@@ -1,0 +1,311 @@
+/* Copyright (c) 2006 Christopher J. W. Lloyd
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
+
+// Original - Christopher Lloyd <cjwl@objc.net>
+#import <AppKit/NSMenuItem.h>
+#import <AppKit/NSMenu.h>
+#import <AppKit/NSImage.h>
+#import <AppKit/NSEvent.h>
+#import <AppKit/NSNibKeyedUnarchiver.h>
+
+@implementation NSMenuItem
+
++(NSMenuItem *)separatorItem {
+   return [[[self alloc] initWithTitle:nil action:NULL keyEquivalent:nil] autorelease];
+}
+
+-(void)encodeWithCoder:(NSCoder *)coder {
+   [coder encodeObject:_title forKey:@"NSMenuItem title"];
+   [coder encodeObject:_keyEquivalent forKey:@"NSMenuItem keyEquivalent"];
+   [coder encodeInt:_keyEquivalentModifierMask forKey:@"NSMenuItem keyEquivalentModifierMask"];
+   [coder encodeObject:_submenu forKey:@"NSMenuItem submenu"];
+   [coder encodeInt:_tag forKey:@"NSMenuItem tag"];
+}
+
+-initWithCoder:(NSCoder *)coder {
+   if([coder isKindOfClass:[NSNibKeyedUnarchiver class]]){
+    NSNibKeyedUnarchiver *keyed=(NSNibKeyedUnarchiver *)coder;
+    NSString          *title=[keyed decodeObjectForKey:@"NSTitle"];
+    NSString          *keyEquivalent=[keyed decodeObjectForKey:@"NSKeyEquiv"];
+    
+    [self initWithTitle:title action:NULL keyEquivalent:keyEquivalent];
+    [self setKeyEquivalentModifierMask:[keyed decodeIntForKey:@"NSKeyEquivModMask"]];
+    [self setSubmenu:[keyed decodeObjectForKey:@"NSSubmenu"]];
+    _tag=[keyed decodeIntForKey:@"NSTag"];
+     
+    if([keyed decodeBoolForKey:@"NSIsSeparator"]){
+     [_title release];
+     _title=nil;
+    }
+   }
+   else {
+    _title=[[coder decodeObjectForKey:@"NSMenuItem title"] retain];
+    _keyEquivalent=[[coder decodeObjectForKey:@"NSMenuItem keyEquivalent"] retain];
+    _keyEquivalentModifierMask=[coder decodeIntForKey:@"NSMenuItem keyEquivalentModifierMask"];
+    _submenu=[[coder decodeObjectForKey:@"NSMenuItem submenu"] retain];
+    _tag=[coder decodeIntForKey:@"NSMenuItem tag"];
+   }
+
+   return self;
+}
+
+-initWithTitle:(NSString *)title action:(SEL)action keyEquivalent:(NSString *)keyEquivalent {
+   _title=[title copy];
+   _target=nil;
+   _action=action;
+   _keyEquivalent=[keyEquivalent copy];
+   _keyEquivalentModifierMask=0;
+   _mnemonic=@"";
+   _mnemonicLocation=0;
+   _submenu=nil;
+   _tag=-1;
+   _enabled=YES;
+
+   return self;
+}
+
+-(void)dealloc {
+   [_title release];
+   [_keyEquivalent release];
+   [_submenu release];
+   [_image release];
+   [_onStateImage release];
+   [_mixedStateImage release];
+   [_offStateImage release];
+   [_representedObject release];
+   [super dealloc];
+}
+
+-(NSString *)title {
+   return _title;
+}
+
+-(NSString *)mnemonic {
+   return _mnemonic;
+}
+
+-(unsigned)mnemonicLocation {
+   return _mnemonicLocation;
+}
+
+-(id)target {
+   return _target;
+}
+
+-(SEL)action {
+   return _action;
+}
+
+-(int)tag {
+   return _tag;
+}
+
+-(int)state {
+    return _state;
+}
+
+-(NSString *)keyEquivalent {
+   return _keyEquivalent;
+}
+
+-(unsigned)keyEquivalentModifierMask {
+   return _keyEquivalentModifierMask;
+}
+
+-(NSImage *)image {
+    return _image;
+}
+
+-(NSImage *)onStateImage {
+    return _onStateImage;
+}
+
+-(NSImage *)offStateImage {
+    return _offStateImage;
+}
+
+-(NSImage *)mixedStateImage {
+    return _mixedStateImage;
+}
+
+-(id)representedObject {
+    return _representedObject;
+}
+
+-(BOOL)hasSubmenu {
+   return (_submenu!=nil)?YES:NO;
+}
+
+-(NSMenu *)submenu {
+   return _submenu;
+}
+
+-(BOOL)isSeparatorItem {
+   return _title==nil;
+}
+
+-(BOOL)isEnabled {
+   return _enabled;
+}
+
+-(void)setTitle:(NSString *)title {
+    title=[title copy];
+    [_title release];
+    _title=title;
+}
+
+-(void)setTitleWithMnemonic:(NSString *)mnemonic {
+   mnemonic=[mnemonic copy];
+   [_mnemonic release];
+   _mnemonic=mnemonic;
+}
+
+-(void)setMnemonicLocation:(unsigned)location {
+   _mnemonicLocation=location;
+}
+
+-(void)setTarget:(id)target {
+   _target=target;
+}
+
+-(void)setAction:(SEL)action {
+   _action=action;
+}
+
+-(void)setTag:(int)tag {
+   _tag=tag;
+}
+
+-(void)setState:(int)state {
+    _state = state;
+}
+
+-(void)setKeyEquivalent:(NSString *)keyEquivalent {
+   keyEquivalent=[keyEquivalent copy];
+   [_keyEquivalent release];
+   _keyEquivalent=keyEquivalent;
+}
+
+-(void)setKeyEquivalentModifierMask:(unsigned)mask {
+   _keyEquivalentModifierMask=mask;
+}
+
+-(void)setImage:(NSImage *)image {
+    [_image release];
+    _image = [image retain];
+}
+
+-(void)setOnStateImage:(NSImage *)image {
+    [_onStateImage release];
+    _onStateImage = [image retain];
+}
+
+-(void)setOffStateImage:(NSImage *)image {
+    [_offStateImage release];
+    _offStateImage = [image retain];
+}
+
+-(void)setMixedStateImage:(NSImage *)image {
+    [_mixedStateImage release];
+    _mixedStateImage = [image retain];
+}
+
+-(void)setRepresentedObject:(id)object {
+    [_representedObject release];
+    _representedObject = [object retain];
+}
+
+-(void)setSubmenu:(NSMenu *)submenu {
+   submenu=[submenu copy];
+   [_submenu release];
+   _submenu=submenu;
+}
+
+-(void)setEnabled:(BOOL)flag {
+   _enabled=flag;
+}
+
++(NSDictionary *)keyNames {
+   static NSDictionary *shared=nil;
+
+   if(shared==nil){
+    NSBundle *bundle=[NSBundle bundleForClass:self];
+    NSString *path=[bundle pathForResource:@"NSMenu" ofType:@"plist"];
+
+    shared=[[NSDictionary alloc] initWithContentsOfFile:path];
+   }
+
+   return shared;
+}
+
+-(NSString *)_scanModifierMapFor:(NSString *)key longForm:(BOOL)longForm {
+   NSDictionary *modmap=[[NSUserDefaults standardUserDefaults]
+      dictionaryForKey:@"NSModifierFlagMapping"];
+
+   if([[modmap objectForKey:@"LeftControl"] isEqual:key])
+    return longForm?@"LCtrl+":@"Ctrl+";
+   else if([[modmap objectForKey:@"LeftAlt"] isEqual:key])
+    return longForm?@"LAlt+":@"Alt+";
+   else if([[modmap objectForKey:@"RightAlt"] isEqual:key])
+    return longForm?@"RAlt+":@"Alt+";
+   else if([[modmap objectForKey:@"RightControl"] isEqual:key])
+    return longForm?@"RCtrl+":@"Ctrl+";
+   else {
+    if([key isEqualToString:@"Alt"]){
+     if([[modmap objectForKey:@"LeftAlt"] length]==0)
+      return longForm?@"LAlt+":@"Alt+";
+
+     if([[modmap objectForKey:@"RightAlt"] length]==0)
+      return longForm?@"RAlt+":@"Alt+";
+    }
+    return nil;
+   }
+}
+
+-(NSString *)_keyEquivalentDescription {
+   NSString     *result=@"";
+   NSString     *uppercaseKey=[_keyEquivalent uppercaseString];
+   NSString     *lowercaseKey=[_keyEquivalent lowercaseString];
+   NSDictionary *keyNames=[[self class] keyNames];
+   NSString     *keyName;
+   NSString     *command=nil,*alt=nil;
+   if(![_keyEquivalent isEqualToString:lowercaseKey]) // [key isEqualToString:uppercaseKey] doesn't work for numbers
+    result=@"Shift+";
+
+   if(_keyEquivalentModifierMask&NSCommandKeyMask)
+    if((command=[self _scanModifierMapFor:@"Command" longForm:NO])==nil)
+     return @"";
+
+   if(_keyEquivalentModifierMask&NSAlternateKeyMask)
+    if((alt=[self _scanModifierMapFor:@"Alt" longForm:NO])==nil)
+     return @"";
+
+   if([command isEqualToString:alt]){
+    command=[self _scanModifierMapFor:@"Command" longForm:YES];
+    alt=[self _scanModifierMapFor:@"Alt" longForm:YES];
+   }
+
+   if(command!=nil)
+    result=[result stringByAppendingString:command];
+   if(alt!=nil)
+    result=[result stringByAppendingString:alt];
+
+   if((keyName=[keyNames objectForKey:_keyEquivalent])==nil)
+    keyName=uppercaseKey;
+
+   result=[result stringByAppendingString:keyName];
+
+   return result;
+}
+
+-(NSString *)description {
+    return [NSString stringWithFormat:@"<%@[0x%x]: title: %@ action: %@ hasSubmenu: %@>",
+        [self class],self,_title,NSStringFromSelector(_action),([self hasSubmenu] ? @"YES" : @"NO")];
+}
+
+@end

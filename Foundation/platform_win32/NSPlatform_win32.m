@@ -1,0 +1,498 @@
+/* Copyright (c) 2006 Christopher J. W. Lloyd
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
+
+// Original - Christopher Lloyd <cjwl@objc.net>
+#import <Foundation/NSPlatform_win32.h>
+#import <Foundation/NSString_win32.h>
+#import <Foundation/NSHandleMonitor_win32.h>
+#import <Foundation/NSHandleMonitorSet_win32.h>
+#import <Foundation/NSTask_win32.h>
+#import <Foundation/NSFileHandle_win32.h>
+#import <Foundation/NSPipe_win32.h>
+#import <Foundation/NSLock_win32.h>
+#import <Foundation/NSPersistantDomain_win32.h>
+#import <Foundation/NSString.h>
+#import <Foundation/NSArray.h>
+#import <Foundation/NSPathUtilities.h>
+#import <Foundation/NSDictionary.h>
+#import <Foundation/NSException.h>
+#import <Foundation/NSProcessInfo.h>
+#import <Foundation/NSData.h>
+#import <Foundation/NSPropertyListReader.h>
+#import <Foundation/NSPropertyListWriter.h>
+#import <Foundation/NSThread.h>
+#import <Foundation/NSRunLoop.h>
+#import <Foundation/NSFileManager.h>
+#import <stdlib.h>
+#import <winsock.h>
+#import <Foundation/NSSocketMonitorSet.h>
+#import <Foundation/NSParentDeathMonitor_win32.h>
+#import <malloc.h>
+
+#import <Foundation/ObjectiveC.h>
+
+NSString *NSPlatformClassName=@"NSPlatform_win32";
+
+#define MAXHOSTNAMELEN 512
+
+@implementation NSPlatform_win32
+
+-init {
+   NSString   *entry;
+   const char *module=OBJCModulePathFromClass(isa);
+   HKEY        handle;
+   DWORD       disposition,allowed;
+   DWORD       vR=MAKEWORD(2,2);
+   WSADATA     wsaData;
+   int         i;
+   
+   WSAStartup(vR,&wsaData);
+
+   _processName=[[[[NSString stringWithCString:__argv[0]] lastPathComponent] stringByDeletingPathExtension] copy];
+
+   entry=[@"SYSTEM\\CurrentControlSet\\Services\\Eventlog\\Application\\" stringByAppendingString:_processName];
+
+   if(RegCreateKeyEx(HKEY_LOCAL_MACHINE,[entry cString],0,NULL,
+     REG_OPTION_NON_VOLATILE,KEY_ALL_ACCESS,NULL,&handle,&disposition))
+    ; // oh well, an error
+
+   if(RegSetValueEx(handle,"EventMessageFile",0,REG_EXPAND_SZ,
+      (LPBYTE)module,strlen(module)+1))
+    ; // oh well, an error
+
+   allowed=EVENTLOG_ERROR_TYPE|EVENTLOG_WARNING_TYPE|EVENTLOG_INFORMATION_TYPE;
+   if(RegSetValueEx(handle,"TypesSupported",0,REG_DWORD,
+      (LPBYTE)&allowed,sizeof(DWORD)))
+    ; // oh well, an error
+
+   RegCloseKey(handle);
+
+   _eventLog=RegisterEventSource(NULL,[_processName cString]);
+
+   _parentDeathMonitor=[[NSParentDeathMonitor_win32 alloc] init];
+   
+   for(i=1;i<__argc;i++)
+    if(strcmp(__argv[i],"-Console")==0){
+    // we could check for presence of AttachConsole and use that instead
+     AllocConsole();
+    }
+    
+   return self;
+}
+
+-(NSInputSource *)parentDeathInputSource {
+   return [_parentDeathMonitor handleMonitor];
+}
+
+-(Class)inputSourceSetClass {
+   return [NSHandleMonitorSet_win32 class];
+}
+
+-(NSString *)fileManagerClassName {
+   return @"NSFileManager_win32";
+}
+
+-(Class)taskClass {
+   return [NSTask_win32 class];
+}
+
+-(Class)fileHandleClass {
+   return [NSFileHandle_win32 class];
+}
+
+-(Class)pipeClass {
+   return [NSPipe_win32 class];
+}
+
+-(Class)lockClass {
+   return [NSLock_win32 class];
+}
+
+-(Class)persistantDomainClass {
+   return [NSPersistantDomain_win32 class];
+}
+
+-(NSString *)userName {
+   NSString *result=[[[NSProcessInfo processInfo] environment] objectForKey:@"USERNAME"];
+
+   if(result==nil)
+    [NSException raise:NSInvalidArgumentException
+                format:@"NSProcessInfo environment USERNAME failed"];
+
+   return result;
+}
+
+-(NSString *)fullUserName {
+   NSString *result=[[[NSProcessInfo processInfo] environment] objectForKey:@"USERNAME"];
+
+   if(result==nil)
+    [NSException raise:NSInvalidArgumentException
+                format:@"NSProcessInfo environment USERNAME failed"];
+
+   return result;
+}
+
+-(NSString *)homeDirectory {
+   NSString *drive=[[[NSProcessInfo processInfo] environment] objectForKey:@"HOMEDRIVE"];
+   NSString *path=[[[NSProcessInfo processInfo] environment] objectForKey:@"HOMEPATH"];
+
+   if(drive==nil)
+    return nil;
+
+   if(path==nil)
+    return nil;
+
+   return [drive stringByAppendingPathComponent:path];
+}
+
+-(NSString *)temporaryDirectory {
+   NSString *result=[[[NSProcessInfo processInfo] environment] objectForKey:@"TEMP"];
+
+   if(result==nil)
+    result=[[[NSProcessInfo processInfo] environment] objectForKey:@"TMP"];
+
+   if(result==nil)
+    [NSException raise:NSInvalidArgumentException
+                format:@"NSProcessInfo environment TEMP and TMP failed"];
+
+   return result;
+}
+
+-(NSString *)executableDirectory {
+   return @"Windows";
+}
+
+-(NSString *)resourceNameSuffix {
+   return @"windows";
+}
+
+-(NSString *)loadableObjectFileExtension {
+   return @"dll";
+}
+
+-(NSString *)loadableObjectFilePrefix {
+   return @"";
+}
+
+-(NSArray *)arguments {
+   NSMutableArray *result=[NSMutableArray array];
+   int             i;
+
+   for(i=0;i<__argc;i++)
+    [result addObject:[NSString stringWithCString:__argv[i]]];
+
+   return result;
+}
+
+-(NSDictionary *)environment {
+   id      *objects,*keys;
+   unsigned count;
+
+   char  *envString=GetEnvironmentStrings();
+   char **env;
+   char  *keyValue;
+   int    i,len,max;
+   char  *run;
+
+   for(count=0,run=envString;*run;count++)
+    run+=strlen(run)+1;
+
+   env=alloca(sizeof(char *)*(count+1));
+   for(count=0,run=envString;*run;count++){
+    env[count]=run;
+    run+=strlen(run)+1;
+   }
+   env[count]=NULL;
+
+// env is unix style environment at this point
+
+   max=0;
+   for(count=0;env[count];count++)
+    if((len=strlen(env[count]))>max)
+     max=len;
+
+   keyValue=alloca(max+1);
+   objects=alloca(sizeof(id)*count);
+   keys=alloca(sizeof(id)*count);
+
+   for(count=0;env[count];count++){
+    len=strlen(strcpy(keyValue,env[count]));
+
+    for(i=0;i<len;i++)
+     if(keyValue[i]=='=')
+      break;
+    keyValue[i]='\0';
+
+    objects[count]=[NSString stringWithCString:keyValue+i+1];
+    keys[count]=[NSString stringWithCString:keyValue];
+    [self checkEnvironmentKey:keys[count] value:objects[count]];
+   }
+
+   return [[NSDictionary allocWithZone:NULL] initWithObjects:objects forKeys:keys
+     count:count];
+}
+
+-(NSTimeInterval)timeIntervalSinceReferenceDate {
+   SYSTEMTIME      systemTime;
+   FILETIME        fileTime;
+
+   GetSystemTime(&systemTime);
+   SystemTimeToFileTime(&systemTime,&fileTime);
+
+   return Win32TimeIntervalFromFileTime(fileTime);
+}
+
+-(NSTimeZone *)systemTimeZone {
+    TIME_ZONE_INFORMATION timeZoneInfo;
+    DWORD timeZoneID;
+    NSString *timeZoneName;
+    int secondsFromGMT;
+    BOOL isDaylightSavingTime;
+
+    timeZoneID = GetTimeZoneInformation(&timeZoneInfo);
+    if (timeZoneID == TIME_ZONE_ID_DAYLIGHT) {
+        timeZoneName = NSStringFromNullTerminatedUnicode(timeZoneInfo.DaylightName);
+        secondsFromGMT = 0 - (timeZoneInfo.Bias * 60 +timeZoneInfo.DaylightBias  * 60);
+        isDaylightSavingTime = YES;
+    }
+//    else if (timeZoneID == TIME_ZONE_ID_STANDARD || timeZoneID == TIME_ZONE_ID_UNKNOWN) {
+    else {
+        timeZoneName = NSStringFromNullTerminatedUnicode(timeZoneInfo.StandardName);
+        secondsFromGMT = 0 - (timeZoneInfo.Bias * 60 +timeZoneInfo. StandardBias  * 60);
+        isDaylightSavingTime = NO;
+    }
+
+//    NSLog(@"hmm... %@ %d %d", timeZoneName, secondsFromGMT, isDaylightSavingTime);
+// FIX there needs to be a better way to map this to the UNIX-style zones
+    return [NSTimeZone timeZoneForSecondsFromGMT:secondsFromGMT];
+}
+
+-(unsigned)processID {
+   return GetCurrentProcessId();
+}
+
+-(NSString *)hostName {
+   DWORD length=MAX_COMPUTERNAME_LENGTH;
+   char  name[length+1];
+
+   if(!GetComputerName(name,&length)){
+    name[0]='\0';
+    return NO;
+   }
+
+   return [NSString stringWithCString:name];
+}
+
+-(NSString *)DNSHostName {
+   char cString[MAXHOSTNAMELEN+1];
+   int  err;
+
+   cString[0]='\0';
+
+   if((err=gethostname(cString,MAXHOSTNAMELEN))!=0){
+    [NSException raise:NSInternalInconsistencyException
+                format:@"gethostname failed with %d",err];
+   }
+
+   if(cString[0]=='\0'){
+    [NSException raise:NSInternalInconsistencyException
+                format:@"gethostname() failed with zero-length string"];
+   }
+
+   return [NSString stringWithCString:cString];
+}
+
+-(NSArray *)addressesForDNSHostName:(NSString *)name {
+   NSMutableArray *result=[NSMutableArray array];
+   char            cString[MAXHOSTNAMELEN+1];
+   struct hostent *hp;
+
+   [name getCString:cString maxLength:MAXHOSTNAMELEN];
+
+   if((hp=gethostbyname(cString))==NULL)
+    return nil;
+   else {
+    unsigned long **addr_list=(unsigned long **)hp->h_addr_list;
+    int             i;
+
+    for(i=0;addr_list[i]!=NULL;i++){
+     struct in_addr addr;
+     NSString      *string;
+
+     addr.s_addr=*(addr_list[i]);
+
+     string=[NSString stringWithCString:inet_ntoa(addr)];
+
+     [result addObject:string];
+    }
+
+    return result;
+   }
+}
+
+-(void)sleepThreadForTimeInterval:(NSTimeInterval)interval {
+   Win32ThreadSleepForTimeInterval(interval);
+}
+
+-(void)logString:(NSString *)string {
+   NSData     *data=[NSPropertyListWriter nullTerminatedASCIIDataWithString:string];
+   const char *cString=[data bytes];
+   unsigned    length=[data length]-1; // skip 0
+   DWORD       ignore;
+   HANDLE      handle;
+
+   handle=GetStdHandle(STD_ERROR_HANDLE);
+   WriteFile(handle,cString,length,&ignore,NULL);
+   if(length==0 || cString[length-1]!='\n')
+    WriteFile(handle,"\n",1,&ignore,NULL);
+
+ //  handle=OpenEventLog(NULL,[[[NSProcessInfo processInfo] processName] cString]);
+   ReportEvent(_eventLog,EVENTLOG_ERROR_TYPE,1,1,NULL,1,0,&cString,NULL);
+ //  CloseEventLog(handle);
+}
+
+-(void *)contentsOfFile:(NSString *)path length:(unsigned *)lengthp {
+   HANDLE file=CreateFile([path fileSystemRepresentation],GENERIC_READ,FILE_SHARE_READ,NULL,
+      OPEN_EXISTING,FILE_ATTRIBUTE_NORMAL,NULL);
+   DWORD  length,readLength;
+   void  *result;
+
+   if(file==INVALID_HANDLE_VALUE)
+    return NULL;
+
+   if(GetFileType(file)!=FILE_TYPE_DISK){
+    CloseHandle(file);
+    return NULL;
+   }
+
+   length=GetFileSize(file,NULL);
+   if(length==0xFFFFFFFF){
+    CloseHandle(file);
+    return NULL;
+   }
+
+   result=NSZoneMalloc(NULL,length);
+
+   if(!ReadFile(file,result,length,&readLength,NULL)){
+    NSZoneFree(NULL,result);
+    CloseHandle(file);
+    return NULL;
+   }
+
+   CloseHandle(file);
+
+   *lengthp=readLength;
+   return result;
+}
+
+-(void *)mapContentsOfFile:(NSString *)path length:(unsigned *)lengthp {
+   void    *result;
+   HANDLE   file=CreateFile([path fileSystemRepresentation],GENERIC_READ,0,NULL,
+      OPEN_EXISTING,FILE_ATTRIBUTE_NORMAL,NULL);
+   HANDLE   mapping;
+
+   if(file==INVALID_HANDLE_VALUE)
+    return NULL;
+
+   *lengthp=GetFileSize(file,NULL);
+   if(*lengthp==0xFFFFFFFF){
+    CloseHandle(file);
+    return NULL;
+   }
+   if(*lengthp==0)
+    return "";
+
+   mapping=CreateFileMapping(file,NULL,PAGE_READONLY,0,0,NULL);
+   if(mapping==NULL){
+    CloseHandle(file);
+    return NULL;
+   }
+
+   result=MapViewOfFile(mapping,FILE_MAP_READ,0,0,0);
+   CloseHandle(mapping);
+   CloseHandle(file);
+
+   return result;
+}
+
+-(void)unmapAddress:(void *)ptr length:(unsigned)length {
+   if(length>0){
+    if(!UnmapViewOfFile(ptr))
+     Win32Assert("UnmapViewOfFile()");
+   }
+}
+
+-(BOOL)writeContentsOfFile:(NSString *)path bytes:(const void *)bytes length:(unsigned)length atomically:(BOOL)atomically {
+   HANDLE   file;
+   DWORD    wrote;
+
+   if(atomically){
+    NSString *backup=[path stringByAppendingString:@"##"];
+
+    file=CreateFile([backup fileSystemRepresentation],GENERIC_WRITE,0,NULL,CREATE_ALWAYS,FILE_ATTRIBUTE_NORMAL,NULL);
+    if(!WriteFile(file,bytes,length,&wrote,NULL))
+     CloseHandle(file);
+    else {
+     CloseHandle(file);
+
+     if(wrote!=length)
+      DeleteFile([backup fileSystemRepresentation]);
+     else {
+      if(MoveFileEx([backup fileSystemRepresentation],[path fileSystemRepresentation],MOVEFILE_REPLACE_EXISTING))
+       return YES;
+     }
+    }
+    // atomic failure drops through to non-atomic
+   }
+
+   file=CreateFile([path fileSystemRepresentation],GENERIC_WRITE,0,NULL,CREATE_ALWAYS,FILE_ATTRIBUTE_NORMAL,NULL);
+
+   if(!WriteFile(file,bytes,length,&wrote,NULL)){
+    CloseHandle(file);
+    return NO;
+   }
+
+   CloseHandle(file);
+
+   return (wrote==length)?YES:NO;
+}
+
+@end
+
+void _Win32Assert (const char *code,int line,const char *file) {
+   DWORD lastError=GetLastError();
+
+   if(lastError)
+    [NSException raise:@"Win32AssertFailedException"
+      format:@"%s failed with code %d at %s:%d",code,lastError,file,line];
+}
+
+#define NSTimeIntervalSince1601		12622780800.0L
+NSTimeInterval Win32TimeIntervalFromFileTime(FILETIME fileTime){
+   long long       file64;
+   NSTimeInterval  interval;
+
+   file64=fileTime.dwHighDateTime;
+   file64<<=32;
+   file64|=fileTime.dwLowDateTime;
+   interval=file64;
+   interval/=10000000.0;
+
+   return interval-NSTimeIntervalSince1601;
+}
+
+void Win32ThreadSleepForTimeInterval(NSTimeInterval interval) {
+   while(interval>0){
+    NSTimeInterval chunk=(interval>1000000)?1000000:interval;
+
+    Sleep(chunk*1000);
+
+    interval-=chunk;
+   }
+}
+

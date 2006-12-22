@@ -1,0 +1,25 @@
+{
+    IBClasses = (
+        {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 
+        {
+            ACTIONS = {setColorButtonClicked = id; }; 
+            CLASS = NSColorPanel; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {
+                colorPickerView = id; 
+                colorPickersMatrix = id; 
+                colorWell = id; 
+                setColorButton = id; 
+                splitView = id; 
+            }; 
+            SUPERCLASS = NSPanel; 
+        }, 
+        {
+            CLASS = Owner; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {colorPanel = id; }; 
+            SUPERCLASS = NSObject; 
+        }
+    ); 
+    IBVersion = 1; 
+}

@@ -1,0 +1,73 @@
+/* Copyright (c) 2006 Christopher J. W. Lloyd
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
+
+// Original - Christopher Lloyd <cjwl@objc.net>
+#import <Foundation/NSData_concrete.h>
+#import <Foundation/NSData_mapped.h>
+
+@implementation NSData_concrete
+
+void *NSBytesReplicate(const void *src,unsigned count,NSZone *zone) {
+   void    *dst=NSZoneMalloc(zone,count);
+
+   NSByteCopy(src,dst,count);
+
+   return dst;
+}
+
+NSData *NSData_concreteNew(NSZone *zone,const char *bytes,unsigned length) {
+   NSData_concrete *self=NSAllocateObject([NSData_concrete class],0,zone);
+
+   self->_length=length;
+   self->_bytes=NSBytesReplicate(bytes,length,zone);
+
+   return self;
+}
+
+NSData *NSData_concreteNewNoCopy(NSZone *zone,void *bytes,unsigned length) {
+   NSData_concrete *self=NSAllocateObject([NSData_concrete class],0,zone);
+
+   self->_length=length;
+   self->_bytes=bytes;
+
+   return self;
+}
+
+-init {
+   _length=0;
+   _bytes=NULL;
+   return self;
+}
+
+-initWithBytes:(const void *)bytes length:(unsigned)length {
+   _length=length;
+   _bytes=NSBytesReplicate(bytes,length,NSZoneFromPointer(self));
+   return self;
+}
+
+-initWithBytesNoCopy:(void *)bytes length:(unsigned)length {
+   _length=length;
+   _bytes=bytes;
+   return self;
+}
+
+-initWithContentsOfMappedFile:(NSString *)path {
+   [self dealloc];
+   return [[NSData_mapped alloc] initWithContentsOfMappedFile:path];
+}
+
+-(void)dealloc {
+   if(_bytes!=NULL)
+    NSZoneFree(NSZoneFromPointer(_bytes),_bytes);
+   NSDeallocateObject(self);
+}
+
+-(unsigned)length { return _length; }
+-(const void *)bytes { return _bytes; }
+
+@end

@@ -1,0 +1,53 @@
+{
+    IBClasses = (
+        {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 
+        {
+            CLASS = NSColorPicker; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {subview = id; }; 
+            SUPERCLASS = NSObject; 
+        }, 
+        {
+            ACTIONS = {
+                cmykSliderChanged = id; 
+                cmykTextChanged = id; 
+                grayscaleConstant = id; 
+                greyscaleDidChange = id; 
+                hsbSliderChanged = id; 
+                hsbTextChanged = id; 
+                matrixClicked = id; 
+                rgbSliderChanged = id; 
+                rgbTextChanged = id; 
+            }; 
+            CLASS = NSColorPickerSliders; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {
+                "_blackSlider" = id; 
+                "_blueSlider" = id; 
+                "_brightnessSlider" = id; 
+                "_cyanSlider" = id; 
+                "_grayscaleConstantsMatrix" = id; 
+                "_greenSlider" = id; 
+                "_hueSlider" = id; 
+                "_magentaSlider" = id; 
+                "_redSlider" = id; 
+                "_saturationSlider" = id; 
+                "_yellowSlider" = id; 
+                cmykSubview = id; 
+                cmykTextFieldMatrix = id; 
+                currentView = id; 
+                greyscaleSlider = id; 
+                greyscaleSubview = id; 
+                greyscaleTextField = id; 
+                hsbSubview = id; 
+                hsbTextFieldMatrix = id; 
+                matrix = id; 
+                rgbSubview = id; 
+                rgbTextFieldMatrix = id; 
+                sliderSubview = id; 
+            }; 
+            SUPERCLASS = NSColorPicker; 
+        }
+    ); 
+    IBVersion = 1; 
+}

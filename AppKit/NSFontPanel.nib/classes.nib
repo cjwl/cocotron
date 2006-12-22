@@ -1,0 +1,34 @@
+{
+    IBClasses = (
+        {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 
+        {
+            ACTIONS = {
+                clickFamilyMatrix = id; 
+                clickSizeMatrix = id; 
+                clickSizeText = id; 
+                clickTypefaceMatrix = id; 
+                revert = id; 
+                set = id; 
+            }; 
+            CLASS = NSFontPanel; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {
+                "_familyMatrix" = id; 
+                "_revertButton" = id; 
+                "_sampleTextField" = id; 
+                "_setButton" = id; 
+                "_sizeMatrix" = id; 
+                "_sizeTextField" = id; 
+                "_typefaceMatrix" = id; 
+            }; 
+            SUPERCLASS = NSPanel; 
+        }, 
+        {
+            CLASS = Owner; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {fontPanel = id; }; 
+            SUPERCLASS = NSObject; 
+        }
+    ); 
+    IBVersion = 1; 
+}

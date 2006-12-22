@@ -1,0 +1,26 @@
+{
+    IBClasses = (
+        {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 
+        {
+            ACTIONS = {customizationPaletteDidFinish = id; settingsChanged = id; }; 
+            CLASS = NSToolbarCustomizationPalette; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {
+                "_allowedItemsTextField" = id; 
+                "_button" = id; 
+                "_defaultItemsTextField" = id; 
+                "_displayModePopUp" = id; 
+                "_palette" = id; 
+                "_smallSizeModeButton" = id; 
+            }; 
+            SUPERCLASS = NSPanel; 
+        }, 
+        {
+            CLASS = "_NSPaletteOwner"; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {palette = id; }; 
+            SUPERCLASS = NSObject; 
+        }
+    ); 
+    IBVersion = 1; 
+}

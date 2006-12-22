@@ -1,0 +1,86 @@
+/* Copyright (c) 2006 Christopher J. W. Lloyd
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
+
+#include <sys/types.h>
+#import <stdlib.h>
+#import <ctype.h>
+#import <errno.h>
+#import <float.h>
+#import <limits.h>
+#import <math.h>
+#import <stdarg.h>
+#import <stddef.h>
+#import <stdio.h>
+#import <string.h>
+
+#import <Foundation/NSArchiver.h>
+#import <Foundation/NSArray.h>
+#import <Foundation/NSAttributedString.h>
+#import <Foundation/NSAutoreleasePool.h>
+#import <Foundation/NSBundle.h>
+#import <Foundation/NSByteOrder.h>
+#import <Foundation/NSCalendarDate.h>
+#import <Foundation/NSCharacterSet.h>
+#import <Foundation/NSCoder.h>
+#import <Foundation/NSCountedSet.h>
+#import <Foundation/NSData.h>
+#import <Foundation/NSDate.h>
+#import <Foundation/NSDateFormatter.h>
+#import <Foundation/NSDebug.h>
+#import <Foundation/NSDictionary.h>
+#import <Foundation/NSDirectoryEnumerator.h>
+#import <Foundation/NSEnumerator.h>
+#import <Foundation/NSException.h>
+#import <Foundation/NSFileHandle.h>
+#import <Foundation/NSFileManager.h>
+#import <Foundation/NSFormatter.h>
+#import <Foundation/NSGeometry.h>
+#import <Foundation/NSHashTable.h>
+#import <Foundation/NSHost.h>
+#import <Foundation/NSInvocation.h>
+#import <Foundation/NSKeyedUnarchiver.h>
+#import <Foundation/NSLock.h>
+#import <Foundation/NSMapTable.h>
+#import <Foundation/NSMethodSignature.h>
+#import <Foundation/NSMutableArray.h>
+#import <Foundation/NSMutableAttributedString.h>
+#import <Foundation/NSMutableCharacterSet.h>
+#import <Foundation/NSMutableData.h>
+#import <Foundation/NSMutableDictionary.h>
+#import <Foundation/NSMutableSet.h>
+#import <Foundation/NSMutableString.h>
+#import <Foundation/NSNotification.h>
+#import <Foundation/NSNotificationCenter.h>
+#import <Foundation/NSNotificationQueue.h>
+#import <Foundation/NSNull.h>
+#import <Foundation/NSNumber.h>
+#import <Foundation/NSNumberFormatter.h>
+#import <Foundation/NSObjCRuntime.h>
+#import <Foundation/NSObject.h>
+#import <Foundation/NSPathUtilities.h>
+#import <Foundation/NSPipe.h>
+#import <Foundation/NSPortCoder.h>
+#import <Foundation/NSProcessInfo.h>
+#import <Foundation/NSProxy.h>
+#import <Foundation/NSRaise.h>
+#import <Foundation/NSRange.h>
+#import <Foundation/NSRunLoop.h>
+#import <Foundation/NSScanner.h>
+#import <Foundation/NSSet.h>
+#import <Foundation/NSStream.h>
+#import <Foundation/NSString.h>
+#import <Foundation/NSTask.h>
+#import <Foundation/NSThread.h>
+#import <Foundation/NSTimer.h>
+#import <Foundation/NSTimeZone.h>
+#import <Foundation/NSUnarchiver.h>
+#import <Foundation/NSUndoManager.h>
+#import <Foundation/NSUserDefaults.h>
+#import <Foundation/NSValue.h>
+#import <Foundation/NSZone.h>
+

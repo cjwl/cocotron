@@ -1,0 +1,62 @@
+/* Copyright (c) 2006 Christopher J. W. Lloyd
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
+
+// Original - Christopher Lloyd <cjwl@objc.net>
+#import <Foundation/NSRange.h>
+#import <Foundation/NSStringFormatter.h>
+
+NSRange NSMakeRange(unsigned location,unsigned length) {
+   NSRange range={location,length};
+   return range;
+}
+
+BOOL NSEqualRanges(NSRange range, NSRange otherRange) {
+   return (range.location==otherRange.location && range.length==otherRange.length);
+}
+
+unsigned NSMaxRange(NSRange range){
+   return range.location+range.length;
+}
+
+NSString *NSStringFromRange(NSRange range){
+   return NSStringWithFormat(@"{location = %u; length = %u}",range.location,range.length);
+}
+
+BOOL NSLocationInRange(unsigned location,NSRange range){
+   return (location>=range.location && location<NSMaxRange(range))?YES:NO;
+}
+
+NSRange NSIntersectionRange(NSRange range,NSRange otherRange){
+   unsigned min,loc,max1=NSMaxRange(range),max2=NSMaxRange(otherRange);
+   NSRange result;
+
+   min=(max1<max2)?max1:max2;
+   loc=(range.location>otherRange.location)?range.location:otherRange.location;
+
+   if(min<loc)
+    result.location=result.length=0;
+   else{
+    result.location=loc;
+    result.length=min-loc;
+   }
+
+   return result;
+}
+
+NSRange NSUnionRange(NSRange range,NSRange otherRange){
+   unsigned max,loc,max1=NSMaxRange(range),max2=NSMaxRange(otherRange);
+   NSRange result;
+
+   max=(max1>max2)?max1:max2;
+   loc=(range.location<otherRange.location)?range.location:otherRange.location;
+
+   result.location=loc;
+   result.length=max-result.location;
+   return result;
+}
+

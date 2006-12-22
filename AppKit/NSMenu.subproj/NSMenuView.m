@@ -1,0 +1,178 @@
+/* Copyright (c) 2006 Christopher J. W. Lloyd
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
+
+// Rewrite - Christopher Lloyd <cjwl@objc.net>
+// Prototype - David Young <daver@geeks.org>
+#import <AppKit/NSMenuView.h>
+#import <AppKit/NSMenuWindow.h>
+
+@implementation NSMenuView
+
+-(unsigned)itemIndexAtPoint:(NSPoint)point {
+   NSInvalidAbstractInvocation();
+   return NSNotFound;
+}
+
+-(unsigned)selectedItemIndex {
+   return _selectedItemIndex;
+}
+
+-(void)setSelectedItemIndex:(unsigned)itemIndex {
+   _selectedItemIndex=itemIndex;
+   [self display];
+   [[self window] flushWindow];
+}
+
+-(NSArray *)itemArray {
+   return [[self menu] itemArray];
+}
+
+-(NSMenuItem *)itemAtSelectedIndex {
+   NSArray *items=[self itemArray];
+
+   if(_selectedItemIndex<[items count])
+    return [items objectAtIndex:_selectedItemIndex];
+
+   return nil;
+}
+
+-(NSMenuView *)viewAtSelectedIndexPositionOnScreen:(NSScreen *)screen {
+   NSInvalidAbstractInvocation();
+   return nil;
+}
+
+-(void)rightMouseDown:(NSEvent *)event {
+   // do nothing
+}
+
+-(NSScreen *)_screenForPoint:(NSPoint)point {
+   NSArray *screens=[NSScreen screens];
+   int      i,count=[screens count];
+
+   for(i=0;i<count;i++){
+    NSScreen *check=[screens objectAtIndex:i];
+
+    if(NSPointInRect(point,[check frame]))
+     return check;
+   }
+
+   return [screens objectAtIndex:0];// should not happen
+}
+
+-(NSMenuItem *)trackForEvent:(NSEvent *)event {
+   NSMenuItem *item=nil;
+
+   enum {
+    STATE_FIRSTMOUSEDOWN,
+    STATE_MOUSEDOWN,
+    STATE_MOUSEUP,
+    STATE_EXIT
+   } state=STATE_FIRSTMOUSEDOWN;
+   NSPoint point=[event locationInWindow];
+   NSPoint firstPoint=point;
+   NSMutableArray *viewStack=[NSMutableArray array];
+
+   [[self menu] update];
+
+   [viewStack addObject:self];
+
+   [event retain];
+   do {
+    NSAutoreleasePool *pool=[NSAutoreleasePool new];
+    int                count=[viewStack count];
+    NSScreen          *screen=[self _screenForPoint:[[event window] convertBaseToScreen:point]];
+
+    point=[[event window] convertBaseToScreen:point];
+    if(count==1)
+     screen=[self _screenForPoint:point];
+
+    while(--count>=0){
+     NSMenuView *checkView=[viewStack objectAtIndex:count];
+     NSPoint     checkPoint=[[checkView window] convertScreenToBase:point];
+
+     checkPoint=[checkView convertPoint:checkPoint fromView:nil];
+
+     if(NSMouseInRect(checkPoint,[checkView bounds],[checkView isFlipped])){
+      unsigned itemIndex=[checkView itemIndexAtPoint:checkPoint];
+
+      if(itemIndex!=[checkView selectedItemIndex]){
+       NSMenuView *branch;
+
+       while(count+1<[viewStack count]){
+        [[[viewStack lastObject] window] close];
+        [viewStack removeLastObject];
+       }
+       [checkView setSelectedItemIndex:itemIndex];
+
+       if((branch=[checkView viewAtSelectedIndexPositionOnScreen:screen])!=nil)
+        [viewStack addObject:branch];
+      }
+      break;
+     }
+    } 
+
+    if(count<0){
+     [[viewStack lastObject] setSelectedItemIndex:NSNotFound];
+    }
+
+    [event release];
+    event=[[self window] nextEventMatchingMask:NSLeftMouseUpMask|NSLeftMouseDraggedMask];
+    [event retain];
+
+    point=[event locationInWindow];
+
+    switch(state){
+     case STATE_FIRSTMOUSEDOWN:
+      item=[[viewStack lastObject] itemAtSelectedIndex];
+
+      if(([viewStack count]==1) && [item isEnabled] && ![item hasSubmenu])
+       state=STATE_EXIT;
+      else if(NSEqualPoints(firstPoint,point)){
+       if([event type]==NSLeftMouseUp)
+        state=STATE_MOUSEUP;
+      }
+      else
+       state=STATE_MOUSEDOWN;
+      break;
+
+     default:
+      item=[[viewStack lastObject] itemAtSelectedIndex];
+      if([event type]==NSLeftMouseUp){
+       if(([viewStack count]<=2) || ([item isEnabled] && ![item hasSubmenu]))
+        state=STATE_EXIT;
+      }
+      break;
+    }
+
+    [pool release];
+   }while(state!=STATE_EXIT);
+
+   if([viewStack count]>0)
+    item=[[viewStack lastObject] itemAtSelectedIndex];
+
+   while([viewStack count]>1){
+    [[[viewStack lastObject] window] close];
+    [viewStack removeLastObject];
+   }
+   [viewStack removeLastObject];
+
+   _selectedItemIndex=NSNotFound;
+   [self display];
+   [[self window] flushWindow];
+
+   return ([item isEnabled] && ![item hasSubmenu])?item:nil;
+}
+
+-(void)mouseDown:(NSEvent *)event {
+   NSMenuItem *item=[self trackForEvent:event];
+
+   if(item!=nil)
+    [NSApp sendAction:[item action] to:[item target] from:item];
+}
+
+@end

@@ -1,0 +1,130 @@
+/* Copyright (c) 2006 Christopher J. W. Lloyd
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
+
+// Original - Christopher Lloyd <cjwl@objc.net>
+#import "Protocol.h"
+
+#import <Foundation/ObjCHashTable.h>
+#import <Foundation/ObjCClass.h>
+#import <Foundation/ObjCSelector.h>
+#import <Foundation/ObjCException.h>
+
+#define PROTOCOL_CLASS "Protocol"
+
+static void OBJCRegisterMethodList(OBJCMethodDescriptionList *list){
+   unsigned i;
+
+   for (i=0;i<list->count;i++)
+    list->list[i].name=OBJCRegisterMethodDescription(list->list+i);
+}
+
+void OBJCRegisterProtocol(OBJCProtocolTemplate *template) {
+   unsigned          i;
+   OBJCProtocolList *subprotos;
+   Class             class=OBJCClassFromString(PROTOCOL_CLASS);
+
+   if(template->isa==class)
+    return; // already registered
+
+   template->isa=class;
+
+   if(template->instanceMethods!=NULL)
+    OBJCRegisterMethodList(template->instanceMethods);
+
+   if(template->classMethods!=NULL)
+    OBJCRegisterMethodList(template->classMethods);
+   for(subprotos=template->childProtocols;subprotos!=NULL;subprotos=subprotos->next){
+    for (i=0;i<subprotos->count;i++)
+     OBJCRegisterProtocol((OBJCProtocolTemplate *)subprotos->list[i]);
+   }
+}
+
+@implementation Protocol
+
+-(const char *)name {
+    return nameCString;
+}
+
+-(OBJCMethodDescription *)descriptionForInstanceMethod:(SEL)selector {
+   OBJCProtocolList *list;
+   unsigned          i;
+
+   if(instanceMethods==NULL)
+    for(i=0;i<instanceMethods->count;i++)
+     if(instanceMethods->list[i].name==OBJCSelectorUniqueId(selector))
+      return &instanceMethods->list[i];
+    
+   list=childProtocols;
+   while(list!=NULL){
+    unsigned j;
+
+    for(j=0;j<list->count;j++){
+     unsigned k;
+
+     for(k=0;k<list->list[j]->instanceMethods->count;k++)
+      if(list->list[j]->instanceMethods->list[k].name==OBJCSelectorUniqueId(selector))
+       return &list->list[j]->instanceMethods->list[k];
+    }
+    list=list->next;
+   }
+
+   return NULL;
+}
+
+-(OBJCMethodDescription *)descriptionForClassMethod:(SEL)selector {
+   OBJCProtocolList *list;
+   unsigned          i;
+
+   if(classMethods==NULL)
+    for(i=0;i<classMethods->count;i++)
+     if(classMethods->list[i].name==OBJCSelectorUniqueId(selector))
+      return &classMethods->list[i];
+
+   list=childProtocols;
+   while(list!=NULL){
+    unsigned j;
+
+    for(j=0;j<list->count;j++) {
+     unsigned k;
+
+     for (k=0;k<list->list[j]->classMethods->count;k++)
+      if(list->list[j]->classMethods->list[k].name==OBJCSelectorUniqueId(selector))
+       return &list->list[j]->classMethods->list[k];
+    }
+    list=list->next;
+   }
+
+   return NULL;
+}
+
+-(BOOL)conformsTo:(Protocol *)other {
+
+   if(other==nil)
+    return NO;
+
+   if(strcmp(other->nameCString,nameCString)==0)
+    return YES;
+   else if(childProtocols==NULL)
+    return NO;
+   else {
+    int i;
+
+    for (i=0;i<childProtocols->count;i++) {
+     Protocol *proto=childProtocols->list[i];
+
+     if (strcmp(other->nameCString,proto->nameCString) == 0)
+      return YES;
+
+     if ([proto conformsTo:other])
+      return YES;
+    }
+    return NO;
+   }
+}
+
+@end

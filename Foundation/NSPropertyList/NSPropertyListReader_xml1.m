@@ -1,0 +1,192 @@
+/* Copyright (c) 2006 Christopher J. W. Lloyd
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
+
+// Original - Christopher Lloyd <cjwl@objc.net>
+#import <Foundation/NSPropertyListReader_xml1.h>
+#import <Foundation/NSXMLReader.h>
+#import <Foundation/NSXMLDocument.h>
+#import <Foundation/NSXMLElement.h>
+#import <Foundation/NSException.h>
+#import <Foundation/NSDictionary.h>
+#import <Foundation/NSArray.h>
+#import <Foundation/NSData.h>
+#import <Foundation/NSNumber.h>
+
+@implementation NSPropertyListReader_xml1
+
++(NSDictionary *)dictionaryFromElement:(NSXMLElement *)element {
+   NSMutableDictionary *result=[NSMutableDictionary dictionary];
+   NSArray             *contents=[element contents];
+   int                  i,count=[contents count];
+   id                   currentKey=nil;
+   
+   for(i=0;i<count;i++){
+    id check=[contents objectAtIndex:i];
+    
+    if([check isKindOfClass:[NSXMLElement class]]){
+     if([[check name] isEqualToString:@"key"])
+      currentKey=[check stringValue];
+     else
+      [result setObject:[self propertyListFromElement:check] forKey:currentKey];
+     
+    }
+   }   
+   return result;
+}
+
++(NSArray *)arrayFromElement:(NSXMLElement *)element {
+   NSMutableArray *result=[NSMutableArray array];
+   NSArray        *contents=[element contents];
+   int             i,count=[contents count];
+   
+   for(i=0;i<count;i++){
+    id check=[contents objectAtIndex:i];
+    
+    if([check isKindOfClass:[NSXMLElement class]])
+     [result addObject:[self propertyListFromElement:check]];
+   }
+   
+   return result;
+}
+
++(NSData *)dataFromBase64String:(NSString *)string {
+   unsigned      i,length=[string length],resultLength=0;
+   unichar       buffer[length];
+   unsigned char result[length];
+   unsigned char partial=0;
+   enum { load6High, load2Low, load4Low, load6Low } state=load6High;
+   
+   [string getCharacters:buffer];
+   
+   for(i=0;i<length;i++){
+    unichar       code=buffer[i];
+    unsigned char bits;
+    
+    if(code>='A' && code<='Z')
+     bits=code-'A';
+    else if(code>='a' && code<='z')
+     bits=code-'a'+26;
+    else if(code>='0' && code<='9')
+     bits=code-'0'+52;
+    else if(code=='+')
+     bits=62;
+    else if(code=='/')
+     bits=63;
+    else if(code=='='){
+     break;
+    }
+    else
+     continue;
+     
+    switch(state){
+    
+     case load6High:
+      partial=bits<<2;
+      state=load2Low;
+      break;
+    
+     case load2Low:
+      partial|=bits>>4;
+      result[resultLength++]=partial;
+      partial=bits<<4;
+      state=load4Low;
+      break;
+     
+     case load4Low:
+      partial|=bits>>2;
+      result[resultLength++]=partial;
+      partial=bits<<6;
+      state=load6Low;
+      break;
+
+     case load6Low:
+      partial|=bits;
+      result[resultLength++]=partial;
+      state=load6High;
+      break;
+    }
+   }
+   
+   
+   return [NSData dataWithBytes:result length:resultLength];
+}
+
++(NSData *)dataFromElement:(NSXMLElement *)element {
+   NSMutableData *result=[NSMutableData data];
+   NSArray       *strings=[element contents];
+   int            i,count=[strings count];
+   
+   for(i=0;i<count;i++)
+    [result appendData:[self dataFromBase64String:[strings objectAtIndex:i]]];
+   
+   return result;
+}
+
+
++(NSObject *)propertyListFromElement:(NSXMLElement *)element {
+   NSString *name=[element name];
+   id        result=nil;
+      
+   if([name isEqualToString:@"dict"])
+    result=[self dictionaryFromElement:element];
+   else if([name isEqualToString:@"array"])
+    result=[self arrayFromElement:element];
+   else if([name isEqualToString:@"string"])
+    result=[element stringValue];
+   else if([name isEqualToString:@"integer"])
+    result=[NSNumber numberWithInt:[element intValue]];
+   else if([name isEqualToString:@"real"])
+    result=[NSNumber numberWithFloat:[element floatValue]];
+   else if([name isEqualToString:@"true"])
+    result=[NSNumber numberWithBool:YES];
+   else if([name isEqualToString:@"false"])
+    result=[NSNumber numberWithBool:NO];
+   else if([name isEqualToString:@"data"])
+    result=[self dataFromElement:element];
+        
+   return result;
+}
+
++(NSObject *)propertyListFromContentsOfElement:(NSXMLElement *)element {
+   id       result=nil;
+   NSArray *contents=[element contents];
+   int      i,count=[contents count];
+   
+   for(i=0;i<count;i++){
+    id check=[contents objectAtIndex:i];
+    
+    if([check isKindOfClass:[NSXMLElement class]])
+     result=[self propertyListFromElement:check];
+   }
+   
+   return result;
+}
+
++(NSObject *)propertyListFromDocument:(NSXMLDocument *)document {
+   NSXMLElement *root=[document rootElement];
+   
+   return [self propertyListFromContentsOfElement:root];
+}
+
++(NSObject *)propertyListFromData:(NSData *)data {
+   id result=nil;
+   
+   NS_DURING
+    NSXMLDocument *document=[NSXMLReader documentWithData:data];
+   
+    if(document!=nil){
+     result=[self propertyListFromDocument:document];
+    }
+   NS_HANDLER
+
+   NS_ENDHANDLER
+      
+   return result;
+}
+
+@end

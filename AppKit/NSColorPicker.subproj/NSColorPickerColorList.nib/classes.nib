@@ -1,0 +1,19 @@
+{
+    IBClasses = (
+        {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 
+        {
+            CLASS = NSColorPicker; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {subview = id; }; 
+            SUPERCLASS = NSObject; 
+        }, 
+        {
+            ACTIONS = {colorListBrowserClicked = id; colorListPopUpClicked = id; }; 
+            CLASS = NSColorPickerColorList; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {colorBrowser = id; colorListPopUp = id; }; 
+            SUPERCLASS = NSColorPicker; 
+        }
+    ); 
+    IBVersion = 1; 
+}
