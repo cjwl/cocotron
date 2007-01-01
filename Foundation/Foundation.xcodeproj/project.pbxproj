@@ -1203,15 +1203,15 @@
 		6EA04A8909E57EA10067589C /* NSTask_posix.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28058409747CEE00EC542B /* NSTask_posix.m */; };
 		6EAD77310AAF1283004BCCC9 /* NSInputStream_socket.h in Headers */ = {isa = PBXBuildFile; fileRef = 6EAD772F0AAF1283004BCCC9 /* NSInputStream_socket.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		6EAD77320AAF1283004BCCC9 /* NSInputStream_socket.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EAD77300AAF1283004BCCC9 /* NSInputStream_socket.m */; };
-		6EAD77330AAF1283004BCCC9 /* NSInputStream_socket.h in Headers */ = {isa = PBXBuildFile; fileRef = 6EAD772F0AAF1283004BCCC9 /* NSInputStream_socket.h */; };
+		6EAD77330AAF1283004BCCC9 /* NSInputStream_socket.h in Headers */ = {isa = PBXBuildFile; fileRef = 6EAD772F0AAF1283004BCCC9 /* NSInputStream_socket.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		6EAD77340AAF1283004BCCC9 /* NSInputStream_socket.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EAD77300AAF1283004BCCC9 /* NSInputStream_socket.m */; };
-		6EAD77350AAF1283004BCCC9 /* NSInputStream_socket.h in Headers */ = {isa = PBXBuildFile; fileRef = 6EAD772F0AAF1283004BCCC9 /* NSInputStream_socket.h */; };
+		6EAD77350AAF1283004BCCC9 /* NSInputStream_socket.h in Headers */ = {isa = PBXBuildFile; fileRef = 6EAD772F0AAF1283004BCCC9 /* NSInputStream_socket.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6EAD77360AAF1283004BCCC9 /* NSInputStream_socket.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EAD77300AAF1283004BCCC9 /* NSInputStream_socket.m */; };
 		6EAD773B0AAF1293004BCCC9 /* NSOutputStream_socket.h in Headers */ = {isa = PBXBuildFile; fileRef = 6EAD77390AAF1293004BCCC9 /* NSOutputStream_socket.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		6EAD773C0AAF1293004BCCC9 /* NSOutputStream_socket.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EAD773A0AAF1293004BCCC9 /* NSOutputStream_socket.m */; };
-		6EAD773D0AAF1293004BCCC9 /* NSOutputStream_socket.h in Headers */ = {isa = PBXBuildFile; fileRef = 6EAD77390AAF1293004BCCC9 /* NSOutputStream_socket.h */; };
+		6EAD773D0AAF1293004BCCC9 /* NSOutputStream_socket.h in Headers */ = {isa = PBXBuildFile; fileRef = 6EAD77390AAF1293004BCCC9 /* NSOutputStream_socket.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		6EAD773E0AAF1293004BCCC9 /* NSOutputStream_socket.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EAD773A0AAF1293004BCCC9 /* NSOutputStream_socket.m */; };
-		6EAD773F0AAF1293004BCCC9 /* NSOutputStream_socket.h in Headers */ = {isa = PBXBuildFile; fileRef = 6EAD77390AAF1293004BCCC9 /* NSOutputStream_socket.h */; };
+		6EAD773F0AAF1293004BCCC9 /* NSOutputStream_socket.h in Headers */ = {isa = PBXBuildFile; fileRef = 6EAD77390AAF1293004BCCC9 /* NSOutputStream_socket.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		6EAD77400AAF1293004BCCC9 /* NSOutputStream_socket.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EAD773A0AAF1293004BCCC9 /* NSOutputStream_socket.m */; };
 		6EC4AAE90A34D9B200E8D6CA /* NSKeyedUnarchiver.h in Headers */ = {isa = PBXBuildFile; fileRef = 6EC4AAE70A34D9B200E8D6CA /* NSKeyedUnarchiver.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6EC4AAEA0A34D9B200E8D6CA /* NSKeyedUnarchiver.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EC4AAE80A34D9B200E8D6CA /* NSKeyedUnarchiver.m */; };
@@ -1225,6 +1225,246 @@
 		6EC4AB540A35157600E8D6CA /* NSSocketMonitorSet_Unix.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EC4AB520A35157600E8D6CA /* NSSocketMonitorSet_Unix.m */; };
 		6EC4AB550A35157600E8D6CA /* NSSocketMonitorSet_Unix.h in Headers */ = {isa = PBXBuildFile; fileRef = 6EC4AB510A35157600E8D6CA /* NSSocketMonitorSet_Unix.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		6EC4AB560A35157600E8D6CA /* NSSocketMonitorSet_Unix.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EC4AB520A35157600E8D6CA /* NSSocketMonitorSet_Unix.m */; };
+		FE405A6C0B4450FD001B183D /* NSHTTPURLResponse.h in Headers */ = {isa = PBXBuildFile; fileRef = FE405A6A0B4450FD001B183D /* NSHTTPURLResponse.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE405A6D0B4450FD001B183D /* NSHTTPURLResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = FE405A6B0B4450FD001B183D /* NSHTTPURLResponse.m */; };
+		FE405A6E0B4450FD001B183D /* NSHTTPURLResponse.h in Headers */ = {isa = PBXBuildFile; fileRef = FE405A6A0B4450FD001B183D /* NSHTTPURLResponse.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE405A6F0B4450FD001B183D /* NSHTTPURLResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = FE405A6B0B4450FD001B183D /* NSHTTPURLResponse.m */; };
+		FE405A700B4450FD001B183D /* NSHTTPURLResponse.h in Headers */ = {isa = PBXBuildFile; fileRef = FE405A6A0B4450FD001B183D /* NSHTTPURLResponse.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE405A710B4450FD001B183D /* NSHTTPURLResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = FE405A6B0B4450FD001B183D /* NSHTTPURLResponse.m */; };
+		FEB9D30E0B4374F700C239BB /* NSInputStream_data.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB9D30C0B4374F700C239BB /* NSInputStream_data.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FEB9D30F0B4374F700C239BB /* NSInputStream_data.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9D30D0B4374F700C239BB /* NSInputStream_data.m */; };
+		FEB9D3100B4374F700C239BB /* NSInputStream_data.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB9D30C0B4374F700C239BB /* NSInputStream_data.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FEB9D3110B4374F700C239BB /* NSInputStream_data.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9D30D0B4374F700C239BB /* NSInputStream_data.m */; };
+		FEB9D3120B4374F700C239BB /* NSInputStream_data.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB9D30C0B4374F700C239BB /* NSInputStream_data.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FEB9D3130B4374F700C239BB /* NSInputStream_data.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9D30D0B4374F700C239BB /* NSInputStream_data.m */; };
+		FEB9D31C0B43781500C239BB /* NSOutputStream_data.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB9D31A0B43781500C239BB /* NSOutputStream_data.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FEB9D31D0B43781500C239BB /* NSOutputStream_data.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9D31B0B43781500C239BB /* NSOutputStream_data.m */; };
+		FEB9D31E0B43781500C239BB /* NSOutputStream_data.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB9D31A0B43781500C239BB /* NSOutputStream_data.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FEB9D31F0B43781500C239BB /* NSOutputStream_data.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9D31B0B43781500C239BB /* NSOutputStream_data.m */; };
+		FEB9D3200B43781500C239BB /* NSOutputStream_data.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB9D31A0B43781500C239BB /* NSOutputStream_data.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FEB9D3210B43781500C239BB /* NSOutputStream_data.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9D31B0B43781500C239BB /* NSOutputStream_data.m */; };
+		FEB9D3270B43783C00C239BB /* NSOutputStream_file.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB9D3250B43783C00C239BB /* NSOutputStream_file.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FEB9D3280B43783C00C239BB /* NSOutputStream_file.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9D3260B43783C00C239BB /* NSOutputStream_file.m */; };
+		FEB9D3290B43783C00C239BB /* NSOutputStream_file.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB9D3250B43783C00C239BB /* NSOutputStream_file.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FEB9D32A0B43783C00C239BB /* NSOutputStream_file.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9D3260B43783C00C239BB /* NSOutputStream_file.m */; };
+		FEB9D32B0B43783C00C239BB /* NSOutputStream_file.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB9D3250B43783C00C239BB /* NSOutputStream_file.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FEB9D32C0B43783C00C239BB /* NSOutputStream_file.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9D3260B43783C00C239BB /* NSOutputStream_file.m */; };
+		FEB9D3340B43786400C239BB /* NSInputStream_file.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB9D3320B43786400C239BB /* NSInputStream_file.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FEB9D3350B43786400C239BB /* NSInputStream_file.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9D3330B43786400C239BB /* NSInputStream_file.m */; };
+		FEB9D3360B43786400C239BB /* NSInputStream_file.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB9D3320B43786400C239BB /* NSInputStream_file.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FEB9D3370B43786400C239BB /* NSInputStream_file.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9D3330B43786400C239BB /* NSInputStream_file.m */; };
+		FEB9D3380B43786400C239BB /* NSInputStream_file.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB9D3320B43786400C239BB /* NSInputStream_file.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEB9D3390B43786400C239BB /* NSInputStream_file.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9D3330B43786400C239BB /* NSInputStream_file.m */; };
+		FEB9D3690B437C9600C239BB /* NSOutputStream_buffer.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB9D3670B437C9600C239BB /* NSOutputStream_buffer.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FEB9D36A0B437C9600C239BB /* NSOutputStream_buffer.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9D3680B437C9600C239BB /* NSOutputStream_buffer.m */; };
+		FEB9D36B0B437C9600C239BB /* NSOutputStream_buffer.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB9D3670B437C9600C239BB /* NSOutputStream_buffer.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FEB9D36C0B437C9600C239BB /* NSOutputStream_buffer.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9D3680B437C9600C239BB /* NSOutputStream_buffer.m */; };
+		FEB9D36D0B437C9600C239BB /* NSOutputStream_buffer.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB9D3670B437C9600C239BB /* NSOutputStream_buffer.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FEB9D36E0B437C9600C239BB /* NSOutputStream_buffer.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9D3680B437C9600C239BB /* NSOutputStream_buffer.m */; };
+		FEB9D3E60B4412D800C239BB /* NSConnection.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB9D3E40B4412D800C239BB /* NSConnection.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEB9D3E70B4412D800C239BB /* NSConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9D3E50B4412D800C239BB /* NSConnection.m */; };
+		FEB9D3E80B4412D800C239BB /* NSConnection.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB9D3E40B4412D800C239BB /* NSConnection.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEB9D3E90B4412D800C239BB /* NSConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9D3E50B4412D800C239BB /* NSConnection.m */; };
+		FEB9D3EA0B4412D800C239BB /* NSConnection.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB9D3E40B4412D800C239BB /* NSConnection.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEB9D3EB0B4412D800C239BB /* NSConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9D3E50B4412D800C239BB /* NSConnection.m */; };
+		FEB9D4110B4415F900C239BB /* NSPort.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB9D40F0B4415F900C239BB /* NSPort.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEB9D4120B4415F900C239BB /* NSPort.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9D4100B4415F900C239BB /* NSPort.m */; };
+		FEB9D4130B4415F900C239BB /* NSPort.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB9D40F0B4415F900C239BB /* NSPort.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEB9D4140B4415F900C239BB /* NSPort.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9D4100B4415F900C239BB /* NSPort.m */; };
+		FEB9D4150B4415F900C239BB /* NSPort.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB9D40F0B4415F900C239BB /* NSPort.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEB9D4160B4415F900C239BB /* NSPort.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9D4100B4415F900C239BB /* NSPort.m */; };
+		FEB9D4340B44164500C239BB /* NSSocketPort.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB9D4320B44164500C239BB /* NSSocketPort.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEB9D4350B44164500C239BB /* NSSocketPort.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9D4330B44164500C239BB /* NSSocketPort.m */; };
+		FEB9D4360B44164500C239BB /* NSSocketPort.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB9D4320B44164500C239BB /* NSSocketPort.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEB9D4370B44164500C239BB /* NSSocketPort.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9D4330B44164500C239BB /* NSSocketPort.m */; };
+		FEB9D4380B44164500C239BB /* NSSocketPort.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB9D4320B44164500C239BB /* NSSocketPort.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEB9D4390B44164500C239BB /* NSSocketPort.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9D4330B44164500C239BB /* NSSocketPort.m */; };
+		FEB9D4560B4416C400C239BB /* NSMessagePort.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB9D4540B4416C400C239BB /* NSMessagePort.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEB9D4570B4416C400C239BB /* NSMessagePort.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9D4550B4416C400C239BB /* NSMessagePort.m */; };
+		FEB9D4580B4416C400C239BB /* NSMessagePort.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB9D4540B4416C400C239BB /* NSMessagePort.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEB9D4590B4416C400C239BB /* NSMessagePort.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9D4550B4416C400C239BB /* NSMessagePort.m */; };
+		FEB9D45A0B4416C400C239BB /* NSMessagePort.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB9D4540B4416C400C239BB /* NSMessagePort.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEB9D45B0B4416C400C239BB /* NSMessagePort.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9D4550B4416C400C239BB /* NSMessagePort.m */; };
+		FEB9D46D0B44323C00C239BB /* NSDistantObject.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB9D46B0B44323C00C239BB /* NSDistantObject.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEB9D46E0B44323C00C239BB /* NSDistantObject.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9D46C0B44323C00C239BB /* NSDistantObject.m */; };
+		FEB9D46F0B44323C00C239BB /* NSDistantObject.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB9D46B0B44323C00C239BB /* NSDistantObject.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEB9D4700B44323C00C239BB /* NSDistantObject.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9D46C0B44323C00C239BB /* NSDistantObject.m */; };
+		FEB9D4710B44323C00C239BB /* NSDistantObject.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB9D46B0B44323C00C239BB /* NSDistantObject.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEB9D4720B44323C00C239BB /* NSDistantObject.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9D46C0B44323C00C239BB /* NSDistantObject.m */; };
+		FEB9D4840B44331400C239BB /* NSComparisonPredicate.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB9D4820B44331400C239BB /* NSComparisonPredicate.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEB9D4850B44331400C239BB /* NSComparisonPredicate.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9D4830B44331400C239BB /* NSComparisonPredicate.m */; };
+		FEB9D4860B44331400C239BB /* NSComparisonPredicate.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB9D4820B44331400C239BB /* NSComparisonPredicate.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEB9D4870B44331400C239BB /* NSComparisonPredicate.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9D4830B44331400C239BB /* NSComparisonPredicate.m */; };
+		FEB9D4880B44331400C239BB /* NSComparisonPredicate.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB9D4820B44331400C239BB /* NSComparisonPredicate.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEB9D4890B44331400C239BB /* NSComparisonPredicate.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9D4830B44331400C239BB /* NSComparisonPredicate.m */; };
+		FEB9D4900B4433F500C239BB /* NSPredicate.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB9D48E0B4433F500C239BB /* NSPredicate.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEB9D4910B4433F500C239BB /* NSPredicate.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9D48F0B4433F500C239BB /* NSPredicate.m */; };
+		FEB9D4920B4433F500C239BB /* NSPredicate.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB9D48E0B4433F500C239BB /* NSPredicate.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEB9D4930B4433F500C239BB /* NSPredicate.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9D48F0B4433F500C239BB /* NSPredicate.m */; };
+		FEB9D4940B4433F500C239BB /* NSPredicate.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB9D48E0B4433F500C239BB /* NSPredicate.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEB9D4950B4433F500C239BB /* NSPredicate.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9D48F0B4433F500C239BB /* NSPredicate.m */; };
+		FEB9D49A0B44340800C239BB /* NSCompoundPredicate.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB9D4980B44340800C239BB /* NSCompoundPredicate.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEB9D49B0B44340800C239BB /* NSCompoundPredicate.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9D4990B44340800C239BB /* NSCompoundPredicate.m */; };
+		FEB9D49C0B44340800C239BB /* NSCompoundPredicate.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB9D4980B44340800C239BB /* NSCompoundPredicate.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEB9D49D0B44340800C239BB /* NSCompoundPredicate.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9D4990B44340800C239BB /* NSCompoundPredicate.m */; };
+		FEB9D49E0B44340800C239BB /* NSCompoundPredicate.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB9D4980B44340800C239BB /* NSCompoundPredicate.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEB9D49F0B44340800C239BB /* NSCompoundPredicate.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9D4990B44340800C239BB /* NSCompoundPredicate.m */; };
+		FEB9D4A40B44349600C239BB /* NSExpression.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB9D4A20B44349600C239BB /* NSExpression.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEB9D4A50B44349600C239BB /* NSExpression.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9D4A30B44349600C239BB /* NSExpression.m */; };
+		FEB9D4A60B44349600C239BB /* NSExpression.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB9D4A20B44349600C239BB /* NSExpression.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEB9D4A70B44349600C239BB /* NSExpression.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9D4A30B44349600C239BB /* NSExpression.m */; };
+		FEB9D4A80B44349600C239BB /* NSExpression.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB9D4A20B44349600C239BB /* NSExpression.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEB9D4A90B44349600C239BB /* NSExpression.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9D4A30B44349600C239BB /* NSExpression.m */; };
+		FEB9D4AE0B4434C800C239BB /* NSError.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB9D4AC0B4434C800C239BB /* NSError.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEB9D4AF0B4434C800C239BB /* NSError.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9D4AD0B4434C800C239BB /* NSError.m */; };
+		FEB9D4B00B4434C800C239BB /* NSError.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB9D4AC0B4434C800C239BB /* NSError.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEB9D4B10B4434C800C239BB /* NSError.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9D4AD0B4434C800C239BB /* NSError.m */; };
+		FEB9D4B20B4434C800C239BB /* NSError.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB9D4AC0B4434C800C239BB /* NSError.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEB9D4B30B4434C800C239BB /* NSError.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9D4AD0B4434C800C239BB /* NSError.m */; };
+		FEB9D4BB0B44359400C239BB /* NSIndexSet.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB9D4B90B44359400C239BB /* NSIndexSet.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEB9D4BC0B44359400C239BB /* NSIndexSet.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9D4BA0B44359400C239BB /* NSIndexSet.m */; };
+		FEB9D4BD0B44359400C239BB /* NSIndexSet.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB9D4B90B44359400C239BB /* NSIndexSet.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEB9D4BE0B44359400C239BB /* NSIndexSet.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9D4BA0B44359400C239BB /* NSIndexSet.m */; };
+		FEB9D4BF0B44359400C239BB /* NSIndexSet.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB9D4B90B44359400C239BB /* NSIndexSet.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEB9D4C00B44359400C239BB /* NSIndexSet.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9D4BA0B44359400C239BB /* NSIndexSet.m */; };
+		FEB9D4C70B4435A700C239BB /* NSMutableIndexSet.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB9D4C50B4435A700C239BB /* NSMutableIndexSet.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEB9D4C80B4435A700C239BB /* NSMutableIndexSet.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9D4C60B4435A700C239BB /* NSMutableIndexSet.m */; };
+		FEB9D4C90B4435A700C239BB /* NSMutableIndexSet.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB9D4C50B4435A700C239BB /* NSMutableIndexSet.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEB9D4CA0B4435A700C239BB /* NSMutableIndexSet.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9D4C60B4435A700C239BB /* NSMutableIndexSet.m */; };
+		FEB9D4CB0B4435A700C239BB /* NSMutableIndexSet.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB9D4C50B4435A700C239BB /* NSMutableIndexSet.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEB9D4CC0B4435A700C239BB /* NSMutableIndexSet.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9D4C60B4435A700C239BB /* NSMutableIndexSet.m */; };
+		FEB9D4D30B4435D000C239BB /* NSLocale.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB9D4D10B4435D000C239BB /* NSLocale.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEB9D4D40B4435D000C239BB /* NSLocale.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9D4D20B4435D000C239BB /* NSLocale.m */; };
+		FEB9D4D50B4435D000C239BB /* NSLocale.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB9D4D10B4435D000C239BB /* NSLocale.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEB9D4D60B4435D000C239BB /* NSLocale.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9D4D20B4435D000C239BB /* NSLocale.m */; };
+		FEB9D4D70B4435D000C239BB /* NSLocale.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB9D4D10B4435D000C239BB /* NSLocale.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEB9D4D80B4435D000C239BB /* NSLocale.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9D4D20B4435D000C239BB /* NSLocale.m */; };
+		FEB9D4EF0B4436FD00C239BB /* NSPropertyList.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB9D4ED0B4436FD00C239BB /* NSPropertyList.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEB9D4F00B4436FD00C239BB /* NSPropertyList.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9D4EE0B4436FD00C239BB /* NSPropertyList.m */; };
+		FEB9D4F10B4436FD00C239BB /* NSPropertyList.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB9D4ED0B4436FD00C239BB /* NSPropertyList.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEB9D4F20B4436FD00C239BB /* NSPropertyList.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9D4EE0B4436FD00C239BB /* NSPropertyList.m */; };
+		FEB9D4F30B4436FD00C239BB /* NSPropertyList.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB9D4ED0B4436FD00C239BB /* NSPropertyList.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEB9D4F40B4436FD00C239BB /* NSPropertyList.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9D4EE0B4436FD00C239BB /* NSPropertyList.m */; };
+		FEB9D55F0B4438E500C239BB /* NSURL.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB9D55D0B4438E500C239BB /* NSURL.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEB9D5600B4438E500C239BB /* NSURL.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9D55E0B4438E500C239BB /* NSURL.m */; };
+		FEB9D5610B4438E500C239BB /* NSURL.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB9D55D0B4438E500C239BB /* NSURL.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEB9D5620B4438E500C239BB /* NSURL.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9D55E0B4438E500C239BB /* NSURL.m */; };
+		FEB9D5630B4438E500C239BB /* NSURL.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB9D55D0B4438E500C239BB /* NSURL.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEB9D5640B4438E500C239BB /* NSURL.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9D55E0B4438E500C239BB /* NSURL.m */; };
+		FEB9D56B0B4438FD00C239BB /* NSURLAuthenticationChallenge.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB9D5690B4438FD00C239BB /* NSURLAuthenticationChallenge.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEB9D56C0B4438FD00C239BB /* NSURLAuthenticationChallenge.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9D56A0B4438FD00C239BB /* NSURLAuthenticationChallenge.m */; };
+		FEB9D56D0B4438FD00C239BB /* NSURLAuthenticationChallenge.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB9D5690B4438FD00C239BB /* NSURLAuthenticationChallenge.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEB9D56E0B4438FD00C239BB /* NSURLAuthenticationChallenge.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9D56A0B4438FD00C239BB /* NSURLAuthenticationChallenge.m */; };
+		FEB9D56F0B4438FD00C239BB /* NSURLAuthenticationChallenge.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB9D5690B4438FD00C239BB /* NSURLAuthenticationChallenge.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEB9D5700B4438FD00C239BB /* NSURLAuthenticationChallenge.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9D56A0B4438FD00C239BB /* NSURLAuthenticationChallenge.m */; };
+		FEB9D5770B44390D00C239BB /* NSURLCache.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB9D5750B44390D00C239BB /* NSURLCache.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEB9D5780B44390D00C239BB /* NSURLCache.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9D5760B44390D00C239BB /* NSURLCache.m */; };
+		FEB9D5790B44390D00C239BB /* NSURLCache.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB9D5750B44390D00C239BB /* NSURLCache.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEB9D57A0B44390D00C239BB /* NSURLCache.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9D5760B44390D00C239BB /* NSURLCache.m */; };
+		FEB9D57B0B44390D00C239BB /* NSURLCache.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB9D5750B44390D00C239BB /* NSURLCache.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEB9D57C0B44390D00C239BB /* NSURLCache.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9D5760B44390D00C239BB /* NSURLCache.m */; };
+		FEB9D5830B44391E00C239BB /* NSURLConnection.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB9D5810B44391E00C239BB /* NSURLConnection.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEB9D5840B44391E00C239BB /* NSURLConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9D5820B44391E00C239BB /* NSURLConnection.m */; };
+		FEB9D5850B44391E00C239BB /* NSURLConnection.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB9D5810B44391E00C239BB /* NSURLConnection.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEB9D5860B44391E00C239BB /* NSURLConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9D5820B44391E00C239BB /* NSURLConnection.m */; };
+		FEB9D5870B44391E00C239BB /* NSURLConnection.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB9D5810B44391E00C239BB /* NSURLConnection.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEB9D5880B44391E00C239BB /* NSURLConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9D5820B44391E00C239BB /* NSURLConnection.m */; };
+		FEB9D58F0B44393400C239BB /* NSURLCredential.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB9D58D0B44393400C239BB /* NSURLCredential.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEB9D5900B44393400C239BB /* NSURLCredential.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9D58E0B44393400C239BB /* NSURLCredential.m */; };
+		FEB9D5910B44393400C239BB /* NSURLCredential.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB9D58D0B44393400C239BB /* NSURLCredential.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEB9D5920B44393400C239BB /* NSURLCredential.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9D58E0B44393400C239BB /* NSURLCredential.m */; };
+		FEB9D5930B44393400C239BB /* NSURLCredential.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB9D58D0B44393400C239BB /* NSURLCredential.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEB9D5940B44393400C239BB /* NSURLCredential.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9D58E0B44393400C239BB /* NSURLCredential.m */; };
+		FEB9D59B0B44394000C239BB /* NSURLCredentialStorage.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB9D5990B44394000C239BB /* NSURLCredentialStorage.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEB9D59C0B44394000C239BB /* NSURLCredentialStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9D59A0B44394000C239BB /* NSURLCredentialStorage.m */; };
+		FEB9D59D0B44394000C239BB /* NSURLCredentialStorage.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB9D5990B44394000C239BB /* NSURLCredentialStorage.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEB9D59E0B44394000C239BB /* NSURLCredentialStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9D59A0B44394000C239BB /* NSURLCredentialStorage.m */; };
+		FEB9D59F0B44394000C239BB /* NSURLCredentialStorage.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB9D5990B44394000C239BB /* NSURLCredentialStorage.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEB9D5A00B44394000C239BB /* NSURLCredentialStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9D59A0B44394000C239BB /* NSURLCredentialStorage.m */; };
+		FEB9D5A70B44395100C239BB /* NSURLDownload.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB9D5A50B44395100C239BB /* NSURLDownload.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEB9D5A80B44395100C239BB /* NSURLDownload.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9D5A60B44395100C239BB /* NSURLDownload.m */; };
+		FEB9D5A90B44395100C239BB /* NSURLDownload.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB9D5A50B44395100C239BB /* NSURLDownload.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEB9D5AA0B44395100C239BB /* NSURLDownload.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9D5A60B44395100C239BB /* NSURLDownload.m */; };
+		FEB9D5AB0B44395100C239BB /* NSURLDownload.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB9D5A50B44395100C239BB /* NSURLDownload.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEB9D5AC0B44395100C239BB /* NSURLDownload.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9D5A60B44395100C239BB /* NSURLDownload.m */; };
+		FEB9D5BF0B44397900C239BB /* NSURLHandle.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB9D5BD0B44397900C239BB /* NSURLHandle.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEB9D5C00B44397900C239BB /* NSURLHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9D5BE0B44397900C239BB /* NSURLHandle.m */; };
+		FEB9D5C10B44397900C239BB /* NSURLHandle.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB9D5BD0B44397900C239BB /* NSURLHandle.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEB9D5C20B44397900C239BB /* NSURLHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9D5BE0B44397900C239BB /* NSURLHandle.m */; };
+		FEB9D5C30B44397900C239BB /* NSURLHandle.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB9D5BD0B44397900C239BB /* NSURLHandle.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEB9D5C40B44397900C239BB /* NSURLHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9D5BE0B44397900C239BB /* NSURLHandle.m */; };
+		FEB9D5CB0B44399000C239BB /* NSURLProtectionSpace.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB9D5C90B44399000C239BB /* NSURLProtectionSpace.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEB9D5CC0B44399000C239BB /* NSURLProtectionSpace.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9D5CA0B44399000C239BB /* NSURLProtectionSpace.m */; };
+		FEB9D5CD0B44399000C239BB /* NSURLProtectionSpace.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB9D5C90B44399000C239BB /* NSURLProtectionSpace.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEB9D5CE0B44399000C239BB /* NSURLProtectionSpace.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9D5CA0B44399000C239BB /* NSURLProtectionSpace.m */; };
+		FEB9D5CF0B44399000C239BB /* NSURLProtectionSpace.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB9D5C90B44399000C239BB /* NSURLProtectionSpace.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEB9D5D00B44399000C239BB /* NSURLProtectionSpace.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9D5CA0B44399000C239BB /* NSURLProtectionSpace.m */; };
+		FEB9D5D70B4439A200C239BB /* NSURLProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB9D5D50B4439A200C239BB /* NSURLProtocol.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEB9D5D80B4439A200C239BB /* NSURLProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9D5D60B4439A200C239BB /* NSURLProtocol.m */; };
+		FEB9D5D90B4439A200C239BB /* NSURLProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB9D5D50B4439A200C239BB /* NSURLProtocol.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEB9D5DA0B4439A200C239BB /* NSURLProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9D5D60B4439A200C239BB /* NSURLProtocol.m */; };
+		FEB9D5DB0B4439A200C239BB /* NSURLProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB9D5D50B4439A200C239BB /* NSURLProtocol.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEB9D5DC0B4439A200C239BB /* NSURLProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9D5D60B4439A200C239BB /* NSURLProtocol.m */; };
+		FEB9D5E30B4439BA00C239BB /* NSURLRequest.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB9D5E10B4439BA00C239BB /* NSURLRequest.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEB9D5E40B4439BA00C239BB /* NSURLRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9D5E20B4439BA00C239BB /* NSURLRequest.m */; };
+		FEB9D5E50B4439BA00C239BB /* NSURLRequest.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB9D5E10B4439BA00C239BB /* NSURLRequest.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEB9D5E60B4439BA00C239BB /* NSURLRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9D5E20B4439BA00C239BB /* NSURLRequest.m */; };
+		FEB9D5E70B4439BA00C239BB /* NSURLRequest.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB9D5E10B4439BA00C239BB /* NSURLRequest.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEB9D5E80B4439BA00C239BB /* NSURLRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9D5E20B4439BA00C239BB /* NSURLRequest.m */; };
+		FEB9D5EF0B443A9600C239BB /* NSURLResponse.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB9D5ED0B443A9600C239BB /* NSURLResponse.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEB9D5F00B443A9600C239BB /* NSURLResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9D5EE0B443A9600C239BB /* NSURLResponse.m */; };
+		FEB9D5F10B443A9600C239BB /* NSURLResponse.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB9D5ED0B443A9600C239BB /* NSURLResponse.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEB9D5F20B443A9600C239BB /* NSURLResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9D5EE0B443A9600C239BB /* NSURLResponse.m */; };
+		FEB9D5F30B443A9600C239BB /* NSURLResponse.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB9D5ED0B443A9600C239BB /* NSURLResponse.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEB9D5F40B443A9600C239BB /* NSURLResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9D5EE0B443A9600C239BB /* NSURLResponse.m */; };
+		FEB9D5FB0B443B8200C239BB /* NSProtocolChecker.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB9D5F90B443B8200C239BB /* NSProtocolChecker.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEB9D5FC0B443B8200C239BB /* NSProtocolChecker.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9D5FA0B443B8200C239BB /* NSProtocolChecker.m */; };
+		FEB9D5FD0B443B8200C239BB /* NSProtocolChecker.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB9D5F90B443B8200C239BB /* NSProtocolChecker.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEB9D5FE0B443B8200C239BB /* NSProtocolChecker.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9D5FA0B443B8200C239BB /* NSProtocolChecker.m */; };
+		FEB9D5FF0B443B8200C239BB /* NSProtocolChecker.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB9D5F90B443B8200C239BB /* NSProtocolChecker.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEB9D6000B443B8200C239BB /* NSProtocolChecker.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9D5FA0B443B8200C239BB /* NSProtocolChecker.m */; };
+		FEB9D60C0B443C2800C239BB /* NSHTTPCookie.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB9D60A0B443C2800C239BB /* NSHTTPCookie.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEB9D60D0B443C2800C239BB /* NSHTTPCookie.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9D60B0B443C2800C239BB /* NSHTTPCookie.m */; };
+		FEB9D60E0B443C2800C239BB /* NSHTTPCookie.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB9D60A0B443C2800C239BB /* NSHTTPCookie.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEB9D60F0B443C2800C239BB /* NSHTTPCookie.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9D60B0B443C2800C239BB /* NSHTTPCookie.m */; };
+		FEB9D6100B443C2800C239BB /* NSHTTPCookie.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB9D60A0B443C2800C239BB /* NSHTTPCookie.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEB9D6110B443C2800C239BB /* NSHTTPCookie.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9D60B0B443C2800C239BB /* NSHTTPCookie.m */; };
+		FEB9D6160B443C3F00C239BB /* NSHTTPCookieStorage.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB9D6140B443C3F00C239BB /* NSHTTPCookieStorage.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEB9D6170B443C3F00C239BB /* NSHTTPCookieStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9D6150B443C3F00C239BB /* NSHTTPCookieStorage.m */; };
+		FEB9D6180B443C3F00C239BB /* NSHTTPCookieStorage.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB9D6140B443C3F00C239BB /* NSHTTPCookieStorage.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEB9D6190B443C3F00C239BB /* NSHTTPCookieStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9D6150B443C3F00C239BB /* NSHTTPCookieStorage.m */; };
+		FEB9D61A0B443C3F00C239BB /* NSHTTPCookieStorage.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB9D6140B443C3F00C239BB /* NSHTTPCookieStorage.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEB9D61B0B443C3F00C239BB /* NSHTTPCookieStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9D6150B443C3F00C239BB /* NSHTTPCookieStorage.m */; };
+		FEB9D6B00B443F1200C239BB /* NSPortMessage.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB9D6AE0B443F1200C239BB /* NSPortMessage.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEB9D6B10B443F1200C239BB /* NSPortMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9D6AF0B443F1200C239BB /* NSPortMessage.m */; };
+		FEB9D6B20B443F1200C239BB /* NSPortMessage.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB9D6AE0B443F1200C239BB /* NSPortMessage.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEB9D6B30B443F1200C239BB /* NSPortMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9D6AF0B443F1200C239BB /* NSPortMessage.m */; };
+		FEB9D6B40B443F1200C239BB /* NSPortMessage.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB9D6AE0B443F1200C239BB /* NSPortMessage.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEB9D6B50B443F1200C239BB /* NSPortMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9D6AF0B443F1200C239BB /* NSPortMessage.m */; };
+		FEB9D6CF0B44405700C239BB /* NSClassDescription.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB9D6CD0B44405700C239BB /* NSClassDescription.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEB9D6D00B44405700C239BB /* NSClassDescription.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9D6CE0B44405700C239BB /* NSClassDescription.m */; };
+		FEB9D6D10B44405700C239BB /* NSClassDescription.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB9D6CD0B44405700C239BB /* NSClassDescription.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEB9D6D20B44405700C239BB /* NSClassDescription.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9D6CE0B44405700C239BB /* NSClassDescription.m */; };
+		FEB9D6D30B44405700C239BB /* NSClassDescription.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB9D6CD0B44405700C239BB /* NSClassDescription.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEB9D6D40B44405700C239BB /* NSClassDescription.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9D6CE0B44405700C239BB /* NSClassDescription.m */; };
+		FEB9D6DD0B4440DA00C239BB /* NSPortNameServer.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB9D6DB0B4440DA00C239BB /* NSPortNameServer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEB9D6DE0B4440DA00C239BB /* NSPortNameServer.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9D6DC0B4440DA00C239BB /* NSPortNameServer.m */; };
+		FEB9D6DF0B4440DA00C239BB /* NSPortNameServer.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB9D6DB0B4440DA00C239BB /* NSPortNameServer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEB9D6E00B4440DA00C239BB /* NSPortNameServer.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9D6DC0B4440DA00C239BB /* NSPortNameServer.m */; };
+		FEB9D6E10B4440DA00C239BB /* NSPortNameServer.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB9D6DB0B4440DA00C239BB /* NSPortNameServer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEB9D6E20B4440DA00C239BB /* NSPortNameServer.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9D6DC0B4440DA00C239BB /* NSPortNameServer.m */; };
+		FEB9D6E90B4440F200C239BB /* NSMessagePortNameServer.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB9D6E70B4440F200C239BB /* NSMessagePortNameServer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEB9D6EA0B4440F200C239BB /* NSMessagePortNameServer.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9D6E80B4440F200C239BB /* NSMessagePortNameServer.m */; };
+		FEB9D6EB0B4440F200C239BB /* NSMessagePortNameServer.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB9D6E70B4440F200C239BB /* NSMessagePortNameServer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEB9D6EC0B4440F200C239BB /* NSMessagePortNameServer.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9D6E80B4440F200C239BB /* NSMessagePortNameServer.m */; };
+		FEB9D6ED0B4440F200C239BB /* NSMessagePortNameServer.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB9D6E70B4440F200C239BB /* NSMessagePortNameServer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEB9D6EE0B4440F200C239BB /* NSMessagePortNameServer.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9D6E80B4440F200C239BB /* NSMessagePortNameServer.m */; };
+		FEB9D7020B44414000C239BB /* NSSocketPortNameServer.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB9D7000B44414000C239BB /* NSSocketPortNameServer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEB9D7030B44414000C239BB /* NSSocketPortNameServer.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9D7010B44414000C239BB /* NSSocketPortNameServer.m */; };
+		FEB9D7040B44414000C239BB /* NSSocketPortNameServer.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB9D7000B44414000C239BB /* NSSocketPortNameServer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEB9D7050B44414000C239BB /* NSSocketPortNameServer.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9D7010B44414000C239BB /* NSSocketPortNameServer.m */; };
+		FEB9D7060B44414000C239BB /* NSSocketPortNameServer.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB9D7000B44414000C239BB /* NSSocketPortNameServer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEB9D7070B44414000C239BB /* NSSocketPortNameServer.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9D7010B44414000C239BB /* NSSocketPortNameServer.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
@@ -1315,10 +1555,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		6E0084A20A19363F00F78605 /* NSPropertyListReader_xml1.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NSPropertyListReader_xml1.h; path = NSPropertyList/NSPropertyListReader_xml1.h; sourceTree = "<group>"; };
-		6E0084A30A19363F00F78605 /* NSPropertyListReader_xml1.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NSPropertyListReader_xml1.m; path = NSPropertyList/NSPropertyListReader_xml1.m; sourceTree = "<group>"; };
-		6E0084CD0A19371600F78605 /* NSPropertyListReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NSPropertyListReader.h; path = NSPropertyList/NSPropertyListReader.h; sourceTree = "<group>"; };
-		6E0084CE0A19371600F78605 /* NSPropertyListReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NSPropertyListReader.m; path = NSPropertyList/NSPropertyListReader.m; sourceTree = "<group>"; };
+		6E0084A20A19363F00F78605 /* NSPropertyListReader_xml1.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSPropertyListReader_xml1.h; sourceTree = "<group>"; };
+		6E0084A30A19363F00F78605 /* NSPropertyListReader_xml1.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSPropertyListReader_xml1.m; sourceTree = "<group>"; };
+		6E0084CD0A19371600F78605 /* NSPropertyListReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSPropertyListReader.h; sourceTree = "<group>"; };
+		6E0084CE0A19371600F78605 /* NSPropertyListReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSPropertyListReader.m; sourceTree = "<group>"; };
 		6E28030D0974787200EC542B /* NSArchiver.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NSArchiver.h; sourceTree = "<group>"; };
 		6E28030E0974787200EC542B /* NSArchiver.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NSArchiver.m; sourceTree = "<group>"; };
 		6E280311097478CC00EC542B /* NSArray_concrete.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSArray_concrete.h; sourceTree = "<group>"; };
@@ -1441,10 +1681,10 @@
 		6E28043909747BBE00EC542B /* NSObject.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = NSObject.m; path = NSObject/NSObject.m; sourceTree = "<group>"; };
 		6E28043B09747BBE00EC542B /* NSZombieObject.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = NSZombieObject.h; path = NSObject/NSZombieObject.h; sourceTree = "<group>"; };
 		6E28043C09747BBE00EC542B /* NSZombieObject.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = NSZombieObject.m; path = NSObject/NSZombieObject.m; sourceTree = "<group>"; };
-		6E28044209747BCB00EC542B /* NSPropertyListReader_vintage.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = NSPropertyListReader_vintage.h; path = NSPropertyList/NSPropertyListReader_vintage.h; sourceTree = "<group>"; };
-		6E28044309747BCB00EC542B /* NSPropertyListReader_vintage.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = NSPropertyListReader_vintage.m; path = NSPropertyList/NSPropertyListReader_vintage.m; sourceTree = "<group>"; };
-		6E28044409747BCB00EC542B /* NSPropertyListWriter.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = NSPropertyListWriter.h; path = NSPropertyList/NSPropertyListWriter.h; sourceTree = "<group>"; };
-		6E28044509747BCB00EC542B /* NSPropertyListWriter.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = NSPropertyListWriter.m; path = NSPropertyList/NSPropertyListWriter.m; sourceTree = "<group>"; };
+		6E28044209747BCB00EC542B /* NSPropertyListReader_vintage.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSPropertyListReader_vintage.h; sourceTree = "<group>"; };
+		6E28044309747BCB00EC542B /* NSPropertyListReader_vintage.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSPropertyListReader_vintage.m; sourceTree = "<group>"; };
+		6E28044409747BCB00EC542B /* NSPropertyListWriter.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSPropertyListWriter.h; sourceTree = "<group>"; };
+		6E28044509747BCB00EC542B /* NSPropertyListWriter.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSPropertyListWriter.m; sourceTree = "<group>"; };
 		6E28044A09747BD100EC542B /* NSDelayedPerform.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = NSDelayedPerform.h; path = NSRunLoop/NSDelayedPerform.h; sourceTree = "<group>"; };
 		6E28044B09747BD100EC542B /* NSDelayedPerform.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = NSDelayedPerform.m; path = NSRunLoop/NSDelayedPerform.m; sourceTree = "<group>"; };
 		6E28044C09747BD100EC542B /* NSOrderedPerform.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = NSOrderedPerform.h; path = NSRunLoop/NSOrderedPerform.h; sourceTree = "<group>"; };
@@ -1474,12 +1714,12 @@
 		6E28047109747BE200EC542B /* NSSet_placeholder.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = NSSet_placeholder.m; path = NSSet/NSSet_placeholder.m; sourceTree = "<group>"; };
 		6E28047209747BE200EC542B /* NSSet.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = NSSet.h; path = NSSet/NSSet.h; sourceTree = "<group>"; };
 		6E28047309747BE200EC542B /* NSSet.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = NSSet.m; path = NSSet/NSSet.m; sourceTree = "<group>"; };
-		6E28048409747BED00EC542B /* NSInputStream.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = NSInputStream.h; path = NSStream/NSInputStream.h; sourceTree = "<group>"; };
-		6E28048509747BED00EC542B /* NSInputStream.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = NSInputStream.m; path = NSStream/NSInputStream.m; sourceTree = "<group>"; };
-		6E28048609747BED00EC542B /* NSOutputStream.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = NSOutputStream.h; path = NSStream/NSOutputStream.h; sourceTree = "<group>"; };
-		6E28048709747BED00EC542B /* NSOutputStream.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = NSOutputStream.m; path = NSStream/NSOutputStream.m; sourceTree = "<group>"; };
-		6E28048809747BED00EC542B /* NSStream.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = NSStream.h; path = NSStream/NSStream.h; sourceTree = "<group>"; };
-		6E28048909747BED00EC542B /* NSStream.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = NSStream.m; path = NSStream/NSStream.m; sourceTree = "<group>"; };
+		6E28048409747BED00EC542B /* NSInputStream.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSInputStream.h; sourceTree = "<group>"; };
+		6E28048509747BED00EC542B /* NSInputStream.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSInputStream.m; sourceTree = "<group>"; };
+		6E28048609747BED00EC542B /* NSOutputStream.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSOutputStream.h; sourceTree = "<group>"; };
+		6E28048709747BED00EC542B /* NSOutputStream.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSOutputStream.m; sourceTree = "<group>"; };
+		6E28048809747BED00EC542B /* NSStream.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSStream.h; sourceTree = "<group>"; };
+		6E28048909747BED00EC542B /* NSStream.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSStream.m; sourceTree = "<group>"; };
 		6E28049209747BF800EC542B /* NSConstantString-Impl.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = "NSConstantString-Impl.m"; sourceTree = "<group>"; };
 		6E28049309747BF800EC542B /* NSString_cString.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSString_cString.h; sourceTree = "<group>"; };
 		6E28049409747BF800EC542B /* NSString_cString.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSString_cString.m; sourceTree = "<group>"; };
@@ -1742,10 +1982,10 @@
 		6E8113970A54BBAC000DE3F1 /* objc_msg_sendv.s */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.asm; path = objc_msg_sendv.s; sourceTree = "<group>"; };
 		6E8115B20A55CB99000DE3F1 /* objc_msg_lookup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = objc_msg_lookup.m; sourceTree = "<group>"; };
 		6EA04A7709E57D5F0067589C /* Foundation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Foundation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		6EAD772F0AAF1283004BCCC9 /* NSInputStream_socket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NSInputStream_socket.h; path = NSStream/NSInputStream_socket.h; sourceTree = "<group>"; };
-		6EAD77300AAF1283004BCCC9 /* NSInputStream_socket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NSInputStream_socket.m; path = NSStream/NSInputStream_socket.m; sourceTree = "<group>"; };
-		6EAD77390AAF1293004BCCC9 /* NSOutputStream_socket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NSOutputStream_socket.h; path = NSStream/NSOutputStream_socket.h; sourceTree = "<group>"; };
-		6EAD773A0AAF1293004BCCC9 /* NSOutputStream_socket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NSOutputStream_socket.m; path = NSStream/NSOutputStream_socket.m; sourceTree = "<group>"; };
+		6EAD772F0AAF1283004BCCC9 /* NSInputStream_socket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSInputStream_socket.h; sourceTree = "<group>"; };
+		6EAD77300AAF1283004BCCC9 /* NSInputStream_socket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSInputStream_socket.m; sourceTree = "<group>"; };
+		6EAD77390AAF1293004BCCC9 /* NSOutputStream_socket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSOutputStream_socket.h; sourceTree = "<group>"; };
+		6EAD773A0AAF1293004BCCC9 /* NSOutputStream_socket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSOutputStream_socket.m; sourceTree = "<group>"; };
 		6EC4AAE70A34D9B200E8D6CA /* NSKeyedUnarchiver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSKeyedUnarchiver.h; sourceTree = "<group>"; };
 		6EC4AAE80A34D9B200E8D6CA /* NSKeyedUnarchiver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSKeyedUnarchiver.m; sourceTree = "<group>"; };
 		6EC4AB350A350DDA00E8D6CA /* NSSocketMonitorSet_Windows.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NSSocketMonitorSet_Windows.h; path = platform_win32/NSSocketMonitorSet_Windows.h; sourceTree = "<group>"; };
@@ -1754,6 +1994,86 @@
 		6EC4AB520A35157600E8D6CA /* NSSocketMonitorSet_Unix.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NSSocketMonitorSet_Unix.m; path = platform_posix/NSSocketMonitorSet_Unix.m; sourceTree = "<group>"; };
 		8DC2EF5A0486A6940098B216 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		8DC2EF5B0486A6940098B216 /* Foundation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Foundation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		FE405A6A0B4450FD001B183D /* NSHTTPURLResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSHTTPURLResponse.h; sourceTree = "<group>"; };
+		FE405A6B0B4450FD001B183D /* NSHTTPURLResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSHTTPURLResponse.m; sourceTree = "<group>"; };
+		FEB9D30C0B4374F700C239BB /* NSInputStream_data.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSInputStream_data.h; sourceTree = "<group>"; };
+		FEB9D30D0B4374F700C239BB /* NSInputStream_data.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSInputStream_data.m; sourceTree = "<group>"; };
+		FEB9D31A0B43781500C239BB /* NSOutputStream_data.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSOutputStream_data.h; sourceTree = "<group>"; };
+		FEB9D31B0B43781500C239BB /* NSOutputStream_data.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSOutputStream_data.m; sourceTree = "<group>"; };
+		FEB9D3250B43783C00C239BB /* NSOutputStream_file.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSOutputStream_file.h; sourceTree = "<group>"; };
+		FEB9D3260B43783C00C239BB /* NSOutputStream_file.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSOutputStream_file.m; sourceTree = "<group>"; };
+		FEB9D3320B43786400C239BB /* NSInputStream_file.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSInputStream_file.h; sourceTree = "<group>"; };
+		FEB9D3330B43786400C239BB /* NSInputStream_file.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSInputStream_file.m; sourceTree = "<group>"; };
+		FEB9D3670B437C9600C239BB /* NSOutputStream_buffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSOutputStream_buffer.h; sourceTree = "<group>"; };
+		FEB9D3680B437C9600C239BB /* NSOutputStream_buffer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSOutputStream_buffer.m; sourceTree = "<group>"; };
+		FEB9D3E40B4412D800C239BB /* NSConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSConnection.h; sourceTree = "<group>"; };
+		FEB9D3E50B4412D800C239BB /* NSConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSConnection.m; sourceTree = "<group>"; };
+		FEB9D40F0B4415F900C239BB /* NSPort.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSPort.h; sourceTree = "<group>"; };
+		FEB9D4100B4415F900C239BB /* NSPort.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSPort.m; sourceTree = "<group>"; };
+		FEB9D4320B44164500C239BB /* NSSocketPort.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSSocketPort.h; sourceTree = "<group>"; };
+		FEB9D4330B44164500C239BB /* NSSocketPort.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSSocketPort.m; sourceTree = "<group>"; };
+		FEB9D4540B4416C400C239BB /* NSMessagePort.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSMessagePort.h; sourceTree = "<group>"; };
+		FEB9D4550B4416C400C239BB /* NSMessagePort.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSMessagePort.m; sourceTree = "<group>"; };
+		FEB9D46B0B44323C00C239BB /* NSDistantObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSDistantObject.h; sourceTree = "<group>"; };
+		FEB9D46C0B44323C00C239BB /* NSDistantObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSDistantObject.m; sourceTree = "<group>"; };
+		FEB9D4820B44331400C239BB /* NSComparisonPredicate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSComparisonPredicate.h; sourceTree = "<group>"; };
+		FEB9D4830B44331400C239BB /* NSComparisonPredicate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSComparisonPredicate.m; sourceTree = "<group>"; };
+		FEB9D48E0B4433F500C239BB /* NSPredicate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSPredicate.h; sourceTree = "<group>"; };
+		FEB9D48F0B4433F500C239BB /* NSPredicate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSPredicate.m; sourceTree = "<group>"; };
+		FEB9D4980B44340800C239BB /* NSCompoundPredicate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSCompoundPredicate.h; sourceTree = "<group>"; };
+		FEB9D4990B44340800C239BB /* NSCompoundPredicate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSCompoundPredicate.m; sourceTree = "<group>"; };
+		FEB9D4A20B44349600C239BB /* NSExpression.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSExpression.h; sourceTree = "<group>"; };
+		FEB9D4A30B44349600C239BB /* NSExpression.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSExpression.m; sourceTree = "<group>"; };
+		FEB9D4AC0B4434C800C239BB /* NSError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSError.h; sourceTree = "<group>"; };
+		FEB9D4AD0B4434C800C239BB /* NSError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSError.m; sourceTree = "<group>"; };
+		FEB9D4B90B44359400C239BB /* NSIndexSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSIndexSet.h; sourceTree = "<group>"; };
+		FEB9D4BA0B44359400C239BB /* NSIndexSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSIndexSet.m; sourceTree = "<group>"; };
+		FEB9D4C50B4435A700C239BB /* NSMutableIndexSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSMutableIndexSet.h; sourceTree = "<group>"; };
+		FEB9D4C60B4435A700C239BB /* NSMutableIndexSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSMutableIndexSet.m; sourceTree = "<group>"; };
+		FEB9D4D10B4435D000C239BB /* NSLocale.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSLocale.h; sourceTree = "<group>"; };
+		FEB9D4D20B4435D000C239BB /* NSLocale.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSLocale.m; sourceTree = "<group>"; };
+		FEB9D4ED0B4436FD00C239BB /* NSPropertyList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSPropertyList.h; sourceTree = "<group>"; };
+		FEB9D4EE0B4436FD00C239BB /* NSPropertyList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSPropertyList.m; sourceTree = "<group>"; };
+		FEB9D55D0B4438E500C239BB /* NSURL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSURL.h; sourceTree = "<group>"; };
+		FEB9D55E0B4438E500C239BB /* NSURL.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSURL.m; sourceTree = "<group>"; };
+		FEB9D5690B4438FD00C239BB /* NSURLAuthenticationChallenge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSURLAuthenticationChallenge.h; sourceTree = "<group>"; };
+		FEB9D56A0B4438FD00C239BB /* NSURLAuthenticationChallenge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSURLAuthenticationChallenge.m; sourceTree = "<group>"; };
+		FEB9D5750B44390D00C239BB /* NSURLCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSURLCache.h; sourceTree = "<group>"; };
+		FEB9D5760B44390D00C239BB /* NSURLCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSURLCache.m; sourceTree = "<group>"; };
+		FEB9D5810B44391E00C239BB /* NSURLConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSURLConnection.h; sourceTree = "<group>"; };
+		FEB9D5820B44391E00C239BB /* NSURLConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSURLConnection.m; sourceTree = "<group>"; };
+		FEB9D58D0B44393400C239BB /* NSURLCredential.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSURLCredential.h; sourceTree = "<group>"; };
+		FEB9D58E0B44393400C239BB /* NSURLCredential.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSURLCredential.m; sourceTree = "<group>"; };
+		FEB9D5990B44394000C239BB /* NSURLCredentialStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSURLCredentialStorage.h; sourceTree = "<group>"; };
+		FEB9D59A0B44394000C239BB /* NSURLCredentialStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSURLCredentialStorage.m; sourceTree = "<group>"; };
+		FEB9D5A50B44395100C239BB /* NSURLDownload.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSURLDownload.h; sourceTree = "<group>"; };
+		FEB9D5A60B44395100C239BB /* NSURLDownload.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSURLDownload.m; sourceTree = "<group>"; };
+		FEB9D5BD0B44397900C239BB /* NSURLHandle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSURLHandle.h; sourceTree = "<group>"; };
+		FEB9D5BE0B44397900C239BB /* NSURLHandle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSURLHandle.m; sourceTree = "<group>"; };
+		FEB9D5C90B44399000C239BB /* NSURLProtectionSpace.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSURLProtectionSpace.h; sourceTree = "<group>"; };
+		FEB9D5CA0B44399000C239BB /* NSURLProtectionSpace.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSURLProtectionSpace.m; sourceTree = "<group>"; };
+		FEB9D5D50B4439A200C239BB /* NSURLProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSURLProtocol.h; sourceTree = "<group>"; };
+		FEB9D5D60B4439A200C239BB /* NSURLProtocol.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSURLProtocol.m; sourceTree = "<group>"; };
+		FEB9D5E10B4439BA00C239BB /* NSURLRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSURLRequest.h; sourceTree = "<group>"; };
+		FEB9D5E20B4439BA00C239BB /* NSURLRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSURLRequest.m; sourceTree = "<group>"; };
+		FEB9D5ED0B443A9600C239BB /* NSURLResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSURLResponse.h; sourceTree = "<group>"; };
+		FEB9D5EE0B443A9600C239BB /* NSURLResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSURLResponse.m; sourceTree = "<group>"; };
+		FEB9D5F90B443B8200C239BB /* NSProtocolChecker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSProtocolChecker.h; sourceTree = "<group>"; };
+		FEB9D5FA0B443B8200C239BB /* NSProtocolChecker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSProtocolChecker.m; sourceTree = "<group>"; };
+		FEB9D60A0B443C2800C239BB /* NSHTTPCookie.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSHTTPCookie.h; sourceTree = "<group>"; };
+		FEB9D60B0B443C2800C239BB /* NSHTTPCookie.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSHTTPCookie.m; sourceTree = "<group>"; };
+		FEB9D6140B443C3F00C239BB /* NSHTTPCookieStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSHTTPCookieStorage.h; sourceTree = "<group>"; };
+		FEB9D6150B443C3F00C239BB /* NSHTTPCookieStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSHTTPCookieStorage.m; sourceTree = "<group>"; };
+		FEB9D6AE0B443F1200C239BB /* NSPortMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSPortMessage.h; sourceTree = "<group>"; };
+		FEB9D6AF0B443F1200C239BB /* NSPortMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSPortMessage.m; sourceTree = "<group>"; };
+		FEB9D6CD0B44405700C239BB /* NSClassDescription.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSClassDescription.h; sourceTree = "<group>"; };
+		FEB9D6CE0B44405700C239BB /* NSClassDescription.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSClassDescription.m; sourceTree = "<group>"; };
+		FEB9D6DB0B4440DA00C239BB /* NSPortNameServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSPortNameServer.h; sourceTree = "<group>"; };
+		FEB9D6DC0B4440DA00C239BB /* NSPortNameServer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSPortNameServer.m; sourceTree = "<group>"; };
+		FEB9D6E70B4440F200C239BB /* NSMessagePortNameServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSMessagePortNameServer.h; sourceTree = "<group>"; };
+		FEB9D6E80B4440F200C239BB /* NSMessagePortNameServer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSMessagePortNameServer.m; sourceTree = "<group>"; };
+		FEB9D7000B44414000C239BB /* NSSocketPortNameServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSSocketPortNameServer.h; sourceTree = "<group>"; };
+		FEB9D7010B44414000C239BB /* NSSocketPortNameServer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSSocketPortNameServer.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1794,8 +2114,7 @@
 		0867D691FE84028FC02AAC07 /* Foundation */ = {
 			isa = PBXGroup;
 			children = (
-				6EC4AAE70A34D9B200E8D6CA /* NSKeyedUnarchiver.h */,
-				6EC4AAE80A34D9B200E8D6CA /* NSKeyedUnarchiver.m */,
+				0867D69AFE84028FC02AAC07 /* External Frameworks and Libraries */,
 				6E280B2909747F1F00EC542B /* Foundation.h */,
 				6E28030D0974787200EC542B /* NSArchiver.h */,
 				6E28030E0974787200EC542B /* NSArchiver.m */,
@@ -1807,8 +2126,11 @@
 				6E2805F509747D5800EC542B /* NSByteOrder.h */,
 				6E2805F609747D5800EC542B /* NSByteOrder.m */,
 				6E28066309747DE300EC542B /* NSCharacterSet */,
+				FEB9D6CD0B44405700C239BB /* NSClassDescription.h */,
+				FEB9D6CE0B44405700C239BB /* NSClassDescription.m */,
 				6E2805F709747D5800EC542B /* NSCoder.h */,
 				6E2805F809747D5800EC542B /* NSCoder.m */,
+				FEB9D2F00B42F85100C239BB /* NSConnection */,
 				6E28032F097478FA00EC542B /* NSData */,
 				6E28069409747E6B00EC542B /* NSDate */,
 				6E2805F909747D5800EC542B /* NSDebug.h */,
@@ -1818,6 +2140,8 @@
 				6E2805FC09747D5800EC542B /* NSDirectoryEnumerator.m */,
 				6E2805FD09747D5800EC542B /* NSEnumerator.h */,
 				6E2805FE09747D5800EC542B /* NSEnumerator.m */,
+				FEB9D4AC0B4434C800C239BB /* NSError.h */,
+				FEB9D4AD0B4434C800C239BB /* NSError.m */,
 				6E2803310974790A00EC542B /* NSException */,
 				6E2805FF09747D5800EC542B /* NSFileHandle.h */,
 				6E28060009747D5800EC542B /* NSFileHandle.m */,
@@ -1831,12 +2155,18 @@
 				6E28060809747D5800EC542B /* NSHashTable.m */,
 				6E28060909747D5800EC542B /* NSHost.h */,
 				6E28060A09747D5800EC542B /* NSHost.m */,
+				FEB9D6070B443BC500C239BB /* NSHTTPCookie */,
+				FEB9D4B60B44355900C239BB /* NSIndexSet */,
 				6E28060B09747D5800EC542B /* NSInputSource.h */,
 				6E28060C09747D5800EC542B /* NSInputSource.m */,
 				6E28060D09747D5800EC542B /* NSInputSourceSet.h */,
 				6E28060E09747D5800EC542B /* NSInputSourceSet.m */,
 				6E28060F09747D5800EC542B /* NSInvocation.h */,
 				6E28061009747D5800EC542B /* NSInvocation.m */,
+				6EC4AAE70A34D9B200E8D6CA /* NSKeyedUnarchiver.h */,
+				6EC4AAE80A34D9B200E8D6CA /* NSKeyedUnarchiver.m */,
+				FEB9D4D10B4435D000C239BB /* NSLocale.h */,
+				FEB9D4D20B4435D000C239BB /* NSLocale.m */,
 				6E2803320974791700EC542B /* NSLock */,
 				6E28061109747D5800EC542B /* NSMapTable.h */,
 				6E28061209747D5800EC542B /* NSMapTable.m */,
@@ -1858,8 +2188,8 @@
 				6E28061C09747D5800EC542B /* NSPipe.m */,
 				6E28061D09747D5800EC542B /* NSPlatform.h */,
 				6E28061E09747D5800EC542B /* NSPlatform.m */,
-				6E28061F09747D5800EC542B /* NSPortCoder.h */,
-				6E28062009747D5800EC542B /* NSPortCoder.m */,
+				FEB9D6A90B443EA600C239BB /* NSPortNameServer */,
+				FEB9D47D0B4432C400C239BB /* NSPredicate */,
 				6E28062109747D5800EC542B /* NSProcessInfo.h */,
 				6E28062209747D5800EC542B /* NSProcessInfo.m */,
 				6E2803390974795700EC542B /* NSPropertyList */,
@@ -1881,20 +2211,20 @@
 				6E28062909747D5800EC542B /* NSUnarchiver.h */,
 				6E28062A09747D5800EC542B /* NSUnarchiver.m */,
 				6E280342097479EF00EC542B /* NSUndoManager */,
+				FEB9D5580B44389200C239BB /* NSURL */,
 				6E280343097479F900EC542B /* NSUserDefaults */,
 				6E28034409747A0100EC542B /* NSValue */,
 				6E28034509747A1A00EC542B /* NSZone */,
 				6E28034609747A2500EC542B /* objc */,
-				6E28053E09747C8900EC542B /* Protocol.h */,
-				6E28053F09747C8900EC542B /* Protocol.m */,
 				6E28034709747A4900EC542B /* platform_linux */,
 				6E28034809747A5F00EC542B /* platform_posix */,
 				6E28034909747A6B00EC542B /* platform_solaris */,
 				6E28034A09747A7700EC542B /* platform_win32 */,
-				6E28034B09747A8200EC542B /* xml */,
-				089C1665FE841158C02AAC07 /* Resources */,
-				0867D69AFE84028FC02AAC07 /* External Frameworks and Libraries */,
 				034768DFFF38A50411DB9C8B /* Products */,
+				6E28053E09747C8900EC542B /* Protocol.h */,
+				6E28053F09747C8900EC542B /* Protocol.m */,
+				089C1665FE841158C02AAC07 /* Resources */,
+				6E28034B09747A8200EC542B /* xml */,
 			);
 			name = Foundation;
 			sourceTree = "<group>";
@@ -2155,8 +2485,10 @@
 				6E0084A30A19363F00F78605 /* NSPropertyListReader_xml1.m */,
 				6E0084CD0A19371600F78605 /* NSPropertyListReader.h */,
 				6E0084CE0A19371600F78605 /* NSPropertyListReader.m */,
+				FEB9D4ED0B4436FD00C239BB /* NSPropertyList.h */,
+				FEB9D4EE0B4436FD00C239BB /* NSPropertyList.m */,
 			);
-			name = NSPropertyList;
+			path = NSPropertyList;
 			sourceTree = "<group>";
 		};
 		6E28033A0974796000EC542B /* NSRunLoop */ = {
@@ -2214,16 +2546,26 @@
 			children = (
 				6E28048409747BED00EC542B /* NSInputStream.h */,
 				6E28048509747BED00EC542B /* NSInputStream.m */,
+				FEB9D30C0B4374F700C239BB /* NSInputStream_data.h */,
+				FEB9D30D0B4374F700C239BB /* NSInputStream_data.m */,
+				FEB9D3320B43786400C239BB /* NSInputStream_file.h */,
+				FEB9D3330B43786400C239BB /* NSInputStream_file.m */,
 				6EAD772F0AAF1283004BCCC9 /* NSInputStream_socket.h */,
 				6EAD77300AAF1283004BCCC9 /* NSInputStream_socket.m */,
 				6E28048609747BED00EC542B /* NSOutputStream.h */,
 				6E28048709747BED00EC542B /* NSOutputStream.m */,
+				FEB9D31A0B43781500C239BB /* NSOutputStream_data.h */,
+				FEB9D31B0B43781500C239BB /* NSOutputStream_data.m */,
+				FEB9D3250B43783C00C239BB /* NSOutputStream_file.h */,
+				FEB9D3260B43783C00C239BB /* NSOutputStream_file.m */,
 				6EAD77390AAF1293004BCCC9 /* NSOutputStream_socket.h */,
 				6EAD773A0AAF1293004BCCC9 /* NSOutputStream_socket.m */,
 				6E28048809747BED00EC542B /* NSStream.h */,
 				6E28048909747BED00EC542B /* NSStream.m */,
+				FEB9D3670B437C9600C239BB /* NSOutputStream_buffer.h */,
+				FEB9D3680B437C9600C239BB /* NSOutputStream_buffer.m */,
 			);
-			name = NSStream;
+			path = NSStream;
 			sourceTree = "<group>";
 		};
 		6E28033E0974799000EC542B /* NSString */ = {
@@ -2587,6 +2929,112 @@
 			name = NSCharacterSet;
 			sourceTree = "<group>";
 		};
+		FEB9D2F00B42F85100C239BB /* NSConnection */ = {
+			isa = PBXGroup;
+			children = (
+				FEB9D3E40B4412D800C239BB /* NSConnection.h */,
+				FEB9D3E50B4412D800C239BB /* NSConnection.m */,
+				FEB9D4540B4416C400C239BB /* NSMessagePort.h */,
+				FEB9D4550B4416C400C239BB /* NSMessagePort.m */,
+				FEB9D40F0B4415F900C239BB /* NSPort.h */,
+				FEB9D4100B4415F900C239BB /* NSPort.m */,
+				6E28061F09747D5800EC542B /* NSPortCoder.h */,
+				6E28062009747D5800EC542B /* NSPortCoder.m */,
+				FEB9D4320B44164500C239BB /* NSSocketPort.h */,
+				FEB9D4330B44164500C239BB /* NSSocketPort.m */,
+				FEB9D46B0B44323C00C239BB /* NSDistantObject.h */,
+				FEB9D46C0B44323C00C239BB /* NSDistantObject.m */,
+				FEB9D5F90B443B8200C239BB /* NSProtocolChecker.h */,
+				FEB9D5FA0B443B8200C239BB /* NSProtocolChecker.m */,
+				FEB9D6AE0B443F1200C239BB /* NSPortMessage.h */,
+				FEB9D6AF0B443F1200C239BB /* NSPortMessage.m */,
+			);
+			path = NSConnection;
+			sourceTree = "<group>";
+		};
+		FEB9D47D0B4432C400C239BB /* NSPredicate */ = {
+			isa = PBXGroup;
+			children = (
+				FEB9D4820B44331400C239BB /* NSComparisonPredicate.h */,
+				FEB9D4830B44331400C239BB /* NSComparisonPredicate.m */,
+				FEB9D4980B44340800C239BB /* NSCompoundPredicate.h */,
+				FEB9D4990B44340800C239BB /* NSCompoundPredicate.m */,
+				FEB9D4A20B44349600C239BB /* NSExpression.h */,
+				FEB9D4A30B44349600C239BB /* NSExpression.m */,
+				FEB9D48E0B4433F500C239BB /* NSPredicate.h */,
+				FEB9D48F0B4433F500C239BB /* NSPredicate.m */,
+			);
+			path = NSPredicate;
+			sourceTree = "<group>";
+		};
+		FEB9D4B60B44355900C239BB /* NSIndexSet */ = {
+			isa = PBXGroup;
+			children = (
+				FEB9D4B90B44359400C239BB /* NSIndexSet.h */,
+				FEB9D4BA0B44359400C239BB /* NSIndexSet.m */,
+				FEB9D4C50B4435A700C239BB /* NSMutableIndexSet.h */,
+				FEB9D4C60B4435A700C239BB /* NSMutableIndexSet.m */,
+			);
+			path = NSIndexSet;
+			sourceTree = "<group>";
+		};
+		FEB9D5580B44389200C239BB /* NSURL */ = {
+			isa = PBXGroup;
+			children = (
+				FEB9D55D0B4438E500C239BB /* NSURL.h */,
+				FEB9D55E0B4438E500C239BB /* NSURL.m */,
+				FEB9D5690B4438FD00C239BB /* NSURLAuthenticationChallenge.h */,
+				FEB9D56A0B4438FD00C239BB /* NSURLAuthenticationChallenge.m */,
+				FEB9D5750B44390D00C239BB /* NSURLCache.h */,
+				FEB9D5760B44390D00C239BB /* NSURLCache.m */,
+				FEB9D5810B44391E00C239BB /* NSURLConnection.h */,
+				FEB9D5820B44391E00C239BB /* NSURLConnection.m */,
+				FEB9D58D0B44393400C239BB /* NSURLCredential.h */,
+				FEB9D58E0B44393400C239BB /* NSURLCredential.m */,
+				FEB9D5990B44394000C239BB /* NSURLCredentialStorage.h */,
+				FEB9D59A0B44394000C239BB /* NSURLCredentialStorage.m */,
+				FEB9D5A50B44395100C239BB /* NSURLDownload.h */,
+				FEB9D5A60B44395100C239BB /* NSURLDownload.m */,
+				FEB9D5BD0B44397900C239BB /* NSURLHandle.h */,
+				FEB9D5BE0B44397900C239BB /* NSURLHandle.m */,
+				FEB9D5C90B44399000C239BB /* NSURLProtectionSpace.h */,
+				FEB9D5CA0B44399000C239BB /* NSURLProtectionSpace.m */,
+				FEB9D5D50B4439A200C239BB /* NSURLProtocol.h */,
+				FEB9D5D60B4439A200C239BB /* NSURLProtocol.m */,
+				FEB9D5E10B4439BA00C239BB /* NSURLRequest.h */,
+				FEB9D5E20B4439BA00C239BB /* NSURLRequest.m */,
+				FEB9D5ED0B443A9600C239BB /* NSURLResponse.h */,
+				FEB9D5EE0B443A9600C239BB /* NSURLResponse.m */,
+				FE405A6A0B4450FD001B183D /* NSHTTPURLResponse.h */,
+				FE405A6B0B4450FD001B183D /* NSHTTPURLResponse.m */,
+			);
+			path = NSURL;
+			sourceTree = "<group>";
+		};
+		FEB9D6070B443BC500C239BB /* NSHTTPCookie */ = {
+			isa = PBXGroup;
+			children = (
+				FEB9D60A0B443C2800C239BB /* NSHTTPCookie.h */,
+				FEB9D60B0B443C2800C239BB /* NSHTTPCookie.m */,
+				FEB9D6140B443C3F00C239BB /* NSHTTPCookieStorage.h */,
+				FEB9D6150B443C3F00C239BB /* NSHTTPCookieStorage.m */,
+			);
+			path = NSHTTPCookie;
+			sourceTree = "<group>";
+		};
+		FEB9D6A90B443EA600C239BB /* NSPortNameServer */ = {
+			isa = PBXGroup;
+			children = (
+				FEB9D6E70B4440F200C239BB /* NSMessagePortNameServer.h */,
+				FEB9D6E80B4440F200C239BB /* NSMessagePortNameServer.m */,
+				FEB9D6DB0B4440DA00C239BB /* NSPortNameServer.h */,
+				FEB9D6DC0B4440DA00C239BB /* NSPortNameServer.m */,
+				FEB9D7000B44414000C239BB /* NSSocketPortNameServer.h */,
+				FEB9D7010B44414000C239BB /* NSSocketPortNameServer.m */,
+			);
+			path = NSPortNameServer;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -2787,6 +3235,46 @@
 				6EC4AB550A35157600E8D6CA /* NSSocketMonitorSet_Unix.h in Headers */,
 				6EAD77330AAF1283004BCCC9 /* NSInputStream_socket.h in Headers */,
 				6EAD773D0AAF1293004BCCC9 /* NSOutputStream_socket.h in Headers */,
+				FEB9D3100B4374F700C239BB /* NSInputStream_data.h in Headers */,
+				FEB9D31E0B43781500C239BB /* NSOutputStream_data.h in Headers */,
+				FEB9D3290B43783C00C239BB /* NSOutputStream_file.h in Headers */,
+				FEB9D3360B43786400C239BB /* NSInputStream_file.h in Headers */,
+				FEB9D36B0B437C9600C239BB /* NSOutputStream_buffer.h in Headers */,
+				FEB9D3EA0B4412D800C239BB /* NSConnection.h in Headers */,
+				FEB9D4150B4415F900C239BB /* NSPort.h in Headers */,
+				FEB9D4380B44164500C239BB /* NSSocketPort.h in Headers */,
+				FEB9D45A0B4416C400C239BB /* NSMessagePort.h in Headers */,
+				FEB9D4710B44323C00C239BB /* NSDistantObject.h in Headers */,
+				FEB9D4880B44331400C239BB /* NSComparisonPredicate.h in Headers */,
+				FEB9D4940B4433F500C239BB /* NSPredicate.h in Headers */,
+				FEB9D49E0B44340800C239BB /* NSCompoundPredicate.h in Headers */,
+				FEB9D4A80B44349600C239BB /* NSExpression.h in Headers */,
+				FEB9D4B20B4434C800C239BB /* NSError.h in Headers */,
+				FEB9D4BF0B44359400C239BB /* NSIndexSet.h in Headers */,
+				FEB9D4CB0B4435A700C239BB /* NSMutableIndexSet.h in Headers */,
+				FEB9D4D70B4435D000C239BB /* NSLocale.h in Headers */,
+				FEB9D4F30B4436FD00C239BB /* NSPropertyList.h in Headers */,
+				FEB9D5630B4438E500C239BB /* NSURL.h in Headers */,
+				FEB9D56F0B4438FD00C239BB /* NSURLAuthenticationChallenge.h in Headers */,
+				FEB9D57B0B44390D00C239BB /* NSURLCache.h in Headers */,
+				FEB9D5870B44391E00C239BB /* NSURLConnection.h in Headers */,
+				FEB9D5930B44393400C239BB /* NSURLCredential.h in Headers */,
+				FEB9D59F0B44394000C239BB /* NSURLCredentialStorage.h in Headers */,
+				FEB9D5AB0B44395100C239BB /* NSURLDownload.h in Headers */,
+				FEB9D5C30B44397900C239BB /* NSURLHandle.h in Headers */,
+				FEB9D5CF0B44399000C239BB /* NSURLProtectionSpace.h in Headers */,
+				FEB9D5DB0B4439A200C239BB /* NSURLProtocol.h in Headers */,
+				FEB9D5E70B4439BA00C239BB /* NSURLRequest.h in Headers */,
+				FEB9D5F30B443A9600C239BB /* NSURLResponse.h in Headers */,
+				FEB9D5FF0B443B8200C239BB /* NSProtocolChecker.h in Headers */,
+				FEB9D6100B443C2800C239BB /* NSHTTPCookie.h in Headers */,
+				FEB9D61A0B443C3F00C239BB /* NSHTTPCookieStorage.h in Headers */,
+				FEB9D6B40B443F1200C239BB /* NSPortMessage.h in Headers */,
+				FEB9D6D30B44405700C239BB /* NSClassDescription.h in Headers */,
+				FEB9D6E10B4440DA00C239BB /* NSPortNameServer.h in Headers */,
+				FEB9D6ED0B4440F200C239BB /* NSMessagePortNameServer.h in Headers */,
+				FEB9D7060B44414000C239BB /* NSSocketPortNameServer.h in Headers */,
+				FE405A6E0B4450FD001B183D /* NSHTTPURLResponse.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2987,6 +3475,46 @@
 				6EC4AB530A35157600E8D6CA /* NSSocketMonitorSet_Unix.h in Headers */,
 				6EAD77350AAF1283004BCCC9 /* NSInputStream_socket.h in Headers */,
 				6EAD773F0AAF1293004BCCC9 /* NSOutputStream_socket.h in Headers */,
+				FEB9D3120B4374F700C239BB /* NSInputStream_data.h in Headers */,
+				FEB9D3200B43781500C239BB /* NSOutputStream_data.h in Headers */,
+				FEB9D32B0B43783C00C239BB /* NSOutputStream_file.h in Headers */,
+				FEB9D3380B43786400C239BB /* NSInputStream_file.h in Headers */,
+				FEB9D36D0B437C9600C239BB /* NSOutputStream_buffer.h in Headers */,
+				FEB9D3E60B4412D800C239BB /* NSConnection.h in Headers */,
+				FEB9D4110B4415F900C239BB /* NSPort.h in Headers */,
+				FEB9D4340B44164500C239BB /* NSSocketPort.h in Headers */,
+				FEB9D4560B4416C400C239BB /* NSMessagePort.h in Headers */,
+				FEB9D46D0B44323C00C239BB /* NSDistantObject.h in Headers */,
+				FEB9D4840B44331400C239BB /* NSComparisonPredicate.h in Headers */,
+				FEB9D4900B4433F500C239BB /* NSPredicate.h in Headers */,
+				FEB9D49A0B44340800C239BB /* NSCompoundPredicate.h in Headers */,
+				FEB9D4A40B44349600C239BB /* NSExpression.h in Headers */,
+				FEB9D4AE0B4434C800C239BB /* NSError.h in Headers */,
+				FEB9D4BB0B44359400C239BB /* NSIndexSet.h in Headers */,
+				FEB9D4C70B4435A700C239BB /* NSMutableIndexSet.h in Headers */,
+				FEB9D4D30B4435D000C239BB /* NSLocale.h in Headers */,
+				FEB9D4EF0B4436FD00C239BB /* NSPropertyList.h in Headers */,
+				FEB9D55F0B4438E500C239BB /* NSURL.h in Headers */,
+				FEB9D56B0B4438FD00C239BB /* NSURLAuthenticationChallenge.h in Headers */,
+				FEB9D5770B44390D00C239BB /* NSURLCache.h in Headers */,
+				FEB9D5830B44391E00C239BB /* NSURLConnection.h in Headers */,
+				FEB9D58F0B44393400C239BB /* NSURLCredential.h in Headers */,
+				FEB9D59B0B44394000C239BB /* NSURLCredentialStorage.h in Headers */,
+				FEB9D5A70B44395100C239BB /* NSURLDownload.h in Headers */,
+				FEB9D5BF0B44397900C239BB /* NSURLHandle.h in Headers */,
+				FEB9D5CB0B44399000C239BB /* NSURLProtectionSpace.h in Headers */,
+				FEB9D5D70B4439A200C239BB /* NSURLProtocol.h in Headers */,
+				FEB9D5E30B4439BA00C239BB /* NSURLRequest.h in Headers */,
+				FEB9D5EF0B443A9600C239BB /* NSURLResponse.h in Headers */,
+				FEB9D5FB0B443B8200C239BB /* NSProtocolChecker.h in Headers */,
+				FEB9D60C0B443C2800C239BB /* NSHTTPCookie.h in Headers */,
+				FEB9D6160B443C3F00C239BB /* NSHTTPCookieStorage.h in Headers */,
+				FEB9D6B00B443F1200C239BB /* NSPortMessage.h in Headers */,
+				FEB9D6CF0B44405700C239BB /* NSClassDescription.h in Headers */,
+				FEB9D6DD0B4440DA00C239BB /* NSPortNameServer.h in Headers */,
+				FEB9D6E90B4440F200C239BB /* NSMessagePortNameServer.h in Headers */,
+				FEB9D7020B44414000C239BB /* NSSocketPortNameServer.h in Headers */,
+				FE405A700B4450FD001B183D /* NSHTTPURLResponse.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3191,6 +3719,46 @@
 				6EC4AB370A350DDA00E8D6CA /* NSSocketMonitorSet_Windows.h in Headers */,
 				6EAD77310AAF1283004BCCC9 /* NSInputStream_socket.h in Headers */,
 				6EAD773B0AAF1293004BCCC9 /* NSOutputStream_socket.h in Headers */,
+				FEB9D30E0B4374F700C239BB /* NSInputStream_data.h in Headers */,
+				FEB9D31C0B43781500C239BB /* NSOutputStream_data.h in Headers */,
+				FEB9D3270B43783C00C239BB /* NSOutputStream_file.h in Headers */,
+				FEB9D3340B43786400C239BB /* NSInputStream_file.h in Headers */,
+				FEB9D3690B437C9600C239BB /* NSOutputStream_buffer.h in Headers */,
+				FEB9D3E80B4412D800C239BB /* NSConnection.h in Headers */,
+				FEB9D4130B4415F900C239BB /* NSPort.h in Headers */,
+				FEB9D4360B44164500C239BB /* NSSocketPort.h in Headers */,
+				FEB9D4580B4416C400C239BB /* NSMessagePort.h in Headers */,
+				FEB9D46F0B44323C00C239BB /* NSDistantObject.h in Headers */,
+				FEB9D4860B44331400C239BB /* NSComparisonPredicate.h in Headers */,
+				FEB9D4920B4433F500C239BB /* NSPredicate.h in Headers */,
+				FEB9D49C0B44340800C239BB /* NSCompoundPredicate.h in Headers */,
+				FEB9D4A60B44349600C239BB /* NSExpression.h in Headers */,
+				FEB9D4B00B4434C800C239BB /* NSError.h in Headers */,
+				FEB9D4BD0B44359400C239BB /* NSIndexSet.h in Headers */,
+				FEB9D4C90B4435A700C239BB /* NSMutableIndexSet.h in Headers */,
+				FEB9D4D50B4435D000C239BB /* NSLocale.h in Headers */,
+				FEB9D4F10B4436FD00C239BB /* NSPropertyList.h in Headers */,
+				FEB9D5610B4438E500C239BB /* NSURL.h in Headers */,
+				FEB9D56D0B4438FD00C239BB /* NSURLAuthenticationChallenge.h in Headers */,
+				FEB9D5790B44390D00C239BB /* NSURLCache.h in Headers */,
+				FEB9D5850B44391E00C239BB /* NSURLConnection.h in Headers */,
+				FEB9D5910B44393400C239BB /* NSURLCredential.h in Headers */,
+				FEB9D59D0B44394000C239BB /* NSURLCredentialStorage.h in Headers */,
+				FEB9D5A90B44395100C239BB /* NSURLDownload.h in Headers */,
+				FEB9D5C10B44397900C239BB /* NSURLHandle.h in Headers */,
+				FEB9D5CD0B44399000C239BB /* NSURLProtectionSpace.h in Headers */,
+				FEB9D5D90B4439A200C239BB /* NSURLProtocol.h in Headers */,
+				FEB9D5E50B4439BA00C239BB /* NSURLRequest.h in Headers */,
+				FEB9D5F10B443A9600C239BB /* NSURLResponse.h in Headers */,
+				FEB9D5FD0B443B8200C239BB /* NSProtocolChecker.h in Headers */,
+				FEB9D60E0B443C2800C239BB /* NSHTTPCookie.h in Headers */,
+				FEB9D6180B443C3F00C239BB /* NSHTTPCookieStorage.h in Headers */,
+				FEB9D6B20B443F1200C239BB /* NSPortMessage.h in Headers */,
+				FEB9D6D10B44405700C239BB /* NSClassDescription.h in Headers */,
+				FEB9D6DF0B4440DA00C239BB /* NSPortNameServer.h in Headers */,
+				FEB9D6EB0B4440F200C239BB /* NSMessagePortNameServer.h in Headers */,
+				FEB9D7040B44414000C239BB /* NSSocketPortNameServer.h in Headers */,
+				FE405A6C0B4450FD001B183D /* NSHTTPURLResponse.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3537,6 +4105,46 @@
 				6E8115B40A55CB99000DE3F1 /* objc_msg_lookup.m in Sources */,
 				6EAD77340AAF1283004BCCC9 /* NSInputStream_socket.m in Sources */,
 				6EAD773E0AAF1293004BCCC9 /* NSOutputStream_socket.m in Sources */,
+				FEB9D3110B4374F700C239BB /* NSInputStream_data.m in Sources */,
+				FEB9D31F0B43781500C239BB /* NSOutputStream_data.m in Sources */,
+				FEB9D32A0B43783C00C239BB /* NSOutputStream_file.m in Sources */,
+				FEB9D3370B43786400C239BB /* NSInputStream_file.m in Sources */,
+				FEB9D36C0B437C9600C239BB /* NSOutputStream_buffer.m in Sources */,
+				FEB9D3EB0B4412D800C239BB /* NSConnection.m in Sources */,
+				FEB9D4160B4415F900C239BB /* NSPort.m in Sources */,
+				FEB9D4390B44164500C239BB /* NSSocketPort.m in Sources */,
+				FEB9D45B0B4416C400C239BB /* NSMessagePort.m in Sources */,
+				FEB9D4720B44323C00C239BB /* NSDistantObject.m in Sources */,
+				FEB9D4890B44331400C239BB /* NSComparisonPredicate.m in Sources */,
+				FEB9D4950B4433F500C239BB /* NSPredicate.m in Sources */,
+				FEB9D49F0B44340800C239BB /* NSCompoundPredicate.m in Sources */,
+				FEB9D4A90B44349600C239BB /* NSExpression.m in Sources */,
+				FEB9D4B30B4434C800C239BB /* NSError.m in Sources */,
+				FEB9D4C00B44359400C239BB /* NSIndexSet.m in Sources */,
+				FEB9D4CC0B4435A700C239BB /* NSMutableIndexSet.m in Sources */,
+				FEB9D4D80B4435D000C239BB /* NSLocale.m in Sources */,
+				FEB9D4F40B4436FD00C239BB /* NSPropertyList.m in Sources */,
+				FEB9D5640B4438E500C239BB /* NSURL.m in Sources */,
+				FEB9D5700B4438FD00C239BB /* NSURLAuthenticationChallenge.m in Sources */,
+				FEB9D57C0B44390D00C239BB /* NSURLCache.m in Sources */,
+				FEB9D5880B44391E00C239BB /* NSURLConnection.m in Sources */,
+				FEB9D5940B44393400C239BB /* NSURLCredential.m in Sources */,
+				FEB9D5A00B44394000C239BB /* NSURLCredentialStorage.m in Sources */,
+				FEB9D5AC0B44395100C239BB /* NSURLDownload.m in Sources */,
+				FEB9D5C40B44397900C239BB /* NSURLHandle.m in Sources */,
+				FEB9D5D00B44399000C239BB /* NSURLProtectionSpace.m in Sources */,
+				FEB9D5DC0B4439A200C239BB /* NSURLProtocol.m in Sources */,
+				FEB9D5E80B4439BA00C239BB /* NSURLRequest.m in Sources */,
+				FEB9D5F40B443A9600C239BB /* NSURLResponse.m in Sources */,
+				FEB9D6000B443B8200C239BB /* NSProtocolChecker.m in Sources */,
+				FEB9D6110B443C2800C239BB /* NSHTTPCookie.m in Sources */,
+				FEB9D61B0B443C3F00C239BB /* NSHTTPCookieStorage.m in Sources */,
+				FEB9D6B50B443F1200C239BB /* NSPortMessage.m in Sources */,
+				FEB9D6D40B44405700C239BB /* NSClassDescription.m in Sources */,
+				FEB9D6E20B4440DA00C239BB /* NSPortNameServer.m in Sources */,
+				FEB9D6EE0B4440F200C239BB /* NSMessagePortNameServer.m in Sources */,
+				FEB9D7070B44414000C239BB /* NSSocketPortNameServer.m in Sources */,
+				FE405A6F0B4450FD001B183D /* NSHTTPURLResponse.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3737,6 +4345,46 @@
 				6E8115B80A55CB99000DE3F1 /* objc_msg_lookup.m in Sources */,
 				6EAD77360AAF1283004BCCC9 /* NSInputStream_socket.m in Sources */,
 				6EAD77400AAF1293004BCCC9 /* NSOutputStream_socket.m in Sources */,
+				FEB9D3130B4374F700C239BB /* NSInputStream_data.m in Sources */,
+				FEB9D3210B43781500C239BB /* NSOutputStream_data.m in Sources */,
+				FEB9D32C0B43783C00C239BB /* NSOutputStream_file.m in Sources */,
+				FEB9D3390B43786400C239BB /* NSInputStream_file.m in Sources */,
+				FEB9D36E0B437C9600C239BB /* NSOutputStream_buffer.m in Sources */,
+				FEB9D3E70B4412D800C239BB /* NSConnection.m in Sources */,
+				FEB9D4120B4415F900C239BB /* NSPort.m in Sources */,
+				FEB9D4350B44164500C239BB /* NSSocketPort.m in Sources */,
+				FEB9D4570B4416C400C239BB /* NSMessagePort.m in Sources */,
+				FEB9D46E0B44323C00C239BB /* NSDistantObject.m in Sources */,
+				FEB9D4850B44331400C239BB /* NSComparisonPredicate.m in Sources */,
+				FEB9D4910B4433F500C239BB /* NSPredicate.m in Sources */,
+				FEB9D49B0B44340800C239BB /* NSCompoundPredicate.m in Sources */,
+				FEB9D4A50B44349600C239BB /* NSExpression.m in Sources */,
+				FEB9D4AF0B4434C800C239BB /* NSError.m in Sources */,
+				FEB9D4BC0B44359400C239BB /* NSIndexSet.m in Sources */,
+				FEB9D4C80B4435A700C239BB /* NSMutableIndexSet.m in Sources */,
+				FEB9D4D40B4435D000C239BB /* NSLocale.m in Sources */,
+				FEB9D4F00B4436FD00C239BB /* NSPropertyList.m in Sources */,
+				FEB9D5600B4438E500C239BB /* NSURL.m in Sources */,
+				FEB9D56C0B4438FD00C239BB /* NSURLAuthenticationChallenge.m in Sources */,
+				FEB9D5780B44390D00C239BB /* NSURLCache.m in Sources */,
+				FEB9D5840B44391E00C239BB /* NSURLConnection.m in Sources */,
+				FEB9D5900B44393400C239BB /* NSURLCredential.m in Sources */,
+				FEB9D59C0B44394000C239BB /* NSURLCredentialStorage.m in Sources */,
+				FEB9D5A80B44395100C239BB /* NSURLDownload.m in Sources */,
+				FEB9D5C00B44397900C239BB /* NSURLHandle.m in Sources */,
+				FEB9D5CC0B44399000C239BB /* NSURLProtectionSpace.m in Sources */,
+				FEB9D5D80B4439A200C239BB /* NSURLProtocol.m in Sources */,
+				FEB9D5E40B4439BA00C239BB /* NSURLRequest.m in Sources */,
+				FEB9D5F00B443A9600C239BB /* NSURLResponse.m in Sources */,
+				FEB9D5FC0B443B8200C239BB /* NSProtocolChecker.m in Sources */,
+				FEB9D60D0B443C2800C239BB /* NSHTTPCookie.m in Sources */,
+				FEB9D6170B443C3F00C239BB /* NSHTTPCookieStorage.m in Sources */,
+				FEB9D6B10B443F1200C239BB /* NSPortMessage.m in Sources */,
+				FEB9D6D00B44405700C239BB /* NSClassDescription.m in Sources */,
+				FEB9D6DE0B4440DA00C239BB /* NSPortNameServer.m in Sources */,
+				FEB9D6EA0B4440F200C239BB /* NSMessagePortNameServer.m in Sources */,
+				FEB9D7030B44414000C239BB /* NSSocketPortNameServer.m in Sources */,
+				FE405A710B4450FD001B183D /* NSHTTPURLResponse.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3941,6 +4589,46 @@
 				6E8115B60A55CB99000DE3F1 /* objc_msg_lookup.m in Sources */,
 				6EAD77320AAF1283004BCCC9 /* NSInputStream_socket.m in Sources */,
 				6EAD773C0AAF1293004BCCC9 /* NSOutputStream_socket.m in Sources */,
+				FEB9D30F0B4374F700C239BB /* NSInputStream_data.m in Sources */,
+				FEB9D31D0B43781500C239BB /* NSOutputStream_data.m in Sources */,
+				FEB9D3280B43783C00C239BB /* NSOutputStream_file.m in Sources */,
+				FEB9D3350B43786400C239BB /* NSInputStream_file.m in Sources */,
+				FEB9D36A0B437C9600C239BB /* NSOutputStream_buffer.m in Sources */,
+				FEB9D3E90B4412D800C239BB /* NSConnection.m in Sources */,
+				FEB9D4140B4415F900C239BB /* NSPort.m in Sources */,
+				FEB9D4370B44164500C239BB /* NSSocketPort.m in Sources */,
+				FEB9D4590B4416C400C239BB /* NSMessagePort.m in Sources */,
+				FEB9D4700B44323C00C239BB /* NSDistantObject.m in Sources */,
+				FEB9D4870B44331400C239BB /* NSComparisonPredicate.m in Sources */,
+				FEB9D4930B4433F500C239BB /* NSPredicate.m in Sources */,
+				FEB9D49D0B44340800C239BB /* NSCompoundPredicate.m in Sources */,
+				FEB9D4A70B44349600C239BB /* NSExpression.m in Sources */,
+				FEB9D4B10B4434C800C239BB /* NSError.m in Sources */,
+				FEB9D4BE0B44359400C239BB /* NSIndexSet.m in Sources */,
+				FEB9D4CA0B4435A700C239BB /* NSMutableIndexSet.m in Sources */,
+				FEB9D4D60B4435D000C239BB /* NSLocale.m in Sources */,
+				FEB9D4F20B4436FD00C239BB /* NSPropertyList.m in Sources */,
+				FEB9D5620B4438E500C239BB /* NSURL.m in Sources */,
+				FEB9D56E0B4438FD00C239BB /* NSURLAuthenticationChallenge.m in Sources */,
+				FEB9D57A0B44390D00C239BB /* NSURLCache.m in Sources */,
+				FEB9D5860B44391E00C239BB /* NSURLConnection.m in Sources */,
+				FEB9D5920B44393400C239BB /* NSURLCredential.m in Sources */,
+				FEB9D59E0B44394000C239BB /* NSURLCredentialStorage.m in Sources */,
+				FEB9D5AA0B44395100C239BB /* NSURLDownload.m in Sources */,
+				FEB9D5C20B44397900C239BB /* NSURLHandle.m in Sources */,
+				FEB9D5CE0B44399000C239BB /* NSURLProtectionSpace.m in Sources */,
+				FEB9D5DA0B4439A200C239BB /* NSURLProtocol.m in Sources */,
+				FEB9D5E60B4439BA00C239BB /* NSURLRequest.m in Sources */,
+				FEB9D5F20B443A9600C239BB /* NSURLResponse.m in Sources */,
+				FEB9D5FE0B443B8200C239BB /* NSProtocolChecker.m in Sources */,
+				FEB9D60F0B443C2800C239BB /* NSHTTPCookie.m in Sources */,
+				FEB9D6190B443C3F00C239BB /* NSHTTPCookieStorage.m in Sources */,
+				FEB9D6B30B443F1200C239BB /* NSPortMessage.m in Sources */,
+				FEB9D6D20B44405700C239BB /* NSClassDescription.m in Sources */,
+				FEB9D6E00B4440DA00C239BB /* NSPortNameServer.m in Sources */,
+				FEB9D6EC0B4440F200C239BB /* NSMessagePortNameServer.m in Sources */,
+				FEB9D7050B44414000C239BB /* NSSocketPortNameServer.m in Sources */,
+				FE405A6D0B4450FD001B183D /* NSHTTPURLResponse.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -1,4 +1,4 @@
-/* Copyright (c) 2006 Christopher J. W. Lloyd
+/* Copyright (c) 2006-2007 Christopher J. W. Lloyd
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
@@ -962,14 +962,14 @@ static inline NSGlyph glyphForCharacter(NSGlyphRangeTable *table,unichar charact
    return NSNullGlyph;
 }
 
-static inline NSGlyphInfo *glyphInfoForGlyph(NSGlyphInfoSet *infoSet,NSGlyph glyph){
+static inline NSGlyphMetrics *glyphInfoForGlyph(NSGlyphMetricsSet *infoSet,NSGlyph glyph){
    if(glyph<infoSet->numberOfGlyphs)
     return infoSet->info+glyph;
 
    return NULL;
 }
 
--(void)fetchAdvancementsForFontWithName:(NSString *)name pointSize:(float)pointSize glyphRanges:(NSGlyphRangeTable *)table infoSet:(NSGlyphInfoSet *)infoSet forGlyph:(NSGlyph)glyph {
+-(void)fetchAdvancementsForFontWithName:(NSString *)name pointSize:(float)pointSize glyphRanges:(NSGlyphRangeTable *)table infoSet:(NSGlyphMetricsSet *)infoSet forGlyph:(NSGlyph)glyph {
    HDC       dc=[self deviceContextWithFontName:name pointSize:pointSize];
    ABCFLOAT *abc;
    int       i,max;
@@ -982,7 +982,7 @@ static inline NSGlyphInfo *glyphInfoForGlyph(NSGlyphInfoSet *infoSet,NSGlyph gly
    }
 
    if(max==MAXUNICHAR){
-    NSGlyphInfo *info=glyphInfoForGlyph(infoSet,glyph);
+    NSGlyphMetrics *info=glyphInfoForGlyph(infoSet,glyph);
 
     info->hasAdvancement=YES;
     info->advanceA=0;
@@ -998,7 +998,7 @@ static inline NSGlyphInfo *glyphInfoForGlyph(NSGlyphInfoSet *infoSet,NSGlyph gly
    else {
     for(i=0;i<max;i++){
      NSGlyph      glyph=glyphForCharacter(table,i);
-     NSGlyphInfo *info=glyphInfoForGlyph(infoSet,glyph);
+     NSGlyphMetrics *info=glyphInfoForGlyph(infoSet,glyph);
 
      if(info==NULL)
       NSLog(@"no info for glyph %d",glyph);
@@ -1012,7 +1012,7 @@ static inline NSGlyphInfo *glyphInfoForGlyph(NSGlyphInfoSet *infoSet,NSGlyph gly
    }
 }
 
--(void)fetchGlyphKerningForFontWithName:(NSString *)name pointSize:(float)pointSize glyphRanges:(NSGlyphRangeTable *)table infoSet:(NSGlyphInfoSet *)infoSet {
+-(void)fetchGlyphKerningForFontWithName:(NSString *)name pointSize:(float)pointSize glyphRanges:(NSGlyphRangeTable *)table infoSet:(NSGlyphMetricsSet *)infoSet {
    HDC         dc=[self deviceContextWithFontName:name pointSize:pointSize];
    int         i,numberOfPairs=GetKerningPairs(dc,0,NULL);
    KERNINGPAIR pairs[numberOfPairs];
@@ -1032,7 +1032,7 @@ static inline NSGlyphInfo *glyphInfoForGlyph(NSGlyphInfoSet *infoSet,NSGlyph gly
     if(current==NSNullGlyph)
      ;//NSLog(@"unable to generate kern pair 0x%04X 0x%04X %f",previousCharacter,currentCharacter,xoffset);
     else {
-     NSGlyphInfo *info=glyphInfoForGlyph(infoSet,current);
+     NSGlyphMetrics *info=glyphInfoForGlyph(infoSet,current);
 
      if(info==NULL)
       NSLog(@"no info for glyph %d",current);

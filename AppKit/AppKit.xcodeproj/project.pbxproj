@@ -481,7 +481,7 @@
 		6E81CCD10A39CBE00089C666 /* NSCustomResource.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E81CCCF0A39CBE00089C666 /* NSCustomResource.m */; };
 		6EC4AC370A35D0C200E8D6CA /* NSIBObjectData.h in Headers */ = {isa = PBXBuildFile; fileRef = 6EC4AC350A35D0C200E8D6CA /* NSIBObjectData.h */; };
 		6EC4AC380A35D0C200E8D6CA /* NSIBObjectData.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EC4AC360A35D0C200E8D6CA /* NSIBObjectData.m */; };
-		6EC4AC690A35D47800E8D6CA /* NSCustomObject.h in Headers */ = {isa = PBXBuildFile; fileRef = 6EC4AC670A35D47800E8D6CA /* NSCustomObject.h */; };
+		6EC4AC690A35D47800E8D6CA /* NSCustomObject.h in Headers */ = {isa = PBXBuildFile; fileRef = 6EC4AC670A35D47800E8D6CA /* NSCustomObject.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6EC4AC6A0A35D47800E8D6CA /* NSCustomObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EC4AC680A35D47800E8D6CA /* NSCustomObject.m */; };
 		6EC4ACFD0A36613800E8D6CA /* NSWindowTemplate.h in Headers */ = {isa = PBXBuildFile; fileRef = 6EC4ACFB0A36613800E8D6CA /* NSWindowTemplate.h */; };
 		6EC4ACFE0A36613800E8D6CA /* NSWindowTemplate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EC4ACFC0A36613800E8D6CA /* NSWindowTemplate.m */; };
@@ -491,6 +491,60 @@
 		6ECABDFA0A3FA2B700AD7F7B /* NSCustomView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6ECABDF80A3FA2B700AD7F7B /* NSCustomView.m */; };
 		6ECABE330A40520700AD7F7B /* NSNibKeyedUnarchiver.h in Headers */ = {isa = PBXBuildFile; fileRef = 6ECABE310A40520700AD7F7B /* NSNibKeyedUnarchiver.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		6ECABE340A40520700AD7F7B /* NSNibKeyedUnarchiver.m in Sources */ = {isa = PBXBuildFile; fileRef = 6ECABE320A40520700AD7F7B /* NSNibKeyedUnarchiver.m */; };
+		FE2A101F0B44A201006C03DE /* NSAlert.h in Headers */ = {isa = PBXBuildFile; fileRef = FE2A101D0B44A201006C03DE /* NSAlert.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE2A10200B44A201006C03DE /* NSAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = FE2A101E0B44A201006C03DE /* NSAlert.m */; };
+		FE2A102A0B44A26B006C03DE /* NSArrayController.h in Headers */ = {isa = PBXBuildFile; fileRef = FE2A10280B44A26B006C03DE /* NSArrayController.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE2A102B0B44A26B006C03DE /* NSArrayController.m in Sources */ = {isa = PBXBuildFile; fileRef = FE2A10290B44A26B006C03DE /* NSArrayController.m */; };
+		FE2A10340B44A27C006C03DE /* NSBezierPath.h in Headers */ = {isa = PBXBuildFile; fileRef = FE2A10320B44A27C006C03DE /* NSBezierPath.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE2A10350B44A27C006C03DE /* NSBezierPath.m in Sources */ = {isa = PBXBuildFile; fileRef = FE2A10330B44A27C006C03DE /* NSBezierPath.m */; };
+		FE2A10460B44A2E5006C03DE /* NSColorSpace.h in Headers */ = {isa = PBXBuildFile; fileRef = FE2A10440B44A2E5006C03DE /* NSColorSpace.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE2A10470B44A2E5006C03DE /* NSColorSpace.m in Sources */ = {isa = PBXBuildFile; fileRef = FE2A10450B44A2E5006C03DE /* NSColorSpace.m */; };
+		FE2A105A0B459984006C03DE /* NSController.h in Headers */ = {isa = PBXBuildFile; fileRef = FE2A10580B459984006C03DE /* NSController.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE2A105B0B459984006C03DE /* NSController.m in Sources */ = {isa = PBXBuildFile; fileRef = FE2A10590B459984006C03DE /* NSController.m */; };
+		FE2A10620B459992006C03DE /* NSObjectController.h in Headers */ = {isa = PBXBuildFile; fileRef = FE2A10600B459992006C03DE /* NSObjectController.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE2A10630B459992006C03DE /* NSObjectController.m in Sources */ = {isa = PBXBuildFile; fileRef = FE2A10610B459992006C03DE /* NSObjectController.m */; };
+		FE2A106A0B4599A3006C03DE /* NSTreeController.h in Headers */ = {isa = PBXBuildFile; fileRef = FE2A10680B4599A3006C03DE /* NSTreeController.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE2A106B0B4599A3006C03DE /* NSTreeController.m in Sources */ = {isa = PBXBuildFile; fileRef = FE2A10690B4599A3006C03DE /* NSTreeController.m */; };
+		FE2A10720B4599BD006C03DE /* NSUserDefaultsController.h in Headers */ = {isa = PBXBuildFile; fileRef = FE2A10700B4599BD006C03DE /* NSUserDefaultsController.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE2A10730B4599BD006C03DE /* NSUserDefaultsController.m in Sources */ = {isa = PBXBuildFile; fileRef = FE2A10710B4599BD006C03DE /* NSUserDefaultsController.m */; };
+		FE2A10C70B45BAC8006C03DE /* NSGlyphGenerator.h in Headers */ = {isa = PBXBuildFile; fileRef = FE2A10C50B45BAC8006C03DE /* NSGlyphGenerator.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE2A10C80B45BAC8006C03DE /* NSGlyphGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = FE2A10C60B45BAC8006C03DE /* NSGlyphGenerator.m */; };
+		FE2A10CF0B45BAE2006C03DE /* NSGlyphInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = FE2A10CD0B45BAE2006C03DE /* NSGlyphInfo.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE2A10D00B45BAE2006C03DE /* NSGlyphInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = FE2A10CE0B45BAE2006C03DE /* NSGlyphInfo.m */; };
+		FE2A10D50B45BB0A006C03DE /* NSHelpManager.h in Headers */ = {isa = PBXBuildFile; fileRef = FE2A10D30B45BB0A006C03DE /* NSHelpManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE2A10D60B45BB0A006C03DE /* NSHelpManager.m in Sources */ = {isa = PBXBuildFile; fileRef = FE2A10D40B45BB0A006C03DE /* NSHelpManager.m */; };
+		FE2A10DB0B45BB28006C03DE /* NSLevelIndicator.h in Headers */ = {isa = PBXBuildFile; fileRef = FE2A10D90B45BB28006C03DE /* NSLevelIndicator.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE2A10DC0B45BB28006C03DE /* NSLevelIndicator.m in Sources */ = {isa = PBXBuildFile; fileRef = FE2A10DA0B45BB28006C03DE /* NSLevelIndicator.m */; };
+		FE2A10E30B45BB37006C03DE /* NSLevelIndicatorCell.h in Headers */ = {isa = PBXBuildFile; fileRef = FE2A10E10B45BB37006C03DE /* NSLevelIndicatorCell.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE2A10E40B45BB37006C03DE /* NSLevelIndicatorCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FE2A10E20B45BB37006C03DE /* NSLevelIndicatorCell.m */; };
+		FE2A10EB0B45BB69006C03DE /* NSNib.h in Headers */ = {isa = PBXBuildFile; fileRef = FE2A10E90B45BB69006C03DE /* NSNib.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE2A10EC0B45BB69006C03DE /* NSNib.m in Sources */ = {isa = PBXBuildFile; fileRef = FE2A10EA0B45BB69006C03DE /* NSNib.m */; };
+		FE2A10F10B45BC4F006C03DE /* NSPDFImageRep.h in Headers */ = {isa = PBXBuildFile; fileRef = FE2A10EF0B45BC4F006C03DE /* NSPDFImageRep.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE2A10F20B45BC4F006C03DE /* NSPDFImageRep.m in Sources */ = {isa = PBXBuildFile; fileRef = FE2A10F00B45BC4F006C03DE /* NSPDFImageRep.m */; };
+		FE2A10F70B45BC75006C03DE /* NSPrinter.h in Headers */ = {isa = PBXBuildFile; fileRef = FE2A10F50B45BC75006C03DE /* NSPrinter.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE2A10F80B45BC75006C03DE /* NSPrinter.m in Sources */ = {isa = PBXBuildFile; fileRef = FE2A10F60B45BC75006C03DE /* NSPrinter.m */; };
+		FE2A11010B45BCA7006C03DE /* NSSearchField.h in Headers */ = {isa = PBXBuildFile; fileRef = FE2A10FF0B45BCA6006C03DE /* NSSearchField.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE2A11020B45BCA7006C03DE /* NSSearchField.m in Sources */ = {isa = PBXBuildFile; fileRef = FE2A11000B45BCA7006C03DE /* NSSearchField.m */; };
+		FE2A11070B45BCB5006C03DE /* NSSearchFieldCell.h in Headers */ = {isa = PBXBuildFile; fileRef = FE2A11050B45BCB5006C03DE /* NSSearchFieldCell.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE2A11080B45BCB5006C03DE /* NSSearchFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FE2A11060B45BCB5006C03DE /* NSSearchFieldCell.m */; };
+		FE2A110D0B45BCCB006C03DE /* NSSegmentedCell.h in Headers */ = {isa = PBXBuildFile; fileRef = FE2A110B0B45BCCB006C03DE /* NSSegmentedCell.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE2A110E0B45BCCB006C03DE /* NSSegmentedCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FE2A110C0B45BCCB006C03DE /* NSSegmentedCell.m */; };
+		FE2A11150B45BCD8006C03DE /* NSSegmentedControl.h in Headers */ = {isa = PBXBuildFile; fileRef = FE2A11130B45BCD8006C03DE /* NSSegmentedControl.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE2A11160B45BCD8006C03DE /* NSSegmentedControl.m in Sources */ = {isa = PBXBuildFile; fileRef = FE2A11140B45BCD8006C03DE /* NSSegmentedControl.m */; };
+		FE2A111B0B45BD0A006C03DE /* NSShadow.h in Headers */ = {isa = PBXBuildFile; fileRef = FE2A11190B45BD0A006C03DE /* NSShadow.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE2A111C0B45BD0A006C03DE /* NSShadow.m in Sources */ = {isa = PBXBuildFile; fileRef = FE2A111A0B45BD0A006C03DE /* NSShadow.m */; };
+		FE2A11230B45C52C006C03DE /* NSSound.h in Headers */ = {isa = PBXBuildFile; fileRef = FE2A11210B45C52C006C03DE /* NSSound.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE2A11240B45C52C006C03DE /* NSSound.m in Sources */ = {isa = PBXBuildFile; fileRef = FE2A11220B45C52C006C03DE /* NSSound.m */; };
+		FE2A112F0B45C55D006C03DE /* NSSpellChecker.h in Headers */ = {isa = PBXBuildFile; fileRef = FE2A112D0B45C55D006C03DE /* NSSpellChecker.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE2A11300B45C55D006C03DE /* NSSpellChecker.m in Sources */ = {isa = PBXBuildFile; fileRef = FE2A112E0B45C55D006C03DE /* NSSpellChecker.m */; };
+		FE2A113F0B45C58D006C03DE /* NSStatusBar.h in Headers */ = {isa = PBXBuildFile; fileRef = FE2A113D0B45C58D006C03DE /* NSStatusBar.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE2A11400B45C58D006C03DE /* NSStatusBar.m in Sources */ = {isa = PBXBuildFile; fileRef = FE2A113E0B45C58D006C03DE /* NSStatusBar.m */; };
+		FE2A11470B45C59A006C03DE /* NSStatusItem.h in Headers */ = {isa = PBXBuildFile; fileRef = FE2A11450B45C59A006C03DE /* NSStatusItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE2A11480B45C59A006C03DE /* NSStatusItem.m in Sources */ = {isa = PBXBuildFile; fileRef = FE2A11460B45C59A006C03DE /* NSStatusItem.m */; };
+		FE2A11540B45C65E006C03DE /* NSTokenField.h in Headers */ = {isa = PBXBuildFile; fileRef = FE2A11520B45C65E006C03DE /* NSTokenField.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE2A11550B45C65E006C03DE /* NSTokenField.m in Sources */ = {isa = PBXBuildFile; fileRef = FE2A11530B45C65E006C03DE /* NSTokenField.m */; };
+		FE2A115C0B45C66A006C03DE /* NSTokenFieldCell.h in Headers */ = {isa = PBXBuildFile; fileRef = FE2A115A0B45C66A006C03DE /* NSTokenFieldCell.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE2A115D0B45C66A006C03DE /* NSTokenFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FE2A115B0B45C66A006C03DE /* NSTokenFieldCell.m */; };
 		FE56BA040B1221330046B7D9 /* NSMutableAttributedString.h in Headers */ = {isa = PBXBuildFile; fileRef = FE56BA020B1221330046B7D9 /* NSMutableAttributedString.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE56BA050B1221330046B7D9 /* NSMutableAttributedString.m in Sources */ = {isa = PBXBuildFile; fileRef = FE56BA030B1221330046B7D9 /* NSMutableAttributedString.m */; };
 		FE6466E30B2C611D00B302B0 /* NSMutableParagraphStyle.h in Headers */ = {isa = PBXBuildFile; fileRef = FE6466E10B2C611D00B302B0 /* NSMutableParagraphStyle.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -1028,6 +1082,60 @@
 		6ECABDF80A3FA2B700AD7F7B /* NSCustomView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSCustomView.m; sourceTree = "<group>"; };
 		6ECABE310A40520700AD7F7B /* NSNibKeyedUnarchiver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSNibKeyedUnarchiver.h; sourceTree = "<group>"; };
 		6ECABE320A40520700AD7F7B /* NSNibKeyedUnarchiver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSNibKeyedUnarchiver.m; sourceTree = "<group>"; };
+		FE2A101D0B44A201006C03DE /* NSAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSAlert.h; sourceTree = "<group>"; };
+		FE2A101E0B44A201006C03DE /* NSAlert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSAlert.m; sourceTree = "<group>"; };
+		FE2A10280B44A26B006C03DE /* NSArrayController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSArrayController.h; sourceTree = "<group>"; };
+		FE2A10290B44A26B006C03DE /* NSArrayController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSArrayController.m; sourceTree = "<group>"; };
+		FE2A10320B44A27C006C03DE /* NSBezierPath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSBezierPath.h; sourceTree = "<group>"; };
+		FE2A10330B44A27C006C03DE /* NSBezierPath.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSBezierPath.m; sourceTree = "<group>"; };
+		FE2A10440B44A2E5006C03DE /* NSColorSpace.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSColorSpace.h; sourceTree = "<group>"; };
+		FE2A10450B44A2E5006C03DE /* NSColorSpace.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSColorSpace.m; sourceTree = "<group>"; };
+		FE2A10580B459984006C03DE /* NSController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSController.h; sourceTree = "<group>"; };
+		FE2A10590B459984006C03DE /* NSController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSController.m; sourceTree = "<group>"; };
+		FE2A10600B459992006C03DE /* NSObjectController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSObjectController.h; sourceTree = "<group>"; };
+		FE2A10610B459992006C03DE /* NSObjectController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSObjectController.m; sourceTree = "<group>"; };
+		FE2A10680B4599A3006C03DE /* NSTreeController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSTreeController.h; sourceTree = "<group>"; };
+		FE2A10690B4599A3006C03DE /* NSTreeController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSTreeController.m; sourceTree = "<group>"; };
+		FE2A10700B4599BD006C03DE /* NSUserDefaultsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSUserDefaultsController.h; sourceTree = "<group>"; };
+		FE2A10710B4599BD006C03DE /* NSUserDefaultsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSUserDefaultsController.m; sourceTree = "<group>"; };
+		FE2A10C50B45BAC8006C03DE /* NSGlyphGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSGlyphGenerator.h; sourceTree = "<group>"; };
+		FE2A10C60B45BAC8006C03DE /* NSGlyphGenerator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSGlyphGenerator.m; sourceTree = "<group>"; };
+		FE2A10CD0B45BAE2006C03DE /* NSGlyphInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSGlyphInfo.h; sourceTree = "<group>"; };
+		FE2A10CE0B45BAE2006C03DE /* NSGlyphInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSGlyphInfo.m; sourceTree = "<group>"; };
+		FE2A10D30B45BB0A006C03DE /* NSHelpManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSHelpManager.h; sourceTree = "<group>"; };
+		FE2A10D40B45BB0A006C03DE /* NSHelpManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSHelpManager.m; sourceTree = "<group>"; };
+		FE2A10D90B45BB28006C03DE /* NSLevelIndicator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSLevelIndicator.h; sourceTree = "<group>"; };
+		FE2A10DA0B45BB28006C03DE /* NSLevelIndicator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSLevelIndicator.m; sourceTree = "<group>"; };
+		FE2A10E10B45BB37006C03DE /* NSLevelIndicatorCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSLevelIndicatorCell.h; sourceTree = "<group>"; };
+		FE2A10E20B45BB37006C03DE /* NSLevelIndicatorCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSLevelIndicatorCell.m; sourceTree = "<group>"; };
+		FE2A10E90B45BB69006C03DE /* NSNib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSNib.h; sourceTree = "<group>"; };
+		FE2A10EA0B45BB69006C03DE /* NSNib.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSNib.m; sourceTree = "<group>"; };
+		FE2A10EF0B45BC4F006C03DE /* NSPDFImageRep.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSPDFImageRep.h; sourceTree = "<group>"; };
+		FE2A10F00B45BC4F006C03DE /* NSPDFImageRep.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSPDFImageRep.m; sourceTree = "<group>"; };
+		FE2A10F50B45BC75006C03DE /* NSPrinter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSPrinter.h; sourceTree = "<group>"; };
+		FE2A10F60B45BC75006C03DE /* NSPrinter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSPrinter.m; sourceTree = "<group>"; };
+		FE2A10FF0B45BCA6006C03DE /* NSSearchField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSSearchField.h; sourceTree = "<group>"; };
+		FE2A11000B45BCA7006C03DE /* NSSearchField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSSearchField.m; sourceTree = "<group>"; };
+		FE2A11050B45BCB5006C03DE /* NSSearchFieldCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSSearchFieldCell.h; sourceTree = "<group>"; };
+		FE2A11060B45BCB5006C03DE /* NSSearchFieldCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSSearchFieldCell.m; sourceTree = "<group>"; };
+		FE2A110B0B45BCCB006C03DE /* NSSegmentedCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSSegmentedCell.h; sourceTree = "<group>"; };
+		FE2A110C0B45BCCB006C03DE /* NSSegmentedCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSSegmentedCell.m; sourceTree = "<group>"; };
+		FE2A11130B45BCD8006C03DE /* NSSegmentedControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSSegmentedControl.h; sourceTree = "<group>"; };
+		FE2A11140B45BCD8006C03DE /* NSSegmentedControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSSegmentedControl.m; sourceTree = "<group>"; };
+		FE2A11190B45BD0A006C03DE /* NSShadow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSShadow.h; sourceTree = "<group>"; };
+		FE2A111A0B45BD0A006C03DE /* NSShadow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSShadow.m; sourceTree = "<group>"; };
+		FE2A11210B45C52C006C03DE /* NSSound.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSSound.h; sourceTree = "<group>"; };
+		FE2A11220B45C52C006C03DE /* NSSound.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSSound.m; sourceTree = "<group>"; };
+		FE2A112D0B45C55D006C03DE /* NSSpellChecker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSSpellChecker.h; sourceTree = "<group>"; };
+		FE2A112E0B45C55D006C03DE /* NSSpellChecker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSSpellChecker.m; sourceTree = "<group>"; };
+		FE2A113D0B45C58D006C03DE /* NSStatusBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSStatusBar.h; sourceTree = "<group>"; };
+		FE2A113E0B45C58D006C03DE /* NSStatusBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSStatusBar.m; sourceTree = "<group>"; };
+		FE2A11450B45C59A006C03DE /* NSStatusItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSStatusItem.h; sourceTree = "<group>"; };
+		FE2A11460B45C59A006C03DE /* NSStatusItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSStatusItem.m; sourceTree = "<group>"; };
+		FE2A11520B45C65E006C03DE /* NSTokenField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSTokenField.h; sourceTree = "<group>"; };
+		FE2A11530B45C65E006C03DE /* NSTokenField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSTokenField.m; sourceTree = "<group>"; };
+		FE2A115A0B45C66A006C03DE /* NSTokenFieldCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSTokenFieldCell.h; sourceTree = "<group>"; };
+		FE2A115B0B45C66A006C03DE /* NSTokenFieldCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSTokenFieldCell.m; sourceTree = "<group>"; };
 		FE56BA020B1221330046B7D9 /* NSMutableAttributedString.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSMutableAttributedString.h; sourceTree = "<group>"; };
 		FE56BA030B1221330046B7D9 /* NSMutableAttributedString.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSMutableAttributedString.m; sourceTree = "<group>"; };
 		FE6466E10B2C611D00B302B0 /* NSMutableParagraphStyle.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSMutableParagraphStyle.h; sourceTree = "<group>"; };
@@ -1079,12 +1187,16 @@
 				6E2B53250976075200DA0954 /* NSActionCell.m */,
 				6E2B54000976075200DA0954 /* NSAffineTransform.h */,
 				6E2B53270976075200DA0954 /* NSAffineTransform.m */,
+				FE2A101D0B44A201006C03DE /* NSAlert.h */,
+				FE2A101E0B44A201006C03DE /* NSAlert.m */,
 				6E2B54020976075200DA0954 /* NSAlertPanel.h */,
 				6E2B53290976075200DA0954 /* NSAlertPanel.m */,
 				6E2B54040976075200DA0954 /* NSApplication.h */,
 				6E2B532B0976075200DA0954 /* NSApplication.m */,
 				6E2B54060976075200DA0954 /* NSAttributedString.h */,
 				6E2B532D0976075200DA0954 /* NSAttributedString.m */,
+				FE2A10320B44A27C006C03DE /* NSBezierPath.h */,
+				FE2A10330B44A27C006C03DE /* NSBezierPath.m */,
 				6E2B54080976075200DA0954 /* NSBitmapImageRep.h */,
 				6E2B532F0976075200DA0954 /* NSBitmapImageRep.m */,
 				6E2B540A0976075200DA0954 /* NSBox.h */,
@@ -1109,6 +1221,8 @@
 				6E2B541E0976075200DA0954 /* NSColorPanel.h */,
 				6E2B53450976075200DA0954 /* NSColorPanel.m */,
 				6E2B55DF0976075300DA0954 /* NSColorPicker */,
+				FE2A10440B44A2E5006C03DE /* NSColorSpace.h */,
+				FE2A10450B44A2E5006C03DE /* NSColorSpace.m */,
 				6E2B54200976075200DA0954 /* NSColorWell.h */,
 				6E2B53470976075200DA0954 /* NSColorWell.m */,
 				6E2B54220976075200DA0954 /* NSComboBox.h */,
@@ -1121,6 +1235,7 @@
 				6E2B534F0976075200DA0954 /* NSComboBoxWindow.m */,
 				6E2B542A0976075200DA0954 /* NSControl.h */,
 				6E2B53510976075200DA0954 /* NSControl.m */,
+				FE2A10250B44A239006C03DE /* NSController */,
 				6E2B542C0976075200DA0954 /* NSCursor.h */,
 				6E2B53530976075200DA0954 /* NSCursor.m */,
 				6E2B542E0976075200DA0954 /* NSCursorRect.h */,
@@ -1160,11 +1275,17 @@
 				6E2B53670976075200DA0954 /* NSForm.m */,
 				6E2B54500976075200DA0954 /* NSFormCell.h */,
 				6E2B53690976075200DA0954 /* NSFormCell.m */,
+				FE2A10C50B45BAC8006C03DE /* NSGlyphGenerator.h */,
+				FE2A10C60B45BAC8006C03DE /* NSGlyphGenerator.m */,
+				FE2A10CD0B45BAE2006C03DE /* NSGlyphInfo.h */,
+				FE2A10CE0B45BAE2006C03DE /* NSGlyphInfo.m */,
 				6E2B54520976075200DA0954 /* NSGraphics.h */,
 				6E2B53770976075200DA0954 /* NSGraphics.m */,
 				6E2B54540976075200DA0954 /* NSGraphicsContext.h */,
 				6E2B53790976075200DA0954 /* NSGraphicsContext.m */,
 				6E2B54560976075200DA0954 /* NSGraphicsContextFunctions.h */,
+				FE2A10D30B45BB0A006C03DE /* NSHelpManager.h */,
+				FE2A10D40B45BB0A006C03DE /* NSHelpManager.m */,
 				6E2B54580976075200DA0954 /* NSImage.h */,
 				6E2B537B0976075200DA0954 /* NSImage.m */,
 				6E2B545A0976075200DA0954 /* NSImageCell.h */,
@@ -1184,6 +1305,10 @@
 				6E2B54680976075200DA0954 /* NSInterfaceStyle.h */,
 				6E2B538B0976075200DA0954 /* NSInterfaceStyle.m */,
 				6E2B56FC0976075400DA0954 /* NSKeyBinding */,
+				FE2A10D90B45BB28006C03DE /* NSLevelIndicator.h */,
+				FE2A10DA0B45BB28006C03DE /* NSLevelIndicator.m */,
+				FE2A10E10B45BB37006C03DE /* NSLevelIndicatorCell.h */,
+				FE2A10E20B45BB37006C03DE /* NSLevelIndicatorCell.m */,
 				6E2B546A0976075200DA0954 /* NSMatrix.h */,
 				6E2B538D0976075200DA0954 /* NSMatrix.m */,
 				6E2B54DA0976075300DA0954 /* NSMeasurementUnit.h */,
@@ -1209,6 +1334,8 @@
 				6E2B53970976075200DA0954 /* NSParagraphStyle.m */,
 				6E2B54740976075200DA0954 /* NSPasteboard.h */,
 				6E2B53990976075200DA0954 /* NSPasteboard.m */,
+				FE2A10EF0B45BC4F006C03DE /* NSPDFImageRep.h */,
+				FE2A10F00B45BC4F006C03DE /* NSPDFImageRep.m */,
 				6E2B54760976075200DA0954 /* NSPlatform.h */,
 				6E2B54780976075200DA0954 /* NSPopUpButton.h */,
 				6E2B539B0976075200DA0954 /* NSPopUpButton.m */,
@@ -1218,6 +1345,8 @@
 				6E2B539F0976075200DA0954 /* NSPopUpView.m */,
 				6E2B547E0976075200DA0954 /* NSPopUpWindow.h */,
 				6E2B53A10976075200DA0954 /* NSPopUpWindow.m */,
+				FE2A10F50B45BC75006C03DE /* NSPrinter.h */,
+				FE2A10F60B45BC75006C03DE /* NSPrinter.m */,
 				6E2B54820976075200DA0954 /* NSPrintInfo.h */,
 				6E2B53A30976075200DA0954 /* NSPrintInfo.m */,
 				6E2B54840976075200DA0954 /* NSPrintOperation.h */,
@@ -1238,18 +1367,36 @@
 				6E2B53AF0976075200DA0954 /* NSScroller.m */,
 				6E2B54900976075200DA0954 /* NSScrollView.h */,
 				6E2B53B10976075200DA0954 /* NSScrollView.m */,
+				FE2A10FF0B45BCA6006C03DE /* NSSearchField.h */,
+				FE2A11000B45BCA7006C03DE /* NSSearchField.m */,
+				FE2A11050B45BCB5006C03DE /* NSSearchFieldCell.h */,
+				FE2A11060B45BCB5006C03DE /* NSSearchFieldCell.m */,
 				6E2B549E0976075200DA0954 /* NSSecureTextField.h */,
 				6E2B53B30976075200DA0954 /* NSSecureTextField.m */,
 				6E2B54A00976075200DA0954 /* NSSecureTextFieldCell.h */,
 				6E2B53B50976075200DA0954 /* NSSecureTextFieldCell.m */,
+				FE2A110B0B45BCCB006C03DE /* NSSegmentedCell.h */,
+				FE2A110C0B45BCCB006C03DE /* NSSegmentedCell.m */,
+				FE2A11130B45BCD8006C03DE /* NSSegmentedControl.h */,
+				FE2A11140B45BCD8006C03DE /* NSSegmentedControl.m */,
+				FE2A11190B45BD0A006C03DE /* NSShadow.h */,
+				FE2A111A0B45BD0A006C03DE /* NSShadow.m */,
 				6E2B54920976075200DA0954 /* NSSheetContext.h */,
 				6E2B53B70976075200DA0954 /* NSSheetContext.m */,
 				6E2B54940976075200DA0954 /* NSSlider.h */,
 				6E2B53B90976075200DA0954 /* NSSlider.m */,
 				6E2B54960976075200DA0954 /* NSSliderCell.h */,
 				6E2B53BB0976075200DA0954 /* NSSliderCell.m */,
+				FE2A11210B45C52C006C03DE /* NSSound.h */,
+				FE2A11220B45C52C006C03DE /* NSSound.m */,
+				FE2A112D0B45C55D006C03DE /* NSSpellChecker.h */,
+				FE2A112E0B45C55D006C03DE /* NSSpellChecker.m */,
 				6E2B54980976075200DA0954 /* NSSplitView.h */,
 				6E2B53BD0976075200DA0954 /* NSSplitView.m */,
+				FE2A113D0B45C58D006C03DE /* NSStatusBar.h */,
+				FE2A113E0B45C58D006C03DE /* NSStatusBar.m */,
+				FE2A11450B45C59A006C03DE /* NSStatusItem.h */,
+				FE2A11460B45C59A006C03DE /* NSStatusItem.m */,
 				6E2B54A20976075200DA0954 /* NSStepper.h */,
 				6E2B53BF0976075200DA0954 /* NSStepper.m */,
 				6E2B54A40976075200DA0954 /* NSStepperCell.h */,
@@ -1280,11 +1427,16 @@
 				6E2B53D90976075200DA0954 /* NSTextField.m */,
 				6E2B54BA0976075300DA0954 /* NSTextFieldCell.h */,
 				6E2B53DB0976075200DA0954 /* NSTextFieldCell.m */,
+				FE2A114D0B45C608006C03DE /* NSTextTable */,
 				6E2B55680976075300DA0954 /* NSTextView */,
 				6E14EC6509A3C40F009C8693 /* NSTIFFImageFileDirectory.h */,
 				6E14EC6609A3C40F009C8693 /* NSTIFFImageFileDirectory.m */,
 				6E14EC6709A3C40F009C8693 /* NSTIFFReader.h */,
 				6E14EC6809A3C40F009C8693 /* NSTIFFReader.m */,
+				FE2A11520B45C65E006C03DE /* NSTokenField.h */,
+				FE2A11530B45C65E006C03DE /* NSTokenField.m */,
+				FE2A115A0B45C66A006C03DE /* NSTokenFieldCell.h */,
+				FE2A115B0B45C66A006C03DE /* NSTokenFieldCell.m */,
 				6E2B570E0976075400DA0954 /* NSToolbar */,
 				6E2B54D60976075300DA0954 /* NSToolTipWindow.h */,
 				6E2B53F10976075200DA0954 /* NSToolTipWindow.m */,
@@ -1382,6 +1534,8 @@
 				6E81CCCF0A39CBE00089C666 /* NSCustomResource.m */,
 				6ECABDF70A3FA2B700AD7F7B /* NSCustomView.h */,
 				6ECABDF80A3FA2B700AD7F7B /* NSCustomView.m */,
+				FE2A10E90B45BB69006C03DE /* NSNib.h */,
+				FE2A10EA0B45BB69006C03DE /* NSNib.m */,
 			);
 			name = nib;
 			path = nib.subproj;
@@ -1776,6 +1930,30 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		FE2A10250B44A239006C03DE /* NSController */ = {
+			isa = PBXGroup;
+			children = (
+				FE2A10280B44A26B006C03DE /* NSArrayController.h */,
+				FE2A10290B44A26B006C03DE /* NSArrayController.m */,
+				FE2A10580B459984006C03DE /* NSController.h */,
+				FE2A10590B459984006C03DE /* NSController.m */,
+				FE2A10600B459992006C03DE /* NSObjectController.h */,
+				FE2A10610B459992006C03DE /* NSObjectController.m */,
+				FE2A10680B4599A3006C03DE /* NSTreeController.h */,
+				FE2A10690B4599A3006C03DE /* NSTreeController.m */,
+				FE2A10700B4599BD006C03DE /* NSUserDefaultsController.h */,
+				FE2A10710B4599BD006C03DE /* NSUserDefaultsController.m */,
+			);
+			path = NSController;
+			sourceTree = "<group>";
+		};
+		FE2A114D0B45C608006C03DE /* NSTextTable */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = NSTextTable;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -2013,6 +2191,33 @@
 				6E404FE70A52FEA900FA9AE5 /* NSTextViewSharedData.h in Headers */,
 				FE56BA040B1221330046B7D9 /* NSMutableAttributedString.h in Headers */,
 				FE6466E30B2C611D00B302B0 /* NSMutableParagraphStyle.h in Headers */,
+				FE2A101F0B44A201006C03DE /* NSAlert.h in Headers */,
+				FE2A102A0B44A26B006C03DE /* NSArrayController.h in Headers */,
+				FE2A10340B44A27C006C03DE /* NSBezierPath.h in Headers */,
+				FE2A10460B44A2E5006C03DE /* NSColorSpace.h in Headers */,
+				FE2A105A0B459984006C03DE /* NSController.h in Headers */,
+				FE2A10620B459992006C03DE /* NSObjectController.h in Headers */,
+				FE2A106A0B4599A3006C03DE /* NSTreeController.h in Headers */,
+				FE2A10720B4599BD006C03DE /* NSUserDefaultsController.h in Headers */,
+				FE2A10C70B45BAC8006C03DE /* NSGlyphGenerator.h in Headers */,
+				FE2A10CF0B45BAE2006C03DE /* NSGlyphInfo.h in Headers */,
+				FE2A10D50B45BB0A006C03DE /* NSHelpManager.h in Headers */,
+				FE2A10DB0B45BB28006C03DE /* NSLevelIndicator.h in Headers */,
+				FE2A10E30B45BB37006C03DE /* NSLevelIndicatorCell.h in Headers */,
+				FE2A10EB0B45BB69006C03DE /* NSNib.h in Headers */,
+				FE2A10F10B45BC4F006C03DE /* NSPDFImageRep.h in Headers */,
+				FE2A10F70B45BC75006C03DE /* NSPrinter.h in Headers */,
+				FE2A11010B45BCA7006C03DE /* NSSearchField.h in Headers */,
+				FE2A11070B45BCB5006C03DE /* NSSearchFieldCell.h in Headers */,
+				FE2A110D0B45BCCB006C03DE /* NSSegmentedCell.h in Headers */,
+				FE2A11150B45BCD8006C03DE /* NSSegmentedControl.h in Headers */,
+				FE2A111B0B45BD0A006C03DE /* NSShadow.h in Headers */,
+				FE2A11230B45C52C006C03DE /* NSSound.h in Headers */,
+				FE2A112F0B45C55D006C03DE /* NSSpellChecker.h in Headers */,
+				FE2A113F0B45C58D006C03DE /* NSStatusBar.h in Headers */,
+				FE2A11470B45C59A006C03DE /* NSStatusItem.h in Headers */,
+				FE2A11540B45C65E006C03DE /* NSTokenField.h in Headers */,
+				FE2A115C0B45C66A006C03DE /* NSTokenFieldCell.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2369,6 +2574,33 @@
 				6E404FE80A52FEA900FA9AE5 /* NSTextViewSharedData.m in Sources */,
 				FE56BA050B1221330046B7D9 /* NSMutableAttributedString.m in Sources */,
 				FE6466E40B2C611D00B302B0 /* NSMutableParagraphStyle.m in Sources */,
+				FE2A10200B44A201006C03DE /* NSAlert.m in Sources */,
+				FE2A102B0B44A26B006C03DE /* NSArrayController.m in Sources */,
+				FE2A10350B44A27C006C03DE /* NSBezierPath.m in Sources */,
+				FE2A10470B44A2E5006C03DE /* NSColorSpace.m in Sources */,
+				FE2A105B0B459984006C03DE /* NSController.m in Sources */,
+				FE2A10630B459992006C03DE /* NSObjectController.m in Sources */,
+				FE2A106B0B4599A3006C03DE /* NSTreeController.m in Sources */,
+				FE2A10730B4599BD006C03DE /* NSUserDefaultsController.m in Sources */,
+				FE2A10C80B45BAC8006C03DE /* NSGlyphGenerator.m in Sources */,
+				FE2A10D00B45BAE2006C03DE /* NSGlyphInfo.m in Sources */,
+				FE2A10D60B45BB0A006C03DE /* NSHelpManager.m in Sources */,
+				FE2A10DC0B45BB28006C03DE /* NSLevelIndicator.m in Sources */,
+				FE2A10E40B45BB37006C03DE /* NSLevelIndicatorCell.m in Sources */,
+				FE2A10EC0B45BB69006C03DE /* NSNib.m in Sources */,
+				FE2A10F20B45BC4F006C03DE /* NSPDFImageRep.m in Sources */,
+				FE2A10F80B45BC75006C03DE /* NSPrinter.m in Sources */,
+				FE2A11020B45BCA7006C03DE /* NSSearchField.m in Sources */,
+				FE2A11080B45BCB5006C03DE /* NSSearchFieldCell.m in Sources */,
+				FE2A110E0B45BCCB006C03DE /* NSSegmentedCell.m in Sources */,
+				FE2A11160B45BCD8006C03DE /* NSSegmentedControl.m in Sources */,
+				FE2A111C0B45BD0A006C03DE /* NSShadow.m in Sources */,
+				FE2A11240B45C52C006C03DE /* NSSound.m in Sources */,
+				FE2A11300B45C55D006C03DE /* NSSpellChecker.m in Sources */,
+				FE2A11400B45C58D006C03DE /* NSStatusBar.m in Sources */,
+				FE2A11480B45C59A006C03DE /* NSStatusItem.m in Sources */,
+				FE2A11550B45C65E006C03DE /* NSTokenField.m in Sources */,
+				FE2A115D0B45C66A006C03DE /* NSTokenFieldCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

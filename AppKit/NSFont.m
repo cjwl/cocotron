@@ -1,4 +1,4 @@
-/* Copyright (c) 2006 Christopher J. W. Lloyd
+/* Copyright (c) 2006-2007 Christopher J. W. Lloyd
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
@@ -31,7 +31,7 @@ static inline NSGlyph glyphForCharacter(NSFont *self,unichar character){
    return NSNullGlyph;
 }
 
-static inline NSGlyphInfo *glyphInfoForGlyph(NSFont *self,NSGlyph glyph){
+static inline NSGlyphMetrics *glyphInfoForGlyph(NSFont *self,NSGlyph glyph){
    if(glyph<self->_glyphInfoSet->numberOfGlyphs)
     return self->_glyphInfoSet->info+glyph;
 
@@ -65,7 +65,7 @@ static inline NSGlyphInfo *glyphInfoForGlyph(NSFont *self,NSGlyph glyph){
 }
 
 -(void)fetchGlyphInfo {
-   _glyphInfoSet->info=NSZoneCalloc([self zone],sizeof(NSGlyphInfo),_glyphInfoSet->numberOfGlyphs);
+   _glyphInfoSet->info=NSZoneCalloc([self zone],sizeof(NSGlyphMetrics),_glyphInfoSet->numberOfGlyphs);
    [[NSDisplay currentDisplay] fetchGlyphKerningForFontWithName:_name pointSize:_pointSize glyphRanges:self->_glyphRangeTable infoSet:self->_glyphInfoSet];
 }
 
@@ -74,7 +74,7 @@ static inline void fetchAllGlyphRangesIfNeeded(NSFont *self){
     [self fetchGlyphRanges];
 }
 
-static inline NSGlyphInfo *fetchGlyphInfoIfNeeded(NSFont *self,NSGlyph glyph){
+static inline NSGlyphMetrics *fetchGlyphInfoIfNeeded(NSFont *self,NSGlyph glyph){
    fetchAllGlyphRangesIfNeeded(self);
    if(self->_glyphInfoSet->info==NULL)
     [self fetchGlyphInfo];
@@ -82,8 +82,8 @@ static inline NSGlyphInfo *fetchGlyphInfoIfNeeded(NSFont *self,NSGlyph glyph){
    return glyphInfoForGlyph(self,glyph);
 }
 
-static inline NSGlyphInfo *fetchGlyphAdvancementIfNeeded(NSFont *self,NSGlyph glyph){
-   NSGlyphInfo *info=fetchGlyphInfoIfNeeded(self,glyph);
+static inline NSGlyphMetrics *fetchGlyphAdvancementIfNeeded(NSFont *self,NSGlyph glyph){
+   NSGlyphMetrics *info=fetchGlyphInfoIfNeeded(self,glyph);
 
    if(info==NULL)
     return info;
@@ -112,7 +112,7 @@ static inline NSGlyphInfo *fetchGlyphAdvancementIfNeeded(NSFont *self,NSGlyph gl
 
    _glyphRangeTable=NULL;
    [self fetchSharedGlyphRangeTable];
-   _glyphInfoSet=NSZoneMalloc([self zone],sizeof(NSGlyphInfoSet));
+   _glyphInfoSet=NSZoneMalloc([self zone],sizeof(NSGlyphMetricsSet));
    _glyphInfoSet->numberOfGlyphs=0;
    _glyphInfoSet->info=NULL;
 }
@@ -295,14 +295,14 @@ static inline NSGlyphInfo *fetchGlyphAdvancementIfNeeded(NSFont *self,NSGlyph gl
 }
 
 -(BOOL)glyphIsEncoded:(NSGlyph)glyph {
-   NSGlyphInfo *info=fetchGlyphInfoIfNeeded(self,glyph);
+   NSGlyphMetrics *info=fetchGlyphInfoIfNeeded(self,glyph);
 
    return (info!=NULL)?YES:NO;
 }
 
 -(NSSize)advancementForGlyph:(NSGlyph)glyph {
    NSSize       result=NSMakeSize(0,0);
-   NSGlyphInfo *info=fetchGlyphAdvancementIfNeeded(self,glyph);
+   NSGlyphMetrics *info=fetchGlyphAdvancementIfNeeded(self,glyph);
 
    if(info==NULL){
     NSLog(@"no info for glyph %d",glyph);
@@ -372,8 +372,8 @@ static inline NSGlyphInfo *fetchGlyphAdvancementIfNeeded(NSFont *self,NSGlyph gl
 }
 
 -(NSPoint)positionOfGlyph:(NSGlyph)current precededByGlyph:(NSGlyph)previous isNominal:(BOOL *)isNominalp {
-   NSGlyphInfo *previousInfo;
-   NSGlyphInfo *currentInfo;
+   NSGlyphMetrics *previousInfo;
+   NSGlyphMetrics *currentInfo;
    NSPoint      result=NSMakePoint(0,0);
 
    previousInfo=fetchGlyphAdvancementIfNeeded(self,previous);
