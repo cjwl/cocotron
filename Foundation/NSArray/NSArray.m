@@ -33,12 +33,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return NSAllocateObject(self,0,zone);
 }
 
-
--init {
-   return [self initWithObjects:NULL count:0];
-}
-
-
 -initWithArray:(NSArray *)array {
    unsigned count=[array count];
    id      *objects=alloca(sizeof(id)*count);

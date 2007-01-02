@@ -1,0 +1,460 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 42;
+	objects = {
+
+/* Begin PBXAggregateTarget section */
+		FE4034A10B42F1BC00CEC41A /* objc */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = FE4034AE0B42F1D600CEC41A /* Build configuration list for PBXAggregateTarget "objc" */;
+			buildPhases = (
+			);
+			dependencies = (
+				FE4034A30B42F1C100CEC41A /* PBXTargetDependency */,
+				FE4034A50B42F1C400CEC41A /* PBXTargetDependency */,
+				FE4034A70B42F1C800CEC41A /* PBXTargetDependency */,
+			);
+			name = objc;
+			productName = objc;
+		};
+/* End PBXAggregateTarget section */
+
+/* Begin PBXBuildFile section */
+		FE4034BA0B42F24C00CEC41A /* objc-class.h in Headers */ = {isa = PBXBuildFile; fileRef = FE4034B90B42F24C00CEC41A /* objc-class.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE4034BB0B42F24C00CEC41A /* objc-class.h in Headers */ = {isa = PBXBuildFile; fileRef = FE4034B90B42F24C00CEC41A /* objc-class.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE4034BC0B42F24C00CEC41A /* objc-class.h in Headers */ = {isa = PBXBuildFile; fileRef = FE4034B90B42F24C00CEC41A /* objc-class.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE4034CF0B42F2C400CEC41A /* objc.h in Headers */ = {isa = PBXBuildFile; fileRef = FE4034CE0B42F2C400CEC41A /* objc.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE4034D00B42F2C400CEC41A /* objc.h in Headers */ = {isa = PBXBuildFile; fileRef = FE4034CE0B42F2C400CEC41A /* objc.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE4034D10B42F2C400CEC41A /* objc.h in Headers */ = {isa = PBXBuildFile; fileRef = FE4034CE0B42F2C400CEC41A /* objc.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEB6CBFA0B4A1584004FADF2 /* objc-export.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB6CBF90B4A1584004FADF2 /* objc-export.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEB6CBFB0B4A1584004FADF2 /* objc-export.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB6CBF90B4A1584004FADF2 /* objc-export.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEB6CBFC0B4A1584004FADF2 /* objc-export.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB6CBF90B4A1584004FADF2 /* objc-export.h */; settings = {ATTRIBUTES = (Public, ); }; };
+/* End PBXBuildFile section */
+
+/* Begin PBXBuildRule section */
+		FE4034350B42E73300CEC41A /* PBXBuildRule */ = {
+			isa = PBXBuildRule;
+			compilerSpec = org.cocotron.1.0.windows.i386.gcc.4_0_3;
+			fileType = sourcecode.c;
+			isEditable = 1;
+			outputFiles = (
+			);
+		};
+		FE4034560B42E8AF00CEC41A /* PBXBuildRule */ = {
+			isa = PBXBuildRule;
+			compilerSpec = org.cocotron.1.0.linux.i386.gcc.4_0_3;
+			fileType = sourcecode.c;
+			isEditable = 1;
+			outputFiles = (
+			);
+		};
+		FE4034870B42E94D00CEC41A /* PBXBuildRule */ = {
+			isa = PBXBuildRule;
+			compilerSpec = org.cocotron.1.0.linux.i386.gcc.4_0_3;
+			fileType = sourcecode.c;
+			isEditable = 1;
+			outputFiles = (
+			);
+		};
+/* End PBXBuildRule section */
+
+/* Begin PBXContainerItemProxy section */
+		FE4034A20B42F1C100CEC41A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8DC2EF4F0486A6940098B216;
+			remoteInfo = "objc-Windows-i386";
+		};
+		FE4034A40B42F1C400CEC41A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = FE4034530B42E8AF00CEC41A;
+			remoteInfo = "objc-Linux-i386";
+		};
+		FE4034A60B42F1C800CEC41A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = FE4034840B42E94D00CEC41A;
+			remoteInfo = "objc-Solaris-sparc";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		8DC2EF5A0486A6940098B216 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		8DC2EF5B0486A6940098B216 /* objc.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = objc.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		FE4034590B42E8AF00CEC41A /* objc.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = objc.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		FE40348A0B42E94D00CEC41A /* objc.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = objc.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		FE4034B90B42F24C00CEC41A /* objc-class.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "objc-class.h"; sourceTree = "<group>"; };
+		FE4034CE0B42F2C400CEC41A /* objc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = objc.h; sourceTree = "<group>"; };
+		FEB6CBF90B4A1584004FADF2 /* objc-export.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "objc-export.h"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		034768DFFF38A50411DB9C8B /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8DC2EF5B0486A6940098B216 /* objc.framework */,
+				FE4034590B42E8AF00CEC41A /* objc.framework */,
+				FE40348A0B42E94D00CEC41A /* objc.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		0867D691FE84028FC02AAC07 /* objc */ = {
+			isa = PBXGroup;
+			children = (
+				08FB77AEFE84172EC02AAC07 /* Classes */,
+				32C88DFF0371C24200C91783 /* Other Sources */,
+				089C1665FE841158C02AAC07 /* Resources */,
+				0867D69AFE84028FC02AAC07 /* External Frameworks and Libraries */,
+				034768DFFF38A50411DB9C8B /* Products */,
+			);
+			name = objc;
+			sourceTree = "<group>";
+		};
+		0867D69AFE84028FC02AAC07 /* External Frameworks and Libraries */ = {
+			isa = PBXGroup;
+			children = (
+				1058C7B0FEA5585E11CA2CBB /* Linked Frameworks */,
+				1058C7B2FEA5585E11CA2CBB /* Other Frameworks */,
+			);
+			name = "External Frameworks and Libraries";
+			sourceTree = "<group>";
+		};
+		089C1665FE841158C02AAC07 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				8DC2EF5A0486A6940098B216 /* Info.plist */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		08FB77AEFE84172EC02AAC07 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				FE4034B90B42F24C00CEC41A /* objc-class.h */,
+				FE4034CE0B42F2C400CEC41A /* objc.h */,
+				FEB6CBF90B4A1584004FADF2 /* objc-export.h */,
+			);
+			name = Classes;
+			sourceTree = "<group>";
+		};
+		1058C7B0FEA5585E11CA2CBB /* Linked Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "Linked Frameworks";
+			sourceTree = "<group>";
+		};
+		1058C7B2FEA5585E11CA2CBB /* Other Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "Other Frameworks";
+			sourceTree = "<group>";
+		};
+		32C88DFF0371C24200C91783 /* Other Sources */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "Other Sources";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		8DC2EF500486A6940098B216 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FE4034BA0B42F24C00CEC41A /* objc-class.h in Headers */,
+				FE4034D00B42F2C400CEC41A /* objc.h in Headers */,
+				FEB6CBFA0B4A1584004FADF2 /* objc-export.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FE4034540B42E8AF00CEC41A /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FE4034BB0B42F24C00CEC41A /* objc-class.h in Headers */,
+				FE4034CF0B42F2C400CEC41A /* objc.h in Headers */,
+				FEB6CBFC0B4A1584004FADF2 /* objc-export.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FE4034850B42E94D00CEC41A /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FE4034BC0B42F24C00CEC41A /* objc-class.h in Headers */,
+				FE4034D10B42F2C400CEC41A /* objc.h in Headers */,
+				FEB6CBFB0B4A1584004FADF2 /* objc-export.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		8DC2EF4F0486A6940098B216 /* objc-Windows-i386 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1DEB91AD08733DA50010E9CD /* Build configuration list for PBXNativeTarget "objc-Windows-i386" */;
+			buildPhases = (
+				8DC2EF500486A6940098B216 /* Headers */,
+				8DC2EF520486A6940098B216 /* Resources */,
+			);
+			buildRules = (
+				FE4034350B42E73300CEC41A /* PBXBuildRule */,
+			);
+			dependencies = (
+			);
+			name = "objc-Windows-i386";
+			productInstallPath = "$(HOME)/Library/Frameworks";
+			productName = objc;
+			productReference = 8DC2EF5B0486A6940098B216 /* objc.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		FE4034530B42E8AF00CEC41A /* objc-Linux-i386 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FE4034570B42E8AF00CEC41A /* Build configuration list for PBXNativeTarget "objc-Linux-i386" */;
+			buildPhases = (
+				FE4034540B42E8AF00CEC41A /* Headers */,
+				FE4034550B42E8AF00CEC41A /* Resources */,
+			);
+			buildRules = (
+				FE4034560B42E8AF00CEC41A /* PBXBuildRule */,
+			);
+			dependencies = (
+			);
+			name = "objc-Linux-i386";
+			productInstallPath = "$(HOME)/Library/Frameworks";
+			productName = objc;
+			productReference = FE4034590B42E8AF00CEC41A /* objc.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		FE4034840B42E94D00CEC41A /* objc-Solaris-sparc */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FE4034880B42E94D00CEC41A /* Build configuration list for PBXNativeTarget "objc-Solaris-sparc" */;
+			buildPhases = (
+				FE4034850B42E94D00CEC41A /* Headers */,
+				FE4034860B42E94D00CEC41A /* Resources */,
+			);
+			buildRules = (
+				FE4034870B42E94D00CEC41A /* PBXBuildRule */,
+			);
+			dependencies = (
+			);
+			name = "objc-Solaris-sparc";
+			productInstallPath = "$(HOME)/Library/Frameworks";
+			productName = objc;
+			productReference = FE40348A0B42E94D00CEC41A /* objc.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		0867D690FE84028FC02AAC07 /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = 1DEB91B108733DA50010E9CD /* Build configuration list for PBXProject "objc" */;
+			hasScannedForEncodings = 1;
+			mainGroup = 0867D691FE84028FC02AAC07 /* objc */;
+			productRefGroup = 034768DFFF38A50411DB9C8B /* Products */;
+			projectDirPath = "";
+			targets = (
+				8DC2EF4F0486A6940098B216 /* objc-Windows-i386 */,
+				FE4034530B42E8AF00CEC41A /* objc-Linux-i386 */,
+				FE4034840B42E94D00CEC41A /* objc-Solaris-sparc */,
+				FE4034A10B42F1BC00CEC41A /* objc */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		8DC2EF520486A6940098B216 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FE4034550B42E8AF00CEC41A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FE4034860B42E94D00CEC41A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		FE4034A30B42F1C100CEC41A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8DC2EF4F0486A6940098B216 /* objc-Windows-i386 */;
+			targetProxy = FE4034A20B42F1C100CEC41A /* PBXContainerItemProxy */;
+		};
+		FE4034A50B42F1C400CEC41A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = FE4034530B42E8AF00CEC41A /* objc-Linux-i386 */;
+			targetProxy = FE4034A40B42F1C400CEC41A /* PBXContainerItemProxy */;
+		};
+		FE4034A70B42F1C800CEC41A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = FE4034840B42E94D00CEC41A /* objc-Solaris-sparc */;
+			targetProxy = FE4034A60B42F1C800CEC41A /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		1DEB91AF08733DA50010E9CD /* Deployment */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = i386;
+				DEPLOYMENT_LOCATION = YES;
+				DSTROOT = /;
+				EXECUTABLE_SUFFIX = .1.0.dll;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = "";
+				INFOPLIST_FILE = Info.plist;
+				INSTALL_PATH = /Developer/Cocotron/1.0/Windows/i386/Frameworks;
+				OTHER_CFLAGS = (
+					"-DOBJC_INSIDE_BUILD",
+					"-D__LITTLE_ENDIAN__",
+				);
+				OTHER_LDFLAGS = (
+					"-shared",
+					"-Wl,--enable-auto-import",
+					"-Wl,--export-all-symbols",
+					"-Wl,--out-implib,$TARGET_BUILD_DIR/$(PRODUCT_NAME).framework/lib$(PRODUCT_NAME).a",
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = objc;
+				SYMROOT = /Developer/Cocotron/1.0/build/objc/Windows/i386;
+			};
+			name = Deployment;
+		};
+		1DEB91B308733DA50010E9CD /* Deployment */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Deployment;
+		};
+		FE4034580B42E8AF00CEC41A /* Deployment */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = i386;
+				DEPLOYMENT_LOCATION = YES;
+				DSTROOT = /;
+				EXECUTABLE_SUFFIX = .so;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = "";
+				INFOPLIST_FILE = Info.plist;
+				INSTALL_PATH = /Developer/Cocotron/1.0/Linux/i386/Frameworks;
+				OTHER_CFLAGS = (
+					"-DOBJC_INSIDE_BUILD",
+					"-D__LITTLE_ENDIAN__",
+					"-fPIC",
+				);
+				OTHER_LDFLAGS = "-shared";
+				PREBINDING = NO;
+				PRODUCT_NAME = objc;
+				SYMROOT = /Developer/Cocotron/1.0/build/objc/Linux/i386;
+			};
+			name = Deployment;
+		};
+		FE4034890B42E94D00CEC41A /* Deployment */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = sparc;
+				DEPLOYMENT_LOCATION = YES;
+				DSTROOT = /;
+				EXECUTABLE_SUFFIX = .so;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = "";
+				INFOPLIST_FILE = Info.plist;
+				INSTALL_PATH = /Developer/Cocotron/1.0/Solaris/sparc/Frameworks;
+				OTHER_CFLAGS = (
+					"-DOBJC_INSIDE_BUILD",
+					"-D__BIG_ENDIAN__",
+					"-fPIC",
+				);
+				OTHER_LDFLAGS = "-shared";
+				PREBINDING = NO;
+				PRODUCT_NAME = objc;
+				SYMROOT = /Developer/Cocotron/1.0/build/objc/Solaris/sparc;
+			};
+			name = Deployment;
+		};
+		FE4034AF0B42F1D600CEC41A /* Deployment */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				PRODUCT_NAME = objc;
+				ZERO_LINK = NO;
+			};
+			name = Deployment;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		1DEB91AD08733DA50010E9CD /* Build configuration list for PBXNativeTarget "objc-Windows-i386" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1DEB91AF08733DA50010E9CD /* Deployment */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Deployment;
+		};
+		1DEB91B108733DA50010E9CD /* Build configuration list for PBXProject "objc" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1DEB91B308733DA50010E9CD /* Deployment */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Deployment;
+		};
+		FE4034570B42E8AF00CEC41A /* Build configuration list for PBXNativeTarget "objc-Linux-i386" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FE4034580B42E8AF00CEC41A /* Deployment */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Deployment;
+		};
+		FE4034880B42E94D00CEC41A /* Build configuration list for PBXNativeTarget "objc-Solaris-sparc" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FE4034890B42E94D00CEC41A /* Deployment */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Deployment;
+		};
+		FE4034AE0B42F1D600CEC41A /* Build configuration list for PBXAggregateTarget "objc" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FE4034AF0B42F1D600CEC41A /* Deployment */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Deployment;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 0867D690FE84028FC02AAC07 /* Project object */;
+}

@@ -9,6 +9,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/ObjCHashTable.h>
 #import <Foundation/ObjCTypes.h>
 #import <Foundation/ObjCSelector.h>
+#import <objc/objc-class.h>
 
 enum {
    CLASS_INFO_CLASS=0x001,
@@ -17,12 +18,6 @@ enum {
    CLASS_INFO_POSING=0x008,
    CLASS_INFO_LINKED=0x100
 };
-
-typedef struct {
-   char *name;
-   char *type;
-   int   offset;
-} OBJCInstanceVariable;
 
 typedef struct {
    int                  count;

@@ -19,7 +19,7 @@ enum {
  XYXSocketExceptionalActivity=4
 };
 
-@interface NSStreamInputSource_win32 : NSInputSource  {
+@interface NSSocketInputSource_windows : NSInputSource  {
    SOCKET   _socket;
    int      _index;
    id       _delegate;
@@ -44,11 +44,11 @@ enum {
 
 @end
 
-@interface NSObject(NSStreamInputSource_win32_delegate)
+@interface NSObject(NSSocketInputSource_windows_delegate)
 
--(void)activityMonitorIndicatesReadable:(NSStreamInputSource_win32 *)activityMonitor;
--(void)activityMonitorIndicatesWriteable:(NSStreamInputSource_win32 *)activityMonitor;
--(void)activityMonitorIndicatesException:(NSStreamInputSource_win32 *)activityMonitor;
+-(void)activityMonitorIndicatesReadable:(NSSocketInputSource_windows *)activityMonitor;
+-(void)activityMonitorIndicatesWriteable:(NSSocketInputSource_windows *)activityMonitor;
+-(void)activityMonitorIndicatesException:(NSSocketInputSource_windows *)activityMonitor;
 
 @end
 #endif

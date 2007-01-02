@@ -97,7 +97,7 @@ static OBJCInstanceVariable *instanceVariableWithName(OBJCClassTemplate *class,c
     int i;
 
     for(i=0;ivarList!=NULL && i<ivarList->count;i++){
-     if(strcmp(ivarList->list[i].name,name)==0)
+     if(strcmp(ivarList->list[i].ivar_name,name)==0)
       return &(ivarList->list[i]);
     }
     if(class->isa->isa==class)
@@ -120,7 +120,7 @@ void OBJCSetInstanceVariable(id object,const char *name,void *value) {
    OBJCInstanceVariable *ivar=instanceVariableWithName(object->isa,name);
 
    if(ivar!=NULL)
-    ivarCopy(object,ivar->offset,value,sizeof(id));
+    ivarCopy(object,ivar->ivar_offset,value,sizeof(id));
 }
 
 BOOL OBJCIsKindOfClass(id object,Class kindOf) {

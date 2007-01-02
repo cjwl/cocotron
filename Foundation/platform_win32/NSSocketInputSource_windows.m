@@ -8,7 +8,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 // Original - Christopher Lloyd <cjwl@objc.net>
 #if defined(WIN32)
-#import <Foundation/NSStreamInputSource_win32.h>
+#import <Foundation/NSSocketInputSource_windows.h>
 #import <Foundation/NSArray.h>
 #import <Foundation/NSRunLoop.h>
 #import <Foundation/NSDate.h>
@@ -17,10 +17,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 typedef struct {
    unsigned   _max;
    fd_set    *_set;
-} YRSelectSet;
+} Win32SelectSet;
 
-YRSelectSet *YRSelectSetNew() {
-   YRSelectSet *sset=NSZoneMalloc(NSDefaultMallocZone(),sizeof(YRSelectSet));
+Win32SelectSet *Win32SelectSetNew() {
+   Win32SelectSet *sset=NSZoneMalloc(NSDefaultMallocZone(),sizeof(Win32SelectSet));
 
    sset->_max=FD_SETSIZE;
 
@@ -30,17 +30,17 @@ YRSelectSet *YRSelectSetNew() {
    return sset;
 }
 
-void YRSelectSetDealloc(YRSelectSet *sset) {
+void Win32SelectSetDealloc(Win32SelectSet *sset) {
    NSZoneFree(NSDefaultMallocZone(),sset->_set);
    NSZoneFree(NSDefaultMallocZone(),sset);
 }
 
-void YRSelectSetZero(YRSelectSet *sset) {
+void Win32SelectSetZero(Win32SelectSet *sset) {
    sset->_set->fd_count=0;
 
 }
 
-void YRSelectSetClear(YRSelectSet *sset,SOCKET socket) {
+void Win32SelectSetClear(Win32SelectSet *sset,SOCKET socket) {
    int  i;
 
    for(i=0;i<sset->_set->fd_count;i++){
@@ -56,7 +56,7 @@ void YRSelectSetClear(YRSelectSet *sset,SOCKET socket) {
 
 }
 
-void YRSelectSetSet(YRSelectSet *sset,SOCKET socket) {
+void Win32SelectSetSet(Win32SelectSet *sset,SOCKET socket) {
    if(sset->_set->fd_count>=sset->_max){
     sset->_max*=2;
     sset->_set=NSZoneRealloc(NSDefaultMallocZone(),sset->_set,
@@ -65,7 +65,7 @@ void YRSelectSetSet(YRSelectSet *sset,SOCKET socket) {
    sset->_set->fd_array[sset->_set->fd_count++]=socket;
 }
 
-BOOL YRSelectSetIsSet(YRSelectSet *sset,SOCKET socket) {
+BOOL Win32SelectSetIsSet(Win32SelectSet *sset,SOCKET socket) {
    int i;
 
    for(i=0;i<sset->_set->fd_count;i++)
@@ -75,28 +75,28 @@ BOOL YRSelectSetIsSet(YRSelectSet *sset,SOCKET socket) {
    return NO;
 }
 
-fd_set *YRSelectSetFDSet(YRSelectSet *sset) {
+fd_set *Win32SelectSetFDSet(Win32SelectSet *sset) {
    return sset->_set;
 }
 
-NSString *YRSocketErrorStringFromCode(int code) {
+NSString *Win32SocketErrorStringFromCode(int code) {
    return [NSString stringWithFormat:@"code=%d",code];
 }
 
-NSString *YRSocketErrorString(void) {
-   return YRSocketErrorStringFromCode(WSAGetLastError());
+NSString *Win32SocketErrorString(void) {
+   return Win32SocketErrorStringFromCode(WSAGetLastError());
 }
 
 BOOL _YRSocketAssert(int r,int line,const char *file){
    if(r<0){
-    NSLog(@"socket error %@ at %d in %s",YRSocketErrorString(),line,file);
+    NSLog(@"socket error %@ at %d in %s",Win32SocketErrorString(),line,file);
     return YES;
    }
    return NO;
 }
-#define YRSocketAssert(call)    _YRSocketAssert(call,__LINE__,__FILE__)
+#define Win32SocketAssert(call)    _YRSocketAssert(call,__LINE__,__FILE__)
 
-@implementation NSStreamInputSource_win32
+@implementation NSSocketInputSource_windows
 
 static HANDLE              eventHandle=NULL;
 static NSHandleMonitor_win32 *eventMonitor=nil;
@@ -114,20 +114,20 @@ static volatile struct monitorStruct {
 } *monitors;
 
 static WINAPI DWORD selectThread(LPVOID arg){
-   YRSelectSet *readset,*writeset,*exceptset;
+   Win32SelectSet *readset,*writeset,*exceptset;
    int      i,nfds;
    unsigned activity;
 
-   readset=YRSelectSetNew();
-   writeset=YRSelectSetNew();
-   exceptset=YRSelectSetNew();
+   readset=Win32SelectSetNew();
+   writeset=Win32SelectSetNew();
+   exceptset=Win32SelectSetNew();
 
    while(YES){
     BOOL setEvent;
 
-    YRSelectSetZero(readset);
-    YRSelectSetZero(writeset);
-    YRSelectSetZero(exceptset);
+    Win32SelectSetZero(readset);
+    Win32SelectSetZero(writeset);
+    Win32SelectSetZero(exceptset);
 
     EnterCriticalSection (threadLock);
     nfds=0;
@@ -137,26 +137,26 @@ static WINAPI DWORD selectThread(LPVOID arg){
        nfds=monitors[i].socket;
 
       if(monitors[i].activity&XYXSocketReadableActivity)
-       YRSelectSetSet(readset,monitors[i].socket);
+       Win32SelectSetSet(readset,monitors[i].socket);
 
       if(monitors[i].activity&XYXSocketWritableActivity)
-       YRSelectSetSet(writeset,monitors[i].socket);
+       Win32SelectSetSet(writeset,monitors[i].socket);
 
       if(monitors[i].activity&XYXSocketExceptionalActivity)
-       YRSelectSetSet(exceptset,monitors[i].socket);
+       Win32SelectSetSet(exceptset,monitors[i].socket);
      }
     }
     LeaveCriticalSection (threadLock);
     nfds++;
 
-    YRSelectSetSet(readset,threadPingRead);
+    Win32SelectSetSet(readset,threadPingRead);
     if(nfds<=threadPingRead)
      nfds=threadPingRead+1;
 
-    if(select(nfds,YRSelectSetFDSet(readset),YRSelectSetFDSet(writeset), YRSelectSetFDSet(exceptset),NULL)<0)
+    if(select(nfds,Win32SelectSetFDSet(readset),Win32SelectSetFDSet(writeset), Win32SelectSetFDSet(exceptset),NULL)<0)
      continue;
 
-    if(YRSelectSetIsSet(readset,threadPingRead)){
+    if(Win32SelectSetIsSet(readset,threadPingRead)){
      char buf[4096];
 
      recv(threadPingRead,buf,4096,0);
@@ -170,11 +170,11 @@ static WINAPI DWORD selectThread(LPVOID arg){
      if(monitors[i].socket==INVALID_SOCKET)
       continue;
 
-     if(YRSelectSetIsSet(readset,monitors[i].socket))
+     if(Win32SelectSetIsSet(readset,monitors[i].socket))
       activity|=XYXSocketReadableActivity;
-     if(YRSelectSetIsSet(writeset,monitors[i].socket))
+     if(Win32SelectSetIsSet(writeset,monitors[i].socket))
       activity|=XYXSocketWritableActivity;
-     if(YRSelectSetIsSet(exceptset,monitors[i].socket))
+     if(Win32SelectSetIsSet(exceptset,monitors[i].socket))
       activity|=XYXSocketExceptionalActivity;
 
      if(activity!=XYXSocketNoActivity){
@@ -202,19 +202,19 @@ static void createPingPair(int pair[2]){
    struct              sockaddr_in address;
    int                 namelen;
 
-   YRSocketAssert(readSocket=socket(PF_INET,SOCK_DGRAM,IPPROTO_UDP));
-   YRSocketAssert(writeSocket=socket(PF_INET,SOCK_DGRAM,IPPROTO_UDP));
+   Win32SocketAssert(readSocket=socket(PF_INET,SOCK_DGRAM,IPPROTO_UDP));
+   Win32SocketAssert(writeSocket=socket(PF_INET,SOCK_DGRAM,IPPROTO_UDP));
 
    byteZero(&address,sizeof(struct sockaddr_in));
    address.sin_family=AF_INET;
    address.sin_addr.s_addr=inet_addr("127.0.0.1");
    address.sin_port=0;
-   YRSocketAssert(bind(readSocket,(struct sockaddr *)&address,
+   Win32SocketAssert(bind(readSocket,(struct sockaddr *)&address,
                                          sizeof(struct sockaddr_in)));
    namelen=sizeof(address);
-   YRSocketAssert (getsockname(readSocket,(struct sockaddr *)&address,&namelen));
+   Win32SocketAssert (getsockname(readSocket,(struct sockaddr *)&address,&namelen));
 
-   YRSocketAssert(connect(writeSocket,(struct sockaddr *)&address,
+   Win32SocketAssert(connect(writeSocket,(struct sockaddr *)&address,
         sizeof(struct sockaddr_in)));
 
    pair[0]=readSocket;
@@ -247,7 +247,7 @@ static void createPingPair(int pair[2]){
 }
 
 -(void)pingThread {
-   YRSocketAssert(send(threadPingWrite," ",1,0));
+   Win32SocketAssert(send(threadPingWrite," ",1,0));
 }
 
 +(void)handleMonitorIndicatesSignaled:(NSHandleMonitor_win32 *)monitor {

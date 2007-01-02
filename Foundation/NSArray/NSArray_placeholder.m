@@ -18,4 +18,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return NSArray_concreteNew(NULL,objects,count);
 }
 
+-init {
+   return [self initWithObjects:NULL count:0];
+}
+
 @end

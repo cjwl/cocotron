@@ -297,7 +297,7 @@
 		6E2805D309747D0400EC542B /* NSPipe_win32.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2805B309747D0400EC542B /* NSPipe_win32.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		6E2805D509747D0400EC542B /* NSPlatform_win32.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2805B509747D0400EC542B /* NSPlatform_win32.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		6E2805D709747D0400EC542B /* NSReadInBackground_win32.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2805B709747D0400EC542B /* NSReadInBackground_win32.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		6E2805D909747D0400EC542B /* NSStreamInputSource_win32.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2805B909747D0400EC542B /* NSStreamInputSource_win32.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		6E2805D909747D0400EC542B /* NSSocketInputSource_windows.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2805B909747D0400EC542B /* NSSocketInputSource_windows.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		6E2805DB09747D0400EC542B /* NSString_win32.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2805BB09747D0400EC542B /* NSString_win32.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		6E2805DD09747D0400EC542B /* NSTask_win32.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2805BD09747D0400EC542B /* NSTask_win32.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		6E2805E909747D1000EC542B /* NSXMLAttribute.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2805DF09747D1000EC542B /* NSXMLAttribute.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -813,7 +813,7 @@
 		6E71DB21097B5AB50071C089 /* NSPipe_win32.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2805B409747D0400EC542B /* NSPipe_win32.m */; };
 		6E71DB22097B5AB70071C089 /* NSPlatform_win32.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2805B609747D0400EC542B /* NSPlatform_win32.m */; };
 		6E71DB23097B5AB80071C089 /* NSReadInBackground_win32.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2805B809747D0400EC542B /* NSReadInBackground_win32.m */; };
-		6E71DB24097B5AB90071C089 /* NSStreamInputSource_win32.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2805BA09747D0400EC542B /* NSStreamInputSource_win32.m */; };
+		6E71DB24097B5AB90071C089 /* NSSocketInputSource_windows.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2805BA09747D0400EC542B /* NSSocketInputSource_windows.m */; };
 		6E71DB25097B5ABA0071C089 /* NSString_win32.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2805BC09747D0400EC542B /* NSString_win32.m */; };
 		6E71DB26097B5ABB0071C089 /* NSTask_win32.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2805BE09747D0400EC542B /* NSTask_win32.m */; };
 		6E8113740A54BA9C000DE3F1 /* objc_msg_sendv.s in Sources */ = {isa = PBXBuildFile; fileRef = 6E28055D09747CC300EC542B /* objc_msg_sendv.s */; };
@@ -1225,12 +1225,30 @@
 		6EC4AB540A35157600E8D6CA /* NSSocketMonitorSet_Unix.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EC4AB520A35157600E8D6CA /* NSSocketMonitorSet_Unix.m */; };
 		6EC4AB550A35157600E8D6CA /* NSSocketMonitorSet_Unix.h in Headers */ = {isa = PBXBuildFile; fileRef = 6EC4AB510A35157600E8D6CA /* NSSocketMonitorSet_Unix.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		6EC4AB560A35157600E8D6CA /* NSSocketMonitorSet_Unix.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EC4AB520A35157600E8D6CA /* NSSocketMonitorSet_Unix.m */; };
+		FE35CAED0B4AB85800FE7AB3 /* objc.m in Sources */ = {isa = PBXBuildFile; fileRef = FE35CAEC0B4AB85800FE7AB3 /* objc.m */; };
+		FE35CAEE0B4AB85800FE7AB3 /* objc.m in Sources */ = {isa = PBXBuildFile; fileRef = FE35CAEC0B4AB85800FE7AB3 /* objc.m */; };
+		FE35CAEF0B4AB85800FE7AB3 /* objc.m in Sources */ = {isa = PBXBuildFile; fileRef = FE35CAEC0B4AB85800FE7AB3 /* objc.m */; };
 		FE405A6C0B4450FD001B183D /* NSHTTPURLResponse.h in Headers */ = {isa = PBXBuildFile; fileRef = FE405A6A0B4450FD001B183D /* NSHTTPURLResponse.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE405A6D0B4450FD001B183D /* NSHTTPURLResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = FE405A6B0B4450FD001B183D /* NSHTTPURLResponse.m */; };
 		FE405A6E0B4450FD001B183D /* NSHTTPURLResponse.h in Headers */ = {isa = PBXBuildFile; fileRef = FE405A6A0B4450FD001B183D /* NSHTTPURLResponse.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE405A6F0B4450FD001B183D /* NSHTTPURLResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = FE405A6B0B4450FD001B183D /* NSHTTPURLResponse.m */; };
 		FE405A700B4450FD001B183D /* NSHTTPURLResponse.h in Headers */ = {isa = PBXBuildFile; fileRef = FE405A6A0B4450FD001B183D /* NSHTTPURLResponse.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE405A710B4450FD001B183D /* NSHTTPURLResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = FE405A6B0B4450FD001B183D /* NSHTTPURLResponse.m */; };
+		FEB6CBB00B4A139F004FADF2 /* NSKeyValueCoding.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB6CBAE0B4A139F004FADF2 /* NSKeyValueCoding.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEB6CBB10B4A139F004FADF2 /* NSKeyValueCoding.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB6CBAF0B4A139F004FADF2 /* NSKeyValueCoding.m */; };
+		FEB6CBB20B4A139F004FADF2 /* NSKeyValueCoding.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB6CBAE0B4A139F004FADF2 /* NSKeyValueCoding.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEB6CBB30B4A139F004FADF2 /* NSKeyValueCoding.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB6CBAF0B4A139F004FADF2 /* NSKeyValueCoding.m */; };
+		FEB6CBB40B4A139F004FADF2 /* NSKeyValueCoding.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB6CBAE0B4A139F004FADF2 /* NSKeyValueCoding.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEB6CBB50B4A139F004FADF2 /* NSKeyValueCoding.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB6CBAF0B4A139F004FADF2 /* NSKeyValueCoding.m */; };
+		FEB6CC0F0B4A169C004FADF2 /* objc-class.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB6CC0E0B4A169C004FADF2 /* objc-class.m */; };
+		FEB6CC100B4A169C004FADF2 /* objc-class.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB6CC0E0B4A169C004FADF2 /* objc-class.m */; };
+		FEB6CC110B4A169D004FADF2 /* objc-class.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB6CC0E0B4A169C004FADF2 /* objc-class.m */; };
+		FEB6CC8B0B4A1D4D004FADF2 /* NSKVCMutableArray.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB6CC890B4A1D4D004FADF2 /* NSKVCMutableArray.h */; };
+		FEB6CC8C0B4A1D4D004FADF2 /* NSKVCMutableArray.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB6CC8A0B4A1D4D004FADF2 /* NSKVCMutableArray.m */; };
+		FEB6CC8D0B4A1D4D004FADF2 /* NSKVCMutableArray.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB6CC890B4A1D4D004FADF2 /* NSKVCMutableArray.h */; };
+		FEB6CC8E0B4A1D4D004FADF2 /* NSKVCMutableArray.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB6CC8A0B4A1D4D004FADF2 /* NSKVCMutableArray.m */; };
+		FEB6CC8F0B4A1D4D004FADF2 /* NSKVCMutableArray.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB6CC890B4A1D4D004FADF2 /* NSKVCMutableArray.h */; };
+		FEB6CC900B4A1D4D004FADF2 /* NSKVCMutableArray.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB6CC8A0B4A1D4D004FADF2 /* NSKVCMutableArray.m */; };
 		FEB9D30E0B4374F700C239BB /* NSInputStream_data.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB9D30C0B4374F700C239BB /* NSInputStream_data.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FEB9D30F0B4374F700C239BB /* NSInputStream_data.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9D30D0B4374F700C239BB /* NSInputStream_data.m */; };
 		FEB9D3100B4374F700C239BB /* NSInputStream_data.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB9D30C0B4374F700C239BB /* NSInputStream_data.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -1544,6 +1562,48 @@
 			proxyType = 1;
 			remoteGlobalIDString = 6EA048CA09E57D5F0067589C;
 			remoteInfo = "Foundation-Linux-i386-gcc-4.0.3-redhat";
+		};
+		FEB6CC470B4A1922004FADF2 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FEB6CC400B4A1922004FADF2 /* objc.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 8DC2EF5B0486A6940098B216;
+			remoteInfo = "objc-Windows-i386";
+		};
+		FEB6CC490B4A1922004FADF2 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FEB6CC400B4A1922004FADF2 /* objc.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = FE4034590B42E8AF00CEC41A;
+			remoteInfo = "objc-Linux-i386";
+		};
+		FEB6CC4B0B4A1922004FADF2 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FEB6CC400B4A1922004FADF2 /* objc.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = FE40348A0B42E94D00CEC41A;
+			remoteInfo = "objc-Solaris-sparc";
+		};
+		FEB6CC4E0B4A1944004FADF2 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FEB6CC400B4A1922004FADF2 /* objc.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 8DC2EF4F0486A6940098B216;
+			remoteInfo = "objc-Windows-i386";
+		};
+		FEB6CC500B4A194C004FADF2 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FEB6CC400B4A1922004FADF2 /* objc.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = FE4034530B42E8AF00CEC41A;
+			remoteInfo = "objc-Linux-i386";
+		};
+		FEB6CC520B4A1952004FADF2 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FEB6CC400B4A1922004FADF2 /* objc.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = FE4034840B42E94D00CEC41A;
+			remoteInfo = "objc-Solaris-sparc";
 		};
 		FEFC42400B0A5D050041512F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -1862,8 +1922,8 @@
 		6E2805B609747D0400EC542B /* NSPlatform_win32.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = NSPlatform_win32.m; path = platform_win32/NSPlatform_win32.m; sourceTree = "<group>"; };
 		6E2805B709747D0400EC542B /* NSReadInBackground_win32.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = NSReadInBackground_win32.h; path = platform_win32/NSReadInBackground_win32.h; sourceTree = "<group>"; };
 		6E2805B809747D0400EC542B /* NSReadInBackground_win32.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = NSReadInBackground_win32.m; path = platform_win32/NSReadInBackground_win32.m; sourceTree = "<group>"; };
-		6E2805B909747D0400EC542B /* NSStreamInputSource_win32.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = NSStreamInputSource_win32.h; path = platform_win32/NSStreamInputSource_win32.h; sourceTree = "<group>"; };
-		6E2805BA09747D0400EC542B /* NSStreamInputSource_win32.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = NSStreamInputSource_win32.m; path = platform_win32/NSStreamInputSource_win32.m; sourceTree = "<group>"; };
+		6E2805B909747D0400EC542B /* NSSocketInputSource_windows.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = NSSocketInputSource_windows.h; path = platform_win32/NSSocketInputSource_windows.h; sourceTree = "<group>"; };
+		6E2805BA09747D0400EC542B /* NSSocketInputSource_windows.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = NSSocketInputSource_windows.m; path = platform_win32/NSSocketInputSource_windows.m; sourceTree = "<group>"; };
 		6E2805BB09747D0400EC542B /* NSString_win32.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = NSString_win32.h; path = platform_win32/NSString_win32.h; sourceTree = "<group>"; };
 		6E2805BC09747D0400EC542B /* NSString_win32.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = NSString_win32.m; path = platform_win32/NSString_win32.m; sourceTree = "<group>"; };
 		6E2805BD09747D0400EC542B /* NSTask_win32.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = NSTask_win32.h; path = platform_win32/NSTask_win32.h; sourceTree = "<group>"; };
@@ -1994,8 +2054,15 @@
 		6EC4AB520A35157600E8D6CA /* NSSocketMonitorSet_Unix.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NSSocketMonitorSet_Unix.m; path = platform_posix/NSSocketMonitorSet_Unix.m; sourceTree = "<group>"; };
 		8DC2EF5A0486A6940098B216 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		8DC2EF5B0486A6940098B216 /* Foundation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Foundation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		FE35CAEC0B4AB85800FE7AB3 /* objc.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = objc.m; sourceTree = "<group>"; };
 		FE405A6A0B4450FD001B183D /* NSHTTPURLResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSHTTPURLResponse.h; sourceTree = "<group>"; };
 		FE405A6B0B4450FD001B183D /* NSHTTPURLResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSHTTPURLResponse.m; sourceTree = "<group>"; };
+		FEB6CBAE0B4A139F004FADF2 /* NSKeyValueCoding.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSKeyValueCoding.h; sourceTree = "<group>"; };
+		FEB6CBAF0B4A139F004FADF2 /* NSKeyValueCoding.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSKeyValueCoding.m; sourceTree = "<group>"; };
+		FEB6CC0E0B4A169C004FADF2 /* objc-class.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "objc-class.m"; sourceTree = "<group>"; };
+		FEB6CC400B4A1922004FADF2 /* objc.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = objc.xcodeproj; path = ../objc/objc.xcodeproj; sourceTree = SOURCE_ROOT; };
+		FEB6CC890B4A1D4D004FADF2 /* NSKVCMutableArray.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSKVCMutableArray.h; sourceTree = "<group>"; };
+		FEB6CC8A0B4A1D4D004FADF2 /* NSKVCMutableArray.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSKVCMutableArray.m; sourceTree = "<group>"; };
 		FEB9D30C0B4374F700C239BB /* NSInputStream_data.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSInputStream_data.h; sourceTree = "<group>"; };
 		FEB9D30D0B4374F700C239BB /* NSInputStream_data.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSInputStream_data.m; sourceTree = "<group>"; };
 		FEB9D31A0B43781500C239BB /* NSOutputStream_data.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSOutputStream_data.h; sourceTree = "<group>"; };
@@ -2114,6 +2181,8 @@
 		0867D691FE84028FC02AAC07 /* Foundation */ = {
 			isa = PBXGroup;
 			children = (
+				FEB6CC800B4A1C7A004FADF2 /* NSKeyValueCoding */,
+				FEB6CC400B4A1922004FADF2 /* objc.xcodeproj */,
 				0867D69AFE84028FC02AAC07 /* External Frameworks and Libraries */,
 				6E280B2909747F1F00EC542B /* Foundation.h */,
 				6E28030D0974787200EC542B /* NSArchiver.h */,
@@ -2697,8 +2766,10 @@
 		6E28034609747A2500EC542B /* objc */ = {
 			isa = PBXGroup;
 			children = (
+				FEB6CC0E0B4A169C004FADF2 /* objc-class.m */,
 				6E28052609747C8900EC542B /* objc_functions.m */,
 				6E8115B20A55CB99000DE3F1 /* objc_msg_lookup.m */,
+				6E28055F09747CCA00EC542B /* objc_msg_sendv.m */,
 				6E28052709747C8900EC542B /* ObjCArray.h */,
 				6E28052809747C8900EC542B /* ObjCArray.m */,
 				6E28052909747C8900EC542B /* ObjCClass.h */,
@@ -2720,8 +2791,8 @@
 				6E28053D09747C8900EC542B /* ObjectiveC.m */,
 				6E28055A09747C8F00EC542B /* platform_linux */,
 				6E28055B09747C9900EC542B /* platform_solaris */,
-				6E28055F09747CCA00EC542B /* objc_msg_sendv.m */,
 				6E28055C09747CAC00EC542B /* platform_win32 */,
+				FE35CAEC0B4AB85800FE7AB3 /* objc.m */,
 			);
 			path = objc;
 			sourceTree = "<group>";
@@ -2802,8 +2873,8 @@
 				6E2805B609747D0400EC542B /* NSPlatform_win32.m */,
 				6E2805B709747D0400EC542B /* NSReadInBackground_win32.h */,
 				6E2805B809747D0400EC542B /* NSReadInBackground_win32.m */,
-				6E2805B909747D0400EC542B /* NSStreamInputSource_win32.h */,
-				6E2805BA09747D0400EC542B /* NSStreamInputSource_win32.m */,
+				6E2805B909747D0400EC542B /* NSSocketInputSource_windows.h */,
+				6E2805BA09747D0400EC542B /* NSSocketInputSource_windows.m */,
 				6E2805BB09747D0400EC542B /* NSString_win32.h */,
 				6E2805BC09747D0400EC542B /* NSString_win32.m */,
 				6E2805BD09747D0400EC542B /* NSTask_win32.h */,
@@ -2927,6 +2998,27 @@
 				6E28068309747E0A00EC542B /* whitespaceCharacterSet.bitmap */,
 			);
 			name = NSCharacterSet;
+			sourceTree = "<group>";
+		};
+		FEB6CC410B4A1922004FADF2 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				FEB6CC480B4A1922004FADF2 /* objc.framework */,
+				FEB6CC4A0B4A1922004FADF2 /* objc.framework */,
+				FEB6CC4C0B4A1922004FADF2 /* objc.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		FEB6CC800B4A1C7A004FADF2 /* NSKeyValueCoding */ = {
+			isa = PBXGroup;
+			children = (
+				FEB6CC890B4A1D4D004FADF2 /* NSKVCMutableArray.h */,
+				FEB6CC8A0B4A1D4D004FADF2 /* NSKVCMutableArray.m */,
+				FEB6CBAE0B4A139F004FADF2 /* NSKeyValueCoding.h */,
+				FEB6CBAF0B4A139F004FADF2 /* NSKeyValueCoding.m */,
+			);
+			path = NSKeyValueCoding;
 			sourceTree = "<group>";
 		};
 		FEB9D2F00B42F85100C239BB /* NSConnection */ = {
@@ -3275,6 +3367,8 @@
 				FEB9D6ED0B4440F200C239BB /* NSMessagePortNameServer.h in Headers */,
 				FEB9D7060B44414000C239BB /* NSSocketPortNameServer.h in Headers */,
 				FE405A6E0B4450FD001B183D /* NSHTTPURLResponse.h in Headers */,
+				FEB6CBB40B4A139F004FADF2 /* NSKeyValueCoding.h in Headers */,
+				FEB6CC8D0B4A1D4D004FADF2 /* NSKVCMutableArray.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3515,6 +3609,8 @@
 				FEB9D6E90B4440F200C239BB /* NSMessagePortNameServer.h in Headers */,
 				FEB9D7020B44414000C239BB /* NSSocketPortNameServer.h in Headers */,
 				FE405A700B4450FD001B183D /* NSHTTPURLResponse.h in Headers */,
+				FEB6CBB20B4A139F004FADF2 /* NSKeyValueCoding.h in Headers */,
+				FEB6CC8F0B4A1D4D004FADF2 /* NSKVCMutableArray.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3659,7 +3755,7 @@
 				6E2805D309747D0400EC542B /* NSPipe_win32.h in Headers */,
 				6E2805D509747D0400EC542B /* NSPlatform_win32.h in Headers */,
 				6E2805D709747D0400EC542B /* NSReadInBackground_win32.h in Headers */,
-				6E2805D909747D0400EC542B /* NSStreamInputSource_win32.h in Headers */,
+				6E2805D909747D0400EC542B /* NSSocketInputSource_windows.h in Headers */,
 				6E2805DB09747D0400EC542B /* NSString_win32.h in Headers */,
 				6E2805DD09747D0400EC542B /* NSTask_win32.h in Headers */,
 				6E2805E909747D1000EC542B /* NSXMLAttribute.h in Headers */,
@@ -3759,6 +3855,8 @@
 				FEB9D6EB0B4440F200C239BB /* NSMessagePortNameServer.h in Headers */,
 				FEB9D7040B44414000C239BB /* NSSocketPortNameServer.h in Headers */,
 				FE405A6C0B4450FD001B183D /* NSHTTPURLResponse.h in Headers */,
+				FEB6CBB00B4A139F004FADF2 /* NSKeyValueCoding.h in Headers */,
+				FEB6CC8B0B4A1D4D004FADF2 /* NSKVCMutableArray.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3779,6 +3877,7 @@
 				6E4D93260A2642BD003D335C /* PBXBuildRule */,
 			);
 			dependencies = (
+				FEB6CC530B4A1952004FADF2 /* PBXTargetDependency */,
 			);
 			name = "Foundation-Solaris-sparc";
 			productInstallPath = "$(HOME)/Library/Frameworks";
@@ -3800,6 +3899,7 @@
 				6EA04A7209E57D5F0067589C /* PBXBuildRule */,
 			);
 			dependencies = (
+				FEB6CC510B4A194C004FADF2 /* PBXTargetDependency */,
 			);
 			name = "Foundation-Linux-i386";
 			productInstallPath = "$(HOME)/Library/Frameworks";
@@ -3821,6 +3921,7 @@
 				6E280B2F09747FCF00EC542B /* PBXBuildRule */,
 			);
 			dependencies = (
+				FEB6CC4F0B4A1944004FADF2 /* PBXTargetDependency */,
 			);
 			name = "Foundation-Windows-i386";
 			productInstallPath = "$(HOME)/Library/Frameworks";
@@ -3838,6 +3939,12 @@
 			mainGroup = 0867D691FE84028FC02AAC07 /* Foundation */;
 			productRefGroup = 034768DFFF38A50411DB9C8B /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = FEB6CC410B4A1922004FADF2 /* Products */;
+					ProjectRef = FEB6CC400B4A1922004FADF2 /* objc.xcodeproj */;
+				},
+			);
 			targets = (
 				8DC2EF4F0486A6940098B216 /* Foundation-Windows-i386 */,
 				6EA048CA09E57D5F0067589C /* Foundation-Linux-i386 */,
@@ -3846,6 +3953,30 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		FEB6CC480B4A1922004FADF2 /* objc.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = objc.framework;
+			remoteRef = FEB6CC470B4A1922004FADF2 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FEB6CC4A0B4A1922004FADF2 /* objc.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = objc.framework;
+			remoteRef = FEB6CC490B4A1922004FADF2 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FEB6CC4C0B4A1922004FADF2 /* objc.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = objc.framework;
+			remoteRef = FEB6CC4B0B4A1922004FADF2 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		6E4D93160A2642BD003D335C /* Resources */ = {
@@ -4145,6 +4276,10 @@
 				FEB9D6EE0B4440F200C239BB /* NSMessagePortNameServer.m in Sources */,
 				FEB9D7070B44414000C239BB /* NSSocketPortNameServer.m in Sources */,
 				FE405A6F0B4450FD001B183D /* NSHTTPURLResponse.m in Sources */,
+				FEB6CBB50B4A139F004FADF2 /* NSKeyValueCoding.m in Sources */,
+				FEB6CC100B4A169C004FADF2 /* objc-class.m in Sources */,
+				FEB6CC8E0B4A1D4D004FADF2 /* NSKVCMutableArray.m in Sources */,
+				FE35CAEF0B4AB85800FE7AB3 /* objc.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4385,6 +4520,10 @@
 				FEB9D6EA0B4440F200C239BB /* NSMessagePortNameServer.m in Sources */,
 				FEB9D7030B44414000C239BB /* NSSocketPortNameServer.m in Sources */,
 				FE405A710B4450FD001B183D /* NSHTTPURLResponse.m in Sources */,
+				FEB6CBB30B4A139F004FADF2 /* NSKeyValueCoding.m in Sources */,
+				FEB6CC110B4A169D004FADF2 /* objc-class.m in Sources */,
+				FEB6CC900B4A1D4D004FADF2 /* NSKVCMutableArray.m in Sources */,
+				FE35CAED0B4AB85800FE7AB3 /* objc.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4577,7 +4716,7 @@
 				6E71DB21097B5AB50071C089 /* NSPipe_win32.m in Sources */,
 				6E71DB22097B5AB70071C089 /* NSPlatform_win32.m in Sources */,
 				6E71DB23097B5AB80071C089 /* NSReadInBackground_win32.m in Sources */,
-				6E71DB24097B5AB90071C089 /* NSStreamInputSource_win32.m in Sources */,
+				6E71DB24097B5AB90071C089 /* NSSocketInputSource_windows.m in Sources */,
 				6E71DB25097B5ABA0071C089 /* NSString_win32.m in Sources */,
 				6E71DB26097B5ABB0071C089 /* NSTask_win32.m in Sources */,
 				6E903FFB0A07B65500938799 /* NSConstantString.m in Sources */,
@@ -4629,6 +4768,10 @@
 				FEB9D6EC0B4440F200C239BB /* NSMessagePortNameServer.m in Sources */,
 				FEB9D7050B44414000C239BB /* NSSocketPortNameServer.m in Sources */,
 				FE405A6D0B4450FD001B183D /* NSHTTPURLResponse.m in Sources */,
+				FEB6CBB10B4A139F004FADF2 /* NSKeyValueCoding.m in Sources */,
+				FEB6CC0F0B4A169C004FADF2 /* objc-class.m in Sources */,
+				FEB6CC8C0B4A1D4D004FADF2 /* NSKVCMutableArray.m in Sources */,
+				FE35CAEE0B4AB85800FE7AB3 /* objc.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4644,6 +4787,21 @@
 			isa = PBXTargetDependency;
 			target = 6EA048CA09E57D5F0067589C /* Foundation-Linux-i386 */;
 			targetProxy = 6E3877330A0A78F800643D29 /* PBXContainerItemProxy */;
+		};
+		FEB6CC4F0B4A1944004FADF2 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "objc-Windows-i386";
+			targetProxy = FEB6CC4E0B4A1944004FADF2 /* PBXContainerItemProxy */;
+		};
+		FEB6CC510B4A194C004FADF2 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "objc-Linux-i386";
+			targetProxy = FEB6CC500B4A194C004FADF2 /* PBXContainerItemProxy */;
+		};
+		FEB6CC530B4A1952004FADF2 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "objc-Solaris-sparc";
+			targetProxy = FEB6CC520B4A1952004FADF2 /* PBXContainerItemProxy */;
 		};
 		FEFC42410B0A5D050041512F /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -4677,6 +4835,7 @@
 				INSTALL_PATH = /Developer/Cocotron/1.0/Windows/i386/Frameworks;
 				OTHER_CFLAGS = (
 					"-DFOUNDATION_INSIDE_BUILD",
+					"-DOBJC_INSIDE_BUILD",
 					"-D__LITTLE_ENDIAN__",
 				);
 				OTHER_LDFLAGS = (
@@ -4722,6 +4881,7 @@
 				INSTALL_PATH = /Developer/Cocotron/1.0/Solaris/sparc/Frameworks;
 				OTHER_CFLAGS = (
 					"-DFOUNDATION_INSIDE_BUILD",
+					"-DOBJC_INSIDE_BUILD",
 					"-D__BIG_ENDIAN__",
 					"-fPIC",
 				);
@@ -4751,6 +4911,7 @@
 				INSTALL_PATH = /Developer/Cocotron/1.0/Linux/i386/Frameworks;
 				OTHER_CFLAGS = (
 					"-DFOUNDATION_INSIDE_BUILD",
+					"-DOBJC_INSIDE_BUILD",
 					"-D__LITTLE_ENDIAN__",
 					"-fPIC",
 				);
