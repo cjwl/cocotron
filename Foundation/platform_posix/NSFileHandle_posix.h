@@ -8,12 +8,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/NSFileHandle.h>
 
-@class NSSocketMonitor;
+@class NSSelectInputSource;
 
 @interface NSFileHandle_posix : NSFileHandle {
     int _fileDescriptor;
     BOOL _closeOnDealloc;
-    NSSocketMonitor *_backgroundMonitor;
+    NSSelectInputSource *_inputSource;
     NSArray *_backgroundModes;
 }
 

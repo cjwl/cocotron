@@ -22,6 +22,8 @@ extern void childSignalHandler(int sig);
     int       _terminationStatus;
 }
 
++(void)signalPipeReadNotification:(NSNotification *)note;
+
 -init;
 
 -(void)setLaunchPath:(NSString *)path;

@@ -13,9 +13,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSFileHandle_posix.h>
 #import <Foundation/Foundation.h>
 
-#import <Foundation/NSSocketMonitorSet.h>
-#import <Foundation/NSSocketMonitor.h>
-
 #include <unistd.h>
 #include <sys/ioctl.h>
 #include <signal.h>
@@ -24,7 +21,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 // these cannot be static, subclasses need them :/
 NSMutableArray *_liveTasks = nil;
 NSPipe *_taskPipe = nil;
-NSSocketMonitor *_taskMonitor = nil;
 
 @implementation NSTask_posix
 
@@ -42,22 +38,26 @@ void childSignalHandler(int sig) {
     }
 }
 
--init {
-   if (_taskPipe == nil) {
-       int readfd;
++(void)signalPipeReadNotification:(NSNotification *)note {
+   [[_taskPipe fileHandleForReading] readInBackgroundAndNotifyForModes:[NSArray arrayWithObject:NSDefaultRunLoopMode]];
+}
 
-       _liveTasks = [[NSMutableArray alloc] init];
-       _taskPipe = [[NSPipe alloc] init];
-       readfd = [(NSFileHandle_posix *)[_taskPipe fileHandleForReading] fileDescriptor];
-       _taskMonitor = [[NSSocketMonitor alloc] initWithDescriptor:readfd];
-
-       // tricky! since we use 1 pipe for multiple tasks, we need a delegate that 
-       // isn't going away any time soon. 
-       [_taskMonitor setDelegate:[self class]];
-
-       [[NSRunLoop currentRunLoop] addInputSource:_taskMonitor forMode:NSDefaultRunLoopMode];
++(void)initialize {
+   if(self==[NSTask_posix class]){
+    NSFileHandle *forReading;
+    
+    _liveTasks=[[NSMutableArray alloc] init];
+    _taskPipe=[[NSPipe alloc] init];
+    forReading=[_taskPipe fileHandleForReading];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(signalPipeReadNotification:)
+      name:NSFileHandleReadCompletionNotification object:forReading];
+    
+    [forReading readInBackgroundAndNotifyForModes:[NSArray arrayWithObject:NSDefaultRunLoopMode]];
    }
+}
 
+-init {
    _launchPath=nil;
    _arguments=nil;
    _currentDirectoryPath=[[[NSFileManager defaultManager] currentDirectoryPath] copy];
@@ -190,7 +190,6 @@ void childSignalHandler(int sig) {
    else if (_processID != -1) {
        _isRunning = YES;
        [_liveTasks addObject:self];
-       [_taskMonitor monitorFileActivity:NSSocketReadableActivity];
    }
    else
        [NSException raise:NSInvalidArgumentException
@@ -200,27 +199,14 @@ void childSignalHandler(int sig) {
 -(void)terminate {
    kill(_processID, SIGTERM);
    [_liveTasks removeObject:self];
-   if ([_liveTasks count] == 0)
-       [_taskMonitor ceaseMonitoringFileActivity];
 }
 
 -(int)terminationStatus { return _terminationStatus; }			// OSX specs this
 -(void)setTerminationStatus:(int)terminationStatus { _terminationStatus = terminationStatus; }
 
-+(void)activityMonitorIndicatesReadable:(NSSocketMonitor *)socketMonitor {
-   // handled in UNIX-specific subproject
-   NSInvalidAbstractInvocation();
-}
-
-+(void)activityMonitorIndicatesException:(NSSocketMonitor *)socketMonitor {
-   NSRaiseException(NSInvalidArgumentException, self, _cmd, @"pipe socket monitor exception");
-}
-
 -(void)taskFinished {
    _isRunning = NO;
    [_liveTasks removeObject:self];
-   if ([_liveTasks count] == 0)
-       [_taskMonitor ceaseMonitoringFileActivity];
 }
 
 @end

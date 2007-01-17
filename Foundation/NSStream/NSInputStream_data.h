@@ -9,6 +9,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSInputStream.h>
 
 @interface NSInputStream_data : NSInputStream {
+   id             _delegate;
+   NSError       *_error;
    NSStreamStatus _status;
    NSData        *_data;
    unsigned       _position;

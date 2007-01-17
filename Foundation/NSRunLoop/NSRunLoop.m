@@ -68,12 +68,17 @@ NSString *NSDefaultRunLoopMode=@"NSDefaultRunLoopMode";
 }
 
 -(NSDate *)limitDateForMode:(NSString *)mode {
-   [_currentMode release];
-   _currentMode=[mode retain];
-
+   NSRunLoopState *state=[self stateForMode:mode];
+   
+   if(![mode isEqualToString:_currentMode]){
+    [_currentMode release];
+    _currentMode=[mode retain];
+    [state changingIntoMode:mode];
+   }
+   
    [self _orderedPerforms];
 
-   return [[self stateForMode:mode] limitDateForMode:mode];
+   return [state limitDateForMode:mode];
 }
 
 -(void)acceptInputForMode:(NSString *)mode beforeDate:(NSDate *)date {

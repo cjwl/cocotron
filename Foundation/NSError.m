@@ -6,8 +6,38 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 #import <Foundation/NSError.h>
-
+#import <Foundation/NSString.h>
+#import <Foundation/NSDictionary.h>
 
 @implementation NSError
+
+-initWithDomain:(NSString *)domain code:(int)code userInfo:(NSDictionary *)userInfo {
+   _domain=[domain copy];
+   _code=code;
+   _userInfo=[userInfo retain];
+   return self;
+}
+
+-(void)dealloc {
+   [_domain release];
+   [_userInfo release];
+   [super dealloc];
+}
+
++errorWithDomain:(NSString *)domain code:(int)code userInfo:(NSDictionary *)userInfo {
+   return [[[self alloc] initWithDomain:domain code:code userInfo:userInfo] autorelease];
+}
+
+-(NSString *)domain {
+   return _domain;
+}
+
+-(int)code {
+   return _code;
+}
+
+-(NSDictionary *)userInfo {
+   return _userInfo;
+}
 
 @end

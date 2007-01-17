@@ -12,6 +12,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSString.h>
 #import <Foundation/NSRaise.h>
 #import <Foundation/NSDebug.h>
+#import <Foundation/NSArray.h>
 
 extern NSString *NSPlatformClassName;
 
@@ -25,9 +26,13 @@ extern NSString *NSPlatformClassName;
    return nil;
 }
 
--(Class)inputSourceSetClass {
+-(NSInputSourceSet *)synchronousInputSourceSet {
    NSInvalidAbstractInvocation();
-   return Nil;
+   return nil;
+}
+
+-(NSArray *)asynchronousInputSourceSets {
+   return [NSArray array];
 }
 
 -(NSString *)fileManagerClassName {

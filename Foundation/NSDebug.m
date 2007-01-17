@@ -15,3 +15,5 @@ BOOL NSZombieEnabled=YES;
 #else
 BOOL NSZombieEnabled=NO;
 #endif
+
+BOOL NSDebugEnabled=NO;

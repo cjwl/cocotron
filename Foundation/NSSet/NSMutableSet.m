@@ -114,6 +114,17 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     [self addObject:[array objectAtIndex:i]];
 }
 
+-(void)setSet:(NSSet *)other {
+   NSEnumerator *state;
+   id            object;
+
+   [self removeAllObjects];
+   
+   state=[other objectEnumerator];
+   while((object=[state nextObject])!=nil)
+    [self addObject:object];
+}
+
 -(void)unionSet:(NSSet *)other {
    NSEnumerator *state=[other objectEnumerator];
    id            object;

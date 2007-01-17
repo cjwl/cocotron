@@ -69,6 +69,11 @@ NSString *NSFileHFSTypeCode = @"NSFileHFSTypeCode";
    return NO;
 }
 
+-(NSString *)pathContentOfSymbolicLinkAtPath:(NSString *)path {
+   NSInvalidAbstractInvocation();
+   return NO;
+}
+
 -(BOOL)fileExistsAtPath:(NSString *)path {
    BOOL foo;
    return [self fileExistsAtPath:path isDirectory:&foo];
@@ -147,6 +152,10 @@ NSString *NSFileHFSTypeCode = @"NSFileHFSTypeCode";
 
 -(NSString *)fileGroupOwnerAccountName {
    return [self objectForKey:NSFileGroupOwnerAccountName];
+}
+
+-(NSString *)fileType {
+   return [self objectForKey:NSFileType];
 }
 
 @end

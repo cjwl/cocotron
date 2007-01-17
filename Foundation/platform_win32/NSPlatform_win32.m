@@ -30,8 +30,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSFileManager.h>
 #import <stdlib.h>
 #import <winsock.h>
-#import <Foundation/NSSocketMonitorSet.h>
+#import <Foundation/NSSocket_windows.h>
 #import <Foundation/NSParentDeathMonitor_win32.h>
+#import <Foundation/NSSelectInputSourceSet.h>
 #import <malloc.h>
 
 #import <Foundation/ObjectiveC.h>
@@ -47,11 +48,9 @@ NSString *NSPlatformClassName=@"NSPlatform_win32";
    const char *module=OBJCModulePathFromClass(isa);
    HKEY        handle;
    DWORD       disposition,allowed;
-   DWORD       vR=MAKEWORD(2,2);
-   WSADATA     wsaData;
    int         i;
    
-   WSAStartup(vR,&wsaData);
+   [NSSocket_windows class]; // initialize winsock
 
    _processName=[[[[NSString stringWithCString:__argv[0]] lastPathComponent] stringByDeletingPathExtension] copy];
 
@@ -89,8 +88,12 @@ NSString *NSPlatformClassName=@"NSPlatform_win32";
    return [_parentDeathMonitor handleMonitor];
 }
 
--(Class)inputSourceSetClass {
-   return [NSHandleMonitorSet_win32 class];
+-(NSInputSourceSet *)synchronousInputSourceSet {
+   return [[[NSHandleMonitorSet_win32 alloc] init] autorelease];
+}
+
+-(NSArray *)asynchronousInputSourceSets {
+   return [NSArray arrayWithObject:[[[NSSelectInputSourceSet alloc] init] autorelease]];
 }
 
 -(NSString *)fileManagerClassName {

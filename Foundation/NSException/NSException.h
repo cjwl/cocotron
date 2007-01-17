@@ -82,4 +82,6 @@ FOUNDATION_EXPORT void __NSPopExceptionFrame(NSExceptionFrame *frame);
   { __NSPopExceptionFrame(&__exceptionFrame); return; }
 
 
+#import <Foundation/NSAssertionHandler.h>
+
 

@@ -8,7 +8,119 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 // Original - Christopher Lloyd <cjwl@objc.net>
 #import <Foundation/NSInputStream_socket.h>
+#import <Foundation/NSSelectInputSource.h>
+#import <Foundation/NSSelectSet.h>
+#import <Foundation/NSError.h>
+#import <Foundation/NSRunLoop.h>
 
 @implementation NSInputStream_socket
+
+-initWithSocket:(NSSocket *)socket streamStatus:(NSStreamStatus)status {
+   _delegate=self;
+   _error=nil;
+   _status=status;
+   _socket=[socket retain];
+   _inputSource=nil;
+   return self;
+}
+
+-(void)dealloc {
+   [_error release];
+   [_socket release];
+   [_inputSource release];
+   [super dealloc];
+}
+
+-delegate {
+   return _delegate;
+}
+
+-(void)setDelegate:delegate {
+   _delegate=delegate;
+   if(_delegate==nil)
+    _delegate=self;
+}
+
+-(NSError *)streamError {
+   return _error;
+}
+
+-(NSStreamStatus)streamStatus {
+   return _status;
+}
+
+-(void)scheduleInRunLoop:(NSRunLoop *)runLoop forMode:(NSString *)mode {
+   if(_inputSource==nil){
+    _inputSource=[[NSSelectInputSource alloc] initWithSocket:_socket];
+    [_inputSource setDelegate:self];
+    [_inputSource setSelectEventMask:NSSelectReadEvent];
+   }
+   
+   [runLoop addInputSource:_inputSource forMode:mode];
+}
+
+-(void)removeFromRunLoop:(NSRunLoop *)runLoop forMode:(NSString *)mode {
+   if(_inputSource!=nil)
+    [runLoop removeInputSource:_inputSource forMode:mode];
+}
+
+-(BOOL)getBuffer:(unsigned char **)buffer length:(unsigned *)length {
+   *buffer=NULL;
+   *length=0;
+   return NO;
+}
+
+-(BOOL)hasBytesAvailable {
+   if(_status==NSStreamStatusOpen)
+    return [_socket hasBytesAvailable];
+
+   return NO;
+}
+
+-(int)read:(unsigned char *)buffer maxLength:(unsigned)maxLength {
+   int result;
+   
+   if(_status==NSStreamStatusAtEnd)
+    return 0;
+    
+   if(_status!=NSStreamStatusOpen && _status!=NSStreamStatusOpening)
+    return -1;
+   
+   result=[_socket read:buffer maxLength:maxLength];
+   
+   if(result==0)
+    _status=NSStreamStatusAtEnd;
+   if(result==-1)
+    _status=NSStreamStatusError;
+    
+   return result;
+}
+
+-(void)selectInputSource:(NSSelectInputSource *)inputSource selectEvent:(unsigned)selectEvent {
+   NSStreamEvent event;
+
+   switch(_status){
+   
+    case NSStreamStatusOpening:
+     _status=NSStreamStatusOpen;
+     event=NSStreamEventOpenCompleted;
+     break;
+    
+    case NSStreamStatusOpen:
+     event=NSStreamEventHasBytesAvailable;
+     break;
+
+    case NSStreamStatusAtEnd:
+     event=NSStreamEventEndEncountered;
+     break;
+     
+    default:
+     event=NSStreamEventNone;
+     break;
+   }
+         
+   if(event!=NSStreamEventNone && [_delegate respondsToSelector:@selector(stream:handleEvent:)])
+    [_delegate stream:self handleEvent:event];
+}
 
 @end

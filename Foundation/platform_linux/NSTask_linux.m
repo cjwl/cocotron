@@ -10,8 +10,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSTask_linux.h>
 #import <Foundation/Foundation.h>
 
-#import <Foundation/NSSocketMonitor.h>
-
 #define _USE_BSD
 #include <sys/types.h>
 #include <sys/time.h>
@@ -29,7 +27,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 // in POSIX implementation
 
 extern NSMutableArray *_liveTasks; // = nil;
-extern NSPipe *_taskPipe; // = nil;
 
 @implementation NSTask_linux
  
@@ -53,15 +50,14 @@ extern NSPipe *_taskPipe; // = nil;
 // the child process; right now all cases are EventSignaled. We could have stuff about
 // whether the child process exited normally/crashed/whatever, but none of that is in
 // OPENSTEP yet so I'll leave that to a future programmer. --dwy 9/5/2002
-+(void)activityMonitorIndicatesReadable:(NSSocketMonitor *)socketMonitor {
++(void)signalPipeReadNotification:(NSNotification *)note {
    NSEnumerator *taskEnumerator = [_liveTasks objectEnumerator];
    NSTask *task;
    pid_t pid;
    int status;
 
-   // clear pipe
-   [[_taskPipe fileHandleForReading] readDataOfLength:sizeof(int)];
-
+   [super signalPipeReadNotification:note];
+   
    pid = wait4(-1, &status, WNOHANG, NULL);
    if (pid < 0) {
        [NSException raise:NSInvalidArgumentException

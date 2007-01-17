@@ -8,15 +8,18 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/NSObject.h>
 
-@class NSDate,NSTimer,NSMutableArray, NSDelayedPerform;
+@class NSDate,NSTimer,NSMutableArray, NSArray, NSDelayedPerform;
 @class NSInputSource,NSInputSourceSet;
 
 @interface NSRunLoopState : NSObject {
    NSInputSourceSet *_inputSourceSet;
+   NSArray          *_asyncInputSourceSets;
    NSMutableArray   *_timers;
 }
 
 -(void)addTimer:(NSTimer *)timer;
+
+-(void)changingIntoMode:(NSString *)mode;
 
 -(NSDate *)limitDateForMode:(NSString *)mode;
 

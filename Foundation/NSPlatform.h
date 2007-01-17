@@ -9,7 +9,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSObject.h>
 #import <Foundation/NSDate.h>
 
-@class NSTimeZone, NSThread, NSInputSource;
+@class NSTimeZone, NSThread, NSInputSource,NSInputSourceSet;
 
 @interface NSPlatform : NSObject
 
@@ -17,7 +17,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(NSInputSource *)parentDeathInputSource;
 
--(Class)inputSourceSetClass;
+-(NSInputSourceSet *)synchronousInputSourceSet;
+-(NSArray *)asynchronousInputSourceSets;
 
 -(NSString *)fileManagerClassName;
 -(Class)taskClass;

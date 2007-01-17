@@ -30,26 +30,33 @@ typedef enum {
  NSStreamEventEndEncountered=0x10,
 } NSStreamEvent;
 
+FOUNDATION_EXPORT NSString *NSStreamDataWrittenToMemoryStreamKey;
+
 @interface NSStream : NSObject
 
-+(void)getStreamsToHost:(NSHost *)host port:(int)port inputStream:(NSInputStream **)inputStream outputStream:(NSOutputStream *)outputStream;
++(void)getStreamsToHost:(NSHost *)host port:(int)port inputStream:(NSInputStream **)inputStream outputStream:(NSOutputStream **)outputStream;
 
 -delegate;
 -(void)setDelegate:delegate;
 
--(void)open;
--(void)close;
 -(NSError *)streamError;
 -(NSStreamStatus)streamStatus;
 
 -propertyForKey:(NSString *)key;
 -(BOOL)setProperty:property forKey:(NSString *)key;
 
--(void)removeFromRunLoop:(NSRunLoop *)runLoop forMode:(NSString *)mode;
 -(void)scheduleInRunLoop:(NSRunLoop *)runLoop forMode:(NSString *)mode;
+-(void)removeFromRunLoop:(NSRunLoop *)runLoop forMode:(NSString *)mode;
+
+-(void)open;
+-(void)close;
 
 @end
 
 @interface NSObject(NSStream_delegate)
 -(void)stream:(NSStream *)stream handleEvent:(NSStreamEvent)streamEvent;
 @end
+
+#import <Foundation/NSInputStream.h>
+#import <Foundation/NSOutputStream.h>
+

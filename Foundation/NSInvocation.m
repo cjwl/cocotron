@@ -11,6 +11,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSMethodSignature.h>
 #import <Foundation/NSCoder.h>
 #import <Foundation/NSRaise.h>
+#import <string.h>
 
 @implementation NSInvocation
 

@@ -9,11 +9,31 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 // Original - Christopher Lloyd <cjwl@objc.net>
 #import <Foundation/NSStream.h>
 #import <Foundation/NSRaise.h>
+#import <Foundation/NSSocket.h>
+#import "NSInputStream_socket.h"
+#import "NSOutputStream_socket.h"
+
+NSString *NSStreamDataWrittenToMemoryStreamKey=@"NSStreamDataWrittenToMemoryStreamKey";
 
 @implementation NSStream
 
-+(void)getStreamsToHost:(NSHost *)host port:(int)port inputStream:(NSInputStream **)inputStream outputStream:(NSOutputStream *)outputStream {
-   NSInvalidAbstractInvocation();
++(void)getStreamsToHost:(NSHost *)host port:(int)port inputStream:(NSInputStream **)inputStreamp outputStream:(NSOutputStream **)outputStreamp {
+   NSSocket              *socket=[[[NSSocket alloc] initTCPStream] autorelease];
+   NSError               *error;
+   BOOL                   immediate;
+   NSStreamStatus         status;
+   NSInputStream_socket  *input;
+   NSOutputStream_socket *output;
+   
+   if((error=[socket connectToHost:host port:port immediate:&immediate])!=nil){
+    *inputStreamp=nil;
+    *outputStreamp=nil;
+    return;
+   }
+   status=immediate?NSStreamStatusOpen:NSStreamStatusOpening;
+   
+   *inputStreamp=input=[[[NSInputStream_socket alloc] initWithSocket:socket streamStatus:status] autorelease];
+   *outputStreamp=output=[[[NSOutputStream_socket alloc] initWithSocket:socket streamStatus:status] autorelease];
 }
 
 -delegate {
@@ -22,14 +42,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)setDelegate:delegate {
-   NSInvalidAbstractInvocation();
-}
-
--(void)open {
-   NSInvalidAbstractInvocation();
-}
-
--(void)close {
    NSInvalidAbstractInvocation();
 }
 
@@ -53,11 +65,19 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return NO;
 }
 
+-(void)scheduleInRunLoop:(NSRunLoop *)runLoop forMode:(NSString *)mode {
+   NSInvalidAbstractInvocation();
+}
+
 -(void)removeFromRunLoop:(NSRunLoop *)runLoop forMode:(NSString *)mode {
    NSInvalidAbstractInvocation();
 }
 
--(void)scheduleInRunLoop:(NSRunLoop *)runLoop forMode:(NSString *)mode {
+-(void)open {
+   NSInvalidAbstractInvocation();
+}
+
+-(void)close {
    NSInvalidAbstractInvocation();
 }
 

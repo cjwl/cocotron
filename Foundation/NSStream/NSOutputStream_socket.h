@@ -8,9 +8,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/NSOutputStream.h>
 
-@interface NSOutputStream_socket : NSOutputStream {
-   NSStreamStatus _status;
+@class NSSocket, NSSelectInputSource;
 
+@interface NSOutputStream_socket : NSOutputStream {
+   id                   _delegate;
+   NSError             *_error;
+   NSStreamStatus       _status;
+   NSSocket            *_socket;
+   NSSelectInputSource *_inputSource;
 }
+
+-initWithSocket:(NSSocket *)socket streamStatus:(NSStreamStatus)status;
 
 @end

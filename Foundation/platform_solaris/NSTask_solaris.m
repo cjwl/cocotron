@@ -10,8 +10,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSTask_solaris.h>
 #import <Foundation/Foundation.h>
 
-#import <Foundation/NSSocketMonitor.h>
-
 #define _USE_BSD
 #include <sys/types.h>
 #include <sys/time.h>
@@ -28,7 +26,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 // in POSIX implementation
 
 extern NSMutableArray *_liveTasks; // = nil;
-extern NSPipe *_taskPipe; // = nil;
 
 @implementation NSTask_solaris
 
@@ -68,14 +65,13 @@ extern NSPipe *_taskPipe; // = nil;
      The status can be evaluated  using  the  macros  defined  by
      wstat(3XFN).
  */
-+(void)activityMonitorIndicatesReadable:(NSSocketMonitor *)socketMonitor {
++(void)signalPipeReadNotification:(NSNotification *)note {
    NSEnumerator *taskEnumerator = [_liveTasks objectEnumerator];
    NSTask *task;
    pid_t pid;
    int status;
 
-   // clear pipe
-   [[_taskPipe fileHandleForReading] readDataOfLength:sizeof(int)];
+   [super signalPipeReadNotification:note];
 
    pid = wait4(0, &status, WNOHANG, NULL);
    if (pid < 0) {

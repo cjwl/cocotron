@@ -9,10 +9,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 // Original - David Young <daver@geeks.org>
 #import <Foundation/NSFileHandle_posix.h>
 #import <Foundation/NSPlatform_posix.h>
-#import <Foundation/Foundation.h>
-
-#import <Foundation/NSSocketDescriptor.h>
-#import <Foundation/NSSocketMonitor.h>
+#import <Foundation/NSString.h>
+#import <Foundation/NSPathUtilities.h>
+#import <Foundation/NSData.h>
+#import <Foundation/NSArray.h>
+#import <Foundation/NSException.h>
+#import <Foundation/NSSelectInputSource.h>
+#import <Foundation/NSNotification.h>
+#import <Foundation/NSRunLoop.h>
+#import <Foundation/NSDictionary.h>
+#import "NSSocket_bsd.h"
 
 #import <stdio.h>
 #import <unistd.h>
@@ -35,7 +41,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 - (void)dealloc {
-    if (_backgroundMonitor != nil)
+    if (_inputSource != nil)
         [self cancelBackgroundMonitoring];
 
     if (_closeOnDealloc == YES)
@@ -249,36 +255,33 @@ CONFORMING TO
 
 
 -(void)cancelBackgroundMonitoring {
-    int i, count = [_backgroundModes count];
+   int i, count = [_backgroundModes count];
 
-    [_backgroundMonitor ceaseMonitoringFileActivity];
-    for (i = 0; i < count; ++i)
-        [[NSRunLoop currentRunLoop] removeInputSource:_backgroundMonitor
-                                              forMode:[_backgroundModes objectAtIndex:i]];
+   for (i = 0; i < count; ++i)
+    [[NSRunLoop currentRunLoop] removeInputSource:_inputSource forMode:[_backgroundModes objectAtIndex:i]];
 
     // we never actually retain the monitor, the run loop does--so we don't need to release it.
-    _backgroundMonitor = nil;
-    [_backgroundModes release];
-    _backgroundModes = nil;
+   _inputSource = nil;
+   [_backgroundModes release];
+   _backgroundModes = nil;
 }
 
 -(void)readInBackgroundAndNotifyForModes:(NSArray *)modes {
-    int i, count = [modes count];
+   int i, count = [modes count];
     
-    if (_backgroundMonitor != nil)
-        [NSException raise:NSInternalInconsistencyException
-                    format:@"%@ already has background activity", [self description]];
+   if (_inputSource != nil)
+    [NSException raise:NSInternalInconsistencyException format:@"%@ already has background activity", [self description]];
 
-    _backgroundMonitor = [NSSocketMonitor socketMonitorWithDescriptor:_fileDescriptor];
-    [_backgroundMonitor monitorFileActivity:NSSocketReadableActivity];
-    [_backgroundMonitor setDelegate:self];
+    _inputSource=[NSSelectInputSource socketInputSourceWithSocket:[NSSocket_bsd socketWithDescriptor:_fileDescriptor]];
+    [_inputSource setSelectEventMask:NSSelectReadEvent];
+    [_inputSource setDelegate:self];
     _backgroundModes = [modes retain];
     
-    for (i = 0; i < count; ++i)
-        [[NSRunLoop currentRunLoop] addInputSource:_backgroundMonitor forMode:[modes objectAtIndex:i]];
+   for(i = 0; i < count; ++i)
+    [[NSRunLoop currentRunLoop] addInputSource:_inputSource forMode:[modes objectAtIndex:i]];
 }
 
--(void)activityMonitorIndicatesReadable:(NSSocketMonitor *)socketMonitor {
+-(void)selectInputSource:(NSSelectInputSource *)inputSource selectEvent:(unsigned)selectEvent {
     NSData *availableData = [self availableData];
     NSDictionary   *userInfo;
     NSNotification *note;
@@ -292,12 +295,6 @@ CONFORMING TO
                                      userInfo:userInfo];
 
     [[NSNotificationCenter defaultCenter] postNotification:note];
-}
-
--(void)activityMonitorIndicatesException:(NSSocketMonitor *)socketMonitor {
-    [self cancelBackgroundMonitoring];
-    
-    NSRaiseException(NSInvalidArgumentException, self, _cmd, @"file handle socket monitor exception");
 }
 
 @end

@@ -13,10 +13,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @implementation Win32EventInputSource
 
--(BOOL)canProcessImmediateInput {
-   return YES;
-}
-
 -(NSDate *)limitDateForMode:(NSString *)mode {
    return [NSDate distantFuture];
 }

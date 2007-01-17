@@ -1,4 +1,4 @@
-/* Copyright (c) 2006-2007 Christopher J. W. Lloyd
+/* Copyright (c) 2007 Christopher J. W. Lloyd
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
@@ -6,22 +6,36 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
-// Original - Christopher Lloyd <cjwl@objc.net>
-#import <Foundation/NSInputSource.h>
-#import <Foundation/NSRaise.h>
+#import <Foundation/NSObject.h>
 
-@implementation NSInputSource
+@class NSError,NSMutableSet,NSDate;
 
--(BOOL)canProcessImmediateInput {
-   return NO;
+FOUNDATION_EXPORT NSString *NSSelectSetOutputNotification;
+
+@interface NSSelectSet : NSObject <NSCopying> {
+   NSMutableSet *_readSet;
+   NSMutableSet *_writeSet;
+   NSMutableSet *_exceptionSet;
 }
 
--(NSDate *)limitDateForMode:(NSString *)mode {
-   return nil;
-}
+-(void)addObjectForRead:object;
+-(void)addObjectForWrite:object;
+-(void)addObjectForException:object;
 
--(BOOL)processInputImmediately {
-   return NO;
-}
+-(void)removeObjectForRead:object;
+-(void)removeObjectForWrite:object;
+-(void)removeObjectForException:object;
+
+-(void)removeAllObjects;
+
+-(BOOL)isEmpty;
+
+-(BOOL)containsObjectForRead:object;
+-(BOOL)containsObjectForWrite:object;
+-(BOOL)containsObjectForException:object;
+
+-(void)waitInBackground;
+
+-(NSError *)waitForSelectWithOutputSet:(NSSelectSet **)outputSet beforeDate:(NSDate *)beforeDate;
 
 @end

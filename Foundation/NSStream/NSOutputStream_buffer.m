@@ -6,8 +6,75 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
+// Original - Christopher Lloyd <cjwl@objc.net>
 #import <Foundation/NSOutputStream_buffer.h>
+#import <Foundation/NSError.h>
 
 @implementation NSOutputStream_buffer
+
+-initToBuffer:(unsigned char *)buffer capacity:(unsigned)capacity {
+   _delegate=self;
+   _error=nil;
+   _status=NSStreamStatusNotOpen;
+   _buffer=buffer;
+   _capacity=capacity;
+   _position=0;
+   return self;
+}
+
+-(void)dealloc {
+   [_error release];
+   [super dealloc];
+}
+
+-delegate {
+   return _delegate;
+}
+
+-(void)setDelegate:delegate {
+   _delegate=delegate;
+   if(_delegate==nil)
+    _delegate=self;
+}
+
+-(NSError *)streamError {
+   return _error;
+}
+
+-(NSStreamStatus)streamStatus {
+   return _status;
+}
+
+-(void)open {
+   if(_status==NSStreamStatusNotOpen)
+    _status=NSStreamStatusOpen;
+}
+
+-(void)close {
+   _status=NSStreamStatusClosed;
+}
+
+-(BOOL)hasSpaceAvailable {
+   if(_status!=NSStreamStatusOpen)
+    return NO;
+    
+   return (_position<_capacity)?YES:NO;
+}
+
+-(int)write:(const unsigned char *)buffer maxLength:(unsigned)maxLength {
+   if(_status!=NSStreamStatusOpen)
+    return -1;
+   else {
+    int i;
+    
+    for(i=0;i<maxLength && _position<_capacity;i++)
+     _buffer[_position++]=buffer[i];
+    
+    if(_position>=_capacity)
+     _status=NSStreamStatusAtEnd;
+     
+    return i;
+   }
+}
 
 @end

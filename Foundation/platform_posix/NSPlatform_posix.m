@@ -9,6 +9,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 // Original - David Young <daver@geeks.org>
 #import <Foundation/ObjectiveC.h>
 #import <Foundation/Foundation.h>
+#import <Foundation/NSSelectInputSourceSet.h>
 #import <Foundation/NSPlatform_posix.h>
 #import <Foundation/NSFileHandle_posix.h>
 #import <Foundation/NSFileManager_posix.h>
@@ -16,8 +17,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSPersistantDomain_posix.h>
 #import <Foundation/NSTask_posix.h>
 #import <Foundation/NSPipe_posix.h>
-
-#import <Foundation/NSSocketMonitorSet_Unix.h>
 
 #import <pwd.h>
 #import <unistd.h>
@@ -33,8 +32,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @implementation NSPlatform_posix
 
--(Class)inputSourceSetClass {
-   return [NSSocketMonitorSet_Unix class];
+-(NSInputSourceSet *)synchronousInputSourceSet {
+   return [[[NSSelectInputSourceSet alloc] init] autorelease];
 }
 
 -(NSString *)fileManagerClassName {

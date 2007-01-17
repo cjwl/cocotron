@@ -99,14 +99,6 @@
 		6E2803C509747B6200EC542B /* NSRaise.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2803BF09747B6200EC542B /* NSRaise.m */; };
 		6E2803C809747B7100EC542B /* NSLock.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2803C609747B7100EC542B /* NSLock.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6E2803C909747B7100EC542B /* NSLock.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2803C709747B7100EC542B /* NSLock.m */; };
-		6E2803D409747B7B00EC542B /* NSSocketDescriptor.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2803CA09747B7B00EC542B /* NSSocketDescriptor.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		6E2803D509747B7B00EC542B /* NSSocketDescriptor.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2803CB09747B7B00EC542B /* NSSocketDescriptor.m */; };
-		6E2803D609747B7B00EC542B /* NSSocketMonitor.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2803CC09747B7B00EC542B /* NSSocketMonitor.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		6E2803D709747B7B00EC542B /* NSSocketMonitor.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2803CD09747B7B00EC542B /* NSSocketMonitor.m */; };
-		6E2803D809747B7B00EC542B /* NSSocketMonitorSet.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2803CE09747B7B00EC542B /* NSSocketMonitorSet.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		6E2803D909747B7B00EC542B /* NSSocketMonitorSet.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2803CF09747B7B00EC542B /* NSSocketMonitorSet.m */; };
-		6E2803DA09747B7B00EC542B /* NSSocketSet.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2803D009747B7B00EC542B /* NSSocketSet.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		6E2803DB09747B7B00EC542B /* NSSocketSet.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2803D109747B7B00EC542B /* NSSocketSet.m */; };
 		6E2803E209747B8600EC542B /* NSNotification_concrete.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2803DE09747B8600EC542B /* NSNotification_concrete.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		6E2803E309747B8600EC542B /* NSNotification_concrete.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2803DF09747B8600EC542B /* NSNotification_concrete.m */; };
 		6E2803E409747B8600EC542B /* NSNotification.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2803E009747B8600EC542B /* NSNotification.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -297,7 +289,6 @@
 		6E2805D309747D0400EC542B /* NSPipe_win32.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2805B309747D0400EC542B /* NSPipe_win32.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		6E2805D509747D0400EC542B /* NSPlatform_win32.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2805B509747D0400EC542B /* NSPlatform_win32.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		6E2805D709747D0400EC542B /* NSReadInBackground_win32.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2805B709747D0400EC542B /* NSReadInBackground_win32.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		6E2805D909747D0400EC542B /* NSSocketInputSource_windows.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2805B909747D0400EC542B /* NSSocketInputSource_windows.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		6E2805DB09747D0400EC542B /* NSString_win32.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2805BB09747D0400EC542B /* NSString_win32.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		6E2805DD09747D0400EC542B /* NSTask_win32.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2805BD09747D0400EC542B /* NSTask_win32.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		6E2805E909747D1000EC542B /* NSXMLAttribute.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2805DF09747D1000EC542B /* NSXMLAttribute.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -442,10 +433,6 @@
 		6E4D91A70A2642BD003D335C /* NSException.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2803BA09747B6200EC542B /* NSException.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6E4D91A90A2642BD003D335C /* NSRaise.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2803BE09747B6200EC542B /* NSRaise.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6E4D91AA0A2642BD003D335C /* NSLock.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2803C609747B7100EC542B /* NSLock.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		6E4D91AB0A2642BD003D335C /* NSSocketDescriptor.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2803CA09747B7B00EC542B /* NSSocketDescriptor.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		6E4D91AC0A2642BD003D335C /* NSSocketMonitor.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2803CC09747B7B00EC542B /* NSSocketMonitor.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		6E4D91AD0A2642BD003D335C /* NSSocketMonitorSet.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2803CE09747B7B00EC542B /* NSSocketMonitorSet.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		6E4D91AE0A2642BD003D335C /* NSSocketSet.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2803D009747B7B00EC542B /* NSSocketSet.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		6E4D91AF0A2642BD003D335C /* NSNotification_concrete.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2803DE09747B8600EC542B /* NSNotification_concrete.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		6E4D91B00A2642BD003D335C /* NSNotification.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2803E009747B8600EC542B /* NSNotification.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6E4D91B10A2642BD003D335C /* NSNotificationCenter.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2803E609747B9100EC542B /* NSNotificationCenter.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -628,10 +615,6 @@
 		6E4D926A0A2642BD003D335C /* NSException.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2803BB09747B6200EC542B /* NSException.m */; };
 		6E4D926C0A2642BD003D335C /* NSRaise.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2803BF09747B6200EC542B /* NSRaise.m */; };
 		6E4D926D0A2642BD003D335C /* NSLock.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2803C709747B7100EC542B /* NSLock.m */; };
-		6E4D926E0A2642BD003D335C /* NSSocketDescriptor.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2803CB09747B7B00EC542B /* NSSocketDescriptor.m */; };
-		6E4D926F0A2642BD003D335C /* NSSocketMonitor.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2803CD09747B7B00EC542B /* NSSocketMonitor.m */; };
-		6E4D92700A2642BD003D335C /* NSSocketMonitorSet.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2803CF09747B7B00EC542B /* NSSocketMonitorSet.m */; };
-		6E4D92710A2642BD003D335C /* NSSocketSet.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2803D109747B7B00EC542B /* NSSocketSet.m */; };
 		6E4D92720A2642BD003D335C /* NSNotification_concrete.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2803DF09747B8600EC542B /* NSNotification_concrete.m */; };
 		6E4D92730A2642BD003D335C /* NSNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2803E109747B8600EC542B /* NSNotification.m */; };
 		6E4D92740A2642BD003D335C /* NSNotificationCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2803E709747B9100EC542B /* NSNotificationCenter.m */; };
@@ -813,7 +796,6 @@
 		6E71DB21097B5AB50071C089 /* NSPipe_win32.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2805B409747D0400EC542B /* NSPipe_win32.m */; };
 		6E71DB22097B5AB70071C089 /* NSPlatform_win32.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2805B609747D0400EC542B /* NSPlatform_win32.m */; };
 		6E71DB23097B5AB80071C089 /* NSReadInBackground_win32.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2805B809747D0400EC542B /* NSReadInBackground_win32.m */; };
-		6E71DB24097B5AB90071C089 /* NSSocketInputSource_windows.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2805BA09747D0400EC542B /* NSSocketInputSource_windows.m */; };
 		6E71DB25097B5ABA0071C089 /* NSString_win32.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2805BC09747D0400EC542B /* NSString_win32.m */; };
 		6E71DB26097B5ABB0071C089 /* NSTask_win32.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2805BE09747D0400EC542B /* NSTask_win32.m */; };
 		6E8113740A54BA9C000DE3F1 /* objc_msg_sendv.s in Sources */ = {isa = PBXBuildFile; fileRef = 6E28055D09747CC300EC542B /* objc_msg_sendv.s */; };
@@ -855,10 +837,6 @@
 		6EA048E909E57D5F0067589C /* NSException.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2803BA09747B6200EC542B /* NSException.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6EA048EB09E57D5F0067589C /* NSRaise.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2803BE09747B6200EC542B /* NSRaise.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6EA048EC09E57D5F0067589C /* NSLock.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2803C609747B7100EC542B /* NSLock.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		6EA048ED09E57D5F0067589C /* NSSocketDescriptor.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2803CA09747B7B00EC542B /* NSSocketDescriptor.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		6EA048EE09E57D5F0067589C /* NSSocketMonitor.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2803CC09747B7B00EC542B /* NSSocketMonitor.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		6EA048EF09E57D5F0067589C /* NSSocketMonitorSet.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2803CE09747B7B00EC542B /* NSSocketMonitorSet.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		6EA048F009E57D5F0067589C /* NSSocketSet.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2803D009747B7B00EC542B /* NSSocketSet.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		6EA048F109E57D5F0067589C /* NSNotification_concrete.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2803DE09747B8600EC542B /* NSNotification_concrete.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		6EA048F209E57D5F0067589C /* NSNotification.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2803E009747B8600EC542B /* NSNotification.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6EA048F309E57D5F0067589C /* NSNotificationCenter.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2803E609747B9100EC542B /* NSNotificationCenter.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -1032,10 +1010,6 @@
 		6EA049AF09E57D5F0067589C /* NSException.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2803BB09747B6200EC542B /* NSException.m */; };
 		6EA049B109E57D5F0067589C /* NSRaise.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2803BF09747B6200EC542B /* NSRaise.m */; };
 		6EA049B209E57D5F0067589C /* NSLock.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2803C709747B7100EC542B /* NSLock.m */; };
-		6EA049B309E57D5F0067589C /* NSSocketDescriptor.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2803CB09747B7B00EC542B /* NSSocketDescriptor.m */; };
-		6EA049B409E57D5F0067589C /* NSSocketMonitor.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2803CD09747B7B00EC542B /* NSSocketMonitor.m */; };
-		6EA049B509E57D5F0067589C /* NSSocketMonitorSet.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2803CF09747B7B00EC542B /* NSSocketMonitorSet.m */; };
-		6EA049B609E57D5F0067589C /* NSSocketSet.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2803D109747B7B00EC542B /* NSSocketSet.m */; };
 		6EA049B709E57D5F0067589C /* NSNotification_concrete.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2803DF09747B8600EC542B /* NSNotification_concrete.m */; };
 		6EA049B809E57D5F0067589C /* NSNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2803E109747B8600EC542B /* NSNotification.m */; };
 		6EA049B909E57D5F0067589C /* NSNotificationCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2803E709747B9100EC542B /* NSNotificationCenter.m */; };
@@ -1219,15 +1193,51 @@
 		6EC4AAEC0A34D9B200E8D6CA /* NSKeyedUnarchiver.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EC4AAE80A34D9B200E8D6CA /* NSKeyedUnarchiver.m */; };
 		6EC4AAED0A34D9B200E8D6CA /* NSKeyedUnarchiver.h in Headers */ = {isa = PBXBuildFile; fileRef = 6EC4AAE70A34D9B200E8D6CA /* NSKeyedUnarchiver.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6EC4AAEE0A34D9B200E8D6CA /* NSKeyedUnarchiver.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EC4AAE80A34D9B200E8D6CA /* NSKeyedUnarchiver.m */; };
-		6EC4AB370A350DDA00E8D6CA /* NSSocketMonitorSet_Windows.h in Headers */ = {isa = PBXBuildFile; fileRef = 6EC4AB350A350DDA00E8D6CA /* NSSocketMonitorSet_Windows.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		6EC4AB380A350DDA00E8D6CA /* NSSocketMonitorSet_Windows.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EC4AB360A350DDA00E8D6CA /* NSSocketMonitorSet_Windows.m */; };
-		6EC4AB530A35157600E8D6CA /* NSSocketMonitorSet_Unix.h in Headers */ = {isa = PBXBuildFile; fileRef = 6EC4AB510A35157600E8D6CA /* NSSocketMonitorSet_Unix.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		6EC4AB540A35157600E8D6CA /* NSSocketMonitorSet_Unix.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EC4AB520A35157600E8D6CA /* NSSocketMonitorSet_Unix.m */; };
-		6EC4AB550A35157600E8D6CA /* NSSocketMonitorSet_Unix.h in Headers */ = {isa = PBXBuildFile; fileRef = 6EC4AB510A35157600E8D6CA /* NSSocketMonitorSet_Unix.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		6EC4AB560A35157600E8D6CA /* NSSocketMonitorSet_Unix.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EC4AB520A35157600E8D6CA /* NSSocketMonitorSet_Unix.m */; };
+		FE1935170B5D449E00FB74CC /* NSAssertionHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = FE1935150B5D449E00FB74CC /* NSAssertionHandler.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE1935180B5D449E00FB74CC /* NSAssertionHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = FE1935160B5D449E00FB74CC /* NSAssertionHandler.m */; };
+		FE1935190B5D449E00FB74CC /* NSAssertionHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = FE1935150B5D449E00FB74CC /* NSAssertionHandler.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE19351A0B5D449E00FB74CC /* NSAssertionHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = FE1935160B5D449E00FB74CC /* NSAssertionHandler.m */; };
+		FE19351B0B5D449E00FB74CC /* NSAssertionHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = FE1935150B5D449E00FB74CC /* NSAssertionHandler.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE19351C0B5D449E00FB74CC /* NSAssertionHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = FE1935160B5D449E00FB74CC /* NSAssertionHandler.m */; };
 		FE35CAED0B4AB85800FE7AB3 /* objc.m in Sources */ = {isa = PBXBuildFile; fileRef = FE35CAEC0B4AB85800FE7AB3 /* objc.m */; };
 		FE35CAEE0B4AB85800FE7AB3 /* objc.m in Sources */ = {isa = PBXBuildFile; fileRef = FE35CAEC0B4AB85800FE7AB3 /* objc.m */; };
 		FE35CAEF0B4AB85800FE7AB3 /* objc.m in Sources */ = {isa = PBXBuildFile; fileRef = FE35CAEC0B4AB85800FE7AB3 /* objc.m */; };
+		FE35CBDB0B4AD47400FE7AB3 /* NSSocket.h in Headers */ = {isa = PBXBuildFile; fileRef = FE35CBD70B4AD47400FE7AB3 /* NSSocket.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE35CBDC0B4AD47400FE7AB3 /* NSSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = FE35CBD80B4AD47400FE7AB3 /* NSSocket.m */; };
+		FE35CBDD0B4AD47400FE7AB3 /* NSSelectInputSource.h in Headers */ = {isa = PBXBuildFile; fileRef = FE35CBD90B4AD47400FE7AB3 /* NSSelectInputSource.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE35CBDE0B4AD47400FE7AB3 /* NSSelectInputSource.m in Sources */ = {isa = PBXBuildFile; fileRef = FE35CBDA0B4AD47400FE7AB3 /* NSSelectInputSource.m */; };
+		FE35CBDF0B4AD47400FE7AB3 /* NSSocket.h in Headers */ = {isa = PBXBuildFile; fileRef = FE35CBD70B4AD47400FE7AB3 /* NSSocket.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE35CBE00B4AD47400FE7AB3 /* NSSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = FE35CBD80B4AD47400FE7AB3 /* NSSocket.m */; };
+		FE35CBE10B4AD47400FE7AB3 /* NSSelectInputSource.h in Headers */ = {isa = PBXBuildFile; fileRef = FE35CBD90B4AD47400FE7AB3 /* NSSelectInputSource.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE35CBE20B4AD47400FE7AB3 /* NSSelectInputSource.m in Sources */ = {isa = PBXBuildFile; fileRef = FE35CBDA0B4AD47400FE7AB3 /* NSSelectInputSource.m */; };
+		FE35CBE30B4AD47400FE7AB3 /* NSSocket.h in Headers */ = {isa = PBXBuildFile; fileRef = FE35CBD70B4AD47400FE7AB3 /* NSSocket.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE35CBE40B4AD47400FE7AB3 /* NSSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = FE35CBD80B4AD47400FE7AB3 /* NSSocket.m */; };
+		FE35CBE50B4AD47400FE7AB3 /* NSSelectInputSource.h in Headers */ = {isa = PBXBuildFile; fileRef = FE35CBD90B4AD47400FE7AB3 /* NSSelectInputSource.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE35CBE60B4AD47400FE7AB3 /* NSSelectInputSource.m in Sources */ = {isa = PBXBuildFile; fileRef = FE35CBDA0B4AD47400FE7AB3 /* NSSelectInputSource.m */; };
+		FE35CC130B4AD8A400FE7AB3 /* NSSocket_windows.h in Headers */ = {isa = PBXBuildFile; fileRef = FE35CC0F0B4AD8A400FE7AB3 /* NSSocket_windows.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE35CC140B4AD8A400FE7AB3 /* NSSocket_windows.m in Sources */ = {isa = PBXBuildFile; fileRef = FE35CC100B4AD8A400FE7AB3 /* NSSocket_windows.m */; };
+		FE35D2DB0B4ECDBD00FE7AB3 /* NSSelectSet.h in Headers */ = {isa = PBXBuildFile; fileRef = FE35D2D90B4ECDBD00FE7AB3 /* NSSelectSet.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE35D2DC0B4ECDBD00FE7AB3 /* NSSelectSet.m in Sources */ = {isa = PBXBuildFile; fileRef = FE35D2DA0B4ECDBD00FE7AB3 /* NSSelectSet.m */; };
+		FE35D2DD0B4ECDBD00FE7AB3 /* NSSelectSet.h in Headers */ = {isa = PBXBuildFile; fileRef = FE35D2D90B4ECDBD00FE7AB3 /* NSSelectSet.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE35D2DE0B4ECDBD00FE7AB3 /* NSSelectSet.m in Sources */ = {isa = PBXBuildFile; fileRef = FE35D2DA0B4ECDBD00FE7AB3 /* NSSelectSet.m */; };
+		FE35D2DF0B4ECDBD00FE7AB3 /* NSSelectSet.h in Headers */ = {isa = PBXBuildFile; fileRef = FE35D2D90B4ECDBD00FE7AB3 /* NSSelectSet.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE35D2E00B4ECDBD00FE7AB3 /* NSSelectSet.m in Sources */ = {isa = PBXBuildFile; fileRef = FE35D2DA0B4ECDBD00FE7AB3 /* NSSelectSet.m */; };
+		FE35D3510B4EEDBB00FE7AB3 /* NSSelectSet_windows.h in Headers */ = {isa = PBXBuildFile; fileRef = FE35D34F0B4EEDBB00FE7AB3 /* NSSelectSet_windows.h */; };
+		FE35D3520B4EEDBB00FE7AB3 /* NSSelectSet_windows.m in Sources */ = {isa = PBXBuildFile; fileRef = FE35D3500B4EEDBB00FE7AB3 /* NSSelectSet_windows.m */; };
+		FE35D3AC0B4F369C00FE7AB3 /* NSSelectInputSourceSet.h in Headers */ = {isa = PBXBuildFile; fileRef = FE35D3AA0B4F369C00FE7AB3 /* NSSelectInputSourceSet.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE35D3AD0B4F369C00FE7AB3 /* NSSelectInputSourceSet.m in Sources */ = {isa = PBXBuildFile; fileRef = FE35D3AB0B4F369C00FE7AB3 /* NSSelectInputSourceSet.m */; };
+		FE35D3AE0B4F369C00FE7AB3 /* NSSelectInputSourceSet.h in Headers */ = {isa = PBXBuildFile; fileRef = FE35D3AA0B4F369C00FE7AB3 /* NSSelectInputSourceSet.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE35D3AF0B4F369C00FE7AB3 /* NSSelectInputSourceSet.m in Sources */ = {isa = PBXBuildFile; fileRef = FE35D3AB0B4F369C00FE7AB3 /* NSSelectInputSourceSet.m */; };
+		FE35D3B00B4F369C00FE7AB3 /* NSSelectInputSourceSet.h in Headers */ = {isa = PBXBuildFile; fileRef = FE35D3AA0B4F369C00FE7AB3 /* NSSelectInputSourceSet.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE35D3B10B4F369C00FE7AB3 /* NSSelectInputSourceSet.m in Sources */ = {isa = PBXBuildFile; fileRef = FE35D3AB0B4F369C00FE7AB3 /* NSSelectInputSourceSet.m */; };
+		FE35D6490B52A3E400FE7AB3 /* NSSelectSet_bsd.h in Headers */ = {isa = PBXBuildFile; fileRef = FE35D6470B52A3E400FE7AB3 /* NSSelectSet_bsd.h */; };
+		FE35D64A0B52A3E400FE7AB3 /* NSSelectSet_bsd.m in Sources */ = {isa = PBXBuildFile; fileRef = FE35D6480B52A3E400FE7AB3 /* NSSelectSet_bsd.m */; };
+		FE35D64B0B52A3E400FE7AB3 /* NSSelectSet_bsd.h in Headers */ = {isa = PBXBuildFile; fileRef = FE35D6470B52A3E400FE7AB3 /* NSSelectSet_bsd.h */; };
+		FE35D64C0B52A3E400FE7AB3 /* NSSelectSet_bsd.m in Sources */ = {isa = PBXBuildFile; fileRef = FE35D6480B52A3E400FE7AB3 /* NSSelectSet_bsd.m */; };
+		FE35D66E0B52AFBC00FE7AB3 /* NSSocket_bsd.h in Headers */ = {isa = PBXBuildFile; fileRef = FE35D66C0B52AFBC00FE7AB3 /* NSSocket_bsd.h */; };
+		FE35D66F0B52AFBC00FE7AB3 /* NSSocket_bsd.m in Sources */ = {isa = PBXBuildFile; fileRef = FE35D66D0B52AFBC00FE7AB3 /* NSSocket_bsd.m */; };
+		FE35D6700B52AFBC00FE7AB3 /* NSSocket_bsd.h in Headers */ = {isa = PBXBuildFile; fileRef = FE35D66C0B52AFBC00FE7AB3 /* NSSocket_bsd.h */; };
+		FE35D6710B52AFBC00FE7AB3 /* NSSocket_bsd.m in Sources */ = {isa = PBXBuildFile; fileRef = FE35D66D0B52AFBC00FE7AB3 /* NSSocket_bsd.m */; };
 		FE405A6C0B4450FD001B183D /* NSHTTPURLResponse.h in Headers */ = {isa = PBXBuildFile; fileRef = FE405A6A0B4450FD001B183D /* NSHTTPURLResponse.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE405A6D0B4450FD001B183D /* NSHTTPURLResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = FE405A6B0B4450FD001B183D /* NSHTTPURLResponse.m */; };
 		FE405A6E0B4450FD001B183D /* NSHTTPURLResponse.h in Headers */ = {isa = PBXBuildFile; fileRef = FE405A6A0B4450FD001B183D /* NSHTTPURLResponse.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -1684,14 +1694,6 @@
 		6E2803BF09747B6200EC542B /* NSRaise.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSRaise.m; sourceTree = "<group>"; };
 		6E2803C609747B7100EC542B /* NSLock.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSLock.h; sourceTree = "<group>"; };
 		6E2803C709747B7100EC542B /* NSLock.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSLock.m; sourceTree = "<group>"; };
-		6E2803CA09747B7B00EC542B /* NSSocketDescriptor.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = NSSocketDescriptor.h; path = NSNetworkQueue/NSSocketDescriptor.h; sourceTree = "<group>"; };
-		6E2803CB09747B7B00EC542B /* NSSocketDescriptor.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = NSSocketDescriptor.m; path = NSNetworkQueue/NSSocketDescriptor.m; sourceTree = "<group>"; };
-		6E2803CC09747B7B00EC542B /* NSSocketMonitor.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = NSSocketMonitor.h; path = NSNetworkQueue/NSSocketMonitor.h; sourceTree = "<group>"; };
-		6E2803CD09747B7B00EC542B /* NSSocketMonitor.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = NSSocketMonitor.m; path = NSNetworkQueue/NSSocketMonitor.m; sourceTree = "<group>"; };
-		6E2803CE09747B7B00EC542B /* NSSocketMonitorSet.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = NSSocketMonitorSet.h; path = NSNetworkQueue/NSSocketMonitorSet.h; sourceTree = "<group>"; };
-		6E2803CF09747B7B00EC542B /* NSSocketMonitorSet.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = NSSocketMonitorSet.m; path = NSNetworkQueue/NSSocketMonitorSet.m; sourceTree = "<group>"; };
-		6E2803D009747B7B00EC542B /* NSSocketSet.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = NSSocketSet.h; path = NSNetworkQueue/NSSocketSet.h; sourceTree = "<group>"; };
-		6E2803D109747B7B00EC542B /* NSSocketSet.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = NSSocketSet.m; path = NSNetworkQueue/NSSocketSet.m; sourceTree = "<group>"; };
 		6E2803DE09747B8600EC542B /* NSNotification_concrete.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = NSNotification_concrete.h; path = NSNotification/NSNotification_concrete.h; sourceTree = "<group>"; };
 		6E2803DF09747B8600EC542B /* NSNotification_concrete.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = NSNotification_concrete.m; path = NSNotification/NSNotification_concrete.m; sourceTree = "<group>"; };
 		6E2803E009747B8600EC542B /* NSNotification.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = NSNotification.h; path = NSNotification/NSNotification.h; sourceTree = "<group>"; };
@@ -1922,8 +1924,6 @@
 		6E2805B609747D0400EC542B /* NSPlatform_win32.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = NSPlatform_win32.m; path = platform_win32/NSPlatform_win32.m; sourceTree = "<group>"; };
 		6E2805B709747D0400EC542B /* NSReadInBackground_win32.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = NSReadInBackground_win32.h; path = platform_win32/NSReadInBackground_win32.h; sourceTree = "<group>"; };
 		6E2805B809747D0400EC542B /* NSReadInBackground_win32.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = NSReadInBackground_win32.m; path = platform_win32/NSReadInBackground_win32.m; sourceTree = "<group>"; };
-		6E2805B909747D0400EC542B /* NSSocketInputSource_windows.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = NSSocketInputSource_windows.h; path = platform_win32/NSSocketInputSource_windows.h; sourceTree = "<group>"; };
-		6E2805BA09747D0400EC542B /* NSSocketInputSource_windows.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = NSSocketInputSource_windows.m; path = platform_win32/NSSocketInputSource_windows.m; sourceTree = "<group>"; };
 		6E2805BB09747D0400EC542B /* NSString_win32.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = NSString_win32.h; path = platform_win32/NSString_win32.h; sourceTree = "<group>"; };
 		6E2805BC09747D0400EC542B /* NSString_win32.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = NSString_win32.m; path = platform_win32/NSString_win32.m; sourceTree = "<group>"; };
 		6E2805BD09747D0400EC542B /* NSTask_win32.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = NSTask_win32.h; path = platform_win32/NSTask_win32.h; sourceTree = "<group>"; };
@@ -1960,10 +1960,10 @@
 		6E28060809747D5800EC542B /* NSHashTable.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSHashTable.m; sourceTree = "<group>"; };
 		6E28060909747D5800EC542B /* NSHost.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSHost.h; sourceTree = "<group>"; };
 		6E28060A09747D5800EC542B /* NSHost.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSHost.m; sourceTree = "<group>"; };
-		6E28060B09747D5800EC542B /* NSInputSource.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSInputSource.h; sourceTree = "<group>"; };
-		6E28060C09747D5800EC542B /* NSInputSource.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSInputSource.m; sourceTree = "<group>"; };
-		6E28060D09747D5800EC542B /* NSInputSourceSet.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSInputSourceSet.h; sourceTree = "<group>"; };
-		6E28060E09747D5800EC542B /* NSInputSourceSet.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSInputSourceSet.m; sourceTree = "<group>"; };
+		6E28060B09747D5800EC542B /* NSInputSource.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = NSInputSource.h; path = NSRunLoop/NSInputSource.h; sourceTree = "<group>"; };
+		6E28060C09747D5800EC542B /* NSInputSource.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = NSInputSource.m; path = NSRunLoop/NSInputSource.m; sourceTree = "<group>"; };
+		6E28060D09747D5800EC542B /* NSInputSourceSet.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = NSInputSourceSet.h; path = NSRunLoop/NSInputSourceSet.h; sourceTree = "<group>"; };
+		6E28060E09747D5800EC542B /* NSInputSourceSet.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = NSInputSourceSet.m; path = NSRunLoop/NSInputSourceSet.m; sourceTree = "<group>"; };
 		6E28060F09747D5800EC542B /* NSInvocation.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSInvocation.h; sourceTree = "<group>"; };
 		6E28061009747D5800EC542B /* NSInvocation.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSInvocation.m; sourceTree = "<group>"; };
 		6E28061109747D5800EC542B /* NSMapTable.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSMapTable.h; sourceTree = "<group>"; };
@@ -2048,13 +2048,27 @@
 		6EAD773A0AAF1293004BCCC9 /* NSOutputStream_socket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSOutputStream_socket.m; sourceTree = "<group>"; };
 		6EC4AAE70A34D9B200E8D6CA /* NSKeyedUnarchiver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSKeyedUnarchiver.h; sourceTree = "<group>"; };
 		6EC4AAE80A34D9B200E8D6CA /* NSKeyedUnarchiver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSKeyedUnarchiver.m; sourceTree = "<group>"; };
-		6EC4AB350A350DDA00E8D6CA /* NSSocketMonitorSet_Windows.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NSSocketMonitorSet_Windows.h; path = platform_win32/NSSocketMonitorSet_Windows.h; sourceTree = "<group>"; };
-		6EC4AB360A350DDA00E8D6CA /* NSSocketMonitorSet_Windows.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NSSocketMonitorSet_Windows.m; path = platform_win32/NSSocketMonitorSet_Windows.m; sourceTree = "<group>"; };
-		6EC4AB510A35157600E8D6CA /* NSSocketMonitorSet_Unix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NSSocketMonitorSet_Unix.h; path = platform_posix/NSSocketMonitorSet_Unix.h; sourceTree = "<group>"; };
-		6EC4AB520A35157600E8D6CA /* NSSocketMonitorSet_Unix.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NSSocketMonitorSet_Unix.m; path = platform_posix/NSSocketMonitorSet_Unix.m; sourceTree = "<group>"; };
 		8DC2EF5A0486A6940098B216 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		8DC2EF5B0486A6940098B216 /* Foundation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Foundation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		FE1935150B5D449E00FB74CC /* NSAssertionHandler.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSAssertionHandler.h; sourceTree = "<group>"; };
+		FE1935160B5D449E00FB74CC /* NSAssertionHandler.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSAssertionHandler.m; sourceTree = "<group>"; };
 		FE35CAEC0B4AB85800FE7AB3 /* objc.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = objc.m; sourceTree = "<group>"; };
+		FE35CBD70B4AD47400FE7AB3 /* NSSocket.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSSocket.h; sourceTree = "<group>"; };
+		FE35CBD80B4AD47400FE7AB3 /* NSSocket.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSSocket.m; sourceTree = "<group>"; };
+		FE35CBD90B4AD47400FE7AB3 /* NSSelectInputSource.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSSelectInputSource.h; sourceTree = "<group>"; };
+		FE35CBDA0B4AD47400FE7AB3 /* NSSelectInputSource.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSSelectInputSource.m; sourceTree = "<group>"; };
+		FE35CC0F0B4AD8A400FE7AB3 /* NSSocket_windows.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = NSSocket_windows.h; path = platform_win32/NSSocket_windows.h; sourceTree = "<group>"; };
+		FE35CC100B4AD8A400FE7AB3 /* NSSocket_windows.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = NSSocket_windows.m; path = platform_win32/NSSocket_windows.m; sourceTree = "<group>"; };
+		FE35D2D90B4ECDBD00FE7AB3 /* NSSelectSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSSelectSet.h; sourceTree = "<group>"; };
+		FE35D2DA0B4ECDBD00FE7AB3 /* NSSelectSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSSelectSet.m; sourceTree = "<group>"; };
+		FE35D34F0B4EEDBB00FE7AB3 /* NSSelectSet_windows.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NSSelectSet_windows.h; path = platform_win32/NSSelectSet_windows.h; sourceTree = "<group>"; };
+		FE35D3500B4EEDBB00FE7AB3 /* NSSelectSet_windows.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NSSelectSet_windows.m; path = platform_win32/NSSelectSet_windows.m; sourceTree = "<group>"; };
+		FE35D3AA0B4F369C00FE7AB3 /* NSSelectInputSourceSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSSelectInputSourceSet.h; sourceTree = "<group>"; };
+		FE35D3AB0B4F369C00FE7AB3 /* NSSelectInputSourceSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSSelectInputSourceSet.m; sourceTree = "<group>"; };
+		FE35D6470B52A3E400FE7AB3 /* NSSelectSet_bsd.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = NSSelectSet_bsd.h; path = platform_posix/NSSelectSet_bsd.h; sourceTree = "<group>"; };
+		FE35D6480B52A3E400FE7AB3 /* NSSelectSet_bsd.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = NSSelectSet_bsd.m; path = platform_posix/NSSelectSet_bsd.m; sourceTree = "<group>"; };
+		FE35D66C0B52AFBC00FE7AB3 /* NSSocket_bsd.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = NSSocket_bsd.h; path = platform_posix/NSSocket_bsd.h; sourceTree = "<group>"; };
+		FE35D66D0B52AFBC00FE7AB3 /* NSSocket_bsd.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = NSSocket_bsd.m; path = platform_posix/NSSocket_bsd.m; sourceTree = "<group>"; };
 		FE405A6A0B4450FD001B183D /* NSHTTPURLResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSHTTPURLResponse.h; sourceTree = "<group>"; };
 		FE405A6B0B4450FD001B183D /* NSHTTPURLResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSHTTPURLResponse.m; sourceTree = "<group>"; };
 		FEB6CBAE0B4A139F004FADF2 /* NSKeyValueCoding.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSKeyValueCoding.h; sourceTree = "<group>"; };
@@ -2181,13 +2195,13 @@
 		0867D691FE84028FC02AAC07 /* Foundation */ = {
 			isa = PBXGroup;
 			children = (
-				FEB6CC800B4A1C7A004FADF2 /* NSKeyValueCoding */,
-				FEB6CC400B4A1922004FADF2 /* objc.xcodeproj */,
 				0867D69AFE84028FC02AAC07 /* External Frameworks and Libraries */,
 				6E280B2909747F1F00EC542B /* Foundation.h */,
 				6E28030D0974787200EC542B /* NSArchiver.h */,
 				6E28030E0974787200EC542B /* NSArchiver.m */,
 				6E280310097478A700EC542B /* NSArray */,
+				FE1935150B5D449E00FB74CC /* NSAssertionHandler.h */,
+				FE1935160B5D449E00FB74CC /* NSAssertionHandler.m */,
 				6E28032D097478E900EC542B /* NSAttributedString */,
 				6E28032E097478F200EC542B /* NSAutoreleasePool */,
 				6E2805F309747D5800EC542B /* NSBundle.h */,
@@ -2226,14 +2240,11 @@
 				6E28060A09747D5800EC542B /* NSHost.m */,
 				FEB9D6070B443BC500C239BB /* NSHTTPCookie */,
 				FEB9D4B60B44355900C239BB /* NSIndexSet */,
-				6E28060B09747D5800EC542B /* NSInputSource.h */,
-				6E28060C09747D5800EC542B /* NSInputSource.m */,
-				6E28060D09747D5800EC542B /* NSInputSourceSet.h */,
-				6E28060E09747D5800EC542B /* NSInputSourceSet.m */,
 				6E28060F09747D5800EC542B /* NSInvocation.h */,
 				6E28061009747D5800EC542B /* NSInvocation.m */,
 				6EC4AAE70A34D9B200E8D6CA /* NSKeyedUnarchiver.h */,
 				6EC4AAE80A34D9B200E8D6CA /* NSKeyedUnarchiver.m */,
+				FEB6CC800B4A1C7A004FADF2 /* NSKeyValueCoding */,
 				FEB9D4D10B4435D000C239BB /* NSLocale.h */,
 				FEB9D4D20B4435D000C239BB /* NSLocale.m */,
 				6E2803320974791700EC542B /* NSLock */,
@@ -2241,7 +2252,6 @@
 				6E28061209747D5800EC542B /* NSMapTable.m */,
 				6E28061309747D5800EC542B /* NSMethodSignature.h */,
 				6E28061409747D5800EC542B /* NSMethodSignature.m */,
-				6E2803330974792800EC542B /* NSNetworkQueue */,
 				6E2803340974793100EC542B /* NSNotification */,
 				6E2803350974793800EC542B /* NSNotificationCenter */,
 				6E2803360974794100EC542B /* NSNotificationQueue */,
@@ -2285,6 +2295,7 @@
 				6E28034409747A0100EC542B /* NSValue */,
 				6E28034509747A1A00EC542B /* NSZone */,
 				6E28034609747A2500EC542B /* objc */,
+				FEB6CC400B4A1922004FADF2 /* objc.xcodeproj */,
 				6E28034709747A4900EC542B /* platform_linux */,
 				6E28034809747A5F00EC542B /* platform_posix */,
 				6E28034909747A6B00EC542B /* platform_solaris */,
@@ -2444,21 +2455,6 @@
 			path = NSLock;
 			sourceTree = "<group>";
 		};
-		6E2803330974792800EC542B /* NSNetworkQueue */ = {
-			isa = PBXGroup;
-			children = (
-				6E2803CA09747B7B00EC542B /* NSSocketDescriptor.h */,
-				6E2803CB09747B7B00EC542B /* NSSocketDescriptor.m */,
-				6E2803CC09747B7B00EC542B /* NSSocketMonitor.h */,
-				6E2803CD09747B7B00EC542B /* NSSocketMonitor.m */,
-				6E2803CE09747B7B00EC542B /* NSSocketMonitorSet.h */,
-				6E2803CF09747B7B00EC542B /* NSSocketMonitorSet.m */,
-				6E2803D009747B7B00EC542B /* NSSocketSet.h */,
-				6E2803D109747B7B00EC542B /* NSSocketSet.m */,
-			);
-			name = NSNetworkQueue;
-			sourceTree = "<group>";
-		};
 		6E2803340974793100EC542B /* NSNotification */ = {
 			isa = PBXGroup;
 			children = (
@@ -2563,6 +2559,10 @@
 		6E28033A0974796000EC542B /* NSRunLoop */ = {
 			isa = PBXGroup;
 			children = (
+				6E28060B09747D5800EC542B /* NSInputSource.h */,
+				6E28060C09747D5800EC542B /* NSInputSource.m */,
+				6E28060D09747D5800EC542B /* NSInputSourceSet.h */,
+				6E28060E09747D5800EC542B /* NSInputSourceSet.m */,
 				6E28044A09747BD100EC542B /* NSDelayedPerform.h */,
 				6E28044B09747BD100EC542B /* NSDelayedPerform.m */,
 				6E28044C09747BD100EC542B /* NSOrderedPerform.h */,
@@ -2623,16 +2623,24 @@
 				6EAD77300AAF1283004BCCC9 /* NSInputStream_socket.m */,
 				6E28048609747BED00EC542B /* NSOutputStream.h */,
 				6E28048709747BED00EC542B /* NSOutputStream.m */,
+				FEB9D3670B437C9600C239BB /* NSOutputStream_buffer.h */,
+				FEB9D3680B437C9600C239BB /* NSOutputStream_buffer.m */,
 				FEB9D31A0B43781500C239BB /* NSOutputStream_data.h */,
 				FEB9D31B0B43781500C239BB /* NSOutputStream_data.m */,
 				FEB9D3250B43783C00C239BB /* NSOutputStream_file.h */,
 				FEB9D3260B43783C00C239BB /* NSOutputStream_file.m */,
 				6EAD77390AAF1293004BCCC9 /* NSOutputStream_socket.h */,
 				6EAD773A0AAF1293004BCCC9 /* NSOutputStream_socket.m */,
+				FE35CBD90B4AD47400FE7AB3 /* NSSelectInputSource.h */,
+				FE35CBDA0B4AD47400FE7AB3 /* NSSelectInputSource.m */,
+				FE35D3AA0B4F369C00FE7AB3 /* NSSelectInputSourceSet.h */,
+				FE35D3AB0B4F369C00FE7AB3 /* NSSelectInputSourceSet.m */,
+				FE35D2D90B4ECDBD00FE7AB3 /* NSSelectSet.h */,
+				FE35D2DA0B4ECDBD00FE7AB3 /* NSSelectSet.m */,
+				FE35CBD70B4AD47400FE7AB3 /* NSSocket.h */,
+				FE35CBD80B4AD47400FE7AB3 /* NSSocket.m */,
 				6E28048809747BED00EC542B /* NSStream.h */,
 				6E28048909747BED00EC542B /* NSStream.m */,
-				FEB9D3670B437C9600C239BB /* NSOutputStream_buffer.h */,
-				FEB9D3680B437C9600C239BB /* NSOutputStream_buffer.m */,
 			);
 			path = NSStream;
 			sourceTree = "<group>";
@@ -2825,10 +2833,12 @@
 				6E28058009747CEE00EC542B /* NSPipe_posix.m */,
 				6E28058109747CEE00EC542B /* NSPlatform_posix.h */,
 				6E28058209747CEE00EC542B /* NSPlatform_posix.m */,
+				FE35D6470B52A3E400FE7AB3 /* NSSelectSet_bsd.h */,
+				FE35D6480B52A3E400FE7AB3 /* NSSelectSet_bsd.m */,
+				FE35D66C0B52AFBC00FE7AB3 /* NSSocket_bsd.h */,
+				FE35D66D0B52AFBC00FE7AB3 /* NSSocket_bsd.m */,
 				6E28058309747CEE00EC542B /* NSTask_posix.h */,
 				6E28058409747CEE00EC542B /* NSTask_posix.m */,
-				6EC4AB510A35157600E8D6CA /* NSSocketMonitorSet_Unix.h */,
-				6EC4AB520A35157600E8D6CA /* NSSocketMonitorSet_Unix.m */,
 			);
 			name = platform_posix;
 			sourceTree = "<group>";
@@ -2848,10 +2858,8 @@
 		6E28034A09747A7700EC542B /* platform_win32 */ = {
 			isa = PBXGroup;
 			children = (
-				6EC4AB350A350DDA00E8D6CA /* NSSocketMonitorSet_Windows.h */,
-				6EC4AB360A350DDA00E8D6CA /* NSSocketMonitorSet_Windows.m */,
-				6E28057509747CEE00EC542B /* NSConstantString.m */,
 				6E28059F09747D0400EC542B /* dllmain.m */,
+				6E28057509747CEE00EC542B /* NSConstantString.m */,
 				6E2805A309747D0400EC542B /* NSFileHandle_win32.h */,
 				6E2805A409747D0400EC542B /* NSFileHandle_win32.m */,
 				6E2805A509747D0400EC542B /* NSFileManager_win32.h */,
@@ -2873,8 +2881,10 @@
 				6E2805B609747D0400EC542B /* NSPlatform_win32.m */,
 				6E2805B709747D0400EC542B /* NSReadInBackground_win32.h */,
 				6E2805B809747D0400EC542B /* NSReadInBackground_win32.m */,
-				6E2805B909747D0400EC542B /* NSSocketInputSource_windows.h */,
-				6E2805BA09747D0400EC542B /* NSSocketInputSource_windows.m */,
+				FE35D34F0B4EEDBB00FE7AB3 /* NSSelectSet_windows.h */,
+				FE35D3500B4EEDBB00FE7AB3 /* NSSelectSet_windows.m */,
+				FE35CC0F0B4AD8A400FE7AB3 /* NSSocket_windows.h */,
+				FE35CC100B4AD8A400FE7AB3 /* NSSocket_windows.m */,
 				6E2805BB09747D0400EC542B /* NSString_win32.h */,
 				6E2805BC09747D0400EC542B /* NSString_win32.m */,
 				6E2805BD09747D0400EC542B /* NSTask_win32.h */,
@@ -3166,10 +3176,6 @@
 				6E4D91A70A2642BD003D335C /* NSException.h in Headers */,
 				6E4D91A90A2642BD003D335C /* NSRaise.h in Headers */,
 				6E4D91AA0A2642BD003D335C /* NSLock.h in Headers */,
-				6E4D91AB0A2642BD003D335C /* NSSocketDescriptor.h in Headers */,
-				6E4D91AC0A2642BD003D335C /* NSSocketMonitor.h in Headers */,
-				6E4D91AD0A2642BD003D335C /* NSSocketMonitorSet.h in Headers */,
-				6E4D91AE0A2642BD003D335C /* NSSocketSet.h in Headers */,
 				6E4D91AF0A2642BD003D335C /* NSNotification_concrete.h in Headers */,
 				6E4D91B00A2642BD003D335C /* NSNotification.h in Headers */,
 				6E4D91B10A2642BD003D335C /* NSNotificationCenter.h in Headers */,
@@ -3324,7 +3330,6 @@
 				6E5796DF0A26438500D0D5AB /* NSPlatform_solaris.h in Headers */,
 				6E5796E10A26439000D0D5AB /* NSTask_solaris.h in Headers */,
 				6EC4AAED0A34D9B200E8D6CA /* NSKeyedUnarchiver.h in Headers */,
-				6EC4AB550A35157600E8D6CA /* NSSocketMonitorSet_Unix.h in Headers */,
 				6EAD77330AAF1283004BCCC9 /* NSInputStream_socket.h in Headers */,
 				6EAD773D0AAF1293004BCCC9 /* NSOutputStream_socket.h in Headers */,
 				FEB9D3100B4374F700C239BB /* NSInputStream_data.h in Headers */,
@@ -3369,6 +3374,13 @@
 				FE405A6E0B4450FD001B183D /* NSHTTPURLResponse.h in Headers */,
 				FEB6CBB40B4A139F004FADF2 /* NSKeyValueCoding.h in Headers */,
 				FEB6CC8D0B4A1D4D004FADF2 /* NSKVCMutableArray.h in Headers */,
+				FE35CBE30B4AD47400FE7AB3 /* NSSocket.h in Headers */,
+				FE35CBE50B4AD47400FE7AB3 /* NSSelectInputSource.h in Headers */,
+				FE35D2DF0B4ECDBD00FE7AB3 /* NSSelectSet.h in Headers */,
+				FE35D3B00B4F369C00FE7AB3 /* NSSelectInputSourceSet.h in Headers */,
+				FE35D64B0B52A3E400FE7AB3 /* NSSelectSet_bsd.h in Headers */,
+				FE35D6700B52AFBC00FE7AB3 /* NSSocket_bsd.h in Headers */,
+				FE1935190B5D449E00FB74CC /* NSAssertionHandler.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3408,10 +3420,6 @@
 				6EA048E909E57D5F0067589C /* NSException.h in Headers */,
 				6EA048EB09E57D5F0067589C /* NSRaise.h in Headers */,
 				6EA048EC09E57D5F0067589C /* NSLock.h in Headers */,
-				6EA048ED09E57D5F0067589C /* NSSocketDescriptor.h in Headers */,
-				6EA048EE09E57D5F0067589C /* NSSocketMonitor.h in Headers */,
-				6EA048EF09E57D5F0067589C /* NSSocketMonitorSet.h in Headers */,
-				6EA048F009E57D5F0067589C /* NSSocketSet.h in Headers */,
 				6EA048F109E57D5F0067589C /* NSNotification_concrete.h in Headers */,
 				6EA048F209E57D5F0067589C /* NSNotification.h in Headers */,
 				6EA048F309E57D5F0067589C /* NSNotificationCenter.h in Headers */,
@@ -3566,7 +3574,6 @@
 				6E0084A60A19363F00F78605 /* NSPropertyListReader_xml1.h in Headers */,
 				6E0084D10A19371600F78605 /* NSPropertyListReader.h in Headers */,
 				6EC4AAE90A34D9B200E8D6CA /* NSKeyedUnarchiver.h in Headers */,
-				6EC4AB530A35157600E8D6CA /* NSSocketMonitorSet_Unix.h in Headers */,
 				6EAD77350AAF1283004BCCC9 /* NSInputStream_socket.h in Headers */,
 				6EAD773F0AAF1293004BCCC9 /* NSOutputStream_socket.h in Headers */,
 				FEB9D3120B4374F700C239BB /* NSInputStream_data.h in Headers */,
@@ -3611,6 +3618,13 @@
 				FE405A700B4450FD001B183D /* NSHTTPURLResponse.h in Headers */,
 				FEB6CBB20B4A139F004FADF2 /* NSKeyValueCoding.h in Headers */,
 				FEB6CC8F0B4A1D4D004FADF2 /* NSKVCMutableArray.h in Headers */,
+				FE35CBDB0B4AD47400FE7AB3 /* NSSocket.h in Headers */,
+				FE35CBDD0B4AD47400FE7AB3 /* NSSelectInputSource.h in Headers */,
+				FE35D2DB0B4ECDBD00FE7AB3 /* NSSelectSet.h in Headers */,
+				FE35D3AC0B4F369C00FE7AB3 /* NSSelectInputSourceSet.h in Headers */,
+				FE35D6490B52A3E400FE7AB3 /* NSSelectSet_bsd.h in Headers */,
+				FE35D66E0B52AFBC00FE7AB3 /* NSSocket_bsd.h in Headers */,
+				FE1935170B5D449E00FB74CC /* NSAssertionHandler.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3650,10 +3664,6 @@
 				6E2803C009747B6200EC542B /* NSException.h in Headers */,
 				6E2803C409747B6200EC542B /* NSRaise.h in Headers */,
 				6E2803C809747B7100EC542B /* NSLock.h in Headers */,
-				6E2803D409747B7B00EC542B /* NSSocketDescriptor.h in Headers */,
-				6E2803D609747B7B00EC542B /* NSSocketMonitor.h in Headers */,
-				6E2803D809747B7B00EC542B /* NSSocketMonitorSet.h in Headers */,
-				6E2803DA09747B7B00EC542B /* NSSocketSet.h in Headers */,
 				6E2803E209747B8600EC542B /* NSNotification_concrete.h in Headers */,
 				6E2803E409747B8600EC542B /* NSNotification.h in Headers */,
 				6E2803EC09747B9100EC542B /* NSNotificationCenter.h in Headers */,
@@ -3755,7 +3765,6 @@
 				6E2805D309747D0400EC542B /* NSPipe_win32.h in Headers */,
 				6E2805D509747D0400EC542B /* NSPlatform_win32.h in Headers */,
 				6E2805D709747D0400EC542B /* NSReadInBackground_win32.h in Headers */,
-				6E2805D909747D0400EC542B /* NSSocketInputSource_windows.h in Headers */,
 				6E2805DB09747D0400EC542B /* NSString_win32.h in Headers */,
 				6E2805DD09747D0400EC542B /* NSTask_win32.h in Headers */,
 				6E2805E909747D1000EC542B /* NSXMLAttribute.h in Headers */,
@@ -3812,7 +3821,6 @@
 				6E0084A40A19363F00F78605 /* NSPropertyListReader_xml1.h in Headers */,
 				6E0084CF0A19371600F78605 /* NSPropertyListReader.h in Headers */,
 				6EC4AAEB0A34D9B200E8D6CA /* NSKeyedUnarchiver.h in Headers */,
-				6EC4AB370A350DDA00E8D6CA /* NSSocketMonitorSet_Windows.h in Headers */,
 				6EAD77310AAF1283004BCCC9 /* NSInputStream_socket.h in Headers */,
 				6EAD773B0AAF1293004BCCC9 /* NSOutputStream_socket.h in Headers */,
 				FEB9D30E0B4374F700C239BB /* NSInputStream_data.h in Headers */,
@@ -3857,6 +3865,13 @@
 				FE405A6C0B4450FD001B183D /* NSHTTPURLResponse.h in Headers */,
 				FEB6CBB00B4A139F004FADF2 /* NSKeyValueCoding.h in Headers */,
 				FEB6CC8B0B4A1D4D004FADF2 /* NSKVCMutableArray.h in Headers */,
+				FE35CBDF0B4AD47400FE7AB3 /* NSSocket.h in Headers */,
+				FE35CBE10B4AD47400FE7AB3 /* NSSelectInputSource.h in Headers */,
+				FE35CC130B4AD8A400FE7AB3 /* NSSocket_windows.h in Headers */,
+				FE35D2DD0B4ECDBD00FE7AB3 /* NSSelectSet.h in Headers */,
+				FE35D3510B4EEDBB00FE7AB3 /* NSSelectSet_windows.h in Headers */,
+				FE35D3AE0B4F369C00FE7AB3 /* NSSelectInputSourceSet.h in Headers */,
+				FE19351B0B5D449E00FB74CC /* NSAssertionHandler.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4074,10 +4089,6 @@
 				6E4D926A0A2642BD003D335C /* NSException.m in Sources */,
 				6E4D926C0A2642BD003D335C /* NSRaise.m in Sources */,
 				6E4D926D0A2642BD003D335C /* NSLock.m in Sources */,
-				6E4D926E0A2642BD003D335C /* NSSocketDescriptor.m in Sources */,
-				6E4D926F0A2642BD003D335C /* NSSocketMonitor.m in Sources */,
-				6E4D92700A2642BD003D335C /* NSSocketMonitorSet.m in Sources */,
-				6E4D92710A2642BD003D335C /* NSSocketSet.m in Sources */,
 				6E4D92720A2642BD003D335C /* NSNotification_concrete.m in Sources */,
 				6E4D92730A2642BD003D335C /* NSNotification.m in Sources */,
 				6E4D92740A2642BD003D335C /* NSNotificationCenter.m in Sources */,
@@ -4232,7 +4243,6 @@
 				6E5796E40A2643A000D0D5AB /* SolarisMemoryFunctions.m in Sources */,
 				6E5796E50A2643AE00D0D5AB /* objc_msg_sendv.m in Sources */,
 				6EC4AAEE0A34D9B200E8D6CA /* NSKeyedUnarchiver.m in Sources */,
-				6EC4AB560A35157600E8D6CA /* NSSocketMonitorSet_Unix.m in Sources */,
 				6E8115B40A55CB99000DE3F1 /* objc_msg_lookup.m in Sources */,
 				6EAD77340AAF1283004BCCC9 /* NSInputStream_socket.m in Sources */,
 				6EAD773E0AAF1293004BCCC9 /* NSOutputStream_socket.m in Sources */,
@@ -4280,6 +4290,13 @@
 				FEB6CC100B4A169C004FADF2 /* objc-class.m in Sources */,
 				FEB6CC8E0B4A1D4D004FADF2 /* NSKVCMutableArray.m in Sources */,
 				FE35CAEF0B4AB85800FE7AB3 /* objc.m in Sources */,
+				FE35CBE40B4AD47400FE7AB3 /* NSSocket.m in Sources */,
+				FE35CBE60B4AD47400FE7AB3 /* NSSelectInputSource.m in Sources */,
+				FE35D2E00B4ECDBD00FE7AB3 /* NSSelectSet.m in Sources */,
+				FE35D3B10B4F369C00FE7AB3 /* NSSelectInputSourceSet.m in Sources */,
+				FE35D64C0B52A3E400FE7AB3 /* NSSelectSet_bsd.m in Sources */,
+				FE35D6710B52AFBC00FE7AB3 /* NSSocket_bsd.m in Sources */,
+				FE19351A0B5D449E00FB74CC /* NSAssertionHandler.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4318,10 +4335,6 @@
 				6EA049AF09E57D5F0067589C /* NSException.m in Sources */,
 				6EA049B109E57D5F0067589C /* NSRaise.m in Sources */,
 				6EA049B209E57D5F0067589C /* NSLock.m in Sources */,
-				6EA049B309E57D5F0067589C /* NSSocketDescriptor.m in Sources */,
-				6EA049B409E57D5F0067589C /* NSSocketMonitor.m in Sources */,
-				6EA049B509E57D5F0067589C /* NSSocketMonitorSet.m in Sources */,
-				6EA049B609E57D5F0067589C /* NSSocketSet.m in Sources */,
 				6EA049B709E57D5F0067589C /* NSNotification_concrete.m in Sources */,
 				6EA049B809E57D5F0067589C /* NSNotification.m in Sources */,
 				6EA049B909E57D5F0067589C /* NSNotificationCenter.m in Sources */,
@@ -4475,7 +4488,6 @@
 				6E0084A70A19363F00F78605 /* NSPropertyListReader_xml1.m in Sources */,
 				6E0084D20A19371600F78605 /* NSPropertyListReader.m in Sources */,
 				6EC4AAEA0A34D9B200E8D6CA /* NSKeyedUnarchiver.m in Sources */,
-				6EC4AB540A35157600E8D6CA /* NSSocketMonitorSet_Unix.m in Sources */,
 				6E8113980A54BBAC000DE3F1 /* objc_msg_sendv.s in Sources */,
 				6E8115B80A55CB99000DE3F1 /* objc_msg_lookup.m in Sources */,
 				6EAD77360AAF1283004BCCC9 /* NSInputStream_socket.m in Sources */,
@@ -4524,6 +4536,13 @@
 				FEB6CC110B4A169D004FADF2 /* objc-class.m in Sources */,
 				FEB6CC900B4A1D4D004FADF2 /* NSKVCMutableArray.m in Sources */,
 				FE35CAED0B4AB85800FE7AB3 /* objc.m in Sources */,
+				FE35CBDC0B4AD47400FE7AB3 /* NSSocket.m in Sources */,
+				FE35CBDE0B4AD47400FE7AB3 /* NSSelectInputSource.m in Sources */,
+				FE35D2DC0B4ECDBD00FE7AB3 /* NSSelectSet.m in Sources */,
+				FE35D3AD0B4F369C00FE7AB3 /* NSSelectInputSourceSet.m in Sources */,
+				FE35D64A0B52A3E400FE7AB3 /* NSSelectSet_bsd.m in Sources */,
+				FE35D66F0B52AFBC00FE7AB3 /* NSSocket_bsd.m in Sources */,
+				FE1935180B5D449E00FB74CC /* NSAssertionHandler.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4562,10 +4581,6 @@
 				6E2803C109747B6200EC542B /* NSException.m in Sources */,
 				6E2803C509747B6200EC542B /* NSRaise.m in Sources */,
 				6E2803C909747B7100EC542B /* NSLock.m in Sources */,
-				6E2803D509747B7B00EC542B /* NSSocketDescriptor.m in Sources */,
-				6E2803D709747B7B00EC542B /* NSSocketMonitor.m in Sources */,
-				6E2803D909747B7B00EC542B /* NSSocketMonitorSet.m in Sources */,
-				6E2803DB09747B7B00EC542B /* NSSocketSet.m in Sources */,
 				6E2803E309747B8600EC542B /* NSNotification_concrete.m in Sources */,
 				6E2803E509747B8600EC542B /* NSNotification.m in Sources */,
 				6E2803ED09747B9100EC542B /* NSNotificationCenter.m in Sources */,
@@ -4716,14 +4731,12 @@
 				6E71DB21097B5AB50071C089 /* NSPipe_win32.m in Sources */,
 				6E71DB22097B5AB70071C089 /* NSPlatform_win32.m in Sources */,
 				6E71DB23097B5AB80071C089 /* NSReadInBackground_win32.m in Sources */,
-				6E71DB24097B5AB90071C089 /* NSSocketInputSource_windows.m in Sources */,
 				6E71DB25097B5ABA0071C089 /* NSString_win32.m in Sources */,
 				6E71DB26097B5ABB0071C089 /* NSTask_win32.m in Sources */,
 				6E903FFB0A07B65500938799 /* NSConstantString.m in Sources */,
 				6E0084A50A19363F00F78605 /* NSPropertyListReader_xml1.m in Sources */,
 				6E0084D00A19371600F78605 /* NSPropertyListReader.m in Sources */,
 				6EC4AAEC0A34D9B200E8D6CA /* NSKeyedUnarchiver.m in Sources */,
-				6EC4AB380A350DDA00E8D6CA /* NSSocketMonitorSet_Windows.m in Sources */,
 				6E8113740A54BA9C000DE3F1 /* objc_msg_sendv.s in Sources */,
 				6E8115B60A55CB99000DE3F1 /* objc_msg_lookup.m in Sources */,
 				6EAD77320AAF1283004BCCC9 /* NSInputStream_socket.m in Sources */,
@@ -4772,6 +4785,13 @@
 				FEB6CC0F0B4A169C004FADF2 /* objc-class.m in Sources */,
 				FEB6CC8C0B4A1D4D004FADF2 /* NSKVCMutableArray.m in Sources */,
 				FE35CAEE0B4AB85800FE7AB3 /* objc.m in Sources */,
+				FE35CBE00B4AD47400FE7AB3 /* NSSocket.m in Sources */,
+				FE35CBE20B4AD47400FE7AB3 /* NSSelectInputSource.m in Sources */,
+				FE35CC140B4AD8A400FE7AB3 /* NSSocket_windows.m in Sources */,
+				FE35D2DE0B4ECDBD00FE7AB3 /* NSSelectSet.m in Sources */,
+				FE35D3520B4EEDBB00FE7AB3 /* NSSelectSet_windows.m in Sources */,
+				FE35D3AF0B4F369C00FE7AB3 /* NSSelectInputSourceSet.m in Sources */,
+				FE19351C0B5D449E00FB74CC /* NSAssertionHandler.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

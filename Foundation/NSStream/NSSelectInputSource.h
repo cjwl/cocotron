@@ -1,4 +1,4 @@
-/* Copyright (c) 2006-2007 Christopher J. W. Lloyd
+/* Copyright (c) 2007 Christopher J. W. Lloyd
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
@@ -7,46 +7,37 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
 #import <Foundation/NSInputSource.h>
-#import <Foundation/NSSocketDescriptor.h>
+#import <Foundation/NSStream.h>
+#import <Foundation/NSSocket.h>
 
 enum {
- NSSocketNoActivity=0,
- NSSocketReadableActivity=1,
- NSSocketWritableActivity=2,
- NSSocketExceptionalActivity=4
+   NSSelectReadEvent=0x01,
+   NSSelectWriteEvent=0x02,
+   NSSelectExceptEvent=0x04
 };
 
-@interface NSSocketMonitor : NSInputSource {
-   NSSocketDescriptor _descriptor;
-   unsigned           _monitorActivity;
-   unsigned           _currentActivity;
-   id                 _delegate;
+@interface NSSelectInputSource : NSInputSource {
+   NSSocket *_socket;
+   id        _delegate;
+   unsigned  _eventMask;
 }
 
-+(NSSocketMonitor *)socketMonitorWithDescriptor:(NSSocketDescriptor)descriptor;
+-initWithSocket:(NSSocket *)socket;
 
--initWithDescriptor:(NSSocketDescriptor)descriptor;
++(id)socketInputSourceWithSocket:(NSSocket *)socket;
 
--(NSSocketDescriptor)descriptor;
-
--(void)setDelegate:delegate;
+-(NSSocket *)socket;
 -delegate;
 
--(unsigned)currentActivity;
--(void)setCurrentActivity:(unsigned)activity;
+-(void)setDelegate:object;
 
--(unsigned)fileActivity;
--(void)monitorFileActivity:(unsigned)activity;
--(void)ceaseMonitoringFileActivity;
+-(unsigned)selectEventMask;
+-(void)setSelectEventMask:(unsigned)mask;
 
--(void)notifyDelegateOfCurrentActivityAndReset;
+-(BOOL)processImmediateEvents:(unsigned)selectEvent;
 
 @end
 
-@interface NSObject(NSSocketMonitor_delegate)
-
--(void)activityMonitorIndicatesReadable:(NSSocketMonitor *)socketMonitor;
--(void)activityMonitorIndicatesWriteable:(NSSocketMonitor *)socketMonitor;
--(void)activityMonitorIndicatesException:(NSSocketMonitor *)socketMonitor;
-
+@interface NSObject(NSSelectInputSourceDelegate)
+-(void)selectInputSource:(NSSelectInputSource *)inputSource selectEvent:(unsigned)selectEvent;
 @end

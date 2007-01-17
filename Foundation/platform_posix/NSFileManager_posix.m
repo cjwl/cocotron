@@ -98,6 +98,21 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     return NO;
 }
 
+-(BOOL)_errorHandler:handler src:(NSString *)src dest:(NSString *)dest operation:(NSString *)op {
+    if ([handler respondsToSelector:@selector(fileManager:shouldProceedAfterError:)]) {
+        NSDictionary *errorInfo = [NSDictionary dictionaryWithObjectsAndKeys:
+            src, @"Path",
+            [NSString stringWithFormat:@"%@: %s", op, strerror(errno)], @"Error",
+            dest, @"ToPath",
+            nil];
+
+        if ([handler fileManager:self shouldProceedAfterError:errorInfo])
+            return YES;
+    }
+
+    return NO;
+}
+
 -(BOOL)removeFileAtPath:(NSString *)path handler:handler {
     if([path isEqualToString:@"."] || [path isEqualToString:@".."])
         NSRaiseException(NSInvalidArgumentException, self, _cmd, @"%@: invalid path", path);
@@ -131,20 +146,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     return YES;
 }
 
--(BOOL)_errorHandler:handler src:(NSString *)src dest:(NSString *)dest operation:(NSString *)op {
-    if ([handler respondsToSelector:@selector(fileManager:shouldProceedAfterError:)]) {
-        NSDictionary *errorInfo = [NSDictionary dictionaryWithObjectsAndKeys:
-            src, @"Path",
-            [NSString stringWithFormat:@"%@: %s", op, strerror(errno)], @"Error",
-            dest, @"ToPath",
-            nil];
-
-        if ([handler fileManager:self shouldProceedAfterError:errorInfo])
-            return YES;
-    }
-
-    return NO;
-}
 
 -(BOOL)movePath:(NSString *)src toPath:(NSString *)dest handler:handler {
 /*

@@ -6,21 +6,27 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
-#import <Foundation/NSInputStream.h>
-#import <Foundation/NSSocket.h>
-#import <Foundation/NSSelectInputSource.h>
+#import <Foundation/NSObject.h>
 
-@class NSSocket,NSSelectInputSource;
+@class NSDate, NSInputSource, NSMutableSet;
 
-@interface NSInputStream_socket : NSInputStream {
-   id                   _delegate;
-   NSError             *_error;
-   NSStreamStatus       _status;
-   NSSocket            *_socket;
-   NSSelectInputSource *_inputSource;
-   
+@interface NSInputSourceSet : NSObject {
+   NSMutableSet *_inputSources;
 }
 
--initWithSocket:(NSSocket *)socket streamStatus:(NSStreamStatus)status;
+-(BOOL)recognizesInputSource:(NSInputSource *)source;
+
+-(void)addInputSource:(NSInputSource *)source;
+-(void)removeInputSource:(NSInputSource *)source;
+
+-(NSDate *)limitDateForMode:(NSString *)mode;
+
+-(BOOL)immediateInputInMode:(NSString *)mode;
+
+-(void)changingIntoMode:(NSString *)mode;
+
+-(void)waitInBackground;
+
+-(BOOL)waitForInputInMode:(NSString *)mode beforeDate:(NSDate *)date;
 
 @end

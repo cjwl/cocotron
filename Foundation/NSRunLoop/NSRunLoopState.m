@@ -19,13 +19,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @implementation NSRunLoopState
 
 -init {
-   _inputSourceSet=[[[NSPlatform currentPlatform] inputSourceSetClass] new];
+   _inputSourceSet=[[[NSPlatform currentPlatform] synchronousInputSourceSet] retain];
+   _asyncInputSourceSets=[[[NSPlatform currentPlatform] asynchronousInputSourceSets] retain];
    _timers=[NSMutableArray new];
    return self;
 }
 
 -(void)dealloc {
    [_inputSourceSet release];
+   [_asyncInputSourceSets release];
    [_timers release];
    [super dealloc];
 }
@@ -33,6 +35,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)addTimer:(NSTimer *)timer {
    [_timers addObject:timer];
 }
+
+-(void)changingIntoMode:(NSString *)mode {
+   int i,count=[_asyncInputSourceSets count];
+
+   [_inputSourceSet changingIntoMode:mode];
+
+   for(i=0;i<count;i++)
+    [[_asyncInputSourceSets objectAtIndex:i] changingIntoMode:mode];
+}
+
 
 -(NSDate *)limitDateForMode:(NSString *)mode {
    NSMutableArray *fire=[NSMutableArray array];
@@ -70,12 +82,28 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return limit;
 }
 
+-(NSInputSourceSet *)inputSourceSetForInputSource:(NSInputSource *)source {
+   if([_inputSourceSet recognizesInputSource:source])
+    return _inputSourceSet;
+   else {
+    int i,count=[_asyncInputSourceSets count];
+    
+    for(i=0;i<count;i++){
+     NSInputSourceSet *check=[_asyncInputSourceSets objectAtIndex:i];
+     
+     if([check recognizesInputSource:source])
+      return check;
+    }
+   }
+   return nil;
+}
+
 -(void)addInputSource:(NSInputSource *)source {
-   [_inputSourceSet addInputSource:source];
+   [[self inputSourceSetForInputSource:source] addInputSource:source];
 }
 
 -(void)removeInputSource:(NSInputSource *)source {
-   [_inputSourceSet removeInputSource:source];
+   [[self inputSourceSetForInputSource:source] removeInputSource:source];
 }
 
 -(void)invalidateTimerWithDelayedPerform:(NSDelayedPerform *)delayed {
@@ -91,15 +119,33 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    }
 }
 
--(void)acceptInputForMode:(NSString *)mode beforeDate:(NSDate *)date {
+-(BOOL)immediateInputInMode:(NSString *)mode {
    if([_inputSourceSet immediateInputInMode:mode])
-    return;
+    return YES;
+   else {
+    int i,count=[_asyncInputSourceSets count];
+    
+    for(i=0;i<count;i++)
+     if([[_asyncInputSourceSets objectAtIndex:i] immediateInputInMode:mode])
+      return YES;
+      
+    return NO;
+   }
+}
 
-   [_inputSourceSet waitForInputInMode:mode beforeDate:date];
+-(void)acceptInputForMode:(NSString *)mode beforeDate:(NSDate *)date {
+   if(![self immediateInputInMode:mode]){
+    int i,count=[_asyncInputSourceSets count];
+    
+    for(i=0;i<count;i++)
+     [[_asyncInputSourceSets objectAtIndex:i] waitInBackground];
+
+    [_inputSourceSet waitForInputInMode:mode beforeDate:date];
+   }
 }
 
 -(BOOL)pollInputForMode:(NSString *)mode {
-   if([_inputSourceSet immediateInputInMode:mode])
+   if([self immediateInputInMode:mode])
     return YES;
 
    return [_inputSourceSet waitForInputInMode:mode beforeDate:[NSDate date]];

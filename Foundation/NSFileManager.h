@@ -49,6 +49,8 @@ FOUNDATION_EXPORT NSString *NSFileDeviceIdentifier;
 -(BOOL)createDirectoryAtPath:(NSString *)path
                   attributes:(NSDictionary *)attributes;
 
+-(NSString *)pathContentOfSymbolicLinkAtPath:(NSString *)path;
+
 -(BOOL)fileExistsAtPath:(NSString *)path;
 -(BOOL)fileExistsAtPath:(NSString *)path isDirectory:(BOOL *)isDirectory;
 
@@ -83,4 +85,5 @@ FOUNDATION_EXPORT NSString *NSFileDeviceIdentifier;
 -(unsigned long)filePosixPermissions;
 -(NSString *)fileOwnerAccountName;
 -(NSString *)fileGroupOwnerAccountName;
+-(NSString *)fileType;
 @end

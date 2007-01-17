@@ -26,6 +26,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSNumber_placeholder.h>
 #import <Foundation/NSAutoreleasePool-private.h>
 
+#import <string.h>
+
 @implementation NSNumber
 
 +allocWithZone:(NSZone *)zone {

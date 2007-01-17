@@ -9,24 +9,69 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 // Original - Christopher Lloyd <cjwl@objc.net>
 #import <Foundation/NSOutputStream_data.h>
 #import <Foundation/NSMutableData.h>
+#import <Foundation/NSError.h>
+#import <Foundation/NSString.h>
 
 @implementation NSOutputStream_data
 
 -initToMemory {
-   _data=[NSMutableData data];
+   _delegate=self;
+   _error=nil;
+   _status=NSStreamStatusNotOpen;
+   _data=nil;
    return self;
 }
 
 -(void)dealloc {
+   [_error release];
    [_data release];
    [super dealloc];
 }
 
+-delegate {
+   return _delegate;
+}
+
+-(void)setDelegate:delegate {
+   _delegate=delegate;
+   if(_delegate==nil)
+    _delegate=self;
+}
+
+-(NSError *)streamError {
+   return _error;
+}
+
+-(NSStreamStatus)streamStatus {
+   return _status;
+}
+
+-(void)open {
+   if(_status==NSStreamStatusNotOpen){
+    _status=NSStreamStatusOpen;
+    _data=[NSMutableData new];
+   }
+}
+
+-(void)close {
+   _status=NSStreamStatusClosed;
+}
+
+-propertyForKey:(NSString *)key {
+   if([key isEqualToString:NSStreamDataWrittenToMemoryStreamKey])
+    return _data;
+    
+   return nil;
+}
+
 -(BOOL)hasSpaceAvailable {
-   return YES;
+   return (_status==NSStreamStatusOpen)?YES:NO;
 }
 
 -(int)write:(const unsigned char *)buffer maxLength:(unsigned)maxLength {
+   if(_status!=NSStreamStatusOpen)
+    return -1;
+    
    [_data appendBytes:buffer length:maxLength];
    return maxLength;
 }

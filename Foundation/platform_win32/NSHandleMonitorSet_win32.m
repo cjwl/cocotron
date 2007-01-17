@@ -26,13 +26,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -init {
    [super init];
-   _monitors=[NSMutableSet new];
    _eventInputSource=nil;
    return self;
 }
 
 -(void)dealloc {
-   [_monitors release];
    [_eventInputSource release];
    [super dealloc];
 }
@@ -41,7 +39,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    if(_eventInputSource!=nil)
     return YES;
 
-   return ([_monitors count]>0)?YES:NO;
+   return ([_inputSources count]>0)?YES:NO;
 }
 
 -(NSDate *)limitDateForMode:(NSString *)mode {
@@ -52,58 +50,59 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(unsigned)count {
-   return [_monitors count];
+   return [_inputSources count];
+}
+
+-(BOOL)recognizesInputSource:(NSInputSource *)source {
+   if([source isKindOfClass:[NSHandleMonitor_win32 class]])
+    return YES;
+   if([source respondsToSelector:@selector(waitForEventsAndMultipleObjects:count:milliseconds:)])
+    return YES;
+   return NO;
 }
 
 -(void)addInputSource:(NSInputSource *)source {
-   if([source isKindOfClass:[NSHandleMonitor_win32 class]])
-    [_monitors addObject:source];
-   else {
-    if([source respondsToSelector:@selector(waitForEventsAndMultipleObjects:count:milliseconds:)]){
-     [_eventInputSource autorelease];
-     _eventInputSource=[source retain];
-    }
+   [super addInputSource:source];
 
-    [super addInputSource:source];
+   if([source respondsToSelector:@selector(waitForEventsAndMultipleObjects:count:milliseconds:)]){
+    [_eventInputSource autorelease];
+    _eventInputSource=[source retain];
    }
 }
 
 -(void)removeInputSource:(NSInputSource *)source {
-   if([source isKindOfClass:[NSHandleMonitor_win32 class]])
-    [_monitors removeObject:source];
-   else {
-    if(source==_eventInputSource){
-     [_eventInputSource autorelease];
-     _eventInputSource=nil;
-    }
-
-    [super removeInputSource:source];
+   [super removeInputSource:source];
+   
+   if(source==_eventInputSource){
+    [_eventInputSource autorelease];
+    _eventInputSource=nil;
    }
 }
 
 -(NSHandleMonitor_win32 *)monitorWithHandle:(void *)handle {
-   NSEnumerator          *state=[_monitors objectEnumerator];
+   NSEnumerator          *state=[_inputSources objectEnumerator];
    NSHandleMonitor_win32 *monitor;
 
    while((monitor=[state nextObject])!=nil)
-    if([monitor handle]==handle)
+    if([monitor isKindOfClass:[NSHandleMonitor_win32 class]] && ([monitor handle]==handle))
      return monitor;
 
    return nil;
 }
 
 -(NSHandleMonitor_win32 *)waitForHandleActivityBeforeDate:(NSDate *)date mode:(NSString *)mode {
-   NSEnumerator          *state=[_monitors objectEnumerator];
+   NSEnumerator          *state=[_inputSources objectEnumerator];
    NSHandleMonitor_win32    *monitor;
    NSTimeInterval         interval=[date timeIntervalSinceNow];
    DWORD                  msec;
-   HANDLE                 objectList[[_monitors count]];
+   HANDLE                 objectList[[_inputSources count]];
    int                    objectCount=0;
    DWORD                  waitResult;
 
    objectCount=0;
    while((monitor=[state nextObject])!=nil)
-    objectList[objectCount++]=[monitor handle];
+    if([monitor isKindOfClass:[NSHandleMonitor_win32 class]])
+     objectList[objectCount++]=[monitor handle];
 
    if(interval>1000000)
     interval=10000;
