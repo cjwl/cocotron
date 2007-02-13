@@ -10,4 +10,32 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @implementation NSPDFImageRep
 
+-initWithData:(NSData *)data {
+   return self;
+}
+
+-(void)dealloc {
+   [super dealloc];
+}
+
++imageRepWithData:(NSData *)data {
+   return [[[self alloc] initWithData:data] autorelease];
+}
+
+-(NSData *)PDFRepresentation {
+   return _pdf;
+}
+
+-(int)pageCount {
+   return 0;
+}
+
+-(int)currentPage {
+   return _currentPage;
+}
+
+-(void)setCurrentPage:(int)page {
+   _currentPage=page;
+}
+
 @end

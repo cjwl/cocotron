@@ -7,6 +7,8 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
 // Original - Christopher Lloyd <cjwl@objc.net>
+#include <math.h>
+
 #import <Foundation/NSKeyedUnarchiver.h>
 #import <Foundation/NSPropertyListReader.h>
 #import <Foundation/NSString.h>
@@ -198,13 +200,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    NSString *string=[self decodeObjectForKey:key];
    unsigned i,length=[string length],resultLength=0;
    unichar  buffer[length];
-   double   multiplier=0.10,sign=1;
+   double   multiplier=0.10,sign=1,exponent=0,expsign=1;
    enum {
     expectingBraceOrSpace,
     expectingBraceSpaceOrInteger,
     expectingSpaceOrInteger,
     expectingInteger,
     expectingFraction,
+    expectingExponent,
     expectingCommaBraceOrSpace,
     expectingSpace
    } state=expectingBraceOrSpace;
@@ -237,7 +240,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
        break;
       // fallthru
      case expectingInteger:
-      state=expectingInteger;
       if(code=='-')
        sign=-1;
       else if(code>='0' && code<='9')
@@ -245,6 +247,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       else if(code=='.'){
        multiplier=0.10;
        state=expectingFraction;
+      }
+      else if(code=='e' || code=='E'){
+       state=expectingExponent;
+       exponent=0;
       }
       else if(code==','){
        result[resultLength++]*=sign;
@@ -270,6 +276,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
        result[resultLength]=result[resultLength]+multiplier*(code-'0');
        multiplier/=10;
       }
+      else if(code=='e' || code=='E'){
+       state=expectingExponent;
+       exponent=0;
+      }
       else if(code==','){
        result[resultLength++]*=sign;
        sign=1;
@@ -278,6 +288,29 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       else if(code=='}'){
        result[resultLength++]*=sign;
        sign=1;
+       state=expectingBraceSpaceOrInteger;
+      }
+      else
+       [NSException raise:NSInvalidArgumentException format:@"Unable to parse geometry %@, state=%d",string,state];
+      break;
+     
+     case expectingExponent:
+      if(code=='+')
+       break;
+      if(code=='-')
+       expsign=-1;
+      else if(code>='0' && code<='9')
+       exponent=exponent*10+(code-'0');
+      else if(code==','){
+       result[resultLength++]*=sign*pow(10,expsign*exponent);
+       sign=expsign=1;
+       exponent=0;
+       state=expectingSpaceOrInteger;
+      }
+      else if(code=='}'){
+       result[resultLength++]*=sign*pow(10,expsign*exponent);
+       sign=expsign=1;
+       exponent=0;
        state=expectingBraceSpaceOrInteger;
       }
       else

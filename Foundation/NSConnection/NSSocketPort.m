@@ -7,7 +7,58 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
 #import <Foundation/NSSocketPort.h>
+#import <Foundation/NSRaise.h>
 
 @implementation NSSocketPort
+
+-init {
+  NSUnimplementedMethod();
+  return nil;
+}
+
+-initRemoteWithProtocolFamily:(int)family socketType:(int)type protocol:(int)protocol address:(NSData *)address {
+  NSUnimplementedMethod();
+  return nil;
+}
+
+-initRemoteWithTCPPort:(unsigned short)port host:(NSString *)hostName {
+  NSUnimplementedMethod();
+  return nil;
+}
+
+-initWithProtocolFamily:(int)family socketType:(int)type protocol:(int)protocol address:(NSData *)address {
+  NSUnimplementedMethod();
+  return nil;
+}
+
+-initWithProtocolFamily:(int)family socketType:(int)type protocol:(int)protocol socket:(NSSocketNativeHandle)nativeSocket {
+  NSUnimplementedMethod();
+  return nil;
+}
+
+-(NSData *)address {
+  NSUnimplementedMethod();
+  return nil;
+}
+
+-(int)protocol {
+  NSUnimplementedMethod();
+  return 0;
+}
+
+-(int)protocolFamily {
+  NSUnimplementedMethod();
+  return 0;
+}
+
+-(NSSocketNativeHandle)socket {
+  NSUnimplementedMethod();
+  return 0;
+}
+
+-(int)socketType {
+  NSUnimplementedMethod();
+  return 0;
+}
 
 @end

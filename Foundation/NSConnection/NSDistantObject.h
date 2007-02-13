@@ -8,8 +8,22 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/NSProxy.h>
 
-@interface NSDistantObject : NSProxy {
+@class NSConnection,Protocol;
 
+@interface NSDistantObject : NSProxy {
+   NSConnection *_connection;
+   Protocol     *_protocol;
+   id            _localOrRemote;
 }
+
+-initWithLocal:local connection:(NSConnection *)connection;
+-initWithTarget:remote connection:(NSConnection *)connection;
+
++(NSDistantObject *)proxyWithLocal:local connection:(NSConnection *)connection;
++(NSDistantObject *)proxyWithTarget:remote connection:(NSConnection *)connection;
+
+-(NSConnection *)connectionForProxy;
+
+-(void)setProtocolForProxy:(Protocol *)protocol;
 
 @end

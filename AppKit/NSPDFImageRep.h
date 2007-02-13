@@ -8,8 +8,23 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <AppKit/NSImageRep.h>
 
-@interface NSPDFImageRep : NSImageRep {
+@class KGPDFDocument;
 
+@interface NSPDFImageRep : NSImageRep {
+   NSData        *_pdf;
+   int            _currentPage;
+   KGPDFDocument *_document;
 }
+
+-initWithData:(NSData *)data;
+
++imageRepWithData:(NSData *)data;
+
+-(NSData *)PDFRepresentation;
+
+-(int)pageCount;
+-(int)currentPage;
+
+-(void)setCurrentPage:(int)page;
 
 @end

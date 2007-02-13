@@ -8,10 +8,37 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/NSObject.h>
 
-@interface NSPort : NSObject {
+@class NSPortMessage,NSRunLoop,NSConnection,NSDate,NSMutableArray,NSData;
 
-}
+FOUNDATION_EXPORT NSString *NSPortDidBecomeInvalidNotification;
+
+@interface NSPort : NSObject
+
++(NSPort *)port;
+
+-(id)delegate;
+-(void)setDelegate:delegate;
+
+-(void)invalidate;
+-(BOOL)isValid;
+
+-(void)scheduleInRunLoop:(NSRunLoop *)runLoop forMode:(NSString *)mode;
+-(void)removeFromRunLoop:(NSRunLoop *)runLoop forMode:(NSString *)mode;
+
+-(void)addConnection:(NSConnection *)connection toRunLoop:(NSRunLoop *)runLoop forMode:(NSString *)mode;
+-(void)removeConnection:(NSConnection *)connection fromRunLoop:(NSRunLoop *)runLoop forMode:(NSString *)mode;
+
+-(unsigned)reservedSpaceLength;
+
+-(BOOL)sendBeforeDate:(NSDate *)beforeDate components:(NSMutableArray *)components from:(NSPort *)fromPort reserved:(unsigned)reservedSpace;
+
+-(BOOL)sendBeforeDate:(NSDate *)beforeData msgid:(unsigned)msgid components:(NSMutableArray *)components from:(NSPort *)fromPort reserved:(unsigned)reservedSpace;
 
 @end
+
+@interface NSObject(NSPortDelegate)
+-(void)handlePortMessage:(NSPortMessage *)portMessage;
+@end
+
 
 #import <Foundation/NSSocketPort.h>

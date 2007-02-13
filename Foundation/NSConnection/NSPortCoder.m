@@ -8,7 +8,45 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 // Original - Christopher Lloyd <cjwl@objc.net>
 #import <Foundation/NSPortCoder.h>
+#import <Foundation/NSRaise.h>
 
 @implementation NSPortCoder
+
+-initWithReceivePort:(NSPort *)receivePort sendPort:(NSPort *)sendPort components:(NSArray *)components {
+   NSUnimplementedMethod();
+   return nil;
+}
+
++portCoderWithReceivePort:(NSPort *)receivePort sendPort:(NSPort *)sendPort components:(NSArray *)components {
+   return [[[self alloc] initWithReceivePort:receivePort sendPort:sendPort components:components] autorelease];
+}
+
+-(NSConnection *)connection {
+   NSUnimplementedMethod();
+   return nil;
+}
+
+-(void)encodePortObject:(NSPort *)port {
+   NSUnimplementedMethod();
+}
+
+-(NSPort *)decodePortObject {
+   NSUnimplementedMethod();
+   return nil;
+}
+
+-(BOOL)isBycopy {
+   NSUnimplementedMethod();
+   return NO;
+}
+
+-(BOOL)isByref {
+   NSUnimplementedMethod();
+   return NO;
+}
+
+-(void)dispatch {
+   NSUnimplementedMethod();
+}
 
 @end

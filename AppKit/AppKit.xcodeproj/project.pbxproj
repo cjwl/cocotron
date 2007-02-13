@@ -549,6 +549,66 @@
 		FE56BA050B1221330046B7D9 /* NSMutableAttributedString.m in Sources */ = {isa = PBXBuildFile; fileRef = FE56BA030B1221330046B7D9 /* NSMutableAttributedString.m */; };
 		FE6466E30B2C611D00B302B0 /* NSMutableParagraphStyle.h in Headers */ = {isa = PBXBuildFile; fileRef = FE6466E10B2C611D00B302B0 /* NSMutableParagraphStyle.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE6466E40B2C611D00B302B0 /* NSMutableParagraphStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = FE6466E20B2C611D00B302B0 /* NSMutableParagraphStyle.m */; };
+		FE64B8E10B81239D007EE513 /* KGColorSpace.h in Headers */ = {isa = PBXBuildFile; fileRef = FE64B8A70B81239D007EE513 /* KGColorSpace.h */; };
+		FE64B8E20B81239D007EE513 /* KGColorSpace.m in Sources */ = {isa = PBXBuildFile; fileRef = FE64B8A80B81239D007EE513 /* KGColorSpace.m */; };
+		FE64B8E30B81239D007EE513 /* KGContext.h in Headers */ = {isa = PBXBuildFile; fileRef = FE64B8A90B81239D007EE513 /* KGContext.h */; };
+		FE64B8E40B81239D007EE513 /* KGContext.m in Sources */ = {isa = PBXBuildFile; fileRef = FE64B8AA0B81239D007EE513 /* KGContext.m */; };
+		FE64B8E50B81239D007EE513 /* KGDataProvider.h in Headers */ = {isa = PBXBuildFile; fileRef = FE64B8AB0B81239D007EE513 /* KGDataProvider.h */; };
+		FE64B8E60B81239D007EE513 /* KGDataProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = FE64B8AC0B81239D007EE513 /* KGDataProvider.m */; };
+		FE64B8E70B81239D007EE513 /* KGFunction.h in Headers */ = {isa = PBXBuildFile; fileRef = FE64B8AD0B81239D007EE513 /* KGFunction.h */; };
+		FE64B8E80B81239D007EE513 /* KGFunction.m in Sources */ = {isa = PBXBuildFile; fileRef = FE64B8AE0B81239D007EE513 /* KGFunction.m */; };
+		FE64B8E90B81239D007EE513 /* KGImage.h in Headers */ = {isa = PBXBuildFile; fileRef = FE64B8AF0B81239D007EE513 /* KGImage.h */; };
+		FE64B8EA0B81239D007EE513 /* KGImage.m in Sources */ = {isa = PBXBuildFile; fileRef = FE64B8B00B81239D007EE513 /* KGImage.m */; };
+		FE64B8EB0B81239D007EE513 /* KGPDFArray.h in Headers */ = {isa = PBXBuildFile; fileRef = FE64B8B10B81239D007EE513 /* KGPDFArray.h */; };
+		FE64B8EC0B81239D007EE513 /* KGPDFArray.m in Sources */ = {isa = PBXBuildFile; fileRef = FE64B8B20B81239D007EE513 /* KGPDFArray.m */; };
+		FE64B8ED0B81239D007EE513 /* KGPDFContentStream.h in Headers */ = {isa = PBXBuildFile; fileRef = FE64B8B30B81239D007EE513 /* KGPDFContentStream.h */; };
+		FE64B8EE0B81239D007EE513 /* KGPDFContentStream.m in Sources */ = {isa = PBXBuildFile; fileRef = FE64B8B40B81239D007EE513 /* KGPDFContentStream.m */; };
+		FE64B8EF0B81239D007EE513 /* KGPDFDictionary.h in Headers */ = {isa = PBXBuildFile; fileRef = FE64B8B50B81239D007EE513 /* KGPDFDictionary.h */; };
+		FE64B8F00B81239D007EE513 /* KGPDFDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = FE64B8B60B81239D007EE513 /* KGPDFDictionary.m */; };
+		FE64B8F10B81239D007EE513 /* KGPDFDocument.h in Headers */ = {isa = PBXBuildFile; fileRef = FE64B8B70B81239D007EE513 /* KGPDFDocument.h */; };
+		FE64B8F20B81239D007EE513 /* KGPDFDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = FE64B8B80B81239D007EE513 /* KGPDFDocument.m */; };
+		FE64B8F30B81239D007EE513 /* KGPDFFilter.h in Headers */ = {isa = PBXBuildFile; fileRef = FE64B8B90B81239D007EE513 /* KGPDFFilter.h */; };
+		FE64B8F40B81239D007EE513 /* KGPDFFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = FE64B8BA0B81239D007EE513 /* KGPDFFilter.m */; };
+		FE64B8F50B81239D007EE513 /* KGPDFFunction_Type2.h in Headers */ = {isa = PBXBuildFile; fileRef = FE64B8BB0B81239D007EE513 /* KGPDFFunction_Type2.h */; };
+		FE64B8F60B81239D007EE513 /* KGPDFFunction_Type2.m in Sources */ = {isa = PBXBuildFile; fileRef = FE64B8BC0B81239D007EE513 /* KGPDFFunction_Type2.m */; };
+		FE64B8F70B81239D007EE513 /* KGPDFFunction_Type3.h in Headers */ = {isa = PBXBuildFile; fileRef = FE64B8BD0B81239D007EE513 /* KGPDFFunction_Type3.h */; };
+		FE64B8F80B81239D007EE513 /* KGPDFFunction_Type3.m in Sources */ = {isa = PBXBuildFile; fileRef = FE64B8BE0B81239D007EE513 /* KGPDFFunction_Type3.m */; };
+		FE64B8F90B81239D007EE513 /* KGPDFObject_Boolean.h in Headers */ = {isa = PBXBuildFile; fileRef = FE64B8BF0B81239D007EE513 /* KGPDFObject_Boolean.h */; };
+		FE64B8FA0B81239D007EE513 /* KGPDFObject_Boolean.m in Sources */ = {isa = PBXBuildFile; fileRef = FE64B8C00B81239D007EE513 /* KGPDFObject_Boolean.m */; };
+		FE64B8FB0B81239D007EE513 /* KGPDFObject_const.h in Headers */ = {isa = PBXBuildFile; fileRef = FE64B8C10B81239D007EE513 /* KGPDFObject_const.h */; };
+		FE64B8FC0B81239D007EE513 /* KGPDFObject_const.m in Sources */ = {isa = PBXBuildFile; fileRef = FE64B8C20B81239D007EE513 /* KGPDFObject_const.m */; };
+		FE64B8FD0B81239D007EE513 /* KGPDFObject_identifier.h in Headers */ = {isa = PBXBuildFile; fileRef = FE64B8C30B81239D007EE513 /* KGPDFObject_identifier.h */; };
+		FE64B8FE0B81239D007EE513 /* KGPDFObject_identifier.m in Sources */ = {isa = PBXBuildFile; fileRef = FE64B8C40B81239D007EE513 /* KGPDFObject_identifier.m */; };
+		FE64B8FF0B81239D007EE513 /* KGPDFObject_Integer.h in Headers */ = {isa = PBXBuildFile; fileRef = FE64B8C50B81239D007EE513 /* KGPDFObject_Integer.h */; };
+		FE64B9000B81239D007EE513 /* KGPDFObject_Integer.m in Sources */ = {isa = PBXBuildFile; fileRef = FE64B8C60B81239D007EE513 /* KGPDFObject_Integer.m */; };
+		FE64B9010B81239D007EE513 /* KGPDFObject_Name.h in Headers */ = {isa = PBXBuildFile; fileRef = FE64B8C70B81239D007EE513 /* KGPDFObject_Name.h */; };
+		FE64B9020B81239D007EE513 /* KGPDFObject_Name.m in Sources */ = {isa = PBXBuildFile; fileRef = FE64B8C80B81239D007EE513 /* KGPDFObject_Name.m */; };
+		FE64B9030B81239D007EE513 /* KGPDFObject_R.h in Headers */ = {isa = PBXBuildFile; fileRef = FE64B8C90B81239D007EE513 /* KGPDFObject_R.h */; };
+		FE64B9040B81239D007EE513 /* KGPDFObject_R.m in Sources */ = {isa = PBXBuildFile; fileRef = FE64B8CA0B81239D007EE513 /* KGPDFObject_R.m */; };
+		FE64B9050B81239D007EE513 /* KGPDFObject_Real.h in Headers */ = {isa = PBXBuildFile; fileRef = FE64B8CB0B81239D007EE513 /* KGPDFObject_Real.h */; };
+		FE64B9060B81239D007EE513 /* KGPDFObject_Real.m in Sources */ = {isa = PBXBuildFile; fileRef = FE64B8CC0B81239D007EE513 /* KGPDFObject_Real.m */; };
+		FE64B9070B81239D007EE513 /* KGPDFObject.h in Headers */ = {isa = PBXBuildFile; fileRef = FE64B8CD0B81239D007EE513 /* KGPDFObject.h */; };
+		FE64B9080B81239D007EE513 /* KGPDFObject.m in Sources */ = {isa = PBXBuildFile; fileRef = FE64B8CE0B81239D007EE513 /* KGPDFObject.m */; };
+		FE64B9090B81239D007EE513 /* KGPDFOperators.h in Headers */ = {isa = PBXBuildFile; fileRef = FE64B8CF0B81239D007EE513 /* KGPDFOperators.h */; };
+		FE64B90A0B81239D007EE513 /* KGPDFOperators.m in Sources */ = {isa = PBXBuildFile; fileRef = FE64B8D00B81239D007EE513 /* KGPDFOperators.m */; };
+		FE64B90B0B81239D007EE513 /* KGPDFOperatorTable.h in Headers */ = {isa = PBXBuildFile; fileRef = FE64B8D10B81239D007EE513 /* KGPDFOperatorTable.h */; };
+		FE64B90C0B81239D007EE513 /* KGPDFOperatorTable.m in Sources */ = {isa = PBXBuildFile; fileRef = FE64B8D20B81239D007EE513 /* KGPDFOperatorTable.m */; };
+		FE64B90D0B81239D007EE513 /* KGPDFPage.h in Headers */ = {isa = PBXBuildFile; fileRef = FE64B8D30B81239D007EE513 /* KGPDFPage.h */; };
+		FE64B90E0B81239D007EE513 /* KGPDFPage.m in Sources */ = {isa = PBXBuildFile; fileRef = FE64B8D40B81239D007EE513 /* KGPDFPage.m */; };
+		FE64B90F0B81239D007EE513 /* KGPDFScanner.h in Headers */ = {isa = PBXBuildFile; fileRef = FE64B8D50B81239D007EE513 /* KGPDFScanner.h */; };
+		FE64B9100B81239D007EE513 /* KGPDFScanner.m in Sources */ = {isa = PBXBuildFile; fileRef = FE64B8D60B81239D007EE513 /* KGPDFScanner.m */; };
+		FE64B9110B81239D007EE513 /* KGPDFStream.h in Headers */ = {isa = PBXBuildFile; fileRef = FE64B8D70B81239D007EE513 /* KGPDFStream.h */; };
+		FE64B9120B81239D007EE513 /* KGPDFStream.m in Sources */ = {isa = PBXBuildFile; fileRef = FE64B8D80B81239D007EE513 /* KGPDFStream.m */; };
+		FE64B9130B81239D007EE513 /* KGPDFString.h in Headers */ = {isa = PBXBuildFile; fileRef = FE64B8D90B81239D007EE513 /* KGPDFString.h */; };
+		FE64B9140B81239D007EE513 /* KGPDFString.m in Sources */ = {isa = PBXBuildFile; fileRef = FE64B8DA0B81239D007EE513 /* KGPDFString.m */; };
+		FE64B9150B81239D007EE513 /* KGPDFxref.h in Headers */ = {isa = PBXBuildFile; fileRef = FE64B8DB0B81239D007EE513 /* KGPDFxref.h */; };
+		FE64B9160B81239D007EE513 /* KGPDFxref.m in Sources */ = {isa = PBXBuildFile; fileRef = FE64B8DC0B81239D007EE513 /* KGPDFxref.m */; };
+		FE64B9170B81239D007EE513 /* KGPDFxrefEntry.h in Headers */ = {isa = PBXBuildFile; fileRef = FE64B8DD0B81239D007EE513 /* KGPDFxrefEntry.h */; };
+		FE64B9180B81239D007EE513 /* KGPDFxrefEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = FE64B8DE0B81239D007EE513 /* KGPDFxrefEntry.m */; };
+		FE64B9190B81239D007EE513 /* KGShading.h in Headers */ = {isa = PBXBuildFile; fileRef = FE64B8DF0B81239D007EE513 /* KGShading.h */; };
+		FE64B91A0B81239D007EE513 /* KGShading.m in Sources */ = {isa = PBXBuildFile; fileRef = FE64B8E00B81239D007EE513 /* KGShading.m */; };
+		FE64B9220B8123F1007EE513 /* CGImage.h in Headers */ = {isa = PBXBuildFile; fileRef = FE64B9200B8123F1007EE513 /* CGImage.h */; };
+		FE64B9230B8123F1007EE513 /* CGImage.m in Sources */ = {isa = PBXBuildFile; fileRef = FE64B9210B8123F1007EE513 /* CGImage.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
@@ -1140,6 +1200,66 @@
 		FE56BA030B1221330046B7D9 /* NSMutableAttributedString.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSMutableAttributedString.m; sourceTree = "<group>"; };
 		FE6466E10B2C611D00B302B0 /* NSMutableParagraphStyle.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSMutableParagraphStyle.h; sourceTree = "<group>"; };
 		FE6466E20B2C611D00B302B0 /* NSMutableParagraphStyle.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSMutableParagraphStyle.m; sourceTree = "<group>"; };
+		FE64B8A70B81239D007EE513 /* KGColorSpace.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = KGColorSpace.h; sourceTree = "<group>"; };
+		FE64B8A80B81239D007EE513 /* KGColorSpace.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = KGColorSpace.m; sourceTree = "<group>"; };
+		FE64B8A90B81239D007EE513 /* KGContext.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = KGContext.h; sourceTree = "<group>"; };
+		FE64B8AA0B81239D007EE513 /* KGContext.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = KGContext.m; sourceTree = "<group>"; };
+		FE64B8AB0B81239D007EE513 /* KGDataProvider.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = KGDataProvider.h; sourceTree = "<group>"; };
+		FE64B8AC0B81239D007EE513 /* KGDataProvider.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = KGDataProvider.m; sourceTree = "<group>"; };
+		FE64B8AD0B81239D007EE513 /* KGFunction.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = KGFunction.h; sourceTree = "<group>"; };
+		FE64B8AE0B81239D007EE513 /* KGFunction.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = KGFunction.m; sourceTree = "<group>"; };
+		FE64B8AF0B81239D007EE513 /* KGImage.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = KGImage.h; sourceTree = "<group>"; };
+		FE64B8B00B81239D007EE513 /* KGImage.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = KGImage.m; sourceTree = "<group>"; };
+		FE64B8B10B81239D007EE513 /* KGPDFArray.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = KGPDFArray.h; sourceTree = "<group>"; };
+		FE64B8B20B81239D007EE513 /* KGPDFArray.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = KGPDFArray.m; sourceTree = "<group>"; };
+		FE64B8B30B81239D007EE513 /* KGPDFContentStream.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = KGPDFContentStream.h; sourceTree = "<group>"; };
+		FE64B8B40B81239D007EE513 /* KGPDFContentStream.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = KGPDFContentStream.m; sourceTree = "<group>"; };
+		FE64B8B50B81239D007EE513 /* KGPDFDictionary.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = KGPDFDictionary.h; sourceTree = "<group>"; };
+		FE64B8B60B81239D007EE513 /* KGPDFDictionary.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = KGPDFDictionary.m; sourceTree = "<group>"; };
+		FE64B8B70B81239D007EE513 /* KGPDFDocument.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = KGPDFDocument.h; sourceTree = "<group>"; };
+		FE64B8B80B81239D007EE513 /* KGPDFDocument.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = KGPDFDocument.m; sourceTree = "<group>"; };
+		FE64B8B90B81239D007EE513 /* KGPDFFilter.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = KGPDFFilter.h; sourceTree = "<group>"; };
+		FE64B8BA0B81239D007EE513 /* KGPDFFilter.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = KGPDFFilter.m; sourceTree = "<group>"; };
+		FE64B8BB0B81239D007EE513 /* KGPDFFunction_Type2.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = KGPDFFunction_Type2.h; sourceTree = "<group>"; };
+		FE64B8BC0B81239D007EE513 /* KGPDFFunction_Type2.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = KGPDFFunction_Type2.m; sourceTree = "<group>"; };
+		FE64B8BD0B81239D007EE513 /* KGPDFFunction_Type3.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = KGPDFFunction_Type3.h; sourceTree = "<group>"; };
+		FE64B8BE0B81239D007EE513 /* KGPDFFunction_Type3.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = KGPDFFunction_Type3.m; sourceTree = "<group>"; };
+		FE64B8BF0B81239D007EE513 /* KGPDFObject_Boolean.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = KGPDFObject_Boolean.h; sourceTree = "<group>"; };
+		FE64B8C00B81239D007EE513 /* KGPDFObject_Boolean.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = KGPDFObject_Boolean.m; sourceTree = "<group>"; };
+		FE64B8C10B81239D007EE513 /* KGPDFObject_const.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = KGPDFObject_const.h; sourceTree = "<group>"; };
+		FE64B8C20B81239D007EE513 /* KGPDFObject_const.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = KGPDFObject_const.m; sourceTree = "<group>"; };
+		FE64B8C30B81239D007EE513 /* KGPDFObject_identifier.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = KGPDFObject_identifier.h; sourceTree = "<group>"; };
+		FE64B8C40B81239D007EE513 /* KGPDFObject_identifier.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = KGPDFObject_identifier.m; sourceTree = "<group>"; };
+		FE64B8C50B81239D007EE513 /* KGPDFObject_Integer.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = KGPDFObject_Integer.h; sourceTree = "<group>"; };
+		FE64B8C60B81239D007EE513 /* KGPDFObject_Integer.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = KGPDFObject_Integer.m; sourceTree = "<group>"; };
+		FE64B8C70B81239D007EE513 /* KGPDFObject_Name.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = KGPDFObject_Name.h; sourceTree = "<group>"; };
+		FE64B8C80B81239D007EE513 /* KGPDFObject_Name.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = KGPDFObject_Name.m; sourceTree = "<group>"; };
+		FE64B8C90B81239D007EE513 /* KGPDFObject_R.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = KGPDFObject_R.h; sourceTree = "<group>"; };
+		FE64B8CA0B81239D007EE513 /* KGPDFObject_R.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = KGPDFObject_R.m; sourceTree = "<group>"; };
+		FE64B8CB0B81239D007EE513 /* KGPDFObject_Real.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = KGPDFObject_Real.h; sourceTree = "<group>"; };
+		FE64B8CC0B81239D007EE513 /* KGPDFObject_Real.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = KGPDFObject_Real.m; sourceTree = "<group>"; };
+		FE64B8CD0B81239D007EE513 /* KGPDFObject.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = KGPDFObject.h; sourceTree = "<group>"; };
+		FE64B8CE0B81239D007EE513 /* KGPDFObject.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = KGPDFObject.m; sourceTree = "<group>"; };
+		FE64B8CF0B81239D007EE513 /* KGPDFOperators.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = KGPDFOperators.h; sourceTree = "<group>"; };
+		FE64B8D00B81239D007EE513 /* KGPDFOperators.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = KGPDFOperators.m; sourceTree = "<group>"; };
+		FE64B8D10B81239D007EE513 /* KGPDFOperatorTable.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = KGPDFOperatorTable.h; sourceTree = "<group>"; };
+		FE64B8D20B81239D007EE513 /* KGPDFOperatorTable.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = KGPDFOperatorTable.m; sourceTree = "<group>"; };
+		FE64B8D30B81239D007EE513 /* KGPDFPage.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = KGPDFPage.h; sourceTree = "<group>"; };
+		FE64B8D40B81239D007EE513 /* KGPDFPage.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = KGPDFPage.m; sourceTree = "<group>"; };
+		FE64B8D50B81239D007EE513 /* KGPDFScanner.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = KGPDFScanner.h; sourceTree = "<group>"; };
+		FE64B8D60B81239D007EE513 /* KGPDFScanner.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = KGPDFScanner.m; sourceTree = "<group>"; };
+		FE64B8D70B81239D007EE513 /* KGPDFStream.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = KGPDFStream.h; sourceTree = "<group>"; };
+		FE64B8D80B81239D007EE513 /* KGPDFStream.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = KGPDFStream.m; sourceTree = "<group>"; };
+		FE64B8D90B81239D007EE513 /* KGPDFString.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = KGPDFString.h; sourceTree = "<group>"; };
+		FE64B8DA0B81239D007EE513 /* KGPDFString.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = KGPDFString.m; sourceTree = "<group>"; };
+		FE64B8DB0B81239D007EE513 /* KGPDFxref.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = KGPDFxref.h; sourceTree = "<group>"; };
+		FE64B8DC0B81239D007EE513 /* KGPDFxref.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = KGPDFxref.m; sourceTree = "<group>"; };
+		FE64B8DD0B81239D007EE513 /* KGPDFxrefEntry.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = KGPDFxrefEntry.h; sourceTree = "<group>"; };
+		FE64B8DE0B81239D007EE513 /* KGPDFxrefEntry.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = KGPDFxrefEntry.m; sourceTree = "<group>"; };
+		FE64B8DF0B81239D007EE513 /* KGShading.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = KGShading.h; sourceTree = "<group>"; };
+		FE64B8E00B81239D007EE513 /* KGShading.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = KGShading.m; sourceTree = "<group>"; };
+		FE64B9200B8123F1007EE513 /* CGImage.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = CGImage.h; sourceTree = "<group>"; };
+		FE64B9210B8123F1007EE513 /* CGImage.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = CGImage.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1629,11 +1749,71 @@
 				6E2B55B60976075300DA0954 /* CGGeometry.m */,
 				6E2B55D10976075300DA0954 /* CGGraphicsState.h */,
 				6E2B55BC0976075300DA0954 /* CGGraphicsState.m */,
+				FE64B9200B8123F1007EE513 /* CGImage.h */,
+				FE64B9210B8123F1007EE513 /* CGImage.m */,
 				6E2B55D50976075300DA0954 /* CGRenderingContext.h */,
 				6E2B55C00976075300DA0954 /* CGRenderingContext.m */,
 				6E2B55D70976075300DA0954 /* CGWindow.h */,
 				6E2B55C20976075300DA0954 /* CGWindow.m */,
 				6E2B55CF0976075300DA0954 /* CoreGraphics.h */,
+				FE64B8A70B81239D007EE513 /* KGColorSpace.h */,
+				FE64B8A80B81239D007EE513 /* KGColorSpace.m */,
+				FE64B8A90B81239D007EE513 /* KGContext.h */,
+				FE64B8AA0B81239D007EE513 /* KGContext.m */,
+				FE64B8AB0B81239D007EE513 /* KGDataProvider.h */,
+				FE64B8AC0B81239D007EE513 /* KGDataProvider.m */,
+				FE64B8AD0B81239D007EE513 /* KGFunction.h */,
+				FE64B8AE0B81239D007EE513 /* KGFunction.m */,
+				FE64B8AF0B81239D007EE513 /* KGImage.h */,
+				FE64B8B00B81239D007EE513 /* KGImage.m */,
+				FE64B8B10B81239D007EE513 /* KGPDFArray.h */,
+				FE64B8B20B81239D007EE513 /* KGPDFArray.m */,
+				FE64B8B30B81239D007EE513 /* KGPDFContentStream.h */,
+				FE64B8B40B81239D007EE513 /* KGPDFContentStream.m */,
+				FE64B8B50B81239D007EE513 /* KGPDFDictionary.h */,
+				FE64B8B60B81239D007EE513 /* KGPDFDictionary.m */,
+				FE64B8B70B81239D007EE513 /* KGPDFDocument.h */,
+				FE64B8B80B81239D007EE513 /* KGPDFDocument.m */,
+				FE64B8B90B81239D007EE513 /* KGPDFFilter.h */,
+				FE64B8BA0B81239D007EE513 /* KGPDFFilter.m */,
+				FE64B8BB0B81239D007EE513 /* KGPDFFunction_Type2.h */,
+				FE64B8BC0B81239D007EE513 /* KGPDFFunction_Type2.m */,
+				FE64B8BD0B81239D007EE513 /* KGPDFFunction_Type3.h */,
+				FE64B8BE0B81239D007EE513 /* KGPDFFunction_Type3.m */,
+				FE64B8CD0B81239D007EE513 /* KGPDFObject.h */,
+				FE64B8CE0B81239D007EE513 /* KGPDFObject.m */,
+				FE64B8BF0B81239D007EE513 /* KGPDFObject_Boolean.h */,
+				FE64B8C00B81239D007EE513 /* KGPDFObject_Boolean.m */,
+				FE64B8C10B81239D007EE513 /* KGPDFObject_const.h */,
+				FE64B8C20B81239D007EE513 /* KGPDFObject_const.m */,
+				FE64B8C30B81239D007EE513 /* KGPDFObject_identifier.h */,
+				FE64B8C40B81239D007EE513 /* KGPDFObject_identifier.m */,
+				FE64B8C50B81239D007EE513 /* KGPDFObject_Integer.h */,
+				FE64B8C60B81239D007EE513 /* KGPDFObject_Integer.m */,
+				FE64B8C70B81239D007EE513 /* KGPDFObject_Name.h */,
+				FE64B8C80B81239D007EE513 /* KGPDFObject_Name.m */,
+				FE64B8C90B81239D007EE513 /* KGPDFObject_R.h */,
+				FE64B8CA0B81239D007EE513 /* KGPDFObject_R.m */,
+				FE64B8CB0B81239D007EE513 /* KGPDFObject_Real.h */,
+				FE64B8CC0B81239D007EE513 /* KGPDFObject_Real.m */,
+				FE64B8CF0B81239D007EE513 /* KGPDFOperators.h */,
+				FE64B8D00B81239D007EE513 /* KGPDFOperators.m */,
+				FE64B8D10B81239D007EE513 /* KGPDFOperatorTable.h */,
+				FE64B8D20B81239D007EE513 /* KGPDFOperatorTable.m */,
+				FE64B8D30B81239D007EE513 /* KGPDFPage.h */,
+				FE64B8D40B81239D007EE513 /* KGPDFPage.m */,
+				FE64B8D50B81239D007EE513 /* KGPDFScanner.h */,
+				FE64B8D60B81239D007EE513 /* KGPDFScanner.m */,
+				FE64B8D70B81239D007EE513 /* KGPDFStream.h */,
+				FE64B8D80B81239D007EE513 /* KGPDFStream.m */,
+				FE64B8D90B81239D007EE513 /* KGPDFString.h */,
+				FE64B8DA0B81239D007EE513 /* KGPDFString.m */,
+				FE64B8DB0B81239D007EE513 /* KGPDFxref.h */,
+				FE64B8DC0B81239D007EE513 /* KGPDFxref.m */,
+				FE64B8DD0B81239D007EE513 /* KGPDFxrefEntry.h */,
+				FE64B8DE0B81239D007EE513 /* KGPDFxrefEntry.m */,
+				FE64B8DF0B81239D007EE513 /* KGShading.h */,
+				FE64B8E00B81239D007EE513 /* KGShading.m */,
 			);
 			name = CoreGraphics;
 			path = CoreGraphics.subproj;
@@ -2218,6 +2398,36 @@
 				FE2A11470B45C59A006C03DE /* NSStatusItem.h in Headers */,
 				FE2A11540B45C65E006C03DE /* NSTokenField.h in Headers */,
 				FE2A115C0B45C66A006C03DE /* NSTokenFieldCell.h in Headers */,
+				FE64B8E10B81239D007EE513 /* KGColorSpace.h in Headers */,
+				FE64B8E30B81239D007EE513 /* KGContext.h in Headers */,
+				FE64B8E50B81239D007EE513 /* KGDataProvider.h in Headers */,
+				FE64B8E70B81239D007EE513 /* KGFunction.h in Headers */,
+				FE64B8E90B81239D007EE513 /* KGImage.h in Headers */,
+				FE64B8EB0B81239D007EE513 /* KGPDFArray.h in Headers */,
+				FE64B8ED0B81239D007EE513 /* KGPDFContentStream.h in Headers */,
+				FE64B8EF0B81239D007EE513 /* KGPDFDictionary.h in Headers */,
+				FE64B8F10B81239D007EE513 /* KGPDFDocument.h in Headers */,
+				FE64B8F30B81239D007EE513 /* KGPDFFilter.h in Headers */,
+				FE64B8F50B81239D007EE513 /* KGPDFFunction_Type2.h in Headers */,
+				FE64B8F70B81239D007EE513 /* KGPDFFunction_Type3.h in Headers */,
+				FE64B8F90B81239D007EE513 /* KGPDFObject_Boolean.h in Headers */,
+				FE64B8FB0B81239D007EE513 /* KGPDFObject_const.h in Headers */,
+				FE64B8FD0B81239D007EE513 /* KGPDFObject_identifier.h in Headers */,
+				FE64B8FF0B81239D007EE513 /* KGPDFObject_Integer.h in Headers */,
+				FE64B9010B81239D007EE513 /* KGPDFObject_Name.h in Headers */,
+				FE64B9030B81239D007EE513 /* KGPDFObject_R.h in Headers */,
+				FE64B9050B81239D007EE513 /* KGPDFObject_Real.h in Headers */,
+				FE64B9070B81239D007EE513 /* KGPDFObject.h in Headers */,
+				FE64B9090B81239D007EE513 /* KGPDFOperators.h in Headers */,
+				FE64B90B0B81239D007EE513 /* KGPDFOperatorTable.h in Headers */,
+				FE64B90D0B81239D007EE513 /* KGPDFPage.h in Headers */,
+				FE64B90F0B81239D007EE513 /* KGPDFScanner.h in Headers */,
+				FE64B9110B81239D007EE513 /* KGPDFStream.h in Headers */,
+				FE64B9130B81239D007EE513 /* KGPDFString.h in Headers */,
+				FE64B9150B81239D007EE513 /* KGPDFxref.h in Headers */,
+				FE64B9170B81239D007EE513 /* KGPDFxrefEntry.h in Headers */,
+				FE64B9190B81239D007EE513 /* KGShading.h in Headers */,
+				FE64B9220B8123F1007EE513 /* CGImage.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2601,6 +2811,36 @@
 				FE2A11480B45C59A006C03DE /* NSStatusItem.m in Sources */,
 				FE2A11550B45C65E006C03DE /* NSTokenField.m in Sources */,
 				FE2A115D0B45C66A006C03DE /* NSTokenFieldCell.m in Sources */,
+				FE64B8E20B81239D007EE513 /* KGColorSpace.m in Sources */,
+				FE64B8E40B81239D007EE513 /* KGContext.m in Sources */,
+				FE64B8E60B81239D007EE513 /* KGDataProvider.m in Sources */,
+				FE64B8E80B81239D007EE513 /* KGFunction.m in Sources */,
+				FE64B8EA0B81239D007EE513 /* KGImage.m in Sources */,
+				FE64B8EC0B81239D007EE513 /* KGPDFArray.m in Sources */,
+				FE64B8EE0B81239D007EE513 /* KGPDFContentStream.m in Sources */,
+				FE64B8F00B81239D007EE513 /* KGPDFDictionary.m in Sources */,
+				FE64B8F20B81239D007EE513 /* KGPDFDocument.m in Sources */,
+				FE64B8F40B81239D007EE513 /* KGPDFFilter.m in Sources */,
+				FE64B8F60B81239D007EE513 /* KGPDFFunction_Type2.m in Sources */,
+				FE64B8F80B81239D007EE513 /* KGPDFFunction_Type3.m in Sources */,
+				FE64B8FA0B81239D007EE513 /* KGPDFObject_Boolean.m in Sources */,
+				FE64B8FC0B81239D007EE513 /* KGPDFObject_const.m in Sources */,
+				FE64B8FE0B81239D007EE513 /* KGPDFObject_identifier.m in Sources */,
+				FE64B9000B81239D007EE513 /* KGPDFObject_Integer.m in Sources */,
+				FE64B9020B81239D007EE513 /* KGPDFObject_Name.m in Sources */,
+				FE64B9040B81239D007EE513 /* KGPDFObject_R.m in Sources */,
+				FE64B9060B81239D007EE513 /* KGPDFObject_Real.m in Sources */,
+				FE64B9080B81239D007EE513 /* KGPDFObject.m in Sources */,
+				FE64B90A0B81239D007EE513 /* KGPDFOperators.m in Sources */,
+				FE64B90C0B81239D007EE513 /* KGPDFOperatorTable.m in Sources */,
+				FE64B90E0B81239D007EE513 /* KGPDFPage.m in Sources */,
+				FE64B9100B81239D007EE513 /* KGPDFScanner.m in Sources */,
+				FE64B9120B81239D007EE513 /* KGPDFStream.m in Sources */,
+				FE64B9140B81239D007EE513 /* KGPDFString.m in Sources */,
+				FE64B9160B81239D007EE513 /* KGPDFxref.m in Sources */,
+				FE64B9180B81239D007EE513 /* KGPDFxrefEntry.m in Sources */,
+				FE64B91A0B81239D007EE513 /* KGShading.m in Sources */,
+				FE64B9230B8123F1007EE513 /* CGImage.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

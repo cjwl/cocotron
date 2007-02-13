@@ -8,8 +8,22 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/NSPort.h>
 
+typedef int NSSocketNativeHandle;
+
 @interface NSSocketPort : NSPort {
 
 }
+
+-init;
+-initRemoteWithProtocolFamily:(int)family socketType:(int)type protocol:(int)protocol address:(NSData *)address;
+-initRemoteWithTCPPort:(unsigned short)port host:(NSString *)hostName;
+-initWithProtocolFamily:(int)family socketType:(int)type protocol:(int)protocol address:(NSData *)address;
+-initWithProtocolFamily:(int)family socketType:(int)type protocol:(int)protocol socket:(NSSocketNativeHandle)nativeSocket;
+
+-(NSData *)address;
+-(int)protocol;
+-(int)protocolFamily;
+-(NSSocketNativeHandle)socket;
+-(int)socketType;
 
 @end

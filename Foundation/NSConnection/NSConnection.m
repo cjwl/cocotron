@@ -8,7 +8,185 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 // Original - Christopher Lloyd <cjwl@objc.net>
 #import <Foundation/NSConnection.h>
+#import <Foundation/NSString.h>
+#import <Foundation/NSRaise.h>
+
+NSString *NSConnectionReplyMode=@"NSConnectionReplyMode";
 
 @implementation NSConnection
+
++(NSArray *)allConnections {
+   NSUnimplementedMethod();
+   return nil;
+}
+
++(NSConnection *)defaultConnection {
+   NSUnimplementedMethod();
+   return nil;
+}
+
+-initWithReceivePort:(NSPort *)receivePort sendPort:(NSPort *)sendPort {
+   NSUnimplementedMethod();
+   return nil;
+}
+
++(NSConnection *)connectionWithReceivePort:(NSPort *)receivePort sendPort:(NSPort *)sendPort {
+   NSUnimplementedMethod();
+   return nil;
+}
+
++(NSConnection *)connectionWithRegisteredName:(NSString *)name host:(NSString *)hostName usingNameServer:(NSPortNameServer *)nameServer {
+   NSUnimplementedMethod();
+   return nil;
+}
+
++(NSConnection *)connectionWithRegisteredName:(NSString *)name host:(NSString *)hostName {
+   NSUnimplementedMethod();
+   return nil;
+}
+
++(NSDistantObject *)rootProxyForConnectionWithRegisteredName:(NSString *)name host:(NSString *)hostName usingNameServer:(NSPortNameServer *)nameServer {
+   NSUnimplementedMethod();
+   return nil;
+}
+
++(NSDistantObject *)rootProxyForConnectionWithRegisteredName:(NSString *)name host:(NSString *)hostName {
+   NSUnimplementedMethod();
+   return nil;
+}
+
++currentConversation {
+   NSUnimplementedMethod();
+   return nil;
+}
+
+-delegate {
+   NSUnimplementedMethod();
+   return nil;
+}
+
+-(BOOL)isValid {
+   NSUnimplementedMethod();
+   return NO;
+}
+
+-(BOOL)independentConversationQueueing {
+   NSUnimplementedMethod();
+   return NO;
+}
+
+-(BOOL)multipleThreadsEnabled {
+   NSUnimplementedMethod();
+   return NO;
+}
+
+-(NSTimeInterval)replyTimeout {
+   NSUnimplementedMethod();
+   return 0;
+}
+
+-(NSTimeInterval)requestTimeout {
+   NSUnimplementedMethod();
+   return 0;
+}
+
+-(NSPort *)sendPort {
+   NSUnimplementedMethod();
+   return nil;
+}
+
+-(NSPort *)receivePort {
+   NSUnimplementedMethod();
+   return nil;
+}
+
+-(NSArray *)requestModes {
+   NSUnimplementedMethod();
+   return nil;
+}
+
+-rootObject {
+   NSUnimplementedMethod();
+   return nil;
+}
+
+-(NSDistantObject *)rootProxy {
+   NSUnimplementedMethod();
+   return nil;
+}
+
+-(NSArray *)localObjects {
+   NSUnimplementedMethod();
+   return nil;
+}
+
+-(NSArray *)remoteObjects {
+   NSUnimplementedMethod();
+   return nil;
+}
+
+-(void)setDelegate:delegate {
+   NSUnimplementedMethod();
+}
+
+-(void)invalidate {
+   NSUnimplementedMethod();
+}
+
+-(void)setIndependentConversationQueueing:(BOOL)flag {
+   NSUnimplementedMethod();
+}
+
+-(void)enableMultipleThreads {
+   NSUnimplementedMethod();
+}
+
+-(void)setReplyTimeout:(NSTimeInterval)seconds {
+   NSUnimplementedMethod();
+}
+
+-(void)setRequestTimeout:(NSTimeInterval)seconds {
+   NSUnimplementedMethod();
+}
+
+-(void)addRequestMode:(NSString *)mode {
+   NSUnimplementedMethod();
+}
+
+-(void)removeRequestMode:(NSString *)mode {
+   NSUnimplementedMethod();
+}
+
+-(void)setRootObject:rootObject {
+   NSUnimplementedMethod();
+}
+
+-(void)runInNewThread {
+   NSUnimplementedMethod();
+}
+
+-(void)addRunLoop:(NSRunLoop *)runLoop {
+   NSUnimplementedMethod();
+}
+
+-(void)removeRunLoop:(NSRunLoop *)runLoop {
+   NSUnimplementedMethod();
+}
+
+-(BOOL)registerName:(NSString *)name withNameServer:(NSPortNameServer *)nameServer {
+   NSUnimplementedMethod();
+   return NO;
+}
+
+-(BOOL)registerName:(NSString *)name {
+   NSUnimplementedMethod();
+   return NO;
+}
+
+-(NSDictionary *)statistics {
+   NSUnimplementedMethod();
+   return nil;
+}
+
 
 @end
