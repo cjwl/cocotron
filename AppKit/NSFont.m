@@ -99,7 +99,7 @@ static inline NSGlyphMetrics *fetchGlyphAdvancementIfNeeded(NSFont *self,NSGlyph
 -(void)fetchMetrics {
    NSFontMetrics metrics;
 
-   [[NSDisplay currentDisplay] metricsForFontWithName:_name pointSize:_pointSize metrics:&metrics];
+   [[NSDisplay currentDisplay] metricsForFontWithName:[_name cString] pointSize:_pointSize metrics:&metrics];
 
    _boundingRect=metrics.boundingRect;
 

@@ -600,7 +600,7 @@ static void loadItemIntoMapTables(NSOutlineView *self,id item,unsigned *rowCount
         [super drawHighlightedSelectionForColumn:column row:row inRect:rect];
 }
 
--(void)_drawGridForItem:(id)item context:(CGContext *)context level:(int)level {
+-(void)_drawGridForItem:(id)item context:(KGContext *)context level:(int)level {
     int column = [_tableColumns indexOfObject:_outlineTableColumn];
     int row = [self rowForItem:item];
     NSRect myFrame = [self frameOfMarkerCellAtColumn:column row:row level:level];
@@ -644,7 +644,7 @@ static void loadItemIntoMapTables(NSOutlineView *self,id item,unsigned *rowCount
 
 -(void)drawGridInClipRect:(NSRect)aRect {
     // this doesn't look right at all when the indentation marker isn't set to follow the cell
-    CGContext *context=NSCurrentGraphicsPort();
+    KGContext *context=NSCurrentGraphicsPort();
     BOOL temp = _indentationMarkerFollowsCell;
     int  i,count=numberOfChildrenOfItemAndReload(self,nil,NO);
 

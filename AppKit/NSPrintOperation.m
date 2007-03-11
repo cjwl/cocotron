@@ -63,7 +63,7 @@ static NSPrintOperation *_currentOperation=nil;
 -(BOOL)runOperation {
    NSRange            pageRange;
    BOOL               knowsPageRange=[self _viewKnowsPageRange:&pageRange];
-   CGContext *graphicsPort=[[NSDisplay currentDisplay] graphicsPortForPrintOperationWithView:_view printInfo:_printInfo pageRange:pageRange];
+   KGContext *graphicsPort=[[NSDisplay currentDisplay] graphicsPortForPrintOperationWithView:_view printInfo:_printInfo pageRange:pageRange];
    NSGraphicsContext *context;
 
    if(graphicsPort==nil)
@@ -74,8 +74,9 @@ static NSPrintOperation *_currentOperation=nil;
    _currentOperation=self;
    [NSGraphicsContext saveGraphicsState];
    [NSGraphicsContext setCurrentContext:context];
+   CGContextBeginDocument(graphicsPort);
    [_view beginDocument];
-
+   
    if(knowsPageRange){
     int i;
 
@@ -106,6 +107,7 @@ static NSPrintOperation *_currentOperation=nil;
    }
  
    [_view endDocument];
+   CGContextEndDocument(graphicsPort);
    [NSGraphicsContext restoreGraphicsState];
    _currentOperation=nil;
 

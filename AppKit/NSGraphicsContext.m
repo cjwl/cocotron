@@ -10,7 +10,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSGraphicsContext.h>
 #import <AppKit/NSWindow-Private.h>
 #import <AppKit/NSCachedImageRep.h>
-#import <AppKit/CGRenderingContext.h>
 #import <AppKit/CGContext.h>
 
 @class NSColor;
@@ -18,24 +17,19 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @implementation NSGraphicsContext
 
 -initWithWindow:(NSWindow *)window {
-   CGAffineTransform flip={1,0,0,-1,0,[window frame].size.height};
-
-   _graphicsPort=[[[window _renderingContext] graphicsContextWithTransform:flip clipRect:NSMakeRect(0,0,[window frame].size.width,[window frame].size.height)] retain];
+   _graphicsPort=CGContextRetain([window graphicsContext]);
    _isDrawingToScreen=YES;
-
    return self;
 }
 
 -initWithWithCachedImageRep:(NSCachedImageRep *)imageRep {
-   CGAffineTransform flip={1,0,0,-1,0,[imageRep size].height};
-
-   _graphicsPort=[[[imageRep renderingContext] graphicsContextWithTransform:flip clipRect: NSMakeRect(0,0,[imageRep size].width,[imageRep size].height)] retain];
+   _graphicsPort=CGContextRetain([imageRep graphicsContext]);
    _isDrawingToScreen=YES;
    return self;
 }
 
--initWithPrintingContext:(CGContext *)context {
-   _graphicsPort=[context retain];
+-initWithPrintingContext:(KGContext *)context {
+   _graphicsPort=CGContextRetain(context);
    _isDrawingToScreen=NO;
    return self;
 }
@@ -48,7 +42,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return [[[self alloc] initWithWithCachedImageRep:imageRep] autorelease];
 }
 
-+(NSGraphicsContext *)graphicsContextWithPrintingContext:(CGContext *)context {
++(NSGraphicsContext *)graphicsContextWithPrintingContext:(KGContext *)context {
    return [[[self alloc] initWithPrintingContext:context] autorelease];
 }
 
@@ -68,7 +62,7 @@ static NSGraphicsContext *_currentContext() {
    return NSThreadSharedInstanceDoNotCreate(@"NSGraphicsContext");
 }
 
-CGContext *NSCurrentGraphicsPort() {
+KGContext *NSCurrentGraphicsPort() {
    return _currentContext()->_graphicsPort;
 }
 
@@ -107,11 +101,11 @@ CGContext *NSCurrentGraphicsPort() {
 }
 
 -(void)dealloc {
-   [_graphicsPort release];
+   CGContextRelease(_graphicsPort);
    [super dealloc];
 }
 
--(CGContext *)graphicsPort {
+-(KGContext *)graphicsPort {
    return _graphicsPort;
 }
 

@@ -8,7 +8,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <AppKit/NSGraphics.h>
 
-@class CGContext;
+@class KGContext;
 
 void NSInterfaceDrawButton(NSRect rect,NSRect clipRect);
 void NSInterfaceDrawHighlightedButton(NSRect rect,NSRect clipRect);
@@ -22,4 +22,4 @@ void NSInterfaceDrawBrowserHeader(NSRect rect,NSRect clipRect);
 void NSInterfaceDrawProgressIndicatorBezel(NSRect rect,NSRect clipRect);
 
 void NSInterfaceDrawOutlineMarker(NSRect rect,NSRect clipRect, BOOL state);
-void NSInterfaceDrawOutlineGrid(NSRect rect,CGContext *context);
+void NSInterfaceDrawOutlineGrid(NSRect rect,KGContext *context);

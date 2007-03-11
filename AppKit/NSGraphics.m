@@ -30,13 +30,13 @@ NSString *NSCalibratedRGBColorSpace=@"NSCalibratedRGBColorSpace";
 NSString *NSNamedColorSpace=@"NSNamedColorSpace";
 
 void NSRectClipList(const NSRect *rects, int count) {
-   CGContext *graphicsPort=NSCurrentGraphicsPort();
+   CGContextRef graphicsPort=NSCurrentGraphicsPort();
 
    CGContextClipToRects(graphicsPort,rects,count);
 }
 
 void NSRectClip(NSRect rect) {
-   CGContext *graphicsPort=NSCurrentGraphicsPort();
+   CGContextRef graphicsPort=NSCurrentGraphicsPort();
 
    CGContextClipToRect(graphicsPort,rect);
 }
@@ -55,7 +55,7 @@ void NSRectFillListWithColors(const NSRect *rects,NSColor **colors,int count) {
 }
 
 void NSRectFillListWithGrays(const NSRect *rects,const float *grays,int count) {
-   CGContext *graphicsPort=NSCurrentGraphicsPort();
+   CGContextRef graphicsPort=NSCurrentGraphicsPort();
    int        i;
 
    for(i=0;i<count;i++){
@@ -80,7 +80,7 @@ void NSFrameRectWithWidth(NSRect rect,float width) {
 }
 
 void NSFrameRect(NSRect rect) {
-   CGContextStrokeRect(NSCurrentGraphicsPort(),rect);
+   CGContextStrokeRectWithWidth(NSCurrentGraphicsPort(),rect,1);
 }
 
 void NSDottedFrameRect(NSRect rect) {
@@ -123,7 +123,7 @@ void NSDottedFrameRect(NSRect rect) {
 
 
 static NSRect NSDrawColorRects(NSRect boundsRect,NSRect clipRect,const NSRect *sides,NSColor **colors,int count) {
-   CGContext *graphicsPort=NSCurrentGraphicsPort();
+   CGContextRef graphicsPort=NSCurrentGraphicsPort();
 
    CGContextSaveGState(graphicsPort);
    CGContextClipToRect(graphicsPort,clipRect);

@@ -8,8 +8,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/NSObject.h>
 #import <Foundation/NSDictionary.h>
+#import <Foundation/NSDirectoryEnumerator.h>
 
-@class NSData,NSDate,NSDirectoryEnumerator;
+@class NSData,NSDate;
 
 FOUNDATION_EXPORT NSString *NSFileType;
 FOUNDATION_EXPORT NSString    *NSFileTypeRegular;
@@ -49,6 +50,7 @@ FOUNDATION_EXPORT NSString *NSFileDeviceIdentifier;
 -(BOOL)createDirectoryAtPath:(NSString *)path
                   attributes:(NSDictionary *)attributes;
 
+-(BOOL)createSymbolicLinkAtPath:(NSString *)path pathContent:(NSString *)destination;
 -(NSString *)pathContentOfSymbolicLinkAtPath:(NSString *)path;
 
 -(BOOL)fileExistsAtPath:(NSString *)path;
@@ -86,4 +88,6 @@ FOUNDATION_EXPORT NSString *NSFileDeviceIdentifier;
 -(NSString *)fileOwnerAccountName;
 -(NSString *)fileGroupOwnerAccountName;
 -(NSString *)fileType;
+-(unsigned long long)fileSize;
 @end
+

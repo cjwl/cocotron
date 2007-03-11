@@ -12,6 +12,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSWindow-Private.h>
 #import <AppKit/NSScreen.h>
 #import <AppKit/NSDrawerWindow.h>
+#import <AppKit/NSNibKeyedUnarchiver.h>
 
 NSString *NSDrawerWillOpenNotification = @"NSDrawerWillOpenNotification";
 NSString *NSDrawerDidOpenNotification = @"NSDrawerDidOpenNotification";
@@ -113,25 +114,80 @@ NSString *NSDrawerDidCloseNotification = @"NSDrawerDidCloseNotification";
     }
 }
 
-- initWithContentSize:(NSSize)contentSize preferredEdge:(NSRectEdge)edge {
-    _contentSize = contentSize;
-    _drawerWindow = [[NSDrawerWindow alloc] initWithContentRect:NSMakeRect(0, 0, _contentSize.width, _contentSize.height) styleMask:NSDrawerWindowMask backing:NSBackingStoreBuffered defer:NO];
+- (id)initWithCoder:(NSCoder *)coder
+{
+   self = [super initWithCoder:coder];
+
+   if (self && [coder isKindOfClass:[NSNibKeyedUnarchiver class]])
+   {
+      NSNibKeyedUnarchiver *keyed = (NSNibKeyedUnarchiver *)coder;
+
+      if([keyed containsValueForKey:@"NSContentSize"])
+         _contentSize = [keyed decodeSizeForKey:@"NSContentSize"];
+      else
+         _contentSize = NSZeroSize;
+
+      _state = 0;
+      _edge  = 0;
+      if([keyed containsValueForKey:@"NSPreferredEdge"])
+         [self setPreferredEdge:[keyed decodeIntForKey:@"NSPreferredEdge"]];
+      else
+         _preferredEdge = 0;
+
+      if([keyed containsValueForKey:@"NSLeadingOffset"])
+         [self setLeadingOffset:[keyed decodeFloatForKey:@"NSLeadingOffset"]];
+      else
+         _leadingOffset = 0;
+ 
+      if([keyed containsValueForKey:@"NSTrailingOffset"])
+         [self setTrailingOffset:[keyed decodeFloatForKey:@"NSTrailingOffset"]];
+      else
+         _trailingOffset = 0;
+
+      _drawerWindow = [[[NSDrawerWindow alloc] initWithContentRect:NSMakeRect(0, 0, _contentSize.width, _contentSize.height) styleMask:NSDrawerWindowMask backing:NSBackingStoreBuffered defer:NO] retain];
+      [_drawerWindow setDrawer:self];
+      [self setContentSize:_contentSize];
+
+      _parentWindow = _nextParentWindow = nil;
+      if([keyed containsValueForKey:@"NSParentWindow"])
+         [self setParentWindow:[keyed decodeObjectForKey:@"NSParentWindow"]];
+
+      if([keyed containsValueForKey:@"NSDelegate"])
+         [self setDelegate:[keyed decodeObjectForKey:@"NSDelegate"]];
+      else
+         _delegate = nil;
+
+      if([keyed containsValueForKey:@"NSMinContentSize"])
+         [self setMinContentSize:[keyed decodeSizeForKey:@"NSMinContentSize"]];
+      else
+         _minContentSize = NSZeroSize;
+
+      if([keyed containsValueForKey:@"NSMaxContentSize"])
+         [self setMaxContentSize:[keyed decodeSizeForKey:@"NSMaxContentSize"]];
+      else
+         _maxContentSize = NSZeroSize;
+   }
+
+   return self;
+}
+
+
+- (id)initWithContentSize:(NSSize)contentSize preferredEdge:(NSRectEdge)edge {
+    _drawerWindow = [[NSDrawerWindow alloc] initWithContentRect:NSMakeRect(0, 0, contentSize.width, contentSize.height) styleMask:NSDrawerWindowMask backing:NSBackingStoreBuffered defer:NO];
     [_drawerWindow setDrawer:self];
-        
-    [self setContentSize:contentSize];	// maybe not
+    [self setContentSize:contentSize];
     [self setPreferredEdge:edge];
+    _parentWindow = _nextParentWindow = nil;
 
     return self;
 }
 
 - (void)dealloc {
     [_drawerWindow release];
-    [_parentWindow release];
-    
     [super dealloc];
 }
 
-- delegate {
+- (id)delegate {
     return _delegate;
 }
 
@@ -200,33 +256,38 @@ NSString *NSDrawerDidCloseNotification = @"NSDrawerDidCloseNotification";
 }
 
 - (void)setNextParentWindow {
+    if (_nextParentWindow == (NSWindow *)-1)
+        _nextParentWindow = nil;
+        
     [_parentWindow _detachDrawer:self];
     [_parentWindow release];
-    _parentWindow = [_nextParentWindow retain];
-    [_parentWindow _attachDrawer:self];
+    
+    if ((_parentWindow = [_nextParentWindow retain]))
+        [_parentWindow _attachDrawer:self];
 
     _nextParentWindow = nil;
 }
 
 - (void)setParentWindow:(NSWindow *)window {
-    _nextParentWindow = window;
-    
-    if (_state == NSDrawerClosedState)
-        [self setNextParentWindow];
+    if (window != _parentWindow)
+    {
+       _nextParentWindow = window;
+       
+       if (_state == NSDrawerClosedState)
+           [self setNextParentWindow];
+                                               // otherwise postpone action until drawer is closed
+       else if (_nextParentWindow == nil)      // for the postponed action case make 
+           _nextParentWindow = (NSWindow *)-1; // _nextParentWindow != nil so that setNextParentWindow
+    }                                          // eventually becomes called later
 }
 
 - (void)setContentView:(NSView *)view {
-    NSArray *subviews = [[_drawerWindow contentView] subviews];
-    
-    if ([subviews count] > 0)
-        [[subviews objectAtIndex:0] removeFromSuperview];
-    
-    if (view != nil)
-        [[_drawerWindow contentView] addSubview:view];
+    [_drawerWindow setContentView:view];
 }
 
 - (void)setContentSize:(NSSize)size {
-    [[self contentView] setFrameSize:size];
+   [[self contentView] setFrameSize:size];
+   _contentSize = size;
 }
 
 - (void)setMinContentSize:(NSSize)size {
@@ -266,17 +327,17 @@ NSString *NSDrawerDidCloseNotification = @"NSDrawerDidCloseNotification";
     
     // if we've moved to a different edge, recompute...
     if (_edge != edge)
-        _contentSize = [self drawerWindow:_drawerWindow constrainSize:_contentSize edge:edge];
+        [self setContentSize:[self drawerWindow:_drawerWindow constrainSize:[self contentSize] edge:edge]];
     
     _edge = edge;
     
     [[NSNotificationCenter defaultCenter] postNotificationName:NSDrawerWillOpenNotification object:self];
 
-    frame = [[self class] drawerFrameWithContentSize:_contentSize parentWindow:[self parentWindow] leadingOffset:_leadingOffset trailingOffset:_trailingOffset edge:_edge state:NSDrawerOpenState];
-    _contentSize = frame.size;
+    frame = [[self class] drawerFrameWithContentSize:[self contentSize] parentWindow:[self parentWindow] leadingOffset:_leadingOffset trailingOffset:_trailingOffset edge:_edge state:NSDrawerOpenState];
+    [self setContentSize:frame.size];
 
     // OK. setup and slide the drawer out
-    start = [[self class] drawerFrameWithContentSize:_contentSize parentWindow:[self parentWindow] leadingOffset:_leadingOffset trailingOffset:_trailingOffset edge:_edge state:NSDrawerClosedState];
+    start = [[self class] drawerFrameWithContentSize:[self contentSize] parentWindow:[self parentWindow] leadingOffset:_leadingOffset trailingOffset:_trailingOffset edge:_edge state:NSDrawerClosedState];
     
     frame.size = start.size = [self drawerWindow:_drawerWindow constrainSize:frame.size edge:_edge];
 //    frame.size = [self drawerWindow:_drawerWindow constrainSize:frame.size];
@@ -297,7 +358,7 @@ NSString *NSDrawerDidCloseNotification = @"NSDrawerDidCloseNotification";
     if ([self state] != NSDrawerOpenState)
         return;
     
-    frame = [[self class] drawerFrameWithContentSize:_contentSize parentWindow:[self parentWindow] leadingOffset:_leadingOffset trailingOffset:_trailingOffset edge:_edge state:NSDrawerClosedState];
+    frame = [[self class] drawerFrameWithContentSize:[self contentSize] parentWindow:[self parentWindow] leadingOffset:_leadingOffset trailingOffset:_trailingOffset edge:_edge state:NSDrawerClosedState];
     frame.size = [self drawerWindow:_drawerWindow constrainSize:frame.size edge:_edge];    
 
     [[NSNotificationCenter defaultCenter] postNotificationName:NSDrawerWillCloseNotification object:self];
@@ -342,9 +403,14 @@ NSString *NSDrawerDidCloseNotification = @"NSDrawerDidCloseNotification";
         [self _resetWindowOrdering:nil];
 }
 
+- (void)parentWindowDidDeactivate:(NSWindow *)window {
+    if (_state == NSDrawerOpenState && ![_parentWindow isMiniaturized])
+        [self _resetWindowOrdering:nil];
+}
+
 - (void)parentWindowDidChangeFrame:(NSWindow *)window {
     if (_state == NSDrawerOpenState) {
-        NSRect frame = [[self class] drawerFrameWithContentSize:_contentSize parentWindow:[self parentWindow] leadingOffset:_leadingOffset trailingOffset:_trailingOffset edge:_edge state:_state];
+        NSRect frame = [[self class] drawerFrameWithContentSize:[self contentSize] parentWindow:[self parentWindow] leadingOffset:_leadingOffset trailingOffset:_trailingOffset edge:_edge state:_state];
 
         if (_edge == NSMinXEdge || _edge == NSMaxXEdge) {
             if (frame.size.width > _maxContentSize.width && _maxContentSize.width > 0)
@@ -370,12 +436,17 @@ NSString *NSDrawerDidCloseNotification = @"NSDrawerDidCloseNotification";
 }
 
 - (void)parentWindowDidDeminiaturize:(NSWindow *)window {
-    // ... otherwise the drawer is visible before Windows finishes its animation, heh
-    [self performSelector:@selector(_resetWindowOrdering:) withObject:window afterDelay:0.5];
+}
+
+- (void)parentWindowDidClose:(NSWindow *)window {
+    if (_state == NSDrawerOpenState)
+       [_drawerWindow orderOut:nil];
+    [self dealloc];
 }
 
 - (void)drawerWindowDidActivate:(NSDrawerWindow *)window {
-    [self _resetWindowOrdering:nil];
+    if (_state == NSDrawerOpenState  && ![_parentWindow isMiniaturized])
+       [self _resetWindowOrdering:nil];
 }
 
 - (NSSize)drawerWindow:(NSDrawerWindow *)window constrainSize:(NSSize)size edge:(NSRectEdge)edge {
@@ -383,16 +454,16 @@ NSString *NSDrawerDidCloseNotification = @"NSDrawerDidCloseNotification";
         if (size.width > _maxContentSize.width && _maxContentSize.width > 0)
             size.width = _maxContentSize.width;
         
-        size.height = _contentSize.height;
+        size.height = [self contentSize].height;
     }
     else {
         if (size.height > _maxContentSize.height && _maxContentSize.height > 0)
             size.height = _maxContentSize.height;
         
-        size.width = _contentSize.width;
+        size.width = [self contentSize].width;
     }
     
-    _contentSize = size;
+    [self setContentSize:size];
     
     return size;
 }
@@ -407,6 +478,7 @@ NSString *NSDrawerDidCloseNotification = @"NSDrawerDidCloseNotification";
         if (size.width < _minContentSize.width) {
             [self close];
             _contentSize.width = _minContentSize.width;
+            
         }
     }
     else {
@@ -415,6 +487,8 @@ NSString *NSDrawerDidCloseNotification = @"NSDrawerDidCloseNotification";
             _contentSize.height = _minContentSize.height;
         }
     }
+
+    [self setContentSize:_contentSize];
 }
 
 // ?

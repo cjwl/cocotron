@@ -60,5 +60,7 @@ FOUNDATION_EXPORT id objc_msg_sendv(id self, SEL selector, unsigned arg_size, vo
 
 FOUNDATION_EXPORT void OBJCReportStatistics();
 FOUNDATION_EXPORT void OBJCSetDispatchTracing(BOOL yesOrNo);
+FOUNDATION_EXPORT void OBJCEnableMsgTracing();
+FOUNDATION_EXPORT void OBJCDisableMsgTracing();
 
 #import <Foundation/ObjCDynamicModule.h>

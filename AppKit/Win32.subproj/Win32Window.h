@@ -11,7 +11,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <windows.h>
 
-@class Win32RenderingContext, NSEvent;
+@class Win32DeviceContext, NSEvent;
 
 typedef enum {
    Win32BackingStoreRetained=0,
@@ -21,11 +21,12 @@ typedef enum {
 
 @interface Win32Window : CGWindow {
    HWND                   _handle;
-   Win32RenderingContext *_renderingContext;
+   NSSize                 _size;
+   Win32DeviceContext *_renderingContext;
 
    Win32BackingStoreType  _backingType;
    NSSize                 _backingSize;
-   Win32RenderingContext *_backingContext;
+   Win32DeviceContext *_backingContext;
 
    BOOL                  _ignoreMinMaxMessage;
    BOOL                  _sentBeginSizing;
@@ -45,7 +46,7 @@ typedef enum {
 
 -(HWND)windowHandle;
 
--(Win32RenderingContext *)renderingContext;
+-(Win32DeviceContext *)renderingContext;
 
 -(void)setTitle:(NSString *)title;
 -(void)setFrame:(NSRect)frame;
@@ -63,6 +64,7 @@ typedef enum {
 -(void)captureEvents;
 -(void)miniaturize;
 -(void)deminiaturize;
+-(BOOL)isMiniaturized;
 
 -(void)flushBuffer;
 

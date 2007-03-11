@@ -69,6 +69,11 @@ NSString *NSFileHFSTypeCode = @"NSFileHFSTypeCode";
    return NO;
 }
 
+-(BOOL)createSymbolicLinkAtPath:(NSString *)path pathContent:(NSString *)destination {
+   NSInvalidAbstractInvocation();
+   return NO;
+}
+
 -(NSString *)pathContentOfSymbolicLinkAtPath:(NSString *)path {
    NSInvalidAbstractInvocation();
    return NO;
@@ -156,6 +161,10 @@ NSString *NSFileHFSTypeCode = @"NSFileHFSTypeCode";
 
 -(NSString *)fileType {
    return [self objectForKey:NSFileType];
+}
+
+-(unsigned long long)fileSize {
+   return [[self objectForKey:NSFileSize] unsignedLongLongValue];
 }
 
 @end

@@ -119,7 +119,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    unsigned   i,count=[self count];
    KGPDFReal *numbers;
    
-   numbers=NSZoneMalloc(NULL,sizeof(float)*count);
+   numbers=NSZoneMalloc(NULL,sizeof(KGPDFReal)*count);
    for(i=0;i<count;i++){
     if(![self getNumberAtIndex:i value:numbers+i]){
      NSZoneFree(NULL,numbers);

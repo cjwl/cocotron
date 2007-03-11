@@ -13,6 +13,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "KGPDFScanner.h"
 #import "KGPDFDocument.h"
 #import "KGPDFDictionary.h"
+#import "KGPDFArray.h"
 
 @implementation KGPDFPage
 
@@ -45,11 +46,90 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return _dictionary;
 }
 
+BOOL KGPDFGetPageObjectForKey(KGPDFPage *page,const char *key,KGPDFObject **object){
+   KGPDFDictionary *dictionary=[page dictionary];
+   
+   do{
+    KGPDFObject *check;
+    
+    if([dictionary getObjectForKey:key value:&check]){
+     *object=check;
+     return YES;
+    }
+    
+   }while([dictionary getDictionaryForKey:"Parent" value:&dictionary]);
+   
+   return NO;
+}
+
+BOOL KGPDFGetPageArrayForKey(KGPDFPage *page,const char *key,KGPDFArray **arrayp){
+   KGPDFObject *check;
+   
+   if(!KGPDFGetPageObjectForKey(page,key,&check))
+    return NO;
+    
+   return [check checkForType:kKGPDFObjectTypeArray value:arrayp];
+}
+
+-(BOOL)getRect:(NSRect *)rect forBox:(KGPDFBox)box {
+   const char *string=NULL;
+   KGPDFArray *array;
+   KGPDFReal  *numbers;
+   unsigned    count;
+   
+   switch(box){
+    case kKGPDFMediaBox: string="MediaBox"; break;
+    case kKGPDFCropBox:  string="CropBox"; break;
+    case kKGPDFBleedBox: string="BleedBox"; break;
+    case kKGPDFTrimBox:  string="TrimBox"; break;
+    case kKGPDFArtBox:   string="ArtBox"; break;
+   }
+   
+   if(string==NULL)
+    return NO;
+   if(!KGPDFGetPageArrayForKey(self,string,&array))
+    return NO;
+   
+   if(![array getNumbers:&numbers count:&count])
+    return NO;
+    
+   if(count==4){
+    NSZoneFree(NULL,numbers);
+    return NO;
+   }
+   
+   rect->origin.x=numbers[0];
+   rect->origin.y=numbers[1];
+   rect->size.width=numbers[2];
+   rect->size.height=numbers[3];
+   
+   NSZoneFree(NULL,numbers);
+   
+   return YES;
+}
+
+-(int)rotationAngle {
+   return 0;
+}
+
+
+-(CGAffineTransform)drawingTransformForBox:(KGPDFBox)box inRect:(NSRect)rect rotate:(int)degrees preserveAspectRatio:(BOOL)preserveAspectRatio {
+   CGAffineTransform result=CGAffineTransformIdentity;
+   NSRect boxRect;
+   
+   if([self getRect:&boxRect forBox:box]){    
+    result=CGAffineTransformTranslate(result,-boxRect.origin.x,-boxRect.origin.y);
+    result=CGAffineTransformScale(result,rect.size.width/boxRect.size.width,rect.size.height/boxRect.size.height);
+   }
+   
+   return result;
+}
+
 -(void)drawInContext:(KGContext *)context {
    KGPDFContentStream *contentStream=[[[KGPDFContentStream alloc] initWithPage:self] autorelease];
    KGPDFOperatorTable *operatorTable=[KGPDFOperatorTable renderingOperatorTable];
    KGPDFScanner       *scanner=[[[KGPDFScanner alloc] initWithContentStream:contentStream operatorTable:operatorTable info:context] autorelease];
-   
+
    [scanner scan];
 }
 

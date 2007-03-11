@@ -50,7 +50,7 @@ NSStringDrawer *NSCurrentStringDrawer() {
    if((*isFlipped=[[NSView focusView] isFlipped]))
     return point;
    else {
-    CGContext        *context=NSCurrentGraphicsPort();
+    KGContext        *context=NSCurrentGraphicsPort();
     CGAffineTransform translate=CGAffineTransformMakeTranslation(point.x,point.y);
     CGAffineTransform flip={1,0,0,-1,0,height};
 
@@ -64,7 +64,7 @@ NSStringDrawer *NSCurrentStringDrawer() {
    if((*isFlipped=[[NSView focusView] isFlipped]))
     return rect.origin;
    else {
-    CGContext        *context=NSCurrentGraphicsPort();
+    KGContext        *context=NSCurrentGraphicsPort();
     CGAffineTransform translate=CGAffineTransformMakeTranslation(NSMinX(rect),NSMinY(rect));
     CGAffineTransform flip={1,0,0,-1,0,rect.size.height};
 
@@ -156,7 +156,7 @@ NSStringDrawer *NSCurrentStringDrawer() {
 @implementation NSString(NSStringDrawer)
 
 -(void)_clipAndDrawInRect:(NSRect)rect withAttributes:(NSDictionary *)attributes {
-   CGContext *graphicsPort=NSCurrentGraphicsPort();
+   KGContext *graphicsPort=NSCurrentGraphicsPort();
 
    CGContextSaveGState(graphicsPort);
    CGContextClipToRect(graphicsPort,rect);
@@ -169,7 +169,7 @@ NSStringDrawer *NSCurrentStringDrawer() {
 @implementation NSAttributedString(NSStringDrawer)
 
 -(void)_clipAndDrawInRect:(NSRect)rect {
-   CGContext *graphicsPort=NSCurrentGraphicsPort();
+   KGContext *graphicsPort=NSCurrentGraphicsPort();
 
    CGContextSaveGState(graphicsPort);
    CGContextClipToRect(graphicsPort,rect);

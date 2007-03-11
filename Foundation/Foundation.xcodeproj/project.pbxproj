@@ -4860,7 +4860,7 @@
 				);
 				OTHER_LDFLAGS = (
 					"-shared",
-					"-lWSOCK32",
+					"-lwsock32",
 					"-Wl,--export-all-symbols",
 					"-Wl,--out-implib,$TARGET_BUILD_DIR/Foundation.framework/libFoundation.a",
 				);

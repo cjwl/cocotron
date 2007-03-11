@@ -26,5 +26,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(NSSize)size;
 
 -(BOOL)drawAtPoint:(NSPoint)point;
+-(BOOL)drawInRect:(NSRect)rect;
 
 @end

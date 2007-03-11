@@ -31,6 +31,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return [[KGColorSpace_indexed alloc] initWithColorSpace:baseColorSpace hival:hival bytes:bytes];
 }
 
+-copyWithZone:(NSZone *)zone {
+   return [self retain];
+}
+
 -(unsigned)numberOfComponents {
    switch(_type){
     case KGColorSpaceDeviceGray: return 1;

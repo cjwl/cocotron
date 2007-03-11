@@ -10,9 +10,21 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/ObjCClass.h>
 #import <Foundation/ObjectiveC.h>
 
+static int msg_tracing=0;
+
+void OBJCEnableMsgTracing(){
+  msg_tracing=1;
+  OBJCLog("OBJC msg tracing ENABLED");
+}
+void OBJCDisableMsgTracing(){
+  msg_tracing=0;
+  OBJCLog("OBJC msg tracing DISABLED");
+}
+
 IMP objc_msg_lookup(id object,SEL selector) {
    
-   //OBJCLog("objc_msg_lookup %x %s isa %x name %s",selector,OBJCStringFromSelector(selector),(object!=nil)?object->isa:Nil,(object!=nil)?object->isa->name:"");
+   if(msg_tracing)
+    OBJCLog("objc_msg_lookup %x %s isa %x name %s",selector,OBJCStringFromSelector(selector),(object!=nil)?object->isa:Nil,(object!=nil)?object->isa->name:"");
 
    if(object!=nil){
     OBJCMethodCache      *cache=object->isa->cache;

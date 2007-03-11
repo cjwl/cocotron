@@ -55,14 +55,14 @@ void KGPDF_render_b_star(KGPDFScanner *scanner,void *info) {
    KGContext *context=kgContextFromInfo(info);
    
    [context closePath];
-   [context eoFillAndStrokePath];
+   [context evenOddFillAndStrokePath];
 }
 
 // eofill, stroke
 void KGPDF_render_B_star(KGPDFScanner *scanner,void *info) {
    KGContext *context=kgContextFromInfo(info);
    
-   [context eoFillAndStrokePath];
+   [context evenOddFillAndStrokePath];
 }
 
 // Begin marked-content sequence with property list
@@ -113,23 +113,23 @@ void KGPDF_render_c(KGPDFScanner *scanner,void *info) {
 
 // concat, Concatenate matrix to current transformation matrix
 void KGPDF_render_cm(KGPDFScanner *scanner,void *info) {
-   KGContext *context=kgContextFromInfo(info);
-   KGPDFReal      a,b,c,d,tx,ty;
+   KGContext        *context=kgContextFromInfo(info);
+   CGAffineTransform matrix;
    
-   if(![scanner popNumber:&ty])
+   if(![scanner popNumber:&matrix.ty])
     return;
-   if(![scanner popNumber:&tx])
+   if(![scanner popNumber:&matrix.tx])
     return;
-   if(![scanner popNumber:&d])
+   if(![scanner popNumber:&matrix.d])
     return;
-   if(![scanner popNumber:&c])
+   if(![scanner popNumber:&matrix.c])
     return;
-   if(![scanner popNumber:&b])
+   if(![scanner popNumber:&matrix.b])
     return;
-   if(![scanner popNumber:&a])
+   if(![scanner popNumber:&matrix.a])
     return;
   
-   [context concatCTM:a:b:c:d:tx:ty];
+   [context concatCTM:matrix];
 }
 
 KGColorSpace *colorSpaceFromScannerInfo(KGPDFScanner *scanner,void *info,const char *name) {
@@ -453,7 +453,7 @@ void KGPDF_render_Do(KGPDFScanner *scanner,void *info) {
 
    if((resource=[content resourceForCategory:"XObject" name:name])==nil)
     return;
-   NSLog(@"name=%s",name);
+  // NSLog(@"name=%s",name);
    
    if(![resource checkForType:kKGPDFObjectTypeStream value:&stream])
     return;
@@ -500,8 +500,8 @@ if(doIt)
     KGImage *image=imageFromStream(stream);
     
     if(image!=NULL)
-     [context drawImage:image inRect:0:0:1:1];
-    
+     [context drawImage:image inRect:CGRectMake(0,0,1,1)];
+
     if(image!=NULL)
      [image release];
    }
@@ -556,7 +556,7 @@ void KGPDF_render_F(KGPDFScanner *scanner,void *info) {
 void KGPDF_render_f_star(KGPDFScanner *scanner,void *info) {
    KGContext *context=kgContextFromInfo(info);
    
-   [context eoFillPath];
+   [context evenOddFillPath];
 }
 
 // setgray, set gray level for stroking operations
@@ -631,6 +631,44 @@ void KGPDF_render_gs(KGPDFScanner *scanner,void *info) {
    }
    if([graphicsState getDictionaryForKey:"BG" value:&dictionary]){ // functions are streams too
    }
+   
+   if([graphicsState getNameForKey:"BM" value:&name]){
+    if(strcmp(name,"Normal")==0)
+     [context setBlendMode:KGBlendModeNormal];
+    else if(strcmp(name,"Multiply")==0)
+     [context setBlendMode:KGBlendModeMultiply];
+    else if(strcmp(name,"Screen")==0)
+     [context setBlendMode:KGBlendModeScreen];
+    else if(strcmp(name,"Overlay")==0)
+     [context setBlendMode:KGBlendModeOverlay];
+    else if(strcmp(name,"Darken")==0)
+     [context setBlendMode:KGBlendModeDarken];
+    else if(strcmp(name,"Lighten")==0)
+     [context setBlendMode:KGBlendModeLighten];
+    else if(strcmp(name,"ColorDodge")==0)
+     [context setBlendMode:KGBlendModeColorDodge];
+    else if(strcmp(name,"ColorBurn")==0)
+     [context setBlendMode:KGBlendModeColorBurn];
+    else if(strcmp(name,"HardLight")==0)
+     [context setBlendMode:KGBlendModeHardLight];
+    else if(strcmp(name,"SoftLight")==0)
+     [context setBlendMode:KGBlendModeSoftLight];
+    else if(strcmp(name,"Difference")==0)
+     [context setBlendMode:KGBlendModeDifference];
+    else if(strcmp(name,"Exclusion")==0)
+     [context setBlendMode:KGBlendModeExclusion];
+    else if(strcmp(name,"Hue")==0)
+     [context setBlendMode:KGBlendModeHue];
+    else if(strcmp(name,"Saturation")==0)
+     [context setBlendMode:KGBlendModeSaturation];
+    else if(strcmp(name,"Color")==0)
+     [context setBlendMode:KGBlendModeColor];
+    else if(strcmp(name,"Luminosity")==0)
+     [context setBlendMode:KGBlendModeLuminosity];
+    else
+     NSLog(@"Unknown blend mode %s",name);
+   }
+   
    if([graphicsState getNumberForKey:"FL" value:&number]){
    }
    if([graphicsState getNumberForKey:"SM" value:&number]){
@@ -789,18 +827,18 @@ void KGPDF_render_Q(KGPDFScanner *scanner,void *info) {
 // Append rectangle to path
 void KGPDF_render_re(KGPDFScanner *scanner,void *info) {
    KGContext *context=kgContextFromInfo(info);
-   float x,y,width,height;
+   NSRect     rect;
    
-   if(![scanner popNumber:&height])
+   if(![scanner popNumber:&rect.size.height])
     return;
-   if(![scanner popNumber:&width])
+   if(![scanner popNumber:&rect.size.width])
     return;
-   if(![scanner popNumber:&y])
+   if(![scanner popNumber:&rect.origin.y])
     return;
-   if(![scanner popNumber:&x])
+   if(![scanner popNumber:&rect.origin.x])
     return;
    
-   [context addRect:x:y:width:height];
+   [context addRect:rect];
 }
 
 // setrgbcolor, Set RGB color for stroking operations
@@ -1203,7 +1241,7 @@ void KGPDF_render_TD(KGPDFScanner *scanner,void *info) {
    if(![scanner popNumber:&x])
     return;
     
-   [context setTextLeading:x:-y];
+   [context setTextLeading:-y];
    [context setTextPosition:x:y];
 }
 
@@ -1235,7 +1273,7 @@ void KGPDF_render_Tf(KGPDFScanner *scanner,void *info) {
    if(![dictionary getNameForKey:"Subtype" value:&subtype])
     return;
 
-   [context setTextMatrixIdentity];
+   [context setTextMatrix:CGAffineTransformIdentity];
    
    if(strcmp(subtype,"Type0")==0){
    }
@@ -1245,7 +1283,7 @@ void KGPDF_render_Tf(KGPDFScanner *scanner,void *info) {
     if(![dictionary getNameForKey:"BaseFont" value:&baseFont])
      return;
 
-    [context selectFont:baseFont scale:scale encoding:0];
+    [context selectFontWithName:baseFont size:scale encoding:0];
    }
    else if(strcmp(subtype,"MMType1")==0){
    }
@@ -1308,23 +1346,23 @@ void KGPDF_render_TL(KGPDFScanner *scanner,void *info) {
 
 // Set text matrix and text line matrix
 void KGPDF_render_Tm(KGPDFScanner *scanner,void *info) {
-   KGContext *context=kgContextFromInfo(info);
-   KGPDFReal a,b,c,d,tx,ty;
+   KGContext        *context=kgContextFromInfo(info);
+   CGAffineTransform matrix;
    
-   if(![scanner popNumber:&ty])
+   if(![scanner popNumber:&matrix.ty])
     return;
-   if(![scanner popNumber:&tx])
+   if(![scanner popNumber:&matrix.tx])
     return;
-   if(![scanner popNumber:&d])
+   if(![scanner popNumber:&matrix.d])
     return;
-   if(![scanner popNumber:&c])
+   if(![scanner popNumber:&matrix.c])
     return;
-   if(![scanner popNumber:&b])
+   if(![scanner popNumber:&matrix.b])
     return;
-   if(![scanner popNumber:&a])
+   if(![scanner popNumber:&matrix.a])
     return;
         
-   [context setTextMatrix:a:b:c:d:tx:ty];
+   [context setTextMatrix:matrix];
 }
 
 // Set text rendering mode
@@ -1393,7 +1431,7 @@ void KGPDF_render_W(KGPDFScanner *scanner,void *info) {
 void KGPDF_render_W_star(KGPDFScanner *scanner,void *info) {
    KGContext *context=kgContextFromInfo(info);
    
-   [context eoClipToPath];
+   [context evenOddClipToPath];
 }
 
 // curveto, Append curved segment to path, final point replicated

@@ -8,11 +8,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <AppKit/NSWindow.h>
 
-@class CGRenderingContext, CGWindow;
+@class KGContext, CGWindow;
 
 @interface NSWindow(NSWindow_private)
 -(CGWindow *)platformWindow;
--(CGRenderingContext *)_renderingContext;
+-(KGContext *)graphicsContext;
 -(BOOL)_isActive;
 -(NSArray *)_draggedTypes;
 -(void)_addCursorRect:(NSRect)rect cursor:(NSCursor *)cursor view:(NSView *)view;

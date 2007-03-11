@@ -78,11 +78,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)loadWindow {
+   static       NSPoint cascadeTopLeftSavedPoint={0.0, 0.0};
    NSString     *path=[self windowNibPath];
    NSDictionary *nameTable=[NSDictionary dictionaryWithObject:_owner forKey:@"NSOwner"];
 
    [NSBundle loadNibFile:path externalNameTable:nameTable withZone:NULL];
    [self synchronizeWindowTitleWithDocumentName];
+   
+   if (_shouldCascadeWindows)
+      cascadeTopLeftSavedPoint=[_window cascadeTopLeftFromPoint:cascadeTopLeftSavedPoint];   
 }
 
 -(void)windowWillLoad {

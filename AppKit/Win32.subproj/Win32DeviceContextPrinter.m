@@ -11,14 +11,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @implementation Win32DeviceContextPrinter
 
--initWithPrinterName:(NSString *)name {
-   HDC dc=CreateDC("WINSPOOL",[name cString],NULL,NULL);
-
-   [super initWithDC:dc];
-
-   return self;
-}
-
 -(void)dealloc {
    DeleteDC(_dc);
    [super dealloc];

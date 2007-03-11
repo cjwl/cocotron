@@ -11,9 +11,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @class NSData;
 
 @interface KGDataProvider : NSObject {
-   NSData *_data;
+   NSData     *_data;
+   const void *_bytes;
+   unsigned    _length;
 }
 
 -initWithData:(NSData *)data;
+
+-(const void *)bytes;
+-(unsigned)length;
 
 @end

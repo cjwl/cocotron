@@ -8,15 +8,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 // Original - Christopher Lloyd <cjwl@objc.net>
 #import <AppKit/NSCachedImageRep.h>
-#import <AppKit/CGRenderingContext.h>
 #import <AppKit/NSGraphicsContextFunctions.h>
 #import <AppKit/NSDisplay.h>
+#import <AppKit/Win32DeviceContextBitmap.h>
+#import <AppKit/KGImage_context.h>
 
 @implementation NSCachedImageRep
 
 -initWithSize:(NSSize)size {
    _size=size;
-   _renderingContext=[[[NSDisplay currentDisplay] bitmapRenderingContextWithSize:size] retain];
+   _renderingContext=[[Win32DeviceContextBitmap alloc] initWithSize:size];
    return self;
 }
 
@@ -25,12 +26,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [super dealloc];
 }
 
--(CGRenderingContext *)renderingContext {
-   return _renderingContext;
+-(KGContext *)graphicsContext {
+   return [_renderingContext graphicsContextWithSize:[self size]];
 }
 
 -(BOOL)drawAtPoint:(NSPoint)point {
-   CGContextBitCopy(NSCurrentGraphicsPort(),point,_renderingContext,NSMakePoint(0,0),_size);
+   KGImage *image=[[KGImage_context alloc] initWithRenderingContext:_renderingContext];
+   NSRect   rect={point,_size};
+   
+   CGContextDrawImage(NSCurrentGraphicsPort(),rect,image);
    return YES;
 }
 

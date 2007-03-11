@@ -8,10 +8,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/NSObject.h>
 #import <AppKit/AppKitExport.h>
-
+#import <AppKit/CGColorSpace.h>
+#import <AppKit/CGDataProvider.h>
 @class KGImage;
 
 typedef KGImage *CGImageRef;
 
-APPKIT_EXPORT void CGImageRetain(KGImage *image);
+typedef unsigned CGBitmapInfo;
+
+APPKIT_EXPORT CGImageRef CGImageRetain(KGImage *image);
 APPKIT_EXPORT void CGImageRelease(KGImage *image);
+
+APPKIT_EXPORT CGImageRef CGImageCreate(unsigned width,unsigned height,unsigned bitsPerComponent,unsigned bitsPerPixel,unsigned bytesPerRow,CGColorSpaceRef colorSpace,CGBitmapInfo bitmapInfo,CGDataProviderRef dataProvider,const float *decode,BOOL interpolate,CGColorRenderingIntent renderingIntent);

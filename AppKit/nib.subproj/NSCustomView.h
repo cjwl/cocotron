@@ -8,11 +8,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <AppKit/NSView.h>
 
-@interface NSCustomView : NSObject {
+@interface NSCustomView : NSView {
    NSString *_className;
-   NSRect    _frame;
-   unsigned  _autoresizingMask;
-   int       _tag;
 }
 
 @end

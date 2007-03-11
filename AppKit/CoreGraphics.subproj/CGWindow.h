@@ -8,7 +8,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/Foundation.h>
 
-@class CGRenderingContext,CGEvent;
+@class KGContext,CGEvent;
 
 @interface CGWindow : NSObject
 
@@ -17,7 +17,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)invalidate;
 
--(CGRenderingContext *)renderingContext;
+-(KGContext *)graphicsContext;
 
 -(void)setTitle:(NSString *)title;
 -(void)setFrame:(NSRect)frame;
@@ -34,6 +34,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)captureEvents;
 -(void)miniaturize;
 -(void)deminiaturize;
+-(BOOL)isMiniaturized;
 
 -(void)flushBuffer;
 

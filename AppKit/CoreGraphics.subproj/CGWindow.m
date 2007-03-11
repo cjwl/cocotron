@@ -25,7 +25,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 
--(CGRenderingContext *)renderingContext {
+-(KGContext *)graphicsContext {
    NSInvalidAbstractInvocation();
    return nil;
 }
@@ -79,6 +79,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    NSInvalidAbstractInvocation();
 }
 
+-(BOOL)isMiniaturized {
+   NSInvalidAbstractInvocation();
+   return NO;
+}
 
 -(void)flushBuffer {
    NSInvalidAbstractInvocation();

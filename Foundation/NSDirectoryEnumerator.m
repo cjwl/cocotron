@@ -8,7 +8,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 // Original - David Young <daver@geeks.org>
 #import <Foundation/NSDirectoryEnumerator.h>
+#import <Foundation/NSRaise.h>
 
 @implementation NSDirectoryEnumerator
+
+-(void)skipDescendents {
+   NSUnimplementedMethod();
+}
 
 @end

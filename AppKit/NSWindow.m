@@ -19,7 +19,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSEvent_CoreGraphics.h>
 #import <AppKit/NSColor.h>
 #import <AppKit/CGWindow.h>
-#import <AppKit/CGRenderingContext.h>
+#import <AppKit/CGContext.h>
 #import <AppKit/NSGraphics.h>
 #import <AppKit/NSMenu.h>
 #import <AppKit/NSMenuItem.h>
@@ -136,7 +136,6 @@ NSString *NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification";
    _sheetContext=nil;
 
    _isVisible=NO;
-   _isMiniaturized=NO;
    _isDocumentEdited=NO;
 
    _makeSureIsOnAScreen=YES;
@@ -218,8 +217,8 @@ NSString *NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification";
    return _platformWindow;
 }
 
--(CGRenderingContext *)_renderingContext {
-   return (CGRenderingContext *)[[self platformWindow] renderingContext];
+-(KGContext *)graphicsContext {
+   return [[self platformWindow] graphicsContext];
 }
 
 -(void)_setStyleMask:(unsigned)mask
@@ -363,7 +362,7 @@ NSString *NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification";
 }
 
 -(BOOL)isMiniaturized {
-   return _isMiniaturized;
+   return [_platformWindow isMiniaturized];
 }
 
 -(BOOL)canBecomeKeyWindow {
@@ -678,6 +677,28 @@ NSString *NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification";
    frame.origin.x=point.x;
    frame.origin.y=point.y-frame.size.height;
    [self setFrame:frame display:YES];
+}
+
+-(NSPoint)cascadeTopLeftFromPoint:(NSPoint)topLeftPoint {
+   NSSize  screenSize = [[self screen] frame].size;
+   NSRect  frame = [self frame];
+
+   if (topLeftPoint.x + topLeftPoint.y == 0.0 || topLeftPoint.x > 0.5*screenSize.width || topLeftPoint.y < 0.5*screenSize.height)
+   {
+      topLeftPoint.x = frame.origin.x;
+      topLeftPoint.y = frame.origin.y + frame.size.height;
+   }
+   
+   else
+   {
+      topLeftPoint.x += 18;
+      topLeftPoint.y -= 21;
+      frame.origin.x=topLeftPoint.x;
+      frame.origin.y=topLeftPoint.y - frame.size.height;
+      [self setFrame:frame display:YES];
+   }
+   
+   return topLeftPoint;
 }
 
 -(void)setMinSize:(NSSize)size {
@@ -1044,6 +1065,9 @@ NSString *NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification";
  */
    [self orderOut:nil];
 
+   if ([_drawers count] > 0)
+       [_drawers makeObjectsPerformSelector:@selector(parentWindowDidClose:) withObject:self];
+
    [self postNotificationName:NSWindowWillCloseNotification];
 
    if(_releaseWhenClosed)
@@ -1067,6 +1091,8 @@ NSString *NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification";
 }
 
 -(void)makeKeyAndOrderFront:sender {
+   if ([self isMiniaturized])
+    [_platformWindow deminiaturize];
 
    [self makeKeyWindow];
 
@@ -1610,6 +1636,9 @@ NSString *NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification";
 }
 
 -(void)platformWindowDeactivated:(CGWindow *)window checkForAppDeactivation:(BOOL)checkForAppDeactivation {
+   if ([_drawers count] > 0)
+       [_drawers makeObjectsPerformSelector:@selector(parentWindowDidDeactivate:) withObject:self];
+
    _isActive=NO;
 
    if([self isKeyWindow])
@@ -1624,19 +1653,13 @@ NSString *NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification";
 }
 
 -(void)platformWindowDeminiaturized:(CGWindow *)window {
-   _isMiniaturized=NO;
-
    [self _updatePlatformWindowTitle];
    [self postNotificationName:NSWindowDidDeminiaturizeNotification];
-
    [NSApp updateWindows];
-   if ([_drawers count] > 0)
-       [_drawers makeObjectsPerformSelector:@selector(parentWindowDidDeminiaturize:) withObject:self];
 }
 
 -(void)platformWindowMiniaturized:(CGWindow *)window {
    _isActive=NO;
-   _isMiniaturized=YES;
 
    [self _updatePlatformWindowTitle];
    [self postNotificationName:NSWindowDidMiniaturizeNotification];

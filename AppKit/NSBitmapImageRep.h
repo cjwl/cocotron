@@ -12,7 +12,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @interface NSBitmapImageRep : NSImageRep {
    unsigned       _bitsPerPixel;
    unsigned       _bytesPerRow;
-   unsigned char *_bitmap;
+   NSData        *_bitmap;
 }
 
 -initWithData:(NSData *)data;

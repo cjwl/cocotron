@@ -12,11 +12,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/Win32Window.h>
 #import <AppKit/Win32Cursor.h>
 #import <AppKit/Win32DeviceContext.h>
-#import <AppKit/Win32RenderingContext.h>
+#import <AppKit/Win32DeviceContextPrinter.h>
+#import <AppKit/KGGraphicsState.h>
 #import <AppKit/Win32EventInputSource.h>
 #import <AppKit/Win32Application.h>
 #import <AppKit/Win32SplashPanel.h>
-#import <AppKit/Win32GraphicsContext.h>
+#import <AppKit/KGContext.h>
 
 #import <AppKit/NSScreen.h>
 #import <AppKit/NSEvent_CoreGraphics.h>
@@ -197,10 +198,6 @@ BOOL CALLBACK monitorEnumerator(HMONITOR hMonitor,HDC hdcMonitor,LPRECT rect,LPA
 
 -(CGWindow *)panelWithFrame:(NSRect)frame styleMask:(unsigned)styleMask backingType:(unsigned)backingType {
    return [[[Win32Window alloc] initWithFrame:frame styleMask:styleMask isPanel:YES backingType:backingType] autorelease];
-}
-
--(CGRenderingContext *)bitmapRenderingContextWithSize:(NSSize)size {
-   return [[[Win32RenderingContext alloc] initWithPixelSize:size] autorelease];
 }
 
 -(void)invalidateSystemColors {
@@ -873,13 +870,13 @@ static int CALLBACK buildTypeface(const LOGFONTA *lofFont_old,
 
 #define MAXUNICHAR 0xFFFF
 
--(HDC)deviceContextWithFontName:(NSString *)name pointSize:(float)pointSize {
+-(HDC)deviceContextWithFontName:(const char *)name pointSize:(float)pointSize {
    [_deviceContextOnPrimaryScreen selectFontWithName:name pointSize:pointSize];
 
    return [_deviceContextOnPrimaryScreen dc];
 }
 
--(void)metricsForFontWithName:(NSString *)name pointSize:(float)pointSize metrics:(NSFontMetrics *)result {
+-(void)metricsForFontWithName:(const char *)name pointSize:(float)pointSize metrics:(NSFontMetrics *)result {
    HDC           dc=[self deviceContextWithFontName:name pointSize:pointSize];
    TEXTMETRIC    metrics;
 
@@ -903,7 +900,7 @@ static int CALLBACK buildTypeface(const LOGFONTA *lofFont_old,
 }
 
 -(void)loadGlyphRangeTable:(NSGlyphRangeTable *)table fontName:(NSString *)name range:(NSRange)range {
-   HDC                dc=[self deviceContextWithFontName:name pointSize:12.0];
+   HDC                dc=[self deviceContextWithFontName:[name cString] pointSize:12.0];
    unichar            characters[range.length];
    unsigned short     glyphs[range.length];
    unsigned           i;
@@ -970,7 +967,7 @@ static inline NSGlyphMetrics *glyphInfoForGlyph(NSGlyphMetricsSet *infoSet,NSGly
 }
 
 -(void)fetchAdvancementsForFontWithName:(NSString *)name pointSize:(float)pointSize glyphRanges:(NSGlyphRangeTable *)table infoSet:(NSGlyphMetricsSet *)infoSet forGlyph:(NSGlyph)glyph {
-   HDC       dc=[self deviceContextWithFontName:name pointSize:pointSize];
+   HDC       dc=[self deviceContextWithFontName:[name cString] pointSize:pointSize];
    ABCFLOAT *abc;
    int       i,max;
 
@@ -1013,7 +1010,7 @@ static inline NSGlyphMetrics *glyphInfoForGlyph(NSGlyphMetricsSet *infoSet,NSGly
 }
 
 -(void)fetchGlyphKerningForFontWithName:(NSString *)name pointSize:(float)pointSize glyphRanges:(NSGlyphRangeTable *)table infoSet:(NSGlyphMetricsSet *)infoSet {
-   HDC         dc=[self deviceContextWithFontName:name pointSize:pointSize];
+   HDC         dc=[self deviceContextWithFontName:[name cString] pointSize:pointSize];
    int         i,numberOfPairs=GetKerningPairs(dc,0,NULL);
    KERNINGPAIR pairs[numberOfPairs];
 
@@ -1069,7 +1066,7 @@ static inline NSGlyphMetrics *glyphInfoForGlyph(NSGlyphMetricsSet *infoSet,NSGly
    [self startWaitCursor];
 }
 
--(CGContext *)graphicsPortForPrintOperationWithView:(NSView *)view printInfo:(NSPrintInfo *)printInfo pageRange:(NSRange)pageRange {
+-(KGContext *)graphicsPortForPrintOperationWithView:(NSView *)view printInfo:(NSPrintInfo *)printInfo pageRange:(NSRange)pageRange {
    PRINTDLG           printProperties;
    int                check;
 
@@ -1101,21 +1098,18 @@ static inline NSGlyphMetrics *glyphInfoForGlyph(NSGlyphMetricsSet *infoSet,NSGly
    if(check==0)
     return nil;
    else {
-    HDC                        dc= printProperties.hDC;
-    Win32RenderingContext     *printContext=[[[Win32RenderingContext alloc] initWithPrinterDC:dc] autorelease];
-    float                      dpix=GetDeviceCaps(dc,LOGPIXELSX);
-    float                      dpiy=GetDeviceCaps(dc,LOGPIXELSY);
-    float                      pixelsWide=GetDeviceCaps(dc,HORZRES);
-    float                      pixelsHigh=GetDeviceCaps(dc,VERTRES);
-    float                      pointsWide=(pixelsWide/dpix)*72.0;
-    float                      pointsHigh=(pixelsHigh/dpiy)*72.0;
-    CGAffineTransform          scale=CGAffineTransformMakeScale(dpix/72.0,dpiy/72.0);
-    CGAffineTransform          flip={1,0,0,-1,0, pointsHigh};
-    Win32GraphicsContext      *graphicsPort;
-
-    scale=CGAffineTransformConcat(scale,flip);
-
-    graphicsPort=[[[Win32GraphicsContext alloc] initWithRenderingContext:printContext transform:scale clipRect:NSMakeRect(0,0,pointsWide,pointsHigh)] autorelease];
+    HDC                    dc= printProperties.hDC;
+    Win32DeviceContext *printContext=[[[Win32DeviceContextPrinter alloc] initWithDC:dc] autorelease];
+    float                  dpix=GetDeviceCaps(dc,LOGPIXELSX);
+    float                  dpiy=GetDeviceCaps(dc,LOGPIXELSY);
+    float                  pixelsWide=GetDeviceCaps(dc,HORZRES);
+    float                  pixelsHigh=GetDeviceCaps(dc,VERTRES);
+    float                  pointsWide=(pixelsWide/dpix)*72.0;
+    float                  pointsHigh=(pixelsHigh/dpiy)*72.0;
+    CGAffineTransform      flip={1,0,0,-1,0, pointsHigh};
+    CGAffineTransform      scale=CGAffineTransformConcat(CGAffineTransformMakeScale(dpix/72.0,dpiy/72.0),flip);
+    KGGraphicsState    *initialState=[[[KGGraphicsState alloc] initWithRenderingContext:printContext transform:scale userSpaceSize:NSMakeSize(pointsWide,pointsHigh)] autorelease];
+    KGContext             *graphicsPort=[[[KGContext alloc] initWithGraphicsState:initialState] autorelease];
 
     [printInfo setPaperSize:NSMakeSize(pointsWide,pointsHigh)];
 

@@ -9,7 +9,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/Foundation.h>
 #import <AppKit/NSFont.h>
 
-@class NSEvent,NSColor, NSPasteboard,NSDraggingManager,NSPrintInfo, CGContext, NSView, NSSavePanel, NSOpenPanel, CGWindow;
+@class NSEvent,NSColor, NSPasteboard,NSDraggingManager,NSPrintInfo, KGContext, NSView, NSSavePanel, NSOpenPanel, CGWindow;
 
 typedef struct NSGlyphRange {
    NSGlyph glyphs[256];
@@ -73,8 +73,6 @@ typedef struct NSFontMetrics {
 -(CGWindow *)windowWithFrame:(NSRect)frame styleMask:(unsigned)styleMask backingType:(unsigned)backingType;
 -(CGWindow *)panelWithFrame:(NSRect)frame styleMask:(unsigned)styleMask backingType:(unsigned)backingType;
 
--(CGRenderingContext *)bitmapRenderingContextWithSize:(NSSize)size;
-
 -(NSColor *)colorWithName:(NSString *)colorName;
 -(NSString *)menuFontNameAndSize:(float *)pointSize;
 
@@ -112,7 +110,7 @@ typedef struct NSFontMetrics {
 
 -(float)scrollerWidth;
 
--(void)metricsForFontWithName:(NSString *)name pointSize:(float)pointSize metrics:(NSFontMetrics *)metrics;
+-(void)metricsForFontWithName:(const char *)name pointSize:(float)pointSize metrics:(NSFontMetrics *)metrics;
 
 -(void)loadGlyphRangeTable:(NSGlyphRangeTable *)table fontName:(NSString *)name range:(NSRange)range;
 
@@ -121,7 +119,7 @@ typedef struct NSFontMetrics {
 
 -(void)runModalWithPrintInfo:(NSPrintInfo *)printInfo;
 
--(CGContext *)graphicsPortForPrintOperationWithView:(NSView *)view printInfo:(NSPrintInfo *)printInfo pageRange:(NSRange)pageRange;
+-(KGContext *)graphicsPortForPrintOperationWithView:(NSView *)view printInfo:(NSPrintInfo *)printInfo pageRange:(NSRange)pageRange;
 
 -(int)savePanel:(NSSavePanel *)savePanel runModalForDirectory:(NSString *)directory file:(NSString *)file;
 -(int)openPanel:(NSOpenPanel *)openPanel runModalForDirectory:(NSString *)directory file:(NSString *)file types:(NSArray *)types;

@@ -643,7 +643,7 @@ static inline void _appendRectToCache(NSLayoutManager *self,NSRect rect){
 }
 
 -(void)showPackedGlyphs:(char *)glyphs length:(unsigned)length glyphRange:(NSRange)glyphRange atPoint:(NSPoint)point font:(NSFont *)font color:(NSColor *)color printingAdjustment:(NSSize)printingAdjustment {
-   CGContext *context=NSCurrentGraphicsPort();
+   KGContext *context=NSCurrentGraphicsPort();
    CGGlyph   *cgGlyphs=(CGGlyph *)glyphs;
    int        cgGlyphsLength=length/2;
 

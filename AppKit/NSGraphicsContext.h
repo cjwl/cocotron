@@ -12,13 +12,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @class NSWindow, NSCachedImageRep;
 
 @interface NSGraphicsContext : NSObject {
-   CGContext *_graphicsPort;
+   KGContext *_graphicsPort;
    BOOL       _isDrawingToScreen;
 }
 
 +(NSGraphicsContext *)graphicsContextWithWindow:(NSWindow *)window;
 +(NSGraphicsContext *)graphicsContextWithCachedImageRep:(NSCachedImageRep *)imageRep;
-+(NSGraphicsContext *)graphicsContextWithPrintingContext:(CGContext *)context;
++(NSGraphicsContext *)graphicsContextWithPrintingContext:(KGContext *)context;
 
 +(NSGraphicsContext *)currentContext;
 +(void)setCurrentContext:(NSGraphicsContext *)context;
@@ -28,7 +28,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 +(BOOL)currentContextDrawingToScreen;
 
--(CGContext *)graphicsPort;
+-(KGContext *)graphicsPort;
 
 -(BOOL)isDrawingToScreen;
 

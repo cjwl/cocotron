@@ -13,7 +13,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @implementation KGImage
 
--initWithWidth:(unsigned)width height:(unsigned)height bitsPerComponent:(unsigned)bitsPerComponent bitsPerPixel:(unsigned)bitsPerPixel bytesPerRow:(unsigned)bytesPerRow colorSpace:(KGColorSpace *)colorSpace bitmapInfo:(unsigned)bitmapInfo provider:(KGDataProvider *)provider decode:(float *)decode interpolate:(BOOL)interpolate renderingIntent:(unsigned)renderingIntent {
+-initWithWidth:(unsigned)width height:(unsigned)height bitsPerComponent:(unsigned)bitsPerComponent bitsPerPixel:(unsigned)bitsPerPixel bytesPerRow:(unsigned)bytesPerRow colorSpace:(KGColorSpace *)colorSpace bitmapInfo:(unsigned)bitmapInfo provider:(KGDataProvider *)provider decode:(const float *)decode interpolate:(BOOL)interpolate renderingIntent:(unsigned)renderingIntent {
    _width=width;
    _height=height;
    _bitsPerComponent=bitsPerComponent;
@@ -29,7 +29,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return self;
 }
 
--initMaskWithWidth:(unsigned)width height:(unsigned)height bitsPerComponent:(unsigned)bitsPerComponent bitsPerPixel:(unsigned)bitsPerPixel bytesPerRow:(unsigned)bytesPerRow provider:(KGDataProvider *)provider decode:(float *)decode interpolate:(BOOL)interpolate {
+-initMaskWithWidth:(unsigned)width height:(unsigned)height bitsPerComponent:(unsigned)bitsPerComponent bitsPerPixel:(unsigned)bitsPerPixel bytesPerRow:(unsigned)bytesPerRow provider:(KGDataProvider *)provider decode:(const float *)decode interpolate:(BOOL)interpolate {
    _width=width;
    _height=height;
    _bitsPerComponent=bitsPerComponent;
@@ -45,10 +45,48 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return self;
 }
 
+-(void)dealloc {
+   [_colorSpace release];
+   [_provider release];
+   [super dealloc];
+}
+
 -(void)addMask:(KGImage *)image {
    [image retain];
    [_mask release];
    _mask=image;
+}
+
+-(unsigned)width {
+   return _width;
+}
+
+-(unsigned)height {
+   return _height;
+}
+
+-(unsigned)bitsPerComponent {
+   return _bitsPerComponent;
+}
+
+-(unsigned)bitsPerPixel {
+   return _bitsPerPixel;
+}
+
+-(KGColorSpace *)colorSpace {
+   return _colorSpace;
+}
+
+-(unsigned)bitmapInfo {
+   return _bitmapInfo;
+}
+
+-(const void *)bytes {
+   return [_provider bytes];
+}
+
+-(unsigned)length {
+   return [_provider length];
 }
 
 @end

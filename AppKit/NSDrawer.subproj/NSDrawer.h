@@ -44,9 +44,11 @@ APPKIT_EXPORT NSString *NSDrawerDidCloseNotification;
 
 + (NSRectEdge)visibleEdgeWithPreferredEdge:(NSRectEdge)preferredEdge parentWindow:(NSWindow *)parentWindow drawerWindow:(NSWindow *)drawerWindow;
 
--initWithContentSize:(NSSize)contentSize preferredEdge:(NSRectEdge)edge;
+-(id)initWithCoder:(NSCoder *)coder;
 
--delegate;
+-(id)initWithContentSize:(NSSize)contentSize preferredEdge:(NSRectEdge)edge;
+
+-(id)delegate;
 -(NSWindow *)parentWindow;
 -(NSView *)contentView;
 -(NSSize)contentSize;
@@ -77,10 +79,12 @@ APPKIT_EXPORT NSString *NSDrawerDidCloseNotification;
 -(void)toggle:sender;
 
 -(void)parentWindowDidActivate:(NSWindow *)window;
+-(void)parentWindowDidDeactivate:(NSWindow *)window;
 -(void)parentWindowDidChangeFrame:(NSWindow *)window;
 -(void)parentWindowDidExitMove:(NSWindow *)window;
 -(void)parentWindowDidMiniaturize:(NSWindow *)window;
 -(void)parentWindowDidDeminiaturize:(NSWindow *)window;
+-(void)parentWindowDidClose:(NSWindow *)window;
 
 -(void)drawerWindowDidActivate:(NSDrawerWindow *)window;
 -(NSSize)drawerWindow:(NSDrawerWindow *)window constrainSize:(NSSize)size edge:(NSRectEdge)edge;

@@ -8,17 +8,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/Foundation.h>
 
-typedef enum {
-	NSFileWrapperDirectoryType,
-	NSFileWrapperRegularFileType,
-	NSFileWrapperSymbolicLinkType
-} NSFileWrapperType;
+@class NSImage;
 
 @interface NSFileWrapper : NSObject {
 	@private
-	id _content;
 	NSMutableDictionary* _fileAttributes;
-	NSFileWrapperType	_contentType;
+    NSString*            _filename;
+    NSString*            _preferredFilename;
+    NSImage *            _icon;
 }
 
 
@@ -34,18 +31,36 @@ typedef enum {
 - (id)initWithPath:(NSString *)path;
     // Designated initializer. 
 
+- (NSDictionary*) fileWrappers;
+- (NSString *)addFileWrapper:(NSFileWrapper *)wrapper;
+
+
+- (NSString *)filename;
 -(void)setFilename:(NSString *)filename;
+
+- (NSString *)preferredFilename;
 -(void)setPreferredFilename:(NSString *)filename;
 
-- (void) setFileAttributes: (NSDictionary*) attributes;
-
+- (void) setFileAttributes: (NSDictionary *)attributes;
 - (NSDictionary*) fileAttributes;
 
 - (BOOL) isRegularFile;
 - (BOOL) isDirectory;
 - (BOOL) isSymbolicLink;
 
-- (NSData*) regularFileContent;
+- (NSData*) regularFileContents;
+- (NSString*) symbolicLinkDestination;
 
+- (NSImage *)icon;
+- (void)setIcon:(NSImage *)anImage;
+
+// Write instace to disk at path. if directory type, this method is recursive
+// if flag is YES, the wrapper will be updated with the name used in writing the file
+- (BOOL)writeToFile:(NSString *)path
+         atomically:(BOOL)atomicFlag
+    updateFilenames:(BOOL)updateFilenamesFlag;
+
+- (BOOL)needsToBeUpdatedFromPath:(NSString *)path;
+- (BOOL)updateFromPath:(NSString *)path;
 
 @end

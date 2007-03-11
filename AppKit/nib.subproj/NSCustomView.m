@@ -13,25 +13,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @implementation NSCustomView
 
--initWithCoder:(NSCoder *)coder {
-   if([coder isKindOfClass:[NSNibKeyedUnarchiver class]]){
-    NSNibKeyedUnarchiver *keyed=(NSNibKeyedUnarchiver *)coder;
-    unsigned           vFlags=[keyed decodeIntForKey:@"NSvFlags"];
-    
-    _className=[[keyed decodeObjectForKey:@"NSClassName"] retain];
-    _frame=NSZeroRect;
-    if([keyed containsValueForKey:@"NSFrame"])
-     _frame=[keyed decodeRectForKey:@"NSFrame"];
-    else if([keyed containsValueForKey:@"NSFrameSize"])
-     _frame.size=[keyed decodeSizeForKey:@"NSFrameSize"];
-    _autoresizingMask=vFlags&0x3F;
-    _tag=-1;
-    if([keyed containsValueForKey:@"NSTag"])
-     _tag=[keyed decodeIntForKey:@"NSTag"];
-   }
+- (id)initWithCoder:(NSCoder *)coder {
+   self = [super initWithCoder:coder];
+
+   if (self && [coder isKindOfClass:[NSNibKeyedUnarchiver class]])
+      _className = [[(NSNibKeyedUnarchiver *)coder decodeObjectForKey:@"NSClassName"] retain];
    else 
-    [NSException raise:NSInvalidArgumentException format:@"-[%@ %s] does not handle %@",isa,SELNAME(_cmd),[coder class]];
-   
+      [NSException raise:NSInvalidArgumentException format:@"-[%@ %s] does not handle %@",isa,SELNAME(_cmd),[coder class]];
+
    return self;
 }
 
@@ -40,18 +29,25 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [super dealloc];
 }
 
--awakeAfterUsingCoder:(NSCoder *)coder {
-   id    result;
-   Class class=NSClassFromString(_className);
+- (id)awakeAfterUsingCoder:(NSCoder *)coder {
+   if ([_className isEqualToString:@"NSView"])
+      return [super awakeAfterUsingCoder:coder];
+   else
+   {
+      id    result = nil;
+      Class class  = NSClassFromString(_className);
 
-   if(class==Nil)
-    NSLog(@"NSCustomView unknown class %@",_className);
-    
-   result=[[[class alloc] initWithFrame:_frame] autorelease];
-   [result setAutoresizingMask:_autoresizingMask];
-   [result setTag:_tag];
-      
-   return result;
+      if (class == nil)
+         NSLog(@"NSCustomView unknown class %@", _className);
+
+      result = [[[class alloc] initWithFrame:_frame] autorelease];
+      [result setAutoresizingMask:_autoresizingMask];
+      [result setTag:_tag];
+      [(NSMutableArray *)[result subviews] addObjectsFromArray:_subviews];
+      [[result subviews] makeObjectsPerformSelector:@selector(_setSuperview:) withObject:result];
+
+      return result;
+   }
 }
 
 @end

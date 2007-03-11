@@ -1077,11 +1077,11 @@ BOOL KGPDFParseIndirectObject(NSData *data,KGPDFInteger position,KGPDFObject **o
     
     if(![object checkForType:kKGPDFObjectTypeStream value:&scan])
      return NO;
-    
+
     if(![self scanStream:scan])
      return NO;
    }
-   
+
    return result;
 }
 

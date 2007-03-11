@@ -9,6 +9,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 // Original - Christopher Lloyd <cjwl@objc.net>
 #import "NSWindowTemplate.h"
 #import <AppKit/NSNibKeyedUnarchiver.h>
+#import <AppKit/NSScreen.h>
+#import <AppKit/NSMainMenuView.h>
 #import <AppKit/NSWindow.h>
 
 @implementation NSWindowTemplate
@@ -28,6 +30,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     _windowStyleMask=[keyed decodeIntForKey:@"NSWindowStyleMask"];
     _windowTitle=[[keyed decodeObjectForKey:@"NSWindowTitle"] retain];
     _windowView=[[keyed decodeObjectForKey:@"NSWindowView"] retain];
+
+    _windowRect.origin.y -= _screenRect.size.height - [[NSScreen mainScreen] frame].size.height;
+    if (![_windowClass isEqualToString:@"NSPanel"])
+       _windowRect.origin.y -= [NSMainMenuView menuHeight];   // compensation for the additional menu bar
    }
    else {
     [NSException raise:NSInvalidArgumentException format:@"NSWindowTemplate can not initWithCoder:%@",[coder class]];
@@ -60,12 +66,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [result setReleasedWhenClosed:(_wtFlags&0x40000000)?NO:YES];
    [result setHidesOnDeactivate:(_wtFlags&0x80000000)?YES:NO];
    [result setTitle:_windowTitle];
-   // if we don't turn these off we get recursive setFrame: as it autosizes, not sure why
-   [_windowView setAutoresizesSubviews:NO];
+
    [result setContentView:_windowView];
    [_windowView setAutoresizesSubviews:YES];
    [_windowView setAutoresizingMask:NSViewWidthSizable|NSViewHeightSizable];
-      
+
    return result;
 }
 

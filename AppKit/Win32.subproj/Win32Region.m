@@ -8,23 +8,24 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 // Original - Christopher Lloyd <cjwl@objc.net>
 #import <AppKit/Win32Region.h>
-#import <AppKit/Win32DeviceContext.h>
 
 @implementation Win32Region
 
--initWithDeviceContext:(Win32DeviceContext *)context rect:(NSRect)rect {
+-initWithHandle:(HRGN)handle {
+   _handle=handle;
+   return self;
+}
+
+-initWithRect:(NSRect)rect {
    POINT points[2]={
     { NSMinX(rect), NSMinY(rect) },
     { NSMaxX(rect), NSMaxY(rect) },
    };
-   _deviceContext=[context retain];
-   LPtoDP([_deviceContext dc],points,2);
    _handle=CreateRectRgn(points[0].x,points[0].y,points[1].x,points[1].y);
    return self;
 }
 
 -(void)dealloc {
-   [_deviceContext release];
    DeleteObject(_handle);
    NSDeallocateObject(self);
 }
@@ -32,7 +33,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 static inline id copyWithZone(Win32Region *self,NSZone *zone){
    Win32Region *copy=NSCopyObject(self,0,zone);
 
-   copy->_deviceContext=[self->_deviceContext retain];
    copy->_handle=CreateRectRgn(0,0,0,0);
    CombineRgn(copy->_handle,self->_handle,NULL,RGN_COPY);
 
@@ -54,7 +54,6 @@ static inline id copyWithZone(Win32Region *self,NSZone *zone){
    };
    HRGN add;
 
-   LPtoDP([_deviceContext dc],points,2);
    add=CreateRectRgn(points[0].x,points[0].y,points[1].x,points[1].y);
 
    CombineRgn(_handle,_handle,add,RGN_AND);
@@ -73,7 +72,6 @@ static inline id copyWithZone(Win32Region *self,NSZone *zone){
     };
     HRGN   add;
 
-    LPtoDP([_deviceContext dc],points,2);
     add=CreateRectRgn(points[0].x,points[0].y,points[1].x,points[1].y);
 
     if(group==NULL)
@@ -85,11 +83,6 @@ static inline id copyWithZone(Win32Region *self,NSZone *zone){
    }
    DeleteObject(group);
    CombineRgn(_handle,_handle,group,RGN_AND);
-}
-
--(void)selectInDeviceContext {
-   if(![_deviceContext isPrinter])
-    SelectClipRgn([_deviceContext dc],_handle);
 }
 
 -(HRGN)regionHandle {

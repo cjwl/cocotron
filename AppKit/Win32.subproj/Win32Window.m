@@ -8,8 +8,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 // Original - Christopher Lloyd <cjwl@objc.net>
 #import <AppKit/Win32Window.h>
-#import <AppKit/Win32GraphicsContext.h>
-#import <AppKit/Win32RenderingContext.h>
+#import <AppKit/Win32DeviceContextWindow.h>
+#import <AppKit/Win32DeviceContextBitmap.h>
 #import <AppKit/Win32Event.h>
 #import <AppKit/Win32Application.h>
 #import <AppKit/Win32Display.h>
@@ -43,7 +43,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
    if(_styleMask&NSUtilityWindowMask)
     result|=WS_EX_TOOLWINDOW;
-
+   
    return result/*|0x80000*/ ;
 }
 
@@ -164,13 +164,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
    SetProp(_handle,"self",self);
 
-   _renderingContext=[[Win32RenderingContext alloc] initWithWindowHandle:_handle];
+   _renderingContext=[[Win32DeviceContextWindow alloc] initWithWindowHandle:_handle];
 
    _backingType=backingType;
 
    if([[NSUserDefaults standardUserDefaults] boolForKey:@"NSAllWindowsRetained"])
     _backingType=Win32BackingStoreRetained;
 
+   _size=frame.size;
    _backingSize=frame.size;
    switch(_backingType){
 
@@ -180,7 +181,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
      break;
 
     case Win32BackingStoreBuffered:
-     _backingContext=[[Win32RenderingContext alloc] initWithPixelSize:_backingSize compatibleWithContext:_renderingContext];
+     _backingContext=[[Win32DeviceContextBitmap alloc] initWithSize:_backingSize deviceContext:_renderingContext];
      break;
    }
 
@@ -219,7 +220,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return _handle;
 }
 
--(Win32RenderingContext *)renderingContext {
+-(Win32DeviceContext *)renderingContext {
    switch(_backingType){
 
     case Win32BackingStoreRetained:
@@ -232,7 +233,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    }
 }
 
+-(KGContext *)graphicsContext {
+   return [[self renderingContext] graphicsContextWithSize:_size];
+}
+
 -(void)rebuildBackingContextWithSize:(NSSize)size forceRebuild:(BOOL)forceRebuild {
+   _size=size;
+   
    switch(_backingType){
 
     case Win32BackingStoreRetained:
@@ -246,7 +253,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       _backingSize=size;
 
       [_backingContext release];
-      _backingContext=[[Win32RenderingContext alloc] initWithPixelSize:_backingSize compatibleWithContext:_renderingContext];
+      _backingContext=[[Win32DeviceContextBitmap alloc] initWithSize:_backingSize deviceContext:_renderingContext];
      }
      break;
    }
@@ -342,6 +349,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)deminiaturize {
     ShowWindow([self windowHandle],SW_RESTORE);
+}
+
+-(BOOL)isMiniaturized {
+    return IsIconic(_handle);
 }
 
 -(void)flushBuffer {

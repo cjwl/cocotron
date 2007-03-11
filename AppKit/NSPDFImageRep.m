@@ -7,14 +7,23 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
 #import <AppKit/NSPDFImageRep.h>
+#import <AppKit/KGPDFDocument.h>
+#import <AppKit/KGPDFPage.h>
+#import <AppKit/NSGraphicsContext.h>
+#import <AppKit/CGContext.h>
 
 @implementation NSPDFImageRep
 
 -initWithData:(NSData *)data {
+   _pdf=[data retain];
+   _currentPage=0;
+   _document=[[KGPDFDocument alloc] initWithData:_pdf];
    return self;
 }
 
 -(void)dealloc {
+   [_pdf release];
+   [_document release];
    [super dealloc];
 }
 
@@ -27,7 +36,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(int)pageCount {
-   return 0;
+   return [_document pageCount];
 }
 
 -(int)currentPage {
@@ -36,6 +45,19 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)setCurrentPage:(int)page {
    _currentPage=page;
+}
+
+-(BOOL)drawInRect:(NSRect)rect {
+   CGContextRef context=[[NSGraphicsContext currentContext] graphicsPort];
+   KGPDFPage   *page=[_document pageAtNumber:_currentPage];
+   
+   if(page==nil)
+    return NO;
+   
+   CGContextSaveGState(context);
+   CGContextConcatCTM(context,[page drawingTransformForBox:kKGPDFMediaBox inRect:rect rotate:0 preserveAspectRatio:NO]);
+   CGContextDrawPDFPage(context,page);
+   CGContextRestoreGState(context);
 }
 
 @end

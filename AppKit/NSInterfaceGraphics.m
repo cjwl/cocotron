@@ -14,7 +14,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSView.h>
 
 static NSRect NSInterfaceDrawRects(NSRect boundsRect,NSRect clipRect,const NSRect *sides,NSColor **colors,int count) {
-   CGContext *graphicsPort=NSCurrentGraphicsPort();
+   KGContext *graphicsPort=NSCurrentGraphicsPort();
 
    CGContextSaveGState(graphicsPort);
    CGContextClipToRect(graphicsPort,clipRect);
@@ -237,7 +237,7 @@ void NSInterfaceDrawOutlineMarker(NSRect rect,NSRect clipRect, BOOL state) {
    NSInterfaceDrawRects(rect,clipRect,rects,colors,numDrawnRects);
 }
 
-void NSInterfaceDrawOutlineGrid(NSRect rect,CGContext *context) {
+void NSInterfaceDrawOutlineGrid(NSRect rect,KGContext *context) {
 /* Win32 has poor dashed line support...
  */
    if(rect.size.width<0)

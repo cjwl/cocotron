@@ -10,25 +10,28 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSGraphicsContextFunctions.h>
 #import <AppKit/NSView.h>
 #import <AppKit/CoreGraphics.h>
+#import <AppKit/CGColorSpace.h>
 #import <AppKit/NSTIFFReader.h>
 
 @implementation NSBitmapImageRep
 
 -initWithData:(NSData *)data {
-   NSTIFFReader *reader=[[NSTIFFReader alloc] initWithData:data];
-   int           width=[reader pixelsWide];
-   int           height=[reader pixelsHigh];
-   int           npixels=width*height;
-
+   NSTIFFReader  *reader=[[NSTIFFReader alloc] initWithData:data];
+   int            width=[reader pixelsWide];
+   int            height=[reader pixelsHigh];
+   int            npixels=width*height;
+   unsigned char *bytes;
+   
    if(reader==nil){
     [self dealloc];
     return nil;
    }
 
    npixels=width*height;
-   _bitmap=NSZoneMalloc([self zone],(npixels*4*sizeof(unsigned char)));
-   if(![reader getRGBAImageBytes:_bitmap width:width height:height]){
+   bytes=NSZoneMalloc([self zone],(npixels*4*sizeof(unsigned char)));
+   if(![reader getRGBAImageBytes:bytes width:width height:height]){
     [reader release];
+    NSZoneFree([self zone],bytes);
     [self dealloc];
     return nil;
    }
@@ -38,6 +41,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
    _bitsPerPixel=32;
    _bytesPerRow=_bitsPerPixel/sizeof(char)*width;
+
+   _bitmap=[[NSData alloc] initWithBytesNoCopy:bytes length:_bytesPerRow*_size.height];
 
    [reader release];    
 
@@ -56,10 +61,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)dealloc {
-   if(_bitmap!=NULL){
-    NSZoneFree([self zone],_bitmap);
-    _bitmap=NULL;
-   }
+   [_bitmap release];
    [super dealloc];
 }
 
@@ -68,9 +70,20 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)compositeToPoint:(NSPoint)point operation:(NSCompositingOperation)operation fraction:(float)fraction {
-   CGContextSourceOverRGBAImage(NSCurrentGraphicsPort(),
-    NSMakeRect(point.x,point.y,_size.width,_size.height),
-     _size.width,_size.height,(void *)_bitmap,fraction);
+   CGContextRef      context=NSCurrentGraphicsPort();
+   CGDataProviderRef provider=CGDataProviderCreateWithCFData(_bitmap);
+   CGColorSpaceRef   colorSpace=CGColorSpaceCreateDeviceRGB();
+   CGImageRef        image=CGImageCreate(_size.width,_size.height,8,_bitsPerPixel,_bytesPerRow,
+      colorSpace,0/*kCGImageAlphaLast|kCGBitmapByteOrder32Little*/,provider,NULL,NO,kCGRenderingIntentDefault);
+   
+   CGContextSaveGState(context);
+   CGContextSetAlpha(context,fraction);
+   CGContextDrawImage(context,NSMakeRect(point.x,point.y,_size.width,_size.height),image);
+   CGContextRestoreGState(context);
+   
+   CGImageRelease(image);
+   CGColorSpaceRelease(colorSpace);
+   CGDataProviderRelease(provider);
 }
 
 @end

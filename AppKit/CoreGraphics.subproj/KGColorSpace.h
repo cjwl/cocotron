@@ -23,7 +23,7 @@ typedef enum {
    KGColorSpaceIndexed
 } KGColorSpaceType;
 
-@interface KGColorSpace : NSObject {
+@interface KGColorSpace : NSObject <NSCopying> {
    KGColorSpaceType _type;
 }
 

@@ -178,7 +178,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)lockFocus {
    NSCachedImageRep  *cached=[self _cachedImageRep];
    NSGraphicsContext *context;
-   CGContext         *graphicsPort;
+   KGContext         *graphicsPort;
 
    if(cached==nil){
     cached=[[[NSCachedImageRep alloc] initWithSize:_size] autorelease];
@@ -196,7 +196,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)unlockFocus {
-   CGContext *graphicsPort=NSCurrentGraphicsPort();
+   KGContext *graphicsPort=NSCurrentGraphicsPort();
 
    CGContextRestoreGState(graphicsPort);
 

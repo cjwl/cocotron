@@ -9,21 +9,17 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/Foundation.h>
 #import <windows.h>
 
-@class Win32DeviceContext;
-
 // dont use autorelease on this class
 
 @interface Win32Region : NSObject <NSCopying> {
-   Win32DeviceContext *_deviceContext;
-   HRGN                _handle;
+   HRGN _handle;
 }
 
--initWithDeviceContext:(Win32DeviceContext *)context rect:(NSRect)rect;
+-initWithHandle:(HRGN)handle;
+-initWithRect:(NSRect)rect;
 
 -(void)intersectWithRect:(NSRect)rect;
 -(void)intersectWithRects:(NSRect *)rects count:(unsigned)count;
-
--(void)selectInDeviceContext;
 
 -(HRGN)regionHandle;
 

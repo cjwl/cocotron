@@ -871,7 +871,7 @@ static inline void buildTransformsIfNeeded(NSView *self) {
 
 -(void)lockFocus {
    NSGraphicsContext *context=[NSGraphicsContext graphicsContextWithWindow:[self window]];
-   CGContext         *graphicsPort=[context graphicsPort];
+   KGContext         *graphicsPort=[context graphicsPort];
 
    [[NSView _focusStack] addObject:self];
 
@@ -886,7 +886,7 @@ static inline void buildTransformsIfNeeded(NSView *self) {
 }
 
 -(void)unlockFocus {
-   CGContext *graphicsPort=NSCurrentGraphicsPort();
+   KGContext *graphicsPort=NSCurrentGraphicsPort();
 
    CGContextRestoreGState(graphicsPort);
    [NSGraphicsContext restoreGraphicsState];
@@ -990,19 +990,13 @@ static inline void buildTransformsIfNeeded(NSView *self) {
 }
 
 -(void)beginDocument {
-   CGContext *graphicsPort=NSCurrentGraphicsPort();
-
-   CGContextBeginDocument(graphicsPort);
 }
 
 -(void)endDocument {
-   CGContext *graphicsPort=NSCurrentGraphicsPort();
-
-   CGContextEndDocument(graphicsPort);
 }
 
 -(void)beginPageInRect:(NSRect)rect atPlacement:(NSPoint)placement {
-   CGContext *graphicsPort=NSCurrentGraphicsPort();
+   KGContext *graphicsPort=NSCurrentGraphicsPort();
    CGRect     mediaBox=NSMakeRect(0,0,0,0);
    CGAffineTransform transform;
 
@@ -1017,7 +1011,7 @@ static inline void buildTransformsIfNeeded(NSView *self) {
 }
 
 -(void)endPage {
-   CGContext *graphicsPort=NSCurrentGraphicsPort();
+   KGContext *graphicsPort=NSCurrentGraphicsPort();
 
    CGContextRestoreGState(graphicsPort);
    CGContextEndPage(graphicsPort);

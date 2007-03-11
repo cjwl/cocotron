@@ -8,6 +8,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/NSObject.h>
 #import <Foundation/NSGeometry.h>
+#import <AppKit/CGAffineTransform.h>
 
 @class KGPDFDocument,KGPDFDictionary,KGContext;
 
@@ -33,6 +34,10 @@ typedef enum  {
 -(int)pageNumber;
 
 -(KGPDFDictionary *)dictionary;
+
+-(int)rotationAngle;
+
+-(CGAffineTransform)drawingTransformForBox:(KGPDFBox)box inRect:(NSRect)rect rotate:(int)degrees preserveAspectRatio:(BOOL)preserveAspectRatio;
 
 -(void)drawInContext:(KGContext *)context;
 

@@ -89,7 +89,6 @@ APPKIT_EXPORT NSString *NSWindowDidAnimateNotification;
    BOOL      _isVisible;
    BOOL      _isKeyWindow;
    BOOL      _isMainWindow;
-   BOOL      _isMiniaturized;
    BOOL      _isDocumentEdited;
    BOOL      _makeSureIsOnAScreen;
 
@@ -182,6 +181,7 @@ APPKIT_EXPORT NSString *NSWindowDidAnimateNotification;
 -(void)setContentSize:(NSSize)contentSize;
 -(void)setFrameOrigin:(NSPoint)point;
 -(void)setFrameTopLeftPoint:(NSPoint)point;
+-(NSPoint)cascadeTopLeftFromPoint:(NSPoint)topLeftPoint;
 -(void)setMinSize:(NSSize)size;
 -(void)setMaxSize:(NSSize)size;
 

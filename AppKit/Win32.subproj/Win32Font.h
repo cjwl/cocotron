@@ -15,7 +15,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    HFONT _handle;
 }
 
--initWithName:(NSString *)string size:(NSSize)size;
+-initWithName:(const char *)name size:(NSSize)size antialias:(BOOL)antialias;
 
 -(HFONT)fontHandle;
 

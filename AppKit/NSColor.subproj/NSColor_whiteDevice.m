@@ -64,7 +64,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)set {
-   CGContextSetDeviceGrayColor(NSCurrentGraphicsPort(),_white,_alpha);
+   CGContextSetGrayStrokeColor(NSCurrentGraphicsPort(),_white,_alpha);
+   CGContextSetGrayFillColor(NSCurrentGraphicsPort(),_white,_alpha);
 }
 
 @end
