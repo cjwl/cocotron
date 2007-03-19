@@ -1,4 +1,4 @@
-/* Copyright (c) 2006-2007 Christopher J. W. Lloyd
+/* Copyright (c) 2007 Christopher J. W. Lloyd
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
@@ -6,136 +6,128 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
-// Original - Christopher Lloyd <cjwl@objc.net>
 #import <Foundation/NSXMLElement.h>
-#import <Foundation/NSXMLAttribute.h>
-#import <Foundation/NSString.h>
+#import <Foundation/NSXMLNode.h>
 #import <Foundation/NSArray.h>
-#import <Foundation/NSScanner.h>
+#import <Foundation/NSDictionary.h>
+#import <Foundation/NSEnumerator.h>
 
 @implementation NSXMLElement
 
-+(NSXMLElement *)elementWithName:(NSString *)name {
-   return [[[self alloc] initWithName:name] autorelease];
-}
-
 -initWithName:(NSString *)name {
-   _name=[name copy];
-   _attributes=[NSMutableArray new];
-   _contents=[NSMutableArray new];
-   return self;
 }
 
--(void)dealloc {
-   [_name release];
-   [_attributes release];
-   [_contents release];
-   [super dealloc];
+-initWithName:(NSString *)name stringValue:(NSString *)string {
 }
 
--(NSString *)name {
-   return _name;
+-initWithName:(NSString *)name URI:(NSString *)uri {
+}
+
+-initWithXMLString:(NSString *)xml error:(NSError **)error {
+}
+
+-copyWithZone:(NSZone *)zone {
 }
 
 -(NSArray *)attributes {
-   return _attributes;
+   return [_attributes allValues];
 }
 
--(NSArray *)contents {
-   return _contents;
+-(NSXMLNode *)attributeForLocalName:(NSString *)name URI:(NSString *)uri {
 }
 
--(NSString *)xid {
-   return [[self attributeWithName:@"id"] value];
+-(NSXMLNode *)attributeForName:(NSString *)name {
+   return [_attributes objectForKey:name];
 }
 
--(NSXMLAttribute *)attributeWithName:(NSString *)name {
-   int i,count=[_attributes count];
+-(NSArray *)elementsForLocalName:(NSString *)localName URI:(NSString *)uri {
+}
 
+-(NSArray *)elementsForName:(NSString *)name {
+}
+
+-(NSArray *)namespaces {
+}
+
+-(NSXMLNode *)namespaceForPrefix:(NSString *)prefix {
+}
+
+-(void)setAttributes:(NSArray *)attributes {
+   int i,count=[attributes count];
+   
    for(i=0;i<count;i++){
-    NSXMLAttribute *check=[_attributes objectAtIndex:i];
-
-    if([[check name] isEqualToString:name])
-     return check;
-   }
-   return nil;
-}
-
--(void)addAttribute:(NSXMLAttribute *)attribute {
-   [_attributes addObject:attribute];
-}
-
--(void)addContent:(id)content {
-   [_contents addObject:content];
-}
-
--(NSString *)stringValue {
-   int i,count=[_contents count];
-
-   if(count==0)
-    return @"";
-   if(count==1)
-    return [_contents lastObject];
-   else {
-    NSMutableString *result=[NSMutableString string];
-
-    for(i=0;i<count;i++)
-     [result appendString:[_contents objectAtIndex:i]];
-
-    return result;
+    NSXMLNode *add=[attributes objectAtIndex:i];
+    
+    [_attributes setObject:add forKey:[add name]];
    }
 }
 
--(int)intValue {
-   return [[self stringValue] intValue];
-}
-
--(unsigned)unsignedIntValue {
-   return [[self stringValue] intValue];
-}
-
--(float)floatValue {
-   return [[self stringValue] floatValue];
-}
-
--(NSRect)rectValue {
-   NSRect     result=NSZeroRect;
-   NSScanner *scanner=[NSScanner scannerWithString:[self stringValue]];
-
-   [scanner scanFloat:&result.origin.x];
-   [scanner scanFloat:&result.origin.y];
-   [scanner scanFloat:&result.size.width];
-   [scanner scanFloat:&result.size.height];
-
-   return result;
-}
-
--(NSSize)sizeValue {
-   NSSize     result=NSZeroSize;
-   NSScanner *scanner=[NSScanner scannerWithString:[self stringValue]];
-
-   [scanner scanFloat:&result.width];
-   [scanner scanFloat:&result.height];
-
-   return result;
-}
-
--(NSString *)description {
-   return [NSString stringWithFormat:@"<%@ %@ %@ %@>",[self class],
-     _name,_attributes,_contents];
-}
-
--(NSXMLElement *)nextElement {
-   NSXMLElement *next;
-
-   if([_contents count]==0)
-    next=nil;
-   else {
-    next=[[[_contents objectAtIndex:0] retain] autorelease];
-    [_contents removeObjectAtIndex:0];
+-(void)setAttributesAsDictionary:(NSDictionary *)attributes {
+   NSEnumerator *state=[attributes keyEnumerator];
+   NSString     *name;
+   
+   while((name=[state nextObject])!=nil){
+    NSString  *value=[attributes objectForKey:name];
+    NSXMLNode *node=[NSXMLNode attributeWithName:name stringValue:value];
+    
+    [_attributes setObject:node forKey:name];
    }
+}
 
-   return next;
+-(void)setChildren:(NSArray *)children {
+   [_children setArray:children];
+}
+
+-(void)setNamespaces:(NSArray *)namespaces {
+   [_namespaces removeAllObjects];
+}
+
+-(void)addChild:(NSXMLNode *)node {
+   [_children addObject:node];
+}
+
+-(void)insertChild:(NSXMLNode *)child atIndex:(unsigned)index {
+   [_children insertObject:child atIndex:index];
+}
+
+-(void)insertChildren:(NSArray *)children atIndex:(unsigned)index {
+   int i,count=[children count];
+   
+   for(i=0;i<count;i++)
+    [_children insertObject:[children objectAtIndex:i] atIndex:index+i];
+}
+
+-(void)removeChildAtIndex:(unsigned)index {
+   [_children removeObjectAtIndex:index];
+}
+
+-(void)replaceChildAtIndex:(unsigned)index withNode:(NSXMLNode *)node {
+   [_children replaceObjectAtIndex:index withObject:node];
+}
+
+-(void)addAttribute:(NSXMLNode *)attribute {
+   [_attributes setObject:attribute forKey:[attribute name]];
+}
+
+-(void)removeAttributeForName:(NSString *)name {
+   [_attributes removeObjectForKey:name];
+}
+
+-(void)addNamespace:(NSXMLNode *)namespace {
+   [_namespaces setObject:namespace forKey:[namespace prefix]];
+}
+
+-(void)removeNamespaceForPrefix:(NSString *)prefix {
+   [_namespaces removeObjectForKey:prefix];
+}
+
+-(void)resolveNamespaceForName:(NSString *)name {
+}
+
+-(void)resolvePrefixForNamespaceURI:(NSString *)uri {
+}
+
+-(void)normalizeAdjacentTextNodesPreservingCDATA:(BOOL)preserve {
 }
 
 @end

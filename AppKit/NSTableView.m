@@ -521,7 +521,7 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
     [_editingCell setBackgroundColor:_backgroundColor];
     [_editingCell setBezeled:NO];
     [_editingCell setBordered:YES];
-    [_editingCell setObjectValue:[self dataSourceObjectValueForTableColumn:editingColumn row:row]];
+    [(NSCell *)_editingCell setObjectValue:[self dataSourceObjectValueForTableColumn:editingColumn row:row]];
 
     _currentEditor=[[self window] fieldEditor:YES forObject:self];
     _currentEditor=[_editingCell setUpFieldEditorAttributes:_currentEditor];

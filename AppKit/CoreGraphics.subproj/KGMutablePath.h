@@ -22,6 +22,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)addCurveToControlPoint:(NSPoint)cp1 endPoint:(NSPoint)endPoint withTransform:(CGAffineTransform *)matrix;
 -(void)closeSubpath;
 
+-(void)relativeMoveToPoint:(NSPoint)point withTransform:(CGAffineTransform *)matrix;
+-(void)addRelativeLineToPoint:(NSPoint)point withTransform:(CGAffineTransform *)matrix;
+-(void)addRelativeCurveToControlPoint:(NSPoint)cp1 controlPoint:(NSPoint)cp2 endPoint:(NSPoint)endPoint withTransform:(CGAffineTransform *)matrix;
+
 -(void)addLinesWithPoints:(NSPoint *)points count:(unsigned)count withTransform:(CGAffineTransform *)matrix;
 
 -(void)addRect:(NSRect)rect withTransform:(CGAffineTransform *)matrix;
@@ -33,5 +37,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)addEllipseInRect:(NSRect)rect withTransform:(CGAffineTransform *)matrix;
 
 -(void)addPath:(KGPath *)path withTransform:(CGAffineTransform *)matrix;
+
+-(void)applyTransform:(CGAffineTransform)matrix;
 
 @end

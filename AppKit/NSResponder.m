@@ -112,8 +112,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(BOOL)tryToPerform:(SEL)action with:object {
-   if([self respondsToSelector:action])
+   if([self respondsToSelector:action]){
     [self performSelector:action withObject:object];
+    return YES;
+   }
 
    return [_nextResponder tryToPerform:action with:object];
 }

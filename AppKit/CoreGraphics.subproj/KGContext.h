@@ -37,7 +37,7 @@ enum {
 };
 
 
-@class KGColor,KGColorSpace,KGShading,KGImage,KGGraphicsState,KGMutablePath,KGPath,KGPattern,KGLayer,KGPDFPage,NSMutableArray;
+@class KGRenderingContext,KGColor,KGColorSpace,KGShading,KGImage,KGGraphicsState,KGMutablePath,KGPath,KGPattern,KGLayer,KGPDFPage,NSMutableArray;
 
 @interface KGContext : NSObject {
    NSMutableArray *_layerStack;
@@ -47,6 +47,8 @@ enum {
 }
 
 -initWithGraphicsState:(KGGraphicsState *)state;
+
+-(KGRenderingContext *)renderingContext;
 
 -(void)setAllowsAntialiasing:(BOOL)yesOrNo;
 

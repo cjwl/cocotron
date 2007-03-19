@@ -8,7 +8,23 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 // Original - Christopher Lloyd <cjwl@objc.net>
 #import <AppKit/NSOpenGLPixelFormat.h>
+#import <Foundation/NSRaise.h>
 
 @implementation NSOpenGLPixelFormat
+
+-initWithAttributes:(NSOpenGLPixelFormatAttribute *)attributes {
+   NSUnimplementedMethod();
+}
+
+-(void *)CGLPixelFormatObj {
+   NSUnimplementedMethod();
+}
+-(int)numberOfVirtualScreens {
+   NSUnimplementedMethod();
+}
+
+-(void)getValues:(long *)values forAttribute:(NSOpenGLPixelFormatAttribute)attribute forVirtualScreen:(int)screen {
+   NSUnimplementedMethod();
+}
 
 @end

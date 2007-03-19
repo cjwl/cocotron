@@ -9,32 +9,29 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 // Original - Christopher Lloyd <cjwl@objc.net>
 #import <AppKit/NSCachedImageRep.h>
 #import <AppKit/NSGraphicsContextFunctions.h>
-#import <AppKit/NSDisplay.h>
-#import <AppKit/Win32DeviceContextBitmap.h>
-#import <AppKit/KGImage_context.h>
+#import <AppKit/KGLayer.h>
 
 @implementation NSCachedImageRep
 
 -initWithSize:(NSSize)size {
    _size=size;
-   _renderingContext=[[Win32DeviceContextBitmap alloc] initWithSize:size];
+   _layer=[[KGLayer alloc] initWithSize:size];
    return self;
 }
 
 -(void)dealloc {
-   [_renderingContext release];
+   [_layer release];
    [super dealloc];
 }
 
 -(KGContext *)graphicsContext {
-   return [_renderingContext graphicsContextWithSize:[self size]];
+   return [_layer context];
 }
 
 -(BOOL)drawAtPoint:(NSPoint)point {
-   KGImage *image=[[KGImage_context alloc] initWithRenderingContext:_renderingContext];
-   NSRect   rect={point,_size};
+   NSRect rect={point,_size};
    
-   CGContextDrawImage(NSCurrentGraphicsPort(),rect,image);
+   CGContextDrawLayerInRect(NSCurrentGraphicsPort(),rect,_layer);
    return YES;
 }
 

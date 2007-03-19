@@ -291,14 +291,6 @@
 		6E2805D709747D0400EC542B /* NSReadInBackground_win32.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2805B709747D0400EC542B /* NSReadInBackground_win32.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		6E2805DB09747D0400EC542B /* NSString_win32.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2805BB09747D0400EC542B /* NSString_win32.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		6E2805DD09747D0400EC542B /* NSTask_win32.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2805BD09747D0400EC542B /* NSTask_win32.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		6E2805E909747D1000EC542B /* NSXMLAttribute.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2805DF09747D1000EC542B /* NSXMLAttribute.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		6E2805EA09747D1000EC542B /* NSXMLAttribute.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2805E009747D1000EC542B /* NSXMLAttribute.m */; };
-		6E2805EB09747D1000EC542B /* NSXMLDocument.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2805E109747D1000EC542B /* NSXMLDocument.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		6E2805EC09747D1000EC542B /* NSXMLDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2805E209747D1000EC542B /* NSXMLDocument.m */; };
-		6E2805ED09747D1000EC542B /* NSXMLElement.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2805E309747D1000EC542B /* NSXMLElement.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		6E2805EE09747D1000EC542B /* NSXMLElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2805E409747D1000EC542B /* NSXMLElement.m */; };
-		6E2805EF09747D1000EC542B /* NSXMLReader.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2805E509747D1000EC542B /* NSXMLReader.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		6E2805F009747D1000EC542B /* NSXMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2805E609747D1000EC542B /* NSXMLReader.m */; };
 		6E28062B09747D5800EC542B /* NSBundle.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2805F309747D5800EC542B /* NSBundle.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6E28062C09747D5800EC542B /* NSBundle.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2805F409747D5800EC542B /* NSBundle.m */; };
 		6E28062D09747D5800EC542B /* NSByteOrder.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2805F509747D5800EC542B /* NSByteOrder.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -524,10 +516,6 @@
 		6E4D920A0A2642BD003D335C /* Object.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E28053A09747C8900EC542B /* Object.h */; };
 		6E4D920B0A2642BD003D335C /* ObjectiveC.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E28053C09747C8900EC542B /* ObjectiveC.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6E4D920C0A2642BD003D335C /* Protocol.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E28053E09747C8900EC542B /* Protocol.h */; };
-		6E4D920D0A2642BD003D335C /* NSXMLAttribute.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2805DF09747D1000EC542B /* NSXMLAttribute.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		6E4D920E0A2642BD003D335C /* NSXMLDocument.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2805E109747D1000EC542B /* NSXMLDocument.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		6E4D920F0A2642BD003D335C /* NSXMLElement.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2805E309747D1000EC542B /* NSXMLElement.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		6E4D92100A2642BD003D335C /* NSXMLReader.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2805E509747D1000EC542B /* NSXMLReader.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		6E4D92120A2642BD003D335C /* NSBundle.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2805F309747D5800EC542B /* NSBundle.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6E4D92130A2642BD003D335C /* NSByteOrder.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2805F509747D5800EC542B /* NSByteOrder.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6E4D92140A2642BD003D335C /* NSCoder.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2805F709747D5800EC542B /* NSCoder.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -704,10 +692,6 @@
 		6E4D92CF0A2642BD003D335C /* Object.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28053B09747C8900EC542B /* Object.m */; };
 		6E4D92D00A2642BD003D335C /* ObjectiveC.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28053D09747C8900EC542B /* ObjectiveC.m */; };
 		6E4D92D10A2642BD003D335C /* Protocol.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28053F09747C8900EC542B /* Protocol.m */; };
-		6E4D92D20A2642BD003D335C /* NSXMLAttribute.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2805E009747D1000EC542B /* NSXMLAttribute.m */; };
-		6E4D92D30A2642BD003D335C /* NSXMLDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2805E209747D1000EC542B /* NSXMLDocument.m */; };
-		6E4D92D40A2642BD003D335C /* NSXMLElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2805E409747D1000EC542B /* NSXMLElement.m */; };
-		6E4D92D50A2642BD003D335C /* NSXMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2805E609747D1000EC542B /* NSXMLReader.m */; };
 		6E4D92D70A2642BD003D335C /* NSBundle.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2805F409747D5800EC542B /* NSBundle.m */; };
 		6E4D92D80A2642BD003D335C /* NSByteOrder.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2805F609747D5800EC542B /* NSByteOrder.m */; };
 		6E4D92D90A2642BD003D335C /* NSCoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2805F809747D5800EC542B /* NSCoder.m */; };
@@ -928,10 +912,6 @@
 		6EA0494C09E57D5F0067589C /* Object.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E28053A09747C8900EC542B /* Object.h */; };
 		6EA0494D09E57D5F0067589C /* ObjectiveC.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E28053C09747C8900EC542B /* ObjectiveC.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6EA0494E09E57D5F0067589C /* Protocol.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E28053E09747C8900EC542B /* Protocol.h */; };
-		6EA0495D09E57D5F0067589C /* NSXMLAttribute.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2805DF09747D1000EC542B /* NSXMLAttribute.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		6EA0495E09E57D5F0067589C /* NSXMLDocument.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2805E109747D1000EC542B /* NSXMLDocument.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		6EA0495F09E57D5F0067589C /* NSXMLElement.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2805E309747D1000EC542B /* NSXMLElement.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		6EA0496009E57D5F0067589C /* NSXMLReader.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2805E509747D1000EC542B /* NSXMLReader.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		6EA0496209E57D5F0067589C /* NSBundle.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2805F309747D5800EC542B /* NSBundle.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6EA0496309E57D5F0067589C /* NSByteOrder.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2805F509747D5800EC542B /* NSByteOrder.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6EA0496409E57D5F0067589C /* NSCoder.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2805F709747D5800EC542B /* NSCoder.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -1099,10 +1079,6 @@
 		6EA04A1409E57D5F0067589C /* Object.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28053B09747C8900EC542B /* Object.m */; };
 		6EA04A1509E57D5F0067589C /* ObjectiveC.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28053D09747C8900EC542B /* ObjectiveC.m */; };
 		6EA04A1609E57D5F0067589C /* Protocol.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28053F09747C8900EC542B /* Protocol.m */; };
-		6EA04A1709E57D5F0067589C /* NSXMLAttribute.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2805E009747D1000EC542B /* NSXMLAttribute.m */; };
-		6EA04A1809E57D5F0067589C /* NSXMLDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2805E209747D1000EC542B /* NSXMLDocument.m */; };
-		6EA04A1909E57D5F0067589C /* NSXMLElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2805E409747D1000EC542B /* NSXMLElement.m */; };
-		6EA04A1A09E57D5F0067589C /* NSXMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2805E609747D1000EC542B /* NSXMLReader.m */; };
 		6EA04A1C09E57D5F0067589C /* NSBundle.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2805F409747D5800EC542B /* NSBundle.m */; };
 		6EA04A1D09E57D5F0067589C /* NSByteOrder.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2805F609747D5800EC542B /* NSByteOrder.m */; };
 		6EA04A1E09E57D5F0067589C /* NSCoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2805F809747D5800EC542B /* NSCoder.m */; };
@@ -1244,6 +1220,150 @@
 		FE405A6F0B4450FD001B183D /* NSHTTPURLResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = FE405A6B0B4450FD001B183D /* NSHTTPURLResponse.m */; };
 		FE405A700B4450FD001B183D /* NSHTTPURLResponse.h in Headers */ = {isa = PBXBuildFile; fileRef = FE405A6A0B4450FD001B183D /* NSHTTPURLResponse.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE405A710B4450FD001B183D /* NSHTTPURLResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = FE405A6B0B4450FD001B183D /* NSHTTPURLResponse.m */; };
+		FE53BE1F0BA9EBBE0050277F /* NSOldXMLAttribute.h in Headers */ = {isa = PBXBuildFile; fileRef = FE53BE170BA9EBBE0050277F /* NSOldXMLAttribute.h */; };
+		FE53BE200BA9EBBE0050277F /* NSOldXMLAttribute.m in Sources */ = {isa = PBXBuildFile; fileRef = FE53BE180BA9EBBE0050277F /* NSOldXMLAttribute.m */; };
+		FE53BE210BA9EBBE0050277F /* NSOldXMLDocument.h in Headers */ = {isa = PBXBuildFile; fileRef = FE53BE190BA9EBBE0050277F /* NSOldXMLDocument.h */; };
+		FE53BE220BA9EBBE0050277F /* NSOldXMLDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = FE53BE1A0BA9EBBE0050277F /* NSOldXMLDocument.m */; };
+		FE53BE230BA9EBBE0050277F /* NSOldXMLElement.h in Headers */ = {isa = PBXBuildFile; fileRef = FE53BE1B0BA9EBBE0050277F /* NSOldXMLElement.h */; };
+		FE53BE240BA9EBBE0050277F /* NSOldXMLElement.m in Sources */ = {isa = PBXBuildFile; fileRef = FE53BE1C0BA9EBBE0050277F /* NSOldXMLElement.m */; };
+		FE53BE250BA9EBBE0050277F /* NSOldXMLReader.h in Headers */ = {isa = PBXBuildFile; fileRef = FE53BE1D0BA9EBBE0050277F /* NSOldXMLReader.h */; };
+		FE53BE260BA9EBBE0050277F /* NSOldXMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = FE53BE1E0BA9EBBE0050277F /* NSOldXMLReader.m */; };
+		FE53BE270BA9EBBE0050277F /* NSOldXMLAttribute.h in Headers */ = {isa = PBXBuildFile; fileRef = FE53BE170BA9EBBE0050277F /* NSOldXMLAttribute.h */; };
+		FE53BE280BA9EBBE0050277F /* NSOldXMLAttribute.m in Sources */ = {isa = PBXBuildFile; fileRef = FE53BE180BA9EBBE0050277F /* NSOldXMLAttribute.m */; };
+		FE53BE290BA9EBBE0050277F /* NSOldXMLDocument.h in Headers */ = {isa = PBXBuildFile; fileRef = FE53BE190BA9EBBE0050277F /* NSOldXMLDocument.h */; };
+		FE53BE2A0BA9EBBE0050277F /* NSOldXMLDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = FE53BE1A0BA9EBBE0050277F /* NSOldXMLDocument.m */; };
+		FE53BE2B0BA9EBBE0050277F /* NSOldXMLElement.h in Headers */ = {isa = PBXBuildFile; fileRef = FE53BE1B0BA9EBBE0050277F /* NSOldXMLElement.h */; };
+		FE53BE2C0BA9EBBE0050277F /* NSOldXMLElement.m in Sources */ = {isa = PBXBuildFile; fileRef = FE53BE1C0BA9EBBE0050277F /* NSOldXMLElement.m */; };
+		FE53BE2D0BA9EBBE0050277F /* NSOldXMLReader.h in Headers */ = {isa = PBXBuildFile; fileRef = FE53BE1D0BA9EBBE0050277F /* NSOldXMLReader.h */; };
+		FE53BE2E0BA9EBBE0050277F /* NSOldXMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = FE53BE1E0BA9EBBE0050277F /* NSOldXMLReader.m */; };
+		FE53BE2F0BA9EBBE0050277F /* NSOldXMLAttribute.h in Headers */ = {isa = PBXBuildFile; fileRef = FE53BE170BA9EBBE0050277F /* NSOldXMLAttribute.h */; };
+		FE53BE300BA9EBBE0050277F /* NSOldXMLAttribute.m in Sources */ = {isa = PBXBuildFile; fileRef = FE53BE180BA9EBBE0050277F /* NSOldXMLAttribute.m */; };
+		FE53BE310BA9EBBE0050277F /* NSOldXMLDocument.h in Headers */ = {isa = PBXBuildFile; fileRef = FE53BE190BA9EBBE0050277F /* NSOldXMLDocument.h */; };
+		FE53BE320BA9EBBE0050277F /* NSOldXMLDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = FE53BE1A0BA9EBBE0050277F /* NSOldXMLDocument.m */; };
+		FE53BE330BA9EBBE0050277F /* NSOldXMLElement.h in Headers */ = {isa = PBXBuildFile; fileRef = FE53BE1B0BA9EBBE0050277F /* NSOldXMLElement.h */; };
+		FE53BE340BA9EBBE0050277F /* NSOldXMLElement.m in Sources */ = {isa = PBXBuildFile; fileRef = FE53BE1C0BA9EBBE0050277F /* NSOldXMLElement.m */; };
+		FE53BE350BA9EBBE0050277F /* NSOldXMLReader.h in Headers */ = {isa = PBXBuildFile; fileRef = FE53BE1D0BA9EBBE0050277F /* NSOldXMLReader.h */; };
+		FE53BE360BA9EBBE0050277F /* NSOldXMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = FE53BE1E0BA9EBBE0050277F /* NSOldXMLReader.m */; };
+		FE53BE570BA9ED490050277F /* NSXMLDocument.h in Headers */ = {isa = PBXBuildFile; fileRef = FE53BE490BA9ED490050277F /* NSXMLDocument.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE53BE580BA9ED490050277F /* NSXMLDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = FE53BE4A0BA9ED490050277F /* NSXMLDocument.m */; };
+		FE53BE590BA9ED490050277F /* NSXMLDTD.h in Headers */ = {isa = PBXBuildFile; fileRef = FE53BE4B0BA9ED490050277F /* NSXMLDTD.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE53BE5A0BA9ED490050277F /* NSXMLDTD.m in Sources */ = {isa = PBXBuildFile; fileRef = FE53BE4C0BA9ED490050277F /* NSXMLDTD.m */; };
+		FE53BE5B0BA9ED490050277F /* NSXMLDTDNode.h in Headers */ = {isa = PBXBuildFile; fileRef = FE53BE4D0BA9ED490050277F /* NSXMLDTDNode.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE53BE5C0BA9ED490050277F /* NSXMLDTDNode.m in Sources */ = {isa = PBXBuildFile; fileRef = FE53BE4E0BA9ED490050277F /* NSXMLDTDNode.m */; };
+		FE53BE5D0BA9ED490050277F /* NSXMLElement.h in Headers */ = {isa = PBXBuildFile; fileRef = FE53BE4F0BA9ED490050277F /* NSXMLElement.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE53BE5E0BA9ED490050277F /* NSXMLElement.m in Sources */ = {isa = PBXBuildFile; fileRef = FE53BE500BA9ED490050277F /* NSXMLElement.m */; };
+		FE53BE5F0BA9ED490050277F /* NSXMLNode.h in Headers */ = {isa = PBXBuildFile; fileRef = FE53BE510BA9ED490050277F /* NSXMLNode.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE53BE600BA9ED490050277F /* NSXMLNode.m in Sources */ = {isa = PBXBuildFile; fileRef = FE53BE520BA9ED490050277F /* NSXMLNode.m */; };
+		FE53BE630BA9ED490050277F /* NSXMLParser.h in Headers */ = {isa = PBXBuildFile; fileRef = FE53BE550BA9ED490050277F /* NSXMLParser.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE53BE640BA9ED490050277F /* NSXMLParser.m in Sources */ = {isa = PBXBuildFile; fileRef = FE53BE560BA9ED490050277F /* NSXMLParser.m */; };
+		FE53BE650BA9ED490050277F /* NSXMLDocument.h in Headers */ = {isa = PBXBuildFile; fileRef = FE53BE490BA9ED490050277F /* NSXMLDocument.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE53BE660BA9ED490050277F /* NSXMLDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = FE53BE4A0BA9ED490050277F /* NSXMLDocument.m */; };
+		FE53BE670BA9ED490050277F /* NSXMLDTD.h in Headers */ = {isa = PBXBuildFile; fileRef = FE53BE4B0BA9ED490050277F /* NSXMLDTD.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE53BE680BA9ED490050277F /* NSXMLDTD.m in Sources */ = {isa = PBXBuildFile; fileRef = FE53BE4C0BA9ED490050277F /* NSXMLDTD.m */; };
+		FE53BE690BA9ED490050277F /* NSXMLDTDNode.h in Headers */ = {isa = PBXBuildFile; fileRef = FE53BE4D0BA9ED490050277F /* NSXMLDTDNode.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE53BE6A0BA9ED490050277F /* NSXMLDTDNode.m in Sources */ = {isa = PBXBuildFile; fileRef = FE53BE4E0BA9ED490050277F /* NSXMLDTDNode.m */; };
+		FE53BE6B0BA9ED490050277F /* NSXMLElement.h in Headers */ = {isa = PBXBuildFile; fileRef = FE53BE4F0BA9ED490050277F /* NSXMLElement.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE53BE6C0BA9ED490050277F /* NSXMLElement.m in Sources */ = {isa = PBXBuildFile; fileRef = FE53BE500BA9ED490050277F /* NSXMLElement.m */; };
+		FE53BE6D0BA9ED490050277F /* NSXMLNode.h in Headers */ = {isa = PBXBuildFile; fileRef = FE53BE510BA9ED490050277F /* NSXMLNode.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE53BE6E0BA9ED490050277F /* NSXMLNode.m in Sources */ = {isa = PBXBuildFile; fileRef = FE53BE520BA9ED490050277F /* NSXMLNode.m */; };
+		FE53BE710BA9ED490050277F /* NSXMLParser.h in Headers */ = {isa = PBXBuildFile; fileRef = FE53BE550BA9ED490050277F /* NSXMLParser.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE53BE720BA9ED490050277F /* NSXMLParser.m in Sources */ = {isa = PBXBuildFile; fileRef = FE53BE560BA9ED490050277F /* NSXMLParser.m */; };
+		FE53BE730BA9ED490050277F /* NSXMLDocument.h in Headers */ = {isa = PBXBuildFile; fileRef = FE53BE490BA9ED490050277F /* NSXMLDocument.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE53BE740BA9ED490050277F /* NSXMLDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = FE53BE4A0BA9ED490050277F /* NSXMLDocument.m */; };
+		FE53BE750BA9ED490050277F /* NSXMLDTD.h in Headers */ = {isa = PBXBuildFile; fileRef = FE53BE4B0BA9ED490050277F /* NSXMLDTD.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE53BE760BA9ED490050277F /* NSXMLDTD.m in Sources */ = {isa = PBXBuildFile; fileRef = FE53BE4C0BA9ED490050277F /* NSXMLDTD.m */; };
+		FE53BE770BA9ED490050277F /* NSXMLDTDNode.h in Headers */ = {isa = PBXBuildFile; fileRef = FE53BE4D0BA9ED490050277F /* NSXMLDTDNode.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE53BE780BA9ED490050277F /* NSXMLDTDNode.m in Sources */ = {isa = PBXBuildFile; fileRef = FE53BE4E0BA9ED490050277F /* NSXMLDTDNode.m */; };
+		FE53BE790BA9ED490050277F /* NSXMLElement.h in Headers */ = {isa = PBXBuildFile; fileRef = FE53BE4F0BA9ED490050277F /* NSXMLElement.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE53BE7A0BA9ED490050277F /* NSXMLElement.m in Sources */ = {isa = PBXBuildFile; fileRef = FE53BE500BA9ED490050277F /* NSXMLElement.m */; };
+		FE53BE7B0BA9ED490050277F /* NSXMLNode.h in Headers */ = {isa = PBXBuildFile; fileRef = FE53BE510BA9ED490050277F /* NSXMLNode.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE53BE7C0BA9ED490050277F /* NSXMLNode.m in Sources */ = {isa = PBXBuildFile; fileRef = FE53BE520BA9ED490050277F /* NSXMLNode.m */; };
+		FE53BE7F0BA9ED490050277F /* NSXMLParser.h in Headers */ = {isa = PBXBuildFile; fileRef = FE53BE550BA9ED490050277F /* NSXMLParser.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE53BE800BA9ED490050277F /* NSXMLParser.m in Sources */ = {isa = PBXBuildFile; fileRef = FE53BE560BA9ED490050277F /* NSXMLParser.m */; };
+		FE6DC2570BA902710082AC66 /* NSAffineTransform.h in Headers */ = {isa = PBXBuildFile; fileRef = FE6DC2550BA902710082AC66 /* NSAffineTransform.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE6DC2580BA902710082AC66 /* NSAffineTransform.m in Sources */ = {isa = PBXBuildFile; fileRef = FE6DC2560BA902710082AC66 /* NSAffineTransform.m */; };
+		FE6DC2590BA902710082AC66 /* NSAffineTransform.h in Headers */ = {isa = PBXBuildFile; fileRef = FE6DC2550BA902710082AC66 /* NSAffineTransform.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE6DC25A0BA902710082AC66 /* NSAffineTransform.m in Sources */ = {isa = PBXBuildFile; fileRef = FE6DC2560BA902710082AC66 /* NSAffineTransform.m */; };
+		FE6DC25B0BA902710082AC66 /* NSAffineTransform.h in Headers */ = {isa = PBXBuildFile; fileRef = FE6DC2550BA902710082AC66 /* NSAffineTransform.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE6DC25C0BA902710082AC66 /* NSAffineTransform.m in Sources */ = {isa = PBXBuildFile; fileRef = FE6DC2560BA902710082AC66 /* NSAffineTransform.m */; };
+		FE7477710BAC4E9000829F4F /* NSDecimal.h in Headers */ = {isa = PBXBuildFile; fileRef = FE74776D0BAC4E9000829F4F /* NSDecimal.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE7477720BAC4E9000829F4F /* NSDecimal.m in Sources */ = {isa = PBXBuildFile; fileRef = FE74776E0BAC4E9000829F4F /* NSDecimal.m */; };
+		FE7477730BAC4E9000829F4F /* NSDecimalNumber.h in Headers */ = {isa = PBXBuildFile; fileRef = FE74776F0BAC4E9000829F4F /* NSDecimalNumber.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE7477740BAC4E9000829F4F /* NSDecimalNumber.m in Sources */ = {isa = PBXBuildFile; fileRef = FE7477700BAC4E9000829F4F /* NSDecimalNumber.m */; };
+		FE7477750BAC4E9000829F4F /* NSDecimal.h in Headers */ = {isa = PBXBuildFile; fileRef = FE74776D0BAC4E9000829F4F /* NSDecimal.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE7477760BAC4E9000829F4F /* NSDecimal.m in Sources */ = {isa = PBXBuildFile; fileRef = FE74776E0BAC4E9000829F4F /* NSDecimal.m */; };
+		FE7477770BAC4E9000829F4F /* NSDecimalNumber.h in Headers */ = {isa = PBXBuildFile; fileRef = FE74776F0BAC4E9000829F4F /* NSDecimalNumber.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE7477780BAC4E9000829F4F /* NSDecimalNumber.m in Sources */ = {isa = PBXBuildFile; fileRef = FE7477700BAC4E9000829F4F /* NSDecimalNumber.m */; };
+		FE7477790BAC4E9000829F4F /* NSDecimal.h in Headers */ = {isa = PBXBuildFile; fileRef = FE74776D0BAC4E9000829F4F /* NSDecimal.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE74777A0BAC4E9000829F4F /* NSDecimal.m in Sources */ = {isa = PBXBuildFile; fileRef = FE74776E0BAC4E9000829F4F /* NSDecimal.m */; };
+		FE74777B0BAC4E9000829F4F /* NSDecimalNumber.h in Headers */ = {isa = PBXBuildFile; fileRef = FE74776F0BAC4E9000829F4F /* NSDecimalNumber.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE74777C0BAC4E9000829F4F /* NSDecimalNumber.m in Sources */ = {isa = PBXBuildFile; fileRef = FE7477700BAC4E9000829F4F /* NSDecimalNumber.m */; };
+		FE74779D0BAC4F5200829F4F /* NSDistributedLock.h in Headers */ = {isa = PBXBuildFile; fileRef = FE7477990BAC4F5200829F4F /* NSDistributedLock.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE74779E0BAC4F5200829F4F /* NSDistributedLock.m in Resources */ = {isa = PBXBuildFile; fileRef = FE74779A0BAC4F5200829F4F /* NSDistributedLock.m */; };
+		FE74779F0BAC4F5200829F4F /* NSDistributedNotificationCenter.h in Headers */ = {isa = PBXBuildFile; fileRef = FE74779B0BAC4F5200829F4F /* NSDistributedNotificationCenter.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE7477A00BAC4F5200829F4F /* NSDistributedNotificationCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = FE74779C0BAC4F5200829F4F /* NSDistributedNotificationCenter.m */; };
+		FE7477A10BAC4F5200829F4F /* NSDistributedLock.h in Headers */ = {isa = PBXBuildFile; fileRef = FE7477990BAC4F5200829F4F /* NSDistributedLock.h */; };
+		FE7477A20BAC4F5200829F4F /* NSDistributedLock.m in Resources */ = {isa = PBXBuildFile; fileRef = FE74779A0BAC4F5200829F4F /* NSDistributedLock.m */; };
+		FE7477A30BAC4F5200829F4F /* NSDistributedNotificationCenter.h in Headers */ = {isa = PBXBuildFile; fileRef = FE74779B0BAC4F5200829F4F /* NSDistributedNotificationCenter.h */; };
+		FE7477A40BAC4F5200829F4F /* NSDistributedNotificationCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = FE74779C0BAC4F5200829F4F /* NSDistributedNotificationCenter.m */; };
+		FE7477A50BAC4F5200829F4F /* NSDistributedLock.h in Headers */ = {isa = PBXBuildFile; fileRef = FE7477990BAC4F5200829F4F /* NSDistributedLock.h */; };
+		FE7477A60BAC4F5200829F4F /* NSDistributedLock.m in Resources */ = {isa = PBXBuildFile; fileRef = FE74779A0BAC4F5200829F4F /* NSDistributedLock.m */; };
+		FE7477A70BAC4F5200829F4F /* NSDistributedNotificationCenter.h in Headers */ = {isa = PBXBuildFile; fileRef = FE74779B0BAC4F5200829F4F /* NSDistributedNotificationCenter.h */; };
+		FE7477A80BAC4F5200829F4F /* NSDistributedNotificationCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = FE74779C0BAC4F5200829F4F /* NSDistributedNotificationCenter.m */; };
+		FE7477C00BAC507F00829F4F /* NSIndexPath.h in Headers */ = {isa = PBXBuildFile; fileRef = FE7477BE0BAC507F00829F4F /* NSIndexPath.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE7477C10BAC507F00829F4F /* NSIndexPath.m in Sources */ = {isa = PBXBuildFile; fileRef = FE7477BF0BAC507F00829F4F /* NSIndexPath.m */; };
+		FE7477C20BAC507F00829F4F /* NSIndexPath.h in Headers */ = {isa = PBXBuildFile; fileRef = FE7477BE0BAC507F00829F4F /* NSIndexPath.h */; };
+		FE7477C30BAC507F00829F4F /* NSIndexPath.m in Sources */ = {isa = PBXBuildFile; fileRef = FE7477BF0BAC507F00829F4F /* NSIndexPath.m */; };
+		FE7477C40BAC507F00829F4F /* NSIndexPath.h in Headers */ = {isa = PBXBuildFile; fileRef = FE7477BE0BAC507F00829F4F /* NSIndexPath.h */; };
+		FE7477C50BAC507F00829F4F /* NSIndexPath.m in Sources */ = {isa = PBXBuildFile; fileRef = FE7477BF0BAC507F00829F4F /* NSIndexPath.m */; };
+		FE7477D50BAC519800829F4F /* NSMetadataItem.h in Headers */ = {isa = PBXBuildFile; fileRef = FE7477CD0BAC519800829F4F /* NSMetadataItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE7477D60BAC519800829F4F /* NSMetadataItem.m in Sources */ = {isa = PBXBuildFile; fileRef = FE7477CE0BAC519800829F4F /* NSMetadataItem.m */; };
+		FE7477D70BAC519800829F4F /* NSMetadataQuery.h in Headers */ = {isa = PBXBuildFile; fileRef = FE7477CF0BAC519800829F4F /* NSMetadataQuery.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE7477D80BAC519800829F4F /* NSMetadataQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = FE7477D00BAC519800829F4F /* NSMetadataQuery.m */; };
+		FE7477D90BAC519800829F4F /* NSMetadataQueryAttributeValueTuple.h in Headers */ = {isa = PBXBuildFile; fileRef = FE7477D10BAC519800829F4F /* NSMetadataQueryAttributeValueTuple.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE7477DA0BAC519800829F4F /* NSMetadataQueryAttributeValueTuple.m in Sources */ = {isa = PBXBuildFile; fileRef = FE7477D20BAC519800829F4F /* NSMetadataQueryAttributeValueTuple.m */; };
+		FE7477DB0BAC519800829F4F /* NSMetadataQueryResultGroup.h in Headers */ = {isa = PBXBuildFile; fileRef = FE7477D30BAC519800829F4F /* NSMetadataQueryResultGroup.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE7477DC0BAC519800829F4F /* NSMetadataQueryResultGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = FE7477D40BAC519800829F4F /* NSMetadataQueryResultGroup.m */; };
+		FE7477DD0BAC519800829F4F /* NSMetadataItem.h in Headers */ = {isa = PBXBuildFile; fileRef = FE7477CD0BAC519800829F4F /* NSMetadataItem.h */; };
+		FE7477DE0BAC519800829F4F /* NSMetadataItem.m in Sources */ = {isa = PBXBuildFile; fileRef = FE7477CE0BAC519800829F4F /* NSMetadataItem.m */; };
+		FE7477DF0BAC519800829F4F /* NSMetadataQuery.h in Headers */ = {isa = PBXBuildFile; fileRef = FE7477CF0BAC519800829F4F /* NSMetadataQuery.h */; };
+		FE7477E00BAC519800829F4F /* NSMetadataQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = FE7477D00BAC519800829F4F /* NSMetadataQuery.m */; };
+		FE7477E10BAC519800829F4F /* NSMetadataQueryAttributeValueTuple.h in Headers */ = {isa = PBXBuildFile; fileRef = FE7477D10BAC519800829F4F /* NSMetadataQueryAttributeValueTuple.h */; };
+		FE7477E20BAC519800829F4F /* NSMetadataQueryAttributeValueTuple.m in Sources */ = {isa = PBXBuildFile; fileRef = FE7477D20BAC519800829F4F /* NSMetadataQueryAttributeValueTuple.m */; };
+		FE7477E30BAC519800829F4F /* NSMetadataQueryResultGroup.h in Headers */ = {isa = PBXBuildFile; fileRef = FE7477D30BAC519800829F4F /* NSMetadataQueryResultGroup.h */; };
+		FE7477E40BAC519800829F4F /* NSMetadataQueryResultGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = FE7477D40BAC519800829F4F /* NSMetadataQueryResultGroup.m */; };
+		FE7477E50BAC519800829F4F /* NSMetadataItem.h in Headers */ = {isa = PBXBuildFile; fileRef = FE7477CD0BAC519800829F4F /* NSMetadataItem.h */; };
+		FE7477E60BAC519800829F4F /* NSMetadataItem.m in Sources */ = {isa = PBXBuildFile; fileRef = FE7477CE0BAC519800829F4F /* NSMetadataItem.m */; };
+		FE7477E70BAC519800829F4F /* NSMetadataQuery.h in Headers */ = {isa = PBXBuildFile; fileRef = FE7477CF0BAC519800829F4F /* NSMetadataQuery.h */; };
+		FE7477E80BAC519800829F4F /* NSMetadataQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = FE7477D00BAC519800829F4F /* NSMetadataQuery.m */; };
+		FE7477E90BAC519800829F4F /* NSMetadataQueryAttributeValueTuple.h in Headers */ = {isa = PBXBuildFile; fileRef = FE7477D10BAC519800829F4F /* NSMetadataQueryAttributeValueTuple.h */; };
+		FE7477EA0BAC519800829F4F /* NSMetadataQueryAttributeValueTuple.m in Sources */ = {isa = PBXBuildFile; fileRef = FE7477D20BAC519800829F4F /* NSMetadataQueryAttributeValueTuple.m */; };
+		FE7477EB0BAC519800829F4F /* NSMetadataQueryResultGroup.h in Headers */ = {isa = PBXBuildFile; fileRef = FE7477D30BAC519800829F4F /* NSMetadataQueryResultGroup.h */; };
+		FE7477EC0BAC519800829F4F /* NSMetadataQueryResultGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = FE7477D40BAC519800829F4F /* NSMetadataQueryResultGroup.m */; };
+		FE74780F0BAC594600829F4F /* NSNetService.h in Headers */ = {isa = PBXBuildFile; fileRef = FE74780B0BAC594600829F4F /* NSNetService.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE7478100BAC594600829F4F /* NSNetService.m in Sources */ = {isa = PBXBuildFile; fileRef = FE74780C0BAC594600829F4F /* NSNetService.m */; };
+		FE7478110BAC594600829F4F /* NSNetServiceBrowser.h in Headers */ = {isa = PBXBuildFile; fileRef = FE74780D0BAC594600829F4F /* NSNetServiceBrowser.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE7478120BAC594600829F4F /* NSNetServiceBrowser.m in Sources */ = {isa = PBXBuildFile; fileRef = FE74780E0BAC594600829F4F /* NSNetServiceBrowser.m */; };
+		FE7478130BAC594600829F4F /* NSNetService.h in Headers */ = {isa = PBXBuildFile; fileRef = FE74780B0BAC594600829F4F /* NSNetService.h */; };
+		FE7478140BAC594600829F4F /* NSNetService.m in Sources */ = {isa = PBXBuildFile; fileRef = FE74780C0BAC594600829F4F /* NSNetService.m */; };
+		FE7478150BAC594600829F4F /* NSNetServiceBrowser.h in Headers */ = {isa = PBXBuildFile; fileRef = FE74780D0BAC594600829F4F /* NSNetServiceBrowser.h */; };
+		FE7478160BAC594600829F4F /* NSNetServiceBrowser.m in Sources */ = {isa = PBXBuildFile; fileRef = FE74780E0BAC594600829F4F /* NSNetServiceBrowser.m */; };
+		FE7478170BAC594600829F4F /* NSNetService.h in Headers */ = {isa = PBXBuildFile; fileRef = FE74780B0BAC594600829F4F /* NSNetService.h */; };
+		FE7478180BAC594600829F4F /* NSNetService.m in Sources */ = {isa = PBXBuildFile; fileRef = FE74780C0BAC594600829F4F /* NSNetService.m */; };
+		FE7478190BAC594600829F4F /* NSNetServiceBrowser.h in Headers */ = {isa = PBXBuildFile; fileRef = FE74780D0BAC594600829F4F /* NSNetServiceBrowser.h */; };
+		FE74781A0BAC594600829F4F /* NSNetServiceBrowser.m in Sources */ = {isa = PBXBuildFile; fileRef = FE74780E0BAC594600829F4F /* NSNetServiceBrowser.m */; };
+		FE7478430BAC5A8700829F4F /* NSSortDescriptor.h in Headers */ = {isa = PBXBuildFile; fileRef = FE7478410BAC5A8700829F4F /* NSSortDescriptor.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE7478440BAC5A8700829F4F /* NSSortDescriptor.m in Sources */ = {isa = PBXBuildFile; fileRef = FE7478420BAC5A8700829F4F /* NSSortDescriptor.m */; };
+		FE7478450BAC5A8700829F4F /* NSSortDescriptor.h in Headers */ = {isa = PBXBuildFile; fileRef = FE7478410BAC5A8700829F4F /* NSSortDescriptor.h */; };
+		FE7478460BAC5A8700829F4F /* NSSortDescriptor.m in Sources */ = {isa = PBXBuildFile; fileRef = FE7478420BAC5A8700829F4F /* NSSortDescriptor.m */; };
+		FE7478470BAC5A8700829F4F /* NSSortDescriptor.h in Headers */ = {isa = PBXBuildFile; fileRef = FE7478410BAC5A8700829F4F /* NSSortDescriptor.h */; };
+		FE7478480BAC5A8700829F4F /* NSSortDescriptor.m in Sources */ = {isa = PBXBuildFile; fileRef = FE7478420BAC5A8700829F4F /* NSSortDescriptor.m */; };
+		FE7478720BAC5EB600829F4F /* NSValueTransformer.h in Headers */ = {isa = PBXBuildFile; fileRef = FE7478700BAC5EB600829F4F /* NSValueTransformer.h */; };
+		FE7478730BAC5EB600829F4F /* NSValueTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = FE7478710BAC5EB600829F4F /* NSValueTransformer.m */; };
+		FE7478740BAC5EB600829F4F /* NSValueTransformer.h in Headers */ = {isa = PBXBuildFile; fileRef = FE7478700BAC5EB600829F4F /* NSValueTransformer.h */; };
+		FE7478750BAC5EB600829F4F /* NSValueTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = FE7478710BAC5EB600829F4F /* NSValueTransformer.m */; };
+		FE7478760BAC5EB600829F4F /* NSValueTransformer.h in Headers */ = {isa = PBXBuildFile; fileRef = FE7478700BAC5EB600829F4F /* NSValueTransformer.h */; };
+		FE7478770BAC5EB600829F4F /* NSValueTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = FE7478710BAC5EB600829F4F /* NSValueTransformer.m */; };
 		FEB6CBB00B4A139F004FADF2 /* NSKeyValueCoding.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB6CBAE0B4A139F004FADF2 /* NSKeyValueCoding.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FEB6CBB10B4A139F004FADF2 /* NSKeyValueCoding.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB6CBAF0B4A139F004FADF2 /* NSKeyValueCoding.m */; };
 		FEB6CBB20B4A139F004FADF2 /* NSKeyValueCoding.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB6CBAE0B4A139F004FADF2 /* NSKeyValueCoding.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -1928,14 +2048,6 @@
 		6E2805BC09747D0400EC542B /* NSString_win32.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = NSString_win32.m; path = platform_win32/NSString_win32.m; sourceTree = "<group>"; };
 		6E2805BD09747D0400EC542B /* NSTask_win32.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = NSTask_win32.h; path = platform_win32/NSTask_win32.h; sourceTree = "<group>"; };
 		6E2805BE09747D0400EC542B /* NSTask_win32.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = NSTask_win32.m; path = platform_win32/NSTask_win32.m; sourceTree = "<group>"; };
-		6E2805DF09747D1000EC542B /* NSXMLAttribute.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = NSXMLAttribute.h; path = xml/NSXMLAttribute.h; sourceTree = "<group>"; };
-		6E2805E009747D1000EC542B /* NSXMLAttribute.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = NSXMLAttribute.m; path = xml/NSXMLAttribute.m; sourceTree = "<group>"; };
-		6E2805E109747D1000EC542B /* NSXMLDocument.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = NSXMLDocument.h; path = xml/NSXMLDocument.h; sourceTree = "<group>"; };
-		6E2805E209747D1000EC542B /* NSXMLDocument.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = NSXMLDocument.m; path = xml/NSXMLDocument.m; sourceTree = "<group>"; };
-		6E2805E309747D1000EC542B /* NSXMLElement.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = NSXMLElement.h; path = xml/NSXMLElement.h; sourceTree = "<group>"; };
-		6E2805E409747D1000EC542B /* NSXMLElement.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = NSXMLElement.m; path = xml/NSXMLElement.m; sourceTree = "<group>"; };
-		6E2805E509747D1000EC542B /* NSXMLReader.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = NSXMLReader.h; path = xml/NSXMLReader.h; sourceTree = "<group>"; };
-		6E2805E609747D1000EC542B /* NSXMLReader.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = NSXMLReader.m; path = xml/NSXMLReader.m; sourceTree = "<group>"; };
 		6E2805F309747D5800EC542B /* NSBundle.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSBundle.h; sourceTree = "<group>"; };
 		6E2805F409747D5800EC542B /* NSBundle.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSBundle.m; sourceTree = "<group>"; };
 		6E2805F509747D5800EC542B /* NSByteOrder.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSByteOrder.h; sourceTree = "<group>"; };
@@ -2071,6 +2183,54 @@
 		FE35D66D0B52AFBC00FE7AB3 /* NSSocket_bsd.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = NSSocket_bsd.m; path = platform_posix/NSSocket_bsd.m; sourceTree = "<group>"; };
 		FE405A6A0B4450FD001B183D /* NSHTTPURLResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSHTTPURLResponse.h; sourceTree = "<group>"; };
 		FE405A6B0B4450FD001B183D /* NSHTTPURLResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSHTTPURLResponse.m; sourceTree = "<group>"; };
+		FE53BE170BA9EBBE0050277F /* NSOldXMLAttribute.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSOldXMLAttribute.h; sourceTree = "<group>"; };
+		FE53BE180BA9EBBE0050277F /* NSOldXMLAttribute.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSOldXMLAttribute.m; sourceTree = "<group>"; };
+		FE53BE190BA9EBBE0050277F /* NSOldXMLDocument.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSOldXMLDocument.h; sourceTree = "<group>"; };
+		FE53BE1A0BA9EBBE0050277F /* NSOldXMLDocument.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSOldXMLDocument.m; sourceTree = "<group>"; };
+		FE53BE1B0BA9EBBE0050277F /* NSOldXMLElement.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSOldXMLElement.h; sourceTree = "<group>"; };
+		FE53BE1C0BA9EBBE0050277F /* NSOldXMLElement.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSOldXMLElement.m; sourceTree = "<group>"; };
+		FE53BE1D0BA9EBBE0050277F /* NSOldXMLReader.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSOldXMLReader.h; sourceTree = "<group>"; };
+		FE53BE1E0BA9EBBE0050277F /* NSOldXMLReader.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSOldXMLReader.m; sourceTree = "<group>"; };
+		FE53BE490BA9ED490050277F /* NSXMLDocument.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSXMLDocument.h; sourceTree = "<group>"; };
+		FE53BE4A0BA9ED490050277F /* NSXMLDocument.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSXMLDocument.m; sourceTree = "<group>"; };
+		FE53BE4B0BA9ED490050277F /* NSXMLDTD.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSXMLDTD.h; sourceTree = "<group>"; };
+		FE53BE4C0BA9ED490050277F /* NSXMLDTD.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSXMLDTD.m; sourceTree = "<group>"; };
+		FE53BE4D0BA9ED490050277F /* NSXMLDTDNode.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSXMLDTDNode.h; sourceTree = "<group>"; };
+		FE53BE4E0BA9ED490050277F /* NSXMLDTDNode.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSXMLDTDNode.m; sourceTree = "<group>"; };
+		FE53BE4F0BA9ED490050277F /* NSXMLElement.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSXMLElement.h; sourceTree = "<group>"; };
+		FE53BE500BA9ED490050277F /* NSXMLElement.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSXMLElement.m; sourceTree = "<group>"; };
+		FE53BE510BA9ED490050277F /* NSXMLNode.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSXMLNode.h; sourceTree = "<group>"; };
+		FE53BE520BA9ED490050277F /* NSXMLNode.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSXMLNode.m; sourceTree = "<group>"; };
+		FE53BE550BA9ED490050277F /* NSXMLParser.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSXMLParser.h; sourceTree = "<group>"; };
+		FE53BE560BA9ED490050277F /* NSXMLParser.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSXMLParser.m; sourceTree = "<group>"; };
+		FE6DC2550BA902710082AC66 /* NSAffineTransform.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSAffineTransform.h; sourceTree = "<group>"; };
+		FE6DC2560BA902710082AC66 /* NSAffineTransform.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSAffineTransform.m; sourceTree = "<group>"; };
+		FE74776D0BAC4E9000829F4F /* NSDecimal.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSDecimal.h; sourceTree = "<group>"; };
+		FE74776E0BAC4E9000829F4F /* NSDecimal.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSDecimal.m; sourceTree = "<group>"; };
+		FE74776F0BAC4E9000829F4F /* NSDecimalNumber.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSDecimalNumber.h; sourceTree = "<group>"; };
+		FE7477700BAC4E9000829F4F /* NSDecimalNumber.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSDecimalNumber.m; sourceTree = "<group>"; };
+		FE7477990BAC4F5200829F4F /* NSDistributedLock.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSDistributedLock.h; sourceTree = "<group>"; };
+		FE74779A0BAC4F5200829F4F /* NSDistributedLock.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSDistributedLock.m; sourceTree = "<group>"; };
+		FE74779B0BAC4F5200829F4F /* NSDistributedNotificationCenter.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSDistributedNotificationCenter.h; sourceTree = "<group>"; };
+		FE74779C0BAC4F5200829F4F /* NSDistributedNotificationCenter.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSDistributedNotificationCenter.m; sourceTree = "<group>"; };
+		FE7477BE0BAC507F00829F4F /* NSIndexPath.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSIndexPath.h; sourceTree = "<group>"; };
+		FE7477BF0BAC507F00829F4F /* NSIndexPath.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSIndexPath.m; sourceTree = "<group>"; };
+		FE7477CD0BAC519800829F4F /* NSMetadataItem.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSMetadataItem.h; sourceTree = "<group>"; };
+		FE7477CE0BAC519800829F4F /* NSMetadataItem.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSMetadataItem.m; sourceTree = "<group>"; };
+		FE7477CF0BAC519800829F4F /* NSMetadataQuery.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSMetadataQuery.h; sourceTree = "<group>"; };
+		FE7477D00BAC519800829F4F /* NSMetadataQuery.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSMetadataQuery.m; sourceTree = "<group>"; };
+		FE7477D10BAC519800829F4F /* NSMetadataQueryAttributeValueTuple.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSMetadataQueryAttributeValueTuple.h; sourceTree = "<group>"; };
+		FE7477D20BAC519800829F4F /* NSMetadataQueryAttributeValueTuple.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSMetadataQueryAttributeValueTuple.m; sourceTree = "<group>"; };
+		FE7477D30BAC519800829F4F /* NSMetadataQueryResultGroup.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSMetadataQueryResultGroup.h; sourceTree = "<group>"; };
+		FE7477D40BAC519800829F4F /* NSMetadataQueryResultGroup.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSMetadataQueryResultGroup.m; sourceTree = "<group>"; };
+		FE74780B0BAC594600829F4F /* NSNetService.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSNetService.h; sourceTree = "<group>"; };
+		FE74780C0BAC594600829F4F /* NSNetService.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSNetService.m; sourceTree = "<group>"; };
+		FE74780D0BAC594600829F4F /* NSNetServiceBrowser.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSNetServiceBrowser.h; sourceTree = "<group>"; };
+		FE74780E0BAC594600829F4F /* NSNetServiceBrowser.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSNetServiceBrowser.m; sourceTree = "<group>"; };
+		FE7478410BAC5A8700829F4F /* NSSortDescriptor.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSSortDescriptor.h; sourceTree = "<group>"; };
+		FE7478420BAC5A8700829F4F /* NSSortDescriptor.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSSortDescriptor.m; sourceTree = "<group>"; };
+		FE7478700BAC5EB600829F4F /* NSValueTransformer.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSValueTransformer.h; sourceTree = "<group>"; };
+		FE7478710BAC5EB600829F4F /* NSValueTransformer.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSValueTransformer.m; sourceTree = "<group>"; };
 		FEB6CBAE0B4A139F004FADF2 /* NSKeyValueCoding.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSKeyValueCoding.h; sourceTree = "<group>"; };
 		FEB6CBAF0B4A139F004FADF2 /* NSKeyValueCoding.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSKeyValueCoding.m; sourceTree = "<group>"; };
 		FEB6CC0E0B4A169C004FADF2 /* objc-class.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "objc-class.m"; sourceTree = "<group>"; };
@@ -2197,6 +2357,8 @@
 			children = (
 				0867D69AFE84028FC02AAC07 /* External Frameworks and Libraries */,
 				6E280B2909747F1F00EC542B /* Foundation.h */,
+				FE6DC2550BA902710082AC66 /* NSAffineTransform.h */,
+				FE6DC2560BA902710082AC66 /* NSAffineTransform.m */,
 				6E28030D0974787200EC542B /* NSArchiver.h */,
 				6E28030E0974787200EC542B /* NSArchiver.m */,
 				6E280310097478A700EC542B /* NSArray */,
@@ -2218,9 +2380,14 @@
 				6E28069409747E6B00EC542B /* NSDate */,
 				6E2805F909747D5800EC542B /* NSDebug.h */,
 				6E2805FA09747D5800EC542B /* NSDebug.m */,
+				FE74776A0BAC4E0D00829F4F /* NSDecimal */,
 				6E2803300974790300EC542B /* NSDictionary */,
 				6E2805FB09747D5800EC542B /* NSDirectoryEnumerator.h */,
 				6E2805FC09747D5800EC542B /* NSDirectoryEnumerator.m */,
+				FE7477990BAC4F5200829F4F /* NSDistributedLock.h */,
+				FE74779A0BAC4F5200829F4F /* NSDistributedLock.m */,
+				FE74779B0BAC4F5200829F4F /* NSDistributedNotificationCenter.h */,
+				FE74779C0BAC4F5200829F4F /* NSDistributedNotificationCenter.m */,
 				6E2805FD09747D5800EC542B /* NSEnumerator.h */,
 				6E2805FE09747D5800EC542B /* NSEnumerator.m */,
 				FEB9D4AC0B4434C800C239BB /* NSError.h */,
@@ -2239,6 +2406,8 @@
 				6E28060909747D5800EC542B /* NSHost.h */,
 				6E28060A09747D5800EC542B /* NSHost.m */,
 				FEB9D6070B443BC500C239BB /* NSHTTPCookie */,
+				FE7477BE0BAC507F00829F4F /* NSIndexPath.h */,
+				FE7477BF0BAC507F00829F4F /* NSIndexPath.m */,
 				FEB9D4B60B44355900C239BB /* NSIndexSet */,
 				6E28060F09747D5800EC542B /* NSInvocation.h */,
 				6E28061009747D5800EC542B /* NSInvocation.m */,
@@ -2250,8 +2419,10 @@
 				6E2803320974791700EC542B /* NSLock */,
 				6E28061109747D5800EC542B /* NSMapTable.h */,
 				6E28061209747D5800EC542B /* NSMapTable.m */,
+				FE7477CC0BAC511600829F4F /* NSMetadata */,
 				6E28061309747D5800EC542B /* NSMethodSignature.h */,
 				6E28061409747D5800EC542B /* NSMethodSignature.m */,
+				FE74780A0BAC591800829F4F /* NSNetService */,
 				6E2803340974793100EC542B /* NSNotification */,
 				6E2803350974793800EC542B /* NSNotificationCenter */,
 				6E2803360974794100EC542B /* NSNotificationQueue */,
@@ -2279,6 +2450,8 @@
 				6E28033A0974796000EC542B /* NSRunLoop */,
 				6E28033B0974796500EC542B /* NSScanner */,
 				6E28033C0974796E00EC542B /* NSSet */,
+				FE7478410BAC5A8700829F4F /* NSSortDescriptor.h */,
+				FE7478420BAC5A8700829F4F /* NSSortDescriptor.m */,
 				6E28033D0974797500EC542B /* NSStream */,
 				6E28033E0974799000EC542B /* NSString */,
 				6E28033F0974799800EC542B /* NSStringsFileFormat */,
@@ -2293,6 +2466,8 @@
 				FEB9D5580B44389200C239BB /* NSURL */,
 				6E280343097479F900EC542B /* NSUserDefaults */,
 				6E28034409747A0100EC542B /* NSValue */,
+				FE7478700BAC5EB600829F4F /* NSValueTransformer.h */,
+				FE7478710BAC5EB600829F4F /* NSValueTransformer.m */,
 				6E28034509747A1A00EC542B /* NSZone */,
 				6E28034609747A2500EC542B /* objc */,
 				FEB6CC400B4A1922004FADF2 /* objc.xcodeproj */,
@@ -2542,6 +2717,14 @@
 		6E2803390974795700EC542B /* NSPropertyList */ = {
 			isa = PBXGroup;
 			children = (
+				FE53BE170BA9EBBE0050277F /* NSOldXMLAttribute.h */,
+				FE53BE180BA9EBBE0050277F /* NSOldXMLAttribute.m */,
+				FE53BE190BA9EBBE0050277F /* NSOldXMLDocument.h */,
+				FE53BE1A0BA9EBBE0050277F /* NSOldXMLDocument.m */,
+				FE53BE1B0BA9EBBE0050277F /* NSOldXMLElement.h */,
+				FE53BE1C0BA9EBBE0050277F /* NSOldXMLElement.m */,
+				FE53BE1D0BA9EBBE0050277F /* NSOldXMLReader.h */,
+				FE53BE1E0BA9EBBE0050277F /* NSOldXMLReader.m */,
 				6E28044209747BCB00EC542B /* NSPropertyListReader_vintage.h */,
 				6E28044309747BCB00EC542B /* NSPropertyListReader_vintage.m */,
 				6E28044409747BCB00EC542B /* NSPropertyListWriter.h */,
@@ -2896,16 +3079,20 @@
 		6E28034B09747A8200EC542B /* xml */ = {
 			isa = PBXGroup;
 			children = (
-				6E2805DF09747D1000EC542B /* NSXMLAttribute.h */,
-				6E2805E009747D1000EC542B /* NSXMLAttribute.m */,
-				6E2805E109747D1000EC542B /* NSXMLDocument.h */,
-				6E2805E209747D1000EC542B /* NSXMLDocument.m */,
-				6E2805E309747D1000EC542B /* NSXMLElement.h */,
-				6E2805E409747D1000EC542B /* NSXMLElement.m */,
-				6E2805E509747D1000EC542B /* NSXMLReader.h */,
-				6E2805E609747D1000EC542B /* NSXMLReader.m */,
+				FE53BE490BA9ED490050277F /* NSXMLDocument.h */,
+				FE53BE4A0BA9ED490050277F /* NSXMLDocument.m */,
+				FE53BE4B0BA9ED490050277F /* NSXMLDTD.h */,
+				FE53BE4C0BA9ED490050277F /* NSXMLDTD.m */,
+				FE53BE4D0BA9ED490050277F /* NSXMLDTDNode.h */,
+				FE53BE4E0BA9ED490050277F /* NSXMLDTDNode.m */,
+				FE53BE4F0BA9ED490050277F /* NSXMLElement.h */,
+				FE53BE500BA9ED490050277F /* NSXMLElement.m */,
+				FE53BE510BA9ED490050277F /* NSXMLNode.h */,
+				FE53BE520BA9ED490050277F /* NSXMLNode.m */,
+				FE53BE550BA9ED490050277F /* NSXMLParser.h */,
+				FE53BE560BA9ED490050277F /* NSXMLParser.m */,
 			);
-			name = xml;
+			path = xml;
 			sourceTree = "<group>";
 		};
 		6E28055A09747C8F00EC542B /* platform_linux */ = {
@@ -3008,6 +3195,43 @@
 				6E28068309747E0A00EC542B /* whitespaceCharacterSet.bitmap */,
 			);
 			name = NSCharacterSet;
+			sourceTree = "<group>";
+		};
+		FE74776A0BAC4E0D00829F4F /* NSDecimal */ = {
+			isa = PBXGroup;
+			children = (
+				FE74776D0BAC4E9000829F4F /* NSDecimal.h */,
+				FE74776E0BAC4E9000829F4F /* NSDecimal.m */,
+				FE74776F0BAC4E9000829F4F /* NSDecimalNumber.h */,
+				FE7477700BAC4E9000829F4F /* NSDecimalNumber.m */,
+			);
+			path = NSDecimal;
+			sourceTree = "<group>";
+		};
+		FE7477CC0BAC511600829F4F /* NSMetadata */ = {
+			isa = PBXGroup;
+			children = (
+				FE7477CD0BAC519800829F4F /* NSMetadataItem.h */,
+				FE7477CE0BAC519800829F4F /* NSMetadataItem.m */,
+				FE7477CF0BAC519800829F4F /* NSMetadataQuery.h */,
+				FE7477D00BAC519800829F4F /* NSMetadataQuery.m */,
+				FE7477D10BAC519800829F4F /* NSMetadataQueryAttributeValueTuple.h */,
+				FE7477D20BAC519800829F4F /* NSMetadataQueryAttributeValueTuple.m */,
+				FE7477D30BAC519800829F4F /* NSMetadataQueryResultGroup.h */,
+				FE7477D40BAC519800829F4F /* NSMetadataQueryResultGroup.m */,
+			);
+			path = NSMetadata;
+			sourceTree = "<group>";
+		};
+		FE74780A0BAC591800829F4F /* NSNetService */ = {
+			isa = PBXGroup;
+			children = (
+				FE74780B0BAC594600829F4F /* NSNetService.h */,
+				FE74780C0BAC594600829F4F /* NSNetService.m */,
+				FE74780D0BAC594600829F4F /* NSNetServiceBrowser.h */,
+				FE74780E0BAC594600829F4F /* NSNetServiceBrowser.m */,
+			);
+			path = NSNetService;
 			sourceTree = "<group>";
 		};
 		FEB6CC410B4A1922004FADF2 /* Products */ = {
@@ -3267,10 +3491,6 @@
 				6E4D920A0A2642BD003D335C /* Object.h in Headers */,
 				6E4D920B0A2642BD003D335C /* ObjectiveC.h in Headers */,
 				6E4D920C0A2642BD003D335C /* Protocol.h in Headers */,
-				6E4D920D0A2642BD003D335C /* NSXMLAttribute.h in Headers */,
-				6E4D920E0A2642BD003D335C /* NSXMLDocument.h in Headers */,
-				6E4D920F0A2642BD003D335C /* NSXMLElement.h in Headers */,
-				6E4D92100A2642BD003D335C /* NSXMLReader.h in Headers */,
 				6E4D92120A2642BD003D335C /* NSBundle.h in Headers */,
 				6E4D92130A2642BD003D335C /* NSByteOrder.h in Headers */,
 				6E4D92140A2642BD003D335C /* NSCoder.h in Headers */,
@@ -3381,6 +3601,30 @@
 				FE35D64B0B52A3E400FE7AB3 /* NSSelectSet_bsd.h in Headers */,
 				FE35D6700B52AFBC00FE7AB3 /* NSSocket_bsd.h in Headers */,
 				FE1935190B5D449E00FB74CC /* NSAssertionHandler.h in Headers */,
+				FE6DC25B0BA902710082AC66 /* NSAffineTransform.h in Headers */,
+				FE53BE2F0BA9EBBE0050277F /* NSOldXMLAttribute.h in Headers */,
+				FE53BE310BA9EBBE0050277F /* NSOldXMLDocument.h in Headers */,
+				FE53BE330BA9EBBE0050277F /* NSOldXMLElement.h in Headers */,
+				FE53BE350BA9EBBE0050277F /* NSOldXMLReader.h in Headers */,
+				FE53BE730BA9ED490050277F /* NSXMLDocument.h in Headers */,
+				FE53BE750BA9ED490050277F /* NSXMLDTD.h in Headers */,
+				FE53BE770BA9ED490050277F /* NSXMLDTDNode.h in Headers */,
+				FE53BE790BA9ED490050277F /* NSXMLElement.h in Headers */,
+				FE53BE7B0BA9ED490050277F /* NSXMLNode.h in Headers */,
+				FE53BE7F0BA9ED490050277F /* NSXMLParser.h in Headers */,
+				FE7477790BAC4E9000829F4F /* NSDecimal.h in Headers */,
+				FE74777B0BAC4E9000829F4F /* NSDecimalNumber.h in Headers */,
+				FE7477A50BAC4F5200829F4F /* NSDistributedLock.h in Headers */,
+				FE7477A70BAC4F5200829F4F /* NSDistributedNotificationCenter.h in Headers */,
+				FE7477C40BAC507F00829F4F /* NSIndexPath.h in Headers */,
+				FE7477E50BAC519800829F4F /* NSMetadataItem.h in Headers */,
+				FE7477E70BAC519800829F4F /* NSMetadataQuery.h in Headers */,
+				FE7477E90BAC519800829F4F /* NSMetadataQueryAttributeValueTuple.h in Headers */,
+				FE7477EB0BAC519800829F4F /* NSMetadataQueryResultGroup.h in Headers */,
+				FE7478170BAC594600829F4F /* NSNetService.h in Headers */,
+				FE7478190BAC594600829F4F /* NSNetServiceBrowser.h in Headers */,
+				FE7478470BAC5A8700829F4F /* NSSortDescriptor.h in Headers */,
+				FE7478760BAC5EB600829F4F /* NSValueTransformer.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3511,10 +3755,6 @@
 				6EA0494C09E57D5F0067589C /* Object.h in Headers */,
 				6EA0494D09E57D5F0067589C /* ObjectiveC.h in Headers */,
 				6EA0494E09E57D5F0067589C /* Protocol.h in Headers */,
-				6EA0495D09E57D5F0067589C /* NSXMLAttribute.h in Headers */,
-				6EA0495E09E57D5F0067589C /* NSXMLDocument.h in Headers */,
-				6EA0495F09E57D5F0067589C /* NSXMLElement.h in Headers */,
-				6EA0496009E57D5F0067589C /* NSXMLReader.h in Headers */,
 				6EA0496209E57D5F0067589C /* NSBundle.h in Headers */,
 				6EA0496309E57D5F0067589C /* NSByteOrder.h in Headers */,
 				6EA0496409E57D5F0067589C /* NSCoder.h in Headers */,
@@ -3625,6 +3865,30 @@
 				FE35D6490B52A3E400FE7AB3 /* NSSelectSet_bsd.h in Headers */,
 				FE35D66E0B52AFBC00FE7AB3 /* NSSocket_bsd.h in Headers */,
 				FE1935170B5D449E00FB74CC /* NSAssertionHandler.h in Headers */,
+				FE6DC2590BA902710082AC66 /* NSAffineTransform.h in Headers */,
+				FE53BE270BA9EBBE0050277F /* NSOldXMLAttribute.h in Headers */,
+				FE53BE290BA9EBBE0050277F /* NSOldXMLDocument.h in Headers */,
+				FE53BE2B0BA9EBBE0050277F /* NSOldXMLElement.h in Headers */,
+				FE53BE2D0BA9EBBE0050277F /* NSOldXMLReader.h in Headers */,
+				FE53BE650BA9ED490050277F /* NSXMLDocument.h in Headers */,
+				FE53BE670BA9ED490050277F /* NSXMLDTD.h in Headers */,
+				FE53BE690BA9ED490050277F /* NSXMLDTDNode.h in Headers */,
+				FE53BE6B0BA9ED490050277F /* NSXMLElement.h in Headers */,
+				FE53BE6D0BA9ED490050277F /* NSXMLNode.h in Headers */,
+				FE53BE710BA9ED490050277F /* NSXMLParser.h in Headers */,
+				FE7477750BAC4E9000829F4F /* NSDecimal.h in Headers */,
+				FE7477770BAC4E9000829F4F /* NSDecimalNumber.h in Headers */,
+				FE7477A10BAC4F5200829F4F /* NSDistributedLock.h in Headers */,
+				FE7477A30BAC4F5200829F4F /* NSDistributedNotificationCenter.h in Headers */,
+				FE7477C20BAC507F00829F4F /* NSIndexPath.h in Headers */,
+				FE7477DD0BAC519800829F4F /* NSMetadataItem.h in Headers */,
+				FE7477DF0BAC519800829F4F /* NSMetadataQuery.h in Headers */,
+				FE7477E10BAC519800829F4F /* NSMetadataQueryAttributeValueTuple.h in Headers */,
+				FE7477E30BAC519800829F4F /* NSMetadataQueryResultGroup.h in Headers */,
+				FE7478130BAC594600829F4F /* NSNetService.h in Headers */,
+				FE7478150BAC594600829F4F /* NSNetServiceBrowser.h in Headers */,
+				FE7478450BAC5A8700829F4F /* NSSortDescriptor.h in Headers */,
+				FE7478740BAC5EB600829F4F /* NSValueTransformer.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3767,10 +4031,6 @@
 				6E2805D709747D0400EC542B /* NSReadInBackground_win32.h in Headers */,
 				6E2805DB09747D0400EC542B /* NSString_win32.h in Headers */,
 				6E2805DD09747D0400EC542B /* NSTask_win32.h in Headers */,
-				6E2805E909747D1000EC542B /* NSXMLAttribute.h in Headers */,
-				6E2805EB09747D1000EC542B /* NSXMLDocument.h in Headers */,
-				6E2805ED09747D1000EC542B /* NSXMLElement.h in Headers */,
-				6E2805EF09747D1000EC542B /* NSXMLReader.h in Headers */,
 				6E28062B09747D5800EC542B /* NSBundle.h in Headers */,
 				6E28062D09747D5800EC542B /* NSByteOrder.h in Headers */,
 				6E28062F09747D5800EC542B /* NSCoder.h in Headers */,
@@ -3872,6 +4132,30 @@
 				FE35D3510B4EEDBB00FE7AB3 /* NSSelectSet_windows.h in Headers */,
 				FE35D3AE0B4F369C00FE7AB3 /* NSSelectInputSourceSet.h in Headers */,
 				FE19351B0B5D449E00FB74CC /* NSAssertionHandler.h in Headers */,
+				FE6DC2570BA902710082AC66 /* NSAffineTransform.h in Headers */,
+				FE53BE1F0BA9EBBE0050277F /* NSOldXMLAttribute.h in Headers */,
+				FE53BE210BA9EBBE0050277F /* NSOldXMLDocument.h in Headers */,
+				FE53BE230BA9EBBE0050277F /* NSOldXMLElement.h in Headers */,
+				FE53BE250BA9EBBE0050277F /* NSOldXMLReader.h in Headers */,
+				FE53BE570BA9ED490050277F /* NSXMLDocument.h in Headers */,
+				FE53BE590BA9ED490050277F /* NSXMLDTD.h in Headers */,
+				FE53BE5B0BA9ED490050277F /* NSXMLDTDNode.h in Headers */,
+				FE53BE5D0BA9ED490050277F /* NSXMLElement.h in Headers */,
+				FE53BE5F0BA9ED490050277F /* NSXMLNode.h in Headers */,
+				FE53BE630BA9ED490050277F /* NSXMLParser.h in Headers */,
+				FE7477710BAC4E9000829F4F /* NSDecimal.h in Headers */,
+				FE7477730BAC4E9000829F4F /* NSDecimalNumber.h in Headers */,
+				FE74779D0BAC4F5200829F4F /* NSDistributedLock.h in Headers */,
+				FE74779F0BAC4F5200829F4F /* NSDistributedNotificationCenter.h in Headers */,
+				FE7477C00BAC507F00829F4F /* NSIndexPath.h in Headers */,
+				FE7477D50BAC519800829F4F /* NSMetadataItem.h in Headers */,
+				FE7477D70BAC519800829F4F /* NSMetadataQuery.h in Headers */,
+				FE7477D90BAC519800829F4F /* NSMetadataQueryAttributeValueTuple.h in Headers */,
+				FE7477DB0BAC519800829F4F /* NSMetadataQueryResultGroup.h in Headers */,
+				FE74780F0BAC594600829F4F /* NSNetService.h in Headers */,
+				FE7478110BAC594600829F4F /* NSNetServiceBrowser.h in Headers */,
+				FE7478430BAC5A8700829F4F /* NSSortDescriptor.h in Headers */,
+				FE7478720BAC5EB600829F4F /* NSValueTransformer.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4010,6 +4294,7 @@
 				6E4D93210A2642BD003D335C /* NSTimeZoneAbbreviations.plist in Resources */,
 				6E4D93220A2642BD003D335C /* NSTimeZoneRegions.plist in Resources */,
 				6E4D93230A2642BD003D335C /* NSUserDefaults.plist in Resources */,
+				FE7477A60BAC4F5200829F4F /* NSDistributedLock.m in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4029,6 +4314,7 @@
 				6EA04A6C09E57D5F0067589C /* NSTimeZoneAbbreviations.plist in Resources */,
 				6EA04A6D09E57D5F0067589C /* NSTimeZoneRegions.plist in Resources */,
 				6EA04A6E09E57D5F0067589C /* NSUserDefaults.plist in Resources */,
+				FE7477A20BAC4F5200829F4F /* NSDistributedLock.m in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4048,6 +4334,7 @@
 				6E2808FD09747EA900EC542B /* NSTimeZoneAbbreviations.plist in Resources */,
 				6E2808FE09747EA900EC542B /* NSTimeZoneRegions.plist in Resources */,
 				6E280B2D09747F4900EC542B /* NSUserDefaults.plist in Resources */,
+				FE74779E0BAC4F5200829F4F /* NSDistributedLock.m in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4178,10 +4465,6 @@
 				6E4D92CF0A2642BD003D335C /* Object.m in Sources */,
 				6E4D92D00A2642BD003D335C /* ObjectiveC.m in Sources */,
 				6E4D92D10A2642BD003D335C /* Protocol.m in Sources */,
-				6E4D92D20A2642BD003D335C /* NSXMLAttribute.m in Sources */,
-				6E4D92D30A2642BD003D335C /* NSXMLDocument.m in Sources */,
-				6E4D92D40A2642BD003D335C /* NSXMLElement.m in Sources */,
-				6E4D92D50A2642BD003D335C /* NSXMLReader.m in Sources */,
 				6E4D92D70A2642BD003D335C /* NSBundle.m in Sources */,
 				6E4D92D80A2642BD003D335C /* NSByteOrder.m in Sources */,
 				6E4D92D90A2642BD003D335C /* NSCoder.m in Sources */,
@@ -4297,6 +4580,29 @@
 				FE35D64C0B52A3E400FE7AB3 /* NSSelectSet_bsd.m in Sources */,
 				FE35D6710B52AFBC00FE7AB3 /* NSSocket_bsd.m in Sources */,
 				FE19351A0B5D449E00FB74CC /* NSAssertionHandler.m in Sources */,
+				FE6DC25C0BA902710082AC66 /* NSAffineTransform.m in Sources */,
+				FE53BE300BA9EBBE0050277F /* NSOldXMLAttribute.m in Sources */,
+				FE53BE320BA9EBBE0050277F /* NSOldXMLDocument.m in Sources */,
+				FE53BE340BA9EBBE0050277F /* NSOldXMLElement.m in Sources */,
+				FE53BE360BA9EBBE0050277F /* NSOldXMLReader.m in Sources */,
+				FE53BE740BA9ED490050277F /* NSXMLDocument.m in Sources */,
+				FE53BE760BA9ED490050277F /* NSXMLDTD.m in Sources */,
+				FE53BE780BA9ED490050277F /* NSXMLDTDNode.m in Sources */,
+				FE53BE7A0BA9ED490050277F /* NSXMLElement.m in Sources */,
+				FE53BE7C0BA9ED490050277F /* NSXMLNode.m in Sources */,
+				FE53BE800BA9ED490050277F /* NSXMLParser.m in Sources */,
+				FE74777A0BAC4E9000829F4F /* NSDecimal.m in Sources */,
+				FE74777C0BAC4E9000829F4F /* NSDecimalNumber.m in Sources */,
+				FE7477A80BAC4F5200829F4F /* NSDistributedNotificationCenter.m in Sources */,
+				FE7477C50BAC507F00829F4F /* NSIndexPath.m in Sources */,
+				FE7477E60BAC519800829F4F /* NSMetadataItem.m in Sources */,
+				FE7477E80BAC519800829F4F /* NSMetadataQuery.m in Sources */,
+				FE7477EA0BAC519800829F4F /* NSMetadataQueryAttributeValueTuple.m in Sources */,
+				FE7477EC0BAC519800829F4F /* NSMetadataQueryResultGroup.m in Sources */,
+				FE7478180BAC594600829F4F /* NSNetService.m in Sources */,
+				FE74781A0BAC594600829F4F /* NSNetServiceBrowser.m in Sources */,
+				FE7478480BAC5A8700829F4F /* NSSortDescriptor.m in Sources */,
+				FE7478770BAC5EB600829F4F /* NSValueTransformer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4424,10 +4730,6 @@
 				6EA04A1409E57D5F0067589C /* Object.m in Sources */,
 				6EA04A1509E57D5F0067589C /* ObjectiveC.m in Sources */,
 				6EA04A1609E57D5F0067589C /* Protocol.m in Sources */,
-				6EA04A1709E57D5F0067589C /* NSXMLAttribute.m in Sources */,
-				6EA04A1809E57D5F0067589C /* NSXMLDocument.m in Sources */,
-				6EA04A1909E57D5F0067589C /* NSXMLElement.m in Sources */,
-				6EA04A1A09E57D5F0067589C /* NSXMLReader.m in Sources */,
 				6EA04A1C09E57D5F0067589C /* NSBundle.m in Sources */,
 				6EA04A1D09E57D5F0067589C /* NSByteOrder.m in Sources */,
 				6EA04A1E09E57D5F0067589C /* NSCoder.m in Sources */,
@@ -4543,6 +4845,29 @@
 				FE35D64A0B52A3E400FE7AB3 /* NSSelectSet_bsd.m in Sources */,
 				FE35D66F0B52AFBC00FE7AB3 /* NSSocket_bsd.m in Sources */,
 				FE1935180B5D449E00FB74CC /* NSAssertionHandler.m in Sources */,
+				FE6DC25A0BA902710082AC66 /* NSAffineTransform.m in Sources */,
+				FE53BE280BA9EBBE0050277F /* NSOldXMLAttribute.m in Sources */,
+				FE53BE2A0BA9EBBE0050277F /* NSOldXMLDocument.m in Sources */,
+				FE53BE2C0BA9EBBE0050277F /* NSOldXMLElement.m in Sources */,
+				FE53BE2E0BA9EBBE0050277F /* NSOldXMLReader.m in Sources */,
+				FE53BE660BA9ED490050277F /* NSXMLDocument.m in Sources */,
+				FE53BE680BA9ED490050277F /* NSXMLDTD.m in Sources */,
+				FE53BE6A0BA9ED490050277F /* NSXMLDTDNode.m in Sources */,
+				FE53BE6C0BA9ED490050277F /* NSXMLElement.m in Sources */,
+				FE53BE6E0BA9ED490050277F /* NSXMLNode.m in Sources */,
+				FE53BE720BA9ED490050277F /* NSXMLParser.m in Sources */,
+				FE7477760BAC4E9000829F4F /* NSDecimal.m in Sources */,
+				FE7477780BAC4E9000829F4F /* NSDecimalNumber.m in Sources */,
+				FE7477A40BAC4F5200829F4F /* NSDistributedNotificationCenter.m in Sources */,
+				FE7477C30BAC507F00829F4F /* NSIndexPath.m in Sources */,
+				FE7477DE0BAC519800829F4F /* NSMetadataItem.m in Sources */,
+				FE7477E00BAC519800829F4F /* NSMetadataQuery.m in Sources */,
+				FE7477E20BAC519800829F4F /* NSMetadataQueryAttributeValueTuple.m in Sources */,
+				FE7477E40BAC519800829F4F /* NSMetadataQueryResultGroup.m in Sources */,
+				FE7478140BAC594600829F4F /* NSNetService.m in Sources */,
+				FE7478160BAC594600829F4F /* NSNetServiceBrowser.m in Sources */,
+				FE7478460BAC5A8700829F4F /* NSSortDescriptor.m in Sources */,
+				FE7478750BAC5EB600829F4F /* NSValueTransformer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4670,10 +4995,6 @@
 				6E28055509747C8900EC542B /* Object.m in Sources */,
 				6E28055709747C8900EC542B /* ObjectiveC.m in Sources */,
 				6E28055909747C8900EC542B /* Protocol.m in Sources */,
-				6E2805EA09747D1000EC542B /* NSXMLAttribute.m in Sources */,
-				6E2805EC09747D1000EC542B /* NSXMLDocument.m in Sources */,
-				6E2805EE09747D1000EC542B /* NSXMLElement.m in Sources */,
-				6E2805F009747D1000EC542B /* NSXMLReader.m in Sources */,
 				6E28062C09747D5800EC542B /* NSBundle.m in Sources */,
 				6E28062E09747D5800EC542B /* NSByteOrder.m in Sources */,
 				6E28063009747D5800EC542B /* NSCoder.m in Sources */,
@@ -4792,6 +5113,29 @@
 				FE35D3520B4EEDBB00FE7AB3 /* NSSelectSet_windows.m in Sources */,
 				FE35D3AF0B4F369C00FE7AB3 /* NSSelectInputSourceSet.m in Sources */,
 				FE19351C0B5D449E00FB74CC /* NSAssertionHandler.m in Sources */,
+				FE6DC2580BA902710082AC66 /* NSAffineTransform.m in Sources */,
+				FE53BE200BA9EBBE0050277F /* NSOldXMLAttribute.m in Sources */,
+				FE53BE220BA9EBBE0050277F /* NSOldXMLDocument.m in Sources */,
+				FE53BE240BA9EBBE0050277F /* NSOldXMLElement.m in Sources */,
+				FE53BE260BA9EBBE0050277F /* NSOldXMLReader.m in Sources */,
+				FE53BE580BA9ED490050277F /* NSXMLDocument.m in Sources */,
+				FE53BE5A0BA9ED490050277F /* NSXMLDTD.m in Sources */,
+				FE53BE5C0BA9ED490050277F /* NSXMLDTDNode.m in Sources */,
+				FE53BE5E0BA9ED490050277F /* NSXMLElement.m in Sources */,
+				FE53BE600BA9ED490050277F /* NSXMLNode.m in Sources */,
+				FE53BE640BA9ED490050277F /* NSXMLParser.m in Sources */,
+				FE7477720BAC4E9000829F4F /* NSDecimal.m in Sources */,
+				FE7477740BAC4E9000829F4F /* NSDecimalNumber.m in Sources */,
+				FE7477A00BAC4F5200829F4F /* NSDistributedNotificationCenter.m in Sources */,
+				FE7477C10BAC507F00829F4F /* NSIndexPath.m in Sources */,
+				FE7477D60BAC519800829F4F /* NSMetadataItem.m in Sources */,
+				FE7477D80BAC519800829F4F /* NSMetadataQuery.m in Sources */,
+				FE7477DA0BAC519800829F4F /* NSMetadataQueryAttributeValueTuple.m in Sources */,
+				FE7477DC0BAC519800829F4F /* NSMetadataQueryResultGroup.m in Sources */,
+				FE7478100BAC594600829F4F /* NSNetService.m in Sources */,
+				FE7478120BAC594600829F4F /* NSNetServiceBrowser.m in Sources */,
+				FE7478440BAC5A8700829F4F /* NSSortDescriptor.m in Sources */,
+				FE7478730BAC5EB600829F4F /* NSValueTransformer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -9,7 +9,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/Foundation.h>
 
 #import <AppKit/NSActionCell.h>
-#import <AppKit/NSAffineTransform.h>
+#import <Foundation/NSAffineTransform.h>
 #import <AppKit/NSAlert.h>
 #import <AppKit/NSApplication.h>
 #import <AppKit/NSArrayController.h>
@@ -36,6 +36,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSController.h>
 #import <AppKit/NSCursor.h>
 #import <AppKit/NSCustomImageRep.h>
+#import <AppKit/NSDatePicker.h>
+#import <AppKit/NSDatePickerCell.h>
 #import <AppKit/NSDocument.h>
 #import <AppKit/NSDocumentController.h>
 #import <AppKit/NSDragging.h>
@@ -71,6 +73,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSNibOutletConnector.h>
 #import <AppKit/NSObjectController.h>
 #import <AppKit/NSOpenPanel.h>
+#import <AppKit/NSOpenGLContext.h>
+#import <AppKit/NSOpenGLView.h>
+#import <AppKit/NSOpenGLPixelBuffer.h>
+#import <AppKit/NSOpenGLPixelFormat.h>
 #import <AppKit/NSOutlineView.h>
 #import <AppKit/NSPageLayout.h>
 #import <AppKit/NSPanel.h>

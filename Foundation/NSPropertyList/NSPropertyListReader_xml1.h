@@ -8,12 +8,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/NSObject.h>
 
-@class NSData,NSXMLElement;
+@class NSData,NSOldXMLElement;
 
 @interface NSPropertyListReader_xml1 : NSObject {
 }
 
-+(NSObject *)propertyListFromElement:(NSXMLElement *)element;
++(NSObject *)propertyListFromElement:(NSOldXMLElement *)element;
 
 +(NSObject *)propertyListFromData:(NSData *)data;
 

@@ -8,8 +8,45 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/NSObject.h>
 
+@class NSOpenGLPixelFormat,NSOpenGLPixelBuffer,NSView;
+
+typedef int NSOpenGLContextParameter;
+
 @interface NSOpenGLContext : NSObject {
 
 }
+
++(NSOpenGLContext *)currentContext;
++(void)clearCurrentContext;
+
+-initWithFormat:(NSOpenGLPixelFormat *)pixelFormat shareContext:(NSOpenGLContext *)shareContext;
+
+-(NSView *)view;
+-(NSOpenGLPixelBuffer *)pixelBuffer;
+-(unsigned long)pixelBufferCubeMapFace;
+-(long)pixelBufferMipMapLevel;
+-(void *)CGLContextObj;
+
+-(void)getValues:(long *)vals forParameter:(NSOpenGLContextParameter)parameter;
+-(void)setValues:(const long *)vals forParameter:(NSOpenGLContextParameter)parameter;
+-(void)setView:(NSView *)view;
+
+-(void)makeCurrenContext;
+-(int)currentVirtualScreen;
+
+-(void)setCurrentVirtualScreen:(int)screen;
+-(void)setFullScreen;
+-(void)setOffscreen:(void *)bytes width:(long)width height:(long)height rowbytes:(long)rowbytes;
+-(void)setPixelBuffer:(NSOpenGLPixelBuffer *)pixelBuffer cubeMapFace:(unsigned long)cubeMapFace mipMapLeve:(long)mipMapLevel currentVirtualScreen:(int)screen;
+-(void)setTextureImageToPixelBuffer:(NSOpenGLPixelBuffer *)pixelBuffer colorBuffer:(unsigned long)source;
+
+-(void)update;
+
+-(void)clearDrawable;
+
+-(void)copyAttrbutesFromContext:(NSOpenGLContext *)context withMask:(unsigned long)mask;
+-(void)createTexture:(unsigned long)identifier fromView:(NSView *)view internalFormat:(unsigned long)internalFormat;
+
+-(void)flushBuffer;
 
 @end

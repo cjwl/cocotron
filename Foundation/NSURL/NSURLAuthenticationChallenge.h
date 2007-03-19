@@ -7,8 +7,29 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 #import <Foundation/NSObject.h>
 
-@interface NSURLAuthenticationChallenge : NSObject {
+@class NSError,NSURLResponse,NSURLProtectionSpace,NSURLCredential;
 
+@protocol NSURLAuthenticationChallengeSender <NSObject>
+@end
+
+@interface NSURLAuthenticationChallenge : NSObject {
+   NSURLProtectionSpace *_protectionSpace;
+   NSURLCredential      *_proposedCredential;
+   int                   _failureCount;
+   NSURLResponse        *_failureResponse;
+   NSError              *_error;
+   id                    _sender;
 }
+
+-initWithProtectionSpace:(NSURLProtectionSpace *)space proposedCredential:(NSURLCredential *)credential previousFailureCount:(int)failureCount failureResponse:(NSURLResponse *)failureResponse error:(NSError *)error sender:(id <NSURLAuthenticationChallengeSender>)sender;
+
+-initWithAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge sender:(id <NSURLAuthenticationChallengeSender>)sender;
+
+-(NSURLProtectionSpace *)protectionSpace;
+-(NSURLCredential *)proposedCredential;
+-(unsigned)previousFailureCount;
+-(NSURLResponse *)failureResponse;
+-(NSError *)error;
+-(id<NSURLAuthenticationChallengeSender>)sender;
 
 @end

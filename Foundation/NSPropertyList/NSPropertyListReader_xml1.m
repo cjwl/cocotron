@@ -8,9 +8,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 // Original - Christopher Lloyd <cjwl@objc.net>
 #import <Foundation/NSPropertyListReader_xml1.h>
-#import <Foundation/NSXMLReader.h>
-#import <Foundation/NSXMLDocument.h>
-#import <Foundation/NSXMLElement.h>
+#import "NSOldXMLReader.h"
+#import "NSOldXMLDocument.h"
+#import "NSOldXMLElement.h"
 #import <Foundation/NSException.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSArray.h>
@@ -19,7 +19,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @implementation NSPropertyListReader_xml1
 
-+(NSDictionary *)dictionaryFromElement:(NSXMLElement *)element {
++(NSDictionary *)dictionaryFromElement:(NSOldXMLElement *)element {
    NSMutableDictionary *result=[NSMutableDictionary dictionary];
    NSArray             *contents=[element contents];
    int                  i,count=[contents count];
@@ -28,7 +28,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    for(i=0;i<count;i++){
     id check=[contents objectAtIndex:i];
     
-    if([check isKindOfClass:[NSXMLElement class]]){
+    if([check isKindOfClass:[NSOldXMLElement class]]){
      if([[check name] isEqualToString:@"key"])
       currentKey=[check stringValue];
      else
@@ -39,7 +39,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return result;
 }
 
-+(NSArray *)arrayFromElement:(NSXMLElement *)element {
++(NSArray *)arrayFromElement:(NSOldXMLElement *)element {
    NSMutableArray *result=[NSMutableArray array];
    NSArray        *contents=[element contents];
    int             i,count=[contents count];
@@ -47,7 +47,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    for(i=0;i<count;i++){
     id check=[contents objectAtIndex:i];
     
-    if([check isKindOfClass:[NSXMLElement class]])
+    if([check isKindOfClass:[NSOldXMLElement class]])
      [result addObject:[self propertyListFromElement:check]];
    }
    
@@ -116,7 +116,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return [NSData dataWithBytes:result length:resultLength];
 }
 
-+(NSData *)dataFromElement:(NSXMLElement *)element {
++(NSData *)dataFromElement:(NSOldXMLElement *)element {
    NSMutableData *result=[NSMutableData data];
    NSArray       *strings=[element contents];
    int            i,count=[strings count];
@@ -128,7 +128,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 
-+(NSObject *)propertyListFromElement:(NSXMLElement *)element {
++(NSObject *)propertyListFromElement:(NSOldXMLElement *)element {
    NSString *name=[element name];
    id        result=nil;
       
@@ -152,7 +152,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return result;
 }
 
-+(NSObject *)propertyListFromContentsOfElement:(NSXMLElement *)element {
++(NSObject *)propertyListFromContentsOfElement:(NSOldXMLElement *)element {
    id       result=nil;
    NSArray *contents=[element contents];
    int      i,count=[contents count];
@@ -160,15 +160,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    for(i=0;i<count;i++){
     id check=[contents objectAtIndex:i];
     
-    if([check isKindOfClass:[NSXMLElement class]])
+    if([check isKindOfClass:[NSOldXMLElement class]])
      result=[self propertyListFromElement:check];
    }
    
    return result;
 }
 
-+(NSObject *)propertyListFromDocument:(NSXMLDocument *)document {
-   NSXMLElement *root=[document rootElement];
++(NSObject *)propertyListFromDocument:(NSOldXMLDocument *)document {
+   NSOldXMLElement *root=[document rootElement];
    
    return [self propertyListFromContentsOfElement:root];
 }
@@ -177,7 +177,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    id result=nil;
    
    NS_DURING
-    NSXMLDocument *document=[NSXMLReader documentWithData:data];
+    NSOldXMLDocument *document=[NSOldXMLReader documentWithData:data];
    
     if(document!=nil){
      result=[self propertyListFromDocument:document];

@@ -7,9 +7,24 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
 #import <Foundation/NSObject.h>
+#import <Foundation/NSGeometry.h>
 
-@interface NSShadow : NSObject {
+@class NSColor;
 
+@interface NSShadow : NSObject <NSCoding,NSCopying> {
+   NSSize   _offset;
+   NSColor *_color;
+   float    _blurRadius;
 }
+
+-(NSSize)shadowOffset;
+-(NSColor *)shadowColor;
+-(float)shadowBlurRadius;
+
+-(void)setShadowOffset:(NSSize)offset;
+-(void)setShadowColor:(NSColor *)color;
+-(void)setShadowBlurRadius:(float)radius;
+
+-(void)set;
 
 @end

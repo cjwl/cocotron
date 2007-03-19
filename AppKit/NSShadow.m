@@ -7,7 +7,74 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
 #import <AppKit/NSShadow.h>
+#import <AppKit/NSColor.h>
+#import <AppKit/NSGraphicsContext.h>
+#import <AppKit/CGContext.h>
+#import <Foundation/NSRaise.h>
 
 @implementation NSShadow
+
+-init {
+   _offset=NSMakeSize(0,0); // what is the default?
+   _color=[[NSColor colorWithCalibratedWhite:0 alpha:1.0/3.0] retain];
+   _blurRadius=0;
+   return self;
+}
+
+-(void)dealloc {
+   [_color release];
+   [super dealloc];
+}
+
+-initWithCoder:(NSCoder *)coder {
+   NSUnimplementedMethod();
+   return self;
+}
+
+-(void)encodeWithCoder:(NSCoder *)coder {
+   NSUnimplementedMethod();
+}
+
+-copyWithZone:(NSZone *)zone {
+   NSShadow *copy=NSCopyObject(self,0,zone);
+   
+   copy->_color=[_color copy];
+   
+   return copy;
+}
+
+-(NSSize)shadowOffset {
+   return _offset;
+}
+
+-(NSColor *)shadowColor {
+   return _color;
+}
+
+-(float)shadowBlurRadius {
+   return _blurRadius;
+}
+
+-(void)setShadowOffset:(NSSize)offset {
+   _offset=offset;
+}
+
+-(void)setShadowColor:(NSColor *)color {
+   color=[color copy];
+   [_color release];
+   _color=color;
+}
+
+-(void)setShadowBlurRadius:(float)radius {
+   _blurRadius=radius;
+}
+
+-(void)set {
+   CGContextRef context=[[NSGraphicsContext currentContext] graphicsPort];
+
+// need  NSColor->CGColor
+//   CGContextSetShadowWithColor(context,_offset,_blurRadius,[color _cgColor]);
+   NSUnimplementedMethod();
+}
 
 @end

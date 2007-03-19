@@ -8,8 +8,19 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/NSObject.h>
 
-@interface NSNib : NSObject {
+@class NSURL,NSBundle,NSDictionary,NSArray,NSData;
 
+FOUNDATION_EXPORT NSString *NSNibOwner;
+FOUNDATION_EXPORT NSString *NSNibTopLevelObjects;
+
+@interface NSNib : NSObject {
+   NSData *_data;
 }
+
+-initWithContentsofURL:(NSURL *)url;
+-initWithNibNamed:(NSString *)name bundle:(NSBundle *)bundle;
+
+-(BOOL)instantiateNibWithExternalNameTable:(NSDictionary *)nameTable;
+-(BOOL)instantiateNibWithOwner:owner topLevelObjects:(NSArray **)objects;
 
 @end

@@ -8,8 +8,26 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <AppKit/NSView.h>
 
+@class NSOpenGLPixelFormat,NSOpenGLContext;
+
 @interface NSOpenGLView : NSView {
 
 }
+
++(NSOpenGLPixelFormat *)defaultPixelFormat;
+
+-initWithFrame:(NSRect)frame pixelFormat:(NSOpenGLPixelFormat *)pixelFormat;
+
+-(NSOpenGLPixelFormat *)pixelFormat;
+-(NSOpenGLContext *)openGLContext;
+
+-(void)setPixelFormat:(NSOpenGLPixelFormat *)pixelFormat;
+-(void)setOpenGLContext:(NSOpenGLContext *)context;
+
+-(void)update;
+-(void)reshape;
+
+-(void)prepareOpenGL;
+-(void)clearGLContext;
 
 @end

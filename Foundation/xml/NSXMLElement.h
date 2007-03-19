@@ -1,4 +1,4 @@
-/* Copyright (c) 2006-2007 Christopher J. W. Lloyd
+/* Copyright (c) 2007 Christopher J. W. Lloyd
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
@@ -7,39 +7,49 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
 #import <Foundation/NSObject.h>
-#import <Foundation/NSGeometry.h>
 
-@class NSXMLAttribute, NSMutableArray, NSArray;
+@class NSXMLNode,NSArray,NSError,NSDictionary,NSMutableDictionary,NSMutableArray;
 
-@interface NSXMLElement : NSObject {
-   NSString       *_name;
-   NSMutableArray *_attributes;
-   NSMutableArray *_contents;
+@interface NSXMLElement : NSObject <NSCopying> {
+   NSMutableDictionary *_attributes;
+   NSMutableDictionary *_namespaces;
+   NSMutableArray      *_children;
 }
 
-+(NSXMLElement *)elementWithName:(NSString *)name;
-
 -initWithName:(NSString *)name;
+-initWithName:(NSString *)name stringValue:(NSString *)string;
+-initWithName:(NSString *)name URI:(NSString *)uri;
+-initWithXMLString:(NSString *)xml error:(NSError **)error;
 
--(NSString *)name;
 -(NSArray *)attributes;
--(NSArray *)contents;
+-(NSXMLNode *)attributeForLocalName:(NSString *)name URI:(NSString *)uri;
+-(NSXMLNode *)attributeForName:(NSString *)name;
+-(NSArray *)elementsForLocalName:(NSString *)localName URI:(NSString *)uri;
+-(NSArray *)elementsForName:(NSString *)name;
+-(NSArray *)namespaces;
+-(NSXMLNode *)namespaceForPrefix:(NSString *)prefix;
 
--(NSString *)xid;
+-(void)setAttributes:(NSArray *)attributes;
+-(void)setAttributesAsDictionary:(NSDictionary *)attributes;
+-(void)setChildren:(NSArray *)children;
+-(void)setNamespaces:(NSArray *)namespaces;
 
--(NSXMLAttribute *)attributeWithName:(NSString *)name;
+-(void)addChild:(NSXMLNode *)child;
+-(void)insertChild:(NSXMLNode *)child atIndex:(unsigned)index;
+-(void)insertChildren:(NSArray *)children atIndex:(unsigned)index;
+-(void)removeChildAtIndex:(unsigned)index;
+-(void)replaceChildAtIndex:(unsigned)index withNode:(NSXMLNode *)node;
 
--(void)addAttribute:(NSXMLAttribute *)attribute;
+-(void)addAttribute:(NSXMLNode *)attribute;
+-(void)removeAttributeForName:(NSString *)name;
 
--(void)addContent:(id)content;
+-(void)addNamespace:(NSXMLNode *)namespace;
+-(void)removeNamespaceForPrefix:(NSString *)prefix;
 
--(NSString *)stringValue;
--(int)intValue;
--(unsigned)unsignedIntValue;
--(float)floatValue;
--(NSRect)rectValue;
--(NSSize)sizeValue;
+-(void)resolveNamespaceForName:(NSString *)name;
+-(void)resolvePrefixForNamespaceURI:(NSString *)uri;
 
--(NSXMLElement *)nextElement;
+-(void)normalizeAdjacentTextNodesPreservingCDATA:(BOOL)preserve;
 
 @end
+

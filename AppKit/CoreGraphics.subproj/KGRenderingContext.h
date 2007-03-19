@@ -10,7 +10,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/CGAffineTransform.h>
 #import <AppKit/CGFont.h>
 
-@class KGContext,KGColor,KGPath,KGImage;
+@class KGContext,KGColor,KGPath,KGImage,KGLayer;
 
 @interface KGRenderingContext : NSObject
 
@@ -44,5 +44,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)drawPathInDeviceSpace:(KGPath *)path drawingMode:(int)mode ctm:(CGAffineTransform)ctm lineWidth:(float)lineWidth fillColor:(KGColor *)fillColor strokeColor:(KGColor *)strokeColor;
 
 -(void)drawImage:(KGImage *)image inRect:(NSRect)rect ctm:(CGAffineTransform)ctm fraction:(float)fraction;
+
+-(void)drawLayer:(KGLayer *)layer inRect:(NSRect)rect ctm:(CGAffineTransform)ctm;
 
 @end

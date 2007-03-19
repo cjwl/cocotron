@@ -7,10 +7,10 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
 // Original - Christopher Lloyd <cjwl@objc.net>
-#import <Foundation/NSXMLReader.h>
-#import <Foundation/NSXMLElement.h>
-#import <Foundation/NSXMLAttribute.h>
-#import <Foundation/NSXMLDocument.h>
+#import "NSOldXMLReader.h"
+#import "NSOldXMLElement.h"
+#import "NSOldXMLAttribute.h"
+#import "NSOldXMLDocument.h"
 #import <Foundation/NSData.h>
 #import <Foundation/NSArray.h>
 #import <Foundation/NSDictionary.h>
@@ -39,7 +39,7 @@ enum {
    STATE_Attribute_Value_SingleQuote,
 };
 
-@implementation NSXMLReader
+@implementation NSOldXMLReader
 
 -initWithData:(NSData *)data {
    _data=[data copy];
@@ -81,7 +81,7 @@ enum {
    [super dealloc];
 }
 
--(NSXMLElement *)rootElement {
+-(NSOldXMLElement *)rootElement {
    return _rootElement;
 }
 
@@ -117,7 +117,7 @@ enum {
 }
 
 -(void)entityRef:(NSString *)entityRef {
-   NSXMLElement *element=[_stack lastObject];
+   NSOldXMLElement *element=[_stack lastObject];
    NSString   *contents=[_entityRefContents objectForKey:self];
 
    if(contents!=nil)
@@ -125,7 +125,7 @@ enum {
 }
 
 -(void)sTag:(NSString *)sTag {
-   [_stack addObject:[NSXMLElement elementWithName:sTag]];
+   [_stack addObject:[NSOldXMLElement elementWithName:sTag]];
    if([_stack count]==1){
     [_rootElement release];
     _rootElement=[[_stack lastObject] retain];
@@ -133,7 +133,7 @@ enum {
 }
 
 -(void)popElement {
-   NSXMLElement *last=[[_stack lastObject] retain];
+   NSOldXMLElement *last=[[_stack lastObject] retain];
 
    [_stack removeLastObject];
    [[_stack lastObject] addContent:last];
@@ -155,7 +155,7 @@ enum {
 
 -(void)attributeValue:(NSString *)value {
    NSString     *name=[_stack lastObject];
-   NSXMLAttribute *attribute=[NSXMLAttribute attributeWithName:name value:value];
+   NSOldXMLAttribute *attribute=[NSOldXMLAttribute attributeWithName:name value:value];
 
    [_stack removeLastObject];
    [[_stack lastObject] addAttribute:attribute];
@@ -489,13 +489,13 @@ static inline BOOL codeIsNameContinue(unsigned char code){
    }
 }
 
-+(NSXMLDocument *)documentWithContentsOfFile:(NSString *)path {
-   NSXMLReader   *reader=[[self alloc] initWithContentsOfFile:path];
-   NSXMLDocument *document;
++(NSOldXMLDocument *)documentWithContentsOfFile:(NSString *)path {
+   NSOldXMLReader   *reader=[[self alloc] initWithContentsOfFile:path];
+   NSOldXMLDocument *document;
 
    [reader tokenize];
 
-   document=[[[NSXMLDocument alloc] init] autorelease];
+   document=[[[NSOldXMLDocument alloc] init] autorelease];
    [document setRootElement:[reader rootElement]];
 
    [reader release];
@@ -503,13 +503,13 @@ static inline BOOL codeIsNameContinue(unsigned char code){
    return document;
 }
 
-+(NSXMLDocument *)documentWithData:(NSData *)data {
-   NSXMLReader   *reader=[[self alloc] initWithData:data];
-   NSXMLDocument *document;
++(NSOldXMLDocument *)documentWithData:(NSData *)data {
+   NSOldXMLReader   *reader=[[self alloc] initWithData:data];
+   NSOldXMLDocument *document;
 
    [reader tokenize];
 
-   document=[[[NSXMLDocument alloc] init] autorelease];
+   document=[[[NSOldXMLDocument alloc] init] autorelease];
    [document setRootElement:[reader rootElement]];
 
    [reader release];

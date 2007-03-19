@@ -18,6 +18,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <stdio.h>
 #import <string.h>
 
+#import <Foundation/NSAffineTransform.h>
 #import <Foundation/NSArchiver.h>
 #import <Foundation/NSArray.h>
 #import <Foundation/NSAssertionHandler.h>
@@ -27,6 +28,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSByteOrder.h>
 #import <Foundation/NSCalendarDate.h>
 #import <Foundation/NSCharacterSet.h>
+#import <Foundation/NSClassDescription.h>
 #import <Foundation/NSCoder.h>
 #import <Foundation/NSCountedSet.h>
 #import <Foundation/NSData.h>
@@ -48,6 +50,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSKeyValueCoding.h>
 #import <Foundation/NSLock.h>
 #import <Foundation/NSMapTable.h>
+#import <Foundation/NSMetadataItem.h>
+#import <Foundation/NSMetadataQuery.h>
+#import <Foundation/NSMetadataQueryAttributeValueTuple.h>
+#import <Foundation/NSMetadataQueryResultGroup.h>
 #import <Foundation/NSMethodSignature.h>
 #import <Foundation/NSMutableArray.h>
 #import <Foundation/NSMutableAttributedString.h>
@@ -56,6 +62,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSMutableDictionary.h>
 #import <Foundation/NSMutableSet.h>
 #import <Foundation/NSMutableString.h>
+#import <Foundation/NSNetService.h>
+#import <Foundation/NSNetServiceBrowser.h>
 #import <Foundation/NSNotification.h>
 #import <Foundation/NSNotificationCenter.h>
 #import <Foundation/NSNotificationQueue.h>
@@ -74,6 +82,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSRunLoop.h>
 #import <Foundation/NSScanner.h>
 #import <Foundation/NSSet.h>
+#import <Foundation/NSSortDescriptor.h>
 #import <Foundation/NSStream.h>
 #import <Foundation/NSString.h>
 #import <Foundation/NSTask.h>
@@ -84,5 +93,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSUndoManager.h>
 #import <Foundation/NSUserDefaults.h>
 #import <Foundation/NSValue.h>
+#import <Foundation/NSXMLDocument.h>
+#import <Foundation/NSXMLDTD.h>
+#import <Foundation/NSXMLDTDNode.h>
+#import <Foundation/NSXMLElement.h>
+#import <Foundation/NSXMLNode.h>
+#import <Foundation/NSXMLParser.h>
 #import <Foundation/NSZone.h>
 

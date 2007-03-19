@@ -12,14 +12,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSApplication.h>
 #import <AppKit/KGPath.h>
 #import <AppKit/KGColor.h>
-#import <AppKit/NSAffineTransform.h>
 #import <AppKit/Win32Font.h>
 #import <AppKit/Win32Application.h>
 #import <AppKit/Win32Region.h>
 #import <AppKit/KGImage.h>
 #import <AppKit/KGGraphicsState.h>
+#import <AppKit/KGLayer.h>
 #import <AppKit/KGContext.h>
-#import <AppKit/KGImage_context.h>
 
 static COLORREF RGBFromColor(KGColor *color){
    int    count=[color numberOfComponents];
@@ -515,36 +514,34 @@ static void zeroBytes(void *bytes,int size){
     }
    }
 
-   DeleteObject(bitmap);
+   DeleteObject(bitmap);s
    SelectObject(sourceDC,oldBitmap);
    DeleteDC(sourceDC);
 }
 #endif
 
 -(void)drawImage:(KGImage *)image inRect:(CGRect)rect ctm:(CGAffineTransform)ctm fraction:(float)fraction {
-   if([image isKindOfClass:[KGImage_context class]]){
-    Win32DeviceContext *other=[(KGImage_context *)image renderingContext];
-   
-    rect.origin=CGPointApplyAffineTransform(rect.origin,ctm);
-
-    if(transformIsFlipped(ctm))
-     rect.origin.y-=rect.size.height;
-
-    [other copyColorsToContext:self size:rect.size toPoint:rect.origin];
+   if([image bitsPerComponent]!=8){
+    NSLog(@"Does not support bitsPerComponent=%d",[image bitsPerComponent]);
+    return;
    }
-   else {
-    if([image bitsPerComponent]!=8){
-     NSLog(@"Does not support bitsPerComponent=%d",[image bitsPerComponent]);
-     return;
-    }
-    if([image bitsPerPixel]!=32){
-     NSLog(@"Does not support bitsPerPixel=%d",[image bitsPerPixel]);
-     return;
-    }
-   
-    [self drawBitmapImage:image inRect:rect ctm:ctm fraction:fraction ];
+   if([image bitsPerPixel]!=32){
+    NSLog(@"Does not support bitsPerPixel=%d",[image bitsPerPixel]);
+    return;
    }
+   
+   [self drawBitmapImage:image inRect:rect ctm:ctm fraction:fraction ];
 }
 
+-(void)drawLayer:(KGLayer *)layer inRect:(NSRect)rect ctm:(CGAffineTransform)ctm {
+   Win32DeviceContext *other=[layer renderingContext];
+   
+   rect.origin=CGPointApplyAffineTransform(rect.origin,ctm);
+
+   if(transformIsFlipped(ctm))
+    rect.origin.y-=rect.size.height;
+
+   [other copyColorsToContext:self size:rect.size toPoint:rect.origin];
+}
 
 @end

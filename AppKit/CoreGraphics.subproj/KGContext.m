@@ -37,6 +37,11 @@ static inline KGGraphicsState *currentState(KGContext *self){
    return [self->_stateStack lastObject];
 }
 
+-(KGRenderingContext *)renderingContext {
+   return [currentState(self) renderingContext];
+}
+
+
 -(void)setAllowsAntialiasing:(BOOL)yesOrNo {
    _allowsAntialiasing=yesOrNo;
 }
@@ -513,7 +518,7 @@ static inline KGGraphicsState *currentState(KGContext *self){
 }
 
 -(void)drawLayer:(KGLayer *)layer inRect:(NSRect)rect {
-   NSUnimplementedMethod();
+   [[self renderingContext] drawLayer:layer inRect:rect ctm:[currentState(self) ctm]];
 }
 
 -(void)drawPDFPage:(KGPDFPage *)page {
@@ -530,11 +535,11 @@ static inline KGGraphicsState *currentState(KGContext *self){
 }
 
 -(void)beginPage:(const NSRect *)mediaBox {
-   [[[_stateStack lastObject] renderingContext] beginPage];
+   [[self renderingContext] beginPage];
 }
 
 -(void)endPage {
-   [[[_stateStack lastObject] renderingContext] endPage];
+   [[self renderingContext] endPage];
 }
 
 // temporary
@@ -581,15 +586,15 @@ static inline KGGraphicsState *currentState(KGContext *self){
 }
 
 -(void)beginDocument {
-   [[[_stateStack lastObject] renderingContext] beginDocument];
+   [[self renderingContext] beginDocument];
 }
 
 -(void)scalePage:(float)scalex:(float)scaley {
-   [[[_stateStack lastObject] renderingContext] scalePage:scalex:scaley];
+   [[self renderingContext] scalePage:scalex:scaley];
 }
 
 -(void)endDocument {
-   [[[_stateStack lastObject] renderingContext] endDocument];
+   [[self renderingContext] endDocument];
 }
 
 @end

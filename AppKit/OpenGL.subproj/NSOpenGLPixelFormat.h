@@ -8,8 +8,17 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/NSObject.h>
 
+typedef int NSOpenGLPixelFormatAttribute;
+
 @interface NSOpenGLPixelFormat : NSObject {
 
 }
+
+-initWithAttributes:(NSOpenGLPixelFormatAttribute *)attributes;
+
+-(void *)CGLPixelFormatObj;
+-(int)numberOfVirtualScreens;
+
+-(void)getValues:(long *)values forAttribute:(NSOpenGLPixelFormatAttribute)attribute forVirtualScreen:(int)screen;
 
 @end

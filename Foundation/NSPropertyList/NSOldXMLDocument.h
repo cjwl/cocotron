@@ -8,19 +8,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/NSObject.h>
 
-@interface NSXMLAttribute : NSObject {
-   NSString *_name;
-   NSString *_value;
+@class NSOldXMLElement;
+
+@interface NSOldXMLDocument : NSObject {
+   NSOldXMLElement *_rootElement;
 }
 
-+(NSXMLAttribute *)attributeWithName:(NSString *)name value:(NSString *)value;
+-(void)setRootElement:(NSOldXMLElement *)element;
 
--initWithName:(NSString *)name value:(NSString *)value;
-
--(NSString *)name;
--(NSString *)value;
-
--(NSString *)stringValue;
--(float)floatValue;
+-(NSOldXMLElement *)rootElement;
 
 @end

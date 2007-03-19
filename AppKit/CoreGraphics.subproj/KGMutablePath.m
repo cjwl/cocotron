@@ -135,6 +135,37 @@ static void expandPointCapacity(KGMutablePath *self,unsigned delta){
    _operators[_numberOfOperators++]=KGPathOperatorCloseSubpath;   
 }
 
+-(void)relativeMoveToPoint:(NSPoint)point withTransform:(CGAffineTransform *)matrix {
+   NSPoint current=[self currentPoint];
+   
+   point.x+=current.x;
+   point.y+=current.y;
+   
+   [self moveToPoint:point withTransform:matrix];
+}
+
+-(void)addRelativeLineToPoint:(NSPoint)point withTransform:(CGAffineTransform *)matrix {
+   NSPoint current=[self currentPoint];
+
+   point.x+=current.x;
+   point.y+=current.y;
+   
+   [self addLineToPoint:point withTransform:matrix];
+}
+
+-(void)addRelativeCurveToControlPoint:(NSPoint)cp1 controlPoint:(NSPoint)cp2 endPoint:(NSPoint)endPoint withTransform:(CGAffineTransform *)matrix {
+   NSPoint current=[self currentPoint];
+
+   cp1.x+=current.x;
+   cp1.y+=current.y;
+   cp2.x+=current.x;
+   cp2.y+=current.y;
+   endPoint.x+=current.x;
+   endPoint.y+=current.y;
+   
+   [self addCurveToControlPoint:cp1 controlPoint:cp2 endPoint:endPoint withTransform:matrix];
+}
+
 -(void)addLinesWithPoints:(NSPoint *)points count:(unsigned)count withTransform:(CGAffineTransform *)matrix {
    int i;
    
@@ -227,6 +258,13 @@ static void expandPointCapacity(KGMutablePath *self,unsigned delta){
     for(i=0;i<pointCount;i++)
      _points[_numberOfPoints++]=CGPointApplyAffineTransform(points[i],*matrix);
    }
+}
+
+-(void)applyTransform:(CGAffineTransform)matrix {
+   int i;
+   
+   for(i=0;i<_numberOfPoints;i++)
+    _points[i]=CGPointApplyAffineTransform(_points[i],matrix);
 }
 
 @end

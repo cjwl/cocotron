@@ -8,7 +8,52 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 // Original - Christopher Lloyd <cjwl@objc.net>
 #import <AppKit/NSOpenGLView.h>
+#import <Foundation/NSRaise.h>
 
 @implementation NSOpenGLView
+
++(NSOpenGLPixelFormat *)defaultPixelFormat {
+   NSUnimplementedMethod();
+   return nil;
+}
+
+-initWithFrame:(NSRect)frame pixelFormat:(NSOpenGLPixelFormat *)pixelFormat {
+   NSUnimplementedMethod();
+   return self;
+}
+
+-(NSOpenGLPixelFormat *)pixelFormat {
+   NSUnimplementedMethod();
+   return nil;
+}
+
+-(NSOpenGLContext *)openGLContext {
+   NSUnimplementedMethod();
+   return nil;
+}
+
+-(void)setPixelFormat:(NSOpenGLPixelFormat *)pixelFormat {
+   NSUnimplementedMethod();
+}
+
+-(void)setOpenGLContext:(NSOpenGLContext *)context {
+   NSUnimplementedMethod();
+}
+
+-(void)update {
+   NSUnimplementedMethod();
+}
+
+-(void)reshape {
+   NSUnimplementedMethod();
+}
+
+-(void)prepareOpenGL {
+   NSUnimplementedMethod();
+}
+
+-(void)clearGLContext {
+   NSUnimplementedMethod();
+}
 
 @end

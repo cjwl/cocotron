@@ -8,8 +8,47 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <AppKit/NSActionCell.h>
 
-@interface NSSegmentedCell : NSActionCell {
+typedef enum {
+   NSSegmentSwitchTrackingSelectOne,
+   NSSegmentSwitchTrackingSelectAny,
+   NSSegmentSwitchTrackingMomentary
+} NSSegmentSwitchTracking;
 
+@interface NSSegmentedCell : NSActionCell {
 }
+
+-(int)segmentCount;
+-(NSSegmentSwitchTracking)trackingMode;
+
+-(int)tagForSegment:(int)segment;
+-(NSImage *)imageForSegment:(int)segment;
+-(BOOL)isEnabledForSegment:(int)segment;
+-(NSString *)labelForSegment:(int)segment;
+-(NSMenu *)menuForSegment:(int)segment;
+-(NSString *)toolTipForSegment:(int)segment;
+-(float)widthForSegment:(int)segment;
+
+-(int)selectedSegment;
+-(BOOL)isSelectedForSegment:(int)segment;
+
+-(void)setSegmentCount:(int)count;
+-(void)setTrackingMode:(NSSegmentSwitchTracking)trackingMode;
+
+-(void)setTag:(int)tag forSegment:(int)segment;
+-(void)setImage:(NSImage *)image forSegment:(int)segment;
+-(void)setEnabled:(BOOL)enabled forSegment:(int)segment;
+-(void)setLabel:(NSString *)label forSegment:(int)segment;
+-(void)setMenu:(NSMenu *)menu forSegment:(int)segment;
+-(void)setToolTip:(NSString *)string forSegment:(int)segment;
+-(void)setWidth:(float)width forSegment:(int)segment;
+
+-(BOOL)selectSegmentWithTag:(int)tag;
+-(void)setSelected:(BOOL)flag forSegment:(int)segment;
+-(void)setSelectedSegment:(int)segment;
+
+-(void)makeNextSegmentKey;
+-(void)makePreviousSegmentKey;
+
+-(void)drawSegment:(int)segment inFrame:(NSRect)frame withView:(NSView *)view;
 
 @end

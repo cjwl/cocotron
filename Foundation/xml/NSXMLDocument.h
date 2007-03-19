@@ -1,4 +1,4 @@
-/* Copyright (c) 2006-2007 Christopher J. W. Lloyd
+/* Copyright (c) 2007 Christopher J. W. Lloyd
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
@@ -6,16 +6,64 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
-#import <Foundation/NSObject.h>
+#import <Foundation/NSXMLNode.h>
 
-@class NSXMLElement;
+@class NSXMLDTD,NSURL,NSData,NSMutableArray;
 
-@interface NSXMLDocument : NSObject {
+typedef int NSXMLDocumentContentKind;
+
+@interface NSXMLDocument : NSXMLNode {
+   NSMutableArray *_children;
+   NSXMLDocumentContentKind _contentKind;
+   NSString     *_version;
+   NSString     *_characterEncoding;
+   NSString     *_mimeType;
+   BOOL          _isStandalone;
+
    NSXMLElement *_rootElement;
+   NSXMLDTD     *_dtd;
+   NSString     *_uri;
 }
 
--(void)setRootElement:(NSXMLElement *)element;
++(Class)replacementClassForClass:(Class)class;
 
+-initWithRootElement:(NSXMLElement *)element;
+-initWithXMLString:(NSString *)string options:(unsigned)options error:(NSError **)error;
+-initWithData:(NSData *)data options:(unsigned)options error:(NSError **)error;
+-initWithContentsOfURL:(NSURL *)url options:(unsigned)options error:(NSError **)error;
+
+-(NSXMLDocumentContentKind)documentContentKind;
+-(NSString *)version;
+-(NSString *)characterEncoding;
+-(NSString *)MIMEType;
+-(BOOL)isStandalone;
 -(NSXMLElement *)rootElement;
+-(NSXMLDTD *)DTD;
+-(NSString *)URI;
+
+-(void)setDocumentContentKind:(NSXMLDocumentContentKind)kind;
+-(void)setCharacterEncoding:(NSString *)encoding;
+-(void)setVersion:(NSString *)version;
+-(void)setMIMEType:(NSString *)mimeType;
+-(void)setStandalone:(BOOL)flag;
+-(void)setRootElement:(NSXMLNode *)element;
+-(void)setDTD:(NSXMLDTD *)dtd;
+-(void)setURI:(NSString *)uri;
+
+-(void)setChildren:(NSArray *)children;
+-(void)addChild:(NSXMLNode *)child;
+-(void)insertChild:(NSXMLNode *)child atIndex:(unsigned)index;
+-(void)insertChildren:(NSArray *)children atIndex:(unsigned)index;
+-(void)removeChildAtIndex:(unsigned)index;
+-(void)replaceChildAtIndex:(unsigned)index withNode:(NSXMLNode *)node;
+
+-(BOOL)validateAndReturnError:(NSError **)error;
+
+-(NSData *)XMLData;
+-(NSData *)XMLDataWithOptions:(unsigned)options;
+
+-objectByApplyingXSLT:(NSData *)xslt arguments:(NSDictionary *)arguments error:(NSError *)error;
+-objectByApplyingXSLTAtURL:(NSURL *)url arguments:(NSDictionary *)arguments error:(NSError *)error;
+-objectByApplyingXSLTString:(NSString *)string arguments:(NSDictionary *)arguments error:(NSError *)error;
 
 @end

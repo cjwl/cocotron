@@ -233,7 +233,7 @@ static NSMutableDictionary *cellClassDictionary = nil;
 // FIX protocol does not implement isEqual
    if(![(id)object isEqual:[[self selectedCell] objectValue]]){
     [self abortEditing];
-    [[self selectedCell] setObjectValue:object];
+    [(NSCell *)[self selectedCell] setObjectValue:object];
     [self setNeedsDisplay:YES];
    }
 }

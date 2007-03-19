@@ -12,7 +12,6 @@
 		6E14EC6B09A3C40F009C8693 /* NSTIFFReader.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E14EC6709A3C40F009C8693 /* NSTIFFReader.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		6E14EC6C09A3C40F009C8693 /* NSTIFFReader.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E14EC6809A3C40F009C8693 /* NSTIFFReader.m */; };
 		6E2B53260976075200DA0954 /* NSActionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B53250976075200DA0954 /* NSActionCell.m */; settings = {ATTRIBUTES = (); }; };
-		6E2B53280976075200DA0954 /* NSAffineTransform.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B53270976075200DA0954 /* NSAffineTransform.m */; settings = {ATTRIBUTES = (); }; };
 		6E2B532A0976075200DA0954 /* NSAlertPanel.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B53290976075200DA0954 /* NSAlertPanel.m */; settings = {ATTRIBUTES = (); }; };
 		6E2B532C0976075200DA0954 /* NSApplication.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B532B0976075200DA0954 /* NSApplication.m */; settings = {ATTRIBUTES = (); }; };
 		6E2B532E0976075200DA0954 /* NSAttributedString.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B532D0976075200DA0954 /* NSAttributedString.m */; settings = {ATTRIBUTES = (); }; };
@@ -119,7 +118,6 @@
 		6E2B53FB0976075200DA0954 /* AppKitExport.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B53FA0976075200DA0954 /* AppKitExport.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
 		6E2B53FD0976075200DA0954 /* AppKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B53FC0976075200DA0954 /* AppKit.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
 		6E2B53FF0976075200DA0954 /* NSActionCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B53FE0976075200DA0954 /* NSActionCell.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
-		6E2B54010976075200DA0954 /* NSAffineTransform.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54000976075200DA0954 /* NSAffineTransform.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
 		6E2B54030976075200DA0954 /* NSAlertPanel.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54020976075200DA0954 /* NSAlertPanel.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		6E2B54050976075200DA0954 /* NSApplication.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54040976075200DA0954 /* NSApplication.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
 		6E2B54070976075200DA0954 /* NSAttributedString.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54060976075200DA0954 /* NSAttributedString.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
@@ -499,9 +497,7 @@
 		FE064AD80B8B805000853FBB /* CGShading.m in Sources */ = {isa = PBXBuildFile; fileRef = FE064ABA0B8B805000853FBB /* CGShading.m */; };
 		FE064AD90B8B805000853FBB /* KGColor.h in Headers */ = {isa = PBXBuildFile; fileRef = FE064ABB0B8B805000853FBB /* KGColor.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE064ADA0B8B805000853FBB /* KGColor.m in Sources */ = {isa = PBXBuildFile; fileRef = FE064ABC0B8B805000853FBB /* KGColor.m */; };
-		FE064ADD0B8B805000853FBB /* KGImage_context.h in Headers */ = {isa = PBXBuildFile; fileRef = FE064ABF0B8B805000853FBB /* KGImage_context.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		FE064ADE0B8B805000853FBB /* KGImage_context.m in Sources */ = {isa = PBXBuildFile; fileRef = FE064AC00B8B805000853FBB /* KGImage_context.m */; };
-		FE064ADF0B8B805000853FBB /* KGLayer.h in Headers */ = {isa = PBXBuildFile; fileRef = FE064AC10B8B805000853FBB /* KGLayer.h */; };
+		FE064ADF0B8B805000853FBB /* KGLayer.h in Headers */ = {isa = PBXBuildFile; fileRef = FE064AC10B8B805000853FBB /* KGLayer.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE064AE00B8B805000853FBB /* KGLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = FE064AC20B8B805000853FBB /* KGLayer.m */; };
 		FE064AE10B8B805000853FBB /* KGPath.h in Headers */ = {isa = PBXBuildFile; fileRef = FE064AC30B8B805000853FBB /* KGPath.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE064AE20B8B805000853FBB /* KGPath.m in Sources */ = {isa = PBXBuildFile; fileRef = FE064AC40B8B805000853FBB /* KGPath.m */; };
@@ -637,9 +633,15 @@
 		FE64B91A0B81239D007EE513 /* KGShading.m in Sources */ = {isa = PBXBuildFile; fileRef = FE64B8E00B81239D007EE513 /* KGShading.m */; };
 		FE64B9220B8123F1007EE513 /* CGImage.h in Headers */ = {isa = PBXBuildFile; fileRef = FE64B9200B8123F1007EE513 /* CGImage.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE64B9230B8123F1007EE513 /* CGImage.m in Sources */ = {isa = PBXBuildFile; fileRef = FE64B9210B8123F1007EE513 /* CGImage.m */; };
+		FE6DC16C0BA85BEC0082AC66 /* NSOpenGLPixelBuffer.h in Headers */ = {isa = PBXBuildFile; fileRef = FE6DC16A0BA85BEC0082AC66 /* NSOpenGLPixelBuffer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE6DC16D0BA85BEC0082AC66 /* NSOpenGLPixelBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = FE6DC16B0BA85BEC0082AC66 /* NSOpenGLPixelBuffer.m */; };
+		FE6DC3DE0BA9A6EB0082AC66 /* NSDatePicker.h in Headers */ = {isa = PBXBuildFile; fileRef = FE6DC3DC0BA9A6EB0082AC66 /* NSDatePicker.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE6DC3DF0BA9A6EB0082AC66 /* NSDatePicker.m in Sources */ = {isa = PBXBuildFile; fileRef = FE6DC3DD0BA9A6EB0082AC66 /* NSDatePicker.m */; };
+		FE6DC3F00BA9A7100082AC66 /* NSDatePickerCell.h in Headers */ = {isa = PBXBuildFile; fileRef = FE6DC3EE0BA9A7100082AC66 /* NSDatePickerCell.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE6DC3F10BA9A7100082AC66 /* NSDatePickerCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FE6DC3EF0BA9A7100082AC66 /* NSDatePickerCell.m */; };
 		FEEF00590B96441800069FD1 /* CGPDFPage.h in Headers */ = {isa = PBXBuildFile; fileRef = FEEF00570B96441800069FD1 /* CGPDFPage.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FEEF005A0B96441800069FD1 /* CGPDFPage.m in Sources */ = {isa = PBXBuildFile; fileRef = FEEF00580B96441800069FD1 /* CGPDFPage.m */; };
-		FEF33C010B93543C00DC0B6F /* KGMutablePath.h in Headers */ = {isa = PBXBuildFile; fileRef = FEF33BFF0B93543C00DC0B6F /* KGMutablePath.h */; };
+		FEF33C010B93543C00DC0B6F /* KGMutablePath.h in Headers */ = {isa = PBXBuildFile; fileRef = FEF33BFF0B93543C00DC0B6F /* KGMutablePath.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FEF33C020B93543C00DC0B6F /* KGMutablePath.m in Sources */ = {isa = PBXBuildFile; fileRef = FEF33C000B93543C00DC0B6F /* KGMutablePath.m */; };
 /* End PBXBuildFile section */
 
@@ -694,7 +696,6 @@
 		6E14EC6809A3C40F009C8693 /* NSTIFFReader.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSTIFFReader.m; sourceTree = "<group>"; };
 		6E2B53220976074C00DA0954 /* AppKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AppKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6E2B53250976075200DA0954 /* NSActionCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NSActionCell.m; sourceTree = "<group>"; };
-		6E2B53270976075200DA0954 /* NSAffineTransform.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NSAffineTransform.m; sourceTree = "<group>"; };
 		6E2B53290976075200DA0954 /* NSAlertPanel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NSAlertPanel.m; sourceTree = "<group>"; };
 		6E2B532B0976075200DA0954 /* NSApplication.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NSApplication.m; sourceTree = "<group>"; };
 		6E2B532D0976075200DA0954 /* NSAttributedString.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NSAttributedString.m; sourceTree = "<group>"; };
@@ -801,7 +802,6 @@
 		6E2B53FA0976075200DA0954 /* AppKitExport.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppKitExport.h; sourceTree = "<group>"; };
 		6E2B53FC0976075200DA0954 /* AppKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppKit.h; sourceTree = "<group>"; };
 		6E2B53FE0976075200DA0954 /* NSActionCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NSActionCell.h; sourceTree = "<group>"; };
-		6E2B54000976075200DA0954 /* NSAffineTransform.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NSAffineTransform.h; sourceTree = "<group>"; };
 		6E2B54020976075200DA0954 /* NSAlertPanel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NSAlertPanel.h; sourceTree = "<group>"; };
 		6E2B54040976075200DA0954 /* NSApplication.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NSApplication.h; sourceTree = "<group>"; };
 		6E2B54060976075200DA0954 /* NSAttributedString.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NSAttributedString.h; sourceTree = "<group>"; };
@@ -1182,8 +1182,6 @@
 		FE064ABA0B8B805000853FBB /* CGShading.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = CGShading.m; sourceTree = "<group>"; };
 		FE064ABB0B8B805000853FBB /* KGColor.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = KGColor.h; sourceTree = "<group>"; };
 		FE064ABC0B8B805000853FBB /* KGColor.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = KGColor.m; sourceTree = "<group>"; };
-		FE064ABF0B8B805000853FBB /* KGImage_context.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = KGImage_context.h; sourceTree = "<group>"; };
-		FE064AC00B8B805000853FBB /* KGImage_context.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = KGImage_context.m; sourceTree = "<group>"; };
 		FE064AC10B8B805000853FBB /* KGLayer.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = KGLayer.h; sourceTree = "<group>"; };
 		FE064AC20B8B805000853FBB /* KGLayer.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = KGLayer.m; sourceTree = "<group>"; };
 		FE064AC30B8B805000853FBB /* KGPath.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = KGPath.h; sourceTree = "<group>"; };
@@ -1320,6 +1318,12 @@
 		FE64B8E00B81239D007EE513 /* KGShading.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = KGShading.m; sourceTree = "<group>"; };
 		FE64B9200B8123F1007EE513 /* CGImage.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = CGImage.h; sourceTree = "<group>"; };
 		FE64B9210B8123F1007EE513 /* CGImage.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = CGImage.m; sourceTree = "<group>"; };
+		FE6DC16A0BA85BEC0082AC66 /* NSOpenGLPixelBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSOpenGLPixelBuffer.h; sourceTree = "<group>"; };
+		FE6DC16B0BA85BEC0082AC66 /* NSOpenGLPixelBuffer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSOpenGLPixelBuffer.m; sourceTree = "<group>"; };
+		FE6DC3DC0BA9A6EB0082AC66 /* NSDatePicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSDatePicker.h; sourceTree = "<group>"; };
+		FE6DC3DD0BA9A6EB0082AC66 /* NSDatePicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSDatePicker.m; sourceTree = "<group>"; };
+		FE6DC3EE0BA9A7100082AC66 /* NSDatePickerCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSDatePickerCell.h; sourceTree = "<group>"; };
+		FE6DC3EF0BA9A7100082AC66 /* NSDatePickerCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSDatePickerCell.m; sourceTree = "<group>"; };
 		FEEF00570B96441800069FD1 /* CGPDFPage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGPDFPage.h; sourceTree = "<group>"; };
 		FEEF00580B96441800069FD1 /* CGPDFPage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CGPDFPage.m; sourceTree = "<group>"; };
 		FEF33BFF0B93543C00DC0B6F /* KGMutablePath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGMutablePath.h; sourceTree = "<group>"; };
@@ -1363,15 +1367,13 @@
 		6E2B53240976075200DA0954 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				FE267E7F0B8BCB660000DDC0 /* ImageIO */,
 				6E2B53FC0976075200DA0954 /* AppKit.h */,
 				6E2B53FA0976075200DA0954 /* AppKitExport.h */,
 				6E2B55B20976075300DA0954 /* CoreGraphics */,
+				FE267E7F0B8BCB660000DDC0 /* ImageIO */,
 				6E2B55100976075300DA0954 /* nib */,
 				6E2B53FE0976075200DA0954 /* NSActionCell.h */,
 				6E2B53250976075200DA0954 /* NSActionCell.m */,
-				6E2B54000976075200DA0954 /* NSAffineTransform.h */,
-				6E2B53270976075200DA0954 /* NSAffineTransform.m */,
 				FE2A101D0B44A201006C03DE /* NSAlert.h */,
 				FE2A101E0B44A201006C03DE /* NSAlert.m */,
 				6E2B54020976075200DA0954 /* NSAlertPanel.h */,
@@ -1427,6 +1429,10 @@
 				6E2B53550976075200DA0954 /* NSCursorRect.m */,
 				6E2B54300976075200DA0954 /* NSCustomImageRep.h */,
 				6E2B53570976075200DA0954 /* NSCustomImageRep.m */,
+				FE6DC3DC0BA9A6EB0082AC66 /* NSDatePicker.h */,
+				FE6DC3DD0BA9A6EB0082AC66 /* NSDatePicker.m */,
+				FE6DC3EE0BA9A7100082AC66 /* NSDatePickerCell.h */,
+				FE6DC3EF0BA9A7100082AC66 /* NSDatePickerCell.m */,
 				6E2B54320976075200DA0954 /* NSDisplay.h */,
 				6E2B53590976075200DA0954 /* NSDisplay.m */,
 				6E2B54340976075200DA0954 /* NSDocument.h */,
@@ -1847,8 +1853,6 @@
 				6E2B55BC0976075300DA0954 /* KGGraphicsState.m */,
 				FE64B8AF0B81239D007EE513 /* KGImage.h */,
 				FE64B8B00B81239D007EE513 /* KGImage.m */,
-				FE064ABF0B8B805000853FBB /* KGImage_context.h */,
-				FE064AC00B8B805000853FBB /* KGImage_context.m */,
 				FE064AC10B8B805000853FBB /* KGLayer.h */,
 				FE064AC20B8B805000853FBB /* KGLayer.m */,
 				FEF33BFF0B93543C00DC0B6F /* KGMutablePath.h */,
@@ -2042,6 +2046,8 @@
 			children = (
 				6E2B56B90976075400DA0954 /* NSOpenGLContext.h */,
 				6E2B56B20976075400DA0954 /* NSOpenGLContext.m */,
+				FE6DC16A0BA85BEC0082AC66 /* NSOpenGLPixelBuffer.h */,
+				FE6DC16B0BA85BEC0082AC66 /* NSOpenGLPixelBuffer.m */,
 				6E2B56BB0976075400DA0954 /* NSOpenGLPixelFormat.h */,
 				6E2B56B40976075400DA0954 /* NSOpenGLPixelFormat.m */,
 				6E2B56BD0976075400DA0954 /* NSOpenGLView.h */,
@@ -2248,7 +2254,6 @@
 				6E2B53FB0976075200DA0954 /* AppKitExport.h in Headers */,
 				6E2B53FD0976075200DA0954 /* AppKit.h in Headers */,
 				6E2B53FF0976075200DA0954 /* NSActionCell.h in Headers */,
-				6E2B54010976075200DA0954 /* NSAffineTransform.h in Headers */,
 				6E2B54030976075200DA0954 /* NSAlertPanel.h in Headers */,
 				6E2B54050976075200DA0954 /* NSApplication.h in Headers */,
 				6E2B54070976075200DA0954 /* NSAttributedString.h in Headers */,
@@ -2536,7 +2541,6 @@
 				FE064AD50B8B805000853FBB /* CGPattern.h in Headers */,
 				FE064AD70B8B805000853FBB /* CGShading.h in Headers */,
 				FE064AD90B8B805000853FBB /* KGColor.h in Headers */,
-				FE064ADD0B8B805000853FBB /* KGImage_context.h in Headers */,
 				FE064ADF0B8B805000853FBB /* KGLayer.h in Headers */,
 				FE064AE10B8B805000853FBB /* KGPath.h in Headers */,
 				FE064AE30B8B805000853FBB /* KGPattern.h in Headers */,
@@ -2548,6 +2552,9 @@
 				FE267EB90B8BD2690000DDC0 /* KGBitmapContext.h in Headers */,
 				FEF33C010B93543C00DC0B6F /* KGMutablePath.h in Headers */,
 				FEEF00590B96441800069FD1 /* CGPDFPage.h in Headers */,
+				FE6DC16C0BA85BEC0082AC66 /* NSOpenGLPixelBuffer.h in Headers */,
+				FE6DC3DE0BA9A6EB0082AC66 /* NSDatePicker.h in Headers */,
+				FE6DC3F00BA9A7100082AC66 /* NSDatePickerCell.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2682,7 +2689,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				6E2B53260976075200DA0954 /* NSActionCell.m in Sources */,
-				6E2B53280976075200DA0954 /* NSAffineTransform.m in Sources */,
 				6E2B532A0976075200DA0954 /* NSAlertPanel.m in Sources */,
 				6E2B532C0976075200DA0954 /* NSApplication.m in Sources */,
 				6E2B532E0976075200DA0954 /* NSAttributedString.m in Sources */,
@@ -2965,7 +2971,6 @@
 				FE064AD60B8B805000853FBB /* CGPattern.m in Sources */,
 				FE064AD80B8B805000853FBB /* CGShading.m in Sources */,
 				FE064ADA0B8B805000853FBB /* KGColor.m in Sources */,
-				FE064ADE0B8B805000853FBB /* KGImage_context.m in Sources */,
 				FE064AE00B8B805000853FBB /* KGLayer.m in Sources */,
 				FE064AE20B8B805000853FBB /* KGPath.m in Sources */,
 				FE064AE40B8B805000853FBB /* KGPattern.m in Sources */,
@@ -2977,6 +2982,9 @@
 				FE267EBA0B8BD2690000DDC0 /* KGBitmapContext.m in Sources */,
 				FEF33C020B93543C00DC0B6F /* KGMutablePath.m in Sources */,
 				FEEF005A0B96441800069FD1 /* CGPDFPage.m in Sources */,
+				FE6DC16D0BA85BEC0082AC66 /* NSOpenGLPixelBuffer.m in Sources */,
+				FE6DC3DF0BA9A6EB0082AC66 /* NSDatePicker.m in Sources */,
+				FE6DC3F10BA9A7100082AC66 /* NSDatePickerCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

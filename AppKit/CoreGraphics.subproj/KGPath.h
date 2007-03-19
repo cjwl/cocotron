@@ -22,8 +22,8 @@ enum {
    KGPathOperatorMoveToPoint,
    KGPathOperatorLineToPoint,
    KGPathOperatorCurveToPoint,
+   KGPathOperatorCloseSubpath,
    KGPathOperatorQuadCurveToPoint,
-   KGPathOperatorCloseSubpath
 };
 
 @interface KGPath : NSObject <NSCopying,NSMutableCopying> {

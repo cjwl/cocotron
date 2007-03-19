@@ -8,15 +8,44 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 // Original - Christopher Lloyd <cjwl@objc.net>
 #import "KGLayer.h"
+#import <AppKit/KGContext.h>
+#import <AppKit/Win32DeviceContextBitmap.h>
 
 @implementation KGLayer
 
 -initRelativeToContext:(KGContext *)context size:(NSSize)size unused:(NSDictionary *)unused {
+   _size=size;
+   _unused=[unused retain];
+   _renderingContext=[[Win32DeviceContextBitmap alloc] initWithSize:size deviceContext:(Win32DeviceContext *)[context renderingContext]];
    return self;
 }
 
+-initRelativeToRenderingContext:(KGRenderingContext *)context size:(NSSize)size unused:(NSDictionary *)unused {
+   _size=size;
+   _unused=[unused retain];
+   _renderingContext=[[Win32DeviceContextBitmap alloc] initWithSize:size deviceContext:(Win32DeviceContext *)context];
+   return self;
+}
+
+-initWithSize:(NSSize)size {
+   _size=size;
+   _unused=nil;
+   _renderingContext=[[Win32DeviceContextBitmap alloc] initWithSize:size];
+   return self;
+}
+
+-(void)dealloc {
+   [_unused release];
+   [_renderingContext release];
+   [super dealloc];
+}
+
+-(KGRenderingContext *)renderingContext {
+   return _renderingContext;
+}
+
 -(KGContext *)context {
-   return nil;
+   return [_renderingContext graphicsContextWithSize:_size];
 }
 
 -(NSSize)size {

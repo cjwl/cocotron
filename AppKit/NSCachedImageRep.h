@@ -8,11 +8,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <AppKit/NSImageRep.h>
 
-@class KGContext;
-@class KGRenderingContext;
+@class KGContext,KGLayer;
 
 @interface NSCachedImageRep : NSImageRep {
-   KGRenderingContext *_renderingContext;
+   KGLayer *_layer;
 }
 
 -initWithSize:(NSSize)size;

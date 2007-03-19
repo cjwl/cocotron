@@ -19,6 +19,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSPanel.h>
 #import <AppKit/NSApplication.h>
 #import <AppKit/NSDrawerWindow.h>
+#import <AppKit/KGLayer.h>
+#import <AppKit/KGContext.h>
 
 @implementation Win32Window
 
@@ -177,11 +179,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
     case Win32BackingStoreRetained:
     case Win32BackingStoreNonretained:
-     _backingContext=nil;
+     _backingLayer=nil;
      break;
 
     case Win32BackingStoreBuffered:
-     _backingContext=[[Win32DeviceContextBitmap alloc] initWithSize:_backingSize deviceContext:_renderingContext];
+     _backingLayer=[[KGLayer alloc] initRelativeToRenderingContext:_renderingContext size:_backingSize unused:nil];
      break;
    }
 
@@ -203,8 +205,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    _handle=NULL;
    [_renderingContext release];
    _renderingContext=nil;
-   [_backingContext release];
-   _backingContext=nil;
+   [_backingLayer release];
+   _backingLayer=nil;
 }
 
 -(void)setDelegate:delegate {
@@ -220,21 +222,17 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return _handle;
 }
 
--(Win32DeviceContext *)renderingContext {
+-(KGContext *)graphicsContext {
    switch(_backingType){
 
     case Win32BackingStoreRetained:
     case Win32BackingStoreNonretained:
     default:
-     return _renderingContext;
+     return [_renderingContext graphicsContextWithSize:_size];
 
     case Win32BackingStoreBuffered:
-    return _backingContext;
+    return [_backingLayer context];
    }
-}
-
--(KGContext *)graphicsContext {
-   return [[self renderingContext] graphicsContextWithSize:_size];
 }
 
 -(void)rebuildBackingContextWithSize:(NSSize)size forceRebuild:(BOOL)forceRebuild {
@@ -244,16 +242,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
     case Win32BackingStoreRetained:
     case Win32BackingStoreNonretained:
-     [_backingContext release];
-     _backingContext=nil;
+     [_backingLayer release];
+     _backingLayer=nil;
      break;
 
     case Win32BackingStoreBuffered:
-     if(!NSEqualSizes(_backingSize,size) || _backingContext==nil || forceRebuild){
+     if(!NSEqualSizes(_backingSize,size) || _backingLayer==nil || forceRebuild){
       _backingSize=size;
 
-      [_backingContext release];
-      _backingContext=[[Win32DeviceContextBitmap alloc] initWithSize:_backingSize deviceContext:_renderingContext];
+      [_backingLayer release];
+      _backingLayer=[[KGLayer alloc] initRelativeToRenderingContext:_renderingContext size:_backingSize unused:nil];
      }
      break;
    }
@@ -363,7 +361,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
      break;
 
     case Win32BackingStoreBuffered:
-     [_backingContext copyColorsToContext:_renderingContext size:_backingSize];
+     [[_renderingContext graphicsContextWithSize:_size] drawLayer:_backingLayer atPoint:NSMakePoint(0,0)];
      break;
    }
 }
