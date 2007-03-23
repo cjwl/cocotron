@@ -47,7 +47,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     NSNibKeyedUnarchiver *keyed=(NSNibKeyedUnarchiver *)coder;
     int                flags=[keyed decodeIntForKey:@"NSCellFlags"];
     int                flags2=[keyed decodeIntForKey:@"NSCellFlags2"];
-
+    id                 check;
+    
     _state=(flags&0x8000000)?YES:NO;
     _isHighlighted=(flags&0x40000000)?YES:NO;
     _isEnabled=(flags&0x20000000)?NO:YES;
@@ -64,20 +65,18 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     _isContinuous=(flags&0x00080100)?YES:NO;
     _textAlignment=(flags2&0x1c000000)>>26;
     _objectValue=[[keyed decodeObjectForKey:@"NSContents"] retain];
-    _image=[[keyed decodeObjectForKey:@"NSNormalImage"] retain];
-    if([_image isKindOfClass:[NSFont class]]){
-     _font=(NSFont *)_image;
-     _image=nil;
-    }
-    else {
-     _font=[[keyed decodeObjectForKey:@"NSSupport"] retain];
-     if(![_font isKindOfClass:[NSFont class]]){
-      [_font release];
-      _font=nil;
-     }
-     if(_font==nil)
-      _font=[[NSFont userFontOfSize:0] retain]; // ?
-    }
+    check=[keyed decodeObjectForKey:@"NSNormalImage"];
+    if([check isKindOfClass:[NSImage class]])
+     _image=[check retain];
+    else if([check isKindOfClass:[NSFont class]])
+     _font=[check retain];
+     
+    check=[keyed decodeObjectForKey:@"NSSupport"];
+    if([check isKindOfClass:[NSFont class]])
+     _font=[check retain];
+    
+    if(_font==nil)
+     _font=[[NSFont userFontOfSize:0] retain]; // ?
    }
    else {
     _state=[coder decodeIntForKey:@"NSCell state"];

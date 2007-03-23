@@ -14,11 +14,38 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @implementation KGPDFFunction_Type3
 
+static void evaluate(void *info,const float *input,float *output) {
+   KGPDFFunction_Type3 *self=info;
+   float                x=input[0];
+   float                bounds[2],encode[2];
+   int                  i;
+      
+   for(i=0;i<self->_boundsCount;i++){
+    if(x<self->_bounds[i])
+     break;
+   }   
+
+   bounds[0]=(i==0)?self->_domain[0]:self->_bounds[i-1];
+   bounds[1]=(i==self->_boundsCount)?self->_domain[self->_domainCount-1]:self->_bounds[i];
+   encode[0]=self->_encode[i*2];
+   encode[1]=self->_encode[i*2+1];
+
+   x-=bounds[0];
+   x=(bounds[1]-bounds[0])/x;
+   x=(encode[1]-encode[0])/x;
+   x+=encode[0];
+
+   [self->_functions[i] evaluateInput:x output:output];
+}
+
 -initWithDomain:(KGPDFArray *)domain range:(KGPDFArray *)range functions:(NSArray *)functions bounds:(KGPDFArray *)bounds encode:(KGPDFArray *)encode {
    int i;
    
    if([super initWithDomain:domain range:range]==nil)
     return nil;
+
+   _info=self;
+   _callbacks.evaluate=evaluate;
 
    if((_functionCount=[functions count])==0){
     [self dealloc];
@@ -74,26 +101,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [super dealloc];
 }
 
--(void)evaluateInput:(float)x output:(float *)output {
-   float bounds[2],encode[2];
-   int   i;
-      
-   for(i=0;i<_boundsCount;i++){
-    if(x<_bounds[i])
-     break;
-   }   
+-(BOOL)isLinear {
+   if(_functionCount==1)
+    return [_functions[0] isLinear];
 
-   bounds[0]=(i==0)?_domain[0]:_bounds[i-1];
-   bounds[1]=(i==_boundsCount)?_domain[_domainCount-1]:_bounds[i];
-   encode[0]=_encode[i*2];
-   encode[1]=_encode[i*2+1];
-
-   x-=bounds[0];
-   x=(bounds[1]-bounds[0])/x;
-   x=(encode[1]-encode[0])/x;
-   x+=encode[0];
-
-   [_functions[i] evaluateInput:x output:output];
+   return NO;
 }
 
 @end

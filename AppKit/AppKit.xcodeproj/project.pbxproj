@@ -473,7 +473,7 @@
 		6EC4AC6A0A35D47800E8D6CA /* NSCustomObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EC4AC680A35D47800E8D6CA /* NSCustomObject.m */; };
 		6EC4ACFD0A36613800E8D6CA /* NSWindowTemplate.h in Headers */ = {isa = PBXBuildFile; fileRef = 6EC4ACFB0A36613800E8D6CA /* NSWindowTemplate.h */; };
 		6EC4ACFE0A36613800E8D6CA /* NSWindowTemplate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EC4ACFC0A36613800E8D6CA /* NSWindowTemplate.m */; };
-		6EC4ADE60A37294300E8D6CA /* NSButtonImageSource.h in Headers */ = {isa = PBXBuildFile; fileRef = 6EC4ADE40A37294300E8D6CA /* NSButtonImageSource.h */; };
+		6EC4ADE60A37294300E8D6CA /* NSButtonImageSource.h in Headers */ = {isa = PBXBuildFile; fileRef = 6EC4ADE40A37294300E8D6CA /* NSButtonImageSource.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		6EC4ADE70A37294300E8D6CA /* NSButtonImageSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EC4ADE50A37294300E8D6CA /* NSButtonImageSource.m */; };
 		6ECABDF90A3FA2B700AD7F7B /* NSCustomView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6ECABDF70A3FA2B700AD7F7B /* NSCustomView.h */; };
 		6ECABDFA0A3FA2B700AD7F7B /* NSCustomView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6ECABDF80A3FA2B700AD7F7B /* NSCustomView.m */; };
@@ -573,13 +573,13 @@
 		FE56BA050B1221330046B7D9 /* NSMutableAttributedString.m in Sources */ = {isa = PBXBuildFile; fileRef = FE56BA030B1221330046B7D9 /* NSMutableAttributedString.m */; };
 		FE6466E30B2C611D00B302B0 /* NSMutableParagraphStyle.h in Headers */ = {isa = PBXBuildFile; fileRef = FE6466E10B2C611D00B302B0 /* NSMutableParagraphStyle.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE6466E40B2C611D00B302B0 /* NSMutableParagraphStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = FE6466E20B2C611D00B302B0 /* NSMutableParagraphStyle.m */; };
-		FE64B8E10B81239D007EE513 /* KGColorSpace.h in Headers */ = {isa = PBXBuildFile; fileRef = FE64B8A70B81239D007EE513 /* KGColorSpace.h */; };
+		FE64B8E10B81239D007EE513 /* KGColorSpace.h in Headers */ = {isa = PBXBuildFile; fileRef = FE64B8A70B81239D007EE513 /* KGColorSpace.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE64B8E20B81239D007EE513 /* KGColorSpace.m in Sources */ = {isa = PBXBuildFile; fileRef = FE64B8A80B81239D007EE513 /* KGColorSpace.m */; };
 		FE64B8E30B81239D007EE513 /* KGContext.h in Headers */ = {isa = PBXBuildFile; fileRef = FE64B8A90B81239D007EE513 /* KGContext.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE64B8E40B81239D007EE513 /* KGContext.m in Sources */ = {isa = PBXBuildFile; fileRef = FE64B8AA0B81239D007EE513 /* KGContext.m */; };
 		FE64B8E50B81239D007EE513 /* KGDataProvider.h in Headers */ = {isa = PBXBuildFile; fileRef = FE64B8AB0B81239D007EE513 /* KGDataProvider.h */; };
 		FE64B8E60B81239D007EE513 /* KGDataProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = FE64B8AC0B81239D007EE513 /* KGDataProvider.m */; };
-		FE64B8E70B81239D007EE513 /* KGFunction.h in Headers */ = {isa = PBXBuildFile; fileRef = FE64B8AD0B81239D007EE513 /* KGFunction.h */; };
+		FE64B8E70B81239D007EE513 /* KGFunction.h in Headers */ = {isa = PBXBuildFile; fileRef = FE64B8AD0B81239D007EE513 /* KGFunction.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE64B8E80B81239D007EE513 /* KGFunction.m in Sources */ = {isa = PBXBuildFile; fileRef = FE64B8AE0B81239D007EE513 /* KGFunction.m */; };
 		FE64B8E90B81239D007EE513 /* KGImage.h in Headers */ = {isa = PBXBuildFile; fileRef = FE64B8AF0B81239D007EE513 /* KGImage.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE64B8EA0B81239D007EE513 /* KGImage.m in Sources */ = {isa = PBXBuildFile; fileRef = FE64B8B00B81239D007EE513 /* KGImage.m */; };
@@ -629,7 +629,7 @@
 		FE64B9160B81239D007EE513 /* KGPDFxref.m in Sources */ = {isa = PBXBuildFile; fileRef = FE64B8DC0B81239D007EE513 /* KGPDFxref.m */; };
 		FE64B9170B81239D007EE513 /* KGPDFxrefEntry.h in Headers */ = {isa = PBXBuildFile; fileRef = FE64B8DD0B81239D007EE513 /* KGPDFxrefEntry.h */; };
 		FE64B9180B81239D007EE513 /* KGPDFxrefEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = FE64B8DE0B81239D007EE513 /* KGPDFxrefEntry.m */; };
-		FE64B9190B81239D007EE513 /* KGShading.h in Headers */ = {isa = PBXBuildFile; fileRef = FE64B8DF0B81239D007EE513 /* KGShading.h */; };
+		FE64B9190B81239D007EE513 /* KGShading.h in Headers */ = {isa = PBXBuildFile; fileRef = FE64B8DF0B81239D007EE513 /* KGShading.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE64B91A0B81239D007EE513 /* KGShading.m in Sources */ = {isa = PBXBuildFile; fileRef = FE64B8E00B81239D007EE513 /* KGShading.m */; };
 		FE64B9220B8123F1007EE513 /* CGImage.h in Headers */ = {isa = PBXBuildFile; fileRef = FE64B9200B8123F1007EE513 /* CGImage.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE64B9230B8123F1007EE513 /* CGImage.m in Sources */ = {isa = PBXBuildFile; fileRef = FE64B9210B8123F1007EE513 /* CGImage.m */; };

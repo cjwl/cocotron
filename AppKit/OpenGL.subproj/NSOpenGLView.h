@@ -11,7 +11,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @class NSOpenGLPixelFormat,NSOpenGLContext;
 
 @interface NSOpenGLView : NSView {
-
+   NSOpenGLPixelFormat *_pixelFormat;
+   NSOpenGLContext     *_context;
 }
 
 +(NSOpenGLPixelFormat *)defaultPixelFormat;

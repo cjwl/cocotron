@@ -16,3 +16,6 @@ static inline CGRect CGRectMake(float x, float y, float width, float height) {
    return NSMakeRect(x,y,width,height);
 }
 
+static inline CGPoint CGPointMake(float x,float y){
+   return NSMakePoint(x,y);
+}

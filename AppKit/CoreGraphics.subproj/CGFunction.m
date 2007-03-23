@@ -8,3 +8,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <AppKit/CGFunction.h>
 #import "KGFunction.h"
+
+CGFunctionRef CGFunctionRetain(CGFunctionRef self) {
+   [self retain];
+}
+
+void CGFunctionRelease(CGFunctionRef self) {
+   [self release];
+}
+
+CGFunctionRef CGFunctionCreate(void *info,unsigned numberOfInputs,const float *inputBounds,unsigned numberOfOutputs,const float *outputBounds,const CGFunctionCallbacks *callbacks) {
+   return [[KGFunction alloc] initWithInfo:info domainCount:numberOfInputs*2 domain:inputBounds rangeCount:numberOfOutputs*2 range:outputBounds callbacks:callbacks];
+}

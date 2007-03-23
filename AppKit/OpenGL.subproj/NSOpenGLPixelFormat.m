@@ -13,12 +13,26 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @implementation NSOpenGLPixelFormat
 
 -initWithAttributes:(NSOpenGLPixelFormatAttribute *)attributes {
-   NSUnimplementedMethod();
+   int count;
+   
+   for(count=0;attributes[count]!=0;count++)
+    ;
+   _attributes=NSZoneMalloc(NULL,sizeof(NSOpenGLPixelFormatAttribute)*(count+1));
+   for(count=0;(_attributes[count]=attributes[count])!=0;count++)
+    ;
+   
+   return self;
+}
+
+-(void)dealloc {
+   NSZoneFree(NULL,_attributes);
+   [super dealloc];
 }
 
 -(void *)CGLPixelFormatObj {
    NSUnimplementedMethod();
 }
+
 -(int)numberOfVirtualScreens {
    NSUnimplementedMethod();
 }

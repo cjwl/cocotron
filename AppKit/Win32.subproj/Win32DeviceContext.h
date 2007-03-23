@@ -15,7 +15,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @interface Win32DeviceContext : KGRenderingContext {
    HDC        _dc;
-
+   BOOL       _isAdvanced;
    Win32Font *_font;
 }
 

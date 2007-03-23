@@ -11,7 +11,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 typedef int NSOpenGLPixelFormatAttribute;
 
 @interface NSOpenGLPixelFormat : NSObject {
-
+   NSOpenGLPixelFormatAttribute *_attributes;
 }
 
 -initWithAttributes:(NSOpenGLPixelFormatAttribute *)attributes;

@@ -170,7 +170,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    date=[NSDate dateWithTimeIntervalSinceReferenceDate:Win32TimeIntervalFromFileTime(fileData.ftLastWriteTime)];
    [result setObject:date forKey:NSFileModificationDate];
 
-// FIX
+   // dth
+   NSString* fileType = NSFileTypeRegular;
+   if (fileData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
+          fileType = NSFileTypeDirectory;
+   // FIX: Support for links and other attributes needed!
+
+   [result setObject:fileType forKey:NSFileType];
    [result setObject:@"USER" forKey:NSFileOwnerAccountName];
    [result setObject:@"GROUP" forKey:NSFileGroupOwnerAccountName];
    [result setObject:[NSNumber numberWithUnsignedLong:0666]

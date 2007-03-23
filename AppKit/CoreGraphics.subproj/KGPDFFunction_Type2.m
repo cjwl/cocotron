@@ -15,10 +15,30 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @implementation KGPDFFunction_Type2
 
+static void evaluate(void *info,const float *input,float *output) {
+   KGPDFFunction_Type2 *self=info;
+   float x=input[0];
+   int i;
+   
+   if(self->_N==1.0){
+    for(i=0;i<self->_C0Count;i++){
+     output[i]=self->_C0[i]+x*(self->_C1[i]-self->_C0[i]);
+    }
+   }
+   else {
+    for(i=0;i<self->_C0Count;i++){
+     output[i]=self->_C0[i]+pow(x,self->_N)*(self->_C1[i]-self->_C0[i]);
+    }
+   }
+}
+
 -initWithDomain:(KGPDFArray *)domain range:(KGPDFArray *)range C0:(KGPDFArray *)C0 C1:(KGPDFArray *)C1 N:(KGPDFReal)N {
    if([super initWithDomain:domain range:range]==nil)
     return nil;
-    
+   
+   _info=self;
+   _callbacks.evaluate=evaluate;
+   
    [C0 getNumbers:&_C0 count:&_C0Count];
    [C1 getNumbers:&_C1 count:&_C1Count];
    if(_C0Count!=_C1Count){
@@ -55,19 +75,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [super dealloc];
 }
 
--(void)evaluateInput:(float)x output:(float *)output {
-   int j;
-   
-   if(_N==1.0){
-    for(j=0;j<_C0Count;j++){
-     output[j]=_C0[j]+x*(_C1[j]-_C0[j]);
-    }
-   }
-   else {
-    for(j=0;j<_C0Count;j++){
-     output[j]=_C0[j]+pow(x,_N)*(_C1[j]-_C0[j]);
-    }
-   }
+-(BOOL)isLinear {
+   return (_N==1.0)?YES:NO;
 }
 
 @end

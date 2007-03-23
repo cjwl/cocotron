@@ -18,8 +18,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/KGImage.h>
 #import <AppKit/KGGraphicsState.h>
 #import <AppKit/KGLayer.h>
+#import <AppKit/KGShading.h>
 #import <AppKit/KGContext.h>
+#import <AppKit/KGFunction.h>
+#import <AppKit/KGColorSpace.h>
 
+static inline int float2int(float coord){
+   return lround(coord);
+}
+ 
 static COLORREF RGBFromColor(KGColor *color){
    int    count=[color numberOfComponents];
    float *components=[color components];
@@ -66,6 +73,8 @@ static inline NSRect transformRect(CGAffineTransform matrix,NSRect rect) {
 -initWithDC:(HDC)dc {
    _dc=dc;
 
+   _isAdvanced=(SetGraphicsMode(_dc,GM_ADVANCED)!=0)?YES:NO;
+   
    if(SetMapMode(_dc,MM_ANISOTROPIC)==0)
     NSLog(@"SetMapMode failed");
 
@@ -74,10 +83,6 @@ static inline NSRect transformRect(CGAffineTransform matrix,NSRect rect) {
    SetBkMode(_dc,TRANSPARENT);
    SetTextAlign(_dc,TA_BASELINE);
 
-#if 0
-    if(SetGraphicsMode(_dc,GM_ADVANCED)==0)
-     NSLog(@"SetGraphicsMode(_dc,GM_ADVANCED) failed");
-#endif
 
    _font=nil;
    return self;
@@ -205,10 +210,10 @@ static RECT NSRectToRECT(NSRect rect) {
    if(rect.size.width<0)
     rect=NSZeroRect;
 
-   result.top=rect.origin.y;
-   result.left=rect.origin.x;
-   result.bottom=rect.origin.y+rect.size.height;
-   result.right=rect.origin.x+rect.size.width;
+   result.top=float2int(rect.origin.y);
+   result.left=float2int(rect.origin.x);
+   result.bottom=float2int(rect.origin.y+rect.size.height);
+   result.right=float2int(rect.origin.x+rect.size.width);
 
    return result;
 }
@@ -283,15 +288,14 @@ static RECT NSRectToRECT(NSRect rect) {
    ExtTextOutW(dc,point.x,point.y,ETO_GLYPH_INDEX,NULL,(void *)glyphs,count,NULL);
 }
 
--(void)drawPathInDeviceSpace:(KGPath *)path drawingMode:(int)mode ctm:(CGAffineTransform)ctm lineWidth:(float)lineWidth fillColor:(KGColor *)fillColor strokeColor:(KGColor *)strokeColor {
-   HDC                  dc=_dc;
+-(void)establishDeviceSpacePath:(KGPath *)path {
    unsigned             opCount=[path numberOfOperators];
    const unsigned char *operators=[path operators];
    unsigned             pointCount=[path numberOfPoints];
    const NSPoint       *points=[path points];
    unsigned             i,pointIndex;
        
-   BeginPath(dc);
+   BeginPath(_dc);
    
    pointIndex=0;
    for(i=0;i<opCount;i++){
@@ -300,14 +304,14 @@ static RECT NSRectToRECT(NSRect rect) {
      case KGPathOperatorMoveToPoint:{
        NSPoint point=points[pointIndex++];
         
-       MoveToEx(dc,point.x,point.y,NULL);
+       MoveToEx(_dc,float2int(point.x),float2int(point.y),NULL);
       }
       break;
        
      case KGPathOperatorLineToPoint:{
        NSPoint point=points[pointIndex++];
         
-       LineTo(dc,point.x,point.y);
+       LineTo(_dc,float2int(point.x),float2int(point.y));
       }
       break;
 
@@ -316,12 +320,12 @@ static RECT NSRectToRECT(NSRect rect) {
        NSPoint cp2=points[pointIndex++];
        NSPoint end=points[pointIndex++];
        POINT   points[3]={
-        { cp1.x, cp1.y },
-        { cp2.x, cp2.y },
-        { end.x, end.y },
+        { float2int(cp1.x), float2int(cp1.y) },
+        { float2int(cp2.x), float2int(cp2.y) },
+        { float2int(end.x), float2int(end.y) },
        };
         
-       PolyBezierTo(dc,points,3);
+       PolyBezierTo(_dc,points,3);
       }
       break;
 
@@ -330,33 +334,39 @@ static RECT NSRectToRECT(NSRect rect) {
        NSPoint cp2=points[pointIndex++];
        NSPoint end=cp2;
        POINT   points[3]={
-        { cp1.x, cp1.y },
-        { cp2.x, cp2.y },
-        { end.x, end.y },
+        { float2int(cp1.x), float2int(cp1.y) },
+        { float2int(cp2.x), float2int(cp2.y) },
+        { float2int(end.x), float2int(end.y) },
        };
         
-       PolyBezierTo(dc,points,3);
+       PolyBezierTo(_dc,points,3);
       }
       break;
 
      case KGPathOperatorCloseSubpath:
-      CloseFigure(dc);
+      CloseFigure(_dc);
       break;
     }
    }
-   EndPath(dc);
+   EndPath(_dc);
+}
+
+-(void)drawPathInDeviceSpace:(KGPath *)path drawingMode:(int)mode ctm:(CGAffineTransform)ctm lineWidth:(float)lineWidth fillColor:(KGColor *)fillColor strokeColor:(KGColor *)strokeColor {
+   
+   [self establishDeviceSpacePath:path];
+   
    {
     HBRUSH fillBrush=CreateSolidBrush(RGBFromColor(fillColor));
 
-    SelectObject(dc,fillBrush);
+    SelectObject(_dc,fillBrush);
 
    if(mode==KGPathFill || mode==KGPathFillStroke){
-    SetPolyFillMode(dc,WINDING);
-    FillPath(dc);
+    SetPolyFillMode(_dc,WINDING);
+    FillPath(_dc);
    }
    if(mode==KGPathEOFill || mode==KGPathEOFillStroke){
-    SetPolyFillMode(dc,ALTERNATE);
-    FillPath(dc);
+    SetPolyFillMode(_dc,ALTERNATE);
+    FillPath(_dc);
    }
     DeleteObject(fillBrush);
    }
@@ -364,11 +374,25 @@ static RECT NSRectToRECT(NSRect rect) {
    if(mode==KGPathStroke || mode==KGPathFillStroke || mode==KGPathEOFillStroke){
     NSSize lineSize=CGSizeApplyAffineTransform(NSMakeSize(lineWidth,lineWidth),ctm);
     HPEN   pen=CreatePen(PS_SOLID,(lineSize.width+lineSize.height)/2,RGBFromColor(strokeColor));
-    HPEN   oldpen=SelectObject(dc,pen);
+    HPEN   oldpen=SelectObject(_dc,pen);
 
-    StrokePath(dc);
-    SelectObject(dc,oldpen);
+    StrokePath(_dc);
+    SelectObject(_dc,oldpen);
    }
+}
+
+-(void)clipToDeviceSpacePath:(KGPath *)path {
+   [self establishDeviceSpacePath:path];
+   SetPolyFillMode(_dc,WINDING);
+   if(!SelectClipPath(_dc,RGN_AND))
+    NSLog(@"SelectClipPath failed");
+}
+
+-(void)evenOddClipToDeviceSpacePath:(KGPath *)path {
+   [self establishDeviceSpacePath:path];
+   SetPolyFillMode(_dc,ALTERNATE);
+   if(!SelectClipPath(_dc,RGN_AND))
+    NSLog(@"SelectClipPath failed");
 }
 
 #if 1
@@ -543,5 +567,236 @@ static void zeroBytes(void *bytes,int size){
 
    [other copyColorsToContext:self size:rect.size toPoint:rect.origin];
 }
+
+// The problem is that the GDI gradient fill is a linear/stitched filler and the
+// Mac one is a sampling one. So to preserve color variation we stitch together a lot of samples
+
+// we could use stitched linear PDF functions better, i.e. use the intervals
+// we could decompose the rectangles further and just use fills if we don't have GradientFill
+// we could test for cases where the angle is a multiple of 90 and use the _H or _V constants if we dont have transformations
+// we could decompose this better to platform generalize it
+
+static inline float bandIntervalFromMagnitude(KGFunction *function,float magnitude){
+   if(magnitude<1)
+    return 0;
+
+   if([function isLinear])
+    return 1;
+   
+   if(magnitude<1)
+    return 1;
+   if(magnitude<4)
+    return magnitude;
+    
+   return magnitude/4; // 4== arbitrary
+}
+
+static inline void GrayAToRGBA(float *input,float *output){
+   output[0]=input[0];
+   output[1]=input[0];
+   output[2]=input[0];
+   output[3]=input[1];
+}
+
+static inline void RGBAToRGBA(float *input,float *output){
+   output[0]=input[0];
+   output[1]=input[1];
+   output[2]=input[2];
+   output[3]=input[3];
+}
+
+static inline void CMYKAToRGBA(float *input,float *output){
+   float white=1-input[3];
+   
+   output[0]=(input[0]>white)?0:white-input[0];
+   output[1]=(input[1]>white)?0:white-input[1];
+   output[2]=(input[2]>white)?0:white-input[2];
+   output[3]=input[4];
+}
+
+#ifndef GRADIENT_FILL_RECT_H
+#define GRADIENT_FILL_RECT_H 0
+#endif
+
+-(void)drawInUserSpace:(CGAffineTransform)matrix axialShading:(KGShading *)shading {
+   KGColorSpace *colorSpace=[shading colorSpace];
+   KGColorSpaceType colorSpaceType=[colorSpace type];
+   KGFunction   *function=[shading function];
+   const float  *domain=[function domain];
+   const float  *range=[function range];
+   BOOL          extendStart=[shading extendStart];
+   BOOL          extendEnd=[shading extendEnd];
+   NSPoint       startPoint=CGPointApplyAffineTransform([shading startPoint],matrix);
+   NSPoint       endPoint=CGPointApplyAffineTransform([shading endPoint],matrix);
+   NSPoint       vector=NSMakePoint(endPoint.x-startPoint.x,endPoint.y-startPoint.y);
+   float         magnitude=ceilf(sqrtf(vector.x*vector.x+vector.y*vector.y));
+   float         angle=(magnitude==0)?0:(atanf(vector.y/vector.x)+((vector.x<0)?M_PI:0));
+   float         bandInterval=bandIntervalFromMagnitude(function,magnitude);
+   int           bandCount=bandInterval;
+   int           i,rectIndex=0;
+   float         rectWidth=(bandCount==0)?0:magnitude/bandInterval;
+   float         domainInterval=(bandCount==0)?0:(domain[1]-domain[0])/bandInterval;
+   GRADIENT_RECT rect[1+bandCount+1];
+   int           vertexIndex=0;
+   TRIVERTEX     vertices[(1+bandCount+1)*2];
+   float         output[[colorSpace numberOfComponents]+1];
+   float         rgba[4];
+   void        (*outputToRGBA)(float *,float *);
+   // should use something different here so we dont get huge numbers on printers, the clip bbox?
+   int           hRes=GetDeviceCaps(_dc,HORZRES);
+   int           vRes=GetDeviceCaps(_dc,VERTRES);
+   float         maxHeight=MAX(hRes,vRes)*2;
+
+   typedef WINGDIAPI BOOL WINAPI (*gradientType)(HDC,PTRIVERTEX,ULONG,PVOID,ULONG,ULONG);
+   HANDLE        library=LoadLibrary("MSIMG32");
+   gradientType  gradientFill=(gradientType)GetProcAddress(library,"GradientFill");
+      
+   if(!_isAdvanced)
+    return;
+    
+   if(gradientFill==NULL){
+    NSLog(@"Unable to locate GradientFill");
+    return;
+   }
+
+   switch(colorSpaceType){
+
+    case KGColorSpaceDeviceGray:
+     outputToRGBA=GrayAToRGBA;
+     break;
+     
+    case KGColorSpaceDeviceRGB:
+     outputToRGBA=RGBAToRGBA;
+     break;
+     
+    case KGColorSpaceDeviceCMYK:
+     outputToRGBA=CMYKAToRGBA;
+     break;
+     
+    default:
+     NSLog(@"can't deal with colorspace %@",colorSpace);
+     return;
+   }
+      
+   if(extendStart){
+    [function evaluateInput:domain[0] output:output];
+    outputToRGBA(output,rgba);
+    
+    rect[rectIndex].UpperLeft=vertexIndex;
+    vertices[vertexIndex].x=float2int(-maxHeight);
+    vertices[vertexIndex].y=float2int(-maxHeight);
+    vertices[vertexIndex].Red=rgba[0]*0xFFFF;
+    vertices[vertexIndex].Green=rgba[1]*0xFFFF;
+    vertices[vertexIndex].Blue=rgba[2]*0xFFFF;
+    vertices[vertexIndex].Alpha=rgba[3]*0xFFFF;
+    vertexIndex++;
+    
+    rect[rectIndex].LowerRight=vertexIndex;
+ // the degenerative case for magnitude==0 is to fill the whole area with the extend
+    if(magnitude!=0)
+     vertices[vertexIndex].x=float2int(0);
+    else {
+     vertices[vertexIndex].x=float2int(maxHeight);
+     extendEnd=NO;
+    }
+    vertices[vertexIndex].y=float2int(maxHeight);
+    vertices[vertexIndex].Red=rgba[0]*0xFFFF;
+    vertices[vertexIndex].Green=rgba[1]*0xFFFF;
+    vertices[vertexIndex].Blue=rgba[2]*0xFFFF;
+    vertices[vertexIndex].Alpha=rgba[3]*0xFFFF;
+    vertexIndex++;
+
+    rectIndex++;
+   }
+   
+   for(i=0;i<bandCount;i++){
+    float x0=domain[0]+i*domainInterval;
+    float x1=domain[0]+(i+1)*domainInterval;
+   
+    rect[rectIndex].UpperLeft=vertexIndex;
+    vertices[vertexIndex].x=float2int(i*rectWidth);
+    vertices[vertexIndex].y=float2int(-maxHeight);
+    [function evaluateInput:x0 output:output];
+    outputToRGBA(output,rgba);
+    vertices[vertexIndex].Red=rgba[0]*0xFFFF;
+    vertices[vertexIndex].Green=rgba[1]*0xFFFF;
+    vertices[vertexIndex].Blue=rgba[2]*0xFFFF;
+    vertices[vertexIndex].Alpha=rgba[3]*0xFFFF;
+    vertexIndex++;
+    
+    rect[rectIndex].LowerRight=vertexIndex;
+    vertices[vertexIndex].x=float2int((i+1)*rectWidth);
+    vertices[vertexIndex].y=float2int(maxHeight);
+    [function evaluateInput:x1 output:output];
+    outputToRGBA(output,rgba);
+    vertices[vertexIndex].Red=rgba[0]*0xFFFF;
+    vertices[vertexIndex].Green=rgba[1]*0xFFFF;
+    vertices[vertexIndex].Blue=rgba[2]*0xFFFF;
+    vertices[vertexIndex].Alpha=rgba[3]*0xFFFF;
+    vertexIndex++;
+
+    rectIndex++;
+   }
+   
+   if(extendEnd){
+    [function evaluateInput:domain[1] output:output];
+    outputToRGBA(output,rgba);
+
+    rect[rectIndex].UpperLeft=vertexIndex;
+    vertices[vertexIndex].x=float2int(i*rectWidth);
+    vertices[vertexIndex].y=float2int(-maxHeight);
+    vertices[vertexIndex].Red=rgba[0]*0xFFFF;
+    vertices[vertexIndex].Green=rgba[1]*0xFFFF;
+    vertices[vertexIndex].Blue=rgba[2]*0xFFFF;
+    vertices[vertexIndex].Alpha=rgba[3]*0xFFFF;
+    vertexIndex++;
+    
+    rect[rectIndex].LowerRight=vertexIndex;
+    vertices[vertexIndex].x=float2int(maxHeight);
+    vertices[vertexIndex].y=float2int(maxHeight);
+    vertices[vertexIndex].Red=rgba[0]*0xFFFF;
+    vertices[vertexIndex].Green=rgba[1]*0xFFFF;
+    vertices[vertexIndex].Blue=rgba[2]*0xFFFF;
+    vertices[vertexIndex].Alpha=rgba[3]*0xFFFF;
+    vertexIndex++;
+
+    rectIndex++;
+   }
+   
+   if(rectIndex==0)
+    return;
+   
+   {
+    XFORM current;
+    XFORM translate={1,0,0,1,startPoint.x,startPoint.y};
+    XFORM rotate={cos(angle),sin(angle),-sin(angle),cos(angle),0,0};
+     
+    if(!GetWorldTransform(_dc,&current))
+     NSLog(@"GetWorldTransform failed");
+     
+    if(!ModifyWorldTransform(_dc,&rotate,MWT_RIGHTMULTIPLY))
+     NSLog(@"ModifyWorldTransform failed");
+    if(!ModifyWorldTransform(_dc,&translate,MWT_RIGHTMULTIPLY))
+     NSLog(@"ModifyWorldTransform failed");
+    
+    if(!gradientFill(_dc,vertices,vertexIndex,rect,rectIndex,GRADIENT_FILL_RECT_H))
+     NSLog(@"GradientFill failed");
+
+    if(!SetWorldTransform(_dc,&current))
+     NSLog(@"GetWorldTransform failed");
+   }
+}
+
+-(void)drawInUserSpace:(CGAffineTransform)matrix radialShading:(KGShading *)shading {
+   NSLog(@"radial shaders not supported yet");
+}
+
+-(void)drawInUserSpace:(CGAffineTransform)matrix shading:(KGShading *)shading {
+  if([shading isAxial])
+   [self drawInUserSpace:matrix axialShading:shading];
+  else
+   [self drawInUserSpace:matrix radialShading:shading];
+}
+
 
 @end

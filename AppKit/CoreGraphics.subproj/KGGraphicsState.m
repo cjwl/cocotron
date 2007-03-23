@@ -121,9 +121,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)clipToPath:(KGPath *)path {
+   [_renderingContext clipToDeviceSpacePath:path];
 }
 
 -(void)evenOddClipToPath:(KGPath *)path {
+   [_renderingContext evenOddClipToDeviceSpacePath:path];
 }
 
 -(void)clipToMask:(KGImage *)image inRect:(NSRect)rect {
@@ -455,7 +457,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)drawShading:(KGShading *)shading {
-   NSUnimplementedMethod();
+   [_renderingContext drawInUserSpace:_ctm shading:shading];
 }
 
 -(void)drawImage:(KGImage *)image inRect:(NSRect)rect {

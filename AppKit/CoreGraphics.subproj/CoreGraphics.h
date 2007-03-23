@@ -8,6 +8,18 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/Foundation.h>
 
-#import <AppKit/CGContext.h>
-#import <AppKit/CGGeometry.h>
 #import <AppKit/CGAffineTransform.h>
+#import <AppKit/CGBitmapContext.h>
+#import <AppKit/CGColor.h>
+#import <AppKit/CGColorSpace.h>
+#import <AppKit/CGContext.h>
+#import <AppKit/CGDataProvider.h>
+#import <AppKit/CGFont.h>
+#import <AppKit/CGFunction.h>
+#import <AppKit/CGGeometry.h>
+#import <AppKit/CGImage.h>
+#import <AppKit/CGLayer.h>
+#import <AppKit/CGPath.h>
+#import <AppKit/CGPattern.h>
+#import <AppKit/CGPDFPage.h>
+#import <AppKit/CGShading.h>

@@ -8,52 +8,93 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 // Original - Christopher Lloyd <cjwl@objc.net>
 #import <AppKit/NSOpenGLView.h>
+#import <AppKit/NSOpenGLContext.h>
+#import <AppKit/NSOpenGLPixelFormat.h>
 #import <Foundation/NSRaise.h>
 
 @implementation NSOpenGLView
 
 +(NSOpenGLPixelFormat *)defaultPixelFormat {
-   NSUnimplementedMethod();
-   return nil;
+   NSOpenGLPixelFormatAttribute attributes[]={
+   
+    0
+   };
+      
+   return [[[NSOpenGLPixelFormat alloc] initWithAttributes:attributes] autorelease];
 }
 
 -initWithFrame:(NSRect)frame pixelFormat:(NSOpenGLPixelFormat *)pixelFormat {
-   NSUnimplementedMethod();
+   _pixelFormat=[pixelFormat retain];
+   _context=nil;
    return self;
 }
 
+-initWithFrame:(NSRect)frame  {
+   return [self initWithFrame:frame pixelFormat:[isa defaultPixelFormat]];
+}
+
+-(void)dealloc {
+   [_pixelFormat release];
+   [_context release];
+   [super dealloc];
+}
+
 -(NSOpenGLPixelFormat *)pixelFormat {
-   NSUnimplementedMethod();
-   return nil;
+   return _pixelFormat;
 }
 
 -(NSOpenGLContext *)openGLContext {
-   NSUnimplementedMethod();
-   return nil;
+   if(_context==nil){
+    // _context=[[NSOpenGLContext alloc] initWithPixel:_pixelFormat shareContext:];
+   }
+   
+   return _context;
 }
 
 -(void)setPixelFormat:(NSOpenGLPixelFormat *)pixelFormat {
-   NSUnimplementedMethod();
+   pixelFormat=[pixelFormat retain];
+   [_pixelFormat release];
+   _pixelFormat=pixelFormat;
 }
 
 -(void)setOpenGLContext:(NSOpenGLContext *)context {
-   NSUnimplementedMethod();
+   context=[context retain];
+   [_context release];
+   _context=context;
 }
 
 -(void)update {
-   NSUnimplementedMethod();
+   [_context update];
 }
 
 -(void)reshape {
-   NSUnimplementedMethod();
+// do nothing
 }
 
 -(void)prepareOpenGL {
-   NSUnimplementedMethod();
+// do nothing?
+}
+
+-(void)lockFocus {  
+  [super lockFocus];
+  
+  [[self openGLContext] makeCurrenContext];
+  [self prepareOpenGL];
 }
 
 -(void)clearGLContext {
-   NSUnimplementedMethod();
+   [_context clearDrawable];
+   [_context release];
+   _context=nil;
+}
+
+-(void)resizeSubviewsWithOldSize:(NSSize)oldSize {
+   [self update];
+}
+
+-(void)setBounds:(NSRect)bounds {
+   [super setBounds:bounds];
+   [self reshape];
 }
 
 @end

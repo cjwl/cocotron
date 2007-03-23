@@ -8,3 +8,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <AppKit/CGShading.h>
 #import "KGShading.h"
+
+CGShadingRef CGShadingRetain(CGShadingRef self) {
+   return [self retain];
+}
+
+void CGShadingRelease(CGShadingRef self) {
+   [self release];
+}
+
+CGShadingRef CGShadingCreateAxial(CGColorSpaceRef colorSpace,CGPoint startPoint,CGPoint endPoint,CGFunctionRef function,BOOL extendStart,BOOL extendEnd) {
+   return [[KGShading alloc] initWithColorSpace:colorSpace startPoint:startPoint endPoint:endPoint function:function extendStart:extendStart extendEnd:extendEnd];
+}

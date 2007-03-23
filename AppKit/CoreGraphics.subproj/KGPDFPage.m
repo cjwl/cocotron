@@ -89,11 +89,12 @@ BOOL KGPDFGetPageArrayForKey(KGPDFPage *page,const char *key,KGPDFArray **arrayp
     return NO;
    if(!KGPDFGetPageArrayForKey(self,string,&array))
     return NO;
+   NSLog(@"array=%@",array);
    
    if(![array getNumbers:&numbers count:&count])
     return NO;
     
-   if(count==4){
+   if(count!=4){
     NSZoneFree(NULL,numbers);
     return NO;
    }
@@ -102,6 +103,7 @@ BOOL KGPDFGetPageArrayForKey(KGPDFPage *page,const char *key,KGPDFArray **arrayp
    rect->origin.y=numbers[1];
    rect->size.width=numbers[2];
    rect->size.height=numbers[3];
+   NSLog(@"rect=%@",NSStringFromRect(*rect));
    
    NSZoneFree(NULL,numbers);
    
@@ -117,7 +119,7 @@ BOOL KGPDFGetPageArrayForKey(KGPDFPage *page,const char *key,KGPDFArray **arrayp
    CGAffineTransform result=CGAffineTransformIdentity;
    NSRect boxRect;
    
-   if([self getRect:&boxRect forBox:box]){    
+   if([self getRect:&boxRect forBox:box]){   
     result=CGAffineTransformTranslate(result,-boxRect.origin.x,-boxRect.origin.y);
     result=CGAffineTransformScale(result,rect.size.width/boxRect.size.width,rect.size.height/boxRect.size.height);
    }

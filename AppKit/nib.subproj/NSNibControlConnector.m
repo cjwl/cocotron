@@ -12,11 +12,18 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @implementation NSNibControlConnector
 
 -(void)establishConnection {
-   SEL selector=NSSelectorFromString(_label);
+   NSString *selectorName=_label;
+   unsigned  length=[selectorName length];
+   SEL selector;
+   
+   if(length>0 && [selectorName characterAtIndex:length-1]!=':')
+    selectorName=[selectorName stringByAppendingString:@":"];
+   
+   selector=NSSelectorFromString(selectorName);
 
    if(selector==NULL)
     [NSException raise:NSInvalidArgumentException
-         format:@"-[%@ %s] selector %@ does not exist:",isa,SELNAME(_cmd),_label];
+         format:@"-[%@ %s] selector %@ does not exist:",isa,SELNAME(_cmd),selectorName];
 
    if([_source respondsToSelector:@selector(setAction:)])
     [_source performSelector:@selector(setAction:) withObject:(id)selector];

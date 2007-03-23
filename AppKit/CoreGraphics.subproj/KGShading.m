@@ -43,4 +43,32 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [super dealloc];
 }
 
+-(KGColorSpace *)colorSpace {
+   return _colorSpace;
+}
+
+-(NSPoint)startPoint {
+   return _startPoint;
+}
+
+-(NSPoint)endPoint {
+   return _endPoint;
+}
+
+-(BOOL)extendStart {
+   return _extendStart;
+}
+
+-(BOOL)extendEnd {
+   return _extendEnd;
+}
+
+-(KGFunction *)function {
+   return _function;
+}
+
+-(BOOL)isAxial {
+   return _isRadial?NO:YES;
+}
+
 @end

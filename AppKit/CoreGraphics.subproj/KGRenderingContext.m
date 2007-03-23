@@ -56,6 +56,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    NSInvalidAbstractInvocation();
 }
 
+-(void)clipToDeviceSpacePath:(KGPath *)path {
+   NSInvalidAbstractInvocation();
+}
+
+-(void)evenOddClipToDeviceSpacePath:(KGPath *)path {
+   NSInvalidAbstractInvocation();
+}
+
 -(void)fillInUserSpace:(CGAffineTransform)ctm rects:(const NSRect *)rects count:(unsigned)count color:(KGColor *)color {
    NSInvalidAbstractInvocation();
 }
@@ -85,6 +93,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)drawLayer:(KGLayer *)layer inRect:(NSRect)rect ctm:(CGAffineTransform)ctm {
+   NSInvalidAbstractInvocation();
+}
+
+-(void)drawInUserSpace:(CGAffineTransform)matrix shading:(KGShading *)shading {
    NSInvalidAbstractInvocation();
 }
 

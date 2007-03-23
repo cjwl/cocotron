@@ -27,6 +27,8 @@ typedef enum {
    KGColorSpaceType _type;
 }
 
+-(KGColorSpaceType)type;
+
 -initWithDeviceGray;
 -initWithDeviceRGB;
 -initWithDeviceCMYK;

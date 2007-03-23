@@ -151,17 +151,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       win32Frame.origin.x, win32Frame.origin.y,
       win32Frame.size.width, win32Frame.size.height,
       NULL,NULL, Win32ApplicationHandle(),NULL);
-#if 0
-// This is how alpha is set for the whole window, unfortunately a) it's incredibly slow b) we'd have to use a Win32 window per view to get the per view alpha of OSX c) you have to set the alpha for the whole view or chromakey it, it's not as general as OSX where you can just draw with alpha in the view and it works.
-{
-   HANDLE  library=LoadLibrary("USER32");
-   FARPROC setLayered =GetProcAddress(library,"SetLayeredWindowAttributes");
-
-   if(setLayered!=NULL)
-    setLayered(_handle,RGB(0,0,0),128,2);
-}
-#endif
-
    }
 
    SetProp(_handle,"self",self);

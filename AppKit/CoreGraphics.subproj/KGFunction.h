@@ -6,20 +6,29 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
-#import "KGPDFObject.h"
+#import <Foundation/NSObject.h>
+#import <AppKit/CGFunction.h>
 
 @class KGPDFArray;
 
 @interface KGFunction : NSObject {
-   unsigned _domainCount;
-   float   *_domain;
-   unsigned _rangeCount;
-   float   *_range;
+   void               *_info;
+   unsigned            _domainCount;
+   float              *_domain;
+   unsigned            _rangeCount;
+   float              *_range;
+   CGFunctionCallbacks _callbacks;
 }
 
 -initWithDomain:(KGPDFArray *)domain range:(KGPDFArray *)range;
+-initWithInfo:(void *)info domainCount:(unsigned)domainCount domain:(const float *)domain rangeCount:(unsigned)rangeCount range:(const float *)range callbacks:(const CGFunctionCallbacks *)callbacks;
 
+-(unsigned)domainCount;
+-(const float *)domain;
 -(unsigned)rangeCount;
+-(const float *)range;
+
+-(BOOL)isLinear;
 
 // FIX, only works for one input value
 -(void)evaluateInput:(float)x output:(float *)outp;

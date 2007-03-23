@@ -10,7 +10,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/CGAffineTransform.h>
 #import <AppKit/CGFont.h>
 
-@class KGContext,KGColor,KGPath,KGImage,KGLayer;
+@class KGContext,KGColor,KGPath,KGImage,KGLayer,KGShading;
 
 @interface KGRenderingContext : NSObject
 
@@ -31,6 +31,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)restoreDeviceState:(id)state;
 
 -(void)clipInUserSpace:(CGAffineTransform)ctm rects:(const NSRect *)rect count:(unsigned)count;
+-(void)clipToDeviceSpacePath:(KGPath *)path;
+-(void)evenOddClipToDeviceSpacePath:(KGPath *)path;
 
 -(void)fillInUserSpace:(CGAffineTransform)ctm rects:(const NSRect *)rects count:(unsigned)count color:(KGColor *)color;
 
@@ -46,5 +48,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)drawImage:(KGImage *)image inRect:(NSRect)rect ctm:(CGAffineTransform)ctm fraction:(float)fraction;
 
 -(void)drawLayer:(KGLayer *)layer inRect:(NSRect)rect ctm:(CGAffineTransform)ctm;
+
+-(void)drawInUserSpace:(CGAffineTransform)matrix shading:(KGShading *)shading;
 
 @end

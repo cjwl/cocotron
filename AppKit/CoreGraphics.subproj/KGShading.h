@@ -27,4 +27,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -initWithColorSpace:(KGColorSpace *)colorSpace startPoint:(NSPoint)startPoint startRadius:(float)startRadius endPoint:(NSPoint)endPoint endRadius:(float)endRadius function:(KGFunction *)function extendStart:(BOOL)extendStart extendEnd:(BOOL)extendEnd;
 
+-(KGColorSpace *)colorSpace;
+
+-(NSPoint)startPoint;
+-(NSPoint)endPoint;
+
+-(BOOL)extendStart;
+-(BOOL)extendEnd;
+
+-(KGFunction *)function;
+
+-(BOOL)isAxial;
+
 @end

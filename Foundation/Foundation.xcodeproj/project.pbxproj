@@ -1299,15 +1299,12 @@
 		FE74777B0BAC4E9000829F4F /* NSDecimalNumber.h in Headers */ = {isa = PBXBuildFile; fileRef = FE74776F0BAC4E9000829F4F /* NSDecimalNumber.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE74777C0BAC4E9000829F4F /* NSDecimalNumber.m in Sources */ = {isa = PBXBuildFile; fileRef = FE7477700BAC4E9000829F4F /* NSDecimalNumber.m */; };
 		FE74779D0BAC4F5200829F4F /* NSDistributedLock.h in Headers */ = {isa = PBXBuildFile; fileRef = FE7477990BAC4F5200829F4F /* NSDistributedLock.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		FE74779E0BAC4F5200829F4F /* NSDistributedLock.m in Resources */ = {isa = PBXBuildFile; fileRef = FE74779A0BAC4F5200829F4F /* NSDistributedLock.m */; };
 		FE74779F0BAC4F5200829F4F /* NSDistributedNotificationCenter.h in Headers */ = {isa = PBXBuildFile; fileRef = FE74779B0BAC4F5200829F4F /* NSDistributedNotificationCenter.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE7477A00BAC4F5200829F4F /* NSDistributedNotificationCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = FE74779C0BAC4F5200829F4F /* NSDistributedNotificationCenter.m */; };
 		FE7477A10BAC4F5200829F4F /* NSDistributedLock.h in Headers */ = {isa = PBXBuildFile; fileRef = FE7477990BAC4F5200829F4F /* NSDistributedLock.h */; };
-		FE7477A20BAC4F5200829F4F /* NSDistributedLock.m in Resources */ = {isa = PBXBuildFile; fileRef = FE74779A0BAC4F5200829F4F /* NSDistributedLock.m */; };
 		FE7477A30BAC4F5200829F4F /* NSDistributedNotificationCenter.h in Headers */ = {isa = PBXBuildFile; fileRef = FE74779B0BAC4F5200829F4F /* NSDistributedNotificationCenter.h */; };
 		FE7477A40BAC4F5200829F4F /* NSDistributedNotificationCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = FE74779C0BAC4F5200829F4F /* NSDistributedNotificationCenter.m */; };
 		FE7477A50BAC4F5200829F4F /* NSDistributedLock.h in Headers */ = {isa = PBXBuildFile; fileRef = FE7477990BAC4F5200829F4F /* NSDistributedLock.h */; };
-		FE7477A60BAC4F5200829F4F /* NSDistributedLock.m in Resources */ = {isa = PBXBuildFile; fileRef = FE74779A0BAC4F5200829F4F /* NSDistributedLock.m */; };
 		FE7477A70BAC4F5200829F4F /* NSDistributedNotificationCenter.h in Headers */ = {isa = PBXBuildFile; fileRef = FE74779B0BAC4F5200829F4F /* NSDistributedNotificationCenter.h */; };
 		FE7477A80BAC4F5200829F4F /* NSDistributedNotificationCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = FE74779C0BAC4F5200829F4F /* NSDistributedNotificationCenter.m */; };
 		FE7477C00BAC507F00829F4F /* NSIndexPath.h in Headers */ = {isa = PBXBuildFile; fileRef = FE7477BE0BAC507F00829F4F /* NSIndexPath.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -1613,6 +1610,9 @@
 		FEB9D7050B44414000C239BB /* NSSocketPortNameServer.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9D7010B44414000C239BB /* NSSocketPortNameServer.m */; };
 		FEB9D7060B44414000C239BB /* NSSocketPortNameServer.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB9D7000B44414000C239BB /* NSSocketPortNameServer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FEB9D7070B44414000C239BB /* NSSocketPortNameServer.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9D7010B44414000C239BB /* NSSocketPortNameServer.m */; };
+		FEE17BA30BB43998006B4510 /* NSDistributedLock.m in Sources */ = {isa = PBXBuildFile; fileRef = FEE17BA20BB43998006B4510 /* NSDistributedLock.m */; };
+		FEE17BA40BB43998006B4510 /* NSDistributedLock.m in Sources */ = {isa = PBXBuildFile; fileRef = FEE17BA20BB43998006B4510 /* NSDistributedLock.m */; };
+		FEE17BA50BB43998006B4510 /* NSDistributedLock.m in Sources */ = {isa = PBXBuildFile; fileRef = FEE17BA20BB43998006B4510 /* NSDistributedLock.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
@@ -2210,7 +2210,6 @@
 		FE74776F0BAC4E9000829F4F /* NSDecimalNumber.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSDecimalNumber.h; sourceTree = "<group>"; };
 		FE7477700BAC4E9000829F4F /* NSDecimalNumber.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSDecimalNumber.m; sourceTree = "<group>"; };
 		FE7477990BAC4F5200829F4F /* NSDistributedLock.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSDistributedLock.h; sourceTree = "<group>"; };
-		FE74779A0BAC4F5200829F4F /* NSDistributedLock.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSDistributedLock.m; sourceTree = "<group>"; };
 		FE74779B0BAC4F5200829F4F /* NSDistributedNotificationCenter.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSDistributedNotificationCenter.h; sourceTree = "<group>"; };
 		FE74779C0BAC4F5200829F4F /* NSDistributedNotificationCenter.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSDistributedNotificationCenter.m; sourceTree = "<group>"; };
 		FE7477BE0BAC507F00829F4F /* NSIndexPath.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSIndexPath.h; sourceTree = "<group>"; };
@@ -2315,6 +2314,7 @@
 		FEB9D6E80B4440F200C239BB /* NSMessagePortNameServer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSMessagePortNameServer.m; sourceTree = "<group>"; };
 		FEB9D7000B44414000C239BB /* NSSocketPortNameServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSSocketPortNameServer.h; sourceTree = "<group>"; };
 		FEB9D7010B44414000C239BB /* NSSocketPortNameServer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSSocketPortNameServer.m; sourceTree = "<group>"; };
+		FEE17BA20BB43998006B4510 /* NSDistributedLock.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSDistributedLock.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -2385,7 +2385,7 @@
 				6E2805FB09747D5800EC542B /* NSDirectoryEnumerator.h */,
 				6E2805FC09747D5800EC542B /* NSDirectoryEnumerator.m */,
 				FE7477990BAC4F5200829F4F /* NSDistributedLock.h */,
-				FE74779A0BAC4F5200829F4F /* NSDistributedLock.m */,
+				FEE17BA20BB43998006B4510 /* NSDistributedLock.m */,
 				FE74779B0BAC4F5200829F4F /* NSDistributedNotificationCenter.h */,
 				FE74779C0BAC4F5200829F4F /* NSDistributedNotificationCenter.m */,
 				6E2805FD09747D5800EC542B /* NSEnumerator.h */,
@@ -4294,7 +4294,6 @@
 				6E4D93210A2642BD003D335C /* NSTimeZoneAbbreviations.plist in Resources */,
 				6E4D93220A2642BD003D335C /* NSTimeZoneRegions.plist in Resources */,
 				6E4D93230A2642BD003D335C /* NSUserDefaults.plist in Resources */,
-				FE7477A60BAC4F5200829F4F /* NSDistributedLock.m in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4314,7 +4313,6 @@
 				6EA04A6C09E57D5F0067589C /* NSTimeZoneAbbreviations.plist in Resources */,
 				6EA04A6D09E57D5F0067589C /* NSTimeZoneRegions.plist in Resources */,
 				6EA04A6E09E57D5F0067589C /* NSUserDefaults.plist in Resources */,
-				FE7477A20BAC4F5200829F4F /* NSDistributedLock.m in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4334,7 +4332,6 @@
 				6E2808FD09747EA900EC542B /* NSTimeZoneAbbreviations.plist in Resources */,
 				6E2808FE09747EA900EC542B /* NSTimeZoneRegions.plist in Resources */,
 				6E280B2D09747F4900EC542B /* NSUserDefaults.plist in Resources */,
-				FE74779E0BAC4F5200829F4F /* NSDistributedLock.m in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4603,6 +4600,7 @@
 				FE74781A0BAC594600829F4F /* NSNetServiceBrowser.m in Sources */,
 				FE7478480BAC5A8700829F4F /* NSSortDescriptor.m in Sources */,
 				FE7478770BAC5EB600829F4F /* NSValueTransformer.m in Sources */,
+				FEE17BA50BB43998006B4510 /* NSDistributedLock.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4868,6 +4866,7 @@
 				FE7478160BAC594600829F4F /* NSNetServiceBrowser.m in Sources */,
 				FE7478460BAC5A8700829F4F /* NSSortDescriptor.m in Sources */,
 				FE7478750BAC5EB600829F4F /* NSValueTransformer.m in Sources */,
+				FEE17BA40BB43998006B4510 /* NSDistributedLock.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5136,6 +5135,7 @@
 				FE7478120BAC594600829F4F /* NSNetServiceBrowser.m in Sources */,
 				FE7478440BAC5A8700829F4F /* NSSortDescriptor.m in Sources */,
 				FE7478730BAC5EB600829F4F /* NSValueTransformer.m in Sources */,
+				FEE17BA30BB43998006B4510 /* NSDistributedLock.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

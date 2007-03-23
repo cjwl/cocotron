@@ -23,6 +23,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSControl.h>
 #import <AppKit/NSMatrix.h>
 #import <AppKit/NSNibKeyedUnarchiver.h>
+#import <AppKit/NSButtonImageSource.h>
 
 @implementation NSButtonCell
 
@@ -47,6 +48,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     NSNibKeyedUnarchiver *keyed=(NSNibKeyedUnarchiver *)coder;
     unsigned           flags=[keyed decodeIntForKey:@"NSButtonFlags"];
     unsigned           flags2=[keyed decodeIntForKey:@"NSButtonFlags2"];
+    id                 check;
     
     _title=[[keyed decodeObjectForKey:@"NSContents"] retain];
     _alternateTitle=[[keyed decodeObjectForKey:@"NSAlternateContents"] retain];
@@ -84,7 +86,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
      _highlightsBy|=NSChangeGrayCellMask;
     
     _isBordered=(flags&0x00800000)?YES:NO; // err, this flag is in NSCell too
-    
+        
     switch(flags2&0x37){
      case 1: _bezelStyle=NSRoundedBezelStyle; break;
      case 2: _bezelStyle=NSRegularSquareBezelStyle; break;
@@ -107,11 +109,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     _isTransparent=(flags&0x00008000)?YES:NO;
     _imageDimsWhenDisabled=(flags&0x00002000)?NO:YES;
     
-    _alternateImage=[[keyed decodeObjectForKey:@"NSAlternateImage"] retain];
-    if(![_alternateImage isKindOfClass:[NSImage class]]){
-     [_alternateImage release];
-     _alternateImage=nil;
+    check=[keyed decodeObjectForKey:@"NSAlternateImage"];
+    if([check isKindOfClass:[NSImage class]])
+     _alternateImage=[check retain];
+    else if([check isKindOfClass:[NSButtonImageSource class]]){
+     [_image release];
+     _image=[[check normalImage] retain];
+     _alternateImage=[[check alternateImage] retain];
     }
+    
     _keyEquivalent=[[keyed decodeObjectForKey:@"NSKeyEquivalent"] retain];
     _keyEquivalentModifierMask=flags2>>8;
    }
