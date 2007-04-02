@@ -13,7 +13,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSClipView.h>
 #import <AppKit/NSScroller.h>
 #import <AppKit/NSColor.h>
-#import <AppKit/NSInterfaceGraphics.h>
+#import <AppKit/NSGraphicsStyle.h>
 #import <AppKit/NSStringDrawing.h>
 #import <AppKit/NSMatrix.h>
 #import <AppKit/NSApplication.h>
@@ -784,12 +784,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [[NSColor controlColor] set];
    NSRectFill(rect);
 
-   if([self isTitled]){
+   if([self isTitled]){    
     for(i=[self firstVisibleColumn];i<=[self lastVisibleColumn];i++){
      NSRect titleRect=[self titleFrameOfColumn:i];
 
-     NSInterfaceDrawBrowserHeader(titleRect,titleRect);
-
+     [[self graphicsStyle] drawBrowserTitleBackgroundInRect:titleRect];
+     
      titleRect=NSInsetRect(titleRect,2,2);
 
      [self drawTitleOfColumn:i inRect:titleRect];

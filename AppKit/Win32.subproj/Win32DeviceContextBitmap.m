@@ -14,6 +14,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -initWithSize:(NSSize)size deviceContext:(Win32DeviceContext *)compatible {
    [self initWithDC:CreateCompatibleDC([compatible dc])];
+    _compatible=[compatible retain];
 #if 1
    _bitmap=CreateCompatibleBitmap([compatible dc],size.width,size.height);
 #else
@@ -50,9 +51,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)dealloc {
+   [_compatible release];
    DeleteObject(_bitmap);
    DeleteDC(_dc);
    [super dealloc];
+}
+
+-(Win32DeviceContextWindow *)windowDeviceContext {
+   return [_compatible windowDeviceContext];
 }
 
 @end

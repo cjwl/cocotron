@@ -27,7 +27,7 @@ const char *OBJCStringFromClass(Class class){
 
 Class OBJCSuperclassFromClass(Class class) {
    struct objc_class *cls=class;
-   return cls->superclass;
+   return cls->super_class;
 }
 
 FOUNDATION_EXPORT Class OBJCSuperclassFromObject(id object) {
@@ -41,7 +41,7 @@ BOOL OBJCInstanceRespondsToSelector(Class class,SEL selector) {
 
 BOOL OBJCClassConformsToProtocol(Class class,Protocol *protocol) {
 
-   for(;;class=class->superclass){
+   for(;;class=class->super_class){
     OBJCProtocolList *protoList=class->protocols;
 
     for(;protoList!=NULL;protoList=protoList->next){
@@ -67,13 +67,13 @@ BOOL OBJCIsMetaClass(Class class) {
 IMP OBJCMethodForSelector(Class class,SEL selector) {
    OBJCMethod *method=OBJCLookupUniqueIdInClass(class,OBJCSelectorUniqueId(selector));
 
-   return (method==NULL)?NULL:method->implementation;
+   return (method==NULL)?NULL:method->method_imp;
 }
 
 const char *OBJCTypesForSelector(Class class,SEL selector) {
    OBJCMethod *method=OBJCLookupUniqueIdInClass(class,OBJCSelectorUniqueId(selector));
 
-   return (method==NULL)?NULL:method->types;
+   return (method==NULL)?NULL:method->method_types;
 }
 
 int OBJCClassVersion(Class class) {
@@ -88,11 +88,11 @@ void OBJCSetClassVersion(Class class,int version) {
 
 unsigned OBJCInstanceSize(Class class) {
    struct objc_class *cls=class;
-   return cls->instanceSize;
+   return cls->instance_size;
 }
 
 static OBJCInstanceVariable *instanceVariableWithName(OBJCClassTemplate *class,const char *name) {
-   for(;;class=class->superclass){
+   for(;;class=class->super_class){
     OBJCInstanceVariableList *ivarList=class->ivars;
     int i;
 
@@ -126,7 +126,7 @@ void OBJCSetInstanceVariable(id object,const char *name,void *value) {
 BOOL OBJCIsKindOfClass(id object,Class kindOf) {
    struct objc_class *class=object->isa;
 
-   for(;;class=class->superclass){
+   for(;;class=class->super_class){
     if(kindOf==class)
      return YES;
     if(class->isa->isa==class)
@@ -135,9 +135,3 @@ BOOL OBJCIsKindOfClass(id object,Class kindOf) {
 
    return NO;
 }
-
-// const char *OBJCStringFromSelector(SEL selector) in OBJCSelector.m
-// SEL OBJCSelectorFromString(const char *string) in OBJCSelector.m
-// const char *OBJCModulePathFromClass(Class class) is OBJCModule.m
-// const char *OBJCModulePathForProcess() in OBJCModule.m
-

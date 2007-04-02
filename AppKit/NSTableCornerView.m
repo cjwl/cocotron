@@ -8,12 +8,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 // Original - Christopher Lloyd <cjwl@objc.net>
 #import <AppKit/NSTableCornerView.h>
-#import <AppKit/NSGraphics.h>
+#import <AppKit/NSGraphicsStyle.h>
 
 @implementation NSTableCornerView
 
 -(void)drawRect:(NSRect)rect {
-    NSDrawButton(_bounds,rect);
+   [[self graphicsStyle] drawTableViewCornerInRect:_bounds];
 }
 
 @end

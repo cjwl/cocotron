@@ -18,7 +18,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSImage.h>
 #import <AppKit/NSParagraphStyle.h>
 #import <AppKit/NSWindow.h>
-#import <AppKit/NSInterfaceGraphics.h>
+#import <AppKit/NSGraphicsStyle.h>
 #import <AppKit/NSStringDrawer.h>
 #import <AppKit/NSControl.h>
 #import <AppKit/NSMatrix.h>
@@ -431,9 +431,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    }
 
    if(drawImage){
-    float dimFraction=[self imageDimsWhenDisabled]?0.5:1.0;
-
-    [image compositeToPoint:imageOrigin operation:NSCompositeSourceOver fraction:[self isEnabled]?1.0:dimFraction];
+    NSRect rect=NSMakeRect(imageOrigin.x,imageOrigin.y,imageSize.width,imageSize.height);
+    
+    [[_controlView graphicsStyle] drawButtonImage:image inRect:rect enabled:[self isEnabled]?YES:![self imageDimsWhenDisabled]];
    }
 
    if(drawTitle){
@@ -472,17 +472,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
        frame = NSInsetRect(frame,1,1);
    }
 
-   if([self isBordered]){
-    if(([self highlightsBy]&NSPushInCellMask) && [self isHighlighted]){
-     NSInterfaceDrawDepressedButton(frame,frame);
-    }
-    else {
-     if([self isVisuallyHighlighted])
-      NSInterfaceDrawHighlightedButton(frame,frame);
-     else
-      NSDrawButton(frame,frame);
-    }
-
+   if([self isBordered]){    
+    if(([self highlightsBy]&NSPushInCellMask) && [self isHighlighted])
+     [[_controlView graphicsStyle] drawPushButtonPressedInRect:frame];
+    else if([self isVisuallyHighlighted])
+     [[_controlView graphicsStyle] drawPushButtonHighlightedInRect:frame];
+    else
+     [[_controlView graphicsStyle] drawPushButtonNormalInRect:frame];
+         
     frame=NSInsetRect(frame,2,2);
    }
 

@@ -17,6 +17,19 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return self;
 }
 
+-(unsigned)hash 
+{ 
+        return (unsigned)[self nonretainedObjectValue]; 
+} 
+
+-(BOOL)isEqual:(id)other 
+{ 
+        if([other isKindOfClass:[NSValue class]] && 
+           [other nonretainedObjectValue] == [self nonretainedObjectValue]) 
+                return YES; 
+        return NO; 
+} 
+
 -(void)getValue:(void *)value {
    *((id *)value)=_object;
 }

@@ -14,6 +14,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSNumber.h>
 #import <Foundation/NSData.h>
 #import <Foundation/NSArray.h>
+#import <Foundation/NSConcreteDirectoryEnumerator.h>
 
 NSString *NSFileType = @"NSFileType";
 NSString *NSFileTypeRegular = @"NSFileTypeRegular";
@@ -59,8 +60,7 @@ NSString *NSFileHFSTypeCode = @"NSFileHFSTypeCode";
 }
 
 -(NSDirectoryEnumerator *)enumeratorAtPath:(NSString *)path {
-// FIX
-   return (id)[[self directoryContentsAtPath:path] objectEnumerator];
+    return [[[NSConcreteDirectoryEnumerator alloc] initWithPath: path] autorelease];
 }
 
 -(BOOL)createDirectoryAtPath:(NSString *)path

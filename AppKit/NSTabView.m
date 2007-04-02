@@ -16,6 +16,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSMatrix.h>
 #import <AppKit/NSPopUpButton.h>	// for indexOfSelectedItem definition
 #import <AppKit/NSNibKeyedUnarchiver.h>
+#import <AppKit/NSGraphicsStyle.h>
 
 @interface NSTabViewItem(NSTabViewItem_private)
 -(void)setTabView:(NSTabView *)tabView;
@@ -332,73 +333,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return result;
 }
 
-// only works in un-flipped systems
-void _NSDrawTab(NSRect rect, NSColor *tabColor, NSRect clipRect,BOOL selected) {
-    NSRect rects[8];
-    NSColor *colors[8];
-    int i;
-
-    if(selected){
-       rect.origin.x-=2;
-       rect.size.width+=3;
-    }
-    else {
-     rect.size.height-=2;
-    }
-
-    for(i=0; i<8; i++)
-        rects[i]=rect;
-
-    colors[0]=[NSColor controlColor];
-    if(selected){
-     rects[0].origin.y-=1;
-     rects[0].size.height+=1;
-    }
-    colors[1]=tabColor;
-    rects[1]=NSInsetRect(rect,1,1);
-    colors[2]=[NSColor whiteColor];
-    rects[2].size.width=1;
-    rects[2].size.height-=2;
-    if(selected){
-     rects[2].origin.y-=1;
-     rects[2].size.height+=1;
-    }
-    colors[3]=[NSColor whiteColor];
-    rects[3].origin.x+=1;
-    rects[3].origin.y+=rect.size.height-2;
-    rects[3].size.width=1;
-    rects[3].size.height=1;
-    colors[4]=[NSColor whiteColor];
-    rects[4].origin.x+=2;
-    rects[4].origin.y+=rect.size.height-1;
-    rects[4].size.width=rect.size.width-4;
-    rects[4].size.height=1;
-    colors[5]=[NSColor blackColor];
-    rects[5].origin.x+=rect.size.width-2;
-    rects[5].origin.y+=rect.size.height-2;
-    rects[5].size.width=1;
-    rects[5].size.height=1;
-    colors[6]=[NSColor controlShadowColor];
-    rects[6].origin.x+=rect.size.width-2;
-    rects[6].size.width=1;
-    rects[6].size.height-=2;
-    colors[7]=[NSColor blackColor];
-    rects[7].origin.x+=rect.size.width-1;
-    rects[7].size.width=1;
-    rects[7].size.height-=2;
-    if(selected){
-     rects[7].origin.y-=1;
-     rects[7].size.height+=1;
-    }
-
-    for(i=0; i<8; i++) {
-        [colors[i] set];
-        NSRectFill(rects[i]);
-    }
-}
-
 -(void)drawRect:(NSRect)rect {
-
+   NSGraphicsStyle *style=[self graphicsStyle];
+   
     switch (_type) {
         case NSTopTabsBezelBorder:
         case NSLeftTabsBezelBorder:
@@ -412,18 +349,17 @@ void _NSDrawTab(NSRect rect, NSColor *tabColor, NSRect clipRect,BOOL selected) {
 
                 // defer selected item for overlap
                 if (item != _selectedItem) {
-                    _NSDrawTab([self rectForItemBorderAtIndex:i],[item color],rect,NO);
+                    [style drawTabInRect:[self rectForItemBorderAtIndex:i] clipRect:rect color:[item color] selected:NO];
                     [item drawLabel:_allowsTruncatedLabels inRect:[self rectForItemLabelAtIndex:i]];
                 }
             }
 
-            NSDrawButton([self rectForBorder],rect);
+            [style drawTabPaneInRect:[self rectForBorder]];
 
             if((i=[_items indexOfObjectIdenticalTo:_selectedItem])!=NSNotFound){
                 // now do selected item
                 i = [_items indexOfObject:_selectedItem];
-
-                _NSDrawTab([self rectForItemBorderAtIndex:i],[_selectedItem color],rect,YES);
+                [style drawTabInRect:[self rectForItemBorderAtIndex:i] clipRect:rect color:[_selectedItem color] selected:YES];
               {
                NSRect labelRect=[self rectForItemLabelAtIndex:i];
                labelRect.origin.y+=2;

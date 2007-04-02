@@ -10,7 +10,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSProgressIndicator.h>
 #import <AppKit/NSColor.h>
 #import <AppKit/NSWindow.h>
-#import <AppKit/NSInterfaceGraphics.h>
+#import <AppKit/NSGraphicsStyle.h>
 #import <AppKit/NSNibKeyedUnarchiver.h>
 
 // rough estimates
@@ -78,13 +78,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     float percentage;
     int numBlocks;
     
-    if (!_isBezeled) {
-     [[[self window] backgroundColor] set];
-     NSRectFill(_bounds);
-    }
-    else
-        NSInterfaceDrawProgressIndicatorBezel(_bounds, clipRect);
-
+    [[self graphicsStyle] drawProgressIndicatorBezel:_bounds clipRect:clipRect bezeled:_isBezeled];
+    
     [[NSColor selectedControlColor] set];
     
     if (_isIndeterminate) {

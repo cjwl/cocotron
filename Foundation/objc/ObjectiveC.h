@@ -10,9 +10,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/ObjCTypes.h>
 
-#define sel_getUid             OBJCSelectorFromString
 #define sel_getName            OBJCStringFromSelector
-#define sel_registerName       OBJCCreateSelectorFromCString
 #define SELNAME                OBJCStringFromSelector
 
 @class Protocol;
@@ -42,8 +40,6 @@ FOUNDATION_EXPORT void OBJCSetInstanceVariable(id,const char *name,void *);
 FOUNDATION_EXPORT BOOL OBJCIsKindOfClass(id object,Class class);
 
 FOUNDATION_EXPORT const char *OBJCStringFromSelector(SEL selector);
-FOUNDATION_EXPORT SEL OBJCCreateSelectorFromCString(const char *string);
-FOUNDATION_EXPORT SEL OBJCSelectorFromString(const char *string);
 
 FOUNDATION_EXPORT const char *OBJCModulePathFromClass(Class class);
 FOUNDATION_EXPORT const char *OBJCModulePathForProcess();

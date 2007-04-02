@@ -14,9 +14,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSImage.h>
 #import <AppKit/NSEvent.h>
 #import <AppKit/NSWindow.h>
-#import <AppKit/NSInterfaceGraphics.h>
 #import <AppKit/NSDisplay.h>
-#import <AppKit/NSInterfacePart.h>
+#import <AppKit/NSGraphicsStyle.h>
 #import <AppKit/NSNibKeyedUnarchiver.h>
 
 @implementation NSScroller
@@ -130,20 +129,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)setArrowsPosition:(NSScrollArrowPosition)position {
    _arrowsPosition=position;
-}
-
--(NSInterfacePart *)minPart {
-   if([self isVertical])
-    return [NSInterfacePart interfacePartScrollerArrowUpEnabled:[self isEnabled]];
-   else
-    return [NSInterfacePart interfacePartScrollerArrowLeftEnabled:[self isEnabled]];
-}
-
--(NSInterfacePart *)maxPart {
-   if([self isVertical])
-    return [NSInterfacePart interfacePartScrollerArrowDownEnabled:[self isEnabled]];
-   else
-    return [NSInterfacePart interfacePartScrollerArrowRightEnabled:[self isEnabled]];
 }
 
 -(NSRect)frameOfDecrementPage {
@@ -318,54 +303,15 @@ static inline float roundFloat(float value){
 -(void)drawKnob {
    NSRect knob=[self rectForPart:NSScrollerKnob];
 
-   if(!NSIsEmptyRect(knob))
-    NSDrawButton(knob,knob);
+   if(!NSIsEmptyRect(knob)) 
+    [[self graphicsStyle] drawScrollerKnobInRect:knob vertical:[self isVertical] highlight:_isHighlighted];
 }
 
 -(void)drawArrow:(NSScrollerArrow)arrow highlight:(BOOL)highlight {
-   if(arrow==NSScrollerIncrementArrow){
-    NSRect max=[self rectForPart:NSScrollerIncrementLine];
-
-    if(!NSIsEmptyRect(max)){
-     NSInterfacePart *maxPart=[self maxPart];
-     NSSize           maxPartSize=[maxPart size];
-
-     if(highlight)
-      NSInterfaceDrawDepressedScrollerButton(max,max);
-     else
-      NSInterfaceDrawScrollerButton(max,max);
-
-     if(max.size.height>8 && max.size.width>8){
-      NSPoint point=max.origin;
-
-      point.x+=floor((max.size.width-maxPartSize.width)/2);
-      point.y+=floor((max.size.height-maxPartSize.height)/2);
-      [maxPart drawAtPoint:point];
-     }
-    }
-   }
-   else {
-    NSRect min=[self rectForPart:NSScrollerDecrementLine];
-
-    if(!NSIsEmptyRect(min)){
-     NSInterfacePart *minPart=[self minPart];
-     NSSize           minPartSize=[minPart size];
-
-     if(highlight)
-      NSInterfaceDrawDepressedScrollerButton(min,min);
-     else
-      NSInterfaceDrawScrollerButton(min,min);
-
-     if(min.size.height>8 && min.size.width>8){
-      NSPoint point=min.origin;
-
-      point.x+=floor((min.size.width-minPartSize.width)/2);
-      point.y+=floor((min.size.height-minPartSize.height)/2);
-      [minPart drawAtPoint:point];
-     }
-    }
-   }
-}
+   NSRect rect=(arrow==NSScrollerIncrementArrow)?[self rectForPart:NSScrollerIncrementLine]:[self rectForPart:NSScrollerDecrementLine];
+   
+   [[self graphicsStyle] drawScrollerButtonInRect:rect enabled:[self isEnabled] pressed:highlight vertical:[self isVertical] upOrLeft:(arrow!=NSScrollerIncrementArrow)];
+ }
 
 
 -(void)drawRect:(NSRect)rect {
@@ -380,20 +326,14 @@ static inline float roundFloat(float value){
    high=(_hitPart==NSScrollerDecrementLine) && _isHighlighted;
    [self drawArrow:NSScrollerDecrementArrow highlight:high];
 
-   if(!NSIsEmptyRect(decPage)){
-    [[NSColor colorWithCalibratedWhite:0.9 alpha:1] set];
-    NSRectFill(decPage);
-   }
+   if(!NSIsEmptyRect(decPage))
+    [[self graphicsStyle] drawScrollerTrackInRect:decPage vertical:[self isVertical] upOrLeft:YES];
 
-   if(!NSIsEmptyRect(incPage)){
-    [[NSColor colorWithCalibratedWhite:0.9 alpha:1] set];
-    NSRectFill(incPage);
-   }
+   if(!NSIsEmptyRect(incPage))
+    [[self graphicsStyle] drawScrollerTrackInRect:incPage vertical:[self isVertical] upOrLeft:NO];
 
-   if(NSIsEmptyRect(knob) && !NSIsEmptyRect(slot)){
-    [[NSColor colorWithCalibratedWhite:0.9 alpha:1] set];
-    NSRectFill(slot);
-   }
+   if(NSIsEmptyRect(knob) && !NSIsEmptyRect(slot))
+    [[self graphicsStyle] drawScrollerTrackInRect:slot vertical:[self isVertical]];
 
    [self drawKnob];
 }

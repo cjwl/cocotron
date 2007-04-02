@@ -16,4 +16,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    NSUnimplementedMethod();
 }
 
+-(NSDictionary *)directoryAttributes {
+   return nil;
+}
+
+-(NSDictionary *)fileAttributes {
+   return nil;
+}
+
 @end

@@ -22,4 +22,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [super dealloc];
 }
 
+-(HWND)windowHandle {
+   return _handle;
+}
+
+-(Win32DeviceContextWindow *)windowDeviceContext {
+   return self;
+}
+
 @end

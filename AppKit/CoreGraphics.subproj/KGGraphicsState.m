@@ -87,15 +87,19 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(NSPoint)convertPointToDeviceSpace:(NSPoint)point {
+   return CGPointApplyAffineTransform(point,_ctm);
 }
 
 -(NSPoint)convertPointToUserSpace:(NSPoint)point {
+   return CGPointApplyAffineTransform(point,CGAffineTransformInvert(_ctm));
 }
 
 -(NSSize)convertSizeToDeviceSpace:(NSSize)size {
+   return CGSizeApplyAffineTransform(size,_ctm);
 }
 
 -(NSSize)convertSizeToUserSpace:(NSSize)size {
+   return CGSizeApplyAffineTransform(size,CGAffineTransformInvert(_ctm));
 }
 
 -(NSRect)convertRectToDeviceSpace:(NSRect)rect {

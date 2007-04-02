@@ -124,6 +124,9 @@ FOUNDATION_EXPORT const unsigned NSMaximumStringLength;
         allowLossyConversion:(BOOL)lossy;
 -(NSData *)dataUsingEncoding:(NSStringEncoding)encoding;
 
+-(NSString *)stringByReplacingPercentEscapesUsingEncoding:(NSStringEncoding)encoding;
+-(NSString *)stringByAddingPercentEscapesUsingEncoding:(NSStringEncoding)encoding;
+
 +(NSStringEncoding)defaultCStringEncoding;
 
 -(void)getCString:(char *)buffer maxLength:(unsigned)maxLength

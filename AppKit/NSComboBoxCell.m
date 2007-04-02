@@ -12,6 +12,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSButtonCell.h>
 #import <AppKit/NSComboBoxWindow.h>
 #import <AppKit/NSNibKeyedUnarchiver.h>
+#import <AppKit/NSGraphicsStyle.h>
 
 @implementation NSComboBoxCell
 
@@ -28,9 +29,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     _objectValues=[[NSMutableArray alloc] initWithArray:[keyed decodeObjectForKey:@"NSPopUpListData"]];
     _numberOfVisibleItems=[keyed decodeIntForKey:@"NSVisibleItemCount"];
     _completes=[keyed decodeBoolForKey:@"NSCompletes"];
-    _buttonCell=[[NSButtonCell alloc] initImageCell:[NSImage imageNamed:@"NSComboBoxCellDown"]];
-    [_buttonCell setBordered:YES];
-    [_buttonCell setBezeled:YES];
+    _buttonBordered=YES;
+    _buttonEnabled=YES;
+    _buttonPressed=NO;
    }
    else {
     [NSException raise:NSInvalidArgumentException format:@"-[%@ %s] is not implemented for coder %@",isa,SELNAME(_cmd),coder];
@@ -41,7 +42,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)dealloc {
    [_objectValues release];
-   [_buttonCell release];
    [super dealloc];
 }
 
@@ -49,29 +49,28 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     NSComboBoxCell *copy = [super copyWithZone:zone];
 
     copy->_objectValues=[_objectValues copy];
-    copy->_buttonCell=[_buttonCell copy];
 
     return copy;
 }
 
 -(void)addItemWithObjectValue:(id)object {
    [_objectValues addObject:object];
-   [_buttonCell setEnabled:[_objectValues count]>0];
+   _buttonEnabled=([_objectValues count]>0)?YES:NO;
 }
 
 -(void)addItemsWithObjectValues:(NSArray *)objects {
    [_objectValues addObjectsFromArray:objects];
-   [_buttonCell setEnabled:[_objectValues count]>0];
+   _buttonEnabled=([_objectValues count]>0)?YES:NO;
 }
 
 - (void)insertItemWithObjectValue:(id)object atIndex:(int)index {
     [_objectValues insertObject:object atIndex:index];
-    [_buttonCell setEnabled:[_objectValues count]>0];
+   _buttonEnabled=([_objectValues count]>0)?YES:NO;
 }
 
 -(void)removeAllItems {
    [_objectValues removeAllObjects];
-   [_buttonCell setEnabled:[_objectValues count]>0];
+   _buttonEnabled=([_objectValues count]>0)?YES:NO;
 }
 
 -(int)indexOfItemWithObjectValue:(id)object {
@@ -148,8 +147,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    if([self font]!=nil)
     [window setFont:[self font]];
 
+   _buttonPressed=YES;
+   [controlView setNeedsDisplay:YES];
    selectedIndex=[window runTrackingWithEvent:event];
    [window close]; // release when closed=YES
+   _buttonPressed=NO;
+   [controlView setNeedsDisplay:YES];
 
    if(selectedIndex!=NSNotFound){
     NSControl *control=(NSControl *)controlView;
@@ -172,7 +175,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)drawWithFrame:(NSRect)frame inView:(NSView *)controlView {
    [super drawWithFrame:frame inView:controlView];
 
-   [_buttonCell drawWithFrame:[self buttonRectForBounds:frame] inView:controlView];
+   [[controlView graphicsStyle] drawComboBoxButtonInRect:[self buttonRectForBounds:frame] enabled:_buttonEnabled bordered:_buttonBordered pressed:_buttonPressed];
 }
 
 @end

@@ -7,8 +7,49 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 #import <Foundation/NSObject.h>
 
+@class NSURLHandle,NSNumber,NSData;
+
 @interface NSURL : NSObject {
 
 }
+
+-initWithScheme:(NSString *)scheme host:(NSString *)host path:(NSString *)path;
+-initFileURLWithPath:(NSString *)path;
+-initWithString:(NSString *)string;
+-initWithString:(NSString *)string relativeToURL:(NSURL *)parent;
+
++fileURLWithPath:(NSString *)path;
++URLWithString:(NSString *)string;
++URLWithString:(NSString *)string relativeToURL:(NSURL *)parent;
+
+-(NSString *)absoluteString;
+-(NSString *)parameterString;
+-propertyForKey:(NSString *)key;
+
+-(NSString *)scheme;
+-(NSString *)host;
+-(NSString *)user;
+-(NSString *)password;
+-(NSString *)fragment;
+-(NSString *)path;
+-(NSNumber *)port;
+-(NSString *)query;
+-(NSString *)relativePath;
+-(NSString *)relativeString;
+-(NSString *)resourceSpecifier;
+
+-(BOOL)isFileURL;
+
+-(NSURL *)standardizedURL;
+-(NSURL *)absoluteURL;
+-(NSURL *)baseURL;
+
+-(BOOL)setProperty:property forKey:(NSString *)key;
+
+-(BOOL)setResourceData:(NSData *)data;
+
+-(NSData *)resourceDataUsingCache:(BOOL)useCache;
+-(NSURLHandle *)URLHandleUsingCache:(BOOL)useCache;
+-(void)laodResourceDataNotifyingClient:client usingCache:(BOOL)useCache;
 
 @end

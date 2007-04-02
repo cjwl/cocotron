@@ -17,6 +17,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSPlatform.h>
 
 #import <Foundation/ObjectiveC.h>
+#import <objc/objc.h>
 
 const unsigned NSNotFound=0x7FFFFFFF;
 
@@ -201,12 +202,17 @@ const char *NSGetSizeAndAlignment(const char *type,unsigned *size,
 }
 
 SEL NSSelectorFromString(NSString *selectorName) {
+   SEL      result;
+   
    unsigned length=[selectorName length];
    char     cString[length+1];
 
    [selectorName getCString:cString maxLength:length];
 
-   return OBJCSelectorFromString(cString);
+   if((result=sel_getUid(cString))==NULL)
+    result=sel_registerName(cString);
+   
+   return result;
 }
 
 NSString *NSStringFromSelector(SEL selector) {

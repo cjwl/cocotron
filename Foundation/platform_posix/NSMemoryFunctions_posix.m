@@ -60,7 +60,7 @@ NSThread *NSPlatformCurrentThread() {
 NSObject *NSAllocateObject(Class class,unsigned extraBytes,NSZone *zone) {
     id result;
 
-    result=calloc(1,class->instanceSize+extraBytes);
+    result=calloc(1,class->instance_size+extraBytes);
     result->isa=class;
 
     return result;
@@ -85,7 +85,7 @@ static inline void byteCopy(void *vsrc,void *vdst,unsigned length){
 id NSCopyObject(id object,unsigned extraBytes,NSZone *zone) {
    id result=NSAllocateObject(object->isa,extraBytes,zone);
 
-   byteCopy(object,result,object->isa->instanceSize+extraBytes);
+   byteCopy(object,result,object->isa->instance_size+extraBytes);
 
    return result;
 }

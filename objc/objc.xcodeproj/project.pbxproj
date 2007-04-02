@@ -29,6 +29,9 @@
 		FE4034CF0B42F2C400CEC41A /* objc.h in Headers */ = {isa = PBXBuildFile; fileRef = FE4034CE0B42F2C400CEC41A /* objc.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE4034D00B42F2C400CEC41A /* objc.h in Headers */ = {isa = PBXBuildFile; fileRef = FE4034CE0B42F2C400CEC41A /* objc.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE4034D10B42F2C400CEC41A /* objc.h in Headers */ = {isa = PBXBuildFile; fileRef = FE4034CE0B42F2C400CEC41A /* objc.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE85F6AB0BBF51D400E9C25C /* objc-runtime.h in Headers */ = {isa = PBXBuildFile; fileRef = FE85F6AA0BBF51D400E9C25C /* objc-runtime.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE85F6AC0BBF51D400E9C25C /* objc-runtime.h in Headers */ = {isa = PBXBuildFile; fileRef = FE85F6AA0BBF51D400E9C25C /* objc-runtime.h */; };
+		FE85F6AD0BBF51D400E9C25C /* objc-runtime.h in Headers */ = {isa = PBXBuildFile; fileRef = FE85F6AA0BBF51D400E9C25C /* objc-runtime.h */; };
 		FEB6CBFA0B4A1584004FADF2 /* objc-export.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB6CBF90B4A1584004FADF2 /* objc-export.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FEB6CBFB0B4A1584004FADF2 /* objc-export.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB6CBF90B4A1584004FADF2 /* objc-export.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FEB6CBFC0B4A1584004FADF2 /* objc-export.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB6CBF90B4A1584004FADF2 /* objc-export.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -92,6 +95,7 @@
 		FE40348A0B42E94D00CEC41A /* objc.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = objc.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FE4034B90B42F24C00CEC41A /* objc-class.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "objc-class.h"; sourceTree = "<group>"; };
 		FE4034CE0B42F2C400CEC41A /* objc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = objc.h; sourceTree = "<group>"; };
+		FE85F6AA0BBF51D400E9C25C /* objc-runtime.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = "objc-runtime.h"; sourceTree = "<group>"; };
 		FEB6CBF90B4A1584004FADF2 /* objc-export.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "objc-export.h"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -109,6 +113,7 @@
 		0867D691FE84028FC02AAC07 /* objc */ = {
 			isa = PBXGroup;
 			children = (
+				FE85F6AA0BBF51D400E9C25C /* objc-runtime.h */,
 				08FB77AEFE84172EC02AAC07 /* Classes */,
 				32C88DFF0371C24200C91783 /* Other Sources */,
 				089C1665FE841158C02AAC07 /* Resources */,
@@ -176,6 +181,7 @@
 				FE4034BA0B42F24C00CEC41A /* objc-class.h in Headers */,
 				FE4034D00B42F2C400CEC41A /* objc.h in Headers */,
 				FEB6CBFA0B4A1584004FADF2 /* objc-export.h in Headers */,
+				FE85F6AB0BBF51D400E9C25C /* objc-runtime.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -186,6 +192,7 @@
 				FE4034BB0B42F24C00CEC41A /* objc-class.h in Headers */,
 				FE4034CF0B42F2C400CEC41A /* objc.h in Headers */,
 				FEB6CBFC0B4A1584004FADF2 /* objc-export.h in Headers */,
+				FE85F6AC0BBF51D400E9C25C /* objc-runtime.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -196,6 +203,7 @@
 				FE4034BC0B42F24C00CEC41A /* objc-class.h in Headers */,
 				FE4034D10B42F2C400CEC41A /* objc.h in Headers */,
 				FEB6CBFB0B4A1584004FADF2 /* objc-export.h in Headers */,
+				FE85F6AD0BBF51D400E9C25C /* objc-runtime.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

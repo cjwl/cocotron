@@ -17,6 +17,20 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return self;
 }
 
+-(unsigned)hash 
+{ 
+        return (unsigned)[self pointerValue]; 
+} 
+
+-(BOOL)isEqual:(id)other 
+{ 
+        if([other isKindOfClass:[NSValue class]] && 
+           [other pointerValue] == [self pointerValue]) 
+                return YES; 
+        return NO; 
+} 
+
+
 -(void)getValue:(void *)value {
    *((const void **)value)=_pointer;
 }

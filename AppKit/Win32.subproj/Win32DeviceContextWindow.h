@@ -9,9 +9,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/Win32DeviceContext.h>
 
 @interface Win32DeviceContextWindow : Win32DeviceContext {
-   HWND _handle;
+   HWND   _handle;
 }
 
 -initWithWindowHandle:(HWND)handle;
+
+-(HWND)windowHandle;
 
 @end

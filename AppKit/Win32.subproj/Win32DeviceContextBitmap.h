@@ -9,10 +9,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/Win32DeviceContext.h>
 
 @interface Win32DeviceContextBitmap : Win32DeviceContext {
-   HBITMAP _bitmap;
+   Win32DeviceContext *_compatible;
+   HBITMAP             _bitmap;
 }
 
 -initWithSize:(NSSize)size deviceContext:(Win32DeviceContext *)compatible;
 -initWithSize:(NSSize)size;
+
+-(Win32DeviceContextWindow *)windowDeviceContext;
 
 @end

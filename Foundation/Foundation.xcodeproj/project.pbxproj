@@ -1613,6 +1613,33 @@
 		FEE17BA30BB43998006B4510 /* NSDistributedLock.m in Sources */ = {isa = PBXBuildFile; fileRef = FEE17BA20BB43998006B4510 /* NSDistributedLock.m */; };
 		FEE17BA40BB43998006B4510 /* NSDistributedLock.m in Sources */ = {isa = PBXBuildFile; fileRef = FEE17BA20BB43998006B4510 /* NSDistributedLock.m */; };
 		FEE17BA50BB43998006B4510 /* NSDistributedLock.m in Sources */ = {isa = PBXBuildFile; fileRef = FEE17BA20BB43998006B4510 /* NSDistributedLock.m */; };
+		FEE97EB60BBEDE3000DBAFF9 /* NSConcreteDirectoryEnumerator.h in Headers */ = {isa = PBXBuildFile; fileRef = FEE97EB40BBEDE3000DBAFF9 /* NSConcreteDirectoryEnumerator.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FEE97EB70BBEDE3000DBAFF9 /* NSConcreteDirectoryEnumerator.m in Sources */ = {isa = PBXBuildFile; fileRef = FEE97EB50BBEDE3000DBAFF9 /* NSConcreteDirectoryEnumerator.m */; };
+		FEE97EB80BBEDE3000DBAFF9 /* NSConcreteDirectoryEnumerator.h in Headers */ = {isa = PBXBuildFile; fileRef = FEE97EB40BBEDE3000DBAFF9 /* NSConcreteDirectoryEnumerator.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FEE97EB90BBEDE3000DBAFF9 /* NSConcreteDirectoryEnumerator.m in Sources */ = {isa = PBXBuildFile; fileRef = FEE97EB50BBEDE3000DBAFF9 /* NSConcreteDirectoryEnumerator.m */; };
+		FEE97EBA0BBEDE3000DBAFF9 /* NSConcreteDirectoryEnumerator.h in Headers */ = {isa = PBXBuildFile; fileRef = FEE97EB40BBEDE3000DBAFF9 /* NSConcreteDirectoryEnumerator.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FEE97EBB0BBEDE3000DBAFF9 /* NSConcreteDirectoryEnumerator.m in Sources */ = {isa = PBXBuildFile; fileRef = FEE97EB50BBEDE3000DBAFF9 /* NSConcreteDirectoryEnumerator.m */; };
+		FEF5B4CD0BBEFDBA00A8FF26 /* NSArray+KVC.m in Sources */ = {isa = PBXBuildFile; fileRef = FEF5B4C60BBEFDBA00A8FF26 /* NSArray+KVC.m */; };
+		FEF5B4CE0BBEFDBA00A8FF26 /* NSDictionary+KVC.m in Sources */ = {isa = PBXBuildFile; fileRef = FEF5B4C70BBEFDBA00A8FF26 /* NSDictionary+KVC.m */; };
+		FEF5B4CF0BBEFDBA00A8FF26 /* NSKeyValueObserving-Private.h in Headers */ = {isa = PBXBuildFile; fileRef = FEF5B4C80BBEFDBA00A8FF26 /* NSKeyValueObserving-Private.h */; };
+		FEF5B4D00BBEFDBA00A8FF26 /* NSKeyValueObserving.h in Headers */ = {isa = PBXBuildFile; fileRef = FEF5B4C90BBEFDBA00A8FF26 /* NSKeyValueObserving.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEF5B4D10BBEFDBA00A8FF26 /* NSKeyValueObserving.m in Sources */ = {isa = PBXBuildFile; fileRef = FEF5B4CA0BBEFDBA00A8FF26 /* NSKeyValueObserving.m */; };
+		FEF5B4D20BBEFDBA00A8FF26 /* NSString+KVCAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = FEF5B4CB0BBEFDBA00A8FF26 /* NSString+KVCAdditions.h */; };
+		FEF5B4D30BBEFDBA00A8FF26 /* NSString+KVCAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = FEF5B4CC0BBEFDBA00A8FF26 /* NSString+KVCAdditions.m */; };
+		FEF5B4D40BBEFDBA00A8FF26 /* NSArray+KVC.m in Sources */ = {isa = PBXBuildFile; fileRef = FEF5B4C60BBEFDBA00A8FF26 /* NSArray+KVC.m */; };
+		FEF5B4D50BBEFDBA00A8FF26 /* NSDictionary+KVC.m in Sources */ = {isa = PBXBuildFile; fileRef = FEF5B4C70BBEFDBA00A8FF26 /* NSDictionary+KVC.m */; };
+		FEF5B4D60BBEFDBA00A8FF26 /* NSKeyValueObserving-Private.h in Headers */ = {isa = PBXBuildFile; fileRef = FEF5B4C80BBEFDBA00A8FF26 /* NSKeyValueObserving-Private.h */; };
+		FEF5B4D70BBEFDBA00A8FF26 /* NSKeyValueObserving.h in Headers */ = {isa = PBXBuildFile; fileRef = FEF5B4C90BBEFDBA00A8FF26 /* NSKeyValueObserving.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEF5B4D80BBEFDBA00A8FF26 /* NSKeyValueObserving.m in Sources */ = {isa = PBXBuildFile; fileRef = FEF5B4CA0BBEFDBA00A8FF26 /* NSKeyValueObserving.m */; };
+		FEF5B4D90BBEFDBA00A8FF26 /* NSString+KVCAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = FEF5B4CB0BBEFDBA00A8FF26 /* NSString+KVCAdditions.h */; };
+		FEF5B4DA0BBEFDBA00A8FF26 /* NSString+KVCAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = FEF5B4CC0BBEFDBA00A8FF26 /* NSString+KVCAdditions.m */; };
+		FEF5B4DB0BBEFDBA00A8FF26 /* NSArray+KVC.m in Sources */ = {isa = PBXBuildFile; fileRef = FEF5B4C60BBEFDBA00A8FF26 /* NSArray+KVC.m */; };
+		FEF5B4DC0BBEFDBA00A8FF26 /* NSDictionary+KVC.m in Sources */ = {isa = PBXBuildFile; fileRef = FEF5B4C70BBEFDBA00A8FF26 /* NSDictionary+KVC.m */; };
+		FEF5B4DD0BBEFDBA00A8FF26 /* NSKeyValueObserving-Private.h in Headers */ = {isa = PBXBuildFile; fileRef = FEF5B4C80BBEFDBA00A8FF26 /* NSKeyValueObserving-Private.h */; };
+		FEF5B4DE0BBEFDBA00A8FF26 /* NSKeyValueObserving.h in Headers */ = {isa = PBXBuildFile; fileRef = FEF5B4C90BBEFDBA00A8FF26 /* NSKeyValueObserving.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEF5B4DF0BBEFDBA00A8FF26 /* NSKeyValueObserving.m in Sources */ = {isa = PBXBuildFile; fileRef = FEF5B4CA0BBEFDBA00A8FF26 /* NSKeyValueObserving.m */; };
+		FEF5B4E00BBEFDBA00A8FF26 /* NSString+KVCAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = FEF5B4CB0BBEFDBA00A8FF26 /* NSString+KVCAdditions.h */; };
+		FEF5B4E10BBEFDBA00A8FF26 /* NSString+KVCAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = FEF5B4CC0BBEFDBA00A8FF26 /* NSString+KVCAdditions.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
@@ -2315,6 +2342,15 @@
 		FEB9D7000B44414000C239BB /* NSSocketPortNameServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSSocketPortNameServer.h; sourceTree = "<group>"; };
 		FEB9D7010B44414000C239BB /* NSSocketPortNameServer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSSocketPortNameServer.m; sourceTree = "<group>"; };
 		FEE17BA20BB43998006B4510 /* NSDistributedLock.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSDistributedLock.m; sourceTree = "<group>"; };
+		FEE97EB40BBEDE3000DBAFF9 /* NSConcreteDirectoryEnumerator.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSConcreteDirectoryEnumerator.h; sourceTree = "<group>"; };
+		FEE97EB50BBEDE3000DBAFF9 /* NSConcreteDirectoryEnumerator.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSConcreteDirectoryEnumerator.m; sourceTree = "<group>"; };
+		FEF5B4C60BBEFDBA00A8FF26 /* NSArray+KVC.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = "NSArray+KVC.m"; sourceTree = "<group>"; };
+		FEF5B4C70BBEFDBA00A8FF26 /* NSDictionary+KVC.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+KVC.m"; sourceTree = "<group>"; };
+		FEF5B4C80BBEFDBA00A8FF26 /* NSKeyValueObserving-Private.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = "NSKeyValueObserving-Private.h"; sourceTree = "<group>"; };
+		FEF5B4C90BBEFDBA00A8FF26 /* NSKeyValueObserving.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSKeyValueObserving.h; sourceTree = "<group>"; };
+		FEF5B4CA0BBEFDBA00A8FF26 /* NSKeyValueObserving.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSKeyValueObserving.m; sourceTree = "<group>"; };
+		FEF5B4CB0BBEFDBA00A8FF26 /* NSString+KVCAdditions.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = "NSString+KVCAdditions.h"; sourceTree = "<group>"; };
+		FEF5B4CC0BBEFDBA00A8FF26 /* NSString+KVCAdditions.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = "NSString+KVCAdditions.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -2375,6 +2411,8 @@
 				FEB9D6CE0B44405700C239BB /* NSClassDescription.m */,
 				6E2805F709747D5800EC542B /* NSCoder.h */,
 				6E2805F809747D5800EC542B /* NSCoder.m */,
+				FEE97EB40BBEDE3000DBAFF9 /* NSConcreteDirectoryEnumerator.h */,
+				FEE97EB50BBEDE3000DBAFF9 /* NSConcreteDirectoryEnumerator.m */,
 				FEB9D2F00B42F85100C239BB /* NSConnection */,
 				6E28032F097478FA00EC542B /* NSData */,
 				6E28069409747E6B00EC542B /* NSDate */,
@@ -3247,6 +3285,13 @@
 		FEB6CC800B4A1C7A004FADF2 /* NSKeyValueCoding */ = {
 			isa = PBXGroup;
 			children = (
+				FEF5B4C60BBEFDBA00A8FF26 /* NSArray+KVC.m */,
+				FEF5B4C70BBEFDBA00A8FF26 /* NSDictionary+KVC.m */,
+				FEF5B4C80BBEFDBA00A8FF26 /* NSKeyValueObserving-Private.h */,
+				FEF5B4C90BBEFDBA00A8FF26 /* NSKeyValueObserving.h */,
+				FEF5B4CA0BBEFDBA00A8FF26 /* NSKeyValueObserving.m */,
+				FEF5B4CB0BBEFDBA00A8FF26 /* NSString+KVCAdditions.h */,
+				FEF5B4CC0BBEFDBA00A8FF26 /* NSString+KVCAdditions.m */,
 				FEB6CC890B4A1D4D004FADF2 /* NSKVCMutableArray.h */,
 				FEB6CC8A0B4A1D4D004FADF2 /* NSKVCMutableArray.m */,
 				FEB6CBAE0B4A139F004FADF2 /* NSKeyValueCoding.h */,
@@ -3625,6 +3670,10 @@
 				FE7478190BAC594600829F4F /* NSNetServiceBrowser.h in Headers */,
 				FE7478470BAC5A8700829F4F /* NSSortDescriptor.h in Headers */,
 				FE7478760BAC5EB600829F4F /* NSValueTransformer.h in Headers */,
+				FEE97EBA0BBEDE3000DBAFF9 /* NSConcreteDirectoryEnumerator.h in Headers */,
+				FEF5B4DD0BBEFDBA00A8FF26 /* NSKeyValueObserving-Private.h in Headers */,
+				FEF5B4DE0BBEFDBA00A8FF26 /* NSKeyValueObserving.h in Headers */,
+				FEF5B4E00BBEFDBA00A8FF26 /* NSString+KVCAdditions.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3889,6 +3938,10 @@
 				FE7478150BAC594600829F4F /* NSNetServiceBrowser.h in Headers */,
 				FE7478450BAC5A8700829F4F /* NSSortDescriptor.h in Headers */,
 				FE7478740BAC5EB600829F4F /* NSValueTransformer.h in Headers */,
+				FEE97EB80BBEDE3000DBAFF9 /* NSConcreteDirectoryEnumerator.h in Headers */,
+				FEF5B4D60BBEFDBA00A8FF26 /* NSKeyValueObserving-Private.h in Headers */,
+				FEF5B4D70BBEFDBA00A8FF26 /* NSKeyValueObserving.h in Headers */,
+				FEF5B4D90BBEFDBA00A8FF26 /* NSString+KVCAdditions.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4156,6 +4209,10 @@
 				FE7478110BAC594600829F4F /* NSNetServiceBrowser.h in Headers */,
 				FE7478430BAC5A8700829F4F /* NSSortDescriptor.h in Headers */,
 				FE7478720BAC5EB600829F4F /* NSValueTransformer.h in Headers */,
+				FEE97EB60BBEDE3000DBAFF9 /* NSConcreteDirectoryEnumerator.h in Headers */,
+				FEF5B4CF0BBEFDBA00A8FF26 /* NSKeyValueObserving-Private.h in Headers */,
+				FEF5B4D00BBEFDBA00A8FF26 /* NSKeyValueObserving.h in Headers */,
+				FEF5B4D20BBEFDBA00A8FF26 /* NSString+KVCAdditions.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4601,6 +4658,11 @@
 				FE7478480BAC5A8700829F4F /* NSSortDescriptor.m in Sources */,
 				FE7478770BAC5EB600829F4F /* NSValueTransformer.m in Sources */,
 				FEE17BA50BB43998006B4510 /* NSDistributedLock.m in Sources */,
+				FEE97EBB0BBEDE3000DBAFF9 /* NSConcreteDirectoryEnumerator.m in Sources */,
+				FEF5B4DB0BBEFDBA00A8FF26 /* NSArray+KVC.m in Sources */,
+				FEF5B4DC0BBEFDBA00A8FF26 /* NSDictionary+KVC.m in Sources */,
+				FEF5B4DF0BBEFDBA00A8FF26 /* NSKeyValueObserving.m in Sources */,
+				FEF5B4E10BBEFDBA00A8FF26 /* NSString+KVCAdditions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4867,6 +4929,11 @@
 				FE7478460BAC5A8700829F4F /* NSSortDescriptor.m in Sources */,
 				FE7478750BAC5EB600829F4F /* NSValueTransformer.m in Sources */,
 				FEE17BA40BB43998006B4510 /* NSDistributedLock.m in Sources */,
+				FEE97EB90BBEDE3000DBAFF9 /* NSConcreteDirectoryEnumerator.m in Sources */,
+				FEF5B4D40BBEFDBA00A8FF26 /* NSArray+KVC.m in Sources */,
+				FEF5B4D50BBEFDBA00A8FF26 /* NSDictionary+KVC.m in Sources */,
+				FEF5B4D80BBEFDBA00A8FF26 /* NSKeyValueObserving.m in Sources */,
+				FEF5B4DA0BBEFDBA00A8FF26 /* NSString+KVCAdditions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5136,6 +5203,11 @@
 				FE7478440BAC5A8700829F4F /* NSSortDescriptor.m in Sources */,
 				FE7478730BAC5EB600829F4F /* NSValueTransformer.m in Sources */,
 				FEE17BA30BB43998006B4510 /* NSDistributedLock.m in Sources */,
+				FEE97EB70BBEDE3000DBAFF9 /* NSConcreteDirectoryEnumerator.m in Sources */,
+				FEF5B4CD0BBEFDBA00A8FF26 /* NSArray+KVC.m in Sources */,
+				FEF5B4CE0BBEFDBA00A8FF26 /* NSDictionary+KVC.m in Sources */,
+				FEF5B4D10BBEFDBA00A8FF26 /* NSKeyValueObserving.m in Sources */,
+				FEF5B4D30BBEFDBA00A8FF26 /* NSString+KVCAdditions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -15,11 +15,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSString.h>
 #import <Foundation/NSInvocation.h>
 #import <Foundation/NSMethodSignature.h>
+#import <Foundation/NSKeyValueObserving.h>
 #include <objc/objc-class.h>
 #include <malloc.h>
 #include <string.h>
 
 #import "NSKVCMutableArray.h"
+#import "NSString+KVCAdditions.h"
 
 @implementation NSObject (KeyValueCoding)
 #pragma mark -
@@ -146,7 +148,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 			return [self setNilValueForKey:key];
 		}
 		unsigned int size, align;
-		id inv=[NSInvocation invocationWithMethodSignature:sig];
+		NSInvocation* inv=[NSInvocation invocationWithMethodSignature:sig];
 		[inv setSelector:sel];
 		[inv setTarget:self];
 		
@@ -198,7 +200,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 - (void)setValue:(id)value forKey:(NSString *)key
 {
-	id ukey = [key capitalizedString];
+	NSString* ukey = [NSString stringWithFormat:@"%@%@", [[key substringToIndex:1] uppercaseString], [key substringFromIndex:1]];
 	SEL sel = NSSelectorFromString([NSString stringWithFormat:@"set%@:", ukey]);
 	if([self respondsToSelector:sel])
 	{
@@ -223,12 +225,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 		if(ivar)
 		{
+			[self willChangeValueForKey:key];
 			// if value is nil and ivar is not an object type
 			if(!value && ivar->ivar_type[0]!='@')
 				return [self setNilValueForKey:key];
 
-			if([self _setValue:value toBuffer:(void*)self+ivar->ivar_offset ofType:ivar->ivar_type])
-				return;
+			[self _setValue:value toBuffer:(void*)self+ivar->ivar_offset ofType:ivar->ivar_type];
+			[self didChangeValueForKey:key];
+			return;
 		}
 	}
 
@@ -282,34 +286,32 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(id)valueForKeyPath:(NSString*)keyPath
 {
-	// FIXME: operators missing
-	id en=[[keyPath componentsSeparatedByString:@"."] objectEnumerator];
-	id pathComponent;
-	id ret=self;
-	while((pathComponent = [en nextObject]) && ret)
-	{
-		ret = [ret valueForKey:pathComponent];
-	}
-	return ret;
+	NSString* firstPart, *rest;
+	[keyPath _KVC_partBeforeDot:&firstPart afterDot:&rest];
+	if(rest)
+		return [[self valueForKeyPath:firstPart] valueForKeyPath:rest];
+	else
+		return [self valueForKey:firstPart];
 }
 
 - (void)setValue:(id)value forKeyPath:(NSString *)keyPath
 {
-	id array=[[[keyPath componentsSeparatedByString:@"."] mutableCopy] autorelease];
-	id lastPathComponent=[array lastObject];
-	[array removeObject:lastPathComponent];
-	id en=[array objectEnumerator];
-	id pathComponent;
-	id ret=self;
-	while((pathComponent = [en nextObject]) && ret)
+	NSString* firstPart, *rest;
+	[keyPath _KVC_partBeforeDot:&firstPart afterDot:&rest];
+
+	if(rest)
+		[[self valueForKey:firstPart] setValue:value
+									forKeyPath:rest];
+	else
 	{
-		ret = [ret valueForKey:pathComponent];
+		[self setValue:value 
+				forKey:firstPart];
 	}
-	[ret setValue:value forKey:lastPathComponent];
 }
 
 - (BOOL)validateValue:(id *)ioValue forKeyPath:(NSString *)keyPath error:(NSError **)outError
 {
+// FIX: should this be recursive or not?
 	id array=[[[keyPath componentsSeparatedByString:@"."] mutableCopy] autorelease];
 	id lastPathComponent=[array lastObject];
 	[array removeObject:lastPathComponent];

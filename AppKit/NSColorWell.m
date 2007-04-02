@@ -11,12 +11,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSColor.h>
 #import <AppKit/NSColorPanel.h>
 #import <AppKit/NSApplication.h>
-#import <AppKit/NSInterfaceGraphics.h>
 #import <AppKit/NSEvent.h>
 #import <AppKit/NSPasteboard.h>
 #import <AppKit/NSImage.h>
 #import <AppKit/NSDragging.h>
 #import <AppKit/NSNibKeyedUnarchiver.h>
+#import <AppKit/NSGraphicsStyle.h>
 
 @implementation NSColorWell
 
@@ -179,25 +179,7 @@ NSString *_NSColorWellDidBecomeExclusiveNotification=@"_NSColorWellDidBecomeExcl
 -(void)drawRect:(NSRect)rect {
    rect=_bounds;
 
-   if([self isBordered]){
-    if([self isActive]){
-     NSInterfaceDrawHighlightedButton(rect,rect);
-    }
-    else {
-     NSInterfaceDrawButton(rect,rect);
-    }
-    rect=NSInsetRect(rect,6,6);
-    if([self isEnabled]){
-     NSDrawGrayBezel(rect,rect);
-    }
-    rect=NSInsetRect(rect,2,2);
-   }
-   else {
-    if([self isEnabled]){
-     NSDrawGrayBezel(rect,rect);
-    }
-    rect=NSInsetRect(rect,2,2);
-   }
+   rect=[[self graphicsStyle] drawColorWellBorderInRect:rect enabled:[self isEnabled] bordered:[self isBordered] active:[self isActive]];
 
    [self drawWellInside:rect];
 }

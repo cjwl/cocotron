@@ -8,6 +8,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 // Original - David Young <daver@geeks.org>
 #import <AppKit/AppKit.h>
+#import <AppKit/NSGraphicsStyle.h>
 
 @implementation NSTableHeaderCell
 
@@ -16,13 +17,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)drawWithFrame:(NSRect)frame inView:(NSView *)controlView {
-    NSDrawButton(frame, frame);
-    if ([self isHighlighted]) {
-        [[NSColor darkGrayColor] set];
-        NSRectFill(NSInsetRect(frame,2,2));
-    }
-
-    [self drawInteriorWithFrame:[self drawingRectForBounds:frame] inView:controlView];
+   _controlView=controlView;
+   
+   [[controlView graphicsStyle] drawTableViewHeaderInRect:frame highlighted:[self isHighlighted]];
+      
+   [self drawInteriorWithFrame:[self drawingRectForBounds:frame] inView:controlView];
 }
 
 @end

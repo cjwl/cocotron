@@ -18,17 +18,4 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #define FOUNDATION_EXPORT extern
 #endif
 
-typedef struct objc_class *Class;
-typedef struct objc_object {
-        Class isa;
-} *id;
-
-typedef void *SEL;    
-typedef id  (*IMP)(id,SEL,...); 
-typedef char  BOOL;
-
-#define YES  ((BOOL)1)
-#define NO   ((BOOL)0)
-
-#define Nil  ((Class)0)
-#define nil  ((id)0)
+#import <objc/objc.h>

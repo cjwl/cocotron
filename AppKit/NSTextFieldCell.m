@@ -13,6 +13,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSStringDrawing.h>
 #import <AppKit/NSGraphicsContext.h>
 #import <AppKit/NSGraphics.h>
+#import <AppKit/NSGraphicsStyle.h>
 #import <AppKit/NSFont.h>
 #import <AppKit/NSColor.h>
 #import <AppKit/NSParagraphStyle.h>
@@ -165,13 +166,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    _controlView=control;
 
    if([self isBezeled]){
-    NSDrawWhiteBezel(frame,frame);
+    [[control graphicsStyle] drawTextFieldBorderInRect:frame bezeledNotLine:YES];
     backRect=NSInsetRect(backRect,-1,-1);
    }
    else {
     if([self isBordered]){
-     [[NSColor blackColor] set];
-     NSFrameRect(frame);
+     [[control graphicsStyle] drawTextFieldBorderInRect:frame bezeledNotLine:NO];
      backRect=NSInsetRect(backRect,-1,-1);
     }
    }

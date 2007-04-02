@@ -8,7 +8,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 // Original - David Young <daver@geeks.org>
 #import <AppKit/NSOutlineMarkerCell.h>
-#import <AppKit/NSInterfaceGraphics.h>
+#import <AppKit/NSGraphicsStyle.h>
 #import <AppKit/NSColor.h>
 #import <AppKit/NSImage.h>
 
@@ -48,7 +48,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @implementation NSWindowsOutlineMarkerCell
 
 -(void)drawInteriorWithFrame:(NSRect)frame inView:(NSView *)control {
-    NSInterfaceDrawOutlineMarker(frame, frame, _state);
+   [[control graphicsStyle] drawOutlineViewBranchInRect:frame expanded:_state];
 }
 
 -(void)drawWithFrame:(NSRect)frame inView:(NSView *)control {

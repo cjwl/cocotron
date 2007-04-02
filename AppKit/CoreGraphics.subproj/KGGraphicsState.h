@@ -15,6 +15,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @class KGRenderingContext,KGImage,KGColorSpace,KGColor,KGPattern,KGShading,KGMutablePath,KGPath;
 
 @interface KGGraphicsState : NSObject <NSCopying> {
+@public
    KGRenderingContext *_renderingContext;
    CGAffineTransform   _ctm;
    CGAffineTransform   _textTransform;

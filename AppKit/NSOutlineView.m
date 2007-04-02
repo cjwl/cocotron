@@ -10,13 +10,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSOutlineView.h>
 #import <AppKit/NSOutlineMarkerCell.h>
 #import <AppKit/NSInterfaceStyle.h>
+#import <AppKit/NSGraphicsStyle.h>
 #import <AppKit/NSImage.h>
 #import <AppKit/NSColor.h>
 #import <AppKit/NSImageCell.h>
 #import <AppKit/NSTextFieldCell.h>
 #import <AppKit/NSTableColumn.h>
 #import <AppKit/NSStringDrawing.h>
-#import <AppKit/NSInterfaceGraphics.h>
 #import <AppKit/NSGraphicsContextFunctions.h>
 #import <AppKit/NSNibKeyedUnarchiver.h>
 
@@ -600,7 +600,7 @@ static void loadItemIntoMapTables(NSOutlineView *self,id item,unsigned *rowCount
         [super drawHighlightedSelectionForColumn:column row:row inRect:rect];
 }
 
--(void)_drawGridForItem:(id)item context:(KGContext *)context level:(int)level {
+-(void)_drawGridForItem:(id)item style:(NSGraphicsStyle *)style level:(int)level {
     int column = [_tableColumns indexOfObject:_outlineTableColumn];
     int row = [self rowForItem:item];
     NSRect myFrame = [self frameOfMarkerCellAtColumn:column row:row level:level];
@@ -614,7 +614,7 @@ static void loadItemIntoMapTables(NSOutlineView *self,id item,unsigned *rowCount
         rect.origin.y += (rect.size.height/2)-1;
         rect.size.height = 1;
 
-        NSInterfaceDrawOutlineGrid(rect,context);
+        [style drawOutlineViewGridInRect:rect];
     }
     
    if (isItemExpanded(self,item)) {
@@ -623,7 +623,7 @@ static void loadItemIntoMapTables(NSOutlineView *self,id item,unsigned *rowCount
 
     for(i=0;i<numberOfChildren;i++){
      lastChild=childOfItemAtIndex(self,item,i);
-     [self _drawGridForItem:lastChild context:context level:level+1];
+     [self _drawGridForItem:lastChild style:style level:level+1];
     }
 
     if(lastChild!=nil){
@@ -637,14 +637,14 @@ static void loadItemIntoMapTables(NSOutlineView *self,id item,unsigned *rowCount
      rect.origin.y += rect.size.height/2;
      rect.size.height = delta;
 
-     NSInterfaceDrawOutlineGrid(rect,context);
+     [style drawOutlineViewGridInRect:rect];
     }
    }
 }
 
 -(void)drawGridInClipRect:(NSRect)aRect {
     // this doesn't look right at all when the indentation marker isn't set to follow the cell
-    KGContext *context=NSCurrentGraphicsPort();
+    NSGraphicsStyle *style=[self graphicsStyle];
     BOOL temp = _indentationMarkerFollowsCell;
     int  i,count=numberOfChildrenOfItemAndReload(self,nil,NO);
 
@@ -652,7 +652,7 @@ static void loadItemIntoMapTables(NSOutlineView *self,id item,unsigned *rowCount
 
     [self setIndentationMarkerFollowsCell:YES];
     for(i=0;i<count;i++)
-     [self _drawGridForItem:childOfItemAtIndex(self,nil,i) context:context level:0];
+     [self _drawGridForItem:childOfItemAtIndex(self,nil,i) style:style level:0];
     [self setIndentationMarkerFollowsCell:temp];
 }
 

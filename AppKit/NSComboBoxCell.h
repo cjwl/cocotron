@@ -19,9 +19,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    BOOL            _usesDataSource;
    BOOL            _hasVerticalScroller;
    BOOL            _completes;
-
+   BOOL            _buttonBordered;
+   BOOL            _buttonEnabled;
+   BOOL            _buttonPressed;
+   
    NSMutableArray *_objectValues;
-   NSButtonCell   *_buttonCell;
 }
 
 -(void)addItemWithObjectValue:(id)object;

@@ -151,7 +151,7 @@ static void OBJCSymbolTableRegisterSelectors(OBJCSymbolTable *symbolTable){
 
    if(selectorReferences!=NULL){
     while(*selectorReferences!=NULL){
-     *selectorReferences=(SEL)OBJCRegisterSelectorName((const char *)*selectorReferences,*selectorReferences);
+     *selectorReferences=(SEL)OBJCRegisterSelectorName((const char *)*selectorReferences);
      selectorReferences++;
     }
    }

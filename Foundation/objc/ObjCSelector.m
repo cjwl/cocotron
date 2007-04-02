@@ -19,46 +19,48 @@ int selectorCount=0;
 
 static SEL   nextSelector=(void *)sizeof(OBJCMethodCacheEntry);
 static OBJCHashTable *nameToNumber=NULL;
-static OBJCHashTable *nameToSelector=NULL;
 
 
-SEL OBJCRegisterSelectorName(const char *name,const void *selector){
+SEL OBJCRegisterSelectorName(const char *name){
   SEL result;
 
    if(nameToNumber==NULL)
     nameToNumber=OBJCCreateHashTable(INITIAL_SELECTOR_TABLE_SIZE);
-
-   if(nameToSelector==NULL)
-    nameToSelector=OBJCCreateHashTable(INITIAL_SELECTOR_TABLE_SIZE);
 
    result=(SEL)OBJCHashValueForKey(nameToNumber,name);
 
    if(result==OBJCNilSelector){
     selectorCount++;
     result=(SEL)OBJCHashInsertValueForKey(nameToNumber,name,(void *)nextSelector);
-    OBJCHashInsertValueForKey(nameToSelector,name,(void *)selector);
     nextSelector+=sizeof(OBJCMethodCacheEntry);
    }
 
    return result;
 }
 
-FOUNDATION_EXPORT SEL OBJCRegisterMethodDescription(OBJCMethodDescription *method) {
-   return OBJCRegisterSelectorName((const char *)method->name,method);
+SEL OBJCRegisterMethodDescription(OBJCMethodDescription *method) {
+   return OBJCRegisterSelectorName((const char *)method->name);
 }
 
-FOUNDATION_EXPORT SEL OBJCRegisterMethod(OBJCMethod *method) {
-   return OBJCRegisterSelectorName((const char *)method->name,method);
+SEL OBJCRegisterMethod(OBJCMethod *method) {
+   return OBJCRegisterSelectorName((const char *)method->method_name);
 }
 
-SEL OBJCCreateSelectorFromCString(const char *cString){
-   SEL result=OBJCSelectorFromString(cString);
+SEL sel_getUid(const char *selectorName) {
+   if(nameToNumber==NULL)
+    return NULL;
+
+   return (SEL)OBJCHashValueForKey(nameToNumber,selectorName);
+}
+
+SEL sel_registerName(const char *cString){
+   SEL result=sel_getUid(cString);
 
    if(result==NULL){
     char *copy=NSZoneMalloc(NULL,sizeof(char)*(strlen(cString)+1));
 
     strcpy(copy,cString);
-    result=(SEL)OBJCRegisterSelectorName(copy,copy);
+    result=(SEL)OBJCRegisterSelectorName(copy);
    }
 
    return result;
@@ -81,9 +83,3 @@ const char *OBJCStringFromSelector(SEL selector){
   return NULL;
 }
 
-SEL OBJCSelectorFromString(const char *selectorName) {
-   if(nameToNumber==NULL)
-    return NULL;
-
-   return (SEL)OBJCHashValueForKey(nameToNumber,selectorName);
-}

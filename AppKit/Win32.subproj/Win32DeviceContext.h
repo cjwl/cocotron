@@ -11,7 +11,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <windows.h>
 
-@class Win32Font, NSAffineTransform;
+@class Win32Font, NSAffineTransform,Win32DeviceContextWindow;
 
 @interface Win32DeviceContext : KGRenderingContext {
    HDC        _dc;
@@ -24,6 +24,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -initWithDC:(HDC)dc;
 
 -(HDC)dc;
+-(Win32DeviceContextWindow *)windowDeviceContext;
 
 -(void)selectFontWithName:(const char *)name pointSize:(float)pointSize;
 -(void)selectFontWithName:(const char *)name pointSize:(float)pointSize antialias:(BOOL)antialias;
@@ -63,3 +64,5 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)drawImage:(KGImage *)image inRect:(CGRect)rect ctm:(CGAffineTransform)ctm fraction:(float)fraction;
 
 @end
+
+NSRect Win32TransformRect(CGAffineTransform matrix,NSRect rect);

@@ -43,7 +43,7 @@ static inline BOOL transformIsFlipped(CGAffineTransform matrix){
    return (matrix.d<0)?YES:NO;
 }
 
-static inline NSRect transformRect(CGAffineTransform matrix,NSRect rect) {
+NSRect Win32TransformRect(CGAffineTransform matrix,NSRect rect) {
    NSPoint point1=CGPointApplyAffineTransform(rect.origin,matrix);
    NSPoint point2=CGPointApplyAffineTransform(NSMakePoint(NSMaxX(rect),NSMaxY(rect)),matrix);
 
@@ -95,6 +95,10 @@ static inline NSRect transformRect(CGAffineTransform matrix,NSRect rect) {
 
 -(HDC)dc {
    return _dc;
+}
+
+-(Win32DeviceContextWindow *)windowDeviceContext {
+   return nil;
 }
 
 -(void)selectFontWithName:(const char *)name pointSize:(float)pointSize antialias:(BOOL)antialias {
@@ -195,7 +199,7 @@ static inline NSRect transformRect(CGAffineTransform matrix,NSRect rect) {
    int          i;
 
    for(i=0;i<count;i++)
-    rects[i]=transformRect(ctm,userRects[i]);
+    rects[i]=Win32TransformRect(ctm,userRects[i]);
     
    [clip intersectWithRects:rects count:count];
    [self setDeviceClipState:clip];
@@ -225,7 +229,7 @@ static RECT NSRectToRECT(NSRect rect) {
    int         i;
 
    for(i=0;i<count;i++)
-    tlbr[i]=NSRectToRECT(transformRect(ctm,rects[i]));
+    tlbr[i]=NSRectToRECT(Win32TransformRect(ctm,rects[i]));
 
    for(i=0;i<count;i++)
     FillRect(dc,tlbr+i,handle);
@@ -236,7 +240,7 @@ static RECT NSRectToRECT(NSRect rect) {
 -(void)strokeInUserSpace:(CGAffineTransform)ctm rect:(NSRect)rect width:(float)width color:(KGColor *)color {
    HDC         dc=_dc;
    HBRUSH      handle=CreateSolidBrush(RGBFromColor(color));
-   RECT        tlbr=NSRectToRECT(transformRect(ctm,rect));
+   RECT        tlbr=NSRectToRECT(Win32TransformRect(ctm,rect));
 
    if(width<=1.0)
     FrameRect(dc,&tlbr,handle);
@@ -261,8 +265,8 @@ static RECT NSRectToRECT(NSRect rect) {
 
 -(void)copyBitsInUserSpace:(CGAffineTransform)ctm rect:(NSRect)rect toPoint:(NSPoint)point {
    HDC     dc=_dc;
-   NSRect  srcRect=transformRect(ctm,rect);
-   NSRect  dstRect=transformRect(ctm,NSMakeRect(point.x,point.y,rect.size.width,rect.size.height));
+   NSRect  srcRect=Win32TransformRect(ctm,rect);
+   NSRect  dstRect=Win32TransformRect(ctm,NSMakeRect(point.x,point.y,rect.size.width,rect.size.height));
    NSRect  scrollRect=NSUnionRect(srcRect,dstRect);
    int     dx=dstRect.origin.x-srcRect.origin.x;
    int     dy=dstRect.origin.y-srcRect.origin.y;
@@ -518,7 +522,7 @@ static void zeroBytes(void *bytes,int size){
    if((oldBitmap=SelectObject(sourceDC,bitmap))==NULL)
     NSLog(@"SelectObject failed");
 
-   rect=transformRect(ctm,rect);
+   rect=Win32TransformRect(ctm,rect);
 
    blendFunction.BlendOp=AC_SRC_OVER;
    blendFunction.BlendFlags=0;

@@ -7,8 +7,32 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 #import <Foundation/NSObject.h>
 
-@interface NSURLCache : NSObject {
+@class NSCachedURLResponse,NSURLRequest;
 
+@interface NSURLCache : NSObject {
+   unsigned _memoryCapacity;
+   unsigned _diskCapacity;
 }
+
++(NSURLCache *)sharedURLCache;
++(void)setSharedURLCache:(NSURLCache *)cache;
+
+-initWithMemoryCapacity:(unsigned)memoryCapacity diskCapacity:(unsigned)diskCapacity diskPath:(NSString *)diskPath;
+
+-(unsigned)memoryCapacity;
+-(unsigned)diskCapacity;
+
+-(unsigned)currentDiskUsage;
+-(unsigned)currentMemoryUsage;
+
+-(NSCachedURLResponse *)cachedResponseForRequest:(NSURLRequest *)request;
+
+-(void)setMemoryCapacity:(unsigned)memoryCapacity;
+-(void)setDiskCapacity:(unsigned)diskCapacity;
+
+-(void)storeCachedResponse:(NSCachedURLResponse *)response forRequest:(NSURLRequest *)request;
+
+-(void)removeAllCachedResponses;
+-(void)removeCachedResponseForRequest:(NSURLRequest *)request;
 
 @end

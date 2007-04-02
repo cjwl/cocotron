@@ -14,6 +14,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSMatrix.h>
 #import <AppKit/NSControl.h>
 #import <AppKit/NSNibKeyedUnarchiver.h>
+#import <AppKit/NSGraphicsStyle.h>
 
 #define PIXELINSET	8
 #define KNOBHEIGHT      15
@@ -132,20 +133,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 
-- (void)drawBarInside:(NSRect)frame flipped:(BOOL)isFlipped
-{
-    NSRect groove=frame;
-
-    if ([self isVertical]) {
-        groove.size.width=4;
-        groove.origin.x=floor(frame.origin.x+(frame.size.width-4)/2);
-    }
-    else {
-        groove.size.height=4;
-        groove.origin.y=floor(frame.origin.y+(frame.size.height-4)/2);
-    }
-
-    NSDrawGrayBezel(groove, frame);
+-(void)drawBarInside:(NSRect)frame flipped:(BOOL)isFlipped {
+   [[_controlView graphicsStyle] drawSliderTrackInRect:frame vertical:[self isVertical]];
 }
 
 
@@ -195,21 +184,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)drawKnob:(NSRect)rect {
-   NSDrawButton(rect,rect);
-
-   if([self isHighlighted]) {
-    [[NSColor whiteColor] set];
-    NSRectFill(NSInsetRect(rect,1,1));
-   }
+   [[_controlView graphicsStyle] drawSliderKnobInRect:rect vertical:[self isVertical] highlighted:[self isHighlighted]];
 }
 
 -(void)drawTickMarks {
+   NSGraphicsStyle *style=[_controlView graphicsStyle];
    int i;
 
-   [[NSColor blackColor] set];
-
    for(i=0;i<_numberOfTickMarks;i++)
-    NSRectFill([self rectOfTickMarkAtIndex:i]);
+    [style drawSliderTickInRect:[self rectOfTickMarkAtIndex:i]];
 }
 
 - (void)drawWithFrame:(NSRect)frame inView:(NSView *)controlView

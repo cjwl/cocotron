@@ -18,6 +18,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSStringDrawer.h>
 #import <AppKit/NSCell.h>
 #import <AppKit/NSNibKeyedUnarchiver.h>
+#import <AppKit/NSGraphicsStyle.h>
 
 @implementation NSBox
 
@@ -148,16 +149,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
      break;
 
     case NSLineBorder:
-     [[NSColor blackColor] set];
-     NSFrameRect(grooveRect);
+     [[self graphicsStyle] drawBoxWithLineInRect:grooveRect];
      break;
 
     case NSBezelBorder:
-     NSDrawGrayBezel(grooveRect,rect);
+     [[self graphicsStyle] drawBoxWithBezelInRect:grooveRect clipRect:rect];
      break;
 
     case NSGrooveBorder:
-     NSDrawGroove(grooveRect,rect);
+     [[self graphicsStyle] drawBoxWithGrooveInRect:grooveRect clipRect:rect];
      break;
    }
 

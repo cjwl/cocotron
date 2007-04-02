@@ -79,6 +79,7 @@ enum {
 -(void)restoreGState;
 
 -(CGAffineTransform)userSpaceToDeviceSpaceTransform;
+-(void)getCTM:(CGAffineTransform *)matrix;
 -(CGAffineTransform)ctm;
 -(NSRect)clipBoundingBox;
 -(CGAffineTransform)textMatrix;

@@ -9,7 +9,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/ObjCClass.h>
 
 Ivar class_getInstanceVariable(Class class,const char *variableName) {
-   for(;;class=class->superclass){
+   for(;;class=class->super_class){
     OBJCInstanceVariableList *ivarList=class->ivars;
     int i;
 
@@ -22,4 +22,30 @@ Ivar class_getInstanceVariable(Class class,const char *variableName) {
    }
 
    return NULL;
+}
+
+void class_addMethods(Class class,OBJCMethodList *methodList) {
+	
+	if(class->methodLists==NULL)
+		class->methodLists=methodList;
+	else {
+		struct objc_method_list *node;
+		
+		for(node=class->methodLists;node->next!=NULL;node=node->next)
+			;
+		node->next=methodList;
+	}
+}
+
+struct objc_method_list *class_nextMethodList(Class class,void **iterator) {
+   struct objc_method_list *next=*iterator;
+   
+   if(next==NULL)
+    next=class->methodLists;
+   else
+    next=next->next;
+   
+   *iterator=next;
+   
+   return next;
 }

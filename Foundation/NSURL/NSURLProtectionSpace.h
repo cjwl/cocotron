@@ -7,8 +7,27 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 #import <Foundation/NSObject.h>
 
-@interface NSURLProtectionSpace : NSObject {
-
+@interface NSURLProtectionSpace : NSObject <NSCopying> {
+   NSString *_host;
+   int       _port;
+   NSString *_protocol;
+   NSString *_realm;
+   NSString *_authenticationMethod;
+   BOOL      _isProxy;
 }
+
+-initWithHost:(NSString *)host port:(int)port protocol:(NSString *)protocol realm:(NSString *)realm authenticationMethod:(NSString *)authenticationMethod;
+-initWithProxyHost:(NSString *)host port:(int)port protocol:(NSString *)protocol realm:(NSString *)realm authenticationMethod:(NSString *)authenticationMethod;
+
+-(NSString *)host;
+-(int)port;
+-(NSString *)protocol;
+-(NSString *)realm;
+-(NSString *)authenticationMethod;
+
+-(NSString *)proxyType;
+
+-(BOOL)receivesCredentialsSecurely;
+-(BOOL)isProxy;
 
 @end

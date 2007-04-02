@@ -7,8 +7,44 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 #import <Foundation/NSObject.h>
 
-@interface NSURLDownload : NSObject {
+@class NSURLRequest,NSURLResponse,NSURLAuthenticationChallenge,NSData,NSError;
 
+@interface NSURLDownload : NSObject {
+   id   _delegate;
+   BOOL _deletesOnFailure;
 }
 
++(BOOL)canResumeDownloadDecodedWithEncodingMIMEType:(NSString *)mimeType;
+
+-initWithRequest:(NSURLRequest *)requst delegate:delegate;
+-initWithResumeData:(NSData *)data delegate:delegate path:(NSString *)path;
+
+-(NSURLRequest *)request;
+-(NSData *)resumeData;
+
+-(BOOL)deletesFileUponFailure;
+
+-(void)setDeletesFileUponFailure:(BOOL)flag;
+-(void)setDestination:(NSString *)path allowOverwrite:(BOOL)allowOverwrite;
+
+-(void)cancel;
+
+@end
+
+@interface NSObject(NSURLDownloadDelegate)
+-(void)downloadDidBegin:(NSURLDownload *)download;
+-(void)download:(NSURLDownload *)download willSendRequest:(NSURLRequest *)request redirectResponse:(NSURLResponse *)redirect;
+-(void)download:(NSURLDownload *)download didReceiveAuthenticationChallenge:(NSURLAuthenticationChallenge *)authChallenge;
+-(void)download:(NSURLDownload *)download didCancelAuthenticationChallenge:(NSURLAuthenticationChallenge *)authChallenge;
+-(void)download:(NSURLDownload *)download didReceiveResponse:(NSURLResponse *)response;
+-(void)download:(NSURLDownload *)download didReceiveDataOfLength:(unsigned)length;
+
+-(void)download:(NSURLDownload *)download didFailWithError:(NSError *)error;
+-(void)downloadDidFinish:(NSURLDownload *)download;
+
+-(void)download:(NSURLDownload *)download decideDestinationWithSuggestedFilename:(NSString *)suggested;
+-(void)download:(NSURLDownload *)download didCreateDestination:(NSString *)destPath;
+-(void)download:(NSURLDownload *)download shouldDecodeSourceDataOfMIMEType:(NSString *)mimeType;
+
+-(void)download:(NSURLDownload *)download willResumeWithResponse:(NSURLResponse *)response fromByte:(long long)position;
 @end

@@ -84,7 +84,7 @@ NSObject *NSAllocateObject(Class class,unsigned extraBytes,NSZone *zone) {
    if(zone==NULL)
     zone=GetProcessHeap();
 
-   result=HeapAlloc(zone,HEAP_ZERO_MEMORY,class->instanceSize+extraBytes);
+   result=HeapAlloc(zone,HEAP_ZERO_MEMORY,class->instance_size+extraBytes);
 
    if(result==nil)
     ;//OBJCRaiseException("OBJCAllocationFailure","OBJCAllocateObject, OBJCZoneCalloc returned NULL");
@@ -122,7 +122,7 @@ static inline void byteCopy(void *vsrc,void *vdst,unsigned length){
 id NSCopyObject(id object,unsigned extraBytes,NSZone *zone) {
    id result=NSAllocateObject(object->isa,extraBytes,zone);
 
-   byteCopy(object,result,object->isa->instanceSize+extraBytes);
+   byteCopy(object,result,object->isa->instance_size+extraBytes);
 
    return result;
 }

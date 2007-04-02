@@ -9,7 +9,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 // Original - Christopher Lloyd <cjwl@objc.net>
 #import <AppKit/NSSubmenuView.h>
 #import <AppKit/NSMenuWindow.h>
-#import <AppKit/NSInterfacePart.h>
+#import <AppKit/NSGraphicsStyle.h>
 
 @implementation NSSubmenuView
 
@@ -51,7 +51,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(NSSize)rightArrowSize {
-   NSSize result=[[NSInterfacePart interfacePartMenuArrowRightSelected:NO] size];
+   NSSize result=[[self graphicsStyle] sizeOfMenuBranchArrow];
  
    result.height+=TITLE_TOP_MARGIN+TITLE_BOTTOM_MARGIN;
    result.width+=RIGHT_ARROW_LEFT_MARGIN;
@@ -218,16 +218,13 @@ static NSRect drawSubmenuBackground(NSRect rect){
    return boundsToTitleAreaRect(rect);
 }
 
--(float)drawSeparatorItemAtPoint:(NSPoint)point width:(float)width {
+-(float)drawSeparatorItemAtPoint:(NSPoint)point width:(float)width {   
    point.x+=1;
    point.y+=3;
    width-=2;
 
-   [[NSColor darkGrayColor] set];
-   NSRectFill(NSMakeRect(point.x,point.y,width,1));
-   [[NSColor whiteColor] set];
-   NSRectFill(NSMakeRect(point.x,point.y+1,width,1));
-
+   [[self graphicsStyle] drawMenuSeparatorInRect:NSMakeRect(point.x,point.y,width,2)];
+   
    return [self separatorSize].height;
 }
 
@@ -283,11 +280,10 @@ static NSRect drawSubmenuBackground(NSRect rect){
      }
 
      if([item hasSubmenu]){
-      NSInterfacePart *arrowPart=[NSInterfacePart interfacePartMenuArrowRightSelected:selected];
-      NSSize           size=[arrowPart size];
+      NSSize size=[[self graphicsStyle] sizeOfMenuBranchArrow];
 
       point.x=NSMaxX(itemArea)-RIGHT_ARROW_RIGHT_MARGIN-size.width;
-      [arrowPart drawAtPoint:point];
+      [[self graphicsStyle] drawMenuBranchArrowAtPoint:point selected:selected];
      }
 
      origin.y+=[title sizeWithAttributes:attributes].height+TITLE_TOP_MARGIN+TITLE_BOTTOM_MARGIN;

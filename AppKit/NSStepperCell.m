@@ -12,7 +12,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSGraphics.h>
 #import <AppKit/NSButtonCell.h>
 #import <AppKit/NSWindow.h>
-#import <AppKit/NSInterfacePart.h>
+#import <AppKit/NSGraphicsStyle.h>
 #import <AppKit/NSMatrix.h>
 
 @implementation NSStepperCell
@@ -150,35 +150,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 // I don't believe there are < > horizontal steppers?
 -(void)drawWithFrame:(NSRect)frame inView:(NSView *)controlView {
     BOOL drawDottedRect = NO;
-    NSInterfacePart *upPart, *downPart;
     NSRect rect;
 
-    upPart = [NSInterfacePart interfacePartScrollerArrowUpEnabled:[self isEnabled]];
-    downPart = [NSInterfacePart interfacePartScrollerArrowDownEnabled:[self isEnabled]];
-
     _controlView=controlView;
-    rect = [self _upArrowFrameForFrame:frame];
-    if (_isUpHighlighted)
-        NSDrawWhiteBezel(rect, frame);
-    else
-        NSDrawButton(rect, frame);
-    rect.origin.x += rect.size.width/2;
-    rect.origin.x -= [upPart size].width/2;
-    rect.origin.y += rect.size.height/2;
-    rect.origin.y -= [upPart size].height/2;
-    [upPart drawAtPoint:rect.origin];
-
-    rect = [self _downArrowFrameForFrame:frame];
-    if (_isDownHighlighted)
-        NSDrawWhiteBezel(rect, frame);
-    else
-        NSDrawButton(rect, frame);
-    rect.origin.x += rect.size.width/2;
-    rect.origin.x -= [downPart size].width/2;
-    rect.origin.y += rect.size.height/2;
-    rect.origin.y -= [downPart size].height/2; 
-    [downPart drawAtPoint:rect.origin];
-    
+    [[_controlView graphicsStyle] drawStepperButtonInRect:[self _upArrowFrameForFrame:frame] clipRect:frame enabled:[self isEnabled] highlighted:_isUpHighlighted upNotDown:YES];
+    [[_controlView graphicsStyle] drawStepperButtonInRect:[self _downArrowFrameForFrame:frame] clipRect:frame enabled:[self isEnabled] highlighted:_isDownHighlighted upNotDown:YES];
+        
     if ([[controlView window] firstResponder] == controlView){
         if([controlView isKindOfClass:[NSMatrix class]]){
             NSMatrix *matrix=(NSMatrix *)controlView;

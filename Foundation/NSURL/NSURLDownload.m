@@ -6,7 +6,51 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 #import <Foundation/NSURLDownload.h>
+#import <Foundation/NSRaise.h>
 
 @implementation NSURLDownload
+
++(BOOL)canResumeDownloadDecodedWithEncodingMIMEType:(NSString *)mimeType {
+   NSUnimplementedMethod();
+   return NO;
+}
+
+-initWithRequest:(NSURLRequest *)requst delegate:delegate {
+   NSUnimplementedMethod();
+   return NO;
+}
+
+-initWithResumeData:(NSData *)data delegate:delegate path:(NSString *)path {
+   NSUnimplementedMethod();
+   return NO;
+}
+
+-(NSURLRequest *)request {
+   NSUnimplementedMethod();
+   return NO;
+}
+
+-(NSData *)resumeData {
+   NSUnimplementedMethod();
+   return NO;
+}
+
+-(BOOL)deletesFileUponFailure {
+   NSUnimplementedMethod();
+   return NO;
+}
+
+-(void)setDeletesFileUponFailure:(BOOL)flag {
+   NSUnimplementedMethod();
+}
+
+-(void)setDestination:(NSString *)path allowOverwrite:(BOOL)allowOverwrite {
+   NSUnimplementedMethod();
+}
+
+-(void)cancel {
+   NSUnimplementedMethod();
+}
+
 
 @end

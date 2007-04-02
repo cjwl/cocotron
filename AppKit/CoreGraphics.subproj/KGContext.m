@@ -170,6 +170,10 @@ static inline KGGraphicsState *currentState(KGContext *self){
    [currentState(self) userSpaceToDeviceSpaceTransform];
 }
 
+-(void)getCTM:(CGAffineTransform *)matrix {
+   *matrix=currentState(self)->_ctm;
+}
+
 -(CGAffineTransform)ctm {
    [currentState(self) ctm];
 }
