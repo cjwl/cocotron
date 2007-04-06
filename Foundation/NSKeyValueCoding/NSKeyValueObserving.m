@@ -39,6 +39,10 @@ static BOOL CreateClassDefinition( const char * name, const char * superclassNam
 NSMutableDictionary *observationInfo=nil;
 NSLock *kvoLock=nil;
 
+@interface NSObject (KVOSettersForwardReferencs)
++(void)_KVO_buildDependencyUnion;
+@end
+
 @implementation NSObject (KeyValueObserving)
 
 -(void*)observationInfo
