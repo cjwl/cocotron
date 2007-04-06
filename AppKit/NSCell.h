@@ -42,6 +42,12 @@ typedef enum {
    NSOnState=1,
 } NSCellState;
 
+typedef enum {
+   NSRegularControlSize,
+   NSSmallControlSize,
+   NSMiniControlSize
+} NSControlSize;
+
 @interface NSCell : NSObject <NSCopying,NSCoding> {
    int       _state;
    NSFont   *_font;
@@ -53,6 +59,7 @@ typedef enum {
    NSFormatter *_formatter;
    NSString *_title;
    id        _representedObject;
+   NSControlSize _controlSize;
 
    BOOL      _isEnabled;
    BOOL      _isEditable;
@@ -64,6 +71,7 @@ typedef enum {
    BOOL      _isHighlighted;
    BOOL      _refusesFirstResponder;
    BOOL	     _isContinuous;
+   BOOL      _allowsMixedState;
 }
 
 -initTextCell:(NSString *)string;
@@ -101,11 +109,15 @@ typedef enum {
 -(double)doubleValue;
 -(NSAttributedString *)attributedStringValue;
 -(id)representedObject;
+-(NSControlSize)controlSize;
 
 -(void)setType:(NSCellType)type;
 
 -(void)setState:(int)value;
 -(int)nextState;
+-(void)setNextState;
+-(BOOL)allowsMixedState;
+-(void)setAllowsMixedState:(BOOL)allow;
 
 -(void)setTarget:target;
 -(void)setAction:(SEL)action;
@@ -137,6 +149,7 @@ typedef enum {
 -(void)setDoubleValue:(double)value;
 -(void)setAttributedStringValue:(NSAttributedString *)value;
 -(void)setRepresentedObject:(id)object;
+-(void)setControlSize:(NSControlSize)size;
 
 -(void)takeObjectValueFrom:sender;
 -(void)takeStringValueFrom:sender;

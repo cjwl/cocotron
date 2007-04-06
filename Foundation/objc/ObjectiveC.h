@@ -10,9 +10,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/ObjCTypes.h>
 
-#define sel_getName            OBJCStringFromSelector
-#define SELNAME                OBJCStringFromSelector
-
 @class Protocol;
 
 FOUNDATION_EXPORT Class       OBJCMetaClassFromClass(Class class);
@@ -39,8 +36,6 @@ FOUNDATION_EXPORT void OBJCSetInstanceVariable(id,const char *name,void *);
 
 FOUNDATION_EXPORT BOOL OBJCIsKindOfClass(id object,Class class);
 
-FOUNDATION_EXPORT const char *OBJCStringFromSelector(SEL selector);
-
 FOUNDATION_EXPORT const char *OBJCModulePathFromClass(Class class);
 FOUNDATION_EXPORT const char *OBJCModulePathForProcess();
 FOUNDATION_EXPORT const char **OBJCAllModulePaths(); // free the ptr but not the strings
@@ -58,5 +53,7 @@ FOUNDATION_EXPORT void OBJCReportStatistics();
 FOUNDATION_EXPORT void OBJCSetDispatchTracing(BOOL yesOrNo);
 FOUNDATION_EXPORT void OBJCEnableMsgTracing();
 FOUNDATION_EXPORT void OBJCDisableMsgTracing();
+
+FOUNDATION_EXPORT void OBJCInitializeProcess(int argc,const char *argv[]);
 
 #import <Foundation/ObjCDynamicModule.h>

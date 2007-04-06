@@ -797,8 +797,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    }
 
    if([self hasHorizontalScroller])
-    NSDrawGrayBezel([self frameOfScrollerBorder],rect);
-
+    [[self graphicsStyle] drawBrowserHorizontalScrollerWellInRect:[self frameOfScrollerBorder] clipRect:rect];
 }
 
 -(void)resizeSubviewsWithOldSize:(NSSize)oldSize {

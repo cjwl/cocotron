@@ -59,6 +59,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     _isSelectable=(flags&0x00200000)?YES:NO;
     _isScrollable=(flags&0x00100000)?YES:NO;
     _wraps=(flags&0x00100000)?NO:YES; // ! scrollable, use lineBreakMode ?
+    _allowsMixedState=(flags2&0x1000000)?YES:NO;
     // 0x00080000 = continuous
     // 0x00040000 = action on mouse down
     // 0x00000100 = action on mouse drag
@@ -172,7 +173,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(int)state {
-   return _state;
+   if (_allowsMixedState) {
+      if (_state < 0)
+         return -1;
+      else if (_state > 0)
+         return 1;
+      else
+         return 0;
+   }
+   else
+      return (abs(_state) > 0) ? 1 : 0;
 }
 
 -target {
@@ -317,6 +327,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     return _representedObject;
 }
 
+- (NSControlSize)controlSize {
+    return _controlSize;
+}
+
 -(void)setType:(NSCellType)type {
    if(_cellType!=type){
     _cellType = type;
@@ -330,11 +344,37 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)setState:(int)value {
-   _state=value;
+   if (_allowsMixedState) {
+      if (value < 0)
+         _state = -1;
+      else if (value > 0)
+         _state = 1;
+      else
+         _state = 0;
+   }
+   else
+      _state = (abs(value) > 0) ? 1 : 0;
 }
 
 -(int)nextState {
-   return ([self state]==0)?1:0;
+   if (_allowsMixedState) {
+      int value = [self state];
+      return value - ((value == -1) ? -2 : 1);
+   }
+   else
+      return 1 - [self state];
+}
+
+-(void)setNextState {
+   _state = [self nextState];
+}
+
+-(BOOL)allowsMixedState; {
+   return _allowsMixedState;
+}
+
+-(void)setAllowsMixedState:(BOOL)allow {
+   _allowsMixedState = allow;
 }
 
 -(void)setTarget:target {
@@ -506,6 +546,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     object = [object retain];
     [_representedObject release];
     _representedObject = object;
+}
+
+- (void)setControlSize:(NSControlSize)size {
+   _controlSize = size;
 }
 
 -(void)takeObjectValueFrom:sender {

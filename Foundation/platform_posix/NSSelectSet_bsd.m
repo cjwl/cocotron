@@ -74,6 +74,17 @@ void native_set_set(native_set *set,int descriptor){
 #endif
 }
 
+BOOL native_set_is_set(native_set *native,int descriptor) {
+  if(descriptor>native->max)
+   return NO;
+   
+#ifdef LINUX
+   return (__FDS_BITS(native->fdset)[descriptor/NFDBITS]&(1<<(descriptor%NFDBITS)))?YES:NO;
+#else
+   return (native->fdset->fds_bits[descriptor/NFDBITS]&(1<<(descriptor%NFDBITS)))?YES:NO;
+#endif
+}
+
 static int maxDescriptorInSet(NSSet *set){
    int           result=-1;
    NSEnumerator *state=[set objectEnumerator];
@@ -108,14 +119,14 @@ static void transferSetToNative(NSSet *set,native_set *native){
    NSSocket_bsd *socket;
    
    while((socket=[state nextObject])!=nil)
-    select_set_set(native,[socket descriptor]);
+    native_set_set(native,[socket descriptor]);
 }
 
 static void transferNativeToSetWithOriginals(native_set *sset,NSMutableSet *set,NSSet *original,NSSocket_bsd *cheater){
    int i;
    
    for(i=0;i<sset->max;i++){
-    if(native_set_is_set(i)){
+    if(native_set_is_set(sset,i)){
      [cheater setDescriptor:i];
      [set addObject:[original member:cheater]];
     }

@@ -83,6 +83,11 @@ OBJCObjectFile *OBJCCreateMainObjectFile(){
    
    return OBJCUniqueObjectFileWithPath(path);
 }
+
+void OBJCInitializeProcess(int argc,const char *argv[]) {
+   // do nothing, but we need it in unix land
+}
+
 #else
 OBJCObjectFile *OBJCObjectFileForPointer(void *ptr){
    Dl_info info;
@@ -95,15 +100,28 @@ OBJCObjectFile *OBJCObjectFileForPointer(void *ptr){
    return OBJCUniqueObjectFileWithPath(info.dli_fname);
 }
 
+static char pathOfExecutable[PATH_MAX+1]="\0";
+
 OBJCObjectFile *OBJCCreateMainObjectFile(){
-   void *ptr=dlsym(RTLD_DEFAULT,"main");
+   return OBJCUniqueObjectFileWithPath(pathOfExecutable);
+}
 
-   if(ptr==NULL){
-    OBJCRaiseException("OBJCInternalInconsistencyException","Can't resolve symbol 'main'");
-    return NULL;
+// This does not work if the parent process sets argv[0] to something other than the executable path, which is possible but not likely
+void OBJCInitializeProcess(int argc,const char *argv[]) {
+   const char *argv0=argv[0];
+   
+   if(argv0[0]=='/')
+    strcpy(pathOfExecutable,argv0);
+   else {
+    if(getcwd(pathOfExecutable,PATH_MAX)!=NULL) {
+     strncat(pathOfExecutable, "/", PATH_MAX);
+     
+     if(strncmp(argv0,"./",2)==0)
+      strncat(pathOfExecutable, argv0+2, PATH_MAX);
+     else
+      strncat(pathOfExecutable, argv0, PATH_MAX);
+    }
    }
-
-   return OBJCObjectFileForPointer(ptr);
 }
 #endif
 

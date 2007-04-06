@@ -236,10 +236,10 @@ id OBJCForwardInvocation(id object,SEL message,...){
    unsigned   *frame;
    
    if((method=OBJCLookupUniqueIdInClass(class,OBJCSelectorUniqueId(@selector(_frameLengthForSelector:))))==NULL){
-    OBJCRaiseException("OBJCDoesNotRecognizeSelector","%c[%s %s(%d)]", class->info & CLASS_INFO_META ? '+' : '-', class->name,OBJCStringFromSelector(message),message);
+    OBJCRaiseException("OBJCDoesNotRecognizeSelector","%c[%s %s(%d)]", class->info & CLASS_INFO_META ? '+' : '-', class->name,sel_getName(message),message);
     return nil;
    }
-   frameLength=method->implementation(object,@selector(_frameLengthForSelector:),message);
+   frameLength=method->method_imp(object,@selector(_frameLengthForSelector:),message);
    frame=alloca(frameLength);
    
    va_start(arguments,message);
@@ -249,9 +249,9 @@ id OBJCForwardInvocation(id object,SEL message,...){
     frame[i]=va_arg(arguments,unsigned);
    
    if((method=OBJCLookupUniqueIdInClass(class,OBJCSelectorUniqueId(@selector(forwardSelector:arguments:))))!=NULL)
-    return method->implementation(object,@selector(forwardSelector:arguments:),message,frame);
+    return method->method_imp(object,@selector(forwardSelector:arguments:),message,frame);
    else {
-    OBJCRaiseException("OBJCDoesNotRecognizeSelector","%c[%s %s(%d)]", class->info & CLASS_INFO_META ? '+' : '-', class->name,OBJCStringFromSelector(message),message);
+    OBJCRaiseException("OBJCDoesNotRecognizeSelector","%c[%s %s(%d)]", class->info & CLASS_INFO_META ? '+' : '-', class->name,sel_getName(message),message);
     return nil;
    }
 }
@@ -264,7 +264,7 @@ id OBJCForwardInvocation(id object,SEL message,...){
    if((method=OBJCLookupUniqueIdInClass(class,OBJCSelectorUniqueId(@selector(forwardSelector:arguments:))))!=NULL)
     return method->method_imp(object,@selector(forwardSelector:arguments:),message,arguments);
    else {
-    OBJCRaiseException("OBJCDoesNotRecognizeSelector","%c[%s %s(%d)]", class->info & CLASS_INFO_META ? '+' : '-', class->name,OBJCStringFromSelector(message),message);
+    OBJCRaiseException("OBJCDoesNotRecognizeSelector","%c[%s %s(%d)]", class->info & CLASS_INFO_META ? '+' : '-', class->name,sel_getName(message),message);
     return nil;
    }
 }

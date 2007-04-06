@@ -168,52 +168,10 @@ static NSRect boundsToTitleAreaRect(NSRect rect){
    return NSInsetRect(rect, WINDOW_BORDER_THICKNESS, WINDOW_BORDER_THICKNESS);
 }
 
-static NSRect drawSubmenuBackground(NSRect rect){
-   NSRect   rects[7];
-   NSColor *colors[7];
-
-   rects[0]=rect;
-   colors[0]=[NSColor controlColor];
-
-   rects[1]=rect;
-   rects[1].origin.y=NSMaxY(rect)-1;
-   rects[1].size.height=1;
-   colors[1]=[NSColor blackColor];
-
-   rects[2]=rect;
-   rects[2].origin.x=NSMaxX(rect)-1;
-   rects[2].size.width=1;
-   colors[2]=[NSColor blackColor];  
-
-   rects[3]=rect;
-   rects[3].origin.x+=1;
-   rects[3].size.width=1;
-   rects[3].origin.y+=1;
-   rects[3].size.height-=2;
-   colors[3]=[NSColor whiteColor];
-
-   rects[4]=rect;
-   rects[4].origin.x+=2;
-   rects[4].size.width-=4;
-   rects[4].origin.y+=1;
-   rects[4].size.height=1;
-   colors[4]=[NSColor whiteColor];
-
-   rects[5]=rect;
-   rects[5].origin.x+=1;
-   rects[5].size.width-=2;
-   rects[5].origin.y=NSMaxY(rect)-2;
-   rects[5].size.height=1;
-   colors[5]=[NSColor darkGrayColor];
-
-   rects[6]=rect;
-   rects[6].origin.x=NSMaxX(rect)-2;
-   rects[6].size.width=1;
-   rects[6].origin.y=1;
-   rects[6].size.height-=2;
-   colors[6]=[NSColor darkGrayColor];
-
-   NSRectFillListWithColors(rects,colors,7);
+-(NSRect)drawSubmenuBackground {
+   NSRect rect=[self bounds];
+   
+   [[self graphicsStyle] drawMenuWindowBackgroundInRect:rect];
 
    return boundsToTitleAreaRect(rect);
 }
@@ -229,7 +187,7 @@ static NSRect drawSubmenuBackground(NSRect rect){
 }
 
 -(void)drawRect:(NSRect)rect {
-   NSRect   itemArea=drawSubmenuBackground([self bounds]);
+   NSRect   itemArea=[self drawSubmenuBackground];
    NSArray *items=[self itemArray];
    unsigned i,count=[items count];
    NSSize   titleAreaSize=[self titleAreaSizeWithMenuItems:items];

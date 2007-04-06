@@ -8,6 +8,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/NSKeyValueObserving.h>
 #import <Foundation/NSArray.h>
+#import <Foundation/NSSet.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSLock.h>
 #import <Foundation/NSValue.h>
@@ -18,6 +19,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <objc/objc-runtime.h>
 #import <objc/objc-class.h>
+#import <string.h>
 
 #import "NSString+KVCAdditions.h"
 #import "NSKeyValueObserving-Private.h"
@@ -26,7 +28,8 @@ NSString *const NSKeyValueChangeKindKey=@"NSKeyValueChangeKindKey";
 NSString *const NSKeyValueChangeNewKey=@"NSKeyValueChangeNewKey";
 NSString *const NSKeyValueChangeOldKey=@"NSKeyValueChangeOldKey";
 
-NSString *const _KVO_DependentKeyTriggeringChangeNotification=@"_KVO_DependentKeyTriggeringChangeNotification";
+NSString *const _KVO_DependentKeysTriggeringChangeNotification=@"_KVO_DependentKeysTriggeringChangeNotification";
+NSString *const _KVO_UnionOfKeysTriggeringChangeNotification=@"_KVO_UnionOfKeysTriggeringChangeNotification";
 
 static BOOL CreateClassDefinition( const char * name, const char * superclassName );
 
@@ -64,7 +67,6 @@ NSLock *kvoLock=nil;
 
 -(void)addObserver:(id)observer forKeyPath:(NSString*)keyPath options:(NSKeyValueObservingOptions)options context:(void*)context realKeyPath:(id)realKeyPath;
 {
-	NSLog(@"adding observer for key path %@", keyPath);
 	[self _KVO_swizzle];
 	NSString* remainingKeyPath;
 	NSString* key;
@@ -163,15 +165,29 @@ NSLock *kvoLock=nil;
 -(void)willChangeValueForKey:(NSString*)key
 {
 	NSMutableDictionary* dict=[self observationInfo];
-	NSArray *dependents=[[(id)[[self class] observationInfo] objectForKey:_KVO_DependentKeyTriggeringChangeNotification] objectForKey:key];
 
-	if(dependents)
 	{
-		int count=[dependents count];
-		int i;
-		for(i=0; i<count; i++)
+		NSDictionary *dependencies=[(id)[isa observationInfo] objectForKey:_KVO_UnionOfKeysTriggeringChangeNotification];
+
+		if(!dependencies)
 		{
-			[self willChangeValueForKey:[dependents objectAtIndex:i]];
+			[isa _KVO_buildDependencyUnion];
+			dependencies=[(id)[isa observationInfo] objectForKey:_KVO_UnionOfKeysTriggeringChangeNotification];
+		}
+		
+		
+		NSArray *dependents=[dependencies objectForKey:key];
+
+		
+		if(dependents)
+		{
+			id dep;
+			id en=[dependents objectEnumerator];
+			int i;
+			while(dep=[en nextObject])
+			{
+				[self willChangeValueForKey:dep];
+			}
 		}
 	}
 	NSMutableArray *observers=[dict objectForKey:key];
@@ -203,18 +219,30 @@ NSLock *kvoLock=nil;
 -(void)didChangeValueForKey:(NSString*)key
 {
 	NSMutableDictionary* dict=[self observationInfo];
-	NSArray *dependents=[[(id)[[self class] observationInfo] objectForKey:_KVO_DependentKeyTriggeringChangeNotification] objectForKey:key];
-	
-	if(dependents)
+
 	{
-		int count=[dependents count];
-		int i;
-		for(i=0; i<count; i++)
+		NSDictionary *dependencies=[(id)[isa observationInfo] objectForKey:_KVO_UnionOfKeysTriggeringChangeNotification];
+		
+		if(!dependencies)
 		{
-			[self didChangeValueForKey:[dependents objectAtIndex:i]];
+			[isa _KVO_buildDependencyUnion];
+			dependencies=[(id)[isa observationInfo] objectForKey:_KVO_UnionOfKeysTriggeringChangeNotification];
+		}
+		
+		NSSet *dependents=[dependencies objectForKey:key];
+		
+
+		if(dependents)
+		{
+			id dep;
+			id en=[dependents objectEnumerator];
+			int i;
+			while(dep=[en nextObject])
+			{
+				[self didChangeValueForKey:dep];
+			}
 		}
 	}
-	
 	NSMutableArray *observers=[dict objectForKey:key];
 
 	NSEnumerator *en=[observers objectEnumerator];
@@ -270,7 +298,7 @@ NSLock *kvoLock=nil;
 	}
 }
 
-+ (void)setKeys:(NSArray *)keys triggerChangeNotificationsForDependentKey:(NSString *)dependentKey
++(void)setKeys:(NSArray *)keys triggerChangeNotificationsForDependentKey:(NSString *)dependentKey
 {
 	NSMutableDictionary* dict=[self observationInfo];
 	if(!dict)
@@ -279,16 +307,21 @@ NSLock *kvoLock=nil;
 		dict=[self observationInfo];
 	}
 	
-	NSMutableDictionary *dependents=[dict objectForKey:_KVO_DependentKeyTriggeringChangeNotification];
+	NSMutableDictionary *dependents=[dict objectForKey:_KVO_DependentKeysTriggeringChangeNotification];
 	if(!dependents)
 	{
 		dependents=[NSMutableDictionary dictionary];
 		[dict setObject:dependents
-				 forKey:_KVO_DependentKeyTriggeringChangeNotification];
+				 forKey:_KVO_DependentKeysTriggeringChangeNotification];
 	}
 
-	[dependents setObject:[[keys copy] autorelease] 
-				   forKey:dependentKey];
+	id key;
+	id en=[keys objectEnumerator];
+	while(key = [en nextObject])
+	{
+		[dependents setObject:dependentKey 
+					   forKey:key];
+	}
 }
 @end
 
@@ -343,8 +376,47 @@ CHANGE_DECLARATION(NSPoint)
 -(id)_KVO_className
 {
 	return [NSString stringWithCString:isa->name+13];
-	//[NSException raise:@"NSUnimplementedException" format:@"KVO replacement className is unimplemented. Whoops"];
 }
+
++(void)_KVO_buildDependencyUnion
+{
+	NSMutableDictionary* dict=[self observationInfo];
+	if(!dict)
+	{
+		[self setObservationInfo:[NSMutableDictionary new]];
+		dict=[self observationInfo];
+	}
+
+
+	NSMutableDictionary *ownDependents=[NSMutableDictionary dictionary];
+
+	id class=self;
+	while(class != [NSObject class])
+	{
+		NSDictionary* classDependents=[(NSDictionary*)[class observationInfo] objectForKey:_KVO_DependentKeysTriggeringChangeNotification];
+
+		id keys=[classDependents allKeys];
+		int i;
+		int ct=[keys count];
+		for(i=0; i<ct; i++)
+		{
+			id key=[keys objectAtIndex:i];
+			NSMutableSet* dependentsForKey=[ownDependents objectForKey:key];
+			if(!dependentsForKey)
+			{
+				dependentsForKey=[NSMutableSet set];
+				[ownDependents setObject:dependentsForKey forKey:key];
+			}
+			[dependentsForKey addObject:[classDependents objectForKey:key]];
+		}
+
+		class=[class superclass];
+	}
+
+	[dict setObject:ownDependents
+				 forKey:_KVO_UnionOfKeysTriggeringChangeNotification];
+}
+
 
 
 -(void)_KVO_swizzle
@@ -436,8 +508,8 @@ CHANGE_DECLARATION(NSPoint)
 				CHECK_AND_ASSIGN(NSSize);
 				CHECK_AND_ASSIGN(NSPoint);
 
-				if(kvoSelector==0)
-					NSLog(@"type %s not defined in %s:%i (selector %s on class %@)", firstParameterType, __FILE__, __LINE__, SELNAME(method->method_name), [self className]);
+//				if(kvoSelector==0)
+//					NSLog(@"type %s not defined in %s:%i (selector %s on class %@)", firstParameterType, __FILE__, __LINE__, SELNAME(method->method_name), [self className]);
 				
 			}
 			// there's a suitable selector for us

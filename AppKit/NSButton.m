@@ -51,6 +51,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return [_cell state];
 }
 
+-(BOOL)allowsMixedState {
+   return [_cell allowsMixedState];
+}
+
 
 -(void)setTransparent:(BOOL)flag {
    [_cell setTransparent:flag];
@@ -80,6 +84,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [_cell setState:value];
    [self setNeedsDisplay:YES];
 }
+
+-(void)setNextState {
+   [_cell setNextState];
+   [self setNeedsDisplay:YES];
+}
+
+-(void)setAllowsMixedState:(BOOL)flag {
+   [_cell setAllowsMixedState:flag];
+}
+
 
 -(unsigned)keyEquivalentModifierMask {
    return [_cell keyEquivalentModifierMask];

@@ -17,6 +17,17 @@ enum {
 };
 
 typedef enum {
+   NSMomentaryLightButton,
+   NSPushOnPushOffButton,
+   NSToggleButton,
+   NSSwitchButton,
+   NSRadioButton,
+   NSMomentaryChangeButton,
+   NSOnOffButton,
+   NSMomentaryPushInButton,
+} NSButtonType;
+
+typedef enum {
    NSRoundedBezelStyle=1,
    NSRegularSquareBezelStyle,
    NSThickSquareBezelStyle,
@@ -44,6 +55,7 @@ typedef enum {
    BOOL      _imageDimsWhenDisabled;
    NSString *_keyEquivalent;
    unsigned  _keyEquivalentModifierMask;
+   BOOL      _showsBorderOnlyWhileMouseInside;
 }
 
 -(BOOL)isTransparent;
@@ -58,6 +70,8 @@ typedef enum {
 -(int)showsStateBy;
 -(BOOL)imageDimsWhenDisabled;
 -(unsigned)keyEquivalentModifierMask;
+-(NSBezelStyle)bezelStyle;
+-(BOOL)showsBorderOnlyWhileMouseInside;
 
 -(void)setTransparent:(BOOL)flag;
 -(void)setKeyEquivalent:(NSString *)keyEquivalent;
@@ -71,6 +85,9 @@ typedef enum {
 -(void)setShowsStateBy:(int)type;
 -(void)setImageDimsWhenDisabled:(BOOL)flag;
 -(void)setKeyEquivalentModifierMask:(unsigned)mask;
+-(void)setBezelStyle:(NSBezelStyle)bezelStyle;
+-(void)setButtonType:(NSButtonType)buttonType;
+-(void)setShowsBorderOnlyWhileMouseInside:(BOOL)show;
 
 @end
 

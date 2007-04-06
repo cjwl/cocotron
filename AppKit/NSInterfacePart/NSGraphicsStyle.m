@@ -33,7 +33,22 @@
    NSRectFill(NSMakeRect(point.x,point.y+1,width,1));
 }
 
--(void)drawPushButtonNormalInRect:(NSRect)rect {
+-(NSRect)drawUnborderedButtonInRect:(NSRect)rect defaulted:(BOOL)defaulted {
+   if(defaulted){
+    [[NSColor blackColor] set];
+    NSRectFill(rect);
+    rect = NSInsetRect(rect,1,1);
+   }
+   return rect;
+}
+
+-(void)drawPushButtonNormalInRect:(NSRect)rect defaulted:(BOOL)defaulted {
+   if(defaulted){
+    [[NSColor blackColor] set];
+    NSRectFill(rect);
+    rect = NSInsetRect(rect,1,1);
+   }
+
    NSDrawButton(rect,rect);
 }
 
@@ -45,7 +60,11 @@
    NSInterfaceDrawHighlightedButton(rect,rect);
 }
 
--(void)drawButtonImage:(NSImage *)image inRect:(NSRect)rect enabled:(BOOL)enabled {
+-(NSSize)sizeOfButtonImage:(NSImage *)image enabled:(BOOL)enabled mixed:(BOOL)mixed {
+   return [image size];
+}
+
+-(void)drawButtonImage:(NSImage *)image inRect:(NSRect)rect enabled:(BOOL)enabled mixed:(BOOL)mixed {
    float fraction=enabled?1.0:0.5;
    
    [image compositeToPoint:rect.origin operation:NSCompositeSourceOver fraction:fraction];
@@ -53,6 +72,10 @@
 
 -(void)drawBrowserTitleBackgroundInRect:(NSRect)rect {
    NSInterfaceDrawBrowserHeader(rect,rect);
+}
+
+-(void)drawBrowserHorizontalScrollerWellInRect:(NSRect)rect clipRect:(NSRect)clipRect {
+   NSDrawGrayBezel(rect,clipRect);
 }
 
 -(NSRect)drawColorWellBorderInRect:(NSRect)rect enabled:(BOOL)enabled bordered:(BOOL)bordered active:(BOOL)active {
@@ -83,6 +106,58 @@
    arrow=[[[NSInterfacePartAttributedString alloc] initWithCharacter:0x34 fontName:@"Marlett" pointSize:10 color:color] autorelease];
 
    [arrow drawAtPoint:point];
+}
+
+-(void)drawMenuWindowBackgroundInRect:(NSRect)rect {
+   NSRect   rects[7];
+   NSColor *colors[7];
+
+   rects[0]=rect;
+   colors[0]=[NSColor menuBackgroundColor];
+
+   rects[1]=rect;
+   rects[1].origin.y=NSMaxY(rect)-1;
+   rects[1].size.height=1;
+   colors[1]=[NSColor blackColor];
+
+   rects[2]=rect;
+   rects[2].origin.x=NSMaxX(rect)-1;
+   rects[2].size.width=1;
+   colors[2]=[NSColor blackColor];  
+
+   rects[3]=rect;
+   rects[3].origin.x+=1;
+   rects[3].size.width=1;
+   rects[3].origin.y+=1;
+   rects[3].size.height-=2;
+   colors[3]=[NSColor whiteColor];
+
+   rects[4]=rect;
+   rects[4].origin.x+=2;
+   rects[4].size.width-=4;
+   rects[4].origin.y+=1;
+   rects[4].size.height=1;
+   colors[4]=[NSColor whiteColor];
+
+   rects[5]=rect;
+   rects[5].origin.x+=1;
+   rects[5].size.width-=2;
+   rects[5].origin.y=NSMaxY(rect)-2;
+   rects[5].size.height=1;
+   colors[5]=[NSColor darkGrayColor];
+
+   rects[6]=rect;
+   rects[6].origin.x=NSMaxX(rect)-2;
+   rects[6].size.width=1;
+   rects[6].origin.y=1;
+   rects[6].size.height-=2;
+   colors[6]=[NSColor darkGrayColor];
+
+   NSRectFillListWithColors(rects,colors,7);
+}
+
+-(void)drawPopUpButtonWindowBackgroundInRect:(NSRect)rect {
+   NSDrawButton(rect,rect);
 }
 
 -(void)drawOutlineViewBranchInRect:(NSRect)rect expanded:(BOOL)expanded {
@@ -235,10 +310,11 @@
    imageRect.origin.y=rect.origin.y+(rect.size.height-imageSize.height)/2+(pressed?-1:0);
    imageRect.size=imageSize;
    
-   [self drawButtonImage:image inRect:imageRect enabled:enabled];
+   [self drawButtonImage:image inRect:imageRect enabled:enabled mixed:NO];
 }
 
 -(void)drawTabInRect:(NSRect)rect clipRect:(NSRect)clipRect color:(NSColor *)color selected:(BOOL)selected {
+    NSRect originalRect=rect;
     NSRect rects[8];
     NSColor *colors[8];
     int i;
@@ -300,10 +376,23 @@
         [colors[i] set];
         NSRectFill(rects[i]);
     }
+    
+    if(selected){ // cleanup
+     NSRect erase=originalRect;
+     
+     [[NSColor controlColor] set];
+     erase.size.height=2;
+     erase=NSInsetRect(erase,1,0);
+     NSRectFill(erase);
+    }
 }
 
 -(void)drawTabPaneInRect:(NSRect)rect {
    NSDrawButton(rect,rect);
+}
+
+-(void)drawTabViewBackgroundInRect:(NSRect)rect {
+   // do nothing
 }
 
 -(void)drawTextFieldBorderInRect:(NSRect)rect bezeledNotLine:(BOOL)bezeledNotLine {
@@ -313,6 +402,11 @@
     [[NSColor blackColor] set];
     NSFrameRect(rect);
    }
+}
+
+-(void)drawTextViewInsertionPointInRect:(NSRect)rect color:(NSColor *)color {
+   [color set];
+   NSRectFill(rect);
 }
 
 @end

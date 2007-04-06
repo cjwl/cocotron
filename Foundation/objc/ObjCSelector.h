@@ -23,5 +23,4 @@ static inline SEL OBJCSelectorUniqueId(const void *selector){
 FOUNDATION_EXPORT SEL OBJCRegisterSelectorName(const char *name);
 FOUNDATION_EXPORT SEL OBJCRegisterMethodDescription(OBJCMethodDescription *method);
 FOUNDATION_EXPORT SEL OBJCRegisterMethod(OBJCMethod *method);
-FOUNDATION_EXPORT const char *OBJCStringFromSelector(SEL selector);
 

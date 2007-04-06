@@ -219,7 +219,7 @@ NSString *NSStringFromSelector(SEL selector) {
    if(selector==NULL)
     return @"";
 
-   return NSString_cStringWithBytesAndZero(NULL,OBJCStringFromSelector(selector));
+   return NSString_cStringWithBytesAndZero(NULL,sel_getName(selector));
 }
 
 Class NSClassFromString(NSString *className) {

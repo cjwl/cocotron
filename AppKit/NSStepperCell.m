@@ -154,7 +154,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
     _controlView=controlView;
     [[_controlView graphicsStyle] drawStepperButtonInRect:[self _upArrowFrameForFrame:frame] clipRect:frame enabled:[self isEnabled] highlighted:_isUpHighlighted upNotDown:YES];
-    [[_controlView graphicsStyle] drawStepperButtonInRect:[self _downArrowFrameForFrame:frame] clipRect:frame enabled:[self isEnabled] highlighted:_isDownHighlighted upNotDown:YES];
+    [[_controlView graphicsStyle] drawStepperButtonInRect:[self _downArrowFrameForFrame:frame] clipRect:frame enabled:[self isEnabled] highlighted:_isDownHighlighted upNotDown:NO];
         
     if ([[controlView window] firstResponder] == controlView){
         if([controlView isKindOfClass:[NSMatrix class]]){

@@ -24,6 +24,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSMatrix.h>
 #import <AppKit/NSNibKeyedUnarchiver.h>
 #import <AppKit/NSButtonImageSource.h>
+#import <AppKit/NSPopUpButtonCell.h>
 
 @implementation NSButtonCell
 
@@ -86,29 +87,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
      _highlightsBy|=NSChangeGrayCellMask;
     
     _isBordered=(flags&0x00800000)?YES:NO; // err, this flag is in NSCell too
-        
-    switch(flags2&0x37){
-     case 1: _bezelStyle=NSRoundedBezelStyle; break;
-     case 2: _bezelStyle=NSRegularSquareBezelStyle; break;
-     case 3: _bezelStyle=NSThickSquareBezelStyle; break;
-     case 4: _bezelStyle=NSThickerSquareBezelStyle; break;
-     case 5: _bezelStyle=NSDisclosureBezelStyle; break;
-     case 6: _bezelStyle=NSShadowlessSquareBezelStyle; break;
-     case 7: _bezelStyle=NSCircularBezelStyle; break;
 
-     case 32: _bezelStyle=NSTexturedSquareBezelStyle; break;
-     case 33: _bezelStyle=NSHelpButtonBezelStyle; break;
-     case 34: _bezelStyle=NSSmallSquareBezelStyle; break;
-     case 35: _bezelStyle=NSTexturedRoundedBezelStyle; break;
-     case 36: _bezelStyle=NSRoundRectBezelStyle; break;
-     case 37: _bezelStyle=NSRecessedBezelStyle; break;
-     //case 38: _bezelStyle=NSRoundedDisclosureBezelStyle; break; 38 not possible, 31?
-     default: _bezelStyle=NSRoundedBezelStyle; break;
-    }
-        
+    _bezelStyle=flags2&0x7|(flags2&0x20>>2);
+
     _isTransparent=(flags&0x00008000)?YES:NO;
     _imageDimsWhenDisabled=(flags&0x00002000)?NO:YES;
     
+    _showsBorderOnlyWhileMouseInside=(flags2&0x8)?YES:NO;
+
     check=[keyed decodeObjectForKey:@"NSAlternateImage"];
     if([check isKindOfClass:[NSImage class]])
      _alternateImage=[check retain];
@@ -117,7 +103,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
      _image=[[check normalImage] retain];
      _alternateImage=[[check alternateImage] retain];
     }
-    
+    else
+     _alternateImage=nil;
+
     _keyEquivalent=[[keyed decodeObjectForKey:@"NSKeyEquivalent"] retain];
     _keyEquivalentModifierMask=flags2>>8;
    }
@@ -147,6 +135,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    _alternateImage=nil;
    _keyEquivalent=@"";
    _keyEquivalentModifierMask=0;
+   _showsBorderOnlyWhileMouseInside=NO;
 
    [self setBordered:YES];
    [self setBezeled:YES];
@@ -265,6 +254,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return _keyEquivalentModifierMask;
 }
 
+-(NSBezelStyle)bezelStyle {
+   return _bezelStyle;
+}
+
+-(BOOL)showsBorderOnlyWhileMouseInside {
+   return _showsBorderOnlyWhileMouseInside;
+}
+
 -(int)state {
    return [self intValue];
 }
@@ -329,6 +326,96 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [self setIntValue:value];
 }
 
+-(void)setNextState {
+   [self setIntValue:[self nextState]];
+}
+
+-(void)setObjectValue:(id <NSCopying>)value {
+   if ([(id)value isKindOfClass:[NSNumber class]])
+      [super setState:[(NSNumber *)value intValue]];
+   else
+      [super setState:0];
+
+   [_objectValue release];
+   _objectValue = [[NSNumber numberWithInt:[super state]] retain];
+
+   [(NSControl *)[self controlView] updateCell:self];
+}
+
+-(void)setBezelStyle:(NSBezelStyle)bezelStyle {
+   _bezelStyle = bezelStyle;
+}
+
+-(void)setButtonType:(NSButtonType)buttonType {
+   switch (buttonType)
+   {
+      case NSMomentaryLightButton:
+         _highlightsBy = NSChangeBackgroundCellMask;
+	      _showsStateBy = NSNoCellMask;
+         _imageDimsWhenDisabled = YES;
+         break;
+
+      case NSMomentaryPushInButton:
+	      _highlightsBy = NSPushInCellMask|NSChangeGrayCellMask;
+	      _showsStateBy = NSNoCellMask;
+         _imageDimsWhenDisabled = YES;
+         break;
+
+      case NSMomentaryChangeButton:
+	      _highlightsBy = NSContentsCellMask;
+	      _showsStateBy = NSNoCellMask;
+         _imageDimsWhenDisabled = YES;
+         break;
+
+      case NSPushOnPushOffButton:
+	      _highlightsBy = NSPushInCellMask|NSChangeGrayCellMask;
+	      _showsStateBy = NSChangeBackgroundCellMask;
+         _imageDimsWhenDisabled = YES;
+         break;
+
+      case NSOnOffButton:
+	      _highlightsBy = NSChangeBackgroundCellMask;
+	      _showsStateBy = NSChangeBackgroundCellMask;
+         _imageDimsWhenDisabled = YES;
+         break;
+
+      case NSToggleButton:
+	      _highlightsBy = NSPushInCellMask|NSContentsCellMask;
+	      _showsStateBy = NSContentsCellMask;
+         _imageDimsWhenDisabled = YES;
+         break;
+
+      case NSSwitchButton:
+	      _highlightsBy = NSContentsCellMask;
+	      _showsStateBy = NSContentsCellMask;
+         _imagePosition = NSImageLeft;
+         _imageDimsWhenDisabled = NO;
+	      [self setImage:[NSImage imageNamed:@"NSSwitch"]];
+	      [self setAlternateImage:[NSImage imageNamed:@"NSHighlightedSwitch"]];
+	      [self setAlignment:NSLeftTextAlignment];
+	      [self setBordered:NO];
+	      [self setBezeled:NO];
+         break;
+
+      case NSRadioButton:
+	      _highlightsBy = NSContentsCellMask;
+	      _showsStateBy = NSContentsCellMask;
+         _imagePosition = NSImageLeft;
+         _imageDimsWhenDisabled = NO;
+	      [self setImage:[NSImage imageNamed:@"NSRadioButton"]];
+	      [self setAlternateImage:[NSImage imageNamed:@"NSHighlightedRadioButton"]];
+	      [self setAlignment:NSLeftTextAlignment];
+	      [self setBordered:NO];
+	      [self setBezeled:NO];
+         break;
+   }
+
+   [(NSControl *)[self controlView] updateCell:self];
+}
+
+-(void)setShowsBorderOnlyWhileMouseInside:(BOOL)show {
+   _showsBorderOnlyWhileMouseInside=show;
+}
 
 -(NSAttributedString *)titleForHighlight {
    if((([self highlightsBy]&NSContentsCellMask) && [self isHighlighted]) ||
@@ -343,11 +430,24 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(NSImage *)imageForHighlight {
-   if((([self highlightsBy]&NSContentsCellMask) && [self isHighlighted]) ||
-      (([self showsStateBy]&NSContentsCellMask) && [self state]))
-    return [self alternateImage];
+   if(_bezelStyle==NSDisclosureBezelStyle){
+   
+    if((([self highlightsBy]&NSContentsCellMask) && [self isHighlighted]))
+     return [NSImage imageNamed:@"NSButtonCell_disclosure_highlighted"];
+    else if([self state])
+     return [NSImage imageNamed:@"NSButtonCell_disclosure_selected"];
+    else
+     return [NSImage imageNamed:@"NSButtonCell_disclosure_normal"];
+     
+    return nil;
+   }
+   else {
+    if((([self highlightsBy]&NSContentsCellMask) && [self isHighlighted]) ||
+       (([self showsStateBy]&NSContentsCellMask) && [self state]))
+     return [self alternateImage];
 
-   return [self image];
+    return [self image];
+   }
 }
 
 -(BOOL)isVisuallyHighlighted {
@@ -358,7 +458,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)drawInteriorWithFrame:(NSRect)frame inView:(NSView *)controlView {
    NSAttributedString *title=[self titleForHighlight];
    NSImage            *image=[self imageForHighlight];
-   NSSize              imageSize=(image==nil)?NSMakeSize(0,0):[image size];
+   BOOL                enabled=[self isEnabled]?YES:![self imageDimsWhenDisabled];
+   BOOL                mixed=([self state]==NSMixedState)?YES:NO;
+   NSSize              imageSize=(image==nil)?NSMakeSize(0,0):[[controlView graphicsStyle] sizeOfButtonImage:image enabled:enabled mixed:mixed];
    NSPoint             imageOrigin=frame.origin;
    NSSize              titleSize=[title size];
    NSRect              titleRect=frame;
@@ -433,7 +535,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    if(drawImage){
     NSRect rect=NSMakeRect(imageOrigin.x,imageOrigin.y,imageSize.width,imageSize.height);
     
-    [[_controlView graphicsStyle] drawButtonImage:image inRect:rect enabled:[self isEnabled]?YES:![self imageDimsWhenDisabled]];
+    [[_controlView graphicsStyle] drawButtonImage:image inRect:rect enabled:enabled mixed:mixed];
    }
 
    if(drawTitle){
@@ -461,24 +563,44 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)drawWithFrame:(NSRect)frame inView:(NSView *)control {
+   BOOL defaulted;
+   
    _controlView=control;
 
    if([self isTransparent])
     return;
 
-   if ([[control window] defaultButtonCell] == self) {
-       [[NSColor blackColor] set];
-       NSRectFill(frame);
-       frame = NSInsetRect(frame,1,1);
+   defaulted=([[control window] defaultButtonCell] == self);
+   
+/*
+ Aqua Push Buttons actually have a frame much larger than told by IB to make room for shadows and whatnot
+ So we have to compensate for this when drawing simpler buttons.
+ There is probably a way to streamline this, make NSPopUpButtonCell draw itself for starters
+ NSGraphicsStyle should probably do this adjustment too
+ */
+   if((_bezelStyle==NSRoundedBezelStyle) && (_highlightsBy&NSPushInCellMask) && (_highlightsBy&NSChangeGrayCellMask) && (_showsStateBy==NSNoCellMask)){
+    if(![self isKindOfClass:[NSPopUpButtonCell class]]){
+     frame.size.height-=10;
+     frame.origin.y+=[control isFlipped]?-5:5;
+     frame.size.width-=6;
+     frame.origin.x+=3;
+    }
    }
-
-   if([self isBordered]){    
+   
+   if(_bezelStyle==NSDisclosureBezelStyle){
+// FIX The background isn't getting erased during pressing ? shouldn't the view be doing this during tracking ?
+    [[NSColor controlColor] set];
+    NSRectFill(frame);
+   }
+   else if(![self isBordered])
+    frame=[[_controlView graphicsStyle] drawUnborderedButtonInRect:frame defaulted:defaulted];
+   else {
     if(([self highlightsBy]&NSPushInCellMask) && [self isHighlighted])
      [[_controlView graphicsStyle] drawPushButtonPressedInRect:frame];
     else if([self isVisuallyHighlighted])
      [[_controlView graphicsStyle] drawPushButtonHighlightedInRect:frame];
     else
-     [[_controlView graphicsStyle] drawPushButtonNormalInRect:frame];
+     [[_controlView graphicsStyle] drawPushButtonNormalInRect:frame defaulted:defaulted];
          
     frame=NSInsetRect(frame,2,2);
    }

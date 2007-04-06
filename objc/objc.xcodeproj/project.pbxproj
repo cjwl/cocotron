@@ -30,8 +30,8 @@
 		FE4034D00B42F2C400CEC41A /* objc.h in Headers */ = {isa = PBXBuildFile; fileRef = FE4034CE0B42F2C400CEC41A /* objc.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE4034D10B42F2C400CEC41A /* objc.h in Headers */ = {isa = PBXBuildFile; fileRef = FE4034CE0B42F2C400CEC41A /* objc.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE85F6AB0BBF51D400E9C25C /* objc-runtime.h in Headers */ = {isa = PBXBuildFile; fileRef = FE85F6AA0BBF51D400E9C25C /* objc-runtime.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		FE85F6AC0BBF51D400E9C25C /* objc-runtime.h in Headers */ = {isa = PBXBuildFile; fileRef = FE85F6AA0BBF51D400E9C25C /* objc-runtime.h */; };
-		FE85F6AD0BBF51D400E9C25C /* objc-runtime.h in Headers */ = {isa = PBXBuildFile; fileRef = FE85F6AA0BBF51D400E9C25C /* objc-runtime.h */; };
+		FE85F6AC0BBF51D400E9C25C /* objc-runtime.h in Headers */ = {isa = PBXBuildFile; fileRef = FE85F6AA0BBF51D400E9C25C /* objc-runtime.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE85F6AD0BBF51D400E9C25C /* objc-runtime.h in Headers */ = {isa = PBXBuildFile; fileRef = FE85F6AA0BBF51D400E9C25C /* objc-runtime.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FEB6CBFA0B4A1584004FADF2 /* objc-export.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB6CBF90B4A1584004FADF2 /* objc-export.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FEB6CBFB0B4A1584004FADF2 /* objc-export.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB6CBF90B4A1584004FADF2 /* objc-export.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FEB6CBFC0B4A1584004FADF2 /* objc-export.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB6CBF90B4A1584004FADF2 /* objc-export.h */; settings = {ATTRIBUTES = (Public, ); }; };

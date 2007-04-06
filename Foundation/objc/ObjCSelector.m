@@ -66,7 +66,7 @@ SEL sel_registerName(const char *cString){
    return result;
 }
 
-const char *OBJCStringFromSelector(SEL selector){
+const char *sel_getName(SEL selector) {
   OBJCHashEnumerator state=OBJCEnumerateHashTable(nameToNumber);
   const char        *check;
 
@@ -82,4 +82,3 @@ const char *OBJCStringFromSelector(SEL selector){
 
   return NULL;
 }
-

@@ -11,13 +11,21 @@
 -(NSSize)sizeOfMenuBranchArrow;
 
 -(void)drawMenuSeparatorInRect:(NSRect)rect;
--(void)drawPushButtonNormalInRect:(NSRect)rect;
+-(NSRect)drawUnborderedButtonInRect:(NSRect)rect defaulted:(BOOL)defaulted;
+
+-(void)drawPushButtonNormalInRect:(NSRect)rect defaulted:(BOOL)defaulted;
 -(void)drawPushButtonPressedInRect:(NSRect)rect;
 -(void)drawPushButtonHighlightedInRect:(NSRect)rect;
--(void)drawButtonImage:(NSImage *)image inRect:(NSRect)rect enabled:(BOOL)enabled;
+-(NSSize)sizeOfButtonImage:(NSImage *)image enabled:(BOOL)enabled mixed:(BOOL)mixed;
+-(void)drawButtonImage:(NSImage *)image inRect:(NSRect)rect enabled:(BOOL)enabled mixed:(BOOL)mixed;
 -(void)drawBrowserTitleBackgroundInRect:(NSRect)rect;
+-(void)drawBrowserHorizontalScrollerWellInRect:(NSRect)rect clipRect:(NSRect)clipRect;
 -(NSRect)drawColorWellBorderInRect:(NSRect)rect enabled:(BOOL)enabled bordered:(BOOL)bordered active:(BOOL)active;
 -(void)drawMenuBranchArrowAtPoint:(NSPoint)point selected:(BOOL)selected;
+-(void)drawMenuWindowBackgroundInRect:(NSRect)rect;
+
+-(void)drawPopUpButtonWindowBackgroundInRect:(NSRect)rect;
+
 -(void)drawOutlineViewBranchInRect:(NSRect)rect expanded:(BOOL)expanded;
 -(void)drawOutlineViewGridInRect:(NSRect)rect;
 -(void)drawProgressIndicatorBezel:(NSRect)rect clipRect:(NSRect)clipRect bezeled:(BOOL)bezeled;
@@ -40,8 +48,10 @@
 
 -(void)drawTabInRect:(NSRect)rect clipRect:(NSRect)clipRect color:(NSColor *)color selected:(BOOL)selected;
 -(void)drawTabPaneInRect:(NSRect)rect;
+-(void)drawTabViewBackgroundInRect:(NSRect)rect;
 
 -(void)drawTextFieldBorderInRect:(NSRect)rect bezeledNotLine:(BOOL)bezeledNotLine;
+-(void)drawTextViewInsertionPointInRect:(NSRect)rect color:(NSColor *)color;
 
 @end
 

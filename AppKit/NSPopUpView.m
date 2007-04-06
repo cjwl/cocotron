@@ -10,6 +10,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 // Original - Christopher Lloyd <cjwl@objc.net>
 #import <AppKit/NSPopUpView.h>
 #import <AppKit/NSStringDrawer.h>
+#import <AppKit/NSGraphicsStyle.h>
 
 enum {
     KEYBOARD_INACTIVE,
@@ -145,7 +146,7 @@ enum {
    NSArray      *items=[_menu itemArray];
    int           i,count=[items count];
 
-   NSDrawButton([self bounds],[self bounds]);
+   [[self graphicsStyle] drawPopUpButtonWindowBackgroundInRect:[self bounds]];
 
    for(i=0;i<count;i++){
     [self drawItemAtIndex:i];

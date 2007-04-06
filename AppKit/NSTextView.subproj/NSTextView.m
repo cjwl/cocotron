@@ -469,10 +469,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    if(NSIsEmptyRect(rect))
     return;
 
-   if(turnedOn){
-    [color set];
-    NSRectFill(rect);
-   }
+   if(turnedOn)
+    [[self graphicsStyle] drawTextViewInsertionPointInRect:rect color:color];
    else {
     NSLayoutManager *layoutManager=[self layoutManager];
     NSPoint          origin=[self textContainerOrigin];

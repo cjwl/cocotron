@@ -9,6 +9,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSString.h>
 #import <Foundation/NSDictionary.h>
 
+NSString *NSPOSIXErrorDomain=@"NSPOSIXErrorDomain";
+NSString *NSWINSOCKErrorDomain=@"NSWINSOCKErrorDomain";
+
 @implementation NSError
 
 -initWithDomain:(NSString *)domain code:(int)code userInfo:(NSDictionary *)userInfo {

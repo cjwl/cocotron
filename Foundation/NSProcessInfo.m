@@ -16,6 +16,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSString_cString.h>
 #import <Foundation/NSThread-Private.h>
 #import <Foundation/NSPlatform.h>
+#import <Foundation/ObjectiveC.h>
 
 @implementation NSProcessInfo
 
@@ -114,4 +115,5 @@ static NSLock *_counterLock=nil;
 FOUNDATION_EXPORT void NSInitializeProcess(int argc,const char *argv[]) {
    NSProcessInfoArgc=argc;
    NSProcessInfoArgv=argv;
+   OBJCInitializeProcess(argc,argv);
 }

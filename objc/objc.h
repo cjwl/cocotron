@@ -23,5 +23,8 @@ typedef char  BOOL;
 #define Nil  ((Class)0)
 #define nil  ((id)0)
 
+#define SELNAME sel_getName
+
 OBJC_EXPORT SEL sel_getUid(const char *cString);
 OBJC_EXPORT SEL sel_registerName(const char *cString);
+OBJC_EXPORT const char *sel_getName(SEL selector);

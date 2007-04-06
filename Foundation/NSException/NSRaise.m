@@ -14,15 +14,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 void _NSInvalidAbstractInvocation(SEL selector,id object,const char *file,int line) {
    [NSException raise:NSInvalidArgumentException
      format:@"-%s only defined for abstract class. Define -[%@ %s] in %s:%d!",
-       OBJCStringFromSelector (selector),[object class], OBJCStringFromSelector (selector),file,line];
+       sel_getName (selector),[object class], sel_getName (selector),file,line];
 }
 
 void _NSUnimplementedMethod(SEL selector,id object,const char *file,int line) {
-   NSLog(@"-[%@ %s] unimplemented in %s at %d",[object class],OBJCStringFromSelector(selector),file,line);
+   NSLog(@"-[%@ %s] unimplemented in %s at %d",[object class],sel_getName(selector),file,line);
 }
 
 void _NSUnsupportedMethod(SEL selector,id object,const char *file,int line) {
-   NSLog(@"-[%@ %s] not supported In %s at %d",[object class],OBJCStringFromSelector(selector),file,line);
+   NSLog(@"-[%@ %s] not supported In %s at %d",[object class],sel_getName(selector),file,line);
 }
 
 

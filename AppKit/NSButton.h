@@ -17,6 +17,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(NSCellImagePosition)imagePosition;
 -(NSString *)title;
 -(int)state;
+-(BOOL)allowsMixedState;
 
 -(void)setTransparent:(BOOL)flag;
 -(void)setKeyEquivalent:(NSString *)keyEquivalent;
@@ -24,6 +25,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)setImagePosition:(NSCellImagePosition)position;
 -(void)setTitle:(NSString *)title;
 -(void)setState:(int)value;
+-(void)setNextState;
+-(void)setAllowsMixedState:(BOOL)flag;
 
 -(void)performClick:sender;
 

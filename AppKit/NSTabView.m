@@ -336,6 +336,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)drawRect:(NSRect)rect {
    NSGraphicsStyle *style=[self graphicsStyle];
    
+   if(_drawsBackground)
+    [style drawTabViewBackgroundInRect:[self bounds]];
+   
     switch (_type) {
         case NSTopTabsBezelBorder:
         case NSLeftTabsBezelBorder:
@@ -369,13 +372,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
                 if ([[self window] firstResponder] == self)
                     NSDottedFrameRect(NSInsetRect(labelRect,-1,0));
               }
-
-                // erase touch-up
-                [[NSColor controlColor] set];
-                erase=[self rectForItemBorderAtIndex:i];
-                erase.size.height=2;
-                erase=NSInsetRect(erase,1,0);
-                NSRectFill(erase);
             }
             break;
         }
