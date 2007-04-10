@@ -1,44 +1,77 @@
-/* Copyright (c) 2006-2007 Christopher J. W. Lloyd
+/* Copyright (c) 2007 Johannes Fortmann
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
-#import <AppKit/NSController.h>
-#import <Foundation/NSRaise.h>
+#import "NSBinder.h"
 
-@implementation NSController
 
--initWithCoder:(NSCoder *)coder {
-   NSUnimplementedMethod();
-   return self;
+@implementation _NSBinder
+
+- (id)source {
+    return [[source retain] autorelease];
 }
 
--(void)encodeWithCoder:(NSCoder *)coder {
-   NSUnimplementedMethod();
+- (void)setSource:(id)value {
+    if (source != value) 
+	{
+        source = value;
+    }
 }
 
--(BOOL)commitEditing {
-   NSUnimplementedMethod();
-   return NO;
+- (id)destination 
+{
+    return [[destination retain] autorelease];
 }
 
--(void)discardEditing {
-   NSUnimplementedMethod();
+- (void)setDestination:(id)value 
+{
+    if (destination != value) 
+	{
+        destination = value;
+    }
 }
 
--(BOOL)isEditing {
-   NSUnimplementedMethod();
-   return NO;
+- (id)keyPath {
+    return [[keyPath retain] autorelease];
 }
 
--(void)objectDidBeginEditing:editor {
-   NSUnimplementedMethod();
+- (void)setKeyPath:(id)value {
+    if (keyPath != value) {
+        [keyPath release];
+        keyPath = [value copy];
+    }
 }
 
--(void)objectDidEndEditing:editor {
-   NSUnimplementedMethod();
+- (id)binding {
+    return [[binding retain] autorelease];
 }
 
+- (void)setBinding:(id)value {
+    if (binding != value) {
+        [binding release];
+        binding = [value copy];
+    }
+}
+
+-(void)stopObservingChanges {
+}
+
+-(void)dealloc
+{
+	[self stopObservingChanges];
+	[keyPath release];
+	[binding release];
+	[super dealloc];
+}
+
+-(void)bind
+{
+}
+
+-(void)unbind
+{
+}
 @end

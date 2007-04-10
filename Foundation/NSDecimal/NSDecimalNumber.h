@@ -7,9 +7,63 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
 #import <Foundation/NSNumber.h>
+#import <Foundation/NSDecimal.h>
+
+FOUNDATION_EXPORT NSString *NSDecimalNumberDivideByZeroException;
+FOUNDATION_EXPORT NSString *NSDecimalNumberUnderflowException;
+FOUNDATION_EXPORT NSString *NSDecimalNumberOverflowException;
+FOUNDATION_EXPORT NSString *NSDecimalNumberExactnessException;
+
+@protocol NSDecimalNumberBehaviors
+@end
 
 @interface NSDecimalNumber : NSNumber {
 }
 
+#if 0
+-initWithDecimal:(NSDecimal)decimal;
+-initWithMantissa:(unsigned long long)mantissa exponent:(short)exponent isNegative:(BOOL)flag;
+-initWithString:(NSString *)string;
+-initWithString:(NSString *)string locale:(NSDictionary *)locale;
+
++(NSDecimalNumber *)decimalNumberWithDecimal:(NSDecimal)decimal;
++(NSDecimalNumber *)decimalNumberWithMantissa:(unsigned long long)mantissa exponent:(short)exponent isNegative:(BOOL)negative;
++(NSDecimalNumber *)decimalNumberWithString:(NSString *)string;
++(NSDecimalNumber *)decimalNumberWithString:(NSString *)string locale:(NSDictionary *)locale;
+
++(NSDecimalNumber *)zero;
++(NSDecimalNumber *)one;
++(NSDecimalNumber *)minimumDecimalNumber;
++(NSDecimalNumber *)maximumDecimalNumber;
++(NSDecimalNumber *)notANumber;
+
++(id <NSDecimalNumberBehaviors>)defaultBehavior;
++(void)setDefaultBehavior:(id <NSDecimalNumberBehaviors>)behavior;
+
+-(NSComparisonResult)compare:(NSNumber *)other;
+
+-(double)doubleValue;
+-(const char *)objCType;
+
+-(NSDecimalNumber *)decimalNumberByRoundingAccordingToBehavior:(id <NSDecimalNumberBehaviors>)behavior;
+
+-(NSDecimalNumber *)decimalNumberByAdding:(NSDecimalNumber *)other;
+-(NSDecimalNumber *)decimalNumberByAdding:(NSDecimalNumber *)other withBehavior:(id <NSDecimalNumberBehaviors>)behavior;
+-(NSDecimalNumber *)decimalNumberBySubtracting:(NSDecimalNumber *)other;
+-(NSDecimalNumber *)decimalNumberBySubtracting:(NSDecimalNumber *)other withBehavior:(id <NSDecimalNumberBehaviors>)behavior;
+
+-(NSDecimalNumber *)decimalNumberByMultiplyingBy:(NSDecimalNumber *)other;
+-(NSDecimalNumber *)decimalNumberByMultiplyingBy:(NSDecimalNumber *)other withBehavior:(id <NSDecimalNumberBehaviors>)behavior;
+-(NSDecimalNumber *)decimalNumberByDividingBy:(NSDecimalNumber *)other;
+-(NSDecimalNumber *)decimalNumberByDividingBy:(NSDecimalNumber *)other withBehavior:(id <NSDecimalNumberBehaviors>)behavior;
+
+-(NSDecimalNumber *)decimalNumberByMultiplyingByPowerOf10:(short)power;
+-(NSDecimalNumber *)decimalNumberByMultiplyingByPowerOf10:(short)power withBehavior:(id <NSDecimalNumberBehaviors>)behavior;
+
+-(NSDecimalNumber *)decimalNumberByRaisingToPower:(unsigned)power;
+-(NSDecimalNumber *)decimalNumberByRaisingToPower:(unsigned)power withBehavior:(id <NSDecimalNumberBehaviors>)behavior;
+
+-(NSString *)descriptionWithLocale:(NSDictionary *)locale;
+#endif
 
 @end

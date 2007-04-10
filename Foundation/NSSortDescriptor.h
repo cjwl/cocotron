@@ -8,6 +8,20 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/NSObject.h>
 
-@interface NSSortDescriptor : NSObject
+@interface NSSortDescriptor : NSObject <NSCoding,NSCopying> {
+   NSString *_key;
+   BOOL      _ascending;
+   SEL       _selector;
+}
+
+-initWithKey:(NSString *)key ascending:(BOOL)ascending;
+-initWithKey:(NSString *)key ascending:(BOOL)ascending selector:(SEL)selector;
+
+-(NSString *)key;
+-(BOOL)ascending;
+-(SEL)selector;
+
+-(NSComparisonResult)compareObject:first toObject:second;
+-reversedSortDescriptor;
 
 @end

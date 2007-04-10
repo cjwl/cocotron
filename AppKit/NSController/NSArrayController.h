@@ -6,10 +6,68 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
-#import <AppKit/NSController.h>
+#import <AppKit/NSObjectController.h>
 
-@interface NSArrayController : NSController {
+@class NSPredicate,NSIndexSet;
+
+@interface NSArrayController : NSObjectController {
 
 }
+
+#if 0
+-(NSArray *)sortDescriptors;
+-(NSPredicate *)filterPredicate;
+-(BOOL)alwaysUsesMultipleValuesMarker;
+-(BOOL)clearsFilterPredicateOnInsertion;
+-(BOOL)automaticallyPreparesContent;
+-(BOOL)avoidsEmptySelection;
+-(BOOL)selectsInsertedObjects;
+-(BOOL)preservesSelection;
+
+-(void)setSortDescriptors:(NSArray *)descriptors;
+-(void)setFilterPredicate:(NSPredicate *)predicate;
+-(void)setAlwaysUsesMultipleValuesMarker:(BOOL)flag;
+-(void)setClearsFilterPredicateOnInsertion:(BOOL)flag;
+-(void)setAutomaticallyPreparesContent:(BOOL)flag;
+-(void)setAvoidsEmptySelection:(BOOL)flag;
+-(void)setSelectsInsertedObjects:(BOOL)flag;
+-(void)setPreservesSelection:(BOOL)flag;
+
+-(void)addObject:object;
+-(void)addObjects:(NSArray *)objects;
+-(void)insertObject:object atArrangedObjectIndex:(unsigned)index;
+-(void)insertObjects:(NSArray *)objects atArrangedObjectIndexes:(NSIndexSet *)indices;
+-(void)removeObject:object;
+-(void)removeObjectAtArrangedObjectIndex:(unsigned)index;
+-(void)removeObjects:(NSArray *)objects;
+-(void)removeObjectsAtArrangedObjectIndexes:(NSIndexSet *)indices;
+
+-(NSIndexSet *)selectionIndexes;
+-(unsigned)selectionIndex;
+-(NSArray *)selectedObjects;
+
+-(BOOL)canInsert;
+-(BOOL)canSelectNext;
+-(BOOL)canSelectPrevious;
+
+-(void)insert:sender;
+-(void)remove:sender;
+-(void)selectNext:sender;
+-(void)selectPrevious:sender;
+
+-(void)setSelectedObjects:(NSArray *)objects;
+-(void)setSelectionIndex:(unsigned)index;
+-(BOOL)setSelectionIndexes:(NSIndexSet *)indices;
+
+-(BOOL)addSelectedObjects:(NSArray *)objects;
+-(BOOL)addSelectionIndexes:(NSIndexSet *)indices;
+
+-(BOOL)removeSelectedObjects:(NSArray *)objects;
+-(BOOL)removeSelectionInddexes:(NSIndexSet *)indices;
+
+-arrangedObjects;
+-(NSArray *)arrangeObjects:(NSArray *)objects;
+-(void)rearrangeObjects;
+#endif
 
 @end

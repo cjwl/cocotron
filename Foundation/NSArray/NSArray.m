@@ -21,6 +21,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSPropertyListReader.h>
 #import <Foundation/NSPropertyListWriter.h>
 #import <Foundation/NSKeyedUnarchiver.h>
+#import <Foundation/NSPredicate.h>
 
 #import <malloc.h>
 
@@ -414,6 +415,19 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return nil;
 }
 
+-(NSArray *)filteredArrayUsingPredicate:(NSPredicate *)predicate {
+   int             i,count=[self count];
+   NSMutableArray *result=[NSMutableArray arrayWithCapacity:count];
+   
+   for(i=0;i<count;i++){
+    id check=[self objectAtIndex:i];
+    
+    if([predicate evaluateObject:check])
+     [result addObject:check];
+   }
+    
+   return result;
+}
 
 @end
 

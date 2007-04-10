@@ -8,12 +8,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 // Original - Christopher Lloyd <cjwl@objc.net>
 #import <AppKit/NSNibLoading.h>
-#import "NSNibKeyedUnarchiver.h"
-#import <AppKit/NSMenu.h>
-#import <AppKit/NSApplication.h>
-#import <AppKit/NSTableCornerView.h>
-#import "NSIBObjectData.h"
-#import "NSNibHelpConnector.h"
+#import <AppKit/NSNib.h>
+#import <Foundation/NSString.h>
+#import <Foundation/NSDictionary.h>
+#import <Foundation/NSRaise.h>
 
 @implementation NSObject(NSNibLoading)
 
@@ -25,60 +23,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @implementation NSBundle(NSNibLoading)
 
 +(BOOL)loadNibFile:(NSString *)path externalNameTable:(NSDictionary *)nameTable withZone:(NSZone *)zone {
-   NSString *keyedArchive=[[path stringByAppendingPathComponent:@"keyedobjects"] stringByAppendingPathExtension:@"nib"];
-   NSData   *keyedData=[NSData dataWithContentsOfFile:keyedArchive];
+   NSNib *nib=[[[NSNib allocWithZone:zone] initWithContentsOfFile:path] autorelease];
    
-  // NSLog(@"LOADING %@",path);
-   
-   if(keyedData==nil)
-    return NO;
-   else {
-    NSNibKeyedUnarchiver *unarchiver=[[NSNibKeyedUnarchiver alloc] initForReadingWithData:keyedData externalNameTable:nameTable];
-    NSIBObjectData    *objectData;
-    NSArray           *allObjects;
-    int                i,count;
-    NSMenu            *menu;
-    
-    /*
-    TO DO:
-     - utf8 in the multinational panel
-     - misaligned objects in boxes everywhere
-    */
-    [unarchiver setClass:[NSTableCornerView class] forClassName:@"_NSCornerView"];
-    [unarchiver setClass:[NSNibHelpConnector class] forClassName:@"NSIBHelpConnector"];
-    
-    objectData=[unarchiver decodeObjectForKey:@"IB.objectdata"];
-    
-    [objectData buildConnectionsWithNameTable:nameTable];
-    if((menu=[objectData mainMenu])!=nil)
-     [NSApp setMainMenu:menu];
-     
-    allObjects=[[unarchiver allObjects] arrayByAddingObjectsFromArray:[nameTable allValues]];
-    count=[allObjects count];
-
-    for(i=0;i<count;i++){
-     id object=[allObjects objectAtIndex:i];
-
-     if([object respondsToSelector:@selector(awakeFromNib)])
-      [object awakeFromNib];
-    }
-    for(i=0;i<count;i++){
-     id object=[allObjects objectAtIndex:i];
-
-     if([object respondsToSelector:@selector(postAwakeFromNib)])
-      [object performSelector:@selector(postAwakeFromNib)];
-    }
-
-    [[objectData visibleWindows] makeObjectsPerformSelector:@selector(makeKeyAndOrderFront:) withObject:nil];
-    
-    return (objectData!=nil);
-   }
+   return [nib instantiateNibWithExternalNameTable:nameTable];
 }
 
 +(BOOL)loadNibNamed:(NSString *)name owner:owner {
-   NSDictionary *nameTable=[NSDictionary dictionaryWithObject:owner forKey:@"NSOwner"];
-   NSString     *path;
+   NSDictionary *nameTable=[NSDictionary dictionaryWithObject:owner forKey:NSNibOwner];
    NSBundle     *bundle=[NSBundle bundleForClass:[owner class]];
+   NSString     *path;
 
    path=[bundle pathForResource:name ofType:@"nib"];
    if(path==nil)
@@ -91,8 +44,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(BOOL)loadNibFile:(NSString *)path externalNameTable:(NSDictionary *)nameTable withZone:(NSZone *)zone {
-   NSUnimplementedMethod();
-   return NO;
+   NSNib *nib=[[[NSNib allocWithZone:zone] initWithContentsOfFile:path] autorelease];
+   
+   return [nib instantiateNibWithExternalNameTable:nameTable];
 }
 
 @end

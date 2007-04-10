@@ -646,6 +646,16 @@
 		FE86887F0BC3FFA4009F515C /* NSButtonCell_disclosure_highlighted.tif in Resources */ = {isa = PBXBuildFile; fileRef = FE86887C0BC3FFA4009F515C /* NSButtonCell_disclosure_highlighted.tif */; };
 		FE8688800BC3FFA4009F515C /* NSButtonCell_disclosure_normal.tif in Resources */ = {isa = PBXBuildFile; fileRef = FE86887D0BC3FFA4009F515C /* NSButtonCell_disclosure_normal.tif */; };
 		FE8688810BC3FFA4009F515C /* NSButtonCell_disclosure_selected.tif in Resources */ = {isa = PBXBuildFile; fileRef = FE86887E0BC3FFA4009F515C /* NSButtonCell_disclosure_selected.tif */; };
+		FE8BAEC70BC9EA8D0007FACA /* NSNibBindingConnector.h in Headers */ = {isa = PBXBuildFile; fileRef = FE8BAEC50BC9EA8D0007FACA /* NSNibBindingConnector.h */; };
+		FE8BAEC80BC9EA8D0007FACA /* NSNibBindingConnector.m in Sources */ = {isa = PBXBuildFile; fileRef = FE8BAEC60BC9EA8D0007FACA /* NSNibBindingConnector.m */; };
+		FE8BAF250BC9EC680007FACA /* NSBinder.h in Headers */ = {isa = PBXBuildFile; fileRef = FE8BAF1D0BC9EC680007FACA /* NSBinder.h */; };
+		FE8BAF260BC9EC680007FACA /* NSBinder.m in Sources */ = {isa = PBXBuildFile; fileRef = FE8BAF1E0BC9EC680007FACA /* NSBinder.m */; };
+		FE8BAF270BC9EC680007FACA /* NSKVOBinder.h in Headers */ = {isa = PBXBuildFile; fileRef = FE8BAF1F0BC9EC680007FACA /* NSKVOBinder.h */; };
+		FE8BAF280BC9EC680007FACA /* NSKVOBinder.m in Sources */ = {isa = PBXBuildFile; fileRef = FE8BAF200BC9EC680007FACA /* NSKVOBinder.m */; };
+		FE8BAF290BC9EC680007FACA /* NSObject+BindingSupport.h in Headers */ = {isa = PBXBuildFile; fileRef = FE8BAF210BC9EC680007FACA /* NSObject+BindingSupport.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE8BAF2A0BC9EC680007FACA /* NSObject+BindingSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = FE8BAF220BC9EC680007FACA /* NSObject+BindingSupport.m */; };
+		FE8BAF2B0BC9EC680007FACA /* NSTableViewBinder.h in Headers */ = {isa = PBXBuildFile; fileRef = FE8BAF230BC9EC680007FACA /* NSTableViewBinder.h */; };
+		FE8BAF2C0BC9EC680007FACA /* NSTableViewBinder.m in Sources */ = {isa = PBXBuildFile; fileRef = FE8BAF240BC9EC680007FACA /* NSTableViewBinder.m */; };
 		FEEF00590B96441800069FD1 /* CGPDFPage.h in Headers */ = {isa = PBXBuildFile; fileRef = FEEF00570B96441800069FD1 /* CGPDFPage.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FEEF005A0B96441800069FD1 /* CGPDFPage.m in Sources */ = {isa = PBXBuildFile; fileRef = FEEF00580B96441800069FD1 /* CGPDFPage.m */; };
 		FEF33C010B93543C00DC0B6F /* KGMutablePath.h in Headers */ = {isa = PBXBuildFile; fileRef = FEF33BFF0B93543C00DC0B6F /* KGMutablePath.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -1338,6 +1348,16 @@
 		FE86887C0BC3FFA4009F515C /* NSButtonCell_disclosure_highlighted.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = NSButtonCell_disclosure_highlighted.tif; sourceTree = "<group>"; };
 		FE86887D0BC3FFA4009F515C /* NSButtonCell_disclosure_normal.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = NSButtonCell_disclosure_normal.tif; sourceTree = "<group>"; };
 		FE86887E0BC3FFA4009F515C /* NSButtonCell_disclosure_selected.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = NSButtonCell_disclosure_selected.tif; sourceTree = "<group>"; };
+		FE8BAEC50BC9EA8D0007FACA /* NSNibBindingConnector.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSNibBindingConnector.h; sourceTree = "<group>"; };
+		FE8BAEC60BC9EA8D0007FACA /* NSNibBindingConnector.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSNibBindingConnector.m; sourceTree = "<group>"; };
+		FE8BAF1D0BC9EC680007FACA /* NSBinder.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSBinder.h; sourceTree = "<group>"; };
+		FE8BAF1E0BC9EC680007FACA /* NSBinder.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSBinder.m; sourceTree = "<group>"; };
+		FE8BAF1F0BC9EC680007FACA /* NSKVOBinder.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSKVOBinder.h; sourceTree = "<group>"; };
+		FE8BAF200BC9EC680007FACA /* NSKVOBinder.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSKVOBinder.m; sourceTree = "<group>"; };
+		FE8BAF210BC9EC680007FACA /* NSObject+BindingSupport.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = "NSObject+BindingSupport.h"; sourceTree = "<group>"; };
+		FE8BAF220BC9EC680007FACA /* NSObject+BindingSupport.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = "NSObject+BindingSupport.m"; sourceTree = "<group>"; };
+		FE8BAF230BC9EC680007FACA /* NSTableViewBinder.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSTableViewBinder.h; sourceTree = "<group>"; };
+		FE8BAF240BC9EC680007FACA /* NSTableViewBinder.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSTableViewBinder.m; sourceTree = "<group>"; };
 		FEEF00570B96441800069FD1 /* CGPDFPage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGPDFPage.h; sourceTree = "<group>"; };
 		FEEF00580B96441800069FD1 /* CGPDFPage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CGPDFPage.m; sourceTree = "<group>"; };
 		FEF33BFF0B93543C00DC0B6F /* KGMutablePath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGMutablePath.h; sourceTree = "<group>"; };
@@ -1381,6 +1401,7 @@
 		6E2B53240976075200DA0954 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				FE8BAF1A0BC9EC0B0007FACA /* binders */,
 				FE44327B0BB95F4300411464 /* NSInterfacePart */,
 				6E2B53FC0976075200DA0954 /* AppKit.h */,
 				6E2B53FA0976075200DA0954 /* AppKitExport.h */,
@@ -1705,6 +1726,8 @@
 		6E2B55100976075300DA0954 /* nib */ = {
 			isa = PBXGroup;
 			children = (
+				FE8BAEC50BC9EA8D0007FACA /* NSNibBindingConnector.h */,
+				FE8BAEC60BC9EA8D0007FACA /* NSNibBindingConnector.m */,
 				6ECABE310A40520700AD7F7B /* NSNibKeyedUnarchiver.h */,
 				6ECABE320A40520700AD7F7B /* NSNibKeyedUnarchiver.m */,
 				6EC4AC670A35D47800E8D6CA /* NSCustomObject.h */,
@@ -2273,6 +2296,21 @@
 			path = NSInterfacePart;
 			sourceTree = "<group>";
 		};
+		FE8BAF1A0BC9EC0B0007FACA /* binders */ = {
+			isa = PBXGroup;
+			children = (
+				FE8BAF1D0BC9EC680007FACA /* NSBinder.h */,
+				FE8BAF1E0BC9EC680007FACA /* NSBinder.m */,
+				FE8BAF1F0BC9EC680007FACA /* NSKVOBinder.h */,
+				FE8BAF200BC9EC680007FACA /* NSKVOBinder.m */,
+				FE8BAF210BC9EC680007FACA /* NSObject+BindingSupport.h */,
+				FE8BAF220BC9EC680007FACA /* NSObject+BindingSupport.m */,
+				FE8BAF230BC9EC680007FACA /* NSTableViewBinder.h */,
+				FE8BAF240BC9EC680007FACA /* NSTableViewBinder.m */,
+			);
+			path = binders;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -2586,6 +2624,11 @@
 				FE6DC3F00BA9A7100082AC66 /* NSDatePickerCell.h in Headers */,
 				FE4434040BB9833B00411464 /* NSGraphicsStyle_uxtheme.h in Headers */,
 				FE1E86C10BBCA62D0013B968 /* NSGraphicsStyle.h in Headers */,
+				FE8BAEC70BC9EA8D0007FACA /* NSNibBindingConnector.h in Headers */,
+				FE8BAF250BC9EC680007FACA /* NSBinder.h in Headers */,
+				FE8BAF270BC9EC680007FACA /* NSKVOBinder.h in Headers */,
+				FE8BAF290BC9EC680007FACA /* NSObject+BindingSupport.h in Headers */,
+				FE8BAF2B0BC9EC680007FACA /* NSTableViewBinder.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3021,6 +3064,11 @@
 				FE6DC3F10BA9A7100082AC66 /* NSDatePickerCell.m in Sources */,
 				FE4434050BB9833B00411464 /* NSGraphicsStyle_uxtheme.m in Sources */,
 				FE1E86C20BBCA62D0013B968 /* NSGraphicsStyle.m in Sources */,
+				FE8BAEC80BC9EA8D0007FACA /* NSNibBindingConnector.m in Sources */,
+				FE8BAF260BC9EC680007FACA /* NSBinder.m in Sources */,
+				FE8BAF280BC9EC680007FACA /* NSKVOBinder.m in Sources */,
+				FE8BAF2A0BC9EC680007FACA /* NSObject+BindingSupport.m in Sources */,
+				FE8BAF2C0BC9EC680007FACA /* NSTableViewBinder.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

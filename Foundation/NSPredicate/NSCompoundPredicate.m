@@ -6,8 +6,68 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 #import <Foundation/NSCompoundPredicate.h>
-
+#import <Foundation/NSArray.h>
 
 @implementation NSCompoundPredicate
+
+-initWithType:(NSCompoundPredicateType)type subpredicates:(NSArray *)predicates {
+   _type=type;
+   _predicates=[predicates retain];
+   return self;
+}
+
+-(void)dealloc {
+   [_predicates release];
+   [super dealloc];
+}
+
++(NSPredicate *)notPredicateWithSubpredicate:(NSPredicate *)predicate {
+   return [[[self alloc] initWithType:NSNotPredicateType subpredicates:[NSArray arrayWithObject:predicate]] autorelease];
+}
+
+
++(NSPredicate *)andPredicateWithSubpredicates:(NSArray *)predicates {
+   return [[[self alloc] initWithType:NSAndPredicateType subpredicates:predicates] autorelease];
+}
+
++(NSPredicate *)orPredicateWithSubpredicates:(NSArray *)predicates {
+   return [[[self alloc] initWithType:NSOrPredicateType subpredicates:predicates] autorelease];
+}
+
+-(NSCompoundPredicateType)compoundPredicateType {
+   return _type;
+}
+
+-(NSArray *)subpredicates {
+   return _predicates;
+}
+
+-(BOOL)evaluateObject:object {
+   BOOL result=NO;
+   int  i,count=[_predicates count];
+   
+   for(i=0;i<count;i++){
+    NSPredicate *predicate=[_predicates objectAtIndex:i];
+    
+    switch(_type){
+     case NSNotPredicateType:
+      return ![predicate evaluateObject:object];
+
+     case NSAndPredicateType:
+      if(i==0)
+       result=[predicate evaluateObject:object];
+      else
+       result=result && [predicate evaluateObject:object];
+      break;
+      
+     case NSOrPredicateType:
+      if([predicate evaluateObject:object])
+       return YES;
+      break;
+    }
+   }
+   
+   return result;
+}
 
 @end

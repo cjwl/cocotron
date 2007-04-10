@@ -70,6 +70,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 			return [NSNumber numberWithShort:*(short*)value];
 		case 'S':
 			return [NSNumber numberWithUnsignedShort:*(unsigned short*)value];
+		case 'c':
+			return [NSNumber numberWithChar:*(char*)value];
+		case 'C':
+			return [NSNumber numberWithUnsignedChar:*(unsigned char*)value];
 		default:
 // FIX #warning some wrapping types unimplemented
 			return [NSString stringWithFormat:@"FIXME: wrap value of type %s unimplemented for get", type];	
@@ -108,7 +112,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 		case 'd':
 			*(double*)buffer = [value doubleValue];
 			return YES;
-			
+
+		case 'c':
+			*(char*)buffer = [value charValue];
+			return YES;
+		case 'C':
+			*(unsigned char*)buffer = [value unsignedCharValue];
+			return YES;
+
 		default:
 // FIX #warning some wrapping types unimplemented
 			NSLog(@"FIXME: wrap value of type %s unimplemented for set", type);

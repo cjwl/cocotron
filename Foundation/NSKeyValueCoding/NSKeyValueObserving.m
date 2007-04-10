@@ -247,7 +247,7 @@ NSLock *kvoLock=nil;
 			}
 		}
 	}
-	NSMutableArray *observers=[dict objectForKey:key];
+	NSMutableArray *observers=[[dict objectForKey:key] copy];
 
 	NSEnumerator *en=[observers objectEnumerator];
 	_NSObservationInfo *info;
@@ -300,6 +300,7 @@ NSLock *kvoLock=nil;
 
 		[dict release];
 	}
+	[observers release];
 }
 
 +(void)setKeys:(NSArray *)keys triggerChangeNotificationsForDependentKey:(NSString *)dependentKey
@@ -364,18 +365,30 @@ NSLock *kvoLock=nil;
 // FIX: add more types
 @interface NSObject (KVOSetters)
 CHANGE_DEFINE(float);
+CHANGE_DEFINE(double);
 CHANGE_DEFINE(id);
 CHANGE_DEFINE(int);
 CHANGE_DEFINE(NSSize);
 CHANGE_DEFINE(NSPoint);
+CHANGE_DEFINE(NSRect);
+CHANGE_DEFINE(NSRange);
+CHANGE_DEFINE(char);
+CHANGE_DEFINE(long);
+CHANGE_DEFINE(SEL);
 @end
 
 @implementation NSObject (KVOSetters)
 CHANGE_DECLARATION(float)
+CHANGE_DECLARATION(double)
 CHANGE_DECLARATION(id)
 CHANGE_DECLARATION(int)
 CHANGE_DECLARATION(NSSize)
 CHANGE_DECLARATION(NSPoint)
+CHANGE_DECLARATION(NSRect)
+CHANGE_DECLARATION(NSRange)
+CHANGE_DECLARATION(char)
+CHANGE_DECLARATION(long)
+CHANGE_DECLARATION(SEL)
 
 -(id)_KVO_className
 {
@@ -384,6 +397,9 @@ CHANGE_DECLARATION(NSPoint)
 
 +(void)_KVO_buildDependencyUnion
 {
+	/*
+	 This method gathers dependent keys from all superclasses and merges them together
+	 */
 	NSMutableDictionary* dict=[self observationInfo];
 	if(!dict)
 	{
@@ -499,18 +515,30 @@ CHANGE_DECLARATION(NSPoint)
 			{
 				const char* firstParameterType=[[self methodSignatureForSelector:method->method_name] getArgumentTypeAtIndex:2];
 
-				// check for correct type
+				/* check for correct type: either perfect match
+				or primitive signed type matching unsigned type
+				(i.e. tolower(@encode(unsigned long)[0])==@encode(long)[0])
+				*/
 #define CHECK_AND_ASSIGN(a) \
-				if(!strcmp(firstParameterType, @encode(a))) \
+				if(!strcmp(firstParameterType, @encode(a)) || \
+				   (strlen(@encode(a))==1 && \
+					strlen(firstParameterType)==1 && \
+					tolower(firstParameterType[0])==@encode(a)[0])) \
 				{ \
 					kvoSelector = @selector( CHANGE_SELECTOR(a) ); \
 				}
 				// FIX: add more types
 				CHECK_AND_ASSIGN(id);
 				CHECK_AND_ASSIGN(float);
+				CHECK_AND_ASSIGN(double);
 				CHECK_AND_ASSIGN(int);
 				CHECK_AND_ASSIGN(NSSize);
 				CHECK_AND_ASSIGN(NSPoint);
+				CHECK_AND_ASSIGN(NSRect);
+				CHECK_AND_ASSIGN(NSRange);
+				CHECK_AND_ASSIGN(char);
+				CHECK_AND_ASSIGN(long);
+				CHECK_AND_ASSIGN(SEL);
 
 //				if(kvoSelector==0)
 //					NSLog(@"type %s not defined in %s:%i (selector %s on class %@)", firstParameterType, __FILE__, __LINE__, SELNAME(method->method_name), [self className]);
@@ -520,7 +548,7 @@ CHANGE_DECLARATION(NSPoint)
 			if(kvoSelector!=0)
 			{
 				// if we already added too many methods, increase the size of the method list array
-				if(currentMethod>maxMethods)
+				if(currentMethod>=maxMethods)
 				{
 					maxMethods*=2;
 					newMethods=realloc(newMethods, maxMethods*sizeof(struct objc_method));
@@ -625,6 +653,11 @@ CHANGE_DECLARATION(NSPoint)
 	[keyPath release];
 	[oldValue release];
 	[super dealloc];
+}
+
+-(NSString *)description
+{
+	return [NSString stringWithFormat:@"<%@ %p (%@ -> %@)>", [self className], self, originalKeyPath, observer];
 }
 @end
 

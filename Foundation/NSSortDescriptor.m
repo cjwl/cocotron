@@ -7,7 +7,65 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
 #import <Foundation/NSSortDescriptor.h>
+#import <Foundation/NSString.h>
+#import <Foundation/NSKeyValueCoding.h>
+#import <Foundation/NSRaise.h>
 
 @implementation NSSortDescriptor
+
+-initWithKey:(NSString *)key ascending:(BOOL)ascending {
+   return [self initWithKey:key ascending:ascending selector:@selector(compare:)];
+}
+
+-initWithKey:(NSString *)key ascending:(BOOL)ascending selector:(SEL)selector {
+   _key=[key copy];
+   _ascending=ascending;
+   _selector=selector;
+   return self;
+}
+
+-(void)dealloc {
+   [_key release];
+   [super dealloc];
+}
+
+-initWithCoder:(NSCoder *)coder {
+   NSUnimplementedMethod();
+   return self;
+}
+
+-(void)encodeWithCoder:(NSCoder *)coder {
+   NSUnimplementedMethod();
+}
+
+-copyWithZone:(NSZone *)zone {
+   return [self retain];
+}
+
+-(NSString *)key {
+   return _key;
+}
+
+-(BOOL)ascending {
+   return _ascending;
+}
+
+-(SEL)selector {
+   return _selector;
+}
+
+-(NSComparisonResult)compareObject:first toObject:second {
+   id checkFirst=[first valueForKeyPath:_key];
+   id checkSecond=[second valueForKeyPath:_key];
+
+   if(_ascending)
+    return (NSComparisonResult)[checkFirst performSelector:_selector withObject:checkSecond];
+   else
+    return (NSComparisonResult)[checkSecond performSelector:_selector withObject:checkFirst];
+}
+
+-reversedSortDescriptor {
+   return [[[isa alloc] initWithKey:_key ascending:!_ascending selector:_selector] autorelease];
+}
 
 @end

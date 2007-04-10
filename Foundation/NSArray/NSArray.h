@@ -9,7 +9,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSObject.h>
 #import <Foundation/NSRange.h>
 
-@class NSString,NSEnumerator,NSDictionary;
+@class NSString,NSEnumerator,NSDictionary,NSPredicate;
 
 @interface NSArray : NSObject <NSCopying,NSMutableCopying,NSCoding>
 
@@ -67,6 +67,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(NSString *)descriptionWithLocale:(NSDictionary *)locale;
 -(NSString *)descriptionWithLocale:(NSDictionary *)locale
    indent:(unsigned)level;
+
+-(NSArray *)filteredArrayUsingPredicate:(NSPredicate *)predicate;
 
 @end
 

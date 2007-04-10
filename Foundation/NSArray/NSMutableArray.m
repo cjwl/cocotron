@@ -13,6 +13,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSMutableArray_concrete.h>
 #import <Foundation/NSAutoreleasePool-private.h>
 #import <Foundation/NSPropertyListReader.h>
+#import <Foundation/NSPredicate.h>
 
 #import <malloc.h>
 
@@ -291,5 +292,15 @@ static int selectorCompare(id object1,id object2,void *userData){
    }
 }
 
+-(void)filterUsingPredicate:(NSPredicate *)predicate {
+   int count=[self count];
+   
+   while(--count>=0){
+    id check=[self objectAtIndex:count];
+    
+    if(![predicate evaluateObject:check])
+     [self removeObjectAtIndex:count];
+   }
+}
 
 @end
