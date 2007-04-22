@@ -11,6 +11,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSActionCell.h>
 #import <Foundation/NSAffineTransform.h>
 #import <AppKit/NSAlert.h>
+#import <AppKit/NSAnimation.h>
 #import <AppKit/NSApplication.h>
 #import <AppKit/NSArrayController.h>
 #import <AppKit/NSAttributedString.h>
@@ -46,6 +47,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSEvent.h>
 #import <AppKit/NSFileWrapper.h>
 #import <AppKit/NSFont.h>
+#import <AppKit/NSFontDescriptor.h>
 #import <AppKit/NSFontManager.h>
 #import <AppKit/NSFontPanel.h>
 #import <AppKit/NSForm.h>
@@ -59,6 +61,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSImageCell.h>
 #import <AppKit/NSImageRep.h>
 #import <AppKit/NSInterfaceStyle.h>
+#import <AppKit/NSObject+BindingSupport.h>
 #import <AppKit/NSLayoutManager.h>
 #import <AppKit/NSLevelIndicator.h>
 #import <AppKit/NSLevelIndicatorCell.h>

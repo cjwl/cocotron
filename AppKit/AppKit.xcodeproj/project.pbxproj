@@ -573,6 +573,8 @@
 		FE2A115D0B45C66A006C03DE /* NSTokenFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FE2A115B0B45C66A006C03DE /* NSTokenFieldCell.m */; };
 		FE4434040BB9833B00411464 /* NSGraphicsStyle_uxtheme.h in Headers */ = {isa = PBXBuildFile; fileRef = FE4434020BB9833B00411464 /* NSGraphicsStyle_uxtheme.h */; };
 		FE4434050BB9833B00411464 /* NSGraphicsStyle_uxtheme.m in Sources */ = {isa = PBXBuildFile; fileRef = FE4434030BB9833B00411464 /* NSGraphicsStyle_uxtheme.m */; };
+		FE4BDC0B0BCD40C600E19685 /* NSFontDescriptor.h in Headers */ = {isa = PBXBuildFile; fileRef = FE4BDC090BCD40C600E19685 /* NSFontDescriptor.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE4BDC0C0BCD40C600E19685 /* NSFontDescriptor.m in Sources */ = {isa = PBXBuildFile; fileRef = FE4BDC0A0BCD40C600E19685 /* NSFontDescriptor.m */; };
 		FE56BA040B1221330046B7D9 /* NSMutableAttributedString.h in Headers */ = {isa = PBXBuildFile; fileRef = FE56BA020B1221330046B7D9 /* NSMutableAttributedString.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE56BA050B1221330046B7D9 /* NSMutableAttributedString.m in Sources */ = {isa = PBXBuildFile; fileRef = FE56BA030B1221330046B7D9 /* NSMutableAttributedString.m */; };
 		FE6466E30B2C611D00B302B0 /* NSMutableParagraphStyle.h in Headers */ = {isa = PBXBuildFile; fileRef = FE6466E10B2C611D00B302B0 /* NSMutableParagraphStyle.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -652,10 +654,14 @@
 		FE8BAF260BC9EC680007FACA /* NSBinder.m in Sources */ = {isa = PBXBuildFile; fileRef = FE8BAF1E0BC9EC680007FACA /* NSBinder.m */; };
 		FE8BAF270BC9EC680007FACA /* NSKVOBinder.h in Headers */ = {isa = PBXBuildFile; fileRef = FE8BAF1F0BC9EC680007FACA /* NSKVOBinder.h */; };
 		FE8BAF280BC9EC680007FACA /* NSKVOBinder.m in Sources */ = {isa = PBXBuildFile; fileRef = FE8BAF200BC9EC680007FACA /* NSKVOBinder.m */; };
-		FE8BAF290BC9EC680007FACA /* NSObject+BindingSupport.h in Headers */ = {isa = PBXBuildFile; fileRef = FE8BAF210BC9EC680007FACA /* NSObject+BindingSupport.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE8BAF290BC9EC680007FACA /* NSObject+BindingSupport.h in Headers */ = {isa = PBXBuildFile; fileRef = FE8BAF210BC9EC680007FACA /* NSObject+BindingSupport.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE8BAF2A0BC9EC680007FACA /* NSObject+BindingSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = FE8BAF220BC9EC680007FACA /* NSObject+BindingSupport.m */; };
 		FE8BAF2B0BC9EC680007FACA /* NSTableViewBinder.h in Headers */ = {isa = PBXBuildFile; fileRef = FE8BAF230BC9EC680007FACA /* NSTableViewBinder.h */; };
 		FE8BAF2C0BC9EC680007FACA /* NSTableViewBinder.m in Sources */ = {isa = PBXBuildFile; fileRef = FE8BAF240BC9EC680007FACA /* NSTableViewBinder.m */; };
+		FED310E10BCC027200552615 /* NSAnimation.h in Headers */ = {isa = PBXBuildFile; fileRef = FED310DD0BCC027200552615 /* NSAnimation.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FED310E20BCC027200552615 /* NSAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = FED310DE0BCC027200552615 /* NSAnimation.m */; };
+		FED310E30BCC027200552615 /* NSViewAnimation.h in Headers */ = {isa = PBXBuildFile; fileRef = FED310DF0BCC027200552615 /* NSViewAnimation.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FED310E40BCC027200552615 /* NSViewAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = FED310E00BCC027200552615 /* NSViewAnimation.m */; };
 		FEEF00590B96441800069FD1 /* CGPDFPage.h in Headers */ = {isa = PBXBuildFile; fileRef = FEEF00570B96441800069FD1 /* CGPDFPage.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FEEF005A0B96441800069FD1 /* CGPDFPage.m in Sources */ = {isa = PBXBuildFile; fileRef = FEEF00580B96441800069FD1 /* CGPDFPage.m */; };
 		FEF33C010B93543C00DC0B6F /* KGMutablePath.h in Headers */ = {isa = PBXBuildFile; fileRef = FEF33BFF0B93543C00DC0B6F /* KGMutablePath.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -1275,6 +1281,8 @@
 		FE2A115B0B45C66A006C03DE /* NSTokenFieldCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSTokenFieldCell.m; sourceTree = "<group>"; };
 		FE4434020BB9833B00411464 /* NSGraphicsStyle_uxtheme.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSGraphicsStyle_uxtheme.h; sourceTree = "<group>"; };
 		FE4434030BB9833B00411464 /* NSGraphicsStyle_uxtheme.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSGraphicsStyle_uxtheme.m; sourceTree = "<group>"; };
+		FE4BDC090BCD40C600E19685 /* NSFontDescriptor.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSFontDescriptor.h; sourceTree = "<group>"; };
+		FE4BDC0A0BCD40C600E19685 /* NSFontDescriptor.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSFontDescriptor.m; sourceTree = "<group>"; };
 		FE56BA020B1221330046B7D9 /* NSMutableAttributedString.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSMutableAttributedString.h; sourceTree = "<group>"; };
 		FE56BA030B1221330046B7D9 /* NSMutableAttributedString.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSMutableAttributedString.m; sourceTree = "<group>"; };
 		FE6466E10B2C611D00B302B0 /* NSMutableParagraphStyle.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSMutableParagraphStyle.h; sourceTree = "<group>"; };
@@ -1358,6 +1366,10 @@
 		FE8BAF220BC9EC680007FACA /* NSObject+BindingSupport.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = "NSObject+BindingSupport.m"; sourceTree = "<group>"; };
 		FE8BAF230BC9EC680007FACA /* NSTableViewBinder.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSTableViewBinder.h; sourceTree = "<group>"; };
 		FE8BAF240BC9EC680007FACA /* NSTableViewBinder.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSTableViewBinder.m; sourceTree = "<group>"; };
+		FED310DD0BCC027200552615 /* NSAnimation.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSAnimation.h; sourceTree = "<group>"; };
+		FED310DE0BCC027200552615 /* NSAnimation.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSAnimation.m; sourceTree = "<group>"; };
+		FED310DF0BCC027200552615 /* NSViewAnimation.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSViewAnimation.h; sourceTree = "<group>"; };
+		FED310E00BCC027200552615 /* NSViewAnimation.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSViewAnimation.m; sourceTree = "<group>"; };
 		FEEF00570B96441800069FD1 /* CGPDFPage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGPDFPage.h; sourceTree = "<group>"; };
 		FEEF00580B96441800069FD1 /* CGPDFPage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CGPDFPage.m; sourceTree = "<group>"; };
 		FEF33BFF0B93543C00DC0B6F /* KGMutablePath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGMutablePath.h; sourceTree = "<group>"; };
@@ -1401,8 +1413,6 @@
 		6E2B53240976075200DA0954 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				FE8BAF1A0BC9EC0B0007FACA /* binders */,
-				FE44327B0BB95F4300411464 /* NSInterfacePart */,
 				6E2B53FC0976075200DA0954 /* AppKit.h */,
 				6E2B53FA0976075200DA0954 /* AppKitExport.h */,
 				6E2B55B20976075300DA0954 /* CoreGraphics */,
@@ -1414,6 +1424,7 @@
 				FE2A101E0B44A201006C03DE /* NSAlert.m */,
 				6E2B54020976075200DA0954 /* NSAlertPanel.h */,
 				6E2B53290976075200DA0954 /* NSAlertPanel.m */,
+				FED310D70BCC022300552615 /* NSAnimation */,
 				6E2B54040976075200DA0954 /* NSApplication.h */,
 				6E2B532B0976075200DA0954 /* NSApplication.m */,
 				6E2B54060976075200DA0954 /* NSAttributedString.h */,
@@ -1486,6 +1497,8 @@
 				6E2B53630976075200DA0954 /* NSFileWrapper.m */,
 				6E2B54400976075200DA0954 /* NSFont.h */,
 				6E2B53650976075200DA0954 /* NSFont.m */,
+				FE4BDC090BCD40C600E19685 /* NSFontDescriptor.h */,
+				FE4BDC0A0BCD40C600E19685 /* NSFontDescriptor.m */,
 				6E2B54420976075200DA0954 /* NSFontFamily.h */,
 				6E2B536B0976075200DA0954 /* NSFontFamily.m */,
 				6E2B54440976075200DA0954 /* NSFontManager.h */,
@@ -1521,9 +1534,11 @@
 				6E2B537F0976075200DA0954 /* NSImageRep.m */,
 				6E2B545E0976075200DA0954 /* NSImageView.h */,
 				6E2B53810976075200DA0954 /* NSImageView.m */,
+				FE44327B0BB95F4300411464 /* NSInterfacePart */,
 				6E2B54680976075200DA0954 /* NSInterfaceStyle.h */,
 				6E2B538B0976075200DA0954 /* NSInterfaceStyle.m */,
 				6E2B56FC0976075400DA0954 /* NSKeyBinding */,
+				FE8BAF1A0BC9EC0B0007FACA /* NSKeyValueBinding */,
 				FE2A10D90B45BB28006C03DE /* NSLevelIndicator.h */,
 				FE2A10DA0B45BB28006C03DE /* NSLevelIndicator.m */,
 				FE2A10E10B45BB37006C03DE /* NSLevelIndicatorCell.h */,
@@ -2296,7 +2311,7 @@
 			path = NSInterfacePart;
 			sourceTree = "<group>";
 		};
-		FE8BAF1A0BC9EC0B0007FACA /* binders */ = {
+		FE8BAF1A0BC9EC0B0007FACA /* NSKeyValueBinding */ = {
 			isa = PBXGroup;
 			children = (
 				FE8BAF1D0BC9EC680007FACA /* NSBinder.h */,
@@ -2308,7 +2323,18 @@
 				FE8BAF230BC9EC680007FACA /* NSTableViewBinder.h */,
 				FE8BAF240BC9EC680007FACA /* NSTableViewBinder.m */,
 			);
-			path = binders;
+			path = NSKeyValueBinding;
+			sourceTree = "<group>";
+		};
+		FED310D70BCC022300552615 /* NSAnimation */ = {
+			isa = PBXGroup;
+			children = (
+				FED310DD0BCC027200552615 /* NSAnimation.h */,
+				FED310DE0BCC027200552615 /* NSAnimation.m */,
+				FED310DF0BCC027200552615 /* NSViewAnimation.h */,
+				FED310E00BCC027200552615 /* NSViewAnimation.m */,
+			);
+			path = NSAnimation;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -2629,6 +2655,9 @@
 				FE8BAF270BC9EC680007FACA /* NSKVOBinder.h in Headers */,
 				FE8BAF290BC9EC680007FACA /* NSObject+BindingSupport.h in Headers */,
 				FE8BAF2B0BC9EC680007FACA /* NSTableViewBinder.h in Headers */,
+				FED310E10BCC027200552615 /* NSAnimation.h in Headers */,
+				FED310E30BCC027200552615 /* NSViewAnimation.h in Headers */,
+				FE4BDC0B0BCD40C600E19685 /* NSFontDescriptor.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3069,6 +3098,9 @@
 				FE8BAF280BC9EC680007FACA /* NSKVOBinder.m in Sources */,
 				FE8BAF2A0BC9EC680007FACA /* NSObject+BindingSupport.m in Sources */,
 				FE8BAF2C0BC9EC680007FACA /* NSTableViewBinder.m in Sources */,
+				FED310E20BCC027200552615 /* NSAnimation.m in Sources */,
+				FED310E40BCC027200552615 /* NSViewAnimation.m in Sources */,
+				FE4BDC0C0BCD40C600E19685 /* NSFontDescriptor.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

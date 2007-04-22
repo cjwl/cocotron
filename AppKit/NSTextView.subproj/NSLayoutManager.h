@@ -52,6 +52,9 @@ typedef int NSGlyphInscription;
 -(void)setTypesetter:(NSTypesetter *)typesetter;
 -(void)setDelegate:delegate;
 
+-(BOOL)usesScreenFonts;
+-(void)setUsesScreenFonts:(BOOL)yorn;
+
 -(void)addTextContainer:(NSTextContainer *)container;
 -(void)removeTextContainerAtIndex:(unsigned)index;
 -(void)insertTextContainer:(NSTextContainer *)container atIndex:(unsigned)index;
@@ -110,6 +113,8 @@ typedef int NSGlyphInscription;
 
 -(void)drawBackgroundForGlyphRange:(NSRange)glyphRange atPoint:(NSPoint)origin;
 -(void)drawGlyphsForGlyphRange:(NSRange)glyphRange atPoint:(NSPoint)origin;
+
+-(float)defaultLineHeightForFont:(NSFont *)font;
 
 @end
 

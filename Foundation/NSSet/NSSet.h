@@ -23,6 +23,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 +setWithSet:(NSSet *)set;
 +setWithObject:object;
 +setWithObjects:first,...;
++setWithObjects:(id *)objects count:(unsigned)count;
 
 -member:object;
 -(unsigned)count;

@@ -13,6 +13,9 @@ FOUNDATION_EXPORT NSString *NSPOSIXErrorDomain;
 // temporary until we can map it
 FOUNDATION_EXPORT NSString *NSWINSOCKErrorDomain;
 
+FOUNDATION_EXPORT NSString *NSUnderlyingErrorKey;
+FOUNDATION_EXPORT NSString *NSLocalizedDescriptionKey;
+
 @interface NSError : NSObject {
    NSString     *_domain;
    int           _code;
@@ -26,5 +29,7 @@ FOUNDATION_EXPORT NSString *NSWINSOCKErrorDomain;
 -(NSString *)domain;
 -(int)code;
 -(NSDictionary *)userInfo;
+
+-(NSString *)localizedDescription;
 
 @end

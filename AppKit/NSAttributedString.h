@@ -18,6 +18,10 @@ APPKIT_EXPORT NSString *NSBackgroundColorAttributeName;
 
 APPKIT_EXPORT NSString *NSUnderlineStyleAttributeName;
 APPKIT_EXPORT NSString *NSAttachmentAttributeName;
+APPKIT_EXPORT NSString *NSKernAttributeName;
+APPKIT_EXPORT NSString *NSLigatureAttributeName;
+
+APPKIT_EXPORT NSString *NSBackgroundColorDocumentAttribute;
 
 enum {
    NSNoUnderlineStyle,

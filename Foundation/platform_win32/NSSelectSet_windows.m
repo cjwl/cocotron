@@ -217,6 +217,7 @@ static WINAPI DWORD selectThread(LPVOID arg){
     if(setEvent)
      SetEvent(async->eventHandle);
    }
+   return 0;
 }
 
 // one per thread at some point

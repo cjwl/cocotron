@@ -168,4 +168,16 @@ static NSCharacterSet *sharedSetWithName(NSString *name){
                                length:NSBitmapCharacterSetSize];
 }
 
+// yea this is terrible
+-(BOOL)isSupersetOfSet:(NSCharacterSet *)other {
+   unsigned i;
+   
+   for(i=0;i<=0xFFFF;i++){
+    if([other characterIsMember:i] && ![self characterIsMember:i])
+     return NO;
+   }
+   
+   return YES;
+}
+
 @end

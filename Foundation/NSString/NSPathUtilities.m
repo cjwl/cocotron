@@ -11,6 +11,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSFileManager.h>
 #import <Foundation/NSArray.h>
 #import <Foundation/NSPlatform.h>
+#import <Foundation/NSRaise.h>
 
 #import <string.h>
 #import <stdio.h>
@@ -196,6 +197,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
                                 length:length-homelength];
 
    return [@"~" stringByAppendingString:rest];
+}
+
+-(NSString *)stringByStandardizingPath {
+   NSUnimplementedMethod();
+   return self;
 }
 
 -(BOOL)isAbsolutePath {

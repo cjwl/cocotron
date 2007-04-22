@@ -24,7 +24,8 @@ typedef enum {
    NSSymbolStringEncoding,
    NSNonLossyASCIIStringEncoding,
    NSShiftJISStringEncoding,
-   NSUTF8StringEncoding
+   NSUTF8StringEncoding,
+   NSMacOSRomanStringEncoding,
 } NSStringEncoding;
 
 enum {
@@ -123,6 +124,8 @@ FOUNDATION_EXPORT const unsigned NSMaximumStringLength;
 -(NSData *)dataUsingEncoding:(NSStringEncoding)encoding
         allowLossyConversion:(BOOL)lossy;
 -(NSData *)dataUsingEncoding:(NSStringEncoding)encoding;
+
+-(const char *)UTF8String;
 
 -(NSString *)stringByReplacingPercentEscapesUsingEncoding:(NSStringEncoding)encoding;
 -(NSString *)stringByAddingPercentEscapesUsingEncoding:(NSStringEncoding)encoding;

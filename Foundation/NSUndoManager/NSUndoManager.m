@@ -197,7 +197,7 @@ NSString *NSUndoManagerDidRedoChangeNotification=@"NSUndoManagerDidRedoChangeNot
     NSUndoGroup *temp = _currentGroup;
     int level = (_currentGroup != nil);
 
-    while (temp = [temp parentGroup])
+    while ((temp = [temp parentGroup])!=nil)
         level++;
 
     return level;

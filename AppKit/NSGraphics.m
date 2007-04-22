@@ -406,3 +406,8 @@ void NSBeep() {
    [[NSDisplay currentDisplay] beep];
 }
 
+void NSEnableScreenUpdates(void) {
+}
+
+void NSDisableScreenUpdates(void) {
+}

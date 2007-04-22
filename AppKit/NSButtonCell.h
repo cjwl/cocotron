@@ -89,5 +89,7 @@ typedef enum {
 -(void)setButtonType:(NSButtonType)buttonType;
 -(void)setShowsBorderOnlyWhileMouseInside:(BOOL)show;
 
+-(void)performClick:sender;
+
 @end
 

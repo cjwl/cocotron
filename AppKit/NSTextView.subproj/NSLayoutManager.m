@@ -146,6 +146,14 @@ static inline NSGlyphFragment *fragmentAtGlyphIndex(NSLayoutManager *self,unsign
    _delegate=delegate;
 }
 
+-(BOOL)usesScreenFonts {
+   return YES;
+}
+
+-(void)setUsesScreenFonts:(BOOL)yorn {
+
+}
+
 -(void)addTextContainer:(NSTextContainer *)container {
    [_textContainers addObject:container];
    [container setLayoutManager:self];
@@ -862,6 +870,10 @@ static inline void _appendRectToCache(NSLayoutManager *self,NSRect rect){
 #endif
 
     return [self characterRangeForGlyphRange:result actualGlyphRange:NULL];
+}
+
+-(float)defaultLineHeightForFont:(NSFont *)font {
+   return [font defaultLineHeightForFont];
 }
 
 @end

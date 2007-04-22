@@ -123,6 +123,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [super dealloc];
 }
 
+-copyWithZone:(NSZone *)zone {
+   return [self retain];
+}
+
 -(NSString *)name {
    return _name;
 }

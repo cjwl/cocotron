@@ -241,6 +241,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return [NSColor colorWithCatalogName:@"System" colorName:@"controlShadowColor"];
 }
 
++(NSArray *)controlAlternatingRowBackgroundColors {
+   return [NSArray arrayWithObjects:
+    [NSColor whiteColor],
+    [NSColor whiteColor],
+    nil];
+}
+
 +(NSColor *)textColor {
    return [NSColor colorWithCatalogName:@"System" colorName:@"textColor"];
 }

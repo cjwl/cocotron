@@ -9,7 +9,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/Foundation.h>
 #import <AppKit/AppKitExport.h>
 
-@class NSLayoutManager;
+@class NSLayoutManager,NSFont;
 
 enum {
    NSTextStorageEditedCharacters=0x01,
@@ -42,6 +42,8 @@ APPKIT_EXPORT NSString *NSTextStorageDidProcessEditingNotification;
 -(void)processEditing;
 
 -(void)edited:(unsigned)editedMask range:(NSRange)range changeInLength:(int)delta;
+
+-(void)setFont:(NSFont *)font;
 
 @end
 

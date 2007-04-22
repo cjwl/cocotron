@@ -139,5 +139,9 @@ NSString *NSTextStorageDidProcessEditingNotification=@"NSTextStorageDidProcessEd
    }
 }
 
+-(void)setFont:(NSFont *)font {
+   [self addAttribute:NSFontAttributeName value:font range:NSMakeRange(0,[self length])];
+}
+
 @end
 

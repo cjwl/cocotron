@@ -45,9 +45,7 @@ static inline void appendCharacter(NSStringBuffer *buffer,unichar unicode){
    buffer->characters[buffer->length++]=unicode;
 }
 
-static inline void appendCharacters(NSStringBuffer *buffer,
- unichar *characters,unsigned length,
- unichar fillChar,BOOL leftAdj,int fieldWidth){
+static inline void appendCharacters(NSStringBuffer *buffer,unichar *characters,unsigned length,unichar fillChar,BOOL leftAdj,int fieldWidth){
    unsigned i;
 
    makeRoomForNcharacters(buffer,(fieldWidth>length)?fieldWidth:length);
@@ -64,6 +62,10 @@ static inline void appendCharacters(NSStringBuffer *buffer,
     for(i=0;i<fieldWidth-length;i++)
      buffer->characters[buffer->length++]=' ';
    }
+}
+
+static inline void appendUnichar(NSStringBuffer *buffer,unichar code,unichar fillChar,BOOL leftAdj,int fieldWidth){
+   appendCharacters(buffer,&code,1,fillChar,leftAdj,fieldWidth);
 }
 
 static inline void reverseCharacters(unichar *characters,unsigned length){
@@ -453,8 +455,11 @@ unichar *NSCharactersNewWithFormat(NSString *format,NSDictionary *locale,
         break;
 
        case 'c':
-        appendCStringChar(&result,va_arg(arguments,int),
-               fillChar,leftAdj,fieldWidth);
+        appendCStringChar(&result,va_arg(arguments,int),fillChar,leftAdj,fieldWidth);
+        break;
+
+       case 'C':
+        appendUnichar(&result,va_arg(arguments,int),fillChar,leftAdj,fieldWidth);
         break;
 
        case 's':

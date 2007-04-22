@@ -145,7 +145,7 @@ static inline void byteZero(void *vsrc,int size){
 -(NSError *)setOperationWouldBlock:(BOOL)blocks {
    u_long onoff=blocks?NO:YES;
 
-   [self errorForReturnValue:ioctlsocket(_handle,FIONBIO,&onoff)];
+   return [self errorForReturnValue:ioctlsocket(_handle,FIONBIO,&onoff)];
 }
 
 -(BOOL)operationWouldBlock {

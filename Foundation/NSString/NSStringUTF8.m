@@ -49,18 +49,20 @@ static unsigned convertUTF16toUTF8(const unichar *utf16,unsigned utf16Length,uns
 }
 
 char    *NSUnicodeToUTF8(const unichar *characters,unsigned length,
-  BOOL lossy,unsigned *resultLength,NSZone *zone){
+  BOOL lossy,unsigned *resultLength,NSZone *zone,BOOL zeroTerminate){
   unsigned  utf8Length=convertUTF16toUTF8(characters,length,NULL);
-  char     *utf8=NSZoneMalloc(NULL,utf8Length*sizeof(unsigned char));
+  char     *utf8=NSZoneMalloc(NULL,(utf8Length+(zeroTerminate?1:0))*sizeof(unsigned char));
 
   *resultLength=convertUTF16toUTF8(characters,length,(unsigned char *)utf8);
-  
+  if(zeroTerminate)
+   utf8[*resultLength]='\0';
+   
   return utf8;
 }
 
 static unsigned convertUTF8toUTF16(const unsigned char *utf8,unsigned utf8Length,unichar *utf16){
    unsigned i,utf16Length=0;
-   unsigned code32;
+   unsigned code32=0;
    enum {
     stateThreeLeft,
 	stateTwoLeft,

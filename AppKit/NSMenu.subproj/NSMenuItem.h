@@ -11,7 +11,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @class NSMenu, NSImage;
 
 @interface NSMenuItem : NSObject {
-   NSString *_title;
+   NSMenu   *_menu;
+   NSAttributedString *_atitle;
    id        _target;
    SEL       _action;
    NSString *_keyEquivalent;
@@ -33,7 +34,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -initWithTitle:(NSString *)title action:(SEL)action keyEquivalent:(NSString *)keyEquivalent;
 
+-(NSMenu *)menu;
 -(NSString *)title;
+-(NSAttributedString *)attributedTitle;
 -(NSString *)mnemonic;
 -(unsigned)mnemonicLocation;
 -target;
@@ -56,6 +59,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(BOOL)isEnabled;
 
 -(void)setTitle:(NSString *)title;
+-(void)setAttributedTitle:(NSAttributedString *)title;
 -(void)setTitleWithMnemonic:(NSString *)mnemonic;
 -(void)setMnemonicLocation:(unsigned)location;
 -(void)setTarget:target;

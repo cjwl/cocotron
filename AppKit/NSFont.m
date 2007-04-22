@@ -443,6 +443,23 @@ static inline NSGlyphMetrics *fetchGlyphAdvancementIfNeeded(NSFont *self,NSGlyph
    return length;
 }
 
+-(void)getAdvancements:(NSSize *)advancements forGlyphs:(const NSGlyph *)glyphs count:(unsigned)count {
+   int i;
+   
+   for(i=0;i<count;i++){
+    NSGlyphMetrics *info=fetchGlyphAdvancementIfNeeded(self,glyphs[i]);
+
+    if(info==NULL){
+     NSLog(@"no info for glyph %d",glyphs[i]);
+     advancements[i].width=0;
+     advancements[i].height=0;
+    }
+    else {
+     advancements[i].width=info->advanceA+info->advanceB+info->advanceC;
+     advancements[i].height=0;
+    }
+   }
+}
 
 @end
 

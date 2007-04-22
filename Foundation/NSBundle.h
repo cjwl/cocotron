@@ -34,6 +34,7 @@ FOUNDATION_EXPORT NSString *NSLoadedClasses;
 -(NSString *)bundlePath;
 -(NSString *)resourcePath;
 -(NSDictionary *)infoDictionary;
+-objectForInfoDictionaryKey:(NSString *)key;
 -(NSString *)bundleIdentifier;
 
 -(Class)principalClass;

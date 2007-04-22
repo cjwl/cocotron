@@ -70,3 +70,5 @@ APPKIT_EXPORT void NSCopyBits(int gState,NSRect rect,NSPoint point);
 
 APPKIT_EXPORT void NSBeep();
 
+APPKIT_EXPORT void NSEnableScreenUpdates(void);
+APPKIT_EXPORT void NSDisableScreenUpdates(void);

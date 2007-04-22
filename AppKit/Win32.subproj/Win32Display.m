@@ -558,7 +558,7 @@ The values should be upgraded to something which is more generic to implement, p
     if(isKeypad)
      modifierFlags|=NSNumericPadKeyMask;
 
-    event=[NSEvent keyEventWithType:type location:location modifierFlags:modifierFlags window:window characters:characters charactersIgnoringModifiers:charactersIgnoringModifiers isARepeat:isARepeat keyCode:keyCode];
+    event=[NSEvent keyEventWithType:type location:location modifierFlags:modifierFlags timestamp:[NSDate timeIntervalSinceReferenceDate] windowNumber:(int)window context:nil characters:characters charactersIgnoringModifiers:charactersIgnoringModifiers isARepeat:isARepeat keyCode:keyCode];
     [self postEvent:event atStart:NO];
     return YES;
    }

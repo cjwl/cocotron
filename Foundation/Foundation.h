@@ -17,6 +17,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <stddef.h>
 #import <stdio.h>
 #import <string.h>
+#import <assert.h>
+
+#import <Foundation/CFAllocator.h>
+#import <Foundation/CFBase.h>
+#import <Foundation/CFLocale.h>
+#import <Foundation/CFMutableDictionary.h>
+#import <Foundation/CFNumber.h>
+#import <Foundation/CFNumberFormatter.h>
+#import <Foundation/CFString.h>
 
 #import <Foundation/NSAffineTransform.h>
 #import <Foundation/NSArchiver.h>
@@ -38,6 +47,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSDirectoryEnumerator.h>
 #import <Foundation/NSEnumerator.h>
+#import <Foundation/NSError.h>
 #import <Foundation/NSException.h>
 #import <Foundation/NSFileHandle.h>
 #import <Foundation/NSFileManager.h>
@@ -46,6 +56,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSHashTable.h>
 #import <Foundation/NSHost.h>
 #import <Foundation/NSInvocation.h>
+#import <Foundation/NSKeyedArchiver.h>
 #import <Foundation/NSKeyedUnarchiver.h>
 #import <Foundation/NSKeyValueCoding.h>
 #import <Foundation/NSKeyValueObserving.h>

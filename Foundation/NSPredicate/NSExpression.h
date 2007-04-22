@@ -30,6 +30,10 @@ typedef enum {
 +(NSExpression *)expressionForVariable:(NSString *)string;
 +(NSExpression *)expressionForKeyPath:(NSString *)keyPath;
 +(NSExpression *)expressionForFunction:(NSString *)name arguments:(NSArray *)arguments;
+// private
++(NSExpression *)expressionForVariable:(NSString *)name assignment:(NSExpression *)assignment;
++(NSExpression *)expressionForKeyPathLeft:(NSExpression *)left right:(NSExpression *)right;
+// end private
 
 -(NSExpressionType)expressionType;
 

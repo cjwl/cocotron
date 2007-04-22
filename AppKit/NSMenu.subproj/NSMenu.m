@@ -51,6 +51,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     
     _title=[[keyed decodeObjectForKey:@"NSTitle"] copy];
     _itemArray=[[NSMutableArray alloc] initWithArray:[keyed decodeObjectForKey:@"NSMenuItems"]];
+    [_itemArray makeObjectsPerformSelector:@selector(_setMenu:) withObject:self];
     _autoenablesItems=![keyed decodeBoolForKey:@"NSNoAutoenable"];
    }
    else {
@@ -74,6 +75,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)dealloc {
    [_title release];
+   [_itemArray makeObjectsPerformSelector:@selector(_setMenu:) withObject:nil];
    [_itemArray release];
    [super dealloc];
 }
@@ -190,6 +192,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)addItem:(NSMenuItem *)item {
+   [item performSelector:@selector(_setMenu:) withObject:self];
    [_itemArray addObject:item];
 }
 
@@ -207,6 +210,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)removeItem:(NSMenuItem *)item {
+   [item performSelector:@selector(_setMenu:) withObject:nil];
    [_itemArray removeObjectIdenticalTo:item];
 }
 
@@ -215,6 +219,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)insertItem:(NSMenuItem *)item atIndex:(int)index {
+   [item performSelector:@selector(_setMenu:) withObject:self];
    [_itemArray insertObject:item atIndex:index];
 }
 

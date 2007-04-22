@@ -10,7 +10,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @class NSImageRep;
 
-@interface NSImage : NSObject {
+@interface NSImage : NSObject <NSCopying> {
    NSString       *_name;
    NSSize          _size;
    NSMutableArray *_representations;

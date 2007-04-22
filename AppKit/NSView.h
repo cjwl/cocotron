@@ -45,6 +45,7 @@ APPKIT_EXPORT NSString *NSViewFocusDidChangeNotification;
    NSMutableArray *_subviews;
    NSView         *_nextKeyView;
    NSView         *_previousKeyView;
+   BOOL            _isHidden;
    BOOL            _postsNotificationOnFrameChange;
    BOOL            _postsNotificationOnBoundsChange;
    BOOL            _autoresizesSubviews;
@@ -86,6 +87,9 @@ APPKIT_EXPORT NSString *NSViewFocusDidChangeNotification;
 -(int)gState;
 -(NSRect)visibleRect;
 
+-(BOOL)isHidden;
+-(void)setHidden:(BOOL)flag;
+
 -(NSView *)nextKeyView;
 -(NSView *)nextValidKeyView;
 
@@ -100,6 +104,8 @@ APPKIT_EXPORT NSString *NSViewFocusDidChangeNotification;
 
 -(NSPoint)convertPoint:(NSPoint)point fromView:(NSView *)viewOrNil;
 -(NSPoint)convertPoint:(NSPoint)point toView:(NSView *)viewOrNil;
+-(NSSize)convertSize:(NSSize)size fromView:(NSView *)viewOrNil;
+-(NSSize)convertSize:(NSSize)size toView:(NSView *)viewOrNil;
 -(NSRect)convertRect:(NSRect)rect fromView:(NSView *)viewOrNil;
 -(NSRect)convertRect:(NSRect)rect toView:(NSView *)viewOrNil;
 -(NSRect)centerScanRect:(NSRect)rect;
@@ -165,6 +171,7 @@ APPKIT_EXPORT NSString *NSViewFocusDidChangeNotification;
 
 -(BOOL)canDraw;
 -(void)lockFocus;
+-(BOOL)lockFocusIfCanDraw;
 -(void)unlockFocus;
 
 -(NSView *)opaqueAncestor;

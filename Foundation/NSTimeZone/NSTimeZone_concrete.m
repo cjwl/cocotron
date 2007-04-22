@@ -164,7 +164,7 @@ struct tzhead {
         NSEnumerator *timeZoneTypeEnumerator = [_timeZoneTypes objectEnumerator];
         NSTimeZoneType *type;
 
-        while (type = [timeZoneTypeEnumerator nextObject]) {
+        while ((type = [timeZoneTypeEnumerator nextObject])!=nil) {
             if (![type isDaylightSavingTime])
                 return type;
         }
@@ -175,7 +175,7 @@ struct tzhead {
         NSEnumerator *timeZoneTransitionEnumerator = [_timeZoneTransitions objectEnumerator];
         NSTimeZoneTransition *transition, *previousTransition = nil;
 
-        while (transition = [timeZoneTransitionEnumerator nextObject]) {
+        while ((transition = [timeZoneTransitionEnumerator nextObject])!=nil) {
             if ([date compare:[transition transitionDate]] == NSOrderedAscending) {
                 previousTransition = transition;
             }

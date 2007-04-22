@@ -22,6 +22,19 @@ typedef enum {
    NSSelectionAffinityDownstream,
 } NSSelectionAffinity;
 
+typedef enum {
+   NSFindPanelActionShowFindPanel=1,
+   NSFindPanelActionNext,
+   NSFindPanelActionPrevious,
+   NSFindPanelActionReplaceAll,
+   NSFindPanelActionReplace,
+   NSFindPanelActionReplaceAndFind,
+   NSFindPanelActionSetFindString,
+   NSFindPanelActionReplaceAllInSelection,
+   NSFindPanelActionSelectAll,
+   NSFindPanelActionSelectAllInSelection
+} NSFindPanelAction;
+
 @interface NSTextView : NSText {
    NSTextStorage   *_textStorage;
    NSTextContainer *_textContainer;

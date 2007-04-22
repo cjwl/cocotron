@@ -10,7 +10,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @class NSArray,NSDictionary;
 
 @interface NSPredicate : NSObject <NSCoding,NSCopying> {
-   NSString *_format;
+   NSString    *_format;
+   NSPredicate *_predicate;
 }
 
 +(NSPredicate *)predicateWithFormat:(NSString *)format arguments:(va_list)arguments;

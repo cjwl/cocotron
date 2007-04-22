@@ -25,6 +25,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)appendData:(NSData *)data;
 
 -(void)replaceBytesInRange:(NSRange)range withBytes:(const void *)bytes;
+-(void)replaceBytesInRange:(NSRange)range withBytes:(const void *)bytes length:(unsigned)bytesLength;
 -(void)setData:(NSData *)data;
 
 -(void)resetBytesInRange:(NSRange)range;

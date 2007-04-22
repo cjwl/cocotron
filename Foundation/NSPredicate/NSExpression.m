@@ -64,8 +64,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 +(NSExpression *)expressionForFunction:(NSString *)name arguments:(NSArray *)arguments {
-// FIX validate name
+// FIX validate name ?
    return [[[self alloc] initWithExpressionType:NSFunctionExpressionType value:name arguments:arguments] autorelease];
+}
+
++(NSExpression *)expressionForVariable:(NSString *)name assignment:(NSExpression *)assignment {
+   return nil;
+}
+
++(NSExpression *)expressionForKeyPathLeft:(NSExpression *)left right:(NSExpression *)right {
+   return nil;
 }
 
 -(NSExpressionType)expressionType {

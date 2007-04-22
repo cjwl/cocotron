@@ -12,6 +12,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @interface NSData_concrete : NSData {
    unsigned _length;
    char    *_bytes;
+   BOOL     _freeWhenDone;
 }
 @end
 

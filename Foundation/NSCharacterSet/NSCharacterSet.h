@@ -35,6 +35,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(NSData *)bitmapRepresentation;
 
+-(BOOL)isSupersetOfSet:(NSCharacterSet *)other;
+
 @end
 
 #import <Foundation/NSMutableCharacterSet.h>

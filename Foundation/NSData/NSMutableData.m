@@ -35,7 +35,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return self;
 }
 
--initWithBytesNoCopy:(void *)bytes length:(unsigned)length {
+-initWithBytesNoCopy:(void *)bytes length:(unsigned)length freeWhenDone:(BOOL)freeOnDealloc {
    self=[self initWithCapacity:length];
 
    [self appendBytes:bytes length:length];
@@ -54,8 +54,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -copyWithZone:(NSZone *)zone {
-   return [[NSData allocWithZone:zone] initWithBytes:[self bytes]
-                                              length:[self length]];
+   return [[NSData allocWithZone:zone] initWithBytes:[self bytes] length:[self length]];
 }
 
 -(Class)classForCoder {
@@ -88,31 +87,67 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)replaceBytesInRange:(NSRange)range withBytes:(const void *)bytes {
-   void *mutableBytes=[self mutableBytes];
-   int   i,length=[self length],loc=range.location,len=range.length;
+   int   i,length=[self length];
+   void *mutableBytes;
 
-   if(loc>length)
-    NSRaiseException(NSRangeException,self,_cmd,@"location %d beyond length %d",
-     loc,[self length]);
+   if(range.location>length)
+    NSRaiseException(NSRangeException,self,_cmd,@"location %d beyond length %d",range.location,[self length]);
 
-   if(loc+len>length)
-    [self setLength:loc+len];
+   if(range.location+range.length>length)
+    [self setLength:range.location+range.length];
+    
+   mutableBytes=[self mutableBytes];
 
-   for(i=0;i<len;i++)
-    ((char *)mutableBytes)[i+loc]=((char *)bytes)[i];
+   for(i=0;i<range.length;i++)
+    ((char *)mutableBytes)[range.location+i]=((char *)bytes)[i];
+}
+
+-(void)replaceBytesInRange:(NSRange)range withBytes:(const void *)bytes length:(unsigned)bytesLength {
+   int   i,length=[self length];
+   char *mutableBytes;
+
+   if(range.location>length)
+    NSRaiseException(NSRangeException,self,_cmd,@"location %d beyond length %d",range.location,[self length]);
+
+   if(bytesLength>range.length){
+    int delta=bytesLength-range.length;
+    int pos=length;
+    
+    [self setLength:length+delta];
+
+    mutableBytes=[self mutableBytes];
+
+    while(--pos>range.location+range.length)
+     mutableBytes[pos-delta]=mutableBytes[pos-delta-1];
+   }
+   else if(bytesLength<range.length){
+    int delta=range.length-bytesLength;
+    
+    mutableBytes=[self mutableBytes];
+
+    for(i=range.location+bytesLength;i<length-delta;i++)
+     mutableBytes[i]=mutableBytes[i+delta];
+     
+    [self setLength:length-delta];
+
+    mutableBytes=[self mutableBytes];
+   }
+   else {
+    mutableBytes=[self mutableBytes];
+   }
+   
+   for(i=0;i<bytesLength;i++)
+    mutableBytes[range.location+i]=((char *)bytes)[i];
 }
 
 -(void)setData:(NSData *)data {
    [self setLength:[data length]];
-   [self replaceBytesInRange:NSMakeRange(0,[data length])
-                   withBytes:[data bytes]];
+   [self replaceBytesInRange:NSMakeRange(0,[data length]) withBytes:[data bytes]];
 }
 
 -(void)resetBytesInRange:(NSRange)range {
-
    if(NSMaxRange(range)>[self length])
-    NSRaiseException(NSRangeException,self,_cmd,@"range %@ beyond length %d",
-     NSStringFromRange(range),[self length]);
+    NSRaiseException(NSRangeException,self,_cmd,@"range %@ beyond length %d",NSStringFromRange(range),[self length]);
 
    NSByteZeroRange([self mutableBytes],range);
 }

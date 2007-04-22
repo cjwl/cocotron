@@ -145,6 +145,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return NSAutorelease(NSSet_concreteNew(NULL,objects,count));
 }
 
++setWithObjects:(id *)objects count:(unsigned)count {
+   return NSAutorelease(NSSet_concreteNew(NULL,objects,count));
+}
 
 -(Class)classForCoder {
    return OBJCClassFromString("NSSet");

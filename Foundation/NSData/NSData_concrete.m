@@ -25,6 +25,7 @@ NSData *NSData_concreteNew(NSZone *zone,const char *bytes,unsigned length) {
 
    self->_length=length;
    self->_bytes=NSBytesReplicate(bytes,length,zone);
+   self->_freeWhenDone=YES;
 
    return self;
 }
@@ -34,6 +35,7 @@ NSData *NSData_concreteNewNoCopy(NSZone *zone,void *bytes,unsigned length) {
 
    self->_length=length;
    self->_bytes=bytes;
+   self->_freeWhenDone=YES;
 
    return self;
 }
@@ -41,18 +43,28 @@ NSData *NSData_concreteNewNoCopy(NSZone *zone,void *bytes,unsigned length) {
 -init {
    _length=0;
    _bytes=NULL;
+   _freeWhenDone=YES;
    return self;
 }
 
 -initWithBytes:(const void *)bytes length:(unsigned)length {
    _length=length;
    _bytes=NSBytesReplicate(bytes,length,NSZoneFromPointer(self));
+   _freeWhenDone=YES;
    return self;
 }
 
 -initWithBytesNoCopy:(void *)bytes length:(unsigned)length {
    _length=length;
    _bytes=bytes;
+   _freeWhenDone=YES;
+   return self;
+}
+
+-initWithBytesNoCopy:(void *)bytes length:(unsigned)length freeWhenDone:(BOOL)freeOnDealloc {
+   _length=length;
+   _bytes=bytes;
+   _freeWhenDone=freeOnDealloc;
    return self;
 }
 
@@ -62,7 +74,7 @@ NSData *NSData_concreteNewNoCopy(NSZone *zone,void *bytes,unsigned length) {
 }
 
 -(void)dealloc {
-   if(_bytes!=NULL)
+   if(_bytes!=NULL && _freeWhenDone)
     NSZoneFree(NSZoneFromPointer(_bytes),_bytes);
    NSDeallocateObject(self);
 }

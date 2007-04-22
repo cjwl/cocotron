@@ -11,6 +11,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @interface NSData : NSObject <NSCopying,NSMutableCopying,NSCoding>
 
+-initWithBytesNoCopy:(void *)bytes length:(unsigned)length freeWhenDone:(BOOL)freeOnDealloc;
 -initWithBytesNoCopy:(void *)bytes length:(unsigned)length;
 -initWithBytes:(const void *)bytes length:(unsigned)length;
 -initWithData:(NSData *)data;
@@ -18,6 +19,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -initWithContentsOfMappedFile:(NSString *)path;
 
 +data;
++dataWithBytesNoCopy:(void *)bytes length:(unsigned)length freeWhenDone:(BOOL)freeOnDealloc;
 +dataWithBytesNoCopy:(void *)bytes length:(unsigned)length;
 +dataWithBytes:(const void *)bytes length:(unsigned)length;
 +dataWithData:(NSData *)data;

@@ -20,7 +20,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)encodeWithCoder:(NSCoder *)coder {
-   [coder encodeObject:_title forKey:@"NSMenuItem title"];
+   [coder encodeObject:[_atitle string] forKey:@"NSMenuItem title"];
    [coder encodeObject:_keyEquivalent forKey:@"NSMenuItem keyEquivalent"];
    [coder encodeInt:_keyEquivalentModifierMask forKey:@"NSMenuItem keyEquivalentModifierMask"];
    [coder encodeObject:_submenu forKey:@"NSMenuItem submenu"];
@@ -39,12 +39,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     _tag=[keyed decodeIntForKey:@"NSTag"];
      
     if([keyed decodeBoolForKey:@"NSIsSeparator"]){
-     [_title release];
-     _title=nil;
+     [_atitle release];
+     _atitle=nil;
     }
    }
    else {
-    _title=[[coder decodeObjectForKey:@"NSMenuItem title"] retain];
+    _atitle=[[NSAttributedString alloc] initWithString:[coder decodeObjectForKey:@"NSMenuItem title"]];
     _keyEquivalent=[[coder decodeObjectForKey:@"NSMenuItem keyEquivalent"] retain];
     _keyEquivalentModifierMask=[coder decodeIntForKey:@"NSMenuItem keyEquivalentModifierMask"];
     _submenu=[[coder decodeObjectForKey:@"NSMenuItem submenu"] retain];
@@ -55,7 +55,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -initWithTitle:(NSString *)title action:(SEL)action keyEquivalent:(NSString *)keyEquivalent {
-   _title=[title copy];
+   _atitle=[[NSAttributedString alloc] initWithString:title];
    _target=nil;
    _action=action;
    _keyEquivalent=[keyEquivalent copy];
@@ -70,7 +70,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)dealloc {
-   [_title release];
+   [_atitle release];
    [_keyEquivalent release];
    [_submenu release];
    [_image release];
@@ -81,8 +81,20 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [super dealloc];
 }
 
+-(NSMenu *)menu {
+   return _menu;
+}
+
+-(void)_setMenu:(NSMenu *)menu {
+   _menu=menu;
+}
+
 -(NSString *)title {
-   return _title;
+   return [_atitle string];
+}
+
+-(NSAttributedString *)attributedTitle {
+   return _atitle;
 }
 
 -(NSString *)mnemonic {
@@ -146,7 +158,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(BOOL)isSeparatorItem {
-   return _title==nil;
+   return _atitle==nil;
 }
 
 -(BOOL)isEnabled {
@@ -154,9 +166,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)setTitle:(NSString *)title {
-    title=[title copy];
-    [_title release];
-    _title=title;
+    [_atitle release];
+    _atitle=[[NSAttributedString alloc] initWithString:title];
+}
+
+-(void)setAttributedTitle:(NSAttributedString *)title {
+   title=[title copy];
+   [_atitle release];
+   _atitle=title;
 }
 
 -(void)setTitleWithMnemonic:(NSString *)mnemonic {
@@ -305,7 +322,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(NSString *)description {
     return [NSString stringWithFormat:@"<%@[0x%x]: title: %@ action: %@ hasSubmenu: %@>",
-        [self class],self,_title,NSStringFromSelector(_action),([self hasSubmenu] ? @"YES" : @"NO")];
+        [self class],self,[self title],NSStringFromSelector(_action),([self hasSubmenu] ? @"YES" : @"NO")];
 }
 
 @end

@@ -25,6 +25,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSDragging.h>
 #import <AppKit/NSPrintOperation.h>
 #import <AppKit/NSNibKeyedUnarchiver.h>
+#import <Foundation/NSRaise.h>
 
 NSString *NSViewFrameDidChangeNotification=@"NSViewFrameDidChangeNotification";
 NSString *NSViewBoundsDidChangeNotification=@"NSViewBoundsDidChangeNotification";
@@ -286,6 +287,16 @@ static inline void buildTransformsIfNeeded(NSView *self) {
    return _visibleRect;
 }
 
+-(BOOL)isHidden {
+   return _isHidden;
+}
+
+-(void)setHidden:(BOOL)flag {
+   _isHidden=flag;
+   if(_isHidden)
+    NSUnimplementedMethod();
+}
+
 -(NSView *)nextKeyView {
    return _nextKeyView;
 }
@@ -376,6 +387,22 @@ static inline void buildTransformsIfNeeded(NSView *self) {
    CGAffineTransform fromWindow=[toView transformFromWindow];
 
    return CGPointApplyAffineTransform(CGPointApplyAffineTransform(point,toWindow),fromWindow);
+}
+
+-(NSSize)convertSize:(NSSize)size fromView:(NSView *)viewOrNil {
+   NSView           *fromView=(viewOrNil!=nil)?viewOrNil:[[self window] _backgroundView];
+   CGAffineTransform toWindow=[fromView transformToWindow];
+   CGAffineTransform fromWindow=[self transformFromWindow];
+
+   return CGSizeApplyAffineTransform(CGSizeApplyAffineTransform(size,toWindow),fromWindow);
+}
+
+-(NSSize)convertSize:(NSSize)size toView:(NSView *)viewOrNil {
+   NSView           *toView=(viewOrNil!=nil)?viewOrNil:[[self window] _backgroundView];
+   CGAffineTransform toWindow=[self transformToWindow];
+   CGAffineTransform fromWindow=[toView transformFromWindow];
+
+   return CGSizeApplyAffineTransform(CGSizeApplyAffineTransform(size,toWindow),fromWindow);
 }
 
 -(NSRect)convertRect:(NSRect)rect fromView:(NSView *)viewOrNil {
@@ -883,6 +910,14 @@ static inline void buildTransformsIfNeeded(NSView *self) {
    CGContextClipToRect(graphicsPort,[self visibleRect]);
 
    [self setUpGState];
+}
+
+-(BOOL)lockFocusIfCanDraw {
+   if([self canDraw]){
+    [self lockFocus];
+    return YES;
+   }
+   return NO;
 }
 
 -(void)unlockFocus {

@@ -20,6 +20,10 @@ NSString *NSBackgroundColorAttributeName=@"NSBackgroundColorAttributeName";
 
 NSString *NSUnderlineStyleAttributeName=@"NSUnderlineStyleAttributeName";
 NSString *NSAttachmentAttributeName=@"NSAttachmentAttributeName";
+NSString *NSKernAttributeName=@"NSKernAttributeName";
+NSString *NSLigatureAttributeName=@"NSLigatureAttributeName";
+
+NSString *NSBackgroundColorDocumentAttribute=@"NSBackgroundColorDocumentAttribute";
 
 @implementation NSAttributedString(NSAttributedString_AppKit)
 

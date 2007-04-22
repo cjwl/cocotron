@@ -89,41 +89,56 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    switch(_type){
    
     case NSLessThanPredicateOperatorType:
-     break;
+     return ([leftResult compare:rightResult]==NSOrderedAscending)?YES:NO;
      
-    case NSLessThanOrEqualToPredicateOperatorType:
-     break;
+    case NSLessThanOrEqualToPredicateOperatorType:{
+      NSComparisonResult check=[leftResult compare:rightResult];
+      
+      return (check==NSOrderedAscending || check==NSOrderedSame)?YES:NO;
+     }
      
     case NSGreaterThanPredicateOperatorType:
-     break;
+     return ([leftResult compare:rightResult]==NSOrderedDescending)?YES:NO;
      
-    case NSGreaterThanOrEqualToPredicateOperatorType:
-     break;
+    case NSGreaterThanOrEqualToPredicateOperatorType:{
+      NSComparisonResult check=[leftResult compare:rightResult];
+      
+      return (check==NSOrderedDescending || check==NSOrderedSame)?YES:NO;
+     }
      
     case NSEqualToPredicateOperatorType:
-     break;
+     return [leftResult isEqual:rightResult];
      
     case NSNotEqualToPredicateOperatorType:
-     break;
+     return ![leftResult isEqual:rightResult];
      
     case NSMatchesPredicateOperatorType:
-     break;
+     NSUnimplementedMethod();
+     return NO;
      
     case NSLikePredicateOperatorType:
-     break;
+     NSUnimplementedMethod();
+     return NO;
      
     case NSBeginsWithPredicateOperatorType:
-     break;
+     NSUnimplementedMethod();
+     return NO;
      
     case NSEndsWithPredicateOperatorType:
-     break;
+     NSUnimplementedMethod();
+     return NO;
      
     case NSInPredicateOperatorType:
-     break;
+     NSUnimplementedMethod();
+     return NO;
      
-    case NSCustomSelectorPredicateOperatorType:
-     break;
-     
+    case NSCustomSelectorPredicateOperatorType:{
+      BOOL (*function)(id,SEL,id)=(BOOL (*)(id,SEL,id))[leftResult methodForSelector:_customSelector];
+      
+      return function(leftResult,_customSelector,rightResult);
+     }
+    default:
+     return NO;
    }
 }
 

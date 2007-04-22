@@ -230,7 +230,7 @@ const unsigned NSMaximumStringLength=INT_MAX-1;
    char    *utf8;
 
    [self getCharacters:buffer];
-   utf8=NSUnicodeToUTF8(buffer,length,NO,&utf8Length,NULL);
+   utf8=NSUnicodeToUTF8(buffer,length,NO,&utf8Length,NULL,NO);
    [coder encodeBytes:utf8 length:utf8Length];
    NSZoneFree(NSZoneFromPointer(utf8),utf8);
 }
@@ -803,7 +803,7 @@ U+2029 (Unicode paragraph separator), \r\n, in that order (also known as CRLF)
    else if(encoding==NSSymbolStringEncoding)
     bytes=NSUnicodeToSymbol(unicode,length,lossy,&byteLength,zone);
    else if(encoding==NSUTF8StringEncoding)
-    bytes=NSUnicodeToUTF8(unicode,length,lossy,&byteLength,zone);
+    bytes=NSUnicodeToUTF8(unicode,length,lossy,&byteLength,zone,NO);
    else if(encoding==NSUnicodeStringEncoding){
     buffer[0]=0xFFFE;
     return [NSData dataWithBytes:buffer length:(1+length)*sizeof(unichar)];
@@ -823,6 +823,19 @@ U+2029 (Unicode paragraph separator), \r\n, in that order (also known as CRLF)
 
 -(NSData *)dataUsingEncoding:(NSStringEncoding)encoding {
    return [self dataUsingEncoding:encoding allowLossyConversion:NO];
+}
+
+-(const char *)UTF8String {
+   unsigned length=[self length],byteLength;
+   unichar  unicode[length];
+   char    *bytes;
+   
+   [self getCharacters:unicode];
+   
+   if((bytes=NSUnicodeToUTF8(unicode,length,NO,&byteLength,NULL,YES))==NULL)
+    return NULL;
+
+   return [[NSData dataWithBytesNoCopy:bytes length:byteLength] bytes];
 }
 
 -(NSString *)stringByReplacingPercentEscapesUsingEncoding:(NSStringEncoding)encoding {

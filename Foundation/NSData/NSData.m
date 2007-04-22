@@ -25,9 +25,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return NSAllocateObject(self,0,zone);
 }
 
--initWithBytesNoCopy:(void *)bytes length:(unsigned)length {
+-initWithBytesNoCopy:(void *)bytes length:(unsigned)length freeWhenDone:(BOOL)freeOnDealloc {
    NSInvalidAbstractInvocation();
    return nil;
+}
+
+-initWithBytesNoCopy:(void *)bytes length:(unsigned)length {
+   return [self initWithBytesNoCopy:bytes length:length freeWhenDone:YES];
 }
 
 -initWithBytes:(const void *)bytes length:(unsigned)length {
@@ -89,6 +93,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     return NSAutorelease(NSData_concreteNew(NULL,NULL,0));
 
    return [[[self allocWithZone:NULL] init] autorelease];
+}
+
++dataWithBytesNoCopy:(void *)bytes length:(unsigned)length freeWhenDone:(BOOL)freeOnDealloc{
+   return [[[self allocWithZone:NULL] initWithBytesNoCopy:bytes length:length freeWhenDone:freeOnDealloc] autorelease];
 }
 
 +dataWithBytesNoCopy:(void *)bytes length:(unsigned)length {

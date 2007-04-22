@@ -174,8 +174,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
                        coalesceMask:(unsigned)mask {
    NSUnimplementedMethod();
 
-   if(mask==NSNotificationCoalescingOnName|
-                    NSNotificationCoalescingOnSender){
+   if(mask==(NSNotificationCoalescingOnName|NSNotificationCoalescingOnSender)){
 
    }
    else if(mask==NSNotificationCoalescingOnName){

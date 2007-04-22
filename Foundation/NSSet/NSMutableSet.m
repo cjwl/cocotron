@@ -96,6 +96,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return [[[self allocWithZone:NULL] initWithObjects:objects count:count] autorelease];
 }
 
++setWithObjects:(id *)objects count:(unsigned)count {
+   return [[[self allocWithZone:NULL] initWithObjects:objects count:count] autorelease];
+}
+
 +setWithCapacity:(unsigned)capacity {
    if(self==[NSMutableSet class])
     return NSAutorelease(NSMutableSet_concreteNew(NULL,capacity));

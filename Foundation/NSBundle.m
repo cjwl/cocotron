@@ -217,6 +217,10 @@ static NSMapTable *pathToObject=NULL;
    return _infoDictionary;
 }
 
+-objectForInfoDictionaryKey:(NSString *)key {
+   return [[self infoDictionary] objectForKey:key];
+}
+
 -(NSString *)bundleIdentifier {
    return [[self infoDictionary] objectForKey:@"CFBundleIdentifier"];
 }
