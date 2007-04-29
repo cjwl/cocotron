@@ -8,6 +8,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSComparisonPredicate.h>
 #import <Foundation/NSExpression.h>
 #import <Foundation/NSRaise.h>
+#import <Foundation/NSArray.h>
+#import <Foundation/NSSet.h>
+#import <Foundation/NSEnumerator.h>
+#import <Foundation/NSNull.h>
+#import <Foundation/NSString.h>
+#import "NSExpression_operator.h"
 
 @implementation NSComparisonPredicate
 
@@ -58,6 +64,102 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return [[[self alloc] initWithLeftExpression:left rightExpression:right customSelector:selector] autorelease];
 }
 
+-(NSString *)predicateFormat {
+   NSMutableString *result=[NSMutableString string];
+   NSString        *operator;
+   NSString        *options;
+   
+   switch(_modifier){
+    case NSDirectPredicateModifier:
+     break;
+
+    case NSAllPredicateModifier:
+     [result appendFormat:@"ALL "];
+     break;
+
+    case NSAnyPredicateModifier:
+     [result appendFormat:@"ANY "];
+     break;
+   }
+   
+   if(_options&NSCaseInsensitivePredicateOption)
+    if(_options&NSDiacriticInsensitivePredicateOption)
+     options=@"[cd]";
+    else
+     options=@"[c]";
+   else if(_options&NSDiacriticInsensitivePredicateOption)
+    options=@"[d]";
+   else
+    options=@"";
+       
+   switch(_type){
+   
+    case NSLessThanPredicateOperatorType:
+     operator=@"<";
+     break;
+     
+    case NSLessThanOrEqualToPredicateOperatorType:
+     operator=@"<=";
+     break;
+     
+    case NSGreaterThanPredicateOperatorType:
+     operator=@">";
+     break;
+     
+    case NSGreaterThanOrEqualToPredicateOperatorType:
+     operator=@">=";
+     break;
+     
+    case NSEqualToPredicateOperatorType:
+     operator=@"==";
+     break;
+     
+    case NSNotEqualToPredicateOperatorType:
+     operator=@"!=";
+     break;
+     
+    case NSMatchesPredicateOperatorType:
+     operator=@"MATCHES";
+     break;
+     
+    case NSLikePredicateOperatorType:
+     operator=@"LIKE";
+     break;
+     
+    case NSBeginsWithPredicateOperatorType:
+     operator=@"BEGINSWITH";
+     break;
+     
+    case NSEndsWithPredicateOperatorType:
+     operator=@"ENDSWITH";
+     break;
+     
+    case NSInPredicateOperatorType:
+     operator=@"IN";
+     break;
+    
+    // FIX, not right
+    case NSCustomSelectorPredicateOperatorType:
+     operator=[NSString stringWithFormat:@"@selector(%s)",SELNAME(_customSelector)];
+     break;
+     
+   }
+   
+   [result appendFormat:@"%@ %@%@ %@",_left,operator,options,_right];
+     
+   return result;
+}
+
+-(NSPredicate *)predicateWithSubstitutionVariables:(NSDictionary *)variables {
+   NSExpression *left=[_left _expressionWithSubstitutionVariables:variables];
+   NSExpression *right=[_left _expressionWithSubstitutionVariables:variables];
+   
+   if(_type!=NSCustomSelectorPredicateOperatorType)
+    return [NSComparisonPredicate predicateWithLeftExpression:left rightExpression:right modifier:_modifier type:_type options:_options];
+   else
+    return [NSComparisonPredicate predicateWithLeftExpression:left rightExpression:right customSelector:_customSelector];
+}
+
 -(NSExpression *)leftExpression {
    return _left;
 }
@@ -82,10 +184,21 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return _customSelector;
 }
 
--(BOOL)evaluateObject:object {
-   id leftResult=[_left expressionValueWithObject:object context:nil];
+-(BOOL)_evaluateValue:leftResult withObject:object {
    id rightResult=[_right expressionValueWithObject:object context:nil];
+   unsigned compareOptions=0;
    
+   BOOL selfIsNil = (leftResult == nil || [leftResult isEqual:[NSNull null]]);
+   BOOL objectIsNil = (rightResult == nil || [rightResult isEqual:[NSNull null]]);
+	
+   if (selfIsNil || objectIsNil)
+    return (selfIsNil == objectIsNil && _type == NSEqualToPredicateOperatorType);
+
+   if(!(_options & NSDiacriticInsensitivePredicateOption))
+     compareOptions |= NSLiteralSearch;
+   if(_options & NSCaseInsensitivePredicateOption)
+     compareOptions |= NSCaseInsensitiveSearch;
+
    switch(_type){
    
     case NSLessThanPredicateOperatorType:
@@ -120,17 +233,19 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
      NSUnimplementedMethod();
      return NO;
      
-    case NSBeginsWithPredicateOperatorType:
-     NSUnimplementedMethod();
-     return NO;
+    case NSBeginsWithPredicateOperatorType:{
+      NSRange range = NSMakeRange(0,[rightResult length]);
+      return ([leftResult compare:rightResult options:compareOptions range:range]==NSOrderedSame)?YES:NO;
+     }
      
-    case NSEndsWithPredicateOperatorType:
-     NSUnimplementedMethod();
-     return NO;
+    case NSEndsWithPredicateOperatorType:{
+      NSRange range = NSMakeRange([leftResult length] - [rightResult length],[rightResult length]);
+      
+      return ([leftResult compare:rightResult options:compareOptions range:range]==NSOrderedSame)?YES:NO;
+     }
      
     case NSInPredicateOperatorType:
-     NSUnimplementedMethod();
-     return NO;
+     return ([leftResult rangeOfString:rightResult options:compareOptions].location!=NSNotFound)?YES:NO;
      
     case NSCustomSelectorPredicateOperatorType:{
       BOOL (*function)(id,SEL,id)=(BOOL (*)(id,SEL,id))[leftResult methodForSelector:_customSelector];
@@ -141,5 +256,30 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
      return NO;
    }
 }
+
+-(BOOL)evaluateWithObject:(id)object{
+   NSMutableArray *values = [NSMutableArray array];
+   NSComparisonPredicateModifier modifier = [self comparisonPredicateModifier];
+	
+   id leftValue = [[self leftExpression] expressionValueWithObject:object context:NULL];
+	
+   if(modifier==NSDirectPredicateModifier)
+    [values addObject:leftValue];
+   else{		
+    if ([[self leftExpression] expressionType] != NSKeyPathExpressionType || !([leftValue isKindOfClass:[NSArray class]] || [leftValue isKindOfClass:[NSSet class]]))
+     [NSException raise:NSInvalidArgumentException format:@"The left hand side for an ALL or ANY operator must be either an NSArray or an NSSet"];
+    [values addObjectsFromArray:leftValue];
+   }
+	
+   BOOL result = (modifier == NSAllPredicateModifier);
+   NSEnumerator *e = [values objectEnumerator];
+   id value;
+   while (value = [e nextObject]) {
+    BOOL eval = [self _evaluateValue:value withObject:(id)object];
+    if (eval == (modifier != NSAllPredicateModifier)) return eval;		
+   }
+   return result;
+}
+
 
 @end

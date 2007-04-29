@@ -298,7 +298,7 @@ static int selectorCompare(id object1,id object2,void *userData){
    while(--count>=0){
     id check=[self objectAtIndex:count];
     
-    if(![predicate evaluateObject:check])
+    if(![predicate evaluateWithObject:check])
      [self removeObjectAtIndex:count];
    }
 }

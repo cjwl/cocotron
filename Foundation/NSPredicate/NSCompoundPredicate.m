@@ -7,6 +7,7 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 #import <Foundation/NSCompoundPredicate.h>
 #import <Foundation/NSArray.h>
+#import <Foundation/NSString.h>
 
 @implementation NSCompoundPredicate
 
@@ -34,6 +35,39 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return [[[self alloc] initWithType:NSOrPredicateType subpredicates:predicates] autorelease];
 }
 
+-(NSString *)predicateFormat {
+   NSMutableString *result=[NSMutableString string];
+   NSMutableArray  *args=[NSMutableArray array];
+   int              i,count=[_predicates count];
+   
+   for(i=0;i<count;i++){
+    NSPredicate *check=[_predicates objectAtIndex:i];
+    NSString    *precedence=[check predicateFormat];
+    
+    if([check isKindOfClass:[NSCompoundPredicate class]])
+     if([(NSCompoundPredicate *)check compoundPredicateType]!=_type)
+      precedence=[NSString stringWithFormat:@"(%@)",precedence];
+     
+    [args addObject:precedence];
+   }
+   
+   switch(_type){
+    case NSNotPredicateType:
+     [result appendFormat:@"NOT %@",[args objectAtIndex:0]];
+     break;
+     
+    case NSAndPredicateType:
+     [result appendFormat:@"%@ AND %@",[args objectAtIndex:0],[args objectAtIndex:1]];
+     break;
+
+    case NSOrPredicateType:
+     [result appendFormat:@"%@ OR %@",[args objectAtIndex:0],[args objectAtIndex:1]];
+     break;
+    }
+   
+   return result;
+}
+
 -(NSCompoundPredicateType)compoundPredicateType {
    return _type;
 }
@@ -42,7 +76,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return _predicates;
 }
 
--(BOOL)evaluateObject:object {
+-(BOOL)evaluateWithObject:object {
    BOOL result=NO;
    int  i,count=[_predicates count];
    
@@ -51,17 +85,17 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     
     switch(_type){
      case NSNotPredicateType:
-      return ![predicate evaluateObject:object];
+      return ![predicate evaluateWithObject:object];
 
      case NSAndPredicateType:
       if(i==0)
-       result=[predicate evaluateObject:object];
+       result=[predicate evaluateWithObject:object];
       else
-       result=result && [predicate evaluateObject:object];
+       result=result && [predicate evaluateWithObject:object];
       break;
       
      case NSOrPredicateType:
-      if([predicate evaluateObject:object])
+      if([predicate evaluateWithObject:object])
        return YES;
       break;
     }

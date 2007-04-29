@@ -1637,6 +1637,54 @@
 		FEB9D7050B44414000C239BB /* NSSocketPortNameServer.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9D7010B44414000C239BB /* NSSocketPortNameServer.m */; };
 		FEB9D7060B44414000C239BB /* NSSocketPortNameServer.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB9D7000B44414000C239BB /* NSSocketPortNameServer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FEB9D7070B44414000C239BB /* NSSocketPortNameServer.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9D7010B44414000C239BB /* NSSocketPortNameServer.m */; };
+		FED160AE0BE26DF700BF9889 /* NSExpression_operator.h in Headers */ = {isa = PBXBuildFile; fileRef = FED160AC0BE26DF700BF9889 /* NSExpression_operator.h */; };
+		FED160AF0BE26DF700BF9889 /* NSExpression_operator.m in Sources */ = {isa = PBXBuildFile; fileRef = FED160AD0BE26DF700BF9889 /* NSExpression_operator.m */; };
+		FED160B00BE26DF700BF9889 /* NSExpression_operator.h in Headers */ = {isa = PBXBuildFile; fileRef = FED160AC0BE26DF700BF9889 /* NSExpression_operator.h */; };
+		FED160B10BE26DF700BF9889 /* NSExpression_operator.m in Sources */ = {isa = PBXBuildFile; fileRef = FED160AD0BE26DF700BF9889 /* NSExpression_operator.m */; };
+		FED160B20BE26DF700BF9889 /* NSExpression_operator.h in Headers */ = {isa = PBXBuildFile; fileRef = FED160AC0BE26DF700BF9889 /* NSExpression_operator.h */; };
+		FED160B30BE26DF700BF9889 /* NSExpression_operator.m in Sources */ = {isa = PBXBuildFile; fileRef = FED160AD0BE26DF700BF9889 /* NSExpression_operator.m */; };
+		FED162980BE2E44600BF9889 /* NSExpression_array.h in Headers */ = {isa = PBXBuildFile; fileRef = FED162960BE2E44600BF9889 /* NSExpression_array.h */; };
+		FED162990BE2E44600BF9889 /* NSExpression_array.m in Sources */ = {isa = PBXBuildFile; fileRef = FED162970BE2E44600BF9889 /* NSExpression_array.m */; };
+		FED1629A0BE2E44600BF9889 /* NSExpression_array.h in Headers */ = {isa = PBXBuildFile; fileRef = FED162960BE2E44600BF9889 /* NSExpression_array.h */; };
+		FED1629B0BE2E44600BF9889 /* NSExpression_array.m in Sources */ = {isa = PBXBuildFile; fileRef = FED162970BE2E44600BF9889 /* NSExpression_array.m */; };
+		FED1629C0BE2E44600BF9889 /* NSExpression_array.h in Headers */ = {isa = PBXBuildFile; fileRef = FED162960BE2E44600BF9889 /* NSExpression_array.h */; };
+		FED1629D0BE2E44600BF9889 /* NSExpression_array.m in Sources */ = {isa = PBXBuildFile; fileRef = FED162970BE2E44600BF9889 /* NSExpression_array.m */; };
+		FED162F40BE2EAB200BF9889 /* NSExpression_assignment.h in Headers */ = {isa = PBXBuildFile; fileRef = FED162F20BE2EAB200BF9889 /* NSExpression_assignment.h */; };
+		FED162F50BE2EAB200BF9889 /* NSExpression_assignment.m in Sources */ = {isa = PBXBuildFile; fileRef = FED162F30BE2EAB200BF9889 /* NSExpression_assignment.m */; };
+		FED162F60BE2EAB200BF9889 /* NSExpression_assignment.h in Headers */ = {isa = PBXBuildFile; fileRef = FED162F20BE2EAB200BF9889 /* NSExpression_assignment.h */; };
+		FED162F70BE2EAB200BF9889 /* NSExpression_assignment.m in Sources */ = {isa = PBXBuildFile; fileRef = FED162F30BE2EAB200BF9889 /* NSExpression_assignment.m */; };
+		FED162F80BE2EAB200BF9889 /* NSExpression_assignment.h in Headers */ = {isa = PBXBuildFile; fileRef = FED162F20BE2EAB200BF9889 /* NSExpression_assignment.h */; };
+		FED162F90BE2EAB200BF9889 /* NSExpression_assignment.m in Sources */ = {isa = PBXBuildFile; fileRef = FED162F30BE2EAB200BF9889 /* NSExpression_assignment.m */; };
+		FED163680BE4093700BF9889 /* NSExpression_constant.h in Headers */ = {isa = PBXBuildFile; fileRef = FED1635E0BE4093700BF9889 /* NSExpression_constant.h */; };
+		FED163690BE4093700BF9889 /* NSExpression_constant.m in Sources */ = {isa = PBXBuildFile; fileRef = FED1635F0BE4093700BF9889 /* NSExpression_constant.m */; };
+		FED1636A0BE4093700BF9889 /* NSExpression_function.h in Headers */ = {isa = PBXBuildFile; fileRef = FED163600BE4093700BF9889 /* NSExpression_function.h */; };
+		FED1636B0BE4093700BF9889 /* NSExpression_function.m in Sources */ = {isa = PBXBuildFile; fileRef = FED163610BE4093700BF9889 /* NSExpression_function.m */; };
+		FED1636C0BE4093700BF9889 /* NSExpression_keypath.h in Headers */ = {isa = PBXBuildFile; fileRef = FED163620BE4093700BF9889 /* NSExpression_keypath.h */; };
+		FED1636D0BE4093700BF9889 /* NSExpression_keypath.m in Sources */ = {isa = PBXBuildFile; fileRef = FED163630BE4093700BF9889 /* NSExpression_keypath.m */; };
+		FED1636E0BE4093700BF9889 /* NSExpression_self.h in Headers */ = {isa = PBXBuildFile; fileRef = FED163640BE4093700BF9889 /* NSExpression_self.h */; };
+		FED1636F0BE4093700BF9889 /* NSExpression_self.m in Sources */ = {isa = PBXBuildFile; fileRef = FED163650BE4093700BF9889 /* NSExpression_self.m */; };
+		FED163700BE4093700BF9889 /* NSExpression_variable.h in Headers */ = {isa = PBXBuildFile; fileRef = FED163660BE4093700BF9889 /* NSExpression_variable.h */; };
+		FED163710BE4093700BF9889 /* NSExpression_variable.m in Sources */ = {isa = PBXBuildFile; fileRef = FED163670BE4093700BF9889 /* NSExpression_variable.m */; };
+		FED163720BE4093700BF9889 /* NSExpression_constant.h in Headers */ = {isa = PBXBuildFile; fileRef = FED1635E0BE4093700BF9889 /* NSExpression_constant.h */; };
+		FED163730BE4093700BF9889 /* NSExpression_constant.m in Sources */ = {isa = PBXBuildFile; fileRef = FED1635F0BE4093700BF9889 /* NSExpression_constant.m */; };
+		FED163740BE4093700BF9889 /* NSExpression_function.h in Headers */ = {isa = PBXBuildFile; fileRef = FED163600BE4093700BF9889 /* NSExpression_function.h */; };
+		FED163750BE4093700BF9889 /* NSExpression_function.m in Sources */ = {isa = PBXBuildFile; fileRef = FED163610BE4093700BF9889 /* NSExpression_function.m */; };
+		FED163760BE4093700BF9889 /* NSExpression_keypath.h in Headers */ = {isa = PBXBuildFile; fileRef = FED163620BE4093700BF9889 /* NSExpression_keypath.h */; };
+		FED163770BE4093700BF9889 /* NSExpression_keypath.m in Sources */ = {isa = PBXBuildFile; fileRef = FED163630BE4093700BF9889 /* NSExpression_keypath.m */; };
+		FED163780BE4093700BF9889 /* NSExpression_self.h in Headers */ = {isa = PBXBuildFile; fileRef = FED163640BE4093700BF9889 /* NSExpression_self.h */; };
+		FED163790BE4093700BF9889 /* NSExpression_self.m in Sources */ = {isa = PBXBuildFile; fileRef = FED163650BE4093700BF9889 /* NSExpression_self.m */; };
+		FED1637A0BE4093700BF9889 /* NSExpression_variable.h in Headers */ = {isa = PBXBuildFile; fileRef = FED163660BE4093700BF9889 /* NSExpression_variable.h */; };
+		FED1637B0BE4093700BF9889 /* NSExpression_variable.m in Sources */ = {isa = PBXBuildFile; fileRef = FED163670BE4093700BF9889 /* NSExpression_variable.m */; };
+		FED1637C0BE4093700BF9889 /* NSExpression_constant.h in Headers */ = {isa = PBXBuildFile; fileRef = FED1635E0BE4093700BF9889 /* NSExpression_constant.h */; };
+		FED1637D0BE4093700BF9889 /* NSExpression_constant.m in Sources */ = {isa = PBXBuildFile; fileRef = FED1635F0BE4093700BF9889 /* NSExpression_constant.m */; };
+		FED1637E0BE4093700BF9889 /* NSExpression_function.h in Headers */ = {isa = PBXBuildFile; fileRef = FED163600BE4093700BF9889 /* NSExpression_function.h */; };
+		FED1637F0BE4093700BF9889 /* NSExpression_function.m in Sources */ = {isa = PBXBuildFile; fileRef = FED163610BE4093700BF9889 /* NSExpression_function.m */; };
+		FED163800BE4093700BF9889 /* NSExpression_keypath.h in Headers */ = {isa = PBXBuildFile; fileRef = FED163620BE4093700BF9889 /* NSExpression_keypath.h */; };
+		FED163810BE4093700BF9889 /* NSExpression_keypath.m in Sources */ = {isa = PBXBuildFile; fileRef = FED163630BE4093700BF9889 /* NSExpression_keypath.m */; };
+		FED163820BE4093700BF9889 /* NSExpression_self.h in Headers */ = {isa = PBXBuildFile; fileRef = FED163640BE4093700BF9889 /* NSExpression_self.h */; };
+		FED163830BE4093700BF9889 /* NSExpression_self.m in Sources */ = {isa = PBXBuildFile; fileRef = FED163650BE4093700BF9889 /* NSExpression_self.m */; };
+		FED163840BE4093700BF9889 /* NSExpression_variable.h in Headers */ = {isa = PBXBuildFile; fileRef = FED163660BE4093700BF9889 /* NSExpression_variable.h */; };
+		FED163850BE4093700BF9889 /* NSExpression_variable.m in Sources */ = {isa = PBXBuildFile; fileRef = FED163670BE4093700BF9889 /* NSExpression_variable.m */; };
 		FED311CC0BCC0E1D00552615 /* NSConditionLock.h in Headers */ = {isa = PBXBuildFile; fileRef = FED311CA0BCC0E1D00552615 /* NSConditionLock.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FED311CD0BCC0E1D00552615 /* NSConditionLock.m in Sources */ = {isa = PBXBuildFile; fileRef = FED311CB0BCC0E1D00552615 /* NSConditionLock.m */; };
 		FED311CE0BCC0E1D00552615 /* NSConditionLock.h in Headers */ = {isa = PBXBuildFile; fileRef = FED311CA0BCC0E1D00552615 /* NSConditionLock.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -1679,6 +1727,12 @@
 		FEF5B4DF0BBEFDBA00A8FF26 /* NSKeyValueObserving.m in Sources */ = {isa = PBXBuildFile; fileRef = FEF5B4CA0BBEFDBA00A8FF26 /* NSKeyValueObserving.m */; };
 		FEF5B4E00BBEFDBA00A8FF26 /* NSString+KVCAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = FEF5B4CB0BBEFDBA00A8FF26 /* NSString+KVCAdditions.h */; };
 		FEF5B4E10BBEFDBA00A8FF26 /* NSString+KVCAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = FEF5B4CC0BBEFDBA00A8FF26 /* NSString+KVCAdditions.m */; };
+		FEFF238F0BDCF136005357B8 /* NSCalendar.h in Headers */ = {isa = PBXBuildFile; fileRef = FEFF238D0BDCF136005357B8 /* NSCalendar.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEFF23900BDCF136005357B8 /* NSCalendar.m in Sources */ = {isa = PBXBuildFile; fileRef = FEFF238E0BDCF136005357B8 /* NSCalendar.m */; };
+		FEFF23910BDCF136005357B8 /* NSCalendar.h in Headers */ = {isa = PBXBuildFile; fileRef = FEFF238D0BDCF136005357B8 /* NSCalendar.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEFF23920BDCF136005357B8 /* NSCalendar.m in Sources */ = {isa = PBXBuildFile; fileRef = FEFF238E0BDCF136005357B8 /* NSCalendar.m */; };
+		FEFF23930BDCF136005357B8 /* NSCalendar.h in Headers */ = {isa = PBXBuildFile; fileRef = FEFF238D0BDCF136005357B8 /* NSCalendar.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEFF23940BDCF136005357B8 /* NSCalendar.m in Sources */ = {isa = PBXBuildFile; fileRef = FEFF238E0BDCF136005357B8 /* NSCalendar.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
@@ -2389,6 +2443,22 @@
 		FEB9D6E80B4440F200C239BB /* NSMessagePortNameServer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSMessagePortNameServer.m; sourceTree = "<group>"; };
 		FEB9D7000B44414000C239BB /* NSSocketPortNameServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSSocketPortNameServer.h; sourceTree = "<group>"; };
 		FEB9D7010B44414000C239BB /* NSSocketPortNameServer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSSocketPortNameServer.m; sourceTree = "<group>"; };
+		FED160AC0BE26DF700BF9889 /* NSExpression_operator.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSExpression_operator.h; sourceTree = "<group>"; };
+		FED160AD0BE26DF700BF9889 /* NSExpression_operator.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSExpression_operator.m; sourceTree = "<group>"; };
+		FED162960BE2E44600BF9889 /* NSExpression_array.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSExpression_array.h; sourceTree = "<group>"; };
+		FED162970BE2E44600BF9889 /* NSExpression_array.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSExpression_array.m; sourceTree = "<group>"; };
+		FED162F20BE2EAB200BF9889 /* NSExpression_assignment.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSExpression_assignment.h; sourceTree = "<group>"; };
+		FED162F30BE2EAB200BF9889 /* NSExpression_assignment.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSExpression_assignment.m; sourceTree = "<group>"; };
+		FED1635E0BE4093700BF9889 /* NSExpression_constant.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSExpression_constant.h; sourceTree = "<group>"; };
+		FED1635F0BE4093700BF9889 /* NSExpression_constant.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSExpression_constant.m; sourceTree = "<group>"; };
+		FED163600BE4093700BF9889 /* NSExpression_function.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSExpression_function.h; sourceTree = "<group>"; };
+		FED163610BE4093700BF9889 /* NSExpression_function.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSExpression_function.m; sourceTree = "<group>"; };
+		FED163620BE4093700BF9889 /* NSExpression_keypath.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSExpression_keypath.h; sourceTree = "<group>"; };
+		FED163630BE4093700BF9889 /* NSExpression_keypath.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSExpression_keypath.m; sourceTree = "<group>"; };
+		FED163640BE4093700BF9889 /* NSExpression_self.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSExpression_self.h; sourceTree = "<group>"; };
+		FED163650BE4093700BF9889 /* NSExpression_self.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSExpression_self.m; sourceTree = "<group>"; };
+		FED163660BE4093700BF9889 /* NSExpression_variable.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSExpression_variable.h; sourceTree = "<group>"; };
+		FED163670BE4093700BF9889 /* NSExpression_variable.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSExpression_variable.m; sourceTree = "<group>"; };
 		FED311CA0BCC0E1D00552615 /* NSConditionLock.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSConditionLock.h; sourceTree = "<group>"; };
 		FED311CB0BCC0E1D00552615 /* NSConditionLock.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSConditionLock.m; sourceTree = "<group>"; };
 		FEDDE2520BD2A9E500DDD110 /* NSPredicate_BOOL.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSPredicate_BOOL.h; sourceTree = "<group>"; };
@@ -2403,6 +2473,8 @@
 		FEF5B4CA0BBEFDBA00A8FF26 /* NSKeyValueObserving.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSKeyValueObserving.m; sourceTree = "<group>"; };
 		FEF5B4CB0BBEFDBA00A8FF26 /* NSString+KVCAdditions.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = "NSString+KVCAdditions.h"; sourceTree = "<group>"; };
 		FEF5B4CC0BBEFDBA00A8FF26 /* NSString+KVCAdditions.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = "NSString+KVCAdditions.m"; sourceTree = "<group>"; };
+		FEFF238D0BDCF136005357B8 /* NSCalendar.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = NSCalendar.h; path = NSDate/NSCalendar.h; sourceTree = "<group>"; };
+		FEFF238E0BDCF136005357B8 /* NSCalendar.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = NSCalendar.m; path = NSDate/NSCalendar.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -3235,6 +3307,8 @@
 		6E28069409747E6B00EC542B /* NSDate */ = {
 			isa = PBXGroup;
 			children = (
+				FEFF238D0BDCF136005357B8 /* NSCalendar.h */,
+				FEFF238E0BDCF136005357B8 /* NSCalendar.m */,
 				6E28069509747E7B00EC542B /* NSCalendarDate.h */,
 				6E28069609747E7B00EC542B /* NSCalendarDate.m */,
 				6E28069709747E7B00EC542B /* NSDate_timeInterval.h */,
@@ -3405,6 +3479,22 @@
 		FEB9D47D0B4432C400C239BB /* NSPredicate */ = {
 			isa = PBXGroup;
 			children = (
+				FED1635E0BE4093700BF9889 /* NSExpression_constant.h */,
+				FED1635F0BE4093700BF9889 /* NSExpression_constant.m */,
+				FED163600BE4093700BF9889 /* NSExpression_function.h */,
+				FED163610BE4093700BF9889 /* NSExpression_function.m */,
+				FED163620BE4093700BF9889 /* NSExpression_keypath.h */,
+				FED163630BE4093700BF9889 /* NSExpression_keypath.m */,
+				FED163640BE4093700BF9889 /* NSExpression_self.h */,
+				FED163650BE4093700BF9889 /* NSExpression_self.m */,
+				FED163660BE4093700BF9889 /* NSExpression_variable.h */,
+				FED163670BE4093700BF9889 /* NSExpression_variable.m */,
+				FED162F20BE2EAB200BF9889 /* NSExpression_assignment.h */,
+				FED162F30BE2EAB200BF9889 /* NSExpression_assignment.m */,
+				FED162960BE2E44600BF9889 /* NSExpression_array.h */,
+				FED162970BE2E44600BF9889 /* NSExpression_array.m */,
+				FED160AC0BE26DF700BF9889 /* NSExpression_operator.h */,
+				FED160AD0BE26DF700BF9889 /* NSExpression_operator.m */,
 				FEDDE2520BD2A9E500DDD110 /* NSPredicate_BOOL.h */,
 				FEDDE2530BD2A9E500DDD110 /* NSPredicate_BOOL.m */,
 				FEB9D4820B44331400C239BB /* NSComparisonPredicate.h */,
@@ -3765,6 +3855,15 @@
 				FE4BDE5B0BCDB16E00E19685 /* CFBase.h in Headers */,
 				FEDDE2580BD2A9E500DDD110 /* NSPredicate_BOOL.h in Headers */,
 				FE4EC6920BD9B47B0015F9E9 /* NSKeyedArchiver.h in Headers */,
+				FEFF23930BDCF136005357B8 /* NSCalendar.h in Headers */,
+				FED160B20BE26DF700BF9889 /* NSExpression_operator.h in Headers */,
+				FED1629C0BE2E44600BF9889 /* NSExpression_array.h in Headers */,
+				FED162F80BE2EAB200BF9889 /* NSExpression_assignment.h in Headers */,
+				FED1637C0BE4093700BF9889 /* NSExpression_constant.h in Headers */,
+				FED1637E0BE4093700BF9889 /* NSExpression_function.h in Headers */,
+				FED163800BE4093700BF9889 /* NSExpression_keypath.h in Headers */,
+				FED163820BE4093700BF9889 /* NSExpression_self.h in Headers */,
+				FED163840BE4093700BF9889 /* NSExpression_variable.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4043,6 +4142,15 @@
 				FE4BDE5A0BCDB16E00E19685 /* CFBase.h in Headers */,
 				FEDDE2560BD2A9E500DDD110 /* NSPredicate_BOOL.h in Headers */,
 				FE4EC6900BD9B47B0015F9E9 /* NSKeyedArchiver.h in Headers */,
+				FEFF23910BDCF136005357B8 /* NSCalendar.h in Headers */,
+				FED160B00BE26DF700BF9889 /* NSExpression_operator.h in Headers */,
+				FED1629A0BE2E44600BF9889 /* NSExpression_array.h in Headers */,
+				FED162F60BE2EAB200BF9889 /* NSExpression_assignment.h in Headers */,
+				FED163720BE4093700BF9889 /* NSExpression_constant.h in Headers */,
+				FED163740BE4093700BF9889 /* NSExpression_function.h in Headers */,
+				FED163760BE4093700BF9889 /* NSExpression_keypath.h in Headers */,
+				FED163780BE4093700BF9889 /* NSExpression_self.h in Headers */,
+				FED1637A0BE4093700BF9889 /* NSExpression_variable.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4324,6 +4432,15 @@
 				FE4BDE590BCDB16E00E19685 /* CFBase.h in Headers */,
 				FEDDE2540BD2A9E500DDD110 /* NSPredicate_BOOL.h in Headers */,
 				FE4EC68E0BD9B47B0015F9E9 /* NSKeyedArchiver.h in Headers */,
+				FEFF238F0BDCF136005357B8 /* NSCalendar.h in Headers */,
+				FED160AE0BE26DF700BF9889 /* NSExpression_operator.h in Headers */,
+				FED162980BE2E44600BF9889 /* NSExpression_array.h in Headers */,
+				FED162F40BE2EAB200BF9889 /* NSExpression_assignment.h in Headers */,
+				FED163680BE4093700BF9889 /* NSExpression_constant.h in Headers */,
+				FED1636A0BE4093700BF9889 /* NSExpression_function.h in Headers */,
+				FED1636C0BE4093700BF9889 /* NSExpression_keypath.h in Headers */,
+				FED1636E0BE4093700BF9889 /* NSExpression_self.h in Headers */,
+				FED163700BE4093700BF9889 /* NSExpression_variable.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4777,6 +4894,15 @@
 				FED311D10BCC0E1D00552615 /* NSConditionLock.m in Sources */,
 				FEDDE2590BD2A9E500DDD110 /* NSPredicate_BOOL.m in Sources */,
 				FE4EC6930BD9B47B0015F9E9 /* NSKeyedArchiver.m in Sources */,
+				FEFF23940BDCF136005357B8 /* NSCalendar.m in Sources */,
+				FED160B30BE26DF700BF9889 /* NSExpression_operator.m in Sources */,
+				FED1629D0BE2E44600BF9889 /* NSExpression_array.m in Sources */,
+				FED162F90BE2EAB200BF9889 /* NSExpression_assignment.m in Sources */,
+				FED1637D0BE4093700BF9889 /* NSExpression_constant.m in Sources */,
+				FED1637F0BE4093700BF9889 /* NSExpression_function.m in Sources */,
+				FED163810BE4093700BF9889 /* NSExpression_keypath.m in Sources */,
+				FED163830BE4093700BF9889 /* NSExpression_self.m in Sources */,
+				FED163850BE4093700BF9889 /* NSExpression_variable.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5051,6 +5177,15 @@
 				FED311CF0BCC0E1D00552615 /* NSConditionLock.m in Sources */,
 				FEDDE2570BD2A9E500DDD110 /* NSPredicate_BOOL.m in Sources */,
 				FE4EC6910BD9B47B0015F9E9 /* NSKeyedArchiver.m in Sources */,
+				FEFF23920BDCF136005357B8 /* NSCalendar.m in Sources */,
+				FED160B10BE26DF700BF9889 /* NSExpression_operator.m in Sources */,
+				FED1629B0BE2E44600BF9889 /* NSExpression_array.m in Sources */,
+				FED162F70BE2EAB200BF9889 /* NSExpression_assignment.m in Sources */,
+				FED163730BE4093700BF9889 /* NSExpression_constant.m in Sources */,
+				FED163750BE4093700BF9889 /* NSExpression_function.m in Sources */,
+				FED163770BE4093700BF9889 /* NSExpression_keypath.m in Sources */,
+				FED163790BE4093700BF9889 /* NSExpression_self.m in Sources */,
+				FED1637B0BE4093700BF9889 /* NSExpression_variable.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5328,6 +5463,15 @@
 				FED311CD0BCC0E1D00552615 /* NSConditionLock.m in Sources */,
 				FEDDE2550BD2A9E500DDD110 /* NSPredicate_BOOL.m in Sources */,
 				FE4EC68F0BD9B47B0015F9E9 /* NSKeyedArchiver.m in Sources */,
+				FEFF23900BDCF136005357B8 /* NSCalendar.m in Sources */,
+				FED160AF0BE26DF700BF9889 /* NSExpression_operator.m in Sources */,
+				FED162990BE2E44600BF9889 /* NSExpression_array.m in Sources */,
+				FED162F50BE2EAB200BF9889 /* NSExpression_assignment.m in Sources */,
+				FED163690BE4093700BF9889 /* NSExpression_constant.m in Sources */,
+				FED1636B0BE4093700BF9889 /* NSExpression_function.m in Sources */,
+				FED1636D0BE4093700BF9889 /* NSExpression_keypath.m in Sources */,
+				FED1636F0BE4093700BF9889 /* NSExpression_self.m in Sources */,
+				FED163710BE4093700BF9889 /* NSExpression_variable.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

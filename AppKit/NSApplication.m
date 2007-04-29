@@ -658,17 +658,24 @@ id NSApp=nil;
 }
 
 -servicesProvider {
-   //NSUnsupportedMethod();
    return nil;
 }
 
 -(void)setServicesProvider:provider {
-   //NSUnsupportedMethod();
 }
 
 -(void)registerServicesMenuSendTypes:(NSArray *)sendTypes returnTypes:(NSArray *)returnTypes {
    //tiredofthesewarnings NSUnsupportedMethod();
 }
+
+-(void)orderFrontStandardAboutPanel:sender {
+   [self orderFrontStandardAboutPanelWithOptions:nil];
+}
+
+-(void)orderFrontStandardAboutPanelWithOptions:(NSDictionary *)options {
+   NSUnimplementedMethod();
+}
+
 
 - (void)doCommandBySelector:(SEL)selector {
     if ([_delegate respondsToSelector:selector])

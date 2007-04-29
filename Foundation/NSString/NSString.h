@@ -76,9 +76,10 @@ FOUNDATION_EXPORT const unsigned NSMaximumStringLength;
 -(void)getCharacters:(unichar *)buffer range:(NSRange)range;
 -(void)getCharacters:(unichar *)buffer;
 
--(NSComparisonResult)compare:(NSString *)string options:(unsigned)options;
--(NSComparisonResult)compare:(NSString *)string;
--(NSComparisonResult)caseInsensitiveCompare:(NSString *)string;
+-(NSComparisonResult)compare:(NSString *)other options:(unsigned)options range:(NSRange)range;
+-(NSComparisonResult)compare:(NSString *)other options:(unsigned)options;
+-(NSComparisonResult)compare:(NSString *)other;
+-(NSComparisonResult)caseInsensitiveCompare:(NSString *)other;
 
 -(BOOL)isEqualToString:(NSString *)string;
 

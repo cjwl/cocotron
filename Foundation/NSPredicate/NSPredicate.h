@@ -23,6 +23,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(NSPredicate *)predicateWithSubstitutionVariables:(NSDictionary *)variables;
 
--(BOOL)evaluateObject:object;
+-(BOOL)evaluateWithObject:object;
 
 @end

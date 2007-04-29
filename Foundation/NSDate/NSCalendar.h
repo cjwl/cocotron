@@ -6,55 +6,41 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
-#import <AppKit/NSControl.h>
-#import <AppKit/NSDatePickerCell.h>
+#import <Foundation/NSObject.h>
 
-@class NSCalendar;
+@class NSDateComponents;
 
-@interface NSDatePicker : NSControl
+typedef int NSCalendarUnit;
 
--(BOOL)isBezeled;
--(BOOL)isBordered;
+@interface NSCalendar : NSObject <NSCopying> {
+}
 
--delegate;
+#if 0
++currentCalendar;
 
--(NSDatePickerElementFlags)datePickerElements;
--(NSDatePickerMode)datePickerMode;
--(NSDatePickerStyle)datePickerStyle;
+-initWithCalendarIdentifier:(NSString *)identifier;
 
--(NSCalendar *)calendar;
--(NSLocale *)locale;
--(NSDate *)minDate;
--(NSDate *)maxDate;
-
--(NSDate *)dateValue;
--(NSTimeInterval)timeInterval;
+-(NSString *)calendarIdentifier;
+-(unsigned)firstWeekday;
+-(unsigned)minimumDaysInFirstWeek;
 -(NSTimeZone *)timeZone;
+-(NSLocale *)locale;
 
--(BOOL)drawsBackground;
--(NSColor *)backgroundColor;
--(NSColor *)textColor;
-
--(void)setBezeled:(BOOL)flag;
--(void)setBordered:(BOOL)flag;
-
--(void)setDelegate:delegate;
-
--(void)setDatePickerElements:(NSDatePickerElementFlags)elements;
--(void)setDatePickerMode:(NSDatePickerMode)mode;
--(void)setDatePickerStyle:(NSDatePickerStyle)style;
-
--(void)setCalendar:(NSCalendar *)calendar;
--(void)setLocale:(NSLocale *)locale;
--(void)setMinDate:(NSDate *)date;
--(void)setMaxDate:(NSDate *)date;
-
--(void)setDateValue:(NSDate *)date;
--(void)setTimeInterval:(NSTimeInterval)interval;
+-(void)setFirstWeekday:(unsigned)weekday;
+-(void)setMinimumDaysInFirstWeek:(unsigned)days;
 -(void)setTimeZone:(NSTimeZone *)timeZone;
+-(void)setLocale:(NSLocale *)locale;
 
--(void)setDrawsBackground:(BOOL)flag;
--(void)setBackgroundColor:(NSColor *)color;
--(void)setTextColor:(NSColor *)color;
+-(NSRange)minimumRangeOfUnit:(NSCalendarUnit)unit;
+-(NSRange)maximumRangeOfUnit:(NSCalendarUnit)unit;
+-(NSRange)rangeOfUnit:(NSCalendarUnit)unit inUnit:(NSCalendarUnit)inUnit forDate:(NSDate *)date;
+-(unsigned)ordinalityOfUnit:(NSCalendarUnit)unit inUnit:(NSCalendarUnit)inUnit forDate:(NSDate *)date;
 
+-(NSDateComponents *)components:(unsigned)flags fromDate:(NSDate *)date;
+-(NSDateComponents *)components:(unsigned)flags fromDate:(NSDate *)fromDate toDate:(NSDate *)toDate options:(unsigned)options;
+
+-(NSDate *)dateByAddingComponents:(NSDateComponents *)components toDate:(NSDate *)date options:(unsigned)options;
+-(NSDate *)dateFromComponents:(NSDateComponents *)components;
+#endif
+ 
 @end

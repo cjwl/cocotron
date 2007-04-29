@@ -35,6 +35,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSAutoreleasePool.h>
 #import <Foundation/NSBundle.h>
 #import <Foundation/NSByteOrder.h>
+#import <Foundation/NSCalendar.h>
 #import <Foundation/NSCalendarDate.h>
 #import <Foundation/NSCharacterSet.h>
 #import <Foundation/NSClassDescription.h>
@@ -87,6 +88,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSPathUtilities.h>
 #import <Foundation/NSPipe.h>
 #import <Foundation/NSPortCoder.h>
+#import <Foundation/NSPredicate.h>
 #import <Foundation/NSProcessInfo.h>
 #import <Foundation/NSProxy.h>
 #import <Foundation/NSRaise.h>

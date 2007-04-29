@@ -6,7 +6,7 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
-/*  zlib decode is based on the public domain zlib decode v0.2 by Sean Barrett 2006-11-18  http://www.nothings.org/stb_image.c */
+/*  zlib decode is based on the public domain zlib decode v0.2 by Sean Barrett 2006-11-18  http://www.nothings.org/stb_image.c  V 0.57 */
 
 // First revision - Christopher Lloyd <cjwl@objc.net>
 #import "KGPDFFilter.h"
@@ -352,7 +352,7 @@ static int parse_uncompressed_block(KGFlateDecode *inflate) {
    len  = header[0] * 256 + header[1];
    nlen = header[2] * 256 + header[3];
    
-   if (nlen != ~len)
+   if (nlen != (len ^ 0xffff))
     return e("zlib corrupt");
    if (inflate->inPosition + len > inflate->inLength)
     return e("read past buffer");

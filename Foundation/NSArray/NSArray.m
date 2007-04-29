@@ -422,7 +422,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    for(i=0;i<count;i++){
     id check=[self objectAtIndex:i];
     
-    if([predicate evaluateObject:check])
+    if([predicate evaluateWithObject:check])
      [result addObject:check];
    }
     

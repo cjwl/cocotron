@@ -119,6 +119,9 @@ typedef enum {
 -(void)setServicesProvider:provider;
 -(void)registerServicesMenuSendTypes:(NSArray *)sendTypes returnTypes:(NSArray *)returnTypes;
 
+-(void)orderFrontStandardAboutPanel:sender;
+-(void)orderFrontStandardAboutPanelWithOptions:(NSDictionary *)options;
+
 // private
 -(void)_addWindow:(NSWindow *)window;
 @end

@@ -104,7 +104,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
        NSMenuView *branch;
 
        while(count+1<[viewStack count]){
-        [[[viewStack lastObject] window] close];
+        [[(NSView *)[viewStack lastObject] window] close];
         [viewStack removeLastObject];
        }
        [checkView setSelectedItemIndex:itemIndex];
@@ -156,7 +156,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     item=[[viewStack lastObject] itemAtSelectedIndex];
 
    while([viewStack count]>1){
-    [[[viewStack lastObject] window] close];
+    [[(NSView *)[viewStack lastObject] window] close];
     [viewStack removeLastObject];
    }
    [viewStack removeLastObject];

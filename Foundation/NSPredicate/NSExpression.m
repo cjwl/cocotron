@@ -11,27 +11,18 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSArray.h>
 #import <Foundation/NSRaise.h>
 #import <Foundation/NSKeyValueCoding.h>
+#import <Foundation/NSDictionary.h>
+#import "NSExpression_constant.h"
+#import "NSExpression_self.h"
+#import "NSExpression_function.h"
+#import "NSExpression_variable.h"
+#import "NSExpression_keypath.h"
 
 @implementation NSExpression
 
 -initWithExpressionType:(NSExpressionType)type {
    _type=type;
-   _value=nil;
-   _arguments=nil;
    return self;
-}
-
--initWithExpressionType:(NSExpressionType)type value:value arguments:(NSArray *)arguments {
-   _type=type;
-   _value=[value copy];
-   _arguments=[arguments retain];
-   return self;
-}
-
--(void)dealloc {
-   [_value release];
-   [_arguments release];
-   [super dealloc];
 }
 
 -initWithCoder:(NSCoder *)coder {
@@ -48,28 +39,23 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 +(NSExpression *)expressionForConstantValue:value {
-   return [[[self alloc] initWithExpressionType:NSConstantValueExpressionType value:value arguments:nil] autorelease];
+   return [[[NSExpression_constant allocWithZone:NULL] initWithValue:value] autorelease];
 }
 
 +(NSExpression *)expressionForEvaluatedObject {
-   return [[[self alloc] initWithExpressionType:NSEvaluatedObjectExpressionType value:nil arguments:nil] autorelease];
+   return [[[NSExpression_self allocWithZone:NULL] init] autorelease];
 }
 
 +(NSExpression *)expressionForVariable:(NSString *)string {
-   return [[[self alloc] initWithExpressionType:NSVariableExpressionType value:string arguments:nil] autorelease];
+   return [[[NSExpression_variable allocWithZone:NULL] initWithVariable:string] autorelease];
 }
 
 +(NSExpression *)expressionForKeyPath:(NSString *)keyPath {
-   return [[[self alloc] initWithExpressionType:NSKeyPathExpressionType value:keyPath arguments:nil] autorelease];
+   return [[[NSExpression_keypath allocWithZone:NULL] initWithKeyPath:keyPath] autorelease];
 }
 
 +(NSExpression *)expressionForFunction:(NSString *)name arguments:(NSArray *)arguments {
-// FIX validate name ?
-   return [[[self alloc] initWithExpressionType:NSFunctionExpressionType value:name arguments:arguments] autorelease];
-}
-
-+(NSExpression *)expressionForVariable:(NSString *)name assignment:(NSExpression *)assignment {
-   return nil;
+   return [[[NSExpression_function allocWithZone:NULL] initWithName:name arguments:arguments] autorelease];
 }
 
 +(NSExpression *)expressionForKeyPathLeft:(NSExpression *)left right:(NSExpression *)right {
@@ -81,62 +67,41 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -constantValue {
-   if(_type!=NSConstantValueExpressionType)
-    [NSException raise:NSInvalidArgumentException format:@"-[%@ %s] is not of NSConstantValueExpressionType",isa,SELNAME(_cmd)];
-    
-   return _value;
+   [NSException raise:NSInvalidArgumentException format:@"-[%@ %s] is not of NSConstantValueExpressionType",isa,SELNAME(_cmd)];
+   return nil;
 }
 
 -(NSString *)variable {
-   if(_type!=NSVariableExpressionType)
-    [NSException raise:NSInvalidArgumentException format:@"-[%@ %s] is not of NSVariableExpressionType",isa,SELNAME(_cmd)];
-    
-   return _value;
+   [NSException raise:NSInvalidArgumentException format:@"-[%@ %s] is not of NSVariableExpressionType",isa,SELNAME(_cmd)];
+   return nil;
 }
 
 -(NSString *)keyPath {
-   if(_type!=NSKeyPathExpressionType)
-    [NSException raise:NSInvalidArgumentException format:@"-[%@ %s] is not of NSKeyPathExpressionType",isa,SELNAME(_cmd)];
-    
-   return _value;
+   [NSException raise:NSInvalidArgumentException format:@"-[%@ %s] is not of NSKeyPathExpressionType",isa,SELNAME(_cmd)];
+   return nil;
 }
 
 -(NSString *)function {
-   if(_type!=NSFunctionExpressionType)
-    [NSException raise:NSInvalidArgumentException format:@"-[%@ %s] is not of NSFunctionExpressionType",isa,SELNAME(_cmd)];
-    
-   return _value;
+   [NSException raise:NSInvalidArgumentException format:@"-[%@ %s] is not of NSFunctionExpressionType",isa,SELNAME(_cmd)];
+   return nil;
 }
 
 -(NSArray *)arguments {
-   if(_type!=NSFunctionExpressionType)
-    [NSException raise:NSInvalidArgumentException format:@"-[%@ %s] is not of NSFunctionExpressionType",isa,SELNAME(_cmd)];
-    
-   return _arguments;
+   [NSException raise:NSInvalidArgumentException format:@"-[%@ %s] is not of NSFunctionExpressionType",isa,SELNAME(_cmd)];
+   return nil;
 }
 
 -(NSExpression *)operand {
+   NSUnimplementedMethod();
+   return nil;
 }
 
 -expressionValueWithObject:object context:(NSMutableDictionary *)context {
-   switch(_type){
-    case NSConstantValueExpressionType:
-     return _value;
-     
-    case NSEvaluatedObjectExpressionType:
-     return object;
-     
-    case NSVariableExpressionType:
-     NSUnimplementedMethod();
-     return nil;
-     
-    case NSKeyPathExpressionType:
-     return [object valueForKeyPath:_value];
-     
-    case NSFunctionExpressionType:
-     NSUnimplementedMethod();
-     return nil;
-   }
+
+}
+
+-(NSExpression *)_expressionWithSubstitutionVariables:(NSDictionary *)variables {
+   return self;
 }
 
 @end

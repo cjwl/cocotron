@@ -8,8 +8,55 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/NSObject.h>
 
-@interface NSAlert : NSObject {
+@class NSButton,NSImage,NSArray,NSWindow,NSError;
 
+typedef enum  {
+   NSWarningAlertStyle,
+   NSInformationalAlertStyle,
+   NSCriticalAlertStyle
+} NSAlertStyle;
+
+@interface NSAlert : NSObject {
+   id           _delegate;
+   NSAlertStyle _style;
+   NSImage     *_icon;
+   NSString    *_messageText;
+   NSString    *_informativeText;
+   BOOL         _showsHelp;
+   NSString    *_helpAnchor;
+   NSArray     *_buttons;
+   NSWindow    *_window;
 }
 
++(NSAlert *)alertWithError:(NSError *)error;
++(NSAlert *)alertWithMessageText:(NSString *)messageText defaultButton:(NSString *)defaultTitle alternateButton:(NSString *)alternateTitle otherButton:(NSString *)otherTitle informativeTextWithFormat:(NSString *)format,...;
+
+-delegate;
+-(NSAlertStyle)alertStyle;
+-(NSImage *)icon;
+-(NSString *)messageText;
+-(NSString *)informativeText;
+-(BOOL)showsHelp;
+-(NSString *)helpAnchor;
+-(NSArray *)buttons;
+-window;
+
+-(void)setDelegate:delegate;
+-(void)setAlertStyle:(NSAlertStyle)style;
+-(void)setIcon:(NSImage *)icon;
+-(void)setMessageText:(NSString *)string;
+-(void)setInformativeText:(NSString *)string;
+-(void)setShowsHelp:(BOOL)flag;
+-(void)setHelpAnchor:(NSString *)anchor;
+
+-(NSButton *)addButtonWithTitle:(NSString *)title;
+
+-(void)beginSheetModalForWindow:(NSWindow *)window modalDelegate:delegate didEndSelector:(SEL)selector contextInfo:(void *)info;
+-(int)runModal;
+
 @end
+
+@interface NSObject(NSAlertDelegate)
+-(BOOL)alertShowHelp:(NSAlert *)alert;
+@end
+

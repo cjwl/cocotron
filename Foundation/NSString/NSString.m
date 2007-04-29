@@ -257,42 +257,45 @@ const unsigned NSMaximumStringLength=INT_MAX-1;
    [self getCharacters:unicode range:range];
 }
 
-static inline NSComparisonResult compareWithOptions(NSString *self,NSString *other,unsigned options){
-   unsigned i,selfLength=[self length],otherLength=[other length];
-   unichar  selfBuf[selfLength],otherBuf[otherLength];
+static inline NSComparisonResult compareWithOptions(NSString *self,NSString *other,unsigned options,NSRange range){
+   unsigned i,otherLength=[other length];
+   unichar  selfBuf[range.length],otherBuf[otherLength];
 
-   [self getCharacters:selfBuf];
+   [self getCharacters:selfBuf range:range];
    [other getCharacters:otherBuf];
 
    if(options&NSCaseInsensitiveSearch){
-    NSUnicodeToUppercase(selfBuf,selfLength);
+    NSUnicodeToUppercase(selfBuf,range.length);
     NSUnicodeToUppercase(otherBuf,otherLength);
    }
 
-   for(i=0;i<selfLength && i<otherLength;i++)
+   for(i=0;i<range.length && i<otherLength;i++)
     if(selfBuf[i]<otherBuf[i])
      return NSOrderedAscending;
     else if(selfBuf[i]>otherBuf[i])
      return NSOrderedDescending;
 
-   if(selfLength==otherLength)
+   if(range.length==otherLength)
     return NSOrderedSame;
 
    return (i<otherLength)?NSOrderedAscending:NSOrderedDescending;
 }
 
+-(NSComparisonResult)compare:(NSString *)other options:(unsigned)options range:(NSRange)range {
+   return compareWithOptions(self,other,options,range);
+}
 
 // but improve the case conversion
 -(NSComparisonResult)compare:(NSString *)other options:(unsigned)options {
-   return compareWithOptions(self,other,options);
+   return compareWithOptions(self,other,options,NSMakeRange(0,[self length]));
 }
 
 -(NSComparisonResult)compare:(NSString *)other {
-   return compareWithOptions(self,other,0);
+   return compareWithOptions(self,other,0,NSMakeRange(0,[self length]));
 }
 
 -(NSComparisonResult)caseInsensitiveCompare:(NSString *)other {
-   return compareWithOptions(self,other,NSCaseInsensitiveSearch);
+   return compareWithOptions(self,other,NSCaseInsensitiveSearch,NSMakeRange(0,[self length]));
 }
 
 -(unsigned)hash {
