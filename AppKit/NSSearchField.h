@@ -8,8 +8,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <AppKit/NSTextField.h>
 
-@interface NSSearchField : NSTextField {
+@interface NSSearchField : NSTextField
 
-}
+-(NSArray *)recentSearches;
+-(NSString *)recentsAutosaveName;
+
+-(void)setRecentSearches:(NSArray *)searches;
+-(void)setRecentsAutosaveName:(NSString *)name;
 
 @end

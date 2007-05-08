@@ -150,8 +150,8 @@
 		6E28044109747BBE00EC542B /* NSZombieObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28043C09747BBE00EC542B /* NSZombieObject.m */; };
 		6E28044609747BCB00EC542B /* NSPropertyListReader_vintage.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E28044209747BCB00EC542B /* NSPropertyListReader_vintage.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		6E28044709747BCB00EC542B /* NSPropertyListReader_vintage.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28044309747BCB00EC542B /* NSPropertyListReader_vintage.m */; };
-		6E28044809747BCB00EC542B /* NSPropertyListWriter.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E28044409747BCB00EC542B /* NSPropertyListWriter.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		6E28044909747BCB00EC542B /* NSPropertyListWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28044509747BCB00EC542B /* NSPropertyListWriter.m */; };
+		6E28044809747BCB00EC542B /* NSPropertyListWriter_vintage.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E28044409747BCB00EC542B /* NSPropertyListWriter_vintage.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		6E28044909747BCB00EC542B /* NSPropertyListWriter_vintage.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28044509747BCB00EC542B /* NSPropertyListWriter_vintage.m */; };
 		6E28045309747BD100EC542B /* NSDelayedPerform.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E28044A09747BD100EC542B /* NSDelayedPerform.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		6E28045409747BD100EC542B /* NSDelayedPerform.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28044B09747BD100EC542B /* NSDelayedPerform.m */; };
 		6E28045509747BD100EC542B /* NSOrderedPerform.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E28044C09747BD100EC542B /* NSOrderedPerform.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -451,7 +451,7 @@
 		6E4D91C60A2642BD003D335C /* NSObject.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E28043809747BBE00EC542B /* NSObject.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6E4D91C70A2642BD003D335C /* NSZombieObject.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E28043B09747BBE00EC542B /* NSZombieObject.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		6E4D91C80A2642BD003D335C /* NSPropertyListReader_vintage.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E28044209747BCB00EC542B /* NSPropertyListReader_vintage.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		6E4D91C90A2642BD003D335C /* NSPropertyListWriter.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E28044409747BCB00EC542B /* NSPropertyListWriter.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		6E4D91C90A2642BD003D335C /* NSPropertyListWriter_vintage.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E28044409747BCB00EC542B /* NSPropertyListWriter_vintage.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		6E4D91CA0A2642BD003D335C /* NSDelayedPerform.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E28044A09747BD100EC542B /* NSDelayedPerform.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		6E4D91CB0A2642BD003D335C /* NSOrderedPerform.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E28044C09747BD100EC542B /* NSOrderedPerform.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		6E4D91CC0A2642BD003D335C /* NSRunLoop-InputSource.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E28044E09747BD100EC542B /* NSRunLoop-InputSource.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -628,7 +628,7 @@
 		6E4D92880A2642BD003D335C /* NSObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28043909747BBE00EC542B /* NSObject.m */; };
 		6E4D928A0A2642BD003D335C /* NSZombieObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28043C09747BBE00EC542B /* NSZombieObject.m */; };
 		6E4D928B0A2642BD003D335C /* NSPropertyListReader_vintage.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28044309747BCB00EC542B /* NSPropertyListReader_vintage.m */; };
-		6E4D928C0A2642BD003D335C /* NSPropertyListWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28044509747BCB00EC542B /* NSPropertyListWriter.m */; };
+		6E4D928C0A2642BD003D335C /* NSPropertyListWriter_vintage.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28044509747BCB00EC542B /* NSPropertyListWriter_vintage.m */; };
 		6E4D928D0A2642BD003D335C /* NSDelayedPerform.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28044B09747BD100EC542B /* NSDelayedPerform.m */; };
 		6E4D928E0A2642BD003D335C /* NSOrderedPerform.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28044D09747BD100EC542B /* NSOrderedPerform.m */; };
 		6E4D928F0A2642BD003D335C /* NSRunLoop.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28045009747BD100EC542B /* NSRunLoop.m */; };
@@ -847,7 +847,7 @@
 		6EA0490809E57D5F0067589C /* NSObject.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E28043809747BBE00EC542B /* NSObject.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6EA0490909E57D5F0067589C /* NSZombieObject.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E28043B09747BBE00EC542B /* NSZombieObject.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		6EA0490A09E57D5F0067589C /* NSPropertyListReader_vintage.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E28044209747BCB00EC542B /* NSPropertyListReader_vintage.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		6EA0490B09E57D5F0067589C /* NSPropertyListWriter.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E28044409747BCB00EC542B /* NSPropertyListWriter.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		6EA0490B09E57D5F0067589C /* NSPropertyListWriter_vintage.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E28044409747BCB00EC542B /* NSPropertyListWriter_vintage.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		6EA0490C09E57D5F0067589C /* NSDelayedPerform.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E28044A09747BD100EC542B /* NSDelayedPerform.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		6EA0490D09E57D5F0067589C /* NSOrderedPerform.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E28044C09747BD100EC542B /* NSOrderedPerform.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		6EA0490E09E57D5F0067589C /* NSRunLoop-InputSource.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E28044E09747BD100EC542B /* NSRunLoop-InputSource.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -1015,7 +1015,7 @@
 		6EA049CD09E57D5F0067589C /* NSObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28043909747BBE00EC542B /* NSObject.m */; };
 		6EA049CF09E57D5F0067589C /* NSZombieObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28043C09747BBE00EC542B /* NSZombieObject.m */; };
 		6EA049D009E57D5F0067589C /* NSPropertyListReader_vintage.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28044309747BCB00EC542B /* NSPropertyListReader_vintage.m */; };
-		6EA049D109E57D5F0067589C /* NSPropertyListWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28044509747BCB00EC542B /* NSPropertyListWriter.m */; };
+		6EA049D109E57D5F0067589C /* NSPropertyListWriter_vintage.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28044509747BCB00EC542B /* NSPropertyListWriter_vintage.m */; };
 		6EA049D209E57D5F0067589C /* NSDelayedPerform.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28044B09747BD100EC542B /* NSDelayedPerform.m */; };
 		6EA049D309E57D5F0067589C /* NSOrderedPerform.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28044D09747BD100EC542B /* NSOrderedPerform.m */; };
 		6EA049D409E57D5F0067589C /* NSRunLoop.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28045009747BD100EC542B /* NSRunLoop.m */; };
@@ -1214,6 +1214,12 @@
 		FE35D66F0B52AFBC00FE7AB3 /* NSSocket_bsd.m in Sources */ = {isa = PBXBuildFile; fileRef = FE35D66D0B52AFBC00FE7AB3 /* NSSocket_bsd.m */; };
 		FE35D6700B52AFBC00FE7AB3 /* NSSocket_bsd.h in Headers */ = {isa = PBXBuildFile; fileRef = FE35D66C0B52AFBC00FE7AB3 /* NSSocket_bsd.h */; };
 		FE35D6710B52AFBC00FE7AB3 /* NSSocket_bsd.m in Sources */ = {isa = PBXBuildFile; fileRef = FE35D66D0B52AFBC00FE7AB3 /* NSSocket_bsd.m */; };
+		FE3F7D9A0BE63BBD007E9363 /* NSDateComponents.h in Headers */ = {isa = PBXBuildFile; fileRef = FE3F7D980BE63BBD007E9363 /* NSDateComponents.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE3F7D9B0BE63BBE007E9363 /* NSDateComponents.m in Sources */ = {isa = PBXBuildFile; fileRef = FE3F7D990BE63BBD007E9363 /* NSDateComponents.m */; };
+		FE3F7D9C0BE63BBE007E9363 /* NSDateComponents.h in Headers */ = {isa = PBXBuildFile; fileRef = FE3F7D980BE63BBD007E9363 /* NSDateComponents.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE3F7D9D0BE63BBE007E9363 /* NSDateComponents.m in Sources */ = {isa = PBXBuildFile; fileRef = FE3F7D990BE63BBD007E9363 /* NSDateComponents.m */; };
+		FE3F7D9E0BE63BBE007E9363 /* NSDateComponents.h in Headers */ = {isa = PBXBuildFile; fileRef = FE3F7D980BE63BBD007E9363 /* NSDateComponents.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE3F7D9F0BE63BBE007E9363 /* NSDateComponents.m in Sources */ = {isa = PBXBuildFile; fileRef = FE3F7D990BE63BBD007E9363 /* NSDateComponents.m */; };
 		FE405A6C0B4450FD001B183D /* NSHTTPURLResponse.h in Headers */ = {isa = PBXBuildFile; fileRef = FE405A6A0B4450FD001B183D /* NSHTTPURLResponse.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE405A6D0B4450FD001B183D /* NSHTTPURLResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = FE405A6B0B4450FD001B183D /* NSHTTPURLResponse.m */; };
 		FE405A6E0B4450FD001B183D /* NSHTTPURLResponse.h in Headers */ = {isa = PBXBuildFile; fileRef = FE405A6A0B4450FD001B183D /* NSHTTPURLResponse.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -1985,8 +1991,8 @@
 		6E28043C09747BBE00EC542B /* NSZombieObject.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = NSZombieObject.m; path = NSObject/NSZombieObject.m; sourceTree = "<group>"; };
 		6E28044209747BCB00EC542B /* NSPropertyListReader_vintage.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSPropertyListReader_vintage.h; sourceTree = "<group>"; };
 		6E28044309747BCB00EC542B /* NSPropertyListReader_vintage.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSPropertyListReader_vintage.m; sourceTree = "<group>"; };
-		6E28044409747BCB00EC542B /* NSPropertyListWriter.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSPropertyListWriter.h; sourceTree = "<group>"; };
-		6E28044509747BCB00EC542B /* NSPropertyListWriter.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSPropertyListWriter.m; sourceTree = "<group>"; };
+		6E28044409747BCB00EC542B /* NSPropertyListWriter_vintage.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSPropertyListWriter_vintage.h; sourceTree = "<group>"; };
+		6E28044509747BCB00EC542B /* NSPropertyListWriter_vintage.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSPropertyListWriter_vintage.m; sourceTree = "<group>"; };
 		6E28044A09747BD100EC542B /* NSDelayedPerform.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = NSDelayedPerform.h; path = NSRunLoop/NSDelayedPerform.h; sourceTree = "<group>"; };
 		6E28044B09747BD100EC542B /* NSDelayedPerform.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = NSDelayedPerform.m; path = NSRunLoop/NSDelayedPerform.m; sourceTree = "<group>"; };
 		6E28044C09747BD100EC542B /* NSOrderedPerform.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = NSOrderedPerform.h; path = NSRunLoop/NSOrderedPerform.h; sourceTree = "<group>"; };
@@ -2301,6 +2307,8 @@
 		FE35D6480B52A3E400FE7AB3 /* NSSelectSet_bsd.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = NSSelectSet_bsd.m; path = platform_posix/NSSelectSet_bsd.m; sourceTree = "<group>"; };
 		FE35D66C0B52AFBC00FE7AB3 /* NSSocket_bsd.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = NSSocket_bsd.h; path = platform_posix/NSSocket_bsd.h; sourceTree = "<group>"; };
 		FE35D66D0B52AFBC00FE7AB3 /* NSSocket_bsd.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = NSSocket_bsd.m; path = platform_posix/NSSocket_bsd.m; sourceTree = "<group>"; };
+		FE3F7D980BE63BBD007E9363 /* NSDateComponents.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = NSDateComponents.h; path = NSDate/NSDateComponents.h; sourceTree = "<group>"; };
+		FE3F7D990BE63BBD007E9363 /* NSDateComponents.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = NSDateComponents.m; path = NSDate/NSDateComponents.m; sourceTree = "<group>"; };
 		FE405A6A0B4450FD001B183D /* NSHTTPURLResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSHTTPURLResponse.h; sourceTree = "<group>"; };
 		FE405A6B0B4450FD001B183D /* NSHTTPURLResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSHTTPURLResponse.m; sourceTree = "<group>"; };
 		FE4BDD2C0BCD664900E19685 /* CFMutableDictionary.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = CFMutableDictionary.h; sourceTree = "<group>"; };
@@ -2891,8 +2899,8 @@
 				FE53BE1E0BA9EBBE0050277F /* NSOldXMLReader.m */,
 				6E28044209747BCB00EC542B /* NSPropertyListReader_vintage.h */,
 				6E28044309747BCB00EC542B /* NSPropertyListReader_vintage.m */,
-				6E28044409747BCB00EC542B /* NSPropertyListWriter.h */,
-				6E28044509747BCB00EC542B /* NSPropertyListWriter.m */,
+				6E28044409747BCB00EC542B /* NSPropertyListWriter_vintage.h */,
+				6E28044509747BCB00EC542B /* NSPropertyListWriter_vintage.m */,
 				6E0084A20A19363F00F78605 /* NSPropertyListReader_xml1.h */,
 				6E0084A30A19363F00F78605 /* NSPropertyListReader_xml1.m */,
 				6E0084CD0A19371600F78605 /* NSPropertyListReader.h */,
@@ -3307,6 +3315,8 @@
 		6E28069409747E6B00EC542B /* NSDate */ = {
 			isa = PBXGroup;
 			children = (
+				FE3F7D980BE63BBD007E9363 /* NSDateComponents.h */,
+				FE3F7D990BE63BBD007E9363 /* NSDateComponents.m */,
 				FEFF238D0BDCF136005357B8 /* NSCalendar.h */,
 				FEFF238E0BDCF136005357B8 /* NSCalendar.m */,
 				6E28069509747E7B00EC542B /* NSCalendarDate.h */,
@@ -3642,7 +3652,7 @@
 				6E4D91C60A2642BD003D335C /* NSObject.h in Headers */,
 				6E4D91C70A2642BD003D335C /* NSZombieObject.h in Headers */,
 				6E4D91C80A2642BD003D335C /* NSPropertyListReader_vintage.h in Headers */,
-				6E4D91C90A2642BD003D335C /* NSPropertyListWriter.h in Headers */,
+				6E4D91C90A2642BD003D335C /* NSPropertyListWriter_vintage.h in Headers */,
 				6E4D91CA0A2642BD003D335C /* NSDelayedPerform.h in Headers */,
 				6E4D91CB0A2642BD003D335C /* NSOrderedPerform.h in Headers */,
 				6E4D91CC0A2642BD003D335C /* NSRunLoop-InputSource.h in Headers */,
@@ -3864,6 +3874,7 @@
 				FED163800BE4093700BF9889 /* NSExpression_keypath.h in Headers */,
 				FED163820BE4093700BF9889 /* NSExpression_self.h in Headers */,
 				FED163840BE4093700BF9889 /* NSExpression_variable.h in Headers */,
+				FE3F7D9E0BE63BBE007E9363 /* NSDateComponents.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3929,7 +3940,7 @@
 				6EA0490809E57D5F0067589C /* NSObject.h in Headers */,
 				6EA0490909E57D5F0067589C /* NSZombieObject.h in Headers */,
 				6EA0490A09E57D5F0067589C /* NSPropertyListReader_vintage.h in Headers */,
-				6EA0490B09E57D5F0067589C /* NSPropertyListWriter.h in Headers */,
+				6EA0490B09E57D5F0067589C /* NSPropertyListWriter_vintage.h in Headers */,
 				6EA0490C09E57D5F0067589C /* NSDelayedPerform.h in Headers */,
 				6EA0490D09E57D5F0067589C /* NSOrderedPerform.h in Headers */,
 				6EA0490E09E57D5F0067589C /* NSRunLoop-InputSource.h in Headers */,
@@ -4151,6 +4162,7 @@
 				FED163760BE4093700BF9889 /* NSExpression_keypath.h in Headers */,
 				FED163780BE4093700BF9889 /* NSExpression_self.h in Headers */,
 				FED1637A0BE4093700BF9889 /* NSExpression_variable.h in Headers */,
+				FE3F7D9C0BE63BBE007E9363 /* NSDateComponents.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4216,7 +4228,7 @@
 				6E28043D09747BBE00EC542B /* NSObject.h in Headers */,
 				6E28044009747BBE00EC542B /* NSZombieObject.h in Headers */,
 				6E28044609747BCB00EC542B /* NSPropertyListReader_vintage.h in Headers */,
-				6E28044809747BCB00EC542B /* NSPropertyListWriter.h in Headers */,
+				6E28044809747BCB00EC542B /* NSPropertyListWriter_vintage.h in Headers */,
 				6E28045309747BD100EC542B /* NSDelayedPerform.h in Headers */,
 				6E28045509747BD100EC542B /* NSOrderedPerform.h in Headers */,
 				6E28045709747BD100EC542B /* NSRunLoop-InputSource.h in Headers */,
@@ -4441,6 +4453,7 @@
 				FED1636C0BE4093700BF9889 /* NSExpression_keypath.h in Headers */,
 				FED1636E0BE4093700BF9889 /* NSExpression_self.h in Headers */,
 				FED163700BE4093700BF9889 /* NSExpression_variable.h in Headers */,
+				FE3F7D9A0BE63BBD007E9363 /* NSDateComponents.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4683,7 +4696,7 @@
 				6E4D92880A2642BD003D335C /* NSObject.m in Sources */,
 				6E4D928A0A2642BD003D335C /* NSZombieObject.m in Sources */,
 				6E4D928B0A2642BD003D335C /* NSPropertyListReader_vintage.m in Sources */,
-				6E4D928C0A2642BD003D335C /* NSPropertyListWriter.m in Sources */,
+				6E4D928C0A2642BD003D335C /* NSPropertyListWriter_vintage.m in Sources */,
 				6E4D928D0A2642BD003D335C /* NSDelayedPerform.m in Sources */,
 				6E4D928E0A2642BD003D335C /* NSOrderedPerform.m in Sources */,
 				6E4D928F0A2642BD003D335C /* NSRunLoop.m in Sources */,
@@ -4903,6 +4916,7 @@
 				FED163810BE4093700BF9889 /* NSExpression_keypath.m in Sources */,
 				FED163830BE4093700BF9889 /* NSExpression_self.m in Sources */,
 				FED163850BE4093700BF9889 /* NSExpression_variable.m in Sources */,
+				FE3F7D9F0BE63BBE007E9363 /* NSDateComponents.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4966,7 +4980,7 @@
 				6EA049CD09E57D5F0067589C /* NSObject.m in Sources */,
 				6EA049CF09E57D5F0067589C /* NSZombieObject.m in Sources */,
 				6EA049D009E57D5F0067589C /* NSPropertyListReader_vintage.m in Sources */,
-				6EA049D109E57D5F0067589C /* NSPropertyListWriter.m in Sources */,
+				6EA049D109E57D5F0067589C /* NSPropertyListWriter_vintage.m in Sources */,
 				6EA049D209E57D5F0067589C /* NSDelayedPerform.m in Sources */,
 				6EA049D309E57D5F0067589C /* NSOrderedPerform.m in Sources */,
 				6EA049D409E57D5F0067589C /* NSRunLoop.m in Sources */,
@@ -5186,6 +5200,7 @@
 				FED163770BE4093700BF9889 /* NSExpression_keypath.m in Sources */,
 				FED163790BE4093700BF9889 /* NSExpression_self.m in Sources */,
 				FED1637B0BE4093700BF9889 /* NSExpression_variable.m in Sources */,
+				FE3F7D9D0BE63BBE007E9363 /* NSDateComponents.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5249,7 +5264,7 @@
 				6E28043E09747BBE00EC542B /* NSObject.m in Sources */,
 				6E28044109747BBE00EC542B /* NSZombieObject.m in Sources */,
 				6E28044709747BCB00EC542B /* NSPropertyListReader_vintage.m in Sources */,
-				6E28044909747BCB00EC542B /* NSPropertyListWriter.m in Sources */,
+				6E28044909747BCB00EC542B /* NSPropertyListWriter_vintage.m in Sources */,
 				6E28045409747BD100EC542B /* NSDelayedPerform.m in Sources */,
 				6E28045609747BD100EC542B /* NSOrderedPerform.m in Sources */,
 				6E28045909747BD100EC542B /* NSRunLoop.m in Sources */,
@@ -5472,6 +5487,7 @@
 				FED1636D0BE4093700BF9889 /* NSExpression_keypath.m in Sources */,
 				FED1636F0BE4093700BF9889 /* NSExpression_self.m in Sources */,
 				FED163710BE4093700BF9889 /* NSExpression_variable.m in Sources */,
+				FE3F7D9B0BE63BBE007E9363 /* NSDateComponents.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

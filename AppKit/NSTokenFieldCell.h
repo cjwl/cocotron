@@ -8,8 +8,31 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <AppKit/NSTextFieldCell.h>
 
-@interface NSTokenFieldCell : NSTextFieldCell {
+typedef enum {
+   NSDefaultTokenStyle,
+   NSPlainTextTokenStyle,
+   NSRoundedTokenStyle,
+} NSTokenStyle;
 
+@interface NSTokenFieldCell : NSTextFieldCell {
+   NSTokenStyle    _style;
+   NSCharacterSet *_set;
+   NSTimeInterval  _completionDelay;
+   id              _delegate;
 }
 
++(NSTimeInterval)defaultCompletionDelay;
++(NSCharacterSet *)defaultTokenizingCharacterSet;
+
+-(NSTokenStyle)tokenStyle;
+-(NSCharacterSet *)tokenizingCharacterSet;
+-(NSTimeInterval)completionDelay;
+-delegate;
+
+-(void)setTokenStyle:(NSTokenStyle)style;
+-(void)setTokenizingCharacterSet:(NSCharacterSet *)set;
+-(void)setCompletionDelay:(NSTimeInterval)delay;
+-(void)setDelegate:delegate;
+
 @end
+

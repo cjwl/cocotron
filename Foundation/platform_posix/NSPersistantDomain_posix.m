@@ -10,7 +10,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSPersistantDomain_posix.h>
 #import <Foundation/NSPathUtilities.h>
 #import <Foundation/NSPropertyListReader.h>
-#import <Foundation/NSPropertyListWriter.h>
+#import <Foundation/NSPropertyListWriter_vintage.h>
 #import <Foundation/NSFileManager.h>
 #import <Foundation/NSException.h>
 #import <Foundation/NSArray.h>
@@ -82,7 +82,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)synchronize {
    [self createUserDefaultsDirectoryIfNeeded];
-    if ([NSPropertyListWriter writePropertyList:_mutableDomain toFile:_path atomically:YES] == NO)
+    if ([NSPropertyListWriter_vintage writePropertyList:_mutableDomain toFile:_path atomically:YES] == NO)
         [NSException raise:NSInternalInconsistencyException
                     format:@"Cannot synchronize NSUserDefaults to %@", _path];
 }

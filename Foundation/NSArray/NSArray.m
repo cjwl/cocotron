@@ -19,7 +19,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSEnumerator_arrayReverse.h>
 #import <Foundation/NSAutoreleasePool-private.h>
 #import <Foundation/NSPropertyListReader.h>
-#import <Foundation/NSPropertyListWriter.h>
+#import <Foundation/NSPropertyListWriter_vintage.h>
 #import <Foundation/NSKeyedUnarchiver.h>
 #import <Foundation/NSPredicate.h>
 
@@ -381,7 +381,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(BOOL)writeToFile:(NSString *)path atomically:(BOOL)atomically {
-   return [NSPropertyListWriter writePropertyList:self toFile:path atomically:atomically];
+   return [NSPropertyListWriter_vintage writePropertyList:self toFile:path atomically:atomically];
 }
 
 
@@ -401,7 +401,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(NSString *)description {
-   return [NSPropertyListWriter stringWithPropertyList:self];
+   return [NSPropertyListWriter_vintage stringWithPropertyList:self];
 }
 
 -(NSString *)descriptionWithLocale:(NSDictionary *)locale {
@@ -428,6 +428,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     
    return result;
 }
+
+-(NSArray *)sortedArrayUsingDescriptors:(NSArray *)descriptors {
+   NSMutableArray *result=[NSMutableArray arrayWithArray:self];
+   
+   [result sortUsingDescriptors:descriptors];
+   
+   return result;
+}
+
 
 @end
 

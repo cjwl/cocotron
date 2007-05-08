@@ -565,6 +565,17 @@ static inline void buildTransformsIfNeeded(NSView *self) {
    [self _insertSubview:view atIndex:NSNotFound];
 }
 
+-(void)addSubview:(NSView *)view positioned:(NSWindowOrderingMode)ordering relativeTo:(NSView *)relativeTo {
+   unsigned index=[_subviews indexOfObjectIdenticalTo:relativeTo];
+   
+   if(index==NSNotFound)
+    index=(ordering==NSWindowBelow)?0:NSNotFound;
+   else
+    index=(ordering==NSWindowBelow)?index:((index+1==[_subviews count])?NSNotFound:index+1);
+    
+   [self _insertSubview:view atIndex:index];
+}
+
 -(void)replaceSubview:(NSView *)oldView with:(NSView *)newView {
    unsigned index=[_subviews indexOfObjectIdenticalTo:oldView];
 

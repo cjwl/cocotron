@@ -238,12 +238,23 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)replaceObjectsInRange:(NSRange)range
         withObjectsFromArray:(NSArray *)array {
-   NSUnimplementedMethod();
+   [self replaceObjectsInRange:range withObjectsFromArray:array range:NSMakeRange(0,[array count])];
 }
 
 -(void)replaceObjectsInRange:(NSRange)range
-        withObjectsFromArray:(NSArray *)array range:(NSRange)otherRange {
-   NSUnimplementedMethod();
+        withObjectsFromArray:(NSArray *)array range:(NSRange)arrayRange {
+   int i;
+   
+   for(i=0;i<range.length && i<arrayRange.length;i++)
+    [self replaceObjectAtIndex:range.location+i withObject:[array objectAtIndex:arrayRange.location+i]];
+    
+   if(i<range.length)
+    [self removeObjectsInRange:NSMakeRange(range.location+i,range.length-i)];
+    
+   if(i<arrayRange.length){
+    for(;i<arrayRange.length;i++)
+     [self insertObject:[array objectAtIndex:arrayRange.location+i] atIndex:range.location+i];
+   }
 }
 
 
@@ -290,6 +301,10 @@ static int selectorCompare(id object1,id object2,void *userData){
      }
     }
    }
+}
+
+-(void)sortUsingDescriptors:(NSArray *)descriptors {
+   NSUnimplementedMethod();
 }
 
 -(void)filterUsingPredicate:(NSPredicate *)predicate {

@@ -68,6 +68,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(NSString *)descriptionWithLocale:(NSDictionary *)locale
    indent:(unsigned)level;
 
+-(NSArray *)sortedArrayUsingDescriptors:(NSArray *)descriptors;
 -(NSArray *)filteredArrayUsingPredicate:(NSPredicate *)predicate;
 
 @end

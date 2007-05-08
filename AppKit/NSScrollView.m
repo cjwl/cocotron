@@ -17,6 +17,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSApplication.h>
 #import <AppKit/NSRulerView.h>
 #import <AppKit/NSNibKeyedUnarchiver.h>
+#import <AppKit/NSCursor.h>
 
 @implementation NSScrollView
 
@@ -509,6 +510,10 @@ static Class _rulerViewClass = nil;
     return _scrollsDynamically;
 }
 
+-(NSCursor *)documentCursor {
+   return _documentCursor;
+}
+
 -(void)setDocumentView:(NSView *)view {
    [_clipView setDocumentView:view];
    [self reflectScrolledClipView:_clipView];
@@ -634,6 +639,14 @@ static Class _rulerViewClass = nil;
     _scrollsDynamically = flag;
 }
 
+-(void)setDocumentCursor:(NSCursor *)cursor {
+   [_clipView discardCursorRects];
+   [_documentCursor release];
+   _documentCursor=[cursor retain];
+   if(_documentCursor!=nil)
+    [_clipView addCursorRect:[_clipView bounds] cursor:_documentCursor];
+}
+
 -(void)tile {
    NSRect frame;
 
@@ -669,6 +682,9 @@ static Class _rulerViewClass = nil;
    [_clipView setBoundsOrigin:frame.origin];
 
    [self reflectScrolledClipView:_clipView];
+   [_clipView discardCursorRects];
+   if(_documentCursor!=nil)
+    [_clipView addCursorRect:[_clipView bounds] cursor:_documentCursor];
 }
 
 -(void)reflectScrolledClipView:(NSClipView *)clipView {

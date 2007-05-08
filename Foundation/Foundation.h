@@ -43,6 +43,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSCountedSet.h>
 #import <Foundation/NSData.h>
 #import <Foundation/NSDate.h>
+#import <Foundation/NSDateComponents.h>
 #import <Foundation/NSDateFormatter.h>
 #import <Foundation/NSDebug.h>
 #import <Foundation/NSDictionary.h>
@@ -56,6 +57,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSGeometry.h>
 #import <Foundation/NSHashTable.h>
 #import <Foundation/NSHost.h>
+#import <Foundation/NSIndexSet.h>
 #import <Foundation/NSInvocation.h>
 #import <Foundation/NSKeyedArchiver.h>
 #import <Foundation/NSKeyedUnarchiver.h>
@@ -73,6 +75,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSMutableCharacterSet.h>
 #import <Foundation/NSMutableData.h>
 #import <Foundation/NSMutableDictionary.h>
+#import <Foundation/NSMutableIndexSet.h>
 #import <Foundation/NSMutableSet.h>
 #import <Foundation/NSMutableString.h>
 #import <Foundation/NSNetService.h>

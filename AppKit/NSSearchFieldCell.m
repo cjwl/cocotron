@@ -7,7 +7,107 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
 #import <AppKit/NSSearchFieldCell.h>
+#import <AppKit/NSButtonCell.h>
+#import <AppKit/NSMenu.h>
+#import <Foundation/NSRaise.h>
 
 @implementation NSSearchFieldCell
+
+-(NSArray *)recentSearches {
+   return _recentSearches;
+}
+
+-(NSString *)recentsAutosaveName {
+   return _autosaveName;
+}
+
+-(int)maximumRecents {
+   return _maximumRecents;
+}
+
+-(BOOL)sendsWholeSearchString {
+   return _sendsWholeSearchString;
+}
+
+-(BOOL)sendsSearchStringImmediately {
+   return _sendsSearchStringImmediately;
+}
+
+-(NSButtonCell *)searchButtonCell {
+   return _searchButtonCell;
+}
+
+-(NSButtonCell *)cancelButtonCell {
+   return _cancelButtonCell;
+}
+
+-(NSMenu *)searchMenuTemplate {
+   return _searchMenuTemplate;
+}
+
+-(void)setRecentSearches:(NSArray *)searches {
+   searches=[searches copy];
+   [_recentSearches release];
+   _recentSearches=searches;
+}
+
+-(void)setRecentsAutosaveName:(NSString *)name {
+   name=[name copy];
+   [_autosaveName release];
+   _autosaveName=name;
+}
+
+-(void)setMaximumRecents:(int)value {
+   _maximumRecents=value;
+}
+
+-(void)setSendsWholeSearchString:(BOOL)flag {
+   _sendsWholeSearchString=flag;
+}
+
+-(void)setSendsSearchStringImmediately:(BOOL)flag {
+   _sendsSearchStringImmediately=flag;
+}
+
+-(void)setSearchButtonCell:(NSButtonCell *)cell {
+   cell=[cell retain];
+   [_searchButtonCell release];
+   _searchButtonCell=cell;
+}
+
+-(void)setCancelButtonCell:(NSButtonCell *)cell {
+   cell=[cell retain];
+   [_cancelButtonCell release];
+   _cancelButtonCell=cell;
+}
+
+-(void)setSearchMenuTemplate:(NSMenu *)menu {
+   menu=[menu retain];
+   [_searchMenuTemplate release];
+   _searchMenuTemplate=menu;
+}
+
+-(NSRect)searchTextRectForBounds:(NSRect)rect {
+   NSUnimplementedMethod();
+   return NSZeroRect;
+}
+
+-(NSRect)searchButtonRectForBounds:(NSRect)rect {
+   NSUnimplementedMethod();
+   return NSZeroRect;
+}
+
+-(NSRect)cancelButtonRectForBounds:(NSRect)rect {
+   NSUnimplementedMethod();
+   return NSZeroRect;
+}
+
+-(void)resetCancelButtonCell {
+   NSUnimplementedMethod();
+}
+
+-(void)resetSearchButtonCell {
+   NSUnimplementedMethod();
+}
 
 @end

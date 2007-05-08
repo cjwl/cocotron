@@ -7,15 +7,20 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
 #import <Foundation/NSObject.h>
+#import <Foundation/NSRange.h>
 
-@class NSDateComponents;
+@class NSDateComponents,NSTimeZone,NSLocale,NSDate;
 
 typedef int NSCalendarUnit;
 
 @interface NSCalendar : NSObject <NSCopying> {
+   NSString   *_identifier;
+   unsigned    _firstWeekday;
+   unsigned    _minimumDaysInFirstWeek;
+   NSTimeZone *_timeZone;
+   NSLocale   *_locale;
 }
 
-#if 0
 +currentCalendar;
 
 -initWithCalendarIdentifier:(NSString *)identifier;
@@ -41,6 +46,5 @@ typedef int NSCalendarUnit;
 
 -(NSDate *)dateByAddingComponents:(NSDateComponents *)components toDate:(NSDate *)date options:(unsigned)options;
 -(NSDate *)dateFromComponents:(NSDateComponents *)components;
-#endif
  
 @end

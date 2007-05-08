@@ -7,13 +7,13 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
 // Original - Christopher Lloyd <cjwl@objc.net>
-#import <Foundation/NSPropertyListWriter.h>
+#import <Foundation/NSPropertyListWriter_vintage.h>
 #import <Foundation/NSData.h>
 #import <Foundation/NSString.h>
 #import <Foundation/NSArray.h>
 #import <Foundation/NSDictionary.h>
 
-@implementation NSPropertyListWriter
+@implementation NSPropertyListWriter_vintage
 
 static BOOL _NSPropertyListNameSet[128]={
  NO, NO, NO, NO, NO, NO, NO, NO, NO, NO, NO, NO, NO, NO, NO, NO,// 0
@@ -180,7 +180,7 @@ YES,YES,YES,YES,YES,YES,YES,YES,YES,YES,YES, NO, NO, NO, NO, NO,// 112
 }
 
 +(NSData *)nullTerminatedASCIIDataWithString:(NSString *)string {
-   NSPropertyListWriter *writer=[[self alloc] init];
+   NSPropertyListWriter_vintage *writer=[[self alloc] init];
    NSData               *result=[[[writer nullTerminatedASCIIDataWithString:string] retain] autorelease];
 
    [writer release];
@@ -195,7 +195,7 @@ YES,YES,YES,YES,YES,YES,YES,YES,YES,YES,YES, NO, NO, NO, NO, NO,// 112
 }
 
 +(NSData *)nullTerminatedASCIIDataWithPropertyList:plist {
-   NSPropertyListWriter *writer=[[self alloc] init];
+   NSPropertyListWriter_vintage *writer=[[self alloc] init];
    NSData               *result=[[[writer nullTerminatedASCIIDataWithPropertyList:plist] retain] autorelease];
 
    [writer release];
@@ -204,7 +204,7 @@ YES,YES,YES,YES,YES,YES,YES,YES,YES,YES,YES, NO, NO, NO, NO, NO,// 112
 }
 
 +(NSData *)dataWithPropertyList:plist {
-   NSPropertyListWriter *writer=[[self alloc] init];
+   NSPropertyListWriter_vintage *writer=[[self alloc] init];
    NSData               *result=[[[writer dataForRootObject:plist] retain] autorelease];
 
    [writer release];
@@ -213,7 +213,7 @@ YES,YES,YES,YES,YES,YES,YES,YES,YES,YES,YES, NO, NO, NO, NO, NO,// 112
 }
 
 +(NSString *)stringWithPropertyList:plist {
-   NSPropertyListWriter *writer=[[self alloc] init];
+   NSPropertyListWriter_vintage *writer=[[self alloc] init];
    NSData               *data=[writer dataForRootObject:plist];
    NSString             *result=[[[NSString allocWithZone:NULL] initWithData:data encoding:NSASCIIStringEncoding] autorelease];
 
@@ -223,7 +223,7 @@ YES,YES,YES,YES,YES,YES,YES,YES,YES,YES,YES, NO, NO, NO, NO, NO,// 112
 }
 
 +(BOOL)writePropertyList:object toFile:(NSString *)path atomically:(BOOL)atomically {
-   NSPropertyListWriter *writer=[[self alloc] init];
+   NSPropertyListWriter_vintage *writer=[[self alloc] init];
    NSData               *data=[writer dataForRootObject:object];
    BOOL                  result=[data writeToFile:path atomically:atomically];
 

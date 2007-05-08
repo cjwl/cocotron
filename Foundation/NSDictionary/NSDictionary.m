@@ -13,7 +13,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSDictionary_mapTable.h>
 #import <Foundation/NSEnumerator_dictionaryObjects.h>
 #import <Foundation/NSPropertyListReader.h>
-#import <Foundation/NSPropertyListWriter.h>
+#import <Foundation/NSPropertyListWriter_vintage.h>
 #import <Foundation/NSRaise.h>
 #import <Foundation/NSCoder.h>
 #import <Foundation/NSKeyedUnarchiver.h>
@@ -335,11 +335,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(BOOL)writeToFile:(NSString *)path atomically:(BOOL)atomically {
-   return [NSPropertyListWriter writePropertyList:self toFile:path atomically:atomically];
+   return [NSPropertyListWriter_vintage writePropertyList:self toFile:path atomically:atomically];
 }
 
 -(NSString *)description {
-   return [NSPropertyListWriter stringWithPropertyList:self];
+   return [NSPropertyListWriter_vintage stringWithPropertyList:self];
 }
 
 -(NSString *)descriptionInStringsFileFormat {

@@ -7,7 +7,28 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
 #import <AppKit/NSSearchField.h>
+#import <AppKit/NSSearchFieldCell.h>
 
 @implementation NSSearchField
+
+-(NSSearchFieldCell *)_searchCell {
+   return [self cell];
+}
+
+-(NSArray *)recentSearches {
+   return [[self _searchCell] recentSearches];
+}
+
+-(NSString *)recentsAutosaveName {
+   return [[self _searchCell] recentsAutosaveName];
+}
+
+-(void)setRecentSearches:(NSArray *)searches {
+   [[self _searchCell] setRecentSearches:searches];
+}
+
+-(void)setRecentsAutosaveName:(NSString *)name {
+   [[self _searchCell] setRecentsAutosaveName:name];
+}
 
 @end

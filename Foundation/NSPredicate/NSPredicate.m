@@ -23,6 +23,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #define FF 12
 #define CR 13
 
+// FIX, need to add a selector token type for function calls which can be selector or identifier
+
 enum {
  predTokenEOF=-1,
  
@@ -171,11 +173,11 @@ static BOOL codeIsHex(unichar code,unichar *hexChar) {
     return YES;
    }
    else if(code>='a' && code<='f'){
-    *hexChar=*hexChar*16+(code-'a');
+    *hexChar=*hexChar*16+(10+code-'a');
     return YES;
    }
    else if(code>='A' && code<='F'){
-    *hexChar=*hexChar*16+(code-'A');
+    *hexChar=*hexChar*16+(10+code-'A');
     return YES;
    }
    return NO;
@@ -192,6 +194,8 @@ static int scanToken(predicateScanner *scanner,id *token){
     STATE_SCANNING,
     STATE_IDENTIFIER,
     STATE_ESCAPED_IDENTIFIER,
+    STATE_ZERO,
+    STATE_HEX,
     STATE_INTEGER,
     STATE_REAL,
     STATE_EXPONENT,
@@ -249,8 +253,12 @@ static int scanToken(predicateScanner *scanner,id *token){
         state=STATE_IDENTIFIER;
         tokenLocation=scanner->position;
         break;
+       
+       case '0':
+        state=STATE_ZERO;
+        break;
         
-       case '0': case '1': case '2': case '3': case '4':
+       case '1': case '2': case '3': case '4':
        case '5': case '6': case '7': case '8': case '9':
         state=STATE_INTEGER;
 	    currentSign=1;
@@ -361,6 +369,32 @@ static int scanToken(predicateScanner *scanner,id *token){
       }
       break;
 
+     case STATE_ZERO:
+      if(code=='x'){
+       state=STATE_HEX;
+	   currentInt=0;
+      }
+      else {
+       scanner->position--;
+       state=STATE_INTEGER;
+	   currentSign=1;
+	   currentInt=0;
+      }
+      break;
+     
+     case STATE_HEX:
+      if(code>='0' && code<='9')
+       currentInt=currentInt*16+(code-'0');
+      else if(code>='A' && code<='F')
+       currentInt=currentInt*16+(10+code-'A');
+      else if(code>='a' && code<='a')
+       currentInt=currentInt*16+(10+code-'a');
+      else {
+       *token=[NSNumber numberWithInt:currentInt];
+       return predTokenNumeric;
+      }
+      break;
+      
      case STATE_INTEGER:
       if(code=='.'){
        state=STATE_REAL;

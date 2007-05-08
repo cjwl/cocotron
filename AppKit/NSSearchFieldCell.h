@@ -8,8 +8,49 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <AppKit/NSTextFieldCell.h>
 
-@interface NSSearchFieldCell : NSTextFieldCell {
+@class NSButtonCell;
 
+enum {
+ NSSearchFieldRecentsTitleMenuItemTag=1000,
+ NSSearchFieldRecentsMenuItemTag=1001,
+ NSSearchFieldClearRecentsMenuItemTag=1002,
+ NSSearchFieldNoRecentsMenuItemTag=1003,
+};
+
+@interface NSSearchFieldCell : NSTextFieldCell {
+   NSArray      *_recentSearches;
+   NSString     *_autosaveName;
+   int           _maximumRecents;
+   BOOL          _sendsWholeSearchString;
+   BOOL          _sendsSearchStringImmediately;
+   NSButtonCell *_searchButtonCell;
+   NSButtonCell *_cancelButtonCell;
+   NSMenu       *_searchMenuTemplate;
 }
+
+-(NSArray *)recentSearches;
+-(NSString *)recentsAutosaveName;
+-(int)maximumRecents;
+-(BOOL)sendsWholeSearchString;
+-(BOOL)sendsSearchStringImmediately;
+-(NSButtonCell *)searchButtonCell;
+-(NSButtonCell *)cancelButtonCell;
+-(NSMenu *)searchMenuTemplate;
+
+-(void)setRecentSearches:(NSArray *)searches;
+-(void)setRecentsAutosaveName:(NSString *)name;
+-(void)setMaximumRecents:(int)value;
+-(void)setSendsWholeSearchString:(BOOL)flag;
+-(void)setSendsSearchStringImmediately:(BOOL)flag;
+-(void)setSearchButtonCell:(NSButtonCell *)cell;
+-(void)setCancelButtonCell:(NSButtonCell *)cell;
+-(void)setSearchMenuTemplate:(NSMenu *)menu;
+
+-(NSRect)searchTextRectForBounds:(NSRect)rect;
+-(NSRect)searchButtonRectForBounds:(NSRect)rect;
+-(NSRect)cancelButtonRectForBounds:(NSRect)rect;
+
+-(void)resetCancelButtonCell;
+-(void)resetSearchButtonCell;
 
 @end

@@ -10,20 +10,24 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @class NSUserDefaults,NSDictionary;
 
 @interface NSUserDefaultsController : NSController {
+   NSUserDefaults *_defaults;
+   NSDictionary   *_initialValues;
+   BOOL            _appliesImmediately;
 
 }
 
-#if 0
 +sharedUserDefaultsController;
 
--initWithDefault:(NSUserDefaults *)defaults initialValues:(NSDictionary *)values;
+-initWithDefaults:(NSUserDefaults *)defaults initialValues:(NSDictionary *)values;
 
 -(NSUserDefaults *)defaults;
 -(NSDictionary *)initialValues;
 -(BOOL)appliesImmediately;
 
--(void)setInitialValues:(NSDictionary *)initialValues;
+-(void)setInitialValues:(NSDictionary *)values;
 -(void)setAppliesImmediately:(BOOL)flag;
+
+#if 0
 
 -values;
 

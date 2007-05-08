@@ -28,6 +28,12 @@ typedef enum {
    NSCompositePlusLighter
 } NSCompositingOperation;
 
+typedef enum {
+   NSWindowBelow=-1,
+   NSWindowOut=0,
+   NSWindowAbove=1
+} NSWindowOrderingMode;
+
 APPKIT_EXPORT const float NSBlack;
 APPKIT_EXPORT const float NSDarkGray;
 APPKIT_EXPORT const float NSLightGray;
@@ -49,6 +55,8 @@ APPKIT_EXPORT void NSRectFillListWithColors(const NSRect *rects,NSColor **colors
 APPKIT_EXPORT void NSRectFillListWithGrays(const NSRect *rects,const float *grays,int count);
 APPKIT_EXPORT void NSRectFillList(const NSRect *rects,int count);
 APPKIT_EXPORT void NSRectFill(NSRect rect);
+
+APPKIT_EXPORT void NSRectFillUsingOperation(NSRect rect,NSCompositingOperation op);
 
 APPKIT_EXPORT void NSFrameRectWithWidth(NSRect rect,float width);
 APPKIT_EXPORT void NSFrameRect(NSRect rect);

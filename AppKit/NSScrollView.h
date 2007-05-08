@@ -29,6 +29,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    BOOL          _hasVerticalRuler;
    BOOL          _rulersVisible;
    BOOL          _scrollsDynamically;
+   NSCursor     *_documentCursor;
 }
 
 +(NSSize)frameSizeForContentSize:(NSSize)contentSize hasHorizontalScroller:(BOOL)hasHorizontalScroller hasVerticalScroller:(BOOL)hasVerticalScroller borderType:(NSBorderType)borderType;
@@ -61,6 +62,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(float)lineScroll;
 -(float)pageScroll;
 -(BOOL)scrollsDynamically;
+-(NSCursor *)documentCursor;
 
 -(void)setDocumentView:(NSView *)view;
 -(void)setContentView:(NSClipView *)clipView;
@@ -80,6 +82,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)setLineScroll:(float)value;
 -(void)setPageScroll:(float)value;
 -(void)setScrollsDynamically:(BOOL)flag;
+-(void)setDocumentCursor:(NSCursor *)cursor;
 
 -(void)tile;
 -(void)reflectScrolledClipView:(NSClipView *)clipView;

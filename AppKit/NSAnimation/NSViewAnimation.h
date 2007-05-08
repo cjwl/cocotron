@@ -10,13 +10,20 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 APPKIT_EXPORT NSString *NSViewAnimationStartFrameKey;
 APPKIT_EXPORT NSString *NSViewAnimationEndFrameKey;
 APPKIT_EXPORT NSString *NSViewAnimationTargetKey;
+APPKIT_EXPORT NSString *NSViewAnimationEffectKey;
+
+APPKIT_EXPORT NSString *NSViewAnimationFadeInEffect;
+APPKIT_EXPORT NSString *NSViewAnimationFadeOutEffect;
 
 @interface NSViewAnimation : NSAnimation {
+   NSArray *_animations;
 }
 
 -initWithViewAnimations:(NSArray *)animations;
 
 -(NSArray *)viewAnimations;
+
+-(void)setViewAnimations:(NSArray *)animations;
 
 
 @end

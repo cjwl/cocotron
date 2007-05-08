@@ -37,6 +37,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)sortUsingSelector:(SEL)selector;
 -(void)sortUsingFunction:(int (*)(id, id, void *))compare context:(void *)context;
 
+-(void)sortUsingDescriptors:(NSArray *)descriptors;
 -(void)filterUsingPredicate:(NSPredicate *)predicate;
 
 @end

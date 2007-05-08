@@ -496,7 +496,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    }
 }
 
--(NSRect)_viewRectForRange:(NSRange)range {
+-(NSRect)_viewRectForCharacterRange:(NSRange)range {
    NSPoint origin=[self textContainerOrigin];
    NSRect  result;
 
@@ -550,7 +550,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    if(range.length>0)
     _insertionPointRect=NSZeroRect;
    else
-    _insertionPointRect=[self _viewRectForRange:[self selectedRange]];
+    _insertionPointRect=[self _viewRectForCharacterRange:[self selectedRange]];
 
    if(restartFlag){
     float interval=[[NSDisplay currentDisplay] textCaretBlinkInterval];
@@ -1894,7 +1894,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)scrollRangeToVisible:(NSRange)range {
-   NSRect rect=[self _viewRectForRange:range];
+   NSRect rect=[self _viewRectForCharacterRange:range];
 
    rect=NSInsetRect(rect,-2,-2);
    [self scrollRectToVisible:rect];
@@ -2211,6 +2211,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [self didChangeText];
 
    return YES;
+}
+
+-(NSRect)firstRectForCharacterRange:(NSRange)range {
+   return [self _viewRectForCharacterRange:range];
 }
 
 @end

@@ -13,7 +13,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSData.h>
 #import <Foundation/NSPropertyListReader.h>
-#import <Foundation/NSPropertyListWriter.h>
+#import <Foundation/NSPropertyListWriter_vintage.h>
 #import <Foundation/NSException.h>
 
 #import <windows.h>
@@ -120,7 +120,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)setObject:object forKey:(NSString *)key {
    LONG      error;
-   NSData   *data=[NSPropertyListWriter dataWithPropertyList:object];
+   NSData   *data=[NSPropertyListWriter_vintage dataWithPropertyList:object];
    
    [_cache removeObjectForKey:key];
 

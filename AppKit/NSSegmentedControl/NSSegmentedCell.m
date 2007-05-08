@@ -8,51 +8,58 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <AppKit/NSSegmentedCell.h>
 #import <Foundation/NSRaise.h>
+#import "NSSegment.h"
 
 @implementation NSSegmentedCell
 
 -(int)segmentCount {
-   NSUnimplementedMethod();
+   return [_segments count];
 }
 
 -(NSSegmentSwitchTracking)trackingMode {
-   NSUnimplementedMethod();
+   return _trackingMode;
 }
 
 -(int)tagForSegment:(int)segment {
-   NSUnimplementedMethod();
+   return [[_segments objectAtIndex:segment] tag];
 }
 
 -(NSImage *)imageForSegment:(int)segment {
-   NSUnimplementedMethod();
+   return [[_segments objectAtIndex:segment] image];
 }
 
 -(BOOL)isEnabledForSegment:(int)segment {
-   NSUnimplementedMethod();
+   return [[_segments objectAtIndex:segment] isEnabled];
 }
 
 -(NSString *)labelForSegment:(int)segment {
-   NSUnimplementedMethod();
+   return [[_segments objectAtIndex:segment] label];
 }
 
 -(NSMenu *)menuForSegment:(int)segment {
-   NSUnimplementedMethod();
+   return [[_segments objectAtIndex:segment] menu];
 }
 
 -(NSString *)toolTipForSegment:(int)segment {
-   NSUnimplementedMethod();
+   return [[_segments objectAtIndex:segment] toolTip];
 }
 
 -(float)widthForSegment:(int)segment {
-   NSUnimplementedMethod();
+   return [[_segments objectAtIndex:segment] width];
 }
 
 -(int)selectedSegment {
-   NSUnimplementedMethod();
+   int i,count=[_segments count];
+   
+   for(i=0;i<count;i++)
+    if([[_segments objectAtIndex:i] isSelected])
+     return i;
+   
+   return -1;
 }
 
 -(BOOL)isSelectedForSegment:(int)segment {
-   NSUnimplementedMethod();
+   return [[_segments objectAtIndex:segment] isSelected];
 }
 
 -(void)setSegmentCount:(int)count {
@@ -60,45 +67,51 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)setTrackingMode:(NSSegmentSwitchTracking)trackingMode {
-   NSUnimplementedMethod();
+   _trackingMode=trackingMode;
 }
 
 -(void)setTag:(int)tag forSegment:(int)segment {
-   NSUnimplementedMethod();
+   [[_segments objectAtIndex:segment] setTag:tag];
 }
 
 -(void)setImage:(NSImage *)image forSegment:(int)segment {
-   NSUnimplementedMethod();
+   [[_segments objectAtIndex:segment] setImage:image];
 }
 
 -(void)setEnabled:(BOOL)enabled forSegment:(int)segment {
-   NSUnimplementedMethod();
+   [[_segments objectAtIndex:segment] setEnabled:enabled];
 }
 
 -(void)setLabel:(NSString *)label forSegment:(int)segment {
-   NSUnimplementedMethod();
+   [[_segments objectAtIndex:segment] setLabel:label];
 }
 
 -(void)setMenu:(NSMenu *)menu forSegment:(int)segment {
-   NSUnimplementedMethod();
+   [[_segments objectAtIndex:segment] setMenu:menu];
 }
 
 -(void)setToolTip:(NSString *)string forSegment:(int)segment {
-   NSUnimplementedMethod();
+   [[_segments objectAtIndex:segment] setToolTip:string];
 }
 
 -(void)setWidth:(float)width forSegment:(int)segment {
-   NSUnimplementedMethod();
+   [[_segments objectAtIndex:segment] setWidth:width];
 }
 
 -(BOOL)selectSegmentWithTag:(int)tag {
-   NSUnimplementedMethod();
+   int i,count=[_segments count];
+   
+   for(i=0;i<count;i++)
+    if([[_segments objectAtIndex:i] tag]==tag)
+     [self setSelected:YES forSegment:i];
 }
+
 -(void)setSelected:(BOOL)flag forSegment:(int)segment {
-   NSUnimplementedMethod();
+   [[_segments objectAtIndex:segment] setSelected:flag];
 }
+
 -(void)setSelectedSegment:(int)segment {
-   NSUnimplementedMethod();
+   [[_segments objectAtIndex:segment] setSelected:YES];
 }
 
 -(void)makeNextSegmentKey {

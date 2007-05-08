@@ -15,6 +15,8 @@ typedef enum {
 } NSSegmentSwitchTracking;
 
 @interface NSSegmentedCell : NSActionCell {
+   NSMutableArray         *_segments;
+   NSSegmentSwitchTracking _trackingMode;
 }
 
 -(int)segmentCount;

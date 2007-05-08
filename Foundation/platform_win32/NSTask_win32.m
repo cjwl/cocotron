@@ -14,7 +14,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSPlatform_win32.h>
 #import <Foundation/NSString_win32.h>
 #import <windows.h>
-#import <Foundation/NSPropertyListWriter.h>
+#import <Foundation/NSPropertyListWriter_vintage.h>
 #import <Foundation/NSFileManager.h>
 #import <Foundation/NSArray.h>
 #import <Foundation/NSData.h>
@@ -198,6 +198,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)handleMonitorIndicatesAbandoned:(NSHandleMonitor_win32 *)monitor {
    NSLog(@"process abandoned ?");
+}
+
+-(int)processIdentifier {
+   return _processInfo.dwProcessId;
 }
 
 @end

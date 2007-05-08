@@ -6,6 +6,9 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 #import <Foundation/NSCalendar.h>
+#import <Foundation/NSDateComponents.h>
+#import <Foundation/NSTimeZone.h>
+#import <Foundation/NSLocale.h>
 #import <Foundation/NSRaise.h>
 
 @implementation NSCalendar 
@@ -14,6 +17,96 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    NSUnimplementedMethod();
    // this is wrong, need to actually copy;
    return [self retain];
+}
+
++currentCalendar {
+   return nil;
+}
+
+-initWithCalendarIdentifier:(NSString *)identifier {
+   _identifier=[identifier copy];
+   NSUnimplementedMethod();
+   return self;
+}
+
+-(NSString *)calendarIdentifier {
+   return _identifier;
+}
+
+-(unsigned)firstWeekday {
+   return _firstWeekday;
+}
+
+-(unsigned)minimumDaysInFirstWeek {
+   return _minimumDaysInFirstWeek;
+}
+
+-(NSTimeZone *)timeZone {
+   return _timeZone;
+}
+
+-(NSLocale *)locale {
+   return _locale;
+}
+
+-(void)setFirstWeekday:(unsigned)weekday {
+   _firstWeekday=weekday;
+}
+
+-(void)setMinimumDaysInFirstWeek:(unsigned)days {
+   _minimumDaysInFirstWeek=days;
+}
+
+-(void)setTimeZone:(NSTimeZone *)timeZone {
+   timeZone=[timeZone retain];
+   [_timeZone release];
+   _timeZone=timeZone;
+}
+
+-(void)setLocale:(NSLocale *)locale {
+   locale=[locale retain];
+   [_locale release];
+   _locale=locale;
+}
+
+-(NSRange)minimumRangeOfUnit:(NSCalendarUnit)unit {
+   NSUnimplementedMethod();
+   return NSMakeRange(0,0);
+}
+
+-(NSRange)maximumRangeOfUnit:(NSCalendarUnit)unit {
+   NSUnimplementedMethod();
+   return NSMakeRange(0,0);
+}
+
+-(NSRange)rangeOfUnit:(NSCalendarUnit)unit inUnit:(NSCalendarUnit)inUnit forDate:(NSDate *)date {
+   NSUnimplementedMethod();
+   return NSMakeRange(0,0);
+}
+
+-(unsigned)ordinalityOfUnit:(NSCalendarUnit)unit inUnit:(NSCalendarUnit)inUnit forDate:(NSDate *)date {
+   NSUnimplementedMethod();
+   return 0;
+}
+
+-(NSDateComponents *)components:(unsigned)flags fromDate:(NSDate *)date {
+   NSUnimplementedMethod();
+   return nil;
+}
+
+-(NSDateComponents *)components:(unsigned)flags fromDate:(NSDate *)fromDate toDate:(NSDate *)toDate options:(unsigned)options {
+   NSUnimplementedMethod();
+   return nil;
+}
+
+-(NSDate *)dateByAddingComponents:(NSDateComponents *)components toDate:(NSDate *)date options:(unsigned)options {
+   NSUnimplementedMethod();
+   return nil;
+}
+
+-(NSDate *)dateFromComponents:(NSDateComponents *)components {
+   NSUnimplementedMethod();
+   return nil;
 }
 
 @end

@@ -26,12 +26,6 @@ typedef enum {
    NSBackingStoreBuffered=2
 } NSBackingStoreType;
 
-typedef enum {
-   NSWindowBelow=-1,
-   NSWindowOut=0,
-   NSWindowAbove=1
-} NSWindowOrderingMode;
-
 APPKIT_EXPORT NSString *NSWindowDidBecomeKeyNotification;
 APPKIT_EXPORT NSString *NSWindowDidResignKeyNotification;
 APPKIT_EXPORT NSString *NSWindowDidBecomeMainNotification;

@@ -517,6 +517,7 @@
 		FE267EB80B8BD2690000DDC0 /* CGBitmapContext.m in Sources */ = {isa = PBXBuildFile; fileRef = FE267EB40B8BD2690000DDC0 /* CGBitmapContext.m */; };
 		FE267EB90B8BD2690000DDC0 /* KGBitmapContext.h in Headers */ = {isa = PBXBuildFile; fileRef = FE267EB50B8BD2690000DDC0 /* KGBitmapContext.h */; };
 		FE267EBA0B8BD2690000DDC0 /* KGBitmapContext.m in Sources */ = {isa = PBXBuildFile; fileRef = FE267EB60B8BD2690000DDC0 /* KGBitmapContext.m */; };
+		FE27AC150BE9038000136B43 /* NSTextInput.h in Headers */ = {isa = PBXBuildFile; fileRef = FE27AC140BE9038000136B43 /* NSTextInput.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE2A101F0B44A201006C03DE /* NSAlert.h in Headers */ = {isa = PBXBuildFile; fileRef = FE2A101D0B44A201006C03DE /* NSAlert.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE2A10200B44A201006C03DE /* NSAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = FE2A101E0B44A201006C03DE /* NSAlert.m */; };
 		FE2A102A0B44A26B006C03DE /* NSArrayController.h in Headers */ = {isa = PBXBuildFile; fileRef = FE2A10280B44A26B006C03DE /* NSArrayController.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -658,6 +659,14 @@
 		FE8BAF2A0BC9EC680007FACA /* NSObject+BindingSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = FE8BAF220BC9EC680007FACA /* NSObject+BindingSupport.m */; };
 		FE8BAF2B0BC9EC680007FACA /* NSTableViewBinder.h in Headers */ = {isa = PBXBuildFile; fileRef = FE8BAF230BC9EC680007FACA /* NSTableViewBinder.h */; };
 		FE8BAF2C0BC9EC680007FACA /* NSTableViewBinder.m in Sources */ = {isa = PBXBuildFile; fileRef = FE8BAF240BC9EC680007FACA /* NSTableViewBinder.m */; };
+		FED166D60BE502AD00BF9889 /* NSSegment.h in Headers */ = {isa = PBXBuildFile; fileRef = FED166D40BE502AD00BF9889 /* NSSegment.h */; };
+		FED166D70BE502AD00BF9889 /* NSSegment.m in Sources */ = {isa = PBXBuildFile; fileRef = FED166D50BE502AD00BF9889 /* NSSegment.m */; };
+		FED167AA0BE57EB300BF9889 /* NSTextBlock.h in Headers */ = {isa = PBXBuildFile; fileRef = FED167A40BE57EB300BF9889 /* NSTextBlock.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FED167AB0BE57EB300BF9889 /* NSTextBlock.m in Sources */ = {isa = PBXBuildFile; fileRef = FED167A50BE57EB300BF9889 /* NSTextBlock.m */; };
+		FED167AC0BE57EB300BF9889 /* NSTextTable.h in Headers */ = {isa = PBXBuildFile; fileRef = FED167A60BE57EB300BF9889 /* NSTextTable.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FED167AD0BE57EB300BF9889 /* NSTextTable.m in Sources */ = {isa = PBXBuildFile; fileRef = FED167A70BE57EB300BF9889 /* NSTextTable.m */; };
+		FED167AE0BE57EB300BF9889 /* NSTextTableBlock.h in Headers */ = {isa = PBXBuildFile; fileRef = FED167A80BE57EB300BF9889 /* NSTextTableBlock.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FED167AF0BE57EB300BF9889 /* NSTextTableBlock.m in Sources */ = {isa = PBXBuildFile; fileRef = FED167A90BE57EB300BF9889 /* NSTextTableBlock.m */; };
 		FED310E10BCC027200552615 /* NSAnimation.h in Headers */ = {isa = PBXBuildFile; fileRef = FED310DD0BCC027200552615 /* NSAnimation.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FED310E20BCC027200552615 /* NSAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = FED310DE0BCC027200552615 /* NSAnimation.m */; };
 		FED310E30BCC027200552615 /* NSViewAnimation.h in Headers */ = {isa = PBXBuildFile; fileRef = FED310DF0BCC027200552615 /* NSViewAnimation.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -1225,6 +1234,7 @@
 		FE267EB40B8BD2690000DDC0 /* CGBitmapContext.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = CGBitmapContext.m; sourceTree = "<group>"; };
 		FE267EB50B8BD2690000DDC0 /* KGBitmapContext.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = KGBitmapContext.h; sourceTree = "<group>"; };
 		FE267EB60B8BD2690000DDC0 /* KGBitmapContext.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = KGBitmapContext.m; sourceTree = "<group>"; };
+		FE27AC140BE9038000136B43 /* NSTextInput.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSTextInput.h; sourceTree = "<group>"; };
 		FE2A101D0B44A201006C03DE /* NSAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSAlert.h; sourceTree = "<group>"; };
 		FE2A101E0B44A201006C03DE /* NSAlert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSAlert.m; sourceTree = "<group>"; };
 		FE2A10280B44A26B006C03DE /* NSArrayController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSArrayController.h; sourceTree = "<group>"; };
@@ -1366,6 +1376,14 @@
 		FE8BAF220BC9EC680007FACA /* NSObject+BindingSupport.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = "NSObject+BindingSupport.m"; sourceTree = "<group>"; };
 		FE8BAF230BC9EC680007FACA /* NSTableViewBinder.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSTableViewBinder.h; sourceTree = "<group>"; };
 		FE8BAF240BC9EC680007FACA /* NSTableViewBinder.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSTableViewBinder.m; sourceTree = "<group>"; };
+		FED166D40BE502AD00BF9889 /* NSSegment.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSSegment.h; sourceTree = "<group>"; };
+		FED166D50BE502AD00BF9889 /* NSSegment.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSSegment.m; sourceTree = "<group>"; };
+		FED167A40BE57EB300BF9889 /* NSTextBlock.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSTextBlock.h; sourceTree = "<group>"; };
+		FED167A50BE57EB300BF9889 /* NSTextBlock.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSTextBlock.m; sourceTree = "<group>"; };
+		FED167A60BE57EB300BF9889 /* NSTextTable.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSTextTable.h; sourceTree = "<group>"; };
+		FED167A70BE57EB300BF9889 /* NSTextTable.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSTextTable.m; sourceTree = "<group>"; };
+		FED167A80BE57EB300BF9889 /* NSTextTableBlock.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSTextTableBlock.h; sourceTree = "<group>"; };
+		FED167A90BE57EB300BF9889 /* NSTextTableBlock.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSTextTableBlock.m; sourceTree = "<group>"; };
 		FED310DD0BCC027200552615 /* NSAnimation.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSAnimation.h; sourceTree = "<group>"; };
 		FED310DE0BCC027200552615 /* NSAnimation.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSAnimation.m; sourceTree = "<group>"; };
 		FED310DF0BCC027200552615 /* NSViewAnimation.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSViewAnimation.h; sourceTree = "<group>"; };
@@ -1609,10 +1627,7 @@
 				6E2B53B30976075200DA0954 /* NSSecureTextField.m */,
 				6E2B54A00976075200DA0954 /* NSSecureTextFieldCell.h */,
 				6E2B53B50976075200DA0954 /* NSSecureTextFieldCell.m */,
-				FE2A110B0B45BCCB006C03DE /* NSSegmentedCell.h */,
-				FE2A110C0B45BCCB006C03DE /* NSSegmentedCell.m */,
-				FE2A11130B45BCD8006C03DE /* NSSegmentedControl.h */,
-				FE2A11140B45BCD8006C03DE /* NSSegmentedControl.m */,
+				FED166CC0BE5022A00BF9889 /* NSSegmentedControl */,
 				FE2A11190B45BD0A006C03DE /* NSShadow.h */,
 				FE2A111A0B45BD0A006C03DE /* NSShadow.m */,
 				6E2B54920976075200DA0954 /* NSSheetContext.h */,
@@ -1802,6 +1817,7 @@
 		6E2B55680976075300DA0954 /* NSTextView */ = {
 			isa = PBXGroup;
 			children = (
+				FE27AC140BE9038000136B43 /* NSTextInput.h */,
 				6E2B55870976075300DA0954 /* NSLayoutManager.h */,
 				6E2B55720976075300DA0954 /* NSLayoutManager.m */,
 				6E2B558B0976075300DA0954 /* NSRangeArray.h */,
@@ -1820,10 +1836,10 @@
 				6E2B557C0976075300DA0954 /* NSTextTab.m */,
 				6E2B557F0976075300DA0954 /* NSTextView.h */,
 				6E2B556A0976075300DA0954 /* NSTextView.m */,
-				6E2B55890976075300DA0954 /* NSTypesetter.h */,
-				6E2B55740976075300DA0954 /* NSTypesetter.m */,
 				6E404FE50A52FEA900FA9AE5 /* NSTextViewSharedData.h */,
 				6E404FE60A52FEA900FA9AE5 /* NSTextViewSharedData.m */,
+				6E2B55890976075300DA0954 /* NSTypesetter.h */,
+				6E2B55740976075300DA0954 /* NSTypesetter.m */,
 			);
 			name = NSTextView;
 			path = NSTextView.subproj;
@@ -2290,6 +2306,12 @@
 		FE2A114D0B45C608006C03DE /* NSTextTable */ = {
 			isa = PBXGroup;
 			children = (
+				FED167A40BE57EB300BF9889 /* NSTextBlock.h */,
+				FED167A50BE57EB300BF9889 /* NSTextBlock.m */,
+				FED167A60BE57EB300BF9889 /* NSTextTable.h */,
+				FED167A70BE57EB300BF9889 /* NSTextTable.m */,
+				FED167A80BE57EB300BF9889 /* NSTextTableBlock.h */,
+				FED167A90BE57EB300BF9889 /* NSTextTableBlock.m */,
 			);
 			path = NSTextTable;
 			sourceTree = "<group>";
@@ -2324,6 +2346,19 @@
 				FE8BAF240BC9EC680007FACA /* NSTableViewBinder.m */,
 			);
 			path = NSKeyValueBinding;
+			sourceTree = "<group>";
+		};
+		FED166CC0BE5022A00BF9889 /* NSSegmentedControl */ = {
+			isa = PBXGroup;
+			children = (
+				FED166D40BE502AD00BF9889 /* NSSegment.h */,
+				FED166D50BE502AD00BF9889 /* NSSegment.m */,
+				FE2A110B0B45BCCB006C03DE /* NSSegmentedCell.h */,
+				FE2A110C0B45BCCB006C03DE /* NSSegmentedCell.m */,
+				FE2A11130B45BCD8006C03DE /* NSSegmentedControl.h */,
+				FE2A11140B45BCD8006C03DE /* NSSegmentedControl.m */,
+			);
+			path = NSSegmentedControl;
 			sourceTree = "<group>";
 		};
 		FED310D70BCC022300552615 /* NSAnimation */ = {
@@ -2658,6 +2693,11 @@
 				FED310E10BCC027200552615 /* NSAnimation.h in Headers */,
 				FED310E30BCC027200552615 /* NSViewAnimation.h in Headers */,
 				FE4BDC0B0BCD40C600E19685 /* NSFontDescriptor.h in Headers */,
+				FED166D60BE502AD00BF9889 /* NSSegment.h in Headers */,
+				FED167AA0BE57EB300BF9889 /* NSTextBlock.h in Headers */,
+				FED167AC0BE57EB300BF9889 /* NSTextTable.h in Headers */,
+				FED167AE0BE57EB300BF9889 /* NSTextTableBlock.h in Headers */,
+				FE27AC150BE9038000136B43 /* NSTextInput.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3101,6 +3141,10 @@
 				FED310E20BCC027200552615 /* NSAnimation.m in Sources */,
 				FED310E40BCC027200552615 /* NSViewAnimation.m in Sources */,
 				FE4BDC0C0BCD40C600E19685 /* NSFontDescriptor.m in Sources */,
+				FED166D70BE502AD00BF9889 /* NSSegment.m in Sources */,
+				FED167AB0BE57EB300BF9889 /* NSTextBlock.m in Sources */,
+				FED167AD0BE57EB300BF9889 /* NSTextTable.m in Sources */,
+				FED167AF0BE57EB300BF9889 /* NSTextTableBlock.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

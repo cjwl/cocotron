@@ -24,7 +24,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSProcessInfo.h>
 #import <Foundation/NSData.h>
 #import <Foundation/NSPropertyListReader.h>
-#import <Foundation/NSPropertyListWriter.h>
+#import <Foundation/NSPropertyListWriter_vintage.h>
 #import <Foundation/NSThread.h>
 #import <Foundation/NSRunLoop.h>
 #import <Foundation/NSFileManager.h>
@@ -343,7 +343,7 @@ NSString *NSPlatformClassName=@"NSPlatform_win32";
 }
 
 -(void)logString:(NSString *)string {
-   NSData     *data=[NSPropertyListWriter nullTerminatedASCIIDataWithString:string];
+   NSData     *data=[NSPropertyListWriter_vintage nullTerminatedASCIIDataWithString:string];
    const char *cString=[data bytes];
    unsigned    length=[data length]-1; // skip 0
    DWORD       ignore;

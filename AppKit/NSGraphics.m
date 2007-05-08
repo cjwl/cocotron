@@ -75,6 +75,11 @@ void NSRectFill(NSRect rect) {
    CGContextFillRect(NSCurrentGraphicsPort(),rect);
 }
 
+void NSRectFillUsingOperation(NSRect rect,NSCompositingOperation op) {
+// FIX wrong
+   CGContextFillRect(NSCurrentGraphicsPort(),rect);
+}
+
 void NSFrameRectWithWidth(NSRect rect,float width) {
    CGContextStrokeRectWithWidth(NSCurrentGraphicsPort(),rect,width);
 }

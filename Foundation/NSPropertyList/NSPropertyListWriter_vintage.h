@@ -5,8 +5,26 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
-#import <Foundation/NSPropertyList.h>
 
-@implementation NSPropertyListSerialization
+#import <Foundation/NSObject.h>
+
+@class NSMutableData,NSData;
+
+@interface NSPropertyListWriter_vintage : NSObject {
+   NSMutableData *_data;
+}
+
+-init;
+
+-(void)encodePropertyList:object indent:(int)indent;
+
+-(NSData *)dataForRootObject:object;
+
++(NSData *)nullTerminatedASCIIDataWithString:(NSString *)string;
++(NSData *)nullTerminatedASCIIDataWithPropertyList:plist;
++(NSData *)dataWithPropertyList:plist;
++(NSString *)stringWithPropertyList:plist;
+
++(BOOL)writePropertyList:object toFile:(NSString *)path atomically:(BOOL)atomically;
 
 @end
