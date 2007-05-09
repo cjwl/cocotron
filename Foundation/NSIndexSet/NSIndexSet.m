@@ -101,10 +101,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 // these two functions are the lynchpin of performance, should be improved for large sets
 static unsigned positionOfRangeGreaterThanOrEqualToLocation(NSRange *ranges,unsigned length,unsigned location){
-   unsigned i=0;
+   unsigned i;
    
    for(i=0;i<length;i++)
-    if(location<NSMaxRange(ranges[i]));
+    if(location<NSMaxRange(ranges[i]))
      return i;
      
    return NSNotFound;

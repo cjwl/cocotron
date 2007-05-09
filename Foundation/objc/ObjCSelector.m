@@ -82,3 +82,8 @@ const char *sel_getName(SEL selector) {
 
   return NULL;
 }
+
+BOOL sel_isMapped(SEL selector) {
+   return (sel_getName(selector)!=NULL)?YES:NO;
+}
+

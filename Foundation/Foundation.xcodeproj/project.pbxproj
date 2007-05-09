@@ -1313,6 +1313,9 @@
 		FE53BE7C0BA9ED490050277F /* NSXMLNode.m in Sources */ = {isa = PBXBuildFile; fileRef = FE53BE520BA9ED490050277F /* NSXMLNode.m */; };
 		FE53BE7F0BA9ED490050277F /* NSXMLParser.h in Headers */ = {isa = PBXBuildFile; fileRef = FE53BE550BA9ED490050277F /* NSXMLParser.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE53BE800BA9ED490050277F /* NSXMLParser.m in Sources */ = {isa = PBXBuildFile; fileRef = FE53BE560BA9ED490050277F /* NSXMLParser.m */; };
+		FE5F11AC0BF0FF1100A00B2F /* objc_lock.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5F11AB0BF0FF1100A00B2F /* objc_lock.h */; };
+		FE5F11AD0BF0FF1100A00B2F /* objc_lock.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5F11AB0BF0FF1100A00B2F /* objc_lock.h */; };
+		FE5F11AE0BF0FF1100A00B2F /* objc_lock.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5F11AB0BF0FF1100A00B2F /* objc_lock.h */; };
 		FE6DC2570BA902710082AC66 /* NSAffineTransform.h in Headers */ = {isa = PBXBuildFile; fileRef = FE6DC2550BA902710082AC66 /* NSAffineTransform.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE6DC2580BA902710082AC66 /* NSAffineTransform.m in Sources */ = {isa = PBXBuildFile; fileRef = FE6DC2560BA902710082AC66 /* NSAffineTransform.m */; };
 		FE6DC2590BA902710082AC66 /* NSAffineTransform.h in Headers */ = {isa = PBXBuildFile; fileRef = FE6DC2550BA902710082AC66 /* NSAffineTransform.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -2340,6 +2343,7 @@
 		FE53BE520BA9ED490050277F /* NSXMLNode.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSXMLNode.m; sourceTree = "<group>"; };
 		FE53BE550BA9ED490050277F /* NSXMLParser.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSXMLParser.h; sourceTree = "<group>"; };
 		FE53BE560BA9ED490050277F /* NSXMLParser.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSXMLParser.m; sourceTree = "<group>"; };
+		FE5F11AB0BF0FF1100A00B2F /* objc_lock.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = objc_lock.h; sourceTree = "<group>"; };
 		FE6DC2550BA902710082AC66 /* NSAffineTransform.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSAffineTransform.h; sourceTree = "<group>"; };
 		FE6DC2560BA902710082AC66 /* NSAffineTransform.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSAffineTransform.m; sourceTree = "<group>"; };
 		FE74776D0BAC4E9000829F4F /* NSDecimal.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSDecimal.h; sourceTree = "<group>"; };
@@ -3129,6 +3133,7 @@
 		6E28034609747A2500EC542B /* objc */ = {
 			isa = PBXGroup;
 			children = (
+				FE5F11AB0BF0FF1100A00B2F /* objc_lock.h */,
 				FEB6CC0E0B4A169C004FADF2 /* objc-class.m */,
 				6E28052609747C8900EC542B /* objc_functions.m */,
 				6E8115B20A55CB99000DE3F1 /* objc_msg_lookup.m */,
@@ -3875,6 +3880,7 @@
 				FED163820BE4093700BF9889 /* NSExpression_self.h in Headers */,
 				FED163840BE4093700BF9889 /* NSExpression_variable.h in Headers */,
 				FE3F7D9E0BE63BBE007E9363 /* NSDateComponents.h in Headers */,
+				FE5F11AE0BF0FF1100A00B2F /* objc_lock.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4163,6 +4169,7 @@
 				FED163780BE4093700BF9889 /* NSExpression_self.h in Headers */,
 				FED1637A0BE4093700BF9889 /* NSExpression_variable.h in Headers */,
 				FE3F7D9C0BE63BBE007E9363 /* NSDateComponents.h in Headers */,
+				FE5F11AD0BF0FF1100A00B2F /* objc_lock.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4454,6 +4461,7 @@
 				FED1636E0BE4093700BF9889 /* NSExpression_self.h in Headers */,
 				FED163700BE4093700BF9889 /* NSExpression_variable.h in Headers */,
 				FE3F7D9A0BE63BBD007E9363 /* NSDateComponents.h in Headers */,
+				FE5F11AC0BF0FF1100A00B2F /* objc_lock.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

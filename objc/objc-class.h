@@ -52,7 +52,6 @@ typedef struct {
 
 typedef struct {
    OBJCMethodCacheEntry table[OBJCMethodCacheNumberOfEntries];
-// if we need a lock, put it at the end to avoid addition during cache lookup
 } OBJCMethodCache;
 
 @class Protocol;

@@ -28,3 +28,5 @@ typedef char  BOOL;
 OBJC_EXPORT SEL sel_getUid(const char *cString);
 OBJC_EXPORT SEL sel_registerName(const char *cString);
 OBJC_EXPORT const char *sel_getName(SEL selector);
+OBJC_EXPORT BOOL sel_isMapped(SEL selector);
+
