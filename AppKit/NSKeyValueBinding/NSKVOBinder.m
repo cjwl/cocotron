@@ -15,8 +15,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @implementation _NSKVOBinder
 -(void)startObservingChanges
 {
+	NSLog(@"binding between %@.%@ alias %@ and %@.%@ (%@)", [source className], binding, bindingPath, [destination className], keyPath, self);
+
 	[source addObserver:self
-			 forKeyPath:binding 
+			 forKeyPath:bindingPath 
 				options:NSKeyValueObservingOptionNew
 				context:nil];
 	[destination addObserver:self 
@@ -28,7 +30,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)stopObservingChanges
 {
 	NS_DURING
-		[source removeObserver:self forKeyPath:binding];
+		[source removeObserver:self forKeyPath:bindingPath];
 		[destination removeObserver:self forKeyPath:keyPath];
 	NS_HANDLER
 	NS_ENDHANDLER
@@ -36,32 +38,39 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)syncUp
 {
+	NS_DURING
+
 	id value=[destination valueForKeyPath:keyPath];
 	
 	if(value)
-		[source setValue:value forKeyPath:binding];
+		[source setValue:value forKeyPath:bindingPath];
 	else
 	{
-		value=[source valueForKeyPath:binding];
+		value=[source valueForKeyPath:bindingPath];
 		if(value)
 			[destination setValue:value forKeyPath:keyPath];
 	}
+	NS_HANDLER
+	NS_ENDHANDLER
 }
 
 - (void)observeValueForKeyPath:(NSString *)kp ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
 	[self stopObservingChanges];
-	NSLog(@"bind event from %@.%@ to %@.%@ (%@)", [source className], binding, [destination className], keyPath, self);
-	
+
 	if(object==source)
 	{
+		NSLog(@"bind event from %@.%@ alias %@ to %@.%@ (%@)", [source className], binding, bindingPath, [destination className], keyPath, self);
+
 		[destination setValue:[change valueForKey:NSKeyValueChangeNewKey]
-					   forKey:keyPath];
+					   forKeyPath:keyPath];
 	}
 	else if(object==destination)
 	{
+		NSLog(@"bind event from %@.%@ to %@.%@ alias %@ (%@)", [destination className], keyPath, [source className], binding, bindingPath, self);
+
 		[source setValue:[change valueForKey:NSKeyValueChangeNewKey]
-				  forKey:binding];
+			  forKeyPath:bindingPath];
 	}
 	
 	[self startObservingChanges];

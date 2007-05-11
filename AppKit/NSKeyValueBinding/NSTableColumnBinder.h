@@ -9,9 +9,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @class NSArray;
 
-@interface _NSTableViewBinder : _NSBinder 
+@interface _NSTableColumnBinder : _NSBinder 
 {
 	NSArray* rowValues;
+	id pathToArray;
 }
+-(void)applyToCell:(id)cell inRow:(int)row;
+-(void)updateRowValues;
+@end
+
+
+@interface _NSTableViewContentBinder : _NSBinder
 
 @end

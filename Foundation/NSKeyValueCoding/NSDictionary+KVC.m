@@ -12,6 +12,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 {
 	return [self objectForKey:key];
 }
+
+-(void)setValue:(id)value forKey:(NSString*)key
+{
+	[NSException raise:NSInvalidArgumentException format:@"%@ called on immutable dictionary %@", NSStringFromSelector(_cmd), self];
+}
 @end
 
 
@@ -19,7 +24,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)setValue:(id)value forKey:(NSString*)key
 {
 	[self willChangeValueForKey:key];
-	[self setObject:value forKey:key];
+	if(value)
+		[self setObject:value forKey:key];
+	else
+		[self removeObjectForKey:key];
 	[self didChangeValueForKey:key];
 }
 @end

@@ -37,7 +37,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)establishConnection
 {
-	NSLog(@"binding between %@.%@ and %@.%@", [_source className], _binding, [_destination className], _keyPath);
+	//NSLog(@"binding between %@.%@ and %@.%@", [_source className], _binding, [_destination className], _keyPath);
 
 	[_source bind:_binding
 		 toObject:_destination

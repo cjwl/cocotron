@@ -536,6 +536,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [self setObjectValue:[NSNumber numberWithDouble:value]];
 }
 
+
 -(void)setAttributedStringValue:(NSAttributedString *)value {
    value=[value copy];
    [_objectValue release];

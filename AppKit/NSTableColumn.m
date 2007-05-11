@@ -1,4 +1,5 @@
 /* Copyright (c) 2006-2007 Christopher J. W. Lloyd
+   Copyright (c) 2007 Johannes Fortmann
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
@@ -9,6 +10,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 // Original - David Young <daver@geeks.org>
 #import <AppKit/AppKit.h>
 #import <AppKit/NSNibKeyedUnarchiver.h>
+
+#import "NSKeyValueBinding/NSTableColumnBinder.h"
+#import "NSKeyValueBinding/NSKVOBinder.h"
 
 @implementation NSTableColumn
 
@@ -144,5 +148,56 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(NSCell *)dataCellForRow:(int)row {
     return [self dataCell];
 }
+
+-(int)_rowCountFromBindings
+{
+	id binder=[self _binderForBinding:@"value" create:NO];
+	if(!binder)
+		return -1;
+	return [binder count];
+}
+
+-(void)_boundValuesChanged
+{
+	id binders=[self _allUsedBinders];
+	int count=[binders count];
+	int i;
+	for(i=0; i<count; i++)
+	{
+		id binder=[binders objectAtIndex:i];
+		if([binder isKindOfClass:[_NSTableColumnBinder class]])
+		{
+			[binder updateRowValues];			
+		}
+	}	
+}
+
+-(void)prepareCell:(id)cell inRow:(int)row
+{
+	id binders=[self _allUsedBinders];
+	int count=[binders count];
+	int i;
+	for(i=0; i<count; i++)
+	{
+		id binder=[binders objectAtIndex:i];
+		if([binder isKindOfClass:[_NSTableColumnBinder class]])
+		{
+			[binder applyToCell:cell inRow:row];			
+		}
+	}	
+}
+
+
+
++(Class)_binderClassForBinding:(id)binding
+{
+	if([binding isEqual:@"headerTitle"] ||
+	   [binding isEqual:@"maxWidth"] ||
+	   [binding isEqual:@"minWidth"] ||
+	   [binding isEqual:@"width"])
+		return [_NSKVOBinder class];
+	return [_NSTableColumnBinder class];
+}
+
 
 @end

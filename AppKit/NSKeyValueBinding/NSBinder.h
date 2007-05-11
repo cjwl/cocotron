@@ -12,8 +12,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	id source;
 	id destination;
 	id keyPath;
+	id bindingPath;
 	id binding;
+	id options;
 }
+- (id)options;
+- (void)setOptions:(id)value;
+
 - (id)source;
 - (void)setSource:(id)value;
 

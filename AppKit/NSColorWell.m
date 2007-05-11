@@ -20,6 +20,19 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @implementation NSColorWell
 
++(void)initialize
+{
+	[self setKeys:[NSArray arrayWithObjects:@"color", @"something", nil]
+ triggerChangeNotificationsForDependentKey:@"value"];
+}
+
+-(id)_replacementKeyPathForBinding:(id)binding
+{
+	if([binding isEqual:@"value"])
+		return @"color";
+	return binding;
+}
+
 // private
 NSString *_NSColorWellDidBecomeExclusiveNotification=@"_NSColorWellDidBecomeExclusiveNotification";
 
@@ -127,6 +140,9 @@ NSString *_NSColorWellDidBecomeExclusiveNotification=@"_NSColorWellDidBecomeExcl
 }
 
 -(void)setColor:(NSColor *)color {
+	if(![color isKindOfClass:[NSColor class]])
+		return [self setColor:[NSColor blackColor]];
+
    color=[color retain];
    [_color release];
    _color=color;
@@ -253,5 +269,6 @@ NSString *_NSColorWellDidBecomeExclusiveNotification=@"_NSColorWellDidBecomeExcl
 
    return YES;
 }
+
 
 @end

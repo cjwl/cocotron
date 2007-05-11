@@ -10,6 +10,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/AppKit.h>
 #import <AppKit/NSTableCornerView.h>
 #import <AppKit/NSNibKeyedUnarchiver.h>
+#import "NSKeyValueBinding/NSTableColumnBinder.h"
+#import "NSKeyValueBinding/NSKVOBinder.h"
 
 NSString *NSTableViewSelectionIsChangingNotification=@"NSTableViewSelectionIsChangingNotification";
 NSString *NSTableViewSelectionDidChangeNotification=@"NSTableViewSelectionDidChangeNotification";
@@ -32,6 +34,27 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
 @end
 
 @implementation NSTableView
+
+-(id)_replacementKeyPathForBinding:(id)binding
+{
+	if([binding isEqual:@"selectionIndexes"])
+		return @"selectedRowIndexes";
+	return binding;
+}
+
++(Class)_binderClassForBinding:(id)binding
+{
+	if([binding isEqual:@"content"])
+	   return [_NSTableViewContentBinder class];
+	return [_NSKVOBinder class];
+}
+
+-(void)_boundValuesChanged
+{
+	[_tableColumns makeObjectsPerformSelector:@selector(_boundValuesChanged)];
+	[self reloadData];
+}
+
 
 -(void)encodeWithCoder:(NSCoder *)coder {
    NSUnimplementedMethod();
@@ -59,7 +82,7 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
     _allowsEmptySelection=(flags&0x10000000)?YES:NO;
     _allowsColumnSelection=(flags&0x04000000)?YES:NO;
     _intercellSpacing = NSMakeSize(3.0,2.0);
-    _selectedRows = [[NSMutableArray alloc] init];
+	_selectedRowIndexes = [[NSIndexSet alloc] init];
     _selectedColumns = [[NSMutableArray alloc] init];
     _editedColumn = -1;
     _editedRow = -1;
@@ -76,7 +99,7 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
         // Returns the height of each row in the receiver. The default row height is 16.0.
         _rowHeight = 16.0;
         _intercellSpacing = NSMakeSize(3.0,2.0);
-        _selectedRows = [[NSMutableArray alloc] init];
+		_selectedRowIndexes = [[NSIndexSet alloc] init];
         _selectedColumns = [[NSMutableArray alloc] init];
         _editedColumn = -1;
         _editedRow = -1;
@@ -106,7 +129,7 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
    [_tableColumns release];
    [_backgroundColor release];
    [_gridColor release];
-   [_selectedRows release];
+   [NSIndexSet release];
    [_selectedColumns release];
    [super dealloc];
 }
@@ -194,6 +217,12 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
 }
 
 -(int)numberOfRows {
+	int val;
+	if((val = [[_tableColumns lastObject] _rowCountFromBindings]) >= 0)
+	{
+		return val;
+	}
+		
     return [_dataSource numberOfRowsInTableView:self];
 }
 
@@ -543,11 +572,24 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
     return _clickedColumn;
 }
 
+- (NSIndexSet *)selectedRowIndexes {
+    return [[_selectedRowIndexes retain] autorelease];
+}
+
+- (void)setSelectedRowIndexes:(NSIndexSet *)value {
+    if (_selectedRowIndexes != value) {
+        [_selectedRowIndexes release];
+        _selectedRowIndexes = [value copy];
+		
+		[self setNeedsDisplay:YES];
+    }
+}
+
 -(int)selectedRow {
-    if([_selectedRows count]==0)
+    if([_selectedRowIndexes count]==0)
      return -1;
 
-    return [[_selectedRows objectAtIndex:0] intValue];
+    return [_selectedRowIndexes firstIndex];
 }
 
 -(int)selectedColumn {
@@ -558,7 +600,7 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
 }
 
 -(int)numberOfSelectedRows {
-    return [_selectedRows count];
+    return [_selectedRowIndexes count];
 }
 
 -(int)numberOfSelectedColumns {
@@ -566,7 +608,7 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
 }
 
 -(BOOL)isRowSelected:(int)row {
-    return [_selectedRows containsObject:[NSNumber numberWithInt:row]];
+    return [_selectedRowIndexes containsIndex:row];
 }
 
 -(BOOL)isColumnSelected:(int)col {
@@ -578,22 +620,28 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
 }
 
 -(NSEnumerator *)selectedRowEnumerator {
-    return [_selectedRows objectEnumerator];
+	NSUnimplementedMethod();
 }
 
 -(void)selectRow:(int)row byExtendingSelection:(BOOL)extend  {
+	NSLog(@"selectRow:%i extend:%i", row, extend);
+
     // selecting a row deselects all columns
     [_selectedColumns removeAllObjects];
+	
+	NSMutableIndexSet* selectedRowIndexes=[[[self selectedRowIndexes] mutableCopy] autorelease];
 
     if (extend == NO)
-        [_selectedRows removeAllObjects];
+		[selectedRowIndexes removeAllIndexes];
+	
 
-    if (![_selectedRows containsObject:[NSNumber numberWithInt:row]]) {
+    if (![selectedRowIndexes containsIndex:row]) {
         if ([self delegateShouldSelectRow:row])
-            [_selectedRows addObject:[NSNumber numberWithInt:row]];
+            [selectedRowIndexes addIndex:row];
     }
+	
+	[self setSelectedRowIndexes:selectedRowIndexes];
 
-    [self setNeedsDisplay:YES];
     [_headerView setNeedsDisplay:YES];
 }
 
@@ -601,7 +649,7 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
     NSTableColumn *tableColumn = [_tableColumns objectAtIndex:column];
     
     // selecting a column deselects all rows
-    [_selectedRows removeAllObjects];
+	[self setSelectedRowIndexes:[NSIndexSet indexSet]];
     
     if (extend == NO)
         [_selectedColumns removeAllObjects];
@@ -616,9 +664,12 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
 }
 
 -(void)deselectRow:(int)row {
-    if ([_selectedRows containsObject:[NSNumber numberWithInt:row]]) {
-        [_selectedRows removeObject:[NSNumber numberWithInt:row]];
-        [self setNeedsDisplay:YES];
+	NSMutableIndexSet* selectedRowIndexes=[self selectedRowIndexes];
+
+    if ([selectedRowIndexes containsIndex:row]) {
+		selectedRowIndexes=[[[self selectedRowIndexes] mutableCopy] autorelease];
+        [selectedRowIndexes removeIndex:row];
+		[self setSelectedRowIndexes:selectedRowIndexes];
     }
 }
 
@@ -641,7 +692,7 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
 }
 
 -(void)deselectAll:sender  {
-    [_selectedRows removeAllObjects];
+	[self setSelectedRowIndexes:[NSIndexSet indexSet]];
     [_selectedColumns removeAllObjects];
 
     [self setNeedsDisplay:YES];
@@ -737,6 +788,7 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
                     [self drawHighlightedSelectionForColumn:column row:row inRect:[self frameOfCellAtColumn:column row:row]];
 }
 
+
 -(void)drawRow:(int)row clipRect:(NSRect)clipRect {
     // draw only visible columns.
     NSRange visibleColumns = [self columnsInRect:clipRect];
@@ -752,14 +804,16 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
         NSRect cellRect = NSInsetRect([self frameOfCellAtColumn:drawThisColumn row:row], _intercellSpacing.width/2, _intercellSpacing.height/2);
 
         if (!(row == _editedRow && drawThisColumn == _editedColumn)) {
-            [dataCell setObjectValue:[_dataSource tableView:self objectValueForTableColumn:column row:row]];
+            [dataCell setObjectValue:[self dataSourceObjectValueForTableColumn:column row:row]];
             
             if ([dataCell type] == NSTextCellType) {
                 if ([self isRowSelected:row] || [self isColumnSelected:drawThisColumn])
                     [dataCell setTextColor:[NSColor selectedTextColor]];
                 else 
-                    [dataCell setTextColor:[NSColor textColor]];
+					[dataCell setTextColor:[NSColor textColor]];
             }
+			
+			[column prepareCell:dataCell inRow:row];
 
             if ([_delegate respondsToSelector:@selector(tableView:willDisplayCell:forTableColumn:row:)])
                 [_delegate tableView:self willDisplayCell:dataCell forTableColumn:column row:row];
@@ -1108,7 +1162,7 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
     for (i = 0; i < _numberOfRows; ++i) {
         NSCell *dataCell = [column dataCellForRow:i];
         
-        [dataCell setObjectValue:[_dataSource tableView:self objectValueForTableColumn:column row:i]];
+        [dataCell setObjectValue:[self dataSourceObjectValueForTableColumn:column row:i]];
         width = [[dataCell attributedStringValue] size].width;
         if (width > minWidth)
             minWidth = width;

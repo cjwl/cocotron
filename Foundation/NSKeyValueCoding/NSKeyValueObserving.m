@@ -36,7 +36,7 @@ static BOOL CreateClassDefinition( const char * name, const char * superclassNam
 #pragma mark -
 #pragma mark KVO implementation
 
-NSMutableDictionary *observationInfo=nil;
+NSMutableDictionary *observationInfos=nil;
 NSLock *kvoLock=nil;
 
 @interface NSObject (KVOSettersForwardReferencs)
@@ -47,26 +47,26 @@ NSLock *kvoLock=nil;
 
 -(void*)observationInfo
 {
-	return [[observationInfo objectForKey:[NSValue valueWithPointer:self]] pointerValue];
+	return [[observationInfos objectForKey:[NSValue valueWithPointer:self]] pointerValue];
 }
 
 -(void)setObservationInfo:(void*)info
 {
-	if(!observationInfo)
-		observationInfo=[NSMutableDictionary new];
-	[observationInfo setObject:[NSValue valueWithPointer:info] forKey:[NSValue valueWithPointer:self]];
+	if(!observationInfos)
+		observationInfos=[NSMutableDictionary new];
+	[observationInfos setObject:[NSValue valueWithPointer:info] forKey:[NSValue valueWithPointer:self]];
 }
 
 +(void*)observationInfo
 {
-	return [[observationInfo objectForKey:[NSValue valueWithPointer:self]] pointerValue];
+	return [[observationInfos objectForKey:[NSValue valueWithPointer:self]] pointerValue];
 }
 
 +(void)setObservationInfo:(void*)info
 {
-	if(!observationInfo)
-		observationInfo=[NSMutableDictionary new];
-	[observationInfo setObject:[NSValue valueWithPointer:info] forKey:[NSValue valueWithPointer:self]];
+	if(!observationInfos)
+		observationInfos=[NSMutableDictionary new];
+	[observationInfos setObject:[NSValue valueWithPointer:info] forKey:[NSValue valueWithPointer:self]];
 }
 
 -(void)addObserver:(id)observer forKeyPath:(NSString*)keyPath options:(NSKeyValueObservingOptions)options context:(void*)context realKeyPath:(id)realKeyPath;
@@ -158,6 +158,11 @@ NSLock *kvoLock=nil;
 			if(![observers count])
 			{
 				[dict removeObjectForKey:firstPart];
+			}
+			if(![dict count])
+			{
+				[dict release];
+				[self setObservationInfo:nil];
 			}
 			return;
 		}
@@ -266,14 +271,16 @@ NSLock *kvoLock=nil;
 		{
 			id oldValue=[info oldValue];
 			if(oldValue)
-				[dict setObject:[info oldValue] 
+				[dict setObject:oldValue 
 						 forKey:NSKeyValueChangeOldKey];
 			[info setOldValue:nil];
 		}
 		if(info->options & NSKeyValueObservingOptionNew)
 		{
-			[dict setObject:[self valueForKeyPath:keyPath] 
-					 forKey:NSKeyValueChangeNewKey];
+			id newValue=[self valueForKeyPath:keyPath];
+			if(newValue)
+				[dict setObject:newValue
+						 forKey:NSKeyValueChangeNewKey];
 		}
 		[dict setObject:NSKeyValueChangeKindKey 
 				 forKey:NSKeyValueChangeKindKey];
@@ -352,13 +359,23 @@ NSLock *kvoLock=nil;
 // extracts key from selector called, calls original function
 #define CHANGE_DECLARATION(type) CHANGE_DEFINE(type) \
 { \
-	NSString* sel=NSStringFromSelector(_cmd); \
-	NSString* key=[sel _KVC_setterKeyNameFromSelectorName]; \
+	const char* origName = sel_getName(_cmd); \
+	int selLen=strlen(origName); \
+	char *sel=alloca(selLen+1); \
+	strcpy(sel, origName); \
+	sel[selLen-1]='\0'; \
+	if(sel[0]=='_') \
+		sel+=4; \
+	else \
+		sel+=3; \
+	sel[0]=tolower(sel[0]); \
+	NSString *key=[[NSString alloc] initWithCString:sel]; \
 	[self willChangeValueForKey:key]; \
 	typedef id (*sender)(id obj, SEL selector, type value); \
 	sender implementation=(sender)[[self superclass] instanceMethodForSelector:_cmd]; \
 	*implementation(self, _cmd, value); \
 	[self didChangeValueForKey:key]; \
+	[key release]; \
 }
 
 
@@ -509,7 +526,7 @@ CHANGE_DECLARATION(SEL)
 			SEL kvoSelector=nil;
 			
 			// current method is a setter?
-			if([methodName hasPrefix:@"set"] &&
+			if(([methodName hasPrefix:@"set"] || [methodName hasPrefix:@"_set"]) &&
 			   [[self methodSignatureForSelector:method->method_name] numberOfArguments]==3 &&
 			   [[self class] automaticallyNotifiesObserversForKey:[methodName _KVC_setterKeyNameFromSelectorName]])
 			{
@@ -542,7 +559,6 @@ CHANGE_DECLARATION(SEL)
 
 //				if(kvoSelector==0)
 //					NSLog(@"type %s not defined in %s:%i (selector %s on class %@)", firstParameterType, __FILE__, __LINE__, SELNAME(method->method_name), [self className]);
-				
 			}
 			// there's a suitable selector for us
 			if(kvoSelector!=0)

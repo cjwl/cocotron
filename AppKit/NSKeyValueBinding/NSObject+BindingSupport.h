@@ -10,5 +10,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @class NSDictionary;
 
 @interface NSObject (BindingSupport)
--(void)bind:(id)binding toObject:(id)destination withKeyPath:(NSString*)keyPath options:(NSDictionary*)options;
+-(void)bind:(id)binding toObject:(NSString*)destination withKeyPath:(NSString*)keyPath options:(NSDictionary*)options;
+-(void)infoForBinding:(NSString*)binding;
+-(void)unbind:(NSString*)binding;
+@end
+
+
+@interface NSObject (InternalBindingSupport)
++(Class)_binderClassForBinding:(id)binding;
+-(void)_cleanupBinders;
+-(NSArray*)_allUsedBinders;
 @end

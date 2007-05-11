@@ -41,8 +41,8 @@ APPKIT_EXPORT NSString *NSTableViewColumnDidResizeNotification;
 
    // temp ivars
    int _numberOfRows;
-   NSMutableArray *_selectedRows;
    NSMutableArray *_selectedColumns;
+   NSIndexSet *_selectedRowIndexes;
    int _clickedColumn, _clickedRow;
    int _editedColumn, _editedRow;
    id _editingCell;
@@ -148,6 +148,8 @@ APPKIT_EXPORT NSString *NSTableViewColumnDidResizeNotification;
 -(void)drawRow:(int)row clipRect:(NSRect)rect;
 -(void)drawGridInClipRect:(NSRect)rect;
 
+- (NSIndexSet *)selectedRowIndexes;
+- (void)setSelectedRowIndexes:(NSIndexSet *)value;
 @end
 
 @interface NSObject(NSTableView_dataSource)

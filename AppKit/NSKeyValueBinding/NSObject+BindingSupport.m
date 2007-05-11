@@ -5,17 +5,18 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
-#import <AppKit/NSObject+BindingSupport.h>
 #import "NSKVOBinder.h"
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSValue.h>
+#import <Foundation/NSString.h>
+#import <AppKit/NSObject+BindingSupport.h>
 
 NSMutableDictionary *bindersForObjects=nil;
 @implementation NSObject (BindingSupport)
 
--(Class)_binderClassForBinding:(id)binding
++(Class)_binderClassForBinding:(id)binding
 {
-	//return nil;
+	//return [_NSBinder class];
 	return [_NSKVOBinder class];
 }
 
@@ -37,11 +38,18 @@ NSMutableDictionary *bindersForObjects=nil;
 	
 	if(!binder && create)
 	{
-		binder = [[[self _binderClassForBinding:binding] new] autorelease];
+		binder = [[[isa _binderClassForBinding:binding] new] autorelease];
 		[ownBinders setObject:binder forKey:binding];
 	}
 	
 	return binder;
+}
+
+-(id)_replacementKeyPathForBinding:(id)binding
+{
+	if([binding isEqual:@"value"])
+		return @"objectValue";
+	return binding;
 }
 
 -(void)_cleanupBinders
@@ -49,9 +57,9 @@ NSMutableDictionary *bindersForObjects=nil;
 	[bindersForObjects removeObjectForKey:[NSValue valueWithNonretainedObject:self]];
 }
 
--(void)bind:(id)binding toObject:(id)destination withKeyPath:(NSString*)keyPath options:(NSDictionary*)options
+-(void)bind:(NSString*)binding toObject:(id)destination withKeyPath:(NSString*)keyPath options:(NSDictionary*)options
 {
-	if(![self _binderClassForBinding:binding])
+	if(![isa _binderClassForBinding:binding])
 		return;
 
 	id binder=[self _binderForBinding:binding create:NO];
@@ -65,7 +73,31 @@ NSMutableDictionary *bindersForObjects=nil;
 	[binder setDestination:destination];
 	[binder setKeyPath:keyPath];
 	[binder setBinding:binding];
+	[binder setOptions:options];
 	
 	[binder bind];
+}
+
+-(void)unbind:(NSString*)binding
+{
+	id key = [NSValue valueWithNonretainedObject:self];
+	id ownBinders = [bindersForObjects objectForKey:key];
+	
+	id binder=[ownBinders objectForKey:binding];
+	[binder unbind];
+	
+	[ownBinders removeObjectForKey:binding];	
+}
+
+-(void)infoForBinding:(NSString*)binding
+{
+	return [[self _binderForBinding:binding create:NO] options];	
+}
+
+-(NSArray*)_allUsedBinders
+{
+	id key = [NSValue valueWithNonretainedObject:self];
+	id ownBinders = [bindersForObjects objectForKey:key];
+	return [ownBinders allValues];
 }
 @end

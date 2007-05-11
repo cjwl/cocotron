@@ -35,7 +35,7 @@ static inline void setObjectForKey(NSMutableDictionary_mapTable *self,id object,
    if (key==nil)
     NSRaiseException(NSInvalidArgumentException,self,@selector(setObject:forKey:),@"Attempt to insert object with nil key");
    else if(object==nil)
-    NSRaiseException(NSInvalidArgumentException,self,@selector(setObject:forKey:),@"Attempt to insert nil object");
+    NSRaiseException(NSInvalidArgumentException,self,@selector(setObject:forKey:),@"Attempt to insert nil object for key %@", key);
 
 
    key=[key copy];

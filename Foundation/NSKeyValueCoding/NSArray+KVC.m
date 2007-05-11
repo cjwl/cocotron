@@ -51,7 +51,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	id obj;
 	while(obj=[en nextObject])
 	{
-		id val=[obj valueForKeyPath:key];
+		id val=[obj valueForKey:key];
 		if(!val)
 			val=[NSNull null];
 		[array addObject:val];
@@ -151,9 +151,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 {
 	return [NSNumber numberWithInt:[self count]];
 }
-@end
 
-@implementation NSMutableArray (NSKeyValueCoding)
 -(void)setValue:(id)value forKey:(NSString*)key
 {
 	id en=[self objectEnumerator];
@@ -176,3 +174,40 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @end
 
 
+@implementation NSArray (KVO)
+
+- (void)addObserver:(NSObject *)observer toObjectsAtIndexes:(NSIndexSet *)indexes forKeyPath:(NSString *)keyPath options:(NSKeyValueObservingOptions)options context:(void *)context
+{
+	unsigned idx=[indexes firstIndex];
+	while(idx!=NSNotFound)
+	{
+		[[self objectAtIndex:idx] addObserver:observer
+								   forKeyPath:keyPath
+									  options:options
+									  context:context];
+		idx=[indexes indexGreaterThanIndex:idx];
+	}
+}
+
+- (void)removeObserver:(NSObject *)observer fromObjectsAtIndexes:(NSIndexSet *)indexes forKeyPath:(NSString *)keyPath
+{
+	unsigned idx=[indexes firstIndex];
+	while(idx!=NSNotFound)
+	{
+		[[self objectAtIndex:idx] removeObserver:observer
+									  forKeyPath:keyPath];
+		idx=[indexes indexGreaterThanIndex:idx];
+	}
+}
+
+
+-(void)addObserver:(id)observer forKeyPath:(NSString*)keyPath options:(NSKeyValueObservingOptions)options context:(void*)context;
+{
+	NSRaiseException(NSInvalidArgumentException,self,_cmd,@"not supported for key path %@ (observer was %@)", keyPath, observer);
+}
+
+-(void)removeObserver:(id)observer forKeyPath:(NSString*)keyPath;
+{
+	NSRaiseException(NSInvalidArgumentException,self,_cmd,@"not supported for key path %@ (observer was %@)", keyPath, observer);	
+}
+@end

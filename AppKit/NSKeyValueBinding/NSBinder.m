@@ -18,6 +18,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     if (source != value) 
 	{
         source = value;
+		[self setBindingPath:[source _replacementKeyPathForBinding:binding]];
     }
 }
 
@@ -53,6 +54,29 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     if (binding != value) {
         [binding release];
         binding = [value copy];
+		[self setBindingPath:[source _replacementKeyPathForBinding:binding]];
+    }
+}
+
+- (id)options {
+    return [[options retain] autorelease];
+}
+
+- (void)setOptions:(id)value {
+    if (options != value) {
+        [options release];
+        options = [value copy];
+    }
+}
+
+- (id)bindingPath {
+    return [[bindingPath retain] autorelease];
+}
+
+- (void)setBindingPath:(id)value {
+    if (bindingPath != value) {
+        [bindingPath release];
+        bindingPath = [value copy];
     }
 }
 
@@ -64,8 +88,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	[self stopObservingChanges];
 	[keyPath release];
 	[binding release];
+	[options release];
+	[bindingPath release];
 	[super dealloc];
 }
+
+
 
 -(void)bind
 {

@@ -289,8 +289,13 @@ static NSMutableDictionary *cellClassDictionary = nil;
 
 -(void)updateCell:(NSCell *)cell {
     if (_cell == cell)
+	{
+		[self willChangeValueForKey:@"objectValue"];
+		[self didChangeValueForKey:@"objectValue"];
         [self setNeedsDisplay:YES];
+	}
 }
+
 
 -(void)updateCellInside:(NSCell *)cell {
     if (_cell == cell)
