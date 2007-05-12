@@ -22,6 +22,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSPropertyListWriter_vintage.h>
 #import <Foundation/NSKeyedUnarchiver.h>
 #import <Foundation/NSPredicate.h>
+#import <Foundation/NSIndexSet.h>
 
 #import <malloc.h>
 
@@ -209,6 +210,19 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
    for(i=0;i<range.length;i++)
     objects[i]=[self objectAtIndex:loc+i];
+}
+
+-(NSArray *)objectsAtIndexes:(NSIndexSet *)indexes {
+   unsigned i,count=[indexes count];
+   unsigned buffer[count];
+   id       objects[count];
+
+   count=[indexes getIndexes:buffer maxCount:count inIndexRange:NULL];
+//  getObjects:range: would make more sense
+   for(i=0;i<count;i++)
+    objects[i]=[self objectAtIndex:buffer[i]];
+   
+   return [NSArray arrayWithObjects:objects count:count];
 }
 
 -(NSArray *)subarrayWithRange:(NSRange)range {

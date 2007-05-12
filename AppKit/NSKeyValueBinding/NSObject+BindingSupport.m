@@ -89,7 +89,7 @@ NSMutableDictionary *bindersForObjects=nil;
 	[ownBinders removeObjectForKey:binding];	
 }
 
--(void)infoForBinding:(NSString*)binding
+-(NSDictionary *)infoForBinding:(NSString*)binding
 {
 	return [[self _binderForBinding:binding create:NO] options];	
 }

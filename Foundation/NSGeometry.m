@@ -12,6 +12,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSStringFormatter.h>
 #import <Foundation/NSObjCRuntime.h>
 #import <Foundation/NSRaise.h>
+#import <math.h>
 
 const NSPoint NSZeroPoint={0,0};
 
@@ -102,13 +103,21 @@ NSRect NSInsetRect(NSRect rect,float dx,float dy) {
 }
 
 NSRect NSOffsetRect(NSRect rect,float dx,float dy) {
-   NSUnimplementedFunction();
-   return NSZeroRect;
+   rect.origin.x+=dx; 
+   rect.origin.y+=dy; 
+   return rect; 
+
 }
 
 NSRect NSIntegralRect(NSRect rect) {
-   NSUnimplementedFunction();
-   return NSZeroRect;
+   if (!NSIsEmptyRect(rect)) { 
+      rect.origin.x = floor(rect.origin.x); 
+      rect.origin.y = floor(rect.origin.y); 
+      rect.size.width = ceil(rect.size.width); 
+      rect.size.height = ceil(rect.size.height); 
+   } 
+   return rect; 
+
 }
 
 NSRect NSUnionRect(NSRect rect0,NSRect rect1) {

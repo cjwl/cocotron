@@ -30,25 +30,25 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	id arrangedObjects;
 }
 
-#if 0
 -(NSArray *)sortDescriptors;
 -(NSPredicate *)filterPredicate;
 -(BOOL)alwaysUsesMultipleValuesMarker;
--(BOOL)clearsFilterPredicateOnInsertion;
--(BOOL)automaticallyPreparesContent;
--(BOOL)avoidsEmptySelection;
--(BOOL)selectsInsertedObjects;
--(BOOL)preservesSelection;
+//-(BOOL)clearsFilterPredicateOnInsertion;
+//-(BOOL)automaticallyPreparesContent;
+//-(BOOL)avoidsEmptySelection;
+//-(BOOL)selectsInsertedObjects;
+//-(BOOL)preservesSelection;
 
 -(void)setSortDescriptors:(NSArray *)descriptors;
 -(void)setFilterPredicate:(NSPredicate *)predicate;
--(void)setAlwaysUsesMultipleValuesMarker:(BOOL)flag;
--(void)setClearsFilterPredicateOnInsertion:(BOOL)flag;
--(void)setAutomaticallyPreparesContent:(BOOL)flag;
--(void)setAvoidsEmptySelection:(BOOL)flag;
--(void)setSelectsInsertedObjects:(BOOL)flag;
--(void)setPreservesSelection:(BOOL)flag;
+//-(void)setAlwaysUsesMultipleValuesMarker:(BOOL)flag;
+//-(void)setClearsFilterPredicateOnInsertion:(BOOL)flag;
+//-(void)setAutomaticallyPreparesContent:(BOOL)flag;
+//-(void)setAvoidsEmptySelection:(BOOL)flag;
+//-(void)setSelectsInsertedObjects:(BOOL)flag;
+//-(void)setPreservesSelection:(BOOL)flag;
 
+#if 0
 -(void)addObject:object;
 -(void)addObjects:(NSArray *)objects;
 -(void)insertObject:object atArrangedObjectIndex:(unsigned)index;
@@ -57,33 +57,33 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)removeObjectAtArrangedObjectIndex:(unsigned)index;
 -(void)removeObjects:(NSArray *)objects;
 -(void)removeObjectsAtArrangedObjectIndexes:(NSIndexSet *)indices;
+#endif
 
 -(NSIndexSet *)selectionIndexes;
--(unsigned)selectionIndex;
+//-(unsigned)selectionIndex;
 -(NSArray *)selectedObjects;
 
--(BOOL)canInsert;
--(BOOL)canSelectNext;
--(BOOL)canSelectPrevious;
+//-(BOOL)canInsert;
+//-(BOOL)canSelectNext;
+//-(BOOL)canSelectPrevious;
 
--(void)insert:sender;
+//-(void)insert:sender;
 -(void)remove:sender;
 -(void)selectNext:sender;
 -(void)selectPrevious:sender;
 
--(void)setSelectedObjects:(NSArray *)objects;
--(void)setSelectionIndex:(unsigned)index;
+//-(void)setSelectedObjects:(NSArray *)objects;
+-(BOOL)setSelectionIndex:(unsigned)index;
 -(BOOL)setSelectionIndexes:(NSIndexSet *)indices;
 
--(BOOL)addSelectedObjects:(NSArray *)objects;
--(BOOL)addSelectionIndexes:(NSIndexSet *)indices;
+//-(BOOL)addSelectedObjects:(NSArray *)objects;
+//-(BOOL)addSelectionIndexes:(NSIndexSet *)indices;
 
--(BOOL)removeSelectedObjects:(NSArray *)objects;
--(BOOL)removeSelectionInddexes:(NSIndexSet *)indices;
+//-(BOOL)removeSelectedObjects:(NSArray *)objects;
+//-(BOOL)removeSelectionIndexes:(NSIndexSet *)indices;
 
 -arrangedObjects;
--(NSArray *)arrangeObjects:(NSArray *)objects;
--(void)rearrangeObjects;
-#endif
+//-(NSArray *)arrangeObjects:(NSArray *)objects;
+//-(void)rearrangeObjects;
 
 @end

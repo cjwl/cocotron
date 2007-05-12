@@ -12,6 +12,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSKeyValueCoding.h>
 #import <Foundation/NSArray.h>
 #import <Foundation/NSString.h>
+#import <AppKit/NSTableView.h>
+#import <AppKit/NSTableColumn.h>
 
 
 @implementation _NSTableColumnBinder

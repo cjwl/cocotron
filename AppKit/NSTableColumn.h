@@ -48,4 +48,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(NSCell *)dataCellForRow:(int)row;
 
+// internal
+-(void)prepareCell:(id)cell inRow:(int)row;
+-(int)_rowCountFromBindings;
+-(void)_boundValuesChanged;
+
 @end

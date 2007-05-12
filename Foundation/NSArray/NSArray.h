@@ -9,7 +9,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSObject.h>
 #import <Foundation/NSRange.h>
 
-@class NSString,NSEnumerator,NSDictionary,NSPredicate;
+@class NSString,NSEnumerator,NSDictionary,NSPredicate,NSIndexSet;
 
 @interface NSArray : NSObject <NSCopying,NSMutableCopying,NSCoding>
 
@@ -31,6 +31,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)getObjects:(id *)objects;
 -(void)getObjects:(id *)objects range:(NSRange)range;
+
+-(NSArray *)objectsAtIndexes:(NSIndexSet *)indexes;
 
 -(NSArray *)subarrayWithRange:(NSRange)range;
 

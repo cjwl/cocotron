@@ -10,6 +10,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 // Original - David Young <daver@geeks.org>
 #import <AppKit/AppKit.h>
 #import <AppKit/NSNibKeyedUnarchiver.h>
+#import <AppKit/NSObject+BindingSupport.h>
 
 #import "NSKeyValueBinding/NSTableColumnBinder.h"
 #import "NSKeyValueBinding/NSKVOBinder.h"

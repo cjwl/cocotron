@@ -11,6 +11,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "NSArrayControllerSelectionProxy.h"
 #import <Foundation/NSIndexSet.h>
 #import <Foundation/NSException.h>
+#import <Foundation/NSCoder.h>
+#import <Foundation/NSPredicate.h>
+#import <Foundation/NSKeyValueObserving.h>
 
 @implementation NSArrayController
 
@@ -58,6 +61,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     return [[contentArray retain] autorelease];
 }
 
+- (void)setArrangedObjects:(id)value {
+    if (arrangedObjects != value) 
+	{
+		[arrangedObjects release];
+        arrangedObjects = [[NSArray alloc] initWithArray:value];
+    }
+}
+
 - (void)setContentArray:(id)value {
     if (contentArray != value) {
         [contentArray release];
@@ -71,16 +82,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     }
 }
 
-- (void)setArrangedObjects:(id)value {
-    if (arrangedObjects != value) 
-	{
-		[arrangedObjects release];
-        arrangedObjects = [[NSArray alloc] initWithArray:value];
-    }
-}
-
-
-
 -(id)arrangedObjects
 {
 	return arrangedObjects;
@@ -91,14 +92,19 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	return _selection;
 }
 
-- (id)selectionIndexes {
+- (NSIndexSet *)selectionIndexes {
     return [[selectionIndexes retain] autorelease];
 }
 
-- (void)setSelectionIndexes:(id)value {
+-(BOOL)setSelectionIndex:(unsigned)index {
+   return [self setSelectionIndexes:[NSIndexSet indexSetWithIndex:index]];
+}
+
+- (BOOL)setSelectionIndexes:(NSIndexSet *)value {
 	if(!value && flags.avoidsEmptySelection && [[self arrangedObjects] count])
 		value=[NSIndexSet indexSetWithIndex:0];
-	
+
+// use isEqualToIndexSet: ?	
     if (selectionIndexes != value) {
         [selectionIndexes release];
         selectionIndexes = [value copy];
@@ -112,25 +118,27 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 		[self didChangeValueForKey:@"selection"];		
 
+     return YES;
     }
+    return NO;
 }
 
-- (id)sortDescriptors {
+- (NSArray *)sortDescriptors {
     return [[sortDescriptors retain] autorelease];
 }
 
-- (void)setSortDescriptors:(id)value {
+- (void)setSortDescriptors:(NSArray *)value {
     if (sortDescriptors != value) {
         [sortDescriptors release];
         sortDescriptors = [value copy];
     }
 }
 
-- (id)filterPredicate {
+- (NSPredicate *)filterPredicate {
     return [[filterPredicate retain] autorelease];
 }
 
-- (void)setFilterPredicate:(id)value {
+- (void)setFilterPredicate:(NSPredicate *)value {
     if (filterPredicate != value) {
         [filterPredicate release];
         filterPredicate = [value copy];
@@ -142,7 +150,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	return flags.alwaysUsesMultipleValuesMarker;
 }
 
--(id)selectedObjects
+-(NSArray *)selectedObjects
 {
 	id idxs=[self selectionIndexes];
 	if(idxs)
@@ -164,8 +172,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)selectNext:(id)sender
 {
 	id idxs=[[[self selectionIndexes] mutableCopy] autorelease];
-	if(!idxs)
-		return [self setSelectionIndexes:[NSIndexSet indexSetWithIndex:0]];
+	if(!idxs){
+		[self setSelectionIndexes:[NSIndexSet indexSetWithIndex:0]];
+        return;
+    }
 	[idxs shiftIndexesStartingAtIndex:0 by:1];
 	
 	if([idxs lastIndex]<[[self arrangedObjects] count])
@@ -175,8 +185,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)selectPrevious:(id)sender
 {
 	id idxs=[[[self selectionIndexes] mutableCopy] autorelease];
-	if(!idxs)
-		return [self setSelectionIndexes:[NSIndexSet indexSetWithIndex:0]];
+	if(!idxs){
+	   [self setSelectionIndexes:[NSIndexSet indexSetWithIndex:0]];
+        return;
+      }
 	if([idxs firstIndex]>0)
 	{
 		[idxs shiftIndexesStartingAtIndex:0 by:-1];

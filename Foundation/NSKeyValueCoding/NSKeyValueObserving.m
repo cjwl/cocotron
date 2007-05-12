@@ -20,6 +20,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <objc/objc-runtime.h>
 #import <objc/objc-class.h>
 #import <string.h>
+#import <malloc.h>
 
 #import "NSString+KVCAdditions.h"
 #import "NSKeyValueObserving-Private.h"
