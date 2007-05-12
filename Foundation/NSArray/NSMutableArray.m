@@ -14,6 +14,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSAutoreleasePool-private.h>
 #import <Foundation/NSPropertyListReader.h>
 #import <Foundation/NSPredicate.h>
+#import <Foundation/NSSortDescriptor.h> 
 
 #import <malloc.h>
 
@@ -303,9 +304,51 @@ static int selectorCompare(id object1,id object2,void *userData){
    }
 }
 
--(void)sortUsingDescriptors:(NSArray *)descriptors {
-   NSUnimplementedMethod();
-}
+static NSComparisonResult compareObjectsUsingDescriptors(id A, id B, NSArray *descriptors) { 
+   NSComparisonResult result; 
+
+   int n = [descriptors count]; 
+   int i = 0; 
+   do 
+      result = [(NSSortDescriptor *)[descriptors objectAtIndex:i++] compareObject:A toObject:B]; 
+   while (i < n && result == NSOrderedSame); 
+
+   return result; 
+} 
+
+// iterative mergesort using descriptors based on http://www.inf.fh-flensburg.de/lang/algorithmen/sortieren/merge/mergiter.htm
+- (void)sortUsingDescriptors:(NSArray *)descriptors  { 
+   int h, i, j, k, l, m, n = [self count]; 
+   id  A, *B = malloc((n/2 + 1) * sizeof(id)); 
+   for (h = 1; h < n; h += h) 
+      for (m = n - 1 - h; m >= 0; m -= h + h) 
+      { 
+         l = m - h + 1; 
+         if (l < 0) 
+            l = 0; 
+
+         for (i = 0, j = l; j <= m; i++, j++) 
+            B[i] = [self objectAtIndex:j]; 
+
+         for (i = 0, k = l; k < j && j <= m + h; k++) 
+         { 
+            A = [self objectAtIndex:j]; 
+            if (compareObjectsUsingDescriptors(A, B[i], descriptors) == NSOrderedDescending) 
+               [self replaceObjectAtIndex:k withObject:B[i++]]; 
+            else 
+            { 
+               [self replaceObjectAtIndex:k withObject:A]; 
+               j++; 
+            } 
+         } 
+
+         while (k < j) 
+            [self replaceObjectAtIndex:k++ withObject:B[i++]]; 
+      } 
+
+      free(B); 
+
+} 
 
 -(void)filterUsingPredicate:(NSPredicate *)predicate {
    int count=[self count];
