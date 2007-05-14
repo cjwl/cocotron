@@ -75,9 +75,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     check=[keyed decodeObjectForKey:@"NSSupport"];
     if([check isKindOfClass:[NSFont class]])
      _font=[check retain];
-    
-    if(_font==nil)
-     _font=[[NSFont userFontOfSize:0] retain]; // ?
+
+    _controlSize=(flags2&0xE0000)>>17;
+    if (_font==nil)
+       _font=[[NSFont userFontOfSize:13 - _controlSize*2] retain];
    }
    else {
     _state=[coder decodeIntForKey:@"NSCell state"];
@@ -551,6 +552,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 - (void)setControlSize:(NSControlSize)size {
    _controlSize = size;
+   [_font release];
+   _font = [[NSFont userFontOfSize:13 - _controlSize*2] retain];
+   [(NSControl *)[self controlView] updateCell:self];
 }
 
 -(void)takeObjectValueFrom:sender {

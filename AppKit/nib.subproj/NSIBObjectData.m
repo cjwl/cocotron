@@ -11,6 +11,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSArray.h>
 #import <Foundation/NSString.h>
 #import <Foundation/NSSet.h>
+#import <Foundation/NSDebug.h>
 #import "NSNibKeyedUnarchiver.h"
 #import "NSCustomObject.h"
 #import <AppKit/NSNibConnector.h>
@@ -113,7 +114,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     NS_DURING
      [[_connections objectAtIndex:i] establishConnection];
     NS_HANDLER
-     // NSLog(@"Exception during -establishConnection %@",localException);
+     if(NSDebugEnabled)
+      NSLog(@"Exception during -establishConnection %@",localException);
     NS_ENDHANDLER
    }
 }

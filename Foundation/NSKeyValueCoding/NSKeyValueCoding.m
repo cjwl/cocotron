@@ -180,6 +180,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(id)valueForKey:(NSString*)key
 {
+	if(!key)
+		return [self valueForUndefinedKey:nil];
 	SEL sel=NSSelectorFromString(key);
 	// FIXME: getKey, _getKey, isKey, _isKey are missing
 	
@@ -366,6 +368,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(id)mutableArrayValueForKey:(id)key
 {
 	return [[[NSKVCMutableArray alloc] initWithKey:key forProxyObject:self] autorelease];
+}
+
+-(id)mutableArrayValueForKeyPath:(id)keyPath
+{
+	NSString* firstPart, *rest;
+	[keyPath _KVC_partBeforeDot:&firstPart afterDot:&rest];
+	if(rest)
+		return [[self valueForKeyPath:firstPart] valueForKeyPath:rest];
+	else
+		return [[[NSKVCMutableArray alloc] initWithKey:firstPart forProxyObject:self] autorelease];
 }
 @end
 

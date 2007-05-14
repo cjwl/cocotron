@@ -28,6 +28,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	id filterPredicate;
 	id _selection;
 	id arrangedObjects;
+	
 }
 
 -(NSArray *)sortDescriptors;
@@ -85,5 +86,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -arrangedObjects;
 //-(NSArray *)arrangeObjects:(NSArray *)objects;
 //-(void)rearrangeObjects;
+
+// private 
+-(void)_selectionMayHaveChanged;
 
 @end

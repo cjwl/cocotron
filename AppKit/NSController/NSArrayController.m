@@ -15,6 +15,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSPredicate.h>
 #import <Foundation/NSKeyValueObserving.h>
 
+@interface NSArrayController(forwardRefs)
+-(void)_selectionMayHaveChanged;
+- (void)setArrangedObjects:(id)value;
+@end
+
 @implementation NSArrayController
 
 +(void)initialize
@@ -23,7 +28,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
  triggerChangeNotificationsForDependentKey:@"selection"];
 }
 
--(id)initWithCoder:(id)coder
+-(id)initWithCoder:(NSCoder*)coder
 {
 	self=[super init];
 	if(self)
@@ -38,8 +43,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 		id declaredKeys=[coder decodeObjectForKey:@"NSDeclaredKeys"];
 	}
-	// FIX: cocotron nib loading seems not to retain top-level objects. _dirtiest_ possible hack: retain
-	return [self retain];
+	return self;
 }
 
 -(void)dealloc
@@ -52,21 +56,18 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(id)awakeFromNib
 {
+	[self _selectionMayHaveChanged];
+}
+
+-(void)_selectionMayHaveChanged
+{
 	[self willChangeValueForKey:@"selection"];
 	_selection=[[NSArrayControllerSelectionProxy alloc] initWithArrayController:self];
-	[self didChangeValueForKey:@"selection"];
+	[self didChangeValueForKey:@"selection"];	
 }
 
 - (id)contentArray {
     return [[contentArray retain] autorelease];
-}
-
-- (void)setArrangedObjects:(id)value {
-    if (arrangedObjects != value) 
-	{
-		[arrangedObjects release];
-        arrangedObjects = [[NSArray alloc] initWithArray:value];
-    }
 }
 
 - (void)setContentArray:(id)value {
@@ -79,6 +80,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 		if([self sortDescriptors])
 			value=[value sortedArrayUsingDescriptors:[self sortDescriptors]];
 		[self setArrangedObjects:value];
+    }
+}
+
+- (void)setArrangedObjects:(id)value {
+    if (arrangedObjects != value) 
+	{
+		[arrangedObjects release];
+        arrangedObjects = [value copy];
     }
 }
 
@@ -195,6 +204,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 		
 		[self setSelectionIndexes:idxs];
 	}
-	
 }
+
 @end

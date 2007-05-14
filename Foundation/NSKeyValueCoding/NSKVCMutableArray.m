@@ -138,8 +138,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 		replace(proxyObject, replaceSel, index, anObject);
 	else
 	{
-		[self removeObjectAtIndex:index];
-		[self insertObject:anObject atIndex:index];
+		id target=[[self _representedObject] mutableCopy];
+		[target replaceObjectAtIndex:index withObject:anObject];
+		[self _setRepresentedObject:target];
+		[target release];
 	}
 }
 

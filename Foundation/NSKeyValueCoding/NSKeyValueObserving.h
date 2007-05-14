@@ -7,7 +7,8 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
 #import <Foundation/NSObject.h>
-@class NSDictionary,NSArray;
+#import <Foundation/NSArray.h>
+@class NSDictionary;
 
 FOUNDATION_EXPORT NSString *const NSKeyValueChangeKindKey;
 FOUNDATION_EXPORT NSString *const NSKeyValueChangeNewKey;
@@ -32,6 +33,13 @@ typedef unsigned int NSKeyValueObservingOptions;
 
 -(void)setObservationInfo:(void*)newInfo;
 -(void*)observationInfo;
+@end
+
+@interface NSArray(KeyValueObserving)
+-(void)addObserver:(NSObject *)observer toObjectsAtIndexes:(NSIndexSet *)indexes forKeyPath:(NSString *)keyPath options:(NSKeyValueObservingOptions)options context:(void *)context;
+-(void)removeObserver:(NSObject *)observer fromObjectsAtIndexes:(NSIndexSet *)indexes forKeyPath:(NSString *)keyPath;
+-(void)addObserver:(id)observer forKeyPath:(NSString*)keyPath options:(NSKeyValueObservingOptions)options context:(void*)context;
+-(void)removeObserver:(id)observer forKeyPath:(NSString*)keyPath;
 @end
 
 @protocol NSKeyValueObserver

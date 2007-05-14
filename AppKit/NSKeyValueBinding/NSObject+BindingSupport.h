@@ -22,4 +22,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(id)_replacementKeyPathForBinding:(id)binding;
 -(void)_cleanupBinders;
 -(NSArray*)_allUsedBinders;
+-(id)_binderForBinding:(id)binding create:(BOOL)create;
+-(id)_binderForBinding:(id)binding;
 @end

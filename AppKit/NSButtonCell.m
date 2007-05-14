@@ -579,12 +579,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
  NSGraphicsStyle should probably do this adjustment too
  */
    if((_bezelStyle==NSRoundedBezelStyle) && (_highlightsBy&NSPushInCellMask) && (_highlightsBy&NSChangeGrayCellMask) && (_showsStateBy==NSNoCellMask)){
-    if(![self isKindOfClass:[NSPopUpButtonCell class]]){
-     frame.size.height-=10;
-     frame.origin.y+=[control isFlipped]?-5:5;
-     frame.size.width-=6;
-     frame.origin.x+=3;
-    }
+    if (![self isKindOfClass:[NSPopUpButtonCell class]] && _controlSize <= NSSmallControlSize) 
+         { 
+            frame.size.width  -= 10 - _controlSize*2; 
+            frame.size.height -= 10 - _controlSize*2; 
+            frame.origin.x    +=  5 - _controlSize; 
+            frame.origin.y    += [control isFlipped] ? _controlSize*2 - 3 : 7 - _controlSize*2; 
+         } 
    }
    
    if(_bezelStyle==NSDisclosureBezelStyle){

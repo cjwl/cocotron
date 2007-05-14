@@ -20,6 +20,11 @@ NSMutableDictionary *bindersForObjects=nil;
 	return [_NSKVOBinder class];
 }
 
+-(id)_binderForBinding:(id)binding;
+{
+	return [self _binderForBinding:binding create:NO];
+}
+
 -(id)_binderForBinding:(id)binding create:(BOOL)create
 {
 	if(!bindersForObjects)

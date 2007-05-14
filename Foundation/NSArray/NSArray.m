@@ -212,19 +212,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     objects[i]=[self objectAtIndex:loc+i];
 }
 
--(NSArray *)objectsAtIndexes:(NSIndexSet *)indexes {
-   unsigned i,count=[indexes count];
-   unsigned buffer[count];
-   id       objects[count];
-
-   count=[indexes getIndexes:buffer maxCount:count inIndexRange:NULL];
-//  getObjects:range: would make more sense
-   for(i=0;i<count;i++)
-    objects[i]=[self objectAtIndex:buffer[i]];
-   
-   return [NSArray arrayWithObjects:objects count:count];
-}
-
 -(NSArray *)subarrayWithRange:(NSRange)range {
    if(NSMaxRange(range)>[self count])
     NSRaiseException(NSRangeException,self,_cmd,@"range %@ beyond count %d",
@@ -451,6 +438,32 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return result;
 }
 
+#if 0
+// untested
+-(NSArray *)objectsAtIndexes:(NSIndexSet *)indexes {
+   unsigned i,count=[indexes count];
+   unsigned buffer[count];
+   id       objects[count];
 
+   count=[indexes getIndexes:buffer maxCount:count inIndexRange:NULL];
+//  getObjects:range: would make more sense
+   for(i=0;i<count;i++)
+    objects[i]=[self objectAtIndex:buffer[i]];
+   
+   return [NSArray arrayWithObjects:objects count:count];
+}
+#endif
+
+-(NSArray *)objectsAtIndexes:(NSIndexSet*)indexes
+{
+	unsigned idx=[indexes firstIndex];
+	id ret=[NSMutableArray array];
+	while(idx!=NSNotFound)
+	{
+		[ret addObject:[self objectAtIndex:idx]];
+		idx=[indexes indexGreaterThanIndex:idx];
+	}
+	return ret;
+}
 @end
 

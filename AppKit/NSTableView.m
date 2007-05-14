@@ -71,6 +71,7 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
     [_headerView setTableView:self];
     _cornerView=[[keyed decodeObjectForKey:@"NSCornerView"] retain];
     _tableColumns=[[NSMutableArray alloc] initWithArray:[keyed decodeObjectForKey:@"NSTableColumns"]];
+	[_tableColumns makeObjectsPerformSelector:@selector(setTableView:) withObject:self];
     _backgroundColor=[[keyed decodeObjectForKey:@"NSBackgroundColor"] retain];
     _gridColor=[[keyed decodeObjectForKey:@"NSGridColor"] retain];
     _rowHeight=[keyed decodeFloatForKey:@"NSRowHeight"];
@@ -501,11 +502,13 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
 // also.. i wonder if remove should use an isEqual method in NSTableColumn, or removeObjectIdenticalTo...
 -(void)addTableColumn:(NSTableColumn *)column {
     [_tableColumns addObject:column];
+	[column setTableView:self];
     [self reloadData];
     [_headerView setNeedsDisplay:YES];
 }
 
 -(void)removeTableColumn:(NSTableColumn *)column {
+	[column setTableView:nil];
     [_tableColumns removeObject:column];
     [self reloadData];
     [_headerView setNeedsDisplay:YES];
@@ -538,9 +541,9 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
     if ([self delegateShouldEditTableColumn:editingColumn row:row] == NO)
         return;
 
-    if ([self dataSourceCanSetObjectValue] == NO)
+    if ([self dataSourceCanSetObjectValue] == NO && [[editingColumn _binderForBinding:@"value" create:NO] allowsEditingForRow:row] == NO)
         [NSException raise:NSInternalInconsistencyException
-                    format:@"data source does not respond to tableView:setObjectValue:forTableColumn:row:"];
+                    format:@"data source does not respond to tableView:setObjectValue:forTableColumn:row: and binding is read-only"];
 
     _editedColumn = column;
     _editedRow = row;
@@ -551,6 +554,8 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
     [_editingCell setBezeled:NO];
     [_editingCell setBordered:YES];
     [(NSCell *)_editingCell setObjectValue:[self dataSourceObjectValueForTableColumn:editingColumn row:row]];
+
+	[editingColumn prepareCell:_editingCell inRow:row];
 
     _currentEditor=[[self window] fieldEditor:YES forObject:self];
     _currentEditor=[_editingCell setUpFieldEditorAttributes:_currentEditor];
@@ -624,9 +629,7 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
 }
 
 -(void)selectRow:(int)row byExtendingSelection:(BOOL)extend  {
-	NSLog(@"selectRow:%i extend:%i", row, extend);
-
-    // selecting a row deselects all columns
+	// selecting a row deselects all columns
     [_selectedColumns removeAllObjects];
 	
 	NSMutableIndexSet* selectedRowIndexes=[[[self selectedRowIndexes] mutableCopy] autorelease];
@@ -929,7 +932,16 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
     // avoid possible row synch issues
     _numberOfRows = [self numberOfRows];
     if (_editedRow >= 0 && _editedRow < _numberOfRows)
-        [self dataSourceSetObjectValue:[_editingCell objectValue] forTableColumn:editedColumn row:_editedRow];
+	{
+		if([self dataSourceCanSetObjectValue])
+		{
+			[self dataSourceSetObjectValue:[_editingCell objectValue] forTableColumn:editedColumn row:_editedRow];
+		}
+		else
+		{
+			[[editedColumn _binderForBinding:@"value" create:NO] applyFromCell:_editingCell inRow:_editedRow];
+		}
+	}
 
     [self abortEditing];
 
@@ -1146,7 +1158,9 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
     }
     else if ([event clickCount] == 2) {
         // nb this logic was backwards previously
-        if ([self dataSourceCanSetObjectValue]) {
+		id binder=[[_tableColumns objectAtIndex:_clickedColumn] _binderForBinding:@"value" create:NO];
+        if ([self dataSourceCanSetObjectValue] || 
+			[binder allowsEditingForRow:_clickedRow]) {
             if (_clickedColumn != NSNotFound && _clickedRow != NSNotFound)
                 [self editColumn:[self clickedColumn] row:_clickedRow withEvent:event select:YES];
         }

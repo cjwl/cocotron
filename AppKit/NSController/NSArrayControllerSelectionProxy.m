@@ -83,7 +83,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)setValue:(id)value forKey:(NSString *)key
 {
-	NSLog(@"setValue %@ forKey %@", value, key);
 	[[controller selectedObjects] setValue:value forKey:key];
 }
 

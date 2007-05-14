@@ -7,13 +7,14 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 #import <Foundation/NSObject.h>
 
+@class NSString;
 
 @interface _NSBinder : NSObject {
 	id source;
 	id destination;
-	id keyPath;
-	id bindingPath;
-	id binding;
+	NSString* keyPath;
+	NSString* bindingPath;
+	NSString* binding;
 	id options;
 }
 - (id)options;
@@ -25,11 +26,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 - (id)destination;
 - (void)setDestination:(id)value;
 
-- (id)keyPath;
-- (void)setKeyPath:(id)value;
+- (NSString*)keyPath;
+- (void)setKeyPath:(NSString*)value;
 
-- (id)binding;
-- (void)setBinding:(id)value;
+- (NSString*)binding;
+- (void)setBinding:(NSString*)value;
 
 -(void)bind;
 -(void)unbind;

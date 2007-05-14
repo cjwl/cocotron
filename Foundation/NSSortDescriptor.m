@@ -10,6 +10,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSString.h>
 #import <Foundation/NSKeyValueCoding.h>
 #import <Foundation/NSRaise.h>
+#import <Foundation/NSCoder.h> 
+#import <Foundation/NSKeyedUnarchiver.h> 
 
 @implementation NSSortDescriptor
 
@@ -27,15 +29,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)dealloc {
    [_key release];
    [super dealloc];
-}
-
--initWithCoder:(NSCoder *)coder {
-   NSUnimplementedMethod();
-   return self;
-}
-
--(void)encodeWithCoder:(NSCoder *)coder {
-   NSUnimplementedMethod();
 }
 
 -copyWithZone:(NSZone *)zone {
@@ -66,6 +59,42 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -reversedSortDescriptor {
    return [[[isa alloc] initWithKey:_key ascending:!_ascending selector:_selector] autorelease];
+}
+
+// NSCoding protocol 
+
+- (void)encodeWithCoder:(NSCoder *)coder { 
+   if ([coder allowsKeyedCoding]) 
+   { 
+      [coder encodeObject:_key forKey:@"Key"]; 
+      [coder encodeBool:_ascending forKey:@"Ascending"]; 
+      [coder encodeObject:NSStringFromSelector(_selector) forKey: @"Selector"]; 
+   } 
+   else 
+   { 
+      [coder encodeObject:_key]; 
+      [coder encodeValueOfObjCType:@encode(BOOL) at:&_ascending]; 
+      [coder encodeObject:NSStringFromSelector(_selector)]; 
+   } 
+} 
+
+- (id)initWithCoder:(NSCoder *)coder { 
+   if ([coder isKindOfClass:[NSKeyedUnarchiver class]]) 
+   { 
+      NSKeyedUnarchiver *keyed = (NSKeyedUnarchiver *)coder; 
+      _key = [[keyed decodeObjectForKey:@"Key"] copy]; 
+      _ascending = [keyed decodeBoolForKey:@"Ascending"]; 
+      _selector = NSSelectorFromString([keyed decodeObjectForKey:@"Selector"]); 
+   } 
+
+   else 
+   { 
+      _key = [[coder decodeObject] copy]; 
+      [coder decodeValueOfObjCType:@encode(BOOL) at:&_ascending]; 
+      _selector = NSSelectorFromString([coder decodeObject]); 
+   } 
+
+   return self; 
 }
 
 @end
