@@ -56,7 +56,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     [_identifier release];
     [_headerCell release];
     [_dataCell release];
-
+	[_sortDescriptorPrototype release];
+	
     [super dealloc];
 }
 
@@ -150,13 +151,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     return [self dataCell];
 }
 
--(int)_rowCountFromBindings
-{
-	id binder=[self _binderForBinding:@"value" create:NO];
-	if(!binder)
-		return -1;
-	return [binder count];
-}
 
 -(void)_boundValuesChanged
 {
@@ -200,5 +194,46 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	return [_NSTableColumnBinder class];
 }
 
+- (NSSortDescriptor *)sortDescriptorPrototype {
+    return [[_sortDescriptorPrototype retain] autorelease];
+}
+
+- (void)setSortDescriptorPrototype:(NSSortDescriptor *)value {
+    if (_sortDescriptorPrototype != value) {
+        [_sortDescriptorPrototype release];
+        _sortDescriptorPrototype = [value copy];
+    }
+}
+
+
+
+-(void)_sort
+{
+	id newDescriptor=[self sortDescriptorPrototype];
+	if(!newDescriptor)
+		return;
+
+	id allDescs=[[[_tableView sortDescriptors] mutableCopy] autorelease];
+	int i;
+
+	for(i=0; i<[allDescs count]; i++)
+	{
+		id desc=[allDescs objectAtIndex:i];
+		if([[newDescriptor key] isEqual:[desc key]])
+		{
+			if(i==0)
+				newDescriptor=[desc reversedSortDescriptor];
+			
+			[allDescs insertObject:newDescriptor atIndex:0];
+			[allDescs removeObject:desc];
+			[_tableView setSortDescriptors:allDescs];
+			return;
+		}
+	}
+
+	[allDescs insertObject:newDescriptor atIndex:0];
+	[_tableView setSortDescriptors:allDescs];
+
+}
 
 @end

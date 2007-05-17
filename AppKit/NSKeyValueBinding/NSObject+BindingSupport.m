@@ -10,9 +10,40 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSValue.h>
 #import <Foundation/NSString.h>
 #import <AppKit/NSObject+BindingSupport.h>
+#import <Foundation/NSBundle.h>
 
 NSMutableDictionary *bindersForObjects=nil;
+NSDictionary *defaultBindingOptions;
 @implementation NSObject (BindingSupport)
+
++(id)_defaultBindingOptionsForBinding:(id)binding
+{
+	if(!defaultBindingOptions)
+	{
+		defaultBindingOptions=[NSDictionary dictionaryWithContentsOfFile:
+			[[NSBundle bundleForClass:[_NSKVOBinder class]] pathForResource:@"defaultBindingOptions" 
+																	 ofType:@"plist"]];
+		[defaultBindingOptions retain];
+	}
+	id defaults=[defaultBindingOptions objectForKey:[self className]];
+	if(self==[NSObject class])
+	{
+		if(defaults)
+			return defaults;
+		return [NSDictionary dictionary];
+	}
+	
+	id ret=[[[self superclass] _defaultBindingOptionsForBinding:binding] mutableCopy];
+	if(defaults)
+		[ret setValuesForKeysWithDictionary:defaults];
+	return [ret autorelease];
+}
+
+-(id)_defaultBindingOptionsForBinding:(id)binding
+{
+	return [isa _defaultBindingOptionsForBinding:binding];
+}
+
 
 +(Class)_binderClassForBinding:(id)binding
 {
@@ -54,12 +85,12 @@ NSMutableDictionary *bindersForObjects=nil;
 {
 	if([binding isEqual:@"value"])
 		return @"objectValue";
+   // FIX: actually try and detect these
+	if([binding isEqual:@"displayPatternValue1"])
+		return @"objectValue";
+	if([binding isEqual:@"displayPatternValue2"])
+		return @"objectValue";
 	return binding;
-}
-
--(void)_cleanupBinders
-{
-	[bindersForObjects removeObjectForKey:[NSValue valueWithNonretainedObject:self]];
 }
 
 -(void)bind:(NSString*)binding toObject:(id)destination withKeyPath:(NSString*)keyPath options:(NSDictionary*)options
@@ -91,7 +122,9 @@ NSMutableDictionary *bindersForObjects=nil;
 	id binder=[ownBinders objectForKey:binding];
 	[binder unbind];
 	
-	[ownBinders removeObjectForKey:binding];	
+	[ownBinders removeObjectForKey:binding];
+	if([ownBinders count]==0)
+		[bindersForObjects removeObjectForKey:key];
 }
 
 -(NSDictionary *)infoForBinding:(NSString*)binding

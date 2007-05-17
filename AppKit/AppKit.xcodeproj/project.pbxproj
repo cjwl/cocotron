@@ -479,6 +479,7 @@
 		6ECABDFA0A3FA2B700AD7F7B /* NSCustomView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6ECABDF80A3FA2B700AD7F7B /* NSCustomView.m */; };
 		6ECABE330A40520700AD7F7B /* NSNibKeyedUnarchiver.h in Headers */ = {isa = PBXBuildFile; fileRef = 6ECABE310A40520700AD7F7B /* NSNibKeyedUnarchiver.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		6ECABE340A40520700AD7F7B /* NSNibKeyedUnarchiver.m in Sources */ = {isa = PBXBuildFile; fileRef = 6ECABE320A40520700AD7F7B /* NSNibKeyedUnarchiver.m */; };
+		C8B239A30BF8EEB500CA33AF /* defaultBindingOptions.plist in Resources */ = {isa = PBXBuildFile; fileRef = C8B239A20BF8EEB500CA33AF /* defaultBindingOptions.plist */; };
 		FE064AC70B8B805000853FBB /* CGColor.h in Headers */ = {isa = PBXBuildFile; fileRef = FE064AA90B8B805000853FBB /* CGColor.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE064AC80B8B805000853FBB /* CGColor.m in Sources */ = {isa = PBXBuildFile; fileRef = FE064AAA0B8B805000853FBB /* CGColor.m */; };
 		FE064AC90B8B805000853FBB /* CGColorSpace.h in Headers */ = {isa = PBXBuildFile; fileRef = FE064AAB0B8B805000853FBB /* CGColorSpace.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -1198,6 +1199,7 @@
 		6ECABDF80A3FA2B700AD7F7B /* NSCustomView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSCustomView.m; sourceTree = "<group>"; };
 		6ECABE310A40520700AD7F7B /* NSNibKeyedUnarchiver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSNibKeyedUnarchiver.h; sourceTree = "<group>"; };
 		6ECABE320A40520700AD7F7B /* NSNibKeyedUnarchiver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSNibKeyedUnarchiver.m; sourceTree = "<group>"; };
+		C8B239A20BF8EEB500CA33AF /* defaultBindingOptions.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = defaultBindingOptions.plist; sourceTree = "<group>"; };
 		FE064AA90B8B805000853FBB /* CGColor.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = CGColor.h; sourceTree = "<group>"; };
 		FE064AAA0B8B805000853FBB /* CGColor.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = CGColor.m; sourceTree = "<group>"; };
 		FE064AAB0B8B805000853FBB /* CGColorSpace.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = CGColorSpace.h; sourceTree = "<group>"; };
@@ -2342,6 +2344,7 @@
 		FE8BAF1A0BC9EC0B0007FACA /* NSKeyValueBinding */ = {
 			isa = PBXGroup;
 			children = (
+				C8B239A20BF8EEB500CA33AF /* defaultBindingOptions.plist */,
 				FEC5FF7B0BF49D5400682A70 /* NSTableColumnBinder.h */,
 				FEC5FF7C0BF49D5400682A70 /* NSTableColumnBinder.m */,
 				FE8BAF1D0BC9EC680007FACA /* NSBinder.h */,
@@ -2821,6 +2824,7 @@
 				FE86887F0BC3FFA4009F515C /* NSButtonCell_disclosure_highlighted.tif in Resources */,
 				FE8688800BC3FFA4009F515C /* NSButtonCell_disclosure_normal.tif in Resources */,
 				FE8688810BC3FFA4009F515C /* NSButtonCell_disclosure_selected.tif in Resources */,
+				C8B239A30BF8EEB500CA33AF /* defaultBindingOptions.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

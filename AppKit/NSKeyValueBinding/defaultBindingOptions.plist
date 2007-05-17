@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>NSCell</key>
+	<dict>
+		<key>NSCreatesSortDescriptors</key>
+		<false/>
+	</dict>
+	<key>NSObject</key>
+	<dict>
+		<key>NSMultipleValuesPlaceholder</key>
+		<string>Multiple values</string>
+		<key>NSNoSelectionPlaceholder</key>
+		<string>No selection</string>
+		<key>NSRaisesForNotApplicableKeys</key>
+		<true/>
+	</dict>
+	<key>NSActionCell</key>
+	<dict>
+		<key>NSCreatesSortDescriptors</key>
+		<true/>
+	</dict>
+</dict>
+</plist>

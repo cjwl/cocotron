@@ -147,6 +147,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	return currentMinimum;
 }
 
+-(id)_kvo_operator_count:(NSString*)parameter
+{
+	if([parameter length]>0)
+		[NSException raise:NSInvalidArgumentException
+					format:@"array operator @count called with argument (%@)", parameter];
+	return [self _kvo_operator_count];
+}
+
 -(id)_kvo_operator_count
 {
 	return [NSNumber numberWithInt:[self count]];
@@ -200,14 +208,23 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	}
 }
 
-
 -(void)addObserver:(id)observer forKeyPath:(NSString*)keyPath options:(NSKeyValueObservingOptions)options context:(void*)context;
 {
-	NSRaiseException(NSInvalidArgumentException,self,_cmd,@"not supported for key path %@ (observer was %@)", keyPath, observer);
+	if([isa instanceMethodForSelector:_cmd]==[NSArray instanceMethodForSelector:_cmd])
+		NSRaiseException(NSInvalidArgumentException,self,_cmd,@"not supported for key path %@ (observer was %@)", keyPath, observer);
+	else
+		[super addObserver:observer
+				forKeyPath:keyPath
+				   options:options
+				   context:context];
 }
 
 -(void)removeObserver:(id)observer forKeyPath:(NSString*)keyPath;
 {
-	NSRaiseException(NSInvalidArgumentException,self,_cmd,@"not supported for key path %@ (observer was %@)", keyPath, observer);	
+	if([isa instanceMethodForSelector:_cmd]==[NSArray instanceMethodForSelector:_cmd])
+		NSRaiseException(NSInvalidArgumentException,self,_cmd,@"not supported for key path %@ (observer was %@)", keyPath, observer);	
+	else
+		[super removeObserver:observer
+				   forKeyPath:keyPath];
 }
 @end

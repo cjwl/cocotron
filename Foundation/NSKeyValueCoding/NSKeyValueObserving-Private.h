@@ -15,16 +15,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	void* context;
 	id oldValue;
 	int willChangeCount;
-	NSString* originalKeyPath;
 	NSString* keyPath;
 }
 -(id)observer;
 - (id)oldValue;
 - (void)setOldValue:(id)value;
-- (NSString *)originalKeyPath;
-- (void)setOriginalKeyPath:(NSString *)value;
 - (NSString *)keyPath;
 - (void)setKeyPath:(NSString *)value;
+
 @end
 
 @interface NSObject (KVOSwizzeling)

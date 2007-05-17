@@ -17,6 +17,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	NSString* binding;
 	id options;
 }
+// override this if you need to provide different defaults.
+// the default implementation gets its options from source.
+-(id)defaultBindingOptionsForBinding:(id)binding;
+
 - (id)options;
 - (void)setOptions:(id)value;
 
@@ -36,5 +40,17 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)unbind;
 
 -(void)setBindingPath:(id)value;
-
 @end
+
+@interface _NSBinder (BindingOptions)
+-(BOOL)conditionallySetsEditable;
+-(BOOL)conditionallySetsEnabled;
+-(BOOL)allowsEditingMultipleValues;
+-(BOOL)createsSortDescriptor;
+@end
+
+
+extern NSString *NSNoSelectionPlaceholderBindingOption;
+extern NSString *NSMultipleValuesPlaceholderBindingOption;
+extern NSString *NSCreatesSortDescriptorBindingOption;
+extern NSString *NSRaisesForNotApplicableKeysBindingOption;

@@ -15,13 +15,26 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)unbind:(NSString*)binding;
 @end
 
-
 @interface NSObject (InternalBindingSupport)
+// returns a dictionary with the default options for the specified binding
+// the dictionaries are stored on a per-class basis in defaultBindingOptions.plist
+// the binding parameter is currently ignored
+-(id)_defaultBindingOptionsForBinding:(id)binding;
+
+// return the class of a suitable binder for the respective binding
 +(Class)_binderClassForBinding:(id)binding;
--(id)_binderForBinding:(id)binding create:(BOOL)create;
--(id)_replacementKeyPathForBinding:(id)binding;
--(void)_cleanupBinders;
--(NSArray*)_allUsedBinders;
--(id)_binderForBinding:(id)binding create:(BOOL)create;
+
+// return the respective binder or nil if unbound
 -(id)_binderForBinding:(id)binding;
+
+// return a suitable binder for the binding. if create is NO, only returns a binder
+// if the binding is actually in use
+-(id)_binderForBinding:(id)binding create:(BOOL)create;
+
+// return a key path suitable for KVO to replace the generic binding name
+// e.g. "value" -> "color" on NSColorWell
+-(id)_replacementKeyPathForBinding:(id)binding;
+
+// returns all binders used by the object
+-(NSArray*)_allUsedBinders;
 @end

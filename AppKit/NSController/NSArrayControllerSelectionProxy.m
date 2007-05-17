@@ -31,7 +31,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	[super dealloc];
 }
 
--(id)valueForKey:(id)key
+-(id)valueForKey:(NSString*)key
 {
 	id val=[values objectForKey:key];
 	if(val)
@@ -86,7 +86,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	[[controller selectedObjects] setValue:value forKey:key];
 }
 
--(id)description
+-(NSString*)description
 {
 	return [NSString stringWithFormat:
 		@"%@ <0x%x>",

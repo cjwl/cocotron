@@ -176,7 +176,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
             }
         }
     }
-    
+	
     if ([_tableView allowsColumnSelection]) {
         if ([theEvent modifierFlags] & NSAlternateKeyMask) {		// extend/change selection
             if ([_tableView isColumnSelected:clickedColumn])		// deselect previously selected?
@@ -203,6 +203,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         else
             [_tableView selectColumn:clickedColumn byExtendingSelection:NO];
     }
+	
+	[[[_tableView tableColumns] objectAtIndex:clickedColumn] _sort];
 }
 
 -(void)resetCursorRects {

@@ -11,6 +11,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSException.h>
 #import <Foundation/NSString.h>
 #import <Foundation/NSDictionary.h>
+#import <AppKit/NSController.h>
+#import <AppKit/NSControl.h>
 
 @implementation _NSKVOBinder
 -(void)startObservingChanges
@@ -19,11 +21,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 	[source addObserver:self
 			 forKeyPath:bindingPath 
-				options:NSKeyValueObservingOptionNew
+				options:0
 				context:nil];
 	[destination addObserver:self 
 				  forKeyPath:keyPath 
-					 options:NSKeyValueObservingOptionNew
+					 options:0
 					 context:nil];
 }
 
@@ -36,23 +38,79 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	NS_ENDHANDLER
 }
 
+-(id)destinationValue
+{
+	id peers=[self peerBinders];
+	if([peers count])
+	{
+		// FIX: maybe this should be in subclasses.
+		// however, as long as there's just booleans (enabled, hidden etc.)
+		// and strings (%{value1}@...
+		peers=[peers sortedArrayUsingSelector:@selector(compare:)];
+		id values=[peers valueForKeyPath:@"realDestinationValue"];
+		int i;
+		id pattern=[[[options objectForKey:@"NSDisplayPattern"] mutableCopy] autorelease];
+		if(pattern)
+		{
+			for(i=0; i<[peers count]; i++)
+			{
+				id token=[NSString stringWithFormat:@"%%{value%i}@", i+1];
+				[pattern replaceCharactersInRange:[pattern rangeOfString:token]
+									   withString:[[values objectAtIndex:i] description]];
+			}
+			return pattern;
+		}
+		else if([[values lastObject] isKindOfClass:[NSNumber class]])
+		{
+			BOOL ret;
+			if([binding isEqual:@"hidden"])
+			{
+				ret=NO;
+				for(i=0; i<[peers count]; i++)
+				{
+					id value=[values objectAtIndex:i];
+					if([value respondsToSelector:@selector(boolValue)])
+						ret|=[value boolValue];
+					else
+						ret=YES;
+				}
+			}
+			else
+			{
+				ret=YES;
+				for(i=0; i<[peers count]; i++)
+				{
+					id value=[values objectAtIndex:i];
+					if([value respondsToSelector:@selector(boolValue)])
+						ret&=[value boolValue];
+					else
+						ret=NO;
+				}				
+			}
+			return [NSNumber numberWithBool:ret];
+		}
+		return pattern;
+	}
+	else
+		return [destination valueForKeyPath:keyPath];
+}
+
+-(id)_realDestinationValue
+{
+	return [destination valueForKeyPath:keyPath];
+}
+
 -(void)syncUp
 {
 	NS_DURING
-
-	id value=[destination valueForKeyPath:keyPath];
-	
-	if(value)
-		[source setValue:value forKeyPath:bindingPath];
-	else
-	{
-		value=[source valueForKeyPath:bindingPath];
-		if(value)
-			[destination setValue:value forKeyPath:keyPath];
-	}
+	if([self destinationValue])
+		[source setValue:[self destinationValue] forKeyPath:bindingPath];
 	NS_HANDLER
+		if([self raisesForNotApplicableKeys])
+			[localException raise];
 	NS_ENDHANDLER
 }
+
 
 - (void)observeValueForKeyPath:(NSString *)kp ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
@@ -62,14 +120,34 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	{
 		//NSLog(@"bind event from %@.%@ alias %@ to %@.%@ (%@)", [source className], binding, bindingPath, [destination className], keyPath, self);
 
-		[destination setValue:[change valueForKey:NSKeyValueChangeNewKey]
-					   forKeyPath:keyPath];
+		[destination setValue:[source valueForKeyPath:bindingPath]
+				   forKeyPath:keyPath];
 	}
 	else if(object==destination)
 	{
 		//NSLog(@"bind event from %@.%@ to %@.%@ alias %@ (%@)", [destination className], keyPath, [source className], binding, bindingPath, self);
+		id newValue=[self destinationValue];
 
-		[source setValue:[change valueForKey:NSKeyValueChangeNewKey]
+		BOOL editable=YES;
+		if(newValue==NSMultipleValuesMarker)
+		{
+			newValue=[options objectForKey:NSMultipleValuesPlaceholderBindingOption];
+			if(![self allowsEditingMultipleValues])
+				editable=NO;
+		}
+		else if(newValue==NSNoSelectionMarker)
+		{
+			newValue=[options objectForKey:NSNoSelectionPlaceholderBindingOption];
+			editable=NO;
+		}
+		
+		
+		if([self conditionallySetsEditable])
+			[source setEditable:editable];
+		if([self conditionallySetsEnabled])
+			[source setEnabled:editable];
+		
+		[source setValue:newValue
 			  forKeyPath:bindingPath];
 	}
 	

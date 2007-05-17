@@ -35,11 +35,9 @@ typedef unsigned int NSKeyValueObservingOptions;
 -(void*)observationInfo;
 @end
 
-@interface NSArray(KeyValueObserving)
+@interface NSArray (KeyValueObserving)
 -(void)addObserver:(NSObject *)observer toObjectsAtIndexes:(NSIndexSet *)indexes forKeyPath:(NSString *)keyPath options:(NSKeyValueObservingOptions)options context:(void *)context;
 -(void)removeObserver:(NSObject *)observer fromObjectsAtIndexes:(NSIndexSet *)indexes forKeyPath:(NSString *)keyPath;
--(void)addObserver:(id)observer forKeyPath:(NSString*)keyPath options:(NSKeyValueObservingOptions)options context:(void*)context;
--(void)removeObserver:(id)observer forKeyPath:(NSString*)keyPath;
 @end
 
 @protocol NSKeyValueObserver

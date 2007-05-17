@@ -8,6 +8,58 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "NSBinder.h"
 #import <AppKit/NSObject+BindingSupport.h>
 #import <Foundation/NSString.h>
+#import <Foundation/NSDictionary.h>
+#import <Foundation/NSNumber.h>
+#import <Foundation/NSMutableArray.h>
+
+#pragma mark -
+#pragma mark Binding Option Strings
+
+NSString *NSNoSelectionPlaceholderBindingOption=@"NSNoSelectionPlaceholder";
+NSString *NSMultipleValuesPlaceholderBindingOption=@"NSMultipleValuesPlaceholder";
+NSString *NSCreatesSortDescriptorBindingOption=@"NSCreatesSortDescriptors";
+NSString *NSRaisesForNotApplicableKeysBindingOption=@"NSRaisesForNotApplicableKeys";
+
+#pragma mark -
+#pragma mark Binding Options
+
+@implementation _NSBinder (BindingOptions)
+-(BOOL)conditionallySetsEditable
+{
+	// FIX: needs to read from options
+	if([source respondsToSelector:@selector(setEditable:)])
+		return YES;
+	return NO;
+}
+
+-(BOOL)conditionallySetsEnabled
+{
+	// FIX: needs to read from options
+	if([source respondsToSelector:@selector(setEditable:)])
+		return YES;
+	return NO;
+}
+
+-(BOOL)allowsEditingMultipleValues
+{
+	// FIX: needs to read from options
+	return YES;
+}
+
+-(BOOL)createsSortDescriptor
+{
+	return [[options objectForKey:NSCreatesSortDescriptorBindingOption] boolValue];
+}
+
+
+-(BOOL)raisesForNotApplicableKeys
+{
+	return [[options objectForKey:NSRaisesForNotApplicableKeysBindingOption] boolValue];
+}
+@end
+
+#pragma mark -
+#pragma mark Class implementation
 
 @implementation _NSBinder
 
@@ -59,15 +111,20 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     }
 }
 
+-(id)defaultBindingOptionsForBinding:(id)binding
+{
+	return [source _defaultBindingOptionsForBinding:binding];
+}
+
 - (id)options {
     return [[options retain] autorelease];
 }
 
 - (void)setOptions:(id)value {
-    if (options != value) {
-        [options release];
-        options = [value copy];
-    }
+	[options release];
+	options=[[self defaultBindingOptionsForBinding:binding] mutableCopy];
+	if(value)
+		[options setValuesForKeysWithDictionary:value];
 }
 
 - (id)bindingPath {
@@ -94,8 +151,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	[super dealloc];
 }
 
-
-
 -(void)bind
 {
 }
@@ -103,4 +158,41 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)unbind
 {
 }
+
+-(NSComparisonResult)compare:(id)other
+{
+	// FIXME: needs to be a compare understanding that 11<20
+	return [binding compare:[other binding]];
+}
+
+-(id)peerBinders
+{
+	//NSRange numberAtEnd=[binding rangeOfCharacterFromSet:[NSCharacterSet decimalDigitCharacterSet]
+	//											 options:NSBackwardsSearch|NSAnchoredSearch];
+	// FIXME: total hack. assume only one digit at end, 1-9
+	NSRange numberAtEnd=NSMakeRange([binding length]-1, 1);
+	if([[binding substringWithRange:numberAtEnd] intValue]==0)
+		return nil;
+	
+	if(numberAtEnd.location==NSNotFound)
+		return nil;
+	id baseName=[binding substringToIndex:numberAtEnd.location];
+	
+	id binders=[[source _allUsedBinders] objectEnumerator];
+	id binder;
+	id ret=[NSMutableArray array];
+	while(binder=[binders nextObject])
+	{
+		if([[binder binding] hasPrefix:baseName])
+			[ret addObject:binder];
+	}
+	return ret;
+}
+
+-(NSString*)description
+{
+	return [NSString stringWithFormat:@"%@: %@", [self className], binding];
+}
 @end
+
+

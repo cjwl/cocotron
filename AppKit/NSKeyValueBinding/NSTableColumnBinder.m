@@ -14,12 +14,18 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSString.h>
 #import <AppKit/NSTableView.h>
 #import <AppKit/NSTableColumn.h>
-#import <AppKit/NSArrayController.h>
-#import <AppKit/NSObject+BindingSupport.h>
+
+@interface _NSTableColumnWrapperArray : NSArray
+{
+	id object;
+}
+-(id)initWithObject:(id)obj;
+@end
+
 
 
 @implementation _NSTableColumnBinder
-- (NSMutableArray *)rowValues 
+- (NSArray *)rowValues 
 {
     return [[rowValues retain] autorelease];
 }
@@ -36,9 +42,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)applyToCell:(id)cell inRow:(int)row
 {
-	if(!arrayKeyPath)
-		[self cacheArrayKeyPath];
-	[cell setValue:[[rowValues objectAtIndex:row] valueForKey:valueKeyPath] forKey:bindingPath];
+	[cell setValue:[[rowValues objectAtIndex:row] valueForKeyPath:valueKeyPath] forKey:bindingPath];
 }
 
 -(void)applyFromCell:(id)cell inRow:(int)row
@@ -49,30 +53,41 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)cacheArrayKeyPath
 {
-	// find content binding
-	id tableViewContentBinder=[[source tableView] _binderForBinding:@"content"];
-	if(!tableViewContentBinder)
-		return;
-
-	// this should be something like "arrangedObjects"
-	arrayKeyPath=[[tableViewContentBinder keyPath] copy];
-
-	if(![keyPath hasPrefix:arrayKeyPath])
-		[NSException raise:NSInvalidArgumentException
-					format:@"content binding %@ of table view %@ doesn't fit value binding %@ on column %@",
-			arrayKeyPath,
-			[source tableView],
-			keyPath,
-			source];
-
-	// get rest of key path ("value" from "arrangedObjects.value")
-	valueKeyPath=[[keyPath substringFromIndex:[arrayKeyPath length]+1] retain];
+	/*
+	 Normally, the array path is the key path minus the last component.
+	 In case the last component is actually a parameter to an operator,
+	 we have to take the last two components.	 
+	 */
+	id components=[keyPath componentsSeparatedByString:@"."];
+	if([components count]==1)
+	{
+		valueKeyPath=@"self";
+		arrayKeyPath=[components lastObject];
+	}
+	else
+	{
+		id secondToLast=[components objectAtIndex:[components count]-2];
+		
+		if([secondToLast hasPrefix:@"@"])
+		{
+			valueKeyPath=keyPath;
+			arrayKeyPath=@"self";
+		}
+		else
+		{
+			valueKeyPath=[components lastObject];
+			arrayKeyPath= [keyPath substringToIndex:[keyPath length]-[valueKeyPath length]-1];
+		}
+	}
+	[valueKeyPath retain];
+	[arrayKeyPath retain];
 }
 
 -(BOOL)allowsEditingForRow:(int)row
 {
 	return YES;
 }
+
 
 -(void)dealloc
 {
@@ -86,11 +101,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 {
 	NS_DURING
 	[destination addObserver:self forKeyPath:arrayKeyPath options:0 context:destination];
-	[rowValues addObserver:self
-		toObjectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, [rowValues count])]
-				forKeyPath:valueKeyPath 
-				   options:0
-				   context:nil];
+	if(![valueKeyPath hasPrefix:@"@"])
+		[rowValues addObserver:self
+			toObjectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, [rowValues count])]
+					forKeyPath:valueKeyPath 
+					   options:0
+					   context:nil];
 	NS_HANDLER
 	NS_ENDHANDLER
 }
@@ -99,9 +115,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 {
 	NS_DURING
 	[destination removeObserver:self forKeyPath:arrayKeyPath];
-	[rowValues removeObserver:self
-		 fromObjectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, [rowValues count])]
-				   forKeyPath:valueKeyPath];
+	if(![valueKeyPath hasPrefix:@"@"])
+		[rowValues removeObserver:self
+			 fromObjectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, [rowValues count])]
+					   forKeyPath:valueKeyPath];
 	NS_HANDLER
 	NS_ENDHANDLER
 }
@@ -145,25 +162,23 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	}
 }
 
--(void)finishBind
+-(id)defaultBindingOptionsForBinding:(id)binding
+{
+	return [[source dataCell] _defaultBindingOptionsForBinding:binding];
+}
+
+-(void)bind
 {
 	[self cacheArrayKeyPath];
 
 	[self syncUp];
 	[self startObservingChanges];
-}
 
--(void)bind
-{
-	[self cacheArrayKeyPath];	
-
-	// At the time of binding, the binders for the table view may not yet be initialized.
-	// In that case, we cannot determine which part of our key path is the array and
-	// which is the value key. In that case, we defer the finishing steps.
-	if(!arrayKeyPath)
-		[self performSelector:@selector(finishBind) withObject:nil afterDelay:0.0];
-	else
-		[self finishBind];
+	if([self createsSortDescriptor] && [binding isEqual:@"value"])
+	{
+		[source setSortDescriptorPrototype:[[[NSSortDescriptor alloc] initWithKey:valueKeyPath
+																		ascending:NO] autorelease]];
+	}
 }
 
 
@@ -173,24 +188,27 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	[self stopObservingChanges];
 }
 
--(int)count
+-(unsigned)count
 {
 	return [rowValues count];
 }
 
 -(id)objectAtIndex:(unsigned)row
 {
-	return [[rowValues objectAtIndex:row] valueForKey:valueKeyPath];
+	return [[rowValues objectAtIndex:row] valueForKeyPath:valueKeyPath];
 }
 
--(id)description
+-(NSString*)description
 {
 	return [NSString stringWithFormat:@"%@ %@", [super description], [self rowValues]];
 }
 
 -(void)updateRowValues
 {
-	[self setRowValues:[destination valueForKeyPath:arrayKeyPath]];
+	id value=[destination valueForKeyPath:arrayKeyPath];
+	if(![value respondsToSelector:@selector(objectAtIndex:)])
+		value=[[[_NSTableColumnWrapperArray alloc] initWithObject:value] autorelease];
+	[self setRowValues:value];
 }
 @end
 
@@ -247,5 +265,37 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)unbind
 {
 	[self stopObservingChanges];
+}
+
+-(unsigned)numberOfRows
+{
+	return [[destination valueForKeyPath:keyPath] count];
+}
+@end
+
+@implementation _NSTableColumnWrapperArray
+-(id)initWithObject:(id)obj
+{
+	if(self = [super init])
+	{
+		object=[obj retain];
+	}
+	return self;
+}
+
+-(void)dealloc
+{
+	[object release];
+	[super dealloc];
+}
+
+-(unsigned)count
+{
+	return 1;
+}
+
+-(id)objectAtIndex:(unsigned)idx
+{
+	return object;
 }
 @end

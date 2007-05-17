@@ -70,7 +70,7 @@ NSLock *kvoLock=nil;
 	[observationInfos setObject:[NSValue valueWithPointer:info] forKey:[NSValue valueWithPointer:self]];
 }
 
--(void)addObserver:(id)observer forKeyPath:(NSString*)keyPath options:(NSKeyValueObservingOptions)options context:(void*)context realKeyPath:(id)realKeyPath;
+-(void)addObserver:(id)observer forKeyPath:(NSString*)keyPath options:(NSKeyValueObservingOptions)options context:(void*)context;
 {
 	[self _KVO_swizzle];
 	NSString* remainingKeyPath;
@@ -114,48 +114,37 @@ NSLock *kvoLock=nil;
 	info->observer=observer;
 	info->options=options;
 	info->context=context;
-	[info setOriginalKeyPath:realKeyPath];
 	[info setKeyPath:keyPath];
 
 	// if observing a key path, also observe all deeper levels
+	// info object acts as a proxy replacing remainingKeyPath with keyPath 
 	if([remainingKeyPath length])
 	{
-		[[self valueForKey:key] addObserver:observer
+		[[self valueForKey:key] addObserver:info
 									forKeyPath:remainingKeyPath
 									   options:options
-									   context:context
-								   realKeyPath:realKeyPath];
+									   context:context];
 	}
 }
 
--(void)addObserver:(id)observer forKeyPath:(NSString*)keyPath options:(NSKeyValueObservingOptions)options context:(void*)context;
-{
-	/* to support change events for every part of a key path, an observer is
-	 added to every component of the path. Observation messages are sent with
-	 the full path, contained in realKeyPath.
-	*/
-	[self addObserver:observer forKeyPath:keyPath options:options context:context realKeyPath:keyPath];
-}
 
 -(void)removeObserver:(id)observer forKeyPath:(NSString*)keyPath;
 {
-	// first remove all deeper levels in a key path
 	NSString* firstPart, *rest;
 	[keyPath _KVC_partBeforeDot:&firstPart afterDot:&rest];
-	if(rest)
-		[[self valueForKey:firstPart] removeObserver:observer forKeyPath:rest];
 
 	// now remove own observer
 	NSMutableDictionary* dict=[self observationInfo];
 	NSMutableArray *observers=[dict objectForKey:firstPart];
 
 	NSEnumerator *en=[observers objectEnumerator];
-	_NSObservationInfo *current;
-	while(current=[en nextObject])
+	_NSObservationInfo *info;
+	while(info=[en nextObject])
 	{
-		if([current observer]==observer)
+		if(info->observer==observer)
 		{
-			[observers removeObject:current];
+			[[info retain] autorelease];
+			[observers removeObject:info];
 			if(![observers count])
 			{
 				[dict removeObjectForKey:firstPart];
@@ -165,6 +154,9 @@ NSLock *kvoLock=nil;
 				[dict release];
 				[self setObservationInfo:nil];
 			}
+
+			if(rest)
+				[[self valueForKey:firstPart] removeObserver:info forKeyPath:rest];
 			return;
 		}
 	}
@@ -222,7 +214,7 @@ NSLock *kvoLock=nil;
 
 		// remove deeper levels (those items will change)
 		if(rest)
-			[[self valueForKey:firstPart] removeObserver:info->observer forKeyPath:rest];
+			[[self valueForKey:firstPart] removeObserver:info forKeyPath:rest];
 	}
 }
 
@@ -270,7 +262,7 @@ NSLock *kvoLock=nil;
 		NSMutableDictionary *dict=[NSMutableDictionary new];
 		if(info->options & NSKeyValueObservingOptionOld)
 		{
-			id oldValue=[info oldValue];
+			id oldValue=info->oldValue;
 			if(oldValue)
 				[dict setObject:oldValue 
 						 forKey:NSKeyValueChangeOldKey];
@@ -293,15 +285,14 @@ NSLock *kvoLock=nil;
 		if(rest)
 		{
 			[[self valueForKey:firstPart]
-			addObserver:info->observer 
+			addObserver:info
 				forKeyPath:rest
 				   options:info->options
-				   context:info->context
-			   realKeyPath:info->originalKeyPath];
+				   context:info->context];
 		}
 
 		// inform observer of change
-		[info->observer observeValueForKeyPath:[info originalKeyPath] 
+		[info->observer observeValueForKeyPath:info->keyPath
 									  ofObject:self 
 										change:dict
 									   context:info->context];
@@ -632,17 +623,6 @@ CHANGE_DECLARATION(SEL)
     }
 }
 
-- (NSString*)originalKeyPath {
-    return [[originalKeyPath retain] autorelease];
-}
-
-- (void)setOriginalKeyPath:(NSString*)value {
-    if (originalKeyPath != value) {
-        [originalKeyPath release];
-        originalKeyPath = [value copy];
-    }
-}
-
 
 
 - (id)oldValue 
@@ -666,15 +646,22 @@ CHANGE_DECLARATION(SEL)
 
 -(void)dealloc
 {
-	[originalKeyPath release];
 	[keyPath release];
 	[oldValue release];
 	[super dealloc];
 }
 
+-(void)observeValueForKeyPath:(NSString*)subKeyPath ofObject:(id)object change:(NSDictionary*)changeDict context:(void*)subContext;
+{
+	[observer observeValueForKeyPath:keyPath
+							ofObject:object
+							  change:changeDict
+							 context:context];
+}
+
 -(NSString *)description
 {
-	return [NSString stringWithFormat:@"<%@ %p (%@ -> %@)>", [self className], self, originalKeyPath, observer];
+	return [NSString stringWithFormat:@"<%@ %p (%@ -> %@)>", [self className], self, keyPath, observer];
 }
 @end
 

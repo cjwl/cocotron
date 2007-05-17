@@ -47,6 +47,7 @@ APPKIT_EXPORT NSString *NSTableViewColumnDidResizeNotification;
    int _editedColumn, _editedRow;
    id _editingCell;
    NSRect _editingFrame;
+   NSArray* _sortDescriptors;
 }
 
 -(SEL)doubleAction;
@@ -150,6 +151,9 @@ APPKIT_EXPORT NSString *NSTableViewColumnDidResizeNotification;
 
 - (NSIndexSet *)selectedRowIndexes;
 - (void)setSelectedRowIndexes:(NSIndexSet *)value;
+
+- (NSArray *)sortDescriptors;
+- (void)setSortDescriptors:(NSArray *)value;
 @end
 
 @interface NSObject(NSTableView_dataSource)

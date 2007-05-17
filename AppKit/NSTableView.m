@@ -132,6 +132,7 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
    [_gridColor release];
    [NSIndexSet release];
    [_selectedColumns release];
+   [_sortDescriptors release];
    [super dealloc];
 }
 
@@ -219,7 +220,7 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
 
 -(int)numberOfRows {
 	int val;
-	if((val = [[_tableColumns lastObject] _rowCountFromBindings]) >= 0)
+	if((val = [[self _binderForBinding:@"content"] numberOfRows]) >= 0)
 	{
 		return val;
 	}
@@ -575,6 +576,19 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
 
 -(int)clickedColumn {
     return _clickedColumn;
+}
+
+- (NSArray *)sortDescriptors {
+	if(!_sortDescriptors)
+		_sortDescriptors=[NSArray new];
+    return [[_sortDescriptors retain] autorelease];
+}
+
+- (void)setSortDescriptors:(NSArray *)value {
+    if (_sortDescriptors != value) {
+        [_sortDescriptors release];
+        _sortDescriptors = [value copy];
+    }
 }
 
 - (NSIndexSet *)selectedRowIndexes {
