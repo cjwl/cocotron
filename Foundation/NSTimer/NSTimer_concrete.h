@@ -16,6 +16,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    BOOL            _repeats:1;
 }
 
+-initWithFireDate:(NSDate *)date interval:(NSTimeInterval)timeInterval repeats:(BOOL)repeats;
 -initWithTimeInterval:(NSTimeInterval)timeInterval repeats:(BOOL)repeats;
 
 @end

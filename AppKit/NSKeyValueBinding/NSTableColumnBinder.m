@@ -14,6 +14,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSString.h>
 #import <AppKit/NSTableView.h>
 #import <AppKit/NSTableColumn.h>
+#import <AppKit/NSCell.h>
+#import <AppKit/NSObject+BindingSupport.h>
 
 @interface _NSTableColumnWrapperArray : NSArray
 {
@@ -157,14 +159,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 			[[source tableView] reloadData];
 		
 		if([destination respondsToSelector:@selector(_selectionMayHaveChanged)])
-			[destination _selectionMayHaveChanged];
+			[destination performSelector:@selector(_selectionMayHaveChanged)];
 
 	}
 }
 
--(id)defaultBindingOptionsForBinding:(id)binding
+-(id)defaultBindingOptionsForBinding:(id)thisBinding
 {
-	return [[source dataCell] _defaultBindingOptionsForBinding:binding];
+	return [[source dataCell] _defaultBindingOptionsForBinding:thisBinding];
 }
 
 -(void)bind

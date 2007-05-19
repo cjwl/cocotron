@@ -267,133 +267,106 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     }
 }
 
+// The documentation appears to be wrong, it returns -1 on overflow.
 -(BOOL)scanHexInt:(unsigned *)valuep {
-    enum {
-        STATE_SPACE,
-        STATE_HEX_ONLY
-    } state=STATE_SPACE;
-    int sign=1;
-    int value=0;
-    BOOL hasValue=NO;
+   enum {
+    STATE_SPACE,
+    STATE_ZERO,
+    STATE_HEX,
+   } state=STATE_SPACE;
+   unsigned value=0;
+   BOOL     hasValue=NO;
+   BOOL     overflow=NO;
+   
+   for(;_location<[_string length];_location++){
+    unichar unicode=[_string characterAtIndex:_location];
 
-    for(;_location<[_string length];_location++){
-        unichar unicode=[_string characterAtIndex:_location];
-
-        switch(state){
-            case STATE_SPACE:
-                if([_skipSet characterIsMember:unicode])
-                    state=STATE_SPACE;
-                else if (unicode == '0' && ([_string characterAtIndex:_location+1] == 'x' ||
-                                            [_string characterAtIndex:_location+1] == 'X')) {
-                    _location++;
-                    state=STATE_SPACE;
-                }
-                else if(unicode>='0' && unicode<='9'){
-                    value=(value*16)+unicode-'0';
-                    state=STATE_HEX_ONLY;
-                    hasValue=YES;
-                }
-                else if((unicode>='a' && unicode<='f') || (unicode >='A' && unicode <= 'F')){
-                    int digit = 0;
-                    switch(unicode) {
-                        case 'a':
-                        case 'A':
-                            digit = 10;
-                            break;
-
-                        case 'b':
-                        case 'B':
-                            digit = 11;
-                            break;
-
-                        case 'c':
-                        case 'C':
-                            digit = 12;
-                            break;
-
-                        case 'd':
-                        case 'D':
-                            digit = 13;
-                            break;
-
-                        case 'e':
-                        case 'E':
-                            digit = 14;
-                            break;
-
-                        case 'f':
-                        case 'F':
-                            digit = 15;
-                            break;
-                    }
-                            
-                    value=(value*16)+digit;
-                    state=STATE_HEX_ONLY;
-                    hasValue=YES;
-                }
-                else
-                    return NO;
-                break;
-
-            case STATE_HEX_ONLY:
-                if(unicode>='0' && unicode<='9'){
-                    value=(value*16)+unicode-'0';
-                    hasValue=YES;
-                }
-                else if((unicode>='a' && unicode<='f') || (unicode >='A' && unicode <= 'F')){
-                    int digit = 0;
-                    switch(unicode) {
-                        case 'a':
-                        case 'A':
-                            digit = 10;
-                            break;
-
-                        case 'b':
-                        case 'B':
-                            digit = 11;
-                            break;
-
-                        case 'c':
-                        case 'C':
-                            digit = 12;
-                            break;
-
-                        case 'd':
-                        case 'D':
-                            digit = 13;
-                            break;
-
-                        case 'e':
-                        case 'E':
-                            digit = 14;
-                            break;
-
-                        case 'f':
-                        case 'F':
-                            digit = 15;
-                            break;
-                    }
-
-                    value=(value*16)+digit;
-                    state=STATE_HEX_ONLY;
-                    hasValue=YES;
-                }
-                else if(!hasValue)
-                    return NO;
-                else {
-                    *valuep=sign*value;
-                    return YES;
-                }
-                    break;
+    switch(state){
+    
+     case STATE_SPACE:
+      if([_skipSet characterIsMember:unicode])
+       state=STATE_SPACE;
+      else if(unicode == '0'){
+       state=STATE_ZERO;
+       hasValue=YES;
+      }
+      else if(unicode>='1' && unicode<='9'){
+       value=value*16+(unicode-'0');
+       state=STATE_HEX;
+       hasValue=YES;
+      }
+      else if(unicode>='a' && unicode<='f'){
+       value=value*16+(unicode-'a')+10;
+       state=STATE_HEX;
+       hasValue=YES;
+      }
+      else if(unicode>='A' && unicode<='F'){
+       value=value*16+(unicode-'A')+10;
+       state=STATE_HEX;
+       hasValue=YES;
+      }
+      else
+       return NO;
+      break;
+      
+     case STATE_ZERO:
+      state=STATE_HEX;
+      if(unicode=='x' || unicode=='X')
+       break;
+      // fallthrough
+     case STATE_HEX:
+      if(unicode>='0' && unicode<='9'){
+       if(!overflow){
+        unsigned check=value*16+(unicode-'0');
+        if(check>value)
+         value=check;
+        else {
+         value=-1;
+         overflow=YES;
         }
+       }
+      }
+      else if(unicode>='a' && unicode<='f'){
+       if(!overflow){
+        unsigned check=value*16+(unicode-'a')+10;
+        if(check>value)
+         value=check;
+        else {
+         value=-1;
+         overflow=YES;
+        }
+       }
+      }
+      else if(unicode>='A' && unicode<='F'){
+       if(!overflow){
+        unsigned check=value*16+(unicode-'A')+10;
+        
+        if(check>value)
+         value=check;
+        else {
+         value=-1;
+         overflow=YES;
+        }
+       }
+      }
+      else {
+       if(valuep!=NULL)
+        *valuep=value;
+        
+       return YES;
+      }
+      break;
     }
-
-    if(!hasValue)
-        return NO;
-    else {
-        *valuep=sign*value;
-        return YES;
-    }
+   }
+   
+   if(hasValue){
+    if(valuep!=NULL)
+     *valuep=value;
+     
+    return YES;
+   }
+    
+   return NO;
 }
 
 

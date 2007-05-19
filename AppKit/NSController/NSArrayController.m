@@ -14,6 +14,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSCoder.h>
 #import <Foundation/NSPredicate.h>
 #import <Foundation/NSKeyValueObserving.h>
+#import <Foundation/NSString+KVCAdditions.h>
 
 @interface NSArrayController(forwardRefs)
 -(void)_selectionMayHaveChanged;

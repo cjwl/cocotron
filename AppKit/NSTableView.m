@@ -220,7 +220,8 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
 
 -(int)numberOfRows {
 	int val;
-	if((val = [[self _binderForBinding:@"content"] numberOfRows]) >= 0)
+    id binding=[self _binderForBinding:@"content"];
+    if(binding && (val=[binding numberOfRows])>=0)
 	{
 		return val;
 	}

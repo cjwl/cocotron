@@ -147,17 +147,17 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	return currentMinimum;
 }
 
+-(id)_kvo_operator_count
+{
+	return [NSNumber numberWithInt:[self count]];
+}
+
 -(id)_kvo_operator_count:(NSString*)parameter
 {
 	if([parameter length]>0)
 		[NSException raise:NSInvalidArgumentException
 					format:@"array operator @count called with argument (%@)", parameter];
 	return [self _kvo_operator_count];
-}
-
--(id)_kvo_operator_count
-{
-	return [NSNumber numberWithInt:[self count]];
 }
 
 -(void)setValue:(id)value forKey:(NSString*)key

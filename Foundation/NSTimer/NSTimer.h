@@ -10,6 +10,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @interface NSTimer : NSObject
 
+-initWithFireDate:(NSDate *)date interval:(NSTimeInterval)interval target:target selector:(SEL)selector userInfo:userInfo repeats:(BOOL)repeats;
+
 +(NSTimer *)timerWithTimeInterval:(NSTimeInterval)timeInterval
   invocation:(NSInvocation *)invocation repeats:(BOOL)repeats;
 
@@ -30,6 +32,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(NSTimeInterval)timeInterval;
 
 -userInfo;
+
+-(void)setFireDate:(NSDate *)date;
 
 -(void)fire;
 

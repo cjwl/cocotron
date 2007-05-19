@@ -16,6 +16,17 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @implementation NSTimer : NSObject
 
++allocWithZone:(NSZone *)zone {
+   if(self==OBJCClassFromString("NSTimer"))
+    return NSAllocateObject([NSTimer_targetAction class],0,NULL);
+
+   return NSAllocateObject(self,0,zone);
+}
+
+-initWithFireDate:(NSDate *)date interval:(NSTimeInterval)interval target:target selector:(SEL)selector userInfo:userInfo repeats:(BOOL)repeats {
+   NSInvalidAbstractInvocation();
+   return self;
+}
 
 +(NSTimer *)timerWithTimeInterval:(NSTimeInterval)timeInterval
   invocation:(NSInvocation *)invocation repeats:(BOOL)repeats {
@@ -67,6 +78,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -userInfo {
    NSInvalidAbstractInvocation();
    return nil;
+}
+
+-(void)setFireDate:(NSDate *)date {
+   NSInvalidAbstractInvocation();
 }
 
 -(void)fire {

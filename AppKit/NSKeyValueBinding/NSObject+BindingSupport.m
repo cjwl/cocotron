@@ -11,6 +11,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSString.h>
 #import <AppKit/NSObject+BindingSupport.h>
 #import <Foundation/NSBundle.h>
+#import <Foundation/NSKeyValueCoding.h>
 
 NSMutableDictionary *bindersForObjects=nil;
 NSDictionary *defaultBindingOptions;

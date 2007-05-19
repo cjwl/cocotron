@@ -12,6 +12,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @implementation NSTimer_targetAction
 
+-initWithFireDate:(NSDate *)date interval:(NSTimeInterval)interval target:target selector:(SEL)selector userInfo:userInfo repeats:(BOOL)repeats {
+   [super initWithFireDate:date interval:interval repeats:repeats];
+
+   _userInfo=[userInfo retain];
+   _target=target;
+   _selector=selector;
+
+   return self;
+}
 
 -initWithTimeInterval:(NSTimeInterval)timeInterval repeats:(BOOL)repeats
   userInfo:userInfo target:target selector:(SEL)selector {

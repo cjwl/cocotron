@@ -11,6 +11,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSNumber.h>
 #import <Foundation/NSMutableArray.h>
+#import <Foundation/NSKeyValueCoding.h>
+#import <Foundation/NSEnumerator.h>
 
 #pragma mark -
 #pragma mark Binding Option Strings
@@ -111,9 +113,9 @@ NSString *NSRaisesForNotApplicableKeysBindingOption=@"NSRaisesForNotApplicableKe
     }
 }
 
--(id)defaultBindingOptionsForBinding:(id)binding
+-(id)defaultBindingOptionsForBinding:(id)thisBinding
 {
-	return [source _defaultBindingOptionsForBinding:binding];
+	return [source _defaultBindingOptionsForBinding:thisBinding];
 }
 
 - (id)options {

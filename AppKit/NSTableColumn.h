@@ -55,5 +55,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 // internal
 -(void)prepareCell:(id)cell inRow:(int)row;
 -(void)_boundValuesChanged;
+-(void)_sort;
 
 @end

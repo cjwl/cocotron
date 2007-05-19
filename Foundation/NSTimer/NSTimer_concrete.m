@@ -12,10 +12,19 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @implementation NSTimer_concrete
 
+-initWithFireDate:(NSDate *)date interval:(NSTimeInterval)interval repeats:(BOOL)repeats {
+   _timeInterval=interval;
+   _fireDate=[date copy];
 
--initWithTimeInterval:(NSTimeInterval)timeInterval repeats:(BOOL)repeats {
+   _isValid=YES;
+   _repeats=repeats;
 
-   _timeInterval=timeInterval;
+   return self;
+}
+
+-initWithTimeInterval:(NSTimeInterval)interval repeats:(BOOL)repeats {
+
+   _timeInterval=interval;
    _fireDate=[[[NSDate date] addTimeInterval:_timeInterval] retain];
 
    _isValid=YES;
@@ -53,6 +62,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -userInfo {
    return nil;
+}
+
+-(void)setFireDate:(NSDate *)date {
+   date=[date copy];
+   [_fireDate release];
+   _fireDate=date;
 }
 
 -(BOOL)isValid {

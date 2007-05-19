@@ -15,6 +15,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    SEL _selector;
 }
 
+-initWithFireDate:(NSDate *)date interval:(NSTimeInterval)interval target:target selector:(SEL)selector userInfo:userInfo repeats:(BOOL)repeats;
+
 -initWithTimeInterval:(NSTimeInterval)timeInterval repeats:(BOOL)repeats
   userInfo:userInfo target:target selector:(SEL)selector;
 
