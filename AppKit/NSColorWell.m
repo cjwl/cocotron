@@ -141,7 +141,7 @@ NSString *_NSColorWellDidBecomeExclusiveNotification=@"_NSColorWellDidBecomeExcl
 }
 
 -(void)setColor:(NSColor *)color {
-	if(![color isKindOfClass:[NSColor class]])
+	if(NSIsControllerMarker(color))
 		return [self setColor:[NSColor blackColor]];
 
    color=[color retain];

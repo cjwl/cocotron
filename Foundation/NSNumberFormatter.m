@@ -8,6 +8,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 // Original - David Young <daver@geeks.org>
 #import <Foundation/NSString.h>
+#import <Foundation/NSCoder.h>
 #import <Foundation/NSNumber.h>
 #import <Foundation/NSArray.h>
 #import <Foundation/NSDictionary.h>
@@ -58,6 +59,60 @@ Aug 10 14:40:35 formatters[12645] 0.11111: $
    _allowsFloats = YES;
 
    return self;
+}
+
+-(id)initWithCoder:(NSCoder*)coder
+{
+	if(self=[super initWithCoder:coder])
+	{
+		// FIX: decode & set other values
+		/*NS.allowsfloats = 1;
+		NS.attributes = {
+			CF$UID = 196;
+		};
+		NS.decimal = {
+			CF$UID = 70;
+		};
+		NS.hasthousands = 1;
+		NS.localized = 0;
+		NS.max = {
+			CF$UID = 68;
+		};
+		NS.min = {
+			CF$UID = 68;
+		};
+		NS.nan = {
+			CF$UID = 200;
+		};
+		NS.negativeattrs = {
+			CF$UID = 0;
+		};
+		NS.negativeformat = {
+			CF$UID = 58;
+		};
+		NS.nil = {
+			CF$UID = 199;
+		};
+		NS.positiveattrs = {
+			CF$UID = 0;
+		};
+		NS.positiveformat = {
+			CF$UID = 57;
+		};
+		NS.rounding = {
+			CF$UID = 0;
+		};
+		NS.thousand = {
+			CF$UID = 71;
+		};
+		NS.zero = {
+			CF$UID = 198;
+		};		 
+		 */
+		[self setPositiveFormat:[coder decodeObjectForKey:@"NS.positiveformat"]];
+		[self setNegativeFormat:[coder decodeObjectForKey:@"NS.negativeformat"]];
+	}
+	return self;
 }
 
 -(void)dealloc {

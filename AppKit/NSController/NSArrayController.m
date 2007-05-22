@@ -14,6 +14,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSCoder.h>
 #import <Foundation/NSPredicate.h>
 #import <Foundation/NSKeyValueObserving.h>
+#import <Foundation/NSKeyValueCoding.h>
 #import <Foundation/NSString+KVCAdditions.h>
 
 @interface NSArrayController(forwardRefs)
@@ -44,8 +45,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(id)initWithCoder:(NSCoder*)coder
 {
-	self=[super init];
-	if(self)
+	if(self = [super initWithCoder:coder])
 	{
 		flags.avoidsEmptySelection = [coder decodeBoolForKey:@"NSAvoidsEmptySelection"];
 		flags.clearsFilterPredicateOnInsertion = [coder decodeBoolForKey:@"NSClearsFilterPredicateOnInsertion"];
@@ -63,8 +63,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)dealloc
 {
 	[_selection release];
-	[contentArray release];
-	[selectionIndexes release];
+	[_contentArray release];
+	[_selectionIndexes release];
+	[_sortDescriptors release];
+	[_filterPredicate release];
+	[_arrangedObjects release];
 	[super dealloc];
 }
 
@@ -81,39 +84,43 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 - (id)contentArray {
-    return [[contentArray retain] autorelease];
+    return [[_contentArray retain] autorelease];
 }
 
--(void)arrangeObjects
+-(NSArray*)arrangeObjects:(NSArray*)objects
 {
-	id sortedObjects=contentArray;
+	id sortedObjects=objects;
 	if([self filterPredicate])
 		sortedObjects=[sortedObjects filteredArrayUsingPredicate:[self filterPredicate]];
 	if([self sortDescriptors])
 		sortedObjects=[sortedObjects sortedArrayUsingDescriptors:[self sortDescriptors]];
-	[self setArrangedObjects:sortedObjects];
-	
+	return sortedObjects;
+}
+
+- (void)rearrangeObjects
+{
+	[self setArrangedObjects:[self arrangeObjects:[self contentArray]]];
 }
 
 - (void)setContentArray:(id)value {
-    if (contentArray != value) {
-        [contentArray release];
-        contentArray = [value copy];
-		[self arrangeObjects];
+    if (_contentArray != value) {
+        [_contentArray release];
+        _contentArray = [value copy];
+		[self rearrangeObjects];
     }
 }
 
 - (void)setArrangedObjects:(id)value {
-    if (arrangedObjects != value) 
+    if (_arrangedObjects != value) 
 	{
-		[arrangedObjects release];
-        arrangedObjects = [[_NSObservableArray alloc] initWithArray:value];
+		[_arrangedObjects release];
+        _arrangedObjects = [[_NSObservableArray alloc] initWithArray:value];
     }
 }
 
 -(id)arrangedObjects
 {
-	return arrangedObjects;
+	return _arrangedObjects;
 }
 
 -(id)selection
@@ -122,7 +129,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 - (NSIndexSet *)selectionIndexes {
-    return [[selectionIndexes retain] autorelease];
+    return [[_selectionIndexes retain] autorelease];
 }
 
 -(BOOL)setSelectionIndex:(unsigned)index {
@@ -134,9 +141,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 		value=[NSIndexSet indexSetWithIndex:0];
 
 // use isEqualToIndexSet: ?	
-    if (selectionIndexes != value) {
-        [selectionIndexes release];
-        selectionIndexes = [value copy];
+    if (_selectionIndexes != value) {
+        [_selectionIndexes release];
+        _selectionIndexes = [value copy];
 		//NSLog(@"selectionIndexes changed to %@", value);
 
 		[self willChangeValueForKey:@"selection"];
@@ -152,26 +159,26 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 - (NSArray *)sortDescriptors {
-    return [[sortDescriptors retain] autorelease];
+    return [[_sortDescriptors retain] autorelease];
 }
 
 - (void)setSortDescriptors:(NSArray *)value {
-    if (sortDescriptors != value) {
-        [sortDescriptors release];
-        sortDescriptors = [value copy];
-		[self arrangeObjects];
+    if (_sortDescriptors != value) {
+        [_sortDescriptors release];
+        _sortDescriptors = [value copy];
+		[self rearrangeObjects];
     }
 }
 
 - (NSPredicate *)filterPredicate {
-    return [[filterPredicate retain] autorelease];
+    return [[_filterPredicate retain] autorelease];
 }
 
 - (void)setFilterPredicate:(NSPredicate *)value {
-    if (filterPredicate != value) {
-        [filterPredicate release];
-        filterPredicate = [value copy];
-		[self arrangeObjects];
+    if (_filterPredicate != value) {
+        [_filterPredicate release];
+        _filterPredicate = [value copy];
+		[self rearrangeObjects];
     }
 }
 
@@ -188,15 +195,46 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	return [_NSObservableArray array];
 }
 
+- (void)removeObject:(id)object
+{
+	[[self mutableArrayValueForKey:@"contentArray"] removeObject:object];
+}
+
+- (void)removeObjects:(id)objects
+{
+	id contentArray=[[self contentArray] mutableCopy];
+	int count=[objects count];
+	int i;
+	for(i=0; i<count; i++)
+		[contentArray removeObject:[objects objectAtIndex:i]];
+	[self setContentArray:contentArray];
+}
+
+- (void)addObject:(id)object
+{
+	[[self mutableArrayValueForKey:@"contentArray"] addObject:object];
+}
+
+-(id)newObject
+{
+	return [[NSClassFromString(_objectClassName) alloc] init];
+}
 
 -(void)add:(id)sender
 {
-	
+	[self addObject:[[self newObject] autorelease]];
+
+}
+
+-(void)removeObjectsAtArrangedObjectIndexes:(NSIndexSet*)indexes
+{
+	[self removeObjects:[[self contentArray] objectsAtIndexes:indexes]];
+
 }
 
 -(void)remove:(id)sender
 {
-	
+	[self removeObjectsAtArrangedObjectIndexes:[self selectionIndexes]];
 }
 
 -(void)selectNext:(id)sender

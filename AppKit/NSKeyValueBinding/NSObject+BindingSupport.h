@@ -6,13 +6,15 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 #import <Foundation/NSObject.h>
+#import <AppKit/AppKitExport.h>
 
-@class NSDictionary,NSArray;
+@class NSDictionary,NSArray,NSString;
 
 @interface NSObject (BindingSupport)
--(void)bind:(NSString *)binding toObject:(id)destination withKeyPath:(NSString*)keyPath options:(NSDictionary*)options;
--(NSDictionary *)infoForBinding:(NSString*)binding;
--(void)unbind:(NSString*)binding;
+-(void)bind:(id)binding toObject:(id)destination withKeyPath:(NSString*)keyPath options:(NSDictionary*)options;
+-(NSDictionary *)infoForBinding:(id)binding;
+-(void)unbind:(id)binding;
++(void)exposeBinding:(id)binding;
 @end
 
 @interface NSObject (InternalBindingSupport)
@@ -38,3 +40,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 // returns all binders used by the object
 -(NSArray*)_allUsedBinders;
 @end
+
+APPKIT_EXPORT NSString* NSObservedObjectKey;
+APPKIT_EXPORT NSString* NSObservedKeyPathKey;
+APPKIT_EXPORT NSString* NSOptionsKey;
+
+// Binding option keys
+APPKIT_EXPORT NSString *NSNoSelectionPlaceholderBindingOption;
+APPKIT_EXPORT NSString *NSMultipleValuesPlaceholderBindingOption;
+APPKIT_EXPORT NSString *NSCreatesSortDescriptorBindingOption;
+APPKIT_EXPORT NSString *NSRaisesForNotApplicableKeysBindingOption;
+APPKIT_EXPORT NSString *NSAllowsEditingMultipleValuesSelectionBindingOption;
+APPKIT_EXPORT NSString *NSValueTransformerNameBindingOption;
+

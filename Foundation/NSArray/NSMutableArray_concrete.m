@@ -257,4 +257,41 @@ static inline unsigned indexOfObject(NSMutableArray_concrete *self,id object){
     [_objects[count] performSelector:selector];
 }
 
+// iterative mergesort based on http://www.inf.fh-flensburg.de/lang/algorithmen/sortieren/merge/mergiter.htm
+-(void)sortUsingFunction:(int (*)(id, id, void *))compare context:(void *)context {
+  int h, i, j, k, l, m, n = _count;
+  id  A, *B = malloc((n/2 + 1) * sizeof(id));
+
+  for (h = 1; h < n; h += h)
+  {
+     for (m = n - 1 - h; m >= 0; m -= h + h)
+     {
+        l = m - h + 1;
+        if (l < 0)
+           l = 0;
+
+        for (i = 0, j = l; j <= m; i++, j++)
+           B[i] = _objects[j];
+
+        for (i = 0, k = l; k < j && j <= m + h; k++)
+        {
+           A = _objects[j];
+           if (compare(A, B[i], context) == NSOrderedDescending)
+              _objects[k] = B[i++];
+           else
+           {
+              _objects[k] = A;
+              j++;
+           }
+        }
+
+        while (k < j)
+           _objects[k++] = B[i++];
+     }
+  }
+
+  free(B);
+}
+
+
 @end

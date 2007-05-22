@@ -22,13 +22,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 		long selectsInsertedObjects:1;
 		long alwaysUsesMultipleValuesMarker:1;
 	} flags;
-	id contentArray;
-	id selectionIndexes;
-	id sortDescriptors;
-	id filterPredicate;
+	id _contentArray;
+	id _selectionIndexes;
+	id _sortDescriptors;
+	id _filterPredicate;
 	id _selection;
-	id arrangedObjects;
-	
+	id _arrangedObjects;
 }
 
 -(NSArray *)sortDescriptors;

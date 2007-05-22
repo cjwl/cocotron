@@ -33,6 +33,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)replaceObjectAtIndex:(unsigned)index withObject:object;
 -(void)replaceObjectsInRange:(NSRange)range withObjectsFromArray:(NSArray *)array;
 -(void)replaceObjectsInRange:(NSRange)range withObjectsFromArray:(NSArray *)array range:(NSRange)otherRange;
+-(void)exchangeObjectAtIndex:(unsigned)index withObjectAtIndex:(unsigned)other;
 
 -(void)sortUsingSelector:(SEL)selector;
 -(void)sortUsingFunction:(int (*)(id, id, void *))compare context:(void *)context;

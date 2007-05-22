@@ -422,4 +422,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return [_nameToReplacementClass objectForKey:className];
 }
 
+-(NSString*)description
+{
+	return [NSString stringWithFormat:@"%@ %@", [super description], [_plistStack lastObject]];
+}
 @end

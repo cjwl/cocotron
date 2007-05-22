@@ -75,6 +75,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     check=[keyed decodeObjectForKey:@"NSSupport"];
     if([check isKindOfClass:[NSFont class]])
      _font=[check retain];
+	
+	[self setFormatter:[keyed decodeObjectForKey:@"NSFormatter"]];
 
     _controlSize=(flags2&0xE0000)>>17;
     if (_font==nil)

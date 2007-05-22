@@ -46,6 +46,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSDateComponents.h>
 #import <Foundation/NSDateFormatter.h>
 #import <Foundation/NSDebug.h>
+#import <Foundation/NSDecimalNumber.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSDirectoryEnumerator.h>
 #import <Foundation/NSEnumerator.h>

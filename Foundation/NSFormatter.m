@@ -40,4 +40,17 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return nil;
 }
 
+-(id)initWithCoder:(NSCoder*)coder
+{
+	if(self=[super init])
+	{
+	}
+	return self;
+}
+
+-(void)encodeWithCoder:(NSCoder *)coder {
+
+
+}
+
 @end

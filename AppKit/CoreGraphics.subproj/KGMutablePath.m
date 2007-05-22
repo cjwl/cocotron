@@ -232,9 +232,11 @@ static void expandPointCapacity(KGMutablePath *self,unsigned delta){
 }
 
 -(void)addArcToPoint:(NSPoint)point1 point:(NSPoint)point2 radius:(float)radius withTransform:(CGAffineTransform *)matrix {
+	NSUnimplementedMethod();
 }
 
 -(void)addEllipseInRect:(NSRect)rect withTransform:(CGAffineTransform *)matrix {
+	NSUnimplementedMethod();
 }
 
 -(void)addPath:(KGPath *)path withTransform:(CGAffineTransform *)matrix {

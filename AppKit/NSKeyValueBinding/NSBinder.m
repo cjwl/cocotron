@@ -6,21 +6,14 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 #import "NSBinder.h"
-#import <AppKit/NSObject+BindingSupport.h>
+#import "NSObject+BindingSupport.h"
 #import <Foundation/NSString.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSNumber.h>
 #import <Foundation/NSMutableArray.h>
 #import <Foundation/NSKeyValueCoding.h>
 #import <Foundation/NSEnumerator.h>
-
-#pragma mark -
-#pragma mark Binding Option Strings
-
-NSString *NSNoSelectionPlaceholderBindingOption=@"NSNoSelectionPlaceholder";
-NSString *NSMultipleValuesPlaceholderBindingOption=@"NSMultipleValuesPlaceholder";
-NSString *NSCreatesSortDescriptorBindingOption=@"NSCreatesSortDescriptors";
-NSString *NSRaisesForNotApplicableKeysBindingOption=@"NSRaisesForNotApplicableKeys";
+#import <AppKit/NSController.h>
 
 #pragma mark -
 #pragma mark Binding Options
@@ -44,8 +37,7 @@ NSString *NSRaisesForNotApplicableKeysBindingOption=@"NSRaisesForNotApplicableKe
 
 -(BOOL)allowsEditingMultipleValues
 {
-	// FIX: needs to read from options
-	return YES;
+	return [[options objectForKey:NSAllowsEditingMultipleValuesSelectionBindingOption] boolValue];
 }
 
 -(BOOL)createsSortDescriptor
@@ -57,6 +49,22 @@ NSString *NSRaisesForNotApplicableKeysBindingOption=@"NSRaisesForNotApplicableKe
 -(BOOL)raisesForNotApplicableKeys
 {
 	return [[options objectForKey:NSRaisesForNotApplicableKeysBindingOption] boolValue];
+}
+
+-(id)multipleValuesPlaceholder
+{
+	id ret=[options objectForKey:NSMultipleValuesPlaceholderBindingOption];
+	if(!ret)
+		return NSMultipleValuesMarker;
+	return ret;
+}
+
+-(id)noSelectionPlaceholder
+{
+	id ret=[options objectForKey:NSNoSelectionPlaceholderBindingOption];
+	if(!ret)
+		return NSNoSelectionMarker;
+	return ret;
 }
 @end
 

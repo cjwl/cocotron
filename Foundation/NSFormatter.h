@@ -10,7 +10,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @class NSAttributedString, NSDictionary;
 
-@interface NSFormatter : NSObject
+@interface NSFormatter : NSObject <NSCoding>
 
 -(BOOL)isPartialStringValid:(NSString *)partial
    newEditingString:(NSString **)editing errorDescription:(NSString **)error;

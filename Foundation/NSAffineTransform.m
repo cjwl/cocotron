@@ -8,6 +8,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 // Original - Christopher Lloyd <cjwl@objc.net>
 #import <Foundation/NSAffineTransform.h>
+#import <math.h>
 
 @implementation NSAffineTransform
 
@@ -97,4 +98,14 @@ static inline NSAffineTransformStruct invertStruct(NSAffineTransformStruct matri
    return result;
 }
 
+-(void)rotateByDegrees:(float)angle
+{
+	[self rotateByRadians:M_PI*angle/180.0];
+}
+
+-(void)rotateByRadians:(float)radians
+{
+	NSAffineTransformStruct rotate={cos(radians),sin(radians),-sin(radians),cos(radians),0,0};
+	_matrix=multiplyStruct(_matrix,rotate);
+}
 @end

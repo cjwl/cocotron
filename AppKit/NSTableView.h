@@ -15,16 +15,22 @@ APPKIT_EXPORT NSString *NSTableViewSelectionDidChangeNotification;
 APPKIT_EXPORT NSString *NSTableViewColumnDidMoveNotification;		
 APPKIT_EXPORT NSString *NSTableViewColumnDidResizeNotification;
 
+enum {
+   NSTableViewGridNone,
+   NSTableViewSolidVerticalGridLineMask,
+   NSTableViewSolidHorizontalGridLineMask
+};
+
 @interface NSTableView : NSControl {
    id  _target;
    SEL _action;
    SEL _doubleAction;
 
-   id _delegate;
-   id _dataSource;
+   id  _delegate;
+   id  _dataSource;
 
    NSTableHeaderView *_headerView;
-   NSView 	     *_cornerView;
+   NSView 	         *_cornerView;
    NSMutableArray    *_tableColumns;
 
    float _rowHeight;
@@ -38,6 +44,9 @@ APPKIT_EXPORT NSString *NSTableViewColumnDidResizeNotification;
    BOOL _allowsEmptySelection;
    BOOL _allowsColumnSelection;
    NSSize _intercellSpacing;
+
+   BOOL _alternatingRowBackground;
+   unsigned int _gridStyleMask;
 
    // temp ivars
    int _numberOfRows;
@@ -72,6 +81,9 @@ APPKIT_EXPORT NSString *NSTableViewColumnDidResizeNotification;
 -(BOOL)allowsEmptySelection;
 -(BOOL)allowsColumnSelection;
 -(BOOL)autosaveTableColumns;
+
+-(BOOL)usesAlternatingRowBackgroundColors;
+-(unsigned int)gridStyleMask;
 
 -(int)numberOfRows;
 -(int)numberOfColumns;
@@ -108,6 +120,9 @@ APPKIT_EXPORT NSString *NSTableViewColumnDidResizeNotification;
 -(void)setAllowsEmptySelection:(BOOL)flag;
 -(void)setAllowsColumnSelection:(BOOL)flag;
 -(void)setAutosaveTableColumns:(BOOL)flag;
+
+-(void)setUsesAlternatingRowBackgroundColors:(BOOL)flag;
+-(void)setGridStyleMask:(unsigned int)gridStyle;
 
 -(void)addTableColumn:(NSTableColumn *)column;
 -(void)removeTableColumn:(NSTableColumn *)column;

@@ -181,6 +181,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 		[source setSortDescriptorPrototype:[[[NSSortDescriptor alloc] initWithKey:valueKeyPath
 																		ascending:NO] autorelease]];
 	}
+	if([source respondsToSelector:@selector(tableView)])
+	{
+		[[source tableView] performSelector:@selector(_establishBindingsWithDestinationIfUnbound:)
+								 withObject:destination
+								 afterDelay:0.0];
+	}
 }
 
 

@@ -55,6 +55,28 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
 	[self reloadData];
 }
 
+-(void)_establishBindingsWithDestinationIfUnbound:(id)destination
+{
+	// this method is called after table column bindings have been established.
+	// if the table view doesn't have any bindings at this point, it needs to have
+	// its content, sortDescriptors and selectedIndexes bindings established
+	if([[self _allUsedBinders] count]==0)
+	{
+		[self bind:@"content" 
+		  toObject:destination 
+	   withKeyPath:@"arrangedObjects"
+		   options:nil];
+		[self bind:@"sortDescriptors" 
+		  toObject:destination 
+	   withKeyPath:@"sortDescriptors"
+		   options:nil];
+		[self bind:@"selectionIndexes" 
+		  toObject:destination 
+	   withKeyPath:@"selectionIndexes"
+		   options:nil];
+	}
+}
+
 
 -(void)encodeWithCoder:(NSCoder *)coder {
    NSUnimplementedMethod();
@@ -71,7 +93,7 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
     [_headerView setTableView:self];
     _cornerView=[[keyed decodeObjectForKey:@"NSCornerView"] retain];
     _tableColumns=[[NSMutableArray alloc] initWithArray:[keyed decodeObjectForKey:@"NSTableColumns"]];
-	[_tableColumns makeObjectsPerformSelector:@selector(setTableView:) withObject:self];
+    [_tableColumns makeObjectsPerformSelector:@selector(setTableView:) withObject:self];
     _backgroundColor=[[keyed decodeObjectForKey:@"NSBackgroundColor"] retain];
     _gridColor=[[keyed decodeObjectForKey:@"NSGridColor"] retain];
     _rowHeight=[keyed decodeFloatForKey:@"NSRowHeight"];
@@ -83,10 +105,17 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
     _allowsEmptySelection=(flags&0x10000000)?YES:NO;
     _allowsColumnSelection=(flags&0x04000000)?YES:NO;
     _intercellSpacing = NSMakeSize(3.0,2.0);
-	_selectedRowIndexes = [[NSIndexSet alloc] init];
+    _selectedRowIndexes = [[NSIndexSet alloc] init];
     _selectedColumns = [[NSMutableArray alloc] init];
     _editedColumn = -1;
     _editedRow = -1;
+
+    // row background and grid attributes for OS X >= 10.3
+    _alternatingRowBackground=(flags&0x00800000)?YES:NO;
+    if ([keyed containsValueForKey:@"NSGridStyleMask"])
+       _gridStyleMask=[keyed decodeIntForKey:@"NSGridStyleMask"];
+    else
+       _gridStyleMask=NSTableViewGridNone;
    }
    else {
     [NSException raise:NSInvalidArgumentException format:@"-[%@ %s] is not implemented for coder %@",isa,SELNAME(_cmd),coder];
@@ -100,7 +129,7 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
         // Returns the height of each row in the receiver. The default row height is 16.0.
         _rowHeight = 16.0;
         _intercellSpacing = NSMakeSize(3.0,2.0);
-		_selectedRowIndexes = [[NSIndexSet alloc] init];
+        _selectedRowIndexes = [[NSIndexSet alloc] init];
         _selectedColumns = [[NSMutableArray alloc] init];
         _editedColumn = -1;
         _editedRow = -1;
@@ -121,6 +150,10 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
         _backgroundColor = [[NSColor controlBackgroundColor] retain];
         _gridColor = [[NSColor gridColor] retain];
 
+        // row background and grid attributes for OS X >= 10.3
+        _alternatingRowBackground = NO;
+        _gridStyleMask = 0;
+
     return self;
 }
 
@@ -130,7 +163,7 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
    [_tableColumns release];
    [_backgroundColor release];
    [_gridColor release];
-   [NSIndexSet release];
+   [_selectedRowIndexes release];
    [_selectedColumns release];
    [_sortDescriptors release];
    [super dealloc];
@@ -185,8 +218,10 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
    return nil;
 }
 
+// deprecated in OS X >= 10.3
+// use gridStyleMask instead
 -(BOOL)drawsGrid {
-    return _drawsGrid;
+    return _gridStyleMask != NSTableViewGridNone;
 }
 
 -(BOOL)allowsColumnReordering {
@@ -216,6 +251,15 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
 -(BOOL)autosaveTableColumns {
    NSUnimplementedMethod();
    return NO;
+}
+
+// row background and grid attributes for OS X >= 10.3
+-(BOOL)usesAlternatingRowBackgroundColors {
+   return _alternatingRowBackground;
+}
+
+-(unsigned int)gridStyleMask {
+   return _gridStyleMask;
 }
 
 -(int)numberOfRows {
@@ -468,8 +512,13 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
    NSUnimplementedMethod();
 }
 
+// deprecated in OS X >= 10.3
+// use setGridStyleMask instead
 -(void)setDrawsGrid:(BOOL)flag {
-    _drawsGrid = flag;
+    if (flag)
+       _gridStyleMask = NSTableViewSolidVerticalGridLineMask + NSTableViewSolidHorizontalGridLineMask;
+    else
+       _gridStyleMask = NSTableViewGridNone;
 }
 
 -(void)setAllowsColumnReordering:(BOOL)flag {
@@ -498,6 +547,15 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
 
 -(void)setAutosaveTableColumns:(BOOL)flag {
    NSUnimplementedMethod();
+}
+
+// row background and grid attributes for OS X >= 10.3
+-(void)setUsesAlternatingRowBackgroundColors:(BOOL)flag {
+   _alternatingRowBackground = flag;
+}
+
+-(void)setGridStyleMask:(unsigned int)gridStyle {
+   _gridStyleMask = gridStyle;
 }
 
 // the appkit dox are pretty vague on these two. should they trigger a redraw or reloadData?
@@ -530,6 +588,7 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
 }
 
 -(void)editColumn:(int)column row:(int)row withEvent:(NSEvent *)event select:(BOOL)select {
+    NSCell        *editingCell;
     NSTableColumn *editingColumn = [_tableColumns objectAtIndex:column];
 
     // light sanity check; invalid columns caught above in objectAtIndex:
@@ -550,25 +609,28 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
     _editedColumn = column;
     _editedRow = row;
     _editingFrame = [self frameOfCellAtColumn:column row:row];
-    _editingCell = [[editingColumn dataCellForRow:row] copy];
-    [_editingCell setDrawsBackground:YES];
-    [_editingCell setBackgroundColor:_backgroundColor];
-    [_editingCell setBezeled:NO];
-    [_editingCell setBordered:YES];
-    [(NSCell *)_editingCell setObjectValue:[self dataSourceObjectValueForTableColumn:editingColumn row:row]];
+    if ([(editingCell = [[editingColumn dataCellForRow:row] copy]) isKindOfClass:[NSTextFieldCell class]])
+    {
+       _editingCell = editingCell;
+       [_editingCell setDrawsBackground:YES];
+       [_editingCell setBackgroundColor:_backgroundColor];
+       [_editingCell setBezeled:NO];
+       [_editingCell setBordered:YES];
+       [(NSCell *)_editingCell setObjectValue:[self dataSourceObjectValueForTableColumn:editingColumn row:row]];
 
-	[editingColumn prepareCell:_editingCell inRow:row];
+	   [editingColumn prepareCell:_editingCell inRow:row];
 
-    _currentEditor=[[self window] fieldEditor:YES forObject:self];
-    _currentEditor=[_editingCell setUpFieldEditorAttributes:_currentEditor];
-    [_currentEditor retain];
+       _currentEditor=[[self window] fieldEditor:YES forObject:self];
+       _currentEditor=[_editingCell setUpFieldEditorAttributes:_currentEditor];
+       [_currentEditor retain];
 
-    if (select == YES)
-        [_editingCell selectWithFrame:_editingFrame inView:self editor:_currentEditor delegate:self start:0 length:[[_editingCell stringValue] length]];
-    else
-        [_editingCell editWithFrame:_editingFrame inView:self editor:_currentEditor delegate:self event:event];
-    
-    [self setNeedsDisplay:YES];
+       if (select == YES)
+           [_editingCell selectWithFrame:_editingFrame inView:self editor:_currentEditor delegate:self start:0 length:[[_editingCell stringValue] length]];
+       else
+           [_editingCell editWithFrame:_editingFrame inView:self editor:_currentEditor delegate:self event:event];
+       
+       [self setNeedsDisplay:YES];
+    }
 }
 
 -(int)clickedRow {
@@ -824,11 +886,11 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
         if (!(row == _editedRow && drawThisColumn == _editedColumn)) {
             [dataCell setObjectValue:[self dataSourceObjectValueForTableColumn:column row:row]];
             
-            if ([dataCell type] == NSTextCellType) {
+            if ([dataCell respondsToSelector:@selector(setTextColor:)]) {
                 if ([self isRowSelected:row] || [self isColumnSelected:drawThisColumn])
                     [dataCell setTextColor:[NSColor selectedTextColor]];
                 else 
-					[dataCell setTextColor:[NSColor textColor]];
+                    [dataCell setTextColor:[NSColor textColor]];
             }
 			
 			[column prepareCell:dataCell inRow:row];
@@ -1094,7 +1156,19 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
     _clickedColumn = [self columnAtPoint:location];
     _clickedRow = [self rowAtPoint:location];
 
-    //NSLog(@"click in col %d row %d", clickedColumn, clickedRow);
+    NSTableColumn *clickedColumnObject = [_tableColumns objectAtIndex:_clickedColumn];
+    NSCell *clickedCell = [clickedColumnObject dataCellForRow:_clickedRow];
+    if ([clickedCell isKindOfClass:[NSButtonCell class]])
+    {
+       [clickedCell setObjectValue:[self dataSourceObjectValueForTableColumn:clickedColumnObject row:_clickedRow]];
+       [clickedCell setNextState];
+       [self dataSourceSetObjectValue:[NSNumber numberWithInt:[clickedCell state]] forTableColumn:clickedColumnObject row:_clickedRow];
+       [self setNeedsDisplay:YES];
+
+       return;
+    }
+
+    // NSLog(@"click in col %d row %d", _clickedColumn, _clickedRow);
     // single click behavior
     if ([event clickCount] < 2) {
         if ([self delegateSelectionShouldChange] == NO)	// provide delegate opportunity
@@ -1222,4 +1296,3 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
 }
 
 @end
-

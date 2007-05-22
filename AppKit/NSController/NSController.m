@@ -10,6 +10,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 NSString *NSNoSelectionMarker=@"NSNoSelectionMarker";
 NSString *NSMultipleValuesMarker=@"NSMultipleValuesMarker";
+NSString *NSNotApplicableMarker=@"NSNotApplicableMarker";
+
+BOOL NSIsControllerMarker(id object)
+{
+	if(object==NSNoSelectionMarker ||
+	   object==NSMultipleValuesMarker ||
+	   object==NSNotApplicableMarker)
+		return YES;
+	return NO;
+}
 
 @implementation NSController
 

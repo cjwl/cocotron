@@ -37,5 +37,7 @@ typedef struct {
 
 -(NSPoint)transformPoint:(NSPoint)point;
 
+-(void)rotateByDegrees:(float)angle;
+-(void)rotateByRadians:(float)radians;
 
 @end

@@ -389,14 +389,14 @@ static RECT NSRectToRECT(NSRect rect) {
    [self establishDeviceSpacePath:path];
    SetPolyFillMode(_dc,WINDING);
    if(!SelectClipPath(_dc,RGN_AND))
-    NSLog(@"SelectClipPath failed");
+    NSLog(@"SelectClipPath failed (%i) %@", GetLastError());
 }
 
 -(void)evenOddClipToDeviceSpacePath:(KGPath *)path {
    [self establishDeviceSpacePath:path];
    SetPolyFillMode(_dc,ALTERNATE);
    if(!SelectClipPath(_dc,RGN_AND))
-    NSLog(@"SelectClipPath failed");
+    NSLog(@"SelectClipPath failed (%i)", GetLastError());
 }
 
 #if 1

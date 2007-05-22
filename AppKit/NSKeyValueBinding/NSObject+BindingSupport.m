@@ -15,6 +15,21 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 NSMutableDictionary *bindersForObjects=nil;
 NSDictionary *defaultBindingOptions;
+
+#pragma mark -
+#pragma mark Binding Option Keys
+
+NSString* NSObservedObjectKey=@"NSObservedObject";
+NSString* NSObservedKeyPathKey=@"NSObservedKeyPath";
+NSString* NSOptionsKey=@"NSOptions";
+
+NSString *NSNoSelectionPlaceholderBindingOption=@"NSNoSelectionPlaceholder";
+NSString *NSMultipleValuesPlaceholderBindingOption=@"NSMultipleValuesPlaceholder";
+NSString *NSCreatesSortDescriptorBindingOption=@"NSCreatesSortDescriptors";
+NSString *NSRaisesForNotApplicableKeysBindingOption=@"NSRaisesForNotApplicableKeys";
+NSString *NSAllowsEditingMultipleValuesSelectionBindingOption=@"NSAllowsEditingMultipleValuesSelection";
+NSString *NSValueTransformerNameBindingOption=@"NSValueTransformerName";
+
 @implementation NSObject (BindingSupport)
 
 +(id)_defaultBindingOptionsForBinding:(id)binding
@@ -94,7 +109,7 @@ NSDictionary *defaultBindingOptions;
 	return binding;
 }
 
--(void)bind:(NSString*)binding toObject:(id)destination withKeyPath:(NSString*)keyPath options:(NSDictionary*)options
+-(void)bind:(id)binding toObject:(id)destination withKeyPath:(NSString*)keyPath options:(NSDictionary*)options
 {
 	if(![isa _binderClassForBinding:binding])
 		return;
@@ -115,7 +130,7 @@ NSDictionary *defaultBindingOptions;
 	[binder bind];
 }
 
--(void)unbind:(NSString*)binding
+-(void)unbind:(id)binding
 {
 	id key = [NSValue valueWithNonretainedObject:self];
 	id ownBinders = [bindersForObjects objectForKey:key];
@@ -128,9 +143,14 @@ NSDictionary *defaultBindingOptions;
 		[bindersForObjects removeObjectForKey:key];
 }
 
--(NSDictionary *)infoForBinding:(NSString*)binding
+-(NSDictionary *)infoForBinding:(id)binding
 {
 	return [[self _binderForBinding:binding create:NO] options];	
+}
+
++(void)exposeBinding:(id)binding
+{
+	
 }
 
 -(NSArray*)_allUsedBinders

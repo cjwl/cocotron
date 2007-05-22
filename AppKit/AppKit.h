@@ -9,7 +9,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/Foundation.h>
 
 #import <AppKit/NSActionCell.h>
-#import <Foundation/NSAffineTransform.h>
+#import <AppKit/NSAffineTransform.h>
 #import <AppKit/NSAlert.h>
 #import <AppKit/NSAnimation.h>
 #import <AppKit/NSApplication.h>

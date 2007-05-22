@@ -13,6 +13,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSDictionary.h>
 #import <AppKit/NSController.h>
 #import <AppKit/NSControl.h>
+#import "NSObject+BindingSupport.h"
 
 @implementation _NSKVOBinder
 -(void)startObservingChanges
@@ -131,17 +132,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 		BOOL editable=YES;
 		if(newValue==NSMultipleValuesMarker)
 		{
-			newValue=[options objectForKey:NSMultipleValuesPlaceholderBindingOption];
+			newValue=[self multipleValuesPlaceholder];
 			if(![self allowsEditingMultipleValues])
 				editable=NO;
 		}
 		else if(newValue==NSNoSelectionMarker)
 		{
-			newValue=[options objectForKey:NSNoSelectionPlaceholderBindingOption];
+			newValue=[self noSelectionPlaceholder];
 			editable=NO;
 		}
-		
-		
+
 		if([self conditionallySetsEditable])
 			[source setEditable:editable];
 		if([self conditionallySetsEnabled])

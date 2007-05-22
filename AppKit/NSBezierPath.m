@@ -453,6 +453,8 @@ static NSLineJoinStyle _defaultLineJoinStyle=NSMiterLineJoinStyle;
 -(void)addClip {
    KGContext *context=[[NSGraphicsContext currentContext] graphicsPort];
 
+	if(CGContextIsPathEmpty(context))
+		CGContextBeginPath(context);
    CGContextAddPath(context,_path);
    CGContextClip(context);
 }
@@ -460,7 +462,7 @@ static NSLineJoinStyle _defaultLineJoinStyle=NSMiterLineJoinStyle;
 -(void)setClip {
    KGContext *context=[[NSGraphicsContext currentContext] graphicsPort];
 
-// FIX, wrong
+	CGContextBeginPath(context);
    CGContextAddPath(context,_path);
    CGContextClip(context);
 }

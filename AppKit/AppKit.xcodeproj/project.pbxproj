@@ -480,6 +480,8 @@
 		6ECABE330A40520700AD7F7B /* NSNibKeyedUnarchiver.h in Headers */ = {isa = PBXBuildFile; fileRef = 6ECABE310A40520700AD7F7B /* NSNibKeyedUnarchiver.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		6ECABE340A40520700AD7F7B /* NSNibKeyedUnarchiver.m in Sources */ = {isa = PBXBuildFile; fileRef = 6ECABE320A40520700AD7F7B /* NSNibKeyedUnarchiver.m */; };
 		C8B239A30BF8EEB500CA33AF /* defaultBindingOptions.plist in Resources */ = {isa = PBXBuildFile; fileRef = C8B239A20BF8EEB500CA33AF /* defaultBindingOptions.plist */; };
+		C8E4F5810BFF7A8A0076D5E6 /* NSAffineTransform.h in Headers */ = {isa = PBXBuildFile; fileRef = C8E4F57F0BFF7A8A0076D5E6 /* NSAffineTransform.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C8E4F5820BFF7A8A0076D5E6 /* NSAffineTransform.m in Sources */ = {isa = PBXBuildFile; fileRef = C8E4F5800BFF7A8A0076D5E6 /* NSAffineTransform.m */; };
 		FE064AC70B8B805000853FBB /* CGColor.h in Headers */ = {isa = PBXBuildFile; fileRef = FE064AA90B8B805000853FBB /* CGColor.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE064AC80B8B805000853FBB /* CGColor.m in Sources */ = {isa = PBXBuildFile; fileRef = FE064AAA0B8B805000853FBB /* CGColor.m */; };
 		FE064AC90B8B805000853FBB /* CGColorSpace.h in Headers */ = {isa = PBXBuildFile; fileRef = FE064AAB0B8B805000853FBB /* CGColorSpace.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -1200,6 +1202,8 @@
 		6ECABE310A40520700AD7F7B /* NSNibKeyedUnarchiver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSNibKeyedUnarchiver.h; sourceTree = "<group>"; };
 		6ECABE320A40520700AD7F7B /* NSNibKeyedUnarchiver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSNibKeyedUnarchiver.m; sourceTree = "<group>"; };
 		C8B239A20BF8EEB500CA33AF /* defaultBindingOptions.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = defaultBindingOptions.plist; sourceTree = "<group>"; };
+		C8E4F57F0BFF7A8A0076D5E6 /* NSAffineTransform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSAffineTransform.h; sourceTree = "<group>"; };
+		C8E4F5800BFF7A8A0076D5E6 /* NSAffineTransform.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSAffineTransform.m; sourceTree = "<group>"; };
 		FE064AA90B8B805000853FBB /* CGColor.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = CGColor.h; sourceTree = "<group>"; };
 		FE064AAA0B8B805000853FBB /* CGColor.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = CGColor.m; sourceTree = "<group>"; };
 		FE064AAB0B8B805000853FBB /* CGColorSpace.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = CGColorSpace.h; sourceTree = "<group>"; };
@@ -1444,6 +1448,8 @@
 				6E2B55100976075300DA0954 /* nib */,
 				6E2B53FE0976075200DA0954 /* NSActionCell.h */,
 				6E2B53250976075200DA0954 /* NSActionCell.m */,
+				C8E4F57F0BFF7A8A0076D5E6 /* NSAffineTransform.h */,
+				C8E4F5800BFF7A8A0076D5E6 /* NSAffineTransform.m */,
 				FE2A101D0B44A201006C03DE /* NSAlert.h */,
 				FE2A101E0B44A201006C03DE /* NSAlert.m */,
 				6E2B54020976075200DA0954 /* NSAlertPanel.h */,
@@ -2708,6 +2714,7 @@
 				FE27AC150BE9038000136B43 /* NSTextInput.h in Headers */,
 				FE352F6A0BF3998E00223FAF /* NSArrayControllerSelectionProxy.h in Headers */,
 				FEC5FF7D0BF49D5400682A70 /* NSTableColumnBinder.h in Headers */,
+				C8E4F5810BFF7A8A0076D5E6 /* NSAffineTransform.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3157,6 +3164,7 @@
 				FED167AF0BE57EB300BF9889 /* NSTextTableBlock.m in Sources */,
 				FE352F6B0BF3998E00223FAF /* NSArrayControllerSelectionProxy.m in Sources */,
 				FEC5FF7E0BF49D5400682A70 /* NSTableColumnBinder.m in Sources */,
+				C8E4F5820BFF7A8A0076D5E6 /* NSAffineTransform.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

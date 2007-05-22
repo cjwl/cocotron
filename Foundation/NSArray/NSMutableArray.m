@@ -258,6 +258,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    }
 }
 
+-(void)exchangeObjectAtIndex:(unsigned)index withObjectAtIndex:(unsigned)other {
+   id object=[[self objectAtIndex:index] retain];
+   id otherObject=[self objectAtIndex:other];
+   
+   [self replaceObjectAtIndex:index withObject:otherObject];
+   [self replaceObjectAtIndex:other withObject:object];
+   [object release];
+}
 
 static int selectorCompare(id object1,id object2,void *userData){
    SEL selector=userData;
@@ -270,85 +278,71 @@ static int selectorCompare(id object1,id object2,void *userData){
    [self sortUsingFunction:selectorCompare context:selector];
 }
 
-// shellsort
--(void)sortUsingFunction:(int (*)(id, id, void *))compare
-                 context:(void *)context {
-   int strideFactor=3; // magic number
-   int c,d,stride,count=[self count];
-   BOOL found=NO;
+// iterative mergesort based on
+// http://www.inf.fh-flensburg.de/lang/algorithmen/sortieren/merge/mergiter.htm ...
 
-   stride=1;
-   while(stride<=count)
-    stride=stride*strideFactor+1;
+// ... using a comparison function
+-(void)sortUsingFunction:(int (*)(id, id, void *))compare context:(void *)context
+{
+   int h, i, j, k, l, m, n = [self count];
+   id  A, *B = malloc((n/2 + 1) * sizeof(id));
 
-   while(stride>(strideFactor-1)){
-    stride=stride/strideFactor;
-    for(c=stride;c<count;c++){
-     found=NO;
-     d=c-stride;
-     while((d>=0) && !found){
-      id dstrideObject=[self objectAtIndex:d+stride];
-      id dObject=[self objectAtIndex:d];
+// to prevent retain counts from temporarily hitting zero.  
+   for(i=0;i<n;i++)
+    [[self objectAtIndex:i] retain];
+    
+   for (h = 1; h < n; h += h)
+   {
+      for (m = n - 1 - h; m >= 0; m -= h + h)
+      {
+         l = m - h + 1;
+         if (l < 0)
+            l = 0;
 
-      if(compare(dstrideObject,dObject,context)>=0)
-       found=YES;
-      else{
-       [dstrideObject retain];
-       [self replaceObjectAtIndex:d+stride withObject:dObject];
-       [self replaceObjectAtIndex:d withObject:dstrideObject];
-       [dstrideObject release];
-       d-=stride;
+         for (i = 0, j = l; j <= m; i++, j++)
+            B[i] = [self objectAtIndex:j];
+
+         for (i = 0, k = l; k < j && j <= m + h; k++)
+         {
+            A = [self objectAtIndex:j];
+            if (compare(A, B[i], context) == NSOrderedDescending)
+               [self replaceObjectAtIndex:k withObject:B[i++]];
+            else
+            {
+               [self replaceObjectAtIndex:k withObject:A];
+               j++;
+            }
+         }
+
+         while (k < j)
+            [self replaceObjectAtIndex:k++ withObject:B[i++]];
       }
-     }
-    }
    }
+   
+   for(i=0;i<n;i++)
+    [[self objectAtIndex:i] release];
+    
+   free(B);
 }
 
-static NSComparisonResult compareObjectsUsingDescriptors(id A, id B, NSArray *descriptors) { 
-   NSComparisonResult result; 
 
-   int n = [descriptors count]; 
-   int i = 0; 
-   do 
-      result = [(NSSortDescriptor *)[descriptors objectAtIndex:i++] compareObject:A toObject:B]; 
-   while (i < n && result == NSOrderedSame); 
+// sort using sort descriptors
+static NSComparisonResult compareObjectsUsingDescriptors(id A, id B, void *descriptors) { 
+   NSComparisonResult result;
 
-   return result; 
-} 
+   int n = [(NSArray *)descriptors count];
+   int i = 0;
+   do
+      result = [(NSSortDescriptor *)[(NSArray *)descriptors objectAtIndex:i++] compareObject:A toObject:B];
+   while (i < n && result == NSOrderedSame);
 
-// iterative mergesort using descriptors based on http://www.inf.fh-flensburg.de/lang/algorithmen/sortieren/merge/mergiter.htm
-- (void)sortUsingDescriptors:(NSArray *)descriptors  { 
-   int h, i, j, k, l, m, n = [self count]; 
-   id  A, *B = malloc((n/2 + 1) * sizeof(id)); 
-   for (h = 1; h < n; h += h) 
-      for (m = n - 1 - h; m >= 0; m -= h + h) 
-      { 
-         l = m - h + 1; 
-         if (l < 0) 
-            l = 0; 
+   return result;
+}
 
-         for (i = 0, j = l; j <= m; i++, j++) 
-            B[i] = [self objectAtIndex:j]; 
+- (void)sortUsingDescriptors:(NSArray *)descriptors {
+   [self sortUsingFunction:compareObjectsUsingDescriptors context:descriptors];
+}
 
-         for (i = 0, k = l; k < j && j <= m + h; k++) 
-         { 
-            A = [self objectAtIndex:j]; 
-            if (compareObjectsUsingDescriptors(A, B[i], descriptors) == NSOrderedDescending) 
-               [self replaceObjectAtIndex:k withObject:B[i++]]; 
-            else 
-            { 
-               [self replaceObjectAtIndex:k withObject:A]; 
-               j++; 
-            } 
-         } 
-
-         while (k < j) 
-            [self replaceObjectAtIndex:k++ withObject:B[i++]]; 
-      } 
-
-      free(B); 
-
-} 
 
 -(void)filterUsingPredicate:(NSPredicate *)predicate {
    int count=[self count];
