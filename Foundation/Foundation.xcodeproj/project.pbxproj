@@ -1391,12 +1391,36 @@
 		FE7478460BAC5A8700829F4F /* NSSortDescriptor.m in Sources */ = {isa = PBXBuildFile; fileRef = FE7478420BAC5A8700829F4F /* NSSortDescriptor.m */; };
 		FE7478470BAC5A8700829F4F /* NSSortDescriptor.h in Headers */ = {isa = PBXBuildFile; fileRef = FE7478410BAC5A8700829F4F /* NSSortDescriptor.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE7478480BAC5A8700829F4F /* NSSortDescriptor.m in Sources */ = {isa = PBXBuildFile; fileRef = FE7478420BAC5A8700829F4F /* NSSortDescriptor.m */; };
-		FE7478720BAC5EB600829F4F /* NSValueTransformer.h in Headers */ = {isa = PBXBuildFile; fileRef = FE7478700BAC5EB600829F4F /* NSValueTransformer.h */; };
+		FE7478720BAC5EB600829F4F /* NSValueTransformer.h in Headers */ = {isa = PBXBuildFile; fileRef = FE7478700BAC5EB600829F4F /* NSValueTransformer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE7478730BAC5EB600829F4F /* NSValueTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = FE7478710BAC5EB600829F4F /* NSValueTransformer.m */; };
 		FE7478740BAC5EB600829F4F /* NSValueTransformer.h in Headers */ = {isa = PBXBuildFile; fileRef = FE7478700BAC5EB600829F4F /* NSValueTransformer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE7478750BAC5EB600829F4F /* NSValueTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = FE7478710BAC5EB600829F4F /* NSValueTransformer.m */; };
 		FE7478760BAC5EB600829F4F /* NSValueTransformer.h in Headers */ = {isa = PBXBuildFile; fileRef = FE7478700BAC5EB600829F4F /* NSValueTransformer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE7478770BAC5EB600829F4F /* NSValueTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = FE7478710BAC5EB600829F4F /* NSValueTransformer.m */; };
+		FE9D953C0C0387D5006DB214 /* NSValueTransformer_IsNil.h in Headers */ = {isa = PBXBuildFile; fileRef = FE9D95340C0387D5006DB214 /* NSValueTransformer_IsNil.h */; };
+		FE9D953D0C0387D5006DB214 /* NSValueTransformer_IsNil.m in Sources */ = {isa = PBXBuildFile; fileRef = FE9D95350C0387D5006DB214 /* NSValueTransformer_IsNil.m */; };
+		FE9D953E0C0387D5006DB214 /* NSValueTransformer_IsNotNil.h in Headers */ = {isa = PBXBuildFile; fileRef = FE9D95360C0387D5006DB214 /* NSValueTransformer_IsNotNil.h */; };
+		FE9D953F0C0387D5006DB214 /* NSValueTransformer_IsNotNil.m in Sources */ = {isa = PBXBuildFile; fileRef = FE9D95370C0387D5006DB214 /* NSValueTransformer_IsNotNil.m */; };
+		FE9D95400C0387D5006DB214 /* NSValueTransformer_NegateBoolean.h in Headers */ = {isa = PBXBuildFile; fileRef = FE9D95380C0387D5006DB214 /* NSValueTransformer_NegateBoolean.h */; };
+		FE9D95410C0387D5006DB214 /* NSValueTransformer_NegateBoolean.m in Sources */ = {isa = PBXBuildFile; fileRef = FE9D95390C0387D5006DB214 /* NSValueTransformer_NegateBoolean.m */; };
+		FE9D95420C0387D5006DB214 /* NSValueTransformer_UnarchiveFromData.h in Headers */ = {isa = PBXBuildFile; fileRef = FE9D953A0C0387D5006DB214 /* NSValueTransformer_UnarchiveFromData.h */; };
+		FE9D95430C0387D5006DB214 /* NSValueTransformer_UnarchiveFromData.m in Sources */ = {isa = PBXBuildFile; fileRef = FE9D953B0C0387D5006DB214 /* NSValueTransformer_UnarchiveFromData.m */; };
+		FE9D95440C0387D5006DB214 /* NSValueTransformer_IsNil.h in Headers */ = {isa = PBXBuildFile; fileRef = FE9D95340C0387D5006DB214 /* NSValueTransformer_IsNil.h */; };
+		FE9D95450C0387D5006DB214 /* NSValueTransformer_IsNil.m in Sources */ = {isa = PBXBuildFile; fileRef = FE9D95350C0387D5006DB214 /* NSValueTransformer_IsNil.m */; };
+		FE9D95460C0387D5006DB214 /* NSValueTransformer_IsNotNil.h in Headers */ = {isa = PBXBuildFile; fileRef = FE9D95360C0387D5006DB214 /* NSValueTransformer_IsNotNil.h */; };
+		FE9D95470C0387D5006DB214 /* NSValueTransformer_IsNotNil.m in Sources */ = {isa = PBXBuildFile; fileRef = FE9D95370C0387D5006DB214 /* NSValueTransformer_IsNotNil.m */; };
+		FE9D95480C0387D5006DB214 /* NSValueTransformer_NegateBoolean.h in Headers */ = {isa = PBXBuildFile; fileRef = FE9D95380C0387D5006DB214 /* NSValueTransformer_NegateBoolean.h */; };
+		FE9D95490C0387D5006DB214 /* NSValueTransformer_NegateBoolean.m in Sources */ = {isa = PBXBuildFile; fileRef = FE9D95390C0387D5006DB214 /* NSValueTransformer_NegateBoolean.m */; };
+		FE9D954A0C0387D5006DB214 /* NSValueTransformer_UnarchiveFromData.h in Headers */ = {isa = PBXBuildFile; fileRef = FE9D953A0C0387D5006DB214 /* NSValueTransformer_UnarchiveFromData.h */; };
+		FE9D954B0C0387D5006DB214 /* NSValueTransformer_UnarchiveFromData.m in Sources */ = {isa = PBXBuildFile; fileRef = FE9D953B0C0387D5006DB214 /* NSValueTransformer_UnarchiveFromData.m */; };
+		FE9D954C0C0387D5006DB214 /* NSValueTransformer_IsNil.h in Headers */ = {isa = PBXBuildFile; fileRef = FE9D95340C0387D5006DB214 /* NSValueTransformer_IsNil.h */; };
+		FE9D954D0C0387D5006DB214 /* NSValueTransformer_IsNil.m in Sources */ = {isa = PBXBuildFile; fileRef = FE9D95350C0387D5006DB214 /* NSValueTransformer_IsNil.m */; };
+		FE9D954E0C0387D5006DB214 /* NSValueTransformer_IsNotNil.h in Headers */ = {isa = PBXBuildFile; fileRef = FE9D95360C0387D5006DB214 /* NSValueTransformer_IsNotNil.h */; };
+		FE9D954F0C0387D5006DB214 /* NSValueTransformer_IsNotNil.m in Sources */ = {isa = PBXBuildFile; fileRef = FE9D95370C0387D5006DB214 /* NSValueTransformer_IsNotNil.m */; };
+		FE9D95500C0387D5006DB214 /* NSValueTransformer_NegateBoolean.h in Headers */ = {isa = PBXBuildFile; fileRef = FE9D95380C0387D5006DB214 /* NSValueTransformer_NegateBoolean.h */; };
+		FE9D95510C0387D5006DB214 /* NSValueTransformer_NegateBoolean.m in Sources */ = {isa = PBXBuildFile; fileRef = FE9D95390C0387D5006DB214 /* NSValueTransformer_NegateBoolean.m */; };
+		FE9D95520C0387D5006DB214 /* NSValueTransformer_UnarchiveFromData.h in Headers */ = {isa = PBXBuildFile; fileRef = FE9D953A0C0387D5006DB214 /* NSValueTransformer_UnarchiveFromData.h */; };
+		FE9D95530C0387D5006DB214 /* NSValueTransformer_UnarchiveFromData.m in Sources */ = {isa = PBXBuildFile; fileRef = FE9D953B0C0387D5006DB214 /* NSValueTransformer_UnarchiveFromData.m */; };
 		FEB6CBB00B4A139F004FADF2 /* NSKeyValueCoding.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB6CBAE0B4A139F004FADF2 /* NSKeyValueCoding.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FEB6CBB10B4A139F004FADF2 /* NSKeyValueCoding.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB6CBAF0B4A139F004FADF2 /* NSKeyValueCoding.m */; };
 		FEB6CBB20B4A139F004FADF2 /* NSKeyValueCoding.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB6CBAE0B4A139F004FADF2 /* NSKeyValueCoding.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -2371,6 +2395,14 @@
 		FE7478420BAC5A8700829F4F /* NSSortDescriptor.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSSortDescriptor.m; sourceTree = "<group>"; };
 		FE7478700BAC5EB600829F4F /* NSValueTransformer.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSValueTransformer.h; sourceTree = "<group>"; };
 		FE7478710BAC5EB600829F4F /* NSValueTransformer.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSValueTransformer.m; sourceTree = "<group>"; };
+		FE9D95340C0387D5006DB214 /* NSValueTransformer_IsNil.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSValueTransformer_IsNil.h; sourceTree = "<group>"; };
+		FE9D95350C0387D5006DB214 /* NSValueTransformer_IsNil.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSValueTransformer_IsNil.m; sourceTree = "<group>"; };
+		FE9D95360C0387D5006DB214 /* NSValueTransformer_IsNotNil.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSValueTransformer_IsNotNil.h; sourceTree = "<group>"; };
+		FE9D95370C0387D5006DB214 /* NSValueTransformer_IsNotNil.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSValueTransformer_IsNotNil.m; sourceTree = "<group>"; };
+		FE9D95380C0387D5006DB214 /* NSValueTransformer_NegateBoolean.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSValueTransformer_NegateBoolean.h; sourceTree = "<group>"; };
+		FE9D95390C0387D5006DB214 /* NSValueTransformer_NegateBoolean.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSValueTransformer_NegateBoolean.m; sourceTree = "<group>"; };
+		FE9D953A0C0387D5006DB214 /* NSValueTransformer_UnarchiveFromData.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSValueTransformer_UnarchiveFromData.h; sourceTree = "<group>"; };
+		FE9D953B0C0387D5006DB214 /* NSValueTransformer_UnarchiveFromData.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSValueTransformer_UnarchiveFromData.m; sourceTree = "<group>"; };
 		FEB6CBAE0B4A139F004FADF2 /* NSKeyValueCoding.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSKeyValueCoding.h; sourceTree = "<group>"; };
 		FEB6CBAF0B4A139F004FADF2 /* NSKeyValueCoding.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSKeyValueCoding.m; sourceTree = "<group>"; };
 		FEB6CC0E0B4A169C004FADF2 /* objc-class.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "objc-class.m"; sourceTree = "<group>"; };
@@ -2527,6 +2559,7 @@
 		0867D691FE84028FC02AAC07 /* Foundation */ = {
 			isa = PBXGroup;
 			children = (
+				FE9D95260C0386BD006DB214 /* NSValueTransformer */,
 				FE4BDD2A0BCD65EB00E19685 /* CoreFoundation */,
 				0867D69AFE84028FC02AAC07 /* External Frameworks and Libraries */,
 				6E280B2909747F1F00EC542B /* Foundation.h */,
@@ -2640,8 +2673,6 @@
 				FEB9D5580B44389200C239BB /* NSURL */,
 				6E280343097479F900EC542B /* NSUserDefaults */,
 				6E28034409747A0100EC542B /* NSValue */,
-				FE7478700BAC5EB600829F4F /* NSValueTransformer.h */,
-				FE7478710BAC5EB600829F4F /* NSValueTransformer.m */,
 				6E28034509747A1A00EC542B /* NSZone */,
 				6E28034609747A2500EC542B /* objc */,
 				FEB6CC400B4A1922004FADF2 /* objc.xcodeproj */,
@@ -3440,6 +3471,23 @@
 			path = NSNetService;
 			sourceTree = "<group>";
 		};
+		FE9D95260C0386BD006DB214 /* NSValueTransformer */ = {
+			isa = PBXGroup;
+			children = (
+				FE7478700BAC5EB600829F4F /* NSValueTransformer.h */,
+				FE7478710BAC5EB600829F4F /* NSValueTransformer.m */,
+				FE9D95340C0387D5006DB214 /* NSValueTransformer_IsNil.h */,
+				FE9D95350C0387D5006DB214 /* NSValueTransformer_IsNil.m */,
+				FE9D95360C0387D5006DB214 /* NSValueTransformer_IsNotNil.h */,
+				FE9D95370C0387D5006DB214 /* NSValueTransformer_IsNotNil.m */,
+				FE9D95380C0387D5006DB214 /* NSValueTransformer_NegateBoolean.h */,
+				FE9D95390C0387D5006DB214 /* NSValueTransformer_NegateBoolean.m */,
+				FE9D953A0C0387D5006DB214 /* NSValueTransformer_UnarchiveFromData.h */,
+				FE9D953B0C0387D5006DB214 /* NSValueTransformer_UnarchiveFromData.m */,
+			);
+			path = NSValueTransformer;
+			sourceTree = "<group>";
+		};
 		FEB6CC410B4A1922004FADF2 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -3881,6 +3929,10 @@
 				FED163840BE4093700BF9889 /* NSExpression_variable.h in Headers */,
 				FE3F7D9E0BE63BBE007E9363 /* NSDateComponents.h in Headers */,
 				FE5F11AE0BF0FF1100A00B2F /* objc_lock.h in Headers */,
+				FE9D954C0C0387D5006DB214 /* NSValueTransformer_IsNil.h in Headers */,
+				FE9D954E0C0387D5006DB214 /* NSValueTransformer_IsNotNil.h in Headers */,
+				FE9D95500C0387D5006DB214 /* NSValueTransformer_NegateBoolean.h in Headers */,
+				FE9D95520C0387D5006DB214 /* NSValueTransformer_UnarchiveFromData.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4170,6 +4222,10 @@
 				FED1637A0BE4093700BF9889 /* NSExpression_variable.h in Headers */,
 				FE3F7D9C0BE63BBE007E9363 /* NSDateComponents.h in Headers */,
 				FE5F11AD0BF0FF1100A00B2F /* objc_lock.h in Headers */,
+				FE9D95440C0387D5006DB214 /* NSValueTransformer_IsNil.h in Headers */,
+				FE9D95460C0387D5006DB214 /* NSValueTransformer_IsNotNil.h in Headers */,
+				FE9D95480C0387D5006DB214 /* NSValueTransformer_NegateBoolean.h in Headers */,
+				FE9D954A0C0387D5006DB214 /* NSValueTransformer_UnarchiveFromData.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4462,6 +4518,10 @@
 				FED163700BE4093700BF9889 /* NSExpression_variable.h in Headers */,
 				FE3F7D9A0BE63BBD007E9363 /* NSDateComponents.h in Headers */,
 				FE5F11AC0BF0FF1100A00B2F /* objc_lock.h in Headers */,
+				FE9D953C0C0387D5006DB214 /* NSValueTransformer_IsNil.h in Headers */,
+				FE9D953E0C0387D5006DB214 /* NSValueTransformer_IsNotNil.h in Headers */,
+				FE9D95400C0387D5006DB214 /* NSValueTransformer_NegateBoolean.h in Headers */,
+				FE9D95420C0387D5006DB214 /* NSValueTransformer_UnarchiveFromData.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4925,6 +4985,10 @@
 				FED163830BE4093700BF9889 /* NSExpression_self.m in Sources */,
 				FED163850BE4093700BF9889 /* NSExpression_variable.m in Sources */,
 				FE3F7D9F0BE63BBE007E9363 /* NSDateComponents.m in Sources */,
+				FE9D954D0C0387D5006DB214 /* NSValueTransformer_IsNil.m in Sources */,
+				FE9D954F0C0387D5006DB214 /* NSValueTransformer_IsNotNil.m in Sources */,
+				FE9D95510C0387D5006DB214 /* NSValueTransformer_NegateBoolean.m in Sources */,
+				FE9D95530C0387D5006DB214 /* NSValueTransformer_UnarchiveFromData.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5209,6 +5273,10 @@
 				FED163790BE4093700BF9889 /* NSExpression_self.m in Sources */,
 				FED1637B0BE4093700BF9889 /* NSExpression_variable.m in Sources */,
 				FE3F7D9D0BE63BBE007E9363 /* NSDateComponents.m in Sources */,
+				FE9D95450C0387D5006DB214 /* NSValueTransformer_IsNil.m in Sources */,
+				FE9D95470C0387D5006DB214 /* NSValueTransformer_IsNotNil.m in Sources */,
+				FE9D95490C0387D5006DB214 /* NSValueTransformer_NegateBoolean.m in Sources */,
+				FE9D954B0C0387D5006DB214 /* NSValueTransformer_UnarchiveFromData.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5496,6 +5564,10 @@
 				FED1636F0BE4093700BF9889 /* NSExpression_self.m in Sources */,
 				FED163710BE4093700BF9889 /* NSExpression_variable.m in Sources */,
 				FE3F7D9B0BE63BBE007E9363 /* NSDateComponents.m in Sources */,
+				FE9D953D0C0387D5006DB214 /* NSValueTransformer_IsNil.m in Sources */,
+				FE9D953F0C0387D5006DB214 /* NSValueTransformer_IsNotNil.m in Sources */,
+				FE9D95410C0387D5006DB214 /* NSValueTransformer_NegateBoolean.m in Sources */,
+				FE9D95430C0387D5006DB214 /* NSValueTransformer_UnarchiveFromData.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
