@@ -318,7 +318,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       if(unicode>='0' && unicode<='9'){
        if(!overflow){
         unsigned check=value*16+(unicode-'0');
-        if(check>value)
+        if(check>=value)
          value=check;
         else {
          value=-1;
@@ -329,7 +329,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       else if(unicode>='a' && unicode<='f'){
        if(!overflow){
         unsigned check=value*16+(unicode-'a')+10;
-        if(check>value)
+        if(check>=value)
          value=check;
         else {
          value=-1;
@@ -341,7 +341,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
        if(!overflow){
         unsigned check=value*16+(unicode-'A')+10;
         
-        if(check>value)
+        if(check>=value)
          value=check;
         else {
          value=-1;
