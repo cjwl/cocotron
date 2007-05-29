@@ -45,8 +45,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -initWithContentsOfFile:(NSString *)path {
-   NSUnimplementedMethod();
-   return nil;
+    id contents = [NSPropertyListReader arrayWithContentsOfFile: path]; 
+
+    if(contents==nil) { 
+        [self dealloc]; 
+        return nil; 
+    } 
+
+    return [self initWithArray: contents]; 
 }
 
 

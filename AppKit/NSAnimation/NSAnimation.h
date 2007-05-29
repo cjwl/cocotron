@@ -33,6 +33,8 @@ APPKIT_EXPORT NSString *NSAnimationProgressMarkNotification;
    NSAnimationBlockingMode _blockingMode;
    id                      _delegate;
    NSArray                *_progressMarks;
+   float                   _currentValue;
+   NSArray                *_runLoopModes;
 }
 
 -initWithDuration:(NSTimeInterval)duration animationCurve:(NSAnimationCurve)curve;

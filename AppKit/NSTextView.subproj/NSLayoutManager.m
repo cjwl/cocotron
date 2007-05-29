@@ -8,6 +8,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 // Original - Christopher Lloyd <cjwl@objc.net>
 #import <AppKit/NSLayoutManager.h>
+#import <AppKit/NSGlyphGenerator.h>
 #import <AppKit/NSTypesetter.h>
 #import <AppKit/NSTextContainer.h>
 #import <AppKit/NSTextStorage.h>
@@ -62,6 +63,7 @@ static inline NSGlyphFragment *fragmentAtGlyphIndex(NSLayoutManager *self,unsign
 
    _textStorage=[keyed decodeObjectForKey:@"NSTextStorage"];
    _typesetter=[NSTypesetter new];
+   _glyphGenerator=[[NSGlyphGenerator sharedGlyphGenerator] retain];
    _delegate=[keyed decodeObjectForKey:@"NSDelegate"];
    _textContainers=[NSMutableArray new];
    [_textContainers addObjectsFromArray:[keyed decodeObjectForKey:@"NSTextContainers"]];
@@ -80,6 +82,7 @@ static inline NSGlyphFragment *fragmentAtGlyphIndex(NSLayoutManager *self,unsign
 
 -init {
    _typesetter=[NSTypesetter new];
+   _glyphGenerator=[[NSGlyphGenerator sharedGlyphGenerator] retain];
    _textContainers=[NSMutableArray new];
    _glyphFragments=NSCreateRangeToOwnedPointerEntries(2);
    _invalidFragments=NSCreateRangeToOwnedPointerEntries(2);
@@ -93,6 +96,7 @@ static inline NSGlyphFragment *fragmentAtGlyphIndex(NSLayoutManager *self,unsign
 -(void)dealloc {
    _textStorage=nil;
    [_typesetter release];
+   [_glyphGenerator release];
    [_textContainers release];
    NSFreeRangeEntries(_glyphFragments);
    NSFreeRangeEntries(_invalidFragments);
@@ -102,6 +106,10 @@ static inline NSGlyphFragment *fragmentAtGlyphIndex(NSLayoutManager *self,unsign
 
 -(NSTextStorage *)textStorage {
    return _textStorage;
+}
+
+-(NSGlyphGenerator *)glyphGenerator {
+   return _glyphGenerator;
 }
 
 -(NSTypesetter *)typesetter {
@@ -137,9 +145,16 @@ static inline NSGlyphFragment *fragmentAtGlyphIndex(NSLayoutManager *self,unsign
    _textStorage=textStorage;
 }
 
+-(void)setGlyphGenerator:(NSGlyphGenerator *)generator {
+   generator=[generator retain];
+   [_glyphGenerator release];
+   _glyphGenerator=generator;
+}
+
 -(void)setTypesetter:(NSTypesetter *)typesetter {
-   [_typesetter autorelease];
-   _typesetter=[typesetter retain];
+   typesetter=[typesetter retain];
+   [_typesetter release];
+   _typesetter=typesetter;
 }
 
 -(void)setDelegate:delegate {
@@ -168,6 +183,27 @@ static inline NSGlyphFragment *fragmentAtGlyphIndex(NSLayoutManager *self,unsign
    [container setLayoutManager:self];
 }
 
+-(void)insertGlyph:(NSGlyph)glyph atGlyphIndex:(unsigned)glyphIndex characterIndex:(unsigned)characterIndex {
+}
+
+-(void)replaceGlyphAtIndex:(unsigned)glyphIndex withGlyph:(NSGlyph)glyph {
+}
+
+-(void)deleteGlyphsInRange:(NSRange)glyphRange {
+}
+
+-(void)setCharacterIndex:(unsigned)characterIndex forGlyphAtIndex:(unsigned)glyphIndex {
+}
+
+-(void)setNotShownAttribute:(BOOL)notShown forGlyphAtIndex:(unsigned)glyphIndex {
+}
+
+-(void)setAttachmentSize:(NSSize)size forGlyphRange:(NSRange)glyphRange {
+}
+
+-(void)setDrawsOutsideLineFragment:(BOOL)drawsOutside forGlyphAtIndex:(unsigned)glyphIndex {
+}
+
 -(unsigned)numberOfGlyphs {
    return [_textStorage length];
 }
@@ -191,6 +227,10 @@ static inline NSGlyphFragment *fragmentAtGlyphIndex(NSLayoutManager *self,unsign
 }
 
 -(unsigned)getGlyphsInRange:(NSRange)range glyphs:(NSGlyph *)glyphs characterIndexes:(unsigned *)charIndexes glyphInscriptions:(NSGlyphInscription *)inscriptions elasticBits:(BOOL *)elasticBits {
+   return [self getGlyphsInRange:range glyphs:glyphs characterIndexes:charIndexes glyphInscriptions:inscriptions elasticBits:elasticBits bidiLevels:NULL];
+}
+
+-(unsigned)getGlyphsInRange:(NSRange)range glyphs:(NSGlyph *)glyphs characterIndexes:(unsigned *)charIndexes glyphInscriptions:(NSGlyphInscription *)inscriptions elasticBits:(BOOL *)elasticBits bidiLevels:(unsigned char *)bidiLevels {
    return 0;
 }
 
@@ -750,9 +790,13 @@ static inline void _appendRectToCache(NSLayoutManager *self,NSRect rect){
       NSTextAttachment *attachment=[attributes objectForKey:NSAttachmentAttributeName];
 
       if(attachment!=nil){
-       NSImage *image=[attachment image];
-
-       [image compositeToPoint:point operation:NSCompositeSourceOver];
+       id <NSTextAttachmentCell> cell=[attachment attachmentCell];
+       NSRect frame;
+       
+       frame.origin=point;
+       frame.size=[cell cellSize];
+       
+       [cell drawWithFrame:frame inView:textView characterIndex:characterRange.location layoutManager:self];
       }
       else {
        NSColor      *color=NSForegroundColorAttributeInDictionary(attributes);

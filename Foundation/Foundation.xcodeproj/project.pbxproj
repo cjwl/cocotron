@@ -2559,7 +2559,6 @@
 		0867D691FE84028FC02AAC07 /* Foundation */ = {
 			isa = PBXGroup;
 			children = (
-				FE9D95260C0386BD006DB214 /* NSValueTransformer */,
 				FE4BDD2A0BCD65EB00E19685 /* CoreFoundation */,
 				0867D69AFE84028FC02AAC07 /* External Frameworks and Libraries */,
 				6E280B2909747F1F00EC542B /* Foundation.h */,
@@ -2673,6 +2672,7 @@
 				FEB9D5580B44389200C239BB /* NSURL */,
 				6E280343097479F900EC542B /* NSUserDefaults */,
 				6E28034409747A0100EC542B /* NSValue */,
+				FE9D95260C0386BD006DB214 /* NSValueTransformer */,
 				6E28034509747A1A00EC542B /* NSZone */,
 				6E28034609747A2500EC542B /* objc */,
 				FEB6CC400B4A1922004FADF2 /* objc.xcodeproj */,

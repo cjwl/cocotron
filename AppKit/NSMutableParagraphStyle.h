@@ -9,7 +9,31 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSParagraphStyle.h>
 
 @interface NSMutableParagraphStyle : NSParagraphStyle
+-(void)setBaseWritingDirection:(NSWritingDirection)direction;
+
+-(void)setParagraphSpacing:(float)spacing;
+-(void)setParagraphSpacingBefore:(float)spacing;
+
+-(void)setTextBlocks:(NSArray *)blocks;
+-(void)setTextLists:(NSArray *)lists;
+
+-(void)setHeaderLevel:(int)level;
+
+-(void)setFirstLineHeadIndent:(float)indent;
+-(void)setHeadIndent:(float)indent;
+-(void)setTailIndent:(float)indent;
+
 -(void)setAlignment:(NSTextAlignment)alignment;
 -(void)setLineBreakMode:(NSLineBreakMode)mode;
--(void)setTabStops:(NSArray *)stops;
+
+-(void)setMinimumLineHeight:(float)height;
+-(void)setMaximumLineHeight:(float)height;
+-(void)setLineHeightMultiple:(float)multiple;
+-(void)setLineSpacing:(float)spacing;
+
+-(void)setDefaultTabInterval:(float)interval;
+-(void)setTabStops:(NSArray *)tabStops;
+
+-(void)setHyphenationFactor:(float)factor;
+-(void)setTighteningFactorForTruncation:(float)factor;
 @end

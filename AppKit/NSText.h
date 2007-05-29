@@ -45,6 +45,12 @@ enum {
    NSOtherTextMovement=0
 };
 
+typedef enum {
+   NSWritingDirectionNatural=-1,
+   NSWritingDirectionLeftToRight,
+   NSWritingDirectionRightToLeft,
+} NSWritingDirection;
+
 APPKIT_EXPORT NSString *NSTextDidBeginEditingNotification;
 APPKIT_EXPORT NSString *NSTextDidEndEditingNotification;
 APPKIT_EXPORT NSString *NSTextDidChangeNotification;

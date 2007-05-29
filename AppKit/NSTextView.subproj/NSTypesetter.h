@@ -1,53 +1,130 @@
-/* Copyright (c) 2006-2007 Christopher J. W. Lloyd
-
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
-
-#import <Foundation/Foundation.h>
+#import <AppKit/NSText.h>
 #import <AppKit/NSFont.h>
-#import <AppKit/NSParagraphStyle.h>
+#import <AppKit/NSLayoutManager.h>
 
-@class NSLayoutManager,NSTextContainer,NSRangeArray, NSParagraphStyle;
+@class NSLayoutManager,NSParagraphStyle,NSTextTab;
+
+typedef enum {
+   NSTypesetterLatestBehavior,
+} NSTypesetterBehavior;
+
+typedef enum {
+   NSTypesetterZeroAdvancementAction,
+   NSTypesetterWhitespaceAction,
+   NSTypesetterHorizontalTabAction,
+   NSTypesetterLineBreakAction,
+   NSTypesetterParagraphBreakAction,
+   NSTypesetterContainerBreakAction,
+} NSTypesetterControlCharacterAction;
 
 @interface NSTypesetter : NSObject {
-   IMP                 _layoutNextFragment;
-   NSLayoutManager    *_layoutManager;
-   NSAttributedString *_attributedString;
-   NSString           *_string;
+   NSTypesetterBehavior _behavior;
+   float                _hyphenationFactor;
+   float                _lineFragmentPadding;
+   BOOL                 _usesFontLeading;
+   BOOL                 _bidiProcessingEnabled;
 
-   unsigned            _nextGlyphLocation;
-   unsigned            _numberOfGlyphs;
-   NSRange             _glyphCacheRange;
-   unsigned            _glyphCacheCapacity;
-   NSGlyph            *_glyphCache;
-   unichar            *_characterCache;
-
-   NSTextContainer    *_container;
-   NSSize              _containerSize;
-
-   NSDictionary       *_attributes;
-   NSRange             _attributesRange;
-   NSRange             _attributesGlyphRange;
-   NSFont             *_font;
-   float               _fontAscender;
-   float               _fontDefaultLineHeight;
-   NSPoint           (*_positionOfGlyph)(NSFont *,SEL,NSGlyph,NSGlyph,BOOL *);
-   NSParagraphStyle   *_paragraphStyle;
-   NSTextAlignment     _alignment;
-   NSLineBreakMode     _lineBreakMode;
-   NSArray            *_tabStops;
-   float               _defaultTabStop;
-
-   NSRange             _lineRange;
-   NSRangeArray       *_glyphRangesInLine;
-   NSGlyph             _previousGlyph;
-   NSRect              _scanRect;
-   float               _maxAscender;
+   NSLayoutManager     *_layoutManager;
+   NSArray             *_textContainers;
+   NSAttributedString  *_attributedString;
+   NSString            *_string;
+   
+   NSTextContainer     *_currentTextContainer;
+   NSParagraphStyle    *_currentParagraphStyle;
+   
 }
 
--(void)layoutGlyphsInLayoutManager:(NSLayoutManager *)layoutManager startingAtGlyphIndex:(unsigned)startGlyphIndex maxNumberOfLineFragments:(unsigned)maxNumLines nextGlyphIndex:(unsigned *)nextGlyph;
++(NSTypesetterBehavior)defaultTypesetterBehavior;
+
++(NSSize)printingAdjustmentInLayoutManager:(NSLayoutManager *)layoutManager forNominallySpacedGlyphRange:(NSRange)glyphRange packedGlyphs:(const unsigned char *)packedGlyphs count:(unsigned)count;
+
++sharedSystemTypesetterForBehavior:(NSTypesetterBehavior)behavior;
+
++sharedSystemTypesetter;
+
+-(NSTypesetterBehavior)typesetterBehavior;
+-(float)hyphenationFactor;
+-(float)lineFragmentPadding;
+-(BOOL)usesFontLeading;
+-(BOOL)bidiProcessingEnabled;
+
+-(void)setTypesetterBehavior:(NSTypesetterBehavior)behavior;
+-(void)setHyphenationFactor:(float)factor;
+-(void)setLineFragmentPadding:(float)padding;
+-(void)setUsesFontLeading:(BOOL)flag;
+-(void)setBidiProcessingEnabled:(BOOL)flag;
+
+// glyph storage
+
+-(NSRange)characterRangeForGlyphRange:(NSRange)glyphRange actualGlyphRange:(NSRange *)actualGlyphRange;
+-(NSRange)glyphRangeForCharacterRange:(NSRange)characterRange actualCharacterRange:(NSRange *)actualCharacterRange;
+-(unsigned)getGlyphsInRange:(NSRange)glyphRange glyphs:(NSGlyph *)glyphs characterIndexes:(unsigned *)characterIndexes glyphInscriptions:(NSGlyphInscription *)glyphInscriptions elasticBits:(BOOL *)elasticBits bidiLevels:(unsigned char *)bidiLevels;
+-(void)getLineFragmentRect:(NSRect *)fragmentRect usedRect:(NSRect *)usedRect remainingRect:(NSRect *)remainingRect forStartingGlyphAtIndex:(unsigned)startingGlyphIndex proposedRect:(NSRect)proposedRect lineSpacing:(float)lineSpacing paragraphSpacingBefore:(float)paragraphSpacingBefore paragraphSpacingAfter:(float)paragraphSpacingAfter;
+-(void)setLineFragmentRect:(NSRect)fragmentRect forGlyphRange:(NSRange)glyphRange usedRect:(NSRect)usedRect baselineOffset:(float)baselineOffset;
+-(void)substituteGlyphsInRange:(NSRange)glyphRange withGlyphs:(NSGlyph *)glyphs;
+-(void)insertGlyph:(NSGlyph)glyph atGlyphIndex:(unsigned)glyphIndex characterIndex:(unsigned)characterIndex;
+
+-(void)deleteGlyphsInRange:(NSRange)glyphRange;
+-(void)setNotShownAttribute:(BOOL)flag forGlyphRange:(NSRange)range;
+
+-(void)setDrawsOutsideLineFragment:(BOOL)flag forGlyphRange:(NSRange)range;
+-(void)setLocation:(NSPoint)location withAdvancements:(const float *)nominalAdvancements forStartOfGlyphRange:(NSRange)glyphRange;
+-(void)setAttachmentSize:(NSSize)size forGlyphRange:(NSRange)glyphRange;
+-(void)setBidiLevels:(const unsigned char *)bidiLevels forGlyphRange:(NSRange)glyphRange;
+
+// layout
+
+-(void)willSetLineFragmentRect:(NSRect *)fragmentRect forGlyphRange:(NSRange)glyphRange usedRect:(NSRect *)usedRect baselineOffset:(float *)baselineOffset;
+-(BOOL)shouldBreakLineByHyphenatingBeforeCharacterAtIndex:(unsigned)characterIndex;
+
+-(BOOL)shouldBreakLineByWordBeforeCharacterAtIndex:(unsigned)characterIndex;
+
+-(float)hyphenationFactorForGlyphAtIndex:(unsigned)glyphIndex;
+
+-(unichar)hyphenCharacterForGlyphAtIndex:(unsigned)glyphIndex;
+
+-(NSRect)boundingBoxForControlGlyphAtIndex:(unsigned)glyphIndex forTextContainer:(NSTextContainer *)textContainer proposedLineFragment:(NSRect)proposedRect glyphPosition:(NSPoint)glyphPosition characterIndex:(unsigned)characterIndex;
+
+
+//--
+
+-(NSAttributedString *)attributedString;
+-(NSDictionary *)attributesForExtraLineFragment;
+
+-(NSLayoutManager *)layoutManager;
+
+-(NSArray *)textContainers;
+-(NSTextContainer *)currentTextContainer;
+
+-(NSParagraphStyle *)currentParagraphStyle;
+-(NSRange)paragraphCharacterRange;
+-(NSRange)paragraphGlyphRange;
+-(NSRange)paragraphSeparatorCharacterRange;
+-(NSRange)paragraphSeparatorGlyphRange;
+-(NSTypesetterControlCharacterAction)actionForControlCharacterAtIndex:(unsigned)characterIndex;
+-(NSFont *)substituteFontForFont:(NSFont *)font;
+
+-(void)setAttributedString:(NSAttributedString *)text;
+-(void)setHardInvalidation:(BOOL)invalidate forGlyphRange:(NSRange)glyphRange;
+-(void)setParagraphGlyphRange:(NSRange)glyphRange separatorGlyphRange:(NSRange)separatorGlyphRange;
+
+-(void)beginLineWithGlyphAtIndex:(unsigned)glyphIndex;
+-(void)endLineWithGlyphRange:(NSRange)glyphRange;
+
+-(void)beginParagraph;
+-(void)endParagraph;
+
+-(float)baselineOffsetInLayoutManager:(NSLayoutManager *)layoutManager glyphIndex:(unsigned)glyphIndex;
+-(NSTextTab *)textTabForGlyphLocation:(float)location writingDirection:(NSWritingDirection)direction maxLocation:(float)maxLocation;
+
+-(void)getLineFragmentRect:(NSRect *)fragmentRect usedRect:(NSRect *)usedRect forParagraphSeparatorGlyphRange:(NSRange)glyphRange atProposedOrigin:(NSPoint)proposedOrigin;
+
+-(float)lineSpacingAfterGlyphAtIndex:(unsigned)glyphIndex withProposedLineFragmentRect:(NSRect)rect;
+-(float)paragraphSpacingAfterGlyphAtIndex:(unsigned)glyphIndex withProposedLineFragmentRect:(NSRect)rect;
+-(float)paragraphSpacingBeforeGlyphAtIndex:(unsigned)glyphIndex withProposedLineFragmentRect:(NSRect)rect;
+
+-(unsigned)layoutParagraphAtPoint:(NSPoint *)point;
+
+-(void)layoutGlyphsInLayoutManager:(NSLayoutManager *)layoutManager startingAtGlyphIndex:(unsigned)startGlyphIndex maxNumberOfLineFragments:(unsigned)maxFragments nextGlyphIndex:(unsigned *)nextGlyph;
 
 @end

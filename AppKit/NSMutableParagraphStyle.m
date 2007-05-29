@@ -28,17 +28,86 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return [[NSParagraphStyle alloc] initWithParagraphStyle:self];
 }
 
+-(void)setBaseWritingDirection:(NSWritingDirection)direction {
+   _writingDirection=direction;
+}
+
+-(void)setParagraphSpacing:(float)spacing {
+   _paragraphSpacing=spacing;
+}
+
+-(void)setParagraphSpacingBefore:(float)spacing {
+   _paragraphSpacingBefore=spacing;
+}
+
+-(void)setTextBlocks:(NSArray *)blocks {
+   blocks=[blocks copy];
+   [_textBlocks release];
+   _textBlocks=blocks;
+}
+
+-(void)setTextLists:(NSArray *)lists {
+   lists=[lists copy];
+   [_textLists release];
+   _textLists=lists;
+}
+
+-(void)setHeaderLevel:(int)level {
+   _headerLevel=level;
+}
+
+-(void)setFirstLineHeadIndent:(float)indent {
+   _firstLineHeadIndent=indent;
+}
+
+-(void)setHeadIndent:(float)indent {
+   _headIndent=indent;
+}
+
+-(void)setTailIndent:(float)indent {
+   _tailIndent=indent;
+}
+
 -(void)setAlignment:(NSTextAlignment)alignment {
-   _textAlignment=alignment;
+   _alignment=alignment;
 }
 
 -(void)setLineBreakMode:(NSLineBreakMode)mode {
    _lineBreakMode=mode;
 }
 
--(void)setTabStops:(NSArray *)stops {
-   [_tabStops autorelease];
-   _tabStops=[stops retain];
+-(void)setMinimumLineHeight:(float)height {
+   _minimumLineHeight=height;
+}
+
+-(void)setMaximumLineHeight:(float)height {
+   _maximumLineHeight=height;
+}
+
+-(void)setLineHeightMultiple:(float)multiple {
+   _lineHeightMultiple=multiple;
+}
+
+-(void)setLineSpacing:(float)spacing {
+   _lineSpacing=spacing;
+}
+
+-(void)setDefaultTabInterval:(float)interval {
+   _defaultTabInterval=interval;
+}
+
+-(void)setTabStops:(NSArray *)tabStops {
+   tabStops=[tabStops copy];
+   [_tabStops release];
+   _tabStops=tabStops;
+}
+
+-(void)setHyphenationFactor:(float)factor {
+   _hyphenationFactor=factor;
+}
+
+-(void)setTighteningFactorForTruncation:(float)factor {
+   _tighteningFactorForTruncation=factor;
 }
 
 @end

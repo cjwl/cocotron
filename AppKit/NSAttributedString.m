@@ -11,6 +11,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSFont.h>
 #import <AppKit/NSColor.h>
 #import <AppKit/NSParagraphStyle.h>
+#import <AppKit/NSTextAttachment.h>
 #import <AppKit/NSRichTextReader.h>
 
 NSString *NSFontAttributeName=@"NSFontAttributeName";
@@ -142,6 +143,14 @@ NSString *NSBackgroundColorDocumentAttribute=@"NSBackgroundColorDocumentAttribut
     }
 
     return NSNotFound;
+}
+
++(NSAttributedString *)attributedStringWithAttachment:(NSTextAttachment *)attachment {
+   unichar       unicode=NSAttachmentCharacter;
+   NSString     *string=[NSString stringWithCharacters:&unicode length:1];
+   NSDictionary *attributes=[NSDictionary dictionaryWithObject:attachment forKey:NSAttachmentAttributeName];
+   
+   return [[[self alloc] initWithString:string attributes:attributes] autorelease];
 }
 
 @end

@@ -651,6 +651,12 @@
 		FE6DC3DF0BA9A6EB0082AC66 /* NSDatePicker.m in Sources */ = {isa = PBXBuildFile; fileRef = FE6DC3DD0BA9A6EB0082AC66 /* NSDatePicker.m */; };
 		FE6DC3F00BA9A7100082AC66 /* NSDatePickerCell.h in Headers */ = {isa = PBXBuildFile; fileRef = FE6DC3EE0BA9A7100082AC66 /* NSDatePickerCell.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE6DC3F10BA9A7100082AC66 /* NSDatePickerCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FE6DC3EF0BA9A7100082AC66 /* NSDatePickerCell.m */; };
+		FE7247690C06202B007CBC51 /* NSTextList.h in Headers */ = {isa = PBXBuildFile; fileRef = FE7247670C06202B007CBC51 /* NSTextList.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE72476A0C06202B007CBC51 /* NSTextList.m in Sources */ = {isa = PBXBuildFile; fileRef = FE7247680C06202B007CBC51 /* NSTextList.m */; };
+		FE7247A60C0622F2007CBC51 /* NSTextAttachmentCell.h in Headers */ = {isa = PBXBuildFile; fileRef = FE7247A40C0622F2007CBC51 /* NSTextAttachmentCell.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE7247A70C0622F2007CBC51 /* NSTextAttachmentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FE7247A50C0622F2007CBC51 /* NSTextAttachmentCell.m */; };
+		FE7248510C0676AA007CBC51 /* NSTypesetter_concrete.h in Headers */ = {isa = PBXBuildFile; fileRef = FE72484F0C0676AA007CBC51 /* NSTypesetter_concrete.h */; };
+		FE7248520C0676AA007CBC51 /* NSTypesetter_concrete.m in Sources */ = {isa = PBXBuildFile; fileRef = FE7248500C0676AA007CBC51 /* NSTypesetter_concrete.m */; };
 		FE86887F0BC3FFA4009F515C /* NSButtonCell_disclosure_highlighted.tif in Resources */ = {isa = PBXBuildFile; fileRef = FE86887C0BC3FFA4009F515C /* NSButtonCell_disclosure_highlighted.tif */; };
 		FE8688800BC3FFA4009F515C /* NSButtonCell_disclosure_normal.tif in Resources */ = {isa = PBXBuildFile; fileRef = FE86887D0BC3FFA4009F515C /* NSButtonCell_disclosure_normal.tif */; };
 		FE8688810BC3FFA4009F515C /* NSButtonCell_disclosure_selected.tif in Resources */ = {isa = PBXBuildFile; fileRef = FE86887E0BC3FFA4009F515C /* NSButtonCell_disclosure_selected.tif */; };
@@ -1373,6 +1379,12 @@
 		FE6DC3DD0BA9A6EB0082AC66 /* NSDatePicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSDatePicker.m; sourceTree = "<group>"; };
 		FE6DC3EE0BA9A7100082AC66 /* NSDatePickerCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSDatePickerCell.h; sourceTree = "<group>"; };
 		FE6DC3EF0BA9A7100082AC66 /* NSDatePickerCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSDatePickerCell.m; sourceTree = "<group>"; };
+		FE7247670C06202B007CBC51 /* NSTextList.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSTextList.h; sourceTree = "<group>"; };
+		FE7247680C06202B007CBC51 /* NSTextList.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSTextList.m; sourceTree = "<group>"; };
+		FE7247A40C0622F2007CBC51 /* NSTextAttachmentCell.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSTextAttachmentCell.h; sourceTree = "<group>"; };
+		FE7247A50C0622F2007CBC51 /* NSTextAttachmentCell.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSTextAttachmentCell.m; sourceTree = "<group>"; };
+		FE72484F0C0676AA007CBC51 /* NSTypesetter_concrete.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSTypesetter_concrete.h; sourceTree = "<group>"; };
+		FE7248500C0676AA007CBC51 /* NSTypesetter_concrete.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSTypesetter_concrete.m; sourceTree = "<group>"; };
 		FE86887C0BC3FFA4009F515C /* NSButtonCell_disclosure_highlighted.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = NSButtonCell_disclosure_highlighted.tif; sourceTree = "<group>"; };
 		FE86887D0BC3FFA4009F515C /* NSButtonCell_disclosure_normal.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = NSButtonCell_disclosure_normal.tif; sourceTree = "<group>"; };
 		FE86887E0BC3FFA4009F515C /* NSButtonCell_disclosure_selected.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = NSButtonCell_disclosure_selected.tif; sourceTree = "<group>"; };
@@ -1684,10 +1696,14 @@
 				6E2B53D50976075200DA0954 /* NSText.m */,
 				6E2B54B60976075300DA0954 /* NSTextAttachment.h */,
 				6E2B53D70976075200DA0954 /* NSTextAttachment.m */,
+				FE7247A40C0622F2007CBC51 /* NSTextAttachmentCell.h */,
+				FE7247A50C0622F2007CBC51 /* NSTextAttachmentCell.m */,
 				6E2B54B80976075300DA0954 /* NSTextField.h */,
 				6E2B53D90976075200DA0954 /* NSTextField.m */,
 				6E2B54BA0976075300DA0954 /* NSTextFieldCell.h */,
 				6E2B53DB0976075200DA0954 /* NSTextFieldCell.m */,
+				FE7247670C06202B007CBC51 /* NSTextList.h */,
+				FE7247680C06202B007CBC51 /* NSTextList.m */,
 				FE2A114D0B45C608006C03DE /* NSTextTable */,
 				6E2B55680976075300DA0954 /* NSTextView */,
 				FE2A11520B45C65E006C03DE /* NSTokenField.h */,
@@ -1829,6 +1845,8 @@
 		6E2B55680976075300DA0954 /* NSTextView */ = {
 			isa = PBXGroup;
 			children = (
+				FE72484F0C0676AA007CBC51 /* NSTypesetter_concrete.h */,
+				FE7248500C0676AA007CBC51 /* NSTypesetter_concrete.m */,
 				FE27AC140BE9038000136B43 /* NSTextInput.h */,
 				6E2B55870976075300DA0954 /* NSLayoutManager.h */,
 				6E2B55720976075300DA0954 /* NSLayoutManager.m */,
@@ -2715,6 +2733,9 @@
 				FE352F6A0BF3998E00223FAF /* NSArrayControllerSelectionProxy.h in Headers */,
 				FEC5FF7D0BF49D5400682A70 /* NSTableColumnBinder.h in Headers */,
 				C8E4F5810BFF7A8A0076D5E6 /* NSAffineTransform.h in Headers */,
+				FE7247690C06202B007CBC51 /* NSTextList.h in Headers */,
+				FE7247A60C0622F2007CBC51 /* NSTextAttachmentCell.h in Headers */,
+				FE7248510C0676AA007CBC51 /* NSTypesetter_concrete.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3165,6 +3186,9 @@
 				FE352F6B0BF3998E00223FAF /* NSArrayControllerSelectionProxy.m in Sources */,
 				FEC5FF7E0BF49D5400682A70 /* NSTableColumnBinder.m in Sources */,
 				C8E4F5820BFF7A8A0076D5E6 /* NSAffineTransform.m in Sources */,
+				FE72476A0C06202B007CBC51 /* NSTextList.m in Sources */,
+				FE7247A70C0622F2007CBC51 /* NSTextAttachmentCell.m in Sources */,
+				FE7248520C0676AA007CBC51 /* NSTypesetter_concrete.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

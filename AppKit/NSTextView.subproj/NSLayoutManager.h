@@ -9,15 +9,21 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/Foundation.h>
 #import <AppKit/NSFont.h>
 
-@class NSTextStorage,NSTypesetter,NSTextContainer,NSTextView;
+@class NSTextStorage,NSGlyphGenerator,NSTypesetter,NSTextContainer,NSTextView;
 @class NSWindow,NSColor,NSCell;
-@class NSGlyphIndex,NSLayoutIndex;
 
-typedef int NSGlyphInscription;
+typedef enum {
+   NSGlyphInscribeBase,
+   NSGlyphInscribeBelow,
+   NSGlyphInscribeAbove,
+   NSGlyphInscribeOverstrike,
+   NSGlyphInscribeOverBelow,
+} NSGlyphInscription;
 
 @interface NSLayoutManager : NSObject {
-   NSTextStorage  *_textStorage;
-   NSTypesetter   *_typesetter;
+   NSTextStorage    *_textStorage;
+   NSGlyphGenerator *_glyphGenerator;
+   NSTypesetter     *_typesetter;
 
    id              _delegate;
 
@@ -39,6 +45,7 @@ typedef int NSGlyphInscription;
 -init;
 
 -(NSTextStorage *)textStorage;
+-(NSGlyphGenerator *)glyphGenerator;
 -(NSTypesetter *)typesetter;
 -delegate;
 -(NSArray *)textContainers;
@@ -49,6 +56,7 @@ typedef int NSGlyphInscription;
 
 -(void)setTextStorage:(NSTextStorage *)textStorage;
 -(void)replaceTextStorage:(NSTextStorage *)textStorage;
+-(void)setGlyphGenerator:(NSGlyphGenerator *)generator;
 -(void)setTypesetter:(NSTypesetter *)typesetter;
 -(void)setDelegate:delegate;
 
@@ -59,10 +67,19 @@ typedef int NSGlyphInscription;
 -(void)removeTextContainerAtIndex:(unsigned)index;
 -(void)insertTextContainer:(NSTextContainer *)container atIndex:(unsigned)index;
 
+-(void)insertGlyph:(NSGlyph)glyph atGlyphIndex:(unsigned)glyphIndex characterIndex:(unsigned)characterIndex;
+-(void)replaceGlyphAtIndex:(unsigned)glyphIndex withGlyph:(NSGlyph)glyph;
+-(void)deleteGlyphsInRange:(NSRange)glyphRange;
+-(void)setCharacterIndex:(unsigned)characterIndex forGlyphAtIndex:(unsigned)glyphIndex;
+-(void)setNotShownAttribute:(BOOL)notShown forGlyphAtIndex:(unsigned)glyphIndex;
+-(void)setAttachmentSize:(NSSize)size forGlyphRange:(NSRange)glyphRange;
+-(void)setDrawsOutsideLineFragment:(BOOL)drawsOutside forGlyphAtIndex:(unsigned)glyphIndex;
+
 -(unsigned)numberOfGlyphs;
 -(unsigned)getGlyphs:(NSGlyph *)glyphs range:(NSRange)glyphRange;
 
 -(unsigned)getGlyphsInRange:(NSRange)range glyphs:(NSGlyph *)glyphs characterIndexes:(unsigned *)charIndexes glyphInscriptions:(NSGlyphInscription *)inscriptions elasticBits:(BOOL *)elasticBits;
+-(unsigned)getGlyphsInRange:(NSRange)range glyphs:(NSGlyph *)glyphs characterIndexes:(unsigned *)charIndexes glyphInscriptions:(NSGlyphInscription *)inscriptions elasticBits:(BOOL *)elasticBits bidiLevels:(unsigned char *)bidiLevels;
 
 -(NSTextContainer *)textContainerForGlyphAtIndex:(unsigned)glyphIndex effectiveRange:(NSRangePointer)effectiveGlyphRange;
 -(NSRect)lineFragmentRectForGlyphAtIndex:(unsigned)glyphIndex effectiveRange:(NSRangePointer)effectiveGlyphRange;
@@ -102,7 +119,7 @@ typedef int NSGlyphInscription;
 -(NSRectArray)rectArrayForGlyphRange:(NSRange)glyphRange withinSelectedGlyphRange:(NSRange)selectedGlyphRange inTextContainer:(NSTextContainer *)container rectCount:(unsigned *)rectCount;
 
 -(unsigned)characterIndexForGlyphAtIndex:(unsigned)glyphIndex;
--(NSRange)characterRangeForGlyphRange:(NSRange)glyphRange actualGlyphRange:(NSRangePointer)actualGlyphRange;
+-(NSRange)characterRangeForGlyphRange:(NSRange)glyphRange actualGlyphRange:(NSRange *)actualGlyphRange;
 -(NSRectArray)rectArrayForCharacterRange:(NSRange)characterRange withinSelectedCharacterRange:(NSRange)selectedCharRange inTextContainer:(NSTextContainer *)container rectCount:(unsigned *)rectCount;
 
 -(unsigned)firstUnlaidGlyphIndex;

@@ -38,14 +38,33 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return shared;
 }
 
+-(void)_initWithDefaults {
+   _writingDirection=NSWritingDirectionLeftToRight;
+   _paragraphSpacing=0;
+   _paragraphSpacingBefore=0;
+   _textBlocks=nil;
+   _textLists=nil;
+   _headerLevel=0;
+   _firstLineHeadIndent=0;
+   _headIndent=0;
+   _tailIndent=0;
+   _alignment=NSLeftTextAlignment;
+   _lineBreakMode=NSLineBreakByWordWrapping;
+   _minimumLineHeight=0;
+   _maximumLineHeight=0;
+   _lineHeightMultiple=0;
+   _lineSpacing=0;
+   _defaultTabInterval=0;
+   _tabStops=[[isa _defaultTabStops] retain];
+   _hyphenationFactor=0;
+   _tighteningFactorForTruncation=0;
+}
+
 -initWithCoder:(NSCoder *)coder {
    if([coder isKindOfClass:[NSNibKeyedUnarchiver class]]){
     NSNibKeyedUnarchiver *keyed=(NSNibKeyedUnarchiver *)coder;
 
-    _textAlignment=NSLeftTextAlignment;
-    _lineBreakMode=NSLineBreakByWordWrapping;
-
-    _tabStops=[[isa _defaultTabStops] retain];
+    [self _initWithDefaults];
    }
    else {
     [NSException raise:NSInvalidArgumentException format:@"-[%@ %s] is not implemented for coder %@",isa,SELNAME(_cmd),coder];
@@ -55,23 +74,36 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -init {
-
-   _textAlignment=NSLeftTextAlignment;
-   _lineBreakMode=NSLineBreakByWordWrapping;
-
-   _tabStops=[[isa _defaultTabStops] retain];
-
+   [self _initWithDefaults];
    return self;
 }
 
 -initWithParagraphStyle:(NSParagraphStyle *)other {
-   _textAlignment=[other alignment];
+   _writingDirection=[other baseWritingDirection];
+   _paragraphSpacing=[other paragraphSpacing];
+   _paragraphSpacingBefore=[other paragraphSpacingBefore];
+   _textBlocks=[[other textBlocks] copy];
+   _textLists=[[other textLists] copy];
+   _headerLevel=[other headerLevel];
+   _firstLineHeadIndent=[other firstLineHeadIndent];
+   _headIndent=[other headIndent];
+   _tailIndent=[other tailIndent];
+   _alignment=[other alignment];
    _lineBreakMode=[other lineBreakMode];
+   _minimumLineHeight=[other minimumLineHeight];
+   _maximumLineHeight=[other maximumLineHeight];
+   _lineHeightMultiple=[other lineHeightMultiple];
+   _lineSpacing=[other lineSpacing];
+   _defaultTabInterval=[other defaultTabInterval];
    _tabStops=[[other tabStops] copy];
+   _hyphenationFactor=[other hyphenationFactor];
+   _tighteningFactorForTruncation=[other tighteningFactorForTruncation];
    return self;
 }
 
 -(void)dealloc {
+   [_textBlocks release];
+   [_textLists release];
    [_tabStops release];
    [super dealloc];
 }
@@ -85,13 +117,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 static inline id mutableCopyWithZone(NSParagraphStyle *self,NSZone *zone){
-   id copy=[[NSMutableParagraphStyle allocWithZone:zone] init];
-
-   [copy setAlignment:self->_textAlignment];
-   [copy setLineBreakMode:self->_lineBreakMode];
-   [copy setTabStops:self->_tabStops];
-
-   return copy;
+   return [[NSMutableParagraphStyle allocWithZone:zone] initWithParagraphStyle:self];
 }
 
 -mutableCopy {
@@ -102,16 +128,80 @@ static inline id mutableCopyWithZone(NSParagraphStyle *self,NSZone *zone){
    return mutableCopyWithZone(self,zone);
 }
 
+-(NSWritingDirection)baseWritingDirection {
+   return _writingDirection;
+}
+
+-(float)paragraphSpacing {
+   return _paragraphSpacing;
+}
+
+-(float)paragraphSpacingBefore {
+   return _paragraphSpacingBefore;
+}
+
+-(NSArray *)textBlocks {
+   return _textBlocks;
+}
+
+-(NSArray *)textLists {
+   return _textLists;
+}
+
+-(int)headerLevel {
+   return _headerLevel;
+}
+
+-(float)firstLineHeadIndent {
+   return _firstLineHeadIndent;
+}
+
+-(float)headIndent {
+   return _headIndent;
+}
+
+-(float)tailIndent {
+   return _tailIndent;
+}
+
 -(NSTextAlignment)alignment {
-   return _textAlignment;
+   return _alignment;
 }
 
 -(NSLineBreakMode)lineBreakMode {
    return _lineBreakMode;
 }
 
+-(float)minimumLineHeight {
+   return _minimumLineHeight;
+}
+
+-(float)maximumLineHeight {
+   return _maximumLineHeight;
+}
+
+-(float)lineHeightMultiple {
+   return _lineHeightMultiple;
+}
+
+-(float)lineSpacing {
+   return _lineSpacing;
+}
+
+-(float)defaultTabInterval {
+   return _defaultTabInterval;
+}
+
 -(NSArray *)tabStops {
    return _tabStops;
+}
+
+-(float)hyphenationFactor {
+   return _hyphenationFactor;
+}
+
+-(float)tighteningFactorForTruncation {
+   return _tighteningFactorForTruncation;
 }
 
 @end

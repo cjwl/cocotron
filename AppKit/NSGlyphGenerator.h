@@ -26,6 +26,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 +sharedGlyphGenerator;
 
--(void)generateGlyphsForGlyphStorage:(id <NSGlyphStorage>)glyphStorage desiredNumberOfCharacters:(unsigned int)numberOfCharacters glyphIndex:(unsigned *)glyphIndex characterIndex:(unsigned *)characterIndex;
+-(void)generateGlyphsForGlyphStorage:(id <NSGlyphStorage>)glyphStorage desiredNumberOfCharacters:(unsigned)numberOfCharacters glyphIndex:(unsigned *)glyphIndex characterIndex:(unsigned *)characterIndex;
 
 @end

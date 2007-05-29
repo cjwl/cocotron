@@ -124,10 +124,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSTabViewItem.h>
 #import <AppKit/NSText.h>
 #import <AppKit/NSTextAttachment.h>
+#import <AppKit/NSTextAttachmentCell.h>
 #import <AppKit/NSTextBlock.h>
 #import <AppKit/NSTextContainer.h>
 #import <AppKit/NSTextField.h>
 #import <AppKit/NSTextFieldCell.h>
+#import <AppKit/NSTextList.h>
 #import <AppKit/NSTextStorage.h>
 #import <AppKit/NSTextTab.h>
 #import <AppKit/NSTextTable.h>

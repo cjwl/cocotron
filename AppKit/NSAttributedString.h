@@ -9,7 +9,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/Foundation.h>
 #import <AppKit/AppKitExport.h>
 
-@class NSFont,NSColor,NSParagraphStyle;
+@class NSFont,NSColor,NSParagraphStyle,NSTextAttachment;
 
 APPKIT_EXPORT NSString *NSFontAttributeName; 
 APPKIT_EXPORT NSString *NSParagraphStyleAttributeName;
@@ -32,6 +32,7 @@ enum {
 -initWithPath:(NSString *)path documentAttributes:(NSDictionary **)attributes;
 -(NSRange)doubleClickAtIndex:(unsigned)location;
 -(unsigned)nextWordFromIndex:(unsigned)location forward:(BOOL)forward;
++(NSAttributedString *)attributedStringWithAttachment:(NSTextAttachment *)attachment;
 @end
 
 // private

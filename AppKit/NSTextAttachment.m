@@ -9,24 +9,40 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 // Original - Christopher Lloyd <cjwl@objc.net>
 #import <AppKit/NSTextAttachment.h>
 #import <AppKit/NSImage.h>
+#import <AppKit/NSFileWrapper.h>
 
 @implementation NSTextAttachment
 
--initWithContentsOfFile:(NSString *)path {
-   if((_image=[[NSImage alloc] initWithContentsOfFile:path])==nil){
-    [self dealloc];
-    return nil;
-   }
+-initWithFileWrapper:(NSFileWrapper *)fileWrapper {
+   _fileWrapper=[fileWrapper retain];
+   _cell=[[NSTextAttachmentCell alloc] init];
    return self;
 }
 
 -(void)dealloc {
-   [_image release];
+   [_fileWrapper release];
+   [_cell release];
    [super dealloc];
 }
 
--(NSImage *)image {
-   return _image;
+-(NSFileWrapper *)fileWrapper {
+   return _fileWrapper;
+}
+
+-(id <NSTextAttachmentCell>)attachmentCell {
+   return _cell;
+}
+
+-(void)setFileWrapper:(NSFileWrapper *)fileWrapper {
+   fileWrapper=[fileWrapper retain];
+   [_fileWrapper release];
+   _fileWrapper=fileWrapper;
+}
+
+-(void)setAttachmentCell:(id <NSTextAttachmentCell>)cell {
+   cell=[cell retain];
+   [_cell release];
+   _cell=cell;
 }
 
 @end

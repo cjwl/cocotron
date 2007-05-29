@@ -15,16 +15,56 @@ typedef enum {
 } NSLineBreakMode;
 
 @interface NSParagraphStyle : NSObject <NSCopying,NSMutableCopying> {
-   NSTextAlignment _textAlignment;
-   NSLineBreakMode _lineBreakMode;
-   NSArray        *_tabStops;
+   NSWritingDirection _writingDirection;
+   float              _paragraphSpacing;
+   float              _paragraphSpacingBefore;
+   NSArray           *_textBlocks;
+   NSArray           *_textLists;
+   int                _headerLevel;
+   float              _firstLineHeadIndent;
+   float              _headIndent;
+   float              _tailIndent;
+   NSTextAlignment    _alignment;
+   NSLineBreakMode    _lineBreakMode;
+   float              _minimumLineHeight;
+   float              _maximumLineHeight;
+   float              _lineHeightMultiple;
+   float              _lineSpacing;
+   float             _defaultTabInterval;
+   NSArray          *_tabStops;
+   float             _hyphenationFactor;
+   float             _tighteningFactorForTruncation;
 }
 
 +(NSParagraphStyle *)defaultParagraphStyle;
 
+-(NSWritingDirection)baseWritingDirection;
+
+-(float)paragraphSpacing;
+-(float)paragraphSpacingBefore;
+
+-(NSArray *)textBlocks;
+-(NSArray *)textLists;
+
+-(int)headerLevel;
+
+-(float)firstLineHeadIndent;
+-(float)headIndent;
+-(float)tailIndent;
+
 -(NSTextAlignment)alignment;
 -(NSLineBreakMode)lineBreakMode;
+
+-(float)minimumLineHeight;
+-(float)maximumLineHeight;
+-(float)lineHeightMultiple;
+-(float)lineSpacing;
+
+-(float)defaultTabInterval;
 -(NSArray *)tabStops;
+
+-(float)hyphenationFactor;
+-(float)tighteningFactorForTruncation;
 
 @end
 

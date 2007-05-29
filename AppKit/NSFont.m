@@ -416,7 +416,7 @@ static inline NSGlyphMetrics *fetchGlyphAdvancementIfNeeded(NSFont *self,NSGlyph
     for(i=0;i<length;i++){
      unichar check=characters[i];
 
-     if(check=='\n' || check=='\t')
+     if(check<' ' || (check>=0x7F && check<=0x9F) || check==0x200B)
       glyphs[i]=NSControlGlyph;
      else
       glyphs[i]=glyphForCharacter(self,check);
@@ -428,7 +428,7 @@ static inline NSGlyphMetrics *fetchGlyphAdvancementIfNeeded(NSFont *self,NSGlyph
     for(i=0;i<length;i++){
      char check=symbols[i];
 
-     if(check=='\n' || check=='\t')
+     if(check<' ')
       glyphs[i]=NSControlGlyph;
      else
       glyphs[i]=glyphForCharacter(self,check);
