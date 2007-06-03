@@ -83,8 +83,8 @@ static int zbuild_huffman(zhuffman *z, const unsigned char *sizelist, int num) {
    code = 0;
    for (i=1; i < 16; ++i) {
       next_code[i] = code;
-      z->firstcode[i] = code;
-      z->firstsymbol[i] = k;
+      z->firstcode[i] = (uint16)code;
+      z->firstsymbol[i] = (uint16)k;
       code = (code + sizes[i]);
       if (sizes[i])
          if (code-1 >= (1 << i)) return e("bad codelengths");
@@ -98,11 +98,11 @@ static int zbuild_huffman(zhuffman *z, const unsigned char *sizelist, int num) {
       if (s) {
          int c = next_code[s] - z->firstcode[s] + z->firstsymbol[s];
          z->size[c] = s;
-         z->value[c] = i;
+         z->value[c] = (uint16)i;
          if (s <= ZFAST_BITS) {
             int k = bit_reverse(next_code[s],s);
             while (k < (1 << ZFAST_BITS)) {
-               z->fast[k] = c;
+               z->fast[k] = (uint16)c;
                k += (1 << s);
             }
          }
@@ -349,8 +349,8 @@ static int parse_uncompressed_block(KGFlateDecode *inflate) {
    while (k < 4)
       header[k++] = KGFlateDecodeNextByte(inflate);
       
-   len  = header[0] * 256 + header[1];
-   nlen = header[2] * 256 + header[3];
+   len  = header[1] * 256 + header[0];
+   nlen = header[3] * 256 + header[2];
    
    if (nlen != (len ^ 0xffff))
     return e("zlib corrupt");
