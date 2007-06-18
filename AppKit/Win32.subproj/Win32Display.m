@@ -687,12 +687,17 @@ The values should be upgraded to something which is more generic to implement, p
 
      case WM_MOUSEMOVE:
       [self _unhideCursorForMouseMove];
-      type=NSLeftMouseDragged;
-#if 0
-// Need a test for whether the mouse is down or not to distinguish
-      if(window!=nil && ![window acceptsMouseMovedEvents])
-       return YES;
-#endif
+      
+      if(msg.wParam&MK_LBUTTON)
+       type=NSLeftMouseDragged;
+      else if(msg.wParam&MK_RBUTTON)
+       type=NSRightMouseDragged;
+      else {
+       if(window!=nil && [window acceptsMouseMovedEvents])
+        type=NSMouseMoved;
+       else
+        return YES;
+      }
       break;
 
      case WM_LBUTTONDOWN:

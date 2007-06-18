@@ -12,20 +12,73 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSRaise.h>
 #import <Foundation/NSPlatform.h>
+#import <Foundation/NSNotificationCenter.h>
 
 NSString *NSWillBecomeMultiThreadedNotification=@"NSWillBecomeMultiThreadedNotification";
 NSString *NSThreadWillExitNotification=@"NSThreadWillExitNotification";
 
 @implementation NSThread
 
-+(BOOL)isMultiThreaded {
-   NSUnsupportedMethod();
-   return NO;
+static BOOL isMultiThreaded = NO;
+
++ (BOOL) isMultiThreaded {
+	return isMultiThreaded;
 }
 
-+(void)detachNewThreadSelector:(SEL)selector toTarget:target
-   withObject:argument {
-   NSUnsupportedMethod();
+- (id) initWithTarget: (id) aTarget selector: (SEL) aSelector argument: (id) anArgument {
+   [self init];
+   _target   = [aTarget retain];
+   _selector = aSelector;
+   _argument = [anArgument retain];
+   return self;
+}
+
+- (void) run {
+	[_target performSelector: _selector withObject: _argument];
+}
+
+static unsigned nsThreadStartThread(void* thread)
+{
+    [(NSThread*)thread run];
+    [(NSThread*)thread release];
+	return 0;
+}
+
+#ifdef WIN32
+/* Create a new thread of execution. */
+DWORD objc_thread_detach(unsigned (*func)(void *arg), void *arg) {
+	DWORD	threadId = 0;
+	HANDLE win32Handle = (HANDLE)_beginthreadex(NULL, 0, func, arg, 0, &threadId);
+	
+	if (win32Handle) {
+		threadId = 0; // just to be sure
+	}
+	
+	CloseHandle(win32Handle);
+	return threadId;
+}
+#else
+int objc_thread_detach(unsigned (*func)(void *arg), void *arg) {
+	return 0;
+}
+#endif
+
++(void)detachNewThreadSelector:(SEL)selector toTarget:target withObject:argument {
+	id newThread = [[self alloc] initWithTarget: target selector: selector argument: argument];
+	
+	if (!isMultiThreaded) {
+		[[NSNotificationCenter defaultCenter] postNotificationName: NSWillBecomeMultiThreadedNotification
+															object: nil
+														  userInfo: nil];
+		isMultiThreaded = YES;
+	}
+	
+	if (objc_thread_detach( &nsThreadStartThread, newThread) == 0) {
+		// No thread has been created. Don't leak:
+		[newThread release];
+		[NSException raise: @"NSThreadCreationFailedException"
+					format: @"Creation of Objective-C thread failed."];
+	}
 }
 
 +(NSThread *)currentThread {
@@ -46,6 +99,14 @@ NSString *NSThreadWillExitNotification=@"NSThreadWillExitNotification";
    _dictionary=[NSMutableDictionary new];
    _sharedObjects=[NSMutableDictionary new];
    return self;
+}
+
+- (void) dealloc {
+	[_dictionary release];
+	[_sharedObjects release];
+	[_argument release];
+	[_target release];
+	[super dealloc];
 }
 
 -(NSMutableDictionary *)threadDictionary {
@@ -110,6 +171,18 @@ NSUncaughtExceptionHandler *NSThreadUncaughtExceptionHandler(void) {
 
 void NSThreadSetUncaughtExceptionHandler(NSUncaughtExceptionHandler *function) {
    NSPlatformCurrentThread()->_uncaughtExceptionHandler=function;
+}
+
+@end
+
+@implementation NSObject(NSThread)
+
+-(void)performSelectorOnMainThread:(SEL)selector withObject:(id)object waitUntilDone:(BOOL)waitUntilDone modes:(NSArray *)modes {
+	NSUnimplementedMethod();
+}
+
+-(void)performSelectorOnMainThread:(SEL)selector withObject:(id)object waitUntilDone:(BOOL)waitUntilDone {
+	NSUnimplementedMethod();
 }
 
 @end

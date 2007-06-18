@@ -34,11 +34,6 @@ FOUNDATION_EXPORT Class OBJCSuperclassFromObject(id object) {
    return OBJCSuperclassFromClass(object->isa);
 }
 
-BOOL OBJCInstanceRespondsToSelector(Class class,SEL selector) {
-   return OBJCLookupUniqueIdInClass(class,OBJCSelectorUniqueId (selector))!=NULL;
-}
-
-
 BOOL OBJCClassConformsToProtocol(Class class,Protocol *protocol) {
 
    for(;;class=class->super_class){
@@ -62,12 +57,6 @@ BOOL OBJCClassConformsToProtocol(Class class,Protocol *protocol) {
 
 BOOL OBJCIsMetaClass(Class class) {
    return (class->info&CLASS_INFO_META)?YES:NO;
-}
-
-IMP OBJCMethodForSelector(Class class,SEL selector) {
-   OBJCMethod *method=OBJCLookupUniqueIdInClass(class,OBJCSelectorUniqueId(selector));
-
-   return (method==NULL)?NULL:method->method_imp;
 }
 
 const char *OBJCTypesForSelector(Class class,SEL selector) {

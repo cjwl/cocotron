@@ -58,6 +58,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSGeometry.h>
 #import <Foundation/NSHashTable.h>
 #import <Foundation/NSHost.h>
+#import <Foundation/NSIndexPath.h>
 #import <Foundation/NSIndexSet.h>
 #import <Foundation/NSInvocation.h>
 #import <Foundation/NSKeyedArchiver.h>

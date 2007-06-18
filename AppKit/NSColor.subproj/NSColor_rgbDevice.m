@@ -84,6 +84,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return _alpha;
 }
 
+-(NSColor *)colorWithAlphaComponent:(float)alpha { 
+   return [[[[self class] alloc] initWithRed:_red green:_green blue:_blue alpha:alpha] autorelease]; 
+} 
+
 -(NSColor *)colorUsingColorSpaceName:(NSString *)colorSpace device:(NSDictionary *)device {
    if([colorSpace isEqualToString:NSDeviceRGBColorSpace] || colorSpace==nil)
     return self;

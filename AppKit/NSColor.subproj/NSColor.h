@@ -101,6 +101,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(float)alphaComponent;
 
+-(NSColor *)colorWithAlphaComponent:(float)alpha;
+
 -(NSColor *)colorUsingColorSpaceName:(NSString *)colorSpace;
 -(NSColor *)colorUsingColorSpaceName:(NSString *)colorSpace device:(NSDictionary *)device;
 

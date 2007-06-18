@@ -42,18 +42,6 @@ typedef struct objc_method_list {
    OBJCMethod               method_list[1]; 
 } OBJCMethodList;
 
-typedef struct {
-   long        offsetToNextEntry;
-   OBJCMethod *method;
-} OBJCMethodCacheEntry;
-
-#define OBJCMethodCacheNumberOfEntries 64
-#define OBJCMethodCacheMask            ((OBJCMethodCacheNumberOfEntries-1)*sizeof(OBJCMethodCacheEntry))
-
-typedef struct {
-   OBJCMethodCacheEntry table[OBJCMethodCacheNumberOfEntries];
-} OBJCMethodCache;
-
 @class Protocol;
 
 typedef struct OBJCProtocolList {
@@ -79,7 +67,7 @@ typedef struct objc_class {
    long                      instance_size;
    OBJCInstanceVariableList *ivars;
    OBJCMethodList           *methodLists;
-   OBJCMethodCache          *cache;
+   struct objc_cache        *cache;
    OBJCProtocolList         *protocols;
    void                     *privateData;
 } OBJCClassTemplate;

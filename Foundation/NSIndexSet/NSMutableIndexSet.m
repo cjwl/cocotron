@@ -87,7 +87,6 @@ static void removeRangeAtPosition(NSRange *ranges,unsigned length,unsigned posit
    while(pos+1<_length){
     unsigned max=NSMaxRange(_ranges[pos]);
     unsigned nextMax;
-    unsigned i;
     
     if(max<_ranges[pos+1].location)
      break;

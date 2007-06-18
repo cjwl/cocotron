@@ -36,7 +36,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     _numberOfColumns=[keyed decodeIntForKey:@"NSNumCols"];
     _cellSize=[keyed decodeSizeForKey:@"NSCellSize"];
     _intercellSpacing=[keyed decodeSizeForKey:@"NSIntercellSpacing"];
+    _tabKeyTraversesCells=(flags&0x00200000)?YES:NO;
     _autosizesCells=(flags&0x00800000)?YES:NO;
+    _drawsBackground=(flags&0x01000000)?YES:NO;
+    _drawsCellBackground=(flags&0x02000000)?YES:NO;
+    _selectionByRect=(flags&0x04000000)?YES:NO;
+    _isAutoscroll=(flags&0x08000000)?YES:NO;
+    _allowsEmptySelection=(flags&0x10000000)?YES:NO;
     _mode=NSTrackModeMatrix;
     if(flags&0x20000000)
      _mode=NSListModeMatrix;
@@ -44,17 +50,20 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
      _mode=NSRadioModeMatrix;
     if(flags&0x80000000)
      _mode=NSHighlightModeMatrix;
-    _drawsBackground=(flags&0x01000000)?YES:NO;
     _backgroundColor=[[keyed decodeObjectForKey:@"NSBackgroundColor"] retain];
+    _cellBackgroundColor=[[keyed decodeObjectForKey:@"NSCellBackgroundColor"] retain];
     name=[keyed decodeObjectForKey:@"NSCellClass"];
     if((_cellClass=NSClassFromString(name))==Nil){
      NSLog(@"Unknown cell class %@, using NSCell",name);
      _cellClass=[NSCell class];
-    _tabKeyTraversesCells=YES;
     }
     _prototype=[[keyed decodeObjectForKey:@"NSProtoCell"] retain];
     _cells=[[NSMutableArray new] initWithArray:[keyed decodeObjectForKey:@"NSCells"]];
-    _tabKeyTraversesCells=YES;
+    id selectedCell=[keyed decodeObjectForKey:@"NSSelectedCell"];
+    if ((_selectedIndex=[_cells indexOfObjectIdenticalTo:selectedCell]) != NSNotFound)
+      [self selectCell:selectedCell];
+    else
+      _selectedIndex=-1;
    }
    else {
     [NSException raise:NSInvalidArgumentException format:@"-[%@ %s] is not implemented for coder %@",isa,SELNAME(_cmd),coder];

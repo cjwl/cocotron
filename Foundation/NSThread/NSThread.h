@@ -20,6 +20,9 @@ FOUNDATION_EXPORT NSString *NSThreadWillExitNotification;
    NSAutoreleasePool   *_currentPool;
    NSExceptionFrame    *_currentHandler;
    NSUncaughtExceptionHandler *_uncaughtExceptionHandler;
+   SEL _selector;
+   id  _argument;
+   id  _target;
 }
 
 +(BOOL)isMultiThreaded;
@@ -40,6 +43,10 @@ FOUNDATION_EXPORT NSString *NSThreadWillExitNotification;
 
 @end
 
+@interface NSObject(NSThread)
+-(void)performSelectorOnMainThread:(SEL)selector withObject:(id)object waitUntilDone:(BOOL)waitUntilDone modes:(NSArray *)modes;
+-(void)performSelectorOnMainThread:(SEL)selector withObject:(id)object waitUntilDone:(BOOL)waitUntilDone;
+@end
 
 // PRIVATE
 FOUNDATION_EXPORT NSThread *NSCurrentThread(void);

@@ -9,6 +9,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 // Original - Christopher Lloyd <cjwl@objc.net>
 #import <Foundation/ObjCClass.h>
 #import <Foundation/ObjectiveC.h>
+#import "objc_cache.h"
 
 static int msg_tracing=0;
 
@@ -29,7 +30,7 @@ IMP objc_msg_lookup(id object,SEL selector) {
    if(object!=nil){
     OBJCMethodCache      *cache=object->isa->cache;
     unsigned              index=(unsigned)selector&OBJCMethodCacheMask;
-    OBJCMethodCacheEntry *checkEntry=((void *)object->isa->cache->table)+index; 
+    OBJCMethodCacheEntry *checkEntry=((void *)cache->table)+index; 
 
     do{
      OBJCMethod *check=checkEntry->method;

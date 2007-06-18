@@ -150,7 +150,7 @@ static int classifyToken(NSString *token){
     { @"CAST", predToken_CAST },
     { @"TRUEPREDICATE", predToken_TRUEPREDICATE },
     { @"FALSEPREDICATE", predToken_FALSEPREDICATE },
-    nil,0
+    { nil,0 }
    };
    int i;
    
@@ -906,6 +906,7 @@ static NSExpression *nextFormatCharacter(predicateScanner *scanner){
      }
     }
    }
+   return nil;
 }
 
 static NSExpression *nextPrimaryExpression(predicateScanner *scanner){

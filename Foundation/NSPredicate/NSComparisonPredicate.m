@@ -66,7 +66,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(NSString *)predicateFormat {
    NSMutableString *result=[NSMutableString string];
-   NSString        *operator;
+   NSString        *operator=nil;
    NSString        *options;
    
    switch(_modifier){
@@ -274,7 +274,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    BOOL result = (modifier == NSAllPredicateModifier);
    NSEnumerator *e = [values objectEnumerator];
    id value;
-   while (value = [e nextObject]) {
+   while ((value = [e nextObject])!=nil) {
     BOOL eval = [self _evaluateValue:value withObject:(id)object];
     if (eval == (modifier != NSAllPredicateModifier)) return eval;		
    }

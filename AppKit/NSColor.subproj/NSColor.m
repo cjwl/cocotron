@@ -502,6 +502,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     return 1.0;
 }
 
+-(NSColor *)colorWithAlphaComponent:(float)alpha {
+   if (alpha >= 1.0) return self; 
+   return nil; 
+}
+
 -(NSColor *)colorUsingColorSpaceName:(NSString *)colorSpace {
     return [self colorUsingColorSpaceName:colorSpace device:nil];
 }

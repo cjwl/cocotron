@@ -19,12 +19,10 @@ FOUNDATION_EXPORT const char *OBJCStringFromClass(Class class);
 FOUNDATION_EXPORT Class OBJCSuperclassFromClass(Class class);
 FOUNDATION_EXPORT Class OBJCSuperclassFromObject(id object);
 
-FOUNDATION_EXPORT BOOL OBJCInstanceRespondsToSelector(id object,SEL selector);
 FOUNDATION_EXPORT BOOL OBJCClassConformsToProtocol(Class class,Protocol *protocol);
 
 FOUNDATION_EXPORT BOOL OBJCIsMetaClass(Class class);
 
-FOUNDATION_EXPORT IMP OBJCMethodForSelector(Class class,SEL selector);
 FOUNDATION_EXPORT const char *OBJCTypesForSelector(Class class,SEL selector);
 
 FOUNDATION_EXPORT int OBJCClassVersion(Class class);

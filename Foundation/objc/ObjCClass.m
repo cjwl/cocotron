@@ -14,6 +14,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/ObjCException.h>
 #import <Foundation/ObjCModule.h>
 #import <stdio.h>
+#import "objc_cache.h"
 
 #ifdef WIN32
 #import <windows.h>
@@ -228,7 +229,7 @@ void OBJCInitializeClass(Class class) {
 
 // both of these suck, we should be using NSMethodSignature types to extract the frame and create the NSInvocation here
 #ifdef SOLARIS
-id OBJCForwardInvocation(id object,SEL message,...){
+id objc_msgForward(id object,SEL message,...){
    Class       class=object->isa;
    OBJCMethod *method;
    va_list     arguments;
@@ -256,7 +257,7 @@ id OBJCForwardInvocation(id object,SEL message,...){
    }
 }
 #else
-id OBJCForwardInvocation(id object,SEL message,...){
+id objc_msgForward(id object,SEL message,...){
    Class       class=object->isa;
    OBJCMethod *method;
    void       *arguments=&object;
@@ -310,7 +311,7 @@ IMP OBJCLookupAndCacheUniqueIdInClass(Class class,SEL uniqueId){
     return method->method_imp;
    }
 
-   return OBJCForwardInvocation;
+   return objc_msgForward;
 }
 
 static id nil_message(id object,SEL message,...){

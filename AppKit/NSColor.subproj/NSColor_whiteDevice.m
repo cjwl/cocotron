@@ -63,6 +63,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return _alpha;
 }
 
+-(NSColor *)colorWithAlphaComponent:(float)alpha { 
+   return [[[[self class] alloc] initWithGray:_white alpha:alpha] autorelease]; 
+} 
+
 -(void)set {
    CGContextSetGrayStrokeColor(NSCurrentGraphicsPort(),_white,_alpha);
    CGContextSetGrayFillColor(NSCurrentGraphicsPort(),_white,_alpha);

@@ -61,6 +61,7 @@ NSString *NSPortDidBecomeInvalidNotification=@"NSPortDidBecomeInvalidNotificatio
 
 -(unsigned)reservedSpaceLength  {
    NSInvalidAbstractInvocation();
+   return 0;
 }
 
 -(BOOL)sendBeforeDate:(NSDate *)beforeDate components:(NSMutableArray *)components from:(NSPort *)fromPort reserved:(unsigned)reservedSpace  {

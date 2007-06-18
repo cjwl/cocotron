@@ -12,6 +12,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/ObjCException.h>
 #import <Foundation/NSZone.h>
 #import <Foundation/ObjCClass.h>
+#import "objc_cache.h"
 
 #define INITIAL_SELECTOR_TABLE_SIZE 4096 // Big System has about 3700 selectors
 

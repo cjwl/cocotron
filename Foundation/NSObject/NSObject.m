@@ -17,6 +17,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSAutoreleasePool-private.h>
 #import <Foundation/NSMethodSignature.h>
 #import <Foundation/NSRaise.h>
+#import <Foundation/ObjCClass.h>
 
 extern NSMethodSignature *NSMethodSignatureWithTypes(const char *types);
 
@@ -49,9 +50,8 @@ extern NSMethodSignature *NSMethodSignatureWithTypes(const char *types);
 
 
 +(BOOL)instancesRespondToSelector:(SEL)selector {
-   return OBJCInstanceRespondsToSelector(self,selector);
+   return OBJCLookupUniqueIdInClass(self,selector)!=NULL;
 }
-
 
 +(BOOL)conformsToProtocol:(Protocol *)protocol {
    return OBJCClassConformsToProtocol(self,protocol);
@@ -59,11 +59,11 @@ extern NSMethodSignature *NSMethodSignatureWithTypes(const char *types);
 
 
 +(IMP)methodForSelector:(SEL)selector {
-   return OBJCMethodForSelector(OBJCMetaClassFromClass(self),selector);
+   return OBJCLookupAndCacheUniqueIdInClass(OBJCMetaClassFromClass(self),selector);
 }
 
 +(IMP)instanceMethodForSelector:(SEL)selector {
-   return OBJCMethodForSelector(self,selector);
+   return OBJCLookupAndCacheUniqueIdInClass(self,selector);
 }
 
 +(NSMethodSignature *)instanceMethodSignatureForSelector:(SEL)selector {
@@ -139,7 +139,7 @@ extern NSMethodSignature *NSMethodSignatureWithTypes(const char *types);
 }
 
 -(IMP)methodForSelector:(SEL)selector {
-   return OBJCMethodForSelector(isa,selector);
+   return OBJCLookupAndCacheUniqueIdInClass(isa,selector);
 }
 
 -(void)doesNotRecognizeSelector:(SEL)selector {
@@ -255,7 +255,7 @@ extern NSMethodSignature *NSMethodSignatureWithTypes(const char *types);
 
 
 -(BOOL)respondsToSelector:(SEL)selector {
-   return OBJCMethodForSelector(isa,selector)!=NULL;
+   return OBJCLookupUniqueIdInClass(isa,selector)!=NULL;
 }
 
 

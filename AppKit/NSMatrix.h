@@ -34,6 +34,7 @@ typedef enum {
    id              _prototype;
    Class           _cellClass;
    int             _mode;
+   BOOL            _selectionByRect;
    BOOL            _allowsEmptySelection;
    BOOL            _tabKeyTraversesCells;
    BOOL            _isAutoscroll;
