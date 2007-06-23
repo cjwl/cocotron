@@ -20,3 +20,4 @@ APPKIT_EXPORT CGShadingRef CGShadingRetain(CGShadingRef self);
 APPKIT_EXPORT void         CGShadingRelease(CGShadingRef self);
 
 APPKIT_EXPORT CGShadingRef CGShadingCreateAxial(CGColorSpaceRef colorSpace,CGPoint startPoint,CGPoint endPoint,CGFunctionRef function,BOOL extendStart,BOOL extendEnd);
+APPKIT_EXPORT CGShadingRef CGShadingCreateRadial(CGColorSpaceRef colorSpace,CGPoint startPoint,float startRadius,CGPoint endPoint,float endRadius,CGFunctionRef function,BOOL extendStart,BOOL extendEnd);

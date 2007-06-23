@@ -24,6 +24,17 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return self;
 }
 
+-initWithColorSpace:(KGColorSpace *)colorSpace {
+   int   i,length=[_colorSpace numberOfComponents];
+   float components[length+1];
+   
+   for(i=0;i<length;i++)
+    components[i]=0;
+   components[i]=1;
+   
+   return [self initWithColorSpace:colorSpace components:components];
+}
+
 -init {
    KGColorSpace *gray=[[[KGColorSpace alloc] initWithDeviceGray] autorelease];
    float         components[2]={0,1};

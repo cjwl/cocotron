@@ -32,6 +32,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(NSPoint)startPoint;
 -(NSPoint)endPoint;
 
+-(float)startRadius;
+-(float)endRadius;
+
 -(BOOL)extendStart;
 -(BOOL)extendEnd;
 

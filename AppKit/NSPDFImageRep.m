@@ -50,7 +50,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(BOOL)drawInRect:(NSRect)rect {
    CGContextRef context=[[NSGraphicsContext currentContext] graphicsPort];
    KGPDFPage   *page=[_document pageAtNumber:_currentPage];
-   
+
    if(page==nil)
     return NO;
    

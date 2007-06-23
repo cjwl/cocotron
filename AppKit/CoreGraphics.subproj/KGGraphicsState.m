@@ -143,12 +143,28 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [_renderingContext clipInUserSpace:_ctm rects:rects count:count];
 }
 
+-(KGColor *)strokeColor {
+   return _strokeColor;
+}
+
+-(KGColor *)fillColor {
+   return _fillColor;
+}
+
 -(void)setStrokeColorSpace:(KGColorSpace *)colorSpace {
-   NSUnimplementedMethod();
+   KGColor *color=[[KGColor alloc] initWithColorSpace:colorSpace];
+   
+   [self setStrokeColor:color];
+   
+   [color release];
 }
 
 -(void)setFillColorSpace:(KGColorSpace *)colorSpace {
-   NSUnimplementedMethod();
+   KGColor *color=[[KGColor alloc] initWithColorSpace:colorSpace];
+   
+   [self setFillColor:color];
+   
+   [color release];
 }
 
 -(void)setStrokeColorWithComponents:(const float *)components {
@@ -311,6 +327,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)setTextPosition:(float)x:(float)y {
+   _textTransform.tx=x;
+   _textTransform.ty=y;
 }
 
 -(void)setCharacterSpacing:(float)spacing {
@@ -440,12 +458,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    NSUnimplementedMethod();
 }
 
--(void)showGlyphs:(const CGGlyph *)glyphs count:(unsigned)count {
-   NSUnimplementedMethod();
+-(void)showGlyphs:(const CGGlyph *)glyphs count:(unsigned)numberOfGlyphs {
+   [_renderingContext showInUserSpace:_ctm textSpace:_textTransform glyphs:glyphs count:numberOfGlyphs color:_fillColor];
 }
 
--(void)showGlyphs:(const CGGlyph *)glyphs count:(unsigned)numberOfGlyphs atPoint:(float)x:(float)y {
-   [_renderingContext showInUserSpace:_ctm glyphs:glyphs count:numberOfGlyphs atPoint:x:y color:_fillColor];
+-(void)showGlyphs:(const CGGlyph *)glyphs count:(unsigned)numberOfGlyphs atPoint:(float)x:(float)y {   
+   _textTransform.tx=x;
+   _textTransform.ty=y;
+   [_renderingContext showInUserSpace:_ctm textSpace:_textTransform glyphs:glyphs count:numberOfGlyphs color:_fillColor];
 }
 
 -(void)showGlyphs:(const CGGlyph *)glyphs count:(unsigned)count advances:(const NSSize *)advances {
@@ -453,11 +473,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)showText:(const char *)text length:(unsigned)length {
-   NSUnimplementedMethod();
+   [_renderingContext showInUserSpace:_ctm textSpace:_textTransform text:text count:length color:_fillColor];
 }
 
 -(void)showText:(const char *)text length:(unsigned)length atPoint:(float)x:(float)y {
-   [_renderingContext showInUserSpace:_ctm text:text count:length atPoint:x:y color:_fillColor];
+   _textTransform.tx=x;
+   _textTransform.ty=y;
+   [_renderingContext showInUserSpace:_ctm textSpace:_textTransform text:text count:length color:_fillColor];
 }
 
 -(void)drawShading:(KGShading *)shading {

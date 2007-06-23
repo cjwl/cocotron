@@ -93,47 +93,57 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return result;
 }
 
--(KGPDFPage *)pageAtNumber:(int)pageNumber {
-   KGPDFDictionary *pages=[self pagesRoot];
-   KGPDFArray      *kids;
-   int              i=0,count,pageIndex=0;
-   KGPDFInteger     pageCount,parentCount=INT_MAX;
-
+-(KGPDFPage *)pageAtNumber:(int)pageNumber pages:(KGPDFDictionary *)pages pagesOffset:(int)pagesOffset {
+   KGPDFArray  *kids;
+   KGPDFInteger i,kidsCount,pageCount;
+   
    if(![pages getArrayForKey:"Kids" value:&kids])
     return nil;
-    
-   count=[kids count];
+
+   if(![pages getIntegerForKey:"Count" value:&pageCount])
+    return nil;
    
-   while(i<count){
+   kidsCount=[kids count];
+   for(i=0;i<kidsCount;i++){
     KGPDFDictionary *check;
     const char      *type;
     
     if(![kids getDictionaryAtIndex:i++ value:&check])
      return nil;
 
-    if([check getNameForKey:"Type" value:&type]){
+    if(![check getNameForKey:"Type" value:&type])
+     return nil;
     
-     if(pageIndex>=pageNumber && strcmp(type,"Page")==0)
+    if(strcmp(type,"Page")==0){
+     if(pagesOffset==pageNumber)
       return [KGPDFPage pdfPageWithDocument:self pageNumber:pageNumber dictionary:check];
+      
+     pagesOffset++;
     }
-    
-    if(![check getIntegerForKey:"Count" value:&pageCount])
-     pageCount=0;
-
-    if(pageCount<parentCount && (pageIndex+pageCount)<=pageNumber){
-     pageIndex+=(pageCount==0)?1:pageCount;
+    else if(strcmp(type,"Pages")==0){
+     KGPDFPage *checkPage=[self pageAtNumber:pageNumber pages:check pagesOffset:pagesOffset];
+     
+     if(checkPage!=nil)
+      return checkPage;
+     else {
+      KGPDFInteger checkCount;
+     
+      if(![check getIntegerForKey:"Count" value:&checkCount])
+       return nil;
+     
+      pagesOffset+=checkCount;
+     }
     }
-    else{
-     if(![pages getArrayForKey:"Kids" value:&kids])
-      count=0;
-     else
-      count=[kids count];
-     i=0;
-     parentCount=pageCount;
-    }
-
+    else
+     return nil;
    }
    return nil;
+}
+
+-(KGPDFPage *)pageAtNumber:(int)pageNumber {
+   KGPDFDictionary *pages=[self pagesRoot];
+   
+   return [self pageAtNumber:pageNumber pages:pages pagesOffset:0];
 }
 
 @end

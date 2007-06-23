@@ -13,6 +13,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "KGPDFDictionary.h"
 #import <Foundation/NSData.h>
 #import <Foundation/NSArray.h>
+#import <Foundation/NSString.h>
 
 @implementation KGPDFxref
 
@@ -62,7 +63,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(KGPDFxrefEntry *)entryWithNumber:(KGPDFInteger)number generation:(KGPDFInteger)generation {
    void *key=(void *)number;
    id    check=NSMapGet(_numberToEntries,key);
-   
+      
+   if(check==nil)
+    return [_previous entryWithNumber:number generation:generation];
+    
    if([check isKindOfClass:[NSArray class]]){
     NSArray *array=check;
     int      i,count=[check count];

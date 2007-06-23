@@ -21,6 +21,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "KGPDFFunction_Type3.h"
 
 #import "KGContext.h"
+#import "KGColor.h"
 #import "KGColorSpace.h"
 #import "KGImage.h"
 #import "KGFunction.h"
@@ -82,6 +83,9 @@ void KGPDF_render_BMC(KGPDFScanner *scanner,void *info) {
 
 // Begin text object
 void KGPDF_render_BT(KGPDFScanner *scanner,void *info) {
+   KGContext *context=kgContextFromInfo(info);
+   
+   [context setTextMatrix:CGAffineTransformIdentity];
    NSLog(@"BT");
 }
 
@@ -130,90 +134,6 @@ void KGPDF_render_cm(KGPDFScanner *scanner,void *info) {
     return;
   
    [context concatCTM:matrix];
-}
-
-KGColorSpace *colorSpaceFromScannerInfo(KGPDFScanner *scanner,void *info,const char *name) {
-   KGColorSpace *result=NULL;
-   
-   if(strcmp(name,"DeviceGray")==0)
-    result=[[KGColorSpace alloc] initWithDeviceGray];
-   else if(strcmp(name,"DeviceRGB")==0)
-    result=[[KGColorSpace alloc] initWithDeviceRGB];
-   else if(strcmp(name,"DeviceCMYK")==0)
-    result=[[KGColorSpace alloc] initWithDeviceCMYK];
-   else {
-    NSLog(@"unknown color space = %s",name);
-    // look it up in resources
-   }
-   
-   return result;
-}
-
-// setcolorspace, Set color space for stroking operations
-void KGPDF_render_CS(KGPDFScanner *scanner,void *info) {
-   KGContext *context=kgContextFromInfo(info);
-   const char     *name;
-   KGColorSpace *colorSpace;
-   
-   if(![scanner popName:&name])
-    return;
-    
-   colorSpace=colorSpaceFromScannerInfo(scanner,info,name);
-   
-   if(colorSpace!=NULL){
-    [context setStrokeColorSpace:colorSpace];
-    [colorSpace release];
-   }
-}
-
-// setcolorspace, Set color space for nonstroking operations
-void KGPDF_render_cs(KGPDFScanner *scanner,void *info) {
-   KGContext *context=kgContextFromInfo(info);
-   const char     *name;
-   KGColorSpace *colorSpace;
-   
-   if(![scanner popName:&name])
-    return;
-    
-   colorSpace=colorSpaceFromScannerInfo(scanner,info,name);
-   
-   if(colorSpace!=NULL){
-    [context setFillColorSpace:colorSpace];
-    [colorSpace release];
-   }
-}
-
-// setdash, Set line dash pattern
-void KGPDF_render_d(KGPDFScanner *scanner,void *info) {
-   KGContext *context=kgContextFromInfo(info);
-   KGPDFReal    phase;
-   KGPDFArray  *array;
-   int          i,count;
-   
-   if(![scanner popNumber:&phase])
-    return;
-   if(![scanner popArray:&array])
-    return;
-   count=[array count];
-   {
-    KGPDFReal lengths[count];
-   
-    for(i=0;i<count;i++)
-     if(![array getNumberAtIndex:i value:lengths+i])
-      return;
-   
-    [context setLineDashPhase:phase lengths:lengths count:count];
-   }
-}
-
-// setcharwidth, Set glyph with in Type 3 font
-void KGPDF_render_d0(KGPDFScanner *scanner,void *info) {
-   //NSLog(@"d0");
-}
-
-// setcachedevice, Set glyph width and bounding box in Type 3 font
-void KGPDF_render_d1(KGPDFScanner *scanner,void *info) {
-   //NSLog(@"d1");
 }
 
 static KGColorSpace *colorSpaceFromObject(KGPDFObject *object){
@@ -288,6 +208,37 @@ static KGColorSpace *colorSpaceFromObject(KGPDFObject *object){
       NSLog(@"indexed color space table invalid");
      }
     }
+    else if(strcmp(name,"ICCBased")==0){
+     KGPDFStream     *stream;
+     KGPDFDictionary *dictionary;
+     KGPDFInteger     numberOfComponents;
+     
+     if(![colorSpaceArray getStreamAtIndex:1 value:&stream]){
+      NSLog(@"second element of ICCBased color space array is not a stream");
+      return NULL;
+     }
+     dictionary=[stream dictionary];
+     if(![dictionary getIntegerForKey:"N" value:&numberOfComponents]){
+      NSLog(@"Required key N missing from ICCBased stream");
+      return NULL;
+     }
+     switch(numberOfComponents){
+
+      case 1:
+       return [[KGColorSpace alloc] initWithDeviceGray];
+       
+      case 3:
+       return [[KGColorSpace alloc] initWithDeviceRGB];
+       
+      case 4:
+       return [[KGColorSpace alloc] initWithDeviceCMYK];
+       
+      default:
+       NSLog(@"Invalid N in ICCBased stream");
+       break;
+     }
+     
+    }
     else {
      NSLog(@"does not handle color space %@",object);
     }
@@ -299,6 +250,98 @@ static KGColorSpace *colorSpaceFromObject(KGPDFObject *object){
    
    return NULL;
 }
+
+KGColorSpace *colorSpaceFromScannerInfo(KGPDFScanner *scanner,void *info,const char *name) {
+   KGColorSpace *result=NULL;
+   
+   if(strcmp(name,"DeviceGray")==0)
+    result=[[KGColorSpace alloc] initWithDeviceGray];
+   else if(strcmp(name,"DeviceRGB")==0)
+    result=[[KGColorSpace alloc] initWithDeviceRGB];
+   else if(strcmp(name,"DeviceCMYK")==0)
+    result=[[KGColorSpace alloc] initWithDeviceCMYK];
+   else {
+    KGPDFContentStream *content=[scanner contentStream];
+    KGPDFObject        *object=[content resourceForCategory:"ColorSpace" name:name];
+    
+    if(object==nil){
+     NSLog(@"Unable to find color space named %s",name);
+     return NULL;
+    }
+   
+    return colorSpaceFromObject(object);
+   }
+   
+   return result;
+}
+
+// setcolorspace, Set color space for stroking operations
+void KGPDF_render_CS(KGPDFScanner *scanner,void *info) {
+   KGContext *context=kgContextFromInfo(info);
+   const char     *name;
+   KGColorSpace *colorSpace;
+   
+   if(![scanner popName:&name])
+    return;
+    
+   colorSpace=colorSpaceFromScannerInfo(scanner,info,name);
+   
+   if(colorSpace!=NULL){
+    [context setStrokeColorSpace:colorSpace];
+    [colorSpace release];
+   }
+}
+
+// setcolorspace, Set color space for nonstroking operations
+void KGPDF_render_cs(KGPDFScanner *scanner,void *info) {
+   KGContext *context=kgContextFromInfo(info);
+   const char     *name;
+   KGColorSpace *colorSpace;
+   
+   if(![scanner popName:&name])
+    return;
+    
+   colorSpace=colorSpaceFromScannerInfo(scanner,info,name);
+   
+   if(colorSpace!=NULL){
+    [context setFillColorSpace:colorSpace];
+    [colorSpace release];
+   }
+}
+
+// setdash, Set line dash pattern
+void KGPDF_render_d(KGPDFScanner *scanner,void *info) {
+   KGContext *context=kgContextFromInfo(info);
+   KGPDFReal    phase;
+   KGPDFArray  *array;
+   int          i,count;
+   
+   if(![scanner popNumber:&phase])
+    return;
+   if(![scanner popArray:&array])
+    return;
+   count=[array count];
+   {
+    KGPDFReal lengths[count];
+   
+    for(i=0;i<count;i++)
+     if(![array getNumberAtIndex:i value:lengths+i])
+      return;
+   
+    [context setLineDashPhase:phase lengths:lengths count:count];
+   }
+}
+
+// setcharwidth, Set glyph with in Type 3 font
+void KGPDF_render_d0(KGPDFScanner *scanner,void *info) {
+   //NSLog(@"d0");
+}
+
+// setcachedevice, Set glyph width and bounding box in Type 3 font
+void KGPDF_render_d1(KGPDFScanner *scanner,void *info) {
+   //NSLog(@"d1");
+}
+
 
 int intentWithName(const char *name){
    if(name==NULL)
@@ -901,22 +944,78 @@ void KGPDF_render_S(KGPDFScanner *scanner,void *info) {
 
 // setcolor, Set color for stroking operations
 void KGPDF_render_SC(KGPDFScanner *scanner,void *info) {
-   NSLog(@"SC");
+   KGContext    *context=kgContextFromInfo(info);
+   KGColor      *color=[context strokeColor];
+   KGColorSpace *colorSpace=[color colorSpace];
+   unsigned      numberOfComponents=[colorSpace numberOfComponents];
+   int           count=numberOfComponents;
+   float         components[count+1];
+   
+   components[count]=[color alpha];
+   while(--count>=0)
+    if(![scanner popNumber:components+count]){
+     NSLog(@"underflow in SC, numberOfComponents=%d,count=%d",numberOfComponents,count);
+     return;
+    }
+    
+   [context setStrokeColorWithComponents:components];
 }
 
 // setcolor, Set color for nonstroking operations
 void KGPDF_render_sc(KGPDFScanner *scanner,void *info) {
-   NSLog(@"sc");
+   KGContext    *context=kgContextFromInfo(info);
+   KGColor      *color=[context fillColor];
+   KGColorSpace *colorSpace=[color colorSpace];
+   unsigned      numberOfComponents=[colorSpace numberOfComponents];
+   int           count=numberOfComponents;
+   float         components[count+1];
+   
+   components[count]=[color alpha];
+   while(--count>=0)
+    if(![scanner popNumber:components+count]){
+     NSLog(@"underflow in sc, numberOfComponents=%d,count=%d",numberOfComponents,count);
+     return;
+    }
+    
+   [context setFillColorWithComponents:components];
 }
 
 // setcolor, Set color for stroking operations, ICCBased and special color spaces
 void KGPDF_render_SCN(KGPDFScanner *scanner,void *info) {
-   NSLog(@"SCN");
+   KGContext    *context=kgContextFromInfo(info);
+   KGColor      *color=[context strokeColor];
+   KGColorSpace *colorSpace=[color colorSpace];
+   unsigned      numberOfComponents=[colorSpace numberOfComponents];
+   int           count=numberOfComponents;
+   float         components[count+1];
+   
+   components[count]=[color alpha];
+   while(--count>=0)
+    if(![scanner popNumber:components+count]){
+     NSLog(@"underflow in SCN, numberOfComponents=%d,count=%d",numberOfComponents,count);
+     return;
+    }
+    
+   [context setStrokeColorWithComponents:components];
 }
 
 // setcolor, Set color for nonstroking operations, ICCBased and special color spaces
 void KGPDF_render_scn(KGPDFScanner *scanner,void *info) {
-   NSLog(@"scn");
+   KGContext    *context=kgContextFromInfo(info);
+   KGColor      *color=[context fillColor];
+   KGColorSpace *colorSpace=[color colorSpace];
+   unsigned      numberOfComponents=[colorSpace numberOfComponents];
+   int           count=numberOfComponents;
+   KGPDFReal     components[count+1];
+   
+   components[count]=[color alpha];
+   while(--count>=0)
+    if(![scanner popNumber:&components[count]]){
+     NSLog(@"underflow in scn, numberOfComponents=%d,count=%d",numberOfComponents,count);
+     return;
+    }
+
+   [context setFillColorWithComponents:components];
 }
 
 
@@ -1081,7 +1180,7 @@ KGShading *radialShading(KGPDFDictionary *dictionary,KGColorSpace *colorSpace){
 //NSLog(@"axialShading=%@",dictionary);
 
    if(![dictionary getArrayForKey:"Coords" value:&coordsArray]){
-    NSLog(@"No Coords entry in axial shader");
+    NSLog(@"No Coords entry in radial shader");
     return NULL;
    }
    else {    
@@ -1115,7 +1214,7 @@ KGShading *radialShading(KGPDFDictionary *dictionary,KGColorSpace *colorSpace){
     domainArray=nil;
     
    if(![dictionary getDictionaryForKey:"Function" value:&fnDictionary]){
-    NSLog(@"No Function entry in axial shader");
+    NSLog(@"No Function entry in radial shader");
     return NULL;
    }
    if((function=functionFromDictionary(fnDictionary))==NULL)
@@ -1276,27 +1375,38 @@ void KGPDF_render_Tf(KGPDFScanner *scanner,void *info) {
    [context setTextMatrix:CGAffineTransformIdentity];
    
    if(strcmp(subtype,"Type0")==0){
+    NSLog(@"Font subtype %s not implemented",subtype);
    }
    else if(strcmp(subtype,"Type1")==0){
     const char *baseFont;
     
     if(![dictionary getNameForKey:"BaseFont" value:&baseFont])
      return;
-
+//NSLog(@"Type1 baseFont=%s,scale=%f",baseFont,scale);
     [context selectFontWithName:baseFont size:scale encoding:0];
    }
    else if(strcmp(subtype,"MMType1")==0){
+    NSLog(@"Font subtype %s not implemented",subtype);
    }
    else if(strcmp(subtype,"Type3")==0){
+    NSLog(@"Font subtype %s not implemented",subtype);
    }
    else if(strcmp(subtype,"TrueType")==0){
+    const char *baseFont;
+    
+    if(![dictionary getNameForKey:"BaseFont" value:&baseFont])
+     return;
+//NSLog(@"Type1 baseFont=%s,scale=%f",baseFont,scale);
+    [context selectFontWithName:baseFont size:scale encoding:0];
    }
    else if(strcmp(subtype,"CIDFontType0")==0){
+    NSLog(@"Font subtype %s not implemented",subtype);
    }
    else if(strcmp(subtype,"CIDFontType2")==0){
+    NSLog(@"Font subtype %s not implemented",subtype);
    }
    
-   NSLog(@"Tf=%@",dictionary);
+  // NSLog(@"Tf=%@",dictionary);
 }
 
 // show
@@ -1361,7 +1471,8 @@ void KGPDF_render_Tm(KGPDFScanner *scanner,void *info) {
     return;
    if(![scanner popNumber:&matrix.a])
     return;
-        
+     
+   NSLog(@"%f %f %f %f %f %f",matrix.a,matrix.b,matrix.c,matrix.d,matrix.tx,matrix.ty);
    [context setTextMatrix:matrix];
 }
 

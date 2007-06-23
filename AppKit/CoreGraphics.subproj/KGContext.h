@@ -105,6 +105,9 @@ enum {
 
 // I think we need more ways to set the color
 
+-(KGColor *)strokeColor;
+-(KGColor *)fillColor;
+
 -(void)setStrokeColorSpace:(KGColorSpace *)colorSpace;
 -(void)setFillColorSpace:(KGColorSpace *)colorSpace;
 

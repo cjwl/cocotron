@@ -254,6 +254,14 @@ static inline KGGraphicsState *currentState(KGContext *self){
    [currentState(self) clipToRects:rects count:count];
 }
 
+-(KGColor *)strokeColor {
+   return [currentState(self) strokeColor];
+}
+
+-(KGColor *)fillColor {
+   return [currentState(self) fillColor];
+}
+
 -(void)setStrokeColorSpace:(KGColorSpace *)colorSpace {
    [currentState(self) setStrokeColorSpace:colorSpace];
 }
@@ -526,7 +534,6 @@ static inline KGGraphicsState *currentState(KGContext *self){
 }
 
 -(void)drawPDFPage:(KGPDFPage *)page {
-   NSLog(@"page=%@",page);
    [page drawInContext:self];
 }
    

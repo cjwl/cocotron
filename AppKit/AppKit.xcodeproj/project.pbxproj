@@ -846,7 +846,7 @@
 		6E2B53FC0976075200DA0954 /* AppKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppKit.h; sourceTree = "<group>"; };
 		6E2B53FE0976075200DA0954 /* NSActionCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NSActionCell.h; sourceTree = "<group>"; };
 		6E2B54020976075200DA0954 /* NSAlertPanel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NSAlertPanel.h; sourceTree = "<group>"; };
-		6E2B54040976075200DA0954 /* NSApplication.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NSApplication.h; sourceTree = "<group>"; };
+		6E2B54040976075200DA0954 /* NSApplication.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = NSApplication.h; path = ../NSApplication.h; sourceTree = "<group>"; };
 		6E2B54060976075200DA0954 /* NSAttributedString.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NSAttributedString.h; sourceTree = "<group>"; };
 		6E2B54080976075200DA0954 /* NSBitmapImageRep.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NSBitmapImageRep.h; sourceTree = "<group>"; };
 		6E2B540A0976075200DA0954 /* NSBox.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NSBox.h; sourceTree = "<group>"; };
@@ -1467,7 +1467,6 @@
 				6E2B54020976075200DA0954 /* NSAlertPanel.h */,
 				6E2B53290976075200DA0954 /* NSAlertPanel.m */,
 				FED310D70BCC022300552615 /* NSAnimation */,
-				6E2B54040976075200DA0954 /* NSApplication.h */,
 				6E2B532B0976075200DA0954 /* NSApplication.m */,
 				6E2B54060976075200DA0954 /* NSAttributedString.h */,
 				6E2B532D0976075200DA0954 /* NSAttributedString.m */,
@@ -2397,6 +2396,7 @@
 		FED310D70BCC022300552615 /* NSAnimation */ = {
 			isa = PBXGroup;
 			children = (
+				6E2B54040976075200DA0954 /* NSApplication.h */,
 				FED310DD0BCC027200552615 /* NSAnimation.h */,
 				FED310DE0BCC027200552615 /* NSAnimation.m */,
 				FED310DF0BCC027200552615 /* NSViewAnimation.h */,

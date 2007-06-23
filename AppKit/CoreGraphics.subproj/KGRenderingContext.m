@@ -76,11 +76,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    NSInvalidAbstractInvocation();
 }
 
--(void)showInUserSpace:(CGAffineTransform)ctm text:(const char *)text count:(unsigned)count atPoint:(float)x:(float)y color:(KGColor *)color {
+-(void)showInUserSpace:(CGAffineTransform)ctm textSpace:(CGAffineTransform)textSpace text:(const char *)text count:(unsigned)count color:(KGColor *)color {
    NSInvalidAbstractInvocation();
 }
 
--(void)showInUserSpace:(CGAffineTransform)ctm glyphs:(const CGGlyph *)glyphs count:(unsigned)count atPoint:(float)x:(float)y color:(KGColor *)color {
+-(void)showInUserSpace:(CGAffineTransform)ctm textSpace:(CGAffineTransform)textSpace glyphs:(const CGGlyph *)glyphs count:(unsigned)count color:(KGColor *)color {
    NSInvalidAbstractInvocation();
 }
 

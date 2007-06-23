@@ -55,6 +55,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return _endPoint;
 }
 
+-(float)startRadius {
+   return _startRadius;
+}
+
+-(float)endRadius {
+   return _endRadius;
+}
+
 -(BOOL)extendStart {
    return _extendStart;
 }

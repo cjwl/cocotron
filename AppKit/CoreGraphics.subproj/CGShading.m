@@ -20,3 +20,7 @@ void CGShadingRelease(CGShadingRef self) {
 CGShadingRef CGShadingCreateAxial(CGColorSpaceRef colorSpace,CGPoint startPoint,CGPoint endPoint,CGFunctionRef function,BOOL extendStart,BOOL extendEnd) {
    return [[KGShading alloc] initWithColorSpace:colorSpace startPoint:startPoint endPoint:endPoint function:function extendStart:extendStart extendEnd:extendEnd];
 }
+
+CGShadingRef CGShadingCreateRadial(CGColorSpaceRef colorSpace,CGPoint startPoint,float startRadius,CGPoint endPoint,float endRadius,CGFunctionRef function,BOOL extendStart,BOOL extendEnd) {
+   return [[KGShading alloc] initWithColorSpace:colorSpace startPoint:startPoint startRadius:startRadius endPoint:endPoint endRadius:endRadius function:function extendStart:extendStart extendEnd:extendEnd];
+}

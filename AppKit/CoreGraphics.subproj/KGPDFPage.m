@@ -89,7 +89,6 @@ BOOL KGPDFGetPageArrayForKey(KGPDFPage *page,const char *key,KGPDFArray **arrayp
     return NO;
    if(!KGPDFGetPageArrayForKey(self,string,&array))
     return NO;
-   NSLog(@"array=%@",array);
    
    if(![array getNumbers:&numbers count:&count])
     return NO;
@@ -103,7 +102,6 @@ BOOL KGPDFGetPageArrayForKey(KGPDFPage *page,const char *key,KGPDFArray **arrayp
    rect->origin.y=numbers[1];
    rect->size.width=numbers[2];
    rect->size.height=numbers[3];
-   NSLog(@"rect=%@",NSStringFromRect(*rect));
    
    NSZoneFree(NULL,numbers);
    

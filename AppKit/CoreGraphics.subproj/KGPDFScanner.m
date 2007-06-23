@@ -970,7 +970,7 @@ BOOL KGPDFParseIndirectObject(NSData *data,KGPDFInteger position,KGPDFObject **o
 
 -(BOOL)popNumber:(KGPDFReal *)value {
    BOOL result=[[_stack lastObject] checkForType:kKGPDFObjectTypeReal value:value];
-   
+
    [_stack removeLastObject];
    
    return result;
@@ -1038,7 +1038,7 @@ BOOL KGPDFParseIndirectObject(NSData *data,KGPDFInteger position,KGPDFObject **o
    unsigned     length=[data length];
    KGPDFInteger position=0;
    
- //  NSLog(@"data[%d]=%@",[data length],[[[NSString alloc] initWithData:data encoding:NSISOLatin1StringEncoding] autorelease]);
+   //NSLog(@"data[%d]=%@",[data length],[[[NSString alloc] initWithData:data encoding:NSISOLatin1StringEncoding] autorelease]);
    
    while(position<length) {
     KGPDFObject *object;

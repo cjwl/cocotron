@@ -26,7 +26,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 static inline int float2int(float coord){
    return lround(coord);
 }
- 
+
 static COLORREF RGBFromColor(KGColor *color){
    int    count=[color numberOfComponents];
    float *components=[color components];
@@ -276,20 +276,32 @@ static RECT NSRectToRECT(NSRect rect) {
    ScrollDC(dc,dx,dy,&winScrollRect,&winScrollRect,NULL,NULL);
 }
 
--(void)showInUserSpace:(CGAffineTransform)ctm text:(const char *)text count:(unsigned)count atPoint:(float)x:(float)y color:(KGColor *)color {
-   HDC     dc=_dc;
-   NSPoint point=CGPointApplyAffineTransform(NSMakePoint(x,y),ctm);
+-(void)showInUserSpace:(CGAffineTransform)ctm textSpace:(CGAffineTransform)textSpace text:(const char *)text count:(unsigned)count color:(KGColor *)color {
+   CGAffineTransform flip={1,0,0,-1,0,0};
+   CGAffineTransform Trm=CGAffineTransformConcat(ctm,CGAffineTransformConcat(textSpace,flip));
+   NSPoint           point={0,0};//CGPointApplyAffineTransform(NSMakePoint(0,0),Trm);
+   XFORM             current,textRendering={Trm.a,Trm.b,Trm.c,Trm.d,Trm.tx,Trm.ty};
+   
+   SetTextColor(_dc,RGBFromColor(color));
+   
+   if(!GetWorldTransform(_dc,&current))
+    NSLog(@"GetWorldTransform failed");
+   
+   if(!ModifyWorldTransform(_dc,&textRendering,MWT_RIGHTMULTIPLY))
+    NSLog(@"ModifyWorldTransform failed");
+    
+   ExtTextOut(_dc,point.x,point.y,0,NULL,text,count,NULL);
 
-   SetTextColor(dc,RGBFromColor(color));
-   ExtTextOut(dc,point.x,point.y,0,NULL,text,count,NULL);
+   if(!SetWorldTransform(_dc,&current))
+    NSLog(@"GetWorldTransform failed");
 }
 
--(void)showInUserSpace:(CGAffineTransform)ctm glyphs:(const CGGlyph *)glyphs count:(unsigned)count atPoint:(float)x:(float)y color:(KGColor *)color {
-   HDC     dc=_dc;
-   NSPoint point=CGPointApplyAffineTransform(NSMakePoint(x,y),ctm);
-
-   SetTextColor(dc,RGBFromColor(color));
-   ExtTextOutW(dc,point.x,point.y,ETO_GLYPH_INDEX,NULL,(void *)glyphs,count,NULL);
+-(void)showInUserSpace:(CGAffineTransform)ctm textSpace:(CGAffineTransform)textSpace glyphs:(const CGGlyph *)glyphs count:(unsigned)count color:(KGColor *)color {
+   CGAffineTransform Trm=CGAffineTransformConcat(ctm,textSpace);
+   NSPoint           point=CGPointApplyAffineTransform(NSMakePoint(0,0),Trm);
+   
+   SetTextColor(_dc,RGBFromColor(color));
+   ExtTextOutW(_dc,point.x,point.y,ETO_GLYPH_INDEX,NULL,(void *)glyphs,count,NULL);
 }
 
 -(void)establishDeviceSpacePath:(KGPath *)path {
@@ -389,7 +401,7 @@ static RECT NSRectToRECT(NSRect rect) {
    [self establishDeviceSpacePath:path];
    SetPolyFillMode(_dc,WINDING);
    if(!SelectClipPath(_dc,RGN_AND))
-    NSLog(@"SelectClipPath failed (%i) %@", GetLastError());
+    NSLog(@"SelectClipPath failed (%i)", GetLastError());
 }
 
 -(void)evenOddClipToDeviceSpacePath:(KGPath *)path {
@@ -580,7 +592,7 @@ static void zeroBytes(void *bytes,int size){
 // we could test for cases where the angle is a multiple of 90 and use the _H or _V constants if we dont have transformations
 // we could decompose this better to platform generalize it
 
-static inline float bandIntervalFromMagnitude(KGFunction *function,float magnitude){
+static inline float axialBandIntervalFromMagnitude(KGFunction *function,float magnitude){
    if(magnitude<1)
     return 0;
 
@@ -635,7 +647,7 @@ static inline void CMYKAToRGBA(float *input,float *output){
    NSPoint       vector=NSMakePoint(endPoint.x-startPoint.x,endPoint.y-startPoint.y);
    float         magnitude=ceilf(sqrtf(vector.x*vector.x+vector.y*vector.y));
    float         angle=(magnitude==0)?0:(atanf(vector.y/vector.x)+((vector.x<0)?M_PI:0));
-   float         bandInterval=bandIntervalFromMagnitude(function,magnitude);
+   float         bandInterval=axialBandIntervalFromMagnitude(function,magnitude);
    int           bandCount=bandInterval;
    int           i,rectIndex=0;
    float         rectWidth=(bandCount==0)?0:magnitude/bandInterval;
@@ -678,7 +690,7 @@ static inline void CMYKAToRGBA(float *input,float *output){
      break;
      
     default:
-     NSLog(@"can't deal with colorspace %@",colorSpace);
+     NSLog(@"axial shading can't deal with colorspace %@",colorSpace);
      return;
    }
       
@@ -791,8 +803,229 @@ static inline void CMYKAToRGBA(float *input,float *output){
    }
 }
 
+static int appendCurveto(POINT *points,int position,NSPoint cp1,NSPoint cp2,NSPoint end,CGAffineTransform matrix){
+   cp1=CGPointApplyAffineTransform(cp1,matrix);
+   points[position].x=float2int(cp1.x);
+   points[position].y=float2int(cp1.y);
+   position++;
+   
+   cp2=CGPointApplyAffineTransform(cp2,matrix);
+   points[position].x=float2int(cp2.x);
+   points[position].y=float2int(cp2.y);
+   position++;
+
+   end=CGPointApplyAffineTransform(end,matrix);
+   points[position].x=float2int(end.x);
+   points[position].y=float2int(end.y);
+   position++;
+   
+   return position;
+}
+
+// ellipse to 4 spline bezier, http://www.tinaja.com/glib/ellipse4.pdf
+static void appendCircle(HDC dc,float x,float y,float radius,CGAffineTransform matrix){
+   float magic=0.551784;
+   float xrad=radius;
+   float yrad=radius;
+   float xmag=xrad*magic;
+   float ymag=yrad*magic;
+   POINT points[12];
+   int   count=0;
+   NSPoint moveto;
+
+   matrix=CGAffineTransformConcat(matrix,CGAffineTransformMakeTranslation(x,y));
+
+   moveto=CGPointApplyAffineTransform(NSMakePoint(-xrad,0),matrix);
+   MoveToEx(dc,float2int(moveto.x),float2int(moveto.y),NULL);   
+
+   count=appendCurveto(points,count,NSMakePoint(-xrad,ymag),NSMakePoint(-xmag,yrad),NSMakePoint(0,yrad),matrix);
+   count=appendCurveto(points,count,NSMakePoint(xmag,yrad),NSMakePoint(xrad,ymag),NSMakePoint(xrad,0),matrix);
+   count=appendCurveto(points,count,NSMakePoint(xrad,-ymag),NSMakePoint(xmag,-yrad),NSMakePoint(0,-yrad),matrix);
+   count=appendCurveto(points,count,NSMakePoint(-xmag,-yrad),NSMakePoint(-xrad,-ymag),NSMakePoint(-xrad,0),matrix);
+   
+   PolyBezierTo(dc,points,count);
+}
+
+static inline float radialBandIntervalFromMagnitude(KGFunction *function,float magnitude){
+   if(magnitude<1)
+    return 0;
+       
+   return magnitude;
+}
+
+// not so good, appears to misfire causing premature termination
+static BOOL circleInsideClip(HDC dc,float x,float y,float radius,CGAffineTransform matrix){
+   CGAffineTransform rotate45=CGAffineTransformMakeRotation(M_PI*45.0/180.0);
+   NSPoint bottomLeft=CGPointApplyAffineTransform(NSMakePoint(-radius,0),rotate45);
+   NSPoint topRight=CGPointApplyAffineTransform(NSMakePoint(radius,0),rotate45);
+   NSRect  rect;
+      
+   rect.origin=bottomLeft;
+   rect.size.width=topRight.x-bottomLeft.x;
+   rect.size.height=topRight.y-bottomLeft.y;
+   rect.origin.x+=x;
+   rect.origin.y+=y;
+   {
+    NSRect edges[4]={
+     NSMakeRect(NSMinX(rect),NSMinY(rect),1,NSHeight(rect)),
+     NSMakeRect(NSMaxX(rect)-1,NSMinY(rect),1,NSHeight(rect)),
+     NSMakeRect(NSMinX(rect),NSMinY(rect),NSWidth(rect),1),
+     NSMakeRect(NSMinX(rect),NSMaxY(rect),NSWidth(rect),1),
+    };
+    int i;
+    BOOL visible=NO;
+      
+    for(i=0;i<4;i++){
+     NSRect checkRect=Win32TransformRect(matrix,edges[i]);
+     RECT   check=NSRectToRECT(checkRect);
+
+     if(RectVisible(dc,&check))
+      return YES;
+    }
+    return NO;
+   }
+}
+
+static void extend(HDC dc,int i,int direction,float bandInterval,NSPoint startPoint,NSPoint endPoint,float startRadius,float endRadius,CGAffineTransform matrix){
+/* - some edge cases of extend are either slow or don't fill bands accurately but these are undesirable gradients
+   - optimize: if start or end is inside the other we can do straight fills (i.e. non-tubular)
+ */
+
+    for(;;i+=direction){
+     float position,x,y,radius;
+     RECT  check;
+     
+     BeginPath(dc);
+
+     position=(float)i/bandInterval;
+     x=startPoint.x+position*(endPoint.x-startPoint.x);
+     y=startPoint.y+position*(endPoint.y-startPoint.y);
+     radius=startRadius+position*(endRadius-startRadius);
+     appendCircle(dc,x,y,radius,matrix);
+    
+     position=(float)(i+direction)/bandInterval;
+     x=startPoint.x+position*(endPoint.x-startPoint.x);
+     y=startPoint.y+position*(endPoint.y-startPoint.y);
+     radius=startRadius+position*(endRadius-startRadius);
+     appendCircle(dc,x,y,radius,matrix);
+     
+     EndPath(dc);
+
+     FillPath(dc);
+     
+     if(radius<=0)
+      break;
+ 
+     if(!circleInsideClip(dc,x,y,radius,matrix))
+      break;
+    }
+}
+
 -(void)drawInUserSpace:(CGAffineTransform)matrix radialShading:(KGShading *)shading {
-   NSLog(@"radial shaders not supported yet");
+/* - band interval needs to be improved
+    - does not factor resolution/scaling can cause banding
+    - does not factor color sampling rate, generates multiple bands for same color
+ */
+   KGColorSpace *colorSpace=[shading colorSpace];
+   KGColorSpaceType colorSpaceType=[colorSpace type];
+   KGFunction   *function=[shading function];
+   const float  *domain=[function domain];
+   const float  *range=[function range];
+   BOOL          extendStart=[shading extendStart];
+   BOOL          extendEnd=[shading extendEnd];
+   float         startRadius=[shading startRadius];
+   float         endRadius=[shading endRadius];
+   NSPoint       startPoint=[shading startPoint];
+   NSPoint       endPoint=[shading endPoint];
+   NSPoint       vector=NSMakePoint(endPoint.x-startPoint.x,endPoint.y-startPoint.y);
+   float         lineMagnitude=ceilf(sqrtf(vector.x*vector.x+vector.y*vector.y));
+   float         radiusMagnitude=ABS(endRadius-startRadius)*2;
+   float         magnitude=MAX(lineMagnitude,radiusMagnitude);
+   float         bandInterval=radialBandIntervalFromMagnitude(function,magnitude);
+   int           i,bandCount=bandInterval;
+   float         bandWidth=magnitude/bandInterval;
+   float         domainInterval=(bandCount==0)?0:(domain[1]-domain[0])/bandInterval;
+   float         output[[colorSpace numberOfComponents]+1];
+   float         rgba[4];
+   void        (*outputToRGBA)(float *,float *);
+
+   switch(colorSpaceType){
+
+    case KGColorSpaceDeviceGray:
+     outputToRGBA=GrayAToRGBA;
+     break;
+     
+    case KGColorSpaceDeviceRGB:
+     outputToRGBA=RGBAToRGBA;
+     break;
+     
+    case KGColorSpaceDeviceCMYK:
+     outputToRGBA=CMYKAToRGBA;
+     break;
+     
+    default:
+     NSLog(@"radial shading can't deal with colorspace %@",colorSpace);
+     return;
+   }
+
+   if(extendStart){
+    HBRUSH brush;
+
+    [function evaluateInput:domain[0] output:output];
+    outputToRGBA(output,rgba);
+    brush=CreateSolidBrush(RGB(output[0]*255,output[1]*255,output[2]*255));
+    SelectObject(_dc,brush);
+    SetPolyFillMode(_dc,ALTERNATE);
+    extend(_dc,0,-1,bandInterval,startPoint,endPoint,startRadius,endRadius,matrix);
+    DeleteObject(brush);
+   }
+   
+   for(i=0;i<bandCount;i++){
+    HBRUSH brush;
+    float position,x,y,radius;
+    float x0=((domain[0]+i*domainInterval)+(domain[0]+(i+1)*domainInterval))/2; // midpoint color between edges
+    
+    BeginPath(_dc);
+
+    position=(float)i/bandInterval;
+    x=startPoint.x+position*(endPoint.x-startPoint.x);
+    y=startPoint.y+position*(endPoint.y-startPoint.y);
+    radius=startRadius+position*(endRadius-startRadius);
+    appendCircle(_dc,x,y,radius,matrix);
+    
+    if(i+1==bandCount)
+     appendCircle(_dc,endPoint.x,endPoint.y,endRadius,matrix);
+    else {
+     position=(float)(i+1)/bandInterval;
+     x=startPoint.x+position*(endPoint.x-startPoint.x);
+     y=startPoint.y+position*(endPoint.y-startPoint.y);
+     radius=startRadius+position*(endRadius-startRadius);
+     appendCircle(_dc,x,y,radius,matrix);
+    }
+
+    EndPath(_dc);
+
+    [function evaluateInput:x0 output:output];
+    outputToRGBA(output,rgba);
+    brush=CreateSolidBrush(RGB(output[0]*255,output[1]*255,output[2]*255));
+    SelectObject(_dc,brush);
+    SetPolyFillMode(_dc,ALTERNATE);
+    FillPath(_dc);
+    DeleteObject(brush);
+   }
+
+   if(extendEnd){
+    HBRUSH brush;
+    
+    [function evaluateInput:domain[1] output:output];
+    outputToRGBA(output,rgba);
+    brush=CreateSolidBrush(RGB(output[0]*255,output[1]*255,output[2]*255));
+    SelectObject(_dc,brush);
+    SetPolyFillMode(_dc,ALTERNATE);
+    extend(_dc,i,1,bandInterval,startPoint,endPoint,startRadius,endRadius,matrix);
+
+    DeleteObject(brush);
+   }
 }
 
 -(void)drawInUserSpace:(CGAffineTransform)matrix shading:(KGShading *)shading {

@@ -79,6 +79,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)clipToRect:(NSRect)clipRect;
 -(void)clipToRects:(const NSRect *)rects count:(unsigned)count;
 
+-(KGColor *)strokeColor;
+-(KGColor *)fillColor;
+
 -(void)setStrokeColorSpace:(KGColorSpace *)colorSpace;
 -(void)setFillColorSpace:(KGColorSpace *)colorSpace;
 
