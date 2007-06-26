@@ -192,6 +192,8 @@ APPKIT_EXPORT void CGContextEndPage(CGContextRef context);
 
 // Temporary hacks
 
+APPKIT_EXPORT void CGContextResetClip(CGContextRef context);
+
 APPKIT_EXPORT void CGContextSetCalibratedGrayColor(CGContextRef context,float gray,float alpha);
 APPKIT_EXPORT void CGContextSetCalibratedRGBColor(CGContextRef context,float red,float green,float blue,float alpha);
 

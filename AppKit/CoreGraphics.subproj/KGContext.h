@@ -204,6 +204,8 @@ enum {
 
 // temporary
 
+-(void)resetClip;
+
 -(void)setWordSpacing:(float)spacing;
 -(void)setTextLeading:(float)leading;
 

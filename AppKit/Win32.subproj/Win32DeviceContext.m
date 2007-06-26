@@ -73,6 +73,9 @@ NSRect Win32TransformRect(CGAffineTransform matrix,NSRect rect) {
 -initWithDC:(HDC)dc {
    _dc=dc;
 
+   _clipRegion=CreateRectRgn(0,0,GetDeviceCaps(_dc,HORZRES),GetDeviceCaps(_dc,VERTRES));
+   GetClipRgn(_dc,_clipRegion); // it is expected this will fail, empty clip path
+   
    _isAdvanced=(SetGraphicsMode(_dc,GM_ADVANCED)!=0)?YES:NO;
    
    if(SetMapMode(_dc,MM_ANISOTROPIC)==0)
@@ -89,6 +92,7 @@ NSRect Win32TransformRect(CGAffineTransform matrix,NSRect rect) {
 }
 
 -(void)dealloc {
+   DeleteObject(_clipRegion);
    [_font release];
    [super dealloc];
 }
@@ -1035,5 +1039,8 @@ static void extend(HDC dc,int i,int direction,float bandInterval,NSPoint startPo
    [self drawInUserSpace:matrix radialShading:shading];
 }
 
+-(void)resetClip {
+  SelectClipRgn(_dc,_clipRegion);
+}
 
 @end

@@ -917,6 +917,7 @@ static inline void buildTransformsIfNeeded(NSView *self) {
    [NSGraphicsContext setCurrentContext:context];
 
    CGContextSaveGState(graphicsPort);
+   CGContextResetClip(graphicsPort);
    CGContextConcatCTM(graphicsPort,[self transformToWindow]);
    CGContextClipToRect(graphicsPort,[self visibleRect]);
 

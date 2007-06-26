@@ -33,8 +33,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)dealloc {
    [_renderingContext release];
    [_deviceState release];
+   [_strokeColor release];
+   [_fillColor release];
    if(_dashLengths!=NULL)
     NSZoneFree(NULL,_dashLengths);
+   [_shadowColor release];
    [super dealloc];
 }
 
@@ -45,6 +48,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    copy->_deviceState=nil;
    copy->_strokeColor=[_strokeColor copyWithZone:zone];
    copy->_fillColor=[_fillColor copyWithZone:zone];
+   copy->_shadowColor=[_shadowColor copyWithZone:zone];
    
    return copy;
 }

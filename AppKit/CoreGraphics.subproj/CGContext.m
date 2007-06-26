@@ -448,6 +448,11 @@ void CGContextEndPage(CGContextRef context) {
 
 
 /// temporary hacks
+
+void CGContextResetClip(CGContextRef context) {
+   [context resetClip];
+}
+
 void CGContextSetCalibratedGrayColor(CGContextRef context,float gray,float alpha) {
    [context setCalibratedColorWhite:gray alpha:alpha];
 }

@@ -51,4 +51,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)drawInUserSpace:(CGAffineTransform)matrix shading:(KGShading *)shading;
 
+-(void)resetClip;
+
 @end

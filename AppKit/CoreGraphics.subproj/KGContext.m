@@ -555,6 +555,10 @@ static inline KGGraphicsState *currentState(KGContext *self){
 
 // temporary
 
+-(void)resetClip {
+   [[self renderingContext] resetClip];
+}
+
 -(void)setWordSpacing:(float)spacing {
    [currentState(self) setWordSpacing:spacing];
 }

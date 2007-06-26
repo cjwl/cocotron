@@ -640,7 +640,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     currentPoint=[view convertPoint:[event locationInWindow] fromView:nil];
     isWithinCellFrame=NSMouseInRect(currentPoint,frame,[view isFlipped]);
 
-    //NSLog(@"%@ in %@", NSStringFromPoint(currentPoint), NSStringFromRect(frame));
     if(untilMouseUp){
      if([event type]==NSLeftMouseUp){
       [self stopTracking:lastPoint at:[event locationInWindow] inView:view mouseIsUp:YES];
