@@ -273,6 +273,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return _selectedItem;
 }
 
+-(void)resizeSubviewsWithOldSize:(NSSize)oldSize {
+   if(_selectedItem!=nil)
+    [[_selectedItem view] setFrame:[self contentRect]];
+}
+
 // delegate methods go here
 -(void)selectTabViewItem:(NSTabViewItem *)item {
     if(item!=_selectedItem) {

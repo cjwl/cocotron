@@ -16,6 +16,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @implementation NSEvent
 
++(NSPoint)mouseLocation {
+   return [[NSDisplay currentDisplay] mouseLocation];
+}
+
 -initWithType:(NSEventType)type location:(NSPoint)location modifierFlags:(unsigned)modifierFlags window:(NSWindow *)window {
    _type=type;
    _locationInWindow=location;

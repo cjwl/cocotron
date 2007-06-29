@@ -1133,4 +1133,21 @@ static inline NSGlyphMetrics *glyphInfoForGlyph(NSGlyphMetricsSet *infoSet,NSGly
     return [openPanel _GetOpenFileNameForTypes:types];
 }
 
+-(float)primaryScreenHeight {
+   return GetSystemMetrics(SM_CYSCREEN);
+}
+
+-(NSPoint)mouseLocation {
+   POINT   winPoint;
+   NSPoint point;
+
+   GetCursorPos(&winPoint);
+
+   point.x=winPoint.x;
+   point.y=winPoint.y;
+   point.y=[self primaryScreenHeight]-point.y;
+
+   return point;
+}
+
 @end

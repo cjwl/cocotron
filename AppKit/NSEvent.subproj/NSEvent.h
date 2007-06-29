@@ -143,6 +143,8 @@ enum {
    NSWindow *_window;
 }
 
++(NSPoint)mouseLocation;
+
 -initWithType:(NSEventType)type location:(NSPoint)location modifierFlags:(unsigned)modifierFlags window:(NSWindow *)window;
 
 +(NSEvent *)mouseEventWithType:(NSEventType)type location:(NSPoint)location modifierFlags:(unsigned int)modifierFlags window:(NSWindow *)window clickCount:(int)clickCount;

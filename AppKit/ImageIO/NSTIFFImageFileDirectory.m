@@ -145,6 +145,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       _rowsPerStrip=[reader expectUnsigned16OrUnsigned32];
       break;
 
+     case NSTIFFTagSampleFormat:
+      [reader expectArrayOfUnsigned16:&_sampleFormats count:&_sizeOfSampleFormats];
+      break;
+     
      case NSTIFFTagSamplesPerPixel:
       _samplesPerPixel=[reader expectUnsigned16];
       break;
@@ -167,6 +171,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
      case NSTIFFTagThreshholding:
       _threshholding=[reader expectUnsigned16];
+      break;
+
+     case NSTIFFTagXMP:
+      [reader expectArrayOfUnsigned8:&_xmp count:&_sizeOfXMP];
       break;
 
      case NSTIFFTagXPosition:
@@ -225,11 +233,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [_pageName release];
    if(_pageNumbers!=NULL)
     NSZoneFree([self zone],_pageNumbers);
+   if(_sampleFormats!=NULL)
+    NSZoneFree([self zone],_sampleFormats);
    [_software release];
    if(_stripByteCounts!=NULL)
     NSZoneFree([self zone],_stripByteCounts);
    if(_stripOffsets!=NULL)
     NSZoneFree([self zone],_stripOffsets);
+   if(_xmp!=NULL)
+    NSZoneFree([self zone],_xmp);
 
    [super dealloc];
 }
@@ -272,8 +284,8 @@ static void decode_R8_G8_B8_Afill(const unsigned char *stripBytes,unsigned byteC
     pixelBytes[pixelBytesRow*bytesPerRow+pixelBytesCol]=stripBytes[i];
     pixelBytesCol++;
 
-    if(pixelBytesCol%3==0){
-     pixelBytes[pixelBytesRow*bytesPerRow+pixelBytesCol]=0x00;
+    if(((pixelBytesCol+1)%4)==0){
+     pixelBytes[pixelBytesRow*bytesPerRow+pixelBytesCol]=0xFF;
      pixelBytesCol++;
     }
 
@@ -327,15 +339,23 @@ static void decode_R8_G8_B8_Afill(const unsigned char *stripBytes,unsigned byteC
     return NO;
    }
 
+   if(_sampleFormats!=NULL){
+    for(i=0;i<_sizeOfSampleFormats;i++)
+     if(_sampleFormats[i]!=NSTIFFSampleFormat_UINT){
+      NSLog(@"TIFF unsupported, sampleFormats[%d]!=1, got %d",i,_sampleFormats[i]);
+      return NO;
+     }
+   }
+   
    bitsPerPixel=0;
    for(i=0;i<_sizeOfBitsPerSample;i++){
-    bitsPerPixel+=_bitsPerSample [i];
+    bitsPerPixel+=_bitsPerSample[i];
     if(_bitsPerSample[i]!=8){
      NSLog(@"TIFF unsupported, bitsPerSample[%d]!=8, got %d",i, _bitsPerSample[i]);
      return NO;
     }
    }
-
+   
    bytesPerRow=_imageWidth*4;
    pixelBytesRow=_imageLength-1;
    pixelBytesCol=0;
@@ -347,7 +367,7 @@ static void decode_R8_G8_B8_Afill(const unsigned char *stripBytes,unsigned byteC
      NSLog(@"TIFF strip error, offset (%d) + byteCount (%d) > length (%d)",offset,byteCount,length);
      return NO;
     }
-
+    
     if(_samplesPerPixel==4)
      decode_R8_G8_B8_A8(bytes+offset,byteCount,pixelBytes,bytesPerRow,&pixelBytesRow);
     else

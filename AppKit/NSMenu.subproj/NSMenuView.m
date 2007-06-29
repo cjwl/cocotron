@@ -121,7 +121,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     }
 
     [event release];
-    event=[[self window] nextEventMatchingMask:NSLeftMouseUpMask|NSLeftMouseDraggedMask];
+    event=[[self window] nextEventMatchingMask:NSLeftMouseUpMask|NSMouseMovedMask|NSLeftMouseDraggedMask];
     [event retain];
 
     point=[event locationInWindow];
@@ -169,8 +169,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)mouseDown:(NSEvent *)event {
-   NSMenuItem *item=[self trackForEvent:event];
-
+   BOOL        didAccept=[[self window] acceptsMouseMovedEvents];
+   NSMenuItem *item;
+   
+   [[self window] setAcceptsMouseMovedEvents:YES];
+   item=[self trackForEvent:event];
+   [[self window] setAcceptsMouseMovedEvents:didAccept];
+   
    if(item!=nil)
     [NSApp sendAction:[item action] to:[item target] from:item];
 }

@@ -63,7 +63,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    NSUnimplementedMethod();
 }
 
--(void)makeCurrenContext {
+-(void)makeCurrentContext {
    NSUnimplementedMethod();
 }
 
@@ -99,7 +99,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    NSUnimplementedMethod();
 }
 
--(void)copyAttrbutesFromContext:(NSOpenGLContext *)context withMask:(unsigned long)mask {
+-(void)copyAttributesFromContext:(NSOpenGLContext *)context withMask:(unsigned long)mask {
    NSUnimplementedMethod();
 }
 

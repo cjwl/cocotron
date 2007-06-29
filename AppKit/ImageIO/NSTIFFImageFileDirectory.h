@@ -49,6 +49,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
   unsigned             _planarConfiguration;
   unsigned             _resolutionUnit;
   unsigned             _rowsPerStrip;
+  unsigned             _sizeOfSampleFormats;
+  unsigned            *_sampleFormats;
   unsigned             _samplesPerPixel;
   NSString            *_software;
   unsigned             _sizeOfStripByteCounts;
@@ -57,6 +59,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
   unsigned            *_stripOffsets;
   unsigned             _subfileType;
   unsigned             _threshholding;
+  unsigned             _sizeOfXMP;
+  unsigned char       *_xmp;
   double               _xPosition;
   double               _xResolution;
   double               _yPosition;

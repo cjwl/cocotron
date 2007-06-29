@@ -49,12 +49,14 @@ enum {
  NSTIFFTagPlanarConfiguration=284,
  NSTIFFTagResolutionUnit=296,
  NSTIFFTagRowsPerStrip=278,
+ NSTIFFTagSampleFormat=339,
  NSTIFFTagSamplesPerPixel=277,
  NSTIFFTagSoftware=305,
  NSTIFFTagStripByteCounts=279,
  NSTIFFTagStripOffsets=273,
  NSTIFFTagSubfileType=255,
  NSTIFFTagThreshholding=263,
+ NSTIFFTagXMP=700,
  NSTIFFTagXPosition=286,
  NSTIFFTagXResolution=282,
  NSTIFFTagYPosition=287,
@@ -76,8 +78,13 @@ enum {
  NSTIFFResolutionUnit_none=1,
  NSTIFFResolutionUnit_inch=2,
  NSTIFFResolutionUnit_centimeter=3,
-
-
+ 
+ NSTIFFSampleFormat_UINT=1,
+ NSTIFFSampleFormat_INT=2,
+ NSTIFFSampleFormat_IEEEFP=3,
+ NSTIFFSampleFormat_VOID=4,
+ NSTIFFSampleFormat_COMPLEXINT=5,
+ NSTIFFSampleFormat_COMPLEXIEEEFP=6,
 };
 
 @interface NSTIFFReader : NSObject {
@@ -103,6 +110,7 @@ enum {
 -(double)expectRational;
 -(NSString *)expectASCII;
 -(unsigned)expectUnsigned16OrUnsigned32;
+-(void)expectArrayOfUnsigned8:(unsigned char **)valuesp count:(unsigned *)countp;
 -(void)expectArrayOfUnsigned16:(unsigned **)valuesp count:(unsigned *)countp;
 -(void)expectArrayOfUnsigned16OrUnsigned32:(unsigned **)valuesp count:(unsigned *)countp;
 

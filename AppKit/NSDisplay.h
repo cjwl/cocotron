@@ -124,4 +124,6 @@ typedef struct NSFontMetrics {
 -(int)savePanel:(NSSavePanel *)savePanel runModalForDirectory:(NSString *)directory file:(NSString *)file;
 -(int)openPanel:(NSOpenPanel *)openPanel runModalForDirectory:(NSString *)directory file:(NSString *)file types:(NSArray *)types;
 
+-(NSPoint)mouseLocation;
+
 @end

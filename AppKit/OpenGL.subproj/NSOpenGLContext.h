@@ -31,7 +31,7 @@ typedef int NSOpenGLContextParameter;
 -(void)setValues:(const long *)vals forParameter:(NSOpenGLContextParameter)parameter;
 -(void)setView:(NSView *)view;
 
--(void)makeCurrenContext;
+-(void)makeCurrentContext;
 -(int)currentVirtualScreen;
 
 -(void)setCurrentVirtualScreen:(int)screen;
@@ -44,7 +44,7 @@ typedef int NSOpenGLContextParameter;
 
 -(void)clearDrawable;
 
--(void)copyAttrbutesFromContext:(NSOpenGLContext *)context withMask:(unsigned long)mask;
+-(void)copyAttributesFromContext:(NSOpenGLContext *)context withMask:(unsigned long)mask;
 -(void)createTexture:(unsigned long)identifier fromView:(NSView *)view internalFormat:(unsigned long)internalFormat;
 
 -(void)flushBuffer;

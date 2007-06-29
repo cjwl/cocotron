@@ -78,7 +78,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)lockFocus {  
   [super lockFocus];
   
-  [[self openGLContext] makeCurrenContext];
+  [[self openGLContext] makeCurrentContext];
   [self prepareOpenGL];
 }
 

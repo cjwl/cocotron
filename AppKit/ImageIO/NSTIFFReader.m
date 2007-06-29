@@ -137,7 +137,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    if(type==NSTIFFTypeSHORT)
     result=[self nextUnsigned16];
    else
-    NSLog(@"TIFF parse error, expecting unsigned16 or unsinged32, got %d",type);
+    NSLog(@"TIFF parse error, expecting unsigned16 got %d",type);
 
    return result;
 }
@@ -285,6 +285,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return result;
 }
 
+-(void)expectArrayOfUnsigned8:(unsigned char **)valuesp count:(unsigned *)countp {
+   unsigned type=[self nextUnsigned16];
+
+   if(type!=NSTIFFTypeBYTE){
+    NSLog(@"TIFF parse error, expecting unsigned8");
+    return;
+   }
+
+   [self _decodeArrayOfUnsigned8:valuesp count:countp];
+}
 
 -(void)expectArrayOfUnsigned16:(unsigned **)valuesp count:(unsigned *)countp {
    unsigned type=[self nextUnsigned16];
