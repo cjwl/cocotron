@@ -241,7 +241,7 @@ id objc_msgForward(id object,SEL message,...){
     return nil;
    }
    frameLength=method->method_imp(object,@selector(_frameLengthForSelector:),message);
-   frame=alloca(frameLength);
+   frame=__builtin_alloca(frameLength);
    
    va_start(arguments,message);
    frame[0]=object;

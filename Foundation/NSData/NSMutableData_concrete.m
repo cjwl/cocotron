@@ -69,6 +69,8 @@ static inline void replaceBytesInRange(NSMutableData_concrete *self,NSRange rang
 -(void)dealloc {
    NSZoneFree(NSZoneFromPointer(_bytes),_bytes);
    NSDeallocateObject(self);
+   return;
+   [super dealloc];
 }
 
 -(void)appendBytes:(const void *)bytes length:(unsigned)length {

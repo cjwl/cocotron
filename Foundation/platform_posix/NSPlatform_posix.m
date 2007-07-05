@@ -25,6 +25,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <sys/time.h>
+#include <sys/param.h>
 #include <fcntl.h>
 #include <netdb.h>
 #include <time.h>
@@ -109,16 +110,16 @@ static struct passwd *pwent = NULL;
    char  *keyValue;
    int    i,len,max;
 
-   env = __environ;
+   env = NSPlatform_environ();
 
    max=0;
    for(count=0;env[count];count++)
     if((len=strlen(env[count]))>max)
      max=len;
 
-   keyValue=alloca(max+1);
-   objects=alloca(sizeof(id)*count);
-   keys=alloca(sizeof(id)*count);
+   keyValue=__builtin_alloca(max+1);
+   objects=__builtin_alloca(sizeof(id)*count);
+   keys=__builtin_alloca(sizeof(id)*count);
 
    for(count=0;env[count];count++){
     len=strlen(strcpy(keyValue,env[count]));

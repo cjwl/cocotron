@@ -61,6 +61,8 @@ static inline void setObjectForKey(NSMutableDictionary_mapTable *self,id object,
    if(_table!=NULL)
     NSFreeMapTable(_table);
    NSDeallocateObject(self);
+   return;
+   [super dealloc];
 }
 
 -(void)addEntriesFromDictionary:(NSDictionary *)dictionary {

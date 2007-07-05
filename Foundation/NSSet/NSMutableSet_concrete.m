@@ -52,6 +52,8 @@ NSSet *NSMutableSet_concreteNewWithArray(NSZone *zone,NSArray *array) {
    NSSetTableFreeObjects(&_table);
    NSSetTableFreeBuckets(&_table);
    NSDeallocateObject(self);
+   return;
+   [super dealloc];
 }
 
 -(unsigned)count {

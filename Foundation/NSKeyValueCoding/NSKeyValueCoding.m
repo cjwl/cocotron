@@ -17,7 +17,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSMethodSignature.h>
 #import <Foundation/NSKeyValueObserving.h>
 #include <objc/objc-class.h>
-#include <malloc.h>
 #include <string.h>
 
 #import "NSKVCMutableArray.h"
@@ -48,7 +47,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	if(type[0]!='@' && strlen(type)>1)
 	{
 		// valueWithBytes:objCType: doesn't like quotes in its types
-		char* cleanType=alloca(strlen(type)+1);
+		char* cleanType=__builtin_alloca(strlen(type)+1);
 		[self _demangleTypeEncoding:type to:cleanType];
 
 		return [NSValue valueWithBytes:value objCType:cleanType];
@@ -84,7 +83,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 {
 	if(type[0]!='@' && strlen(type)>1)
 	{
-		char* cleanType=alloca(strlen(type)+1);
+		char* cleanType=__builtin_alloca(strlen(type)+1);
 		[self _demangleTypeEncoding:type to:cleanType];
 
 		if(strcmp([value objCType], cleanType))
@@ -139,7 +138,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 		[inv invoke];
 		
 		int returnLength=[sig methodReturnLength];
-		void *returnValue=alloca(returnLength);
+		void *returnValue=__builtin_alloca(returnLength);
 		[inv getReturnValue:returnValue];
 		
 		return [self _wrapValue:returnValue ofType:type];
@@ -164,7 +163,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 		[inv setTarget:self];
 		
 		NSGetSizeAndAlignment(type, &size, &align);
-		void *buffer=alloca(size);		
+		void *buffer=__builtin_alloca(size);		
 		[self _setValue:value toBuffer:buffer ofType:type];
 		
 		[inv setArgument:buffer atIndex:2];

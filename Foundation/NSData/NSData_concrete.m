@@ -77,6 +77,8 @@ NSData *NSData_concreteNewNoCopy(NSZone *zone,void *bytes,unsigned length) {
    if(_bytes!=NULL && _freeWhenDone)
     NSZoneFree(NSZoneFromPointer(_bytes),_bytes);
    NSDeallocateObject(self);
+   return;
+   [super dealloc];
 }
 
 -(unsigned)length { return _length; }

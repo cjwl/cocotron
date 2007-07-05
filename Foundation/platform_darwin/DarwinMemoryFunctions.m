@@ -6,46 +6,25 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
-// Original - Christopher Lloyd <cjwl@objc.net>
-#import <Foundation/NSDictionary_mapTable.h>
-#import <Foundation/NSEnumerator_dictionaryKeys.h>
-#import <Foundation/NSAutoreleasePool-private.h>
-#import <Foundation/NSCoder.h>
+// Original - David Young <daver@geeks.org>
+#import <Foundation/Foundation.h>
+#import <sys/unistd.h>
 
-@implementation NSDictionary_mapTable
+/*
+     The page size is a system page size and need not be the same
+     as the underlying hardware page size.
+ */
+unsigned NSPageSize(void) {
+   static size_t pageSize = 0;
 
--(unsigned)count {
-   return NSCountMapTable(_table);
+   if (pageSize == 0)
+       pageSize = getpagesize();
+
+   return pageSize;
 }
 
--objectForKey:key {
-   return NSMapGet(_table,key);
+unsigned NSRealMemoryAvailable(void) 
+{
+   // is this accurate?
+   return 0;
 }
-
--(NSEnumerator *)keyEnumerator {
-   return NSAutorelease(NSEnumerator_dictionaryKeysNew(_table));
-}
-
--initWithObjects:(id *)objects forKeys:(id *)keys count:(unsigned)count {
-   int i;
-
-   _table=NSCreateMapTableWithZone(NSObjectMapKeyCallBacks,
-     NSObjectMapValueCallBacks,count,NULL);
-
-   for(i=0;i<count;i++){
-    id key=[keys[i] copy];
-    NSMapInsert(_table,key,objects[i]);
-    [key release];
-   }
-   return self;
-}
-
--(void)dealloc {
-   if(_table!=NULL)
-    NSFreeMapTable(_table);
-   NSDeallocateObject(self);
-   return;
-   [super dealloc];
-}
-
-@end

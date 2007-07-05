@@ -17,7 +17,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSRaise.h>
 #import <Foundation/NSCoder.h>
 #import <Foundation/NSKeyedUnarchiver.h>
-#import <malloc.h>
 
 @implementation NSDictionary
 
@@ -75,8 +74,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     count++;
    va_end(arguments);
 
-   objects=alloca(sizeof(id)*count/2);
-   keys=alloca(sizeof(id)*count/2);
+   objects=__builtin_alloca(sizeof(id)*count/2);
+   keys=__builtin_alloca(sizeof(id)*count/2);
 
    va_start(arguments,first);
    objects[0]=first;
@@ -132,8 +131,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     count++;
    va_end(arguments);
 
-   objects=alloca(sizeof(id)*count/2);
-   keys=alloca(sizeof(id)*count/2);
+   objects=__builtin_alloca(sizeof(id)*count/2);
+   keys=__builtin_alloca(sizeof(id)*count/2);
 
    va_start(arguments,first);
    objects[0]=first;
@@ -191,8 +190,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     id      *keys,*values;
 
     [coder decodeValueOfObjCType:@encode(int) at:&count];
-    keys=alloca(count*sizeof(id));
-    values=alloca(count*sizeof(id));
+    keys=__builtin_alloca(count*sizeof(id));
+    values=__builtin_alloca(count*sizeof(id));
 
     for(i=0;i<count;i++){
      keys[i]=[coder decodeObject];

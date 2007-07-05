@@ -11,15 +11,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #define FOUNDATION_FILE_MODE		S_IRUSR|S_IWUSR|S_IRGRP|S_IROTH
 #define FOUNDATION_DIR_MODE		S_IRUSR|S_IWUSR|S_IXUSR|S_IRGRP|S_IXGRP|S_IROTH|S_IXOTH
 
-// Hmm. __environ is POSIX.1. Goes to show you how far standards get you.
-#ifdef SOLARIS
-#define __environ environ
-extern char **environ;
-#endif
-
 @interface NSPlatform_posix : NSPlatform
 {
 }
 
 @end
 
+extern char **NSPlatform_environ();

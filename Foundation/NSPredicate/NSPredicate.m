@@ -1311,11 +1311,11 @@ static NSPredicate *nextComparisonPredicate(predicateScanner *scanner){
      skipToken(scanner);
      right=nextExpression(scanner);     
      {
-      NSExpression          *rightFirst=[NSExpression_operator expressionForOperator:NSExpressionOperatorIndexFirst arguments:[NSArray arrayWithObject:right]];
-      NSComparisonPredicate *greaterOrEqual=[NSComparisonPredicate predicateWithLeftExpression:left rightExpression:rightFirst modifier:NSDirectPredicateModifier type:NSGreaterThanOrEqualToPredicateOperatorType options:0];
+      NSExpression *rightFirst=[NSExpression_operator expressionForOperator:NSExpressionOperatorIndexFirst arguments:[NSArray arrayWithObject:right]];
+      NSPredicate  *greaterOrEqual=[NSComparisonPredicate predicateWithLeftExpression:left rightExpression:rightFirst modifier:NSDirectPredicateModifier type:NSGreaterThanOrEqualToPredicateOperatorType options:0];
       
-      NSExpression          *rightLast=[NSExpression_operator expressionForOperator:NSExpressionOperatorIndexLast arguments:[NSArray arrayWithObject:right]];
-      NSComparisonPredicate *lessOrEqual=[NSComparisonPredicate predicateWithLeftExpression:left rightExpression:rightLast modifier:NSDirectPredicateModifier type:NSLessThanOrEqualToPredicateOperatorType options:0];
+      NSExpression *rightLast=[NSExpression_operator expressionForOperator:NSExpressionOperatorIndexLast arguments:[NSArray arrayWithObject:right]];
+      NSPredicate  *lessOrEqual=[NSComparisonPredicate predicateWithLeftExpression:left rightExpression:rightLast modifier:NSDirectPredicateModifier type:NSLessThanOrEqualToPredicateOperatorType options:0];
       
       result=[NSCompoundPredicate andPredicateWithSubpredicates:[NSArray arrayWithObjects:greaterOrEqual,lessOrEqual,nil]];
      }

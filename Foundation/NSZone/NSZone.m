@@ -20,7 +20,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 // NSDeallocateObject implemented in platform subproject
 // NSCopyObject implemented in platform subproject
 
-BOOL NSShouldRetainWithZone(NSObject *object,NSZone *zone) {
+BOOL NSShouldRetainWithZone(id object,NSZone *zone) {
    return (zone==NULL || zone==NSDefaultMallocZone() || zone==[object zone])?YES:NO;
 }
 

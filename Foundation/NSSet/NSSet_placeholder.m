@@ -11,7 +11,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSSet_concrete.h>
 #import <Foundation/NSArray.h>
 #import <Foundation/NSRaise.h>
-#import <malloc.h>
 
 @implementation NSSet_placeholder
 
@@ -23,7 +22,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -initWithArray:(NSArray *)array {
    unsigned count=[array count];
-   id      *objects=alloca(sizeof(id)*count);
+   id      *objects=__builtin_alloca(sizeof(id)*count);
 
    [array getObjects:objects];
 
@@ -50,7 +49,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
    va_end(arguments);
 
-   objects=alloca(sizeof(id)*count);
+   objects=__builtin_alloca(sizeof(id)*count);
 
    va_start(arguments,first);
 

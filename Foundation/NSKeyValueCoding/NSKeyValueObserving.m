@@ -20,7 +20,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <objc/objc-runtime.h>
 #import <objc/objc-class.h>
 #import <string.h>
-#import <malloc.h>
 
 #import "NSString+KVCAdditions.h"
 #import "NSKeyValueObserving-Private.h"
@@ -353,7 +352,7 @@ NSLock *kvoLock=nil;
 { \
 	const char* origName = sel_getName(_cmd); \
 	int selLen=strlen(origName); \
-	char *sel=alloca(selLen+1); \
+	char *sel=__builtin_alloca(selLen+1); \
 	strcpy(sel, origName); \
 	sel[selLen-1]='\0'; \
 	if(sel[0]=='_') \

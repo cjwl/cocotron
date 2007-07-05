@@ -31,6 +31,8 @@ NSEnumerator *NSEnumerator_setNew(NSZone *zone,id set,NSSetTable *table) {
 -(void)dealloc {
    [_set release];
    NSDeallocateObject(self);
+   return;
+   [super dealloc];
 }
 
 static id nextObject(NSEnumerator_set *self){

@@ -137,14 +137,14 @@ void childSignalHandler(int sig) {
        NSMutableArray *array = [_arguments mutableCopy];
        const char     *path = [_launchPath cString];
        int            i,count=[array count];
-       const char    *args[count+1];
+       char          *args[count+1];
        
        if (array == nil)
            array = [NSMutableArray array];
 
        [array insertObject:_launchPath atIndex:0];
        for(i=0;i<count;i++)
-        args[i]=[[[array objectAtIndex:i] description] cString];
+        args[i]=(char *)[[[array objectAtIndex:i] description] cString];
        args[i]=NULL;
        
        if ([_stdin isKindOfClass:[NSFileHandle class]] || [_stdin isKindOfClass:[NSPipe class]]) {
@@ -183,7 +183,7 @@ void childSignalHandler(int sig) {
 
        chdir([_currentDirectoryPath fileSystemRepresentation]);
 
-       execve(path, args, __environ);
+       execve(path, args, NSPlatform_environ());
        [NSException raise:NSInvalidArgumentException
                    format:@"NSTask: execve(%s) returned: %s", path, strerror(errno)];
    }

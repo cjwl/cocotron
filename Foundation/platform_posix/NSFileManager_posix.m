@@ -23,16 +23,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <sys/param.h>
 #include <unistd.h>
 #include <fcntl.h>
 #include <pwd.h>
 #include <grp.h>
 #include <dirent.h>
 #include <errno.h>
-
-#ifdef SOLARIS
-#define PATH_MAX 1024
-#endif
 
 @implementation NSFileManager_posix
 
@@ -246,7 +243,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(NSString *)currentDirectoryPath {
-    char  path[PATH_MAX+1];
+    char  path[MAXPATHLEN+1];
 
     if (getcwd(path, sizeof(path)) != NULL)
         return [NSString stringWithCString:path];
@@ -255,10 +252,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(NSString *)pathContentOfSymbolicLinkAtPath:(NSString *)path {
-    char linkbuf[PATH_MAX+1];
+    char linkbuf[MAXPATHLEN+1];
     int length;
 
-    length = readlink([path fileSystemRepresentation], linkbuf, PATH_MAX);
+    length = readlink([path fileSystemRepresentation], linkbuf, MAXPATHLEN);
     if (length < 0)
         return nil;
 

@@ -16,8 +16,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSArray.h>
 #import <Foundation/NSNotificationCenter.h>
 
-#import <malloc.h>
-
 @implementation NSSelectSet(windows)
 
 +allocWithZone:(NSZone *)zone {

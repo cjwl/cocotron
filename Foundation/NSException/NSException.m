@@ -96,6 +96,8 @@ void NSSetUncaughtExceptionHandler(NSUncaughtExceptionHandler *proc) {
    [_reason release];
    [_userInfo release];
    NSDeallocateObject(self);
+   return;
+   [super dealloc];
 }
 
 +(NSException *)exceptionWithName:(NSString *)name reason:(NSString *)reason

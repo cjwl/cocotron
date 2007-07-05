@@ -16,8 +16,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSPredicate.h>
 #import <Foundation/NSSortDescriptor.h> 
 
-#import <malloc.h>
-
 @implementation NSMutableArray
 
 +allocWithZone:(NSZone *)zone {
@@ -99,7 +97,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     count++;
    va_end(arguments);
 
-   objects=alloca(sizeof(id)*count);
+   objects=__builtin_alloca(sizeof(id)*count);
 
    va_start(arguments,first);
    objects[0]=first;

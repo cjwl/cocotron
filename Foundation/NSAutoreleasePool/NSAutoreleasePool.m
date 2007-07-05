@@ -85,6 +85,8 @@ static inline void addObject(NSAutoreleasePool *self,id object){
     _parent->_childPool=nil;
 
    NSDeallocateObject(self);
+   return;
+   [super dealloc];
 }
 
 -(void)addObject:object {

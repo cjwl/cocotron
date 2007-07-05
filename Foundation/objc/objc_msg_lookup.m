@@ -23,7 +23,7 @@ void OBJCDisableMsgTracing(){
 }
 
 IMP objc_msg_lookup(id object,SEL selector) {
-   
+
    if(msg_tracing)
     OBJCLog("objc_msg_lookup %x %s isa %x name %s",selector,sel_getName(selector),(object!=nil)?object->isa:Nil,(object!=nil)?object->isa->name:"");
 

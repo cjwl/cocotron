@@ -31,6 +31,8 @@ NSSet *NSSet_concreteNew(NSZone *zone,id *objects,unsigned count) {
 -(void)dealloc {
    NSSetTableFreeObjects(&_table);
    NSDeallocateObject(self);
+   return;
+   [super dealloc];
 }
 
 -(unsigned)count {

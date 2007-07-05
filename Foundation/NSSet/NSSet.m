@@ -16,7 +16,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSSet_placeholder.h>
 #import <Foundation/NSSet_concrete.h>
 #import <Foundation/NSAutoreleasePool-private.h>
-#import <malloc.h>
 
 @implementation NSSet
 
@@ -90,7 +89,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     count++;
    va_end(arguments);
 
-   objects=alloca(sizeof(id)*count);
+   objects=__builtin_alloca(sizeof(id)*count);
 
    va_start(arguments,first);
    objects[0]=first;
@@ -133,7 +132,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     count++;
    va_end(arguments);
 
-   objects=alloca(sizeof(id)*count);
+   objects=__builtin_alloca(sizeof(id)*count);
 
    va_start(arguments,first);
    objects[0]=first;
@@ -166,7 +165,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
     [coder decodeValueOfObjCType:@encode(unsigned) at:&count];
 
-    objects=alloca(count*sizeof(id));
+    objects=__builtin_alloca(count*sizeof(id));
 
     for(i=0;i<count;i++)
      objects[i]=[coder decodeObject];

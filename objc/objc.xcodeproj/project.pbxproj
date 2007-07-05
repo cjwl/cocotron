@@ -35,6 +35,14 @@
 		FEB6CBFA0B4A1584004FADF2 /* objc-export.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB6CBF90B4A1584004FADF2 /* objc-export.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FEB6CBFB0B4A1584004FADF2 /* objc-export.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB6CBF90B4A1584004FADF2 /* objc-export.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FEB6CBFC0B4A1584004FADF2 /* objc-export.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB6CBF90B4A1584004FADF2 /* objc-export.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FED70AA00C3B3F5E000CBE5B /* objc-class.h in Headers */ = {isa = PBXBuildFile; fileRef = FE4034B90B42F24C00CEC41A /* objc-class.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FED70AA10C3B3F5E000CBE5B /* objc.h in Headers */ = {isa = PBXBuildFile; fileRef = FE4034CE0B42F2C400CEC41A /* objc.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FED70AA20C3B3F5E000CBE5B /* objc-export.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB6CBF90B4A1584004FADF2 /* objc-export.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FED70AA30C3B3F5E000CBE5B /* objc-runtime.h in Headers */ = {isa = PBXBuildFile; fileRef = FE85F6AA0BBF51D400E9C25C /* objc-runtime.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FED70FC00C3C0A17000CBE5B /* objc-class.h in Headers */ = {isa = PBXBuildFile; fileRef = FE4034B90B42F24C00CEC41A /* objc-class.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FED70FC10C3C0A17000CBE5B /* objc.h in Headers */ = {isa = PBXBuildFile; fileRef = FE4034CE0B42F2C400CEC41A /* objc.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FED70FC20C3C0A17000CBE5B /* objc-export.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB6CBF90B4A1584004FADF2 /* objc-export.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FED70FC30C3C0A17000CBE5B /* objc-runtime.h in Headers */ = {isa = PBXBuildFile; fileRef = FE85F6AA0BBF51D400E9C25C /* objc-runtime.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
@@ -57,6 +65,22 @@
 		FE4034870B42E94D00CEC41A /* PBXBuildRule */ = {
 			isa = PBXBuildRule;
 			compilerSpec = org.cocotron.1.0.linux.i386.gcc.4_0_3;
+			fileType = sourcecode.c;
+			isEditable = 1;
+			outputFiles = (
+			);
+		};
+		FED70AA50C3B3F5E000CBE5B /* PBXBuildRule */ = {
+			isa = PBXBuildRule;
+			compilerSpec = com.apple.compilers.gcc.4_0;
+			fileType = sourcecode.c;
+			isEditable = 1;
+			outputFiles = (
+			);
+		};
+		FED70FC50C3C0A17000CBE5B /* PBXBuildRule */ = {
+			isa = PBXBuildRule;
+			compilerSpec = com.apple.compilers.gcc.4_0;
 			fileType = sourcecode.c;
 			isEditable = 1;
 			outputFiles = (
@@ -97,6 +121,8 @@
 		FE4034CE0B42F2C400CEC41A /* objc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = objc.h; sourceTree = "<group>"; };
 		FE85F6AA0BBF51D400E9C25C /* objc-runtime.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = "objc-runtime.h"; sourceTree = "<group>"; };
 		FEB6CBF90B4A1584004FADF2 /* objc-export.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "objc-export.h"; sourceTree = "<group>"; };
+		FED70AA80C3B3F5E000CBE5B /* objc.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = objc.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		FED70FC80C3C0A17000CBE5B /* objc.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = objc.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -106,6 +132,8 @@
 				8DC2EF5B0486A6940098B216 /* objc.framework */,
 				FE4034590B42E8AF00CEC41A /* objc.framework */,
 				FE40348A0B42E94D00CEC41A /* objc.framework */,
+				FED70AA80C3B3F5E000CBE5B /* objc.framework */,
+				FED70FC80C3C0A17000CBE5B /* objc.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -207,6 +235,28 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		FED70A9F0C3B3F5E000CBE5B /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FED70AA00C3B3F5E000CBE5B /* objc-class.h in Headers */,
+				FED70AA10C3B3F5E000CBE5B /* objc.h in Headers */,
+				FED70AA20C3B3F5E000CBE5B /* objc-export.h in Headers */,
+				FED70AA30C3B3F5E000CBE5B /* objc-runtime.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FED70FBF0C3C0A17000CBE5B /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FED70FC00C3C0A17000CBE5B /* objc-class.h in Headers */,
+				FED70FC10C3C0A17000CBE5B /* objc.h in Headers */,
+				FED70FC20C3C0A17000CBE5B /* objc-export.h in Headers */,
+				FED70FC30C3C0A17000CBE5B /* objc-runtime.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
@@ -264,6 +314,42 @@
 			productReference = FE40348A0B42E94D00CEC41A /* objc.framework */;
 			productType = "com.apple.product-type.framework";
 		};
+		FED70A9E0C3B3F5E000CBE5B /* objc-Darwin-i386 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FED70AA60C3B3F5E000CBE5B /* Build configuration list for PBXNativeTarget "objc-Darwin-i386" */;
+			buildPhases = (
+				FED70A9F0C3B3F5E000CBE5B /* Headers */,
+				FED70AA40C3B3F5E000CBE5B /* Resources */,
+			);
+			buildRules = (
+				FED70AA50C3B3F5E000CBE5B /* PBXBuildRule */,
+			);
+			dependencies = (
+			);
+			name = "objc-Darwin-i386";
+			productInstallPath = "$(HOME)/Library/Frameworks";
+			productName = objc;
+			productReference = FED70AA80C3B3F5E000CBE5B /* objc.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		FED70FBE0C3C0A17000CBE5B /* objc-Darwin-ppc */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FED70FC60C3C0A17000CBE5B /* Build configuration list for PBXNativeTarget "objc-Darwin-ppc" */;
+			buildPhases = (
+				FED70FBF0C3C0A17000CBE5B /* Headers */,
+				FED70FC40C3C0A17000CBE5B /* Resources */,
+			);
+			buildRules = (
+				FED70FC50C3C0A17000CBE5B /* PBXBuildRule */,
+			);
+			dependencies = (
+			);
+			name = "objc-Darwin-ppc";
+			productInstallPath = "$(HOME)/Library/Frameworks";
+			productName = objc;
+			productReference = FED70FC80C3C0A17000CBE5B /* objc.framework */;
+			productType = "com.apple.product-type.framework";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -279,6 +365,8 @@
 				FE4034530B42E8AF00CEC41A /* objc-Linux-i386 */,
 				FE4034840B42E94D00CEC41A /* objc-Solaris-sparc */,
 				FE4034A10B42F1BC00CEC41A /* objc */,
+				FED70A9E0C3B3F5E000CBE5B /* objc-Darwin-i386 */,
+				FED70FBE0C3C0A17000CBE5B /* objc-Darwin-ppc */,
 			);
 		};
 /* End PBXProject section */
@@ -299,6 +387,20 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		FE4034860B42E94D00CEC41A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FED70AA40C3B3F5E000CBE5B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FED70FC40C3C0A17000CBE5B /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -419,6 +521,52 @@
 			};
 			name = Deployment;
 		};
+		FED70AA70C3B3F5E000CBE5B /* Deployment */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = i386;
+				DEPLOYMENT_LOCATION = YES;
+				DSTROOT = /;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = "";
+				INFOPLIST_FILE = /Users/cjwl/Cocotron/1.0/r31/objc/Info.plist;
+				INSTALL_PATH = /Developer/Cocotron/1.0/Darwin/i386/Frameworks;
+				OTHER_CFLAGS = (
+					"-DOBJC_INSIDE_BUILD",
+					"-D__LITTLE_ENDIAN__",
+					"-fPIC",
+				);
+				OTHER_LDFLAGS = "";
+				PREBINDING = NO;
+				PRODUCT_NAME = objc;
+				SYMROOT = /Developer/Cocotron/1.0/build/objc/Darwin/i386;
+			};
+			name = Deployment;
+		};
+		FED70FC70C3C0A17000CBE5B /* Deployment */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = ppc;
+				DEPLOYMENT_LOCATION = YES;
+				DSTROOT = /;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = "";
+				INFOPLIST_FILE = /Users/cjwl/Cocotron/1.0/r31/objc/Info.plist;
+				INSTALL_PATH = /Developer/Cocotron/1.0/Darwin/ppc/Frameworks;
+				OTHER_CFLAGS = (
+					"-DOBJC_INSIDE_BUILD",
+					"-D__LITTLE_ENDIAN__",
+					"-fPIC",
+				);
+				OTHER_LDFLAGS = "";
+				PREBINDING = NO;
+				PRODUCT_NAME = objc;
+				SYMROOT = /Developer/Cocotron/1.0/build/objc/Darwin/ppc;
+			};
+			name = Deployment;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -458,6 +606,22 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				FE4034AF0B42F1D600CEC41A /* Deployment */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Deployment;
+		};
+		FED70AA60C3B3F5E000CBE5B /* Build configuration list for PBXNativeTarget "objc-Darwin-i386" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FED70AA70C3B3F5E000CBE5B /* Deployment */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Deployment;
+		};
+		FED70FC60C3C0A17000CBE5B /* Build configuration list for PBXNativeTarget "objc-Darwin-ppc" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FED70FC70C3C0A17000CBE5B /* Deployment */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Deployment;

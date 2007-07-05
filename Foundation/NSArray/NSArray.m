@@ -24,8 +24,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSPredicate.h>
 #import <Foundation/NSIndexSet.h>
 
-#import <malloc.h>
-
 @implementation NSArray 
 
 +allocWithZone:(NSZone *)zone {
@@ -37,7 +35,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -initWithArray:(NSArray *)array {
    unsigned count=[array count];
-   id      *objects=alloca(sizeof(id)*count);
+   id      *objects=__builtin_alloca(sizeof(id)*count);
 
    [array getObjects:objects];
 
@@ -73,7 +71,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     count++;
    va_end(arguments);
 
-   objects=alloca(sizeof(id)*count);
+   objects=__builtin_alloca(sizeof(id)*count);
 
    va_start(arguments,object);
    objects[0]=object;
@@ -111,7 +109,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
     [coder decodeValueOfObjCType:@encode(int) at:&count];
 
-    objects=alloca(count*sizeof(id));
+    objects=__builtin_alloca(count*sizeof(id));
 
     for(i=0;i<count;i++)
      objects[i]=[coder decodeObject];
@@ -162,7 +160,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     count++;
    va_end(arguments);
 
-   objects=alloca(sizeof(id)*count);
+   objects=__builtin_alloca(sizeof(id)*count);
 
    va_start(arguments,object);
    objects[0]=object;

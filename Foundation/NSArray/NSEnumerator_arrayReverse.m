@@ -24,6 +24,8 @@ NSEnumerator *NSEnumerator_arrayReverseNew(NSArray *array) {
 -(void)dealloc {
    [_array release];
    NSDeallocateObject(self);
+   return;
+   [super dealloc];
 }
 
 -nextObject {

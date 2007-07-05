@@ -28,6 +28,8 @@ NSString *NSString_unicodePtrNewNoCopy(NSZone *zone,
 -(void)dealloc {
    NSZoneFree(NSZoneFromPointer((void *)_unicode),(void *)_unicode);
    NSDeallocateObject(self);
+   return;
+   [super dealloc];
 }
 
 -(unsigned)length {

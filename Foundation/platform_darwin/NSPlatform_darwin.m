@@ -9,21 +9,32 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 // Original - David Young <daver@geeks.org>
 #import <Foundation/ObjectiveC.h>
 #import <Foundation/Foundation.h>
-#import <Foundation/NSPlatform_linux.h>
-#import <Foundation/NSTask_linux.h>
+#import <Foundation/NSPlatform_darwin.h>
+#import <Foundation/NSTask_darwin.h>
 
-#import <rpc/types.h>		// for MAXHOSTNAMELEN, why is that there?
+#import <rpc/types.h>
 #import <time.h>
+#import <sys/param.h>
+#import <netdb.h>
+#import <unistd.h>
+#import <crt_externs.h>
 
-NSString *NSPlatformClassName=@"NSPlatform_linux";
+NSString *NSPlatformClassName=@"NSPlatform_darwin";
 
-@implementation NSPlatform_linux
+@implementation NSPlatform_darwin
 
-// FIX messy
-extern char *__tzname[2];
-extern int __daylight;
-extern long int __timezone;
-
+/*
+     The external time_t variable altzone  contains  the  differ-
+     ence, in seconds, between Coordinated Universal Time and the
+     alternate time zone. The external variable timezone contains
+     the  difference,  in seconds, between UTC and local standard
+     time.  The external variable daylight indicates whether time
+     should  reflect  daylight  savings  time.  Both timezone and
+     altzone default to 0 (UTC). The external  variable  daylight
+     is  non-zero if an alternate time zone exists. The time zone
+     names are contained in the external variable  tzname,  which
+     by default is set to:
+ */
 -(NSTimeZone *)systemTimeZone {
    NSTimeZone *systemTimeZone;
     NSString *timeZoneName;
@@ -37,16 +48,13 @@ extern long int __timezone;
 #endif
 
 #if 0		// more anomalous results...
-   systemTimeZone = [[NSTimeZone alloc] initWithName:@"LinuxSystem" 
+   systemTimeZone = [[NSTimeZone alloc] initWithName:@"SolarisSystem" 
                data:[NSData dataWithContentsOfFile:@"/etc/localtime"]];
 #endif
 
    // similar to Win32's implementation
-   // extern long int __timezone;   /* Seconds west of UTC.  */
-   // this is really somewhat ugly, but /etc/localtime (above) should "just
-   // work" and it does not.
    tzset();
-   secondsFromGMT = 0-__timezone + __daylight*3600;
+   secondsFromGMT = -__DARWIN_ALIAS(timezone) + daylight*3600;
    systemTimeZone = [NSTimeZone timeZoneForSecondsFromGMT:secondsFromGMT];
 
    return systemTimeZone;
@@ -63,8 +71,10 @@ extern long int __timezone;
 
     if (interval > 1.0)
         sleep((unsigned int) interval);
-    else 
-        usleep((unsigned long)(1000000.0*interval));
+    else {
+     unsigned long value= 1000.0*interval;
+     poll(NULL,0,value);
+    }
 }
 
 /*
@@ -85,28 +95,28 @@ extern long int __timezone;
 }
 
 -(NSString *)executableDirectory {
-   return @"Linux";
+   return @"Darwin";
 }
 
 -(NSString *)resourceNameSuffix {
-   return @"linux";
+   return @"darwin";
 }
 
 -(NSString *)loadableObjectFileExtension {
-   return @"so";
+   return @"";
 }
 
 -(NSString *)loadableObjectFilePrefix {
-   return @"lib";
+   return @"";
 }
 
 -(Class)taskClass {
-   return [NSTask_linux class];
+   return [NSTask_darwin class];
 }
 
 @end
 
 char **NSPlatform_environ() {   
-   return __environ;
+   return *_NSGetEnviron();
 }
 

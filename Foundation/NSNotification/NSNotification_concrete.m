@@ -39,6 +39,8 @@ NSNotification_concrete *NSNotification_concreteNew(NSZone *zone,
    [_object release];
    [_userInfo release];
    NSDeallocateObject(self);
+   return;
+   [super dealloc];
 }
 
 

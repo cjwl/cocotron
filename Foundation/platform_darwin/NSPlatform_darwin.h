@@ -6,46 +6,12 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
-// Original - Christopher Lloyd <cjwl@objc.net>
-#import <Foundation/NSDictionary_mapTable.h>
-#import <Foundation/NSEnumerator_dictionaryKeys.h>
-#import <Foundation/NSAutoreleasePool-private.h>
-#import <Foundation/NSCoder.h>
+#import <Foundation/NSPlatform.h>
+#import <Foundation/NSPlatform_posix.h>
 
-@implementation NSDictionary_mapTable
-
--(unsigned)count {
-   return NSCountMapTable(_table);
-}
-
--objectForKey:key {
-   return NSMapGet(_table,key);
-}
-
--(NSEnumerator *)keyEnumerator {
-   return NSAutorelease(NSEnumerator_dictionaryKeysNew(_table));
-}
-
--initWithObjects:(id *)objects forKeys:(id *)keys count:(unsigned)count {
-   int i;
-
-   _table=NSCreateMapTableWithZone(NSObjectMapKeyCallBacks,
-     NSObjectMapValueCallBacks,count,NULL);
-
-   for(i=0;i<count;i++){
-    id key=[keys[i] copy];
-    NSMapInsert(_table,key,objects[i]);
-    [key release];
-   }
-   return self;
-}
-
--(void)dealloc {
-   if(_table!=NULL)
-    NSFreeMapTable(_table);
-   NSDeallocateObject(self);
-   return;
-   [super dealloc];
+@interface NSPlatform_darwin : NSPlatform_posix
+{
 }
 
 @end
+

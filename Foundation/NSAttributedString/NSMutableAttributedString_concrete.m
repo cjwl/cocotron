@@ -27,6 +27,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [_string release];
    NSFreeRangeEntries(_rangeToAttributes);
    NSDeallocateObject(self);
+   return;
+   [super dealloc];
 }
 
 -(NSString *)string {

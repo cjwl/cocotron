@@ -33,7 +33,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSSocket_windows.h>
 #import <Foundation/NSParentDeathMonitor_win32.h>
 #import <Foundation/NSSelectInputSourceSet.h>
-#import <malloc.h>
 
 #import <Foundation/ObjectiveC.h>
 
@@ -205,7 +204,7 @@ NSString *NSPlatformClassName=@"NSPlatform_win32";
    for(count=0,run=envString;*run;count++)
     run+=strlen(run)+1;
 
-   env=alloca(sizeof(char *)*(count+1));
+   env=__builtin_alloca(sizeof(char *)*(count+1));
    for(count=0,run=envString;*run;count++){
     env[count]=run;
     run+=strlen(run)+1;
@@ -219,9 +218,9 @@ NSString *NSPlatformClassName=@"NSPlatform_win32";
     if((len=strlen(env[count]))>max)
      max=len;
 
-   keyValue=alloca(max+1);
-   objects=alloca(sizeof(id)*count);
-   keys=alloca(sizeof(id)*count);
+   keyValue=__builtin_alloca(max+1);
+   objects=__builtin_alloca(sizeof(id)*count);
+   keys=__builtin_alloca(sizeof(id)*count);
 
    for(count=0;env[count];count++){
     len=strlen(strcpy(keyValue,env[count]));

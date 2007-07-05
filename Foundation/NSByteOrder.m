@@ -111,9 +111,7 @@ double NSSwapBigDoubleToHost(NSSwappedDouble value){
     return NSConvertSwappedDoubleToHost(NSSwapDouble(value));
 }
 
-#endif
-
-#ifdef __BIG_ENDIAN__
+#elif defined(__BIG_ENDIAN__)
 
 int NSHostByteOrder(void){
    return NS_BigEndian;

@@ -87,6 +87,8 @@ NSArray *NSArray_concreteWithArrayRange(NSArray *array,NSRange range) {
     [_objects[count] release];
 
    NSDeallocateObject(self);
+   return;
+   [super dealloc];
 }
 
 -(unsigned)count { return _count; }

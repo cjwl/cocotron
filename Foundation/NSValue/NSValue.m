@@ -16,7 +16,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSValue_nonRetainedObject.h>
 #import <Foundation/NSValue_pointer.h>
 #import <Foundation/NSData_concrete.h>
-#import <malloc.h>
 
 @implementation NSValue
 
@@ -91,8 +90,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     return NO;
 
    NSGetSizeAndAlignment(type,&size,&alignment);
-   selfData=alloca(size);
-   otherData=alloca(size);
+   selfData=__builtin_alloca(size);
+   otherData=__builtin_alloca(size);
 
    [self getValue:selfData];
    [other getValue:otherData];

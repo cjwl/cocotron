@@ -112,3 +112,10 @@ NSString *NSPlatformClassName=@"NSPlatform_solaris";
 }
 
 @end
+
+char **NSPlatform_environ() {
+   extern char **environ;
+   
+   return environ;
+}
+

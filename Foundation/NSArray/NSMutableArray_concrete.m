@@ -11,8 +11,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSRaise.h>
 #import <Foundation/NSCoder.h>
 
-#import <malloc.h>
-
 @implementation NSMutableArray_concrete
 
 static inline unsigned roundCapacityUp(unsigned capacity){
@@ -93,7 +91,7 @@ NSArray *NSMutableArray_concreteNewWithCapacity(NSZone *zone,
 
    va_end(arguments);
 
-   objects=alloca(sizeof(id)*count);
+   objects=__builtin_alloca(sizeof(id)*count);
 
    va_start(arguments,first);
 
@@ -119,6 +117,8 @@ NSArray *NSMutableArray_concreteNewWithCapacity(NSZone *zone,
 
    NSZoneFree(NSZoneFromPointer(_objects),_objects);
    NSDeallocateObject(self);
+   return;
+   [super dealloc];
 }
 
 -(unsigned)count { return _count; }

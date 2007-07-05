@@ -25,6 +25,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    NSSetTableFreeBuckets(_table);
    NSZoneFree(NSZoneFromPointer(_table),_table);
    NSDeallocateObject(self);
+   return;
+   [super dealloc];
 }
 
 -(unsigned)count {

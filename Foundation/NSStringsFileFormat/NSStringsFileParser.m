@@ -14,7 +14,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSString.h>
 #import <Foundation/NSObjCRuntime.h>
 #import <Foundation/NSString_cString.h>
-#import <malloc.h>
 
 static NSArray *error(NSArray *array,char *strBuf,NSString *fmt,...) {
    va_list list;
@@ -208,8 +207,8 @@ NSDictionary *NSDictionaryFromStringsFormatData(NSData *data) {
 
    count=[array count]/2;
 
-   keys=alloca(sizeof(id)*count);
-   values=alloca(sizeof(id)*count);
+   keys=__builtin_alloca(sizeof(id)*count);
+   values=__builtin_alloca(sizeof(id)*count);
 
    for(i=0;i<count;i++){
     keys[i]=[array objectAtIndex:i*2];

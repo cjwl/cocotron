@@ -171,6 +171,8 @@ NSString *NSMutableString_unicodePtrNewWithCapacity(NSZone *zone,
 -(void)dealloc {
    NSZoneFree(NSZoneFromPointer(self->_unicode),self->_unicode);
    NSDeallocateObject(self); 
+   return;
+   [super dealloc];
 }
 
 -init {

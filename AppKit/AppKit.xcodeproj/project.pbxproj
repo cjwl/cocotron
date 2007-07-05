@@ -730,6 +730,20 @@
 			remoteGlobalIDString = 8DC2EF4F0486A6940098B216;
 			remoteInfo = "Foundation-Windows-i386-gcc-4.0.3-mingw";
 		};
+		FED70AC90C3B3FD9000CBE5B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6E46FEBE0A2D2DCF004CD27E /* Foundation.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = FED70A6B0C3B3D2C000CBE5B;
+			remoteInfo = "Foundation-darwin";
+		};
+		FEE66D790C3D6F8A00FBED82 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6E46FEBE0A2D2DCF004CD27E /* Foundation.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = FED70FB70C3C09C7000CBE5B /* Foundation.framework */;
+			remoteInfo = "Foundation-Darwin-ppc";
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -2292,6 +2306,8 @@
 				6E46FEC60A2D2DCF004CD27E /* Foundation.framework */,
 				6E46FEC80A2D2DCF004CD27E /* Foundation.framework */,
 				6E46FECA0A2D2DCF004CD27E /* Foundation.framework */,
+				FED70ACA0C3B3FD9000CBE5B /* Foundation.framework */,
+				FEE66D7A0C3D6F8A00FBED82 /* Foundation.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -2806,6 +2822,20 @@
 			fileType = wrapper.framework;
 			path = Foundation.framework;
 			remoteRef = 6E46FEC90A2D2DCF004CD27E /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FED70ACA0C3B3FD9000CBE5B /* Foundation.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Foundation.framework;
+			remoteRef = FED70AC90C3B3FD9000CBE5B /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FEE66D7A0C3D6F8A00FBED82 /* Foundation.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Foundation.framework;
+			remoteRef = FEE66D790C3D6F8A00FBED82 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
