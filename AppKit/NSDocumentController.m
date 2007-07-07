@@ -55,12 +55,13 @@ static NSDocumentController *shared=nil;
 }
 
 -makeUntitledDocumentOfType:(NSString *)type {
+   static int nextUntitledNumber=1;
    id    result;
    Class class=[self documentClassForType:type];
 
    result=[[[class alloc] init] autorelease];
    [result setFileType:type];
-
+   [result _setUntitledNumber:nextUntitledNumber++];
    return result;
 }
 

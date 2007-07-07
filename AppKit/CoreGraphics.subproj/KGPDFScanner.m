@@ -1051,7 +1051,7 @@ BOOL KGPDFParseIndirectObject(NSData *data,KGPDFInteger position,KGPDFObject **o
      else {
       KGPDFOperatorCallback callback=[_operatorTable callbackForName:[(KGPDFObject_identifier *)object name]];
       
-     // NSLog(@"op=[%s]",[object name]);
+      //NSLog(@"op=[%s]",[object name]);
 
       if(callback!=NULL){
        callback(self,_info);

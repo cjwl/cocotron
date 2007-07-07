@@ -12,3 +12,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 NSData *KGPDFFilterWithName(const char *name,NSData *data,KGPDFDictionary *parameters);
 
+@interface KGPDFFilter : NSObject {
+   KGPDFDictionary *_parameters;
+}
+
++(NSData *)decodeWithName:(const char *)name data:(NSData *)data parameters:(KGPDFDictionary *)parameters;
++(NSData *)LZWDecode_data:(NSData *)data parameters:(KGPDFDictionary *)parameters;
+
+@end

@@ -14,6 +14,25 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @implementation NSPDFImageRep
 
++(NSArray *)imageUnfilteredFileTypes {
+   return [NSArray arrayWithObjects:@"pdf",nil];
+}
+
++(NSArray *)imageRepsWithContentsOfFile:(NSString *)path {
+   NSMutableArray *result=[NSMutableArray array];
+   NSData         *data=[NSData dataWithContentsOfFile:path];
+   NSPDFImageRep  *pdf;
+   
+   if(data==nil)
+    return nil;
+   if((pdf=[[[self alloc] initWithData:data] autorelease])==nil)
+    return nil;
+   
+   [result addObject:pdf];
+   
+   return result;
+}
+
 -initWithData:(NSData *)data {
    _pdf=[data retain];
    _currentPage=0;
@@ -45,6 +64,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)setCurrentPage:(int)page {
    _currentPage=page;
+}
+
+-(NSSize)size {
+   KGPDFPage *page=[_document pageAtNumber:_currentPage];
+   NSRect     mediaBox;
+   
+   if(![page getRect:&mediaBox forBox:kKGPDFMediaBox])
+    return NSMakeSize(0,0);
+   
+   return mediaBox.size;
 }
 
 -(BOOL)drawInRect:(NSRect)rect {

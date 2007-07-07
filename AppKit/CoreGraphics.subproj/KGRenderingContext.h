@@ -12,7 +12,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @class KGContext,KGColor,KGPath,KGImage,KGLayer,KGShading;
 
-@interface KGRenderingContext : NSObject
+@interface KGRenderingContext : NSObject {
+   KGFont *_font;
+}
 
 -(NSSize)size;
 
@@ -25,7 +27,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)scalePage:(float)scalex:(float)scaley;
 
--(void)selectFontWithName:(const char *)name pointSize:(float)pointSize antialias:(BOOL)antialias;
+-(void)setFont:(KGFont *)font;
 
 -(id)saveCopyOfDeviceState;
 -(void)restoreDeviceState:(id)state;

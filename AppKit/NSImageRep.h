@@ -19,6 +19,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    BOOL      _isOpaque;
 }
 
++(NSArray *)registeredImageRepClasses;
++(void)registerImageRepClass:(Class)class;
++(void)unregisterImageRepClass:(Class)class;
++(Class)imageRepClassForFileType:(NSString *)type;
+
 +(NSArray *)imageUnfilteredFileTypes;
 
 +(NSArray *)imageRepsWithContentsOfFile:(NSString *)path;

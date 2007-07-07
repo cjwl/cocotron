@@ -9,6 +9,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/Foundation.h>
 #import <AppKit/CoreGraphics.h>
 
+@class KGFont;
+
 typedef unsigned NSGlyph;
 
 enum {
@@ -33,9 +35,7 @@ typedef enum {
    float     _descender;
    BOOL      _isFixedPitch;
 
-   BOOL                      _glyphRangeTableLoaded;
-   struct NSGlyphRangeTable *_glyphRangeTable;
-   struct NSGlyphMetricsSet    *_glyphInfoSet;
+   KGFont   *_kgFont;
 }
 
 +(NSFont *)fontWithName:(NSString *)name size:(float)size;

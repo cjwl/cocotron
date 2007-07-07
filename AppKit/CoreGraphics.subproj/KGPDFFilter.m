@@ -20,13 +20,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <stdlib.h>
 #import <memory.h>
 
-@interface KGPDFFilter : NSObject {
-   KGPDFDictionary *_parameters;
-}
-
-+(NSData *)decodeWithName:(const char *)name data:(NSData *)data parameters:(KGPDFDictionary *)parameters;
-
-@end
 
 NSData *KGPDFFilterWithName(const char *name,NSData *data,KGPDFDictionary *parameters) {
    return [KGPDFFilter decodeWithName:name data:data parameters:parameters];
@@ -483,13 +476,19 @@ unsigned char *stbi_zlib_decode_malloc(KGFlateDecode *inflate,const unsigned cha
    return [NSData dataWithBytesNoCopy:result length:len];
 }
 
++(NSData *)LZWDecode_data:(NSData *)data parameters:(KGPDFDictionary *)parameters {
+   return nil;
+}
 
 +(NSData *)decodeWithName:(const char *)name data:(NSData *)data parameters:(KGPDFDictionary *)parameters {
-   if(strcmp(name,"FlateDecode")==0){
+   if((strcmp(name,"FlateDecode")==0) || (strcmp(name,"LZWDecode")==0)){
     KGPDFInteger predictor;
     
-    data=[self FlateDecode_data:data parameters:parameters];
-
+    if(strcmp(name,"FlateDecode")==0)
+     data=[self FlateDecode_data:data parameters:parameters];
+    else
+     data=[self LZWDecode_data:data parameters:parameters];
+    
     if([parameters getIntegerForKey:"Predictor" value:&predictor]){
      if(predictor>1){
       NSMutableData *mutable=[NSMutableData data];
@@ -560,7 +559,7 @@ unsigned char *stbi_zlib_decode_malloc(KGFlateDecode *inflate,const unsigned cha
    
     return data;
    }
-   NSLog(@"Unknown KGPDFFilter name = %s",name);
+   NSLog(@"Unknown KGPDFFilter name = %s, parameters=%@",name,parameters);
    return nil;
 }
 

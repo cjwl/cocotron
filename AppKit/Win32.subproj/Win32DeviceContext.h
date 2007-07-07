@@ -17,7 +17,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    HDC        _dc;
    HRGN       _clipRegion;
    BOOL       _isAdvanced;
-   Win32Font *_font;
+   Win32Font *_gdiFont;
 }
 
 -(KGContext *)graphicsContextWithSize:(NSSize)size;

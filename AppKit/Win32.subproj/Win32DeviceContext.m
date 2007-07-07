@@ -22,6 +22,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/KGContext.h>
 #import <AppKit/KGFunction.h>
 #import <AppKit/KGColorSpace.h>
+#import <AppKit/KGFont.h>
 
 static inline int float2int(float coord){
    return lround(coord);
@@ -87,13 +88,13 @@ NSRect Win32TransformRect(CGAffineTransform matrix,NSRect rect) {
    SetTextAlign(_dc,TA_BASELINE);
 
 
-   _font=nil;
+   _gdiFont=nil;
    return self;
 }
 
 -(void)dealloc {
    DeleteObject(_clipRegion);
-   [_font release];
+   [_gdiFont release];
    [super dealloc];
 }
 
@@ -108,19 +109,23 @@ NSRect Win32TransformRect(CGAffineTransform matrix,NSRect rect) {
 -(void)selectFontWithName:(const char *)name pointSize:(float)pointSize antialias:(BOOL)antialias {
    int height=(pointSize*GetDeviceCaps(_dc,LOGPIXELSY))/72.0;
 
-   [_font release];
-   _font=[[Win32Font alloc] initWithName:name size:NSMakeSize(0,height) antialias:antialias];
-   SelectObject(_dc,[_font fontHandle]);
+   [_gdiFont release];
+   _gdiFont=[[Win32Font alloc] initWithName:name size:NSMakeSize(0,height) antialias:antialias];
+   SelectObject(_dc,[_gdiFont fontHandle]);
 }
 
 -(void)selectFontWithName:(const char *)name pointSize:(float)pointSize {
    [self selectFontWithName:name pointSize:pointSize antialias:NO];
 }
 
--(Win32Font *)currentFont {
-   return _font;
+-(void)setFont:(KGFont *)font {
+   [super setFont:font];
+   [self selectFontWithName:[[font name] cString] pointSize:[font pointSize] antialias:NO];
 }
 
+-(Win32Font *)currentFont {
+   return _gdiFont;
+}
 
 -(BOOL)isPrinter {
    return NO;
@@ -405,14 +410,14 @@ static RECT NSRectToRECT(NSRect rect) {
    [self establishDeviceSpacePath:path];
    SetPolyFillMode(_dc,WINDING);
    if(!SelectClipPath(_dc,RGN_AND))
-    NSLog(@"SelectClipPath failed (%i)", GetLastError());
+    NSLog(@"SelectClipPath failed (%i), path size= %d", GetLastError(),[path numberOfOperators]);
 }
 
 -(void)evenOddClipToDeviceSpacePath:(KGPath *)path {
    [self establishDeviceSpacePath:path];
    SetPolyFillMode(_dc,ALTERNATE);
    if(!SelectClipPath(_dc,RGN_AND))
-    NSLog(@"SelectClipPath failed (%i)", GetLastError());
+    NSLog(@"SelectClipPath failed (%i), path size= %d", GetLastError(),[path numberOfOperators]);
 }
 
 #if 1
@@ -592,7 +597,7 @@ static void zeroBytes(void *bytes,int size){
 // Mac one is a sampling one. So to preserve color variation we stitch together a lot of samples
 
 // we could use stitched linear PDF functions better, i.e. use the intervals
-// we could decompose the rectangles further and just use fills if we don't have GradientFill
+// we could decompose the rectangles further and just use fills if we don't have GradientFill (or ditch GradientFill altogether)
 // we could test for cases where the angle is a multiple of 90 and use the _H or _V constants if we dont have transformations
 // we could decompose this better to platform generalize it
 
@@ -807,111 +812,166 @@ static inline void CMYKAToRGBA(float *input,float *output){
    }
 }
 
-static int appendCurveto(POINT *points,int position,NSPoint cp1,NSPoint cp2,NSPoint end,CGAffineTransform matrix){
-   cp1=CGPointApplyAffineTransform(cp1,matrix);
-   points[position].x=float2int(cp1.x);
-   points[position].y=float2int(cp1.y);
-   position++;
-   
-   cp2=CGPointApplyAffineTransform(cp2,matrix);
-   points[position].x=float2int(cp2.x);
-   points[position].y=float2int(cp2.y);
-   position++;
-
-   end=CGPointApplyAffineTransform(end,matrix);
-   points[position].x=float2int(end.x);
-   points[position].y=float2int(end.y);
-   position++;
-   
-   return position;
-}
-
 // ellipse to 4 spline bezier, http://www.tinaja.com/glib/ellipse4.pdf
-static void appendCircle(HDC dc,float x,float y,float radius,CGAffineTransform matrix){
+static int appendCircle(NSPoint *cp,int position,float x,float y,float radius,CGAffineTransform matrix){
    float magic=0.551784;
    float xrad=radius;
    float yrad=radius;
    float xmag=xrad*magic;
    float ymag=yrad*magic;
-   POINT points[12];
-   int   count=0;
-   NSPoint moveto;
 
    matrix=CGAffineTransformConcat(matrix,CGAffineTransformMakeTranslation(x,y));
 
-   moveto=CGPointApplyAffineTransform(NSMakePoint(-xrad,0),matrix);
-   MoveToEx(dc,float2int(moveto.x),float2int(moveto.y),NULL);   
+   cp[position++]=CGPointApplyAffineTransform(NSMakePoint(-xrad,0),matrix);
 
-   count=appendCurveto(points,count,NSMakePoint(-xrad,ymag),NSMakePoint(-xmag,yrad),NSMakePoint(0,yrad),matrix);
-   count=appendCurveto(points,count,NSMakePoint(xmag,yrad),NSMakePoint(xrad,ymag),NSMakePoint(xrad,0),matrix);
-   count=appendCurveto(points,count,NSMakePoint(xrad,-ymag),NSMakePoint(xmag,-yrad),NSMakePoint(0,-yrad),matrix);
-   count=appendCurveto(points,count,NSMakePoint(-xmag,-yrad),NSMakePoint(-xrad,-ymag),NSMakePoint(-xrad,0),matrix);
+   cp[position++]=CGPointApplyAffineTransform(NSMakePoint(-xrad,ymag),matrix);
+   cp[position++]=CGPointApplyAffineTransform(NSMakePoint(-xmag,yrad),matrix);
+   cp[position++]=CGPointApplyAffineTransform(NSMakePoint(0,yrad),matrix);
    
-   PolyBezierTo(dc,points,count);
+   cp[position++]=CGPointApplyAffineTransform(NSMakePoint(xmag,yrad),matrix);
+   cp[position++]=CGPointApplyAffineTransform(NSMakePoint(xrad,ymag),matrix);
+   cp[position++]=CGPointApplyAffineTransform(NSMakePoint(xrad,0),matrix);
+
+   cp[position++]=CGPointApplyAffineTransform(NSMakePoint(xrad,-ymag),matrix);
+   cp[position++]=CGPointApplyAffineTransform(NSMakePoint(xmag,-yrad),matrix);
+   cp[position++]=CGPointApplyAffineTransform(NSMakePoint(0,-yrad),matrix);
+
+   cp[position++]=CGPointApplyAffineTransform(NSMakePoint(-xmag,-yrad),matrix);
+   cp[position++]=CGPointApplyAffineTransform(NSMakePoint(-xrad,-ymag),matrix);
+   cp[position++]=CGPointApplyAffineTransform(NSMakePoint(-xrad,0),matrix);
+
+   return position;
 }
 
-static inline float radialBandIntervalFromMagnitude(KGFunction *function,float magnitude){
-   if(magnitude<1)
-    return 0;
-       
+static void appendCircleToDC(HDC dc,NSPoint *cp){
+   POINT   cPOINT[13];
+   int     i,count=13;
+
+   for(i=0;i<count;i++){
+    cPOINT[i].x=float2int(cp[i].x);
+    cPOINT[i].y=float2int(cp[i].y);
+   }
+   
+   MoveToEx(dc,cPOINT[0].x,cPOINT[0].y,NULL);      
+   PolyBezierTo(dc,cPOINT+1,count-1);
+}
+
+static void appendCircleToPath(HDC dc,float x,float y,float radius,CGAffineTransform matrix){
+   NSPoint cp[13];
+   
+   appendCircle(cp,0,x,y,radius,matrix);
+   appendCircleToDC(dc,cp);
+}
+
+static inline float numberOfRadialBands(KGFunction *function,NSPoint startPoint,NSPoint endPoint,float startRadius,float endRadius,CGAffineTransform matrix){
+   NSPoint startRadiusPoint=NSMakePoint(startRadius,0);
+   NSPoint endRadiusPoint=NSMakePoint(endRadius,0);
+   
+   startPoint=CGPointApplyAffineTransform(startPoint,matrix);
+   endPoint=CGPointApplyAffineTransform(endPoint,matrix);
+   
+   startRadiusPoint=CGPointApplyAffineTransform(startRadiusPoint,matrix);
+   endRadiusPoint=CGPointApplyAffineTransform(endRadiusPoint,matrix);
+{
+   NSPoint lineVector=NSMakePoint(endPoint.x-startPoint.x,endPoint.y-startPoint.y);
+   float   lineMagnitude=ceilf(sqrtf(lineVector.x*lineVector.x+lineVector.y*lineVector.y));
+   NSPoint radiusVector=NSMakePoint(endRadiusPoint.x-startRadiusPoint.x,endRadiusPoint.y-startRadiusPoint.y);
+   float   radiusMagnitude=ceilf(sqrtf(radiusVector.x*radiusVector.x+radiusVector.y*radiusVector.y))*2;
+   float   magnitude=MAX(lineMagnitude,radiusMagnitude);
+
    return magnitude;
 }
-
-// not so good, appears to misfire causing premature termination
-static BOOL circleInsideClip(HDC dc,float x,float y,float radius,CGAffineTransform matrix){
-   CGAffineTransform rotate45=CGAffineTransformMakeRotation(M_PI*45.0/180.0);
-   NSPoint bottomLeft=CGPointApplyAffineTransform(NSMakePoint(-radius,0),rotate45);
-   NSPoint topRight=CGPointApplyAffineTransform(NSMakePoint(radius,0),rotate45);
-   NSRect  rect;
-      
-   rect.origin=bottomLeft;
-   rect.size.width=topRight.x-bottomLeft.x;
-   rect.size.height=topRight.y-bottomLeft.y;
-   rect.origin.x+=x;
-   rect.origin.y+=y;
-   {
-    NSRect edges[4]={
-     NSMakeRect(NSMinX(rect),NSMinY(rect),1,NSHeight(rect)),
-     NSMakeRect(NSMaxX(rect)-1,NSMinY(rect),1,NSHeight(rect)),
-     NSMakeRect(NSMinX(rect),NSMinY(rect),NSWidth(rect),1),
-     NSMakeRect(NSMinX(rect),NSMaxY(rect),NSWidth(rect),1),
-    };
-    int i;
-    BOOL visible=NO;
-      
-    for(i=0;i<4;i++){
-     NSRect checkRect=Win32TransformRect(matrix,edges[i]);
-     RECT   check=NSRectToRECT(checkRect);
-
-     if(RectVisible(dc,&check))
-      return YES;
-    }
-    return NO;
-   }
 }
 
+// FIX, still lame
+static BOOL controlPointsIntersectClip(HDC dc,NSPoint cp[13]){
+   NSRect clipRect,cpRect;
+   RECT   gdiRect;
+   int    i;
+   
+   if(!GetClipBox(dc,&gdiRect)){
+    NSLog(@"GetClipBox failed");
+    return NO;
+   }
+   clipRect.origin.x=gdiRect.left;
+   clipRect.origin.y=gdiRect.top;
+   clipRect.size.width=gdiRect.right-gdiRect.left;
+   clipRect.size.height=gdiRect.bottom-gdiRect.top;
+   
+   clipRect.origin.x-=clipRect.size.width;
+   clipRect.origin.y-=clipRect.size.height;
+   clipRect.size.width*=3;
+   clipRect.size.height*=3;
+   
+   for(i=0;i<13;i++)
+    if(NSPointInRect(cp[i],clipRect))
+     return YES;
+     
+   return NO;
+}
+
+
 static void extend(HDC dc,int i,int direction,float bandInterval,NSPoint startPoint,NSPoint endPoint,float startRadius,float endRadius,CGAffineTransform matrix){
-/* - some edge cases of extend are either slow or don't fill bands accurately but these are undesirable gradients
-   - optimize: if start or end is inside the other we can do straight fills (i.e. non-tubular)
- */
+// - some edge cases of extend are either slow or don't fill bands accurately but these are undesirable gradients
+
+    {
+     NSPoint lineVector=NSMakePoint(endPoint.x-startPoint.x,endPoint.y-startPoint.y);
+     float   lineMagnitude=ceilf(sqrtf(lineVector.x*lineVector.x+lineVector.y*lineVector.y));
+     
+     if((lineMagnitude+startRadius)<endRadius){
+      BeginPath(dc);
+      if(direction<0)
+       appendCircleToPath(dc,startPoint.x,startPoint.y,startRadius,matrix);
+      else {
+       NSPoint point=CGPointApplyAffineTransform(endPoint,matrix);
+
+       appendCircleToPath(dc,endPoint.x,endPoint.y,endRadius,matrix);
+       // FIX, lame
+       appendCircleToPath(dc,point.x,point.y,1000000,CGAffineTransformIdentity);
+      }
+      EndPath(dc);
+      FillPath(dc);
+      return;
+     }
+     
+     if((lineMagnitude+endRadius)<startRadius){
+      BeginPath(dc);
+      if(direction<0){
+       NSPoint point=CGPointApplyAffineTransform(startPoint,matrix);
+       
+       appendCircleToPath(dc,startPoint.x,startPoint.y,startRadius,matrix);
+       // FIX, lame
+       appendCircleToPath(dc,point.x,point.y,1000000,CGAffineTransformIdentity);
+      }
+      else {
+       appendCircleToPath(dc,endPoint.x,endPoint.y,endRadius,matrix);
+      }
+      EndPath(dc);
+      FillPath(dc);
+      return;
+     }
+    }
 
     for(;;i+=direction){
      float position,x,y,radius;
      RECT  check;
-     
+     NSPoint cp[13];
+   
      BeginPath(dc);
 
      position=(float)i/bandInterval;
      x=startPoint.x+position*(endPoint.x-startPoint.x);
      y=startPoint.y+position*(endPoint.y-startPoint.y);
      radius=startRadius+position*(endRadius-startRadius);
-     appendCircle(dc,x,y,radius,matrix);
+     appendCircle(cp,0,x,y,radius,matrix);
+     appendCircleToDC(dc,cp);
     
      position=(float)(i+direction)/bandInterval;
      x=startPoint.x+position*(endPoint.x-startPoint.x);
      y=startPoint.y+position*(endPoint.y-startPoint.y);
      radius=startRadius+position*(endRadius-startRadius);
-     appendCircle(dc,x,y,radius,matrix);
+     appendCircle(cp,0,x,y,radius,matrix);
+     appendCircleToDC(dc,cp);
      
      EndPath(dc);
 
@@ -920,7 +980,7 @@ static void extend(HDC dc,int i,int direction,float bandInterval,NSPoint startPo
      if(radius<=0)
       break;
  
-     if(!circleInsideClip(dc,x,y,radius,matrix))
+     if(!controlPointsIntersectClip(dc,cp))
       break;
     }
 }
@@ -941,13 +1001,8 @@ static void extend(HDC dc,int i,int direction,float bandInterval,NSPoint startPo
    float         endRadius=[shading endRadius];
    NSPoint       startPoint=[shading startPoint];
    NSPoint       endPoint=[shading endPoint];
-   NSPoint       vector=NSMakePoint(endPoint.x-startPoint.x,endPoint.y-startPoint.y);
-   float         lineMagnitude=ceilf(sqrtf(vector.x*vector.x+vector.y*vector.y));
-   float         radiusMagnitude=ABS(endRadius-startRadius)*2;
-   float         magnitude=MAX(lineMagnitude,radiusMagnitude);
-   float         bandInterval=radialBandIntervalFromMagnitude(function,magnitude);
+   float         bandInterval=numberOfRadialBands(function,startPoint,endPoint,startRadius,endRadius,matrix);
    int           i,bandCount=bandInterval;
-   float         bandWidth=magnitude/bandInterval;
    float         domainInterval=(bandCount==0)?0:(domain[1]-domain[0])/bandInterval;
    float         output[[colorSpace numberOfComponents]+1];
    float         rgba[4];
@@ -977,7 +1032,7 @@ static void extend(HDC dc,int i,int direction,float bandInterval,NSPoint startPo
 
     [function evaluateInput:domain[0] output:output];
     outputToRGBA(output,rgba);
-    brush=CreateSolidBrush(RGB(output[0]*255,output[1]*255,output[2]*255));
+    brush=CreateSolidBrush(RGB(rgba[0]*255,rgba[1]*255,rgba[2]*255));
     SelectObject(_dc,brush);
     SetPolyFillMode(_dc,ALTERNATE);
     extend(_dc,0,-1,bandInterval,startPoint,endPoint,startRadius,endRadius,matrix);
@@ -995,16 +1050,16 @@ static void extend(HDC dc,int i,int direction,float bandInterval,NSPoint startPo
     x=startPoint.x+position*(endPoint.x-startPoint.x);
     y=startPoint.y+position*(endPoint.y-startPoint.y);
     radius=startRadius+position*(endRadius-startRadius);
-    appendCircle(_dc,x,y,radius,matrix);
+    appendCircleToPath(_dc,x,y,radius,matrix);
     
     if(i+1==bandCount)
-     appendCircle(_dc,endPoint.x,endPoint.y,endRadius,matrix);
+     appendCircleToPath(_dc,endPoint.x,endPoint.y,endRadius,matrix);
     else {
      position=(float)(i+1)/bandInterval;
      x=startPoint.x+position*(endPoint.x-startPoint.x);
      y=startPoint.y+position*(endPoint.y-startPoint.y);
      radius=startRadius+position*(endRadius-startRadius);
-     appendCircle(_dc,x,y,radius,matrix);
+     appendCircleToPath(_dc,x,y,radius,matrix);
     }
 
     EndPath(_dc);
@@ -1017,13 +1072,13 @@ static void extend(HDC dc,int i,int direction,float bandInterval,NSPoint startPo
     FillPath(_dc);
     DeleteObject(brush);
    }
-
+   
    if(extendEnd){
     HBRUSH brush;
     
     [function evaluateInput:domain[1] output:output];
     outputToRGBA(output,rgba);
-    brush=CreateSolidBrush(RGB(output[0]*255,output[1]*255,output[2]*255));
+    brush=CreateSolidBrush(RGB(rgba[0]*255,rgba[1]*255,rgba[2]*255));
     SelectObject(_dc,brush);
     SetPolyFillMode(_dc,ALTERNATE);
     extend(_dc,i,1,bandInterval,startPoint,endPoint,startRadius,endRadius,matrix);

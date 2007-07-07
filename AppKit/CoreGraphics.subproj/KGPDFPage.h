@@ -35,6 +35,8 @@ typedef enum  {
 
 -(KGPDFDictionary *)dictionary;
 
+-(BOOL)getRect:(NSRect *)rect forBox:(KGPDFBox)box;
+
 -(int)rotationAngle;
 
 -(CGAffineTransform)drawingTransformForBox:(KGPDFBox)box inRect:(NSRect)rect rotate:(int)degrees preserveAspectRatio:(BOOL)preserveAspectRatio;

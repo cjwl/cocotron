@@ -8,6 +8,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 // Original - Christopher Lloyd <cjwl@objc.net>
 #import <AppKit/KGRenderingContext.h>
+#import <AppKit/KGFont.h>
 
 @implementation KGRenderingContext
 
@@ -40,8 +41,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    NSInvalidAbstractInvocation();
 }
 
--(void)selectFontWithName:(const char *)name pointSize:(float)pointSize antialias:(BOOL)antialias {
-   NSInvalidAbstractInvocation();
+-(void)setFont:(KGFont *)font {
+   font=[font retain];
+   [_font release];
+   _font=font;
 }
 
 -(id)saveCopyOfDeviceState {

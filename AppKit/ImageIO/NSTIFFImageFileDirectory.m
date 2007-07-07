@@ -9,6 +9,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 // Original - Christopher Lloyd <cjwl@objc.net>
 #import "NSTIFFImageFileDirectory.h"
 #import "NSTIFFReader.h"
+#import <AppKit/KGPDFFilter.h>
 
 @implementation NSTIFFImageFileDirectory
 
@@ -329,7 +330,7 @@ static void decode_R8_G8_B8_Afill(const unsigned char *stripBytes,unsigned byteC
 
 // specific checks for unimplemented features
 
-   if(_compression!=NSTIFFCompression_none){
+   if(_compression!=NSTIFFCompression_none && _compression!=NSTIFFCompression_LZW){
     NSLog(@"TIFF unsupported, compression %d",_compression);
     return NO;
    }
@@ -359,21 +360,43 @@ static void decode_R8_G8_B8_Afill(const unsigned char *stripBytes,unsigned byteC
    bytesPerRow=_imageWidth*4;
    pixelBytesRow=_imageLength-1;
    pixelBytesCol=0;
-   for(strip=0;strip<_sizeOfStripOffsets;strip++){
-    unsigned offset=_stripOffsets[strip];
-    unsigned byteCount=_stripByteCounts[strip];
-
-    if(offset+byteCount>length){
-     NSLog(@"TIFF strip error, offset (%d) + byteCount (%d) > length (%d)",offset,byteCount,length);
-     return NO;
-    }
+   if(_compression==NSTIFFCompression_LZW){
     
-    if(_samplesPerPixel==4)
-     decode_R8_G8_B8_A8(bytes+offset,byteCount,pixelBytes,bytesPerRow,&pixelBytesRow);
-    else
-     decode_R8_G8_B8_Afill(bytes+offset,byteCount,pixelBytes,bytesPerRow,&pixelBytesRow);
-   }
+    for(strip=0;strip<_sizeOfStripOffsets;strip++){
+     unsigned offset=_stripOffsets[strip];
+     unsigned byteCount=_stripByteCounts[strip];
 
+     if(offset+byteCount>length){
+      NSLog(@"TIFF strip error, offset (%d) + byteCount (%d) > length (%d)",offset,byteCount,length);
+      return NO;
+     }
+     NSData *data=[NSData dataWithBytes:bytes+offset length:byteCount];
+     
+     data=[KGPDFFilter LZWDecode_data:data parameters:nil];
+     if(_samplesPerPixel==4)
+      decode_R8_G8_B8_A8([data bytes],[data length],pixelBytes,bytesPerRow,&pixelBytesRow);
+     else
+      decode_R8_G8_B8_Afill([data bytes],[data length],pixelBytes,bytesPerRow,&pixelBytesRow);
+    }
+      
+   }
+   else {
+    for(strip=0;strip<_sizeOfStripOffsets;strip++){
+     unsigned offset=_stripOffsets[strip];
+     unsigned byteCount=_stripByteCounts[strip];
+
+     if(offset+byteCount>length){
+      NSLog(@"TIFF strip error, offset (%d) + byteCount (%d) > length (%d)",offset,byteCount,length);
+      return NO;
+     }
+    
+     if(_samplesPerPixel==4)
+      decode_R8_G8_B8_A8(bytes+offset,byteCount,pixelBytes,bytesPerRow,&pixelBytesRow);
+     else
+      decode_R8_G8_B8_Afill(bytes+offset,byteCount,pixelBytes,bytesPerRow,&pixelBytesRow);
+    }
+   }
+   
    return YES;
 }
 

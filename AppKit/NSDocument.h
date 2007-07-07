@@ -8,7 +8,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/Foundation.h>
 
-@class NSWindow,NSWindowController,NSSavePanel, NSMenuItem;
+@class NSWindow,NSWindowController,NSSavePanel, NSMenuItem,NSFileWrapper;
 
 typedef enum {
    NSChangeDone,
@@ -52,6 +52,10 @@ typedef enum {
 -(NSString *)displayName;
 -(void)setWindow:(NSWindow *)window;
 
+-(BOOL)readFromData:(NSData *)data ofType:(NSString *)type error:(NSError **)error;
+-(BOOL)readFromFileWrapper:(NSFileWrapper *)fileWrapper ofType:(NSString *)type error:(NSError **)error;
+-(BOOL)readFromURL:(NSURL *)url ofType:(NSString *)type error:(NSError **)error;
+
 -(BOOL)readFromFile:(NSString *)path ofType:(NSString *)type;
 -(BOOL)writeToFile:(NSString *)path ofType:(NSString *)type;
 -(BOOL)writeWithBackupToFile:(NSString *)path ofType:(NSString *)type saveOperation:(NSSaveOperationType)operation;
@@ -84,4 +88,6 @@ typedef enum {
 
 -(BOOL)validateMenuItem:(NSMenuItem *)item;
 
+// private
+-(void)_setUntitledNumber:(int)number;
 @end

@@ -24,6 +24,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    NSRect              _clipRect;
    KGColor            *_strokeColor;
    KGColor            *_fillColor;
+   KGFont             *_font;
    NSSize              _patternPhase;   
    float               _characterSpacing;
    int                 _textDrawingMode;

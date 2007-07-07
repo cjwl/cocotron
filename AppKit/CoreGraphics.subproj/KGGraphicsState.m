@@ -14,6 +14,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "KGColor.h"
 #import "KGColorSpace.h"
 #import "KGMutablePath.h"
+#import "KGFont.h"
 
 @implementation KGGraphicsState
 
@@ -344,13 +345,27 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)setFont:(KGFont *)font {
+   font=[font retain];
+   [_font release];
+   _font=font;
+   [_renderingContext setFont:_font];
 }
 
 -(void)setFontSize:(float)size {
+   NSString *name=[_font name];
+   KGFont   *font=[[KGFont alloc] initWithName:name size:size];
+   
+   [_font release];
+   _font=font;
+   [_renderingContext setFont:_font];
 }
 
 -(void)selectFontWithName:(const char *)name size:(float)size encoding:(int)encoding {
-   [_renderingContext selectFontWithName:name pointSize:size antialias:_shouldAntialias];
+   KGFont *font=[[KGFont alloc] initWithName:[NSString stringWithCString:name] size:size];
+   
+   [_font release];
+   _font=font;
+   [_renderingContext setFont:_font];
 }
 
 -(void)setShouldSmoothFonts:(BOOL)yesOrNo {
@@ -463,13 +478,26 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)showGlyphs:(const CGGlyph *)glyphs count:(unsigned)numberOfGlyphs {
+   NSSize advancement;
+   
    [_renderingContext showInUserSpace:_ctm textSpace:_textTransform glyphs:glyphs count:numberOfGlyphs color:_fillColor];
+   advancement=[_font advancementForNominalGlyphs:glyphs count:numberOfGlyphs];
+   
+   _textTransform.tx+=advancement.width;
+   _textTransform.ty+=advancement.height;
 }
 
 -(void)showGlyphs:(const CGGlyph *)glyphs count:(unsigned)numberOfGlyphs atPoint:(float)x:(float)y {   
+   NSSize advancement;
+
    _textTransform.tx=x;
    _textTransform.ty=y;
+   
    [_renderingContext showInUserSpace:_ctm textSpace:_textTransform glyphs:glyphs count:numberOfGlyphs color:_fillColor];
+   advancement=[_font advancementForNominalGlyphs:glyphs count:numberOfGlyphs];
+   
+   _textTransform.tx+=advancement.width;
+   _textTransform.ty+=advancement.height;
 }
 
 -(void)showGlyphs:(const CGGlyph *)glyphs count:(unsigned)count advances:(const NSSize *)advances {
@@ -477,13 +505,20 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)showText:(const char *)text length:(unsigned)length {
-   [_renderingContext showInUserSpace:_ctm textSpace:_textTransform text:text count:length color:_fillColor];
+   unichar unicode[length];
+   CGGlyph glyphs[length];
+   int     i;
+   
+   for(i=0;i<length;i++)
+    unicode[i]=text[i];
+   [_font getGlyphs:glyphs forCharacters:unicode length:length];
+   [self showGlyphs:glyphs count:length];
 }
 
 -(void)showText:(const char *)text length:(unsigned)length atPoint:(float)x:(float)y {
    _textTransform.tx=x;
    _textTransform.ty=y;
-   [_renderingContext showInUserSpace:_ctm textSpace:_textTransform text:text count:length color:_fillColor];
+   [self showText:text length:length];
 }
 
 -(void)drawShading:(KGShading *)shading {

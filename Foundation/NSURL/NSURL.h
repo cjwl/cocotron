@@ -10,7 +10,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @class NSURLHandle,NSNumber,NSData;
 
 @interface NSURL : NSObject {
-
+   NSString *_scheme;
+   NSString *_path;
 }
 
 -initWithScheme:(NSString *)scheme host:(NSString *)host path:(NSString *)path;

@@ -288,15 +288,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    NSInvalidAbstractInvocation();
 }
 
--(void)loadGlyphRangeTable:(NSGlyphRangeTable *)table fontName:(NSString *)name range:(NSRange)range {
+-(void)loadGlyphRangeTable:(CGGlyphRangeTable *)table fontName:(NSString *)name range:(NSRange)range {
    NSInvalidAbstractInvocation();
 }
 
--(void)fetchAdvancementsForFontWithName:(NSString *)name pointSize:(float)pointSize glyphRanges:(NSGlyphRangeTable *)table infoSet:(NSGlyphMetricsSet *)infoSet forGlyph:(NSGlyph)glyph {
+-(void)fetchAdvancementsForFontWithName:(NSString *)name pointSize:(float)pointSize glyphRanges:(CGGlyphRangeTable *)table infoSet:(CGGlyphMetricsSet *)infoSet forGlyph:(NSGlyph)glyph {
    NSInvalidAbstractInvocation();
 }
 
--(void)fetchGlyphKerningForFontWithName:(NSString *)name pointSize:(float)pointSize glyphRanges:(NSGlyphRangeTable *)table infoSet:(NSGlyphMetricsSet *)infoSet {
+-(void)fetchGlyphKerningForFontWithName:(NSString *)name pointSize:(float)pointSize glyphRanges:(CGGlyphRangeTable *)table infoSet:(CGGlyphMetricsSet *)infoSet {
    NSInvalidAbstractInvocation();
 }
 

@@ -3127,14 +3127,14 @@
 			isa = PBXContainerItemProxy;
 			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = FED7081C0C3B3D2C000CBE5B /* Foundation-Darwin-i386 */;
+			remoteGlobalIDString = FED7081C0C3B3D2C000CBE5B;
 			remoteInfo = "Foundation-Darwin-i386";
 		};
 		FEE66CCF0C3D615200FBED82 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = FED70D670C3C09C7000CBE5B /* Foundation-Darwin-ppc */;
+			remoteGlobalIDString = FED70D670C3C09C7000CBE5B;
 			remoteInfo = "Foundation-Darwin-ppc";
 		};
 		FEFC42400B0A5D050041512F /* PBXContainerItemProxy */ = {

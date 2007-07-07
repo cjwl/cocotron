@@ -16,8 +16,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -initFileURLWithPath:(NSString *)path {
-   NSUnimplementedMethod();
-   return nil;
+   _scheme=@"file";
+   _path=[path copy];
+   return self;
 }
 
 -initWithString:(NSString *)string {
@@ -42,6 +43,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return [[[self alloc] initWithString:string relativeToURL:parent] autorelease];
 }
 
+-(void)dealloc {
+   [_scheme release];
+   [_path release];
+   [super dealloc];
+}
+
 -(NSString *)absoluteString {
    NSUnimplementedMethod();
    return nil;
@@ -58,8 +65,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(NSString *)scheme {
-   NSUnimplementedMethod();
-   return nil;
+   return _scheme;
 }
 
 -(NSString *)host {
@@ -83,8 +89,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(NSString *)path {
-   NSUnimplementedMethod();
-   return nil;
+   return _path;
 }
 
 -(NSNumber *)port {

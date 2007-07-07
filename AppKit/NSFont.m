@@ -20,82 +20,6 @@ FOUNDATION_EXPORT char *NSUnicodeToSymbol(const unichar *characters,unsigned len
 
 @implementation NSFont
 
-static inline NSGlyph glyphForCharacter(NSFont *self,unichar character){
-   NSGlyphRangeTable *table=self->_glyphRangeTable;
-   unsigned           range=character>>8;
-   unsigned           index=character&0xFF;
-
-   if(table->ranges[range]!=NULL)
-    return table->ranges[range]->glyphs[index];
-
-   return NSNullGlyph;
-}
-
-static inline NSGlyphMetrics *glyphInfoForGlyph(NSFont *self,NSGlyph glyph){
-   if(glyph<self->_glyphInfoSet->numberOfGlyphs)
-    return self->_glyphInfoSet->info+glyph;
-
-   return NULL;
-}
-
-#define MAXUNICHAR 0xFFFF
-
--(void)fetchSharedGlyphRangeTable {
-   static NSMapTable    *nameToGlyphRanges=NULL;
-   NSGlyphRangeTable    *result;
-
-   if(nameToGlyphRanges==NULL)
-    nameToGlyphRanges=NSCreateMapTable(NSObjectMapKeyCallBacks,NSNonOwnedPointerMapValueCallBacks,0);
-
-   result=NSMapGet(nameToGlyphRanges,_name);
-
-   if(result==NULL){
-    result=NSZoneCalloc(NULL,sizeof(NSGlyphRangeTable),1);
-    NSMapInsert(nameToGlyphRanges,_name,result);
-   }
-
-   _glyphRangeTable=result;
-}
-
--(void)fetchGlyphRanges {
-   [[NSDisplay currentDisplay] loadGlyphRangeTable:_glyphRangeTable fontName:_name range:NSMakeRange(0,0xFFFF)];
-
-   _glyphRangeTableLoaded=YES;
-   _glyphInfoSet->numberOfGlyphs=_glyphRangeTable->numberOfGlyphs;
-}
-
--(void)fetchGlyphInfo {
-   _glyphInfoSet->info=NSZoneCalloc([self zone],sizeof(NSGlyphMetrics),_glyphInfoSet->numberOfGlyphs);
-   [[NSDisplay currentDisplay] fetchGlyphKerningForFontWithName:_name pointSize:_pointSize glyphRanges:self->_glyphRangeTable infoSet:self->_glyphInfoSet];
-}
-
-static inline void fetchAllGlyphRangesIfNeeded(NSFont *self){
-   if(!self->_glyphRangeTableLoaded)
-    [self fetchGlyphRanges];
-}
-
-static inline NSGlyphMetrics *fetchGlyphInfoIfNeeded(NSFont *self,NSGlyph glyph){
-   fetchAllGlyphRangesIfNeeded(self);
-   if(self->_glyphInfoSet->info==NULL)
-    [self fetchGlyphInfo];
-
-   return glyphInfoForGlyph(self,glyph);
-}
-
-static inline NSGlyphMetrics *fetchGlyphAdvancementIfNeeded(NSFont *self,NSGlyph glyph){
-   NSGlyphMetrics *info=fetchGlyphInfoIfNeeded(self,glyph);
-
-   if(info==NULL)
-    return info;
-
-   if(!info->hasAdvancement){
-    [[NSDisplay currentDisplay] fetchAdvancementsForFontWithName:self->_name pointSize:self->_pointSize glyphRanges:self->_glyphRangeTable infoSet:self->_glyphInfoSet forGlyph:glyph];
-   }
-
-   return info;
-}
-
-
 -(void)fetchMetrics {
    NSFontMetrics metrics;
 
@@ -110,11 +34,6 @@ static inline NSGlyphMetrics *fetchGlyphAdvancementIfNeeded(NSFont *self,NSGlyph
    _descender=metrics.descender;
    _isFixedPitch=metrics.isFixedPitch;
 
-   _glyphRangeTable=NULL;
-   [self fetchSharedGlyphRangeTable];
-   _glyphInfoSet=NSZoneMalloc([self zone],sizeof(NSGlyphMetricsSet));
-   _glyphInfoSet->numberOfGlyphs=0;
-   _glyphInfoSet->info=NULL;
 }
 
 -(void)encodeWithCoder:(NSCoder *)coder {
@@ -187,6 +106,8 @@ static inline NSGlyphMetrics *fetchGlyphAdvancementIfNeeded(NSFont *self,NSGlyph
    [self fetchMetrics];
 
    [[NSDisplay currentDisplay] addFontToCache:self];
+   
+   _kgFont=[[KGFont alloc] initWithName:_name size:_pointSize];
 
    return self;
 }
@@ -197,22 +118,7 @@ static inline NSGlyphMetrics *fetchGlyphAdvancementIfNeeded(NSFont *self,NSGlyph
    [[NSDisplay currentDisplay] removeFontFromCache:self];
 
    [_name release];
-   _glyphRangeTable=NULL;
-
-   if(_glyphInfoSet!=NULL){
-    if(_glyphInfoSet->info!=NULL){
-     unsigned i;
-
-     for(i=0;i<_glyphInfoSet->numberOfGlyphs;i++){
-      if(_glyphInfoSet->info[i].kerningOffsets!=NULL)
-       NSZoneFree([self zone],_glyphInfoSet->info[i].kerningOffsets);
-     }
-     NSZoneFree([self zone],_glyphInfoSet->info);
-    }
-
-    NSZoneFree([self zone],_glyphInfoSet);
-   }
-
+   [_kgFont release];
    [super dealloc];
 }
 
@@ -291,47 +197,22 @@ static inline NSGlyphMetrics *fetchGlyphAdvancementIfNeeded(NSFont *self,NSGlyph
 }
 
 -(unsigned)numberOfGlyphs {
-   return _glyphInfoSet->numberOfGlyphs;
+   return [_kgFont numberOfGlyphs];
 }
 
 -(BOOL)glyphIsEncoded:(NSGlyph)glyph {
-   NSGlyphMetrics *info=fetchGlyphInfoIfNeeded(self,glyph);
-
-   return (info!=NULL)?YES:NO;
+   return [_kgFont glyphIsEncoded:glyph];
 }
 
 -(NSSize)advancementForGlyph:(NSGlyph)glyph {
-   NSSize       result=NSMakeSize(0,0);
-   NSGlyphMetrics *info=fetchGlyphAdvancementIfNeeded(self,glyph);
-
-   if(info==NULL){
-    NSLog(@"no info for glyph %d",glyph);
-    return result;
-   }
-
-   result.width+=info->advanceA+info->advanceB+info->advanceC;
-
-   return result;
+   return [_kgFont advancementForGlyph:glyph];
 }
 
 -(NSSize)maximumAdvancement {
-   NSSize max=NSZeroSize;
-   int    glyph;
-
-   fetchAllGlyphRangesIfNeeded(self);
-
-   for(glyph=0;glyph<self->_glyphInfoSet->numberOfGlyphs;glyph++){
-    NSSize advance=[self advancementForGlyph:glyph];
-
-    max.width=MAX(max.width,advance.width);
-    max.height=MAX(max.height,advance.height);
-   }
-
-   return max;
+   return [_kgFont maximumAdvancement];
 }
 
 -(NSFont *)screenFont {
-//   NSUnimplementedMethod();
    return self;
 }
 
@@ -360,7 +241,7 @@ static inline NSGlyphMetrics *fetchGlyphAdvancementIfNeeded(NSFont *self,NSGlyph
 }
 
 -(void)set {
-   CGContextSelectFont(NSCurrentGraphicsPort(),[_name cString],_pointSize, kCGEncodingFontSpecific);
+   CGContextSetFont(NSCurrentGraphicsPort(),_kgFont);
 }
 
 -(NSStringEncoding)mostCompatibleStringEncoding {
@@ -372,93 +253,35 @@ static inline NSGlyphMetrics *fetchGlyphAdvancementIfNeeded(NSFont *self,NSGlyph
 }
 
 -(NSPoint)positionOfGlyph:(NSGlyph)current precededByGlyph:(NSGlyph)previous isNominal:(BOOL *)isNominalp {
-   NSGlyphMetrics *previousInfo;
-   NSGlyphMetrics *currentInfo;
-   NSPoint      result=NSMakePoint(0,0);
-
-   previousInfo=fetchGlyphAdvancementIfNeeded(self,previous);
-   currentInfo=fetchGlyphAdvancementIfNeeded(self,current);
-
-   *isNominalp=YES;
-
-   if(previous==NSNullGlyph){
-    if(currentInfo!=NULL){
-    }
-   }
-   else {
-    if(previousInfo!=NULL)
-     result.x+=previousInfo->advanceA+previousInfo->advanceB+previousInfo->advanceC;
-
-    if(current==NSNullGlyph){
-    }
-    else if(currentInfo!=NULL){
-     int i;
-
-     for(i=0;i<currentInfo->numberOfKerningOffsets;i++){
-      if(currentInfo->kerningOffsets[i].previous==previous){
-       result.x+=currentInfo->kerningOffsets[i].xoffset;
-       *isNominalp=NO;
-       break;
-      }
-     }
-    }
-   }
-
-   return result;
+   return [_kgFont positionOfGlyph:current precededByGlyph:previous isNominal:isNominalp];
 }
 
 -(unsigned)getGlyphs:(NSGlyph *)glyphs forCharacters:(unichar *)characters length:(unsigned)length {
-   int i;
+   CGGlyph  cgGlyphs[length];
+   int      i;
+   
+   [_kgFont getGlyphs:cgGlyphs forCharacters:characters length:length];
+   
+   for(i=0;i<length;i++){
+    unichar check=characters[i];
 
-   fetchAllGlyphRangesIfNeeded(self);
-
-   if(_encoding==NSUnicodeStringEncoding){
-    for(i=0;i<length;i++){
-     unichar check=characters[i];
-
-     if(check<' ' || (check>=0x7F && check<=0x9F) || check==0x200B)
-      glyphs[i]=NSControlGlyph;
-     else
-      glyphs[i]=glyphForCharacter(self,check);
-    }
-   }
-   else if(_encoding==NSSymbolStringEncoding){
-    char *symbols=NSUnicodeToSymbol(characters,length,YES,&length,NULL);
-
-    for(i=0;i<length;i++){
-     char check=symbols[i];
-
-     if(check<' ')
-      glyphs[i]=NSControlGlyph;
-     else
-      glyphs[i]=glyphForCharacter(self,check);
-    }
-
-    NSZoneFree(NULL,symbols);
-   }
-   else {
-    NSLog(@"unknown font encoding %d",_encoding);
+    if(check<' ' || (check>=0x7F && check<=0x9F) || check==0x200B)
+     glyphs[i]=NSControlGlyph;
+    else
+     glyphs[i]=cgGlyphs[i];
    }
 
    return length;
 }
 
 -(void)getAdvancements:(NSSize *)advancements forGlyphs:(const NSGlyph *)glyphs count:(unsigned)count {
-   int i;
+   CGGlyph cgGlyphs[count];
+   int     i;
    
-   for(i=0;i<count;i++){
-    NSGlyphMetrics *info=fetchGlyphAdvancementIfNeeded(self,glyphs[i]);
-
-    if(info==NULL){
-     NSLog(@"no info for glyph %d",glyphs[i]);
-     advancements[i].width=0;
-     advancements[i].height=0;
-    }
-    else {
-     advancements[i].width=info->advanceA+info->advanceB+info->advanceC;
-     advancements[i].height=0;
-    }
-   }
+   for(i=0;i<count;i++)
+    cgGlyphs[i]=glyphs[i];
+    
+   [_kgFont getAdvancements:advancements forGlyphs:cgGlyphs count:count];
 }
 
 @end

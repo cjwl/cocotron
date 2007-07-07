@@ -21,7 +21,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    _layerStack=[NSMutableArray new];
    _stateStack=[NSMutableArray new];
    [_stateStack addObject:state];
-   _path=nil;
+   _path=[[KGMutablePath alloc] init];
    _allowsAntialiasing=YES;
    return self;
 }

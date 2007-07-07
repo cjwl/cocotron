@@ -39,11 +39,12 @@ NSString *NSToolbarDidChangeNotification = @"NSToolbarDidChangeNotification";
         
      _items = [[NSMutableArray alloc] init];
      _identifiers = [[NSMutableArray alloc] init];
-        
-     _allowsUserCustomization = YES;
-     _isLoadingConfiguration = NO;
 
      _view = [[NSToolbarView alloc] initWithFrame:[NSToolbarView viewFrameWithWindowContentSize:[[_window contentView] frame].size sizeMode:_sizeMode displayMode:_displayMode minYMargin:MIN_Y_MARGIN]];
+
+     _visible=YES;
+     _allowsUserCustomization = YES;
+     _isLoadingConfiguration = NO;
         
      [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(toolbarDidChange:) name:NSToolbarDidChangeNotification object:nil];
             
@@ -313,14 +314,11 @@ NSString *NSToolbarDidChangeNotification = @"NSToolbarDidChangeNotification";
 //    [[NSNotificationCenter defaultCenter] postNotificationName:NSToolbarDidChangeNotification object:self];
 }
 
-- (void)setVisible:(BOOL)flag
-{
-    if (_visible == flag)
-        return;
-    
-    if ([self isVisible]) {
+-(void)_setVisible:(BOOL)flag { 
+
+    if (_window==[_view window]) {
         NSRect frame = [_window frame];
-        
+
         [_view removeFromSuperview];
         
         frame.size.height -= [_view frame].size.height;
@@ -330,7 +328,7 @@ NSString *NSToolbarDidChangeNotification = @"NSToolbarDidChangeNotification";
     }
     else {
         NSRect frame = [_view frame];
-        
+
         frame.size.width = [[_window contentView] frame].size.width;
         frame.origin.y = [[_window contentView] frame].size.height;
 
@@ -349,6 +347,13 @@ NSString *NSToolbarDidChangeNotification = @"NSToolbarDidChangeNotification";
     _visible = flag;
     if ([self autosavesConfiguration])
         [self saveConfiguration];
+}
+
+- (void)setVisible:(BOOL)flag
+{
+    if (_visible == flag)
+        return;
+    [self _setVisible:flag];
 }
 
 - (void)setSizeMode:(NSToolbarSizeMode)mode
@@ -432,13 +437,15 @@ NSString *NSToolbarDidChangeNotification = @"NSToolbarDidChangeNotification";
     [[NSNotificationCenter defaultCenter] removeObserver:self name:NSWindowDidAnimateNotification object:_window];
     
     _window = window;
-    
+
     if (_window != nil) 
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(windowDidAnimate:) name:NSWindowDidAnimateNotification object:_window];
 
     // do this here since _window must be initialized for this to work...
     if ([self loadConfiguration])
         [self _reloadToolbar];
+
+    [self _setVisible:_visible];
 }
 
 - (NSArray *)itemIdentifiers

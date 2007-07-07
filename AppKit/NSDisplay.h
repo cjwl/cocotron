@@ -8,36 +8,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/Foundation.h>
 #import <AppKit/NSFont.h>
+#import <AppKit/KGFont.h>
 
 @class NSEvent,NSColor, NSPasteboard,NSDraggingManager,NSPrintInfo, KGContext, NSView, NSSavePanel, NSOpenPanel, CGWindow;
-
-typedef struct NSGlyphRange {
-   NSGlyph glyphs[256];
-} NSGlyphRange;
-
-typedef struct NSGlyphRangeTable {
-   unsigned              numberOfGlyphs;
-   struct NSGlyphRange  *ranges[256]; 
-} NSGlyphRangeTable;
-
-typedef struct {
-   NSGlyph previous;
-   float   xoffset;
-} NSKerningOffset;
-
-typedef struct NSGlyphMetrics {
-   BOOL             hasAdvancement;
-   float            advanceA;
-   float            advanceB;
-   float            advanceC;
-   unsigned         numberOfKerningOffsets;
-   NSKerningOffset *kerningOffsets;
-} NSGlyphMetrics;
-
-typedef struct NSGlyphMetricsSet {
-   unsigned     numberOfGlyphs;
-   NSGlyphMetrics *info;
-} NSGlyphMetricsSet;
 
 typedef struct NSFontMetrics {
    NSRect boundingRect;
@@ -112,10 +85,10 @@ typedef struct NSFontMetrics {
 
 -(void)metricsForFontWithName:(const char *)name pointSize:(float)pointSize metrics:(NSFontMetrics *)metrics;
 
--(void)loadGlyphRangeTable:(NSGlyphRangeTable *)table fontName:(NSString *)name range:(NSRange)range;
+-(void)loadGlyphRangeTable:(CGGlyphRangeTable *)table fontName:(NSString *)name range:(NSRange)range;
 
--(void)fetchAdvancementsForFontWithName:(NSString *)name pointSize:(float)pointSize glyphRanges:(NSGlyphRangeTable *)table infoSet:(NSGlyphMetricsSet *)infoSet forGlyph:(NSGlyph)glyph;
--(void)fetchGlyphKerningForFontWithName:(NSString *)name pointSize:(float)pointSize glyphRanges:(NSGlyphRangeTable *)table infoSet:(NSGlyphMetricsSet *)infoSet;
+-(void)fetchAdvancementsForFontWithName:(NSString *)name pointSize:(float)pointSize glyphRanges:(CGGlyphRangeTable *)table infoSet:(CGGlyphMetricsSet *)infoSet forGlyph:(NSGlyph)glyph;
+-(void)fetchGlyphKerningForFontWithName:(NSString *)name pointSize:(float)pointSize glyphRanges:(CGGlyphRangeTable *)table infoSet:(CGGlyphMetricsSet *)infoSet;
 
 -(void)runModalWithPrintInfo:(NSPrintInfo *)printInfo;
 

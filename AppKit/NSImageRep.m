@@ -9,24 +9,55 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 // Original - Christopher Lloyd <cjwl@objc.net>
 #import <AppKit/NSImageRep.h>
 #import <AppKit/NSBitmapImageRep.h>
+#import <AppKit/NSPDFImageRep.h>
 
 @implementation NSImageRep
 
+static NSMutableArray *_registeredClasses=nil;
+
++(void)initialize {
+   if(self==[NSImageRep class]){
+    _registeredClasses=[NSMutableArray new];
+    [_registeredClasses addObject:[NSBitmapImageRep class]];
+    [_registeredClasses addObject:[NSPDFImageRep class]];
+   }
+}
+
++(NSArray *)registeredImageRepClasses {
+   return _registeredClasses;
+}
+
++(void)registerImageRepClass:(Class)class {
+   [_registeredClasses addObject:class];
+}
+
++(void)unregisterImageRepClass:(Class)class {
+   [_registeredClasses removeObjectIdenticalTo:class];
+}
+
++(Class)imageRepClassForFileType:(NSString *)type {
+   int count=[_registeredClasses count];
+   
+   while(--count>=0){
+    Class    checkClass=[_registeredClasses objectAtIndex:count];
+    NSArray *types=[checkClass imageUnfilteredFileTypes];
+    
+    if([types containsObject:type])
+     return checkClass;
+   }
+   
+   return nil;
+}
+
 +(NSArray *)imageUnfilteredFileTypes {
-   return [NSArray arrayWithObjects:@"tiff",@"tif",nil];
+   return nil;
 }
 
 +(NSArray *)imageRepsWithContentsOfFile:(NSString *)path {
    NSString *type=[path pathExtension];
-
-   if([type isEqualToString:@"tif"] || [type isEqualToString:@"tiff"]){
-    NSBitmapImageRep *bitmap=[[[NSBitmapImageRep alloc] initWithContentsOfFile:path] autorelease];
-
-    if(bitmap!=nil)
-     return [NSArray arrayWithObject:bitmap];
-   }
-
-   return nil;
+   Class     class=[self imageRepClassForFileType:type];
+   
+   return [class imageRepsWithContentsOfFile:path];
 }
 
 -(NSSize)size {
@@ -34,8 +65,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(BOOL)drawAtPoint:(NSPoint)point {
-   NSInvalidAbstractInvocation();
-   return NO;
+   NSSize size=[self size];
+   
+   return [self drawInRect:NSMakeRect(point.x,point.y,size.width,size.height)];
 }
 
 -(BOOL)drawInRect:(NSRect)rect {

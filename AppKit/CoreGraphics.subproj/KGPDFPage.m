@@ -119,6 +119,7 @@ BOOL KGPDFGetPageArrayForKey(KGPDFPage *page,const char *key,KGPDFArray **arrayp
    
    if([self getRect:&boxRect forBox:box]){   
     result=CGAffineTransformTranslate(result,-boxRect.origin.x,-boxRect.origin.y);
+    result=CGAffineTransformTranslate(result,rect.origin.x,rect.origin.y);
     result=CGAffineTransformScale(result,rect.size.width/boxRect.size.width,rect.size.height/boxRect.size.height);
    }
    

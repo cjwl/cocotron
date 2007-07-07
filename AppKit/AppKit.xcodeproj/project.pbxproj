@@ -603,7 +603,7 @@
 		FE64B8F00B81239D007EE513 /* KGPDFDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = FE64B8B60B81239D007EE513 /* KGPDFDictionary.m */; };
 		FE64B8F10B81239D007EE513 /* KGPDFDocument.h in Headers */ = {isa = PBXBuildFile; fileRef = FE64B8B70B81239D007EE513 /* KGPDFDocument.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE64B8F20B81239D007EE513 /* KGPDFDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = FE64B8B80B81239D007EE513 /* KGPDFDocument.m */; };
-		FE64B8F30B81239D007EE513 /* KGPDFFilter.h in Headers */ = {isa = PBXBuildFile; fileRef = FE64B8B90B81239D007EE513 /* KGPDFFilter.h */; };
+		FE64B8F30B81239D007EE513 /* KGPDFFilter.h in Headers */ = {isa = PBXBuildFile; fileRef = FE64B8B90B81239D007EE513 /* KGPDFFilter.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE64B8F40B81239D007EE513 /* KGPDFFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = FE64B8BA0B81239D007EE513 /* KGPDFFilter.m */; };
 		FE64B8F50B81239D007EE513 /* KGPDFFunction_Type2.h in Headers */ = {isa = PBXBuildFile; fileRef = FE64B8BB0B81239D007EE513 /* KGPDFFunction_Type2.h */; };
 		FE64B8F60B81239D007EE513 /* KGPDFFunction_Type2.m in Sources */ = {isa = PBXBuildFile; fileRef = FE64B8BC0B81239D007EE513 /* KGPDFFunction_Type2.m */; };
@@ -660,6 +660,8 @@
 		FE86887F0BC3FFA4009F515C /* NSButtonCell_disclosure_highlighted.tif in Resources */ = {isa = PBXBuildFile; fileRef = FE86887C0BC3FFA4009F515C /* NSButtonCell_disclosure_highlighted.tif */; };
 		FE8688800BC3FFA4009F515C /* NSButtonCell_disclosure_normal.tif in Resources */ = {isa = PBXBuildFile; fileRef = FE86887D0BC3FFA4009F515C /* NSButtonCell_disclosure_normal.tif */; };
 		FE8688810BC3FFA4009F515C /* NSButtonCell_disclosure_selected.tif in Resources */ = {isa = PBXBuildFile; fileRef = FE86887E0BC3FFA4009F515C /* NSButtonCell_disclosure_selected.tif */; };
+		FE89AF490C33679100CD21FB /* KGFont.h in Headers */ = {isa = PBXBuildFile; fileRef = FE89AF470C33679100CD21FB /* KGFont.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE89AF4A0C33679100CD21FB /* KGFont.m in Sources */ = {isa = PBXBuildFile; fileRef = FE89AF480C33679100CD21FB /* KGFont.m */; };
 		FE8BAEC70BC9EA8D0007FACA /* NSNibBindingConnector.h in Headers */ = {isa = PBXBuildFile; fileRef = FE8BAEC50BC9EA8D0007FACA /* NSNibBindingConnector.h */; };
 		FE8BAEC80BC9EA8D0007FACA /* NSNibBindingConnector.m in Sources */ = {isa = PBXBuildFile; fileRef = FE8BAEC60BC9EA8D0007FACA /* NSNibBindingConnector.m */; };
 		FE8BAF250BC9EC680007FACA /* NSBinder.h in Headers */ = {isa = PBXBuildFile; fileRef = FE8BAF1D0BC9EC680007FACA /* NSBinder.h */; };
@@ -741,7 +743,7 @@
 			isa = PBXContainerItemProxy;
 			containerPortal = 6E46FEBE0A2D2DCF004CD27E /* Foundation.xcodeproj */;
 			proxyType = 2;
-			remoteGlobalIDString = FED70FB70C3C09C7000CBE5B /* Foundation.framework */;
+			remoteGlobalIDString = FED70FB70C3C09C7000CBE5B;
 			remoteInfo = "Foundation-Darwin-ppc";
 		};
 /* End PBXContainerItemProxy section */
@@ -860,7 +862,7 @@
 		6E2B53FC0976075200DA0954 /* AppKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppKit.h; sourceTree = "<group>"; };
 		6E2B53FE0976075200DA0954 /* NSActionCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NSActionCell.h; sourceTree = "<group>"; };
 		6E2B54020976075200DA0954 /* NSAlertPanel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NSAlertPanel.h; sourceTree = "<group>"; };
-		6E2B54040976075200DA0954 /* NSApplication.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = NSApplication.h; path = ../NSApplication.h; sourceTree = "<group>"; };
+		6E2B54040976075200DA0954 /* NSApplication.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NSApplication.h; sourceTree = "<group>"; };
 		6E2B54060976075200DA0954 /* NSAttributedString.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NSAttributedString.h; sourceTree = "<group>"; };
 		6E2B54080976075200DA0954 /* NSBitmapImageRep.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NSBitmapImageRep.h; sourceTree = "<group>"; };
 		6E2B540A0976075200DA0954 /* NSBox.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NSBox.h; sourceTree = "<group>"; };
@@ -1402,6 +1404,8 @@
 		FE86887C0BC3FFA4009F515C /* NSButtonCell_disclosure_highlighted.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = NSButtonCell_disclosure_highlighted.tif; sourceTree = "<group>"; };
 		FE86887D0BC3FFA4009F515C /* NSButtonCell_disclosure_normal.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = NSButtonCell_disclosure_normal.tif; sourceTree = "<group>"; };
 		FE86887E0BC3FFA4009F515C /* NSButtonCell_disclosure_selected.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = NSButtonCell_disclosure_selected.tif; sourceTree = "<group>"; };
+		FE89AF470C33679100CD21FB /* KGFont.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = KGFont.h; sourceTree = "<group>"; };
+		FE89AF480C33679100CD21FB /* KGFont.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = KGFont.m; sourceTree = "<group>"; };
 		FE8BAEC50BC9EA8D0007FACA /* NSNibBindingConnector.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSNibBindingConnector.h; sourceTree = "<group>"; };
 		FE8BAEC60BC9EA8D0007FACA /* NSNibBindingConnector.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSNibBindingConnector.m; sourceTree = "<group>"; };
 		FE8BAF1D0BC9EC680007FACA /* NSBinder.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSBinder.h; sourceTree = "<group>"; };
@@ -1481,6 +1485,7 @@
 				6E2B54020976075200DA0954 /* NSAlertPanel.h */,
 				6E2B53290976075200DA0954 /* NSAlertPanel.m */,
 				FED310D70BCC022300552615 /* NSAnimation */,
+				6E2B54040976075200DA0954 /* NSApplication.h */,
 				6E2B532B0976075200DA0954 /* NSApplication.m */,
 				6E2B54060976075200DA0954 /* NSAttributedString.h */,
 				6E2B532D0976075200DA0954 /* NSAttributedString.m */,
@@ -1909,6 +1914,8 @@
 		6E2B55B20976075300DA0954 /* CoreGraphics */ = {
 			isa = PBXGroup;
 			children = (
+				FE89AF470C33679100CD21FB /* KGFont.h */,
+				FE89AF480C33679100CD21FB /* KGFont.m */,
 				6E2B55CB0976075300DA0954 /* CGAffineTransform.h */,
 				6E2B55B80976075300DA0954 /* CGAffineTransform.m */,
 				FE267EB30B8BD2690000DDC0 /* CGBitmapContext.h */,
@@ -2412,7 +2419,6 @@
 		FED310D70BCC022300552615 /* NSAnimation */ = {
 			isa = PBXGroup;
 			children = (
-				6E2B54040976075200DA0954 /* NSApplication.h */,
 				FED310DD0BCC027200552615 /* NSAnimation.h */,
 				FED310DE0BCC027200552615 /* NSAnimation.m */,
 				FED310DF0BCC027200552615 /* NSViewAnimation.h */,
@@ -2752,6 +2758,7 @@
 				FE7247690C06202B007CBC51 /* NSTextList.h in Headers */,
 				FE7247A60C0622F2007CBC51 /* NSTextAttachmentCell.h in Headers */,
 				FE7248510C0676AA007CBC51 /* NSTypesetter_concrete.h in Headers */,
+				FE89AF490C33679100CD21FB /* KGFont.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3219,6 +3226,7 @@
 				FE72476A0C06202B007CBC51 /* NSTextList.m in Sources */,
 				FE7247A70C0622F2007CBC51 /* NSTextAttachmentCell.m in Sources */,
 				FE7248520C0676AA007CBC51 /* NSTypesetter_concrete.m in Sources */,
+				FE89AF4A0C33679100CD21FB /* KGFont.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

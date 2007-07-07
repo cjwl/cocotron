@@ -904,7 +904,7 @@ static int CALLBACK buildTypeface(const LOGFONTA *lofFont_old,
    result->isFixedPitch=(metrics.tmPitchAndFamily&TMPF_FIXED_PITCH)?NO:YES;
 }
 
--(void)loadGlyphRangeTable:(NSGlyphRangeTable *)table fontName:(NSString *)name range:(NSRange)range {
+-(void)loadGlyphRangeTable:(CGGlyphRangeTable *)table fontName:(NSString *)name range:(NSRange)range {
    HDC                dc=[self deviceContextWithFontName:[name cString] pointSize:12.0];
    unichar            characters[range.length];
    unsigned short     glyphs[range.length];
@@ -946,7 +946,7 @@ static int CALLBACK buildTypeface(const LOGFONTA *lofFont_old,
       table->numberOfGlyphs=glyph;
 
      if(table->ranges[range]==NULL)
-      table->ranges[range]=NSZoneCalloc(NULL,sizeof(NSGlyphRange),1);
+      table->ranges[range]=NSZoneCalloc(NULL,sizeof(CGGlyphRange),1);
 
      table->ranges[range]->glyphs[index]=glyph;
     }
@@ -954,7 +954,7 @@ static int CALLBACK buildTypeface(const LOGFONTA *lofFont_old,
    table->numberOfGlyphs++;
 }
 
-static inline NSGlyph glyphForCharacter(NSGlyphRangeTable *table,unichar character){
+static inline NSGlyph glyphForCharacter(CGGlyphRangeTable *table,unichar character){
    unsigned range=character>>8;
    unsigned index=character&0xFF;
 
@@ -964,14 +964,14 @@ static inline NSGlyph glyphForCharacter(NSGlyphRangeTable *table,unichar charact
    return NSNullGlyph;
 }
 
-static inline NSGlyphMetrics *glyphInfoForGlyph(NSGlyphMetricsSet *infoSet,NSGlyph glyph){
+static inline CGGlyphMetrics *glyphInfoForGlyph(CGGlyphMetricsSet *infoSet,NSGlyph glyph){
    if(glyph<infoSet->numberOfGlyphs)
     return infoSet->info+glyph;
 
    return NULL;
 }
 
--(void)fetchAdvancementsForFontWithName:(NSString *)name pointSize:(float)pointSize glyphRanges:(NSGlyphRangeTable *)table infoSet:(NSGlyphMetricsSet *)infoSet forGlyph:(NSGlyph)glyph {
+-(void)fetchAdvancementsForFontWithName:(NSString *)name pointSize:(float)pointSize glyphRanges:(CGGlyphRangeTable *)table infoSet:(CGGlyphMetricsSet *)infoSet forGlyph:(NSGlyph)glyph {
    HDC       dc=[self deviceContextWithFontName:[name cString] pointSize:pointSize];
    ABCFLOAT *abc;
    int       i,max;
@@ -984,7 +984,7 @@ static inline NSGlyphMetrics *glyphInfoForGlyph(NSGlyphMetricsSet *infoSet,NSGly
    }
 
    if(max==MAXUNICHAR){
-    NSGlyphMetrics *info=glyphInfoForGlyph(infoSet,glyph);
+    CGGlyphMetrics *info=glyphInfoForGlyph(infoSet,glyph);
 
     info->hasAdvancement=YES;
     info->advanceA=0;
@@ -1000,7 +1000,7 @@ static inline NSGlyphMetrics *glyphInfoForGlyph(NSGlyphMetricsSet *infoSet,NSGly
    else {
     for(i=0;i<max;i++){
      NSGlyph      glyph=glyphForCharacter(table,i);
-     NSGlyphMetrics *info=glyphInfoForGlyph(infoSet,glyph);
+     CGGlyphMetrics *info=glyphInfoForGlyph(infoSet,glyph);
 
      if(info==NULL)
       NSLog(@"no info for glyph %d",glyph);
@@ -1014,7 +1014,7 @@ static inline NSGlyphMetrics *glyphInfoForGlyph(NSGlyphMetricsSet *infoSet,NSGly
    }
 }
 
--(void)fetchGlyphKerningForFontWithName:(NSString *)name pointSize:(float)pointSize glyphRanges:(NSGlyphRangeTable *)table infoSet:(NSGlyphMetricsSet *)infoSet {
+-(void)fetchGlyphKerningForFontWithName:(NSString *)name pointSize:(float)pointSize glyphRanges:(CGGlyphRangeTable *)table infoSet:(CGGlyphMetricsSet *)infoSet {
    HDC         dc=[self deviceContextWithFontName:[name cString] pointSize:pointSize];
    int         i,numberOfPairs=GetKerningPairs(dc,0,NULL);
    KERNINGPAIR pairs[numberOfPairs];
@@ -1034,7 +1034,7 @@ static inline NSGlyphMetrics *glyphInfoForGlyph(NSGlyphMetricsSet *infoSet,NSGly
     if(current==NSNullGlyph)
      ;//NSLog(@"unable to generate kern pair 0x%04X 0x%04X %f",previousCharacter,currentCharacter,xoffset);
     else {
-     NSGlyphMetrics *info=glyphInfoForGlyph(infoSet,current);
+     CGGlyphMetrics *info=glyphInfoForGlyph(infoSet,current);
 
      if(info==NULL)
       NSLog(@"no info for glyph %d",current);
@@ -1042,10 +1042,10 @@ static inline NSGlyphMetrics *glyphInfoForGlyph(NSGlyphMetricsSet *infoSet,NSGly
       unsigned index=info->numberOfKerningOffsets;
 
       if(index==0)
-       info->kerningOffsets=NSZoneMalloc([self zone],sizeof(NSKerningOffset));
+       info->kerningOffsets=NSZoneMalloc([self zone],sizeof(CGKerningOffset));
       else
        info->kerningOffsets=NSZoneRealloc([self zone],info->kerningOffsets,
-               sizeof(NSKerningOffset)*(index+1));
+               sizeof(CGKerningOffset)*(index+1));
 
       info->kerningOffsets[index].previous=previous;
       info->kerningOffsets[index].xoffset=xoffset;

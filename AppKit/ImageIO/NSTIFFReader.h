@@ -73,6 +73,7 @@ enum {
 
  NSTIFFCompression_none=1,
  NSTIFFCompression_CCITTGroup3=2,
+ NSTIFFCompression_LZW=5,
  NSTIFFCompression_packBits=32773,
 
  NSTIFFResolutionUnit_none=1,

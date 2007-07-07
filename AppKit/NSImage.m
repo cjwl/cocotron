@@ -232,8 +232,19 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @implementation NSBundle(NSImage)
 
+-(NSArray *)_allImageFileTypes {
+   NSMutableArray *result=[NSMutableArray array];
+   NSArray        *allClasses=[NSImageRep registeredImageRepClasses];
+   int             i,count=[allClasses count];
+   
+   for(i=0;i<count;i++)
+    [result addObjectsFromArray:[[allClasses objectAtIndex:i] imageUnfilteredFileTypes]];
+
+   return result;
+}
+
 -(NSString *)pathForImageResource:(NSString *)name {
-   NSArray *types=[NSImage imageUnfilteredFileTypes];
+   NSArray *types=[self _allImageFileTypes];
    int      i,count=[types count];
 
    for(i=0;i<count;i++){

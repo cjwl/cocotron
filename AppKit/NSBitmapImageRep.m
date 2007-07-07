@@ -15,6 +15,18 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @implementation NSBitmapImageRep
 
++(NSArray *)imageUnfilteredFileTypes {
+   return [NSArray arrayWithObjects:@"tiff",@"tif",nil];
+}
+
++(NSArray *)imageRepsWithContentsOfFile:(NSString *)path {
+   NSMutableArray *result=[NSMutableArray array];
+   
+   [result addObject:[[[NSBitmapImageRep alloc] initWithContentsOfFile:path] autorelease]];
+   
+   return result;
+}
+
 -initWithData:(NSData *)data {
    NSTIFFReader  *reader=[[NSTIFFReader alloc] initWithData:data];
    int            width=[reader pixelsWide];
@@ -67,6 +79,22 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 +imageRepWithData:(NSData *)data {
    return [[[self alloc] initWithData:data] autorelease];
+}
+
+-(BOOL)drawInRect:(NSRect)rect {
+   CGContextRef      context=NSCurrentGraphicsPort();
+   CGDataProviderRef provider=CGDataProviderCreateWithCFData(_bitmap);
+   CGColorSpaceRef   colorSpace=CGColorSpaceCreateDeviceRGB();
+   CGImageRef        image=CGImageCreate(_size.width,_size.height,8,_bitsPerPixel,_bytesPerRow,
+      colorSpace,0/*kCGImageAlphaLast|kCGBitmapByteOrder32Little*/,provider,NULL,NO,kCGRenderingIntentDefault);
+   
+   CGContextSaveGState(context);
+   CGContextDrawImage(context,rect,image);
+   CGContextRestoreGState(context);
+   
+   CGImageRelease(image);
+   CGColorSpaceRelease(colorSpace);
+   CGDataProviderRelease(provider);
 }
 
 -(void)compositeToPoint:(NSPoint)point operation:(NSCompositingOperation)operation fraction:(float)fraction {

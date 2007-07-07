@@ -14,23 +14,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSSavePanel.h>
 #import <AppKit/NSApplication.h>
 #import <AppKit/NSMenuItem.h>
+#import <AppKit/NSFileWrapper.h>
 
 @implementation NSDocument
 
 -init {
-   static int nextUntitledNumber=1;
-
-   _windowControllers=[NSMutableArray new];
-   _path=nil;
-   _type=nil;
-   _changeCount=0;
-   _untitledNumber=nextUntitledNumber++;
-   _hasUndoManager=YES;
-
-   return self;
-}
-
--initWithContentsOfFile:(NSString *)path ofType:(NSString *)type {
    _windowControllers=[NSMutableArray new];
    _path=nil;
    _type=nil;
@@ -38,8 +26,18 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    _untitledNumber=0;
    _hasUndoManager=YES;
 
-   if(![self readFromFile:path ofType:type]){
-    NSRunAlertPanel(nil,@"Can't open file '%@'.",@"Ok",nil,nil,path);
+   return self;
+}
+
+-initWithContentsOfFile:(NSString *)path ofType:(NSString *)type {
+   NSURL   *url=[NSURL fileURLWithPath:path];
+   NSError *error;
+   
+   [self init];
+
+   error=nil;
+   if(![self readFromURL:url ofType:type error:&error]){
+    NSRunAlertPanel(nil,@"Can't open file '%@'. Error = %@",@"Ok",nil,nil,path,error);
     [self dealloc];
     return nil;
    }
@@ -51,6 +49,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return self;
 }
 
+-(void)_setUntitledNumber:(int)number {
+   _untitledNumber=number;
+}
+
 -(NSData *)dataRepresentationOfType:(NSString *)type {
    [NSException raise:NSInternalInconsistencyException format:@"-[%@ %s]",isa,SELNAME(_cmd)];
    return nil;
@@ -58,6 +60,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(BOOL)loadDataRepresentation:(NSData *)data ofType:(NSString *)type {
    [NSException raise:NSInternalInconsistencyException format:@"-[%@ %s]",isa,SELNAME(_cmd)];
+   return NO;
+}
+
+-(BOOL)loadFileWrapperRepresentation:(NSFileWrapper *)fileWrapper ofType:(NSString *)type {
+
+   if([fileWrapper isRegularFile])
+    return [self loadDataRepresentation:[fileWrapper regularFileContents] ofType:type];
+
    return NO;
 }
 
@@ -112,6 +122,47 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [[_windowControllers objectAtIndex:0] setWindow:window];
    [window release];
 }
+
+-(BOOL)readFromData:(NSData *)data ofType:(NSString *)type error:(NSError **)error {
+   IMP mine=[NSDocument instanceMethodForSelector:@selector(loadDataRepresentation:ofType:)];
+   IMP theirs=[self methodForSelector:@selector(loadDataRepresentation:ofType:)];
+
+   if(mine!=theirs)
+    return [self loadDataRepresentation:data ofType:type];
+   else {
+    [NSException raise:NSInternalInconsistencyException format:@"-[%@ %s]",isa,SELNAME(_cmd)];
+    return NO;
+   }
+}
+
+-(BOOL)readFromFileWrapper:(NSFileWrapper *)fileWrapper ofType:(NSString *)type error:(NSError **)error {
+   IMP mine=[NSDocument instanceMethodForSelector:@selector(loadFileWrapperRepresentation:ofType:)];
+   IMP theirs=[self methodForSelector:@selector(loadFileWrapperRepresentation:ofType:)];
+  
+   if(mine!=theirs)
+    return [self loadFileWrapperRepresentation:fileWrapper ofType:type];
+   else
+    return [self readFromData:[fileWrapper regularFileContents] ofType:type error:error];
+}
+
+-(BOOL)readFromURL:(NSURL *)url ofType:(NSString *)type error:(NSError **)error {
+   if([[url scheme] isEqual:@"file"]){
+    IMP mine=[NSDocument instanceMethodForSelector:@selector(readFromFile:ofType:)];
+    IMP theirs=[self methodForSelector:@selector(readFromFile:ofType:)];
+    
+    if(mine!=theirs){
+     return [self readFromFile:[url path] ofType:type];
+    }
+    else {
+     NSFileWrapper *fileWrapper=[[[NSFileWrapper alloc] initWithPath:[url path]] autorelease];
+   
+     return [self readFromFileWrapper:fileWrapper ofType:type error:error];
+    }
+   }
+   
+   return NO;
+}
+
 
 -(BOOL)readFromFile:(NSString *)path ofType:(NSString *)type {
    NSData *data=[[NSData alloc] initWithContentsOfFile:path];

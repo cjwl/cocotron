@@ -871,7 +871,7 @@ void KGPDF_render_Q(KGPDFScanner *scanner,void *info) {
 void KGPDF_render_re(KGPDFScanner *scanner,void *info) {
    KGContext *context=kgContextFromInfo(info);
    NSRect     rect;
-   
+
    if(![scanner popNumber:&rect.size.height])
     return;
    if(![scanner popNumber:&rect.size.width])
@@ -880,7 +880,7 @@ void KGPDF_render_re(KGPDFScanner *scanner,void *info) {
     return;
    if(![scanner popNumber:&rect.origin.x])
     return;
-   
+
    [context addRect:rect];
 }
 
