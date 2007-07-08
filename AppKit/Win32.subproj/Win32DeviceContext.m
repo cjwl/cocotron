@@ -884,7 +884,7 @@ static inline float numberOfRadialBands(KGFunction *function,NSPoint startPoint,
 }
 
 // FIX, still lame
-static BOOL controlPointsIntersectClip(HDC dc,NSPoint cp[13]){
+static BOOL controlPointsOutsideClip(HDC dc,NSPoint cp[13]){
    NSRect clipRect,cpRect;
    RECT   gdiRect;
    int    i;
@@ -904,10 +904,14 @@ static BOOL controlPointsIntersectClip(HDC dc,NSPoint cp[13]){
    clipRect.size.height*=3;
    
    for(i=0;i<13;i++)
-    if(NSPointInRect(cp[i],clipRect))
+    if(cp[i].x>50000 || cp[i].x<-50000 || cp[i].y>50000 || cp[i].y<-50000)
      return YES;
      
-   return NO;
+   for(i=0;i<13;i++)
+    if(NSPointInRect(cp[i],clipRect))
+     return NO;
+     
+   return YES;
 }
 
 
@@ -980,7 +984,7 @@ static void extend(HDC dc,int i,int direction,float bandInterval,NSPoint startPo
      if(radius<=0)
       break;
  
-     if(!controlPointsIntersectClip(dc,cp))
+     if(controlPointsOutsideClip(dc,cp))
       break;
     }
 }
