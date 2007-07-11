@@ -235,11 +235,19 @@ static inline KGGraphicsState *currentState(KGContext *self){
 }
 
 -(void)clipToPath {
+   if([_path numberOfOperators]==0)
+    return;
+    
    [currentState(self) clipToPath:_path];
+   [_path reset];
 }
 
 -(void)evenOddClipToPath {
+   if([_path numberOfOperators]==0)
+    return;
+
    [currentState(self) evenOddClipToPath:_path];
+   [_path reset];
 }
 
 -(void)clipToMask:(KGImage *)image inRect:(NSRect)rect {
@@ -248,10 +256,12 @@ static inline KGGraphicsState *currentState(KGContext *self){
 
 -(void)clipToRect:(NSRect)rect {
    [currentState(self) clipToRect:rect];
+   [_path reset];
 }
 
 -(void)clipToRects:(const NSRect *)rects count:(unsigned)count {
    [currentState(self) clipToRects:rects count:count];
+   [_path reset];
 }
 
 -(KGColor *)strokeColor {
@@ -468,26 +478,32 @@ static inline KGGraphicsState *currentState(KGContext *self){
 
 -(void)drawPath:(int)pathMode {
    [currentState(self) drawPath:_path mode:pathMode];
+   [_path reset];
 }
 
 -(void)strokePath {
    [currentState(self) drawPath:_path mode:KGPathStroke];
+   [_path reset];
 }
 
 -(void)fillPath {
    [currentState(self) drawPath:_path mode:KGPathFill];
+   [_path reset];
 }
 
 -(void)evenOddFillPath {
    [currentState(self) drawPath:_path mode:KGPathEOFill];
+   [_path reset];
 }
 
 -(void)fillAndStrokePath {
    [currentState(self) drawPath:_path mode:KGPathFillStroke];
+   [_path reset];
 }
 
 -(void)evenOddFillAndStrokePath {
    [currentState(self) drawPath:_path mode:KGPathEOFillStroke];
+   [_path reset];
 }
 
 -(void)clearRect:(NSRect)rect {
