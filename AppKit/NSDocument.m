@@ -15,6 +15,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSApplication.h>
 #import <AppKit/NSMenuItem.h>
 #import <AppKit/NSFileWrapper.h>
+#import <AppKit/NSPrintOperation.h>
+#import <AppKit/NSPageLayout.h>
 
 @implementation NSDocument
 
@@ -32,6 +34,26 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -initWithContentsOfFile:(NSString *)path ofType:(NSString *)type {
    NSURL   *url=[NSURL fileURLWithPath:path];
    NSError *error;
+   
+   [self init];
+
+   error=nil;
+   if(![self readFromURL:url ofType:type error:&error]){
+    NSRunAlertPanel(nil,@"Can't open file '%@'. Error = %@",@"Ok",nil,nil,path,error);
+    [self dealloc];
+    return nil;
+   }
+   else {
+    [self setFileName:path];
+    [self setFileType:type];
+   }
+
+   return self;
+}
+
+-initWithContentsOfURL:(NSURL *)url ofType:(NSString *)type {
+   NSString *path=[url path];
+   NSError  *error;
    
    [self init];
 
@@ -146,7 +168,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(BOOL)readFromURL:(NSURL *)url ofType:(NSString *)type error:(NSError **)error {
-   if([[url scheme] isEqual:@"file"]){
+   if([url isFileURL]){
     IMP mine=[NSDocument instanceMethodForSelector:@selector(readFromFile:ofType:)];
     IMP theirs=[self methodForSelector:@selector(readFromFile:ofType:)];
     
@@ -199,6 +221,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(NSString *)fileName {
    return _path;
+}
+
+-(NSURL *)fileURL {
+   if(_path==nil)
+    return nil;
+    
+   return [NSURL fileURLWithPath:_path];
 }
 
 -(void)setFileName:(NSString *)path {
@@ -353,10 +382,29 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    }
 }
 
+-(NSPrintOperation *)printOperationWithSettings:(NSDictionary *)settings error:(NSError **)error {
+   NSLog(@"Implement %s in your subclass %@ of NSDocument to enable printing",SELNAME(_cmd),isa);
+   return nil;
+}
+
+-(void)printDocumentWithSettings:(NSDictionary *)settings showPrintPanel:(BOOL)showPrintPanel delegate:delegate didPrintSelector:(SEL)selector contextInfo:(void *)contextInfo {
+   NSError          *error=nil;
+   NSPrintOperation *operation=[self printOperationWithSettings:settings error:&error];
+   
+   if(operation==nil){
+    return;
+   }
+   
+   [operation setShowsPrintPanel:showPrintPanel];
+   [operation runOperation];
+}
+
 -(void)printDocument:sender {
+   [self printDocumentWithSettings:nil showPrintPanel:YES delegate:nil didPrintSelector:NULL contextInfo:NULL];
 }
 
 -(void)runPageLayout:sender {
+   [[NSPageLayout pageLayout] runModal];
 }
 
 -(void)revertDocumentToSaved:sender {

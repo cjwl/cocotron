@@ -8,12 +8,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 // Original - Christopher Lloyd <cjwl@objc.net>
 #import <AppKit/Win32Window.h>
-#import <AppKit/Win32DeviceContextWindow.h>
-#import <AppKit/Win32DeviceContextBitmap.h>
 #import <AppKit/Win32Event.h>
 #import <AppKit/Win32Application.h>
 #import <AppKit/Win32Display.h>
 #import <Foundation/NSString_win32.h>
+#import <AppKit/KGRenderingContext_gdi.h>
 
 #import <AppKit/NSWindow.h>
 #import <AppKit/NSPanel.h>
@@ -164,7 +163,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
    SetProp(_handle,"self",self);
 
-   _renderingContext=[[Win32DeviceContextWindow alloc] initWithWindowHandle:_handle];
+   _renderingContext=[[KGRenderingContext_gdi renderingContextWithWindowHWND:_handle] retain];
 
    _backingType=backingType;
 

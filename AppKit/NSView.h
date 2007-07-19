@@ -194,6 +194,11 @@ APPKIT_EXPORT NSString *NSViewFocusDidChangeNotification;
 -(void)beginPageInRect:(NSRect)rect atPlacement:(NSPoint)placement;
 -(void)endPage;
 
+-(float)widthAdjustLimit;
+-(float)heightAdjustLimit;
+-(void)adjustPageWidthNew:(float *)adjustedRight left:(float)left right:(float)right limit:(float)limit;
+-(void)adjustPageHeightNew:(float *)adjustedBottom top:(float)top bottom:(float)bottom limit:(float)limit;
+
 -(BOOL)knowsPageRange:(NSRange *)range;
 -(NSPoint)locationOfPrintRect:(NSRect)rect;
 -(NSRect)rectForPage:(int)page;

@@ -90,7 +90,8 @@ typedef struct NSFontMetrics {
 -(void)fetchAdvancementsForFontWithName:(NSString *)name pointSize:(float)pointSize glyphRanges:(CGGlyphRangeTable *)table infoSet:(CGGlyphMetricsSet *)infoSet forGlyph:(NSGlyph)glyph;
 -(void)fetchGlyphKerningForFontWithName:(NSString *)name pointSize:(float)pointSize glyphRanges:(CGGlyphRangeTable *)table infoSet:(CGGlyphMetricsSet *)infoSet;
 
--(void)runModalWithPrintInfo:(NSPrintInfo *)printInfo;
+-(void)runModalPageLayoutWithPrintInfo:(NSPrintInfo *)printInfo;
+-(int)runModalPrintPanelWithPrintInfoDictionary:(NSMutableDictionary *)attributes;
 
 -(KGContext *)graphicsPortForPrintOperationWithView:(NSView *)view printInfo:(NSPrintInfo *)printInfo pageRange:(NSRange)pageRange;
 

@@ -332,7 +332,7 @@
 		6E2B55FF0976075300DA0954 /* NSColorPickerSlidersRGB.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B55FE0976075300DA0954 /* NSColorPickerSlidersRGB.tiff */; };
 		6E2B56010976075300DA0954 /* NSColorPickerSlidersGray.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B56000976075300DA0954 /* NSColorPickerSlidersGray.tiff */; };
 		6E2B560B0976075300DA0954 /* Win32Cursor.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B560A0976075300DA0954 /* Win32Cursor.m */; settings = {ATTRIBUTES = (); }; };
-		6E2B560D0976075300DA0954 /* Win32DeviceContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B560C0976075300DA0954 /* Win32DeviceContext.m */; settings = {ATTRIBUTES = (); }; };
+		6E2B560D0976075300DA0954 /* KGRenderingContext_gdi.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B560C0976075300DA0954 /* KGRenderingContext_gdi.m */; settings = {ATTRIBUTES = (); }; };
 		6E2B560F0976075300DA0954 /* Win32DeviceContextBitmap.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B560E0976075300DA0954 /* Win32DeviceContextBitmap.m */; settings = {ATTRIBUTES = (); }; };
 		6E2B56110976075300DA0954 /* Win32DeviceContextPrinter.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B56100976075300DA0954 /* Win32DeviceContextPrinter.m */; settings = {ATTRIBUTES = (); }; };
 		6E2B56130976075300DA0954 /* Win32DeviceContextWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B56120976075300DA0954 /* Win32DeviceContextWindow.m */; settings = {ATTRIBUTES = (); }; };
@@ -350,7 +350,7 @@
 		6E2B56310976075400DA0954 /* NSOpenPanel-Win32.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B56300976075400DA0954 /* NSOpenPanel-Win32.m */; settings = {ATTRIBUTES = (); }; };
 		6E2B56330976075400DA0954 /* NSPlatform-Win32.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B56320976075400DA0954 /* NSPlatform-Win32.m */; settings = {ATTRIBUTES = (); }; };
 		6E2B56380976075400DA0954 /* Win32Cursor.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B56370976075400DA0954 /* Win32Cursor.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		6E2B563A0976075400DA0954 /* Win32DeviceContext.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B56390976075400DA0954 /* Win32DeviceContext.h */; settings = {ATTRIBUTES = (Project, Private, ); }; };
+		6E2B563A0976075400DA0954 /* KGRenderingContext_gdi.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B56390976075400DA0954 /* KGRenderingContext_gdi.h */; settings = {ATTRIBUTES = (Project, Private, ); }; };
 		6E2B563C0976075400DA0954 /* Win32DeviceContextBitmap.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B563B0976075400DA0954 /* Win32DeviceContextBitmap.h */; settings = {ATTRIBUTES = (Project, Private, ); }; };
 		6E2B563E0976075400DA0954 /* Win32DeviceContextPrinter.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B563D0976075400DA0954 /* Win32DeviceContextPrinter.h */; settings = {ATTRIBUTES = (Project, Private, ); }; };
 		6E2B56400976075400DA0954 /* Win32DeviceContextWindow.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B563F0976075400DA0954 /* Win32DeviceContextWindow.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -583,6 +583,12 @@
 		FE4BDC0C0BCD40C600E19685 /* NSFontDescriptor.m in Sources */ = {isa = PBXBuildFile; fileRef = FE4BDC0A0BCD40C600E19685 /* NSFontDescriptor.m */; };
 		FE56BA040B1221330046B7D9 /* NSMutableAttributedString.h in Headers */ = {isa = PBXBuildFile; fileRef = FE56BA020B1221330046B7D9 /* NSMutableAttributedString.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE56BA050B1221330046B7D9 /* NSMutableAttributedString.m in Sources */ = {isa = PBXBuildFile; fileRef = FE56BA030B1221330046B7D9 /* NSMutableAttributedString.m */; };
+		FE57F8170C46AA2C0078FFC1 /* KGDeviceContext.h in Headers */ = {isa = PBXBuildFile; fileRef = FE57F8150C46AA2C0078FFC1 /* KGDeviceContext.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE57F8180C46AA2C0078FFC1 /* KGDeviceContext.m in Sources */ = {isa = PBXBuildFile; fileRef = FE57F8160C46AA2C0078FFC1 /* KGDeviceContext.m */; };
+		FE57F8D20C46B68C0078FFC1 /* KGDeviceContext_gdi.h in Headers */ = {isa = PBXBuildFile; fileRef = FE57F8D00C46B68C0078FFC1 /* KGDeviceContext_gdi.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE57F8D30C46B68C0078FFC1 /* KGDeviceContext_gdi.m in Sources */ = {isa = PBXBuildFile; fileRef = FE57F8D10C46B68C0078FFC1 /* KGDeviceContext_gdi.m */; };
+		FE57FAB70C47F2010078FFC1 /* NSPrintPanel.h in Headers */ = {isa = PBXBuildFile; fileRef = FE57FAB50C47F2010078FFC1 /* NSPrintPanel.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE57FAB80C47F2010078FFC1 /* NSPrintPanel.m in Sources */ = {isa = PBXBuildFile; fileRef = FE57FAB60C47F2010078FFC1 /* NSPrintPanel.m */; };
 		FE6466E30B2C611D00B302B0 /* NSMutableParagraphStyle.h in Headers */ = {isa = PBXBuildFile; fileRef = FE6466E10B2C611D00B302B0 /* NSMutableParagraphStyle.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE6466E40B2C611D00B302B0 /* NSMutableParagraphStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = FE6466E20B2C611D00B302B0 /* NSMutableParagraphStyle.m */; };
 		FE64B8E10B81239D007EE513 /* KGColorSpace.h in Headers */ = {isa = PBXBuildFile; fileRef = FE64B8A70B81239D007EE513 /* KGColorSpace.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -1075,7 +1081,7 @@
 		6E2B55FE0976075300DA0954 /* NSColorPickerSlidersRGB.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = NSColorPickerSlidersRGB.tiff; sourceTree = "<group>"; };
 		6E2B56000976075300DA0954 /* NSColorPickerSlidersGray.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = NSColorPickerSlidersGray.tiff; sourceTree = "<group>"; };
 		6E2B560A0976075300DA0954 /* Win32Cursor.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Win32Cursor.m; sourceTree = "<group>"; };
-		6E2B560C0976075300DA0954 /* Win32DeviceContext.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Win32DeviceContext.m; sourceTree = "<group>"; };
+		6E2B560C0976075300DA0954 /* KGRenderingContext_gdi.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KGRenderingContext_gdi.m; sourceTree = "<group>"; };
 		6E2B560E0976075300DA0954 /* Win32DeviceContextBitmap.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Win32DeviceContextBitmap.m; sourceTree = "<group>"; };
 		6E2B56100976075300DA0954 /* Win32DeviceContextPrinter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Win32DeviceContextPrinter.m; sourceTree = "<group>"; };
 		6E2B56120976075300DA0954 /* Win32DeviceContextWindow.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Win32DeviceContextWindow.m; sourceTree = "<group>"; };
@@ -1093,7 +1099,7 @@
 		6E2B56300976075400DA0954 /* NSOpenPanel-Win32.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSOpenPanel-Win32.m"; sourceTree = "<group>"; };
 		6E2B56320976075400DA0954 /* NSPlatform-Win32.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSPlatform-Win32.m"; sourceTree = "<group>"; };
 		6E2B56370976075400DA0954 /* Win32Cursor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Win32Cursor.h; sourceTree = "<group>"; };
-		6E2B56390976075400DA0954 /* Win32DeviceContext.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Win32DeviceContext.h; sourceTree = "<group>"; };
+		6E2B56390976075400DA0954 /* KGRenderingContext_gdi.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KGRenderingContext_gdi.h; sourceTree = "<group>"; };
 		6E2B563B0976075400DA0954 /* Win32DeviceContextBitmap.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Win32DeviceContextBitmap.h; sourceTree = "<group>"; };
 		6E2B563D0976075400DA0954 /* Win32DeviceContextPrinter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Win32DeviceContextPrinter.h; sourceTree = "<group>"; };
 		6E2B563F0976075400DA0954 /* Win32DeviceContextWindow.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Win32DeviceContextWindow.h; sourceTree = "<group>"; };
@@ -1327,6 +1333,12 @@
 		FE4BDC0A0BCD40C600E19685 /* NSFontDescriptor.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSFontDescriptor.m; sourceTree = "<group>"; };
 		FE56BA020B1221330046B7D9 /* NSMutableAttributedString.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSMutableAttributedString.h; sourceTree = "<group>"; };
 		FE56BA030B1221330046B7D9 /* NSMutableAttributedString.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSMutableAttributedString.m; sourceTree = "<group>"; };
+		FE57F8150C46AA2C0078FFC1 /* KGDeviceContext.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = KGDeviceContext.h; sourceTree = "<group>"; };
+		FE57F8160C46AA2C0078FFC1 /* KGDeviceContext.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = KGDeviceContext.m; sourceTree = "<group>"; };
+		FE57F8D00C46B68C0078FFC1 /* KGDeviceContext_gdi.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = KGDeviceContext_gdi.h; sourceTree = "<group>"; };
+		FE57F8D10C46B68C0078FFC1 /* KGDeviceContext_gdi.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = KGDeviceContext_gdi.m; sourceTree = "<group>"; };
+		FE57FAB50C47F2010078FFC1 /* NSPrintPanel.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSPrintPanel.h; sourceTree = "<group>"; };
+		FE57FAB60C47F2010078FFC1 /* NSPrintPanel.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSPrintPanel.m; sourceTree = "<group>"; };
 		FE6466E10B2C611D00B302B0 /* NSMutableParagraphStyle.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSMutableParagraphStyle.h; sourceTree = "<group>"; };
 		FE6466E20B2C611D00B302B0 /* NSMutableParagraphStyle.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSMutableParagraphStyle.m; sourceTree = "<group>"; };
 		FE64B8A70B81239D007EE513 /* KGColorSpace.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = KGColorSpace.h; sourceTree = "<group>"; };
@@ -1645,6 +1657,8 @@
 				6E2B53A30976075200DA0954 /* NSPrintInfo.m */,
 				6E2B54840976075200DA0954 /* NSPrintOperation.h */,
 				6E2B53A50976075200DA0954 /* NSPrintOperation.m */,
+				FE57FAB50C47F2010078FFC1 /* NSPrintPanel.h */,
+				FE57FAB60C47F2010078FFC1 /* NSPrintPanel.m */,
 				6E2B54860976075200DA0954 /* NSProgressIndicator.h */,
 				6E2B53A70976075200DA0954 /* NSProgressIndicator.m */,
 				6E2B54880976075200DA0954 /* NSResponder.h */,
@@ -1914,6 +1928,8 @@
 		6E2B55B20976075300DA0954 /* CoreGraphics */ = {
 			isa = PBXGroup;
 			children = (
+				FE57F8150C46AA2C0078FFC1 /* KGDeviceContext.h */,
+				FE57F8160C46AA2C0078FFC1 /* KGDeviceContext.m */,
 				FE89AF470C33679100CD21FB /* KGFont.h */,
 				FE89AF480C33679100CD21FB /* KGFont.m */,
 				6E2B55CB0976075300DA0954 /* CGAffineTransform.h */,
@@ -2072,10 +2088,14 @@
 		6E2B56060976075300DA0954 /* Win32 */ = {
 			isa = PBXGroup;
 			children = (
+				6E2B56620976075400DA0954 /* dllmain.m */,
+				FE57F8D00C46B68C0078FFC1 /* KGDeviceContext_gdi.h */,
+				FE57F8D10C46B68C0078FFC1 /* KGDeviceContext_gdi.m */,
+				6E2B56390976075400DA0954 /* KGRenderingContext_gdi.h */,
+				6E2B560C0976075300DA0954 /* KGRenderingContext_gdi.m */,
+				6E2B565F0976075400DA0954 /* multiple_monitors.h */,
 				FE4434020BB9833B00411464 /* NSGraphicsStyle_uxtheme.h */,
 				FE4434030BB9833B00411464 /* NSGraphicsStyle_uxtheme.m */,
-				6E2B56620976075400DA0954 /* dllmain.m */,
-				6E2B565F0976075400DA0954 /* multiple_monitors.h */,
 				6E2B565D0976075400DA0954 /* NSOpenPanel-Win32.h */,
 				6E2B56300976075400DA0954 /* NSOpenPanel-Win32.m */,
 				6E2B56320976075400DA0954 /* NSPlatform-Win32.m */,
@@ -2085,8 +2105,6 @@
 				6E2B56220976075400DA0954 /* Win32Application.m */,
 				6E2B56370976075400DA0954 /* Win32Cursor.h */,
 				6E2B560A0976075300DA0954 /* Win32Cursor.m */,
-				6E2B56390976075400DA0954 /* Win32DeviceContext.h */,
-				6E2B560C0976075300DA0954 /* Win32DeviceContext.m */,
 				6E2B563B0976075400DA0954 /* Win32DeviceContextBitmap.h */,
 				6E2B560E0976075300DA0954 /* Win32DeviceContextBitmap.m */,
 				6E2B563D0976075400DA0954 /* Win32DeviceContextPrinter.h */,
@@ -2586,7 +2604,7 @@
 				6E2B55EF0976075300DA0954 /* NSBrowserCellColorList.h in Headers */,
 				6E2B55F10976075300DA0954 /* NSColorPickerSliders.h in Headers */,
 				6E2B56380976075400DA0954 /* Win32Cursor.h in Headers */,
-				6E2B563A0976075400DA0954 /* Win32DeviceContext.h in Headers */,
+				6E2B563A0976075400DA0954 /* KGRenderingContext_gdi.h in Headers */,
 				6E2B563C0976075400DA0954 /* Win32DeviceContextBitmap.h in Headers */,
 				6E2B563E0976075400DA0954 /* Win32DeviceContextPrinter.h in Headers */,
 				6E2B56400976075400DA0954 /* Win32DeviceContextWindow.h in Headers */,
@@ -2759,6 +2777,9 @@
 				FE7247A60C0622F2007CBC51 /* NSTextAttachmentCell.h in Headers */,
 				FE7248510C0676AA007CBC51 /* NSTypesetter_concrete.h in Headers */,
 				FE89AF490C33679100CD21FB /* KGFont.h in Headers */,
+				FE57F8170C46AA2C0078FFC1 /* KGDeviceContext.h in Headers */,
+				FE57F8D20C46B68C0078FFC1 /* KGDeviceContext_gdi.h in Headers */,
+				FE57FAB70C47F2010078FFC1 /* NSPrintPanel.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3054,7 +3075,7 @@
 				6E2B55E60976075300DA0954 /* NSBrowserCellColorList.m in Sources */,
 				6E2B55E80976075300DA0954 /* NSColorPickerSliders.m in Sources */,
 				6E2B560B0976075300DA0954 /* Win32Cursor.m in Sources */,
-				6E2B560D0976075300DA0954 /* Win32DeviceContext.m in Sources */,
+				6E2B560D0976075300DA0954 /* KGRenderingContext_gdi.m in Sources */,
 				6E2B560F0976075300DA0954 /* Win32DeviceContextBitmap.m in Sources */,
 				6E2B56110976075300DA0954 /* Win32DeviceContextPrinter.m in Sources */,
 				6E2B56130976075300DA0954 /* Win32DeviceContextWindow.m in Sources */,
@@ -3227,6 +3248,9 @@
 				FE7247A70C0622F2007CBC51 /* NSTextAttachmentCell.m in Sources */,
 				FE7248520C0676AA007CBC51 /* NSTypesetter_concrete.m in Sources */,
 				FE89AF4A0C33679100CD21FB /* KGFont.m in Sources */,
+				FE57F8180C46AA2C0078FFC1 /* KGDeviceContext.m in Sources */,
+				FE57F8D30C46B68C0078FFC1 /* KGDeviceContext_gdi.m in Sources */,
+				FE57FAB80C47F2010078FFC1 /* NSPrintPanel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

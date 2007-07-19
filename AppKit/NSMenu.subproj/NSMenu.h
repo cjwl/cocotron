@@ -12,6 +12,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @interface NSMenu : NSObject <NSCopying> {
    NSString       *_title;
+   NSString       *_name;
    NSMutableArray *_itemArray;
    BOOL            _autoenablesItems;
 }
@@ -41,7 +42,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)addItem:(NSMenuItem *)item;
 -(NSMenuItem *)addItemWithTitle:(NSString *)title action:(SEL)action keyEquivalent:(NSString *)keyEquivalent;
 
--(void)removeAllItems; // not public in Apples
+-(void)removeAllItems; // private, don't use outside framework
 -(void)removeItem:(NSMenuItem *)item;
 -(void)removeItemAtIndex:(int)index;
 
@@ -56,6 +57,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(BOOL)performKeyEquivalent:(NSEvent *)event;
 
+// private
+-(NSMenu *)_menuWithName:(NSString *)name;
 @end
 
 @interface NSObject(NSMenu_validateItem)

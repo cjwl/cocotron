@@ -20,7 +20,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(int)runModalWithPrintInfo:(NSPrintInfo *)printInfo {
-   [[NSDisplay currentDisplay] runModalWithPrintInfo:printInfo];
+   [[NSDisplay currentDisplay] runModalPageLayoutWithPrintInfo:printInfo];
 
    return 0;
 }

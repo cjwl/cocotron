@@ -11,8 +11,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/Win32Event.h>
 #import <AppKit/Win32Window.h>
 #import <AppKit/Win32Cursor.h>
-#import <AppKit/Win32DeviceContext.h>
-#import <AppKit/Win32DeviceContextPrinter.h>
+#import <AppKit/KGDeviceContext_gdi.h>
+#import <AppKit/Win32DeviceContextWindow.h>
+#import "KGRenderingContext_gdi.h"
 #import <AppKit/KGGraphicsState.h>
 #import <AppKit/Win32EventInputSource.h>
 #import <AppKit/Win32Application.h>
@@ -95,7 +96,7 @@ static DWORD WINAPI runWaitCursor(LPVOID arg){
 
    [super init];
 
-   _deviceContextOnPrimaryScreen=[[Win32DeviceContext deviceContextForWindowHandle:handle] retain];
+   _renderingContextOnPrimaryScreen=[[KGRenderingContext_gdi renderingContextWithWindowHWND:handle] retain];
    _eventInputSource=[Win32EventInputSource new];
    [[NSRunLoop currentRunLoop] addInputSource:_eventInputSource forMode:NSDefaultRunLoopMode];
    [[NSRunLoop currentRunLoop] addInputSource:_eventInputSource forMode:NSModalPanelRunLoopMode];
@@ -121,8 +122,8 @@ static DWORD WINAPI runWaitCursor(LPVOID arg){
    _splashPanel=nil;
 }
 
--(Win32DeviceContext *)deviceContextOnPrimaryScreen {
-   return _deviceContextOnPrimaryScreen;
+-(KGDeviceContext_gdi *)deviceContextOnPrimaryScreen {
+   return (KGDeviceContext_gdi *)[_renderingContextOnPrimaryScreen deviceContext];
 }
 
 BOOL CALLBACK monitorEnumerator(HMONITOR hMonitor,HDC hdcMonitor,LPRECT rect,LPARAM dwData) {
@@ -278,7 +279,7 @@ BOOL CALLBACK monitorEnumerator(HMONITOR hMonitor,HDC hdcMonitor,LPRECT rect,LPA
 
    *pointSize=fontData.elfLogFont.lfHeight;
 
-   *pointSize=(fontData.elfLogFont.lfHeight*72.0)/GetDeviceCaps([[self deviceContextOnPrimaryScreen] dc],LOGPIXELSY);
+   *pointSize=(fontData.elfLogFont.lfHeight*72.0)/GetDeviceCaps([_renderingContextOnPrimaryScreen dc],LOGPIXELSY);
 NSLog(@"name=%@,size=%f",[NSString stringWithCString:fontData. elfLogFont.lfFaceName],*pointSize);
 
    return [NSString stringWithCString:fontData. elfLogFont.lfFaceName];
@@ -800,7 +801,7 @@ static int CALLBACK buildFamily(const LOGFONTA *lofFont_old,
 
 -(NSSet *)allFontFamilyNames {
    NSMutableSet *result=[NSMutableSet set];
-   HDC           dc=[[self deviceContextOnPrimaryScreen] dc];
+   HDC           dc=[_renderingContextOnPrimaryScreen dc];
    LOGFONT       logFont;
 
    logFont.lfCharSet=DEFAULT_CHARSET;
@@ -855,7 +856,7 @@ static int CALLBACK buildTypeface(const LOGFONTA *lofFont_old,
 
 -(NSArray *)fontTypefacesForFamilyName:(NSString *)name {
    NSMutableDictionary *result=[NSMutableDictionary dictionary];
-   HDC             dc=[[self deviceContextOnPrimaryScreen] dc];
+   HDC             dc=[_renderingContextOnPrimaryScreen dc];
    LOGFONT         logFont;
 
    logFont.lfCharSet=DEFAULT_CHARSET;
@@ -876,9 +877,9 @@ static int CALLBACK buildTypeface(const LOGFONTA *lofFont_old,
 #define MAXUNICHAR 0xFFFF
 
 -(HDC)deviceContextWithFontName:(const char *)name pointSize:(float)pointSize {
-   [_deviceContextOnPrimaryScreen selectFontWithName:name pointSize:pointSize];
+   [_renderingContextOnPrimaryScreen selectFontWithName:name pointSize:pointSize];
 
-   return [_deviceContextOnPrimaryScreen dc];
+   return [_renderingContextOnPrimaryScreen dc];
 }
 
 -(void)metricsForFontWithName:(const char *)name pointSize:(float)pointSize metrics:(NSFontMetrics *)result {
@@ -1055,7 +1056,7 @@ static inline CGGlyphMetrics *glyphInfoForGlyph(CGGlyphMetricsSet *infoSet,NSGly
    }
 }
 
--(void)runModalWithPrintInfo:(NSPrintInfo *)printInfo {
+-(void)runModalPageLayoutWithPrintInfo:(NSPrintInfo *)printInfo {
    PAGESETUPDLG setup;
 
    setup.lStructSize=sizeof(PAGESETUPDLG);
@@ -1071,9 +1072,10 @@ static inline CGGlyphMetrics *glyphInfoForGlyph(CGGlyphMetricsSet *infoSet,NSGly
    [self startWaitCursor];
 }
 
--(KGContext *)graphicsPortForPrintOperationWithView:(NSView *)view printInfo:(NSPrintInfo *)printInfo pageRange:(NSRange)pageRange {
-   PRINTDLG           printProperties;
-   int                check;
+-(int)runModalPrintPanelWithPrintInfoDictionary:(NSMutableDictionary *)attributes {
+   NSView             *view=[attributes objectForKey:@"_NSView"];
+   PRINTDLG            printProperties;
+   int                 check;
 
    printProperties.lStructSize=sizeof(PRINTDLG);
    printProperties.hwndOwner=[(Win32Window *)[[view window] platformWindow] windowHandle];
@@ -1082,11 +1084,11 @@ static inline CGGlyphMetrics *glyphInfoForGlyph(CGGlyphMetricsSet *infoSet,NSGly
    printProperties.hDC=NULL;
    printProperties.Flags=PD_RETURNDC|PD_COLLATE;
 
-   printProperties.nFromPage=pageRange.location; 
-   printProperties.nToPage=pageRange.length; 
-   printProperties.nMinPage=pageRange.location; 
-   printProperties.nMaxPage=pageRange.length;
-   printProperties.nCopies=1; 
+   printProperties.nFromPage=[[attributes objectForKey:NSPrintFirstPage] intValue]; 
+   printProperties.nToPage=[[attributes objectForKey:NSPrintLastPage] intValue]; 
+   printProperties.nMinPage=[[attributes objectForKey:NSPrintFirstPage] intValue]; 
+   printProperties.nMaxPage=[[attributes objectForKey:NSPrintLastPage] intValue];
+   printProperties.nCopies=[[attributes objectForKey:NSPrintCopies] intValue]; 
    printProperties.hInstance=NULL; 
    printProperties.lCustData=0; 
    printProperties.lpfnPrintHook=NULL; 
@@ -1101,25 +1103,18 @@ static inline CGGlyphMetrics *glyphInfoForGlyph(CGGlyphMetricsSet *infoSet,NSGly
    [self startWaitCursor];
 
    if(check==0)
-    return nil;
+    return NSCancelButton;
    else {
-    HDC                    dc= printProperties.hDC;
-    Win32DeviceContext *printContext=[[[Win32DeviceContextPrinter alloc] initWithDC:dc] autorelease];
-    float                  dpix=GetDeviceCaps(dc,LOGPIXELSX);
-    float                  dpiy=GetDeviceCaps(dc,LOGPIXELSY);
-    float                  pixelsWide=GetDeviceCaps(dc,HORZRES);
-    float                  pixelsHigh=GetDeviceCaps(dc,VERTRES);
-    float                  pointsWide=(pixelsWide/dpix)*72.0;
-    float                  pointsHigh=(pixelsHigh/dpiy)*72.0;
-    CGAffineTransform      flip={1,0,0,-1,0, pointsHigh};
-    CGAffineTransform      scale=CGAffineTransformConcat(CGAffineTransformMakeScale(dpix/72.0,dpiy/72.0),flip);
-    KGGraphicsState    *initialState=[[[KGGraphicsState alloc] initWithRenderingContext:printContext transform:scale userSpaceSize:NSMakeSize(pointsWide,pointsHigh)] autorelease];
-    KGContext             *graphicsPort=[[[KGContext alloc] initWithGraphicsState:initialState] autorelease];
-
-    [printInfo setPaperSize:NSMakeSize(pointsWide,pointsHigh)];
-
-    return graphicsPort;
+    KGRenderingContext_gdi *renderingContext=[KGRenderingContext_gdi renderingContextWithPrinterDC:printProperties.hDC];
+    KGDeviceContext        *deviceContext=[renderingContext deviceContext];
+    KGContext              *context=[renderingContext createGraphicsContext];
+    
+    [attributes setObject:context forKey:@"_KGContext"];
+    
+    [attributes setObject:[NSValue valueWithSize:[deviceContext pointSize]] forKey:NSPrintPaperSize];
    }
+     
+   return NSOKButton;
 }
 
 -(int)savePanel:(NSSavePanel *)savePanel runModalForDirectory:(NSString *)directory file:(NSString *)file {

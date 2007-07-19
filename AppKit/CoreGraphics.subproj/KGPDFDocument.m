@@ -107,8 +107,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    for(i=0;i<kidsCount;i++){
     KGPDFDictionary *check;
     const char      *type;
-    
-    if(![kids getDictionaryAtIndex:i++ value:&check])
+        
+    if(![kids getDictionaryAtIndex:i value:&check])
      return nil;
 
     if(![check getNameForKey:"Type" value:&type])
@@ -142,8 +142,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(KGPDFPage *)pageAtNumber:(int)pageNumber {
    KGPDFDictionary *pages=[self pagesRoot];
-   
-   return [self pageAtNumber:pageNumber pages:pages pagesOffset:0];
+   KGPDFPage       *page=[self pageAtNumber:pageNumber pages:pages pagesOffset:0];
+
+   return page;
 }
 
 @end

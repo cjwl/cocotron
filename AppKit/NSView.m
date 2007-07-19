@@ -24,6 +24,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSDraggingManager.h>
 #import <AppKit/NSDragging.h>
 #import <AppKit/NSPrintOperation.h>
+#import <AppKit/NSPrintInfo.h>
 #import <AppKit/NSNibKeyedUnarchiver.h>
 #import <Foundation/NSRaise.h>
 
@@ -1043,15 +1044,25 @@ static inline void buildTransformsIfNeeded(NSView *self) {
 }
 
 -(void)beginPageInRect:(NSRect)rect atPlacement:(NSPoint)placement {
-   KGContext *graphicsPort=NSCurrentGraphicsPort();
-   CGRect     mediaBox=NSMakeRect(0,0,0,0);
-   CGAffineTransform transform;
+   KGContext        *graphicsPort=NSCurrentGraphicsPort();
+   CGRect            mediaBox=NSMakeRect(0,0,rect.size.width,rect.size.height);
+   NSPrintInfo      *printInfo=[[NSPrintOperation currentOperation] printInfo];
+   NSRect            imageableRect=[printInfo imageablePageBounds];
+   CGAffineTransform transform=CGAffineTransformIdentity;
 
    CGContextBeginPage(graphicsPort,&mediaBox);
    CGContextSaveGState(graphicsPort);
+   
+   transform=CGAffineTransformTranslate(transform,imageableRect.origin.x,imageableRect.origin.y);
+   if([self isFlipped]){
+    CGAffineTransform flip={1,0,0,-1,0,imageableRect.size.height};
+     
+    transform=CGAffineTransformConcat(transform,flip);
+    transform=CGAffineTransformTranslate(transform,-rect.origin.x,-rect.origin.y);
+   }
+   else
+    transform=CGAffineTransformTranslate(transform,-rect.origin.x,NSMaxY(rect));
 
-//   transform=CGAffineTransformTranslate(transform,placement.x,-placement.y);
-   transform=CGAffineTransformMakeTranslation(-rect.origin.x,-rect.origin.y);
    CGContextConcatCTM(graphicsPort,transform);
 
    [self setUpGState];
@@ -1062,6 +1073,22 @@ static inline void buildTransformsIfNeeded(NSView *self) {
 
    CGContextRestoreGState(graphicsPort);
    CGContextEndPage(graphicsPort);
+}
+
+-(float)widthAdjustLimit {
+   return 0.5;
+}
+
+-(float)heightAdjustLimit {
+   return 0.5;
+}
+
+-(void)adjustPageWidthNew:(float *)adjusted left:(float)left right:(float)right limit:(float)limit {
+// FIX, give subviews a chance
+}
+
+-(void)adjustPageHeightNew:(float *)adjust top:(float)top bottom:(float)bottom limit:(float)limit {
+// FIX, give subviews a chance
 }
 
 -(BOOL)knowsPageRange:(NSRange *)range {

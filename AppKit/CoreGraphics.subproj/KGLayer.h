@@ -12,12 +12,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @class KGContext,NSDictionary,KGRenderingContext;
 
 @interface KGLayer : NSObject {
-   NSSize              _size;
-   NSDictionary       *_unused;
-   KGRenderingContext *_renderingContext;
+   NSSize                    _size;
+   NSDictionary             *_unused;
+   KGRenderingContext       *_renderingContext;
 }
 
--initRelativeToContext:(KGContext *)context size:(NSSize)size unused:(NSDictionary *)unused;
 -initRelativeToRenderingContext:(KGRenderingContext *)context size:(NSSize)size unused:(NSDictionary *)unused;
 -initWithSize:(NSSize)size;
 

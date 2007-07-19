@@ -49,6 +49,22 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [super dealloc];
 }
 
+-(BOOL)isEqual:other {
+   NSURL *otherURL;
+   
+   if(![other isKindOfClass:[NSURL class]])
+    return NO;
+    
+   otherURL=other;
+   if(![otherURL->_scheme isEqual:_scheme])
+    return NO;
+    
+   if(![otherURL->_path isEqual:_path])
+    return NO;
+    
+   return YES;
+}
+
 -(NSString *)absoluteString {
    NSUnimplementedMethod();
    return nil;
@@ -118,8 +134,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(BOOL)isFileURL {
-   NSUnimplementedMethod();
-   return NO;
+   return [_scheme isEqualToString:@"file"];
 }
 
 -(NSURL *)standardizedURL {

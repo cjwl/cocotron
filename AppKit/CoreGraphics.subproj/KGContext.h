@@ -214,8 +214,4 @@ enum {
 
 -(void)copyBitsInRect:(NSRect)rect toPoint:(NSPoint)point gState:(int)gState;
 
--(void)beginDocument;
--(void)scalePage:(float)scalex:(float)scaley;
--(void)endDocument;
-
 @end

@@ -50,9 +50,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     NSNibKeyedUnarchiver *keyed=(NSNibKeyedUnarchiver *)coder;
     
     _title=[[keyed decodeObjectForKey:@"NSTitle"] copy];
+    _name=[[keyed decodeObjectForKey:@"NSName"] copy];
+    
     _itemArray=[[NSMutableArray alloc] initWithArray:[keyed decodeObjectForKey:@"NSMenuItems"]];
     [_itemArray makeObjectsPerformSelector:@selector(_setMenu:) withObject:self];
-    _autoenablesItems=![keyed decodeBoolForKey:@"NSNoAutoenable"];
+    _autoenablesItems=![keyed decodeBoolForKey:@"NSNoAutoenable"];    
    }
    else {
     _title=[[coder decodeObjectForKey:@"NSMenu title"] retain];
@@ -75,6 +77,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)dealloc {
    [_title release];
+   [_name release];
    [_itemArray makeObjectsPerformSelector:@selector(_setMenu:) withObject:nil];
    [_itemArray release];
    [super dealloc];
@@ -300,6 +303,23 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    }
 
    return NO;
+}
+
+-(NSMenu *)_menuWithName:(NSString *)name {
+   if([_name isEqual:name])
+    return self;
+   else {
+    int i,count=[_itemArray count];
+    
+    for(i=0;i<count;i++){
+     NSMenu *check=[[[_itemArray objectAtIndex:i] submenu] _menuWithName:name];
+     
+     if(check!=nil)
+      return check;
+    }
+   }   
+   
+   return nil;
 }
 
 @end

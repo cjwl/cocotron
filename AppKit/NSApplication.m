@@ -81,17 +81,11 @@ id NSApp=nil;
   return [self mainMenu];
 }
 
-// FIX should be a better way to determine this... IB? special tags?
-/* This info is in the NSMenuTemplate? */
 
 -(NSMenu *)windowsMenu {
-#if 1
    if(_windowsMenu==nil)
-    _windowsMenu=[[[[self mainMenu] itemWithTitle:@"Window"] submenu] retain];
-   if(_windowsMenu==nil) // Some apps use "Windows"
-    _windowsMenu=[[[[self mainMenu] itemWithTitle:@"Windows"] submenu] retain];
-
-#endif
+    _windowsMenu=[[NSApp mainMenu] _menuWithName:@"_NSWindowsMenu"];
+ 
     return _windowsMenu;
 }
 

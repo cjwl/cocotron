@@ -300,7 +300,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    NSInvalidAbstractInvocation();
 }
 
--(void)runModalWithPrintInfo:(NSPrintInfo *)printInfo {
+-(void)runModalPageLayoutWithPrintInfo:(NSPrintInfo *)printInfo {
+   NSInvalidAbstractInvocation();
+}
+
+-(int)runModalPrintPanelWithPrintInfoDictionary:(NSMutableDictionary *)attributes {
    NSInvalidAbstractInvocation();
 }
 

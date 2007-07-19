@@ -73,7 +73,7 @@ void KGPDF_render_BDC(KGPDFScanner *scanner,void *info) {
 
 // Begin inline image object
 void KGPDF_render_BI(KGPDFScanner *scanner,void *info) {
-   NSLog(@"BI");
+   //NSLog(@"BI");
 }
 
 // Begin marked-content sequence
@@ -86,7 +86,7 @@ void KGPDF_render_BT(KGPDFScanner *scanner,void *info) {
    KGContext *context=kgContextFromInfo(info);
    
    [context setTextMatrix:CGAffineTransformIdentity];
-   NSLog(@"BT");
+   //NSLog(@"BT");
 }
 
 // Begin compatibility section
@@ -1451,7 +1451,7 @@ void KGPDF_render_TJ(KGPDFScanner *scanner,void *info) {
 
 // Set text leading
 void KGPDF_render_TL(KGPDFScanner *scanner,void *info) {
-   NSLog(@"TL");
+   //NSLog(@"TL");
 }
 
 // Set text matrix and text line matrix
@@ -1472,18 +1472,18 @@ void KGPDF_render_Tm(KGPDFScanner *scanner,void *info) {
    if(![scanner popNumber:&matrix.a])
     return;
      
-   NSLog(@"%f %f %f %f %f %f",matrix.a,matrix.b,matrix.c,matrix.d,matrix.tx,matrix.ty);
+   //NSLog(@"%f %f %f %f %f %f",matrix.a,matrix.b,matrix.c,matrix.d,matrix.tx,matrix.ty);
    [context setTextMatrix:matrix];
 }
 
 // Set text rendering mode
 void KGPDF_render_Tr(KGPDFScanner *scanner,void *info) {
-   NSLog(@"Tr");
+   //NSLog(@"Tr");
 }
 
 // Set text rise
 void KGPDF_render_Ts(KGPDFScanner *scanner,void *info) {
-   NSLog(@"Ts");
+  // NSLog(@"Ts");
 }
 
 // Set word spacing
@@ -1499,7 +1499,7 @@ void KGPDF_render_Tw(KGPDFScanner *scanner,void *info) {
 
 // Set horizontal text scaling
 void KGPDF_render_Tz(KGPDFScanner *scanner,void *info) {
-     NSLog(@"Tz");
+    // NSLog(@"Tz");
  
 }
 

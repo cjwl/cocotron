@@ -616,16 +616,4 @@ static inline KGGraphicsState *currentState(KGContext *self){
    [currentState(self) copyBitsInRect:rect toPoint:point];
 }
 
--(void)beginDocument {
-   [[self renderingContext] beginDocument];
-}
-
--(void)scalePage:(float)scalex:(float)scaley {
-   [[self renderingContext] scalePage:scalex:scaley];
-}
-
--(void)endDocument {
-   [[self renderingContext] endDocument];
-}
-
 @end

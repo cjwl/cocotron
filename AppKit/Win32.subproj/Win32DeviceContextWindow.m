@@ -12,8 +12,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @implementation Win32DeviceContextWindow
 
 -initWithWindowHandle:(HWND)handle {
+   [super initWithDC:GetDC(handle)];
    _handle=handle;
-   [self initWithDC:GetDC(handle)];
    return self;
 }
 

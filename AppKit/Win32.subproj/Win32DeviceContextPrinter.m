@@ -8,6 +8,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 // Original - Christopher Lloyd <cjwl@objc.net>
 #import <AppKit/Win32DeviceContextPrinter.h>
+#import <Foundation/NSString.h>
 
 @implementation Win32DeviceContextPrinter
 
@@ -20,15 +21,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return NSMakeSize(72*8.5,72*11);
 }
 
--(BOOL)isPrinter {
-   return YES;
-}
-
--(void)beginDocument {
+-(void)beginPrintingWithDocumentName:(NSString *)name {
    DOCINFO info;
 
    info.cbSize=sizeof(DOCINFO);
-   info.lpszDocName="TEST.XYZ";
+   info.lpszDocName=[name cString];
    info.lpszOutput=NULL;
    info.lpszDatatype=NULL;
    info.fwType=0;
@@ -39,7 +36,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return;
 }
 
--(void)endDocument {
+-(void)endPrinting {
    if(EndDoc(_dc)==SP_ERROR)
     NSLog(@"EndDoc failed");
 }
@@ -59,5 +56,64 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    if(AbortDoc(_dc)==SP_ERROR)
     NSLog(@"AbortDoc failed");
 }
+
+-(NSSize)pixelsPerInch {
+   float dpix=GetDeviceCaps(_dc,LOGPIXELSX);
+   float dpiy=GetDeviceCaps(_dc,LOGPIXELSY);
+   
+   return NSMakeSize(dpix,dpiy);
+}
+
+-(NSSize)pixelSize {
+   float pixelsWide=GetDeviceCaps(_dc,HORZRES);
+   float pixelsHigh=GetDeviceCaps(_dc,VERTRES);
+   
+   return NSMakeSize(pixelsWide,pixelsHigh);
+}
+
+-(NSRect)paperRect {
+   NSSize dpi=[self pixelsPerInch];
+   float width=GetDeviceCaps(_dc,PHYSICALWIDTH);
+   float height=GetDeviceCaps(_dc,PHYSICALHEIGHT);
+      
+   return NSMakeRect(0,0,(width/dpi.width)*72,(height/dpi.height)*72);
+}
+
+-(NSRect)imageableRect {
+   NSSize dpi=[self pixelsPerInch];
+   NSRect result=[self paperRect];
+   float  offsetx=GetDeviceCaps(_dc,PHYSICALOFFSETX);
+   float  offsety=GetDeviceCaps(_dc,PHYSICALOFFSETY);
+
+   offsetx/=dpi.width;
+   offsety/=dpi.height;
+   
+   offsetx*=72;
+   offsety*=72;
+   
+   result.origin.x+=offsetx;
+   result.size.width-=offsetx;
+   result.size.height-=offsety;
+
+   return result;
+}
+
+#if 0
+-(void)scalePage:(float)scalex:(float)scaley {
+   HDC colorDC=_dc;
+   int xmul=scalex*1000;
+   int xdiv=1000;
+   int ymul=scaley*1000;
+   int ydiv=1000;
+
+   int width=GetDeviceCaps(colorDC,HORZRES);
+   int height=GetDeviceCaps(colorDC,VERTRES);
+
+   SetWindowExtEx(colorDC,width,height,NULL);
+   SetViewportExtEx(colorDC,width,height,NULL);
+
+   ScaleWindowExtEx(colorDC,xdiv,xmul,ydiv,ymul,NULL);
+}
+#endif
 
 @end

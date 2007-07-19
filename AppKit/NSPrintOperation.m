@@ -9,10 +9,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 // Original - Christopher Lloyd <cjwl@objc.net>
 #import <AppKit/NSPrintOperation.h>
 #import <AppKit/NSPrintInfo.h>
+#import <AppKit/NSPrintPanel.h>
 #import <AppKit/NSView.h>
-#import <AppKit/NSWindow.h>
+#import <AppKit/NSPanel.h>
 #import <AppKit/NSDisplay.h>
 #import <AppKit/NSGraphicsContext.h>
+#import <AppKit/KGContext.h>
+#import <AppKit/KGRenderingContext.h>
 
 @implementation NSPrintOperation
 
@@ -33,6 +36,8 @@ static NSPrintOperation *_currentOperation=nil;
 -initWithView:(NSView *)view printInfo:(NSPrintInfo *)printInfo {
    _view=[view retain];
    _printInfo=[printInfo retain];
+   _printPanel=[[NSPrintPanel printPanel] retain];
+   _showsPrintPanel=YES;
    _currentPage=0;
    return self;
 }
@@ -40,6 +45,7 @@ static NSPrintOperation *_currentOperation=nil;
 -(void)dealloc {
    [_view release];
    [_printInfo release];
+   [_printPanel release];
    [_context release];
    [super dealloc];
 }
@@ -48,82 +54,28 @@ static NSPrintOperation *_currentOperation=nil;
    return NO;
 }
 
--(NSRect)nextPageRectAfterPageRect:(NSRect)lastRect {
-   return lastRect;
-}
-
--(BOOL)_viewKnowsPageRange:(NSRange *)range {
-   if([_view knowsPageRange:range])
-    return YES;
-
-   *range=NSMakeRange(1,1000);
-   return NO;
-}
-
--(BOOL)runOperation {
-   NSRange            pageRange;
-   BOOL               knowsPageRange=[self _viewKnowsPageRange:&pageRange];
-   KGContext *graphicsPort=[[NSDisplay currentDisplay] graphicsPortForPrintOperationWithView:_view printInfo:_printInfo pageRange:pageRange];
-   NSGraphicsContext *context;
-
-   if(graphicsPort==nil)
-    return NO;
-
-   context=[NSGraphicsContext graphicsContextWithPrintingContext:graphicsPort];
-
-   _currentOperation=self;
-   [NSGraphicsContext saveGraphicsState];
-   [NSGraphicsContext setCurrentContext:context];
-   CGContextBeginDocument(graphicsPort);
-   [_view beginDocument];
-   
-   if(knowsPageRange){
-    int i;
-
-    for(i=0,_currentPage=pageRange.location;i<pageRange.length;i++,_currentPage++){
-     NSRect  rect=[_view rectForPage:_currentPage];
-     NSPoint location=[_view locationOfPrintRect:rect];
-
-//NSLog(@"rect=%f %f %f %f",rect.origin.x,rect.origin.y,rect.size.width,rect.size.height);
-//NSLog(@"location=%f %f",location.x,location.y);
-
-     [_view beginPageInRect:rect atPlacement:location];
-
-     [_view drawRect:rect];
-
-     [_view endPage];
-    }
-   }
-   else {
-    NSRect lastRect=NSZeroRect;
-
-    for(_currentPage=0;;_currentPage++){
-     NSRect  rect=[self nextPageRectAfterPageRect:lastRect];
-     NSPoint location=[_view locationOfPrintRect:rect];
-
-     [_view beginPageInRect:rect atPlacement:location];
-     [_view endPage];
-    }
-   }
- 
-   [_view endDocument];
-   CGContextEndDocument(graphicsPort);
-   [NSGraphicsContext restoreGraphicsState];
-   _currentOperation=nil;
-
-   return YES;
-}
-
 -(void)setAccessoryView:(NSView *)view {
    NSUnimplementedMethod();
+}
+
+-(NSView *)view {
+   return _view;
 }
 
 -(NSPrintInfo *)printInfo {
    return _printInfo;
 }
 
--(NSView *)view {
-   return _view;
+-(NSPrintPanel *)printPanel {
+   return _printPanel;
+}
+
+-(BOOL)showsPrintPanel {
+   return _showsPrintPanel;
+}
+
+-(void)setShowsPrintPanel:(BOOL)flag {
+   _showsPrintPanel=flag;
 }
 
 -(int)currentPage {
@@ -131,9 +83,142 @@ static NSPrintOperation *_currentOperation=nil;
 }
 
 -(NSGraphicsContext *)createContext {
- //  _context=[[NSGraphicsContext graphicsContextWithPrinterName:@"HP DeskJet 970Cse"] retain];
+   return nil;
+}
 
-   return nil;//_context;
+-(void)_autopaginatePageRange:(NSRange)pageRange actualPageRange:(NSRange *)rangep context:(KGContext *)context {
+   NSRange result=NSMakeRange(1,0);
+   NSRect  bounds=[_view bounds];
+   NSRect  imageableRect=[_printInfo imageablePageBounds];
+   BOOL    isFlipped=[_view isFlipped];
+   float   top=isFlipped?NSMinY(bounds):NSMaxY(bounds);
+   NSPrintingOrientation orientation=[_printInfo orientation];
+   
+   while(YES) {
+    float heightAdjustLimit=[_view heightAdjustLimit];
+    float widthAdjustLimit=[_view widthAdjustLimit];
+    float left=NSMinX(bounds);
+    float right=left+imageableRect.size.width;
+    float rightLimit=left+imageableRect.size.width*widthAdjustLimit;
+    float bottom=isFlipped?top+imageableRect.size.height:top-imageableRect.size.height;
+    float bottomLimit=isFlipped?top+imageableRect.size.height*heightAdjustLimit:top-imageableRect.size.height*heightAdjustLimit;
+    
+    if(orientation==NSLandscapeOrientation){
+     // FIX
+    }
+    
+    if(isFlipped){
+     if(bottom>NSMaxY(bounds))
+      bottom=NSMaxY(bounds);
+    }
+    else {
+     if(bottom<NSMinY(bounds))
+      bottom=NSMinY(bounds);
+    }
+
+    [_view adjustPageWidthNew:&right left:left right:right limit:rightLimit];
+    [_view adjustPageHeightNew:&bottom top:top bottom:bottom limit:bottomLimit];
+             
+    if(context!=nil && (pageRange.location==NSNotFound || NSLocationInRange(NSMaxRange(result),pageRange))){
+     NSRect  rect=NSMakeRect(left,top,right-left,bottom-top);
+     NSPoint location=[_view locationOfPrintRect:rect];
+
+     [_view beginPageInRect:rect atPlacement:location];
+     [_view drawRect:rect];
+     [_view endPage];
+     _currentPage++;
+    }
+    
+    result.length++;
+    
+    top=bottom;
+    
+    if(isFlipped){
+     if(top>=NSMaxY(bounds))
+      break;
+    }
+    else {
+     if(top<=NSMinY(bounds))
+      break;
+    }
+   }
+   
+   *rangep=result;
+}
+
+-(BOOL)_paginateWithPageRange:(NSRange)pageRange context:(KGContext *)context {
+   int i;
+
+   for(i=0,_currentPage=pageRange.location;i<pageRange.length;i++,_currentPage++){
+    NSRect  rect=[_view rectForPage:_currentPage];
+    NSPoint location=[_view locationOfPrintRect:rect];
+
+    [_view beginPageInRect:rect atPlacement:location];
+    [_view drawRect:rect];
+    [_view endPage];
+   }
+}
+
+-(BOOL)runOperation {
+   NSRange            pageRange=NSMakeRange(NSNotFound,NSNotFound);
+   BOOL               knowsPageRange;
+   NSPrintPanel      *printPanel=[self printPanel];
+   int                panelResult;
+   KGContext         *context;
+   NSGraphicsContext *graphicsContext;
+      
+   _currentOperation=self;
+   
+   knowsPageRange=[_view knowsPageRange:&pageRange];
+
+   if(knowsPageRange){
+    [[_printInfo dictionary] setObject:[NSNumber numberWithInt:pageRange.location] forKey:NSPrintFirstPage];
+    [[_printInfo dictionary] setObject:[NSNumber numberWithInt:NSMaxRange(pageRange)-1] forKey:NSPrintLastPage];
+   }
+   else {
+    [[_printInfo dictionary] setObject:[NSNumber numberWithInt:1] forKey:NSPrintFirstPage];
+    [[_printInfo dictionary] setObject:[NSNumber numberWithInt:1] forKey:NSPrintLastPage];
+   }
+   
+   if(_showsPrintPanel){
+    [[_printInfo dictionary] setObject:_view forKey:@"_NSView"];
+    panelResult=[printPanel runModal];
+    [[_printInfo dictionary] removeObjectForKey:@"_NSView"];
+   
+    if(panelResult!=NSOKButton)
+     return NO;
+   }
+   else {
+    NSLog(@"Printing not implemented without print panel yet");
+     return NO;
+   }
+   
+   if((context=[[_printInfo dictionary] objectForKey:@"_KGContext"])==nil)
+    return NO;
+
+   [_printInfo setUpPrintOperationDefaultValues];
+
+   graphicsContext=[NSGraphicsContext graphicsContextWithPrintingContext:context];
+
+   [NSGraphicsContext saveGraphicsState];
+   [NSGraphicsContext setCurrentContext:graphicsContext];
+   [[context renderingContext] beginPrintingWithDocumentName:[[_view window] title]];
+   [_view beginDocument];
+   
+   if(knowsPageRange)
+    [self _paginateWithPageRange:pageRange context:context];
+   else
+    [self _autopaginatePageRange:pageRange actualPageRange:&pageRange context:context];
+     
+   [_view endDocument];
+   [[context renderingContext] endPrinting];
+   [NSGraphicsContext restoreGraphicsState];
+   
+   [[_printInfo dictionary] removeObjectForKey:@"_KGContext"];
+   
+   _currentOperation=nil;
+
+   return YES;
 }
 
 @end

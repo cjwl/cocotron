@@ -15,12 +15,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <windows.h>
 
-@class NSEvent, NSColor, Win32EventInputSource, Win32SplashPanel, Win32DeviceContext;
+@class NSEvent, NSColor, Win32EventInputSource, Win32SplashPanel,KGRenderingContext_gdi,KGDeviceContext_gdi;
 
 @interface Win32Display : NSDisplay {
    Win32SplashPanel      *_splashPanel;
 
-   Win32DeviceContext    *_deviceContextOnPrimaryScreen;
+   KGRenderingContext_gdi *_renderingContextOnPrimaryScreen;
 
    Win32EventInputSource *_eventInputSource;
 
@@ -41,7 +41,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 +(Win32Display *)currentDisplay;
 
--(Win32DeviceContext *)deviceContextOnPrimaryScreen;
+-(KGDeviceContext_gdi *)deviceContextOnPrimaryScreen;
 
 -(NSArray *)screens;
 

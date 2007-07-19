@@ -198,7 +198,3 @@ APPKIT_EXPORT void CGContextSetCalibratedGrayColor(CGContextRef context,float gr
 APPKIT_EXPORT void CGContextSetCalibratedRGBColor(CGContextRef context,float red,float green,float blue,float alpha);
 
 APPKIT_EXPORT void CGContextCopyBits(CGContextRef context,CGRect rect,CGPoint point,int gState);
-
-APPKIT_EXPORT void CGContextBeginDocument(CGContextRef context);
-APPKIT_EXPORT void CGContextScalePage(CGContextRef context,float scalex,float scaley);
-APPKIT_EXPORT void CGContextEndDocument(CGContextRef context);

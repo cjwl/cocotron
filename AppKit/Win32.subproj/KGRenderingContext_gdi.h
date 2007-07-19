@@ -11,42 +11,35 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <windows.h>
 
-@class Win32Font, NSAffineTransform,Win32DeviceContextWindow;
+@class Win32Font, NSAffineTransform;
 
-@interface Win32DeviceContext : KGRenderingContext {
+@interface KGRenderingContext_gdi : KGRenderingContext {
    HDC        _dc;
    HRGN       _clipRegion;
    BOOL       _isAdvanced;
    Win32Font *_gdiFont;
 }
 
++(KGRenderingContext *)renderingContextWithPrinterDC:(HDC)dc;
++(KGRenderingContext *)renderingContextWithWindowHWND:(HWND)handle;
++(KGRenderingContext *)renderingContextWithSize:(NSSize)size renderingContext:(KGRenderingContext *)otherContext;
++(KGRenderingContext *)renderingContextWithSize:(NSSize)size;
+
+-(KGContext *)createGraphicsContext;
 -(KGContext *)graphicsContextWithSize:(NSSize)size;
 
--initWithDC:(HDC)dc;
+-initWithDC:(HDC)dc deviceContext:(KGDeviceContext *)deviceContext;
 
 -(HDC)dc;
--(Win32DeviceContextWindow *)windowDeviceContext;
+-(HWND)windowHandle;
 
 -(void)selectFontWithName:(const char *)name pointSize:(float)pointSize;
 -(void)selectFontWithName:(const char *)name pointSize:(float)pointSize antialias:(BOOL)antialias;
 -(Win32Font *)currentFont;
 
-+(Win32DeviceContext *)deviceContextForWindowHandle:(HWND)handle;
+-(void)copyColorsToContext:(KGRenderingContext_gdi *)other size:(NSSize)size toPoint:(NSPoint)toPoint ;
 
--(BOOL)isPrinter;
--(void)beginPage;
--(void)endPage;
--(void)beginDocument;
--(void)endDocument;
-
-
--(NSSize)size;
-
--(void)copyColorsToContext:(Win32DeviceContext *)other size:(NSSize)size toPoint:(NSPoint)toPoint ;
-
--(void)copyColorsToContext:(Win32DeviceContext *)other size:(NSSize)size;
-
--(void)scalePage:(float)scalex:(float)scaley;
+-(void)copyColorsToContext:(KGRenderingContext_gdi *)other size:(NSSize)size;
 
 -(void)clipInUserSpace:(CGAffineTransform)ctm rects:(const NSRect *)userRects count:(unsigned)count;
 

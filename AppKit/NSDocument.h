@@ -8,7 +8,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/Foundation.h>
 
-@class NSWindow,NSWindowController,NSSavePanel, NSMenuItem,NSFileWrapper;
+@class NSWindow,NSWindowController,NSSavePanel, NSMenuItem,NSFileWrapper,NSPrintOperation;
 
 typedef enum {
    NSChangeDone,
@@ -34,6 +34,7 @@ typedef enum {
 
 -init;
 -initWithContentsOfFile:(NSString *)path ofType:(NSString *)type;
+-initWithContentsOfURL:(NSURL *)url ofType:(NSString *)type;
 
 -(NSData *)dataRepresentationOfType:(NSString *)type;
 -(BOOL)loadDataRepresentation:(NSData *)data ofType:(NSString *)type;
@@ -60,6 +61,7 @@ typedef enum {
 -(BOOL)writeToFile:(NSString *)path ofType:(NSString *)type;
 -(BOOL)writeWithBackupToFile:(NSString *)path ofType:(NSString *)type saveOperation:(NSSaveOperationType)operation;
 -(NSString *)fileName;
+-(NSURL *)fileURL;
 -(void)setFileName:(NSString *)path;
 -(BOOL)keepBackupFile;
 
@@ -74,7 +76,11 @@ typedef enum {
 -(BOOL)prepareSavePanel:(NSSavePanel *)savePanel;
 -(void)runModalSavePanelForSaveOperation:(NSSaveOperationType)operation delegate:delegate didSaveSelector:(SEL)selector contextInfo:(void *)context;
 
+-(NSPrintOperation *)printOperationWithSettings:(NSDictionary *)settings error:(NSError **)error;
+-(void)printDocumentWithSettings:(NSDictionary *)settings showPrintPanel:(BOOL)showPanel delegate:delegate didPrintSelector:(SEL)selector contextInfo:(void *)contextInfo;
+
 -(void)printDocument:sender;
+
 -(void)runPageLayout:sender;
 -(void)revertDocumentToSaved:sender;
 -(void)saveDocument:sender;

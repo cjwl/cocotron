@@ -55,7 +55,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -initWithTitle:(NSString *)title action:(SEL)action keyEquivalent:(NSString *)keyEquivalent {
-   _atitle=[[NSAttributedString alloc] initWithString:title];
+   _atitle=(title==nil)?nil:[[NSAttributedString alloc] initWithString:title];
    _target=nil;
    _action=action;
    _keyEquivalent=[keyEquivalent copy];

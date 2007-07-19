@@ -8,11 +8,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/Foundation.h>
 
-@class NSPrintInfo,NSView, NSGraphicsContext;
+@class NSPrintInfo,NSPrintPanel,NSView, NSGraphicsContext;
 
 @interface NSPrintOperation : NSObject {
    NSView            *_view;
    NSPrintInfo       *_printInfo;
+   NSPrintPanel      *_printPanel;
+   BOOL               _showsPrintPanel;
    int                _currentPage;
    NSGraphicsContext *_context;
 }
@@ -25,15 +27,20 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -initWithView:(NSView *)view printInfo:(NSPrintInfo *)printInfo;
 
 -(BOOL)isCopyingOperation;
--(BOOL)runOperation;
 
 -(void)setAccessoryView:(NSView *)view;
 
--(NSPrintInfo *)printInfo;
 -(NSView *)view;
+-(NSPrintInfo *)printInfo;
+-(NSPrintPanel *)printPanel;
+-(BOOL)showsPrintPanel;
+
+-(void)setShowsPrintPanel:(BOOL)flag;
 
 -(int)currentPage;
 
 -(NSGraphicsContext *)createContext;
+
+-(BOOL)runOperation;
 
 @end

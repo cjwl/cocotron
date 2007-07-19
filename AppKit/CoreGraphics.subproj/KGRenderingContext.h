@@ -10,11 +10,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/CGAffineTransform.h>
 #import <AppKit/CGFont.h>
 
-@class KGContext,KGColor,KGPath,KGImage,KGLayer,KGShading;
+@class KGDeviceContext,KGContext,KGColor,KGPath,KGImage,KGLayer,KGShading;
 
 @interface KGRenderingContext : NSObject {
-   KGFont *_font;
+   KGDeviceContext *_deviceContext;
+   KGFont          *_font;
 }
+
+-initWithDeviceContext:(KGDeviceContext *)deviceContext;
+
+-(KGDeviceContext *)deviceContext;
 
 -(NSSize)size;
 
@@ -22,10 +27,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)beginPage;
 -(void)endPage;
--(void)beginDocument;
--(void)endDocument;
 
--(void)scalePage:(float)scalex:(float)scaley;
+-(void)beginPrintingWithDocumentName:(NSString *)name;
+-(void)endPrinting;
 
 -(void)setFont:(KGFont *)font;
 

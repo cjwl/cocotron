@@ -3,7 +3,7 @@
 #import <AppKit/KGContext.h>
 #import <AppKit/NSImage.h>
 #import <AppKit/NSColor.h>
-#import "Win32DeviceContextWindow.h"
+#import "KGRenderingContext_gdi.h"
 #undef _WIN32_WINNT
 #define _WIN32_WINNT 0x0501
 #import <uxtheme.h>
@@ -108,8 +108,8 @@ static BOOL drawThemeBackground(HANDLE theme,HDC dc,int partId,int stateId,const
 
 @implementation NSGraphicsStyle_uxtheme
 
--(HANDLE)themeForClassList:(LPCWSTR)classList deviceContext:(Win32DeviceContext *)deviceContext  {
-   HWND windowHandle=[[deviceContext windowDeviceContext] windowHandle];
+-(HANDLE)themeForClassList:(LPCWSTR)classList renderingContext:(KGRenderingContext_gdi *)renderingContext  {
+   HWND windowHandle=[renderingContext windowHandle];
    
    if(windowHandle==NULL)
     return NULL;
@@ -137,14 +137,14 @@ static inline RECT transformToRECT(CGAffineTransform matrix,NSRect rect) {
 }
 
 -(BOOL)sizeOfPartId:(int)partId stateId:(int)stateId classList:(LPCWSTR)classList size:(NSSize *)result {
-   KGContext          *context=[[NSGraphicsContext currentContext] graphicsPort];
-   Win32DeviceContext *deviceContext=(Win32DeviceContext *)[context renderingContext];
-   HANDLE              theme;
+   KGContext              *context=[[NSGraphicsContext currentContext] graphicsPort];
+   KGRenderingContext_gdi *renderingContext=(KGRenderingContext_gdi *)[context renderingContext];
+   HANDLE                  theme;
 
-   if((theme=[self themeForClassList:classList deviceContext:deviceContext])!=NULL){
+   if((theme=[self themeForClassList:classList renderingContext:renderingContext])!=NULL){
     SIZE size;
      
-    if(getThemePartSize(theme,[deviceContext dc],partId,stateId,NULL,TS_DRAW,&size)){
+    if(getThemePartSize(theme,[renderingContext dc],partId,stateId,NULL,TS_DRAW,&size)){
      result->width=size.cx;
      result->height=size.cy;
      // should invert translate here
@@ -157,10 +157,10 @@ static inline RECT transformToRECT(CGAffineTransform matrix,NSRect rect) {
 
 -(BOOL)drawPartId:(int)partId stateId:(int)stateId classList:(LPCWSTR)classList inRect:(NSRect)rect {
    KGContext          *context=[[NSGraphicsContext currentContext] graphicsPort];
-   Win32DeviceContext *deviceContext=(Win32DeviceContext *)[context renderingContext];
+   KGRenderingContext_gdi *renderingContext=(KGRenderingContext_gdi *)[context renderingContext];
    HANDLE              theme;
    
-   if((theme=[self themeForClassList:classList deviceContext:deviceContext])!=NULL){
+   if((theme=[self themeForClassList:classList renderingContext:renderingContext])!=NULL){
     CGAffineTransform matrix;
     RECT tlbr;
 
@@ -168,7 +168,7 @@ static inline RECT transformToRECT(CGAffineTransform matrix,NSRect rect) {
     [context getCTM:&matrix];
     tlbr=transformToRECT(matrix,rect);
 
-    drawThemeBackground(theme,[deviceContext dc],partId,stateId,&tlbr,NULL);
+    drawThemeBackground(theme,[renderingContext dc],partId,stateId,&tlbr,NULL);
        
     closeThemeData(theme);
     return YES;

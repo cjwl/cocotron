@@ -22,12 +22,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(NSArray *)documents;
 -(void)addDocument:(NSDocument *)document;
 -(void)removeDocument:(NSDocument *)document;
+-documentForURL:(NSURL *)url;
 
--makeDocumentWithContentsOfFile:(NSString *)file ofType:(NSString *)type;
+-makeDocumentWithContentsOfFile:(NSString *)path ofType:(NSString *)type;
+-makeDocumentWithContentsOfURL:(NSURL *)url ofType:(NSString *)type error:(NSError **)error;
 -makeUntitledDocumentOfType:(NSString *)type;
 
 -openUntitledDocumentOfType:(NSString *)type display:(BOOL)display;
--openDocumentWithContentsOfFile:(NSString *)type display:(BOOL)display;
+-openDocumentWithContentsOfFile:(NSString *)path display:(BOOL)display;
+-openDocumentWithContentsOfURL:(NSURL *)url display:(BOOL)display error:(NSError **)error;
 
 -(NSString *)currentDirectory;
 
@@ -43,5 +46,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)newDocument:sender;
 -(void)openDocument:sender;
 -(void)saveAllDocuments:sender;
+
+-(NSArray *)recentDocumentURLs;
+-(void)noteNewRecentDocumentURL:(NSURL *)url;
+-(void)noteNewRecentDocument:(NSDocument *)document;
+-(unsigned)maximumRecentDocumentCount;
+-(void)clearRecentDocuments:sender;
 
 @end

@@ -90,6 +90,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSPopUpButtonCell.h>
 #import <AppKit/NSPrinter.h>
 #import <AppKit/NSPrintOperation.h>
+#import <AppKit/NSPrintPanel.h>
 #import <AppKit/NSPrintInfo.h>
 #import <AppKit/NSProgressIndicator.h>
 #import <AppKit/NSResponder.h>

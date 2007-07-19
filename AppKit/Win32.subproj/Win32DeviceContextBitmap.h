@@ -6,16 +6,18 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
-#import <AppKit/Win32DeviceContext.h>
+#import <AppKit/KGDeviceContext_gdi.h>
+#import <Foundation/NSGeometry.h>
 
-@interface Win32DeviceContextBitmap : Win32DeviceContext {
-   Win32DeviceContext *_compatible;
-   HBITMAP             _bitmap;
+@class KGRenderingContext;
+
+@interface Win32DeviceContextBitmap : KGDeviceContext_gdi {
+   KGDeviceContext_gdi *_compatible;
+   HBITMAP              _bitmap;
+   KGRenderingContext  *_renderingContext;
 }
 
--initWithSize:(NSSize)size deviceContext:(Win32DeviceContext *)compatible;
+-initWithSize:(NSSize)size deviceContext:(KGDeviceContext_gdi *)compatible;
 -initWithSize:(NSSize)size;
-
--(Win32DeviceContextWindow *)windowDeviceContext;
 
 @end

@@ -10,6 +10,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSDocumentController.h>
 #import <AppKit/NSDocument.h>
 #import <AppKit/NSOpenPanel.h>
+#import <AppKit/NSMenu.h>
+#import <AppKit/NSMenuItem.h>
+#import <AppKit/NSApplication.h>
+
+@interface NSDocumentController(forward)
+-(void)_updateRecentDocumentsMenu;
+@end
 
 @implementation NSDocumentController
 
@@ -29,6 +36,7 @@ static NSDocumentController *shared=nil;
    _documents=[NSMutableArray new];
    _fileTypes=[[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleDocumentTypes"] retain];
 
+   [self _updateRecentDocumentsMenu];
    return self;
 }
 
@@ -44,11 +52,35 @@ static NSDocumentController *shared=nil;
    [_documents removeObjectIdenticalTo:document];
 }
 
+-documentForURL:(NSURL *)url {
+   int i,count=[_documents count];
+   
+   for(i=0;i<count;i++){
+    NSDocument *document=[_documents objectAtIndex:i];
+    NSURL      *check=[document fileURL];
+    
+    if(check!=nil && [check isEqual:url])
+     return document;
+   }
+   
+   return nil;
+}
+
 -makeDocumentWithContentsOfFile:(NSString *)path ofType:(NSString *)type {
    id    result;
    Class class=[self documentClassForType:type];
 
    result=[[[class alloc] initWithContentsOfFile:path ofType:type] autorelease];
+   [result setFileType:type];
+
+   return result;
+}
+
+-makeDocumentWithContentsOfURL:(NSURL *)url ofType:(NSString *)type error:(NSError **)error {
+   id    result;
+   Class class=[self documentClassForType:type];
+
+   result=[[[class alloc] initWithContentsOfURL:url ofType:type] autorelease];
    [result setFileType:type];
 
    return result;
@@ -92,8 +124,38 @@ static NSDocumentController *shared=nil;
    if(display)
     [result showWindows];
 
+   [self noteNewRecentDocument:result];
+
    return result;
 }
+
+-openDocumentWithContentsOfURL:(NSURL *)url display:(BOOL)display error:(NSError **)error {
+   IMP mine=[NSDocumentController instanceMethodForSelector:@selector(openDocumentWithContentsOfFile:display:)];
+   IMP theirs=[self methodForSelector:@selector(openDocumentWithContentsOfFile:display:)];
+      
+   if([url isFileURL] && mine!=theirs)
+    return [self openDocumentWithContentsOfFile:[url path] display:display];
+   else {
+    NSDocument *result=[self documentForURL:url];
+
+    if(result==nil){
+     NSString   *extension=[[url path] pathExtension];
+     NSString   *type=[self typeFromFileExtension:extension];
+     
+     result=[self makeDocumentWithContentsOfURL:url ofType:type error:error];
+
+     if(result!=nil){
+      [self addDocument:result];
+      [result makeWindowControllers];
+      [self noteNewRecentDocument:result];
+     }
+    }
+    if(display)
+     [result showWindows];
+     
+    return result;
+   }
+} 
 
 -(NSString *)currentDirectory {
    NSUnimplementedMethod();
@@ -190,17 +252,123 @@ static NSDocumentController *shared=nil;
    int      i,count=[files count];
 
    for(i=0;i<count;i++){
-    NSString *path=[files objectAtIndex:i];
+    NSError *error=nil;
+    NSURL   *url=[NSURL fileURLWithPath:[files objectAtIndex:i]];
 
-    [self openDocumentWithContentsOfFile:path display:YES];
+    [self openDocumentWithContentsOfURL:url display:YES error:&error];
    }
 }
 
 -(void)saveAllDocuments:sender {
 }
 
+-(NSArray *)_recentDocumentPaths {
+   return [[NSUserDefaults standardUserDefaults] arrayForKey:@"NSRecentDocumentPaths"];
+}
+
+-(void)_openRecentDocument:sender {
+   NSArray    *paths=[self _recentDocumentPaths];
+   NSMenuItem *item=sender;
+   int         tag=[item tag];
+
+   if(tag>=0 && tag<[paths count]){
+    NSError *error=nil;
+    NSURL   *url=[NSURL fileURLWithPath:[paths objectAtIndex:tag]];
+    
+    [self openDocumentWithContentsOfURL:url display:YES error:&error];
+   }
+}
+
+-(void)_removeAllRecentDocumentsFromMenu:(NSMenu *)menu {
+   NSArray *items=[menu itemArray];
+   int      count=[items count];
+
+   while(--count>=0){
+    NSMenuItem *check=[items objectAtIndex:count];
+    
+    if([check action]==@selector(_openRecentDocument:))
+     [menu removeItemAtIndex:count];
+   }
+}
+
+
+-(void)_updateRecentDocumentsMenu {
+   NSMenu  *menu=[[NSApp mainMenu] _menuWithName:@"_NSRecentDocumentsMenu"];
+   NSArray *array=[self _recentDocumentPaths];
+   int      count=[array count];
+ 
+   [self _removeAllRecentDocumentsFromMenu:menu];
+   
+   if([[menu itemArray] count]>0){
+    if([array count]==0){
+     if([[[menu itemArray] objectAtIndex:0] isSeparatorItem])
+      [menu removeItemAtIndex:0];
+    }
+    else {
+     if(![[[menu itemArray] objectAtIndex:0] isSeparatorItem])
+      [menu insertItem:[NSMenuItem separatorItem] atIndex:0];
+    }
+   }
+   while(--count>=0){
+    NSString   *path=[array objectAtIndex:count];
+    NSMenuItem *item=[[[NSMenuItem alloc] initWithTitle:path action:@selector(_openRecentDocument:) keyEquivalent:nil] autorelease];
+    
+    [item setTag:count];
+    [menu insertItem:item atIndex:0];
+   }
+}
+
+-(NSArray *)recentDocumentURLs {
+   NSArray        *paths=[self _recentDocumentPaths];
+   int             i,count=[paths count];
+   NSMutableArray *result=[NSMutableArray arrayWithCapacity:count];
+   
+   for(i=0;i<count;i++)
+    [result addObject:[NSURL fileURLWithPath:[paths objectAtIndex:i]]];
+    
+   return result;
+}
+
+-(void)noteNewRecentDocumentURL:(NSURL *)url {
+   NSString       *path=[url path];
+   NSMutableArray *array=[NSMutableArray arrayWithArray:[self _recentDocumentPaths]];
+
+   [array removeObject:path];
+   [array insertObject:path atIndex:0];
+   
+   while([array count]>[self maximumRecentDocumentCount])
+    [array removeLastObject];
+    
+   [[NSUserDefaults standardUserDefaults] setObject:array forKey:@"NSRecentDocumentPaths"];
+   [self _updateRecentDocumentsMenu];
+}
+
+-(void)noteNewRecentDocument:(NSDocument *)document {
+   NSURL *url=[document fileURL];
+  
+   if(url!=nil)
+    [self noteNewRecentDocumentURL:url];
+}
+
+-(unsigned)maximumRecentDocumentCount {
+   NSString *value=[[NSUserDefaults standardUserDefaults] stringForKey:@"NSRecentDocumentMaximum"];
+   
+   return (value==nil)?10:[value intValue];
+}
+
+-(void)clearRecentDocuments:sender {
+   NSArray *array=[NSArray array];
+   
+   [[NSUserDefaults standardUserDefaults] setObject:array forKey:@"NSRecentDocumentPaths"];
+   [self _updateRecentDocumentsMenu];
+}
+
 -(BOOL)application:sender openFile:(NSString *)path {
-   return ([self openDocumentWithContentsOfFile:path display:YES]!=nil)?YES:NO;
+   NSError    *error=nil;
+   NSURL      *url=[NSURL fileURLWithPath:path];
+   NSDocument *document=[self openDocumentWithContentsOfURL:url display:YES error:&error];
+
+   return (document!=nil)?YES:NO;
 }
 
 @end

@@ -8,9 +8,24 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 // Original - Christopher Lloyd <cjwl@objc.net>
 #import <AppKit/KGRenderingContext.h>
+#import <AppKit/KGDeviceContext.h>
 #import <AppKit/KGFont.h>
 
 @implementation KGRenderingContext
+
+-initWithDeviceContext:(KGDeviceContext *)deviceContext {
+   _deviceContext=[deviceContext retain];
+   return self;
+}
+
+-(void)dealloc {
+   [_deviceContext release];
+   [super dealloc];
+}
+
+-(KGDeviceContext *)deviceContext {
+   return _deviceContext;
+}
 
 -(NSSize)size {
   return NSZeroSize;
@@ -22,23 +37,19 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)beginPage {
-   NSInvalidAbstractInvocation();
+   [_deviceContext beginPage];
 }
 
 -(void)endPage {
-   NSInvalidAbstractInvocation();
+   [_deviceContext endPage];
 }
 
--(void)beginDocument {
-   NSInvalidAbstractInvocation();
+-(void)beginPrintingWithDocumentName:(NSString *)name {
+   [_deviceContext beginPrintingWithDocumentName:name];
 }
 
--(void)endDocument {
-   NSInvalidAbstractInvocation();
-}
-
--(void)scalePage:(float)scalex:(float)scaley {
-   NSInvalidAbstractInvocation();
+-(void)endPrinting {
+   [_deviceContext endPrinting];
 }
 
 -(void)setFont:(KGFont *)font {

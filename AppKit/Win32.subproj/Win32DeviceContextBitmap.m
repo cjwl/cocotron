@@ -12,7 +12,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @implementation Win32DeviceContextBitmap
 
--initWithSize:(NSSize)size deviceContext:(Win32DeviceContext *)compatible {
+-initWithSize:(NSSize)size deviceContext:(KGDeviceContext_gdi *)compatible {
    [self initWithDC:CreateCompatibleDC([compatible dc])];
     _compatible=[compatible retain];
 #if 1

@@ -7,8 +7,8 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
 // Original - Christopher Lloyd <cjwl@objc.net>
-#import <AppKit/Win32DeviceContext.h>
-#import <AppKit/Win32DeviceContextWindow.h>
+#import "KGRenderingContext_gdi.h"
+#import <AppKit/KGDeviceContext_gdi.h>
 #import <AppKit/NSApplication.h>
 #import <AppKit/KGPath.h>
 #import <AppKit/KGColor.h>
@@ -23,6 +23,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/KGFunction.h>
 #import <AppKit/KGColorSpace.h>
 #import <AppKit/KGFont.h>
+#import "Win32DeviceContextPrinter.h"
+#import "Win32DeviceContextWindow.h"
+#import "Win32DeviceContextBitmap.h"
 
 static inline int float2int(float coord){
    return lround(coord);
@@ -58,20 +61,52 @@ NSRect Win32TransformRect(CGAffineTransform matrix,NSRect rect) {
 }
 
 
-@implementation Win32DeviceContext
+@implementation KGRenderingContext_gdi
 
--(KGContext *)graphicsContextWithSize:(NSSize)size {
-   CGAffineTransform flip={1,0,0,-1,0,size.height};
-   KGGraphicsState *initialState=[[[KGGraphicsState alloc] initWithRenderingContext:self transform:flip userSpaceSize:NSMakeSize(size.width,size.height)] autorelease];
++(KGRenderingContext *)renderingContextWithPrinterDC:(HDC)dc {
+   KGDeviceContext *deviceContext=[[[Win32DeviceContextPrinter alloc] initWithDC:dc] autorelease];
    
+   return [[[self alloc] initWithDC:dc deviceContext:deviceContext] autorelease];
+}
+
++(KGRenderingContext *)renderingContextWithWindowHWND:(HWND)handle {
+   KGDeviceContext *deviceContext=[[[Win32DeviceContextWindow alloc] initWithWindowHandle:handle] autorelease];
+   
+   return [[[self alloc] initWithDC:GetDC(handle) deviceContext:deviceContext] autorelease];
+}
+
++(KGRenderingContext *)renderingContextWithSize:(NSSize)size renderingContext:(KGRenderingContext *)otherContext {
+   KGDeviceContext_gdi *deviceContext=[[[Win32DeviceContextBitmap alloc] initWithSize:size deviceContext:(KGDeviceContext_gdi *)[otherContext deviceContext]] autorelease];
+   
+   return [[[self alloc] initWithDC:[deviceContext dc] deviceContext:deviceContext] autorelease];
+}
+
++(KGRenderingContext *)renderingContextWithSize:(NSSize)size  {
+   KGDeviceContext_gdi *deviceContext=[[[Win32DeviceContextBitmap alloc] initWithSize:size] autorelease];
+   
+   return [[[self alloc] initWithDC:[deviceContext dc] deviceContext:deviceContext] autorelease];
+}
+
+-(KGContext *)createGraphicsContext {
+   NSSize            pointSize=[_deviceContext pointSize];
+   NSSize            pixelsPerInch=[_deviceContext pixelsPerInch];
+   CGAffineTransform flip={1,0,0,-1,0, pointSize.height};
+   CGAffineTransform scale=CGAffineTransformConcat(CGAffineTransformMakeScale(pixelsPerInch.width/72.0,pixelsPerInch.height/72.0),flip);
+   KGGraphicsState  *initialState=[[[KGGraphicsState alloc] initWithRenderingContext:self transform:scale userSpaceSize:pointSize] autorelease];
+      
    return [[[KGContext alloc] initWithGraphicsState:initialState] autorelease];
 }
 
-+(Win32DeviceContext *)deviceContextForWindowHandle:(HWND)handle {
-   return [[[Win32DeviceContextWindow alloc] initWithWindowHandle:handle] autorelease];
+-(KGContext *)graphicsContextWithSize:(NSSize)size {
+   CGAffineTransform flip={1,0,0,-1,0,size.height};
+   KGGraphicsState  *initialState=[[[KGGraphicsState alloc] initWithRenderingContext:self transform:flip userSpaceSize:NSMakeSize(size.width,size.height)] autorelease];
+
+   return [[[KGContext alloc] initWithGraphicsState:initialState] autorelease];
 }
 
--initWithDC:(HDC)dc {
+-initWithDC:(HDC)dc deviceContext:(KGDeviceContext *)deviceContext {
+   [super initWithDeviceContext:deviceContext];
+   
    _dc=dc;
 
    _clipRegion=CreateRectRgn(0,0,GetDeviceCaps(_dc,HORZRES),GetDeviceCaps(_dc,VERTRES));
@@ -87,7 +122,6 @@ NSRect Win32TransformRect(CGAffineTransform matrix,NSRect rect) {
    SetBkMode(_dc,TRANSPARENT);
    SetTextAlign(_dc,TA_BASELINE);
 
-
    _gdiFont=nil;
    return self;
 }
@@ -102,8 +136,8 @@ NSRect Win32TransformRect(CGAffineTransform matrix,NSRect rect) {
    return _dc;
 }
 
--(Win32DeviceContextWindow *)windowDeviceContext {
-   return nil;
+-(HWND)windowHandle {
+   return [[(KGDeviceContext_gdi *)_deviceContext windowDeviceContext] windowHandle];
 }
 
 -(void)selectFontWithName:(const char *)name pointSize:(float)pointSize antialias:(BOOL)antialias {
@@ -127,26 +161,6 @@ NSRect Win32TransformRect(CGAffineTransform matrix,NSRect rect) {
    return _gdiFont;
 }
 
--(BOOL)isPrinter {
-   return NO;
-}
-
--(void)beginPage {
-   // do nothing
-}
-
--(void)endPage {
-   // do nothing
-}
-
--(void)beginDocument {
-   // do nothing
-}
-
--(void)endDocument {
-   // do nothing
-}
-
 -(NSSize)size {
    NSSize result;
 
@@ -156,28 +170,12 @@ NSRect Win32TransformRect(CGAffineTransform matrix,NSRect rect) {
    return result;
 }
 
--(void)copyColorsToContext:(Win32DeviceContext *)other size:(NSSize)size toPoint:(NSPoint)toPoint  {
+-(void)copyColorsToContext:(KGRenderingContext_gdi *)other size:(NSSize)size toPoint:(NSPoint)toPoint  {
    BitBlt([other dc],toPoint.x,toPoint.y,size.width,size.height,_dc,0,0,SRCCOPY);
 }
 
--(void)copyColorsToContext:(Win32DeviceContext *)other size:(NSSize)size {
+-(void)copyColorsToContext:(KGRenderingContext_gdi *)other size:(NSSize)size {
    [self copyColorsToContext:other size:size toPoint:NSMakePoint(0,0)];
-}
-
--(void)scalePage:(float)scalex:(float)scaley {
-   HDC colorDC=_dc;
-   int xmul=scalex*1000;
-   int xdiv=1000;
-   int ymul=scaley*1000;
-   int ydiv=1000;
-
-   int width=GetDeviceCaps(colorDC,HORZRES);
-   int height=GetDeviceCaps(colorDC,VERTRES);
-
-   SetWindowExtEx(colorDC,width,height,NULL);
-   SetViewportExtEx(colorDC,width,height,NULL);
-
-   ScaleWindowExtEx(colorDC,xdiv,xmul,ydiv,ymul,NULL);
 }
 
 -(id)saveCopyOfDeviceState {
@@ -198,8 +196,7 @@ NSRect Win32TransformRect(CGAffineTransform matrix,NSRect rect) {
 }
 
 -(void)setDeviceClipState:(id)region {
-   if(![self isPrinter])
-    SelectClipRgn(_dc,[(Win32Region *)region regionHandle]);
+   SelectClipRgn(_dc,[(Win32Region *)region regionHandle]);
 }
 
 -(void)clipInUserSpace:(CGAffineTransform)ctm rects:(const NSRect *)userRects count:(unsigned)count {
@@ -583,7 +580,7 @@ static void zeroBytes(void *bytes,int size){
 }
 
 -(void)drawLayer:(KGLayer *)layer inRect:(NSRect)rect ctm:(CGAffineTransform)ctm {
-   Win32DeviceContext *other=[layer renderingContext];
+   KGRenderingContext_gdi *other=[layer renderingContext];
    
    rect.origin=CGPointApplyAffineTransform(rect.origin,ctm);
 

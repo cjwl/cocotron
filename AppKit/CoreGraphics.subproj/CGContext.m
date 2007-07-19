@@ -442,11 +442,6 @@ void CGContextEndPage(CGContextRef context) {
    [context endPage];
 }
 
-
-
-
-
-
 /// temporary hacks
 
 void CGContextResetClip(CGContextRef context) {
@@ -463,17 +458,5 @@ void CGContextSetCalibratedRGBColor(CGContextRef context,float red,float green,f
 
 void CGContextCopyBits(CGContextRef context,CGRect rect,CGPoint point,int gState) {
    [context copyBitsInRect:rect toPoint:point gState:gState];
-}
-
-void CGContextBeginDocument(CGContextRef context) {
-   [context beginDocument];
-}
-
-void CGContextScalePage(CGContextRef context,float scalex,float scaley) {
-   [context scalePage:scalex:scaley];
-}
-
-void CGContextEndDocument(CGContextRef context) {
-   [context endDocument];
 }
 
