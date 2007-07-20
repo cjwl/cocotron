@@ -397,6 +397,8 @@ static inline BOOL isEqualString(NSString *str1,NSString *str2){
    return YES;
 }
 
+// Knuth-Morris-Pratt string search
+
 static inline void computeNext(int next[],unichar patbuffer[],int patlength){
    int pos=0,i=-1;
 
@@ -413,7 +415,24 @@ static inline void computeNext(int next[],unichar patbuffer[],int patlength){
    }
 }
 
-// Knuth-Morris-Pratt string search
+static inline NSRange rangeOfPatternNext(unichar *buffer,unichar *patbuffer,int *next,unsigned patlength,NSRange range){
+   int i,pos=0,searchLength=range.location+range.length;
+   int start=0;
+
+   for(i=range.location;i<searchLength && pos<patlength;i++,pos++){
+    while(pos>-1 && (patbuffer[pos]!=buffer[i]))
+     pos=next[pos];
+
+    if(pos<=0)
+     start=i;
+   }
+
+   if(pos==patlength)
+    return NSMakeRange(start,patlength);
+   else
+    return NSMakeRange(NSNotFound,0);
+}
+
 // FIX, add options
 -(NSRange)rangeOfString:(NSString *)pattern options:(unsigned)options
  range:(NSRange)range {
@@ -442,24 +461,8 @@ static inline void computeNext(int next[],unichar patbuffer[],int patlength){
     NSUnsupportedMethod();
 
    computeNext(next,patbuffer,patlength);
-
-   {
-    int i,pos=0,searchLength=range.location+range.length;
-    int start=0;
-
-    for(i=range.location;i<searchLength && pos<patlength;i++,pos++){
-     while(pos>-1 && (patbuffer[pos]!=buffer[i]))
-       pos=next[pos];
-
-     if(pos<=0)
-      start=i;
-    }
-
-    if(pos==patlength)
-     return NSMakeRange(start,patlength);
-    else
-     return NSMakeRange(NSNotFound,0);
-   }
+   
+   return rangeOfPatternNext(buffer,patbuffer,next,patlength,range);
 }
 
 -(NSRange)rangeOfString:(NSString *)string options:(unsigned)options {
@@ -749,22 +752,35 @@ U+2029 (Unicode paragraph separator), \r\n, in that order (also known as CRLF)
    return [NSString stringWithCharacters:unicode length:totalLength];
 }
 
--(NSArray *)componentsSeparatedByString:(NSString *)separator {
+-(NSArray *)componentsSeparatedByString:(NSString *)pattern {
    NSMutableArray *result=[NSMutableArray array];
-   NSRange         search=NSMakeRange(0,[self length]),where;
+   unsigned        length=[self length];
+   unichar        *buffer;
+   unsigned        patlength=[pattern length];
+   unichar         patbuffer[patlength+1];
+   int             next[patlength+1];
+   NSRange         search=NSMakeRange(0,length),where;
+
+   buffer=NSZoneMalloc(NULL,sizeof(unichar)*length);
+   [self getCharacters:buffer];
+   [pattern getCharacters:patbuffer];
+
+   computeNext(next,patbuffer,patlength);
 
    do {
-    where=[self rangeOfString:separator options:0 range:search];
+    where=rangeOfPatternNext(buffer,patbuffer,next,patlength,search);
 
     if(where.length>0){
      NSString *piece=[self substringWithRange:NSMakeRange(search.location,where.location-search.location)];
 
      [result addObject:piece];
      search.location=where.location+where.length;
-     search.length=[self length]-search.location;
+     search.length=length-search.location;
     }
    }while(where.length>0);
 
+   NSZoneFree(NULL,buffer);
+   
    [result addObject:[self substringWithRange:search]];
 
    return result;
