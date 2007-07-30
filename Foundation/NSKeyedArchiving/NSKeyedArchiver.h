@@ -29,15 +29,15 @@ FOUNDATION_EXPORT NSString *NSInvalidArchiveOperationException;
 
 -initForWritingWithMutableData:(NSMutableData *)data;
 
-+(NSString *)classNameForClass:(Class)class;
-+(void)setClassName:(NSString *)className forClass:(Class)class;
++(NSString *)classNameForClass:(Class)aClass;
++(void)setClassName:(NSString *)className forClass:(Class)aClass;
 
 -delegate;
--(NSString *)classNameForClass:(Class)class;
+-(NSString *)classNameForClass:(Class)aClass;
 -(NSPropertyListFormat)outputFormat;
 
 -(void)setDelegate:delegate;
--(void)setClassName:(NSString *)className forClass:(Class)class;
+-(void)setClassName:(NSString *)className forClass:(Class)aClass;
 -(void)setOutputFormat:(NSPropertyListFormat)format;
 
 -(void)encodeBool:(BOOL)value forKey:(NSString *)key;

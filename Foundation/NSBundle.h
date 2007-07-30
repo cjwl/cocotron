@@ -25,7 +25,7 @@ FOUNDATION_EXPORT NSString *NSLoadedClasses;
 
 +(NSBundle *)mainBundle;
 
-+(NSBundle *)bundleForClass:(Class)class;
++(NSBundle *)bundleForClass:(Class)aClass;
 
 -initWithPath:(NSString *)path;
 

@@ -43,7 +43,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)addAttribute:(NSXMLNode *)attribute;
 -(void)removeAttributeForName:(NSString *)name;
 
--(void)addNamespace:(NSXMLNode *)namespace;
+-(void)addNamespace:(NSXMLNode *)aNamespace;
 -(void)removeNamespaceForPrefix:(NSString *)prefix;
 
 -(void)resolveNamespaceForName:(NSString *)name;

@@ -35,7 +35,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 +(NSSize)frameSizeForContentSize:(NSSize)contentSize hasHorizontalScroller:(BOOL)hasHorizontalScroller hasVerticalScroller:(BOOL)hasVerticalScroller borderType:(NSBorderType)borderType;
 +(NSSize)contentSizeForFrameSize:(NSSize)fSize hasHorizontalScroller:(BOOL)hasHorizontalScroller hasVerticalScroller:(BOOL)hasVerticalScroller borderType:(NSBorderType)borderType;
 
-+(void)setRulerViewClass:(Class)class;
++(void)setRulerViewClass:(Class)aClass;
 +(Class)rulerViewClass;
 
 -(NSSize)contentSize;

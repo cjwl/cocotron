@@ -12,35 +12,39 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @class Protocol;
 
-FOUNDATION_EXPORT Class       OBJCMetaClassFromClass(Class class);
+FOUNDATION_EXPORT Class       OBJCMetaClassFromClass(Class aClass);
 FOUNDATION_EXPORT Class       OBJCClassFromString(const char *name);
-FOUNDATION_EXPORT const char *OBJCStringFromClass(Class class);
+FOUNDATION_EXPORT const char *OBJCStringFromClass(Class aClass);
 
-FOUNDATION_EXPORT Class OBJCSuperclassFromClass(Class class);
+FOUNDATION_EXPORT Class OBJCSuperclassFromClass(Class aClass);
 FOUNDATION_EXPORT Class OBJCSuperclassFromObject(id object);
 
-FOUNDATION_EXPORT BOOL OBJCClassConformsToProtocol(Class class,Protocol *protocol);
+FOUNDATION_EXPORT BOOL OBJCClassConformsToProtocol(Class aClass,Protocol *protocol);
 
-FOUNDATION_EXPORT BOOL OBJCIsMetaClass(Class class);
+FOUNDATION_EXPORT BOOL OBJCIsMetaClass(Class aClass);
 
-FOUNDATION_EXPORT const char *OBJCTypesForSelector(Class class,SEL selector);
+FOUNDATION_EXPORT const char *OBJCTypesForSelector(Class aClass,SEL selector);
 
-FOUNDATION_EXPORT int OBJCClassVersion(Class class);
-FOUNDATION_EXPORT void OBJCSetClassVersion(Class class,int version);
-FOUNDATION_EXPORT unsigned OBJCInstanceSize(Class class);
+FOUNDATION_EXPORT int OBJCClassVersion(Class aClass);
+FOUNDATION_EXPORT void OBJCSetClassVersion(Class aClass,int version);
+FOUNDATION_EXPORT unsigned OBJCInstanceSize(Class aClass);
 
 // This only works for 'id' ivars
 FOUNDATION_EXPORT void OBJCSetInstanceVariable(id,const char *name,void *);
 
-FOUNDATION_EXPORT BOOL OBJCIsKindOfClass(id object,Class class);
+FOUNDATION_EXPORT BOOL OBJCIsKindOfClass(id object,Class aClass);
 
-FOUNDATION_EXPORT const char *OBJCModulePathFromClass(Class class);
+FOUNDATION_EXPORT const char *OBJCModulePathFromClass(Class aClass);
 FOUNDATION_EXPORT const char *OBJCModulePathForProcess();
 FOUNDATION_EXPORT const char **OBJCAllModulePaths(); // free the ptr but not the strings
 
 struct objc_super {
-    id    object;
+    id    receiver;
+#ifndef __cplusplus
     Class class;
+#else
+	Class super_class;
+#endif
 };
 
 FOUNDATION_EXPORT IMP objc_msg_lookup(id self, SEL selector);

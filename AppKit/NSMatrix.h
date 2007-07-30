@@ -88,7 +88,7 @@ typedef enum {
 
 -(void)setDelegate:delegate;
 -(void)setDoubleAction:(SEL)action;
--(void)setCellClass:(Class)class;
+-(void)setCellClass:(Class)aClass;
 -(void)setPrototype:(NSCell *)cell;
 
 -(void)renewRows:(int)rows columns:(int)columns;

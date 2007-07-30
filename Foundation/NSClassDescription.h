@@ -15,9 +15,9 @@ FOUNDATION_EXPORT NSString *NSClassDescriptionNeededForClassNotification;
 
 }
 
-+(NSClassDescription *)classDescriptionForClass:(Class)class;
++(NSClassDescription *)classDescriptionForClass:(Class)aClass;
 +(void)invalidateClassDescriptionCache;
-+(void)registerClassDescription:(NSClassDescription *)description forClass:(Class)class;
++(void)registerClassDescription:(NSClassDescription *)description forClass:(Class)aClass;
 
 -(NSArray *)attributeKeys;
 -(NSString *)inverseForRelationshipKey:(NSString *)key;

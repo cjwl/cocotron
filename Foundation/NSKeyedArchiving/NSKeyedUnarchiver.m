@@ -389,7 +389,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    id plist=[[_plistStack lastObject] objectForKey:key];
    
    if(plist==nil)
-    result==nil;
+    result=nil;
    else
     result=[self _decodeObjectWithPropertyList:plist];
 

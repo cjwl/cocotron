@@ -482,6 +482,693 @@
 		C8B239A30BF8EEB500CA33AF /* defaultBindingOptions.plist in Resources */ = {isa = PBXBuildFile; fileRef = C8B239A20BF8EEB500CA33AF /* defaultBindingOptions.plist */; };
 		C8E4F5810BFF7A8A0076D5E6 /* NSAffineTransform.h in Headers */ = {isa = PBXBuildFile; fileRef = C8E4F57F0BFF7A8A0076D5E6 /* NSAffineTransform.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C8E4F5820BFF7A8A0076D5E6 /* NSAffineTransform.m in Sources */ = {isa = PBXBuildFile; fileRef = C8E4F5800BFF7A8A0076D5E6 /* NSAffineTransform.m */; };
+		FE01A80B0C5D9BCB00AEA51A /* AppKitExport.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B53FA0976075200DA0954 /* AppKitExport.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
+		FE01A80C0C5D9BCB00AEA51A /* AppKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B53FC0976075200DA0954 /* AppKit.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
+		FE01A80D0C5D9BCB00AEA51A /* NSActionCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B53FE0976075200DA0954 /* NSActionCell.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
+		FE01A80E0C5D9BCB00AEA51A /* NSAlertPanel.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54020976075200DA0954 /* NSAlertPanel.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE01A80F0C5D9BCB00AEA51A /* NSApplication.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54040976075200DA0954 /* NSApplication.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
+		FE01A8100C5D9BCB00AEA51A /* NSAttributedString.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54060976075200DA0954 /* NSAttributedString.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
+		FE01A8110C5D9BCB00AEA51A /* NSBitmapImageRep.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54080976075200DA0954 /* NSBitmapImageRep.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
+		FE01A8120C5D9BCB00AEA51A /* NSBox.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B540A0976075200DA0954 /* NSBox.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
+		FE01A8130C5D9BCB00AEA51A /* NSBrowser.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B540C0976075200DA0954 /* NSBrowser.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
+		FE01A8140C5D9BCB00AEA51A /* NSBrowserCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B540E0976075200DA0954 /* NSBrowserCell.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
+		FE01A8150C5D9BCB00AEA51A /* NSButton.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54100976075200DA0954 /* NSButton.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
+		FE01A8160C5D9BCB00AEA51A /* NSButtonCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54120976075200DA0954 /* NSButtonCell.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
+		FE01A8170C5D9BCB00AEA51A /* NSCachedImageRep.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54140976075200DA0954 /* NSCachedImageRep.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
+		FE01A8180C5D9BCB00AEA51A /* NSCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54160976075200DA0954 /* NSCell.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
+		FE01A8190C5D9BCB00AEA51A /* NSClipView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54180976075200DA0954 /* NSClipView.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
+		FE01A81A0C5D9BCB00AEA51A /* NSColorList.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B541A0976075200DA0954 /* NSColorList.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
+		FE01A81B0C5D9BCB00AEA51A /* NSColorPanel.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B541E0976075200DA0954 /* NSColorPanel.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
+		FE01A81C0C5D9BCB00AEA51A /* NSColorWell.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54200976075200DA0954 /* NSColorWell.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
+		FE01A81D0C5D9BCB00AEA51A /* NSComboBox.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54220976075200DA0954 /* NSComboBox.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
+		FE01A81E0C5D9BCB00AEA51A /* NSComboBoxCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54240976075200DA0954 /* NSComboBoxCell.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
+		FE01A81F0C5D9BCB00AEA51A /* NSComboBoxView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54260976075200DA0954 /* NSComboBoxView.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE01A8200C5D9BCB00AEA51A /* NSComboBoxWindow.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54280976075200DA0954 /* NSComboBoxWindow.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE01A8210C5D9BCB00AEA51A /* NSControl.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B542A0976075200DA0954 /* NSControl.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
+		FE01A8220C5D9BCB00AEA51A /* NSCursor.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B542C0976075200DA0954 /* NSCursor.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
+		FE01A8230C5D9BCB00AEA51A /* NSCursorRect.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B542E0976075200DA0954 /* NSCursorRect.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE01A8240C5D9BCB00AEA51A /* NSCustomImageRep.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54300976075200DA0954 /* NSCustomImageRep.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
+		FE01A8250C5D9BCB00AEA51A /* NSDisplay.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54320976075200DA0954 /* NSDisplay.h */; settings = {ATTRIBUTES = (Project, Private, ); }; };
+		FE01A8260C5D9BCB00AEA51A /* NSDocument.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54340976075200DA0954 /* NSDocument.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
+		FE01A8270C5D9BCB00AEA51A /* NSDocumentController.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54360976075200DA0954 /* NSDocumentController.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
+		FE01A8280C5D9BCB00AEA51A /* NSDragging.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54380976075200DA0954 /* NSDragging.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
+		FE01A8290C5D9BCB00AEA51A /* NSDraggingManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B543A0976075200DA0954 /* NSDraggingManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE01A82A0C5D9BCB00AEA51A /* NSEPSImageRep.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B543C0976075200DA0954 /* NSEPSImageRep.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
+		FE01A82B0C5D9BCB00AEA51A /* NSFileWrapper.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B543E0976075200DA0954 /* NSFileWrapper.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
+		FE01A82C0C5D9BCB00AEA51A /* NSFont.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54400976075200DA0954 /* NSFont.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
+		FE01A82D0C5D9BCB00AEA51A /* NSFontFamily.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54420976075200DA0954 /* NSFontFamily.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE01A82E0C5D9BCB00AEA51A /* NSFontManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54440976075200DA0954 /* NSFontManager.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
+		FE01A82F0C5D9BCB00AEA51A /* NSFontMetric.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54460976075200DA0954 /* NSFontMetric.h */; settings = {ATTRIBUTES = (Project, Private, ); }; };
+		FE01A8300C5D9BCB00AEA51A /* NSFontPanel.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54480976075200DA0954 /* NSFontPanel.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE01A8310C5D9BCB00AEA51A /* NSFontPanelCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B544A0976075200DA0954 /* NSFontPanelCell.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE01A8320C5D9BCB00AEA51A /* NSFontTypeface.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B544C0976075200DA0954 /* NSFontTypeface.h */; settings = {ATTRIBUTES = (Project, Private, ); }; };
+		FE01A8330C5D9BCB00AEA51A /* NSForm.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B544E0976075200DA0954 /* NSForm.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
+		FE01A8340C5D9BCB00AEA51A /* NSFormCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54500976075200DA0954 /* NSFormCell.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
+		FE01A8350C5D9BCB00AEA51A /* NSGraphics.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54520976075200DA0954 /* NSGraphics.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
+		FE01A8360C5D9BCB00AEA51A /* NSGraphicsContext.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54540976075200DA0954 /* NSGraphicsContext.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
+		FE01A8370C5D9BCB00AEA51A /* NSGraphicsContextFunctions.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54560976075200DA0954 /* NSGraphicsContextFunctions.h */; settings = {ATTRIBUTES = (Project, Private, ); }; };
+		FE01A8380C5D9BCB00AEA51A /* NSImage.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54580976075200DA0954 /* NSImage.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
+		FE01A8390C5D9BCB00AEA51A /* NSImageCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B545A0976075200DA0954 /* NSImageCell.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
+		FE01A83A0C5D9BCB00AEA51A /* NSImageRep.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B545C0976075200DA0954 /* NSImageRep.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
+		FE01A83B0C5D9BCB00AEA51A /* NSImageView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B545E0976075200DA0954 /* NSImageView.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
+		FE01A83C0C5D9BCB00AEA51A /* NSInterfaceGraphics.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54600976075200DA0954 /* NSInterfaceGraphics.h */; settings = {ATTRIBUTES = (); }; };
+		FE01A83D0C5D9BCB00AEA51A /* NSInterfacePart.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54620976075200DA0954 /* NSInterfacePart.h */; settings = {ATTRIBUTES = (Project, Private, ); }; };
+		FE01A83E0C5D9BCB00AEA51A /* NSInterfacePartAttributedString.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54640976075200DA0954 /* NSInterfacePartAttributedString.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE01A83F0C5D9BCB00AEA51A /* NSInterfacePartDisabledAttributedString.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54660976075200DA0954 /* NSInterfacePartDisabledAttributedString.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE01A8400C5D9BCB00AEA51A /* NSInterfaceStyle.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54680976075200DA0954 /* NSInterfaceStyle.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
+		FE01A8410C5D9BCB00AEA51A /* NSMatrix.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B546A0976075200DA0954 /* NSMatrix.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
+		FE01A8420C5D9BCB00AEA51A /* NSModalSessionX.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B546C0976075200DA0954 /* NSModalSessionX.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE01A8430C5D9BCB00AEA51A /* NSOpenPanel.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B546E0976075200DA0954 /* NSOpenPanel.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
+		FE01A8440C5D9BCB00AEA51A /* NSPageLayout.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54700976075200DA0954 /* NSPageLayout.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE01A8450C5D9BCB00AEA51A /* NSPanel.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54720976075200DA0954 /* NSPanel.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
+		FE01A8460C5D9BCB00AEA51A /* NSPasteboard.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54740976075200DA0954 /* NSPasteboard.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
+		FE01A8470C5D9BCB00AEA51A /* NSPlatform.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54760976075200DA0954 /* NSPlatform.h */; settings = {ATTRIBUTES = (Project, Private, ); }; };
+		FE01A8480C5D9BCB00AEA51A /* NSPopUpButton.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54780976075200DA0954 /* NSPopUpButton.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
+		FE01A8490C5D9BCB00AEA51A /* NSPopUpButtonCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B547A0976075200DA0954 /* NSPopUpButtonCell.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
+		FE01A84A0C5D9BCB00AEA51A /* NSPopUpView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B547C0976075200DA0954 /* NSPopUpView.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE01A84B0C5D9BCB00AEA51A /* NSPopUpWindow.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B547E0976075200DA0954 /* NSPopUpWindow.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE01A84C0C5D9BCB00AEA51A /* NSParagraphStyle.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54800976075200DA0954 /* NSParagraphStyle.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
+		FE01A84D0C5D9BCB00AEA51A /* NSPrintInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54820976075200DA0954 /* NSPrintInfo.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
+		FE01A84E0C5D9BCB00AEA51A /* NSPrintOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54840976075200DA0954 /* NSPrintOperation.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
+		FE01A84F0C5D9BCB00AEA51A /* NSProgressIndicator.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54860976075200DA0954 /* NSProgressIndicator.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
+		FE01A8500C5D9BCB00AEA51A /* NSResponder.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54880976075200DA0954 /* NSResponder.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
+		FE01A8510C5D9BCB00AEA51A /* NSSavePanel.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B548A0976075200DA0954 /* NSSavePanel.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
+		FE01A8520C5D9BCB00AEA51A /* NSScreen.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B548C0976075200DA0954 /* NSScreen.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
+		FE01A8530C5D9BCB00AEA51A /* NSScroller.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B548E0976075200DA0954 /* NSScroller.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
+		FE01A8540C5D9BCB00AEA51A /* NSScrollView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54900976075200DA0954 /* NSScrollView.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
+		FE01A8550C5D9BCB00AEA51A /* NSSheetContext.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54920976075200DA0954 /* NSSheetContext.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE01A8560C5D9BCB00AEA51A /* NSSlider.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54940976075200DA0954 /* NSSlider.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
+		FE01A8570C5D9BCB00AEA51A /* NSSliderCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54960976075200DA0954 /* NSSliderCell.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
+		FE01A8580C5D9BCB00AEA51A /* NSSplitView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54980976075200DA0954 /* NSSplitView.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
+		FE01A8590C5D9BCB00AEA51A /* NSStringDrawer.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B549A0976075200DA0954 /* NSStringDrawer.h */; settings = {ATTRIBUTES = (Project, Private, ); }; };
+		FE01A85A0C5D9BCB00AEA51A /* NSStringDrawing.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B549C0976075200DA0954 /* NSStringDrawing.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
+		FE01A85B0C5D9BCB00AEA51A /* NSSecureTextField.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B549E0976075200DA0954 /* NSSecureTextField.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
+		FE01A85C0C5D9BCB00AEA51A /* NSSecureTextFieldCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54A00976075200DA0954 /* NSSecureTextFieldCell.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
+		FE01A85D0C5D9BCB00AEA51A /* NSStepper.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54A20976075200DA0954 /* NSStepper.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
+		FE01A85E0C5D9BCB00AEA51A /* NSStepperCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54A40976075200DA0954 /* NSStepperCell.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
+		FE01A85F0C5D9BCB00AEA51A /* NSTableColumn.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54A60976075200DA0954 /* NSTableColumn.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
+		FE01A8600C5D9BCB00AEA51A /* NSTableCornerView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54A80976075200DA0954 /* NSTableCornerView.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE01A8610C5D9BCB00AEA51A /* NSTableHeaderCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54AA0976075300DA0954 /* NSTableHeaderCell.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
+		FE01A8620C5D9BCB00AEA51A /* NSTableHeaderView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54AC0976075300DA0954 /* NSTableHeaderView.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE01A8630C5D9BCB00AEA51A /* NSTableView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54AE0976075300DA0954 /* NSTableView.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
+		FE01A8640C5D9BCB00AEA51A /* NSTabView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54B00976075300DA0954 /* NSTabView.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
+		FE01A8650C5D9BCB00AEA51A /* NSTabViewItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54B20976075300DA0954 /* NSTabViewItem.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
+		FE01A8660C5D9BCB00AEA51A /* NSText.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54B40976075300DA0954 /* NSText.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
+		FE01A8670C5D9BCB00AEA51A /* NSTextAttachment.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54B60976075300DA0954 /* NSTextAttachment.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
+		FE01A8680C5D9BCB00AEA51A /* NSTextField.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54B80976075300DA0954 /* NSTextField.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
+		FE01A8690C5D9BCB00AEA51A /* NSTextFieldCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54BA0976075300DA0954 /* NSTextFieldCell.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
+		FE01A86A0C5D9BCB00AEA51A /* NSTrackingRect.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54BC0976075300DA0954 /* NSTrackingRect.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE01A86B0C5D9BCB00AEA51A /* NSView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54BE0976075300DA0954 /* NSView.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
+		FE01A86C0C5D9BCB00AEA51A /* NSWindow.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54C00976075300DA0954 /* NSWindow.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
+		FE01A86D0C5D9BCB00AEA51A /* NSWindow-Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54C20976075300DA0954 /* NSWindow-Private.h */; settings = {ATTRIBUTES = (Project, Private, ); }; };
+		FE01A86E0C5D9BCB00AEA51A /* NSWindowBackgroundView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54C40976075300DA0954 /* NSWindowBackgroundView.h */; settings = {ATTRIBUTES = (Project, Private, ); }; };
+		FE01A86F0C5D9BCB00AEA51A /* NSWindowController.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54C60976075300DA0954 /* NSWindowController.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
+		FE01A8700C5D9BCB00AEA51A /* NSWorkspace.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54C80976075300DA0954 /* NSWorkspace.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
+		FE01A8710C5D9BCB00AEA51A /* NSOutlineMarkerCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54CE0976075300DA0954 /* NSOutlineMarkerCell.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE01A8720C5D9BCB00AEA51A /* NSOutlineView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54D00976075300DA0954 /* NSOutlineView.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
+		FE01A8730C5D9BCB00AEA51A /* NSRulerView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54D20976075300DA0954 /* NSRulerView.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
+		FE01A8740C5D9BCB00AEA51A /* NSRulerMarker.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54D40976075300DA0954 /* NSRulerMarker.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
+		FE01A8750C5D9BCB00AEA51A /* NSToolTipWindow.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54D60976075300DA0954 /* NSToolTipWindow.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE01A8760C5D9BCB00AEA51A /* NSWindowAnimationContext.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54D80976075300DA0954 /* NSWindowAnimationContext.h */; settings = {ATTRIBUTES = (Project, Private, ); }; };
+		FE01A8770C5D9BCB00AEA51A /* NSMeasurementUnit.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54DA0976075300DA0954 /* NSMeasurementUnit.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE01A8780C5D9BCB00AEA51A /* NSWindow-Drag.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54DC0976075300DA0954 /* NSWindow-Drag.h */; settings = {ATTRIBUTES = (Project, Private, ); }; };
+		FE01A8790C5D9BCB00AEA51A /* NSNibOutletConnector.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B552F0976075300DA0954 /* NSNibOutletConnector.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE01A87A0C5D9BCB00AEA51A /* NSNibControlConnector.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B55310976075300DA0954 /* NSNibControlConnector.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE01A87B0C5D9BCB00AEA51A /* NSNibConnector.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B55330976075300DA0954 /* NSNibConnector.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE01A87C0C5D9BCB00AEA51A /* NSNibLoading.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B55350976075300DA0954 /* NSNibLoading.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
+		FE01A87D0C5D9BCB00AEA51A /* NSNibHelpConnector.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B553D0976075300DA0954 /* NSNibHelpConnector.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE01A87E0C5D9BCB00AEA51A /* NSColor.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B55540976075300DA0954 /* NSColor.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
+		FE01A87F0C5D9BCB00AEA51A /* NSColor_rgbCalibrated.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B55560976075300DA0954 /* NSColor_rgbCalibrated.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE01A8800C5D9BCB00AEA51A /* NSColor_whiteCalibrated.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B55580976075300DA0954 /* NSColor_whiteCalibrated.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE01A8810C5D9BCB00AEA51A /* NSColor_cmykDevice.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B555A0976075300DA0954 /* NSColor_cmykDevice.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE01A8820C5D9BCB00AEA51A /* NSColor_rgbDevice.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B555C0976075300DA0954 /* NSColor_rgbDevice.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE01A8830C5D9BCB00AEA51A /* NSColor_whiteDevice.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B555E0976075300DA0954 /* NSColor_whiteDevice.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE01A8840C5D9BCB00AEA51A /* NSColor_catalog.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B55600976075300DA0954 /* NSColor_catalog.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE01A8850C5D9BCB00AEA51A /* conversions.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B55620976075300DA0954 /* conversions.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE01A8860C5D9BCB00AEA51A /* NSTextView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B557F0976075300DA0954 /* NSTextView.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
+		FE01A8870C5D9BCB00AEA51A /* NSTextContainer.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B55810976075300DA0954 /* NSTextContainer.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
+		FE01A8880C5D9BCB00AEA51A /* NSTextStorage.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B55830976075300DA0954 /* NSTextStorage.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
+		FE01A8890C5D9BCB00AEA51A /* NSTextStorage_concrete.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B55850976075300DA0954 /* NSTextStorage_concrete.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE01A88A0C5D9BCB00AEA51A /* NSLayoutManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B55870976075300DA0954 /* NSLayoutManager.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
+		FE01A88B0C5D9BCB00AEA51A /* NSTypesetter.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B55890976075300DA0954 /* NSTypesetter.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE01A88C0C5D9BCB00AEA51A /* NSRangeArray.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B558B0976075300DA0954 /* NSRangeArray.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE01A88D0C5D9BCB00AEA51A /* NSSecureTextView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B558D0976075300DA0954 /* NSSecureTextView.h */; settings = {ATTRIBUTES = (Project, Private, ); }; };
+		FE01A88E0C5D9BCB00AEA51A /* NSSecureLayoutManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B558F0976075300DA0954 /* NSSecureLayoutManager.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE01A88F0C5D9BCB00AEA51A /* NSTextTab.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B55910976075300DA0954 /* NSTextTab.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
+		FE01A8900C5D9BCB00AEA51A /* NSEvent_mouse.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B55A40976075300DA0954 /* NSEvent_mouse.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE01A8910C5D9BCB00AEA51A /* NSEvent_keyboard.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B55A60976075300DA0954 /* NSEvent_keyboard.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE01A8920C5D9BCB00AEA51A /* NSEvent_periodic.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B55A80976075300DA0954 /* NSEvent_periodic.h */; settings = {ATTRIBUTES = (Project, Private, ); }; };
+		FE01A8930C5D9BCB00AEA51A /* NSEvent.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B55AA0976075300DA0954 /* NSEvent.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
+		FE01A8940C5D9BCB00AEA51A /* NSEvent_CoreGraphics.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B55AC0976075300DA0954 /* NSEvent_CoreGraphics.h */; settings = {ATTRIBUTES = (Project, Private, ); }; };
+		FE01A8950C5D9BCB00AEA51A /* CGContext.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B55C70976075300DA0954 /* CGContext.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
+		FE01A8960C5D9BCB00AEA51A /* CGGeometry.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B55C90976075300DA0954 /* CGGeometry.h */; settings = {ATTRIBUTES = (Project, Public, ); }; };
+		FE01A8970C5D9BCB00AEA51A /* CGAffineTransform.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B55CB0976075300DA0954 /* CGAffineTransform.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
+		FE01A8980C5D9BCB00AEA51A /* CGFont.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B55CD0976075300DA0954 /* CGFont.h */; settings = {ATTRIBUTES = (Project, Public, ); }; };
+		FE01A8990C5D9BCB00AEA51A /* CoreGraphics.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B55CF0976075300DA0954 /* CoreGraphics.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
+		FE01A89A0C5D9BCB00AEA51A /* KGGraphicsState.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B55D10976075300DA0954 /* KGGraphicsState.h */; settings = {ATTRIBUTES = (Project, Private, ); }; };
+		FE01A89B0C5D9BCB00AEA51A /* KGRenderingContext.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B55D50976075300DA0954 /* KGRenderingContext.h */; settings = {ATTRIBUTES = (Project, Private, ); }; };
+		FE01A89C0C5D9BCB00AEA51A /* CGWindow.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B55D70976075300DA0954 /* CGWindow.h */; settings = {ATTRIBUTES = (Project, Private, ); }; };
+		FE01A89D0C5D9BCB00AEA51A /* CGEvent.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B55D90976075300DA0954 /* CGEvent.h */; settings = {ATTRIBUTES = (Project, Private, ); }; };
+		FE01A89E0C5D9BCB00AEA51A /* NSColorPicker.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B55EA0976075300DA0954 /* NSColorPicker.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE01A89F0C5D9BCB00AEA51A /* NSColorPickerColorList.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B55EC0976075300DA0954 /* NSColorPickerColorList.h */; settings = {ATTRIBUTES = (Project, Private, ); }; };
+		FE01A8A00C5D9BCB00AEA51A /* NSBrowserCellColorList.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B55EE0976075300DA0954 /* NSBrowserCellColorList.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE01A8A10C5D9BCB00AEA51A /* NSColorPickerSliders.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B55F00976075300DA0954 /* NSColorPickerSliders.h */; settings = {ATTRIBUTES = (Project, Private, ); }; };
+		FE01A8A20C5D9BCB00AEA51A /* Win32Cursor.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B56370976075400DA0954 /* Win32Cursor.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE01A8A30C5D9BCB00AEA51A /* KGRenderingContext_gdi.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B56390976075400DA0954 /* KGRenderingContext_gdi.h */; settings = {ATTRIBUTES = (Project, Private, ); }; };
+		FE01A8A40C5D9BCB00AEA51A /* Win32DeviceContextBitmap.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B563B0976075400DA0954 /* Win32DeviceContextBitmap.h */; settings = {ATTRIBUTES = (Project, Private, ); }; };
+		FE01A8A50C5D9BCB00AEA51A /* Win32DeviceContextPrinter.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B563D0976075400DA0954 /* Win32DeviceContextPrinter.h */; settings = {ATTRIBUTES = (Project, Private, ); }; };
+		FE01A8A60C5D9BCB00AEA51A /* Win32DeviceContextWindow.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B563F0976075400DA0954 /* Win32DeviceContextWindow.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE01A8A70C5D9BCB00AEA51A /* Win32Display.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B56410976075400DA0954 /* Win32Display.h */; settings = {ATTRIBUTES = (Project, Private, ); }; };
+		FE01A8A80C5D9BCB00AEA51A /* Win32Event.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B56430976075400DA0954 /* Win32Event.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE01A8A90C5D9BCB00AEA51A /* Win32Font.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B56450976075400DA0954 /* Win32Font.h */; settings = {ATTRIBUTES = (Project, Private, ); }; };
+		FE01A8AA0C5D9BCB00AEA51A /* Win32Region.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B564B0976075400DA0954 /* Win32Region.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE01A8AB0C5D9BCB00AEA51A /* Win32Window.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B564D0976075400DA0954 /* Win32Window.h */; settings = {ATTRIBUTES = (Project, Private, ); }; };
+		FE01A8AC0C5D9BCB00AEA51A /* Win32Application.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B564F0976075400DA0954 /* Win32Application.h */; settings = {ATTRIBUTES = (Project, Private, ); }; };
+		FE01A8AD0C5D9BCB00AEA51A /* Win32SplashPanel.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B56510976075400DA0954 /* Win32SplashPanel.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE01A8AE0C5D9BCB00AEA51A /* Win32RunningCopyPipe.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B56530976075400DA0954 /* Win32RunningCopyPipe.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE01A8AF0C5D9BCB00AEA51A /* Win32EventInputSource.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B56550976075400DA0954 /* Win32EventInputSource.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE01A8B00C5D9BCB00AEA51A /* Win32Workspace.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B56590976075400DA0954 /* Win32Workspace.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE01A8B10C5D9BCB00AEA51A /* NSSavePanel-Win32.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B565B0976075400DA0954 /* NSSavePanel-Win32.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE01A8B20C5D9BCB00AEA51A /* NSOpenPanel-Win32.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B565D0976075400DA0954 /* NSOpenPanel-Win32.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE01A8B30C5D9BCB00AEA51A /* multiple_monitors.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B565F0976075400DA0954 /* multiple_monitors.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE01A8B40C5D9BCB00AEA51A /* Win32DraggingManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B568C0976075400DA0954 /* Win32DraggingManager.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE01A8B50C5D9BCB00AEA51A /* Win32DragSession.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B568E0976075400DA0954 /* Win32DragSession.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE01A8B60C5D9BCB00AEA51A /* Win32DropPasteboard.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B56900976075400DA0954 /* Win32DropPasteboard.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE01A8B70C5D9BCB00AEA51A /* Win32FORMATETC.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B56920976075400DA0954 /* Win32FORMATETC.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE01A8B80C5D9BCB00AEA51A /* Win32GeneralPasteboard.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B56940976075400DA0954 /* Win32GeneralPasteboard.h */; settings = {ATTRIBUTES = (Project, Private, ); }; };
+		FE01A8B90C5D9BCB00AEA51A /* Win32IDataObjectClient.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B56960976075400DA0954 /* Win32IDataObjectClient.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE01A8BA0C5D9BCB00AEA51A /* Win32IDataObjectServer.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B56980976075400DA0954 /* Win32IDataObjectServer.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE01A8BB0C5D9BCB00AEA51A /* Win32IDropSourceServer.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B569A0976075400DA0954 /* Win32IDropSourceServer.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE01A8BC0C5D9BCB00AEA51A /* Win32IDropTargetServer.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B569C0976075400DA0954 /* Win32IDropTargetServer.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE01A8BD0C5D9BCB00AEA51A /* Win32IEnumFORMATETCServer.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B569E0976075400DA0954 /* Win32IEnumFORMATETCServer.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE01A8BE0C5D9BCB00AEA51A /* Win32IStreamClient.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B56A00976075400DA0954 /* Win32IStreamClient.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE01A8BF0C5D9BCB00AEA51A /* Win32IUnknownServer.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B56A20976075400DA0954 /* Win32IUnknownServer.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE01A8C00C5D9BCB00AEA51A /* Win32Pasteboard.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B56A40976075400DA0954 /* Win32Pasteboard.h */; settings = {ATTRIBUTES = (Project, Private, ); }; };
+		FE01A8C10C5D9BCB00AEA51A /* Win32TypesAndOwner.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B56A60976075400DA0954 /* Win32TypesAndOwner.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE01A8C20C5D9BCB00AEA51A /* Win32Window-Drag.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B56A80976075400DA0954 /* Win32Window-Drag.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE01A8C30C5D9BCB00AEA51A /* NSDragView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B56AA0976075400DA0954 /* NSDragView.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE01A8C40C5D9BCB00AEA51A /* NSOpenGLContext.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B56B90976075400DA0954 /* NSOpenGLContext.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE01A8C50C5D9BCB00AEA51A /* NSOpenGLPixelFormat.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B56BB0976075400DA0954 /* NSOpenGLPixelFormat.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE01A8C60C5D9BCB00AEA51A /* NSOpenGLView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B56BD0976075400DA0954 /* NSOpenGLView.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE01A8C70C5D9BCB00AEA51A /* NSRichTextReader.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B56CA0976075400DA0954 /* NSRichTextReader.h */; settings = {ATTRIBUTES = (Project, Private, ); }; };
+		FE01A8C80C5D9BCB00AEA51A /* NSRichTextWriter.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B56CC0976075400DA0954 /* NSRichTextWriter.h */; settings = {ATTRIBUTES = (Project, Private, ); }; };
+		FE01A8C90C5D9BCB00AEA51A /* NSMainMenuView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B56E30976075400DA0954 /* NSMainMenuView.h */; settings = {ATTRIBUTES = (Project, Private, ); }; };
+		FE01A8CA0C5D9BCB00AEA51A /* NSMenu.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B56E50976075400DA0954 /* NSMenu.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
+		FE01A8CB0C5D9BCB00AEA51A /* NSMenuItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B56E70976075400DA0954 /* NSMenuItem.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
+		FE01A8CC0C5D9BCB00AEA51A /* NSMenuView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B56E90976075400DA0954 /* NSMenuView.h */; settings = {ATTRIBUTES = (Project, Private, ); }; };
+		FE01A8CD0C5D9BCB00AEA51A /* NSMenuWindow.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B56EB0976075400DA0954 /* NSMenuWindow.h */; settings = {ATTRIBUTES = (Project, Private, ); }; };
+		FE01A8CE0C5D9BCB00AEA51A /* NSOverflowMenuView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B56ED0976075400DA0954 /* NSOverflowMenuView.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE01A8CF0C5D9BCB00AEA51A /* NSSubmenuView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B56EF0976075400DA0954 /* NSSubmenuView.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE01A8D00C5D9BCB00AEA51A /* NSKeyBindingManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B57030976075400DA0954 /* NSKeyBindingManager.h */; settings = {ATTRIBUTES = (Project, Private, ); }; };
+		FE01A8D10C5D9BCB00AEA51A /* NSKeyBinding.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B57050976075400DA0954 /* NSKeyBinding.h */; settings = {ATTRIBUTES = (Project, Private, ); }; };
+		FE01A8D20C5D9BCB00AEA51A /* NSStandardToolbarItems.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B57250976075400DA0954 /* NSStandardToolbarItems.h */; settings = {ATTRIBUTES = (Project, Private, ); }; };
+		FE01A8D30C5D9BCB00AEA51A /* NSToolbar.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B57270976075400DA0954 /* NSToolbar.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
+		FE01A8D40C5D9BCB00AEA51A /* NSToolbarButton.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B57290976075400DA0954 /* NSToolbarButton.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE01A8D50C5D9BCB00AEA51A /* NSToolbarItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B572B0976075400DA0954 /* NSToolbarItem.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
+		FE01A8D60C5D9BCB00AEA51A /* NSToolbarView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B572D0976075500DA0954 /* NSToolbarView.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE01A8D70C5D9BCB00AEA51A /* NSToolbarButtonCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B572F0976075500DA0954 /* NSToolbarButtonCell.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE01A8D80C5D9BCB00AEA51A /* NSToolbarCustomizationPalette.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B57310976075500DA0954 /* NSToolbarCustomizationPalette.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE01A8D90C5D9BCB00AEA51A /* NSToolbarCustomizationView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B57330976075500DA0954 /* NSToolbarCustomizationView.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE01A8DA0C5D9BCB00AEA51A /* NSToolbarSeparatorItemView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B57350976075500DA0954 /* NSToolbarSeparatorItemView.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE01A8DB0C5D9BCB00AEA51A /* NSToolbarSeparatorItemCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B57370976075500DA0954 /* NSToolbarSeparatorItemCell.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE01A8DC0C5D9BCB00AEA51A /* NSDrawer.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B574D0976075500DA0954 /* NSDrawer.h */; settings = {ATTRIBUTES = (Project, Private, ); }; };
+		FE01A8DD0C5D9BCB00AEA51A /* NSDrawerWindow.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B574F0976075500DA0954 /* NSDrawerWindow.h */; settings = {ATTRIBUTES = (Project, Private, ); }; };
+		FE01A8DE0C5D9BCB00AEA51A /* NSTIFFImageFileDirectory.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E14EC6509A3C40F009C8693 /* NSTIFFImageFileDirectory.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE01A8DF0C5D9BCB00AEA51A /* NSTIFFReader.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E14EC6709A3C40F009C8693 /* NSTIFFReader.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE01A8E00C5D9BCB00AEA51A /* NSIBObjectData.h in Headers */ = {isa = PBXBuildFile; fileRef = 6EC4AC350A35D0C200E8D6CA /* NSIBObjectData.h */; };
+		FE01A8E10C5D9BCB00AEA51A /* NSCustomObject.h in Headers */ = {isa = PBXBuildFile; fileRef = 6EC4AC670A35D47800E8D6CA /* NSCustomObject.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE01A8E20C5D9BCB00AEA51A /* NSWindowTemplate.h in Headers */ = {isa = PBXBuildFile; fileRef = 6EC4ACFB0A36613800E8D6CA /* NSWindowTemplate.h */; };
+		FE01A8E30C5D9BCB00AEA51A /* NSButtonImageSource.h in Headers */ = {isa = PBXBuildFile; fileRef = 6EC4ADE40A37294300E8D6CA /* NSButtonImageSource.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE01A8E40C5D9BCB00AEA51A /* NSClassSwapper.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E81CA740A3883660089C666 /* NSClassSwapper.h */; };
+		FE01A8E50C5D9BCB00AEA51A /* NSCustomResource.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E81CCCE0A39CBE00089C666 /* NSCustomResource.h */; };
+		FE01A8E60C5D9BCB00AEA51A /* NSCustomView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6ECABDF70A3FA2B700AD7F7B /* NSCustomView.h */; };
+		FE01A8E70C5D9BCB00AEA51A /* NSNibKeyedUnarchiver.h in Headers */ = {isa = PBXBuildFile; fileRef = 6ECABE310A40520700AD7F7B /* NSNibKeyedUnarchiver.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE01A8E80C5D9BCB00AEA51A /* NSTextViewSharedData.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E404FE50A52FEA900FA9AE5 /* NSTextViewSharedData.h */; };
+		FE01A8E90C5D9BCB00AEA51A /* NSMutableAttributedString.h in Headers */ = {isa = PBXBuildFile; fileRef = FE56BA020B1221330046B7D9 /* NSMutableAttributedString.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE01A8EA0C5D9BCB00AEA51A /* NSMutableParagraphStyle.h in Headers */ = {isa = PBXBuildFile; fileRef = FE6466E10B2C611D00B302B0 /* NSMutableParagraphStyle.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE01A8EB0C5D9BCB00AEA51A /* NSAlert.h in Headers */ = {isa = PBXBuildFile; fileRef = FE2A101D0B44A201006C03DE /* NSAlert.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE01A8EC0C5D9BCB00AEA51A /* NSArrayController.h in Headers */ = {isa = PBXBuildFile; fileRef = FE2A10280B44A26B006C03DE /* NSArrayController.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE01A8ED0C5D9BCB00AEA51A /* NSBezierPath.h in Headers */ = {isa = PBXBuildFile; fileRef = FE2A10320B44A27C006C03DE /* NSBezierPath.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE01A8EE0C5D9BCB00AEA51A /* NSColorSpace.h in Headers */ = {isa = PBXBuildFile; fileRef = FE2A10440B44A2E5006C03DE /* NSColorSpace.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE01A8EF0C5D9BCB00AEA51A /* NSController.h in Headers */ = {isa = PBXBuildFile; fileRef = FE2A10580B459984006C03DE /* NSController.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE01A8F00C5D9BCB00AEA51A /* NSObjectController.h in Headers */ = {isa = PBXBuildFile; fileRef = FE2A10600B459992006C03DE /* NSObjectController.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE01A8F10C5D9BCB00AEA51A /* NSTreeController.h in Headers */ = {isa = PBXBuildFile; fileRef = FE2A10680B4599A3006C03DE /* NSTreeController.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE01A8F20C5D9BCB00AEA51A /* NSUserDefaultsController.h in Headers */ = {isa = PBXBuildFile; fileRef = FE2A10700B4599BD006C03DE /* NSUserDefaultsController.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE01A8F30C5D9BCB00AEA51A /* NSGlyphGenerator.h in Headers */ = {isa = PBXBuildFile; fileRef = FE2A10C50B45BAC8006C03DE /* NSGlyphGenerator.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE01A8F40C5D9BCB00AEA51A /* NSGlyphInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = FE2A10CD0B45BAE2006C03DE /* NSGlyphInfo.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE01A8F50C5D9BCB00AEA51A /* NSHelpManager.h in Headers */ = {isa = PBXBuildFile; fileRef = FE2A10D30B45BB0A006C03DE /* NSHelpManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE01A8F60C5D9BCB00AEA51A /* NSLevelIndicator.h in Headers */ = {isa = PBXBuildFile; fileRef = FE2A10D90B45BB28006C03DE /* NSLevelIndicator.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE01A8F70C5D9BCB00AEA51A /* NSLevelIndicatorCell.h in Headers */ = {isa = PBXBuildFile; fileRef = FE2A10E10B45BB37006C03DE /* NSLevelIndicatorCell.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE01A8F80C5D9BCB00AEA51A /* NSNib.h in Headers */ = {isa = PBXBuildFile; fileRef = FE2A10E90B45BB69006C03DE /* NSNib.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE01A8F90C5D9BCB00AEA51A /* NSPDFImageRep.h in Headers */ = {isa = PBXBuildFile; fileRef = FE2A10EF0B45BC4F006C03DE /* NSPDFImageRep.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE01A8FA0C5D9BCB00AEA51A /* NSPrinter.h in Headers */ = {isa = PBXBuildFile; fileRef = FE2A10F50B45BC75006C03DE /* NSPrinter.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE01A8FB0C5D9BCB00AEA51A /* NSSearchField.h in Headers */ = {isa = PBXBuildFile; fileRef = FE2A10FF0B45BCA6006C03DE /* NSSearchField.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE01A8FC0C5D9BCB00AEA51A /* NSSearchFieldCell.h in Headers */ = {isa = PBXBuildFile; fileRef = FE2A11050B45BCB5006C03DE /* NSSearchFieldCell.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE01A8FD0C5D9BCB00AEA51A /* NSSegmentedCell.h in Headers */ = {isa = PBXBuildFile; fileRef = FE2A110B0B45BCCB006C03DE /* NSSegmentedCell.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE01A8FE0C5D9BCB00AEA51A /* NSSegmentedControl.h in Headers */ = {isa = PBXBuildFile; fileRef = FE2A11130B45BCD8006C03DE /* NSSegmentedControl.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE01A8FF0C5D9BCB00AEA51A /* NSShadow.h in Headers */ = {isa = PBXBuildFile; fileRef = FE2A11190B45BD0A006C03DE /* NSShadow.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE01A9000C5D9BCB00AEA51A /* NSSound.h in Headers */ = {isa = PBXBuildFile; fileRef = FE2A11210B45C52C006C03DE /* NSSound.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE01A9010C5D9BCB00AEA51A /* NSSpellChecker.h in Headers */ = {isa = PBXBuildFile; fileRef = FE2A112D0B45C55D006C03DE /* NSSpellChecker.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE01A9020C5D9BCB00AEA51A /* NSStatusBar.h in Headers */ = {isa = PBXBuildFile; fileRef = FE2A113D0B45C58D006C03DE /* NSStatusBar.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE01A9030C5D9BCB00AEA51A /* NSStatusItem.h in Headers */ = {isa = PBXBuildFile; fileRef = FE2A11450B45C59A006C03DE /* NSStatusItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE01A9040C5D9BCB00AEA51A /* NSTokenField.h in Headers */ = {isa = PBXBuildFile; fileRef = FE2A11520B45C65E006C03DE /* NSTokenField.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE01A9050C5D9BCB00AEA51A /* NSTokenFieldCell.h in Headers */ = {isa = PBXBuildFile; fileRef = FE2A115A0B45C66A006C03DE /* NSTokenFieldCell.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE01A9060C5D9BCB00AEA51A /* KGColorSpace.h in Headers */ = {isa = PBXBuildFile; fileRef = FE64B8A70B81239D007EE513 /* KGColorSpace.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE01A9070C5D9BCB00AEA51A /* KGContext.h in Headers */ = {isa = PBXBuildFile; fileRef = FE64B8A90B81239D007EE513 /* KGContext.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE01A9080C5D9BCB00AEA51A /* KGDataProvider.h in Headers */ = {isa = PBXBuildFile; fileRef = FE64B8AB0B81239D007EE513 /* KGDataProvider.h */; };
+		FE01A9090C5D9BCB00AEA51A /* KGFunction.h in Headers */ = {isa = PBXBuildFile; fileRef = FE64B8AD0B81239D007EE513 /* KGFunction.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE01A90A0C5D9BCB00AEA51A /* KGImage.h in Headers */ = {isa = PBXBuildFile; fileRef = FE64B8AF0B81239D007EE513 /* KGImage.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE01A90B0C5D9BCB00AEA51A /* KGPDFArray.h in Headers */ = {isa = PBXBuildFile; fileRef = FE64B8B10B81239D007EE513 /* KGPDFArray.h */; };
+		FE01A90C0C5D9BCB00AEA51A /* KGPDFContentStream.h in Headers */ = {isa = PBXBuildFile; fileRef = FE64B8B30B81239D007EE513 /* KGPDFContentStream.h */; };
+		FE01A90D0C5D9BCB00AEA51A /* KGPDFDictionary.h in Headers */ = {isa = PBXBuildFile; fileRef = FE64B8B50B81239D007EE513 /* KGPDFDictionary.h */; };
+		FE01A90E0C5D9BCB00AEA51A /* KGPDFDocument.h in Headers */ = {isa = PBXBuildFile; fileRef = FE64B8B70B81239D007EE513 /* KGPDFDocument.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE01A90F0C5D9BCB00AEA51A /* KGPDFFilter.h in Headers */ = {isa = PBXBuildFile; fileRef = FE64B8B90B81239D007EE513 /* KGPDFFilter.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE01A9100C5D9BCB00AEA51A /* KGPDFFunction_Type2.h in Headers */ = {isa = PBXBuildFile; fileRef = FE64B8BB0B81239D007EE513 /* KGPDFFunction_Type2.h */; };
+		FE01A9110C5D9BCB00AEA51A /* KGPDFFunction_Type3.h in Headers */ = {isa = PBXBuildFile; fileRef = FE64B8BD0B81239D007EE513 /* KGPDFFunction_Type3.h */; };
+		FE01A9120C5D9BCB00AEA51A /* KGPDFObject_Boolean.h in Headers */ = {isa = PBXBuildFile; fileRef = FE64B8BF0B81239D007EE513 /* KGPDFObject_Boolean.h */; };
+		FE01A9130C5D9BCB00AEA51A /* KGPDFObject_const.h in Headers */ = {isa = PBXBuildFile; fileRef = FE64B8C10B81239D007EE513 /* KGPDFObject_const.h */; };
+		FE01A9140C5D9BCB00AEA51A /* KGPDFObject_identifier.h in Headers */ = {isa = PBXBuildFile; fileRef = FE64B8C30B81239D007EE513 /* KGPDFObject_identifier.h */; };
+		FE01A9150C5D9BCB00AEA51A /* KGPDFObject_Integer.h in Headers */ = {isa = PBXBuildFile; fileRef = FE64B8C50B81239D007EE513 /* KGPDFObject_Integer.h */; };
+		FE01A9160C5D9BCB00AEA51A /* KGPDFObject_Name.h in Headers */ = {isa = PBXBuildFile; fileRef = FE64B8C70B81239D007EE513 /* KGPDFObject_Name.h */; };
+		FE01A9170C5D9BCB00AEA51A /* KGPDFObject_R.h in Headers */ = {isa = PBXBuildFile; fileRef = FE64B8C90B81239D007EE513 /* KGPDFObject_R.h */; };
+		FE01A9180C5D9BCB00AEA51A /* KGPDFObject_Real.h in Headers */ = {isa = PBXBuildFile; fileRef = FE64B8CB0B81239D007EE513 /* KGPDFObject_Real.h */; };
+		FE01A9190C5D9BCB00AEA51A /* KGPDFObject.h in Headers */ = {isa = PBXBuildFile; fileRef = FE64B8CD0B81239D007EE513 /* KGPDFObject.h */; };
+		FE01A91A0C5D9BCB00AEA51A /* KGPDFOperators.h in Headers */ = {isa = PBXBuildFile; fileRef = FE64B8CF0B81239D007EE513 /* KGPDFOperators.h */; };
+		FE01A91B0C5D9BCB00AEA51A /* KGPDFOperatorTable.h in Headers */ = {isa = PBXBuildFile; fileRef = FE64B8D10B81239D007EE513 /* KGPDFOperatorTable.h */; };
+		FE01A91C0C5D9BCB00AEA51A /* KGPDFPage.h in Headers */ = {isa = PBXBuildFile; fileRef = FE64B8D30B81239D007EE513 /* KGPDFPage.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE01A91D0C5D9BCB00AEA51A /* KGPDFScanner.h in Headers */ = {isa = PBXBuildFile; fileRef = FE64B8D50B81239D007EE513 /* KGPDFScanner.h */; };
+		FE01A91E0C5D9BCB00AEA51A /* KGPDFStream.h in Headers */ = {isa = PBXBuildFile; fileRef = FE64B8D70B81239D007EE513 /* KGPDFStream.h */; };
+		FE01A91F0C5D9BCB00AEA51A /* KGPDFString.h in Headers */ = {isa = PBXBuildFile; fileRef = FE64B8D90B81239D007EE513 /* KGPDFString.h */; };
+		FE01A9200C5D9BCB00AEA51A /* KGPDFxref.h in Headers */ = {isa = PBXBuildFile; fileRef = FE64B8DB0B81239D007EE513 /* KGPDFxref.h */; };
+		FE01A9210C5D9BCB00AEA51A /* KGPDFxrefEntry.h in Headers */ = {isa = PBXBuildFile; fileRef = FE64B8DD0B81239D007EE513 /* KGPDFxrefEntry.h */; };
+		FE01A9220C5D9BCB00AEA51A /* KGShading.h in Headers */ = {isa = PBXBuildFile; fileRef = FE64B8DF0B81239D007EE513 /* KGShading.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE01A9230C5D9BCB00AEA51A /* CGImage.h in Headers */ = {isa = PBXBuildFile; fileRef = FE64B9200B8123F1007EE513 /* CGImage.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE01A9240C5D9BCB00AEA51A /* CGColor.h in Headers */ = {isa = PBXBuildFile; fileRef = FE064AA90B8B805000853FBB /* CGColor.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE01A9250C5D9BCB00AEA51A /* CGColorSpace.h in Headers */ = {isa = PBXBuildFile; fileRef = FE064AAB0B8B805000853FBB /* CGColorSpace.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE01A9260C5D9BCB00AEA51A /* CGDataProvider.h in Headers */ = {isa = PBXBuildFile; fileRef = FE064AAD0B8B805000853FBB /* CGDataProvider.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE01A9270C5D9BCB00AEA51A /* CGFunction.h in Headers */ = {isa = PBXBuildFile; fileRef = FE064AAF0B8B805000853FBB /* CGFunction.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE01A9280C5D9BCB00AEA51A /* CGLayer.h in Headers */ = {isa = PBXBuildFile; fileRef = FE064AB30B8B805000853FBB /* CGLayer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE01A9290C5D9BCB00AEA51A /* CGPath.h in Headers */ = {isa = PBXBuildFile; fileRef = FE064AB50B8B805000853FBB /* CGPath.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE01A92A0C5D9BCB00AEA51A /* CGPattern.h in Headers */ = {isa = PBXBuildFile; fileRef = FE064AB70B8B805000853FBB /* CGPattern.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE01A92B0C5D9BCB00AEA51A /* CGShading.h in Headers */ = {isa = PBXBuildFile; fileRef = FE064AB90B8B805000853FBB /* CGShading.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE01A92C0C5D9BCB00AEA51A /* KGColor.h in Headers */ = {isa = PBXBuildFile; fileRef = FE064ABB0B8B805000853FBB /* KGColor.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE01A92D0C5D9BCB00AEA51A /* KGLayer.h in Headers */ = {isa = PBXBuildFile; fileRef = FE064AC10B8B805000853FBB /* KGLayer.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE01A92E0C5D9BCB00AEA51A /* KGPath.h in Headers */ = {isa = PBXBuildFile; fileRef = FE064AC30B8B805000853FBB /* KGPath.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE01A92F0C5D9BCB00AEA51A /* KGPattern.h in Headers */ = {isa = PBXBuildFile; fileRef = FE064AC50B8B805000853FBB /* KGPattern.h */; };
+		FE01A9300C5D9BCB00AEA51A /* KGImageSource_JPEG.h in Headers */ = {isa = PBXBuildFile; fileRef = FE267E830B8BCC3C0000DDC0 /* KGImageSource_JPEG.h */; };
+		FE01A9310C5D9BCB00AEA51A /* KGImageSource_PNG.h in Headers */ = {isa = PBXBuildFile; fileRef = FE267E850B8BCC3C0000DDC0 /* KGImageSource_PNG.h */; };
+		FE01A9320C5D9BCB00AEA51A /* KGImageSource_TIFF.h in Headers */ = {isa = PBXBuildFile; fileRef = FE267E870B8BCC3C0000DDC0 /* KGImageSource_TIFF.h */; };
+		FE01A9330C5D9BCB00AEA51A /* KGImageSource.h in Headers */ = {isa = PBXBuildFile; fileRef = FE267E890B8BCC3C0000DDC0 /* KGImageSource.h */; };
+		FE01A9340C5D9BCB00AEA51A /* CGBitmapContext.h in Headers */ = {isa = PBXBuildFile; fileRef = FE267EB30B8BD2690000DDC0 /* CGBitmapContext.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE01A9350C5D9BCB00AEA51A /* KGBitmapContext.h in Headers */ = {isa = PBXBuildFile; fileRef = FE267EB50B8BD2690000DDC0 /* KGBitmapContext.h */; };
+		FE01A9360C5D9BCB00AEA51A /* KGMutablePath.h in Headers */ = {isa = PBXBuildFile; fileRef = FEF33BFF0B93543C00DC0B6F /* KGMutablePath.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE01A9370C5D9BCB00AEA51A /* CGPDFPage.h in Headers */ = {isa = PBXBuildFile; fileRef = FEEF00570B96441800069FD1 /* CGPDFPage.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE01A9380C5D9BCB00AEA51A /* NSOpenGLPixelBuffer.h in Headers */ = {isa = PBXBuildFile; fileRef = FE6DC16A0BA85BEC0082AC66 /* NSOpenGLPixelBuffer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE01A9390C5D9BCB00AEA51A /* NSDatePicker.h in Headers */ = {isa = PBXBuildFile; fileRef = FE6DC3DC0BA9A6EB0082AC66 /* NSDatePicker.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE01A93A0C5D9BCB00AEA51A /* NSDatePickerCell.h in Headers */ = {isa = PBXBuildFile; fileRef = FE6DC3EE0BA9A7100082AC66 /* NSDatePickerCell.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE01A93B0C5D9BCB00AEA51A /* NSGraphicsStyle_uxtheme.h in Headers */ = {isa = PBXBuildFile; fileRef = FE4434020BB9833B00411464 /* NSGraphicsStyle_uxtheme.h */; };
+		FE01A93C0C5D9BCB00AEA51A /* NSGraphicsStyle.h in Headers */ = {isa = PBXBuildFile; fileRef = FE1E86BF0BBCA62D0013B968 /* NSGraphicsStyle.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE01A93D0C5D9BCB00AEA51A /* NSNibBindingConnector.h in Headers */ = {isa = PBXBuildFile; fileRef = FE8BAEC50BC9EA8D0007FACA /* NSNibBindingConnector.h */; };
+		FE01A93E0C5D9BCB00AEA51A /* NSBinder.h in Headers */ = {isa = PBXBuildFile; fileRef = FE8BAF1D0BC9EC680007FACA /* NSBinder.h */; };
+		FE01A93F0C5D9BCB00AEA51A /* NSKVOBinder.h in Headers */ = {isa = PBXBuildFile; fileRef = FE8BAF1F0BC9EC680007FACA /* NSKVOBinder.h */; };
+		FE01A9400C5D9BCB00AEA51A /* NSObject+BindingSupport.h in Headers */ = {isa = PBXBuildFile; fileRef = FE8BAF210BC9EC680007FACA /* NSObject+BindingSupport.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE01A9410C5D9BCB00AEA51A /* NSAnimation.h in Headers */ = {isa = PBXBuildFile; fileRef = FED310DD0BCC027200552615 /* NSAnimation.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE01A9420C5D9BCB00AEA51A /* NSViewAnimation.h in Headers */ = {isa = PBXBuildFile; fileRef = FED310DF0BCC027200552615 /* NSViewAnimation.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE01A9430C5D9BCB00AEA51A /* NSFontDescriptor.h in Headers */ = {isa = PBXBuildFile; fileRef = FE4BDC090BCD40C600E19685 /* NSFontDescriptor.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE01A9440C5D9BCB00AEA51A /* NSSegment.h in Headers */ = {isa = PBXBuildFile; fileRef = FED166D40BE502AD00BF9889 /* NSSegment.h */; };
+		FE01A9450C5D9BCB00AEA51A /* NSTextBlock.h in Headers */ = {isa = PBXBuildFile; fileRef = FED167A40BE57EB300BF9889 /* NSTextBlock.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE01A9460C5D9BCB00AEA51A /* NSTextTable.h in Headers */ = {isa = PBXBuildFile; fileRef = FED167A60BE57EB300BF9889 /* NSTextTable.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE01A9470C5D9BCB00AEA51A /* NSTextTableBlock.h in Headers */ = {isa = PBXBuildFile; fileRef = FED167A80BE57EB300BF9889 /* NSTextTableBlock.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE01A9480C5D9BCB00AEA51A /* NSTextInput.h in Headers */ = {isa = PBXBuildFile; fileRef = FE27AC140BE9038000136B43 /* NSTextInput.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE01A9490C5D9BCB00AEA51A /* NSArrayControllerSelectionProxy.h in Headers */ = {isa = PBXBuildFile; fileRef = FE352F680BF3998E00223FAF /* NSArrayControllerSelectionProxy.h */; };
+		FE01A94A0C5D9BCB00AEA51A /* NSTableColumnBinder.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC5FF7B0BF49D5400682A70 /* NSTableColumnBinder.h */; };
+		FE01A94B0C5D9BCB00AEA51A /* NSAffineTransform.h in Headers */ = {isa = PBXBuildFile; fileRef = C8E4F57F0BFF7A8A0076D5E6 /* NSAffineTransform.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE01A94C0C5D9BCB00AEA51A /* NSTextList.h in Headers */ = {isa = PBXBuildFile; fileRef = FE7247670C06202B007CBC51 /* NSTextList.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE01A94D0C5D9BCB00AEA51A /* NSTextAttachmentCell.h in Headers */ = {isa = PBXBuildFile; fileRef = FE7247A40C0622F2007CBC51 /* NSTextAttachmentCell.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE01A94E0C5D9BCB00AEA51A /* NSTypesetter_concrete.h in Headers */ = {isa = PBXBuildFile; fileRef = FE72484F0C0676AA007CBC51 /* NSTypesetter_concrete.h */; };
+		FE01A94F0C5D9BCB00AEA51A /* KGFont.h in Headers */ = {isa = PBXBuildFile; fileRef = FE89AF470C33679100CD21FB /* KGFont.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE01A9500C5D9BCB00AEA51A /* KGDeviceContext.h in Headers */ = {isa = PBXBuildFile; fileRef = FE57F8150C46AA2C0078FFC1 /* KGDeviceContext.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE01A9510C5D9BCB00AEA51A /* KGDeviceContext_gdi.h in Headers */ = {isa = PBXBuildFile; fileRef = FE57F8D00C46B68C0078FFC1 /* KGDeviceContext_gdi.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE01A9520C5D9BCB00AEA51A /* NSPrintPanel.h in Headers */ = {isa = PBXBuildFile; fileRef = FE57FAB50C47F2010078FFC1 /* NSPrintPanel.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE01A9540C5D9BCB00AEA51A /* NSActionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B53250976075200DA0954 /* NSActionCell.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9550C5D9BCB00AEA51A /* NSAlertPanel.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B53290976075200DA0954 /* NSAlertPanel.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9560C5D9BCB00AEA51A /* NSApplication.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B532B0976075200DA0954 /* NSApplication.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9570C5D9BCB00AEA51A /* NSAttributedString.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B532D0976075200DA0954 /* NSAttributedString.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9580C5D9BCB00AEA51A /* NSBitmapImageRep.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B532F0976075200DA0954 /* NSBitmapImageRep.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9590C5D9BCB00AEA51A /* NSBox.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B53310976075200DA0954 /* NSBox.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A95A0C5D9BCB00AEA51A /* NSBrowser.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B53330976075200DA0954 /* NSBrowser.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A95B0C5D9BCB00AEA51A /* NSBrowserCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B53350976075200DA0954 /* NSBrowserCell.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A95C0C5D9BCB00AEA51A /* NSButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B53370976075200DA0954 /* NSButton.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A95D0C5D9BCB00AEA51A /* NSButtonCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B53390976075200DA0954 /* NSButtonCell.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A95E0C5D9BCB00AEA51A /* NSCachedImageRep.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B533B0976075200DA0954 /* NSCachedImageRep.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A95F0C5D9BCB00AEA51A /* NSCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B533D0976075200DA0954 /* NSCell.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9600C5D9BCB00AEA51A /* NSClipView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B533F0976075200DA0954 /* NSClipView.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9610C5D9BCB00AEA51A /* NSColorList.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B53410976075200DA0954 /* NSColorList.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9620C5D9BCB00AEA51A /* NSColorPanel.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B53450976075200DA0954 /* NSColorPanel.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9630C5D9BCB00AEA51A /* NSColorWell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B53470976075200DA0954 /* NSColorWell.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9640C5D9BCB00AEA51A /* NSComboBox.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B53490976075200DA0954 /* NSComboBox.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9650C5D9BCB00AEA51A /* NSComboBoxCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B534B0976075200DA0954 /* NSComboBoxCell.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9660C5D9BCB00AEA51A /* NSComboBoxView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B534D0976075200DA0954 /* NSComboBoxView.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9670C5D9BCB00AEA51A /* NSComboBoxWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B534F0976075200DA0954 /* NSComboBoxWindow.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9680C5D9BCB00AEA51A /* NSControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B53510976075200DA0954 /* NSControl.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9690C5D9BCB00AEA51A /* NSCursor.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B53530976075200DA0954 /* NSCursor.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A96A0C5D9BCB00AEA51A /* NSCursorRect.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B53550976075200DA0954 /* NSCursorRect.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A96B0C5D9BCB00AEA51A /* NSCustomImageRep.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B53570976075200DA0954 /* NSCustomImageRep.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A96C0C5D9BCB00AEA51A /* NSDisplay.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B53590976075200DA0954 /* NSDisplay.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A96D0C5D9BCB00AEA51A /* NSDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B535B0976075200DA0954 /* NSDocument.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A96E0C5D9BCB00AEA51A /* NSDocumentController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B535D0976075200DA0954 /* NSDocumentController.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A96F0C5D9BCB00AEA51A /* NSDraggingManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B535F0976075200DA0954 /* NSDraggingManager.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9700C5D9BCB00AEA51A /* NSEPSImageRep.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B53610976075200DA0954 /* NSEPSImageRep.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9710C5D9BCB00AEA51A /* NSFileWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B53630976075200DA0954 /* NSFileWrapper.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9720C5D9BCB00AEA51A /* NSFont.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B53650976075200DA0954 /* NSFont.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9730C5D9BCB00AEA51A /* NSForm.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B53670976075200DA0954 /* NSForm.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9740C5D9BCB00AEA51A /* NSFormCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B53690976075200DA0954 /* NSFormCell.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9750C5D9BCB00AEA51A /* NSFontFamily.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B536B0976075200DA0954 /* NSFontFamily.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9760C5D9BCB00AEA51A /* NSFontManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B536D0976075200DA0954 /* NSFontManager.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9770C5D9BCB00AEA51A /* NSFontMetric.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B536F0976075200DA0954 /* NSFontMetric.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9780C5D9BCB00AEA51A /* NSFontPanel.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B53710976075200DA0954 /* NSFontPanel.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9790C5D9BCB00AEA51A /* NSFontPanelCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B53730976075200DA0954 /* NSFontPanelCell.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A97A0C5D9BCB00AEA51A /* NSFontTypeface.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B53750976075200DA0954 /* NSFontTypeface.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A97B0C5D9BCB00AEA51A /* NSGraphics.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B53770976075200DA0954 /* NSGraphics.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A97C0C5D9BCB00AEA51A /* NSGraphicsContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B53790976075200DA0954 /* NSGraphicsContext.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A97D0C5D9BCB00AEA51A /* NSImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B537B0976075200DA0954 /* NSImage.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A97E0C5D9BCB00AEA51A /* NSImageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B537D0976075200DA0954 /* NSImageCell.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A97F0C5D9BCB00AEA51A /* NSImageRep.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B537F0976075200DA0954 /* NSImageRep.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9800C5D9BCB00AEA51A /* NSImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B53810976075200DA0954 /* NSImageView.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9810C5D9BCB00AEA51A /* NSInterfaceGraphics.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B53830976075200DA0954 /* NSInterfaceGraphics.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9820C5D9BCB00AEA51A /* NSInterfacePart.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B53850976075200DA0954 /* NSInterfacePart.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9830C5D9BCB00AEA51A /* NSInterfacePartAttributedString.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B53870976075200DA0954 /* NSInterfacePartAttributedString.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9840C5D9BCB00AEA51A /* NSInterfacePartDisabledAttributedString.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B53890976075200DA0954 /* NSInterfacePartDisabledAttributedString.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9850C5D9BCB00AEA51A /* NSInterfaceStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B538B0976075200DA0954 /* NSInterfaceStyle.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9860C5D9BCB00AEA51A /* NSMatrix.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B538D0976075200DA0954 /* NSMatrix.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9870C5D9BCB00AEA51A /* NSModalSessionX.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B538F0976075200DA0954 /* NSModalSessionX.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9880C5D9BCB00AEA51A /* NSOpenPanel.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B53910976075200DA0954 /* NSOpenPanel.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9890C5D9BCB00AEA51A /* NSPageLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B53930976075200DA0954 /* NSPageLayout.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A98A0C5D9BCB00AEA51A /* NSPanel.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B53950976075200DA0954 /* NSPanel.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A98B0C5D9BCB00AEA51A /* NSParagraphStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B53970976075200DA0954 /* NSParagraphStyle.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A98C0C5D9BCB00AEA51A /* NSPasteboard.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B53990976075200DA0954 /* NSPasteboard.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A98D0C5D9BCB00AEA51A /* NSPopUpButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B539B0976075200DA0954 /* NSPopUpButton.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A98E0C5D9BCB00AEA51A /* NSPopUpButtonCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B539D0976075200DA0954 /* NSPopUpButtonCell.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A98F0C5D9BCB00AEA51A /* NSPopUpView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B539F0976075200DA0954 /* NSPopUpView.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9900C5D9BCB00AEA51A /* NSPopUpWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B53A10976075200DA0954 /* NSPopUpWindow.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9910C5D9BCB00AEA51A /* NSPrintInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B53A30976075200DA0954 /* NSPrintInfo.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9920C5D9BCB00AEA51A /* NSPrintOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B53A50976075200DA0954 /* NSPrintOperation.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9930C5D9BCB00AEA51A /* NSProgressIndicator.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B53A70976075200DA0954 /* NSProgressIndicator.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9940C5D9BCB00AEA51A /* NSResponder.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B53A90976075200DA0954 /* NSResponder.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9950C5D9BCB00AEA51A /* NSSavePanel.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B53AB0976075200DA0954 /* NSSavePanel.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9960C5D9BCB00AEA51A /* NSScreen.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B53AD0976075200DA0954 /* NSScreen.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9970C5D9BCB00AEA51A /* NSScroller.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B53AF0976075200DA0954 /* NSScroller.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9980C5D9BCB00AEA51A /* NSScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B53B10976075200DA0954 /* NSScrollView.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9990C5D9BCB00AEA51A /* NSSecureTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B53B30976075200DA0954 /* NSSecureTextField.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A99A0C5D9BCB00AEA51A /* NSSecureTextFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B53B50976075200DA0954 /* NSSecureTextFieldCell.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A99B0C5D9BCB00AEA51A /* NSSheetContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B53B70976075200DA0954 /* NSSheetContext.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A99C0C5D9BCB00AEA51A /* NSSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B53B90976075200DA0954 /* NSSlider.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A99D0C5D9BCB00AEA51A /* NSSliderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B53BB0976075200DA0954 /* NSSliderCell.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A99E0C5D9BCB00AEA51A /* NSSplitView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B53BD0976075200DA0954 /* NSSplitView.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A99F0C5D9BCB00AEA51A /* NSStepper.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B53BF0976075200DA0954 /* NSStepper.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9A00C5D9BCB00AEA51A /* NSStepperCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B53C10976075200DA0954 /* NSStepperCell.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9A10C5D9BCB00AEA51A /* NSStringDrawer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B53C30976075200DA0954 /* NSStringDrawer.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9A20C5D9BCB00AEA51A /* NSStringDrawing.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B53C50976075200DA0954 /* NSStringDrawing.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9A30C5D9BCB00AEA51A /* NSTableColumn.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B53C70976075200DA0954 /* NSTableColumn.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9A40C5D9BCB00AEA51A /* NSTableCornerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B53C90976075200DA0954 /* NSTableCornerView.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9A50C5D9BCB00AEA51A /* NSTableHeaderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B53CB0976075200DA0954 /* NSTableHeaderCell.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9A60C5D9BCB00AEA51A /* NSTableHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B53CD0976075200DA0954 /* NSTableHeaderView.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9A70C5D9BCB00AEA51A /* NSTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B53CF0976075200DA0954 /* NSTableView.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9A80C5D9BCB00AEA51A /* NSTabView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B53D10976075200DA0954 /* NSTabView.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9A90C5D9BCB00AEA51A /* NSTabViewItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B53D30976075200DA0954 /* NSTabViewItem.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9AA0C5D9BCB00AEA51A /* NSText.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B53D50976075200DA0954 /* NSText.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9AB0C5D9BCB00AEA51A /* NSTextAttachment.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B53D70976075200DA0954 /* NSTextAttachment.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9AC0C5D9BCB00AEA51A /* NSTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B53D90976075200DA0954 /* NSTextField.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9AD0C5D9BCB00AEA51A /* NSTextFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B53DB0976075200DA0954 /* NSTextFieldCell.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9AE0C5D9BCB00AEA51A /* NSTrackingRect.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B53DD0976075200DA0954 /* NSTrackingRect.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9AF0C5D9BCB00AEA51A /* NSView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B53DF0976075200DA0954 /* NSView.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9B00C5D9BCB00AEA51A /* NSWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B53E10976075200DA0954 /* NSWindow.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9B10C5D9BCB00AEA51A /* NSWindowBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B53E30976075200DA0954 /* NSWindowBackgroundView.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9B20C5D9BCB00AEA51A /* NSWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B53E50976075200DA0954 /* NSWindowController.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9B30C5D9BCB00AEA51A /* NSWorkspace.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B53E70976075200DA0954 /* NSWorkspace.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9B40C5D9BCB00AEA51A /* NSOutlineMarkerCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B53E90976075200DA0954 /* NSOutlineMarkerCell.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9B50C5D9BCB00AEA51A /* NSOutlineView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B53EB0976075200DA0954 /* NSOutlineView.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9B60C5D9BCB00AEA51A /* NSRulerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B53ED0976075200DA0954 /* NSRulerView.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9B70C5D9BCB00AEA51A /* NSRulerMarker.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B53EF0976075200DA0954 /* NSRulerMarker.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9B80C5D9BCB00AEA51A /* NSToolTipWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B53F10976075200DA0954 /* NSToolTipWindow.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9B90C5D9BCB00AEA51A /* NSWindowAnimationContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B53F30976075200DA0954 /* NSWindowAnimationContext.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9BA0C5D9BCB00AEA51A /* NSMeasurementUnit.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B53F50976075200DA0954 /* NSMeasurementUnit.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9BB0C5D9BCB00AEA51A /* NSWindow-Drag.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B53F70976075200DA0954 /* NSWindow-Drag.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9BC0C5D9BCB00AEA51A /* NSNibOutletConnector.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B55180976075300DA0954 /* NSNibOutletConnector.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9BD0C5D9BCB00AEA51A /* NSNibControlConnector.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B551A0976075300DA0954 /* NSNibControlConnector.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9BE0C5D9BCB00AEA51A /* NSNibConnector.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B551C0976075300DA0954 /* NSNibConnector.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9BF0C5D9BCB00AEA51A /* NSNibLoading.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B551E0976075300DA0954 /* NSNibLoading.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9C00C5D9BCB00AEA51A /* NSNibHelpConnector.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B55260976075300DA0954 /* NSNibHelpConnector.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9C10C5D9BCB00AEA51A /* NSColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B55450976075300DA0954 /* NSColor.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9C20C5D9BCB00AEA51A /* NSColor_rgbCalibrated.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B55470976075300DA0954 /* NSColor_rgbCalibrated.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9C30C5D9BCB00AEA51A /* NSColor_whiteCalibrated.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B55490976075300DA0954 /* NSColor_whiteCalibrated.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9C40C5D9BCB00AEA51A /* NSColor_cmykDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B554B0976075300DA0954 /* NSColor_cmykDevice.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9C50C5D9BCB00AEA51A /* NSColor_rgbDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B554D0976075300DA0954 /* NSColor_rgbDevice.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9C60C5D9BCB00AEA51A /* NSColor_whiteDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B554F0976075300DA0954 /* NSColor_whiteDevice.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9C70C5D9BCB00AEA51A /* NSColor_catalog.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B55510976075300DA0954 /* NSColor_catalog.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9C80C5D9BCB00AEA51A /* NSTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B556A0976075300DA0954 /* NSTextView.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9C90C5D9BCB00AEA51A /* NSTextContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B556C0976075300DA0954 /* NSTextContainer.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9CA0C5D9BCB00AEA51A /* NSTextStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B556E0976075300DA0954 /* NSTextStorage.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9CB0C5D9BCB00AEA51A /* NSTextStorage_concrete.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B55700976075300DA0954 /* NSTextStorage_concrete.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9CC0C5D9BCB00AEA51A /* NSLayoutManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B55720976075300DA0954 /* NSLayoutManager.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9CD0C5D9BCB00AEA51A /* NSTypesetter.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B55740976075300DA0954 /* NSTypesetter.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9CE0C5D9BCB00AEA51A /* NSRangeArray.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B55760976075300DA0954 /* NSRangeArray.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9CF0C5D9BCB00AEA51A /* NSSecureTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B55780976075300DA0954 /* NSSecureTextView.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9D00C5D9BCB00AEA51A /* NSSecureLayoutManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B557A0976075300DA0954 /* NSSecureLayoutManager.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9D10C5D9BCB00AEA51A /* NSTextTab.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B557C0976075300DA0954 /* NSTextTab.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9D20C5D9BCB00AEA51A /* NSEvent_mouse.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B55990976075300DA0954 /* NSEvent_mouse.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9D30C5D9BCB00AEA51A /* NSEvent_keyboard.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B559B0976075300DA0954 /* NSEvent_keyboard.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9D40C5D9BCB00AEA51A /* NSEvent_periodic.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B559D0976075300DA0954 /* NSEvent_periodic.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9D50C5D9BCB00AEA51A /* NSEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B559F0976075300DA0954 /* NSEvent.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9D60C5D9BCB00AEA51A /* NSEvent_CoreGraphics.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B55A10976075300DA0954 /* NSEvent_CoreGraphics.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9D70C5D9BCB00AEA51A /* CGContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B55B40976075300DA0954 /* CGContext.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9D80C5D9BCB00AEA51A /* CGGeometry.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B55B60976075300DA0954 /* CGGeometry.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9D90C5D9BCB00AEA51A /* CGAffineTransform.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B55B80976075300DA0954 /* CGAffineTransform.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9DA0C5D9BCB00AEA51A /* CGFont.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B55BA0976075300DA0954 /* CGFont.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9DB0C5D9BCB00AEA51A /* KGGraphicsState.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B55BC0976075300DA0954 /* KGGraphicsState.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9DC0C5D9BCB00AEA51A /* KGRenderingContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B55C00976075300DA0954 /* KGRenderingContext.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9DD0C5D9BCB00AEA51A /* CGWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B55C20976075300DA0954 /* CGWindow.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9DE0C5D9BCB00AEA51A /* CGEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B55C40976075300DA0954 /* CGEvent.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9DF0C5D9BCB00AEA51A /* NSColorPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B55E10976075300DA0954 /* NSColorPicker.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9E00C5D9BCB00AEA51A /* NSColorPickerColorList.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B55E30976075300DA0954 /* NSColorPickerColorList.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9E10C5D9BCB00AEA51A /* NSBrowserCellColorList.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B55E50976075300DA0954 /* NSBrowserCellColorList.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9E20C5D9BCB00AEA51A /* NSColorPickerSliders.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B55E70976075300DA0954 /* NSColorPickerSliders.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9E30C5D9BCB00AEA51A /* Win32Cursor.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B560A0976075300DA0954 /* Win32Cursor.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9E40C5D9BCB00AEA51A /* KGRenderingContext_gdi.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B560C0976075300DA0954 /* KGRenderingContext_gdi.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9E50C5D9BCB00AEA51A /* Win32DeviceContextBitmap.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B560E0976075300DA0954 /* Win32DeviceContextBitmap.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9E60C5D9BCB00AEA51A /* Win32DeviceContextPrinter.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B56100976075300DA0954 /* Win32DeviceContextPrinter.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9E70C5D9BCB00AEA51A /* Win32DeviceContextWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B56120976075300DA0954 /* Win32DeviceContextWindow.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9E80C5D9BCB00AEA51A /* Win32Display.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B56140976075300DA0954 /* Win32Display.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9E90C5D9BCB00AEA51A /* Win32Event.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B56160976075300DA0954 /* Win32Event.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9EA0C5D9BCB00AEA51A /* Win32Font.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B56180976075400DA0954 /* Win32Font.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9EB0C5D9BCB00AEA51A /* Win32Region.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B561E0976075400DA0954 /* Win32Region.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9EC0C5D9BCB00AEA51A /* Win32Window.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B56200976075400DA0954 /* Win32Window.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9ED0C5D9BCB00AEA51A /* Win32Application.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B56220976075400DA0954 /* Win32Application.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9EE0C5D9BCB00AEA51A /* Win32SplashPanel.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B56240976075400DA0954 /* Win32SplashPanel.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9EF0C5D9BCB00AEA51A /* Win32RunningCopyPipe.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B56260976075400DA0954 /* Win32RunningCopyPipe.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9F00C5D9BCB00AEA51A /* Win32EventInputSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B56280976075400DA0954 /* Win32EventInputSource.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9F10C5D9BCB00AEA51A /* Win32Workspace.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B562C0976075400DA0954 /* Win32Workspace.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9F20C5D9BCB00AEA51A /* NSSavePanel-Win32.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B562E0976075400DA0954 /* NSSavePanel-Win32.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9F30C5D9BCB00AEA51A /* NSOpenPanel-Win32.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B56300976075400DA0954 /* NSOpenPanel-Win32.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9F40C5D9BCB00AEA51A /* NSPlatform-Win32.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B56320976075400DA0954 /* NSPlatform-Win32.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9F50C5D9BCB00AEA51A /* dllmain.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B56620976075400DA0954 /* dllmain.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9F60C5D9BCB00AEA51A /* Win32DraggingManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B566B0976075400DA0954 /* Win32DraggingManager.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9F70C5D9BCB00AEA51A /* Win32DragSession.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B566D0976075400DA0954 /* Win32DragSession.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9F80C5D9BCB00AEA51A /* Win32DropPasteboard.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B566F0976075400DA0954 /* Win32DropPasteboard.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9F90C5D9BCB00AEA51A /* Win32FORMATETC.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B56710976075400DA0954 /* Win32FORMATETC.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9FA0C5D9BCB00AEA51A /* Win32GeneralPasteboard.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B56730976075400DA0954 /* Win32GeneralPasteboard.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9FB0C5D9BCB00AEA51A /* Win32IDataObjectClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B56750976075400DA0954 /* Win32IDataObjectClient.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9FC0C5D9BCB00AEA51A /* Win32IDataObjectServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B56770976075400DA0954 /* Win32IDataObjectServer.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9FD0C5D9BCB00AEA51A /* Win32IDropSourceServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B56790976075400DA0954 /* Win32IDropSourceServer.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9FE0C5D9BCB00AEA51A /* Win32IDropTargetServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B567B0976075400DA0954 /* Win32IDropTargetServer.m */; settings = {ATTRIBUTES = (); }; };
+		FE01A9FF0C5D9BCB00AEA51A /* Win32IEnumFORMATETCServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B567D0976075400DA0954 /* Win32IEnumFORMATETCServer.m */; settings = {ATTRIBUTES = (); }; };
+		FE01AA000C5D9BCB00AEA51A /* Win32IStreamClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B567F0976075400DA0954 /* Win32IStreamClient.m */; settings = {ATTRIBUTES = (); }; };
+		FE01AA010C5D9BCB00AEA51A /* Win32IUnknownServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B56810976075400DA0954 /* Win32IUnknownServer.m */; settings = {ATTRIBUTES = (); }; };
+		FE01AA020C5D9BCB00AEA51A /* Win32Pasteboard.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B56830976075400DA0954 /* Win32Pasteboard.m */; settings = {ATTRIBUTES = (); }; };
+		FE01AA030C5D9BCB00AEA51A /* Win32TypesAndOwner.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B56850976075400DA0954 /* Win32TypesAndOwner.m */; settings = {ATTRIBUTES = (); }; };
+		FE01AA040C5D9BCB00AEA51A /* Win32Window-Drag.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B56870976075400DA0954 /* Win32Window-Drag.m */; settings = {ATTRIBUTES = (); }; };
+		FE01AA050C5D9BCB00AEA51A /* NSDragView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B56890976075400DA0954 /* NSDragView.m */; settings = {ATTRIBUTES = (); }; };
+		FE01AA060C5D9BCB00AEA51A /* NSOpenGLContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B56B20976075400DA0954 /* NSOpenGLContext.m */; settings = {ATTRIBUTES = (); }; };
+		FE01AA070C5D9BCB00AEA51A /* NSOpenGLPixelFormat.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B56B40976075400DA0954 /* NSOpenGLPixelFormat.m */; settings = {ATTRIBUTES = (); }; };
+		FE01AA080C5D9BCB00AEA51A /* NSOpenGLView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B56B60976075400DA0954 /* NSOpenGLView.m */; settings = {ATTRIBUTES = (); }; };
+		FE01AA090C5D9BCB00AEA51A /* NSRichTextReader.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B56C50976075400DA0954 /* NSRichTextReader.m */; settings = {ATTRIBUTES = (); }; };
+		FE01AA0A0C5D9BCB00AEA51A /* NSRichTextWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B56C70976075400DA0954 /* NSRichTextWriter.m */; settings = {ATTRIBUTES = (); }; };
+		FE01AA0B0C5D9BCB00AEA51A /* NSMainMenuView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B56D40976075400DA0954 /* NSMainMenuView.m */; settings = {ATTRIBUTES = (); }; };
+		FE01AA0C0C5D9BCB00AEA51A /* NSMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B56D60976075400DA0954 /* NSMenu.m */; settings = {ATTRIBUTES = (); }; };
+		FE01AA0D0C5D9BCB00AEA51A /* NSMenuItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B56D80976075400DA0954 /* NSMenuItem.m */; settings = {ATTRIBUTES = (); }; };
+		FE01AA0E0C5D9BCB00AEA51A /* NSMenuView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B56DA0976075400DA0954 /* NSMenuView.m */; settings = {ATTRIBUTES = (); }; };
+		FE01AA0F0C5D9BCB00AEA51A /* NSMenuWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B56DC0976075400DA0954 /* NSMenuWindow.m */; settings = {ATTRIBUTES = (); }; };
+		FE01AA100C5D9BCB00AEA51A /* NSOverflowMenuView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B56DE0976075400DA0954 /* NSOverflowMenuView.m */; settings = {ATTRIBUTES = (); }; };
+		FE01AA110C5D9BCB00AEA51A /* NSSubmenuView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B56E00976075400DA0954 /* NSSubmenuView.m */; settings = {ATTRIBUTES = (); }; };
+		FE01AA120C5D9BCB00AEA51A /* NSKeyBindingManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B56FE0976075400DA0954 /* NSKeyBindingManager.m */; settings = {ATTRIBUTES = (); }; };
+		FE01AA130C5D9BCB00AEA51A /* NSKeyBinding.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B57000976075400DA0954 /* NSKeyBinding.m */; settings = {ATTRIBUTES = (); }; };
+		FE01AA140C5D9BCB00AEA51A /* NSStandardToolbarItems.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B57100976075400DA0954 /* NSStandardToolbarItems.m */; settings = {ATTRIBUTES = (); }; };
+		FE01AA150C5D9BCB00AEA51A /* NSToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B57120976075400DA0954 /* NSToolbar.m */; settings = {ATTRIBUTES = (); }; };
+		FE01AA160C5D9BCB00AEA51A /* NSToolbarButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B57140976075400DA0954 /* NSToolbarButton.m */; settings = {ATTRIBUTES = (); }; };
+		FE01AA170C5D9BCB00AEA51A /* NSToolbarItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B57160976075400DA0954 /* NSToolbarItem.m */; settings = {ATTRIBUTES = (); }; };
+		FE01AA180C5D9BCB00AEA51A /* NSToolbarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B57180976075400DA0954 /* NSToolbarView.m */; settings = {ATTRIBUTES = (); }; };
+		FE01AA190C5D9BCB00AEA51A /* NSToolbarButtonCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B571A0976075400DA0954 /* NSToolbarButtonCell.m */; settings = {ATTRIBUTES = (); }; };
+		FE01AA1A0C5D9BCB00AEA51A /* NSToolbarCustomizationPalette.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B571C0976075400DA0954 /* NSToolbarCustomizationPalette.m */; settings = {ATTRIBUTES = (); }; };
+		FE01AA1B0C5D9BCB00AEA51A /* NSToolbarCustomizationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B571E0976075400DA0954 /* NSToolbarCustomizationView.m */; settings = {ATTRIBUTES = (); }; };
+		FE01AA1C0C5D9BCB00AEA51A /* NSToolbarSeparatorItemView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B57200976075400DA0954 /* NSToolbarSeparatorItemView.m */; settings = {ATTRIBUTES = (); }; };
+		FE01AA1D0C5D9BCB00AEA51A /* NSToolbarSeparatorItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B57220976075400DA0954 /* NSToolbarSeparatorItemCell.m */; settings = {ATTRIBUTES = (); }; };
+		FE01AA1E0C5D9BCB00AEA51A /* NSDrawer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B57480976075500DA0954 /* NSDrawer.m */; settings = {ATTRIBUTES = (); }; };
+		FE01AA1F0C5D9BCB00AEA51A /* NSDrawerWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B574A0976075500DA0954 /* NSDrawerWindow.m */; settings = {ATTRIBUTES = (); }; };
+		FE01AA200C5D9BCB00AEA51A /* NSTIFFImageFileDirectory.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E14EC6609A3C40F009C8693 /* NSTIFFImageFileDirectory.m */; };
+		FE01AA210C5D9BCB00AEA51A /* NSTIFFReader.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E14EC6809A3C40F009C8693 /* NSTIFFReader.m */; };
+		FE01AA220C5D9BCB00AEA51A /* NSIBObjectData.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EC4AC360A35D0C200E8D6CA /* NSIBObjectData.m */; };
+		FE01AA230C5D9BCB00AEA51A /* NSCustomObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EC4AC680A35D47800E8D6CA /* NSCustomObject.m */; };
+		FE01AA240C5D9BCB00AEA51A /* NSWindowTemplate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EC4ACFC0A36613800E8D6CA /* NSWindowTemplate.m */; };
+		FE01AA250C5D9BCB00AEA51A /* NSButtonImageSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EC4ADE50A37294300E8D6CA /* NSButtonImageSource.m */; };
+		FE01AA260C5D9BCB00AEA51A /* NSClassSwapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E81CA750A3883660089C666 /* NSClassSwapper.m */; };
+		FE01AA270C5D9BCB00AEA51A /* NSCustomResource.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E81CCCF0A39CBE00089C666 /* NSCustomResource.m */; };
+		FE01AA280C5D9BCB00AEA51A /* NSCustomView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6ECABDF80A3FA2B700AD7F7B /* NSCustomView.m */; };
+		FE01AA290C5D9BCB00AEA51A /* NSNibKeyedUnarchiver.m in Sources */ = {isa = PBXBuildFile; fileRef = 6ECABE320A40520700AD7F7B /* NSNibKeyedUnarchiver.m */; };
+		FE01AA2A0C5D9BCB00AEA51A /* NSTextViewSharedData.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E404FE60A52FEA900FA9AE5 /* NSTextViewSharedData.m */; };
+		FE01AA2B0C5D9BCB00AEA51A /* NSMutableAttributedString.m in Sources */ = {isa = PBXBuildFile; fileRef = FE56BA030B1221330046B7D9 /* NSMutableAttributedString.m */; };
+		FE01AA2C0C5D9BCB00AEA51A /* NSMutableParagraphStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = FE6466E20B2C611D00B302B0 /* NSMutableParagraphStyle.m */; };
+		FE01AA2D0C5D9BCB00AEA51A /* NSAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = FE2A101E0B44A201006C03DE /* NSAlert.m */; };
+		FE01AA2E0C5D9BCB00AEA51A /* NSArrayController.m in Sources */ = {isa = PBXBuildFile; fileRef = FE2A10290B44A26B006C03DE /* NSArrayController.m */; };
+		FE01AA2F0C5D9BCB00AEA51A /* NSBezierPath.m in Sources */ = {isa = PBXBuildFile; fileRef = FE2A10330B44A27C006C03DE /* NSBezierPath.m */; };
+		FE01AA300C5D9BCB00AEA51A /* NSColorSpace.m in Sources */ = {isa = PBXBuildFile; fileRef = FE2A10450B44A2E5006C03DE /* NSColorSpace.m */; };
+		FE01AA310C5D9BCB00AEA51A /* NSController.m in Sources */ = {isa = PBXBuildFile; fileRef = FE2A10590B459984006C03DE /* NSController.m */; };
+		FE01AA320C5D9BCB00AEA51A /* NSObjectController.m in Sources */ = {isa = PBXBuildFile; fileRef = FE2A10610B459992006C03DE /* NSObjectController.m */; };
+		FE01AA330C5D9BCB00AEA51A /* NSTreeController.m in Sources */ = {isa = PBXBuildFile; fileRef = FE2A10690B4599A3006C03DE /* NSTreeController.m */; };
+		FE01AA340C5D9BCB00AEA51A /* NSUserDefaultsController.m in Sources */ = {isa = PBXBuildFile; fileRef = FE2A10710B4599BD006C03DE /* NSUserDefaultsController.m */; };
+		FE01AA350C5D9BCB00AEA51A /* NSGlyphGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = FE2A10C60B45BAC8006C03DE /* NSGlyphGenerator.m */; };
+		FE01AA360C5D9BCB00AEA51A /* NSGlyphInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = FE2A10CE0B45BAE2006C03DE /* NSGlyphInfo.m */; };
+		FE01AA370C5D9BCB00AEA51A /* NSHelpManager.m in Sources */ = {isa = PBXBuildFile; fileRef = FE2A10D40B45BB0A006C03DE /* NSHelpManager.m */; };
+		FE01AA380C5D9BCB00AEA51A /* NSLevelIndicator.m in Sources */ = {isa = PBXBuildFile; fileRef = FE2A10DA0B45BB28006C03DE /* NSLevelIndicator.m */; };
+		FE01AA390C5D9BCB00AEA51A /* NSLevelIndicatorCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FE2A10E20B45BB37006C03DE /* NSLevelIndicatorCell.m */; };
+		FE01AA3A0C5D9BCB00AEA51A /* NSNib.m in Sources */ = {isa = PBXBuildFile; fileRef = FE2A10EA0B45BB69006C03DE /* NSNib.m */; };
+		FE01AA3B0C5D9BCB00AEA51A /* NSPDFImageRep.m in Sources */ = {isa = PBXBuildFile; fileRef = FE2A10F00B45BC4F006C03DE /* NSPDFImageRep.m */; };
+		FE01AA3C0C5D9BCB00AEA51A /* NSPrinter.m in Sources */ = {isa = PBXBuildFile; fileRef = FE2A10F60B45BC75006C03DE /* NSPrinter.m */; };
+		FE01AA3D0C5D9BCB00AEA51A /* NSSearchField.m in Sources */ = {isa = PBXBuildFile; fileRef = FE2A11000B45BCA7006C03DE /* NSSearchField.m */; };
+		FE01AA3E0C5D9BCB00AEA51A /* NSSearchFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FE2A11060B45BCB5006C03DE /* NSSearchFieldCell.m */; };
+		FE01AA3F0C5D9BCB00AEA51A /* NSSegmentedCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FE2A110C0B45BCCB006C03DE /* NSSegmentedCell.m */; };
+		FE01AA400C5D9BCB00AEA51A /* NSSegmentedControl.m in Sources */ = {isa = PBXBuildFile; fileRef = FE2A11140B45BCD8006C03DE /* NSSegmentedControl.m */; };
+		FE01AA410C5D9BCB00AEA51A /* NSShadow.m in Sources */ = {isa = PBXBuildFile; fileRef = FE2A111A0B45BD0A006C03DE /* NSShadow.m */; };
+		FE01AA420C5D9BCB00AEA51A /* NSSound.m in Sources */ = {isa = PBXBuildFile; fileRef = FE2A11220B45C52C006C03DE /* NSSound.m */; };
+		FE01AA430C5D9BCB00AEA51A /* NSSpellChecker.m in Sources */ = {isa = PBXBuildFile; fileRef = FE2A112E0B45C55D006C03DE /* NSSpellChecker.m */; };
+		FE01AA440C5D9BCB00AEA51A /* NSStatusBar.m in Sources */ = {isa = PBXBuildFile; fileRef = FE2A113E0B45C58D006C03DE /* NSStatusBar.m */; };
+		FE01AA450C5D9BCB00AEA51A /* NSStatusItem.m in Sources */ = {isa = PBXBuildFile; fileRef = FE2A11460B45C59A006C03DE /* NSStatusItem.m */; };
+		FE01AA460C5D9BCB00AEA51A /* NSTokenField.m in Sources */ = {isa = PBXBuildFile; fileRef = FE2A11530B45C65E006C03DE /* NSTokenField.m */; };
+		FE01AA470C5D9BCB00AEA51A /* NSTokenFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FE2A115B0B45C66A006C03DE /* NSTokenFieldCell.m */; };
+		FE01AA480C5D9BCB00AEA51A /* KGColorSpace.m in Sources */ = {isa = PBXBuildFile; fileRef = FE64B8A80B81239D007EE513 /* KGColorSpace.m */; };
+		FE01AA490C5D9BCB00AEA51A /* KGContext.m in Sources */ = {isa = PBXBuildFile; fileRef = FE64B8AA0B81239D007EE513 /* KGContext.m */; };
+		FE01AA4A0C5D9BCB00AEA51A /* KGDataProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = FE64B8AC0B81239D007EE513 /* KGDataProvider.m */; };
+		FE01AA4B0C5D9BCB00AEA51A /* KGFunction.m in Sources */ = {isa = PBXBuildFile; fileRef = FE64B8AE0B81239D007EE513 /* KGFunction.m */; };
+		FE01AA4C0C5D9BCB00AEA51A /* KGImage.m in Sources */ = {isa = PBXBuildFile; fileRef = FE64B8B00B81239D007EE513 /* KGImage.m */; };
+		FE01AA4D0C5D9BCB00AEA51A /* KGPDFArray.m in Sources */ = {isa = PBXBuildFile; fileRef = FE64B8B20B81239D007EE513 /* KGPDFArray.m */; };
+		FE01AA4E0C5D9BCB00AEA51A /* KGPDFContentStream.m in Sources */ = {isa = PBXBuildFile; fileRef = FE64B8B40B81239D007EE513 /* KGPDFContentStream.m */; };
+		FE01AA4F0C5D9BCB00AEA51A /* KGPDFDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = FE64B8B60B81239D007EE513 /* KGPDFDictionary.m */; };
+		FE01AA500C5D9BCB00AEA51A /* KGPDFDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = FE64B8B80B81239D007EE513 /* KGPDFDocument.m */; };
+		FE01AA510C5D9BCB00AEA51A /* KGPDFFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = FE64B8BA0B81239D007EE513 /* KGPDFFilter.m */; };
+		FE01AA520C5D9BCB00AEA51A /* KGPDFFunction_Type2.m in Sources */ = {isa = PBXBuildFile; fileRef = FE64B8BC0B81239D007EE513 /* KGPDFFunction_Type2.m */; };
+		FE01AA530C5D9BCB00AEA51A /* KGPDFFunction_Type3.m in Sources */ = {isa = PBXBuildFile; fileRef = FE64B8BE0B81239D007EE513 /* KGPDFFunction_Type3.m */; };
+		FE01AA540C5D9BCB00AEA51A /* KGPDFObject_Boolean.m in Sources */ = {isa = PBXBuildFile; fileRef = FE64B8C00B81239D007EE513 /* KGPDFObject_Boolean.m */; };
+		FE01AA550C5D9BCB00AEA51A /* KGPDFObject_const.m in Sources */ = {isa = PBXBuildFile; fileRef = FE64B8C20B81239D007EE513 /* KGPDFObject_const.m */; };
+		FE01AA560C5D9BCB00AEA51A /* KGPDFObject_identifier.m in Sources */ = {isa = PBXBuildFile; fileRef = FE64B8C40B81239D007EE513 /* KGPDFObject_identifier.m */; };
+		FE01AA570C5D9BCB00AEA51A /* KGPDFObject_Integer.m in Sources */ = {isa = PBXBuildFile; fileRef = FE64B8C60B81239D007EE513 /* KGPDFObject_Integer.m */; };
+		FE01AA580C5D9BCB00AEA51A /* KGPDFObject_Name.m in Sources */ = {isa = PBXBuildFile; fileRef = FE64B8C80B81239D007EE513 /* KGPDFObject_Name.m */; };
+		FE01AA590C5D9BCB00AEA51A /* KGPDFObject_R.m in Sources */ = {isa = PBXBuildFile; fileRef = FE64B8CA0B81239D007EE513 /* KGPDFObject_R.m */; };
+		FE01AA5A0C5D9BCB00AEA51A /* KGPDFObject_Real.m in Sources */ = {isa = PBXBuildFile; fileRef = FE64B8CC0B81239D007EE513 /* KGPDFObject_Real.m */; };
+		FE01AA5B0C5D9BCB00AEA51A /* KGPDFObject.m in Sources */ = {isa = PBXBuildFile; fileRef = FE64B8CE0B81239D007EE513 /* KGPDFObject.m */; };
+		FE01AA5C0C5D9BCB00AEA51A /* KGPDFOperators.m in Sources */ = {isa = PBXBuildFile; fileRef = FE64B8D00B81239D007EE513 /* KGPDFOperators.m */; };
+		FE01AA5D0C5D9BCB00AEA51A /* KGPDFOperatorTable.m in Sources */ = {isa = PBXBuildFile; fileRef = FE64B8D20B81239D007EE513 /* KGPDFOperatorTable.m */; };
+		FE01AA5E0C5D9BCB00AEA51A /* KGPDFPage.m in Sources */ = {isa = PBXBuildFile; fileRef = FE64B8D40B81239D007EE513 /* KGPDFPage.m */; };
+		FE01AA5F0C5D9BCB00AEA51A /* KGPDFScanner.m in Sources */ = {isa = PBXBuildFile; fileRef = FE64B8D60B81239D007EE513 /* KGPDFScanner.m */; };
+		FE01AA600C5D9BCB00AEA51A /* KGPDFStream.m in Sources */ = {isa = PBXBuildFile; fileRef = FE64B8D80B81239D007EE513 /* KGPDFStream.m */; };
+		FE01AA610C5D9BCB00AEA51A /* KGPDFString.m in Sources */ = {isa = PBXBuildFile; fileRef = FE64B8DA0B81239D007EE513 /* KGPDFString.m */; };
+		FE01AA620C5D9BCB00AEA51A /* KGPDFxref.m in Sources */ = {isa = PBXBuildFile; fileRef = FE64B8DC0B81239D007EE513 /* KGPDFxref.m */; };
+		FE01AA630C5D9BCB00AEA51A /* KGPDFxrefEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = FE64B8DE0B81239D007EE513 /* KGPDFxrefEntry.m */; };
+		FE01AA640C5D9BCB00AEA51A /* KGShading.m in Sources */ = {isa = PBXBuildFile; fileRef = FE64B8E00B81239D007EE513 /* KGShading.m */; };
+		FE01AA650C5D9BCB00AEA51A /* CGImage.m in Sources */ = {isa = PBXBuildFile; fileRef = FE64B9210B8123F1007EE513 /* CGImage.m */; };
+		FE01AA660C5D9BCB00AEA51A /* CGColor.m in Sources */ = {isa = PBXBuildFile; fileRef = FE064AAA0B8B805000853FBB /* CGColor.m */; };
+		FE01AA670C5D9BCB00AEA51A /* CGColorSpace.m in Sources */ = {isa = PBXBuildFile; fileRef = FE064AAC0B8B805000853FBB /* CGColorSpace.m */; };
+		FE01AA680C5D9BCB00AEA51A /* CGDataProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = FE064AAE0B8B805000853FBB /* CGDataProvider.m */; };
+		FE01AA690C5D9BCB00AEA51A /* CGFunction.m in Sources */ = {isa = PBXBuildFile; fileRef = FE064AB00B8B805000853FBB /* CGFunction.m */; };
+		FE01AA6A0C5D9BCB00AEA51A /* CGLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = FE064AB40B8B805000853FBB /* CGLayer.m */; };
+		FE01AA6B0C5D9BCB00AEA51A /* CGPath.m in Sources */ = {isa = PBXBuildFile; fileRef = FE064AB60B8B805000853FBB /* CGPath.m */; };
+		FE01AA6C0C5D9BCB00AEA51A /* CGPattern.m in Sources */ = {isa = PBXBuildFile; fileRef = FE064AB80B8B805000853FBB /* CGPattern.m */; };
+		FE01AA6D0C5D9BCB00AEA51A /* CGShading.m in Sources */ = {isa = PBXBuildFile; fileRef = FE064ABA0B8B805000853FBB /* CGShading.m */; };
+		FE01AA6E0C5D9BCB00AEA51A /* KGColor.m in Sources */ = {isa = PBXBuildFile; fileRef = FE064ABC0B8B805000853FBB /* KGColor.m */; };
+		FE01AA6F0C5D9BCB00AEA51A /* KGLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = FE064AC20B8B805000853FBB /* KGLayer.m */; };
+		FE01AA700C5D9BCB00AEA51A /* KGPath.m in Sources */ = {isa = PBXBuildFile; fileRef = FE064AC40B8B805000853FBB /* KGPath.m */; };
+		FE01AA710C5D9BCB00AEA51A /* KGPattern.m in Sources */ = {isa = PBXBuildFile; fileRef = FE064AC60B8B805000853FBB /* KGPattern.m */; };
+		FE01AA720C5D9BCB00AEA51A /* KGImageSource_JPEG.m in Sources */ = {isa = PBXBuildFile; fileRef = FE267E840B8BCC3C0000DDC0 /* KGImageSource_JPEG.m */; };
+		FE01AA730C5D9BCB00AEA51A /* KGImageSource_PNG.m in Sources */ = {isa = PBXBuildFile; fileRef = FE267E860B8BCC3C0000DDC0 /* KGImageSource_PNG.m */; };
+		FE01AA740C5D9BCB00AEA51A /* KGImageSource_TIFF.m in Sources */ = {isa = PBXBuildFile; fileRef = FE267E880B8BCC3C0000DDC0 /* KGImageSource_TIFF.m */; };
+		FE01AA750C5D9BCB00AEA51A /* KGImageSource.m in Sources */ = {isa = PBXBuildFile; fileRef = FE267E8A0B8BCC3C0000DDC0 /* KGImageSource.m */; };
+		FE01AA760C5D9BCB00AEA51A /* CGBitmapContext.m in Sources */ = {isa = PBXBuildFile; fileRef = FE267EB40B8BD2690000DDC0 /* CGBitmapContext.m */; };
+		FE01AA770C5D9BCB00AEA51A /* KGBitmapContext.m in Sources */ = {isa = PBXBuildFile; fileRef = FE267EB60B8BD2690000DDC0 /* KGBitmapContext.m */; };
+		FE01AA780C5D9BCB00AEA51A /* KGMutablePath.m in Sources */ = {isa = PBXBuildFile; fileRef = FEF33C000B93543C00DC0B6F /* KGMutablePath.m */; };
+		FE01AA790C5D9BCB00AEA51A /* CGPDFPage.m in Sources */ = {isa = PBXBuildFile; fileRef = FEEF00580B96441800069FD1 /* CGPDFPage.m */; };
+		FE01AA7A0C5D9BCB00AEA51A /* NSOpenGLPixelBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = FE6DC16B0BA85BEC0082AC66 /* NSOpenGLPixelBuffer.m */; };
+		FE01AA7B0C5D9BCB00AEA51A /* NSDatePicker.m in Sources */ = {isa = PBXBuildFile; fileRef = FE6DC3DD0BA9A6EB0082AC66 /* NSDatePicker.m */; };
+		FE01AA7C0C5D9BCB00AEA51A /* NSDatePickerCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FE6DC3EF0BA9A7100082AC66 /* NSDatePickerCell.m */; };
+		FE01AA7D0C5D9BCB00AEA51A /* NSGraphicsStyle_uxtheme.m in Sources */ = {isa = PBXBuildFile; fileRef = FE4434030BB9833B00411464 /* NSGraphicsStyle_uxtheme.m */; };
+		FE01AA7E0C5D9BCB00AEA51A /* NSGraphicsStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = FE1E86C00BBCA62D0013B968 /* NSGraphicsStyle.m */; };
+		FE01AA7F0C5D9BCB00AEA51A /* NSNibBindingConnector.m in Sources */ = {isa = PBXBuildFile; fileRef = FE8BAEC60BC9EA8D0007FACA /* NSNibBindingConnector.m */; };
+		FE01AA800C5D9BCB00AEA51A /* NSBinder.m in Sources */ = {isa = PBXBuildFile; fileRef = FE8BAF1E0BC9EC680007FACA /* NSBinder.m */; };
+		FE01AA810C5D9BCB00AEA51A /* NSKVOBinder.m in Sources */ = {isa = PBXBuildFile; fileRef = FE8BAF200BC9EC680007FACA /* NSKVOBinder.m */; };
+		FE01AA820C5D9BCB00AEA51A /* NSObject+BindingSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = FE8BAF220BC9EC680007FACA /* NSObject+BindingSupport.m */; };
+		FE01AA830C5D9BCB00AEA51A /* NSAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = FED310DE0BCC027200552615 /* NSAnimation.m */; };
+		FE01AA840C5D9BCB00AEA51A /* NSViewAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = FED310E00BCC027200552615 /* NSViewAnimation.m */; };
+		FE01AA850C5D9BCB00AEA51A /* NSFontDescriptor.m in Sources */ = {isa = PBXBuildFile; fileRef = FE4BDC0A0BCD40C600E19685 /* NSFontDescriptor.m */; };
+		FE01AA860C5D9BCB00AEA51A /* NSSegment.m in Sources */ = {isa = PBXBuildFile; fileRef = FED166D50BE502AD00BF9889 /* NSSegment.m */; };
+		FE01AA870C5D9BCB00AEA51A /* NSTextBlock.m in Sources */ = {isa = PBXBuildFile; fileRef = FED167A50BE57EB300BF9889 /* NSTextBlock.m */; };
+		FE01AA880C5D9BCB00AEA51A /* NSTextTable.m in Sources */ = {isa = PBXBuildFile; fileRef = FED167A70BE57EB300BF9889 /* NSTextTable.m */; };
+		FE01AA890C5D9BCB00AEA51A /* NSTextTableBlock.m in Sources */ = {isa = PBXBuildFile; fileRef = FED167A90BE57EB300BF9889 /* NSTextTableBlock.m */; };
+		FE01AA8A0C5D9BCB00AEA51A /* NSArrayControllerSelectionProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = FE352F690BF3998E00223FAF /* NSArrayControllerSelectionProxy.m */; };
+		FE01AA8B0C5D9BCB00AEA51A /* NSTableColumnBinder.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC5FF7C0BF49D5400682A70 /* NSTableColumnBinder.m */; };
+		FE01AA8C0C5D9BCB00AEA51A /* NSAffineTransform.m in Sources */ = {isa = PBXBuildFile; fileRef = C8E4F5800BFF7A8A0076D5E6 /* NSAffineTransform.m */; };
+		FE01AA8D0C5D9BCB00AEA51A /* NSTextList.m in Sources */ = {isa = PBXBuildFile; fileRef = FE7247680C06202B007CBC51 /* NSTextList.m */; };
+		FE01AA8E0C5D9BCB00AEA51A /* NSTextAttachmentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FE7247A50C0622F2007CBC51 /* NSTextAttachmentCell.m */; };
+		FE01AA8F0C5D9BCB00AEA51A /* NSTypesetter_concrete.m in Sources */ = {isa = PBXBuildFile; fileRef = FE7248500C0676AA007CBC51 /* NSTypesetter_concrete.m */; };
+		FE01AA900C5D9BCB00AEA51A /* KGFont.m in Sources */ = {isa = PBXBuildFile; fileRef = FE89AF480C33679100CD21FB /* KGFont.m */; };
+		FE01AA910C5D9BCB00AEA51A /* KGDeviceContext.m in Sources */ = {isa = PBXBuildFile; fileRef = FE57F8160C46AA2C0078FFC1 /* KGDeviceContext.m */; };
+		FE01AA920C5D9BCB00AEA51A /* KGDeviceContext_gdi.m in Sources */ = {isa = PBXBuildFile; fileRef = FE57F8D10C46B68C0078FFC1 /* KGDeviceContext_gdi.m */; };
+		FE01AA930C5D9BCB00AEA51A /* NSPrintPanel.m in Sources */ = {isa = PBXBuildFile; fileRef = FE57FAB60C47F2010078FFC1 /* NSPrintPanel.m */; };
+		FE01AA950C5D9BCB00AEA51A /* NSFontPanel.nib in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B54DF0976075300DA0954 /* NSFontPanel.nib */; };
+		FE01AA960C5D9BCB00AEA51A /* NSColorPanel.nib in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B54E10976075300DA0954 /* NSColorPanel.nib */; };
+		FE01AA970C5D9BCB00AEA51A /* NSToolbarCustomizationPalette.nib in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B54E30976075300DA0954 /* NSToolbarCustomizationPalette.nib */; };
+		FE01AA980C5D9BCB00AEA51A /* NSSplitViewVDimple.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B54E70976075300DA0954 /* NSSplitViewVDimple.tiff */; };
+		FE01AA990C5D9BCB00AEA51A /* NSHighlightedBrowserCellArrow.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B54E90976075300DA0954 /* NSHighlightedBrowserCellArrow.tiff */; };
+		FE01AA9A0C5D9BCB00AEA51A /* NSRulerMarkerTab.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B54EB0976075300DA0954 /* NSRulerMarkerTab.tiff */; };
+		FE01AA9B0C5D9BCB00AEA51A /* NSAlertPanelExclamation.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B54ED0976075300DA0954 /* NSAlertPanelExclamation.tiff */; };
+		FE01AA9C0C5D9BCB00AEA51A /* NSComboBoxCellDown.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B54EF0976075300DA0954 /* NSComboBoxCellDown.tiff */; };
+		FE01AA9D0C5D9BCB00AEA51A /* NSRadioButton.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B54F10976075300DA0954 /* NSRadioButton.tiff */; };
+		FE01AA9E0C5D9BCB00AEA51A /* NSSwitch.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B54F30976075300DA0954 /* NSSwitch.tiff */; };
+		FE01AA9F0C5D9BCB00AEA51A /* NSHighlightedSwitch.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B54F50976075300DA0954 /* NSHighlightedSwitch.tiff */; };
+		FE01AAA00C5D9BCB00AEA51A /* NSPopUpButtonCellPopUp.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B54F70976075300DA0954 /* NSPopUpButtonCellPopUp.tiff */; };
+		FE01AAA10C5D9BCB00AEA51A /* NSPopUpButtonCellPullDown.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B54F90976075300DA0954 /* NSPopUpButtonCellPullDown.tiff */; };
+		FE01AAA20C5D9BCB00AEA51A /* NSHighlightedRadioButton.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B54FB0976075300DA0954 /* NSHighlightedRadioButton.tiff */; };
+		FE01AAA30C5D9BCB00AEA51A /* NSOutlineViewOpen.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B54FD0976075300DA0954 /* NSOutlineViewOpen.tiff */; };
+		FE01AAA40C5D9BCB00AEA51A /* NSSplitViewHDimple.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B54FF0976075300DA0954 /* NSSplitViewHDimple.tiff */; };
+		FE01AAA50C5D9BCB00AEA51A /* NSBrowserCellArrow.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B55010976075300DA0954 /* NSBrowserCellArrow.tiff */; };
+		FE01AAA60C5D9BCB00AEA51A /* NSOutlineViewClosed.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B55030976075300DA0954 /* NSOutlineViewClosed.tiff */; };
+		FE01AAA70C5D9BCB00AEA51A /* NSMenu.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B55060976075300DA0954 /* NSMenu.plist */; };
+		FE01AAA80C5D9BCB00AEA51A /* NSColorPickerColorList.nib in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B55F30976075300DA0954 /* NSColorPickerColorList.nib */; };
+		FE01AAA90C5D9BCB00AEA51A /* NSColorPickerSliders.nib in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B55F50976075300DA0954 /* NSColorPickerSliders.nib */; };
+		FE01AAAA0C5D9BCB00AEA51A /* NSColorPickerSlidersCMYK.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B55F80976075300DA0954 /* NSColorPickerSlidersCMYK.tiff */; };
+		FE01AAAB0C5D9BCB00AEA51A /* NSColorPickerColorList.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B55FA0976075300DA0954 /* NSColorPickerColorList.tiff */; };
+		FE01AAAC0C5D9BCB00AEA51A /* NSColorPickerSlidersHSB.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B55FC0976075300DA0954 /* NSColorPickerSlidersHSB.tiff */; };
+		FE01AAAD0C5D9BCB00AEA51A /* NSColorPickerSlidersRGB.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B55FE0976075300DA0954 /* NSColorPickerSlidersRGB.tiff */; };
+		FE01AAAE0C5D9BCB00AEA51A /* NSColorPickerSlidersGray.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B56000976075300DA0954 /* NSColorPickerSlidersGray.tiff */; };
+		FE01AAAF0C5D9BCB00AEA51A /* NSMenuArrow.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B56F20976075400DA0954 /* NSMenuArrow.tiff */; };
+		FE01AAB00C5D9BCB00AEA51A /* NSMenuViewDoubleRightArrow.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B56F40976075400DA0954 /* NSMenuViewDoubleRightArrow.tiff */; };
+		FE01AAB10C5D9BCB00AEA51A /* NSMenuViewDoubleRightArrowGray.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B56F60976075400DA0954 /* NSMenuViewDoubleRightArrowGray.tiff */; };
+		FE01AAB20C5D9BCB00AEA51A /* StandardKeyBindings.keybindings in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B57080976075400DA0954 /* StandardKeyBindings.keybindings */; };
+		FE01AAB30C5D9BCB00AEA51A /* NSToolbarShowFontsItem.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B573A0976075500DA0954 /* NSToolbarShowFontsItem.tiff */; };
+		FE01AAB40C5D9BCB00AEA51A /* NSToolbarCustomizeToolbarItem.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B573C0976075500DA0954 /* NSToolbarCustomizeToolbarItem.tiff */; };
+		FE01AAB50C5D9BCB00AEA51A /* NSToolbarShowColorsItem.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B573E0976075500DA0954 /* NSToolbarShowColorsItem.tiff */; };
+		FE01AAB60C5D9BCB00AEA51A /* NSToolbarPrintItem.tiff in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B57400976075500DA0954 /* NSToolbarPrintItem.tiff */; };
+		FE01AAB70C5D9BCB00AEA51A /* NSButtonCell_disclosure_highlighted.tif in Resources */ = {isa = PBXBuildFile; fileRef = FE86887C0BC3FFA4009F515C /* NSButtonCell_disclosure_highlighted.tif */; };
+		FE01AAB80C5D9BCB00AEA51A /* NSButtonCell_disclosure_normal.tif in Resources */ = {isa = PBXBuildFile; fileRef = FE86887D0BC3FFA4009F515C /* NSButtonCell_disclosure_normal.tif */; };
+		FE01AAB90C5D9BCB00AEA51A /* NSButtonCell_disclosure_selected.tif in Resources */ = {isa = PBXBuildFile; fileRef = FE86887E0BC3FFA4009F515C /* NSButtonCell_disclosure_selected.tif */; };
+		FE01AABA0C5D9BCB00AEA51A /* defaultBindingOptions.plist in Resources */ = {isa = PBXBuildFile; fileRef = C8B239A20BF8EEB500CA33AF /* defaultBindingOptions.plist */; };
+		FE01AABC0C5D9BCB00AEA51A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E2B575B0976075500DA0954 /* Foundation.framework */; };
 		FE064AC70B8B805000853FBB /* CGColor.h in Headers */ = {isa = PBXBuildFile; fileRef = FE064AA90B8B805000853FBB /* CGColor.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE064AC80B8B805000853FBB /* CGColor.m in Sources */ = {isa = PBXBuildFile; fileRef = FE064AAA0B8B805000853FBB /* CGColor.m */; };
 		FE064AC90B8B805000853FBB /* CGColorSpace.h in Headers */ = {isa = PBXBuildFile; fileRef = FE064AAB0B8B805000853FBB /* CGColorSpace.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -707,6 +1394,16 @@
 			);
 			script = "";
 		};
+		FE01AABE0C5D9BCB00AEA51A /* PBXBuildRule */ = {
+			isa = PBXBuildRule;
+			compilerSpec = org.cocotron.1.0.windows.i386.gcc.default;
+			fileType = sourcecode.c;
+			isEditable = 1;
+			outputFiles = (
+				"",
+			);
+			script = "";
+		};
 /* End PBXBuildRule section */
 
 /* Begin PBXContainerItemProxy section */
@@ -737,6 +1434,20 @@
 			proxyType = 1;
 			remoteGlobalIDString = 8DC2EF4F0486A6940098B216;
 			remoteInfo = "Foundation-Windows-i386-gcc-4.0.3-mingw";
+		};
+		FE01AAC90C5D9BCC00AEA51A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6E46FEBE0A2D2DCF004CD27E /* Foundation.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = FE01A7EC0C5D9B6900AEA51A;
+			remoteInfo = "Foundation-Windows-i386";
+		};
+		FE01AACB0C5D9BE700AEA51A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6E46FEBE0A2D2DCF004CD27E /* Foundation.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = FE01A5970C5D9B6900AEA51A;
+			remoteInfo = "Foundation-Windows-i386";
 		};
 		FED70AC90C3B3FD9000CBE5B /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -1232,6 +1943,7 @@
 		C8B239A20BF8EEB500CA33AF /* defaultBindingOptions.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = defaultBindingOptions.plist; sourceTree = "<group>"; };
 		C8E4F57F0BFF7A8A0076D5E6 /* NSAffineTransform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSAffineTransform.h; sourceTree = "<group>"; };
 		C8E4F5800BFF7A8A0076D5E6 /* NSAffineTransform.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSAffineTransform.m; sourceTree = "<group>"; };
+		FE01AAC10C5D9BCB00AEA51A /* AppKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AppKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FE064AA90B8B805000853FBB /* CGColor.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = CGColor.h; sourceTree = "<group>"; };
 		FE064AAA0B8B805000853FBB /* CGColor.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = CGColor.m; sourceTree = "<group>"; };
 		FE064AAB0B8B805000853FBB /* CGColorSpace.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = CGColorSpace.h; sourceTree = "<group>"; };
@@ -1455,6 +2167,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		FE01AABB0C5D9BCB00AEA51A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FE01AABC0C5D9BCB00AEA51A /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -1476,6 +2196,7 @@
 			isa = PBXGroup;
 			children = (
 				6E2B53220976074C00DA0954 /* AppKit.framework */,
+				FE01AAC10C5D9BCB00AEA51A /* AppKit.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -2333,6 +3054,7 @@
 				6E46FECA0A2D2DCF004CD27E /* Foundation.framework */,
 				FED70ACA0C3B3FD9000CBE5B /* Foundation.framework */,
 				FEE66D7A0C3D6F8A00FBED82 /* Foundation.framework */,
+				FE01AACA0C5D9BCC00AEA51A /* Foundation.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -2783,12 +3505,347 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		FE01A80A0C5D9BCB00AEA51A /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FE01A80B0C5D9BCB00AEA51A /* AppKitExport.h in Headers */,
+				FE01A80C0C5D9BCB00AEA51A /* AppKit.h in Headers */,
+				FE01A80D0C5D9BCB00AEA51A /* NSActionCell.h in Headers */,
+				FE01A80E0C5D9BCB00AEA51A /* NSAlertPanel.h in Headers */,
+				FE01A80F0C5D9BCB00AEA51A /* NSApplication.h in Headers */,
+				FE01A8100C5D9BCB00AEA51A /* NSAttributedString.h in Headers */,
+				FE01A8110C5D9BCB00AEA51A /* NSBitmapImageRep.h in Headers */,
+				FE01A8120C5D9BCB00AEA51A /* NSBox.h in Headers */,
+				FE01A8130C5D9BCB00AEA51A /* NSBrowser.h in Headers */,
+				FE01A8140C5D9BCB00AEA51A /* NSBrowserCell.h in Headers */,
+				FE01A8150C5D9BCB00AEA51A /* NSButton.h in Headers */,
+				FE01A8160C5D9BCB00AEA51A /* NSButtonCell.h in Headers */,
+				FE01A8170C5D9BCB00AEA51A /* NSCachedImageRep.h in Headers */,
+				FE01A8180C5D9BCB00AEA51A /* NSCell.h in Headers */,
+				FE01A8190C5D9BCB00AEA51A /* NSClipView.h in Headers */,
+				FE01A81A0C5D9BCB00AEA51A /* NSColorList.h in Headers */,
+				FE01A81B0C5D9BCB00AEA51A /* NSColorPanel.h in Headers */,
+				FE01A81C0C5D9BCB00AEA51A /* NSColorWell.h in Headers */,
+				FE01A81D0C5D9BCB00AEA51A /* NSComboBox.h in Headers */,
+				FE01A81E0C5D9BCB00AEA51A /* NSComboBoxCell.h in Headers */,
+				FE01A81F0C5D9BCB00AEA51A /* NSComboBoxView.h in Headers */,
+				FE01A8200C5D9BCB00AEA51A /* NSComboBoxWindow.h in Headers */,
+				FE01A8210C5D9BCB00AEA51A /* NSControl.h in Headers */,
+				FE01A8220C5D9BCB00AEA51A /* NSCursor.h in Headers */,
+				FE01A8230C5D9BCB00AEA51A /* NSCursorRect.h in Headers */,
+				FE01A8240C5D9BCB00AEA51A /* NSCustomImageRep.h in Headers */,
+				FE01A8250C5D9BCB00AEA51A /* NSDisplay.h in Headers */,
+				FE01A8260C5D9BCB00AEA51A /* NSDocument.h in Headers */,
+				FE01A8270C5D9BCB00AEA51A /* NSDocumentController.h in Headers */,
+				FE01A8280C5D9BCB00AEA51A /* NSDragging.h in Headers */,
+				FE01A8290C5D9BCB00AEA51A /* NSDraggingManager.h in Headers */,
+				FE01A82A0C5D9BCB00AEA51A /* NSEPSImageRep.h in Headers */,
+				FE01A82B0C5D9BCB00AEA51A /* NSFileWrapper.h in Headers */,
+				FE01A82C0C5D9BCB00AEA51A /* NSFont.h in Headers */,
+				FE01A82D0C5D9BCB00AEA51A /* NSFontFamily.h in Headers */,
+				FE01A82E0C5D9BCB00AEA51A /* NSFontManager.h in Headers */,
+				FE01A82F0C5D9BCB00AEA51A /* NSFontMetric.h in Headers */,
+				FE01A8300C5D9BCB00AEA51A /* NSFontPanel.h in Headers */,
+				FE01A8310C5D9BCB00AEA51A /* NSFontPanelCell.h in Headers */,
+				FE01A8320C5D9BCB00AEA51A /* NSFontTypeface.h in Headers */,
+				FE01A8330C5D9BCB00AEA51A /* NSForm.h in Headers */,
+				FE01A8340C5D9BCB00AEA51A /* NSFormCell.h in Headers */,
+				FE01A8350C5D9BCB00AEA51A /* NSGraphics.h in Headers */,
+				FE01A8360C5D9BCB00AEA51A /* NSGraphicsContext.h in Headers */,
+				FE01A8370C5D9BCB00AEA51A /* NSGraphicsContextFunctions.h in Headers */,
+				FE01A8380C5D9BCB00AEA51A /* NSImage.h in Headers */,
+				FE01A8390C5D9BCB00AEA51A /* NSImageCell.h in Headers */,
+				FE01A83A0C5D9BCB00AEA51A /* NSImageRep.h in Headers */,
+				FE01A83B0C5D9BCB00AEA51A /* NSImageView.h in Headers */,
+				FE01A83C0C5D9BCB00AEA51A /* NSInterfaceGraphics.h in Headers */,
+				FE01A83D0C5D9BCB00AEA51A /* NSInterfacePart.h in Headers */,
+				FE01A83E0C5D9BCB00AEA51A /* NSInterfacePartAttributedString.h in Headers */,
+				FE01A83F0C5D9BCB00AEA51A /* NSInterfacePartDisabledAttributedString.h in Headers */,
+				FE01A8400C5D9BCB00AEA51A /* NSInterfaceStyle.h in Headers */,
+				FE01A8410C5D9BCB00AEA51A /* NSMatrix.h in Headers */,
+				FE01A8420C5D9BCB00AEA51A /* NSModalSessionX.h in Headers */,
+				FE01A8430C5D9BCB00AEA51A /* NSOpenPanel.h in Headers */,
+				FE01A8440C5D9BCB00AEA51A /* NSPageLayout.h in Headers */,
+				FE01A8450C5D9BCB00AEA51A /* NSPanel.h in Headers */,
+				FE01A8460C5D9BCB00AEA51A /* NSPasteboard.h in Headers */,
+				FE01A8470C5D9BCB00AEA51A /* NSPlatform.h in Headers */,
+				FE01A8480C5D9BCB00AEA51A /* NSPopUpButton.h in Headers */,
+				FE01A8490C5D9BCB00AEA51A /* NSPopUpButtonCell.h in Headers */,
+				FE01A84A0C5D9BCB00AEA51A /* NSPopUpView.h in Headers */,
+				FE01A84B0C5D9BCB00AEA51A /* NSPopUpWindow.h in Headers */,
+				FE01A84C0C5D9BCB00AEA51A /* NSParagraphStyle.h in Headers */,
+				FE01A84D0C5D9BCB00AEA51A /* NSPrintInfo.h in Headers */,
+				FE01A84E0C5D9BCB00AEA51A /* NSPrintOperation.h in Headers */,
+				FE01A84F0C5D9BCB00AEA51A /* NSProgressIndicator.h in Headers */,
+				FE01A8500C5D9BCB00AEA51A /* NSResponder.h in Headers */,
+				FE01A8510C5D9BCB00AEA51A /* NSSavePanel.h in Headers */,
+				FE01A8520C5D9BCB00AEA51A /* NSScreen.h in Headers */,
+				FE01A8530C5D9BCB00AEA51A /* NSScroller.h in Headers */,
+				FE01A8540C5D9BCB00AEA51A /* NSScrollView.h in Headers */,
+				FE01A8550C5D9BCB00AEA51A /* NSSheetContext.h in Headers */,
+				FE01A8560C5D9BCB00AEA51A /* NSSlider.h in Headers */,
+				FE01A8570C5D9BCB00AEA51A /* NSSliderCell.h in Headers */,
+				FE01A8580C5D9BCB00AEA51A /* NSSplitView.h in Headers */,
+				FE01A8590C5D9BCB00AEA51A /* NSStringDrawer.h in Headers */,
+				FE01A85A0C5D9BCB00AEA51A /* NSStringDrawing.h in Headers */,
+				FE01A85B0C5D9BCB00AEA51A /* NSSecureTextField.h in Headers */,
+				FE01A85C0C5D9BCB00AEA51A /* NSSecureTextFieldCell.h in Headers */,
+				FE01A85D0C5D9BCB00AEA51A /* NSStepper.h in Headers */,
+				FE01A85E0C5D9BCB00AEA51A /* NSStepperCell.h in Headers */,
+				FE01A85F0C5D9BCB00AEA51A /* NSTableColumn.h in Headers */,
+				FE01A8600C5D9BCB00AEA51A /* NSTableCornerView.h in Headers */,
+				FE01A8610C5D9BCB00AEA51A /* NSTableHeaderCell.h in Headers */,
+				FE01A8620C5D9BCB00AEA51A /* NSTableHeaderView.h in Headers */,
+				FE01A8630C5D9BCB00AEA51A /* NSTableView.h in Headers */,
+				FE01A8640C5D9BCB00AEA51A /* NSTabView.h in Headers */,
+				FE01A8650C5D9BCB00AEA51A /* NSTabViewItem.h in Headers */,
+				FE01A8660C5D9BCB00AEA51A /* NSText.h in Headers */,
+				FE01A8670C5D9BCB00AEA51A /* NSTextAttachment.h in Headers */,
+				FE01A8680C5D9BCB00AEA51A /* NSTextField.h in Headers */,
+				FE01A8690C5D9BCB00AEA51A /* NSTextFieldCell.h in Headers */,
+				FE01A86A0C5D9BCB00AEA51A /* NSTrackingRect.h in Headers */,
+				FE01A86B0C5D9BCB00AEA51A /* NSView.h in Headers */,
+				FE01A86C0C5D9BCB00AEA51A /* NSWindow.h in Headers */,
+				FE01A86D0C5D9BCB00AEA51A /* NSWindow-Private.h in Headers */,
+				FE01A86E0C5D9BCB00AEA51A /* NSWindowBackgroundView.h in Headers */,
+				FE01A86F0C5D9BCB00AEA51A /* NSWindowController.h in Headers */,
+				FE01A8700C5D9BCB00AEA51A /* NSWorkspace.h in Headers */,
+				FE01A8710C5D9BCB00AEA51A /* NSOutlineMarkerCell.h in Headers */,
+				FE01A8720C5D9BCB00AEA51A /* NSOutlineView.h in Headers */,
+				FE01A8730C5D9BCB00AEA51A /* NSRulerView.h in Headers */,
+				FE01A8740C5D9BCB00AEA51A /* NSRulerMarker.h in Headers */,
+				FE01A8750C5D9BCB00AEA51A /* NSToolTipWindow.h in Headers */,
+				FE01A8760C5D9BCB00AEA51A /* NSWindowAnimationContext.h in Headers */,
+				FE01A8770C5D9BCB00AEA51A /* NSMeasurementUnit.h in Headers */,
+				FE01A8780C5D9BCB00AEA51A /* NSWindow-Drag.h in Headers */,
+				FE01A8790C5D9BCB00AEA51A /* NSNibOutletConnector.h in Headers */,
+				FE01A87A0C5D9BCB00AEA51A /* NSNibControlConnector.h in Headers */,
+				FE01A87B0C5D9BCB00AEA51A /* NSNibConnector.h in Headers */,
+				FE01A87C0C5D9BCB00AEA51A /* NSNibLoading.h in Headers */,
+				FE01A87D0C5D9BCB00AEA51A /* NSNibHelpConnector.h in Headers */,
+				FE01A87E0C5D9BCB00AEA51A /* NSColor.h in Headers */,
+				FE01A87F0C5D9BCB00AEA51A /* NSColor_rgbCalibrated.h in Headers */,
+				FE01A8800C5D9BCB00AEA51A /* NSColor_whiteCalibrated.h in Headers */,
+				FE01A8810C5D9BCB00AEA51A /* NSColor_cmykDevice.h in Headers */,
+				FE01A8820C5D9BCB00AEA51A /* NSColor_rgbDevice.h in Headers */,
+				FE01A8830C5D9BCB00AEA51A /* NSColor_whiteDevice.h in Headers */,
+				FE01A8840C5D9BCB00AEA51A /* NSColor_catalog.h in Headers */,
+				FE01A8850C5D9BCB00AEA51A /* conversions.h in Headers */,
+				FE01A8860C5D9BCB00AEA51A /* NSTextView.h in Headers */,
+				FE01A8870C5D9BCB00AEA51A /* NSTextContainer.h in Headers */,
+				FE01A8880C5D9BCB00AEA51A /* NSTextStorage.h in Headers */,
+				FE01A8890C5D9BCB00AEA51A /* NSTextStorage_concrete.h in Headers */,
+				FE01A88A0C5D9BCB00AEA51A /* NSLayoutManager.h in Headers */,
+				FE01A88B0C5D9BCB00AEA51A /* NSTypesetter.h in Headers */,
+				FE01A88C0C5D9BCB00AEA51A /* NSRangeArray.h in Headers */,
+				FE01A88D0C5D9BCB00AEA51A /* NSSecureTextView.h in Headers */,
+				FE01A88E0C5D9BCB00AEA51A /* NSSecureLayoutManager.h in Headers */,
+				FE01A88F0C5D9BCB00AEA51A /* NSTextTab.h in Headers */,
+				FE01A8900C5D9BCB00AEA51A /* NSEvent_mouse.h in Headers */,
+				FE01A8910C5D9BCB00AEA51A /* NSEvent_keyboard.h in Headers */,
+				FE01A8920C5D9BCB00AEA51A /* NSEvent_periodic.h in Headers */,
+				FE01A8930C5D9BCB00AEA51A /* NSEvent.h in Headers */,
+				FE01A8940C5D9BCB00AEA51A /* NSEvent_CoreGraphics.h in Headers */,
+				FE01A8950C5D9BCB00AEA51A /* CGContext.h in Headers */,
+				FE01A8960C5D9BCB00AEA51A /* CGGeometry.h in Headers */,
+				FE01A8970C5D9BCB00AEA51A /* CGAffineTransform.h in Headers */,
+				FE01A8980C5D9BCB00AEA51A /* CGFont.h in Headers */,
+				FE01A8990C5D9BCB00AEA51A /* CoreGraphics.h in Headers */,
+				FE01A89A0C5D9BCB00AEA51A /* KGGraphicsState.h in Headers */,
+				FE01A89B0C5D9BCB00AEA51A /* KGRenderingContext.h in Headers */,
+				FE01A89C0C5D9BCB00AEA51A /* CGWindow.h in Headers */,
+				FE01A89D0C5D9BCB00AEA51A /* CGEvent.h in Headers */,
+				FE01A89E0C5D9BCB00AEA51A /* NSColorPicker.h in Headers */,
+				FE01A89F0C5D9BCB00AEA51A /* NSColorPickerColorList.h in Headers */,
+				FE01A8A00C5D9BCB00AEA51A /* NSBrowserCellColorList.h in Headers */,
+				FE01A8A10C5D9BCB00AEA51A /* NSColorPickerSliders.h in Headers */,
+				FE01A8A20C5D9BCB00AEA51A /* Win32Cursor.h in Headers */,
+				FE01A8A30C5D9BCB00AEA51A /* KGRenderingContext_gdi.h in Headers */,
+				FE01A8A40C5D9BCB00AEA51A /* Win32DeviceContextBitmap.h in Headers */,
+				FE01A8A50C5D9BCB00AEA51A /* Win32DeviceContextPrinter.h in Headers */,
+				FE01A8A60C5D9BCB00AEA51A /* Win32DeviceContextWindow.h in Headers */,
+				FE01A8A70C5D9BCB00AEA51A /* Win32Display.h in Headers */,
+				FE01A8A80C5D9BCB00AEA51A /* Win32Event.h in Headers */,
+				FE01A8A90C5D9BCB00AEA51A /* Win32Font.h in Headers */,
+				FE01A8AA0C5D9BCB00AEA51A /* Win32Region.h in Headers */,
+				FE01A8AB0C5D9BCB00AEA51A /* Win32Window.h in Headers */,
+				FE01A8AC0C5D9BCB00AEA51A /* Win32Application.h in Headers */,
+				FE01A8AD0C5D9BCB00AEA51A /* Win32SplashPanel.h in Headers */,
+				FE01A8AE0C5D9BCB00AEA51A /* Win32RunningCopyPipe.h in Headers */,
+				FE01A8AF0C5D9BCB00AEA51A /* Win32EventInputSource.h in Headers */,
+				FE01A8B00C5D9BCB00AEA51A /* Win32Workspace.h in Headers */,
+				FE01A8B10C5D9BCB00AEA51A /* NSSavePanel-Win32.h in Headers */,
+				FE01A8B20C5D9BCB00AEA51A /* NSOpenPanel-Win32.h in Headers */,
+				FE01A8B30C5D9BCB00AEA51A /* multiple_monitors.h in Headers */,
+				FE01A8B40C5D9BCB00AEA51A /* Win32DraggingManager.h in Headers */,
+				FE01A8B50C5D9BCB00AEA51A /* Win32DragSession.h in Headers */,
+				FE01A8B60C5D9BCB00AEA51A /* Win32DropPasteboard.h in Headers */,
+				FE01A8B70C5D9BCB00AEA51A /* Win32FORMATETC.h in Headers */,
+				FE01A8B80C5D9BCB00AEA51A /* Win32GeneralPasteboard.h in Headers */,
+				FE01A8B90C5D9BCB00AEA51A /* Win32IDataObjectClient.h in Headers */,
+				FE01A8BA0C5D9BCB00AEA51A /* Win32IDataObjectServer.h in Headers */,
+				FE01A8BB0C5D9BCB00AEA51A /* Win32IDropSourceServer.h in Headers */,
+				FE01A8BC0C5D9BCB00AEA51A /* Win32IDropTargetServer.h in Headers */,
+				FE01A8BD0C5D9BCB00AEA51A /* Win32IEnumFORMATETCServer.h in Headers */,
+				FE01A8BE0C5D9BCB00AEA51A /* Win32IStreamClient.h in Headers */,
+				FE01A8BF0C5D9BCB00AEA51A /* Win32IUnknownServer.h in Headers */,
+				FE01A8C00C5D9BCB00AEA51A /* Win32Pasteboard.h in Headers */,
+				FE01A8C10C5D9BCB00AEA51A /* Win32TypesAndOwner.h in Headers */,
+				FE01A8C20C5D9BCB00AEA51A /* Win32Window-Drag.h in Headers */,
+				FE01A8C30C5D9BCB00AEA51A /* NSDragView.h in Headers */,
+				FE01A8C40C5D9BCB00AEA51A /* NSOpenGLContext.h in Headers */,
+				FE01A8C50C5D9BCB00AEA51A /* NSOpenGLPixelFormat.h in Headers */,
+				FE01A8C60C5D9BCB00AEA51A /* NSOpenGLView.h in Headers */,
+				FE01A8C70C5D9BCB00AEA51A /* NSRichTextReader.h in Headers */,
+				FE01A8C80C5D9BCB00AEA51A /* NSRichTextWriter.h in Headers */,
+				FE01A8C90C5D9BCB00AEA51A /* NSMainMenuView.h in Headers */,
+				FE01A8CA0C5D9BCB00AEA51A /* NSMenu.h in Headers */,
+				FE01A8CB0C5D9BCB00AEA51A /* NSMenuItem.h in Headers */,
+				FE01A8CC0C5D9BCB00AEA51A /* NSMenuView.h in Headers */,
+				FE01A8CD0C5D9BCB00AEA51A /* NSMenuWindow.h in Headers */,
+				FE01A8CE0C5D9BCB00AEA51A /* NSOverflowMenuView.h in Headers */,
+				FE01A8CF0C5D9BCB00AEA51A /* NSSubmenuView.h in Headers */,
+				FE01A8D00C5D9BCB00AEA51A /* NSKeyBindingManager.h in Headers */,
+				FE01A8D10C5D9BCB00AEA51A /* NSKeyBinding.h in Headers */,
+				FE01A8D20C5D9BCB00AEA51A /* NSStandardToolbarItems.h in Headers */,
+				FE01A8D30C5D9BCB00AEA51A /* NSToolbar.h in Headers */,
+				FE01A8D40C5D9BCB00AEA51A /* NSToolbarButton.h in Headers */,
+				FE01A8D50C5D9BCB00AEA51A /* NSToolbarItem.h in Headers */,
+				FE01A8D60C5D9BCB00AEA51A /* NSToolbarView.h in Headers */,
+				FE01A8D70C5D9BCB00AEA51A /* NSToolbarButtonCell.h in Headers */,
+				FE01A8D80C5D9BCB00AEA51A /* NSToolbarCustomizationPalette.h in Headers */,
+				FE01A8D90C5D9BCB00AEA51A /* NSToolbarCustomizationView.h in Headers */,
+				FE01A8DA0C5D9BCB00AEA51A /* NSToolbarSeparatorItemView.h in Headers */,
+				FE01A8DB0C5D9BCB00AEA51A /* NSToolbarSeparatorItemCell.h in Headers */,
+				FE01A8DC0C5D9BCB00AEA51A /* NSDrawer.h in Headers */,
+				FE01A8DD0C5D9BCB00AEA51A /* NSDrawerWindow.h in Headers */,
+				FE01A8DE0C5D9BCB00AEA51A /* NSTIFFImageFileDirectory.h in Headers */,
+				FE01A8DF0C5D9BCB00AEA51A /* NSTIFFReader.h in Headers */,
+				FE01A8E00C5D9BCB00AEA51A /* NSIBObjectData.h in Headers */,
+				FE01A8E10C5D9BCB00AEA51A /* NSCustomObject.h in Headers */,
+				FE01A8E20C5D9BCB00AEA51A /* NSWindowTemplate.h in Headers */,
+				FE01A8E30C5D9BCB00AEA51A /* NSButtonImageSource.h in Headers */,
+				FE01A8E40C5D9BCB00AEA51A /* NSClassSwapper.h in Headers */,
+				FE01A8E50C5D9BCB00AEA51A /* NSCustomResource.h in Headers */,
+				FE01A8E60C5D9BCB00AEA51A /* NSCustomView.h in Headers */,
+				FE01A8E70C5D9BCB00AEA51A /* NSNibKeyedUnarchiver.h in Headers */,
+				FE01A8E80C5D9BCB00AEA51A /* NSTextViewSharedData.h in Headers */,
+				FE01A8E90C5D9BCB00AEA51A /* NSMutableAttributedString.h in Headers */,
+				FE01A8EA0C5D9BCB00AEA51A /* NSMutableParagraphStyle.h in Headers */,
+				FE01A8EB0C5D9BCB00AEA51A /* NSAlert.h in Headers */,
+				FE01A8EC0C5D9BCB00AEA51A /* NSArrayController.h in Headers */,
+				FE01A8ED0C5D9BCB00AEA51A /* NSBezierPath.h in Headers */,
+				FE01A8EE0C5D9BCB00AEA51A /* NSColorSpace.h in Headers */,
+				FE01A8EF0C5D9BCB00AEA51A /* NSController.h in Headers */,
+				FE01A8F00C5D9BCB00AEA51A /* NSObjectController.h in Headers */,
+				FE01A8F10C5D9BCB00AEA51A /* NSTreeController.h in Headers */,
+				FE01A8F20C5D9BCB00AEA51A /* NSUserDefaultsController.h in Headers */,
+				FE01A8F30C5D9BCB00AEA51A /* NSGlyphGenerator.h in Headers */,
+				FE01A8F40C5D9BCB00AEA51A /* NSGlyphInfo.h in Headers */,
+				FE01A8F50C5D9BCB00AEA51A /* NSHelpManager.h in Headers */,
+				FE01A8F60C5D9BCB00AEA51A /* NSLevelIndicator.h in Headers */,
+				FE01A8F70C5D9BCB00AEA51A /* NSLevelIndicatorCell.h in Headers */,
+				FE01A8F80C5D9BCB00AEA51A /* NSNib.h in Headers */,
+				FE01A8F90C5D9BCB00AEA51A /* NSPDFImageRep.h in Headers */,
+				FE01A8FA0C5D9BCB00AEA51A /* NSPrinter.h in Headers */,
+				FE01A8FB0C5D9BCB00AEA51A /* NSSearchField.h in Headers */,
+				FE01A8FC0C5D9BCB00AEA51A /* NSSearchFieldCell.h in Headers */,
+				FE01A8FD0C5D9BCB00AEA51A /* NSSegmentedCell.h in Headers */,
+				FE01A8FE0C5D9BCB00AEA51A /* NSSegmentedControl.h in Headers */,
+				FE01A8FF0C5D9BCB00AEA51A /* NSShadow.h in Headers */,
+				FE01A9000C5D9BCB00AEA51A /* NSSound.h in Headers */,
+				FE01A9010C5D9BCB00AEA51A /* NSSpellChecker.h in Headers */,
+				FE01A9020C5D9BCB00AEA51A /* NSStatusBar.h in Headers */,
+				FE01A9030C5D9BCB00AEA51A /* NSStatusItem.h in Headers */,
+				FE01A9040C5D9BCB00AEA51A /* NSTokenField.h in Headers */,
+				FE01A9050C5D9BCB00AEA51A /* NSTokenFieldCell.h in Headers */,
+				FE01A9060C5D9BCB00AEA51A /* KGColorSpace.h in Headers */,
+				FE01A9070C5D9BCB00AEA51A /* KGContext.h in Headers */,
+				FE01A9080C5D9BCB00AEA51A /* KGDataProvider.h in Headers */,
+				FE01A9090C5D9BCB00AEA51A /* KGFunction.h in Headers */,
+				FE01A90A0C5D9BCB00AEA51A /* KGImage.h in Headers */,
+				FE01A90B0C5D9BCB00AEA51A /* KGPDFArray.h in Headers */,
+				FE01A90C0C5D9BCB00AEA51A /* KGPDFContentStream.h in Headers */,
+				FE01A90D0C5D9BCB00AEA51A /* KGPDFDictionary.h in Headers */,
+				FE01A90E0C5D9BCB00AEA51A /* KGPDFDocument.h in Headers */,
+				FE01A90F0C5D9BCB00AEA51A /* KGPDFFilter.h in Headers */,
+				FE01A9100C5D9BCB00AEA51A /* KGPDFFunction_Type2.h in Headers */,
+				FE01A9110C5D9BCB00AEA51A /* KGPDFFunction_Type3.h in Headers */,
+				FE01A9120C5D9BCB00AEA51A /* KGPDFObject_Boolean.h in Headers */,
+				FE01A9130C5D9BCB00AEA51A /* KGPDFObject_const.h in Headers */,
+				FE01A9140C5D9BCB00AEA51A /* KGPDFObject_identifier.h in Headers */,
+				FE01A9150C5D9BCB00AEA51A /* KGPDFObject_Integer.h in Headers */,
+				FE01A9160C5D9BCB00AEA51A /* KGPDFObject_Name.h in Headers */,
+				FE01A9170C5D9BCB00AEA51A /* KGPDFObject_R.h in Headers */,
+				FE01A9180C5D9BCB00AEA51A /* KGPDFObject_Real.h in Headers */,
+				FE01A9190C5D9BCB00AEA51A /* KGPDFObject.h in Headers */,
+				FE01A91A0C5D9BCB00AEA51A /* KGPDFOperators.h in Headers */,
+				FE01A91B0C5D9BCB00AEA51A /* KGPDFOperatorTable.h in Headers */,
+				FE01A91C0C5D9BCB00AEA51A /* KGPDFPage.h in Headers */,
+				FE01A91D0C5D9BCB00AEA51A /* KGPDFScanner.h in Headers */,
+				FE01A91E0C5D9BCB00AEA51A /* KGPDFStream.h in Headers */,
+				FE01A91F0C5D9BCB00AEA51A /* KGPDFString.h in Headers */,
+				FE01A9200C5D9BCB00AEA51A /* KGPDFxref.h in Headers */,
+				FE01A9210C5D9BCB00AEA51A /* KGPDFxrefEntry.h in Headers */,
+				FE01A9220C5D9BCB00AEA51A /* KGShading.h in Headers */,
+				FE01A9230C5D9BCB00AEA51A /* CGImage.h in Headers */,
+				FE01A9240C5D9BCB00AEA51A /* CGColor.h in Headers */,
+				FE01A9250C5D9BCB00AEA51A /* CGColorSpace.h in Headers */,
+				FE01A9260C5D9BCB00AEA51A /* CGDataProvider.h in Headers */,
+				FE01A9270C5D9BCB00AEA51A /* CGFunction.h in Headers */,
+				FE01A9280C5D9BCB00AEA51A /* CGLayer.h in Headers */,
+				FE01A9290C5D9BCB00AEA51A /* CGPath.h in Headers */,
+				FE01A92A0C5D9BCB00AEA51A /* CGPattern.h in Headers */,
+				FE01A92B0C5D9BCB00AEA51A /* CGShading.h in Headers */,
+				FE01A92C0C5D9BCB00AEA51A /* KGColor.h in Headers */,
+				FE01A92D0C5D9BCB00AEA51A /* KGLayer.h in Headers */,
+				FE01A92E0C5D9BCB00AEA51A /* KGPath.h in Headers */,
+				FE01A92F0C5D9BCB00AEA51A /* KGPattern.h in Headers */,
+				FE01A9300C5D9BCB00AEA51A /* KGImageSource_JPEG.h in Headers */,
+				FE01A9310C5D9BCB00AEA51A /* KGImageSource_PNG.h in Headers */,
+				FE01A9320C5D9BCB00AEA51A /* KGImageSource_TIFF.h in Headers */,
+				FE01A9330C5D9BCB00AEA51A /* KGImageSource.h in Headers */,
+				FE01A9340C5D9BCB00AEA51A /* CGBitmapContext.h in Headers */,
+				FE01A9350C5D9BCB00AEA51A /* KGBitmapContext.h in Headers */,
+				FE01A9360C5D9BCB00AEA51A /* KGMutablePath.h in Headers */,
+				FE01A9370C5D9BCB00AEA51A /* CGPDFPage.h in Headers */,
+				FE01A9380C5D9BCB00AEA51A /* NSOpenGLPixelBuffer.h in Headers */,
+				FE01A9390C5D9BCB00AEA51A /* NSDatePicker.h in Headers */,
+				FE01A93A0C5D9BCB00AEA51A /* NSDatePickerCell.h in Headers */,
+				FE01A93B0C5D9BCB00AEA51A /* NSGraphicsStyle_uxtheme.h in Headers */,
+				FE01A93C0C5D9BCB00AEA51A /* NSGraphicsStyle.h in Headers */,
+				FE01A93D0C5D9BCB00AEA51A /* NSNibBindingConnector.h in Headers */,
+				FE01A93E0C5D9BCB00AEA51A /* NSBinder.h in Headers */,
+				FE01A93F0C5D9BCB00AEA51A /* NSKVOBinder.h in Headers */,
+				FE01A9400C5D9BCB00AEA51A /* NSObject+BindingSupport.h in Headers */,
+				FE01A9410C5D9BCB00AEA51A /* NSAnimation.h in Headers */,
+				FE01A9420C5D9BCB00AEA51A /* NSViewAnimation.h in Headers */,
+				FE01A9430C5D9BCB00AEA51A /* NSFontDescriptor.h in Headers */,
+				FE01A9440C5D9BCB00AEA51A /* NSSegment.h in Headers */,
+				FE01A9450C5D9BCB00AEA51A /* NSTextBlock.h in Headers */,
+				FE01A9460C5D9BCB00AEA51A /* NSTextTable.h in Headers */,
+				FE01A9470C5D9BCB00AEA51A /* NSTextTableBlock.h in Headers */,
+				FE01A9480C5D9BCB00AEA51A /* NSTextInput.h in Headers */,
+				FE01A9490C5D9BCB00AEA51A /* NSArrayControllerSelectionProxy.h in Headers */,
+				FE01A94A0C5D9BCB00AEA51A /* NSTableColumnBinder.h in Headers */,
+				FE01A94B0C5D9BCB00AEA51A /* NSAffineTransform.h in Headers */,
+				FE01A94C0C5D9BCB00AEA51A /* NSTextList.h in Headers */,
+				FE01A94D0C5D9BCB00AEA51A /* NSTextAttachmentCell.h in Headers */,
+				FE01A94E0C5D9BCB00AEA51A /* NSTypesetter_concrete.h in Headers */,
+				FE01A94F0C5D9BCB00AEA51A /* KGFont.h in Headers */,
+				FE01A9500C5D9BCB00AEA51A /* KGDeviceContext.h in Headers */,
+				FE01A9510C5D9BCB00AEA51A /* KGDeviceContext_gdi.h in Headers */,
+				FE01A9520C5D9BCB00AEA51A /* NSPrintPanel.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		6E2B53210976074C00DA0954 /* AppKit-Windows-i386 */ = {
+		6E2B53210976074C00DA0954 /* AppKit-Windows-i386-gcc-4.0.3 */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 6E2B57710976075500DA0954 /* Build configuration list for PBXNativeTarget "AppKit-Windows-i386" */;
+			buildConfigurationList = 6E2B57710976075500DA0954 /* Build configuration list for PBXNativeTarget "AppKit-Windows-i386-gcc-4.0.3" */;
 			buildPhases = (
 				6E2B531C0976074C00DA0954 /* Headers */,
 				6E2B531D0976074C00DA0954 /* Sources */,
@@ -2802,10 +3859,32 @@
 			dependencies = (
 				6E46FECC0A2D2DD8004CD27E /* PBXTargetDependency */,
 			);
-			name = "AppKit-Windows-i386";
+			name = "AppKit-Windows-i386-gcc-4.0.3";
 			productInstallPath = /Library/Frameworks;
 			productName = AppKit;
 			productReference = 6E2B53220976074C00DA0954 /* AppKit.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		FE01A8070C5D9BCB00AEA51A /* AppKit-Windows-i386 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FE01AABF0C5D9BCB00AEA51A /* Build configuration list for PBXNativeTarget "AppKit-Windows-i386" */;
+			buildPhases = (
+				FE01A80A0C5D9BCB00AEA51A /* Headers */,
+				FE01A9530C5D9BCB00AEA51A /* Sources */,
+				FE01AA940C5D9BCB00AEA51A /* Resources */,
+				FE01AABB0C5D9BCB00AEA51A /* Frameworks */,
+				FE01AABD0C5D9BCB00AEA51A /* Rez */,
+			);
+			buildRules = (
+				FE01AABE0C5D9BCB00AEA51A /* PBXBuildRule */,
+			);
+			dependencies = (
+				FE01AACC0C5D9BE700AEA51A /* PBXTargetDependency */,
+			);
+			name = "AppKit-Windows-i386";
+			productInstallPath = /Library/Frameworks;
+			productName = AppKit;
+			productReference = FE01AAC10C5D9BCB00AEA51A /* AppKit.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 /* End PBXNativeTarget section */
@@ -2825,7 +3904,8 @@
 				},
 			);
 			targets = (
-				6E2B53210976074C00DA0954 /* AppKit-Windows-i386 */,
+				6E2B53210976074C00DA0954 /* AppKit-Windows-i386-gcc-4.0.3 */,
+				FE01A8070C5D9BCB00AEA51A /* AppKit-Windows-i386 */,
 			);
 		};
 /* End PBXProject section */
@@ -2850,6 +3930,13 @@
 			fileType = wrapper.framework;
 			path = Foundation.framework;
 			remoteRef = 6E46FEC90A2D2DCF004CD27E /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FE01AACA0C5D9BCC00AEA51A /* Foundation.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Foundation.framework;
+			remoteRef = FE01AAC90C5D9BCC00AEA51A /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		FED70ACA0C3B3FD9000CBE5B /* Foundation.framework */ = {
@@ -2914,10 +4001,62 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		FE01AA940C5D9BCB00AEA51A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FE01AA950C5D9BCB00AEA51A /* NSFontPanel.nib in Resources */,
+				FE01AA960C5D9BCB00AEA51A /* NSColorPanel.nib in Resources */,
+				FE01AA970C5D9BCB00AEA51A /* NSToolbarCustomizationPalette.nib in Resources */,
+				FE01AA980C5D9BCB00AEA51A /* NSSplitViewVDimple.tiff in Resources */,
+				FE01AA990C5D9BCB00AEA51A /* NSHighlightedBrowserCellArrow.tiff in Resources */,
+				FE01AA9A0C5D9BCB00AEA51A /* NSRulerMarkerTab.tiff in Resources */,
+				FE01AA9B0C5D9BCB00AEA51A /* NSAlertPanelExclamation.tiff in Resources */,
+				FE01AA9C0C5D9BCB00AEA51A /* NSComboBoxCellDown.tiff in Resources */,
+				FE01AA9D0C5D9BCB00AEA51A /* NSRadioButton.tiff in Resources */,
+				FE01AA9E0C5D9BCB00AEA51A /* NSSwitch.tiff in Resources */,
+				FE01AA9F0C5D9BCB00AEA51A /* NSHighlightedSwitch.tiff in Resources */,
+				FE01AAA00C5D9BCB00AEA51A /* NSPopUpButtonCellPopUp.tiff in Resources */,
+				FE01AAA10C5D9BCB00AEA51A /* NSPopUpButtonCellPullDown.tiff in Resources */,
+				FE01AAA20C5D9BCB00AEA51A /* NSHighlightedRadioButton.tiff in Resources */,
+				FE01AAA30C5D9BCB00AEA51A /* NSOutlineViewOpen.tiff in Resources */,
+				FE01AAA40C5D9BCB00AEA51A /* NSSplitViewHDimple.tiff in Resources */,
+				FE01AAA50C5D9BCB00AEA51A /* NSBrowserCellArrow.tiff in Resources */,
+				FE01AAA60C5D9BCB00AEA51A /* NSOutlineViewClosed.tiff in Resources */,
+				FE01AAA70C5D9BCB00AEA51A /* NSMenu.plist in Resources */,
+				FE01AAA80C5D9BCB00AEA51A /* NSColorPickerColorList.nib in Resources */,
+				FE01AAA90C5D9BCB00AEA51A /* NSColorPickerSliders.nib in Resources */,
+				FE01AAAA0C5D9BCB00AEA51A /* NSColorPickerSlidersCMYK.tiff in Resources */,
+				FE01AAAB0C5D9BCB00AEA51A /* NSColorPickerColorList.tiff in Resources */,
+				FE01AAAC0C5D9BCB00AEA51A /* NSColorPickerSlidersHSB.tiff in Resources */,
+				FE01AAAD0C5D9BCB00AEA51A /* NSColorPickerSlidersRGB.tiff in Resources */,
+				FE01AAAE0C5D9BCB00AEA51A /* NSColorPickerSlidersGray.tiff in Resources */,
+				FE01AAAF0C5D9BCB00AEA51A /* NSMenuArrow.tiff in Resources */,
+				FE01AAB00C5D9BCB00AEA51A /* NSMenuViewDoubleRightArrow.tiff in Resources */,
+				FE01AAB10C5D9BCB00AEA51A /* NSMenuViewDoubleRightArrowGray.tiff in Resources */,
+				FE01AAB20C5D9BCB00AEA51A /* StandardKeyBindings.keybindings in Resources */,
+				FE01AAB30C5D9BCB00AEA51A /* NSToolbarShowFontsItem.tiff in Resources */,
+				FE01AAB40C5D9BCB00AEA51A /* NSToolbarCustomizeToolbarItem.tiff in Resources */,
+				FE01AAB50C5D9BCB00AEA51A /* NSToolbarShowColorsItem.tiff in Resources */,
+				FE01AAB60C5D9BCB00AEA51A /* NSToolbarPrintItem.tiff in Resources */,
+				FE01AAB70C5D9BCB00AEA51A /* NSButtonCell_disclosure_highlighted.tif in Resources */,
+				FE01AAB80C5D9BCB00AEA51A /* NSButtonCell_disclosure_normal.tif in Resources */,
+				FE01AAB90C5D9BCB00AEA51A /* NSButtonCell_disclosure_selected.tif in Resources */,
+				FE01AABA0C5D9BCB00AEA51A /* defaultBindingOptions.plist in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXRezBuildPhase section */
 		6E2B53200976074C00DA0954 /* Rez */ = {
+			isa = PBXRezBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FE01AABD0C5D9BCB00AEA51A /* Rez */ = {
 			isa = PBXRezBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -3254,6 +4393,333 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		FE01A9530C5D9BCB00AEA51A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FE01A9540C5D9BCB00AEA51A /* NSActionCell.m in Sources */,
+				FE01A9550C5D9BCB00AEA51A /* NSAlertPanel.m in Sources */,
+				FE01A9560C5D9BCB00AEA51A /* NSApplication.m in Sources */,
+				FE01A9570C5D9BCB00AEA51A /* NSAttributedString.m in Sources */,
+				FE01A9580C5D9BCB00AEA51A /* NSBitmapImageRep.m in Sources */,
+				FE01A9590C5D9BCB00AEA51A /* NSBox.m in Sources */,
+				FE01A95A0C5D9BCB00AEA51A /* NSBrowser.m in Sources */,
+				FE01A95B0C5D9BCB00AEA51A /* NSBrowserCell.m in Sources */,
+				FE01A95C0C5D9BCB00AEA51A /* NSButton.m in Sources */,
+				FE01A95D0C5D9BCB00AEA51A /* NSButtonCell.m in Sources */,
+				FE01A95E0C5D9BCB00AEA51A /* NSCachedImageRep.m in Sources */,
+				FE01A95F0C5D9BCB00AEA51A /* NSCell.m in Sources */,
+				FE01A9600C5D9BCB00AEA51A /* NSClipView.m in Sources */,
+				FE01A9610C5D9BCB00AEA51A /* NSColorList.m in Sources */,
+				FE01A9620C5D9BCB00AEA51A /* NSColorPanel.m in Sources */,
+				FE01A9630C5D9BCB00AEA51A /* NSColorWell.m in Sources */,
+				FE01A9640C5D9BCB00AEA51A /* NSComboBox.m in Sources */,
+				FE01A9650C5D9BCB00AEA51A /* NSComboBoxCell.m in Sources */,
+				FE01A9660C5D9BCB00AEA51A /* NSComboBoxView.m in Sources */,
+				FE01A9670C5D9BCB00AEA51A /* NSComboBoxWindow.m in Sources */,
+				FE01A9680C5D9BCB00AEA51A /* NSControl.m in Sources */,
+				FE01A9690C5D9BCB00AEA51A /* NSCursor.m in Sources */,
+				FE01A96A0C5D9BCB00AEA51A /* NSCursorRect.m in Sources */,
+				FE01A96B0C5D9BCB00AEA51A /* NSCustomImageRep.m in Sources */,
+				FE01A96C0C5D9BCB00AEA51A /* NSDisplay.m in Sources */,
+				FE01A96D0C5D9BCB00AEA51A /* NSDocument.m in Sources */,
+				FE01A96E0C5D9BCB00AEA51A /* NSDocumentController.m in Sources */,
+				FE01A96F0C5D9BCB00AEA51A /* NSDraggingManager.m in Sources */,
+				FE01A9700C5D9BCB00AEA51A /* NSEPSImageRep.m in Sources */,
+				FE01A9710C5D9BCB00AEA51A /* NSFileWrapper.m in Sources */,
+				FE01A9720C5D9BCB00AEA51A /* NSFont.m in Sources */,
+				FE01A9730C5D9BCB00AEA51A /* NSForm.m in Sources */,
+				FE01A9740C5D9BCB00AEA51A /* NSFormCell.m in Sources */,
+				FE01A9750C5D9BCB00AEA51A /* NSFontFamily.m in Sources */,
+				FE01A9760C5D9BCB00AEA51A /* NSFontManager.m in Sources */,
+				FE01A9770C5D9BCB00AEA51A /* NSFontMetric.m in Sources */,
+				FE01A9780C5D9BCB00AEA51A /* NSFontPanel.m in Sources */,
+				FE01A9790C5D9BCB00AEA51A /* NSFontPanelCell.m in Sources */,
+				FE01A97A0C5D9BCB00AEA51A /* NSFontTypeface.m in Sources */,
+				FE01A97B0C5D9BCB00AEA51A /* NSGraphics.m in Sources */,
+				FE01A97C0C5D9BCB00AEA51A /* NSGraphicsContext.m in Sources */,
+				FE01A97D0C5D9BCB00AEA51A /* NSImage.m in Sources */,
+				FE01A97E0C5D9BCB00AEA51A /* NSImageCell.m in Sources */,
+				FE01A97F0C5D9BCB00AEA51A /* NSImageRep.m in Sources */,
+				FE01A9800C5D9BCB00AEA51A /* NSImageView.m in Sources */,
+				FE01A9810C5D9BCB00AEA51A /* NSInterfaceGraphics.m in Sources */,
+				FE01A9820C5D9BCB00AEA51A /* NSInterfacePart.m in Sources */,
+				FE01A9830C5D9BCB00AEA51A /* NSInterfacePartAttributedString.m in Sources */,
+				FE01A9840C5D9BCB00AEA51A /* NSInterfacePartDisabledAttributedString.m in Sources */,
+				FE01A9850C5D9BCB00AEA51A /* NSInterfaceStyle.m in Sources */,
+				FE01A9860C5D9BCB00AEA51A /* NSMatrix.m in Sources */,
+				FE01A9870C5D9BCB00AEA51A /* NSModalSessionX.m in Sources */,
+				FE01A9880C5D9BCB00AEA51A /* NSOpenPanel.m in Sources */,
+				FE01A9890C5D9BCB00AEA51A /* NSPageLayout.m in Sources */,
+				FE01A98A0C5D9BCB00AEA51A /* NSPanel.m in Sources */,
+				FE01A98B0C5D9BCB00AEA51A /* NSParagraphStyle.m in Sources */,
+				FE01A98C0C5D9BCB00AEA51A /* NSPasteboard.m in Sources */,
+				FE01A98D0C5D9BCB00AEA51A /* NSPopUpButton.m in Sources */,
+				FE01A98E0C5D9BCB00AEA51A /* NSPopUpButtonCell.m in Sources */,
+				FE01A98F0C5D9BCB00AEA51A /* NSPopUpView.m in Sources */,
+				FE01A9900C5D9BCB00AEA51A /* NSPopUpWindow.m in Sources */,
+				FE01A9910C5D9BCB00AEA51A /* NSPrintInfo.m in Sources */,
+				FE01A9920C5D9BCB00AEA51A /* NSPrintOperation.m in Sources */,
+				FE01A9930C5D9BCB00AEA51A /* NSProgressIndicator.m in Sources */,
+				FE01A9940C5D9BCB00AEA51A /* NSResponder.m in Sources */,
+				FE01A9950C5D9BCB00AEA51A /* NSSavePanel.m in Sources */,
+				FE01A9960C5D9BCB00AEA51A /* NSScreen.m in Sources */,
+				FE01A9970C5D9BCB00AEA51A /* NSScroller.m in Sources */,
+				FE01A9980C5D9BCB00AEA51A /* NSScrollView.m in Sources */,
+				FE01A9990C5D9BCB00AEA51A /* NSSecureTextField.m in Sources */,
+				FE01A99A0C5D9BCB00AEA51A /* NSSecureTextFieldCell.m in Sources */,
+				FE01A99B0C5D9BCB00AEA51A /* NSSheetContext.m in Sources */,
+				FE01A99C0C5D9BCB00AEA51A /* NSSlider.m in Sources */,
+				FE01A99D0C5D9BCB00AEA51A /* NSSliderCell.m in Sources */,
+				FE01A99E0C5D9BCB00AEA51A /* NSSplitView.m in Sources */,
+				FE01A99F0C5D9BCB00AEA51A /* NSStepper.m in Sources */,
+				FE01A9A00C5D9BCB00AEA51A /* NSStepperCell.m in Sources */,
+				FE01A9A10C5D9BCB00AEA51A /* NSStringDrawer.m in Sources */,
+				FE01A9A20C5D9BCB00AEA51A /* NSStringDrawing.m in Sources */,
+				FE01A9A30C5D9BCB00AEA51A /* NSTableColumn.m in Sources */,
+				FE01A9A40C5D9BCB00AEA51A /* NSTableCornerView.m in Sources */,
+				FE01A9A50C5D9BCB00AEA51A /* NSTableHeaderCell.m in Sources */,
+				FE01A9A60C5D9BCB00AEA51A /* NSTableHeaderView.m in Sources */,
+				FE01A9A70C5D9BCB00AEA51A /* NSTableView.m in Sources */,
+				FE01A9A80C5D9BCB00AEA51A /* NSTabView.m in Sources */,
+				FE01A9A90C5D9BCB00AEA51A /* NSTabViewItem.m in Sources */,
+				FE01A9AA0C5D9BCB00AEA51A /* NSText.m in Sources */,
+				FE01A9AB0C5D9BCB00AEA51A /* NSTextAttachment.m in Sources */,
+				FE01A9AC0C5D9BCB00AEA51A /* NSTextField.m in Sources */,
+				FE01A9AD0C5D9BCB00AEA51A /* NSTextFieldCell.m in Sources */,
+				FE01A9AE0C5D9BCB00AEA51A /* NSTrackingRect.m in Sources */,
+				FE01A9AF0C5D9BCB00AEA51A /* NSView.m in Sources */,
+				FE01A9B00C5D9BCB00AEA51A /* NSWindow.m in Sources */,
+				FE01A9B10C5D9BCB00AEA51A /* NSWindowBackgroundView.m in Sources */,
+				FE01A9B20C5D9BCB00AEA51A /* NSWindowController.m in Sources */,
+				FE01A9B30C5D9BCB00AEA51A /* NSWorkspace.m in Sources */,
+				FE01A9B40C5D9BCB00AEA51A /* NSOutlineMarkerCell.m in Sources */,
+				FE01A9B50C5D9BCB00AEA51A /* NSOutlineView.m in Sources */,
+				FE01A9B60C5D9BCB00AEA51A /* NSRulerView.m in Sources */,
+				FE01A9B70C5D9BCB00AEA51A /* NSRulerMarker.m in Sources */,
+				FE01A9B80C5D9BCB00AEA51A /* NSToolTipWindow.m in Sources */,
+				FE01A9B90C5D9BCB00AEA51A /* NSWindowAnimationContext.m in Sources */,
+				FE01A9BA0C5D9BCB00AEA51A /* NSMeasurementUnit.m in Sources */,
+				FE01A9BB0C5D9BCB00AEA51A /* NSWindow-Drag.m in Sources */,
+				FE01A9BC0C5D9BCB00AEA51A /* NSNibOutletConnector.m in Sources */,
+				FE01A9BD0C5D9BCB00AEA51A /* NSNibControlConnector.m in Sources */,
+				FE01A9BE0C5D9BCB00AEA51A /* NSNibConnector.m in Sources */,
+				FE01A9BF0C5D9BCB00AEA51A /* NSNibLoading.m in Sources */,
+				FE01A9C00C5D9BCB00AEA51A /* NSNibHelpConnector.m in Sources */,
+				FE01A9C10C5D9BCB00AEA51A /* NSColor.m in Sources */,
+				FE01A9C20C5D9BCB00AEA51A /* NSColor_rgbCalibrated.m in Sources */,
+				FE01A9C30C5D9BCB00AEA51A /* NSColor_whiteCalibrated.m in Sources */,
+				FE01A9C40C5D9BCB00AEA51A /* NSColor_cmykDevice.m in Sources */,
+				FE01A9C50C5D9BCB00AEA51A /* NSColor_rgbDevice.m in Sources */,
+				FE01A9C60C5D9BCB00AEA51A /* NSColor_whiteDevice.m in Sources */,
+				FE01A9C70C5D9BCB00AEA51A /* NSColor_catalog.m in Sources */,
+				FE01A9C80C5D9BCB00AEA51A /* NSTextView.m in Sources */,
+				FE01A9C90C5D9BCB00AEA51A /* NSTextContainer.m in Sources */,
+				FE01A9CA0C5D9BCB00AEA51A /* NSTextStorage.m in Sources */,
+				FE01A9CB0C5D9BCB00AEA51A /* NSTextStorage_concrete.m in Sources */,
+				FE01A9CC0C5D9BCB00AEA51A /* NSLayoutManager.m in Sources */,
+				FE01A9CD0C5D9BCB00AEA51A /* NSTypesetter.m in Sources */,
+				FE01A9CE0C5D9BCB00AEA51A /* NSRangeArray.m in Sources */,
+				FE01A9CF0C5D9BCB00AEA51A /* NSSecureTextView.m in Sources */,
+				FE01A9D00C5D9BCB00AEA51A /* NSSecureLayoutManager.m in Sources */,
+				FE01A9D10C5D9BCB00AEA51A /* NSTextTab.m in Sources */,
+				FE01A9D20C5D9BCB00AEA51A /* NSEvent_mouse.m in Sources */,
+				FE01A9D30C5D9BCB00AEA51A /* NSEvent_keyboard.m in Sources */,
+				FE01A9D40C5D9BCB00AEA51A /* NSEvent_periodic.m in Sources */,
+				FE01A9D50C5D9BCB00AEA51A /* NSEvent.m in Sources */,
+				FE01A9D60C5D9BCB00AEA51A /* NSEvent_CoreGraphics.m in Sources */,
+				FE01A9D70C5D9BCB00AEA51A /* CGContext.m in Sources */,
+				FE01A9D80C5D9BCB00AEA51A /* CGGeometry.m in Sources */,
+				FE01A9D90C5D9BCB00AEA51A /* CGAffineTransform.m in Sources */,
+				FE01A9DA0C5D9BCB00AEA51A /* CGFont.m in Sources */,
+				FE01A9DB0C5D9BCB00AEA51A /* KGGraphicsState.m in Sources */,
+				FE01A9DC0C5D9BCB00AEA51A /* KGRenderingContext.m in Sources */,
+				FE01A9DD0C5D9BCB00AEA51A /* CGWindow.m in Sources */,
+				FE01A9DE0C5D9BCB00AEA51A /* CGEvent.m in Sources */,
+				FE01A9DF0C5D9BCB00AEA51A /* NSColorPicker.m in Sources */,
+				FE01A9E00C5D9BCB00AEA51A /* NSColorPickerColorList.m in Sources */,
+				FE01A9E10C5D9BCB00AEA51A /* NSBrowserCellColorList.m in Sources */,
+				FE01A9E20C5D9BCB00AEA51A /* NSColorPickerSliders.m in Sources */,
+				FE01A9E30C5D9BCB00AEA51A /* Win32Cursor.m in Sources */,
+				FE01A9E40C5D9BCB00AEA51A /* KGRenderingContext_gdi.m in Sources */,
+				FE01A9E50C5D9BCB00AEA51A /* Win32DeviceContextBitmap.m in Sources */,
+				FE01A9E60C5D9BCB00AEA51A /* Win32DeviceContextPrinter.m in Sources */,
+				FE01A9E70C5D9BCB00AEA51A /* Win32DeviceContextWindow.m in Sources */,
+				FE01A9E80C5D9BCB00AEA51A /* Win32Display.m in Sources */,
+				FE01A9E90C5D9BCB00AEA51A /* Win32Event.m in Sources */,
+				FE01A9EA0C5D9BCB00AEA51A /* Win32Font.m in Sources */,
+				FE01A9EB0C5D9BCB00AEA51A /* Win32Region.m in Sources */,
+				FE01A9EC0C5D9BCB00AEA51A /* Win32Window.m in Sources */,
+				FE01A9ED0C5D9BCB00AEA51A /* Win32Application.m in Sources */,
+				FE01A9EE0C5D9BCB00AEA51A /* Win32SplashPanel.m in Sources */,
+				FE01A9EF0C5D9BCB00AEA51A /* Win32RunningCopyPipe.m in Sources */,
+				FE01A9F00C5D9BCB00AEA51A /* Win32EventInputSource.m in Sources */,
+				FE01A9F10C5D9BCB00AEA51A /* Win32Workspace.m in Sources */,
+				FE01A9F20C5D9BCB00AEA51A /* NSSavePanel-Win32.m in Sources */,
+				FE01A9F30C5D9BCB00AEA51A /* NSOpenPanel-Win32.m in Sources */,
+				FE01A9F40C5D9BCB00AEA51A /* NSPlatform-Win32.m in Sources */,
+				FE01A9F50C5D9BCB00AEA51A /* dllmain.m in Sources */,
+				FE01A9F60C5D9BCB00AEA51A /* Win32DraggingManager.m in Sources */,
+				FE01A9F70C5D9BCB00AEA51A /* Win32DragSession.m in Sources */,
+				FE01A9F80C5D9BCB00AEA51A /* Win32DropPasteboard.m in Sources */,
+				FE01A9F90C5D9BCB00AEA51A /* Win32FORMATETC.m in Sources */,
+				FE01A9FA0C5D9BCB00AEA51A /* Win32GeneralPasteboard.m in Sources */,
+				FE01A9FB0C5D9BCB00AEA51A /* Win32IDataObjectClient.m in Sources */,
+				FE01A9FC0C5D9BCB00AEA51A /* Win32IDataObjectServer.m in Sources */,
+				FE01A9FD0C5D9BCB00AEA51A /* Win32IDropSourceServer.m in Sources */,
+				FE01A9FE0C5D9BCB00AEA51A /* Win32IDropTargetServer.m in Sources */,
+				FE01A9FF0C5D9BCB00AEA51A /* Win32IEnumFORMATETCServer.m in Sources */,
+				FE01AA000C5D9BCB00AEA51A /* Win32IStreamClient.m in Sources */,
+				FE01AA010C5D9BCB00AEA51A /* Win32IUnknownServer.m in Sources */,
+				FE01AA020C5D9BCB00AEA51A /* Win32Pasteboard.m in Sources */,
+				FE01AA030C5D9BCB00AEA51A /* Win32TypesAndOwner.m in Sources */,
+				FE01AA040C5D9BCB00AEA51A /* Win32Window-Drag.m in Sources */,
+				FE01AA050C5D9BCB00AEA51A /* NSDragView.m in Sources */,
+				FE01AA060C5D9BCB00AEA51A /* NSOpenGLContext.m in Sources */,
+				FE01AA070C5D9BCB00AEA51A /* NSOpenGLPixelFormat.m in Sources */,
+				FE01AA080C5D9BCB00AEA51A /* NSOpenGLView.m in Sources */,
+				FE01AA090C5D9BCB00AEA51A /* NSRichTextReader.m in Sources */,
+				FE01AA0A0C5D9BCB00AEA51A /* NSRichTextWriter.m in Sources */,
+				FE01AA0B0C5D9BCB00AEA51A /* NSMainMenuView.m in Sources */,
+				FE01AA0C0C5D9BCB00AEA51A /* NSMenu.m in Sources */,
+				FE01AA0D0C5D9BCB00AEA51A /* NSMenuItem.m in Sources */,
+				FE01AA0E0C5D9BCB00AEA51A /* NSMenuView.m in Sources */,
+				FE01AA0F0C5D9BCB00AEA51A /* NSMenuWindow.m in Sources */,
+				FE01AA100C5D9BCB00AEA51A /* NSOverflowMenuView.m in Sources */,
+				FE01AA110C5D9BCB00AEA51A /* NSSubmenuView.m in Sources */,
+				FE01AA120C5D9BCB00AEA51A /* NSKeyBindingManager.m in Sources */,
+				FE01AA130C5D9BCB00AEA51A /* NSKeyBinding.m in Sources */,
+				FE01AA140C5D9BCB00AEA51A /* NSStandardToolbarItems.m in Sources */,
+				FE01AA150C5D9BCB00AEA51A /* NSToolbar.m in Sources */,
+				FE01AA160C5D9BCB00AEA51A /* NSToolbarButton.m in Sources */,
+				FE01AA170C5D9BCB00AEA51A /* NSToolbarItem.m in Sources */,
+				FE01AA180C5D9BCB00AEA51A /* NSToolbarView.m in Sources */,
+				FE01AA190C5D9BCB00AEA51A /* NSToolbarButtonCell.m in Sources */,
+				FE01AA1A0C5D9BCB00AEA51A /* NSToolbarCustomizationPalette.m in Sources */,
+				FE01AA1B0C5D9BCB00AEA51A /* NSToolbarCustomizationView.m in Sources */,
+				FE01AA1C0C5D9BCB00AEA51A /* NSToolbarSeparatorItemView.m in Sources */,
+				FE01AA1D0C5D9BCB00AEA51A /* NSToolbarSeparatorItemCell.m in Sources */,
+				FE01AA1E0C5D9BCB00AEA51A /* NSDrawer.m in Sources */,
+				FE01AA1F0C5D9BCB00AEA51A /* NSDrawerWindow.m in Sources */,
+				FE01AA200C5D9BCB00AEA51A /* NSTIFFImageFileDirectory.m in Sources */,
+				FE01AA210C5D9BCB00AEA51A /* NSTIFFReader.m in Sources */,
+				FE01AA220C5D9BCB00AEA51A /* NSIBObjectData.m in Sources */,
+				FE01AA230C5D9BCB00AEA51A /* NSCustomObject.m in Sources */,
+				FE01AA240C5D9BCB00AEA51A /* NSWindowTemplate.m in Sources */,
+				FE01AA250C5D9BCB00AEA51A /* NSButtonImageSource.m in Sources */,
+				FE01AA260C5D9BCB00AEA51A /* NSClassSwapper.m in Sources */,
+				FE01AA270C5D9BCB00AEA51A /* NSCustomResource.m in Sources */,
+				FE01AA280C5D9BCB00AEA51A /* NSCustomView.m in Sources */,
+				FE01AA290C5D9BCB00AEA51A /* NSNibKeyedUnarchiver.m in Sources */,
+				FE01AA2A0C5D9BCB00AEA51A /* NSTextViewSharedData.m in Sources */,
+				FE01AA2B0C5D9BCB00AEA51A /* NSMutableAttributedString.m in Sources */,
+				FE01AA2C0C5D9BCB00AEA51A /* NSMutableParagraphStyle.m in Sources */,
+				FE01AA2D0C5D9BCB00AEA51A /* NSAlert.m in Sources */,
+				FE01AA2E0C5D9BCB00AEA51A /* NSArrayController.m in Sources */,
+				FE01AA2F0C5D9BCB00AEA51A /* NSBezierPath.m in Sources */,
+				FE01AA300C5D9BCB00AEA51A /* NSColorSpace.m in Sources */,
+				FE01AA310C5D9BCB00AEA51A /* NSController.m in Sources */,
+				FE01AA320C5D9BCB00AEA51A /* NSObjectController.m in Sources */,
+				FE01AA330C5D9BCB00AEA51A /* NSTreeController.m in Sources */,
+				FE01AA340C5D9BCB00AEA51A /* NSUserDefaultsController.m in Sources */,
+				FE01AA350C5D9BCB00AEA51A /* NSGlyphGenerator.m in Sources */,
+				FE01AA360C5D9BCB00AEA51A /* NSGlyphInfo.m in Sources */,
+				FE01AA370C5D9BCB00AEA51A /* NSHelpManager.m in Sources */,
+				FE01AA380C5D9BCB00AEA51A /* NSLevelIndicator.m in Sources */,
+				FE01AA390C5D9BCB00AEA51A /* NSLevelIndicatorCell.m in Sources */,
+				FE01AA3A0C5D9BCB00AEA51A /* NSNib.m in Sources */,
+				FE01AA3B0C5D9BCB00AEA51A /* NSPDFImageRep.m in Sources */,
+				FE01AA3C0C5D9BCB00AEA51A /* NSPrinter.m in Sources */,
+				FE01AA3D0C5D9BCB00AEA51A /* NSSearchField.m in Sources */,
+				FE01AA3E0C5D9BCB00AEA51A /* NSSearchFieldCell.m in Sources */,
+				FE01AA3F0C5D9BCB00AEA51A /* NSSegmentedCell.m in Sources */,
+				FE01AA400C5D9BCB00AEA51A /* NSSegmentedControl.m in Sources */,
+				FE01AA410C5D9BCB00AEA51A /* NSShadow.m in Sources */,
+				FE01AA420C5D9BCB00AEA51A /* NSSound.m in Sources */,
+				FE01AA430C5D9BCB00AEA51A /* NSSpellChecker.m in Sources */,
+				FE01AA440C5D9BCB00AEA51A /* NSStatusBar.m in Sources */,
+				FE01AA450C5D9BCB00AEA51A /* NSStatusItem.m in Sources */,
+				FE01AA460C5D9BCB00AEA51A /* NSTokenField.m in Sources */,
+				FE01AA470C5D9BCB00AEA51A /* NSTokenFieldCell.m in Sources */,
+				FE01AA480C5D9BCB00AEA51A /* KGColorSpace.m in Sources */,
+				FE01AA490C5D9BCB00AEA51A /* KGContext.m in Sources */,
+				FE01AA4A0C5D9BCB00AEA51A /* KGDataProvider.m in Sources */,
+				FE01AA4B0C5D9BCB00AEA51A /* KGFunction.m in Sources */,
+				FE01AA4C0C5D9BCB00AEA51A /* KGImage.m in Sources */,
+				FE01AA4D0C5D9BCB00AEA51A /* KGPDFArray.m in Sources */,
+				FE01AA4E0C5D9BCB00AEA51A /* KGPDFContentStream.m in Sources */,
+				FE01AA4F0C5D9BCB00AEA51A /* KGPDFDictionary.m in Sources */,
+				FE01AA500C5D9BCB00AEA51A /* KGPDFDocument.m in Sources */,
+				FE01AA510C5D9BCB00AEA51A /* KGPDFFilter.m in Sources */,
+				FE01AA520C5D9BCB00AEA51A /* KGPDFFunction_Type2.m in Sources */,
+				FE01AA530C5D9BCB00AEA51A /* KGPDFFunction_Type3.m in Sources */,
+				FE01AA540C5D9BCB00AEA51A /* KGPDFObject_Boolean.m in Sources */,
+				FE01AA550C5D9BCB00AEA51A /* KGPDFObject_const.m in Sources */,
+				FE01AA560C5D9BCB00AEA51A /* KGPDFObject_identifier.m in Sources */,
+				FE01AA570C5D9BCB00AEA51A /* KGPDFObject_Integer.m in Sources */,
+				FE01AA580C5D9BCB00AEA51A /* KGPDFObject_Name.m in Sources */,
+				FE01AA590C5D9BCB00AEA51A /* KGPDFObject_R.m in Sources */,
+				FE01AA5A0C5D9BCB00AEA51A /* KGPDFObject_Real.m in Sources */,
+				FE01AA5B0C5D9BCB00AEA51A /* KGPDFObject.m in Sources */,
+				FE01AA5C0C5D9BCB00AEA51A /* KGPDFOperators.m in Sources */,
+				FE01AA5D0C5D9BCB00AEA51A /* KGPDFOperatorTable.m in Sources */,
+				FE01AA5E0C5D9BCB00AEA51A /* KGPDFPage.m in Sources */,
+				FE01AA5F0C5D9BCB00AEA51A /* KGPDFScanner.m in Sources */,
+				FE01AA600C5D9BCB00AEA51A /* KGPDFStream.m in Sources */,
+				FE01AA610C5D9BCB00AEA51A /* KGPDFString.m in Sources */,
+				FE01AA620C5D9BCB00AEA51A /* KGPDFxref.m in Sources */,
+				FE01AA630C5D9BCB00AEA51A /* KGPDFxrefEntry.m in Sources */,
+				FE01AA640C5D9BCB00AEA51A /* KGShading.m in Sources */,
+				FE01AA650C5D9BCB00AEA51A /* CGImage.m in Sources */,
+				FE01AA660C5D9BCB00AEA51A /* CGColor.m in Sources */,
+				FE01AA670C5D9BCB00AEA51A /* CGColorSpace.m in Sources */,
+				FE01AA680C5D9BCB00AEA51A /* CGDataProvider.m in Sources */,
+				FE01AA690C5D9BCB00AEA51A /* CGFunction.m in Sources */,
+				FE01AA6A0C5D9BCB00AEA51A /* CGLayer.m in Sources */,
+				FE01AA6B0C5D9BCB00AEA51A /* CGPath.m in Sources */,
+				FE01AA6C0C5D9BCB00AEA51A /* CGPattern.m in Sources */,
+				FE01AA6D0C5D9BCB00AEA51A /* CGShading.m in Sources */,
+				FE01AA6E0C5D9BCB00AEA51A /* KGColor.m in Sources */,
+				FE01AA6F0C5D9BCB00AEA51A /* KGLayer.m in Sources */,
+				FE01AA700C5D9BCB00AEA51A /* KGPath.m in Sources */,
+				FE01AA710C5D9BCB00AEA51A /* KGPattern.m in Sources */,
+				FE01AA720C5D9BCB00AEA51A /* KGImageSource_JPEG.m in Sources */,
+				FE01AA730C5D9BCB00AEA51A /* KGImageSource_PNG.m in Sources */,
+				FE01AA740C5D9BCB00AEA51A /* KGImageSource_TIFF.m in Sources */,
+				FE01AA750C5D9BCB00AEA51A /* KGImageSource.m in Sources */,
+				FE01AA760C5D9BCB00AEA51A /* CGBitmapContext.m in Sources */,
+				FE01AA770C5D9BCB00AEA51A /* KGBitmapContext.m in Sources */,
+				FE01AA780C5D9BCB00AEA51A /* KGMutablePath.m in Sources */,
+				FE01AA790C5D9BCB00AEA51A /* CGPDFPage.m in Sources */,
+				FE01AA7A0C5D9BCB00AEA51A /* NSOpenGLPixelBuffer.m in Sources */,
+				FE01AA7B0C5D9BCB00AEA51A /* NSDatePicker.m in Sources */,
+				FE01AA7C0C5D9BCB00AEA51A /* NSDatePickerCell.m in Sources */,
+				FE01AA7D0C5D9BCB00AEA51A /* NSGraphicsStyle_uxtheme.m in Sources */,
+				FE01AA7E0C5D9BCB00AEA51A /* NSGraphicsStyle.m in Sources */,
+				FE01AA7F0C5D9BCB00AEA51A /* NSNibBindingConnector.m in Sources */,
+				FE01AA800C5D9BCB00AEA51A /* NSBinder.m in Sources */,
+				FE01AA810C5D9BCB00AEA51A /* NSKVOBinder.m in Sources */,
+				FE01AA820C5D9BCB00AEA51A /* NSObject+BindingSupport.m in Sources */,
+				FE01AA830C5D9BCB00AEA51A /* NSAnimation.m in Sources */,
+				FE01AA840C5D9BCB00AEA51A /* NSViewAnimation.m in Sources */,
+				FE01AA850C5D9BCB00AEA51A /* NSFontDescriptor.m in Sources */,
+				FE01AA860C5D9BCB00AEA51A /* NSSegment.m in Sources */,
+				FE01AA870C5D9BCB00AEA51A /* NSTextBlock.m in Sources */,
+				FE01AA880C5D9BCB00AEA51A /* NSTextTable.m in Sources */,
+				FE01AA890C5D9BCB00AEA51A /* NSTextTableBlock.m in Sources */,
+				FE01AA8A0C5D9BCB00AEA51A /* NSArrayControllerSelectionProxy.m in Sources */,
+				FE01AA8B0C5D9BCB00AEA51A /* NSTableColumnBinder.m in Sources */,
+				FE01AA8C0C5D9BCB00AEA51A /* NSAffineTransform.m in Sources */,
+				FE01AA8D0C5D9BCB00AEA51A /* NSTextList.m in Sources */,
+				FE01AA8E0C5D9BCB00AEA51A /* NSTextAttachmentCell.m in Sources */,
+				FE01AA8F0C5D9BCB00AEA51A /* NSTypesetter_concrete.m in Sources */,
+				FE01AA900C5D9BCB00AEA51A /* KGFont.m in Sources */,
+				FE01AA910C5D9BCB00AEA51A /* KGDeviceContext.m in Sources */,
+				FE01AA920C5D9BCB00AEA51A /* KGDeviceContext_gdi.m in Sources */,
+				FE01AA930C5D9BCB00AEA51A /* NSPrintPanel.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -3261,6 +4727,11 @@
 			isa = PBXTargetDependency;
 			name = "Foundation-Windows-i386-gcc-4.0.3-mingw";
 			targetProxy = 6E46FECB0A2D2DD8004CD27E /* PBXContainerItemProxy */;
+		};
+		FE01AACC0C5D9BE700AEA51A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "Foundation-Windows-i386";
+			targetProxy = FE01AACB0C5D9BE700AEA51A /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -3324,10 +4795,43 @@
 			};
 			name = Deployment;
 		};
+		FE01AAC00C5D9BCB00AEA51A /* Deployment */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = i386;
+				DEPLOYMENT_LOCATION = YES;
+				DSTROOT = /;
+				EXECUTABLE_SUFFIX = .1.0.dll;
+				FRAMEWORK_SEARCH_PATHS = /Developer/Cocotron/1.0/Windows/i386/Frameworks;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = "";
+				INFOPLIST_FILE = Info.plist;
+				INSTALL_PATH = /Developer/Cocotron/1.0/Windows/i386/Frameworks;
+				OTHER_CFLAGS = (
+					"-DAPPKIT_INSIDE_BUILD",
+					"-D__LITTLE_ENDIAN__",
+				);
+				OTHER_LDFLAGS = (
+					"-shared",
+					"-lole32",
+					"-lgdi32",
+					"-luser32",
+					"-lcomdlg32",
+					"-Wl,--enable-auto-import",
+					"-Wl,--export-all-symbols",
+					"-Wl,--out-implib,$TARGET_BUILD_DIR/AppKit.framework/libAppKit.a",
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = AppKit;
+				SYMROOT = /Developer/Cocotron/1.0/build/AppKit/Windows;
+			};
+			name = Deployment;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		6E2B57710976075500DA0954 /* Build configuration list for PBXNativeTarget "AppKit-Windows-i386" */ = {
+		6E2B57710976075500DA0954 /* Build configuration list for PBXNativeTarget "AppKit-Windows-i386-gcc-4.0.3" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				6E2B57730976075500DA0954 /* Deployment */,
@@ -3339,6 +4843,14 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				6E2B57760976075500DA0954 /* Deployment */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Deployment;
+		};
+		FE01AABF0C5D9BCB00AEA51A /* Build configuration list for PBXNativeTarget "AppKit-Windows-i386" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FE01AAC00C5D9BCB00AEA51A /* Deployment */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Deployment;

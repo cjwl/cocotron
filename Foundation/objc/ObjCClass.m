@@ -126,17 +126,9 @@ void OBJCRegisterClass(Class class) {
 }
 
 static void OBJCAppendMethodListToClass(Class class, OBJCMethodList *methodList) {
-
-   if(class->methodLists==NULL)
-    class->methodLists=methodList;
-   else {
-    OBJCMethodList *node;
-
-    for(node=class->methodLists;node->next!=NULL;node=node->next)
-     ;
-    node->next=methodList;
-   }
-
+   methodList->next=class->methodLists;
+   class->methodLists=methodList;
+   
    OBJCRegisterSelectorsInMethodList(methodList);
 }
 

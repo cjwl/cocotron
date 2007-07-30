@@ -33,7 +33,7 @@ FOUNDATION_EXPORT void      NSZoneFree(NSZone *zone,void *pointer);
 FOUNDATION_EXPORT void     *NSZoneMalloc(NSZone *zone,unsigned size);
 FOUNDATION_EXPORT void     *NSZoneRealloc(NSZone *zone,void *pointer,unsigned size);
 
-FOUNDATION_EXPORT id   NSAllocateObject(Class class,unsigned extraBytes,NSZone *zone);
+FOUNDATION_EXPORT id   NSAllocateObject(Class aClass,unsigned extraBytes,NSZone *zone);
 FOUNDATION_EXPORT void NSDeallocateObject(id object);
 FOUNDATION_EXPORT id   NSCopyObject(id object,unsigned extraBytes,NSZone *zone);
 FOUNDATION_EXPORT BOOL NSShouldRetainWithZone(id object,NSZone *zone);

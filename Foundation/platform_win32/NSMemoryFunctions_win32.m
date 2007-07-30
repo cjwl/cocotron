@@ -75,7 +75,7 @@ NSThread *NSPlatformCurrentThread() {
    return thread;
 }
 
-NSObject *NSAllocateObject(Class class,unsigned extraBytes,NSZone *zone) {
+id NSAllocateObject(Class class,unsigned extraBytes,NSZone *zone) {
    id result;
 
    if(class==Nil)
@@ -96,7 +96,7 @@ NSObject *NSAllocateObject(Class class,unsigned extraBytes,NSZone *zone) {
     return result;
 }
 
-void NSDeallocateObject(NSObject *object) {
+void NSDeallocateObject(id object) {
    if(NSZombieEnabled)
     NSRegisterZombie(object);
    else {

@@ -8,14 +8,30 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <stdlib.h>
 
+#ifdef __cplusplus
+
 #if defined(__WIN32__)
 #if defined(FOUNDATION_INSIDE_BUILD)
-#define FOUNDATION_EXPORT __declspec(dllexport)
+#define FOUNDATION_EXPORT extern "C" __declspec(dllexport)
 #else
-#define FOUNDATION_EXPORT __declspec(dllimport)
+#define FOUNDATION_EXPORT extern "C" __declspec(dllimport) 
+#endif
+#else
+#define FOUNDATION_EXPORT extern "C"
+#endif
+
+#else
+
+#if defined(__WIN32__)
+#if defined(FOUNDATION_INSIDE_BUILD)
+#define FOUNDATION_EXPORT __declspec(dllexport) extern
+#else
+#define FOUNDATION_EXPORT __declspec(dllimport) extern
 #endif
 #else
 #define FOUNDATION_EXPORT extern
+#endif
+
 #endif
 
 #import <objc/objc.h>

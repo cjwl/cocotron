@@ -41,10 +41,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -delegate;
 -(void)setDelegate:delegate;
 
-+(void)setClass:(Class)class forClassName:(NSString *)className;
++(void)setClass:(Class)aClass forClassName:(NSString *)className;
 +(Class)classForClassName:(NSString *)className;
 
--(void)setClass:(Class)class forClassName:(NSString *)className;
+-(void)setClass:(Class)aClass forClassName:(NSString *)className;
 -(Class)classForClassName:(NSString *)className;
 
 @end

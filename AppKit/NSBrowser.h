@@ -79,8 +79,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)setDelegate:delegate;
 -(void)setDoubleAction:(SEL)action;
--(void)setMatrixClass:(Class)class;
--(void)setCellClass:(Class)class;
+-(void)setMatrixClass:(Class)aClass;
+-(void)setCellClass:(Class)aClass;
 -(void)setMaxVisibleColumns:(int)count;
 -(void)setHasHorizontalScroller:(BOOL)flag;
 -(void)setSeparatesColumns:(BOOL)flag;

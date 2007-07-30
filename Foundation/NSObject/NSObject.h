@@ -27,8 +27,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(unsigned)hash;
 -(BOOL)isEqual:object;
 
--(BOOL)isKindOfClass:(Class)class;
--(BOOL)isMemberOfClass:(Class)class;
+-(BOOL)isKindOfClass:(Class)aClass;
+-(BOOL)isMemberOfClass:(Class)aClass;
 -(BOOL)conformsToProtocol:(Protocol *)protocol;
 
 -(BOOL)respondsToSelector:(SEL)selector;

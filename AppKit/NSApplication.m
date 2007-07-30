@@ -39,7 +39,9 @@ id NSApp=nil;
 
 +(void)initialize {
    if(self==[NSApplication class]){
+#ifdef WINDOWS
     Win32UseRunningCopyOfApplication();
+#endif
    }
 }
 
@@ -685,7 +687,7 @@ id NSApp=nil;
 @end
 
 int NSApplicationMain(int argc, const char *argv[]) {
-   NSInitializeProcess(__argc,(const char **)__argv);
+   NSInitializeProcess(argc,(const char **)argv);
    {
     NSAutoreleasePool *pool=[NSAutoreleasePool new];
     NSBundle *bundle=[NSBundle mainBundle];

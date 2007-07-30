@@ -20,8 +20,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 +(NSArray *)registeredImageRepClasses;
-+(void)registerImageRepClass:(Class)class;
-+(void)unregisterImageRepClass:(Class)class;
++(void)registerImageRepClass:(Class)aClass;
++(void)unregisterImageRepClass:(Class)aClass;
 +(Class)imageRepClassForFileType:(NSString *)type;
 
 +(NSArray *)imageUnfilteredFileTypes;

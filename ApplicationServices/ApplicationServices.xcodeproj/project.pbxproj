@@ -7,10 +7,19 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		FE01AAE60C5D9BF900AEA51A /* ApplicationServices.h in Headers */ = {isa = PBXBuildFile; fileRef = FE32179C0BB41C65004F000A /* ApplicationServices.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE32179D0BB41C65004F000A /* ApplicationServices.h in Headers */ = {isa = PBXBuildFile; fileRef = FE32179C0BB41C65004F000A /* ApplicationServices.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
+		FE01AAEA0C5D9BF900AEA51A /* PBXBuildRule */ = {
+			isa = PBXBuildRule;
+			compilerSpec = org.cocotron.1.0.windows.i386.gcc.default;
+			fileType = sourcecode.c;
+			isEditable = 1;
+			outputFiles = (
+			);
+		};
 		FE6DC4440BA9ACDE0082AC66 /* PBXBuildRule */ = {
 			isa = PBXBuildRule;
 			compilerSpec = org.cocotron.1.0.windows.i386.gcc.4_0_3;
@@ -22,6 +31,20 @@
 /* End PBXBuildRule section */
 
 /* Begin PBXContainerItemProxy section */
+		FE01AAF00C5D9BF900AEA51A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FE3217E10BB41D2D004F000A /* AppKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = FE01AAC10C5D9BCB00AEA51A;
+			remoteInfo = "AppKit-Windows-i386";
+		};
+		FE01AAF20C5D9C1500AEA51A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FE3217E10BB41D2D004F000A /* AppKit.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = FE01A8070C5D9BCB00AEA51A;
+			remoteInfo = "AppKit-Windows-i386";
+		};
 		FE3217E50BB41D2D004F000A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FE3217E10BB41D2D004F000A /* AppKit.xcodeproj */;
@@ -43,12 +66,20 @@
 		0867D6A5FE840307C02AAC07 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		8DC2EF5A0486A6940098B216 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		8DC2EF5B0486A6940098B216 /* ApplicationServices.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ApplicationServices.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		FE01AAED0C5D9BF900AEA51A /* ApplicationServices.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ApplicationServices.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FE32179C0BB41C65004F000A /* ApplicationServices.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = ApplicationServices.h; sourceTree = "<group>"; };
 		FE3217E10BB41D2D004F000A /* AppKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AppKit.xcodeproj; path = ../AppKit/AppKit.xcodeproj; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		8DC2EF560486A6940098B216 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FE01AAE90C5D9BF900AEA51A /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -62,6 +93,7 @@
 			isa = PBXGroup;
 			children = (
 				8DC2EF5B0486A6940098B216 /* ApplicationServices.framework */,
+				FE01AAED0C5D9BF900AEA51A /* ApplicationServices.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -131,6 +163,7 @@
 			isa = PBXGroup;
 			children = (
 				FE3217E60BB41D2D004F000A /* AppKit.framework */,
+				FE01AAF10C5D9BF900AEA51A /* AppKit.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -146,12 +179,20 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		FE01AAE50C5D9BF900AEA51A /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FE01AAE60C5D9BF900AEA51A /* ApplicationServices.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		8DC2EF4F0486A6940098B216 /* ApplicationServices-Windows-i386 */ = {
+		8DC2EF4F0486A6940098B216 /* ApplicationServices-Windows-i386-gcc-4.0.3 */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 1DEB91AD08733DA50010E9CD /* Build configuration list for PBXNativeTarget "ApplicationServices-Windows-i386" */;
+			buildConfigurationList = 1DEB91AD08733DA50010E9CD /* Build configuration list for PBXNativeTarget "ApplicationServices-Windows-i386-gcc-4.0.3" */;
 			buildPhases = (
 				8DC2EF500486A6940098B216 /* Headers */,
 				8DC2EF520486A6940098B216 /* Resources */,
@@ -164,10 +205,31 @@
 			dependencies = (
 				FE3217E80BB41D34004F000A /* PBXTargetDependency */,
 			);
-			name = "ApplicationServices-Windows-i386";
+			name = "ApplicationServices-Windows-i386-gcc-4.0.3";
 			productInstallPath = "$(HOME)/Library/Frameworks";
 			productName = ApplicationServices;
 			productReference = 8DC2EF5B0486A6940098B216 /* ApplicationServices.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		FE01AAE20C5D9BF900AEA51A /* ApplicationServices-Windows-i386 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FE01AAEB0C5D9BF900AEA51A /* Build configuration list for PBXNativeTarget "ApplicationServices-Windows-i386" */;
+			buildPhases = (
+				FE01AAE50C5D9BF900AEA51A /* Headers */,
+				FE01AAE70C5D9BF900AEA51A /* Resources */,
+				FE01AAE80C5D9BF900AEA51A /* Sources */,
+				FE01AAE90C5D9BF900AEA51A /* Frameworks */,
+			);
+			buildRules = (
+				FE01AAEA0C5D9BF900AEA51A /* PBXBuildRule */,
+			);
+			dependencies = (
+				FE01AAF30C5D9C1500AEA51A /* PBXTargetDependency */,
+			);
+			name = "ApplicationServices-Windows-i386";
+			productInstallPath = "$(HOME)/Library/Frameworks";
+			productName = ApplicationServices;
+			productReference = FE01AAED0C5D9BF900AEA51A /* ApplicationServices.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 /* End PBXNativeTarget section */
@@ -187,12 +249,20 @@
 				},
 			);
 			targets = (
-				8DC2EF4F0486A6940098B216 /* ApplicationServices-Windows-i386 */,
+				8DC2EF4F0486A6940098B216 /* ApplicationServices-Windows-i386-gcc-4.0.3 */,
+				FE01AAE20C5D9BF900AEA51A /* ApplicationServices-Windows-i386 */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		FE01AAF10C5D9BF900AEA51A /* AppKit.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = AppKit.framework;
+			remoteRef = FE01AAF00C5D9BF900AEA51A /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		FE3217E60BB41D2D004F000A /* AppKit.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
@@ -210,6 +280,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		FE01AAE70C5D9BF900AEA51A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -220,9 +297,21 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		FE01AAE80C5D9BF900AEA51A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		FE01AAF30C5D9C1500AEA51A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "AppKit-Windows-i386";
+			targetProxy = FE01AAF20C5D9C1500AEA51A /* PBXContainerItemProxy */;
+		};
 		FE3217E80BB41D34004F000A /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = "AppKit-Windows-i386";
@@ -269,10 +358,38 @@
 			};
 			name = Deployment;
 		};
+		FE01AAEC0C5D9BF900AEA51A /* Deployment */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = i386;
+				DEPLOYMENT_LOCATION = YES;
+				DSTROOT = /;
+				EXECUTABLE_SUFFIX = .1.0.dll;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = "";
+				INFOPLIST_FILE = Info.plist;
+				INSTALL_PATH = /Developer/Cocotron/1.0/Windows/i386/Frameworks;
+				OTHER_CFLAGS = (
+					"-DAPPLICATIONSERVICES_INSIDE_BUILD",
+					"-D__LITTLE_ENDIAN__",
+				);
+				OTHER_LDFLAGS = (
+					"-shared",
+					"-Wl,--enable-auto-import",
+					"-Wl,--export-all-symbols",
+					"-Wl,--out-implib,$TARGET_BUILD_DIR/$(PRODUCT_NAME).framework/lib$(PRODUCT_NAME).a",
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = ApplicationServices;
+				SYMROOT = /Developer/Cocotron/1.0/build/ApplicationServices/Windows/i386;
+			};
+			name = Deployment;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		1DEB91AD08733DA50010E9CD /* Build configuration list for PBXNativeTarget "ApplicationServices-Windows-i386" */ = {
+		1DEB91AD08733DA50010E9CD /* Build configuration list for PBXNativeTarget "ApplicationServices-Windows-i386-gcc-4.0.3" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				1DEB91AF08733DA50010E9CD /* Deployment */,
@@ -284,6 +401,14 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				1DEB91B308733DA50010E9CD /* Deployment */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Deployment;
+		};
+		FE01AAEB0C5D9BF900AEA51A /* Build configuration list for PBXNativeTarget "ApplicationServices-Windows-i386" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FE01AAEC0C5D9BF900AEA51A /* Deployment */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Deployment;

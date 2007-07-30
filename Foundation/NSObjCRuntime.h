@@ -33,7 +33,7 @@ FOUNDATION_EXPORT SEL NSSelectorFromString(NSString *selectorName);
 FOUNDATION_EXPORT NSString *NSStringFromSelector(SEL selector);
 
 FOUNDATION_EXPORT Class NSClassFromString(NSString *className);
-FOUNDATION_EXPORT NSString *NSStringFromClass(Class class);
+FOUNDATION_EXPORT NSString *NSStringFromClass(Class aClass);
 
 
 

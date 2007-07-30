@@ -25,7 +25,7 @@ typedef int NSXMLDocumentContentKind;
    NSString     *_uri;
 }
 
-+(Class)replacementClassForClass:(Class)class;
++(Class)replacementClassForClass:(Class)aClass;
 
 -initWithRootElement:(NSXMLElement *)element;
 -initWithXMLString:(NSString *)string options:(unsigned)options error:(NSError **)error;
