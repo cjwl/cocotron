@@ -151,7 +151,7 @@ FOUNDATION_EXPORT const unsigned NSMaximumStringLength;
 @end
 
 // only needed for Darwin ppc
-extern void *_NSConstantStringClassReference;
+extern struct objc_class _NSConstantStringClassReference;
 
 #import <Foundation/NSMutableString.h>
 

@@ -1761,6 +1761,8 @@
 		FE19351A0B5D449E00FB74CC /* NSAssertionHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = FE1935160B5D449E00FB74CC /* NSAssertionHandler.m */; };
 		FE19351B0B5D449E00FB74CC /* NSAssertionHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = FE1935150B5D449E00FB74CC /* NSAssertionHandler.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE19351C0B5D449E00FB74CC /* NSAssertionHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = FE1935160B5D449E00FB74CC /* NSAssertionHandler.m */; };
+		FE2705C60C5EF3D60004AB37 /* OBJCInitializeProcess_Darwin.m in Sources */ = {isa = PBXBuildFile; fileRef = FE2705C50C5EF3D60004AB37 /* OBJCInitializeProcess_Darwin.m */; };
+		FE2705C70C5EF3D60004AB37 /* OBJCInitializeProcess_Darwin.m in Sources */ = {isa = PBXBuildFile; fileRef = FE2705C50C5EF3D60004AB37 /* OBJCInitializeProcess_Darwin.m */; };
 		FE35CAED0B4AB85800FE7AB3 /* objc.m in Sources */ = {isa = PBXBuildFile; fileRef = FE35CAEC0B4AB85800FE7AB3 /* objc.m */; };
 		FE35CAEE0B4AB85800FE7AB3 /* objc.m in Sources */ = {isa = PBXBuildFile; fileRef = FE35CAEC0B4AB85800FE7AB3 /* objc.m */; };
 		FE35CAEF0B4AB85800FE7AB3 /* objc.m in Sources */ = {isa = PBXBuildFile; fileRef = FE35CAEC0B4AB85800FE7AB3 /* objc.m */; };
@@ -4186,6 +4188,7 @@
 		FE01A7EC0C5D9B6900AEA51A /* Foundation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Foundation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FE1935150B5D449E00FB74CC /* NSAssertionHandler.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSAssertionHandler.h; sourceTree = "<group>"; };
 		FE1935160B5D449E00FB74CC /* NSAssertionHandler.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSAssertionHandler.m; sourceTree = "<group>"; };
+		FE2705C50C5EF3D60004AB37 /* OBJCInitializeProcess_Darwin.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = OBJCInitializeProcess_Darwin.m; sourceTree = "<group>"; };
 		FE35CAEC0B4AB85800FE7AB3 /* objc.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = objc.m; sourceTree = "<group>"; };
 		FE35CBD70B4AD47400FE7AB3 /* NSSocket.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSSocket.h; sourceTree = "<group>"; };
 		FE35CBD80B4AD47400FE7AB3 /* NSSocket.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSSocket.m; sourceTree = "<group>"; };
@@ -5068,6 +5071,7 @@
 		6E28034609747A2500EC542B /* objc */ = {
 			isa = PBXGroup;
 			children = (
+				FE2705C50C5EF3D60004AB37 /* OBJCInitializeProcess_Darwin.m */,
 				FED70D610C3C0973000CBE5B /* objc_msgSend-darwin-ppc.s */,
 				FED70C8E0C3BFFBE000CBE5B /* objc_msgSend-darwin-i386.s */,
 				FEA36F250C24C57000025A9C /* objc_cache.h */,
@@ -9105,6 +9109,7 @@
 				FED70B060C3B4255000CBE5B /* NSPlatform_darwin.m in Sources */,
 				FED70B080C3B4255000CBE5B /* NSTask_darwin.m in Sources */,
 				FED70C8F0C3BFFBE000CBE5B /* objc_msgSend-darwin-i386.s in Sources */,
+				FE2705C60C5EF3D60004AB37 /* OBJCInitializeProcess_Darwin.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -9394,6 +9399,7 @@
 				FED70FA20C3C09C7000CBE5B /* NSPlatform_darwin.m in Sources */,
 				FED70FA30C3C09C7000CBE5B /* NSTask_darwin.m in Sources */,
 				FED70FB90C3C0A00000CBE5B /* objc_msgSend-darwin-ppc.s in Sources */,
+				FE2705C70C5EF3D60004AB37 /* OBJCInitializeProcess_Darwin.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -9611,7 +9617,7 @@
 				FRAMEWORK_SEARCH_PATHS = /Developer/Cocotron/1.0/Darwin/i386/Frameworks;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
-				INFOPLIST_FILE = /Users/cjwl/Cocotron/1.0/r31/Foundation/Info.plist;
+				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = /Developer/Cocotron/1.0/Darwin/i386/Frameworks;
 				OTHER_CFLAGS = (
 					"-DFOUNDATION_INSIDE_BUILD",
@@ -9635,7 +9641,7 @@
 				FRAMEWORK_SEARCH_PATHS = /Developer/Cocotron/1.0/Darwin/ppc/Frameworks;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
-				INFOPLIST_FILE = /Users/cjwl/Cocotron/1.0/r31/Foundation/Info.plist;
+				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = /Developer/Cocotron/1.0/Darwin/ppc/Frameworks;
 				OTHER_CFLAGS = (
 					"-DFOUNDATION_INSIDE_BUILD",

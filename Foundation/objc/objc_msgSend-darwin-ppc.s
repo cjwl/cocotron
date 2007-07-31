@@ -18,6 +18,12 @@ _objc_msgSend:
 	stw r9,128(r1)
 	stw r10,132(r1)
 	bl L_objc_msg_lookup$stub
+   lwz r5,112(r1)
+	lwz r6,116(r1)
+	lwz r7,120(r1)
+	lwz r8,124(r1)
+	lwz r9,128(r1)
+	lwz r10,132(r1)
 	mr r12,r3
 	mr r4,r28
 	mr r3,r29
@@ -44,6 +50,12 @@ _objc_msgSendSuper:
 	stw r9,128(r1)
 	stw r10,132(r1)
 	bl L_objc_msg_lookup_super$stub
+   lwz r5,112(r1)
+	lwz r6,116(r1)
+	lwz r7,120(r1)
+	lwz r8,124(r1)
+	lwz r9,128(r1)
+	lwz r10,132(r1)
 	mr r12,r3
 	mr r4,r28
 	lwz r3,0(r29)
@@ -72,6 +84,11 @@ _objc_msgSend_stret:
 	stw r8,156(r1)
 	stw r10,164(r1)
 	bl L_objc_msg_lookup$stub
+   lwz r9,160(r1)
+	lwz r6,148(r1)
+	lwz r7,152(r1)
+	lwz r8,156(r1)
+	lwz r10,164(r1)
 	mr r4,r28
 	mr r12,r3
 	mr r5,r27

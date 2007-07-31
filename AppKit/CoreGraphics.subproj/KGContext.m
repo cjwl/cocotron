@@ -175,7 +175,7 @@ static inline KGGraphicsState *currentState(KGContext *self){
 }
 
 -(CGAffineTransform)ctm {
-   [currentState(self) ctm];
+   return [currentState(self) ctm];
 }
 
 -(NSRect)clipBoundingBox {

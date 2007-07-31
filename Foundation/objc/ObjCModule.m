@@ -122,6 +122,9 @@ void OBJCInitializeProcess(int argc,const char *argv[]) {
       strncat(pathOfExecutable, argv0, PATH_MAX);
     }
    }
+#ifdef __APPLE__
+   OBJCInitializeProcess_Darwin();
+#endif
 }
 #endif
 

@@ -32,11 +32,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSKeyedUnarchiver.h>
 #import <Foundation/NSStringHashing.h>
 #import <limits.h>
+#import <objc/objc-class.h>
 
 const unsigned NSMaximumStringLength=INT_MAX-1;
 
 // only needed for Darwin ppc
-void *_NSConstantStringClassReference;
+struct objc_class _NSConstantStringClassReference;
 // only needed for Darwin i386
 int __CFConstantStringClassReference[1];
 
