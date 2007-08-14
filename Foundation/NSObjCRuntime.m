@@ -163,9 +163,17 @@ const char *NSGetSizeAndAlignment(const char *type,unsigned *size,
       break;
 
      case '[':
-      NSUnimplementedFunction();
-      quit=YES;
-      break;
+    {
+        unsigned subsize;
+        type++;
+        int len = atoi(type);
+        while (isdigit(*type))
+            type++;
+        type=NSGetSizeAndAlignment(type,&subsize,alignment);
+        *size=subsize*len;
+        quit=YES;
+    }
+     break;
 
      case '{':
       type++;
@@ -181,7 +189,25 @@ const char *NSGetSizeAndAlignment(const char *type,unsigned *size,
       }while(*type!='}');
       quit=YES;
       break;
-
+                
+    case '(':
+    {
+        type++;
+        if(*type=='?')
+            type++;
+        if(*type=='=')
+            type++;
+        do {
+            unsigned subsize,subalignment;
+                        
+            type=NSGetSizeAndAlignment(type,&subsize,&subalignment);
+            *size=MAX(subsize, *size);
+            *alignment=MAX(subalignment, *alignment);
+        }while(*type!=')');
+        quit=YES;
+        break;
+    }
+                
      case '^':
       NSUnimplementedFunction();
       quit=YES;
