@@ -18,6 +18,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSRaise.h>
 #import <Foundation/NSScanner.h>
 #import <Foundation/NSCharacterSet.h>
+#import <Foundation/NSKeyedUnarchiver.h>
 
 // anyway, the code in this file has been subjected to a rather grueling
 // test suite (see dateTester.m) which appears to prove that the code
@@ -43,6 +44,20 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     [_locale release];
 
     [super dealloc];
+}
+
+-initWithCoder:(NSCoder*)coder {
+   [super initWithCoder:coder];
+   
+   if([coder isKindOfClass:[NSKeyedUnarchiver class]]){
+    /* attributes in key NS.attributes
+        "formatBehavior" is key in attributes
+     */
+    _dateFormat=[[coder decodeObjectForKey:@"NS.format"] retain];
+    _allowsNaturalLanguage=[coder decodeBoolForKey:@"NS.natural"];
+   }
+   
+   return self;
 }
 
 -(NSString *)dateFormat {
@@ -86,6 +101,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     *object = NSCalendarDateWithStringDateFormatLocale(string, _dateFormat, _locale);
     if (*object == nil) {
 // FIX localization
+       if(error!=NULL)
         *error = @"Couldn't convert string to a valid NSCalendarDate object.";
         return NO;
     }

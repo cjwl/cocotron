@@ -29,12 +29,17 @@ enum {
 @interface NSFontManager : NSObject {
    NSFontPanel *_panel;
    id           _delegate;
-
+   SEL          _action;
+   
    NSFont      *_selectedFont;
    BOOL         _isMultiple;
 }
 
 +(NSFontManager *)sharedFontManager;
+
+-delegate;
+-(SEL)action;
+-(void)setAction:(SEL)value;
 
 -(NSFontPanel *)fontPanel:(BOOL)create;
 
@@ -49,7 +54,6 @@ enum {
 -(void)setSelectedFont:(NSFont *)font isMultiple:(BOOL)flag;
 
 -(void)setDelegate:delegate;
--delegate;
 
 -(NSArray *)availableFonts;
 -(NSArray *)availableFontFamilies;

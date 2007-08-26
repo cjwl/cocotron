@@ -20,7 +20,6 @@ FOUNDATION_EXPORT NSString *NSDecimalNumberExactnessException;
 @interface NSDecimalNumber : NSNumber {
 }
 
-#if 0
 -initWithDecimal:(NSDecimal)decimal;
 -initWithMantissa:(unsigned long long)mantissa exponent:(short)exponent isNegative:(BOOL)flag;
 -initWithString:(NSString *)string;
@@ -64,6 +63,5 @@ FOUNDATION_EXPORT NSString *NSDecimalNumberExactnessException;
 -(NSDecimalNumber *)decimalNumberByRaisingToPower:(unsigned)power withBehavior:(id <NSDecimalNumberBehaviors>)behavior;
 
 -(NSString *)descriptionWithLocale:(NSDictionary *)locale;
-#endif
 
 @end

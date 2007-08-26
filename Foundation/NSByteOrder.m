@@ -11,7 +11,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #ifdef __LITTLE_ENDIAN__
 
-int NSHostByteOrder(void){
+NSByteOrder NSHostByteOrder(void){
    return NS_LittleEndian;
 }
 
@@ -113,7 +113,7 @@ double NSSwapBigDoubleToHost(NSSwappedDouble value){
 
 #elif defined(__BIG_ENDIAN__)
 
-int NSHostByteOrder(void){
+NSByteOrder NSHostByteOrder(void){
    return NS_BigEndian;
 }
 

@@ -166,6 +166,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return nil;
 }
 
+-initWithUTF8String:(const char *)utf8 {
+   unsigned length;
+   unichar *characters;
+
+   characters=NSUTF8ToUnicode(utf8,strlen(utf8),&length,NULL);
+
+   return NSString_unicodePtrNewNoCopy(NULL,characters,length);
+}
+
 -initWithContentsOfFile:(NSString *)path {
    unsigned  length;
    unichar  *unicode;

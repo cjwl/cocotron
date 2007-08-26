@@ -68,6 +68,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 +(Class)superclass;
 +(Class)class;
++(BOOL)isSubclassOfClass:(Class)cls;
 
 +(BOOL)instancesRespondToSelector:(SEL)selector;
 +(BOOL)conformsToProtocol:(Protocol *)protocol;

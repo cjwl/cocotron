@@ -24,6 +24,7 @@ NSString *NSInternalInconsistencyException=@"NSInternalInconsistencyException";
 NSString *NSMallocException=@"NSMallocException";
 
 NSString *NSParseErrorException=@"NSParseErrorException";
+NSString *NSInconsistentArchiveException=@"NSInconsistentArchiveException";
 
 @implementation NSException
 

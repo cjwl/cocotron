@@ -8,6 +8,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <AppKit/NSActionCell.h>
 
+@class NSSound;
+
 enum {
    NSNoCellMask=0x00,
    NSContentsCellMask=0x01,
@@ -56,6 +58,7 @@ typedef enum {
    NSString *_keyEquivalent;
    unsigned  _keyEquivalentModifierMask;
    BOOL      _showsBorderOnlyWhileMouseInside;
+   NSSound  *_sound;
 }
 
 -(BOOL)isTransparent;
@@ -72,6 +75,7 @@ typedef enum {
 -(unsigned)keyEquivalentModifierMask;
 -(NSBezelStyle)bezelStyle;
 -(BOOL)showsBorderOnlyWhileMouseInside;
+-(NSSound *)sound;
 
 -(void)setTransparent:(BOOL)flag;
 -(void)setKeyEquivalent:(NSString *)keyEquivalent;
@@ -88,6 +92,7 @@ typedef enum {
 -(void)setBezelStyle:(NSBezelStyle)bezelStyle;
 -(void)setButtonType:(NSButtonType)buttonType;
 -(void)setShowsBorderOnlyWhileMouseInside:(BOOL)show;
+-(void)setSound:(NSSound *)sound;
 
 -(void)performClick:sender;
 

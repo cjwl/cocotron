@@ -60,7 +60,7 @@ BOOL OBJCIsMetaClass(Class class) {
 }
 
 const char *OBJCTypesForSelector(Class class,SEL selector) {
-   OBJCMethod *method=OBJCLookupUniqueIdInClass(class,OBJCSelectorUniqueId(selector));
+   struct objc_method *method=OBJCLookupUniqueIdInClass(class,OBJCSelectorUniqueId(selector));
 
    return (method==NULL)?NULL:method->method_types;
 }
@@ -82,12 +82,12 @@ unsigned OBJCInstanceSize(Class class) {
 
 static OBJCInstanceVariable *instanceVariableWithName(OBJCClassTemplate *class,const char *name) {
    for(;;class=class->super_class){
-    OBJCInstanceVariableList *ivarList=class->ivars;
+    struct objc_ivar_list *ivarList=class->ivars;
     int i;
 
-    for(i=0;ivarList!=NULL && i<ivarList->count;i++){
-     if(strcmp(ivarList->list[i].ivar_name,name)==0)
-      return &(ivarList->list[i]);
+    for(i=0;ivarList!=NULL && i<ivarList->ivar_count;i++){
+     if(strcmp(ivarList->ivar_list[i].ivar_name,name)==0)
+      return &(ivarList->ivar_list[i]);
     }
     if(class->isa->isa==class)
      break;

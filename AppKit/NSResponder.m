@@ -120,6 +120,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return [_nextResponder tryToPerform:action with:object];
 }
 
+-(void)noResponderFor:(SEL)action {
+   if(action==@selector(keyDown:))
+    NSBeep();
+}
+
 -(BOOL)acceptsFirstResponder {
    return NO;
 }

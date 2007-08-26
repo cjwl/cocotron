@@ -8,11 +8,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/NSObject.h>
 
-enum {
+typedef enum {
    NS_UnknownByteOrder,
    NS_LittleEndian,
    NS_BigEndian
-};
+} NSByteOrder;
 
 typedef struct {
    unsigned long floatWord;
@@ -22,7 +22,7 @@ typedef struct {
    unsigned long long doubleWord;
 } NSSwappedDouble;
 
-FOUNDATION_EXPORT int                NSHostByteOrder(void);
+FOUNDATION_EXPORT NSByteOrder        NSHostByteOrder(void);
 
 FOUNDATION_EXPORT unsigned short     NSSwapHostShortToLittle(unsigned short value);
 FOUNDATION_EXPORT unsigned short     NSSwapLittleShortToHost(unsigned short value);

@@ -111,10 +111,13 @@ typedef enum {
 
 -(void)hide:sender;
 -(void)unhide:sender;
+-(void)stop:sender;
 -(void)terminate:sender;
 
 -(void)arrangeInFront:sender;
 
+-(NSMenu *)servicesMenu;
+-(void)setServicesMenu:(NSMenu *)menu;
 -servicesProvider;
 -(void)setServicesProvider:provider;
 -(void)registerServicesMenuSendTypes:(NSArray *)sendTypes returnTypes:(NSArray *)returnTypes;

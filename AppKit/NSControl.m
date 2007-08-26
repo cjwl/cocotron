@@ -315,6 +315,10 @@ static NSMutableDictionary *cellClassDictionary = nil;
    return _currentEditor;
 }
 
+-(void)validateEditing {
+   NSUnimplementedMethod();
+}
+
 -(BOOL)abortEditing {
    if(_currentEditor!=nil){
 // this may be invalid after endEditingFor: if we dont retain it

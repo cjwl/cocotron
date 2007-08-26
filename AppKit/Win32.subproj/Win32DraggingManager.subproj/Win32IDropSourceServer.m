@@ -20,6 +20,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)dealloc {
    [_image release];
    [_window release];
+   [super dealloc];
 }
 
 -(void)setImage:(NSImage *)image {

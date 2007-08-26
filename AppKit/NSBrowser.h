@@ -96,7 +96,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)setTitle:(NSString *)title ofColumn:(int)column;
 
 -(void)selectRow:(int)row inColumn:(int)column;
+-(void)setPath:(NSString *)path;
 
+-(BOOL)sendAction;
 -(void)doClick:sender;
 -(void)doDoubleClick:sender;
 

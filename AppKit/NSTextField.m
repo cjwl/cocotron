@@ -177,13 +177,4 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    }
 }
 
-// Not sure this is a good idea
--(unsigned)draggingEntered:(id <NSDraggingInfo>)sender {
-   [[self window] makeFirstResponder:nil];
-// need to make the range accurate to avoid display glitches
-   [self _selectTextWithRange:NSMakeRange(0,0)];
-
-   return [[self currentEditor] draggingEntered:sender];
-}
-
 @end

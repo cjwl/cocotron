@@ -262,6 +262,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return _showsBorderOnlyWhileMouseInside;
 }
 
+-(NSSound *)sound {
+   return _sound;
+}
+
 -(int)state {
    return [self intValue];
 }
@@ -415,6 +419,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)setShowsBorderOnlyWhileMouseInside:(BOOL)show {
    _showsBorderOnlyWhileMouseInside=show;
+}
+
+-(void)setSound:(NSSound *)sound {
+   sound=[sound retain];
+   [_sound release];
+   _sound=sound;
 }
 
 -(NSAttributedString *)titleForHighlight {

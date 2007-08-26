@@ -599,6 +599,10 @@ id NSApp=nil;
    NSUnimplementedMethod();
 }
 
+-(void)stop:sender {
+   NSUnimplementedMethod();
+}
+
 -(void)terminate:sender {
    if([_delegate respondsToSelector:@selector(applicationShouldTerminate:)]){
     if(![_delegate applicationShouldTerminate:self]){
@@ -650,6 +654,14 @@ id NSApp=nil;
 }
 
 -(void)showHelp:sender {
+   NSUnimplementedMethod();
+}
+
+-(NSMenu *)servicesMenu {
+   return [[NSApp mainMenu] _menuWithName:@"_NSServicesMenu"];
+}
+
+-(void)setServicesMenu:(NSMenu *)menu {
    NSUnimplementedMethod();
 }
 

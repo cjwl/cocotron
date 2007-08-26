@@ -65,6 +65,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     // 0x00000100 = action on mouse drag
     _isContinuous=(flags&0x00080100)?YES:NO;
     _textAlignment=(flags2&0x1c000000)>>26;
+    _writingDirection=NSWritingDirectionNatural;
     _objectValue=[[keyed decodeObjectForKey:@"NSContents"] retain];
     check=[keyed decodeObjectForKey:@"NSNormalImage"];
     if([check isKindOfClass:[NSImage class]])
@@ -86,6 +87,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     _state=[coder decodeIntForKey:@"NSCell state"];
     _cellType=[coder decodeIntForKey:@"NSCell type"];
     _textAlignment=[coder decodeIntForKey:@"NSCell alignment"];
+    _writingDirection=NSWritingDirectionNatural;
     _wraps=[coder decodeBoolForKey:@"NSCell wraps"];
     _isEnabled=[coder decodeBoolForKey:@"NSCell enabled"];
     _isEditable=[coder decodeBoolForKey:@"NSCell editable"];
@@ -218,6 +220,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(NSTextAlignment)alignment {
    return _textAlignment;
+}
+
+-(NSWritingDirection)baseWritingDirection {
+   return _writingDirection;
 }
 
 -(BOOL)wraps {
@@ -423,6 +429,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)setAlignment:(NSTextAlignment)alignment {
    _textAlignment=alignment;
+}
+
+-(void)setBaseWritingDirection:(NSWritingDirection)value {
+   _writingDirection=value;
 }
 
 -(void)setWraps:(BOOL)wraps {

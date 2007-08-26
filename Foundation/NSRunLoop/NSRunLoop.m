@@ -77,14 +77,14 @@ NSString *NSDefaultRunLoopMode=@"NSDefaultRunLoopMode";
    }
    
    [self _orderedPerforms];
+   [state fireTimers];
+   [[NSNotificationQueue defaultQueue] asapProcessMode:mode];
 
    return [state limitDateForMode:mode];
 }
 
 -(void)acceptInputForMode:(NSString *)mode beforeDate:(NSDate *)date {
    NSRunLoopState *state=[self stateForMode:mode];
-
-   [[NSNotificationQueue defaultQueue] asapProcessMode:mode];
 
    if([[NSNotificationQueue defaultQueue] hasIdleNotificationsInMode:mode]){
     if(![state pollInputForMode:mode])

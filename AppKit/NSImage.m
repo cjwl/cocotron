@@ -16,6 +16,17 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @implementation NSImage
 
++(NSArray *)imageFileTypes {
+   NSMutableArray *result=[NSMutableArray array];
+   NSArray        *allClasses=[NSImageRep registeredImageRepClasses];
+   int             i,count=[allClasses count];
+   
+   for(i=0;i<count;i++)
+    [result addObjectsFromArray:[[allClasses objectAtIndex:i] imageUnfilteredFileTypes]];
+
+   return result;
+}
+
 +(NSArray *)imageUnfilteredFileTypes {
    return [NSImageRep imageUnfilteredFileTypes];
 }
@@ -110,6 +121,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return self;
 }
 
+-initByReferencingFile:(NSString *)path {
+   NSUnimplementedMethod();
+   return nil;
+}
+
 -initWithSize:(NSSize)size {
    _name=nil;
    _size=size;
@@ -159,6 +175,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return YES;
 }
 
+-(void)setSize:(NSSize)size {
+   _size=size;
+   // FIX, clear cache
+}
+
 -(void)addRepresentation:(NSImageRep *)imageRep {
    [_representations addObject:imageRep];
 }
@@ -169,6 +190,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)setCachedSeparately:(BOOL)flag {
    //NSUnimplementedMethod();
+}
+
+-(void)setBackgroundColor:(NSColor *)color {
+   NSUnimplementedMethod();
 }
 
 -(NSCachedImageRep *)_cachedImageRep {
@@ -203,6 +228,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    CGContextClipToRect(graphicsPort,NSMakeRect(0,0,[cached size].width,[cached size].height));
 }
 
+-(void)lockFocusOnRepresentation:(NSImageRep *)representation {
+   NSUnimplementedMethod();
+}
+
 -(void)unlockFocus {
    KGContext *graphicsPort=NSCurrentGraphicsPort();
 
@@ -224,6 +253,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     [rep drawAtPoint:point];
 }
 
+-(void)compositeToPoint:(NSPoint)point fromRect:(NSRect)rect operation:(NSCompositingOperation)operation {
+   NSUnimplementedMethod();
+}
+
 -(NSString *)description {
     return [NSString stringWithFormat:@"<%@[0x%lx] name: %@ size: { %f, %f } representations: %@>", [self class], self, _name, _size.width, _size.height, _representations];
 }
@@ -232,19 +265,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @implementation NSBundle(NSImage)
 
--(NSArray *)_allImageFileTypes {
-   NSMutableArray *result=[NSMutableArray array];
-   NSArray        *allClasses=[NSImageRep registeredImageRepClasses];
-   int             i,count=[allClasses count];
-   
-   for(i=0;i<count;i++)
-    [result addObjectsFromArray:[[allClasses objectAtIndex:i] imageUnfilteredFileTypes]];
-
-   return result;
-}
-
 -(NSString *)pathForImageResource:(NSString *)name {
-   NSArray *types=[self _allImageFileTypes];
+   NSArray *types=[NSImage imageFileTypes];
    int      i,count=[types count];
 
    for(i=0;i<count;i++){

@@ -45,6 +45,9 @@ typedef enum {
    BOOL            _refusesFirstResponder;
 }
 
+-initWithFrame:(NSRect)frame mode:(int)mode prototype:(NSCell *)prototype numberOfRows:(int)rows numberOfColumns:(int)columns;
+-initWithFrame:(NSRect)frame mode:(int)mode cellClass:(Class)cls numberOfRows:(int)rows numberOfColumns:(int)columns;
+
 -delegate;
 -(SEL)doubleAction;
 
@@ -98,6 +101,7 @@ typedef enum {
 -(void)addRow;
 -(void)insertRow:(int)row;
 -(void)removeRow:(int)row;
+-(void)insertRow:(int)row withCells:(NSArray *)cells;
 
 -(void)addColumn;
 -(void)removeColumn:(int)col;
@@ -131,6 +135,7 @@ typedef enum {
 
 -(void)sizeToCells;
 
+-(void)setState:(int)state atRow:(int)row column:(int)column;
 -(void)highlightCell:(BOOL)highlight atRow:(int)row column:(int)column;
 
 -(void)drawCellAtRow:(int)row column:(int)column;

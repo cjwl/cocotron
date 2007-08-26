@@ -33,7 +33,7 @@ IMP objc_msg_lookup(id object,SEL selector) {
     OBJCMethodCacheEntry *checkEntry=((void *)cache->table)+index; 
 
     do{
-     OBJCMethod *check=checkEntry->method;
+     struct objc_method *check=checkEntry->method;
      
      if(((SEL)check->method_name)==selector)
       return check->method_imp;
@@ -50,7 +50,7 @@ IMP objc_msg_lookup_super(struct objc_super *super,SEL selector) {
     OBJCMethodCacheEntry *checkEntry=((void *)super->class->cache->table)+index; 
 
    do{
-     OBJCMethod *check=checkEntry->method;
+     struct objc_method *check=checkEntry->method;
      
      if(((SEL)check->method_name)==selector)
       return check->method_imp;

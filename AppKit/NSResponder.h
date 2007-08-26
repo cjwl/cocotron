@@ -28,6 +28,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)interpretKeyEvents:(NSArray *)events;
 -(BOOL)performKeyEquivalent:(NSEvent *)event;
 -(BOOL)tryToPerform:(SEL)action with:object;
+-(void)noResponderFor:(SEL)action;
 
 -(BOOL)acceptsFirstResponder;
 -(BOOL)becomeFirstResponder;

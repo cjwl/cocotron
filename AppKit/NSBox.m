@@ -61,9 +61,25 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return [[self subviews] lastObject];
 }
 
+-(NSString *)title {
+   return [_titleCell stringValue];
+}
+
+-(void)setContentView:(NSView *)view {
+   if(![[self subviews] containsObject:view]){
+    [[self subviews] makeObjectsPerformSelector:@selector(removeFromSuperview)];
+    // FIX, adjust size
+    [self addSubview:view];
+   }
+}
+
 -(void)setTitle:(NSString *)title {
    [_titleCell setStringValue:title];
    [self setNeedsDisplay:YES];
+}
+
+-(void)setTitleFont:(NSFont *)font {
+   [_titleCell setFont:font];
 }
 
 -(NSAttributedString *)attributedTitle {
@@ -93,18 +109,59 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return YES;
 }
 
+-(NSFont *)titleFont {
+   return [_titleCell font];
+}
+
+-(NSRect)titleRect {
+   NSAttributedString *title=[self attributedTitle];
+   NSSize              size=[title size];
+   NSRect              bounds=[self bounds];
+   NSRect              result=NSZeroRect;
+   
+   result.origin.x=10+TEXTGAP;
+   result.size.height=ceil(size.height);
+   result.size.width=ceil(size.width);
+
+   switch(_titlePosition){
+
+    case NSNoTitle:
+     break;
+
+    case NSAboveTop:
+     result.origin.y=bounds.size.height-result.size.height;
+     break;
+
+    case NSAtTop:
+     result.origin.y=bounds.size.height-result.size.height;
+     break;
+
+    case NSBelowTop:
+     result.origin.y=bounds.size.height-(result.size.height+TEXTGAP);
+     break;
+
+    case NSAboveBottom:
+     result.origin.y=TEXTGAP;
+     break;
+
+    case NSAtBottom:
+     break;
+
+    case NSBelowBottom:
+     result.origin.y=0;
+     break;
+   }
+
+   return result;
+}
+
+
 -(void)drawRect:(NSRect)rect {
    NSAttributedString *title=[self attributedTitle];
    NSRect              grooveRect=_bounds;
-   NSSize              titleSize=[title size];
-   NSRect              titleRect;
+   NSRect              titleRect=[self titleRect];
    BOOL                drawTitle=YES;
 
-   titleRect.origin.x=10+TEXTGAP;
-   titleSize.height=ceil(titleSize.height);
-   titleSize.width=ceil(titleSize.width);
-   titleRect.size=titleSize;
-   
    switch(_titlePosition){
 
     case NSNoTitle:
@@ -112,32 +169,27 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
      break;
 
     case NSAboveTop:
-     titleRect.origin.y=_bounds.size.height-titleSize.height;
-     grooveRect.size.height-=titleSize.height+TEXTGAP;
+     grooveRect.size.height-=titleRect.size.height+TEXTGAP;
      break;
 
     case NSAtTop:
-     titleRect.origin.y=_bounds.size.height-titleSize.height;
-     grooveRect.size.height-=floor(titleSize.height/2);
+     grooveRect.size.height-=floor(titleRect.size.height/2);
      break;
 
     case NSBelowTop:
-     titleRect.origin.y=_bounds.size.height-(titleSize.height+TEXTGAP);
      break;
 
     case NSAboveBottom:
-     titleRect.origin.y=TEXTGAP;
      break;
 
     case NSAtBottom:
-     grooveRect.origin.y+=floor(titleSize.height/2);
-     grooveRect.size.height-=floor(titleSize.height/2);
+     grooveRect.origin.y+=floor(titleRect.size.height/2);
+     grooveRect.size.height-=floor(titleRect.size.height/2);
      break;
 
     case NSBelowBottom:
-     titleRect.origin.y=0;
-     grooveRect.origin.y+=titleSize.height+TEXTGAP;
-     grooveRect.size.height-=titleSize.height+TEXTGAP;
+     grooveRect.origin.y+=titleRect.size.height+TEXTGAP;
+     grooveRect.size.height-=titleRect.size.height+TEXTGAP;
      break;
    }
 
@@ -173,5 +225,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    }
 }
 
+-(void)setFrameFromContentFrame:(NSRect)content {
+// FIX, adjust content frame size to accomodate border/title
+   [self setFrame:content];
+}
 
 @end

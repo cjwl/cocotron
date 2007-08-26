@@ -15,7 +15,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(BOOL)pullsDown;
 -(NSMenu *)menu;
-
+-(NSArray *)itemArray;
 -(int)numberOfItems;
 
 -(NSMenuItem *)itemAtIndex:(int)index;

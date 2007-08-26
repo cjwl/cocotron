@@ -23,6 +23,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [_colorName release];
    [_catalogName release];
    NSDeallocateObject(self);
+   return;
+   [super dealloc];
 }
 
 -(void)encodeWithCoder:(NSCoder *)coder {

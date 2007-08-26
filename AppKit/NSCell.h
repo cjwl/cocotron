@@ -55,6 +55,7 @@ typedef enum {
    id        _objectValue;
    NSImage  *_image;
    int       _textAlignment;
+   NSWritingDirection _writingDirection;
    int       _cellType;
    NSFormatter *_formatter;
    NSString *_title;
@@ -89,6 +90,7 @@ typedef enum {
 -(NSFont *)font;
 -(NSImage *)image;
 -(NSTextAlignment)alignment;
+-(NSWritingDirection)baseWritingDirection;
 -(BOOL)wraps;
 -(NSString *)title;
 
@@ -127,6 +129,7 @@ typedef enum {
 -(void)setFont:(NSFont *)font;
 -(void)setImage:(NSImage *)image;
 -(void)setAlignment:(NSTextAlignment)alignment;
+-(void)setBaseWritingDirection:(NSWritingDirection)value;
 -(void)setWraps:(BOOL)wraps;
 -(void)setTitle:(NSString *)title;
 

@@ -10,12 +10,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 Ivar class_getInstanceVariable(Class class,const char *variableName) {
    for(;;class=class->super_class){
-    OBJCInstanceVariableList *ivarList=class->ivars;
+    struct objc_ivar_list *ivarList=class->ivars;
     int i;
 
-    for(i=0;ivarList!=NULL && i<ivarList->count;i++){
-     if(strcmp(ivarList->list[i].ivar_name,variableName)==0)
-      return &(ivarList->list[i]);
+    for(i=0;ivarList!=NULL && i<ivarList->ivar_count;i++){
+     if(strcmp(ivarList->ivar_list[i].ivar_name,variableName)==0)
+      return &(ivarList->ivar_list[i]);
     }
     if(class->isa->isa==class)
      break;
@@ -24,16 +24,16 @@ Ivar class_getInstanceVariable(Class class,const char *variableName) {
    return NULL;
 }
 
-void class_addMethods(Class class,OBJCMethodList *methodList) {
+void class_addMethods(Class class,struct objc_method_list *methodList) {
 	
 	if(class->methodLists==NULL)
 		class->methodLists=methodList;
 	else {
 		struct objc_method_list *node;
 		
-		for(node=class->methodLists;node->next!=NULL;node=node->next)
+		for(node=class->methodLists;node->method_next!=NULL;node=node->method_next)
 			;
-		node->next=methodList;
+		node->method_next=methodList;
 	}
 }
 
@@ -43,7 +43,7 @@ struct objc_method_list *class_nextMethodList(Class class,void **iterator) {
    if(next==NULL)
     next=class->methodLists;
    else
-    next=next->next;
+    next=next->method_next;
    
    *iterator=next;
    

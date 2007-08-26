@@ -35,6 +35,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @end
 
+enum {
+ NSLibraryDirectory,
+};
+
+enum {
+ NSSystemDomainMask
+};
+
+FOUNDATION_EXPORT NSArray  *NSSearchPathForDirectoriesInDomains(int d,unsigned mask,BOOL expand);
+
 FOUNDATION_EXPORT NSString *NSHomeDirectory(void);
 
 FOUNDATION_EXPORT NSString *NSTemporaryDirectory(void);

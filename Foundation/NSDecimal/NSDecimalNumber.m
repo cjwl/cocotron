@@ -8,6 +8,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/NSDecimalNumber.h>
 #import <Foundation/NSString.h>
+#import <Foundation/NSRaise.h>
 
 NSString *NSDecimalNumberDivideByZeroException=@"NSDecimalNumberDivideByZeroException";
 NSString *NSDecimalNumberUnderflowException=@"NSDecimalNumberUnderflowException";
@@ -15,5 +16,163 @@ NSString *NSDecimalNumberOverflowException=@"NSDecimalNumberOverflowException";
 NSString *NSDecimalNumberExactnessException=@"NSDecimalNumberExactnessException";
 
 @implementation NSDecimalNumber
+
+-initWithDecimal:(NSDecimal)decimal {
+   NSUnimplementedMethod();
+   return nil;
+}
+
+-initWithMantissa:(unsigned long long)mantissa exponent:(short)exponent isNegative:(BOOL)flag {
+   NSUnimplementedMethod();
+   return nil;
+}
+
+-initWithString:(NSString *)string {
+   NSUnimplementedMethod();
+   return nil;
+}
+
+-initWithString:(NSString *)string locale:(NSDictionary *)locale {
+   NSUnimplementedMethod();
+   return nil;
+}
+
++(NSDecimalNumber *)decimalNumberWithDecimal:(NSDecimal)decimal {
+   NSUnimplementedMethod();
+   return nil;
+}
+
++(NSDecimalNumber *)decimalNumberWithMantissa:(unsigned long long)mantissa exponent:(short)exponent isNegative:(BOOL)negative {
+   NSUnimplementedMethod();
+   return nil;
+}
+
++(NSDecimalNumber *)decimalNumberWithString:(NSString *)string {
+   NSUnimplementedMethod();
+   return nil;
+}
+
++(NSDecimalNumber *)decimalNumberWithString:(NSString *)string locale:(NSDictionary *)locale {
+   NSUnimplementedMethod();
+   return nil;
+}
+
++(NSDecimalNumber *)zero {
+   NSUnimplementedMethod();
+   return nil;
+}
+
++(NSDecimalNumber *)one {
+   NSUnimplementedMethod();
+   return nil;
+}
+
++(NSDecimalNumber *)minimumDecimalNumber {
+   NSUnimplementedMethod();
+   return nil;
+}
+
++(NSDecimalNumber *)maximumDecimalNumber {
+   NSUnimplementedMethod();
+   return nil;
+}
+
++(NSDecimalNumber *)notANumber {
+   NSUnimplementedMethod();
+   return nil;
+}
+
++(id <NSDecimalNumberBehaviors>)defaultBehavior {
+   NSUnimplementedMethod();
+   return nil;
+}
+
++(void)setDefaultBehavior:(id <NSDecimalNumberBehaviors>)behavior {
+   NSUnimplementedMethod();
+}
+
+-(NSComparisonResult)compare:(NSNumber *)other {
+   NSUnimplementedMethod();
+   return 0;
+}
+
+-(double)doubleValue {
+   NSUnimplementedMethod();
+   return 0;
+}
+
+-(const char *)objCType {
+   return @encode(double);
+}
+
+-(NSDecimalNumber *)decimalNumberByRoundingAccordingToBehavior:(id <NSDecimalNumberBehaviors>)behavior {
+   NSUnimplementedMethod();
+   return nil;
+}
+
+-(NSDecimalNumber *)decimalNumberByAdding:(NSDecimalNumber *)other {
+   NSUnimplementedMethod();
+   return nil;
+}
+
+-(NSDecimalNumber *)decimalNumberByAdding:(NSDecimalNumber *)other withBehavior:(id <NSDecimalNumberBehaviors>)behavior {
+   NSUnimplementedMethod();
+   return nil;
+}
+
+-(NSDecimalNumber *)decimalNumberBySubtracting:(NSDecimalNumber *)other {
+   NSUnimplementedMethod();
+   return nil;
+}
+
+-(NSDecimalNumber *)decimalNumberBySubtracting:(NSDecimalNumber *)other withBehavior:(id <NSDecimalNumberBehaviors>)behavior {
+   NSUnimplementedMethod();
+   return nil;
+}
+
+-(NSDecimalNumber *)decimalNumberByMultiplyingBy:(NSDecimalNumber *)other {
+   NSUnimplementedMethod();
+   return nil;
+}
+
+-(NSDecimalNumber *)decimalNumberByMultiplyingBy:(NSDecimalNumber *)other withBehavior:(id <NSDecimalNumberBehaviors>)behavior {
+   NSUnimplementedMethod();
+   return nil;
+}
+
+-(NSDecimalNumber *)decimalNumberByDividingBy:(NSDecimalNumber *)other {
+   NSUnimplementedMethod();
+   return nil;
+}
+
+-(NSDecimalNumber *)decimalNumberByDividingBy:(NSDecimalNumber *)other withBehavior:(id <NSDecimalNumberBehaviors>)behavior {
+   NSUnimplementedMethod();
+   return nil;
+}
+
+-(NSDecimalNumber *)decimalNumberByMultiplyingByPowerOf10:(short)power {
+   NSUnimplementedMethod();
+   return nil;
+}
+
+-(NSDecimalNumber *)decimalNumberByMultiplyingByPowerOf10:(short)power withBehavior:(id <NSDecimalNumberBehaviors>)behavior {
+   NSUnimplementedMethod();
+   return nil;
+}
+
+-(NSDecimalNumber *)decimalNumberByRaisingToPower:(unsigned)power {
+   NSUnimplementedMethod();
+   return nil;
+}
+
+-(NSDecimalNumber *)decimalNumberByRaisingToPower:(unsigned)power withBehavior:(id <NSDecimalNumberBehaviors>)behavior {
+   NSUnimplementedMethod();
+   return nil;
+}
+
+-(NSString *)descriptionWithLocale:(NSDictionary *)locale {
+   NSUnimplementedMethod();
+   return nil;
+}
 
 @end

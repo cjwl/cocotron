@@ -55,6 +55,16 @@ NSString *NSTextDidChangeNotification=@"NSTextDidChangeNotification";
    return NO;
 }
 
+-(BOOL)usesFontPanel {
+   NSInvalidAbstractInvocation();
+   return NO;
+}
+
+-(BOOL)importsGraphics {
+   NSInvalidAbstractInvocation();
+   return NO;
+}
+
 -(NSFont *)font {
    NSInvalidAbstractInvocation();
    return nil;
@@ -138,6 +148,14 @@ NSString *NSTextDidChangeNotification=@"NSTextDidChangeNotification";
 }
 
 -(void)setFieldEditor:(BOOL)flag {
+   NSInvalidAbstractInvocation();
+}
+
+-(void)setUsesFontPanel:(BOOL)value {
+   NSInvalidAbstractInvocation();
+}
+
+-(void)setImportsGraphics:(BOOL)value {
    NSInvalidAbstractInvocation();
 }
 

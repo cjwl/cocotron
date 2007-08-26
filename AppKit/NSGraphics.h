@@ -34,6 +34,8 @@ typedef enum {
    NSWindowAbove=1
 } NSWindowOrderingMode;
 
+typedef int NSWindowDepth;
+
 APPKIT_EXPORT const float NSBlack;
 APPKIT_EXPORT const float NSDarkGray;
 APPKIT_EXPORT const float NSLightGray;

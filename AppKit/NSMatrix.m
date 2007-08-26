@@ -92,6 +92,36 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return self;
 }
 
+-initWithFrame:(NSRect)frame mode:(int)mode prototype:(NSCell *)prototype numberOfRows:(int)rows numberOfColumns:(int)columns {
+   int i;
+   
+   [self initWithFrame:frame];
+   
+   _mode=mode;
+   _prototype=[prototype copy];
+   _numberOfRows=rows;
+   _numberOfColumns=columns;
+   for(i=0;i<rows*columns;i++)
+    [_cells addObject:[[_prototype copy] autorelease]];
+    
+   return self;
+}
+
+-initWithFrame:(NSRect)frame mode:(int)mode cellClass:(Class)cls numberOfRows:(int)rows numberOfColumns:(int)columns {
+   int i;
+   
+   [self initWithFrame:frame];
+   
+   _mode=mode;
+   _cellClass=cls;
+   _numberOfRows=rows;
+   _numberOfColumns=columns;
+   for(i=0;i<rows*columns;i++)
+    [_cells addObject:[[[cls alloc] init] autorelease]];
+    
+   return self;
+}
+
 -(void)dealloc {
    [_font release];
    [_backgroundColor release];
@@ -478,6 +508,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    _numberOfRows++;
 }
 
+-(void)insertRow:(int)row withCells:(NSArray *)cells {
+   int i;
+
+   for(i=0;i<_numberOfColumns;i++)
+    [_cells insertObject:[cells objectAtIndex:i] atIndex:row*_numberOfColumns+i];
+    
+   _numberOfRows++;
+}
+
 -(void)removeRow:(int)row {
    int i;
 
@@ -690,6 +729,17 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)sizeToCells {
    [self sizeToFit];
+}
+
+-(void)setState:(int)state atRow:(int)row column:(int)column {
+   NSCell *cell=[self cellAtRow:row column:column];
+
+   if(cell!=nil){
+    NSRect frame=[self cellFrameAtRow:row column:column];
+    
+    [cell setState:state];
+    [self setNeedsDisplayInRect:frame];
+   }
 }
 
 -(void)highlightCell:(BOOL)highlight atRow:(int)row column:(int)column {

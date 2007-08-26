@@ -59,6 +59,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return _titleWidth;
 }
 
+-(float)titleWidth:(NSSize)size {
+// FIX,wrong
+   return _titleWidth;
+}
+
 -(NSString *)title {
    return [_titleCell stringValue];
 }
@@ -75,20 +80,37 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return [_titleCell alignment];
 }
 
--(void)setTitleWidth:(float)width {
-   _titleWidth=width;
+-(NSWritingDirection)titleBaseWritingDirection {
+   return [_titleCell baseWritingDirection];
 }
 
--(void)setTitle:(NSString *)title {
-   [_titleCell setStringValue:title];
+-(void)setTitleWidth:(float)value {
+   _titleWidth=value;
 }
 
--(void)setTitleFont:(NSFont *)font {
-   [_titleCell setFont:font];
+-(void)setTitle:(NSString *)value {
+   [_titleCell setStringValue:value];
 }
 
--(void)setTitleAlignment:(NSTextAlignment)alignment {
-   [_titleCell setAlignment:alignment];
+-(void)setAttributedTitle:(NSAttributedString *)value {
+   [_titleCell setAttributedStringValue:value];
+}
+
+-(void)setTitleWithMnemonic:(NSString *)value {
+// FIX, wrong
+   [_titleCell setStringValue:value];
+}
+
+-(void)setTitleFont:(NSFont *)value {
+   [_titleCell setFont:value];
+}
+
+-(void)setTitleAlignment:(NSTextAlignment)value {
+   [_titleCell setAlignment:value];
+}
+
+-(void)setTitleBaseWritingDirection:(NSWritingDirection)value {
+   [_titleCell setBaseWritingDirection:value];
 }
 
 -(void)setEnabled:(BOOL)enabled {

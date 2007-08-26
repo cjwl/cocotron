@@ -157,6 +157,11 @@ NSString *NSToolbarDidChangeNotification = @"NSToolbarDidChangeNotification";
     return _allowsUserCustomization;
 }
 
+-(NSString *)selectedItemIdentifier {
+   NSUnimplementedMethod();
+   return nil;
+}
+
 - (void)insertItemWithItemIdentifier:(NSString *)identifier atIndex:(int)index
 {
     NSToolbarItem *item;
@@ -399,6 +404,10 @@ NSString *NSToolbarDidChangeNotification = @"NSToolbarDidChangeNotification";
 - (void)setAllowsUserCustomization:(BOOL)flag
 {
     _allowsUserCustomization = flag;
+}
+
+-(void)setSelectedItemIdentifier:(NSString *)identifier {
+   NSUnimplementedMethod();
 }
 
 - (void)validateVisibleItems

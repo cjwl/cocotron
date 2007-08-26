@@ -44,6 +44,7 @@ APPKIT_EXPORT NSString *NSControlTextDidEndEditingNotification;
 -(NSString *)stringValue;
 -(int)intValue;
 -(float)floatValue;
+-(double)doubleValue;
 
 -selectedCell;
 -(int)selectedTag;
@@ -87,6 +88,7 @@ APPKIT_EXPORT NSString *NSControlTextDidEndEditingNotification;
 -(BOOL)sendAction:(SEL)action to:target;
 
 -(NSText *)currentEditor;
+-(void)validateEditing;
 -(BOOL)abortEditing;
 
 -(void)calcSize;

@@ -20,6 +20,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSStringDrawer.h>
 #import <AppKit/NSWindow.h>
 #import <AppKit/NSNibKeyedUnarchiver.h>
+#import <Foundation/NSRaise.h>
 
 @interface NSBrowser(Private)
 -(NSRect)frameOfScroller;
@@ -486,11 +487,19 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    }
 }
 
+-(void)setPath:(NSString *)path {
+   NSUnimplementedMethod();
+}
+
+-(BOOL)sendAction {
+   return [self sendAction:[self action] to:[self target]];
+}
+
 -(void)doClick:sender {
     [self _reloadSelectionInColumn:[self columnOfMatrix:sender]];
 
     if ([[[self window] currentEvent] type] != NSKeyDown || _sendsActionOnArrowKeys == YES)
-        [self sendAction:[self action] to:[self target]];
+        [self sendAction];
 }
 
 -(void)doDoubleClick:sender {

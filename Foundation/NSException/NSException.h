@@ -19,6 +19,7 @@ FOUNDATION_EXPORT NSString *NSInternalInconsistencyException;
 FOUNDATION_EXPORT NSString *NSMallocException;
 
 FOUNDATION_EXPORT NSString *NSParseErrorException;
+FOUNDATION_EXPORT NSString *NSInconsistentArchiveException;
 
 @interface NSException:NSObject <NSCoding,NSCopying> {
     NSString		*_name;

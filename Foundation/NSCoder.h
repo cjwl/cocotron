@@ -64,6 +64,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(NSSize)decodeSize;
 -(NSRect)decodeRect;
 
+-(BOOL)containsValueForKey:(NSString *)key;
+
+-(void *)decodeBytesForKey:(NSString *)key returnedLength:(unsigned *)lengthp;
 -(NSPoint)decodePointForKey:(NSString *)key;
 -(NSRect)decodeRectForKey:(NSString *)key;
 -(NSSize)decodeSizeForKey:(NSString *)key;

@@ -58,6 +58,7 @@ FOUNDATION_EXPORT const unsigned NSMaximumStringLength;
 -initWithFormat:(NSString *)format,...;
 
 -initWithData:(NSData *)data encoding:(NSStringEncoding)encoding;
+-initWithUTF8String:(const char *)utf8;
 
 -initWithContentsOfFile:(NSString *)path;
 
@@ -130,6 +131,8 @@ FOUNDATION_EXPORT const unsigned NSMaximumStringLength;
 
 -(NSString *)stringByReplacingPercentEscapesUsingEncoding:(NSStringEncoding)encoding;
 -(NSString *)stringByAddingPercentEscapesUsingEncoding:(NSStringEncoding)encoding;
+
+-(NSString *)stringByTrimmingCharactersInSet:(NSCharacterSet *)set;
 
 +(NSStringEncoding)defaultCStringEncoding;
 

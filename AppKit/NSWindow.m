@@ -61,6 +61,10 @@ NSString *NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification";
 
 @implementation NSWindow
 
++(NSWindowDepth)defaultDepthLimit {
+   return 0;
+}
+
 +(NSRect)frameRectForContentRect:(NSRect)contentRect styleMask:(unsigned)styleMask {
    contentRect.size.height+=[NSMainMenuView menuHeight];
    return contentRect;
@@ -139,8 +143,10 @@ NSString *NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification";
    _isDocumentEdited=NO;
 
    _makeSureIsOnAScreen=YES;
+   _excludedFromWindowsMenu=NO;
 
    _acceptsMouseMovedEvents=NO;
+   _excludedFromWindowsMenu=NO;
    _isDeferred=defer;
    _isOneShot=NO;
    _useOptimizedDrawing=NO;
@@ -161,6 +167,11 @@ NSString *NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification";
    [[NSApplication sharedApplication] _addWindow:self];
 
    return self;
+}
+
+-initWithContentRect:(NSRect)contentRect styleMask:(unsigned int)styleMask backing:(unsigned)backing defer:(BOOL)defer screen:(NSScreen *)screen {
+// FIX, relocate contentRect
+   return [self initWithContentRect:contentRect styleMask:styleMask backing:backing defer:defer screen:screen];
 }
 
 -(void)dealloc {
@@ -262,6 +273,14 @@ NSString *NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification";
    return _styleMask;
 }
 
+-(NSBackingStoreType)backingType {
+   return _backingType;
+}
+
+-(BOOL)hasDynamicDepthLimit {
+   return _dynamicDepthLimit;
+}
+
 -(BOOL)isOneShot {
    return _isOneShot;
 }
@@ -284,6 +303,18 @@ NSString *NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification";
 
 -(BOOL)acceptsMouseMovedEvents {
    return _acceptsMouseMovedEvents;
+}
+
+-(BOOL)isExcludedFromWindowsMenu {
+   return _excludedFromWindowsMenu;
+}
+
+-(BOOL)isAutodisplay {
+   return _isAutodisplay;
+}
+
+-(NSString *)frameAutosaveName {
+   return _autosaveFrameName;
 }
 
 -(NSResponder *)firstResponder {
@@ -322,8 +353,17 @@ NSString *NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification";
     return _drawers;
 }
 
+-(NSWindowController *)windowController {
+   return _windowController;
+}
+
 -(int)windowNumber {
    return (int)self;
+}
+
+-(int)gState {
+   NSUnimplementedMethod();
+   return 0;
 }
 
 -(NSScreen *)screen {
@@ -401,7 +441,7 @@ NSString *NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification";
 
    [self _updatePlatformWindowTitle];
 
-   if (![self isKindOfClass:[NSPanel class]] && [self isVisible])
+   if (![self isKindOfClass:[NSPanel class]] && [self isVisible] && ![self isExcludedFromWindowsMenu])
        [NSApp changeWindowsItem:self title:title filename:NO];
 }
 
@@ -410,7 +450,7 @@ NSString *NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification";
       [filename lastPathComponent],
       [filename stringByDeletingLastPathComponent]]];
 
-    if (![self isKindOfClass:[NSPanel class]] && [self isVisible])
+    if (![self isKindOfClass:[NSPanel class]] && [self isVisible] && ![self isExcludedFromWindowsMenu])
         [NSApp changeWindowsItem:self title:filename filename:YES];
 }
 
@@ -709,6 +749,10 @@ NSString *NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification";
    _maxSize=size;
 }
 
+-(void)setDynamicDepthLimit:(BOOL)value {
+   _dynamicDepthLimit=value;
+}
+
 -(void)setOneShot:(BOOL)flag {
    _isOneShot=flag;
 }
@@ -723,6 +767,14 @@ NSString *NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification";
 
 -(void)setAcceptsMouseMovedEvents:(BOOL)flag {
    _acceptsMouseMovedEvents=flag;
+}
+
+-(void)setExcludedFromWindowsMenu:(BOOL)value {
+   _excludedFromWindowsMenu=value;
+}
+
+-(void)setAutodisplay:(BOOL)value {
+   _isAutodisplay=value;
 }
 
 -(void)setInitialFirstResponder:(NSView *)view {
@@ -749,6 +801,14 @@ NSString *NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification";
    _backgroundColor=color;
 }
 
+-(float)alphaValue {
+   return 1;
+}
+
+-(NSWindowDepth)depthLimit {
+   return 0;
+}
+
 -(void)setToolbar:(NSToolbar*)toolbar {
     [_toolbar _setWindow:nil];
     [_toolbar release];
@@ -761,6 +821,10 @@ NSString *NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification";
     _defaultButtonCell = [buttonCell retain];
     [_defaultButtonCell setKeyEquivalent:@"\r"];
     [[_defaultButtonCell controlView] setNeedsDisplay:YES];
+}
+
+-(void)setWindowController:(NSWindowController *)value {
+   _windowController=value;
 }
 
 -(void)setDocumentEdited:(BOOL)flag {
@@ -1132,7 +1196,7 @@ NSString *NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification";
  */
      [self displayIfNeeded];
      // this is here since it would seem that doing this any earlier will not work.
-     if(![self isKindOfClass:[NSPanel class]])
+     if(![self isKindOfClass:[NSPanel class]] && ![self isExcludedFromWindowsMenu])
          [NSApp changeWindowsItem:self title:_title filename:NO];
      break;
 
@@ -1148,7 +1212,7 @@ NSString *NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification";
  */
      [self displayIfNeeded];
      // this is here since it would seem that doing this any earlier will not work.
-     if(![self isKindOfClass:[NSPanel class]])
+     if(![self isKindOfClass:[NSPanel class]] && ![self isExcludedFromWindowsMenu])
          [NSApp changeWindowsItem:self title:_title filename:NO];
      break;
 
@@ -1289,6 +1353,10 @@ NSString *NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification";
      NSUnimplementedMethod();
      break;
    }
+}
+
+-(void)postEvent:(NSEvent *)event atStart:(BOOL)atStart {
+   [NSApp postEvent:event atStart:atStart];
 }
 
 -(NSPoint)mouseLocationOutsideOfEventStream {

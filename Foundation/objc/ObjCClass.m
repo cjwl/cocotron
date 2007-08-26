@@ -57,7 +57,7 @@ id objc_getOrigClass(const char *name) {
    return OBJCHashValueForKey(OBJCClassTable(),name);
 }
 
-static void OBJCRegisterSelectorsInMethodList(OBJCMethodList *list){
+static void OBJCRegisterSelectorsInMethodList(struct objc_method_list *list){
   int i;
 
   for (i=0;i<list->method_count;i++)
@@ -65,14 +65,14 @@ static void OBJCRegisterSelectorsInMethodList(OBJCMethodList *list){
 }
 
 static void OBJCRegisterSelectorsInClass(Class class) {
-   OBJCMethodList *node;
+   struct objc_method_list *node;
 
-   for(node=class->methodLists;node!=NULL;node=node->next)
+   for(node=class->methodLists;node!=NULL;node=node->method_next)
     OBJCRegisterSelectorsInMethodList(node);
 }
 
 static void OBJCInitializeCacheEntry(OBJCMethodCacheEntry *entry){
-   static OBJCMethod empty={
+   static struct objc_method empty={
     0,NULL,NULL
    };
    
@@ -125,8 +125,8 @@ void OBJCRegisterClass(Class class) {
    }
 }
 
-static void OBJCAppendMethodListToClass(Class class, OBJCMethodList *methodList) {
-   methodList->next=class->methodLists;
+static void OBJCAppendMethodListToClass(Class class, struct objc_method_list *methodList) {
+   methodList->method_next=class->methodLists;
    class->methodLists=methodList;
    
    OBJCRegisterSelectorsInMethodList(methodList);
@@ -170,7 +170,7 @@ void OBJCLinkClassTable(void) {
     OBJCLinkClass(class);
 }
 
-static inline OBJCMethod *OBJCLookupUniqueIdInMethodList(OBJCMethodList *list,SEL uniqueId){
+static inline struct objc_method *OBJCLookupUniqueIdInMethodList(struct objc_method_list *list,SEL uniqueId){
    int i;
 
    for(i=0;i<list->method_count;i++){
@@ -181,19 +181,19 @@ static inline OBJCMethod *OBJCLookupUniqueIdInMethodList(OBJCMethodList *list,SE
    return NULL;
 }
 
-static inline OBJCMethod *OBJCLookupUniqueIdInOnlyThisClass(Class class,SEL uniqueId){
-   OBJCMethod     *result=NULL;
-   OBJCMethodList *check;
+static inline struct objc_method *OBJCLookupUniqueIdInOnlyThisClass(Class class,SEL uniqueId){
+   struct objc_method     *result=NULL;
+   struct objc_method_list *check;
 
-   for(check=class->methodLists;check!=NULL;check=check->next)
+   for(check=class->methodLists;check!=NULL;check=check->method_next)
     if((result=OBJCLookupUniqueIdInMethodList(check,uniqueId))!=NULL)
      break;
 
    return result;
 }
 
-inline OBJCMethod *OBJCLookupUniqueIdInClass(Class class,SEL uniqueId) {
-   OBJCMethod *result=NULL;
+inline struct objc_method *OBJCLookupUniqueIdInClass(Class class,SEL uniqueId) {
+   struct objc_method *result=NULL;
 
    for(;class!=NULL;class=class->super_class)
     if((result=OBJCLookupUniqueIdInOnlyThisClass(class,uniqueId))!=NULL)
@@ -209,7 +209,7 @@ void OBJCInitializeClass(Class class) {
 
     if(!(class->info&CLASS_INFO_INITIALIZED)) {
      SEL         selector=@selector(initialize);
-     OBJCMethod *method=OBJCLookupUniqueIdInOnlyThisClass(class->isa,OBJCSelectorUniqueId(selector));
+     struct objc_method *method=OBJCLookupUniqueIdInOnlyThisClass(class->isa,OBJCSelectorUniqueId(selector));
 
      class->info|=CLASS_INFO_INITIALIZED;
 
@@ -223,7 +223,7 @@ void OBJCInitializeClass(Class class) {
 #ifdef SOLARIS
 id objc_msgForward(id object,SEL message,...){
    Class       class=object->isa;
-   OBJCMethod *method;
+   struct objc_method *method;
    va_list     arguments;
    unsigned    i,frameLength,limit;
    unsigned   *frame;
@@ -251,7 +251,7 @@ id objc_msgForward(id object,SEL message,...){
 #else
 id objc_msgForward(id object,SEL message,...){
    Class       class=object->isa;
-   OBJCMethod *method;
+   struct objc_method *method;
    void       *arguments=&object;
 
    if((method=OBJCLookupUniqueIdInClass(class,OBJCSelectorUniqueId(@selector(forwardSelector:arguments:))))!=NULL)
@@ -276,7 +276,7 @@ static OBJCMethodCacheEntry *allocateCacheEntry(){
    return result;
 }
 
-static inline void OBJCCacheMethodInClass(Class class,OBJCMethod *method) {
+static inline void OBJCCacheMethodInClass(Class class,struct objc_method *method) {
    SEL          uniqueId=method->method_name;
    unsigned              index=(unsigned)uniqueId&OBJCMethodCacheMask;
    OBJCMethodCacheEntry *check=((void *)class->cache->table)+index;
@@ -296,7 +296,7 @@ static inline void OBJCCacheMethodInClass(Class class,OBJCMethod *method) {
 }
 
 IMP OBJCLookupAndCacheUniqueIdInClass(Class class,SEL uniqueId){
-   OBJCMethod *method;
+   struct objc_method *method;
 
    if((method=OBJCLookupUniqueIdInClass(class,uniqueId))!=NULL){
     OBJCCacheMethodInClass(class,method);

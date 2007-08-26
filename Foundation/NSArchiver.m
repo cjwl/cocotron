@@ -56,6 +56,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return [data writeToFile:path atomically:YES];
 }
 
+-(NSMutableData *)archiverData {
+   return _data;
+}
+
 -(void)cannotEncodeType:(const char *)type {
    [NSException raise:@"NSArchiverCannotEncodeException"
                format:@"NSArchiver cannot encode type=%s",type];
@@ -413,6 +417,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)encodeConditionalObject:(id)object {
    [self _appendCString:"@"];
    [self _appendObject:object conditional:YES];
+}
+
+-(void)encodeClassName:(NSString *)runtime intoClassName:(NSString *)archive {
+   NSUnimplementedMethod();
+}
+
+-(void)replaceObject:original withObject:replacement {
+   NSUnimplementedMethod();
 }
 
 @end

@@ -55,6 +55,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return [_cell allowsMixedState];
 }
 
+-(NSSound *)sound {
+   return [_cell sound];
+}
 
 -(void)setTransparent:(BOOL)flag {
    [_cell setTransparent:flag];
@@ -94,6 +97,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [_cell setAllowsMixedState:flag];
 }
 
+-(void)setSound:(NSSound *)sound {
+   [_cell setSound:sound];
+}
 
 -(unsigned)keyEquivalentModifierMask {
    return [_cell keyEquivalentModifierMask];

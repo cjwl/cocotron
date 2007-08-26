@@ -66,6 +66,8 @@ APPKIT_EXPORT NSString *NSTextDidChangeNotification;
 -(BOOL)isSelectable;
 -(BOOL)isRichText;
 -(BOOL)isFieldEditor;
+-(BOOL)usesFontPanel;
+-(BOOL)importsGraphics;
 
 -(NSFont *)font;
 -(NSTextAlignment)alignment;
@@ -94,6 +96,8 @@ APPKIT_EXPORT NSString *NSTextDidChangeNotification;
 -(void)setSelectable:(BOOL)flag;
 -(void)setRichText:(BOOL)flag;
 -(void)setFieldEditor:(BOOL)flag; 
+-(void)setUsesFontPanel:(BOOL)value;
+-(void)setImportsGraphics:(BOOL)value;
 
 -(void)setFont:(NSFont *)font;
 -(void)setAlignment:(NSTextAlignment)alignment;

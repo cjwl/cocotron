@@ -8,6 +8,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <AppKit/NSView.h>
 
+@class NSFont;
+
 typedef enum {
    NSNoTitle,
    NSAboveTop,
@@ -26,7 +28,14 @@ typedef enum {
 }
 
 -contentView;
+-(NSString *)title;
+-(NSFont *)titleFont;
+-(NSRect)titleRect;
 
+-(void)setContentView:(NSView *)view;
 -(void)setTitle:(NSString *)title;
+-(void)setTitleFont:(NSFont *)font;
+
+-(void)setFrameFromContentFrame:(NSRect)content;
 
 @end

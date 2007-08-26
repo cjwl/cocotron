@@ -33,7 +33,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 {
     [super initWithContentRect:contentRect styleMask:styleMask backing:backing defer:defer];
     _textField = [[NSTextField alloc] initWithFrame:NSMakeRect(2, 2, contentRect.size.width, contentRect.size.height)];
-    [_textField setFont:[NSFont toolTipFontOfSize:TOOLTIP_FONT_SIZE]];
+    [_textField setFont:[NSFont toolTipsFontOfSize:TOOLTIP_FONT_SIZE]];
     [self setBackgroundColor:[NSColor yellowColor]];
     [_backgroundView setBorderType:NSLineBorder];
     [[self contentView] addSubview:_textField];
@@ -47,7 +47,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     
     [_textField setStringValue:toolTip];
 
-    frame.size = [[_textField stringValue] sizeWithAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[NSFont toolTipFontOfSize:TOOLTIP_FONT_SIZE], NSFontAttributeName, nil]];
+    frame.size = [[_textField stringValue] sizeWithAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[NSFont toolTipsFontOfSize:TOOLTIP_FONT_SIZE], NSFontAttributeName, nil]];
     
     [_textField setBoundsSize:frame.size];
     [_textField setFrameSize:frame.size];

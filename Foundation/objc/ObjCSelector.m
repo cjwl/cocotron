@@ -43,7 +43,7 @@ SEL OBJCRegisterMethodDescription(OBJCMethodDescription *method) {
    return OBJCRegisterSelectorName((const char *)method->name);
 }
 
-SEL OBJCRegisterMethod(OBJCMethod *method) {
+SEL OBJCRegisterMethod(struct objc_method *method) {
    return OBJCRegisterSelectorName((const char *)method->method_name);
 }
 

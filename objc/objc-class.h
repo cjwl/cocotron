@@ -19,28 +19,38 @@ enum {
    CLASS_INFO_LINKED=0x100
 };
 
+enum {
+ _C_ID='@',
+ _C_CHR='c',
+ _C_UCHR='C',
+ _C_INT='i',
+ _C_UINT='I',
+ _C_FLT='f',
+ _C_DBL='d',
+};
+
 typedef struct objc_ivar {
    char *ivar_name;
    char *ivar_type;
    int   ivar_offset;
 } *Ivar, OBJCInstanceVariable;
 
-typedef struct {
-   int                  count;
-   OBJCInstanceVariable list[1];
-} OBJCInstanceVariableList;
+struct objc_ivar_list {
+   int              ivar_count;
+   struct objc_ivar ivar_list[1];
+};
 
 typedef struct objc_method {
    SEL   method_name;
    char *method_types;
    IMP   method_imp;
-} *Method, OBJCMethod;
+} *Method;
 
-typedef struct objc_method_list {
-   struct objc_method_list *next;
+struct objc_method_list {
+   struct objc_method_list *method_next;
    int                      method_count;
-   OBJCMethod               method_list[1]; 
-} OBJCMethodList;
+   struct objc_method       method_list[1]; 
+};
 
 @class Protocol;
 
@@ -53,8 +63,8 @@ typedef struct OBJCProtocolList {
 typedef struct {
    const char       *name;
    const char       *className;
-   OBJCMethodList   *instanceMethods;
-   OBJCMethodList   *classMethods;
+   struct objc_method_list   *instanceMethods;
+   struct objc_method_list   *classMethods;
    OBJCProtocolList *protocols;
 } OBJCCategory;
 
@@ -65,14 +75,14 @@ typedef struct objc_class {
    long                      version;
    long                      info;
    long                      instance_size;
-   OBJCInstanceVariableList *ivars;
-   OBJCMethodList           *methodLists;
+   struct objc_ivar_list    *ivars;
+   struct objc_method_list           *methodLists;
    struct objc_cache        *cache;
    OBJCProtocolList         *protocols;
    void                     *privateData;
 } OBJCClassTemplate;
 
 OBJC_EXPORT Ivar class_getInstanceVariable(Class class,const char *variableName);
-OBJC_EXPORT void class_addMethods(Class class,OBJCMethodList *methodList);
+OBJC_EXPORT void class_addMethods(Class class,struct objc_method_list *methodList);
 
 OBJC_EXPORT struct objc_method_list *class_nextMethodList(Class class,void **iterator);

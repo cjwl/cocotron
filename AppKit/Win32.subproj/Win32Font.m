@@ -22,6 +22,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)dealloc {
    DeleteObject(_handle);
    NSDeallocateObject(self);
+   return;
+   [super dealloc];
 }
 
 -(HFONT)fontHandle {

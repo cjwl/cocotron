@@ -449,4 +449,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    NSUnimplementedMethod();
 }
 
++(void)decodeClassName:(NSString *)archiveName asClassName:(NSString *)runtimeName {
+   NSUnimplementedMethod();
+}
+
+-(void)replaceObject:original withObject:replacement {
+   NSUnimplementedMethod();
+}
+
 @end

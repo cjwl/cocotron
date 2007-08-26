@@ -19,9 +19,29 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return self;
 }
 
+-initWithWindow:(NSWindow *)window rect:(NSRect)rect {
+   NSUnimplementedMethod();
+   return nil;
+}
+
+-initWithSize:(NSSize)size depth:(NSWindowDepth)windowDepth separate:(BOOL)separateWindow alpha:(BOOL)hasAlpha {
+   NSUnimplementedMethod();
+   return nil;
+}
+
 -(void)dealloc {
    [_layer release];
    [super dealloc];
+}
+
+-(NSWindow *)window {
+   NSUnimplementedMethod();
+   return nil;
+}
+
+-(NSRect)rect {
+   NSUnimplementedMethod();
+   return NSZeroRect;
 }
 
 -(KGContext *)graphicsContext {

@@ -28,11 +28,17 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 +(NSData *)archivedDataWithRootObject:rootObject;
 +(BOOL)archiveRootObject:rootObject toFile:(NSString *)path;
 
+-(NSMutableData *)archiverData;
+
 -(void)encodeValueOfObjCType:(const char *)type at:(const void *)addr;
 -(void)encodeDataObject:(NSData *)data;
 
 -(void)encodeRootObject:rootObject;
 -(void)encodeConditionalObject:object;
+
+-(void)encodeClassName:(NSString *)runtime intoClassName:(NSString *)archive;
+
+-(void)replaceObject:original withObject:replacement;
 
 @end
 

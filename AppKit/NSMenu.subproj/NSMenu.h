@@ -11,6 +11,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @class NSMenuItem,NSWindow,NSEvent,NSView;
 
 @interface NSMenu : NSObject <NSCopying> {
+   NSMenu         *_supermenu;
    NSString       *_title;
    NSString       *_name;
    NSMutableArray *_itemArray;
@@ -21,6 +22,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -initWithTitle:(NSString *)title;
 
+-(NSMenu *)supermenu;
 -(NSString *)title;
 -(int)numberOfItems;
 -(NSArray *)itemArray;
@@ -37,6 +39,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(int)indexOfItemWithTarget:(id)target andAction:(SEL)action;
 -(int)indexOfItemWithSubmenu:(NSMenu *)menu;
 
+-(void)setSupermenu:(NSMenu *)value;
+-(void)setTitle:(NSString *)title;
 -(void)setAutoenablesItems:(BOOL)flag;
 
 -(void)addItem:(NSMenuItem *)item;

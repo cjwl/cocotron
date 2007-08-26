@@ -16,10 +16,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    NSMutableArray *_representations;
 }
 
++(NSArray *)imageFileTypes;
 +(NSArray *)imageUnfilteredFileTypes;
 
 +imageNamed:(NSString *)name;
 -initWithContentsOfFile:(NSString *)path;
+-initByReferencingFile:(NSString *)path;
 
 -initWithSize:(NSSize)size;
 
@@ -29,15 +31,20 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(BOOL)isCachedSeparately;
 
 -(BOOL)setName:(NSString *)string;
+-(void)setSize:(NSSize)size;
 -(void)addRepresentation:(NSImageRep *)imageRep;
 -(void)setScalesWhenResized:(BOOL)flag;
 -(void)setCachedSeparately:(BOOL)flag;
+-(void)setBackgroundColor:(NSColor *)color;
 
 -(void)lockFocus;
+-(void)lockFocusOnRepresentation:(NSImageRep *)representation;
 -(void)unlockFocus;
 
 -(void)compositeToPoint:(NSPoint)point operation:(NSCompositingOperation)operation;
 -(void)compositeToPoint:(NSPoint)point operation:(NSCompositingOperation)operation fraction:(float)fraction;
+
+-(void)compositeToPoint:(NSPoint)point fromRect:(NSRect)rect operation:(NSCompositingOperation)operation;
 
 @end
 

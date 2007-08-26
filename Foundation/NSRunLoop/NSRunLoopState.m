@@ -45,14 +45,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     [[_asyncInputSourceSets objectAtIndex:i] changingIntoMode:mode];
 }
 
-
--(NSDate *)limitDateForMode:(NSString *)mode {
+-(void)fireTimers {
    NSMutableArray *fire=[NSMutableArray array];
-   NSDate         *limit=nil;
    NSDate         *now=[NSDate date];
-   int             count;
-
-   count=[_timers count];
+   int             count=[_timers count];
+   
    while(--count>=0){
     NSTimer *timer=[_timers objectAtIndex:count];
 
@@ -63,6 +60,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    }
 
    [fire makeObjectsPerformSelector:@selector(fire)];
+}
+
+-(NSDate *)limitDateForMode:(NSString *)mode {
+   NSDate *limit=nil;
+   int     count;
 
    count=[_timers count];
    while(--count>=0){

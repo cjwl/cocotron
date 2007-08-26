@@ -244,6 +244,19 @@ static inline void buildTransformsIfNeeded(NSView *self) {
    return _superview;
 }
 
+-(BOOL)isDescendantOf:(NSView *)other {
+   NSView *check=self;
+   
+   do {
+    if(check==other)
+     return YES;
+     
+    check=[check superview];
+   }while(check!=nil);
+   
+   return NO;
+}
+
 -(NSScrollView *)enclosingScrollView {
    id result=[self superview];
 
@@ -671,7 +684,7 @@ static inline void buildTransformsIfNeeded(NSView *self) {
    _draggedTypes=nil;
 }
 
--(void)removeView:(NSView *)view {
+-(void)removeView:(NSView *)view  {
    [_subviews removeObjectIdenticalTo:view];
 
    [self setNeedsDisplay:YES];
@@ -687,6 +700,22 @@ static inline void buildTransformsIfNeeded(NSView *self) {
    [self _setWindow:nil];
 
    [removeFrom removeView:self];
+}
+
+-(void)removeViewWithoutDisplay:(NSView *)view  {
+   [_subviews removeObjectIdenticalTo:view];
+}
+
+-(void)removeFromSuperviewWithoutNeedingDisplay {
+   NSView *removeFrom=_superview;
+
+   [self discardCursorRects];
+   [[self window] _discardTrackingRectsForView:self toolTipsOnly:YES];
+
+   [self _setSuperview:nil];
+   [self _setWindow:nil];
+
+   [removeFrom removeViewWithoutDisplay:self];
 }
 
 -(void)viewWillMoveToWindow:(NSWindow *)window {
@@ -960,6 +989,38 @@ static inline void buildTransformsIfNeeded(NSView *self) {
 
     for(i=0;i<count;i++) // back to front
      [[_subviews objectAtIndex:i] displayIfNeeded];
+   }
+}
+
+-(void)displayIfNeededInRect:(NSRect)rect {
+   if([self needsDisplay])
+    [self displayRect:rect];
+   else {
+    int i,count=[_subviews count];
+
+    for(i=0;i<count;i++){ // back to front
+     NSView *child=[_subviews objectAtIndex:i];
+     NSRect  converted=NSIntersectionRect([self convertRect:rect toView:child],[child bounds]);
+   
+     if(!NSIsEmptyRect(converted))
+      [child displayIfNeededInRect:converted];
+    }
+   }
+}
+
+-(void)displayIfNeededInRectIgnoringOpacity:(NSRect)rect {
+   if([self needsDisplay])
+    [self displayRectIgnoringOpacity:rect];
+   else {
+    int i,count=[_subviews count];
+
+    for(i=0;i<count;i++){ // back to front
+     NSView *child=[_subviews objectAtIndex:i];
+     NSRect  converted=NSIntersectionRect([self convertRect:rect toView:child],[child bounds]);
+   
+     if(!NSIsEmptyRect(converted))
+      [child displayIfNeededInRectIgnoringOpacity:converted];
+    }
    }
 }
 

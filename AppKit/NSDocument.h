@@ -94,6 +94,12 @@ typedef enum {
 
 -(BOOL)validateMenuItem:(NSMenuItem *)item;
 
+-(void)close;
+
+// deprecated, avoid
+
+-(BOOL)canCloseDocument;
+
 // private
 -(void)_setUntitledNumber:(int)number;
 @end

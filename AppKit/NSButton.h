@@ -18,6 +18,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(NSString *)title;
 -(int)state;
 -(BOOL)allowsMixedState;
+-(NSSound *)sound;
 
 -(void)setTransparent:(BOOL)flag;
 -(void)setKeyEquivalent:(NSString *)keyEquivalent;
@@ -27,6 +28,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)setState:(int)value;
 -(void)setNextState;
 -(void)setAllowsMixedState:(BOOL)flag;
+-(void)setSound:(NSSound *)sound;
 
 -(void)performClick:sender;
 

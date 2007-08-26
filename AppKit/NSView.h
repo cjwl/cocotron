@@ -76,6 +76,7 @@ APPKIT_EXPORT NSString *NSViewFocusDidChangeNotification;
 
 -(NSWindow *)window;
 -superview;
+-(BOOL)isDescendantOf:(NSView *)other;
 -(NSScrollView *)enclosingScrollView;
 
 -(NSArray *)subviews;
@@ -149,6 +150,7 @@ APPKIT_EXPORT NSString *NSViewFocusDidChangeNotification;
 -(void)unregisterDraggedTypes;
 
 -(void)removeFromSuperview;
+-(void)removeFromSuperviewWithoutNeedingDisplay;
 
 -(void)viewWillMoveToWindow:(NSWindow *)window;
 -(void)viewWillMoveToSuperview:(NSView *)view;
@@ -179,6 +181,8 @@ APPKIT_EXPORT NSString *NSViewFocusDidChangeNotification;
 -(NSView *)opaqueAncestor;
 -(void)display;
 -(void)displayIfNeeded;
+-(void)displayIfNeededInRect:(NSRect)rect;
+-(void)displayIfNeededInRectIgnoringOpacity:(NSRect)rect;
 -(void)displayRect:(NSRect)rect;
 -(void)displayRectIgnoringOpacity:(NSRect)rect;
 -(void)drawRect:(NSRect)rect;

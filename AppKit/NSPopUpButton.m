@@ -34,6 +34,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     return [_cell menu];
 }
 
+-(NSArray *)itemArray {
+   return [_cell itemArray];
+}
+
 -(int)numberOfItems {
    return [_cell numberOfItems];
 }

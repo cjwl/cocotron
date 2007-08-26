@@ -30,6 +30,18 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return self;
 }
 
+-delegate {
+   return _delegate;
+}
+
+-(SEL)action {
+   return _action;
+}
+
+-(void)setAction:(SEL)value {
+   _action=value;
+}
+
 -(void)setFontPanel:(NSFontPanel *)panel {
    panel=[panel retain];
    [_panel release];
@@ -146,10 +158,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)setDelegate:delegate {
    _delegate=delegate;
-}
-
--delegate {
-   return _delegate;
 }
 
 -(NSArray *)availableFonts {

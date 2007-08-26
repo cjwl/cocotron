@@ -144,24 +144,16 @@ FOUNDATION_EXPORT char *NSUnicodeToSymbol(const unichar *characters,unsigned len
    return [self fontWithName:name size:matrix[0]];
 }
 
-+(NSFont *)systemFontOfSize:(float)size {
-   return [self messageFontOfSize:size];
-}
-
-+(NSFont *)messageFontOfSize:(float)size {
-   return [NSFont fontWithName:@"Arial" size:(size==0)?12.0:size];
-}
-
-+(NSFont *)userFontOfSize:(float)size {
-   return [NSFont fontWithName:@"Arial" size:(size==0)?12.0:size];
-}
-
-+(NSFont *)userFixedPitchFontOfSize:(float)size {
-   return [NSFont fontWithName:@"Courier New" size:(size==0)?12.0:size];
-}
-
 +(NSFont *)boldSystemFontOfSize:(float)size {
    return [NSFont fontWithName:@"Arial Bold" size:(size==0)?12.0:size];
+}
+
++(NSFont *)controlContentFontOfSize:(float)size {
+   return [NSFont fontWithName:@"Arial" size:(size==0)?12.0:size];
+}
+
++(NSFont *)labelFontOfSize:(float)size {
+   return [NSFont fontWithName:@"Arial" size:(size==0)?12.0:size];
 }
 
 +(NSFont *)menuFontOfSize:(float)size {
@@ -171,9 +163,32 @@ FOUNDATION_EXPORT char *NSUnicodeToSymbol(const unichar *characters,unsigned len
    return [NSFont fontWithName:name size:(size==0)?pointSize:size];
 }
 
-// nb check
-+(NSFont *)toolTipFontOfSize:(float)size {
++(NSFont *)messageFontOfSize:(float)size {
    return [NSFont fontWithName:@"Arial" size:(size==0)?12.0:size];
+}
+
++(NSFont *)paletteFontOfSize:(float)size {
+   return [NSFont fontWithName:@"Arial" size:(size==0)?12.0:size];
+}
+
++(NSFont *)systemFontOfSize:(float)size {
+   return [self messageFontOfSize:size];
+}
+
++(NSFont *)titleBarFontOfSize:(float)size {
+   return [NSFont fontWithName:@"Arial" size:(size==0)?12.0:size];
+}
+
++(NSFont *)toolTipsFontOfSize:(float)size {
+   return [NSFont fontWithName:@"Arial" size:(size==0)?12.0:size];
+}
+
++(NSFont *)userFontOfSize:(float)size {
+   return [NSFont fontWithName:@"Arial" size:(size==0)?12.0:size];
+}
+
++(NSFont *)userFixedPitchFontOfSize:(float)size {
+   return [NSFont fontWithName:@"Courier New" size:(size==0)?12.0:size];
 }
 
 -(NSString *)description {

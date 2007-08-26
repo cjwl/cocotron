@@ -16,6 +16,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -initWithWindow:(NSWindow *)window {
    _window=[window retain];
+   [_window setWindowController:self];
    _nibPath=nil;
    _owner=nil;
    _document=nil;
@@ -47,6 +48,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)dealloc {
+   [_window setWindowController:nil];
    [_window release];
    [_nibPath release];
    [_windowFrameAutosaveName release];
@@ -68,9 +70,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)setWindow:(NSWindow *)window {
+   [_window setWindowController:nil];
    window=[window retain];
    [_window release];
    _window=window;
+   [_window setWindowController:self];
 }
 
 -(BOOL)isWindowLoaded {

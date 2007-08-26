@@ -87,6 +87,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return [self retain];
 }
 
+-(NSMenu *)supermenu {
+   return _supermenu;
+}
+
 -(NSString *)title {
    return _title;
 }
@@ -188,6 +192,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
             return i;
 
     return -1;
+}
+
+-(void)setSupermenu:(NSMenu *)value {
+   _supermenu=value;
+}
+
+-(void)setTitle:(NSString *)title {
+   title=[title copy];
+   [_title release];
+   _title=title;
 }
 
 -(void)setAutoenablesItems:(BOOL)flag {

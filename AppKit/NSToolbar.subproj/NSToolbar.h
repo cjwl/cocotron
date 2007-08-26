@@ -58,6 +58,7 @@ APPKIT_EXPORT NSString *NSToolbarDidRemoveItemNotification;
 -(NSDictionary *)configurationDictionary;
 -(BOOL)autosavesConfiguration;
 -(BOOL)allowsUserCustomization;
+-(NSString *)selectedItemIdentifier;
 
 -(void)insertItemWithItemIdentifier:(NSString *)identifier atIndex:(int)index;
 -(void)removeItemAtIndex:(int)index;
@@ -69,6 +70,7 @@ APPKIT_EXPORT NSString *NSToolbarDidRemoveItemNotification;
 -(void)setConfigurationFromDictionary:(NSDictionary *)dictionary;
 -(void)setAutosavesConfiguration:(BOOL)flag;
 -(void)setAllowsUserCustomization:(BOOL)flag;
+-(void)setSelectedItemIdentifier:(NSString *)identifier;
 
 -(void)validateVisibleItems;
 

@@ -8,6 +8,34 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <AppKit/NSMatrix.h>
 
+@class NSFormCell;
+
 @interface NSForm : NSMatrix
+
+-cellAtIndex:(int)index;
+-(int)indexOfCellWithTag:(int)tag;
+-(int)indexOfSelectedItem;
+
+-(void)setBordered:(BOOL)value;
+-(void)setBezeled:(BOOL)value;
+
+-(void)setEntryWidth:(float)value;
+-(void)setInterlineSpacing:(float)value;
+
+-(void)setTitleAlignment:(NSTextAlignment)value;
+-(void)setTitleFont:(NSFont *)value;
+-(void)setTitleBaseWritingDirection:(NSWritingDirection)value;
+
+-(void)setTextAlignment:(NSTextAlignment)value;
+-(void)setTextFont:(NSFont *)value;
+-(void)setTextBaseWritingDirection:(NSWritingDirection)value;
+
+-(NSFormCell *)addEntry:(NSString *)title;
+-(NSFormCell *)insertEntry:(NSString *)title atIndex:(int)index;
+-(void)removeEntryAtIndex:(int)index;
+
+-(void)selectTextAtIndex:(int)index;
+
+-(void)drawCellAtIndex:(int)index;
 
 @end

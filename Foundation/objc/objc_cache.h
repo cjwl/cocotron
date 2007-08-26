@@ -3,7 +3,7 @@
 // the cache entry size must be a power of 2
 typedef struct {
    long        offsetToNextEntry;
-   OBJCMethod *method;
+   struct objc_method *method;
 } OBJCMethodCacheEntry;
 
 #define OBJCMethodCacheNumberOfEntries 64

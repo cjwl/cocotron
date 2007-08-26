@@ -48,6 +48,19 @@ extern NSMethodSignature *NSMethodSignatureWithTypes(const char *types);
    return self;
 }
 
++(BOOL)isSubclassOfClass:(Class)cls {
+   Class check=self;
+   
+   do {
+    check=[check superclass];
+    
+    if(check==cls)
+     return YES;
+     
+   }while(check!=[NSObject class]);
+   
+   return NO;
+}
 
 +(BOOL)instancesRespondToSelector:(SEL)selector {
    return OBJCLookupUniqueIdInClass(self,selector)!=NULL;

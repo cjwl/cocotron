@@ -243,6 +243,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return rect;
 }
 
+-(BOOL)containsValueForKey:(NSString *)key {
+   NSUnimplementedMethod();
+   return NO;
+}
+
+-(void *)decodeBytesForKey:(NSString *)key returnedLength:(unsigned *)lengthp {
+   *lengthp=0;
+   return NULL;
+}
 
 -(BOOL)decodeBoolForKey:(NSString *)key {
    BOOL result;

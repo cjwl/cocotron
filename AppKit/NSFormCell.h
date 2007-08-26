@@ -8,20 +8,27 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <AppKit/NSActionCell.h>
 
+@class NSTextFieldCell;
+
 @interface NSFormCell : NSActionCell {
    float _titleWidth;
-   id    _titleCell;
+   NSTextFieldCell *_titleCell;
 }
 
 -(float)titleWidth;
+-(float)titleWidth:(NSSize)size;
 -(NSString *)title;
 -(NSAttributedString *)attributedTitle;
 -(NSFont *)titleFont;
 -(NSTextAlignment)titleAlignment;
+-(NSWritingDirection)titleBaseWritingDirection;
 
--(void)setTitleWidth:(float)width;
--(void)setTitle:(NSString *)title;
--(void)setTitleFont:(NSFont *)font;
--(void)setTitleAlignment:(NSTextAlignment)alignment;
+-(void)setTitleWidth:(float)value;
+-(void)setTitle:(NSString *)value;
+-(void)setAttributedTitle:(NSAttributedString *)value;
+-(void)setTitleWithMnemonic:(NSString *)value;
+-(void)setTitleFont:(NSFont *)value;
+-(void)setTitleAlignment:(NSTextAlignment)value;
+-(void)setTitleBaseWritingDirection:(NSWritingDirection)value;
 
 @end

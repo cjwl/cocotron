@@ -44,4 +44,141 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    }
 }
 
+-cellAtIndex:(int)index {
+   return [[self cells] objectAtIndex:index];
+}
+
+-(int)indexOfCellWithTag:(int)tag {
+   NSArray *cells=[self cells];
+   int      i,count=[cells count];
+   
+   for(i=0;i<count;i++)
+    if([[cells objectAtIndex:i] tag]==tag)
+     return i;
+   
+   return -1;
+}
+
+-(int)indexOfSelectedItem {
+   return [self selectedRow];
+}
+
+
+-(void)setBordered:(BOOL)value {
+   NSArray *cells=[self cells];
+   int      i,count=[cells count];
+   
+   for(i=0;i<count;i++)
+    [[cells objectAtIndex:i] setBordered:value];
+    
+   [self setNeedsDisplay:YES];
+}
+
+-(void)setBezeled:(BOOL)value {
+   NSArray *cells=[self cells];
+   int      i,count=[cells count];
+   
+   for(i=0;i<count;i++)
+    [[cells objectAtIndex:i] setBezeled:value];
+
+   [self setNeedsDisplay:YES];
+}
+
+-(void)setEntryWidth:(float)value {
+   NSSize size=[self cellSize];
+   
+   size.width=value;
+   [self setCellSize:size];
+}
+
+-(void)setInterlineSpacing:(float)value {
+   [self setIntercellSpacing:NSMakeSize(0,value)];
+}
+
+-(void)setTitleAlignment:(NSTextAlignment)value {
+   NSArray *cells=[self cells];
+   int      i,count=[cells count];
+   
+   for(i=0;i<count;i++)
+    [[cells objectAtIndex:i] setTitleAlignment:value];
+    
+   [self setNeedsDisplay:YES];
+}
+
+-(void)setTitleFont:(NSFont *)value {
+   NSArray *cells=[self cells];
+   int      i,count=[cells count];
+   
+   for(i=0;i<count;i++)
+    [[cells objectAtIndex:i] setTitleFont:value];
+    
+   [self setNeedsDisplay:YES];
+}
+
+-(void)setTitleBaseWritingDirection:(NSWritingDirection)value {
+   NSArray *cells=[self cells];
+   int      i,count=[cells count];
+   
+   for(i=0;i<count;i++)
+    [[cells objectAtIndex:i] setTitleBaseWritingDirection:value];
+    
+   [self setNeedsDisplay:YES];
+}
+
+-(void)setTextAlignment:(NSTextAlignment)value {
+   NSArray *cells=[self cells];
+   int      i,count=[cells count];
+   
+   for(i=0;i<count;i++)
+    [[cells objectAtIndex:i] setAlignment:value];
+    
+   [self setNeedsDisplay:YES];
+}
+
+-(void)setTextFont:(NSFont *)value {
+   NSArray *cells=[self cells];
+   int      i,count=[cells count];
+   
+   for(i=0;i<count;i++)
+    [[cells objectAtIndex:i] setFont:value];
+    
+   [self setNeedsDisplay:YES];
+}
+
+-(void)setTextBaseWritingDirection:(NSWritingDirection)value {
+   NSArray *cells=[self cells];
+   int      i,count=[cells count];
+   
+   for(i=0;i<count;i++)
+    [[cells objectAtIndex:i] setBaseWritingDirection:value];
+    
+   [self setNeedsDisplay:YES];
+}
+
+-(NSFormCell *)addEntry:(NSString *)title {   
+   [self addRow];
+   [[[self cells] lastObject] setTitle:title];
+   
+   return [[self cells] lastObject];
+}
+
+-(NSFormCell *)insertEntry:(NSString *)title atIndex:(int)index {
+   [self insertRow:index];
+   [[self cellAtRow:index column:0] setTitle:title];
+   
+   return [self cellAtRow:index column:0];
+}
+
+-(void)removeEntryAtIndex:(int)index {
+   [self removeRow:index];
+}
+
+-(void)selectTextAtIndex:(int)index {
+   NSUnimplementedMethod();
+}
+
+-(void)drawCellAtIndex:(int)index {
+   [self drawCellAtRow:index column:0];
+}
+
 @end

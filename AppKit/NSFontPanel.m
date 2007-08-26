@@ -183,6 +183,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [self setPanelFont:[manager selectedFont] isMultiple:[manager isMultiple]];
 }
 
+-(void)setAccessoryView:(NSView *)view {
+   NSUnimplementedMethod();
+}
+
+-(NSView *)accessoryView {
+   NSUnimplementedMethod();
+   return nil;
+}
+
 -(void)setPanelFont:(NSFont *)font isMultiple:(BOOL)isMultiple {
    NSFontFamily   *family=[NSFontFamily fontFamilyWithTypefaceName:[font fontName]];
    NSFontTypeface *typeface=[family typefaceWithName:[font fontName]];

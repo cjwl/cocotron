@@ -112,6 +112,11 @@ int __CFConstantStringClassReference[1];
    return nil;
 }
 
+-initWithUTF8String:(const char *)utf8 {
+   NSInvalidAbstractInvocation();
+   return nil;
+}
+
 -initWithContentsOfFile:(NSString *)path {
    NSInvalidAbstractInvocation();
    return nil;
@@ -588,6 +593,9 @@ U+2029 (Unicode paragraph separator), \r\n, in that order (also known as CRLF)
    if(NSMaxRange(range)>[self length])
     [NSException raise:NSRangeException format:@"-[%@ %s] range %d,%d beyond length %d",isa,SELNAME(_cmd),range.location,range.length,[self length]];
 
+   if(range.length==0)
+    return @"";
+    
    unicode=__builtin_alloca(sizeof(unichar)*range.length);
 
    [self getCharacters:unicode range:range];
@@ -870,6 +878,26 @@ U+2029 (Unicode paragraph separator), \r\n, in that order (also known as CRLF)
 -(NSString *)stringByAddingPercentEscapesUsingEncoding:(NSStringEncoding)encoding {
    NSUnimplementedMethod();
    return nil;
+}
+
+-(NSString *)stringByTrimmingCharactersInSet:(NSCharacterSet *)set {
+   unsigned length=[self length];
+   unsigned location=0;
+   unichar  buffer[length];
+   
+   [self getCharacters:buffer];
+   for(;location<length;location++)
+    if(![set characterIsMember:buffer[location]])
+     break;
+   
+   while(length>location) {
+    if(![set characterIsMember:buffer[length-1]])
+     break;
+     
+    length--;
+   }
+   
+   return [self substringWithRange:NSMakeRange(location,length-location)];
 }
 
 +(NSStringEncoding)defaultCStringEncoding {

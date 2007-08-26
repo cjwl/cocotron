@@ -20,6 +20,17 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     return _marker;
 }
 
+-(void)setFile:(NSString *)file {
+   file=[file copy];
+   [_file release];
+   _file=file;
+}
+
+-(void)setMarker:(NSString *)marker {
+   marker=[marker copy];
+   [_marker release];
+   _marker=marker;
+}
 
 -(void)establishConnection  {
 #if 0

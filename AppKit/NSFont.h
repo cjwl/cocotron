@@ -41,13 +41,17 @@ typedef enum {
 +(NSFont *)fontWithName:(NSString *)name size:(float)size;
 +(NSFont *)fontWithName:(NSString *)name matrix:(const float *)matrix;
 
-+(NSFont *)systemFontOfSize:(float)size;
++(NSFont *)boldSystemFontOfSize:(float)size;
++(NSFont *)controlContentFontOfSize:(float)size;
++(NSFont *)labelFontOfSize:(float)size;
++(NSFont *)menuFontOfSize:(float)size;
 +(NSFont *)messageFontOfSize:(float)size;
++(NSFont *)paletteFontOfSize:(float)size;
++(NSFont *)systemFontOfSize:(float)size;
++(NSFont *)titleBarFontOfSize:(float)size;
++(NSFont *)toolTipsFontOfSize:(float)size;
 +(NSFont *)userFontOfSize:(float)size;
 +(NSFont *)userFixedPitchFontOfSize:(float)size;
-+(NSFont *)boldSystemFontOfSize:(float)size;
-+(NSFont *)menuFontOfSize:(float)size;
-+(NSFont *)toolTipFontOfSize:(float)size;
 
 -(float)pointSize;
 -(NSString *)fontName;

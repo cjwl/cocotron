@@ -10,7 +10,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/AppKitExport.h>
 #import <AppKit/NSView.h>
 
-@class NSView, NSEvent, NSColor, NSCursor, NSImage, NSScreen, NSText, NSTextView, CGWindow, NSPasteboard, NSSheetContext, NSUndoManager, NSButtonCell, NSDrawer, NSToolbar, NSWindowAnimationContext, NSTrackingRect, NSWindowBackgroundView;
+@class NSView, NSEvent, NSColor, NSCursor, NSImage, NSScreen, NSText, NSTextView, CGWindow, NSPasteboard, NSSheetContext, NSUndoManager, NSButtonCell, NSDrawer, NSToolbar, NSWindowAnimationContext, NSTrackingRect, NSWindowBackgroundView,NSWindowController;
 
 enum {
    NSBorderlessWindowMask=0x00,
@@ -87,7 +87,9 @@ APPKIT_EXPORT NSString *NSWindowDidAnimateNotification;
    BOOL      _makeSureIsOnAScreen;
 
    BOOL      _acceptsMouseMovedEvents;
+   BOOL      _excludedFromWindowsMenu;
    BOOL      _isDeferred;
+   BOOL      _dynamicDepthLimit;
    BOOL      _isOneShot;
    BOOL      _useOptimizedDrawing;
    BOOL      _releaseWhenClosed;
@@ -96,11 +98,11 @@ APPKIT_EXPORT NSString *NSWindowDidAnimateNotification;
    BOOL      _isActive;
    BOOL      _viewsNeedDisplay;
    BOOL      _flushNeeded;
-
+   BOOL      _isAutodisplay;
+   
    BOOL      _useResizeInfo;
    BOOL      _resizeInfoIsRatio;
    BOOL      _defaultButtonCellKeyEquivalentDisabled;
-
    NSString *_autosaveFrameName;
 
    CGWindow *_platformWindow;
@@ -108,16 +110,19 @@ APPKIT_EXPORT NSString *NSWindowDidAnimateNotification;
    NSView *_initialFirstResponder;
    NSButtonCell *_defaultButtonCell;
 
+   NSWindowController *_windowController;
    NSMutableArray *_drawers;
    NSToolbar *_toolbar;
    NSWindowAnimationContext *_animationContext;
    NSTrackingRect *_trackedRect;
 }
 
++(NSWindowDepth)defaultDepthLimit;
 +(NSRect)frameRectForContentRect:(NSRect)contentRect styleMask:(unsigned)styleMask;
 +(NSRect)contentRectForFrameRect:(NSRect)frameRect styleMask:(unsigned)styleMask;
 
 -initWithContentRect:(NSRect)contentRect styleMask:(unsigned int)styleMask backing:(unsigned)backing defer:(BOOL)defer;
+-initWithContentRect:(NSRect)contentRect styleMask:(unsigned int)styleMask backing:(unsigned)backing defer:(BOOL)defer screen:(NSScreen *)screen;
 
 -(NSString *)title;
 -contentView;
@@ -129,12 +134,17 @@ APPKIT_EXPORT NSString *NSWindowDidAnimateNotification;
 -(NSSize)maxSize;
 
 -(unsigned)styleMask;
+-(NSBackingStoreType)backingType;
+-(BOOL)hasDynamicDepthLimit;
 -(BOOL)isOneShot;
 -(BOOL)isReleasedWhenClosed;
 -(BOOL)hidesOnDeactivate;
 -(BOOL)worksWhenModal;
 -(BOOL)isSheet;
 -(BOOL)acceptsMouseMovedEvents;
+-(BOOL)isExcludedFromWindowsMenu;
+-(BOOL)isAutodisplay;
+-(NSString *)frameAutosaveName;
 
 -(NSResponder *)firstResponder;
 -(NSView *)initialFirstResponder;
@@ -142,15 +152,19 @@ APPKIT_EXPORT NSString *NSWindowDidAnimateNotification;
 -(NSImage *)miniwindowImage;
 -(NSString *)miniwindowTitle;
 -(NSColor *)backgroundColor;
+-(float)alphaValue;
+-(NSWindowDepth)depthLimit;
 
 -(NSToolbar *)toolbar;
 
 -(NSButtonCell *)defaultButtonCell;
 -(NSWindow *)attachedSheet;
 
+-(NSWindowController *)windowController;
 -(NSArray *)drawers;
 
 -(int)windowNumber;
+-(int)gState;
 -(NSScreen *)screen;
 
 -(BOOL)isDocumentEdited;
@@ -179,16 +193,21 @@ APPKIT_EXPORT NSString *NSWindowDidAnimateNotification;
 -(void)setMinSize:(NSSize)size;
 -(void)setMaxSize:(NSSize)size;
 
+-(void)setDynamicDepthLimit:(BOOL)value;
 -(void)setOneShot:(BOOL)flag;
 -(void)setReleasedWhenClosed:(BOOL)flag;
 -(void)setHidesOnDeactivate:(BOOL)flag;
 -(void)setAcceptsMouseMovedEvents:(BOOL)flag;
+-(void)setExcludedFromWindowsMenu:(BOOL)value;
+-(void)setAutodisplay:(BOOL)value;
+
 -(void)setInitialFirstResponder:(NSView *)view;
 -(void)setMiniwindowImage:(NSImage *)image;
 -(void)setMiniwindowTitle:(NSString *)title;
 -(void)setBackgroundColor:(NSColor *)color;
 -(void)setToolbar:(NSToolbar*)toolbar;
 -(void)setDefaultButtonCell:(NSButtonCell *)buttonCell;
+-(void)setWindowController:(NSWindowController *)value;
 -(void)setDocumentEdited:(BOOL)flag;
 
 -(BOOL)setFrameUsingName:(NSString *)name;
@@ -248,6 +267,8 @@ APPKIT_EXPORT NSString *NSWindowDidAnimateNotification;
 -(NSEvent *)nextEventMatchingMask:(unsigned int)mask untilDate:(NSDate *)untilDate inMode:(NSString *)mode dequeue:(BOOL)dequeue;
 
 -(void)sendEvent:(NSEvent *)event;
+-(void)postEvent:(NSEvent *)event atStart:(BOOL)atStart;
+
 -(NSPoint)mouseLocationOutsideOfEventStream;
 
 -(void)registerForDraggedTypes:(NSArray *)types;

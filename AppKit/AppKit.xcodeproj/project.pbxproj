@@ -699,9 +699,9 @@
 		FE01A8E10C5D9BCB00AEA51A /* NSCustomObject.h in Headers */ = {isa = PBXBuildFile; fileRef = 6EC4AC670A35D47800E8D6CA /* NSCustomObject.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE01A8E20C5D9BCB00AEA51A /* NSWindowTemplate.h in Headers */ = {isa = PBXBuildFile; fileRef = 6EC4ACFB0A36613800E8D6CA /* NSWindowTemplate.h */; };
 		FE01A8E30C5D9BCB00AEA51A /* NSButtonImageSource.h in Headers */ = {isa = PBXBuildFile; fileRef = 6EC4ADE40A37294300E8D6CA /* NSButtonImageSource.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		FE01A8E40C5D9BCB00AEA51A /* NSClassSwapper.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E81CA740A3883660089C666 /* NSClassSwapper.h */; };
+		FE01A8E40C5D9BCB00AEA51A /* NSClassSwapper.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E81CA740A3883660089C666 /* NSClassSwapper.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE01A8E50C5D9BCB00AEA51A /* NSCustomResource.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E81CCCE0A39CBE00089C666 /* NSCustomResource.h */; };
-		FE01A8E60C5D9BCB00AEA51A /* NSCustomView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6ECABDF70A3FA2B700AD7F7B /* NSCustomView.h */; };
+		FE01A8E60C5D9BCB00AEA51A /* NSCustomView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6ECABDF70A3FA2B700AD7F7B /* NSCustomView.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE01A8E70C5D9BCB00AEA51A /* NSNibKeyedUnarchiver.h in Headers */ = {isa = PBXBuildFile; fileRef = 6ECABE310A40520700AD7F7B /* NSNibKeyedUnarchiver.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE01A8E80C5D9BCB00AEA51A /* NSTextViewSharedData.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E404FE50A52FEA900FA9AE5 /* NSTextViewSharedData.h */; };
 		FE01A8E90C5D9BCB00AEA51A /* NSMutableAttributedString.h in Headers */ = {isa = PBXBuildFile; fileRef = FE56BA020B1221330046B7D9 /* NSMutableAttributedString.h */; settings = {ATTRIBUTES = (Public, ); }; };

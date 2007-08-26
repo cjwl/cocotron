@@ -34,5 +34,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 +(id)unarchiveObjectWithFile:(NSString *)path;
 
 -(void)decodeClassName:(NSString *)archiveName asClassName:(NSString *)runtimeName;
++(void)decodeClassName:(NSString *)archiveName asClassName:(NSString *)runtimeName;
+
+-(void)replaceObject:original withObject:replacement;
 
 @end
