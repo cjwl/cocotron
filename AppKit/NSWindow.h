@@ -100,9 +100,12 @@ APPKIT_EXPORT NSString *NSWindowDidAnimateNotification;
    BOOL      _flushNeeded;
    BOOL      _isAutodisplay;
    
-   BOOL      _useResizeInfo;
-   BOOL      _resizeInfoIsRatio;
    BOOL      _defaultButtonCellKeyEquivalentDisabled;
+   
+   BOOL      _useAspectRatio;
+   BOOL      _aspectRatioIsContent;
+   NSSize    _aspectRatio;
+   
    NSString *_autosaveFrameName;
 
    CGWindow *_platformWindow;
@@ -209,6 +212,7 @@ APPKIT_EXPORT NSString *NSWindowDidAnimateNotification;
 -(void)setDefaultButtonCell:(NSButtonCell *)buttonCell;
 -(void)setWindowController:(NSWindowController *)value;
 -(void)setDocumentEdited:(BOOL)flag;
+-(void)setContentAspectRatio:(NSSize)value;
 
 -(BOOL)setFrameUsingName:(NSString *)name;
 -(BOOL)setFrameAutosaveName:(NSString *)name;

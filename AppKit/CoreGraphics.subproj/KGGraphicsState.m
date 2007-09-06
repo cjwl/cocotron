@@ -36,6 +36,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [_deviceState release];
    [_strokeColor release];
    [_fillColor release];
+   [_font release];
    if(_dashLengths!=NULL)
     NSZoneFree(NULL,_dashLengths);
    [_shadowColor release];
@@ -49,6 +50,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    copy->_deviceState=nil;
    copy->_strokeColor=[_strokeColor copyWithZone:zone];
    copy->_fillColor=[_fillColor copyWithZone:zone];
+   copy->_font=[_font retain];
+   if(_dashLengths!=NULL){
+    int i;
+    
+    copy->_dashLengths==NSZoneMalloc(zone,sizeof(float)*_dashLengthsCount);
+    for(i=0;i<_dashLengthsCount;i++)
+     copy->_dashLengths[i]=_dashLengths[i];
+   }
+    
    copy->_shadowColor=[_shadowColor copyWithZone:zone];
    
    return copy;

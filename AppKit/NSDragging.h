@@ -19,7 +19,8 @@ enum {
    NSDragOperationGeneric=0x04,
    NSDragOperationPrivate=0x08, 
    NSDragOperationMove=0x10,
-   NSDragOperationDelete=0x20
+   NSDragOperationDelete=0x20,
+   NSDragOperationEvery=UINT_MAX
 };
 
 @protocol NSDraggingInfo

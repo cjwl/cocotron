@@ -11,6 +11,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSString_cString.h>
 #import <Foundation/NSData_concrete.h>
 #import <Foundation/NSAutoreleasePool-private.h>
+#import <Foundation/NSKeyedUnarchiver.h>
 
 #import <Foundation/NSRaise.h>
 #import <Foundation/NSPlatform.h>
@@ -80,8 +81,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -initWithCoder:(NSCoder *)coder {
-   [self dealloc];
-   return [[coder decodeDataObject] retain];
+   if([coder allowsKeyedCoding]){
+    NSKeyedUnarchiver *keyed=(NSKeyedUnarchiver *)coder;
+    NSData            *data=[keyed decodeObjectForKey:@"NS.data"];
+    
+    return [self initWithData:data];
+   }
+   else {
+    [self dealloc];
+    return [[coder decodeDataObject] retain];
+   }
 }
 
 -(void)encodeWithCoder:(NSCoder *)coder {

@@ -359,7 +359,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -_decodeObjectWithPropertyList:plist {
 
-   if([plist isKindOfClass:[NSString class]])
+   if([plist isKindOfClass:[NSString class]] || [plist isKindOfClass:[NSData class]])
     return plist;
    if([plist isKindOfClass:[NSDictionary class]]){
     NSNumber *uid=[plist objectForKey:@"CF$UID"];

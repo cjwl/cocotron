@@ -26,8 +26,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)removeObjectsInRange:(NSRange)range;
 -(void)removeObjectsFromIndices:(unsigned *)indices numIndices:(unsigned)count;
 -(void)removeObjectsInArray:(NSArray *)array;
+-(void)removeObjectsAtIndexes:(NSIndexSet *)indexes; 
 
 -(void)insertObject:object atIndex:(unsigned)index;
+-(void)insertObjects:(NSArray *)objects atIndexes:(NSIndexSet *)indexes; 
 
 -(void)setArray:(NSArray *)array;
 -(void)replaceObjectAtIndex:(unsigned)index withObject:object;

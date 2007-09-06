@@ -15,6 +15,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSPropertyListReader.h>
 #import <Foundation/NSPredicate.h>
 #import <Foundation/NSSortDescriptor.h> 
+#import <Foundation/NSIndexSet.h> 
 
 @implementation NSMutableArray
 
@@ -220,10 +221,30 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    }
 }
 
+-(void)removeObjectsAtIndexes:(NSIndexSet *)indexes { 
+        unsigned int index = [indexes lastIndex]; 
+
+        while(index != NSNotFound) 
+        { 
+                [self removeObjectAtIndex:index]; 
+                index = [indexes indexLessThanIndex:index]; 
+        } 
+
+} 
 
 -(void)insertObject:object atIndex:(unsigned)index {
    NSInvalidAbstractInvocation();
 }
+
+-(void)insertObjects:(NSArray *)objects atIndexes:(NSIndexSet *)indexes { 
+        int i; 
+        int index = [indexes firstIndex]; 
+        for(i = 0; i < [objects count]; i++) 
+        { 
+                [self insertObject:[objects objectAtIndex:i] atIndex:index]; 
+                index = [indexes indexGreaterThanIndex:index]; 
+        } 
+} 
 
 -(void)setArray:(NSArray *)other {
    [self removeAllObjects];

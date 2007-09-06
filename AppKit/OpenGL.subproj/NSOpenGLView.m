@@ -11,6 +11,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSOpenGLContext.h>
 #import <AppKit/NSOpenGLPixelFormat.h>
 #import <Foundation/NSRaise.h>
+#import <AppKit/NSNibKeyedUnarchiver.h>
 
 @implementation NSOpenGLView
 
@@ -33,6 +34,18 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return [self initWithFrame:frame pixelFormat:[isa defaultPixelFormat]];
 }
 
+-initWithCoder:(NSCoder *)coder {
+   [super initWithCoder:coder];
+   
+   if([coder allowsKeyedCoding])
+    _pixelFormat=[[coder decodeObjectForKey:@"NSPixelFormat"] retain];
+   else
+    NSUnimplementedMethod();
+    
+   return self;
+}
+
+
 -(void)dealloc {
    [_pixelFormat release];
    [_context release];
@@ -45,7 +58,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(NSOpenGLContext *)openGLContext {
    if(_context==nil){
-    // _context=[[NSOpenGLContext alloc] initWithPixel:_pixelFormat shareContext:];
+    _context=[[NSOpenGLContext alloc] initWithFormat:_pixelFormat shareContext:nil];
+    [_context setView:self];
    }
    
    return _context;
@@ -58,13 +72,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)setOpenGLContext:(NSOpenGLContext *)context {
+   [_context clearDrawable];
    context=[context retain];
    [_context release];
    _context=context;
+   [_context setView:self];
 }
 
 -(void)update {
-   [_context update];
+   [[self openGLContext] update];
 }
 
 -(void)reshape {
@@ -80,6 +96,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
   
   [[self openGLContext] makeCurrentContext];
   [self prepareOpenGL];
+  if(_needsReshape)
+   [self reshape];
+}
+
+-(void)unlockFocus {
+   [[self openGLContext] flushBuffer];
 }
 
 -(void)clearGLContext {
@@ -94,7 +116,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)setBounds:(NSRect)bounds {
    [super setBounds:bounds];
-   [self reshape];
+   _needsReshape=YES;
 }
 
 @end

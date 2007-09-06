@@ -9,24 +9,77 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 // Original - Christopher Lloyd <cjwl@objc.net>
 #import <AppKit/NSOpenGLPixelFormat.h>
 #import <Foundation/NSRaise.h>
+#import <Foundation/NSCoder.h>
+#import <Foundation/NSData.h>
 
 @implementation NSOpenGLPixelFormat
+
+static inline BOOL attributeHasArgument(NSOpenGLPixelFormatAttribute attribute){
+   switch(attribute){
+    case NSOpenGLPFAAuxBuffers:
+    case NSOpenGLPFAColorSize:
+    case NSOpenGLPFAAlphaSize:
+    case NSOpenGLPFADepthSize:
+    case NSOpenGLPFAStencilSize:
+    case NSOpenGLPFAAccumSize:
+    case NSOpenGLPFARendererID:
+    case NSOpenGLPFAScreenMask:
+     return YES;
+   }
+   return NO;
+}
 
 -initWithAttributes:(NSOpenGLPixelFormatAttribute *)attributes {
    int count;
    
    for(count=0;attributes[count]!=0;count++)
-    ;
+    if(attributeHasArgument(attributes[count]))
+     count++;
+        
    _attributes=NSZoneMalloc(NULL,sizeof(NSOpenGLPixelFormatAttribute)*(count+1));
    for(count=0;(_attributes[count]=attributes[count])!=0;count++)
     ;
-   
+
    return self;
 }
 
 -(void)dealloc {
    NSZoneFree(NULL,_attributes);
    [super dealloc];
+}
+
+-initWithCoder:(NSCoder *)coder {
+   if([coder allowsKeyedCoding]){
+    NSData                      *data=[coder decodeObjectForKey:@"NSPixelAttributes"];
+    unsigned                     i,length=[data length];
+    const unsigned char         *bytes=[data bytes];
+    NSOpenGLPixelFormatAttribute attributes[length/4];
+    unsigned                     a=0;
+    
+    if(length%4>0){
+     NSLog(@"NSPixelAttributes is not a multiple of 4, length=%d",length);
+     return nil;
+    }
+    
+    for(i=0;i<length;){
+     unsigned value;
+     
+     value=bytes[i++];
+     value<<=8;
+     value|=bytes[i++];
+     value<<=8;
+     value|=bytes[i++];
+     value<<=8;
+     value|=bytes[i++];
+     attributes[a++]=value;
+    }
+     
+    return [self initWithAttributes:attributes];
+   }
+   else
+    NSUnimplementedMethod();
+
+   return self;
 }
 
 -(void *)CGLPixelFormatObj {
@@ -38,7 +91,24 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)getValues:(long *)values forAttribute:(NSOpenGLPixelFormatAttribute)attribute forVirtualScreen:(int)screen {
-   NSUnimplementedMethod();
+   int i;
+   
+   for(i=0;_attributes[i]!=0;i++){
+    BOOL hasArgument=attributeHasArgument(_attributes[i]);
+    
+    if(_attributes[i]==attribute){
+     if(hasArgument)
+      *values=_attributes[i+1];
+     else
+      *values=1;
+     
+     return;
+    }
+    
+    if(hasArgument)
+     i++;
+   }
+   *values=0;
 }
 
 @end

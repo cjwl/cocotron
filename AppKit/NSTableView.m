@@ -324,7 +324,8 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
         rect.origin.x += [[_tableColumns objectAtIndex:i++] width] + _intercellSpacing.width;
 
     rect.size.width = [[_tableColumns objectAtIndex:column] width] + _intercellSpacing.width;
-    rect.size.height = _numberOfRows * (_rowHeight + _intercellSpacing.height);
+    rect.size.height = MAX(_numberOfRows * (_rowHeight + _intercellSpacing.height), [self 
+bounds].size.height); 
 
     return rect;
 }
@@ -666,6 +667,21 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
 		[self setNeedsDisplay:YES];
     }
 }
+
+- (void)selectRowIndexes:(NSIndexSet *)indexes byExtendingSelection:(BOOL)extend { 
+        unsigned index; 
+
+        if((index = [indexes firstIndex]) != NSNotFound) { 
+                [self selectRow:index byExtendingSelection:extend]; 
+
+                index = [indexes indexGreaterThanIndex:index]; 
+                while(index != NSNotFound) { 
+                        [self selectRow:index byExtendingSelection:YES]; 
+                        index = [indexes indexGreaterThanIndex:index]; 
+                } 
+        } 
+
+} 
 
 -(int)selectedRow {
     if([_selectedRowIndexes count]==0)
@@ -1117,6 +1133,32 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
         if (_editingCell != nil && _editedColumn != -1 && _editedRow != -1)
             [_editingCell drawWithFrame:_editingFrame inView:self];
     }
+
+        if(_draggingRow >= 0) 
+        { 
+                NSRect rowRect; 
+                [[NSColor blackColor] set]; 
+                if([self numberOfRows] == 0) 
+                        [NSBezierPath strokeLineFromPoint:NSMakePoint(0, 0) toPoint:NSMakePoint([self 
+bounds].size.width, 0)]; 
+                else 
+                { 
+                        if(_draggingRow == [self numberOfRows]) 
+                        { 
+                                rowRect = NSIntersectionRect([self rectOfRow: _draggingRow-1],[self 
+visibleRect]); 
+                                [NSBezierPath strokeLineFromPoint:NSMakePoint(0, rowRect.origin.y 
++_rowHeight) toPoint:NSMakePoint(rowRect.size.width, rowRect.origin.y+_rowHeight)]; 
+                        } 
+                        else 
+                        { 
+                                rowRect = NSIntersectionRect([self rectOfRow: _draggingRow],[self 
+visibleRect]); 
+                                [NSBezierPath strokeLineFromPoint:NSMakePoint(0, rowRect.origin.y) 
+toPoint:NSMakePoint(rowRect.size.width, rowRect.origin.y)]; 
+                        } 
+                } 
+        } 
 }
 
 -(BOOL)delegateSelectionShouldChange
@@ -1202,44 +1244,88 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
             }
         }
         else {								// normal selection, allow for dragging
-            int firstClickedRow = _clickedRow;
+                        BOOL dragging = NO; 
+                        if([_dataSource respondsToSelector:@selector(tableView:writeRowsWithIndexes:toPasteboard:)]) 
+                        { 
+                                NSPoint currentPoint; 
+                                do { 
+                                        event = [_window nextEventMatchingMask:NSLeftMouseUpMask|NSLeftMouseDraggedMask untilDate:[NSDate distantFuture] inMode:NSEventTrackingRunLoopMode dequeue:NO]; 
+                                        if([event type] == NSLeftMouseDragged) 
+                                                event = [_window nextEventMatchingMask:NSLeftMouseUpMask| NSLeftMouseDraggedMask]; 
+                                        else 
+                                                break; 
+                                        currentPoint = [self convertPoint:[event locationInWindow] fromView:nil]; 
+                                        if(abs(location.x - currentPoint.x) > 5 || abs(location.y - currentPoint.y) > 5) 
+                                        { 
+                                                dragging = YES; 
+                                                break; 
+                                        } 
+                                } while([event type] != NSLeftMouseUp); 
+                        } 
+                        if(dragging) 
+                        { 
+                                NSIndexSet *rowIndexes = [self selectedRowIndexes]; 
+                                if([rowIndexes containsIndex: _clickedRow] == FALSE) 
+                                        rowIndexes = [NSIndexSet indexSetWithIndex: _clickedRow]; 
 
-            [self selectRow:_clickedRow byExtendingSelection:NO];
-            if ([self allowsMultipleSelection] == YES) {
-                do {
-                    NSPoint point;
-                    int row;
+                                NSPasteboard *pasteboard = [NSPasteboard pasteboardWithName:NSDragPboard]; 
+                                if([_dataSource tableView:self writeRowsWithIndexes:rowIndexes toPasteboard:pasteboard] == NO) 
+                                        dragging = NO; 
+                                else 
+                                { 
+                                        NSImage *image = [[[NSImage alloc] initWithSize:NSMakeSize(0,0)] autorelease]; 
+                                        [self dragImage:image 
+                                                                 at:NSMakePoint(0,0) 
+                                                         offset:NSMakeSize(0,0) 
+                                                          event:event 
+                                                 pasteboard:pasteboard 
+                                                         source:self 
+                                                  slideBack:YES]; 
+                                } 
+                        } 
 
-                    event = [_window nextEventMatchingMask:NSLeftMouseUpMask|NSLeftMouseDraggedMask];
-                    point=[self convertPoint:[event locationInWindow] fromView:nil];
+                        if(dragging == NO) 
+                        { 
+                                // normal selection, allow for dragging 
+                                int firstClickedRow = _clickedRow; 
 
-                    row = [self rowAtPoint:point];
-                    if (row != NSNotFound) {
-                        // we need to smooth out the selection granularity. on my slow system, the mouse moves
-                        // too quickly for the NSEvents to show up for each row..
-                        int startRow, endRow, i;
+                                [self selectRow:_clickedRow byExtendingSelection:NO]; 
+                                if ([self allowsMultipleSelection] == YES) { 
+                                        do { 
+                                                NSPoint point; 
+                                                int row; 
 
-                        if (firstClickedRow > row) {
-                            endRow = firstClickedRow;
-                            startRow = row;
-                        }
-                        else {
-                            startRow = firstClickedRow;
-                            endRow = row;
-                        }
+                                                event = [_window nextEventMatchingMask:NSLeftMouseUpMask| NSLeftMouseDraggedMask]; 
+                                                point=[self convertPoint:[event locationInWindow] fromView:nil]; 
 
-                        for (i = 0; i < _numberOfRows; i++) {
-                            if (i >= startRow && i <= endRow)
-                                [self selectRow:i byExtendingSelection:YES];
-                            else
-                                [self deselectRow:i];
-                        }
-                    }
+                                                row = [self rowAtPoint:point]; 
+                                                if (row != NSNotFound) { 
+                                                        // we need to smooth out the selection granularity. on my slow system, the mouse moves 
+                                                        // too quickly for the NSEvents to show up for each row.. 
+                                                        int startRow, endRow, i; 
 
-                    [self noteSelectionIsChanging];
-                } while([event type] != NSLeftMouseUp);
-            }
-        }                
+                                                        if (firstClickedRow > row) { 
+                                                                endRow = firstClickedRow; 
+                                                                startRow = row; 
+                                                        } 
+                                                        else { 
+                                                                startRow = firstClickedRow; 
+                                                                endRow = row; 
+                                                        } 
+
+                                                        for (i = 0; i < _numberOfRows; i++) { 
+                                                                if (i >= startRow && i <= endRow) 
+                                                                        [self selectRow:i byExtendingSelection:YES]; 
+                                                                else 
+                                                                        [self deselectRow:i]; 
+                                                        } 
+                                                } 
+
+                                                [self noteSelectionIsChanging]; 
+                                        } while([event type] != NSLeftMouseUp); 
+                                } 
+                        } 
+        }                 
 
         [self noteSelectionDidChange];
 
@@ -1289,6 +1375,78 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
 
     [self tile];
 }
+
+- (unsigned)draggingSourceOperationMaskForLocal:(BOOL)isLocal { 
+        return NSDragOperationCopy; 
+
+} 
+
+- (int)_getDraggedRow:(id <NSDraggingInfo>)info { 
+        NSPoint point = [self convertPoint:[info draggingLocation] fromView:nil]; 
+        int row = point.y / _rowHeight; 
+        if((int) point.y % (int) _rowHeight > (_rowHeight / 2)) 
+                row++; 
+
+        row = MIN([self numberOfRows], row); 
+
+        return row; 
+
+} 
+
+- (unsigned)_validateDraggedRow:(id <NSDraggingInfo>)info { 
+        BOOL result; 
+        int proposedRow = [self _getDraggedRow:info]; 
+        if(result = [_dataSource tableView:self validateDrop:info proposedRow:proposedRow 
+proposedDropOperation:NSTableViewDropAbove]) 
+                _draggingRow = proposedRow; 
+        else 
+                _draggingRow = -1; 
+        [self display]; 
+
+        return result; 
+
+} 
+
+- (unsigned)draggingEntered:(id <NSDraggingInfo>)sender { 
+        int i; 
+        for(i = 0; i < [[self _draggedTypes] count]; i++) 
+        { 
+                if ([[[sender draggingPasteboard] types] containsObject:[[self _draggedTypes] 
+objectAtIndex: i]]) 
+                        return [self _validateDraggedRow:sender]; 
+        } 
+        return NSDragOperationNone; 
+
+} 
+
+- (unsigned)draggingUpdated:(id <NSDraggingInfo>)sender { 
+        int i; 
+        for(i = 0; i < [[self _draggedTypes] count]; i++) 
+        { 
+                if ([[[sender draggingPasteboard] types] containsObject:[[self _draggedTypes] 
+objectAtIndex: i]]) 
+                        return [self _validateDraggedRow:sender]; 
+        } 
+        return NSDragOperationNone; 
+
+} 
+
+- (void)draggingExited:(id <NSDraggingInfo>)sender 
+{ 
+        _draggingRow = -1; 
+        [self display]; 
+} 
+
+- (BOOL)prepareForDragOperation:(id <NSDraggingInfo>)sender { 
+        _draggingRow = -1; 
+        [self display]; 
+    return YES; 
+} 
+
+- (BOOL)performDragOperation:(id <NSDraggingInfo>)sender { 
+        return [_dataSource tableView:self acceptDrop:sender row:[self _getDraggedRow:sender] 
+dropOperation:NSTableViewDropAbove]; 
+} 
 
 -(NSString *)description {
     return [NSString stringWithFormat:@"<%@ %0x08lx tableColumns: %@>",

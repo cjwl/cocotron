@@ -8,7 +8,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/NSObject.h>
 
-typedef int NSOpenGLPixelFormatAttribute;
+typedef enum {
+   NSOpenGLPFAAuxBuffers=7,
+   NSOpenGLPFAColorSize=8,
+   NSOpenGLPFAAlphaSize=11,
+   NSOpenGLPFADepthSize=12,
+   NSOpenGLPFAStencilSize=13,
+   NSOpenGLPFAAccumSize=14,
+   NSOpenGLPFARendererID=70,
+   NSOpenGLPFAScreenMask=84,
+} NSOpenGLPixelFormatAttribute;
 
 @interface NSOpenGLPixelFormat : NSObject {
    NSOpenGLPixelFormatAttribute *_attributes;

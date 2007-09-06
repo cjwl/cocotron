@@ -8,7 +8,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 // Original - Christopher Lloyd <cjwl@objc.net>
 #import <AppKit/NSOpenGLContext.h>
+#import <AppKit/NSOpenGLPixelFormat.h>
+#import "NSOpenGLDrawable_gdiView.h"
 #import <Foundation/NSRaise.h>
+#import "opengl_dll.h"
 
 @implementation NSOpenGLContext
 
@@ -22,13 +25,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -initWithFormat:(NSOpenGLPixelFormat *)pixelFormat shareContext:(NSOpenGLContext *)shareContext {
-   NSUnimplementedMethod();
+   _pixelFormat=[pixelFormat retain];
    return self;
 }
 
 -(NSView *)view {
-   NSUnimplementedMethod();
-   return nil;
+   return _view;
 }
 
 -(NSOpenGLPixelBuffer *)pixelBuffer {
@@ -60,11 +62,20 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)setView:(NSView *)view {
-   NSUnimplementedMethod();
+   _view=view;
 }
 
 -(void)makeCurrentContext {
-   NSUnimplementedMethod();
+   if(_drawable==nil){
+    _drawable=[[NSOpenGLDrawable_gdiView alloc] initWithPixelFormat:_pixelFormat view:_view];
+      
+    if((_glContext=opengl_wglCreateContext([_drawable dc]))==NULL){
+     NSLog(@"unable to create _glContext");
+     [self dealloc];
+     return ;
+    }
+   }
+   [_drawable makeCurrentWithGLContext:_glContext];
 }
 
 -(int)currentVirtualScreen {
@@ -92,11 +103,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)update {
-   NSUnimplementedMethod();
+   [_drawable updateWithView:_view];
 }
 
 -(void)clearDrawable {
-   NSUnimplementedMethod();
+   _view=nil;
+   [_drawable invalidate];
+   [_drawable release];
+   _drawable=nil;
 }
 
 -(void)copyAttributesFromContext:(NSOpenGLContext *)context withMask:(unsigned long)mask {
@@ -108,7 +122,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)flushBuffer {
-   NSUnimplementedMethod();
+   // fix, check if doublebuffered
+   [_drawable swapBuffers];
 }
 
 @end

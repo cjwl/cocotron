@@ -664,7 +664,7 @@ static void initializeWindowClass(WNDCLASS *class){
     NSString *path=[[NSBundle mainBundle] pathForResource:name ofType:@"ico"];
     HICON     icon=(path==nil)?NULL:LoadImage(NULL,[path fileSystemRepresentation],IMAGE_ICON,0,0,LR_DEFAULTCOLOR|LR_LOADFROMFILE);
 
-    static WNDCLASS _standardWindowClass,_popupWindowClass;
+    static WNDCLASS _standardWindowClass,_popupWindowClass,_glWindowClass;
 
 
     initializeWindowClass(&_standardWindowClass);
@@ -677,6 +677,12 @@ static void initializeWindowClass(WNDCLASS *class){
     _popupWindowClass.style|=CS_SAVEBITS;
     _popupWindowClass.lpszClassName="NSWin32PopUpWindow";
     if(RegisterClass(&_popupWindowClass)==0)
+     NSLog(@"RegisterClass failed");
+
+    initializeWindowClass(&_glWindowClass);
+    _glWindowClass.lpszClassName="NSWin32OpenGLWindow";
+    _glWindowClass.hIcon=icon;
+    if(RegisterClass(&_glWindowClass)==0)
      NSLog(@"RegisterClass failed");
    }
 }

@@ -7,6 +7,7 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
 #import <AppKit/NSControl.h>
+#import <AppKit/NSDragging.h>
 
 @class NSTableHeaderView, NSTableColumn;
 
@@ -20,6 +21,11 @@ enum {
    NSTableViewSolidVerticalGridLineMask,
    NSTableViewSolidHorizontalGridLineMask
 };
+
+typedef enum { 
+   NSTableViewDropOn, 
+   NSTableViewDropAbove 
+} NSTableViewDropOperation; 
 
 @interface NSTableView : NSControl {
    id  _target;
@@ -57,6 +63,8 @@ enum {
    id _editingCell;
    NSRect _editingFrame;
    NSArray* _sortDescriptors;
+
+   int _draggingRow; 
 }
 
 -(SEL)doubleAction;
@@ -165,7 +173,7 @@ enum {
 -(void)drawGridInClipRect:(NSRect)rect;
 
 - (NSIndexSet *)selectedRowIndexes;
-- (void)setSelectedRowIndexes:(NSIndexSet *)value;
+- (void)selectRowIndexes:(NSIndexSet *)indexes byExtendingSelection:(BOOL)extend;
 
 - (NSArray *)sortDescriptors;
 - (void)setSortDescriptors:(NSArray *)value;
@@ -175,6 +183,9 @@ enum {
 -(int)numberOfRowsInTableView:(NSTableView *)tableView;
 -tableView:(NSTableView *)tableView objectValueForTableColumn:(NSTableColumn *)tableColumn row:(int)row;
 -(void)tableView:(NSTableView *)tableView setObjectValue:object forTableColumn:(NSTableColumn *)tableColumn row:(int)row;
+-(BOOL)tableView:(NSTableView *)tableView writeRowsWithIndexes:(NSIndexSet *)indexes toPasteboard:(NSPasteboard *)pasteboard;
+-(NSDragOperation)tableView:(NSTableView *)tableView validateDrop:(id <NSDraggingInfo>)draggingInfo proposedRow:(int)proposedRow proposedDropOperation:(NSTableViewDropOperation)dropOperation;
+-(BOOL)tableView:(NSTableView *)tableView acceptDrop:(id <NSDraggingInfo>)draggingInfo row:(int)row dropOperation:(NSTableViewDropOperation)dropOperation;
 @end
 
 @interface NSObject(NSTableView_delegate)

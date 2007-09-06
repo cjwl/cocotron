@@ -832,6 +832,12 @@ NSString *NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification";
    [self _updatePlatformWindowTitle];
 }
 
+-(void)setContentAspectRatio:(NSSize)value {
+   _useAspectRatio=YES;
+   _aspectRatioIsContent=YES;
+   _aspectRatio=value;
+}
+
 -(NSString *)_autosaveFrameKeyWithName:(NSString *)name {
    return [NSString stringWithFormat:@"NSWindow frame %@ %@",name, NSStringFromRect([[self screen] frame])];
 }

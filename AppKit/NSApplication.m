@@ -379,7 +379,6 @@ id NSApp=nil;
 
     [_currentEvent release];
     _currentEvent=[nextEvent retain];
-
    NS_HANDLER
     [self reportException:localException];
    NS_ENDHANDLER
