@@ -91,6 +91,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 // do nothing?
 }
 
+-(BOOL)isOpaque {
+   return YES;
+}
+
 -(void)lockFocus {  
   [super lockFocus];
   
@@ -102,6 +106,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)unlockFocus {
    [[self openGLContext] flushBuffer];
+   [super unlockFocus];
 }
 
 -(void)clearGLContext {
@@ -110,13 +115,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    _context=nil;
 }
 
--(void)resizeSubviewsWithOldSize:(NSSize)oldSize {
-   [self update];
-}
-
--(void)setBounds:(NSRect)bounds {
-   [super setBounds:bounds];
+-(void)setFrame:(NSRect)frame {
+   [super setFrame:frame];
    _needsReshape=YES;
+   [self update];
 }
 
 @end

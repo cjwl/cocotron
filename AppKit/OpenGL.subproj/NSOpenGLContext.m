@@ -29,6 +29,19 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return self;
 }
 
+-(void)dealloc {
+   [_pixelFormat release];
+   _view=nil;
+   [_drawable invalidate];
+   [_drawable release];
+   if(_glContext!=NULL){
+    if(opengl_wglGetCurrentContext()==_glContext)
+     opengl_wglMakeCurrent(NULL,NULL);
+    opengl_wglDeleteContext(_glContext);
+   }
+   [super dealloc];
+}
+
 -(NSView *)view {
    return _view;
 }
@@ -87,6 +100,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)setFullScreen {
+   if(_view!=nil)
+    NSLog(@"NSOpenGLContext has view, full-screen not allowed");
+    
    NSUnimplementedMethod();
 }
 

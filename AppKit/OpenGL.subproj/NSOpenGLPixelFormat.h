@@ -9,13 +9,19 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSObject.h>
 
 typedef enum {
+   NSOpenGLPFADoubleBuffer=5,
+   NSOpenGLPFAStereo=6,
    NSOpenGLPFAAuxBuffers=7,
    NSOpenGLPFAColorSize=8,
    NSOpenGLPFAAlphaSize=11,
    NSOpenGLPFADepthSize=12,
    NSOpenGLPFAStencilSize=13,
    NSOpenGLPFAAccumSize=14,
+   NSOpenGLPFAOffScreen=53,
+   NSOpenGLPFAFullScreen=54,
    NSOpenGLPFARendererID=70,
+   NSOpenGLPFAAccelerated=73,
+   NSOpenGLPFAWindow=80,
    NSOpenGLPFAScreenMask=84,
 } NSOpenGLPixelFormatAttribute;
 

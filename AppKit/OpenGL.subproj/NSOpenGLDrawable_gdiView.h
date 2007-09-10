@@ -4,6 +4,7 @@
 @class NSView,NSOpenGLPixelFormat;
 
 @interface NSOpenGLDrawable_gdiView : NSObject {
+   NSView *_view;
    HWND _windowHandle;
    HDC  _dc;
    PAINTSTRUCT ps;

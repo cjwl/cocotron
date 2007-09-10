@@ -629,7 +629,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return DefWindowProc(_handle,message,wParam,lParam);
 }
 
-
 static LRESULT CALLBACK windowProcedure(HWND handle,UINT message,WPARAM wParam,LPARAM lParam){
    NSAutoreleasePool *pool=[NSAutoreleasePool new];
    Win32Window       *self=GetProp(handle,"self");
@@ -665,7 +664,8 @@ static void initializeWindowClass(WNDCLASS *class){
     HICON     icon=(path==nil)?NULL:LoadImage(NULL,[path fileSystemRepresentation],IMAGE_ICON,0,0,LR_DEFAULTCOLOR|LR_LOADFROMFILE);
 
     static WNDCLASS _standardWindowClass,_popupWindowClass,_glWindowClass;
-
+    OSVERSIONINFOEX osVersion;
+    
 
     initializeWindowClass(&_standardWindowClass);
     _standardWindowClass.lpszClassName="NSWin32StandardWindow";
@@ -675,14 +675,22 @@ static void initializeWindowClass(WNDCLASS *class){
 
     initializeWindowClass(&_popupWindowClass);
     _popupWindowClass.style|=CS_SAVEBITS;
+
+#ifdef CS_DROPSHADOW
+#warning CS_DROPSHADOW is defined, can get rid of it here
+#else
+#define CS_DROPSHADOW 0x20000
+#endif
+
+    osVersion.dwOSVersionInfoSize=sizeof(osVersion);
+    GetVersionEx((OSVERSIONINFO *)&osVersion);
+    // XP or higher
+    if((osVersion.dwMajorVersion==5 && osVersion.dwMinorVersion>=1) || osVersion.dwMajorVersion>5){
+     _popupWindowClass.style|=CS_DROPSHADOW;
+    }
+
     _popupWindowClass.lpszClassName="NSWin32PopUpWindow";
     if(RegisterClass(&_popupWindowClass)==0)
-     NSLog(@"RegisterClass failed");
-
-    initializeWindowClass(&_glWindowClass);
-    _glWindowClass.lpszClassName="NSWin32OpenGLWindow";
-    _glWindowClass.hIcon=icon;
-    if(RegisterClass(&_glWindowClass)==0)
      NSLog(@"RegisterClass failed");
    }
 }
