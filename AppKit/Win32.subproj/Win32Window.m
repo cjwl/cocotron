@@ -219,16 +219,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return _handle;
 }
 
--(KGContext *)graphicsContext {
+-(KGContext *)cgContext {
    switch(_backingType){
 
     case Win32BackingStoreRetained:
     case Win32BackingStoreNonretained:
     default:
-     return [_renderingContext graphicsContextWithSize:_size];
+     return [_renderingContext cgContextWithSize:_size];
 
     case Win32BackingStoreBuffered:
-    return [_backingLayer context];
+    return [_backingLayer cgContext];
    }
 }
 
@@ -358,7 +358,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
      break;
 
     case Win32BackingStoreBuffered:
-     [[_renderingContext graphicsContextWithSize:_size] drawLayer:_backingLayer atPoint:NSMakePoint(0,0)];
+     [[_renderingContext cgContextWithSize:_size] drawLayer:_backingLayer atPoint:NSMakePoint(0,0)];
      break;
    }
 }

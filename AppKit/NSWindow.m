@@ -228,8 +228,8 @@ NSString *NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification";
    return _platformWindow;
 }
 
--(KGContext *)graphicsContext {
-   return [[self platformWindow] graphicsContext];
+-(KGContext *)cgContext {
+   return [[self platformWindow] cgContext];
 }
 
 -(void)_setStyleMask:(unsigned)mask
@@ -244,6 +244,10 @@ NSString *NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification";
    [[NSNotificationCenter defaultCenter] postNotificationName:name
      object:self];
 }
+
+-(NSGraphicsContext *)graphicsContext { 
+   return [NSGraphicsContext graphicsContextWithWindow:self]; 
+} 
 
 -(NSString *)title {
    return _title;

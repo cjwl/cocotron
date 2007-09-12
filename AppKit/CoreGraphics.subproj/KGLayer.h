@@ -22,7 +22,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(KGRenderingContext *)renderingContext;
 
--(KGContext *)context;
+-(KGContext *)cgContext;
 -(NSSize)size;
 
 @end

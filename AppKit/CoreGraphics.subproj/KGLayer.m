@@ -37,8 +37,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return _renderingContext;
 }
 
--(KGContext *)context {
-   return [_renderingContext graphicsContextWithSize:_size];
+-(KGContext *)cgContext {
+   return [_renderingContext cgContextWithSize:_size];
 }
 
 -(NSSize)size {

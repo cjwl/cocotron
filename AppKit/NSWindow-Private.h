@@ -12,7 +12,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @interface NSWindow(NSWindow_private)
 -(CGWindow *)platformWindow;
--(KGContext *)graphicsContext;
+-(KGContext *)cgContext;
 -(BOOL)_isActive;
 -(NSArray *)_draggedTypes;
 -(void)_addCursorRect:(NSRect)rect cursor:(NSCursor *)cursor view:(NSView *)view;

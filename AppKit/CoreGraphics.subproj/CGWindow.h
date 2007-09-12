@@ -17,7 +17,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)invalidate;
 
--(KGContext *)graphicsContext;
+-(KGContext *)cgContext;
 
 -(void)setTitle:(NSString *)title;
 -(void)setFrame:(NSRect)frame;

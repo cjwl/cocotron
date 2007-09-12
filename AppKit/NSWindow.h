@@ -127,6 +127,8 @@ APPKIT_EXPORT NSString *NSWindowDidAnimateNotification;
 -initWithContentRect:(NSRect)contentRect styleMask:(unsigned int)styleMask backing:(unsigned)backing defer:(BOOL)defer;
 -initWithContentRect:(NSRect)contentRect styleMask:(unsigned int)styleMask backing:(unsigned)backing defer:(BOOL)defer screen:(NSScreen *)screen;
 
+-(NSGraphicsContext *)graphicsContext;
+
 -(NSString *)title;
 -contentView;
 

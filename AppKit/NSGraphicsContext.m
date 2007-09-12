@@ -17,13 +17,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @implementation NSGraphicsContext
 
 -initWithWindow:(NSWindow *)window {
-   _graphicsPort=CGContextRetain([window graphicsContext]);
+   _graphicsPort=CGContextRetain([window cgContext]);
    _isDrawingToScreen=YES;
    return self;
 }
 
 -initWithWithCachedImageRep:(NSCachedImageRep *)imageRep {
-   _graphicsPort=CGContextRetain([imageRep graphicsContext]);
+   _graphicsPort=CGContextRetain([imageRep cgContext]);
    _isDrawingToScreen=YES;
    return self;
 }

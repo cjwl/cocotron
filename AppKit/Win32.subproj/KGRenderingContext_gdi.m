@@ -97,7 +97,7 @@ NSRect Win32TransformRect(CGAffineTransform matrix,NSRect rect) {
    return [[[KGContext alloc] initWithGraphicsState:initialState] autorelease];
 }
 
--(KGContext *)graphicsContextWithSize:(NSSize)size {
+-(KGContext *)cgContextWithSize:(NSSize)size {
    CGAffineTransform flip={1,0,0,-1,0,size.height};
    KGGraphicsState  *initialState=[[[KGGraphicsState alloc] initWithRenderingContext:self transform:flip userSpaceSize:NSMakeSize(size.width,size.height)] autorelease];
 

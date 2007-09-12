@@ -44,8 +44,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return NSZeroRect;
 }
 
--(KGContext *)graphicsContext {
-   return [_layer context];
+-(KGContext *)cgContext {
+   return [_layer cgContext];
 }
 
 -(BOOL)drawAtPoint:(NSPoint)point {

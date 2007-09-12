@@ -26,7 +26,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 +(KGRenderingContext *)renderingContextWithSize:(NSSize)size;
 
 -(KGContext *)createGraphicsContext;
--(KGContext *)graphicsContextWithSize:(NSSize)size;
+-(KGContext *)cgContextWithSize:(NSSize)size;
 
 -initWithDC:(HDC)dc deviceContext:(KGDeviceContext *)deviceContext;
 

@@ -31,7 +31,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
   return NSZeroSize;
 }
 
--(KGContext *)graphicsContextWithSize:(NSSize)size {
+-(KGContext *)cgContextWithSize:(NSSize)size {
    NSInvalidAbstractInvocation();
    return nil;
 }
