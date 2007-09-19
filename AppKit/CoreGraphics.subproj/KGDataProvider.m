@@ -24,6 +24,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [super dealloc];
 }
 
+-(NSData *)data {
+   return _data;
+}
+
 -(const void *)bytes {
    return _bytes;
 }

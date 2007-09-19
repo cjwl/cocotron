@@ -99,6 +99,8 @@ enum {
 
 -initWithContentsOfFile:(NSString *)path;
 
+-(NSArray *)imageFileDirectory;
+
 -(BOOL)tracingEnabled;
 
 -(unsigned)currentOffset;
@@ -114,7 +116,6 @@ enum {
 -(void)expectArrayOfUnsigned8:(unsigned char **)valuesp count:(unsigned *)countp;
 -(void)expectArrayOfUnsigned16:(unsigned **)valuesp count:(unsigned *)countp;
 -(void)expectArrayOfUnsigned16OrUnsigned32:(unsigned **)valuesp count:(unsigned *)countp;
-
 
 -(int)pixelsWide;
 -(int)pixelsHigh;

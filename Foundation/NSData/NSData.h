@@ -9,6 +9,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSObject.h>
 #import <Foundation/NSRange.h>
 
+@class NSURL;
+
 @interface NSData : NSObject <NSCopying,NSMutableCopying,NSCoding>
 
 -initWithBytesNoCopy:(void *)bytes length:(unsigned)length freeWhenDone:(BOOL)freeOnDealloc;
@@ -17,6 +19,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -initWithData:(NSData *)data;
 -initWithContentsOfFile:(NSString *)path;
 -initWithContentsOfMappedFile:(NSString *)path;
+-initWithContentsOfURL:(NSURL *)url;
 
 +data;
 +dataWithBytesNoCopy:(void *)bytes length:(unsigned)length freeWhenDone:(BOOL)freeOnDealloc;
@@ -25,6 +28,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 +dataWithData:(NSData *)data;
 +dataWithContentsOfFile:(NSString *)path;
 +dataWithContentsOfMappedFile:(NSString *)path;
++dataWithContentsOfURL:(NSURL *)url;
 
 -(const void *)bytes;
 -(unsigned)length;

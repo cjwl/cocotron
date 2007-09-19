@@ -175,5 +175,8 @@ void *NSZoneRealloc(NSZone *zone,void *pointer,unsigned size){
    if(zone==NULL)
     zone=GetProcessHeap();
 
-   return HeapReAlloc(zone,0,pointer,size);
+   if(pointer==NULL)
+    return HeapAlloc(zone,0,size);
+   else
+    return HeapReAlloc(zone,0,pointer,size);
 }

@@ -8,8 +8,19 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/NSObject.h>
 
-@interface KGImageSource : NSObject {
+@class NSData,NSDictionary,NSURL,KGImage;
 
-}
+@interface KGImageSource : NSObject
+
++(KGImageSource *)newImageSourceWithData:(NSData *)data options:(NSDictionary *)options;
+
++(BOOL)isTypeOfData:(NSData *)data;
+
+-initWithData:(NSData *)data options:(NSDictionary *)options;
+-initWithURL:(NSURL *)url options:(NSDictionary *)options;
+
+-(unsigned)count;
+
+-(KGImage *)imageAtIndex:(unsigned)index options:(NSDictionary *)options;
 
 @end

@@ -775,10 +775,10 @@
 		FE01A92D0C5D9BCB00AEA51A /* KGLayer.h in Headers */ = {isa = PBXBuildFile; fileRef = FE064AC10B8B805000853FBB /* KGLayer.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE01A92E0C5D9BCB00AEA51A /* KGPath.h in Headers */ = {isa = PBXBuildFile; fileRef = FE064AC30B8B805000853FBB /* KGPath.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE01A92F0C5D9BCB00AEA51A /* KGPattern.h in Headers */ = {isa = PBXBuildFile; fileRef = FE064AC50B8B805000853FBB /* KGPattern.h */; };
-		FE01A9300C5D9BCB00AEA51A /* KGImageSource_JPEG.h in Headers */ = {isa = PBXBuildFile; fileRef = FE267E830B8BCC3C0000DDC0 /* KGImageSource_JPEG.h */; };
-		FE01A9310C5D9BCB00AEA51A /* KGImageSource_PNG.h in Headers */ = {isa = PBXBuildFile; fileRef = FE267E850B8BCC3C0000DDC0 /* KGImageSource_PNG.h */; };
-		FE01A9320C5D9BCB00AEA51A /* KGImageSource_TIFF.h in Headers */ = {isa = PBXBuildFile; fileRef = FE267E870B8BCC3C0000DDC0 /* KGImageSource_TIFF.h */; };
-		FE01A9330C5D9BCB00AEA51A /* KGImageSource.h in Headers */ = {isa = PBXBuildFile; fileRef = FE267E890B8BCC3C0000DDC0 /* KGImageSource.h */; };
+		FE01A9300C5D9BCB00AEA51A /* KGImageSource_JPEG.h in Headers */ = {isa = PBXBuildFile; fileRef = FE267E830B8BCC3C0000DDC0 /* KGImageSource_JPEG.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE01A9310C5D9BCB00AEA51A /* KGImageSource_PNG.h in Headers */ = {isa = PBXBuildFile; fileRef = FE267E850B8BCC3C0000DDC0 /* KGImageSource_PNG.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE01A9320C5D9BCB00AEA51A /* KGImageSource_TIFF.h in Headers */ = {isa = PBXBuildFile; fileRef = FE267E870B8BCC3C0000DDC0 /* KGImageSource_TIFF.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE01A9330C5D9BCB00AEA51A /* KGImageSource.h in Headers */ = {isa = PBXBuildFile; fileRef = FE267E890B8BCC3C0000DDC0 /* KGImageSource.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE01A9340C5D9BCB00AEA51A /* CGBitmapContext.h in Headers */ = {isa = PBXBuildFile; fileRef = FE267EB30B8BD2690000DDC0 /* CGBitmapContext.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE01A9350C5D9BCB00AEA51A /* KGBitmapContext.h in Headers */ = {isa = PBXBuildFile; fileRef = FE267EB50B8BD2690000DDC0 /* KGBitmapContext.h */; };
 		FE01A9360C5D9BCB00AEA51A /* KGMutablePath.h in Headers */ = {isa = PBXBuildFile; fileRef = FEF33BFF0B93543C00DC0B6F /* KGMutablePath.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -1199,13 +1199,13 @@
 		FE1CEA700C8F12F800184630 /* opengl_dll.m in Sources */ = {isa = PBXBuildFile; fileRef = FE1CEA6C0C8F12F800184630 /* opengl_dll.m */; };
 		FE1E86C10BBCA62D0013B968 /* NSGraphicsStyle.h in Headers */ = {isa = PBXBuildFile; fileRef = FE1E86BF0BBCA62D0013B968 /* NSGraphicsStyle.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE1E86C20BBCA62D0013B968 /* NSGraphicsStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = FE1E86C00BBCA62D0013B968 /* NSGraphicsStyle.m */; };
-		FE267E8B0B8BCC3C0000DDC0 /* KGImageSource_JPEG.h in Headers */ = {isa = PBXBuildFile; fileRef = FE267E830B8BCC3C0000DDC0 /* KGImageSource_JPEG.h */; };
+		FE267E8B0B8BCC3C0000DDC0 /* KGImageSource_JPEG.h in Headers */ = {isa = PBXBuildFile; fileRef = FE267E830B8BCC3C0000DDC0 /* KGImageSource_JPEG.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE267E8C0B8BCC3C0000DDC0 /* KGImageSource_JPEG.m in Sources */ = {isa = PBXBuildFile; fileRef = FE267E840B8BCC3C0000DDC0 /* KGImageSource_JPEG.m */; };
-		FE267E8D0B8BCC3C0000DDC0 /* KGImageSource_PNG.h in Headers */ = {isa = PBXBuildFile; fileRef = FE267E850B8BCC3C0000DDC0 /* KGImageSource_PNG.h */; };
+		FE267E8D0B8BCC3C0000DDC0 /* KGImageSource_PNG.h in Headers */ = {isa = PBXBuildFile; fileRef = FE267E850B8BCC3C0000DDC0 /* KGImageSource_PNG.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE267E8E0B8BCC3C0000DDC0 /* KGImageSource_PNG.m in Sources */ = {isa = PBXBuildFile; fileRef = FE267E860B8BCC3C0000DDC0 /* KGImageSource_PNG.m */; };
-		FE267E8F0B8BCC3C0000DDC0 /* KGImageSource_TIFF.h in Headers */ = {isa = PBXBuildFile; fileRef = FE267E870B8BCC3C0000DDC0 /* KGImageSource_TIFF.h */; };
+		FE267E8F0B8BCC3C0000DDC0 /* KGImageSource_TIFF.h in Headers */ = {isa = PBXBuildFile; fileRef = FE267E870B8BCC3C0000DDC0 /* KGImageSource_TIFF.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE267E900B8BCC3C0000DDC0 /* KGImageSource_TIFF.m in Sources */ = {isa = PBXBuildFile; fileRef = FE267E880B8BCC3C0000DDC0 /* KGImageSource_TIFF.m */; };
-		FE267E910B8BCC3C0000DDC0 /* KGImageSource.h in Headers */ = {isa = PBXBuildFile; fileRef = FE267E890B8BCC3C0000DDC0 /* KGImageSource.h */; };
+		FE267E910B8BCC3C0000DDC0 /* KGImageSource.h in Headers */ = {isa = PBXBuildFile; fileRef = FE267E890B8BCC3C0000DDC0 /* KGImageSource.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE267E920B8BCC3C0000DDC0 /* KGImageSource.m in Sources */ = {isa = PBXBuildFile; fileRef = FE267E8A0B8BCC3C0000DDC0 /* KGImageSource.m */; };
 		FE267EB70B8BD2690000DDC0 /* CGBitmapContext.h in Headers */ = {isa = PBXBuildFile; fileRef = FE267EB30B8BD2690000DDC0 /* CGBitmapContext.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE267EB80B8BD2690000DDC0 /* CGBitmapContext.m in Sources */ = {isa = PBXBuildFile; fileRef = FE267EB40B8BD2690000DDC0 /* CGBitmapContext.m */; };
@@ -1274,6 +1274,10 @@
 		FE4BDC0C0BCD40C600E19685 /* NSFontDescriptor.m in Sources */ = {isa = PBXBuildFile; fileRef = FE4BDC0A0BCD40C600E19685 /* NSFontDescriptor.m */; };
 		FE56BA040B1221330046B7D9 /* NSMutableAttributedString.h in Headers */ = {isa = PBXBuildFile; fileRef = FE56BA020B1221330046B7D9 /* NSMutableAttributedString.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE56BA050B1221330046B7D9 /* NSMutableAttributedString.m in Sources */ = {isa = PBXBuildFile; fileRef = FE56BA030B1221330046B7D9 /* NSMutableAttributedString.m */; };
+		FE572D8D0CA0809500FB3E79 /* KGImageSource_BMP.h in Headers */ = {isa = PBXBuildFile; fileRef = FE572D8B0CA0809500FB3E79 /* KGImageSource_BMP.h */; };
+		FE572D8E0CA0809500FB3E79 /* KGImageSource_BMP.m in Sources */ = {isa = PBXBuildFile; fileRef = FE572D8C0CA0809500FB3E79 /* KGImageSource_BMP.m */; };
+		FE572D8F0CA0809500FB3E79 /* KGImageSource_BMP.h in Headers */ = {isa = PBXBuildFile; fileRef = FE572D8B0CA0809500FB3E79 /* KGImageSource_BMP.h */; };
+		FE572D900CA0809500FB3E79 /* KGImageSource_BMP.m in Sources */ = {isa = PBXBuildFile; fileRef = FE572D8C0CA0809500FB3E79 /* KGImageSource_BMP.m */; };
 		FE57F8170C46AA2C0078FFC1 /* KGDeviceContext.h in Headers */ = {isa = PBXBuildFile; fileRef = FE57F8150C46AA2C0078FFC1 /* KGDeviceContext.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE57F8180C46AA2C0078FFC1 /* KGDeviceContext.m in Sources */ = {isa = PBXBuildFile; fileRef = FE57F8160C46AA2C0078FFC1 /* KGDeviceContext.m */; };
 		FE57F8D20C46B68C0078FFC1 /* KGDeviceContext_gdi.h in Headers */ = {isa = PBXBuildFile; fileRef = FE57F8D00C46B68C0078FFC1 /* KGDeviceContext_gdi.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -1367,6 +1371,10 @@
 		FE8BAF280BC9EC680007FACA /* NSKVOBinder.m in Sources */ = {isa = PBXBuildFile; fileRef = FE8BAF200BC9EC680007FACA /* NSKVOBinder.m */; };
 		FE8BAF290BC9EC680007FACA /* NSObject+BindingSupport.h in Headers */ = {isa = PBXBuildFile; fileRef = FE8BAF210BC9EC680007FACA /* NSObject+BindingSupport.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE8BAF2A0BC9EC680007FACA /* NSObject+BindingSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = FE8BAF220BC9EC680007FACA /* NSObject+BindingSupport.m */; };
+		FE8F9F280C9C5D0000270AEE /* KGzlib.h in Headers */ = {isa = PBXBuildFile; fileRef = FE8F9F260C9C5D0000270AEE /* KGzlib.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE8F9F290C9C5D0000270AEE /* KGzlib.m in Sources */ = {isa = PBXBuildFile; fileRef = FE8F9F270C9C5D0000270AEE /* KGzlib.m */; };
+		FE8F9F2A0C9C5D0000270AEE /* KGzlib.h in Headers */ = {isa = PBXBuildFile; fileRef = FE8F9F260C9C5D0000270AEE /* KGzlib.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE8F9F2B0C9C5D0000270AEE /* KGzlib.m in Sources */ = {isa = PBXBuildFile; fileRef = FE8F9F270C9C5D0000270AEE /* KGzlib.m */; };
 		FEC5FF7D0BF49D5400682A70 /* NSTableColumnBinder.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC5FF7B0BF49D5400682A70 /* NSTableColumnBinder.h */; };
 		FEC5FF7E0BF49D5400682A70 /* NSTableColumnBinder.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC5FF7C0BF49D5400682A70 /* NSTableColumnBinder.m */; };
 		FED166D60BE502AD00BF9889 /* NSSegment.h in Headers */ = {isa = PBXBuildFile; fileRef = FED166D40BE502AD00BF9889 /* NSSegment.h */; };
@@ -2055,6 +2063,8 @@
 		FE4BDC0A0BCD40C600E19685 /* NSFontDescriptor.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSFontDescriptor.m; sourceTree = "<group>"; };
 		FE56BA020B1221330046B7D9 /* NSMutableAttributedString.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSMutableAttributedString.h; sourceTree = "<group>"; };
 		FE56BA030B1221330046B7D9 /* NSMutableAttributedString.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSMutableAttributedString.m; sourceTree = "<group>"; };
+		FE572D8B0CA0809500FB3E79 /* KGImageSource_BMP.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = KGImageSource_BMP.h; sourceTree = "<group>"; };
+		FE572D8C0CA0809500FB3E79 /* KGImageSource_BMP.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = KGImageSource_BMP.m; sourceTree = "<group>"; };
 		FE57F8150C46AA2C0078FFC1 /* KGDeviceContext.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = KGDeviceContext.h; sourceTree = "<group>"; };
 		FE57F8160C46AA2C0078FFC1 /* KGDeviceContext.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = KGDeviceContext.m; sourceTree = "<group>"; };
 		FE57F8D00C46B68C0078FFC1 /* KGDeviceContext_gdi.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = KGDeviceContext_gdi.h; sourceTree = "<group>"; };
@@ -2148,6 +2158,8 @@
 		FE8BAF200BC9EC680007FACA /* NSKVOBinder.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSKVOBinder.m; sourceTree = "<group>"; };
 		FE8BAF210BC9EC680007FACA /* NSObject+BindingSupport.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = "NSObject+BindingSupport.h"; sourceTree = "<group>"; };
 		FE8BAF220BC9EC680007FACA /* NSObject+BindingSupport.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = "NSObject+BindingSupport.m"; sourceTree = "<group>"; };
+		FE8F9F260C9C5D0000270AEE /* KGzlib.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = KGzlib.h; sourceTree = "<group>"; };
+		FE8F9F270C9C5D0000270AEE /* KGzlib.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = KGzlib.m; sourceTree = "<group>"; };
 		FEC5FF7B0BF49D5400682A70 /* NSTableColumnBinder.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSTableColumnBinder.h; sourceTree = "<group>"; };
 		FEC5FF7C0BF49D5400682A70 /* NSTableColumnBinder.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSTableColumnBinder.m; sourceTree = "<group>"; };
 		FED166D40BE502AD00BF9889 /* NSSegment.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSSegment.h; sourceTree = "<group>"; };
@@ -2661,6 +2673,8 @@
 		6E2B55B20976075300DA0954 /* CoreGraphics */ = {
 			isa = PBXGroup;
 			children = (
+				FE8F9F260C9C5D0000270AEE /* KGzlib.h */,
+				FE8F9F270C9C5D0000270AEE /* KGzlib.m */,
 				FE57F8150C46AA2C0078FFC1 /* KGDeviceContext.h */,
 				FE57F8160C46AA2C0078FFC1 /* KGDeviceContext.m */,
 				FE89AF470C33679100CD21FB /* KGFont.h */,
@@ -3078,6 +3092,8 @@
 		FE267E7F0B8BCB660000DDC0 /* ImageIO */ = {
 			isa = PBXGroup;
 			children = (
+				FE572D8B0CA0809500FB3E79 /* KGImageSource_BMP.h */,
+				FE572D8C0CA0809500FB3E79 /* KGImageSource_BMP.m */,
 				FE267E890B8BCC3C0000DDC0 /* KGImageSource.h */,
 				FE267E8A0B8BCC3C0000DDC0 /* KGImageSource.m */,
 				FE267E830B8BCC3C0000DDC0 /* KGImageSource_JPEG.h */,
@@ -3520,6 +3536,8 @@
 				FE57FAB70C47F2010078FFC1 /* NSPrintPanel.h in Headers */,
 				FEF2EC340C891E7C001FC5A8 /* NSOpenGLDrawable_gdiView.h in Headers */,
 				FE1CEA6D0C8F12F800184630 /* opengl_dll.h in Headers */,
+				FE8F9F280C9C5D0000270AEE /* KGzlib.h in Headers */,
+				FE572D8D0CA0809500FB3E79 /* KGImageSource_BMP.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3857,6 +3875,8 @@
 				FE01A9520C5D9BCB00AEA51A /* NSPrintPanel.h in Headers */,
 				FEF2EC350C891E7C001FC5A8 /* NSOpenGLDrawable_gdiView.h in Headers */,
 				FE1CEA6F0C8F12F800184630 /* opengl_dll.h in Headers */,
+				FE8F9F2A0C9C5D0000270AEE /* KGzlib.h in Headers */,
+				FE572D8F0CA0809500FB3E79 /* KGImageSource_BMP.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4412,6 +4432,8 @@
 				FE57FAB80C47F2010078FFC1 /* NSPrintPanel.m in Sources */,
 				FEF2EC7A0C8A03CC001FC5A8 /* NSOpenGLDrawable_gdiView.m in Sources */,
 				FE1CEA6E0C8F12F800184630 /* opengl_dll.m in Sources */,
+				FE8F9F290C9C5D0000270AEE /* KGzlib.m in Sources */,
+				FE572D8E0CA0809500FB3E79 /* KGImageSource_BMP.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4741,6 +4763,8 @@
 				FE01AA930C5D9BCB00AEA51A /* NSPrintPanel.m in Sources */,
 				FEF2EC7B0C8A03CC001FC5A8 /* NSOpenGLDrawable_gdiView.m in Sources */,
 				FE1CEA700C8F12F800184630 /* opengl_dll.m in Sources */,
+				FE8F9F2B0C9C5D0000270AEE /* KGzlib.m in Sources */,
+				FE572D900CA0809500FB3E79 /* KGImageSource_BMP.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

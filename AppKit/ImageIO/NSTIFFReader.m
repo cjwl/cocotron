@@ -398,6 +398,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [super dealloc];
 }
 
+-(NSArray *)imageFileDirectory {
+   return _directory;
+}
+
 -(int)pixelsWide {
    if([_directory count]==0)
     return 0;

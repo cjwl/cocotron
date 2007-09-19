@@ -9,10 +9,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSImageRep.h>
 #import <AppKit/NSGraphics.h>
 
+@class KGImage;
+
 @interface NSBitmapImageRep : NSImageRep {
-   unsigned       _bitsPerPixel;
-   unsigned       _bytesPerRow;
-   NSData        *_bitmap;
+   KGImage *_image;
 }
 
 -initWithData:(NSData *)data;

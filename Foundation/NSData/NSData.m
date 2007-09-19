@@ -16,6 +16,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSRaise.h>
 #import <Foundation/NSPlatform.h>
 #import <Foundation/NSCoder.h>
+#import <Foundation/NSURL.h>
 
 @implementation NSData
 
@@ -66,6 +67,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    }
 
    return [self initWithBytesNoCopy:bytes length:length];
+}
+
+-initWithContentsOfURL:(NSURL *)url {
+   if(![url isFileURL]){
+    [self dealloc];
+    return nil;
+   }
+   return [self initWithContentsOfFile:[url path]];
 }
 
 -copyWithZone:(NSZone *)zone {
@@ -135,6 +144,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 +dataWithContentsOfMappedFile:(NSString *)path {
    return [[[self allocWithZone:NULL] initWithContentsOfMappedFile:path] autorelease];
+}
+
++dataWithContentsOfURL:(NSURL *)url {
+   return [[[self allocWithZone:NULL] initWithContentsOfURL:url] autorelease];
 }
 
 -(const void *)bytes {

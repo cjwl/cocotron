@@ -422,7 +422,6 @@ static RECT NSRectToRECT(NSRect rect) {
    int            width=[image width];
    int            height=[image height];
    const unsigned int *data=[image bytes];
-   BOOL           viewIsFlipped=!transformIsFlipped(ctm);
    HDC            sourceDC=_dc;
    HDC            combineDC;
    int            combineWidth=width;
@@ -434,7 +433,7 @@ static RECT NSRectToRECT(NSRect rect) {
    unsigned char *combineBGRX;
    unsigned char *imageRGBA=(void *)data;
 
-   if(!viewIsFlipped)
+   if(transformIsFlipped(ctm))
     point.y-=rect.size.height;
 
    if((combineDC=CreateCompatibleDC(sourceDC))==NULL){
@@ -444,7 +443,7 @@ static RECT NSRectToRECT(NSRect rect) {
 
    info.bmiHeader.biSize=sizeof(BITMAPINFO);
    info.bmiHeader.biWidth=combineWidth;
-   info.bmiHeader.biHeight=combineHeight;
+   info.bmiHeader.biHeight=-combineHeight;
    info.bmiHeader.biPlanes=1;
    info.bmiHeader.biBitCount=32;
    info.bmiHeader.biCompression=BI_RGB;

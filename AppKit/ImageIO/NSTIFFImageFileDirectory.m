@@ -255,8 +255,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return _imageWidth;
 }
 
-// these load the image upside down, assuming orientation=1, and it works, the use of win32 image drawing is probably wrong, two wrongs do make a right
-static void decode_R8_G8_B8_A8(const unsigned char *stripBytes,unsigned byteCount,unsigned char *pixelBytes,int bytesPerRow,int *pixelBytesRowp){
+static void decode_R8_G8_B8_A8(const unsigned char *stripBytes,unsigned byteCount,unsigned char *pixelBytes,int bytesPerRow,int *pixelBytesRowp,int height){
    int pixelBytesRow=*pixelBytesRowp;
    int pixelBytesCol=0;
    int i;
@@ -267,8 +266,8 @@ static void decode_R8_G8_B8_A8(const unsigned char *stripBytes,unsigned byteCoun
 
     if(pixelBytesCol>=bytesPerRow){
      pixelBytesCol=0;
-     pixelBytesRow--;
-     if(pixelBytesRow<0)
+     pixelBytesRow++;
+     if(pixelBytesRow>=height)
       break;
     }
    }
@@ -276,7 +275,7 @@ static void decode_R8_G8_B8_A8(const unsigned char *stripBytes,unsigned byteCoun
    *pixelBytesRowp=pixelBytesRow;
 }
 
-static void decode_R8_G8_B8_Afill(const unsigned char *stripBytes,unsigned byteCount,unsigned char *pixelBytes,int bytesPerRow,int *pixelBytesRowp){
+static void decode_R8_G8_B8_Afill(const unsigned char *stripBytes,unsigned byteCount,unsigned char *pixelBytes,int bytesPerRow,int *pixelBytesRowp,int height){
    int pixelBytesRow=*pixelBytesRowp;
    int pixelBytesCol=0;
    int i;
@@ -292,8 +291,8 @@ static void decode_R8_G8_B8_Afill(const unsigned char *stripBytes,unsigned byteC
 
     if(pixelBytesCol>=bytesPerRow){
      pixelBytesCol=0;
-     pixelBytesRow--;
-     if(pixelBytesRow<0)
+     pixelBytesRow++;
+     if(pixelBytesRow>=height)
       break;
     }
    }
@@ -358,8 +357,9 @@ static void decode_R8_G8_B8_Afill(const unsigned char *stripBytes,unsigned byteC
    }
    
    bytesPerRow=_imageWidth*4;
-   pixelBytesRow=_imageLength-1;
+   pixelBytesRow=0;
    pixelBytesCol=0;
+
    if(_compression==NSTIFFCompression_LZW){
     
     for(strip=0;strip<_sizeOfStripOffsets;strip++){
@@ -374,9 +374,9 @@ static void decode_R8_G8_B8_Afill(const unsigned char *stripBytes,unsigned byteC
      
      data=[KGPDFFilter LZWDecode_data:data parameters:nil];
      if(_samplesPerPixel==4)
-      decode_R8_G8_B8_A8([data bytes],[data length],pixelBytes,bytesPerRow,&pixelBytesRow);
+      decode_R8_G8_B8_A8([data bytes],[data length],pixelBytes,bytesPerRow,&pixelBytesRow,_imageLength);
      else
-      decode_R8_G8_B8_Afill([data bytes],[data length],pixelBytes,bytesPerRow,&pixelBytesRow);
+      decode_R8_G8_B8_Afill([data bytes],[data length],pixelBytes,bytesPerRow,&pixelBytesRow,_imageLength);
     }
       
    }
@@ -389,11 +389,10 @@ static void decode_R8_G8_B8_Afill(const unsigned char *stripBytes,unsigned byteC
       NSLog(@"TIFF strip error, offset (%d) + byteCount (%d) > length (%d)",offset,byteCount,length);
       return NO;
      }
-    
      if(_samplesPerPixel==4)
-      decode_R8_G8_B8_A8(bytes+offset,byteCount,pixelBytes,bytesPerRow,&pixelBytesRow);
+      decode_R8_G8_B8_A8(bytes+offset,byteCount,pixelBytes,bytesPerRow,&pixelBytesRow,_imageLength);
      else
-      decode_R8_G8_B8_Afill(bytes+offset,byteCount,pixelBytes,bytesPerRow,&pixelBytesRow);
+      decode_R8_G8_B8_Afill(bytes+offset,byteCount,pixelBytes,bytesPerRow,&pixelBytesRow,_imageLength);
     }
    }
    

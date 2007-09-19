@@ -8,8 +8,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import "KGImageSource.h"
 
-@interface KGImageSource_TIFF : KGImageSource {
+@class NSTIFFReader;
 
+@interface KGImageSource_TIFF : KGImageSource {
+   NSTIFFReader *_reader;
 }
+
 
 @end

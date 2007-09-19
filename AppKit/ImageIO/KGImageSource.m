@@ -7,7 +7,60 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
 #import "KGImageSource.h"
+#import "KGImageSource_TIFF.h"
+#import "KGImageSource_PNG.h"
+#import "KGImageSource_JPEG.h"
+#import "KGImageSource_BMP.h"
+#import <Foundation/NSData.h>
+#import <Foundation/NSRaise.h>
 
 @implementation KGImageSource
+
++(KGImageSource *)newImageSourceWithData:(NSData *)data options:(NSDictionary *)options {
+   if([KGImageSource_PNG isTypeOfData:data])
+    return [[KGImageSource_PNG alloc] initWithData:data options:options];
+
+   if([KGImageSource_TIFF isTypeOfData:data])
+    return [[KGImageSource_TIFF alloc] initWithData:data options:options];
+
+   if([KGImageSource_JPEG isTypeOfData:data])
+    return [[KGImageSource_JPEG alloc] initWithData:data options:options];
+        
+   if([KGImageSource_BMP isTypeOfData:data])
+    return [[KGImageSource_BMP alloc] initWithData:data options:options];
+    
+   return nil;
+}
+
++(BOOL)isTypeOfData:(NSData *)data {
+   NSInvalidAbstractInvocation();
+   return NO;
+}
+
+-initWithData:(NSData *)data options:(NSDictionary *)options {
+  NSInvalidAbstractInvocation();
+  return nil;
+}
+
+-initWithURL:(NSURL *)url options:(NSDictionary *)options {
+   NSData *data=[NSData dataWithContentsOfURL:url];
+   
+   if(data==nil){
+    [self dealloc];
+    return nil;
+   }
+   
+   return [self initWithData:data options:options];
+}
+
+-(unsigned)count {
+   NSInvalidAbstractInvocation();
+   return 0;
+}
+
+-(KGImage *)imageAtIndex:(unsigned)index options:(NSDictionary *)options {
+  NSInvalidAbstractInvocation();
+  return nil;
+}
 
 @end

@@ -42,6 +42,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
   NSString            *_model;
   unsigned             _newSubfileType;
   unsigned             _orientation;
+  
   NSString            *_pageName;
   unsigned             _sizeOfPageNumbers;
   unsigned            *_pageNumbers;
