@@ -214,11 +214,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    KGContext         *graphicsPort;
 
    if(cached==nil){
-    cached=[[[NSCachedImageRep alloc] initWithSize:_size] autorelease];
+    cached=[[[NSCachedImageRep alloc] initWithSize:_size depth:0 separate:YES alpha:YES] autorelease];
     [self addRepresentation:cached];
    }
 
-   context=[NSGraphicsContext graphicsContextWithCachedImageRep:cached];
+   context=[NSGraphicsContext graphicsContextWithWindow:[cached window]];
 
    [NSGraphicsContext saveGraphicsState];
    [NSGraphicsContext setCurrentContext:context];

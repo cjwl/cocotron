@@ -66,12 +66,16 @@ NSString *NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification";
 }
 
 +(NSRect)frameRectForContentRect:(NSRect)contentRect styleMask:(unsigned)styleMask {
-   contentRect.size.height+=[NSMainMenuView menuHeight];
+   contentRect.size.height;
+   if(styleMask!=0)
+    contentRect.size.height+=[NSMainMenuView menuHeight];
    return contentRect;
 }
 
 +(NSRect)contentRectForFrameRect:(NSRect)frameRect styleMask:(unsigned)styleMask {
-   frameRect.size.height-=[NSMainMenuView menuHeight];
+   frameRect.size.height;
+   if(styleMask!=0)
+    frameRect.size.height-=[NSMainMenuView menuHeight];
    return frameRect;
 }
 
@@ -99,10 +103,8 @@ NSString *NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification";
    _title=@"";
    _miniwindowTitle=@"";
 
-   if([self isKindOfClass:[NSPanel class]]){
-    _menu=nil;
-   }
-   else {
+   _menu=nil;
+   if(![self isKindOfClass:[NSPanel class]] && styleMask>0){
     NSRect frame=NSMakeRect(0,contentRect.size.height,contentRect.size.width,[NSMainMenuView menuHeight]);
 
     _menu=[[NSApp mainMenu] copy];
@@ -1697,6 +1699,8 @@ NSString *NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification";
 }
 
 -(void)platformWindowActivated:(CGWindow *)window {
+   [NSApp _windowWillBecomeActive:self];
+   
    [self _setSheetOriginAndFront];
    if ([_drawers count] > 0)
        [_drawers makeObjectsPerformSelector:@selector(parentWindowDidActivate:) withObject:self];
@@ -1710,10 +1714,14 @@ NSString *NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification";
    [_menuView setNeedsDisplay:YES];
    [self displayIfNeeded];
 
+   [NSApp _windowDidBecomeActive:self];
+   
    [NSApp updateWindows];
 }
 
 -(void)platformWindowDeactivated:(CGWindow *)window checkForAppDeactivation:(BOOL)checkForAppDeactivation {
+   [NSApp _windowWillBecomeDeactive:self];
+   
    if ([_drawers count] > 0)
        [_drawers makeObjectsPerformSelector:@selector(parentWindowDidDeactivate:) withObject:self];
 
@@ -1727,6 +1735,9 @@ NSString *NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification";
 
    if(checkForAppDeactivation)
     [NSApp performSelector:@selector(_checkForAppActivation)];
+
+   [NSApp _windowDidBecomeDeactive:self];
+   
    [NSApp updateWindows];
 }
 

@@ -56,7 +56,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
      return hit;
    }
 
-   return ([types firstObjectCommonWithArray:[self _draggedTypes]]!=nil)?self:nil;
+   return ([types firstObjectCommonWithArray:[self _draggedTypes]]!=nil)?(id)self:nil;
 }
 
 @end

@@ -8,10 +8,27 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 // Original - Christopher Lloyd <cjwl@objc.net>
 #import "KGPDFArray.h"
+#import "KGPDFObject_Real.h"
+#import <AppKit/KGPDFContext.h>
 #import <Foundation/NSString.h>
 #import <stddef.h>
 
 @implementation KGPDFArray
+
++(KGPDFArray *)pdfArray {
+   return [[[self alloc] init] autorelease];
+}
+
++(KGPDFArray *)pdfArrayWithRect:(NSRect)rect {
+   KGPDFArray *result=[self pdfArray];
+   
+   [result addNumber:rect.origin.x];
+   [result addNumber:rect.origin.y];
+   [result addNumber:rect.size.width];
+   [result addNumber:rect.size.height];
+   
+   return result;
+}
 
 -init {
    _capacity=1;
@@ -46,6 +63,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     _objects=NSZoneRealloc([self zone],_objects,sizeof(id)*_capacity);
    }
    _objects[_count-1]=object;
+}
+
+-(void)addNumber:(KGPDFReal)value {
+   [self addObject:[KGPDFObject_Real pdfObjectWithReal:value]];
 }
 
 -(KGPDFObject *)objectAtIndex:(unsigned)index {
@@ -144,6 +165,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     [result appendFormat:@"%@ ",_objects[i]];
    [result appendString:@" ]\n"];
    return result;
+}
+
+-(void)encodeWithPDFContext:(KGPDFContext *)encoder {
+   int i;
+   
+   [encoder appendString:@"[ "];
+   for(i=0;i<_count;i++)
+    [encoder encodePDFObject:_objects[i]];
+   [encoder appendString:@"]\n"];
 }
 
 @end

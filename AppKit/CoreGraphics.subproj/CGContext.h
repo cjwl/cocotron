@@ -27,8 +27,22 @@ typedef enum {
 
 typedef int CGLineCap;
 typedef int CGLineJoin;
-typedef int CGPathDrawingMode;
-typedef int CGInterpolationQuality;
+
+typedef enum {
+   kCGPathFill,
+   kCGPathEOFill,
+   kCGPathStroke,
+   kCGPathFillStroke,
+   kCGPathEOFillStroke
+} CGPathDrawingMode;
+
+typedef enum {
+   kCGInterpolationDefault,
+   kCGInterpolationNone,
+   kCGInterpolationLow,
+   kCGInterpolationHigh,
+} CGInterpolationQuality;
+
 typedef int CGBlendMode;
 typedef int CGTextDrawingMode;
 
@@ -191,6 +205,8 @@ APPKIT_EXPORT void CGContextBeginPage(CGContextRef context,const CGRect *mediaBo
 APPKIT_EXPORT void CGContextEndPage(CGContextRef context);
 
 // Temporary hacks
+
+APPKIT_EXPORT void CGContextDrawContextInRect(CGContextRef context,CGContextRef other,CGRect rect);
 
 APPKIT_EXPORT void CGContextResetClip(CGContextRef context);
 

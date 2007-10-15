@@ -9,6 +9,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSObject.h>
 #import <Foundation/NSGeometry.h>
 #import <AppKit/CGAffineTransform.h>
+#import <AppKit/CGPath.h>
 
 enum {
    KGPathFill,
@@ -16,14 +17,6 @@ enum {
    KGPathStroke,
    KGPathFillStroke,
    KGPathEOFillStroke
-};
-
-enum {
-   KGPathOperatorMoveToPoint,
-   KGPathOperatorLineToPoint,
-   KGPathOperatorCurveToPoint,
-   KGPathOperatorCloseSubpath,
-   KGPathOperatorQuadCurveToPoint,
 };
 
 @interface KGPath : NSObject <NSCopying,NSMutableCopying> {

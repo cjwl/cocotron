@@ -11,17 +11,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/CGAffineTransform.h>
 #import <AppKit/CGFont.h>
 #import <AppKit/CGGeometry.h>
+#import <AppKit/CGContext.h>
 
-@class KGRenderingContext,KGImage,KGColorSpace,KGColor,KGPattern,KGShading,KGMutablePath,KGPath;
+@class KGImage,KGColorSpace,KGColor,KGPattern,KGShading,KGMutablePath,KGPath;
 
 @interface KGGraphicsState : NSObject <NSCopying> {
 @public
-   KGRenderingContext *_renderingContext;
    CGAffineTransform   _ctm;
    CGAffineTransform   _textTransform;
    
-   id                  _deviceState;
-   NSRect              _clipRect;
    KGColor            *_strokeColor;
    KGColor            *_fillColor;
    KGFont             *_font;
@@ -36,7 +34,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    float               _dashPhase;
    float               _dashLengthsCount;
    float              *_dashLengths;
-   int                 _renderingIntent;
+   CGColorRenderingIntent _renderingIntent;
    int                 _blendMode;
    float               _flatness;
    int                 _interpolationQuality;
@@ -49,9 +47,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    float               _textLeading;
 }
 
--initWithRenderingContext:(KGRenderingContext *)context transform:(CGAffineTransform)deviceTransform userSpaceSize:(NSSize)userSpaceSize;
-
--(KGRenderingContext *)renderingContext;
+-initWithTransform:(CGAffineTransform)deviceTransform;
+-init;
 
 -(void)save;
 -(void)restore;
@@ -70,45 +67,17 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(NSRect)convertRectToUserSpace:(NSRect)rect;
 
 -(void)concatCTM:(CGAffineTransform)transform;
--(void)translateCTM:(float)tx:(float)ty;
--(void)scaleCTM:(float)scalex:(float)scaley;
--(void)rotateCTM:(float)radians;
 
 -(void)clipToPath:(KGPath *)path;
 -(void)evenOddClipToPath:(KGPath *)path;
 -(void)clipToMask:(KGImage *)image inRect:(NSRect)rect;
--(void)clipToRect:(NSRect)clipRect;
 -(void)clipToRects:(const NSRect *)rects count:(unsigned)count;
 
 -(KGColor *)strokeColor;
 -(KGColor *)fillColor;
 
--(void)setStrokeColorSpace:(KGColorSpace *)colorSpace;
--(void)setFillColorSpace:(KGColorSpace *)colorSpace;
-
--(void)setStrokeColorWithComponents:(const float *)components;
 -(void)setStrokeColor:(KGColor *)color;
--(void)setGrayStrokeColor:(float)gray:(float)alpha;
--(void)setRGBStrokeColor:(float)r:(float)g:(float)b:(float)alpha;
--(void)setCMYKStrokeColor:(float)c:(float)m:(float)y:(float)k:(float)alpha;
-
--(void)setFillColorWithComponents:(const float *)components;
 -(void)setFillColor:(KGColor *)color;
--(void)setGrayFillColor:(float)gray:(float)alpha;
--(void)setRGBFillColor:(float)r:(float)g:(float)b:(float)alpha;
--(void)setCMYKFillColor:(float)c:(float)m:(float)y:(float)k:(float)alpha;
-
--(void)setStrokeAndFillAlpha:(float)alpha;
-
--(void)setStrokeAlpha:(float)alpha;
--(void)setGrayStrokeColor:(float)gray;
--(void)setRGBStrokeColor:(float)r:(float)g:(float)b;
--(void)setCMYKStrokeColor:(float)c:(float)m:(float)y:(float)k;
-
--(void)setFillAlpha:(float)alpha;
--(void)setGrayFillColor:(float)gray;
--(void)setRGBFillColor:(float)r:(float)g:(float)b;
--(void)setCMYKFillColor:(float)c:(float)m:(float)y:(float)k;
 
 -(void)setPatternPhase:(NSSize)phase;
 -(void)setStrokePattern:(KGPattern *)pattern components:(const float *)components;
@@ -118,9 +87,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)setTextPosition:(float)x:(float)y;
 -(void)setCharacterSpacing:(float)spacing;
 -(void)setTextDrawingMode:(int)textMode;
+-(KGFont *)font;
 -(void)setFont:(KGFont *)font;
--(void)setFontSize:(float)size;
--(void)selectFontWithName:(const char *)name size:(float)size encoding:(int)encoding;
 -(void)setShouldSmoothFonts:(BOOL)yesOrNo;
 
 -(void)setLineWidth:(float)width;
@@ -129,46 +97,22 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)setMiterLimit:(float)limit;
 -(void)setLineDashPhase:(float)phase lengths:(const float *)lengths count:(unsigned)count;
 
--(void)setRenderingIntent:(int)intent;
+-(void)setRenderingIntent:(CGColorRenderingIntent)intent;
 -(void)setBlendMode:(int)mode;
 
 -(void)setFlatness:(float)flatness;
--(void)setInterpolationQuality:(int)quality;
+-(void)setInterpolationQuality:(CGInterpolationQuality)quality;
 
 -(void)setShadowOffset:(NSSize)offset blur:(float)blur color:(KGColor *)color;
 -(void)setShadowOffset:(NSSize)offset blur:(float)blur;
 
 -(void)setShouldAntialias:(BOOL)flag;
 
--(void)strokeLineSegmentsWithPoints:(NSPoint *)points count:(unsigned)count;
--(void)strokeRect:(NSRect)rect;
--(void)strokeRect:(NSRect)rect width:(float)width;
--(void)strokeEllipseInRect:(NSRect)rect;
-
--(void)fillRects:(const NSRect *)rects count:(unsigned)count;
--(void)fillEllipseInRect:(NSRect)rect;
-
--(void)drawPath:(KGPath *)path mode:(int)mode;
-
--(void)clearRect:(NSRect)rect;
-
--(void)showGlyphs:(const CGGlyph *)glyphs count:(unsigned)count;
--(void)showGlyphs:(const CGGlyph *)glyphs count:(unsigned)numberOfGlyphs atPoint:(float)x:(float)y;
--(void)showGlyphs:(const CGGlyph *)glyphs count:(unsigned)count advances:(const NSSize *)advances;
-
--(void)showText:(const char *)text length:(unsigned)length;
--(void)showText:(const char *)text length:(unsigned)length atPoint:(float)x:(float)y;
-
--(void)drawShading:(KGShading *)shading;
--(void)drawImage:(KGImage *)image inRect:(NSRect)rect;
-
 // temporary
+
+-(void)resetClip;
 
 -(void)setWordSpacing:(float)spacing;
 -(void)setTextLeading:(float)leading;
 
--(void)copyBitsInRect:(NSRect)rect toPoint:(NSPoint)point;
-
 @end
-
-void CGGraphicsSourceOver_rgba32_onto_bgrx32(unsigned char *sourceRGBA,unsigned char *resultRGBX,int width,int height,float fraction);

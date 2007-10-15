@@ -10,6 +10,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "KGShading.h"
 #import "KGColorSpace.h"
 #import "KGFunction.h"
+#import "KGPDFDictionary.h"
+#import "KGPDFArray.h"
+#import <Foundation/NSString.h>
 
 @implementation KGShading
 
@@ -77,6 +80,201 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(BOOL)isAxial {
    return _isRadial?NO:YES;
+}
+
+-(KGPDFObject *)pdfObjectInContext:(KGPDFContext *)context {
+   KGPDFDictionary *result=[KGPDFDictionary pdfDictionary];
+    
+   if([self isAxial])
+    [result setIntegerForKey:"ShadingType" value:2];
+   else
+    [result setIntegerForKey:"ShadingType" value:3];
+    
+   [result setObjectForKey:"ColorSpace" value:[_colorSpace pdfObjectInContext:context]];
+   
+   return result;
+}
+
+KGShading *axialShading(KGPDFDictionary *dictionary,KGColorSpace *colorSpace){
+   KGPDFArray *coordsArray;
+   KGPDFArray *domainArray;
+   KGPDFDictionary *fnDictionary;
+   KGPDFArray *extendArray;
+   NSPoint     start;
+   NSPoint     end;
+   KGFunction *function;
+   KGPDFBoolean extendStart=NO;
+   KGPDFBoolean extendEnd=NO;
+   
+//NSLog(@"axialShading=%@",dictionary);
+
+   if(![dictionary getArrayForKey:"Coords" value:&coordsArray]){
+    NSLog(@"No Coords entry in axial shader");
+    return NULL;
+   }
+   else {    
+    if(![coordsArray getNumberAtIndex:0 value:&start.x]){
+     NSLog(@"No real at Coords[0]");
+     return NULL;
+    }
+    if(![coordsArray getNumberAtIndex:1 value:&start.y]){
+     NSLog(@"No real at Coords[1]");
+     return NULL;
+    }
+    if(![coordsArray getNumberAtIndex:2 value:&end.x]){
+     NSLog(@"No real at Coords[2]");
+     return NULL;
+    }
+    if(![coordsArray getNumberAtIndex:3 value:&end.y]){
+     NSLog(@"No real at Coords[3]");
+     return NULL;
+    }
+   }
+   
+   if(![dictionary getArrayForKey:"Domain" value:&domainArray])
+    domainArray=nil;
+    
+   if(![dictionary getDictionaryForKey:"Function" value:&fnDictionary]){
+    NSLog(@"No Function entry in axial shader");
+    return NULL;
+   }
+   if((function=[KGFunction pdfFunctionWithDictionary:fnDictionary])==NULL)
+    return NULL;
+    
+   if([dictionary getArrayForKey:"Extend" value:&extendArray]){
+    if(![extendArray getBooleanAtIndex:0 value:&extendStart]){
+     NSLog(@"Extend dictionary missing boolean at 0");
+     return NULL;
+    }
+    if(![extendArray getBooleanAtIndex:1 value:&extendEnd]){
+     NSLog(@"Extend dictionary missing boolean at 1");
+     return NULL;
+    }
+   }
+   
+   return [[KGShading alloc] initWithColorSpace:colorSpace startPoint:start endPoint:end function:function extendStart:extendStart extendEnd:extendEnd];    
+}
+
+KGShading *radialShading(KGPDFDictionary *dictionary,KGColorSpace *colorSpace){
+   KGPDFArray *coordsArray;
+   KGPDFArray *domainArray;
+   KGPDFDictionary *fnDictionary;
+   KGPDFArray *extendArray;
+   NSPoint     start;
+   KGPDFReal    startRadius;
+   NSPoint     end;
+   KGPDFReal    endRadius;
+   KGFunction *function;
+   KGPDFBoolean extendStart=NO;
+   KGPDFBoolean extendEnd=NO;
+   
+//NSLog(@"axialShading=%@",dictionary);
+
+   if(![dictionary getArrayForKey:"Coords" value:&coordsArray]){
+    NSLog(@"No Coords entry in radial shader");
+    return NULL;
+   }
+   else {    
+    if(![coordsArray getNumberAtIndex:0 value:&start.x]){
+     NSLog(@"No real at Coords[0]");
+     return NULL;
+    }
+    if(![coordsArray getNumberAtIndex:1 value:&start.y]){
+     NSLog(@"No real at Coords[1]");
+     return NULL;
+    }
+    if(![coordsArray getNumberAtIndex:2 value:&startRadius]){
+     NSLog(@"No real at Coords[2]");
+     return NULL;
+    }
+    if(![coordsArray getNumberAtIndex:3 value:&end.x]){
+     NSLog(@"No real at Coords[3]");
+     return NULL;
+    }
+    if(![coordsArray getNumberAtIndex:4 value:&end.y]){
+     NSLog(@"No real at Coords[4]");
+     return NULL;
+    }
+    if(![coordsArray getNumberAtIndex:5 value:&endRadius]){
+     NSLog(@"No real at Coords[5]");
+     return NULL;
+    }
+   }
+   
+   if(![dictionary getArrayForKey:"Domain" value:&domainArray])
+    domainArray=nil;
+    
+   if(![dictionary getDictionaryForKey:"Function" value:&fnDictionary]){
+    NSLog(@"No Function entry in radial shader");
+    return NULL;
+   }
+   if((function=[KGFunction pdfFunctionWithDictionary:fnDictionary])==NULL)
+    return NULL;
+    
+   if([dictionary getArrayForKey:"Extend" value:&extendArray]){
+    if(![extendArray getBooleanAtIndex:0 value:&extendStart]){
+     NSLog(@"Extend dictionary missing boolean at 0");
+     return NULL;
+    }
+    if(![extendArray getBooleanAtIndex:1 value:&extendEnd]){
+     NSLog(@"Extend dictionary missing boolean at 1");
+     return NULL;
+    }
+   }
+   
+   return [[KGShading alloc] initWithColorSpace:colorSpace startPoint:start startRadius:startRadius endPoint:end endRadius:endRadius function:function extendStart:extendStart extendEnd:extendEnd];        
+}
+
++(KGShading *)shadingWithPDFObject:(KGPDFObject *)object {
+   KGPDFDictionary *dictionary;
+   KGShading       *result=nil;
+   KGPDFObject     *colorSpaceObject;
+   KGColorSpace    *colorSpace;
+   KGPDFInteger     shadingType;
+   
+   if(![object checkForType:kKGPDFObjectTypeDictionary value:&dictionary])
+    return nil;
+   
+  // NSLog(@"sh=%@",dictionary);
+   if(![dictionary getIntegerForKey:"ShadingType" value:&shadingType]){
+    NSLog(@"required ShadingType missing");
+    return nil;
+   }
+   if(![dictionary getObjectForKey:"ColorSpace" value:&colorSpaceObject]){
+    NSLog(@"required ColorSpace missing");
+    return nil;
+   }
+   if((colorSpace=[KGColorSpace colorSpaceFromPDFObject:colorSpaceObject])==nil)
+    return;
+    
+   switch(shadingType){
+    case 1: // Function-base shading
+     NSLog(@"Unsupported shading type %d",shadingType);
+     break;
+    case 2: // Axial shading
+     result=axialShading(dictionary,colorSpace);
+     break;
+    case 3: // Radial shading
+     result=radialShading(dictionary,colorSpace);
+     break;
+    case 4: // Free-form Gouraud-shaded triangle mesh
+     NSLog(@"Unsupported shading type %d",shadingType);
+     break;
+    case 5: // Lattice-form Gouraud-shaded triangle mesh
+     NSLog(@"Unsupported shading type %d",shadingType);
+     break;
+    case 6: // Coons patch mesh
+     NSLog(@"Unsupported shading type %d",shadingType);
+     break;
+    case 7: // Tensor-product patch mesh
+     NSLog(@"Unsupported shading type %d",shadingType);
+     break;
+    default: // unknown
+     NSLog(@"Unknown shading type %d",shadingType);
+     break;
+   }
+   
+   return result;
 }
 
 @end

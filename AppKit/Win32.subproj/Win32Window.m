@@ -18,7 +18,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSPanel.h>
 #import <AppKit/NSApplication.h>
 #import <AppKit/NSDrawerWindow.h>
-#import <AppKit/KGLayer.h>
+#import "KGLayer_gdi.h"
 #import <AppKit/KGContext.h>
 
 @implementation Win32Window
@@ -180,7 +180,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
      break;
 
     case Win32BackingStoreBuffered:
-     _backingLayer=[[KGLayer alloc] initRelativeToRenderingContext:_renderingContext size:_backingSize unused:nil];
+     _backingLayer=[[KGLayer_gdi alloc] initRelativeToRenderingContext:_renderingContext size:_backingSize unused:nil];
      break;
    }
 
@@ -248,7 +248,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       _backingSize=size;
 
       [_backingLayer release];
-      _backingLayer=[[KGLayer alloc] initRelativeToRenderingContext:_renderingContext size:_backingSize unused:nil];
+      _backingLayer=[[KGLayer_gdi alloc] initRelativeToRenderingContext:_renderingContext size:_backingSize unused:nil];
      }
      break;
    }

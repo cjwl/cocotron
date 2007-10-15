@@ -9,7 +9,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 // Original - Christopher Lloyd <cjwl@objc.net>
 #import "KGContext.h"
 #import <AppKit/KGGraphicsState.h>
-#import <AppKit/KGRenderingContext.h>
+#import <AppKit/KGColor.h>
+#import <AppKit/KGColorSpace.h>
+#import <AppKit/KGFont.h>
 #import "KGMutablePath.h"
 #import "KGLayer.h"
 #import "KGPDFPage.h"
@@ -26,6 +28,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return self;
 }
 
+-init {
+   return [self initWithGraphicsState:[[[KGGraphicsState alloc] init] autorelease]];
+}
+
 -(void)dealloc {
    [_layerStack release];
    [_stateStack release];
@@ -36,11 +42,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 static inline KGGraphicsState *currentState(KGContext *self){
    return [self->_stateStack lastObject];
 }
-
--(KGRenderingContext *)renderingContext {
-   return [currentState(self) renderingContext];
-}
-
 
 -(void)setAllowsAntialiasing:(BOOL)yesOrNo {
    _allowsAntialiasing=yesOrNo;
@@ -113,9 +114,7 @@ static inline KGGraphicsState *currentState(KGContext *self){
 }
 
 -(void)addRect:(NSRect)rect {
-   CGAffineTransform ctm=[currentState(self) ctm];
-   
-   [_path addRect:rect withTransform:&ctm];
+   [self addRects:&rect count:1];
 }
 
 -(void)addRects:(NSRect *)rect count:(unsigned)count {
@@ -222,16 +221,16 @@ static inline KGGraphicsState *currentState(KGContext *self){
    [currentState(self) concatCTM:transform];
 }
 
--(void)translateCTM:(float)tx:(float)ty {
-   [currentState(self) translateCTM:tx:ty];
+-(void)translateCTM:(float)translatex:(float)translatey {
+   [self concatCTM:CGAffineTransformMakeTranslation(translatex,translatey)];
 }
 
 -(void)scaleCTM:(float)scalex:(float)scaley {
-   [currentState(self) scaleCTM:scalex:scaley];
+   [self concatCTM:CGAffineTransformMakeScale(scalex,scaley)];
 }
 
 -(void)rotateCTM:(float)radians {
-   [currentState(self) rotateCTM:radians];
+   [self concatCTM:CGAffineTransformMakeRotation(radians)];
 }
 
 -(void)clipToPath {
@@ -255,8 +254,7 @@ static inline KGGraphicsState *currentState(KGContext *self){
 }
 
 -(void)clipToRect:(NSRect)rect {
-   [currentState(self) clipToRect:rect];
-   [_path reset];
+   [self clipToRects:&rect count:1];
 }
 
 -(void)clipToRects:(const NSRect *)rects count:(unsigned)count {
@@ -273,15 +271,28 @@ static inline KGGraphicsState *currentState(KGContext *self){
 }
 
 -(void)setStrokeColorSpace:(KGColorSpace *)colorSpace {
-   [currentState(self) setStrokeColorSpace:colorSpace];
+   KGColor *color=[[KGColor alloc] initWithColorSpace:colorSpace];
+   
+   [self setStrokeColor:color];
+   
+   [color release];
 }
 
 -(void)setFillColorSpace:(KGColorSpace *)colorSpace {
-   [currentState(self) setFillColorSpace:colorSpace];
+   KGColor *color=[[KGColor alloc] initWithColorSpace:colorSpace];
+
+   [self setFillColor:color];
+   
+   [color release];
 }
 
 -(void)setStrokeColorWithComponents:(const float *)components {
-   [currentState(self) setStrokeColorWithComponents:components];
+   KGColorSpace *colorSpace=[[self strokeColor] colorSpace];
+   KGColor      *color=[[KGColor alloc] initWithColorSpace:colorSpace components:components];
+   
+   [self setStrokeColor:color];
+   
+   [color release];
 }
 
 -(void)setStrokeColor:(KGColor *)color {
@@ -289,19 +300,45 @@ static inline KGGraphicsState *currentState(KGContext *self){
 }
 
 -(void)setGrayStrokeColor:(float)gray:(float)alpha {
-   [currentState(self) setGrayStrokeColor:gray:alpha];
+   KGColorSpace *colorSpace=[[KGColorSpace alloc] initWithDeviceGray];
+   float         components[2]={gray,alpha};
+   KGColor      *color=[[KGColor alloc] initWithColorSpace:colorSpace components:components];
+   
+   [self setStrokeColor:color];
+   
+   [color release];
+   [colorSpace release];
 }
 
 -(void)setRGBStrokeColor:(float)r:(float)g:(float)b:(float)alpha {
-   [currentState(self) setRGBStrokeColor:r:g:b:alpha];
+   KGColorSpace *colorSpace=[[KGColorSpace alloc] initWithDeviceRGB];
+   float         components[4]={r,g,b,alpha};
+   KGColor      *color=[[KGColor alloc] initWithColorSpace:colorSpace components:components];
+   
+   [self setStrokeColor:color];
+   
+   [color release];
+   [colorSpace release];
 }
 
 -(void)setCMYKStrokeColor:(float)c:(float)m:(float)y:(float)k:(float)alpha {
-   [currentState(self) setCMYKStrokeColor:c:m:y:k:alpha];
+   KGColorSpace *colorSpace=[[KGColorSpace alloc] initWithDeviceCMYK];
+   float         components[5]={c,m,y,k,alpha};
+   KGColor      *color=[[KGColor alloc] initWithColorSpace:colorSpace components:components];
+   
+   [self setStrokeColor:color];
+   
+   [color release];
+   [colorSpace release];
 }
 
 -(void)setFillColorWithComponents:(const float *)components {
-   [currentState(self) setFillColorWithComponents:components];
+   KGColorSpace *colorSpace=[[self fillColor] colorSpace];
+   KGColor      *color=[[KGColor alloc] initWithColorSpace:colorSpace components:components];
+   
+   [self setFillColor:color];
+   
+   [color release];
 }
 
 -(void)setFillColor:(KGColor *)color {
@@ -309,51 +346,84 @@ static inline KGGraphicsState *currentState(KGContext *self){
 }
 
 -(void)setGrayFillColor:(float)gray:(float)alpha {
-   [currentState(self) setGrayFillColor:gray:alpha];
+   KGColorSpace *colorSpace=[[KGColorSpace alloc] initWithDeviceGray];
+   float         components[2]={gray,alpha};
+   KGColor      *color=[[KGColor alloc] initWithColorSpace:colorSpace components:components];
+   
+   [self setFillColor:color];
+   
+   [color release];
+   [colorSpace release];
 }
 
 -(void)setRGBFillColor:(float)r:(float)g:(float)b:(float)alpha {
-   [currentState(self) setRGBFillColor:r:g:b:alpha];
+   KGColorSpace *colorSpace=[[KGColorSpace alloc] initWithDeviceRGB];
+   float         components[4]={r,g,b,alpha};
+   KGColor      *color=[[KGColor alloc] initWithColorSpace:colorSpace components:components];
+   
+   [self setFillColor:color];
+   
+   [color release];
+   [colorSpace release];
 }
 
 -(void)setCMYKFillColor:(float)c:(float)m:(float)y:(float)k:(float)alpha {
-   [currentState(self) setCMYKFillColor:c:m:y:k:alpha];
+   KGColorSpace *colorSpace=[[KGColorSpace alloc] initWithDeviceCMYK];
+   float         components[5]={c,m,y,k,alpha};
+   KGColor      *color=[[KGColor alloc] initWithColorSpace:colorSpace components:components];
+   
+   [self setFillColor:color];
+   
+   [color release];
+   [colorSpace release];
 }
 
 -(void)setStrokeAndFillAlpha:(float)alpha {
-   [currentState(self) setStrokeAndFillAlpha:alpha];
+   [self setStrokeAlpha:alpha];
+   [self setFillAlpha:alpha];
 }
 
 -(void)setStrokeAlpha:(float)alpha {
-   [currentState(self) setStrokeAlpha:alpha];
+   KGColor *color=[[self strokeColor] copyWithAlpha:alpha];
+   [self setStrokeColor:color];
+   [color release];
 }
 
 -(void)setGrayStrokeColor:(float)gray {
-   [currentState(self) setGrayStrokeColor:gray];
+   float alpha=[[self strokeColor] alpha];
+   
+   [self setGrayStrokeColor:gray:alpha];
 }
 
 -(void)setRGBStrokeColor:(float)r:(float)g:(float)b {
-   [currentState(self) setRGBStrokeColor:r:g:b];
+   float alpha=[[self strokeColor] alpha];
+   [self setRGBStrokeColor:r:g:b:alpha];
 }
 
 -(void)setCMYKStrokeColor:(float)c:(float)m:(float)y:(float)k {
-   [currentState(self) setCMYKStrokeColor:c:y:m:k];
+   float alpha=[[self strokeColor] alpha];
+   [self setCMYKStrokeColor:c:m:y:k:alpha];
 }
 
 -(void)setFillAlpha:(float)alpha {
-   [currentState(self) setFillAlpha:alpha];
+   KGColor *color=[[self fillColor] copyWithAlpha:alpha];
+   [self setFillColor:color];
+   [color release];
 }
 
 -(void)setGrayFillColor:(float)gray {
-   [currentState(self) setGrayFillColor:gray];
+   float alpha=[[self fillColor] alpha];
+   [self setGrayFillColor:gray:alpha];
 }
 
 -(void)setRGBFillColor:(float)r:(float)g:(float)b {
-   [currentState(self) setRGBFillColor:r:g:b];
+   float alpha=[[self fillColor] alpha];
+   [self setRGBFillColor:r:g:b:alpha];
 }
 
 -(void)setCMYKFillColor:(float)c:(float)m:(float)y:(float)k {
-   [currentState(self) setCMYKFillColor:c:y:m:k];
+   float alpha=[[self fillColor] alpha];
+   [self setCMYKFillColor:c:m:y:k:alpha];
 }
 
 -(void)setPatternPhase:(NSSize)phase {
@@ -389,11 +459,16 @@ static inline KGGraphicsState *currentState(KGContext *self){
 }
 
 -(void)setFontSize:(float)size {
-   [currentState(self) setFontSize:size];
+   NSString *name=[[currentState(self) font] name];
+   KGFont   *font=[[KGFont alloc] initWithName:name size:size];
+   
+   [self setFont:font];
 }
 
 -(void)selectFontWithName:(const char *)name size:(float)size encoding:(int)encoding {
-   [currentState(self) selectFontWithName:name size:size encoding:encoding];
+   KGFont *font=[[KGFont alloc] initWithName:[NSString stringWithCString:name] size:size];
+   
+   [self setFont:font];
 }
 
 -(void)setShouldSmoothFonts:(BOOL)yesOrNo {
@@ -420,7 +495,7 @@ static inline KGGraphicsState *currentState(KGContext *self){
    [currentState(self) setLineDashPhase:phase lengths:lengths count:count];
 }
 
--(void)setRenderingIntent:(int)intent {
+-(void)setRenderingIntent:(CGColorRenderingIntent)intent {
    [currentState(self) setRenderingIntent:intent];
 }
 
@@ -432,7 +507,7 @@ static inline KGGraphicsState *currentState(KGContext *self){
    [currentState(self) setFlatness:flatness];
 }
 
--(void)setInterpolationQuality:(int)quality {
+-(void)setInterpolationQuality:(CGInterpolationQuality)quality {
    [currentState(self) setInterpolationQuality:quality];
 }
 
@@ -449,93 +524,130 @@ static inline KGGraphicsState *currentState(KGContext *self){
 }
 
 -(void)strokeLineSegmentsWithPoints:(NSPoint *)points count:(unsigned)count {
-   [currentState(self) strokeLineSegmentsWithPoints:points count:count];
+   int i;
+   
+   [self beginPath];
+   for(i=0;i<count;i+=2){
+    [self moveToPoint:points[i].x:points[i].y];
+    [self addLineToPoint:points[i+1].x:points[i+1].y];
+   }
+   [self strokePath];
 }
 
 -(void)strokeRect:(NSRect)rect {
-   [currentState(self) strokeRect:rect];
+   [self beginPath];
+   [self addRect:rect];
+   [self strokePath];
 }
 
 -(void)strokeRect:(NSRect)rect width:(float)width {
-   [currentState(self) strokeRect:rect width:width];
+   [self saveGState];
+   [self setLineWidth:width];
+   [self beginPath];
+   [self addRect:rect];
+   [self strokePath];
+   [self restoreGState];
 }
 
 -(void)strokeEllipseInRect:(NSRect)rect {
-   [currentState(self) strokeEllipseInRect:rect];
+   [self beginPath];
+   [self addEllipseInRect:rect];
+   [self strokePath];
 }
 
 -(void)fillRect:(NSRect)rect {
-   [currentState(self) fillRects:&rect count:1];
+   [self fillRects:&rect count:1];
 }
 
 -(void)fillRects:(const NSRect *)rects count:(unsigned)count {
-   [currentState(self) fillRects:rects count:count];
+   [self beginPath];
+   [self addRects:rects count:count];
+   [self fillPath];
 }
 
 -(void)fillEllipseInRect:(NSRect)rect {
-   [currentState(self) fillEllipseInRect:rect];
+   [self beginPath];
+   [self addEllipseInRect:rect];
+   [self fillPath];
 }
 
--(void)drawPath:(int)pathMode {
-   [currentState(self) drawPath:_path mode:pathMode];
-   [_path reset];
+-(void)drawPath:(CGPathDrawingMode)pathMode {
+   NSInvalidAbstractInvocation();
+// reset path in subclass
 }
 
 -(void)strokePath {
-   [currentState(self) drawPath:_path mode:KGPathStroke];
-   [_path reset];
+   [self drawPath:KGPathStroke];
 }
 
 -(void)fillPath {
-   [currentState(self) drawPath:_path mode:KGPathFill];
-   [_path reset];
+   [self drawPath:KGPathFill];
 }
 
 -(void)evenOddFillPath {
-   [currentState(self) drawPath:_path mode:KGPathEOFill];
-   [_path reset];
+   [self drawPath:KGPathEOFill];
 }
 
 -(void)fillAndStrokePath {
-   [currentState(self) drawPath:_path mode:KGPathFillStroke];
-   [_path reset];
+   [self drawPath:KGPathFillStroke];
 }
 
 -(void)evenOddFillAndStrokePath {
-   [currentState(self) drawPath:_path mode:KGPathEOFillStroke];
-   [_path reset];
+   [self drawPath:KGPathEOFillStroke];
 }
 
 -(void)clearRect:(NSRect)rect {
-   [currentState(self) clearRect:rect];
+   NSInvalidAbstractInvocation();
 }
 
 -(void)showGlyphs:(const CGGlyph *)glyphs count:(unsigned)count {
-   [currentState(self) showGlyphs:glyphs count:count];
+   NSInvalidAbstractInvocation();
 }
 
 -(void)showGlyphs:(const CGGlyph *)glyphs count:(unsigned)count atPoint:(float)x:(float)y {
-   [currentState(self) showGlyphs:glyphs count:count atPoint:x:y];
+   [self setTextPosition:x:y];
+   [self showGlyphs:glyphs count:count];
 }
 
 -(void)showGlyphs:(const CGGlyph *)glyphs count:(unsigned)count advances:(const NSSize *)advances {
-   [currentState(self) showGlyphs:glyphs count:count advances:advances];
+   CGAffineTransform textMatrix=[currentState(self) textMatrix];
+   float             x=textMatrix.tx;
+   float             y=textMatrix.ty;
+   int i;
+   
+   for(i=0;i<count;i++){
+    [self showGlyphs:glyphs+i count:1];
+    
+    x+=advances[i].width;
+    y+=advances[i].height;
+    [self setTextPosition:x:y];
+   }
 }
 
 -(void)showText:(const char *)text length:(unsigned)length {
-   [currentState(self) showText:text length:length];
+   unichar unicode[length];
+   CGGlyph glyphs[length];
+   int     i;
+   
+// FIX, encoding
+   for(i=0;i<length;i++)
+    unicode[i]=text[i];
+    
+   [[currentState(self) font] getGlyphs:glyphs forCharacters:unicode length:length];
+   [self showGlyphs:glyphs count:length];
 }
 
 -(void)showText:(const char *)text length:(unsigned)length atPoint:(float)x:(float)y {
-   [currentState(self) showText:text length:length atPoint:x:y];
+   [self setTextPosition:x:y];
+   [self showText:text length:length];
 }
 
 -(void)drawShading:(KGShading *)shading {
-   [currentState(self) drawShading:shading];
+   NSInvalidAbstractInvocation();
 }
 
 -(void)drawImage:(KGImage *)image inRect:(NSRect)rect {
-   [currentState(self) drawImage:image inRect:rect];
+   NSInvalidAbstractInvocation();
 }
 
 -(void)drawLayer:(KGLayer *)layer atPoint:(NSPoint)point {
@@ -546,7 +658,7 @@ static inline KGGraphicsState *currentState(KGContext *self){
 }
 
 -(void)drawLayer:(KGLayer *)layer inRect:(NSRect)rect {
-   [[self renderingContext] drawLayer:layer inRect:rect ctm:[currentState(self) ctm]];
+   NSInvalidAbstractInvocation();
 }
 
 -(void)drawPDFPage:(KGPDFPage *)page {
@@ -554,25 +666,45 @@ static inline KGGraphicsState *currentState(KGContext *self){
 }
    
 -(void)flush {
-   NSUnimplementedMethod();
+   // do nothing
 }
 
 -(void)synchronize {
-   NSUnimplementedMethod();
+   // do nothing
 }
 
 -(void)beginPage:(const NSRect *)mediaBox {
-   [[self renderingContext] beginPage];
+   // do nothing
 }
 
 -(void)endPage {
-   [[self renderingContext] endPage];
+   // do nothing
+}
+
+-(KGLayer *)layerWithSize:(NSSize)size unused:(NSDictionary *)unused {
+   NSUnimplementedMethod();
+}
+
+-(void)beginPrintingWithDocumentName:(NSString *)documentName {
+   NSUnimplementedMethod();
+}
+
+-(void)endPrinting {
+   NSUnimplementedMethod();
+}
+
+-(BOOL)getImageableRect:(NSRect *)rect {
+   NSUnimplementedMethod();
 }
 
 // temporary
 
+-(void)drawContext:(KGContext *)other inRect:(CGRect)rect {
+   NSUnimplementedMethod();
+}
+
 -(void)resetClip {
-   [[self renderingContext] resetClip];
+   [currentState(self) resetClip];
 }
 
 -(void)setWordSpacing:(float)spacing {
@@ -588,10 +720,7 @@ static inline KGGraphicsState *currentState(KGContext *self){
 }
 
 -(void)setCalibratedColorRed:(float)r green:(float)g blue:(float)b alpha:(float)alpha {
-// NeXT gamma is 2.2 I think, my PC card is probably 1.3. This should be
-// assumed = PC card setting
-// display = NeXT 2.2
-// I think.
+// lame gamma adjustment so that non-system colors appear similar to those on a Mac
 
    const float assumedGamma=1.3;
    const float displayGamma=2.2;
@@ -613,7 +742,7 @@ static inline KGGraphicsState *currentState(KGContext *self){
 }
 
 -(void)copyBitsInRect:(NSRect)rect toPoint:(NSPoint)point gState:(int)gState {
-   [currentState(self) copyBitsInRect:rect toPoint:point];
+   NSInvalidAbstractInvocation();
 }
 
 @end

@@ -102,7 +102,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(NSFont *)cachedFontWithName:(NSString *)name size:(float)size {
    unsigned i=[self _cacheIndexOfFontWithName:name size:size];
 
-   return (i==NSNotFound)?nil:_fontCache[i];
+   return (i==NSNotFound)?(NSFont *)nil:_fontCache[i];
 }
 
 -(void)addFontToCache:(NSFont *)font {

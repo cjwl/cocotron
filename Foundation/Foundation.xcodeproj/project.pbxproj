@@ -7491,13 +7491,13 @@
 				},
 			);
 			targets = (
+				FE01A5970C5D9B6900AEA51A /* Foundation-Windows-i386 */,
 				8DC2EF4F0486A6940098B216 /* Foundation-Windows-i386-gcc-4.0.3 */,
 				6EA048CA09E57D5F0067589C /* Foundation-Linux-i386 */,
 				6E3877300A0A78EF00643D29 /* Foundation */,
 				6E4D91880A2642BD003D335C /* Foundation-Solaris-sparc */,
 				FED7081C0C3B3D2C000CBE5B /* Foundation-Darwin-i386 */,
 				FED70D670C3C09C7000CBE5B /* Foundation-Darwin-ppc */,
-				FE01A5970C5D9B6900AEA51A /* Foundation-Windows-i386 */,
 			);
 		};
 /* End PBXProject section */

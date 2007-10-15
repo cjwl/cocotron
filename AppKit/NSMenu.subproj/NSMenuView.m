@@ -165,7 +165,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [self display];
    [[self window] flushWindow];
 
-   return ([item isEnabled] && ![item hasSubmenu])?item:nil;
+   return ([item isEnabled] && ![item hasSubmenu])?item:(NSMenuItem *)nil;
 }
 
 -(void)mouseDown:(NSEvent *)event {

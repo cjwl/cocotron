@@ -30,6 +30,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return [[[self alloc] initWithBytes:bytes length:length] autorelease];
 }
 
++pdfObjectWithCString:(const char *)cString {
+   return [self pdfObjectWithBytes:cString length:strlen(cString)];
+}
+
 -(const char *)name {
    return _bytes;
 }
@@ -44,6 +48,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    
    *((char **)value)=_bytes;
    return YES;
+}
+
+-(void)encodeWithPDFContext:(KGPDFContext *)encoder {
+   [encoder appendFormat:@"/%s ",_bytes];
 }
 
 -(NSString *)description {

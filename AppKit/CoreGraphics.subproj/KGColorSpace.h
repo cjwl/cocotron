@@ -8,13 +8,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/NSObject.h>
 
-enum  {
-   KGRenderingIntentDefault,
-   KGRenderingIntentAbsoluteColorimetric,
-   KGRenderingIntentRelativeColorimetric,
-   KGRenderingIntentPerceptual,
-   KGRenderingIntentSaturation
-};
+@class KGPDFObject,KGPDFContext;
 
 typedef enum {
    KGColorSpaceDeviceGray,
@@ -36,6 +30,9 @@ typedef enum {
 
 -(unsigned)numberOfComponents;
 
+-(KGPDFObject *)pdfObjectInContext:(KGPDFContext *)context;
++(KGColorSpace *)colorSpaceFromPDFObject:(KGPDFObject *)object;
+
 @end
 
 @interface KGColorSpace_indexed : KGColorSpace {
@@ -43,5 +40,7 @@ typedef enum {
    unsigned       _hival;
    unsigned char *_bytes;
 }
+
+-(KGColorSpace *)baseColorSpace;
 
 @end

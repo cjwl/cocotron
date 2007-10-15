@@ -8,7 +8,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 // Original - Christopher Lloyd <cjwl@objc.net>
 #import "KGPDFxrefEntry.h"
-#import "KGPDFObject.h"
+#import <AppKit/KGPDFObject.h>
 
 @implementation KGPDFxrefEntry
 
@@ -48,6 +48,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(KGPDFInteger)generation {
    return _generation;
+}
+
+-(void)setPosition:(KGPDFInteger)value {
+   _position=value;
 }
 
 @end

@@ -633,7 +633,7 @@ BOOL KGPDFParseObject(const char *bytes,unsigned length,KGPDFInteger position,KG
        break;
 
      case KGPDFObjectTypeMark_array_close:{
-       KGPDFArray *array=[[[KGPDFArray alloc] init] autorelease];
+       KGPDFArray *array=[KGPDFArray pdfArray];
        int         count=[stack count];
        int         index=count;
        NSRange     remove;
@@ -664,7 +664,7 @@ BOOL KGPDFParseObject(const char *bytes,unsigned length,KGPDFInteger position,KG
       break;
       
      case KGPDFObjectTypeMark_dictionary_close:{
-       KGPDFDictionary *dictionary=[[[KGPDFDictionary alloc] init] autorelease];
+       KGPDFDictionary *dictionary=[KGPDFDictionary pdfDictionary];
        
        while((check=[stack lastObject])!=nil){
         const char *key;

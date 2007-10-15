@@ -8,12 +8,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/NSObject.h>
 #import <Foundation/NSGeometry.h>
-#ifdef WIN32
 #import <AppKit/CGAffineTransform.h>
 #import <AppKit/CGFont.h>
-#else
-#import <ApplicationServices/ApplicationServices.h>
-#endif
+#import <AppKit/CGContext.h>
 
 enum {
 // seperable
@@ -36,8 +33,7 @@ enum {
    KGBlendModeLuminosity,
 };
 
-
-@class KGRenderingContext,KGColor,KGColorSpace,KGShading,KGImage,KGGraphicsState,KGMutablePath,KGPath,KGPattern,KGLayer,KGPDFPage,NSMutableArray;
+@class KGColor,KGColorSpace,KGShading,KGImage,KGGraphicsState,KGMutablePath,KGPath,KGPattern,KGLayer,KGPDFPage,NSMutableArray;
 
 @interface KGContext : NSObject {
    NSMutableArray *_layerStack;
@@ -47,8 +43,7 @@ enum {
 }
 
 -initWithGraphicsState:(KGGraphicsState *)state;
-
--(KGRenderingContext *)renderingContext;
+-init;
 
 -(void)setAllowsAntialiasing:(BOOL)yesOrNo;
 
@@ -103,8 +98,6 @@ enum {
 -(void)clipToRect:(NSRect)rect;
 -(void)clipToRects:(const NSRect *)rects count:(unsigned)count;
 
-// I think we need more ways to set the color
-
 -(KGColor *)strokeColor;
 -(KGColor *)fillColor;
 
@@ -154,11 +147,11 @@ enum {
 -(void)setMiterLimit:(float)limit;
 -(void)setLineDashPhase:(float)phase lengths:(const float *)lengths count:(unsigned)count;
 
--(void)setRenderingIntent:(int)intent;
+-(void)setRenderingIntent:(CGColorRenderingIntent)intent;
 -(void)setBlendMode:(int)mode;
 
 -(void)setFlatness:(float)flatness;
--(void)setInterpolationQuality:(int)quality;
+-(void)setInterpolationQuality:(CGInterpolationQuality)quality;
    
 -(void)setShadowOffset:(NSSize)offset blur:(float)blur color:(KGColor *)color;
 -(void)setShadowOffset:(NSSize)offset blur:(float)blur;
@@ -174,7 +167,7 @@ enum {
 -(void)fillRects:(const NSRect *)rects count:(unsigned)count;
 -(void)fillEllipseInRect:(NSRect)rect;
 
--(void)drawPath:(int)pathMode;
+-(void)drawPath:(CGPathDrawingMode)pathMode;
 -(void)strokePath;
 -(void)fillPath;
 -(void)evenOddFillPath;
@@ -202,7 +195,18 @@ enum {
 -(void)beginPage:(const NSRect *)mediaBox;
 -(void)endPage;
 
+-(KGLayer *)layerWithSize:(NSSize)size unused:(NSDictionary *)unused;
+
+// printing
+
+-(void)beginPrintingWithDocumentName:(NSString *)documentName;
+-(void)endPrinting;
+
+-(BOOL)getImageableRect:(NSRect *)rect;
+
 // temporary
+
+-(void)drawContext:(KGContext *)other inRect:(CGRect)rect;
 
 -(void)resetClip;
 

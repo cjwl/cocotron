@@ -8,6 +8,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 // Original - Christopher Lloyd <cjwl@objc.net>
 #import "KGPDFObject_Real.h"
+#import <AppKit/KGPDFContext.h>
 #import <Foundation/NSString.h>
 
 @implementation KGPDFObject_Real
@@ -35,6 +36,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(NSString *)description {
    return [NSString stringWithFormat:@"<%@ %f>",isa,_value];
+}
+
+-(void)encodeWithPDFContext:(KGPDFContext *)encoder {
+   [encoder appendFormat:@"%f ",_value];
 }
 
 @end

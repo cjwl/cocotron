@@ -11,7 +11,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "KGPDFOperatorTable.h"
 #import "KGPDFScanner.h"
 #import "KGPDFContentStream.h"
-#import "KGPDFObject.h"
+#import <AppKit/KGPDFObject.h>
 #import "KGPDFArray.h"
 #import "KGPDFDictionary.h"
 #import "KGPDFStream.h"
@@ -136,120 +136,6 @@ void KGPDF_render_cm(KGPDFScanner *scanner,void *info) {
    [context concatCTM:matrix];
 }
 
-static KGColorSpace *colorSpaceFromObject(KGPDFObject *object){
-   const char  *colorSpaceName;
-   KGPDFArray  *colorSpaceArray;
-
-   if([object checkForType:kKGPDFObjectTypeName value:&colorSpaceName]){
-    if(strcmp(colorSpaceName,"DeviceGray")==0)
-     return [[KGColorSpace alloc] initWithDeviceGray];
-    else if(strcmp(colorSpaceName,"DeviceRGB")==0)
-     return [[KGColorSpace alloc] initWithDeviceRGB];
-    else if(strcmp(colorSpaceName,"DeviceCMYK")==0)
-     return [[KGColorSpace alloc] initWithDeviceCMYK];
-    else {
-     NSLog(@"does not handle color space named %s",colorSpaceName);
-    }
-   }
-   else if([object checkForType:kKGPDFObjectTypeArray value:&colorSpaceArray]){
-    const char *name;
-     
-    if(![colorSpaceArray getNameAtIndex:0 value:&name]){
-     NSLog(@"first element of color space array is not name");
-     return NULL;
-    }
-     
-    if(strcmp(name,"Indexed")==0){
-     KGPDFObject    *baseObject;
-     KGColorSpace *baseColorSpace;
-     KGPDFString    *tableString;
-     KGPDFStream    *tableStream;
-     int             baseNumberOfComponents;
-     KGPDFInteger    hival,tableSize;
-     
-     if(![colorSpaceArray getObjectAtIndex:1 value:&baseObject]){
-      NSLog(@"Indexed color space missing base");
-      return NULL;
-     }
-     if((baseColorSpace=colorSpaceFromObject(baseObject))==NULL){
-      NSLog(@"Indexed color space invalid base %@",baseObject);
-      return NULL;
-     }
-     
-     if(![colorSpaceArray getIntegerAtIndex:2 value:&hival]){
-      NSLog(@"Indexed color space missing hival");
-      return NULL;
-     }
-     
-     if(hival>255){
-      NSLog(@"hival > 255, %d",hival);
-      return NULL;
-     }
-     baseNumberOfComponents=[baseColorSpace numberOfComponents];
-     tableSize=baseNumberOfComponents*(hival+1);
-     
-     if([colorSpaceArray getStringAtIndex:3 value:&tableString]){
-      if([tableString length]!=tableSize){
-       NSLog(@"lookup invalid size,string length=%d,tableSize=%d",[tableString length],tableSize);
-       return NULL;
-      }
-      return [[KGColorSpace alloc] initWithColorSpace:baseColorSpace hival:hival bytes:(const unsigned char *)[tableString bytes]];
-     }
-     else if([colorSpaceArray getStreamAtIndex:3 value:&tableStream]){
-      NSData *data=[tableStream data];
-      
-      if([data length]!=tableSize){
-       NSLog(@"lookup invalid size,data length=%d,tableSize=%d",[data length],tableSize);
-       return NULL;
-      }
-      return [[KGColorSpace alloc] initWithColorSpace:baseColorSpace hival:hival bytes:[data bytes]];
-     }
-     else {
-      NSLog(@"indexed color space table invalid");
-     }
-    }
-    else if(strcmp(name,"ICCBased")==0){
-     KGPDFStream     *stream;
-     KGPDFDictionary *dictionary;
-     KGPDFInteger     numberOfComponents;
-     
-     if(![colorSpaceArray getStreamAtIndex:1 value:&stream]){
-      NSLog(@"second element of ICCBased color space array is not a stream");
-      return NULL;
-     }
-     dictionary=[stream dictionary];
-     if(![dictionary getIntegerForKey:"N" value:&numberOfComponents]){
-      NSLog(@"Required key N missing from ICCBased stream");
-      return NULL;
-     }
-     switch(numberOfComponents){
-
-      case 1:
-       return [[KGColorSpace alloc] initWithDeviceGray];
-       
-      case 3:
-       return [[KGColorSpace alloc] initWithDeviceRGB];
-       
-      case 4:
-       return [[KGColorSpace alloc] initWithDeviceCMYK];
-       
-      default:
-       NSLog(@"Invalid N in ICCBased stream");
-       break;
-     }
-     
-    }
-    else {
-     NSLog(@"does not handle color space %@",object);
-    }
-   }
-   else {
-    NSLog(@"invalid color space type %@",object);
-   }
-
-   
-   return NULL;
-}
 
 KGColorSpace *colorSpaceFromScannerInfo(KGPDFScanner *scanner,void *info,const char *name) {
    KGColorSpace *result=NULL;
@@ -269,7 +155,7 @@ KGColorSpace *colorSpaceFromScannerInfo(KGPDFScanner *scanner,void *info,const c
      return NULL;
     }
    
-    return colorSpaceFromObject(object);
+    return [KGColorSpace colorSpaceFromPDFObject:object];
    }
    
    return result;
@@ -345,18 +231,18 @@ void KGPDF_render_d1(KGPDFScanner *scanner,void *info) {
 
 int intentWithName(const char *name){
    if(name==NULL)
-    return KGRenderingIntentDefault;
+    return kCGRenderingIntentDefault;
     
    if(strcmp(name,"AbsoluteColorimetric")==0)
-    return KGRenderingIntentAbsoluteColorimetric;
+    return kCGRenderingIntentAbsoluteColorimetric;
    else if(strcmp(name,"RelativeColorimetric")==0)
-    return KGRenderingIntentRelativeColorimetric;
+    return kCGRenderingIntentRelativeColorimetric;
    else if(strcmp(name,"Saturation")==0)
-    return KGRenderingIntentSaturation;
+    return kCGRenderingIntentSaturation;
    else if(strcmp(name,"Perceptual")==0)
-    return KGRenderingIntentPerceptual;
+    return kCGRenderingIntentPerceptual;
    else
-    return KGRenderingIntentDefault; // unknown
+    return kCGRenderingIntentDefault; // unknown
 }
 
 KGImage *imageFromStream(KGPDFStream *stream){
@@ -391,7 +277,7 @@ KGImage *imageFromStream(KGPDFStream *stream){
     NSLog(@"Image has no ColorSpace");
     return NULL;
    }
-   if((colorSpace=colorSpaceFromObject(colorSpaceObject))==NULL)
+   if((colorSpace=[KGColorSpace colorSpaceFromPDFObject:colorSpaceObject])==NULL)
     return NULL;
      
    componentsPerPixel=[colorSpace numberOfComponents];
@@ -918,8 +804,8 @@ void KGPDF_render_rg(KGPDFScanner *scanner,void *info) {
 
 // name ri, Set color rendering intent
 void KGPDF_render_ri(KGPDFScanner *scanner,void *info) {
-   KGContext *context=kgContextFromInfo(info);
-   const char            *name;
+   KGContext  *context=kgContextFromInfo(info);
+   const char *name;
    
    if(![scanner popName:&name])
     return;
@@ -1019,220 +905,6 @@ void KGPDF_render_scn(KGPDFScanner *scanner,void *info) {
 }
 
 
-KGFunction *functionFromDictionary(KGPDFDictionary *dictionary){
-   KGPDFInteger type;
-   KGPDFArray  *domain;
-   KGPDFArray  *range;
-   
-   if(![dictionary getIntegerForKey:"FunctionType" value:&type]){
-    NSLog(@"Function missing FunctionType");
-    return nil;
-   }
-   
-   if(![dictionary getArrayForKey:"Domain" value:&domain]){
-    NSLog(@"Function missing Domain");
-    return nil;
-   }
-   
-   if(![dictionary getArrayForKey:"Range" value:&range])
-    range=nil;
-       
-   if(type==0){
-    NSLog(@"Sampled functions not implemented");
-    return nil;
-   }
-   else if(type==2){
-    KGPDFArray *C0;
-    KGPDFArray *C1;
-    KGPDFReal   N;
-    
-    if(![dictionary getArrayForKey:"C0" value:&C0]){
-     NSLog(@"No C0");
-     C0=nil;
-    }
-    if(![dictionary getArrayForKey:"C1" value:&C1]){
-     NSLog(@"No C1");
-     C1=nil;
-    }
-    if(![dictionary getNumberForKey:"N" value:&N]){
-     NSLog(@"Type 2 function missing N");
-     return nil;
-    }
-
-    return [[[KGPDFFunction_Type2 alloc] initWithDomain:domain range:range C0:C0 C1:C1 N:N] autorelease];
-   }
-   else if(type==3){
-    KGPDFArray     *functionsArray;
-    NSMutableArray *functions;
-    int             i,count;
-    KGPDFArray     *bounds;
-    KGPDFArray     *encode;
-    
-    if(![dictionary getArrayForKey:"Functions" value:&functionsArray]){
-     NSLog(@"Functions entry missing from stitching function");
-     return nil;
-    }
-    count=[functionsArray count];
-    functions=[NSMutableArray arrayWithCapacity:count];
-    for(i=0;i<count;i++){
-     KGPDFDictionary *subfnDictionary;
-     KGFunction   *subfn;
-     
-     if(![functionsArray getDictionaryAtIndex:i value:&subfnDictionary]){
-      NSLog(@"Functions[%d] not a dictionary",i);
-      return nil;
-     }
-     
-     if((subfn=functionFromDictionary(subfnDictionary))==nil)
-      return nil;
-      
-     [functions addObject:subfn];
-    }
-    
-    if(![dictionary getArrayForKey:"Bounds" value:&bounds])
-     return nil;
-    if(![dictionary getArrayForKey:"Encode" value:&encode])
-     return nil;
-     
-    return [[[KGPDFFunction_Type3 alloc] initWithDomain:domain range:range functions:functions bounds:bounds encode:encode] autorelease];
-   }
-   else if(type==4){
-    NSLog(@"PostScript calculator functions not implemented");
-    return nil;
-   }
-   
-   return nil;
-}
-
-KGShading *axialShading(KGPDFDictionary *dictionary,KGColorSpace *colorSpace){
-   KGPDFArray *coordsArray;
-   KGPDFArray *domainArray;
-   KGPDFDictionary *fnDictionary;
-   KGPDFArray *extendArray;
-   NSPoint     start;
-   NSPoint     end;
-   KGFunction *function;
-   KGPDFBoolean extendStart=NO;
-   KGPDFBoolean extendEnd=NO;
-   
-//NSLog(@"axialShading=%@",dictionary);
-
-   if(![dictionary getArrayForKey:"Coords" value:&coordsArray]){
-    NSLog(@"No Coords entry in axial shader");
-    return NULL;
-   }
-   else {    
-    if(![coordsArray getNumberAtIndex:0 value:&start.x]){
-     NSLog(@"No real at Coords[0]");
-     return NULL;
-    }
-    if(![coordsArray getNumberAtIndex:1 value:&start.y]){
-     NSLog(@"No real at Coords[1]");
-     return NULL;
-    }
-    if(![coordsArray getNumberAtIndex:2 value:&end.x]){
-     NSLog(@"No real at Coords[2]");
-     return NULL;
-    }
-    if(![coordsArray getNumberAtIndex:3 value:&end.y]){
-     NSLog(@"No real at Coords[3]");
-     return NULL;
-    }
-   }
-   
-   if(![dictionary getArrayForKey:"Domain" value:&domainArray])
-    domainArray=nil;
-    
-   if(![dictionary getDictionaryForKey:"Function" value:&fnDictionary]){
-    NSLog(@"No Function entry in axial shader");
-    return NULL;
-   }
-   if((function=functionFromDictionary(fnDictionary))==NULL)
-    return NULL;
-    
-   if([dictionary getArrayForKey:"Extend" value:&extendArray]){
-    if(![extendArray getBooleanAtIndex:0 value:&extendStart]){
-     NSLog(@"Extend dictionary missing boolean at 0");
-     return NULL;
-    }
-    if(![extendArray getBooleanAtIndex:1 value:&extendEnd]){
-     NSLog(@"Extend dictionary missing boolean at 1");
-     return NULL;
-    }
-   }
-   
-   return [[KGShading alloc] initWithColorSpace:colorSpace startPoint:start endPoint:end function:function extendStart:extendStart extendEnd:extendEnd];    
-}
-
-KGShading *radialShading(KGPDFDictionary *dictionary,KGColorSpace *colorSpace){
-   KGPDFArray *coordsArray;
-   KGPDFArray *domainArray;
-   KGPDFDictionary *fnDictionary;
-   KGPDFArray *extendArray;
-   NSPoint     start;
-   KGPDFReal    startRadius;
-   NSPoint     end;
-   KGPDFReal    endRadius;
-   KGFunction *function;
-   KGPDFBoolean extendStart=NO;
-   KGPDFBoolean extendEnd=NO;
-   
-//NSLog(@"axialShading=%@",dictionary);
-
-   if(![dictionary getArrayForKey:"Coords" value:&coordsArray]){
-    NSLog(@"No Coords entry in radial shader");
-    return NULL;
-   }
-   else {    
-    if(![coordsArray getNumberAtIndex:0 value:&start.x]){
-     NSLog(@"No real at Coords[0]");
-     return NULL;
-    }
-    if(![coordsArray getNumberAtIndex:1 value:&start.y]){
-     NSLog(@"No real at Coords[1]");
-     return NULL;
-    }
-    if(![coordsArray getNumberAtIndex:2 value:&startRadius]){
-     NSLog(@"No real at Coords[2]");
-     return NULL;
-    }
-    if(![coordsArray getNumberAtIndex:3 value:&end.x]){
-     NSLog(@"No real at Coords[3]");
-     return NULL;
-    }
-    if(![coordsArray getNumberAtIndex:4 value:&end.y]){
-     NSLog(@"No real at Coords[4]");
-     return NULL;
-    }
-    if(![coordsArray getNumberAtIndex:5 value:&endRadius]){
-     NSLog(@"No real at Coords[5]");
-     return NULL;
-    }
-   }
-   
-   if(![dictionary getArrayForKey:"Domain" value:&domainArray])
-    domainArray=nil;
-    
-   if(![dictionary getDictionaryForKey:"Function" value:&fnDictionary]){
-    NSLog(@"No Function entry in radial shader");
-    return NULL;
-   }
-   if((function=functionFromDictionary(fnDictionary))==NULL)
-    return NULL;
-    
-   if([dictionary getArrayForKey:"Extend" value:&extendArray]){
-    if(![extendArray getBooleanAtIndex:0 value:&extendStart]){
-     NSLog(@"Extend dictionary missing boolean at 0");
-     return NULL;
-    }
-    if(![extendArray getBooleanAtIndex:1 value:&extendEnd]){
-     NSLog(@"Extend dictionary missing boolean at 1");
-     return NULL;
-    }
-   }
-   
-   return [[KGShading alloc] initWithColorSpace:colorSpace startPoint:start startRadius:startRadius endPoint:end endRadius:endRadius function:function extendStart:extendStart extendEnd:extendEnd];        
-}
 
 // shfill, Paint area defined by shading pattern
 void KGPDF_render_sh(KGPDFScanner *scanner,void *info) {
@@ -1252,48 +924,8 @@ void KGPDF_render_sh(KGPDFScanner *scanner,void *info) {
    if((resource=[content resourceForCategory:"Shading" name:name])==nil)
     return;
    
-   if(![resource checkForType:kKGPDFObjectTypeDictionary value:&dictionary])
-    return;
+   shading=[KGShading shadingWithPDFObject:dictionary];
    
-  // NSLog(@"sh=%@",dictionary);
-   if(![dictionary getIntegerForKey:"ShadingType" value:&shadingType]){
-    NSLog(@"required ShadingType missing");
-    return;
-   }
-   if(![dictionary getObjectForKey:"ColorSpace" value:&colorSpaceObject]){
-    NSLog(@"required ColorSpace missing");
-    return;
-   }
-   if((colorSpace=colorSpaceFromObject(colorSpaceObject))==nil)
-    return;
-    
-   switch(shadingType){
-    case 1: // Function-base shading
-     NSLog(@"Unsupported shading type %d",shadingType);
-     break;
-    case 2: // Axial shading
-     shading=axialShading(dictionary,colorSpace);
-     break;
-    case 3: // Radial shading
-     shading=radialShading(dictionary,colorSpace);
-     break;
-    case 4: // Free-form Gouraud-shaded triangle mesh
-     NSLog(@"Unsupported shading type %d",shadingType);
-     break;
-    case 5: // Lattice-form Gouraud-shaded triangle mesh
-     NSLog(@"Unsupported shading type %d",shadingType);
-     break;
-    case 6: // Coons patch mesh
-     NSLog(@"Unsupported shading type %d",shadingType);
-     break;
-    case 7: // Tensor-product patch mesh
-     NSLog(@"Unsupported shading type %d",shadingType);
-     break;
-    default: // unknown
-     NSLog(@"Unknown shading type %d",shadingType);
-     break;
-   }
-
    if(shading!=NULL){
     [context drawShading:shading];
     [shading release];
@@ -1308,7 +940,7 @@ void KGPDF_render_T_star(KGPDFScanner *scanner,void *info) {
 // Set character spacing
 void KGPDF_render_Tc(KGPDFScanner *scanner,void *info) {
    KGContext *context=kgContextFromInfo(info);
-   KGPDFReal    spacing;
+   KGPDFReal  spacing;
    
    if(![scanner popNumber:&spacing])
     return;

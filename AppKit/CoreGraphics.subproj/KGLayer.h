@@ -9,18 +9,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSObject.h>
 #import <Foundation/NSGeometry.h>
 
-@class KGContext,NSDictionary,KGRenderingContext;
+@class KGContext,NSDictionary;
 
 @interface KGLayer : NSObject {
-   NSSize                    _size;
-   NSDictionary             *_unused;
-   KGRenderingContext       *_renderingContext;
+   NSSize        _size;
+   NSDictionary *_unused;
 }
 
--initRelativeToRenderingContext:(KGRenderingContext *)context size:(NSSize)size unused:(NSDictionary *)unused;
--initWithSize:(NSSize)size;
-
--(KGRenderingContext *)renderingContext;
+-initWithSize:(NSSize)size unused:(NSDictionary *)unused;
 
 -(KGContext *)cgContext;
 -(NSSize)size;

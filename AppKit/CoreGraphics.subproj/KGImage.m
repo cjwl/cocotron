@@ -10,6 +10,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "KGImage.h"
 #import "KGColorSpace.h"
 #import "KGDataProvider.h"
+#import "KGPDFDictionary.h"
 
 @implementation KGImage
 
@@ -87,6 +88,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(unsigned)length {
    return [_provider length];
+}
+
+-(KGPDFObject *)pdfObjectInContext:(KGPDFContext *)context {
+   KGPDFDictionary *result=[KGPDFDictionary pdfDictionary];
+
+   [result setNameForKey:"Type" value:"Font"];
+   
+   return result;
 }
 
 @end

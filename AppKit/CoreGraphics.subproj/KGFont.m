@@ -1,5 +1,6 @@
 #import <AppKit/KGFont.h>
 #import <AppKit/NSDisplay.h>
+#import <AppKit/KGPDFDictionary.h>
 
 @implementation KGFont
 
@@ -237,6 +238,18 @@ static inline CGGlyphMetrics *fetchGlyphAdvancementIfNeeded(KGFont *self,CGGlyph
      result.height+=0;
     }
    }
+   
+   return result;
+}
+
+-(KGPDFObject *)pdfObjectInContext:(KGPDFContext *)context {
+   KGPDFDictionary *result=[KGPDFDictionary pdfDictionary];
+
+   [result setNameForKey:"Type" value:"Font"];
+   [result setNameForKey:"Subtype" value:"TrueType"];
+   [result setNameForKey:"BaseFont" value:[_name cString]];
+   [result setIntegerForKey:"FirstChar" value:0];
+   [result setIntegerForKey:"FirstChar" value:255];
    
    return result;
 }

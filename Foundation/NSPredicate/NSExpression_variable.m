@@ -39,7 +39,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(NSExpression *)_expressionWithSubstitutionVariables:(NSDictionary *)variables {
    id constant=[variables objectForKey:_name];
       
-   return (constant==nil)?self:[NSExpression expressionForConstantValue:constant];
+   return (constant==nil)?(NSExpression *)self:[NSExpression expressionForConstantValue:constant];
 }
 
 

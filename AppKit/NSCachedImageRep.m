@@ -9,49 +9,44 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 // Original - Christopher Lloyd <cjwl@objc.net>
 #import <AppKit/NSCachedImageRep.h>
 #import <AppKit/NSGraphicsContextFunctions.h>
-#import <AppKit/KGLayer.h>
+#import <AppKit/NSWindow.h>
+#import <AppKit/NSGraphicsContext.h>
 
 @implementation NSCachedImageRep
 
--initWithSize:(NSSize)size {
+-initWithSize:(NSSize)size depth:(NSWindowDepth)windowDepth separate:(BOOL)separateWindow alpha:(BOOL)hasAlpha {
    _size=size;
-   _layer=[[KGLayer alloc] initWithSize:size];
+   _origin=NSMakePoint(0,0);
+   _window=[[NSWindow alloc] initWithContentRect:NSMakeRect(_origin.x,_origin.y,size.width,size.height) styleMask:NSBorderlessWindowMask backing:NSBackingStoreBuffered defer:NO];
+
+// this is a little broken, the windows get resized to larger size when on-screen
+   if([[NSUserDefaults standardUserDefaults] boolForKey:@"NSShowAllWindows"])
+    [_window orderFront:nil];
+    
    return self;
 }
 
--initWithWindow:(NSWindow *)window rect:(NSRect)rect {
-   NSUnimplementedMethod();
-   return nil;
-}
-
--initWithSize:(NSSize)size depth:(NSWindowDepth)windowDepth separate:(BOOL)separateWindow alpha:(BOOL)hasAlpha {
-   NSUnimplementedMethod();
-   return nil;
-}
-
 -(void)dealloc {
-   [_layer release];
+   [_window release];
    [super dealloc];
 }
 
 -(NSWindow *)window {
-   NSUnimplementedMethod();
-   return nil;
+   return _window;
 }
 
 -(NSRect)rect {
-   NSUnimplementedMethod();
-   return NSZeroRect;
+   return NSMakeRect(_origin.x,_origin.y,_size.width,_size.height);
 }
 
 -(KGContext *)cgContext {
-   return [_layer cgContext];
+   return [[_window graphicsContext] graphicsPort];
 }
 
 -(BOOL)drawAtPoint:(NSPoint)point {
    NSRect rect={point,_size};
    
-   CGContextDrawLayerInRect(NSCurrentGraphicsPort(),rect,_layer);
+   CGContextDrawContextInRect(NSCurrentGraphicsPort(),[[_window graphicsContext] graphicsPort],rect);
    return YES;
 }
 

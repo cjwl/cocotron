@@ -17,14 +17,19 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    BOOL               _showsPrintPanel;
    int                _currentPage;
    NSGraphicsContext *_context;
+   NSRect             _insideRect;
+   NSMutableData     *_mutableData;
+   int                _type;
 }
 
 +(NSPrintOperation *)currentOperation;
 
 +(NSPrintOperation *)printOperationWithView:(NSView *)view;
 +(NSPrintOperation *)printOperationWithView:(NSView *)view printInfo:(NSPrintInfo *)printInfo;
-
--initWithView:(NSView *)view printInfo:(NSPrintInfo *)printInfo;
++(NSPrintOperation *)PDFOperationWithView:(NSView *)view insideRect:(NSRect)rect toData:(NSMutableData *)data;
++(NSPrintOperation *)PDFOperationWithView:(NSView *)view insideRect:(NSRect)rect toData:(NSMutableData *)data printInfo:(NSPrintInfo *)printInfo;
++(NSPrintOperation *)EPSOperationWithView:(NSView *)view insideRect:(NSRect)rect toData:(NSMutableData *)data;
++(NSPrintOperation *)EPSOperationWithView:(NSView *)view insideRect:(NSRect)rect toData:(NSMutableData *)data printInfo:(NSPrintInfo *)printInfo;
 
 -(BOOL)isCopyingOperation;
 
@@ -40,6 +45,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(int)currentPage;
 
 -(NSGraphicsContext *)createContext;
+-(void)destroyContext;
 
 -(BOOL)runOperation;
 

@@ -8,8 +8,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 // Original - Christopher Lloyd <cjwl@objc.net>
 #import "KGFunction.h"
+#import "KGPDFFunction_Type2.h"
+#import "KGPDFFunction_Type3.h"
 #import "KGPDFArray.h"
+#import <Foundation/NSString.h>
+#import <Foundation/NSArray.h>
 #import <stddef.h>
+#import "KGPDFDictionary.h"
+#import "KGPDFArray.h"
 
 @implementation KGFunction
 
@@ -103,6 +109,91 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    else if(output[i]>_range[i*2+1])
     output[i]=_range[i*2+1];
   }
+}
+
++(KGFunction *)pdfFunctionWithDictionary:(KGPDFDictionary *)dictionary {
+   KGPDFInteger type;
+   KGPDFArray  *domain;
+   KGPDFArray  *range;
+   
+   if(![dictionary getIntegerForKey:"FunctionType" value:&type]){
+    NSLog(@"Function missing FunctionType");
+    return nil;
+   }
+   
+   if(![dictionary getArrayForKey:"Domain" value:&domain]){
+    NSLog(@"Function missing Domain");
+    return nil;
+   }
+   
+   if(![dictionary getArrayForKey:"Range" value:&range])
+    range=nil;
+       
+   if(type==0){
+    NSLog(@"Sampled functions not implemented");
+    return nil;
+   }
+   else if(type==2){
+    KGPDFArray *C0;
+    KGPDFArray *C1;
+    KGPDFReal   N;
+    
+    if(![dictionary getArrayForKey:"C0" value:&C0]){
+     NSLog(@"No C0");
+     C0=nil;
+    }
+    if(![dictionary getArrayForKey:"C1" value:&C1]){
+     NSLog(@"No C1");
+     C1=nil;
+    }
+    if(![dictionary getNumberForKey:"N" value:&N]){
+     NSLog(@"Type 2 function missing N");
+     return nil;
+    }
+
+    return [[[KGPDFFunction_Type2 alloc] initWithDomain:domain range:range C0:C0 C1:C1 N:N] autorelease];
+   }
+   else if(type==3){
+    KGPDFArray     *functionsArray;
+    NSMutableArray *functions;
+    int             i,count;
+    KGPDFArray     *bounds;
+    KGPDFArray     *encode;
+    
+    if(![dictionary getArrayForKey:"Functions" value:&functionsArray]){
+     NSLog(@"Functions entry missing from stitching function");
+     return nil;
+    }
+    count=[functionsArray count];
+    functions=[NSMutableArray arrayWithCapacity:count];
+    for(i=0;i<count;i++){
+     KGPDFDictionary *subfnDictionary;
+     KGFunction   *subfn;
+     
+     if(![functionsArray getDictionaryAtIndex:i value:&subfnDictionary]){
+      NSLog(@"Functions[%d] not a dictionary",i);
+      return nil;
+     }
+     
+     if((subfn=[KGFunction pdfFunctionWithDictionary:subfnDictionary])==nil)
+      return nil;
+      
+     [functions addObject:subfn];
+    }
+    
+    if(![dictionary getArrayForKey:"Bounds" value:&bounds])
+     return nil;
+    if(![dictionary getArrayForKey:"Encode" value:&encode])
+     return nil;
+     
+    return [[[KGPDFFunction_Type3 alloc] initWithDomain:domain range:range functions:functions bounds:bounds encode:encode] autorelease];
+   }
+   else if(type==4){
+    NSLog(@"PostScript calculator functions not implemented");
+    return nil;
+   }
+   
+   return nil;
 }
 
 @end

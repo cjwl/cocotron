@@ -57,6 +57,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)drawImage:(KGImage *)image inRect:(CGRect)rect ctm:(CGAffineTransform)ctm fraction:(float)fraction;
 
+-(void)drawOther:(KGRenderingContext_gdi *)other inRect:(NSRect)rect ctm:(CGAffineTransform)ctm;
+
 @end
 
 NSRect Win32TransformRect(CGAffineTransform matrix,NSRect rect);

@@ -346,7 +346,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	while(key=[en nextObject])
 	{
 		id value=[self valueForKey:key];
-		[ret setObject:value ? value : [NSNull null] forKey:key];
+		[ret setObject:value ? value : (id)[NSNull null] forKey:key];
 	}
 	return ret;
 }

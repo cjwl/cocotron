@@ -740,7 +740,7 @@
 		FE01A90A0C5D9BCB00AEA51A /* KGImage.h in Headers */ = {isa = PBXBuildFile; fileRef = FE64B8AF0B81239D007EE513 /* KGImage.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE01A90B0C5D9BCB00AEA51A /* KGPDFArray.h in Headers */ = {isa = PBXBuildFile; fileRef = FE64B8B10B81239D007EE513 /* KGPDFArray.h */; };
 		FE01A90C0C5D9BCB00AEA51A /* KGPDFContentStream.h in Headers */ = {isa = PBXBuildFile; fileRef = FE64B8B30B81239D007EE513 /* KGPDFContentStream.h */; };
-		FE01A90D0C5D9BCB00AEA51A /* KGPDFDictionary.h in Headers */ = {isa = PBXBuildFile; fileRef = FE64B8B50B81239D007EE513 /* KGPDFDictionary.h */; };
+		FE01A90D0C5D9BCB00AEA51A /* KGPDFDictionary.h in Headers */ = {isa = PBXBuildFile; fileRef = FE64B8B50B81239D007EE513 /* KGPDFDictionary.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE01A90E0C5D9BCB00AEA51A /* KGPDFDocument.h in Headers */ = {isa = PBXBuildFile; fileRef = FE64B8B70B81239D007EE513 /* KGPDFDocument.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE01A90F0C5D9BCB00AEA51A /* KGPDFFilter.h in Headers */ = {isa = PBXBuildFile; fileRef = FE64B8B90B81239D007EE513 /* KGPDFFilter.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE01A9100C5D9BCB00AEA51A /* KGPDFFunction_Type2.h in Headers */ = {isa = PBXBuildFile; fileRef = FE64B8BB0B81239D007EE513 /* KGPDFFunction_Type2.h */; };
@@ -752,7 +752,7 @@
 		FE01A9160C5D9BCB00AEA51A /* KGPDFObject_Name.h in Headers */ = {isa = PBXBuildFile; fileRef = FE64B8C70B81239D007EE513 /* KGPDFObject_Name.h */; };
 		FE01A9170C5D9BCB00AEA51A /* KGPDFObject_R.h in Headers */ = {isa = PBXBuildFile; fileRef = FE64B8C90B81239D007EE513 /* KGPDFObject_R.h */; };
 		FE01A9180C5D9BCB00AEA51A /* KGPDFObject_Real.h in Headers */ = {isa = PBXBuildFile; fileRef = FE64B8CB0B81239D007EE513 /* KGPDFObject_Real.h */; };
-		FE01A9190C5D9BCB00AEA51A /* KGPDFObject.h in Headers */ = {isa = PBXBuildFile; fileRef = FE64B8CD0B81239D007EE513 /* KGPDFObject.h */; };
+		FE01A9190C5D9BCB00AEA51A /* KGPDFObject.h in Headers */ = {isa = PBXBuildFile; fileRef = FE64B8CD0B81239D007EE513 /* KGPDFObject.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE01A91A0C5D9BCB00AEA51A /* KGPDFOperators.h in Headers */ = {isa = PBXBuildFile; fileRef = FE64B8CF0B81239D007EE513 /* KGPDFOperators.h */; };
 		FE01A91B0C5D9BCB00AEA51A /* KGPDFOperatorTable.h in Headers */ = {isa = PBXBuildFile; fileRef = FE64B8D10B81239D007EE513 /* KGPDFOperatorTable.h */; };
 		FE01A91C0C5D9BCB00AEA51A /* KGPDFPage.h in Headers */ = {isa = PBXBuildFile; fileRef = FE64B8D30B81239D007EE513 /* KGPDFPage.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -1268,6 +1268,10 @@
 		FE2A115D0B45C66A006C03DE /* NSTokenFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FE2A115B0B45C66A006C03DE /* NSTokenFieldCell.m */; };
 		FE352F6A0BF3998E00223FAF /* NSArrayControllerSelectionProxy.h in Headers */ = {isa = PBXBuildFile; fileRef = FE352F680BF3998E00223FAF /* NSArrayControllerSelectionProxy.h */; };
 		FE352F6B0BF3998E00223FAF /* NSArrayControllerSelectionProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = FE352F690BF3998E00223FAF /* NSArrayControllerSelectionProxy.m */; };
+		FE3CA99D0CB6BB36005E3858 /* KGGraphicsState_gdi.h in Headers */ = {isa = PBXBuildFile; fileRef = FE3CA99B0CB6BB36005E3858 /* KGGraphicsState_gdi.h */; };
+		FE3CA99E0CB6BB36005E3858 /* KGGraphicsState_gdi.m in Sources */ = {isa = PBXBuildFile; fileRef = FE3CA99C0CB6BB36005E3858 /* KGGraphicsState_gdi.m */; };
+		FE3CA99F0CB6BB36005E3858 /* KGGraphicsState_gdi.h in Headers */ = {isa = PBXBuildFile; fileRef = FE3CA99B0CB6BB36005E3858 /* KGGraphicsState_gdi.h */; };
+		FE3CA9A00CB6BB36005E3858 /* KGGraphicsState_gdi.m in Sources */ = {isa = PBXBuildFile; fileRef = FE3CA99C0CB6BB36005E3858 /* KGGraphicsState_gdi.m */; };
 		FE4434040BB9833B00411464 /* NSGraphicsStyle_uxtheme.h in Headers */ = {isa = PBXBuildFile; fileRef = FE4434020BB9833B00411464 /* NSGraphicsStyle_uxtheme.h */; };
 		FE4434050BB9833B00411464 /* NSGraphicsStyle_uxtheme.m in Sources */ = {isa = PBXBuildFile; fileRef = FE4434030BB9833B00411464 /* NSGraphicsStyle_uxtheme.m */; };
 		FE4BDC0B0BCD40C600E19685 /* NSFontDescriptor.h in Headers */ = {isa = PBXBuildFile; fileRef = FE4BDC090BCD40C600E19685 /* NSFontDescriptor.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -1375,6 +1379,14 @@
 		FE8F9F290C9C5D0000270AEE /* KGzlib.m in Sources */ = {isa = PBXBuildFile; fileRef = FE8F9F270C9C5D0000270AEE /* KGzlib.m */; };
 		FE8F9F2A0C9C5D0000270AEE /* KGzlib.h in Headers */ = {isa = PBXBuildFile; fileRef = FE8F9F260C9C5D0000270AEE /* KGzlib.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE8F9F2B0C9C5D0000270AEE /* KGzlib.m in Sources */ = {isa = PBXBuildFile; fileRef = FE8F9F270C9C5D0000270AEE /* KGzlib.m */; };
+		FEABD5EA0CB9CEE40035F828 /* KGLayer_gdi.h in Headers */ = {isa = PBXBuildFile; fileRef = FEABD5E80CB9CEE40035F828 /* KGLayer_gdi.h */; };
+		FEABD5EB0CB9CEE40035F828 /* KGLayer_gdi.m in Sources */ = {isa = PBXBuildFile; fileRef = FEABD5E90CB9CEE40035F828 /* KGLayer_gdi.m */; };
+		FEABD5EC0CB9CEE40035F828 /* KGLayer_gdi.h in Headers */ = {isa = PBXBuildFile; fileRef = FEABD5E80CB9CEE40035F828 /* KGLayer_gdi.h */; };
+		FEABD5ED0CB9CEE40035F828 /* KGLayer_gdi.m in Sources */ = {isa = PBXBuildFile; fileRef = FEABD5E90CB9CEE40035F828 /* KGLayer_gdi.m */; };
+		FEABD6050CB9D0C90035F828 /* KGContext_gdi.h in Headers */ = {isa = PBXBuildFile; fileRef = FEABD6030CB9D0C90035F828 /* KGContext_gdi.h */; };
+		FEABD6060CB9D0C90035F828 /* KGContext_gdi.m in Sources */ = {isa = PBXBuildFile; fileRef = FEABD6040CB9D0C90035F828 /* KGContext_gdi.m */; };
+		FEABD6070CB9D0C90035F828 /* KGContext_gdi.h in Headers */ = {isa = PBXBuildFile; fileRef = FEABD6030CB9D0C90035F828 /* KGContext_gdi.h */; };
+		FEABD6080CB9D0C90035F828 /* KGContext_gdi.m in Sources */ = {isa = PBXBuildFile; fileRef = FEABD6040CB9D0C90035F828 /* KGContext_gdi.m */; };
 		FEC5FF7D0BF49D5400682A70 /* NSTableColumnBinder.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC5FF7B0BF49D5400682A70 /* NSTableColumnBinder.h */; };
 		FEC5FF7E0BF49D5400682A70 /* NSTableColumnBinder.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC5FF7C0BF49D5400682A70 /* NSTableColumnBinder.m */; };
 		FED166D60BE502AD00BF9889 /* NSSegment.h in Headers */ = {isa = PBXBuildFile; fileRef = FED166D40BE502AD00BF9889 /* NSSegment.h */; };
@@ -1389,6 +1401,10 @@
 		FED310E20BCC027200552615 /* NSAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = FED310DE0BCC027200552615 /* NSAnimation.m */; };
 		FED310E30BCC027200552615 /* NSViewAnimation.h in Headers */ = {isa = PBXBuildFile; fileRef = FED310DF0BCC027200552615 /* NSViewAnimation.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FED310E40BCC027200552615 /* NSViewAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = FED310E00BCC027200552615 /* NSViewAnimation.m */; };
+		FEDF951D0CAF43E7009DC96F /* KGPDFContext.h in Headers */ = {isa = PBXBuildFile; fileRef = FEDF951B0CAF43E7009DC96F /* KGPDFContext.h */; };
+		FEDF951E0CAF43E7009DC96F /* KGPDFContext.m in Sources */ = {isa = PBXBuildFile; fileRef = FEDF951C0CAF43E7009DC96F /* KGPDFContext.m */; };
+		FEDF951F0CAF43E7009DC96F /* KGPDFContext.h in Headers */ = {isa = PBXBuildFile; fileRef = FEDF951B0CAF43E7009DC96F /* KGPDFContext.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FEDF95200CAF43E7009DC96F /* KGPDFContext.m in Sources */ = {isa = PBXBuildFile; fileRef = FEDF951C0CAF43E7009DC96F /* KGPDFContext.m */; };
 		FEEF00590B96441800069FD1 /* CGPDFPage.h in Headers */ = {isa = PBXBuildFile; fileRef = FEEF00570B96441800069FD1 /* CGPDFPage.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FEEF005A0B96441800069FD1 /* CGPDFPage.m in Sources */ = {isa = PBXBuildFile; fileRef = FEEF00580B96441800069FD1 /* CGPDFPage.m */; };
 		FEF2EC340C891E7C001FC5A8 /* NSOpenGLDrawable_gdiView.h in Headers */ = {isa = PBXBuildFile; fileRef = FEF2EC330C891E7C001FC5A8 /* NSOpenGLDrawable_gdiView.h */; };
@@ -2057,6 +2073,8 @@
 		FE2A115B0B45C66A006C03DE /* NSTokenFieldCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSTokenFieldCell.m; sourceTree = "<group>"; };
 		FE352F680BF3998E00223FAF /* NSArrayControllerSelectionProxy.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSArrayControllerSelectionProxy.h; sourceTree = "<group>"; };
 		FE352F690BF3998E00223FAF /* NSArrayControllerSelectionProxy.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSArrayControllerSelectionProxy.m; sourceTree = "<group>"; };
+		FE3CA99B0CB6BB36005E3858 /* KGGraphicsState_gdi.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = KGGraphicsState_gdi.h; sourceTree = "<group>"; };
+		FE3CA99C0CB6BB36005E3858 /* KGGraphicsState_gdi.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = KGGraphicsState_gdi.m; sourceTree = "<group>"; };
 		FE4434020BB9833B00411464 /* NSGraphicsStyle_uxtheme.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSGraphicsStyle_uxtheme.h; sourceTree = "<group>"; };
 		FE4434030BB9833B00411464 /* NSGraphicsStyle_uxtheme.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSGraphicsStyle_uxtheme.m; sourceTree = "<group>"; };
 		FE4BDC090BCD40C600E19685 /* NSFontDescriptor.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSFontDescriptor.h; sourceTree = "<group>"; };
@@ -2160,6 +2178,10 @@
 		FE8BAF220BC9EC680007FACA /* NSObject+BindingSupport.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = "NSObject+BindingSupport.m"; sourceTree = "<group>"; };
 		FE8F9F260C9C5D0000270AEE /* KGzlib.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = KGzlib.h; sourceTree = "<group>"; };
 		FE8F9F270C9C5D0000270AEE /* KGzlib.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = KGzlib.m; sourceTree = "<group>"; };
+		FEABD5E80CB9CEE40035F828 /* KGLayer_gdi.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = KGLayer_gdi.h; sourceTree = "<group>"; };
+		FEABD5E90CB9CEE40035F828 /* KGLayer_gdi.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = KGLayer_gdi.m; sourceTree = "<group>"; };
+		FEABD6030CB9D0C90035F828 /* KGContext_gdi.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = KGContext_gdi.h; sourceTree = "<group>"; };
+		FEABD6040CB9D0C90035F828 /* KGContext_gdi.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = KGContext_gdi.m; sourceTree = "<group>"; };
 		FEC5FF7B0BF49D5400682A70 /* NSTableColumnBinder.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSTableColumnBinder.h; sourceTree = "<group>"; };
 		FEC5FF7C0BF49D5400682A70 /* NSTableColumnBinder.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSTableColumnBinder.m; sourceTree = "<group>"; };
 		FED166D40BE502AD00BF9889 /* NSSegment.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSSegment.h; sourceTree = "<group>"; };
@@ -2174,6 +2196,8 @@
 		FED310DE0BCC027200552615 /* NSAnimation.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSAnimation.m; sourceTree = "<group>"; };
 		FED310DF0BCC027200552615 /* NSViewAnimation.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSViewAnimation.h; sourceTree = "<group>"; };
 		FED310E00BCC027200552615 /* NSViewAnimation.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSViewAnimation.m; sourceTree = "<group>"; };
+		FEDF951B0CAF43E7009DC96F /* KGPDFContext.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = KGPDFContext.h; sourceTree = "<group>"; };
+		FEDF951C0CAF43E7009DC96F /* KGPDFContext.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = KGPDFContext.m; sourceTree = "<group>"; };
 		FEEF00570B96441800069FD1 /* CGPDFPage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGPDFPage.h; sourceTree = "<group>"; };
 		FEEF00580B96441800069FD1 /* CGPDFPage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CGPDFPage.m; sourceTree = "<group>"; };
 		FEF2EC330C891E7C001FC5A8 /* NSOpenGLDrawable_gdiView.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSOpenGLDrawable_gdiView.h; sourceTree = "<group>"; };
@@ -2673,12 +2697,6 @@
 		6E2B55B20976075300DA0954 /* CoreGraphics */ = {
 			isa = PBXGroup;
 			children = (
-				FE8F9F260C9C5D0000270AEE /* KGzlib.h */,
-				FE8F9F270C9C5D0000270AEE /* KGzlib.m */,
-				FE57F8150C46AA2C0078FFC1 /* KGDeviceContext.h */,
-				FE57F8160C46AA2C0078FFC1 /* KGDeviceContext.m */,
-				FE89AF470C33679100CD21FB /* KGFont.h */,
-				FE89AF480C33679100CD21FB /* KGFont.m */,
 				6E2B55CB0976075300DA0954 /* CGAffineTransform.h */,
 				6E2B55B80976075300DA0954 /* CGAffineTransform.m */,
 				FE267EB30B8BD2690000DDC0 /* CGBitmapContext.h */,
@@ -2724,6 +2742,8 @@
 				FE64B8AA0B81239D007EE513 /* KGContext.m */,
 				FE64B8AB0B81239D007EE513 /* KGDataProvider.h */,
 				FE64B8AC0B81239D007EE513 /* KGDataProvider.m */,
+				FE89AF470C33679100CD21FB /* KGFont.h */,
+				FE89AF480C33679100CD21FB /* KGFont.m */,
 				FE64B8AD0B81239D007EE513 /* KGFunction.h */,
 				FE64B8AE0B81239D007EE513 /* KGFunction.m */,
 				6E2B55D10976075300DA0954 /* KGGraphicsState.h */,
@@ -2742,6 +2762,8 @@
 				FE64B8B20B81239D007EE513 /* KGPDFArray.m */,
 				FE64B8B30B81239D007EE513 /* KGPDFContentStream.h */,
 				FE64B8B40B81239D007EE513 /* KGPDFContentStream.m */,
+				FEDF951B0CAF43E7009DC96F /* KGPDFContext.h */,
+				FEDF951C0CAF43E7009DC96F /* KGPDFContext.m */,
 				FE64B8B50B81239D007EE513 /* KGPDFDictionary.h */,
 				FE64B8B60B81239D007EE513 /* KGPDFDictionary.m */,
 				FE64B8B70B81239D007EE513 /* KGPDFDocument.h */,
@@ -2784,10 +2806,10 @@
 				FE64B8DC0B81239D007EE513 /* KGPDFxref.m */,
 				FE64B8DD0B81239D007EE513 /* KGPDFxrefEntry.h */,
 				FE64B8DE0B81239D007EE513 /* KGPDFxrefEntry.m */,
-				6E2B55D50976075300DA0954 /* KGRenderingContext.h */,
-				6E2B55C00976075300DA0954 /* KGRenderingContext.m */,
 				FE64B8DF0B81239D007EE513 /* KGShading.h */,
 				FE64B8E00B81239D007EE513 /* KGShading.m */,
+				FE8F9F260C9C5D0000270AEE /* KGzlib.h */,
+				FE8F9F270C9C5D0000270AEE /* KGzlib.m */,
 			);
 			name = CoreGraphics;
 			path = CoreGraphics.subproj;
@@ -2836,8 +2858,18 @@
 			isa = PBXGroup;
 			children = (
 				6E2B56620976075400DA0954 /* dllmain.m */,
+				FEABD6030CB9D0C90035F828 /* KGContext_gdi.h */,
+				FEABD6040CB9D0C90035F828 /* KGContext_gdi.m */,
+				FE57F8150C46AA2C0078FFC1 /* KGDeviceContext.h */,
+				FE57F8160C46AA2C0078FFC1 /* KGDeviceContext.m */,
 				FE57F8D00C46B68C0078FFC1 /* KGDeviceContext_gdi.h */,
 				FE57F8D10C46B68C0078FFC1 /* KGDeviceContext_gdi.m */,
+				FE3CA99B0CB6BB36005E3858 /* KGGraphicsState_gdi.h */,
+				FE3CA99C0CB6BB36005E3858 /* KGGraphicsState_gdi.m */,
+				FEABD5E80CB9CEE40035F828 /* KGLayer_gdi.h */,
+				FEABD5E90CB9CEE40035F828 /* KGLayer_gdi.m */,
+				6E2B55D50976075300DA0954 /* KGRenderingContext.h */,
+				6E2B55C00976075300DA0954 /* KGRenderingContext.m */,
 				6E2B56390976075400DA0954 /* KGRenderingContext_gdi.h */,
 				6E2B560C0976075300DA0954 /* KGRenderingContext_gdi.m */,
 				6E2B565F0976075400DA0954 /* multiple_monitors.h */,
@@ -3079,12 +3111,12 @@
 		6E46FEBF0A2D2DCF004CD27E /* Products */ = {
 			isa = PBXGroup;
 			children = (
+				FE01AACA0C5D9BCC00AEA51A /* Foundation.framework */,
 				6E46FEC60A2D2DCF004CD27E /* Foundation.framework */,
 				6E46FEC80A2D2DCF004CD27E /* Foundation.framework */,
 				6E46FECA0A2D2DCF004CD27E /* Foundation.framework */,
 				FED70ACA0C3B3FD9000CBE5B /* Foundation.framework */,
 				FEE66D7A0C3D6F8A00FBED82 /* Foundation.framework */,
-				FE01AACA0C5D9BCC00AEA51A /* Foundation.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -3538,6 +3570,10 @@
 				FE1CEA6D0C8F12F800184630 /* opengl_dll.h in Headers */,
 				FE8F9F280C9C5D0000270AEE /* KGzlib.h in Headers */,
 				FE572D8D0CA0809500FB3E79 /* KGImageSource_BMP.h in Headers */,
+				FEDF951D0CAF43E7009DC96F /* KGPDFContext.h in Headers */,
+				FE3CA99D0CB6BB36005E3858 /* KGGraphicsState_gdi.h in Headers */,
+				FEABD5EA0CB9CEE40035F828 /* KGLayer_gdi.h in Headers */,
+				FEABD6050CB9D0C90035F828 /* KGContext_gdi.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3877,6 +3913,10 @@
 				FE1CEA6F0C8F12F800184630 /* opengl_dll.h in Headers */,
 				FE8F9F2A0C9C5D0000270AEE /* KGzlib.h in Headers */,
 				FE572D8F0CA0809500FB3E79 /* KGImageSource_BMP.h in Headers */,
+				FEDF951F0CAF43E7009DC96F /* KGPDFContext.h in Headers */,
+				FE3CA99F0CB6BB36005E3858 /* KGGraphicsState_gdi.h in Headers */,
+				FEABD5EC0CB9CEE40035F828 /* KGLayer_gdi.h in Headers */,
+				FEABD6070CB9D0C90035F828 /* KGContext_gdi.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3944,8 +3984,8 @@
 				},
 			);
 			targets = (
-				6E2B53210976074C00DA0954 /* AppKit-Windows-i386-gcc-4.0.3 */,
 				FE01A8070C5D9BCB00AEA51A /* AppKit-Windows-i386 */,
+				6E2B53210976074C00DA0954 /* AppKit-Windows-i386-gcc-4.0.3 */,
 			);
 		};
 /* End PBXProject section */
@@ -4434,6 +4474,10 @@
 				FE1CEA6E0C8F12F800184630 /* opengl_dll.m in Sources */,
 				FE8F9F290C9C5D0000270AEE /* KGzlib.m in Sources */,
 				FE572D8E0CA0809500FB3E79 /* KGImageSource_BMP.m in Sources */,
+				FEDF951E0CAF43E7009DC96F /* KGPDFContext.m in Sources */,
+				FE3CA99E0CB6BB36005E3858 /* KGGraphicsState_gdi.m in Sources */,
+				FEABD5EB0CB9CEE40035F828 /* KGLayer_gdi.m in Sources */,
+				FEABD6060CB9D0C90035F828 /* KGContext_gdi.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4765,6 +4809,10 @@
 				FE1CEA700C8F12F800184630 /* opengl_dll.m in Sources */,
 				FE8F9F2B0C9C5D0000270AEE /* KGzlib.m in Sources */,
 				FE572D900CA0809500FB3E79 /* KGImageSource_BMP.m in Sources */,
+				FEDF95200CAF43E7009DC96F /* KGPDFContext.m in Sources */,
+				FE3CA9A00CB6BB36005E3858 /* KGGraphicsState_gdi.m in Sources */,
+				FEABD5ED0CB9CEE40035F828 /* KGLayer_gdi.m in Sources */,
+				FEABD6080CB9D0C90035F828 /* KGContext_gdi.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

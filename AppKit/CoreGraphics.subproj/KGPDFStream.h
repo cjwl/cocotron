@@ -6,21 +6,26 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
-#import "KGPDFObject.h"
+#import <AppKit/KGPDFObject.h>
 
-@class NSData;
+@class NSData,NSMutableData;
 @class KGPDFDictionary,KGPDFxref;
 
 @interface KGPDFStream : KGPDFObject {
    KGPDFDictionary *_dictionary;
+   NSData          *_data;
    KGPDFxref       *_xref;
-   KGPDFInteger     _position;
 }
+
++(KGPDFStream *)pdfStream;
++(KGPDFStream *)pdfStreamWithData:(NSData *)data;
++(KGPDFStream *)pdfStreamWithBytes:(const void *)bytes length:(unsigned)length;
 
 -initWithDictionary:(KGPDFDictionary *)dictionary xref:(KGPDFxref *)xref position:(KGPDFInteger)position;
 
 -(KGPDFxref *)xref;
 -(KGPDFDictionary *)dictionary;
 -(NSData *)data;
+-(NSMutableData *)mutableData;
 
 @end

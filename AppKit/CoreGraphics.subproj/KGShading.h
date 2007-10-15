@@ -9,7 +9,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSObject.h>
 #import <Foundation/NSGeometry.h>
 
-@class KGColorSpace,KGFunction;
+@class KGColorSpace,KGFunction,KGPDFObject,KGPDFContext;
 
 @interface KGShading : NSObject {
    KGColorSpace *_colorSpace;
@@ -41,5 +41,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(KGFunction *)function;
 
 -(BOOL)isAxial;
+
+-(KGPDFObject *)pdfObjectInContext:(KGPDFContext *)context;
++(KGShading *)shadingWithPDFObject:(KGPDFObject *)object;
 
 @end

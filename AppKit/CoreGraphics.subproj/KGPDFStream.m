@@ -12,22 +12,54 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "KGPDFArray.h"
 #import "KGPDFFilter.h"
 #import "KGPDFxref.h"
+#import <AppKit/KGPDFContext.h>
 #import <Foundation/NSData.h>
 #import <Foundation/NSString.h>
 
 @implementation KGPDFStream
 
 -initWithDictionary:(KGPDFDictionary *)dictionary xref:(KGPDFxref *)xref position:(KGPDFInteger)position {
+   KGPDFInteger length;
+   
    _dictionary=[dictionary retain];
+   
+   if(![_dictionary getIntegerForKey:"Length" value:&length])
+    _data=nil;
+
+// FIX, can do a more efficient subdata here
+   _data=[[[xref data] subdataWithRange:NSMakeRange(position,length)] retain];
    _xref=[xref retain];
-   _position=position;
+   return self;
+}
+
+-initWithDictionary:(KGPDFDictionary *)dictionary data:(NSData *)data {
+   _dictionary=[dictionary retain];
+   _data=[data retain];
+   _xref=nil;
    return self;
 }
 
 -(void)dealloc {
    [_dictionary release];
+   [_data release];
    [_xref release];
    [super dealloc];
+}
+
++(KGPDFStream *)pdfStream {
+   return [self pdfStreamWithData:[NSMutableData data]];
+}
+
++(KGPDFStream *)pdfStreamWithData:(NSData *)data {
+   KGPDFDictionary *dictionary=[KGPDFDictionary pdfDictionary];
+   
+   [dictionary setIntegerForKey:"Length" value:[data length]];
+   
+   return [[[self alloc] initWithDictionary:dictionary data:data] autorelease];
+}
+
++(KGPDFStream *)pdfStreamWithBytes:(const void *)bytes length:(unsigned)length {
+   return [self pdfStreamWithData:[NSData dataWithBytes:bytes length:length]];
 }
 
 -(KGPDFObjectType)objectType { return kKGPDFObjectTypeStream; }
@@ -40,12 +72,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return YES;
 }
 
--(KGPDFxref *)xref {
-   return _xref;
-}
-
 -(KGPDFDictionary *)dictionary {
    return _dictionary;
+}
+
+-(KGPDFxref *)xref {
+   return _xref;
 }
 
 -(NSData *)data {
@@ -58,8 +90,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    if(![_dictionary getIntegerForKey:"Length" value:&length])
     return nil;
 
-// FIX, can do nocopynofree here
-   result=[[_xref data] subdataWithRange:NSMakeRange(_position,length)];
+   result=_data;
        
    if([_dictionary getNameForKey:"Filter" value:&name]){
     
@@ -90,8 +121,25 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return result;
 }
 
+-(NSMutableData *)mutableData {
+   return (NSMutableData *)_data;
+}
+
 -(NSString *)description {
    return [NSString stringWithFormat:@"stream %@",_dictionary];
+}
+
+-(BOOL)isByReference {
+   return YES;
+}
+
+-(void)encodeWithPDFContext:(KGPDFContext *)encoder {
+   [_dictionary setIntegerForKey:"Length" value:[_data length]];
+   
+   [encoder encodePDFObject:_dictionary];
+   [encoder appendCString:"stream\n"];
+   [encoder appendData:_data];
+   [encoder appendCString:"\nendstream\n"];
 }
 
 @end

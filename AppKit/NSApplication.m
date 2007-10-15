@@ -30,8 +30,10 @@ NSString *NSEventTrackingRunLoopMode=@"NSEventTrackingRunLoopMode";
 NSString *NSApplicationWillFinishLaunchingNotification=@"NSApplicationWillFinishLaunchingNotification";
 NSString *NSApplicationDidFinishLaunchingNotification=@"NSApplicationDidFinishLaunchingNotification";
 
+NSString *NSApplicationWillBecomeActiveNotification=@"NSApplicationWillBecomeActiveNotification";
 NSString *NSApplicationDidBecomeActiveNotification=@"NSApplicationDidBecomeActiveNotification";
 NSString *NSApplicationWillResignActiveNotification=@"NSApplicationWillResignActiveNotification";
+NSString *NSApplicationDidResignActiveNotification=@"NSApplicationDidResignActiveNotification";
 
 @implementation NSApplication
 
@@ -116,17 +118,24 @@ id NSApp=nil;
    return nil;
 }
 
--(BOOL)isActive {
+-(BOOL)isActiveExcludingWindow:(NSWindow *)exclude {
    int count=[_windows count];
 
    while(--count>=0){
     NSWindow *check=[_windows objectAtIndex:count];
 
+    if(check==exclude)
+     continue;
+     
     if([check _isActive])
      return YES;
    }
 
    return NO;
+}
+
+-(BOOL)isActive {
+   return [self isActiveExcludingWindow:nil];
 }
 
 -(void)registerDelegate {
@@ -693,6 +702,30 @@ id NSApp=nil;
 
 -(void)_addWindow:(NSWindow *)window {
    [_windows addObject:window];
+}
+
+-(void)_windowWillBecomeActive:(NSWindow *)window {
+   if(![self isActive]){
+    [[NSNotificationCenter defaultCenter] postNotificationName:NSApplicationWillBecomeActiveNotification object:self];
+   }
+}
+
+-(void)_windowDidBecomeActive:(NSWindow *)window {
+   if(![self isActiveExcludingWindow:window]){
+    [[NSNotificationCenter defaultCenter] postNotificationName:NSApplicationDidBecomeActiveNotification object:self];
+   }
+}
+
+-(void)_windowWillBecomeDeactive:(NSWindow *)window {
+   if(![self isActiveExcludingWindow:window]){
+    [[NSNotificationCenter defaultCenter] postNotificationName:NSApplicationWillResignActiveNotification object:self];
+   }
+}
+
+-(void)_windowDidBecomeDeactive:(NSWindow *)window {
+   if(![self isActive]){
+    [[NSNotificationCenter defaultCenter] postNotificationName:NSApplicationDidResignActiveNotification object:self];
+   }
 }
 
 @end

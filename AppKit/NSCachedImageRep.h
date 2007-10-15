@@ -12,11 +12,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @class KGContext,KGLayer;
 
 @interface NSCachedImageRep : NSImageRep {
-   KGLayer *_layer;
+   NSWindow *_window;
+   NSPoint   _origin;
 }
 
--initWithSize:(NSSize)size;
--initWithWindow:(NSWindow *)window rect:(NSRect)rect;
 -initWithSize:(NSSize)size depth:(NSWindowDepth)windowDepth separate:(BOOL)separateWindow alpha:(BOOL)hasAlpha;
 
 -(NSWindow *)window;

@@ -249,26 +249,26 @@ NSString *NSShortMonthNameArray=@"NSShortMonthNameArray";
 -(NSData *)dataForKey:(NSString *)defaultName {
    NSData *data=[self objectForKey:defaultName];
 
-   return [data isKindOfClass:OBJCClassFromString("NSData")]?data:nil;
+   return [data isKindOfClass:OBJCClassFromString("NSData")]?data:(NSData *)nil;
 }
 
 -(NSString *)stringForKey:(NSString *)defaultName {
    NSString *string=[self objectForKey:defaultName];
 
-   return [string isKindOfClass:OBJCClassFromString("NSString")]?string:nil;
+   return [string isKindOfClass:OBJCClassFromString("NSString")]?string:(NSString *)nil;
 }
 
 -(NSArray *)arrayForKey:(NSString *)defaultName {
    NSArray *array=[self objectForKey:defaultName];
 
-   return [array isKindOfClass:OBJCClassFromString("NSArray")]?array:nil;
+   return [array isKindOfClass:OBJCClassFromString("NSArray")]?array:(NSArray *)nil;
 }
 
 
 -(NSDictionary *)dictionaryForKey:(NSString *)defaultName {
    NSDictionary *dictionary=[self objectForKey:defaultName];
 
-   return [dictionary isKindOfClass:OBJCClassFromString("NSDictionary")]?dictionary:nil;
+   return [dictionary isKindOfClass:OBJCClassFromString("NSDictionary")]?dictionary:(NSDictionary *)nil;
 }
 
 -(NSArray *)stringArrayForKey:(NSString *)defaultName {

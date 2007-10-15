@@ -172,7 +172,7 @@ static void pfdFromPixelFormat(PIXELFORMATDESCRIPTOR *pfd,NSOpenGLPixelFormat *p
 
 -(void)updateWithView:(NSView *)view {
    NSWindow    *window=[view window];
-   Win32Window *parent=[window platformWindow];
+   Win32Window *parent=(Win32Window *)[window platformWindow];
    HWND         parentHandle=[parent windowHandle];
    RECT         clientRECT;
    int          parentHeight;

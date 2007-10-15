@@ -208,6 +208,10 @@ APPKIT_EXPORT NSString *NSViewFocusDidChangeNotification;
 -(NSRect)rectForPage:(int)page;
 
 -(NSData *)dataWithEPSInsideRect:(NSRect)rect;
+-(NSData *)dataWithPDFInsideRect:(NSRect)rect;
+
+-(void)writeEPSInsideRect:(NSRect)rect toPasteboard:(NSPasteboard *)pasteboard;
+-(void)writePDFInsideRect:(NSRect)rect toPasteboard:(NSPasteboard *)pasteboard;
 
 -(void)dragImage:(NSImage *)image at:(NSPoint)location offset:(NSSize)offset event:(NSEvent *)event pasteboard:(NSPasteboard *)pasteboard source:source slideBack:(BOOL)slideBack;
 

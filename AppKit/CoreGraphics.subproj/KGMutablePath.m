@@ -88,7 +88,7 @@ static void expandPointCapacity(KGMutablePath *self,unsigned delta){
 
    expandOperatorCapacity(self,1);
    expandPointCapacity(self,1);
-   _operators[_numberOfOperators++]=KGPathOperatorMoveToPoint;
+   _operators[_numberOfOperators++]=kCGPathOperatorMoveToPoint;
    _points[_numberOfPoints++]=point;
 }
 
@@ -98,7 +98,7 @@ static void expandPointCapacity(KGMutablePath *self,unsigned delta){
 
    expandOperatorCapacity(self,1);
    expandPointCapacity(self,1);
-   _operators[_numberOfOperators++]=KGPathOperatorLineToPoint;
+   _operators[_numberOfOperators++]=kCGPathOperatorLineToPoint;
    _points[_numberOfPoints++]=point;
 }
 
@@ -111,7 +111,7 @@ static void expandPointCapacity(KGMutablePath *self,unsigned delta){
 
    expandOperatorCapacity(self,1);
    expandPointCapacity(self,3);
-   _operators[_numberOfOperators++]=KGPathOperatorCurveToPoint;   
+   _operators[_numberOfOperators++]=kCGPathOperatorCurveToPoint;   
    _points[_numberOfPoints++]=cp1;
    _points[_numberOfPoints++]=cp2;
    _points[_numberOfPoints++]=endPoint;
@@ -125,14 +125,14 @@ static void expandPointCapacity(KGMutablePath *self,unsigned delta){
 
    expandOperatorCapacity(self,1);
    expandPointCapacity(self,2);
-   _operators[_numberOfOperators++]=KGPathOperatorQuadCurveToPoint;   
+   _operators[_numberOfOperators++]=kCGPathOperatorQuadCurveToPoint;   
    _points[_numberOfPoints++]=cp1;
    _points[_numberOfPoints++]=endPoint;
 }
 
 -(void)closeSubpath {
    expandOperatorCapacity(self,1);
-   _operators[_numberOfOperators++]=KGPathOperatorCloseSubpath;   
+   _operators[_numberOfOperators++]=kCGPathOperatorCloseSubpath;   
 }
 
 -(void)relativeMoveToPoint:(NSPoint)point withTransform:(CGAffineTransform *)matrix {

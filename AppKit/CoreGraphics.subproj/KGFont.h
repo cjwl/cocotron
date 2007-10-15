@@ -1,6 +1,8 @@
 #import <Foundation/NSObject.h>
 #import <AppKit/CGFont.h>
 
+@class KGPDFObject,KGPDFContext;
+
 typedef struct CGGlyphRange {
    CGGlyph glyphs[256];
 } CGGlyphRange;
@@ -54,5 +56,7 @@ typedef struct CGGlyphMetricsSet {
 -(void)getAdvancements:(NSSize *)advancements forGlyphs:(const CGGlyph *)glyphs count:(unsigned)count;
 
 -(NSSize)advancementForNominalGlyphs:(const CGGlyph *)glyphs count:(unsigned)count;
+
+-(KGPDFObject *)pdfObjectInContext:(KGPDFContext *)context;
 
 @end

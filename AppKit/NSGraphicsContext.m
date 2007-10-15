@@ -19,31 +19,28 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -initWithWindow:(NSWindow *)window {
    _graphicsPort=CGContextRetain([window cgContext]);
    _isDrawingToScreen=YES;
+   _isFlipped=NO;
    return self;
 }
 
--initWithWithCachedImageRep:(NSCachedImageRep *)imageRep {
-   _graphicsPort=CGContextRetain([imageRep cgContext]);
-   _isDrawingToScreen=YES;
-   return self;
-}
-
--initWithPrintingContext:(KGContext *)context {
+-initWithGraphicsPort:(KGContext *)context flipped:(BOOL)flipped {
    _graphicsPort=CGContextRetain(context);
    _isDrawingToScreen=NO;
+   _isFlipped=flipped;
    return self;
+}
+
+-(void)dealloc {
+   CGContextRelease(_graphicsPort);
+   [super dealloc];
 }
 
 +(NSGraphicsContext *)graphicsContextWithWindow:(NSWindow *)window {
    return [[[self alloc] initWithWindow:window] autorelease];
 }
 
-+(NSGraphicsContext *)graphicsContextWithCachedImageRep:(NSCachedImageRep *)imageRep {
-   return [[[self alloc] initWithWithCachedImageRep:imageRep] autorelease];
-}
-
-+(NSGraphicsContext *)graphicsContextWithPrintingContext:(KGContext *)context {
-   return [[[self alloc] initWithPrintingContext:context] autorelease];
++(NSGraphicsContext *)graphicsContextWithGraphicsPort:(KGContext *)context flipped:(BOOL)flipped {
+   return [[[self alloc] initWithGraphicsPort:context flipped:flipped] autorelease];
 }
 
 +(NSMutableArray *)_contextStack {
@@ -98,11 +95,6 @@ KGContext *NSCurrentGraphicsPort() {
 
 +(BOOL)currentContextDrawingToScreen {
    return [[NSGraphicsContext currentContext] isDrawingToScreen];
-}
-
--(void)dealloc {
-   CGContextRelease(_graphicsPort);
-   [super dealloc];
 }
 
 -(KGContext *)graphicsPort {

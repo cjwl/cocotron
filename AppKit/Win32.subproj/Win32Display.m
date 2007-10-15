@@ -1105,7 +1105,7 @@ static inline CGGlyphMetrics *glyphInfoForGlyph(CGGlyphMetricsSet *infoSet,NSGly
    if(check==0)
     return NSCancelButton;
    else {
-    KGRenderingContext_gdi *renderingContext=[KGRenderingContext_gdi renderingContextWithPrinterDC:printProperties.hDC];
+    KGRenderingContext_gdi *renderingContext=(KGRenderingContext_gdi *)[KGRenderingContext_gdi renderingContextWithPrinterDC:printProperties.hDC];
     KGDeviceContext        *deviceContext=[renderingContext deviceContext];
     KGContext              *context=[renderingContext createGraphicsContext];
     

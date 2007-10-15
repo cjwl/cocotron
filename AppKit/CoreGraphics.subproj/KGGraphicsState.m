@@ -8,7 +8,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 // Original - Christopher Lloyd <cjwl@objc.net>
 #import <AppKit/KGGraphicsState.h>
-#import <AppKit/KGRenderingContext.h>
 
 #import <AppKit/CoreGraphics.h>
 #import "KGColor.h"
@@ -18,12 +17,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @implementation KGGraphicsState
 
--initWithRenderingContext:(KGRenderingContext *)context transform:(CGAffineTransform)deviceTransform userSpaceSize:(NSSize)userSpaceSize {
-   _renderingContext=[context retain];
+-initWithTransform:(CGAffineTransform)deviceTransform {
    _ctm=deviceTransform;
    _textTransform=CGAffineTransformIdentity;
-   _clipRect=NSMakeRect(0,0,userSpaceSize.width,userSpaceSize.height);
-   _deviceState=nil;
    _lineWidth=1.0;
    _strokeColor=[[KGColor alloc] init];
    _fillColor=[[KGColor alloc] init];
@@ -31,9 +27,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return self;
 }
 
+-init {
+   return [self initWithTransform:CGAffineTransformIdentity];
+}
+
 -(void)dealloc {
-   [_renderingContext release];
-   [_deviceState release];
    [_strokeColor release];
    [_fillColor release];
    [_font release];
@@ -46,8 +44,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -copyWithZone:(NSZone *)zone {
    KGGraphicsState *copy=NSCopyObject(self,0,zone);
 
-   copy->_renderingContext=[_renderingContext retain];
-   copy->_deviceState=nil;
    copy->_strokeColor=[_strokeColor copyWithZone:zone];
    copy->_fillColor=[_fillColor copyWithZone:zone];
    copy->_font=[_font retain];
@@ -64,18 +60,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return copy;
 }
 
--(KGRenderingContext *)renderingContext {
-   return _renderingContext;
-}
-
 -(void)save {
-   _deviceState=[_renderingContext saveCopyOfDeviceState];
 }
 
 -(void)restore {
-   [_renderingContext restoreDeviceState:_deviceState];
-   [_deviceState release];
-   _deviceState=nil;
 }
 
 -(CGAffineTransform)userSpaceToDeviceSpaceTransform {
@@ -127,35 +115,20 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    _ctm=CGAffineTransformConcat(_ctm,transform);
 }
 
--(void)translateCTM:(float)tx:(float)ty {
-   _ctm=CGAffineTransformTranslate(_ctm,tx,ty);
-}
-
--(void)scaleCTM:(float)scalex:(float)scaley {
-   _ctm=CGAffineTransformScale(_ctm,scalex,scaley);
-}
-
--(void)rotateCTM:(float)radians {
-   _ctm=CGAffineTransformRotate(_ctm,radians);
-}
-
 -(void)clipToPath:(KGPath *)path {
-   [_renderingContext clipToDeviceSpacePath:path];
+   NSInvalidAbstractInvocation();
 }
 
 -(void)evenOddClipToPath:(KGPath *)path {
-   [_renderingContext evenOddClipToDeviceSpacePath:path];
+   NSInvalidAbstractInvocation();
 }
 
 -(void)clipToMask:(KGImage *)image inRect:(NSRect)rect {
-}
-
--(void)clipToRect:(NSRect)clipRect  {
-   [_renderingContext clipInUserSpace:_ctm rects:&clipRect count:1];
+   NSInvalidAbstractInvocation();
 }
 
 -(void)clipToRects:(const NSRect *)rects count:(unsigned)count {
-   [_renderingContext clipInUserSpace:_ctm rects:rects count:count];
+   NSInvalidAbstractInvocation();
 }
 
 -(KGColor *)strokeColor {
@@ -166,165 +139,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return _fillColor;
 }
 
--(void)setStrokeColorSpace:(KGColorSpace *)colorSpace {
-   KGColor *color=[[KGColor alloc] initWithColorSpace:colorSpace];
-   
-   [self setStrokeColor:color];
-   
-   [color release];
-}
-
--(void)setFillColorSpace:(KGColorSpace *)colorSpace {
-   KGColor *color=[[KGColor alloc] initWithColorSpace:colorSpace];
-   
-   [self setFillColor:color];
-   
-   [color release];
-}
-
--(void)setStrokeColorWithComponents:(const float *)components {
-   KGColorSpace *colorSpace=[_strokeColor colorSpace];
-   KGColor      *color=[[KGColor alloc] initWithColorSpace:colorSpace components:components];
-   
-   [self setStrokeColor:color];
-   
-   [color release];
-}
-
 -(void)setStrokeColor:(KGColor *)color {
    [color retain];
    [_strokeColor release];
    _strokeColor=color;
 }
 
--(void)setGrayStrokeColor:(float)gray:(float)alpha {
-   KGColorSpace *colorSpace=[[KGColorSpace alloc] initWithDeviceGray];
-   float         components[2]={gray,alpha};
-   KGColor      *color=[[KGColor alloc] initWithColorSpace:colorSpace components:components];
-   
-   [self setStrokeColor:color];
-   
-   [color release];
-   [colorSpace release];
-}
-
--(void)setRGBStrokeColor:(float)r:(float)g:(float)b:(float)alpha {
-   KGColorSpace *colorSpace=[[KGColorSpace alloc] initWithDeviceRGB];
-   float         components[4]={r,g,b,alpha};
-   KGColor      *color=[[KGColor alloc] initWithColorSpace:colorSpace components:components];
-   
-   [self setStrokeColor:color];
-   
-   [color release];
-   [colorSpace release];
-}
-
--(void)setCMYKStrokeColor:(float)c:(float)m:(float)y:(float)k:(float)alpha {
-   KGColorSpace *colorSpace=[[KGColorSpace alloc] initWithDeviceCMYK];
-   float         components[5]={c,m,y,k,alpha};
-   KGColor      *color=[[KGColor alloc] initWithColorSpace:colorSpace components:components];
-   
-   [self setStrokeColor:color];
-   
-   [color release];
-   [colorSpace release];
-}
-
--(void)setFillColorWithComponents:(const float *)components {
-   KGColorSpace *colorSpace=[_fillColor colorSpace];
-   KGColor      *color=[[KGColor alloc] initWithColorSpace:colorSpace components:components];
-   
-   [self setFillColor:color];
-   
-   [color release];
-}
-
 -(void)setFillColor:(KGColor *)color {
    [color retain];
    [_fillColor release];
    _fillColor=color;
-}
-
--(void)setGrayFillColor:(float)gray:(float)alpha {
-   KGColorSpace *colorSpace=[[KGColorSpace alloc] initWithDeviceGray];
-   float         components[2]={gray,alpha};
-   KGColor      *color=[[KGColor alloc] initWithColorSpace:colorSpace components:components];
-   
-   [self setFillColor:color];
-   
-   [color release];
-   [colorSpace release];
-}
-
--(void)setRGBFillColor:(float)r:(float)g:(float)b:(float)alpha {
-   KGColorSpace *colorSpace=[[KGColorSpace alloc] initWithDeviceRGB];
-   float         components[4]={r,g,b,alpha};
-   KGColor      *color=[[KGColor alloc] initWithColorSpace:colorSpace components:components];
-   
-   [self setFillColor:color];
-   
-   [color release];
-   [colorSpace release];
-}
-
-
--(void)setCMYKFillColor:(float)c:(float)m:(float)y:(float)k:(float)alpha {
-   KGColorSpace *colorSpace=[[KGColorSpace alloc] initWithDeviceCMYK];
-   float         components[5]={c,m,y,k,alpha};
-   KGColor      *color=[[KGColor alloc] initWithColorSpace:colorSpace components:components];
-   
-   [self setFillColor:color];
-   
-   [color release];
-   [colorSpace release];
-}
-
--(void)setStrokeAndFillAlpha:(float)alpha {
-   [self setStrokeAlpha:alpha];
-   [self setFillAlpha:alpha];
-}
-
--(void)setStrokeAlpha:(float)alpha {
-   KGColor *color=[_strokeColor copyWithAlpha:alpha];
-   [self setStrokeColor:color];
-   [color release];
-}
-
--(void)setGrayStrokeColor:(float)gray {
-   float alpha=[_strokeColor alpha];
-   
-   [self setGrayStrokeColor:gray:alpha];
-}
-
--(void)setRGBStrokeColor:(float)r:(float)g:(float)b {
-   float alpha=[_strokeColor alpha];
-   [self setRGBStrokeColor:r:g:b:alpha];
-}
-
--(void)setCMYKStrokeColor:(float)c:(float)m:(float)y:(float)k {
-   float alpha=[_strokeColor alpha];
-   [self setCMYKStrokeColor:c:m:y:k:alpha];
-}
-
--(void)setFillAlpha:(float)alpha {
-   KGColor *color=[_fillColor copyWithAlpha:alpha];
-   [self setFillColor:color];
-   [color release];
-}
-
--(void)setGrayFillColor:(float)gray {
-   float alpha=[_fillColor alpha];
-   [self setGrayFillColor:gray:alpha];
-}
-
--(void)setRGBFillColor:(float)r:(float)g:(float)b {
-   float alpha=[_fillColor alpha];
-   [self setRGBFillColor:r:g:b:alpha];
-}
-
--(void)setCMYKFillColor:(float)c:(float)m:(float)y:(float)k {
-   float alpha=[_fillColor alpha];
-   [self setCMYKFillColor:c:m:y:k:alpha];
 }
 
 -(void)setPatternPhase:(NSSize)phase {
@@ -354,28 +178,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    _textDrawingMode=textMode;
 }
 
+-(KGFont *)font {
+   return _font;
+}
+
 -(void)setFont:(KGFont *)font {
    font=[font retain];
    [_font release];
    _font=font;
-   [_renderingContext setFont:_font];
-}
-
--(void)setFontSize:(float)size {
-   NSString *name=[_font name];
-   KGFont   *font=[[KGFont alloc] initWithName:name size:size];
-   
-   [_font release];
-   _font=font;
-   [_renderingContext setFont:_font];
-}
-
--(void)selectFontWithName:(const char *)name size:(float)size encoding:(int)encoding {
-   KGFont *font=[[KGFont alloc] initWithName:[NSString stringWithCString:name] size:size];
-   
-   [_font release];
-   _font=font;
-   [_renderingContext setFont:_font];
 }
 
 -(void)setShouldSmoothFonts:(BOOL)yesOrNo {
@@ -416,7 +226,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    }
 }
 
--(void)setRenderingIntent:(int)intent {
+-(void)setRenderingIntent:(CGColorRenderingIntent)intent {
    _renderingIntent=intent;
 }
 
@@ -428,7 +238,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    _flatness=flatness;
 }
 
--(void)setInterpolationQuality:(int)quality {
+-(void)setInterpolationQuality:(CGInterpolationQuality)quality {
    _interpolationQuality=quality;
 }
 
@@ -455,91 +265,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    _shouldAntialias=flag;
 }
 
--(void)strokeLineSegmentsWithPoints:(NSPoint *)points count:(unsigned)count {
-   NSUnimplementedMethod();
-}
-
--(void)strokeRect:(NSRect)rect {
-   NSUnimplementedMethod();
-}
-
--(void)strokeRect:(NSRect)rect width:(float)width {
-   [_renderingContext strokeInUserSpace:_ctm rect:rect width:width color:_strokeColor];
-}
-
--(void)strokeEllipseInRect:(NSRect)rect {
-   NSUnimplementedMethod();
-}
-
--(void)fillRects:(const NSRect *)rects count:(unsigned)count {
-   [_renderingContext fillInUserSpace:_ctm rects:rects count:count color:_fillColor];
-}
-
--(void)fillEllipseInRect:(NSRect)rect {
-   NSUnimplementedMethod();
-}
-
--(void)drawPath:(KGPath *)path mode:(int)mode {
-   [_renderingContext drawPathInDeviceSpace:path drawingMode:mode ctm:_ctm lineWidth:_lineWidth fillColor:_fillColor strokeColor:_strokeColor];
-}
-
--(void)clearRect:(NSRect)rect {
-   NSUnimplementedMethod();
-}
-
--(void)showGlyphs:(const CGGlyph *)glyphs count:(unsigned)numberOfGlyphs {
-   NSSize advancement;
-   
-   [_renderingContext showInUserSpace:_ctm textSpace:_textTransform glyphs:glyphs count:numberOfGlyphs color:_fillColor];
-   advancement=[_font advancementForNominalGlyphs:glyphs count:numberOfGlyphs];
-   
-   _textTransform.tx+=advancement.width;
-   _textTransform.ty+=advancement.height;
-}
-
--(void)showGlyphs:(const CGGlyph *)glyphs count:(unsigned)numberOfGlyphs atPoint:(float)x:(float)y {   
-   NSSize advancement;
-
-   _textTransform.tx=x;
-   _textTransform.ty=y;
-   
-   [_renderingContext showInUserSpace:_ctm textSpace:_textTransform glyphs:glyphs count:numberOfGlyphs color:_fillColor];
-   advancement=[_font advancementForNominalGlyphs:glyphs count:numberOfGlyphs];
-   
-   _textTransform.tx+=advancement.width;
-   _textTransform.ty+=advancement.height;
-}
-
--(void)showGlyphs:(const CGGlyph *)glyphs count:(unsigned)count advances:(const NSSize *)advances {
-   NSUnimplementedMethod();
-}
-
--(void)showText:(const char *)text length:(unsigned)length {
-   unichar unicode[length];
-   CGGlyph glyphs[length];
-   int     i;
-   
-   for(i=0;i<length;i++)
-    unicode[i]=text[i];
-   [_font getGlyphs:glyphs forCharacters:unicode length:length];
-   [self showGlyphs:glyphs count:length];
-}
-
--(void)showText:(const char *)text length:(unsigned)length atPoint:(float)x:(float)y {
-   _textTransform.tx=x;
-   _textTransform.ty=y;
-   [self showText:text length:length];
-}
-
--(void)drawShading:(KGShading *)shading {
-   [_renderingContext drawInUserSpace:_ctm shading:shading];
-}
-
--(void)drawImage:(KGImage *)image inRect:(NSRect)rect {
-   [_renderingContext drawImage:image inRect:rect ctm:_ctm fraction:[_fillColor alpha]];
-}
-
 // temporary
+
+-(void)resetClip {
+}
+
 -(void)setWordSpacing:(float)spacing {
    _wordSpacing=spacing;
 }
@@ -548,38 +278,4 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    _textLeading=leading;
 }
 
--(void)copyBitsInRect:(NSRect)rect toPoint:(NSPoint)point {
-   [_renderingContext copyBitsInUserSpace:_ctm rect:rect toPoint:point];
-}
-
 @end
-
-void CGGraphicsSourceOver_rgba32_onto_bgrx32(unsigned char *sourceRGBA,unsigned char *resultBGRX,int width,int height,float fraction) {
-   int sourceIndex=0;
-   int sourceLength=width*height*4;
-   int destinationReadIndex=0;
-   int destinationWriteIndex=0;
-
-   while(sourceIndex<sourceLength){
-    unsigned srcr=sourceRGBA[sourceIndex++];
-    unsigned srcg=sourceRGBA[sourceIndex++];
-    unsigned srcb=sourceRGBA[sourceIndex++];
-    unsigned srca=sourceRGBA[sourceIndex++]*fraction;
-
-    unsigned dstb=resultBGRX[destinationReadIndex++];
-    unsigned dstg=resultBGRX[destinationReadIndex++];
-    unsigned dstr=resultBGRX[destinationReadIndex++];
-    unsigned dsta=255-srca;
-
-    destinationReadIndex++;
-
-    dstr=(srcr*srca+dstr*dsta)>>8;
-    dstg=(srcg*srca+dstg*dsta)>>8;
-    dstb=(srcb*srca+dstb*dsta)>>8;
-
-    resultBGRX[destinationWriteIndex++]=dstb;
-    resultBGRX[destinationWriteIndex++]=dstg;
-    resultBGRX[destinationWriteIndex++]=dstr;
-    destinationWriteIndex++; // skip x
-   }
-}

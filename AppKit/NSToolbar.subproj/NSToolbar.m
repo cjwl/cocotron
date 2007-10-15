@@ -141,7 +141,7 @@ NSString *NSToolbarDidChangeNotification = @"NSToolbarDidChangeNotification";
         [NSNumber numberWithInt:_sizeMode], @"sizeMode",
         [NSNumber numberWithBool:_visible], @"isVisible",
         [NSNumber numberWithBool:_autosavesConfiguration], @"autosavesConfiguration",
-        _identifiers ? _identifiers : [NSArray array], @"itemIdentifiers",
+        _identifiers ? (id)_identifiers : [NSArray array], @"itemIdentifiers",
         nil];    
         
     return dictionary;

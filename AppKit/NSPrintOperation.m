@@ -15,7 +15,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSDisplay.h>
 #import <AppKit/NSGraphicsContext.h>
 #import <AppKit/KGContext.h>
-#import <AppKit/KGRenderingContext.h>
+#import <AppKit/KGPDFContext.h>
+
+enum {
+   NSPrintOperationPDFInRect,
+   NSPrintOperationEPSInRect,
+   NSPrintOperationPrinter,
+};
 
 @implementation NSPrintOperation
 
@@ -25,6 +31,32 @@ static NSPrintOperation *_currentOperation=nil;
    return _currentOperation;
 }
 
+-initWithView:(NSView *)view printInfo:(NSPrintInfo *)printInfo insideRect:(NSRect)rect toData:(NSMutableData *)data type:(int)type {
+   _view=[view retain];
+   _printInfo=[printInfo retain];
+   _printPanel=[[NSPrintPanel printPanel] retain];
+   _showsPrintPanel=YES;
+   _currentPage=0;
+   _insideRect=rect;
+   _mutableData=[data retain];
+   _type=type;
+   return self;
+}
+
+-initWithView:(NSView *)view printInfo:(NSPrintInfo *)printInfo {
+   return [self initWithView:view printInfo:printInfo insideRect:[view bounds] toData:nil type:NSPrintOperationPrinter];
+}
+
+-(void)dealloc {
+   [_view release];
+   [_printInfo release];
+   [_printPanel release];
+   [_context release];
+   [_mutableData release];
+   [super dealloc];
+}
+
+
 +(NSPrintOperation *)printOperationWithView:(NSView *)view {
    return [[[self alloc] initWithView:view printInfo:[NSPrintInfo sharedPrintInfo]] autorelease];
 }
@@ -33,21 +65,20 @@ static NSPrintOperation *_currentOperation=nil;
    return [[[self alloc] initWithView:view printInfo:printInfo] autorelease];
 }
 
--initWithView:(NSView *)view printInfo:(NSPrintInfo *)printInfo {
-   _view=[view retain];
-   _printInfo=[printInfo retain];
-   _printPanel=[[NSPrintPanel printPanel] retain];
-   _showsPrintPanel=YES;
-   _currentPage=0;
-   return self;
++(NSPrintOperation *)PDFOperationWithView:(NSView *)view insideRect:(NSRect)rect toData:(NSMutableData *)data {
+   return [self PDFOperationWithView:view insideRect:rect toData:data printInfo:[NSPrintInfo sharedPrintInfo]];
 }
 
--(void)dealloc {
-   [_view release];
-   [_printInfo release];
-   [_printPanel release];
-   [_context release];
-   [super dealloc];
++(NSPrintOperation *)PDFOperationWithView:(NSView *)view insideRect:(NSRect)rect toData:(NSMutableData *)data printInfo:(NSPrintInfo *)printInfo {
+   return [[[self alloc] initWithView:view printInfo:printInfo insideRect:rect toData:data type:NSPrintOperationPDFInRect] autorelease];
+}
+
++(NSPrintOperation *)EPSOperationWithView:(NSView *)view insideRect:(NSRect)rect toData:(NSMutableData *)data {
+   return [self EPSOperationWithView:view insideRect:rect toData:data printInfo:[NSPrintInfo sharedPrintInfo]];
+}
+
++(NSPrintOperation *)EPSOperationWithView:(NSView *)view insideRect:(NSRect)rect toData:(NSMutableData *)data printInfo:(NSPrintInfo *)printInfo {
+   return [[[self alloc] initWithView:view printInfo:printInfo insideRect:rect toData:data type:NSPrintOperationEPSInRect] autorelease];
 }
 
 -(BOOL)isCopyingOperation {
@@ -82,9 +113,6 @@ static NSPrintOperation *_currentOperation=nil;
    return _currentPage;
 }
 
--(NSGraphicsContext *)createContext {
-   return nil;
-}
 
 -(void)_autopaginatePageRange:(NSRange)pageRange actualPageRange:(NSRange *)rangep context:(KGContext *)context {
    NSRange result=NSMakeRange(1,0);
@@ -159,14 +187,50 @@ static NSPrintOperation *_currentOperation=nil;
    }
 }
 
+-(NSGraphicsContext *)createContext {
+   KGContext *context;
+   
+   if(_type==NSPrintOperationPrinter){
+    if(_showsPrintPanel){
+     NSPrintPanel *printPanel=[self printPanel];
+     int           panelResult;
+     
+     [[_printInfo dictionary] setObject:_view forKey:@"_NSView"];
+     panelResult=[printPanel runModal];
+     [[_printInfo dictionary] removeObjectForKey:@"_NSView"];
+   
+     if(panelResult!=NSOKButton)
+      return NO;
+    }
+    else {
+     NSLog(@"Printing not implemented without print panel yet");
+     return NO;
+    }
+   
+    if((context=[[_printInfo dictionary] objectForKey:@"_KGContext"])==nil)
+     return nil;
+   }
+   else if(_type==NSPrintOperationPDFInRect){
+    context=[[[KGPDFContext alloc] initWithMutableData:_mutableData] autorelease];
+   }
+   
+   return [NSGraphicsContext graphicsContextWithGraphicsPort:context flipped:NO];
+}
+
+-(void)destroyContext {
+   if(_type==NSPrintOperationPrinter){
+    [[_printInfo dictionary] removeObjectForKey:@"_KGContext"];
+   }
+}
+
+// FIX, drawRect: should be changed to displayRect: and displayRect:/NSView should be print aware
+
 -(BOOL)runOperation {
    NSRange            pageRange=NSMakeRange(NSNotFound,NSNotFound);
    BOOL               knowsPageRange;
-   NSPrintPanel      *printPanel=[self printPanel];
-   int                panelResult;
-   KGContext         *context;
    NSGraphicsContext *graphicsContext;
-      
+   KGContext         *context;
+   
    _currentOperation=self;
    
    knowsPageRange=[_view knowsPageRange:&pageRange];
@@ -180,41 +244,35 @@ static NSPrintOperation *_currentOperation=nil;
     [[_printInfo dictionary] setObject:[NSNumber numberWithInt:1] forKey:NSPrintLastPage];
    }
    
-   if(_showsPrintPanel){
-    [[_printInfo dictionary] setObject:_view forKey:@"_NSView"];
-    panelResult=[printPanel runModal];
-    [[_printInfo dictionary] removeObjectForKey:@"_NSView"];
+   graphicsContext=[self createContext];
+   context=[graphicsContext graphicsPort];
    
-    if(panelResult!=NSOKButton)
-     return NO;
-   }
-   else {
-    NSLog(@"Printing not implemented without print panel yet");
-     return NO;
-   }
-   
-   if((context=[[_printInfo dictionary] objectForKey:@"_KGContext"])==nil)
-    return NO;
-
    [_printInfo setUpPrintOperationDefaultValues];
-
-   graphicsContext=[NSGraphicsContext graphicsContextWithPrintingContext:context];
 
    [NSGraphicsContext saveGraphicsState];
    [NSGraphicsContext setCurrentContext:graphicsContext];
-   [[context renderingContext] beginPrintingWithDocumentName:[[_view window] title]];
+   [context beginPrintingWithDocumentName:[[_view window] title]];
    [_view beginDocument];
-   
-   if(knowsPageRange)
-    [self _paginateWithPageRange:pageRange context:context];
-   else
-    [self _autopaginatePageRange:pageRange actualPageRange:&pageRange context:context];
+
+   if(_type==NSPrintOperationPDFInRect){
+     KGPDFContext *pdf=(KGPDFContext *)context;
      
+    [pdf beginPage:&_insideRect];
+    [_view drawRect:_insideRect];
+    [pdf endPage];
+   }
+   else{
+    if(knowsPageRange)
+     [self _paginateWithPageRange:pageRange context:context];
+    else
+     [self _autopaginatePageRange:pageRange actualPageRange:&pageRange context:context];
+   }
+    
    [_view endDocument];
-   [[context renderingContext] endPrinting];
+   [context endPrinting];
    [NSGraphicsContext restoreGraphicsState];
    
-   [[_printInfo dictionary] removeObjectForKey:@"_KGContext"];
+   [self destroyContext];
    
    _currentOperation=nil;
 

@@ -9,8 +9,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 // Original - Christopher Lloyd <cjwl@objc.net>
 #import <AppKit/NSPrintInfo.h>
 #import <AppKit/KGContext.h>
-#import <AppKit/KGRenderingContext.h>
-#import <AppKit/KGDeviceContext.h>
 #import <Foundation/NSString.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSValue.h>
@@ -121,12 +119,10 @@ NSString *NSPrintVerticallyCentered=@"NSPrintVerticallyCentered";
 }
 
 -(NSRect)imageablePageBounds {
-   NSRect           result;
-   KGDeviceContext *deviceContext=[[[_attributes objectForKey:@"_KGContext"] renderingContext] deviceContext];
-
-   if(deviceContext!=nil)
-    result=[deviceContext imageableRect];
-   else {
+   NSRect      result;
+   KGContext  *context=[_attributes objectForKey:@"_KGContext"];
+   
+   if(![context getImageableRect:&result]){
     result.origin.x=0;
     result.origin.y=0;
     result.size=[self paperSize];

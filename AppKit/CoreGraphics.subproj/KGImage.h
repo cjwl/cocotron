@@ -8,7 +8,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/NSObject.h>
 
-@class KGColorSpace,KGDataProvider;
+@class KGColorSpace,KGDataProvider,KGPDFObject,KGPDFContext;
 
 @interface KGImage : NSObject {
    unsigned        _width;
@@ -40,5 +40,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(const void *)bytes;
 -(unsigned)length;
+
+-(KGPDFObject *)pdfObjectInContext:(KGPDFContext *)context;
 
 @end

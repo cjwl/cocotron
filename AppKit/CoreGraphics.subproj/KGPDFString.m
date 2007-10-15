@@ -8,6 +8,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 // Original - Christopher Lloyd <cjwl@objc.net>
 #import "KGPDFString.h"
+#import "KGPDFContext.h"
 #import <Foundation/NSString.h>
 #import <string.h>
 
@@ -42,6 +43,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return [[[self alloc] initWithBytesNoCopyNoFree:bytes length:length] autorelease];
 }
 
++pdfObjectWithCString:(const char *)cString {
+   return [[[self alloc] initWithBytes:cString length:strlen(cString)] autorelease];
+}
+
++pdfObjectWithString:(NSString *)string {
+   NSData *data=[string dataUsingEncoding:NSISOLatin1StringEncoding];
+   
+   return [[[self alloc] initWithBytes:[data bytes] length:[data length]] autorelease];
+}
+
 -(KGPDFObjectType)objectType {
    return kKGPDFObjectTypeString;
 }
@@ -60,6 +71,42 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(const char *)bytes {
    return _bytes;
+}
+
+-(void)encodeWithPDFContext:(KGPDFContext *)encoder {
+   BOOL hex=NO;
+   int  i;
+   
+   for(i=0;i<_length;i++)
+    if(_bytes[i]<' ' || _bytes[i]>=127 || _bytes[i]=='(' || _bytes[i]==')'){
+     hex=YES;
+     break;
+    }
+   
+   if(hex){
+    const char *hex="0123456789ABCDEF";
+    int         i,bufCount,bufSize=256;
+    char        buf[bufSize];
+    
+    [encoder appendCString:"<"];
+    bufCount=0;
+    for(i=0;i<_length;i++){
+     buf[bufCount++]=hex[_bytes[i]>>4];
+     buf[bufCount++]=hex[_bytes[i]&0xF];
+     
+     if(bufCount==bufSize){
+      [encoder appendBytes:buf length:bufCount];
+      bufCount=0;
+     }
+    }
+    [encoder appendBytes:buf length:bufCount];
+    [encoder appendCString:"> "];
+   }
+   else {
+    [encoder appendCString:"("];
+    [encoder appendBytes:_bytes length:_length];
+    [encoder appendCString:") "];
+   }
 }
 
 -(NSString *)description {

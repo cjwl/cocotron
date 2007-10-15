@@ -16,7 +16,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/Win32Application.h>
 #import <AppKit/Win32Region.h>
 #import <AppKit/KGImage.h>
-#import <AppKit/KGGraphicsState.h>
+#import "KGGraphicsState_gdi.h"
+#import "KGContext_gdi.h"
+#import "KGLayer_gdi.h"
 #import <AppKit/KGLayer.h>
 #import <AppKit/KGShading.h>
 #import <AppKit/KGContext.h>
@@ -92,16 +94,16 @@ NSRect Win32TransformRect(CGAffineTransform matrix,NSRect rect) {
    NSSize            pixelsPerInch=[_deviceContext pixelsPerInch];
    CGAffineTransform flip={1,0,0,-1,0, pointSize.height};
    CGAffineTransform scale=CGAffineTransformConcat(CGAffineTransformMakeScale(pixelsPerInch.width/72.0,pixelsPerInch.height/72.0),flip);
-   KGGraphicsState  *initialState=[[[KGGraphicsState alloc] initWithRenderingContext:self transform:scale userSpaceSize:pointSize] autorelease];
+   KGGraphicsState  *initialState=[[[KGGraphicsState_gdi alloc] initWithRenderingContext:self transform:scale] autorelease];
       
-   return [[[KGContext alloc] initWithGraphicsState:initialState] autorelease];
+   return [[[KGContext_gdi alloc] initWithGraphicsState:initialState] autorelease];
 }
 
 -(KGContext *)cgContextWithSize:(NSSize)size {
    CGAffineTransform flip={1,0,0,-1,0,size.height};
-   KGGraphicsState  *initialState=[[[KGGraphicsState alloc] initWithRenderingContext:self transform:flip userSpaceSize:NSMakeSize(size.width,size.height)] autorelease];
+   KGGraphicsState  *initialState=[[[KGGraphicsState_gdi alloc] initWithRenderingContext:self transform:flip] autorelease];
 
-   return [[[KGContext alloc] initWithGraphicsState:initialState] autorelease];
+   return [[[KGContext_gdi alloc] initWithGraphicsState:initialState] autorelease];
 }
 
 -initWithDC:(HDC)dc deviceContext:(KGDeviceContext *)deviceContext {
@@ -323,21 +325,21 @@ static RECT NSRectToRECT(NSRect rect) {
    for(i=0;i<opCount;i++){
     switch(operators[i]){
 
-     case KGPathOperatorMoveToPoint:{
+     case kCGPathOperatorMoveToPoint:{
        NSPoint point=points[pointIndex++];
         
        MoveToEx(_dc,float2int(point.x),float2int(point.y),NULL);
       }
       break;
        
-     case KGPathOperatorLineToPoint:{
+     case kCGPathOperatorLineToPoint:{
        NSPoint point=points[pointIndex++];
         
        LineTo(_dc,float2int(point.x),float2int(point.y));
       }
       break;
 
-     case KGPathOperatorCurveToPoint:{
+     case kCGPathOperatorCurveToPoint:{
        NSPoint cp1=points[pointIndex++];
        NSPoint cp2=points[pointIndex++];
        NSPoint end=points[pointIndex++];
@@ -351,7 +353,7 @@ static RECT NSRectToRECT(NSRect rect) {
       }
       break;
 
-     case KGPathOperatorQuadCurveToPoint:{
+     case kCGPathOperatorQuadCurveToPoint:{
        NSPoint cp1=points[pointIndex++];
        NSPoint cp2=points[pointIndex++];
        NSPoint end=cp2;
@@ -365,7 +367,7 @@ static RECT NSRectToRECT(NSRect rect) {
       }
       break;
 
-     case KGPathOperatorCloseSubpath:
+     case kCGPathOperatorCloseSubpath:
       CloseFigure(_dc);
       break;
     }
@@ -418,6 +420,36 @@ static RECT NSRectToRECT(NSRect rect) {
 }
 
 #if 1
+void CGGraphicsSourceOver_rgba32_onto_bgrx32(unsigned char *sourceRGBA,unsigned char *resultBGRX,int width,int height,float fraction) {
+   int sourceIndex=0;
+   int sourceLength=width*height*4;
+   int destinationReadIndex=0;
+   int destinationWriteIndex=0;
+
+   while(sourceIndex<sourceLength){
+    unsigned srcr=sourceRGBA[sourceIndex++];
+    unsigned srcg=sourceRGBA[sourceIndex++];
+    unsigned srcb=sourceRGBA[sourceIndex++];
+    unsigned srca=sourceRGBA[sourceIndex++]*fraction;
+
+    unsigned dstb=resultBGRX[destinationReadIndex++];
+    unsigned dstg=resultBGRX[destinationReadIndex++];
+    unsigned dstr=resultBGRX[destinationReadIndex++];
+    unsigned dsta=255-srca;
+
+    destinationReadIndex++;
+
+    dstr=(srcr*srca+dstr*dsta)>>8;
+    dstg=(srcg*srca+dstg*dsta)>>8;
+    dstb=(srcb*srca+dstb*dsta)>>8;
+
+    resultBGRX[destinationWriteIndex++]=dstb;
+    resultBGRX[destinationWriteIndex++]=dstg;
+    resultBGRX[destinationWriteIndex++]=dstr;
+    destinationWriteIndex++; // skip x
+   }
+}
+
 -(void)drawBitmapImage:(KGImage *)image inRect:(NSRect)rect ctm:(CGAffineTransform)ctm fraction:(float)fraction  {
    int            width=[image width];
    int            height=[image height];
@@ -578,15 +610,19 @@ static void zeroBytes(void *bytes,int size){
    [self drawBitmapImage:image inRect:rect ctm:ctm fraction:fraction ];
 }
 
--(void)drawLayer:(KGLayer *)layer inRect:(NSRect)rect ctm:(CGAffineTransform)ctm {
-   KGRenderingContext_gdi *other=[layer renderingContext];
-   
+-(void)drawOther:(KGRenderingContext_gdi *)other inRect:(NSRect)rect ctm:(CGAffineTransform)ctm {
    rect.origin=CGPointApplyAffineTransform(rect.origin,ctm);
 
    if(transformIsFlipped(ctm))
     rect.origin.y-=rect.size.height;
 
    [other copyColorsToContext:self size:rect.size toPoint:rect.origin];
+}
+
+-(void)drawLayer:(KGLayer *)layer inRect:(NSRect)rect ctm:(CGAffineTransform)ctm {
+   KGRenderingContext_gdi *other=(KGRenderingContext_gdi *)[(KGLayer_gdi *)layer renderingContext];
+   
+   [self drawOther:other inRect:rect ctm:ctm];
 }
 
 // The problem is that the GDI gradient fill is a linear/stitched filler and the

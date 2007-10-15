@@ -188,12 +188,13 @@ static inline void appendFloat(NSStringBuffer *buffer,double value,
    else if(value!=value)
     appendCString(buffer,"NaN",' ',leftAdj,fieldWidth);
    else{
-    double   integral,fractional;
+    double   integral,fractional,power;
     unsigned i,length=0;
     unichar  characters[100];
     unichar  sign=(value<0)?'-':plusSign?'+':spaceSign?' ':'\0';
 
-    value=fabs(value);
+    power=pow(10.0,precision);
+    value=round(fabs(value)*power)/power;
 
     fractional=modf(value,&integral);
 
@@ -204,7 +205,7 @@ static inline void appendFloat(NSStringBuffer *buffer,double value,
 
     if(length==0)
      characters[length++]='0';
-    else if(sign)
+    if(sign)
      characters[length++]=sign;
 
     reverseCharacters(characters,length);

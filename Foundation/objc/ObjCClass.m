@@ -315,7 +315,7 @@ IMP OBJCInitializeLookupAndCacheUniqueIdForObject(id object,SEL uniqueId){
     return nil_message;
    else {
     Class class=object->isa;
-    Class checkInit=(class->info&CLASS_INFO_META)?object:class;
+    Class checkInit=(class->info&CLASS_INFO_META)?(Class)object:class;
 
     if(!(checkInit->info&CLASS_INFO_INITIALIZED))
      OBJCInitializeClass(checkInit);

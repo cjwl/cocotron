@@ -444,6 +444,10 @@ void CGContextEndPage(CGContextRef context) {
 
 /// temporary hacks
 
+void CGContextDrawContextInRect(CGContextRef context,CGContextRef other,CGRect rect) {
+   [context drawContext:other inRect:rect];
+}
+
 void CGContextResetClip(CGContextRef context) {
    [context resetClip];
 }

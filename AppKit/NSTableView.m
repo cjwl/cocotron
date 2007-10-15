@@ -760,12 +760,13 @@ bounds].size.height);
 }
 
 -(void)deselectRow:(int)row {
-	NSMutableIndexSet* selectedRowIndexes=[self selectedRowIndexes];
+	NSIndexSet* selectedRowIndexes=[self selectedRowIndexes];
 
     if ([selectedRowIndexes containsIndex:row]) {
-		selectedRowIndexes=[[[self selectedRowIndexes] mutableCopy] autorelease];
-        [selectedRowIndexes removeIndex:row];
-		[self setSelectedRowIndexes:selectedRowIndexes];
+     NSMutableIndexSet *newSelection=[[selectedRowIndexes mutableCopy] autorelease];
+     
+     [newSelection removeIndex:row];
+     [self setSelectedRowIndexes:newSelection];
     }
 }
 

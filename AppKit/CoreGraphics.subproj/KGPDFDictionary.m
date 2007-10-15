@@ -11,15 +11,61 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import "KGPDFArray.h"
 #import "KGPDFStream.h"
+#import "KGPDFObject_Integer.h"
+#import "KGPDFObject_Name.h"
+#import "KGPDFContext.h"
 #import <Foundation/NSString.h>
 #import <stddef.h>
 #import <string.h>
+
+unsigned KGPDFHashCString(NSMapTable *table,const void *data){
+   const char *s=data;
+
+   if(s!=NULL){
+    unsigned i,result=5381;
+
+    for(i=0;s[i]!='\0';i++)
+     result=((result<<5)+result)+(unsigned)(s[i]); // hash*33+c
+
+    return result;
+   }
+
+   return 0;
+}
+
+BOOL KGPDFIsEqualCString(NSMapTable *table,const void *data1,const void *data2){
+   if(data1 == data2)
+    return YES;
+
+   if(!data1)
+    return !strlen((char *)data2);
+
+   if (!data2)
+    return !strlen((char *)data1);
+
+   if(((char *)data1)[0]!=((char *)data2)[0])
+    return NO;
+
+   return (strcmp((char *)data1,(char *)data2))?NO:YES;
+}
+
+void KGPDFFreeCString(NSMapTable *table,void *data) {
+   NSZoneFree(NULL,data);
+}
+
+NSMapTableKeyCallBacks KGPDFOwnedCStringKeyCallBacks={
+  KGPDFHashCString,KGPDFIsEqualCString,NULL,KGPDFFreeCString,NULL,NULL
+};
 
 @implementation KGPDFDictionary
 
 -init {
    _table=NSCreateMapTable(KGPDFOwnedCStringKeyCallBacks,NSObjectMapValueCallBacks,0);
    return self;
+}
+
++(KGPDFDictionary *)pdfDictionary {
+   return [[[self alloc] init] autorelease];
 }
 
 -(void)dealloc {
@@ -43,6 +89,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    strcpy(keyCopy,key);
    
    NSMapInsert(_table,keyCopy,object);
+}
+
+-(void)setIntegerForKey:(const char *)key value:(KGPDFInteger)value {
+   [self setObjectForKey:key value:[KGPDFObject_Integer pdfObjectWithInteger:value]];
+}
+
+-(void)setNameForKey:(const char *)key value:(const char *)value {
+   [self setObjectForKey:key value:[KGPDFObject_Name pdfObjectWithCString:value]];
 }
 
 -(KGPDFObject *)objectForCStringKey:(const char *)key {
@@ -142,45 +196,18 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return result;
 }
 
-@end
-
-unsigned KGPDFHashCString(NSMapTable *table,const void *data){
-   const char *s=data;
-
-   if(s!=NULL){
-    unsigned i,result=5381;
-
-    for(i=0;s[i]!='\0';i++)
-     result=((result<<5)+result)+(unsigned)(s[i]); // hash*33+c
-
-    return result;
+-(void)encodeWithPDFContext:(KGPDFContext *)encoder {
+   NSMapEnumerator  state=NSEnumerateMapTable(_table);
+   const char      *key;
+   id               value;
+   
+   [encoder appendString:@"<<\n"];
+   while(NSNextMapEnumeratorPair(&state,(void **)&key,(void **)&value)){
+    [encoder appendFormat:@"/%s ",key];
+    [encoder encodePDFObject:value];
    }
-
-   return 0;
+   [encoder appendString:@">>\n"];
 }
 
-BOOL KGPDFIsEqualCString(NSMapTable *table,const void *data1,const void *data2){
-   if(data1 == data2)
-    return YES;
-
-   if(!data1)
-    return !strlen((char *)data2);
-
-   if (!data2)
-    return !strlen((char *)data1);
-
-   if(((char *)data1)[0]!=((char *)data2)[0])
-    return NO;
-
-   return (strcmp((char *)data1,(char *)data2))?NO:YES;
-}
-
-void KGPDFFreeCString(NSMapTable *table,void *data) {
-   NSZoneFree(NULL,data);
-}
-
-NSMapTableKeyCallBacks KGPDFOwnedCStringKeyCallBacks={
-  KGPDFHashCString,KGPDFIsEqualCString,NULL,KGPDFFreeCString,NULL,NULL
-};
-
+@end
 

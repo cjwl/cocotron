@@ -213,8 +213,8 @@
 		FE7135470B36427F006C9493 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				FE71354F0B36427F006C9493 /* AppKit.framework */,
 				FE01AB250C5D9C3500AEA51A /* AppKit.framework */,
+				FE71354F0B36427F006C9493 /* AppKit.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -306,8 +306,8 @@
 				},
 			);
 			targets = (
-				8DC2EF4F0486A6940098B216 /* Cocoa-Windows-i386-gcc-4.0.3 */,
 				FE01AB110C5D9C3400AEA51A /* Cocoa-Windows-i386 */,
+				8DC2EF4F0486A6940098B216 /* Cocoa-Windows-i386-gcc-4.0.3 */,
 			);
 		};
 /* End PBXProject section */

@@ -3,6 +3,7 @@
 #import <AppKit/KGContext.h>
 #import <AppKit/NSImage.h>
 #import <AppKit/NSColor.h>
+#import "KGContext_gdi.h"
 #import "KGRenderingContext_gdi.h"
 #undef _WIN32_WINNT
 #define _WIN32_WINNT 0x0501
@@ -138,8 +139,13 @@ static inline RECT transformToRECT(CGAffineTransform matrix,NSRect rect) {
 
 -(BOOL)sizeOfPartId:(int)partId stateId:(int)stateId classList:(LPCWSTR)classList size:(NSSize *)result {
    KGContext              *context=[[NSGraphicsContext currentContext] graphicsPort];
-   KGRenderingContext_gdi *renderingContext=(KGRenderingContext_gdi *)[context renderingContext];
+   KGRenderingContext_gdi *renderingContext;
    HANDLE                  theme;
+
+   if(![context isKindOfClass:[KGContext_gdi class]])
+    return NO;
+    
+   renderingContext=[(KGContext_gdi *)context renderingContext];
 
    if((theme=[self themeForClassList:classList renderingContext:renderingContext])!=NULL){
     SIZE size;
@@ -156,9 +162,14 @@ static inline RECT transformToRECT(CGAffineTransform matrix,NSRect rect) {
 }
 
 -(BOOL)drawPartId:(int)partId stateId:(int)stateId classList:(LPCWSTR)classList inRect:(NSRect)rect {
-   KGContext          *context=[[NSGraphicsContext currentContext] graphicsPort];
-   KGRenderingContext_gdi *renderingContext=(KGRenderingContext_gdi *)[context renderingContext];
-   HANDLE              theme;
+   KGContext              *context=[[NSGraphicsContext currentContext] graphicsPort];
+   KGRenderingContext_gdi *renderingContext;
+   HANDLE                  theme;
+   
+   if(![context isKindOfClass:[KGContext_gdi class]])
+    return NO;
+    
+   renderingContext=[(KGContext_gdi *)context renderingContext];
    
    if((theme=[self themeForClassList:classList renderingContext:renderingContext])!=NULL){
     CGAffineTransform matrix;

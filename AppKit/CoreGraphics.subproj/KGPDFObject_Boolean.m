@@ -8,6 +8,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 // Original - Christopher Lloyd <cjwl@objc.net>
 #import "KGPDFObject_Boolean.h"
+#import <AppKit/KGPDFContext.h>
 #import <Foundation/NSString.h>
 
 @implementation KGPDFObject_Boolean
@@ -39,6 +40,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(NSString *)description {
    return [NSString stringWithFormat:@"<%@ %s>",isa,_value?"true":"false"];
+}
+
+-(void)encodeWithPDFContext:(KGPDFContext *)encoder {
+   [encoder appendCString:_value?"true ":"false "];
 }
 
 @end

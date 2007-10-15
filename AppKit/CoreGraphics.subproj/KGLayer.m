@@ -8,37 +8,23 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 // Original - Christopher Lloyd <cjwl@objc.net>
 #import "KGLayer.h"
-#import <AppKit/KGContext.h>
-#import <AppKit/KGRenderingContext_gdi.h>
+#import <Foundation/NSRaise.h>
 
 @implementation KGLayer
 
--initRelativeToRenderingContext:(KGRenderingContext *)otherContext size:(NSSize)size unused:(NSDictionary *)unused {
+-initWithSize:(NSSize)size unused:(NSDictionary *)unused {
    _size=size;
-   _unused=[unused retain];
-   _renderingContext=[[KGRenderingContext_gdi renderingContextWithSize:size renderingContext:otherContext] retain];
-   return self;
-}
-
--initWithSize:(NSSize)size {
-   _size=size;
-   _unused=nil;
-   _renderingContext=[[KGRenderingContext_gdi renderingContextWithSize:size] retain];
+   _unused=[unused copy];
    return self;
 }
 
 -(void)dealloc {
    [_unused release];
-   [_renderingContext release];
    [super dealloc];
 }
 
--(KGRenderingContext *)renderingContext {
-   return _renderingContext;
-}
-
 -(KGContext *)cgContext {
-   return [_renderingContext cgContextWithSize:_size];
+   NSInvalidAbstractInvocation();
 }
 
 -(NSSize)size {

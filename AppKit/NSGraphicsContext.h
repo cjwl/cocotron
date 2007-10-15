@@ -14,11 +14,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @interface NSGraphicsContext : NSObject {
    KGContext *_graphicsPort;
    BOOL       _isDrawingToScreen;
+   BOOL       _isFlipped;
 }
 
 +(NSGraphicsContext *)graphicsContextWithWindow:(NSWindow *)window;
-+(NSGraphicsContext *)graphicsContextWithCachedImageRep:(NSCachedImageRep *)imageRep;
-+(NSGraphicsContext *)graphicsContextWithPrintingContext:(KGContext *)context;
++(NSGraphicsContext *)graphicsContextWithGraphicsPort:(KGContext *)context flipped:(BOOL)flipped;
 
 +(NSGraphicsContext *)currentContext;
 +(void)setCurrentContext:(NSGraphicsContext *)context;

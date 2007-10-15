@@ -17,8 +17,10 @@ APPKIT_EXPORT NSString *NSEventTrackingRunLoopMode;
 APPKIT_EXPORT NSString *NSApplicationWillFinishLaunchingNotification;
 APPKIT_EXPORT NSString *NSApplicationDidFinishLaunchingNotification;
 
+APPKIT_EXPORT NSString *NSApplicationWillBecomeActiveNotification;
 APPKIT_EXPORT NSString *NSApplicationDidBecomeActiveNotification;
 APPKIT_EXPORT NSString *NSApplicationWillResignActiveNotification;
+APPKIT_EXPORT NSString *NSApplicationDidResignActiveNotification;
 
 APPKIT_EXPORT id NSApp;
 
@@ -127,6 +129,11 @@ typedef enum {
 
 // private
 -(void)_addWindow:(NSWindow *)window;
+
+-(void)_windowWillBecomeActive:(NSWindow *)window;
+-(void)_windowDidBecomeActive:(NSWindow *)window;
+-(void)_windowWillBecomeDeactive:(NSWindow *)window;
+-(void)_windowDidBecomeDeactive:(NSWindow *)window;
 @end
 
 @interface NSObject(NSApplication_serviceRequest)

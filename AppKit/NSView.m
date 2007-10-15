@@ -26,6 +26,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSPrintOperation.h>
 #import <AppKit/NSPrintInfo.h>
 #import <AppKit/NSNibKeyedUnarchiver.h>
+#import <AppKit/NSPasteboard.h>
 #import <Foundation/NSRaise.h>
 
 NSString *NSViewFrameDidChangeNotification=@"NSViewFrameDidChangeNotification";
@@ -938,7 +939,7 @@ static inline void buildTransformsIfNeeded(NSView *self) {
 }
 
 -(void)lockFocus {
-   NSGraphicsContext *context=[NSGraphicsContext graphicsContextWithWindow:[self window]];
+   NSGraphicsContext *context=[[self window] graphicsContext];
    KGContext         *graphicsPort=[context graphicsPort];
 
    [[NSView _focusStack] addObject:self];
@@ -1165,8 +1166,35 @@ static inline void buildTransformsIfNeeded(NSView *self) {
 }
 
 -(NSData *)dataWithEPSInsideRect:(NSRect)rect {
-   NSUnimplementedMethod();
-   return nil;
+   NSMutableData    *result=[NSMutableData data];
+   NSPrintOperation *operation=[NSPrintOperation EPSOperationWithView:self insideRect:rect toData:result];
+   
+   [operation runOperation];
+   
+   return result;
+}
+
+-(NSData *)dataWithPDFInsideRect:(NSRect)rect {
+   NSMutableData    *result=[NSMutableData data];
+   NSPrintOperation *operation=[NSPrintOperation PDFOperationWithView:self insideRect:rect toData:result];
+   
+   [operation runOperation];
+   
+   return result;
+}
+
+-(void)writeEPSInsideRect:(NSRect)rect toPasteboard:(NSPasteboard *)pasteboard {
+   NSData *data=[self dataWithEPSInsideRect:rect];
+   
+   [pasteboard declareTypes:[NSArray arrayWithObject:NSPostScriptPboardType] owner:nil];
+   [pasteboard setData:data forType:NSPostScriptPboardType];
+}
+
+-(void)writePDFInsideRect:(NSRect)rect toPasteboard:(NSPasteboard *)pasteboard {
+   NSData *data=[self dataWithPDFInsideRect:rect];
+
+   [pasteboard declareTypes:[NSArray arrayWithObject:NSPDFPboardType] owner:nil];
+   [pasteboard setData:data forType:NSPDFPboardType];
 }
 
 -(void)dragImage:(NSImage *)image at:(NSPoint)location offset:(NSSize)offset event:(NSEvent *)event pasteboard:(NSPasteboard *)pasteboard source:source slideBack:(BOOL)slideBack {

@@ -82,7 +82,7 @@ extern NSMethodSignature *NSMethodSignatureWithTypes(const char *types);
 +(NSMethodSignature *)instanceMethodSignatureForSelector:(SEL)selector {
    const char *types=OBJCTypesForSelector(self,selector);
 
-   return (types==NULL)?nil:NSMethodSignatureWithTypes(types);
+   return (types==NULL)?(NSMethodSignature *)nil:NSMethodSignatureWithTypes(types);
 }
 
 +copyWithZone:(NSZone *)zone {
@@ -164,7 +164,7 @@ extern NSMethodSignature *NSMethodSignatureWithTypes(const char *types);
 -(NSMethodSignature *)methodSignatureForSelector:(SEL)selector {
    const char *types=OBJCTypesForSelector(isa,selector);
 
-   return (types==NULL)?nil:NSMethodSignatureWithTypes(types);
+   return (types==NULL)?(NSMethodSignature *)nil:NSMethodSignatureWithTypes(types);
 }
 
 -(void)forwardInvocation:(NSInvocation *)invocation {

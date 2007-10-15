@@ -11,9 +11,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "KGPDFxrefEntry.h"
 #import "KGPDFObject_const.h"
 #import "KGPDFDictionary.h"
+#import <AppKit/KGPDFContext.h>
 #import <Foundation/NSData.h>
 #import <Foundation/NSArray.h>
 #import <Foundation/NSString.h>
+#import <Foundation/NSRaise.h>
 
 @implementation KGPDFxref
 
@@ -22,6 +24,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    _previous=nil;
    _numberToEntries=NSCreateMapTable(NSIntMapKeyCallBacks,NSObjectMapValueCallBacks,0);
    _entryToObject=NSCreateMapTable(NSObjectMapKeyCallBacks,NSObjectMapValueCallBacks,0);
+   _entriesInOrder=[NSMutableArray new];
    _trailer=nil;   
    return self;
 }
@@ -31,8 +34,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [_previous release];
    NSFreeMapTable(_numberToEntries);
    NSFreeMapTable(_entryToObject);
+   [_entriesInOrder release];
    [_trailer release];
    [super dealloc];
+}
+
+-(BOOL)isByReference {
+   return NO;
 }
 
 -(NSData *)data {
@@ -114,6 +122,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    void *key=(void *)[entry number];
    id    check=NSMapGet(_numberToEntries,key);
    
+   [_entriesInOrder addObject:entry];
+   
    if(check==nil)
     NSMapInsert(_numberToEntries,key,entry);
    if([check isKindOfClass:[NSMutableArray class]])
@@ -122,10 +132,33 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     NSMapInsert(_numberToEntries,key,[NSMutableArray arrayWithObject:entry]);
 }
 
+-(void)addEntry:(KGPDFxrefEntry *)entry object:(KGPDFObject *)object {
+   [self addEntry:entry];
+   NSMapInsert(_entryToObject,entry,object);
+}
+
 -(void)setTrailer:(KGPDFDictionary *)trailer {
    [_trailer autorelease];
    _trailer=[trailer retain];
 }
 
+-(void)encodeWithPDFContext:(KGPDFContext *)encoder {
+   unsigned startxref=[encoder length];
+   int      i,count=[_entriesInOrder count];
+   
+   [encoder appendCString:"xref\n"];
+   [encoder appendFormat:@"%d %d\n",1,count];
+   for(i=0;i<count;i++){
+    KGPDFxrefEntry *entry=[_entriesInOrder objectAtIndex:i];
+    
+    [encoder appendFormat:@"%010d %06d n\n",[entry position],[entry generation]];
+   }
+   [_trailer setIntegerForKey:"Size" value:[[_entriesInOrder lastObject] number]+1];
+   [encoder appendCString:"trailer\n"];
+   [encoder encodePDFObject:_trailer];
+   [encoder appendCString:"startxref\n"];
+   [encoder appendFormat:@"%d\n",startxref];
+   [encoder appendCString:"%%EOF\n"];
+}
 
 @end
