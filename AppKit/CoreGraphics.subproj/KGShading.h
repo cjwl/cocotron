@@ -21,11 +21,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    BOOL          _isRadial;
    float         _startRadius;
    float         _endRadius;
+   float         _domain[2];
 }
 
--initWithColorSpace:(KGColorSpace *)colorSpace startPoint:(NSPoint)startPoint endPoint:(NSPoint)endPoint function:(KGFunction *)function extendStart:(BOOL)extendStart extendEnd:(BOOL)extendEnd;
+-initWithColorSpace:(KGColorSpace *)colorSpace startPoint:(NSPoint)startPoint endPoint:(NSPoint)endPoint function:(KGFunction *)function extendStart:(BOOL)extendStart extendEnd:(BOOL)extendEnd domain:(float[2])domain;
 
--initWithColorSpace:(KGColorSpace *)colorSpace startPoint:(NSPoint)startPoint startRadius:(float)startRadius endPoint:(NSPoint)endPoint endRadius:(float)endRadius function:(KGFunction *)function extendStart:(BOOL)extendStart extendEnd:(BOOL)extendEnd;
+-initWithColorSpace:(KGColorSpace *)colorSpace startPoint:(NSPoint)startPoint startRadius:(float)startRadius endPoint:(NSPoint)endPoint endRadius:(float)endRadius function:(KGFunction *)function extendStart:(BOOL)extendStart extendEnd:(BOOL)extendEnd domain:(float[2])domain;
 
 -(KGColorSpace *)colorSpace;
 
@@ -42,7 +43,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(BOOL)isAxial;
 
--(KGPDFObject *)pdfObjectInContext:(KGPDFContext *)context;
+-(KGPDFObject *)encodeReferenceWithContext:(KGPDFContext *)context;
+
+-(KGPDFObject *)encodeReferenceWithContext:(KGPDFContext *)context;
 +(KGShading *)shadingWithPDFObject:(KGPDFObject *)object;
 
 @end

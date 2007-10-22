@@ -10,6 +10,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "KGColorSpace.h"
 #import "KGPDFObject_Name.h"
 #import "KGPDFObject_Integer.h"
+#import "KGPDFContext.h"
 #import "KGPDFArray.h"
 #import "KGPDFStream.h"
 #import "KGPDFString.h"
@@ -56,21 +57,25 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    }
 }
 
--(KGPDFObject *)pdfObjectInContext:(KGPDFContext *)context {   
+-(KGPDFObject *)encodeReferenceWithContext:(KGPDFContext *)context {
+   KGPDFObject *name;
+   
    switch(_type){
    
     case KGColorSpaceDeviceGray:
-     return [KGPDFObject_Name pdfObjectWithCString:"DeviceGray"];
+     name=[KGPDFObject_Name pdfObjectWithCString:"DeviceGray"];
      
     case KGColorSpaceDeviceRGB:
-     return [KGPDFObject_Name pdfObjectWithCString:"DeviceRGB"];
+     name=[KGPDFObject_Name pdfObjectWithCString:"DeviceRGB"];
 
     case KGColorSpaceDeviceCMYK:
-     return [KGPDFObject_Name pdfObjectWithCString:"DeviceCMYK"];
+     name=[KGPDFObject_Name pdfObjectWithCString:"DeviceCMYK"];
 
     default:
      return nil;
    }
+   
+   return [context encodeIndirectPDFObject:name];
 }
 
 +(KGColorSpace *)colorSpaceFromPDFObject:(KGPDFObject *)object {
@@ -214,16 +219,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return _base;
 }
 
--(KGPDFObject *)pdfObjectInContext:(KGPDFContext *)context {   
+-(KGPDFObject *)encodeReferenceWithContext:(KGPDFContext *)context {   
    KGPDFArray *result=[KGPDFArray pdfArray];
    int         max=[_base numberOfComponents]*(_hival+1);
      
    [result addObject:[KGPDFObject_Name pdfObjectWithCString:"Indexed"]];
-   [result addObject:[_base pdfObjectInContext:context]];
+   [result addObject:[_base encodeReferenceWithContext:context]];
    [result addObject:[KGPDFObject_Integer pdfObjectWithInteger:_hival]];
    [result addObject:[KGPDFStream pdfStreamWithBytes:_bytes length:max]];
    
-   return result;
+   return [context encodeIndirectPDFObject:result];
 }
 
 @end

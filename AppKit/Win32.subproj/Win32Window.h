@@ -11,7 +11,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <windows.h>
 
-@class KGRenderingContext, NSEvent, KGLayer;
+@class KGRenderingContext_gdi, NSEvent, KGLayer;
 
 typedef enum {
    Win32BackingStoreRetained=0,
@@ -22,7 +22,7 @@ typedef enum {
 @interface Win32Window : CGWindow {
    HWND                   _handle;
    NSSize                 _size;
-   KGRenderingContext    *_renderingContext;
+   KGRenderingContext_gdi    *_renderingContext;
 
    Win32BackingStoreType  _backingType;
    NSSize                 _backingSize;

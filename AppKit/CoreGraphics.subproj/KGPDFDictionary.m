@@ -13,6 +13,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "KGPDFStream.h"
 #import "KGPDFObject_Integer.h"
 #import "KGPDFObject_Name.h"
+#import "KGPDFObject_Real.h"
+#import "KGPDFObject_Boolean.h"
 #import "KGPDFContext.h"
 #import <Foundation/NSString.h>
 #import <stddef.h>
@@ -91,8 +93,16 @@ NSMapTableKeyCallBacks KGPDFOwnedCStringKeyCallBacks={
    NSMapInsert(_table,keyCopy,object);
 }
 
+-(void)setBooleanForKey:(const char *)key value:(KGPDFBoolean)value {
+   [self setObjectForKey:key value:[KGPDFObject_Boolean pdfObjectWithBoolean:value]];
+}
+
 -(void)setIntegerForKey:(const char *)key value:(KGPDFInteger)value {
    [self setObjectForKey:key value:[KGPDFObject_Integer pdfObjectWithInteger:value]];
+}
+
+-(void)setNumberForKey:(const char *)key value:(KGPDFReal)value {
+   [self setObjectForKey:key value:[KGPDFObject_Real pdfObjectWithReal:value]];
 }
 
 -(void)setNameForKey:(const char *)key value:(const char *)value {

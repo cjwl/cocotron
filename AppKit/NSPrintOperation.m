@@ -33,7 +33,9 @@ static NSPrintOperation *_currentOperation=nil;
 
 -initWithView:(NSView *)view printInfo:(NSPrintInfo *)printInfo insideRect:(NSRect)rect toData:(NSMutableData *)data type:(int)type {
    _view=[view retain];
-   _printInfo=[printInfo retain];
+   _printInfo=[printInfo copy];
+   if(type==NSPrintOperationPDFInRect || type==NSPrintOperationEPSInRect)
+    [_printInfo setPaperSize:rect.size];
    _printPanel=[[NSPrintPanel printPanel] retain];
    _showsPrintPanel=YES;
    _currentPage=0;
@@ -257,9 +259,9 @@ static NSPrintOperation *_currentOperation=nil;
    if(_type==NSPrintOperationPDFInRect){
      KGPDFContext *pdf=(KGPDFContext *)context;
      
-    [pdf beginPage:&_insideRect];
+    [_view beginPageInRect:_insideRect atPlacement:NSMakePoint(0,0)];
     [_view drawRect:_insideRect];
-    [pdf endPage];
+    [_view endPage];
    }
    else{
     if(knowsPageRange)

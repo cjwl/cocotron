@@ -431,7 +431,7 @@ static int parse_png_file(int scan, int req_comp)
             uint32 raw_len;
             if (scan != SCAN_load) return 1;
             if (idata == NULL) return e("no IDAT","Corrupt PNG");
-            expanded = (uint8 *) stbi_zlib_decode_malloc((char *) idata, ioff, (int *) &raw_len);
+            expanded = (uint8 *) stbi_zlib_decode_malloc((unsigned char *) idata, ioff, (int *) &raw_len);
             if (expanded == NULL) return 0; // zlib should set error
             NSZoneFree(NULL,idata); idata = NULL;
             if ((req_comp == img_n+1 && req_comp != 3 && !pal_img_n) || has_trans)

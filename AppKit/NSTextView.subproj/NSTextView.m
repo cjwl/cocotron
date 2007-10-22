@@ -38,6 +38,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSDragging.h>
 #import <AppKit/NSNibKeyedUnarchiver.h>
 #import <AppKit/NSGraphicsStyle.h>
+#import <AppKit/NSGraphicsContext.h>
 #import "NSTextViewSharedData.h"
 
 @interface NSLayoutManager(NSLayoutManager_visualKeyboardMovement)
@@ -467,6 +468,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)drawInsertionPointInRect:(NSRect)rect color:(NSColor *)color turnedOn:(BOOL)turnedOn {
+   if(![[NSGraphicsContext currentContext] isDrawingToScreen])
+    return;
+    
    if(NSIsEmptyRect(rect))
     return;
 

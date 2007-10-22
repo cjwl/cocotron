@@ -12,11 +12,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "KGFunction.h"
 #import "KGPDFDictionary.h"
 #import "KGPDFArray.h"
+#import "KGPDFContext.h"
 #import <Foundation/NSString.h>
 
 @implementation KGShading
 
--initWithColorSpace:(KGColorSpace *)colorSpace startPoint:(NSPoint)startPoint endPoint:(NSPoint)endPoint function:(KGFunction *)function extendStart:(BOOL)extendStart extendEnd:(BOOL)extendEnd {
+-initWithColorSpace:(KGColorSpace *)colorSpace startPoint:(NSPoint)startPoint endPoint:(NSPoint)endPoint function:(KGFunction *)function extendStart:(BOOL)extendStart extendEnd:(BOOL)extendEnd domain:(float[])domain {
    _colorSpace=[colorSpace retain];
    _startPoint=startPoint;
    _endPoint=endPoint;
@@ -24,10 +25,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    _extendStart=extendStart;
    _extendEnd=extendEnd;
    _isRadial=NO;
+   _domain[0]=domain[0];
+   _domain[1]=domain[1];
    return self;
 }
 
--initWithColorSpace:(KGColorSpace *)colorSpace startPoint:(NSPoint)startPoint startRadius:(float)startRadius endPoint:(NSPoint)endPoint endRadius:(float)endRadius function:(KGFunction *)function extendStart:(BOOL)extendStart extendEnd:(BOOL)extendEnd {
+-initWithColorSpace:(KGColorSpace *)colorSpace startPoint:(NSPoint)startPoint startRadius:(float)startRadius endPoint:(NSPoint)endPoint endRadius:(float)endRadius function:(KGFunction *)function extendStart:(BOOL)extendStart extendEnd:(BOOL)extendEnd domain:(float[])domain {
    _colorSpace=[colorSpace retain];
    _startPoint=startPoint;
    _endPoint=endPoint;
@@ -37,6 +40,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    _isRadial=YES;
    _startRadius=startRadius;
    _endRadius=endRadius;
+   _domain[0]=domain[0];
+   _domain[1]=domain[1];
    return self;
 }
 
@@ -82,22 +87,49 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return _isRadial?NO:YES;
 }
 
--(KGPDFObject *)pdfObjectInContext:(KGPDFContext *)context {
+-(KGPDFObject *)encodeReferenceWithContext:(KGPDFContext *)context {
    KGPDFDictionary *result=[KGPDFDictionary pdfDictionary];
-    
-   if([self isAxial])
-    [result setIntegerForKey:"ShadingType" value:2];
-   else
-    [result setIntegerForKey:"ShadingType" value:3];
-    
-   [result setObjectForKey:"ColorSpace" value:[_colorSpace pdfObjectInContext:context]];
+   int              type;
+   float            coords[6];
+   int              coordsCount;
    
-   return result;
+   if([self isAxial]){
+    type=2;
+    coords[0]=_startPoint.x;
+    coords[1]=_startPoint.y;
+    coords[2]=_endPoint.x;
+    coords[3]=_endPoint.y;
+    coordsCount=4;
+   }
+   else {
+    type=3;
+    coords[0]=_startPoint.x;
+    coords[1]=_startPoint.y;
+    coords[2]=_startRadius;
+    coords[3]=_endPoint.x;
+    coords[4]=_endPoint.y;
+    coords[5]=_endRadius;
+    coordsCount=6;
+   }
+   [result setIntegerForKey:"ShadingType" value:type];
+   [result setObjectForKey:"Coords" value:[KGPDFArray pdfArrayWithNumbers:coords count:coordsCount]];
+
+   [result setObjectForKey:"Domain" value:[KGPDFArray pdfArrayWithNumbers:_domain count:2]];
+   [result setObjectForKey:"ColorSpace" value:[_colorSpace encodeReferenceWithContext:context]];
+   [result setObjectForKey:"Function" value:[_function encodeReferenceWithContext:context]];
+   KGPDFArray *extend=[KGPDFArray pdfArray];
+   
+   [extend addBoolean:_extendStart];
+   [extend addBoolean:_extendEnd];
+   [result setObjectForKey:"Extend" value:extend];
+
+   return [context encodeIndirectPDFObject:result];
 }
 
 KGShading *axialShading(KGPDFDictionary *dictionary,KGColorSpace *colorSpace){
    KGPDFArray *coordsArray;
    KGPDFArray *domainArray;
+   float       domain[2]={0,1};
    KGPDFDictionary *fnDictionary;
    KGPDFArray *extendArray;
    NSPoint     start;
@@ -133,7 +165,17 @@ KGShading *axialShading(KGPDFDictionary *dictionary,KGColorSpace *colorSpace){
    
    if(![dictionary getArrayForKey:"Domain" value:&domainArray])
     domainArray=nil;
-    
+   else {
+    if(![domainArray getNumberAtIndex:0 value:&(domain[0])]){
+     NSLog(@"No real at Domain[0]");
+     return NULL;
+    }
+    if(![domainArray getNumberAtIndex:1 value:&(domain[1])]){
+     NSLog(@"No real at Domain[1]");
+     return NULL;
+    }
+   }
+   
    if(![dictionary getDictionaryForKey:"Function" value:&fnDictionary]){
     NSLog(@"No Function entry in axial shader");
     return NULL;
@@ -152,12 +194,13 @@ KGShading *axialShading(KGPDFDictionary *dictionary,KGColorSpace *colorSpace){
     }
    }
    
-   return [[KGShading alloc] initWithColorSpace:colorSpace startPoint:start endPoint:end function:function extendStart:extendStart extendEnd:extendEnd];    
+   return [[KGShading alloc] initWithColorSpace:colorSpace startPoint:start endPoint:end function:function extendStart:extendStart extendEnd:extendEnd domain:domain];    
 }
 
 KGShading *radialShading(KGPDFDictionary *dictionary,KGColorSpace *colorSpace){
    KGPDFArray *coordsArray;
    KGPDFArray *domainArray;
+   float       domain[2]={0,1};
    KGPDFDictionary *fnDictionary;
    KGPDFArray *extendArray;
    NSPoint     start;
@@ -203,7 +246,17 @@ KGShading *radialShading(KGPDFDictionary *dictionary,KGColorSpace *colorSpace){
    
    if(![dictionary getArrayForKey:"Domain" value:&domainArray])
     domainArray=nil;
-    
+   else {
+    if(![domainArray getNumberAtIndex:0 value:&(domain[0])]){
+     NSLog(@"No real at Domain[0]");
+     return NULL;
+    }
+    if(![domainArray getNumberAtIndex:1 value:&(domain[1])]){
+     NSLog(@"No real at Domain[1]");
+     return NULL;
+    }
+   }
+
    if(![dictionary getDictionaryForKey:"Function" value:&fnDictionary]){
     NSLog(@"No Function entry in radial shader");
     return NULL;
@@ -222,7 +275,7 @@ KGShading *radialShading(KGPDFDictionary *dictionary,KGColorSpace *colorSpace){
     }
    }
    
-   return [[KGShading alloc] initWithColorSpace:colorSpace startPoint:start startRadius:startRadius endPoint:end endRadius:endRadius function:function extendStart:extendStart extendEnd:extendEnd];        
+   return [[KGShading alloc] initWithColorSpace:colorSpace startPoint:start startRadius:startRadius endPoint:end endRadius:endRadius function:function extendStart:extendStart extendEnd:extendEnd domain:domain];        
 }
 
 +(KGShading *)shadingWithPDFObject:(KGPDFObject *)object {

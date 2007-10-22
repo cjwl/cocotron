@@ -28,13 +28,6 @@ typedef enum {
    float            _matrix[6];
    NSStringEncoding _encoding;
 
-   NSRect    _boundingRect;
-   float     _underlinePosition;
-   float     _underlineThickness;
-   float     _ascender;
-   float     _descender;
-   BOOL      _isFixedPitch;
-
    KGFont   *_kgFont;
 }
 

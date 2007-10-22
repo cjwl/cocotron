@@ -3,7 +3,7 @@
 
 @implementation KGLayer_gdi
 
--initRelativeToRenderingContext:(KGRenderingContext *)otherContext size:(NSSize)size unused:(NSDictionary *)unused {
+-initRelativeToRenderingContext:(KGRenderingContext_gdi *)otherContext size:(NSSize)size unused:(NSDictionary *)unused {
    [super initWithSize:size unused:unused];
    _renderingContext=[[KGRenderingContext_gdi renderingContextWithSize:size renderingContext:otherContext] retain];
    return self;
@@ -15,7 +15,7 @@
    [super dealloc];
 }
 
--(KGRenderingContext *)renderingContext {
+-(KGRenderingContext_gdi *)renderingContext {
    return _renderingContext;
 }
 

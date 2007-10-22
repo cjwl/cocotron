@@ -18,6 +18,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -initWithWindow:(NSWindow *)window {
    _graphicsPort=CGContextRetain([window cgContext]);
+   _focusStack=[NSMutableArray new];
    _isDrawingToScreen=YES;
    _isFlipped=NO;
    return self;
@@ -25,6 +26,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -initWithGraphicsPort:(KGContext *)context flipped:(BOOL)flipped {
    _graphicsPort=CGContextRetain(context);
+   _focusStack=[NSMutableArray new];
    _isDrawingToScreen=NO;
    _isFlipped=flipped;
    return self;
@@ -32,6 +34,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)dealloc {
    CGContextRelease(_graphicsPort);
+   [_focusStack release];
    [super dealloc];
 }
 
@@ -63,6 +66,10 @@ KGContext *NSCurrentGraphicsPort() {
    return _currentContext()->_graphicsPort;
 }
 
+NSMutableArray *NSCurrentFocusStack() {
+   return _currentContext()->_focusStack;
+}
+
 +(NSGraphicsContext *)currentContext {
    NSGraphicsContext   *current=_currentContext();
 
@@ -71,7 +78,6 @@ KGContext *NSCurrentGraphicsPort() {
 
    return current;
 }
-
 
 +(void)setCurrentContext:(NSGraphicsContext *)context {
    [NSCurrentThread() setSharedObject:context forClassName:@"NSGraphicsContext"];
@@ -99,6 +105,10 @@ KGContext *NSCurrentGraphicsPort() {
 
 -(KGContext *)graphicsPort {
    return _graphicsPort;
+}
+
+-(NSMutableArray *)focusStack {
+   return _focusStack;
 }
 
 -(BOOL)isDrawingToScreen {

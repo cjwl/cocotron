@@ -40,20 +40,8 @@ NSString *NSViewFocusDidChangeNotification=@"NSViewFocusDidChangeNotification";
 
 @implementation NSView
 
-+(NSMutableArray *)_focusStack {
-   NSMutableDictionary *shared=[[NSThread currentThread] sharedDictionary];
-   NSMutableArray      *stack=[shared objectForKey:@"NSView.focusStack"];
-
-   if(stack==nil){
-    stack=[NSMutableArray array];
-    [shared setObject:stack forKey:@"NSView.focusStack"];
-   }
-
-   return stack;
-}
-
 +(NSView *)focusView {
-   return [[NSView _focusStack] lastObject];
+   return [NSCurrentFocusStack() lastObject];
 }
 
 -(void)encodeWithCoder:(NSCoder *)coder {
@@ -942,10 +930,10 @@ static inline void buildTransformsIfNeeded(NSView *self) {
    NSGraphicsContext *context=[[self window] graphicsContext];
    KGContext         *graphicsPort=[context graphicsPort];
 
-   [[NSView _focusStack] addObject:self];
-
    [NSGraphicsContext saveGraphicsState];
    [NSGraphicsContext setCurrentContext:context];
+   
+   [NSCurrentFocusStack() addObject:self];
 
    CGContextSaveGState(graphicsPort);
    CGContextResetClip(graphicsPort);
@@ -967,8 +955,8 @@ static inline void buildTransformsIfNeeded(NSView *self) {
    KGContext *graphicsPort=NSCurrentGraphicsPort();
 
    CGContextRestoreGState(graphicsPort);
+   [NSCurrentFocusStack() removeLastObject];
    [NSGraphicsContext restoreGraphicsState];
-   [[NSView _focusStack] removeLastObject];
 }
 
 -(NSView *)opaqueAncestor {
@@ -1112,6 +1100,8 @@ static inline void buildTransformsIfNeeded(NSView *self) {
    NSRect            imageableRect=[printInfo imageablePageBounds];
    CGAffineTransform transform=CGAffineTransformIdentity;
 
+   [NSCurrentFocusStack() addObject:self];
+
    CGContextBeginPage(graphicsPort,&mediaBox);
    CGContextSaveGState(graphicsPort);
    
@@ -1135,6 +1125,7 @@ static inline void buildTransformsIfNeeded(NSView *self) {
 
    CGContextRestoreGState(graphicsPort);
    CGContextEndPage(graphicsPort);
+   [NSCurrentFocusStack() removeLastObject];
 }
 
 -(float)widthAdjustLimit {

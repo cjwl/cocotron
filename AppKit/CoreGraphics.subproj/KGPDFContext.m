@@ -1,3 +1,11 @@
+/* Copyright (c) 2007 Christopher J. W. Lloyd
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
+
 #import <AppKit/KGPDFContext.h>
 #import "KGPDFArray.h"
 #import <AppKit/KGPDFDictionary.h>
@@ -10,6 +18,7 @@
 #import "KGPDFStream.h"
 #import "KGPDFString.h"
 #import <AppKit/KGShading.h>
+#import <AppKit/KGImage.h>
 #import <AppKit/KGFont.h>
 #import <AppKit/KGMutablePath.h>
 #import <AppKit/KGColor.h>
@@ -21,6 +30,7 @@
    [super init];
    
    _mutableData=[data retain];
+   _fontCache=[NSMutableDictionary new];
    _objectToRef=NSCreateMapTable(NSObjectMapKeyCallBacks,NSObjectMapValueCallBacks,0);
    _indirectObjects=[NSMutableArray new];
    _indirectEntries=[NSMutableArray new];
@@ -33,7 +43,7 @@
    _info=[[KGPDFDictionary pdfDictionary] retain];
    [_info setObjectForKey:"Author" value:[KGPDFString pdfObjectWithString:NSFullUserName()]];
    [_info setObjectForKey:"Creator" value:[KGPDFString pdfObjectWithString:[[NSProcessInfo processInfo] processName]]];
-   [_info setObjectForKey:"Producer" value:[KGPDFString pdfObjectWithCString:"The Cocotron (cocotron.org) KGPDFContext"]];
+   [_info setObjectForKey:"Producer" value:[KGPDFString pdfObjectWithCString:"THE COCOTRON http://www.cocotron.org KGPDFContext"]];
    
    _catalog=[[KGPDFDictionary pdfDictionary] retain];
    [[_xref trailer] setObjectForKey:"Root" value:_catalog];
@@ -48,12 +58,14 @@
    [_pages setObjectForKey:"Kids" value:_kids];
    
    _page=nil;
+   _categoryToNext=[NSMutableDictionary new];
    _contentStreamStack=[NSMutableArray new];
    return self;
 }
 
 -(void)dealloc {
    [_mutableData release];
+   [_fontCache release];
    NSFreeMapTable(_objectToRef);
    [_indirectObjects release];
    [_indirectEntries release];
@@ -105,6 +117,47 @@
    [string release];
 }
 
+-(void)appendPDFStringWithBytes:(const void *)bytesV length:(unsigned)length mutableData:(NSMutableData *)data {
+   const unsigned char *bytes=bytesV;
+   BOOL hex=NO;
+   int  i;
+   
+   for(i=0;i<length;i++)
+    if(bytes[i]<' ' || bytes[i]>=127 || bytes[i]=='(' || bytes[i]==')'){
+     hex=YES;
+     break;
+    }
+   
+   if(hex){
+    const char *hex="0123456789ABCDEF";
+    int         i,bufCount,bufSize=256;
+    char        buf[bufSize];
+    
+    [data appendBytes:"<" length:1];
+    bufCount=0;
+    for(i=0;i<length;i++){
+     buf[bufCount++]=hex[bytes[i]>>4];
+     buf[bufCount++]=hex[bytes[i]&0xF];
+     
+     if(bufCount==bufSize){
+      [data appendBytes:buf length:bufCount];
+      bufCount=0;
+     }
+    }
+    [data appendBytes:buf length:bufCount];
+    [data appendBytes:"> " length:1];
+   }
+   else {
+    [data appendBytes:"(" length:1];
+    [data appendBytes:bytes length:length];
+    [data appendBytes:") " length:1];
+   }
+}
+
+-(void)appendPDFStringWithBytes:(const void *)bytes length:(unsigned)length {
+   [self appendPDFStringWithBytes:bytes length:length mutableData:_mutableData];
+}
+
 -(BOOL)hasReferenceForObject:(KGPDFObject *)object {
    KGPDFObject *result=NSMapGet(_objectToRef,object);
    
@@ -140,6 +193,13 @@
    }
 }
 
+-(KGPDFObject *)encodeIndirectPDFObject:(KGPDFObject *)object {
+   KGPDFObject *result=[self referenceForObject:object];
+   
+   
+   return result;
+}
+
 -(void)contentWithString:(NSString *)string {
    NSData *data=[string dataUsingEncoding:NSASCIIStringEncoding];
    
@@ -155,6 +215,25 @@
    string=[[NSString alloc] initWithFormat:format arguments:arguments];
    [self contentWithString:string];
    [string release];
+}
+
+-(void)contentPDFStringWithBytes:(const void *)bytes length:(unsigned)length {
+   [self appendPDFStringWithBytes:bytes length:length mutableData:[[_contentStreamStack lastObject] mutableData]];
+}
+
+-(KGPDFObject *)referenceForFontWithName:(NSString *)name size:(float)size {
+   return [(NSDictionary *)[_fontCache objectForKey:name] objectForKey:[NSNumber numberWithFloat:size]];
+}
+
+-(void)setReference:(KGPDFObject *)reference forFontWithName:(NSString *)name size:(float)size {
+   NSMutableDictionary *sizes=[_fontCache objectForKey:name];
+   
+   if(sizes==nil){
+    sizes=[NSMutableDictionary dictionary];
+    [_fontCache setObject:sizes forKey:name];
+   }
+   
+   [sizes setObject:reference forKey:[NSNumber numberWithFloat:size]];
 }
 
 -(KGPDFObject *)nameForResource:(KGPDFObject *)pdfObject inCategory:(const char *)categoryName {
@@ -336,7 +415,7 @@
 }
 
 -(void)clipToMask:(KGImage *)image inRect:(NSRect)rect {
-   KGPDFObject *pdfObject=[image pdfObjectInContext:self];
+   KGPDFObject *pdfObject=[image encodeReferenceWithContext:self];
    KGPDFObject *name=[self nameForResource:pdfObject inCategory:"XObject"];
    
    [self contentWithString:@"q "];
@@ -402,33 +481,13 @@
    [super setFillPattern:pattern components:components];
 }
 
--(void)setTextMatrix:(CGAffineTransform)matrix {
-   [super setTextMatrix:matrix];
-   [self contentWithFormat:@"%f %f %f %f %f %f Tm ",matrix.a,matrix.b,matrix.c,matrix.d,matrix.tx,matrix.ty];
-}
-
--(void)setTextPosition:(float)x:(float)y {
-   [super setTextPosition:x:y];
-   [self contentWithFormat:@"%f %f Td ",x,y];
-}
-
 -(void)setCharacterSpacing:(float)spacing {
    [super setCharacterSpacing:spacing];
    [self contentWithFormat:@"%f Tc ",spacing];
 }
 
 -(void)setTextDrawingMode:(int)textMode {
-   [super setTextDrawingMode:textMode];
-   
-}
-
--(void)setFont:(KGFont *)font {
-   [super setFont:font];
-   
-   KGPDFObject *pdfObject=[font pdfObjectInContext:self];
-   KGPDFObject *name=[self nameForResource:pdfObject inCategory:"Font"];
-
-   [self contentWithFormat:@"%@ %f Tf ",name,[font pointSize]];
+   [super setTextDrawingMode:textMode];   
 }
 
 -(void)setLineWidth:(float)width {
@@ -547,34 +606,36 @@
    [_path reset];
 }
 
--(void)clearRect:(NSRect)rect {
-   // do nothing
-}
-
 -(void)showGlyphs:(const CGGlyph *)glyphs count:(unsigned)count {
-// create text string from glyphs
-#if 0
-   char cString[length+1];
-   int  i;
+   unsigned char bytes[count];
    
-   for(i=0;i<length;i++)
-    cString[i]=text[i];
-   cString[i]='\0';
+   [self contentWithString:@"BT "];
    
-   [self contentWithFormat:@"%s Tj ",cString];
-#endif
-}
+   KGFont *font=[self currentFont];
+   KGPDFObject *pdfObject=[font encodeReferenceWithContext:self];
+   KGPDFObject *name=[self nameForResource:pdfObject inCategory:"Font"];
 
+   [self contentWithFormat:@"%@ %f Tf ",name,[font pointSize]];
+
+   CGAffineTransform matrix=[self textMatrix];
+   [self contentWithFormat:@"%f %f %f %f %f %f Tm ",matrix.a,matrix.b,matrix.c,matrix.d,matrix.tx,matrix.ty];
+   
+   [[self currentFont] getBytes:bytes forGlyphs:glyphs length:count];
+   [self contentPDFStringWithBytes:bytes length:count];
+   [self contentWithString:@" Tj "];
+   
+   [self contentWithString:@"ET "];
+}
 
 -(void)drawShading:(KGShading *)shading {
-   KGPDFObject *pdfObject=[shading pdfObjectInContext:self];
+   KGPDFObject *pdfObject=[shading encodeReferenceWithContext:self];
    KGPDFObject *name=[self nameForResource:pdfObject inCategory:"Shading"];
     
    [self contentWithFormat:@"%@ sh ",name];
 }
 
 -(void)drawImage:(KGImage *)image inRect:(NSRect)rect {
-   KGPDFObject *pdfObject=[image pdfObjectInContext:self];
+   KGPDFObject *pdfObject=[image encodeReferenceWithContext:self];
    KGPDFObject *name=[self nameForResource:pdfObject inCategory:"XObject"];
    
    [self contentWithString:@"q "];

@@ -13,7 +13,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/KGPath.h>
 #import <AppKit/KGColor.h>
 #import <AppKit/Win32Font.h>
-#import <AppKit/Win32Application.h>
 #import <AppKit/Win32Region.h>
 #import <AppKit/KGImage.h>
 #import "KGGraphicsState_gdi.h"
@@ -65,25 +64,25 @@ NSRect Win32TransformRect(CGAffineTransform matrix,NSRect rect) {
 
 @implementation KGRenderingContext_gdi
 
-+(KGRenderingContext *)renderingContextWithPrinterDC:(HDC)dc {
-   KGDeviceContext *deviceContext=[[[Win32DeviceContextPrinter alloc] initWithDC:dc] autorelease];
++(KGRenderingContext_gdi *)renderingContextWithPrinterDC:(HDC)dc {
+   KGDeviceContext_gdi *deviceContext=[[[Win32DeviceContextPrinter alloc] initWithDC:dc] autorelease];
    
    return [[[self alloc] initWithDC:dc deviceContext:deviceContext] autorelease];
 }
 
-+(KGRenderingContext *)renderingContextWithWindowHWND:(HWND)handle {
-   KGDeviceContext *deviceContext=[[[Win32DeviceContextWindow alloc] initWithWindowHandle:handle] autorelease];
++(KGRenderingContext_gdi *)renderingContextWithWindowHWND:(HWND)handle {
+   KGDeviceContext_gdi *deviceContext=[[[Win32DeviceContextWindow alloc] initWithWindowHandle:handle] autorelease];
    
    return [[[self alloc] initWithDC:GetDC(handle) deviceContext:deviceContext] autorelease];
 }
 
-+(KGRenderingContext *)renderingContextWithSize:(NSSize)size renderingContext:(KGRenderingContext *)otherContext {
++(KGRenderingContext_gdi *)renderingContextWithSize:(NSSize)size renderingContext:(KGRenderingContext_gdi *)otherContext {
    KGDeviceContext_gdi *deviceContext=[[[Win32DeviceContextBitmap alloc] initWithSize:size deviceContext:(KGDeviceContext_gdi *)[otherContext deviceContext]] autorelease];
    
    return [[[self alloc] initWithDC:[deviceContext dc] deviceContext:deviceContext] autorelease];
 }
 
-+(KGRenderingContext *)renderingContextWithSize:(NSSize)size  {
++(KGRenderingContext_gdi *)renderingContextWithSize:(NSSize)size  {
    KGDeviceContext_gdi *deviceContext=[[[Win32DeviceContextBitmap alloc] initWithSize:size] autorelease];
    
    return [[[self alloc] initWithDC:[deviceContext dc] deviceContext:deviceContext] autorelease];
@@ -106,8 +105,8 @@ NSRect Win32TransformRect(CGAffineTransform matrix,NSRect rect) {
    return [[[KGContext_gdi alloc] initWithGraphicsState:initialState] autorelease];
 }
 
--initWithDC:(HDC)dc deviceContext:(KGDeviceContext *)deviceContext {
-   [super initWithDeviceContext:deviceContext];
+-initWithDC:(HDC)dc deviceContext:(KGDeviceContext_gdi *)deviceContext {
+   _deviceContext=[deviceContext retain];
    
    _dc=dc;
 
@@ -131,7 +130,12 @@ NSRect Win32TransformRect(CGAffineTransform matrix,NSRect rect) {
 -(void)dealloc {
    DeleteObject(_clipRegion);
    [_gdiFont release];
+   [_deviceContext release];
    [super dealloc];
+}
+
+-(KGDeviceContext_gdi *)deviceContext {
+   return _deviceContext;
 }
 
 -(HDC)dc {
@@ -140,6 +144,22 @@ NSRect Win32TransformRect(CGAffineTransform matrix,NSRect rect) {
 
 -(HWND)windowHandle {
    return [[(KGDeviceContext_gdi *)_deviceContext windowDeviceContext] windowHandle];
+}
+
+-(void)beginPage {
+   [_deviceContext beginPage];
+}
+
+-(void)endPage {
+   [_deviceContext endPage];
+}
+
+-(void)beginPrintingWithDocumentName:(NSString *)name {
+   [_deviceContext beginPrintingWithDocumentName:name];
+}
+
+-(void)endPrinting {
+   [_deviceContext endPrinting];
 }
 
 -(void)selectFontWithName:(const char *)name pointSize:(float)pointSize antialias:(BOOL)antialias {
@@ -155,7 +175,9 @@ NSRect Win32TransformRect(CGAffineTransform matrix,NSRect rect) {
 }
 
 -(void)setFont:(KGFont *)font {
-   [super setFont:font];
+   font=[font retain];
+   [_font release];
+   _font=font;
    [self selectFontWithName:[[font name] cString] pointSize:[font pointSize] antialias:NO];
 }
 

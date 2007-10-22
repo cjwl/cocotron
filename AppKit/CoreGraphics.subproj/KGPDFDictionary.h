@@ -19,7 +19,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 +(KGPDFDictionary *)pdfDictionary;
 
 -(void)setObjectForKey:(const char *)key value:(KGPDFObject *)object;
+-(void)setBooleanForKey:(const char *)key value:(KGPDFBoolean)value;
 -(void)setIntegerForKey:(const char *)key value:(KGPDFInteger)value;
+-(void)setNumberForKey:(const char *)key value:(KGPDFReal)value;
 -(void)setNameForKey:(const char *)key value:(const char *)value;
 
 -(KGPDFObject *)inheritedForCStringKey:(const char *)cStringKey

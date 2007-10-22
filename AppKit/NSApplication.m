@@ -41,9 +41,8 @@ id NSApp=nil;
 
 +(void)initialize {
    if(self==[NSApplication class]){
-#ifdef WINDOWS
-    Win32UseRunningCopyOfApplication();
-#endif
+
+    [NSClassFromString(@"Win32RunningCopyPipe") performSelector:@selector(startRunningCopyPipe)];
    }
 }
 

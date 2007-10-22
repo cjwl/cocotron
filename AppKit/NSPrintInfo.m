@@ -58,6 +58,19 @@ NSString *NSPrintVerticallyCentered=@"NSPrintVerticallyCentered";
    return [self initWithDictionary:defaults];
 }
 
+-(void)dealloc {
+   [_attributes release];
+   [super dealloc];
+}
+
+-copyWithZone:(NSZone *)zone {
+   NSPrintInfo *copy=NSCopyObject(self,0,zone);
+   
+   copy->_attributes=[_attributes mutableCopy];
+   
+   return copy;
+}
+
 -(NSMutableDictionary *)dictionary {
    return _attributes;
 }

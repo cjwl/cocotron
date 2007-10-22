@@ -2,7 +2,6 @@
 #import <AppKit/NSOpenGLPixelFormat.h>
 #import <AppKit/NSWindow-Private.h>
 #import <AppKit/Win32Window.h>
-#import <AppKit/Win32Application.h>
 
 @implementation NSOpenGLDrawable_gdiView 
 
@@ -139,7 +138,7 @@ static void pfdFromPixelFormat(PIXELFORMATDESCRIPTOR *pfd,NSOpenGLPixelFormat *p
    _view=view;
    _windowHandle=CreateWindowEx(WS_EX_TOOLWINDOW,"NSWin32OpenGLWindow", "", WS_CLIPCHILDREN | WS_CLIPSIBLINGS| WS_POPUP|WS_CHILD,
       0, 0, 500, 500,
-      NULL,NULL, Win32ApplicationHandle(),NULL);
+      NULL,NULL, GetModuleHandle (NULL),NULL);
    SetProp(_windowHandle,"self",self);
    
    _dc=GetDC(_windowHandle);

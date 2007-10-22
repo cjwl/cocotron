@@ -8,6 +8,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 // Original - Christopher Lloyd <cjwl@objc.net>
 #import "KGPDFObject_Name.h"
+#import <AppKit/KGPDFContext.h>
 #import <Foundation/NSString.h>
 #import <string.h>
 
@@ -27,7 +28,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 +pdfObjectWithBytes:(const char *)bytes length:(unsigned)length {
-   return [[[self alloc] initWithBytes:bytes length:length] autorelease];
+   return [[(KGPDFObject_Name *)[self alloc] initWithBytes:bytes length:length] autorelease];
 }
 
 +pdfObjectWithCString:(const char *)cString {

@@ -13,9 +13,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "KGPDFArray.h"
 #import <Foundation/NSString.h>
 #import <Foundation/NSArray.h>
-#import <stddef.h>
 #import "KGPDFDictionary.h"
-#import "KGPDFArray.h"
+#import "KGPDFStream.h"
+#import "KGPDFContext.h"
+#import <stddef.h>
 
 @implementation KGFunction
 
@@ -109,6 +110,34 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    else if(output[i]>_range[i*2+1])
     output[i]=_range[i*2+1];
   }
+}
+
+-(KGPDFObject *)encodeReferenceWithContext:(KGPDFContext *)context {
+   int              i,numberOfSamples=1024,numberOfChannels=_rangeCount/2;
+   KGPDFStream     *result=[KGPDFStream pdfStream];
+   KGPDFDictionary *dictionary=[result dictionary];
+   unsigned char    samples[numberOfSamples*numberOfChannels];
+   
+   [dictionary setIntegerForKey:"FunctionType" value:0];
+   [dictionary setObjectForKey:"Domain" value:[KGPDFArray pdfArrayWithNumbers:_domain count:_domainCount]];
+   [dictionary setObjectForKey:"Range" value:[KGPDFArray pdfArrayWithNumbers:_range count:_rangeCount]];
+   [dictionary setObjectForKey:"Size" value:[KGPDFArray pdfArrayWithIntegers:&numberOfSamples count:1]];
+   [dictionary setIntegerForKey:"BitsPerSample" value:8];
+   [dictionary setIntegerForKey:"Order" value:1];
+   for(i=0;i<numberOfSamples;i++){
+    float x=_domain[0]+((float)i/(float)numberOfSamples)*(_domain[1]-_domain[0]);
+    float output[numberOfChannels];
+    int   j;
+    
+    [self evaluateInput:x output:output];
+    
+    for(j=0;j<numberOfChannels;j++){
+     samples[i*numberOfChannels+j]=((output[j]-_range[j*2])/(_range[j*2+1]-_range[j*2]))*255;
+    }
+   }
+   [[result mutableData] appendBytes:samples length:numberOfSamples*numberOfChannels];
+
+   return [context encodeIndirectPDFObject:result];
 }
 
 +(KGFunction *)pdfFunctionWithDictionary:(KGPDFDictionary *)dictionary {

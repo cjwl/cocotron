@@ -16,7 +16,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "KGRenderingContext_gdi.h"
 #import <AppKit/KGGraphicsState.h>
 #import <AppKit/Win32EventInputSource.h>
-#import <AppKit/Win32Application.h>
 #import <AppKit/Win32SplashPanel.h>
 #import <AppKit/KGContext.h>
 
@@ -40,7 +39,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <winuser.h>
 #import <commdlg.h>
 #import <malloc.h>
-#import <AppKit/multiple_monitors.h>
 
 #import <AppKit/NSFontTypeface.h>
 #import <AppKit/NSFontMetric.h>
@@ -92,7 +90,7 @@ static DWORD WINAPI runWaitCursor(LPVOID arg){
     HWND handle=CreateWindow("Win32Window","",
      WS_CLIPCHILDREN|WS_CLIPSIBLINGS|WS_BORDER,
      0,0,100,100,
-     NULL,NULL,Win32ApplicationHandle(),NULL);
+     NULL,NULL,GetModuleHandle (NULL),NULL);
 
    [super init];
 
@@ -122,6 +120,10 @@ static DWORD WINAPI runWaitCursor(LPVOID arg){
    _splashPanel=nil;
 }
 
+-(KGRenderingContext_gdi *)renderingContextOnPrimaryScreen {
+   return _renderingContextOnPrimaryScreen;
+}
+
 -(KGDeviceContext_gdi *)deviceContextOnPrimaryScreen {
    return (KGDeviceContext_gdi *)[_renderingContextOnPrimaryScreen deviceContext];
 }
@@ -140,6 +142,12 @@ BOOL CALLBACK monitorEnumerator(HMONITOR hMonitor,HDC hdcMonitor,LPRECT rect,LPA
    frame.origin.y=GetSystemMetrics(SM_CYSCREEN)-(frame.origin.y+frame.size.height);
 
    screen=[[[NSScreen alloc] initWithFrame:frame visibleFrame:frame] autorelease];
+
+#ifdef MONITORINFOF_PRIMARY
+#warning MONITORINFOF_PRIMARY now defined
+#else
+#define MONITORINFOF_PRIMARY 0x01
+#endif
 
    if(info.dwFlags&MONITORINFOF_PRIMARY)
     [array insertObject:screen atIndex:0];
@@ -874,188 +882,6 @@ static int CALLBACK buildTypeface(const LOGFONTA *lofFont_old,
    return GetSystemMetrics(SM_CXHTHUMB);
 }
 
-#define MAXUNICHAR 0xFFFF
-
--(HDC)deviceContextWithFontName:(const char *)name pointSize:(float)pointSize {
-   [_renderingContextOnPrimaryScreen selectFontWithName:name pointSize:pointSize];
-
-   return [_renderingContextOnPrimaryScreen dc];
-}
-
--(void)metricsForFontWithName:(const char *)name pointSize:(float)pointSize metrics:(NSFontMetrics *)result {
-   HDC           dc=[self deviceContextWithFontName:name pointSize:pointSize];
-   TEXTMETRIC    metrics;
-
-   GetTextMetrics(dc,&metrics);
-
-   result->boundingRect.origin.x=0;
-   result->boundingRect.origin.y=0;
-   result->boundingRect.size.width=metrics.tmMaxCharWidth;
-   result->boundingRect.size.height=metrics.tmHeight;
-
-   result->ascender=metrics.tmAscent;
-   result->descender=-metrics.tmDescent;
-
-   result->underlineThickness=pointSize/24;
-   if(result->underlineThickness<0)
-    result->underlineThickness=1;
-
-   result->underlinePosition=-(result->underlineThickness*2);
-
-   result->isFixedPitch=(metrics.tmPitchAndFamily&TMPF_FIXED_PITCH)?NO:YES;
-}
-
--(void)loadGlyphRangeTable:(CGGlyphRangeTable *)table fontName:(NSString *)name range:(NSRange)range {
-   HDC                dc=[self deviceContextWithFontName:[name cString] pointSize:12.0];
-   unichar            characters[range.length];
-   unsigned short     glyphs[range.length];
-   unsigned           i;
-   HANDLE             library=LoadLibrary("GDI32");
-   FARPROC            getGlyphIndices=GetProcAddress(library,"GetGlyphIndicesW");
-
-   for(i=0;i<range.length;i++)
-    characters[i]=range.location+i;
-
-// GetGlyphIndicesW is around twice as fast as GetCharacterPlacementW, but only available on Win2k/XP
-   if(getGlyphIndices!=NULL)
-    getGlyphIndices(dc,characters,range.length,glyphs,0);
-   else {
-    GCP_RESULTSW results;
-
-    results.lStructSize=sizeof(GCP_RESULTS);
-    results.lpOutString=NULL;
-    results.lpOrder=NULL;
-    results.lpDx=NULL;
-    results.lpCaretPos=NULL;
-    results.lpClass=NULL;
-    results.lpGlyphs=glyphs;
-    results.nGlyphs=range.length;
-    results.nMaxFit=0;
-
-    if(GetCharacterPlacementW(dc,characters,range.length,0,&results,0)==0)
-     NSLog(@"GetCharacterPlacementW failed");
-   }
-
-   table->numberOfGlyphs=0;
-   for(i=0;i<range.length;i++){
-    NSGlyph  glyph=glyphs[i];
-    unsigned range=i>>8;
-    unsigned index=i&0xFF;
-
-    if(glyph!=0){
-     if(glyph>table->numberOfGlyphs)
-      table->numberOfGlyphs=glyph;
-
-     if(table->ranges[range]==NULL)
-      table->ranges[range]=NSZoneCalloc(NULL,sizeof(CGGlyphRange),1);
-
-     table->ranges[range]->glyphs[index]=glyph;
-    }
-   }
-   table->numberOfGlyphs++;
-}
-
-static inline NSGlyph glyphForCharacter(CGGlyphRangeTable *table,unichar character){
-   unsigned range=character>>8;
-   unsigned index=character&0xFF;
-
-   if(table->ranges[range]!=NULL)
-    return table->ranges[range]->glyphs[index];
-
-   return NSNullGlyph;
-}
-
-static inline CGGlyphMetrics *glyphInfoForGlyph(CGGlyphMetricsSet *infoSet,NSGlyph glyph){
-   if(glyph<infoSet->numberOfGlyphs)
-    return infoSet->info+glyph;
-
-   return NULL;
-}
-
--(void)fetchAdvancementsForFontWithName:(NSString *)name pointSize:(float)pointSize glyphRanges:(CGGlyphRangeTable *)table infoSet:(CGGlyphMetricsSet *)infoSet forGlyph:(NSGlyph)glyph {
-   HDC       dc=[self deviceContextWithFontName:[name cString] pointSize:pointSize];
-   ABCFLOAT *abc;
-   int       i,max;
-
-   for(max=0;max<MAXUNICHAR;max++){
-    NSGlyph check=glyphForCharacter(table,max);
-
-    if(check==glyph)
-     break;
-   }
-
-   if(max==MAXUNICHAR){
-    CGGlyphMetrics *info=glyphInfoForGlyph(infoSet,glyph);
-
-    info->hasAdvancement=YES;
-    info->advanceA=0;
-    info->advanceB=0;
-    info->advanceC=0;
-    return;
-   }
-
-   max=((max/128)+1)*128;
-   abc=alloca(sizeof(ABCFLOAT)*max);
-   if(!GetCharABCWidthsFloatW(dc,0,max-1,abc))
-    NSLog(@"GetCharABCWidthsFloat failed");
-   else {
-    for(i=0;i<max;i++){
-     NSGlyph      glyph=glyphForCharacter(table,i);
-     CGGlyphMetrics *info=glyphInfoForGlyph(infoSet,glyph);
-
-     if(info==NULL)
-      NSLog(@"no info for glyph %d",glyph);
-     else {
-      info->hasAdvancement=YES;
-      info->advanceA=abc[i].abcfA;
-      info->advanceB=abc[i].abcfB;
-      info->advanceC=abc[i].abcfC;
-     }
-    }
-   }
-}
-
--(void)fetchGlyphKerningForFontWithName:(NSString *)name pointSize:(float)pointSize glyphRanges:(CGGlyphRangeTable *)table infoSet:(CGGlyphMetricsSet *)infoSet {
-   HDC         dc=[self deviceContextWithFontName:[name cString] pointSize:pointSize];
-   int         i,numberOfPairs=GetKerningPairs(dc,0,NULL);
-   KERNINGPAIR pairs[numberOfPairs];
-
-   GetKerningPairsW(dc,numberOfPairs,pairs);
-
-   for(i=0;i<numberOfPairs;i++){
-    unichar previousCharacter=pairs[i].wFirst;
-    unichar currentCharacter=pairs[i].wSecond;
-    float   xoffset=pairs[i].iKernAmount;
-    NSGlyph previous=glyphForCharacter(table,previousCharacter);
-    NSGlyph current=glyphForCharacter(table,currentCharacter);
-
-    if(pairs[i].iKernAmount==0)
-     continue;
-
-    if(current==NSNullGlyph)
-     ;//NSLog(@"unable to generate kern pair 0x%04X 0x%04X %f",previousCharacter,currentCharacter,xoffset);
-    else {
-     CGGlyphMetrics *info=glyphInfoForGlyph(infoSet,current);
-
-     if(info==NULL)
-      NSLog(@"no info for glyph %d",current);
-     else {
-      unsigned index=info->numberOfKerningOffsets;
-
-      if(index==0)
-       info->kerningOffsets=NSZoneMalloc([self zone],sizeof(CGKerningOffset));
-      else
-       info->kerningOffsets=NSZoneRealloc([self zone],info->kerningOffsets,
-               sizeof(CGKerningOffset)*(index+1));
-
-      info->kerningOffsets[index].previous=previous;
-      info->kerningOffsets[index].xoffset=xoffset;
-      info->numberOfKerningOffsets++;
-     }
-    }
-   }
-}
-
 -(void)runModalPageLayoutWithPrintInfo:(NSPrintInfo *)printInfo {
    PAGESETUPDLG setup;
 
@@ -1106,7 +932,7 @@ static inline CGGlyphMetrics *glyphInfoForGlyph(CGGlyphMetricsSet *infoSet,NSGly
     return NSCancelButton;
    else {
     KGRenderingContext_gdi *renderingContext=(KGRenderingContext_gdi *)[KGRenderingContext_gdi renderingContextWithPrinterDC:printProperties.hDC];
-    KGDeviceContext        *deviceContext=[renderingContext deviceContext];
+    KGDeviceContext_gdi        *deviceContext=[renderingContext deviceContext];
     KGContext              *context=[renderingContext createGraphicsContext];
     
     [attributes setObject:context forKey:@"_KGContext"];

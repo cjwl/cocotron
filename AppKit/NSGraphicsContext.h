@@ -12,9 +12,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @class NSWindow, NSCachedImageRep;
 
 @interface NSGraphicsContext : NSObject {
-   KGContext *_graphicsPort;
-   BOOL       _isDrawingToScreen;
-   BOOL       _isFlipped;
+   KGContext      *_graphicsPort;
+   NSMutableArray *_focusStack;
+   BOOL            _isDrawingToScreen;
+   BOOL            _isFlipped;
 }
 
 +(NSGraphicsContext *)graphicsContextWithWindow:(NSWindow *)window;
@@ -29,6 +30,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 +(BOOL)currentContextDrawingToScreen;
 
 -(KGContext *)graphicsPort;
+-(NSMutableArray *)focusStack;
 
 -(BOOL)isDrawingToScreen;
 

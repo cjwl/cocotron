@@ -228,145 +228,6 @@ void KGPDF_render_d1(KGPDFScanner *scanner,void *info) {
    //NSLog(@"d1");
 }
 
-
-int intentWithName(const char *name){
-   if(name==NULL)
-    return kCGRenderingIntentDefault;
-    
-   if(strcmp(name,"AbsoluteColorimetric")==0)
-    return kCGRenderingIntentAbsoluteColorimetric;
-   else if(strcmp(name,"RelativeColorimetric")==0)
-    return kCGRenderingIntentRelativeColorimetric;
-   else if(strcmp(name,"Saturation")==0)
-    return kCGRenderingIntentSaturation;
-   else if(strcmp(name,"Perceptual")==0)
-    return kCGRenderingIntentPerceptual;
-   else
-    return kCGRenderingIntentDefault; // unknown
-}
-
-KGImage *imageFromStream(KGPDFStream *stream){
-   KGPDFDictionary *dictionary=[stream dictionary];
-   KGPDFInteger width;
-   KGPDFInteger height;
-   KGPDFObject *colorSpaceObject;
-   KGPDFInteger bitsPerComponent;
-   const char  *intent;
-   KGPDFBoolean isImageMask;
-   KGPDFObject *imageMaskObject=NULL;
-   KGColorSpace *colorSpace=NULL;
-    int               componentsPerPixel;
-   KGPDFArray     *decodeArray;
-   float            *decode=NULL;
-   BOOL              interpolate;
-   KGPDFStream *softMaskStream=nil;
-   KGImage *softMask=NULL;
-    
-   // NSLog(@"Image=%@",dictionary);
-    
-   if(![dictionary getIntegerForKey:"Width" value:&width]){
-    NSLog(@"Image has no Width");
-    return NULL;
-   }
-   if(![dictionary getIntegerForKey:"Height" value:&height]){
-    NSLog(@"Image has no Height");
-    return NULL;
-   }
-    
-   if(![dictionary getObjectForKey:"ColorSpace" value:&colorSpaceObject]){
-    NSLog(@"Image has no ColorSpace");
-    return NULL;
-   }
-   if((colorSpace=[KGColorSpace colorSpaceFromPDFObject:colorSpaceObject])==NULL)
-    return NULL;
-     
-   componentsPerPixel=[colorSpace numberOfComponents];
-    
-   if(![dictionary getIntegerForKey:"BitsPerComponent" value:&bitsPerComponent]){
-    NSLog(@"Image has no BitsPerComponent");
-    return NULL;
-   }
-   if(![dictionary getNameForKey:"Intent" value:&intent])
-    intent=NULL;
-   if(![dictionary getBooleanForKey:"ImageMask" value:&isImageMask])
-    isImageMask=NO;
-     
-   if(!isImageMask && [dictionary getObjectForKey:"Mask" value:&imageMaskObject]){
-    
-    
-   }
-
-   if(![dictionary getArrayForKey:"Decode" value:&decodeArray])
-    decode=NULL;
-   else {
-    int i,count=[decodeArray count];
-     
-    if(count!=componentsPerPixel*2){
-     NSLog(@"Invalid decode array, count=%d, should be %d",count,componentsPerPixel*2);
-     return NULL;
-    }
-    
-    decode=__builtin_alloca(sizeof(float)*count);
-    for(i=0;i<count;i++){
-     KGPDFReal number;
-      
-     if(![decodeArray getNumberAtIndex:i value:&number]){
-      NSLog(@"Invalid decode array entry at %d",i);
-      return NULL;
-     }
-     decode[i]=number;
-    }
-   }
-    
-   if(![dictionary getBooleanForKey:"Interpolate" value:&interpolate])
-    interpolate=NO;
-    
-   if([dictionary getStreamForKey:"SMask" value:&softMaskStream]){
-//    NSLog(@"SMask=%@",[softMaskStream dictionary]);
-    softMask=imageFromStream(softMaskStream);
-   }
-    
-   if(colorSpace!=NULL){
-    int               bitsPerPixel=componentsPerPixel*bitsPerComponent;
-    int               bytesPerRow=((width*bitsPerPixel)+7)/8;
-    NSData           *data=[stream data];
-    KGDataProvider * provider;
-    KGImage *image=NULL;
-       
-//     NSLog(@"width=%d,height=%d,bpc=%d,bpp=%d,bpr=%d,cpp=%d",width,height,bitsPerComponent,bitsPerPixel,bytesPerRow,componentsPerPixel);
-     
-    if(height*bytesPerRow!=[data length]){
-     NSMutableData *mutable=[NSMutableData dataWithLength:height*bytesPerRow];
-     char *mbytes=[mutable mutableBytes];
-      int i;
-      for(i=0;i<height*bytesPerRow;i++)
-       mbytes[i]=0x33;
-       
-     NSLog(@"Invalid data length=%d,should be %d=%d",[data length],height*bytesPerRow,[data length]-height*bytesPerRow);
-     data=mutable;
-      //return NULL;
-    }
-    provider=[[KGDataProvider alloc] initWithData:data];
-    if(isImageMask){
-     float decodeDefault[2]={0,1};
-      
-     if(decode==NULL)
-      decode=decodeDefault;
-      
-     image=[[KGImage alloc] initMaskWithWidth:width height:height bitsPerComponent:bitsPerComponent bitsPerPixel:bitsPerPixel bytesPerRow:bytesPerRow provider:provider decode:decode interpolate:interpolate];
-    }
-    else {
-     image=[[KGImage alloc] initWithWidth:width height:height bitsPerComponent:bitsPerComponent bitsPerPixel:bitsPerPixel bytesPerRow:bytesPerRow colorSpace:colorSpace bitmapInfo:0 provider:provider decode:decode interpolate:interpolate renderingIntent:intentWithName(intent)];
-
-     if(softMask!=NULL)
-      [image addMask:softMask];
-    }
-
-    return image;
-   }
-}
-
-
 // Invoke named XObject
 void KGPDF_render_Do(KGPDFScanner *scanner,void *info) {
    KGContext *context=kgContextFromInfo(info);
@@ -426,7 +287,7 @@ if(doIt)
     [doScanner scan];
    }
    else if(strcmp(subtype,"Image")==0){
-    KGImage *image=imageFromStream(stream);
+    KGImage *image=[KGImage imageWithPDFObject:stream];
     
     if(image!=NULL)
      [context drawImage:image inRect:CGRectMake(0,0,1,1)];
@@ -810,7 +671,7 @@ void KGPDF_render_ri(KGPDFScanner *scanner,void *info) {
    if(![scanner popName:&name])
     return;
    
-   [context setRenderingIntent:intentWithName(name)];
+   [context setRenderingIntent:KGImageRenderingIntentWithName(name)];
 }
 
 // closepath stroke

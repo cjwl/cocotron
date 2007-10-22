@@ -9,7 +9,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/KGDeviceContext_gdi.h>
 #import <Foundation/NSGeometry.h>
 
-@class KGRenderingContext;
+@class KGRenderingContext_gdi;
 
 @interface Win32DeviceContextPrinter : KGDeviceContext_gdi
 

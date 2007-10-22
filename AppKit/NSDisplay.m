@@ -284,22 +284,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return 0;
 }
 
--(void)metricsForFontWithName:(const char *)name pointSize:(float)pointSize metrics:(NSFontMetrics *)metrics {
-   NSInvalidAbstractInvocation();
-}
-
--(void)loadGlyphRangeTable:(CGGlyphRangeTable *)table fontName:(NSString *)name range:(NSRange)range {
-   NSInvalidAbstractInvocation();
-}
-
--(void)fetchAdvancementsForFontWithName:(NSString *)name pointSize:(float)pointSize glyphRanges:(CGGlyphRangeTable *)table infoSet:(CGGlyphMetricsSet *)infoSet forGlyph:(NSGlyph)glyph {
-   NSInvalidAbstractInvocation();
-}
-
--(void)fetchGlyphKerningForFontWithName:(NSString *)name pointSize:(float)pointSize glyphRanges:(CGGlyphRangeTable *)table infoSet:(CGGlyphMetricsSet *)infoSet {
-   NSInvalidAbstractInvocation();
-}
-
 -(void)runModalPageLayoutWithPrintInfo:(NSPrintInfo *)printInfo {
    NSInvalidAbstractInvocation();
 }

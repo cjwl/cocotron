@@ -9,7 +9,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 // Original - Christopher Lloyd <cjwl@objc.net>
 #import <AppKit/Win32Window.h>
 #import <AppKit/Win32Event.h>
-#import <AppKit/Win32Application.h>
 #import <AppKit/Win32Display.h>
 #import <Foundation/NSString_win32.h>
 #import <AppKit/KGRenderingContext_gdi.h>
@@ -154,7 +153,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     _handle=CreateWindowEx(extendStyle,className,"", style,
       win32Frame.origin.x, win32Frame.origin.y,
       win32Frame.size.width, win32Frame.size.height,
-      NULL,NULL, Win32ApplicationHandle(),NULL);
+      NULL,NULL, GetModuleHandle (NULL),NULL);
 #if 0
 #define LWA_ALPHA 0x00000002
     GetProcAddress(LoadLibrary("USER32"),"SetLayeredWindowAttributes")(_handle,RGB(255,255,255),0xFF,LWA_ALPHA);

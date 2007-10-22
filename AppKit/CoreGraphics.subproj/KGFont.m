@@ -1,6 +1,8 @@
 #import <AppKit/KGFont.h>
-#import <AppKit/NSDisplay.h>
+#import "KGPDFArray.h"
 #import <AppKit/KGPDFDictionary.h>
+#import "KGPDFContext.h"
+#import <Foundation/NSRaise.h>
 
 @implementation KGFont
 
@@ -12,7 +14,14 @@ static inline CGGlyph glyphForCharacter(KGFont *self,unichar character){
    if(table->ranges[range]!=NULL)
     return table->ranges[range]->glyphs[index];
 
-   return NSNullGlyph;
+   return CGNullGlyph;
+}
+
+static inline unichar characterForGlyph(KGFont *self,CGGlyph glyph){
+   if(glyph<self->_glyphRangeTable->numberOfGlyphs)
+    return self->_glyphRangeTable->characters[glyph];
+   
+   return 0;
 }
 
 static inline CGGlyphMetrics *glyphInfoForGlyph(KGFont *self,CGGlyph glyph){
@@ -42,7 +51,7 @@ static inline CGGlyphMetrics *glyphInfoForGlyph(KGFont *self,CGGlyph glyph){
 }
 
 -(void)fetchGlyphRanges {
-   [[NSDisplay currentDisplay] loadGlyphRangeTable:_glyphRangeTable fontName:_name range:NSMakeRange(0,0xFFFF)];
+   [self loadGlyphRangeTable];
 
    _glyphRangeTableLoaded=YES;
    _glyphInfoSet->numberOfGlyphs=_glyphRangeTable->numberOfGlyphs;
@@ -50,7 +59,8 @@ static inline CGGlyphMetrics *glyphInfoForGlyph(KGFont *self,CGGlyph glyph){
 
 -(void)fetchGlyphInfo {
    _glyphInfoSet->info=NSZoneCalloc([self zone],sizeof(CGGlyphMetrics),_glyphInfoSet->numberOfGlyphs);
-   [[NSDisplay currentDisplay] fetchGlyphKerningForFontWithName:_name pointSize:_size glyphRanges:self->_glyphRangeTable infoSet:self->_glyphInfoSet];
+   [self fetchGlyphKerning];
+   
 }
 
 static inline void fetchAllGlyphRangesIfNeeded(KGFont *self){
@@ -73,7 +83,7 @@ static inline CGGlyphMetrics *fetchGlyphAdvancementIfNeeded(KGFont *self,CGGlyph
     return info;
 
    if(!info->hasAdvancement){
-    [[NSDisplay currentDisplay] fetchAdvancementsForFontWithName:self->_name pointSize:self->_size glyphRanges:self->_glyphRangeTable infoSet:self->_glyphInfoSet forGlyph:glyph];
+    [self fetchAdvancementsForGlyph:glyph];
    }
 
    return info;
@@ -82,7 +92,7 @@ static inline CGGlyphMetrics *fetchGlyphAdvancementIfNeeded(KGFont *self,CGGlyph
 -initWithName:(NSString *)name size:(float)size {
    _name=[name copy];
    _size=size;
-   
+   [self fetchMetrics];
    _glyphRangeTable=NULL;
    [self fetchSharedGlyphRangeTable];
    _glyphInfoSet=NSZoneMalloc([self zone],sizeof(CGGlyphMetricsSet));
@@ -118,6 +128,30 @@ static inline CGGlyphMetrics *fetchGlyphAdvancementIfNeeded(KGFont *self,CGGlyph
 
 -(float)pointSize {
    return _size;
+}
+
+-(NSRect)boundingRect {
+   return _metrics.boundingRect;
+}
+
+-(float)ascender {
+   return _metrics.ascender;
+}
+
+-(float)descender {
+   return _metrics.descender;
+}
+
+-(float)underlineThickness {
+   return _metrics.underlineThickness;
+}
+
+-(float)underlinePosition {
+   return _metrics.underlinePosition;
+}
+
+-(BOOL)isFixedPitch {
+   return _metrics.isFixedPitch;
 }
 
 -(unsigned)numberOfGlyphs {
@@ -170,7 +204,7 @@ static inline CGGlyphMetrics *fetchGlyphAdvancementIfNeeded(KGFont *self,CGGlyph
 
    *isNominalp=YES;
 
-   if(previous==NSNullGlyph){
+   if(previous==CGNullGlyph){
     if(currentInfo!=NULL){
     }
    }
@@ -178,7 +212,7 @@ static inline CGGlyphMetrics *fetchGlyphAdvancementIfNeeded(KGFont *self,CGGlyph
     if(previousInfo!=NULL)
      result.x+=previousInfo->advanceA+previousInfo->advanceB+previousInfo->advanceC;
 
-    if(current==NSNullGlyph){
+    if(current==CGNullGlyph){
     }
     else if(currentInfo!=NULL){
      int i;
@@ -196,14 +230,44 @@ static inline CGGlyphMetrics *fetchGlyphAdvancementIfNeeded(KGFont *self,CGGlyph
    return result;
 }
 
--(unsigned)getGlyphs:(CGGlyph *)glyphs forCharacters:(unichar *)characters length:(unsigned)length {
+-(void)getGlyphs:(CGGlyph *)glyphs forCharacters:(const unichar *)characters length:(unsigned)length {
    int i;
 
    fetchAllGlyphRangesIfNeeded(self);
    for(i=0;i<length;i++)
     glyphs[i]=glyphForCharacter(self,characters[i]);
+}
 
-   return length;
+-(void)getCharacters:(unichar *)characters forGlyphs:(const CGGlyph *)glyphs length:(unsigned)length {
+   int i;
+
+   fetchAllGlyphRangesIfNeeded(self);
+   for(i=0;i<length;i++)
+    characters[i]=characterForGlyph(self,glyphs[i]);
+}
+
+// FIX, lame, this needs to do encoding properly
+-(void)getBytes:(unsigned char *)bytes forGlyphs:(const CGGlyph *)glyphs length:(unsigned)length {
+   unichar  characters[length];
+   unsigned i;
+   
+   [self getCharacters:characters forGlyphs:glyphs length:length];
+   for(i=0;i<length;i++)
+    if(characters[i]<0xFF)
+     bytes[i]=characters[i];
+    else
+     bytes[i]=' ';
+}
+
+// FIX, lame, this needs to do encoding properly
+-(void)getGlyphs:(CGGlyph *)glyphs forBytes:(const unsigned char *)bytes length:(unsigned)length {
+   unichar characters[length];
+   int     i;
+   
+   for(i=0;i<length;i++)
+    characters[i]=bytes[i];
+   
+   [self getGlyphs:glyphs forCharacters:characters length:length];
 }
 
 -(void)getAdvancements:(NSSize *)advancements forGlyphs:(const CGGlyph *)glyphs count:(unsigned)count {
@@ -242,16 +306,90 @@ static inline CGGlyphMetrics *fetchGlyphAdvancementIfNeeded(KGFont *self,CGGlyph
    return result;
 }
 
--(KGPDFObject *)pdfObjectInContext:(KGPDFContext *)context {
-   KGPDFDictionary *result=[KGPDFDictionary pdfDictionary];
+-(KGPDFArray *)_pdfWidths {
+   KGPDFArray   *result=[KGPDFArray pdfArray];
+   unsigned char bytes[256];
+   CGGlyph       glyphs[256];
+   NSSize        advancements[256];
+   int           i;
+   
+   for(i=0;i<256;i++)
+    bytes[i]=i;
+    
+   [self getGlyphs:glyphs forBytes:bytes length:256];
+   [self getAdvancements:advancements forGlyphs:glyphs count:256];
 
-   [result setNameForKey:"Type" value:"Font"];
-   [result setNameForKey:"Subtype" value:"TrueType"];
-   [result setNameForKey:"BaseFont" value:[_name cString]];
-   [result setIntegerForKey:"FirstChar" value:0];
-   [result setIntegerForKey:"FirstChar" value:255];
+// FIX, probably not entirely accurate, you can get precise widths out of the TrueType data
+   for(i=0;i<255;i++){
+    KGPDFReal width=(advancements[i].width/_size)*1000;
+    
+    [result addNumber:width];
+   }
    
    return result;
+}
+
+-(const char *)pdfFontName {
+// lame
+   return [[[_name componentsSeparatedByString:@" "] componentsJoinedByString:@","] cString];
+}
+
+-(KGPDFDictionary *)_pdfFontDescriptor {
+   KGPDFDictionary *result=[KGPDFDictionary pdfDictionary];
+
+   [result setNameForKey:"Type" value:"FontDescriptor"];
+   [result setNameForKey:"FontName" value:[self pdfFontName]];
+   [result setIntegerForKey:"Flags" value:0];
+   
+   KGPDFReal bbox[4]={0,0,0,0};
+   [result setObjectForKey:"FontBBox" value:[KGPDFArray pdfArrayWithNumbers:bbox count:4]];
+   [result setIntegerForKey:"ItalicAngle" value:0];
+   [result setIntegerForKey:"Ascent" value:0];
+   [result setIntegerForKey:"Descent" value:0];
+   [result setIntegerForKey:"CapHeight" value:0];
+   [result setIntegerForKey:"StemV" value:0];
+   [result setIntegerForKey:"StemH" value:0];
+   
+   return result;
+}
+
+-(KGPDFObject *)encodeReferenceWithContext:(KGPDFContext *)context {
+   KGPDFObject *reference=[context referenceForFontWithName:_name size:_size];
+   
+   if(reference==nil){
+    KGPDFDictionary *result=[KGPDFDictionary pdfDictionary];
+
+    [result setNameForKey:"Type" value:"Font"];
+    [result setNameForKey:"Subtype" value:"TrueType"];
+    [result setNameForKey:"BaseFont" value:[self pdfFontName]];
+    [result setIntegerForKey:"FirstChar" value:0];
+    [result setIntegerForKey:"LastChar" value:255];
+    [result setObjectForKey:"Widths" value:[context encodeIndirectPDFObject:[self _pdfWidths]]];
+    [result setObjectForKey:"FontDescriptor" value:[context encodeIndirectPDFObject:[self _pdfFontDescriptor]]];
+
+    [result setNameForKey:"Encoding" value:"WinAnsiEncoding"];
+
+    reference=[context encodeIndirectPDFObject:result];
+    [context setReference:reference forFontWithName:_name size:_size];
+   }
+   
+   return reference;
+}
+
+-(void)fetchMetrics {
+   NSInvalidAbstractInvocation();
+}
+
+-(void)loadGlyphRangeTable {
+   NSInvalidAbstractInvocation();
+}
+
+-(void)fetchGlyphKerning {
+   NSInvalidAbstractInvocation();
+}
+
+-(void)fetchAdvancementsForGlyph:(CGGlyph)glyph {
+   NSInvalidAbstractInvocation();
 }
 
 @end

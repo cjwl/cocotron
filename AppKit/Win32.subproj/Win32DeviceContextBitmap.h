@@ -9,12 +9,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/KGDeviceContext_gdi.h>
 #import <Foundation/NSGeometry.h>
 
-@class KGRenderingContext;
+@class KGRenderingContext_gdi;
 
 @interface Win32DeviceContextBitmap : KGDeviceContext_gdi {
    KGDeviceContext_gdi *_compatible;
    HBITMAP              _bitmap;
-   KGRenderingContext  *_renderingContext;
+   KGRenderingContext_gdi  *_renderingContext;
 }
 
 -initWithSize:(NSSize)size deviceContext:(KGDeviceContext_gdi *)compatible;

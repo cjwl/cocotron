@@ -454,6 +454,10 @@ static inline KGGraphicsState *currentState(KGContext *self){
    [currentState(self) setTextDrawingMode:textMode];
 }
 
+-(KGFont *)currentFont {
+   return [currentState(self) font];
+}
+
 -(void)setFont:(KGFont *)font {
    [currentState(self) setFont:font];
 }
@@ -597,7 +601,11 @@ static inline KGGraphicsState *currentState(KGContext *self){
 }
 
 -(void)clearRect:(NSRect)rect {
-   NSInvalidAbstractInvocation();
+// doc.s are not clear. CGContextClearRect resets the path and does not affect gstate color
+   [self saveGState];
+   [self setGrayFillColor:0:0];
+   [self fillRect:rect];
+   [self restoreGState];
 }
 
 -(void)showGlyphs:(const CGGlyph *)glyphs count:(unsigned)count {
@@ -694,7 +702,7 @@ static inline KGGraphicsState *currentState(KGContext *self){
 }
 
 -(BOOL)getImageableRect:(NSRect *)rect {
-   NSUnimplementedMethod();
+   return NO;
 }
 
 // temporary

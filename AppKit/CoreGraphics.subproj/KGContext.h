@@ -136,6 +136,7 @@ enum {
 -(void)setTextPosition:(float)x:(float)y;
 -(void)setCharacterSpacing:(float)spacing;
 -(void)setTextDrawingMode:(int)textMode;
+-(KGFont *)currentFont;
 -(void)setFont:(KGFont *)font;
 -(void)setFontSize:(float)size;
 -(void)selectFontWithName:(const char *)name size:(float)size encoding:(int)encoding;

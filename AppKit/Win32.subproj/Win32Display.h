@@ -41,6 +41,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 +(Win32Display *)currentDisplay;
 
+-(KGRenderingContext_gdi *)renderingContextOnPrimaryScreen;
 -(KGDeviceContext_gdi *)deviceContextOnPrimaryScreen;
 
 -(NSArray *)screens;

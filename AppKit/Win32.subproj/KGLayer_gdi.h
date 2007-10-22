@@ -1,13 +1,13 @@
 #import <AppKit/KGLayer.h>
 
-@class KGRenderingContext;
+@class KGRenderingContext_gdi;
 
 @interface KGLayer_gdi : KGLayer {
-   KGRenderingContext *_renderingContext;
+   KGRenderingContext_gdi *_renderingContext;
 }
 
--initRelativeToRenderingContext:(KGRenderingContext *)context size:(NSSize)size unused:(NSDictionary *)unused;
+-initRelativeToRenderingContext:(KGRenderingContext_gdi *)context size:(NSSize)size unused:(NSDictionary *)unused;
 
--(KGRenderingContext *)renderingContext;
+-(KGRenderingContext_gdi *)renderingContext;
 
 @end

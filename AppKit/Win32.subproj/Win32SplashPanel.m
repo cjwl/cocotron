@@ -12,7 +12,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSImage.h>
 #import <AppKit/NSBitmapImageRep.h>
 #import <AppKit/NSScreen.h>
-#import <AppKit/Win32Application.h>
 
 @implementation Win32SplashPanel
 
@@ -57,7 +56,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
    _window=CreateWindowEx(0,"STATIC","",WS_POPUP|WS_VISIBLE|WS_DISABLED,
      _frame.origin.x,_frame.origin.y,_frame.size.width,_frame.size.height,
-     NULL,NULL,Win32ApplicationHandle(),NULL);
+     NULL,NULL,GetModuleHandle (NULL),NULL);
 
    [self draw];
 

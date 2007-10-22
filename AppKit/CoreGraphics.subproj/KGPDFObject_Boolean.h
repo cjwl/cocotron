@@ -15,5 +15,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 +pdfObjectWithTrue;
 +pdfObjectWithFalse;
++pdfObjectWithBoolean:(KGPDFBoolean)value;
 
 @end

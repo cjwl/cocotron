@@ -19,11 +19,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 +(KGPDFArray *)pdfArray;
 +(KGPDFArray *)pdfArrayWithRect:(NSRect)rect;
++(KGPDFArray *)pdfArrayWithNumbers:(KGPDFReal *)values count:(unsigned)count;
++(KGPDFArray *)pdfArrayWithIntegers:(KGPDFInteger *)values count:(unsigned)count;
 
 -(unsigned)count;
 
 -(void)addObject:(KGPDFObject *)anObject;
 -(void)addNumber:(KGPDFReal)value;
+-(void)addInteger:(KGPDFInteger)value;
+-(void)addBoolean:(KGPDFBoolean)value;
 
 -(KGPDFObject *)objectAtIndex:(unsigned)index;
 

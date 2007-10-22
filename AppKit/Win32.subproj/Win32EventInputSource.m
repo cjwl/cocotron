@@ -18,7 +18,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 /* We only post periodic events if there are no other normal events, otherwise
-   an long event handling can constantly only generate periodics
+   a long event handling can constantly only generate periodics
  */
 -(BOOL)processInputImmediately {
    BOOL hadPeriodic=[[Win32Display currentDisplay] containsAndRemovePeriodicEvents];

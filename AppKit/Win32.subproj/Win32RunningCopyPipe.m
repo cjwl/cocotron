@@ -101,7 +101,7 @@ static Win32RunningCopyPipe *_runningCopyPipe=nil;
    return YES;
 }
 
-+(void)startRunningCopyPipe {
++(void)_startRunningCopyPipe {
    if(![self createRunningCopyPipe]){
     NSString *path;
 
@@ -113,8 +113,7 @@ static Win32RunningCopyPipe *_runningCopyPipe=nil;
     path=[[NSUserDefaults standardUserDefaults] stringForKey:@"NSOpen"];
 
     if([path length]>0){
-     HANDLE pipe=CreateFile([[self pipeName] cString],
-          GENERIC_WRITE,FILE_SHARE_WRITE,NULL,OPEN_EXISTING,0,NULL);
+     HANDLE pipe=CreateFile([[self pipeName] cString],GENERIC_WRITE,FILE_SHARE_WRITE,NULL,OPEN_EXISTING,0,NULL);
 
      if(pipe==INVALID_HANDLE_VALUE)
       return;
@@ -133,6 +132,14 @@ static Win32RunningCopyPipe *_runningCopyPipe=nil;
     }
     exit(0);
    }
+}
+
++(void)startRunningCopyPipe {
+   NSAutoreleasePool *pool=[NSAutoreleasePool new];
+   
+   [self _startRunningCopyPipe];
+
+   [pool release];
 }
 
 @end

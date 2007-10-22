@@ -9,7 +9,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSObject.h>
 #import <AppKit/CGFunction.h>
 
-@class KGPDFArray,KGPDFDictionary;
+@class KGPDFArray,KGPDFDictionary,KGPDFObject,KGPDFContext;
 
 @interface KGFunction : NSObject {
    void               *_info;
@@ -33,6 +33,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 // FIX, only works for one input value
 -(void)evaluateInput:(float)x output:(float *)outp;
 
+-(KGPDFObject *)encodeReferenceWithContext:(KGPDFContext *)context;
 +(KGFunction *)pdfFunctionWithDictionary:(KGPDFDictionary *)dictionary;
 
 @end

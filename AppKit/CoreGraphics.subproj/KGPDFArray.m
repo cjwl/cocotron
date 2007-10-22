@@ -9,6 +9,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 // Original - Christopher Lloyd <cjwl@objc.net>
 #import "KGPDFArray.h"
 #import "KGPDFObject_Real.h"
+#import "KGPDFObject_Boolean.h"
+#import "KGPDFObject_Integer.h"
 #import <AppKit/KGPDFContext.h>
 #import <Foundation/NSString.h>
 #import <stddef.h>
@@ -29,6 +31,27 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    
    return result;
 }
+
++(KGPDFArray *)pdfArrayWithNumbers:(KGPDFReal *)values count:(unsigned)count {
+   KGPDFArray *result=[self pdfArray];
+   int         i;
+   
+   for(i=0;i<count;i++)
+    [result addNumber:values[i]];
+   
+   return result;
+}
+
++(KGPDFArray *)pdfArrayWithIntegers:(KGPDFInteger *)values count:(unsigned)count {
+   KGPDFArray *result=[self pdfArray];
+   int         i;
+   
+   for(i=0;i<count;i++)
+    [result addInteger:values[i]];
+   
+   return result;
+}
+
 
 -init {
    _capacity=1;
@@ -67,6 +90,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)addNumber:(KGPDFReal)value {
    [self addObject:[KGPDFObject_Real pdfObjectWithReal:value]];
+}
+
+-(void)addInteger:(KGPDFInteger)value {
+   [self addObject:[KGPDFObject_Integer pdfObjectWithInteger:value]];
+}
+
+-(void)addBoolean:(KGPDFBoolean)value {
+   [self addObject:[KGPDFObject_Boolean pdfObjectWithBoolean:value]];
 }
 
 -(KGPDFObject *)objectAtIndex:(unsigned)index {

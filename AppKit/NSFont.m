@@ -20,22 +20,6 @@ FOUNDATION_EXPORT char *NSUnicodeToSymbol(const unichar *characters,unsigned len
 
 @implementation NSFont
 
--(void)fetchMetrics {
-   NSFontMetrics metrics;
-
-   [[NSDisplay currentDisplay] metricsForFontWithName:[_name cString] pointSize:_pointSize metrics:&metrics];
-
-   _boundingRect=metrics.boundingRect;
-
-   _underlineThickness=metrics.underlineThickness;
-   _underlinePosition=metrics.underlinePosition;
-
-   _ascender=metrics.ascender;
-   _descender=metrics.descender;
-   _isFixedPitch=metrics.isFixedPitch;
-
-}
-
 -(void)encodeWithCoder:(NSCoder *)coder {
    [coder encodeObject:_name forKey:@"NSFont name"];
    [coder encodeFloat:_pointSize forKey:@"NSFont pointSize"];
@@ -102,8 +86,6 @@ FOUNDATION_EXPORT char *NSUnicodeToSymbol(const unichar *characters,unsigned len
     _encoding=NSSymbolStringEncoding;
    else
     _encoding=NSUnicodeStringEncoding;
-
-   [self fetchMetrics];
 
    [[NSDisplay currentDisplay] addFontToCache:self];
    
@@ -208,7 +190,7 @@ FOUNDATION_EXPORT char *NSUnicodeToSymbol(const unichar *characters,unsigned len
 }
 
 -(NSRect)boundingRectForFont {
-   return _boundingRect;
+   return [_kgFont boundingRect];
 }
 
 -(unsigned)numberOfGlyphs {
@@ -232,31 +214,37 @@ FOUNDATION_EXPORT char *NSUnicodeToSymbol(const unichar *characters,unsigned len
 }
 
 -(float)underlinePosition {
-   return _underlinePosition;
+   return [_kgFont underlinePosition];
 }
 
 -(float)underlineThickness {
-   return _underlineThickness;
+   return [_kgFont underlineThickness];
 }
 
 -(float)ascender {
-   return _ascender;
+   return [_kgFont ascender];
 }
 
 -(float)descender {
-   return _descender;
+   return [_kgFont descender];
 }
 
 -(float)defaultLineHeightForFont {
-   return _ascender+-_descender;
+   return [_kgFont ascender]+-[_kgFont descender];
 }
 
 -(BOOL)isFixedPitch {
-   return _isFixedPitch;
+   return [_kgFont isFixedPitch];
 }
 
 -(void)set {
    CGContextSetFont(NSCurrentGraphicsPort(),_kgFont);
+   
+   if([[NSView focusView] isFlipped]){
+    CGAffineTransform flip={1,0,0,-1,0,0};
+    
+    CGContextSetTextMatrix(NSCurrentGraphicsPort(),flip);
+   }
 }
 
 -(NSStringEncoding)mostCompatibleStringEncoding {

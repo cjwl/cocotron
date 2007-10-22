@@ -43,7 +43,7 @@ APPKIT_EXPORT NSString *NSPrintRightMargin;
 APPKIT_EXPORT NSString *NSPrintHorizontallyCentered; 
 APPKIT_EXPORT NSString *NSPrintVerticallyCentered; 
 
-@interface NSPrintInfo : NSObject {
+@interface NSPrintInfo : NSObject <NSCopying> {
    NSMutableDictionary *_attributes;
 }
 

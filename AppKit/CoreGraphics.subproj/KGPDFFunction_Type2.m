@@ -9,6 +9,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 // Original - Christopher Lloyd <cjwl@objc.net>
 #import "KGPDFFunction_Type2.h"
 #import "KGPDFArray.h"
+#import "KGPDFDictionary.h"
+#import "KGPDFContext.h"
 #import <Foundation/NSString.h>
 #import <stddef.h>
 #import <math.h>
@@ -77,6 +79,19 @@ static void evaluate(void *info,const float *input,float *output) {
 
 -(BOOL)isLinear {
    return (_N==1.0)?YES:NO;
+}
+
+-(KGPDFObject *)encodeReferenceWithContext:(KGPDFContext *)context {
+   KGPDFDictionary *result=[KGPDFDictionary pdfDictionary];
+   
+   [result setIntegerForKey:"FunctionType" value:2];
+   [result setObjectForKey:"Domain" value:[KGPDFArray pdfArrayWithNumbers:_domain count:_domainCount]];
+   [result setObjectForKey:"Range" value:[KGPDFArray pdfArrayWithNumbers:_range count:_rangeCount]];
+   [result setObjectForKey:"C0" value:[KGPDFArray pdfArrayWithNumbers:_C0 count:_C0Count]];
+   [result setObjectForKey:"C1" value:[KGPDFArray pdfArrayWithNumbers:_C1 count:_C1Count]];
+   [result setNumberForKey:"N" value:_N];
+   
+   return [context encodeIndirectPDFObject:result];
 }
 
 @end

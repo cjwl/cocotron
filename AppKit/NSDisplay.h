@@ -12,15 +12,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @class NSEvent,NSColor, NSPasteboard,NSDraggingManager,NSPrintInfo, KGContext, NSView, NSSavePanel, NSOpenPanel, CGWindow;
 
-typedef struct NSFontMetrics {
-   NSRect boundingRect;
-   float  ascender;
-   float  descender;
-   float  underlineThickness;
-   float  underlinePosition;
-   BOOL   isFixedPitch;
-} NSFontMetrics;
-
 @interface NSDisplay : NSObject {
    unsigned _fontCacheCapacity;
    unsigned _fontCacheSize;
@@ -82,13 +73,6 @@ typedef struct NSFontMetrics {
 -(NSArray *)fontTypefacesForFamilyName:(NSString *)name;
 
 -(float)scrollerWidth;
-
--(void)metricsForFontWithName:(const char *)name pointSize:(float)pointSize metrics:(NSFontMetrics *)metrics;
-
--(void)loadGlyphRangeTable:(CGGlyphRangeTable *)table fontName:(NSString *)name range:(NSRange)range;
-
--(void)fetchAdvancementsForFontWithName:(NSString *)name pointSize:(float)pointSize glyphRanges:(CGGlyphRangeTable *)table infoSet:(CGGlyphMetricsSet *)infoSet forGlyph:(NSGlyph)glyph;
--(void)fetchGlyphKerningForFontWithName:(NSString *)name pointSize:(float)pointSize glyphRanges:(CGGlyphRangeTable *)table infoSet:(CGGlyphMetricsSet *)infoSet;
 
 -(void)runModalPageLayoutWithPrintInfo:(NSPrintInfo *)printInfo;
 -(int)runModalPrintPanelWithPrintInfoDictionary:(NSMutableDictionary *)attributes;

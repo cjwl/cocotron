@@ -7,31 +7,59 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
 #import <Foundation/Foundation.h>
-#import <AppKit/KGRenderingContext.h>
+#import <AppKit/CGAffineTransform.h>
+#import <AppKit/CGFont.h>
+
+@class KGDeviceContext_gdi,KGContext,KGColor,KGPath,KGImage,KGLayer,KGShading;
 
 #import <windows.h>
 
 @class Win32Font, NSAffineTransform;
 
-@interface KGRenderingContext_gdi : KGRenderingContext {
+@interface KGRenderingContext_gdi : NSObject {
+   KGDeviceContext_gdi *_deviceContext;
+   KGFont          *_font;
    HDC        _dc;
    HRGN       _clipRegion;
    BOOL       _isAdvanced;
    Win32Font *_gdiFont;
 }
 
-+(KGRenderingContext *)renderingContextWithPrinterDC:(HDC)dc;
-+(KGRenderingContext *)renderingContextWithWindowHWND:(HWND)handle;
-+(KGRenderingContext *)renderingContextWithSize:(NSSize)size renderingContext:(KGRenderingContext *)otherContext;
-+(KGRenderingContext *)renderingContextWithSize:(NSSize)size;
++(KGRenderingContext_gdi *)renderingContextWithPrinterDC:(HDC)dc;
++(KGRenderingContext_gdi *)renderingContextWithWindowHWND:(HWND)handle;
++(KGRenderingContext_gdi *)renderingContextWithSize:(NSSize)size renderingContext:(KGRenderingContext_gdi *)otherContext;
++(KGRenderingContext_gdi *)renderingContextWithSize:(NSSize)size;
 
 -(KGContext *)createGraphicsContext;
 -(KGContext *)cgContextWithSize:(NSSize)size;
 
--initWithDC:(HDC)dc deviceContext:(KGDeviceContext *)deviceContext;
+-initWithDC:(HDC)dc deviceContext:(KGDeviceContext_gdi *)deviceContext;
 
+-(KGDeviceContext_gdi *)deviceContext;
 -(HDC)dc;
 -(HWND)windowHandle;
+
+-(NSSize)size;
+
+-(void)beginPage;
+-(void)endPage;
+
+-(void)beginPrintingWithDocumentName:(NSString *)name;
+-(void)endPrinting;
+
+-(void)setFont:(KGFont *)font;
+
+-(id)saveCopyOfDeviceState;
+-(void)restoreDeviceState:(id)state;
+
+-(void)clipToDeviceSpacePath:(KGPath *)path;
+-(void)evenOddClipToDeviceSpacePath:(KGPath *)path;
+
+-(void)drawLayer:(KGLayer *)layer inRect:(NSRect)rect ctm:(CGAffineTransform)ctm;
+
+-(void)drawInUserSpace:(CGAffineTransform)matrix shading:(KGShading *)shading;
+
+-(void)resetClip;
 
 -(void)selectFontWithName:(const char *)name pointSize:(float)pointSize;
 -(void)selectFontWithName:(const char *)name pointSize:(float)pointSize antialias:(BOOL)antialias;

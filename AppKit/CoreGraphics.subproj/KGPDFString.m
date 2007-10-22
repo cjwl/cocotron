@@ -36,21 +36,21 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 +pdfObjectWithBytes:(const char *)bytes length:(unsigned)length {
-   return [[[self alloc] initWithBytes:bytes length:length] autorelease];
+   return [[(KGPDFString *)[self alloc] initWithBytes:bytes length:length] autorelease];
 }
 
 +pdfObjectWithBytesNoCopyNoFree:(const char *)bytes length:(unsigned)length {
-   return [[[self alloc] initWithBytesNoCopyNoFree:bytes length:length] autorelease];
+   return [[(KGPDFString *)[self alloc] initWithBytesNoCopyNoFree:bytes length:length] autorelease];
 }
 
 +pdfObjectWithCString:(const char *)cString {
-   return [[[self alloc] initWithBytes:cString length:strlen(cString)] autorelease];
+   return [[(KGPDFString *)[self alloc] initWithBytes:cString length:strlen(cString)] autorelease];
 }
 
 +pdfObjectWithString:(NSString *)string {
    NSData *data=[string dataUsingEncoding:NSISOLatin1StringEncoding];
    
-   return [[[self alloc] initWithBytes:[data bytes] length:[data length]] autorelease];
+   return [[(KGPDFString *)[self alloc] initWithBytes:[data bytes] length:[data length]] autorelease];
 }
 
 -(KGPDFObjectType)objectType {
@@ -74,39 +74,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)encodeWithPDFContext:(KGPDFContext *)encoder {
-   BOOL hex=NO;
-   int  i;
-   
-   for(i=0;i<_length;i++)
-    if(_bytes[i]<' ' || _bytes[i]>=127 || _bytes[i]=='(' || _bytes[i]==')'){
-     hex=YES;
-     break;
-    }
-   
-   if(hex){
-    const char *hex="0123456789ABCDEF";
-    int         i,bufCount,bufSize=256;
-    char        buf[bufSize];
-    
-    [encoder appendCString:"<"];
-    bufCount=0;
-    for(i=0;i<_length;i++){
-     buf[bufCount++]=hex[_bytes[i]>>4];
-     buf[bufCount++]=hex[_bytes[i]&0xF];
-     
-     if(bufCount==bufSize){
-      [encoder appendBytes:buf length:bufCount];
-      bufCount=0;
-     }
-    }
-    [encoder appendBytes:buf length:bufCount];
-    [encoder appendCString:"> "];
-   }
-   else {
-    [encoder appendCString:"("];
-    [encoder appendBytes:_bytes length:_length];
-    [encoder appendCString:") "];
-   }
+   [encoder appendPDFStringWithBytes:_bytes length:_length];
 }
 
 -(NSString *)description {

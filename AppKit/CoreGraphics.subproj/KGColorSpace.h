@@ -30,7 +30,7 @@ typedef enum {
 
 -(unsigned)numberOfComponents;
 
--(KGPDFObject *)pdfObjectInContext:(KGPDFContext *)context;
+-(KGPDFObject *)encodeReferenceWithContext:(KGPDFContext *)context;
 +(KGColorSpace *)colorSpaceFromPDFObject:(KGPDFObject *)object;
 
 @end
