@@ -1110,10 +1110,9 @@ static inline void buildTransformsIfNeeded(NSView *self) {
     CGAffineTransform flip={1,0,0,-1,0,imageableRect.size.height};
      
     transform=CGAffineTransformConcat(transform,flip);
-    transform=CGAffineTransformTranslate(transform,-rect.origin.x,-rect.origin.y);
    }
-   else
-    transform=CGAffineTransformTranslate(transform,-rect.origin.x,NSMaxY(rect));
+
+   transform=CGAffineTransformTranslate(transform,-rect.origin.x,-rect.origin.y);
 
    CGContextConcatCTM(graphicsPort,transform);
 

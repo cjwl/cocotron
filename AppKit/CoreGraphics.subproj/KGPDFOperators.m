@@ -772,7 +772,6 @@ void KGPDF_render_sh(KGPDFScanner *scanner,void *info) {
    KGContext *context=kgContextFromInfo(info);
    KGPDFContentStream *content=[scanner contentStream];
    KGPDFObject        *resource;
-   KGPDFDictionary    *dictionary;
    const char         *name;
    KGPDFInteger        shadingType;
    KGPDFObject        *colorSpaceObject;
@@ -785,7 +784,7 @@ void KGPDF_render_sh(KGPDFScanner *scanner,void *info) {
    if((resource=[content resourceForCategory:"Shading" name:name])==nil)
     return;
    
-   shading=[KGShading shadingWithPDFObject:dictionary];
+   shading=[KGShading shadingWithPDFObject:resource];
    
    if(shading!=NULL){
     [context drawShading:shading];

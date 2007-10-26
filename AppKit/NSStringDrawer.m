@@ -45,44 +45,8 @@ NSStringDrawer *NSCurrentStringDrawer() {
    return [_layoutManager usedRectForTextContainer:_textContainer].size;
 }
 
--(NSPoint)lockFocusToPoint:(NSPoint)point height:(float)height isFlipped:(BOOL *)isFlipped {
-
-   if((*isFlipped=[[NSView focusView] isFlipped]))
-    return point;
-   else {
-    KGContext        *context=NSCurrentGraphicsPort();
-    CGAffineTransform translate=CGAffineTransformMakeTranslation(point.x,point.y);
-    CGAffineTransform flip={1,0,0,-1,0,height};
-
-    CGContextSaveGState(context);
-    CGContextConcatCTM(context,CGAffineTransformConcat(translate,flip));
-    return NSMakePoint(0,0);
-   }
-}
-
--(NSPoint)lockFocusToRect:(NSRect)rect isFlipped:(BOOL *)isFlipped {
-   if((*isFlipped=[[NSView focusView] isFlipped]))
-    return rect.origin;
-   else {
-    KGContext        *context=NSCurrentGraphicsPort();
-    CGAffineTransform translate=CGAffineTransformMakeTranslation(NSMinX(rect),NSMinY(rect));
-    CGAffineTransform flip={1,0,0,-1,0,rect.size.height};
-
-    CGContextSaveGState(context);
-    CGContextConcatCTM(context,CGAffineTransformConcat(translate,flip));
-    return NSMakePoint(0,0);
-   }
-}
-
--(void)unlockFocusIsFlipped:(BOOL)isFlipped {
-   if(!isFlipped)
-    CGContextRestoreGState(NSCurrentGraphicsPort());
-}
-
 -(void)drawString:(NSString *)string withAttributes:(NSDictionary *)attributes inRect:(NSRect)rect {
-   BOOL    isFlipped;
    NSRange glyphRange;
-   NSPoint origin;
 
    [_textContainer setContainerSize:rect.size];
    [_textStorage beginEditing];
@@ -91,16 +55,12 @@ NSStringDrawer *NSCurrentStringDrawer() {
    [_textStorage endEditing];
 
    glyphRange=[_layoutManager glyphRangeForTextContainer:_textContainer];
-   origin=[self lockFocusToRect:rect isFlipped:&isFlipped];
-   [_layoutManager drawBackgroundForGlyphRange:glyphRange atPoint:origin];
-   [_layoutManager drawGlyphsForGlyphRange:glyphRange atPoint:origin];
-   [self unlockFocusIsFlipped:isFlipped];
+   [_layoutManager drawBackgroundForGlyphRange:glyphRange atPoint:rect.origin];
+   [_layoutManager drawGlyphsForGlyphRange:glyphRange atPoint:rect.origin];
 }
 
 -(void)drawString:(NSString *)string withAttributes:(NSDictionary *)attributes atPoint:(NSPoint)point {
-   BOOL    isFlipped;
    NSRange glyphRange;
-   NSPoint origin;
 
    [_textContainer setContainerSize:largeSize];
    [_textStorage beginEditing];
@@ -109,10 +69,8 @@ NSStringDrawer *NSCurrentStringDrawer() {
    [_textStorage endEditing];
 
    glyphRange=[_layoutManager glyphRangeForTextContainer:_textContainer];
-   origin=[self lockFocusToPoint:point height:[_layoutManager usedRectForTextContainer:_textContainer].size.height isFlipped:&isFlipped];
-   [_layoutManager drawBackgroundForGlyphRange:glyphRange atPoint:origin];
-   [_layoutManager drawGlyphsForGlyphRange:glyphRange atPoint:origin];
-   [self unlockFocusIsFlipped:isFlipped];
+   [_layoutManager drawBackgroundForGlyphRange:glyphRange atPoint:point];
+   [_layoutManager drawGlyphsForGlyphRange:glyphRange atPoint:point];
 }
 
 -(NSSize)sizeOfAttributedString:(NSAttributedString *)astring {
@@ -122,33 +80,25 @@ NSStringDrawer *NSCurrentStringDrawer() {
 }
 
 -(void)drawAttributedString:(NSAttributedString *)astring inRect:(NSRect)rect {
-   BOOL    isFlipped;
    NSRange glyphRange;
-   NSPoint origin;
 
    [_textContainer setContainerSize:rect.size];
    [_textStorage setAttributedString:astring];
 
    glyphRange=[_layoutManager glyphRangeForTextContainer:_textContainer];
-   origin=[self lockFocusToRect:rect isFlipped:&isFlipped];
-   [_layoutManager drawBackgroundForGlyphRange:glyphRange atPoint:origin];
-   [_layoutManager drawGlyphsForGlyphRange:glyphRange atPoint:origin];
-   [self unlockFocusIsFlipped:isFlipped];
+   [_layoutManager drawBackgroundForGlyphRange:glyphRange atPoint:rect.origin];
+   [_layoutManager drawGlyphsForGlyphRange:glyphRange atPoint:rect.origin];
 }
 
 -(void)drawAttributedString:(NSAttributedString *)astring atPoint:(NSPoint)point {
-   BOOL    isFlipped;
    NSRange glyphRange;
-   NSPoint origin;
 
    [_textContainer setContainerSize:largeSize];
    [_textStorage setAttributedString:astring];
 
    glyphRange=[_layoutManager glyphRangeForTextContainer:_textContainer];
-   origin=[self lockFocusToPoint:point height:[_layoutManager usedRectForTextContainer:_textContainer].size.height isFlipped:&isFlipped];
-   [_layoutManager drawBackgroundForGlyphRange:glyphRange atPoint:origin];
-   [_layoutManager drawGlyphsForGlyphRange:glyphRange atPoint:origin];
-   [self unlockFocusIsFlipped:isFlipped];
+   [_layoutManager drawBackgroundForGlyphRange:glyphRange atPoint:point];
+   [_layoutManager drawGlyphsForGlyphRange:glyphRange atPoint:point];
 }
 
 @end

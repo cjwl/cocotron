@@ -64,12 +64,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    
     case KGColorSpaceDeviceGray:
      name=[KGPDFObject_Name pdfObjectWithCString:"DeviceGray"];
+     break;
      
     case KGColorSpaceDeviceRGB:
      name=[KGPDFObject_Name pdfObjectWithCString:"DeviceRGB"];
+     break;
 
     case KGColorSpaceDeviceCMYK:
      name=[KGPDFObject_Name pdfObjectWithCString:"DeviceCMYK"];
+     break;
 
     default:
      return nil;

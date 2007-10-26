@@ -734,7 +734,9 @@ static inline void _appendRectToCache(NSLayoutManager *self,NSRect rect){
     NSRange          characterRange=[self characterRangeForGlyphRange:glyphRange actualGlyphRange:NULL];
     unsigned         location=characterRange.location;
     unsigned         limit=NSMaxRange(characterRange);
-
+    BOOL             isFlipped=[[NSView focusView] isFlipped];
+    float            usedHeight=[self usedRectForTextContainer:container].size.height;
+    
     while(location<limit){
      NSRange          effectiveRange;
      NSDictionary    *attributes=[_textStorage attributesAtIndex:location effectiveRange:&effectiveRange];
@@ -751,9 +753,12 @@ static inline void _appendRectToCache(NSLayoutManager *self,NSRect rect){
       for(i=0;i<rectCount;i++){
        NSRect fill=rects[i];
 
+       if(!isFlipped)
+        fill.origin.y=usedHeight-(fill.origin.y+fill.size.height);
+
        fill.origin.x+=origin.x;
        fill.origin.y+=origin.y;
-
+        
        NSRectFill(fill);
       }
      }
@@ -768,6 +773,10 @@ static inline void _appendRectToCache(NSLayoutManager *self,NSRect rect){
    NSTextView *textView=[self textViewForBeginningOfSelection];
    NSRange     selectedRange=(textView==nil)?NSMakeRange(0,0):[textView selectedRange];
    NSColor    *selectedColor=[[textView selectedTextAttributes] objectForKey:NSForegroundColorAttributeName];
+   
+   NSTextContainer *container=[self textContainerForGlyphAtIndex:glyphRange.location effectiveRange:&glyphRange];
+   BOOL             isFlipped=[[NSView focusView] isFlipped];
+   float            usedHeight=[self usedRectForTextContainer:container].size.height;
 
    if(selectedColor==nil)
     selectedColor=[NSColor selectedTextColor];
@@ -783,12 +792,18 @@ static inline void _appendRectToCache(NSLayoutManager *self,NSRect rect){
      NSRange intersect=NSIntersectionRange(range,glyphRange);
 
      if(intersect.length>0){
-      NSPoint           point=NSMakePoint(origin.x+fragment->location.x,origin.y+fragment->location.y);
+      NSPoint           point=NSMakePoint(fragment->location.x,fragment->location.y);
       NSRange           characterRange=[self characterRangeForGlyphRange:range actualGlyphRange:NULL];
       NSRange           intersectRange=NSIntersectionRange(selectedRange,characterRange);
       NSDictionary     *attributes=[_textStorage attributesAtIndex:characterRange.location effectiveRange:NULL];
       NSTextAttachment *attachment=[attributes objectForKey:NSAttachmentAttributeName];
 
+       if(!isFlipped)
+        point.y=usedHeight-point.y;
+
+      point.x+=origin.x;
+      point.y+=origin.y;
+      
       if(attachment!=nil){
        id <NSTextAttachmentCell> cell=[attachment attachmentCell];
        NSRect frame;

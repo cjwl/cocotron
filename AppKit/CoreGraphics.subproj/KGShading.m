@@ -175,7 +175,7 @@ KGShading *axialShading(KGPDFDictionary *dictionary,KGColorSpace *colorSpace){
      return NULL;
     }
    }
-   
+
    if(![dictionary getDictionaryForKey:"Function" value:&fnDictionary]){
     NSLog(@"No Function entry in axial shader");
     return NULL;
