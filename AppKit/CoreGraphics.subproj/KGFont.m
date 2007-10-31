@@ -131,23 +131,30 @@ static inline CGGlyphMetrics *fetchGlyphAdvancementIfNeeded(KGFont *self,CGGlyph
 }
 
 -(NSRect)boundingRect {
-   return _metrics.boundingRect;
+  NSRect result=_metrics.boundingRect;
+  
+  result.origin.x/=_metrics.emsquare*_metrics.scale;
+  result.origin.y/=_metrics.emsquare*_metrics.scale;
+  result.size.width/=_metrics.emsquare*_metrics.scale;
+  result.size.height/=_metrics.emsquare*_metrics.scale;
+  
+   return result;
 }
 
 -(float)ascender {
-   return _metrics.ascender;
+   return _metrics.ascender/_metrics.emsquare*_metrics.scale;
 }
 
 -(float)descender {
-   return _metrics.descender;
+   return _metrics.descender/_metrics.emsquare*_metrics.scale;
 }
 
 -(float)underlineThickness {
-   return _metrics.underlineThickness;
+   return _metrics.underlineThickness/_metrics.emsquare*_metrics.scale;
 }
 
 -(float)underlinePosition {
-   return _metrics.underlinePosition;
+   return _metrics.underlinePosition/_metrics.emsquare*_metrics.scale;
 }
 
 -(BOOL)isFixedPitch {
@@ -339,16 +346,21 @@ static inline CGGlyphMetrics *fetchGlyphAdvancementIfNeeded(KGFont *self,CGGlyph
 
    [result setNameForKey:"Type" value:"FontDescriptor"];
    [result setNameForKey:"FontName" value:[self pdfFontName]];
-   [result setIntegerForKey:"Flags" value:0];
+   [result setIntegerForKey:"Flags" value:32];
    
-   KGPDFReal bbox[4]={0,0,0,0};
+   KGPDFReal bbox[4];
+   
+   bbox[0]=_metrics.boundingRect.origin.x;
+   bbox[1]=_metrics.boundingRect.origin.y;
+   bbox[2]=_metrics.boundingRect.size.width;
+   bbox[3]=_metrics.boundingRect.size.height;
    [result setObjectForKey:"FontBBox" value:[KGPDFArray pdfArrayWithNumbers:bbox count:4]];
-   [result setIntegerForKey:"ItalicAngle" value:0];
-   [result setIntegerForKey:"Ascent" value:0];
-   [result setIntegerForKey:"Descent" value:0];
-   [result setIntegerForKey:"CapHeight" value:0];
-   [result setIntegerForKey:"StemV" value:0];
-   [result setIntegerForKey:"StemH" value:0];
+   [result setIntegerForKey:"ItalicAngle" value:_metrics.italicAngle];
+   [result setIntegerForKey:"Ascent" value:_metrics.ascender];
+   [result setIntegerForKey:"Descent" value:_metrics.descender];
+   [result setIntegerForKey:"CapHeight" value:_metrics.capHeight];
+   [result setIntegerForKey:"StemV" value:_metrics.stemV];
+   [result setIntegerForKey:"StemH" value:_metrics.stemH];
    
    return result;
 }

@@ -1,6 +1,7 @@
 #import "KGFont_gdi.h"
 #import "KGRenderingContext_gdi.h"
 #import "Win32Display.h"
+#import "Win32Font.h"
 
 @interface KGFont(KGFont_gdi)
 @end
@@ -48,14 +49,18 @@ static inline CGGlyphMetrics *glyphInfoForGlyph(CGGlyphMetricsSet *infoSet,NSGly
 
    GetTextMetrics(dc,&gdiMetrics);
 
+   _metrics.emsquare=1;
+   _metrics.scale=1;
    _metrics.boundingRect.origin.x=0;
    _metrics.boundingRect.origin.y=0;
    _metrics.boundingRect.size.width=gdiMetrics.tmMaxCharWidth;
    _metrics.boundingRect.size.height=gdiMetrics.tmHeight;
-
    _metrics.ascender=gdiMetrics.tmAscent;
    _metrics.descender=-gdiMetrics.tmDescent;
-
+   _metrics.italicAngle=0;
+   _metrics.capHeight=0;
+   _metrics.stemV=0;
+   _metrics.stemH=0;
    _metrics.underlineThickness=_size/24;
    if(_metrics.underlineThickness<0)
     _metrics.underlineThickness=1;
@@ -63,6 +68,56 @@ static inline CGGlyphMetrics *glyphInfoForGlyph(CGGlyphMetricsSet *infoSet,NSGly
    _metrics.underlinePosition=-(_metrics.underlineThickness*2);
 
    _metrics.isFixedPitch=(gdiMetrics.tmPitchAndFamily&TMPF_FIXED_PITCH)?NO:YES;
+
+   if(!(gdiMetrics.tmPitchAndFamily&TMPF_TRUETYPE))
+    return;
+    
+   int size=GetOutlineTextMetricsA(dc,0,NULL);
+    
+   if(size<=0)
+    return;
+
+   OUTLINETEXTMETRICA *ttMetrics=__builtin_alloca(size);
+
+   ttMetrics->otmSize=sizeof(OUTLINETEXTMETRICA);
+   if(!GetOutlineTextMetricsA(dc,size,ttMetrics))
+    return;
+    
+/* P. 931 "Windows Graphics Programming" by Feng Yuan, 1st Ed.
+   A font with height of negative otmEMSquare will have precise metrics  */
+   
+   HFONT   fontHandle=[[[[Win32Display currentDisplay] renderingContextOnPrimaryScreen] currentFont] fontHandle];
+   LOGFONT logFont;
+     
+   GetObject(fontHandle,sizeof(logFont),&logFont);
+   logFont.lfHeight=-ttMetrics->otmEMSquare;
+   logFont.lfWidth=0;
+     
+   fontHandle=CreateFontIndirect(&logFont);
+   SelectObject(dc,fontHandle);
+   
+   ttMetrics->otmSize=sizeof(OUTLINETEXTMETRICA);
+   size=GetOutlineTextMetricsA(dc,size,ttMetrics);
+   DeleteObject(fontHandle);
+   if(size<=0)
+    return;
+          
+   _metrics.emsquare=ttMetrics->otmEMSquare;
+   _metrics.scale=(_size*96.0)/72.0;
+
+   _metrics.boundingRect.origin.x=ttMetrics->otmrcFontBox.left;
+   _metrics.boundingRect.origin.y=ttMetrics->otmrcFontBox.bottom;
+   _metrics.boundingRect.size.width=ttMetrics->otmrcFontBox.right-ttMetrics->otmrcFontBox.left;
+   _metrics.boundingRect.size.height=ttMetrics->otmrcFontBox.top-ttMetrics->otmrcFontBox.bottom;
+
+   _metrics.ascender=ttMetrics->otmAscent;
+   _metrics.descender=ttMetrics->otmDescent;
+   _metrics.italicAngle=ttMetrics->otmItalicAngle;
+   _metrics.capHeight=ttMetrics->otmsCapEmHeight;
+   _metrics.underlineThickness=ttMetrics->otmsUnderscoreSize;
+   if(_metrics.underlineThickness<0)
+    _metrics.underlineThickness=1;
+   _metrics.underlinePosition=ttMetrics->otmsUnderscorePosition;
 }
 
 -(void)loadGlyphRangeTable {

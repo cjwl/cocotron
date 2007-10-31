@@ -8,9 +8,15 @@ enum {
 };
 
 typedef struct CGFontMetrics {
+   float  emsquare;
+   float  scale;
    NSRect boundingRect;
    float  ascender;
    float  descender;
+   float  italicAngle;
+   float  capHeight;
+   float  stemV;
+   float  stemH;
    float  underlineThickness;
    float  underlinePosition;
    BOOL   isFixedPitch;

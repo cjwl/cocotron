@@ -311,8 +311,8 @@ static void loadGlyphAndCharacterCacheForLocation(NSTypesetter_concrete *self,un
    if(_font!=nextFont){
     _previousGlyph=NSNullGlyph;
     _font=nextFont;
-    _fontAscender=[_font ascender];
-    _fontDefaultLineHeight=[_font defaultLineHeightForFont];
+    _fontAscender=ceilf([_font ascender]);
+    _fontDefaultLineHeight=ceilf([_font defaultLineHeightForFont]);
     _positionOfGlyph=(void *)[_font methodForSelector:@selector(positionOfGlyph:precededByGlyph:isNominal:)];
 
     [_font getGlyphs:&spaceGlyph forCharacters:&space length:1];
@@ -368,8 +368,8 @@ static void loadGlyphAndCharacterCacheForLocation(NSTypesetter_concrete *self,un
 
    if(_font==nil){
     _font=NSFontAttributeInDictionary(nil);
-    _fontAscender=[_font ascender];
-    _fontDefaultLineHeight=[_font defaultLineHeightForFont];
+    _fontAscender=ceilf([_font ascender]);
+    _fontDefaultLineHeight=ceilf([_font defaultLineHeightForFont]);
     _positionOfGlyph=(void *)[_font methodForSelector:@selector(positionOfGlyph:precededByGlyph:isNominal:)];
    }
    _scanRect.size.height=MAX(_scanRect.size.height,_fontDefaultLineHeight);

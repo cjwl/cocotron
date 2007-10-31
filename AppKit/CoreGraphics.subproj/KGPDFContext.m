@@ -145,12 +145,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
      }
     }
     [data appendBytes:buf length:bufCount];
-    [data appendBytes:"> " length:1];
+    [data appendBytes:"> " length:2];
    }
    else {
     [data appendBytes:"(" length:1];
     [data appendBytes:bytes length:length];
-    [data appendBytes:") " length:1];
+    [data appendBytes:") " length:2];
    }
 }
 

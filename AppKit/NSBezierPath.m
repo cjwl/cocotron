@@ -138,7 +138,6 @@ static NSLineJoinStyle _defaultLineJoinStyle=NSMiterLineJoinStyle;
    KGContext *context=[[NSGraphicsContext currentContext] graphicsPort];
    
    CGContextSaveGState(context);
- // set default attributes ?
    CGContextFillRect(context,rect);
    CGContextRestoreGState(context);
 }
@@ -147,7 +146,12 @@ static NSLineJoinStyle _defaultLineJoinStyle=NSMiterLineJoinStyle;
    KGContext *context=[[NSGraphicsContext currentContext] graphicsPort];
    
    CGContextSaveGState(context);
- // set default attributes ?
+   CGContextSetLineWidth(context,[self defaultLineWidth]);
+   CGContextSetMiterLimit(context,[self defaultMiterLimit]);
+   CGContextSetFlatness(context,[self defaultFlatness]);
+   CGContextSetLineCap(context,[self defaultLineCapStyle]);
+   CGContextSetLineJoin(context,[self defaultLineJoinStyle]);
+   CGContextSetLineDash(context,0,NULL,0);
    CGContextStrokeRect(context,rect);
    CGContextRestoreGState(context);
 }
@@ -430,8 +434,12 @@ static NSLineJoinStyle _defaultLineJoinStyle=NSMiterLineJoinStyle;
    KGContext *context=[[NSGraphicsContext currentContext] graphicsPort];
    
    CGContextSaveGState(context);
-   
- // set attributes ?
+   CGContextSetLineWidth(context,[self lineWidth]);
+   CGContextSetMiterLimit(context,[self miterLimit]);
+   CGContextSetFlatness(context,[self flatness]);
+   CGContextSetLineCap(context,[self lineCapStyle]);
+   CGContextSetLineJoin(context,[self lineJoinStyle]);
+   CGContextSetLineDash(context,_dashPhase,_dashes,_dashCount);
    CGContextBeginPath(context);
    CGContextAddPath(context,_path);
    CGContextStrokePath(context);
@@ -441,12 +449,12 @@ static NSLineJoinStyle _defaultLineJoinStyle=NSMiterLineJoinStyle;
 -(void)fill {
    KGContext *context=[[NSGraphicsContext currentContext] graphicsPort];
    
-   CGContextSaveGState(context);
- // set attributes ?
    CGContextBeginPath(context);
    CGContextAddPath(context,_path);
-   CGContextFillPath(context);
-   CGContextRestoreGState(context);
+   if([self windingRule]==NSNonZeroWindingRule)
+    CGContextFillPath(context);
+   else
+    CGContextEOFillPath(context);
 }
 
 
