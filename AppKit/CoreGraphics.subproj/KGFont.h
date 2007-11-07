@@ -13,6 +13,7 @@ typedef struct CGFontMetrics {
    NSRect boundingRect;
    float  ascender;
    float  descender;
+   float  leading;
    float  italicAngle;
    float  capHeight;
    float  stemV;
@@ -64,10 +65,12 @@ typedef struct CGGlyphMetricsSet {
 
 -(NSString *)name;
 -(float)pointSize;
+-(float)nominalSize;
 
 -(NSRect)boundingRect;
 -(float)ascender;
 -(float)descender;
+-(float)leading;
 -(float)underlineThickness;
 -(float)underlinePosition;
 -(BOOL)isFixedPitch;

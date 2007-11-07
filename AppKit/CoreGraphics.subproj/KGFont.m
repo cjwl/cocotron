@@ -130,14 +130,18 @@ static inline CGGlyphMetrics *fetchGlyphAdvancementIfNeeded(KGFont *self,CGGlyph
    return _size;
 }
 
+-(float)nominalSize {
+   return _size;
+}
+
 -(NSRect)boundingRect {
-  NSRect result=_metrics.boundingRect;
-  
-  result.origin.x/=_metrics.emsquare*_metrics.scale;
-  result.origin.y/=_metrics.emsquare*_metrics.scale;
-  result.size.width/=_metrics.emsquare*_metrics.scale;
-  result.size.height/=_metrics.emsquare*_metrics.scale;
-  
+   NSRect result=_metrics.boundingRect;
+   
+   result.origin.x/=_metrics.emsquare*_metrics.scale;
+   result.origin.y/=_metrics.emsquare*_metrics.scale;
+   result.size.width/=_metrics.emsquare*_metrics.scale;
+   result.size.height/=_metrics.emsquare*_metrics.scale;
+   
    return result;
 }
 
@@ -147,6 +151,10 @@ static inline CGGlyphMetrics *fetchGlyphAdvancementIfNeeded(KGFont *self,CGGlyph
 
 -(float)descender {
    return _metrics.descender/_metrics.emsquare*_metrics.scale;
+}
+
+-(float)leading {
+   return _metrics.leading/_metrics.emsquare*_metrics.scale;
 }
 
 -(float)underlineThickness {

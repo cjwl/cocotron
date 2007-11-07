@@ -229,8 +229,12 @@ FOUNDATION_EXPORT char *NSUnicodeToSymbol(const unichar *characters,unsigned len
    return [_kgFont descender];
 }
 
+-(float)leading {
+   return [_kgFont leading];
+}
+
 -(float)defaultLineHeightForFont {
-   return [_kgFont ascender]+-[_kgFont descender];
+   return [_kgFont ascender]-[_kgFont descender]+[_kgFont leading];
 }
 
 -(BOOL)isFixedPitch {

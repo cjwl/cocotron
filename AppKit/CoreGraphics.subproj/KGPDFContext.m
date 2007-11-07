@@ -615,7 +615,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    KGPDFObject *pdfObject=[font encodeReferenceWithContext:self];
    KGPDFObject *name=[self nameForResource:pdfObject inCategory:"Font"];
 
-   [self contentWithFormat:@"%@ %f Tf ",name,[font pointSize]];
+   [self contentWithFormat:@"%@ %f Tf ",name,[font nominalSize]];
 
    CGAffineTransform matrix=[self textMatrix];
    [self contentWithFormat:@"%f %f %f %f %f %f Tm ",matrix.a,matrix.b,matrix.c,matrix.d,matrix.tx,matrix.ty];

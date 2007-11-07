@@ -18,10 +18,23 @@
 
 #define MAXUNICHAR 0xFFFF
 
+-(float)pointSize {
+   if(!_useMacMetrics)
+    return _size;
+   else {
+    if (_size <= 10.0)
+       return _size;
+    else if (_size < 20.0)
+       return _size/(1.0 + 0.2*sqrtf(0.0390625*(_size - 10.0)));
+    else
+       return _size/1.125;
+   }
+}
+
 -(HDC)deviceContext {
    KGRenderingContext_gdi *rc=[[Win32Display currentDisplay] renderingContextOnPrimaryScreen];
    
-   [rc selectFontWithName:[_name cString] pointSize:_size];
+   [rc selectFontWithName:[_name cString] pointSize:[self pointSize]];
 
    return [rc dc];
 }
@@ -61,7 +74,7 @@ static inline CGGlyphMetrics *glyphInfoForGlyph(CGGlyphMetricsSet *infoSet,NSGly
    _metrics.capHeight=0;
    _metrics.stemV=0;
    _metrics.stemH=0;
-   _metrics.underlineThickness=_size/24;
+   _metrics.underlineThickness=_size/24.0;
    if(_metrics.underlineThickness<0)
     _metrics.underlineThickness=1;
 
@@ -73,7 +86,9 @@ static inline CGGlyphMetrics *glyphInfoForGlyph(CGGlyphMetricsSet *infoSet,NSGly
     return;
     
    int size=GetOutlineTextMetricsA(dc,0,NULL);
-    
+   
+   _useMacMetrics=NO;
+   
    if(size<=0)
     return;
 
@@ -101,17 +116,33 @@ static inline CGGlyphMetrics *glyphInfoForGlyph(CGGlyphMetricsSet *infoSet,NSGly
    DeleteObject(fontHandle);
    if(size<=0)
     return;
-          
+
+   if(![_name isEqualToString:@"Marlett"])
+    _useMacMetrics=YES;
+
    _metrics.emsquare=ttMetrics->otmEMSquare;
-   _metrics.scale=(_size*96.0)/72.0;
+   if(_useMacMetrics)
+    _metrics.scale=_size;
+   else
+    _metrics.scale=_size*96.0/72.0;
 
    _metrics.boundingRect.origin.x=ttMetrics->otmrcFontBox.left;
    _metrics.boundingRect.origin.y=ttMetrics->otmrcFontBox.bottom;
    _metrics.boundingRect.size.width=ttMetrics->otmrcFontBox.right-ttMetrics->otmrcFontBox.left;
    _metrics.boundingRect.size.height=ttMetrics->otmrcFontBox.top-ttMetrics->otmrcFontBox.bottom;
 
-   _metrics.ascender=ttMetrics->otmAscent;
-   _metrics.descender=ttMetrics->otmDescent;
+   
+   if(_useMacMetrics){
+    _metrics.ascender=ttMetrics->otmMacAscent;
+    _metrics.descender=ttMetrics->otmMacDescent;
+    _metrics.leading=ttMetrics->otmMacLineGap;
+   }
+   else {
+    _metrics.ascender=ttMetrics->otmAscent;
+    _metrics.descender=ttMetrics->otmDescent;
+    _metrics.leading=ttMetrics->otmLineGap;
+   }
+ 
    _metrics.italicAngle=ttMetrics->otmItalicAngle;
    _metrics.capHeight=ttMetrics->otmsCapEmHeight;
    _metrics.underlineThickness=ttMetrics->otmsUnderscoreSize;

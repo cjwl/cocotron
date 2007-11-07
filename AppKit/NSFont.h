@@ -61,6 +61,7 @@ typedef enum {
 -(float)underlineThickness;
 -(float)ascender;
 -(float)descender;
+-(float)leading;
 -(float)defaultLineHeightForFont;
 -(BOOL)isFixedPitch;
 
