@@ -13,6 +13,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @interface NSPrintOperation : NSObject {
    NSView            *_view;
    NSPrintInfo       *_printInfo;
+   NSView            *_accessoryView;
    NSPrintPanel      *_printPanel;
    BOOL               _showsPrintPanel;
    int                _currentPage;

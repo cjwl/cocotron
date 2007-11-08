@@ -22,6 +22,18 @@ APPKIT_EXPORT NSString *NSApplicationDidBecomeActiveNotification;
 APPKIT_EXPORT NSString *NSApplicationWillResignActiveNotification;
 APPKIT_EXPORT NSString *NSApplicationDidResignActiveNotification;
 
+APPKIT_EXPORT NSString *NSApplicationWillUpdateNotification;
+APPKIT_EXPORT NSString *NSApplicationDidUpdateNotification;
+
+APPKIT_EXPORT NSString *NSApplicationWillHideNotification;
+APPKIT_EXPORT NSString *NSApplicationDidHideNotification;
+APPKIT_EXPORT NSString *NSApplicationWillUnhideNotification;
+APPKIT_EXPORT NSString *NSApplicationDidUnhideNotification;
+
+APPKIT_EXPORT NSString *NSApplicationWillTerminateNotification;
+
+APPKIT_EXPORT NSString *NSApplicationDidChangeScreenParametersNotification;
+
 APPKIT_EXPORT id NSApp;
 
 typedef id NSModalSession;
@@ -35,8 +47,26 @@ enum {
 typedef enum {
    NSTerminateCancel,
    NSTerminateNow,
+   NSTerminateLater,
 } NSApplicationTerminateReply;
 
+typedef enum {
+   NSCriticalRequest,
+   NSInformationalRequest,
+} NSRequestUserAttentionType;
+
+typedef enum {
+   NSApplicationDelegateReplySuccess,
+   NSApplicationDelegateReplyCancel,
+   NSApplicationDelegateReplyFailure,
+} NSApplicationDelegateReply;
+
+typedef enum {
+   NSPrintingCancelled,
+   NSPrintingSuccess,
+   NSPrintingReplyLater,
+   NSPrintingFailure,
+} NSApplicationPrintReply;
 
 @interface NSApplication : NSResponder {
    NSDisplay      *_display;
@@ -47,7 +77,9 @@ typedef enum {
 
    NSImage        *_applicationIconImage;
 
+   BOOL            _isRunning;
    BOOL            _isActive;
+   BOOL            _windowsNeedUpdate;
    NSEvent        *_currentEvent;
 
    NSMutableArray *_modalStack;
@@ -55,16 +87,31 @@ typedef enum {
 
 +(NSApplication *)sharedApplication;
 
++(void)detachDrawingThread:(SEL)selector toTarget:target withObject:object;
+
 -init;
+
+-(NSGraphicsContext *)context;
 
 -delegate;
 -(NSArray *)windows;
+-(NSWindow *)windowWithWindowNumber:(int)number;
+
 -(NSMenu *)mainMenu;
 -(NSMenu *)windowsMenu;
 -(NSWindow *)mainWindow;
 -(NSWindow *)keyWindow;
 -(NSImage *)applicationIconImage;
 -(BOOL)isActive;
+-(BOOL)isHidden;
+-(BOOL)isRunning;
+
+-(NSWindow *)makeWindowsPerform:(SEL)selector inOrder:(BOOL)inOrder;
+-(void)miniaturizeAll:sender;
+
+-(NSArray *)orderedDocuments;
+-(NSArray *)orderedWindows;
+-(void)preventWindowOrdering;
 
 -(void)setDelegate:delegate;
 -(void)setMainMenu:(NSMenu *)menu;
@@ -74,6 +121,7 @@ typedef enum {
 -(void)addWindowsItem:(NSWindow *)window title:(NSString *)title filename:(BOOL)filename;
 -(void)changeWindowsItem:(NSWindow *)window title:(NSString *)title filename:(BOOL)filename;
 -(void)removeWindowsItem:(NSWindow *)window;
+-(void)updateWindowsItem:(NSWindow *)window;
 
 -(void)finishLaunching;
 -(void)run;
@@ -86,11 +134,15 @@ typedef enum {
 -(void)postEvent:(NSEvent *)event atStart:(BOOL)atStart;
 
 -targetForAction:(SEL)action;
+-targetForAction:(SEL)action to:target from:sender;
 -(BOOL)sendAction:(SEL)action to:target from:sender;
+-(BOOL)tryToPerform:(SEL)selector with:object;
 
+-(void)setWindowsNeedUpdate:(BOOL)value;
 -(void)updateWindows;
 
 -(void)activateIgnoringOtherApps:(BOOL)flag;
+-(void)deactivate;
 
 -(NSWindow *)modalWindow;
 -(NSModalSession)beginModalSessionForWindow:(NSWindow *)window;
@@ -108,13 +160,23 @@ typedef enum {
 
 -(void)reportException:(NSException *)exception;
 
+-(int)requestUserAttention:(NSRequestUserAttentionType)attentionType;
+-(void)cancelUserAttentionRequest:(int)requestNumber;
+
 -(void)runPageLayout:sender;
 -(void)orderFrontColorPanel:sender;
+-(void)orderFrontCharacterPalette:sender;
 
 -(void)hide:sender;
+-(void)hideOtherApplications:sender;
 -(void)unhide:sender;
+-(void)unhideAllApplications:sender;
+-(void)unhideWithoutActivation;
 -(void)stop:sender;
 -(void)terminate:sender;
+
+-(void)replyToApplicationShouldTerminate:(BOOL)terminate;
+-(void)replyToOpenOrPrint:(NSApplicationDelegateReply)reply;
 
 -(void)arrangeInFront:sender;
 
@@ -123,9 +185,12 @@ typedef enum {
 -servicesProvider;
 -(void)setServicesProvider:provider;
 -(void)registerServicesMenuSendTypes:(NSArray *)sendTypes returnTypes:(NSArray *)returnTypes;
+-validRequestorForSendType:(NSString *)sendType returnType:(NSString *)returnType;
 
 -(void)orderFrontStandardAboutPanel:sender;
 -(void)orderFrontStandardAboutPanelWithOptions:(NSDictionary *)options;
+-(void)activateContextHelpMode:sender;
+-(void)showHelp:sender;
 
 // private
 -(void)_addWindow:(NSWindow *)window;
@@ -143,13 +208,45 @@ typedef enum {
 @interface NSObject(NSApplication_notifications)
 -(void)applicationWillFinishLaunching:(NSNotification *)note;
 -(void)applicationDidFinishLaunching:(NSNotification *)note;
+
+-(void)applicationWillBecomeActive:(NSNotification *)note;
 -(void)applicationDidBecomeActive:(NSNotification *)note;
+-(void)applicationWillResignActive:(NSNotification *)note;
+-(void)applicationDidResignActive:(NSNotification *)note;
+
+-(void)applicationWillUpdate:(NSNotification *)note;
+-(void)applicationDidUpdate:(NSNotification *)note;
+
+-(void)applicationWillHide:(NSNotification *)note;
+-(void)applicationDidHide:(NSNotification *)note;
+-(void)applicationWillUnhide:(NSNotification *)note;
+-(void)applicationDidUnhide:(NSNotification *)note;
+
+-(void)applicationWillTerminate:(NSNotification *)note;
+
+-(void)applicationDidChangeScreenParameters:(NSNotification *)note;
 @end
 
 @interface NSObject(NSApplication_delegate)
--(BOOL)application:sender openFile:(NSString *)path;
--(BOOL)application:sender openTempFile:(NSString *)path;
+-(BOOL)applicationShouldOpenUntitledFile:(NSApplication *)application;
+-(BOOL)applicationOpenUntitledFile:(NSApplication *)application;
+-(BOOL)application:(NSApplication *)application openFile:(NSString *)path;
+-(void)application:(NSApplication *)application openFiles:(NSArray *)pathArray;
+-(BOOL)application:(NSApplication *)application openFileWithoutUI:(NSString *)path;
+-(BOOL)application:(NSApplication *)applicationsender openTempFile:(NSString *)path;
+-(BOOL)applicationShouldHandleReopen:(NSApplication *)application hasVisibleWindows:(BOOL)visible;
+
+-(BOOL)application:(NSApplication *)application printFile:(NSString *)path;
+-(NSApplicationPrintReply)application:(NSApplication *)application printFiles:(NSArray *)pathArray withSettings:(NSDictionary *)settings showPrintPanels:(BOOL)showPanel;
+
+-(NSMenu *)applicationDockMenu:(NSApplication *)application;
+-(BOOL)application:(NSApplication *)application delegateHandlesKey:(NSString *)key;
+
+-(NSError *)application:(NSApplication *)application willPresentError:(NSError *)error;
+
+-(BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication *)application;
 -(NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)application;
+
 @end
 
 APPKIT_EXPORT int NSApplicationMain(int argc, const char *argv[]);

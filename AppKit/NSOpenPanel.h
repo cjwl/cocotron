@@ -18,6 +18,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 +(NSOpenPanel *)openPanel;
 
 -(NSArray *)filenames;
+-(NSArray *)URLs;
 
 -(int)runModalForDirectory:(NSString *)directory file:(NSString *)file types:(NSArray *)types;
 -(int)runModalForTypes:(NSArray *)types;

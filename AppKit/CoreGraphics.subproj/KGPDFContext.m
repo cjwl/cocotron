@@ -399,6 +399,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [self contentWithString:@"Q "];
 }
 
+-(void)setCTM:(CGAffineTransform)matrix {
+   [super setCTM:matrix];
+   NSUnimplementedMethod();
+}
+
 -(void)concatCTM:(CGAffineTransform)matrix {
    [super concatCTM:matrix];
    [self contentWithFormat:@"%f %f %f %f %f %f cm ",matrix.a,matrix.b,matrix.c,matrix.d,matrix.tx,matrix.ty];
@@ -683,7 +688,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)endPage {
-   KGPDFObject *ref;
    KGPDFInteger pageCount=0;
    
    [_contentStreamStack removeLastObject];

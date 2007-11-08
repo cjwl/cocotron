@@ -8,36 +8,49 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/Foundation.h>
 #import <AppKit/CoreGraphics.h>
+#import <AppKit/NSCell.h>
 
-@class KGFont;
+@class NSFontDescriptor,KGFont;
 
 typedef unsigned NSGlyph;
 
 enum {
-   NSNullGlyph=0x0,
-   NSControlGlyph=0x00FFFFFF
+   NSNullGlyph=0,
+   NSControlGlyph=0xFFFFFF,
 };
 
 typedef enum {
-   NSCoreGraphicsGlyphPacking,
+   NSNativeShortGlyphPacking,
 } NSMultibyteGlyphPacking;
+
+typedef enum {
+   NSFontDefaultRenderingMode,
+   NSFontAntialiasedRenderingMode,
+   NSFontIntegerAdvancementsRenderingMode,
+   NSFontAntialiasedIntegerAdvancementsRenderingMode,
+} NSFontRenderingMode;
 
 @interface NSFont : NSObject <NSCopying> {
    NSString        *_name;
    float            _pointSize;
    float            _matrix[6];
    NSStringEncoding _encoding;
-
+   
    KGFont   *_kgFont;
 }
 
-+(NSFont *)fontWithName:(NSString *)name size:(float)size;
-+(NSFont *)fontWithName:(NSString *)name matrix:(const float *)matrix;
++(float)systemFontSize;
++(float)smallSystemFontSize;
++(float)labelFontSize;
++(float)systemFontSizeForControlSize:(NSControlSize)size;
 
 +(NSFont *)boldSystemFontOfSize:(float)size;
 +(NSFont *)controlContentFontOfSize:(float)size;
+
 +(NSFont *)labelFontOfSize:(float)size;
 +(NSFont *)menuFontOfSize:(float)size;
++(NSFont *)menuBarFontOfSize:(float)size;
+
 +(NSFont *)messageFontOfSize:(float)size;
 +(NSFont *)paletteFontOfSize:(float)size;
 +(NSFont *)systemFontOfSize:(float)size;
@@ -46,17 +59,39 @@ typedef enum {
 +(NSFont *)userFontOfSize:(float)size;
 +(NSFont *)userFixedPitchFontOfSize:(float)size;
 
++(void)setUserFont:(NSFont *)value;
++(void)setUserFixedPitchFont:(NSFont *)value;
+
++(NSFont *)fontWithName:(NSString *)name size:(float)size;
++(NSFont *)fontWithName:(NSString *)name matrix:(const float *)matrix;
++(NSFont *)fontWithDescriptor:(NSFontDescriptor *)descriptor size:(float)size;
++(NSFont *)fontWithDescriptor:(NSFontDescriptor *)descriptor size:(float)size textTransform:(NSAffineTransform *)transform;
+
 -(float)pointSize;
 -(NSString *)fontName;
 -(const float *)matrix;
+-(NSAffineTransform *)textTransform;
+-(NSFontRenderingMode)renderingMode;
+-(NSCharacterSet *)coveredCharacterSet;
+-(NSStringEncoding)mostCompatibleStringEncoding;
+-(NSString *)familyName;
+-(NSString *)displayName;
+-(NSFontDescriptor *)fontDescriptor;
+
+-(NSFont *)printerFont;
+-(NSFont *)screenFont;
+-(NSFont *)screenFontWithRenderingMode:(NSFontRenderingMode)mode;
 
 -(NSRect)boundingRectForFont;
+-(NSRect)boundingRectForGlyph:(NSGlyph)glyph;
 
+-(NSMultibyteGlyphPacking)glyphPacking;
 -(unsigned)numberOfGlyphs;
+-(NSGlyph)glyphWithName:(NSString *)name;
 -(BOOL)glyphIsEncoded:(NSGlyph)glyph;
 -(NSSize)advancementForGlyph:(NSGlyph)glyph;
+
 -(NSSize)maximumAdvancement;
--(NSFont *)screenFont;
 -(float)underlinePosition;
 -(float)underlineThickness;
 -(float)ascender;
@@ -64,17 +99,23 @@ typedef enum {
 -(float)leading;
 -(float)defaultLineHeightForFont;
 -(BOOL)isFixedPitch;
+-(float)italicAngle;
+-(float)leading;
+-(float)xHeight;
+-(float)capHeight;
 
+-(void)setInContext:(NSGraphicsContext *)context;
 -(void)set;
-
--(NSStringEncoding)mostCompatibleStringEncoding;
--(NSMultibyteGlyphPacking)glyphPacking;
 
 -(NSPoint)positionOfGlyph:(NSGlyph)current precededByGlyph:(NSGlyph)previous isNominal:(BOOL *)isNominalp;
 
--(unsigned)getGlyphs:(NSGlyph *)glyphs forCharacters:(unichar *)characters length:(unsigned)length;
-
 -(void)getAdvancements:(NSSize *)advancements forGlyphs:(const NSGlyph *)glyphs count:(unsigned)count;
+-(void)getAdvancements:(NSSize *)advancements forPackedGlyphs:(const void *)packed length:(unsigned)length;
+-(void)getBoundingRects:(NSRect *)rects forGlyphs:(const NSGlyph *)glyphs count:(unsigned)count;
+
+// private
+
+-(unsigned)getGlyphs:(NSGlyph *)glyphs forCharacters:(unichar *)characters length:(unsigned)length;
 
 @end
 

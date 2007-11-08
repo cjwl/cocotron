@@ -166,7 +166,7 @@ static inline KGGraphicsState *currentState(KGContext *self){
 }
 
 -(CGAffineTransform)userSpaceToDeviceSpaceTransform {
-   [currentState(self) userSpaceToDeviceSpaceTransform];
+   return [currentState(self) userSpaceToDeviceSpaceTransform];
 }
 
 -(void)getCTM:(CGAffineTransform *)matrix {
@@ -178,7 +178,7 @@ static inline KGGraphicsState *currentState(KGContext *self){
 }
 
 -(NSRect)clipBoundingBox {
-   [currentState(self) clipBoundingBox];
+   return [currentState(self) clipBoundingBox];
 }
 
 -(CGAffineTransform)textMatrix {
@@ -215,6 +215,10 @@ static inline KGGraphicsState *currentState(KGContext *self){
 
 -(NSRect)convertRectToUserSpace:(NSRect)rect {
    return [currentState(self) convertRectToUserSpace:rect];
+}
+
+-(void)setCTM:(CGAffineTransform)matrix {
+   [currentState(self) setCTM:matrix];
 }
 
 -(void)concatCTM:(CGAffineTransform)transform {
@@ -690,15 +694,16 @@ static inline KGGraphicsState *currentState(KGContext *self){
 }
 
 -(KGLayer *)layerWithSize:(NSSize)size unused:(NSDictionary *)unused {
-   NSUnimplementedMethod();
+   NSInvalidAbstractInvocation();
+   return nil;
 }
 
 -(void)beginPrintingWithDocumentName:(NSString *)documentName {
-   NSUnimplementedMethod();
+   NSInvalidAbstractInvocation();
 }
 
 -(void)endPrinting {
-   NSUnimplementedMethod();
+   NSInvalidAbstractInvocation();
 }
 
 -(BOOL)getImageableRect:(NSRect *)rect {
@@ -708,7 +713,7 @@ static inline KGGraphicsState *currentState(KGContext *self){
 // temporary
 
 -(void)drawContext:(KGContext *)other inRect:(CGRect)rect {
-   NSUnimplementedMethod();
+   NSInvalidAbstractInvocation();
 }
 
 -(void)resetClip {

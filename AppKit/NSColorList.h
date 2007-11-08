@@ -12,12 +12,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 APPKIT_EXPORT NSString *NSColorListDidChangeNotification;
 
-@interface NSColorList : NSObject // <NSCoding>
-{
-    NSMutableArray *_keys;
-    NSMutableArray *_colors;
-    NSString *_name;
-    NSString *_path;
+@interface NSColorList : NSObject {
+   NSMutableArray *_keys;
+   NSMutableArray *_colors;
+   NSString *_name;
+   NSString *_path;
 }
 
 +(NSArray *)availableColorLists;
@@ -27,6 +26,7 @@ APPKIT_EXPORT NSString *NSColorListDidChangeNotification;
 
 +(NSColorList *)colorListNamed:(NSString *)name;
 
+-(BOOL)isEditable;
 -(NSString *)name;
 -(NSArray *)allKeys;
 -(NSColor *)colorWithKey:(NSString *)key;	

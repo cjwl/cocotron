@@ -1,7 +1,7 @@
 #import <Foundation/NSObject.h>
 #import <AppKit/CGFont.h>
 
-@class KGPDFObject,KGPDFContext;
+@class KGPDFObject,KGPDFContext,KGMutablePath;
 
 enum {
    CGNullGlyph=0x0
@@ -16,6 +16,7 @@ typedef struct CGFontMetrics {
    float  leading;
    float  italicAngle;
    float  capHeight;
+   float  xHeight;
    float  stemV;
    float  stemH;
    float  underlineThickness;
@@ -74,6 +75,10 @@ typedef struct CGGlyphMetricsSet {
 -(float)underlineThickness;
 -(float)underlinePosition;
 -(BOOL)isFixedPitch;
+-(float)italicAngle;
+-(float)leading;
+-(float)xHeight;
+-(float)capHeight;
 
 -(unsigned)numberOfGlyphs;
 -(BOOL)glyphIsEncoded:(CGGlyph)glyph;
@@ -98,5 +103,5 @@ typedef struct CGGlyphMetricsSet {
 -(void)loadGlyphRangeTable;
 -(void)fetchGlyphKerning;
 -(void)fetchAdvancementsForGlyph:(CGGlyph)glyph;
-
+-(void)appendCubicOutlinesToPath:(KGMutablePath *)path glyphs:(CGGlyph *)glyphs length:(unsigned)length;
 @end

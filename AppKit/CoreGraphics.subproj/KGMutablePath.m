@@ -10,12 +10,41 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "KGMutablePath.h"
 #import "KGPath.h"
 
-// Bezier and arc to bezier algorithms from: Windows Graphics Programming by Feng Yuan
+// ellipse to 4 spline bezier, http://www.tinaja.com/glib/ellipse4.pdf
+void KGMutablePathEllipseToBezier(NSPoint *cp,float x,float y,float xrad,float yrad){
+   float magic=0.551784;
+   float xmag=xrad*magic;
+   float ymag=yrad*magic;
+   int   i=0;
+
+   cp[i++]=NSMakePoint(-xrad,0);
+
+   cp[i++]=NSMakePoint(-xrad,ymag);
+   cp[i++]=NSMakePoint(-xmag,yrad);
+   cp[i++]=NSMakePoint(0,yrad);
+   
+   cp[i++]=NSMakePoint(xmag,yrad);
+   cp[i++]=NSMakePoint(xrad,ymag);
+   cp[i++]=NSMakePoint(xrad,0);
+
+   cp[i++]=NSMakePoint(xrad,-ymag);
+   cp[i++]=NSMakePoint(xmag,-yrad);
+   cp[i++]=NSMakePoint(0,-yrad);
+
+   cp[i++]=NSMakePoint(-xmag,-yrad);
+   cp[i++]=NSMakePoint(-xrad,-ymag);
+   cp[i++]=NSMakePoint(-xrad,0);
+   
+   for(i=0;i<13;i++){
+    cp[i].x+=x;
+    cp[i].y+=y;
+   }
+}
 
 @implementation KGMutablePath
 
+// Bezier and arc to bezier algorithms from: Windows Graphics Programming by Feng Yuan
 #if 0
-// this should go in a rendering context
 static void bezier(KGGraphicsState *self,double x1,double y1,double x2, double y2,double x3,double y3,double x4,double y4){
    // Ax+By+C=0 is the line (x1,y1) (x4,y4);
    double A=y4-y1;
@@ -236,7 +265,18 @@ static void expandPointCapacity(KGMutablePath *self,unsigned delta){
 }
 
 -(void)addEllipseInRect:(NSRect)rect withTransform:(CGAffineTransform *)matrix {
-	NSUnimplementedMethod();
+    float             xradius=rect.size.width/2;
+    float             yradius=rect.size.height/2;
+    float             x=rect.origin.x+xradius;
+    float             y=rect.origin.y+yradius;
+    NSPoint           cp[13];
+    int               i;
+    
+    KGMutablePathEllipseToBezier(cp,x,y,xradius,yradius);
+    
+    [self moveToPoint:cp[0] withTransform:matrix];
+    for(i=0;i<12;i+=3)
+     [self addCurveToControlPoint:cp[i] controlPoint:cp[i+1] endPoint:cp[i+2] withTransform:matrix];
 }
 
 -(void)addPath:(KGPath *)path withTransform:(CGAffineTransform *)matrix {
@@ -267,6 +307,13 @@ static void expandPointCapacity(KGMutablePath *self,unsigned delta){
    
    for(i=0;i<_numberOfPoints;i++)
     _points[i]=CGPointApplyAffineTransform(_points[i],matrix);
+}
+
+-(void)setPoints:(NSPoint *)points count:(unsigned)count atIndex:(unsigned)index {
+   int i;
+   
+   for(i=0;i<count;i++)
+    _points[index+i]=points[i];
 }
 
 @end

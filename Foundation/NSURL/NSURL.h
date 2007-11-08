@@ -9,7 +9,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @class NSURLHandle,NSNumber,NSData;
 
-@interface NSURL : NSObject {
+@interface NSURL : NSObject <NSCopying> {
    NSString *_scheme;
    NSString *_path;
 }

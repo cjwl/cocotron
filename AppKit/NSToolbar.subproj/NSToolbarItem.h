@@ -65,7 +65,7 @@ APPKIT_EXPORT NSString *NSToolbarSpaceItemIdentifier;
 -(BOOL)isEnabled;
 -(NSString *)toolTip;
 
--(void)setImage:(NSImage*)image;
+-(void)setImage:(NSImage *)image;
 -(void)setTarget:target;
 -(void)setAction:(SEL)action;
 -(void)setTag:(int)tag;  

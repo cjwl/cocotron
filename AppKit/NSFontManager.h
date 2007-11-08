@@ -8,8 +8,20 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/Foundation.h>
 
-@class NSFont, NSFontPanel;
-typedef unsigned int NSFontTraitMask;
+@class NSFont,NSFontDescriptor,NSFontPanel;
+
+typedef unsigned NSFontTraitMask;
+
+typedef enum {
+   NSNoFontChangeAction=0,
+   NSViaPanelFontAction=1,
+   NSAddTraitFontAction=2,
+   NSSizeUpFontAction=3,
+   NSSizeDownFontAction=4,
+   NSHeavierFontAction=5,
+   NSLighterFontAction=6,
+   NSRemoveTraitFontAction=7,
+} NSFontAction;
 
 enum {
    NSItalicFontMask=0x00000001,
@@ -23,7 +35,7 @@ enum {
    NSPosterFontMask=0x00000100,
    NSCompressedFontMask=0x00000200,
    NSFixedPitchFontMask=0x00000400,
-   NSUnitalicFontMask=0x01000000
+   NSUnitalicFontMask=0x01000000,
 };
 
 @interface NSFontManager : NSObject {
@@ -33,35 +45,68 @@ enum {
    
    NSFont      *_selectedFont;
    BOOL         _isMultiple;
+   NSFontAction _currentFontAction;
 }
 
 +(NSFontManager *)sharedFontManager;
 
++(void)setFontManagerFactory:(Class)value;
++(void)setFontPanelFactory:(Class)value;
+
 -delegate;
 -(SEL)action;
+
+-(void)setDelegate:delegate;
 -(void)setAction:(SEL)value;
+
+-(NSArray *)collectionNames;
+-(BOOL)addCollection:(NSString *)name options:(int)options;
+-(void)addFontDescriptors:(NSArray *)descriptors toCollection:(NSString *)name;
+-(BOOL)removeCollection:(NSString *)name;
+
+-(NSArray *)fontDescriptorsInCollection:(NSString *)name;
+
+-(NSArray *)availableFonts;
+-(NSArray *)availableFontFamilies;
+-(NSArray *)availableMembersOfFontFamily:(NSString *)name;
+-(NSArray *)availableFontNamesMatchingFontDescriptor:(NSFontDescriptor *)descriptor;
+-(NSArray *)availableFontNamesWithTraits:(NSFontTraitMask)traits;
+
+-(BOOL)fontNamed:(NSString *)name hasTraits:(NSFontTraitMask)traits;
+-(NSFont *)fontWithFamily:(NSString *)family traits:(NSFontTraitMask)traits weight:(int)weight size:(float)size;
+-(int)weightOfFont:(NSFont *)font;
+-(NSFontTraitMask)traitsOfFont:(NSFont *)font;
+
+-(NSString *)localizedNameForFamily:(NSString *)family face:(NSString *)face;
 
 -(NSFontPanel *)fontPanel:(BOOL)create;
 
--(NSFontTraitMask)traitsOfFont:(NSFont *)font;
+-(BOOL)sendAction;
+
+-(BOOL)isEnabled;
+-(BOOL)isMultiple;
+-(NSFont *)selectedFont;
+
+-(void)setSelectedFont:(NSFont *)font isMultiple:(BOOL)isMultiple;
 
 -(NSFont *)convertFont:(NSFont *)font;
 -(NSFont *)convertFont:(NSFont *)font toSize:(float)size;
 -(NSFont *)convertFont:(NSFont *)font toHaveTrait:(NSFontTraitMask)trait;
+-(NSFont *)convertFont:(NSFont *)font toNotHaveTrait:(NSFontTraitMask)trait;
 
--(BOOL)isMultiple;
--(NSFont *)selectedFont;
--(void)setSelectedFont:(NSFont *)font isMultiple:(BOOL)flag;
+-(NSFont *)convertFont:(NSFont *)font toFace:(NSString *)typeface;
+-(NSFont *)convertFont:(NSFont *)font toFamily:(NSString *)family;
+-(NSFont *)convertWeight:(BOOL)heavierNotLighter ofFont:(NSFont *)font;
 
--(void)setDelegate:delegate;
-
--(NSArray *)availableFonts;
--(NSArray *)availableFontFamilies;
--(NSArray *)availableMembersOfFontFamily:(NSString *)familyName;
+-(NSDictionary *)convertAttributes:(NSDictionary *)attributes;
 
 -(void)addFontTrait:sender;
+-(void)modifyFont:sender;
+-(void)modifyFontViaPanel:sender;
+-(void)removeFontTrait:sender;
 
 -(void)orderFrontFontPanel:sender;
+-(void)orderFrontStylesPanel:sender;
 
 @end
 

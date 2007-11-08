@@ -133,55 +133,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     return [result retain];
    }
    else {
-    NSString *space=[coder decodeObject];
-
-    [self dealloc];
-
-    if([space isEqualToString:@"NSDeviceCMYKColorSpace"]){
-     float c,m,y,k,a;
-
-     [coder decodeValuesOfObjCTypes:"fffff",&c,&m,&y,&k,&a];
-
-     return [[NSColor colorWithDeviceCyan:c magenta:m yellow:y black:k alpha:a] retain];
-    }
-    else if([space isEqualToString:@"NSDeviceWhiteColorSpace"]){
-     float w,a;
-
-     [coder decodeValuesOfObjCTypes:"ff",&w,&a];
-
-     return [[NSColor colorWithDeviceWhite:w alpha:a] retain];
-    }
-    else if([space isEqualToString:@"NSCalibratedWhiteColorSpace"]){
-     float w,a;
-
-     [coder decodeValuesOfObjCTypes:"ff",&w,&a];
-
-     return [[NSColor colorWithCalibratedWhite:w alpha:a] retain];
-    }
-    else if([space isEqualToString:@"NSDeviceRGBColorSpace"]){
-     float r,g,b,a;
-
-     [coder decodeValuesOfObjCTypes:"ffff",&r,&g,&b,&a];
-
-     return [[NSColor colorWithDeviceRed:r green:g blue:b alpha:a] retain];
-    }
-    else if([space isEqualToString:@"NSCalibratedRGBColorSpace"]){
-     float r,g,b,a;
-
-     [coder decodeValuesOfObjCTypes:"ffff",&r,&g,&b,&a];
-
-     return [[NSColor colorWithCalibratedRed:r green:g blue:b alpha:a] retain];
-    }
-    else if([space isEqualToString:@"NSNamedColorSpace"]){
-     NSString *catalog=[coder decodeObject];
-     NSString *color=[coder decodeObject];
-
-     return [[NSColor colorWithCatalogName:catalog colorName:color] retain];
-    }
-    else {
-     [NSException raise:@"UnknownColor" format:@"Unknown color space %@",space];
-     return nil;
-    }
+    [NSException raise:NSInvalidArgumentException format:@"%@ can not initWithCoder:%@",isa,[coder class]];
+    return nil;
    }
 }
 

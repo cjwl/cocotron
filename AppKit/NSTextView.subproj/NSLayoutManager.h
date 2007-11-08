@@ -39,7 +39,7 @@ typedef enum {
    NSTextContainer *_extraLineFragmentTextContainer;
 
    unsigned    _rectCacheCapacity,_rectCacheCount;
-   NSRectArray _rectCache;
+   NSRect * _rectCache;
 }
 
 -init;
@@ -116,11 +116,11 @@ typedef enum {
 -(NSRange)rangeOfNominallySpacedGlyphsContainingIndex:(unsigned)glyphIndex;
 
 -(NSRect)boundingRectForGlyphRange:(NSRange)glyphRange inTextContainer:(NSTextContainer *)container;
--(NSRectArray)rectArrayForGlyphRange:(NSRange)glyphRange withinSelectedGlyphRange:(NSRange)selectedGlyphRange inTextContainer:(NSTextContainer *)container rectCount:(unsigned *)rectCount;
+-(NSRect *)rectArrayForGlyphRange:(NSRange)glyphRange withinSelectedGlyphRange:(NSRange)selectedGlyphRange inTextContainer:(NSTextContainer *)container rectCount:(unsigned *)rectCount;
 
 -(unsigned)characterIndexForGlyphAtIndex:(unsigned)glyphIndex;
 -(NSRange)characterRangeForGlyphRange:(NSRange)glyphRange actualGlyphRange:(NSRange *)actualGlyphRange;
--(NSRectArray)rectArrayForCharacterRange:(NSRange)characterRange withinSelectedCharacterRange:(NSRange)selectedCharRange inTextContainer:(NSTextContainer *)container rectCount:(unsigned *)rectCount;
+-(NSRect *)rectArrayForCharacterRange:(NSRange)characterRange withinSelectedCharacterRange:(NSRange)selectedCharRange inTextContainer:(NSTextContainer *)container rectCount:(unsigned *)rectCount;
 
 -(unsigned)firstUnlaidGlyphIndex;
 -(unsigned)firstUnlaidCharacterIndex;

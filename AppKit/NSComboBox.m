@@ -12,7 +12,99 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSApplication.h>
 #import <AppKit/NSTextView.h>
 
+NSString *NSComboBoxSelectionDidChangeNotification=@"NSComboBoxSelectionDidChangeNotification";
+NSString *NSComboBoxSelectionIsChangingNotification=@"NSComboBoxSelectionIsChangingNotification";
+NSString *NSComboBoxWillDismissNotification=@"NSComboBoxWillDismissNotification";
+NSString *NSComboBoxWillPopUpNotification=@"NSComboBoxWillPopUpNotification";
+
 @implementation NSComboBox
+
+-dataSource {
+   return [[self cell] dataSource];
+}
+
+-(BOOL)usesDataSource {
+   return [[self cell] usesDataSource];
+}
+
+-(BOOL)isButtonBordered {
+   return [[self cell] isButtonBordered];
+}
+
+-(float)itemHeight {
+   return [[self cell] itemHeight];
+}
+
+-(BOOL)hasVerticalScroller {
+   return [[self cell] hasVerticalScroller];
+}
+
+-(NSSize)intercellSpacing {
+   return [[self cell] intercellSpacing];
+}
+
+-(BOOL)completes {
+   return [[self cell] completes];
+}
+
+-(int)numberOfVisibleItems {
+   return [[self cell] numberOfVisibleItems];
+}
+
+-(void)setDataSource:value {
+   [[self cell] setDataSource:value];
+   [self setNeedsDisplay:YES];
+}
+
+-(void)setUsesDataSource:(BOOL)value {
+   [[self cell] setUsesDataSource:value];
+   [self setNeedsDisplay:YES];
+}
+
+-(void)setButtonBordered:(BOOL)value {
+   [[self cell] setButtonBordered:value];
+   [self setNeedsDisplay:YES];
+}
+
+-(void)setItemHeight:(float)value {
+   [[self cell] setItemHeight:value];
+   [self setNeedsDisplay:YES];
+}
+
+-(void)setHasVerticalScroller:(BOOL)value {
+   [[self cell] setHasVerticalScroller:value];
+   [self setNeedsDisplay:YES];
+}
+
+-(void)setIntercellSpacing:(NSSize)value {
+   [[self cell] setIntercellSpacing:value];
+   [self setNeedsDisplay:YES];
+}
+
+-(void)setCompletes:(BOOL)completes {
+   [[self cell] setCompletes:completes];
+}
+
+-(void)setNumberOfVisibleItems:(int)value {
+   [[self cell] setNumberOfVisibleItems:value];
+   [self setNeedsDisplay:YES];
+}
+
+-(int)numberOfItems {
+   return [[self cell] numberOfItems];
+}
+
+-(NSArray *)objectValues {
+   return [[self cell] objectValues];
+}
+
+-itemObjectValueAtIndex:(int)index {
+   return [[self cell] itemObjectValueAtIndex:index];
+}
+
+-(int)indexOfItemWithObjectValue:(id)object {
+   return [[self cell] indexOfItemWithObjectValue:object];
+}
 
 -(void)addItemWithObjectValue:(id)object {
    [[self cell] addItemWithObjectValue:object];
@@ -26,24 +118,52 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [[self cell] removeAllItems];
 }
 
--(int)indexOfItemWithObjectValue:(id)object {
-   return [_cell indexOfItemWithObjectValue:object];
+-(void)removeItemAtIndex:(int)index {
+   [[self cell] removeItemAtIndex:index];
 }
 
--(void)scrollItemAtIndexToVisible:(int)index {
-   [[self cell] scrollItemAtIndexToVisible:index];
+-(void)removeItemWithObjectValue:value {
+   [[self cell] removeItemWithObjectValue:value];
+}
+
+-(void)insertItemWithObjectValue:value atIndex:(int)index {
+   [[self cell] insertItemWithObjectValue:value atIndex:index];
+}
+
+-(int)indexOfSelectedItem {
+   return [[self cell] indexOfSelectedItem];
+}
+
+-objectValueOfSelectedItem {
+   return [[self cell] objectValueOfSelectedItem];
 }
 
 -(void)selectItemAtIndex:(int)index {
    [[self cell] selectItemAtIndex:index];
 }
 
--(BOOL)completes {
-   return [[self cell] completes];
+-(void)selectItemWithObjectValue:value {
+   [[self cell] selectItemWithObjectValue:value];
 }
 
--(void)setCompletes:(BOOL)completes {
-   [[self cell] setCompletes:completes];
+-(void)deselectItemAtIndex:(int)index {
+   [[self cell] deselectItemAtIndex:index];
+}
+
+-(void)scrollItemAtIndexToTop:(int)index {
+   [[self cell] scrollItemAtIndexToTop:index];
+}
+
+-(void)scrollItemAtIndexToVisible:(int)index {
+   [[self cell] scrollItemAtIndexToVisible:index];
+}
+
+-(void)noteNumberOfItemsChanged {
+   [[self cell] noteNumberOfItemsChanged];
+}
+
+-(void)reloadData {
+   [[self cell] reloadData];
 }
 
 -(void)mouseDown:(NSEvent *)event {

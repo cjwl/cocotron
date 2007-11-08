@@ -9,7 +9,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/Foundation.h>
 #import <AppKit/AppKitExport.h>
 
-@class NSImage;
+@class NSImage, NSView;
 
 APPKIT_EXPORT NSString *NSWorkspaceWillPowerOffNotification;
 
@@ -21,15 +21,56 @@ APPKIT_EXPORT NSString *NSWorkspaceWillPowerOffNotification;
 
 -(NSNotificationCenter *)notificationCenter;
 
--(BOOL)selectFile:(NSString *)path inFileViewerRootedAtPath:(NSString *)rootedAtPath;
+-(NSImage *)iconForFile:(NSString *)path;
+-(NSImage *)iconForFiles:(NSArray *)array;
+-(NSImage *)iconForFileType:(NSString *)type;
+-(NSString *)localizedDescriptionForType:(NSString *)type;
+-(BOOL)filenameExtension:(NSString *)extension isValidForType:(NSString *)type;
+-(NSString *)preferredFilenameExtensionForType:(NSString *)type;
+-(BOOL)type:(NSString *)type conformsToType:(NSString *)conformsToType;
+-(NSString *)typeOfFile:(NSString *)path error:(NSError **)error;
 
 -(BOOL)openFile:(NSString *)path;
 -(BOOL)openFile:(NSString *)path withApplication:(NSString *)application;
 -(BOOL)openTempFile:(NSString *)path;
+-(BOOL)openFile:(NSString *)path fromImage:(NSImage *)image at:(NSPoint)point inView:(NSView *)view;
+-(BOOL)openFile:(NSString *)path withApplication:(NSString *)application andDeactivate:(BOOL)deactivate;
+-(BOOL)openURL:(NSURL *)url;
 
--(int)extendPowerOffBy:(int)seconds;
+-(BOOL)selectFile:(NSString *)path inFileViewerRootedAtPath:(NSString *)rootedAtPath;
+-(void)slideImage:(NSImage *)image from:(NSPoint)from to:(NSPoint)to;
+-(BOOL)performFileOperation:(NSString *)operation source:(NSString *)source destination:(NSString *)destination files:(NSArray *)files tag:(int *)tag;
 
--(void)slideImage:(NSImage *)image from:(NSPoint)fromPoint to:(NSPoint)toPoint;
+-(BOOL)getFileSystemInfoForPath:(NSString *)path isRemovable:(BOOL *)isRemovable isWritable:(BOOL *)isWritable isUnmountable:(BOOL *)isUnmountable description:(NSString **)description type:(NSString **)type;
+
+-(BOOL)getInfoForFile:(NSString *)path application:(NSString **)application type:(NSString **)type;
+
+-(void)checkForRemovableMedia;
+-(NSArray *)mountNewRemovableMedia;
+-(NSArray *)mountedRemovableMedia;
+-(NSArray *)mountedLocalVolumePaths;
+
+-(BOOL)unmountAndEjectDeviceAtPath:(NSString *)path;
+
+-(BOOL)fileSystemChanged;
+-(BOOL)userDefaultsChanged;
+
+-(void)noteFileSystemChanged;
+-(void)noteFileSystemChanged:(NSString *)path;
+-(void)noteUserDefaultsChanged;
+
+-(BOOL)isFilePackageAtPath:(NSString *)path;
+-(NSString *)absolutePathForAppBundleWithIdentifier:(NSString *)identifier;
+-(NSString *)pathForApplication:(NSString *)application;
+-(NSArray *)launchedApplications;
+-(BOOL)launchApplication:(NSString *)application;
+-(BOOL)launchApplication:(NSString *)application showIcon:(BOOL)showIcon autolaunch:(BOOL)autolaunch;
+
+-(void)findApplications;
+-(NSDictionary *)activeApplication;
+-(void)hideOtherApplications;
+
+-(int)extendPowerOffBy:(int)milliseconds;
 
 @end
 

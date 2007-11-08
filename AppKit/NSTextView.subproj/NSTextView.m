@@ -509,7 +509,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
      result=[[self layoutManager] extraLineFragmentRect];
     else {
      unsigned    rectCount=0;
-     NSRectArray rectArray=[[self layoutManager] rectArrayForCharacterRange:range withinSelectedCharacterRange:range inTextContainer:[self textContainer] rectCount:&rectCount];
+     NSRect * rectArray=[[self layoutManager] rectArrayForCharacterRange:range withinSelectedCharacterRange:range inTextContainer:[self textContainer] rectCount:&rectCount];
 
      if(rectCount==0)
       NSLog(@"rectCount==0!");
@@ -1941,7 +1941,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     NSRange range = [self selectedRange];
     
     [[self textStorage] addAttribute:NSUnderlineStyleAttributeName
-                               value:[NSNumber numberWithInt:NSSingleUnderlineStyle]
+                               value:[NSNumber numberWithInt:NSUnderlineStyleSingle]
                                range:range];
 
     [self setSelectedRange:range];

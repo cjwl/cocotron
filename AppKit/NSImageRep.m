@@ -10,6 +10,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSImageRep.h>
 #import <AppKit/NSBitmapImageRep.h>
 #import <AppKit/NSPDFImageRep.h>
+#import <AppKit/NSPasteboard.h>
+#import <AppKit/NSGraphicsContextFunctions.h>
 
 @implementation NSImageRep
 
@@ -35,6 +37,63 @@ static NSMutableArray *_registeredClasses=nil;
    [_registeredClasses removeObjectIdenticalTo:class];
 }
 
++(NSArray *)imageFileTypes {
+   NSMutableSet *result=[NSMutableSet set];
+   int           i,count=[_registeredClasses count];
+   
+   for(i=0;i<count;i++){
+    Class cls=[_registeredClasses objectAtIndex:i];
+    
+    [result addObjectsFromArray:[cls imageUnfilteredFileTypes]];
+   }
+   
+   return [result allObjects];
+}
+
++(NSArray *)imageUnfilteredFileTypes {
+   return [NSArray array];
+}
+
++(NSArray *)imagePasteboardTypes {
+   NSMutableSet *result=[NSMutableSet set];
+   int           i,count=[_registeredClasses count];
+   
+   for(i=0;i<count;i++){
+    Class cls=[_registeredClasses objectAtIndex:i];
+    
+    [result addObjectsFromArray:[cls imageUnfilteredPasteboardTypes]];
+   }
+   
+   return [result allObjects];
+}
+
++(NSArray *)imageUnfilteredPasteboardTypes {
+   return [NSArray array];
+}
+
++(BOOL)canInitWithData:(NSData *)data {
+   return NO;
+}
+
++(BOOL)canInitWithPasteboard:(NSPasteboard *)pasteboard {
+   NSString *available=[pasteboard availableTypeFromArray:[self imageUnfilteredPasteboardTypes]];
+   
+   return (available!=nil)?YES:NO;
+}
+
++(Class)imageRepClassForData:(NSData *)data {
+   int count=[_registeredClasses count];
+   
+   while(--count>=0){
+    Class check=[_registeredClasses objectAtIndex:count];
+    
+    if([check canInitWithData:data])
+     return check;
+   }
+   
+   return nil;
+}
+
 +(Class)imageRepClassForFileType:(NSString *)type {
    int count=[_registeredClasses count];
    
@@ -49,7 +108,17 @@ static NSMutableArray *_registeredClasses=nil;
    return nil;
 }
 
-+(NSArray *)imageUnfilteredFileTypes {
++(Class)imageRepClassForPasteboardType:(NSString *)type {
+   int count=[_registeredClasses count];
+   
+   while(--count>=0){
+    Class    checkClass=[_registeredClasses objectAtIndex:count];
+    NSArray *types=[checkClass imageUnfilteredPasteboardTypes];
+    
+    if([types containsObject:type])
+     return checkClass;
+   }
+   
    return nil;
 }
 
@@ -60,19 +129,118 @@ static NSMutableArray *_registeredClasses=nil;
    return [class imageRepsWithContentsOfFile:path];
 }
 
++(NSArray *)imageRepsWithContentsOfURL:(NSURL *)url {
+   NSUnimplementedMethod();
+   return nil;
+}
+
++(NSArray *)imageRepsWithPasteboard:(NSPasteboard *)pasteboard {
+   NSUnimplementedMethod();
+   return nil;
+}
+
++imageRepWithContentsOfFile:(NSString *)path {
+   NSUnimplementedMethod();
+   return nil;
+}
+
++imageRepWithContentsOfURL:(NSURL *)url {
+   NSUnimplementedMethod();
+   return nil;
+}
+
++imageRepWithPasteboard:(NSPasteboard *)pasteboard {
+   NSUnimplementedMethod();
+   return nil;
+}
+
 -(NSSize)size {
    return _size;
 }
 
+-(int)pixelsWide {
+   return _pixelsWide;
+}
+
+-(int)pixelsHigh {
+   return _pixelsHigh;
+}
+
+-(BOOL)isOpaque {
+   return _isOpaque;
+}
+
+-(BOOL)hasAlpha {
+   return _hasAlpha;
+}
+
+-(NSString *)colorSpaceName {
+   return _colorSpaceName;
+}
+
+-(int)bitsPerSample {
+   return _bitsPerSample;
+}
+
+-(void)setSize:(NSSize)value {
+   _size=value;
+}
+
+-(void)setPixelsWide:(int)value {
+   _pixelsWide=value;
+}
+
+-(void)setPixelsHigh:(int)value {
+   _pixelsHigh=value;
+}
+
+-(void)setOpaque:(BOOL)value {
+   _isOpaque=value;
+}
+
+-(void)setAlpha:(BOOL)value {
+   _hasAlpha=value;
+}
+
+-(void)setColorSpaceName:(NSString *)value {
+   value=[value copy];
+   [_colorSpaceName release];
+   _colorSpaceName=value;
+}
+
+-(void)setBitsPerSample:(int)value {
+   _bitsPerSample=value;
+}
+
+-(BOOL)draw {
+// do nothing
+   return YES;
+}
+
 -(BOOL)drawAtPoint:(NSPoint)point {
-   NSSize size=[self size];
+   CGContextRef context=NSCurrentGraphicsPort();
+   BOOL         result;
    
-   return [self drawInRect:NSMakeRect(point.x,point.y,size.width,size.height)];
+   CGContextSaveGState(context);
+   CGContextTranslateCTM(context,point.x,point.y);
+   result=[self draw];
+   CGContextRestoreGState(context);
+   
+   return result;
 }
 
 -(BOOL)drawInRect:(NSRect)rect {
-   NSInvalidAbstractInvocation();
-   return NO;
+   CGContextRef context=NSCurrentGraphicsPort();
+   NSSize       size=[self size];
+   BOOL         result;
+   
+   CGContextSaveGState(context);
+   CGContextTranslateCTM(context,rect.origin.x,rect.origin.y);
+   CGContextScaleCTM(context,rect.size.width/size.width,rect.size.height/size.height);
+   result=[self draw];
+   CGContextRestoreGState(context);
+   
+   return result;
 }
 
 -(NSString *)description {

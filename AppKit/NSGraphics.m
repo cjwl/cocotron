@@ -29,6 +29,13 @@ NSString *NSCalibratedWhiteColorSpace=@"NSCalibratedWhiteColorSpace";
 NSString *NSCalibratedRGBColorSpace=@"NSCalibratedRGBColorSpace";
 NSString *NSNamedColorSpace=@"NSNamedColorSpace";
 
+NSString *NSDeviceIsScreen=@"NSDeviceIsScreen";
+NSString *NSDeviceIsPrinter=@"NSDeviceIsPrinter";
+NSString *NSDeviceSize=@"NSDeviceSize";
+NSString *NSDeviceResolution=@"NSDeviceResolution";
+NSString *NSDeviceColorSpaceName=@"NSDeviceColorSpaceName";
+NSString *NSDeviceBitsPerSample=@"NSDeviceBitsPerSample";
+
 void NSRectClipList(const NSRect *rects, int count) {
    CGContextRef graphicsPort=NSCurrentGraphicsPort();
 

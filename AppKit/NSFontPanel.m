@@ -15,6 +15,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSFont.h>
 #import <AppKit/NSTextField.h>
 #import <AppKit/NSApplication.h>
+#import <AppKit/NSButton.h>
 
 #import <AppKit/NSFontFamily.h>
 #import <AppKit/NSFontTypeface.h>
@@ -68,8 +69,39 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [self buildFamilyMatrix];
 }
 
++(BOOL)sharedFontPanelExists {
+   return ([[NSFontManager sharedFontManager] fontPanel:NO]!=nil)?YES:NO;
+}
+
 +(NSFontPanel *)sharedFontPanel {
    return [[NSFontManager sharedFontManager] fontPanel:YES];
+}
+
+-(BOOL)isEnabled {
+   return [_setButton isEnabled];
+}
+
+-(NSView *)accessoryView {
+   return _accessoryView;
+}
+
+-(void)setEnabled:(BOOL)value {
+   [_setButton setEnabled:value];
+}
+
+-(void)setAccessoryView:(NSView *)view {
+   view=[view retain];
+   [_accessoryView release];
+   _accessoryView=view;
+   NSUnimplementedMethod();
+}
+
+-(BOOL)worksWhenModal {
+   return YES;
+}
+
+-(void)reloadDefaultFontFamilies {
+   NSUnimplementedMethod();
 }
 
 -(NSString *)selectedFamilyName {
@@ -104,6 +136,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(NSFont *)selectedFont {
    return [NSFont fontWithName:[self selectedFontName] size:[self selectedPointSize]]; 
 }
+
 
 -(void)buildTypefaceMatrix {
    NSArray  *traits=[self availableTraitsInFamily:[self selectedFamilyName]];
@@ -147,51 +180,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [_sampleTextField setFont:[self selectedFont]];
 }
 
--(void)clickFamilyMatrix:sender {
-   [self buildTypefaceMatrix];
-   [self buildSizeMatrix];
-   [self buildSampleTextField];
-}
-
--(void)clickTypefaceMatrix:sender {
-   [self buildSizeMatrix];
-   [self buildSampleTextField];
-}
-
--(void)clickSizeText:sender {
-   [self buildSampleTextField];
-}
-
--(void)clickSizeMatrix:sender {
-   NSArray *sizes=[self availablePointSizes];
-   int      row=[_sizeMatrix selectedRow];
-
-   if(row>=0){
-    [_sizeTextField setStringValue:[NSString stringWithFormat:@"%g",[[sizes objectAtIndex:row] floatValue]]];
-   }
-
-   [self buildSampleTextField];
-}
-
--(void)set:sender {
-   [NSApp sendAction:@selector(changeFont:) to:nil from:[NSFontManager sharedFontManager]];
-}
-
--(void)revert:sender {
-   NSFontManager *manager=[NSFontManager sharedFontManager];
-
-   [self setPanelFont:[manager selectedFont] isMultiple:[manager isMultiple]];
-}
-
--(void)setAccessoryView:(NSView *)view {
-   NSUnimplementedMethod();
-}
-
--(NSView *)accessoryView {
-   NSUnimplementedMethod();
-   return nil;
-}
-
 -(void)setPanelFont:(NSFont *)font isMultiple:(BOOL)isMultiple {
    NSFontFamily   *family=[NSFontFamily fontFamilyWithTypefaceName:[font fontName]];
    NSFontTypeface *typeface=[family typefaceWithName:[font fontName]];
@@ -219,6 +207,44 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(NSFont *)panelConvertFont:(NSFont *)font {
    return [self selectedFont];
 }
+
+-(void)set:sender {
+   [NSApp sendAction:@selector(changeFont:) to:nil from:[NSFontManager sharedFontManager]];
+}
+
+-(void)revert:sender {
+   NSFontManager *manager=[NSFontManager sharedFontManager];
+
+   [self setPanelFont:[manager selectedFont] isMultiple:[manager isMultiple]];
+}
+
+-(void)clickFamilyMatrix:sender {
+   [self buildTypefaceMatrix];
+   [self buildSizeMatrix];
+   [self buildSampleTextField];
+}
+
+-(void)clickTypefaceMatrix:sender {
+   [self buildSizeMatrix];
+   [self buildSampleTextField];
+}
+
+-(void)clickSizeText:sender {
+   [self buildSampleTextField];
+}
+
+-(void)clickSizeMatrix:sender {
+   NSArray *sizes=[self availablePointSizes];
+   int      row=[_sizeMatrix selectedRow];
+
+   if(row>=0){
+    [_sizeTextField setStringValue:[NSString stringWithFormat:@"%g",[[sizes objectAtIndex:row] floatValue]]];
+   }
+
+   [self buildSampleTextField];
+}
+
+
 
 
 @end

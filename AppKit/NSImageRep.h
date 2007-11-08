@@ -6,7 +6,10 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
-#import <Foundation/Foundation.h>
+#import <Foundation/NSObject.h>
+#import <Foundation/NSGeometry.h>
+
+@class NSArray,NSData,NSPasteboard,NSURL;
 
 @interface NSImageRep : NSObject {
    NSSize    _size;
@@ -22,14 +25,43 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 +(NSArray *)registeredImageRepClasses;
 +(void)registerImageRepClass:(Class)aClass;
 +(void)unregisterImageRepClass:(Class)aClass;
-+(Class)imageRepClassForFileType:(NSString *)type;
 
++(NSArray *)imageFileTypes;
 +(NSArray *)imageUnfilteredFileTypes;
++(NSArray *)imagePasteboardTypes;
++(NSArray *)imageUnfilteredPasteboardTypes;
+
++(BOOL)canInitWithData:(NSData *)data;
++(BOOL)canInitWithPasteboard:(NSPasteboard *)pasteboard;
+
++(Class)imageRepClassForData:(NSData *)data;
++(Class)imageRepClassForFileType:(NSString *)type;
++(Class)imageRepClassForPasteboardType:(NSString *)type;
 
 +(NSArray *)imageRepsWithContentsOfFile:(NSString *)path;
++(NSArray *)imageRepsWithContentsOfURL:(NSURL *)url;
++(NSArray *)imageRepsWithPasteboard:(NSPasteboard *)pasteboard;
++imageRepWithContentsOfFile:(NSString *)path;
++imageRepWithContentsOfURL:(NSURL *)url;
++imageRepWithPasteboard:(NSPasteboard *)pasteboard;
 
 -(NSSize)size;
+-(int)pixelsWide;
+-(int)pixelsHigh;
+-(BOOL)isOpaque;
+-(BOOL)hasAlpha;
+-(NSString *)colorSpaceName;
+-(int)bitsPerSample;
 
+-(void)setSize:(NSSize)value;
+-(void)setPixelsWide:(int)value;
+-(void)setPixelsHigh:(int)value;
+-(void)setOpaque:(BOOL)value;
+-(void)setAlpha:(BOOL)value;
+-(void)setColorSpaceName:(NSString *)value;
+-(void)setBitsPerSample:(int)value;
+
+-(BOOL)draw;
 -(BOOL)drawAtPoint:(NSPoint)point;
 -(BOOL)drawInRect:(NSRect)rect;
 

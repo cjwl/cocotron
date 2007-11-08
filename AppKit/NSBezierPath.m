@@ -166,11 +166,13 @@ static NSLineJoinStyle _defaultLineJoinStyle=NSMiterLineJoinStyle;
 }
 
 +(void)drawPackedGlyphs:(const char *)packed atPoint:(NSPoint)point {
-   KGContext *context=[[NSGraphicsContext currentContext] graphicsPort];
-   CGGlyph   *glyphs;
-   unsigned   count=0;
+   KGContext     *context=[[NSGraphicsContext currentContext] graphicsPort];
+   const CGGlyph *glyphs=(const CGGlyph *)packed;
+   unsigned       count;
 
-// FIX, unpack glyphs
+   for(count=0;glyphs[count]!=0;count++)
+    ;
+    
    CGContextShowGlyphsAtPoint(context,point.x,point.y,glyphs,count);
 }
 
@@ -244,11 +246,39 @@ static NSLineJoinStyle _defaultLineJoinStyle=NSMiterLineJoinStyle;
 }
 
 -(NSBezierPathElement)elementAtIndex:(int)index {
+   if(index>=[_path numberOfOperators])
+    [NSException raise:NSInvalidArgumentException format:@"index (%d) >= numberOfOperators (%d)",index,[_path numberOfOperators]];
+
    return [_path operators][index];
 }
 
--(NSBezierPathElement)elementAtIndex:(int)index associatedPoints:(NSPoint *)points {
-   NSUnimplementedMethod();
+static int numberOfPointsForOperator(int op){
+   switch(op){
+    case kCGPathOperatorMoveToPoint: return 1;
+    case kCGPathOperatorLineToPoint: return 1;
+    case kCGPathOperatorCurveToPoint: return 3;
+    case kCGPathOperatorCloseSubpath: return 0;
+    case kCGPathOperatorQuadCurveToPoint: return 2;
+   }
+   return 0;
+}
+
+-(NSBezierPathElement)elementAtIndex:(int)index associatedPoints:(NSPoint *)associated {
+   const unsigned char *operators=[_path operators];
+   const CGPoint       *points=[_path points];
+   int                  i,pi=0,pcount;
+   
+   if(index>=[_path numberOfOperators])
+    [NSException raise:NSInvalidArgumentException format:@"index (%d) >= numberOfOperators (%d)",index,[_path numberOfOperators]];
+    
+   for(i=0;i<index;i++)
+    pi+=numberOfPointsForOperator(operators[i]);
+    
+   pcount=numberOfPointsForOperator(operators[i]);
+   for(i=0;i<pcount;i++,pi++)
+    associated[i]=points[pi];
+    
+   return operators[index];
 }
 
 -(void)setLineWidth:(float)width {
@@ -309,6 +339,7 @@ static NSLineJoinStyle _defaultLineJoinStyle=NSMiterLineJoinStyle;
 
 -(NSRect)bounds {
    NSUnimplementedMethod();
+   return NSMakeRect(0,0,0,0);
 }
 
 -(NSRect)controlPointBounds {
@@ -418,17 +449,29 @@ static NSLineJoinStyle _defaultLineJoinStyle=NSMiterLineJoinStyle;
 }
 
 -(void)setAssociatedPoints:(NSPoint *)points atIndex:(int)index {
-   NSUnimplementedMethod();
+   const unsigned char *operators=[_path operators];
+   int                  i,pi=0,pcount;
+   
+   if(index>=[_path numberOfOperators])
+    [NSException raise:NSInvalidArgumentException format:@"index (%d) >= numberOfOperators (%d)",index,[_path numberOfOperators]];
+    
+   for(i=0;i<index;i++)
+    pi+=numberOfPointsForOperator(operators[i]);
+    
+   pcount=numberOfPointsForOperator(operators[i]);
+   
+   [_path setPoints:points count:pcount atIndex:pi];
 }
 
 -(NSBezierPath *)bezierPathByFlatteningPath {
    NSUnimplementedMethod();
+   return nil;
 }
 
 -(NSBezierPath *)bezierPathByReversingPath {
    NSUnimplementedMethod();
+   return nil;
 }
-
 
 -(void)stroke {
    KGContext *context=[[NSGraphicsContext currentContext] graphicsPort];
@@ -457,12 +500,11 @@ static NSLineJoinStyle _defaultLineJoinStyle=NSMiterLineJoinStyle;
     CGContextEOFillPath(context);
 }
 
-
 -(void)addClip {
    KGContext *context=[[NSGraphicsContext currentContext] graphicsPort];
 
-	if(CGContextIsPathEmpty(context))
-		CGContextBeginPath(context);
+   if(CGContextIsPathEmpty(context))
+    CGContextBeginPath(context);
    CGContextAddPath(context,_path);
    CGContextClip(context);
 }
@@ -470,10 +512,9 @@ static NSLineJoinStyle _defaultLineJoinStyle=NSMiterLineJoinStyle;
 -(void)setClip {
    KGContext *context=[[NSGraphicsContext currentContext] graphicsPort];
 
-	CGContextBeginPath(context);
+   CGContextBeginPath(context);
    CGContextAddPath(context,_path);
    CGContextClip(context);
 }
-
 
 @end

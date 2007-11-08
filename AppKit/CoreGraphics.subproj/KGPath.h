@@ -39,7 +39,7 @@ enum {
 -(BOOL)isEqualToPath:(KGPath *)other;
 
 -(BOOL)isEmpty;
--(BOOL)isRect;
+-(BOOL)isRect:(CGRect *)rect;
 
 -(BOOL)containsPoint:(NSPoint)point evenOdd:(BOOL)evenOdd withTransform:(CGAffineTransform *)matrix;
 

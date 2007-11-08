@@ -8,18 +8,59 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <AppKit/NSTextField.h>
 
+APPKIT_EXPORT NSString *NSComboBoxSelectionDidChangeNotification;
+APPKIT_EXPORT NSString *NSComboBoxSelectionIsChangingNotification;
+APPKIT_EXPORT NSString *NSComboBoxWillDismissNotification;
+APPKIT_EXPORT NSString *NSComboBoxWillPopUpNotification;
+
 @interface NSComboBox : NSTextField
 
--(void)addItemWithObjectValue:(id)object;
+-dataSource;
+-(BOOL)usesDataSource;
+-(BOOL)isButtonBordered;
+-(float)itemHeight;
+-(BOOL)hasVerticalScroller;
+-(NSSize)intercellSpacing;
+-(BOOL)completes;
+-(int)numberOfVisibleItems;
+
+-(void)setDataSource:value;
+-(void)setUsesDataSource:(BOOL)value;
+-(void)setButtonBordered:(BOOL)value;
+-(void)setItemHeight:(float)value;
+-(void)setHasVerticalScroller:(BOOL)value;
+-(void)setIntercellSpacing:(NSSize)value;
+-(void)setCompletes:(BOOL)completes;
+-(void)setNumberOfVisibleItems:(int)value;
+
+-(int)numberOfItems;
+-(NSArray *)objectValues;
+-itemObjectValueAtIndex:(int)index;
+-(int)indexOfItemWithObjectValue:object;
+-(void)addItemWithObjectValue:object;
 -(void)addItemsWithObjectValues:(NSArray *)objects;
 -(void)removeAllItems;
--(int)indexOfItemWithObjectValue:(id)object;
+-(void)removeItemAtIndex:(int)index;
+-(void)removeItemWithObjectValue:value;
+-(void)insertItemWithObjectValue:value atIndex:(int)index;
 
+-(int)indexOfSelectedItem;
+-objectValueOfSelectedItem;
+-(void)selectItemAtIndex:(int)index;
+-(void)selectItemWithObjectValue:value;
+-(void)deselectItemAtIndex:(int)index;
+
+-(void)scrollItemAtIndexToTop:(int)index;
 -(void)scrollItemAtIndexToVisible:(int)index;
 
--(void)selectItemAtIndex:(int)index;
+-(void)noteNumberOfItemsChanged;
+-(void)reloadData;
 
--(BOOL)completes;
--(void)setCompletes:(BOOL)completes;
+@end
 
+@interface NSObject(NSComboBox)
+-(void)comboBoxWillPopUp:(NSNotification *)note;
+-(void)comboBoxWillDismiss:(NSNotification *)note;
+-(void)comboBoxSelectionDidChange:(NSNotification *)note;
+-(void)comboBoxSelectionIsChanging:(NSNotification *)note;
 @end

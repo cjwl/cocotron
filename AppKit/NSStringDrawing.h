@@ -8,6 +8,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/Foundation.h>
 
+typedef unsigned NSStringDrawingOptions;
+
 @interface NSString(NSStringDrawing)
 -(void)drawAtPoint:(NSPoint)point withAttributes:(NSDictionary *)attributes;
 -(void)drawInRect:(NSRect)rect withAttributes:(NSDictionary *)attributes;
@@ -18,6 +20,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @interface NSAttributedString(NSStringDrawing)
 -(void)drawAtPoint:(NSPoint)point;
 -(void)drawInRect:(NSRect)rect;
+-(void)drawWithRect:(NSRect)rect options:(NSStringDrawingOptions)options;
 
 -(NSSize)size;
 @end

@@ -49,6 +49,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [super dealloc];
 }
 
+-copyWithZone:(NSZone *)zone {
+   NSURL *copy=NSCopyObject(self,0,zone);
+   
+   copy->_scheme=[_scheme copy];
+   copy->_path=[_path copy];
+   
+   return copy;
+}
+
 -(BOOL)isEqual:other {
    NSURL *otherURL;
    

@@ -280,6 +280,7 @@ const char *KGImageNameWithIntent(CGColorRenderingIntent intent){
 
     return image;
    }
+   return nil;
 }
 
 @end

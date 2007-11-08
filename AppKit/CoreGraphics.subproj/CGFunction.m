@@ -10,7 +10,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "KGFunction.h"
 
 CGFunctionRef CGFunctionRetain(CGFunctionRef self) {
-   [self retain];
+   return [self retain];
 }
 
 void CGFunctionRelease(CGFunctionRef self) {

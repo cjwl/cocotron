@@ -22,6 +22,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSPageLayout.h>
 #import <AppKit/NSPlatform.h>
 #import <AppKit/NSDocumentController.h>
+#import <AppKit/NSImage.h>
 #import <AppKit/NSSheetContext.h>
 
 NSString *NSModalPanelRunLoopMode=@"NSModalPanelRunLoopMode";
@@ -34,6 +35,18 @@ NSString *NSApplicationWillBecomeActiveNotification=@"NSApplicationWillBecomeAct
 NSString *NSApplicationDidBecomeActiveNotification=@"NSApplicationDidBecomeActiveNotification";
 NSString *NSApplicationWillResignActiveNotification=@"NSApplicationWillResignActiveNotification";
 NSString *NSApplicationDidResignActiveNotification=@"NSApplicationDidResignActiveNotification";
+
+NSString *NSApplicationWillUpdateNotification=@"NSApplicationWillUpdateNotification";
+NSString *NSApplicationDidUpdateNotification=@"NSApplicationDidUpdateNotification";
+
+NSString *NSApplicationWillHideNotification=@"NSApplicationWillHideNotification";
+NSString *NSApplicationDidHideNotification=@"NSApplicationDidHideNotification";
+NSString *NSApplicationWillUnhideNotification=@"NSApplicationWillUnhideNotification";
+NSString *NSApplicationDidUnhideNotification=@"NSApplicationDidUnhideNotification";
+
+NSString *NSApplicationWillTerminateNotification=@"NSApplicationWillTerminateNotification";
+
+NSString *NSApplicationDidChangeScreenParametersNotification=@"NSApplicationDidChangeScreenParametersNotification";
 
 @implementation NSApplication
 
@@ -56,6 +69,10 @@ id NSApp=nil;
    return NSApp;
 }
 
++(void)detachDrawingThread:(SEL)selector toTarget:target withObject:object {
+   NSUnimplementedMethod();
+}
+
 -init {
    _display=[[NSDisplay currentDisplay] retain];
    [_display showSplashImage];
@@ -68,12 +85,30 @@ id NSApp=nil;
    return self;
 }
 
+-(NSGraphicsContext *)context {
+   NSUnimplementedMethod();
+   return nil;
+}
+
 -delegate {
    return _delegate;
 }
 
 -(NSArray *)windows {
    return _windows;
+}
+
+-(NSWindow *)windowWithWindowNumber:(int)number {
+   int i,count=[_windows count];
+   
+   for(i=0;i<count;i++){
+    NSWindow *check=[_windows objectAtIndex:i];
+    
+    if([check windowNumber]==number)
+     return check;
+   }
+   
+   return nil;
 }
 
 -(NSMenu *)mainMenu {
@@ -83,7 +118,6 @@ id NSApp=nil;
 -(NSMenu *)menu {
   return [self mainMenu];
 }
-
 
 -(NSMenu *)windowsMenu {
    if(_windowsMenu==nil)
@@ -113,8 +147,7 @@ id NSApp=nil;
 }
 
 -(NSImage *)applicationIconImage {
-   NSUnimplementedMethod();
-   return nil;
+   return _applicationIconImage;
 }
 
 -(BOOL)isActiveExcludingWindow:(NSWindow *)exclude {
@@ -135,6 +168,41 @@ id NSApp=nil;
 
 -(BOOL)isActive {
    return [self isActiveExcludingWindow:nil];
+}
+
+-(BOOL)isHidden {
+   NSUnimplementedMethod();
+   return NO;
+}
+
+-(BOOL)isRunning {
+   return _isRunning;
+}
+
+-(NSWindow *)makeWindowsPerform:(SEL)selector inOrder:(BOOL)inOrder {
+   NSUnimplementedMethod();
+   return nil;
+}
+
+-(void)miniaturizeAll:sender {
+   int count=[_windows count];
+   
+   while(--count>=0)
+    [[_windows objectAtIndex:count] miniaturize:sender];
+}
+
+-(NSArray *)orderedDocuments {
+   NSUnimplementedMethod();
+   return nil;
+}
+
+-(NSArray *)orderedWindows {
+   NSUnimplementedMethod();
+   return nil;
+}
+
+-(void)preventWindowOrdering {
+   NSUnimplementedMethod();
 }
 
 -(void)registerDelegate {
@@ -179,6 +247,10 @@ id NSApp=nil;
 }
 
 -(void)setApplicationIconImage:(NSImage *)image {
+   image=[image retain];
+   [_applicationIconImage release];
+   _applicationIconImage=image;
+   
    NSUnimplementedMethod();
 }
 
@@ -189,58 +261,62 @@ id NSApp=nil;
 }
 
 -(void)addWindowsItem:(NSWindow *)window title:(NSString *)title filename:(BOOL)isFilename {
-    NSMenuItem *windowItem;
+    NSMenuItem *item;
     
     if ([[self windowsMenu] indexOfItemWithTarget:window andAction:@selector(makeKeyAndOrderFront:)] != -1)
         return;
 
-    // separator management... shouldn't +separatorItem be a singleton? i dunno..
-    // e.g. here, lastObject] == [NSMenuItem separatorItem] ?
-    windowItem = [[[self windowsMenu] itemArray] lastObject];
-    if ([windowItem title] != nil && ![[windowItem target] isKindOfClass:[NSWindow class]])
+    if (![[[[self windowsMenu] itemArray] lastObject] isSeparatorItem])
         [[self windowsMenu] addItem:[NSMenuItem separatorItem]];
 
     if (isFilename)
-        title = [NSString stringWithFormat:@"%@  --  %@", [title lastPathComponent],
-            [title stringByDeletingLastPathComponent]];
+        title = [NSString stringWithFormat:@"%@  --  %@", [title lastPathComponent],[title stringByDeletingLastPathComponent]];
 
-    windowItem = [[[NSMenuItem alloc] initWithTitle:title
-                                             action:@selector(makeKeyAndOrderFront:)
-                                      keyEquivalent:@""] autorelease];
-    [windowItem setTarget:window];
+    item = [[[NSMenuItem alloc] initWithTitle:title action:@selector(makeKeyAndOrderFront:) keyEquivalent:@""] autorelease];
+    [item setTarget:window];
 
-    [[self windowsMenu] addItem:windowItem];
-    //NSLog(@"add: %@ %@ %@", [self windowsMenu], title, windowItem);
+    [[self windowsMenu] addItem:item];
 }
 
 -(void)changeWindowsItem:(NSWindow *)window title:(NSString *)title filename:(BOOL)isFilename {
-    int itemIndex = [[self windowsMenu] indexOfItemWithTarget:window
-                                                    andAction:@selector(makeKeyAndOrderFront:)];
+    int itemIndex = [[self windowsMenu] indexOfItemWithTarget:window andAction:@selector(makeKeyAndOrderFront:)];
 
     if (itemIndex != -1) {
-        NSMenuItem *windowItem = [[self windowsMenu] itemAtIndex:itemIndex];
+        NSMenuItem *item = [[self windowsMenu] itemAtIndex:itemIndex];
 
         if (isFilename)
-            title = [NSString stringWithFormat:@"%@  --  %@",
-                [title lastPathComponent], [title stringByDeletingLastPathComponent]];
+            title = [NSString stringWithFormat:@"%@  --  %@",[title lastPathComponent], [title stringByDeletingLastPathComponent]];
 
-        [windowItem setTitle:title];
-        [[self windowsMenu] itemChanged:windowItem];
+        [item setTitle:title];
+        [[self windowsMenu] itemChanged:item];
     }
     else
         [self addWindowsItem:window title:title filename:isFilename];
 }
 
 -(void)removeWindowsItem:(NSWindow *)window {
-    int itemIndex = [[self windowsMenu] indexOfItemWithTarget:window
-                                                    andAction:@selector(makeKeyAndOrderFront:)];
+    int itemIndex = [[self windowsMenu] indexOfItemWithTarget:window andAction:@selector(makeKeyAndOrderFront:)];
+    
     if (itemIndex != -1) {
         [[self windowsMenu] removeItemAtIndex:itemIndex];
 
-        // separator
-        if ([[[[self windowsMenu] itemArray] lastObject] title] == nil)
+        if ([[[[self windowsMenu] itemArray] lastObject] isSeparatorItem])
             [[self windowsMenu] removeItem:[[[self windowsMenu] itemArray] lastObject]];
     }
+}
+
+-(void)updateWindowsItem:(NSWindow *)window {
+#if 0
+    NSUnimplementedMethod();
+#else
+   NSMenu *menu=[self windowsMenu];
+   int     itemIndex=[[self windowsMenu] indexOfItemWithTarget:window andAction:@selector(makeKeyAndOrderFront:)];
+   
+   if(itemIndex!=-1){
+    NSMenuItem *item=[menu itemAtIndex:itemIndex];
+    
+   }
+#endif
 }
 
 -(void)finishLaunching {
@@ -324,7 +400,9 @@ id NSApp=nil;
 -(void)run {
 
    [self finishLaunching];
-
+   
+   _isRunning=YES;
+   
    do {
     NSAutoreleasePool *pool=[NSAutoreleasePool new];
     NSEvent           *event;
@@ -345,7 +423,7 @@ id NSApp=nil;
     [self _checkForTerminate];
 
     [pool release];
-   }while(YES);
+   }while(_isRunning);
 }
 
 -(BOOL)_performKeyEquivalent:(NSEvent *)event {
@@ -447,6 +525,11 @@ id NSApp=nil;
    return nil;
 }
 
+-targetForAction:(SEL)action to:target from:sender {
+   NSUnimplementedMethod();
+   return nil;
+}
+
 -(BOOL)sendAction:(SEL)action to:target from:sender {
 
 //NSLog(@"%s %s %@ %@",SELNAME(_cmd),action,target,sender);
@@ -465,11 +548,25 @@ id NSApp=nil;
    return NO;
 }
 
+-(BOOL)tryToPerform:(SEL)selector with:object {
+   NSUnimplementedMethod();
+   return NO;
+}
+
+-(void)setWindowsNeedUpdate:(BOOL)value {
+   _windowsNeedUpdate=value;
+   NSUnimplementedMethod();
+}
+
 -(void)updateWindows {
    [_windows makeObjectsPerformSelector:@selector(update)];
 }
 
 -(void)activateIgnoringOtherApps:(BOOL)flag {
+   NSUnimplementedMethod();
+}
+
+-(void)deactivate {
    NSUnimplementedMethod();
 }
 
@@ -590,6 +687,15 @@ id NSApp=nil;
    NSLog(@"NSApplication got exception: %@",exception);
 }
 
+-(int)requestUserAttention:(NSRequestUserAttentionType)attentionType {
+   NSUnimplementedMethod();
+   return 0;
+}
+
+-(void)cancelUserAttentionRequest:(int)requestNumber {
+   NSUnimplementedMethod();
+}
+
 -(void)runPageLayout:sender {
    [[NSPageLayout pageLayout] runModal];
 }
@@ -598,7 +704,15 @@ id NSApp=nil;
    [[NSColorPanel sharedColorPanel] orderFront:sender];
 }
 
+-(void)orderFrontCharacterPalette:sender {
+   NSUnimplementedMethod();
+}
+
 -(void)hide:sender {
+   NSUnimplementedMethod();
+}
+
+-(void)hideOtherApplications:sender {
    NSUnimplementedMethod();
 }
 
@@ -606,8 +720,21 @@ id NSApp=nil;
    NSUnimplementedMethod();
 }
 
--(void)stop:sender {
+-(void)unhideAllApplications:sender {
    NSUnimplementedMethod();
+}
+
+-(void)unhideWithoutActivation {
+   NSUnimplementedMethod();
+}
+
+-(void)stop:sender {
+   if([_modalStack lastObject]!=nil){
+    [self stopModal];
+    return;
+   }
+   
+   _isRunning=NO;
 }
 
 -(void)terminate:sender {
@@ -620,6 +747,14 @@ id NSApp=nil;
    [NSClassFromString(@"Win32RunningCopyPipe") performSelector:@selector(invalidateRunningCopyPipe)];
 
    exit(0);
+}
+
+-(void)replyToApplicationShouldTerminate:(BOOL)terminate {
+   NSUnimplementedMethod();
+}
+
+-(void)replyToOpenOrPrint:(NSApplicationDelegateReply)reply {
+   NSUnimplementedMethod();
 }
 
 -(void)arrangeInFront:sender {
@@ -660,10 +795,6 @@ id NSApp=nil;
     }
 }
 
--(void)showHelp:sender {
-   NSUnimplementedMethod();
-}
-
 -(NSMenu *)servicesMenu {
    return [[NSApp mainMenu] _menuWithName:@"_NSServicesMenu"];
 }
@@ -683,6 +814,12 @@ id NSApp=nil;
    //tiredofthesewarnings NSUnsupportedMethod();
 }
 
+-validRequestorForSendType:(NSString *)sendType returnType:(NSString *)returnType {
+   NSUnimplementedMethod();
+   return nil;
+}
+
+
 -(void)orderFrontStandardAboutPanel:sender {
    [self orderFrontStandardAboutPanelWithOptions:nil];
 }
@@ -691,6 +828,13 @@ id NSApp=nil;
    NSUnimplementedMethod();
 }
 
+-(void)activateContextHelpMode:sender {
+   NSUnimplementedMethod();
+}
+
+-(void)showHelp:sender {
+   NSUnimplementedMethod();
+}
 
 - (void)doCommandBySelector:(SEL)selector {
     if ([_delegate respondsToSelector:selector])

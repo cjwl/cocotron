@@ -8,6 +8,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 // Original - Christopher Lloyd <cjwl@objc.net>
 #import <Foundation/NSAffineTransform.h>
+#import <Foundation/NSRaise.h>
 #import <math.h>
 
 @implementation NSAffineTransform
@@ -48,6 +49,15 @@ static inline NSAffineTransformStruct invertStruct(NSAffineTransformStruct matri
    _matrix.m22=1;
    _matrix.tX=0;
    _matrix.tY=0;
+   return self;
+}
+
+-(void)encodeWithCoder:(NSCoder *)coder {
+   NSUnimplementedMethod();
+}
+
+-initWithCoder:(NSCoder *)coder {
+   NSUnimplementedMethod();
    return self;
 }
 

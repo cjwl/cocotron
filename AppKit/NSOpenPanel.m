@@ -10,6 +10,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSOpenPanel.h>
 #import <AppKit/NSApplication.h>
 #import <AppKit/NSDisplay.h>
+#import <Foundation/NSURL.h>
 
 @implementation NSOpenPanel
 
@@ -35,6 +36,17 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(NSArray *)filenames {
    return _filenames;
+}
+
+-(NSArray *)URLs {
+   NSArray        *paths=[self filenames];
+   NSMutableArray *result=[NSMutableArray arrayWithCapacity:[paths count]];
+   int             i,count=[paths count];
+   
+   for(i=0;i<count;i++)
+    [result addObject:[NSURL fileURLWithPath:[paths objectAtIndex:i]]];
+    
+   return result;
 }
 
 -(int)runModalForDirectory:(NSString *)directory file:(NSString *)file types:(NSArray *)types {

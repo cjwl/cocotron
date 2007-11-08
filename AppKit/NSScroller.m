@@ -32,8 +32,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [super initWithCoder:coder];
 
    if([coder isKindOfClass:[NSNibKeyedUnarchiver class]]){
-    NSNibKeyedUnarchiver *keyed=(NSNibKeyedUnarchiver *)coder;
-
     _isVertical=(_bounds.size.width<_bounds.size.height)?YES:NO;
     _floatValue=0;
     _knobProportion=0;

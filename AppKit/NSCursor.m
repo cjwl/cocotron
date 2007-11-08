@@ -9,32 +9,27 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 // Original - Christopher Lloyd <cjwl@objc.net>
 #import <AppKit/NSCursor.h>
 #import <AppKit/NSDisplay.h>
+#import <AppKit/NSImage.h>
 #import <Foundation/NSNull.h>
 
 @implementation NSCursor
+
++(NSCursor *)currentCursor {
+   NSUnimplementedMethod();
+   return 0;
+}
 
 -initWithCoder:(NSCoder *)coder {
    [self dealloc];
    return [NSNull null];
 }
 
--initWithIBeam {
-   _cursor=[[[NSDisplay currentDisplay] cursorWithName:@"IBeam"] retain];
-   return self;
+-(void)encodeWithCoder:(NSCoder *)coder {
+   NSUnimplementedMethod();
 }
 
--initWithArrow {
-   _cursor=[[[NSDisplay currentDisplay] cursorWithName:@"Arrow"] retain];
-   return self;
-}
-
--initWithHorizontalResize {
-   _cursor=[[[NSDisplay currentDisplay] cursorWithName:@"HorizontalResize"] retain];
-   return self;
-}
-
--initWithVerticalResize {
-   _cursor=[[[NSDisplay currentDisplay] cursorWithName:@"VerticalResize"] retain];
+-initWithName:(NSString *)name {
+   _cursor=[[[NSDisplay currentDisplay] cursorWithName:name] retain];
    return self;
 }
 
@@ -42,7 +37,34 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    static NSCursor *shared=nil;
 
    if(shared==nil)
-    shared=[[self alloc] initWithArrow];
+    shared=[[self alloc] initWithName:NSStringFromSelector(_cmd)];
+
+   return shared;
+}
+
++(NSCursor *)closedHandCursor {
+   static NSCursor *shared=nil;
+
+   if(shared==nil)
+    shared=[[self alloc] initWithName:NSStringFromSelector(_cmd)];
+
+   return shared;
+}
+
++(NSCursor *)crosshairCursor {
+   static NSCursor *shared=nil;
+
+   if(shared==nil)
+    shared=[[self alloc] initWithName:NSStringFromSelector(_cmd)];
+
+   return shared;
+}
+
++(NSCursor *)disappearingItemCursor {
+   static NSCursor *shared=nil;
+
+   if(shared==nil)
+    shared=[[self alloc] initWithName:NSStringFromSelector(_cmd)];
 
    return shared;
 }
@@ -51,25 +73,79 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    static NSCursor *shared=nil;
 
    if(shared==nil)
-    shared=[[self alloc] initWithIBeam];
+    shared=[[self alloc] initWithName:NSStringFromSelector(_cmd)];
 
    return shared;
 }
 
-+(NSCursor *)_horizontalResizeCursor {
++(NSCursor *)openHandCursor {
    static NSCursor *shared=nil;
 
    if(shared==nil)
-    shared=[[self alloc] initWithHorizontalResize];
+    shared=[[self alloc] initWithName:NSStringFromSelector(_cmd)];
 
    return shared;
 }
 
-+(NSCursor *)_verticalResizeCursor {
++(NSCursor *)pointingHandCursor {
    static NSCursor *shared=nil;
 
    if(shared==nil)
-    shared=[[self alloc] initWithVerticalResize];
+    shared=[[self alloc] initWithName:NSStringFromSelector(_cmd)];
+
+   return shared;
+}
+
++(NSCursor *)resizeDownCursor {
+   static NSCursor *shared=nil;
+
+   if(shared==nil)
+    shared=[[self alloc] initWithName:NSStringFromSelector(_cmd)];
+
+   return shared;
+}
+
++(NSCursor *)resizeLeftCursor {
+   static NSCursor *shared=nil;
+
+   if(shared==nil)
+    shared=[[self alloc] initWithName:NSStringFromSelector(_cmd)];
+
+   return shared;
+}
+
++(NSCursor *)resizeLeftRightCursor {
+   static NSCursor *shared=nil;
+
+   if(shared==nil)
+    shared=[[self alloc] initWithName:NSStringFromSelector(_cmd)];
+
+   return shared;
+}
+
++(NSCursor *)resizeRightCursor {
+   static NSCursor *shared=nil;
+
+   if(shared==nil)
+    shared=[[self alloc] initWithName:NSStringFromSelector(_cmd)];
+
+   return shared;
+}
+
++(NSCursor *)resizeUpCursor {
+   static NSCursor *shared=nil;
+
+   if(shared==nil)
+    shared=[[self alloc] initWithName:NSStringFromSelector(_cmd)];
+
+   return shared;
+}
+
++(NSCursor *)resizeUpDownCursor {
+   static NSCursor *shared=nil;
+
+   if(shared==nil)
+    shared=[[self alloc] initWithName:NSStringFromSelector(_cmd)];
 
    return shared;
 }
@@ -87,6 +163,58 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     [self hide];
    else
     [self unhide];
+}
+
+-initWithImage:(NSImage *)image foregroundColorHint:(NSColor *)foregroundHint backgroundColorHint:(NSColor *)backgroundHint hotSpot:(NSPoint)hotSpot {
+   NSUnimplementedMethod();
+   return nil;
+}
+
+-initWithImage:(NSImage *)image hotSpot:(NSPoint)hotSpot {
+   _image=[image retain];
+   _hotSpot=hotSpot;
+   return self;
+}
+
+-(void)dealloc {
+   [_image release];
+   [super dealloc];
+}
+
+-(NSImage *)image {
+   return _image;
+}
+
+-(NSPoint)hotSpot {
+   return _hotSpot;
+}
+
+-(BOOL)isSetOnMouseEntered {
+   return _isSetOnMouseEntered;
+}
+
+-(BOOL)isSetOnMouseExited {
+   return _isSetOnMouseExited;
+}
+
+-(void)setOnMouseEntered:(BOOL)value {
+   _isSetOnMouseEntered=value;
+}
+
+-(void)setOnMouseExited:(BOOL)value {
+   _isSetOnMouseExited=value;
+}
+
+-(void)mouseEntered:(NSEvent *)event {
+   NSUnimplementedMethod();
+}
+
+-(void)mouseExited:(NSEvent *)event {
+   NSUnimplementedMethod();
+}
+
+-(void)pop {
+   NSUnimplementedMethod();
 }
 
 -(void)set {

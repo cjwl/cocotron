@@ -199,7 +199,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    int  count=[_eventQueue count];
 
    while(--count>=0){
-    if([[_eventQueue objectAtIndex:count] type]==NSPeriodic){
+    if([(NSEvent *)[_eventQueue objectAtIndex:count] type]==NSPeriodic){
      result=YES;
      [_eventQueue removeObjectAtIndex:count];
     }
@@ -290,6 +290,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(int)runModalPrintPanelWithPrintInfoDictionary:(NSMutableDictionary *)attributes {
    NSInvalidAbstractInvocation();
+   return 0;
 }
 
 -(KGContext *)graphicsPortForPrintOperationWithView:(NSView *)view printInfo:(NSPrintInfo *)printInfo pageRange:(NSRange)pageRange {

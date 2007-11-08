@@ -87,6 +87,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    CGContextConcatCTM(context,[page drawingTransformForBox:kKGPDFMediaBox inRect:rect rotate:0 preserveAspectRatio:NO]);
    CGContextDrawPDFPage(context,page);
    CGContextRestoreGState(context);
+   return YES;
 }
 
 @end

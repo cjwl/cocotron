@@ -43,6 +43,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(NSTextBlockValueType)valueTypeForDimension:(NSTextBlockDimension)dimension {
+   NSUnimplementedMethod();
+   return 0;
 }
 
 -(float)widthForLayer:(NSTextBlockLayer)layer edge:(NSRectEdge)edge {

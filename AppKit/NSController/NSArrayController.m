@@ -71,7 +71,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	[super dealloc];
 }
 
--(id)awakeFromNib
+-(void)awakeFromNib
 {
 	[self _selectionMayHaveChanged];
 }

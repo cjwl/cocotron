@@ -12,27 +12,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/CGFont.h>
 #import <AppKit/CGContext.h>
 
-enum {
-// seperable
-   KGBlendModeNormal,
-   KGBlendModeMultiply,
-   KGBlendModeScreen,
-   KGBlendModeOverlay,
-   KGBlendModeDarken,
-   KGBlendModeLighten,
-   KGBlendModeColorDodge,
-   KGBlendModeColorBurn,
-   KGBlendModeHardLight,
-   KGBlendModeSoftLight,
-   KGBlendModeDifference,
-   KGBlendModeExclusion,
-// nonseperable  
-   KGBlendModeHue,
-   KGBlendModeSaturation,
-   KGBlendModeColor,
-   KGBlendModeLuminosity,
-};
-
 @class KGColor,KGColorSpace,KGShading,KGImage,KGGraphicsState,KGMutablePath,KGPath,KGPattern,KGLayer,KGPDFPage,NSMutableArray;
 
 @interface KGContext : NSObject {
@@ -87,6 +66,7 @@ enum {
 -(NSRect)convertRectToDeviceSpace:(NSRect)rect;
 -(NSRect)convertRectToUserSpace:(NSRect)rect;
 
+-(void)setCTM:(CGAffineTransform)matrix;
 -(void)concatCTM:(CGAffineTransform)matrix;
 -(void)translateCTM:(float)translatex:(float)translatey;
 -(void)scaleCTM:(float)scalex:(float)scaley;

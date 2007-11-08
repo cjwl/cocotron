@@ -14,19 +14,83 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSTextAttachment.h>
 #import <AppKit/NSRichTextReader.h>
 
-NSString *NSFontAttributeName=@"NSFontAttributeName";
+NSString *NSFontAttributeName=@"NSFontAttributeName"; 
 NSString *NSParagraphStyleAttributeName=@"NSParagraphStyleAttributeName";
 NSString *NSForegroundColorAttributeName=@"NSForegroundColorAttributeName";
 NSString *NSBackgroundColorAttributeName=@"NSBackgroundColorAttributeName";
-
 NSString *NSUnderlineStyleAttributeName=@"NSUnderlineStyleAttributeName";
+NSString *NSUnderlineColorAttributeName=@"NSUnderlineColorAttributeName";
 NSString *NSAttachmentAttributeName=@"NSAttachmentAttributeName";
 NSString *NSKernAttributeName=@"NSKernAttributeName";
 NSString *NSLigatureAttributeName=@"NSLigatureAttributeName";
-
+NSString *NSStrikethroughStyleAttributeName=@"NSStrikethroughStyleAttributeName";
+NSString *NSStrikethroughColorAttributeName=@"NSStrikethroughColorAttributeName";
+NSString *NSObliquenessAttributeName=@"NSObliquenessAttributeName";
+NSString *NSStrokeWidthAttributeName=@"NSStrokeWidthAttributeName";
+NSString *NSStrokeColorAttributeName=@"NSStrokeColorAttributeName";
+NSString *NSBaselineOffsetAttributeName=@"NSBaselineOffsetAttributeName";
+NSString *NSSuperscriptAttributeName=@"NSSuperscriptAttributeName";
+NSString *NSLinkAttributeName=@"NSLinkAttributeName";
+NSString *NSShadowAttributeName=@"NSShadowAttributeName";
+NSString *NSExpansionAttributeName=@"NSExpansionAttributeName";
+NSString *NSCursorAttributeName=@"NSCursorAttributeName";
+NSString *NSToolTipAttributeName=@"NSToolTipAttributeName";
 NSString *NSBackgroundColorDocumentAttribute=@"NSBackgroundColorDocumentAttribute";
 
 @implementation NSAttributedString(NSAttributedString_AppKit)
+
++(NSArray *)textFileTypes {
+   NSUnimplementedMethod();
+   return nil;
+}
+
++(NSArray *)textPasteboardTypes {
+   NSUnimplementedMethod();
+   return nil;
+}
+
++(NSArray *)textUnfilteredFileTypes {
+   NSUnimplementedMethod();
+   return nil;
+}
+
++(NSArray *)textUnfilteredPasteboardTypes {
+   NSUnimplementedMethod();
+   return nil;
+}
+
++(NSAttributedString *)attributedStringWithAttachment:(NSTextAttachment *)attachment {
+   unichar       unicode=NSAttachmentCharacter;
+   NSString     *string=[NSString stringWithCharacters:&unicode length:1];
+   NSDictionary *attributes=[NSDictionary dictionaryWithObject:attachment forKey:NSAttachmentAttributeName];
+   
+   return [[[self alloc] initWithString:string attributes:attributes] autorelease];
+}
+
+-initWithData:(NSData *)data options:(NSDictionary *)options documentAttributes:(NSDictionary **)attributes error:(NSError **)error {
+   NSUnimplementedMethod();
+   return nil;
+}
+
+-initWithDocFormat:(NSData *)werd documentAttributes:(NSDictionary **)attributes {
+   NSUnimplementedMethod();
+   return nil;
+}
+
+-initWithHTML:(NSData *)html baseURL:(NSURL *)url documentAttributes:(NSDictionary **)attributes {
+   NSUnimplementedMethod();
+   return nil;
+}
+
+-initWithHTML:(NSData *)html documentAttributes:(NSDictionary **)attributes {
+   NSUnimplementedMethod();
+   return nil;
+}
+
+-initWithHTML:(NSData *)html options:(NSDictionary *)options documentAttributes:(NSDictionary **)attributes {
+   NSUnimplementedMethod();
+   return nil;
+}
 
 -initWithPath:(NSString *)path documentAttributes:(NSDictionary **)attributes {
    NSAttributedString *string=[NSRichTextReader attributedStringWithContentsOfFile:path];
@@ -35,6 +99,81 @@ NSString *NSBackgroundColorDocumentAttribute=@"NSBackgroundColorDocumentAttribut
     return nil;
    }
    return [self initWithAttributedString:string];
+}
+
+-initWithRTF:(NSData *)rtf documentAttributes:(NSDictionary **)attributes {
+   NSUnimplementedMethod();
+   return nil;
+}
+
+-initWithRTFD:(NSData *)rtfd documentAttributes:(NSDictionary **)attributes {
+   NSUnimplementedMethod();
+   return nil;
+}
+
+-initWithRTFDFileWrapper:(NSFileWrapper *)wrapper documentAttributes:(NSDictionary **)attributes {
+   NSUnimplementedMethod();
+   return nil;
+}
+
+-initWithURL:(NSURL *)url documentAttributes:(NSDictionary **)attributes {
+   NSUnimplementedMethod();
+   return nil;
+}
+
+-initWithURL:(NSURL *)url options:(NSDictionary *)options documentAttributes:(NSDictionary **)attributes error:(NSError **)error {
+   NSUnimplementedMethod();
+   return nil;
+}
+
+-(int)itemNumberInTextList:(NSTextList *)list atIndex:(unsigned)index {
+   NSUnimplementedMethod();
+   return 0;
+}
+
+-(unsigned)lineBreakBeforeIndex:(unsigned)index withinRange:(NSRange)range {
+   NSUnimplementedMethod();
+   return 0;
+}
+
+-(unsigned)lineBreakByHyphenatingBeforeIndex:(unsigned)index withinRange:(NSRange)range {
+   NSUnimplementedMethod();
+   return 0;
+}
+
+-(NSRange)rangeOfTextBlock:(NSTextBlock *)block atIndex:(unsigned)index {
+   NSUnimplementedMethod();
+   return NSMakeRange(0,0);
+}
+
+-(NSRange)rangeOfTextList:(NSTextList *)list atIndex:(unsigned)index {
+   NSUnimplementedMethod();
+   return NSMakeRange(0,0);
+}
+
+-(NSRange)rangeOfTextTable:(NSTextTable *)table atIndex:(unsigned)index {
+   NSUnimplementedMethod();
+   return NSMakeRange(0,0);
+}
+
+-(NSFileWrapper *)RTFDFileWrapperFromRange:(NSRange)range documentAttributes:(NSDictionary *)attributes {
+   NSUnimplementedMethod();
+   return nil;
+}
+
+-(NSData *)RTFDFromRange:(NSRange)range documentAttributes:(NSDictionary *)attributes {
+   NSUnimplementedMethod();
+   return nil;
+}
+
+-(NSData *)RTFFromRange:(NSRange)range documentAttributes:(NSDictionary *)attributes {
+   NSUnimplementedMethod();
+   return nil;
+}
+
+-(NSDictionary *)rulerAttributesInRange:(NSRange)range {
+   NSUnimplementedMethod();
+   return nil;
 }
 
 -(NSRange)doubleClickAtIndex:(unsigned)location {
@@ -145,12 +284,34 @@ NSString *NSBackgroundColorDocumentAttribute=@"NSBackgroundColorDocumentAttribut
     return NSNotFound;
 }
 
-+(NSAttributedString *)attributedStringWithAttachment:(NSTextAttachment *)attachment {
-   unichar       unicode=NSAttachmentCharacter;
-   NSString     *string=[NSString stringWithCharacters:&unicode length:1];
-   NSDictionary *attributes=[NSDictionary dictionaryWithObject:attachment forKey:NSAttachmentAttributeName];
-   
-   return [[[self alloc] initWithString:string attributes:attributes] autorelease];
+-(NSRect)boundingRectWithSize:(NSSize)size options:(NSStringDrawingOptions)options {
+   NSUnimplementedMethod();
+   return NSMakeRect(0,0,0,0);
+}
+
+-(BOOL)containsAttachments {
+   NSUnimplementedMethod();
+   return NO;
+}
+
+-(NSData *)dataFromRange:(NSRange)range documentAttributes:(NSDictionary *)attributes error:(NSError **)error {
+   NSUnimplementedMethod();
+   return 0;
+}
+
+-(NSData *)docFormatFromRange:(NSRange)range documentAttributes:(NSDictionary *)attributes {
+   NSUnimplementedMethod();
+   return 0;
+}
+
+-(NSFileWrapper *)fileWrapperFromRange:(NSRange)range documentAttributes:(NSDictionary *)attributes error:(NSError **)error {
+   NSUnimplementedMethod();
+   return nil;
+}
+
+-(NSDictionary *)fontAttributesInRange:(NSRange)range {
+   NSUnimplementedMethod();
+   return nil;
 }
 
 @end

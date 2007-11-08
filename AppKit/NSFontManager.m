@@ -19,12 +19,29 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @implementation NSFontManager
 
+static Class _fontManagerFactory;
+static Class _fontPanelFactory;
+
 +(NSFontManager *)sharedFontManager {
-   return NSThreadSharedInstance(@"NSFontManager");
+   NSString *name=@"NSFontManager";
+   
+   if(_fontManagerFactory!=Nil)
+    name=NSStringFromClass(_fontManagerFactory);
+   
+   return NSThreadSharedInstance(name);
+}
+
++(void)setFontManagerFactory:(Class)value {
+   _fontManagerFactory=value;
+}
+
++(void)setFontPanelFactory:(Class)value {
+   _fontPanelFactory=value;
 }
 
 -init {
    _panel=nil;
+   _action=@selector(changeFont:);
    _selectedFont=[[NSFont userFontOfSize:0] retain];
    _isMultiple=NO;
    return self;
@@ -38,126 +55,36 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return _action;
 }
 
+-(void)setDelegate:delegate {
+   _delegate=delegate;
+}
+
 -(void)setAction:(SEL)value {
    _action=value;
 }
 
--(void)setFontPanel:(NSFontPanel *)panel {
-   panel=[panel retain];
-   [_panel release];
-   _panel=panel;
-}
-
--(NSFontPanel *)fontPanel:(BOOL)create {
-   if(_panel==nil && create){
-    [NSBundle loadNibNamed:@"NSFontPanel" owner:self];
-   }
-
-   [_panel setPanelFont:_selectedFont isMultiple:_isMultiple];
-   return _panel;
-}
-
--(NSFontTraitMask)traitsOfFont:(NSFont *)font {
-   NSFontTypeface *typeface=[NSFontFamily fontTypefaceWithName:[font fontName]];
-
-   return [typeface traits];
-}
-
--(NSFont *)convertFont:(NSFont *)font {
-   if(_panel==nil)
-    return _selectedFont;
-
-   return [_panel panelConvertFont:font];
-}
-
--(NSFont *)convertFont:(NSFont *)font toSize:(float)size {
-   if(size==[font pointSize])
-    return font;
-
-   return [NSFont fontWithName:[font fontName] size:size];
-}
-
--(NSFont *)convertFont:(NSFont *)font toHaveTrait:(NSFontTraitMask)addTraits {
-   NSFontFamily   *family=[NSFontFamily fontFamilyWithTypefaceName:[font fontName]];
-   NSFontTypeface *typeface=[family typefaceWithName:[font fontName]];
-   NSFontTraitMask traits=[typeface traits];
-   NSFontTypeface *newface;
-
-   if(addTraits&NSItalicFontMask)
-    traits|=NSItalicFontMask;
-   if(addTraits&NSBoldFontMask)
-    traits|=NSBoldFontMask;
-   if(addTraits&NSUnboldFontMask)
-    traits&=~NSBoldFontMask;
-   if(addTraits&NSUnitalicFontMask)
-    traits&=~NSItalicFontMask;
-
-   newface=[family typefaceWithTraits:traits];
-
-   if(newface!=nil)
-    return [NSFont fontWithName:[newface name] size:[font pointSize]];
-
-   NSLog(@"%s failed, %@ %d",SELNAME(_cmd),[font fontName],addTraits);
+-(NSArray *)collectionNames {
    NSUnimplementedMethod();
-   return font;
+   return nil;
 }
 
--(BOOL)isMultiple {
-   return _isMultiple;
+-(BOOL)addCollection:(NSString *)name options:(int)options {
+   NSUnimplementedMethod();
+   return 0;
 }
 
--(NSFont *)selectedFont {
-   return _selectedFont;
+-(void)addFontDescriptors:(NSArray *)descriptors toCollection:(NSString *)name {
+   NSUnimplementedMethod();
 }
 
--(void)_configureMenu:(NSMenu *)menu forFont:(NSFont *)font {
-   NSArray *items=[menu itemArray];
-   int      i,count=[items count];
-
-   for(i=0;i<count;i++){
-    NSMenuItem *item=[items objectAtIndex:i];
-
-    if([item hasSubmenu])
-     [self _configureMenu:[item submenu] forFont:font];
-    else if([item action]==@selector(addFontTrait:) && [item target]==self){
-     unsigned        tag=[item tag];
-     NSFontTraitMask traits=[self traitsOfFont:font];
-
-     if(tag&(NSItalicFontMask|NSUnitalicFontMask)){
-      if(traits&NSItalicFontMask){
-       [item setTag:NSUnitalicFontMask];
-       [item setTitle:@"Unitalic"];
-      }
-      else {
-       [item setTag:NSItalicFontMask];
-       [item setTitle:@"Italic"];
-      }
-     }
-     if(tag&(NSBoldFontMask|NSUnboldFontMask)){
-      if(traits& NSBoldFontMask){
-       [item setTag:NSUnboldFontMask];
-       [item setTitle:@"Unbold"];
-      }
-      else {
-       [item setTag:NSBoldFontMask];
-       [item setTitle:@"Bold"];
-      }
-     }
-    }
-   }
+-(BOOL)removeCollection:(NSString *)name {
+   NSUnimplementedMethod();
+   return 0;
 }
 
--(void)setSelectedFont:(NSFont *)font isMultiple:(BOOL)flag {
-   [_selectedFont autorelease];
-   _selectedFont=[font retain];
-   _isMultiple=flag;
-
-   [[self fontPanel:NO] setPanelFont:font isMultiple:flag];
-   [self _configureMenu:[NSApp mainMenu] forFont:font];
-}
-
--(void)setDelegate:delegate {
-   _delegate=delegate;
+-(NSArray *)fontDescriptorsInCollection:(NSString *)name {
+   NSUnimplementedMethod();
+   return nil;
 }
 
 -(NSArray *)availableFonts {
@@ -229,15 +156,259 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return result;
 }
 
+-(NSArray *)availableFontNamesMatchingFontDescriptor:(NSFontDescriptor *)descriptor {
+   NSUnimplementedMethod();
+   return nil;
+}
+
+-(NSArray *)availableFontNamesWithTraits:(NSFontTraitMask)traits {
+   NSUnimplementedMethod();
+   return nil;
+}
+
+-(BOOL)fontNamed:(NSString *)name hasTraits:(NSFontTraitMask)traits {
+   NSUnimplementedMethod();
+   return 0;
+}
+
+-(NSFont *)fontWithFamily:(NSString *)family traits:(NSFontTraitMask)traits weight:(int)weight size:(float)size {
+   NSUnimplementedMethod();
+   return nil;
+}
+
+-(int)weightOfFont:(NSFont *)font {
+   NSUnimplementedMethod();
+   return 0;
+}
+
+-(NSFontTraitMask)traitsOfFont:(NSFont *)font {
+   NSFontTypeface *typeface=[NSFontFamily fontTypefaceWithName:[font fontName]];
+
+   return [typeface traits];
+}
+
+-(NSString *)localizedNameForFamily:(NSString *)family face:(NSString *)face {
+   NSUnimplementedMethod();
+   return 0;
+}
+
+-(void)setFontPanel:(NSFontPanel *)panel {
+   panel=[panel retain];
+   [_panel release];
+   _panel=panel;
+}
+
+-(NSFontPanel *)fontPanel:(BOOL)create {
+   if(_panel==nil && create){
+    [NSBundle loadNibNamed:@"NSFontPanel" owner:self];
+   }
+
+   [_panel setPanelFont:_selectedFont isMultiple:_isMultiple];
+   return _panel;
+}
+
+-(BOOL)sendAction {
+   return [NSApp sendAction:_action to:nil from:[NSFontManager sharedFontManager]];
+}
+
+-(BOOL)isEnabled {
+   NSUnimplementedMethod();
+   return 0;
+}
+
+-(BOOL)isMultiple {
+   return _isMultiple;
+}
+
+-(NSFont *)selectedFont {
+   return _selectedFont;
+}
+
+-(void)_configureMenu:(NSMenu *)menu forFont:(NSFont *)font {
+   NSArray *items=[menu itemArray];
+   int      i,count=[items count];
+
+   for(i=0;i<count;i++){
+    NSMenuItem *item=[items objectAtIndex:i];
+
+    if([item hasSubmenu])
+     [self _configureMenu:[item submenu] forFont:font];
+    else if([item action]==@selector(addFontTrait:) && [item target]==self){
+     unsigned        tag=[item tag];
+     NSFontTraitMask traits=[self traitsOfFont:font];
+
+     if(tag&(NSItalicFontMask|NSUnitalicFontMask)){
+      if(traits&NSItalicFontMask){
+       [item setTag:NSUnitalicFontMask];
+       [item setTitle:@"Unitalic"];
+      }
+      else {
+       [item setTag:NSItalicFontMask];
+       [item setTitle:@"Italic"];
+      }
+     }
+     if(tag&(NSBoldFontMask|NSUnboldFontMask)){
+      if(traits& NSBoldFontMask){
+       [item setTag:NSUnboldFontMask];
+       [item setTitle:@"Unbold"];
+      }
+      else {
+       [item setTag:NSBoldFontMask];
+       [item setTitle:@"Bold"];
+      }
+     }
+    }
+   }
+}
+
+-(void)setSelectedFont:(NSFont *)font isMultiple:(BOOL)flag {
+   [_selectedFont autorelease];
+   _selectedFont=[font retain];
+   _isMultiple=flag;
+
+   [[self fontPanel:NO] setPanelFont:font isMultiple:flag];
+   [self _configureMenu:[NSApp mainMenu] forFont:font];
+}
+
+-(NSFont *)convertFont:(NSFont *)font {
+   
+   if(_panel==nil)
+    return _selectedFont;
+
+   return [_panel panelConvertFont:font];
+}
+
+-(NSFont *)convertFont:(NSFont *)font toSize:(float)size {
+   if(size==[font pointSize])
+    return font;
+
+   return [NSFont fontWithName:[font fontName] size:size];
+}
+
+-(NSFont *)convertFont:(NSFont *)font toHaveTrait:(NSFontTraitMask)addTraits {
+   NSFontFamily   *family=[NSFontFamily fontFamilyWithTypefaceName:[font fontName]];
+   NSFontTypeface *typeface=[family typefaceWithName:[font fontName]];
+   NSFontTraitMask traits=[typeface traits];
+   NSFontTypeface *newface;
+
+   if(addTraits&NSItalicFontMask)
+    traits|=NSItalicFontMask;
+   if(addTraits&NSBoldFontMask)
+    traits|=NSBoldFontMask;
+   if(addTraits&NSUnboldFontMask)
+    traits&=~NSBoldFontMask;
+   if(addTraits&NSUnitalicFontMask)
+    traits&=~NSItalicFontMask;
+
+   newface=[family typefaceWithTraits:traits];
+
+   if(newface!=nil)
+    return [NSFont fontWithName:[newface name] size:[font pointSize]];
+
+   NSLog(@"%s failed, %@ %d",SELNAME(_cmd),[font fontName],addTraits);
+   NSUnimplementedMethod();
+   return font;
+}
+
+-(NSFont *)convertFont:(NSFont *)font toNotHaveTrait:(NSFontTraitMask)trait {
+   NSUnimplementedMethod();
+   return nil;
+}
+
+-(NSFont *)convertFont:(NSFont *)font toFace:(NSString *)typeface {
+   NSUnimplementedMethod();
+   return nil;
+}
+
+-(NSFont *)convertFont:(NSFont *)font toFamily:(NSString *)family {
+   NSUnimplementedMethod();
+   return nil;
+}
+
+-(NSFont *)convertWeight:(BOOL)heavierNotLighter ofFont:(NSFont *)font {
+   NSUnimplementedMethod();
+   return nil;
+}
+
+-(NSDictionary *)convertAttributes:(NSDictionary *)attributes {
+   NSUnimplementedMethod();
+   return nil;
+}
+
 -(void)addFontTrait:sender {
    NSFont *font=[self convertFont:[self selectedFont] toHaveTrait:[sender tag]];
 
    [self setSelectedFont:font isMultiple:NO];
-   [NSApp sendAction:@selector(changeFont:) to:nil from:[NSFontManager sharedFontManager]];
+   [self sendAction];
+}
+
+-(void)modifyFont:sender {
+   NSFont *font=[self selectedFont];
+   
+   _currentFontAction=[sender tag];
+   
+   switch(_currentFontAction){
+   
+    case NSNoFontChangeAction:
+     break;
+     
+    case NSViaPanelFontAction:
+     font=[_panel panelConvertFont:font];
+     break;
+     
+    case NSAddTraitFontAction:
+     NSUnimplementedMethod();
+     font=[self convertFont:font toHaveTrait:0];
+     break;
+     
+    case NSSizeUpFontAction:
+     font=[self convertFont:font toSize:[font pointSize]+1];
+     break;
+     
+    case NSSizeDownFontAction:{
+     float ps=[font pointSize];
+     
+     if(ps>1)
+      ps-=1;
+      
+     font=[self convertFont:font toSize:ps];
+     }
+     break;
+     
+    case NSHeavierFontAction:
+     font=[self convertWeight:YES ofFont:font];
+     break;
+     
+    case NSLighterFontAction:
+     font=[self convertWeight:NO ofFont:font];
+     break;
+     
+    case NSRemoveTraitFontAction:
+     NSUnimplementedMethod();
+//     font=[self convertFont:font toNotHaveTrait:];
+     break;
+   }
+   
+   NSUnimplementedMethod();
+}
+
+-(void)modifyFontViaPanel:sender {
+   NSUnimplementedMethod();
+}
+
+-(void)removeFontTrait:sender {
+   NSFont *font=[self convertFont:[self selectedFont] toNotHaveTrait:[sender tag]];
+
+   [self setSelectedFont:font isMultiple:NO];
+   [self sendAction];
 }
 
 -(void)orderFrontFontPanel:sender {
    [[NSFontPanel sharedFontPanel] orderFront:sender];
+}
+
+-(void)orderFrontStylesPanel:sender {
+   NSUnimplementedMethod();
 }
 
 @end

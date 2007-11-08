@@ -45,11 +45,7 @@ NSString *NSViewFocusDidChangeNotification=@"NSViewFocusDidChangeNotification";
 }
 
 -(void)encodeWithCoder:(NSCoder *)coder {
-   [super encodeWithCoder:coder];
-   [coder encodeRect:_frame forKey:@"NSView frame"];
-   [coder encodeInt:_autoresizingMask forKey:@"NSView autoresizingMask"];
-   [coder encodeInt:_tag forKey:@"NSView tag"];
-   [coder encodeObject:_subviews forKey:@"NSView subviews"];
+   NSUnimplementedMethod();
 }
 
 -initWithCoder:(NSCoder *)coder {
@@ -83,22 +79,7 @@ NSString *NSViewFocusDidChangeNotification=@"NSViewFocusDidChangeNotification";
     _defaultToolTipTag=-1;
    }
    else {
-    _frame=[coder decodeRectForKey:@"NSView frame"];
-    _bounds.origin=NSMakePoint(0,0);
-    _bounds.size=_frame.size;
-    _window=nil;
-    _superview=nil;
-    _subviews=[NSMutableArray new];
-    _postsNotificationOnFrameChange=YES;
-    _postsNotificationOnBoundsChange=YES;
-    _autoresizesSubviews=YES;
-
-    _autoresizingMask=[coder decodeIntForKey:@"NSView autoresizingMask"];
-    _tag=[coder decodeIntForKey:@"NSView tag"];
-    [_subviews addObjectsFromArray:[coder decodeObjectForKey:@"NSView subviews"]];
-    [_subviews makeObjectsPerformSelector:@selector(_setSuperview:) withObject:self];
-    _invalidRect=_bounds;
-    _defaultToolTipTag=-1;
+    [NSException raise:NSInvalidArgumentException format:@"%@ can not initWithCoder:%@",isa,[coder class]];
    }
 
    return self;

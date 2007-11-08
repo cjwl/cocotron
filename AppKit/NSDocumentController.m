@@ -13,6 +13,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSMenu.h>
 #import <AppKit/NSMenuItem.h>
 #import <AppKit/NSApplication.h>
+#import <AppKit/NSWindowController.h>
+
+@interface NSDocument(private)
+-(void)_setUntitledNumber:(int)number;
+@end
 
 @interface NSDocumentController(forward)
 -(void)_updateRecentDocumentsMenu;
@@ -35,136 +40,40 @@ static NSDocumentController *shared=nil;
 
    _documents=[NSMutableArray new];
    _fileTypes=[[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleDocumentTypes"] retain];
-
+   _autosavingDelay=0;
+   
    [self _updateRecentDocumentsMenu];
    return self;
 }
 
--(NSArray *)documents {
-   return _documents;
-}
-
--(void)addDocument:(NSDocument *)document {
-   [_documents addObject:document];
-}
-
--(void)removeDocument:(NSDocument *)document {
-   [_documents removeObjectIdenticalTo:document];
-}
-
--documentForURL:(NSURL *)url {
-   int i,count=[_documents count];
-   
-   for(i=0;i<count;i++){
-    NSDocument *document=[_documents objectAtIndex:i];
-    NSURL      *check=[document fileURL];
-    
-    if(check!=nil && [check isEqual:url])
-     return document;
-   }
-   
-   return nil;
-}
-
--makeDocumentWithContentsOfFile:(NSString *)path ofType:(NSString *)type {
-   id    result;
-   Class class=[self documentClassForType:type];
-
-   result=[[[class alloc] initWithContentsOfFile:path ofType:type] autorelease];
-   [result setFileType:type];
-
-   return result;
-}
-
--makeDocumentWithContentsOfURL:(NSURL *)url ofType:(NSString *)type error:(NSError **)error {
-   id    result;
-   Class class=[self documentClassForType:type];
-
-   result=[[[class alloc] initWithContentsOfURL:url ofType:type] autorelease];
-   [result setFileType:type];
-
-   return result;
-}
-
--makeUntitledDocumentOfType:(NSString *)type {
-   static int nextUntitledNumber=1;
-   id    result;
-   Class class=[self documentClassForType:type];
-
-   result=[[[class alloc] init] autorelease];
-   [result setFileType:type];
-   [result _setUntitledNumber:nextUntitledNumber++];
-   return result;
-}
-
--openUntitledDocumentOfType:(NSString *)type display:(BOOL)display {
-   NSDocument *result=[self makeUntitledDocumentOfType:type];
-
-   if(result!=nil)
-    [self addDocument:result];
-
-   [result makeWindowControllers];
-
-   if(display)
-    [result showWindows];
-
-   return result;
-}
-
--openDocumentWithContentsOfFile:(NSString *)path display:(BOOL)display {
-   NSString   *extension=[path pathExtension];
-   NSString   *type=[self typeFromFileExtension:extension];
-   NSDocument *result=[self makeDocumentWithContentsOfFile:path ofType:type];
-
-   if(result!=nil)
-    [self addDocument:result];
-
-   [result makeWindowControllers];
-
-   if(display)
-    [result showWindows];
-
-   [self noteNewRecentDocument:result];
-
-   return result;
-}
-
--openDocumentWithContentsOfURL:(NSURL *)url display:(BOOL)display error:(NSError **)error {
-   IMP mine=[NSDocumentController instanceMethodForSelector:@selector(openDocumentWithContentsOfFile:display:)];
-   IMP theirs=[self methodForSelector:@selector(openDocumentWithContentsOfFile:display:)];
-      
-   if([url isFileURL] && mine!=theirs)
-    return [self openDocumentWithContentsOfFile:[url path] display:display];
-   else {
-    NSDocument *result=[self documentForURL:url];
-
-    if(result==nil){
-     NSString   *extension=[[url path] pathExtension];
-     NSString   *type=[self typeFromFileExtension:extension];
-     
-     result=[self makeDocumentWithContentsOfURL:url ofType:type error:error];
-
-     if(result!=nil){
-      [self addDocument:result];
-      [result makeWindowControllers];
-      [self noteNewRecentDocument:result];
-     }
-    }
-    if(display)
-     [result showWindows];
-     
-    return result;
-   }
-} 
-
--(NSString *)currentDirectory {
+-initWithCoder:(NSCoder *)coder {
    NSUnimplementedMethod();
    return nil;
 }
 
--(id)currentDocument {
+-(void)encodeWithCoder:(NSCoder *)coder {
    NSUnimplementedMethod();
-   return nil;
+}
+
+-(NSString *)defaultType {
+   if([_fileTypes count]==0)
+    return nil;
+
+   return [(NSDictionary *)[_fileTypes objectAtIndex:0] objectForKey:@"CFBundleTypeName"];
+}
+
+-(NSArray *)documentClassNames {
+   NSMutableSet *result=[NSMutableSet set];
+   int           i,count=[_fileTypes count];
+   
+   for(i=0;i<count;i++)
+    [result addObject:[(NSDictionary *)[_fileTypes objectAtIndex:i] objectForKey:@"NSDocumentClass"]];
+   
+   return [result allObjects];
+}
+
+-(NSTimeInterval)autosavingDelay {
+   return _autosavingDelay;
 }
 
 -(NSDictionary *)_infoForType:(NSString *)type {
@@ -228,41 +137,251 @@ static NSDocumentController *shared=nil;
    return nil;
 }
 
+-(void)setAutosavingDelay:(NSTimeInterval)value {
+   _autosavingDelay=value;
+   
+   NSUnimplementedMethod();
+}
+
+-(NSArray *)documents {
+   return _documents;
+}
+
+-(void)addDocument:(NSDocument *)document {
+   [_documents addObject:document];
+}
+
+-(void)removeDocument:(NSDocument *)document {
+   [_documents removeObjectIdenticalTo:document];
+}
+
+-documentForURL:(NSURL *)url {
+   int i,count=[_documents count];
+   
+   for(i=0;i<count;i++){
+    NSDocument *document=[_documents objectAtIndex:i];
+    NSURL      *check=[document fileURL];
+    
+    if(check!=nil && [check isEqual:url])
+     return document;
+   }
+   
+   return nil;
+}
+
+-currentDocument {
+   return [[[NSApp mainWindow] windowController] document];
+}
+
+-(NSString *)currentDirectory {
+   NSDocument *current=[self currentDocument];
+   NSURL      *url=[current fileURL];
+   
+   if(url!=nil && [url isFileURL]){
+    NSString *check=[[url path] stringByDeletingLastPathComponent];
+    BOOL      isDirectory;
+    
+    if([[NSFileManager defaultManager] fileExistsAtPath:check isDirectory:&isDirectory])
+     if(isDirectory)
+      return check;
+   }
+   
+   if(_lastOpenPanelDirectory!=nil)
+    return _lastOpenPanelDirectory;
+    
+   return NSHomeDirectory();
+}
+
+-(BOOL)hasEditedDocuments {
+   int count=[_documents count];
+   
+   while(--count)
+    if([[_documents objectAtIndex:count] isDocumentEdited])
+     return YES;
+     
+   return NO;
+}
+
+-documentForWindow:(NSWindow *)window {
+   return [[window windowController] document];
+}
+
+-(NSString *)typeForContentsOfURL:(NSURL *)url error:(NSError **)error {
+   if(![url isFileURL])
+    return nil;
+    
+   NSString *extension=[[url path] lastPathComponent];
+   if(extension==nil)
+    return nil;
+       
+   return [self typeFromFileExtension:extension];
+}
+
+-makeDocumentWithContentsOfFile:(NSString *)path ofType:(NSString *)type {
+   id    result;
+   Class class=[self documentClassForType:type];
+
+   result=[[[class alloc] initWithContentsOfFile:path ofType:type] autorelease];
+
+   return result;
+}
+
+-makeDocumentWithContentsOfURL:(NSURL *)url ofType:(NSString *)type error:(NSError **)error {
+   id    result;
+   Class class=[self documentClassForType:type];
+
+   result=[[[class alloc] initWithContentsOfURL:url ofType:type] autorelease];
+
+   return result;
+}
+
+-makeDocumentForURL:(NSURL *)url withContentsOfURL:(NSURL *)contentsURL ofType:(NSString *)type error:(NSError **)error {
+   id    result;
+   Class class=[self documentClassForType:type];
+
+   result=[[[class alloc] initForURL:url withContentsOfURL:contentsURL ofType:type error:error] autorelease];
+
+   return result;
+}
+
+-makeUntitledDocumentOfType:(NSString *)type {
+   static int nextUntitledNumber=1;
+   id    result;
+   Class class=[self documentClassForType:type];
+
+   result=[[[class alloc] init] autorelease];
+   [result setFileType:type];
+   [result _setUntitledNumber:nextUntitledNumber++];
+   return result;
+}
+
+-openUntitledDocumentOfType:(NSString *)type display:(BOOL)display {
+   NSDocument *result=[self makeUntitledDocumentOfType:type];
+
+   if(result!=nil)
+    [self addDocument:result];
+
+   [result makeWindowControllers];
+
+   if(display)
+    [result showWindows];
+
+   return result;
+}
+
+-openUntitledDocumentAndDisplay:(BOOL)display error:(NSError **)error {
+   NSString   *type=[self defaultType];
+   NSDocument *result=[self makeUntitledDocumentOfType:type];
+
+   if(result!=nil)
+    [self addDocument:result];
+
+   [result makeWindowControllers];
+
+   if(display)
+    [result showWindows];
+
+   return result;
+}
+
+-openDocumentWithContentsOfFile:(NSString *)path display:(BOOL)display {
+   NSString   *extension=[path pathExtension];
+   NSString   *type=[self typeFromFileExtension:extension];
+   NSDocument *result=[self makeDocumentWithContentsOfFile:path ofType:type];
+
+   if(result!=nil)
+    [self addDocument:result];
+
+   [result makeWindowControllers];
+
+   if(display)
+    [result showWindows];
+
+   [self noteNewRecentDocument:result];
+
+   return result;
+}
+
+-openDocumentWithContentsOfURL:(NSURL *)url display:(BOOL)display error:(NSError **)error {
+   IMP mine=[NSDocumentController instanceMethodForSelector:@selector(openDocumentWithContentsOfFile:display:)];
+   IMP theirs=[self methodForSelector:@selector(openDocumentWithContentsOfFile:display:)];
+      
+   if([url isFileURL] && mine!=theirs)
+    return [self openDocumentWithContentsOfFile:[url path] display:display];
+   else {
+    NSDocument *result=[self documentForURL:url];
+
+    if(result==nil){
+     NSString   *extension=[[url path] pathExtension];
+     NSString   *type=[self typeFromFileExtension:extension];
+     
+     result=[self makeDocumentWithContentsOfURL:url ofType:type error:error];
+
+     if(result!=nil){
+      [self addDocument:result];
+      [result makeWindowControllers];
+      [self noteNewRecentDocument:result];
+     }
+    }
+    if(display)
+     [result showWindows];
+     
+    return result;
+   }
+} 
+
+-(BOOL)reopenDocumentForURL:(NSURL *)url withContentsOfURL:(NSURL *)contentsUL error:(NSError **)error {
+   NSUnimplementedMethod();
+   return 0;
+}
+
+-(void)closeAllDocumentsWithDelegate:delegate didCloseAllSelector:(SEL)selector info:(void *)info {
+   NSUnimplementedMethod();
+}
+
+-(void)reviewUnsavedDocumentsWithAlertTitle:(NSString *)title cancellable:(BOOL)cancellable delegate:delegate didReviewAllSelector:(SEL)selector info:(void *)info {
+   NSUnimplementedMethod();
+}
+
+-(NSError *)willPresentError:(NSError *)error {
+// do nothing
+   return error;
+}
+
+-(BOOL)presentError:(NSError *)error {
+   NSUnimplementedMethod();
+   return 0;
+}
+
+-(void)presentError:(NSError *)error modalForWindow:(NSWindow *)window delegate:delegate didPresentSelector:(SEL)selector info:(void *)info {
+   NSUnimplementedMethod();
+}
+
 -(int)runModalOpenPanel:(NSOpenPanel *)openPanel forTypes:(NSArray *)extensions {
 
    return [openPanel runModalForTypes:extensions];
 }
 
--(NSArray *)fileNamesFromRunningOpenPanel {
+-(NSOpenPanel *)_runOpenPanel {
    NSOpenPanel *openPanel=[NSOpenPanel openPanel];
 
    [openPanel setAllowsMultipleSelection:YES];
 
-   if([self runModalOpenPanel:openPanel forTypes:[self _allFileExtensions]])
-    return [openPanel filenames];
-
+   if([self runModalOpenPanel:openPanel forTypes:[self _allFileExtensions]]){
+    [_lastOpenPanelDirectory autorelease];
+    _lastOpenPanelDirectory=[[openPanel directory] copy];
+    return openPanel;
+   }
+    
    return nil;
 }
 
--(void)newDocument:sender {
-   NSString *type=[(NSDictionary *)[_fileTypes objectAtIndex:0] objectForKey:@"CFBundleTypeName"];
-
-   [self openUntitledDocumentOfType:type display:YES];
+-(NSArray *)fileNamesFromRunningOpenPanel {
+   return [[self _runOpenPanel] filenames];
 }
 
--(void)openDocument:sender {
-   NSArray *files=[self fileNamesFromRunningOpenPanel];
-   int      i,count=[files count];
-
-   for(i=0;i<count;i++){
-    NSError *error=nil;
-    NSURL   *url=[NSURL fileURLWithPath:[files objectAtIndex:i]];
-
-    [self openDocumentWithContentsOfURL:url display:YES error:&error];
-   }
-}
-
--(void)saveAllDocuments:sender {
+-(NSArray *)URLsFromRunningOpenPanel {
+   return [[self _runOpenPanel] URLs];
 }
 
 -(NSArray *)_recentDocumentPaths {
@@ -332,6 +451,12 @@ static NSDocumentController *shared=nil;
    return result;
 }
 
+-(unsigned)maximumRecentDocumentCount {
+   NSString *value=[[NSUserDefaults standardUserDefaults] stringForKey:@"NSRecentDocumentMaximum"];
+   
+   return (value==nil)?10:[value intValue];
+}
+
 -(void)noteNewRecentDocumentURL:(NSURL *)url {
    NSString       *path=[url path];
    NSMutableArray *array=[NSMutableArray arrayWithArray:[self _recentDocumentPaths]];
@@ -353,17 +478,63 @@ static NSDocumentController *shared=nil;
     [self noteNewRecentDocumentURL:url];
 }
 
--(unsigned)maximumRecentDocumentCount {
-   NSString *value=[[NSUserDefaults standardUserDefaults] stringForKey:@"NSRecentDocumentMaximum"];
-   
-   return (value==nil)?10:[value intValue];
-}
-
 -(void)clearRecentDocuments:sender {
    NSArray *array=[NSArray array];
    
    [[NSUserDefaults standardUserDefaults] setObject:array forKey:@"NSRecentDocumentPaths"];
    [self _updateRecentDocumentsMenu];
+}
+
+-(void)newDocument:sender {
+   NSString *type=[(NSDictionary *)[_fileTypes objectAtIndex:0] objectForKey:@"CFBundleTypeName"];
+
+   [self openUntitledDocumentOfType:type display:YES];
+}
+
+-(void)openDocument:sender {
+   NSArray *files=[self fileNamesFromRunningOpenPanel];
+   int      i,count=[files count];
+
+   for(i=0;i<count;i++){
+    NSError *error=nil;
+    NSURL   *url=[NSURL fileURLWithPath:[files objectAtIndex:i]];
+
+    [self openDocumentWithContentsOfURL:url display:YES error:&error];
+   }
+}
+
+-(void)saveAllDocuments:sender {
+   int i,count=[_documents count];
+   
+   while(--count>=0){
+    NSDocument *document=[_documents objectAtIndex:count];
+    
+    if([document isDocumentEdited])
+     [document saveDocument:sender];
+   }
+}
+
+static BOOL actionIsDocumentController(SEL selector){
+   if(selector==@selector(saveAllDocuments:))
+    return YES;
+   if(selector==@selector(openDocument:))
+    return YES;
+   if(selector==@selector(newDocument:))
+    return YES;
+   if(selector==@selector(clearRecentDocuments:))
+    return YES;
+   if(selector==@selector(_openRecentDocument:))
+    return YES;
+   
+   return NO;
+}
+
+-(BOOL)validateMenuItem:(NSMenuItem *)item {
+   return actionIsDocumentController([item action]);
+}
+
+-(BOOL)validateUserInterfaceItem:(id <NSValidatedUserInterfaceItem>)item {
+   return actionIsDocumentController([item action]);
 }
 
 -(BOOL)application:sender openFile:(NSString *)path {
@@ -372,6 +543,16 @@ static NSDocumentController *shared=nil;
    NSDocument *document=[self openDocumentWithContentsOfURL:url display:YES error:&error];
 
    return (document!=nil)?YES:NO;
+}
+
+-(BOOL)closeAllDocuments {
+   NSUnimplementedMethod();
+   return NO;
+}
+
+-(BOOL)reviewUnsavedDocumentsWithAlertTitle:(NSString *)title cancellable:(BOOL)cancellable {
+   NSUnimplementedMethod();
+   return 0;
 }
 
 @end

@@ -424,37 +424,37 @@ void KGPDF_render_gs(KGPDFScanner *scanner,void *info) {
    
    if([graphicsState getNameForKey:"BM" value:&name]){
     if(strcmp(name,"Normal")==0)
-     [context setBlendMode:KGBlendModeNormal];
+     [context setBlendMode:kCGBlendModeNormal];
     else if(strcmp(name,"Multiply")==0)
-     [context setBlendMode:KGBlendModeMultiply];
+     [context setBlendMode:kCGBlendModeMultiply];
     else if(strcmp(name,"Screen")==0)
-     [context setBlendMode:KGBlendModeScreen];
+     [context setBlendMode:kCGBlendModeScreen];
     else if(strcmp(name,"Overlay")==0)
-     [context setBlendMode:KGBlendModeOverlay];
+     [context setBlendMode:kCGBlendModeOverlay];
     else if(strcmp(name,"Darken")==0)
-     [context setBlendMode:KGBlendModeDarken];
+     [context setBlendMode:kCGBlendModeDarken];
     else if(strcmp(name,"Lighten")==0)
-     [context setBlendMode:KGBlendModeLighten];
+     [context setBlendMode:kCGBlendModeLighten];
     else if(strcmp(name,"ColorDodge")==0)
-     [context setBlendMode:KGBlendModeColorDodge];
+     [context setBlendMode:kCGBlendModeColorDodge];
     else if(strcmp(name,"ColorBurn")==0)
-     [context setBlendMode:KGBlendModeColorBurn];
+     [context setBlendMode:kCGBlendModeColorBurn];
     else if(strcmp(name,"HardLight")==0)
-     [context setBlendMode:KGBlendModeHardLight];
+     [context setBlendMode:kCGBlendModeHardLight];
     else if(strcmp(name,"SoftLight")==0)
-     [context setBlendMode:KGBlendModeSoftLight];
+     [context setBlendMode:kCGBlendModeSoftLight];
     else if(strcmp(name,"Difference")==0)
-     [context setBlendMode:KGBlendModeDifference];
+     [context setBlendMode:kCGBlendModeDifference];
     else if(strcmp(name,"Exclusion")==0)
-     [context setBlendMode:KGBlendModeExclusion];
+     [context setBlendMode:kCGBlendModeExclusion];
     else if(strcmp(name,"Hue")==0)
-     [context setBlendMode:KGBlendModeHue];
+     [context setBlendMode:kCGBlendModeHue];
     else if(strcmp(name,"Saturation")==0)
-     [context setBlendMode:KGBlendModeSaturation];
+     [context setBlendMode:kCGBlendModeSaturation];
     else if(strcmp(name,"Color")==0)
-     [context setBlendMode:KGBlendModeColor];
+     [context setBlendMode:kCGBlendModeColor];
     else if(strcmp(name,"Luminosity")==0)
-     [context setBlendMode:KGBlendModeLuminosity];
+     [context setBlendMode:kCGBlendModeLuminosity];
     else
      NSLog(@"Unknown blend mode %s",name);
    }

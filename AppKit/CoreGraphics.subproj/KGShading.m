@@ -112,10 +112,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     coordsCount=6;
    }
    [result setIntegerForKey:"ShadingType" value:type];
+   [result setObjectForKey:"ColorSpace" value:[_colorSpace encodeReferenceWithContext:context]];
+
    [result setObjectForKey:"Coords" value:[KGPDFArray pdfArrayWithNumbers:coords count:coordsCount]];
 
    [result setObjectForKey:"Domain" value:[KGPDFArray pdfArrayWithNumbers:_domain count:2]];
-   [result setObjectForKey:"ColorSpace" value:[_colorSpace encodeReferenceWithContext:context]];
    [result setObjectForKey:"Function" value:[_function encodeReferenceWithContext:context]];
    KGPDFArray *extend=[KGPDFArray pdfArray];
    
@@ -298,7 +299,7 @@ KGShading *radialShading(KGPDFDictionary *dictionary,KGColorSpace *colorSpace){
     return nil;
    }
    if((colorSpace=[KGColorSpace colorSpaceFromPDFObject:colorSpaceObject])==nil)
-    return;
+    return nil;
     
    switch(shadingType){
     case 1: // Function-base shading

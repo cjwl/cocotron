@@ -34,6 +34,18 @@ typedef enum {
    NSWindowAbove=1
 } NSWindowOrderingMode;
 
+typedef enum {
+   NSFocusRingOnly,
+   NSFocusRingBelow,
+   NSFocusRingAbove
+} NSFocusRingPlacement;
+
+typedef enum {
+   NSFocusRingTypeDefault,
+   NSFocusRingTypeNone,
+   NSFocusRingTypeExterior
+} NSFocusRingType;
+
 typedef int NSWindowDepth;
 
 APPKIT_EXPORT const float NSBlack;
@@ -50,6 +62,13 @@ APPKIT_EXPORT NSString *NSCalibratedWhiteColorSpace;
 APPKIT_EXPORT NSString *NSCalibratedRGBColorSpace;
 APPKIT_EXPORT NSString *NSNamedColorSpace;
 
+APPKIT_EXPORT NSString *NSDeviceIsScreen;
+APPKIT_EXPORT NSString *NSDeviceIsPrinter;
+APPKIT_EXPORT NSString *NSDeviceSize;
+APPKIT_EXPORT NSString *NSDeviceResolution;
+APPKIT_EXPORT NSString *NSDeviceColorSpaceName;
+APPKIT_EXPORT NSString *NSDeviceBitsPerSample;
+
 APPKIT_EXPORT void NSRectClipList(const NSRect *rects,int count);
 APPKIT_EXPORT void NSRectClip(NSRect rect);
 
@@ -58,7 +77,8 @@ APPKIT_EXPORT void NSRectFillListWithGrays(const NSRect *rects,const float *gray
 APPKIT_EXPORT void NSRectFillList(const NSRect *rects,int count);
 APPKIT_EXPORT void NSRectFill(NSRect rect);
 
-APPKIT_EXPORT void NSRectFillUsingOperation(NSRect rect,NSCompositingOperation op);
+APPKIT_EXPORT void NSRectFillListUsingOperation(const NSRect *rects,int count,NSCompositingOperation operation);
+APPKIT_EXPORT void NSRectFillUsingOperation(NSRect rect,NSCompositingOperation operation);
 
 APPKIT_EXPORT void NSFrameRectWithWidth(NSRect rect,float width);
 APPKIT_EXPORT void NSFrameRect(NSRect rect);

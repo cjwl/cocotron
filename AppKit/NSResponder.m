@@ -13,6 +13,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSKeyBinding.h>
 #import <AppKit/NSApplication.h>
 #import <AppKit/NSNibKeyedUnarchiver.h>
+#import <AppKit/NSGraphics.h>
 
 @implementation NSResponder
 
@@ -21,7 +22,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -initWithCoder:(NSCoder *)coder {
    if([coder isKindOfClass:[NSNibKeyedUnarchiver class]]){
-    NSNibKeyedUnarchiver *keyed=(NSNibKeyedUnarchiver *)coder;
+    // NSNibKeyedUnarchiver *keyed=(NSNibKeyedUnarchiver *)coder;
     
     //; _nextResponder=[keyed decodeObjectForKey:@"NSNextResponder"]; 
    }

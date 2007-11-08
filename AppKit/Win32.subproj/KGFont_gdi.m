@@ -31,13 +31,14 @@
    }
 }
 
--(HDC)deviceContext {
+-(HDC)deviceContextSelfSelected {
    KGRenderingContext_gdi *rc=[[Win32Display currentDisplay] renderingContextOnPrimaryScreen];
    
    [rc selectFontWithName:[_name cString] pointSize:[self pointSize]];
 
    return [rc dc];
 }
+
 
 static inline NSGlyph glyphForCharacter(CGGlyphRangeTable *table,unichar character){
    unsigned range=character>>8;
@@ -57,7 +58,7 @@ static inline CGGlyphMetrics *glyphInfoForGlyph(CGGlyphMetricsSet *infoSet,NSGly
 }
 
 -(void)fetchMetrics {
-   HDC           dc=[self deviceContext];
+   HDC           dc=[self deviceContextSelfSelected];
    TEXTMETRIC    gdiMetrics;
 
    GetTextMetrics(dc,&gdiMetrics);
@@ -72,6 +73,8 @@ static inline CGGlyphMetrics *glyphInfoForGlyph(CGGlyphMetricsSet *infoSet,NSGly
    _metrics.descender=-gdiMetrics.tmDescent;
    _metrics.italicAngle=0;
    _metrics.capHeight=0;
+   _metrics.leading=0;
+   _metrics.xHeight=0;
    _metrics.stemV=0;
    _metrics.stemH=0;
    _metrics.underlineThickness=_size/24.0;
@@ -145,6 +148,8 @@ static inline CGGlyphMetrics *glyphInfoForGlyph(CGGlyphMetricsSet *infoSet,NSGly
  
    _metrics.italicAngle=ttMetrics->otmItalicAngle;
    _metrics.capHeight=ttMetrics->otmsCapEmHeight;
+   _metrics.xHeight=ttMetrics->otmsXHeight;
+
    _metrics.underlineThickness=ttMetrics->otmsUnderscoreSize;
    if(_metrics.underlineThickness<0)
     _metrics.underlineThickness=1;
@@ -152,7 +157,7 @@ static inline CGGlyphMetrics *glyphInfoForGlyph(CGGlyphMetricsSet *infoSet,NSGly
 }
 
 -(void)loadGlyphRangeTable {
-   HDC                dc=[self deviceContext];
+   HDC                dc=[self deviceContextSelfSelected];
    NSRange            range=NSMakeRange(0,MAXUNICHAR);
    unichar            characters[range.length];
    unsigned short     glyphs[range.length];
@@ -209,7 +214,7 @@ static inline CGGlyphMetrics *glyphInfoForGlyph(CGGlyphMetricsSet *infoSet,NSGly
 }
 
 -(void)fetchGlyphKerning {
-   HDC         dc=[self deviceContext];
+   HDC         dc=[self deviceContextSelfSelected];
    int         i,numberOfPairs=GetKerningPairs(dc,0,NULL);
    KERNINGPAIR pairs[numberOfPairs];
 
@@ -250,7 +255,7 @@ static inline CGGlyphMetrics *glyphInfoForGlyph(CGGlyphMetricsSet *infoSet,NSGly
 }
 
 -(void)fetchAdvancementsForGlyph:(CGGlyph)glyph {
-   HDC       dc=[self deviceContext];
+   HDC       dc=[self deviceContextSelfSelected];
    ABCFLOAT *abc;
    int       i,max;
 
@@ -290,6 +295,46 @@ static inline CGGlyphMetrics *glyphInfoForGlyph(CGGlyphMetricsSet *infoSet,NSGly
      }
     }
    }
+}
+
+// not complete
+-(void)appendCubicOutlinesToPath:(KGMutablePath *)path glyphs:(CGGlyph *)glyphs length:(unsigned)length {
+   HDC dc=[self deviceContextSelfSelected];
+   int size=GetOutlineTextMetricsA(dc,0,NULL);
+    
+   if(size<=0)
+    return;
+
+   OUTLINETEXTMETRICA *ttMetrics=__builtin_alloca(size);
+
+   ttMetrics->otmSize=sizeof(OUTLINETEXTMETRICA);
+   if(!GetOutlineTextMetricsA(dc,size,ttMetrics))
+    return;
+    
+/* P. 931 "Windows Graphics Programming" by Feng Yuan, 1st Ed.
+   A font with height of negative otmEMSquare will have precise metrics  */
+   
+   HFONT   fontHandle=[[[[Win32Display currentDisplay] renderingContextOnPrimaryScreen] currentFont] fontHandle];
+   LOGFONT logFont;
+     
+   GetObject(fontHandle,sizeof(logFont),&logFont);
+   logFont.lfHeight=-ttMetrics->otmEMSquare;
+   logFont.lfWidth=0;
+     
+   fontHandle=CreateFontIndirect(&logFont);
+   SelectObject(dc,fontHandle);
+   DeleteObject(fontHandle);
+
+   int i;
+   for(i=0;i<length;i++){
+    int          outlineSize=GetGlyphOutline(dc,glyphs[i],GGO_BEZIER|GGO_GLYPH_INDEX,NULL,0,NULL,NULL);
+    GLYPHMETRICS glyphMetrics;
+    void        *outline=__builtin_alloca(outlineSize);
+
+    if(GetGlyphOutline(dc,glyphs[i],GGO_BEZIER|GGO_GLYPH_INDEX,&glyphMetrics,outlineSize,outline,NULL)==size){
+    }
+   }
+   
 }
 
 @end

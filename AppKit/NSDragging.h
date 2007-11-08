@@ -33,6 +33,7 @@ enum {
 -(id)draggingSource;
 -(void)slideDraggedImageTo:(NSPoint)point;
 -(int)draggingSequenceNumber;
+-(NSArray *)namesOfPromisedFilesDroppedAtDestination:(NSURL *)destination;
 @end
 
 @interface NSObject(NSDragging_destination)
@@ -43,11 +44,15 @@ enum {
 -(NSDragOperation)draggingEntered:(id <NSDraggingInfo>)sender;
 -(void)draggingExited:(id <NSDraggingInfo>)sender;
 -(NSDragOperation)draggingUpdated:(id <NSDraggingInfo>)sender;
+
+-(BOOL)wantsPeriodicDraggingUpdates;
 @end
 
 @interface NSObject(NSDragging_source)
 -(BOOL)ignoreModifierKeysWhileDragging;
 -(NSDragOperation)draggingSourceOperationMaskForLocal:(BOOL)flag;
 -(void)draggedImage:(NSImage *)image beganAt:(NSPoint)point;
+-(void)draggedImage:(NSImage *)image movedTo:(NSPoint)point;
 -(void)draggedImage:(NSImage *)image endedAt:(NSPoint)point operation:(NSDragOperation)operation;
+-(NSArray *)namesOfPromisedFilesDroppedAtDestination:(NSURL *)destination;
 @end

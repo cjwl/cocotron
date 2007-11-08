@@ -46,6 +46,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     return copy;
 }
 
+-initTextCell:(NSString *)value {
+   [super initTextCell:value];
+   NSUnimplementedMethod();
+   return self;
+}
 
 -(void)dealloc {
    [_titleCell release];
@@ -54,6 +59,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(NSCellType)type {
    return NSTextCellType;
+}
+
+-(BOOL)isOpaque {
+   if(_titleWidth==0 && [self isBezeled])
+    return YES;
+   
+   return NO;
 }
 
 -(float)titleWidth {
@@ -85,6 +97,20 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return [_titleCell baseWritingDirection];
 }
 
+-(NSString *)placeholderString {
+   if([_placeholder isKindOfClass:[NSString class]])
+    return _placeholder;
+
+   return nil;
+}
+
+-(NSAttributedString *)placeholderAttributedString {
+   if([_placeholder isKindOfClass:[NSAttributedString class]])
+    return _placeholder;
+
+   return nil;
+}
+
 -(void)setTitleWidth:(float)value {
    _titleWidth=value;
 }
@@ -97,11 +123,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [_titleCell setAttributedStringValue:value];
 }
 
--(void)setTitleWithMnemonic:(NSString *)value {
-// FIX, wrong
-   [_titleCell setStringValue:value];
-}
-
 -(void)setTitleFont:(NSFont *)value {
    [_titleCell setFont:value];
 }
@@ -112,6 +133,23 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)setTitleBaseWritingDirection:(NSWritingDirection)value {
    [_titleCell setBaseWritingDirection:value];
+}
+
+-(void)setPlaceholderString:(NSString *)value {
+   value=[value copy];
+   [_placeholder release];
+   _placeholder=value;
+}
+
+-(void)setPlaceholderAttributedString:(NSAttributedString *)value {
+   value=[value copy];
+   [_placeholder release];
+   _placeholder=value;
+}
+
+-(void)setTitleWithMnemonic:(NSString *)value {
+// FIX, wrong
+   [_titleCell setStringValue:value];
 }
 
 -(void)setEnabled:(BOOL)enabled {

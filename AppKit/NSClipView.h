@@ -11,20 +11,37 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @class NSColor;
 
 @interface NSClipView : NSView {
-   NSColor *_backgroundColor;
-
+   NSColor  *_backgroundColor;
+   NSCursor *_documentCursor;
+   
    NSView *_docView;
    NSRect  _docRect;
+   
+   BOOL _drawsBackground;
+   BOOL _copiesOnScroll;
 }
 
+-(BOOL)drawsBackground;
+-(BOOL)copiesOnScroll;
 -(NSColor *)backgroundColor;
--(id)documentView;
--(NSRect)documentVisibleRect;
+-(NSCursor *)documentCursor;
+-documentView;
 
+-(void)setDrawsBackground:(BOOL)value;
+-(void)setCopiesOnScroll:(BOOL)value;
 -(void)setBackgroundColor:(NSColor *)color;
+-(void)setDocumentCursor:(NSCursor *)value;
 -(void)setDocumentView:(NSView *)view;
 
+-(NSRect)documentRect;
+-(NSRect)documentVisibleRect;
+
 -(NSPoint)constrainScrollPoint:(NSPoint)point;
+
+-(void)viewBoundsChanged:(NSNotification *)note;
+-(void)viewFrameChanged:(NSNotification *)note;
+
+-(BOOL)autoscroll:(NSEvent *)event;
 -(void)scrollToPoint:(NSPoint)point;
 
 @end

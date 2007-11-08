@@ -84,10 +84,12 @@ static inline BOOL attributeHasArgument(NSOpenGLPixelFormatAttribute attribute){
 
 -(void *)CGLPixelFormatObj {
    NSUnimplementedMethod();
+   return 0;
 }
 
 -(int)numberOfVirtualScreens {
    NSUnimplementedMethod();
+   return 0;
 }
 
 -(void)getValues:(long *)values forAttribute:(NSOpenGLPixelFormatAttribute)attribute forVirtualScreen:(int)screen {

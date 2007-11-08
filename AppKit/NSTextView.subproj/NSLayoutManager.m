@@ -15,6 +15,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSTextView.h>
 #import <AppKit/NSTextAttachment.h>
 #import <AppKit/NSImage.h>
+#import <AppKit/NSWindow.h>
 #import <AppKit/NSGraphicsContextFunctions.h>
 
 #import <AppKit/NSAttributedString.h>
@@ -133,7 +134,13 @@ static inline NSGlyphFragment *fragmentAtGlyphIndex(NSLayoutManager *self,unsign
 }
 
 -(BOOL)layoutManagerOwnsFirstResponderInWindow:(NSWindow *)window {
-   NSUnimplementedMethod();
+   NSResponder *first=[window firstResponder];
+   int          i,count=[_textContainers count];
+   
+   for(i=0;i<count;i++)
+    if([[_textContainers objectAtIndex:i] textView]==first)
+     return YES;
+     
    return NO;
 }
 
@@ -577,7 +584,7 @@ static inline NSGlyphFragment *fragmentAtGlyphIndex(NSLayoutManager *self,unsign
   {
    NSRect      result=NSZeroRect;
    unsigned    i,rectCount=0;
-   NSRectArray rects=[self rectArrayForGlyphRange:glyphRange withinSelectedGlyphRange:NSMakeRange(NSNotFound,0)
+   NSRect * rects=[self rectArrayForGlyphRange:glyphRange withinSelectedGlyphRange:NSMakeRange(NSNotFound,0)
      inTextContainer:container rectCount:&rectCount];
 
    for(i=0;i<rectCount;i++){
@@ -599,7 +606,7 @@ static inline void _appendRectToCache(NSLayoutManager *self,NSRect rect){
    self->_rectCache[self->_rectCacheCount++]=rect;
 }
 
--(NSRectArray)rectArrayForGlyphRange:(NSRange)glyphRange withinSelectedGlyphRange:(NSRange)selGlyphRange inTextContainer:(NSTextContainer *)container rectCount:(unsigned *)rectCount {
+-(NSRect *)rectArrayForGlyphRange:(NSRange)glyphRange withinSelectedGlyphRange:(NSRange)selGlyphRange inTextContainer:(NSTextContainer *)container rectCount:(unsigned *)rectCount {
    NSRange remainder=(selGlyphRange.location==NSNotFound)?glyphRange:selGlyphRange;
 
    _rectCacheCount=0;
@@ -670,7 +677,7 @@ static inline void _appendRectToCache(NSLayoutManager *self,NSRect rect){
    return glyphRange;
 }
 
--(NSRectArray)rectArrayForCharacterRange:(NSRange)characterRange withinSelectedCharacterRange:(NSRange)selectedCharRange inTextContainer:(NSTextContainer *)container rectCount:(unsigned *)rectCount {
+-(NSRect *)rectArrayForCharacterRange:(NSRange)characterRange withinSelectedCharacterRange:(NSRange)selectedCharRange inTextContainer:(NSTextContainer *)container rectCount:(unsigned *)rectCount {
    NSRange glyphRange=[self glyphRangeForCharacterRange:characterRange actualCharacterRange:NULL];
    NSRange glyphSelRange=[self glyphRangeForCharacterRange:selectedCharRange actualCharacterRange:NULL];
 
@@ -703,7 +710,7 @@ static inline void _appendRectToCache(NSLayoutManager *self,NSRect rect){
    NSTextView *textView=[self textViewForBeginningOfSelection];
    NSColor    *selectedColor=[[textView selectedTextAttributes] objectForKey:NSBackgroundColorAttributeName];
    NSRange     range;
-   NSRectArray rectArray;
+   NSRect * rectArray;
    unsigned    i,rectCount=0;
 
    if(textView==nil)
@@ -746,7 +753,7 @@ static inline void _appendRectToCache(NSLayoutManager *self,NSRect rect){
 
      if(color!=nil){
       unsigned         i,rectCount;
-      NSRectArray      rects=[self rectArrayForCharacterRange:effectiveRange withinSelectedCharacterRange:NSMakeRange(NSNotFound,0) inTextContainer:container rectCount:&rectCount];
+      NSRect *      rects=[self rectArrayForCharacterRange:effectiveRange withinSelectedCharacterRange:NSMakeRange(NSNotFound,0) inTextContainer:container rectCount:&rectCount];
 
       [color set];
 

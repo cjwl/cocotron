@@ -93,6 +93,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(int)currentVirtualScreen {
    NSUnimplementedMethod();
+   return 0;
 }
 
 -(void)setCurrentVirtualScreen:(int)screen {

@@ -29,7 +29,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     _objectValues=[[NSMutableArray alloc] initWithArray:[keyed decodeObjectForKey:@"NSPopUpListData"]];
     _numberOfVisibleItems=[keyed decodeIntForKey:@"NSVisibleItemCount"];
     _completes=[keyed decodeBoolForKey:@"NSCompletes"];
-    _buttonBordered=YES;
+    _isButtonBordered=YES;
     _buttonEnabled=YES;
     _buttonPressed=NO;
    }
@@ -53,6 +53,86 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     return copy;
 }
 
+-dataSource {
+   return _dataSource;
+}
+
+-(BOOL)usesDataSource {
+   return _usesDataSource;
+}
+
+-(BOOL)isButtonBordered {
+   return _isButtonBordered;
+}
+
+-(float)itemHeight {
+   return _itemHeight;
+}
+
+-(BOOL)hasVerticalScroller {
+   return _hasVerticalScroller;
+}
+
+-(NSSize)intercellSpacing {
+   return _intercellSpacing;
+}
+
+-(BOOL)completes {
+   return _completes;
+}
+
+-(int)numberOfVisibleItems {
+   return _numberOfVisibleItems;
+}
+
+-(void)setDataSource:value {
+   _dataSource=value;
+}
+
+-(void)setUsesDataSource:(BOOL)value {
+   _usesDataSource=value;
+}
+
+-(void)setButtonBordered:(BOOL)value {
+   _isButtonBordered=value;
+}
+
+-(void)setItemHeight:(float)value {
+   _itemHeight=value;
+}
+
+-(void)setHasVerticalScroller:(BOOL)value {
+   _hasVerticalScroller=value;
+}
+
+-(void)setIntercellSpacing:(NSSize)value {
+   _intercellSpacing=value;
+}
+
+-(void)setCompletes:(BOOL)flag {
+   _completes=flag;
+}
+
+-(void)setNumberOfVisibleItems:(int)value {
+   _numberOfVisibleItems=value;
+}
+
+-(int)numberOfItems {
+   return [_objectValues count];
+}
+
+-(NSArray *)objectValues {
+   return _objectValues;
+}
+
+-itemObjectValueAtIndex:(int)index {
+   return [_objectValues objectAtIndex:index];
+}
+
+-(int)indexOfItemWithObjectValue:(id)object {
+   return [_objectValues indexOfObjectIdenticalTo:object];
+}
+
 -(void)addItemWithObjectValue:(id)object {
    [_objectValues addObject:object];
    _buttonEnabled=([_objectValues count]>0)?YES:NO;
@@ -63,21 +143,34 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    _buttonEnabled=([_objectValues count]>0)?YES:NO;
 }
 
-- (void)insertItemWithObjectValue:(id)object atIndex:(int)index {
-    [_objectValues insertObject:object atIndex:index];
-   _buttonEnabled=([_objectValues count]>0)?YES:NO;
-}
-
 -(void)removeAllItems {
    [_objectValues removeAllObjects];
    _buttonEnabled=([_objectValues count]>0)?YES:NO;
 }
 
--(int)indexOfItemWithObjectValue:(id)object {
-   return [_objectValues indexOfObjectIdenticalTo:object];
+-(void)removeItemAtIndex:(int)index {
+   [_objectValues removeObjectAtIndex:index];
+   _buttonEnabled=([_objectValues count]>0)?YES:NO;
 }
 
--(void)scrollItemAtIndexToVisible:(int)index {
+-(void)removeItemWithObjectValue:value {
+   [_objectValues removeObject:value];
+   _buttonEnabled=([_objectValues count]>0)?YES:NO;
+}
+
+-(void)insertItemWithObjectValue:(id)object atIndex:(int)index {
+   [_objectValues insertObject:object atIndex:index];
+   _buttonEnabled=([_objectValues count]>0)?YES:NO;
+}
+
+-(int)indexOfSelectedItem {
+   NSUnimplementedMethod();
+   return 0;
+}
+
+-objectValueOfSelectedItem {
+   NSUnimplementedMethod();
+   return 0;
 }
 
 -(void)selectItemAtIndex:(int)index {
@@ -87,12 +180,28 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     [self setObjectValue:[_objectValues objectAtIndex:index]];
 }
 
--(BOOL)completes {
-   return _completes;
+-(void)selectItemWithObjectValue:value {
+   NSUnimplementedMethod();
 }
 
--(void)setCompletes:(BOOL)flag {
-   _completes=flag;
+-(void)deselectItemAtIndex:(int)index {
+   NSUnimplementedMethod();
+}
+
+-(void)scrollItemAtIndexToTop:(int)index {
+   NSUnimplementedMethod();
+}
+
+-(void)scrollItemAtIndexToVisible:(int)index {
+   NSUnimplementedMethod();
+}
+
+-(void)noteNumberOfItemsChanged {
+   NSUnimplementedMethod();
+}
+
+-(void)reloadData {
+   NSUnimplementedMethod();
 }
 
 - (NSString *)completedString:(NSString *)string {
@@ -175,7 +284,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)drawWithFrame:(NSRect)frame inView:(NSView *)controlView {
    [super drawWithFrame:frame inView:controlView];
 
-   [[controlView graphicsStyle] drawComboBoxButtonInRect:[self buttonRectForBounds:frame] enabled:_buttonEnabled bordered:_buttonBordered pressed:_buttonPressed];
+   [[controlView graphicsStyle] drawComboBoxButtonInRect:[self buttonRectForBounds:frame] enabled:_buttonEnabled bordered:_isButtonBordered pressed:_buttonPressed];
 }
 
 @end

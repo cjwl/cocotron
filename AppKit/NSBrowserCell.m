@@ -33,12 +33,31 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return _isLoaded;
 }
 
--(void)setLeaf:(BOOL)flag {
-   _isLeaf=flag;
+-(NSImage *)image {
+   NSUnimplementedMethod();
+   return nil;
 }
 
--(void)setLoaded:(BOOL)flag {
-   _isLoaded=flag;
+-(NSImage *)alternateImage {
+   return _alternateImage;
+}
+
+-(void)setLeaf:(BOOL)value {
+   _isLeaf=value;
+}
+
+-(void)setLoaded:(BOOL)value {
+   _isLoaded=value;
+}
+
+-(void)setImage:(NSImage *)value {
+   NSUnimplementedMethod();
+}
+
+-(void)setAlternateImage:(NSImage *)value {
+   value=[value retain];
+   [_alternateImage release];
+   _alternateImage=value;
 }
 
 -(void)setState:(int)value {
@@ -54,6 +73,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)reset {
    [self setState:NSOffState];
    _isHighlighted=NO;
+}
+
+-(NSColor *)highlightColorInView:(NSView *)view {
+   NSUnimplementedMethod();
+   return nil;
 }
 
 -(NSImage *)branchImage {

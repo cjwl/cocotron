@@ -57,9 +57,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     _autoenablesItems=![keyed decodeBoolForKey:@"NSNoAutoenable"];    
    }
    else {
-    _title=[[coder decodeObjectForKey:@"NSMenu title"] retain];
-    _itemArray=[[coder decodeObjectForKey:@"NSMenu itemArray"] retain];
-    _autoenablesItems=[coder decodeBoolForKey:@"NSMenu autoenablesItems"];
+    [NSException raise:NSInvalidArgumentException format:@"%@ can not initWithCoder:%@",isa,[coder class]];
    }
    return self;
 }
@@ -161,9 +159,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     return -1;
 }
 
--(int)indexOfItemWithRepresentedObject:(id)object {
-    NSUnimplementedMethod();	// hmmm...
-    return -1;
+-(int)indexOfItemWithRepresentedObject:object {
+   int i,count=[_itemArray count];
+   
+   for(i=0;i<count;i++)
+    if([[(NSMenuItem *)[_itemArray objectAtIndex:i] representedObject] isEqual:object])
+     return i;
+
+   return -1;
 }
 
 // needed this for NSApplication windowsMenu stuff, so i did 'em all..

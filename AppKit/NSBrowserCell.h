@@ -9,6 +9,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSCell.h>
 
 @interface NSBrowserCell : NSCell {
+   NSImage *_alternateImage;
    BOOL _isLeaf;
    BOOL _isLoaded;
 }
@@ -18,11 +19,17 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(BOOL)isLeaf;
 -(BOOL)isLoaded;
+-(NSImage *)image;
+-(NSImage *)alternateImage;
 
--(void)setLeaf:(BOOL)flag;
--(void)setLoaded:(BOOL)flag;
+-(void)setLeaf:(BOOL)value;
+-(void)setLoaded:(BOOL)value;
+-(void)setImage:(NSImage *)value;
+-(void)setAlternateImage:(NSImage *)value;
 
 -(void)set;
 -(void)reset;
+
+-(NSColor *)highlightColorInView:(NSView *)view;
 
 @end

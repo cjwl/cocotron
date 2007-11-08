@@ -158,6 +158,10 @@ CGRect  CGContextConvertRectToUserSpace(CGContextRef context,CGRect rect) {
    return [context convertRectToUserSpace:rect];
 }
 
+void CGContextSetCTM(CGContextRef context,CGAffineTransform matrix) {
+   [context setCTM:matrix];
+}
+
 void CGContextConcatCTM(CGContextRef context,CGAffineTransform matrix) {
    [context concatCTM:matrix];
 }

@@ -43,7 +43,40 @@ typedef enum {
    kCGInterpolationHigh,
 } CGInterpolationQuality;
 
-typedef int CGBlendMode;
+typedef enum {
+// seperable
+   kCGBlendModeNormal,
+   kCGBlendModeMultiply,
+   kCGBlendModeScreen,
+   kCGBlendModeOverlay,
+   kCGBlendModeDarken,
+   kCGBlendModeLighten,
+   kCGBlendModeColorDodge,
+   kCGBlendModeColorBurn,
+   kCGBlendModeHardLight,
+   kCGBlendModeSoftLight,
+   kCGBlendModeDifference,
+   kCGBlendModeExclusion,
+// nonseperable  
+   kCGBlendModeHue,
+   kCGBlendModeSaturation,
+   kCGBlendModeColor,
+   kCGBlendModeLuminosity,
+// Porter-Duff
+   kCGBlendModeClear,
+   kCGBlendModeCopy,
+   kCGBlendModeSourceIn,
+   kCGBlendModeSourceOut,
+   kCGBlendModeSourceAtop,
+   kCGBlendModeDestinationOver,
+   kCGBlendModeDestinationIn,
+   kCGBlendModeDestinationOut,
+   kCGBlendModeDestinationAtop,
+   kCGBlendModeXOR,
+   kCGBlendModePlusDarker,
+   kCGBlendModePlusLighter,
+} CGBlendMode;
+
 typedef int CGTextDrawingMode;
 
 @class KGContext;
@@ -203,6 +236,9 @@ APPKIT_EXPORT void CGContextSynchronize(CGContextRef context);
 
 APPKIT_EXPORT void CGContextBeginPage(CGContextRef context,const CGRect *mediaBox);
 APPKIT_EXPORT void CGContextEndPage(CGContextRef context);
+
+// private for NSAffineTransform
+APPKIT_EXPORT void CGContextSetCTM(CGContextRef context,CGAffineTransform matrix);
 
 // Temporary hacks
 

@@ -11,12 +11,18 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSImageRep.h>
 #import <AppKit/NSBitmapImageRep.h>
 #import <AppKit/NSCachedImageRep.h>
+#import <AppKit/NSPasteboard.h>
+#import <AppKit/NSColor.h>
 #import <AppKit/NSGraphicsContextFunctions.h>
 #import <AppKit/NSNibKeyedUnarchiver.h>
 
 @implementation NSImage
 
 +(NSArray *)imageFileTypes {
+   return [self imageUnfilteredFileTypes];
+}
+
++(NSArray *)imageUnfilteredFileTypes {
    NSMutableArray *result=[NSMutableArray array];
    NSArray        *allClasses=[NSImageRep registeredImageRepClasses];
    int             i,count=[allClasses count];
@@ -27,11 +33,28 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return result;
 }
 
-+(NSArray *)imageUnfilteredFileTypes {
-   return [NSImageRep imageUnfilteredFileTypes];
++(NSArray *)imagePasteboardTypes {
+   return [self imageUnfilteredPasteboardTypes];
 }
 
-+(NSArray *)checkBundles {
++(NSArray *)imageUnfilteredPasteboardTypes{
+   NSMutableArray *result=[NSMutableArray array];
+   NSArray        *allClasses=[NSImageRep registeredImageRepClasses];
+   int             i,count=[allClasses count];
+   
+   for(i=0;i<count;i++)
+    [result addObjectsFromArray:[[allClasses objectAtIndex:i] imageUnfilteredPasteboardTypes]];
+
+   return result;
+}
+
++(BOOL)canInitWithPasteboard:(NSPasteboard *)pasteboard {
+   NSString *available=[pasteboard availableTypeFromArray:[self imageUnfilteredPasteboardTypes]];
+   
+   return (available!=nil)?YES:NO;
+}
+
++(NSArray *)_checkBundles {
    return [NSArray arrayWithObjects:
     [NSBundle bundleForClass:self],
     [NSBundle mainBundle],
@@ -53,7 +76,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    NSImage *image=[[self allImages] objectForKey:name];
 
    if(image==nil){
-    NSArray *bundles=[self checkBundles];
+    NSArray *bundles=[self _checkBundles];
     int      i,count=[bundles count];
 
     for(i=0;i<count;i++){
@@ -104,6 +127,18 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return nil;
 }
 
+-initWithSize:(NSSize)size {
+   _name=nil;
+   _size=size;
+   _representations=[NSMutableArray new];
+   return self;
+}
+
+-initWithData:(NSData *)data {
+   NSUnimplementedMethod();
+   return nil;
+}
+
 -initWithContentsOfFile:(NSString *)path {
    NSArray *reps=[NSImageRep imageRepsWithContentsOfFile:path];
 
@@ -121,16 +156,24 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return self;
 }
 
+-initWithContentsOfURL:(NSURL *)url {
+   NSUnimplementedMethod();
+   return 0;
+}
+
+-initWithPasteboard:(NSPasteboard *)pasteboard {
+   NSUnimplementedMethod();
+   return 0;
+}
+
 -initByReferencingFile:(NSString *)path {
    NSUnimplementedMethod();
    return nil;
 }
 
--initWithSize:(NSSize)size {
-   _name=nil;
-   _size=size;
-   _representations=[NSMutableArray new];
-   return self;
+-initByReferencingURL:(NSURL *)url {
+   NSUnimplementedMethod();
+   return 0;
 }
 
 -(void)dealloc {
@@ -151,13 +194,48 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return _size;
 }
 
--(NSArray *)representations {
-   return _representations;
+-(NSColor *)backgroundColor {
+   return _backgroundColor;
+}
+
+-(BOOL)isFlipped {
+   return _isFlipped;
+}
+
+-(BOOL)scalesWhenResized {
+   return _scalesWhenResized;
+}
+
+-(BOOL)matchesOnMultipleResolution {
+   return _matchesOnMultipleResolution;
+}
+
+-(BOOL)usesEPSOnResolutionMismatch {
+   return _usesEPSOnResolutionMismatch;
+}
+
+-(BOOL)prefersColorMatch {
+   return _prefersColorMatch;
+}
+
+-(NSImageCacheMode)cacheMode {
+   return _cacheMode;
 }
 
 -(BOOL)isCachedSeparately {
-   NSUnimplementedMethod();
-   return NO;
+   return _isCachedSeparately;
+}
+
+-(BOOL)cacheDepthMatchesImageDepth {
+   return _cacheDepthMatchesImageDepth;
+}
+
+-(BOOL)isDataRetained {
+   return _isDataRetained;
+}
+
+-delegate {
+   return _delegate;
 }
 
 -(BOOL)setName:(NSString *)name {
@@ -177,23 +255,100 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)setSize:(NSSize)size {
    _size=size;
-   // FIX, clear cache
+   [self recache];
 }
 
--(void)addRepresentation:(NSImageRep *)imageRep {
-   [_representations addObject:imageRep];
+-(void)setBackgroundColor:(NSColor *)value {
+   value=[value copy];
+   [_backgroundColor release];
+   _backgroundColor=value;
 }
 
--(void)setScalesWhenResized:(BOOL)flag {
+-(void)setFlipped:(BOOL)value {
+   _isFlipped=value;
+}
+
+-(void)setScalesWhenResized:(BOOL)value {
+   _scalesWhenResized=value;
+}
+
+-(void)setMatchesOnMultipleResolution:(BOOL)value {
+   _matchesOnMultipleResolution=value;
+}
+
+-(void)setUsesEPSOnResolutionMismatch:(BOOL)value {
+   _usesEPSOnResolutionMismatch=value;
+}
+
+-(void)setPrefersColorMatch:(BOOL)value {
+   _prefersColorMatch=value;
+}
+
+-(void)setCacheMode:(NSImageCacheMode)value {
+   _cacheMode=value;
+}
+
+-(void)setCachedSeparately:(BOOL)value {
+   _isCachedSeparately=value;
+}
+
+-(void)setCacheDepthMatchesImageDepth:(BOOL)value {
+   _cacheDepthMatchesImageDepth=value;
+}
+
+-(void)setDataRetained:(BOOL)value {
+   _isDataRetained=value;
+}
+
+-(void)setDelegate:delegate {
+   _delegate=delegate;
+}
+
+-(BOOL)isValid {
+   NSUnimplementedMethod();
+   return 0;
+}
+
+-(NSArray *)representations {
+   return _representations;
+}
+
+-(void)addRepresentation:(NSImageRep *)representation {
+   [_representations addObject:representation];
+}
+
+-(void)addRepresentations:(NSArray *)array {
+   int i,count=[array count];
+   
+   for(i=0;i<count;i++)
+    [self addRepresentation:[array objectAtIndex:i]];
+}
+
+-(void)removeRepresentation:(NSImageRep *)representation {
+   [_representations removeObjectIdenticalTo:representation];
+}
+
+-(NSImageRep *)bestRepresentationForDevice:(NSDictionary *)device {
+   NSUnimplementedMethod();
+   return 0;
+}
+
+-(void)recache {
    NSUnimplementedMethod();
 }
 
--(void)setCachedSeparately:(BOOL)flag {
-   //NSUnimplementedMethod();
+-(void)cancelIncrementalLoad {
+   NSUnimplementedMethod();
 }
 
--(void)setBackgroundColor:(NSColor *)color {
+-(NSData *)TIFFRepresentation {
    NSUnimplementedMethod();
+   return nil;
+}
+
+-(NSData *)TIFFRepresentationUsingCompression:(NSTIFFCompression)compression factor:(float)factor {
+   NSUnimplementedMethod();
+   return nil;
 }
 
 -(NSCachedImageRep *)_cachedImageRep {
@@ -240,20 +395,49 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [NSGraphicsContext restoreGraphicsState];
 }
 
+-(BOOL)drawRepresentation:(NSImageRep *)representation inRect:(NSRect)rect {
+   [[self backgroundColor] set];
+   NSRectFill(rect);
+   
+   return [representation drawInRect:rect];
+}
+
+-(void)compositeToPoint:(NSPoint)point fromRect:(NSRect)rect operation:(NSCompositingOperation)operation {
+   [self compositeToPoint:point fromRect:rect operation:operation fraction:1.0];
+}
+
+-(void)compositeToPoint:(NSPoint)point fromRect:(NSRect)rect operation:(NSCompositingOperation)operation fraction:(float)fraction {
+   CGContextRef context=NSCurrentGraphicsPort();
+   
+   CGContextSaveGState(context);
+   CGContextSetAlpha(context,fraction);
+   [[_representations lastObject] drawAtPoint:point];
+   CGContextRestoreGState(context);
+}
+
 -(void)compositeToPoint:(NSPoint)point operation:(NSCompositingOperation)operation {
    [self compositeToPoint:point operation:operation fraction:1.0];
 }
 
 -(void)compositeToPoint:(NSPoint)point operation:(NSCompositingOperation)operation fraction:(float)fraction {
-   NSImageRep *rep=[_representations lastObject];
-
-   if([rep isKindOfClass:[NSBitmapImageRep class]])
-    [(NSBitmapImageRep *)rep compositeToPoint:point operation:operation fraction:fraction];
-   else
-    [rep drawAtPoint:point];
+   NSSize size=[self size];
+   
+   [self compositeToPoint:point fromRect:NSMakeRect(0,0,size.width,size.height) operation:operation fraction:1.0];
 }
 
--(void)compositeToPoint:(NSPoint)point fromRect:(NSRect)rect operation:(NSCompositingOperation)operation {
+-(void)dissolveToPoint:(NSPoint)point fraction:(float)fraction {
+   NSUnimplementedMethod();
+}
+
+-(void)dissolveToPoint:(NSPoint)point fromRect:(NSRect)rect fraction:(float)fraction {
+   NSUnimplementedMethod();
+}
+
+-(void)drawAtPoint:(NSPoint)point fromRect:(NSRect)source operation:(NSCompositingOperation)operation fraction:(float)fraction {
+   NSUnimplementedMethod();
+}
+
+-(void)drawInRect:(NSRect)rect fromRect:(NSRect)source operation:(NSCompositingOperation)operation fraction:(float)fraction {
    NSUnimplementedMethod();
 }
 

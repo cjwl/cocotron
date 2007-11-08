@@ -35,7 +35,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(int)indexOfItem:(NSMenuItem *)item;
 -(int)indexOfItemWithTag:(int)tag;
 -(int)indexOfItemWithTitle:(NSString *)title;
--(int)indexOfItemWithRepresentedObject:(id)object;
+-(int)indexOfItemWithRepresentedObject:object;
 -(int)indexOfItemWithTarget:(id)target andAction:(SEL)action;
 -(int)indexOfItemWithSubmenu:(NSMenu *)menu;
 

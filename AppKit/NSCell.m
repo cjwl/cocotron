@@ -25,21 +25,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @implementation NSCell
 
 -(void)encodeWithCoder:(NSCoder *)coder {
-   [coder encodeInt:_state forKey:@"NSCell state"];
-   [coder encodeInt:_cellType forKey:@"NSCell type"];
-   [coder encodeInt:_textAlignment forKey:@"NSCell alignment"];
-   [coder encodeBool:_wraps forKey:@"NSCell wraps"];
-   [coder encodeBool:_isEnabled forKey:@"NSCell enabled"];
-   [coder encodeBool:_isEditable forKey:@"NSCell editable"];
-   [coder encodeBool:_isSelectable forKey:@"NSCell selectable"];
-   [coder encodeBool:_isScrollable forKey:@"NSCell scrollable"];
-   [coder encodeBool:_isBordered forKey:@"NSCell bordered"];
-   [coder encodeBool:_isBezeled forKey:@"NSCell bezeled"];
-   [coder encodeBool:_isHighlighted forKey:@"NSCell highlighted"];
-   [coder encodeBool:_isContinuous forKey:@"NSCell continuous"];
-   [coder encodeObject:_font forKey:@"NSCell font"];
-   [coder encodeObject:_objectValue forKey:@"NSCell objectValue"];
-   [coder encodeObject:_image forKey:@"NSCell image"];
+   NSUnimplementedMethod();
 }
 
 -initWithCoder:(NSCoder *)coder {
@@ -84,22 +70,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
        _font=[[NSFont userFontOfSize:13 - _controlSize*2] retain];
    }
    else {
-    _state=[coder decodeIntForKey:@"NSCell state"];
-    _cellType=[coder decodeIntForKey:@"NSCell type"];
-    _textAlignment=[coder decodeIntForKey:@"NSCell alignment"];
-    _writingDirection=NSWritingDirectionNatural;
-    _wraps=[coder decodeBoolForKey:@"NSCell wraps"];
-    _isEnabled=[coder decodeBoolForKey:@"NSCell enabled"];
-    _isEditable=[coder decodeBoolForKey:@"NSCell editable"];
-    _isSelectable=[coder decodeBoolForKey:@"NSCell selectable"];
-    _isScrollable=[coder decodeBoolForKey:@"NSCell scrollable"];
-    _isBordered=[coder decodeBoolForKey:@"NSCell bordered"];
-    _isBezeled=[coder decodeBoolForKey:@"NSCell bezeled"];
-    _isHighlighted=[coder decodeBoolForKey:@"NSCell highlighted"];
-    _isContinuous=[coder decodeBoolForKey:@"NSCell continuous"];
-    _font=[[coder decodeObjectForKey:@"NSCell font"] retain];
-    _objectValue=[[coder decodeObjectForKey:@"NSCell objectValue"] retain];
-    _image=[[coder decodeObjectForKey:@"NSCell image"] retain];
+    [NSException raise:NSInvalidArgumentException format:@"%@ can not initWithCoder:%@",isa,[coder class]];
    }
    return self;
 }
@@ -278,7 +249,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     NSString *formatted;
     
     if (_formatter != nil)
-        if (formatted = [_formatter stringForObjectValue:_objectValue])
+        if ((formatted = [_formatter stringForObjectValue:_objectValue])!=nil)
           return formatted;
 
     if([_objectValue isKindOfClass:[NSAttributedString class]])

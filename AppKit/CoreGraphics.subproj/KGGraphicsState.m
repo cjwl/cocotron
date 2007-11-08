@@ -68,6 +68,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(CGAffineTransform)userSpaceToDeviceSpaceTransform {
    NSUnimplementedMethod();
+   return CGAffineTransformIdentity;
 }
 
 -(CGAffineTransform)ctm {
@@ -83,10 +84,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return _textTransform;
 }
 
--(int)interpolationQuality {
+-(CGInterpolationQuality)interpolationQuality {
+   return _interpolationQuality;
 }
 
 -(NSPoint)textPosition {
+// FIX, is this right?
+  return NSMakePoint(_textTransform.tx,_textTransform.ty);
 }
 
 -(NSPoint)convertPointToDeviceSpace:(NSPoint)point {
@@ -106,9 +110,17 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(NSRect)convertRectToDeviceSpace:(NSRect)rect {
+   NSUnimplementedMethod();
+   return NSMakeRect(0,0,0,0);
 }
 
 -(NSRect)convertRectToUserSpace:(NSRect)rect {
+   NSUnimplementedMethod();
+   return NSMakeRect(0,0,0,0);
+}
+
+-(void)setCTM:(CGAffineTransform)transform {
+   _ctm=transform;
 }
 
 -(void)concatCTM:(CGAffineTransform)transform {

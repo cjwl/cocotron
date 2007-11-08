@@ -18,19 +18,27 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(unsigned)textureTarget {
    NSUnimplementedMethod();
+   return 0;
 }
+
 -(unsigned long)textureInternalFormat {
    NSUnimplementedMethod();
+   return 0;
 }
+
 -(long)textureMaxMipMapLevel {
    NSUnimplementedMethod();
+   return 0;
 }
 
 -(int)pixelsWide {
    NSUnimplementedMethod();
+   return 0;
 }
+
 -(int)pixelsHigh {
    NSUnimplementedMethod();
+   return 0;
 }
 
 @end

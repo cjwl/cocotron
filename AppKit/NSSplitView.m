@@ -370,9 +370,9 @@ static float constrainTo(float value,float min,float max){
    NSCursor *cursor;
 
    if([self isVertical])
-    cursor=[NSCursor _verticalResizeCursor];
+    cursor=[NSCursor resizeLeftRightCursor];
    else
-    cursor=[NSCursor _horizontalResizeCursor];
+    cursor=[NSCursor resizeUpDownCursor];
 
    for(i=0;i<count-1;i++){
     NSRect rect=[self dividerRectAtIndex:i];

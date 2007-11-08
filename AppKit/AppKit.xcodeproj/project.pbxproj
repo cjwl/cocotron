@@ -1278,6 +1278,8 @@
 		FE57F8D30C46B68C0078FFC1 /* KGDeviceContext_gdi.m in Sources */ = {isa = PBXBuildFile; fileRef = FE57F8D10C46B68C0078FFC1 /* KGDeviceContext_gdi.m */; };
 		FE57FAB70C47F2010078FFC1 /* NSPrintPanel.h in Headers */ = {isa = PBXBuildFile; fileRef = FE57FAB50C47F2010078FFC1 /* NSPrintPanel.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE57FAB80C47F2010078FFC1 /* NSPrintPanel.m in Sources */ = {isa = PBXBuildFile; fileRef = FE57FAB60C47F2010078FFC1 /* NSPrintPanel.m */; };
+		FE5C6E2D0CD97D2800893B56 /* StandardAboutPanel.nib in Resources */ = {isa = PBXBuildFile; fileRef = FE5C6E2C0CD97D2800893B56 /* StandardAboutPanel.nib */; };
+		FE5C6E2E0CD97D2800893B56 /* StandardAboutPanel.nib in Resources */ = {isa = PBXBuildFile; fileRef = FE5C6E2C0CD97D2800893B56 /* StandardAboutPanel.nib */; };
 		FE6466E30B2C611D00B302B0 /* NSMutableParagraphStyle.h in Headers */ = {isa = PBXBuildFile; fileRef = FE6466E10B2C611D00B302B0 /* NSMutableParagraphStyle.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE6466E40B2C611D00B302B0 /* NSMutableParagraphStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = FE6466E20B2C611D00B302B0 /* NSMutableParagraphStyle.m */; };
 		FE64B8E10B81239D007EE513 /* KGColorSpace.h in Headers */ = {isa = PBXBuildFile; fileRef = FE64B8A70B81239D007EE513 /* KGColorSpace.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -1369,6 +1371,8 @@
 		FE8F9F290C9C5D0000270AEE /* KGzlib.m in Sources */ = {isa = PBXBuildFile; fileRef = FE8F9F270C9C5D0000270AEE /* KGzlib.m */; };
 		FE8F9F2A0C9C5D0000270AEE /* KGzlib.h in Headers */ = {isa = PBXBuildFile; fileRef = FE8F9F260C9C5D0000270AEE /* KGzlib.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE8F9F2B0C9C5D0000270AEE /* KGzlib.m in Sources */ = {isa = PBXBuildFile; fileRef = FE8F9F270C9C5D0000270AEE /* KGzlib.m */; };
+		FEA8A98C0CD2CBC000E1E936 /* NSUserInterfaceValidation.h in Headers */ = {isa = PBXBuildFile; fileRef = FEA8A98B0CD2CBC000E1E936 /* NSUserInterfaceValidation.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEA8A98D0CD2CBC000E1E936 /* NSUserInterfaceValidation.h in Headers */ = {isa = PBXBuildFile; fileRef = FEA8A98B0CD2CBC000E1E936 /* NSUserInterfaceValidation.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FEABD5EA0CB9CEE40035F828 /* KGLayer_gdi.h in Headers */ = {isa = PBXBuildFile; fileRef = FEABD5E80CB9CEE40035F828 /* KGLayer_gdi.h */; };
 		FEABD5EB0CB9CEE40035F828 /* KGLayer_gdi.m in Sources */ = {isa = PBXBuildFile; fileRef = FEABD5E90CB9CEE40035F828 /* KGLayer_gdi.m */; };
 		FEABD5EC0CB9CEE40035F828 /* KGLayer_gdi.h in Headers */ = {isa = PBXBuildFile; fileRef = FEABD5E80CB9CEE40035F828 /* KGLayer_gdi.h */; };
@@ -2074,6 +2078,7 @@
 		FE57F8D10C46B68C0078FFC1 /* KGDeviceContext_gdi.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = KGDeviceContext_gdi.m; sourceTree = "<group>"; };
 		FE57FAB50C47F2010078FFC1 /* NSPrintPanel.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSPrintPanel.h; sourceTree = "<group>"; };
 		FE57FAB60C47F2010078FFC1 /* NSPrintPanel.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSPrintPanel.m; sourceTree = "<group>"; };
+		FE5C6E2C0CD97D2800893B56 /* StandardAboutPanel.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; path = StandardAboutPanel.nib; sourceTree = "<group>"; };
 		FE6466E10B2C611D00B302B0 /* NSMutableParagraphStyle.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSMutableParagraphStyle.h; sourceTree = "<group>"; };
 		FE6466E20B2C611D00B302B0 /* NSMutableParagraphStyle.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSMutableParagraphStyle.m; sourceTree = "<group>"; };
 		FE64B8A70B81239D007EE513 /* KGColorSpace.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = KGColorSpace.h; sourceTree = "<group>"; };
@@ -2163,6 +2168,7 @@
 		FE8BAF220BC9EC680007FACA /* NSObject+BindingSupport.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = "NSObject+BindingSupport.m"; sourceTree = "<group>"; };
 		FE8F9F260C9C5D0000270AEE /* KGzlib.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = KGzlib.h; sourceTree = "<group>"; };
 		FE8F9F270C9C5D0000270AEE /* KGzlib.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = KGzlib.m; sourceTree = "<group>"; };
+		FEA8A98B0CD2CBC000E1E936 /* NSUserInterfaceValidation.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSUserInterfaceValidation.h; sourceTree = "<group>"; };
 		FEABD5E80CB9CEE40035F828 /* KGLayer_gdi.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = KGLayer_gdi.h; sourceTree = "<group>"; };
 		FEABD5E90CB9CEE40035F828 /* KGLayer_gdi.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = KGLayer_gdi.m; sourceTree = "<group>"; };
 		FEABD6030CB9D0C90035F828 /* KGContext_gdi.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = KGContext_gdi.h; sourceTree = "<group>"; };
@@ -2501,6 +2507,7 @@
 				6E2B53F10976075200DA0954 /* NSToolTipWindow.m */,
 				6E2B54BC0976075300DA0954 /* NSTrackingRect.h */,
 				6E2B53DD0976075200DA0954 /* NSTrackingRect.m */,
+				FEA8A98B0CD2CBC000E1E936 /* NSUserInterfaceValidation.h */,
 				6E2B54BE0976075300DA0954 /* NSView.h */,
 				6E2B53DF0976075200DA0954 /* NSView.m */,
 				6E2B54DC0976075300DA0954 /* NSWindow-Drag.h */,
@@ -2530,6 +2537,7 @@
 				6E2B54DF0976075300DA0954 /* NSFontPanel.nib */,
 				6E2B54E10976075300DA0954 /* NSColorPanel.nib */,
 				6E2B54E30976075300DA0954 /* NSToolbarCustomizationPalette.nib */,
+				FE5C6E2C0CD97D2800893B56 /* StandardAboutPanel.nib */,
 			);
 			name = Interfaces;
 			sourceTree = "<group>";
@@ -3551,6 +3559,7 @@
 				FEABD5EA0CB9CEE40035F828 /* KGLayer_gdi.h in Headers */,
 				FEABD6050CB9D0C90035F828 /* KGContext_gdi.h in Headers */,
 				FE311FA60CCC430200EBD696 /* KGFont_gdi.h in Headers */,
+				FEA8A98C0CD2CBC000E1E936 /* NSUserInterfaceValidation.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3891,6 +3900,7 @@
 				FEABD5EC0CB9CEE40035F828 /* KGLayer_gdi.h in Headers */,
 				FEABD6070CB9D0C90035F828 /* KGContext_gdi.h in Headers */,
 				FE311FA80CCC430200EBD696 /* KGFont_gdi.h in Headers */,
+				FEA8A98D0CD2CBC000E1E936 /* NSUserInterfaceValidation.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4052,6 +4062,7 @@
 				FE8688800BC3FFA4009F515C /* NSButtonCell_disclosure_normal.tif in Resources */,
 				FE8688810BC3FFA4009F515C /* NSButtonCell_disclosure_selected.tif in Resources */,
 				C8B239A30BF8EEB500CA33AF /* defaultBindingOptions.plist in Resources */,
+				FE5C6E2E0CD97D2800893B56 /* StandardAboutPanel.nib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4097,6 +4108,7 @@
 				FE01AAB80C5D9BCB00AEA51A /* NSButtonCell_disclosure_normal.tif in Resources */,
 				FE01AAB90C5D9BCB00AEA51A /* NSButtonCell_disclosure_selected.tif in Resources */,
 				FE01AABA0C5D9BCB00AEA51A /* defaultBindingOptions.plist in Resources */,
+				FE5C6E2D0CD97D2800893B56 /* StandardAboutPanel.nib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4877,6 +4889,7 @@
 				OTHER_CFLAGS = (
 					"-DAPPKIT_INSIDE_BUILD",
 					"-D__LITTLE_ENDIAN__",
+					"-Wreturn-type",
 				);
 				OTHER_LDFLAGS = (
 					"-shared",

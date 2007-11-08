@@ -84,4 +84,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    NSUnimplementedMethod();
 }
 
+-(NSArray *)namesOfPromisedFilesDroppedAtDestination:(NSURL *)destination {
+   NSUnimplementedMethod();
+   return nil;
+}
+
 @end

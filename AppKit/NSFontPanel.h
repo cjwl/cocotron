@@ -8,7 +8,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <AppKit/NSPanel.h>
 
-@class NSTextField, NSMatrix,NSButton,NSFont;
+@class NSTextField,NSMatrix,NSButton,NSFont;
 
 @interface NSFontPanel : NSPanel {
    NSTextField *_sampleTextField;
@@ -19,17 +19,26 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
    NSButton    *_setButton;
    NSButton    *_revertButton;
+   NSView      *_accessoryView;
 }
 
++(BOOL)sharedFontPanelExists;
 +(NSFontPanel *)sharedFontPanel;
+
+
+-(BOOL)isEnabled;
+-(NSView *)accessoryView;
+
+-(void)setEnabled:(BOOL)value;
+-(void)setAccessoryView:(NSView *)view;
+
+-(BOOL)worksWhenModal;
+-(void)reloadDefaultFontFamilies;
 
 -(void)setPanelFont:(NSFont *)font isMultiple:(BOOL)isMultiple;
 -(NSFont *)panelConvertFont:(NSFont *)font;
 
 -(void)set:sender;
 -(void)revert:sender;
-
--(void)setAccessoryView:(NSView *)view;
--(NSView *)accessoryView;
 
 @end

@@ -211,7 +211,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     int i;
 
     for (i = 1; i < [[_tableView tableColumns] count]; ++i)
-        [self addCursorRect:[self _resizeRectBeforeColumn:i] cursor:[NSCursor _verticalResizeCursor]];
+        [self addCursorRect:[self _resizeRectBeforeColumn:i] cursor:[NSCursor resizeLeftRightCursor]];
 }
 
 -(void)resizeWithOldSuperviewSize:(NSSize)size {

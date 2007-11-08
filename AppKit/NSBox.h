@@ -17,25 +17,46 @@ typedef enum {
    NSBelowTop,
    NSAboveBottom,
    NSAtBottom,
-   NSBelowBottom
+   NSBelowBottom,
 } NSTitlePosition;
 
+typedef enum {
+   NSBoxPrimary,
+   NSBoxSecondary,
+   NSBoxSeparator,
+   NSBoxOldStyle,
+} NSBoxType;
+
 @interface NSBox : NSView {
-   id     _titleCell;
-   int    _borderType;
-   int    _titlePosition;
-   NSSize _contentViewMargins;
+   NSBoxType       _boxType;
+   NSBorderType    _borderType;
+   NSTitlePosition _titlePosition;
+   id              _titleCell;
+   NSSize          _contentViewMargins;
 }
 
--contentView;
+-(NSBoxType)boxType;
+-(NSBorderType)borderType;
 -(NSString *)title;
 -(NSFont *)titleFont;
--(NSRect)titleRect;
+-contentView;
+-(NSSize)contentViewMargins;
+-(NSTitlePosition)titlePosition;
 
--(void)setContentView:(NSView *)view;
+-(void)setBoxType:(NSBoxType)value;
+-(void)setBorderType:(NSBorderType)value;
 -(void)setTitle:(NSString *)title;
 -(void)setTitleFont:(NSFont *)font;
+-(void)setContentView:(NSView *)view;
+-(void)setContentViewMargins:(NSSize)value;
+-(void)setTitlePosition:(NSTitlePosition)value;
+-(void)setTitleWithMnemonic:(NSString *)value;
+
+-(NSRect)titleRect;
+-(NSRect)borderRect;
+-titleCell;
 
 -(void)setFrameFromContentFrame:(NSRect)content;
+-(void)sizeToFit;
 
 @end

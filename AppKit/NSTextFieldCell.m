@@ -23,10 +23,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @implementation NSTextFieldCell
 
 -(void)encodeWithCoder:(NSCoder *)coder {
-   [super encodeWithCoder:coder];
-   [coder encodeBool:_drawsBackground forKey:@"NSTextFieldCell drawsBackground"];
-   [coder encodeObject:_backgroundColor forKey:@"NSTextFieldCell backgroundColor"];
-   [coder encodeObject:_textColor forKey:@"NSTextFieldCell textColor"];
+   NSUnimplementedMethod();
 }
 
 -initWithCoder:(NSCoder *)coder {
@@ -40,9 +37,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     _textColor=[[keyed decodeObjectForKey:@"NSTextColor"] retain];
    }
    else {
-    _drawsBackground=[coder decodeBoolForKey:@"NSTextFieldCell drawsBackground"];
-    _backgroundColor=[[coder decodeObjectForKey:@"NSTextFieldCell backgroundColor"] retain];
-    _textColor=[[coder decodeObjectForKey:@"NSTextFieldCell textColor"] retain];
+    [NSException raise:NSInvalidArgumentException format:@"%@ can not initWithCoder:%@",isa,[coder class]];
    }
 
    return self;

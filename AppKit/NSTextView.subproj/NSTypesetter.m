@@ -141,10 +141,12 @@
 
 -(BOOL)shouldBreakLineByHyphenatingBeforeCharacterAtIndex:(unsigned)characterIndex {
    NSInvalidAbstractInvocation();
+   return NO;
 }
 
 -(BOOL)shouldBreakLineByWordBeforeCharacterAtIndex:(unsigned)characterIndex {
    NSInvalidAbstractInvocation();
+   return NO;
 }
 
 -(float)hyphenationFactorForGlyphAtIndex:(unsigned)glyphIndex {
@@ -157,6 +159,7 @@
 
 -(NSRect)boundingBoxForControlGlyphAtIndex:(unsigned)glyphIndex forTextContainer:(NSTextContainer *)textContainer proposedLineFragment:(NSRect)proposedRect glyphPosition:(NSPoint)glyphPosition characterIndex:(unsigned)characterIndex {
    NSInvalidAbstractInvocation();
+   return NSMakeRect(0,0,0,0);
 }
 
 -(NSAttributedString *)attributedString {
@@ -165,6 +168,7 @@
 
 -(NSDictionary *)attributesForExtraLineFragment {
    NSInvalidAbstractInvocation();
+   return nil;
 }
 
 -(NSLayoutManager *)layoutManager {
@@ -185,18 +189,22 @@
 
 -(NSRange)paragraphCharacterRange {
    NSInvalidAbstractInvocation();
+   return NSMakeRange(0,0);
 }
 
 -(NSRange)paragraphGlyphRange {
    NSInvalidAbstractInvocation();
+   return NSMakeRange(0,0);
 }
 
 -(NSRange)paragraphSeparatorCharacterRange {
    NSInvalidAbstractInvocation();
+   return NSMakeRange(0,0);
 }
 
 -(NSRange)paragraphSeparatorGlyphRange {
    NSInvalidAbstractInvocation();
+   return NSMakeRange(0,0);
 }
 
 -(NSTypesetterControlCharacterAction)actionForControlCharacterAtIndex:(unsigned)characterIndex {
@@ -253,6 +261,7 @@
 
 -(float)baselineOffsetInLayoutManager:(NSLayoutManager *)layoutManager glyphIndex:(unsigned)glyphIndex {
    NSInvalidAbstractInvocation();
+   return 0;
 }
 
 -(NSTextTab *)textTabForGlyphLocation:(float)location writingDirection:(NSWritingDirection)direction maxLocation:(float)maxLocation {
@@ -305,6 +314,7 @@
    NSInvalidAbstractInvocation();
    
    [self endParagraph];
+   return 0;
 }
 
 -(void)layoutGlyphsInLayoutManager:(NSLayoutManager *)layoutManager startingAtGlyphIndex:(unsigned)startGlyphIndex maxNumberOfLineFragments:(unsigned)maxNumLines nextGlyphIndex:(unsigned *)nextGlyph {

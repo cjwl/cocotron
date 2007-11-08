@@ -13,8 +13,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @interface NSFormCell : NSActionCell {
    float _titleWidth;
    NSTextFieldCell *_titleCell;
+   id _placeholder;
 }
 
+-initTextCell:(NSString *)value;
+
+-(BOOL)isOpaque;
 -(float)titleWidth;
 -(float)titleWidth:(NSSize)size;
 -(NSString *)title;
@@ -22,6 +26,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(NSFont *)titleFont;
 -(NSTextAlignment)titleAlignment;
 -(NSWritingDirection)titleBaseWritingDirection;
+-(NSString *)placeholderString;
+-(NSAttributedString *)placeholderAttributedString;
 
 -(void)setTitleWidth:(float)value;
 -(void)setTitle:(NSString *)value;
@@ -30,5 +36,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)setTitleFont:(NSFont *)value;
 -(void)setTitleAlignment:(NSTextAlignment)value;
 -(void)setTitleBaseWritingDirection:(NSWritingDirection)value;
+-(void)setPlaceholderString:(NSString *)value;
+-(void)setPlaceholderAttributedString:(NSAttributedString *)value;
+-(void)setTitleWithMnemonic:(NSString *)value;
 
 @end

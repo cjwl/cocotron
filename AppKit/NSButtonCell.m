@@ -89,7 +89,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     
     _isBordered=(flags&0x00800000)?YES:NO; // err, this flag is in NSCell too
 
-    _bezelStyle=flags2&0x7|(flags2&0x20>>2);
+    _bezelStyle=(flags2&0x7)|(flags2&0x20>>2);
 
     _isTransparent=(flags&0x00008000)?YES:NO;
     _imageDimsWhenDisabled=(flags&0x00002000)?NO:YES;
@@ -111,16 +111,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     _keyEquivalentModifierMask=flags2>>8;
    }
    else {
-    _title=[[coder decodeObjectForKey:@"NSButtonCell title"] retain];
-    _alternateTitle=[[coder decodeObjectForKey:@"NSButtonCell alternateTitle"] retain];
-    _imagePosition=[coder decodeIntForKey:@"NSButtonCell imagePosition"];
-    _highlightsBy=[coder decodeIntForKey:@"NSButtonCell highlightsBy"];
-    _showsStateBy=[coder decodeIntForKey:@"NSButtonCell showsStateBy"];
-    _isTransparent=[coder decodeBoolForKey:@"NSButtonCell transparent"];
-    _imageDimsWhenDisabled=[coder decodeBoolForKey:@"NSButtonCell imageDimsWhenDisabled"];
-    _alternateImage=[[coder decodeObjectForKey:@"NSButtonCell alternateImage"] retain];
-    _keyEquivalent=[[coder decodeObjectForKey:@"NSButtonCell keyEquivalent"] retain];
-    _keyEquivalentModifierMask=[coder decodeIntForKey:@"NSButtonCell keyEquivalentModifierMask"];
+    [NSException raise:NSInvalidArgumentException format:@"%@ can not initWithCoder:%@",isa,[coder class]];
    }
    return self;
 }

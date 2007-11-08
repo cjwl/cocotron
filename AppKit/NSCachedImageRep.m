@@ -14,16 +14,21 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @implementation NSCachedImageRep
 
--initWithSize:(NSSize)size depth:(NSWindowDepth)windowDepth separate:(BOOL)separateWindow alpha:(BOOL)hasAlpha {
-   _size=size;
-   _origin=NSMakePoint(0,0);
-   _window=[[NSWindow alloc] initWithContentRect:NSMakeRect(_origin.x,_origin.y,size.width,size.height) styleMask:NSBorderlessWindowMask backing:NSBackingStoreBuffered defer:NO];
+-initWithWindow:(NSWindow *)window rect:(NSRect)rect {
+   _size=rect.size;
+   _window=[window retain];
+   _origin=rect.origin;
 
 // this is a little broken, the windows get resized to larger size when on-screen
    if([[NSUserDefaults standardUserDefaults] boolForKey:@"NSShowAllWindows"])
     [_window orderFront:nil];
-    
    return self;
+}
+
+-initWithSize:(NSSize)size depth:(NSWindowDepth)windowDepth separate:(BOOL)separateWindow alpha:(BOOL)hasAlpha {
+   NSWindow *window=[[NSWindow alloc] initWithContentRect:NSMakeRect(0,0,size.width,size.height) styleMask:NSBorderlessWindowMask backing:NSBackingStoreBuffered defer:NO];
+
+   return [self initWithWindow:window rect:NSMakeRect(0,0,size.width,size.height)];
 }
 
 -(void)dealloc {
@@ -37,10 +42,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(NSRect)rect {
    return NSMakeRect(_origin.x,_origin.y,_size.width,_size.height);
-}
-
--(KGContext *)cgContext {
-   return [[_window graphicsContext] graphicsPort];
 }
 
 -(BOOL)drawAtPoint:(NSPoint)point {

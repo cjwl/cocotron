@@ -191,7 +191,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	id binders=[[source _allUsedBinders] objectEnumerator];
 	id binder;
 	id ret=[NSMutableArray array];
-	while(binder=[binders nextObject])
+	while((binder=[binders nextObject])!=nil)
 	{
 		if([[binder binding] hasPrefix:baseName])
 			[ret addObject:binder];

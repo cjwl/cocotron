@@ -18,18 +18,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @implementation NSPopUpButtonCell
 
 -(void)encodeWithCoder:(NSCoder *)coder {
-   [super encodeWithCoder:coder];
-   [coder encodeBool:_pullsDown forKey:@"NSPopUpButtonCell pullsDown"];
-   [coder encodeInt:_selectedIndex forKey:@"NSPopUpButtonCell selectedIndex"];
-   [coder encodeObject:_menu forKey:@"NSPopUpButtonCell menu"];
+   NSUnimplementedMethod();
 }
 
 -initWithCoder:(NSCoder *)coder {
    [super initWithCoder:coder];
 
-   if([coder isKindOfClass:[NSNibKeyedUnarchiver class]]){
-    NSNibKeyedUnarchiver *keyed=(NSNibKeyedUnarchiver *)coder;
- 
+   if([coder isKindOfClass:[NSNibKeyedUnarchiver class]]){ 
     _pullsDown=[coder decodeBoolForKey:@"NSPullDown"];
     _menu=[[coder decodeObjectForKey:@"NSMenu"] retain];
     _selectedIndex=[[_menu itemArray] indexOfObjectIdenticalTo:[coder decodeObjectForKey:@"NSMenuItem"]];
@@ -38,9 +33,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
      _selectedIndex=0;
    }
    else {
-    _pullsDown=[coder decodeBoolForKey:@"NSPopUpButtonCell pullsDown"];
-    _selectedIndex=[coder decodeIntForKey:@"NSPopUpButtonCell selectedIndex"];
-    _menu=[[coder decodeObjectForKey:@"NSPopUpButtonCell menu"] retain];
+    [NSException raise:NSInvalidArgumentException format:@"%@ can not initWithCoder:%@",isa,[coder class]];
    }
    return self;
 }

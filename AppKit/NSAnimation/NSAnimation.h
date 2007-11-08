@@ -9,6 +9,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSDate.h>
 #import <AppKit/AppKitExport.h>
 
+@class NSMutableArray;
+
 typedef enum {
    NSAnimationEaseInOut,
    NSAnimationEaseIn,
@@ -32,7 +34,7 @@ APPKIT_EXPORT NSString *NSAnimationProgressMarkNotification;
    float                   _frameRate;
    NSAnimationBlockingMode _blockingMode;
    id                      _delegate;
-   NSArray                *_progressMarks;
+   NSMutableArray         *_progressMarks;
    float                   _currentValue;
    NSArray                *_runLoopModes;
 }

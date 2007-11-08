@@ -93,13 +93,24 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 - (int)isVertical { return _isVertical; }
 
 -(int)indexOfTickMarkAtPoint:(NSPoint)point {
-   NSUnimplementedMethod();
-   return 0;
+   int i;
+   
+   for(i=0;i<_numberOfTickMarks;i++){
+    NSRect check=[self rectOfTickMarkAtIndex:i];
+    
+    check=NSInsetRect(check,-1,-1);
+    
+    if(NSPointInRect(point,check))
+     return i;
+   }
+   
+   return NSNotFound;
 }
 
 -(double)tickMarkValueAtIndex:(int)index {
-   NSUnimplementedMethod();
-   return 0;
+   double  length=(_isVertical?_lastRect.size.height:_lastRect.size.width)-2*PIXELINSET;
+
+   return (_numberOfTickMarks==1)?length/2:index*(length/(_numberOfTickMarks-1));
 }
 
 -(double)closestTickMarkValueToValue:(double)value {

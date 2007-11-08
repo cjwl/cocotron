@@ -88,12 +88,6 @@ static int get16(void)
    return (z << 8) + get8();
 }
 
-static uint32 get32(void)
-{
-   uint32 z = get16();
-   return (z << 16) + get16();
-}
-
 static void skip(int n)
 {
       img_buffer += n;

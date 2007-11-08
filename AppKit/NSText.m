@@ -21,17 +21,17 @@ NSString *NSTextDidChangeNotification=@"NSTextDidChangeNotification";
 }
 
 -(NSString *)string {
-   NSUnimplementedMethod();
+   NSInvalidAbstractInvocation();
    return nil;
 }
 
 -(NSData *)RTFFromRange:(NSRange)range {
-   NSUnimplementedMethod();
+   NSInvalidAbstractInvocation();
    return nil;
 }
 
 -(NSData *)RTFDFromRange:(NSRange)range {
-   NSUnimplementedMethod();
+   NSInvalidAbstractInvocation();
    return nil;
 }
 
@@ -119,20 +119,20 @@ NSString *NSTextDidChangeNotification=@"NSTextDidChangeNotification";
 }
 
 -(void)replaceCharactersInRange:(NSRange)range withString:(NSString *)string {
-   NSUnimplementedMethod();
+   NSInvalidAbstractInvocation();
 }
 
 -(BOOL)readRTFDFromFile:(NSString *)path {
-   NSUnimplementedMethod();
+   NSInvalidAbstractInvocation();
    return NO;
 }
 
 -(void)replaceCharactersInRange:(NSRange)range withRTF:(NSData *)rtf {
-   NSUnimplementedMethod();
+   NSInvalidAbstractInvocation();
 }
 
 -(void)replaceCharactersInRange:(NSRange)range withRTFD:(NSData *)rtfd {
-   NSUnimplementedMethod();
+   NSInvalidAbstractInvocation();
 }
 
 -(void)setEditable:(BOOL)flag {

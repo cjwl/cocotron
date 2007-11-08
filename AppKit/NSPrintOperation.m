@@ -88,7 +88,9 @@ static NSPrintOperation *_currentOperation=nil;
 }
 
 -(void)setAccessoryView:(NSView *)view {
-   NSUnimplementedMethod();
+   view=[view retain];
+   [_accessoryView release];
+   _accessoryView=view;
 }
 
 -(NSView *)view {
@@ -176,7 +178,7 @@ static NSPrintOperation *_currentOperation=nil;
    *rangep=result;
 }
 
--(BOOL)_paginateWithPageRange:(NSRange)pageRange context:(KGContext *)context {
+-(void)_paginateWithPageRange:(NSRange)pageRange context:(KGContext *)context {
    int i;
 
    for(i=0,_currentPage=pageRange.location;i<pageRange.length;i++,_currentPage++){
@@ -215,7 +217,9 @@ static NSPrintOperation *_currentOperation=nil;
    else if(_type==NSPrintOperationPDFInRect){
     context=[[[KGPDFContext alloc] initWithMutableData:_mutableData] autorelease];
    }
-   
+   else
+    return nil;
+    
    return [NSGraphicsContext graphicsContextWithGraphicsPort:context flipped:NO];
 }
 
@@ -256,9 +260,7 @@ static NSPrintOperation *_currentOperation=nil;
    [context beginPrintingWithDocumentName:[[_view window] title]];
    [_view beginDocument];
 
-   if(_type==NSPrintOperationPDFInRect){
-     KGPDFContext *pdf=(KGPDFContext *)context;
-     
+   if(_type==NSPrintOperationPDFInRect){     
     [_view beginPageInRect:_insideRect atPlacement:NSMakePoint(0,0)];
     [_view drawRect:_insideRect];
     [_view endPage];

@@ -243,7 +243,7 @@ extern NSSize _NSToolbarIconSizeSmall;
     return nil;
 }
 
-- (void)setImage:(NSImage*)image
+- (void)setImage:(NSImage *)image
 {
     [_image release];
     _image = [image retain];

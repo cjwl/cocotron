@@ -221,7 +221,7 @@ static NSMutableDictionary *_namedColorLists = nil;
     return [_namedColorLists allValues];
 }
 
-- (id)initWithName:(NSString *)name fromFile:(NSString *)path
+-initWithName:(NSString *)name fromFile:(NSString *)path
 {
     _keys = [[NSMutableArray alloc] init];
     _colors = [[NSMutableArray alloc] init];
@@ -236,12 +236,12 @@ static NSMutableDictionary *_namedColorLists = nil;
     return self;
 }
 
-- (id)initWithName:(NSString *)name
+-initWithName:(NSString *)name
 {
     return [self initWithName:name fromFile:nil];
 }
 
-- (void)dealloc
+-(void)dealloc
 {
     [_keys release];
     [_colors release];
@@ -259,17 +259,22 @@ static NSMutableDictionary *_namedColorLists = nil;
     return [_namedColorLists objectForKey:name];
 }
 
-- (NSString *)name { return _name; }
+-(BOOL)isEditable {
+   NSUnimplementedMethod();
+   return NO;
+}
 
-- (NSArray *)allKeys { return _keys; }
+-(NSString *)name { return _name; }
 
-- (NSColor *)colorWithKey:(NSString *)soughtKey indexPtr:(unsigned *)index
+-(NSArray *)allKeys { return _keys; }
+
+-(NSColor *)colorWithKey:(NSString *)soughtKey indexPtr:(unsigned *)index
 {
     NSEnumerator *keyEnumerator = [_keys objectEnumerator];
     NSString *thisKey;
 
     *index = 0;
-    while (thisKey = [keyEnumerator nextObject]) {
+    while ((thisKey = [keyEnumerator nextObject])!=nil) {
         if ([thisKey isEqualToString:soughtKey])
             return [_colors objectAtIndex:*index];
         (*index)++;
@@ -278,13 +283,13 @@ static NSMutableDictionary *_namedColorLists = nil;
     return nil;
 }
 
-- (NSColor *)colorWithKey:(NSString *)soughtKey
+-(NSColor *)colorWithKey:(NSString *)soughtKey
 {
     unsigned index;	// unused
     return [self colorWithKey:soughtKey indexPtr:&index];
 }
 
-- (void)setColor:(NSColor *)color forKey:(NSString *)key
+-(void)setColor:(NSColor *)color forKey:(NSString *)key
 {
     unsigned index;
 
@@ -299,7 +304,7 @@ static NSMutableDictionary *_namedColorLists = nil;
     [[NSNotificationCenter defaultCenter] postNotificationName:NSColorListDidChangeNotification object:self];
 }
 
-- (void)removeColorWithKey:(NSString *)key
+-(void)removeColorWithKey:(NSString *)key
 {
     unsigned index;
 
@@ -311,7 +316,7 @@ static NSMutableDictionary *_namedColorLists = nil;
     }
 }
 
-- (void)insertColor:(NSColor *)color key:(NSString *)key atIndex:(unsigned)index
+-(void)insertColor:(NSColor *)color key:(NSString *)key atIndex:(unsigned)index
 {
     [_colors insertObject:color atIndex:index];
     [_keys insertObject:key atIndex:index];
@@ -319,12 +324,12 @@ static NSMutableDictionary *_namedColorLists = nil;
     [[NSNotificationCenter defaultCenter] postNotificationName:NSColorListDidChangeNotification object:self];
 }
 
-- (void)writeToFile:(NSString *)path
+-(void)writeToFile:(NSString *)path
 {
     NSUnimplementedMethod();
 }
 
-- (void)removeFile
+-(void)removeFile
 {
     [[NSFileManager defaultManager] removeFileAtPath:_path handler:nil];
 }

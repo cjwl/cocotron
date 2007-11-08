@@ -99,9 +99,33 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return _numberOfOperators==0;
 }
 
--(BOOL)isRect {
-   NSUnimplementedMethod();
-   return NO;
+-(BOOL)isRect:(CGRect *)rect {   
+   if(_numberOfOperators!=5)
+    return NO;
+   if(_operators[0]!=kCGPathOperatorMoveToPoint)
+    return NO;
+   if(_operators[1]!=kCGPathOperatorLineToPoint)
+    return NO;
+   if(_operators[2]!=kCGPathOperatorLineToPoint)
+    return NO;
+   if(_operators[3]!=kCGPathOperatorLineToPoint)
+    return NO;
+   if(_operators[4]!=kCGPathOperatorCloseSubpath)
+    return NO;
+   
+   if(_points[0].y!=_points[1].y)
+    return NO;
+   if(_points[1].x!=_points[2].x)
+    return NO;
+   if(_points[3].y!=_points[3].y)
+    return NO;
+   if(_points[3].x!=_points[0].x)
+    return NO;
+   
+   rect->origin=_points[0];
+   rect->size=NSMakeSize(_points[1].x-_points[0].x,_points[2].y-_points[0].y);
+   
+   return YES;
 }
 
 -(BOOL)containsPoint:(NSPoint)point evenOdd:(BOOL)evenOdd withTransform:(CGAffineTransform *)matrix {
@@ -110,8 +134,33 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(NSRect)boundingBox {
-   NSUnimplementedMethod();
-   return NSZeroRect;
+   NSRect result;
+   int i;
+   
+   if(_numberOfPoints==0)
+    return NSZeroRect;
+   
+   result.origin=_points[0];
+   result.size=NSMakeSize(0,0);
+   for(i=1;i<_numberOfPoints;i++){
+    NSPoint point=_points[i];
+    
+    if(point.x>NSMaxX(result))
+     result.size.width=point.x-NSMinX(result);
+    else if(point.x<result.origin.x){
+     result.size.width=NSMaxX(result)-point.x;
+     result.origin.x=point.x;
+    }
+    
+    if(point.y>NSMaxY(result))
+     result.size.height=point.y-NSMinY(result);
+    else if(point.y<result.origin.y){
+     result.size.height=NSMaxY(result)-point.y;
+     result.origin.y=point.y;
+    }
+   }   
+
+   return result;
 }
 
 @end

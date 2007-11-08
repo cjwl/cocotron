@@ -26,7 +26,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     _tag=[keyed decodeIntForKey:@"NSTag"];
    }
    else {
-    _tag=[coder decodeIntForKey:@"NSActionCell tag"];
+    [NSException raise:NSInvalidArgumentException format:@"%@ can not initWithCoder:%@",isa,[coder class]];
    }
    return self;
 }
@@ -39,20 +39,25 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return _target;
 }
 
--(void)setTarget:target {
-   _target=target;
-}
-
 -(SEL)action {
    return _action;
 }
 
--(void)setAction:(SEL)action {
-   _action=action;
-}
-
 -(int)tag {
    return _tag;
+}
+
+
+-(void)setControlView:(NSView *)value {
+   _controlView=value;
+}
+
+-(void)setTarget:target {
+   _target=target;
+}
+
+-(void)setAction:(SEL)action {
+   _action=action;
 }
 
 -(void)setTag:(int)tag {

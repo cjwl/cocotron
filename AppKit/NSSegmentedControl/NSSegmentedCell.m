@@ -102,8 +102,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    int i,count=[_segments count];
    
    for(i=0;i<count;i++)
-    if([[_segments objectAtIndex:i] tag]==tag)
+    if([[_segments objectAtIndex:i] tag]==tag){
      [self setSelected:YES forSegment:i];
+     return YES;
+    }
+   
+   return NO;
 }
 
 -(void)setSelected:(BOOL)flag forSegment:(int)segment {

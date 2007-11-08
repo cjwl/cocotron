@@ -20,9 +20,85 @@ FOUNDATION_EXPORT char *NSUnicodeToSymbol(const unichar *characters,unsigned len
 
 @implementation NSFont
 
++(float)systemFontSize {
+   return 12.0;
+}
+
++(float)smallSystemFontSize {
+   NSUnimplementedMethod();
+   return 0;
+}
+
++(float)labelFontSize {
+   return 12.0;
+}
+
++(float)systemFontSizeForControlSize:(NSControlSize)size {
+   NSUnimplementedMethod();
+   return 0;
+}
+
++(NSFont *)boldSystemFontOfSize:(float)size {
+   return [NSFont fontWithName:@"Arial Bold" size:(size==0)?[self systemFontSize]:size];
+}
+
++(NSFont *)controlContentFontOfSize:(float)size {
+   return [NSFont fontWithName:@"Arial" size:(size==0)?12.0:size];
+}
+
++(NSFont *)labelFontOfSize:(float)size {
+   return [NSFont fontWithName:@"Arial" size:(size==0)?[self labelFontSize]:size];
+}
+
++(NSFont *)menuFontOfSize:(float)size {
+   float     pointSize=0;
+   NSString *name=[[NSDisplay currentDisplay] menuFontNameAndSize:&pointSize];
+
+   return [NSFont fontWithName:name size:(size==0)?pointSize:size];
+}
+
++(NSFont *)menuBarFontOfSize:(float)size {
+   return [self menuFontOfSize:size];
+}
+
++(NSFont *)messageFontOfSize:(float)size {
+   return [NSFont fontWithName:@"Arial" size:(size==0)?12.0:size];
+}
+
++(NSFont *)paletteFontOfSize:(float)size {
+   return [NSFont fontWithName:@"Arial" size:(size==0)?12.0:size];
+}
+
++(NSFont *)systemFontOfSize:(float)size {
+   return [self messageFontOfSize:size];
+}
+
++(NSFont *)titleBarFontOfSize:(float)size {
+   return [NSFont fontWithName:@"Arial" size:(size==0)?12.0:size];
+}
+
++(NSFont *)toolTipsFontOfSize:(float)size {
+   return [NSFont fontWithName:@"Arial" size:(size==0)?12.0:size];
+}
+
++(NSFont *)userFontOfSize:(float)size {
+   return [NSFont fontWithName:@"Arial" size:(size==0)?12.0:size];
+}
+
++(NSFont *)userFixedPitchFontOfSize:(float)size {
+   return [NSFont fontWithName:@"Courier New" size:(size==0)?12.0:size];
+}
+
++(void)setUserFont:(NSFont *)value {
+   NSUnimplementedMethod();
+}
+
++(void)setUserFixedPitchFont:(NSFont *)value {
+   NSUnimplementedMethod();
+}
+
 -(void)encodeWithCoder:(NSCoder *)coder {
-   [coder encodeObject:_name forKey:@"NSFont name"];
-   [coder encodeFloat:_pointSize forKey:@"NSFont pointSize"];
+   NSUnimplementedMethod();
 }
 
 -(NSString *)_translateNibFontName:(NSString *)name {
@@ -54,19 +130,14 @@ FOUNDATION_EXPORT char *NSUnicodeToSymbol(const unichar *characters,unsigned len
     NSNibKeyedUnarchiver *keyed=(NSNibKeyedUnarchiver *)coder;
     NSString          *name=[self _translateNibFontName:[keyed decodeObjectForKey:@"NSName"]];
     float              size=[keyed decodeFloatForKey:@"NSSize"];
-    int                flags=[keyed decodeIntForKey:@"NSfFlags"]; // ?
+    // int                flags=[keyed decodeIntForKey:@"NSfFlags"]; // ?
     
     [self dealloc];
     
     return [[NSFont fontWithName:name size:size] retain];
    }
    else {
-    NSString *name=[coder decodeObjectForKey:@"NSFont name"];
-    float     size=[coder decodeFloatForKey:@"NSFont pointSize"];
-
-    [self dealloc];
-
-    return [[NSFont fontWithName:name size:size] retain];
+    [NSException raise:NSInvalidArgumentException format:@"%@ can not initWithCoder:%@",isa,[coder class]];
    }
    return nil;
 }
@@ -95,17 +166,11 @@ FOUNDATION_EXPORT char *NSUnicodeToSymbol(const unichar *characters,unsigned len
 }
 
 -(void)dealloc {
-//NSLog(@"dealloc'ing font %@ %f",_name,_pointSize);
-
    [[NSDisplay currentDisplay] removeFontFromCache:self];
 
    [_name release];
    [_kgFont release];
    [super dealloc];
-}
-
--copyWithZone:(NSZone *)zone {
-   return [self retain];
 }
 
 +(NSFont *)fontWithName:(NSString *)name size:(float)size {
@@ -126,55 +191,18 @@ FOUNDATION_EXPORT char *NSUnicodeToSymbol(const unichar *characters,unsigned len
    return [self fontWithName:name size:matrix[0]];
 }
 
-+(NSFont *)boldSystemFontOfSize:(float)size {
-   return [NSFont fontWithName:@"Arial Bold" size:(size==0)?12.0:size];
++(NSFont *)fontWithDescriptor:(NSFontDescriptor *)descriptor size:(float)size {
+   NSUnimplementedMethod();
+   return 0;
 }
 
-+(NSFont *)controlContentFontOfSize:(float)size {
-   return [NSFont fontWithName:@"Arial" size:(size==0)?12.0:size];
++(NSFont *)fontWithDescriptor:(NSFontDescriptor *)descriptor size:(float)size textTransform:(NSAffineTransform *)transform {
+   NSUnimplementedMethod();
+   return 0;
 }
 
-+(NSFont *)labelFontOfSize:(float)size {
-   return [NSFont fontWithName:@"Arial" size:(size==0)?12.0:size];
-}
-
-+(NSFont *)menuFontOfSize:(float)size {
-   float     pointSize=0;
-   NSString *name=[[NSDisplay currentDisplay] menuFontNameAndSize:&pointSize];
-
-   return [NSFont fontWithName:name size:(size==0)?pointSize:size];
-}
-
-+(NSFont *)messageFontOfSize:(float)size {
-   return [NSFont fontWithName:@"Arial" size:(size==0)?12.0:size];
-}
-
-+(NSFont *)paletteFontOfSize:(float)size {
-   return [NSFont fontWithName:@"Arial" size:(size==0)?12.0:size];
-}
-
-+(NSFont *)systemFontOfSize:(float)size {
-   return [self messageFontOfSize:size];
-}
-
-+(NSFont *)titleBarFontOfSize:(float)size {
-   return [NSFont fontWithName:@"Arial" size:(size==0)?12.0:size];
-}
-
-+(NSFont *)toolTipsFontOfSize:(float)size {
-   return [NSFont fontWithName:@"Arial" size:(size==0)?12.0:size];
-}
-
-+(NSFont *)userFontOfSize:(float)size {
-   return [NSFont fontWithName:@"Arial" size:(size==0)?12.0:size];
-}
-
-+(NSFont *)userFixedPitchFontOfSize:(float)size {
-   return [NSFont fontWithName:@"Courier New" size:(size==0)?12.0:size];
-}
-
--(NSString *)description {
-   return [NSString stringWithFormat:@"<%@ %@ %f>",isa,_name,_pointSize];
+-copyWithZone:(NSZone *)zone {
+   return [self retain];
 }
 
 -(float)pointSize {
@@ -189,12 +217,81 @@ FOUNDATION_EXPORT char *NSUnicodeToSymbol(const unichar *characters,unsigned len
    return _matrix;
 }
 
+-(NSAffineTransform *)textTransform {
+   NSAffineTransform      *result=[NSAffineTransform transform];
+   NSAffineTransformStruct fields={
+    _matrix[0],_matrix[1],_matrix[2],
+    _matrix[3],_matrix[4],_matrix[5],
+   };
+   
+   [result setTransformStruct:fields];
+
+   return result;
+}
+
+-(NSFontRenderingMode)renderingMode {
+   NSUnimplementedMethod();
+   return 0;
+}
+
+-(NSCharacterSet *)coveredCharacterSet {
+   NSUnimplementedMethod();
+   return nil;
+}
+
+-(NSStringEncoding)mostCompatibleStringEncoding {
+   return _encoding;
+}
+
+-(NSString *)familyName {
+   NSUnimplementedMethod();
+   return nil;
+}
+
+-(NSString *)displayName {
+   NSUnimplementedMethod();
+   return nil;
+}
+
+-(NSFontDescriptor *)fontDescriptor {
+   NSUnimplementedMethod();
+   return nil;
+}
+
+-(NSFont *)printerFont {
+   NSUnimplementedMethod();
+   return nil;
+}
+
+-(NSFont *)screenFont {
+   return self;
+}
+
+-(NSFont *)screenFontWithRenderingMode:(NSFontRenderingMode)mode {
+   NSUnimplementedMethod();
+   return nil;
+}
+
 -(NSRect)boundingRectForFont {
    return [_kgFont boundingRect];
 }
 
+-(NSRect)boundingRectForGlyph:(NSGlyph)glyph {
+   NSUnimplementedMethod();
+   return NSMakeRect(0,0,0,0);
+}
+
+-(NSMultibyteGlyphPacking)glyphPacking {
+   return NSNativeShortGlyphPacking;
+}
+
 -(unsigned)numberOfGlyphs {
    return [_kgFont numberOfGlyphs];
+}
+
+-(NSGlyph)glyphWithName:(NSString *)name {
+   NSUnimplementedMethod();
+   return 0;
 }
 
 -(BOOL)glyphIsEncoded:(NSGlyph)glyph {
@@ -207,10 +304,6 @@ FOUNDATION_EXPORT char *NSUnicodeToSymbol(const unichar *characters,unsigned len
 
 -(NSSize)maximumAdvancement {
    return [_kgFont maximumAdvancement];
-}
-
--(NSFont *)screenFont {
-   return self;
 }
 
 -(float)underlinePosition {
@@ -241,26 +334,55 @@ FOUNDATION_EXPORT char *NSUnicodeToSymbol(const unichar *characters,unsigned len
    return [_kgFont isFixedPitch];
 }
 
--(void)set {
-   CGContextSetFont(NSCurrentGraphicsPort(),_kgFont);
+-(float)italicAngle {
+   return [_kgFont italicAngle];
+}
+
+-(float)xHeight {
+   return [_kgFont xHeight];
+}
+
+-(float)capHeight {
+   return [_kgFont capHeight];
+}
+
+-(void)setInContext:(NSGraphicsContext *)context {
+   CGContextRef cgContext=[context graphicsPort];
    
+   CGContextSetFont(cgContext,_kgFont);
+
+// FIX, should check the focusView in the context instead of NSView's
    if([[NSView focusView] isFlipped]){
     CGAffineTransform flip={1,0,0,-1,0,0};
     
-    CGContextSetTextMatrix(NSCurrentGraphicsPort(),flip);
+    CGContextSetTextMatrix(cgContext,flip);
    }
 }
 
--(NSStringEncoding)mostCompatibleStringEncoding {
-   return _encoding;
-}
-
--(NSMultibyteGlyphPacking)glyphPacking {
-   return NSCoreGraphicsGlyphPacking;
+-(void)set {
+   [self setInContext:[NSGraphicsContext currentContext]];
 }
 
 -(NSPoint)positionOfGlyph:(NSGlyph)current precededByGlyph:(NSGlyph)previous isNominal:(BOOL *)isNominalp {
    return [_kgFont positionOfGlyph:current precededByGlyph:previous isNominal:isNominalp];
+}
+
+-(void)getAdvancements:(NSSize *)advancements forGlyphs:(const NSGlyph *)glyphs count:(unsigned)count {
+   CGGlyph cgGlyphs[count];
+   int     i;
+   
+   for(i=0;i<count;i++)
+    cgGlyphs[i]=glyphs[i];
+    
+   [_kgFont getAdvancements:advancements forGlyphs:cgGlyphs count:count];
+}
+
+-(void)getAdvancements:(NSSize *)advancements forPackedGlyphs:(const void *)packed length:(unsigned)length {
+   [_kgFont getAdvancements:advancements forGlyphs:packed count:length];
+}
+
+-(void)getBoundingRects:(NSRect *)rects forGlyphs:(const NSGlyph *)glyphs count:(unsigned)count {
+   NSUnimplementedMethod();
 }
 
 -(unsigned)getGlyphs:(NSGlyph *)glyphs forCharacters:(unichar *)characters length:(unsigned)length {
@@ -281,17 +403,9 @@ FOUNDATION_EXPORT char *NSUnicodeToSymbol(const unichar *characters,unsigned len
    return length;
 }
 
--(void)getAdvancements:(NSSize *)advancements forGlyphs:(const NSGlyph *)glyphs count:(unsigned)count {
-   CGGlyph cgGlyphs[count];
-   int     i;
-   
-   for(i=0;i<count;i++)
-    cgGlyphs[i]=glyphs[i];
-    
-   [_kgFont getAdvancements:advancements forGlyphs:cgGlyphs count:count];
+-(NSString *)description {
+   return [NSString stringWithFormat:@"<%@ %@ %f>",isa,_name,_pointSize];
 }
-
-@end
 
 int NSConvertGlyphsToPackedGlyphs(NSGlyph *glyphs,int length,NSMultibyteGlyphPacking packing,char *outputX) {
    int      i,result=0;
@@ -306,4 +420,6 @@ int NSConvertGlyphsToPackedGlyphs(NSGlyph *glyphs,int length,NSMultibyteGlyphPac
 
    return result*2;
 }
+
+@end
 

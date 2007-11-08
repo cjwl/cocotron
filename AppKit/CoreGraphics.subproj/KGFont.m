@@ -169,6 +169,18 @@ static inline CGGlyphMetrics *fetchGlyphAdvancementIfNeeded(KGFont *self,CGGlyph
    return _metrics.isFixedPitch;
 }
 
+-(float)italicAngle {
+   return _metrics.italicAngle;
+}
+
+-(float)xHeight {
+   return _metrics.xHeight/_metrics.emsquare*_metrics.scale;
+}
+
+-(float)capHeight {
+   return _metrics.capHeight/_metrics.emsquare*_metrics.scale;
+}
+
 -(unsigned)numberOfGlyphs {
    return _glyphInfoSet->numberOfGlyphs;
 }
@@ -409,6 +421,10 @@ static inline CGGlyphMetrics *fetchGlyphAdvancementIfNeeded(KGFont *self,CGGlyph
 }
 
 -(void)fetchAdvancementsForGlyph:(CGGlyph)glyph {
+   NSInvalidAbstractInvocation();
+}
+
+-(void)appendCubicOutlinesToPath:(KGMutablePath *)path glyphs:(CGGlyph *)glyphs length:(unsigned)length {
    NSInvalidAbstractInvocation();
 }
 

@@ -9,6 +9,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 // Original - Christopher Lloyd <cjwl@objc.net>
 #import <AppKit/NSStringDrawing.h>
 #import <AppKit/NSStringDrawer.h>
+#import <Foundation/NSRaise.h>
 
 @implementation NSString(NSStringDrawing)
 
@@ -38,6 +39,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(NSSize)size {
    return [NSCurrentStringDrawer() sizeOfAttributedString:self];
+}
+
+-(void)drawWithRect:(NSRect)rect options:(NSStringDrawingOptions)options {
+   NSUnimplementedMethod();
 }
 
 @end

@@ -17,7 +17,7 @@ typedef struct {
    float tY;
 } NSAffineTransformStruct;
 
-@interface NSAffineTransform : NSObject <NSCopying> {
+@interface NSAffineTransform : NSObject <NSCopying,NSCoding> {
    NSAffineTransformStruct _matrix;
 }
 

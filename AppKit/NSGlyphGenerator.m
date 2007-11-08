@@ -27,8 +27,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    unsigned            characterIndex=*characterIndexp;
    unsigned            glyphIndex=*glyphIndexp;
    NSRange             effectiveRange=NSMakeRange(0,0);
-   NSDictionary       *attributes;
-   NSFont             *font;
+   NSDictionary       *attributes=nil;
+   NSFont             *font=nil;
    int                 i;
    
    for(i=0;i<numberOfCharacters && characterIndex<length;){
@@ -50,7 +50,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     
     characterIndex+=chunkSize;
     glyphIndex+=chunkSize;
-    i+chunkSize;
+    i+=chunkSize;
    }
    *glyphIndexp=glyphIndex;
    *characterIndexp=characterIndex;

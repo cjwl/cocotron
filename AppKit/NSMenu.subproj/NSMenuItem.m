@@ -44,11 +44,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     }
    }
    else {
-    _atitle=[[NSAttributedString alloc] initWithString:[coder decodeObjectForKey:@"NSMenuItem title"]];
-    _keyEquivalent=[[coder decodeObjectForKey:@"NSMenuItem keyEquivalent"] retain];
-    _keyEquivalentModifierMask=[coder decodeIntForKey:@"NSMenuItem keyEquivalentModifierMask"];
-    _submenu=[[coder decodeObjectForKey:@"NSMenuItem submenu"] retain];
-    _tag=[coder decodeIntForKey:@"NSMenuItem tag"];
+    [NSException raise:NSInvalidArgumentException format:@"%@ can not initWithCoder:%@",isa,[coder class]];
    }
 
    return self;

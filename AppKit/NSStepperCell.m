@@ -150,7 +150,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 // I don't believe there are < > horizontal steppers?
 -(void)drawWithFrame:(NSRect)frame inView:(NSView *)controlView {
     BOOL drawDottedRect = NO;
-    NSRect rect;
 
     _controlView=controlView;
     [[_controlView graphicsStyle] drawStepperButtonInRect:[self _upArrowFrameForFrame:frame] clipRect:frame enabled:[self isEnabled] highlighted:_isUpHighlighted upNotDown:YES];

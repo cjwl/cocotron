@@ -27,33 +27,192 @@ NSString *NSWorkspaceWillPowerOffNotification=@"NSWorkspaceWillPowerOffNotificat
    return _notificationCenter;
 }
 
--(BOOL)selectFile:(NSString *)path inFileViewerRootedAtPath:(NSString *)rootedAtPath {
-   NSInvalidAbstractInvocation();
-   return NO;
-}
-
--(BOOL)openFile:(NSString *)path {
-   NSInvalidAbstractInvocation();
-   return NO;
-}
-
--(BOOL)openFile:(NSString *)path withApplication:(NSString *)application {
-   NSInvalidAbstractInvocation();
-   return NO;
-}
-
--(BOOL)openTempFile:(NSString *)path {
-   NSInvalidAbstractInvocation();
-   return NO;
-}
-
--(int)extendPowerOffBy:(int)seconds {
+-(NSImage *)iconForFile:(NSString *)path {
    NSInvalidAbstractInvocation();
    return 0;
 }
 
--(void)slideImage:(NSImage *)image from:(NSPoint)fromPoint to:(NSPoint)toPoint {
+-(NSImage *)iconForFiles:(NSArray *)array {
    NSInvalidAbstractInvocation();
+   return 0;
+}
+
+-(NSImage *)iconForFileType:(NSString *)type {
+   NSInvalidAbstractInvocation();
+   return 0;
+}
+
+-(NSString *)localizedDescriptionForType:(NSString *)type {
+   NSInvalidAbstractInvocation();
+   return 0;
+}
+
+-(BOOL)filenameExtension:(NSString *)extension isValidForType:(NSString *)type {
+   NSInvalidAbstractInvocation();
+   return 0;
+}
+
+-(NSString *)preferredFilenameExtensionForType:(NSString *)type {
+   NSInvalidAbstractInvocation();
+   return 0;
+}
+
+-(BOOL)type:(NSString *)type conformsToType:(NSString *)conformsToType {
+   NSInvalidAbstractInvocation();
+   return 0;
+}
+
+-(NSString *)typeOfFile:(NSString *)path error:(NSError **)error {
+   NSInvalidAbstractInvocation();
+   return 0;
+}
+
+-(BOOL)openFile:(NSString *)path {
+   NSInvalidAbstractInvocation();
+   return 0;
+}
+
+-(BOOL)openFile:(NSString *)path withApplication:(NSString *)application {
+   NSInvalidAbstractInvocation();
+   return 0;
+}
+
+-(BOOL)openTempFile:(NSString *)path {
+   NSInvalidAbstractInvocation();
+   return 0;
+}
+
+-(BOOL)openFile:(NSString *)path fromImage:(NSImage *)image at:(NSPoint)point inView:(NSView *)view {
+   NSInvalidAbstractInvocation();
+   return 0;
+}
+
+-(BOOL)openFile:(NSString *)path withApplication:(NSString *)application andDeactivate:(BOOL)deactivate {
+   NSInvalidAbstractInvocation();
+   return 0;
+}
+
+-(BOOL)openURL:(NSURL *)url {
+   NSInvalidAbstractInvocation();
+   return 0;
+}
+
+-(BOOL)selectFile:(NSString *)path inFileViewerRootedAtPath:(NSString *)rootedAtPath {
+   NSInvalidAbstractInvocation();
+   return 0;
+}
+
+-(void)slideImage:(NSImage *)image from:(NSPoint)from to:(NSPoint)to {
+   NSInvalidAbstractInvocation();
+}
+
+-(BOOL)performFileOperation:(NSString *)operation source:(NSString *)source destination:(NSString *)destination files:(NSArray *)files tag:(int *)tag {
+   NSInvalidAbstractInvocation();
+   return 0;
+}
+
+-(BOOL)getFileSystemInfoForPath:(NSString *)path isRemovable:(BOOL *)isRemovable isWritable:(BOOL *)isWritable isUnmountable:(BOOL *)isUnmountable description:(NSString **)description type:(NSString **)type {
+   NSInvalidAbstractInvocation();
+   return 0;
+}
+
+-(BOOL)getInfoForFile:(NSString *)path application:(NSString **)application type:(NSString **)type {
+   NSInvalidAbstractInvocation();
+   return 0;
+}
+
+-(void)checkForRemovableMedia {
+   NSInvalidAbstractInvocation();
+}
+
+-(NSArray *)mountNewRemovableMedia {
+   NSInvalidAbstractInvocation();
+   return 0;
+}
+
+-(NSArray *)mountedRemovableMedia {
+   NSInvalidAbstractInvocation();
+   return 0;
+}
+
+-(NSArray *)mountedLocalVolumePaths {
+   NSInvalidAbstractInvocation();
+   return 0;
+}
+
+-(BOOL)unmountAndEjectDeviceAtPath:(NSString *)path {
+   NSInvalidAbstractInvocation();
+   return 0;
+}
+
+-(BOOL)fileSystemChanged {
+   NSInvalidAbstractInvocation();
+   return 0;
+}
+
+-(BOOL)userDefaultsChanged {
+   NSInvalidAbstractInvocation();
+   return 0;
+}
+
+-(void)noteFileSystemChanged {
+   NSInvalidAbstractInvocation();
+}
+
+-(void)noteFileSystemChanged:(NSString *)path {
+   NSInvalidAbstractInvocation();
+}
+
+-(void)noteUserDefaultsChanged {
+   NSInvalidAbstractInvocation();
+}
+
+-(BOOL)isFilePackageAtPath:(NSString *)path {
+   NSInvalidAbstractInvocation();
+   return 0;
+}
+
+-(NSString *)absolutePathForAppBundleWithIdentifier:(NSString *)identifier {
+   NSInvalidAbstractInvocation();
+   return 0;
+}
+
+-(NSString *)pathForApplication:(NSString *)application {
+   NSInvalidAbstractInvocation();
+   return 0;
+}
+
+-(NSArray *)launchedApplications {
+   NSInvalidAbstractInvocation();
+   return 0;
+}
+
+-(BOOL)launchApplication:(NSString *)application {
+   NSInvalidAbstractInvocation();
+   return 0;
+}
+
+-(BOOL)launchApplication:(NSString *)application showIcon:(BOOL)showIcon autolaunch:(BOOL)autolaunch {
+   NSInvalidAbstractInvocation();
+   return 0;
+}
+
+-(void)findApplications {
+   NSInvalidAbstractInvocation();
+}
+
+-(NSDictionary *)activeApplication {
+   NSInvalidAbstractInvocation();
+   return 0;
+}
+
+-(void)hideOtherApplications {
+   NSInvalidAbstractInvocation();
+}
+
+-(int)extendPowerOffBy:(int)milliseconds {
+   NSInvalidAbstractInvocation();
+   return 0;
 }
 
 @end

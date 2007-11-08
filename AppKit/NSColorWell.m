@@ -17,6 +17,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSDragging.h>
 #import <AppKit/NSNibKeyedUnarchiver.h>
 #import <AppKit/NSGraphicsStyle.h>
+#import <AppKit/NSController.h>
 #import <Foundation/NSKeyValueObserving.h>
 
 @implementation NSColorWell
@@ -199,6 +200,10 @@ NSString *_NSColorWellDidBecomeExclusiveNotification=@"_NSColorWellDidBecomeExcl
    rect=[[self graphicsStyle] drawColorWellBorderInRect:rect enabled:[self isEnabled] bordered:[self isBordered] active:[self isActive]];
 
    [self drawWellInside:rect];
+}
+
+-(void)takeColorFrom:sender {
+   [self setColor:[sender color]];
 }
 
 -(void)mouseDown:(NSEvent *)event {

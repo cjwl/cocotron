@@ -10,7 +10,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @class NSButtonCell;
 
-@interface NSComboBoxCell : NSTextFieldCell {
+@interface NSComboBoxCell : NSTextFieldCell <NSCoding> {
    id              _dataSource;
    NSSize          _intercellSpacing;
    float           _itemHeight;
@@ -19,26 +19,53 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    BOOL            _usesDataSource;
    BOOL            _hasVerticalScroller;
    BOOL            _completes;
-   BOOL            _buttonBordered;
+   BOOL            _isButtonBordered;
    BOOL            _buttonEnabled;
    BOOL            _buttonPressed;
    
    NSMutableArray *_objectValues;
 }
 
--(void)addItemWithObjectValue:(id)object;
+-dataSource;
+-(BOOL)usesDataSource;
+-(BOOL)isButtonBordered;
+-(float)itemHeight;
+-(BOOL)hasVerticalScroller;
+-(NSSize)intercellSpacing;
+-(BOOL)completes;
+-(int)numberOfVisibleItems;
+
+-(void)setDataSource:value;
+-(void)setUsesDataSource:(BOOL)value;
+-(void)setButtonBordered:(BOOL)value;
+-(void)setItemHeight:(float)value;
+-(void)setHasVerticalScroller:(BOOL)value;
+-(void)setIntercellSpacing:(NSSize)value;
+-(void)setCompletes:(BOOL)completes;
+-(void)setNumberOfVisibleItems:(int)value;
+
+-(int)numberOfItems;
+-(NSArray *)objectValues;
+-itemObjectValueAtIndex:(int)index;
+-(int)indexOfItemWithObjectValue:object;
+-(void)addItemWithObjectValue:object;
 -(void)addItemsWithObjectValues:(NSArray *)objects;
 -(void)removeAllItems;
--(int)indexOfItemWithObjectValue:(id)object;
+-(void)removeItemAtIndex:(int)index;
+-(void)removeItemWithObjectValue:value;
+-(void)insertItemWithObjectValue:value atIndex:(int)index;
 
--(void)insertItemWithObjectValue:(id)object atIndex:(int)index;
+-(int)indexOfSelectedItem;
+-objectValueOfSelectedItem;
+-(void)selectItemAtIndex:(int)index;
+-(void)selectItemWithObjectValue:value;
+-(void)deselectItemAtIndex:(int)index;
 
+-(void)scrollItemAtIndexToTop:(int)index;
 -(void)scrollItemAtIndexToVisible:(int)index;
 
--(void)selectItemAtIndex:(int)index;
-
--(BOOL)completes;
--(void)setCompletes:(BOOL)flag;
+-(void)noteNumberOfItemsChanged;
+-(void)reloadData;
 
 -(NSString *)completedString:(NSString *)string;
 

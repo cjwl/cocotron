@@ -1071,7 +1071,7 @@ BOOL KGPDFParseIndirectObject(NSData *data,KGPDFInteger position,KGPDFObject **o
    NSArray *streams=[_stream streams];
    int      i,count=[streams count];
    
-   for(i=0;i<count & result;i++){
+   for(i=0;(i<count) && result;i++){
     KGPDFObject *object=[streams objectAtIndex:i];
     KGPDFStream *scan;
     

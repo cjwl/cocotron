@@ -9,6 +9,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "KGPath.h"
 #import <AppKit/CGAffineTransform.h>
 
+void KGMutablePathEllipseToBezier(NSPoint *cp,float x,float y,float xradius,float yradius);
+
 @interface KGMutablePath : KGPath <NSCopying> {
    unsigned _capacityOfOperators;
    unsigned _capacityOfPoints;
@@ -39,5 +41,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)addPath:(KGPath *)path withTransform:(CGAffineTransform *)matrix;
 
 -(void)applyTransform:(CGAffineTransform)matrix;
+
+-(void)setPoints:(NSPoint *)points count:(unsigned)count atIndex:(unsigned)index;
 
 @end

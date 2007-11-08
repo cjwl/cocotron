@@ -6,21 +6,56 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
-#import <Foundation/Foundation.h>
+#import <Foundation/NSObject.h>
+#import <Foundation/NSGeometry.h>
 
-@interface NSCursor : NSObject {
+@class NSImage,NSColor,NSEvent;
+
+@interface NSCursor : NSObject <NSCoding> {
+   NSImage *_image;
+   NSPoint  _hotSpot;
+   BOOL     _isSetOnMouseEntered;
+   BOOL     _isSetOnMouseExited;
    id _cursor;
 }
 
++(NSCursor *)currentCursor;
+
 +(NSCursor *)arrowCursor;
++(NSCursor *)closedHandCursor;
++(NSCursor *)crosshairCursor;
++(NSCursor *)disappearingItemCursor;
 +(NSCursor *)IBeamCursor;
-+(NSCursor *)_horizontalResizeCursor;
-+(NSCursor *)_verticalResizeCursor;
++(NSCursor *)openHandCursor;
++(NSCursor *)pointingHandCursor;
++(NSCursor *)resizeDownCursor;
++(NSCursor *)resizeLeftCursor;
++(NSCursor *)resizeLeftRightCursor;
++(NSCursor *)resizeRightCursor;
++(NSCursor *)resizeUpCursor;
++(NSCursor *)resizeUpDownCursor;
 
 +(void)hide;
 +(void)unhide;
 
 +(void)setHiddenUntilMouseMoves:(BOOL)flag;
+
+-initWithImage:(NSImage *)image foregroundColorHint:(NSColor *)foregroundHint backgroundColorHint:(NSColor *)backgroundHint hotSpot:(NSPoint)hotSpot;
+-initWithImage:(NSImage *)image hotSpot:(NSPoint)hotSpot;
+
+-(NSImage *)image;
+-(NSPoint)hotSpot;
+
+-(BOOL)isSetOnMouseEntered;
+-(BOOL)isSetOnMouseExited;
+
+-(void)setOnMouseEntered:(BOOL)value;
+-(void)setOnMouseExited:(BOOL)value;
+
+-(void)mouseEntered:(NSEvent *)event;
+-(void)mouseExited:(NSEvent *)event;
+
+-(void)pop;
 
 -(void)set;
 

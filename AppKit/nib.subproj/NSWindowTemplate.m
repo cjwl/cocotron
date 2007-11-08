@@ -36,7 +36,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
        _windowRect.origin.y -= [NSMainMenuView menuHeight];   // compensation for the additional menu bar
    }
    else {
-    [NSException raise:NSInvalidArgumentException format:@"NSWindowTemplate can not initWithCoder:%@",[coder class]];
+    [NSException raise:NSInvalidArgumentException format:@"%@ can not initWithCoder:%@",isa,[coder class]];
    }
    return self;
 }

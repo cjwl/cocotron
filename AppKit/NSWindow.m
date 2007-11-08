@@ -66,17 +66,29 @@ NSString *NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification";
 }
 
 +(NSRect)frameRectForContentRect:(NSRect)contentRect styleMask:(unsigned)styleMask {
-   contentRect.size.height;
    if(styleMask!=0)
     contentRect.size.height+=[NSMainMenuView menuHeight];
    return contentRect;
 }
 
 +(NSRect)contentRectForFrameRect:(NSRect)frameRect styleMask:(unsigned)styleMask {
-   frameRect.size.height;
    if(styleMask!=0)
     frameRect.size.height-=[NSMainMenuView menuHeight];
    return frameRect;
+}
+
++(float)minFrameWidthWithTitle:(NSString *)title styleMask:(unsigned)styleMask {
+   NSUnimplementedMethod();
+   return 0;
+}
+
++(void)removeFrameUsingName:(NSString *)name {
+   NSUnimplementedMethod();
+}
+
++(NSButton *)standardWindowButton:(NSWindowButton)button forStyleMask:(unsigned)styleMask {
+   NSUnimplementedMethod();
+   return nil;
 }
 
 -(void)encodeWithCoder:(NSCoder *)coder {
@@ -173,7 +185,7 @@ NSString *NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification";
 
 -initWithContentRect:(NSRect)contentRect styleMask:(unsigned int)styleMask backing:(unsigned)backing defer:(BOOL)defer screen:(NSScreen *)screen {
 // FIX, relocate contentRect
-   return [self initWithContentRect:contentRect styleMask:styleMask backing:backing defer:defer screen:screen];
+   return [self initWithContentRect:contentRect styleMask:styleMask backing:backing defer:defer];
 }
 
 -(void)dealloc {
@@ -251,8 +263,9 @@ NSString *NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification";
    return [NSGraphicsContext graphicsContextWithWindow:self]; 
 } 
 
--(NSString *)title {
-   return _title;
+-(NSDictionary *)deviceDescription {
+   NSUnimplementedMethod();
+   return nil;
 }
 
 -contentView {
@@ -263,16 +276,20 @@ NSString *NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification";
    return _delegate;
 }
 
+-(NSString *)title {
+   return _title;
+}
+
+-(NSString *)representedFilename {
+   return _representedFilename;
+}
+
+-(int)level {
+   return _level;
+}
+
 -(NSRect)frame {
    return _frame;
-}
-
--(NSSize)minSize {
-   return _minSize;
-}
-
--(NSSize)maxSize {
-   return _maxSize;
 }
 
 -(unsigned)styleMask {
@@ -283,12 +300,32 @@ NSString *NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification";
    return _backingType;
 }
 
--(BOOL)hasDynamicDepthLimit {
-   return _dynamicDepthLimit;
+-(NSSize)minSize {
+   return _minSize;
+}
+
+-(NSSize)maxSize {
+   return _maxSize;
+}
+
+-(NSSize)contentMinSize {
+   return _contentMinSize;
+}
+
+-(NSSize)contentMaxSize {
+   return _contentMaxSize;
 }
 
 -(BOOL)isOneShot {
    return _isOneShot;
+}
+
+-(BOOL)isOpaque {
+   return _isOpaque;
+}
+
+-(BOOL)hasDynamicDepthLimit {
+   return _dynamicDepthLimit;
 }
 
 -(BOOL)isReleasedWhenClosed {
@@ -319,16 +356,60 @@ NSString *NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification";
    return _isAutodisplay;
 }
 
+-(BOOL)isFlushWindowDisabled {
+   return _isFlushWindowDisabled;
+}
+
 -(NSString *)frameAutosaveName {
    return _autosaveFrameName;
 }
 
--(NSResponder *)firstResponder {
-   return _firstResponder;
+-(BOOL)hasShadow {
+   return _hasShadow;
 }
 
--(NSView *)initialFirstResponder {
-   return _initialFirstResponder;
+-(BOOL)ignoresMouseEvents {
+   return _ignoresMouseEvents;
+}
+
+-(NSSize)aspectRatio {
+   return _aspectRatio;
+}
+
+-(NSSize)contentAspectRatio {
+   return _contentAspectRatio;
+}
+
+-(BOOL)autorecalculatesKeyViewLoop {
+   return _autorecalculatesKeyViewLoop;
+}
+
+-(BOOL)canHide {
+   return _canHide;
+}
+
+-(BOOL)canStoreColor {
+   return _canStoreColor;
+}
+
+-(BOOL)showsResizeIndicator {
+   return _showsResizeIndicator;
+}
+
+-(BOOL)showsToolbarButton {
+   return _showsToolbarButton;
+}
+
+-(BOOL)displaysWhenScreenProfileChanges {
+   return _displaysWhenScreenProfileChanges;
+}
+
+-(BOOL)isMovableByWindowBackground {
+   return _isMovableByWindowBackground;
+}
+
+-(BOOL)allowsToolTipsWhenApplicationIsInactive {
+   return _allowsToolTipsWhenApplicationIsInactive;
 }
 
 -(NSImage *)miniwindowImage {
@@ -343,133 +424,32 @@ NSString *NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification";
    return _backgroundColor;
 }
 
+-(float)alphaValue {
+   return _alphaValue;
+}
+
+-(NSWindowDepth)depthLimit {
+   return 0;
+}
+
+-(NSSize)resizeIncrements {
+   return _resizeIncrements;
+}
+
+-(NSSize)contentResizeIncrements {
+   return _contentResizeIncrements;
+}
+
+-(BOOL)preservesContentDuringLiveResize {
+   return _preservesContentDuringLiveResize;
+}
+
 -(NSToolbar *)toolbar {
     return _toolbar;
 }
 
-- (NSButtonCell *)defaultButtonCell {
-    return _defaultButtonCell;
-}
-
--(NSWindow *)attachedSheet {
-   return [_sheetContext sheet];
-}
-
--(NSArray *)drawers {
-    return _drawers;
-}
-
--(NSWindowController *)windowController {
-   return _windowController;
-}
-
--(int)windowNumber {
-   return (int)self;
-}
-
--(int)gState {
-   NSUnimplementedMethod();
-   return 0;
-}
-
--(NSScreen *)screen {
-   NSArray  *screens=[NSScreen screens];
-   int       i,count=[screens count];
-   NSRect    mostRect=NSZeroRect;
-   NSScreen *mostScreen=nil;
-
-   for(i=0;i<count;i++){
-    NSScreen *check=[screens objectAtIndex:i];
-    NSRect    intersect=NSIntersectionRect([check frame],_frame);
-
-    if(intersect.size.width*intersect.size.height>mostRect.size.width*mostRect.size.height){
-     mostRect=intersect;
-     mostScreen=check;
-    }
-   }
-
-   return mostScreen;
-}
-
--(BOOL)isDocumentEdited {
-   return _isDocumentEdited;
-}
-
--(BOOL)isVisible {
-   return _isVisible;
-}
-
--(BOOL)isKeyWindow {
-   return _isKeyWindow;
-}
-
--(BOOL)isMainWindow {
-   return _isMainWindow;
-}
-
--(BOOL)isMiniaturized {
-   return [_platformWindow isMiniaturized];
-}
-
--(BOOL)canBecomeKeyWindow {
-   return YES;
-}
-
--(BOOL)canBecomeMainWindow {
-   return YES;
-}
-
--(NSPoint)convertBaseToScreen:(NSPoint)point {
-   NSRect frame=[self frame];
-
-   point.x+=frame.origin.x;
-   point.y+=frame.origin.y;
-
-   return point;
-}
-
--(NSPoint)convertScreenToBase:(NSPoint)point {
-   NSRect frame=[self frame];
-
-   point.x-=frame.origin.x;
-   point.y-=frame.origin.y;
-
-   return point;
-}
-
--(void)setTitle:(NSString *)title {
-   title=[title copy];
-   [_title release];
-   _title=title;
-
-   [_miniwindowTitle release];
-   _miniwindowTitle=[title copy];
-
-   [self _updatePlatformWindowTitle];
-
-   if (![self isKindOfClass:[NSPanel class]] && [self isVisible] && ![self isExcludedFromWindowsMenu])
-       [NSApp changeWindowsItem:self title:title filename:NO];
-}
-
--(void)setTitleWithRepresentedFilename:(NSString *)filename {
-   [self setTitle:[NSString stringWithFormat:@"%@  --  %@",
-      [filename lastPathComponent],
-      [filename stringByDeletingLastPathComponent]]];
-
-    if (![self isKindOfClass:[NSPanel class]] && [self isVisible] && ![self isExcludedFromWindowsMenu])
-        [NSApp changeWindowsItem:self title:filename filename:YES];
-}
-
--(void)setContentView:(NSView *)view {
-   view=[view retain];
-   [view setFrame:[_contentView frame]];
-
-   [_contentView removeFromSuperview];
-   [_contentView release];
-   
-   _contentView=view;
-
-   [_backgroundView addSubview:_contentView];
+-(NSView *)initialFirstResponder {
+   return _initialFirstResponder;
 }
 
 -(void)removeObserver:(NSString *)name selector:(SEL)selector {
@@ -725,34 +705,27 @@ NSString *NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification";
    [self setFrame:frame display:YES];
 }
 
--(NSPoint)cascadeTopLeftFromPoint:(NSPoint)topLeftPoint {
-   NSSize  screenSize = [[self screen] frame].size;
-   NSRect  frame = [self frame];
-
-   if (topLeftPoint.x + topLeftPoint.y == 0.0 || topLeftPoint.x > 0.5*screenSize.width || topLeftPoint.y < 0.5*screenSize.height)
-   {
-      topLeftPoint.x = frame.origin.x;
-      topLeftPoint.y = frame.origin.y + frame.size.height;
-   }
-   
-   else
-   {
-      topLeftPoint.x += 18;
-      topLeftPoint.y -= 21;
-      frame.origin.x=topLeftPoint.x;
-      frame.origin.y=topLeftPoint.y - frame.size.height;
-      [self setFrame:frame display:YES];
-   }
-   
-   return topLeftPoint;
-}
-
 -(void)setMinSize:(NSSize)size {
    _minSize=size;
 }
 
 -(void)setMaxSize:(NSSize)size {
    _maxSize=size;
+}
+
+-(void)setContentMinSize:(NSSize)value {
+   _contentMinSize=value;
+   NSUnimplementedMethod();
+}
+
+-(void)setContentMaxSize:(NSSize)value {
+   _contentMaxSize=value;
+   NSUnimplementedMethod();
+}
+
+-(void)setBackingType:(NSBackingStoreType)value {
+   _backingType=value;
+   NSUnimplementedMethod();
 }
 
 -(void)setDynamicDepthLimit:(BOOL)value {
@@ -783,6 +756,41 @@ NSString *NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification";
    _isAutodisplay=value;
 }
 
+-(void)setTitle:(NSString *)title {
+   title=[title copy];
+   [_title release];
+   _title=title;
+
+   [_miniwindowTitle release];
+   _miniwindowTitle=[title copy];
+
+   [self _updatePlatformWindowTitle];
+
+   if (![self isKindOfClass:[NSPanel class]] && [self isVisible] && ![self isExcludedFromWindowsMenu])
+       [NSApp changeWindowsItem:self title:title filename:NO];
+}
+
+-(void)setTitleWithRepresentedFilename:(NSString *)filename {
+   [self setTitle:[NSString stringWithFormat:@"%@  --  %@",
+      [filename lastPathComponent],
+      [filename stringByDeletingLastPathComponent]]];
+
+    if (![self isKindOfClass:[NSPanel class]] && [self isVisible] && ![self isExcludedFromWindowsMenu])
+        [NSApp changeWindowsItem:self title:filename filename:YES];
+}
+
+-(void)setContentView:(NSView *)view {
+   view=[view retain];
+   [view setFrame:[_contentView frame]];
+
+   [_contentView removeFromSuperview];
+   [_contentView release];
+   
+   _contentView=view;
+
+   [_backgroundView addSubview:_contentView];
+}
+
 -(void)setInitialFirstResponder:(NSView *)view {
     _initialFirstResponder = view;
 }
@@ -807,15 +815,12 @@ NSString *NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification";
    _backgroundColor=color;
 }
 
--(float)alphaValue {
-   return 1;
+-(void)setAlphaValue:(float)value {
+   _alphaValue=value;
+   NSUnimplementedMethod();
 }
 
--(NSWindowDepth)depthLimit {
-   return 0;
-}
-
--(void)setToolbar:(NSToolbar*)toolbar {
+-(void)setToolbar:(NSToolbar *)toolbar {
     [_toolbar _setWindow:nil];
     [_toolbar release];
     _toolbar = [toolbar retain];
@@ -842,6 +847,88 @@ NSString *NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification";
    _useAspectRatio=YES;
    _aspectRatioIsContent=YES;
    _aspectRatio=value;
+   NSUnimplementedMethod();
+}
+
+-(void)setHasShadow:(BOOL)value {
+   _hasShadow=value;
+   NSUnimplementedMethod();
+}
+
+-(void)setIgnoresMouseEvents:(BOOL)value {
+   _ignoresMouseEvents=value;
+}
+
+-(void)setAspectRatio:(NSSize)value {
+   _useAspectRatio=YES;
+   _aspectRatioIsContent=NO;
+   _aspectRatio=value;
+   NSUnimplementedMethod();
+}
+
+-(void)setAutorecalculatesKeyViewLoop:(BOOL)value {
+   _autorecalculatesKeyViewLoop=value;
+}
+
+-(void)setCanHide:(BOOL)value {
+   _canHide=value;
+}
+
+-(void)setLevel:(int)value {
+   _level=value;
+   NSUnimplementedMethod();
+}
+
+-(void)setOpaque:(BOOL)value {
+   _isOpaque=value;
+}
+
+-(void)setParentWindow:(NSWindow *)value {
+   _parentWindow=value;
+}
+
+-(void)setPreservesContentDuringLiveResize:(BOOL)value {
+   _preservesContentDuringLiveResize=value;
+}
+
+-(void)setRepresentedFilename:(NSString *)value {
+   value=[value copy];
+   [_representedFilename release];
+   _representedFilename=value;
+}
+
+-(void)setResizeIncrements:(NSSize)value {
+   _resizeIncrements=value;
+}
+
+-(void)setShowsResizeIndicator:(BOOL)value {
+   _showsResizeIndicator=value;
+   NSUnimplementedMethod();
+}
+
+-(void)setShowsToolbarButton:(BOOL)value {
+  _showsToolbarButton=value;
+   NSUnimplementedMethod();
+}
+
+-(void)setContentResizeIncrements:(NSSize)value {
+   _contentResizeIncrements=value;
+}
+
+-(void)setDepthLimit:(NSWindowDepth)value {
+   NSUnimplementedMethod();
+}
+
+-(void)setDisplaysWhenScreenProfileChanges:(BOOL)value {
+   _displaysWhenScreenProfileChanges=value;
+}
+
+-(void)setMovableByWindowBackground:(BOOL)value {
+   _isMovableByWindowBackground=value;
+}
+
+-(void)setAllowsToolTipsWhenApplicationIsInactive:(BOOL)value {
+   _allowsToolTipsWhenApplicationIsInactive=value;
 }
 
 -(NSString *)_autosaveFrameKeyWithName:(NSString *)name {
@@ -849,24 +936,19 @@ NSString *NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification";
 }
 
 -(BOOL)setFrameUsingName:(NSString *)name {
-   NSString *key=[self _autosaveFrameKeyWithName:name];
-   NSString *value=[[NSUserDefaults standardUserDefaults] objectForKey:key];
-   NSRect    rect=NSRectFromString(value);
-
-   if(!NSIsEmptyRect(rect)){
-    [self setFrame:rect display:YES];
-    return YES;
-   }
-
-   return NO;
+   return [self setFrameUsingName:name force:NO];
 }
 
--(void)_autosaveFrame {
-   if([_autosaveFrameName length]>0){
-    NSString *key=[self _autosaveFrameKeyWithName:_autosaveFrameName];
-    NSString *value=NSStringFromRect([self frame]);
-    [[NSUserDefaults standardUserDefaults] setObject:value forKey:key];
-   }
+-(BOOL)setFrameUsingName:(NSString *)name force:(BOOL)force {
+   NSString *key=[self _autosaveFrameKeyWithName:name];
+   NSString *value=[[NSUserDefaults standardUserDefaults] objectForKey:key];
+   
+   if([value length]==0)
+    return NO;
+    
+   [self setFrameFromString:value];
+
+   return YES;
 }
 
 -(BOOL)setFrameAutosaveName:(NSString *)name {
@@ -874,8 +956,176 @@ NSString *NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification";
    [_autosaveFrameName release];
    _autosaveFrameName=name;
    // check if this name is in use by any other windows
-   [self _autosaveFrame];
+   [self saveFrameUsingName:_autosaveFrameName];
    return YES;
+}
+
+-(void)saveFrameUsingName:(NSString *)name {
+   if([name length]>0){
+    NSString *key=[self _autosaveFrameKeyWithName:name];
+    NSString *value=[self stringWithSavedFrame];
+    
+    [[NSUserDefaults standardUserDefaults] setObject:value forKey:key];
+   }
+}
+
+-(void)setFrameFromString:(NSString *)value {
+   NSRect rect=NSRectFromString(value);
+
+   if(!NSIsEmptyRect(rect)){
+    [self setFrame:rect display:YES];
+   }
+}
+
+-(NSString *)stringWithSavedFrame {
+   return NSStringFromRect([self frame]);
+}
+
+-(int)resizeFlags {
+   NSUnimplementedMethod();
+   return 0;
+}
+
+-(float)userSpaceScaleFactor {
+   return 1.0;
+}
+
+-(NSResponder *)firstResponder {
+   return _firstResponder;
+}
+
+-(NSButton *)standardWindowButton:(NSWindowButton)value {
+   NSUnimplementedMethod();
+   return nil;
+}
+
+-(NSButtonCell *)defaultButtonCell {
+    return _defaultButtonCell;
+}
+
+-(NSWindow *)attachedSheet {
+   return [_sheetContext sheet];
+}
+
+-(NSWindowController *)windowController {
+   return _windowController;
+}
+
+-(NSArray *)drawers {
+    return _drawers;
+}
+
+-(int)windowNumber {
+   return (int)self;
+}
+
+-(int)gState {
+   NSUnimplementedMethod();
+   return 0;
+}
+
+-(NSScreen *)screen {
+   NSArray  *screens=[NSScreen screens];
+   int       i,count=[screens count];
+   NSRect    mostRect=NSZeroRect;
+   NSScreen *mostScreen=nil;
+
+   for(i=0;i<count;i++){
+    NSScreen *check=[screens objectAtIndex:i];
+    NSRect    intersect=NSIntersectionRect([check frame],_frame);
+
+    if(intersect.size.width*intersect.size.height>mostRect.size.width*mostRect.size.height){
+     mostRect=intersect;
+     mostScreen=check;
+    }
+   }
+
+   return mostScreen;
+}
+
+-(NSScreen *)deepestScreen {
+   NSUnimplementedMethod();
+   return 0;
+}
+
+-(BOOL)isDocumentEdited {
+   return _isDocumentEdited;
+}
+
+-(BOOL)isZoomed {
+   NSUnimplementedMethod();
+   return 0;
+}
+
+-(BOOL)isVisible {
+   return _isVisible;
+}
+
+-(BOOL)isKeyWindow {
+   return _isKeyWindow;
+}
+
+-(BOOL)isMainWindow {
+   return _isMainWindow;
+}
+
+-(BOOL)isMiniaturized {
+   return [_platformWindow isMiniaturized];
+}
+
+-(BOOL)canBecomeKeyWindow {
+   return YES;
+}
+
+-(BOOL)canBecomeMainWindow {
+   return YES;
+}
+
+-(NSPoint)convertBaseToScreen:(NSPoint)point {
+   NSRect frame=[self frame];
+
+   point.x+=frame.origin.x;
+   point.y+=frame.origin.y;
+
+   return point;
+}
+
+-(NSPoint)convertScreenToBase:(NSPoint)point {
+   NSRect frame=[self frame];
+
+   point.x-=frame.origin.x;
+   point.y-=frame.origin.y;
+
+   return point;
+}
+
+-(NSRect)frameRectForContentRect:(NSRect)rect {
+   return [isa frameRectForContentRect:rect styleMask:[self styleMask]];
+}
+
+-(NSRect)contentRectForFrameRect:(NSRect)rect {
+   return [isa contentRectForFrameRect:rect styleMask:[self styleMask]];
+}
+
+-(NSRect)constrainFrameRect:(NSRect)rect toScreen:(NSScreen *)screen {
+   NSUnimplementedMethod();
+   return NSMakeRect(0,0,0,0);
+}
+
+-(NSWindow *)parentWindow {
+   return _parentWindow;
+}
+
+-(NSArray *)childWindows {
+   return _childWindows;
+}
+
+-(void)addChildWindow:(NSWindow *)child ordered:(NSWindowOrderingMode)ordered {
+   NSUnimplementedMethod();
+}
+
+-(void)removeChildWindow:(NSWindow *)child {
+   NSUnimplementedMethod();
 }
 
 -(BOOL)acceptsFirstResponder {
@@ -988,6 +1238,16 @@ NSString *NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification";
    [self makeFirstResponder:next];
 }
 
+-(void)recalculateKeyViewLoop {
+   NSUnimplementedMethod();
+}
+
+-(NSSelectionDirection)keyViewSelectionDirection {
+   NSUnimplementedMethod();
+   return 0;
+}
+
+
 - (void)disableKeyEquivalentForDefaultButtonCell {
     _defaultButtonCellKeyEquivalentDisabled = YES;
 }
@@ -1017,6 +1277,10 @@ NSString *NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification";
    [_fieldEditor setDelegate:nil];
    [_fieldEditor removeFromSuperview];
    [_fieldEditor setString:@""];
+}
+
+-(void)disableScreenUpdatesUntilFlush {
+   NSUnimplementedMethod();
 }
 
 -(void)useOptimizedDrawing:(BOOL)flag {
@@ -1093,6 +1357,22 @@ NSString *NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification";
    [pool release];
 }
 
+-(void)invalidateShadow {
+   NSUnimplementedMethod();
+}
+
+-(void)cacheImageInRect:(NSRect)rect {
+   NSUnimplementedMethod();
+}
+
+-(void)restoreCachedImage {
+   NSUnimplementedMethod();
+}
+
+-(void)discardCachedImage {
+   NSUnimplementedMethod();
+}
+
 -(BOOL)areCursorRectsEnabled {
    return (_cursorRectsDisabled<=0)?YES:NO;
 }
@@ -1166,30 +1446,6 @@ NSString *NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification";
    [self setFrame:frame display:YES];
 }
 
--(void)makeKeyAndOrderFront:sender {
-   if ([self isMiniaturized])
-    [_platformWindow deminiaturize];
-
-   [self makeKeyWindow];
-
-   if(![self isKindOfClass:[NSPanel class]])
-    [self makeMainWindow];
-
-   [self orderWindow:NSWindowAbove relativeTo:0];
-}
-
--(void)orderFront:sender {
-   [self orderWindow:NSWindowAbove relativeTo:0];
-}
-
--(void)orderBack:sender {
-   [self orderWindow:NSWindowBelow relativeTo:0];
-}
-
--(void)orderOut:sender {
-   [self orderWindow:NSWindowOut relativeTo:0];
-}
-
 -(void)orderWindow:(NSWindowOrderingMode)place relativeTo:(int)relativeTo {
 // The move notifications are sent under unknown conditions around orderFront: in the Apple AppKit, we do them all the time here until it's figured out. I suspect it is a side effect of off-screen windows being at off-screen coordinates (as opposed to just being hidden)
 
@@ -1239,6 +1495,16 @@ NSString *NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification";
    [self postNotificationName:NSWindowDidMoveNotification];
 }
 
+-(void)orderFrontRegardless {
+   NSUnimplementedMethod();
+}
+
+-(NSPoint)mouseLocationOutsideOfEventStream {
+   NSPoint point=[_platformWindow mouseLocationOutsideOfEventStream];
+
+   return [self convertScreenToBase:point];
+}
+
 -(NSEvent *)currentEvent {
     return [NSApp currentEvent];
 }
@@ -1261,6 +1527,10 @@ NSString *NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification";
    }while(!(mask&NSEventMaskFromType([event type])));
 
    return event;
+}
+
+-(void)discardEventsMatchingMask:(unsigned)mask beforeEvent:(NSEvent *)event {
+   NSUnimplementedMethod();
 }
 
 -(void)sendEvent:(NSEvent *)event {
@@ -1371,10 +1641,46 @@ NSString *NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification";
    [NSApp postEvent:event atStart:atStart];
 }
 
--(NSPoint)mouseLocationOutsideOfEventStream {
-   NSPoint point=[_platformWindow mouseLocationOutsideOfEventStream];
+-(BOOL)tryToPerform:(SEL)selector with:object {   
+   if([super tryToPerform:selector with:object])
+    return YES;
+   
+   if([_delegate respondsToSelector:selector]){
+    [_delegate performSelector:selector withObject:object];
+    return YES;
+   }
+   
+   return NO;
+}
 
-   return [self convertScreenToBase:point];
+-(NSPoint)cascadeTopLeftFromPoint:(NSPoint)topLeftPoint {
+   NSSize  screenSize = [[self screen] frame].size;
+   NSRect  frame = [self frame];
+
+   if (topLeftPoint.x + topLeftPoint.y == 0.0 || topLeftPoint.x > 0.5*screenSize.width || topLeftPoint.y < 0.5*screenSize.height)
+   {
+      topLeftPoint.x = frame.origin.x;
+      topLeftPoint.y = frame.origin.y + frame.size.height;
+   }
+   
+   else
+   {
+      topLeftPoint.x += 18;
+      topLeftPoint.y -= 21;
+      frame.origin.x=topLeftPoint.x;
+      frame.origin.y=topLeftPoint.y - frame.size.height;
+      [self setFrame:frame display:YES];
+   }
+   
+   return topLeftPoint;
+}
+
+-(NSData *)dataWithEPSInsideRect:(NSRect)rect {
+   return [_backgroundView dataWithEPSInsideRect:rect];
+}
+
+-(NSData *)dataWithPDFInsideRect:(NSRect)rect {
+   return [_backgroundView dataWithPDFInsideRect:rect];
 }
 
 -(void)registerForDraggedTypes:(NSArray *)types {
@@ -1390,10 +1696,39 @@ NSString *NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification";
    [[NSDraggingManager draggingManager] dragImage:image at:location offset:offset event:event pasteboard:pasteboard source:source slideBack:slideBack];
 }
 
+-validRequestorForSendType:(NSString *)sendType returnType:(NSString *)returnType {
+   NSUnimplementedMethod();
+   return nil;
+}
+
 -(void)update {
    [[NSNotificationCenter defaultCenter]
        postNotificationName:NSWindowDidUpdateNotification
                      object:self];
+}
+
+-(void)makeKeyAndOrderFront:sender {
+   if ([self isMiniaturized])
+    [_platformWindow deminiaturize];
+
+   [self makeKeyWindow];
+
+   if(![self isKindOfClass:[NSPanel class]])
+    [self makeMainWindow];
+
+   [self orderWindow:NSWindowAbove relativeTo:0];
+}
+
+-(void)orderFront:sender {
+   [self orderWindow:NSWindowAbove relativeTo:0];
+}
+
+-(void)orderBack:sender {
+   [self orderWindow:NSWindowBelow relativeTo:0];
+}
+
+-(void)orderOut:sender {
+   [self orderWindow:NSWindowOut relativeTo:0];
 }
 
 -(void)performClose:sender {
@@ -1408,12 +1743,24 @@ NSString *NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification";
    [self miniaturize:sender];
 }
 
+-(void)performZoom:sender {
+   NSUnimplementedMethod();
+}
+
+-(void)zoom:sender {
+   NSUnimplementedMethod();
+}
+
 -(void)miniaturize:sender {
    [[self platformWindow] miniaturize];
 }
 
 -(void)deminiaturize:sender {
    [[self platformWindow] deminiaturize];
+}
+
+-(void)print:sender {
+   [_backgroundView print:sender];
 }
 
 -(void)toggleToolbarShown:sender {    
@@ -1462,7 +1809,7 @@ NSString *NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification";
    while(--count>=0){
     NSCursorRect *check=[_cursorRects objectAtIndex:count];
 
-    if([check view]==view && [check cursor]==cursor & NSEqualRects([check rect],rect))
+    if(([check view]==view) && ([check cursor]==cursor) & NSEqualRects([check rect],rect))
      [_cursorRects removeObjectAtIndex:count];
    }
 }
@@ -1531,8 +1878,6 @@ NSString *NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification";
     [[self platformWindow] hideWindowForAppDeactivation:_frame];
    }
 }
-
-
 
 -(BOOL)performKeyEquivalent:(NSEvent *)event {
    return [_backgroundView performKeyEquivalent:event];
@@ -1776,7 +2121,7 @@ NSString *NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification";
    [_backgroundView setFrameSize:_frame.size];
    [_backgroundView setNeedsDisplay:YES];
 
-   [self _autosaveFrame];
+   [self saveFrameUsingName:_autosaveFrameName];
    [self resetCursorRects];
 }
 

@@ -350,7 +350,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         case NSBottomTabsBezelBorder:
         case NSRightTabsBezelBorder: {
             int    i,count=[_items count];
-            NSRect erase;
 
             for(i=0;i<count;i++){
                 NSTabViewItem *item=[_items objectAtIndex:i];

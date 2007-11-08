@@ -37,7 +37,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    CGColorRenderingIntent _renderingIntent;
    int                 _blendMode;
    float               _flatness;
-   int                 _interpolationQuality;
+   CGInterpolationQuality _interpolationQuality;
    NSSize              _shadowOffset;
    float               _shadowBlur;
    KGColor            *_shadowColor;
@@ -57,7 +57,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(CGAffineTransform)ctm;
 -(NSRect)clipBoundingBox;
 -(CGAffineTransform)textMatrix;
--(int)interpolationQuality;
+-(CGInterpolationQuality)interpolationQuality;
 -(NSPoint)textPosition;
 -(NSPoint)convertPointToDeviceSpace:(NSPoint)point;
 -(NSPoint)convertPointToUserSpace:(NSPoint)point;
@@ -66,6 +66,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(NSRect)convertRectToDeviceSpace:(NSRect)rect;
 -(NSRect)convertRectToUserSpace:(NSRect)rect;
 
+-(void)setCTM:(CGAffineTransform)transform;
 -(void)concatCTM:(CGAffineTransform)transform;
 
 -(void)clipToPath:(KGPath *)path;

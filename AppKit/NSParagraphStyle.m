@@ -62,8 +62,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -initWithCoder:(NSCoder *)coder {
    if([coder isKindOfClass:[NSNibKeyedUnarchiver class]]){
-    NSNibKeyedUnarchiver *keyed=(NSNibKeyedUnarchiver *)coder;
-
     [self _initWithDefaults];
    }
    else {

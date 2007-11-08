@@ -10,7 +10,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "KGRenderingContext_gdi.h"
 #import <AppKit/KGDeviceContext_gdi.h>
 #import <AppKit/NSApplication.h>
-#import <AppKit/KGPath.h>
+#import <AppKit/KGMutablePath.h>
 #import <AppKit/KGColor.h>
 #import <AppKit/Win32Font.h>
 #import <AppKit/Win32Region.h>
@@ -301,7 +301,6 @@ static RECT NSRectToRECT(NSRect rect) {
    int     dx=dstRect.origin.x-srcRect.origin.x;
    int     dy=dstRect.origin.y-srcRect.origin.y;
    RECT    winScrollRect=NSRectToRECT(scrollRect);
-   int     di;
 
    ScrollDC(dc,dx,dy,&winScrollRect,&winScrollRect,NULL,NULL);
 }
@@ -375,6 +374,7 @@ static RECT NSRectToRECT(NSRect rect) {
       }
       break;
 
+// FIX, this is wrong
      case kCGPathOperatorQuadCurveToPoint:{
        NSPoint cp1=points[pointIndex++];
        NSPoint cp2=points[pointIndex++];
@@ -866,35 +866,14 @@ static inline void CMYKAToRGBA(float *input,float *output){
    }
 }
 
-// ellipse to 4 spline bezier, http://www.tinaja.com/glib/ellipse4.pdf
 static int appendCircle(NSPoint *cp,int position,float x,float y,float radius,CGAffineTransform matrix){
-   float magic=0.551784;
-   float xrad=radius;
-   float yrad=radius;
-   float xmag=xrad*magic;
-   float ymag=yrad*magic;
-
-   matrix=CGAffineTransformConcat(matrix,CGAffineTransformMakeTranslation(x,y));
-
-   cp[position++]=CGPointApplyAffineTransform(NSMakePoint(-xrad,0),matrix);
-
-   cp[position++]=CGPointApplyAffineTransform(NSMakePoint(-xrad,ymag),matrix);
-   cp[position++]=CGPointApplyAffineTransform(NSMakePoint(-xmag,yrad),matrix);
-   cp[position++]=CGPointApplyAffineTransform(NSMakePoint(0,yrad),matrix);
+   int i;
    
-   cp[position++]=CGPointApplyAffineTransform(NSMakePoint(xmag,yrad),matrix);
-   cp[position++]=CGPointApplyAffineTransform(NSMakePoint(xrad,ymag),matrix);
-   cp[position++]=CGPointApplyAffineTransform(NSMakePoint(xrad,0),matrix);
-
-   cp[position++]=CGPointApplyAffineTransform(NSMakePoint(xrad,-ymag),matrix);
-   cp[position++]=CGPointApplyAffineTransform(NSMakePoint(xmag,-yrad),matrix);
-   cp[position++]=CGPointApplyAffineTransform(NSMakePoint(0,-yrad),matrix);
-
-   cp[position++]=CGPointApplyAffineTransform(NSMakePoint(-xmag,-yrad),matrix);
-   cp[position++]=CGPointApplyAffineTransform(NSMakePoint(-xrad,-ymag),matrix);
-   cp[position++]=CGPointApplyAffineTransform(NSMakePoint(-xrad,0),matrix);
-
-   return position;
+   KGMutablePathEllipseToBezier(cp+position,x,y,radius,radius);
+   for(i=0;i<13;i++)
+    cp[position+i]=CGPointApplyAffineTransform(cp[position+i],matrix);
+    
+   return position+13;
 }
 
 static void appendCircleToDC(HDC dc,NSPoint *cp){

@@ -285,7 +285,7 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
     NSEnumerator *tableColumnEnumerator = [_tableColumns objectEnumerator];
     NSTableColumn *column;
 
-    while (column = [tableColumnEnumerator nextObject]) 
+    while ((column = [tableColumnEnumerator nextObject])!=nil) 
         if ([[column identifier] isEqual:identifier])
             return column;
 
@@ -719,6 +719,7 @@ bounds].size.height);
 
 -(NSEnumerator *)selectedRowEnumerator {
 	NSUnimplementedMethod();
+    return nil;
 }
 
 -(void)selectRow:(int)row byExtendingSelection:(BOOL)extend  {
@@ -1397,8 +1398,8 @@ toPoint:NSMakePoint(rowRect.size.width, rowRect.origin.y)];
 - (unsigned)_validateDraggedRow:(id <NSDraggingInfo>)info { 
         BOOL result; 
         int proposedRow = [self _getDraggedRow:info]; 
-        if(result = [_dataSource tableView:self validateDrop:info proposedRow:proposedRow 
-proposedDropOperation:NSTableViewDropAbove]) 
+        if((result = [_dataSource tableView:self validateDrop:info proposedRow:proposedRow 
+proposedDropOperation:NSTableViewDropAbove])) 
                 _draggingRow = proposedRow; 
         else 
                 _draggingRow = -1; 

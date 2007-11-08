@@ -12,6 +12,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSGraphics.h>
 #import <AppKit/NSScrollView.h>
 #import <AppKit/NSEvent.h>
+#import <AppKit/NSCursor.h>
 #import <AppKit/NSNibKeyedUnarchiver.h>
 
 @implementation NSClipView
@@ -53,22 +54,46 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [super dealloc];
 }
 
+-(BOOL)drawsBackground {
+   return _drawsBackground;
+}
+
+-(BOOL)copiesOnScroll {
+   return _copiesOnScroll;
+}
+
 -(NSColor *)backgroundColor {
    return _backgroundColor;
+}
+
+-(NSCursor *)documentCursor {
+   return _documentCursor;
 }
 
 -(id)documentView {
    return _docView;
 }
 
--(NSRect)documentVisibleRect {
-   return [self convertRect:[self bounds] toView:_docView];
+-(void)setDrawsBackground:(BOOL)value {
+   _drawsBackground=value;
+   [self setNeedsDisplay:YES];
+}
+
+-(void)setCopiesOnScroll:(BOOL)value {
+   _copiesOnScroll=value;
 }
 
 -(void)setBackgroundColor:(NSColor *)color {
    color=[color copy];
    [_backgroundColor release];
    _backgroundColor=color;
+}
+
+-(void)setDocumentCursor:(NSCursor *)value {
+   value=[value retain];
+   [_documentCursor release];
+   _documentCursor=value;
+   NSUnimplementedMethod();
 }
 
 -(void)setDocumentView:(NSView *)view {
@@ -97,16 +122,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    }
 }
 
--(NSPoint)_scrollPoint {
-   return [self bounds].origin;
+-(NSRect)documentRect {
+   NSUnimplementedMethod();
+   return NSMakeRect(0,0,0,0);
 }
 
--(void)viewBoundsChanged:(NSNotification *)note {
-   [self scrollToPoint:[self _scrollPoint]];
-}
-
--(void)viewFrameChanged:(NSNotification *)note {
-   [self scrollToPoint:[self _scrollPoint]];
+-(NSRect)documentVisibleRect {
+   return [self convertRect:[self bounds] toView:_docView];
 }
 
 -(NSPoint)constrainScrollPoint:(NSPoint)point {
@@ -132,6 +154,18 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return point;
 }
 
+-(NSPoint)_scrollPoint {
+   return [self bounds].origin;
+}
+
+-(void)viewBoundsChanged:(NSNotification *)note {
+   [self scrollToPoint:[self _scrollPoint]];
+}
+
+-(void)viewFrameChanged:(NSNotification *)note {
+   [self scrollToPoint:[self _scrollPoint]];
+}
+
 -(BOOL)isOpaque {
    return YES;
 }
@@ -151,17 +185,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    }
    [_backgroundColor set];
    NSRectFill(rect);
-}
-
--(void)scrollToPoint:(NSPoint)point {
-   NSPoint original=[self bounds].origin;
-   
-   point=[self constrainScrollPoint:point];
-   [self setBoundsOrigin:point];
-   [self setNeedsDisplay:YES];
-
-   if([[self superview] isKindOfClass:[NSScrollView class]])
-    [[self superview] reflectScrolledClipView:self];
 }
 
 -(BOOL)autoscroll:(NSEvent *)event {
@@ -202,6 +225,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [self scrollToPoint:bounds.origin];
 
    return YES;
+}
+
+-(void)scrollToPoint:(NSPoint)point {   
+   point=[self constrainScrollPoint:point];
+   [self setBoundsOrigin:point];
+   [self setNeedsDisplay:YES];
+
+   if([[self superview] isKindOfClass:[NSScrollView class]])
+    [[self superview] reflectScrolledClipView:self];
 }
 
 @end

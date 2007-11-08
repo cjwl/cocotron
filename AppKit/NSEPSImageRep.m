@@ -8,7 +8,42 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 // Original - Christopher Lloyd <cjwl@objc.net>
 #import <AppKit/NSEPSImageRep.h>
+#import <Foundation/NSData.h>
+#import <Foundation/NSRaise.h>
 
 @implementation NSEPSImageRep
+
++imageRepWithData:(NSData *)data {
+   return [[[self alloc] initWithData:data] autorelease];
+}
+
+-initWithData:(NSData *)data {
+   _data=[data retain];
+   return self;
+}
+
+-(void)dealloc {
+   [_data release];
+   [super dealloc];
+}
+
+-(NSData *)EPSRepresentation {
+   return _data;
+}
+
+-(NSRect)boundingBox {
+   NSUnimplementedMethod();
+   return NSMakeRect(0,0,0,0);
+}
+
+-(void)prepareGState {
+   // do nothing
+}
+
+-(BOOL)draw {
+   [self prepareGState];
+   NSUnimplementedMethod();
+   return NO;
+}
 
 @end

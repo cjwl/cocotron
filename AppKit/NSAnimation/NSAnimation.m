@@ -9,6 +9,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSString.h>
 #import <Foundation/NSRaise.h>
 #import <Foundation/NSArray.h>
+#import <Foundation/NSNumber.h>
 
 NSString *NSAnimationProgressMarkNotification=@"NSAnimationProgressMarkNotification";
 
@@ -20,7 +21,7 @@ NSString *NSAnimationProgressMarkNotification=@"NSAnimationProgressMarkNotificat
    _frameRate=30;
    _blockingMode=NSAnimationBlocking;
    _delegate=nil;
-   _progressMarks=nil;
+   _progressMarks=[NSMutableArray new];
    _currentValue=0;
    _runLoopModes=nil; // nil== default, modal and event tracking
    return self;
@@ -77,12 +78,18 @@ NSString *NSAnimationProgressMarkNotification=@"NSAnimationProgressMarkNotificat
 }
 
 -(void)setProgressMarks:(NSArray *)marks {
-   marks=[marks copy];
+   NSMutableArray *mcopy=[marks mutableCopy];
    [_progressMarks release];
-   _progressMarks=marks;
+   _progressMarks=mcopy;
 }
 
 -(void)addProgressMark:(NSAnimationProgress)mark {
+   if(mark<0)
+    mark=0;
+   else if(mark>1)
+    mark=1;
+   
+   [_progressMarks addObject:[NSNumber numberWithFloat:mark]];
    NSUnimplementedMethod();
 }
 

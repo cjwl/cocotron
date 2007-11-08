@@ -44,10 +44,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     [[_subviews lastObject] setAutoresizesSubviews:YES];
    }
    else {
-    _borderType=[coder decodeIntForKey:@"NSBox borderType"];
-    _titlePosition=[coder decodeIntForKey:@"NSBox titlePosition"];
-    _contentViewMargins=[coder decodeSizeForKey:@"NSBox contentViewMargins"];
-    _titleCell=[[coder decodeObjectForKey:@"NSBox titleCell"] retain];
+    [NSException raise:NSInvalidArgumentException format:@"%@ can not initWithCoder:%@",isa,[coder class]];
    }
    return self;
 }
@@ -57,20 +54,42 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [super dealloc];
 }
 
--contentView {
-   return [[self subviews] lastObject];
+-(NSBoxType)boxType {
+   return _boxType;
+}
+
+-(NSBorderType)borderType {
+   return _borderType;
 }
 
 -(NSString *)title {
    return [_titleCell stringValue];
 }
 
--(void)setContentView:(NSView *)view {
-   if(![[self subviews] containsObject:view]){
-    [[self subviews] makeObjectsPerformSelector:@selector(removeFromSuperview)];
-    // FIX, adjust size
-    [self addSubview:view];
-   }
+-(NSFont *)titleFont {
+   return [_titleCell font];
+}
+
+-contentView {
+   return [[self subviews] lastObject];
+}
+
+-(NSSize)contentViewMargins {
+   return _contentViewMargins;
+}
+
+-(NSTitlePosition)titlePosition {
+   return _titlePosition;
+}
+
+-(void)setBoxType:(NSBoxType)value {
+   _boxType=value;
+   [self setNeedsDisplay:YES];
+}
+
+-(void)setBorderType:(NSBorderType)value {
+   _borderType=value;
+   [self setNeedsDisplay:YES];
 }
 
 -(void)setTitle:(NSString *)title {
@@ -82,7 +101,29 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [_titleCell setFont:font];
 }
 
--(NSAttributedString *)attributedTitle {
+-(void)setContentView:(NSView *)view {
+   if(![[self subviews] containsObject:view]){
+    [[self subviews] makeObjectsPerformSelector:@selector(removeFromSuperview)];
+    // FIX, adjust size
+    [self addSubview:view];
+   }
+}
+
+-(void)setContentViewMargins:(NSSize)value {
+   _contentViewMargins=value;
+   [self setNeedsDisplay:YES];
+}
+
+-(void)setTitlePosition:(NSTitlePosition)value {
+   _titlePosition=value;
+   [self setNeedsDisplay:YES];
+}
+
+-(void)setTitleWithMnemonic:(NSString *)value {
+   NSUnimplementedMethod();
+}
+
+-(NSAttributedString *)_attributedTitle {
    NSMutableDictionary *attributes=[NSMutableDictionary dictionary];
    NSMutableParagraphStyle *paraStyle=[[[NSParagraphStyle defaultParagraphStyle] mutableCopy] autorelease];
    NSFont              *font=[_titleCell font];
@@ -105,16 +146,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #define TEXTGAP 4
 
--(BOOL)isOpaque {
-   return YES;
-}
-
--(NSFont *)titleFont {
-   return [_titleCell font];
-}
-
 -(NSRect)titleRect {
-   NSAttributedString *title=[self attributedTitle];
+   NSAttributedString *title=[self _attributedTitle];
    NSSize              size=[title size];
    NSRect              bounds=[self bounds];
    NSRect              result=NSZeroRect;
@@ -155,9 +188,31 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return result;
 }
 
+-(NSRect)borderRect {
+   NSUnimplementedMethod();
+   return NSMakeRect(0,0,0,0);
+}
+
+-titleCell {
+   return _titleCell;
+}
+
+-(void)setFrameFromContentFrame:(NSRect)content {
+// FIX, adjust content frame size to accomodate border/title
+   [self setFrame:content];
+}
+
+-(void)sizeToFit {
+   NSUnimplementedMethod();
+}
+
+-(BOOL)isOpaque {
+   return YES;
+}
+
 
 -(void)drawRect:(NSRect)rect {
-   NSAttributedString *title=[self attributedTitle];
+   NSAttributedString *title=[self _attributedTitle];
    NSRect              grooveRect=_bounds;
    NSRect              titleRect=[self titleRect];
    BOOL                drawTitle=YES;
@@ -223,11 +278,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
     [title _clipAndDrawInRect:titleRect];
    }
-}
-
--(void)setFrameFromContentFrame:(NSRect)content {
-// FIX, adjust content frame size to accomodate border/title
-   [self setFrame:content];
 }
 
 @end

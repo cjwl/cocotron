@@ -87,14 +87,9 @@ static DWORD WINAPI runWaitCursor(LPVOID arg){
 }
 
 -init {
-    HWND handle=CreateWindow("Win32Window","",
-     WS_CLIPCHILDREN|WS_CLIPSIBLINGS|WS_BORDER,
-     0,0,100,100,
-     NULL,NULL,GetModuleHandle (NULL),NULL);
-
    [super init];
 
-   _renderingContextOnPrimaryScreen=[[KGRenderingContext_gdi renderingContextWithWindowHWND:handle] retain];
+   _renderingContextOnPrimaryScreen=[[KGRenderingContext_gdi renderingContextWithWindowHWND:NULL] retain];
    _eventInputSource=[Win32EventInputSource new];
    [[NSRunLoop currentRunLoop] addInputSource:_eventInputSource forMode:NSDefaultRunLoopMode];
    [[NSRunLoop currentRunLoop] addInputSource:_eventInputSource forMode:NSModalPanelRunLoopMode];
@@ -311,7 +306,7 @@ NSLog(@"name=%@,size=%f",[NSString stringWithCString:fontData. elfLogFont.lfFace
     [self unhideCursor];
 }
 
--(id)cursorWithName:(NSString *)name {
+-cursorWithName:(NSString *)name {
    id result=[_cursorCache objectForKey:name];
 
    if(result==nil){
