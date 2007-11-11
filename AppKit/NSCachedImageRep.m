@@ -51,4 +51,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return YES;
 }
 
+-(BOOL)drawInRect:(NSRect)rect {
+	// FIXME: should this scale?
+	return [self drawAtPoint:rect.origin];
+}
+
 @end

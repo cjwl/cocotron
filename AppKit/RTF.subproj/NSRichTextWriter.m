@@ -11,7 +11,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSFont.h>
 #import <AppKit/NSFontManager.h>
 #import <AppKit/NSAttributedString.h>
+#ifdef WIN32
 #import <malloc.h>
+#endif 
 
 @implementation NSRichTextWriter
 

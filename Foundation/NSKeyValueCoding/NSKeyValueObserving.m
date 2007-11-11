@@ -36,8 +36,8 @@ static BOOL CreateClassDefinition( const char * name, const char * superclassNam
 #pragma mark -
 #pragma mark KVO implementation
 
-NSMutableDictionary *observationInfos=nil;
-NSLock *kvoLock=nil;
+static NSMutableDictionary *observationInfos=nil;
+static NSLock *kvoLock=nil;
 
 @interface NSObject (KVOSettersForwardReferencs)
 +(void)_KVO_buildDependencyUnion;
@@ -400,7 +400,7 @@ CHANGE_DECLARATION(SEL)
 
 -(id)_KVO_className
 {
-	return [NSString stringWithCString:isa->name+13];
+	return [NSString stringWithCString:isa->name+strlen("KVONotifying_")];
 }
 
 +(void)_KVO_buildDependencyUnion

@@ -95,3 +95,31 @@ void NSBeginAlertSheet(NSString *title,NSString *defaultButton,NSString *alterna
 
    [NSApp beginSheet:panel modalForWindow:window modalDelegate:modalDelegate didEndSelector:didEndSelector contextInfo:contextInfo];
 }
+
+void NSBeginCriticalAlertSheet(NSString *title,NSString *defaultButton,NSString *alternateButton,NSString *otherButton,NSWindow *window, id modalDelegate,SEL didEndSelector,SEL didDismissSelector,void *contextInfo,NSString *format,...)
+{
+	// FIXME: should probably have different icon or so
+	
+	va_list          arguments;
+	NSString        *message;
+
+	va_start(arguments,format);
+	
+	message=[[[NSString alloc] initWithFormat:format arguments:arguments] autorelease];
+	
+	NSBeginAlertSheet(title, defaultButton, alternateButton,otherButton,window, modalDelegate, didEndSelector,didDismissSelector,contextInfo,message);
+}
+
+void NSBeginInformationalAlertSheet(NSString *title,NSString *defaultButton,NSString *alternateButton,NSString *otherButton,NSWindow *window, id modalDelegate,SEL didEndSelector,SEL didDismissSelector,void *contextInfo,NSString *format,...)
+{
+	// FIXME: should probably have different icon or so
+	
+	va_list          arguments;
+	NSString        *message;
+	
+	va_start(arguments,format);
+	
+	message=[[[NSString alloc] initWithFormat:format arguments:arguments] autorelease];
+	
+	NSBeginAlertSheet(title, defaultButton, alternateButton,otherButton,window, modalDelegate, didEndSelector,didDismissSelector,contextInfo,message);
+}

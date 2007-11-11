@@ -44,6 +44,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	id peers=[self peerBinders];
 	if([peers count])
 	{
+		// Support for pattern binders
 		// FIX: maybe this should be in subclasses.
 		// however, as long as there's just booleans (enabled, hidden etc.)
 		// and strings (%{value1}@...

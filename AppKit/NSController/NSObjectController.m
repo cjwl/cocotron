@@ -8,6 +8,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSObjectController.h>
 #import <Foundation/NSString.h>
 #import <Foundation/NSKeyedUnarchiver.h>
+#import <Foundation/NSKeyValueObserving.h>
+#import "NSControllerSelectionProxy.h"
+
+@interface NSObjectController(forward)
+-(void)_selectionMayHaveChanged;
+@end
 
 @implementation NSObjectController
 -(id)initWithCoder:(NSCoder*)coder
@@ -15,13 +21,93 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	if(self=[super init])
 	{
 		_objectClassName=[[coder decodeObjectForKey:@"NSObjectClassName"] retain];
+		_editable = [coder decodeBoolForKey:@"NSEditable"];
+		_automaticallyPreparesContent = [coder decodeBoolForKey:@"NSAutomaticallyPreparesContent"];
 	}
 	return self;
+}
+
+- (id)content {
+    return [[_content retain] autorelease];
+}
+
+- (void)setContent:(id)value {
+    if (_content != value) {
+        [_content release];
+        _content = [value copy];
+		[self _selectionMayHaveChanged];
+    }
+}
+
+-(NSArray *)selectedObjects
+{
+	return [NSArray arrayWithObject:_content];
+}
+
+-(id)selection
+{
+	return _selection;
+}
+
+-(id)_defaultNewObject
+{
+	return [[NSClassFromString(_objectClassName) alloc] init];
+
+}
+
+-(id)newObject
+{
+	return [self _defaultNewObject];
+}
+
+
+-(void)_selectionMayHaveChanged
+{
+	[self willChangeValueForKey:@"selection"];
+	[_selection autorelease];
+	_selection=[[NSControllerSelectionProxy alloc] initWithController:self];
+	[self didChangeValueForKey:@"selection"];	
 }
  
 -(void)dealloc
 {
+	[_selection release];
 	[_objectClassName release];
+	[_content release];
 	[super dealloc];
+}
+
+
+-(BOOL)canAdd;
+{
+	return [self isEditable];
+}
+
+-(BOOL)canInsert;
+{
+	return [self isEditable];
+}
+
+-(BOOL)canRemove;
+{
+	return [self isEditable] && [[self selectedObjects] count];
+}
+
+- (BOOL)isEditable
+{
+	return _editable;
+}
+
+-(void)setEditable:(BOOL)value
+{
+	_editable=value;
+}
+
+- (BOOL)automaticallyPreparesContent {
+    return _automaticallyPreparesContent;
+}
+
+- (void)setAutomaticallyPreparesContent:(BOOL)value {
+	_automaticallyPreparesContent = value;
 }
 @end

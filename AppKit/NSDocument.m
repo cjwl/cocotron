@@ -645,6 +645,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     return (_fileURL!=nil)?YES:NO;
    if([item action]==@selector(saveDocument:))
     return YES;
+   if([self respondsToSelector:[item action]]) 
+    return YES; 
 
    return NO;
 }
@@ -654,6 +656,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     return (_fileURL!=nil)?YES:NO;
    if([item action]==@selector(saveDocument:))
     return YES;
+   if([self respondsToSelector:[item action]]) 
+    return YES; 
 
    return NO;
 }

@@ -62,6 +62,12 @@ void NSLog(NSString *format,...) {
 const char *NSGetSizeAndAlignment(const char *type,unsigned *size,
   unsigned *alignment) {
    BOOL quit=NO;
+	
+	unsigned ignore=0;
+	if(!size)
+		size=&ignore;
+	if(!alignment)
+		alignment=&ignore;
 
    *size=0;
    *alignment=0;
@@ -209,16 +215,18 @@ const char *NSGetSizeAndAlignment(const char *type,unsigned *size,
     }
                 
      case '^':
-      NSUnimplementedFunction();
-      quit=YES;
-      break;
-
-     case '?':
-      NSUnimplementedFunction();
-      quit=YES;
-      break;
+	 {
+		 unsigned subsize,subalignment;
+		 type++;
+		 	 
+		 type=NSGetSizeAndAlignment(type,&subsize,&subalignment);
+		 *size=sizeof(void*);
+		 quit=YES;
+		 break;
+	 }
 
      default:
+		 NSLog(@"unimplemented for %s %c", type, *type);
       NSUnimplementedFunction();
       quit=YES;
       break;

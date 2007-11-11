@@ -13,6 +13,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSMutableArray.h>
 #import <Foundation/NSKeyValueCoding.h>
 #import <Foundation/NSEnumerator.h>
+#import <Foundation/NSValueTransformer.h>
 #import <AppKit/NSController.h>
 
 #pragma mark -
@@ -66,6 +67,36 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 		return NSNoSelectionMarker;
 	return ret;
 }
+
+-(id)valueTransformer
+{
+	id ret=[options objectForKey:NSValueTransformerBindingOption];
+	if(!ret)
+	{
+		ret=[options objectForKey:NSValueTransformerNameBindingOption];
+		if(!ret)
+			return nil;
+		ret=[NSValueTransformer valueTransformerForName:ret];
+		[options setObject:ret forKey:NSValueTransformerBindingOption];
+	}
+	return ret;	
+}
+
+-(id)transformedObject:(id)object
+{
+	id transformer=[self valueTransformer];
+	if(!transformer)
+		return object;
+	return [transformer transformedValue:object];
+}
+
+-(id)reverseTransformedObject:(id)object
+{
+	id transformer=[self valueTransformer];
+	if(!transformer)
+		return object;
+	return [transformer reverseTransformedValue:object];
+}
 @end
 
 #pragma mark -
@@ -94,7 +125,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 {
     if (destination != value) 
 	{
-        destination = value;
+		[destination release];
+        destination = [value retain];
     }
 }
 
@@ -158,6 +190,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	[binding release];
 	[options release];
 	[bindingPath release];
+	[destination retain];
 	[super dealloc];
 }
 

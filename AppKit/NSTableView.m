@@ -10,7 +10,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/AppKit.h>
 #import <AppKit/NSTableCornerView.h>
 #import <AppKit/NSNibKeyedUnarchiver.h>
-#import "NSKeyValueBinding/NSTableColumnBinder.h"
+#import "NSKeyValueBinding/NSMultipleValueBinder.h"
 #import "NSKeyValueBinding/NSKVOBinder.h"
 
 NSString *NSTableViewSelectionIsChangingNotification=@"NSTableViewSelectionIsChangingNotification";
@@ -1267,7 +1267,7 @@ toPoint:NSMakePoint(rowRect.size.width, rowRect.origin.y)];
                         if(dragging) 
                         { 
                                 NSIndexSet *rowIndexes = [self selectedRowIndexes]; 
-                                if([rowIndexes containsIndex: _clickedRow] == FALSE) 
+                                if([rowIndexes containsIndex: _clickedRow] == NO) 
                                         rowIndexes = [NSIndexSet indexSetWithIndex: _clickedRow]; 
 
                                 NSPasteboard *pasteboard = [NSPasteboard pasteboardWithName:NSDragPboard]; 

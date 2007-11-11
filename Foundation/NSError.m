@@ -12,7 +12,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 NSString *NSPOSIXErrorDomain=@"NSPOSIXErrorDomain";
 NSString *NSWINSOCKErrorDomain=@"NSWINSOCKErrorDomain";
 NSString *NSUnderlyingErrorKey=@"NSUnderlyingErrorKey";
-NSString *NSLocalizedDescriptionKe=@"NSLocalizedDescriptionKe";
+NSString *NSLocalizedDescriptionKey=@"NSLocalizedDescriptionKey";
 
 @implementation NSError
 

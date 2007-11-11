@@ -52,9 +52,9 @@ FOUNDATION_EXPORT NSUncaughtExceptionHandler *NSGetUncaughtExceptionHandler(void
 FOUNDATION_EXPORT void NSSetUncaughtExceptionHandler(NSUncaughtExceptionHandler *);
 
 typedef struct NSExceptionFrame {
+   jmp_buf                  state;
    struct NSExceptionFrame *parent;
    NSException             *exception;
-   jmp_buf                  state;
 } NSExceptionFrame;
 
 FOUNDATION_EXPORT void __NSPushExceptionFrame(NSExceptionFrame *frame);

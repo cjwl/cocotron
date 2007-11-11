@@ -331,8 +331,17 @@ static NSMapTable *pathToObject=NULL;
 
 -(NSArray *)pathsForResourcesOfType:(NSString *)type
   inDirectory:(NSString *)path {
-   NSUnimplementedMethod();
-   return nil;
+	id fullPath=[[self resourcePath] stringByAppendingPathComponent:path];
+	id allFiles=[[NSFileManager defaultManager] directoryContentsAtPath:fullPath];
+	int i;
+	id ret=[NSMutableArray array];
+	for(i=0; i<[allFiles count]; i++)
+	{
+		id filename=[fullPath stringByAppendingPathComponent:[allFiles objectAtIndex:i]];
+		if([[filename pathExtension] isEqualToString:type])
+			[ret addObject:filename];
+	}
+   return ret;
 }
 
 

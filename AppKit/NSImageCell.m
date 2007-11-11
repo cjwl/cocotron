@@ -10,6 +10,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSImageCell.h>
 #import <AppKit/NSImage.h>
 #import <AppKit/NSGraphics.h>
+#import <AppKit/CGContext.h>
+#import <AppKit/NSGraphicsContext.h>
 
 @implementation NSImageCell
 
@@ -100,7 +102,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)drawInteriorWithFrame:(NSRect)frame inView:(NSView *)control {
     if([self _imageValue]!=nil) {
+		
+		CGContextRef ctx=[[NSGraphicsContext currentContext] graphicsPort];
+		CGContextSaveGState(ctx);
+		CGContextClipToRect(ctx,frame);
         [[self _imageValue] compositeToPoint:[self alignedOriginInFrame:frame] operation:NSCompositeSourceOver];
+		CGContextRestoreGState(ctx);
     }
 }
 

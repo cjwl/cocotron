@@ -12,6 +12,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSObject+BindingSupport.h>
 #import <Foundation/NSBundle.h>
 #import <Foundation/NSKeyValueCoding.h>
+#import <Foundation/NSEnumerator.h>
 
 NSMutableDictionary *bindersForObjects=nil;
 NSDictionary *defaultBindingOptions;
@@ -29,6 +30,7 @@ NSString *NSCreatesSortDescriptorBindingOption=@"NSCreatesSortDescriptors";
 NSString *NSRaisesForNotApplicableKeysBindingOption=@"NSRaisesForNotApplicableKeys";
 NSString *NSAllowsEditingMultipleValuesSelectionBindingOption=@"NSAllowsEditingMultipleValuesSelection";
 NSString *NSValueTransformerNameBindingOption=@"NSValueTransformerName";
+NSString *NSValueTransformerBindingOption=@"NSValueTransformerBindingOption";
 
 @implementation NSObject (BindingSupport)
 
@@ -141,6 +143,20 @@ NSString *NSValueTransformerNameBindingOption=@"NSValueTransformerName";
 	[ownBinders removeObjectForKey:binding];
 	if([ownBinders count]==0)
 		[bindersForObjects removeObjectForKey:key];
+}
+
+-(void)_unbindAllBindings
+{
+	id key = [NSValue valueWithNonretainedObject:self];
+	id ownBinders = [bindersForObjects objectForKey:key];
+	id binder=nil;
+	id en=[ownBinders allObjects];
+	while(binder=[en nextObject])
+	{
+		[binder unbind];
+	}
+
+	[bindersForObjects removeObjectForKey:key];
 }
 
 -(NSDictionary *)infoForBinding:(id)binding

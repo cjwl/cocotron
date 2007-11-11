@@ -10,46 +10,48 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @interface NSObjectController : NSController {
 	NSString* _objectClassName;
+	id _content;
+	id _selection;
+	BOOL _editable;
+	BOOL _automaticallyPreparesContent;
 }
-
-#if 0
--initWithContent:content;
-
--content;
--(Class)objectClass;
--(NSString *)entityName;
--(NSPredicate *)fetchPredicate;
--(NSManagedObjectContext *)managedObjectContext;
--(BOOL)isEditable;
--(BOOL)automaticallyPreparesContent;
-
 -(void)setContent:content;
--(void)setObjectClass:(Class)class;
--(void)setEntityName:(NSString *)name;
--(void)setFetchPredicate:(NSPredicate *)predicate;
--(void)setManagedObjectContext:(NSManagedObjectContext *)context;
--(void)setEditable:(BOOL)flag;
--(void)setAutomaticallyPreparesContent:(BOOL)flag;
-
--(void)addObject:object;
+-content;
 
 -selection;
 -(NSArray *)selectedObjects;
+
+//-initWithContent:content;
+
+//-(Class)objectClass;
+//-(NSString *)entityName;
+//-(NSPredicate *)fetchPredicate;
+//-(NSManagedObjectContext *)managedObjectContext;
+-(BOOL)isEditable;
+-(BOOL)automaticallyPreparesContent;
+
+//-(void)setObjectClass:(Class)class;
+//-(void)setEntityName:(NSString *)name;
+//-(void)setFetchPredicate:(NSPredicate *)predicate;
+//-(void)setManagedObjectContext:(NSManagedObjectContext *)context;
+-(void)setEditable:(BOOL)flag;
+-(void)setAutomaticallyPreparesContent:(BOOL)flag;
+
+//-(void)addObject:object;
 
 -newObject;
 
 -(BOOL)canAdd;
 -(BOOL)canRemove;
--(void)add:sender;
--(void)fetch:sender;
--(void)remove:sender;
--(void)removeObject:object;
+//-(void)add:sender;
+//-(void)fetch:sender;
+//-(void)remove:sender;
+//-(void)removeObject:object;
 
--(void)prepareContent;
+//-(void)prepareContent;
 
--(BOOL)fetchWithRequest:(NSFetchRequest *)fetchRequest merge:(BOOL)merge error:(NSError **)error;
+//-(BOOL)fetchWithRequest:(NSFetchRequest *)fetchRequest merge:(BOOL)merge error:(NSError **)error;
 
--(BOOL)validateMenuItem:(NSMenuItem *)menuItem;
-#endif
+//-(BOOL)validateMenuItem:(NSMenuItem *)menuItem;
 
 @end

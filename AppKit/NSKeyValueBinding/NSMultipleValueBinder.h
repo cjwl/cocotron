@@ -5,55 +5,25 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
-#import <Foundation/NSObject.h>
-#import <AppKit/AppKitExport.h>
+#import "NSBinder.h"
 
-@class NSString, NSMutableDictionary, NSValueTransformer;
+@class NSArray;
 
-@interface _NSBinder : NSObject {
-	id source;
-	id destination;
-	NSString* keyPath;
-	NSString* bindingPath;
-	NSString* binding;
-	NSMutableDictionary *options;
+@interface _NSMultipleValueBinder : _NSBinder 
+{
+	NSArray* rowValues;
+	NSString* arrayKeyPath;
+	NSString* valueKeyPath;
 }
-
-
-// override this if you need to provide different defaults.
-// the default implementation gets its options from source.
--(id)defaultBindingOptionsForBinding:(id)binding;
-
-- (id)options;
-- (void)setOptions:(id)value;
-
-- (id)source;
-- (void)setSource:(id)value;
-
-- (id)destination;
-- (void)setDestination:(id)value;
-
-- (NSString*)keyPath;
-- (void)setKeyPath:(NSString*)value;
-
-- (NSString*)binding;
-- (void)setBinding:(NSString*)value;
-
--(void)bind;
--(void)unbind;
-
--(void)setBindingPath:(id)value;
-
--(id)peerBinders;
+-(void)applyToCell:(id)cell inRow:(int)row;
+-(void)applyFromCell:(id)cell inRow:(int)row;
+-(void)updateRowValues;
+-(NSArray*)rowValues;
+-(BOOL)allowsEditingForRow:(int)row;
+-(void)cacheArrayKeyPath;
 @end
 
-@interface _NSBinder (BindingOptions)
--(BOOL)conditionallySetsEditable;
--(BOOL)conditionallySetsEnabled;
--(BOOL)allowsEditingMultipleValues;
--(BOOL)createsSortDescriptor;
--(BOOL)raisesForNotApplicableKeys;
--(id)multipleValuesPlaceholder;
--(id)noSelectionPlaceholder;
-@end
 
+@interface _NSTableViewContentBinder : _NSBinder
+
+@end

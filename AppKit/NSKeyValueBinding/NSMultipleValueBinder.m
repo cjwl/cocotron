@@ -5,7 +5,7 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
-#import "NSTableColumnBinder.h"
+#import "NSMultipleValueBinder.h"
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSException.h>
 #import <Foundation/NSKeyValueObserving.h>
@@ -17,7 +17,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSCell.h>
 #import <AppKit/NSObject+BindingSupport.h>
 
-@interface _NSTableColumnWrapperArray : NSArray
+@interface _NSMultipleValueWrapperArray : NSArray
 {
 	id object;
 }
@@ -26,7 +26,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 
 
-@implementation _NSTableColumnBinder
+@implementation _NSMultipleValueBinder
+
+#pragma mark -
+#pragma mark Outside accessors
+
 - (NSArray *)rowValues 
 {
     return [[rowValues retain] autorelease];
@@ -41,17 +45,51 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     }
 }
 
+-(void)applyToObject:(id)object inRow:(int)row keyPath:(id)path
+{
+	[object setValue:[[rowValues objectAtIndex:row] valueForKeyPath:valueKeyPath] forKey:path];
+}
+
+-(void)applyToObject:(id)object inRow:(int)row
+{
+	[self applyToObject:object inRow:row keyPath:bindingPath];
+}
 
 -(void)applyToCell:(id)cell inRow:(int)row
 {
-	[cell setValue:[[rowValues objectAtIndex:row] valueForKeyPath:valueKeyPath] forKey:bindingPath];
+	[self applyToObject:cell inRow:row keyPath:bindingPath];
+}
+
+-(void)applyFromObject:(id)object inRow:(int)row keyPath:(id)keypath
+{
+	[[rowValues objectAtIndex:row] setValue:[object valueForKeyPath:keypath] 
+								 forKeyPath:valueKeyPath];
+}
+
+-(void)applyFromObject:(id)object inRow:(int)row
+{
+	[self applyFromObject:object inRow:row keyPath:bindingPath];
 }
 
 -(void)applyFromCell:(id)cell inRow:(int)row
 {
-	[[rowValues objectAtIndex:row] setValue:[cell valueForKeyPath:bindingPath] 
-								 forKeyPath:valueKeyPath];
+	[self applyFromObject:cell inRow:row keyPath:bindingPath];
 }
+
+
+-(unsigned)count
+{
+	return [rowValues count];
+}
+
+-(id)objectAtIndex:(unsigned)row
+{
+	return [[rowValues objectAtIndex:row] valueForKeyPath:valueKeyPath];
+}
+
+#pragma mark -
+#pragma mark Internal stuff
+
 
 -(void)cacheArrayKeyPath
 {
@@ -144,10 +182,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 		[self updateRowValues];
 		
-		if([source respondsToSelector:@selector(reloadData)])
-			[source reloadData];
-		if([source respondsToSelector:@selector(tableView)])
-			[[source tableView] reloadData];
+		if([source respondsToSelector:@selector(_boundValuesChanged)])
+			[source _boundValuesChanged];
 
 		[self startObservingChanges];
 	}
@@ -181,11 +217,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 		[source setSortDescriptorPrototype:[[[NSSortDescriptor alloc] initWithKey:valueKeyPath
 																		ascending:NO] autorelease]];
 	}
-	if([source respondsToSelector:@selector(tableView)])
+	if([source respondsToSelector:@selector(_establishBindingsWithDestinationIfUnbound:)])
 	{
-		[[source tableView] performSelector:@selector(_establishBindingsWithDestinationIfUnbound:)
-								 withObject:destination
-								 afterDelay:0.0];
+		[source performSelector:@selector(_establishBindingsWithDestinationIfUnbound:)
+					 withObject:destination
+					 afterDelay:0.0];
 	}
 }
 
@@ -196,15 +232,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	[self stopObservingChanges];
 }
 
--(unsigned)count
-{
-	return [rowValues count];
-}
-
--(id)objectAtIndex:(unsigned)row
-{
-	return [[rowValues objectAtIndex:row] valueForKeyPath:valueKeyPath];
-}
 
 -(NSString*)description
 {
@@ -215,12 +242,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 {
 	id value=[destination valueForKeyPath:arrayKeyPath];
 	if(![value respondsToSelector:@selector(objectAtIndex:)])
-		value=[[[_NSTableColumnWrapperArray alloc] initWithObject:value] autorelease];
+		value=[[[_NSMultipleValueWrapperArray alloc] initWithObject:value] autorelease];
 	[self setRowValues:value];
 }
 @end
 
 
+#pragma mark -
+#pragma mark Helper classes
 
 
 
@@ -259,8 +288,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	if(object==destination)
 	{
 		[source _boundValuesChanged];
-	}	
-	
+	}
+
 	[self startObservingChanges];
 }
 
@@ -281,7 +310,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 @end
 
-@implementation _NSTableColumnWrapperArray
+@implementation _NSMultipleValueWrapperArray
 -(id)initWithObject:(id)obj
 {
 	if(self = [super init])

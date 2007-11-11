@@ -12,8 +12,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSNibKeyedUnarchiver.h>
 #import <AppKit/NSObject+BindingSupport.h>
 
-#import "NSKeyValueBinding/NSTableColumnBinder.h"
+#import "NSKeyValueBinding/NSMultipleValueBinder.h"
 #import "NSKeyValueBinding/NSKVOBinder.h"
+
+@interface NSTableView(private)
+-(void)_establishBindingsWithDestinationIfUnbound:(id)dest;
+@end
 
 @implementation NSTableColumn
 
@@ -160,7 +164,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	for(i=0; i<count; i++)
 	{
 		id binder=[binders objectAtIndex:i];
-		if([binder isKindOfClass:[_NSTableColumnBinder class]])
+		if([binder isKindOfClass:[_NSMultipleValueBinder class]])
 		{
 			[binder updateRowValues];			
 		}
@@ -175,14 +179,17 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	for(i=0; i<count; i++)
 	{
 		id binder=[binders objectAtIndex:i];
-		if([binder isKindOfClass:[_NSTableColumnBinder class]])
+		if([binder isKindOfClass:[_NSMultipleValueBinder class]])
 		{
 			[binder applyToCell:cell inRow:row];			
 		}
 	}	
 }
 
-
+-(void)_establishBindingsWithDestinationIfUnbound:(id)dest
+{
+	[[self tableView] _establishBindingsWithDestinationIfUnbound:dest];
+}
 
 +(Class)_binderClassForBinding:(id)binding
 {
@@ -191,7 +198,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	   [binding isEqual:@"minWidth"] ||
 	   [binding isEqual:@"width"])
 		return [_NSKVOBinder class];
-	return [_NSTableColumnBinder class];
+	return [_NSMultipleValueBinder class];
 }
 
 - (NSSortDescriptor *)sortDescriptorPrototype {

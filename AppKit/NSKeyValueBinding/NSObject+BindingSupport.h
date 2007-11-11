@@ -39,6 +39,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 // returns all binders used by the object
 -(NSArray*)_allUsedBinders;
+
+// unbinds all bindings used; should be called in -dealloc
+-(void)_unbindAllBindings;
 @end
 
 APPKIT_EXPORT NSString* NSObservedObjectKey;
@@ -52,4 +55,5 @@ APPKIT_EXPORT NSString *NSCreatesSortDescriptorBindingOption;
 APPKIT_EXPORT NSString *NSRaisesForNotApplicableKeysBindingOption;
 APPKIT_EXPORT NSString *NSAllowsEditingMultipleValuesSelectionBindingOption;
 APPKIT_EXPORT NSString *NSValueTransformerNameBindingOption;
+APPKIT_EXPORT NSString *NSValueTransformerBindingOption;
 

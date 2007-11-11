@@ -16,17 +16,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	{
 		long avoidsEmptySelection:1;
 		long clearsFilterPredicateOnInsertion:1;
-		long editable:1;
 		long filterRestrictsInsertion:1;
 		long preservesSelection:1;
 		long selectsInsertedObjects:1;
 		long alwaysUsesMultipleValuesMarker:1;
-	} flags;
-	id _contentArray;
+	} _flags;
 	id _selectionIndexes;
 	id _sortDescriptors;
 	id _filterPredicate;
-	id _selection;
 	id _arrangedObjects;
 }
 
@@ -37,7 +34,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 //-(BOOL)automaticallyPreparesContent;
 //-(BOOL)avoidsEmptySelection;
 //-(BOOL)selectsInsertedObjects;
-//-(BOOL)preservesSelection;
+-(BOOL)preservesSelection;
 
 -(void)setSortDescriptors:(NSArray *)descriptors;
 -(void)setFilterPredicate:(NSPredicate *)predicate;
@@ -46,33 +43,32 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 //-(void)setAutomaticallyPreparesContent:(BOOL)flag;
 //-(void)setAvoidsEmptySelection:(BOOL)flag;
 //-(void)setSelectsInsertedObjects:(BOOL)flag;
-//-(void)setPreservesSelection:(BOOL)flag;
+-(void)setPreservesSelection:(BOOL)flag;
 
-#if 0
 -(void)addObject:object;
 -(void)addObjects:(NSArray *)objects;
--(void)insertObject:object atArrangedObjectIndex:(unsigned)index;
--(void)insertObjects:(NSArray *)objects atArrangedObjectIndexes:(NSIndexSet *)indices;
+//-(void)insertObject:object atArrangedObjectIndex:(unsigned)index;
+//-(void)insertObjects:(NSArray *)objects atArrangedObjectIndexes:(NSIndexSet *)indices;
 -(void)removeObject:object;
--(void)removeObjectAtArrangedObjectIndex:(unsigned)index;
+//-(void)removeObjectAtArrangedObjectIndex:(unsigned)index;
+
 -(void)removeObjects:(NSArray *)objects;
 -(void)removeObjectsAtArrangedObjectIndexes:(NSIndexSet *)indices;
-#endif
 
 -(NSIndexSet *)selectionIndexes;
 //-(unsigned)selectionIndex;
 -(NSArray *)selectedObjects;
 
-//-(BOOL)canInsert;
-//-(BOOL)canSelectNext;
-//-(BOOL)canSelectPrevious;
+-(BOOL)canInsert;
+-(BOOL)canSelectNext;
+-(BOOL)canSelectPrevious;
 
-//-(void)insert:sender;
+-(void)insert:sender;
 -(void)remove:sender;
 -(void)selectNext:sender;
 -(void)selectPrevious:sender;
 
-//-(void)setSelectedObjects:(NSArray *)objects;
+-(BOOL)setSelectedObjects:(NSArray *)objects;
 -(BOOL)setSelectionIndex:(unsigned)index;
 -(BOOL)setSelectionIndexes:(NSIndexSet *)indices;
 
@@ -83,10 +79,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 //-(BOOL)removeSelectionIndexes:(NSIndexSet *)indices;
 
 -arrangedObjects;
-//-(NSArray *)arrangeObjects:(NSArray *)objects;
-//-(void)rearrangeObjects;
-
-// private 
--(void)_selectionMayHaveChanged;
+-(NSArray *)arrangeObjects:(NSArray *)objects;
+-(void)rearrangeObjects;
 
 @end

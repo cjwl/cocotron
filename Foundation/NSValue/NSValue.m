@@ -163,6 +163,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return size;
 }
 
+-(NSRange)rangeValue {
+	NSRange range;
+	[self getValue:&range];
+	return range;
+}
+
 -(NSRect)rectValue {
    NSRect rect;
    [self getValue:&rect];
