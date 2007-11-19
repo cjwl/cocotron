@@ -74,6 +74,7 @@ typedef enum {
    BOOL      _refusesFirstResponder;
    BOOL	     _isContinuous;
    BOOL      _allowsMixedState;
+   BOOL      _sendsActionOnEndEditing;
 }
 
 -initTextCell:(NSString *)string;
@@ -183,5 +184,8 @@ typedef enum {
 -(void)endEditing:(NSText *)editor;
 
 -(void)resetCursorRect:(NSRect)rect inView:(NSView *)view;
+
+- (void)setSendsActionOnEndEditing:(BOOL)flag;
+- (BOOL)sendsActionOnEndEditing;
 
 @end

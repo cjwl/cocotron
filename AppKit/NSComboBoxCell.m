@@ -26,8 +26,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    if([coder isKindOfClass:[NSNibKeyedUnarchiver class]]){
     NSNibKeyedUnarchiver *keyed=(NSNibKeyedUnarchiver *)coder;
     
+    _dataSource=[[keyed decodeObjectForKey:@"NSDataSource"] retain];
     _objectValues=[[NSMutableArray alloc] initWithArray:[keyed decodeObjectForKey:@"NSPopUpListData"]];
     _numberOfVisibleItems=[keyed decodeIntForKey:@"NSVisibleItemCount"];
+    _usesDataSource=[keyed decodeBoolForKey:@"NSUsesDataSource"];
+    _hasVerticalScroller=[keyed decodeBoolForKey:@"NSHasVerticalScroller"];
     _completes=[keyed decodeBoolForKey:@"NSCompletes"];
     _isButtonBordered=YES;
     _buttonEnabled=YES;
@@ -41,6 +44,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)dealloc {
+   [_dataSource release];
    [_objectValues release];
    [super dealloc];
 }
@@ -181,7 +185,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)selectItemWithObjectValue:value {
-   NSUnimplementedMethod();
+   if (!_usesDataSource)
+   {
+      int index = [_objectValues indexOfObject:value];
+      [self selectItemAtIndex:(index != NSNotFound)?index:-1];
+   }
+   else
+      NSLog(@"*** -[%@ %s] should not be called when usesDataSource is set to YES",isa,SELNAME(_cmd));
 }
 
 -(void)deselectItemAtIndex:(int)index {
@@ -234,6 +244,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(BOOL)trackMouse:(NSEvent *)event inRect:(NSRect)cellFrame ofView:(NSView *)controlView untilMouseUp:(BOOL)flag {
+   BOOL              saveSendsActionOnEndEditing = _sendsActionOnEndEditing;
    NSComboBoxWindow *window;
    NSPoint           origin=[controlView bounds].origin;
    NSPoint           check=[controlView convertPoint:[event locationInWindow] fromView:nil];
@@ -266,7 +277,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    if(selectedIndex!=NSNotFound){
     NSControl *control=(NSControl *)controlView;
 
+    // the superclass NSTextFieldCell would send the action on endEditing
+    // before our new value is set. Therefore _sendsActionOnEndEditing
+    // should be temporarily set to NO
+    _sendsActionOnEndEditing = NO;
     [control setObjectValue:[_objectValues objectAtIndex:selectedIndex]];
+    _sendsActionOnEndEditing = saveSendsActionOnEndEditing; // restore _sendsActionOnEndEditing 
     [control sendAction:[control action] to:[control target]];
    }
 

@@ -163,6 +163,10 @@ NSString *NSTextDidChangeNotification=@"NSTextDidChangeNotification";
    NSInvalidAbstractInvocation();
 }
 
+-(void)setFont:(NSFont *)font range:(NSRange)range {
+   NSInvalidAbstractInvocation();
+}
+
 -(void)setAlignment:(NSTextAlignment)alignment {
    NSInvalidAbstractInvocation();
 }

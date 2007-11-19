@@ -100,6 +100,7 @@ APPKIT_EXPORT NSString *NSTextDidChangeNotification;
 -(void)setImportsGraphics:(BOOL)value;
 
 -(void)setFont:(NSFont *)font;
+-(void)setFont:(NSFont *)font range:(NSRange)range;
 -(void)setAlignment:(NSTextAlignment)alignment;
 
 -(void)setTextColor:(NSColor *)color;

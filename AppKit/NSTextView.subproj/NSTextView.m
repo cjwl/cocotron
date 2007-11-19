@@ -1788,6 +1788,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [[self textStorage] addAttribute:NSFontAttributeName value:_font range:NSMakeRange(0,[[self textStorage] length])];
 }
 
+-(void)setFont:(NSFont *)font range:(NSRange)range {
+   if (NSMaxRange(range) >= [[self textStorage] length])
+   {
+      [font retain];
+      [_font release];
+      _font=font;
+   }
+   [[self textStorage] addAttribute:NSFontAttributeName value:font range:range];
+}
+
 -(void)_setAlignment:(NSTextAlignment)alignment range:(NSRange)range {
     NSMutableParagraphStyle *style=nil;
 

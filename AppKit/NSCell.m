@@ -35,7 +35,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     int                flags2=[keyed decodeIntForKey:@"NSCellFlags2"];
     id                 check;
     
-    _state=(flags&0x8000000)?YES:NO;
+    _state=(flags&0x80000000)?NSOnState:NSOffState;
     _isHighlighted=(flags&0x40000000)?YES:NO;
     _isEnabled=(flags&0x20000000)?NO:YES;
     _isEditable=(flags&0x10000000)?YES:NO;
@@ -68,6 +68,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     _controlSize=(flags2&0xE0000)>>17;
     if (_font==nil)
        _font=[[NSFont userFontOfSize:13 - _controlSize*2] retain];
+    _sendsActionOnEndEditing=(flags2&0x400000)?YES:NO;
    }
    else {
     [NSException raise:NSInvalidArgumentException format:@"%@ can not initWithCoder:%@",isa,[coder class]];
@@ -745,6 +746,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       [view addCursorRect:titleRect cursor:[NSCursor IBeamCursor]];
     }
    }
+}
+
+- (void)setSendsActionOnEndEditing:(BOOL)flag {
+   _sendsActionOnEndEditing=flag;
+}
+
+- (BOOL)sendsActionOnEndEditing {
+   return _sendsActionOnEndEditing;
 }
 
 @end

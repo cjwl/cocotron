@@ -109,6 +109,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
     _keyEquivalent=[[keyed decodeObjectForKey:@"NSKeyEquivalent"] retain];
     _keyEquivalentModifierMask=flags2>>8;
+    [self setIntValue:_state];   // make the int value of NSButtonCell to be
+                                 // in synch with the bare _state of NSCell
    }
    else {
     [NSException raise:NSInvalidArgumentException format:@"%@ can not initWithCoder:%@",isa,[coder class]];

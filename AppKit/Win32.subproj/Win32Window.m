@@ -44,6 +44,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    if(_styleMask&NSUtilityWindowMask)
     result|=WS_EX_TOOLWINDOW;
 
+   if(_isPanel)
+    result|=WS_EX_NOACTIVATE;
+    
 #if 0
 #define CS_DROPSHADOW  0x00020000
    result|=CS_DROPSHADOW|WS_EX_LAYERED;

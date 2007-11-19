@@ -30,9 +30,37 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
    if([coder isKindOfClass:[NSNibKeyedUnarchiver class]]){
     NSNibKeyedUnarchiver *keyed=(NSNibKeyedUnarchiver *)coder;
-    
+    unsigned flags=[keyed decodeIntForKey:@"NSTvFlags"];
+
     _items=[[NSMutableArray alloc] initWithArray:[keyed decodeObjectForKey:@"NSTabViewItems"]];
     _selectedItem=[keyed decodeObjectForKey:@"NSSelectedTabViewItem"];
+    _allowsTruncatedLabels=[keyed decodeBoolForKey:@"NSAllowTruncatedLabels"];
+    _drawsBackground=[keyed decodeBoolForKey:@"NSDrawsBackground"];
+    _controlSize=(flags&0x18000000)>>27;
+    if (_font==nil)
+     _font=[[NSFont boldSystemFontOfSize:13-_controlSize*2] retain];
+    _type=(flags&0x7);
+
+    // adjust the layout rectangle
+    NSRect frame=[self frame];
+    frame.origin.x += 8;
+    frame.size.width -= 15;
+    switch(_controlSize)
+    {
+     case NSRegularControlSize:
+      frame.origin.y += 12;
+      frame.size.height -= 16;
+      break;
+     case NSSmallControlSize:
+      frame.origin.y += 9;
+      frame.size.height -= 13;
+      break;
+     case NSMiniControlSize:
+      frame.origin.y += 8;
+      frame.size.height -= 12;
+      break;
+    }
+    [self setFrame:frame];
    }
    else {
     [NSException raise:NSInvalidArgumentException format:@"-[%@ %s] is not implemented for coder %@",isa,SELNAME(_cmd),coder];
@@ -332,18 +360,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    NSRect result=[self rectForItemLabelAtIndex:index];
 
    result=NSInsetRect(result,-4,0);
-   result.origin.y=[self bounds].size.height-24;
-   result.size.height=24;
+   result.origin.y=[self bounds].size.height-24-_controlSize;
+   result.size.height=24-_controlSize;
 
    return result;
 }
 
 -(void)drawRect:(NSRect)rect {
-   NSGraphicsStyle *style=[self graphicsStyle];
-   
-   if(_drawsBackground)
-    [style drawTabViewBackgroundInRect:[self bounds]];
-   
+    NSGraphicsStyle *style=[self graphicsStyle];
+
     switch (_type) {
         case NSTopTabsBezelBorder:
         case NSLeftTabsBezelBorder:

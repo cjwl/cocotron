@@ -152,7 +152,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
    [super textDidEndEditing:note];
 
-   if(movement==NSReturnTextMovement)
+   if(movement==NSReturnTextMovement || [[self selectedCell] sendsActionOnEndEditing])
     [self sendAction:[self action] to:[self target]];
 
    if(movement==NSTabTextMovement)
