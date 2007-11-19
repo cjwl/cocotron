@@ -34,21 +34,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -init {
-   _fontCacheCapacity=4;
-   _fontCacheSize=0;
-   _fontCache=NSZoneMalloc([self zone],sizeof(NSFont *)*_fontCacheCapacity);
    _eventMask=0;
    _eventQueue=[NSMutableArray new];
-   _periodicTimer=nil;
    return self;
-}
-
--(void)showSplashImage {
-   NSInvalidAbstractInvocation();
-}
-
--(void)closeSplashImage {
-   NSInvalidAbstractInvocation();
 }
 
 -(NSArray *)screens {
@@ -86,48 +74,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return nil;
 }
 
--(unsigned)_cacheIndexOfFontWithName:(NSString *)name size:(float)size {
-   unsigned i;
-
-   for(i=0;i<_fontCacheSize;i++){
-    NSFont *check=_fontCache[i];
-
-    if(check!=nil && [[check fontName] isEqualToString:name] && [check pointSize]==size)
-     return i;
-   }
-
-   return NSNotFound;
-}
-
--(NSFont *)cachedFontWithName:(NSString *)name size:(float)size {
-   unsigned i=[self _cacheIndexOfFontWithName:name size:size];
-
-   return (i==NSNotFound)?(NSFont *)nil:_fontCache[i];
-}
-
--(void)addFontToCache:(NSFont *)font {
-   unsigned i;
-
-   for(i=0;i<_fontCacheSize;i++){
-    if(_fontCache[i]==nil){
-     _fontCache[i]=font;
-     return;
-    }
-   }
-
-   if(_fontCacheSize>=_fontCacheCapacity){
-    _fontCacheCapacity*=2;
-    _fontCache=NSZoneRealloc([self zone],_fontCache,sizeof(NSFont *)*_fontCacheCapacity);
-   }
-   _fontCache[_fontCacheSize++]=font;
-}
-
--(void)removeFontFromCache:(NSFont *)font {
-   unsigned i=[self _cacheIndexOfFontWithName:[font fontName] size:[font pointSize]];
-
-   if(i!=NSNotFound)
-    _fontCache[i]=nil;
-}
 
 -(NSTimeInterval)textCaretBlinkInterval {
    NSInvalidAbstractInvocation();
@@ -210,45 +156,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(BOOL)hasEventsMatchingMask {
    return [_eventQueue count]>0;
-}
-
--(void)_periodicDelay:(NSTimer *)timer {
-   NSTimeInterval period=[[timer userInfo] doubleValue];
-
-   [_periodicTimer invalidate];
-   [_periodicTimer release];
-
-   _periodicTimer=[[NSTimer timerWithTimeInterval:period
-     target:self selector:@selector(_periodicEvent:) userInfo:nil
-     repeats:YES] retain];
-
-   [[NSRunLoop currentRunLoop] addTimer:_periodicTimer forMode:NSEventTrackingRunLoopMode];
-}
-
--(void)_periodicEvent:(NSTimer *)timer {
-   NSEvent *event=[[[NSEvent_periodic alloc] initWithType:NSPeriodic location:NSMakePoint(0,0) modifierFlags:0 window:nil] autorelease];
-
-   [self postEvent:event atStart:NO];
-   [self discardEventsMatchingMask:NSPeriodicMask beforeEvent:event];
-}
-
--(void)startPeriodicEventsAfterDelay:(NSTimeInterval)delay withPeriod:(NSTimeInterval)period {
-   NSNumber *userInfo=[NSNumber numberWithDouble:period];
-
-   if(_periodicTimer!=nil)
-     [NSException raise:NSInternalInconsistencyException format:@"periodic events already enabled"];
-
-   _periodicTimer=[[NSTimer timerWithTimeInterval:delay
-     target:self selector:@selector(_periodicDelay:) userInfo:userInfo
-     repeats:NO] retain];
-
-   [[NSRunLoop currentRunLoop] addTimer:_periodicTimer forMode:NSEventTrackingRunLoopMode];
-}
-
--(void)stopPeriodicEvents {
-   [_periodicTimer invalidate];
-   [_periodicTimer release];
-   _periodicTimer=nil;
 }
 
 -(unsigned)modifierForDefault:(NSString *)key:(unsigned)standard {

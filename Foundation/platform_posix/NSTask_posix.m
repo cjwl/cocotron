@@ -30,6 +30,7 @@ void childSignalHandler(int sig);
 // which case we wind up send some messages to nil.
 void childSignalHandler(int sig) {
     if (sig == SIGCHLD) {
+// FIX, this probably isnt safe to do from a signal handler
        int quad = 32;
        NSData *data = [NSData dataWithBytes:&quad length:sizeof(int)];
        NSFileHandle *handle = [_taskPipe fileHandleForWriting];

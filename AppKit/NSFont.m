@@ -20,6 +20,61 @@ FOUNDATION_EXPORT char *NSUnicodeToSymbol(const unichar *characters,unsigned len
 
 @implementation NSFont
 
+static unsigned _fontCacheCapacity=0;
+static unsigned _fontCacheSize=0;
+static NSFont **_fontCache=NULL;
+
++(void)initialize {
+   if(self==[NSFont class]){
+    _fontCacheCapacity=4;
+    _fontCacheSize=0;
+    _fontCache=NSZoneMalloc([self zone],sizeof(NSFont *)*_fontCacheCapacity);
+   }
+}
+
++(unsigned)_cacheIndexOfFontWithName:(NSString *)name size:(float)size {
+   unsigned i;
+
+   for(i=0;i<_fontCacheSize;i++){
+    NSFont *check=_fontCache[i];
+
+    if(check!=nil && [[check fontName] isEqualToString:name] && [check pointSize]==size)
+     return i;
+   }
+
+   return NSNotFound;
+}
+
++(NSFont *)cachedFontWithName:(NSString *)name size:(float)size {
+   unsigned i=[self _cacheIndexOfFontWithName:name size:size];
+
+   return (i==NSNotFound)?(NSFont *)nil:_fontCache[i];
+}
+
++(void)addFontToCache:(NSFont *)font {
+   unsigned i;
+
+   for(i=0;i<_fontCacheSize;i++){
+    if(_fontCache[i]==nil){
+     _fontCache[i]=font;
+     return;
+    }
+   }
+
+   if(_fontCacheSize>=_fontCacheCapacity){
+    _fontCacheCapacity*=2;
+    _fontCache=NSZoneRealloc([self zone],_fontCache,sizeof(NSFont *)*_fontCacheCapacity);
+   }
+   _fontCache[_fontCacheSize++]=font;
+}
+
++(void)removeFontFromCache:(NSFont *)font {
+   unsigned i=[self _cacheIndexOfFontWithName:[font fontName] size:[font pointSize]];
+
+   if(i!=NSNotFound)
+    _fontCache[i]=nil;
+}
+
 +(float)systemFontSize {
    return 12.0;
 }
@@ -158,7 +213,7 @@ FOUNDATION_EXPORT char *NSUnicodeToSymbol(const unichar *characters,unsigned len
    else
     _encoding=NSUnicodeStringEncoding;
 
-   [[NSDisplay currentDisplay] addFontToCache:self];
+   [isa addFontToCache:self];
    
    _kgFont=[[KGFont alloc] initWithName:_name size:_pointSize];
 
@@ -166,7 +221,7 @@ FOUNDATION_EXPORT char *NSUnicodeToSymbol(const unichar *characters,unsigned len
 }
 
 -(void)dealloc {
-   [[NSDisplay currentDisplay] removeFontFromCache:self];
+   [isa removeFontFromCache:self];
 
    [_name release];
    [_kgFont release];
@@ -179,7 +234,7 @@ FOUNDATION_EXPORT char *NSUnicodeToSymbol(const unichar *characters,unsigned len
    if(name==nil)
     [NSException raise:NSInvalidArgumentException format:@"-[%@ %s] name==nil",self,SELNAME(_cmd)];
 
-   result=[[NSDisplay currentDisplay] cachedFontWithName:name size:size];
+   result=[self cachedFontWithName:name size:size];
 
    if(result==nil)
     result=[[[NSFont alloc] initWithName:name size:size] autorelease];

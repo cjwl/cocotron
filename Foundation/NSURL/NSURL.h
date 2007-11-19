@@ -9,9 +9,20 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @class NSURLHandle,NSNumber,NSData;
 
+FOUNDATION_EXPORT NSString *NSURLFileScheme;
+
 @interface NSURL : NSObject <NSCopying> {
+   NSURL    *_baseURL;
+   NSString *_string;
    NSString *_scheme;
+   NSString *_host;
+   NSNumber *_port;
+   NSString *_user;
+   NSString *_password;
    NSString *_path;
+   NSString *_parameter;
+   NSString *_query;
+   NSString *_fragment;
 }
 
 -initWithScheme:(NSString *)scheme host:(NSString *)host path:(NSString *)path;
@@ -51,6 +62,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(NSData *)resourceDataUsingCache:(BOOL)useCache;
 -(NSURLHandle *)URLHandleUsingCache:(BOOL)useCache;
--(void)laodResourceDataNotifyingClient:client usingCache:(BOOL)useCache;
+-(void)loadResourceDataNotifyingClient:client usingCache:(BOOL)useCache;
 
 @end
+

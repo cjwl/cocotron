@@ -13,20 +13,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @class NSEvent,NSColor, NSPasteboard,NSDraggingManager,NSPrintInfo, KGContext, NSView, NSSavePanel, NSOpenPanel, CGWindow;
 
 @interface NSDisplay : NSObject {
-   unsigned _fontCacheCapacity;
-   unsigned _fontCacheSize;
-   NSFont **_fontCache;
-
    unsigned        _eventMask;
    NSMutableArray *_eventQueue;
-
-   NSTimer        *_periodicTimer;
 }
 
 +(NSDisplay *)currentDisplay;
-
--(void)showSplashImage;
--(void)closeSplashImage;
 
 -(NSArray *)screens;
 
@@ -40,16 +31,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(NSColor *)colorWithName:(NSString *)colorName;
 -(NSString *)menuFontNameAndSize:(float *)pointSize;
 
--(NSFont *)cachedFontWithName:(NSString *)name size:(float)size;
--(void)addFontToCache:(NSFont *)font;
--(void)removeFontFromCache:(NSFont *)font;
-
 -(NSTimeInterval)textCaretBlinkInterval;
 
 -(void)hideCursor;
 -(void)unhideCursor;
 
-// Arrow, IBeam, HorizontalResize, VerticalResize
 -(id)cursorWithName:(NSString *)name;
 -(void)setCursor:(id)cursor;
 
@@ -61,9 +47,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(BOOL)containsAndRemovePeriodicEvents;
 -(BOOL)hasEventsMatchingMask;
-
--(void)startPeriodicEventsAfterDelay:(NSTimeInterval)delay withPeriod:(NSTimeInterval)period;
--(void)stopPeriodicEvents;
 
 -(unsigned)modifierForDefault:(NSString *)key:(unsigned)standard;
 

@@ -209,7 +209,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)removeObjectsFromIndices:(unsigned *)indices
                      numIndices:(unsigned)count {
-   NSUnimplementedMethod();
+   int i;
+   
+   for(i=0;i<count;i++)
+    [self removeObjectAtIndex:indices[i]];
 }
 
 -(void)removeObjectsInArray:(NSArray *)other {

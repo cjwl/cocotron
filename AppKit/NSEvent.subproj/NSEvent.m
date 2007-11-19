@@ -10,6 +10,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSEvent.h>
 #import <AppKit/NSEvent_mouse.h>
 #import <AppKit/NSEvent_keyboard.h>
+#import <AppKit/NSEvent_periodic.h>
 #import <AppKit/NSApplication.h>
 #import <AppKit/NSWindow.h>
 #import <AppKit/NSDisplay.h>
@@ -104,12 +105,46 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     return [NSString stringWithFormat:@"<%@[0x%lx] type: %d>", [self class], self, _type];
 }
 
+static NSTimer *_periodicTimer=nil;
+
++(void)_periodicDelay:(NSTimer *)timer {
+   NSTimeInterval period=[[timer userInfo] doubleValue];
+
+   [_periodicTimer invalidate];
+   [_periodicTimer release];
+
+   _periodicTimer=[[NSTimer timerWithTimeInterval:period
+     target:self selector:@selector(_periodicEvent:) userInfo:nil
+     repeats:YES] retain];
+
+   [[NSRunLoop currentRunLoop] addTimer:_periodicTimer forMode:NSEventTrackingRunLoopMode];
+}
+
++(void)_periodicEvent:(NSTimer *)timer {
+   NSEvent *event=[[[NSEvent_periodic alloc] initWithType:NSPeriodic location:NSMakePoint(0,0) modifierFlags:0 window:nil] autorelease];
+
+   [[NSDisplay currentDisplay] postEvent:event atStart:NO];
+   [[NSDisplay currentDisplay] discardEventsMatchingMask:NSPeriodicMask beforeEvent:event];
+}
+
+
 +(void)startPeriodicEventsAfterDelay:(NSTimeInterval)delay withPeriod:(NSTimeInterval)period {
-   [[NSDisplay currentDisplay] startPeriodicEventsAfterDelay:delay withPeriod:period];
+   NSNumber *userInfo=[NSNumber numberWithDouble:period];
+
+   if(_periodicTimer!=nil)
+     [NSException raise:NSInternalInconsistencyException format:@"periodic events already enabled"];
+
+   _periodicTimer=[[NSTimer timerWithTimeInterval:delay
+     target:self selector:@selector(_periodicDelay:) userInfo:userInfo
+     repeats:NO] retain];
+
+   [[NSRunLoop currentRunLoop] addTimer:_periodicTimer forMode:NSEventTrackingRunLoopMode];
 }
 
 +(void)stopPeriodicEvents {
-   [[NSDisplay currentDisplay] stopPeriodicEvents];
+   [_periodicTimer invalidate];
+   [_periodicTimer release];
+   _periodicTimer=nil;
 }
 
 @end

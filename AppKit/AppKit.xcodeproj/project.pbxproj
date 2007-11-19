@@ -339,7 +339,6 @@
 		6E2B56190976075400DA0954 /* Win32Font.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B56180976075400DA0954 /* Win32Font.m */; settings = {ATTRIBUTES = (); }; };
 		6E2B561F0976075400DA0954 /* Win32Region.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B561E0976075400DA0954 /* Win32Region.m */; settings = {ATTRIBUTES = (); }; };
 		6E2B56210976075400DA0954 /* Win32Window.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B56200976075400DA0954 /* Win32Window.m */; settings = {ATTRIBUTES = (); }; };
-		6E2B56250976075400DA0954 /* Win32SplashPanel.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B56240976075400DA0954 /* Win32SplashPanel.m */; settings = {ATTRIBUTES = (); }; };
 		6E2B56270976075400DA0954 /* Win32RunningCopyPipe.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B56260976075400DA0954 /* Win32RunningCopyPipe.m */; settings = {ATTRIBUTES = (); }; };
 		6E2B56290976075400DA0954 /* Win32EventInputSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B56280976075400DA0954 /* Win32EventInputSource.m */; settings = {ATTRIBUTES = (); }; };
 		6E2B562D0976075400DA0954 /* Win32Workspace.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B562C0976075400DA0954 /* Win32Workspace.m */; settings = {ATTRIBUTES = (); }; };
@@ -356,7 +355,6 @@
 		6E2B56460976075400DA0954 /* Win32Font.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B56450976075400DA0954 /* Win32Font.h */; settings = {ATTRIBUTES = (Project, Private, ); }; };
 		6E2B564C0976075400DA0954 /* Win32Region.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B564B0976075400DA0954 /* Win32Region.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		6E2B564E0976075400DA0954 /* Win32Window.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B564D0976075400DA0954 /* Win32Window.h */; settings = {ATTRIBUTES = (Project, Private, ); }; };
-		6E2B56520976075400DA0954 /* Win32SplashPanel.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B56510976075400DA0954 /* Win32SplashPanel.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		6E2B56540976075400DA0954 /* Win32RunningCopyPipe.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B56530976075400DA0954 /* Win32RunningCopyPipe.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		6E2B56560976075400DA0954 /* Win32EventInputSource.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B56550976075400DA0954 /* Win32EventInputSource.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		6E2B565A0976075400DA0954 /* Win32Workspace.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B56590976075400DA0954 /* Win32Workspace.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -637,7 +635,6 @@
 		FE01A8A90C5D9BCB00AEA51A /* Win32Font.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B56450976075400DA0954 /* Win32Font.h */; settings = {ATTRIBUTES = (Project, Private, ); }; };
 		FE01A8AA0C5D9BCB00AEA51A /* Win32Region.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B564B0976075400DA0954 /* Win32Region.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE01A8AB0C5D9BCB00AEA51A /* Win32Window.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B564D0976075400DA0954 /* Win32Window.h */; settings = {ATTRIBUTES = (Project, Private, ); }; };
-		FE01A8AD0C5D9BCB00AEA51A /* Win32SplashPanel.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B56510976075400DA0954 /* Win32SplashPanel.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE01A8AE0C5D9BCB00AEA51A /* Win32RunningCopyPipe.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B56530976075400DA0954 /* Win32RunningCopyPipe.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE01A8AF0C5D9BCB00AEA51A /* Win32EventInputSource.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B56550976075400DA0954 /* Win32EventInputSource.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE01A8B00C5D9BCB00AEA51A /* Win32Workspace.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B56590976075400DA0954 /* Win32Workspace.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -952,7 +949,6 @@
 		FE01A9EA0C5D9BCB00AEA51A /* Win32Font.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B56180976075400DA0954 /* Win32Font.m */; settings = {ATTRIBUTES = (); }; };
 		FE01A9EB0C5D9BCB00AEA51A /* Win32Region.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B561E0976075400DA0954 /* Win32Region.m */; settings = {ATTRIBUTES = (); }; };
 		FE01A9EC0C5D9BCB00AEA51A /* Win32Window.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B56200976075400DA0954 /* Win32Window.m */; settings = {ATTRIBUTES = (); }; };
-		FE01A9EE0C5D9BCB00AEA51A /* Win32SplashPanel.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B56240976075400DA0954 /* Win32SplashPanel.m */; settings = {ATTRIBUTES = (); }; };
 		FE01A9EF0C5D9BCB00AEA51A /* Win32RunningCopyPipe.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B56260976075400DA0954 /* Win32RunningCopyPipe.m */; settings = {ATTRIBUTES = (); }; };
 		FE01A9F00C5D9BCB00AEA51A /* Win32EventInputSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B56280976075400DA0954 /* Win32EventInputSource.m */; settings = {ATTRIBUTES = (); }; };
 		FE01A9F10C5D9BCB00AEA51A /* Win32Workspace.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B562C0976075400DA0954 /* Win32Workspace.m */; settings = {ATTRIBUTES = (); }; };
@@ -1827,7 +1823,6 @@
 		6E2B56180976075400DA0954 /* Win32Font.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Win32Font.m; sourceTree = "<group>"; };
 		6E2B561E0976075400DA0954 /* Win32Region.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Win32Region.m; sourceTree = "<group>"; };
 		6E2B56200976075400DA0954 /* Win32Window.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Win32Window.m; sourceTree = "<group>"; };
-		6E2B56240976075400DA0954 /* Win32SplashPanel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Win32SplashPanel.m; sourceTree = "<group>"; };
 		6E2B56260976075400DA0954 /* Win32RunningCopyPipe.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Win32RunningCopyPipe.m; sourceTree = "<group>"; };
 		6E2B56280976075400DA0954 /* Win32EventInputSource.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Win32EventInputSource.m; sourceTree = "<group>"; };
 		6E2B562C0976075400DA0954 /* Win32Workspace.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Win32Workspace.m; sourceTree = "<group>"; };
@@ -1844,7 +1839,6 @@
 		6E2B56450976075400DA0954 /* Win32Font.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Win32Font.h; sourceTree = "<group>"; };
 		6E2B564B0976075400DA0954 /* Win32Region.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Win32Region.h; sourceTree = "<group>"; };
 		6E2B564D0976075400DA0954 /* Win32Window.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Win32Window.h; sourceTree = "<group>"; };
-		6E2B56510976075400DA0954 /* Win32SplashPanel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Win32SplashPanel.h; sourceTree = "<group>"; };
 		6E2B56530976075400DA0954 /* Win32RunningCopyPipe.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Win32RunningCopyPipe.h; sourceTree = "<group>"; };
 		6E2B56550976075400DA0954 /* Win32EventInputSource.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Win32EventInputSource.h; sourceTree = "<group>"; };
 		6E2B56590976075400DA0954 /* Win32Workspace.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Win32Workspace.h; sourceTree = "<group>"; };
@@ -2893,8 +2887,6 @@
 				6E2B561E0976075400DA0954 /* Win32Region.m */,
 				6E2B56530976075400DA0954 /* Win32RunningCopyPipe.h */,
 				6E2B56260976075400DA0954 /* Win32RunningCopyPipe.m */,
-				6E2B56510976075400DA0954 /* Win32SplashPanel.h */,
-				6E2B56240976075400DA0954 /* Win32SplashPanel.m */,
 				6E2B564D0976075400DA0954 /* Win32Window.h */,
 				6E2B56200976075400DA0954 /* Win32Window.m */,
 				6E2B56590976075400DA0954 /* Win32Workspace.h */,
@@ -3390,7 +3382,6 @@
 				6E2B56460976075400DA0954 /* Win32Font.h in Headers */,
 				6E2B564C0976075400DA0954 /* Win32Region.h in Headers */,
 				6E2B564E0976075400DA0954 /* Win32Window.h in Headers */,
-				6E2B56520976075400DA0954 /* Win32SplashPanel.h in Headers */,
 				6E2B56540976075400DA0954 /* Win32RunningCopyPipe.h in Headers */,
 				6E2B56560976075400DA0954 /* Win32EventInputSource.h in Headers */,
 				6E2B565A0976075400DA0954 /* Win32Workspace.h in Headers */,
@@ -3732,7 +3723,6 @@
 				FE01A8A90C5D9BCB00AEA51A /* Win32Font.h in Headers */,
 				FE01A8AA0C5D9BCB00AEA51A /* Win32Region.h in Headers */,
 				FE01A8AB0C5D9BCB00AEA51A /* Win32Window.h in Headers */,
-				FE01A8AD0C5D9BCB00AEA51A /* Win32SplashPanel.h in Headers */,
 				FE01A8AE0C5D9BCB00AEA51A /* Win32RunningCopyPipe.h in Headers */,
 				FE01A8AF0C5D9BCB00AEA51A /* Win32EventInputSource.h in Headers */,
 				FE01A8B00C5D9BCB00AEA51A /* Win32Workspace.h in Headers */,
@@ -4292,7 +4282,6 @@
 				6E2B56190976075400DA0954 /* Win32Font.m in Sources */,
 				6E2B561F0976075400DA0954 /* Win32Region.m in Sources */,
 				6E2B56210976075400DA0954 /* Win32Window.m in Sources */,
-				6E2B56250976075400DA0954 /* Win32SplashPanel.m in Sources */,
 				6E2B56270976075400DA0954 /* Win32RunningCopyPipe.m in Sources */,
 				6E2B56290976075400DA0954 /* Win32EventInputSource.m in Sources */,
 				6E2B562D0976075400DA0954 /* Win32Workspace.m in Sources */,
@@ -4626,7 +4615,6 @@
 				FE01A9EA0C5D9BCB00AEA51A /* Win32Font.m in Sources */,
 				FE01A9EB0C5D9BCB00AEA51A /* Win32Region.m in Sources */,
 				FE01A9EC0C5D9BCB00AEA51A /* Win32Window.m in Sources */,
-				FE01A9EE0C5D9BCB00AEA51A /* Win32SplashPanel.m in Sources */,
 				FE01A9EF0C5D9BCB00AEA51A /* Win32RunningCopyPipe.m in Sources */,
 				FE01A9F00C5D9BCB00AEA51A /* Win32EventInputSource.m in Sources */,
 				FE01A9F10C5D9BCB00AEA51A /* Win32Workspace.m in Sources */,

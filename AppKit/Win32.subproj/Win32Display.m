@@ -16,7 +16,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "KGRenderingContext_gdi.h"
 #import <AppKit/KGGraphicsState.h>
 #import <AppKit/Win32EventInputSource.h>
-#import <AppKit/Win32SplashPanel.h>
 #import <AppKit/KGContext.h>
 
 #import <AppKit/NSScreen.h>
@@ -104,15 +103,6 @@ static DWORD WINAPI runWaitCursor(LPVOID arg){
    _cursorCache=[NSMutableDictionary new];
 
    return self;
-}
-
--(void)showSplashImage {
-   _splashPanel=[[Win32SplashPanel alloc] init];
-}
-
--(void)closeSplashImage {
-   [_splashPanel release];
-   _splashPanel=nil;
 }
 
 -(KGRenderingContext_gdi *)renderingContextOnPrimaryScreen {

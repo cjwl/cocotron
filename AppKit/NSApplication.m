@@ -23,6 +23,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSPlatform.h>
 #import <AppKit/NSDocumentController.h>
 #import <AppKit/NSImage.h>
+#import <AppKit/NSImageView.h>
 #import <AppKit/NSSheetContext.h>
 
 NSString *NSModalPanelRunLoopMode=@"NSModalPanelRunLoopMode";
@@ -73,15 +74,47 @@ id NSApp=nil;
    NSUnimplementedMethod();
 }
 
+-(void)_showSplashImage {
+   NSImage *image=[NSImage imageNamed:@"splash"];
+
+   if(image!=nil){
+    NSSize    imageSize=[image size];
+    NSWindow *splash=[[NSWindow alloc] initWithContentRect:NSMakeRect(0,0,imageSize.width,imageSize.height) styleMask:NSBorderlessWindowMask backing:NSBackingStoreBuffered defer:NO];
+    NSImageView *view=[[[NSImageView alloc] initWithFrame:NSMakeRect(0,0,imageSize.width,imageSize.height)] autorelease];
+    
+    [view setImage:image];
+    [splash setContentView:view];
+    [splash setReleasedWhenClosed:YES];
+    [splash center];
+    [splash orderFront:nil];
+    [splash display];
+   }
+}
+
+-(void)_closeSplashImage {
+   int i;
+   
+   for(i=0;i<[_windows count];i++){
+    NSWindow *check=[_windows objectAtIndex:i];
+    NSView   *contentView=[check contentView];
+    
+    if([contentView isKindOfClass:[NSImageView class]])
+     if([[[(NSImageView *)contentView image] name] isEqual:@"splash"]){
+      [check close];
+      return;
+     }
+   }
+}
+
 -init {
    _display=[[NSDisplay currentDisplay] retain];
-   [_display showSplashImage];
 
    _windows=[NSMutableArray new];
    _mainMenu=nil;
 
    _modalStack=[NSMutableArray new];
 
+   [self _showSplashImage];
    return self;
 }
 
@@ -333,7 +366,7 @@ id NSApp=nil;
    [NSTimer scheduledTimerWithTimeInterval:0.1 target:nil
      selector:NULL userInfo:nil repeats:NO];
 
-   [_display closeSplashImage];
+   [self _closeSplashImage];
 
    if(_delegate==nil){
     id types=[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleDocumentTypes"];
