@@ -524,7 +524,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    for(i=0;i<count;i++)
     [array addNumber:lengths[i]];
    
-   [self contentWithFormat:@"%f %@ d ",phase,array];
+   [self contentWithFormat:@"%@ %f d ",array,phase];
 }
 
 -(void)setRenderingIntent:(CGColorRenderingIntent)intent {

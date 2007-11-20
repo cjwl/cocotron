@@ -366,7 +366,7 @@ static inline CGGlyphMetrics *fetchGlyphAdvancementIfNeeded(KGFont *self,CGGlyph
 
    [result setNameForKey:"Type" value:"FontDescriptor"];
    [result setNameForKey:"FontName" value:[self pdfFontName]];
-   [result setIntegerForKey:"Flags" value:32];
+   [result setIntegerForKey:"Flags" value:4];
    
    KGPDFReal bbox[4];
    
