@@ -19,6 +19,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSRunLoop.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSRaise.h>
+#import <Foundation/NSFileManager.h>
 #import "NSSocket_bsd.h"
 
 #import <stdio.h>
@@ -27,6 +28,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <errno.h>
+#include <string.h>
+#import <sys/socket.h>
+#import <sys/un.h>
 
 @implementation NSFileHandle_posix
 
@@ -51,31 +55,59 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     [super dealloc];
 }
 
-+fileHandleForReadingAtPath:(NSString *)path {
-    int handle = open([path fileSystemRepresentation], O_RDONLY, FOUNDATION_FILE_MODE);
+static int descriptorForPath(NSString *path,int modes){
+    NSDictionary *fileAttributes = [[NSFileManager defaultManager] fileAttributesAtPath:path traverseLink:YES];
 
-    if (handle == -1)
+    if (fileAttributes == nil)
+        return -1;
+
+    if ([[fileAttributes objectForKey:NSFileType] isEqual:NSFileTypeSocket]) {
+     int fd;
+     
+        if ((fd = socket(AF_UNIX, SOCK_STREAM, 0)) == -1)
+         return -1;
+        else {
+            int len;
+            struct sockaddr_un remote;
+
+            remote.sun_family = AF_UNIX;
+            strcpy(remote.sun_path, [path fileSystemRepresentation]);
+            len = strlen(remote.sun_path) + sizeof(remote.sun_family);
+            if (connect(fd, (struct sockaddr *)&remote, len) == -1) {
+                close(fd);
+                return -1;
+            }
+        }
+    } else {
+        return open([path fileSystemRepresentation], modes, FOUNDATION_FILE_MODE);
+    }
+}
+
++fileHandleForReadingAtPath:(NSString *)path {
+    int fd=descriptorForPath(path,O_RDONLY);
+
+    if (fd == -1)
         return nil;
     
-    return [[[self allocWithZone:NULL] initWithFileDescriptor:handle] autorelease];
+    return [[[self allocWithZone:NULL] initWithFileDescriptor:fd] autorelease];
 }
 
 +fileHandleForWritingAtPath:(NSString *)path {
-    int handle = open([path fileSystemRepresentation], O_WRONLY|O_CREAT, FOUNDATION_FILE_MODE);
+    int fd=descriptorForPath(path,O_WRONLY|O_CREAT);
 
-    if (handle == -1)
+    if (fd == -1)
         return nil;
 
-    return [[[self allocWithZone:NULL] initWithFileDescriptor:handle] autorelease];
+    return [[[self allocWithZone:NULL] initWithFileDescriptor:fd] autorelease];
 }
 
 +fileHandleForUpdatingAtPath:(NSString *)path {
-    int handle = open([path fileSystemRepresentation], O_RDWR, FOUNDATION_FILE_MODE);
+    int fd=descriptorForPath(path,O_RDWR);
 
-    if (handle == -1)
+    if (fd == -1)
         return nil;
 
-    return [[[self allocWithZone:NULL] initWithFileDescriptor:handle] autorelease];
+    return [[[self allocWithZone:NULL] initWithFileDescriptor:fd] autorelease];
 }
 
 +fileHandleWithNullDevice {
