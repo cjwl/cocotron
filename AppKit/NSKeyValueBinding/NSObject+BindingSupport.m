@@ -150,7 +150,7 @@ NSString *NSValueTransformerBindingOption=@"NSValueTransformerBindingOption";
 	id key = [NSValue valueWithNonretainedObject:self];
 	id ownBinders = [bindersForObjects objectForKey:key];
 	id binder=nil;
-	id en=[ownBinders allObjects];
+	id en=[[ownBinders allValues] objectEnumerator];
 	while(binder=[en nextObject])
 	{
 		[binder unbind];
