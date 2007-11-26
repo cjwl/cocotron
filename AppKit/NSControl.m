@@ -270,6 +270,10 @@ static NSMutableDictionary *cellClassDictionary = nil;
    [self setFloatValue:[sender floatValue]];
 }
 
+-(void)takeDoubleValueFrom:sender {
+   [self setDoubleValue:[sender doubleValue]];
+}
+
 -(void)selectCell:(NSCell *)cell {
     if (_cell == cell) {
         [_cell setState:YES];

@@ -70,11 +70,13 @@ APPKIT_EXPORT NSString *NSControlTextDidEndEditingNotification;
 -(void)setStringValue:(NSString *)value;
 -(void)setIntValue:(int)value;
 -(void)setFloatValue:(float)value;
+-(void)setDoubleValue:(double)value;
 
 -(void)takeObjectValueFrom:sender;
 -(void)takeStringValueFrom:sender;
 -(void)takeIntValueFrom:sender;
 -(void)takeFloatValueFrom:sender;
+-(void)takeDoubleValueFrom:sender;
 
 -(void)selectCell:(NSCell *)cell;
 

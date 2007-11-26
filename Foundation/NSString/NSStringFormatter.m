@@ -199,7 +199,7 @@ static inline void appendFloat(NSStringBuffer *buffer,double value,
     fractional=modf(value,&integral);
 
     while(integral>=1.0){
-     characters[length++]=(unichar)fmod(integral,10.0)+'0';
+     characters[length++]=(unichar)floor(fmod(integral,10.0)+'0');
      integral/=10.0;
     }
 
@@ -217,7 +217,7 @@ static inline void appendFloat(NSStringBuffer *buffer,double value,
      characters[length++]='.';
      for(i=0;i<precision;i++,length++){
       fractional*=10.0;
-      if((characters[length]=(unichar)fmod(fractional,10.0)+'0')!='0')
+      if((characters[length]=(unichar)floor(fmod(fractional,10.0)+'0'))!='0')
        allZeros=NO;
      }
 

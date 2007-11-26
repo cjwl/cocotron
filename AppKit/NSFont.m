@@ -8,6 +8,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 // Original - Christopher Lloyd <cjwl@objc.net>
 #import <AppKit/NSFont.h>
+#import <AppKit/NSFontFamily.h>
 #import <AppKit/NSWindow.h>
 #import <AppKit/NSGraphicsContextFunctions.h>
 #import <AppKit/CoreGraphics.h>
@@ -299,8 +300,22 @@ static NSFont **_fontCache=NULL;
 }
 
 -(NSString *)familyName {
-   NSUnimplementedMethod();
-   return nil;
+   NSString *familyName = [[NSFontFamily fontFamilyWithName:_name]
+name];
+   if (familyName == nil)
+   {
+      NSString *blank = @" ";
+      NSMutableArray *nameComponents = [NSMutableArray
+arrayWithArray:[_name componentsSeparatedByString:blank]];
+      while ([nameComponents count] > 1 && familyName == nil)
+      {
+         [nameComponents removeLastObject];
+         familyName = [[NSFontFamily fontFamilyWithName:
+[nameComponents componentsJoinedByString:blank]] name];
+      }
+   }
+
+   return familyName;
 }
 
 -(NSString *)displayName {

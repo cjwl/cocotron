@@ -871,13 +871,13 @@ U+2029 (Unicode paragraph separator), \r\n, in that order (also known as CRLF)
 }
 
 -(NSString *)stringByReplacingPercentEscapesUsingEncoding:(NSStringEncoding)encoding {
-   NSUnimplementedMethod();
-   return nil;
+ //  NSUnimplementedMethod();
+   return self;
 }
 
 -(NSString *)stringByAddingPercentEscapesUsingEncoding:(NSStringEncoding)encoding {
-   NSUnimplementedMethod();
-   return nil;
+  // NSUnimplementedMethod();
+   return self;
 }
 
 -(NSString *)stringByTrimmingCharactersInSet:(NSCharacterSet *)set {
