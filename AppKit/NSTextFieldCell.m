@@ -95,6 +95,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     rect=NSInsetRect(rect,3,3);
    else if([self isBordered])
     rect=NSInsetRect(rect,2,2);
+   else 
+    rect=NSInsetRect(rect,2,0); 
 
    return rect;
 }

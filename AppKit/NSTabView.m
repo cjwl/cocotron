@@ -388,19 +388,19 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
             [style drawTabPaneInRect:[self rectForBorder]];
 
-            if((i=[_items indexOfObjectIdenticalTo:_selectedItem])!=NSNotFound){
-                // now do selected item
-                i = [_items indexOfObject:_selectedItem];
-                [style drawTabInRect:[self rectForItemBorderAtIndex:i] clipRect:rect color:[_selectedItem color] selected:YES];
-              {
+            if((i=[_items indexOfObjectIdenticalTo:_selectedItem])!=NSNotFound) {
+               // now do selected item
+               i = [_items indexOfObject:_selectedItem];
+               [style drawTabInRect:[self rectForItemBorderAtIndex:i] clipRect:rect color:[_selectedItem color] selected:YES];
+               [[_selectedItem view] setNeedsDisplay:YES];
+
                NSRect labelRect=[self rectForItemLabelAtIndex:i];
                labelRect.origin.y+=2;
 
-                [_selectedItem drawLabel:_allowsTruncatedLabels inRect: labelRect];
+               [_selectedItem drawLabel:_allowsTruncatedLabels inRect: labelRect];
 
-                if ([[self window] firstResponder] == self)
-                    NSDottedFrameRect(NSInsetRect(labelRect,-1,0));
-              }
+               if ([[self window] firstResponder] == self)
+                  NSDottedFrameRect(NSInsetRect(labelRect,-1,0));
             }
             break;
         }

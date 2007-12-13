@@ -13,6 +13,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @interface NSOpenGLView : NSView {
    NSOpenGLPixelFormat *_pixelFormat;
    NSOpenGLContext     *_context;
+   BOOL                 _needsPrepare;
    BOOL                 _needsReshape;
 }
 

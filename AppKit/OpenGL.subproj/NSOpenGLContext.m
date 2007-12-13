@@ -84,8 +84,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       
     if((_glContext=opengl_wglCreateContext([_drawable dc]))==NULL){
      NSLog(@"unable to create _glContext");
-     [self dealloc];
-     return ;
+     return;
     }
    }
    [_drawable makeCurrentWithGLContext:_glContext];

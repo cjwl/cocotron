@@ -164,6 +164,7 @@ APPKIT_EXPORT NSString *NSViewFocusDidChangeNotification;
 
 -(void)scrollPoint:(NSPoint)point;
 -(BOOL)scrollRectToVisible:(NSRect)rect;
+-(BOOL)mouse:(NSPoint)point inRect:(NSRect)rect;
 
 -(void)allocateGState;
 -(void)releaseGState;

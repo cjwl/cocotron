@@ -877,6 +877,10 @@ static inline void buildTransformsIfNeeded(NSView *self) {
     return NO;
 }
 
+-(BOOL)mouse:(NSPoint)point inRect:(NSRect)rect {
+   return NSMouseInRect(point, rect, [self isFlipped]);
+}
+
 -(void)allocateGState {
    // unimplemented
 }
@@ -1061,9 +1065,10 @@ static inline void buildTransformsIfNeeded(NSView *self) {
    point.x+=delta.width;
    point.y+=delta.height;
 
-   [self lockFocus];
-   NSCopyBits([self gState],rect,point);
-   [self unlockFocus];
+   if([self lockFocusIfCanDraw]){
+    NSCopyBits([self gState],rect,point);
+    [self unlockFocus];
+   }
 }
 
 -(void)print:sender {

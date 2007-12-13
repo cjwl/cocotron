@@ -20,7 +20,6 @@
       [_view drawRect:[_view bounds]];
       [_view unlockFocus];
       EndPaint(_windowHandle,&paintStruct);
-      break;
      }
     }
     return 0;
@@ -135,7 +134,6 @@ static void pfdFromPixelFormat(PIXELFORMATDESCRIPTOR *pfd,NSOpenGLPixelFormat *p
    
    pfdFromPixelFormat(&pfd,pixelFormat);
 
-   _view=view;
    _windowHandle=CreateWindowEx(WS_EX_TOOLWINDOW,"NSWin32OpenGLWindow", "", WS_CLIPCHILDREN | WS_CLIPSIBLINGS| WS_POPUP|WS_CHILD,
       0, 0, 500, 500,
       NULL,NULL, GetModuleHandle (NULL),NULL);
@@ -147,10 +145,12 @@ static void pfdFromPixelFormat(PIXELFORMATDESCRIPTOR *pfd,NSOpenGLPixelFormat *p
  
    if(!SetPixelFormat(_dc,pfIndex,&pfd))
     NSLog(@"SetPixelFormat failed");
-    
+
+   SetWindowPos(_windowHandle,HWND_TOP,0,0,0,0,SWP_NOMOVE|SWP_NOSIZE|SWP_NOACTIVATE|SWP_SHOWWINDOW);
+   
+   _view=view;
    [self updateWithView:view];
-    
-    SetWindowPos(_windowHandle,HWND_TOP,0,0,0,0,SWP_NOMOVE|SWP_NOSIZE|SWP_NOACTIVATE|SWP_SHOWWINDOW);
+
    return self;
 }
 

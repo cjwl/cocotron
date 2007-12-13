@@ -60,6 +60,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    if(_context==nil){
     _context=[[NSOpenGLContext alloc] initWithFormat:_pixelFormat shareContext:nil];
     [_context setView:self];
+    _needsPrepare=YES;
    }
    
    return _context;
@@ -96,12 +97,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)lockFocus {  
-  [super lockFocus];
-  
-  [[self openGLContext] makeCurrentContext];
-  [self prepareOpenGL];
-  if(_needsReshape)
-   [self reshape];
+   [super lockFocus];
+   
+   [[self openGLContext] makeCurrentContext];
+   if(_needsPrepare){
+    [self prepareOpenGL];
+    _needsPrepare=NO;
+   }
+   if(_needsReshape)
+    [self reshape];
 }
 
 -(void)unlockFocus {
