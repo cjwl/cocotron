@@ -13,3 +13,4 @@ void NSUnicodeToLowercase(unichar *characters,unsigned length);
 void NSUnicodeToCapitalized(unichar *characters,unsigned length);
 
 unichar *NSUnicodeFromData(NSData *data,unsigned *resultLengthp);
+unichar *NSUnicodeFromDataUTF16BigEndian(NSData *data,unsigned *resultLengthp);

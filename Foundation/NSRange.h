@@ -19,6 +19,7 @@ FOUNDATION_EXPORT NSRange   NSMakeRange(unsigned location,unsigned length);
 FOUNDATION_EXPORT BOOL      NSEqualRanges(NSRange range, NSRange otherRange);
 FOUNDATION_EXPORT unsigned  NSMaxRange(NSRange range);
 FOUNDATION_EXPORT NSString *NSStringFromRange(NSRange range);
+FOUNDATION_EXPORT NSRange   NSRangeFromString(NSString *s);
 
 FOUNDATION_EXPORT BOOL      NSLocationInRange(unsigned location,NSRange range);
 FOUNDATION_EXPORT NSRange   NSIntersectionRange(NSRange range,NSRange otherRange);

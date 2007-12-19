@@ -1196,7 +1196,7 @@ static inline void buildTransformsIfNeeded(NSView *self) {
     NSRect visible=[self visibleRect];
     float  direction=[self isFlipped]?-1:1;
 
-    visible.origin.y+=[event deltaZ]*direction*[scrollView verticalLineScroll]*3;
+    visible.origin.y+=[event deltaY]*direction*[scrollView verticalLineScroll]*3;
 
 // Something equivalent to this should be in scrollRectToVisible:
     if(visible.origin.y<bounds.origin.y)

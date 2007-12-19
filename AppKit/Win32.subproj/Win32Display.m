@@ -570,11 +570,11 @@ The values should be upgraded to something which is more generic to implement, p
 
 -(BOOL)postScrollWheelMSG:(MSG)msg type:(NSEventType)type location:(NSPoint)location modifierFlags:(unsigned)modifierFlags window:(NSWindow *)window {
    NSEvent *event;
-   float deltaZ=((short)HIWORD(msg.wParam));
+   float deltaY=((short)HIWORD(msg.wParam));
 
-   deltaZ/=WHEEL_DELTA;
+   deltaY/=WHEEL_DELTA;
 
-   event=[NSEvent mouseEventWithType:type location:location modifierFlags:modifierFlags window:window deltaZ:deltaZ];
+   event=[NSEvent mouseEventWithType:type location:location modifierFlags:modifierFlags window:window deltaY:deltaY];
    [self postEvent:event atStart:NO];
    return YES;
 }

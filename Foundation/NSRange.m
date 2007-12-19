@@ -9,6 +9,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 // Original - Christopher Lloyd <cjwl@objc.net>
 #import <Foundation/NSRange.h>
 #import <Foundation/NSStringFormatter.h>
+#import <Foundation/NSScanner.h>
+#import <Foundation/NSCharacterSet.h>
 
 NSRange NSMakeRange(unsigned location,unsigned length) {
    NSRange range={location,length};
@@ -26,6 +28,28 @@ unsigned NSMaxRange(NSRange range){
 NSString *NSStringFromRange(NSRange range){
    return NSStringWithFormat(@"{location = %u; length = %u}",range.location,range.length);
 }
+
+NSRange NSRangeFromString(NSString * s) 
+{ 
+        NSRange result = NSMakeRange(0,0); 
+        NSScanner * scanner = [NSScanner scannerWithString: s]; 
+        NSCharacterSet * digitSet = [NSCharacterSet 
+decimalDigitCharacterSet]; 
+
+        [scanner scanUpToCharactersFromSet: digitSet intoString: (id *) nil]; 
+        if(![scanner isAtEnd]) 
+                { 
+                [scanner scanInt: (int *) &result.location]; 
+                [scanner scanUpToCharactersFromSet: digitSet intoString: (id *) 
+nil]; 
+                if(![scanner isAtEnd]) 
+                        { 
+                        [scanner scanInt: (int *)&result.length]; 
+                        } 
+                } 
+        return result; 
+
+} 
 
 BOOL NSLocationInRange(unsigned location,NSRange range){
    return (location>=range.location && location<NSMaxRange(range))?YES:NO;

@@ -780,3 +780,26 @@ unichar *NSUnicodeFromData(NSData *data,unsigned *resultLengthp) {
    return result;
 }
 
+unichar *NSUnicodeFromDataUTF16BigEndian(NSData *data,unsigned *resultLengthp) {
+   const unsigned char *bytes=[data bytes];
+   unsigned             i,length=[data length],resultLength,resultIndex=0;
+   unichar             *result;
+
+   if(length%2!=0)
+    [NSException raise:NSInvalidArgumentException format:@"length of unicode NSData is not even (length=%d)",length];
+
+   resultLength=length/2;
+   result=NSZoneMalloc(NULL,sizeof(unichar)*resultLength);
+
+   for(i=0;i<length;i+=2){
+    unichar high=bytes[i];
+    unichar low=bytes[i+1];
+
+    result[resultIndex++]=(high<<8)|low;
+   }
+
+   *resultLengthp=resultLength;
+
+   return result;
+}
+

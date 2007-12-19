@@ -9,6 +9,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 // Original - Christopher Lloyd <cjwl@objc.net>
 #import <Foundation/NSPropertyListReader.h>
 #import <Foundation/NSPropertyListReader_xml1.h>
+#import "NSPropertyListReader_binary1.h"
 #import <Foundation/NSPropertyListReader_vintage.h>
 #import <Foundation/NSData.h>
 #import <Foundation/NSDictionary.h>
@@ -22,7 +23,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    if(data==nil)
     return nil;
 
-   result=[NSPropertyListReader_xml1 propertyListFromData:data];
+   result=[NSPropertyListReader_binary1 propertyListFromData:data];
+   if(result==nil)
+    result=[NSPropertyListReader_xml1 propertyListFromData:data];
    if(result==nil)
     result=[NSPropertyListReader_vintage propertyListFromData:data];
     

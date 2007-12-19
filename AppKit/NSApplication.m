@@ -49,6 +49,10 @@ NSString *NSApplicationWillTerminateNotification=@"NSApplicationWillTerminateNot
 
 NSString *NSApplicationDidChangeScreenParametersNotification=@"NSApplicationDidChangeScreenParametersNotification";
 
+@interface NSDocumentController(forward) 
+-(void)_updateRecentDocumentsMenu; 
+@end 
+
 @implementation NSApplication
 
 id NSApp=nil;
@@ -384,8 +388,10 @@ id NSApp=nil;
     }
    }
 
-   if(needsUntitled && [_delegate isKindOfClass:[NSDocumentController class]])
+   if(needsUntitled && [_delegate isKindOfClass:[NSDocumentController class]]){
+    [_delegate _updateRecentDocumentsMenu]; 
     [_delegate newDocument:self];
+   }
 
    NS_DURING
     [[NSNotificationCenter defaultCenter] postNotificationName:NSApplicationDidFinishLaunchingNotification object:self];

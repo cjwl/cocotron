@@ -21,15 +21,24 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return _clickCount;
 }
 
--initWithType:(NSEventType)type location:(NSPoint)location modifierFlags:(unsigned)modifierFlags window:(NSWindow *)window deltaZ:(float)deltaZ {
+-initWithType:(NSEventType)type location:(NSPoint)location modifierFlags:(unsigned)modifierFlags window:(NSWindow *)window deltaY:(float)deltaY {
    [super initWithType:type location:location modifierFlags:modifierFlags window:window];
-   _deltaZ=deltaZ;
+   _deltaY=deltaY;
    return self;
 }
 
--(float)deltaZ {
-   return _deltaZ;
+-(float)deltaX {
+   return 0.0;
 }
 
+
+-(float)deltaY {
+   return _deltaY;
+}
+
+
+-(float)deltaZ {
+   return 0.0;
+}
 
 @end

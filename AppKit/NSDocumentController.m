@@ -41,8 +41,6 @@ static NSDocumentController *shared=nil;
    _documents=[NSMutableArray new];
    _fileTypes=[[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleDocumentTypes"] retain];
    _autosavingDelay=0;
-   
-   [self _updateRecentDocumentsMenu];
    return self;
 }
 

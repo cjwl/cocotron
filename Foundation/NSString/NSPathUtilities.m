@@ -125,10 +125,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [self getCharacters:buffer];
 
    for(i=length;--i>=0;)
-    if(ISSLASH(buffer[i]))
-     return [NSString stringWithCharacters:buffer length:i];
-
-   return self;
+    if(ISSLASH(buffer[i])){
+     if(i==0)
+      return SLASHSTRING;
+     else if(i+1<length)
+      return [NSString stringWithCharacters:buffer length:i];
+    }
+    
+   return @"";
 }
 
 -(NSString *)stringByDeletingPathExtension {

@@ -157,6 +157,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
      }
      break;
 
+    case NSUTF16BigEndianStringEncoding:{
+      unsigned length;
+      unichar *characters=NSUnicodeFromDataUTF16BigEndian(data,&length);
+
+      return NSString_unicodePtrNewNoCopy(NULL,characters,length);
+     }
+     break;
+     
     default:
  
      break;
