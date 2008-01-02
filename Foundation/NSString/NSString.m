@@ -907,9 +907,46 @@ U+2029 (Unicode paragraph separator), \r\n, in that order (also known as CRLF)
    return result;
 }
 
--(NSArray *)componentsSeparatedByCharactersInSet:(NSCharacterSet *)set {
-   NSUnimplementedMethod();
-   return 0;
+- (NSArray *) componentsSeparatedByCharactersInSet:(NSCharacterSet *)set
+{
+       NSAutoreleasePool * pool = [NSAutoreleasePool new];
+       NSMutableArray * result = [NSMutableArray array];
+       NSScanner * scanner = [NSScanner scannerWithString:self];
+       NSString * chunk = nil;
+       NSString * sepScan;
+       BOOL found, sepFound;
+       [scanner setCharactersToBeSkipped: nil];
+       sepFound = [scanner scanCharactersFromSet: set intoString:&sepScan]; // skip any preceding separators
+       if(sepFound)
+               { // if initial separator(s), start with empty component(s)
+               int sepCount = [sepScan length];
+               while(sepCount--)
+                       {
+                       [result addObject:@""];
+                       }
+               }
+
+       while((found = [scanner scanUpToCharactersFromSet: set intoString:&chunk])))
+               {
+               [result addObject:chunk];
+               sepFound = [scanner scanCharactersFromSet: set intoString:&sepScan];
+               if(sepFound)
+                       {
+                       int sepCount = [sepScan length]-1;
+                       while(sepCount--)
+                               {
+                               [result addObject:@""];
+                               }
+                       }
+               }
+       if(sepFound)
+               { // if final separator, end with empty component
+               [result addObject: @""];
+               }
+       result = [result copy];
+       [pool release];
+       result = [result autorelease];
+       return result;
 }
 
 -(NSString *)commonPrefixWithString:(NSString *)other options:(NSStringCompareOptions)options {
