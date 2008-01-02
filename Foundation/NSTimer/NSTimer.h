@@ -19,7 +19,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
   target:target selector:(SEL)selector
   userInfo:userInfo repeats:(BOOL)repeats;
 
-
 +(NSTimer *)scheduledTimerWithTimeInterval:(NSTimeInterval)timeInterval
   invocation:(NSInvocation *)invocation repeats:(BOOL)repeats;
 

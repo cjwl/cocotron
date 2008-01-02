@@ -7,8 +7,45 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 #import <Foundation/NSObject.h>
 
-@interface NSURLProtocol : NSObject {
+@class NSURLProtocol,NSURLRequest,NSURLResponse,NSURLAuthenticationChallenge,NSCachedURLResponse,NSData,NSError,NSMutableURLRequest;
 
+typedef int NSURLCacheStoragePolicy;
+
+@protocol NSURLProtocolClient
+-(void)URLProtocol:(NSURLProtocol *)urlProtocol wasRedirectedToRequest:(NSURLRequest *)request redirectResponse:(NSURLResponse *)redirect;
+-(void)URLProtocol:(NSURLProtocol *)urlProtocol didReceiveAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge;
+-(void)URLProtocol:(NSURLProtocol *)urlProtocol didCancelAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge;
+-(void)URLProtocol:(NSURLProtocol *)urlProtocol didReceiveResponse:(NSURLResponse *)response cacheStoragePolicy:(NSURLCacheStoragePolicy)policy;
+-(void)URLProtocol:(NSURLProtocol *)urlProtocol cachedResponseIsValid:(NSCachedURLResponse *)response;
+-(void)URLProtocol:(NSURLProtocol *)urlProtocol didLoadData:(NSData *)data;
+-(void)URLProtocol:(NSURLProtocol *)urlProtocol didFailWithError:(NSError *)error;
+-(void)URLProtocolDidFinishLoading:(NSURLProtocol *)urlProtocol;
+@end
+
+@interface NSURLProtocol : NSObject {
+   NSURLRequest            *_request;
+   NSCachedURLResponse     *_response;
+   id <NSURLProtocolClient> _client;
 }
+
++(BOOL)registerClass:(Class)cls;
++(void)unregisterClass:(Class)cls;
+
++propertyForKey:(NSString *)key inRequest:(NSURLRequest *)request;
++(void)removePropertyForKey:(NSString *)key inRequest:(NSMutableURLRequest *)request;
++(void)setProperty:value forKey:(NSString *)key inRequest:(NSMutableURLRequest *)request;
+
++(BOOL)canInitWithRequest:(NSURLRequest *)request;
++(NSURLRequest *)canonicalRequestForRequest:(NSURLRequest *)request;
++(BOOL)requestIsCacheEquivalent:(NSURLRequest *)request toRequest:(NSURLRequest *)other;
+
+-initWithRequest:(NSURLRequest *)request cachedResponse:(NSCachedURLResponse *)response client:(id <NSURLProtocolClient>)client;
+
+-(NSURLRequest *)request;
+-(NSCachedURLResponse *)cachedResponse;
+-(id <NSURLProtocolClient>)client;
+
+-(void)startLoading;
+-(void)stopLoading;
 
 @end

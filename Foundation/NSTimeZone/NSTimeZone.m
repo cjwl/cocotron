@@ -17,12 +17,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSBundle.h>
 #import <Foundation/NSPlatform.h>
 
+NSString *NSSystemTimeZoneDidChangeNotification=@"NSSystemTimeZoneDidChangeNotification";
+
 static NSTimeZone *_systemTimeZone=nil;
 static NSTimeZone *_defaultTimeZone=nil;
 static NSTimeZone *_localTimeZone=nil;
 
 @implementation NSTimeZone
-
 
 +(NSTimeZone *)localTimeZone {
     if (_localTimeZone == nil)
@@ -166,6 +167,14 @@ static NSTimeZone *_localTimeZone=nil;
     return [self isDaylightSavingTimeForDate:[NSDate date]];
 }
 
+-(NSTimeInterval)daylightSavingTimeOffset {
+    return [self daylightSavingTimeOffsetForDate:[NSDate date]];
+}
+
+-(NSDate *)nextDaylightSavingTimeTransition {
+    return [self nextDaylightSavingTimeTransitionAfterDate:[NSDate date]];
+}
+
 -(int)secondsFromGMTForDate:(NSDate *)date {
     NSInvalidAbstractInvocation();
     return -1;
@@ -179,6 +188,21 @@ static NSTimeZone *_localTimeZone=nil;
 -(BOOL)isDaylightSavingTimeForDate:(NSDate *)date {
     NSInvalidAbstractInvocation();
     return NO;
+}
+
+-(NSTimeInterval)daylightSavingTimeOffsetForDate:(NSDate *)date {
+   NSUnimplementedMethod();
+   return 0;
+}
+
+-(NSDate *)nextDaylightSavingTimeTransitionAfterDate:(NSDate *)date {
+   NSUnimplementedMethod();
+   return 0;
+}
+
+-(NSString *)localizedName:(NSTimeZoneNameStyle)style locale:(NSLocale *)locale {
+   NSUnimplementedMethod();
+   return 0;
 }
 
 -(NSString *)description {

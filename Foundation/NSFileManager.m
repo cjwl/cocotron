@@ -44,6 +44,98 @@ NSString *NSFileHFSTypeCode = @"NSFileHFSTypeCode";
    return NSThreadSharedInstance([[NSPlatform currentPlatform] fileManagerClassName]);
 }
 
+-delegate {
+   NSUnimplementedMethod();
+   return 0;
+}
+-(void)setDelegate:delegate {
+   NSUnimplementedMethod();
+}
+
+-(NSDictionary *)attributesOfFileSystemForPath:(NSString *)path error:(NSError **)errorp {
+   NSUnimplementedMethod();
+   return 0;
+}
+-(NSDictionary *)attributesOfItemAtPath:(NSString *)path error:(NSError **)error {
+   NSUnimplementedMethod();
+   return 0;
+}
+-(BOOL)changeCurrentDirectoryPath:(NSString *)path {
+   NSUnimplementedMethod();
+   return 0;
+}
+-(NSArray *)componentsToDisplayForPath:(NSString *)path {
+   NSUnimplementedMethod();
+   return 0;
+}
+-(BOOL)contentsEqualAtPath:(NSString *)path1 andPath:(NSString *)path2 {
+   NSUnimplementedMethod();
+   return 0;
+}
+-(NSArray *)contentsOfDirectoryAtPath:(NSString *)path error:(NSError **)error {
+   NSUnimplementedMethod();
+   return 0;
+}
+-(BOOL)copyItemAtPath:(NSString *)fromPath toPath:(NSString *)toPath error:(NSError **)error {
+   NSUnimplementedMethod();
+   return 0;
+}
+-(NSString *)destinationOfSymbolicLinkAtPath:(NSString *)path error:(NSError **)error {
+   NSUnimplementedMethod();
+   return 0;
+}
+
+-(NSString *)displayNameAtPath:(NSString *)path {
+   NSUnimplementedMethod();
+   return 0;
+}
+
+-(NSDictionary *)fileSystemAttributesAtPath:(NSString *)path {
+   NSUnimplementedMethod();
+   return 0;
+}
+
+-(BOOL)isDeletableFileAtPath:(NSString *)path {
+   NSUnimplementedMethod();
+   return 0;
+}
+
+-(BOOL)linkItemAtPath:(NSString *)fromPath toPath:(NSString *)toPath error:(NSError **)error {
+   NSUnimplementedMethod();
+   return 0;
+}
+-(BOOL)linkPath:(NSString *)source toPath:(NSString *)destination handler:handler {
+   NSUnimplementedMethod();
+   return 0;
+}
+-(BOOL)moveItemAtPath:(NSString *)fromPath toPath:(NSString *)toPath error:(NSError **)error {
+   NSUnimplementedMethod();
+   return 0;
+}
+-(BOOL)removeItemAtPath:(NSString *)path error:(NSError **)error {
+   NSUnimplementedMethod();
+   return 0;
+}
+
+-(BOOL)setAttributes:(NSDictionary *)attributes ofItemAtPath:(NSString *)path error:(NSError **)error {
+   NSUnimplementedMethod();
+   return 0;
+}
+
+-(NSString *)stringWithFileSystemRepresentation:(const char *)string length:(NSUInteger)length {
+   NSUnimplementedMethod();
+   return 0;
+}
+
+-(NSArray *)subpathsAtPath:(NSString *)path {
+   NSUnimplementedMethod();
+   return 0;
+}
+-(NSArray *)subpathsOfDirectoryAtPath:(NSString *)path error:(NSError **)error {
+   NSUnimplementedMethod();
+   return 0;
+}
+
 -(NSData *)contentsAtPath:(NSString *)path {
    return [NSData dataWithContentsOfFile:path];
 }
@@ -63,15 +155,24 @@ NSString *NSFileHFSTypeCode = @"NSFileHFSTypeCode";
     return [[[NSConcreteDirectoryEnumerator alloc] initWithPath: path] autorelease];
 }
 
--(BOOL)createDirectoryAtPath:(NSString *)path
-                  attributes:(NSDictionary *)attributes {
+-(BOOL)createDirectoryAtPath:(NSString *)path attributes:(NSDictionary *)attributes {
    NSInvalidAbstractInvocation();
    return NO;
+}
+
+-(BOOL)createDirectoryAtPath:(NSString *)path withIntermediateDirectories:(BOOL)intermediates attributes:(NSDictionary *)attributes error:(NSError **)error {
+   NSUnimplementedMethod();
+   return 0;
 }
 
 -(BOOL)createSymbolicLinkAtPath:(NSString *)path pathContent:(NSString *)destination {
    NSInvalidAbstractInvocation();
    return NO;
+}
+
+-(BOOL)createSymbolicLinkAtPath:(NSString *)path withDestinationPath:(NSString *)destPath error:(NSError **)error {
+   NSUnimplementedMethod();
+   return 0;
 }
 
 -(NSString *)pathContentOfSymbolicLinkAtPath:(NSString *)path {

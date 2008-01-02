@@ -58,6 +58,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [self encodeObject:object];
 }
 
+-(void)encodeByrefObject:object {
+   [self encodeObject:object];
+}
 
 -(void)encodeConditionalObject:object {
    [self encodeObject:object];
@@ -139,6 +142,22 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)encodeObject:object forKey:(NSString *)key {
    [self encodeObject:object];
+}
+
+-(void)encodeInt32:(int32_t)value forKey:(NSString *)key {
+   [self encodeValueOfObjCType:@encode(int32_t) at:&value];
+}
+
+-(void)encodeInt64:(int64_t)value forKey:(NSString *)key {
+   [self encodeValueOfObjCType:@encode(int64_t) at:&value];
+}
+
+-(void)encodeInteger:(NSInteger)value forKey:(NSString *)key {
+   [self encodeValueOfObjCType:@encode(NSInteger) at:&value];
+}
+
+-(void)encodeBytes:(const uint8_t *)bytes length:(NSUInteger)length forKey:(NSString *)key {
+   [self encodeBytes:bytes length:length];
 }
 
 -(void)encodePoint:(NSPoint)value forKey:(NSString *)key {
@@ -296,6 +315,24 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(NSSize)decodeSizeForKey:(NSString *)key {
    NSSize result;
    [self decodeValueOfObjCType:@encode(NSSize) at:&result];
+   return result;
+}
+
+-(int32_t)decodeInt32ForKey:(NSString *)key {
+   int32_t result;
+   [self decodeValueOfObjCType:@encode(int32_t) at:&result];
+   return result;
+}
+
+-(int64_t)decodeInt64ForKey:(NSString *)key {
+   int64_t result;
+   [self decodeValueOfObjCType:@encode(int64_t) at:&result];
+   return result;
+}
+
+-(NSInteger)decodeIntegerForKey:(NSString *)key {
+   NSInteger result;
+   [self decodeValueOfObjCType:@encode(NSInteger) at:&result];
    return result;
 }
 

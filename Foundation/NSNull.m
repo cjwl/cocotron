@@ -8,6 +8,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 // Original - Christopher Lloyd <cjwl@objc.net>
 #import <Foundation/NSNull.h>
+#import <Foundation/NSRaise.h>
 
 @class NSCoder;
 
@@ -33,6 +34,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -init {
    return self;
+}
+
+-(void)encodeWithCoder:(NSCoder *)coder {
+   NSUnimplementedMethod();
 }
 
 -initWithCoder:(NSCoder *)coder {

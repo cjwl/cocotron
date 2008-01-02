@@ -15,9 +15,19 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    NSArray  *_addresses;
 }
 
-+(NSHost *)hostWithName:(NSString *)name;
++(BOOL)isHostCacheEnabled;
++(void)setHostCacheEnabled:(BOOL)value;
++(void)flushHostCache;
 
 +(NSHost *)currentHost;
+
++(NSHost *)hostWithName:(NSString *)name;
++(NSHost *)hostWithAddress:(NSString *)address;
+
+-(BOOL)isEqualToHost:(NSHost *)host;
+
+-(NSArray *)names;
+-(NSString *)name;
 
 -(NSArray *)addresses;
 -(NSString *)address;

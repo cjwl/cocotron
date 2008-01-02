@@ -25,9 +25,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 +(NSInvocation *)invocationWithMethodSignature:(NSMethodSignature *)signature;
-// private
-+(NSInvocation *)invocationWithMethodSignature:(NSMethodSignature *)signature
-   arguments:(void *)arguments;
 
 -(NSMethodSignature *)methodSignature;
 

@@ -8,8 +8,18 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/NSObject.h>
 
+@class NSPort;
+
 @interface NSPortNameServer : NSObject {
 
 }
+
++(NSPortNameServer *)systemDefaultPortNameServer;
+
+-(NSPort *)portForName:(NSString *)name host:(NSString *)host;
+-(NSPort *)portForName:(NSString *)name;
+
+-(BOOL)registerPort:(NSPort *)port name:(NSString *)name;
+-(BOOL)removePortForName:(NSString *)name;
 
 @end

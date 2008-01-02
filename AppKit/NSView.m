@@ -924,7 +924,7 @@ static inline void buildTransformsIfNeeded(NSView *self) {
 
    CGContextSaveGState(graphicsPort);
    CGContextResetClip(graphicsPort);
-   CGContextConcatCTM(graphicsPort,[self transformToWindow]);
+   CGContextSetCTM(graphicsPort,[self transformToWindow]);
    CGContextClipToRect(graphicsPort,[self visibleRect]);
 
    [self setUpGState];
@@ -939,7 +939,8 @@ static inline void buildTransformsIfNeeded(NSView *self) {
 }
 
 -(void)unlockFocus {
-   KGContext *graphicsPort=NSCurrentGraphicsPort();
+   NSGraphicsContext *context=[[self window] graphicsContext];
+   KGContext         *graphicsPort=[context graphicsPort];
 
    CGContextRestoreGState(graphicsPort);
    [NSCurrentFocusStack() removeLastObject];
@@ -1048,6 +1049,7 @@ static inline void buildTransformsIfNeeded(NSView *self) {
     [self unlockFocus];
    }
 
+// FIX, move this
    [[self window] flushWindow];
 }
 

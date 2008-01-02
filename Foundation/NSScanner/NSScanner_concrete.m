@@ -11,6 +11,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSString.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSCharacterSet.h>
+#import <Foundation/NSRaise.h>
 
 @implementation NSScanner_concrete
 
@@ -265,6 +266,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         *valuep=sign*value;
         return YES;
     }
+}
+
+-(BOOL)scanDecimal:(NSDecimal *)valuep {
+    NSUnimplementedMethod();
+    return NO;
+}
+
+-(BOOL)scanInteger:(NSInteger *)valuep {
+    NSUnimplementedMethod();
+    return NO;
 }
 
 // The documentation appears to be wrong, it returns -1 on overflow.

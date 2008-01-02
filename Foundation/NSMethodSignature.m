@@ -114,22 +114,6 @@ NSMethodSignature *NSMethodSignatureWithTypes(const char *types) {
    return entry;
 }
 
--initWithCoder:(NSCoder *)coder {
-   char *types;
-   id    result;
-
-   [coder decodeValueOfObjCType:@encode(char *) at:&types];
-   [self dealloc];
-   result=[NSMethodSignatureWithTypes(types) retain];
-   NSZoneFree(NSZoneFromPointer(types),types);
-
-   return result;
-}
-
--(void)encodeWithCoder:(NSCoder *)coder {
-   [coder encodeValueOfObjCType:@encode(char *) at:&_typesCString];
-}
-
 // This is private but needs to stay this name for compatibility 
 +(NSMethodSignature *)signatureWithObjCTypes:(const char *)types {
    return NSMethodSignatureWithTypes(types);

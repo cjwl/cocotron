@@ -19,6 +19,71 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @implementation KGContext
 
++(NSArray *)allContextClasses {
+   NSString       *possible[]={ @"KGContext_gdi", nil };
+   NSMutableArray *result=[NSMutableArray array];
+   int             i;
+   
+   for(i=0;possible[i]!=nil;i++){
+    Class check=NSClassFromString(possible[i]);
+    
+    if(check!=Nil && [check isAvailable])
+     [result addObject:check];
+   }
+   
+   return result;
+}
+
++(KGContext *)createContextWithSize:(NSSize)size window:(CGWindow *)window {
+   NSArray *array=[self allContextClasses];
+   int      count=[array count];
+   
+   while(--count>=0){
+    Class check=[array objectAtIndex:count];
+    
+    if([check canInitWithWindow:window])
+     return [[check alloc] initWithSize:size window:window];
+   }
+   
+   return nil;
+}
+
++(KGContext *)createContextWithSize:(NSSize)size context:(KGContext *)context {
+   NSArray *array=[self allContextClasses];
+   int      count=[array count];
+   
+   while(--count>=0){
+    Class check=[array objectAtIndex:count];
+    
+    if([check canInitWithContext:context])
+     return [[check alloc] initWithSize:size context:context];
+   }
+   
+   return nil;
+}
+
++(BOOL)isAvailable {
+   return YES;
+}
+
++(BOOL)canInitWithWindow:(CGWindow *)window {
+   return YES;
+}
+
++(BOOL)canInitWithContext:(KGContext *)context {
+   return YES;
+}
+
+-initWithSize:(NSSize)size window:(CGWindow *)window {
+   NSInvalidAbstractInvocation();
+   return nil;
+}
+
+-initWithSize:(NSSize)size context:(KGContext *)context {
+   NSInvalidAbstractInvocation();
+   return nil;
+}
+
 -initWithGraphicsState:(KGGraphicsState *)state {
    _layerStack=[NSMutableArray new];
    _stateStack=[NSMutableArray new];
@@ -39,7 +104,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [super dealloc];
 }
 
-static inline KGGraphicsState *currentState(KGContext *self){
+static inline KGGraphicsState *currentState(KGContext *self){        
    return [self->_stateStack lastObject];
 }
 
@@ -218,6 +283,12 @@ static inline KGGraphicsState *currentState(KGContext *self){
 }
 
 -(void)setCTM:(CGAffineTransform)matrix {
+   CGAffineTransform initial;
+
+// we need to device transform
+   initial=[[_stateStack objectAtIndex:0] ctm];
+   matrix=CGAffineTransformConcat(initial,matrix);
+   
    [currentState(self) setCTM:matrix];
 }
 
@@ -716,6 +787,10 @@ static inline KGGraphicsState *currentState(KGContext *self){
    NSInvalidAbstractInvocation();
 }
 
+-(void)copyContext:(KGContext *)other size:(NSSize)size {
+   NSInvalidAbstractInvocation();
+}
+
 -(void)resetClip {
    [currentState(self) resetClip];
 }
@@ -756,6 +831,10 @@ static inline KGGraphicsState *currentState(KGContext *self){
 
 -(void)copyBitsInRect:(NSRect)rect toPoint:(NSPoint)point gState:(int)gState {
    NSInvalidAbstractInvocation();
+}
+
+-(NSString *)description {
+   return [_stateStack description];
 }
 
 @end

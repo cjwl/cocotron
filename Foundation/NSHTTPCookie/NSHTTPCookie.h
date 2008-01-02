@@ -7,9 +7,49 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 #import <Foundation/NSObject.h>
 
+@class NSArray,NSDictionary,NSURL,NSDate;
 
-@interface NSHTTPCookie : NSObject {
+FOUNDATION_EXPORT NSString *NSHTTPCookieSecure;
+FOUNDATION_EXPORT NSString *NSHTTPCookieDiscard;
+FOUNDATION_EXPORT NSString *NSHTTPCookieExpires;
+FOUNDATION_EXPORT NSString *NSHTTPCookieMaximumAge;
+FOUNDATION_EXPORT NSString *NSHTTPCookieOriginURL;
 
+FOUNDATION_EXPORT NSString *NSHTTPCookieVersion;
+FOUNDATION_EXPORT NSString *NSHTTPCookieDomain;
+FOUNDATION_EXPORT NSString *NSHTTPCookiePath;
+FOUNDATION_EXPORT NSString *NSHTTPCookieName;
+FOUNDATION_EXPORT NSString *NSHTTPCookiePort;
+FOUNDATION_EXPORT NSString *NSHTTPCookieValue;
+
+FOUNDATION_EXPORT NSString *NSHTTPCookieComment;
+FOUNDATION_EXPORT NSString *NSHTTPCookieCommentURL;
+
+@interface NSHTTPCookie : NSObject <NSCopying> {
+   NSDictionary *_properties;
 }
+
++(NSArray *)cookiesWithResponseHeaderFields:(NSDictionary *)headerFields forURL:(NSURL *)url;
++(NSDictionary *)requestHeaderFieldsWithCookies:(NSArray *)cookies;
+
++cookieWithProperties:(NSDictionary *)properties;
+
+-initWithProperties:(NSDictionary *)properties;
+
+-(NSDictionary *)properties;
+
+-(BOOL)isSecure;
+-(BOOL)isSessionOnly;
+-(NSDate *)expiresDate;
+
+-(NSUInteger)version;
+-(NSString *)domain;
+-(NSString *)path;
+-(NSString *)name;
+-(NSArray *)portList;
+-(NSString *)value;
+
+-(NSString *)comment;
+-(NSURL *)commentURL;
 
 @end

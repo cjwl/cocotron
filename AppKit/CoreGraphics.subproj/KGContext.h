@@ -12,7 +12,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/CGFont.h>
 #import <AppKit/CGContext.h>
 
-@class KGColor,KGColorSpace,KGShading,KGImage,KGGraphicsState,KGMutablePath,KGPath,KGPattern,KGLayer,KGPDFPage,NSMutableArray;
+@class KGColor,KGColorSpace,KGShading,KGImage,KGGraphicsState,KGMutablePath,KGPath,KGPattern,KGLayer,KGPDFPage,NSMutableArray,CGWindow;
 
 @interface KGContext : NSObject {
    NSMutableArray *_layerStack;
@@ -20,6 +20,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    KGMutablePath  *_path;
    BOOL            _allowsAntialiasing;
 }
+
++(KGContext *)createContextWithSize:(NSSize)size window:(CGWindow *)window;
++(KGContext *)createContextWithSize:(NSSize)size context:(KGContext *)context;
+
++(BOOL)isAvailable;
++(BOOL)canInitWithWindow:(CGWindow *)window;
++(BOOL)canInitWithContext:(KGContext *)context;
+
+-initWithSize:(NSSize)size window:(CGWindow *)window;
+-initWithSize:(NSSize)size context:(KGContext *)context;
 
 -initWithGraphicsState:(KGGraphicsState *)state;
 -init;
@@ -188,6 +198,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 // temporary
 
 -(void)drawContext:(KGContext *)other inRect:(CGRect)rect;
+
+-(void)copyContext:(KGContext *)other size:(NSSize)size;
 
 -(void)resetClip;
 

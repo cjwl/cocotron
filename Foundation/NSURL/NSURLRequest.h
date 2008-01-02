@@ -8,7 +8,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSObject.h>
 #import <Foundation/NSDate.h>
 
-@class NSURL,NSInputStream;
+@class NSURL,NSInputStream,NSMutableDictionary;
 
 typedef enum {
    NSURLRequestUseProtocolCachePolicy,
@@ -21,6 +21,11 @@ typedef enum {
    NSURL                  *_url;
    NSURLRequestCachePolicy _cachePolicy;
    NSTimeInterval          _timeoutInterval;
+   NSString               *_method;
+   id                      _bodyDataOrStream;
+   NSMutableDictionary    *_headerFields;
+   NSURL                  *_mainDocumentURL;
+   BOOL                    _handleCookies;
 }
 
 -initWithURL:(NSURL *)url;
@@ -33,13 +38,13 @@ typedef enum {
 -(NSURLRequestCachePolicy)cachePolicy;
 -(NSTimeInterval)timeoutInterval;
 
+-(NSString *)HTTPMethod;
+-(NSData *)HTTPBody;
 -(NSInputStream *)HTTPBodyStream;
 
 -(NSDictionary *)allHTTPHeaderFields;
 -(NSString *)valueForHTTPHeaderField:(NSString *)field;
 
--(NSData *)HTTPBody;
--(NSString *)HTTPMethod;
 -(NSURL *)mainDocumentURL;
 
 -(BOOL)HTTPShouldHandleCookies;

@@ -8,7 +8,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 // Original - Christopher Lloyd <cjwl@objc.net>
 #import <Foundation/NSConnection.h>
+#import <Foundation/NSPort.h>
 #import <Foundation/NSString.h>
+#import <Foundation/NSArray.h>
+#import <Foundation/NSDictionary.h>
 #import <Foundation/NSRaise.h>
 
 NSString *NSConnectionReplyMode=@"NSConnectionReplyMode";
@@ -26,13 +29,19 @@ NSString *NSConnectionReplyMode=@"NSConnectionReplyMode";
 }
 
 -initWithReceivePort:(NSPort *)receivePort sendPort:(NSPort *)sendPort {
-   NSUnimplementedMethod();
-   return nil;
+   _receivePort=[receivePort retain];
+   _sendPort=[sendPort retain];
+   return self;
+}
+
+-(void)dealloc {
+   [_receivePort release];
+   [_sendPort release];
+   [super dealloc];
 }
 
 +(NSConnection *)connectionWithReceivePort:(NSPort *)receivePort sendPort:(NSPort *)sendPort {
-   NSUnimplementedMethod();
-   return nil;
+   return [[[self alloc] initWithReceivePort:receivePort sendPort:sendPort] autorelease];
 }
 
 +(NSConnection *)connectionWithRegisteredName:(NSString *)name host:(NSString *)hostName usingNameServer:(NSPortNameServer *)nameServer {
@@ -46,13 +55,11 @@ NSString *NSConnectionReplyMode=@"NSConnectionReplyMode";
 }
 
 +(NSDistantObject *)rootProxyForConnectionWithRegisteredName:(NSString *)name host:(NSString *)hostName usingNameServer:(NSPortNameServer *)nameServer {
-   NSUnimplementedMethod();
-   return nil;
+   return [[self connectionWithRegisteredName:name host:hostName usingNameServer:nameServer] rootProxy];
 }
 
 +(NSDistantObject *)rootProxyForConnectionWithRegisteredName:(NSString *)name host:(NSString *)hostName {
-   NSUnimplementedMethod();
-   return nil;
+   return [[self connectionWithRegisteredName:name host:hostName] rootProxy];
 }
 
 +currentConversation {
@@ -61,48 +68,39 @@ NSString *NSConnectionReplyMode=@"NSConnectionReplyMode";
 }
 
 -delegate {
-   NSUnimplementedMethod();
-   return nil;
+   return _delegate;
 }
 
 -(BOOL)isValid {
-   NSUnimplementedMethod();
-   return NO;
+   return _isValid;
 }
 
 -(BOOL)independentConversationQueueing {
-   NSUnimplementedMethod();
-   return NO;
+   return _independentConversationQueueing;
 }
 
 -(BOOL)multipleThreadsEnabled {
-   NSUnimplementedMethod();
-   return NO;
+   return _multipleThreadsEnabled;
 }
 
 -(NSTimeInterval)replyTimeout {
-   NSUnimplementedMethod();
-   return 0;
+   return _replyTimeout;
 }
 
 -(NSTimeInterval)requestTimeout {
-   NSUnimplementedMethod();
-   return 0;
+   return _requestTimeout;
 }
 
 -(NSPort *)sendPort {
-   NSUnimplementedMethod();
-   return nil;
+   return _sendPort;
 }
 
 -(NSPort *)receivePort {
-   NSUnimplementedMethod();
-   return nil;
+   return _receivePort;
 }
 
 -(NSArray *)requestModes {
-   NSUnimplementedMethod();
-   return nil;
+   return _requestModes;
 }
 
 -rootObject {
@@ -126,7 +124,7 @@ NSString *NSConnectionReplyMode=@"NSConnectionReplyMode";
 }
 
 -(void)setDelegate:delegate {
-   NSUnimplementedMethod();
+   _delegate=delegate;
 }
 
 -(void)invalidate {
@@ -142,10 +140,12 @@ NSString *NSConnectionReplyMode=@"NSConnectionReplyMode";
 }
 
 -(void)setReplyTimeout:(NSTimeInterval)seconds {
+   _replyTimeout=seconds;
    NSUnimplementedMethod();
 }
 
 -(void)setRequestTimeout:(NSTimeInterval)seconds {
+   _requestTimeout=seconds;
    NSUnimplementedMethod();
 }
 
@@ -184,9 +184,7 @@ NSString *NSConnectionReplyMode=@"NSConnectionReplyMode";
 }
 
 -(NSDictionary *)statistics {
-   NSUnimplementedMethod();
-   return nil;
+   return _statistics;
 }
-
 
 @end

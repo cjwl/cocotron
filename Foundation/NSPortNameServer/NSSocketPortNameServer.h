@@ -8,9 +8,23 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/NSPortNameServer.h>
 
-
-@interface NSSocketPortNameServer : NSObject {
+@interface NSSocketPortNameServer : NSPortNameServer {
 
 }
+
++sharedInstance;
+
+-(unsigned short)defaultNameServerPortNumber;
+
+-(void)setDefaultNameServerPortNumber:(unsigned short)number;
+
+-(NSPort *)portForName:(NSString *)name host:(NSString *)host nameServerPortNumber:(unsigned short)number;
+-(NSPort *)portForName:(NSString *)name host:(NSString *)host;
+-(NSPort *)portForName:(NSString *)name;
+
+-(BOOL)registerPort:(NSPort *)port name:(NSString *)name;
+-(BOOL)registerPort:(NSPort *)port name:(NSString *)name nameServerPortNumber:(unsigned short)number;
+
+-(BOOL)removePortForName:(NSString *)name;
 
 @end

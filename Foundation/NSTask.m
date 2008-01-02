@@ -23,6 +23,11 @@ NSString *NSTaskDidTerminateNotification=@"NSTaskDidTerminateNotification";
     return NSAllocateObject(self,0,zone);
 }
 
++(NSTask *)launchedTaskWithLaunchPath:(NSString *)path arguments:(NSArray *)arguments {
+   NSUnimplementedMethod();
+   return nil;
+}
+
 -init {
    NSInvalidAbstractInvocation();
    return self;
@@ -43,6 +48,26 @@ NSString *NSTaskDidTerminateNotification=@"NSTaskDidTerminateNotification";
    return nil;
 }
 
+-(NSDictionary *)environment {
+   NSInvalidAbstractInvocation();
+   return nil;
+}
+
+-standardError {
+   NSInvalidAbstractInvocation();
+   return nil;
+}
+
+-standardInput {
+   NSInvalidAbstractInvocation();
+   return nil;
+}
+
+-standardOutput {
+   NSInvalidAbstractInvocation();
+   return nil;
+}
+
 -(void)setCurrentDirectoryPath:(NSString *)path {
    NSInvalidAbstractInvocation();
 }
@@ -52,6 +77,10 @@ NSString *NSTaskDidTerminateNotification=@"NSTaskDidTerminateNotification";
 }
 
 -(void)setArguments:(NSArray *)arguments {
+   NSInvalidAbstractInvocation();
+}
+
+-(void)setEnvironment:(NSDictionary *)values {
    NSInvalidAbstractInvocation();
 }
 
@@ -72,6 +101,20 @@ NSString *NSTaskDidTerminateNotification=@"NSTaskDidTerminateNotification";
 }
 
 -(BOOL)isRunning {
+   NSInvalidAbstractInvocation();
+   return NO;
+}
+
+-(void)interrupt {
+   NSInvalidAbstractInvocation();
+}
+
+-(BOOL)suspend {
+   NSInvalidAbstractInvocation();
+   return NO;
+}
+
+-(BOOL)resume {
    NSInvalidAbstractInvocation();
    return NO;
 }

@@ -51,7 +51,7 @@ int __CFConstantStringClassReference[1];
 }
 
 -initWithCharactersNoCopy:(unichar *)characters length:(unsigned)length
-             freeWhenDone:(BOOL)freeBuffer {
+             freeWhenDone:(BOOL)freeWhenDone {
    NSInvalidAbstractInvocation();
    return nil;
 }
@@ -66,7 +66,7 @@ int __CFConstantStringClassReference[1];
 }
 
 -initWithCStringNoCopy:(char *)cString length:(unsigned)length
-          freeWhenDone:(BOOL)freeBuffer {
+          freeWhenDone:(BOOL)freeWhenDone {
    NSInvalidAbstractInvocation();
    return nil;
 }
@@ -79,6 +79,11 @@ int __CFConstantStringClassReference[1];
 -initWithCString:(const char *)cString {
    NSInvalidAbstractInvocation();
    return nil;
+}
+
+-initWithCString:(const char *)cString encoding:(NSStringEncoding)encoding {
+   NSUnimplementedMethod();
+   return 0;
 }
 
 -initWithString:(NSString *)string {
@@ -117,10 +122,47 @@ int __CFConstantStringClassReference[1];
    return nil;
 }
 
+-initWithBytes:(const void *)bytes length:(NSUInteger)length encoding:(NSStringEncoding)encoding {
+   NSUnimplementedMethod();
+   return 0;
+}
+-initWithBytesNoCopy:(void *)bytes length:(NSUInteger)length encoding:(NSStringEncoding)encoding freeWhenDone:(BOOL)freeWhenDone {
+   NSUnimplementedMethod();
+   return 0;
+}
+
 -initWithContentsOfFile:(NSString *)path {
    NSInvalidAbstractInvocation();
    return nil;
 }
+
+-initWithContentsOfFile:(NSString *)path encoding:(NSStringEncoding)encoding error:(NSError **)error {
+   NSUnimplementedMethod();
+   return 0;
+}
+-initWithContentsOfFile:(NSString *)path usedEncoding:(NSStringEncoding *)encoding error:(NSError **)error {
+   NSUnimplementedMethod();
+   return 0;
+}
+-initWithContentsOfURL:(NSURL *)url encoding:(NSStringEncoding)encoding error:(NSError **)error {
+   NSUnimplementedMethod();
+   return 0;
+}
+-initWithContentsOfURL:(NSURL *)url usedEncoding:(NSStringEncoding *)encoding error:(NSError **)error {
+   NSUnimplementedMethod();
+   return 0;
+}
+
++(const NSStringEncoding *)availableStringEncodings {
+   NSUnimplementedMethod();
+   return 0;
+}
+
++(NSString *)localizedNameOfStringEncoding:(NSStringEncoding)encoding {
+   NSUnimplementedMethod();
+   return 0;
+}
+
 
 +stringWithCharacters:(const unichar *)unicode length:(unsigned)length {
    if(self==OBJCClassFromString("NSString"))
@@ -177,6 +219,36 @@ int __CFConstantStringClassReference[1];
    }
 
    return [[[self allocWithZone:NULL] initWithContentsOfFile:path] autorelease];
+}
+
++stringWithContentsOfFile:(NSString *)path encoding:(NSStringEncoding)encoding error:(NSError **)error {
+   NSUnimplementedMethod();
+   return 0;
+}
+
++stringWithContentsOfFile:(NSString *)path usedEncoding:(NSStringEncoding *)encoding error:(NSError **)error {
+   NSUnimplementedMethod();
+   return 0;
+}
+
++stringWithContentsOfURL:(NSURL *)url encoding:(NSStringEncoding)encoding error:(NSError **)error {
+   NSUnimplementedMethod();
+   return 0;
+}
+
++stringWithContentsOfURL:(NSURL *)url usedEncoding:(NSStringEncoding *)encoding error:(NSError **)error {
+   NSUnimplementedMethod();
+   return 0;
+}
+
++stringWithCString:(const char *)cString encoding:(NSStringEncoding)encoding {
+   NSUnimplementedMethod();
+   return 0;
+}
+
++stringWithUTF8String:(const char *)utf8 {
+   NSUnimplementedMethod();
+   return 0;
 }
 
 +localizedStringWithFormat:(NSString *)format,... {
@@ -291,6 +363,11 @@ static inline NSComparisonResult compareWithOptions(NSString *self,NSString *oth
    return (i<otherLength)?NSOrderedAscending:NSOrderedDescending;
 }
 
+-(NSComparisonResult)compare:(NSString *)other options:(unsigned)options range:(NSRange)range locale:(NSLocale *)locale {
+   NSUnimplementedMethod();
+   return 0;
+}
+
 -(NSComparisonResult)compare:(NSString *)other options:(unsigned)options range:(NSRange)range {
    return compareWithOptions(self,other,options,range);
 }
@@ -306,6 +383,15 @@ static inline NSComparisonResult compareWithOptions(NSString *self,NSString *oth
 
 -(NSComparisonResult)caseInsensitiveCompare:(NSString *)other {
    return compareWithOptions(self,other,NSCaseInsensitiveSearch,NSMakeRange(0,[self length]));
+}
+
+-(NSComparisonResult)localizedCompare:(NSString *)other {
+   NSUnimplementedMethod();
+   return 0;
+}
+-(NSComparisonResult)localizedCaseInsensitiveCompare:(NSString *)other {
+   NSUnimplementedMethod();
+   return 0;
 }
 
 -(unsigned)hash {
@@ -439,9 +525,13 @@ static inline NSRange rangeOfPatternNext(unichar *buffer,unichar *patbuffer,int 
     return NSMakeRange(NSNotFound,0);
 }
 
+-(NSRange)rangeOfString:(NSString *)string options:(unsigned)options range:(NSRange)range locale:(NSLocale *)locale {
+   NSUnimplementedMethod();
+   return NSMakeRange(0,0);
+}
+
 // FIX, add options
--(NSRange)rangeOfString:(NSString *)pattern options:(unsigned)options
- range:(NSRange)range {
+-(NSRange)rangeOfString:(NSString *)pattern options:(unsigned)options range:(NSRange)range {
    unsigned length=[self length];
    unichar  buffer[length];
    unsigned patlength=[pattern length];
@@ -464,7 +554,7 @@ static inline NSRange rangeOfPatternNext(unichar *buffer,unichar *patbuffer,int 
 
 // need to support NSBackwardsSearch 
    if(options&(NSLiteralSearch|NSBackwardsSearch|NSAnchoredSearch))
-    NSUnsupportedMethod();
+    NSUnimplementedMethod();
 
    computeNext(next,patbuffer,patlength);
    
@@ -587,6 +677,14 @@ U+2029 (Unicode paragraph separator), \r\n, in that order (also known as CRLF)
    return result;
 }
 
+-(void)getParagraphStart:(NSUInteger *)startp end:(NSUInteger *)endp contentsEnd:(NSUInteger *)contentsEndp forRange:(NSRange)range {
+   NSUnimplementedMethod();
+}
+-(NSRange)paragraphRangeForRange:(NSRange)range {
+   NSUnimplementedMethod();
+   return NSMakeRange(0,0);
+}
+
 -(NSString *)substringWithRange:(NSRange)range {
    unichar *unicode;
 
@@ -615,6 +713,11 @@ U+2029 (Unicode paragraph separator), \r\n, in that order (also known as CRLF)
 -(NSString *)substringToIndex:(unsigned)location {
    NSRange range={0,location};
    return [self substringWithRange:range];
+}
+
+-(BOOL)boolValue {
+   NSUnimplementedMethod();
+   return 0;
 }
 
 -(int)intValue {
@@ -649,6 +752,15 @@ U+2029 (Unicode paragraph separator), \r\n, in that order (also known as CRLF)
    }
 
    return sign*value;
+}
+
+-(NSInteger)integerValue {
+   NSUnimplementedMethod();
+   return 0;
+}
+-(long long)longLongValue {
+   NSUnimplementedMethod();
+   return 0;
 }
 
 -(float)floatValue {
@@ -795,6 +907,63 @@ U+2029 (Unicode paragraph separator), \r\n, in that order (also known as CRLF)
    return result;
 }
 
+-(NSArray *)componentsSeparatedByCharactersInSet:(NSCharacterSet *)set {
+   NSUnimplementedMethod();
+   return 0;
+}
+
+-(NSString *)commonPrefixWithString:(NSString *)other options:(NSStringCompareOptions)options {
+   NSUnimplementedMethod();
+   return 0;
+}
+-(NSString *)stringByPaddingToLength:(NSUInteger)length withString:(NSString *)padding startingAtIndex:(NSUInteger)index {
+   NSUnimplementedMethod();
+   return 0;
+}
+-(NSString *)stringByReplacingCharactersInRange:(NSRange)range withString:(NSString *)substitute {
+   NSUnimplementedMethod();
+   return 0;
+}
+-(NSString *)stringByReplacingOccurrencesOfString:(NSString *)original withString:(NSString *)substitute {
+   NSUnimplementedMethod();
+   return 0;
+}
+-(NSString *)stringByReplacingOccurrencesOfString:(NSString *)original withString:(NSString *)substitute options:(NSStringCompareOptions)options range:(NSRange)range {
+   NSUnimplementedMethod();
+   return 0;
+}
+
+-(NSString *)stringByFoldingWithOptions:(NSStringCompareOptions)options locale:(NSLocale *)locale {
+   NSUnimplementedMethod();
+   return 0;
+}
+
+-(NSRange)rangeOfComposedCharacterSequenceAtIndex:(NSUInteger)index {
+   NSUnimplementedMethod();
+   return NSMakeRange(0,0);
+}
+-(NSRange)rangeOfComposedCharacterSequencesForRange:(NSRange)range {
+   NSUnimplementedMethod();
+   return NSMakeRange(0,0);
+}
+
+-(NSString *)precomposedStringWithCanonicalMapping {
+   NSUnimplementedMethod();
+   return 0;
+}
+-(NSString *)decomposedStringWithCanonicalMapping {
+   NSUnimplementedMethod();
+   return 0;
+}
+-(NSString *)precomposedStringWithCompatibilityMapping {
+   NSUnimplementedMethod();
+   return 0;
+}
+-(NSString *)decomposedStringWithCompatibilityMapping {
+   NSUnimplementedMethod();
+   return 0;
+}
+
 -(NSString *)description {
    return self;
 }
@@ -813,8 +982,37 @@ U+2029 (Unicode paragraph separator), \r\n, in that order (also known as CRLF)
    return [data writeToFile:path atomically:atomically];
 }
 
+-(BOOL)writeToFile:(NSString *)path atomically:(BOOL)atomically encoding:(NSStringEncoding)encoding error:(NSError **)error {
+   NSUnimplementedMethod();
+   return 0;
+}
+-(BOOL)writeToURL:(NSURL *)url atomically:(BOOL)atomically encoding:(NSStringEncoding)encoding error:(NSError **)error {
+   NSUnimplementedMethod();
+   return 0;
+}
+
+-(NSStringEncoding)fastestEncoding {
+   NSUnimplementedMethod();
+   return 0;
+}
+
+-(NSStringEncoding)smallestEncoding {
+   NSUnimplementedMethod();
+   return 0;
+}
+
 -(BOOL)canBeConvertedToEncoding:(NSStringEncoding)encoding {
    return ([self dataUsingEncoding:encoding]!=nil)?YES:NO;
+}
+
+-(NSUInteger)lengthOfBytesUsingEncoding:(NSStringEncoding)encoding {
+   NSUnimplementedMethod();
+   return 0;
+}
+
+-(NSUInteger)maximumLengthOfBytesUsingEncoding:(NSStringEncoding)encoding {
+   NSUnimplementedMethod();
+   return 0;
 }
 
 // FIX, not complete
@@ -855,6 +1053,11 @@ U+2029 (Unicode paragraph separator), \r\n, in that order (also known as CRLF)
 
 -(NSData *)dataUsingEncoding:(NSStringEncoding)encoding {
    return [self dataUsingEncoding:encoding allowLossyConversion:NO];
+}
+
+-(BOOL)getBytes:(void *)bytes maxLength:(NSUInteger)maxLength usedLength:(NSUInteger *)usedLength encoding:(NSStringEncoding)encoding options:(NSStringEncodingConversionOptions)options range:(NSRange)range remainingRange:(NSRange *)remainingRange {
+   NSUnimplementedMethod();
+   return 0;
 }
 
 -(const char *)UTF8String {
@@ -898,6 +1101,16 @@ U+2029 (Unicode paragraph separator), \r\n, in that order (also known as CRLF)
    }
    
    return [self substringWithRange:NSMakeRange(location,length-location)];
+}
+
+-(const char *)cStringUsingEncoding:(NSStringEncoding)encoding {
+   NSUnimplementedMethod();
+   return 0;
+}
+
+-(BOOL)getCString:(char *)cString maxLength:(NSUInteger)maxLength encoding:(NSStringEncoding)encoding {
+   NSUnimplementedMethod();
+   return 0;
 }
 
 +(NSStringEncoding)defaultCStringEncoding {

@@ -164,6 +164,12 @@ static NSMapTable *pathToObject=NULL;
 
    return bundle;
 }
+
++(NSBundle *)bundleWithIdentifier:(NSString *)identifier {
+   NSUnimplementedMethod();
+   return 0;
+}
+
 -initWithPath:(NSString *)path {
    NSBundle *realBundle=NSMapGet(pathToObject,path);
 
@@ -192,13 +198,34 @@ static NSMapTable *pathToObject=NULL;
    return [[[self allocWithZone:NULL] initWithPath:path] autorelease];
 }
 
++(NSString *)pathForResource:(NSString *)name ofType:(NSString *)type inDirectory:(NSString *)path {
+   NSUnimplementedMethod();
+   return 0;
+}
++(NSArray *)pathsForResourcesOfType:(NSString *)type inDirectory:(NSString *)path {
+   NSUnimplementedMethod();
+   return 0;
+}
++(NSArray *)preferredLocalizationsFromArray:(NSArray *)localizations {
+   NSUnimplementedMethod();
+   return 0;
+}
++(NSArray *)preferredLocalizationsFromArray:(NSArray *)localizations forPreferences:(NSArray *)preferences {
+   NSUnimplementedMethod();
+   return 0;
+}
+
 -(NSString *)bundlePath {
    return _path;
 }
 
-
 -(NSString *)resourcePath {
    return _resourcePath;
+}
+
+-(NSString *)builtInPlugInsPath {
+   NSUnimplementedMethod();
+   return 0;
 }
 
 -(NSDictionary *)infoDictionary {
@@ -217,12 +244,55 @@ static NSMapTable *pathToObject=NULL;
    return _infoDictionary;
 }
 
+-(NSDictionary *)localizedInfoDictionary {
+   NSUnimplementedMethod();
+   return 0;
+}
+
 -objectForInfoDictionaryKey:(NSString *)key {
    return [[self infoDictionary] objectForKey:key];
 }
 
 -(NSString *)bundleIdentifier {
    return [[self infoDictionary] objectForKey:@"CFBundleIdentifier"];
+}
+
+-(NSString *)developmentLocalization {
+   NSUnimplementedMethod();
+   return 0;
+}
+-(NSArray *)executableArchitectures {
+   NSUnimplementedMethod();
+   return 0;
+}
+-(NSString *)executablePath {
+   NSUnimplementedMethod();
+   return 0;
+}
+-(NSArray *)localizations {
+   NSUnimplementedMethod();
+   return 0;
+}
+-(NSArray *)preferredLocalizations {
+   NSUnimplementedMethod();
+   return 0;
+}
+-(NSString *)privateFrameworksPath {
+   NSUnimplementedMethod();
+   return 0;
+}
+-(NSString *)sharedFrameworksPath {
+   NSUnimplementedMethod();
+   return 0;
+}
+-(NSString *)sharedSupportPath {
+   NSUnimplementedMethod();
+   return 0;
+}
+
+-(NSString *)pathForAuxiliaryExecutable:(NSString *)executable {
+   NSUnimplementedMethod();
+   return 0;
 }
 
 -(Class)principalClass {
@@ -237,6 +307,19 @@ static NSMapTable *pathToObject=NULL;
    [self load];
 
    return NSClassFromString(className);
+}
+
+-(BOOL)isLoaded {
+   NSUnimplementedMethod();
+   return 0;
+}
+-(BOOL)preflightAndReturnError:(NSError **)error {
+   NSUnimplementedMethod();
+   return 0;
+}
+-(BOOL)loadAndReturnError:(NSError **)error {
+   NSUnimplementedMethod();
+   return 0;
 }
 
 /*
@@ -292,6 +375,10 @@ static NSMapTable *pathToObject=NULL;
    return YES;
 }
 
+-(BOOL)unload {
+   NSUnimplementedMethod();
+   return 0;
+}
 
 -(NSArray *)lookInDirectories {
    return [NSArray arrayWithObjects:@"English.lproj",@"",nil];
@@ -311,8 +398,7 @@ static NSMapTable *pathToObject=NULL;
    return nil;
 }
 
--(NSString *)pathForResource:(NSString *)name ofType:(NSString *)type
-  inDirectory:(NSString *)directory {
+-(NSString *)pathForResource:(NSString *)name ofType:(NSString *)type inDirectory:(NSString *)directory {
    NSString *file,*path;
 
    file=[[name stringByAppendingFormat:@"-%@",[[NSPlatform currentPlatform] resourceNameSuffix]] stringByAppendingPathExtension:type];
@@ -325,12 +411,16 @@ static NSMapTable *pathToObject=NULL;
    return path;
 }
 
+-(NSString *)pathForResource:(NSString *)name ofType:(NSString *)type inDirectory:(NSString *)path forLocalization:(NSString *)localization {
+   NSUnimplementedMethod();
+   return 0;
+}
+
 -(NSString *)pathForResource:(NSString *)name ofType:(NSString *)type {
    return [self pathForResource:name ofType:type inDirectory:_resourcePath];
 }
 
--(NSArray *)pathsForResourcesOfType:(NSString *)type
-  inDirectory:(NSString *)path {
+-(NSArray *)pathsForResourcesOfType:(NSString *)type inDirectory:(NSString *)path {
 	id fullPath=[[self resourcePath] stringByAppendingPathComponent:path];
 	id allFiles=[[NSFileManager defaultManager] directoryContentsAtPath:fullPath];
 	int i;
@@ -344,6 +434,10 @@ static NSMapTable *pathToObject=NULL;
    return ret;
 }
 
+-(NSArray *)pathsForResourcesOfType:(NSString *)type inDirectory:(NSString *)path forLocalization:(NSString *)localization {
+   NSUnimplementedMethod();
+   return 0;
+}
 
 -(NSString *)localizedStringForKey:(NSString *)key value:(NSString *)value table:(NSString *)table {
    NSString     *result;

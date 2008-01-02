@@ -42,4 +42,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @end
 
+@interface NSObject(NSArchiver)
+-replacementObjectForArchiver:(NSArchiver *)archiver;
+@end
+
 #import <Foundation/NSUnarchiver.h>

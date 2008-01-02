@@ -398,7 +398,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    _position=0;
    _length=[data length];
 
-   
+   _objectZone=NSDefaultMallocZone();
    _version=0;
    _objects=NSCreateMapTable(NSIntMapKeyCallBacks,
        NSNonRetainedObjectMapValueCallBacks,0);
@@ -445,12 +445,39 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return [unarchiver decodeObject];
 }
 
+-(BOOL)isAtEnd {
+   return (_position<_length)?NO:YES;
+}
+
+-(NSZone *)objectZone {
+   return _objectZone;
+}
+
+-(void)setObjectZone:(NSZone *)zone {
+   _objectZone=zone;
+}
+
+-(unsigned)systemVersion {
+   NSUnimplementedMethod();
+   return 0;
+}
+
 -(void)decodeClassName:(NSString *)archiveName asClassName:(NSString *)runtimeName {
    NSUnimplementedMethod();
 }
 
+-(NSString *)classNameDecodedForArchiveClassName:(NSString *)className {
+   NSUnimplementedMethod();
+   return 0;
+}
+
 +(void)decodeClassName:(NSString *)archiveName asClassName:(NSString *)runtimeName {
    NSUnimplementedMethod();
+}
+
++(NSString *)classNameDecodedForArchiveClassName:(NSString *)className {
+   NSUnimplementedMethod();
+   return 0;
 }
 
 -(void)replaceObject:original withObject:replacement {

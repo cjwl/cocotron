@@ -21,21 +21,32 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return NSAllocateObject(self,0,zone);
 }
 
--initWithString:(NSString *)string {
-    NSInvalidAbstractInvocation();
-    return nil;
-}
-
-+(id)scannerWithString:(NSString *)string {
++scannerWithString:(NSString *)string {
     return [[[self allocWithZone:NULL] initWithString:string] autorelease];
 }
 
-+(id)localizedScannerWithString:(NSString *)string {
++localizedScannerWithString:(NSString *)string {
     NSScanner *scanner = [self scannerWithString:string];
 
     [scanner setLocale:[[NSUserDefaults standardUserDefaults] dictionaryRepresentation]];
 
     return scanner;
+}
+
+-initWithString:(NSString *)string {
+    NSInvalidAbstractInvocation();
+    return nil;
+}
+
+-copyWithZone:(NSZone *)zone {
+   NSScanner *copy=[[NSScanner alloc] initWithString:[self string]];
+   
+   [copy setCharactersToBeSkipped:[self charactersToBeSkipped]];
+   [copy setCaseSensitive:[self caseSensitive]];
+   [copy setLocale:[self locale]];
+   [copy setScanLocation:[self scanLocation]];
+   
+   return copy;
 }
 
 -(NSString *)string {
@@ -100,6 +111,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(BOOL)scanDouble:(double *)value {
+    NSInvalidAbstractInvocation();
+    return NO;
+}
+
+-(BOOL)scanDecimal:(NSDecimal *)valuep {
+    NSInvalidAbstractInvocation();
+    return NO;
+}
+
+-(BOOL)scanInteger:(NSInteger *)valuep {
     NSInvalidAbstractInvocation();
     return NO;
 }

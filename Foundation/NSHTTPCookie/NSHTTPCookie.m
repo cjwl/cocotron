@@ -6,8 +6,96 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 #import <Foundation/NSHTTPCookie.h>
-
+#import <Foundation/NSDictionary.h>
+#import <Foundation/NSRaise.h>
 
 @implementation NSHTTPCookie
+
++(NSArray *)cookiesWithResponseHeaderFields:(NSDictionary *)headerFields forURL:(NSURL *)url {
+   NSUnimplementedMethod();
+   return nil;
+}
+
++(NSDictionary *)requestHeaderFieldsWithCookies:(NSArray *)cookies {
+   NSUnimplementedMethod();
+   return 0;
+}
+
++cookieWithProperties:(NSDictionary *)properties {
+   return [[[self alloc] initWithProperties:properties] autorelease];
+}
+
+-initWithProperties:(NSDictionary *)properties {
+   _properties=[properties copy];
+   return self;
+}
+
+-(void)dealloc {
+   [_properties release];
+   [super dealloc];
+}
+
+-copyWithZone:(NSZone *)zone {
+   return [self retain];
+}
+
+-(NSDictionary *)properties {
+   return _properties;
+}
+
+-(BOOL)isSecure {
+   NSUnimplementedMethod();
+   return 0;
+}
+
+-(BOOL)isSessionOnly {
+   NSUnimplementedMethod();
+   return 0;
+}
+
+-(NSDate *)expiresDate {
+   NSUnimplementedMethod();
+   return 0;
+}
+
+-(NSUInteger)version {
+   NSUnimplementedMethod();
+   return 0;
+}
+
+-(NSString *)domain {
+   NSUnimplementedMethod();
+   return 0;
+}
+
+-(NSString *)path {
+   NSUnimplementedMethod();
+   return 0;
+}
+
+-(NSString *)name {
+   NSUnimplementedMethod();
+   return 0;
+}
+
+-(NSArray *)portList {
+   NSUnimplementedMethod();
+   return 0;
+}
+
+-(NSString *)value {
+   NSUnimplementedMethod();
+   return 0;
+}
+
+-(NSString *)comment {
+   NSUnimplementedMethod();
+   return 0;
+}
+
+-(NSURL *)commentURL {
+   NSUnimplementedMethod();
+   return 0;
+}
 
 @end

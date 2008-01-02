@@ -25,3 +25,13 @@ FOUNDATION_EXPORT NSString *NSClassDescriptionNeededForClassNotification;
 -(NSArray *)toOneRelationshipKeys;
 
 @end
+
+@interface NSObject(NSClassDescription)
+
+-(NSClassDescription *)classDescription;
+
+-(NSArray *)attributeKeys;
+-(NSString *)inverseForRelationshipKey:(NSString *)key;
+-(NSArray *)toOneRelationshipKeys;
+-(NSArray *)toManyRelationshipKeys;
+@end

@@ -9,7 +9,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSObject.h>
 #import <setjmp.h>
 
-@class  NSDictionary;
+@class NSDictionary,NSArray;
 
 FOUNDATION_EXPORT NSString *NSGenericException;
 FOUNDATION_EXPORT NSString *NSInvalidArgumentException;
@@ -25,24 +25,23 @@ FOUNDATION_EXPORT NSString *NSInconsistentArchiveException;
     NSString		*_name;
     NSString		*_reason;
     NSDictionary	*_userInfo;
+    NSArray         *_callStack;
 }
 
 +(void)raise:(NSString *)name format:(NSString *)format,...;
 +(void)raise:(NSString *)name format:(NSString *)format arguments:(va_list)arguments;
 
--initWithName:(NSString *)name reason:(NSString *)reason
-  userInfo:(NSDictionary *)userInfo;
+-initWithName:(NSString *)name reason:(NSString *)reason userInfo:(NSDictionary *)userInfo;
 
-+(NSException *)exceptionWithName:(NSString *)name reason:(NSString *)reason
-  userInfo:(NSDictionary *)userInfo;
++(NSException *)exceptionWithName:(NSString *)name reason:(NSString *)reason userInfo:(NSDictionary *)userInfo;
 
 -(void)raise;
 
 -(NSString *)name;
-
 -(NSString *)reason;
-
 -(NSDictionary *)userInfo;
+
+-(NSArray *)callStackReturnAddresses;
 
 @end
 

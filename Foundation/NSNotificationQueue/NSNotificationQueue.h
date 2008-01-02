@@ -30,8 +30,6 @@ typedef enum {
 
 -initWithNotificationCenter:(NSNotificationCenter *)center;
 
--init;
-
 +(NSNotificationQueue *)defaultQueue;
 
 -(void)enqueueNotification:(NSNotification *)note

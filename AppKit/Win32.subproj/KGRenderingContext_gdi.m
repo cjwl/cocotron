@@ -64,51 +64,9 @@ NSRect Win32TransformRect(CGAffineTransform matrix,NSRect rect) {
 
 @implementation KGRenderingContext_gdi
 
-+(KGRenderingContext_gdi *)renderingContextWithPrinterDC:(HDC)dc {
-   KGDeviceContext_gdi *deviceContext=[[[Win32DeviceContextPrinter alloc] initWithDC:dc] autorelease];
-   
-   return [[[self alloc] initWithDC:dc deviceContext:deviceContext] autorelease];
-}
-
-+(KGRenderingContext_gdi *)renderingContextWithWindowHWND:(HWND)handle {
-   KGDeviceContext_gdi *deviceContext=[[[Win32DeviceContextWindow alloc] initWithWindowHandle:handle] autorelease];
-   
-   return [[[self alloc] initWithDC:GetDC(handle) deviceContext:deviceContext] autorelease];
-}
-
-+(KGRenderingContext_gdi *)renderingContextWithSize:(NSSize)size renderingContext:(KGRenderingContext_gdi *)otherContext {
-   KGDeviceContext_gdi *deviceContext=[[[Win32DeviceContextBitmap alloc] initWithSize:size deviceContext:(KGDeviceContext_gdi *)[otherContext deviceContext]] autorelease];
-   
-   return [[[self alloc] initWithDC:[deviceContext dc] deviceContext:deviceContext] autorelease];
-}
-
-+(KGRenderingContext_gdi *)renderingContextWithSize:(NSSize)size  {
-   KGDeviceContext_gdi *deviceContext=[[[Win32DeviceContextBitmap alloc] initWithSize:size] autorelease];
-   
-   return [[[self alloc] initWithDC:[deviceContext dc] deviceContext:deviceContext] autorelease];
-}
-
--(KGContext *)createGraphicsContext {
-   NSSize            pointSize=[_deviceContext pointSize];
-   NSSize            pixelsPerInch=[_deviceContext pixelsPerInch];
-   CGAffineTransform flip={1,0,0,-1,0, pointSize.height};
-   CGAffineTransform scale=CGAffineTransformConcat(CGAffineTransformMakeScale(pixelsPerInch.width/72.0,pixelsPerInch.height/72.0),flip);
-   KGGraphicsState  *initialState=[[[KGGraphicsState_gdi alloc] initWithRenderingContext:self transform:scale] autorelease];
-      
-   return [[[KGContext_gdi alloc] initWithGraphicsState:initialState] autorelease];
-}
-
--(KGContext *)cgContextWithSize:(NSSize)size {
-   CGAffineTransform flip={1,0,0,-1,0,size.height};
-   KGGraphicsState  *initialState=[[[KGGraphicsState_gdi alloc] initWithRenderingContext:self transform:flip] autorelease];
-
-   return [[[KGContext_gdi alloc] initWithGraphicsState:initialState] autorelease];
-}
-
--initWithDC:(HDC)dc deviceContext:(KGDeviceContext_gdi *)deviceContext {
+-initWithDeviceContext:(KGDeviceContext_gdi *)deviceContext {
    _deviceContext=[deviceContext retain];
-   
-   _dc=dc;
+   _dc=[_deviceContext dc];
 
    _clipRegion=CreateRectRgn(0,0,GetDeviceCaps(_dc,HORZRES),GetDeviceCaps(_dc,VERTRES));
    GetClipRgn(_dc,_clipRegion); // it is expected this will fail, empty clip path
@@ -130,8 +88,50 @@ NSRect Win32TransformRect(CGAffineTransform matrix,NSRect rect) {
 -(void)dealloc {
    DeleteObject(_clipRegion);
    [_gdiFont release];
+   [_font release];
    [_deviceContext release];
    [super dealloc];
+}
+
++(KGRenderingContext_gdi *)renderingContextWithPrinterDC:(HDC)dc {
+   KGDeviceContext_gdi *deviceContext=[[[Win32DeviceContextPrinter alloc] initWithDC:dc] autorelease];
+   
+   return [[[self alloc] initWithDeviceContext:deviceContext] autorelease];
+}
+
++(KGRenderingContext_gdi *)renderingContextWithWindowHWND:(HWND)handle {
+   KGDeviceContext_gdi *deviceContext=[[[Win32DeviceContextWindow alloc] initWithWindowHandle:handle] autorelease];
+   
+   return [[[self alloc] initWithDeviceContext:deviceContext] autorelease];
+}
+
++(KGRenderingContext_gdi *)renderingContextWithSize:(NSSize)size renderingContext:(KGRenderingContext_gdi *)otherContext {
+   KGDeviceContext_gdi *deviceContext=[[[Win32DeviceContextBitmap alloc] initWithSize:size deviceContext:(KGDeviceContext_gdi *)[otherContext deviceContext]] autorelease];
+   
+   return [[[self alloc] initWithDeviceContext:deviceContext] autorelease];
+}
+
++(KGRenderingContext_gdi *)renderingContextWithSize:(NSSize)size  {
+   KGDeviceContext_gdi *deviceContext=[[[Win32DeviceContextBitmap alloc] initWithSize:size] autorelease];
+   
+   return [[[self alloc] initWithDeviceContext:deviceContext] autorelease];
+}
+
+-(KGContext *)createGraphicsContext {
+   NSSize            pointSize=[_deviceContext pointSize];
+   NSSize            pixelsPerInch=[_deviceContext pixelsPerInch];
+   CGAffineTransform flip={1,0,0,-1,0, pointSize.height};
+   CGAffineTransform scale=CGAffineTransformConcat(CGAffineTransformMakeScale(pixelsPerInch.width/72.0,pixelsPerInch.height/72.0),flip);
+   KGGraphicsState  *initialState=[[[KGGraphicsState_gdi alloc] initWithRenderingContext:self transform:scale] autorelease];
+      
+   return [[[KGContext_gdi alloc] initWithGraphicsState:initialState] autorelease];
+}
+
+-(KGContext *)cgContextWithSize:(NSSize)size {
+   CGAffineTransform flip={1,0,0,-1,0,size.height};
+   KGGraphicsState  *initialState=[[[KGGraphicsState_gdi alloc] initWithRenderingContext:self transform:flip] autorelease];
+
+   return [[[KGContext_gdi alloc] initWithGraphicsState:initialState] autorelease];
 }
 
 -(KGDeviceContext_gdi *)deviceContext {

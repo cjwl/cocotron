@@ -33,8 +33,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(KGContext *)createGraphicsContext;
 -(KGContext *)cgContextWithSize:(NSSize)size;
 
--initWithDC:(HDC)dc deviceContext:(KGDeviceContext_gdi *)deviceContext;
-
 -(KGDeviceContext_gdi *)deviceContext;
 -(HDC)dc;
 -(HWND)windowHandle;

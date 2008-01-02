@@ -7,8 +7,13 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
 #import <Foundation/NSObject.h>
+#import <Foundation/NSDate.h>
 
-@class NSArray,NSDate,NSData,NSDictionary;
+@class NSArray,NSDate,NSData,NSDictionary,NSLocale;
+
+typedef NSInteger NSTimeZoneNameStyle;
+
+FOUNDATION_EXPORT NSString *NSSystemTimeZoneDidChangeNotification;
 
 @interface NSTimeZone : NSObject <NSCoding,NSCopying>
 
@@ -41,9 +46,17 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(int)secondsFromGMT;
 -(NSString *)abbreviation;
 -(BOOL)isDaylightSavingTime;
+-(NSTimeInterval)daylightSavingTimeOffset;
+-(NSDate *)nextDaylightSavingTimeTransition;
 
 -(int)secondsFromGMTForDate:(NSDate *)date;
 -(NSString *)abbreviationForDate:(NSDate *)date;
 -(BOOL)isDaylightSavingTimeForDate:(NSDate *)date;
+-(NSTimeInterval)daylightSavingTimeOffsetForDate:(NSDate *)date;
+-(NSDate *)nextDaylightSavingTimeTransitionAfterDate:(NSDate *)date;
+
+-(NSString *)localizedName:(NSTimeZoneNameStyle)style locale:(NSLocale *)locale;
+
+-(NSString *)description;
 
 @end

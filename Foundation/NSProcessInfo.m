@@ -54,6 +54,36 @@ static NSLock *_counterLock=nil;
    return self;
 }
 
+-(NSUInteger)processorCount {
+   NSUnimplementedMethod();
+   return 0;
+}
+
+-(NSUInteger)activeProcessorCount {
+   NSUnimplementedMethod();
+   return 0;
+}
+
+-(unsigned long long)physicalMemory {
+   NSUnimplementedMethod();
+   return 0;
+}
+
+-(unsigned)operatingSystem {
+   NSUnimplementedMethod();
+   return 0;
+}
+
+-(NSString *)operatingSystemName {
+   NSUnimplementedMethod();
+   return 0;
+}
+
+-(NSString *)operatingSystemVersionString {
+   NSUnimplementedMethod();
+   return 0;
+}
+
 -(NSString *)hostName {
    if(_hostName==nil){
     _hostName=[[[NSPlatform currentPlatform] hostName] retain];

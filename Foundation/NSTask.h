@@ -8,21 +8,29 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/NSObject.h>
 
-@class NSArray;
+@class NSArray,NSDictionary;
 
 FOUNDATION_EXPORT NSString *NSTaskDidTerminateNotification;
 
 @interface NSTask : NSObject
+
++(NSTask *)launchedTaskWithLaunchPath:(NSString *)path arguments:(NSArray *)arguments;
 
 -init;
 
 -(NSString *)currentDirectoryPath;
 -(NSString *)launchPath;
 -(NSArray *)arguments;
+-(NSDictionary *)environment;
+
+-standardError;
+-standardInput;
+-standardOutput;
 
 -(void)setCurrentDirectoryPath:(NSString *)path;
 -(void)setLaunchPath:(NSString *)path;
 -(void)setArguments:(NSArray *)arguments;
+-(void)setEnvironment:(NSDictionary *)values;
 
 -(void)setStandardInput:input;
 -(void)setStandardOutput:output;
@@ -31,12 +39,16 @@ FOUNDATION_EXPORT NSString *NSTaskDidTerminateNotification;
 -(void)launch;
 -(BOOL)isRunning;
 
+-(void)interrupt;
+
+-(BOOL)suspend;
+-(BOOL)resume;
+
 -(void)terminate;
 -(int)terminationStatus;
 
 -(void)waitUntilExit;
 
 -(int)processIdentifier;
-
 
 @end

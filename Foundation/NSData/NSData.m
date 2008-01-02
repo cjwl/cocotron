@@ -27,7 +27,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return NSAllocateObject(self,0,zone);
 }
 
--initWithBytesNoCopy:(void *)bytes length:(unsigned)length freeWhenDone:(BOOL)freeOnDealloc {
+-initWithBytesNoCopy:(void *)bytes length:(unsigned)length freeWhenDone:(BOOL)freeWhenDone {
    NSInvalidAbstractInvocation();
    return nil;
 }
@@ -77,6 +77,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return [self initWithContentsOfFile:[url path]];
 }
 
+-initWithContentsOfFile:(NSString *)path options:(NSUInteger)options error:(NSError **)errorp {
+   NSUnimplementedMethod();
+   return nil;
+}
+
+-initWithContentsOfURL:(NSURL *)url options:(NSUInteger)options error:(NSError **)errorp {
+   NSUnimplementedMethod();
+   return nil;
+}
+
 -copyWithZone:(NSZone *)zone {
    return [self retain];
 }
@@ -113,8 +123,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return [[[self allocWithZone:NULL] init] autorelease];
 }
 
-+dataWithBytesNoCopy:(void *)bytes length:(unsigned)length freeWhenDone:(BOOL)freeOnDealloc{
-   return [[[self allocWithZone:NULL] initWithBytesNoCopy:bytes length:length freeWhenDone:freeOnDealloc] autorelease];
++dataWithBytesNoCopy:(void *)bytes length:(unsigned)length freeWhenDone:(BOOL)freeWhenDone{
+   return [[[self allocWithZone:NULL] initWithBytesNoCopy:bytes length:length freeWhenDone:freeWhenDone] autorelease];
 }
 
 +dataWithBytesNoCopy:(void *)bytes length:(unsigned)length {
@@ -150,6 +160,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return [[[self allocWithZone:NULL] initWithContentsOfURL:url] autorelease];
 }
 
++dataWithContentsOfFile:(NSString *)path options:(NSUInteger)options error:(NSError **)errorp {
+   NSUnimplementedMethod();
+   return 0;
+}
+
++dataWithContentsOfURL:(NSURL *)url options:(NSUInteger)options error:(NSError **)errorp {
+   NSUnimplementedMethod();
+   return 0;
+}
+
 -(const void *)bytes {
    NSInvalidAbstractInvocation();
    return NULL;
@@ -183,7 +203,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return NSBytesEqual([self bytes],[other bytes],length);
 }
 
--(void)getBytes:(void *)buffer range:(NSRange)range {
+-(void)getBytes:(void *)result range:(NSRange)range {
    const char *bytes=[self bytes];
    unsigned    i;
 
@@ -193,17 +213,17 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    }
 
    for(i=0;i<range.length;i++)
-    ((char *)buffer)[i]=bytes[range.location+i];
+    ((char *)result)[i]=bytes[range.location+i];
 }
 
--(void)getBytes:(void *)buffer {
+-(void)getBytes:(void *)result {
    NSRange range={0,[self length]};
-   [self getBytes:buffer range:range];
+   [self getBytes:result range:range];
 }
 
--(void)getBytes:(void *)buffer length:(unsigned)length {
+-(void)getBytes:(void *)result length:(unsigned)length {
    NSRange range={0,length};
-   [self getBytes:buffer range:range];
+   [self getBytes:result range:range];
 }
 
 -(NSData *)subdataWithRange:(NSRange)range {
@@ -223,6 +243,23 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(BOOL)writeToFile:(NSString *)path atomically:(BOOL)atomically {
    return [[NSPlatform currentPlatform] writeContentsOfFile:path bytes:[self bytes] length:[self length] atomically:atomically];
+}
+
+-(BOOL)writeToURL:(NSURL *)url atomically:(BOOL)atomically {
+   if(![url isFileURL])
+    return NO;
+    
+   return [self writeToFile:[url path] atomically:atomically];
+}
+
+-(BOOL)writeToFile:(NSString *)path options:(NSUInteger)options error:(NSError **)errorp {
+   NSUnimplementedMethod();
+   return 0;
+}
+
+-(BOOL)writeToURL:(NSURL *)url options:(NSUInteger)options error:(NSError **)errorp {
+   NSUnimplementedMethod();
+   return 0;
 }
 
 -(NSString *)description {

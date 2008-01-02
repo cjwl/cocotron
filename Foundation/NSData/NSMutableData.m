@@ -35,7 +35,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return self;
 }
 
--initWithBytesNoCopy:(void *)bytes length:(unsigned)length freeWhenDone:(BOOL)freeOnDealloc {
+-initWithBytesNoCopy:(void *)bytes length:(unsigned)length freeWhenDone:(BOOL)freeWhenDone {
    self=[self initWithCapacity:length];
 
    [self appendBytes:bytes length:length];

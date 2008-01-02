@@ -15,7 +15,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    NSData              *_data;
    const unsigned char *_bytes;
    unsigned             _position,_length;
-
+   NSZone              *_objectZone;
+   
    unsigned    _version;
    NSMapTable *_objects;
    NSMapTable *_classes;
@@ -24,17 +25,25 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    NSMutableArray *_allObjects;
 }
 
++unarchiveObjectWithData:(NSData *)data;
++unarchiveObjectWithFile:(NSString *)path;
+
++(void)decodeClassName:(NSString *)archiveName asClassName:(NSString *)runtimeName;
++(NSString *)classNameDecodedForArchiveClassName:(NSString *)className;
+
 -(void)decodeValueOfObjCType:(const char *)type at:(void *)data;
 -(NSData *)decodeDataObject;
 -(unsigned)versionForClassName:(NSString *)className;
 
 -initForReadingWithData:(NSData *)data;
 
-+(id)unarchiveObjectWithData:(NSData *)data;
-+(id)unarchiveObjectWithFile:(NSString *)path;
+-(BOOL)isAtEnd;
+-(NSZone *)objectZone;
+-(void)setObjectZone:(NSZone *)zone;
+-(unsigned)systemVersion;
 
 -(void)decodeClassName:(NSString *)archiveName asClassName:(NSString *)runtimeName;
-+(void)decodeClassName:(NSString *)archiveName asClassName:(NSString *)runtimeName;
+-(NSString *)classNameDecodedForArchiveClassName:(NSString *)className;
 
 -(void)replaceObject:original withObject:replacement;
 

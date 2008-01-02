@@ -7,9 +7,53 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 #import <Foundation/NSObject.h>
 
+@class NSArray,NSDictionary;
 
-@interface NSLocale : NSObject {
+FOUNDATION_EXPORT NSString *NSLocaleCountryCode;
+FOUNDATION_EXPORT NSString *NSLocaleLanguageCode;
+FOUNDATION_EXPORT NSString *NSLocaleVariantCode;
+FOUNDATION_EXPORT NSString *NSLocaleIdentifier;
+
+FOUNDATION_EXPORT NSString *NSLocaleGroupingSeparator;
+FOUNDATION_EXPORT NSString *NSLocaleDecimalSeparator;
+FOUNDATION_EXPORT NSString *NSLocaleCalendar;
+FOUNDATION_EXPORT NSString *NSLocaleCurrencyCode;
+FOUNDATION_EXPORT NSString *NSLocaleCurrencySymbol;
+FOUNDATION_EXPORT NSString *NSLocaleUsesMetricSystem;
+FOUNDATION_EXPORT NSString *NSLocaleMeasurementSystem;
+
+FOUNDATION_EXPORT NSString *NSLocaleScriptCode;
+FOUNDATION_EXPORT NSString *NSLocaleExemplarCharacterSet;
+FOUNDATION_EXPORT NSString *NSLocaleCollationIdentifier;
+
+@interface NSLocale : NSObject <NSCoding,NSCopying> {
 
 }
+
++systemLocale;
++currentLocale;
++autoupdatingCurrentLocale;
+
++(NSArray *)availableLocaleIdentifiers;
+
++(NSString *)canonicalLocaleIdentifierFromString:(NSString *)string;
+
++(NSDictionary *)componentsFromLocaleIdentifier:(NSString *)identifier;
++(NSString *)localeIdentifierFromComponents:(NSDictionary *)components;
+
++(NSArray *)ISOCountryCodes;
++(NSArray *)ISOLanguageCodes;
++(NSArray *)ISOCurrencyCodes;
++(NSArray *)commonISOCurrencyCodes;
+
++(NSArray *)preferredLanguages;
+
+-initWithLocaleIdentifier:(NSString *)identifier;
+
+-(NSString *)localeIdentifier;
+
+-objectForKey:key;
+
+-(NSString *)displayNameForKey:key value:value;
 
 @end

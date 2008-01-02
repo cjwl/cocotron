@@ -20,6 +20,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(NSString *)stringByAppendingPathComponent:(NSString *)string;
 -(NSString *)stringByAppendingPathExtension:(NSString *)string;
+-(NSArray *)stringsByAppendingPaths:(NSArray *)paths;
 
 -(NSString *)stringByDeletingLastPathComponent;
 -(NSString *)stringByDeletingPathExtension;
@@ -28,10 +29,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(NSString *)stringByAbbreviatingWithTildeInPath;
 
 -(NSString *)stringByStandardizingPath;
+-(NSString *)stringByResolvingSymlinksInPath;
 
 -(BOOL)isAbsolutePath;
 
 -(const char *)fileSystemRepresentation;
+-(BOOL)getFileSystemRepresentation:(char *)bytes maxLength:(NSUInteger)maxLength;
+
+-(NSUInteger)completePathIntoString:(NSString **)string caseSensitive:(BOOL)caseSensitive matchesIntoArray:(NSArray **)array filterTypes:(NSArray *)types;
 
 @end
 

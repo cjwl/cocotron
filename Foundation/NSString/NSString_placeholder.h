@@ -12,10 +12,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -initWithCString:(const char *)byteString length:(unsigned)length;
 -initWithCStringNoCopy:(char *)byteString length:(unsigned)length
-          freeWhenDone:(BOOL)freeBuffer;
+          freeWhenDone:(BOOL)freeWhenDone;
 
 -initWithCharacters:(const unichar *)characters length:(unsigned)length;
 -initWithCharactersNoCopy:(unichar *)characters length:(unsigned)length
-             freeWhenDone:(BOOL)freeBuffer;
+             freeWhenDone:(BOOL)freeWhenDone;
 
 @end

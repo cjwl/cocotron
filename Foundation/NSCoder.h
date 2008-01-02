@@ -27,12 +27,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)encodePropertyList:propertyList;
 -(void)encodeRootObject:rootObject;
 -(void)encodeBycopyObject:object;
+-(void)encodeByrefObject:object;
 
 -(void)encodeConditionalObject:object;
 -(void)encodeValuesOfObjCTypes:(const char *)types,...;
--(void)encodeArrayOfObjCType:(const char *)type
-  count:(unsigned)count at:(const void *)ptr;
--(void)encodeBytes:(const void *)ptr length:(unsigned)length;
+-(void)encodeArrayOfObjCType:(const char *)type count:(NSUInteger)count at:(const void *)ptr;
+-(void)encodeBytes:(const void *)ptr length:(NSUInteger)length;
 
 -(void)encodePoint:(NSPoint)point;
 -(void)encodeSize:(NSSize)size;
@@ -49,6 +49,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)encodeInt:(int)value forKey:(NSString *)key;
 -(void)encodeObject:object forKey:(NSString *)key;
 
+-(void)encodeInt32:(int32_t)value forKey:(NSString *)key;
+-(void)encodeInt64:(int64_t)value forKey:(NSString *)key;
+-(void)encodeInteger:(NSInteger)value forKey:(NSString *)key;
+
+-(void)encodeBytes:(const uint8_t *)bytes length:(NSUInteger)length forKey:(NSString *)key;
+
 -(void)decodeValueOfObjCType:(const char *)type at:(void *)ptr;
 -(NSData *)decodeDataObject;
 -(unsigned)versionForClassName:(NSString *)className;
@@ -56,9 +62,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -decodeObject;
 -decodePropertyList;
 -(void)decodeValuesOfObjCTypes:(const char *)types,...;
--(void)decodeArrayOfObjCType:(const char *)type
-  count:(unsigned)count at:(void *)array;
--(void *)decodeBytesWithReturnedLength:(unsigned *)lengthp;
+-(void)decodeArrayOfObjCType:(const char *)type count:(NSUInteger)count at:(void *)array;
+-(void *)decodeBytesWithReturnedLength:(NSUInteger *)lengthp;
 
 -(NSPoint)decodePoint;
 -(NSSize)decodeSize;
@@ -66,7 +71,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(BOOL)containsValueForKey:(NSString *)key;
 
--(void *)decodeBytesForKey:(NSString *)key returnedLength:(unsigned *)lengthp;
+-(void *)decodeBytesForKey:(NSString *)key returnedLength:(NSUInteger *)lengthp;
 -(NSPoint)decodePointForKey:(NSString *)key;
 -(NSRect)decodeRectForKey:(NSString *)key;
 -(NSSize)decodeSizeForKey:(NSString *)key;
@@ -77,5 +82,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(int)decodeIntForKey:(NSString *)key;
 -decodeObjectForKey:(NSString *)key;
 
+-(int32_t)decodeInt32ForKey:(NSString *)key;
+-(int64_t)decodeInt64ForKey:(NSString *)key;
+-(NSInteger)decodeIntegerForKey:(NSString *)key;
 
 @end

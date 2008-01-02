@@ -5,3 +5,63 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
+#import <Foundation/NSObject.h>
+#import <Foundation/NSDate.h>
+
+@class NSData,NSDictionary,NSInputStream,NSOutputStream,NSRunLoop;
+
+typedef NSUInteger NSNetServiceOptions;
+
+@interface NSNetService : NSObject {
+}
+
++(NSData *)dataFromTXTRecordDictionary:(NSDictionary *)dictionary;
++(NSDictionary *)dictionaryFromTXTRecordData:(NSData *)data;
+
+-initWithDomain:(NSString *)domain type:(NSString *)type name:(NSString *)name;
+-initWithDomain:(NSString *)domain type:(NSString *)type name:(NSString *)name port:(int)port;
+
+-(NSString *)domain;
+-(NSString *)type;
+-(NSInteger)port;
+
+-delegate;
+
+-(NSString *)name;
+-(NSString *)hostName;
+-(NSArray *)addresses;
+-(NSData *)TXTRecordData;
+
+-(void)setDelegate:delegate;
+-(BOOL)setTXTRecordData:(NSData *)data;
+
+-(void)scheduleInRunLoop:(NSRunLoop *)runLoop forMode:(NSString *)mode;
+-(void)removeFromRunLoop:(NSRunLoop *)runLoop forMode:(NSString *)mode;
+
+-(BOOL)getInputStream:(NSInputStream **)inputStream outputStream:(NSOutputStream **)outputStream;
+
+-(void)publish;
+-(void)publishWithOptions:(NSNetServiceOptions)options;
+
+-(void)resolveWithTimeout:(NSTimeInterval)timeout;
+
+-(void)startMonitoring;
+-(void)stopMonitoring;
+
+-(void)stop;
+
+@end
+
+@interface NSObject(NSNetServiceDelegate)
+-(void)netServiceWillResolve:(NSNetService *)netService;
+-(void)netServiceDidResolveAddress:(NSNetService *)netService;
+-(void)netService:(NSNetService *)netService didNotResolve:(NSDictionary *)dictionary;
+
+-(void)netServiceWillPublish:(NSNetService *)netService;
+-(void)netServiceDidPublish:(NSNetService *)netService;
+-(void)netService:(NSNetService *)netService didNotPublish:(NSDictionary *)dictionary;
+
+-(void)netService:(NSNetService *)netService didUpdateTXTRecordData:(NSData *)data;
+
+-(void)netServiceDidStop:(NSNetService *)netService;
+@end

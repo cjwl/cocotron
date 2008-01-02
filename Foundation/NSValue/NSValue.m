@@ -117,12 +117,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -initWithCoder:(NSCoder *)coder {
-   NSUnsupportedMethod();
+   NSUnimplementedMethod();
    return self;
 }
 
 -(void)encodeWithCoder:(NSCoder *)coder {
-   NSUnsupportedMethod();
+   NSUnimplementedMethod();
 }
 
 -nonretainedObjectValue {

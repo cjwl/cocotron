@@ -8,6 +8,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/ObjectiveC.h>
 #import <stdarg.h>
+#import <stdint.h>
 
 @class NSString;
 
@@ -18,6 +19,9 @@ typedef enum {
 } NSComparisonResult;
 
 FOUNDATION_EXPORT const unsigned NSNotFound;
+
+typedef int      NSInteger;
+typedef unsigned NSUInteger;
 
 #define MIN(a,b) ((a)<(b)?(a):(b))
 #define MAX(a,b) ((a)>(b)?(a):(b))

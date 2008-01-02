@@ -40,17 +40,17 @@ static NSMapTable *nameToSet=NULL;
 }
 
 -(Class)classForCoder {
-   NSUnsupportedMethod();
+   NSUnimplementedMethod();
    return Nil;
 }
 
 -initWithCoder:(NSCoder *)coder {
-   NSUnsupportedMethod();
+   NSUnimplementedMethod();
    return self;
 }
 
 -(void)encodeWithCoder:(NSCoder *)coder {
-   NSUnsupportedMethod();
+   NSUnimplementedMethod();
 }
 
 +(NSCharacterSet *)characterSetWithBitmapRepresentation:(NSData *)data {

@@ -21,11 +21,6 @@ void _NSUnimplementedMethod(SEL selector,id object,const char *file,int line) {
    NSLog(@"-[%@ %s] unimplemented in %s at %d",[object class],sel_getName(selector),file,line);
 }
 
-void _NSUnsupportedMethod(SEL selector,id object,const char *file,int line) {
-   NSLog(@"-[%@ %s] not supported In %s at %d",[object class],sel_getName(selector),file,line);
-}
-
-
 void _NSUnimplementedFunction(const char *function,const char *file,int line) {
    NSLog(@"%s() unimplemented in %s at %d",function,file,line);
 }

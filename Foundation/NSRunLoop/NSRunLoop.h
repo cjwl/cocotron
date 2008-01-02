@@ -9,7 +9,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSDate.h>
 #import <Foundation/NSMapTable.h>
 
-@class NSTimer,NSDate,NSMutableArray,NSInputSource;
+@class NSTimer,NSDate,NSMutableArray,NSInputSource,NSPort;
 
 FOUNDATION_EXPORT NSString *NSDefaultRunLoopMode;
 
@@ -20,6 +20,7 @@ FOUNDATION_EXPORT NSString *NSDefaultRunLoopMode;
 }
 
 +(NSRunLoop *)currentRunLoop;
++(NSRunLoop *)mainRunLoop;
 
 -(NSString *)currentMode;
 -(NSDate *)limitDateForMode:(NSString *)mode;
@@ -28,6 +29,9 @@ FOUNDATION_EXPORT NSString *NSDefaultRunLoopMode;
 -(BOOL)runMode:(NSString *)mode beforeDate:(NSDate *)date;
 -(void)runUntilDate:(NSDate *)date;
 -(void)run; 
+
+-(void)addPort:(NSPort *)port forMode:(NSString *)mode;
+-(void)removePort:(NSPort *)port forMode:(NSString *)mode;
 
 -(void)addInputSource:(NSInputSource *)source forMode:(NSString *)mode;
 -(void)removeInputSource:(NSInputSource *)source forMode:(NSString *)mode;

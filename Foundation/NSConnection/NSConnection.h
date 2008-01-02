@@ -7,13 +7,23 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
 #import <Foundation/NSDate.h>
+#import <Foundation/NSMapTable.h>
 
-@class NSPortNameServer,NSPort,NSRunLoop,NSDistantObject;
+@class NSPortNameServer,NSPort,NSRunLoop,NSDistantObject,NSMutableArray,NSMutableDictionary;
 
 FOUNDATION_EXPORT NSString *NSConnectionReplyMode;
 
 @interface NSConnection : NSObject {
-
+   NSPort *_receivePort;
+   NSPort *_sendPort;
+   id      _delegate;
+   BOOL _isValid;
+   BOOL _independentConversationQueueing;
+   BOOL _multipleThreadsEnabled;
+   NSTimeInterval _replyTimeout;
+   NSTimeInterval _requestTimeout;
+   NSMutableArray *_requestModes;
+   NSMutableDictionary *_statistics;
 }
 
 +(NSArray *)allConnections;

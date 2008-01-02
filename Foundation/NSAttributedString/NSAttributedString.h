@@ -10,7 +10,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @class NSDictionary;
 
-@interface NSAttributedString : NSObject <NSCopying>
+@interface NSAttributedString : NSObject <NSCopying,NSCoding,NSMutableCopying>
 
 -initWithString:(NSString *)string;
 -initWithString:(NSString *)string attributes:(NSDictionary *)attributes;
@@ -21,14 +21,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(unsigned)length;
 -(NSString *)string;
 
--(NSDictionary *)attributesAtIndex:(unsigned)location effectiveRange:(NSRangePointer)range;
--(NSDictionary *)attributesAtIndex:(unsigned)location longestEffectiveRange:(NSRangePointer)range inRange:(NSRange)inRange;
+-(NSDictionary *)attributesAtIndex:(unsigned)location effectiveRange:(NSRange *)range;
+-(NSDictionary *)attributesAtIndex:(unsigned)location longestEffectiveRange:(NSRange *)range inRange:(NSRange)inRange;
 
--attribute:(NSString *)name atIndex:(unsigned)location effectiveRange:(NSRangePointer)range;
--attribute:(NSString *)name atIndex:(unsigned)location longestEffectiveRange:(NSRangePointer)range inRange:(NSRange)inRange;
+-attribute:(NSString *)name atIndex:(unsigned)location effectiveRange:(NSRange *)range;
+-attribute:(NSString *)name atIndex:(unsigned)location longestEffectiveRange:(NSRange *)range inRange:(NSRange)inRange;
 
 -(NSAttributedString *)attributedSubstringFromRange:(NSRange)range;
 
-
 @end
-

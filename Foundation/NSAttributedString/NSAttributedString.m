@@ -42,6 +42,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return nil;
 }
 
+-(void)encodeWithCoder:(NSCoder *)coder {
+   NSUnimplementedMethod();
+}
+
+-initWithCoder:(NSCoder *)coder {
+   NSUnimplementedMethod();
+   return self;
+}
+
 -copy {
    return [self retain];
 }
@@ -72,24 +81,24 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return nil;
 }
 
--(NSDictionary *)attributesAtIndex:(unsigned)location effectiveRange:(NSRangePointer)range {
+-(NSDictionary *)attributesAtIndex:(unsigned)location effectiveRange:(NSRange *)range {
    NSInvalidAbstractInvocation();
    return nil;
 }
 
 -(NSDictionary *)attributesAtIndex:(unsigned)location
-   longestEffectiveRange:(NSRangePointer)range inRange:(NSRange)inRange {
+   longestEffectiveRange:(NSRange *)range inRange:(NSRange)inRange {
    NSUnimplementedMethod();
    return nil;
 }
 
 -attribute:(NSString *)name atIndex:(unsigned)location
-   effectiveRange:(NSRangePointer)range {
+   effectiveRange:(NSRange *)range {
    return [[self attributesAtIndex:location effectiveRange:range] objectForKey:name];
 }
 
 -attribute:(NSString *)name atIndex:(unsigned)location
-   longestEffectiveRange:(NSRangePointer)range inRange:(NSRange)inRange {
+   longestEffectiveRange:(NSRange *)range inRange:(NSRange)inRange {
    NSUnimplementedMethod();
    return nil;
 }

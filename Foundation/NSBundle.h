@@ -8,7 +8,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/NSObject.h>
 
-@class NSArray,NSDictionary,NSString;
+@class NSArray,NSDictionary,NSString,NSError;
 
 FOUNDATION_EXPORT NSString *NSBundleDidLoadNotification;
 FOUNDATION_EXPORT NSString *NSLoadedClasses;	
@@ -26,28 +26,50 @@ FOUNDATION_EXPORT NSString *NSLoadedClasses;
 +(NSBundle *)mainBundle;
 
 +(NSBundle *)bundleForClass:(Class)aClass;
++(NSBundle *)bundleWithIdentifier:(NSString *)identifier;
++(NSBundle *)bundleWithPath:(NSString *)path;
+
++(NSString *)pathForResource:(NSString *)name ofType:(NSString *)type inDirectory:(NSString *)path;
++(NSArray *)pathsForResourcesOfType:(NSString *)type inDirectory:(NSString *)path;
++(NSArray *)preferredLocalizationsFromArray:(NSArray *)localizations;
++(NSArray *)preferredLocalizationsFromArray:(NSArray *)localizations forPreferences:(NSArray *)preferences;
 
 -initWithPath:(NSString *)path;
 
-+(NSBundle *)bundleWithPath:(NSString *)path;
-
 -(NSString *)bundlePath;
 -(NSString *)resourcePath;
+-(NSString *)builtInPlugInsPath;
 -(NSDictionary *)infoDictionary;
+-(NSDictionary *)localizedInfoDictionary;
 -objectForInfoDictionaryKey:(NSString *)key;
 -(NSString *)bundleIdentifier;
+-(NSString *)developmentLocalization;
+-(NSArray *)executableArchitectures;
+-(NSString *)executablePath;
+-(NSArray *)localizations;
+-(NSArray *)preferredLocalizations;
+-(NSString *)privateFrameworksPath;
+-(NSString *)sharedFrameworksPath;
+-(NSString *)sharedSupportPath;
+
+-(NSString *)pathForAuxiliaryExecutable:(NSString *)executable;
 
 -(Class)principalClass;
 -(Class)classNamed:(NSString *)className;
 
+-(BOOL)isLoaded;
+-(BOOL)preflightAndReturnError:(NSError **)error;
+-(BOOL)loadAndReturnError:(NSError **)error;
+
 -(BOOL)load;
+-(BOOL)unload;
 
 -(NSString *)pathForResource:(NSString *)name ofType:(NSString *)type;
--(NSString *)pathForResource:(NSString *)name ofType:(NSString *)type
-  inDirectory:(NSString *)path;
+-(NSString *)pathForResource:(NSString *)name ofType:(NSString *)type inDirectory:(NSString *)path;
+-(NSString *)pathForResource:(NSString *)name ofType:(NSString *)type inDirectory:(NSString *)path forLocalization:(NSString *)localization;
 
--(NSArray *)pathsForResourcesOfType:(NSString *)type
-  inDirectory:(NSString *)path;
+-(NSArray *)pathsForResourcesOfType:(NSString *)type inDirectory:(NSString *)path;
+-(NSArray *)pathsForResourcesOfType:(NSString *)type inDirectory:(NSString *)path forLocalization:(NSString *)localization;
 
 -(NSString *)localizedStringForKey:(NSString *)key value:(NSString *)value table:(NSString *)table;
 

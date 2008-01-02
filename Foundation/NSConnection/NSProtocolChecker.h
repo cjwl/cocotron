@@ -8,7 +8,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSProxy.h>
 
 @interface NSProtocolChecker : NSProxy {
-
+   NSObject *_target;
+   Protocol *_protocol;
 }
+
++protocolCheckerWithTarget:(NSObject *)target protocol:(Protocol *)protocol;
+
+-initWithTarget:(NSObject *)target protocol:(Protocol *)protocol;
+
+-(NSObject *)target;
+-(Protocol *)protocol;
 
 @end

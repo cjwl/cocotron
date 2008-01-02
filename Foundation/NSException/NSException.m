@@ -89,6 +89,7 @@ void NSSetUncaughtExceptionHandler(NSUncaughtExceptionHandler *proc) {
    _name=[name copy];
    _reason=[reason copy];
    _userInfo=[userInfo retain];
+   _callStack=nil;
    return self;
 }
 
@@ -96,6 +97,7 @@ void NSSetUncaughtExceptionHandler(NSUncaughtExceptionHandler *proc) {
    [_name release];
    [_reason release];
    [_userInfo release];
+   [_callStack release];
    NSDeallocateObject(self);
    return;
    [super dealloc];
@@ -115,17 +117,18 @@ void NSSetUncaughtExceptionHandler(NSUncaughtExceptionHandler *proc) {
 }
 
 -initWithCoder:(NSCoder *)coder {
-   NSUnsupportedMethod();
+   NSUnimplementedMethod();
    return self;
 }
 
 -(void)encodeWithCoder:(NSCoder *)coder {
-   NSUnsupportedMethod();
+   NSUnimplementedMethod();
 }
 
 -(void)raise {
    //NSLog(@"RAISE %@",self);
-
+   [_callStack release];
+   _callStack=[[NSThread callStackReturnAddresses] retain];
    _NSRaiseException(self);
 }
 
@@ -139,6 +142,10 @@ void NSSetUncaughtExceptionHandler(NSUncaughtExceptionHandler *proc) {
 
 -(NSDictionary *)userInfo {
    return _userInfo;
+}
+
+-(NSArray *)callStackReturnAddresses {
+   return _callStack;
 }
 
 @end

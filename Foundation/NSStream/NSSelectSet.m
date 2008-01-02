@@ -29,7 +29,7 @@ NSString *NSSelectSetOutputNotification=@"NSSelectSetOutputNotification";
 }
 
 -copyWithZone:(NSZone *)zone {
-   NSSelectSet *copy=NSCopyObject(self,0,[self zone]);
+   NSSelectSet *copy=NSCopyObject(self,0,zone);
    
    copy->_readSet=[_readSet mutableCopy];
    copy->_writeSet=[_writeSet mutableCopy];

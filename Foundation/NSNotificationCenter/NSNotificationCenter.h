@@ -17,16 +17,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 +(NSNotificationCenter *)defaultCenter;
 
--(void)addObserver:observer selector:(SEL)selector name:(NSString *)name
-   object:object;
+-(void)addObserver:observer selector:(SEL)selector name:(NSString *)name object:object;
 
 -(void)removeObserver:observer;
 -(void)removeObserver:observer name:(NSString *)name object:object;
 
 -(void)postNotification:(NSNotification *)note;
 
--(void)postNotificationName:(NSString *)name object:object
-   userInfo:(NSDictionary *)userInfo;
+-(void)postNotificationName:(NSString *)name object:object userInfo:(NSDictionary *)userInfo;
 
 -(void)postNotificationName:(NSString *)name object:object;
 

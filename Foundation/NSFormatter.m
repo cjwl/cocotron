@@ -40,6 +40,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return nil;
 }
 
+-(BOOL)isPartialStringValid:(NSString **)partialStringp proposedSelectedRange:(NSRange *)proposedRangep originalString:(NSString *)originalString originalSelectedRange:(NSRange)originalRange errorDescription:(NSString **)errorStringp {
+   NSInvalidAbstractInvocation();
+   return NO;
+}
+
 -initWithCoder:(NSCoder*)coder {
 
 	return self;

@@ -34,6 +34,8 @@ NSString *NSTimeDateFormatString=@"NSTimeDateFormatString";
 NSString *NSShortWeekDayNameArray=@"NSShortWeekDayNameArray";
 NSString *NSShortMonthNameArray=@"NSShortMonthNameArray";
 
+NSString *NSUserDefaultsDidChangeNotification=@"NSUserDefaultsDidChangeNotification";
+
 @implementation NSUserDefaults
 
 -(void)registerArgumentDefaults {
@@ -131,6 +133,18 @@ NSString *NSShortMonthNameArray=@"NSShortMonthNameArray";
    return NSThreadSharedInstance(@"NSUserDefaults");
 }
 
++(void)resetStandardUserDefaults {
+   NSUnimplementedMethod();
+}
+
+-(void)addSuiteNamed:(NSString *)name {
+   NSUnimplementedMethod();
+}
+
+-(void)removeSuiteNamed:(NSString *)name {
+   NSUnimplementedMethod();
+}
+
 -(NSArray *)searchList {
    return _searchList;
 }
@@ -169,9 +183,8 @@ NSString *NSShortMonthNameArray=@"NSShortMonthNameArray";
    return _dictionaryRep;
 }
 
--(void)registerDefaults:(NSDictionary *)registrationDictionary {
-   [[_domains objectForKey:NSRegistrationDomain]
-                    addEntriesFromDictionary:registrationDictionary];
+-(void)registerDefaults:(NSDictionary *)values {
+   [[_domains objectForKey:NSRegistrationDomain] addEntriesFromDictionary:values];
 }
 
 
@@ -334,6 +347,14 @@ NSString *NSShortMonthNameArray=@"NSShortMonthNameArray";
    [[self persistantDomain] removeObjectForKey:key];
 }
 
+-(BOOL)objectIsForcedForKey:(NSString *)key {
+   NSUnimplementedMethod();
+   return 0;
+}
 
+-(BOOL)objectIsForcedForKey:(NSString *)key inDomain:(NSString *)domain {
+   NSUnimplementedMethod();
+   return 0;
+}
 
 @end

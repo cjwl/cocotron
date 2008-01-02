@@ -7,7 +7,7 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
 #import <Foundation/NSValue.h>
-#import <Foundation/NSObjCRuntime.h>
+#import <Foundation/NSDecimal.h>
 
 @class NSDictionary;
 
@@ -21,12 +21,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -initWithLongLong:(long long)value;
 -initWithFloat:(float)value;
 -initWithDouble:(double)value;
+-initWithInteger:(NSInteger)value;
 
 -initWithUnsignedChar:(unsigned char)value;
 -initWithUnsignedShort:(unsigned short)value;
 -initWithUnsignedInt:(unsigned int)value;
 -initWithUnsignedLong:(unsigned long)value;
 -initWithUnsignedLongLong:(unsigned long long)value;
+-initWithUnsignedInteger:(NSUInteger)value;
 
 +(NSNumber *)numberWithBool:(BOOL)value;
 +(NSNumber *)numberWithChar:(char)value;
@@ -36,12 +38,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 +(NSNumber *)numberWithLongLong:(long long)value;
 +(NSNumber *)numberWithFloat:(float)value;
 +(NSNumber *)numberWithDouble:(double)value;
++(NSNumber *)numberWithInteger:(NSInteger)value;
 
 +(NSNumber *)numberWithUnsignedChar:(unsigned char)value;
 +(NSNumber *)numberWithUnsignedShort:(unsigned short)value;
 +(NSNumber *)numberWithUnsignedInt:(unsigned int)value;
 +(NSNumber *)numberWithUnsignedLong:(unsigned long)value;
 +(NSNumber *)numberWithUnsignedLongLong:(unsigned long long)value;
++(NSNumber *)numberWithUnsignedInteger:(NSUInteger)value;
 
 -(NSComparisonResult)compare:(NSNumber *)other;
 
@@ -55,12 +59,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(float)floatValue;
 -(double)doubleValue;
 -(BOOL)boolValue;
+-(NSDecimal)decimalValue;
+-(NSInteger)integerValue;
 
 -(unsigned char)unsignedCharValue;
 -(unsigned short)unsignedShortValue;
 -(unsigned int)unsignedIntValue;
 -(unsigned long)unsignedLongValue;
 -(unsigned long long)unsignedLongLongValue;
+-(NSUInteger)unsignedIntegerValue;
 
 -(NSString *)stringValue;
 

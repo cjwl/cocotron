@@ -11,8 +11,22 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSPlatform.h>
 #import <Foundation/NSString.h>
 #import <Foundation/NSArray.h>
+#import <Foundation/NSRaise.h>
 
 @implementation NSHost
+
++(BOOL)isHostCacheEnabled {
+   NSUnimplementedMethod();
+   return NO;
+}
+
++(void)setHostCacheEnabled:(BOOL)value {
+   NSUnimplementedMethod();
+}
+
++(void)flushHostCache {
+   NSUnimplementedMethod();
+}
 
 -initWithName:(NSString *)name {
    _name=[name copy];
@@ -26,18 +40,38 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [super dealloc];
 }
 
++(NSHost *)currentHost {
+   return [NSHost hostWithName:[[NSPlatform currentPlatform] DNSHostName]];
+}
+
 +(NSHost *)hostWithName:(NSString *)name {
    return [[[self allocWithZone:NULL] initWithName:name] autorelease];
 }
 
-+(NSHost *)currentHost {
-   return [NSHost hostWithName:[[NSPlatform currentPlatform] DNSHostName]];
++(NSHost *)hostWithAddress:(NSString *)address {
+   NSUnimplementedMethod();
+   return nil;
+}
+
+-(BOOL)isEqualToHost:(NSHost *)host {
+   NSUnimplementedMethod();
+   return 0;
 }
 
 -(void)_resolveAddressesIfNeeded {
    if([_addresses count]==0){
     _addresses=[[[NSPlatform currentPlatform] addressesForDNSHostName:_name] retain];
    }
+}
+
+-(NSArray *)names {
+   NSUnimplementedMethod();
+   return 0;
+}
+
+-(NSString *)name {
+   NSUnimplementedMethod();
+   return 0;
 }
 
 -(NSArray *)addresses {

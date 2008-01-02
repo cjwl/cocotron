@@ -28,6 +28,11 @@ NSString *NSDefaultRunLoopMode=@"NSDefaultRunLoopMode";
    return NSThreadSharedInstance(@"NSRunLoop");
 }
 
++(NSRunLoop *)mainRunLoop {
+   NSUnimplementedMethod();
+   return nil;
+}
+
 -init {
    NSInputSource *parentDeath;
 
@@ -136,6 +141,14 @@ NSString *NSDefaultRunLoopMode=@"NSDefaultRunLoopMode";
    [pool release];
 }
 
+-(void)addPort:(NSPort *)port forMode:(NSString *)mode {
+   NSUnimplementedMethod();
+}
+
+-(void)removePort:(NSPort *)port forMode:(NSString *)mode {
+   NSUnimplementedMethod();
+}
+
 -(void)addInputSource:(NSInputSource *)source forMode:(NSString *)mode {
    [[self stateForMode:mode] addInputSource:source];
 }
@@ -147,7 +160,6 @@ NSString *NSDefaultRunLoopMode=@"NSDefaultRunLoopMode";
 -(void)addTimer:(NSTimer *)timer forMode:(NSString *)mode {
    [[self stateForMode:mode] addTimer:timer];
 }
-
 
 -(void)performSelector:(SEL)selector target:target argument:argument order:(unsigned)order modes:(NSArray *)modes {
    NSOrderedPerform *perform=[NSOrderedPerform orderedPerformWithSelector:selector target:target argument:argument order:order modes:modes];

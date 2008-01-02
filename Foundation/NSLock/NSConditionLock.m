@@ -10,17 +10,59 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @implementation NSConditionLock
 
--initWithCondition:(int)condition {
+-initWithCondition:(NSInteger)condition {
    NSUnimplementedMethod();
    return self;
 }
 
--(void)lockWhenCondition:(int)condition {
+-(NSString *)name {
+   NSUnimplementedMethod();
+   return 0;
+}
+
+-(void)setName:(NSString *)value {
    NSUnimplementedMethod();
 }
 
--(void)unlockWithCondition:(int)condition {
+-(NSInteger)condition {
    NSUnimplementedMethod();
+   return 0;
+}
+
+-(void)lock {
+   NSUnimplementedMethod();
+}
+
+-(void)unlock {
+   NSUnimplementedMethod();
+}
+
+-(BOOL)tryLock {
+   NSUnimplementedMethod();
+   return 0;
+}
+
+-(BOOL)tryLockWhenCondition:(NSInteger)condition {
+   NSUnimplementedMethod();
+   return 0;
+}
+
+-(void)lockWhenCondition:(NSInteger)condition {
+   NSUnimplementedMethod();
+}
+
+-(void)unlockWithCondition:(NSInteger)condition {
+   NSUnimplementedMethod();
+}
+
+-(BOOL)lockBeforeDate:(NSDate *)date {
+   NSUnimplementedMethod();
+   return 0;
+}
+
+-(BOOL)lockWhenCondition:(NSInteger)condition beforeDate:(NSDate *)date {
+   NSUnimplementedMethod();
+   return 0;
 }
 
 @end

@@ -73,3 +73,28 @@ NSStringFromClass(class)];
 }
 
 @end
+
+@implementation NSObject(NSClassDescription)
+
+-(NSClassDescription *)classDescription {
+   return [NSClassDescription classDescriptionForClass:[self class]];
+}
+
+-(NSArray *)attributeKeys {
+   return [[self classDescription] attributeKeys];
+}
+
+-(NSString *)inverseForRelationshipKey:(NSString *)key {
+   return [[self classDescription] inverseForRelationshipKey:key];
+}
+
+-(NSArray *)toOneRelationshipKeys {
+   return [[self classDescription] toOneRelationshipKeys];
+}
+
+-(NSArray *)toManyRelationshipKeys {
+   return [[self classDescription] toManyRelationshipKeys];
+}
+
+@end
+

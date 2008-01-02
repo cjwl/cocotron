@@ -36,7 +36,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(NSDictionary *)attributesAtIndex:(unsigned)location
-   effectiveRange:(NSRangePointer)effectiveRangep {
+   effectiveRange:(NSRange *)effectiveRangep {
    NSDictionary *result;
 
    if(location>=[self length])

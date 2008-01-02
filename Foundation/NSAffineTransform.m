@@ -108,6 +108,11 @@ static inline NSAffineTransformStruct invertStruct(NSAffineTransformStruct matri
    return result;
 }
 
+-(NSSize)transformSize:(NSSize)value {
+   NSUnimplementedMethod();
+   return value;
+}
+
 -(void)rotateByDegrees:(float)angle
 {
 	[self rotateByRadians:M_PI*angle/180.0];
@@ -118,4 +123,15 @@ static inline NSAffineTransformStruct invertStruct(NSAffineTransformStruct matri
 	NSAffineTransformStruct rotate={cos(radians),sin(radians),-sin(radians),cos(radians),0,0};
 	_matrix=multiplyStruct(_matrix,rotate);
 }
+
+-(void)scaleBy:(float)value {
+	NSAffineTransformStruct rotate={1,0,0,1,value,value};
+	_matrix=multiplyStruct(_matrix,rotate);
+}
+
+-(void)scaleXBy:(float)xvalue yBy:(float)yvalue {
+	NSAffineTransformStruct rotate={1,0,0,1,xvalue,yvalue};
+	_matrix=multiplyStruct(_matrix,rotate);
+}
+
 @end

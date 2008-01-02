@@ -181,11 +181,11 @@ NSString *NSMutableString_unicodePtrNewWithCapacity(NSZone *zone,
 }
 
 -initWithCharactersNoCopy:(unichar *)characters length:(unsigned)length
-             freeWhenDone:(BOOL)freeBuffer {
+             freeWhenDone:(BOOL)freeWhenDone {
    NSString *string=NSMutableString_unicodePtrInit(self,characters,length,
      NSZoneFromPointer(self));
 
-   if(freeBuffer)
+   if(freeWhenDone)
     NSZoneFree(NSZoneFromPointer(characters),characters);
 
    return string;
@@ -197,11 +197,11 @@ NSString *NSMutableString_unicodePtrNewWithCapacity(NSZone *zone,
 }
 
 -initWithCStringNoCopy:(char *)bytes length:(unsigned)length
-          freeWhenDone:(BOOL)freeBuffer {
+          freeWhenDone:(BOOL)freeWhenDone {
    NSString *string=NSMutableString_unicodePtrInitWithCString(self,bytes,length,
      NSZoneFromPointer(self));
 
-   if(freeBuffer)
+   if(freeWhenDone)
     NSZoneFree(NSZoneFromPointer(bytes),bytes);
 
    return string;

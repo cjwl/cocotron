@@ -33,6 +33,11 @@ FOUNDATION_EXPORT NSString *NSFileHandleOperationException;
 +fileHandleWithStandardOutput;
 +fileHandleWithStandardError;
 
+-initWithFileDescriptor:(int)descriptor;
+-initWithFileDescriptor:(int)descriptor closeOnDealloc:(BOOL)closeOnDealloc;
+
+-(int)fileDescriptor;
+
 -(void)closeFile;
 -(void)synchronizeFile;
 
@@ -40,7 +45,7 @@ FOUNDATION_EXPORT NSString *NSFileHandleOperationException;
 -(void)seekToFileOffset:(unsigned long long)offset;
 -(unsigned long long)seekToEndOfFile;
 
--(NSData *)readDataOfLength:(unsigned)length;
+-(NSData *)readDataOfLength:(NSUInteger)length;
 -(NSData *)readDataToEndOfFile;
 -(NSData *)availableData;
 
@@ -50,5 +55,14 @@ FOUNDATION_EXPORT NSString *NSFileHandleOperationException;
 
 -(void)readInBackgroundAndNotifyForModes:(NSArray *)modes;
 -(void)readInBackgroundAndNotify;
+
+-(void)readToEndOfFileInBackgroundAndNotifyForModes:(NSArray *)modes;
+-(void)readToEndOfFileInBackgroundAndNotify;
+
+-(void)acceptConnectionInBackgroundAndNotifyForModes:(NSArray *)modes;
+-(void)acceptConnectionInBackgroundAndNotify;
+
+-(void)waitForDataInBackgroundAndNotifyForModes:(NSArray *)modes;
+-(void)waitForDataInBackgroundAndNotify;
 
 @end

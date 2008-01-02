@@ -10,7 +10,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSDirectoryEnumerator.h>
 
-@class NSData,NSDate;
+@class NSData,NSDate,NSError;
 
 FOUNDATION_EXPORT NSString *NSFileType;
 FOUNDATION_EXPORT NSString    *NSFileTypeRegular;
@@ -39,18 +39,49 @@ FOUNDATION_EXPORT NSString *NSFileDeviceIdentifier;
 
 +(NSFileManager *)defaultManager;
 
+-delegate;
+-(void)setDelegate:delegate;
+
+-(NSDictionary *)attributesOfFileSystemForPath:(NSString *)path error:(NSError **)errorp;
+-(NSDictionary *)attributesOfItemAtPath:(NSString *)path error:(NSError **)error;
+-(BOOL)changeCurrentDirectoryPath:(NSString *)path;
+-(NSArray *)componentsToDisplayForPath:(NSString *)path;
+-(BOOL)contentsEqualAtPath:(NSString *)path1 andPath:(NSString *)path2;
+-(NSArray *)contentsOfDirectoryAtPath:(NSString *)path error:(NSError **)error;
+-(BOOL)copyItemAtPath:(NSString *)fromPath toPath:(NSString *)toPath error:(NSError **)error;
+-(NSString *)destinationOfSymbolicLinkAtPath:(NSString *)path error:(NSError **)error;
+
+-(NSString *)displayNameAtPath:(NSString *)path;
+
+-(NSDictionary *)fileSystemAttributesAtPath:(NSString *)path;
+
+-(BOOL)isDeletableFileAtPath:(NSString *)path;
+
+-(BOOL)linkItemAtPath:(NSString *)fromPath toPath:(NSString *)toPath error:(NSError **)error;
+-(BOOL)linkPath:(NSString *)source toPath:(NSString *)destination handler:handler;
+-(BOOL)moveItemAtPath:(NSString *)fromPath toPath:(NSString *)toPath error:(NSError **)error;
+-(BOOL)removeItemAtPath:(NSString *)path error:(NSError **)error;
+
+-(BOOL)setAttributes:(NSDictionary *)attributes ofItemAtPath:(NSString *)path error:(NSError **)error;
+
+-(NSString *)stringWithFileSystemRepresentation:(const char *)string length:(NSUInteger)length;
+
+-(NSArray *)subpathsAtPath:(NSString *)path;
+-(NSArray *)subpathsOfDirectoryAtPath:(NSString *)path error:(NSError **)error;
+
 -(NSData *)contentsAtPath:(NSString *)path;
 
--(BOOL)createFileAtPath:(NSString *)path contents:(NSData *)data 
-             attributes:(NSDictionary *)attributes;
+-(BOOL)createFileAtPath:(NSString *)path contents:(NSData *)data attributes:(NSDictionary *)attributes;
 
 -(NSArray *)directoryContentsAtPath:(NSString *)path;
 -(NSDirectoryEnumerator *)enumeratorAtPath:(NSString *)path;
 
--(BOOL)createDirectoryAtPath:(NSString *)path
-                  attributes:(NSDictionary *)attributes;
+-(BOOL)createDirectoryAtPath:(NSString *)path attributes:(NSDictionary *)attributes;
+-(BOOL)createDirectoryAtPath:(NSString *)path withIntermediateDirectories:(BOOL)intermediates attributes:(NSDictionary *)attributes error:(NSError **)error;
 
 -(BOOL)createSymbolicLinkAtPath:(NSString *)path pathContent:(NSString *)destination;
+-(BOOL)createSymbolicLinkAtPath:(NSString *)path withDestinationPath:(NSString *)toPath error:(NSError **)error;
+
 -(NSString *)pathContentOfSymbolicLinkAtPath:(NSString *)path;
 
 -(BOOL)fileExistsAtPath:(NSString *)path;
@@ -61,7 +92,6 @@ FOUNDATION_EXPORT NSString *NSFileDeviceIdentifier;
 -(BOOL)movePath:(NSString *)src toPath:(NSString *)dest handler:handler;
 -(BOOL)copyPath:(NSString *)src toPath:(NSString *)dest handler:handler;
 
-
 -(NSString *)currentDirectoryPath;
 
 -(NSDictionary *)fileAttributesAtPath:(NSString *)path traverseLink:(BOOL)traverse;
@@ -70,7 +100,6 @@ FOUNDATION_EXPORT NSString *NSFileDeviceIdentifier;
 -(BOOL)isWritableFileAtPath:(NSString *)path;
 -(BOOL)isExecutableFileAtPath:(NSString *)path;
 
-// this only does date
 -(BOOL)changeFileAttributes:(NSDictionary *)attributes atPath:(NSString *)path;
 
 -(const char *)fileSystemRepresentationWithPath:(NSString *)path;
@@ -80,6 +109,19 @@ FOUNDATION_EXPORT NSString *NSFileDeviceIdentifier;
 @interface NSObject(NSFileManager_handler)
 -(BOOL)fileManager:(NSFileManager *)fileManager shouldProceedAfterError:(NSDictionary *)dictionary;
 -(void)fileManager:(NSFileManager *)fileManager willProcessPath:(NSString *)path;
+@end
+
+@interface NSObject(NSFileManagerDelegate)
+-(BOOL)fileManager:(NSFileManager *)fileManager shouldCopyItemAtPath:(NSString *)path toPath:(NSString *)toPath;
+-(BOOL)fileManager:(NSFileManager *)fileManager shouldLinkItemAtPath:(NSString *)path toPath:(NSString *)toPath;
+-(BOOL)fileManager:(NSFileManager *)fileManager shouldMoveItemAtPath:(NSString *)path toPath:(NSString *)toPath;
+-(BOOL)fileManager:(NSFileManager *)fileManager shouldProceedAfterError:(NSError *)error copyingItemAtPath:(NSString *)path toPath:(NSString *)toPath;
+-(BOOL)fileManager:(NSFileManager *)fileManager shouldProceedAfterError:(NSError *)error linkingItemAtPath:(NSString *)path toPath:(NSString *)toPath;
+-(BOOL)fileManager:(NSFileManager *)fileManager shouldProceedAfterError:(NSError *)error movingItemAtPath:(NSString *)path toPath:(NSString *)toPath;
+-(BOOL)fileManager:(NSFileManager *)fileManager shouldProceedAfterError:(NSError *)error removingItemAtPath:(NSString *)path;
+
+-(BOOL)fileManager:(NSFileManager *)fileManager shouldRemoveItemAtPath:(NSString *)path;
+
 @end
 
 @interface NSDictionary(NSFileManager_fileAttributes)

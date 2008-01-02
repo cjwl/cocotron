@@ -7,18 +7,23 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
 #import <Foundation/NSDistantObject.h>
+#import <Foundation/NSConnection.h>
 #import <Foundation/NSRaise.h>
 
 @implementation NSDistantObject
 
 -initWithLocal:local connection:(NSConnection *)connection {
-   NSUnimplementedMethod();
-   return nil;
+   _connection=[connection retain];
+   _protocol=nil;
+   _localOrRemote=local;
+   return self;
 }
 
 -initWithTarget:remote connection:(NSConnection *)connection {
-   NSUnimplementedMethod();
-   return nil;
+   _connection=[connection retain];
+   _protocol=nil;
+   _localOrRemote=remote;
+   return self;
 }
 
 +(NSDistantObject *)proxyWithLocal:local connection:(NSConnection *)connection {
@@ -34,7 +39,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)setProtocolForProxy:(Protocol *)protocol {
-   NSUnimplementedMethod();
+   protocol=[protocol retain];
+   [_protocol release];
+   _protocol=protocol;
 }
 
 @end

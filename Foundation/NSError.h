@@ -7,7 +7,7 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 #import <Foundation/NSObject.h>
 
-@class NSDictionary;
+@class NSDictionary,NSArray;
 
 FOUNDATION_EXPORT NSString *NSPOSIXErrorDomain;
 // temporary until we can map it
@@ -15,21 +15,35 @@ FOUNDATION_EXPORT NSString *NSWINSOCKErrorDomain;
 
 FOUNDATION_EXPORT NSString *NSUnderlyingErrorKey;
 FOUNDATION_EXPORT NSString *NSLocalizedDescriptionKey;
+FOUNDATION_EXPORT NSString *NSLocalizedFailureReasonErrorKey;
+FOUNDATION_EXPORT NSString *NSLocalizedRecoveryOptionsErrorKey;
+FOUNDATION_EXPORT NSString *NSLocalizedRecoverySuggestionErrorKey;
+FOUNDATION_EXPORT NSString *NSRecoveryAttempterErrorKey;
 
-@interface NSError : NSObject {
+FOUNDATION_EXPORT NSString *NSStringEncodingErrorKey;
+FOUNDATION_EXPORT NSString *NSFilePathErrorKey;
+FOUNDATION_EXPORT NSString *NSErrorFailingURLStringKey;
+FOUNDATION_EXPORT NSString *NSURLErrorKey;
+
+@interface NSError : NSObject <NSCoding,NSCopying> {
    NSString     *_domain;
-   int           _code;
+   NSInteger     _code;
    NSDictionary *_userInfo;
 }
 
--initWithDomain:(NSString *)domain code:(int)code userInfo:(NSDictionary *)userInfo;
+-initWithDomain:(NSString *)domain code:(NSInteger)code userInfo:(NSDictionary *)userInfo;
 
-+errorWithDomain:(NSString *)domain code:(int)code userInfo:(NSDictionary *)userInfo;
++errorWithDomain:(NSString *)domain code:(NSInteger)code userInfo:(NSDictionary *)userInfo;
 
 -(NSString *)domain;
--(int)code;
+-(NSInteger)code;
 -(NSDictionary *)userInfo;
 
 -(NSString *)localizedDescription;
+-(NSString *)localizedFailureReason;
+-(NSArray *)localizedRecoveryOptions;
+-(NSString *)localizedRecoverySuggestion;
+
+-recoveryAttempter;
 
 @end

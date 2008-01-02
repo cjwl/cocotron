@@ -9,7 +9,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @class NSData;
 
-typedef unsigned NSPropertyListMutabilityOptions;
+typedef enum {
+   NSPropertyListImmutable,
+   NSPropertyListMutableContainers,
+   NSPropertyListMutableContainersAndLeaves,
+} NSPropertyListMutabilityOptions;
 
 typedef enum {
    NSPropertyListOpenStepFormat,
@@ -18,6 +22,8 @@ typedef enum {
 } NSPropertyListFormat;
 
 @interface NSPropertyListSerialization : NSObject
+
++(BOOL)propertyList:propertyList isValidForFormat:(NSPropertyListFormat)format;
 
 +(NSData *)dataFromPropertyList:plist format:(NSPropertyListFormat)format errorDescription:(NSString **)errorDescriptionp;
 

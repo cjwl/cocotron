@@ -14,16 +14,19 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     Class	isa;
 }
 
-+(Class)class;
-
 +allocWithZone:(NSZone *)zone;
-
 +alloc;
 
++(Class)class;
++(BOOL)respondsToSelector:(SEL)selector;
+
 -(void)dealloc;
+-(void)finalize;
 
 -(NSMethodSignature *)methodSignatureForSelector:(SEL)selector;
 -(void)forwardInvocation:(NSInvocation *)invocation;
+
+-(NSString *)description;
 
 @end
 

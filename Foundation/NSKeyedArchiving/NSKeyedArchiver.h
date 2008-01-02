@@ -61,3 +61,9 @@ FOUNDATION_EXPORT NSString *NSInvalidArchiveOperationException;
 -(void)archiverWllFinish:(NSKeyedArchiver *)archiver;
 -(void)archiverDidFinish:(NSKeyedArchiver *)archiver;
 @end
+
+@interface NSObject(NSKeyedArchiver)
++(Class)classForKeyedUnarchiver;
++(NSArray *)classFallbacksForKeyedArchiver;
+-replacementObjectForKeyedArchiver:(NSKeyedArchiver *)archiver;
+@end

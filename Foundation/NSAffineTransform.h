@@ -36,8 +36,12 @@ typedef struct {
 -(void)translateXBy:(float)xby yBy:(float)yby;
 
 -(NSPoint)transformPoint:(NSPoint)point;
+-(NSSize)transformSize:(NSSize)value;
 
 -(void)rotateByDegrees:(float)angle;
 -(void)rotateByRadians:(float)radians;
+
+-(void)scaleBy:(float)value;
+-(void)scaleXBy:(float)xvalue yBy:(float)yvalue;
 
 @end

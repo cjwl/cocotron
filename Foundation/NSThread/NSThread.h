@@ -11,6 +11,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @class NSDictionary,NSMutableDictionary,NSAutoreleasePool;
 
+FOUNDATION_EXPORT NSString *NSDidBecomeSingleThreadedNotification;
 FOUNDATION_EXPORT NSString *NSWillBecomeMultiThreadedNotification;
 FOUNDATION_EXPORT NSString *NSThreadWillExitNotification;
 
@@ -26,26 +27,54 @@ FOUNDATION_EXPORT NSString *NSThreadWillExitNotification;
 }
 
 +(BOOL)isMultiThreaded;
++(BOOL)isMainThread;
+
++(NSThread *)mainThread;
 
 +(void)detachNewThreadSelector:(SEL)selector toTarget:target
    withObject:argument;
 
 +(NSThread *)currentThread;
++(NSArray *)callStackReturnAddresses;
++(double)threadPriority;
++(BOOL)setThreadPriority:(double)value;
 
 +(void)sleepUntilDate:(NSDate *)date;
++(void)sleepForTimeInterval:(NSTimeInterval)value;
 
 +(void)exit;
 
+-init;
+-initWithTarget:target selector:(SEL)selector object:argument;
+
+-(BOOL)isMainThread;
+-(BOOL)isCancelled;
+-(BOOL)isExecuting;
+-(BOOL)isFinished;
+
+-(void)start;
+-(void)cancel;
+-(void)main;
+
+-(NSString *)name;
+-(NSUInteger)stackSize;
+
 -(NSMutableDictionary *)threadDictionary;
 
+-(void)setName:(NSString *)value;
+-(void)setStackSize:(NSUInteger)value;
+
+
+// private
 -(NSMutableDictionary *)sharedDictionary;
 -(void)setSharedObject:object forClassName:(NSString *)className;
 
 @end
 
 @interface NSObject(NSThread)
--(void)performSelectorOnMainThread:(SEL)selector withObject:(id)object waitUntilDone:(BOOL)waitUntilDone modes:(NSArray *)modes;
--(void)performSelectorOnMainThread:(SEL)selector withObject:(id)object waitUntilDone:(BOOL)waitUntilDone;
+-(void)performSelectorOnMainThread:(SEL)selector withObject:object waitUntilDone:(BOOL)waitUntilDone modes:(NSArray *)modes;
+-(void)performSelectorOnMainThread:(SEL)selector withObject:object waitUntilDone:(BOOL)waitUntilDone;
+-(void)performSelectorInBackground:(SEL)selector withObject:object;
 @end
 
 // PRIVATE

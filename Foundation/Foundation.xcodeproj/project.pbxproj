@@ -3497,6 +3497,30 @@
 		FEDDE2570BD2A9E500DDD110 /* NSPredicate_BOOL.m in Sources */ = {isa = PBXBuildFile; fileRef = FEDDE2530BD2A9E500DDD110 /* NSPredicate_BOOL.m */; };
 		FEDDE2580BD2A9E500DDD110 /* NSPredicate_BOOL.h in Headers */ = {isa = PBXBuildFile; fileRef = FEDDE2520BD2A9E500DDD110 /* NSPredicate_BOOL.h */; };
 		FEDDE2590BD2A9E500DDD110 /* NSPredicate_BOOL.m in Sources */ = {isa = PBXBuildFile; fileRef = FEDDE2530BD2A9E500DDD110 /* NSPredicate_BOOL.m */; };
+		FEDF9FF10CF6123F00F21F87 /* NSMutableURLRequest.h in Headers */ = {isa = PBXBuildFile; fileRef = FEDF9FEF0CF6123F00F21F87 /* NSMutableURLRequest.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEDF9FF20CF6123F00F21F87 /* NSMutableURLRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = FEDF9FF00CF6123F00F21F87 /* NSMutableURLRequest.m */; };
+		FEDF9FF30CF6123F00F21F87 /* NSMutableURLRequest.h in Headers */ = {isa = PBXBuildFile; fileRef = FEDF9FEF0CF6123F00F21F87 /* NSMutableURLRequest.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEDF9FF40CF6123F00F21F87 /* NSMutableURLRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = FEDF9FF00CF6123F00F21F87 /* NSMutableURLRequest.m */; };
+		FEDF9FF50CF6123F00F21F87 /* NSMutableURLRequest.h in Headers */ = {isa = PBXBuildFile; fileRef = FEDF9FEF0CF6123F00F21F87 /* NSMutableURLRequest.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEDF9FF60CF6123F00F21F87 /* NSMutableURLRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = FEDF9FF00CF6123F00F21F87 /* NSMutableURLRequest.m */; };
+		FEDF9FF70CF6123F00F21F87 /* NSMutableURLRequest.h in Headers */ = {isa = PBXBuildFile; fileRef = FEDF9FEF0CF6123F00F21F87 /* NSMutableURLRequest.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEDF9FF80CF6123F00F21F87 /* NSMutableURLRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = FEDF9FF00CF6123F00F21F87 /* NSMutableURLRequest.m */; };
+		FEDF9FF90CF6123F00F21F87 /* NSMutableURLRequest.h in Headers */ = {isa = PBXBuildFile; fileRef = FEDF9FEF0CF6123F00F21F87 /* NSMutableURLRequest.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEDF9FFA0CF6123F00F21F87 /* NSMutableURLRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = FEDF9FF00CF6123F00F21F87 /* NSMutableURLRequest.m */; };
+		FEDF9FFB0CF6123F00F21F87 /* NSMutableURLRequest.h in Headers */ = {isa = PBXBuildFile; fileRef = FEDF9FEF0CF6123F00F21F87 /* NSMutableURLRequest.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEDF9FFC0CF6123F00F21F87 /* NSMutableURLRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = FEDF9FF00CF6123F00F21F87 /* NSMutableURLRequest.m */; };
+		FEDFA1020CF7D41F00F21F87 /* NSCachedURLResponse.h in Headers */ = {isa = PBXBuildFile; fileRef = FEDFA1000CF7D41F00F21F87 /* NSCachedURLResponse.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEDFA1030CF7D41F00F21F87 /* NSCachedURLResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = FEDFA1010CF7D41F00F21F87 /* NSCachedURLResponse.m */; };
+		FEDFA1040CF7D41F00F21F87 /* NSCachedURLResponse.h in Headers */ = {isa = PBXBuildFile; fileRef = FEDFA1000CF7D41F00F21F87 /* NSCachedURLResponse.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEDFA1050CF7D41F00F21F87 /* NSCachedURLResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = FEDFA1010CF7D41F00F21F87 /* NSCachedURLResponse.m */; };
+		FEDFA1060CF7D41F00F21F87 /* NSCachedURLResponse.h in Headers */ = {isa = PBXBuildFile; fileRef = FEDFA1000CF7D41F00F21F87 /* NSCachedURLResponse.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEDFA1070CF7D41F00F21F87 /* NSCachedURLResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = FEDFA1010CF7D41F00F21F87 /* NSCachedURLResponse.m */; };
+		FEDFA1080CF7D41F00F21F87 /* NSCachedURLResponse.h in Headers */ = {isa = PBXBuildFile; fileRef = FEDFA1000CF7D41F00F21F87 /* NSCachedURLResponse.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEDFA1090CF7D41F00F21F87 /* NSCachedURLResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = FEDFA1010CF7D41F00F21F87 /* NSCachedURLResponse.m */; };
+		FEDFA10A0CF7D41F00F21F87 /* NSCachedURLResponse.h in Headers */ = {isa = PBXBuildFile; fileRef = FEDFA1000CF7D41F00F21F87 /* NSCachedURLResponse.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEDFA10B0CF7D41F00F21F87 /* NSCachedURLResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = FEDFA1010CF7D41F00F21F87 /* NSCachedURLResponse.m */; };
+		FEDFA10C0CF7D41F00F21F87 /* NSCachedURLResponse.h in Headers */ = {isa = PBXBuildFile; fileRef = FEDFA1000CF7D41F00F21F87 /* NSCachedURLResponse.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEDFA10D0CF7D41F00F21F87 /* NSCachedURLResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = FEDFA1010CF7D41F00F21F87 /* NSCachedURLResponse.m */; };
 		FEE17BA30BB43998006B4510 /* NSDistributedLock.m in Sources */ = {isa = PBXBuildFile; fileRef = FEE17BA20BB43998006B4510 /* NSDistributedLock.m */; };
 		FEE17BA40BB43998006B4510 /* NSDistributedLock.m in Sources */ = {isa = PBXBuildFile; fileRef = FEE17BA20BB43998006B4510 /* NSDistributedLock.m */; };
 		FEE17BA50BB43998006B4510 /* NSDistributedLock.m in Sources */ = {isa = PBXBuildFile; fileRef = FEE17BA20BB43998006B4510 /* NSDistributedLock.m */; };
@@ -4403,6 +4427,10 @@
 		FED70FB70C3C09C7000CBE5B /* Foundation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Foundation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FEDDE2520BD2A9E500DDD110 /* NSPredicate_BOOL.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSPredicate_BOOL.h; sourceTree = "<group>"; };
 		FEDDE2530BD2A9E500DDD110 /* NSPredicate_BOOL.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSPredicate_BOOL.m; sourceTree = "<group>"; };
+		FEDF9FEF0CF6123F00F21F87 /* NSMutableURLRequest.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSMutableURLRequest.h; sourceTree = "<group>"; };
+		FEDF9FF00CF6123F00F21F87 /* NSMutableURLRequest.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSMutableURLRequest.m; sourceTree = "<group>"; };
+		FEDFA1000CF7D41F00F21F87 /* NSCachedURLResponse.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSCachedURLResponse.h; sourceTree = "<group>"; };
+		FEDFA1010CF7D41F00F21F87 /* NSCachedURLResponse.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSCachedURLResponse.m; sourceTree = "<group>"; };
 		FEE17BA20BB43998006B4510 /* NSDistributedLock.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSDistributedLock.m; sourceTree = "<group>"; };
 		FEE97EB40BBEDE3000DBAFF9 /* NSConcreteDirectoryEnumerator.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSConcreteDirectoryEnumerator.h; sourceTree = "<group>"; };
 		FEE97EB50BBEDE3000DBAFF9 /* NSConcreteDirectoryEnumerator.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSConcreteDirectoryEnumerator.m; sourceTree = "<group>"; };
@@ -5516,6 +5544,12 @@
 		FEB9D5580B44389200C239BB /* NSURL */ = {
 			isa = PBXGroup;
 			children = (
+				FEDFA1000CF7D41F00F21F87 /* NSCachedURLResponse.h */,
+				FEDFA1010CF7D41F00F21F87 /* NSCachedURLResponse.m */,
+				FE405A6A0B4450FD001B183D /* NSHTTPURLResponse.h */,
+				FE405A6B0B4450FD001B183D /* NSHTTPURLResponse.m */,
+				FEDF9FEF0CF6123F00F21F87 /* NSMutableURLRequest.h */,
+				FEDF9FF00CF6123F00F21F87 /* NSMutableURLRequest.m */,
 				FEB9D55D0B4438E500C239BB /* NSURL.h */,
 				FEB9D55E0B4438E500C239BB /* NSURL.m */,
 				FEB9D5690B4438FD00C239BB /* NSURLAuthenticationChallenge.h */,
@@ -5540,8 +5574,6 @@
 				FEB9D5E20B4439BA00C239BB /* NSURLRequest.m */,
 				FEB9D5ED0B443A9600C239BB /* NSURLResponse.h */,
 				FEB9D5EE0B443A9600C239BB /* NSURLResponse.m */,
-				FE405A6A0B4450FD001B183D /* NSHTTPURLResponse.h */,
-				FE405A6B0B4450FD001B183D /* NSHTTPURLResponse.m */,
 			);
 			path = NSURL;
 			sourceTree = "<group>";
@@ -5876,6 +5908,8 @@
 				FE9D95520C0387D5006DB214 /* NSValueTransformer_UnarchiveFromData.h in Headers */,
 				FEA36F280C24C57000025A9C /* objc_cache.h in Headers */,
 				FED70B090C3B4271000CBE5B /* NSTask_solaris.h in Headers */,
+				FEDF9FFB0CF6123F00F21F87 /* NSMutableURLRequest.h in Headers */,
+				FEDFA10C0CF7D41F00F21F87 /* NSCachedURLResponse.h in Headers */,
 				FEA9D0900D16C55E00123D51 /* NSPropertyListReader_binary1.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -6171,6 +6205,8 @@
 				FE9D95480C0387D5006DB214 /* NSValueTransformer_NegateBoolean.h in Headers */,
 				FE9D954A0C0387D5006DB214 /* NSValueTransformer_UnarchiveFromData.h in Headers */,
 				FEA36F270C24C57000025A9C /* objc_cache.h in Headers */,
+				FEDF9FF90CF6123F00F21F87 /* NSMutableURLRequest.h in Headers */,
+				FEDFA10A0CF7D41F00F21F87 /* NSCachedURLResponse.h in Headers */,
 				FEA9D08E0D16C55E00123D51 /* NSPropertyListReader_binary1.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -6469,6 +6505,8 @@
 				FE9D95400C0387D5006DB214 /* NSValueTransformer_NegateBoolean.h in Headers */,
 				FE9D95420C0387D5006DB214 /* NSValueTransformer_UnarchiveFromData.h in Headers */,
 				FEA36F260C24C57000025A9C /* objc_cache.h in Headers */,
+				FEDF9FF70CF6123F00F21F87 /* NSMutableURLRequest.h in Headers */,
+				FEDFA1080CF7D41F00F21F87 /* NSCachedURLResponse.h in Headers */,
 				FEA9D08C0D16C55E00123D51 /* NSPropertyListReader_binary1.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -6767,6 +6805,8 @@
 				FE01A6BA0C5D9B6900AEA51A /* NSValueTransformer_NegateBoolean.h in Headers */,
 				FE01A6BB0C5D9B6900AEA51A /* NSValueTransformer_UnarchiveFromData.h in Headers */,
 				FE01A6BC0C5D9B6900AEA51A /* objc_cache.h in Headers */,
+				FEDF9FF50CF6123F00F21F87 /* NSMutableURLRequest.h in Headers */,
+				FEDFA1060CF7D41F00F21F87 /* NSCachedURLResponse.h in Headers */,
 				FEA9D08A0D16C55E00123D51 /* NSPropertyListReader_binary1.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -7062,6 +7102,8 @@
 				FED7093E0C3B3D2C000CBE5B /* objc_cache.h in Headers */,
 				FED70B050C3B4255000CBE5B /* NSPlatform_darwin.h in Headers */,
 				FED70B070C3B4255000CBE5B /* NSTask_darwin.h in Headers */,
+				FEDF9FF10CF6123F00F21F87 /* NSMutableURLRequest.h in Headers */,
+				FEDFA1020CF7D41F00F21F87 /* NSCachedURLResponse.h in Headers */,
 				FEA9D0920D16C55E00123D51 /* NSPropertyListReader_binary1.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -7357,6 +7399,8 @@
 				FED70E870C3C09C7000CBE5B /* objc_cache.h in Headers */,
 				FED70E880C3C09C7000CBE5B /* NSPlatform_darwin.h in Headers */,
 				FED70E890C3C09C7000CBE5B /* NSTask_darwin.h in Headers */,
+				FEDF9FF30CF6123F00F21F87 /* NSMutableURLRequest.h in Headers */,
+				FEDFA1040CF7D41F00F21F87 /* NSCachedURLResponse.h in Headers */,
 				FEA9D0940D16C55E00123D51 /* NSPropertyListReader_binary1.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -7972,6 +8016,8 @@
 				FE9D95510C0387D5006DB214 /* NSValueTransformer_NegateBoolean.m in Sources */,
 				FE9D95530C0387D5006DB214 /* NSValueTransformer_UnarchiveFromData.m in Sources */,
 				FED70B0A0C3B4278000CBE5B /* NSPlatform_solaris.m in Sources */,
+				FEDF9FFC0CF6123F00F21F87 /* NSMutableURLRequest.m in Sources */,
+				FEDFA10D0CF7D41F00F21F87 /* NSCachedURLResponse.m in Sources */,
 				FEA9D0910D16C55E00123D51 /* NSPropertyListReader_binary1.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -8261,6 +8307,8 @@
 				FE9D95470C0387D5006DB214 /* NSValueTransformer_IsNotNil.m in Sources */,
 				FE9D95490C0387D5006DB214 /* NSValueTransformer_NegateBoolean.m in Sources */,
 				FE9D954B0C0387D5006DB214 /* NSValueTransformer_UnarchiveFromData.m in Sources */,
+				FEDF9FFA0CF6123F00F21F87 /* NSMutableURLRequest.m in Sources */,
+				FEDFA10B0CF7D41F00F21F87 /* NSCachedURLResponse.m in Sources */,
 				FEA9D08F0D16C55E00123D51 /* NSPropertyListReader_binary1.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -8553,6 +8601,8 @@
 				FE9D953F0C0387D5006DB214 /* NSValueTransformer_IsNotNil.m in Sources */,
 				FE9D95410C0387D5006DB214 /* NSValueTransformer_NegateBoolean.m in Sources */,
 				FE9D95430C0387D5006DB214 /* NSValueTransformer_UnarchiveFromData.m in Sources */,
+				FEDF9FF80CF6123F00F21F87 /* NSMutableURLRequest.m in Sources */,
+				FEDFA1090CF7D41F00F21F87 /* NSCachedURLResponse.m in Sources */,
 				FEA9D08D0D16C55E00123D51 /* NSPropertyListReader_binary1.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -8845,6 +8895,8 @@
 				FE01A7D70C5D9B6900AEA51A /* NSValueTransformer_IsNotNil.m in Sources */,
 				FE01A7D80C5D9B6900AEA51A /* NSValueTransformer_NegateBoolean.m in Sources */,
 				FE01A7D90C5D9B6900AEA51A /* NSValueTransformer_UnarchiveFromData.m in Sources */,
+				FEDF9FF60CF6123F00F21F87 /* NSMutableURLRequest.m in Sources */,
+				FEDFA1070CF7D41F00F21F87 /* NSCachedURLResponse.m in Sources */,
 				FEA9D08B0D16C55E00123D51 /* NSPropertyListReader_binary1.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -9136,6 +9188,8 @@
 				FED70B080C3B4255000CBE5B /* NSTask_darwin.m in Sources */,
 				FED70C8F0C3BFFBE000CBE5B /* objc_msgSend-darwin-i386.s in Sources */,
 				FE2705C60C5EF3D60004AB37 /* OBJCInitializeProcess_Darwin.m in Sources */,
+				FEDF9FF20CF6123F00F21F87 /* NSMutableURLRequest.m in Sources */,
+				FEDFA1030CF7D41F00F21F87 /* NSCachedURLResponse.m in Sources */,
 				FEA9D0930D16C55E00123D51 /* NSPropertyListReader_binary1.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -9427,6 +9481,8 @@
 				FED70FA30C3C09C7000CBE5B /* NSTask_darwin.m in Sources */,
 				FED70FB90C3C0A00000CBE5B /* objc_msgSend-darwin-ppc.s in Sources */,
 				FE2705C70C5EF3D60004AB37 /* OBJCInitializeProcess_Darwin.m in Sources */,
+				FEDF9FF40CF6123F00F21F87 /* NSMutableURLRequest.m in Sources */,
+				FEDFA1050CF7D41F00F21F87 /* NSCachedURLResponse.m in Sources */,
 				FEA9D0950D16C55E00123D51 /* NSPropertyListReader_binary1.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

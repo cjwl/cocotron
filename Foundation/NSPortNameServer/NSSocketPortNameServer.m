@@ -7,7 +7,52 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
 #import <Foundation/NSSocketPortNameServer.h>
+#import <Foundation/NSRaise.h>
 
 @implementation NSSocketPortNameServer
+
++sharedInstance {
+   NSUnimplementedMethod();
+   return 0;
+}
+
+-(unsigned short)defaultNameServerPortNumber {
+   NSUnimplementedMethod();
+   return 0;
+}
+
+-(void)setDefaultNameServerPortNumber:(unsigned short)number {
+   NSUnimplementedMethod();
+}
+
+-(NSPort *)portForName:(NSString *)name host:(NSString *)host nameServerPortNumber:(unsigned short)number {
+   NSUnimplementedMethod();
+   return 0;
+}
+
+-(NSPort *)portForName:(NSString *)name host:(NSString *)host {
+   NSUnimplementedMethod();
+   return 0;
+}
+
+-(NSPort *)portForName:(NSString *)name {
+   NSUnimplementedMethod();
+   return 0;
+}
+
+-(BOOL)registerPort:(NSPort *)port name:(NSString *)name {
+   NSUnimplementedMethod();
+   return 0;
+}
+
+-(BOOL)registerPort:(NSPort *)port name:(NSString *)name nameServerPortNumber:(unsigned short)number {
+   NSUnimplementedMethod();
+   return 0;
+}
+
+-(BOOL)removePortForName:(NSString *)name {
+   NSUnimplementedMethod();
+   return 0;
+}
 
 @end

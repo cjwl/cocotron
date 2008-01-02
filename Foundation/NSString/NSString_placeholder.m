@@ -32,10 +32,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -initWithCharactersNoCopy:(unichar *)characters length:(unsigned)length
-             freeWhenDone:(BOOL)freeBuffer {
+             freeWhenDone:(BOOL)freeWhenDone {
    NSDeallocateObject(self);
 
-   if(freeBuffer)
+   if(freeWhenDone)
     return NSString_unicodePtrNewNoCopy(NULL,characters,length);
    else
     return NSString_unicodeNew(NULL,characters,length);
@@ -47,12 +47,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -initWithCStringNoCopy:(char *)bytes length:(unsigned)length
-          freeWhenDone:(BOOL)freeBuffer {
+          freeWhenDone:(BOOL)freeWhenDone {
    NSString *string=NSString_cStringNewWithBytes(NULL,bytes,length);
 
    NSDeallocateObject(self);
 
-   if(freeBuffer)
+   if(freeWhenDone)
     NSZoneFree(NSZoneFromPointer(bytes),bytes);
 
    return string;

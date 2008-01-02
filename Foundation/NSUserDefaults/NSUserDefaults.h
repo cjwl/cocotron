@@ -25,6 +25,8 @@ FOUNDATION_EXPORT NSString *NSTimeDateFormatString;
 FOUNDATION_EXPORT NSString *NSShortWeekDayNameArray;
 FOUNDATION_EXPORT NSString *NSShortMonthNameArray;
 
+FOUNDATION_EXPORT NSString *NSUserDefaultsDidChangeNotification;
+
 @interface NSUserDefaults : NSObject {
    NSMutableDictionary *_domains;
    NSArray             *_searchList;
@@ -35,13 +37,17 @@ FOUNDATION_EXPORT NSString *NSShortMonthNameArray;
 -initWithUser:(NSString *)user;
 
 +(NSUserDefaults *)standardUserDefaults;
++(void)resetStandardUserDefaults;
+
+-(void)addSuiteNamed:(NSString *)name;
+-(void)removeSuiteNamed:(NSString *)name;
 
 -(NSArray *)searchList;
 -(void)setSearchList:(NSArray *)array;
 
 -(NSDictionary *)dictionaryRepresentation;
 
--(void)registerDefaults:(NSDictionary *)registrationDictionary;
+-(void)registerDefaults:(NSDictionary *)values;
 
 -(NSArray *)volatileDomainNames;
 -(NSArray *)persistentDomainNames;
@@ -50,8 +56,7 @@ FOUNDATION_EXPORT NSString *NSShortMonthNameArray;
 -(NSDictionary *)persistentDomainForName:(NSString *)name;
 
 -(void)setVolatileDomain:(NSDictionary *)domain forName:(NSString *)name;
--(void)setPersistentDomain:(NSDictionary *)domain
-   forName:(NSString *)name;
+-(void)setPersistentDomain:(NSDictionary *)domain forName:(NSString *)name;
 
 -(void)removeVolatileDomainForName:(NSString *)name;
 -(void)removePersistentDomainForName:(NSString *)name;
@@ -74,6 +79,9 @@ FOUNDATION_EXPORT NSString *NSShortMonthNameArray;
 -(void)setFloat:(float)value forKey:(NSString *)key;
 
 -(void)removeObjectForKey:(NSString *)key;
+
+-(BOOL)objectIsForcedForKey:(NSString *)key;
+-(BOOL)objectIsForcedForKey:(NSString *)key inDomain:(NSString *)domain;
 
 @end
 

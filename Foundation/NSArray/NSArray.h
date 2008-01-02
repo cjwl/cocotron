@@ -9,17 +9,20 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSObject.h>
 #import <Foundation/NSRange.h>
 
-@class NSString,NSEnumerator,NSDictionary,NSPredicate,NSIndexSet;
+@class NSString,NSEnumerator,NSDictionary,NSPredicate,NSIndexSet,NSURL;
 
 @interface NSArray : NSObject <NSCopying,NSMutableCopying,NSCoding>
 
 -initWithArray:(NSArray *)array;
+-initWithArray:(NSArray *)array copyItems:(BOOL)copyItems;
 -initWithContentsOfFile:(NSString *)path;
+-initWithContentsOfURL:(NSURL *)url;
 -initWithObjects:(id *)objects count:(unsigned)count;
 -initWithObjects:object,...;
 
 +array;
 +arrayWithContentsOfFile:(NSString *)path;
++arrayWithContentsOfURL:(NSURL *)url;
 +arrayWithObject:object;
 +arrayWithObjects:object,...;
 
@@ -67,8 +70,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)makeObjectsPerformSelector:(SEL)selector withObject:object;
 
 -(NSString *)descriptionWithLocale:(NSDictionary *)locale;
--(NSString *)descriptionWithLocale:(NSDictionary *)locale
-   indent:(unsigned)level;
+-(NSString *)descriptionWithLocale:(NSDictionary *)locale indent:(unsigned)indent;
 
 -(NSArray *)sortedArrayUsingDescriptors:(NSArray *)descriptors;
 -(NSArray *)filteredArrayUsingPredicate:(NSPredicate *)predicate;

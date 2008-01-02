@@ -55,6 +55,21 @@ NSString *NSFileHandleOperationException = @"NSFileHandleOperationException";
    return [[[NSPlatform currentPlatform] fileHandleClass] fileHandleWithStandardError];
 }
 
+-initWithFileDescriptor:(int)descriptor {
+   NSInvalidAbstractInvocation();
+   return nil;
+}
+
+-initWithFileDescriptor:(int)descriptor closeOnDealloc:(BOOL)closeOnDealloc {
+   NSInvalidAbstractInvocation();
+   return nil;
+}
+
+-(int)fileDescriptor {
+   NSInvalidAbstractInvocation();
+   return -1;
+}
+
 -(void)closeFile {
    NSInvalidAbstractInvocation();
 }
@@ -106,6 +121,30 @@ NSString *NSFileHandleOperationException = @"NSFileHandleOperationException";
 
 -(void)readInBackgroundAndNotify {
    [self readInBackgroundAndNotifyForModes:[NSArray arrayWithObject:NSDefaultRunLoopMode]];
+}
+
+-(void)readToEndOfFileInBackgroundAndNotifyForModes:(NSArray *)modes {
+   NSInvalidAbstractInvocation();
+}
+
+-(void)readToEndOfFileInBackgroundAndNotify {
+   [self readToEndOfFileInBackgroundAndNotifyForModes:[NSArray arrayWithObject:NSDefaultRunLoopMode]];
+}
+
+-(void)acceptConnectionInBackgroundAndNotifyForModes:(NSArray *)modes {
+   NSInvalidAbstractInvocation();
+}
+
+-(void)acceptConnectionInBackgroundAndNotify {
+   [self acceptConnectionInBackgroundAndNotifyForModes:[NSArray arrayWithObject:NSDefaultRunLoopMode]];
+}
+
+-(void)waitForDataInBackgroundAndNotifyForModes:(NSArray *)modes {
+   NSInvalidAbstractInvocation();
+}
+
+-(void)waitForDataInBackgroundAndNotify {
+   [self waitForDataInBackgroundAndNotifyForModes:[NSArray arrayWithObject:NSDefaultRunLoopMode]];
 }
 
 @end

@@ -9,11 +9,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 // Original - Christopher Lloyd <cjwl@objc.net>
 #import <Foundation/NSThread.h>
 #import <Foundation/NSDate.h>
+#import <Foundation/NSArray.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSRaise.h>
 #import <Foundation/NSPlatform.h>
 #import <Foundation/NSNotificationCenter.h>
 
+NSString *NSDidBecomeSingleThreadedNotification=@"NSDidBecomeSingleThreadedNotification";
 NSString *NSWillBecomeMultiThreadedNotification=@"NSWillBecomeMultiThreadedNotification";
 NSString *NSThreadWillExitNotification=@"NSThreadWillExitNotification";
 
@@ -25,7 +27,18 @@ static BOOL isMultiThreaded = NO;
 	return isMultiThreaded;
 }
 
-- (id) initWithTarget: (id) aTarget selector: (SEL) aSelector argument: (id) anArgument {
++(BOOL)isMainThread {
+   NSUnimplementedMethod();
+   return 0;
+}
+
++(NSThread *)mainThread {
+   NSUnimplementedMethod();
+   return 0;
+}
+
+
+- (id) initWithTarget: (id) aTarget selector: (SEL) aSelector object: (id) anArgument {
    [self init];
    _target   = [aTarget retain];
    _selector = aSelector;
@@ -64,7 +77,7 @@ int objc_thread_detach(unsigned (*func)(void *arg), void *arg) {
 #endif
 
 +(void)detachNewThreadSelector:(SEL)selector toTarget:target withObject:argument {
-	id newThread = [[self alloc] initWithTarget: target selector: selector argument: argument];
+	id newThread = [[self alloc] initWithTarget: target selector: selector object: argument];
 	
 	if (!isMultiThreaded) {
 		[[NSNotificationCenter defaultCenter] postNotificationName: NSWillBecomeMultiThreadedNotification
@@ -85,14 +98,34 @@ int objc_thread_detach(unsigned (*func)(void *arg), void *arg) {
    return NSPlatformCurrentThread();
 }
 
++(NSArray *)callStackReturnAddresses {
+  // dont raise exception as NSException relies on this in raise
+  // NSUnimplementedMethod();
+   return [NSArray arrayWithObject:@"NSUnimplementedMethod"];
+}
+
++(double)threadPriority {
+   NSUnimplementedMethod();
+   return 0;
+}
+
++(BOOL)setThreadPriority:(double)value {
+   NSUnimplementedMethod();
+   return 0;
+}
+
 +(void)sleepUntilDate:(NSDate *)date {
    NSTimeInterval interval=[date timeIntervalSinceNow];
 
    [[NSPlatform currentPlatform] sleepThreadForTimeInterval:interval];
 }
 
++(void)sleepForTimeInterval:(NSTimeInterval)value {
+   [[NSPlatform currentPlatform] sleepThreadForTimeInterval:value];
+}
+
 +(void)exit {
-   NSUnsupportedMethod();
+   NSUnimplementedMethod();
 }
 
 -init {
@@ -109,8 +142,58 @@ int objc_thread_detach(unsigned (*func)(void *arg), void *arg) {
 	[super dealloc];
 }
 
+-(BOOL)isMainThread {
+   NSUnimplementedMethod();
+   return 0;
+}
+
+-(BOOL)isCancelled {
+   NSUnimplementedMethod();
+   return 0;
+}
+
+-(BOOL)isExecuting {
+   NSUnimplementedMethod();
+   return 0;
+}
+
+-(BOOL)isFinished {
+   NSUnimplementedMethod();
+   return 0;
+}
+
+-(void)start {
+   NSUnimplementedMethod();
+}
+
+-(void)cancel {
+   NSUnimplementedMethod();
+}
+
+-(void)main {
+   NSUnimplementedMethod();
+}
+
+-(NSString *)name {
+   NSUnimplementedMethod();
+   return 0;
+}
+
+-(NSUInteger)stackSize {
+   NSUnimplementedMethod();
+   return 0;
+}
+
 -(NSMutableDictionary *)threadDictionary {
    return _dictionary;
+}
+
+-(void)setName:(NSString *)value {
+   NSUnimplementedMethod();
+}
+
+-(void)setStackSize:(NSUInteger)value {
+   NSUnimplementedMethod();
 }
 
 -(NSMutableDictionary *)sharedDictionary {
@@ -182,6 +265,10 @@ void NSThreadSetUncaughtExceptionHandler(NSUncaughtExceptionHandler *function) {
 }
 
 -(void)performSelectorOnMainThread:(SEL)selector withObject:(id)object waitUntilDone:(BOOL)waitUntilDone {
+	NSUnimplementedMethod();
+}
+
+-(void)performSelectorInBackground:(SEL)selector withObject:object {
 	NSUnimplementedMethod();
 }
 

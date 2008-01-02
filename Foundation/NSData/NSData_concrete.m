@@ -61,10 +61,10 @@ NSData *NSData_concreteNewNoCopy(NSZone *zone,void *bytes,unsigned length) {
    return self;
 }
 
--initWithBytesNoCopy:(void *)bytes length:(unsigned)length freeWhenDone:(BOOL)freeOnDealloc {
+-initWithBytesNoCopy:(void *)bytes length:(unsigned)length freeWhenDone:(BOOL)freeWhenDone {
    _length=length;
    _bytes=bytes;
-   _freeWhenDone=freeOnDealloc;
+   _freeWhenDone=freeWhenDone;
    return self;
 }
 

@@ -77,6 +77,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return nil;
 }
 
+-initWithInteger:(NSInteger)value {
+   NSInvalidAbstractInvocation();
+   return nil;
+}
+
 -initWithUnsignedChar:(unsigned char)value {
    NSInvalidAbstractInvocation();
    return nil;
@@ -98,6 +103,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -initWithUnsignedLongLong:(unsigned long long)value {
+   NSInvalidAbstractInvocation();
+   return nil;
+}
+
+-initWithUnsignedInteger:(NSUInteger)value {
    NSInvalidAbstractInvocation();
    return nil;
 }
@@ -380,6 +390,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return [[[self allocWithZone:NULL] initWithDouble:value] autorelease];
 }
 
++(NSNumber *)numberWithInteger:(NSInteger)value {
+   NSUnimplementedMethod();
+   return nil;
+}
+
 +(NSNumber *)numberWithUnsignedChar:(unsigned char)value {
    if(self==OBJCClassFromString("NSNumber"))
     return NSAutorelease(NSNumber_unsignedCharNew(NULL,value));
@@ -414,6 +429,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
    return [[[self allocWithZone:NULL] initWithUnsignedLongLong:value] autorelease];
 }
+
++(NSNumber *)numberWithUnsignedInteger:(NSUInteger)value {
+   NSUnimplementedMethod();
+   return nil;
+}
+
 
 -(NSComparisonResult)compare:(NSNumber *)other {
     double d1 = [self doubleValue];
@@ -489,6 +510,17 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return 0;
 }
 
+-(NSDecimal)decimalValue {
+   NSDecimal result;
+   NSInvalidAbstractInvocation();
+   return result;
+}
+
+-(NSInteger)integerValue {
+   NSInvalidAbstractInvocation();
+   return 0;
+}
+
 -(unsigned char)unsignedCharValue {
    NSInvalidAbstractInvocation();
    return 0;
@@ -510,6 +542,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(unsigned long long)unsignedLongLongValue {
+   NSInvalidAbstractInvocation();
+   return 0;
+}
+
+-(NSUInteger)unsignedIntegerValue {
    NSInvalidAbstractInvocation();
    return 0;
 }

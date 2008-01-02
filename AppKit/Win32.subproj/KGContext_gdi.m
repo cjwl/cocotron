@@ -2,6 +2,7 @@
 #import "KGLayer_gdi.h"
 #import "KGRenderingContext_gdi.h"
 #import "KGGraphicsState_gdi.h"
+#import "Win32Window.h"
 #import <AppKit/KGDeviceContext_gdi.h>
 #import <AppKit/KGMutablePath.h>
 #import <AppKit/KGColor.h>
@@ -9,12 +10,43 @@
 
 @implementation KGContext_gdi
 
+-initWithSize:(NSSize)size window:(CGWindow *)window {
+   HWND                    handle=[(Win32Window *)window windowHandle];
+   KGRenderingContext_gdi *rc=[KGRenderingContext_gdi renderingContextWithWindowHWND:handle];
+   CGAffineTransform       flip={1,0,0,-1,0,size.height};
+   KGGraphicsState        *initialState=[[[KGGraphicsState_gdi alloc] initWithRenderingContext:rc transform:flip] autorelease];
+
+   [self initWithGraphicsState:initialState];
+
+   _renderingContext=[rc retain];
+   
+   return self;
+}
+
+-initWithSize:(NSSize)size context:(KGContext *)otherX {
+   KGContext_gdi          *other=(KGContext_gdi *)otherX;
+   KGRenderingContext_gdi *rc=[KGRenderingContext_gdi renderingContextWithSize:size renderingContext:[other renderingContext]];
+   CGAffineTransform       flip={1,0,0,-1,0,size.height};
+   KGGraphicsState        *initialState=[[[KGGraphicsState_gdi alloc] initWithRenderingContext:rc transform:flip] autorelease];
+
+   [self initWithGraphicsState:initialState];
+
+   _renderingContext=[rc retain];
+   
+   return self;
+}
+
+-(void)dealloc {
+   [_renderingContext release];
+   [super dealloc];
+}
+
 -(KGGraphicsState_gdi *)currentState {
    return [_stateStack lastObject];
 }
 
 -(KGRenderingContext_gdi *)renderingContext {
-   return [[self->_stateStack lastObject] renderingContext];
+   return _renderingContext;
 }
 
 -(void)strokeRect:(NSRect)rect {
@@ -98,6 +130,13 @@
       
    [[self renderingContext] drawOther:[(KGContext_gdi *)other renderingContext] inRect:rect ctm:ctm];
  }
+
+-(void)copyContext:(KGContext *)other size:(NSSize)size {
+   if(![other isKindOfClass:[KGContext_gdi class]])
+    return;
+
+   [[self renderingContext] drawOther:[(KGContext_gdi *)other renderingContext] inRect:NSMakeRect(0,0,size.width,size.height) ctm:CGAffineTransformIdentity];
+}
 
 -(void)flush {
    GdiFlush();

@@ -23,6 +23,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSKeyedUnarchiver.h>
 #import <Foundation/NSPredicate.h>
 #import <Foundation/NSIndexSet.h>
+#import <Foundation/NSURL.h>
 
 @implementation NSArray 
 
@@ -42,6 +43,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return [self initWithObjects:objects count:count];
 }
 
+-initWithArray:(NSArray *)array copyItems:(BOOL)copyItems {
+   NSUnimplementedMethod();
+   return nil;
+}
+
 -initWithContentsOfFile:(NSString *)path {
     id contents = [NSPropertyListReader arrayWithContentsOfFile: path]; 
 
@@ -53,6 +59,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     return [self initWithArray: contents]; 
 }
 
+-initWithContentsOfURL:(NSURL *)url {
+   if(![url isFileURL]){
+    [self dealloc];
+    return nil;
+   }
+   return [self initWithContentsOfFile:[url path]];
+}
 
 -initWithObjects:(id *)objects count:(unsigned)count {
    NSInvalidAbstractInvocation();
@@ -139,6 +152,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return [[[self allocWithZone:NULL] initWithContentsOfFile:path] autorelease];
 }
 
++arrayWithContentsOfURL:(NSURL *)url {
+   return [[[self allocWithZone:NULL] initWithContentsOfURL:url] autorelease];
+}
 
 +arrayWithObject:object {
    if(self==OBJCClassFromString("NSArray"))
@@ -414,8 +430,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return nil;
 }
 
--(NSString *)descriptionWithLocale:(NSDictionary *)locale
-   indent:(unsigned)level {
+-(NSString *)descriptionWithLocale:(NSDictionary *)locale indent:(unsigned)indent {
    NSUnimplementedMethod();
    return nil;
 }

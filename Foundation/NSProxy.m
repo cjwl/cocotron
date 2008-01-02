@@ -25,11 +25,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return self;
 }
 
++(BOOL)respondsToSelector:(SEL)selector {
+   NSUnimplementedMethod();
+   return NO;
+}
 
 +allocWithZone:(NSZone *)zone {
    return NSAllocateObject(self,0,zone);
 }
-
 
 +alloc {
    return [self allocWithZone:NULL];
@@ -39,6 +42,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    NSDeallocateObject((id)self);
 }
 
+-(void)finalize {
+   // do nothing?
+}
 
 -(NSMethodSignature *)methodSignatureForSelector:(SEL)selector {
    NSInvalidAbstractInvocation();

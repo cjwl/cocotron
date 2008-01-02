@@ -10,7 +10,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSRange.h>
 #import <Foundation/NSObjCRuntime.h>
 
-@class NSArray,NSData,NSDictionary,NSCharacterSet;
+@class NSArray,NSData,NSDictionary,NSCharacterSet,NSError,NSLocale,NSURL;
 
 typedef unsigned short unichar;
 
@@ -35,76 +35,102 @@ enum {
    NSBackwardsSearch=0x04,
    NSAnchoredSearch=0x08
 };
+typedef NSUInteger NSStringCompareOptions;
+typedef NSUInteger NSStringEncodingConversionOptions;
 
 FOUNDATION_EXPORT const unsigned NSMaximumStringLength;
 
 @interface NSString : NSObject <NSCopying,NSMutableCopying,NSCoding>
 
--initWithCharactersNoCopy:(unichar *)unicode length:(unsigned)length
-             freeWhenDone:(BOOL)freeBuffer;
--initWithCharacters:(const unichar *)unicode length:(unsigned)length;
--init;
++(const NSStringEncoding *)availableStringEncodings;
++(NSString *)localizedNameOfStringEncoding:(NSStringEncoding)encoding;
 
--initWithCStringNoCopy:(char *)cString length:(unsigned)length
-          freeWhenDone:(BOOL)freeBuffer;
--initWithCString:(const char *)cString length:(unsigned)length;
--initWithCString:(const char *)cString;
-
--initWithString:(NSString *)string;
-
--initWithFormat:(NSString *)format locale:(NSDictionary *)locale
-      arguments:(va_list)arguments;
--initWithFormat:(NSString *)format locale:(NSDictionary *)locale,...;
--initWithFormat:(NSString *)format arguments:(va_list)arguments;
--initWithFormat:(NSString *)format,...;
-
--initWithData:(NSData *)data encoding:(NSStringEncoding)encoding;
--initWithUTF8String:(const char *)utf8;
-
--initWithContentsOfFile:(NSString *)path;
-
-+stringWithCharacters:(const unichar *)unicode length:(unsigned)length;
++stringWithCharacters:(const unichar *)unicode length:(NSUInteger)length;
 +string;
 +stringWithCString:(const char *)cString length:(unsigned)length;
 +stringWithCString:(const char *)cString;
 +stringWithString:(NSString *)string;
 +stringWithFormat:(NSString *)format,...;
 +stringWithContentsOfFile:(NSString *)path;
++stringWithContentsOfFile:(NSString *)path encoding:(NSStringEncoding)encoding error:(NSError **)error;
++stringWithContentsOfFile:(NSString *)path usedEncoding:(NSStringEncoding *)encoding error:(NSError **)error;
++stringWithContentsOfURL:(NSURL *)url encoding:(NSStringEncoding)encoding error:(NSError **)error;
++stringWithContentsOfURL:(NSURL *)url usedEncoding:(NSStringEncoding *)encoding error:(NSError **)error;
++stringWithCString:(const char *)cString encoding:(NSStringEncoding)encoding;
++stringWithUTF8String:(const char *)utf8;
+
 +localizedStringWithFormat:(NSString *)format,...;
 
--(unichar)characterAtIndex:(unsigned)location;
+-initWithCharactersNoCopy:(unichar *)unicode length:(unsigned)length freeWhenDone:(BOOL)freeWhenDone;
+-initWithCharacters:(const unichar *)unicode length:(unsigned)length;
+-init;
+
+-initWithCStringNoCopy:(char *)cString length:(unsigned)length
+          freeWhenDone:(BOOL)freeWhenDone;
+-initWithCString:(const char *)cString length:(unsigned)length;
+-initWithCString:(const char *)cString;
+-initWithCString:(const char *)cString encoding:(NSStringEncoding)encoding;
+
+-initWithString:(NSString *)string;
+
+-initWithFormat:(NSString *)format locale:(NSDictionary *)locale arguments:(va_list)arguments;
+-initWithFormat:(NSString *)format locale:(NSDictionary *)locale,...;
+-initWithFormat:(NSString *)format arguments:(va_list)arguments;
+-initWithFormat:(NSString *)format,...;
+
+-initWithData:(NSData *)data encoding:(NSStringEncoding)encoding;
+-initWithUTF8String:(const char *)utf8;
+-initWithBytes:(const void *)bytes length:(NSUInteger)length encoding:(NSStringEncoding)encoding;
+-initWithBytesNoCopy:(void *)bytes length:(NSUInteger)length encoding:(NSStringEncoding)encoding freeWhenDone:(BOOL)freeWhenDone;
+-initWithContentsOfFile:(NSString *)path usedEncoding:(NSStringEncoding *)encoding error:(NSError **)error;
+
+-initWithContentsOfFile:(NSString *)path;
+-initWithContentsOfFile:(NSString *)path encoding:(NSStringEncoding)encoding error:(NSError **)error;
+-initWithContentsOfFile:(NSString *)path usedEncoding:(NSStringEncoding *)encoding error:(NSError **)error;
+-initWithContentsOfURL:(NSURL *)url encoding:(NSStringEncoding)encoding error:(NSError **)error;
+-initWithContentsOfURL:(NSURL *)url usedEncoding:(NSStringEncoding *)encoding error:(NSError **)error;
+
+-(unichar)characterAtIndex:(NSUInteger)location;
 -(unsigned)length;
 
 -(void)getCharacters:(unichar *)buffer range:(NSRange)range;
 -(void)getCharacters:(unichar *)buffer;
 
+-(NSComparisonResult)compare:(NSString *)other options:(unsigned)options range:(NSRange)range locale:(NSLocale *)locale;
 -(NSComparisonResult)compare:(NSString *)other options:(unsigned)options range:(NSRange)range;
 -(NSComparisonResult)compare:(NSString *)other options:(unsigned)options;
 -(NSComparisonResult)compare:(NSString *)other;
 -(NSComparisonResult)caseInsensitiveCompare:(NSString *)other;
+-(NSComparisonResult)localizedCompare:(NSString *)other;
+-(NSComparisonResult)localizedCaseInsensitiveCompare:(NSString *)other;
 
 -(BOOL)isEqualToString:(NSString *)string;
 
 -(BOOL)hasPrefix:(NSString *)string;
 -(BOOL)hasSuffix:(NSString *)string;
+-(NSRange)rangeOfString:(NSString *)string options:(unsigned)options range:(NSRange)range locale:(NSLocale *)locale;
 -(NSRange)rangeOfString:(NSString *)string options:(unsigned)options range:(NSRange)range;
 -(NSRange)rangeOfString:(NSString *)string options:(unsigned)options;
 -(NSRange)rangeOfString:(NSString *)string;
 
--(NSRange)rangeOfCharacterFromSet:(NSCharacterSet *)set
-   options:(unsigned)options range:(NSRange)range;
--(NSRange)rangeOfCharacterFromSet:(NSCharacterSet *)set
-   options:(unsigned)options;
+-(NSRange)rangeOfCharacterFromSet:(NSCharacterSet *)set options:(unsigned)options range:(NSRange)range;
+-(NSRange)rangeOfCharacterFromSet:(NSCharacterSet *)set options:(unsigned)options;
 -(NSRange)rangeOfCharacterFromSet:(NSCharacterSet *)set;
 
 -(void)getLineStart:(unsigned *)startp end:(unsigned *)endp contentsEnd:(unsigned *)contentsEndp forRange:(NSRange)range;
 -(NSRange)lineRangeForRange:(NSRange)range;
 
+-(void)getParagraphStart:(NSUInteger *)startp end:(NSUInteger *)endp contentsEnd:(NSUInteger *)contentsEndp forRange:(NSRange)range;
+-(NSRange)paragraphRangeForRange:(NSRange)range;
+
 -(NSString *)substringWithRange:(NSRange)range;
 -(NSString *)substringFromIndex:(unsigned)location;
 -(NSString *)substringToIndex:(unsigned)location;
 
+-(BOOL)boolValue;
 -(int)intValue;
+-(NSInteger)integerValue;
+-(long long)longLongValue;
 -(float)floatValue;
 -(double)doubleValue;
 
@@ -116,17 +142,43 @@ FOUNDATION_EXPORT const unsigned NSMaximumStringLength;
 -(NSString *)stringByAppendingString:(NSString *)string;
 
 -(NSArray *)componentsSeparatedByString:(NSString *)separator;
+-(NSArray *)componentsSeparatedByCharactersInSet:(NSCharacterSet *)set;
+
+-(NSString *)commonPrefixWithString:(NSString *)other options:(NSStringCompareOptions)options;
+-(NSString *)stringByPaddingToLength:(NSUInteger)length withString:(NSString *)padding startingAtIndex:(NSUInteger)index;
+-(NSString *)stringByReplacingCharactersInRange:(NSRange)range withString:(NSString *)substitute;
+-(NSString *)stringByReplacingOccurrencesOfString:(NSString *)original withString:(NSString *)substitute;
+-(NSString *)stringByReplacingOccurrencesOfString:(NSString *)original withString:(NSString *)substitute options:(NSStringCompareOptions)options range:(NSRange)range;
+
+-(NSString *)stringByFoldingWithOptions:(NSStringCompareOptions)options locale:(NSLocale *)locale;
+
+-(NSRange)rangeOfComposedCharacterSequenceAtIndex:(NSUInteger)index;
+-(NSRange)rangeOfComposedCharacterSequencesForRange:(NSRange)range;
+
+-(NSString *)precomposedStringWithCanonicalMapping;
+-(NSString *)decomposedStringWithCanonicalMapping;
+-(NSString *)precomposedStringWithCompatibilityMapping;
+-(NSString *)decomposedStringWithCompatibilityMapping;
 
 -propertyList;
 -(NSDictionary *)propertyListFromStringsFileFormat;
 
 -(BOOL)writeToFile:(NSString *)path atomically:(BOOL)atomically;
+-(BOOL)writeToFile:(NSString *)path atomically:(BOOL)atomically encoding:(NSStringEncoding)encoding error:(NSError **)error;
+-(BOOL)writeToURL:(NSURL *)url atomically:(BOOL)atomically encoding:(NSStringEncoding)encoding error:(NSError **)error;
+
+-(NSStringEncoding)fastestEncoding;
+-(NSStringEncoding)smallestEncoding;
 
 -(BOOL)canBeConvertedToEncoding:(NSStringEncoding)encoding;
+-(NSUInteger)lengthOfBytesUsingEncoding:(NSStringEncoding)encoding;
+-(NSUInteger)maximumLengthOfBytesUsingEncoding:(NSStringEncoding)encoding;
 
 -(NSData *)dataUsingEncoding:(NSStringEncoding)encoding
         allowLossyConversion:(BOOL)lossy;
 -(NSData *)dataUsingEncoding:(NSStringEncoding)encoding;
+
+-(BOOL)getBytes:(void *)bytes maxLength:(NSUInteger)maxLength usedLength:(NSUInteger *)usedLength encoding:(NSStringEncoding)encoding options:(NSStringEncodingConversionOptions)options range:(NSRange)range remainingRange:(NSRange *)remainingRange;
 
 -(const char *)UTF8String;
 
@@ -134,6 +186,11 @@ FOUNDATION_EXPORT const unsigned NSMaximumStringLength;
 -(NSString *)stringByAddingPercentEscapesUsingEncoding:(NSStringEncoding)encoding;
 
 -(NSString *)stringByTrimmingCharactersInSet:(NSCharacterSet *)set;
+
+-(const char *)cStringUsingEncoding:(NSStringEncoding)encoding;
+-(BOOL)getCString:(char *)cString maxLength:(NSUInteger)maxLength encoding:(NSStringEncoding)encoding;
+
+-(NSString *)description;
 
 +(NSStringEncoding)defaultCStringEncoding;
 

@@ -8,6 +8,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSError.h>
 #import <Foundation/NSString.h>
 #import <Foundation/NSDictionary.h>
+#import <Foundation/NSRaise.h>
 
 NSString *NSPOSIXErrorDomain=@"NSPOSIXErrorDomain";
 NSString *NSWINSOCKErrorDomain=@"NSWINSOCKErrorDomain";
@@ -29,6 +30,20 @@ NSString *NSLocalizedDescriptionKey=@"NSLocalizedDescriptionKey";
    [super dealloc];
 }
 
+-(void)encodeWithCoder:(NSCoder *)coder {
+   NSUnimplementedMethod();
+}
+
+-initWithCoder:(NSCoder *)coder {
+   NSUnimplementedMethod();
+   return self;
+}
+
+-copyWithZone:(NSZone *)zone {
+   NSUnimplementedMethod();
+   return self;
+}
+
 +errorWithDomain:(NSString *)domain code:(int)code userInfo:(NSDictionary *)userInfo {
    return [[[self alloc] initWithDomain:domain code:code userInfo:userInfo] autorelease];
 }
@@ -48,6 +63,26 @@ NSString *NSLocalizedDescriptionKey=@"NSLocalizedDescriptionKey";
 -(NSString *)localizedDescription {
 // lame
    return [NSString stringWithFormat:@"NSError %@ %d %@",_domain,_code,_userInfo];
+}
+
+-(NSString *)localizedFailureReason {
+   NSUnimplementedMethod();
+   return nil;
+}
+
+-(NSArray *)localizedRecoveryOptions {
+   NSUnimplementedMethod();
+   return nil;
+}
+
+-(NSString *)localizedRecoverySuggestion {
+   NSUnimplementedMethod();
+   return nil;
+}
+
+-recoveryAttempter {
+   NSUnimplementedMethod();
+   return nil;
 }
 
 @end

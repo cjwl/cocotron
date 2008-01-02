@@ -21,6 +21,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 extern NSMethodSignature *NSMethodSignatureWithTypes(const char *types);
 
+@interface NSInvocation(private)
++(NSInvocation *)invocationWithMethodSignature:(NSMethodSignature *)signature arguments:(void *)arguments;
+@end
+
 @implementation NSObject
 
 +(int)version {
@@ -85,6 +89,16 @@ extern NSMethodSignature *NSMethodSignatureWithTypes(const char *types);
    return (types==NULL)?(NSMethodSignature *)nil:NSMethodSignatureWithTypes(types);
 }
 
++(BOOL)resolveClassMethod:(SEL)selector {
+   // do nothing
+   return NO;
+}
+
++(BOOL)resolveInstanceMethod:(SEL)selector {
+   // do nothing
+   return NO;
+}
+
 +copyWithZone:(NSZone *)zone {
    return self;
 }
@@ -113,6 +127,9 @@ extern NSMethodSignature *NSMethodSignatureWithTypes(const char *types);
    NSDeallocateObject(self);
 }
 
+-(void)finalize {
+   // do nothing
+}
 
 -init {
    return self;

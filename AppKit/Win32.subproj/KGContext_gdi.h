@@ -2,7 +2,9 @@
 
 @class KGRenderingContext_gdi;
 
-@interface KGContext_gdi : KGContext
+@interface KGContext_gdi : KGContext {
+   KGRenderingContext_gdi *_renderingContext;
+}
 
 -(KGRenderingContext_gdi *)renderingContext;
 

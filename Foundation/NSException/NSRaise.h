@@ -12,7 +12,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 FOUNDATION_EXPORT void _NSInvalidAbstractInvocation(SEL selector,id object,const char *file,int line);
 FOUNDATION_EXPORT void _NSUnimplementedMethod(SEL selector,id object,const char *file,int line);
-FOUNDATION_EXPORT void _NSUnsupportedMethod(SEL selector,id object,const char *file,int line);
 FOUNDATION_EXPORT void _NSUnimplementedFunction(const char *function,const char *file,int line);
 
 #define NSInvalidAbstractInvocation() \
@@ -20,9 +19,6 @@ FOUNDATION_EXPORT void _NSUnimplementedFunction(const char *function,const char 
 
 #define NSUnimplementedMethod() \
  _NSUnimplementedMethod(_cmd,self,__FILE__,__LINE__)
-
-#define NSUnsupportedMethod() \
- _NSUnsupportedMethod(_cmd,self,__FILE__,__LINE__)
 
 #define NSUnimplementedFunction() \
  _NSUnimplementedFunction(__PRETTY_FUNCTION__,__FILE__,__LINE__)

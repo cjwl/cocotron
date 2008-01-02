@@ -17,6 +17,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSRaise.h>
 #import <Foundation/NSCoder.h>
 #import <Foundation/NSKeyedUnarchiver.h>
+#import <Foundation/NSURL.h>
 
 @implementation NSDictionary
 
@@ -62,6 +63,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return [self initWithObjects:objects forKeys:keys count:count];
 }
 
+-initWithDictionary:(NSDictionary *)dictionary copyItems:(BOOL)copyItems {
+   NSUnimplementedMethod();
+   return nil;
+}
 
 -initWithObjectsAndKeys:first,... {
    va_list  arguments;
@@ -100,6 +105,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    }
 
    return [self initWithDictionary:contents];
+}
+
+-initWithContentsOfURL:(NSURL *)url {
+   if(![url isFileURL]){
+    [self dealloc];
+    return nil;
+   }
+   
+   return [self initWithContentsOfFile:[url path]];
 }
 
 +dictionary {
@@ -156,6 +170,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 +dictionaryWithContentsOfFile:(NSString *)path {
    return [[[self allocWithZone:NULL] initWithContentsOfFile:path] autorelease];
 }
+
++dictionaryWithContentsOfURL:(NSURL *)url {
+   return [[[self allocWithZone:NULL] initWithContentsOfURL:url] autorelease];
+}
+
 
 -copy {
    return [self retain];
@@ -235,6 +254,19 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(NSEnumerator *)objectEnumerator {
    return [[[NSEnumerator_dictionaryObjects allocWithZone:NULL]
                              initWithDictionary:self] autorelease];
+}
+
+-(void)getObjects:(id *)objects andKeys:(id *)keys {
+   NSEnumerator *state=[self keyEnumerator];
+   id            key;
+   NSInteger     i;
+   
+   for(i=0;(key=[state nextObject])!=nil;i++){
+    id value=[self objectForKey:key];
+    
+    objects[i]=value;
+    keys[i]=key;
+   }
 }
 
 -(unsigned)hash {
@@ -337,6 +369,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return [NSPropertyListWriter_vintage writePropertyList:self toFile:path atomically:atomically];
 }
 
+-(BOOL)writeToURL:(NSURL *)url atomically:(BOOL)atomically {
+   if([url isFileURL])
+    return [self writeToFile:[url path] atomically:atomically];
+   
+   return NO;
+}
+
 -(NSString *)description {
    return [NSPropertyListWriter_vintage stringWithPropertyList:self];
 }
@@ -346,13 +385,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return nil;
 }
 
--(NSString *)descriptionWithLocale:(NSDictionary *)locale {
+-(NSString *)descriptionWithLocale:locale {
    NSUnimplementedMethod();
    return nil;
 }
 
--(NSString *)descriptionWithLocale:(NSDictionary *)locale
-   indent:(unsigned)level {
+-(NSString *)descriptionWithLocale:locale indent:(unsigned)indent {
    NSUnimplementedMethod();
    return nil;
 }

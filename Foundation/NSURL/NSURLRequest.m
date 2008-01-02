@@ -6,10 +6,31 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 #import <Foundation/NSURLRequest.h>
+#import <Foundation/NSMutableURLRequest.h>
 #import <Foundation/NSURL.h>
+#import <Foundation/NSDictionary.h>
+#import <Foundation/NSStream.h>
+#import <Foundation/NSData.h>
 #import <Foundation/NSRaise.h>
 
 @implementation NSURLRequest
+
+-initWithURLRequest:(NSURLRequest *)other {
+   _url=[[other URL] copy];
+   _cachePolicy=[other cachePolicy];
+   _timeoutInterval=[other timeoutInterval];
+   
+   NSData *data=[other HTTPBody];
+   if(data!=nil)
+    _bodyDataOrStream=[data copy];
+   else
+    _bodyDataOrStream=[[other HTTPBodyStream] retain];
+   
+   _headerFields=[[other allHTTPHeaderFields] mutableCopy];
+   _method=[other HTTPMethod];
+   _handleCookies=[other HTTPShouldHandleCookies];
+   return self;
+}
 
 -initWithURL:(NSURL *)url {
    return [self initWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:60];
@@ -19,11 +40,18 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    _url=[url copy];
    _cachePolicy=cachePolicy;
    _timeoutInterval=timeout;
+   _bodyDataOrStream=nil;
+   _headerFields=[NSMutableDictionary new];
+   _method=@"GET";
+   _handleCookies=YES;
    return self;
 }
 
 -(void)dealloc {
    [_url release];
+   [_bodyDataOrStream release];
+   [_headerFields release];
+   [_method release];
    [super dealloc];
 }
 
@@ -36,13 +64,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -copyWithZone:(NSZone *)zone {
-   NSUnimplementedMethod();
-   return nil;
+   return [self retain];
 }
 
 -mutableCopyWithZone:(NSZone *)zone {
-   NSUnimplementedMethod();
-   return nil;
+   return [[NSMutableURLRequest alloc] initWithURLRequest:self];
 }
 
 -(NSURL *)URL {
@@ -57,39 +83,40 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return _timeoutInterval;
 }
 
+-(NSString *)HTTPMethod {
+   return _method;
+}
+
+-(NSData *)HTTPBody {
+   if([_bodyDataOrStream isKindOfClass:[NSData class]])
+    return _bodyDataOrStream;
+    
+   return nil;
+}
+
 -(NSInputStream *)HTTPBodyStream {
-   NSUnimplementedMethod();
+   if([_bodyDataOrStream isKindOfClass:[NSInputStream class]])
+    return _bodyDataOrStream;
+    
    return nil;
 }
 
 -(NSDictionary *)allHTTPHeaderFields {
-   NSUnimplementedMethod();
-   return nil;
+   return _headerFields;
 }
 
 -(NSString *)valueForHTTPHeaderField:(NSString *)field {
-   NSUnimplementedMethod();
-   return nil;
-}
-
--(NSData *)HTTPBody {
-   NSUnimplementedMethod();
-   return nil;
-}
-
--(NSString *)HTTPMethod {
-   NSUnimplementedMethod();
-   return nil;
+   field=[field uppercaseString];
+   
+   return [_headerFields objectForKey:field];
 }
 
 -(NSURL *)mainDocumentURL {
-   NSUnimplementedMethod();
-   return nil;
+   return _mainDocumentURL;
 }
 
 -(BOOL)HTTPShouldHandleCookies {
-   NSUnimplementedMethod();
-   return NO;
+   return _handleCookies;
 }
 
 @end

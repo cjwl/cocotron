@@ -10,7 +10,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @class NSPort,NSArray,NSDate;
 
 @interface NSPortMessage : NSObject {
-
+   NSPort  *_sendPort;
+   NSPort  *_receivePort;
+   NSArray *_components;
+   unsigned _msgid;
 }
 
 -initWithSendPort:(NSPort *)sendPort receivePort:(NSPort *)receivePort components:(NSArray *)components;

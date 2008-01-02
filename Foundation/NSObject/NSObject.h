@@ -75,6 +75,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 +(IMP)instanceMethodForSelector:(SEL)selector;
 +(NSMethodSignature *)instanceMethodSignatureForSelector:(SEL)selector;
++(BOOL)resolveClassMethod:(SEL)selector;
++(BOOL)resolveInstanceMethod:(SEL)selector;
 
 +copyWithZone:(NSZone *)zone;
 +mutableCopyWithZone:(NSZone *)zone;
@@ -87,13 +89,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -init;
 +new;
 -(void)dealloc;
+-(void)finalize;
 
 -copy;
 -mutableCopy;
 
 -(Class)classForCoder;
--(id)replacementObjectForCoder:(NSCoder *)coder;
--(id)awakeAfterUsingCoder:(NSCoder *)coder;
+-replacementObjectForCoder:(NSCoder *)coder;
+-awakeAfterUsingCoder:(NSCoder *)coder;
 
 -(IMP)methodForSelector:(SEL)selector;
 

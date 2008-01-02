@@ -10,6 +10,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @class NSArray,NSDictionary;
 
+enum {
+   NSWindowsNTOperatingSystem=1,
+   NSWindows95OperatingSystem,
+   NSSolarisOperatingSystem,
+   NSMACHOperatingSystem,
+};
+
 @interface NSProcessInfo : NSObject {
    NSDictionary *_environment;
    NSArray      *_arguments;
@@ -18,6 +25,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 +(NSProcessInfo *)processInfo;	
+
+-(NSUInteger)processorCount;
+-(NSUInteger)activeProcessorCount;
+-(unsigned long long)physicalMemory;
+
+-(unsigned)operatingSystem;
+-(NSString *)operatingSystemName;
+-(NSString *)operatingSystemVersionString;
 
 -(NSString *)hostName;
 

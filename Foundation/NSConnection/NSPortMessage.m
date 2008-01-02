@@ -6,37 +6,45 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 #import <Foundation/NSPortMessage.h>
+#import <Foundation/NSPort.h>
+#import <Foundation/NSArray.h>
 #import <Foundation/NSRaise.h>
 
 @implementation NSPortMessage
 
 -initWithSendPort:(NSPort *)sendPort receivePort:(NSPort *)receivePort components:(NSArray *)components {
-   NSUnimplementedMethod();
-   return nil;
+   _sendPort=[sendPort retain];
+   _receivePort=[receivePort retain];
+   _components=[components retain];
+   _msgid=0;
+   return self;
+}
+
+-(void)dealloc {
+   [_sendPort release];
+   [_receivePort release];
+   [_components release];
+   [super dealloc];
 }
 
 -(unsigned)msgid {
-   NSUnimplementedMethod();
-   return 0;
+   return _msgid;
 }
 
 -(NSArray *)components {
-   NSUnimplementedMethod();
-   return nil;
+   return _components;
 }
 
 -(NSPort *)sendPort {
-   NSUnimplementedMethod();
-   return nil;
+   return _sendPort;
 }
 
 -(NSPort *)receivePort {
-   NSUnimplementedMethod();
-   return nil;
+   return _receivePort;
 }
 
 -(void)setMsgid:(unsigned)msgid {
-   NSUnimplementedMethod();
+   _msgid=msgid;
 }
 
 -(BOOL)sendBeforeDate:(NSDate *)date {

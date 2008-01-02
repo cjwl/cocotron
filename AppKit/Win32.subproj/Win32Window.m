@@ -11,14 +11,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/Win32Event.h>
 #import <AppKit/Win32Display.h>
 #import <Foundation/NSString_win32.h>
-#import <AppKit/KGRenderingContext_gdi.h>
+#import <AppKit/KGContext.h>
 
 #import <AppKit/NSWindow.h>
 #import <AppKit/NSPanel.h>
 #import <AppKit/NSApplication.h>
 #import <AppKit/NSDrawerWindow.h>
-#import "KGLayer_gdi.h"
-#import <AppKit/KGContext.h>
 
 @implementation Win32Window
 
@@ -165,26 +163,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
    SetProp(_handle,"self",self);
 
-   _renderingContext=[[KGRenderingContext_gdi renderingContextWithWindowHWND:_handle] retain];
+   _size=frame.size;
+   _cgContext=nil;
 
    _backingType=backingType;
 
    if([[NSUserDefaults standardUserDefaults] boolForKey:@"NSAllWindowsRetained"])
     _backingType=Win32BackingStoreRetained;
 
-   _size=frame.size;
-   _backingSize=frame.size;
-   switch(_backingType){
-
-    case Win32BackingStoreRetained:
-    case Win32BackingStoreNonretained:
-     _backingLayer=nil;
-     break;
-
-    case Win32BackingStoreBuffered:
-     _backingLayer=[[KGLayer_gdi alloc] initRelativeToRenderingContext:_renderingContext size:_backingSize unused:nil];
-     break;
-   }
+   _backingContext=nil;
 
    _ignoreMinMaxMessage=NO;
    _sentBeginSizing=NO;
@@ -202,10 +189,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    SetProp(_handle,"self",nil);
    DestroyWindow(_handle);
    _handle=NULL;
-   [_renderingContext release];
-   _renderingContext=nil;
-   [_backingLayer release];
-   _backingLayer=nil;
+   [_cgContext release];
+   _cgContext=nil;
+   [_backingContext release];
+   _backingContext=nil;
 }
 
 -(void)setDelegate:delegate {
@@ -221,43 +208,45 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return _handle;
 }
 
+-(KGContext *)createCGContextIfNeeded {
+   if(_cgContext==nil)
+    _cgContext=[KGContext createContextWithSize:_size window:self];
+
+   return _cgContext;
+}
+
+-(KGContext *)createBackingCGContextIfNeeded {
+   if(_backingContext==nil)
+    _backingContext=[KGContext createContextWithSize:_size context:[self createCGContextIfNeeded]];
+   
+   return _backingContext;
+}
+
 -(KGContext *)cgContext {
    switch(_backingType){
 
     case Win32BackingStoreRetained:
     case Win32BackingStoreNonretained:
     default:
-     return [_renderingContext cgContextWithSize:_size];
+     return [self createCGContextIfNeeded];
 
     case Win32BackingStoreBuffered:
-    return [_backingLayer cgContext];
+     return [self createBackingCGContextIfNeeded];
    }
 }
 
--(void)rebuildBackingContextWithSize:(NSSize)size forceRebuild:(BOOL)forceRebuild {
-   _size=size;
-   
-   switch(_backingType){
-
-    case Win32BackingStoreRetained:
-    case Win32BackingStoreNonretained:
-     [_backingLayer release];
-     _backingLayer=nil;
-     break;
-
-    case Win32BackingStoreBuffered:
-     if(!NSEqualSizes(_backingSize,size) || _backingLayer==nil || forceRebuild){
-      _backingSize=size;
-
-      [_backingLayer release];
-      _backingLayer=[[KGLayer_gdi alloc] initRelativeToRenderingContext:_renderingContext size:_backingSize unused:nil];
-     }
-     break;
-   }
+-(void)invalidateContextsWithNewSize:(NSSize)size forceRebuild:(BOOL)forceRebuild {
+   if(!NSEqualSizes(_size,size) || forceRebuild){
+    _size=size;
+    [_cgContext release];
+    _cgContext=nil;
+    [_backingContext release];
+    _backingContext=nil;
+   }  
 }
 
--(void)rebuildBackingContextWithSize:(NSSize)size {
-   [self rebuildBackingContextWithSize:size forceRebuild:NO];
+-(void)invalidateContextsWithNewSize:(NSSize)size {
+   [self invalidateContextsWithNewSize:size forceRebuild:NO];
 }
 
 
@@ -273,7 +262,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     moveTo.size.width, moveTo.size.height,YES);
    _ignoreMinMaxMessage=NO;
 
-   [self rebuildBackingContextWithSize:frame.size];
+   [self invalidateContextsWithNewSize:frame.size];
 }
 
 -(void)showWindowForAppActivation:(NSRect)frame {
@@ -360,7 +349,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
      break;
 
     case Win32BackingStoreBuffered:
-     [[_renderingContext cgContextWithSize:_size] drawLayer:_backingLayer atPoint:NSMakePoint(0,0)];
+     if(_backingContext!=nil)
+      [_cgContext copyContext:_backingContext size:_size];
      break;
    }
 }
@@ -418,7 +408,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 //   BOOL   equalSizes=NSEqualSizes(_backingSize,contentSize);
 
    if(contentSize.width>0 && contentSize.height>0){
-    [self rebuildBackingContextWithSize:contentSize];
+    [self invalidateContextsWithNewSize:contentSize];
 
     [self _GetWindowRect];
 
@@ -619,7 +609,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #if 0
 // doesn't seem to work
     case WM_PALETTECHANGED:
-     [self rebuildBackingContextWithSize:_backingSize forceRebuild:YES];
+     [self invalidateContextsWithNewSize:_backingSize forceRebuild:YES];
      [_delegate platformWindow:self needsDisplayInRect:NSZeroRect];
      break;
 #endif
