@@ -31,6 +31,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSStringFileIO.h>
 #import <Foundation/NSKeyedUnarchiver.h>
 #import <Foundation/NSStringHashing.h>
+#import <Foundation/NSScanner.h>
+#import <Foundation/NSAutoreleasePool.h>
 #import <limits.h>
 #import <objc/objc-class.h>
 
@@ -926,7 +928,7 @@ U+2029 (Unicode paragraph separator), \r\n, in that order (also known as CRLF)
                        }
                }
 
-       while((found = [scanner scanUpToCharactersFromSet: set intoString:&chunk])))
+       while((found = [scanner scanUpToCharactersFromSet: set intoString:&chunk]))
                {
                [result addObject:chunk];
                sepFound = [scanner scanCharactersFromSet: set intoString:&sepScan];
