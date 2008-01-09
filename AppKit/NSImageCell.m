@@ -12,8 +12,36 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSGraphics.h>
 #import <AppKit/CGContext.h>
 #import <AppKit/NSGraphicsContext.h>
+#import <AppKit/NSNibKeyedUnarchiver.h> 
 
 @implementation NSImageCell
+
+-(void)encodeWithCoder:(NSCoder *)coder 
+{ 
+   [super encodeWithCoder:coder]; 
+   [coder encodeBool:_animates forKey:@"NSAnimates"]; 
+   [coder encodeInt:_imageAlignment forKey:@"NSAlign"]; 
+   [coder encodeInt:_imageScaling forKey:@"NSScale"]; 
+   [coder encodeInt:_frameStyle forKey:@"NSStyle"]; 
+
+} 
+
+-(id)initWithCoder:(NSCoder *)coder 
+{ 
+   [super initWithCoder:coder]; 
+   if([coder isKindOfClass:[NSNibKeyedUnarchiver class]]) 
+   { 
+      NSNibKeyedUnarchiver *keyed=(NSNibKeyedUnarchiver *)coder; 
+      _animates       = [keyed decodeBoolForKey:@"NSAnimates"]; 
+      _imageAlignment = [keyed decodeIntForKey:@"NSAlign"]; 
+      _imageScaling   = [keyed decodeIntForKey:@"NSScale"]; 
+      _frameStyle     = [keyed decodeIntForKey:@"NSStyle"]; 
+   } 
+   else 
+      [NSException raise:NSInvalidArgumentException format:@"%@ can not initWithCoder:%@",isa,[coder class]]; 
+   return self; 
+
+} 
 
 -(NSImage *)_imageValue {
    id result=[self image];

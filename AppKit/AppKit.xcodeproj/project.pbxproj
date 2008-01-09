@@ -1346,6 +1346,14 @@
 		FE7247A70C0622F2007CBC51 /* NSTextAttachmentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FE7247A50C0622F2007CBC51 /* NSTextAttachmentCell.m */; };
 		FE7248510C0676AA007CBC51 /* NSTypesetter_concrete.h in Headers */ = {isa = PBXBuildFile; fileRef = FE72484F0C0676AA007CBC51 /* NSTypesetter_concrete.h */; };
 		FE7248520C0676AA007CBC51 /* NSTypesetter_concrete.m in Sources */ = {isa = PBXBuildFile; fileRef = FE7248500C0676AA007CBC51 /* NSTypesetter_concrete.m */; };
+		FE82867B0D34727900F7489F /* NSApplicationIcon.tiff in Resources */ = {isa = PBXBuildFile; fileRef = FE8286770D34727900F7489F /* NSApplicationIcon.tiff */; };
+		FE82867C0D34727900F7489F /* NSSystemInfoPanel.h in Headers */ = {isa = PBXBuildFile; fileRef = FE8286780D34727900F7489F /* NSSystemInfoPanel.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE82867D0D34727900F7489F /* NSSystemInfoPanel.m in Sources */ = {isa = PBXBuildFile; fileRef = FE8286790D34727900F7489F /* NSSystemInfoPanel.m */; };
+		FE82867E0D34727900F7489F /* NSSystemInfoPanel.nib in Resources */ = {isa = PBXBuildFile; fileRef = FE82867A0D34727900F7489F /* NSSystemInfoPanel.nib */; };
+		FE82867F0D34727900F7489F /* NSApplicationIcon.tiff in Resources */ = {isa = PBXBuildFile; fileRef = FE8286770D34727900F7489F /* NSApplicationIcon.tiff */; };
+		FE8286800D34727900F7489F /* NSSystemInfoPanel.h in Headers */ = {isa = PBXBuildFile; fileRef = FE8286780D34727900F7489F /* NSSystemInfoPanel.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE8286810D34727900F7489F /* NSSystemInfoPanel.m in Sources */ = {isa = PBXBuildFile; fileRef = FE8286790D34727900F7489F /* NSSystemInfoPanel.m */; };
+		FE8286820D34727900F7489F /* NSSystemInfoPanel.nib in Resources */ = {isa = PBXBuildFile; fileRef = FE82867A0D34727900F7489F /* NSSystemInfoPanel.nib */; };
 		FE86887F0BC3FFA4009F515C /* NSButtonCell_disclosure_highlighted.tif in Resources */ = {isa = PBXBuildFile; fileRef = FE86887C0BC3FFA4009F515C /* NSButtonCell_disclosure_highlighted.tif */; };
 		FE8688800BC3FFA4009F515C /* NSButtonCell_disclosure_normal.tif in Resources */ = {isa = PBXBuildFile; fileRef = FE86887D0BC3FFA4009F515C /* NSButtonCell_disclosure_normal.tif */; };
 		FE8688810BC3FFA4009F515C /* NSButtonCell_disclosure_selected.tif in Resources */ = {isa = PBXBuildFile; fileRef = FE86887E0BC3FFA4009F515C /* NSButtonCell_disclosure_selected.tif */; };
@@ -2148,6 +2156,10 @@
 		FE7247A50C0622F2007CBC51 /* NSTextAttachmentCell.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSTextAttachmentCell.m; sourceTree = "<group>"; };
 		FE72484F0C0676AA007CBC51 /* NSTypesetter_concrete.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSTypesetter_concrete.h; sourceTree = "<group>"; };
 		FE7248500C0676AA007CBC51 /* NSTypesetter_concrete.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSTypesetter_concrete.m; sourceTree = "<group>"; };
+		FE8286770D34727900F7489F /* NSApplicationIcon.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = NSApplicationIcon.tiff; sourceTree = "<group>"; };
+		FE8286780D34727900F7489F /* NSSystemInfoPanel.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSSystemInfoPanel.h; sourceTree = "<group>"; };
+		FE8286790D34727900F7489F /* NSSystemInfoPanel.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSSystemInfoPanel.m; sourceTree = "<group>"; };
+		FE82867A0D34727900F7489F /* NSSystemInfoPanel.nib */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; path = NSSystemInfoPanel.nib; sourceTree = "<group>"; };
 		FE86887C0BC3FFA4009F515C /* NSButtonCell_disclosure_highlighted.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = NSButtonCell_disclosure_highlighted.tif; sourceTree = "<group>"; };
 		FE86887D0BC3FFA4009F515C /* NSButtonCell_disclosure_normal.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = NSButtonCell_disclosure_normal.tif; sourceTree = "<group>"; };
 		FE86887E0BC3FFA4009F515C /* NSButtonCell_disclosure_selected.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = NSButtonCell_disclosure_selected.tif; sourceTree = "<group>"; };
@@ -2467,6 +2479,7 @@
 				6E2B53C30976075200DA0954 /* NSStringDrawer.m */,
 				6E2B549C0976075200DA0954 /* NSStringDrawing.h */,
 				6E2B53C50976075200DA0954 /* NSStringDrawing.m */,
+				FE8286760D34725900F7489F /* NSSystemInfoPanel */,
 				6E2B54A60976075200DA0954 /* NSTableColumn.h */,
 				6E2B53C70976075200DA0954 /* NSTableColumn.m */,
 				6E2B54A80976075200DA0954 /* NSTableCornerView.h */,
@@ -3175,6 +3188,17 @@
 			path = NSInterfacePart;
 			sourceTree = "<group>";
 		};
+		FE8286760D34725900F7489F /* NSSystemInfoPanel */ = {
+			isa = PBXGroup;
+			children = (
+				FE8286770D34727900F7489F /* NSApplicationIcon.tiff */,
+				FE8286780D34727900F7489F /* NSSystemInfoPanel.h */,
+				FE8286790D34727900F7489F /* NSSystemInfoPanel.m */,
+				FE82867A0D34727900F7489F /* NSSystemInfoPanel.nib */,
+			);
+			path = NSSystemInfoPanel;
+			sourceTree = "<group>";
+		};
 		FE8BAF1A0BC9EC0B0007FACA /* NSKeyValueBinding */ = {
 			isa = PBXGroup;
 			children = (
@@ -3556,6 +3580,7 @@
 				FEA8A98C0CD2CBC000E1E936 /* NSUserInterfaceValidation.h in Headers */,
 				FE8D94AD0CE3A6C700AFB060 /* NSControllerSelectionProxy.h in Headers */,
 				FE8D95220CE4057300AFB060 /* NSMultipleValueBinder.h in Headers */,
+				FE82867C0D34727900F7489F /* NSSystemInfoPanel.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3897,6 +3922,7 @@
 				FEA8A98D0CD2CBC000E1E936 /* NSUserInterfaceValidation.h in Headers */,
 				FE8D94AB0CE3A6C700AFB060 /* NSControllerSelectionProxy.h in Headers */,
 				FE8D95200CE4057300AFB060 /* NSMultipleValueBinder.h in Headers */,
+				FE8286800D34727900F7489F /* NSSystemInfoPanel.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4058,6 +4084,8 @@
 				FE8688800BC3FFA4009F515C /* NSButtonCell_disclosure_normal.tif in Resources */,
 				FE8688810BC3FFA4009F515C /* NSButtonCell_disclosure_selected.tif in Resources */,
 				C8B239A30BF8EEB500CA33AF /* defaultBindingOptions.plist in Resources */,
+				FE82867B0D34727900F7489F /* NSApplicationIcon.tiff in Resources */,
+				FE82867E0D34727900F7489F /* NSSystemInfoPanel.nib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4103,6 +4131,8 @@
 				FE01AAB80C5D9BCB00AEA51A /* NSButtonCell_disclosure_normal.tif in Resources */,
 				FE01AAB90C5D9BCB00AEA51A /* NSButtonCell_disclosure_selected.tif in Resources */,
 				FE01AABA0C5D9BCB00AEA51A /* defaultBindingOptions.plist in Resources */,
+				FE82867F0D34727900F7489F /* NSApplicationIcon.tiff in Resources */,
+				FE8286820D34727900F7489F /* NSSystemInfoPanel.nib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4456,6 +4486,7 @@
 				FE311FA70CCC430200EBD696 /* KGFont_gdi.m in Sources */,
 				FE8D94AE0CE3A6C700AFB060 /* NSControllerSelectionProxy.m in Sources */,
 				FE8D95230CE4057300AFB060 /* NSMultipleValueBinder.m in Sources */,
+				FE82867D0D34727900F7489F /* NSSystemInfoPanel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4789,6 +4820,7 @@
 				FE311FA90CCC430200EBD696 /* KGFont_gdi.m in Sources */,
 				FE8D94AC0CE3A6C700AFB060 /* NSControllerSelectionProxy.m in Sources */,
 				FE8D95210CE4057300AFB060 /* NSMultipleValueBinder.m in Sources */,
+				FE8286810D34727900F7489F /* NSSystemInfoPanel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

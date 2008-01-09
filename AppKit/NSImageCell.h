@@ -35,6 +35,7 @@ typedef enum {
 } NSImageFrameStyle;
 
 @interface NSImageCell : NSCell {
+   BOOL              _animates; 
    NSImageAlignment  _imageAlignment;
    NSImageScaling    _imageScaling;
    NSImageFrameStyle _frameStyle;

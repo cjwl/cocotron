@@ -25,6 +25,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSImage.h>
 #import <AppKit/NSImageView.h>
 #import <AppKit/NSSheetContext.h>
+#import <AppKit/NSSystemInfoPanel.h> 
 
 NSString *NSModalPanelRunLoopMode=@"NSModalPanelRunLoopMode";
 NSString *NSEventTrackingRunLoopMode=@"NSEventTrackingRunLoopMode";
@@ -864,7 +865,10 @@ id NSApp=nil;
 }
 
 -(void)orderFrontStandardAboutPanelWithOptions:(NSDictionary *)options {
-   NSUnimplementedMethod();
+    NSSystemInfoPanel *standardAboutPanel = [[NSSystemInfoPanel 
+standardAboutPanel] retain]; 
+   [standardAboutPanel showInfoPanel:self]; 
+
 }
 
 -(void)activateContextHelpMode:sender {

@@ -9,6 +9,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 // Original - Christopher Lloyd <cjwl@objc.net>
 #import <Foundation/NSMutableCharacterSet.h>
 #import <Foundation/NSRaise.h>
+#import "NSMutableCharacterSet_bitmap.h"
 
 @implementation NSMutableCharacterSet
 
@@ -17,6 +18,18 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     return NSAllocateObject(OBJCClassFromString("NSMutableCharacterSet_bitmap"),0,zone);
 
    return NSAllocateObject(self,0,zone);
+}
+
++characterSetWithBitmapRepresentation:(NSData *)data {
+   return [[[NSMutableCharacterSet_bitmap alloc] initWithData:data] autorelease];
+}
+
++characterSetWithCharactersInString:(NSString *)string {
+   return [[[NSMutableCharacterSet_bitmap alloc] initWithString:string] autorelease];
+}
+
++characterSetWithRange:(NSRange)range {
+   return [[[NSMutableCharacterSet_bitmap alloc] initWithRange:range] autorelease];
 }
 
 -(void)addCharactersInString:(NSString *)string {

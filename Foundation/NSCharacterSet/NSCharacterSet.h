@@ -12,23 +12,23 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @interface NSCharacterSet : NSObject <NSCopying,NSMutableCopying,NSCoding>
 
-+(NSCharacterSet *)characterSetWithBitmapRepresentation:(NSData *)data;
-+(NSCharacterSet *)characterSetWithCharactersInString:(NSString *)string;
-+(NSCharacterSet *)characterSetWithContentsOfFile:(NSString *)path;
-+(NSCharacterSet *)characterSetWithRange:(NSRange)range;
++characterSetWithBitmapRepresentation:(NSData *)data;
++characterSetWithCharactersInString:(NSString *)string;
++characterSetWithContentsOfFile:(NSString *)path;
++characterSetWithRange:(NSRange)range;
 
-+(NSCharacterSet *)alphanumericCharacterSet;
-+(NSCharacterSet *)controlCharacterSet;
-+(NSCharacterSet *)decimalDigitCharacterSet;
-+(NSCharacterSet *)decomposableCharacterSet;
-+(NSCharacterSet *)illegalCharacterSet;
-+(NSCharacterSet *)letterCharacterSet;
-+(NSCharacterSet *)lowercaseLetterCharacterSet;
-+(NSCharacterSet *)nonBaseCharacterSet;
-+(NSCharacterSet *)punctuationCharacterSet;
-+(NSCharacterSet *)uppercaseLetterCharacterSet;
-+(NSCharacterSet *)whitespaceAndNewlineCharacterSet;
-+(NSCharacterSet *)whitespaceCharacterSet;
++alphanumericCharacterSet;
++controlCharacterSet;
++decimalDigitCharacterSet;
++decomposableCharacterSet;
++illegalCharacterSet;
++letterCharacterSet;
++lowercaseLetterCharacterSet;
++nonBaseCharacterSet;
++punctuationCharacterSet;
++uppercaseLetterCharacterSet;
++whitespaceAndNewlineCharacterSet;
++whitespaceCharacterSet;
 
 -(BOOL)characterIsMember:(unichar)character;
 -(NSCharacterSet *)invertedSet;

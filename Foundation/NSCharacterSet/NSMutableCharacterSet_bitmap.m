@@ -49,6 +49,27 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return self;
 }
 
+-initWithString:(NSString *)string {
+   NSUInteger i,length=[string length];
+   unichar    buffer[length];
+   
+   [string getCharacters:buffer];
+   
+   for(i=0;i<length;i++)
+    bitmapSet(_bitmap,buffer[i]);
+   
+   return self;
+}
+
+-initWithRange:(NSRange)range {
+   NSUInteger i;
+   
+   for(i=range.location;i<NSMaxRange(range);i++)
+    bitmapSet(_bitmap,i);
+   
+   return self;
+}
+
 -(void)addCharactersInString:(NSString *)string {
    unsigned i,length=[string length];
    unichar  unicode[length];

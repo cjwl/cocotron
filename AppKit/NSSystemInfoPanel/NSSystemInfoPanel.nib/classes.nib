@@ -1,0 +1,27 @@
+{
+    IBClasses = (
+        {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 
+        {
+            ACTIONS = {showInfoPanel = id; }; 
+            CLASS = NSSystemInfoPanel; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {
+                appIconView = NSImageView; 
+                appNameField = NSTextField; 
+                creditScrollView = NSScrollView; 
+                creditView = NSTextView; 
+                infoPanel = NSPanel; 
+                legalTextField = NSTextField; 
+                versionField = NSTextField; 
+            }; 
+            SUPERCLASS = NSObject; 
+        }, 
+        {
+            CLASS = NSSystemInfoPanelIconView; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {target = id; }; 
+            SUPERCLASS = NSView; 
+        }
+    ); 
+    IBVersion = 1; 
+}

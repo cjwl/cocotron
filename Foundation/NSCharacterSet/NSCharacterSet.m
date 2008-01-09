@@ -25,15 +25,13 @@ static NSMapTable *nameToSet=NULL;
 
 +(void)initialize {
    if(self==[NSCharacterSet class]){
-    nameToSet=NSCreateMapTable(NSObjectMapKeyCallBacks,
-      NSObjectMapValueCallBacks,0);
+    nameToSet=NSCreateMapTable(NSObjectMapKeyCallBacks,NSObjectMapValueCallBacks,0);
    }
 }
 
 -copyWithZone:(NSZone *)zone {
    return [self retain];
 }
-
 
 -mutableCopyWithZone:(NSZone *)zone {
    return [[NSMutableCharacterSet_bitmap allocWithZone:NULL] initWithCharacterSet:self];
@@ -53,15 +51,15 @@ static NSMapTable *nameToSet=NULL;
    NSUnimplementedMethod();
 }
 
-+(NSCharacterSet *)characterSetWithBitmapRepresentation:(NSData *)data {
++characterSetWithBitmapRepresentation:(NSData *)data {
    return NSAutorelease(NSCharacterSet_bitmapNewWithBitmap(NULL,data));
 }
 
-+(NSCharacterSet *)characterSetWithCharactersInString:(NSString *)string {
++characterSetWithCharactersInString:(NSString *)string {
    return NSAutorelease([[NSCharacterSet_string allocWithZone:NULL] initWithString:string inverted:NO]);
 }
 
-+(NSCharacterSet *)characterSetWithContentsOfFile:(NSString *)path {
++characterSetWithContentsOfFile:(NSString *)path {
    NSData *data=[NSData dataWithContentsOfFile:path];
 
    if(data==nil)
@@ -70,7 +68,7 @@ static NSMapTable *nameToSet=NULL;
    return [self characterSetWithBitmapRepresentation:data];
 }
 
-+(NSCharacterSet *)characterSetWithRange:(NSRange)range {
++characterSetWithRange:(NSRange)range {
    return NSAutorelease([[NSCharacterSet_range allocWithZone:NULL] initWithRange:range]);
 }
 
@@ -79,73 +77,73 @@ static NSString *pathForCharacterSet(NSString *name){
    NSString *path=[bundle pathForResource:name ofType:@"bitmap"];
 
    if(path==nil)
-    [NSException raise:@"NSCharacterSetFailedException"
-                format:@"NSCharacterSet unable to find bitmap for %@",name];
+    [NSException raise:@"NSCharacterSetFailedException" format:@"NSCharacterSet unable to find bitmap for %@",name];
 
    return path;
 }
 
-static NSCharacterSet *sharedSetWithName(NSString *name){
-   NSCharacterSet *set;
+static NSCharacterSet *sharedSetWithName(Class cls,NSString *name){
+   NSCharacterSet *result;
 
-   if((set=NSMapGet(nameToSet,name))==nil){
-    NSString *path=pathForCharacterSet(name);
-
-    if((set=[NSCharacterSet characterSetWithContentsOfFile:path])!=nil)
-     NSMapInsert(nameToSet,name,set);
+   if(cls!=[NSCharacterSet class])
+    result=[cls characterSetWithContentsOfFile:pathForCharacterSet(name)];
+   else {
+    if((result=NSMapGet(nameToSet,name))==nil){
+     if((result=[NSCharacterSet characterSetWithContentsOfFile:pathForCharacterSet(name)])!=nil)
+      NSMapInsert(nameToSet,name,result);
+    }
    }
-
-   return set;
+   
+   return result;
 }
 
-+(NSCharacterSet *)alphanumericCharacterSet {
-   return sharedSetWithName(@"alphanumericCharacterSet");
++alphanumericCharacterSet {
+   return sharedSetWithName(self,@"alphanumericCharacterSet");
 }
 
-+(NSCharacterSet *)controlCharacterSet {
-   return sharedSetWithName(@"controlCharacterSet");
++controlCharacterSet {
+   return sharedSetWithName(self,@"controlCharacterSet");
 }
 
-+(NSCharacterSet *)decimalDigitCharacterSet {
-   return sharedSetWithName(@"decimalDigitCharacterSet");
++decimalDigitCharacterSet {
+   return sharedSetWithName(self,@"decimalDigitCharacterSet");
 }
 
-+(NSCharacterSet *)decomposableCharacterSet {
-   return sharedSetWithName(@"decomposableCharacterSet");
++decomposableCharacterSet {
+   return sharedSetWithName(self,@"decomposableCharacterSet");
 }
 
-+(NSCharacterSet *)illegalCharacterSet {
-   return sharedSetWithName(@"illegalCharacterSet");
++illegalCharacterSet {
+   return sharedSetWithName(self,@"illegalCharacterSet");
 }
 
-+(NSCharacterSet *)letterCharacterSet {
-   return sharedSetWithName(@"letterCharacterSet");
++letterCharacterSet {
+   return sharedSetWithName(self,@"letterCharacterSet");
 }
 
-+(NSCharacterSet *)lowercaseLetterCharacterSet {
-   return sharedSetWithName(@"lowercaseLetterCharacterSet");
++lowercaseLetterCharacterSet {
+   return sharedSetWithName(self,@"lowercaseLetterCharacterSet");
 }
 
-+(NSCharacterSet *)nonBaseCharacterSet {
-   return sharedSetWithName(@"nonBaseCharacterSet");
++nonBaseCharacterSet {
+   return sharedSetWithName(self,@"nonBaseCharacterSet");
 }
 
-+(NSCharacterSet *)punctuationCharacterSet {
-   return sharedSetWithName(@"punctuationCharacterSet");
++punctuationCharacterSet {
+   return sharedSetWithName(self,@"punctuationCharacterSet");
 }
 
-+(NSCharacterSet *)uppercaseLetterCharacterSet {
-   return sharedSetWithName(@"uppercaseLetterCharacterSet");
++uppercaseLetterCharacterSet {
+   return sharedSetWithName(self,@"uppercaseLetterCharacterSet");
 }
 
-+(NSCharacterSet *)whitespaceAndNewlineCharacterSet {
-   return sharedSetWithName(@"whitespaceAndNewlineCharacterSet");
++whitespaceAndNewlineCharacterSet {
+   return sharedSetWithName(self,@"whitespaceAndNewlineCharacterSet");
 }
 
-+(NSCharacterSet *)whitespaceCharacterSet {
-   return sharedSetWithName(@"whitespaceCharacterSet");
++whitespaceCharacterSet {
+   return sharedSetWithName(self,@"whitespaceCharacterSet");
 }
-
 
 -(BOOL)characterIsMember:(unichar)character {
    NSInvalidAbstractInvocation();
