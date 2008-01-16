@@ -924,11 +924,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     NSWindowController *controller=[_windowControllers objectAtIndex:count];
 
     if([controller isWindowLoaded] && window==[controller window]){
-     if([controller shouldCloseDocument]){
-     }
-
-     [_windowControllers removeObjectAtIndex:count];
-     return;
+     BOOL closeMe = [controller shouldCloseDocument]; 
+     [_windowControllers removeObjectAtIndex:count]; 
+     if (closeMe) 
+      [self close]; 
+     return; 
     }
    }
 }
