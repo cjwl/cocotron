@@ -8,24 +8,45 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <AppKit/NSSound.h>
 #import <Foundation/NSString.h>
+#import <Foundation/NSNumber.h>
+#import <Foundation/NSPathUtilities.h>
+#import <Foundation/NSEnumerator.h>
 #import <Foundation/NSArray.h>
 #import <Foundation/NSRaise.h>
+
+static unsigned int uniquenum = 0;
 
 @implementation NSSound
 
 +(NSArray *)soundUnfilteredFileTypes {
-   NSUnimplementedMethod();
-   return nil;
+	//	FIXME: Instead of returned this predetermined set (XPSP2) we should query it something *like* GetProfileString("mci extensions",....);
+	  
+   return [NSArray arrayWithObjects:@"wav",@"aif",@"aifc",@"aiff",@"asf",@"asx",@"au",@"m1v",@"m3u",@"mp2",@"mp2v",@"mp3",@"mpa",@"mpe",@"mpeg",@"mpg",@"mpv2",@"snd",@"wax",@"wm",@"wma",@"wmv",@"wmx",@"wpl",@"wvx",nil];
 }
 
 +(NSSound *)soundNamed:(NSString *)name {
-   NSUnimplementedMethod();
+	// FIXME: We really have to search in other places too, like the docs say
+
+	NSArray *types = [NSSound soundUnfilteredFileTypes];
+	NSString *type;
+	NSEnumerator *enumerator = [types objectEnumerator];
+	while (type = [enumerator nextObject])
+	{
+		if ([[NSBundle mainBundle] pathForResource:name ofType:type])
+			return [[NSSound alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:name ofType:type] byReference:NO];
+	}	
+	 
    return nil;
 }
 
 -initWithContentsOfFile:(NSString *)path byReference:(BOOL)byReference {
-   NSUnimplementedMethod();
-   return nil;
+	if (self = [super init])
+	{
+		_soundFilePath = [path copy];
+		_paused = FALSE;
+		_handle = uniquenum++;
+	}
+	return self;
 }
 
 -(BOOL)setName:(NSString *)name {
@@ -34,18 +55,52 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(BOOL)play {
-   NSUnimplementedMethod();
-   return NO;
+	NSString *loadStr = [NSString stringWithFormat:@"open \"%@\" type %@ alias %i", _soundFilePath, [[_soundFilePath pathExtension] isEqualToString:@"wav"] ? @"waveaudio" : @"MPEGVideo", _handle];
+	if (mciSendString([loadStr UTF8String], NULL, 0, 0))
+		return NO;
+
+	NSString *playStr = [NSString stringWithFormat:@"play %i from 0", _handle];
+	if (mciSendString([playStr UTF8String], NULL, 0, 0))
+		return NO;
+
+	return YES;
 }
 
 -(BOOL)pause {
-   NSUnimplementedMethod();
-   return NO;
+	if (_paused)
+		return NO;
+	else
+	{
+		NSString *pauseStr = [NSString stringWithFormat:@"pause %i", _handle];
+		mciSendString([pauseStr UTF8String], NULL, 0, 0);
+		_paused = TRUE;
+	}
+	return YES;
+}
+
+-(BOOL)resume {
+	if (!_paused)
+		return NO;
+	else
+	{
+		NSString *pauseStr = [NSString stringWithFormat:@"resume %i", _handle];
+		mciSendString([pauseStr UTF8String], NULL, 0, 0);
+		_paused = FALSE;
+	}
+	return YES;
 }
 
 -(BOOL)stop {
-   NSUnimplementedMethod();
-   return NO;
+	NSString *stopStr = [NSString stringWithFormat:@"stop %i", _handle];
+	mciSendString([stopStr UTF8String], NULL, 0, 0);
+	
+	return YES;
+}
+
+-(void)dealloc {
+	[super dealloc];
+	NSString *stopStr = [NSString stringWithFormat:@"close %i", _handle];
+	mciSendString([stopStr UTF8String], NULL, 0, 0);
 }
 
 @end
