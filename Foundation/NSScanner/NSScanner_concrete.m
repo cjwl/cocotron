@@ -433,33 +433,43 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         return NO;
 }
 
--(BOOL)scanCharactersFromSet:(NSCharacterSet *)charset intoString:(NSString **)stringp {
+-(BOOL)scanCharactersFromSet:(NSCharacterSet *)charset intoString:(NSString **)stringp
+{
     int length=[_string length];
     unichar result[length];
     int resultLength = 0;
     BOOL scanStarted = NO;
 
-    for(;_location<length;_location++) {
-        unichar unicode=[_string characterAtIndex:_location];
+    for(;_location<length;_location++)
+		{
+		unichar unicode=[_string characterAtIndex:_location];
 
-        if ([_skipSet characterIsMember:unicode] && scanStarted == NO)
-            ;
-        else if ([charset characterIsMember:unicode]) {
-            scanStarted = YES;
-            result[resultLength++] = unicode;
-        }
-        else
-            return NO;
-    }
+		if ([_skipSet characterIsMember:unicode] && (scanStarted == NO))
+			{
+			// do nothing
+			}
+		else
+			{
+			if ([charset characterIsMember: unicode])
+				{
+				scanStarted = YES;
+				result[resultLength++] = unicode;
+				}
+			else
+				{
+				break; // used to be "return NO";
+				}
+			}
+		}
 
-    if (resultLength > 0) {
-        if (stringp != NULL)
-            *stringp = [NSString stringWithCharacters:result length:resultLength];
-        
-        return YES;
-    }
-    else
-        return NO;
+    if (scanStarted)
+		{
+                if (stringp != NULL)
+			{
+			*stringp = [NSString stringWithCharacters:result length:resultLength];
+			}
+		}
+	return scanStarted;
 }
 
 -(BOOL)scanUpToCharactersFromSet:(NSCharacterSet *)charset intoString:(NSString **)stringp {

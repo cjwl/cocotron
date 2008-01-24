@@ -407,18 +407,18 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 
 -(void)makeObjectsPerformSelector:(SEL)selector {
-   int count=[self count];
-
-   while(--count>=0)
-    [[self objectAtIndex:count] performSelector:selector];
+	int i, count = [self count];
+	
+	for (i = 0; i < count; i++)
+		[[self objectAtIndex:i] performSelector:selector];
 }
 
 
 -(void)makeObjectsPerformSelector:(SEL)selector withObject:object {
-   int count=[self count];
-
-   while(--count>=0)
-    [[self objectAtIndex:count] performSelector:selector withObject:object];
+	int i, count = [self count];
+	
+	for (i = 0; i < count; i++)
+		[[self objectAtIndex:i] performSelector:selector withObject:object];
 }
 
 -(NSString *)description {

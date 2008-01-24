@@ -251,10 +251,10 @@ static inline unsigned indexOfObject(NSMutableArray_concrete *self,id object){
 }
 
 -(void)makeObjectsPerformSelector:(SEL)selector {
-   int count=_count;
-
-   while(--count>=0)
-    [_objects[count] performSelector:selector];
+	int i, count = [self count];
+	
+	for (i = 0; i < count; i++)
+		[_objects[i] performSelector:selector];
 }
 
 // iterative mergesort based on http://www.inf.fh-flensburg.de/lang/algorithmen/sortieren/merge/mergiter.htm

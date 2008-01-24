@@ -16,9 +16,7 @@
 
      if(GetUpdateRect(_windowHandle,&updateRECT,NO)){
       BeginPaint(_windowHandle,&paintStruct);
-      [_view lockFocus];
-      [_view drawRect:[_view bounds]];
-      [_view unlockFocus];
+      [_view display];
       EndPaint(_windowHandle,&paintStruct);
      }
     }
