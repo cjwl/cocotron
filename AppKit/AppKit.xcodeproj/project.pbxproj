@@ -3356,24 +3356,29 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
-		6E2B57760976075500DA0954 /* Deployment */ = {
+		6E2B57760976075500DA0954 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COPY_PHASE_STRIP = YES;
 			};
-			name = Deployment;
+			name = Release;
 		};
-		FE01AAC00C5D9BCB00AEA51A /* Deployment */ = {
+		7E891F4D0D4967B6008150D3 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = i386;
+				COPY_PHASE_STRIP = NO;
 				DEPLOYMENT_LOCATION = YES;
 				DSTROOT = /;
 				EXECUTABLE_SUFFIX = .1.0.dll;
 				FRAMEWORK_SEARCH_PATHS = /Developer/Cocotron/1.0/Windows/i386/Frameworks;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_ENABLE_CPP_EXCEPTIONS = NO;
+				GCC_ENABLE_CPP_RTTI = NO;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = "";
+				GCC_UNROLL_LOOPS = YES;
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = /Developer/Cocotron/1.0/Windows/i386/Frameworks;
 				OTHER_CFLAGS = (
@@ -3396,7 +3401,55 @@
 				PRODUCT_NAME = AppKit;
 				SYMROOT = /Developer/Cocotron/1.0/build/AppKit/Windows;
 			};
-			name = Deployment;
+			name = Debug;
+		};
+		7E891F4E0D4967B6008150D3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+			};
+			name = Debug;
+		};
+		FE01AAC00C5D9BCB00AEA51A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = i386;
+				DEPLOYMENT_LOCATION = YES;
+				DEPLOYMENT_POSTPROCESSING = YES;
+				DSTROOT = /;
+				EXECUTABLE_SUFFIX = .1.0.dll;
+				FRAMEWORK_SEARCH_PATHS = /Developer/Cocotron/1.0/Windows/i386/Frameworks;
+				GCC_ENABLE_CPP_EXCEPTIONS = NO;
+				GCC_ENABLE_CPP_RTTI = NO;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = "";
+				GCC_UNROLL_LOOPS = YES;
+				INFOPLIST_FILE = Info.plist;
+				INSTALL_PATH = /Developer/Cocotron/1.0/Windows/i386/Frameworks;
+				OTHER_CFLAGS = (
+					"-DAPPKIT_INSIDE_BUILD",
+					"-D__LITTLE_ENDIAN__",
+					"-Wreturn-type",
+				);
+				OTHER_LDFLAGS = (
+					"-shared",
+					"-lole32",
+					"-lgdi32",
+					"-luser32",
+					"-lcomdlg32",
+					"-lwinmm",
+					"-Wl,--enable-auto-import",
+					"-Wl,--export-all-symbols",
+					"-Wl,--out-implib,$TARGET_BUILD_DIR/AppKit.framework/libAppKit.a",
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = AppKit;
+				STRIP_INSTALLED_PRODUCT = YES;
+				SYMROOT = /Developer/Cocotron/1.0/build/AppKit/Windows;
+			};
+			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
@@ -3404,18 +3457,20 @@
 		6E2B57740976075500DA0954 /* Build configuration list for PBXProject "AppKit" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				6E2B57760976075500DA0954 /* Deployment */,
+				6E2B57760976075500DA0954 /* Release */,
+				7E891F4E0D4967B6008150D3 /* Debug */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Deployment;
+			defaultConfigurationName = Release;
 		};
 		FE01AABF0C5D9BCB00AEA51A /* Build configuration list for PBXNativeTarget "AppKit-Windows-i386" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				FE01AAC00C5D9BCB00AEA51A /* Deployment */,
+				FE01AAC00C5D9BCB00AEA51A /* Release */,
+				7E891F4D0D4967B6008150D3 /* Debug */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Deployment;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

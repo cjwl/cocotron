@@ -231,7 +231,7 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
-		1DEB91B308733DA50010E9CD /* Deployment */ = {
+		1DEB91B308733DA50010E9CD /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
@@ -239,9 +239,9 @@
 				PREBINDING = NO;
 				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
 			};
-			name = Deployment;
+			name = Release;
 		};
-		FE01AAEC0C5D9BF900AEA51A /* Deployment */ = {
+		FE01AAEC0C5D9BF900AEA51A /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = i386;
@@ -267,7 +267,7 @@
 				PRODUCT_NAME = ApplicationServices;
 				SYMROOT = /Developer/Cocotron/1.0/build/ApplicationServices/Windows/i386;
 			};
-			name = Deployment;
+			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
@@ -275,18 +275,18 @@
 		1DEB91B108733DA50010E9CD /* Build configuration list for PBXProject "ApplicationServices" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				1DEB91B308733DA50010E9CD /* Deployment */,
+				1DEB91B308733DA50010E9CD /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Deployment;
+			defaultConfigurationName = Release;
 		};
 		FE01AAEB0C5D9BF900AEA51A /* Build configuration list for PBXNativeTarget "ApplicationServices-Windows-i386" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				FE01AAEC0C5D9BF900AEA51A /* Deployment */,
+				FE01AAEC0C5D9BF900AEA51A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Deployment;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

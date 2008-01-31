@@ -280,13 +280,13 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
-		1DEB91B208733DA50010E9CD /* Deployment */ = {
+		1DEB91B208733DA50010E9CD /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 			};
-			name = Deployment;
+			name = Release;
 		};
-		FE01AB200C5D9C3400AEA51A /* Deployment */ = {
+		FE01AB200C5D9C3400AEA51A /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = i386;
@@ -313,7 +313,7 @@
 				PRODUCT_NAME = Cocoa;
 				SYMROOT = /Developer/Cocotron/1.0/build/Cocoa/Windows;
 			};
-			name = Deployment;
+			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
@@ -321,18 +321,18 @@
 		1DEB91B108733DA50010E9CD /* Build configuration list for PBXProject "Cocoa" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				1DEB91B208733DA50010E9CD /* Deployment */,
+				1DEB91B208733DA50010E9CD /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Deployment;
+			defaultConfigurationName = Release;
 		};
 		FE01AB1F0C5D9C3400AEA51A /* Build configuration list for PBXNativeTarget "Cocoa-Windows-i386" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				FE01AB200C5D9C3400AEA51A /* Deployment */,
+				FE01AB200C5D9C3400AEA51A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Deployment;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
