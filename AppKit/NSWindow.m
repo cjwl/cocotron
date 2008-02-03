@@ -1917,7 +1917,10 @@ NSString *NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification";
 
     frame=[self frame];
     frame.size.height+=(newSize.height-oldSize.height);
-    [self setFrame:frame display:YES];
+    // no display because setMenu: is called before awakeFromNib
+    [self setFrame:frame display:NO];
+    // do we even need this?
+    [_backgroundView setNeedsDisplay:YES]; 
    }
 
    _menu=[menu copy];

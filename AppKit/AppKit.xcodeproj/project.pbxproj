@@ -3427,6 +3427,7 @@
 				GCC_PREFIX_HEADER = "";
 				GCC_UNROLL_LOOPS = YES;
 				INFOPLIST_FILE = Info.plist;
+				INSTALL_MODE_FLAG = "og-w,a+rX";
 				INSTALL_PATH = /Developer/Cocotron/1.0/Windows/i386/Frameworks;
 				OTHER_CFLAGS = (
 					"-DAPPKIT_INSIDE_BUILD",

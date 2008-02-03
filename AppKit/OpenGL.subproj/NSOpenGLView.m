@@ -81,7 +81,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)update {
-   [[self openGLContext] update];
+// we don't want to create the context if it doesn't exist
+   [_context update];
 }
 
 -(void)reshape {
@@ -89,7 +90,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)prepareOpenGL {
-// do nothing?
+// do nothing
 }
 
 -(BOOL)isOpaque {
