@@ -27,8 +27,4 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return [self retain];
 }
 
--(NSString *)description {
-    return [NSString stringWithFormat:@"<%@[0x%lx] time: %f>", [self class], self, (float)_timeIntervalSinceReferenceDate];
-}
-
 @end

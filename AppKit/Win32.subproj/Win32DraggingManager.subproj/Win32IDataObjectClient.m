@@ -206,18 +206,43 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     case TYMED_ENHMF: // hEnhMetaFile
      break;
 
-    case TYMED_HGLOBAL:{ // hGlobal
-      void  *bytes=GlobalLock(storageMedium.hGlobal);
-      int    size=GlobalSize(storageMedium.hGlobal);
-
-      if(formatEtc.cfFormat==CF_UNICODETEXT && size>1)
-       size-=2; // remove trailing zero
-
-      result=[NSData dataWithBytes:bytes length:size];
-
-      GlobalUnlock(storageMedium.hGlobal);
-     }
-     break;
+    case TYMED_HGLOBAL: 
+           { // hGlobal 
+           void  *bytes=GlobalLock(storageMedium.hGlobal); 
+           int    size=GlobalSize(storageMedium.hGlobal); 
+           if(formatEtc.cfFormat==CF_UNICODETEXT && (size > 0)) 
+                   { 
+                        if(size % 2) 
+                                { // odd data length. WTF? 
+                                unsigned char lastbyte = ((unsigned char *)bytes)[size-1]; 
+                                if(lastbyte != 0) 
+                                        { // not a null oddbyte, log it. 
+                                        NSString * str = [NSString stringWithCharacters: bytes length: (size-1)/2]; 
+                                        if([str length] > 80) 
+                                                { 
+                                                str = [str substringFromIndex: [str length] - 80]; 
+                                                } 
+                                        NSLog(@"%s:%u[%s] -- \n*****CF_UNICODETEXT byte count not even and odd byte (%0X,'%c') not null",__FILE__, __LINE__, __PRETTY_FUNCTION__,(unsigned)lastbyte, 
+lastbyte); 
+                                        } 
+                                --size; // truncate regardless 
+                                }       
+                   while(size) 
+                           { // zortch any terminating null unichars 
+                           if(((unichar *) bytes)[(size-2)/2] != 0) 
+                                   { 
+                                   break; 
+                                   } 
+                           else 
+                                   { 
+                                   size -= 2; 
+                                   } 
+                           }; 
+                   } 
+                result=[NSData dataWithBytes:bytes length:size]; 
+                GlobalUnlock(storageMedium.hGlobal); 
+           } 
+        break; 
 
     case TYMED_FILE: // lpszFileName
      break;

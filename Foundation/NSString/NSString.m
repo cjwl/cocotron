@@ -659,6 +659,11 @@ U+2029 (Unicode paragraph separator), \r\n, in that order (also known as CRLF)
     }
    }
 
+        if((end >= length) && (state!=done)) 
+                { 
+                contentsEnd = end;       
+                } 
+
    if(startp!=NULL)
     *startp=start;
    if(endp!=NULL)

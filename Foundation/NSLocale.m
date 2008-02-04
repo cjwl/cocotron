@@ -8,6 +8,23 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSLocale.h>
 #import <Foundation/NSRaise.h>
 
+NSString *NSLocaleCountryCode=@"NSLocaleCountryCode";
+NSString *NSLocaleLanguageCode=@"NSLocaleLanguageCode";
+NSString *NSLocaleVariantCode=@"NSLocaleVariantCode";
+NSString *NSLocaleIdentifier=@"NSLocaleIdentifier";
+
+NSString *NSLocaleGroupingSeparator=@"NSLocaleGroupingSeparator";
+NSString *NSLocaleDecimalSeparator=@"NSLocaleDecimalSeparator";
+NSString *NSLocaleCalendar=@"NSLocaleCalendar";
+NSString *NSLocaleCurrencyCode=@"NSLocaleCurrencyCode";
+NSString *NSLocaleCurrencySymbol=@"NSLocaleCurrencySymbol";
+NSString *NSLocaleUsesMetricSystem=@"NSLocaleUsesMetricSystem";
+NSString *NSLocaleMeasurementSystem=@"NSLocaleMeasurementSystem";
+
+NSString *NSLocaleScriptCode=@"NSLocaleScriptCode";
+NSString *NSLocaleExemplarCharacterSet=@"NSLocaleExemplarCharacterSet";
+NSString *NSLocaleCollationIdentifier=@"NSLocaleCollationIdentifier";
+
 @implementation NSLocale
 
 +systemLocale {

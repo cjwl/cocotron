@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		FE3B34AA0D55939B009E0AA5 /* glext.h in Headers */ = {isa = PBXBuildFile; fileRef = FE3B34A90D55939B009E0AA5 /* glext.h */; };
+		FE3B34AA0D55939B009E0AA5 /* glext.h in Headers */ = {isa = PBXBuildFile; fileRef = FE3B34A90D55939B009E0AA5 /* glext.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FEF2EB230C878C88001FC5A8 /* OpenGL.h in Headers */ = {isa = PBXBuildFile; fileRef = FEF2EB220C878C88001FC5A8 /* OpenGL.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FEF2EB5E0C87B894001FC5A8 /* gl.h in Headers */ = {isa = PBXBuildFile; fileRef = FEF2EB5D0C87B894001FC5A8 /* gl.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FEF2EB680C87B8BA001FC5A8 /* glu.h in Headers */ = {isa = PBXBuildFile; fileRef = FEF2EB670C87B8BA001FC5A8 /* glu.h */; settings = {ATTRIBUTES = (Public, ); }; };

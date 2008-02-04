@@ -386,7 +386,13 @@ NSString *NSStringWithDateFormatLocale(NSTimeInterval interval,NSString *format,
                     }
                         break;
 
-                    case 'F':{
+                    case 'e':{ 
+                        id fmt=@"%d"; 
+                        [result appendFormat:fmt,NSDayOfMonthFromTimeInterval(interval)+1]; 
+                    } 
+                        break; 
+
+                   case 'F':{
                         id fmt=(suppressZero)?@"%d":((fillChar==' ')?@"%3d":@"%03d");
 
                         [result appendFormat:fmt,NSMillisecondsFromTimeInterval(interval)];

@@ -7,6 +7,7 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
 // Original - Christopher Lloyd <cjwl@objc.net>
+#import <Foundation/NSLocale.h>
 #import <Foundation/NSStringFormatter.h>
 #import <Foundation/NSString_unicodePtr.h>
 #import <Foundation/NSString_cString.h> //appendCString
@@ -180,7 +181,7 @@ static inline void appendCStringChar(NSStringBuffer *buffer,char c,
 
 static inline void appendFloat(NSStringBuffer *buffer,double value,
   unichar fillChar,BOOL leftAdj,BOOL plusSign,BOOL spaceSign,
-  int fieldWidth,int precision,BOOL gFormat){
+  int fieldWidth,int precision,BOOL gFormat,BOOL altForm,NSDictionary *locale){
    if(1.0/0.0==value)
     appendCString(buffer,"1.#INF00",' ',leftAdj,fieldWidth);
    else if(log(0)==value)
@@ -189,19 +190,30 @@ static inline void appendFloat(NSStringBuffer *buffer,double value,
     appendCString(buffer,"NaN",' ',leftAdj,fieldWidth);
    else{
     double   integral,fractional,power;
-    unsigned i,length=0;
+    unsigned i,j,length=0;
     unichar  characters[100];
     unichar  sign=(value<0)?'-':plusSign?'+':spaceSign?' ':'\0';
 
-    power=pow(10.0,precision);
-    value=round(fabs(value)*power)/power;
+    if (value != 0.0)
+    {
+       value=fabs(value);
+       if (!gFormat)
+         power=pow(10.0,precision);
+       else 
+         power=pow(10.0,precision-1-floor(log10(value)));
+       value=(1.0 + 1.0e-15)*round(value*power)/power;
+    }
 
     fractional=modf(value,&integral);
+    BOOL intZero=integral<1.0; 
 
     while(integral>=1.0){
-     characters[length++]=(unichar)floor(fmod(integral,10.0)+'0');
+     characters[length++]=(unichar)fmod(integral,10.0)+'0';
      integral/=10.0;
     }
+
+    if(gFormat)
+      precision -= length;
 
     if(length==0)
      characters[length++]='0';
@@ -211,18 +223,38 @@ static inline void appendFloat(NSStringBuffer *buffer,double value,
     reverseCharacters(characters,length);
 
     if(precision>0){
+     char decSep;
+     if (locale)
+      decSep = [(NSString *)[locale objectForKey:NSLocaleDecimalSeparator] characterAtIndex:0];
+     else
+      decSep = [(NSString *)[[NSLocale systemLocale] objectForKey:NSLocaleDecimalSeparator] characterAtIndex:0];
      unsigned start=length;
-     BOOL     allZeros=YES;
-
-     characters[length++]='.';
-     for(i=0;i<precision;i++,length++){
+     BOOL     fractZero=YES;
+     characters[length++]=decSep;
+     for(i=0,j=0;i<precision;i++,j++,length++){
       fractional*=10.0;
-      if((characters[length]=(unichar)floor(fmod(fractional,10.0)+'0'))!='0')
-       allZeros=NO;
+      if((characters[length]=(unichar)fmod(fractional,10.0)+'0')!='0')
+       fractZero=NO;
+      else if (gFormat && intZero && fractZero && (j - i) < 5)
+         i--;
      }
 
-     if(gFormat && allZeros)
-      length=start;
+     if (gFormat)
+     {
+         if (intZero && fractZero)
+            if(altForm)
+               length=start + precision;
+            else
+               length=start;
+       
+         else if(!altForm)
+         {
+            while (characters[length-1] == '0')
+               length--;
+            if (characters[length-1] == decSep)
+               length--;
+         }
+      }
     }
 
     appendCharacters(buffer,characters,length,fillChar,leftAdj,fieldWidth);
@@ -476,8 +508,7 @@ unichar *NSCharactersNewWithFormat(NSString *format,NSDictionary *locale,
          else
           value=va_arg(arguments,double);
 
-         appendFloat(&result,value,fillChar,leftAdj,plusSign,
-            spaceSign,fieldWidth,precision,NO);
+         appendFloat(&result,value,fillChar,leftAdj,plusSign,spaceSign,fieldWidth,precision,NO,NO,locale);
         }
         break;
 
@@ -489,8 +520,7 @@ unichar *NSCharactersNewWithFormat(NSString *format,NSDictionary *locale,
          else
           value=va_arg(arguments,double);
 
-         appendFloat(&result,value,fillChar,leftAdj,plusSign,
-            spaceSign,fieldWidth,precision,NO);
+         appendFloat(&result,value,fillChar,leftAdj,plusSign,spaceSign,fieldWidth,precision,NO,NO,locale);
         }
         break;
 
@@ -502,8 +532,7 @@ unichar *NSCharactersNewWithFormat(NSString *format,NSDictionary *locale,
          else
           value=va_arg(arguments,double);
 
-         appendFloat(&result,value,fillChar,leftAdj,plusSign,
-            spaceSign,fieldWidth,precision,YES);
+         appendFloat(&result,value,fillChar,leftAdj,plusSign,spaceSign,fieldWidth,precision,YES,altForm,locale);
         }
         break;
 

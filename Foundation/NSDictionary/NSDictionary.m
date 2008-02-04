@@ -18,6 +18,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSCoder.h>
 #import <Foundation/NSKeyedUnarchiver.h>
 #import <Foundation/NSURL.h>
+#import <Foundation/NSAutoreleasePool.h>
 
 @implementation NSDictionary
 
@@ -333,10 +334,22 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return result;
 }
 
--(NSArray *)keysSortedByValueUsingSelector:(SEL)selector {
-   NSUnimplementedMethod();
-   return nil;
-}
+- (NSArray *) keysSortedByValueUsingSelector: (SEL)selector 
+        { // there is probably a faster implementation, but at least this is easy to understand. 
+        NSMutableArray * result = nil; 
+        NSAutoreleasePool * pool = [NSAutoreleasePool new]; 
+        NSArray * values = [[self allValues] sortedArrayUsingSelector: selector]; 
+        id value; 
+        NSEnumerator * de = [values objectEnumerator]; 
+        result = [NSMutableArray array]; 
+        while((value = [de nextObject])) 
+                { 
+                [result addObjectsFromArray: [self allKeysForObject: value]]; 
+                } 
+        result = [result copy]; 
+        [pool release]; 
+        return [result autorelease]; 
+        } 
 
 -(NSArray *)allValues {
    int i,count=[self count];

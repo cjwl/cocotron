@@ -197,8 +197,7 @@ const NSTimeInterval NSTimeIntervalSince1970=978307200.0L;
 }
 
 -(NSString *)description {
-   NSUnimplementedMethod();
-   return [super description];
+   return [self descriptionWithLocale:nil];
 }
 
 -(NSString *)descriptionWithLocale:(NSDictionary *)locale {
