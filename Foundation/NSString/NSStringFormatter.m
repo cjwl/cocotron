@@ -223,14 +223,19 @@ static inline void appendFloat(NSStringBuffer *buffer,double value,
     reverseCharacters(characters,length);
 
     if(precision>0){
-     char decSep;
-     if (locale)
-      decSep = [(NSString *)[locale objectForKey:NSLocaleDecimalSeparator] characterAtIndex:0];
+     NSString *seperatorString;
+     unichar   decimalSeperator;
+     
+     if(locale)
+      seperatorString = [locale objectForKey:NSLocaleDecimalSeparator];
      else
-      decSep = [(NSString *)[[NSLocale systemLocale] objectForKey:NSLocaleDecimalSeparator] characterAtIndex:0];
+      seperatorString = [[NSLocale systemLocale] objectForKey:NSLocaleDecimalSeparator];
+      
+     decimalSeperator=([seperatorString length]>0)?[seperatorString characterAtIndex:0]:'.';
+     
      unsigned start=length;
      BOOL     fractZero=YES;
-     characters[length++]=decSep;
+     characters[length++]=decimalSeperator;
      for(i=0,j=0;i<precision;i++,j++,length++){
       fractional*=10.0;
       if((characters[length]=(unichar)fmod(fractional,10.0)+'0')!='0')
@@ -251,7 +256,7 @@ static inline void appendFloat(NSStringBuffer *buffer,double value,
          {
             while (characters[length-1] == '0')
                length--;
-            if (characters[length-1] == decSep)
+            if (characters[length-1] == decimalSeperator)
                length--;
          }
       }

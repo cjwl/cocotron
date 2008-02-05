@@ -28,7 +28,7 @@ NSString *NSLocaleCollationIdentifier=@"NSLocaleCollationIdentifier";
 @implementation NSLocale
 
 +systemLocale {
-   NSUnimplementedMethod();
+   //NSUnimplementedMethod();
    return 0;
 }
 
