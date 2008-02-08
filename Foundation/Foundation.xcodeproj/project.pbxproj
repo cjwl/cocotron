@@ -1538,6 +1538,8 @@
 		FE9D95510C0387D5006DB214 /* NSValueTransformer_NegateBoolean.m in Sources */ = {isa = PBXBuildFile; fileRef = FE9D95390C0387D5006DB214 /* NSValueTransformer_NegateBoolean.m */; };
 		FE9D95520C0387D5006DB214 /* NSValueTransformer_UnarchiveFromData.h in Headers */ = {isa = PBXBuildFile; fileRef = FE9D953A0C0387D5006DB214 /* NSValueTransformer_UnarchiveFromData.h */; };
 		FE9D95530C0387D5006DB214 /* NSValueTransformer_UnarchiveFromData.m in Sources */ = {isa = PBXBuildFile; fileRef = FE9D953B0C0387D5006DB214 /* NSValueTransformer_UnarchiveFromData.m */; };
+		FE9E1A310D5C0676004AE7BA /* NSLocale+windows.h in Headers */ = {isa = PBXBuildFile; fileRef = FE9E1A2F0D5C0676004AE7BA /* NSLocale+windows.h */; };
+		FE9E1A320D5C0676004AE7BA /* NSLocale+windows.m in Sources */ = {isa = PBXBuildFile; fileRef = FE9E1A300D5C0676004AE7BA /* NSLocale+windows.m */; };
 		FEA36F270C24C57000025A9C /* objc_cache.h in Headers */ = {isa = PBXBuildFile; fileRef = FEA36F250C24C57000025A9C /* objc_cache.h */; };
 		FEA36F280C24C57000025A9C /* objc_cache.h in Headers */ = {isa = PBXBuildFile; fileRef = FEA36F250C24C57000025A9C /* objc_cache.h */; };
 		FEA9D08A0D16C55E00123D51 /* NSPropertyListReader_binary1.h in Headers */ = {isa = PBXBuildFile; fileRef = FEA9D0880D16C55E00123D51 /* NSPropertyListReader_binary1.h */; };
@@ -3677,6 +3679,8 @@
 		FE9D95390C0387D5006DB214 /* NSValueTransformer_NegateBoolean.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSValueTransformer_NegateBoolean.m; sourceTree = "<group>"; };
 		FE9D953A0C0387D5006DB214 /* NSValueTransformer_UnarchiveFromData.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSValueTransformer_UnarchiveFromData.h; sourceTree = "<group>"; };
 		FE9D953B0C0387D5006DB214 /* NSValueTransformer_UnarchiveFromData.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSValueTransformer_UnarchiveFromData.m; sourceTree = "<group>"; };
+		FE9E1A2F0D5C0676004AE7BA /* NSLocale+windows.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = "NSLocale+windows.h"; path = "platform_win32/NSLocale+windows.h"; sourceTree = "<group>"; };
+		FE9E1A300D5C0676004AE7BA /* NSLocale+windows.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = "NSLocale+windows.m"; path = "platform_win32/NSLocale+windows.m"; sourceTree = "<group>"; };
 		FEA36F250C24C57000025A9C /* objc_cache.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = objc_cache.h; sourceTree = "<group>"; };
 		FEA9D0880D16C55E00123D51 /* NSPropertyListReader_binary1.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSPropertyListReader_binary1.h; sourceTree = "<group>"; };
 		FEA9D0890D16C55E00123D51 /* NSPropertyListReader_binary1.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSPropertyListReader_binary1.m; sourceTree = "<group>"; };
@@ -4562,6 +4566,8 @@
 		6E28034A09747A7700EC542B /* platform_win32 */ = {
 			isa = PBXGroup;
 			children = (
+				FE9E1A2F0D5C0676004AE7BA /* NSLocale+windows.h */,
+				FE9E1A300D5C0676004AE7BA /* NSLocale+windows.m */,
 				6E28059F09747D0400EC542B /* dllmain.m */,
 				6E28057509747CEE00EC542B /* NSConstantString.m */,
 				6E2805A309747D0400EC542B /* NSFileHandle_win32.h */,
@@ -5865,6 +5871,7 @@
 				FEDF9FF50CF6123F00F21F87 /* NSMutableURLRequest.h in Headers */,
 				FEDFA1060CF7D41F00F21F87 /* NSCachedURLResponse.h in Headers */,
 				FEA9D08A0D16C55E00123D51 /* NSPropertyListReader_binary1.h in Headers */,
+				FE9E1A310D5C0676004AE7BA /* NSLocale+windows.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7612,6 +7619,7 @@
 				FEDF9FF60CF6123F00F21F87 /* NSMutableURLRequest.m in Sources */,
 				FEDFA1070CF7D41F00F21F87 /* NSCachedURLResponse.m in Sources */,
 				FEA9D08B0D16C55E00123D51 /* NSPropertyListReader_binary1.m in Sources */,
+				FE9E1A320D5C0676004AE7BA /* NSLocale+windows.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

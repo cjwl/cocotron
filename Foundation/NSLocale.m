@@ -5,6 +5,7 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
+#import <Foundation/NSDictionary.h>
 #import <Foundation/NSLocale.h>
 #import <Foundation/NSRaise.h>
 
@@ -27,14 +28,37 @@ NSString *NSLocaleCollationIdentifier=@"NSLocaleCollationIdentifier";
 
 @implementation NSLocale
 
+static NSLocale *_sharedSystemLocale  = nil;
+static NSLocale *_sharedCurrentLocale = nil;
+
+-(NSDictionary *)_locale {
+   return _locale;
+}
+
 +systemLocale {
-   //NSUnimplementedMethod();
-   return 0;
+   if (_sharedSystemLocale == nil)
+      _sharedSystemLocale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US"];
+   return _sharedSystemLocale;
 }
 
 +currentLocale {
-   NSUnimplementedMethod();
-   return 0;
+   if (_sharedCurrentLocale == nil)
+   {
+      NSString *localeIdentifier;
+      
+      if([self respondsToSelector:@selector(_platformCurrentLocaleIdentifier)])
+       localeIdentifier=[self performSelector:@selector(_platformCurrentLocaleIdentifier)];
+      else
+       localeIdentifier=@"en_US";
+       
+      _sharedCurrentLocale = [[NSLocale alloc] initWithLocaleIdentifier:localeIdentifier];
+   }
+   return _sharedCurrentLocale;
+}
+
+-dealloc {
+   [_locale release];
+   [super dealloc];
 }
 
 +autoupdatingCurrentLocale {
@@ -53,7 +77,12 @@ NSString *NSLocaleCollationIdentifier=@"NSLocaleCollationIdentifier";
 }
 
 +(NSDictionary *)componentsFromLocaleIdentifier:(NSString *)identifier {
-   NSUnimplementedMethod();
+   if ([identifier isEqualToString:[[NSLocale currentLocale] localeIdentifier]])
+      return [_sharedCurrentLocale _locale];
+   else if ([identifier isEqualToString:[[NSLocale systemLocale] localeIdentifier]])
+      return [_sharedSystemLocale _locale];
+   else
+      return [[[[NSLocale alloc] initWithLocaleIdentifier:identifier] autorelease] _locale];
    return 0;
 }
 
@@ -88,8 +117,31 @@ NSString *NSLocaleCollationIdentifier=@"NSLocaleCollationIdentifier";
 }
 
 -initWithLocaleIdentifier:(NSString *)identifier {
-   NSUnimplementedMethod();
-   return 0;
+   [super init];
+
+   NSString *separator, *language;
+
+   if ([identifier isEqualToString:@"de_DE"])
+   {
+      separator = @",";
+      language  = @"German";
+   }
+
+   else if ([identifier isEqualToString:@"pt_BR"])
+   {
+      separator = @",";
+      language  = @"pt_BR";
+   }
+
+   else
+   {
+      separator = @".";
+      language  = @"English";
+   }
+   _locale = [[NSDictionary dictionaryWithObjectsAndKeys:identifier, NSLocaleIdentifier,
+                                                          separator, NSLocaleDecimalSeparator,
+                                                           language, NSLocaleLanguageCode, nil] retain];
+   return self;
 }
 
 -(void)encodeWithCoder:(NSCoder *)coder {
@@ -107,13 +159,11 @@ NSString *NSLocaleCollationIdentifier=@"NSLocaleCollationIdentifier";
 }
 
 -(NSString *)localeIdentifier {
-   NSUnimplementedMethod();
-   return 0;
+   return [_locale objectForKey:NSLocaleIdentifier];
 }
 
 -objectForKey:key {
-   NSUnimplementedMethod();
-   return 0;
+   return [_locale objectForKey:key];
 }
 
 -(NSString *)displayNameForKey:key value:value {

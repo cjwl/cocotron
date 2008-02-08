@@ -27,7 +27,7 @@ FOUNDATION_EXPORT NSString *NSLocaleExemplarCharacterSet;
 FOUNDATION_EXPORT NSString *NSLocaleCollationIdentifier;
 
 @interface NSLocale : NSObject <NSCoding,NSCopying> {
-
+   NSDictionary *_locale;
 }
 
 +systemLocale;

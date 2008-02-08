@@ -22,6 +22,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSArray.h>
 #import <Foundation/NSData.h>
 #import <Foundation/NSCharacterSet.h>
+#import <Foundation/NSLocale.h>
 
 #import <Foundation/NSString_placeholder.h>
 #import <Foundation/NSString_unicode.h>
@@ -249,8 +250,7 @@ int __CFConstantStringClassReference[1];
 }
 
 +stringWithUTF8String:(const char *)utf8 {
-   NSUnimplementedMethod();
-   return 0;
+   return [[[NSString alloc] initWithUTF8String:utf8] autorelease];
 }
 
 +localizedStringWithFormat:(NSString *)format,... {
@@ -258,7 +258,7 @@ int __CFConstantStringClassReference[1];
 
    va_start(arguments,format);
 
-   return NSAutorelease(NSStringNewWithFormat(format,nil,arguments,NULL));
+   return NSAutorelease(NSStringNewWithFormat(format,[NSLocale currentLocale],arguments,NULL));
 }
 
 -copy {
@@ -778,6 +778,7 @@ U+2029 (Unicode paragraph separator), \r\n, in that order (also known as CRLF)
    unsigned pos,length=[self length];
    unichar  unicode[length];
    double   sign=1,value=0;
+   char     decSep=[(NSString *)[[NSLocale currentLocale] objectForKey:NSLocaleDecimalSeparator] characterAtIndex:0];
 
    [self getCharacters:unicode];
 
@@ -805,7 +806,7 @@ U+2029 (Unicode paragraph separator), \r\n, in that order (also known as CRLF)
     value+=unicode[pos]-'0';
    }
 
-   if(pos<length && unicode[pos]=='.'){
+   if(pos<length && unicode[pos]==decSep){
     double multiplier=1;
 
     pos++;

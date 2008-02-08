@@ -8,6 +8,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 // Original - Christopher Lloyd <cjwl@objc.net>
 #import <Foundation/NSBundle.h>
+#import <Foundation/NSLocale.h>
 #import <Foundation/NSMapTable.h>
 #import <Foundation/NSString.h>
 #import <Foundation/NSPathUtilities.h>
@@ -18,7 +19,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSRaise.h>
 #import <Foundation/NSPlatform.h>
 #import <Foundation/ObjectiveC.h>
-
 
 NSString *NSBundleDidLoadNotification=@"NSBundleDidLoadNotification";
 NSString *NSLoadedClasses=@"NSLoadedClasses";
@@ -380,8 +380,18 @@ static NSMapTable *pathToObject=NULL;
    return 0;
 }
 
+static NSArray *_sharedLookInDirectoriesArray = nil;
+
 -(NSArray *)lookInDirectories {
-   return [NSArray arrayWithObjects:@"English.lproj",@"",nil];
+   if (_sharedLookInDirectoriesArray == nil)
+   {
+      NSString *language = [[NSLocale currentLocale] objectForKey:NSLocaleLanguageCode];
+      if ([language isEqualToString:@"English"])
+         _sharedLookInDirectoriesArray = [[NSArray arrayWithObjects:@"English.lproj", @"", nil] retain];
+      else
+         _sharedLookInDirectoriesArray = [[NSArray arrayWithObjects:[language stringByAppendingPathExtension:@"lproj"], @"English.lproj", @"", nil] retain];
+   }
+   return _sharedLookInDirectoriesArray;
 }
 
 -(NSString *)pathForResourceFile:(NSString *)file inDirectory:(NSString *)directory {
