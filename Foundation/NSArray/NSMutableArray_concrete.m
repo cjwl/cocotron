@@ -79,29 +79,26 @@ NSArray *NSMutableArray_concreteNewWithCapacity(NSZone *zone,
      NSZoneFromPointer(self));
 }
 
--initWithObjects:first,... {
+-initWithObjects:object,... {
    va_list  arguments;
-   unsigned i,count=0;
+   unsigned i,count;
    id      *objects;
 
-   va_start(arguments,first);
-
+   va_start(arguments,object);
+   count=1;
    while(va_arg(arguments,id)!=nil)
     count++;
-
    va_end(arguments);
 
    objects=__builtin_alloca(sizeof(id)*count);
 
-   va_start(arguments,first);
-
-   for(i=0;i<count;i++)
+   va_start(arguments,object);
+   objects[0]=object;
+   for(i=1;i<count;i++)
     objects[i]=va_arg(arguments,id);
-
    va_end(arguments);
 
-   return NSMutableArray_concreteInit(self,objects,count,
-     NSZoneFromPointer(self));
+   return NSMutableArray_concreteInit(self,objects,count,NSZoneFromPointer(self));
 }
 
 -initWithCapacity:(unsigned)capacity {
