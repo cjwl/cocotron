@@ -98,8 +98,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(unsigned long long)offsetInFile {
-   NSUnimplementedMethod();
-   return 0;
+   LARGE_INTEGER li;
+   
+   li.QuadPart=0;
+   
+   li.LowPart=SetFilePointer(_handle,li.LowPart,&li.HighPart,FILE_CURRENT);
+   
+   if(li.LowPart==INVALID_SET_FILE_POINTER && GetLastError()!=NO_ERROR)
+    [NSException raise:NSInvalidArgumentException format:@"GetLastError()=%d",GetLastError()];
+    
+   return li.QuadPart;
 }
 
 -(void)seekToFileOffset:(unsigned long long)offset {
