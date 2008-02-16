@@ -207,13 +207,90 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     [self removeObjectAtIndex:pos];
 }
 
--(void)removeObjectsFromIndices:(unsigned *)indices
-                     numIndices:(unsigned)count {
-   int i;
-   
-   for(i=0;i<count;i++)
-    [self removeObjectAtIndex:indices[i]];
+static inline void memswp(void* a, void* b, size_t width)
+{
+	if (width == sizeof(void*)) {
+		// Optimization for pointer sized swap:
+		void* tmp;
+		tmp = *(void**)a;
+		*(void**)a = *(void**)b;
+		*(void**)b = tmp;
+		return;
+	}
+	// default uses memcpy:
+	char tmp[width];
+	memcpy(tmp, a, width);
+	memcpy(a, b, width);
+	memcpy(b, tmp, width);
 }
+
+
+// iterative mergesort based on
+//  http://www.inf.fh-flensburg.de/lang/algorithmen/sortieren/merge/mergiter.htm  
+
+static int mergesort(void *base, size_t nel, size_t width, int (*compar)(const  
+void *, const void *))
+{
+	int h, i, j, k, l, m, n = nel;
+	void* A; // points to an element
+	void* B = malloc((n/2 + 1) * width); // points to a temp array
+	
+
+	for (h = 1; h < n; h += h) {
+		for (m = n - 1 - h; m >= 0; m -= h + h) {
+			l = m - h + 1;
+			if (l < 0)
+				l = 0;
+			
+			// Copy first half of the array into helper B:
+			j = m+1;
+			memcpy(B, base + (l * width), (j-l) * width);
+			
+			for (i = 0, k = l; k < j && j <= m + h; k++) {
+				A = base + (width * j); // A = [self objectAtIndex:j];
+				if (compar(A, B + (i * width)) > 0) {
+					memswp(base+(k*width), B+(i*width), width); i+=1;
+				} else {
+					memswp(base+(k*width), A, width); j+=1;
+				}
+			}
+			
+			while (k < j) // This loop could be optimized
+				memswp(base+(k++*width), B+(i++*width), width);
+		}
+	}
+
+	free(B);
+	return 0;
+}
+
+static int _nsmutablearraycompareindices(const void* v1, const void* v2) 
+{ 
+        int i1 = (*(int*)v1); 
+        int i2 = (*(int*)v2); 
+        int result = i1 == i2 ? 0 : (i1<i2 ? -1 : 1); 
+        return result; 
+} 
+
+-(void) removeObjectsFromIndices: (unsigned*) indices 
+                                         numIndices: (unsigned) count 
+{ 
+        if (count) { 
+                unsigned lastIndex = NSNotFound; 
+                unsigned sortedIndices[count]; 
+                int i; 
+                memcpy(sortedIndices, indices, sizeof(unsigned)*count); 
+                mergesort(sortedIndices, sizeof(unsigned), count,   
+&_nsmutablearraycompareindices); 
+                for(i=count-1;i>=0;i--) { 
+                        unsigned index = sortedIndices[i]; 
+                        if (index!=lastIndex) { 
+                                [self removeObjectAtIndex: index]; 
+                        } 
+                        lastIndex = index; 
+                }       
+        } 
+} 
 
 -(void)removeObjectsInArray:(NSArray *)other {
    int count=[other count];

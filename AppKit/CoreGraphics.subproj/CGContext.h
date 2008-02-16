@@ -225,6 +225,7 @@ APPKIT_EXPORT void CGContextShowTextAtPoint(CGContextRef context,float x,float y
 
 APPKIT_EXPORT void CGContextDrawShading(CGContextRef context,CGShadingRef shading);
 APPKIT_EXPORT void CGContextDrawImage(CGContextRef context,CGRect rect,CGImageRef image);
+APPKIT_EXPORT NSData *CGContextCaptureBitmap(CGContextRef context,CGRect rect);
 APPKIT_EXPORT void CGContextDrawLayerAtPoint(CGContextRef context,CGPoint point,CGLayerRef layer);
 APPKIT_EXPORT void CGContextDrawLayerInRect(CGContextRef context,CGRect rect,CGLayerRef layer);
 APPKIT_EXPORT void CGContextDrawPDFPage(CGContextRef context,CGPDFPageRef page);

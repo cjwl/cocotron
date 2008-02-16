@@ -468,3 +468,6 @@ void CGContextCopyBits(CGContextRef context,CGRect rect,CGPoint point,int gState
    [context copyBitsInRect:rect toPoint:point gState:gState];
 }
 
+NSData *CGContextCaptureBitmap(CGContextRef context, CGRect rect) {
+   return [context captureBitmapInRect:rect];
+}

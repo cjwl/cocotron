@@ -778,7 +778,6 @@ U+2029 (Unicode paragraph separator), \r\n, in that order (also known as CRLF)
    unsigned pos,length=[self length];
    unichar  unicode[length];
    double   sign=1,value=0;
-   char     decSep=[(NSString *)[[NSLocale currentLocale] objectForKey:NSLocaleDecimalSeparator] characterAtIndex:0];
 
    [self getCharacters:unicode];
 
@@ -806,7 +805,7 @@ U+2029 (Unicode paragraph separator), \r\n, in that order (also known as CRLF)
     value+=unicode[pos]-'0';
    }
 
-   if(pos<length && unicode[pos]==decSep){
+   if(pos<length && unicode[pos]=='.'){
     double multiplier=1;
 
     pos++;

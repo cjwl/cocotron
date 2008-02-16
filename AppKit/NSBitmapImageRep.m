@@ -112,8 +112,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -initWithFocusedViewRect:(NSRect)rect {
-   NSUnimplementedMethod();
-   return nil;
+   return [self initWithData:CGContextCaptureBitmap(NSCurrentGraphicsPort(), rect)];
 }
 
 -initWithData:(NSData *)data {

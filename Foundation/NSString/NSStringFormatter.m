@@ -13,8 +13,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSString_cString.h> //appendCString
 #import <Foundation/NSAutoreleasePool-private.h>
 #import "unibuffer.h"
-#import <string.h>
 
+#import <stdio.h>
+#import <string.h>
 #import <math.h>
 
 typedef struct {
@@ -179,6 +180,24 @@ static inline void appendCStringChar(NSStringBuffer *buffer,char c,
    appendCString(buffer,cString,fillChar,leftAdj,fieldWidth);
 }
 
+static inline void appendFloat_generic(NSStringBuffer *buffer, double value, char *fmtSpec, NSDictionary *locale)
+{
+   char s[256];
+   int  i, length = snprintf(s, 255, fmtSpec, value);
+   
+   NSString *seperatorString;
+   unichar  decimalSeperator;
+   if (locale)
+      seperatorString = [locale objectForKey:NSLocaleDecimalSeparator];
+   else
+      seperatorString = [[NSLocale systemLocale] objectForKey:NSLocaleDecimalSeparator];
+   decimalSeperator = ([seperatorString length] > 0) ? [seperatorString characterAtIndex:0] : '.';
+   
+   makeRoomForNcharacters(buffer, length);
+   for (i = 0; i < length; i++)
+      buffer->characters[buffer->length++] = (s[i] != '.') ? s[i] : decimalSeperator;
+}
+
 static inline void appendFloat(NSStringBuffer *buffer,double value,
   unichar fillChar,BOOL leftAdj,BOOL plusSign,BOOL spaceSign,
   int fieldWidth,int precision,BOOL gFormat,BOOL altForm,NSDictionary *locale){
@@ -298,6 +317,7 @@ unichar *NSCharactersNewWithFormat(NSString *format,NSDictionary *locale,
    unichar fillChar=' ',dwModify=' ';
    BOOL    altForm=NO,leftAdj=NO,plusSign=NO,spaceSign=NO;
    int     fieldWidth=0,precision=6;
+   char    *p, fmtSpec[fmtLength+1];
 
    enum {
     STATE_SCANNING,
@@ -321,6 +341,8 @@ unichar *NSCharactersNewWithFormat(NSString *format,NSDictionary *locale,
       if(unicode!='%')
        appendCharacter(&result,unicode);
       else{
+       p = fmtSpec;
+       *p++ = (char)unicode;
        fillChar=dwModify=' ';
        altForm=leftAdj=plusSign=spaceSign=NO;
        fieldWidth=0;
@@ -337,6 +359,7 @@ unichar *NSCharactersNewWithFormat(NSString *format,NSDictionary *locale,
        case '-': leftAdj=YES; break;
        case '+': plusSign=YES; break;
        case ' ': spaceSign=YES; break;
+        *p++ = (char)unicode;
 
        default:
         pos--;
@@ -350,11 +373,13 @@ unichar *NSCharactersNewWithFormat(NSString *format,NSDictionary *locale,
 
        case '0': case '1': case '2': case '3': case '4':
        case '5': case '6': case '7': case '8': case '9':
+        *p++ = (char)unicode;
         fieldWidth=fieldWidth*10+(unicode-'0');
         break;
 
        case '*':
         fieldWidth=va_arg(arguments,int);
+        p += snprintf(p, fmtLength, "%d", fieldWidth);
         if(fieldWidth<0){
          leftAdj=YES;
          fieldWidth=-fieldWidth;
@@ -362,6 +387,7 @@ unichar *NSCharactersNewWithFormat(NSString *format,NSDictionary *locale,
         break;
 
        case '.':
+        *p++ = (char)unicode;
         precision=0;
         state=STATE_PRECISION;
         break;
@@ -378,11 +404,13 @@ unichar *NSCharactersNewWithFormat(NSString *format,NSDictionary *locale,
 
        case '0': case '1': case '2': case '3': case '4':
        case '5': case '6': case '7': case '8': case '9':
+        *p++ = (char)unicode;
         precision=precision*10+(unicode-'0');
         break;
 
        case '*': // fix
         precision=va_arg(arguments,int);
+        p += snprintf(p, fmtLength, "%d", precision);
         break;
 
        default:
@@ -396,6 +424,7 @@ unichar *NSCharactersNewWithFormat(NSString *format,NSDictionary *locale,
       switch(unicode){
 
        case 'h': case 'l': case 'q':
+        *p++ = (char)unicode;
         dwModify=unicode;
         break;
 
@@ -410,6 +439,8 @@ unichar *NSCharactersNewWithFormat(NSString *format,NSDictionary *locale,
       switch(unicode){
 
        case 'd': case 'i':{
+         *p++ = (char)unicode;
+         *p = '\0';
          long long value;
 
          if(dwModify=='h')
@@ -427,6 +458,8 @@ unichar *NSCharactersNewWithFormat(NSString *format,NSDictionary *locale,
         break;
 
        case 'o': {
+         *p++ = (char)unicode;
+         *p = '\0';
          unsigned long long value;
 
          if(dwModify=='h')
@@ -443,6 +476,8 @@ unichar *NSCharactersNewWithFormat(NSString *format,NSDictionary *locale,
         break;
 
        case 'x':{
+         *p++ = (char)unicode;
+         *p = '\0';
          unsigned long long value;
 
          if(dwModify=='h')
@@ -460,6 +495,8 @@ unichar *NSCharactersNewWithFormat(NSString *format,NSDictionary *locale,
         break;
 
        case 'X':{
+         *p++ = (char)unicode;
+         *p = '\0';
          unsigned long long value;
 
          if(dwModify=='h')
@@ -477,6 +514,8 @@ unichar *NSCharactersNewWithFormat(NSString *format,NSDictionary *locale,
         break;
 
        case 'u':{
+         *p++ = (char)unicode;
+         *p = '\0';
          unsigned long long value;
 
          if(dwModify=='h')
@@ -493,19 +532,27 @@ unichar *NSCharactersNewWithFormat(NSString *format,NSDictionary *locale,
         break;
 
        case 'c':
+        *p++ = (char)unicode;
+        *p = '\0';
         appendCStringChar(&result,va_arg(arguments,int),fillChar,leftAdj,fieldWidth);
         break;
 
        case 'C':
+        *p++ = (char)unicode;
+        *p = '\0';
         appendUnichar(&result,va_arg(arguments,int),fillChar,leftAdj,fieldWidth);
         break;
 
        case 's':
+        *p++ = (char)unicode;
+        *p = '\0';
         appendCString(&result,va_arg(arguments,char *),
                fillChar,leftAdj,fieldWidth);
         break;
 
        case 'f':{
+         *p++ = (char)unicode;
+         *p = '\0';
          double value;
 
          if(dwModify=='l')
@@ -513,11 +560,13 @@ unichar *NSCharactersNewWithFormat(NSString *format,NSDictionary *locale,
          else
           value=va_arg(arguments,double);
 
-         appendFloat(&result,value,fillChar,leftAdj,plusSign,spaceSign,fieldWidth,precision,NO,NO,locale);
+         appendFloat_generic(&result,value,fmtSpec,locale);
         }
         break;
 
        case 'e': case 'E':{
+         *p++ = (char)unicode;
+         *p = '\0';
          double value;
 
          if(dwModify=='l')
@@ -525,11 +574,13 @@ unichar *NSCharactersNewWithFormat(NSString *format,NSDictionary *locale,
          else
           value=va_arg(arguments,double);
 
-         appendFloat(&result,value,fillChar,leftAdj,plusSign,spaceSign,fieldWidth,precision,NO,NO,locale);
+         appendFloat_generic(&result,value,fmtSpec,locale);
         }
         break;
 
        case 'g': case 'G':{
+         *p++ = (char)unicode;
+         *p = '\0';
          double value;
 
          if(dwModify=='l')
@@ -537,24 +588,32 @@ unichar *NSCharactersNewWithFormat(NSString *format,NSDictionary *locale,
          else
           value=va_arg(arguments,double);
 
-         appendFloat(&result,value,fillChar,leftAdj,plusSign,spaceSign,fieldWidth,precision,YES,altForm,locale);
+         appendFloat_generic(&result,value,fmtSpec,locale);
         }
         break;
 
        case 'p':
+        *p++ = (char)unicode;
+        *p = '\0';
         appendHex(&result,(long)va_arg(arguments,void *),
           fillChar,leftAdj,fieldWidth,"0123456789ABCDEF");
         break;
 
        case 'n':
+        *p++ = (char)unicode;
+        *p = '\0';
         *va_arg(arguments,int *)=result.length;
         break;
 
        case '@':
+        *p++ = (char)unicode;
+        *p = '\0';
         appendObject(&result,va_arg(arguments,id),fillChar,leftAdj,fieldWidth);
         break;
 
        case '%':
+        *p++ = (char)unicode;
+        *p = '\0';
         appendCharacter(&result,'%');
         break;
       }

@@ -29,7 +29,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "Win32DeviceContextBitmap.h"
 
 static inline int float2int(float coord){
-   return lround(coord);
+   return floorf(coord);
 }
 
 static COLORREF RGBFromColor(KGColor *color){
@@ -448,6 +448,7 @@ void CGGraphicsSourceOver_rgba32_onto_bgrx32(unsigned char *sourceRGBA,unsigned 
    int destinationReadIndex=0;
    int destinationWriteIndex=0;
 
+   fraction *= 256.0/255.0;
    while(sourceIndex<sourceLength){
     unsigned srcr=sourceRGBA[sourceIndex++];
     unsigned srcg=sourceRGBA[sourceIndex++];
@@ -457,7 +458,7 @@ void CGGraphicsSourceOver_rgba32_onto_bgrx32(unsigned char *sourceRGBA,unsigned 
     unsigned dstb=resultBGRX[destinationReadIndex++];
     unsigned dstg=resultBGRX[destinationReadIndex++];
     unsigned dstr=resultBGRX[destinationReadIndex++];
-    unsigned dsta=255-srca;
+    unsigned dsta=256-srca;
 
     destinationReadIndex++;
 
@@ -1133,6 +1134,64 @@ static void extend(HDC dc,int i,int direction,float bandInterval,NSPoint startPo
 
 -(void)resetClip {
   SelectClipRgn(_dc,_clipRegion);
+}
+
+-(NSData *)captureBitmapInRect:(NSRect)rect ctm:(CGAffineTransform)ctm {
+   NSPoint           pt = CGPointApplyAffineTransform(rect.origin, ctm);
+   int               width = rect.size.width;
+   int               height = rect.size.height;
+   unsigned long     bmSize = 4*width*height;
+   void             *bmBits;
+   HBITMAP           bmHandle;
+   BITMAPFILEHEADER  bmFileHeader = {0, 0, 0, 0, 0};
+   BITMAPINFO        bmInfo;
+
+   if (transformIsFlipped(ctm))
+      pt.y -= rect.size.height;
+
+   HDC destDC = CreateCompatibleDC(_dc);
+   if (destDC == NULL)
+   {
+      NSLog(@"CreateCompatibleDC failed");
+      return nil;
+   }
+
+   bmInfo.bmiHeader.biSize=sizeof(BITMAPINFOHEADER);
+   bmInfo.bmiHeader.biWidth=width;
+   bmInfo.bmiHeader.biHeight=height;
+   bmInfo.bmiHeader.biPlanes=1;
+   bmInfo.bmiHeader.biBitCount=32;
+   bmInfo.bmiHeader.biCompression=BI_RGB;
+   bmInfo.bmiHeader.biSizeImage=0;
+   bmInfo.bmiHeader.biXPelsPerMeter=0;
+   bmInfo.bmiHeader.biYPelsPerMeter=0;
+   bmInfo.bmiHeader.biClrUsed=0;
+   bmInfo.bmiHeader.biClrImportant=0;
+
+   bmHandle = CreateDIBSection(_dc, &bmInfo, DIB_RGB_COLORS, &bmBits, NULL, 0);
+   if (bmHandle == NULL)
+   {
+      NSLog(@"CreateDIBSection failed");
+      return nil;
+   }
+
+   SelectObject(destDC, bmHandle);
+   BitBlt(destDC, 0, 0, width, height, _dc, pt.x, pt.y, SRCCOPY);
+   GdiFlush();
+
+   ((char *)&bmFileHeader)[0] = 'B';
+   ((char *)&bmFileHeader)[1] = 'M';
+   bmFileHeader.bfOffBits = sizeof(BITMAPFILEHEADER) + sizeof(BITMAPINFOHEADER);
+   bmFileHeader.bfSize = bmFileHeader.bfOffBits + bmSize;
+
+   NSMutableData *result = [NSMutableData dataWithBytes:&bmFileHeader length:sizeof(BITMAPFILEHEADER)];
+   [result appendBytes:&bmInfo.bmiHeader length:sizeof(BITMAPINFOHEADER)];
+   [result appendBytes:bmBits length:bmSize];
+   
+   DeleteObject(bmHandle);
+   DeleteDC(destDC);
+
+   return result;
 }
 
 @end

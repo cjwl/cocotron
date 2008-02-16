@@ -12,6 +12,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSCharacterSet.h>
 #import <Foundation/NSRaise.h>
+#import <Foundation/NSLocale.h>
 
 @implementation NSScanner_concrete
 
@@ -189,12 +190,38 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 // "...returns HUGE_VAL or -HUGE_VAL on overflow, 0.0 on underflow." hmm...
 -(BOOL)scanDouble:(double *)valuep {
+   NSString *seperatorString;
+   unichar   decimalSeperator;
+   if(_locale)
+      seperatorString = [_locale objectForKey:NSLocaleDecimalSeparator];
+   else
+      seperatorString = [[NSLocale systemLocale] objectForKey:NSLocaleDecimalSeparator];
+   decimalSeperator = ([seperatorString length] > 0 ) ? [seperatorString characterAtIndex:0] : '.';
+
+   int     i;
+   int     len = [_string length] - _location;
+   char    p[len + 1], *q;
+   unichar c;
+
+   for (i = 0; i < len; i++)
+   {
+      c  = [_string characterAtIndex:i + _location];    
+      if (c == decimalSeperator) c = '.';
+      p[i] = (char)c;
+   }
+   p[i] = '\0';
+
+   *valuep = strtod(p, &q);
+   _location += (q - p);
+   return (q > p);
+
+/*
     enum {
         STATE_SPACE,
         STATE_DIGITS_ONLY
     } state=STATE_SPACE;
     int sign=1;
-    double value=0;
+    double value=1.0;
     BOOL hasValue=NO;
 
     for(;_location<[_string length];_location++){
@@ -217,7 +244,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
                     state=STATE_DIGITS_ONLY;
                     hasValue=YES;
                 }
-                else if(unicode=='.') {
+                else if(unicode==decimalSeperator) {
                     double multiplier=1;
 
                     _location++;
@@ -240,7 +267,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
                 }
                 else if(!hasValue)
                     return NO;
-                else if(unicode=='.') {
+                else if(unicode==decimalSeperator) {
                     double multiplier=1;
 
                     _location++;
@@ -266,6 +293,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         *valuep=sign*value;
         return YES;
     }
+*/
 }
 
 -(BOOL)scanDecimal:(NSDecimal *)valuep {

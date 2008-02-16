@@ -20,6 +20,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSClipView.h>
 #import <AppKit/NSNibKeyedUnarchiver.h>
 
+#import <Foundation/NSLocale.h>
 #import <Foundation/NSNumberFormatter.h>
 
 @implementation NSCell
@@ -255,20 +256,46 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
     if([_objectValue isKindOfClass:[NSAttributedString class]])
      return [_objectValue string];
+    else if([_objectValue isKindOfClass:[NSString class]])
+     return _objectValue;
 
-    return [_objectValue description];
+    return [_objectValue descriptionWithLocale:[NSLocale currentLocale]];
 }
 
 -(int)intValue {
-   return [_objectValue intValue];
+   NSString *objString = ([_objectValue isKindOfClass:[NSAttributedString class]]) ? [_objectValue string] : (NSString *)_objectValue;
+   if([objString isKindOfClass:[NSString class]])
+   {
+      int i = 0;
+      [[NSScanner localizedScannerWithString:objString] scanInt:&i];
+      return i;
+   }
+   else
+      return [_objectValue intValue];
 }
 
 -(float)floatValue {
-   return [_objectValue floatValue];
+   NSString *objString = ([_objectValue isKindOfClass:[NSAttributedString class]]) ? [_objectValue string] : (NSString *)_objectValue;
+   if([objString isKindOfClass:[NSString class]])
+   {
+      float f = 0.0;
+      [[NSScanner localizedScannerWithString:objString] scanFloat:&f];
+      return f;
+   }
+   else
+      return [_objectValue floatValue];
 }
 
 -(double)doubleValue {
-    return [_objectValue doubleValue];
+   NSString *objString = ([_objectValue isKindOfClass:[NSAttributedString class]]) ? [_objectValue string] : (NSString *)_objectValue;
+   if([objString isKindOfClass:[NSString class]])
+   {
+      double d = 0.0;
+      [[NSScanner localizedScannerWithString:objString] scanDouble:&d];
+      return d;
+   }
+   else
+      return [_objectValue doubleValue];
 }
 
 -(NSAttributedString *)attributedStringValue {

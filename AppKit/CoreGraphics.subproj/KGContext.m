@@ -833,6 +833,11 @@ static inline KGGraphicsState *currentState(KGContext *self){
    NSInvalidAbstractInvocation();
 }
 
+-(NSData *)captureBitmapInRect:(NSRect)rect {
+   NSInvalidAbstractInvocation();
+   return nil;
+}
+
 -(NSString *)description {
    return [_stateStack description];
 }

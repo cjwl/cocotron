@@ -11,6 +11,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSScanner_concrete.h>
 #import <Foundation/NSUserDefaults.h>
 #import <Foundation/NSRaise.h>
+#import <Foundation/NSLocale.h>
 
 @implementation NSScanner
 
@@ -28,7 +29,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 +localizedScannerWithString:(NSString *)string {
     NSScanner *scanner = [self scannerWithString:string];
 
-    [scanner setLocale:[[NSUserDefaults standardUserDefaults] dictionaryRepresentation]];
+    [scanner setLocale:[NSLocale currentLocale]];
 
     return scanner;
 }

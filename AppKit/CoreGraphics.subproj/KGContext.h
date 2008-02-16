@@ -211,4 +211,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)copyBitsInRect:(NSRect)rect toPoint:(NSPoint)point gState:(int)gState;
 
+-(NSData *)captureBitmapInRect:(NSRect)rect;
+
 @end

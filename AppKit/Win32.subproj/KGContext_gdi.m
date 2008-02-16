@@ -142,4 +142,8 @@
    GdiFlush();
 }
 
+-(NSData *)captureBitmapInRect:(NSRect)rect {
+   return [[self renderingContext] captureBitmapInRect:rect ctm:[self currentState]->_ctm];
+}
+
 @end
