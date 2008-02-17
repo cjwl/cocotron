@@ -162,17 +162,26 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(BOOL)decodeBoolForKey:(NSString *)key {
    NSNumber *number=[self _numberForKey:key];
    
+   if(number==nil)
+    return NO;
+    
    return [number boolValue];
 }
 
 -(double)decodeDoubleForKey:(NSString *)key {
    NSNumber *number=[self _numberForKey:key];
    
+   if(number==nil)
+    return 0;
+
    return [number doubleValue];
 }
 
 -(float)decodeFloatForKey:(NSString *)key {
    NSNumber *number=[self _numberForKey:key];
+   
+   if(number==nil)
+    return 0;
    
    return [number floatValue];
 }
@@ -180,18 +189,27 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(int)decodeIntForKey:(NSString *)key {
    NSNumber *number=[self _numberForKey:key];
    
+   if(number==nil)
+    return 0;
+    
    return [number intValue];
 }
 
 -(int)decodeInt32ForKey:(NSString *)key {
    NSNumber *number=[self _numberForKey:key];
    
+   if(number==nil)
+    return 0;
+    
    return [number intValue];
 }
 
 -(int)decodeInt64ForKey:(NSString *)key {
    NSNumber *number=[self _numberForKey:key];
    
+   if(number==nil)
+    return 0;
+    
    return [number intValue];
 }
 

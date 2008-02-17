@@ -49,6 +49,8 @@ typedef enum {
    NSMiniControlSize
 } NSControlSize;
 
+typedef NSUInteger NSControlTint;
+
 @interface NSCell : NSObject <NSCopying,NSCoding> {
    int       _state;
    NSFont   *_font;

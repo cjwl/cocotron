@@ -168,13 +168,96 @@
    NSInterfaceDrawOutlineGrid(rect,NSCurrentGraphicsPort());
 }
 
--(void)drawProgressIndicatorBezel:(NSRect)rect clipRect:(NSRect)clipRect bezeled:(BOOL)bezeled {
-   if(bezeled)
+-(NSRect)drawProgressIndicatorBackground:(NSRect)rect clipRect:(NSRect)clipRect bezeled:(BOOL)bezeled {
+   if(bezeled){
     NSInterfaceDrawProgressIndicatorBezel(rect,clipRect);
+    return NSInsetRect(rect,2,2);
+   }
    else {
     [[[_view window] backgroundColor] set];
     NSRectFill(rect);
+    return rect;
    }
+}
+
+-(void)drawProgressIndicatorChunk:(NSRect)rect {
+   [[NSColor selectedControlColor] set];
+   NSRectFill(rect);
+}
+
+// rough estimates
+#define BLOCK_WIDTH	8.0
+#define BLOCK_SPACING	2.0
+
+-(void)drawProgressIndicatorIndeterminate:(NSRect)rect clipRect:(NSRect)clipRect bezeled:(BOOL)bezeled animation:(double)animation {
+   if(bezeled)
+    rect=[self drawProgressIndicatorBackground:rect clipRect:clipRect bezeled:bezeled];
+    
+
+    NSRect progressRect = rect;
+    NSRect blockRect = progressRect;
+    float percentage;
+    int numBlocks;
+        
+    
+    {
+      float origin=(BLOCK_WIDTH+BLOCK_SPACING)*animation;
+
+        // draw fractional block, if visible..
+        if (origin > BLOCK_SPACING) {
+            blockRect.size.width = origin - BLOCK_SPACING;
+            NSRectFill(blockRect);
+        }
+
+        // fixup origin
+        blockRect.origin.x += origin;
+
+    }
+
+    percentage = 1;
+    numBlocks = (percentage * progressRect.size.width)/(BLOCK_WIDTH + BLOCK_SPACING);
+    
+    if (numBlocks > 0)
+        numBlocks++;
+
+    while (numBlocks-->=0) {
+        blockRect.size.width = BLOCK_WIDTH;
+
+        if (NSMaxX(blockRect) > NSMaxX(progressRect))
+            blockRect.size.width -= (NSMaxX(blockRect) - NSMaxX(progressRect));
+
+        if (blockRect.size.width > 0) {
+            [[NSColor selectedControlColor] set];
+            NSRectFill(blockRect);
+            blockRect.origin.x += BLOCK_WIDTH + BLOCK_SPACING;
+        }
+    }
+}
+
+-(void)drawProgressIndicatorDeterminate:(NSRect)rect clipRect:(NSRect)clipRect bezeled:(BOOL)bezeled value:(double)value {
+   if(bezeled)
+    rect=[self drawProgressIndicatorBackground:rect clipRect:clipRect bezeled:bezeled];
+
+    NSRect progressRect = rect;
+    NSRect blockRect = progressRect;
+    int numBlocks;
+                
+    numBlocks = (value * progressRect.size.width)/(BLOCK_WIDTH + BLOCK_SPACING);
+    
+    if (numBlocks > 0)
+        numBlocks++;
+
+    while (numBlocks-->=0) {
+        blockRect.size.width = BLOCK_WIDTH;
+
+        if (NSMaxX(blockRect) > NSMaxX(progressRect))
+            blockRect.size.width -= (NSMaxX(blockRect) - NSMaxX(progressRect));
+
+        if (blockRect.size.width > 0) {
+            [self drawProgressIndicatorChunk:blockRect];
+            blockRect.origin.x += BLOCK_WIDTH + BLOCK_SPACING;
+        }
+    }
 }
 
 -(void)drawScrollerButtonInRect:(NSRect)rect enabled:(BOOL)enabled pressed:(BOOL)pressed vertical:(BOOL)vertical upOrLeft:(BOOL)upOrLeft {

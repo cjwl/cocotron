@@ -275,7 +275,7 @@ static void expandPointCapacity(KGMutablePath *self,unsigned delta){
     KGMutablePathEllipseToBezier(cp,x,y,xradius,yradius);
     
     [self moveToPoint:cp[0] withTransform:matrix];
-    for(i=0;i<12;i+=3)
+    for(i=1;i<13;i+=3)
      [self addCurveToControlPoint:cp[i] controlPoint:cp[i+1] endPoint:cp[i+2] withTransform:matrix];
 }
 

@@ -288,6 +288,19 @@ static inline RECT transformToRECT(CGAffineTransform matrix,NSRect rect) {
     [super drawOutlineViewBranchInRect:rect expanded:expanded];
 }
 
+-(NSRect)drawProgressIndicatorBackground:(NSRect)rect clipRect:(NSRect)clipRect bezeled:(BOOL)bezeled {
+   if(bezeled){
+    if([self drawPartId:PP_BAR stateId:0 classList:L"PROGRESS" inRect:rect])
+     return NSInsetRect(rect,3,3);
+   }
+
+   return [super drawProgressIndicatorBackground:rect clipRect:clipRect bezeled:bezeled];
+}
+
+-(void)drawProgressIndicatorChunk:(NSRect)rect {
+   [self drawPartId:PP_CHUNK stateId:0 classList:L"PROGRESS" inRect:rect];
+}
+
 -(void)drawScrollerButtonInRect:(NSRect)rect enabled:(BOOL)enabled pressed:(BOOL)pressed vertical:(BOOL)vertical upOrLeft:(BOOL)upOrLeft {
    int stateId;
    
