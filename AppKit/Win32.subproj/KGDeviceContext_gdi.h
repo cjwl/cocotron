@@ -19,6 +19,7 @@
 -(void)beginPage;
 -(void)endPage;
 
+-(unsigned)bitsPerPixel;
 -(NSSize)pixelsPerInch;
 -(NSSize)pixelSize;
 -(NSSize)pointSize;

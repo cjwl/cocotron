@@ -7,54 +7,65 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
 // Original - Christopher Lloyd <cjwl@objc.net>
-#import <AppKit/Win32DeviceContextBitmap.h>
+#import <AppKit/KGDeviceContext_gdiDIBSection.h>
 #import <AppKit/Win32Display.h>
+#import <AppKit/KGContext_gdi.h>
 
-@implementation Win32DeviceContextBitmap
+@implementation KGDeviceContext_gdiDIBSection
 
--initWithSize:(NSSize)size deviceContext:(KGDeviceContext_gdi *)compatible {
+-initWithSize:(NSSize)size deviceContext:(KGDeviceContext_gdi *)compatible bitsPerPixel:(int)bpp {
    [self initWithDC:CreateCompatibleDC([compatible dc])];
     _compatible=[compatible retain];
-#if 1
-   _bitmap=CreateCompatibleBitmap([compatible dc],size.width,size.height);
-#else
-   {
-    void      *bits;
+
     struct {
-     BITMAPINFOHEADER bitmapInfo;
-     RGBQUAD          colors[256+3];
+     BITMAPV4HEADER bitmapInfo;
+     RGBQUAD        colors[256+3];
     } dibInfo;
     HBITMAP    probe=CreateCompatibleBitmap([compatible dc],1,1);
 
     memset(&dibInfo,0,sizeof(dibInfo));
-    dibInfo.bitmapInfo.biSize=sizeof(BITMAPINFOHEADER);
+    dibInfo.bitmapInfo.bV4Size=sizeof(BITMAPV4HEADER);
 
-    if(!GetDIBits([compatible dc],probe,0,1,NULL,(BITMAPINFOHEADER *)&dibInfo,DIB_RGB_COLORS))
+    if(!GetDIBits([compatible dc],probe,0,1,NULL,(BITMAPINFO *)&dibInfo,DIB_RGB_COLORS))
      NSLog(@"GetDIBits failed");
-    if(!GetDIBits([compatible dc],probe,0,1,NULL,(BITMAPINFOHEADER *)&dibInfo,DIB_RGB_COLORS))
+    if(!GetDIBits([compatible dc],probe,0,1,NULL,(BITMAPINFO *)&dibInfo,DIB_RGB_COLORS))
      NSLog(@"GetDIBits failed");
+    
+    if((_bitsPerPixel=bpp)==0)
+     _bitsPerPixel=dibInfo.bitmapInfo.bV4BitCount;
 
     DeleteObject(probe);
 
-    dibInfo. bitmapInfo.biWidth=size.width;
-    dibInfo. bitmapInfo.biHeight=size.height;
+    dibInfo.bitmapInfo.bV4Width=size.width;
+    dibInfo.bitmapInfo.bV4Height=size.height;
+    dibInfo.bitmapInfo.bV4BitCount=32;
+    dibInfo.bitmapInfo.bV4V4Compression=BI_RGB;
 
-    _bitmap=CreateDIBSection([compatible dc],& dibInfo,DIB_RGB_COLORS,&bits,NULL,0);
-   }
-#endif
+    _bitmap=CreateDIBSection([compatible dc],(BITMAPINFO *)&dibInfo,DIB_RGB_COLORS,&_bits,NULL,0);
+
+
    SelectObject(_dc,_bitmap);
    return self;
 }
 
--initWithSize:(NSSize)size {
-   return [self initWithSize:size deviceContext:[[Win32Display currentDisplay] deviceContextOnPrimaryScreen]];
+-initWithSize:(NSSize)size deviceContext:(KGDeviceContext_gdi *)compatible {
+   return [self initWithSize:size deviceContext:compatible bitsPerPixel:0];
 }
+
 
 -(void)dealloc {
    [_compatible release];
    DeleteObject(_bitmap);
    DeleteDC(_dc);
    [super dealloc];
+}
+
+-(void *)bitmapBytes {
+   return _bits;
+}
+
+-(int)bitsPerPixel {
+   return _bitsPerPixel;
 }
 
 -(Win32DeviceContextWindow *)windowDeviceContext {

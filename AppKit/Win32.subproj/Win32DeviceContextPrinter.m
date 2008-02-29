@@ -64,13 +64,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return NSMakeSize(dpix,dpiy);
 }
 
--(NSSize)pixelSize {
-   float pixelsWide=GetDeviceCaps(_dc,HORZRES);
-   float pixelsHigh=GetDeviceCaps(_dc,VERTRES);
-   
-   return NSMakeSize(pixelsWide,pixelsHigh);
-}
-
 -(NSRect)paperRect {
    NSSize dpi=[self pixelsPerInch];
    float width=GetDeviceCaps(_dc,PHYSICALWIDTH);

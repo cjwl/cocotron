@@ -4,7 +4,6 @@
 #import <AppKit/NSImage.h>
 #import <AppKit/NSColor.h>
 #import "KGContext_gdi.h"
-#import "KGRenderingContext_gdi.h"
 #undef _WIN32_WINNT
 #define _WIN32_WINNT 0x0501
 #import <uxtheme.h>
@@ -109,8 +108,8 @@ static BOOL drawThemeBackground(HANDLE theme,HDC dc,int partId,int stateId,const
 
 @implementation NSGraphicsStyle_uxtheme
 
--(HANDLE)themeForClassList:(LPCWSTR)classList renderingContext:(KGRenderingContext_gdi *)renderingContext  {
-   HWND windowHandle=[renderingContext windowHandle];
+-(HANDLE)themeForClassList:(LPCWSTR)classList context:(KGContext_gdi *)context  {
+   HWND windowHandle=[context windowHandle];
    
    if(windowHandle==NULL)
     return NULL;
@@ -138,19 +137,16 @@ static inline RECT transformToRECT(CGAffineTransform matrix,NSRect rect) {
 }
 
 -(BOOL)sizeOfPartId:(int)partId stateId:(int)stateId classList:(LPCWSTR)classList size:(NSSize *)result {
-   KGContext              *context=[[NSGraphicsContext currentContext] graphicsPort];
-   KGRenderingContext_gdi *renderingContext;
+   KGContext_gdi          *context_gdi=(KGContext_gdi *)[[NSGraphicsContext currentContext] graphicsPort];
    HANDLE                  theme;
 
-   if(![context isKindOfClass:[KGContext_gdi class]])
+   if(![context_gdi isKindOfClass:[KGContext_gdi class]])
     return NO;
     
-   renderingContext=[(KGContext_gdi *)context renderingContext];
-
-   if((theme=[self themeForClassList:classList renderingContext:renderingContext])!=NULL){
+   if((theme=[self themeForClassList:classList context:context_gdi])!=NULL){
     SIZE size;
      
-    if(getThemePartSize(theme,[renderingContext dc],partId,stateId,NULL,TS_DRAW,&size)){
+    if(getThemePartSize(theme,[context_gdi dc],partId,stateId,NULL,TS_DRAW,&size)){
      result->width=size.cx;
      result->height=size.cy;
      // should invert translate here
@@ -162,24 +158,20 @@ static inline RECT transformToRECT(CGAffineTransform matrix,NSRect rect) {
 }
 
 -(BOOL)drawPartId:(int)partId stateId:(int)stateId classList:(LPCWSTR)classList inRect:(NSRect)rect {
-   KGContext              *context=[[NSGraphicsContext currentContext] graphicsPort];
-   KGRenderingContext_gdi *renderingContext;
+   KGContext_gdi          *context_gdi=(KGContext_gdi *)[[NSGraphicsContext currentContext] graphicsPort];
    HANDLE                  theme;
    
-   if(![context isKindOfClass:[KGContext_gdi class]])
+   if(![context_gdi isKindOfClass:[KGContext_gdi class]])
     return NO;
-    
-   renderingContext=[(KGContext_gdi *)context renderingContext];
-   
-   if((theme=[self themeForClassList:classList renderingContext:renderingContext])!=NULL){
+       
+   if((theme=[self themeForClassList:classList context:context_gdi])!=NULL){
     CGAffineTransform matrix;
     RECT tlbr;
 
-// [context ctm] not working ?
-    [context getCTM:&matrix];
+    matrix=[context_gdi userSpaceToDeviceSpaceTransform];
     tlbr=transformToRECT(matrix,rect);
 
-    drawThemeBackground(theme,[renderingContext dc],partId,stateId,&tlbr,NULL);
+    drawThemeBackground(theme,[context_gdi dc],partId,stateId,&tlbr,NULL);
        
     closeThemeData(theme);
     return YES;

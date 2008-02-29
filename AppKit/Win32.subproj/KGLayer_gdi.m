@@ -1,27 +1,22 @@
 #import "KGLayer_gdi.h"
-#import "KGRenderingContext_gdi.h"
+#import <AppKit/KGContext_gdi.h>
 
 @implementation KGLayer_gdi
 
--initRelativeToRenderingContext:(KGRenderingContext_gdi *)otherContext size:(NSSize)size unused:(NSDictionary *)unused {
+-initRelativeToContext:(KGContext *)context size:(NSSize)size unused:(NSDictionary *)unused {
    [super initWithSize:size unused:unused];
-   _renderingContext=[[KGRenderingContext_gdi renderingContextWithSize:size renderingContext:otherContext] retain];
+   _context=[[KGContext_gdi alloc] initWithSize:size context:context];
    return self;
 }
 
 -(void)dealloc {
    [_unused release];
-   [_renderingContext release];
+   [_context release];
    [super dealloc];
 }
 
--(KGRenderingContext_gdi *)renderingContext {
-   return _renderingContext;
-}
-
 -(KGContext *)cgContext {
-   return [_renderingContext cgContextWithSize:_size];
+   return _context;
 }
-
 
 @end

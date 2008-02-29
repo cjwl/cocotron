@@ -31,14 +31,21 @@
    // do nothing
 }
 
+-(unsigned)bitsPerPixel {
+   [self doesNotRecognizeSelector:_cmd];
+   return 0;
+}
+
 -(NSSize)pixelsPerInch {
    [self doesNotRecognizeSelector:_cmd];
    return NSMakeSize(0,0);
 }
 
 -(NSSize)pixelSize {
-   [self doesNotRecognizeSelector:_cmd];
-   return NSMakeSize(0,0);
+   float pixelsWide=GetDeviceCaps(_dc,HORZRES);
+   float pixelsHigh=GetDeviceCaps(_dc,VERTRES);
+   
+   return NSMakeSize(pixelsWide,pixelsHigh);
 }
 
 -(NSSize)pointSize {

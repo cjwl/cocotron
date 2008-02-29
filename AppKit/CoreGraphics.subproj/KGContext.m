@@ -15,17 +15,39 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "KGMutablePath.h"
 #import "KGLayer.h"
 #import "KGPDFPage.h"
+#import "KGClipPhase.h"
 #import <Foundation/NSRaise.h>
 
 @implementation KGContext
 
+static NSMutableArray *possibleContextClasses=nil;
+
++(void)initialize {
+   if(possibleContextClasses==nil){
+    possibleContextClasses=[NSMutableArray new];
+    
+    [possibleContextClasses addObject:@"KGContext_gdi"];
+    
+    NSArray *allPaths=[[NSBundle bundleForClass:self] pathsForResourcesOfType:@"cgContext" inDirectory:nil];
+    int      i,count=[allPaths count];
+    
+    for(i=0;i<count;i++){
+     NSString *path=[allPaths objectAtIndex:i];
+     NSBundle *check=[NSBundle bundleWithPath:path];
+     Class     cls=[check principalClass];
+     
+     if(cls!=Nil)
+      [possibleContextClasses addObject:NSStringFromClass([check principalClass])];
+    }
+   }
+}
+
 +(NSArray *)allContextClasses {
-   NSString       *possible[]={ @"KGContext_gdi", nil };
    NSMutableArray *result=[NSMutableArray array];
-   int             i;
+   int             i,count=[possibleContextClasses count];
    
-   for(i=0;possible[i]!=nil;i++){
-    Class check=NSClassFromString(possible[i]);
+   for(i=0;i<count;i++){
+    Class check=NSClassFromString([possibleContextClasses objectAtIndex:i]);
     
     if(check!=Nil && [check isAvailable])
      [result addObject:check];
@@ -41,8 +63,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    while(--count>=0){
     Class check=[array objectAtIndex:count];
     
-    if([check canInitWithWindow:window])
-     return [[check alloc] initWithSize:size window:window];
+    if([check canInitWithWindow:window]){
+     KGContext *result=[[check alloc] initWithSize:size window:window];
+     
+     if(result!=nil)
+      return result;
+    }
    }
    
    return nil;
@@ -55,23 +81,27 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    while(--count>=0){
     Class check=[array objectAtIndex:count];
     
-    if([check canInitWithContext:context])
-     return [[check alloc] initWithSize:size context:context];
+    if([check canInitWithContext:context]){
+     KGContext *result=[[check alloc] initWithSize:size context:context];
+
+     if(result!=nil)
+      return result;
+    }
    }
    
    return nil;
 }
 
 +(BOOL)isAvailable {
-   return YES;
+   return NO;
 }
 
 +(BOOL)canInitWithWindow:(CGWindow *)window {
-   return YES;
+   return NO;
 }
 
 +(BOOL)canInitWithContext:(KGContext *)context {
-   return YES;
+   return NO;
 }
 
 -initWithSize:(NSSize)size window:(CGWindow *)window {
@@ -85,6 +115,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -initWithGraphicsState:(KGGraphicsState *)state {
+   _userToDeviceTransform=[state userSpaceToDeviceSpaceTransform];
    _layerStack=[NSMutableArray new];
    _stateStack=[NSMutableArray new];
    [_stateStack addObject:state];
@@ -133,15 +164,14 @@ static inline KGGraphicsState *currentState(KGContext *self){
 }
 
 -(BOOL)pathContainsPoint:(NSPoint)point drawingMode:(int)pathMode {
-   CGAffineTransform ctm=[currentState(self) ctm];
+   CGAffineTransform ctm=[currentState(self) userSpaceToDeviceSpaceTransform];
 
 // FIX  evenOdd
    return [_path containsPoint:point evenOdd:NO withTransform:&ctm];
 }
 
 -(void)beginPath {
-   [_path release];
-   _path=[[KGMutablePath alloc] init];
+   [_path reset];
 }
 
 -(void)closePath {
@@ -149,31 +179,31 @@ static inline KGGraphicsState *currentState(KGContext *self){
 }
 
 -(void)moveToPoint:(float)x:(float)y {
-   CGAffineTransform ctm=[currentState(self) ctm];
+   CGAffineTransform ctm=[currentState(self) userSpaceToDeviceSpaceTransform];
    
    [_path moveToPoint:NSMakePoint(x,y) withTransform:&ctm];
 }
 
 -(void)addLineToPoint:(float)x:(float)y {
-   CGAffineTransform ctm=[currentState(self) ctm];
+   CGAffineTransform ctm=[currentState(self) userSpaceToDeviceSpaceTransform];
 
    [_path addLineToPoint:NSMakePoint(x,y) withTransform:&ctm];
 }
 
 -(void)addCurveToPoint:(float)cx1:(float)cy1:(float)cx2:(float)cy2:(float)x:(float)y {
-   CGAffineTransform ctm=[currentState(self) ctm];
+   CGAffineTransform ctm=[currentState(self) userSpaceToDeviceSpaceTransform];
 
    [_path addCurveToControlPoint:NSMakePoint(cx1,cy1) controlPoint:NSMakePoint(cx2,cy2) endPoint:NSMakePoint(x,y) withTransform:&ctm];
 }
 
 -(void)addQuadCurveToPoint:(float)cx1:(float)cy1:(float)x:(float)y {
-   CGAffineTransform ctm=[currentState(self) ctm];
+   CGAffineTransform ctm=[currentState(self) userSpaceToDeviceSpaceTransform];
 
    [_path addCurveToControlPoint:NSMakePoint(cx1,cy1) endPoint:NSMakePoint(x,y) withTransform:&ctm];
 }
 
 -(void)addLinesWithPoints:(NSPoint *)points count:(unsigned)count {
-   CGAffineTransform ctm=[currentState(self) ctm];
+   CGAffineTransform ctm=[currentState(self) userSpaceToDeviceSpaceTransform];
    
    [_path addLinesWithPoints:points count:count withTransform:&ctm];
 }
@@ -182,32 +212,32 @@ static inline KGGraphicsState *currentState(KGContext *self){
    [self addRects:&rect count:1];
 }
 
--(void)addRects:(NSRect *)rect count:(unsigned)count {
-   CGAffineTransform ctm=[currentState(self) ctm];
+-(void)addRects:(const NSRect *)rect count:(unsigned)count {
+   CGAffineTransform ctm=[currentState(self) userSpaceToDeviceSpaceTransform];
    
    [_path addRects:rect count:count withTransform:&ctm];
 }
 
 -(void)addArc:(float)x:(float)y:(float)radius:(float)startRadian:(float)endRadian:(int)clockwise {
-   CGAffineTransform ctm=[currentState(self) ctm];
+   CGAffineTransform ctm=[currentState(self) userSpaceToDeviceSpaceTransform];
 
    [_path addArcAtPoint:NSMakePoint(x,y) radius:radius startAngle:startRadian endAngle:endRadian clockwise:clockwise withTransform:&ctm];
 }
 
 -(void)addArcToPoint:(float)x1:(float)y1:(float)x2:(float)y2:(float)radius {
-   CGAffineTransform ctm=[currentState(self) ctm];
+   CGAffineTransform ctm=[currentState(self) userSpaceToDeviceSpaceTransform];
 
    [_path addArcToPoint:NSMakePoint(x1,y1) point:NSMakePoint(x2,y2) radius:radius withTransform:&ctm];
 }
 
 -(void)addEllipseInRect:(NSRect)rect {
-   CGAffineTransform ctm=[currentState(self) ctm];
+   CGAffineTransform ctm=[currentState(self) userSpaceToDeviceSpaceTransform];
 
    [_path addEllipseInRect:rect withTransform:&ctm];
 }
 
 -(void)addPath:(KGPath *)path {
-   CGAffineTransform ctm=[currentState(self) ctm];
+   CGAffineTransform ctm=[currentState(self) userSpaceToDeviceSpaceTransform];
 
    [_path addPath:path withTransform:&ctm];
 }
@@ -216,10 +246,13 @@ static inline KGGraphicsState *currentState(KGContext *self){
    NSUnimplementedMethod();
 }
 
+-(KGGraphicsState *)currentState {
+   return currentState(self);
+}
+
 -(void)saveGState {
    KGGraphicsState *current=currentState(self),*next;
 
-   [current save];
    next=[current copy];
    [_stateStack addObject:next];
    [next release];
@@ -227,19 +260,45 @@ static inline KGGraphicsState *currentState(KGContext *self){
 
 -(void)restoreGState {
    [_stateStack removeLastObject];
-   [currentState(self) restore];
+
+   KGFont *font=[[self currentState] font];
+   [self deviceSelectFontWithName:[[font name] cString] pointSize:[font pointSize]];
+
+   NSArray *phases=[[self currentState] clipPhases];
+   int      i,count=[phases count];
+   
+   [self deviceClipReset];
+   
+   for(i=0;i<count;i++){
+    KGClipPhase *phase=[phases objectAtIndex:i];
+    
+    switch([phase phaseType]){
+    
+     case KGClipPhaseNonZeroPath:{
+       KGPath *path=[phase object];
+       [self deviceClipToNonZeroPath:path];
+      }
+      break;
+      
+     case KGClipPhaseEOPath:{
+       KGPath *path=[phase object];
+       [self deviceClipToEvenOddPath:path];
+      }
+      break;
+      
+     case KGClipPhaseMask:
+      break;
+    }
+    
+   }
 }
 
 -(CGAffineTransform)userSpaceToDeviceSpaceTransform {
    return [currentState(self) userSpaceToDeviceSpaceTransform];
 }
 
--(void)getCTM:(CGAffineTransform *)matrix {
-   *matrix=currentState(self)->_ctm;
-}
-
 -(CGAffineTransform)ctm {
-   return [currentState(self) ctm];
+   return [currentState(self) userSpaceTransform];
 }
 
 -(NSRect)clipBoundingBox {
@@ -283,13 +342,13 @@ static inline KGGraphicsState *currentState(KGContext *self){
 }
 
 -(void)setCTM:(CGAffineTransform)matrix {
-   CGAffineTransform initial;
-
-// we need to device transform
-   initial=[[_stateStack objectAtIndex:0] ctm];
-   matrix=CGAffineTransformConcat(initial,matrix);
+   CGAffineTransform deviceTransform=_userToDeviceTransform;
    
-   [currentState(self) setCTM:matrix];
+   deviceTransform=CGAffineTransformConcat(deviceTransform,matrix);
+   
+   [currentState(self) setDeviceSpaceCTM:deviceTransform];
+
+   [currentState(self) setUserSpaceCTM:matrix];
 }
 
 -(void)concatCTM:(CGAffineTransform)transform {
@@ -311,8 +370,9 @@ static inline KGGraphicsState *currentState(KGContext *self){
 -(void)clipToPath {
    if([_path numberOfOperators]==0)
     return;
-    
-   [currentState(self) clipToPath:_path];
+   
+   [currentState(self) addClipToPath:_path];
+   [self deviceClipToNonZeroPath:_path];
    [_path reset];
 }
 
@@ -320,12 +380,14 @@ static inline KGGraphicsState *currentState(KGContext *self){
    if([_path numberOfOperators]==0)
     return;
 
-   [currentState(self) evenOddClipToPath:_path];
+   [currentState(self) addEvenOddClipToPath:_path];
+   [self deviceClipToEvenOddPath:_path];
    [_path reset];
 }
 
 -(void)clipToMask:(KGImage *)image inRect:(NSRect)rect {
-   [currentState(self) clipToMask:image inRect:rect];
+   [currentState(self) addClipToMask:image inRect:rect];
+   [self deviceClipToMask:image inRect:rect];
 }
 
 -(void)clipToRect:(NSRect)rect {
@@ -333,8 +395,11 @@ static inline KGGraphicsState *currentState(KGContext *self){
 }
 
 -(void)clipToRects:(const NSRect *)rects count:(unsigned)count {
-   [currentState(self) clipToRects:rects count:count];
+   CGAffineTransform ctm=[currentState(self) userSpaceToDeviceSpaceTransform];
+   
    [_path reset];
+   [_path addRects:rects count:count withTransform:&ctm];
+   [self clipToPath];
 }
 
 -(KGColor *)strokeColor {
@@ -535,17 +600,18 @@ static inline KGGraphicsState *currentState(KGContext *self){
 
 -(void)setFont:(KGFont *)font {
    [currentState(self) setFont:font];
+   [self deviceSelectFontWithName:[[font name] cString] pointSize:[font pointSize] ];
 }
 
 -(void)setFontSize:(float)size {
    NSString *name=[[currentState(self) font] name];
-   KGFont   *font=[[KGFont alloc] initWithName:name size:size];
+   KGFont   *font=[[[KGFont alloc] initWithName:name size:size] autorelease];
    
    [self setFont:font];
 }
 
 -(void)selectFontWithName:(const char *)name size:(float)size encoding:(int)encoding {
-   KGFont *font=[[KGFont alloc] initWithName:[NSString stringWithCString:name] size:size];
+   KGFont *font=[[[KGFont alloc] initWithName:[NSString stringWithCString:name] size:size] autorelease];
    
    [self setFont:font];
 }
@@ -656,23 +722,23 @@ static inline KGGraphicsState *currentState(KGContext *self){
 }
 
 -(void)strokePath {
-   [self drawPath:KGPathStroke];
+   [self drawPath:kCGPathStroke];
 }
 
 -(void)fillPath {
-   [self drawPath:KGPathFill];
+   [self drawPath:kCGPathFill];
 }
 
 -(void)evenOddFillPath {
-   [self drawPath:KGPathEOFill];
+   [self drawPath:kCGPathEOFill];
 }
 
 -(void)fillAndStrokePath {
-   [self drawPath:KGPathFillStroke];
+   [self drawPath:kCGPathFillStroke];
 }
 
 -(void)evenOddFillAndStrokePath {
-   [self drawPath:KGPathEOFillStroke];
+   [self drawPath:kCGPathEOFillStroke];
 }
 
 -(void)clearRect:(NSRect)rect {
@@ -792,7 +858,8 @@ static inline KGGraphicsState *currentState(KGContext *self){
 }
 
 -(void)resetClip {
-   [currentState(self) resetClip];
+   [[self currentState] removeAllClipPhases];
+   [self deviceClipReset];
 }
 
 -(void)setWordSpacing:(float)spacing {
@@ -840,6 +907,30 @@ static inline KGGraphicsState *currentState(KGContext *self){
 
 -(NSString *)description {
    return [_stateStack description];
+}
+
+-(void)deviceClipReset {
+   NSInvalidAbstractInvocation();
+}
+
+-(void)deviceClipToNonZeroPath:(KGPath *)path {
+   NSInvalidAbstractInvocation();
+}
+
+-(void)deviceClipToEvenOddPath:(KGPath *)path {
+   NSInvalidAbstractInvocation();
+}
+
+-(void)deviceClipToMask:(KGImage *)mask inRect:(NSRect)rect {
+   NSInvalidAbstractInvocation();
+}
+
+-(void)deviceSelectFontWithName:(const char *)name pointSize:(float)pointSize antialias:(BOOL)antialias {
+   NSInvalidAbstractInvocation();
+}
+
+-(void)deviceSelectFontWithName:(const char *)name pointSize:(float)pointSize {
+   [self deviceSelectFontWithName:name pointSize:pointSize antialias:NO];
 }
 
 @end

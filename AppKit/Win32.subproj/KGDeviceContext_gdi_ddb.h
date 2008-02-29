@@ -9,10 +9,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/KGDeviceContext_gdi.h>
 #import <Foundation/NSGeometry.h>
 
-@interface Win32DeviceContextPrinter : KGDeviceContext_gdi
+@interface KGDeviceContext_gdi_ddb : KGDeviceContext_gdi {
+   KGDeviceContext_gdi *_compatible;
+   HBITMAP              _bitmap;
+}
 
--(NSSize)pageSize;
-
--(void)abortDocument;
+-initWithSize:(NSSize)size deviceContext:(KGDeviceContext_gdi *)compatible;
+-initWithSize:(NSSize)size;
 
 @end

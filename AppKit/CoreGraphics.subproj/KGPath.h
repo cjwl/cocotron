@@ -10,14 +10,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSGeometry.h>
 #import <AppKit/CGAffineTransform.h>
 #import <AppKit/CGPath.h>
-
-enum {
-   KGPathFill,
-   KGPathEOFill,
-   KGPathStroke,
-   KGPathFillStroke,
-   KGPathEOFillStroke
-};
+#import <AppKit/CGContext.h>
 
 @interface KGPath : NSObject <NSCopying,NSMutableCopying> {
    unsigned       _numberOfOperators;

@@ -6,18 +6,34 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
-#import <AppKit/KGDeviceContext_gdi.h>
-#import <Foundation/NSGeometry.h>
+// Original - Christopher Lloyd <cjwl@objc.net>
+#import <AppKit/KGDeviceContext_gdi_ddb.h>
+#import <AppKit/Win32Display.h>
+#import <AppKit/KGContext_gdi.h>
 
-@class KGRenderingContext_gdi;
+@implementation KGDeviceContext_gdi_ddb
 
-@interface Win32DeviceContextBitmap : KGDeviceContext_gdi {
-   KGDeviceContext_gdi *_compatible;
-   HBITMAP              _bitmap;
-   KGRenderingContext_gdi  *_renderingContext;
+-initWithSize:(NSSize)size deviceContext:(KGDeviceContext_gdi *)compatible {
+   [self initWithDC:CreateCompatibleDC([compatible dc])];
+   _compatible=[compatible retain];
+   _bitmap=CreateCompatibleBitmap([compatible dc],size.width,size.height);
+   SelectObject(_dc,_bitmap);
+   return self;
 }
 
--initWithSize:(NSSize)size deviceContext:(KGDeviceContext_gdi *)compatible;
--initWithSize:(NSSize)size;
+-initWithSize:(NSSize)size {
+   return [self initWithSize:size deviceContext:[[[Win32Display currentDisplay] contextOnPrimaryScreen] deviceContext]];
+}
+
+-(void)dealloc {
+   [_compatible release];
+   DeleteObject(_bitmap);
+   DeleteDC(_dc);
+   [super dealloc];
+}
+
+-(Win32DeviceContextWindow *)windowDeviceContext {
+   return [_compatible windowDeviceContext];
+}
 
 @end

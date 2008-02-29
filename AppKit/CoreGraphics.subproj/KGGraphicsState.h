@@ -17,9 +17,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @interface KGGraphicsState : NSObject <NSCopying> {
 @public
-   CGAffineTransform   _ctm;
+   CGAffineTransform   _deviceSpaceTransform;
+   CGAffineTransform   _userSpaceTransform;
    CGAffineTransform   _textTransform;
    
+   NSMutableArray     *_clipPhases;
    KGColor            *_strokeColor;
    KGColor            *_fillColor;
    KGFont             *_font;
@@ -28,14 +30,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    int                 _textDrawingMode;
    BOOL                _shouldSmoothFonts;
    float               _lineWidth;
-   int                 _lineCap;
-   int                 _lineJoin;
+   CGLineCap           _lineCap;
+   CGLineJoin          _lineJoin;
    float               _miterLimit;
    float               _dashPhase;
    float               _dashLengthsCount;
    float              *_dashLengths;
    CGColorRenderingIntent _renderingIntent;
-   int                 _blendMode;
+   CGBlendMode          _blendMode;
    float               _flatness;
    CGInterpolationQuality _interpolationQuality;
    NSSize              _shadowOffset;
@@ -47,14 +49,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    float               _textLeading;
 }
 
--initWithTransform:(CGAffineTransform)deviceTransform;
+-initWithDeviceTransform:(CGAffineTransform)deviceTransform;
 -init;
 
--(void)save;
--(void)restore;
-
 -(CGAffineTransform)userSpaceToDeviceSpaceTransform;
--(CGAffineTransform)ctm;
+-(CGAffineTransform)userSpaceTransform;
 -(NSRect)clipBoundingBox;
 -(CGAffineTransform)textMatrix;
 -(CGInterpolationQuality)interpolationQuality;
@@ -66,13 +65,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(NSRect)convertRectToDeviceSpace:(NSRect)rect;
 -(NSRect)convertRectToUserSpace:(NSRect)rect;
 
--(void)setCTM:(CGAffineTransform)transform;
+-(void)setDeviceSpaceCTM:(CGAffineTransform)transform;
+-(void)setUserSpaceCTM:(CGAffineTransform)transform;
 -(void)concatCTM:(CGAffineTransform)transform;
 
--(void)clipToPath:(KGPath *)path;
--(void)evenOddClipToPath:(KGPath *)path;
--(void)clipToMask:(KGImage *)image inRect:(NSRect)rect;
--(void)clipToRects:(const NSRect *)rects count:(unsigned)count;
+-(NSArray *)clipPhases;
+-(void)removeAllClipPhases;
+-(void)addClipToPath:(KGPath *)path;
+-(void)addEvenOddClipToPath:(KGPath *)path;
+-(void)addClipToMask:(KGImage *)image inRect:(NSRect)rect;
 
 -(KGColor *)strokeColor;
 -(KGColor *)fillColor;
@@ -99,7 +100,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)setLineDashPhase:(float)phase lengths:(const float *)lengths count:(unsigned)count;
 
 -(void)setRenderingIntent:(CGColorRenderingIntent)intent;
--(void)setBlendMode:(int)mode;
+-(void)setBlendMode:(CGBlendMode)mode;
 
 -(void)setFlatness:(float)flatness;
 -(void)setInterpolationQuality:(CGInterpolationQuality)quality;
@@ -109,9 +110,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)setShouldAntialias:(BOOL)flag;
 
-// temporary
-
--(void)resetClip;
+// temporary?
 
 -(void)setWordSpacing:(float)spacing;
 -(void)setTextLeading:(float)leading;

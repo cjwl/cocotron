@@ -18,12 +18,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    
    _numberOfOperators=numberOfOperators;
    _operators=NSZoneMalloc(NULL,(_numberOfOperators==0)?1:_numberOfOperators);
-   for(i=0;i<numberOfOperators;i++)
+   for(i=0;i<_numberOfOperators;i++)
     _operators[i]=operators[i];
 
    _numberOfPoints=numberOfPoints;
    _points=NSZoneMalloc(NULL,(_numberOfPoints==0?1:_numberOfPoints)*sizeof(NSPoint));
-   for(i=0;i<numberOfPoints;i++)
+   for(i=0;i<_numberOfPoints;i++)
     _points[i]=points[i];
     
    return self;

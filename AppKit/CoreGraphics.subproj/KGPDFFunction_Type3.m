@@ -127,4 +127,20 @@ static void evaluate(void *info,const float *input,float *output) {
    return [context encodeIndirectPDFObject:result];
 }
 
+-(NSString *)description {
+   NSMutableString *result=[NSMutableString string];
+   [result appendFormat:@"<%@ %p:",isa,self];
+   int i;
+   
+   for(i=0;i<_boundsCount;i++)
+    [result appendFormat:@"bounds[%d]=%f,",i,_bounds[i]];
+   for(i=0;i<_encodeCount;i++)
+    [result appendFormat:@"encode[%d]=%f,",i,_encode[i]];
+   for(i=0;i<_functionCount;i++)
+    [result appendFormat:@"function[%d]=%@",i,_functions[i]];
+   [result appendFormat:@">"];
+   
+   return result;
+}
+
 @end

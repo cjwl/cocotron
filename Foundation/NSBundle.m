@@ -438,7 +438,7 @@ static NSArray *_sharedLookInDirectoriesArray = nil;
 	for(i=0; i<[allFiles count]; i++)
 	{
 		id filename=[fullPath stringByAppendingPathComponent:[allFiles objectAtIndex:i]];
-		if([[filename pathExtension] isEqualToString:type])
+		if(type==nil || [[filename pathExtension] isEqualToString:type])
 			[ret addObject:filename];
 	}
    return ret;

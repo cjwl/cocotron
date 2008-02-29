@@ -31,7 +31,7 @@ void KGMutablePathEllipseToBezier(NSPoint *cp,float x,float y,float xradius,floa
 -(void)addLinesWithPoints:(NSPoint *)points count:(unsigned)count withTransform:(CGAffineTransform *)matrix;
 
 -(void)addRect:(NSRect)rect withTransform:(CGAffineTransform *)matrix;
--(void)addRects:(NSRect *)rects count:(unsigned)count withTransform:(CGAffineTransform *)matrix;
+-(void)addRects:(const NSRect *)rects count:(unsigned)count withTransform:(CGAffineTransform *)matrix;
 
 -(void)addArcAtPoint:(NSPoint)point radius:(float)radius startAngle:(float)startRadian endAngle:(float)endRadian clockwise:(BOOL)clockwise withTransform:(CGAffineTransform *)matrix;
 -(void)addArcToPoint:(NSPoint)point1 point:(NSPoint)point2 radius:(float)radius withTransform:(CGAffineTransform *)matrix;

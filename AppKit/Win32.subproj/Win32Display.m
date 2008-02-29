@@ -11,12 +11,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/Win32Event.h>
 #import <AppKit/Win32Window.h>
 #import <AppKit/Win32Cursor.h>
-#import <AppKit/KGDeviceContext_gdi.h>
+#import <AppKit/KGContext_gdi.h>
 #import <AppKit/Win32DeviceContextWindow.h>
-#import "KGRenderingContext_gdi.h"
 #import <AppKit/KGGraphicsState.h>
 #import <AppKit/Win32EventInputSource.h>
-#import <AppKit/KGContext.h>
 
 #import <AppKit/NSScreen.h>
 #import <AppKit/NSEvent_CoreGraphics.h>
@@ -88,7 +86,7 @@ static DWORD WINAPI runWaitCursor(LPVOID arg){
 -init {
    [super init];
 
-   _renderingContextOnPrimaryScreen=[[KGRenderingContext_gdi renderingContextWithWindowHWND:NULL] retain];
+   _contextOnPrimaryScreen=[[KGContext_gdi alloc] initWithHWND:NULL];
    _eventInputSource=[Win32EventInputSource new];
    [[NSRunLoop currentRunLoop] addInputSource:_eventInputSource forMode:NSDefaultRunLoopMode];
    [[NSRunLoop currentRunLoop] addInputSource:_eventInputSource forMode:NSModalPanelRunLoopMode];
@@ -105,12 +103,8 @@ static DWORD WINAPI runWaitCursor(LPVOID arg){
    return self;
 }
 
--(KGRenderingContext_gdi *)renderingContextOnPrimaryScreen {
-   return _renderingContextOnPrimaryScreen;
-}
-
--(KGDeviceContext_gdi *)deviceContextOnPrimaryScreen {
-   return (KGDeviceContext_gdi *)[_renderingContextOnPrimaryScreen deviceContext];
+-(KGContext_gdi *)contextOnPrimaryScreen {
+   return _contextOnPrimaryScreen;
 }
 
 BOOL CALLBACK monitorEnumerator(HMONITOR hMonitor,HDC hdcMonitor,LPRECT rect,LPARAM dwData) {
@@ -272,7 +266,7 @@ BOOL CALLBACK monitorEnumerator(HMONITOR hMonitor,HDC hdcMonitor,LPRECT rect,LPA
 
    *pointSize=fontData.elfLogFont.lfHeight;
 
-   *pointSize=(fontData.elfLogFont.lfHeight*72.0)/GetDeviceCaps([_renderingContextOnPrimaryScreen dc],LOGPIXELSY);
+   *pointSize=(fontData.elfLogFont.lfHeight*72.0)/GetDeviceCaps([_contextOnPrimaryScreen dc],LOGPIXELSY);
 NSLog(@"name=%@,size=%f",[NSString stringWithCString:fontData. elfLogFont.lfFaceName],*pointSize);
 
    return [NSString stringWithCString:fontData. elfLogFont.lfFaceName];
@@ -794,7 +788,7 @@ static int CALLBACK buildFamily(const LOGFONTA *lofFont_old,
 
 -(NSSet *)allFontFamilyNames {
    NSMutableSet *result=[NSMutableSet set];
-   HDC           dc=[_renderingContextOnPrimaryScreen dc];
+   HDC           dc=[_contextOnPrimaryScreen dc];
    LOGFONT       logFont;
 
    logFont.lfCharSet=DEFAULT_CHARSET;
@@ -849,7 +843,7 @@ static int CALLBACK buildTypeface(const LOGFONTA *lofFont_old,
 
 -(NSArray *)fontTypefacesForFamilyName:(NSString *)name {
    NSMutableDictionary *result=[NSMutableDictionary dictionary];
-   HDC             dc=[_renderingContextOnPrimaryScreen dc];
+   HDC             dc=[_contextOnPrimaryScreen dc];
    LOGFONT         logFont;
 
    logFont.lfCharSet=DEFAULT_CHARSET;
@@ -916,13 +910,11 @@ static int CALLBACK buildTypeface(const LOGFONTA *lofFont_old,
    if(check==0)
     return NSCancelButton;
    else {
-    KGRenderingContext_gdi *renderingContext=(KGRenderingContext_gdi *)[KGRenderingContext_gdi renderingContextWithPrinterDC:printProperties.hDC];
-    KGDeviceContext_gdi        *deviceContext=[renderingContext deviceContext];
-    KGContext              *context=[renderingContext createGraphicsContext];
-    
+    KGContext_gdi *context=[[[KGContext_gdi alloc] initWithPrinterDC:printProperties.hDC] autorelease];
+        
     [attributes setObject:context forKey:@"_KGContext"];
     
-    [attributes setObject:[NSValue valueWithSize:[deviceContext pointSize]] forKey:NSPrintPaperSize];
+    [attributes setObject:[NSValue valueWithSize:[context pointSize]] forKey:NSPrintPaperSize];
    }
      
    return NSOKButton;

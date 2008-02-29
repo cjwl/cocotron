@@ -25,8 +25,17 @@ typedef enum {
    kCGEncodingFontSpecific
 } CGTextEncoding;
 
-typedef int CGLineCap;
-typedef int CGLineJoin;
+typedef enum {
+   kCGLineCapButt,
+   kCGLineCapRound,
+   kCGLineCapSquare,
+} CGLineCap;
+
+typedef enum {
+   kCGLineJoinMiter,
+   kCGLineJoinRound,
+   kCGLineJoinBevel,
+} CGLineJoin;
 
 typedef enum {
    kCGPathFill,

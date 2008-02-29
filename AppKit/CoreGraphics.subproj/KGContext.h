@@ -15,10 +15,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @class KGColor,KGColorSpace,KGShading,KGImage,KGGraphicsState,KGMutablePath,KGPath,KGPattern,KGLayer,KGPDFPage,NSMutableArray,CGWindow;
 
 @interface KGContext : NSObject {
-   NSMutableArray *_layerStack;
-   NSMutableArray *_stateStack;
-   KGMutablePath  *_path;
-   BOOL            _allowsAntialiasing;
+   CGAffineTransform _userToDeviceTransform;
+   NSMutableArray   *_layerStack;
+   NSMutableArray   *_stateStack;
+   KGMutablePath    *_path;
+   BOOL              _allowsAntialiasing;
 }
 
 +(KGContext *)createContextWithSize:(NSSize)size window:(CGWindow *)window;
@@ -59,11 +60,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)addPath:(KGPath *)path;
 -(void)replacePathWithStrokedPath;
 
+-(KGGraphicsState *)currentState;
 -(void)saveGState;
 -(void)restoreGState;
 
 -(CGAffineTransform)userSpaceToDeviceSpaceTransform;
--(void)getCTM:(CGAffineTransform *)matrix;
 -(CGAffineTransform)ctm;
 -(NSRect)clipBoundingBox;
 -(CGAffineTransform)textMatrix;
@@ -81,6 +82,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)translateCTM:(float)translatex:(float)translatey;
 -(void)scaleCTM:(float)scalex:(float)scaley;
 -(void)rotateCTM:(float)radians;
+
+-(void)deviceClipToNonZeroPath:(KGPath *)path;
+-(void)deviceClipToEvenOddPath:(KGPath *)path;
 
 -(void)clipToPath;
 -(void)evenOddClipToPath;
@@ -212,5 +216,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)copyBitsInRect:(NSRect)rect toPoint:(NSPoint)point gState:(int)gState;
 
 -(NSData *)captureBitmapInRect:(NSRect)rect;
+
+-(void)deviceClipReset;
+-(void)deviceClipToNonZeroPath:(KGPath *)path;
+-(void)deviceClipToEvenOddPath:(KGPath *)path;
+-(void)deviceClipToMask:(KGImage *)mask inRect:(NSRect)rect;
+-(void)deviceSelectFontWithName:(const char *)name pointSize:(float)pointSize antialias:(BOOL)antialias;
+-(void)deviceSelectFontWithName:(const char *)name pointSize:(float)pointSize;
 
 @end

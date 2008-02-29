@@ -14,24 +14,30 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "KGColorSpace.h"
 #import "KGMutablePath.h"
 #import "KGFont.h"
+#import "KGClipPhase.h"
 
 @implementation KGGraphicsState
 
--initWithTransform:(CGAffineTransform)deviceTransform {
-   _ctm=deviceTransform;
+-initWithDeviceTransform:(CGAffineTransform)deviceTransform {
+   _deviceSpaceTransform=deviceTransform;
+   _userSpaceTransform=CGAffineTransformIdentity;
    _textTransform=CGAffineTransformIdentity;
+   _clipPhases=[NSMutableArray new];
    _lineWidth=1.0;
    _strokeColor=[[KGColor alloc] init];
    _fillColor=[[KGColor alloc] init];
+   _blendMode=kCGBlendModeNormal;
+   _interpolationQuality=kCGInterpolationDefault;
    _shouldAntialias=NO;
    return self;
 }
 
 -init {
-   return [self initWithTransform:CGAffineTransformIdentity];
+   return [self initWithDeviceTransform:CGAffineTransformIdentity];
 }
 
 -(void)dealloc {
+   [_clipPhases release];
    [_strokeColor release];
    [_fillColor release];
    [_font release];
@@ -44,6 +50,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -copyWithZone:(NSZone *)zone {
    KGGraphicsState *copy=NSCopyObject(self,0,zone);
 
+   copy->_clipPhases=[[NSMutableArray alloc] initWithArray:_clipPhases];
    copy->_strokeColor=[_strokeColor copyWithZone:zone];
    copy->_fillColor=[_fillColor copyWithZone:zone];
    copy->_font=[_font retain];
@@ -60,19 +67,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return copy;
 }
 
--(void)save {
-}
-
--(void)restore {
-}
-
 -(CGAffineTransform)userSpaceToDeviceSpaceTransform {
-   NSUnimplementedMethod();
-   return CGAffineTransformIdentity;
+   return _deviceSpaceTransform;
 }
 
--(CGAffineTransform)ctm {
-   return _ctm;
+-(CGAffineTransform)userSpaceTransform {
+   return _userSpaceTransform;
 }
 
 -(NSRect)clipBoundingBox {
@@ -94,19 +94,19 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(NSPoint)convertPointToDeviceSpace:(NSPoint)point {
-   return CGPointApplyAffineTransform(point,_ctm);
+   return CGPointApplyAffineTransform(point,_deviceSpaceTransform);
 }
 
 -(NSPoint)convertPointToUserSpace:(NSPoint)point {
-   return CGPointApplyAffineTransform(point,CGAffineTransformInvert(_ctm));
+   return CGPointApplyAffineTransform(point,CGAffineTransformInvert(_deviceSpaceTransform));
 }
 
 -(NSSize)convertSizeToDeviceSpace:(NSSize)size {
-   return CGSizeApplyAffineTransform(size,_ctm);
+   return CGSizeApplyAffineTransform(size,_deviceSpaceTransform);
 }
 
 -(NSSize)convertSizeToUserSpace:(NSSize)size {
-   return CGSizeApplyAffineTransform(size,CGAffineTransformInvert(_ctm));
+   return CGSizeApplyAffineTransform(size,CGAffineTransformInvert(_deviceSpaceTransform));
 }
 
 -(NSRect)convertRectToDeviceSpace:(NSRect)rect {
@@ -119,28 +119,46 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return NSMakeRect(0,0,0,0);
 }
 
--(void)setCTM:(CGAffineTransform)transform {
-   _ctm=transform;
+-(void)setDeviceSpaceCTM:(CGAffineTransform)transform {
+   _deviceSpaceTransform=transform;
+}
+
+-(void)setUserSpaceCTM:(CGAffineTransform)transform {
+   _userSpaceTransform=transform;
 }
 
 -(void)concatCTM:(CGAffineTransform)transform {
-   _ctm=CGAffineTransformConcat(_ctm,transform);
+   _deviceSpaceTransform=CGAffineTransformConcat(_deviceSpaceTransform,transform);
+   _userSpaceTransform=CGAffineTransformConcat(_userSpaceTransform,transform);
 }
 
--(void)clipToPath:(KGPath *)path {
-   NSInvalidAbstractInvocation();
+-(NSArray *)clipPhases {
+   return _clipPhases;
 }
 
--(void)evenOddClipToPath:(KGPath *)path {
-   NSInvalidAbstractInvocation();
+-(void)removeAllClipPhases {
+   [_clipPhases removeAllObjects];
 }
 
--(void)clipToMask:(KGImage *)image inRect:(NSRect)rect {
-   NSInvalidAbstractInvocation();
+-(void)addClipToPath:(KGPath *)path {
+   KGClipPhase *phase=[[KGClipPhase alloc] initWithNonZeroPath:path];
+   
+   [_clipPhases addObject:phase];
+   [phase release];
 }
 
--(void)clipToRects:(const NSRect *)rects count:(unsigned)count {
-   NSInvalidAbstractInvocation();
+-(void)addEvenOddClipToPath:(KGPath *)path {
+   KGClipPhase *phase=[[KGClipPhase alloc] initWithEOPath:path];
+   
+   [_clipPhases addObject:phase];
+   [phase release];
+}
+
+-(void)addClipToMask:(KGImage *)image inRect:(NSRect)rect {
+   KGClipPhase *phase=[[KGClipPhase alloc] initWithMask:image rect:rect transform:_deviceSpaceTransform];
+   
+   [_clipPhases addObject:phase];
+   [phase release];
 }
 
 -(KGColor *)strokeColor {
@@ -242,7 +260,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    _renderingIntent=intent;
 }
 
--(void)setBlendMode:(int)mode {
+-(void)setBlendMode:(CGBlendMode)mode {
    _blendMode=mode;
 }
 
@@ -278,9 +296,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 // temporary
-
--(void)resetClip {
-}
 
 -(void)setWordSpacing:(float)spacing {
    _wordSpacing=spacing;

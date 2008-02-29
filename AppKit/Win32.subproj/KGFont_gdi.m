@@ -1,5 +1,5 @@
 #import "KGFont_gdi.h"
-#import "KGRenderingContext_gdi.h"
+#import "KGContext_gdi.h"
 #import "Win32Display.h"
 #import "Win32Font.h"
 
@@ -32,11 +32,11 @@
 }
 
 -(HDC)deviceContextSelfSelected {
-   KGRenderingContext_gdi *rc=[[Win32Display currentDisplay] renderingContextOnPrimaryScreen];
+   KGContext_gdi *context=[[Win32Display currentDisplay] contextOnPrimaryScreen];
    
-   [rc selectFontWithName:[_name cString] pointSize:[self pointSize]];
+   [context deviceSelectFontWithName:[_name cString] pointSize:[self pointSize]];
 
-   return [rc dc];
+   return [context dc];
 }
 
 
@@ -104,7 +104,7 @@ static inline CGGlyphMetrics *glyphInfoForGlyph(CGGlyphMetricsSet *infoSet,NSGly
 /* P. 931 "Windows Graphics Programming" by Feng Yuan, 1st Ed.
    A font with height of negative otmEMSquare will have precise metrics  */
    
-   HFONT   fontHandle=[[[[Win32Display currentDisplay] renderingContextOnPrimaryScreen] currentFont] fontHandle];
+   HFONT   fontHandle=[[[Win32Display currentDisplay] contextOnPrimaryScreen] fontHandle];
    LOGFONT logFont;
      
    GetObject(fontHandle,sizeof(logFont),&logFont);
@@ -314,7 +314,7 @@ static inline CGGlyphMetrics *glyphInfoForGlyph(CGGlyphMetricsSet *infoSet,NSGly
 /* P. 931 "Windows Graphics Programming" by Feng Yuan, 1st Ed.
    A font with height of negative otmEMSquare will have precise metrics  */
    
-   HFONT   fontHandle=[[[[Win32Display currentDisplay] renderingContextOnPrimaryScreen] currentFont] fontHandle];
+   HFONT   fontHandle=[[[Win32Display currentDisplay] contextOnPrimaryScreen] fontHandle];
    LOGFONT logFont;
      
    GetObject(fontHandle,sizeof(logFont),&logFont);

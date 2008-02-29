@@ -214,7 +214,7 @@ static void expandPointCapacity(KGMutablePath *self,unsigned delta){
    [self closeSubpath];
 }
 
--(void)addRects:(NSRect *)rects count:(unsigned)count withTransform:(CGAffineTransform *)matrix {
+-(void)addRects:(const NSRect *)rects count:(unsigned)count withTransform:(CGAffineTransform *)matrix {
    int i;
    
    for(i=0;i<count;i++)
