@@ -103,10 +103,6 @@ NSString *NSPlatformClassName=@"NSPlatform_win32";
    return [NSTask_win32 class];
 }
 
--(Class)fileHandleClass {
-   return [NSFileHandle_win32 class];
-}
-
 -(Class)pipeClass {
    return [NSPipe_win32 class];
 }

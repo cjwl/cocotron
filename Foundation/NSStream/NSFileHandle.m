@@ -12,6 +12,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSArray.h>
 #import <Foundation/NSPlatform.h>
 #import <Foundation/NSRaise.h>
+#import "NSFileHandle_stream.h"
 
 NSString *NSFileHandleConnectionAcceptedNotification = @"NSFileHandleConnectionAcceptedNotification";
 NSString *NSFileHandleDataAvailableNotification = @"NSFileHandleDataAvailableNotification";
@@ -25,44 +26,59 @@ NSString *NSFileHandleNotificationMonitorModes = @"NSFileHandleNotificationMonit
 
 NSString *NSFileHandleOperationException = @"NSFileHandleOperationException";
 
+@interface NSFileHandle(ImplementedInPlatform)
++(Class)concreteSubclass;
+@end
+
 @implementation NSFileHandle
 
++allocWithZone:(NSZone *)zone {
+   if(self==[NSFileHandle class])
+    return NSAllocateObject([self concreteSubclass],0,NULL);
+
+   return NSAllocateObject(self,0,zone);
+}
+
 +fileHandleForReadingAtPath:(NSString *)path {
-   return [[[NSPlatform currentPlatform] fileHandleClass] fileHandleForReadingAtPath:path];
+   return [[self concreteSubclass] fileHandleForReadingAtPath:path];
 }
 
 +fileHandleForWritingAtPath:(NSString *)path {
-   return [[[NSPlatform currentPlatform] fileHandleClass] fileHandleForWritingAtPath:path];
+   return [[self concreteSubclass] fileHandleForWritingAtPath:path];
 }
 
 +fileHandleForUpdatingAtPath:(NSString *)path {
-   return [[[NSPlatform currentPlatform] fileHandleClass] fileHandleForUpdatingAtPath:path];
+   return [[self concreteSubclass] fileHandleForUpdatingAtPath:path];
 }
 
 +fileHandleWithNullDevice {
-   return [[[NSPlatform currentPlatform] fileHandleClass] fileHandleWithNullDevice];
+   return [[self concreteSubclass] fileHandleWithNullDevice];
 }
 
 +fileHandleWithStandardInput {
-   return [[[NSPlatform currentPlatform] fileHandleClass] fileHandleWithStandardInput];
+   return [[self concreteSubclass] fileHandleWithStandardInput];
 }
 
 +fileHandleWithStandardOutput {
-   return [[[NSPlatform currentPlatform] fileHandleClass] fileHandleWithStandardOutput];
+   return [[self concreteSubclass] fileHandleWithStandardOutput];
 }
 
 +fileHandleWithStandardError {
-   return [[[NSPlatform currentPlatform] fileHandleClass] fileHandleWithStandardError];
+   return [[self concreteSubclass] fileHandleWithStandardError];
 }
 
 -initWithFileDescriptor:(int)descriptor {
-   NSInvalidAbstractInvocation();
-   return nil;
+    return [self initWithFileDescriptor:descriptor closeOnDealloc:YES];
 }
 
 -initWithFileDescriptor:(int)descriptor closeOnDealloc:(BOOL)closeOnDealloc {
-   NSInvalidAbstractInvocation();
-   return nil;
+   NSSocket *socket=[[[NSSocket alloc] initWithFileDescriptor:descriptor] autorelease];
+   
+   [self dealloc];
+   if(socket==nil)
+    return nil;
+
+   return [[NSFileHandle_stream alloc] initWithSocket:socket closeOnDealloc:closeOnDealloc];
 }
 
 -(int)fileDescriptor {

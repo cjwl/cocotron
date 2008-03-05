@@ -49,10 +49,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return [NSPipe_posix class];
 }
 
--(Class)fileHandleClass {
-   return [NSFileHandle_posix class];
-}
-
 -(Class)lockClass {
    return [NSLock_posix class];
 }

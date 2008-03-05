@@ -1522,6 +1522,16 @@
 		FE7478750BAC5EB600829F4F /* NSValueTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = FE7478710BAC5EB600829F4F /* NSValueTransformer.m */; };
 		FE7478760BAC5EB600829F4F /* NSValueTransformer.h in Headers */ = {isa = PBXBuildFile; fileRef = FE7478700BAC5EB600829F4F /* NSValueTransformer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE7478770BAC5EB600829F4F /* NSValueTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = FE7478710BAC5EB600829F4F /* NSValueTransformer.m */; };
+		FE7FE5C10D7CF08B006CCA28 /* NSFileHandle_stream.h in Headers */ = {isa = PBXBuildFile; fileRef = FE7FE5BF0D7CF08B006CCA28 /* NSFileHandle_stream.h */; };
+		FE7FE5C20D7CF08B006CCA28 /* NSFileHandle_stream.m in Sources */ = {isa = PBXBuildFile; fileRef = FE7FE5C00D7CF08B006CCA28 /* NSFileHandle_stream.m */; };
+		FE7FE5C30D7CF08B006CCA28 /* NSFileHandle_stream.h in Headers */ = {isa = PBXBuildFile; fileRef = FE7FE5BF0D7CF08B006CCA28 /* NSFileHandle_stream.h */; };
+		FE7FE5C40D7CF08B006CCA28 /* NSFileHandle_stream.m in Sources */ = {isa = PBXBuildFile; fileRef = FE7FE5C00D7CF08B006CCA28 /* NSFileHandle_stream.m */; };
+		FE7FE5C50D7CF08B006CCA28 /* NSFileHandle_stream.h in Headers */ = {isa = PBXBuildFile; fileRef = FE7FE5BF0D7CF08B006CCA28 /* NSFileHandle_stream.h */; };
+		FE7FE5C60D7CF08B006CCA28 /* NSFileHandle_stream.m in Sources */ = {isa = PBXBuildFile; fileRef = FE7FE5C00D7CF08B006CCA28 /* NSFileHandle_stream.m */; };
+		FE7FE5C70D7CF08B006CCA28 /* NSFileHandle_stream.h in Headers */ = {isa = PBXBuildFile; fileRef = FE7FE5BF0D7CF08B006CCA28 /* NSFileHandle_stream.h */; };
+		FE7FE5C80D7CF08B006CCA28 /* NSFileHandle_stream.m in Sources */ = {isa = PBXBuildFile; fileRef = FE7FE5C00D7CF08B006CCA28 /* NSFileHandle_stream.m */; };
+		FE7FE5C90D7CF08B006CCA28 /* NSFileHandle_stream.h in Headers */ = {isa = PBXBuildFile; fileRef = FE7FE5BF0D7CF08B006CCA28 /* NSFileHandle_stream.h */; };
+		FE7FE5CA0D7CF08B006CCA28 /* NSFileHandle_stream.m in Sources */ = {isa = PBXBuildFile; fileRef = FE7FE5C00D7CF08B006CCA28 /* NSFileHandle_stream.m */; };
 		FE9D95440C0387D5006DB214 /* NSValueTransformer_IsNil.h in Headers */ = {isa = PBXBuildFile; fileRef = FE9D95340C0387D5006DB214 /* NSValueTransformer_IsNil.h */; };
 		FE9D95450C0387D5006DB214 /* NSValueTransformer_IsNil.m in Sources */ = {isa = PBXBuildFile; fileRef = FE9D95350C0387D5006DB214 /* NSValueTransformer_IsNil.m */; };
 		FE9D95460C0387D5006DB214 /* NSValueTransformer_IsNotNil.h in Headers */ = {isa = PBXBuildFile; fileRef = FE9D95360C0387D5006DB214 /* NSValueTransformer_IsNotNil.h */; };
@@ -3671,6 +3681,8 @@
 		FE7478420BAC5A8700829F4F /* NSSortDescriptor.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSSortDescriptor.m; sourceTree = "<group>"; };
 		FE7478700BAC5EB600829F4F /* NSValueTransformer.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSValueTransformer.h; sourceTree = "<group>"; };
 		FE7478710BAC5EB600829F4F /* NSValueTransformer.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSValueTransformer.m; sourceTree = "<group>"; };
+		FE7FE5BF0D7CF08B006CCA28 /* NSFileHandle_stream.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSFileHandle_stream.h; sourceTree = "<group>"; };
+		FE7FE5C00D7CF08B006CCA28 /* NSFileHandle_stream.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSFileHandle_stream.m; sourceTree = "<group>"; };
 		FE9D95340C0387D5006DB214 /* NSValueTransformer_IsNil.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSValueTransformer_IsNil.h; sourceTree = "<group>"; };
 		FE9D95350C0387D5006DB214 /* NSValueTransformer_IsNil.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSValueTransformer_IsNil.m; sourceTree = "<group>"; };
 		FE9D95360C0387D5006DB214 /* NSValueTransformer_IsNotNil.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSValueTransformer_IsNotNil.h; sourceTree = "<group>"; };
@@ -3910,8 +3922,6 @@
 				FEB9D4AC0B4434C800C239BB /* NSError.h */,
 				FEB9D4AD0B4434C800C239BB /* NSError.m */,
 				6E2803310974790A00EC542B /* NSException */,
-				6E2805FF09747D5800EC542B /* NSFileHandle.h */,
-				6E28060009747D5800EC542B /* NSFileHandle.m */,
 				6E28060109747D5800EC542B /* NSFileManager.h */,
 				6E28060209747D5800EC542B /* NSFileManager.m */,
 				6E28060309747D5800EC542B /* NSFormatter.h */,
@@ -4316,6 +4326,10 @@
 		6E28033D0974797500EC542B /* NSStream */ = {
 			isa = PBXGroup;
 			children = (
+				FE7FE5BF0D7CF08B006CCA28 /* NSFileHandle_stream.h */,
+				FE7FE5C00D7CF08B006CCA28 /* NSFileHandle_stream.m */,
+				6E2805FF09747D5800EC542B /* NSFileHandle.h */,
+				6E28060009747D5800EC542B /* NSFileHandle.m */,
 				6E28048409747BED00EC542B /* NSInputStream.h */,
 				6E28048509747BED00EC542B /* NSInputStream.m */,
 				FEB9D30C0B4374F700C239BB /* NSInputStream_data.h */,
@@ -5274,6 +5288,7 @@
 				FEDF9FFB0CF6123F00F21F87 /* NSMutableURLRequest.h in Headers */,
 				FEDFA10C0CF7D41F00F21F87 /* NSCachedURLResponse.h in Headers */,
 				FEA9D0900D16C55E00123D51 /* NSPropertyListReader_binary1.h in Headers */,
+				FE7FE5C50D7CF08B006CCA28 /* NSFileHandle_stream.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5571,6 +5586,7 @@
 				FEDF9FF90CF6123F00F21F87 /* NSMutableURLRequest.h in Headers */,
 				FEDFA10A0CF7D41F00F21F87 /* NSCachedURLResponse.h in Headers */,
 				FEA9D08E0D16C55E00123D51 /* NSPropertyListReader_binary1.h in Headers */,
+				FE7FE5C30D7CF08B006CCA28 /* NSFileHandle_stream.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5872,6 +5888,7 @@
 				FEDFA1060CF7D41F00F21F87 /* NSCachedURLResponse.h in Headers */,
 				FEA9D08A0D16C55E00123D51 /* NSPropertyListReader_binary1.h in Headers */,
 				FE9E1A310D5C0676004AE7BA /* NSLocale+windows.h in Headers */,
+				FE7FE5C10D7CF08B006CCA28 /* NSFileHandle_stream.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6169,6 +6186,7 @@
 				FEDF9FF10CF6123F00F21F87 /* NSMutableURLRequest.h in Headers */,
 				FEDFA1020CF7D41F00F21F87 /* NSCachedURLResponse.h in Headers */,
 				FEA9D0920D16C55E00123D51 /* NSPropertyListReader_binary1.h in Headers */,
+				FE7FE5C70D7CF08B006CCA28 /* NSFileHandle_stream.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6466,6 +6484,7 @@
 				FEDF9FF30CF6123F00F21F87 /* NSMutableURLRequest.h in Headers */,
 				FEDFA1040CF7D41F00F21F87 /* NSCachedURLResponse.h in Headers */,
 				FEA9D0940D16C55E00123D51 /* NSPropertyListReader_binary1.h in Headers */,
+				FE7FE5C90D7CF08B006CCA28 /* NSFileHandle_stream.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7034,6 +7053,7 @@
 				FEDF9FFC0CF6123F00F21F87 /* NSMutableURLRequest.m in Sources */,
 				FEDFA10D0CF7D41F00F21F87 /* NSCachedURLResponse.m in Sources */,
 				FEA9D0910D16C55E00123D51 /* NSPropertyListReader_binary1.m in Sources */,
+				FE7FE5C60D7CF08B006CCA28 /* NSFileHandle_stream.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7325,6 +7345,7 @@
 				FEDF9FFA0CF6123F00F21F87 /* NSMutableURLRequest.m in Sources */,
 				FEDFA10B0CF7D41F00F21F87 /* NSCachedURLResponse.m in Sources */,
 				FEA9D08F0D16C55E00123D51 /* NSPropertyListReader_binary1.m in Sources */,
+				FE7FE5C40D7CF08B006CCA28 /* NSFileHandle_stream.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7620,6 +7641,7 @@
 				FEDFA1070CF7D41F00F21F87 /* NSCachedURLResponse.m in Sources */,
 				FEA9D08B0D16C55E00123D51 /* NSPropertyListReader_binary1.m in Sources */,
 				FE9E1A320D5C0676004AE7BA /* NSLocale+windows.m in Sources */,
+				FE7FE5C20D7CF08B006CCA28 /* NSFileHandle_stream.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7913,6 +7935,7 @@
 				FEDF9FF20CF6123F00F21F87 /* NSMutableURLRequest.m in Sources */,
 				FEDFA1030CF7D41F00F21F87 /* NSCachedURLResponse.m in Sources */,
 				FEA9D0930D16C55E00123D51 /* NSPropertyListReader_binary1.m in Sources */,
+				FE7FE5C80D7CF08B006CCA28 /* NSFileHandle_stream.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8206,6 +8229,7 @@
 				FEDF9FF40CF6123F00F21F87 /* NSMutableURLRequest.m in Sources */,
 				FEDFA1050CF7D41F00F21F87 /* NSCachedURLResponse.m in Sources */,
 				FEA9D0950D16C55E00123D51 /* NSPropertyListReader_binary1.m in Sources */,
+				FE7FE5CA0D7CF08B006CCA28 /* NSFileHandle_stream.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

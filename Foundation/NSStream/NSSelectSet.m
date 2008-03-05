@@ -84,7 +84,7 @@ NSString *NSSelectSetOutputNotification=@"NSSelectSetOutputNotification";
    return [_exceptionSet containsObject:object];
 }
 
--(void)waitInBackground {
+-(void)waitInBackgroundInMode:(NSString *)mode {
    NSInvalidAbstractInvocation();
 }
 

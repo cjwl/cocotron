@@ -34,7 +34,7 @@ FOUNDATION_EXPORT NSString *NSSelectSetOutputNotification;
 -(BOOL)containsObjectForWrite:object;
 -(BOOL)containsObjectForException:object;
 
--(void)waitInBackground;
+-(void)waitInBackgroundInMode:(NSString *)mode;
 
 -(NSError *)waitForSelectWithOutputSet:(NSSelectSet **)outputSet beforeDate:(NSDate *)beforeDate;
 

@@ -15,6 +15,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSDate.h>
 #import <Foundation/NSArray.h>
 #import <Foundation/NSNotificationCenter.h>
+#import <Foundation/NSString.h>
+#import <Foundation/NSRunLoop.h>
 
 @implementation NSSelectSet(windows)
 
@@ -172,7 +174,7 @@ static WINAPI DWORD selectThread(LPVOID arg){
     setEvent=NO;
     if(select(42,activeRead->fdset,activeWrite->fdset,activeExcept->fdset,NULL)<0){
      int i;
-     
+
      native_set_reset(gotErrors);
      
      for(i=0;i<checkForErrors->fdset->fd_count;i++){
@@ -195,6 +197,7 @@ static WINAPI DWORD selectThread(LPVOID arg){
      if(native_set_is_set(activeRead,async->pingReadHandle)){
       char buf[256];
      
+      native_set_clear(activeRead,async->pingReadHandle);
       recv(async->pingReadHandle,buf,256,0);
      }
     
@@ -269,7 +272,9 @@ static void transferNativeToSetWithOriginals(native_set *native,NSMutableSet *se
 
    _async->pingWrite=[[NSSocket alloc] initConnectedToSocket:&_async->pingRead];
    [_async->pingRead retain];
-      
+   _async->pingWriteHandle=[_async->pingWrite socketHandle];
+   _async->pingReadHandle=[_async->pingRead socketHandle];
+
    _async->lock=NSZoneMalloc([self zone],sizeof(CRITICAL_SECTION));
    InitializeCriticalSection(_async->lock);
    
@@ -283,16 +288,20 @@ static void transferNativeToSetWithOriginals(native_set *native,NSMutableSet *se
    _async->outputError=native_set_new();
 }
 
--(void)waitInBackground {
+-(void)waitInBackgroundInMode:(NSString *)mode {
    BOOL pingElseThread=YES;
-   
+
    if([self isEmpty])
     return;
-    
+
    if(_async==NULL){
 
     pingElseThread=NO;
     [isa initBackgroundInfo];
+   }
+   if(![_async->eventMonitorModes containsObject:mode]){
+    [_async->eventMonitorModes addObject:mode];
+    [[NSRunLoop currentRunLoop] addInputSource:_async->eventMonitor forMode:mode];
    }
    
    EnterCriticalSection(_async->lock);

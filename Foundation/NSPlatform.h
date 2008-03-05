@@ -22,7 +22,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(NSString *)fileManagerClassName;
 -(Class)taskClass;
--(Class)fileHandleClass;
 -(Class)pipeClass;
 -(Class)lockClass;
 -(Class)persistantDomainClass;

@@ -197,4 +197,17 @@ static inline void byteZero(void *vsrc,int size){
    return send(_descriptor,(void *)buffer,length,0);
 }
 
+-(NSSocket *)acceptWithError:(NSError **)errorp {
+   struct sockaddr addr;
+   int             addrlen=sizeof(struct sockaddr);
+   int             newSocket; 
+   NSError        *error;
+   
+   error=[self errorForReturnValue:newSocket=accept(_handle,&addr,&addrlen)];
+   if(*errorp!=nil)
+    *errorp=error;
+    
+   return (error!=nil)?nil:[[[NSSocket_bsd alloc] initWithDescriptor:newSocket] autorelease];
+}
+
 @end

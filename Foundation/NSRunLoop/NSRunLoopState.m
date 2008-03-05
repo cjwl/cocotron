@@ -140,7 +140,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     int i,count=[_asyncInputSourceSets count];
     
     for(i=0;i<count;i++)
-     [[_asyncInputSourceSets objectAtIndex:i] waitInBackground];
+     [[_asyncInputSourceSets objectAtIndex:i] waitInBackgroundInMode:mode];
 
     [_inputSourceSet waitForInputInMode:mode beforeDate:date];
    }

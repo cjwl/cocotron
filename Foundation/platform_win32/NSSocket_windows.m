@@ -72,6 +72,18 @@ static inline void byteZero(void *vsrc,int size){
    return self;
 }
 
+-initWithFileDescriptor:(int)descriptor {
+   SOCKET handle=(SOCKET)descriptor;
+   u_long arg;
+   
+   if(ioctlsocket(handle,FIONREAD,&arg)!=0){
+    [self dealloc];
+    return nil;
+   }
+   
+   return [self initWithSocketHandle:handle];
+}
+
 -(void)closeAndDealloc {
    [self close];
    [self dealloc];
@@ -118,6 +130,9 @@ static inline void byteZero(void *vsrc,int size){
    return self;
 }
 
+-(int)fileDescriptor {
+   return (int)_handle;
+}
 
 -(SOCKET)socketHandle {
    return _handle;
@@ -219,6 +234,19 @@ static inline void byteZero(void *vsrc,int size){
 
 -(int)write:(const unsigned char *)buffer maxLength:(unsigned)length {
    return send(_handle,(void *)buffer,length,0);
+}
+
+-(NSSocket *)acceptWithError:(NSError **)errorp {
+   struct sockaddr addr;
+   int             addrlen=sizeof(struct sockaddr);
+   SOCKET          newSocket; 
+   NSError        *error;
+   
+   error=[self errorForReturnValue:newSocket=accept(_handle,&addr,&addrlen)];
+   if(*errorp!=nil)
+    *errorp=error;
+    
+   return (error!=nil)?nil:[[[NSSocket_windows alloc] initWithSocketHandle:newSocket] autorelease];
 }
 
 @end

@@ -9,8 +9,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSFileHandle.h>
 #import <windows.h>
 
-@class NSHandleMonitor_win32;
-
 @interface NSFileHandle_win32 : NSFileHandle {
    HANDLE _handle;
    BOOL   _closeOnDealloc;

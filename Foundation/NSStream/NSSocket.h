@@ -11,9 +11,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @interface NSSocket :  NSObject
 
+// returns nil if descriptor is not a socket
+-initWithFileDescriptor:(int)descriptor;
+
 -initConnectedToSocket:(NSSocket **)other;
 
 -initTCPStream;
+
+-(int)fileDescriptor;
 
 -(NSError *)close;
 
@@ -23,5 +28,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(int)read:(unsigned char *)buffer maxLength:(unsigned)length;
 -(int)write:(const unsigned char *)buffer maxLength:(unsigned)length;
+
+-(NSSocket *)acceptWithError:(NSError **)errorp;
 
 @end

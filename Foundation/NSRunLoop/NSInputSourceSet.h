@@ -25,7 +25,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)changingIntoMode:(NSString *)mode;
 
--(void)waitInBackground;
+-(void)waitInBackgroundInMode:(NSString *)mode;
 
 -(BOOL)waitForInputInMode:(NSString *)mode beforeDate:(NSDate *)date;
 

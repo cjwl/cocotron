@@ -9,7 +9,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 // Original - Christopher Lloyd <cjwl@objc.net>
 #import <Foundation/NSFileHandle_win32.h>
 #import <Foundation/NSPlatform_win32.h>
-#import <Foundation/NSHandleMonitor_win32.h>
 #import <Foundation/NSReadInBackground_win32.h>
 #import <Foundation/NSData.h>
 #import <Foundation/NSPathUtilities.h>
@@ -17,6 +16,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSException.h>
 #import <Foundation/NSRaise.h>
+
+@implementation NSFileHandle(ImplementedInSubclass)
+
++(Class)concreteSubclass {
+   return [NSFileHandle_win32 class];
+}
+
+@end
 
 @implementation NSFileHandle_win32
 

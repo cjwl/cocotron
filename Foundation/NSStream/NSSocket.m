@@ -10,6 +10,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @implementation NSSocket
 
+// returns nil if descriptor is not a socket
+-initWithFileDescriptor:(int)descriptor {
+   NSInvalidAbstractInvocation();
+   return self;
+}
+
 -initConnectedToSocket:(NSSocket **)other {
    NSInvalidAbstractInvocation();
    return self;
@@ -18,6 +24,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -initTCPStream {
    NSInvalidAbstractInvocation();
    return self;
+}
+
+-(int)fileDescriptor {
+   NSInvalidAbstractInvocation();
+   return -1;
 }
 
 -(NSError *)close {
@@ -43,6 +54,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(int)write:(const unsigned char *)buffer maxLength:(unsigned)length {
    NSInvalidAbstractInvocation();
    return -1;
+}
+
+-(NSSocket *)acceptWithError:(NSError **)errorp {
+   NSInvalidAbstractInvocation();
+   return nil;
 }
 
 @end

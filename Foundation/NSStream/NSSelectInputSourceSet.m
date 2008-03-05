@@ -14,6 +14,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSArray.h>
 #import <Foundation/NSEnumerator.h>
 #import <Foundation/NSThread.h>
+#import <Foundation/NSString.h>
 
 @implementation NSSelectInputSourceSet
 
@@ -103,19 +104,19 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)selectSetOutputNotification:(NSNotification *)note {
    NSSelectSet *outputSet=[note object];
-   
+ 
    [_outputSet autorelease];
    _outputSet=[outputSet copy];
 }
 
--(void)waitInBackground {
+-(void)waitInBackgroundInMode:(NSString *)mode {
    NSSelectSet *selectSet=[self inputSelectSet];
    
    [_outputSources setSet:_inputSources];
    [_outputSet autorelease];
    _outputSet=nil;
    
-   [selectSet waitInBackground];
+   [selectSet waitInBackgroundInMode:mode];
 }
 
 -(BOOL)waitForInputInMode:(NSString *)mode beforeDate:(NSDate *)date {

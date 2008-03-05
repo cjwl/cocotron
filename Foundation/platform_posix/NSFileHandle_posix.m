@@ -32,6 +32,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <sys/socket.h>
 #import <sys/un.h>
 
+@implementation NSFileHandle(ImplementedInSubclass)
+
++(Class)concreteSubclass {
+   return [NSFileHandle_posix class];
+}
+
+@end
+
 @implementation NSFileHandle_posix
 
 - (id)initWithFileDescriptor:(int)fileDescriptor closeOnDealloc:(BOOL)closeOnDealloc {
@@ -39,10 +47,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     _closeOnDealloc = closeOnDealloc;
 
     return self;
-}
-
-- (id)initWithFileDescriptor:(int)fileDescriptor {
-    return [self initWithFileDescriptor:fileDescriptor closeOnDealloc:YES];
 }
 
 - (void)dealloc {
