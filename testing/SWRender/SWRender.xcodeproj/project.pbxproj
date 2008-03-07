@@ -1,0 +1,294 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 42;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		8D11072A0486CEB800E47090 /* MainMenu.nib in Resources */ = {isa = PBXBuildFile; fileRef = 29B97318FDCFA39411CA2CEA /* MainMenu.nib */; };
+		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
+		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
+		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
+		FE1F932E0D7EEDF900969491 /* KGRender.m in Sources */ = {isa = PBXBuildFile; fileRef = FE1F932D0D7EEDF900969491 /* KGRender.m */; };
+		FE1F93370D7EEE6900969491 /* KGRender_cg.m in Sources */ = {isa = PBXBuildFile; fileRef = FE1F93360D7EEE6900969491 /* KGRender_cg.m */; };
+		FE1F93430D7EEECA00969491 /* KGRender_baseline.mm in Sources */ = {isa = PBXBuildFile; fileRef = FE1F93420D7EEECA00969491 /* KGRender_baseline.mm */; };
+		FE1F93630D7EF19900969491 /* KGRenderView.m in Sources */ = {isa = PBXBuildFile; fileRef = FE1F93620D7EF19900969491 /* KGRenderView.m */; };
+		FE1F937A0D7EF1F800969491 /* KGRenderController.mm in Sources */ = {isa = PBXBuildFile; fileRef = FE1F93790D7EF1F800969491 /* KGRenderController.mm */; };
+		FE9552810D77CA67009B765B /* riImage.mm in Sources */ = {isa = PBXBuildFile; fileRef = FE9552780D77CA67009B765B /* riImage.mm */; };
+		FE9552820D77CA67009B765B /* riMath.mm in Sources */ = {isa = PBXBuildFile; fileRef = FE95527A0D77CA67009B765B /* riMath.mm */; };
+		FE9552830D77CA67009B765B /* riPath.mm in Sources */ = {isa = PBXBuildFile; fileRef = FE95527C0D77CA67009B765B /* riPath.mm */; };
+		FE9552840D77CA67009B765B /* riPixelPipe.mm in Sources */ = {isa = PBXBuildFile; fileRef = FE95527E0D77CA67009B765B /* riPixelPipe.mm */; };
+		FE9552850D77CA67009B765B /* riRasterizer.mm in Sources */ = {isa = PBXBuildFile; fileRef = FE9552800D77CA67009B765B /* riRasterizer.mm */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		089C165DFE840E0CC02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
+		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		29B97319FDCFA39411CA2CEA /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = English.lproj/MainMenu.nib; sourceTree = "<group>"; };
+		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
+		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
+		32CA4F630368D1EE00C91783 /* SWRender_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SWRender_Prefix.pch; sourceTree = "<group>"; };
+		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		8D1107320486CEB800E47090 /* SWRender.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SWRender.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		FE1F932C0D7EEDF900969491 /* KGRender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGRender.h; sourceTree = "<group>"; };
+		FE1F932D0D7EEDF900969491 /* KGRender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGRender.m; sourceTree = "<group>"; };
+		FE1F93350D7EEE6900969491 /* KGRender_cg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGRender_cg.h; sourceTree = "<group>"; };
+		FE1F93360D7EEE6900969491 /* KGRender_cg.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGRender_cg.m; sourceTree = "<group>"; };
+		FE1F93410D7EEECA00969491 /* KGRender_baseline.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGRender_baseline.h; sourceTree = "<group>"; };
+		FE1F93420D7EEECA00969491 /* KGRender_baseline.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = KGRender_baseline.mm; sourceTree = "<group>"; };
+		FE1F93610D7EF19900969491 /* KGRenderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGRenderView.h; sourceTree = "<group>"; };
+		FE1F93620D7EF19900969491 /* KGRenderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGRenderView.m; sourceTree = "<group>"; };
+		FE1F93780D7EF1F800969491 /* KGRenderController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGRenderController.h; sourceTree = "<group>"; };
+		FE1F93790D7EF1F800969491 /* KGRenderController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = KGRenderController.mm; sourceTree = "<group>"; };
+		FE9552740D77CA67009B765B /* openvg.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = openvg.h; sourceTree = "<group>"; };
+		FE9552750D77CA67009B765B /* riArray.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = riArray.h; sourceTree = "<group>"; };
+		FE9552760D77CA67009B765B /* riDefs.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = riDefs.h; sourceTree = "<group>"; };
+		FE9552770D77CA67009B765B /* riImage.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = riImage.h; sourceTree = "<group>"; };
+		FE9552780D77CA67009B765B /* riImage.mm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.objcpp; path = riImage.mm; sourceTree = "<group>"; };
+		FE9552790D77CA67009B765B /* riMath.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = riMath.h; sourceTree = "<group>"; };
+		FE95527A0D77CA67009B765B /* riMath.mm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.objcpp; path = riMath.mm; sourceTree = "<group>"; };
+		FE95527B0D77CA67009B765B /* riPath.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = riPath.h; sourceTree = "<group>"; };
+		FE95527C0D77CA67009B765B /* riPath.mm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.objcpp; path = riPath.mm; sourceTree = "<group>"; };
+		FE95527D0D77CA67009B765B /* riPixelPipe.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = riPixelPipe.h; sourceTree = "<group>"; };
+		FE95527E0D77CA67009B765B /* riPixelPipe.mm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.objcpp; path = riPixelPipe.mm; sourceTree = "<group>"; };
+		FE95527F0D77CA67009B765B /* riRasterizer.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = riRasterizer.h; sourceTree = "<group>"; };
+		FE9552800D77CA67009B765B /* riRasterizer.mm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.objcpp; path = riRasterizer.mm; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		8D11072E0486CEB800E47090 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */,
+			);
+			name = "Linked Frameworks";
+			sourceTree = "<group>";
+		};
+		1058C7A2FEA54F0111CA2CBB /* Other Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				29B97324FDCFA39411CA2CEA /* AppKit.framework */,
+				29B97325FDCFA39411CA2CEA /* Foundation.framework */,
+			);
+			name = "Other Frameworks";
+			sourceTree = "<group>";
+		};
+		19C28FACFE9D520D11CA2CBB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8D1107320486CEB800E47090 /* SWRender.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		29B97314FDCFA39411CA2CEA /* SWRender */ = {
+			isa = PBXGroup;
+			children = (
+				FE1F932C0D7EEDF900969491 /* KGRender.h */,
+				FE1F932D0D7EEDF900969491 /* KGRender.m */,
+				FE1F93410D7EEECA00969491 /* KGRender_baseline.h */,
+				FE1F93420D7EEECA00969491 /* KGRender_baseline.mm */,
+				FE1F93350D7EEE6900969491 /* KGRender_cg.h */,
+				FE1F93360D7EEE6900969491 /* KGRender_cg.m */,
+				FE1F93780D7EF1F800969491 /* KGRenderController.h */,
+				FE1F93790D7EF1F800969491 /* KGRenderController.mm */,
+				FE1F93610D7EF19900969491 /* KGRenderView.h */,
+				FE1F93620D7EF19900969491 /* KGRenderView.m */,
+				FE9552740D77CA67009B765B /* openvg.h */,
+				FE9552750D77CA67009B765B /* riArray.h */,
+				FE9552760D77CA67009B765B /* riDefs.h */,
+				FE9552770D77CA67009B765B /* riImage.h */,
+				FE9552780D77CA67009B765B /* riImage.mm */,
+				FE9552790D77CA67009B765B /* riMath.h */,
+				FE95527A0D77CA67009B765B /* riMath.mm */,
+				FE95527B0D77CA67009B765B /* riPath.h */,
+				FE95527C0D77CA67009B765B /* riPath.mm */,
+				FE95527D0D77CA67009B765B /* riPixelPipe.h */,
+				FE95527E0D77CA67009B765B /* riPixelPipe.mm */,
+				FE95527F0D77CA67009B765B /* riRasterizer.h */,
+				FE9552800D77CA67009B765B /* riRasterizer.mm */,
+				19C28FACFE9D520D11CA2CBB /* Products */,
+				29B97317FDCFA39411CA2CEA /* Resources */,
+				29B97315FDCFA39411CA2CEA /* Other Sources */,
+				29B97323FDCFA39411CA2CEA /* Frameworks */,
+			);
+			name = SWRender;
+			sourceTree = "<group>";
+		};
+		29B97315FDCFA39411CA2CEA /* Other Sources */ = {
+			isa = PBXGroup;
+			children = (
+				32CA4F630368D1EE00C91783 /* SWRender_Prefix.pch */,
+				29B97316FDCFA39411CA2CEA /* main.m */,
+			);
+			name = "Other Sources";
+			sourceTree = "<group>";
+		};
+		29B97317FDCFA39411CA2CEA /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				8D1107310486CEB800E47090 /* Info.plist */,
+				089C165CFE840E0CC02AAC07 /* InfoPlist.strings */,
+				29B97318FDCFA39411CA2CEA /* MainMenu.nib */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */,
+				1058C7A2FEA54F0111CA2CBB /* Other Frameworks */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		8D1107260486CEB800E47090 /* SWRender */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C01FCF4A08A954540054247B /* Build configuration list for PBXNativeTarget "SWRender" */;
+			buildPhases = (
+				8D1107290486CEB800E47090 /* Resources */,
+				8D11072C0486CEB800E47090 /* Sources */,
+				8D11072E0486CEB800E47090 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SWRender;
+			productInstallPath = "$(HOME)/Applications";
+			productName = SWRender;
+			productReference = 8D1107320486CEB800E47090 /* SWRender.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		29B97313FDCFA39411CA2CEA /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "SWRender" */;
+			hasScannedForEncodings = 1;
+			mainGroup = 29B97314FDCFA39411CA2CEA /* SWRender */;
+			projectDirPath = "";
+			targets = (
+				8D1107260486CEB800E47090 /* SWRender */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		8D1107290486CEB800E47090 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8D11072A0486CEB800E47090 /* MainMenu.nib in Resources */,
+				8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		8D11072C0486CEB800E47090 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8D11072D0486CEB800E47090 /* main.m in Sources */,
+				FE9552810D77CA67009B765B /* riImage.mm in Sources */,
+				FE9552820D77CA67009B765B /* riMath.mm in Sources */,
+				FE9552830D77CA67009B765B /* riPath.mm in Sources */,
+				FE9552840D77CA67009B765B /* riPixelPipe.mm in Sources */,
+				FE9552850D77CA67009B765B /* riRasterizer.mm in Sources */,
+				FE1F932E0D7EEDF900969491 /* KGRender.m in Sources */,
+				FE1F93370D7EEE6900969491 /* KGRender_cg.m in Sources */,
+				FE1F93430D7EEECA00969491 /* KGRender_baseline.mm in Sources */,
+				FE1F93630D7EF19900969491 /* KGRenderView.m in Sources */,
+				FE1F937A0D7EF1F800969491 /* KGRenderController.mm in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		089C165CFE840E0CC02AAC07 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				089C165DFE840E0CC02AAC07 /* English */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		29B97318FDCFA39411CA2CEA /* MainMenu.nib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				29B97319FDCFA39411CA2CEA /* English */,
+			);
+			name = MainMenu.nib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		C01FCF4C08A954540054247B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = i386;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_MODEL_TUNING = "";
+				INFOPLIST_FILE = Info.plist;
+				INSTALL_PATH = "$(HOME)/Applications";
+				PRODUCT_NAME = SWRender;
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+		C01FCF5008A954540054247B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				PREBINDING = NO;
+				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		C01FCF4A08A954540054247B /* Build configuration list for PBXNativeTarget "SWRender" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C01FCF4C08A954540054247B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C01FCF4E08A954540054247B /* Build configuration list for PBXProject "SWRender" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C01FCF5008A954540054247B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 29B97313FDCFA39411CA2CEA /* Project object */;
+}

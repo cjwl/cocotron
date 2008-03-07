@@ -1,0 +1,31 @@
+{
+    IBClasses = (
+        {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 
+        {
+            ACTIONS = {
+                selectBlendMode = id; 
+                selectDashLength = id; 
+                selectDashPhase = id; 
+                selectDestinationColor = id; 
+                selectLineWidth = id; 
+                selectPathDrawingMode = id; 
+                selectRotation = id; 
+                selectScaleX = id; 
+                selectScaleY = id; 
+                setectSourceColor = id; 
+            }; 
+            CLASS = KGRenderController; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {"_cgView" = KGRenderView; "_kgView" = KGRenderView; }; 
+            SUPERCLASS = NSObject; 
+        }, 
+        {CLASS = KGRenderView; LANGUAGE = ObjC; SUPERCLASS = NSView; }, 
+        {
+            ACTIONS = {selectBlendMode = id; }; 
+            CLASS = MyView; 
+            LANGUAGE = ObjC; 
+            SUPERCLASS = NSView; 
+        }
+    ); 
+    IBVersion = 1; 
+}
