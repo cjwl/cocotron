@@ -17,6 +17,7 @@
 				FEFC42410B0A5D050041512F /* PBXTargetDependency */,
 				FEE66CCE0C3D614F00FBED82 /* PBXTargetDependency */,
 				FEE66CD00C3D615200FBED82 /* PBXTargetDependency */,
+				FE50C5DA0D85891000CD1896 /* PBXTargetDependency */,
 			);
 			name = Foundation;
 			productName = Foundation;
@@ -3095,6 +3096,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = FE01A57F0C5D9B3100AEA51A;
 			remoteInfo = "objc-Windows-i386";
+		};
+		FE50C5D90D85891000CD1896 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = FE01A5970C5D9B6900AEA51A;
+			remoteInfo = "Foundation-Windows-i386";
 		};
 		FEB6CC470B4A1922004FADF2 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -8245,6 +8253,11 @@
 			isa = PBXTargetDependency;
 			name = "objc-Windows-i386";
 			targetProxy = FE01A7F20C5D9B9100AEA51A /* PBXContainerItemProxy */;
+		};
+		FE50C5DA0D85891000CD1896 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = FE01A5970C5D9B6900AEA51A /* Foundation-Windows-i386 */;
+			targetProxy = FE50C5D90D85891000CD1896 /* PBXContainerItemProxy */;
 		};
 		FEB6CC510B4A194C004FADF2 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;

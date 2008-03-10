@@ -17,7 +17,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     NSArray *_backgroundModes;
 }
 
-- (id)initWithFileDescriptor:(int)fileDescriptor;
+- (id)initWithFileDescriptor:(int)fileDescriptor closeOnDealloc:(BOOL)closeOnDealloc;
 - (int)fileDescriptor;
 
 - (void)cancelBackgroundMonitoring;

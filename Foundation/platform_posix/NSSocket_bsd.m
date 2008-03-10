@@ -199,11 +199,11 @@ static inline void byteZero(void *vsrc,int size){
 
 -(NSSocket *)acceptWithError:(NSError **)errorp {
    struct sockaddr addr;
-   int             addrlen=sizeof(struct sockaddr);
+   socklen_t       addrlen=sizeof(struct sockaddr);
    int             newSocket; 
    NSError        *error;
    
-   error=[self errorForReturnValue:newSocket=accept(_handle,&addr,&addrlen)];
+   error=[self errorForReturnValue:newSocket=accept(_descriptor,&addr,&addrlen)];
    if(*errorp!=nil)
     *errorp=error;
     

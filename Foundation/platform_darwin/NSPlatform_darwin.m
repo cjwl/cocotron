@@ -54,7 +54,12 @@ NSString *NSPlatformClassName=@"NSPlatform_darwin";
 
    // similar to Win32's implementation
    tzset();
+   
+#if MAC_OS_X_VERSION_MAX_ALLOWED <= MAC_OS_X_VERSION_10_4
    secondsFromGMT = -__DARWIN_ALIAS(timezone) + daylight*3600;
+#else
+   secondsFromGMT = -timezone + daylight*3600;
+#endif
    systemTimeZone = [NSTimeZone timeZoneForSecondsFromGMT:secondsFromGMT];
 
    return systemTimeZone;

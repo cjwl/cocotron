@@ -9,6 +9,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "ObjCModule.h"
 #import <objc/objc-class.h>
 #import <mach-o/dyld.h>
+#import <mach-o/getsect.h>
+#import "ObjCSelector.h"
+#import <string.h>
 
 #import <Foundation/NSString.h>
 
@@ -24,10 +27,10 @@ void OBJCInitializeProcess_Darwin(void)
    //Fix up sel references
   
    for (i = 0; i < count; i++) {
-      struct mach_header *head = _dyld_get_image_header(i);
+      const struct mach_header *head = _dyld_get_image_header(i);
 
       uint32_t size;
-      void *section = getsectdatafromheader(head,
+      char *section = getsectdatafromheader(head,
 				  "__OBJC", "__message_refs", &size);
       
       if(head->filetype == MH_DYLIB)
@@ -49,14 +52,14 @@ void OBJCInitializeProcess_Darwin(void)
    // queue each module.
    
    for (i = 0; i < count; i++) {
-      struct mach_header *head = _dyld_get_image_header(i);
+      const struct mach_header *head = _dyld_get_image_header(i);
       
       
       uint32_t size = 0;
       int nmodules = 0;
       
       OBJCModule *mods = 0;
-      void *section = 0;
+      char *section = 0;
 
       section = getsectdatafromheader(head,"__OBJC",
                                          "__module_info",
@@ -84,10 +87,10 @@ void OBJCInitializeProcess_Darwin(void)
    */
    
    for (i = 0; i < count; i++) {
-      struct mach_header *head = _dyld_get_image_header(i);
+      const struct mach_header *head = _dyld_get_image_header(i);
 
       uint32_t size = 0;
-      void *section  = getsectdatafromheader (head,
+      char *section  = getsectdatafromheader (head,
 				 "__OBJC", "__cls_refs", &size);
       int nrefs = size / sizeof(struct objc_class *);
       

@@ -16,6 +16,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSPredicate.h>
 #import <Foundation/NSSortDescriptor.h> 
 #import <Foundation/NSIndexSet.h> 
+#import <string.h>
 
 @implementation NSMutableArray
 
@@ -228,7 +229,7 @@ static inline void memswp(void* a, void* b, size_t width)
 // iterative mergesort based on
 //  http://www.inf.fh-flensburg.de/lang/algorithmen/sortieren/merge/mergiter.htm  
 
-static int mergesort(void *base, size_t nel, size_t width, int (*compar)(const  
+static int mergesortL(void *base, size_t nel, size_t width, int (*compar)(const  
 void *, const void *))
 {
 	int h, i, j, k, l, m, n = nel;
@@ -280,7 +281,7 @@ static int _nsmutablearraycompareindices(const void* v1, const void* v2)
                 unsigned sortedIndices[count]; 
                 int i; 
                 memcpy(sortedIndices, indices, sizeof(unsigned)*count); 
-                mergesort(sortedIndices, sizeof(unsigned), count,   
+                mergesortL(sortedIndices, sizeof(unsigned), count,   
 &_nsmutablearraycompareindices); 
                 for(i=count-1;i>=0;i--) { 
                         unsigned index = sortedIndices[i]; 

@@ -12,6 +12,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSArray.h>
 #import <Foundation/NSPlatform.h>
 #import <Foundation/NSRaise.h>
+#import <Foundation/NSSocket.h>
 #import "NSFileHandle_stream.h"
 
 NSString *NSFileHandleConnectionAcceptedNotification = @"NSFileHandleConnectionAcceptedNotification";
