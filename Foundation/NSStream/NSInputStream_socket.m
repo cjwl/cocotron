@@ -36,6 +36,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return _socket;
 }
 
+-(int)fileDescriptor {
+   return [_socket fileDescriptor];
+}
+
 -delegate {
    return _delegate;
 }
@@ -67,6 +71,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)removeFromRunLoop:(NSRunLoop *)runLoop forMode:(NSString *)mode {
    if(_inputSource!=nil)
     [runLoop removeInputSource:_inputSource forMode:mode];
+}
+
+-(void)close {
+   [_socket close];
 }
 
 -(BOOL)getBuffer:(unsigned char **)buffer length:(unsigned *)length {

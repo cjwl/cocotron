@@ -31,7 +31,9 @@ enum {
 }
 
 -(void)dealloc {
-
+   if(_closeOnDealloc)
+    [self closeFile];
+   
    [_inputStream setDelegate:nil];
    [_inputStream release];
    [_outputStream setDelegate:nil];
@@ -42,12 +44,18 @@ enum {
 }
 
 -(int)fileDescriptor {
-   NSInvalidAbstractInvocation();
+   if([_inputStream respondsToSelector:@selector(fileDescriptor)])
+    return [(id)_inputStream fileDescriptor];
+    
+   if([_outputStream respondsToSelector:@selector(fileDescriptor)])
+    return [(id)_outputStream fileDescriptor];
+    
    return -1;
 }
 
 -(void)closeFile {
-   return [_inputStream close];
+   [_inputStream close];
+   [_outputStream close];
 }
 
 -(void)synchronizeFile {
