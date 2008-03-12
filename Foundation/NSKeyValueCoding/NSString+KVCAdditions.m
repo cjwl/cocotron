@@ -18,13 +18,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(BOOL)_KVC_setterKeyName:(NSString**)ret forSelectorNameStartingWith:(id)start endingWith:(id)end;
 {
+	*ret=nil;
 	if([self hasPrefix:start] && [self hasSuffix:end])
 	{
-		NSString* keyName=[self substringWithRange:NSMakeRange([start length], [self length]-[end length])];
+		NSString* keyName=[self substringWithRange:NSMakeRange([start length], [self length]-[end length]-[start length])];
 		*ret = [NSString stringWithFormat:@"%@%@", [[keyName substringToIndex:1] lowercaseString], [keyName substringFromIndex:1]]; 
 		return YES;
 	}
-	*ret=NULL;
 	return NO;
 }
 

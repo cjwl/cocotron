@@ -13,12 +13,24 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 FOUNDATION_EXPORT NSString *const NSKeyValueChangeKindKey;
 FOUNDATION_EXPORT NSString *const NSKeyValueChangeNewKey;
 FOUNDATION_EXPORT NSString *const NSKeyValueChangeOldKey;
+FOUNDATION_EXPORT NSString *const NSKeyValueChangeIndexesKey;
+FOUNDATION_EXPORT NSString *const NSKeyValueChangeNotificationIsPriorKey;
 
 enum {
     NSKeyValueObservingOptionNew = 0x01,
-    NSKeyValueObservingOptionOld = 0x02
+    NSKeyValueObservingOptionOld = 0x02,
+	NSKeyValueObservingOptionInitial = 0x04,
+	NSKeyValueObservingOptionPrior = 0x08
 };
 typedef unsigned int NSKeyValueObservingOptions;
+
+enum {
+	NSKeyValueChangeSetting,
+	NSKeyValueChangeInsertion,
+	NSKeyValueChangeRemoval,
+	NSKeyValueChangeReplacement	
+};
+typedef unsigned int NSKeyValueChange;
 
 @interface NSObject (NSKeyValueObserving)
 + (BOOL)automaticallyNotifiesObserversForKey:(NSString *)key;
@@ -30,6 +42,8 @@ typedef unsigned int NSKeyValueObservingOptions;
 
 -(void)willChangeValueForKey:(NSString*)key;
 -(void)didChangeValueForKey:(NSString*)key;
+-(void)willChange:(NSKeyValueChange)change valuesAtIndexes:(NSIndexSet *)indexes forKey:(NSString *)key;
+-(void)didChange:(NSKeyValueChange)change valuesAtIndexes:(NSIndexSet *)indexes forKey:(NSString *)key;
 
 -(void)setObservationInfo:(void*)newInfo;
 -(void*)observationInfo;

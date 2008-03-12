@@ -16,6 +16,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSEnumerator.h>
 #import <Foundation/NSKeyValueCoding.h>
 #import <Foundation/NSMethodSignature.h>
+#import <Foundation/NSIndexSet.h>
 
 #import <objc/objc-runtime.h>
 #import <objc/objc-class.h>
@@ -27,6 +28,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 NSString *const NSKeyValueChangeKindKey=@"NSKeyValueChangeKindKey";
 NSString *const NSKeyValueChangeNewKey=@"NSKeyValueChangeNewKey";
 NSString *const NSKeyValueChangeOldKey=@"NSKeyValueChangeOldKey";
+NSString *const NSKeyValueChangeIndexesKey=@"NSKeyValueChangeIndexesKey";
+NSString *const NSKeyValueChangeNotificationIsPriorKey=@"NSKeyValueChangeNotificationIsPriorKey";
 
 NSString *const _KVO_DependentKeysTriggeringChangeNotification=@"_KVO_DependentKeysTriggeringChangeNotification";
 NSString *const _KVO_UnionOfKeysTriggeringChangeNotification=@"_KVO_UnionOfKeysTriggeringChangeNotification";
@@ -124,6 +127,13 @@ static NSLock *kvoLock=nil;
 									   options:options
 									   context:context];
 	}
+	
+	
+	if(options & NSKeyValueObservingOptionInitial)
+	{
+		[self willChangeValueForKey:keyPath];
+		[self didChangeValueForKey:keyPath];
+	}
 }
 
 
@@ -165,7 +175,38 @@ static NSLock *kvoLock=nil;
 
 -(void)willChangeValueForKey:(NSString*)key
 {
-	NSMutableDictionary* dict=[self observationInfo];
+	NSMutableDictionary *dict=[NSMutableDictionary new];
+	[dict setObject:[NSNumber numberWithInt:NSKeyValueChangeSetting] 
+			 forKey:NSKeyValueChangeKindKey];
+	[self _willChangeValueForKey:key changeOptions:dict];
+}
+
+-(void)didChangeValueForKey:(NSString*)key
+{
+	[self _didChangeValueForKey:key changeOptions:nil];
+}
+
+- (void)willChange:(NSKeyValueChange)change valuesAtIndexes:(NSIndexSet *)indexes forKey:(NSString *)key
+{
+	NSMutableDictionary *dict=[NSMutableDictionary new];
+	[dict setObject:[NSNumber numberWithInt:change]
+			 forKey:NSKeyValueChangeKindKey];
+	[dict setObject:indexes
+			 forKey:NSKeyValueChangeIndexesKey];
+	[self _willChangeValueForKey:key changeOptions:dict];
+}
+
+- (void)didChange:(NSKeyValueChange)change valuesAtIndexes:(NSIndexSet *)indexes forKey:(NSString *)key
+{
+	[self _didChangeValueForKey:key changeOptions:nil];
+}
+
+
+#pragma mark Observer notification
+
+-(void)_willChangeValueForKey:(NSString*)key changeOptions:(NSDictionary*)changeOptions
+{
+	NSMutableDictionary* observationInfo=[self observationInfo];
 
 	{
 		NSDictionary *dependencies=[(id)[isa observationInfo] objectForKey:_KVO_UnionOfKeysTriggeringChangeNotification];
@@ -191,7 +232,7 @@ static NSLock *kvoLock=nil;
 			}
 		}
 	}
-	NSMutableArray *observers=[dict objectForKey:key];
+	NSMutableArray *observers=[observationInfo objectForKey:key];
 	
 	NSEnumerator *en=[observers objectEnumerator];
 	_NSObservationInfo *info;
@@ -203,10 +244,45 @@ static NSLock *kvoLock=nil;
 		if(info->willChangeCount>1)
 			continue;
 		NSString* keyPath=info->keyPath;
+		
+		if(![info changeDictionary])
+		{
+			id cd=[changeOptions mutableCopy];
+			[info setChangeDictionary:cd];
+			[cd release];
+		}
 
 		// store old value if applicable
 		if(info->options & NSKeyValueObservingOptionOld)
-			[info setOldValue:[self valueForKeyPath:keyPath]];
+		{
+			id idxs=[info->changeDictionary objectForKey:NSKeyValueChangeIndexesKey];
+
+			if(idxs)
+			{
+				int type=[[info->changeDictionary objectForKey:NSKeyValueChangeKindKey] intValue];
+				// for to-many relationships, oldvalue is only sensible for replace and remove
+				if(type == NSKeyValueChangeReplacement ||
+				   type == NSKeyValueChangeRemoval)
+					[info->changeDictionary setValue:[[self mutableArrayValueForKeyPath:keyPath] objectsAtIndexes:idxs] forKey:NSKeyValueChangeOldKey];
+			}
+			else	
+			{
+				[info->changeDictionary setValue:[self valueForKeyPath:keyPath] forKey:NSKeyValueChangeOldKey];
+			}
+		}
+		
+		// inform observer of change
+		if(info->options & NSKeyValueObservingOptionPrior)
+		{
+			[info->changeDictionary setObject:[NSNumber numberWithBool:YES] 
+			 forKey:NSKeyValueChangeNotificationIsPriorKey];
+			[info->observer observeValueForKeyPath:info->keyPath
+			 ofObject:self 
+			 change:info->changeDictionary
+			 context:info->context];
+			[info->changeDictionary removeObjectForKey:NSKeyValueChangeNotificationIsPriorKey];
+
+		}
 
 		NSString* firstPart, *rest;
 		[keyPath _KVC_partBeforeDot:&firstPart afterDot:&rest];
@@ -217,9 +293,9 @@ static NSLock *kvoLock=nil;
 	}
 }
 
--(void)didChangeValueForKey:(NSString*)key
+-(void)_didChangeValueForKey:(NSString*)key changeOptions:(NSDictionary*)ignored
 {
-	NSMutableDictionary* dict=[self observationInfo];
+	NSMutableDictionary* observationInfo=[self observationInfo];
 
 	{
 		NSDictionary *dependencies=[(id)[isa observationInfo] objectForKey:_KVO_UnionOfKeysTriggeringChangeNotification];
@@ -244,7 +320,7 @@ static NSLock *kvoLock=nil;
 			}
 		}
 	}
-	NSMutableArray *observers=[[dict objectForKey:key] copy];
+	NSMutableArray *observers=[[observationInfo objectForKey:key] copy];
 
 	NSEnumerator *en=[observers objectEnumerator];
 	_NSObservationInfo *info;
@@ -257,25 +333,24 @@ static NSLock *kvoLock=nil;
 			continue;
 		NSString* keyPath=info->keyPath;
 
-		// build change dictionary with old, new value and change kind
-		NSMutableDictionary *dict=[NSMutableDictionary new];
-		if(info->options & NSKeyValueObservingOptionOld)
-		{
-			id oldValue=info->oldValue;
-			if(oldValue)
-				[dict setObject:oldValue 
-						 forKey:NSKeyValueChangeOldKey];
-			[info setOldValue:nil];
-		}
+		// store new value if applicable
 		if(info->options & NSKeyValueObservingOptionNew)
 		{
-			id newValue=[self valueForKeyPath:keyPath];
-			if(newValue)
-				[dict setObject:newValue
-						 forKey:NSKeyValueChangeNewKey];
+			id idxs=[info->changeDictionary objectForKey:NSKeyValueChangeIndexesKey];			
+			if(idxs)
+			{
+				int type=[[info->changeDictionary objectForKey:NSKeyValueChangeKindKey] intValue];
+				// for to-many relationships, newvalue is only sensible for replace and insert
+
+				if(type == NSKeyValueChangeReplacement ||
+				   type == NSKeyValueChangeInsertion)
+					[info->changeDictionary setValue:[[self mutableArrayValueForKeyPath:keyPath] objectsAtIndexes:idxs] forKey:NSKeyValueChangeNewKey];
+			}
+			else	
+			{
+				[info->changeDictionary setValue:[self valueForKeyPath:keyPath] forKey:NSKeyValueChangeNewKey];
+			}
 		}
-		[dict setObject:NSKeyValueChangeKindKey 
-				 forKey:NSKeyValueChangeKindKey];
 
 		// restore deeper observers if applicable
 		NSString* firstPart, *rest;
@@ -293,10 +368,10 @@ static NSLock *kvoLock=nil;
 		// inform observer of change
 		[info->observer observeValueForKeyPath:info->keyPath
 									  ofObject:self 
-										change:dict
+										change:info->changeDictionary
 									   context:info->context];
-
-		[dict release];
+		
+		[info setChangeDictionary:nil];
 	}
 	[observers release];
 }
@@ -397,6 +472,69 @@ CHANGE_DECLARATION(NSRange)
 CHANGE_DECLARATION(char)
 CHANGE_DECLARATION(long)
 CHANGE_DECLARATION(SEL)
+
+-(void)KVO_notifying_change_insertObject:(id)object inKeyAtIndex:(NSInteger)index
+{ 
+	const char* origName = sel_getName(_cmd); 
+
+	int selLen=strlen(origName); 
+	char *sel=__builtin_alloca(selLen+1); 
+	strcpy(sel, origName); 
+	sel[selLen-1]='\0';
+	sel+=strlen("insertObject:in"); 
+	sel[strlen(sel)-strlen("AtIndex:")+1]='\0';
+
+	sel[0]=tolower(sel[0]); 
+
+	NSString *key=[[NSString alloc] initWithCString:sel]; 
+	[self willChange:NSKeyValueChangeInsertion valuesAtIndexes:[NSIndexSet indexSetWithIndex:index] forKey:key];
+	typedef id (*sender)(id obj, SEL selector, id value, int index); 
+	sender implementation=(sender)[[self superclass] instanceMethodForSelector:_cmd]; 
+	*implementation(self, _cmd, object, index); 
+	[self didChange:NSKeyValueChangeInsertion valuesAtIndexes:[NSIndexSet indexSetWithIndex:index] forKey:key];
+	[key release]; 
+}
+
+-(void)KVO_notifying_change_removeObjectFromKeyAtIndex:(int)index
+{ 
+	const char* origName = sel_getName(_cmd); 
+	int selLen=strlen(origName); 
+	char *sel=__builtin_alloca(selLen+1); 
+	strcpy(sel, origName); 
+	sel[selLen-1]='\0';
+	sel+=strlen("removeObjectFrom"); 
+	sel[strlen(sel)-strlen("AtIndex:")+1]='\0';
+	
+	sel[0]=tolower(sel[0]); 
+	NSString *key=[[NSString alloc] initWithCString:sel]; 
+	[self willChange:NSKeyValueChangeRemoval valuesAtIndexes:[NSIndexSet indexSetWithIndex:index] forKey:key];
+	typedef id (*sender)(id obj, SEL selector, int index); 
+	sender implementation=(sender)[[self superclass] instanceMethodForSelector:_cmd]; 
+	*implementation(self, _cmd, index); 
+	[self didChange:NSKeyValueChangeRemoval valuesAtIndexes:[NSIndexSet indexSetWithIndex:index] forKey:key];
+	[key release]; 
+}
+
+-(void)KVO_notifying_change_replaceObjectInKeyAtIndex:(int)index withObject:(id)object
+{ 
+	const char* origName = sel_getName(_cmd); 
+	int selLen=strlen(origName); 
+	char *sel=__builtin_alloca(selLen+1); 
+	strcpy(sel, origName); 
+	sel[selLen-1]='\0';
+	sel+=strlen("replaceObjectIn"); 
+	sel[strlen(sel)-strlen("AtIndex:WithObject:")+1]='\0';
+	sel[0]=tolower(sel[0]);
+
+	NSString *key=[[NSString alloc] initWithCString:sel]; 
+	[self willChange:NSKeyValueChangeReplacement valuesAtIndexes:[NSIndexSet indexSetWithIndex:index] forKey:key];
+	typedef id (*sender)(id obj, SEL selector, int index, id object); 
+	sender implementation=(sender)[[self superclass] instanceMethodForSelector:_cmd]; 
+	*implementation(self, _cmd, index, object); 
+	[self didChange:NSKeyValueChangeReplacement valuesAtIndexes:[NSIndexSet indexSetWithIndex:index] forKey:key];
+	[key release];
+}
+
 
 -(id)_KVO_className
 {
@@ -551,6 +689,32 @@ CHANGE_DECLARATION(SEL)
 //				if(kvoSelector==0)
 //					NSLog(@"type %s not defined in %s:%i (selector %s on class %@)", firstParameterType, __FILE__, __LINE__, SELNAME(method->method_name), [self className]);
 			}
+			
+			// long selectors
+			if(!kvoSelector)
+			{
+				id ret=nil;
+			
+				if([methodName _KVC_setterKeyName:&ret forSelectorNameStartingWith:@"insertObject:in" endingWith:@"AtIndex:"] &&
+				   ret &&
+				   [[self methodSignatureForSelector:method->method_name] numberOfArguments] == 4)
+				{
+					kvoSelector = @selector(KVO_notifying_change_insertObject:inKeyAtIndex:);
+				}
+				else if([methodName _KVC_setterKeyName:&ret forSelectorNameStartingWith:@"removeObjectFrom" endingWith:@"AtIndex:"] &&
+						ret &&
+						[[self methodSignatureForSelector:method->method_name] numberOfArguments] == 3)
+				{
+					kvoSelector = @selector(KVO_notifying_change_removeObjectFromKeyAtIndex:);
+				}
+				else if([methodName _KVC_setterKeyName:&ret forSelectorNameStartingWith:@"replaceObjectIn" endingWith:@"AtIndex:withObject:"] &&
+						ret &&
+						[[self methodSignatureForSelector:method->method_name] numberOfArguments] == 4)
+				{
+					kvoSelector = @selector(KVO_notifying_change_replaceObjectInKeyAtIndex:withObject:);
+				}
+			}
+				
 			// there's a suitable selector for us
 			if(kvoSelector!=0)
 			{
@@ -624,17 +788,17 @@ CHANGE_DECLARATION(SEL)
 
 
 
-- (id)oldValue 
+- (id)changeDictionary 
 {
-    return [[oldValue retain] autorelease];
+    return [[changeDictionary retain] autorelease];
 }
 
-- (void)setOldValue:(id)value 
+- (void)setChangeDictionary:(id)value 
 {
-    if (oldValue != value) 
+    if (changeDictionary != value) 
 	{
-        [oldValue release];
-        oldValue = [value retain];
+        [changeDictionary release];
+        changeDictionary = [value retain];
     }
 }
 
@@ -646,7 +810,7 @@ CHANGE_DECLARATION(SEL)
 -(void)dealloc
 {
 	[keyPath release];
-	[oldValue release];
+	[changeDictionary release];
 	[super dealloc];
 }
 

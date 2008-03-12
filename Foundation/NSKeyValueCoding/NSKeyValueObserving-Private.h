@@ -13,13 +13,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	id observer;
 	NSKeyValueObservingOptions options;
 	void* context;
-	id oldValue;
+	id changeDictionary;
 	int willChangeCount;
 	NSString* keyPath;
 }
 -(id)observer;
-- (id)oldValue;
-- (void)setOldValue:(id)value;
+- (id)changeDictionary;
+- (void)setChangeDictionary:(id)value;
 - (NSString *)keyPath;
 - (void)setKeyPath:(NSString *)value;
 
@@ -28,4 +28,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @interface NSObject (KVOSwizzeling)
 -(void)_KVO_swizzle;
 -(Class)_KVO_swizzledClass;
+-(void)_willChangeValueForKey:(NSString*)key changeOptions:(NSDictionary*)changeOptions;
+-(void)_didChangeValueForKey:(NSString*)key changeOptions:(NSDictionary*)ignored;
 @end
