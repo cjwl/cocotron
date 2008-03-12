@@ -24,13 +24,16 @@ NSString* NSObservedObjectKey=@"NSObservedObject";
 NSString* NSObservedKeyPathKey=@"NSObservedKeyPath";
 NSString* NSOptionsKey=@"NSOptions";
 
+NSString *NSNullPlaceholderBindingOption=@"NSNullPlaceholder";
 NSString *NSNoSelectionPlaceholderBindingOption=@"NSNoSelectionPlaceholder";
 NSString *NSMultipleValuesPlaceholderBindingOption=@"NSMultipleValuesPlaceholder";
 NSString *NSCreatesSortDescriptorBindingOption=@"NSCreatesSortDescriptors";
 NSString *NSRaisesForNotApplicableKeysBindingOption=@"NSRaisesForNotApplicableKeys";
 NSString *NSAllowsEditingMultipleValuesSelectionBindingOption=@"NSAllowsEditingMultipleValuesSelection";
 NSString *NSValueTransformerNameBindingOption=@"NSValueTransformerName";
-NSString *NSValueTransformerBindingOption=@"NSValueTransformerBindingOption";
+NSString *NSValueTransformerBindingOption=@"NSValueTransformerBinding";
+NSString *NSConditionallySetsEnabledBindingOption=@"NSConditionallySetsEnabled";
+NSString *NSConditionallySetsEditableBindingOption=@"NSConditionallySetsEditable";
 
 @implementation NSObject (BindingSupport)
 

@@ -43,7 +43,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 {
 	[self setKeys:[NSArray arrayWithObjects:@"contentArray", @"selectionIndexes", nil]
  triggerChangeNotificationsForDependentKey:@"selection"];
-	[self setKeys:[NSArray arrayWithObjects:@"contentArray", @"selectionIndexes", nil]
+	[self setKeys:[NSArray arrayWithObjects:@"contentArray", @"selectionIndexes", @"selection", nil]
  triggerChangeNotificationsForDependentKey:@"selectedObjects"];
 	[self setKeys:[NSArray arrayWithObjects:@"selectionIndexes", nil]
  triggerChangeNotificationsForDependentKey:@"canRemove"];
@@ -249,11 +249,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #pragma mark -
 #pragma mark Moving selection
 
--(BOOL)canInsert {
-   //NSUnimplementedMethod();
-   return NO;
-}
-
 -(BOOL)canSelectPrevious
 {
 	id idxs=[[[self selectionIndexes] mutableCopy] autorelease];
@@ -389,6 +384,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 {
 	id _keyPath;
 	id _observer;
+	id _object;
 }
 -(id)initWithKeyPath:(id)keyPath observer:(id)observer;
 -(id)observer;
@@ -436,15 +432,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 		// count never changes (immutable array)
 		if([keyPath isEqualToString:@"@count"])
 			return;
-		
+
 		_NSObservationProxy *proxy=[[_NSObservationProxy alloc] initWithKeyPath:keyPath
-																	   observer:observer];
+																	   observer:observer
+																		 object:self];
 		[_observationProxies addObject:proxy];
 		[proxy release];
 
 		NSString* firstPart, *rest;
 		[keyPath _KVC_partBeforeDot:&firstPart afterDot:&rest];
-
+		
 		[_array addObserver:proxy
 		 toObjectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, [_array count])]
 				 forKeyPath:rest
@@ -470,7 +467,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 			return;
 		
 		_NSObservationProxy *proxy=[[_NSObservationProxy alloc] initWithKeyPath:keyPath
-																	   observer:observer];
+																	   observer:observer
+																		 object:self];
 		int idx=[_observationProxies indexOfObject:proxy];
 		[proxy release];
 		proxy=[_observationProxies objectAtIndex:idx];
@@ -494,12 +492,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @end
 
 @implementation _NSObservationProxy 
--(id)initWithKeyPath:(id)keyPath observer:(id)observer
+-(id)initWithKeyPath:(id)keyPath observer:(id)observer object:(id)object
 {
 	if(self=[super init])
 	{
 		_keyPath=[keyPath retain];
 		_observer=observer;
+		_object=object;
 	}
 	return self;
 }
@@ -525,7 +524,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	if([other isMemberOfClass:isa])
 	{
 		_NSObservationProxy *o=other;
-		if(o->_observer==_observer && [o->_keyPath isEqual:_keyPath])
+		if(o->_observer==_observer && [o->_keyPath isEqual:_keyPath] && [o->_object isEqual:_object])
 			return YES;
 	}
 	return NO;
@@ -537,7 +536,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 					   context:(void *)context
 {
 	[_observer observeValueForKeyPath:_keyPath
-							ofObject:object
+							ofObject:_object
 							  change:change
 							 context:context];
 }

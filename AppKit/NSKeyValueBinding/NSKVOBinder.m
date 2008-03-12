@@ -131,16 +131,24 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 		id newValue=[self destinationValue];
 
 		BOOL editable=YES;
+		BOOL isPlaceholder=NO;
 		if(newValue==NSMultipleValuesMarker)
 		{
 			newValue=[self multipleValuesPlaceholder];
 			if(![self allowsEditingMultipleValues])
 				editable=NO;
+			isPlaceholder=YES;
 		}
 		else if(newValue==NSNoSelectionMarker)
 		{
 			newValue=[self noSelectionPlaceholder];
 			editable=NO;
+			isPlaceholder=YES;
+		}
+		else if(!newValue || newValue==[NSNull null])
+		{
+			newValue=[self nullPlaceholder];
+			isPlaceholder=YES;
 		}
 
 		if([self conditionallySetsEditable])
@@ -150,6 +158,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 		
 		[source setValue:newValue
 			  forKeyPath:bindingPath];
+
+		if(isPlaceholder && [source respondsToSelector:@selector(_setCurrentValueIsPlaceholder:)])
+			[source _setCurrentValueIsPlaceholder:YES];
+	}
+	else
+	{
+		NSLog(@"unexpected change notification for object %@ (src %@, dest %@)", object, source, destination);
 	}
 	
 	[self startObservingChanges];

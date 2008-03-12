@@ -323,7 +323,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 - (BOOL)validateValue:(id *)ioValue forKeyPath:(NSString *)keyPath error:(NSError **)outError
 {
-// FIX: should this be recursive or not?
 	id array=[[[keyPath componentsSeparatedByString:@"."] mutableCopy] autorelease];
 	id lastPathComponent=[array lastObject];
 	[array removeObject:lastPathComponent];

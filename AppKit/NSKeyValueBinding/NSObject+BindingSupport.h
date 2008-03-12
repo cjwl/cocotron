@@ -49,6 +49,7 @@ APPKIT_EXPORT NSString* NSObservedKeyPathKey;
 APPKIT_EXPORT NSString* NSOptionsKey;
 
 // Binding option keys
+APPKIT_EXPORT NSString *NSNullPlaceholderBindingOption;
 APPKIT_EXPORT NSString *NSNoSelectionPlaceholderBindingOption;
 APPKIT_EXPORT NSString *NSMultipleValuesPlaceholderBindingOption;
 APPKIT_EXPORT NSString *NSCreatesSortDescriptorBindingOption;
@@ -56,4 +57,6 @@ APPKIT_EXPORT NSString *NSRaisesForNotApplicableKeysBindingOption;
 APPKIT_EXPORT NSString *NSAllowsEditingMultipleValuesSelectionBindingOption;
 APPKIT_EXPORT NSString *NSValueTransformerNameBindingOption;
 APPKIT_EXPORT NSString *NSValueTransformerBindingOption;
+APPKIT_EXPORT NSString *NSConditionallySetsEnabledBindingOption;
+APPKIT_EXPORT NSString *NSConditionallySetsEditableBindingOption;
 

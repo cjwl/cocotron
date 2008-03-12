@@ -22,10 +22,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @implementation _NSBinder (BindingOptions)
 -(BOOL)conditionallySetsEditable
 {
-	// FIX: needs to read from options
-	if([source respondsToSelector:@selector(setEditable:)])
-		return YES;
-	return NO;
+	return [[options objectForKey:NSConditionallySetsEditableBindingOption] boolValue];
 }
 
 -(BOOL)conditionallySetsEnabled
@@ -63,6 +60,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(id)noSelectionPlaceholder
 {
 	id ret=[options objectForKey:NSNoSelectionPlaceholderBindingOption];
+	if(!ret)
+		return NSNoSelectionMarker;
+	return ret;
+}
+
+-(id)nullPlaceholder
+{
+	id ret=[options objectForKey:NSNullPlaceholderBindingOption];
 	if(!ret)
 		return NSNoSelectionMarker;
 	return ret;

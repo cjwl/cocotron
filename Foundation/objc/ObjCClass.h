@@ -29,3 +29,5 @@ FOUNDATION_EXPORT IMP OBJCInitializeLookupAndCacheUniqueIdForObject(id object,SE
 
 FOUNDATION_EXPORT void OBJCLinkClassTable(void);
 
+BOOL object_cxxConstruct(id self, Class c);
+BOOL object_cxxDestruct(id self, Class c);

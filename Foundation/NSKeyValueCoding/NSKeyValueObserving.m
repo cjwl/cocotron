@@ -116,6 +116,7 @@ static NSLock *kvoLock=nil;
 	info->observer=observer;
 	info->options=options;
 	info->context=context;
+	info->object=self;
 	[info setKeyPath:keyPath];
 
 	// if observing a key path, also observe all deeper levels
@@ -814,7 +815,7 @@ CHANGE_DECLARATION(SEL)
 	[super dealloc];
 }
 
--(void)observeValueForKeyPath:(NSString*)subKeyPath ofObject:(id)object change:(NSDictionary*)changeDict context:(void*)subContext;
+-(void)observeValueForKeyPath:(NSString*)subKeyPath ofObject:(id)subObject change:(NSDictionary*)changeDict context:(void*)subContext;
 {
 	[observer observeValueForKeyPath:keyPath
 							ofObject:object

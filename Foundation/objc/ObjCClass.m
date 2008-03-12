@@ -324,6 +324,55 @@ IMP OBJCInitializeLookupAndCacheUniqueIdForObject(id object,SEL uniqueId){
    }
 }
 
+
+static inline BOOL OBJCCallCXXSelector(id self, Class class, SEL selector)
+{
+	struct objc_method *result=NULL;
+	if(!class->super_class)
+		return YES;
+
+	if(!OBJCCallCXXSelector(self, class->super_class, selector))
+		return NO;
+	
+	if((result=OBJCLookupUniqueIdInOnlyThisClass(class,selector))!=NULL)
+	{
+		if(result->method_imp(self, selector))
+		{
+			return YES;
+		}
+		else
+		{
+			object_cxxDestruct(self, class->super_class);
+			return NO;
+		}
+	}
+	return YES;
+}
+
+BOOL object_cxxConstruct(id self, Class class)
+{
+	static SEL cxx_constructor=0;
+	if(!cxx_constructor)
+		cxx_constructor=sel_registerName(".cxx_construct");
+	
+	if(!self)
+		return YES;
+	return OBJCCallCXXSelector(self, class, cxx_constructor);
+}
+
+BOOL object_cxxDestruct(id self, Class class)
+{
+	return;
+	static SEL cxx_destructor=0;
+	if(!cxx_destructor)
+		cxx_destructor=sel_registerName(".cxx_destruct");
+
+	if(!self)
+		return YES;
+	return OBJCCallCXXSelector(self, class, cxx_destructor);
+}
+
+
 void OBJCLogMsg(id object,SEL message){
 #if 1
    if(object==nil)

@@ -92,11 +92,19 @@ id NSAllocateObject(Class class,unsigned extraBytes,NSZone *zone) {
     result->isa=class;
 
 //OBJCLog("allocated instance of %s at %d",class->name,result);
-
+	
+	if(!object_cxxConstruct(result, result->isa))
+	{
+		HeapFree(zone,0,result);
+		result=nil;
+	}
+	
     return result;
 }
 
 void NSDeallocateObject(id object) {
+	object_cxxDestruct(object, object->isa);
+
    if(NSZombieEnabled)
     NSRegisterZombie(object);
    else {

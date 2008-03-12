@@ -62,11 +62,19 @@ id NSAllocateObject(Class class,unsigned extraBytes,NSZone *zone) {
 
     result=calloc(1,class->instance_size+extraBytes);
     result->isa=class;
+	
+	if(!object_cxxConstruct(result, object->isa))
+	{
+		free(result);
+		result=nil;
+	}
 
     return result;
 }
 
 void NSDeallocateObject(id object) {
+	object_cxxDestruct(object, object->isa);
+
    if(NSZombieEnabled)
     NSRegisterZombie(object);
    else 

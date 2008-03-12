@@ -160,6 +160,22 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	return [self _kvo_operator_count];
 }
 
+-(id)_kvo_operator_sum:(NSString*)parameter
+{
+	NSArray* objects=[self valueForKeyPath:parameter];
+	int count=[objects count];
+	int i;
+	
+	double sum=0.0;
+	for(i=0; i<count; i++)
+	{
+		id obj=[objects objectAtIndex:i];
+		sum+=[obj doubleValue];
+	}
+	return [NSNumber numberWithDouble:sum];	
+}
+
+
 -(void)setValue:(id)value forKey:(NSString*)key
 {
 	id en=[self objectEnumerator];
