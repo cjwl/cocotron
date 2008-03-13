@@ -15,10 +15,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -initWithFrame:(NSRect)frame {
    [super initWithFrame:frame];
    gState=&gStateX;
+   gState->_shouldAntialias=YES;
+   gState->_interpolationQuality=kCGInterpolationDefault;
    gState->_scalex=1;
    gState->_scaley=1;
    gState->_rotation=0;
    gState->_blendMode=kCGBlendModeNormal;
+   gState->_shadowColor=[[NSColor blackColor] copy];
+   gState->_shadowBlur=0;
+   gState->_shadowOffset=NSMakeSize(10,10);
    gState->_lineWidth=1;
    gState->_lineCap=kCGLineCapButt;
    gState->_lineJoin=kCGLineJoinMiter;
@@ -29,6 +34,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    _destinationColor=[[NSColor redColor] copy];
    _sourceColor=[[NSColor blueColor] copy];
    return self;
+}
+
+-(void)setOverlayImageRep:(NSBitmapImageRep *)imageRep {
+  [_overlayRep release];
+  _overlayRep=[imageRep retain];
 }
 
 -(void)setRender:(KGRender *)render {
@@ -51,6 +61,27 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)setBlendMode:(CGBlendMode)blendMode {
    gState->_blendMode=blendMode;
+   [self setNeedsDisplay:YES];
+}
+
+-(void)setShadowColor:(NSColor *)value {
+   [gState->_shadowColor release];
+   gState->_shadowColor=[value copy];
+   [self setNeedsDisplay:YES];
+}
+
+-(void)setShadowBlur:(float)value {
+   gState->_shadowBlur=value;
+   [self setNeedsDisplay:YES];
+}
+
+-(void)setShadowOffsetX:(float)value {
+   gState->_shadowOffset.width=value;
+   [self setNeedsDisplay:YES];
+}
+
+-(void)setShadowOffsetY:(float)value {
+   gState->_shadowOffset.height=value;
    [self setNeedsDisplay:YES];
 }
 
@@ -97,6 +128,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [self setNeedsDisplay:YES];
 }
 
+-(void)setShouldAntialias:(BOOL)value {
+   gState->_shouldAntialias=value;
+   [self setNeedsDisplay:YES];
+}
+
+-(void)setInterpolationQuality:(CGInterpolationQuality)value {
+   gState->_interpolationQuality=value;
+   [self setNeedsDisplay:YES];
+}
+
 -(void)resizeWithOldSuperviewSize:(NSSize)oldSize {
    [super resizeWithOldSuperviewSize:oldSize];
    [_render setSize:[self bounds].size];
@@ -139,11 +180,20 @@ static CGColorRef cgColorFromColor(NSColor *color){
    
    ctm=CGAffineTransformRotate(ctm,M_PI*gState->_rotation/180.0);
    
+   [_render setShadowColor:cgColorFromColor(gState->_shadowColor)];
+   [_render setShadowOffset:CGSizeMake(gState->_shadowOffset.width,gState->_shadowOffset.height)];
+   [_render setShadowBlur:gState->_shadowBlur];
+   
    [_render drawPath:path1 drawingMode:_pathDrawingMode blendMode:kCGBlendModeNormal
-      interpolationQuality:kCGInterpolationDefault fillColor:redColor strokeColor:blackColor lineWidth:gState->_lineWidth lineCap:gState->_lineCap lineJoin:gState->_lineJoin miterLimit:gState->_miterLimit dashPhase:gState->_dashPhase dashLengthsCount:gState->_dashLengthsCount dashLengths:gState->_dashLengths transform:ctm];
-   [_render drawPath:path2 drawingMode:_pathDrawingMode blendMode:gState->_blendMode
-      interpolationQuality:kCGInterpolationDefault fillColor:blueColor strokeColor:blackColor lineWidth:gState->_lineWidth lineCap:gState->_lineCap lineJoin:gState->_lineJoin miterLimit:gState->_miterLimit dashPhase:gState->_dashPhase dashLengthsCount:gState->_dashLengthsCount dashLengths:gState->_dashLengths transform:ctm];
+      interpolationQuality:kCGInterpolationDefault fillColor:redColor strokeColor:blackColor lineWidth:gState->_lineWidth lineCap:gState->_lineCap lineJoin:gState->_lineJoin miterLimit:gState->_miterLimit dashPhase:gState->_dashPhase dashLengthsCount:gState->_dashLengthsCount dashLengths:gState->_dashLengths transform:ctm antialias:gState->_shouldAntialias];
       
+   [_render setShadowColor:NULL];
+
+   [_render drawPath:path2 drawingMode:_pathDrawingMode blendMode:gState->_blendMode
+      interpolationQuality:kCGInterpolationDefault fillColor:blueColor strokeColor:blackColor lineWidth:gState->_lineWidth lineCap:gState->_lineCap lineJoin:gState->_lineJoin miterLimit:gState->_miterLimit dashPhase:gState->_dashPhase dashLengthsCount:gState->_dashLengthsCount dashLengths:gState->_dashLengths transform:ctm antialias:gState->_shouldAntialias];
+    
+   [_render drawBitmapImageRep:_overlayRep antialias:YES interpolationQuality:gState->_interpolationQuality blendMode:gState->_blendMode fillColor:blackColor transform:ctm];
+   
    [_render drawImageInContext:context];
 }
 

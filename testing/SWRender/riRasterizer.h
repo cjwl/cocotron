@@ -64,42 +64,27 @@ public:
 	Rasterizer();	//throws bad_alloc
 	~Rasterizer();
 
-	void		setScissor(const Array<Rectangle>& scissors);	//throws bad_alloc
+    void        setViewport(int vpx,int vpy,int vpwidth,int vpheight);
 
 	void		clear();
 	void		addEdge(const Vector2& v0, const Vector2& v1);	//throws bad_alloc
 
-	void		fill(int vpx, int vpy, int vpwidth, int vpheight, VGFillRule fillRule, VGRenderingQuality renderingQuality, const PixelPipe& pixelPipe) const;	//throws bad_alloc
+    void        setShouldAntialias(BOOL antialias);
+    
+	void		fill(VGFillRule fillRule, const PixelPipe& pixelPipe) ;	//throws bad_alloc
+
 private:
 	Rasterizer(const Rasterizer&);						//!< Not allowed.
 	const Rasterizer& operator=(const Rasterizer&);		//!< Not allowed.
+void Rasterizer::sortEdgeTable(int start,int end) const;
 
 	struct Edge
 	{
-		Edge() : v0(), v1() {}
 		Vector2		v0;
 		Vector2		v1;
-	};
-
-	struct ScissorEdge
-	{
-		ScissorEdge() : x(0), miny(0), maxy(0), direction(0) {}
-		int			x;
-		int			miny;
-		int			maxy;
-		int			direction;		//1 start, -1 end
-	};
-
-	struct ActiveEdge
-	{
-		ActiveEdge() : v0(), v1(), direction(0), minx(0.0f), maxx(0.0f), n(), cnst(0.0f) {}
-		Vector2		v0;
-		Vector2		v1;
-		int			direction;		//-1 down, 1 up
-		RIfloat		minx;			//for the current scanline
-		RIfloat		maxx;			//for the current scanline
-		Vector2		n;
-		RIfloat		cnst;
+        int         direction;
+        Vector2     normal;
+        RIfloat     cnst;
 	};
 
 	struct Sample
@@ -109,10 +94,18 @@ private:
 		RIfloat		y;
 		RIfloat		weight;
 	};
+    
+    int _vpx,_vpy,_vpwidth,_vpheight;
+    
+    int          _edgeCount;
+    int          _edgeCapacity;
+    struct Edge *_edges;
 
-	Array<Edge>			m_edges;
-	Array<ScissorEdge>	m_scissorEdges;
-	bool				m_scissor;
+	Sample samples[32];
+	int numSamples;
+	RIfloat sumWeights ;
+	RIfloat fradius ;		//max offset of the sampling points from a pixel center
+	bool reflect ;
 };
 
 //=======================================================================

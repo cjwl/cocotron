@@ -23,9 +23,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)drawPath:(CGPathRef)path drawingMode:(CGPathDrawingMode)drawingMode blendMode:(CGBlendMode)blendMode interpolationQuality:(CGInterpolationQuality)interpolationQuality fillColor:(CGColorRef)fillColor strokeColor:(CGColorRef)strokeColor 
-lineWidth:(float)lineWidth lineCap:(CGLineCap)lineCap lineJoin:(CGLineJoin)lineJoin miterLimit:(float)miterLimit dashPhase:(float)dashPhase dashLengthsCount:(unsigned)dashLengthsCount dashLengths:(float *)dashLengths transform:(CGAffineTransform)xform {
+lineWidth:(float)lineWidth lineCap:(CGLineCap)lineCap lineJoin:(CGLineJoin)lineJoin miterLimit:(float)miterLimit dashPhase:(float)dashPhase dashLengthsCount:(unsigned)dashLengthsCount dashLengths:(float *)dashLengths transform:(CGAffineTransform)xform antialias:(BOOL)antialias {
    CGContextSaveGState(_context);
    CGContextConcatCTM(_context,xform);
+   CGContextSetShouldAntialias(_context,antialias);
    CGContextSetBlendMode(_context,blendMode);
    CGContextSetFillColorWithColor(_context,fillColor);
    CGContextSetStrokeColorWithColor(_context,strokeColor);
@@ -36,7 +37,27 @@ lineWidth:(float)lineWidth lineCap:(CGLineCap)lineCap lineJoin:(CGLineJoin)lineJ
    CGContextSetLineDash(_context,dashPhase,dashLengths,dashLengthsCount);
    CGContextBeginPath(_context);
    CGContextAddPath(_context,path);
+   if(_shadowColor!=NULL){
+    CGContextSetShadowWithColor(_context,_shadowOffset,_shadowBlur,_shadowColor);
+   }
+   
    CGContextDrawPath(_context,drawingMode);
+   CGContextRestoreGState(_context);
+}
+
+-(void)drawBitmapImageRep:(NSBitmapImageRep *)imageRep antialias:(BOOL)antialias interpolationQuality:(CGInterpolationQuality)interpolationQuality blendMode:(CGBlendMode)blendMode fillColor:(CGColorRef)fillColor transform:(CGAffineTransform)xform {
+   CGDataProviderRef provider=CGDataProviderCreateWithData(NULL,[imageRep bitmapData],[imageRep pixelsHigh]*[imageRep bytesPerRow],NULL);
+
+   CGImageRef image=CGImageCreate([imageRep pixelsWide],[imageRep pixelsHigh],8,[imageRep bitsPerPixel],[imageRep bytesPerRow],CGColorSpaceCreateDeviceRGB(),kCGImageAlphaLast|kCGBitmapByteOrder32Little,provider,NULL,NO,kCGRenderingIntentDefault);
+   
+   CGContextSaveGState(_context);
+   CGContextConcatCTM(_context,xform);
+   CGContextSetShouldAntialias(_context,antialias);
+   CGContextSetInterpolationQuality(_context,interpolationQuality);
+   CGContextSetBlendMode(_context,blendMode);
+   CGContextSetFillColorWithColor(_context,fillColor);
+   CGContextDrawImage(_context,CGRectMake(0,0,[imageRep pixelsWide],[imageRep pixelsHigh]),image);
+   
    CGContextRestoreGState(_context);
 }
 

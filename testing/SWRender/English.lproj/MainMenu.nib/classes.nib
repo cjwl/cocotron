@@ -3,15 +3,21 @@
         {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 
         {
             ACTIONS = {
+                selectAntialias = id; 
                 selectBlendMode = id; 
                 selectDashLength = id; 
                 selectDashPhase = id; 
                 selectDestinationColor = id; 
+                selectInterpolationQuality = id; 
                 selectLineWidth = id; 
                 selectPathDrawingMode = id; 
                 selectRotation = id; 
                 selectScaleX = id; 
                 selectScaleY = id; 
+                selectShadowBlur = id; 
+                selectShadowColor = id; 
+                selectShadowOffsetX = id; 
+                selectShadowOffsetY = id; 
                 setectSourceColor = id; 
             }; 
             CLASS = KGRenderController; 

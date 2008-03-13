@@ -140,14 +140,6 @@ public:
 	RI_INLINE void				operator*=		( RIfloat f )						{ x *= f; y *= f; }
 	RI_INLINE void				operator-=		( const Vector2& v )			{ x -= v.x; y -= v.y; }
 
-/* unused
-	RI_INLINE Vector2&			operator=		( const Vector2& v )			{ x = v.x; y = v.y; return *this; }
-	RI_INLINE RIfloat&			operator[]		( int i )						{ RI_ASSERT(i>=0&&i<2); return (&x)[i]; }
-	RI_INLINE const RIfloat&	operator[]		( int i ) const					{ RI_ASSERT(i>=0&&i<2); return (&x)[i]; }
-	//if the vector is zero, returns false and leaves it unmodified
-	RI_INLINE void				scale			( const Vector2& v )			{ x *= v.x; y *= v.y; }	//component-wise scale
-	RI_INLINE void				negate			()								{ x = -x; y = -y; }
-*/
 	RIfloat						x,y;
 };
 

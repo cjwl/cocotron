@@ -51,7 +51,7 @@ Paint::Paint() :
 	m_colorRampSpreadMode(VG_COLOR_RAMP_SPREAD_PAD),
 	m_colorRampStops(),
 	m_inputColorRampStops(),
-	m_colorRampPremultiplied(VG_TRUE),
+	m_colorRampPremultiplied(YES),
 	m_linearGradientPoint0(0,0),
 	m_linearGradientPoint1(1,0),
 	m_radialGradientCenter(0,0),
@@ -322,7 +322,7 @@ void PixelPipe::radialGradient(RIfloat &g, RIfloat &rho, RIfloat x, RIfloat y) c
 * \note		
 *//*-------------------------------------------------------------------*/
 
-static Color readStopColor(const Array<Paint::GradientStop>& colorRampStops, int i, VGboolean colorRampPremultiplied)
+static Color readStopColor(const Array<Paint::GradientStop>& colorRampStops, int i, BOOL colorRampPremultiplied)
 {
 	RI_ASSERT(i >= 0 && i < colorRampStops.size());
 	Color c = colorRampStops[i].color;

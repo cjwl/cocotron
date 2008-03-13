@@ -11,6 +11,7 @@
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
+		FE0997430D87095000033630 /* overlay.png in Resources */ = {isa = PBXBuildFile; fileRef = FE0997420D87095000033630 /* overlay.png */; };
 		FE1F932E0D7EEDF900969491 /* KGRender.m in Sources */ = {isa = PBXBuildFile; fileRef = FE1F932D0D7EEDF900969491 /* KGRender.m */; };
 		FE1F93370D7EEE6900969491 /* KGRender_cg.m in Sources */ = {isa = PBXBuildFile; fileRef = FE1F93360D7EEE6900969491 /* KGRender_cg.m */; };
 		FE1F93430D7EEECA00969491 /* KGRender_baseline.mm in Sources */ = {isa = PBXBuildFile; fileRef = FE1F93420D7EEECA00969491 /* KGRender_baseline.mm */; };
@@ -33,6 +34,7 @@
 		32CA4F630368D1EE00C91783 /* SWRender_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SWRender_Prefix.pch; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* SWRender.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SWRender.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		FE0997420D87095000033630 /* overlay.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = overlay.png; sourceTree = "<group>"; };
 		FE1F932C0D7EEDF900969491 /* KGRender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGRender.h; sourceTree = "<group>"; };
 		FE1F932D0D7EEDF900969491 /* KGRender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGRender.m; sourceTree = "<group>"; };
 		FE1F93350D7EEE6900969491 /* KGRender_cg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGRender_cg.h; sourceTree = "<group>"; };
@@ -141,6 +143,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				FE0997420D87095000033630 /* overlay.png */,
 				8D1107310486CEB800E47090 /* Info.plist */,
 				089C165CFE840E0CC02AAC07 /* InfoPlist.strings */,
 				29B97318FDCFA39411CA2CEA /* MainMenu.nib */,
@@ -200,6 +203,7 @@
 			files = (
 				8D11072A0486CEB800E47090 /* MainMenu.nib in Resources */,
 				8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */,
+				FE0997430D87095000033630 /* overlay.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -252,6 +256,7 @@
 				ARCHS = i386;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_MODEL_TUNING = "";
+				GENERATE_PROFILING_CODE = NO;
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
 				PRODUCT_NAME = SWRender;

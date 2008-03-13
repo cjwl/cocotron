@@ -33,6 +33,8 @@
  * \note	
  *//*-------------------------------------------------------------------*/
 
+#import <Foundation/Foundation.h>
+
 #ifndef __RIMATH_H
 #include "riMath.h"
 #endif
@@ -74,7 +76,7 @@ public:
 	VGColorRampSpreadMode	m_colorRampSpreadMode;
 	Array<GradientStop>		m_colorRampStops;
 	Array<GradientStop>		m_inputColorRampStops;
-	VGboolean				m_colorRampPremultiplied;
+	BOOL				m_colorRampPremultiplied;
 	Vector2					m_linearGradientPoint0;
 	Vector2					m_linearGradientPoint1;
 	Vector2					m_radialGradientCenter;

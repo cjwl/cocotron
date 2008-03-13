@@ -13,11 +13,18 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @interface KGRenderView : NSView {
    KGRender   *_render;
+   NSBitmapImageRep *_overlayRep;
+   
    struct {
+    BOOL        _shouldAntialias;
+    CGInterpolationQuality _interpolationQuality;
     float       _scalex;
     float       _scaley;
     float       _rotation;
     CGBlendMode _blendMode;
+    NSColor    *_shadowColor;
+    float       _shadowBlur;
+    NSSize      _shadowOffset;
     float       _lineWidth;
     CGLineCap   _lineCap;
     CGLineJoin  _lineJoin;
@@ -33,10 +40,17 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)setRender:(KGRender *)render;
+-(void)setOverlayImageRep:(NSBitmapImageRep *)imageRep;
 
 -(void)setDestinationColor:(NSColor *)color;
 -(void)setSourceColor:(NSColor *)color;
 -(void)setBlendMode:(CGBlendMode)blendMode;
+
+-(void)setShadowColor:(NSColor *)value;
+-(void)setShadowBlur:(float)value;
+-(void)setShadowOffsetX:(float)value;
+-(void)setShadowOffsetY:(float)value;
+
 -(void)setPathDrawingMode:(CGPathDrawingMode)pathDrawingMode;
 -(void)setLineWidth:(float)width;
 -(void)setDashPhase:(float)value;
@@ -45,5 +59,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)setScaleX:(float)value;
 -(void)setScaleY:(float)value;
 -(void)setRotation:(float)value;
+
+-(void)setShouldAntialias:(BOOL)value;
+-(void)setInterpolationQuality:(CGInterpolationQuality)value;
 
 @end

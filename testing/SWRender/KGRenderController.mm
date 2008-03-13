@@ -17,6 +17,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [_cgView setRender:[[[KGRender_cg alloc] init] autorelease]];
    [_kgView setRender:[[[KGRender_baseline alloc] init] autorelease]];
    [[NSColorPanel sharedColorPanel] setShowsAlpha:YES];
+   
+   NSString         *path=[[NSBundle bundleForClass:[self class]] pathForResource:@"overlay" ofType:@"png"];
+   
+  _imageRep=[NSBitmapImageRep imageRepWithContentsOfFile:path];
+  
+   [_cgView setOverlayImageRep:_imageRep];
+   [_kgView setOverlayImageRep:_imageRep];
 }
 
 -(void)selectDestinationColor:sender {
@@ -32,6 +39,26 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)selectBlendMode:sender {
    [_cgView setBlendMode:(CGBlendMode)[sender selectedTag]];
    [_kgView setBlendMode:(CGBlendMode)[sender selectedTag]];
+}
+
+-(void)selectShadowColor:sender {
+   [_cgView setShadowColor:[sender color]];
+   [_kgView setShadowColor:[sender color]];
+}
+
+-(void)selectShadowBlur:sender {
+   [_cgView setShadowBlur:[sender floatValue]];
+   [_kgView setShadowBlur:[sender floatValue]];
+}
+
+-(void)selectShadowOffsetX:sender {
+   [_cgView setShadowOffsetX:[sender floatValue]];
+   [_kgView setShadowOffsetX:[sender floatValue]];
+}
+
+-(void)selectShadowOffsetY:sender {
+   [_cgView setShadowOffsetY:[sender floatValue]];
+   [_kgView setShadowOffsetY:[sender floatValue]];
 }
 
 -(void)selectPathDrawingMode:sender {
@@ -67,6 +94,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)selectRotation:sender {
    [_cgView setRotation:[sender floatValue]];
    [_kgView setRotation:[sender floatValue]];
+}
+
+-(void)selectAntialias:sender {
+   [_cgView setShouldAntialias:[sender intValue]];
+   [_kgView setShouldAntialias:[sender intValue]];
+}
+
+-(void)selectInterpolationQuality:sender {
+   [_cgView setInterpolationQuality:(CGInterpolationQuality)[sender selectedTag]];
+   [_kgView setInterpolationQuality:(CGInterpolationQuality)[sender selectedTag]];
 }
 
 @end

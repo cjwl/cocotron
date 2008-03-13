@@ -853,94 +853,6 @@ void Image::clear(const Color& clearColor, int x, int y, int w, int h)
 }
 
 /*-------------------------------------------------------------------*//*!
-* \brief	Clears a rectangular portion of an image with the given clear color.
-*			Takes scissoring into account.
-* \param	
-* \return	
-* \note		
-*//*-------------------------------------------------------------------*/
-
-void Image::clear(const Color& clearColor, int x, int y, int w, int h, const Array<Rectangle>& scissors)
-{
-	RI_ASSERT(m_data);
-	RI_ASSERT(m_referenceCount > 0);
-
-	//intersect clear region with image bounds
-	Rectangle r(0,0,m_width,m_height);
-	r.intersect(Rectangle(x,y,w,h));
-	if(!r.width || !r.height)
-		return;		//intersection is empty or one of the rectangles is invalid
-
-	Array<ScissorEdge> scissorEdges;
-	for(int i=0;i<scissors.size();i++)
-	{
-		if(scissors[i].width > 0 && scissors[i].height > 0)
-		{
-			ScissorEdge e;
-			e.miny = scissors[i].y;
-			e.maxy = RI_INT_ADDSATURATE(scissors[i].y, scissors[i].height);
-
-			e.x = scissors[i].x;
-			e.direction = 1;
-			scissorEdges.push_back(e);	//throws bad_alloc
-			e.x = RI_INT_ADDSATURATE(scissors[i].x, scissors[i].width);
-			e.direction = -1;
-			scissorEdges.push_back(e);	//throws bad_alloc
-		}
-	}
-	if(!scissorEdges.size())
-		return;	//there are no scissor rectangles => nothing is visible
-
-	//sort scissor edges by edge x
-	for(int e=0;e<scissorEdges.size()-1;e++)
-	{
-		for(int f=e+1;f<scissorEdges.size();f++)
-		{
-			if(scissorEdges[e].x > scissorEdges[f].x)
-			{
-				ScissorEdge tmp = scissorEdges[e];
-				scissorEdges[e] = scissorEdges[f];
-				scissorEdges[f] = tmp;
-			}
-		}
-	}
-
-	//clear the image
-	Color col = clearColor;
-	col.convert(m_desc.internalFormat);
-
-	Array<ScissorEdge> scissorAet;
-	for(int j=r.y;j<r.y + r.height;j++)
-	{
-		//gather scissor edges intersecting this scanline
-		scissorAet.clear();
-		for(int e=0;e<scissorEdges.size();e++)
-		{
-			const ScissorEdge& se = scissorEdges[e];
-			if(j >= se.miny && j < se.maxy)
-				scissorAet.push_back(scissorEdges[e]);	//throws bad_alloc
-		}
-		if(!scissorAet.size())
-			continue;	//scissoring is on, but there are no scissor rectangles on this scanline
-
-		//clear a scanline
-		int scissorWinding = 0;
-		int scissorIndex = 0;
-		for(int i=r.x;i<r.x + r.width;i++)
-		{
-			while(scissorIndex < scissorAet.size() && scissorAet[scissorIndex].x <= i)
-				scissorWinding += scissorAet[scissorIndex++].direction;
-			RI_ASSERT(scissorWinding >= 0);
-
-			if(scissorWinding)
-				writePixel(i, j, col);
-		}
-	}
-
-	m_mipmapsValid = false;
-}
-
-/*-------------------------------------------------------------------*//*!
 * \brief	Blits a source region to destination. Source and destination
 *			can overlap.
 * \param	
@@ -1071,160 +983,6 @@ void Image::blit(const Image& src, int sx, int sy, int dx, int dy, int w, int h,
 			writePixel(dstsx + i, dstsy + j, col);
 		}
 	}
-	m_mipmapsValid = false;
-}
-
-/*-------------------------------------------------------------------*//*!
-* \brief	Blits a source region to destination. Source and destination
-*			can overlap. Takes scissoring into account.
-* \param	
-* \return	
-* \note		
-*//*-------------------------------------------------------------------*/
-
-void Image::blit(const Image& src, int sx, int sy, int dx, int dy, int w, int h, const Array<Rectangle>& scissors)
-{
-	RI_ASSERT(src.m_data);	//source exists
-	RI_ASSERT(m_data);	//destination exists
-	RI_ASSERT(w > 0 && h > 0);
-	RI_ASSERT(m_referenceCount > 0 && src.m_referenceCount > 0);
-
-	sx = RI_INT_MIN(RI_INT_MAX(sx, (int)(RI_INT32_MIN>>2)), (int)(RI_INT32_MAX>>2));
-	sy = RI_INT_MIN(RI_INT_MAX(sy, (int)(RI_INT32_MIN>>2)), (int)(RI_INT32_MAX>>2));
-	dx = RI_INT_MIN(RI_INT_MAX(dx, (int)(RI_INT32_MIN>>2)), (int)(RI_INT32_MAX>>2));
-	dy = RI_INT_MIN(RI_INT_MAX(dy, (int)(RI_INT32_MIN>>2)), (int)(RI_INT32_MAX>>2));
-	w = RI_INT_MIN(w, (int)(RI_INT32_MAX>>2));
-	h = RI_INT_MIN(h, (int)(RI_INT32_MAX>>2));
-	int srcsx = sx, srcex = sx + w, dstsx = dx, dstex = dx + w;
-	if(srcsx < 0)
-	{
-		dstsx -= srcsx;
-		srcsx = 0;
-	}
-	if(srcex > src.m_width)
-	{
-		dstex -= srcex - src.m_width;
-		srcex = src.m_width;
-	}
-	if(dstsx < 0)
-	{
-		srcsx -= dstsx;
-		dstsx = 0;
-	}
-	if(dstex > m_width)
-	{
-		srcex -= dstex - m_width;
-		dstex = m_width;
-	}
-	RI_ASSERT(srcsx >= 0 && dstsx >= 0 && srcex <= src.m_width && dstex <= m_width);
-	w = srcex - srcsx;
-	RI_ASSERT(w == dstex - dstsx);
-	if(w <= 0)
-		return;	//zero area
-
-	int srcsy = sy, srcey = sy + h, dstsy = dy, dstey = dy + h;
-	if(srcsy < 0)
-	{
-		dstsy -= srcsy;
-		srcsy = 0;
-	}
-	if(srcey > src.m_height)
-	{
-		dstey -= srcey - src.m_height;
-		srcey = src.m_height;
-	}
-	if(dstsy < 0)
-	{
-		srcsy -= dstsy;
-		dstsy = 0;
-	}
-	if(dstey > m_height)
-	{
-		srcey -= dstey - m_height;
-		dstey = m_height;
-	}
-	RI_ASSERT(srcsy >= 0 && dstsy >= 0 && srcey <= src.m_height && dstey <= m_height);
-	h = srcey - srcsy;
-	RI_ASSERT(h == dstey - dstsy);
-	if(h <= 0)
-		return;	//zero area
-
-	Array<ScissorEdge> scissorEdges;
-	for(int i=0;i<scissors.size();i++)
-	{
-		if(scissors[i].width > 0 && scissors[i].height > 0)
-		{
-			ScissorEdge e;
-			e.miny = scissors[i].y;
-			e.maxy = RI_INT_ADDSATURATE(scissors[i].y, scissors[i].height);
-
-			e.x = scissors[i].x;
-			e.direction = 1;
-			scissorEdges.push_back(e);	//throws bad_alloc
-			e.x = RI_INT_ADDSATURATE(scissors[i].x, scissors[i].width);
-			e.direction = -1;
-			scissorEdges.push_back(e);	//throws bad_alloc
-		}
-	}
-	if(!scissorEdges.size())
-		return;	//there are no scissor rectangles => nothing is visible
-
-	//sort scissor edges by edge x
-	for(int e=0;e<scissorEdges.size()-1;e++)
-	{
-		for(int f=e+1;f<scissorEdges.size();f++)
-		{
-			if(scissorEdges[e].x > scissorEdges[f].x)
-			{
-				ScissorEdge tmp = scissorEdges[e];
-				scissorEdges[e] = scissorEdges[f];
-				scissorEdges[f] = tmp;
-			}
-		}
-	}
-
-	Array<Color> tmp;
-	tmp.resize(w*h);	//throws bad_alloc
-
-	//copy source region to tmp
-	for(int j=0;j<h;j++)
-	{
-		for(int i=0;i<w;i++)
-		{
-			Color c = src.readPixel(srcsx + i, srcsy + j);
-			c.convert(m_desc.internalFormat);
-			tmp[j*w+i] = c;
-		}
-	}
-
-	Array<ScissorEdge> scissorAet;
-	for(int j=0;j<h;j++)
-	{
-		//gather scissor edges intersecting this scanline
-		scissorAet.clear();
-		for(int e=0;e<scissorEdges.size();e++)
-		{
-			const ScissorEdge& se = scissorEdges[e];
-			if(dstsy + j >= se.miny && dstsy + j < se.maxy)
-				scissorAet.push_back(scissorEdges[e]);	//throws bad_alloc
-		}
-		if(!scissorAet.size())
-			continue;	//scissoring is on, but there are no scissor rectangles on this scanline
-
-		//blit a scanline
-		int scissorWinding = 0;
-		int scissorIndex = 0;
-		for(int i=0;i<w;i++)
-		{
-			while(scissorIndex < scissorAet.size() && scissorAet[scissorIndex].x <= dstsx + i)
-				scissorWinding += scissorAet[scissorIndex++].direction;
-			RI_ASSERT(scissorWinding >= 0);
-
-			if(scissorWinding)
-				writePixel(dstsx + i, dstsy + j, tmp[j*w+i]);
-		}
-	}
-
 	m_mipmapsValid = false;
 }
 
@@ -1601,15 +1359,15 @@ Color Image::resample(RIfloat x, RIfloat y, const Matrix3x3& surfaceToImage, CGI
 {
 	RI_ASSERT(m_referenceCount > 0);
 
-	VGbitfield aq = getAllowedQuality();
-	aq &= (VGbitfield)quality;
+	//VGbitfield aq = getAllowedQuality();
+	//aq &= (VGbitfield)quality;
 
 	Vector3 uvw(x,y,1.0f);
 	uvw = surfaceToImage * uvw;
 	RIfloat oow = 1.0f / uvw.z;
 	uvw *= oow;
 
-	if(aq & kCGInterpolationHigh)
+	if(quality== kCGInterpolationHigh)
 	{	//EWA on mipmaps
 		makeMipMaps();	//throws bad_alloc
 
@@ -1724,7 +1482,7 @@ Color Image::resample(RIfloat x, RIfloat y, const Matrix3x3& surfaceToImage, CGI
 		sumweight = 1.0f / sumweight;
 		return color * sumweight;
 	}
-	else if(aq & kCGInterpolationLow)
+	else if(quality== kCGInterpolationLow)
 	{	//bilinear
 		uvw.x -= 0.5f;
 		uvw.y -= 0.5f;

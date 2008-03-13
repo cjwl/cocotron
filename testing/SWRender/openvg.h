@@ -65,11 +65,6 @@ typedef int VGint;
 typedef unsigned int VGuint;
 typedef unsigned int VGbitfield;
 
-typedef enum {
-  VG_FALSE = 0,
-  VG_TRUE  = 1
-} VGboolean;
-
 #define VG_MAXSHORT ((VGshort)((~((unsigned)0)) >> 1))
 #define VG_MAXINT ((VGint)((~((unsigned)0)) >> 1))
 
@@ -144,12 +139,6 @@ typedef enum {
   VG_MAX_FLOAT                                = 0x1169,
   VG_MAX_GAUSSIAN_STD_DEVIATION               = 0x116A
 } VGParamType;
-
-typedef enum {
-  VG_RENDERING_QUALITY_NONANTIALIASED         = 0x1200,
-  VG_RENDERING_QUALITY_FASTER                 = 0x1201,
-  VG_RENDERING_QUALITY_BETTER                 = 0x1202  /* Default */
-} VGRenderingQuality;
 
 typedef enum {
   VG_PIXEL_LAYOUT_UNKNOWN                     = 0x1300,

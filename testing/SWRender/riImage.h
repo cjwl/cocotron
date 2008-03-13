@@ -208,9 +208,7 @@ public:
 
 	void				resize(int newWidth, int newHeight, const Color& newPixelColor);	//throws bad_alloc
 	void				clear(const Color& clearColor, int x, int y, int w, int h);
-	void				clear(const Color& clearColor, int x, int y, int w, int h, const Array<Rectangle>& scissors);
 	void				blit(const Image& src, int sx, int sy, int dx, int dy, int w, int h, bool dither);	//throws bad_alloc
-	void				blit(const Image& src, int sx, int sy, int dx, int dy, int w, int h, const Array<Rectangle>& scissors);	//throws bad_alloc
 	void				mask(const Image* src, VGMaskOperation operation, int x, int y, int w, int h);
 
 	Color				readPixel(int x, int y) const;
