@@ -362,7 +362,6 @@ BOOL object_cxxConstruct(id self, Class class)
 
 BOOL object_cxxDestruct(id self, Class class)
 {
-	return;
 	static SEL cxx_destructor=0;
 	if(!cxx_destructor)
 		cxx_destructor=sel_registerName(".cxx_destruct");

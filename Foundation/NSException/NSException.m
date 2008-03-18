@@ -150,3 +150,32 @@ void NSSetUncaughtExceptionHandler(NSUncaughtExceptionHandler *proc) {
 
 @end
 
+
+
+void objc_exception_try_enter(void* exceptionFrame)
+{
+	__NSPushExceptionFrame((NSExceptionFrame *)exceptionFrame);
+}
+
+void objc_exception_try_exit(void* exceptionFrame)
+{
+	__NSPopExceptionFrame((NSExceptionFrame *)exceptionFrame);
+}
+
+id objc_exception_extract(void *exceptionFrame) 
+{
+    NSExceptionFrame *frame = (NSExceptionFrame *)exceptionFrame;
+    return (id)frame->exception;
+}
+
+void objc_exception_throw(id exception) 
+{
+	_NSRaiseException(exception);
+	abort();
+}
+
+int objc_exception_match(Class exceptionClass, id exception) 
+{
+	return [exception isKindOfClass:exceptionClass];
+}
+
