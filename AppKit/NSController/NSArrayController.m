@@ -44,7 +44,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	[self setKeys:[NSArray arrayWithObjects:@"contentArray", @"selectionIndexes", nil]
  triggerChangeNotificationsForDependentKey:@"selection"];
 	[self setKeys:[NSArray arrayWithObjects:@"contentArray", @"selectionIndexes", @"selection", nil]
+triggerChangeNotificationsForDependentKey:@"selectionIndex"];
+	[self setKeys:[NSArray arrayWithObjects:@"contentArray", @"selectionIndexes", @"selection", nil]
  triggerChangeNotificationsForDependentKey:@"selectedObjects"];
+	
 	[self setKeys:[NSArray arrayWithObjects:@"selectionIndexes", nil]
  triggerChangeNotificationsForDependentKey:@"canRemove"];
 	[self setKeys:[NSArray arrayWithObjects:@"selectionIndexes", nil]
@@ -124,9 +127,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	else	
 	{
 		[self setSelectionIndexes:oldSelectionIndexes];
-
-		NSLog(@"setting %@", oldSelectionIndexes);
-		NSLog(@"result %@", [self selectionIndexes]);
 	}
 	
 	[self _selectionMayHaveChanged];
@@ -197,12 +197,17 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #pragma mark -
 #pragma mark Selection
 
-- (NSIndexSet *)selectionIndexes {
-    return [[_selectionIndexes retain] autorelease];
+-(NSUInteger)selectionIndex
+{
+	return [_selectionIndexes firstIndex];
 }
 
 -(BOOL)setSelectionIndex:(unsigned)index {
 	return [self setSelectionIndexes:[NSIndexSet indexSetWithIndex:index]];
+}
+
+- (NSIndexSet *)selectionIndexes {
+    return [[_selectionIndexes retain] autorelease];
 }
 
 - (BOOL)setSelectionIndexes:(NSIndexSet *)value {
@@ -214,11 +219,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	
 	// use isEqualToIndexSet: ?	
     if (_selectionIndexes != value) {
+		[self willChangeValueForKey:@"selectionIndexes"];
+
         [_selectionIndexes release];
         _selectionIndexes = [value copy];
-		//NSLog(@"selectionIndexes changed to %@", value);
-		
 		[self _selectionMayHaveChanged];
+
+		[self didChangeValueForKey:@"selectionIndexes"];
 		return YES;
     }
     return NO;
