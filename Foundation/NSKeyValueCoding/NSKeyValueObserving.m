@@ -17,6 +17,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSKeyValueCoding.h>
 #import <Foundation/NSMethodSignature.h>
 #import <Foundation/NSIndexSet.h>
+#import <Foundation/NSDebug.h>
 
 #import <objc/objc-runtime.h>
 #import <objc/objc-class.h>
@@ -379,18 +380,18 @@ static NSLock *kvoLock=nil;
 
 +(void)setKeys:(NSArray *)keys triggerChangeNotificationsForDependentKey:(NSString *)dependentKey
 {
-	NSMutableDictionary* dict=[self observationInfo];
-	if(!dict)
+	NSMutableDictionary* observationInfo=[self observationInfo];
+	if(!observationInfo)
 	{
 		[self setObservationInfo:[NSMutableDictionary new]];
-		dict=[self observationInfo];
+		observationInfo=[self observationInfo];
 	}
 	
-	NSMutableDictionary *dependents=[dict objectForKey:_KVO_DependentKeysTriggeringChangeNotification];
-	if(!dependents)
+	NSMutableDictionary *dependencies=[observationInfo objectForKey:_KVO_DependentKeysTriggeringChangeNotification];
+	if(!dependencies)
 	{
-		dependents=[NSMutableDictionary dictionary];
-		[dict setObject:dependents
+		dependencies=[NSMutableDictionary dictionary];
+		[observationInfo setObject:dependencies
 				 forKey:_KVO_DependentKeysTriggeringChangeNotification];
 	}
 
@@ -398,8 +399,15 @@ static NSLock *kvoLock=nil;
 	id en=[keys objectEnumerator];
 	while(key = [en nextObject])
 	{
-		[dependents setObject:dependentKey 
-					   forKey:key];
+		NSMutableSet* allDependencies=[dependencies objectForKey:key];
+		if(!allDependencies)
+		{
+			allDependencies=[NSMutableSet new];
+			[dependencies setObject:allDependencies 
+						   forKey:key];
+			[allDependencies release];
+		}
+		[allDependencies addObject:dependentKey];
 	}
 }
 @end
@@ -574,7 +582,7 @@ CHANGE_DECLARATION(SEL)
 				dependentsForKey=[NSMutableSet set];
 				[ownDependents setObject:dependentsForKey forKey:key];
 			}
-			[dependentsForKey addObject:[classDependents objectForKey:key]];
+			[dependentsForKey unionSet:[classDependents objectForKey:key]];
 		}
 
 		class=[class superclass];
@@ -661,6 +669,7 @@ CHANGE_DECLARATION(SEL)
 			   [[self class] automaticallyNotifiesObserversForKey:[methodName _KVC_setterKeyNameFromSelectorName]])
 			{
 				const char* firstParameterType=[[self methodSignatureForSelector:method->method_name] getArgumentTypeAtIndex:2];
+				const char* returnType=[[self methodSignatureForSelector:method->method_name] methodReturnType];
 
 				/* check for correct type: either perfect match
 				or primitive signed type matching unsigned type
@@ -686,9 +695,17 @@ CHANGE_DECLARATION(SEL)
 				CHECK_AND_ASSIGN(char);
 				CHECK_AND_ASSIGN(long);
 				CHECK_AND_ASSIGN(SEL);
-
-//				if(kvoSelector==0)
-//					NSLog(@"type %s not defined in %s:%i (selector %s on class %@)", firstParameterType, __FILE__, __LINE__, SELNAME(method->method_name), [self className]);
+				
+				if(kvoSelector==0 && NSDebugEnabled)
+				{
+					//NSLog(@"type %s not defined in %s:%i (selector %s on class %@)", firstParameterType, __FILE__, __LINE__, SELNAME(method->method_name), [self className]);
+				}
+				if(strcmp(returnType, @encode(void)))
+				{
+					if(NSDebugEnabled)
+						NSLog(@"selector %s on class %@ has return type %s and will not be modified for automatic KVO notification", SELNAME(method->method_name), [self className], returnType);
+					kvoSelector=0;
+				}
 			}
 			
 			// long selectors

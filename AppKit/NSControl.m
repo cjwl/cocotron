@@ -51,7 +51,7 @@ static NSMutableDictionary *cellClassDictionary = nil;
    if([coder isKindOfClass:[NSNibKeyedUnarchiver class]]){
     NSNibKeyedUnarchiver *keyed=(NSNibKeyedUnarchiver *)coder;
     
-    _cell=[[keyed decodeObjectForKey:@"NSCell"] retain];
+	[self setCell:[keyed decodeObjectForKey:@"NSCell"]];
    }
    else {
     [NSException raise:NSInvalidArgumentException format:@"%@ can not initWithCoder:%@",isa,[coder class]];
@@ -63,7 +63,7 @@ static NSMutableDictionary *cellClassDictionary = nil;
 -initWithFrame:(NSRect)frame {
    [super initWithFrame:frame];
 // FIX, verify in subclasses
-   _cell = [[[[self class] cellClass] alloc] init];
+	[self setCell:[[[[[self class] cellClass] alloc] init] autorelease]];
    return self;
 }
 

@@ -154,7 +154,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)selectItemAtIndex:(int)index {
+	[self willChangeValueForKey:@"selectedItem"];
    _selectedIndex=index;
+	[self didChangeValueForKey:@"selectedItem"];
 }
 
 -(void)selectItemWithTitle:(NSString *)title {
@@ -199,7 +201,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    else
     [window selectItemAtIndex:_selectedIndex];
 
-   _selectedIndex=[window runTrackingWithEvent:event];
+	[self selectItemAtIndex:[window runTrackingWithEvent:event]];
    [window close]; // release when closed=YES
 
    return YES;

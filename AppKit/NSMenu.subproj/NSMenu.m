@@ -101,6 +101,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return _itemArray;
 }
 
+-(void)_setItemArray:itemArray {
+	if(_itemArray!=itemArray)
+	{
+		[_itemArray release];
+		_itemArray=[itemArray retain];
+	}
+}
+
 -(BOOL)autoenablesItems {
    return _autoenablesItems;
 }
@@ -213,7 +221,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)addItem:(NSMenuItem *)item {
    [item performSelector:@selector(_setMenu:) withObject:self];
-   [_itemArray addObject:item];
+	[[self mutableArrayValueForKey:@"itemArray"] addObject:item];
 }
 
 -(NSMenuItem *)addItemWithTitle:(NSString *)title action:(SEL)action keyEquivalent:(NSString *)keyEquivalent {
@@ -231,7 +239,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)removeItem:(NSMenuItem *)item {
    [item performSelector:@selector(_setMenu:) withObject:nil];
-   [_itemArray removeObjectIdenticalTo:item];
+	[[self mutableArrayValueForKey:@"itemArray"] removeObjectIdenticalTo:item];
 }
 
 -(void)removeItemAtIndex:(int)index {
@@ -240,7 +248,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)insertItem:(NSMenuItem *)item atIndex:(int)index {
    [item performSelector:@selector(_setMenu:) withObject:self];
-   [_itemArray insertObject:item atIndex:index];
+	[[self mutableArrayValueForKey:@"itemArray"] insertObject:item atIndex:index];
 }
 
 -(NSMenuItem *)insertItemWithTitle:(NSString *)title action:(SEL)action keyEquivalent:(NSString *)keyEquivalent atIndex:(int)index {

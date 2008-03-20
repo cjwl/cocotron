@@ -9,6 +9,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 // Original - Christopher Lloyd <cjwl@objc.net>, David Young <daver@geeks.org>
 #import <AppKit/NSPopUpButton.h>
 #import <AppKit/NSPopUpButtonCell.h>
+#import <AppKit/NSObject+BindingSupport.h>
+
+static NSString *NSPopUpButtonBindingObservationContext=@"NSPopUpButtonBindingObservationContext";
 
 @implementation NSPopUpButton
 
@@ -22,6 +25,17 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     [self setPullsDown:pullsDown];
     
     return self;
+}
+
+-(void)dealloc
+{
+	NS_DURING
+	[self removeObserver:self forKeyPath:@"cell.selectedItem"];
+	[self removeObserver:self forKeyPath:@"cell.menu.itemArray"];
+	NS_HANDLER
+	NS_ENDHANDLER
+	
+	[super dealloc];
 }
 
 -(BOOL)pullsDown
@@ -157,4 +171,118 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     [self mouseDown:nil];
 }
 
+@end
+
+
+@implementation NSPopUpButton (BindingSupport)
+-(void)_setItemValues:(NSArray*)values forKey:(NSString*)key;
+{
+	int i;
+
+	if([values count]!=[self numberOfItems])
+	{
+		[self removeAllItems];
+		for(i=0; i<[values count]; i++)
+			[self addItemWithTitle:@""];
+	}
+	if(!key)
+		return;
+	
+	for(i=0; i<[values count]; i++)
+	{
+		[[self itemAtIndex:i] setValue:[values objectAtIndex:i] forKey:key];
+	}
+}
+
+-(id)_contentValues
+{
+	return [self valueForKeyPath:@"itemArray.title"];
+}
+
+-(void)_setContentValues:(NSArray*)values
+{
+	[self _setItemValues:values forKey:@"title"];
+}
+
+-(id)_content
+{
+	return [self valueForKeyPath:@"itemArray.representedObject"];
+}
+
+-(void)_setContent:(NSArray*)values
+{
+	[self _setItemValues:values forKey:@"representedObject"];
+	if(![self _binderForBinding:@"contentValues"])
+	{
+		[self _setItemValues:[values valueForKey:@"description"] forKey:@"title"];
+	}
+}
+
+
+
+-(NSUInteger)_selectedIndex
+{
+	return [self indexOfSelectedItem];
+}
+
+-(void)_setSelectedIndex:(NSUInteger)idx
+{
+	[self selectItemAtIndex:idx];
+}
+
+-(id)_selectedValue
+{
+	return [self titleOfSelectedItem];
+}
+
+-(void)_setSelectedValue:(id)value
+{
+	return [self selectItemWithTitle:value];
+}
+
+- (void) bind:(NSString *)binding toObject:(id)observable withKeyPath:(NSString *)keyPath options:(NSDictionary *)options
+{
+	[self addObserver:self 
+		   forKeyPath:@"cell.menu.itemArray" 
+			  options:NSKeyValueObservingOptionPrior
+			  context:NSPopUpButtonBindingObservationContext];
+	
+	[self addObserver:self 
+		   forKeyPath:@"cell.selectedItem" 
+			  options:NSKeyValueObservingOptionPrior
+			  context:NSPopUpButtonBindingObservationContext];
+	
+	[super bind:binding toObject:observable withKeyPath:keyPath options:options];
+}
+
+- (void) observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+    if (context == NSPopUpButtonBindingObservationContext) {
+		if([keyPath isEqualToString:@"cell.selectedItem"])
+		{
+			if([[change objectForKey:NSKeyValueChangeNotificationIsPriorKey] boolValue])
+			{
+				[self willChangeValueForKey:@"selectedIndex"];
+			}
+			else
+			{
+				[self didChangeValueForKey:@"selectedIndex"];
+			}
+		}
+		else
+		{
+			if([[change objectForKey:NSKeyValueChangeNotificationIsPriorKey] boolValue])
+			{
+				[self willChangeValueForKey:@"contentValues"];
+			}
+			else
+			{
+				[self didChangeValueForKey:@"contentValues"];
+			}
+		}
+	}
+	else {
+		[super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
+	}
+}
 @end
