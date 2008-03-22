@@ -30,11 +30,7 @@
  * \note	
  *//*-------------------------------------------------------------------*/
 
-#include "riDefs.h"
-#include "riMath.h"
-
-namespace OpenVGRI
-{
+#import "riMath.h"
 
 /*-------------------------------------------------------------------*//*!
 * \brief	Inverts a 3x3 matrix. Returns false if the matrix is singular.
@@ -66,7 +62,3 @@ bool Matrix3x3::invert()
 	*this = t;
 	return true;
 }
-
-//==============================================================================================
-
-}	//namespace OpenVGRI

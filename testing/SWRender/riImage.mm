@@ -26,44 +26,14 @@
  *
  *//**
  * \file
- * \brief	Implementation of Color and Image functions.
+ * \brief	Implementation of VGColor and Image functions.
  * \note	
  *//*-------------------------------------------------------------------*/
 
-#include "riImage.h"
-#include "riRasterizer.h"
+#import "riImage.h"
+#import "KGRasterizer.h"
 
-//==============================================================================================
-
-/* TODO Khronos Bugzilla bugs 1094&1095
-
-1094:
-2. I would expect B to be the correct behaviour. In theory, an implementation
-using the most na•ve implementation, would keep the deleted ancestor around as
-a ghost, with the child images still using its original storage. This would
-mean that no images that have, or used to have, a common ancestor, can be used
-as render targets until it is the only remaining sibling. Even if child images
-did not intersect, and you could use them as a valid render target on a given
-platform, it cannot be guaranteed to be the case for every VG implementation.
-
-3. "The image may once again be used as a rendering target when all other
-images that share storage with it have been destroyed", so in a similar vein, i
-would suggest the image can be attached to a pbuffer when it is the only
-remaining child.
-
-1095:
-This bug is related to spec clarification in bug: 1094
-
-The response to this issue on the mailing list seemed to indicate that both of
-these issues are bugs in the RI -- see bug 1094.
-
-3. Can a child image A be bound to a pbuffer after its parent image P has been
-deleted (and it has no other siblings)?  The RI does not allow this.  Is this
-the expected behavior?
-*/
-
-namespace OpenVGRI
-{
+#define RI_MAX_GAUSSIAN_STD_DEVIATION	128.0f
 
 bool isValidImageFormat(int f)
 {
@@ -105,19 +75,19 @@ static unsigned int colorToInt(RIfloat c, int maxc)
 * \note		
 *//*-------------------------------------------------------------------*/
 
-static RI_INLINE RIfloat intToColor(unsigned int i, unsigned int maxi)
+static inline RIfloat intToColor(unsigned int i, unsigned int maxi)
 {
 	return (RIfloat)(i & maxi) / (RIfloat)maxi;
 }
 
 /*-------------------------------------------------------------------*//*!
-* \brief	Converts from packed integer in a given format to a Color.
+* \brief	Converts from packed integer in a given format to a VGColor.
 * \param	
 * \return	
 * \note		
 *//*-------------------------------------------------------------------*/
 
-void Color::unpack(unsigned int inputData, const Color::Descriptor& inputDesc)
+void VGColor::unpack(unsigned int inputData, const VGColorDescriptor& inputDesc)
 {
 	int rb = inputDesc.redBits;
 	int gb = inputDesc.greenBits;
@@ -153,13 +123,13 @@ void Color::unpack(unsigned int inputData, const Color::Descriptor& inputDesc)
 }
 
 /*-------------------------------------------------------------------*//*!
-* \brief	Converts from Color to a packed integer in a given format.
+* \brief	Converts from VGColor to a packed integer in a given format.
 * \param	
 * \return	
 * \note		
 *//*-------------------------------------------------------------------*/
 
-unsigned int Color::pack(const Color::Descriptor& outputDesc) const
+unsigned int VGColor::pack(const VGColorDescriptor& outputDesc) const
 {
 	RI_ASSERT(r >= 0.0f && r <= 1.0f);
 	RI_ASSERT(g >= 0.0f && g <= 1.0f);
@@ -237,7 +207,7 @@ static RIfloat lRGBtoL(RIfloat r, RIfloat g, RIfloat b)
 	return 0.2126f*r + 0.7152f*g + 0.0722f*b;
 }
 
-void Color::convert(InternalFormat outputFormat)
+void VGColor::convert(VGColorInternalFormat outputFormat)
 {
 	RI_ASSERT(r >= 0.0f && r <= 1.0f);
 	RI_ASSERT(g >= 0.0f && g <= 1.0f);
@@ -279,18 +249,18 @@ void Color::convert(InternalFormat outputFormat)
 
 	switch(conversion)
 	{
-	case lRGBA | (sRGBA << shift): r = gamma(r); g = gamma(g); b = gamma(b); break;							//1
-	case lRGBA | (lLA << shift)  : r = g = b = lRGBtoL(r, g, b); break;										//3
-	case lRGBA | (sLA << shift)  : r = g = b = gamma(lRGBtoL(r, g, b)); break;								//3,5
-	case sRGBA | (lRGBA << shift): r = invgamma(r); g = invgamma(g); b = invgamma(b); break;				//2
-	case sRGBA | (lLA << shift)  : r = g = b = lRGBtoL(invgamma(r), invgamma(g), invgamma(b)); break;		//2,3
-	case sRGBA | (sLA << shift)  : r = g = b = gamma(lRGBtoL(invgamma(r), invgamma(g), invgamma(b))); break;//2,3,5
-	case lLA   | (lRGBA << shift): break;																	//4
-	case lLA   | (sRGBA << shift): r = g = b = gamma(r); break;												//4,1
-	case lLA   | (sLA << shift)  : r = g = b = gamma(r); break;												//5
-	case sLA   | (lRGBA << shift): r = g = b = invgamma(r); break;											//7,2
-	case sLA   | (sRGBA << shift): break;																	//7
-	case sLA   | (lLA << shift)  : r = g = b = invgamma(r); break;											//6
+	case VGColor_lRGBA | (VGColor_sRGBA << shift): r = gamma(r); g = gamma(g); b = gamma(b); break;							//1
+	case VGColor_lRGBA | (VGColor_lLA << shift)  : r = g = b = lRGBtoL(r, g, b); break;										//3
+	case VGColor_lRGBA | (VGColor_sLA << shift)  : r = g = b = gamma(lRGBtoL(r, g, b)); break;								//3,5
+	case VGColor_sRGBA | (VGColor_lRGBA << shift): r = invgamma(r); g = invgamma(g); b = invgamma(b); break;				//2
+	case VGColor_sRGBA | (VGColor_lLA << shift)  : r = g = b = lRGBtoL(invgamma(r), invgamma(g), invgamma(b)); break;		//2,3
+	case VGColor_sRGBA | (VGColor_sLA << shift)  : r = g = b = gamma(lRGBtoL(invgamma(r), invgamma(g), invgamma(b))); break;//2,3,5
+	case VGColor_lLA   | (VGColor_lRGBA << shift): break;																	//4
+	case VGColor_lLA   | (VGColor_sRGBA << shift): r = g = b = gamma(r); break;												//4,1
+	case VGColor_lLA   | (VGColor_sLA << shift)  : r = g = b = gamma(r); break;												//5
+	case VGColor_sLA   | (VGColor_lRGBA << shift): r = g = b = invgamma(r); break;											//7,2
+	case VGColor_sLA   | (VGColor_sRGBA << shift): break;																	//7
+	case VGColor_sLA   | (VGColor_lLA << shift)  : r = g = b = invgamma(r); break;											//6
 	default: RI_ASSERT((m_format & (LUMINANCE | NONLINEAR)) == (outputFormat & (LUMINANCE | NONLINEAR))); break;	//nop
 	}
 
@@ -313,10 +283,10 @@ void Color::convert(InternalFormat outputFormat)
 * \note		
 *//*-------------------------------------------------------------------*/
 
-Color::Descriptor Color::formatToDescriptor(VGImageFormat format)
+VGColorDescriptor VGColor::formatToDescriptor(VGImageFormat format)
 {
-	Descriptor desc;
-	memset(&desc, 0, sizeof(Descriptor));
+	VGColorDescriptor desc;
+	memset(&desc, 0, sizeof(VGColorDescriptor));
 	RI_ASSERT(isValidImageFormat(format));
 
 	int baseFormat = (int)format & 15;
@@ -367,7 +337,7 @@ Color::Descriptor Color::formatToDescriptor(VGImageFormat format)
 
 	static const int bpps[13] = {32, 32, 32, 16, 16, 16, 8, 32, 32, 32, 8, 8, 1};
 
-	static const InternalFormat internalFormats[13] = {sRGBA, sRGBA, sRGBA_PRE, sRGBA, sRGBA, sRGBA, sLA, lRGBA, lRGBA, lRGBA_PRE, lLA, lRGBA, lLA};
+	static const VGColorInternalFormat internalFormats[13] = {VGColor_sRGBA, VGColor_sRGBA, VGColor_sRGBA_PRE, VGColor_sRGBA, VGColor_sRGBA, VGColor_sRGBA, VGColor_sLA, VGColor_lRGBA, VGColor_lRGBA, VGColor_lRGBA_PRE, VGColor_lLA, VGColor_lRGBA, VGColor_lLA};
 
 	desc.redBits = redBits[baseFormat];
 	desc.greenBits = greenBits[baseFormat];
@@ -396,7 +366,7 @@ Color::Descriptor Color::formatToDescriptor(VGImageFormat format)
 * \note		
 *//*-------------------------------------------------------------------*/
 
-bool Color::isValidDescriptor(const Color::Descriptor& desc)
+bool VGColor::isValidDescriptor(const VGColorDescriptor& desc)
 {
 	//A valid descriptor has 1, 8, 16, or 32 bits per pixel, and either luminance or rgba channels, but not both.
 	//Any of the rgba channels can be missing, and not all bits need to be used. Maximum channel bit depth is 8.
@@ -465,14 +435,14 @@ bool Color::isValidDescriptor(const Color::Descriptor& desc)
 		if(!isValidImageFormat(desc.format))
 			return false;	//invalid image format
 
-		Descriptor d = formatToDescriptor(desc.format);
+		VGColorDescriptor d = formatToDescriptor(desc.format);
 		if(d.redBits != rb || d.greenBits != gb || d.blueBits != bb || d.alphaBits != ab || d.luminanceBits != lb ||
 		   d.redShift != rs || d.greenShift != gs || d.blueShift != bs || d.alphaShift != as || d.luminanceShift != ls ||
 		   d.bitsPerPixel != bpp)
 		   return false;	//if the descriptor has a VGImageFormat, it must match the bits, shifts, and bpp
 	}
 
-	if((unsigned int)desc.internalFormat & ~(Color::PREMULTIPLIED | Color::NONLINEAR | Color::LUMINANCE))
+	if((unsigned int)desc.internalFormat & ~(VGColor::PREMULTIPLIED | VGColor::NONLINEAR | VGColor::LUMINANCE))
 		return false;	//invalid internal format
 
 	return true;
@@ -492,25 +462,20 @@ bool Color::isValidDescriptor(const Color::Descriptor& desc)
 * \note		
 *//*-------------------------------------------------------------------*/
 
-Image::Image(const Color::Descriptor& desc, int width, int height, VGbitfield allowedQuality) :
+Image::Image(const VGColorDescriptor& desc, int width, int height) :
 	m_desc(desc),
 	m_width(width),
 	m_height(height),
-	m_allowedQuality(allowedQuality),
 	m_inUse(0),
 	m_stride(0),
 	m_data(NULL),
 	m_bitOffset(0),
 	m_referenceCount(0),
 	m_ownsData(true),
-	m_hasChildren(false),
-	m_parent(NULL),
-	m_parentOffsetX(0),
-	m_parentOffsetY(0),
 	m_mipmapsValid(false),
 	m_mipmaps()
 {
-	RI_ASSERT(Color::isValidDescriptor(m_desc));
+	RI_ASSERT(VGColor::isValidDescriptor(m_desc));
 	RI_ASSERT(width > 0 && height > 0);
 	
 	if( m_desc.bitsPerPixel != 1 )
@@ -523,7 +488,7 @@ Image::Image(const Color::Descriptor& desc, int width, int height, VGbitfield al
 		RI_ASSERT(m_desc.bitsPerPixel == 1);
 		m_stride = (m_width+7)/8;
 	}
-	m_data = RI_NEW_ARRAY(RIuint8, m_stride*m_height);	//throws bad_alloc
+	m_data = new RIuint8[m_stride*m_height];	//throws bad_alloc
 	memset(m_data, 0, m_stride*m_height);	//clear image
 }
 
@@ -535,81 +500,22 @@ Image::Image(const Color::Descriptor& desc, int width, int height, VGbitfield al
 * \note		this is meant for internal use to make blitting easier
 *//*-------------------------------------------------------------------*/
 
-Image::Image(const Color::Descriptor& desc, int width, int height, int stride, RIuint8* data) :
+Image::Image(const VGColorDescriptor& desc, int width, int height, int stride, RIuint8* data) :
 	m_desc(desc),
 	m_width(width),
 	m_height(height),
-	m_allowedQuality(0),
 	m_inUse(0),
 	m_stride(stride),
 	m_data(data),
 	m_bitOffset(0),
 	m_referenceCount(0),
 	m_ownsData(false),
-	m_hasChildren(false),
-	m_parent(NULL),
-	m_parentOffsetX(0),
-	m_parentOffsetY(0),
 	m_mipmapsValid(false),
 	m_mipmaps()
 {
-	RI_ASSERT(Color::isValidDescriptor(m_desc));
+	RI_ASSERT(VGColor::isValidDescriptor(m_desc));
 	RI_ASSERT(width > 0 && height > 0);
 	RI_ASSERT(data);
-}
-
-/*-------------------------------------------------------------------*//*!
-* \brief	Construcs a child image.
-* \param	
-* \return	
-* \note		
-*//*-------------------------------------------------------------------*/
-
-Image::Image(Image* parent, int x, int y, int width, int height) :
-	m_desc(Color::formatToDescriptor(VG_sRGBA_8888)),	//dummy initialization, will be overwritten below (can't read from parent->m_desc before knowing the pointer is valid)
-	m_width(width),
-	m_height(height),
-	m_allowedQuality(0),
-	m_inUse(0),
-	m_stride(0),
-	m_data(NULL),
-	m_bitOffset(0),
-	m_referenceCount(0),
-	m_ownsData(false),
-	m_hasChildren(false),
-	m_parent(parent),
-	m_parentOffsetX(x),
-	m_parentOffsetY(y),
-	m_mipmapsValid(false),
-	m_mipmaps()
-{
-	RI_ASSERT(parent);
-	RI_ASSERT(x >= 0 && y >= 0 && width > 0 && height > 0);
-	RI_ASSERT(RI_INT_ADDSATURATE(x,width) <= parent->m_width && RI_INT_ADDSATURATE(y,height) <= parent->m_height);	//child image must be contained in parent
-
-	m_desc = parent->m_desc;
-	RI_ASSERT(Color::isValidDescriptor(m_desc));
-	m_allowedQuality = parent->m_allowedQuality;
-	m_stride = parent->m_stride;
-
-	if( m_desc.bitsPerPixel != 1 )
-	{
-		RI_ASSERT(m_desc.bitsPerPixel == 8 || m_desc.bitsPerPixel == 16 || m_desc.bitsPerPixel == 32);
-		m_data = parent->m_data + y * m_stride + x * (m_desc.bitsPerPixel/8);
-		m_bitOffset = 0;
-	}
-	else
-	{
-		RI_ASSERT(m_desc.bitsPerPixel == 1);
-		m_data = parent->m_data + y * m_stride + (x/8);
-		m_bitOffset = x&7;
-	}
-
-	//increase the reference and use count of the parent
-	addInUse();
-	parent->addInUse();
-	parent->addReference();
-	parent->m_hasChildren = true;
 }
 
 /*-------------------------------------------------------------------*//*!
@@ -623,20 +529,12 @@ Image::~Image()
 {
 	RI_ASSERT(m_referenceCount == 0);
 
-	if(m_parent)
-	{
-		//decrease the reference and use count of the parent
-		removeInUse();
-		m_parent->removeInUse();
-		if(!m_parent->removeReference())
-			RI_DELETE(m_parent);
-	}
 	RI_ASSERT(m_inUse == 0);
 
 	for(int i=0;i<m_mipmaps.size();i++)
 	{
 		if(!m_mipmaps[i]->removeReference())
-			RI_DELETE(m_mipmaps[i]);
+			delete m_mipmaps[i];
 		else
 		{
 			RI_ASSERT(0);	//there can't be any other references to the mipmap levels
@@ -646,47 +544,8 @@ Image::~Image()
 
 	if(m_ownsData)
 	{
-		RI_ASSERT(!m_parent);		//can't have parent if owns the data
-		RI_DELETE_ARRAY(m_data);	//delete image data if we own it
+		delete[] m_data;	//delete image data if we own it
 	}
-}
-
-/*-------------------------------------------------------------------*//*!
-* \brief	Returns true if the two images share pixels.
-* \param	
-* \return	
-* \note		
-*//*-------------------------------------------------------------------*/
-
-bool Image::overlaps(const Image* src) const
-{
-	RI_ASSERT(src);
-
-	const Image* dstancestor = this;
-	int dstoffsetx = 0, dstoffsety = 0;
-	for(;dstancestor->m_parent;dstancestor = dstancestor->m_parent)
-	{
-		dstoffsetx += dstancestor->m_parentOffsetX;
-		dstoffsety += dstancestor->m_parentOffsetY;
-	}
-
-	const Image* srcancestor = src;
-	int srcoffsetx = 0, srcoffsety = 0;
-	for(;srcancestor->m_parent;srcancestor = srcancestor->m_parent)
-	{
-		srcoffsetx += srcancestor->m_parentOffsetX;
-		srcoffsety += srcancestor->m_parentOffsetY;
-	}
-	if(dstancestor != srcancestor)
-		return false;	//no common ancestor, images don't overlap
-
-	//check if the image regions overlap in the common ancestor
-	Rectangle r(dstoffsetx, dstoffsety, m_width, m_height);
-	r.intersect(Rectangle(srcoffsetx, srcoffsety, src->m_width, src->m_height));
-	if(!r.width || !r.height)
-		return false;	//intersection is empty, images don't overlap	
-
-	return true;
 }
 
 /*-------------------------------------------------------------------*//*!
@@ -696,10 +555,9 @@ bool Image::overlaps(const Image* src) const
 * \note		
 *//*-------------------------------------------------------------------*/
 
-void Image::resize(int newWidth, int newHeight, const Color& newPixelColor)
+void Image::resize(int newWidth, int newHeight, const VGColor& newPixelColor)
 {
 	RI_ASSERT(newWidth > 0 && newHeight > 0);
-	RI_ASSERT(!m_parent && m_ownsData && !m_hasChildren);	//disallow resizing if data is shared
 	RI_ASSERT(m_bitOffset == 0);	//we don't have to worry about bitOffset in this function (this is always the original image, not a child)
 	RI_ASSERT(m_referenceCount > 0);
 
@@ -707,7 +565,7 @@ void Image::resize(int newWidth, int newHeight, const Color& newPixelColor)
 	for(int i=0;i<m_mipmaps.size();i++)
 	{
 		if(!m_mipmaps[i]->removeReference())
-			RI_DELETE(m_mipmaps[i]);
+			delete m_mipmaps[i];
 		else
 		{
 			RI_ASSERT(0);	//there can't be any other references to the mipmap levels
@@ -728,9 +586,9 @@ void Image::resize(int newWidth, int newHeight, const Color& newPixelColor)
 		newStride = (newWidth+7)/8;
 	}
 
-	RIuint8* newData = RI_NEW_ARRAY(RIuint8, newStride*newHeight);	//throws bad_alloc
+	RIuint8* newData = new RIuint8[newStride*newHeight];	//throws bad_alloc
 
-	Color col = newPixelColor;
+	VGColor col = newPixelColor;
 	col.clamp();
 	col.convert(m_desc.internalFormat);
 	unsigned int c = col.pack(m_desc);
@@ -812,7 +670,7 @@ void Image::resize(int newWidth, int newHeight, const Color& newPixelColor)
 		}
 	}
 
-	RI_DELETE_ARRAY(m_data);
+	delete[] m_data;
 	m_data = newData;
 	m_width = newWidth;
 	m_height = newHeight;
@@ -826,18 +684,18 @@ void Image::resize(int newWidth, int newHeight, const Color& newPixelColor)
 * \note		
 *//*-------------------------------------------------------------------*/
 
-void Image::clear(const Color& clearColor, int x, int y, int w, int h)
+void Image::clear(const VGColor& clearColor, int x, int y, int w, int h)
 {
 	RI_ASSERT(m_data);
 	RI_ASSERT(m_referenceCount > 0);
 
 	//intersect clear region with image bounds
-	Rectangle r(0,0,m_width,m_height);
-	r.intersect(Rectangle(x,y,w,h));
+	KGIntRect r=KGIntRectInit(0,0,m_width,m_height);
+	r=KGIntRectIntersect(r,KGIntRectInit(x,y,w,h));
 	if(!r.width || !r.height)
 		return;		//intersection is empty or one of the rectangles is invalid
 
-	Color col = clearColor;
+	VGColor col = clearColor;
 	col.clamp();
 	col.convert(m_desc.internalFormat);
 
@@ -935,7 +793,7 @@ void Image::blit(const Image& src, int sx, int sy, int dx, int dy, int w, int h,
 	if(h <= 0)
 		return;	//zero area
 
-	Array<Color> tmp;
+	Array<VGColor> tmp;
 	tmp.resize(w*h);	//throws bad_alloc
 
 	//copy source region to tmp
@@ -943,7 +801,7 @@ void Image::blit(const Image& src, int sx, int sy, int dx, int dy, int w, int h,
 	{
 		for(int i=0;i<w;i++)
 		{
-			Color c = src.readPixel(srcsx + i, srcsy + j);
+			VGColor c = src.readPixel(srcsx + i, srcsy + j);
 			c.convert(m_desc.internalFormat);
 			tmp[j*w+i] = c;
 		}
@@ -961,7 +819,7 @@ void Image::blit(const Image& src, int sx, int sy, int dx, int dy, int w, int h,
 	{
 		for(int i=0;i<w;i++)
 		{
-			Color col = tmp[j*w+i];
+			VGColor col = tmp[j*w+i];
 
 			if(dither)
 			{
@@ -1002,12 +860,12 @@ void Image::mask(const Image* src, VGMaskOperation operation, int x, int y, int 
 	m_mipmapsValid = false;
 	if(operation == VG_CLEAR_MASK)
 	{
-		clear(Color(0,0,0,0,Color::lRGBA), x, y, w, h);
+		clear(VGColor(0,0,0,0,VGColor_lRGBA), x, y, w, h);
 		return;
 	}
 	if(operation == VG_FILL_MASK)
 	{
-		clear(Color(1,1,1,1,Color::lRGBA), x, y, w, h);
+		clear(VGColor(1,1,1,1,VGColor_lRGBA), x, y, w, h);
 		return;
 	}
 
@@ -1102,7 +960,7 @@ void Image::mask(const Image* src, VGMaskOperation operation, int x, int y, int 
 * \note		
 *//*-------------------------------------------------------------------*/
 
-Color Image::readPixel(int x, int y) const
+VGColor Image::readPixel(int x, int y) const
 {
 	RI_ASSERT(m_data);
 	RI_ASSERT(x >= 0 && x < m_width);
@@ -1143,7 +1001,7 @@ Color Image::readPixel(int x, int y) const
 		break;
 	}
 	}
-	Color c;
+	VGColor c;
 	c.unpack(p, m_desc);
 	return c;
 }
@@ -1156,7 +1014,7 @@ Color Image::readPixel(int x, int y) const
 * \note		
 *//*-------------------------------------------------------------------*/
 
-void Image::writePixel(int x, int y, const Color& c)
+void Image::writePixel(int x, int y, const VGColor& c)
 {
 	RI_ASSERT(m_data);
 	RI_ASSERT(x >= 0 && x < m_width);
@@ -1211,21 +1069,21 @@ void Image::writePixel(int x, int y, const Color& c)
 * \note		
 *//*-------------------------------------------------------------------*/
 
-void Image::writeFilteredPixel(int i, int j, const Color& color, VGbitfield channelMask)
+void Image::writeFilteredPixel(int i, int j, const VGColor& color, VGbitfield channelMask)
 {
 	//section 3.4.4: before color space conversion, premultiplied colors are
 	//clamped to alpha, and the color is converted to nonpremultiplied format
 	//section 11.2: how to deal with channel mask
 	//step 1
-	Color f = color;
+	VGColor f = color;
 	f.clamp();			//vgColorMatrix and vgLookups can produce colors that exceed alpha or [0,1] range
 	f.unpremultiply();
 
 	//step 2: color space conversion
-	f.convert((Color::InternalFormat)(m_desc.internalFormat & (Color::NONLINEAR | Color::LUMINANCE)));
+	f.convert((VGColorInternalFormat)(m_desc.internalFormat & (VGColor::NONLINEAR | VGColor::LUMINANCE)));
 
 	//step 3: read the destination color and convert it to nonpremultiplied
-	Color d = readPixel(i,j);
+	VGColor d = readPixel(i,j);
 	d.unpremultiply();
 	RI_ASSERT(d.getInternalFormat() == f.getInternalFormat());
 
@@ -1240,7 +1098,7 @@ void Image::writeFilteredPixel(int i, int j, const Color& color, VGbitfield chan
 		d.a = f.a;
 
 	//step 5: if destination is premultiplied, convert to premultiplied format
-	if(m_desc.internalFormat & Color::PREMULTIPLIED)
+	if(m_desc.internalFormat & VGColor::PREMULTIPLIED)
 		d.premultiply();
 	//write the color to destination
 	writePixel(i,j,d);
@@ -1260,7 +1118,7 @@ RIfloat Image::readMaskPixel(int x, int y) const
 	RI_ASSERT(y >= 0 && y < m_height);
 	RI_ASSERT(m_referenceCount > 0);
 
-	Color c = readPixel(x,y);
+	VGColor c = readPixel(x,y);
 	if(m_desc.luminanceBits)
 	{	//luminance
 		return c.r;	//luminance/luma is read into the color channels
@@ -1302,7 +1160,7 @@ void Image::writeMaskPixel(int x, int y, RIfloat m)
 * \note		
 *//*-------------------------------------------------------------------*/
 
-Color Image::readTexel(int u, int v, int level, VGTilingMode tilingMode, const Color& tileFillColor) const
+VGColor Image::readTexel(int u, int v, int level, VGTilingMode tilingMode, const VGColor& tileFillColor) const
 {
 	const Image* image = this;
 	if( level > 0 )
@@ -1312,7 +1170,7 @@ Color Image::readTexel(int u, int v, int level, VGTilingMode tilingMode, const C
 	}
 	RI_ASSERT(image);
 
-	Color p;
+	VGColor p;
 	if(tilingMode == VG_TILE_FILL)
 	{
 		if(u < 0 || v < 0 || u >= image->m_width || v >= image->m_height)
@@ -1355,23 +1213,20 @@ Color Image::readTexel(int u, int v, int level, VGTilingMode tilingMode, const C
 * \note		
 *//*-------------------------------------------------------------------*/
 
-Color Image::resample(RIfloat x, RIfloat y, const Matrix3x3& surfaceToImage, CGInterpolationQuality quality, VGTilingMode tilingMode, const Color& tileFillColor)	//throws bad_alloc
+VGColor Image::resample(RIfloat x, RIfloat y, const Matrix3x3& surfaceToImage, CGInterpolationQuality quality, VGTilingMode tilingMode, const VGColor& tileFillColor)	//throws bad_alloc
 {
 	RI_ASSERT(m_referenceCount > 0);
 
-	//VGbitfield aq = getAllowedQuality();
-	//aq &= (VGbitfield)quality;
-
-	Vector3 uvw(x,y,1.0f);
+	Vector3 uvw(x,y);
 	uvw = surfaceToImage * uvw;
 	RIfloat oow = 1.0f / uvw.z;
-	uvw *= oow;
+	uvw=Vector3MultiplyByFloat(uvw,oow);
 
 	if(quality== kCGInterpolationHigh)
 	{	//EWA on mipmaps
 		makeMipMaps();	//throws bad_alloc
 
-		Color::InternalFormat procFormat = (Color::InternalFormat)(m_desc.internalFormat | Color::PREMULTIPLIED);
+		VGColorInternalFormat procFormat = (VGColorInternalFormat)(m_desc.internalFormat | VGColor::PREMULTIPLIED);
 
 		RIfloat m_pixelFilterRadius = 1.25f;
 		RIfloat m_resamplingFilterRadius = 1.25f;
@@ -1443,19 +1298,19 @@ Color Image::resample(RIfloat x, RIfloat y, const Matrix3x3& surfaceToImage, CGI
 		int v1 = (int)floor(V0 - vsize + 0.5f);
 		int v2 = (int)floor(V0 + vsize + 0.5f);
 		if( u1 == u2 || v1 == v2 )
-			return Color(0,0,0,0,procFormat);
+			return VGColor(0,0,0,0,procFormat);
 
 		//scale the filter so that Q = 1 at the cutoff radius
 		RIfloat F = A*C - 0.25f * B*B;
 		if( F <= 0.0f )
-			return Color(0,0,0,0,procFormat);	//invalid filter shape due to numerical inaccuracies => return black
+			return VGColor(0,0,0,0,procFormat);	//invalid filter shape due to numerical inaccuracies => return black
 		RIfloat ooF = 1.0f / F;
 		A *= ooF;
 		B *= ooF;
 		C *= ooF;
 		
 		//evaluate filter by using forward differences to calculate Q = A*U^2 + B*U*V + C*V^2
-		Color color(0,0,0,0,procFormat);
+		VGColor color(0,0,0,0,procFormat);
 		RIfloat sumweight = 0.0f;
 		RIfloat DDQ = 2.0f * A;
 		RIfloat U = (RIfloat)u1 - U0 + 0.5f;
@@ -1469,7 +1324,7 @@ Color Image::resample(RIfloat x, RIfloat y, const Matrix3x3& surfaceToImage, CGI
 				if( Q >= 0.0f && Q < 1.0f )
 				{	//Q = r^2, fit gaussian to the range [0,1]
 					RIfloat weight = (RIfloat)exp(-0.5f * 10.0f * Q);	//gaussian at radius 10 equals 0.0067
-					color += weight * readTexel(u, v, level, tilingMode, tileFillColor);
+					color=VGColorAdd(color,  VGColorMultiplyByFloat(readTexel(u, v, level, tilingMode, tileFillColor),weight));
 					sumweight += weight;
 				}
 				Q += DQ;
@@ -1477,10 +1332,10 @@ Color Image::resample(RIfloat x, RIfloat y, const Matrix3x3& surfaceToImage, CGI
 			}
 		}
 		if( sumweight == 0.0f )
-			return Color(0,0,0,0,procFormat);
+			return VGColor(0,0,0,0,procFormat);
 		RI_ASSERT(sumweight > 0.0f);
 		sumweight = 1.0f / sumweight;
-		return color * sumweight;
+		return VGColorMultiplyByFloat(color,sumweight);
 	}
 	else if(quality== kCGInterpolationLow)
 	{	//bilinear
@@ -1488,15 +1343,15 @@ Color Image::resample(RIfloat x, RIfloat y, const Matrix3x3& surfaceToImage, CGI
 		uvw.y -= 0.5f;
 		int u = (int)floor(uvw.x);
 		int v = (int)floor(uvw.y);
-		Color c00 = readTexel(u,v, 0, tilingMode, tileFillColor);
-		Color c10 = readTexel(u+1,v, 0, tilingMode, tileFillColor);
-		Color c01 = readTexel(u,v+1, 0, tilingMode, tileFillColor);
-		Color c11 = readTexel(u+1,v+1, 0, tilingMode, tileFillColor);
+		VGColor c00 = readTexel(u,v, 0, tilingMode, tileFillColor);
+		VGColor c10 = readTexel(u+1,v, 0, tilingMode, tileFillColor);
+		VGColor c01 = readTexel(u,v+1, 0, tilingMode, tileFillColor);
+		VGColor c11 = readTexel(u+1,v+1, 0, tilingMode, tileFillColor);
 		RIfloat fu = uvw.x - (RIfloat)u;
 		RIfloat fv = uvw.y - (RIfloat)v;
-		Color c0 = c00 * (1.0f - fu) + c10 * fu;
-		Color c1 = c01 * (1.0f - fu) + c11 * fu;
-		return c0 * (1.0f - fv) + c1 * fv;
+		VGColor c0 = VGColorAdd(VGColorMultiplyByFloat(c00,(1.0f - fu)),VGColorMultiplyByFloat(c10,fu));
+		VGColor c1 = VGColorAdd(VGColorMultiplyByFloat(c01,(1.0f - fu)),VGColorMultiplyByFloat(c11,fu));
+		return VGColorAdd(VGColorMultiplyByFloat(c0,(1.0f - fv)),VGColorMultiplyByFloat(c1, fv));
 	}
 	else
 	{	//point sampling
@@ -1524,7 +1379,7 @@ void Image::makeMipMaps()
 	for(int i=0;i<m_mipmaps.size();i++)
 	{
 		if(!m_mipmaps[i]->removeReference())
-			RI_DELETE(m_mipmaps[i]);
+			delete m_mipmaps[i];
 		else
 		{
 			RI_ASSERT(0);	//there can't be any other references to the mipmap levels
@@ -1534,8 +1389,8 @@ void Image::makeMipMaps()
 
 	try
 	{
-		Color::InternalFormat procFormat = m_desc.internalFormat;
-		procFormat = (Color::InternalFormat)(procFormat | Color::PREMULTIPLIED);	//premultiplied
+		VGColorInternalFormat procFormat = m_desc.internalFormat;
+		procFormat = (VGColorInternalFormat)(procFormat | VGColor::PREMULTIPLIED);	//premultiplied
 
 		//generate mipmaps until width and height are one
 		Image* prev = this;
@@ -1549,7 +1404,7 @@ void Image::makeMipMaps()
 			m_mipmaps.resize(m_mipmaps.size()+1);	//throws bad_alloc
 			m_mipmaps[m_mipmaps.size()-1] = NULL;
 
-			Image* next = RI_NEW(Image, (m_desc, nextw, nexth, m_allowedQuality));	//throws bad_alloc
+			Image* next = new Image(m_desc, nextw, nexth);	//throws bad_alloc
 			next->addReference();
 			for(int j=0;j<next->m_height;j++)
 			{
@@ -1570,19 +1425,19 @@ void Image::makeMipMaps()
 					int sv = (int)floor(v0);
 					int ev = (int)ceil(v1);
 
-					Color c(0,0,0,0,procFormat);
+					VGColor c(0,0,0,0,procFormat);
 					int samples = 0;
 					for(int y=sv;y<ev;y++)
 					{
 						for(int x=su;x<eu;x++)
 						{
-							Color p = prev->readPixel(x, y);
+							VGColor p = prev->readPixel(x, y);
 							p.convert(procFormat);
-							c += p;
+							c=VGColorAdd(c, p);
 							samples++;
 						}
 					}
-					c *= (1.0f/samples);
+					c=VGColorMultiplyByFloat(c,(1.0f/samples));
 					c.convert(m_desc.internalFormat);
 					next->writePixel(i,j,c);
 				}
@@ -1601,7 +1456,7 @@ void Image::makeMipMaps()
 			if(m_mipmaps[i])
 			{
 				if(!m_mipmaps[i]->removeReference())
-					RI_DELETE(m_mipmaps[i]);
+					delete m_mipmaps[i];
 				else
 				{
 					RI_ASSERT(0);	//there can't be any other references to the mipmap levels
@@ -1632,26 +1487,26 @@ void Image::colorMatrix(const Image& src, const RIfloat* matrix, bool filterForm
 	int h = RI_INT_MIN(m_height, src.m_height);
 	RI_ASSERT(w > 0 && h > 0);
 
-	Color::InternalFormat srcFormat = src.m_desc.internalFormat;
-	Color::InternalFormat procFormat = (Color::InternalFormat)(srcFormat & ~Color::LUMINANCE);	//process in RGB, not luminance
+	VGColorInternalFormat srcFormat = src.m_desc.internalFormat;
+	VGColorInternalFormat procFormat = (VGColorInternalFormat)(srcFormat & ~VGColor::LUMINANCE);	//process in RGB, not luminance
 	if(filterFormatLinear)
-		procFormat = (Color::InternalFormat)(procFormat & ~Color::NONLINEAR);
+		procFormat = (VGColorInternalFormat)(procFormat & ~VGColor::NONLINEAR);
 	else
-		procFormat = (Color::InternalFormat)(procFormat | Color::NONLINEAR);
+		procFormat = (VGColorInternalFormat)(procFormat | VGColor::NONLINEAR);
 
 	if(filterFormatPremultiplied)
-		procFormat = (Color::InternalFormat)(procFormat | Color::PREMULTIPLIED);
+		procFormat = (VGColorInternalFormat)(procFormat | VGColor::PREMULTIPLIED);
 	else
-		procFormat = (Color::InternalFormat)(procFormat & ~Color::PREMULTIPLIED);
+		procFormat = (VGColorInternalFormat)(procFormat & ~VGColor::PREMULTIPLIED);
 
 	for(int j=0;j<h;j++)
 	{
 		for(int i=0;i<w;i++)
 		{
-			Color s = src.readPixel(i,j);	//convert to RGBA [0,1]
+			VGColor s = src.readPixel(i,j);	//convert to RGBA [0,1]
 			s.convert(procFormat);
 
-			Color d(0,0,0,0,procFormat);
+			VGColor d(0,0,0,0,procFormat);
 			d.r = matrix[0+4*0] * s.r + matrix[0+4*1] * s.g + matrix[0+4*2] * s.b + matrix[0+4*3] * s.a + matrix[0+4*4];
 			d.g = matrix[1+4*0] * s.r + matrix[1+4*1] * s.g + matrix[1+4*2] * s.b + matrix[1+4*3] * s.a + matrix[1+4*4];
 			d.b = matrix[2+4*0] * s.r + matrix[2+4*1] * s.g + matrix[2+4*2] * s.b + matrix[2+4*3] * s.a + matrix[2+4*4];
@@ -1669,9 +1524,9 @@ void Image::colorMatrix(const Image& src, const RIfloat* matrix, bool filterForm
 * \note		
 *//*-------------------------------------------------------------------*/
 
-static Color readTiledPixel(int x, int y, int w, int h, VGTilingMode tilingMode, const Array<Color>& image, const Color& edge)
+static VGColor readTiledPixel(int x, int y, int w, int h, VGTilingMode tilingMode, const Array<VGColor>& image, const VGColor& edge)
 {
-	Color s;
+	VGColor s;
 	if(x < 0 || x >= w || y < 0 || y >= h)
 	{	//apply tiling mode
 		switch(tilingMode)
@@ -1717,18 +1572,18 @@ static Color readTiledPixel(int x, int y, int w, int h, VGTilingMode tilingMode,
 * \note		
 *//*-------------------------------------------------------------------*/
 
-static Color::InternalFormat getProcessingFormat(Color::InternalFormat srcFormat, bool filterFormatLinear, bool filterFormatPremultiplied)
+static VGColorInternalFormat getProcessingFormat(VGColorInternalFormat srcFormat, bool filterFormatLinear, bool filterFormatPremultiplied)
 {
-	Color::InternalFormat procFormat = (Color::InternalFormat)(srcFormat & ~Color::LUMINANCE);	//process in RGB, not luminance
+	VGColorInternalFormat procFormat = (VGColorInternalFormat)(srcFormat & ~VGColor::LUMINANCE);	//process in RGB, not luminance
 	if(filterFormatLinear)
-		procFormat = (Color::InternalFormat)(procFormat & ~Color::NONLINEAR);
+		procFormat = (VGColorInternalFormat)(procFormat & ~VGColor::NONLINEAR);
 	else
-		procFormat = (Color::InternalFormat)(procFormat | Color::NONLINEAR);
+		procFormat = (VGColorInternalFormat)(procFormat | VGColor::NONLINEAR);
 
 	if(filterFormatPremultiplied)
-		procFormat = (Color::InternalFormat)(procFormat | Color::PREMULTIPLIED);
+		procFormat = (VGColorInternalFormat)(procFormat | VGColor::PREMULTIPLIED);
 	else
-		procFormat = (Color::InternalFormat)(procFormat & ~Color::PREMULTIPLIED);
+		procFormat = (VGColorInternalFormat)(procFormat & ~VGColor::PREMULTIPLIED);
 	return procFormat;
 }
 
@@ -1739,7 +1594,7 @@ static Color::InternalFormat getProcessingFormat(Color::InternalFormat srcFormat
 * \note		
 *//*-------------------------------------------------------------------*/
 
-void Image::convolve(const Image& src, int kernelWidth, int kernelHeight, int shiftX, int shiftY, const RIint16* kernel, RIfloat scale, RIfloat bias, VGTilingMode tilingMode, const Color& edgeFillColor, bool filterFormatLinear, bool filterFormatPremultiplied, VGbitfield channelMask)
+void Image::convolve(const Image& src, int kernelWidth, int kernelHeight, int shiftX, int shiftY, const RIint16* kernel, RIfloat scale, RIfloat bias, VGTilingMode tilingMode, const VGColor& edgeFillColor, bool filterFormatLinear, bool filterFormatPremultiplied, VGbitfield channelMask)
 {
 	RI_ASSERT(src.m_data);	//source exists
 	RI_ASSERT(m_data);	//destination exists
@@ -1752,13 +1607,13 @@ void Image::convolve(const Image& src, int kernelWidth, int kernelHeight, int sh
 	int h = RI_INT_MIN(m_height, src.m_height);
 	RI_ASSERT(w > 0 && h > 0);
 
-	Color::InternalFormat procFormat = getProcessingFormat(src.m_desc.internalFormat, filterFormatLinear, filterFormatPremultiplied);
+	VGColorInternalFormat procFormat = getProcessingFormat(src.m_desc.internalFormat, filterFormatLinear, filterFormatPremultiplied);
 
-	Color edge = edgeFillColor;
+	VGColor edge = edgeFillColor;
 	edge.clamp();
 	edge.convert(procFormat);
 
-	Array<Color> tmp;
+	Array<VGColor> tmp;
 	tmp.resize(src.m_width*src.m_height);	//throws bad_alloc
 
 	//copy source region to tmp and do conversion
@@ -1766,7 +1621,7 @@ void Image::convolve(const Image& src, int kernelWidth, int kernelHeight, int sh
 	{
 		for(int i=0;i<src.m_width;i++)
 		{
-			Color s = src.readPixel(i, j);
+			VGColor s = src.readPixel(i, j);
 			s.convert(procFormat);
 			tmp[j*src.m_width+i] = s;
 		}
@@ -1776,7 +1631,7 @@ void Image::convolve(const Image& src, int kernelWidth, int kernelHeight, int sh
 	{
 		for(int i=0;i<w;i++)
 		{
-			Color sum(0,0,0,0,procFormat);
+			VGColor sum(0,0,0,0,procFormat);
 
 			for(int kj=0;kj<kernelHeight;kj++)
 			{
@@ -1784,17 +1639,17 @@ void Image::convolve(const Image& src, int kernelWidth, int kernelHeight, int sh
 				{
 					int x = i+ki-shiftX;
 					int y = j+kj-shiftY;
-					Color s = readTiledPixel(x, y, src.m_width, src.m_height, tilingMode, tmp, edge);
+					VGColor s = readTiledPixel(x, y, src.m_width, src.m_height, tilingMode, tmp, edge);
 
 					int kx = kernelWidth-ki-1;
 					int ky = kernelHeight-kj-1;
 					RI_ASSERT(kx >= 0 && kx < kernelWidth && ky >= 0 && ky < kernelHeight);
 
-					sum += (RIfloat)kernel[kx*kernelHeight+ky] * s;
+					sum=VGColorAdd(sum, VGColorMultiplyByFloat(s,(RIfloat)kernel[kx*kernelHeight+ky]));
 				}
 			}
 
-			sum *= scale;
+			sum=VGColorMultiplyByFloat(sum ,scale);
 			sum.r += bias;
 			sum.g += bias;
 			sum.b += bias;
@@ -1812,7 +1667,7 @@ void Image::convolve(const Image& src, int kernelWidth, int kernelHeight, int sh
 * \note		
 *//*-------------------------------------------------------------------*/
 
-void Image::separableConvolve(const Image& src, int kernelWidth, int kernelHeight, int shiftX, int shiftY, const RIint16* kernelX, const RIint16* kernelY, RIfloat scale, RIfloat bias, VGTilingMode tilingMode, const Color& edgeFillColor, bool filterFormatLinear, bool filterFormatPremultiplied, VGbitfield channelMask)
+void Image::separableConvolve(const Image& src, int kernelWidth, int kernelHeight, int shiftX, int shiftY, const RIint16* kernelX, const RIint16* kernelY, RIfloat scale, RIfloat bias, VGTilingMode tilingMode, const VGColor& edgeFillColor, bool filterFormatLinear, bool filterFormatPremultiplied, VGbitfield channelMask)
 {
 	RI_ASSERT(src.m_data);	//source exists
 	RI_ASSERT(m_data);	//destination exists
@@ -1825,13 +1680,13 @@ void Image::separableConvolve(const Image& src, int kernelWidth, int kernelHeigh
 	int h = RI_INT_MIN(m_height, src.m_height);
 	RI_ASSERT(w > 0 && h > 0);
 
-	Color::InternalFormat procFormat = getProcessingFormat(src.m_desc.internalFormat, filterFormatLinear, filterFormatPremultiplied);
+	VGColorInternalFormat procFormat = getProcessingFormat(src.m_desc.internalFormat, filterFormatLinear, filterFormatPremultiplied);
 
-	Color edge = edgeFillColor;
+	VGColor edge = edgeFillColor;
 	edge.clamp();
 	edge.convert(procFormat);
 
-	Array<Color> tmp;
+	Array<VGColor> tmp;
 	tmp.resize(src.m_width*src.m_height);	//throws bad_alloc
 
 	//copy source region to tmp and do conversion
@@ -1839,28 +1694,28 @@ void Image::separableConvolve(const Image& src, int kernelWidth, int kernelHeigh
 	{
 		for(int i=0;i<src.m_width;i++)
 		{
-			Color s = src.readPixel(i, j);
+			VGColor s = src.readPixel(i, j);
 			s.convert(procFormat);
 			tmp[j*src.m_width+i] = s;
 		}
 	}
 
-	Array<Color> tmp2;
+	Array<VGColor> tmp2;
 	tmp2.resize(w*src.m_height);	//throws bad_alloc
 	for(int j=0;j<src.m_height;j++)
 	{
 		for(int i=0;i<w;i++)
 		{
-			Color sum(0,0,0,0,procFormat);
+			VGColor sum(0,0,0,0,procFormat);
 			for(int ki=0;ki<kernelWidth;ki++)
 			{
 				int x = i+ki-shiftX;
-				Color s = readTiledPixel(x, j, src.m_width, src.m_height, tilingMode, tmp, edge);
+				VGColor s = readTiledPixel(x, j, src.m_width, src.m_height, tilingMode, tmp, edge);
 
 				int kx = kernelWidth-ki-1;
 				RI_ASSERT(kx >= 0 && kx < kernelWidth);
 
-				sum += (RIfloat)kernelX[kx] * s;
+				sum=VGColorAdd(sum , VGColorMultiplyByFloat(s,(RIfloat)kernelX[kx])) ;
 			}
 			tmp2[j*w+i] = sum;
 		}
@@ -1868,10 +1723,10 @@ void Image::separableConvolve(const Image& src, int kernelWidth, int kernelHeigh
 
 	if(tilingMode == VG_TILE_FILL)
 	{	//convolve the edge color
-		Color sum(0,0,0,0,procFormat);
+		VGColor sum(0,0,0,0,procFormat);
 		for(int ki=0;ki<kernelWidth;ki++)
 		{
-			sum += (RIfloat)kernelX[ki] * edge;
+			sum=VGColorAdd(sum, VGColorMultiplyByFloat(edge, (RIfloat)kernelX[ki]));
 		}
 		edge = sum;
 	}
@@ -1880,19 +1735,19 @@ void Image::separableConvolve(const Image& src, int kernelWidth, int kernelHeigh
 	{
 		for(int i=0;i<w;i++)
 		{
-			Color sum(0,0,0,0,procFormat);
+			VGColor sum(0,0,0,0,procFormat);
 			for(int kj=0;kj<kernelHeight;kj++)
 			{
 				int y = j+kj-shiftY;
-				Color s = readTiledPixel(i, y, w, src.m_height, tilingMode, tmp2, edge);
+				VGColor s = readTiledPixel(i, y, w, src.m_height, tilingMode, tmp2, edge);
 
 				int ky = kernelHeight-kj-1;
 				RI_ASSERT(ky >= 0 && ky < kernelHeight);
 
-				sum += (RIfloat)kernelY[ky] * s;
+				sum=VGColorAdd(sum, VGColorMultiplyByFloat(s, (RIfloat)kernelY[ky]));
 			}
 
-			sum *= scale;
+			sum=VGColorMultiplyByFloat(sum,scale);
 			sum.r += bias;
 			sum.g += bias;
 			sum.b += bias;
@@ -1910,7 +1765,7 @@ void Image::separableConvolve(const Image& src, int kernelWidth, int kernelHeigh
 * \note		
 *//*-------------------------------------------------------------------*/
 
-void Image::gaussianBlur(const Image& src, RIfloat stdDeviationX, RIfloat stdDeviationY, VGTilingMode tilingMode, const Color& edgeFillColor, bool filterFormatLinear, bool filterFormatPremultiplied, VGbitfield channelMask)
+void Image::gaussianBlur(const Image& src, RIfloat stdDeviationX, RIfloat stdDeviationY, VGTilingMode tilingMode, const VGColor& edgeFillColor, bool filterFormatLinear, bool filterFormatPremultiplied, VGbitfield channelMask)
 {
 	RI_ASSERT(src.m_data);	//source exists
 	RI_ASSERT(m_data);	//destination exists
@@ -1924,13 +1779,13 @@ void Image::gaussianBlur(const Image& src, RIfloat stdDeviationX, RIfloat stdDev
 	int h = RI_INT_MIN(m_height, src.m_height);
 	RI_ASSERT(w > 0 && h > 0);
 
-	Color::InternalFormat procFormat = getProcessingFormat(src.m_desc.internalFormat, filterFormatLinear, filterFormatPremultiplied);
+	VGColorInternalFormat procFormat = getProcessingFormat(src.m_desc.internalFormat, filterFormatLinear, filterFormatPremultiplied);
 
-	Color edge = edgeFillColor;
+	VGColor edge = edgeFillColor;
 	edge.clamp();
 	edge.convert(procFormat);
 
-	Array<Color> tmp;
+	Array<VGColor> tmp;
 	tmp.resize(src.m_width*src.m_height);	//throws bad_alloc
 
 	//copy source region to tmp and do conversion
@@ -1938,15 +1793,15 @@ void Image::gaussianBlur(const Image& src, RIfloat stdDeviationX, RIfloat stdDev
 	{
 		for(int i=0;i<src.m_width;i++)
 		{
-			Color s = src.readPixel(i, j);
+			VGColor s = src.readPixel(i, j);
 			s.convert(procFormat);
 			tmp[j*src.m_width+i] = s;
 		}
 	}
 
 	//find a size for the kernel
-	RIfloat totalWeightX = stdDeviationX*(RIfloat)sqrt(2.0f*PI);
-	RIfloat totalWeightY = stdDeviationY*(RIfloat)sqrt(2.0f*PI);
+	RIfloat totalWeightX = stdDeviationX*(RIfloat)sqrt(2.0f*M_PI);
+	RIfloat totalWeightY = stdDeviationY*(RIfloat)sqrt(2.0f*M_PI);
 	const RIfloat tolerance = 0.99f;	//use a kernel that covers 99% of the total Gaussian support
 
 	RIfloat expScaleX = -1.0f / (2.0f*stdDeviationX*stdDeviationX);
@@ -1975,11 +1830,11 @@ void Image::gaussianBlur(const Image& src, RIfloat stdDeviationX, RIfloat stdDev
 	while(sumY < tolerance*totalWeightY);
 
 	//make a separable kernel
-	Array<RIfloat> kernelX;
-	kernelX.resize(kernelWidth*2+1);
+    int kernelXSize=kernelWidth*2+1;
+	RIfloat kernelX[kernelXSize];
 	int shiftX = kernelWidth;
 	RIfloat scaleX = 0.0f;
-	for(int i=0;i<kernelX.size();i++)
+	for(int i=0;i<kernelXSize;i++)
 	{
 		int x = i-shiftX;
 		kernelX[i] = (RIfloat)exp((RIfloat)x*(RIfloat)x * expScaleX);
@@ -1987,11 +1842,11 @@ void Image::gaussianBlur(const Image& src, RIfloat stdDeviationX, RIfloat stdDev
 	}
 	scaleX = 1.0f / scaleX;	//NOTE: using the mathematical definition of the scaling term doesn't work since we cut the filter support early for performance
 
-	Array<RIfloat> kernelY;
-	kernelY.resize(kernelHeight*2+1);
+    int kernelYSize=kernelHeight*2+1;
+	RIfloat kernelY[kernelYSize];
 	int shiftY = kernelHeight;
 	RIfloat scaleY = 0.0f;
-	for(int i=0;i<kernelY.size();i++)
+	for(int i=0;i<kernelYSize;i++)
 	{
 		int y = i-shiftY;
 		kernelY[i] = (RIfloat)exp((RIfloat)y*(RIfloat)y * expScaleY);
@@ -1999,20 +1854,20 @@ void Image::gaussianBlur(const Image& src, RIfloat stdDeviationX, RIfloat stdDev
 	}
 	scaleY = 1.0f / scaleY;	//NOTE: using the mathematical definition of the scaling term doesn't work since we cut the filter support early for performance
 
-	Array<Color> tmp2;
+	Array<VGColor> tmp2;
 	tmp2.resize(w*src.m_height);	//throws bad_alloc
 	//horizontal pass
 	for(int j=0;j<src.m_height;j++)
 	{
 		for(int i=0;i<w;i++)
 		{
-			Color sum(0,0,0,0,procFormat);
-			for(int ki=0;ki<kernelX.size();ki++)
+			VGColor sum(0,0,0,0,procFormat);
+			for(int ki=0;ki<kernelXSize;ki++)
 			{
 				int x = i+ki-shiftX;
-				sum += kernelX[ki] * readTiledPixel(x, j, src.m_width, src.m_height, tilingMode, tmp, edge);
+				sum=VGColorAdd(sum, VGColorMultiplyByFloat(readTiledPixel(x, j, src.m_width, src.m_height, tilingMode, tmp, edge),kernelX[ki]));
 			}
-			tmp2[j*w+i] = sum * scaleX;
+			tmp2[j*w+i] = VGColorMultiplyByFloat(sum, scaleX);
 		}
 	}
 	//vertical pass
@@ -2020,13 +1875,13 @@ void Image::gaussianBlur(const Image& src, RIfloat stdDeviationX, RIfloat stdDev
 	{
 		for(int i=0;i<w;i++)
 		{
-			Color sum(0,0,0,0,procFormat);
-			for(int kj=0;kj<kernelY.size();kj++)
+			VGColor sum(0,0,0,0,procFormat);
+			for(int kj=0;kj<kernelYSize;kj++)
 			{
 				int y = j+kj-shiftY;
-				sum += kernelY[kj] * readTiledPixel(i, y, w, src.m_height, tilingMode, tmp2, edge);
+				sum=VGColorAdd(sum,  VGColorMultiplyByFloat(readTiledPixel(i, y, w, src.m_height, tilingMode, tmp2, edge), kernelY[kj]));
 			}
-			writeFilteredPixel(i, j, sum * scaleY, channelMask);
+			writeFilteredPixel(i, j, VGColorMultiplyByFloat(sum, scaleY), channelMask);
 		}
 	}
 }
@@ -2038,15 +1893,15 @@ void Image::gaussianBlur(const Image& src, RIfloat stdDeviationX, RIfloat stdDev
 * \note		
 *//*-------------------------------------------------------------------*/
 
-static Color::InternalFormat getLUTFormat(bool outputLinear, bool outputPremultiplied)
+static VGColorInternalFormat getLUTFormat(bool outputLinear, bool outputPremultiplied)
 {
-	Color::InternalFormat lutFormat = Color::lRGBA;
+	VGColorInternalFormat lutFormat = VGColor_lRGBA;
 	if(outputLinear && outputPremultiplied)
-		lutFormat = Color::lRGBA_PRE;
+		lutFormat = VGColor_lRGBA_PRE;
 	else if(!outputLinear && !outputPremultiplied)
-		lutFormat = Color::sRGBA;
+		lutFormat = VGColor_sRGBA;
 	else if(!outputLinear && outputPremultiplied)
-		lutFormat = Color::sRGBA_PRE;
+		lutFormat = VGColor_sRGBA_PRE;
 	return lutFormat;
 }
 
@@ -2070,17 +1925,17 @@ void Image::lookup(const Image& src, const RIuint8 * redLUT, const RIuint8 * gre
 	int h = RI_INT_MIN(m_height, src.m_height);
 	RI_ASSERT(w > 0 && h > 0);
 
-	Color::InternalFormat procFormat = getProcessingFormat(src.m_desc.internalFormat, filterFormatLinear, filterFormatPremultiplied);
-	Color::InternalFormat lutFormat = getLUTFormat(outputLinear, outputPremultiplied);
+	VGColorInternalFormat procFormat = getProcessingFormat(src.m_desc.internalFormat, filterFormatLinear, filterFormatPremultiplied);
+	VGColorInternalFormat lutFormat = getLUTFormat(outputLinear, outputPremultiplied);
 
 	for(int j=0;j<h;j++)
 	{
 		for(int i=0;i<w;i++)
 		{
-			Color s = src.readPixel(i,j);	//convert to RGBA [0,1]
+			VGColor s = src.readPixel(i,j);	//convert to RGBA [0,1]
 			s.convert(procFormat);
 
-			Color d(0,0,0,0,lutFormat);
+			VGColor d(0,0,0,0,lutFormat);
 			d.r = intToColor(  redLUT[colorToInt(s.r, 255)], 255);
 			d.g = intToColor(greenLUT[colorToInt(s.g, 255)], 255);
 			d.b = intToColor( blueLUT[colorToInt(s.b, 255)], 255);
@@ -2119,14 +1974,14 @@ void Image::lookupSingle(const Image& src, const RIuint32 * lookupTable, VGImage
 		sourceChannel = VG_ALPHA;
 	}
 
-	Color::InternalFormat procFormat = getProcessingFormat(src.m_desc.internalFormat, filterFormatLinear, filterFormatPremultiplied);
-	Color::InternalFormat lutFormat = getLUTFormat(outputLinear, outputPremultiplied);
+	VGColorInternalFormat procFormat = getProcessingFormat(src.m_desc.internalFormat, filterFormatLinear, filterFormatPremultiplied);
+	VGColorInternalFormat lutFormat = getLUTFormat(outputLinear, outputPremultiplied);
 
 	for(int j=0;j<h;j++)
 	{
 		for(int i=0;i<w;i++)
 		{
-			Color s = src.readPixel(i,j);	//convert to RGBA [0,1]
+			VGColor s = src.readPixel(i,j);	//convert to RGBA [0,1]
 			s.convert(procFormat);
 			int e;
 			switch(sourceChannel)
@@ -2147,7 +2002,7 @@ void Image::lookupSingle(const Image& src, const RIuint32 * lookupTable, VGImage
 			}
 
 			RIuint32 l = ((const RIuint32*)lookupTable)[e];
-			Color d(0,0,0,0,lutFormat);
+			VGColor d(0,0,0,0,lutFormat);
 			d.r = intToColor((l>>24), 255);
 			d.g = intToColor((l>>16), 255);
 			d.b = intToColor((l>> 8), 255);
@@ -2157,9 +2012,3 @@ void Image::lookupSingle(const Image& src, const RIuint32 * lookupTable, VGImage
 		}
 	}
 }
-
-//==============================================================================================
-
-}	//namespace OpenVGRI
-
-//==============================================================================================

@@ -22,7 +22,7 @@
  */
  
 #import "KGRender_baseline.h"
-#import "riPath.h"
+#import "VGPath.h"
 #import "riMath.h"
 
 typedef float CGFloat;
@@ -30,9 +30,9 @@ typedef float CGFloat;
 @implementation KGRender_baseline
 
 -(void)buildImage {
-   OpenVGRI::Color::Descriptor descriptor=OpenVGRI::Color::formatToDescriptor(VG_lRGBA_8888_PRE);
+   VGColorDescriptor descriptor=VGColor::formatToDescriptor(VG_lRGBA_8888_PRE);
    
-   _image=new OpenVGRI::Image(descriptor,_pixelsWide,_pixelsHigh,_pixelsWide*4,(OpenVGRI::RIuint8 *)_data);
+   _image=new Image(descriptor,_pixelsWide,_pixelsHigh,_pixelsWide*4,(RIuint8 *)_data);
    _image->addReference();
 }
 
@@ -48,7 +48,7 @@ typedef float CGFloat;
 }
 
 static void applyPath(void *info,const CGPathElement *element) {
-   OpenVGRI::Path *vgPath=( OpenVGRI::Path *)info;
+   VGPath *vgPath=( VGPath *)info;
    CGPoint *points=element->points;
    
    unsigned pointIndex=0;
@@ -56,30 +56,30 @@ static void applyPath(void *info,const CGPathElement *element) {
    switch(element->type){
 
     case kCGPathElementMoveToPoint:{
-      VGubyte segment[1]={VG_MOVE_TO};
-      VGfloat coords[2];
+      RIuint8 segment[1]={VG_MOVE_TO};
+      RIfloat coords[2];
        
       coords[0]=points[pointIndex].x;
       coords[1]=points[pointIndex++].y;
        
-      vgPath->appendData(segment,1,(OpenVGRI::RIuint8*)coords);
+      vgPath->appendData(segment,1,coords);
      }
      break;
        
     case kCGPathElementAddLineToPoint:{
-      VGubyte segment[1]={VG_LINE_TO};
-      VGfloat coords[2];
+      RIuint8 segment[1]={VG_LINE_TO};
+      RIfloat coords[2];
        
       coords[0]=points[pointIndex].x;
       coords[1]=points[pointIndex++].y;
         
-      vgPath->appendData(segment,1,(OpenVGRI::RIuint8*)coords);
+      vgPath->appendData(segment,1,coords);
      }
      break;
 
     case kCGPathElementAddCurveToPoint:{
-      VGubyte segment[1]={VG_CUBIC_TO};
-      VGfloat coords[6];
+      RIuint8 segment[1]={VG_CUBIC_TO};
+      RIfloat coords[6];
        
       coords[0]=points[pointIndex].x;
       coords[1]=points[pointIndex++].y;
@@ -88,53 +88,51 @@ static void applyPath(void *info,const CGPathElement *element) {
       coords[4]=points[pointIndex].x;
       coords[5]=points[pointIndex++].y;
         
-      vgPath->appendData(segment,1,(OpenVGRI::RIuint8*)coords);
+      vgPath->appendData(segment,1,coords);
      }
      break;
 
     case kCGPathElementAddQuadCurveToPoint:{
-      VGubyte segment[1]={VG_QUAD_TO};
-      VGfloat coords[4];
+      RIuint8 segment[1]={VG_QUAD_TO};
+      RIfloat coords[4];
        
       coords[0]=points[pointIndex].x;
       coords[1]=points[pointIndex++].y;
       coords[2]=points[pointIndex].x;
       coords[3]=points[pointIndex++].y;
 
-      vgPath->appendData(segment,1,(OpenVGRI::RIuint8*)coords);
+      vgPath->appendData(segment,1,coords);
      }
      break;
 
     case kCGPathElementCloseSubpath:{
-      VGubyte segment[1]={VG_CLOSE_PATH};
-      VGfloat coords[1];
+      RIuint8 segment[1]={VG_CLOSE_PATH};
+      RIfloat coords[1];
        
-      vgPath->appendData(segment,1,(OpenVGRI::RIuint8*)coords);
+      vgPath->appendData(segment,1,coords);
      }
      break;
    }
 }
 
--(OpenVGRI::Path *)buildDeviceSpacePath:(CGPathRef)path {
+-(VGPath *)buildDeviceSpacePath:(CGPathRef)path {
    
-   OpenVGRI::Path *vgPath=
-   new OpenVGRI::Path(VG_PATH_FORMAT_STANDARD,1,0,1,1);
-   vgPath->addReference();
+   VGPath *vgPath=new VGPath(1,0,1,1);
    
    CGPathApply(path,vgPath,applyPath);
 
    return vgPath;
 }
 
-static OpenVGRI::Paint *paintFromColor(CGColorRef color){
-   OpenVGRI::Paint *result=new OpenVGRI::Paint();
+static KGPaint *paintFromColor(CGColorRef color){
+   KGPaint *result=KGPaintInit(KGPaintAlloc());
    int    count=CGColorGetNumberOfComponents(color);
    const float *components=CGColorGetComponents(color);
 
    if(count==2)
-    result->m_inputPaintColor.set(components[0],components[0],components[0],components[1],OpenVGRI::Color::sRGBA);
+    result->m_inputPaintColor.set(components[0],components[0],components[0],components[1],VGColor_sRGBA);
    if(count==4)
-    result->m_inputPaintColor.set(components[0],components[1],components[2],components[3],OpenVGRI::Color::sRGBA);
+    result->m_inputPaintColor.set(components[0],components[1],components[2],components[3],VGColor_sRGBA);
 
    result->m_paintColor = result->m_inputPaintColor;
    result->m_paintColor.clamp();
@@ -144,67 +142,67 @@ static OpenVGRI::Paint *paintFromColor(CGColorRef color){
 
 -(void)drawPath:(CGPathRef)path drawingMode:(CGPathDrawingMode)drawingMode blendMode:(CGBlendMode)blendMode interpolationQuality:(CGInterpolationQuality)interpolationQuality fillColor:(CGColorRef)fillColor strokeColor:(CGColorRef)strokeColor 
 lineWidth:(float)lineWidth lineCap:(CGLineCap)lineCap lineJoin:(CGLineJoin)lineJoin miterLimit:(float)miterLimit dashPhase:(float)dashPhase dashLengthsCount:(unsigned)dashLengthsCount dashLengths:(float *)dashLengths transform:(CGAffineTransform)xform antialias:(BOOL)antialias {
-   OpenVGRI::Path *vgPath=[self buildDeviceSpacePath:path];
+   VGPath *vgPath=[self buildDeviceSpacePath:path];
 
-   OpenVGRI::PixelPipe pixelPipe;
-   OpenVGRI::Rasterizer rasterizer;
+   KGPixelPipe *pixelPipe=KGPixelPipeInit(KGPixelPipeAlloc());
+   KGRasterizer *rasterizer=KGRasterizerInit(KGRasterizerAlloc());
 
-   pixelPipe.setRenderingSurface(_image);
+   KGPixelPipeSetRenderingSurface(pixelPipe,_image);
 
 	try
 	{
-//		pixelPipe.setMask(context->m_masking ? context->getMask() : NULL);
-   		pixelPipe.setBlendMode(blendMode);
-//		pixelPipe.setTileFillColor(context->m_tileFillColor);
+//		KGPixelPipeSetMask(context->m_masking ? context->getMask() : NULL);
+   		KGPixelPipeSetBlendMode(pixelPipe,blendMode);
+//		KGPixelPipeSetTileFillColor(context->m_tileFillColor);
         if(interpolationQuality==kCGInterpolationDefault)
-            pixelPipe.setImageQuality(kCGInterpolationHigh);
+            KGPixelPipeSetImageQuality(pixelPipe,kCGInterpolationHigh);
         else
-            pixelPipe.setImageQuality(interpolationQuality);
+            KGPixelPipeSetImageQuality(pixelPipe,interpolationQuality);
 
-       rasterizer.setViewport(0,0,_image->getWidth(),_image->getHeight());
+       KGRasterizerSetViewport(rasterizer,0,0,_image->getWidth(),_image->getHeight());
        
-       rasterizer.setShouldAntialias(antialias);
+       KGRasterizerSetShouldAntialias(rasterizer,antialias);
        
 CGAffineTransform u2d=CGAffineTransformMakeTranslation(0,_pixelsHigh);
 u2d=CGAffineTransformScale(u2d,1,-1);
 xform=CGAffineTransformConcat(xform,u2d);
 
-		OpenVGRI::Matrix3x3 userToSurfaceMatrix=OpenVGRI::Matrix3x3(xform);// context->m_pathUserToSurface;
+		Matrix3x3 userToSurfaceMatrix=Matrix3x3(xform);// context->m_pathUserToSurface;
 		userToSurfaceMatrix[2].set(0,0,1);		//force affinity
 
 		if(drawingMode!=kCGPathStroke)
 		{
-			pixelPipe.setPaint(paintFromColor(fillColor));
+			KGPixelPipeSetPaint(pixelPipe,paintFromColor(fillColor));
 
-			OpenVGRI::Matrix3x3 surfaceToPaintMatrix =OpenVGRI::Matrix3x3(xform);//context->m_pathUserToSurface * context->m_fillPaintToUser;
+			Matrix3x3 surfaceToPaintMatrix =Matrix3x3(xform);//context->m_pathUserToSurface * context->m_fillPaintToUser;
 			if(surfaceToPaintMatrix.invert())
 			{
 				surfaceToPaintMatrix[2].set(0,0,1);		//force affinity
-				pixelPipe.setSurfaceToPaintMatrix(surfaceToPaintMatrix);
+				KGPixelPipeSetSurfaceToPaintMatrix(pixelPipe,surfaceToPaintMatrix);
 
 				vgPath->fill(userToSurfaceMatrix,rasterizer);	//throws bad_alloc
                 
                 VGFillRule fillRule=(drawingMode==kCGPathFill || drawingMode==kCGPathFillStroke)?VG_NON_ZERO:VG_EVEN_ODD;
                 
-				rasterizer.fill(fillRule, pixelPipe);	//throws bad_alloc
+				KGRasterizerFill(rasterizer,fillRule, pixelPipe);	//throws bad_alloc
 			}
 		}
 
 		if(drawingMode>=kCGPathStroke){
          if(lineWidth > 0.0f){
-			pixelPipe.setPaint(paintFromColor(strokeColor));
+			KGPixelPipeSetPaint(pixelPipe,paintFromColor(strokeColor));
 
-			OpenVGRI::Matrix3x3 surfaceToPaintMatrix=OpenVGRI::Matrix3x3(xform);// = context->m_pathUserToSurface * context->m_strokePaintToUser;
+			Matrix3x3 surfaceToPaintMatrix=Matrix3x3(xform);// = context->m_pathUserToSurface * context->m_strokePaintToUser;
 			if(surfaceToPaintMatrix.invert())
 			{
 				surfaceToPaintMatrix[2].set(0,0,1);		//force affinity
-				pixelPipe.setSurfaceToPaintMatrix(surfaceToPaintMatrix);
+				KGPixelPipeSetSurfaceToPaintMatrix(pixelPipe,surfaceToPaintMatrix);
 
-				rasterizer.clear();
+				KGRasterizerClear(rasterizer);
                                  
 				vgPath->stroke(userToSurfaceMatrix, rasterizer, dashLengths,dashLengthsCount, dashPhase, true /* context->m_strokeDashPhaseReset ? true : false*/,
-									  lineWidth, lineCap,  lineJoin, OpenVGRI::RI_MAX(miterLimit, 1.0f));	//throws bad_alloc
-				rasterizer.fill(VG_NON_ZERO,pixelPipe);	//throws bad_alloc
+									  lineWidth, lineCap,  lineJoin, RI_MAX(miterLimit, 1.0f));	//throws bad_alloc
+				KGRasterizerFill(rasterizer,VG_NON_ZERO,pixelPipe);	//throws bad_alloc
 			}
 		 }
         }
@@ -213,14 +211,15 @@ xform=CGAffineTransformConcat(xform,u2d);
 	{
       NSLog(@"C++ exception, out of memory");
 	}
-
+   KGRasterizerDealloc(rasterizer);
+   KGPixelPipeDealloc(pixelPipe);
 }
 
 -(void)drawBitmapImageRep:(NSBitmapImageRep *)imageRep antialias:(BOOL)antialias interpolationQuality:(CGInterpolationQuality)interpolationQuality blendMode:(CGBlendMode)blendMode fillColor:(CGColorRef)fillColor transform:(CGAffineTransform)xform {
-	OpenVGRI::Image* img;
+	Image* img;
 
-   OpenVGRI::Color::Descriptor descriptor=OpenVGRI::Color::formatToDescriptor(VG_lRGBA_8888);
-   img=new OpenVGRI::Image(descriptor,[imageRep pixelsWide],[imageRep pixelsHigh],[imageRep bytesPerRow],(OpenVGRI::RIuint8 *)[imageRep bitmapData]);
+   VGColorDescriptor descriptor=VGColor::formatToDescriptor(VG_lRGBA_8888);
+   img=new Image(descriptor,[imageRep pixelsWide],[imageRep pixelsHigh],[imageRep bytesPerRow],(RIuint8 *)[imageRep bitmapData]);
    img->addReference();
 
 	try
@@ -232,16 +231,16 @@ CGAffineTransform u2d=CGAffineTransformMakeTranslation(0,_pixelsHigh);
 u2d=CGAffineTransformScale(u2d,1,-1);
 xform=CGAffineTransformConcat(i2u,xform);
 xform=CGAffineTransformConcat(xform,u2d);
-        OpenVGRI::Matrix3x3 imageUserToSurface=OpenVGRI::Matrix3x3(xform);
+        Matrix3x3 imageUserToSurface=Matrix3x3(xform);
 
  // FIX, adjustable
-        OpenVGRI::Matrix3x3 fillPaintToUser=OpenVGRI::Matrix3x3();
+        Matrix3x3 fillPaintToUser=Matrix3x3();
         
 		//transform image corners into the surface space
-		OpenVGRI::Vector3 p0(0, 0, 1);
-		OpenVGRI::Vector3 p1(0, (CGFloat)img->getHeight(), 1);
-		OpenVGRI::Vector3 p2((CGFloat)img->getWidth(), (CGFloat)img->getHeight(), 1);
-		OpenVGRI::Vector3 p3((CGFloat)img->getWidth(), 0, 1);
+		Vector3 p0(0, 0);
+		Vector3 p1(0, (CGFloat)img->getHeight());
+		Vector3 p2((CGFloat)img->getWidth(), (CGFloat)img->getHeight());
+		Vector3 p3((CGFloat)img->getWidth(), 0);
 		p0 = imageUserToSurface * p0;
 		p1 = imageUserToSurface * p1;
 		p2 = imageUserToSurface * p2;
@@ -251,48 +250,50 @@ xform=CGAffineTransformConcat(xform,u2d);
 			return;
 		}
 		//projection
-		p0 *= 1.0f/p0.z;
-		p1 *= 1.0f/p1.z;
-		p2 *= 1.0f/p2.z;
-		p3 *= 1.0f/p3.z;
+		p0=Vector3MultiplyByFloat(p0,1.0f/p0.z);
+		p1=Vector3MultiplyByFloat(p1,1.0f/p1.z);
+		p2=Vector3MultiplyByFloat(p2,1.0f/p2.z);
+		p3=Vector3MultiplyByFloat(p3,1.0f/p3.z);
 
-		OpenVGRI::Rasterizer rasterizer;
+        KGRasterizer *rasterizer=KGRasterizerInit(KGRasterizerAlloc());
 
-        rasterizer.setViewport(0, 0, _image->getWidth(), _image->getHeight());
-        rasterizer.setShouldAntialias(antialias);
+        KGRasterizerSetViewport(rasterizer,0, 0, _image->getWidth(), _image->getHeight());
+        KGRasterizerSetShouldAntialias(rasterizer,antialias);
 
-		OpenVGRI::PixelPipe pixelPipe;
-		// pixelPipe.setTileFillColor(context->m_tileFillColor);
-        pixelPipe.setPaint(paintFromColor(fillColor));
+        KGPixelPipe *pixelPipe=KGPixelPipeInit(KGPixelPipeAlloc());
+		// KGPixelPipeSetTileFillColor(context->m_tileFillColor);
+        KGPixelPipeSetPaint(pixelPipe,paintFromColor(fillColor));
         if(interpolationQuality==kCGInterpolationDefault)
-            pixelPipe.setImageQuality(kCGInterpolationHigh);
+            KGPixelPipeSetImageQuality(pixelPipe,kCGInterpolationHigh);
         else
-            pixelPipe.setImageQuality(interpolationQuality);
+            KGPixelPipeSetImageQuality(pixelPipe,interpolationQuality);
 
-		pixelPipe.setBlendMode(blendMode);
+		KGPixelPipeSetBlendMode(pixelPipe,blendMode);
 
 		//set up rendering surface and mask buffer
-        pixelPipe.setRenderingSurface(_image);
+        KGPixelPipeSetRenderingSurface(pixelPipe,_image);
 
-//		pixelPipe.setMask(context->m_masking ? context->getMask() : NULL);
+//		KGPixelPipeSetMask(context->m_masking ? context->getMask() : NULL);
 
-		OpenVGRI::Matrix3x3 surfaceToImageMatrix = imageUserToSurface;
-		OpenVGRI::Matrix3x3 surfaceToPaintMatrix = imageUserToSurface * fillPaintToUser;
+		Matrix3x3 surfaceToImageMatrix = imageUserToSurface;
+		Matrix3x3 surfaceToPaintMatrix = imageUserToSurface * fillPaintToUser;
 		if(surfaceToImageMatrix.invert() && surfaceToPaintMatrix.invert())
 		{
 			VGImageMode imode = VG_DRAW_IMAGE_NORMAL;
 			if(!surfaceToPaintMatrix.isAffine())
 				imode = VG_DRAW_IMAGE_NORMAL;	//if paint matrix is not affine, always use normal image mode
-			pixelPipe.setImage(img, imode);
-			pixelPipe.setSurfaceToPaintMatrix(surfaceToPaintMatrix);
-			pixelPipe.setSurfaceToImageMatrix(surfaceToImageMatrix);
+			KGPixelPipeSetImage(pixelPipe,img, imode);
+			KGPixelPipeSetSurfaceToPaintMatrix(pixelPipe,surfaceToPaintMatrix);
+			KGPixelPipeSetSurfaceToImageMatrix(pixelPipe,surfaceToImageMatrix);
 
-			rasterizer.addEdge(OpenVGRI::Vector2(p0.x,p0.y), OpenVGRI::Vector2(p1.x,p1.y));	//throws bad_alloc
-			rasterizer.addEdge(OpenVGRI::Vector2(p1.x,p1.y), OpenVGRI::Vector2(p2.x,p2.y));	//throws bad_alloc
-			rasterizer.addEdge(OpenVGRI::Vector2(p2.x,p2.y), OpenVGRI::Vector2(p3.x,p3.y));	//throws bad_alloc
-			rasterizer.addEdge(OpenVGRI::Vector2(p3.x,p3.y), OpenVGRI::Vector2(p0.x,p0.y));	//throws bad_alloc
-			rasterizer.fill(VG_EVEN_ODD, pixelPipe);	//throws bad_alloc
+			KGRasterizerAddEdge(rasterizer,Vector2(p0.x,p0.y), Vector2(p1.x,p1.y));	//throws bad_alloc
+			KGRasterizerAddEdge(rasterizer,Vector2(p1.x,p1.y), Vector2(p2.x,p2.y));	//throws bad_alloc
+			KGRasterizerAddEdge(rasterizer,Vector2(p2.x,p2.y), Vector2(p3.x,p3.y));	//throws bad_alloc
+			KGRasterizerAddEdge(rasterizer,Vector2(p3.x,p3.y), Vector2(p0.x,p0.y));	//throws bad_alloc
+			KGRasterizerFill(rasterizer,VG_EVEN_ODD, pixelPipe);	//throws bad_alloc
 		}
+   KGRasterizerDealloc(rasterizer);
+   KGPixelPipeDealloc(pixelPipe);
 	}
 	catch(std::bad_alloc)
 	{

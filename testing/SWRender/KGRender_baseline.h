@@ -8,11 +8,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import "KGRender.h"
 #import "riImage.h"
-#import "riPixelPipe.h"
-#import "riRasterizer.h"
+#import "KGPixelPipe.h"
+#import "KGRasterizer.h"
 
 @interface KGRender_baseline : KGRender {
-   OpenVGRI::Image      *_image;
+   Image      *_image;
 }
 
 @end

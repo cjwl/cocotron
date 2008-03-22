@@ -19,10 +19,21 @@
 		FE1F937A0D7EF1F800969491 /* KGRenderController.mm in Sources */ = {isa = PBXBuildFile; fileRef = FE1F93790D7EF1F800969491 /* KGRenderController.mm */; };
 		FE9552810D77CA67009B765B /* riImage.mm in Sources */ = {isa = PBXBuildFile; fileRef = FE9552780D77CA67009B765B /* riImage.mm */; };
 		FE9552820D77CA67009B765B /* riMath.mm in Sources */ = {isa = PBXBuildFile; fileRef = FE95527A0D77CA67009B765B /* riMath.mm */; };
-		FE9552830D77CA67009B765B /* riPath.mm in Sources */ = {isa = PBXBuildFile; fileRef = FE95527C0D77CA67009B765B /* riPath.mm */; };
-		FE9552840D77CA67009B765B /* riPixelPipe.mm in Sources */ = {isa = PBXBuildFile; fileRef = FE95527E0D77CA67009B765B /* riPixelPipe.mm */; };
-		FE9552850D77CA67009B765B /* riRasterizer.mm in Sources */ = {isa = PBXBuildFile; fileRef = FE9552800D77CA67009B765B /* riRasterizer.mm */; };
+		FE9552830D77CA67009B765B /* VGPath.mm in Sources */ = {isa = PBXBuildFile; fileRef = FE95527C0D77CA67009B765B /* VGPath.mm */; };
+		FE9552840D77CA67009B765B /* KGPixelPipe.mm in Sources */ = {isa = PBXBuildFile; fileRef = FE95527E0D77CA67009B765B /* KGPixelPipe.mm */; };
+		FE9552850D77CA67009B765B /* KGRasterizer.mm in Sources */ = {isa = PBXBuildFile; fileRef = FE9552800D77CA67009B765B /* KGRasterizer.mm */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXBuildRule section */
+		FEC64D790D92F14E0020233A /* PBXBuildRule */ = {
+			isa = PBXBuildRule;
+			compilerSpec = com.apple.compilers.gcc.4_0;
+			fileType = sourcecode.c;
+			isEditable = 1;
+			outputFiles = (
+			);
+		};
+/* End PBXBuildRule section */
 
 /* Begin PBXFileReference section */
 		089C165DFE840E0CC02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -45,19 +56,16 @@
 		FE1F93620D7EF19900969491 /* KGRenderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGRenderView.m; sourceTree = "<group>"; };
 		FE1F93780D7EF1F800969491 /* KGRenderController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGRenderController.h; sourceTree = "<group>"; };
 		FE1F93790D7EF1F800969491 /* KGRenderController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = KGRenderController.mm; sourceTree = "<group>"; };
-		FE9552740D77CA67009B765B /* openvg.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = openvg.h; sourceTree = "<group>"; };
-		FE9552750D77CA67009B765B /* riArray.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = riArray.h; sourceTree = "<group>"; };
-		FE9552760D77CA67009B765B /* riDefs.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = riDefs.h; sourceTree = "<group>"; };
 		FE9552770D77CA67009B765B /* riImage.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = riImage.h; sourceTree = "<group>"; };
 		FE9552780D77CA67009B765B /* riImage.mm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.objcpp; path = riImage.mm; sourceTree = "<group>"; };
 		FE9552790D77CA67009B765B /* riMath.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = riMath.h; sourceTree = "<group>"; };
 		FE95527A0D77CA67009B765B /* riMath.mm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.objcpp; path = riMath.mm; sourceTree = "<group>"; };
-		FE95527B0D77CA67009B765B /* riPath.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = riPath.h; sourceTree = "<group>"; };
-		FE95527C0D77CA67009B765B /* riPath.mm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.objcpp; path = riPath.mm; sourceTree = "<group>"; };
-		FE95527D0D77CA67009B765B /* riPixelPipe.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = riPixelPipe.h; sourceTree = "<group>"; };
-		FE95527E0D77CA67009B765B /* riPixelPipe.mm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.objcpp; path = riPixelPipe.mm; sourceTree = "<group>"; };
-		FE95527F0D77CA67009B765B /* riRasterizer.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = riRasterizer.h; sourceTree = "<group>"; };
-		FE9552800D77CA67009B765B /* riRasterizer.mm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.objcpp; path = riRasterizer.mm; sourceTree = "<group>"; };
+		FE95527B0D77CA67009B765B /* VGPath.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = VGPath.h; sourceTree = "<group>"; };
+		FE95527C0D77CA67009B765B /* VGPath.mm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.objcpp; path = VGPath.mm; sourceTree = "<group>"; };
+		FE95527D0D77CA67009B765B /* KGPixelPipe.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = KGPixelPipe.h; sourceTree = "<group>"; };
+		FE95527E0D77CA67009B765B /* KGPixelPipe.mm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.objcpp; path = KGPixelPipe.mm; sourceTree = "<group>"; };
+		FE95527F0D77CA67009B765B /* KGRasterizer.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = KGRasterizer.h; sourceTree = "<group>"; };
+		FE9552800D77CA67009B765B /* KGRasterizer.mm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.objcpp; path = KGRasterizer.mm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -110,19 +118,16 @@
 				FE1F93790D7EF1F800969491 /* KGRenderController.mm */,
 				FE1F93610D7EF19900969491 /* KGRenderView.h */,
 				FE1F93620D7EF19900969491 /* KGRenderView.m */,
-				FE9552740D77CA67009B765B /* openvg.h */,
-				FE9552750D77CA67009B765B /* riArray.h */,
-				FE9552760D77CA67009B765B /* riDefs.h */,
 				FE9552770D77CA67009B765B /* riImage.h */,
 				FE9552780D77CA67009B765B /* riImage.mm */,
 				FE9552790D77CA67009B765B /* riMath.h */,
 				FE95527A0D77CA67009B765B /* riMath.mm */,
-				FE95527B0D77CA67009B765B /* riPath.h */,
-				FE95527C0D77CA67009B765B /* riPath.mm */,
-				FE95527D0D77CA67009B765B /* riPixelPipe.h */,
-				FE95527E0D77CA67009B765B /* riPixelPipe.mm */,
-				FE95527F0D77CA67009B765B /* riRasterizer.h */,
-				FE9552800D77CA67009B765B /* riRasterizer.mm */,
+				FE95527B0D77CA67009B765B /* VGPath.h */,
+				FE95527C0D77CA67009B765B /* VGPath.mm */,
+				FE95527D0D77CA67009B765B /* KGPixelPipe.h */,
+				FE95527E0D77CA67009B765B /* KGPixelPipe.mm */,
+				FE95527F0D77CA67009B765B /* KGRasterizer.h */,
+				FE9552800D77CA67009B765B /* KGRasterizer.mm */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
 				29B97315FDCFA39411CA2CEA /* Other Sources */,
@@ -172,6 +177,7 @@
 				8D11072E0486CEB800E47090 /* Frameworks */,
 			);
 			buildRules = (
+				FEC64D790D92F14E0020233A /* PBXBuildRule */,
 			);
 			dependencies = (
 			);
@@ -187,9 +193,11 @@
 		29B97313FDCFA39411CA2CEA /* Project object */ = {
 			isa = PBXProject;
 			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "SWRender" */;
+			compatibilityVersion = "Xcode 2.4";
 			hasScannedForEncodings = 1;
 			mainGroup = 29B97314FDCFA39411CA2CEA /* SWRender */;
 			projectDirPath = "";
+			projectRoot = "";
 			targets = (
 				8D1107260486CEB800E47090 /* SWRender */,
 			);
@@ -217,9 +225,9 @@
 				8D11072D0486CEB800E47090 /* main.m in Sources */,
 				FE9552810D77CA67009B765B /* riImage.mm in Sources */,
 				FE9552820D77CA67009B765B /* riMath.mm in Sources */,
-				FE9552830D77CA67009B765B /* riPath.mm in Sources */,
-				FE9552840D77CA67009B765B /* riPixelPipe.mm in Sources */,
-				FE9552850D77CA67009B765B /* riRasterizer.mm in Sources */,
+				FE9552830D77CA67009B765B /* VGPath.mm in Sources */,
+				FE9552840D77CA67009B765B /* KGPixelPipe.mm in Sources */,
+				FE9552850D77CA67009B765B /* KGRasterizer.mm in Sources */,
 				FE1F932E0D7EEDF900969491 /* KGRender.m in Sources */,
 				FE1F93370D7EEE6900969491 /* KGRender_cg.m in Sources */,
 				FE1F93430D7EEECA00969491 /* KGRender_baseline.mm in Sources */,

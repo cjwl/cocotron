@@ -1,6 +1,3 @@
-#ifndef __RIRASTERIZER_H
-#define __RIRASTERIZER_H
-
 /*------------------------------------------------------------------------
  *
  * OpenVG 1.0.1 Reference Implementation
@@ -29,72 +26,41 @@
  *
  *//**
  * \file
- * \brief	Rasterizer class.
+ * \brief	KGRasterizer class.
  * \note	
  *//*-------------------------------------------------------------------*/
 
-#ifndef __RIMATH_H
-#include "riMath.h"
-#endif
-
-#ifndef __RIARRAY_H
-#include "riArray.h"
-#endif
-
-#ifndef __RIPIXELPIPE_H
-#include "riPixelPipe.h"
-#endif
-
-//=======================================================================
-
-namespace OpenVGRI
-{
+#import "riMath.h"
+#import "KGPixelPipe.h"
 
 /*-------------------------------------------------------------------*//*!
 * \brief	Converts a set of edges to coverage values for each pixel and
-*			calls PixelPipe::pixelPipe for painting a pixel.
+*			calls KGPixelPipe::pixelPipe for painting a pixel.
 * \param	
 * \return	
 * \note		
 *//*-------------------------------------------------------------------*/
 
-class Rasterizer
-{
-public:
-	Rasterizer();	//throws bad_alloc
-	~Rasterizer();
+typedef enum {
+  VG_EVEN_ODD                                 = 0x1900,
+  VG_NON_ZERO                                 = 0x1901
+} VGFillRule;
 
-    void        setViewport(int vpx,int vpy,int vpwidth,int vpheight);
+struct Edge {
+   Vector2		v0;
+   Vector2		v1;
+   int         direction;
+   Vector2     normal;
+   RIfloat     cnst;
+};
 
-	void		clear();
-	void		addEdge(const Vector2& v0, const Vector2& v1);	//throws bad_alloc
+struct Sample {
+   RIfloat		x;
+   RIfloat		y;
+   RIfloat		weight;
+};
 
-    void        setShouldAntialias(BOOL antialias);
-    
-	void		fill(VGFillRule fillRule, const PixelPipe& pixelPipe) ;	//throws bad_alloc
-
-private:
-	Rasterizer(const Rasterizer&);						//!< Not allowed.
-	const Rasterizer& operator=(const Rasterizer&);		//!< Not allowed.
-void Rasterizer::sortEdgeTable(int start,int end) const;
-
-	struct Edge
-	{
-		Vector2		v0;
-		Vector2		v1;
-        int         direction;
-        Vector2     normal;
-        RIfloat     cnst;
-	};
-
-	struct Sample
-	{
-		Sample() : x(0.0f), y(0.0f), weight(0.0f) {}
-		RIfloat		x;
-		RIfloat		y;
-		RIfloat		weight;
-	};
-    
+typedef struct {    
     int _vpx,_vpy,_vpwidth,_vpheight;
     
     int          _edgeCount;
@@ -106,12 +72,14 @@ void Rasterizer::sortEdgeTable(int start,int end) const;
 	RIfloat sumWeights ;
 	RIfloat fradius ;		//max offset of the sampling points from a pixel center
 	bool reflect ;
-};
+} KGRasterizer;
 
-//=======================================================================
+KGRasterizer *KGRasterizerAlloc();
+KGRasterizer *KGRasterizerInit(KGRasterizer *self);
+void KGRasterizerDealloc(KGRasterizer *self);
+void KGRasterizerSetViewport(KGRasterizer *self,int vpx,int vpy,int vpwidth,int vpheight);
+void KGRasterizerClear(KGRasterizer *self);
+void KGRasterizerAddEdge(KGRasterizer *self,const Vector2 v0, const Vector2 v1);	//throws bad_alloc
+void KGRasterizerSetShouldAntialias(KGRasterizer *self,BOOL antialias);
+void KGRasterizerFill(KGRasterizer *self,VGFillRule fillRule, KGPixelPipe *pixelPipe);
 
-}	//namespace OpenVGRI
-
-//=======================================================================
-
-#endif /* __RIRASTERIZER_H */

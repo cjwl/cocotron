@@ -36,6 +36,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
    CGContextSaveGState(context);
    CGContextSetBlendMode(context,kCGBlendModeNormal);
+   CGContextSetShouldAntialias(context,NO);
    CGContextDrawImage(context,CGRectMake(0,0,_pixelsWide,_pixelsHigh),image);
    CGContextRestoreGState(context);
   

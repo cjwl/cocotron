@@ -30,49 +30,36 @@
  * \note	
  *//*-------------------------------------------------------------------*/
 
-#include "riRasterizer.h"
+#import "KGRasterizer.h"
 
-//==============================================================================================
+#define RI_MAX_EDGES					262144
 
-namespace OpenVGRI
-{
+KGRasterizer *KGRasterizerAlloc(){
+   return (KGRasterizer *)NSZoneCalloc(NULL,1,sizeof(KGRasterizer));
+}
 
-/*-------------------------------------------------------------------*//*!
-* \brief	Rasterizer constructor.
-* \param	
-* \return	
-* \note		
-*//*-------------------------------------------------------------------*/
-
-Rasterizer::Rasterizer()
-{
-   _vpx=_vpy=_vpwidth=_vpheight=0;
+KGRasterizer *KGRasterizerInit(KGRasterizer *self) {
+   self->_vpx=self->_vpy=self->_vpwidth=self->_vpheight=0;
    
-   _edgeCount=0;
-   _edgeCapacity=256;
-   _edges=(Edge *)NSZoneMalloc(NULL,_edgeCapacity*sizeof(Edge));
+   self->_edgeCount=0;
+   self->_edgeCapacity=256;
+   self->_edges=(Edge *)NSZoneMalloc(NULL,self->_edgeCapacity*sizeof(Edge));
+   return self;
 }
 
-/*-------------------------------------------------------------------*//*!
-* \brief	Rasterizer destructor.
-* \param	
-* \return	
-* \note		
-*//*-------------------------------------------------------------------*/
-
-Rasterizer::~Rasterizer()
-{
+void KGRasterizerDealloc(KGRasterizer *self) {
+   NSZoneFree(NULL,self->_edges);
+   NSZoneFree(NULL,self);
 }
 
-void        Rasterizer::setViewport(int vpx,int vpy,int vpwidth,int vpheight) {
+void KGRasterizerSetViewport(KGRasterizer *self,int vpx,int vpy,int vpwidth,int vpheight) {
 	RI_ASSERT(vpwidth >= 0 && vpheight >= 0);
 	RI_ASSERT(vpx + vpwidth >= vpx && vpy + vpheight >= vpy);
-    _vpx=vpx;
-    _vpy=vpy;
-    _vpwidth=vpwidth;
-    _vpheight=vpheight;
+    self->_vpx=vpx;
+    self->_vpy=vpy;
+    self->_vpwidth=vpwidth;
+    self->_vpheight=vpheight;
 }
-
 
 /*-------------------------------------------------------------------*//*!
 * \brief	Removes all appended edges.
@@ -81,9 +68,8 @@ void        Rasterizer::setViewport(int vpx,int vpy,int vpwidth,int vpheight) {
 * \note		
 *//*-------------------------------------------------------------------*/
 
-void Rasterizer::clear()
-{
-   _edgeCount=0;
+void KGRasterizerClear(KGRasterizer *self) {
+   self->_edgeCount=0;
 }
 
 /*-------------------------------------------------------------------*//*!
@@ -93,9 +79,8 @@ void Rasterizer::clear()
 * \note		
 *//*-------------------------------------------------------------------*/
 
-void Rasterizer::addEdge(const Vector2& v0, const Vector2& v1)
-{
-	if( _edgeCount >= RI_MAX_EDGES )
+void KGRasterizerAddEdge(KGRasterizer *self,const Vector2 v0, const Vector2 v1) {	//throws bad_alloc
+	if( self->_edgeCount >= RI_MAX_EDGES )
 		throw std::bad_alloc();	//throw an out of memory error if there are too many edges
 
 	if(v0.y == v1.y)
@@ -118,11 +103,11 @@ void Rasterizer::addEdge(const Vector2& v0, const Vector2& v1)
     e.normal.set(e.v0.y - e.v1.y, e.v1.x - e.v0.x);	//edge normal
     e.cnst = dot(e.v0, e.normal);	//distance of v0 from the origin along the edge normal
     
-    if(_edgeCount+1>=_edgeCapacity){
-     _edgeCapacity*=2;
-     _edges=(Edge *)NSZoneRealloc(NULL,_edges,_edgeCapacity*sizeof(Edge));
+    if(self->_edgeCount+1>=self->_edgeCapacity){
+     self->_edgeCapacity*=2;
+     self->_edges=(Edge *)NSZoneRealloc(NULL,self->_edges,self->_edgeCapacity*sizeof(Edge));
     }
-    _edges[_edgeCount++]=e;
+    self->_edges[self->_edgeCount++]=e;
 }
 
 /*-------------------------------------------------------------------*//*!
@@ -149,52 +134,51 @@ static double radicalInverseBase2(unsigned int i)
 	return p;
 }
 
-void Rasterizer::setShouldAntialias(BOOL antialias) {
+void KGRasterizerSetShouldAntialias(KGRasterizer *self,BOOL antialias) {
 
 	//make a sampling pattern
-    sumWeights = 0.0f;
-	 fradius = 0.0f;		//max offset of the sampling points from a pixel center
+    self->sumWeights = 0.0f;
+	 self->fradius = 0.0f;		//max offset of the sampling points from a pixel center
 
 	if(!antialias){
-		numSamples = 1;
-		samples[0].x = 0.0f;
-		samples[0].y = 0.0f;
-		samples[0].weight = 1.0f;
-		fradius = 0.0f;
-		sumWeights = 1.0f;
+		self->numSamples = 1;
+		self->samples[0].x = 0.0f;
+		self->samples[0].y = 0.0f;
+		self->samples[0].weight = 1.0f;
+		self->fradius = 0.0f;
+		self->sumWeights = 1.0f;
 	}
     else  { 
-        /* This is close to the Quartz AA filter, Quartz appears to be more linear but more likely to cut off */
+        // The Quartz AA filter is different than this
         // There doesn't seem to be much noticeable difference between 8 and 16 samples using this
         
-		numSamples = 8;
-		fradius = .75;
-		for(int i=0;i<numSamples;i++)
+		self->numSamples = 8;
+		self->fradius = .75;
+		for(int i=0;i<self->numSamples;i++)
 		{	//Gaussian filter, implemented using Hammersley point set for sample point locations
 			RIfloat x = (RIfloat)radicalInverseBase2(i);
-			RIfloat y = ((RIfloat)i + 0.5f) / (RIfloat)numSamples;
+			RIfloat y = ((RIfloat)i + 0.5f) / (RIfloat)self->numSamples;
 			RI_ASSERT(x >= 0.0f && x < 1.0f);
 			RI_ASSERT(y >= 0.0f && y < 1.0f);
 
 			//map unit square to unit circle
-			RIfloat r = (RIfloat)sqrt(x) * fradius;
-			x = r * (RIfloat)sin(y*2.0f*PI);
-			y = r * (RIfloat)cos(y*2.0f*PI);
-			samples[i].weight = (RIfloat)exp(-0.5f * RI_SQR(r/fradius));
+			RIfloat r = (RIfloat)sqrt(x) * self->fradius;
+			x = r * (RIfloat)sin(y*2.0f*M_PI);
+			y = r * (RIfloat)cos(y*2.0f*M_PI);
+			self->samples[i].weight = (RIfloat)exp(-0.5f * RI_SQR(r/self->fradius));
 
 			RI_ASSERT(x >= -1.5f && x <= 1.5f && y >= -1.5f && y <= 1.5f);	//the specification restricts the filter radius to be less than or equal to 1.5
 			
-			samples[i].x = x;
-			samples[i].y = y;
-			sumWeights += samples[i].weight;
+			self->samples[i].x = x;
+			self->samples[i].y = y;
+			self->sumWeights += self->samples[i].weight;
 		}
 	}
 
 }
 
-
 /*-------------------------------------------------------------------*//*!
-* \brief	Calls PixelPipe::pixelPipe for each pixel with coverage greater
+* \brief	Calls KGPixelPipe::pixelPipe for each pixel with coverage greater
 *			than zero.
 * \param	
 * \return	
@@ -271,28 +255,28 @@ static inline void activeEdgeTableSort(ActiveEdgeTable *aet,int start,int end){
     } 
 }
 
-void Rasterizer::sortEdgeTable(int start,int end) const{
+void KGRasterizerSortEdgeTable(KGRasterizer *self,int start,int end) {
     if (start < end) { 
-      Edge pivot=_edges[end];
+      Edge pivot=self->_edges[end];
       int i = start; 
       int j = end; 
       while (i != j) { 
-        if (_edges[i].v0.y < pivot.v0.y || (_edges[i].v0.y==pivot.v0.y && _edges[i].v1.y<pivot.v1.y)) { 
+        if (self->_edges[i].v0.y < pivot.v0.y || (self->_edges[i].v0.y==pivot.v0.y && self->_edges[i].v1.y<pivot.v1.y)) { 
           i ++; 
         } 
         else { 
-          _edges[j] = _edges[i]; 
-          _edges[i] = _edges[j-1]; 
+          self->_edges[j] = self->_edges[i]; 
+          self->_edges[i] = self->_edges[j-1]; 
           j --; 
         } 
       } 
-      _edges[j] = pivot; 
-      sortEdgeTable( start, j-1); 
-      sortEdgeTable( j+1, end); 
+      self->_edges[j] = pivot; 
+      KGRasterizerSortEdgeTable(self,start, j-1); 
+      KGRasterizerSortEdgeTable(self,j+1, end); 
     } 
 }
 
-void Rasterizer::fill(VGFillRule fillRule, const PixelPipe& pixelPipe) 
+void KGRasterizerFill(KGRasterizer *self,VGFillRule fillRule, KGPixelPipe *pixelPipe) 
 {
 	RI_ASSERT(fillRule == VG_EVEN_ODD || fillRule == VG_NON_ZERO);
 
@@ -315,13 +299,13 @@ void Rasterizer::fill(VGFillRule fillRule, const PixelPipe& pixelPipe)
 
     activeEdgeTableInit(&aet);
     
-    sortEdgeTable(0,_edgeCount-1);
+    KGRasterizerSortEdgeTable(self,0,self->_edgeCount-1);
     
-    int miny=_vpy;
-    int maxy=_vpy+_vpheight;
+    int miny=self->_vpy;
+    int maxy=self->_vpy+self->_vpheight;
 
-    if(_edgeCount>0){
-     int lowesty=floorf(_edges[0].v0.y-fradius+0.5f);
+    if(self->_edgeCount>0){
+     int lowesty=floorf(self->_edges[0].v0.y-self->fradius+0.5f);
      
      if(lowesty>miny){
       miny=lowesty;
@@ -332,15 +316,15 @@ void Rasterizer::fill(VGFillRule fillRule, const PixelPipe& pixelPipe)
     
 	for(int j=miny;j<maxy;j++)
 	{
-        RIfloat cminy = (RIfloat)j - fradius + 0.5f;
-		RIfloat cmaxy = (RIfloat)j + fradius + 0.5f;
+        RIfloat cminy = (RIfloat)j - self->fradius + 0.5f;
+		RIfloat cmaxy = (RIfloat)j + self->fradius + 0.5f;
         
 		//simple AET: scan through all the edges and pick the ones intersecting this scanline
         activeEdgeTableReset(&aet);
         BOOL gotActiveEdge=NO;
         
-		for(int e=startAtEdge;e<_edgeCount;e++) {
-			const Edge ed = _edges[e];
+		for(int e=startAtEdge;e<self->_edgeCount;e++) {
+			const Edge ed = self->_edges[e];
 
 			if(cmaxy >= ed.v0.y && cminy < ed.v1.y){
                 if(!gotActiveEdge){
@@ -380,21 +364,21 @@ void Rasterizer::fill(VGFillRule fillRule, const PixelPipe& pixelPipe)
 		//fill the scanline
 		int aes = 0;
 		int aen = 0;
-		for(int i=_vpx;i<_vpx+_vpwidth;)
+		for(int i=self->_vpx;i<self->_vpx+self->_vpwidth;)
 		{
 			Vector2 pc(i + 0.5f, j + 0.5f);		//pixel center
 			
 			//find edges that intersect or are to the left of the pixel antialiasing filter
-			while(aes < activeEdgeTableCount(&aet) && pc.x + fradius >= activeEdgeTableAt(&aet,aes)->minx)
+			while(aes < activeEdgeTableCount(&aet) && pc.x + self->fradius >= activeEdgeTableAt(&aet,aes)->minx)
 				aes++;
 			//edges [0,aes] may have an effect on winding, and need to be evaluated while sampling
 
 			//compute coverage
 			RIfloat coverage = 0.0f;
-			for(int s=0;s<numSamples;s++){
+			for(int s=0;s<self->numSamples;s++){
 				Vector2 sp = pc;	//sampling point
-			    sp.x += samples[s].x;
-                sp.y += samples[s].y;
+			    sp.x += self->samples[s].x;
+                sp.y += self->samples[s].y;
 
 				//compute winding number by evaluating the edge functions of edges to the left of the sampling point
 				int winding = 0;
@@ -408,28 +392,28 @@ void Rasterizer::fill(VGFillRule fillRule, const PixelPipe& pixelPipe)
 					}
 				}
 				if( winding & fillRuleMask )
-					coverage += samples[s].weight;
+					coverage += self->samples[s].weight;
 			}
 
 			//constant coverage optimization:
 			//scan AET from left to right and skip all the edges that are completely to the left of the pixel filter.
 			//since AET is sorted by minx, the edge we stop at is the leftmost of the edges we haven't passed yet.
 			//if that edge is to the right of this pixel, coverage is constant between this pixel and the start of the edge.
-			while(aen < activeEdgeTableCount(&aet) && activeEdgeTableAt(&aet,aen)->maxx < pc.x - fradius - 0.01f)	//0.01 is a safety region to prevent too aggressive optimization due to numerical inaccuracy
+			while(aen < activeEdgeTableCount(&aet) && activeEdgeTableAt(&aet,aen)->maxx < pc.x - self->fradius - 0.01f)	//0.01 is a safety region to prevent too aggressive optimization due to numerical inaccuracy
 				aen++;
 
-			int endSpan = _vpx + _vpwidth;	//endSpan is the first pixel NOT part of the span
+			int endSpan = self->_vpx + self->_vpwidth;	//endSpan is the first pixel NOT part of the span
 			if(aen < activeEdgeTableCount(&aet))
-				endSpan = RI_INT_MAX(i+1, RI_INT_MIN(endSpan, (int)ceil(activeEdgeTableAt(&aet,aen)->minx - fradius - 0.5f)));
+				endSpan = RI_INT_MAX(i+1, RI_INT_MIN(endSpan, (int)ceil(activeEdgeTableAt(&aet,aen)->minx - self->fradius - 0.5f)));
 
-			coverage /= sumWeights;
+			coverage /= self->sumWeights;
 
 			//fill a run of pixels with constant coverage
 			if(coverage > 0.0f)
 			{
 				for(;i<endSpan;i++)
 				{
-						pixelPipe.pixelPipe(i, j, coverage);
+						KGPixelPipeWriteCoverage(pixelPipe,i, j, coverage);
 				}
 			}
 
@@ -440,6 +424,3 @@ void Rasterizer::fill(VGFillRule fillRule, const PixelPipe& pixelPipe)
     activeEdgeTableFree(&aet);
 }
 
-//=======================================================================
-
-}	//namespace OpenVGRI
