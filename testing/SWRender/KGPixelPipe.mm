@@ -181,7 +181,7 @@ void KGPixelPipeSetTileFillColor(KGPixelPipe *self,VGColor c) {
 * \note		
 *//*-------------------------------------------------------------------*/
 
-void KGPixelPipeSetPaint(KGPixelPipe *self,const KGPaint* paint) {
+void KGPixelPipeSetPaint(KGPixelPipe *self, KGPaint* paint) {
 	self->m_paint = paint;
 	if(!self->m_paint)
 		self->m_paint = self->m_defaultPaint;
@@ -501,7 +501,7 @@ void KGPixelPipeWriteCoverage(KGPixelPipe *self,int x, int y, RIfloat coverage)
 	//apply masking
 	RIfloat cov = coverage;
 	if(self->m_mask)
-		cov *= self->m_mask->readMaskPixel(x, y);
+		cov *= VGImageReadMaskPixel(self->m_mask,x, y);
 	if(cov == 0.0f)
 		return;
 
@@ -537,14 +537,14 @@ void KGPixelPipeWriteCoverage(KGPixelPipe *self,int x, int y, RIfloat coverage)
 	default:
 		RI_ASSERT(self->m_paint->m_paintType == VG_PAINT_TYPE_PATTERN);
 		if(self->m_paint->m_pattern)
-			s = self->m_paint->m_pattern->resample(x+0.5f, y+0.5f, self->m_surfaceToPaintMatrix, self->m_imageQuality, self->m_paint->m_patternTilingMode, self->m_tileFillColor);
+			s = VGImageResample(self->m_paint->m_pattern,x+0.5f, y+0.5f, self->m_surfaceToPaintMatrix, self->m_imageQuality, self->m_paint->m_patternTilingMode, self->m_tileFillColor);
 		else
 			s = self->m_paint->m_paintColor;
 		break;
 	}
 
 	//read destination color
-	VGColor d = self->m_renderingSurface->readPixel(x, y);
+	VGColor d = VGImageReadPixel(self->m_renderingSurface,x, y);
 	d=VGColorPremultiply(d);
 	RI_ASSERT(d.m_format == VGColor_lRGBA_PRE || d.m_format == VGColor_sRGBA_PRE || d.m_format == VGColor_lLA_PRE || d.m_format == VGColor_sLA_PRE);
 
@@ -556,7 +556,7 @@ void KGPixelPipeWriteCoverage(KGPixelPipe *self,int x, int y, RIfloat coverage)
 	RIfloat ar = s.a, ag = s.a, ab = s.a;
 	if(self->m_image)
 	{
-		VGColor im = self->m_image->resample(x+0.5f, y+0.5f, self->m_surfaceToImageMatrix, self->m_imageQuality, VG_TILE_PAD, VGColorRGBA(0,0,0,0,VGImageColorDescriptor(self->m_image).internalFormat));
+		VGColor im = VGImageResample(self->m_image,x+0.5f, y+0.5f, self->m_surfaceToImageMatrix, self->m_imageQuality, VG_TILE_PAD, VGColorRGBA(0,0,0,0,VGImageColorDescriptor(self->m_image).internalFormat));
 		RI_ASSERT((s.m_format & VGColorLUMINANCE && s.r == s.g && s.r == s.b) || !(s.m_format & VGColorLUMINANCE));	//if luminance, r=g=b
 		RI_ASSERT((im.m_format & VGColorLUMINANCE && im.r == im.g && im.r == im.b) || !(im.m_format & VGColorLUMINANCE));	//if luminance, r=g=b
 
@@ -822,7 +822,7 @@ void KGPixelPipeWriteCoverage(KGPixelPipe *self,int x, int y, RIfloat coverage)
 
 	//write result to the destination surface
 	r=VGColorConvert(r,VGImageColorDescriptor(self->m_renderingSurface).internalFormat);
-	self->m_renderingSurface->writePixel(x, y, r);
+	VGImageWritePixel(self->m_renderingSurface,x, y, r);
 }
 
 

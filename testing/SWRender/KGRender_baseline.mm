@@ -32,7 +32,7 @@ typedef float CGFloat;
 -(void)buildImage {
    VGColorDescriptor descriptor=VGColorFormatToDescriptor(VG_lRGBA_8888_PRE);
    
-   _image=new VGImage(descriptor,_pixelsWide,_pixelsHigh,_pixelsWide*4,(RIuint8 *)_data);
+   _image=VGImageInitWithBytes(VGImageAlloc(),descriptor,_pixelsWide,_pixelsHigh,_pixelsWide*4,(RIuint8 *)_data);
 }
 
 -init {
@@ -61,7 +61,7 @@ static void applyPath(void *info,const CGPathElement *element) {
       coords[0]=points[pointIndex].x;
       coords[1]=points[pointIndex++].y;
        
-      vgPath->appendData(segment,1,coords);
+      VGPathAppendData(vgPath,segment,1,coords);
      }
      break;
        
@@ -72,7 +72,7 @@ static void applyPath(void *info,const CGPathElement *element) {
       coords[0]=points[pointIndex].x;
       coords[1]=points[pointIndex++].y;
         
-      vgPath->appendData(segment,1,coords);
+      VGPathAppendData(vgPath,segment,1,coords);
      }
      break;
 
@@ -87,7 +87,7 @@ static void applyPath(void *info,const CGPathElement *element) {
       coords[4]=points[pointIndex].x;
       coords[5]=points[pointIndex++].y;
         
-      vgPath->appendData(segment,1,coords);
+      VGPathAppendData(vgPath,segment,1,coords);
      }
      break;
 
@@ -100,7 +100,7 @@ static void applyPath(void *info,const CGPathElement *element) {
       coords[2]=points[pointIndex].x;
       coords[3]=points[pointIndex++].y;
 
-      vgPath->appendData(segment,1,coords);
+      VGPathAppendData(vgPath,segment,1,coords);
      }
      break;
 
@@ -108,7 +108,7 @@ static void applyPath(void *info,const CGPathElement *element) {
       RIuint8 segment[1]={VG_CLOSE_PATH};
       RIfloat coords[1];
        
-      vgPath->appendData(segment,1,coords);
+      VGPathAppendData(vgPath,segment,1,coords);
      }
      break;
    }
@@ -116,7 +116,7 @@ static void applyPath(void *info,const CGPathElement *element) {
 
 -(VGPath *)buildDeviceSpacePath:(CGPathRef)path {
    
-   VGPath *vgPath=new VGPath(1,0,1,1);
+   VGPath *vgPath=VGPathInit(VGPathAlloc(),1,1);
    
    CGPathApply(path,vgPath,applyPath);
 
@@ -179,7 +179,7 @@ xform=CGAffineTransformConcat(xform,u2d);
 				Matrix3x3ForceAffinity(&surfaceToPaintMatrix);
 				KGPixelPipeSetSurfaceToPaintMatrix(pixelPipe,surfaceToPaintMatrix);
 
-				vgPath->fill(userToSurfaceMatrix,rasterizer);	//throws bad_alloc
+				VGPathFill(vgPath,userToSurfaceMatrix,rasterizer);	//throws bad_alloc
                 
                 VGFillRule fillRule=(drawingMode==kCGPathFill || drawingMode==kCGPathFillStroke)?VG_NON_ZERO:VG_EVEN_ODD;
                 
@@ -199,7 +199,7 @@ xform=CGAffineTransformConcat(xform,u2d);
 
 				KGRasterizerClear(rasterizer);
                                  
-				vgPath->stroke(userToSurfaceMatrix, rasterizer, dashLengths,dashLengthsCount, dashPhase, true /* context->m_strokeDashPhaseReset ? true : false*/,
+				VGPathStroke(vgPath,userToSurfaceMatrix, rasterizer, dashLengths,dashLengthsCount, dashPhase, true /* context->m_strokeDashPhaseReset ? true : false*/,
 									  lineWidth, lineCap,  lineJoin, RI_MAX(miterLimit, 1.0f));	//throws bad_alloc
 				KGRasterizerFill(rasterizer,VG_NON_ZERO,pixelPipe);	//throws bad_alloc
 			}
@@ -218,7 +218,7 @@ xform=CGAffineTransformConcat(xform,u2d);
 	VGImage* img;
 
    VGColorDescriptor descriptor=VGColorFormatToDescriptor(VG_lRGBA_8888);
-   img=new VGImage(descriptor,[imageRep pixelsWide],[imageRep pixelsHigh],[imageRep bytesPerRow],(RIuint8 *)[imageRep bitmapData]);
+   img=VGImageInitWithBytes(VGImageAlloc(),descriptor,[imageRep pixelsWide],[imageRep pixelsHigh],[imageRep bytesPerRow],(RIuint8 *)[imageRep bitmapData]);
    
 try
 	{

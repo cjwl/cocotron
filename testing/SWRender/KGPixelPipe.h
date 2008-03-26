@@ -31,27 +31,9 @@
  *//*-------------------------------------------------------------------*/
 
 #import <Foundation/Foundation.h>
+#import <ApplicationServices/ApplicationServices.h>
 #import "riMath.h"
 #import "VGImage.h"
-
-#if MAC_OS_X_VERSION_MAX_ALLOWED <= MAC_OS_X_VERSION_10_4
-
-enum {
-   kCGBlendModeClear=kCGBlendModeLuminosity+1,
-   kCGBlendModeCopy,
-   kCGBlendModeSourceIn,
-   kCGBlendModeSourceOut,
-   kCGBlendModeSourceAtop,
-   kCGBlendModeDestinationOver,
-   kCGBlendModeDestinationIn,
-   kCGBlendModeDestinationOut,
-   kCGBlendModeDestinationAtop,
-   kCGBlendModeXOR,
-   kCGBlendModePlusDarker,
-   kCGBlendModePlusLighter,
-};
-
-#endif
 
 typedef enum {
   VG_PAINT_TYPE_COLOR                         = 0x1B00,
@@ -104,9 +86,9 @@ void     KGPaintDealloc(KGPaint *self);
 	
 typedef struct {
    VGImage*                 m_renderingSurface;
-   const VGImage*           m_mask;
+   VGImage*           m_mask;
    VGImage*                 m_image;
-   const KGPaint*           m_paint;
+   KGPaint*           m_paint;
    KGPaint                 * m_defaultPaint;
    CGBlendMode            m_blendMode;
    VGImageMode            m_imageMode;
@@ -127,7 +109,7 @@ void KGPixelPipeSetSurfaceToPaintMatrix(KGPixelPipe *self,Matrix3x3 surfaceToPai
 void KGPixelPipeSetSurfaceToImageMatrix(KGPixelPipe *self,Matrix3x3 surfaceToImageMatrix);
 void KGPixelPipeSetImageQuality(KGPixelPipe *self,CGInterpolationQuality imageQuality);
 void KGPixelPipeSetTileFillColor(KGPixelPipe *self,VGColor c);
-void KGPixelPipeSetPaint(KGPixelPipe *self,const KGPaint* paint);
+void KGPixelPipeSetPaint(KGPixelPipe *self,KGPaint* paint);
 //private
 void KGPixelPipeLinearGradient(KGPixelPipe *self,RIfloat& g, RIfloat& rho, RIfloat x, RIfloat y);
 void KGPixelPipeRadialGradient(KGPixelPipe *self,RIfloat &g, RIfloat &rho, RIfloat x, RIfloat y);

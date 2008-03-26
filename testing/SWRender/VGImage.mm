@@ -456,6 +456,10 @@ bool VGColorIsValidDescriptor(VGColorDescriptor desc)
 
 //==============================================================================================
 
+VGImage *VGImageAlloc() {
+   return (VGImage *)NSZoneCalloc(NULL,1,sizeof(VGImage));
+}
+
 /*-------------------------------------------------------------------*//*!
 * \brief	Constructs a blank image.
 * \param	
@@ -463,34 +467,35 @@ bool VGColorIsValidDescriptor(VGColorDescriptor desc)
 * \note		
 *//*-------------------------------------------------------------------*/
 
-VGImage::VGImage(VGColorDescriptor desc, int width, int height) :
-	m_desc(desc),
-	m_width(width),
-	m_height(height),
-	m_stride(0),
-	m_data(NULL),
-	m_bitOffset(0),
-	m_ownsData(true),
-	m_mipmapsValid(false)
-{
-	RI_ASSERT(VGColorIsValidDescriptor(m_desc));
+VGImage *VGImageInit(VGImage *self,VGColorDescriptor desc, int width, int height){	//throws bad_alloc
+	self->m_desc=desc;
+	self->m_width=width;
+	self->m_height=height;
+	self->m_stride=0;
+	self->m_data=NULL;
+	self->m_bitOffset=0;
+	self->m_ownsData=true;
+	self->m_mipmapsValid=false;
+
+	RI_ASSERT(VGColorIsValidDescriptor(self->m_desc));
 	RI_ASSERT(width > 0 && height > 0);
 	
-	if( m_desc.bitsPerPixel != 1 )
+	if( self->m_desc.bitsPerPixel != 1 )
 	{
-		RI_ASSERT(m_desc.bitsPerPixel == 8 || m_desc.bitsPerPixel == 16 || m_desc.bitsPerPixel == 32);
-		m_stride = m_width*m_desc.bitsPerPixel/8;
+		RI_ASSERT(self->m_desc.bitsPerPixel == 8 || self->m_desc.bitsPerPixel == 16 || self->m_desc.bitsPerPixel == 32);
+		self->m_stride = self->m_width*self->m_desc.bitsPerPixel/8;
 	}
 	else
 	{
-		RI_ASSERT(m_desc.bitsPerPixel == 1);
-		m_stride = (m_width+7)/8;
+		RI_ASSERT(self->m_desc.bitsPerPixel == 1);
+		self->m_stride = (self->m_width+7)/8;
 	}
-	m_data = new RIuint8[m_stride*m_height];	//throws bad_alloc
-	memset(m_data, 0, m_stride*m_height);	//clear image
-    _mipmapsCount=0;
-    _mipmapsCapacity=2;
-    _mipmaps=(VGImage **)NSZoneMalloc(NULL,_mipmapsCapacity*sizeof(VGImage *));
+	self->m_data = new RIuint8[self->m_stride*self->m_height];	//throws bad_alloc
+	memset(self->m_data, 0, self->m_stride*self->m_height);	//clear image
+    self->_mipmapsCount=0;
+    self->_mipmapsCapacity=2;
+    self->_mipmaps=(VGImage **)NSZoneMalloc(NULL,self->_mipmapsCapacity*sizeof(VGImage *));
+    return self;
 }
 
 /*-------------------------------------------------------------------*//*!
@@ -501,22 +506,22 @@ VGImage::VGImage(VGColorDescriptor desc, int width, int height) :
 * \note		this is meant for internal use to make blitting easier
 *//*-------------------------------------------------------------------*/
 
-VGImage::VGImage(VGColorDescriptor desc, int width, int height, int stride, RIuint8* data) :
-	m_desc(desc),
-	m_width(width),
-	m_height(height),
-	m_stride(stride),
-	m_data(data),
-	m_bitOffset(0),
-	m_ownsData(false),
-	m_mipmapsValid(false)
-{
-	RI_ASSERT(VGColorIsValidDescriptor(m_desc));
+VGImage *VGImageInitWithBytes(VGImage *self,VGColorDescriptor desc, int width, int height, int stride, RIuint8* data) {	//throws bad_alloc
+	self->m_desc=desc;
+	self->m_width=width;
+	self->m_height=height;
+	self->m_stride=stride;
+	self->m_data=data;
+	self->m_bitOffset=0;
+	self->m_ownsData=false;
+	self->m_mipmapsValid=false;
+	RI_ASSERT(VGColorIsValidDescriptor(self->m_desc));
 	RI_ASSERT(width > 0 && height > 0);
 	RI_ASSERT(data);
-    _mipmapsCount=0;
-    _mipmapsCapacity=2;
-    _mipmaps=(VGImage **)NSZoneMalloc(NULL,_mipmapsCapacity*sizeof(VGImage *));
+    self->_mipmapsCount=0;
+    self->_mipmapsCapacity=2;
+    self->_mipmaps=(VGImage **)NSZoneMalloc(NULL,self->_mipmapsCapacity*sizeof(VGImage *));
+    return self;
 }
 
 /*-------------------------------------------------------------------*//*!
@@ -526,17 +531,16 @@ VGImage::VGImage(VGColorDescriptor desc, int width, int height, int stride, RIui
 * \note		
 *//*-------------------------------------------------------------------*/
 
-VGImage::~VGImage()
-{
-	for(int i=0;i<_mipmapsCount;i++)
+void VGImageDealloc(VGImage *self) {
+	for(int i=0;i<self->_mipmapsCount;i++)
 	{
-			delete _mipmaps[i];
+			delete self->_mipmaps[i];
 	}
-	_mipmapsCount=0;
+	self->_mipmapsCount=0;
 
-	if(m_ownsData)
+	if(self->m_ownsData)
 	{
-		delete[] m_data;	//delete image data if we own it
+		delete[] self->m_data;	//delete image data if we own it
 	}
 }
 
@@ -669,29 +673,28 @@ void VGImageResize(VGImage *self,int newWidth, int newHeight, VGColor newPixelCo
 * \note		
 *//*-------------------------------------------------------------------*/
 
-void VGImage::clear(VGColor clearColor, int x, int y, int w, int h)
-{
-	RI_ASSERT(m_data);
+void VGImageClear(VGImage *self,VGColor clearColor, int x, int y, int w, int h){
+	RI_ASSERT(self->m_data);
 
 	//intersect clear region with image bounds
-	KGIntRect r=KGIntRectInit(0,0,m_width,m_height);
+	KGIntRect r=KGIntRectInit(0,0,self->m_width,self->m_height);
 	r=KGIntRectIntersect(r,KGIntRectInit(x,y,w,h));
 	if(!r.width || !r.height)
 		return;		//intersection is empty or one of the rectangles is invalid
 
 	VGColor col = clearColor;
 	col=VGColorClamp(col);
-	col=VGColorConvert(col,m_desc.internalFormat);
+	col=VGColorConvert(col,self->m_desc.internalFormat);
 
 	for(int j=r.y;j<r.y + r.height;j++)
 	{
 		for(int i=r.x;i<r.x + r.width;i++)
 		{
-			writePixel(i, j, col);
+			VGImageWritePixel(self,i, j, col);
 		}
 	}
 
-	m_mipmapsValid = false;
+	self->m_mipmapsValid = false;
 }
 
 /*-------------------------------------------------------------------*//*!
@@ -710,10 +713,9 @@ static RIfloat ditherChannel(RIfloat c, int bits, RIfloat m)
 	return RI_MIN(ic / (RIfloat)((1<<bits)-1), 1.0f);
 }
 
-void VGImage::blit(const VGImage& src, int sx, int sy, int dx, int dy, int w, int h, bool dither)
-{
-	RI_ASSERT(src.m_data);	//source exists
-	RI_ASSERT(m_data);	//destination exists
+void VGImageBlit(VGImage *self,VGImage * src, int sx, int sy, int dx, int dy, int w, int h, bool dither) {
+	RI_ASSERT(src->m_data);	//source exists
+	RI_ASSERT(self->m_data);	//destination exists
 	RI_ASSERT(w > 0 && h > 0);
 
 	sx = RI_INT_MIN(RI_INT_MAX(sx, (int)(RI_INT32_MIN>>2)), (int)(RI_INT32_MAX>>2));
@@ -728,22 +730,22 @@ void VGImage::blit(const VGImage& src, int sx, int sy, int dx, int dy, int w, in
 		dstsx -= srcsx;
 		srcsx = 0;
 	}
-	if(srcex > src.m_width)
+	if(srcex > src->m_width)
 	{
-		dstex -= srcex - src.m_width;
-		srcex = src.m_width;
+		dstex -= srcex - src->m_width;
+		srcex = src->m_width;
 	}
 	if(dstsx < 0)
 	{
 		srcsx -= dstsx;
 		dstsx = 0;
 	}
-	if(dstex > m_width)
+	if(dstex > self->m_width)
 	{
-		srcex -= dstex - m_width;
-		dstex = m_width;
+		srcex -= dstex - self->m_width;
+		dstex = self->m_width;
 	}
-	RI_ASSERT(srcsx >= 0 && dstsx >= 0 && srcex <= src.m_width && dstex <= m_width);
+	RI_ASSERT(srcsx >= 0 && dstsx >= 0 && srcex <= src->m_width && dstex <= self->m_width);
 	w = srcex - srcsx;
 	RI_ASSERT(w == dstex - dstsx);
 	if(w <= 0)
@@ -755,22 +757,22 @@ void VGImage::blit(const VGImage& src, int sx, int sy, int dx, int dy, int w, in
 		dstsy -= srcsy;
 		srcsy = 0;
 	}
-	if(srcey > src.m_height)
+	if(srcey > src->m_height)
 	{
-		dstey -= srcey - src.m_height;
-		srcey = src.m_height;
+		dstey -= srcey - src->m_height;
+		srcey = src->m_height;
 	}
 	if(dstsy < 0)
 	{
 		srcsy -= dstsy;
 		dstsy = 0;
 	}
-	if(dstey > m_height)
+	if(dstey > self->m_height)
 	{
-		srcey -= dstey - m_height;
-		dstey = m_height;
+		srcey -= dstey - self->m_height;
+		dstey = self->m_height;
 	}
-	RI_ASSERT(srcsy >= 0 && dstsy >= 0 && srcey <= src.m_height && dstey <= m_height);
+	RI_ASSERT(srcsy >= 0 && dstsy >= 0 && srcey <= src->m_height && dstey <= self->m_height);
 	h = srcey - srcsy;
 	RI_ASSERT(h == dstey - dstsy);
 	if(h <= 0)
@@ -783,16 +785,16 @@ void VGImage::blit(const VGImage& src, int sx, int sy, int dx, int dy, int w, in
 	{
 		for(int i=0;i<w;i++)
 		{
-			VGColor c = src.readPixel(srcsx + i, srcsy + j);
-			c=VGColorConvert(c,m_desc.internalFormat);
+			VGColor c = VGImageReadPixel(src,srcsx + i, srcsy + j);
+			c=VGColorConvert(c,self->m_desc.internalFormat);
 			tmp[j*w+i] = c;
 		}
 	}
 
-	int rbits = m_desc.redBits, gbits = m_desc.greenBits, bbits = m_desc.blueBits, abits = m_desc.alphaBits;
-	if(m_desc.luminanceBits)
+	int rbits = self->m_desc.redBits, gbits = self->m_desc.greenBits, bbits = self->m_desc.blueBits, abits = self->m_desc.alphaBits;
+	if(self->m_desc.luminanceBits)
 	{
-		rbits = gbits = bbits = m_desc.luminanceBits;
+		rbits = gbits = bbits = self->m_desc.luminanceBits;
 		abits = 0;
 	}
 
@@ -820,11 +822,11 @@ void VGImage::blit(const VGImage& src, int sx, int sy, int dx, int dy, int w, in
 				if(abits) col.a = ditherChannel(col.a, abits, m);
 			}
 
-			writePixel(dstsx + i, dstsy + j, col);
+			VGImageWritePixel(self,dstsx + i, dstsy + j, col);
 		}
 	}
     NSZoneFree(NULL,tmp);
-	m_mipmapsValid = false;
+	self->m_mipmapsValid = false;
 }
 
 /*-------------------------------------------------------------------*//*!
@@ -834,20 +836,19 @@ void VGImage::blit(const VGImage& src, int sx, int sy, int dx, int dy, int w, in
 * \note		
 *//*-------------------------------------------------------------------*/
 
-void VGImage::mask(const VGImage* src, VGMaskOperation operation, int x, int y, int w, int h)
-{
-	RI_ASSERT(m_data);	//destination exists
+void VGImageMask(VGImage *self,VGImage* src, VGMaskOperation operation, int x, int y, int w, int h) {
+	RI_ASSERT(self->m_data);	//destination exists
 	RI_ASSERT(w > 0 && h > 0);
 
-	m_mipmapsValid = false;
+	self->m_mipmapsValid = false;
 	if(operation == VG_CLEAR_MASK)
 	{
-		clear(VGColorRGBA(0,0,0,0,VGColor_lRGBA), x, y, w, h);
+		VGImageClear(self,VGColorRGBA(0,0,0,0,VGColor_lRGBA), x, y, w, h);
 		return;
 	}
 	if(operation == VG_FILL_MASK)
 	{
-		clear(VGColorRGBA(1,1,1,1,VGColor_lRGBA), x, y, w, h);
+		VGImageClear(self,VGColorRGBA(1,1,1,1,VGColor_lRGBA), x, y, w, h);
 		return;
 	}
 
@@ -870,12 +871,12 @@ void VGImage::mask(const VGImage* src, VGMaskOperation operation, int x, int y, 
 		srcsx -= dstsx;
 		dstsx = 0;
 	}
-	if(dstex > m_width)
+	if(dstex > self->m_width)
 	{
-		srcex -= dstex - m_width;
-		dstex = m_width;
+		srcex -= dstex - self->m_width;
+		dstex = self->m_width;
 	}
-	RI_ASSERT(srcsx >= 0 && dstsx >= 0 && srcex <= src->m_width && dstex <= m_width);
+	RI_ASSERT(srcsx >= 0 && dstsx >= 0 && srcex <= src->m_width && dstex <= self->m_width);
 	w = srcex - srcsx;
 	RI_ASSERT(w == dstex - dstsx);
 	if(w <= 0)
@@ -892,12 +893,12 @@ void VGImage::mask(const VGImage* src, VGMaskOperation operation, int x, int y, 
 		srcsy -= dstsy;
 		dstsy = 0;
 	}
-	if(dstey > m_height)
+	if(dstey > self->m_height)
 	{
-		srcey -= dstey - m_height;
-		dstey = m_height;
+		srcey -= dstey - self->m_height;
+		dstey = self->m_height;
 	}
-	RI_ASSERT(srcsy >= 0 && dstsy >= 0 && srcey <= src->m_height && dstey <= m_height);
+	RI_ASSERT(srcsy >= 0 && dstsy >= 0 && srcey <= src->m_height && dstey <= self->m_height);
 	h = srcey - srcsy;
 	RI_ASSERT(h == dstey - dstsy);
 	if(h <= 0)
@@ -907,8 +908,8 @@ void VGImage::mask(const VGImage* src, VGMaskOperation operation, int x, int y, 
 	{
 		for(int i=0;i<w;i++)
 		{
-			RIfloat aprev = readMaskPixel(dstsx + i, dstsy + j);
-			RIfloat amask = src->readMaskPixel(srcsx + i, srcsy + j);
+			RIfloat aprev = VGImageReadMaskPixel(self,dstsx + i, dstsy + j);
+			RIfloat amask = VGImageReadMaskPixel(src,srcsx + i, srcsy + j);
 			RIfloat anew = 0.0f;
 			switch(operation)
 			{
@@ -929,7 +930,7 @@ void VGImage::mask(const VGImage* src, VGMaskOperation operation, int x, int y, 
 				anew = aprev * (1.0f - amask);
 				break;
 			}
-			writeMaskPixel(dstsx + i, dstsy + j, anew);
+			VGImageWriteMaskPixel(self,dstsx + i, dstsy + j, anew);
 		}
 	}
 }
@@ -941,15 +942,14 @@ void VGImage::mask(const VGImage* src, VGMaskOperation operation, int x, int y, 
 * \note		
 *//*-------------------------------------------------------------------*/
 
-VGColor VGImage::readPixel(int x, int y) const
-{
-	RI_ASSERT(m_data);
-	RI_ASSERT(x >= 0 && x < m_width);
-	RI_ASSERT(y >= 0 && y < m_height);
+VGColor VGImageReadPixel(VGImage *self,int x, int y) {
+	RI_ASSERT(self->m_data);
+	RI_ASSERT(x >= 0 && x < self->m_width);
+	RI_ASSERT(y >= 0 && y < self->m_height);
        
 	unsigned int p = 0;
-	RIuint8* scanline = m_data + y * m_stride;
-	switch(m_desc.bitsPerPixel)
+	RIuint8* scanline = self->m_data + y * self->m_stride;
+	switch(self->m_desc.bitsPerPixel)
 	{
 	case 32:
 	{
@@ -974,14 +974,14 @@ VGColor VGImage::readPixel(int x, int y) const
 
 	default:
 	{
-		RI_ASSERT(m_desc.bitsPerPixel == 1);
-		x += m_bitOffset;
+		RI_ASSERT(self->m_desc.bitsPerPixel == 1);
+		x += self->m_bitOffset;
 		RIuint8* s = scanline + (x>>3);
 		p = (((unsigned int)*s) >> (x&7)) & 1u;
 		break;
 	}
 	}
-	return VGColorUnpack(p, m_desc);
+	return VGColorUnpack(p, self->m_desc);
  }
 
 /*-------------------------------------------------------------------*//*!
@@ -992,16 +992,15 @@ VGColor VGImage::readPixel(int x, int y) const
 * \note		
 *//*-------------------------------------------------------------------*/
 
-void VGImage::writePixel(int x, int y, VGColor c)
-{
-	RI_ASSERT(m_data);
-	RI_ASSERT(x >= 0 && x < m_width);
-	RI_ASSERT(y >= 0 && y < m_height);
-	RI_ASSERT(c.m_format == m_desc.internalFormat);
+void VGImageWritePixel(VGImage *self,int x, int y, VGColor c) {
+	RI_ASSERT(self->m_data);
+	RI_ASSERT(x >= 0 && x < self->m_width);
+	RI_ASSERT(y >= 0 && y < self->m_height);
+	RI_ASSERT(c.m_format == self->m_desc.internalFormat);
 
-	unsigned int p = VGColorPack(c,m_desc);
-	RIuint8* scanline = m_data + y * m_stride;
-	switch(m_desc.bitsPerPixel)
+	unsigned int p = VGColorPack(c,self->m_desc);
+	RIuint8* scanline = self->m_data + y * self->m_stride;
+	switch(self->m_desc.bitsPerPixel)
 	{
 	case 32:
 	{
@@ -1026,8 +1025,8 @@ void VGImage::writePixel(int x, int y, VGColor c)
 
 	default:
 	{
-		RI_ASSERT(m_desc.bitsPerPixel == 1);
-		x += m_bitOffset;
+		RI_ASSERT(self->m_desc.bitsPerPixel == 1);
+		x += self->m_bitOffset;
 		RIuint8* s = scanline + (x>>3);
 		RIuint8 d = *s;
 		d &= ~(1<<(x&7));
@@ -1036,7 +1035,7 @@ void VGImage::writePixel(int x, int y, VGColor c)
 		break;
 	}
 	}
-	m_mipmapsValid = false;
+	self->m_mipmapsValid = false;
 }
 
 /*-------------------------------------------------------------------*//*!
@@ -1046,8 +1045,7 @@ void VGImage::writePixel(int x, int y, VGColor c)
 * \note		
 *//*-------------------------------------------------------------------*/
 
-void VGImage::writeFilteredPixel(int i, int j, VGColor color, VGbitfield channelMask)
-{
+void VGImageWriteFilteredPixel(VGImage *self,int i, int j, VGColor color, VGbitfield channelMask) {
 	//section 3.4.4: before color space conversion, premultiplied colors are
 	//clamped to alpha, and the color is converted to nonpremultiplied format
 	//section 11.2: how to deal with channel mask
@@ -1057,10 +1055,10 @@ void VGImage::writeFilteredPixel(int i, int j, VGColor color, VGbitfield channel
 	f=VGColorUnpremultiply(f);
 
 	//step 2: color space conversion
-	f=VGColorConvert(f,(VGColorInternalFormat)(m_desc.internalFormat & (VGColorNONLINEAR | VGColorLUMINANCE)));
+	f=VGColorConvert(f,(VGColorInternalFormat)(self->m_desc.internalFormat & (VGColorNONLINEAR | VGColorLUMINANCE)));
 
 	//step 3: read the destination color and convert it to nonpremultiplied
-	VGColor d = readPixel(i,j);
+	VGColor d = VGImageReadPixel(self,i,j);
 	d=VGColorUnpremultiply(d);
 	RI_ASSERT(d.m_format == f.m_format);
 
@@ -1075,10 +1073,10 @@ void VGImage::writeFilteredPixel(int i, int j, VGColor color, VGbitfield channel
 		d.a = f.a;
 
 	//step 5: if destination is premultiplied, convert to premultiplied format
-	if(m_desc.internalFormat & VGColorPREMULTIPLIED)
+	if(self->m_desc.internalFormat & VGColorPREMULTIPLIED)
 		d=VGColorPremultiply(d);
 	//write the color to destination
-	writePixel(i,j,d);
+	VGImageWritePixel(self,i,j,d);
 }
 
 /*-------------------------------------------------------------------*//*!
@@ -1088,20 +1086,19 @@ void VGImage::writeFilteredPixel(int i, int j, VGColor color, VGbitfield channel
 * \note		
 *//*-------------------------------------------------------------------*/
 
-RIfloat VGImage::readMaskPixel(int x, int y) const
-{
-	RI_ASSERT(m_data);
-	RI_ASSERT(x >= 0 && x < m_width);
-	RI_ASSERT(y >= 0 && y < m_height);
+RIfloat VGImageReadMaskPixel(VGImage *self,int x, int y){
+	RI_ASSERT(self->m_data);
+	RI_ASSERT(x >= 0 && x < self->m_width);
+	RI_ASSERT(y >= 0 && y < self->m_height);
 
-	VGColor c = readPixel(x,y);
-	if(m_desc.luminanceBits)
+	VGColor c = VGImageReadPixel(self,x,y);
+	if(self->m_desc.luminanceBits)
 	{	//luminance
 		return c.r;	//luminance/luma is read into the color channels
 	}
 	else
 	{	//rgba
-		if(m_desc.alphaBits)
+		if(self->m_desc.alphaBits)
 			return c.a;
 		return c.r;
 	}
@@ -1114,16 +1111,16 @@ RIfloat VGImage::readMaskPixel(int x, int y) const
 * \note		
 *//*-------------------------------------------------------------------*/
 
-void VGImage::writeMaskPixel(int x, int y, RIfloat m)
+void VGImageWriteMaskPixel(VGImage *self,int x, int y, RIfloat m)	//can write only to VG_A_8
 {
-	RI_ASSERT(m_data);
-	RI_ASSERT(x >= 0 && x < m_width);
-	RI_ASSERT(y >= 0 && y < m_height);
-	RI_ASSERT(m_desc.alphaBits == 8 && m_desc.redBits == 0 && m_desc.greenBits == 0 && m_desc.blueBits == 0 && m_desc.luminanceBits == 0 && m_desc.bitsPerPixel == 8);
+	RI_ASSERT(self->m_data);
+	RI_ASSERT(x >= 0 && x < self->m_width);
+	RI_ASSERT(y >= 0 && y < self->m_height);
+	RI_ASSERT(self->m_desc.alphaBits == 8 && self->m_desc.redBits == 0 && self->m_desc.greenBits == 0 && self->m_desc.blueBits == 0 && self->m_desc.luminanceBits == 0 && self->m_desc.bitsPerPixel == 8);
 
-	RIuint8* s = ((RIuint8*)(m_data + y * m_stride)) + x;
+	RIuint8* s = ((RIuint8*)(self->m_data + y * self->m_stride)) + x;
 	*s = (RIuint8)colorToInt(m, 255);
-	m_mipmapsValid = false;
+	self->m_mipmapsValid = false;
 }
 
 /*-------------------------------------------------------------------*//*!
@@ -1135,13 +1132,12 @@ void VGImage::writeMaskPixel(int x, int y, RIfloat m)
 * \note		
 *//*-------------------------------------------------------------------*/
 
-VGColor VGImage::readTexel(int u, int v, int level, VGTilingMode tilingMode, VGColor tileFillColor) const
-{
-	const VGImage* image = this;
+VGColor VGImageReadTexel(VGImage *self,int u, int v, int level, VGTilingMode tilingMode, VGColor tileFillColor){
+	VGImage* image = self;
 	if( level > 0 )
 	{
-		RI_ASSERT(level <= _mipmapsCount);
-		image = _mipmaps[level-1];
+		RI_ASSERT(level <= self->_mipmapsCount);
+		image = self->_mipmaps[level-1];
 	}
 	RI_ASSERT(image);
 
@@ -1151,19 +1147,19 @@ VGColor VGImage::readTexel(int u, int v, int level, VGTilingMode tilingMode, VGC
 		if(u < 0 || v < 0 || u >= image->m_width || v >= image->m_height)
 			p = tileFillColor;
 		else
-			p = image->readPixel(u, v);
+			p = VGImageReadPixel(image,u, v);
 	}
 	else if(tilingMode == VG_TILE_PAD)
 	{
 		u = RI_INT_MIN(RI_INT_MAX(u,0),image->m_width-1);
 		v = RI_INT_MIN(RI_INT_MAX(v,0),image->m_height-1);
-		p = image->readPixel(u, v);
+		p = VGImageReadPixel(image,u, v);
 	}
 	else if(tilingMode == VG_TILE_REPEAT)
 	{
 		u = RI_INT_MOD(u, image->m_width);
 		v = RI_INT_MOD(v, image->m_height);
-		p = image->readPixel(u, v);
+		p = VGImageReadPixel(image,u, v);
 	}
 	else
 	{
@@ -1173,7 +1169,7 @@ VGColor VGImage::readTexel(int u, int v, int level, VGTilingMode tilingMode, VGC
 		v = RI_INT_MOD(v, image->m_height*2);
 		if( u >= image->m_width ) u = image->m_width*2-1 - u;
 		if( v >= image->m_height ) v = image->m_height*2-1 - v;
-		p = image->readPixel(u, v);
+		p = VGImageReadPixel(image,u, v);
 	}
 
 	p=VGColorPremultiply(p);
@@ -1189,7 +1185,7 @@ VGColor VGImage::readTexel(int u, int v, int level, VGTilingMode tilingMode, VGC
 * \note		
 *//*-------------------------------------------------------------------*/
 
-VGColor VGImage::resample(RIfloat x, RIfloat y, Matrix3x3 surfaceToImage, CGInterpolationQuality quality, VGTilingMode tilingMode, VGColor tileFillColor)	//throws bad_alloc
+VGColor VGImageResample(VGImage *self,RIfloat x, RIfloat y, Matrix3x3 surfaceToImage, CGInterpolationQuality quality, VGTilingMode tilingMode, VGColor tileFillColor)	//throws bad_alloc
 {
 	Vector3 uvw=Vector3Make(x,y,1);
 	uvw = Matrix3x3MultiplyVector3(surfaceToImage ,uvw);
@@ -1198,9 +1194,9 @@ VGColor VGImage::resample(RIfloat x, RIfloat y, Matrix3x3 surfaceToImage, CGInte
 
 	if(quality== kCGInterpolationHigh)
 	{	//EWA on mipmaps
-		makeMipMaps();	//throws bad_alloc
+		VGImageMakeMipMaps(self);	//throws bad_alloc
 
-		VGColorInternalFormat procFormat = (VGColorInternalFormat)(m_desc.internalFormat | VGColorPREMULTIPLIED);
+		VGColorInternalFormat procFormat = (VGColorInternalFormat)(self->m_desc.internalFormat | VGColorPREMULTIPLIED);
 
 		RIfloat m_pixelFilterRadius = 1.25f;
 		RIfloat m_resamplingFilterRadius = 1.25f;
@@ -1217,7 +1213,7 @@ VGColor VGImage::resample(RIfloat x, RIfloat y, Matrix3x3 surfaceToImage, CGInte
 		RIfloat axis1sq = Ux*Ux + Vx*Vx;
 		RIfloat axis2sq = Uy*Uy + Vy*Vy;
 		RIfloat minorAxissq = RI_MIN(axis1sq,axis2sq);
-		while(minorAxissq > 9.0f && level < _mipmapsCount)	//half the minor axis must be at least three texels
+		while(minorAxissq > 9.0f && level < self->_mipmapsCount)	//half the minor axis must be at least three texels
 		{
 			level++;
 			minorAxissq *= 0.25f;
@@ -1227,8 +1223,8 @@ VGColor VGImage::resample(RIfloat x, RIfloat y, Matrix3x3 surfaceToImage, CGInte
 		RIfloat sy = 1.0f;
 		if(level > 0)
 		{
-			sx = (RIfloat)_mipmaps[level-1]->m_width / (RIfloat)m_width;
-			sy = (RIfloat)_mipmaps[level-1]->m_height / (RIfloat)m_height;
+			sx = (RIfloat)self->_mipmaps[level-1]->m_width / (RIfloat)self->m_width;
+			sy = (RIfloat)self->_mipmaps[level-1]->m_height / (RIfloat)self->m_height;
 		}
 		Ux *= sx;
 		Vx *= sx;
@@ -1298,7 +1294,7 @@ VGColor VGImage::resample(RIfloat x, RIfloat y, Matrix3x3 surfaceToImage, CGInte
 				if( Q >= 0.0f && Q < 1.0f )
 				{	//Q = r^2, fit gaussian to the range [0,1]
 					RIfloat weight = (RIfloat)exp(-0.5f * 10.0f * Q);	//gaussian at radius 10 equals 0.0067
-					color=VGColorAdd(color,  VGColorMultiplyByFloat(readTexel(u, v, level, tilingMode, tileFillColor),weight));
+					color=VGColorAdd(color,  VGColorMultiplyByFloat(VGImageReadTexel(self,u, v, level, tilingMode, tileFillColor),weight));
 					sumweight += weight;
 				}
 				Q += DQ;
@@ -1317,10 +1313,10 @@ VGColor VGImage::resample(RIfloat x, RIfloat y, Matrix3x3 surfaceToImage, CGInte
 		uvw.y -= 0.5f;
 		int u = (int)floor(uvw.x);
 		int v = (int)floor(uvw.y);
-		VGColor c00 = readTexel(u,v, 0, tilingMode, tileFillColor);
-		VGColor c10 = readTexel(u+1,v, 0, tilingMode, tileFillColor);
-		VGColor c01 = readTexel(u,v+1, 0, tilingMode, tileFillColor);
-		VGColor c11 = readTexel(u+1,v+1, 0, tilingMode, tileFillColor);
+		VGColor c00 = VGImageReadTexel(self,u,v, 0, tilingMode, tileFillColor);
+		VGColor c10 = VGImageReadTexel(self,u+1,v, 0, tilingMode, tileFillColor);
+		VGColor c01 = VGImageReadTexel(self,u,v+1, 0, tilingMode, tileFillColor);
+		VGColor c11 = VGImageReadTexel(self,u+1,v+1, 0, tilingMode, tileFillColor);
 		RIfloat fu = uvw.x - (RIfloat)u;
 		RIfloat fv = uvw.y - (RIfloat)v;
 		VGColor c0 = VGColorAdd(VGColorMultiplyByFloat(c00,(1.0f - fu)),VGColorMultiplyByFloat(c10,fu));
@@ -1329,7 +1325,7 @@ VGColor VGImage::resample(RIfloat x, RIfloat y, Matrix3x3 surfaceToImage, CGInte
 	}
 	else
 	{	//point sampling
-		return readTexel((int)floor(uvw.x), (int)floor(uvw.y), 0, tilingMode, tileFillColor);
+		return VGImageReadTexel(self,(int)floor(uvw.x), (int)floor(uvw.y), 0, tilingMode, tileFillColor);
 	}
 }
 
@@ -1341,27 +1337,26 @@ VGColor VGImage::resample(RIfloat x, RIfloat y, Matrix3x3 surfaceToImage, CGInte
 *			filter for downsampling.
 *//*-------------------------------------------------------------------*/
 
-void VGImage::makeMipMaps()
-{
-	RI_ASSERT(m_data);
+void VGImageMakeMipMaps(VGImage *self) {
+	RI_ASSERT(self->m_data);
 
-	if(m_mipmapsValid)
+	if(self->m_mipmapsValid)
 		return;
 
 	//delete existing mipmaps
-	for(int i=0;i<_mipmapsCount;i++)
+	for(int i=0;i<self->_mipmapsCount;i++)
 	{
-			delete _mipmaps[i];
+			delete self->_mipmaps[i];
 	}
-	_mipmapsCount=0;
+	self->_mipmapsCount=0;
 
 	try
 	{
-		VGColorInternalFormat procFormat = m_desc.internalFormat;
+		VGColorInternalFormat procFormat = self->m_desc.internalFormat;
 		procFormat = (VGColorInternalFormat)(procFormat | VGColorPREMULTIPLIED);	//premultiplied
 
 		//generate mipmaps until width and height are one
-		VGImage* prev = this;
+		VGImage* prev = self;
 		while( prev->m_width > 1 || prev->m_height > 1 )
 		{
 			int nextw = (int)ceil(prev->m_width*0.5f);
@@ -1369,14 +1364,14 @@ void VGImage::makeMipMaps()
 			RI_ASSERT(nextw >= 1 && nexth >= 1);
 			RI_ASSERT(nextw < prev->m_width || nexth < prev->m_height);
 
-            if(_mipmapsCount+1>_mipmapsCapacity){
-             _mipmapsCapacity*=2;
-             _mipmaps=(VGImage **)NSZoneRealloc(NULL,_mipmaps,sizeof(VGImage *)*_mipmapsCapacity);
+            if(self->_mipmapsCount+1>self->_mipmapsCapacity){
+             self->_mipmapsCapacity*=2;
+             self->_mipmaps=(VGImage **)NSZoneRealloc(NULL,self->_mipmaps,sizeof(VGImage *)*self->_mipmapsCapacity);
             }
-            _mipmapsCount++;
-			_mipmaps[_mipmapsCount-1] = NULL;
+            self->_mipmapsCount++;
+			self->_mipmaps[self->_mipmapsCount-1] = NULL;
 
-			VGImage* next = new VGImage(m_desc, nextw, nexth);	//throws bad_alloc
+			VGImage* next =  VGImageInit(VGImageAlloc(),self->m_desc, nextw, nexth);	//throws bad_alloc
 
 			for(int j=0;j<next->m_height;j++)
 			{
@@ -1403,35 +1398,35 @@ void VGImage::makeMipMaps()
 					{
 						for(int x=su;x<eu;x++)
 						{
-							VGColor p = prev->readPixel(x, y);
+							VGColor p = VGImageReadPixel(prev,x, y);
 							p=VGColorConvert(p,procFormat);
 							c=VGColorAdd(c, p);
 							samples++;
 						}
 					}
 					c=VGColorMultiplyByFloat(c,(1.0f/samples));
-					c=VGColorConvert(c,m_desc.internalFormat);
-					next->writePixel(i,j,c);
+					c=VGColorConvert(c,self->m_desc.internalFormat);
+					VGImageWritePixel(next,i,j,c);
 				}
 			}
-			_mipmaps[_mipmapsCount-1] = next;
+			self->_mipmaps[self->_mipmapsCount-1] = next;
 			prev = next;
 		}
 		RI_ASSERT(prev->m_width == 1 && prev->m_height == 1);
-		m_mipmapsValid = true;
+		self->m_mipmapsValid = true;
 	}
 	catch(std::bad_alloc)
 	{
 		//delete existing mipmaps
-		for(int i=0;i<_mipmapsCount;i++)
+		for(int i=0;i<self->_mipmapsCount;i++)
 		{
-			if(_mipmaps[i])
+			if(self->_mipmaps[i])
 			{
-					delete _mipmaps[i];
+					delete self->_mipmaps[i];
 			}
 		}
-		_mipmapsCount=0;
-		m_mipmapsValid = false;
+		self->_mipmapsCount=0;
+		self->m_mipmapsValid = false;
 		throw;
 	}
 }
@@ -1443,17 +1438,16 @@ void VGImage::makeMipMaps()
 * \note		
 *//*-------------------------------------------------------------------*/
 
-void VGImage::colorMatrix(const VGImage& src, const RIfloat* matrix, bool filterFormatLinear, bool filterFormatPremultiplied, VGbitfield channelMask)
-{
-	RI_ASSERT(src.m_data);	//source exists
-	RI_ASSERT(m_data);	//destination exists
+void VGImageColorMatrix(VGImage *self,VGImage * src, const RIfloat* matrix, bool filterFormatLinear, bool filterFormatPremultiplied, VGbitfield channelMask) {
+	RI_ASSERT(src->m_data);	//source exists
+	RI_ASSERT(self->m_data);	//destination exists
 	RI_ASSERT(matrix);
 
-	int w = RI_INT_MIN(m_width, src.m_width);
-	int h = RI_INT_MIN(m_height, src.m_height);
+	int w = RI_INT_MIN(self->m_width, src->m_width);
+	int h = RI_INT_MIN(self->m_height, src->m_height);
 	RI_ASSERT(w > 0 && h > 0);
 
-	VGColorInternalFormat srcFormat = src.m_desc.internalFormat;
+	VGColorInternalFormat srcFormat = src->m_desc.internalFormat;
 	VGColorInternalFormat procFormat = (VGColorInternalFormat)(srcFormat & ~VGColorLUMINANCE);	//process in RGB, not luminance
 	if(filterFormatLinear)
 		procFormat = (VGColorInternalFormat)(procFormat & ~VGColorNONLINEAR);
@@ -1469,7 +1463,7 @@ void VGImage::colorMatrix(const VGImage& src, const RIfloat* matrix, bool filter
 	{
 		for(int i=0;i<w;i++)
 		{
-			VGColor s = src.readPixel(i,j);	//convert to RGBA [0,1]
+			VGColor s = VGImageReadPixel(src,i,j);	//convert to RGBA [0,1]
 			s=VGColorConvert(s,procFormat);
 
 			VGColor d=VGColorRGBA(0,0,0,0,procFormat);
@@ -1478,7 +1472,7 @@ void VGImage::colorMatrix(const VGImage& src, const RIfloat* matrix, bool filter
 			d.b = matrix[2+4*0] * s.r + matrix[2+4*1] * s.g + matrix[2+4*2] * s.b + matrix[2+4*3] * s.a + matrix[2+4*4];
 			d.a = matrix[3+4*0] * s.r + matrix[3+4*1] * s.g + matrix[3+4*2] * s.b + matrix[3+4*3] * s.a + matrix[3+4*4];
 
-			writeFilteredPixel(i, j, d, channelMask);
+			VGImageWriteFilteredPixel(self,i, j, d, channelMask);
 		}
 	}
 }
@@ -1560,34 +1554,33 @@ static VGColorInternalFormat getProcessingFormat(VGColorInternalFormat srcFormat
 * \note		
 *//*-------------------------------------------------------------------*/
 
-void VGImage::convolve(const VGImage& src, int kernelWidth, int kernelHeight, int shiftX, int shiftY, const RIint16* kernel, RIfloat scale, RIfloat bias, VGTilingMode tilingMode, VGColor edgeFillColor, bool filterFormatLinear, bool filterFormatPremultiplied, VGbitfield channelMask)
-{
-	RI_ASSERT(src.m_data);	//source exists
-	RI_ASSERT(m_data);	//destination exists
+void VGImageConvolve(VGImage *self,VGImage * src, int kernelWidth, int kernelHeight, int shiftX, int shiftY, const RIint16* kernel, RIfloat scale, RIfloat bias, VGTilingMode tilingMode, VGColor edgeFillColor, bool filterFormatLinear, bool filterFormatPremultiplied, VGbitfield channelMask) {
+	RI_ASSERT(src->m_data);	//source exists
+	RI_ASSERT(self->m_data);	//destination exists
 	RI_ASSERT(kernel && kernelWidth > 0 && kernelHeight > 0);
 
 	//the area to be written is an intersection of source and destination image areas.
 	//lower-left corners of the images are aligned.
-	int w = RI_INT_MIN(m_width, src.m_width);
-	int h = RI_INT_MIN(m_height, src.m_height);
+	int w = RI_INT_MIN(self->m_width, src->m_width);
+	int h = RI_INT_MIN(self->m_height, src->m_height);
 	RI_ASSERT(w > 0 && h > 0);
 
-	VGColorInternalFormat procFormat = getProcessingFormat(src.m_desc.internalFormat, filterFormatLinear, filterFormatPremultiplied);
+	VGColorInternalFormat procFormat = getProcessingFormat(src->m_desc.internalFormat, filterFormatLinear, filterFormatPremultiplied);
 
 	VGColor edge = edgeFillColor;
 	edge=VGColorClamp(edge);
 	edge=VGColorConvert(edge,procFormat);
 
-	VGColor *tmp=(VGColor *)NSZoneMalloc(NULL,src.m_width*src.m_height*sizeof(VGColor));
+	VGColor *tmp=(VGColor *)NSZoneMalloc(NULL,src->m_width*src->m_height*sizeof(VGColor));
 
 	//copy source region to tmp and do conversion
-	for(int j=0;j<src.m_height;j++)
+	for(int j=0;j<src->m_height;j++)
 	{
-		for(int i=0;i<src.m_width;i++)
+		for(int i=0;i<src->m_width;i++)
 		{
-			VGColor s = src.readPixel(i, j);
+			VGColor s = VGImageReadPixel(src,i, j);
 			s=VGColorConvert(s,procFormat);
-			tmp[j*src.m_width+i] = s;
+			tmp[j*src->m_width+i] = s;
 		}
 	}
 
@@ -1603,7 +1596,7 @@ void VGImage::convolve(const VGImage& src, int kernelWidth, int kernelHeight, in
 				{
 					int x = i+ki-shiftX;
 					int y = j+kj-shiftY;
-					VGColor s = readTiledPixel(x, y, src.m_width, src.m_height, tilingMode, tmp, edge);
+					VGColor s = readTiledPixel(x, y, src->m_width, src->m_height, tilingMode, tmp, edge);
 
 					int kx = kernelWidth-ki-1;
 					int ky = kernelHeight-kj-1;
@@ -1619,7 +1612,7 @@ void VGImage::convolve(const VGImage& src, int kernelWidth, int kernelHeight, in
 			sum.b += bias;
 			sum.a += bias;
 
-			writeFilteredPixel(i, j, sum, channelMask);
+			VGImageWriteFilteredPixel(self,i, j, sum, channelMask);
 		}
 	}
     NSZoneFree(NULL,tmp);
@@ -1632,40 +1625,39 @@ void VGImage::convolve(const VGImage& src, int kernelWidth, int kernelHeight, in
 * \note		
 *//*-------------------------------------------------------------------*/
 
-void VGImage::separableConvolve(const VGImage& src, int kernelWidth, int kernelHeight, int shiftX, int shiftY, const RIint16* kernelX, const RIint16* kernelY, RIfloat scale, RIfloat bias, VGTilingMode tilingMode, VGColor edgeFillColor, bool filterFormatLinear, bool filterFormatPremultiplied, VGbitfield channelMask)
-{
-	RI_ASSERT(src.m_data);	//source exists
-	RI_ASSERT(m_data);	//destination exists
+void VGImageSeparableConvolve(VGImage *self,VGImage * src, int kernelWidth, int kernelHeight, int shiftX, int shiftY, const RIint16* kernelX, const RIint16* kernelY, RIfloat scale, RIfloat bias, VGTilingMode tilingMode, VGColor edgeFillColor, bool filterFormatLinear, bool filterFormatPremultiplied, VGbitfield channelMask) {
+	RI_ASSERT(src->m_data);	//source exists
+	RI_ASSERT(self->m_data);	//destination exists
 	RI_ASSERT(kernelX && kernelY && kernelWidth > 0 && kernelHeight > 0);
 
 	//the area to be written is an intersection of source and destination image areas.
 	//lower-left corners of the images are aligned.
-	int w = RI_INT_MIN(m_width, src.m_width);
-	int h = RI_INT_MIN(m_height, src.m_height);
+	int w = RI_INT_MIN(self->m_width, src->m_width);
+	int h = RI_INT_MIN(self->m_height, src->m_height);
 	RI_ASSERT(w > 0 && h > 0);
 
-	VGColorInternalFormat procFormat = getProcessingFormat(src.m_desc.internalFormat, filterFormatLinear, filterFormatPremultiplied);
+	VGColorInternalFormat procFormat = getProcessingFormat(src->m_desc.internalFormat, filterFormatLinear, filterFormatPremultiplied);
 
 	VGColor edge = edgeFillColor;
 	edge=VGColorClamp(edge);
 	edge=VGColorConvert(edge,procFormat);
 
-	VGColor *tmp=(VGColor *)NSZoneMalloc(NULL,src.m_width*src.m_height*sizeof(VGColor));
+	VGColor *tmp=(VGColor *)NSZoneMalloc(NULL,src->m_width*src->m_height*sizeof(VGColor));
 
 	//copy source region to tmp and do conversion
-	for(int j=0;j<src.m_height;j++)
+	for(int j=0;j<src->m_height;j++)
 	{
-		for(int i=0;i<src.m_width;i++)
+		for(int i=0;i<src->m_width;i++)
 		{
-			VGColor s = src.readPixel(i, j);
+			VGColor s = VGImageReadPixel(src,i, j);
 			s=VGColorConvert(s,procFormat);
-			tmp[j*src.m_width+i] = s;
+			tmp[j*src->m_width+i] = s;
 		}
 	}
 
-	VGColor *tmp2=(VGColor *)NSZoneMalloc(NULL,w*src.m_height*sizeof(VGColor));
+	VGColor *tmp2=(VGColor *)NSZoneMalloc(NULL,w*src->m_height*sizeof(VGColor));
 
-	for(int j=0;j<src.m_height;j++)
+	for(int j=0;j<src->m_height;j++)
 	{
 		for(int i=0;i<w;i++)
 		{
@@ -1673,7 +1665,7 @@ void VGImage::separableConvolve(const VGImage& src, int kernelWidth, int kernelH
 			for(int ki=0;ki<kernelWidth;ki++)
 			{
 				int x = i+ki-shiftX;
-				VGColor s = readTiledPixel(x, j, src.m_width, src.m_height, tilingMode, tmp, edge);
+				VGColor s = readTiledPixel(x, j, src->m_width, src->m_height, tilingMode, tmp, edge);
 
 				int kx = kernelWidth-ki-1;
 				RI_ASSERT(kx >= 0 && kx < kernelWidth);
@@ -1702,7 +1694,7 @@ void VGImage::separableConvolve(const VGImage& src, int kernelWidth, int kernelH
 			for(int kj=0;kj<kernelHeight;kj++)
 			{
 				int y = j+kj-shiftY;
-				VGColor s = readTiledPixel(i, y, w, src.m_height, tilingMode, tmp2, edge);
+				VGColor s = readTiledPixel(i, y, w, src->m_height, tilingMode, tmp2, edge);
 
 				int ky = kernelHeight-kj-1;
 				RI_ASSERT(ky >= 0 && ky < kernelHeight);
@@ -1716,7 +1708,7 @@ void VGImage::separableConvolve(const VGImage& src, int kernelWidth, int kernelH
 			sum.b += bias;
 			sum.a += bias;
 
-			writeFilteredPixel(i, j, sum, channelMask);
+			VGImageWriteFilteredPixel(self,i, j, sum, channelMask);
 		}
 	}
     NSZoneFree(NULL,tmp);
@@ -1730,35 +1722,34 @@ void VGImage::separableConvolve(const VGImage& src, int kernelWidth, int kernelH
 * \note		
 *//*-------------------------------------------------------------------*/
 
-void VGImage::gaussianBlur(const VGImage& src, RIfloat stdDeviationX, RIfloat stdDeviationY, VGTilingMode tilingMode, VGColor edgeFillColor, bool filterFormatLinear, bool filterFormatPremultiplied, VGbitfield channelMask)
-{
-	RI_ASSERT(src.m_data);	//source exists
-	RI_ASSERT(m_data);	//destination exists
+void VGImageGaussianBlur(VGImage *self,VGImage * src, RIfloat stdDeviationX, RIfloat stdDeviationY, VGTilingMode tilingMode, VGColor edgeFillColor, bool filterFormatLinear, bool filterFormatPremultiplied, VGbitfield channelMask){
+	RI_ASSERT(src->m_data);	//source exists
+	RI_ASSERT(self->m_data);	//destination exists
 	RI_ASSERT(stdDeviationX > 0.0f && stdDeviationY > 0.0f);
 	RI_ASSERT(stdDeviationX <= RI_MAX_GAUSSIAN_STD_DEVIATION && stdDeviationY <= RI_MAX_GAUSSIAN_STD_DEVIATION);
 
 	//the area to be written is an intersection of source and destination image areas.
 	//lower-left corners of the images are aligned.
-	int w = RI_INT_MIN(m_width, src.m_width);
-	int h = RI_INT_MIN(m_height, src.m_height);
+	int w = RI_INT_MIN(self->m_width, src->m_width);
+	int h = RI_INT_MIN(self->m_height, src->m_height);
 	RI_ASSERT(w > 0 && h > 0);
 
-	VGColorInternalFormat procFormat = getProcessingFormat(src.m_desc.internalFormat, filterFormatLinear, filterFormatPremultiplied);
+	VGColorInternalFormat procFormat = getProcessingFormat(src->m_desc.internalFormat, filterFormatLinear, filterFormatPremultiplied);
 
 	VGColor edge = edgeFillColor;
 	edge=VGColorClamp(edge);
 	edge=VGColorConvert(edge,procFormat);
 
-	VGColor *tmp=(VGColor *)NSZoneMalloc(NULL,src.m_width*src.m_height*sizeof(VGColor));
+	VGColor *tmp=(VGColor *)NSZoneMalloc(NULL,src->m_width*src->m_height*sizeof(VGColor));
 
 	//copy source region to tmp and do conversion
-	for(int j=0;j<src.m_height;j++)
+	for(int j=0;j<src->m_height;j++)
 	{
-		for(int i=0;i<src.m_width;i++)
+		for(int i=0;i<src->m_width;i++)
 		{
-			VGColor s = src.readPixel(i, j);
+			VGColor s = VGImageReadPixel(src,i, j);
 			s=VGColorConvert(s,procFormat);
-			tmp[j*src.m_width+i] = s;
+			tmp[j*src->m_width+i] = s;
 		}
 	}
 
@@ -1817,10 +1808,10 @@ void VGImage::gaussianBlur(const VGImage& src, RIfloat stdDeviationX, RIfloat st
 	}
 	scaleY = 1.0f / scaleY;	//NOTE: using the mathematical definition of the scaling term doesn't work since we cut the filter support early for performance
 
-	VGColor *tmp2=(VGColor *)NSZoneMalloc(NULL,w*src.m_height*sizeof(VGColor));
+	VGColor *tmp2=(VGColor *)NSZoneMalloc(NULL,w*src->m_height*sizeof(VGColor));
 
 	//horizontal pass
-	for(int j=0;j<src.m_height;j++)
+	for(int j=0;j<src->m_height;j++)
 	{
 		for(int i=0;i<w;i++)
 		{
@@ -1828,7 +1819,7 @@ void VGImage::gaussianBlur(const VGImage& src, RIfloat stdDeviationX, RIfloat st
 			for(int ki=0;ki<kernelXSize;ki++)
 			{
 				int x = i+ki-shiftX;
-				sum=VGColorAdd(sum, VGColorMultiplyByFloat(readTiledPixel(x, j, src.m_width, src.m_height, tilingMode, tmp, edge),kernelX[ki]));
+				sum=VGColorAdd(sum, VGColorMultiplyByFloat(readTiledPixel(x, j, src->m_width, src->m_height, tilingMode, tmp, edge),kernelX[ki]));
 			}
 			tmp2[j*w+i] = VGColorMultiplyByFloat(sum, scaleX);
 		}
@@ -1842,9 +1833,9 @@ void VGImage::gaussianBlur(const VGImage& src, RIfloat stdDeviationX, RIfloat st
 			for(int kj=0;kj<kernelYSize;kj++)
 			{
 				int y = j+kj-shiftY;
-				sum=VGColorAdd(sum,  VGColorMultiplyByFloat(readTiledPixel(i, y, w, src.m_height, tilingMode, tmp2, edge), kernelY[kj]));
+				sum=VGColorAdd(sum,  VGColorMultiplyByFloat(readTiledPixel(i, y, w, src->m_height, tilingMode, tmp2, edge), kernelY[kj]));
 			}
-			writeFilteredPixel(i, j, VGColorMultiplyByFloat(sum, scaleY), channelMask);
+			VGImageWriteFilteredPixel(self,i, j, VGColorMultiplyByFloat(sum, scaleY), channelMask);
 		}
 	}
     NSZoneFree(NULL,tmp);
@@ -1877,26 +1868,25 @@ static VGColorInternalFormat getLUTFormat(bool outputLinear, bool outputPremulti
 * \note		
 *//*-------------------------------------------------------------------*/
 
-void VGImage::lookup(const VGImage& src, const RIuint8 * redLUT, const RIuint8 * greenLUT, const RIuint8 * blueLUT, const RIuint8 * alphaLUT, bool outputLinear, bool outputPremultiplied, bool filterFormatLinear, bool filterFormatPremultiplied, VGbitfield channelMask)
-{
-	RI_ASSERT(src.m_data);	//source exists
-	RI_ASSERT(m_data);	//destination exists
+void VGImageLookup(VGImage *self,VGImage * src, const RIuint8 * redLUT, const RIuint8 * greenLUT, const RIuint8 * blueLUT, const RIuint8 * alphaLUT, bool outputLinear, bool outputPremultiplied, bool filterFormatLinear, bool filterFormatPremultiplied, VGbitfield channelMask){
+	RI_ASSERT(src->m_data);	//source exists
+	RI_ASSERT(self->m_data);	//destination exists
 	RI_ASSERT(redLUT && greenLUT && blueLUT && alphaLUT);
 
 	//the area to be written is an intersection of source and destination image areas.
 	//lower-left corners of the images are aligned.
-	int w = RI_INT_MIN(m_width, src.m_width);
-	int h = RI_INT_MIN(m_height, src.m_height);
+	int w = RI_INT_MIN(self->m_width, src->m_width);
+	int h = RI_INT_MIN(self->m_height, src->m_height);
 	RI_ASSERT(w > 0 && h > 0);
 
-	VGColorInternalFormat procFormat = getProcessingFormat(src.m_desc.internalFormat, filterFormatLinear, filterFormatPremultiplied);
+	VGColorInternalFormat procFormat = getProcessingFormat(src->m_desc.internalFormat, filterFormatLinear, filterFormatPremultiplied);
 	VGColorInternalFormat lutFormat = getLUTFormat(outputLinear, outputPremultiplied);
 
 	for(int j=0;j<h;j++)
 	{
 		for(int i=0;i<w;i++)
 		{
-			VGColor s = src.readPixel(i,j);	//convert to RGBA [0,1]
+			VGColor s = VGImageReadPixel(src,i,j);	//convert to RGBA [0,1]
 			s=VGColorConvert(s,procFormat);
 
 			VGColor d=VGColorRGBA(0,0,0,0,lutFormat);
@@ -1905,7 +1895,7 @@ void VGImage::lookup(const VGImage& src, const RIuint8 * redLUT, const RIuint8 *
 			d.b = intToColor( blueLUT[colorToInt(s.b, 255)], 255);
 			d.a = intToColor(alphaLUT[colorToInt(s.a, 255)], 255);
 
-			writeFilteredPixel(i, j, d, channelMask);
+			VGImageWriteFilteredPixel(self,i, j, d, channelMask);
 		}
 	}
 }
@@ -1917,34 +1907,33 @@ void VGImage::lookup(const VGImage& src, const RIuint8 * redLUT, const RIuint8 *
 * \note		
 *//*-------------------------------------------------------------------*/
 
-void VGImage::lookupSingle(const VGImage& src, const RIuint32 * lookupTable, VGImageChannel sourceChannel, bool outputLinear, bool outputPremultiplied, bool filterFormatLinear, bool filterFormatPremultiplied, VGbitfield channelMask)
-{
-	RI_ASSERT(src.m_data);	//source exists
-	RI_ASSERT(m_data);	//destination exists
+void VGImageLookupSingle(VGImage *self,VGImage * src, const RIuint32 * lookupTable, VGImageChannel sourceChannel, bool outputLinear, bool outputPremultiplied, bool filterFormatLinear, bool filterFormatPremultiplied, VGbitfield channelMask){
+	RI_ASSERT(src->m_data);	//source exists
+	RI_ASSERT(self->m_data);	//destination exists
 	RI_ASSERT(lookupTable);
 
 	//the area to be written is an intersection of source and destination image areas.
 	//lower-left corners of the images are aligned.
-	int w = RI_INT_MIN(m_width, src.m_width);
-	int h = RI_INT_MIN(m_height, src.m_height);
+	int w = RI_INT_MIN(self->m_width, src->m_width);
+	int h = RI_INT_MIN(self->m_height, src->m_height);
 	RI_ASSERT(w > 0 && h > 0);
 
-	if(src.m_desc.luminanceBits)
+	if(src->m_desc.luminanceBits)
 		sourceChannel = VG_RED;
-	else if(src.m_desc.redBits + src.m_desc.greenBits + src.m_desc.blueBits == 0)
+	else if(src->m_desc.redBits + src->m_desc.greenBits + src->m_desc.blueBits == 0)
 	{
-		RI_ASSERT(src.m_desc.alphaBits);
+		RI_ASSERT(src->m_desc.alphaBits);
 		sourceChannel = VG_ALPHA;
 	}
 
-	VGColorInternalFormat procFormat = getProcessingFormat(src.m_desc.internalFormat, filterFormatLinear, filterFormatPremultiplied);
+	VGColorInternalFormat procFormat = getProcessingFormat(src->m_desc.internalFormat, filterFormatLinear, filterFormatPremultiplied);
 	VGColorInternalFormat lutFormat = getLUTFormat(outputLinear, outputPremultiplied);
 
 	for(int j=0;j<h;j++)
 	{
 		for(int i=0;i<w;i++)
 		{
-			VGColor s = src.readPixel(i,j);	//convert to RGBA [0,1]
+			VGColor s = VGImageReadPixel(src,i,j);	//convert to RGBA [0,1]
 			s=VGColorConvert(s,procFormat);
 			int e;
 			switch(sourceChannel)
@@ -1971,7 +1960,7 @@ void VGImage::lookupSingle(const VGImage& src, const RIuint32 * lookupTable, VGI
 			d.b = intToColor((l>> 8), 255);
 			d.a = intToColor((l    ), 255);
 
-			writeFilteredPixel(i, j, d, channelMask);
+			VGImageWriteFilteredPixel(self,i, j, d, channelMask);
 		}
 	}
 }
