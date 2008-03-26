@@ -55,15 +55,15 @@ public:
 
 	void				appendData(const RIuint8* segments, int numSegments, const RIfloat* data);	//throws bad_alloc
 	void				append(const VGPath* srcPath);	//throws bad_alloc
-	void				transform(const VGPath* srcPath, const Matrix3x3& matrix);	//throws bad_alloc
+	void				transform(const VGPath* srcPath, Matrix3x3 matrix);	//throws bad_alloc
 	//returns true if interpolation succeeds, false if start and end paths are not compatible
-	void				fill(const Matrix3x3& pathToSurface, KGRasterizer *rasterizer);	//throws bad_alloc
-	void				stroke(const Matrix3x3& pathToSurface, KGRasterizer *rasterizer, const RIfloat* dashPattern,int dashPatternSize, RIfloat dashPhase, bool dashPhaseReset, RIfloat strokeWidth, CGLineCap capStyle, CGLineJoin joinStyle, RIfloat miterLimit);	//throws bad_alloc
+	void				fill(Matrix3x3 pathToSurface, KGRasterizer *rasterizer);	//throws bad_alloc
+	void				stroke(Matrix3x3 pathToSurface, KGRasterizer *rasterizer, const RIfloat* dashPattern,int dashPatternSize, RIfloat dashPhase, bool dashPhaseReset, RIfloat strokeWidth, CGLineCap capStyle, CGLineJoin joinStyle, RIfloat miterLimit);	//throws bad_alloc
 
 	void				getPointAlong(int startIndex, int numSegments, RIfloat distance, Vector2& p, Vector2& t);	//throws bad_alloc
 	RIfloat				getPathLength(int startIndex, int numSegments);	//throws bad_alloc
 	void				getPathBounds(RIfloat& minx, RIfloat& miny, RIfloat& maxx, RIfloat& maxy);	//throws bad_alloc
-	void				getPathTransformedBounds(const Matrix3x3& pathToSurface, RIfloat& minx, RIfloat& miny, RIfloat& maxx, RIfloat& maxy);	//throws bad_alloc
+	void				getPathTransformedBounds(Matrix3x3 pathToSurface, RIfloat& minx, RIfloat& miny, RIfloat& maxx, RIfloat& maxy);	//throws bad_alloc
 
 //private
 	struct Vertex
@@ -86,9 +86,6 @@ public:
 		bool			inDash;
 	};
 
-	VGPath(const VGPath&);						//!< Not allowed.
-	const VGPath& operator=(const VGPath&);		//!< Not allowed.
-
 	static int			segmentToNumCoordinates(VGPathSegment segment);
 	static int			countNumCoordinates(const RIuint8* segments, int numSegments);
 
@@ -97,20 +94,20 @@ public:
 	RIfloat				getCoordinate(int i) const;
 	void				setCoordinate(int i, RIfloat c)				{ setCoordinate(_coordinates, m_scale, m_bias, i, c); }
 
-	void				addVertex(const Vector2& p, const Vector2& t, RIfloat pathLength, unsigned int flags);	//throws bad_alloc
-	void				addEdge(const Vector2& p0, const Vector2& p1, const Vector2& t0, const Vector2& t1, unsigned int startFlags, unsigned int endFlags);	//throws bad_alloc
+	void				addVertex(Vector2 p, Vector2 t, RIfloat pathLength, unsigned int flags);	//throws bad_alloc
+	void				addEdge(Vector2 p0, Vector2 p1, Vector2 t0, Vector2 t1, unsigned int startFlags, unsigned int endFlags);	//throws bad_alloc
 
-	void				addEndPath(const Vector2& p0, const Vector2& p1, bool subpathHasGeometry, unsigned int flags);	//throws bad_alloc
-	bool				addLineTo(const Vector2& p0, const Vector2& p1, bool subpathHasGeometry);	//throws bad_alloc
-	bool				addQuadTo(const Vector2& p0, const Vector2& p1, const Vector2& p2, bool subpathHasGeometry);	//throws bad_alloc
-	bool				addCubicTo(const Vector2& p0, const Vector2& p1, const Vector2& p2, const Vector2& p3, bool subpathHasGeometry);	//throws bad_alloc
-	bool				addArcTo(const Vector2& p0, RIfloat rh, RIfloat rv, RIfloat rot, const Vector2& p1, VGPathSegment segment, bool subpathHasGeometry);	//throws bad_alloc
+	void				addEndPath(Vector2 p0, Vector2 p1, bool subpathHasGeometry, unsigned int flags);	//throws bad_alloc
+	bool				addLineTo(Vector2 p0, Vector2 p1, bool subpathHasGeometry);	//throws bad_alloc
+	bool				addQuadTo(Vector2 p0, Vector2 p1, Vector2 p2, bool subpathHasGeometry);	//throws bad_alloc
+	bool				addCubicTo(Vector2 p0, Vector2 p1, Vector2 p2, Vector2 p3, bool subpathHasGeometry);	//throws bad_alloc
+	bool				addArcTo(Vector2 p0, RIfloat rh, RIfloat rv, RIfloat rot, Vector2 p1, VGPathSegment segment, bool subpathHasGeometry);	//throws bad_alloc
 
 	void				tessellate();	//throws bad_alloc
 
-	void				interpolateStroke(const Matrix3x3& pathToSurface, KGRasterizer *rasterizer, const StrokeVertex& v0, const StrokeVertex& v1, RIfloat strokeWidth) const;	//throws bad_alloc
-	void				doCap(const Matrix3x3& pathToSurface, KGRasterizer *rasterizer, const StrokeVertex& v, RIfloat strokeWidth, CGLineCap capStyle) const;	//throws bad_alloc
-	void				doJoin(const Matrix3x3& pathToSurface, KGRasterizer *rasterizer, const StrokeVertex& v0, const StrokeVertex& v1, RIfloat strokeWidth, CGLineJoin joinStyle, RIfloat miterLimit) const;	//throws bad_alloc
+	void				interpolateStroke(Matrix3x3 pathToSurface, KGRasterizer *rasterizer, const StrokeVertex& v0, const StrokeVertex& v1, RIfloat strokeWidth) const;	//throws bad_alloc
+	void				doCap(Matrix3x3 pathToSurface, KGRasterizer *rasterizer, const StrokeVertex& v, RIfloat strokeWidth, CGLineCap capStyle) const;	//throws bad_alloc
+	void				doJoin(Matrix3x3 pathToSurface, KGRasterizer *rasterizer, const StrokeVertex& v0, const StrokeVertex& v1, RIfloat strokeWidth, CGLineJoin joinStyle, RIfloat miterLimit) const;	//throws bad_alloc
 
 	//input data
 	RIfloat				m_scale;

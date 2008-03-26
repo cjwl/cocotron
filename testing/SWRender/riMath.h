@@ -30,7 +30,6 @@
  * \note	
  *//*-------------------------------------------------------------------*/
 
-#import <float.h>
 #import <math.h>
 #import <assert.h>
 #import <new>	//for bad_alloc
@@ -56,54 +55,100 @@ inline RIfloat	RI_ABS(RIfloat a)							{ return (a < 0.0f) ? -a : a; }
 inline RIfloat	RI_SQR(RIfloat a)							{ return a * a; }
 inline RIfloat	RI_DEG_TO_RAD(RIfloat a)					{ return a * M_PI / 180.0f; }
 inline RIfloat	RI_RAD_TO_DEG(RIfloat a)					{ return a * 180.0f/ M_PI; }
-inline RIfloat	RI_MOD(RIfloat a, RIfloat b)				{ if(RI_ISNAN(a) || RI_ISNAN(b)) return 0.0f; RI_ASSERT(b >= 0.0f); if(b == 0.0f) return 0.0f; RIfloat f = (RIfloat)fmod(a, b); if(f < 0.0f) f += b; RI_ASSERT(f >= 0.0f && f <= b); return f; }
+inline RIfloat	RI_MOD(RIfloat a, RIfloat b){
+   if(RI_ISNAN(a) || RI_ISNAN(b))
+    return 0.0f;
+    
+   RI_ASSERT(b >= 0.0f);
+   
+   if(b == 0.0f)
+    return 0.0f;
+    
+   RIfloat f = (RIfloat)fmod(a, b);
+   
+   if(f < 0.0f)
+    f += b;
+   RI_ASSERT(f >= 0.0f && f <= b);
+   return f;
+}
 
 inline int		RI_INT_MAX(int a, int b)			{ return (a > b) ? a : b; }
 inline int		RI_INT_MIN(int a, int b)			{ return (a < b) ? a : b; }
 inline int		RI_INT_MOD(int a, int b)			{ RI_ASSERT(b >= 0); if(!b) return 0; int i = a % b; if(i < 0) i += b; RI_ASSERT(i >= 0 && i < b); return i; }
 inline int		RI_INT_ADDSATURATE(int a, int b)	{ RI_ASSERT(b >= 0); int r = a + b; return (r >= a) ? r : RI_INT32_MAX; }
 
-class Vector2 {
-public:
-	inline					Vector2			() : x(0.0f), y(0.0f)					{}
-	inline					Vector2			( const Vector2& v ) : x(v.x), y(v.y)	{}
-	inline					Vector2			( RIfloat fx, RIfloat fy ) : x(fx), y(fy)	{}
-	inline const Vector2		operator-		() const						{ return Vector2(-x,-y); }
-	inline void				set				( RIfloat fx, RIfloat fy )			{ x = fx; y = fy; }
-	inline RIfloat			length			() const						{ return (RIfloat)sqrt((double)x*(double)x+(double)y*(double)y); }
-	inline bool				normalize		()								{ double l = (double)x*(double)x+(double)y*(double)y; if( l == 0.0 ) return false; l = 1.0 / sqrt(l); x = (RIfloat)((double)x * l); y = (RIfloat)((double)y * l); return true; }
-	inline void				operator*=		( RIfloat f )						{ x *= f; y *= f; }
-	inline void				operator-=		( const Vector2& v )			{ x -= v.x; y -= v.y; }
+typedef struct {
+   RIfloat x,y;
+} Vector2;
 
-	RIfloat						x,y;
-};
+inline Vector2 Vector2Make(RIfloat fx,RIfloat fy){
+   Vector2 result;
+   result.x=fx;
+   result.y=fy;
+   return result;
+}
 
-inline bool			operator==	( const Vector2& v1, const Vector2& v2 )	{ return (v1.x == v2.x) && (v1.y == v2.y); }
-inline bool			operator!=	( const Vector2& v1, const Vector2& v2 )	{ return (v1.x != v2.x) || (v1.y != v2.y); }
-inline bool			isZero		( const Vector2& v )						{ return (v.x == 0.0f) && (v.y == 0.0f); }
-inline const Vector2	operator*	( RIfloat f, const Vector2& v )				{ return Vector2(v.x*f,v.y*f); }
-inline const Vector2	operator*	( const Vector2& v, RIfloat f )				{ return Vector2(v.x*f,v.y*f); }
-inline const Vector2	operator+	( const Vector2& v1, const Vector2& v2 )	{ return Vector2(v1.x+v2.x, v1.y+v2.y); }
-inline const Vector2	operator-	( const Vector2& v1, const Vector2& v2 )	{ return Vector2(v1.x-v2.x, v1.y-v2.y); }
-inline RIfloat		dot			( const Vector2& v1, const Vector2& v2 )	{ return v1.x*v2.x+v1.y*v2.y; }
+inline Vector2 Vector2Negate(Vector2 result){
+   return Vector2Make(-result.x,-result.y);
+}
+
+inline RIfloat Vector2Length(Vector2 v){
+   return sqrt((double)v.x*(double)v.x+(double)v.y*(double)v.y);
+}
+
+static inline bool Vector2IsEqual(Vector2 v1,Vector2 v2 ){
+   return (v1.x == v2.x) && (v1.y == v2.y);
+}
+
+inline bool Vector2IsZero(Vector2 v){
+  return (v.x == 0.0f) && (v.y == 0.0f);
+}
+
+inline const Vector2	operator*	( RIfloat f,Vector2 v )				{ return Vector2Make(v.x*f,v.y*f); }
+inline const Vector2	operator*	(Vector2 v, RIfloat f )				{ return Vector2Make(v.x*f,v.y*f); }
+inline const Vector2	operator+	(Vector2 v1,Vector2 v2 )	{ return Vector2Make(v1.x+v2.x, v1.y+v2.y); }
+inline const Vector2	operator-	(Vector2 v1,Vector2 v2)	{ return Vector2Make(v1.x-v2.x, v1.y-v2.y); }
+
+inline RIfloat Vector2Dot(Vector2 v1,Vector2 v2){
+   return v1.x*v2.x+v1.y*v2.y;
+}
+
 //if v is a zero vector, returns a zero vector
-inline const Vector2	normalize	( const Vector2& v )						{ double l = (double)v.x*(double)v.x+(double)v.y*(double)v.y; if( l != 0.0 ) l = 1.0 / sqrt(l); return Vector2((RIfloat)((double)v.x * l), (RIfloat)((double)v.y * l)); }
+inline const Vector2 Vector2Normalize(Vector2 v){
+   double l = (double)v.x*(double)v.x+(double)v.y*(double)v.y;
+   
+   if( l != 0.0 )
+    l = 1.0 / sqrt(l);
+    
+   return Vector2Make((RIfloat)((double)v.x * l), (RIfloat)((double)v.y * l));
+}
 
-inline const Vector2 perpendicularCW(const Vector2& v)						{ return Vector2(v.y, -v.x); }
-inline const Vector2 perpendicularCCW(const Vector2& v)						{ return Vector2(-v.y, v.x); }
-inline const Vector2 perpendicular(const Vector2& v, bool cw)				{ if(cw) return Vector2(v.y, -v.x); return Vector2(-v.y, v.x); }
+inline const Vector2 Vector2PerpendicularCW(Vector2 v){
+   return Vector2Make(v.y, -v.x);
+}
 
+inline const Vector2 Vector2PerpendicularCCW(Vector2 v){
+   return Vector2Make(-v.y, v.x);
+}
 
-class Vector3 {
-public:
-	inline					Vector3			( RIfloat fx, RIfloat fy ) : x(fx), y(fy), z(1)	{}
-	inline					Vector3			( RIfloat fx, RIfloat fy, RIfloat fz ) : x(fx), y(fy), z(fz)	{}
-	inline const RIfloat&	operator[]		( int i ) const					{ RI_ASSERT(i>=0&&i<3); return (&x)[i]; }
-	inline RIfloat&			operator[]		( int i )						{ RI_ASSERT(i>=0&&i<3); return (&x)[i]; }
-	inline void				set				( RIfloat fx, RIfloat fy, RIfloat fz ){ x = fx; y = fy; z = fz; }
+inline const Vector2 Vector2Perpendicular(Vector2 v, bool cw){
+   if(cw)
+    return Vector2Make(v.y, -v.x);
+    
+   return Vector2Make(-v.y, v.x);
+}
 
-	RIfloat						x,y,z;
-};
+typedef struct  {
+   RIfloat x,y,z;
+} Vector3;
+
+static inline Vector3 Vector3Make( RIfloat fx, RIfloat fy, RIfloat fz ){
+   Vector3 result;
+   result.x=fx;
+   result.y=fy;
+   result.z=fz;
+   return result;
+}
 
 static inline Vector3 Vector3MultiplyByFloat(Vector3 v,RIfloat f){
    v.x *= f;
@@ -112,65 +157,94 @@ static inline Vector3 Vector3MultiplyByFloat(Vector3 v,RIfloat f){
    return v;
 }
 
-//indexing: matrix[row][column]
+typedef struct {    
+   RIfloat matrix[3][3];
+} Matrix3x3;
 
-class Matrix3x3 {
-public:
-
-inline					Matrix3x3	()									{ identity(); }
-inline					Matrix3x3	( const Matrix3x3& m )				{ *this = m; }
-inline					Matrix3x3	( RIfloat m00, RIfloat m01, RIfloat m02, RIfloat m10, RIfloat m11, RIfloat m12, RIfloat m20, RIfloat m21, RIfloat m22 )	{ set(m00,m01,m02,m10,m11,m12,m20,m21,m22); }
-inline                   Matrix3x3       (CGAffineTransform transform) {
-   matrix[0][0]=transform.a;
-   matrix[0][1]=transform.c;
-   matrix[0][2]=transform.tx;
-   matrix[1][0]=transform.b;
-   matrix[1][1]=transform.d;
-   matrix[1][2]=transform.ty;
-   matrix[2][0]=0;
-   matrix[2][1]=0;
-   matrix[2][2]=1;
+static inline Matrix3x3 Matrix3x3Identity(){
+   Matrix3x3 result;
+   
+   for(int i=0;i<3;i++)
+    for(int j=0;j<3;j++)
+     result.matrix[i][j] = (i == j) ? 1.0f : 0.0f;
+     
+   return result;
 }
 
-inline Matrix3x3&		operator=	( const Matrix3x3& m )				{ for(int i=0;i<3;i++) for(int j=0;j<3;j++) matrix[i][j] = m.matrix[i][j]; return *this; }
-inline Vector3&			operator[]	( int i )							{ RI_ASSERT(i>=0&&i<3); return (Vector3&)matrix[i][0]; }
-inline const Vector3&	operator[]	( int i ) const						{ RI_ASSERT(i>=0&&i<3); return (const Vector3&)matrix[i][0]; }
-inline void				set			( RIfloat m00, RIfloat m01, RIfloat m02, RIfloat m10, RIfloat m11, RIfloat m12, RIfloat m20, RIfloat m21, RIfloat m22 ) { matrix[0][0] = m00; matrix[0][1] = m01; matrix[0][2] = m02; matrix[1][0] = m10; matrix[1][1] = m11; matrix[1][2] = m12; matrix[2][0] = m20; matrix[2][1] = m21; matrix[2][2] = m22; }
-	inline void				operator*=		( const Matrix3x3& m );
-inline void				operator*=	( RIfloat f )							{ for(int i=0;i<3;i++) for(int j=0;j<3;j++) matrix[i][j] *= f; }
-inline void				operator+=	( const Matrix3x3& m )				{ for(int i=0;i<3;i++) for(int j=0;j<3;j++) matrix[i][j] += m.matrix[i][j]; }
-inline void				operator-=	( const Matrix3x3& m )				{ for(int i=0;i<3;i++) for(int j=0;j<3;j++) matrix[i][j] -= m.matrix[i][j]; }
-inline void				identity		()									{ for(int i=0;i<3;i++) for(int j=0;j<3;j++) matrix[i][j] = (i == j) ? 1.0f : 0.0f; }
-	bool						invert			();	//if the matrix is singular, returns false and leaves it unmodified
-	inline bool				isAffine		() const;
+static inline Matrix3x3 Matrix3x3WithCGAffineTransform(CGAffineTransform transform) {
+   Matrix3x3 result;
 
-// private
-	RIfloat						matrix[3][3];
-};
+   result.matrix[0][0]=transform.a;
+   result.matrix[0][1]=transform.c;
+   result.matrix[0][2]=transform.tx;
+   result.matrix[1][0]=transform.b;
+   result.matrix[1][1]=transform.d;
+   result.matrix[1][2]=transform.ty;
+   result.matrix[2][0]=0;
+   result.matrix[2][1]=0;
+   result.matrix[2][2]=1;
 
-//Matrix3x3 global functions
-inline bool				operator==	( const Matrix3x3& m1, const Matrix3x3& m2 )	{ for(int i=0;i<3;i++) for(int j=0;j<3;j++) if( m1[i][j] != m2[i][j] ) return false; return true; }
-inline bool				operator!=	( const Matrix3x3& m1, const Matrix3x3& m2 )	{ return !(m1 == m2); }
-inline const Matrix3x3	operator*	( const Matrix3x3& m1, const Matrix3x3& m2 )	{ Matrix3x3 t; for(int i=0;i<3;i++) for(int j=0;j<3;j++) t[i][j] = m1[i][0] * m2[0][j] + m1[i][1] * m2[1][j] + m1[i][2] * m2[2][j]; return t; }
-inline const Matrix3x3	operator*	( RIfloat f, const Matrix3x3& m )					{ Matrix3x3 t(m); t *= f; return t; }
-inline const Matrix3x3	operator*	( const Matrix3x3& m, RIfloat f )					{ Matrix3x3 t(m); t *= f; return t; }
-inline const Matrix3x3	operator+	( const Matrix3x3& m1, const Matrix3x3& m2 )	{ Matrix3x3 t(m1); t += m2; return t; }
-inline const Matrix3x3	operator-	( const Matrix3x3& m1, const Matrix3x3& m2 )	{ Matrix3x3 t(m1); t -= m2; return t; }
-// if the matrix is singular, returns it unmodified
-inline const Matrix3x3	invert		( const Matrix3x3& m )							{ Matrix3x3 t(m); t.invert(); return t; }
+   return result;
+}
 
-//Matrix3x3 inline functions (cannot be inside the class because Vector3 is not defined yet when Matrix3x3 is defined)
-inline void				Matrix3x3::operator*=	( const Matrix3x3& m )				{ *this = *this * m; }
-inline bool				Matrix3x3::isAffine		() const							{ if(matrix[2][0] == 0.0f && matrix[2][1] == 0.0f && matrix[2][2] == 1.0f) return true; return false; }
+static inline Matrix3x3 Matrix3x3Make( RIfloat m00, RIfloat m01, RIfloat m02, RIfloat m10, RIfloat m11, RIfloat m12, RIfloat m20, RIfloat m21, RIfloat m22 ) {
+   Matrix3x3 result;
+   
+   result.matrix[0][0] = m00;
+   result.matrix[0][1] = m01;
+   result.matrix[0][2] = m02;
+   result.matrix[1][0] = m10;
+   result.matrix[1][1] = m11;
+   result.matrix[1][2] = m12;
+   result.matrix[2][0] = m20;
+   result.matrix[2][1] = m21;
+   result.matrix[2][2] = m22;
+   
+   return result;
+}
 
+bool Matrix3x3InplaceInvert(Matrix3x3 *m);
+
+static inline Matrix3x3 Matrix3x3Invert(Matrix3x3 result){   
+   Matrix3x3InplaceInvert(&result);
+   return result;
+}
+
+inline Matrix3x3 Matrix3x3Multiply(Matrix3x3 m1,Matrix3x3 m2){
+   Matrix3x3 t;
+   
+   for(int i=0;i<3;i++)
+    for(int j=0;j<3;j++)
+     t.matrix[i][j] = m1.matrix[i][0] * m2.matrix[0][j] + m1.matrix[i][1] * m2.matrix[1][j] + m1.matrix[i][2] * m2.matrix[2][j];
+     
+   return t;
+}
+
+static inline bool Matrix3x3IsAffine(Matrix3x3 m){
+   return (m.matrix[2][0] == 0.0f && m.matrix[2][1] == 0.0f && m.matrix[2][2] == 1.0f)?true:false;
+}
+
+ inline void Matrix3x3ForceAffinity(Matrix3x3 *xform){
+   xform->matrix[2][0]=0;
+   xform->matrix[2][1]=0;
+   xform->matrix[2][2]=1;
+}
 
 //matrix * column vector. The input vector2 is implicitly expanded to (x,y,1)
-inline const Vector2 affineTransform( const Matrix3x3& m, const Vector2& v )	{ RI_ASSERT(m.isAffine()); return Vector2(v.x * m[0][0] + v.y * m[0][1] + m[0][2], v.x * m[1][0] + v.y * m[1][1] + m[1][2]); }
-//matrix * column vector. The input vector2 is implicitly expanded to (x,y,0)
-inline const Vector2 affineTangentTransform(const Matrix3x3& m, const Vector2& v)	{ RI_ASSERT(m.isAffine()); return Vector2(v.x * m[0][0] + v.y * m[0][1], v.x * m[1][0] + v.y * m[1][1]); }
+static inline Vector2 Matrix3x3TransformVector2(Matrix3x3 m,Vector2 v){
+   RI_ASSERT(Matrix3x3IsAffine(m));
+   return Vector2Make(v.x * m.matrix[0][0] + v.y * m.matrix[0][1] + m.matrix[0][2], v.x * m.matrix[1][0] + v.y * m.matrix[1][1] + m.matrix[1][2]);
+}
 
+//matrix * column vector. The input vector2 is implicitly expanded to (x,y,0)
+static inline Vector2 Matrix3x3TangentTransformVector2(Matrix3x3 m, Vector2 v){
+   RI_ASSERT(Matrix3x3IsAffine(m));
+   return Vector2Make(v.x * m.matrix[0][0] + v.y * m.matrix[0][1], v.x * m.matrix[1][0] + v.y * m.matrix[1][1]);
+}
 
 //matrix * column vector
-inline const Vector3	operator*	( const Matrix3x3& m, const Vector3& v)		{ return Vector3( v.x*m[0][0]+v.y*m[0][1]+v.z*m[0][2], v.x*m[1][0]+v.y*m[1][1]+v.z*m[1][2], v.x*m[2][0]+v.y*m[2][1]+v.z*m[2][2] ); }
+inline const Vector3 Matrix3x3MultiplyVector3( Matrix3x3 m,Vector3 v){
+   return Vector3Make(v.x*m.matrix[0][0]+v.y*m.matrix[0][1]+v.z*m.matrix[0][2],v.x*m.matrix[1][0]+v.y*m.matrix[1][1]+v.z*m.matrix[1][2], v.x*m.matrix[2][0]+v.y*m.matrix[2][1]+v.z*m.matrix[2][2] );
+}
 
 

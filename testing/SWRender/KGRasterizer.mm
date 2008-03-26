@@ -100,8 +100,8 @@ void KGRasterizerAddEdge(KGRasterizer *self,const Vector2 v0, const Vector2 v1) 
         e.v1 = v0;
         e.direction = -1;
     }
-    e.normal.set(e.v0.y - e.v1.y, e.v1.x - e.v0.x);	//edge normal
-    e.cnst = dot(e.v0, e.normal);	//distance of v0 from the origin along the edge normal
+    e.normal=Vector2Make(e.v0.y - e.v1.y, e.v1.x - e.v0.x);	//edge normal
+    e.cnst = Vector2Dot(e.v0, e.normal);	//distance of v0 from the origin along the edge normal
     
     if(self->_edgeCount+1>=self->_edgeCapacity){
      self->_edgeCapacity*=2;
@@ -366,7 +366,7 @@ void KGRasterizerFill(KGRasterizer *self,VGFillRule fillRule, KGPixelPipe *pixel
 		int aen = 0;
 		for(int i=self->_vpx;i<self->_vpx+self->_vpwidth;)
 		{
-			Vector2 pc(i + 0.5f, j + 0.5f);		//pixel center
+			Vector2 pc=Vector2Make(i + 0.5f, j + 0.5f);		//pixel center
 			
 			//find edges that intersect or are to the left of the pixel antialiasing filter
 			while(aes < activeEdgeTableCount(&aet) && pc.x + self->fradius >= activeEdgeTableAt(&aet,aes)->minx)
@@ -386,7 +386,7 @@ void KGRasterizerFill(KGRasterizer *self,VGFillRule fillRule, KGPixelPipe *pixel
                 
 					if(sp.y >= activeEdgeTableAt(&aet,e)->v0.y && sp.y < activeEdgeTableAt(&aet,e)->v1.y){
                     	//evaluate edge function to determine on which side of the edge the sampling point lies
-						RIfloat side = dot(sp, activeEdgeTableAt(&aet,e)->n) - activeEdgeTableAt(&aet,e)->cnst;
+						RIfloat side = Vector2Dot(sp, activeEdgeTableAt(&aet,e)->n) - activeEdgeTableAt(&aet,e)->cnst;
 						if(side <= 0.0f)	//implicit tie breaking: a sampling point on an opening edge is in, on a closing edge it's out
 							winding += activeEdgeTableAt(&aet,e)->direction;
 					}

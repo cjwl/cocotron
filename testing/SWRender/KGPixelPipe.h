@@ -32,7 +32,7 @@
 
 #import <Foundation/Foundation.h>
 #import "riMath.h"
-#import "riImage.h"
+#import "VGImage.h"
 
 #if MAC_OS_X_VERSION_MAX_ALLOWED <= MAC_OS_X_VERSION_10_4
 
@@ -87,7 +87,7 @@ typedef struct {
 	Vector2					m_radialGradientFocalPoint;
 	RIfloat					m_radialGradientRadius;
 	VGTilingMode			m_patternTilingMode;
-	Image*					m_pattern;
+	VGImage*					m_pattern;
 
 } KGPaint;
 
@@ -103,9 +103,9 @@ void     KGPaintDealloc(KGPaint *self);
 *//*-------------------------------------------------------------------*/
 	
 typedef struct {
-   Image*                 m_renderingSurface;
-   const Image*           m_mask;
-   Image*                 m_image;
+   VGImage*                 m_renderingSurface;
+   const VGImage*           m_mask;
+   VGImage*                 m_image;
    const KGPaint*           m_paint;
    KGPaint                 * m_defaultPaint;
    CGBlendMode            m_blendMode;
@@ -119,14 +119,14 @@ typedef struct {
 KGPixelPipe *KGPixelPipeAlloc();
 KGPixelPipe *KGPixelPipeInit(KGPixelPipe *self);
 void KGPixelPipeDealloc(KGPixelPipe *self);
-void KGPixelPipeSetRenderingSurface(KGPixelPipe *self,Image *renderingSurface);
+void KGPixelPipeSetRenderingSurface(KGPixelPipe *self,VGImage *renderingSurface);
 void KGPixelPipeSetBlendMode(KGPixelPipe *self,CGBlendMode blendMode);
-void KGPixelPipeSetMask(KGPixelPipe *self,Image* mask);
-void KGPixelPipeSetImage(KGPixelPipe *self,Image* image, VGImageMode imageMode);
-void KGPixelPipeSetSurfaceToPaintMatrix(KGPixelPipe *self,const Matrix3x3& surfaceToPaintMatrix);
-void KGPixelPipeSetSurfaceToImageMatrix(KGPixelPipe *self,const Matrix3x3& surfaceToImageMatrix);
+void KGPixelPipeSetMask(KGPixelPipe *self,VGImage* mask);
+void KGPixelPipeSetImage(KGPixelPipe *self,VGImage* image, VGImageMode imageMode);
+void KGPixelPipeSetSurfaceToPaintMatrix(KGPixelPipe *self,Matrix3x3 surfaceToPaintMatrix);
+void KGPixelPipeSetSurfaceToImageMatrix(KGPixelPipe *self,Matrix3x3 surfaceToImageMatrix);
 void KGPixelPipeSetImageQuality(KGPixelPipe *self,CGInterpolationQuality imageQuality);
-void KGPixelPipeSetTileFillColor(KGPixelPipe *self,const VGColor& c);
+void KGPixelPipeSetTileFillColor(KGPixelPipe *self,VGColor c);
 void KGPixelPipeSetPaint(KGPixelPipe *self,const KGPaint* paint);
 //private
 void KGPixelPipeLinearGradient(KGPixelPipe *self,RIfloat& g, RIfloat& rho, RIfloat x, RIfloat y);

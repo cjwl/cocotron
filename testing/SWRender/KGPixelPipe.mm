@@ -38,28 +38,28 @@ KGPaint *KGPaintAlloc() {
 
 KGPaint *KGPaintInit(KGPaint *self) {
 	self->m_paintType=VG_PAINT_TYPE_COLOR;
-	self->m_paintColor=VGColor(0,0,0,1,VGColor_sRGBA_PRE);
-	self->m_inputPaintColor=VGColor(0,0,0,1,VGColor_sRGBA);
+	self->m_paintColor=VGColorRGBA(0,0,0,1,VGColor_sRGBA_PRE);
+	self->m_inputPaintColor=VGColorRGBA(0,0,0,1,VGColor_sRGBA);
 	self->m_colorRampSpreadMode=VG_COLOR_RAMP_SPREAD_PAD;
     self->m_colorRampStopsCount=2;
     self->m_colorRampStopsCapacity=2;
 	self->m_colorRampStops=(GradientStop *)NSZoneCalloc(NULL,self->m_colorRampStopsCapacity,sizeof(GradientStop));
 	self->m_colorRampPremultiplied=YES;
-	self->m_linearGradientPoint0=Vector2(0,0);
-	self->m_linearGradientPoint1=Vector2(1,0);
-	self->m_radialGradientCenter=Vector2(0,0);
-	self->m_radialGradientFocalPoint=Vector2(0,0);
+	self->m_linearGradientPoint0=Vector2Make(0,0);
+	self->m_linearGradientPoint1=Vector2Make(1,0);
+	self->m_radialGradientCenter=Vector2Make(0,0);
+	self->m_radialGradientFocalPoint=Vector2Make(0,0);
 	self->m_radialGradientRadius=1.0f;
 	self->m_patternTilingMode=VG_TILE_FILL;
 	self->m_pattern=NULL;
 
 	GradientStop gs;
 	gs.offset = 0.0f;
-	gs.color.set(0,0,0,1,VGColor_sRGBA);
+	gs.color=VGColorRGBA(0,0,0,1,VGColor_sRGBA);
 	self->m_colorRampStops[0]=gs;
     
 	gs.offset = 1.0f;
-	gs.color.set(1,1,1,1,VGColor_sRGBA);
+	gs.color=VGColorRGBA(1,1,1,1,VGColor_sRGBA);
 	self->m_colorRampStops[1]=gs;	//throws bad_alloc
     return self;
 }
@@ -67,8 +67,6 @@ KGPaint *KGPaintInit(KGPaint *self) {
 void     KGPaintDealloc(KGPaint *self) {
 	if(self->m_pattern)
 	{
-		self->m_pattern->removeInUse();
-		if(!self->m_pattern->removeReference())
 			delete self->m_pattern;
 	}
 }
@@ -86,9 +84,9 @@ KGPixelPipe *KGPixelPipeInit(KGPixelPipe *self) {
 	self->m_blendMode=kCGBlendModeNormal;
 	self->m_imageMode=VG_DRAW_IMAGE_NORMAL;
 	self->m_imageQuality=kCGInterpolationLow;
-	self->m_tileFillColor=VGColor(0,0,0,0,VGColor_sRGBA);
-	self->m_surfaceToPaintMatrix=Matrix3x3();
-	self->m_surfaceToImageMatrix=Matrix3x3();
+	self->m_tileFillColor=VGColorRGBA(0,0,0,0,VGColor_sRGBA);
+	self->m_surfaceToPaintMatrix=Matrix3x3Identity();
+	self->m_surfaceToImageMatrix=Matrix3x3Identity();
     return self;
 }
 
@@ -96,7 +94,7 @@ void KGPixelPipeDealloc(KGPixelPipe *self) {
    NSZoneFree(NULL,self);
 }
 
-void KGPixelPipeSetRenderingSurface(KGPixelPipe *self,Image *renderingSurface) {
+void KGPixelPipeSetRenderingSurface(KGPixelPipe *self,VGImage *renderingSurface) {
 	RI_ASSERT(renderingSurface);
 	self->m_renderingSurface = renderingSurface;
 }
@@ -113,7 +111,7 @@ void KGPixelPipeSetBlendMode(KGPixelPipe *self,CGBlendMode blendMode) {
 * \note		
 *//*-------------------------------------------------------------------*/
 
-void KGPixelPipeSetMask(KGPixelPipe *self,Image* mask) {
+void KGPixelPipeSetMask(KGPixelPipe *self,VGImage* mask) {
 	self->m_mask = mask;
 }
 
@@ -124,7 +122,7 @@ void KGPixelPipeSetMask(KGPixelPipe *self,Image* mask) {
 * \note		
 *//*-------------------------------------------------------------------*/
 
-void KGPixelPipeSetImage(KGPixelPipe *self,Image* image, VGImageMode imageMode) {
+void KGPixelPipeSetImage(KGPixelPipe *self,VGImage* image, VGImageMode imageMode) {
 	RI_ASSERT(imageMode == VG_DRAW_IMAGE_NORMAL || imageMode == VG_DRAW_IMAGE_MULTIPLY || imageMode == VG_DRAW_IMAGE_STENCIL);
 	self->m_image = image;
 	self->m_imageMode = imageMode;
@@ -137,7 +135,7 @@ void KGPixelPipeSetImage(KGPixelPipe *self,Image* image, VGImageMode imageMode) 
 * \note		
 *//*-------------------------------------------------------------------*/
 
-void KGPixelPipeSetSurfaceToPaintMatrix(KGPixelPipe *self,const Matrix3x3& surfaceToPaintMatrix) {
+void KGPixelPipeSetSurfaceToPaintMatrix(KGPixelPipe *self,Matrix3x3 surfaceToPaintMatrix) {
 	self->m_surfaceToPaintMatrix = surfaceToPaintMatrix;
 }
 
@@ -148,7 +146,7 @@ void KGPixelPipeSetSurfaceToPaintMatrix(KGPixelPipe *self,const Matrix3x3& surfa
 * \note		
 *//*-------------------------------------------------------------------*/
 
-void KGPixelPipeSetSurfaceToImageMatrix(KGPixelPipe *self,const Matrix3x3& surfaceToImageMatrix) {
+void KGPixelPipeSetSurfaceToImageMatrix(KGPixelPipe *self,Matrix3x3 surfaceToImageMatrix) {
 	self->m_surfaceToImageMatrix = surfaceToImageMatrix;
 }
 
@@ -171,9 +169,9 @@ void KGPixelPipeSetImageQuality(KGPixelPipe *self,CGInterpolationQuality imageQu
 * \note		
 *//*-------------------------------------------------------------------*/
 
-void KGPixelPipeSetTileFillColor(KGPixelPipe *self,const VGColor& c) {
+void KGPixelPipeSetTileFillColor(KGPixelPipe *self,VGColor c) {
 	self->m_tileFillColor = c;
-	self->m_tileFillColor.clamp();
+	self->m_tileFillColor=VGColorClamp(self->m_tileFillColor);
 }
 
 /*-------------------------------------------------------------------*//*!
@@ -188,7 +186,7 @@ void KGPixelPipeSetPaint(KGPixelPipe *self,const KGPaint* paint) {
 	if(!self->m_paint)
 		self->m_paint = self->m_defaultPaint;
 	if(self->m_paint->m_pattern)
-		self->m_tileFillColor.convert(self->m_paint->m_pattern->getDescriptor().internalFormat);
+		self->m_tileFillColor=VGColorConvert(self->m_tileFillColor,VGImageColorDescriptor(self->m_paint->m_pattern).internalFormat);
 }
 
 /*-------------------------------------------------------------------*//*!
@@ -201,7 +199,7 @@ void KGPixelPipeSetPaint(KGPixelPipe *self,const KGPaint* paint) {
 void KGPixelPipeLinearGradient(KGPixelPipe *self,RIfloat& g, RIfloat& rho, RIfloat x, RIfloat y) {
 	RI_ASSERT(self->m_paint);
 	Vector2 u = self->m_paint->m_linearGradientPoint1 - self->m_paint->m_linearGradientPoint0;
-	RIfloat usq = dot(u,u);
+	RIfloat usq = Vector2Dot(u,u);
 	if( usq <= 0.0f )
 	{	//points are equal, gradient is always 1.0f
 		g = 1.0f;
@@ -210,13 +208,13 @@ void KGPixelPipeLinearGradient(KGPixelPipe *self,RIfloat& g, RIfloat& rho, RIflo
 	}
 	RIfloat oou = 1.0f / usq;
 
-	Vector2 p(x, y);
-	p = affineTransform(self->m_surfaceToPaintMatrix, p);
-	p -= self->m_paint->m_linearGradientPoint0;
+	Vector2 p=Vector2Make(x, y);
+	p = Matrix3x3TransformVector2(self->m_surfaceToPaintMatrix, p);
+	p = p-self->m_paint->m_linearGradientPoint0;
 	RI_ASSERT(usq >= 0.0f);
-	g = dot(p, u) * oou;
-	RIfloat dgdx = oou * u.x * self->m_surfaceToPaintMatrix[0][0] + oou * u.y * self->m_surfaceToPaintMatrix[1][0];
-	RIfloat dgdy = oou * u.x * self->m_surfaceToPaintMatrix[0][1] + oou * u.y * self->m_surfaceToPaintMatrix[1][1];
+	g = Vector2Dot(p, u) * oou;
+	RIfloat dgdx = oou * u.x * self->m_surfaceToPaintMatrix.matrix[0][0] + oou * u.y * self->m_surfaceToPaintMatrix.matrix[1][0];
+	RIfloat dgdy = oou * u.x * self->m_surfaceToPaintMatrix.matrix[0][1] + oou * u.y * self->m_surfaceToPaintMatrix.matrix[1][1];
 	rho = (RIfloat)sqrt(dgdx*dgdx + dgdy*dgdy);
 	RI_ASSERT(rho >= 0.0f);
 }
@@ -240,26 +238,26 @@ void KGPixelPipeRadialGradient(KGPixelPipe *self,RIfloat &g, RIfloat &rho, RIflo
 	RIfloat r = self->m_paint->m_radialGradientRadius;
 	Vector2 c = self->m_paint->m_radialGradientCenter;
 	Vector2 f = self->m_paint->m_radialGradientFocalPoint;
-	Vector2 gx(self->m_surfaceToPaintMatrix[0][0], self->m_surfaceToPaintMatrix[1][0]);
-	Vector2 gy(self->m_surfaceToPaintMatrix[0][1],self->m_surfaceToPaintMatrix[1][1]);
+	Vector2 gx=Vector2Make(self->m_surfaceToPaintMatrix.matrix[0][0], self->m_surfaceToPaintMatrix.matrix[1][0]);
+	Vector2 gy=Vector2Make(self->m_surfaceToPaintMatrix.matrix[0][1],self->m_surfaceToPaintMatrix.matrix[1][1]);
 
 	Vector2 fp = f - c;
 
 	//clamp the focal point inside the gradient circle
-	RIfloat fpLen = fp.length();
+	RIfloat fpLen = Vector2Length(fp);
 	if( fpLen > 0.999f * r )
-		fp *= 0.999f * r / fpLen;
+		fp = fp * (0.999f * r / fpLen);
 
-	RIfloat D = -1.0f / (dot(fp,fp) - r*r);
-	Vector2 p(x, y);
-	p = affineTransform(self->m_surfaceToPaintMatrix, p) - c;
+	RIfloat D = -1.0f / (Vector2Dot(fp,fp) - r*r);
+	Vector2 p=Vector2Make(x, y);
+	p = Matrix3x3TransformVector2(self->m_surfaceToPaintMatrix, p) - c;
 	Vector2 d = p - fp;
-	RIfloat s = (RIfloat)sqrt(r*r*dot(d,d) - RI_SQR(p.x*fp.y - p.y*fp.x));
-	g = (dot(fp,d) + s) * D;
+	RIfloat s = (RIfloat)sqrt(r*r*Vector2Dot(d,d) - RI_SQR(p.x*fp.y - p.y*fp.x));
+	g = (Vector2Dot(fp,d) + s) * D;
 	if(RI_ISNAN(g))
 		g = 0.0f;
-	RIfloat dgdx = D*dot(fp,gx) + (r*r*dot(d,gx) - (gx.x*fp.y - gx.y*fp.x)*(p.x*fp.y - p.y*fp.x)) * (D / s);
-	RIfloat dgdy = D*dot(fp,gy) + (r*r*dot(d,gy) - (gy.x*fp.y - gy.y*fp.x)*(p.x*fp.y - p.y*fp.x)) * (D / s);
+	RIfloat dgdx = D*Vector2Dot(fp,gx) + (r*r*Vector2Dot(d,gx) - (gx.x*fp.y - gx.y*fp.x)*(p.x*fp.y - p.y*fp.x)) * (D / s);
+	RIfloat dgdy = D*Vector2Dot(fp,gy) + (r*r*Vector2Dot(d,gy) - (gy.x*fp.y - gy.y*fp.x)*(p.x*fp.y - p.y*fp.x)) * (D / s);
 	rho = (RIfloat)sqrt(dgdx*dgdx + dgdy*dgdy);
 	if(RI_ISNAN(rho))
 		rho = 0.0f;
@@ -277,9 +275,10 @@ static VGColor readStopColor(GradientStop *colorRampStops,int colorRampStopsCoun
 {
 	RI_ASSERT(i >= 0 && i < colorRampStopsCount);
 	VGColor c = colorRampStops[i].color;
-	RI_ASSERT(c.getInternalFormat() == VGColor_sRGBA);
+	RI_ASSERT(c.m_format == VGColor_sRGBA);
 	if(colorRampPremultiplied)
-		c.premultiply();
+		c=VGColorPremultiply(c);
+
 	return c;
 }
 
@@ -289,7 +288,7 @@ VGColor KGPixelPipeIntegrateColorRamp(KGPixelPipe *self,RIfloat gmin, RIfloat gm
 	RI_ASSERT(gmax >= 0.0f && gmax <= 1.0f);
 	RI_ASSERT(self->m_paint->m_colorRampStopsCount >= 2);	//there are at least two stops
 
-	VGColor c(0,0,0,0,self->m_paint->m_colorRampPremultiplied ? VGColor_sRGBA_PRE : VGColor_sRGBA);
+	VGColor c=VGColorRGBA(0,0,0,0,self->m_paint->m_colorRampPremultiplied ? VGColor_sRGBA_PRE : VGColor_sRGBA);
 	if(gmin == 1.0f || gmax == 0.0f)
 		return c;
 
@@ -308,7 +307,7 @@ VGColor KGPixelPipeIntegrateColorRamp(KGPixelPipe *self,RIfloat gmin, RIfloat gm
 			VGColor rc = VGColorAdd(VGColorMultiplyByFloat(sc, (1.0f-g)),VGColorMultiplyByFloat(ec , g));
 
 			//subtract the average color from the start of the stop to gmin
-			c -= VGColorMultiplyByFloat(VGColorAdd(sc,rc) , 0.5f*(gmin - s));
+			c=VGColorSubtract(c,VGColorMultiplyByFloat(VGColorAdd(sc,rc) , 0.5f*(gmin - s)));
 			break;
 		}
 	}
@@ -331,7 +330,7 @@ VGColor KGPixelPipeIntegrateColorRamp(KGPixelPipe *self,RIfloat gmin, RIfloat gm
 			VGColor rc = VGColorAdd(VGColorMultiplyByFloat(sc , (1.0f-g)),VGColorMultiplyByFloat( ec , g));
 
 			//subtract the average color from gmax to the end of the stop
-			c -= VGColorMultiplyByFloat(VGColorAdd(rc , ec) , 0.5f*(e - gmax));
+			c=VGColorSubtract(c,VGColorMultiplyByFloat(VGColorAdd(rc , ec) , 0.5f*(e - gmax)));
 			break;
 		}
 	}
@@ -350,8 +349,8 @@ VGColor KGPixelPipeColorRamp(KGPixelPipe *self,RIfloat gradient, RIfloat rho)
 	RI_ASSERT(self->m_paint);
 	RI_ASSERT(rho >= 0.0f);
 
-	VGColor c(0,0,0,0,self->m_paint->m_colorRampPremultiplied ? VGColor_sRGBA_PRE : VGColor_sRGBA);
-	VGColor avg;
+	VGColor c=VGColorRGBA(0,0,0,0,self->m_paint->m_colorRampPremultiplied ? VGColor_sRGBA_PRE : VGColor_sRGBA);
+	VGColor avg=VGColorZero();
 
 	if(rho == 0.0f)
 	{	//filter size is zero or gradient is degenerate
@@ -405,7 +404,7 @@ VGColor KGPixelPipeColorRamp(KGPixelPipe *self,RIfloat gradient, RIfloat rho)
 		gmax = RI_CLAMP(gmax, 0.0f, 1.0f);
 		c=VGColorAdd(c, KGPixelPipeIntegrateColorRamp(self,gmin, gmax));
 		c=VGColorMultiplyByFloat(c , 1.0f/rho);
-		c.clamp();	//clamp needed due to numerical inaccuracies
+		c=VGColorClamp(c);	//clamp needed due to numerical inaccuracies
 		return c;
 	}
 
@@ -418,15 +417,15 @@ VGColor KGPixelPipeColorRamp(KGPixelPipe *self,RIfloat gradient, RIfloat rho)
 
 		//subtract beginning
 		if(((int)gmini) & 1)
-			c -= KGPixelPipeIntegrateColorRamp(self,RI_CLAMP(1.0f - (gmin - gmini), 0.0f, 1.0f), 1.0f);
+			c=VGColorSubtract(c,KGPixelPipeIntegrateColorRamp(self,RI_CLAMP(1.0f - (gmin - gmini), 0.0f, 1.0f), 1.0f));
 		else
-			c -= KGPixelPipeIntegrateColorRamp(self,0.0f, RI_CLAMP(gmin - gmini, 0.0f, 1.0f));
+			c=VGColorSubtract(c,KGPixelPipeIntegrateColorRamp(self,0.0f, RI_CLAMP(gmin - gmini, 0.0f, 1.0f)));
 
 		//subtract end
 		if(((int)gmaxi) & 1)
-			c -= KGPixelPipeIntegrateColorRamp(self,0.0f, RI_CLAMP(1.0f - (gmax - gmaxi), 0.0f, 1.0f));
+			c=VGColorSubtract(c,KGPixelPipeIntegrateColorRamp(self,0.0f, RI_CLAMP(1.0f - (gmax - gmaxi), 0.0f, 1.0f)));
 		else
-			c -= KGPixelPipeIntegrateColorRamp(self,RI_CLAMP(gmax - gmaxi, 0.0f, 1.0f), 1.0f);
+			c=VGColorSubtract(c,KGPixelPipeIntegrateColorRamp(self,RI_CLAMP(gmax - gmaxi, 0.0f, 1.0f), 1.0f));
 		break;
 	}
 
@@ -437,15 +436,15 @@ VGColor KGPixelPipeColorRamp(KGPixelPipe *self,RIfloat gradient, RIfloat rho)
 		RIfloat gmini = (RIfloat)floor(gmin);
 		RIfloat gmaxi = (RIfloat)floor(gmax);
 		c = VGColorMultiplyByFloat(avg , (gmaxi + 1.0f - gmini));		//full ramps
-		c -= KGPixelPipeIntegrateColorRamp(self,0.0f, RI_CLAMP(gmin - gmini, 0.0f, 1.0f));	//subtract beginning
-		c -= KGPixelPipeIntegrateColorRamp(self,RI_CLAMP(gmax - gmaxi, 0.0f, 1.0f), 1.0f);	//subtract end
+		c=VGColorSubtract(c,KGPixelPipeIntegrateColorRamp(self,0.0f, RI_CLAMP(gmin - gmini, 0.0f, 1.0f)));	//subtract beginning
+		c=VGColorSubtract(c,KGPixelPipeIntegrateColorRamp(self,RI_CLAMP(gmax - gmaxi, 0.0f, 1.0f), 1.0f));	//subtract end
 		break;
 	}
 	}
 
 	//divide color by the length of the range
 	c=VGColorMultiplyByFloat(c, 1.0f / rho);
-	c.clamp();	//clamp needed due to numerical inaccuracies
+	c=VGColorClamp(c); //clamp needed due to numerical inaccuracies
 
 	//hide aliasing by fading to the average color
 	const RIfloat fadeStart = 0.5f;
@@ -507,7 +506,7 @@ void KGPixelPipeWriteCoverage(KGPixelPipe *self,int x, int y, RIfloat coverage)
 		return;
 
 	//evaluate paint
-	VGColor s;
+	VGColor s=VGColorZero();
 	RI_ASSERT(self->m_paint);
 	switch(self->m_paint->m_paintType)
 	{
@@ -520,8 +519,8 @@ void KGPixelPipeWriteCoverage(KGPixelPipe *self,int x, int y, RIfloat coverage)
 		RIfloat g, rho;
 		KGPixelPipeLinearGradient(self,g, rho, x+0.5f, y+0.5f);
 		s = KGPixelPipeColorRamp(self,g, rho);
-		RI_ASSERT((s.getInternalFormat() == VGColor_sRGBA && !self->m_paint->m_colorRampPremultiplied) || (s.getInternalFormat() == VGColor_sRGBA_PRE && self->m_paint->m_colorRampPremultiplied));
-		s.premultiply();
+		RI_ASSERT((s.m_format == VGColor_sRGBA && !self->m_paint->m_colorRampPremultiplied) || (s.m_format == VGColor_sRGBA_PRE && self->m_paint->m_colorRampPremultiplied));
+		s=VGColorPremultiply(s);
 		break;
 	}
 
@@ -530,8 +529,8 @@ void KGPixelPipeWriteCoverage(KGPixelPipe *self,int x, int y, RIfloat coverage)
 		RIfloat g, rho;
 		KGPixelPipeRadialGradient(self,g, rho, x+0.5f, y+0.5f);
 		s = KGPixelPipeColorRamp(self,g, rho);
-		RI_ASSERT((s.getInternalFormat() == VGColor_sRGBA && !self->m_paint->m_colorRampPremultiplied) || (s.getInternalFormat() == VGColor_sRGBA_PRE && self->m_paint->m_colorRampPremultiplied));
-		s.premultiply();
+		RI_ASSERT((s.m_format == VGColor_sRGBA && !self->m_paint->m_colorRampPremultiplied) || (s.m_format == VGColor_sRGBA_PRE && self->m_paint->m_colorRampPremultiplied));
+		s=VGColorPremultiply(s);
 		break;
 	}
 
@@ -546,8 +545,8 @@ void KGPixelPipeWriteCoverage(KGPixelPipe *self,int x, int y, RIfloat coverage)
 
 	//read destination color
 	VGColor d = self->m_renderingSurface->readPixel(x, y);
-	d.premultiply();
-	RI_ASSERT(d.getInternalFormat() == VGColor_lRGBA_PRE || d.getInternalFormat() == VGColor_sRGBA_PRE || d.getInternalFormat() == VGColor_lLA_PRE || d.getInternalFormat() == VGColor_sLA_PRE);
+	d=VGColorPremultiply(d);
+	RI_ASSERT(d.m_format == VGColor_lRGBA_PRE || d.m_format == VGColor_sRGBA_PRE || d.m_format == VGColor_lLA_PRE || d.m_format == VGColor_sLA_PRE);
 
 	//apply image (vgDrawImage only)
 	//1. paint: convert paint to dst space
@@ -557,9 +556,9 @@ void KGPixelPipeWriteCoverage(KGPixelPipe *self,int x, int y, RIfloat coverage)
 	RIfloat ar = s.a, ag = s.a, ab = s.a;
 	if(self->m_image)
 	{
-		VGColor im = self->m_image->resample(x+0.5f, y+0.5f, self->m_surfaceToImageMatrix, self->m_imageQuality, VG_TILE_PAD, VGColor(0,0,0,0,self->m_image->getDescriptor().internalFormat));
-		RI_ASSERT((s.getInternalFormat() & VGColor::LUMINANCE && s.r == s.g && s.r == s.b) || !(s.getInternalFormat() & VGColor::LUMINANCE));	//if luminance, r=g=b
-		RI_ASSERT((im.getInternalFormat() & VGColor::LUMINANCE && im.r == im.g && im.r == im.b) || !(im.getInternalFormat() & VGColor::LUMINANCE));	//if luminance, r=g=b
+		VGColor im = self->m_image->resample(x+0.5f, y+0.5f, self->m_surfaceToImageMatrix, self->m_imageQuality, VG_TILE_PAD, VGColorRGBA(0,0,0,0,VGImageColorDescriptor(self->m_image).internalFormat));
+		RI_ASSERT((s.m_format & VGColorLUMINANCE && s.r == s.g && s.r == s.b) || !(s.m_format & VGColorLUMINANCE));	//if luminance, r=g=b
+		RI_ASSERT((im.m_format & VGColorLUMINANCE && im.r == im.g && im.r == im.b) || !(im.m_format & VGColorLUMINANCE));	//if luminance, r=g=b
 
 		switch(self->m_imageMode)
 		{
@@ -568,7 +567,7 @@ void KGPixelPipeWriteCoverage(KGPixelPipe *self,int x, int y, RIfloat coverage)
 			ar = im.a;
 			ag = im.a;
 			ab = im.a;
-			s.convert(d.getInternalFormat());	//convert image color to destination color space
+			s=VGColorConvert(s,d.m_format);	//convert image color to destination color space
 			break;
 		case VG_DRAW_IMAGE_MULTIPLY:
 			//the result will be in image color space. If the number of channels in image and paint
@@ -577,11 +576,11 @@ void KGPixelPipeWriteCoverage(KGPixelPipe *self,int x, int y, RIfloat coverage)
 			//paint == RGB && image == L  : (0.2126 R + 0.7152 G + 0.0722 B)*L
 			//paint == L   && image == RGB: LLL*RGB
 			//paint == L   && image == L  : L*L
-			if(!(s.getInternalFormat() & VGColor::LUMINANCE) && im.getInternalFormat() & VGColor::LUMINANCE)
+			if(!(s.m_format & VGColorLUMINANCE) && im.m_format & VGColorLUMINANCE)
 			{
 				s.r = s.g = s.b = RI_MIN(0.2126f*s.r + 0.7152f*s.g + 0.0722f*s.b, s.a);
 			}
- 			RI_ASSERT(self->m_surfaceToPaintMatrix.isAffine());
+ 			RI_ASSERT(Matrix3x3IsAffine(self->m_surfaceToPaintMatrix));
 			ar *= im.a;
 			ag *= im.a;
 			ab *= im.a;
@@ -590,7 +589,7 @@ void KGPixelPipeWriteCoverage(KGPixelPipe *self,int x, int y, RIfloat coverage)
 			im.b *= s.b;
 			im.a *= s.a;
 			s = im;
-			s.convert(d.getInternalFormat());	//convert resulting color to destination color space
+			s=VGColorConvert(s,d.m_format);	//convert resulting color to destination color space
 			break;
 		default:
 			//the result will be in paint color space.
@@ -599,13 +598,13 @@ void KGPixelPipeWriteCoverage(KGPixelPipe *self,int x, int y, RIfloat coverage)
 			//dst == L   && image == RGB: L*(0.2126 R + 0.7152 G + 0.0722 B)
 			//dst == L   && image == L  : L*L
 			RI_ASSERT(self->m_imageMode == VG_DRAW_IMAGE_STENCIL);
-			if(d.getInternalFormat() & VGColor::LUMINANCE && !(im.getInternalFormat() & VGColor::LUMINANCE))
+			if(d.m_format & VGColorLUMINANCE && !(im.m_format & VGColorLUMINANCE))
 			{
 				im.r = im.g = im.b = RI_MIN(0.2126f*im.r + 0.7152f*im.g + 0.0722f*im.b, im.a);
 			}
-			RI_ASSERT(self->m_surfaceToPaintMatrix.isAffine());
+			RI_ASSERT(Matrix3x3IsAffine(self->m_surfaceToPaintMatrix));
 			//s and im are both in premultiplied format. Each image channel acts as an alpha channel.
-			s.convert(d.getInternalFormat());	//convert paint color to destination space already here, since convert cannot deal with per channel alphas used in this mode.
+			s=VGColorConvert(s,d.m_format);	//convert paint color to destination space already here, since convert cannot deal with per channel alphas used in this mode.
 			s.r *= im.r;
 			s.g *= im.g;
 			s.b *= im.b;
@@ -620,12 +619,12 @@ void KGPixelPipeWriteCoverage(KGPixelPipe *self,int x, int y, RIfloat coverage)
 			break;
 		}
 	}
-	else s.convert(d.getInternalFormat());	//convert paint color to destination color space
+	else s=VGColorConvert(s,d.m_format);	//convert paint color to destination color space
 
-	RI_ASSERT(s.getInternalFormat() == VGColor_lRGBA_PRE || s.getInternalFormat() == VGColor_sRGBA_PRE || s.getInternalFormat() == VGColor_lLA_PRE || s.getInternalFormat() == VGColor_sLA_PRE);
+	RI_ASSERT(s.m_format == VGColor_lRGBA_PRE || s.m_format == VGColor_sRGBA_PRE || s.m_format == VGColor_lLA_PRE || s.m_format == VGColor_sLA_PRE);
 
 	//apply blending in the premultiplied format
-	VGColor r(0,0,0,0,d.getInternalFormat());
+	VGColor r=VGColorRGBA(0,0,0,0,d.m_format);
 	RI_ASSERT(s.a >= 0.0f && s.a <= 1.0f);
 	RI_ASSERT(s.r >= 0.0f && s.r <= s.a && s.r <= ar);
 	RI_ASSERT(s.g >= 0.0f && s.g <= s.a && s.g <= ag);
@@ -816,13 +815,13 @@ void KGPixelPipeWriteCoverage(KGPixelPipe *self,int x, int y, RIfloat coverage)
 	}
 
 	//apply antialiasing in linear color space
-	VGColorInternalFormat aaFormat = (d.getInternalFormat() & VGColor::LUMINANCE) ? VGColor_lLA_PRE : VGColor_lRGBA_PRE;
-	r.convert(aaFormat);
-	d.convert(aaFormat);
+	VGColorInternalFormat aaFormat = (d.m_format & VGColorLUMINANCE) ? VGColor_lLA_PRE : VGColor_lRGBA_PRE;
+	r=VGColorConvert(r,aaFormat);
+	d=VGColorConvert(d,aaFormat);
 	r = VGColorAdd(VGColorMultiplyByFloat(r , cov) , VGColorMultiplyByFloat(d , (1.0f - cov)));
 
 	//write result to the destination surface
-	r.convert(self->m_renderingSurface->getDescriptor().internalFormat);
+	r=VGColorConvert(r,VGImageColorDescriptor(self->m_renderingSurface).internalFormat);
 	self->m_renderingSurface->writePixel(x, y, r);
 }
 

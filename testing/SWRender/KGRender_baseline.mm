@@ -30,10 +30,9 @@ typedef float CGFloat;
 @implementation KGRender_baseline
 
 -(void)buildImage {
-   VGColorDescriptor descriptor=VGColor::formatToDescriptor(VG_lRGBA_8888_PRE);
+   VGColorDescriptor descriptor=VGColorFormatToDescriptor(VG_lRGBA_8888_PRE);
    
-   _image=new Image(descriptor,_pixelsWide,_pixelsHigh,_pixelsWide*4,(RIuint8 *)_data);
-   _image->addReference();
+   _image=new VGImage(descriptor,_pixelsWide,_pixelsHigh,_pixelsWide*4,(RIuint8 *)_data);
 }
 
 -init {
@@ -130,13 +129,13 @@ static KGPaint *paintFromColor(CGColorRef color){
    const float *components=CGColorGetComponents(color);
 
    if(count==2)
-    result->m_inputPaintColor.set(components[0],components[0],components[0],components[1],VGColor_sRGBA);
+    result->m_inputPaintColor=VGColorRGBA(components[0],components[0],components[0],components[1],VGColor_sRGBA);
    if(count==4)
-    result->m_inputPaintColor.set(components[0],components[1],components[2],components[3],VGColor_sRGBA);
+    result->m_inputPaintColor=VGColorRGBA(components[0],components[1],components[2],components[3],VGColor_sRGBA);
 
    result->m_paintColor = result->m_inputPaintColor;
-   result->m_paintColor.clamp();
-   result->m_paintColor.premultiply();
+   result->m_paintColor=VGColorClamp(result->m_paintColor);
+   result->m_paintColor=VGColorPremultiply(result->m_paintColor);
    return result;
 }
 
@@ -159,7 +158,7 @@ lineWidth:(float)lineWidth lineCap:(CGLineCap)lineCap lineJoin:(CGLineJoin)lineJ
         else
             KGPixelPipeSetImageQuality(pixelPipe,interpolationQuality);
 
-       KGRasterizerSetViewport(rasterizer,0,0,_image->getWidth(),_image->getHeight());
+       KGRasterizerSetViewport(rasterizer,0,0,VGImageGetWidth(_image),VGImageGetHeight(_image));
        
        KGRasterizerSetShouldAntialias(rasterizer,antialias);
        
@@ -167,17 +166,17 @@ CGAffineTransform u2d=CGAffineTransformMakeTranslation(0,_pixelsHigh);
 u2d=CGAffineTransformScale(u2d,1,-1);
 xform=CGAffineTransformConcat(xform,u2d);
 
-		Matrix3x3 userToSurfaceMatrix=Matrix3x3(xform);// context->m_pathUserToSurface;
-		userToSurfaceMatrix[2].set(0,0,1);		//force affinity
+		Matrix3x3 userToSurfaceMatrix=Matrix3x3WithCGAffineTransform(xform);// context->m_pathUserToSurface;
+		Matrix3x3ForceAffinity(&userToSurfaceMatrix);
 
 		if(drawingMode!=kCGPathStroke)
 		{
 			KGPixelPipeSetPaint(pixelPipe,paintFromColor(fillColor));
 
-			Matrix3x3 surfaceToPaintMatrix =Matrix3x3(xform);//context->m_pathUserToSurface * context->m_fillPaintToUser;
-			if(surfaceToPaintMatrix.invert())
+			Matrix3x3 surfaceToPaintMatrix =Matrix3x3WithCGAffineTransform(xform);//context->m_pathUserToSurface * context->m_fillPaintToUser;
+			if(Matrix3x3InplaceInvert(&surfaceToPaintMatrix))
 			{
-				surfaceToPaintMatrix[2].set(0,0,1);		//force affinity
+				Matrix3x3ForceAffinity(&surfaceToPaintMatrix);
 				KGPixelPipeSetSurfaceToPaintMatrix(pixelPipe,surfaceToPaintMatrix);
 
 				vgPath->fill(userToSurfaceMatrix,rasterizer);	//throws bad_alloc
@@ -192,10 +191,10 @@ xform=CGAffineTransformConcat(xform,u2d);
          if(lineWidth > 0.0f){
 			KGPixelPipeSetPaint(pixelPipe,paintFromColor(strokeColor));
 
-			Matrix3x3 surfaceToPaintMatrix=Matrix3x3(xform);// = context->m_pathUserToSurface * context->m_strokePaintToUser;
-			if(surfaceToPaintMatrix.invert())
+			Matrix3x3 surfaceToPaintMatrix=Matrix3x3WithCGAffineTransform(xform);// = context->m_pathUserToSurface * context->m_strokePaintToUser;
+			if(Matrix3x3InplaceInvert(&surfaceToPaintMatrix))
 			{
-				surfaceToPaintMatrix[2].set(0,0,1);		//force affinity
+				Matrix3x3ForceAffinity(&surfaceToPaintMatrix);
 				KGPixelPipeSetSurfaceToPaintMatrix(pixelPipe,surfaceToPaintMatrix);
 
 				KGRasterizerClear(rasterizer);
@@ -216,13 +215,12 @@ xform=CGAffineTransformConcat(xform,u2d);
 }
 
 -(void)drawBitmapImageRep:(NSBitmapImageRep *)imageRep antialias:(BOOL)antialias interpolationQuality:(CGInterpolationQuality)interpolationQuality blendMode:(CGBlendMode)blendMode fillColor:(CGColorRef)fillColor transform:(CGAffineTransform)xform {
-	Image* img;
+	VGImage* img;
 
-   VGColorDescriptor descriptor=VGColor::formatToDescriptor(VG_lRGBA_8888);
-   img=new Image(descriptor,[imageRep pixelsWide],[imageRep pixelsHigh],[imageRep bytesPerRow],(RIuint8 *)[imageRep bitmapData]);
-   img->addReference();
-
-	try
+   VGColorDescriptor descriptor=VGColorFormatToDescriptor(VG_lRGBA_8888);
+   img=new VGImage(descriptor,[imageRep pixelsWide],[imageRep pixelsHigh],[imageRep bytesPerRow],(RIuint8 *)[imageRep bitmapData]);
+   
+try
 	{
     CGAffineTransform i2u=CGAffineTransformMakeTranslation(0,[imageRep pixelsHigh]);
 i2u=CGAffineTransformScale(i2u,1,-1);
@@ -231,20 +229,20 @@ CGAffineTransform u2d=CGAffineTransformMakeTranslation(0,_pixelsHigh);
 u2d=CGAffineTransformScale(u2d,1,-1);
 xform=CGAffineTransformConcat(i2u,xform);
 xform=CGAffineTransformConcat(xform,u2d);
-        Matrix3x3 imageUserToSurface=Matrix3x3(xform);
+        Matrix3x3 imageUserToSurface=Matrix3x3WithCGAffineTransform(xform);
 
  // FIX, adjustable
-        Matrix3x3 fillPaintToUser=Matrix3x3();
+        Matrix3x3 fillPaintToUser=Matrix3x3Identity();
         
 		//transform image corners into the surface space
-		Vector3 p0(0, 0);
-		Vector3 p1(0, (CGFloat)img->getHeight());
-		Vector3 p2((CGFloat)img->getWidth(), (CGFloat)img->getHeight());
-		Vector3 p3((CGFloat)img->getWidth(), 0);
-		p0 = imageUserToSurface * p0;
-		p1 = imageUserToSurface * p1;
-		p2 = imageUserToSurface * p2;
-		p3 = imageUserToSurface * p3;
+		Vector3 p0=Vector3Make(0, 0,1);
+		Vector3 p1=Vector3Make(0, (CGFloat)VGImageGetHeight(img),1);
+		Vector3 p2=Vector3Make((CGFloat)VGImageGetWidth(img), (CGFloat)VGImageGetHeight(img),1);
+		Vector3 p3=Vector3Make((CGFloat)VGImageGetWidth(img), 0,1);
+		p0 = Matrix3x3MultiplyVector3(imageUserToSurface , p0);
+		p1 = Matrix3x3MultiplyVector3(imageUserToSurface , p1);
+		p2 = Matrix3x3MultiplyVector3(imageUserToSurface , p2);
+		p3 = Matrix3x3MultiplyVector3(imageUserToSurface , p3);
 		if(p0.z <= 0.0f || p1.z <= 0.0f || p2.z <= 0.0f || p3.z <= 0.0f)
 		{
 			return;
@@ -257,7 +255,7 @@ xform=CGAffineTransformConcat(xform,u2d);
 
         KGRasterizer *rasterizer=KGRasterizerInit(KGRasterizerAlloc());
 
-        KGRasterizerSetViewport(rasterizer,0, 0, _image->getWidth(), _image->getHeight());
+        KGRasterizerSetViewport(rasterizer,0, 0, VGImageGetWidth(_image),VGImageGetHeight(_image));
         KGRasterizerSetShouldAntialias(rasterizer,antialias);
 
         KGPixelPipe *pixelPipe=KGPixelPipeInit(KGPixelPipeAlloc());
@@ -276,20 +274,20 @@ xform=CGAffineTransformConcat(xform,u2d);
 //		KGPixelPipeSetMask(context->m_masking ? context->getMask() : NULL);
 
 		Matrix3x3 surfaceToImageMatrix = imageUserToSurface;
-		Matrix3x3 surfaceToPaintMatrix = imageUserToSurface * fillPaintToUser;
-		if(surfaceToImageMatrix.invert() && surfaceToPaintMatrix.invert())
+		Matrix3x3 surfaceToPaintMatrix = Matrix3x3Multiply(imageUserToSurface,fillPaintToUser);
+		if(Matrix3x3InplaceInvert(&surfaceToImageMatrix) && Matrix3x3InplaceInvert(&surfaceToPaintMatrix))
 		{
 			VGImageMode imode = VG_DRAW_IMAGE_NORMAL;
-			if(!surfaceToPaintMatrix.isAffine())
+			if(!Matrix3x3IsAffine(surfaceToPaintMatrix))
 				imode = VG_DRAW_IMAGE_NORMAL;	//if paint matrix is not affine, always use normal image mode
 			KGPixelPipeSetImage(pixelPipe,img, imode);
 			KGPixelPipeSetSurfaceToPaintMatrix(pixelPipe,surfaceToPaintMatrix);
 			KGPixelPipeSetSurfaceToImageMatrix(pixelPipe,surfaceToImageMatrix);
 
-			KGRasterizerAddEdge(rasterizer,Vector2(p0.x,p0.y), Vector2(p1.x,p1.y));	//throws bad_alloc
-			KGRasterizerAddEdge(rasterizer,Vector2(p1.x,p1.y), Vector2(p2.x,p2.y));	//throws bad_alloc
-			KGRasterizerAddEdge(rasterizer,Vector2(p2.x,p2.y), Vector2(p3.x,p3.y));	//throws bad_alloc
-			KGRasterizerAddEdge(rasterizer,Vector2(p3.x,p3.y), Vector2(p0.x,p0.y));	//throws bad_alloc
+			KGRasterizerAddEdge(rasterizer,Vector2Make(p0.x,p0.y), Vector2Make(p1.x,p1.y));	//throws bad_alloc
+			KGRasterizerAddEdge(rasterizer,Vector2Make(p1.x,p1.y), Vector2Make(p2.x,p2.y));	//throws bad_alloc
+			KGRasterizerAddEdge(rasterizer,Vector2Make(p2.x,p2.y), Vector2Make(p3.x,p3.y));	//throws bad_alloc
+			KGRasterizerAddEdge(rasterizer,Vector2Make(p3.x,p3.y), Vector2Make(p0.x,p0.y));	//throws bad_alloc
 			KGRasterizerFill(rasterizer,VG_EVEN_ODD, pixelPipe);	//throws bad_alloc
 		}
    KGRasterizerDealloc(rasterizer);

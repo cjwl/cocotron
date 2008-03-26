@@ -33,32 +33,32 @@
 #import "riMath.h"
 
 /*-------------------------------------------------------------------*//*!
-* \brief	Inverts a 3x3 matrix. Returns false if the matrix is singular.
+* \brief	Inverts a 3x3 m->matrix. Returns false if the matrix is singular.
 * \param	
 * \return	
 * \note		
 *//*-------------------------------------------------------------------*/
 
-bool Matrix3x3::invert()
+bool Matrix3x3InplaceInvert(Matrix3x3 *m)
 {
-	RIfloat det00 = matrix[1][1]*matrix[2][2] - matrix[2][1]*matrix[1][2];
-	RIfloat det01 = matrix[2][0]*matrix[1][2] - matrix[1][0]*matrix[2][2];
-	RIfloat det02 = matrix[1][0]*matrix[2][1] - matrix[2][0]*matrix[1][1];
+	RIfloat det00 = m->matrix[1][1]*m->matrix[2][2] - m->matrix[2][1]*m->matrix[1][2];
+	RIfloat det01 = m->matrix[2][0]*m->matrix[1][2] - m->matrix[1][0]*m->matrix[2][2];
+	RIfloat det02 = m->matrix[1][0]*m->matrix[2][1] - m->matrix[2][0]*m->matrix[1][1];
 
-	RIfloat d = matrix[0][0]*det00 + matrix[0][1]*det01 + matrix[0][2]*det02;
-	if( d == 0.0f ) return false;	//singular, leave the matrix unmodified and return false
+	RIfloat d = m->matrix[0][0]*det00 + m->matrix[0][1]*det01 + m->matrix[0][2]*det02;
+	if( d == 0.0f ) return false;	//singular, leave the m->matrix unmodified and return false
 	d = 1.0f / d;
 
 	Matrix3x3 t;
-	t[0][0] = d * det00;
-	t[1][0] = d * det01;
-	t[2][0] = d * det02;
-	t[0][1] = d * (matrix[2][1]*matrix[0][2] - matrix[0][1]*matrix[2][2]);
-	t[1][1] = d * (matrix[0][0]*matrix[2][2] - matrix[2][0]*matrix[0][2]);
-	t[2][1] = d * (matrix[2][0]*matrix[0][1] - matrix[0][0]*matrix[2][1]);
-	t[0][2] = d * (matrix[0][1]*matrix[1][2] - matrix[1][1]*matrix[0][2]);
-	t[1][2] = d * (matrix[1][0]*matrix[0][2] - matrix[0][0]*matrix[1][2]);
-	t[2][2] = d * (matrix[0][0]*matrix[1][1] - matrix[1][0]*matrix[0][1]);
-	*this = t;
+	t.matrix[0][0] = d * det00;
+	t.matrix[1][0] = d * det01;
+	t.matrix[2][0] = d * det02;
+	t.matrix[0][1] = d * (m->matrix[2][1]*m->matrix[0][2] - m->matrix[0][1]*m->matrix[2][2]);
+	t.matrix[1][1] = d * (m->matrix[0][0]*m->matrix[2][2] - m->matrix[2][0]*m->matrix[0][2]);
+	t.matrix[2][1] = d * (m->matrix[2][0]*m->matrix[0][1] - m->matrix[0][0]*m->matrix[2][1]);
+	t.matrix[0][2] = d * (m->matrix[0][1]*m->matrix[1][2] - m->matrix[1][1]*m->matrix[0][2]);
+	t.matrix[1][2] = d * (m->matrix[1][0]*m->matrix[0][2] - m->matrix[0][0]*m->matrix[1][2]);
+	t.matrix[2][2] = d * (m->matrix[0][0]*m->matrix[1][1] - m->matrix[1][0]*m->matrix[0][1]);
+	*m = t;
 	return true;
 }

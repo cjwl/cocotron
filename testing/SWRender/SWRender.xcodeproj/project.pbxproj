@@ -17,7 +17,7 @@
 		FE1F93430D7EEECA00969491 /* KGRender_baseline.mm in Sources */ = {isa = PBXBuildFile; fileRef = FE1F93420D7EEECA00969491 /* KGRender_baseline.mm */; };
 		FE1F93630D7EF19900969491 /* KGRenderView.m in Sources */ = {isa = PBXBuildFile; fileRef = FE1F93620D7EF19900969491 /* KGRenderView.m */; };
 		FE1F937A0D7EF1F800969491 /* KGRenderController.mm in Sources */ = {isa = PBXBuildFile; fileRef = FE1F93790D7EF1F800969491 /* KGRenderController.mm */; };
-		FE9552810D77CA67009B765B /* riImage.mm in Sources */ = {isa = PBXBuildFile; fileRef = FE9552780D77CA67009B765B /* riImage.mm */; };
+		FE9552810D77CA67009B765B /* VGImage.mm in Sources */ = {isa = PBXBuildFile; fileRef = FE9552780D77CA67009B765B /* VGImage.mm */; };
 		FE9552820D77CA67009B765B /* riMath.mm in Sources */ = {isa = PBXBuildFile; fileRef = FE95527A0D77CA67009B765B /* riMath.mm */; };
 		FE9552830D77CA67009B765B /* VGPath.mm in Sources */ = {isa = PBXBuildFile; fileRef = FE95527C0D77CA67009B765B /* VGPath.mm */; };
 		FE9552840D77CA67009B765B /* KGPixelPipe.mm in Sources */ = {isa = PBXBuildFile; fileRef = FE95527E0D77CA67009B765B /* KGPixelPipe.mm */; };
@@ -56,8 +56,8 @@
 		FE1F93620D7EF19900969491 /* KGRenderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGRenderView.m; sourceTree = "<group>"; };
 		FE1F93780D7EF1F800969491 /* KGRenderController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGRenderController.h; sourceTree = "<group>"; };
 		FE1F93790D7EF1F800969491 /* KGRenderController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = KGRenderController.mm; sourceTree = "<group>"; };
-		FE9552770D77CA67009B765B /* riImage.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = riImage.h; sourceTree = "<group>"; };
-		FE9552780D77CA67009B765B /* riImage.mm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.objcpp; path = riImage.mm; sourceTree = "<group>"; };
+		FE9552770D77CA67009B765B /* VGImage.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = VGImage.h; sourceTree = "<group>"; };
+		FE9552780D77CA67009B765B /* VGImage.mm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.objcpp; path = VGImage.mm; sourceTree = "<group>"; };
 		FE9552790D77CA67009B765B /* riMath.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = riMath.h; sourceTree = "<group>"; };
 		FE95527A0D77CA67009B765B /* riMath.mm */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.objcpp; path = riMath.mm; sourceTree = "<group>"; };
 		FE95527B0D77CA67009B765B /* VGPath.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = VGPath.h; sourceTree = "<group>"; };
@@ -118,8 +118,8 @@
 				FE1F93790D7EF1F800969491 /* KGRenderController.mm */,
 				FE1F93610D7EF19900969491 /* KGRenderView.h */,
 				FE1F93620D7EF19900969491 /* KGRenderView.m */,
-				FE9552770D77CA67009B765B /* riImage.h */,
-				FE9552780D77CA67009B765B /* riImage.mm */,
+				FE9552770D77CA67009B765B /* VGImage.h */,
+				FE9552780D77CA67009B765B /* VGImage.mm */,
 				FE9552790D77CA67009B765B /* riMath.h */,
 				FE95527A0D77CA67009B765B /* riMath.mm */,
 				FE95527B0D77CA67009B765B /* VGPath.h */,
@@ -223,7 +223,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8D11072D0486CEB800E47090 /* main.m in Sources */,
-				FE9552810D77CA67009B765B /* riImage.mm in Sources */,
+				FE9552810D77CA67009B765B /* VGImage.mm in Sources */,
 				FE9552820D77CA67009B765B /* riMath.mm in Sources */,
 				FE9552830D77CA67009B765B /* VGPath.mm in Sources */,
 				FE9552840D77CA67009B765B /* KGPixelPipe.mm in Sources */,

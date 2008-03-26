@@ -24,11 +24,7 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE MATERIALS OR
  * THE USE OR OTHER DEALINGS IN THE MATERIALS.
  *
- *//**
- * \file
- * \brief	KGRasterizer class.
- * \note	
- *//*-------------------------------------------------------------------*/
+ *-------------------------------------------------------------------*/
 
 #import "riMath.h"
 #import "KGPixelPipe.h"
