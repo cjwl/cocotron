@@ -81,7 +81,7 @@ void KGRasterizerClear(KGRasterizer *self) {
 
 void KGRasterizerAddEdge(KGRasterizer *self,const Vector2 v0, const Vector2 v1) {	//throws bad_alloc
 	if( self->_edgeCount >= RI_MAX_EDGES )
-		throw std::bad_alloc();	//throw an out of memory error if there are too many edges
+     NSLog(@"too many edges");
 
 	if(v0.y == v1.y)
 		return;	//skip horizontal edges (they don't affect rasterization since we scan horizontally)
@@ -125,7 +125,8 @@ static double radicalInverseBase2(unsigned int i)
 	double p = 0.0;
 	double f = 0.5;
 	double ff = f;
-	for(unsigned int j=0;j<32;j++)
+    unsigned int j;
+	for(j=0;j<32;j++)
 	{
 		if( i & (1<<j) )
 			p += f;
@@ -154,7 +155,8 @@ void KGRasterizerSetShouldAntialias(KGRasterizer *self,BOOL antialias) {
         
 		self->numSamples = 8;
 		self->fradius = .75;
-		for(int i=0;i<self->numSamples;i++)
+        int i;
+		for(i=0;i<self->numSamples;i++)
 		{	//Gaussian filter, implemented using Hammersley point set for sample point locations
 			RIfloat x = (RIfloat)radicalInverseBase2(i);
 			RIfloat y = ((RIfloat)i + 0.5f) / (RIfloat)self->numSamples;
@@ -185,7 +187,7 @@ void KGRasterizerSetShouldAntialias(KGRasterizer *self,BOOL antialias) {
 * \note		
 *//*-------------------------------------------------------------------*/
 
-struct ActiveEdge {
+typedef struct {
    Vector2		v0;
    Vector2		v1;
    int			direction;		//-1 down, 1 up
@@ -193,7 +195,7 @@ struct ActiveEdge {
    RIfloat		maxx;			//for the current scanline
    Vector2		n;
    RIfloat		cnst;
-};
+} ActiveEdge;
 
 typedef struct {
    int _count;
@@ -219,10 +221,10 @@ static inline void activeEdgeTableReset(ActiveEdgeTable *aet){
    aet->_count=0;
 }
 
-static inline ActiveEdge *activeEdgeTableAt(ActiveEdgeTable *aet,int index){
-   RI_ASSERT(index<aet->_count);
+static inline ActiveEdge *activeEdgeTableAt(ActiveEdgeTable *aet,int i){
+   RI_ASSERT(i<aet->_count);
    
-   return aet->_activeEdges+index;
+   return aet->_activeEdges+i;
 }
 
 static inline void activeEdgeTableAdd(ActiveEdgeTable *aet,ActiveEdge edge){
@@ -313,8 +315,8 @@ void KGRasterizerFill(KGRasterizer *self,VGFillRule fillRule, KGPixelPipe *pixel
     }
     
     int startAtEdge=0;
-    
-	for(int j=miny;j<maxy;j++)
+    int j;
+	for(j=miny;j<maxy;j++)
 	{
         RIfloat cminy = (RIfloat)j - self->fradius + 0.5f;
 		RIfloat cmaxy = (RIfloat)j + self->fradius + 0.5f;
@@ -322,8 +324,8 @@ void KGRasterizerFill(KGRasterizer *self,VGFillRule fillRule, KGPixelPipe *pixel
 		//simple AET: scan through all the edges and pick the ones intersecting this scanline
         activeEdgeTableReset(&aet);
         BOOL gotActiveEdge=NO;
-        
-		for(int e=startAtEdge;e<self->_edgeCount;e++) {
+        int  e;
+		for(e=startAtEdge;e<self->_edgeCount;e++) {
 			const Edge ed = self->_edges[e];
 
 			if(cmaxy >= ed.v0.y && cminy < ed.v1.y){
@@ -340,7 +342,7 @@ void KGRasterizerFill(KGRasterizer *self,VGFillRule fillRule, KGPixelPipe *pixel
                 ae.cnst=ed.cnst;
                 
 				//compute edge min and max x-coordinates for this scanline
-				Vector2 vd = ae.v1 - ae.v0;
+				Vector2 vd = Vector2Subtract(ae.v1,ae.v0);
 				RIfloat wl = 1.0f / vd.y;
 				RIfloat bminx = RI_MIN(ae.v0.x, ae.v1.x);
 				RIfloat bmaxx = RI_MAX(ae.v0.x, ae.v1.x);
@@ -364,7 +366,8 @@ void KGRasterizerFill(KGRasterizer *self,VGFillRule fillRule, KGPixelPipe *pixel
 		//fill the scanline
 		int aes = 0;
 		int aen = 0;
-		for(int i=self->_vpx;i<self->_vpx+self->_vpwidth;)
+        int i;
+		for(i=self->_vpx;i<self->_vpx+self->_vpwidth;)
 		{
 			Vector2 pc=Vector2Make(i + 0.5f, j + 0.5f);		//pixel center
 			
@@ -375,14 +378,15 @@ void KGRasterizerFill(KGRasterizer *self,VGFillRule fillRule, KGPixelPipe *pixel
 
 			//compute coverage
 			RIfloat coverage = 0.0f;
-			for(int s=0;s<self->numSamples;s++){
+            int     s;
+			for(s=0;s<self->numSamples;s++){
 				Vector2 sp = pc;	//sampling point
 			    sp.x += self->samples[s].x;
                 sp.y += self->samples[s].y;
 
 				//compute winding number by evaluating the edge functions of edges to the left of the sampling point
 				int winding = 0;
-				for(int e=0;e<aes;e++){
+				for(e=0;e<aes;e++){
                 
 					if(sp.y >= activeEdgeTableAt(&aet,e)->v0.y && sp.y < activeEdgeTableAt(&aet,e)->v1.y){
                     	//evaluate edge function to determine on which side of the edge the sampling point lies

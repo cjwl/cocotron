@@ -148,8 +148,6 @@ lineWidth:(float)lineWidth lineCap:(CGLineCap)lineCap lineJoin:(CGLineJoin)lineJ
 
    KGPixelPipeSetRenderingSurface(pixelPipe,_image);
 
-	try
-	{
 //		KGPixelPipeSetMask(context->m_masking ? context->getMask() : NULL);
    		KGPixelPipeSetBlendMode(pixelPipe,blendMode);
 //		KGPixelPipeSetTileFillColor(context->m_tileFillColor);
@@ -205,11 +203,7 @@ xform=CGAffineTransformConcat(xform,u2d);
 			}
 		 }
         }
-	}
-	catch(std::bad_alloc)
-	{
-      NSLog(@"C++ exception, out of memory");
-	}
+
    KGRasterizerDealloc(rasterizer);
    KGPixelPipeDealloc(pixelPipe);
 }
@@ -220,8 +214,6 @@ xform=CGAffineTransformConcat(xform,u2d);
    VGColorDescriptor descriptor=VGColorFormatToDescriptor(VG_lRGBA_8888);
    img=VGImageInitWithBytes(VGImageAlloc(),descriptor,[imageRep pixelsWide],[imageRep pixelsHigh],[imageRep bytesPerRow],(RIuint8 *)[imageRep bitmapData]);
    
-try
-	{
     CGAffineTransform i2u=CGAffineTransformMakeTranslation(0,[imageRep pixelsHigh]);
 i2u=CGAffineTransformScale(i2u,1,-1);
 
@@ -292,11 +284,6 @@ xform=CGAffineTransformConcat(xform,u2d);
 		}
    KGRasterizerDealloc(rasterizer);
    KGPixelPipeDealloc(pixelPipe);
-	}
-	catch(std::bad_alloc)
-	{
-     NSLog(@"out of memory %s %d",__FILE__,__LINE__);
-	}
 }
 
 @end

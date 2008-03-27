@@ -38,30 +38,30 @@
 *//*-------------------------------------------------------------------*/
 
 typedef enum {
-  VG_EVEN_ODD                                 = 0x1900,
-  VG_NON_ZERO                                 = 0x1901
+  VG_EVEN_ODD,
+  VG_NON_ZERO
 } VGFillRule;
 
-struct Edge {
+typedef struct {
    Vector2		v0;
    Vector2		v1;
    int         direction;
    Vector2     normal;
    RIfloat     cnst;
-};
+} Edge;
 
-struct Sample {
+typedef struct {
    RIfloat		x;
    RIfloat		y;
    RIfloat		weight;
-};
+} Sample;
 
 typedef struct {    
     int _vpx,_vpy,_vpwidth,_vpheight;
     
     int          _edgeCount;
     int          _edgeCapacity;
-    struct Edge *_edges;
+    Edge *_edges;
 
 	Sample samples[32];
 	int numSamples;

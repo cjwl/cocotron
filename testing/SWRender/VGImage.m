@@ -174,7 +174,8 @@ unsigned int VGColorPack(VGColor color,VGColorDescriptor outputDesc) {
 * \note		
 *//*-------------------------------------------------------------------*/
 
-static RIfloat gamma(RIfloat c)
+// Can't use 'gamma' ?
+static RIfloat dogamma(RIfloat c)
 {
 #if 1
 #warning no gamma
@@ -249,15 +250,15 @@ VGColor VGColorConvert(VGColor result,VGColorInternalFormat outputFormat){
 
 	switch(conversion)
 	{
-	case VGColor_lRGBA | (VGColor_sRGBA << shift): result.r = gamma(result.r); result.g = gamma(result.g); result.b = gamma(result.b); break;							//1
+	case VGColor_lRGBA | (VGColor_sRGBA << shift): result.r = dogamma(result.r); result.g = dogamma(result.g); result.b = dogamma(result.b); break;							//1
 	case VGColor_lRGBA | (VGColor_lLA << shift)  : result.r = result.g = result.b = lRGBtoL(result.r, result.g, result.b); break;										//3
-	case VGColor_lRGBA | (VGColor_sLA << shift)  : result.r = result.g = result.b = gamma(lRGBtoL(result.r, result.g, result.b)); break;								//3,5
+	case VGColor_lRGBA | (VGColor_sLA << shift)  : result.r = result.g = result.b = dogamma(lRGBtoL(result.r, result.g, result.b)); break;								//3,5
 	case VGColor_sRGBA | (VGColor_lRGBA << shift): result.r = invgamma(result.r); result.g = invgamma(result.g); result.b = invgamma(result.b); break;				//2
 	case VGColor_sRGBA | (VGColor_lLA << shift)  : result.r = result.g = result.b = lRGBtoL(invgamma(result.r), invgamma(result.g), invgamma(result.b)); break;		//2,3
-	case VGColor_sRGBA | (VGColor_sLA << shift)  : result.r = result.g = result.b = gamma(lRGBtoL(invgamma(result.r), invgamma(result.g), invgamma(result.b))); break;//2,3,5
+	case VGColor_sRGBA | (VGColor_sLA << shift)  : result.r = result.g = result.b = dogamma(lRGBtoL(invgamma(result.r), invgamma(result.g), invgamma(result.b))); break;//2,3,5
 	case VGColor_lLA   | (VGColor_lRGBA << shift): break;																	//4
-	case VGColor_lLA   | (VGColor_sRGBA << shift): result.r = result.g = result.b = gamma(result.r); break;												//4,1
-	case VGColor_lLA   | (VGColor_sLA << shift)  : result.r = result.g = result.b = gamma(result.r); break;												//5
+	case VGColor_lLA   | (VGColor_sRGBA << shift): result.r = result.g = result.b = dogamma(result.r); break;												//4,1
+	case VGColor_lLA   | (VGColor_sLA << shift)  : result.r = result.g = result.b = dogamma(result.r); break;												//5
 	case VGColor_sLA   | (VGColor_lRGBA << shift): result.r = result.g = result.b = invgamma(result.r); break;											//7,2
 	case VGColor_sLA   | (VGColor_sRGBA << shift): break;																	//7
 	case VGColor_sLA   | (VGColor_lLA << shift)  : result.r = result.g = result.b = invgamma(result.r); break;											//6
@@ -490,7 +491,7 @@ VGImage *VGImageInit(VGImage *self,VGColorDescriptor desc, int width, int height
 		RI_ASSERT(self->m_desc.bitsPerPixel == 1);
 		self->m_stride = (self->m_width+7)/8;
 	}
-	self->m_data = new RIuint8[self->m_stride*self->m_height];	//throws bad_alloc
+	self->m_data = NSZoneMalloc(NULL,self->m_stride*self->m_height*sizeof(RIuint8));
 	memset(self->m_data, 0, self->m_stride*self->m_height);	//clear image
     self->_mipmapsCount=0;
     self->_mipmapsCapacity=2;
@@ -532,15 +533,16 @@ VGImage *VGImageInitWithBytes(VGImage *self,VGColorDescriptor desc, int width, i
 *//*-------------------------------------------------------------------*/
 
 void VGImageDealloc(VGImage *self) {
-	for(int i=0;i<self->_mipmapsCount;i++)
-	{
-			delete self->_mipmaps[i];
+    int i;
+    
+	for(i=0;i<self->_mipmapsCount;i++){
+			VGImageDealloc(self->_mipmaps[i]);
 	}
 	self->_mipmapsCount=0;
 
 	if(self->m_ownsData)
 	{
-		delete[] self->m_data;	//delete image data if we own it
+		NSZoneFree(NULL,self->m_data);	//delete image data if we own it
 	}
 }
 
@@ -556,9 +558,10 @@ void VGImageResize(VGImage *self,int newWidth, int newHeight, VGColor newPixelCo
 	RI_ASSERT(self->m_bitOffset == 0);	//we don't have to worry about bitOffset in this function (this is always the original image, not a child)
 
 	//destroy mipmaps
-	for(int i=0;i<self->_mipmapsCount;i++)
+    int i;
+	for(i=0;i<self->_mipmapsCount;i++)
 	{
-			delete self->_mipmaps[i];
+			VGImageDealloc(self->_mipmaps[i]);
 	}
 	self->_mipmapsCount=0;
 	self->m_mipmapsValid = false;
@@ -575,7 +578,7 @@ void VGImageResize(VGImage *self,int newWidth, int newHeight, VGColor newPixelCo
 		newStride = (newWidth+7)/8;
 	}
 
-	RIuint8* newData = new RIuint8[newStride*newHeight];	//throws bad_alloc
+	RIuint8* newData = NSZoneMalloc(NULL,sizeof(RIuint8)*newStride*newHeight);
 
 	VGColor col = newPixelColor;
 	col=VGColorClamp(col);
@@ -583,7 +586,8 @@ void VGImageResize(VGImage *self,int newWidth, int newHeight, VGColor newPixelCo
 	unsigned int c = VGColorPack(col,self->m_desc);
 
 	int w = RI_INT_MIN(self->m_width, newWidth);
-	for(int j=0;j<newHeight;j++)
+    int j;
+	for(j=0;j<newHeight;j++)
 	{
 		if(j >= self->m_height)
 			w = 0;		//clear new scanlines
@@ -593,12 +597,12 @@ void VGImageResize(VGImage *self,int newWidth, int newHeight, VGColor newPixelCo
 		{
 		case 32:
 		{
-			for(int i=0;i<w;i++)
+			for(i=0;i<w;i++)
 			{
 				*(RIuint32*)d = *(RIuint32*)s;	//copy old pixels
 				d += 4; s += 4;
 			}
-			for(int i=w;i<newWidth;i++)
+			for(i=w;i<newWidth;i++)
 			{
 				*(RIuint32*)d = (RIuint32)c;	//clear new pixels
 				d += 4;
@@ -608,12 +612,12 @@ void VGImageResize(VGImage *self,int newWidth, int newHeight, VGColor newPixelCo
 
 		case 16:
 		{
-			for(int i=0;i<w;i++)
+			for(i=0;i<w;i++)
 			{
 				*(RIuint16*)d = *(RIuint16*)s;	//copy old pixels
 				d += 2; s += 2;
 			}
-			for(int i=w;i<newWidth;i++)
+			for(i=w;i<newWidth;i++)
 			{
 				*(RIuint16*)d = (RIuint16)c;	//clear new pixels
 				d += 2;
@@ -623,9 +627,9 @@ void VGImageResize(VGImage *self,int newWidth, int newHeight, VGColor newPixelCo
 
 		case 8:
 		{
-			for(int i=0;i<w;i++)
+			for(i=0;i<w;i++)
 				*d++ = *s++;	//copy old pixels
-			for(int i=w;i<newWidth;i++)
+			for(i=w;i<newWidth;i++)
 				*d++ = (RIuint8)c;	//clear new pixels
 			break;
 		}
@@ -636,7 +640,7 @@ void VGImageResize(VGImage *self,int newWidth, int newHeight, VGColor newPixelCo
 			if( c )
 				c = 0xff;
 			int e = w>>3;	//number of full bytes
-			for(int i=0;i<e;i++)
+			for(i=0;i<e;i++)
 				*d++ = *s++;	//copy old pixels
 
 			//copy end leftovers and clear the rest
@@ -652,14 +656,14 @@ void VGImageResize(VGImage *self,int newWidth, int newHeight, VGColor newPixelCo
 				e++;
 			}
 
-			for(int i=e;i<((newWidth+7)>>3);i++)
+			for(i=e;i<((newWidth+7)>>3);i++)
 				*d++ = (RIuint8)c;	//clear new pixels
 			break;
 		}
 		}
 	}
 
-	delete[] self->m_data;
+	NSZoneFree(NULL,self->m_data);
 	self->m_data = newData;
 	self->m_width = newWidth;
 	self->m_height = newHeight;
@@ -686,9 +690,11 @@ void VGImageClear(VGImage *self,VGColor clearColor, int x, int y, int w, int h){
 	col=VGColorClamp(col);
 	col=VGColorConvert(col,self->m_desc.internalFormat);
 
-	for(int j=r.y;j<r.y + r.height;j++)
+    int j;
+	for(j=r.y;j<r.y + r.height;j++)
 	{
-		for(int i=r.x;i<r.x + r.width;i++)
+        int i;
+		for(i=r.x;i<r.x + r.width;i++)
 		{
 			VGImageWritePixel(self,i, j, col);
 		}
@@ -781,9 +787,11 @@ void VGImageBlit(VGImage *self,VGImage * src, int sx, int sy, int dx, int dy, in
 	VGColor *tmp=(VGColor *)NSZoneMalloc(NULL,w*h*sizeof(VGColor));
 
 	//copy source region to tmp
-	for(int j=0;j<h;j++)
+    int j;
+	for(j=0;j<h;j++)
 	{
-		for(int i=0;i<w;i++)
+        int i;
+		for(i=0;i<w;i++)
 		{
 			VGColor c = VGImageReadPixel(src,srcsx + i, srcsy + j);
 			c=VGColorConvert(c,self->m_desc.internalFormat);
@@ -799,9 +807,10 @@ void VGImageBlit(VGImage *self,VGImage * src, int sx, int sy, int dx, int dy, in
 	}
 
 	//write tmp to destination region
-	for(int j=0;j<h;j++)
+	for(j=0;j<h;j++)
 	{
-		for(int i=0;i<w;i++)
+        int i;
+		for(i=0;i<w;i++)
 		{
 			VGColor col = tmp[j*w+i];
 
@@ -904,9 +913,11 @@ void VGImageMask(VGImage *self,VGImage* src, VGMaskOperation operation, int x, i
 	if(h <= 0)
 		return;	//zero area
 
-	for(int j=0;j<h;j++)
+    int j;
+	for(j=0;j<h;j++)
 	{
-		for(int i=0;i<w;i++)
+        int i;
+		for(i=0;i<w;i++)
 		{
 			RIfloat aprev = VGImageReadMaskPixel(self,dstsx + i, dstsy + j);
 			RIfloat amask = VGImageReadMaskPixel(src,srcsx + i, srcsy + j);
@@ -1284,12 +1295,14 @@ VGColor VGImageResample(VGImage *self,RIfloat x, RIfloat y, Matrix3x3 surfaceToI
 		RIfloat sumweight = 0.0f;
 		RIfloat DDQ = 2.0f * A;
 		RIfloat U = (RIfloat)u1 - U0 + 0.5f;
-		for(int v=v1;v<v2;v++)
+        int v;
+		for(v=v1;v<v2;v++)
 		{
 			RIfloat V = (RIfloat)v - V0 + 0.5f;
 			RIfloat DQ = A*(2.0f*U+1.0f) + B*V;
 			RIfloat Q = (C*V+B*U)*V + A*U*U;
-			for(int u=u1;u<u2;u++)
+            int u;
+			for(u=u1;u<u2;u++)
 			{
 				if( Q >= 0.0f && Q < 1.0f )
 				{	//Q = r^2, fit gaussian to the range [0,1]
@@ -1344,13 +1357,14 @@ void VGImageMakeMipMaps(VGImage *self) {
 		return;
 
 	//delete existing mipmaps
-	for(int i=0;i<self->_mipmapsCount;i++)
+    int i;
+	for(i=0;i<self->_mipmapsCount;i++)
 	{
-			delete self->_mipmaps[i];
+			VGImageDealloc(self->_mipmaps[i]);
 	}
 	self->_mipmapsCount=0;
 
-	try
+//	try
 	{
 		VGColorInternalFormat procFormat = self->m_desc.internalFormat;
 		procFormat = (VGColorInternalFormat)(procFormat | VGColorPREMULTIPLIED);	//premultiplied
@@ -1372,10 +1386,10 @@ void VGImageMakeMipMaps(VGImage *self) {
 			self->_mipmaps[self->_mipmapsCount-1] = NULL;
 
 			VGImage* next =  VGImageInit(VGImageAlloc(),self->m_desc, nextw, nexth);	//throws bad_alloc
-
-			for(int j=0;j<next->m_height;j++)
+            int j;
+			for(j=0;j<next->m_height;j++)
 			{
-				for(int i=0;i<next->m_width;i++)
+				for(i=0;i<next->m_width;i++)
 				{
 					RIfloat u0 = (RIfloat)i / (RIfloat)next->m_width;
 					RIfloat u1 = (RIfloat)(i+1) / (RIfloat)next->m_width;
@@ -1394,9 +1408,11 @@ void VGImageMakeMipMaps(VGImage *self) {
 
 					VGColor c=VGColorRGBA(0,0,0,0,procFormat);
 					int samples = 0;
-					for(int y=sv;y<ev;y++)
+                    int y;
+					for(y=sv;y<ev;y++)
 					{
-						for(int x=su;x<eu;x++)
+                        int x;
+						for(x=su;x<eu;x++)
 						{
 							VGColor p = VGImageReadPixel(prev,x, y);
 							p=VGColorConvert(p,procFormat);
@@ -1415,6 +1431,7 @@ void VGImageMakeMipMaps(VGImage *self) {
 		RI_ASSERT(prev->m_width == 1 && prev->m_height == 1);
 		self->m_mipmapsValid = true;
 	}
+#if 0
 	catch(std::bad_alloc)
 	{
 		//delete existing mipmaps
@@ -1422,13 +1439,14 @@ void VGImageMakeMipMaps(VGImage *self) {
 		{
 			if(self->_mipmaps[i])
 			{
-					delete self->_mipmaps[i];
+					VGImageDealloc(self->_mipmaps[i]);
 			}
 		}
 		self->_mipmapsCount=0;
 		self->m_mipmapsValid = false;
 		throw;
 	}
+#endif
 }
 
 /*-------------------------------------------------------------------*//*!
@@ -1459,9 +1477,10 @@ void VGImageColorMatrix(VGImage *self,VGImage * src, const RIfloat* matrix, bool
 	else
 		procFormat = (VGColorInternalFormat)(procFormat & ~VGColorPREMULTIPLIED);
 
-	for(int j=0;j<h;j++)
+    int j,i;
+	for(j=0;j<h;j++)
 	{
-		for(int i=0;i<w;i++)
+		for(i=0;i<w;i++)
 		{
 			VGColor s = VGImageReadPixel(src,i,j);	//convert to RGBA [0,1]
 			s=VGColorConvert(s,procFormat);
@@ -1574,9 +1593,11 @@ void VGImageConvolve(VGImage *self,VGImage * src, int kernelWidth, int kernelHei
 	VGColor *tmp=(VGColor *)NSZoneMalloc(NULL,src->m_width*src->m_height*sizeof(VGColor));
 
 	//copy source region to tmp and do conversion
-	for(int j=0;j<src->m_height;j++)
+    int j;
+	for(j=0;j<src->m_height;j++)
 	{
-		for(int i=0;i<src->m_width;i++)
+        int i;
+		for(i=0;i<src->m_width;i++)
 		{
 			VGColor s = VGImageReadPixel(src,i, j);
 			s=VGColorConvert(s,procFormat);
@@ -1584,15 +1605,17 @@ void VGImageConvolve(VGImage *self,VGImage * src, int kernelWidth, int kernelHei
 		}
 	}
 
-	for(int j=0;j<h;j++)
+	for(j=0;j<h;j++)
 	{
-		for(int i=0;i<w;i++)
+        int i;
+		for(i=0;i<w;i++)
 		{
 			VGColor sum=VGColorRGBA(0,0,0,0,procFormat);
-
-			for(int kj=0;kj<kernelHeight;kj++)
+            int kj;
+			for(kj=0;kj<kernelHeight;kj++)
 			{
-				for(int ki=0;ki<kernelWidth;ki++)
+                int ki;
+				for(ki=0;ki<kernelWidth;ki++)
 				{
 					int x = i+ki-shiftX;
 					int y = j+kj-shiftY;
@@ -1645,9 +1668,11 @@ void VGImageSeparableConvolve(VGImage *self,VGImage * src, int kernelWidth, int 
 	VGColor *tmp=(VGColor *)NSZoneMalloc(NULL,src->m_width*src->m_height*sizeof(VGColor));
 
 	//copy source region to tmp and do conversion
-	for(int j=0;j<src->m_height;j++)
+    int j;
+	for(j=0;j<src->m_height;j++)
 	{
-		for(int i=0;i<src->m_width;i++)
+        int i;
+		for(i=0;i<src->m_width;i++)
 		{
 			VGColor s = VGImageReadPixel(src,i, j);
 			s=VGColorConvert(s,procFormat);
@@ -1657,12 +1682,15 @@ void VGImageSeparableConvolve(VGImage *self,VGImage * src, int kernelWidth, int 
 
 	VGColor *tmp2=(VGColor *)NSZoneMalloc(NULL,w*src->m_height*sizeof(VGColor));
 
-	for(int j=0;j<src->m_height;j++)
+	for(j=0;j<src->m_height;j++)
 	{
-		for(int i=0;i<w;i++)
+        int i;
+		for(i=0;i<w;i++)
 		{
 			VGColor sum=VGColorRGBA(0,0,0,0,procFormat);
-			for(int ki=0;ki<kernelWidth;ki++)
+            int ki;
+            
+			for(ki=0;ki<kernelWidth;ki++)
 			{
 				int x = i+ki-shiftX;
 				VGColor s = readTiledPixel(x, j, src->m_width, src->m_height, tilingMode, tmp, edge);
@@ -1679,19 +1707,22 @@ void VGImageSeparableConvolve(VGImage *self,VGImage * src, int kernelWidth, int 
 	if(tilingMode == VG_TILE_FILL)
 	{	//convolve the edge color
 		VGColor sum=VGColorRGBA(0,0,0,0,procFormat);
-		for(int ki=0;ki<kernelWidth;ki++)
+        int ki;
+		for(ki=0;ki<kernelWidth;ki++)
 		{
 			sum=VGColorAdd(sum, VGColorMultiplyByFloat(edge, (RIfloat)kernelX[ki]));
 		}
 		edge = sum;
 	}
 
-	for(int j=0;j<h;j++)
+	for(j=0;j<h;j++)
 	{
-		for(int i=0;i<w;i++)
+        int i;
+		for(i=0;i<w;i++)
 		{
 			VGColor sum=VGColorRGBA(0,0,0,0,procFormat);
-			for(int kj=0;kj<kernelHeight;kj++)
+            int kj;
+			for(kj=0;kj<kernelHeight;kj++)
 			{
 				int y = j+kj-shiftY;
 				VGColor s = readTiledPixel(i, y, w, src->m_height, tilingMode, tmp2, edge);
@@ -1743,9 +1774,11 @@ void VGImageGaussianBlur(VGImage *self,VGImage * src, RIfloat stdDeviationX, RIf
 	VGColor *tmp=(VGColor *)NSZoneMalloc(NULL,src->m_width*src->m_height*sizeof(VGColor));
 
 	//copy source region to tmp and do conversion
-	for(int j=0;j<src->m_height;j++)
+    int j;
+	for(j=0;j<src->m_height;j++)
 	{
-		for(int i=0;i<src->m_width;i++)
+        int i;
+		for(i=0;i<src->m_width;i++)
 		{
 			VGColor s = VGImageReadPixel(src,i, j);
 			s=VGColorConvert(s,procFormat);
@@ -1788,7 +1821,8 @@ void VGImageGaussianBlur(VGImage *self,VGImage * src, RIfloat stdDeviationX, RIf
 	RIfloat kernelX[kernelXSize];
 	int shiftX = kernelWidth;
 	RIfloat scaleX = 0.0f;
-	for(int i=0;i<kernelXSize;i++)
+    int i;
+	for(i=0;i<kernelXSize;i++)
 	{
 		int x = i-shiftX;
 		kernelX[i] = (RIfloat)exp((RIfloat)x*(RIfloat)x * expScaleX);
@@ -1800,7 +1834,7 @@ void VGImageGaussianBlur(VGImage *self,VGImage * src, RIfloat stdDeviationX, RIf
 	RIfloat kernelY[kernelYSize];
 	int shiftY = kernelHeight;
 	RIfloat scaleY = 0.0f;
-	for(int i=0;i<kernelYSize;i++)
+	for(i=0;i<kernelYSize;i++)
 	{
 		int y = i-shiftY;
 		kernelY[i] = (RIfloat)exp((RIfloat)y*(RIfloat)y * expScaleY);
@@ -1811,12 +1845,13 @@ void VGImageGaussianBlur(VGImage *self,VGImage * src, RIfloat stdDeviationX, RIf
 	VGColor *tmp2=(VGColor *)NSZoneMalloc(NULL,w*src->m_height*sizeof(VGColor));
 
 	//horizontal pass
-	for(int j=0;j<src->m_height;j++)
+	for(j=0;j<src->m_height;j++)
 	{
-		for(int i=0;i<w;i++)
+		for(i=0;i<w;i++)
 		{
 			VGColor sum=VGColorRGBA(0,0,0,0,procFormat);
-			for(int ki=0;ki<kernelXSize;ki++)
+            int ki;
+			for(ki=0;ki<kernelXSize;ki++)
 			{
 				int x = i+ki-shiftX;
 				sum=VGColorAdd(sum, VGColorMultiplyByFloat(readTiledPixel(x, j, src->m_width, src->m_height, tilingMode, tmp, edge),kernelX[ki]));
@@ -1825,12 +1860,13 @@ void VGImageGaussianBlur(VGImage *self,VGImage * src, RIfloat stdDeviationX, RIf
 		}
 	}
 	//vertical pass
-	for(int j=0;j<h;j++)
+	for(j=0;j<h;j++)
 	{
-		for(int i=0;i<w;i++)
+		for(i=0;i<w;i++)
 		{
 			VGColor sum=VGColorRGBA(0,0,0,0,procFormat);
-			for(int kj=0;kj<kernelYSize;kj++)
+            int kj;
+			for(kj=0;kj<kernelYSize;kj++)
 			{
 				int y = j+kj-shiftY;
 				sum=VGColorAdd(sum,  VGColorMultiplyByFloat(readTiledPixel(i, y, w, src->m_height, tilingMode, tmp2, edge), kernelY[kj]));
@@ -1882,9 +1918,11 @@ void VGImageLookup(VGImage *self,VGImage * src, const RIuint8 * redLUT, const RI
 	VGColorInternalFormat procFormat = getProcessingFormat(src->m_desc.internalFormat, filterFormatLinear, filterFormatPremultiplied);
 	VGColorInternalFormat lutFormat = getLUTFormat(outputLinear, outputPremultiplied);
 
-	for(int j=0;j<h;j++)
+    int j;
+	for(j=0;j<h;j++)
 	{
-		for(int i=0;i<w;i++)
+        int i;
+		for(i=0;i<w;i++)
 		{
 			VGColor s = VGImageReadPixel(src,i,j);	//convert to RGBA [0,1]
 			s=VGColorConvert(s,procFormat);
@@ -1929,9 +1967,11 @@ void VGImageLookupSingle(VGImage *self,VGImage * src, const RIuint32 * lookupTab
 	VGColorInternalFormat procFormat = getProcessingFormat(src->m_desc.internalFormat, filterFormatLinear, filterFormatPremultiplied);
 	VGColorInternalFormat lutFormat = getLUTFormat(outputLinear, outputPremultiplied);
 
-	for(int j=0;j<h;j++)
+    int j;
+	for(j=0;j<h;j++)
 	{
-		for(int i=0;i<w;i++)
+        int i;
+		for(i=0;i<w;i++)
 		{
 			VGColor s = VGImageReadPixel(src,i,j);	//convert to RGBA [0,1]
 			s=VGColorConvert(s,procFormat);

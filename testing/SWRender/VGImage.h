@@ -126,13 +126,13 @@ static inline KGIntRect KGIntRectInit(int x,int y,int width,int height) {
 static inline KGIntRect KGIntRectIntersect(KGIntRect self,KGIntRect other) {
 		if(self.width >= 0 && other.width >= 0 && self.height >= 0 && other.height >= 0)
 		{
-			int x1 = RI_INT_MIN(RI_INT_ADDSATURATE(self.x, self.width), RI_INT_ADDSATURATE(other.x, other.width));
+			int xmin = RI_INT_MIN(RI_INT_ADDSATURATE(self.x, self.width), RI_INT_ADDSATURATE(other.x, other.width));
 			self.x = RI_INT_MAX(self.x, other.x);
-			self.width = RI_INT_MAX(x1 - self.x, 0);
+			self.width = RI_INT_MAX(xmin - self.x, 0);
 
-			int y1 = RI_INT_MIN(RI_INT_ADDSATURATE(self.y, self.height), RI_INT_ADDSATURATE(other.y, other.height));
+			int ymin = RI_INT_MIN(RI_INT_ADDSATURATE(self.y, self.height), RI_INT_ADDSATURATE(other.y, other.height));
 			self.y = RI_INT_MAX(self.y, other.y);
-			self.height = RI_INT_MAX(y1 - self.y, 0);
+			self.height = RI_INT_MAX(ymin - self.y, 0);
 		}
 		else
 		{
@@ -152,24 +152,24 @@ static inline KGIntRect KGIntRectIntersect(KGIntRect self,KGIntRect other) {
 * \note		
 *//*-------------------------------------------------------------------*/
 
-	enum {
-		VGColorNONLINEAR		= (1<<0),
-		VGColorPREMULTIPLIED	= (1<<1),
-		VGColorLUMINANCE		= (1<<2)
-	};
-
-enum VGColorInternalFormat {
- VGColor_lRGBA			= 0,
- VGColor_sRGBA			= 1,
- VGColor_lRGBA_PRE		= 2,
- VGColor_sRGBA_PRE		= 3,
- VGColor_lLA				= 4,
- VGColor_sLA				= 5,
- VGColor_lLA_PRE			= 6,
- VGColor_sLA_PRE			= 7
+enum {
+ VGColorNONLINEAR		= (1<<0),
+ VGColorPREMULTIPLIED	= (1<<1),
+ VGColorLUMINANCE		= (1<<2)
 };
 
-struct VGColorDescriptor {
+typedef enum {
+ VGColor_lRGBA			= 0,
+ VGColor_sRGBA			= VGColorNONLINEAR,
+ VGColor_lRGBA_PRE		= VGColorPREMULTIPLIED,
+ VGColor_sRGBA_PRE		= VGColorPREMULTIPLIED|VGColorNONLINEAR,
+ VGColor_lLA            = VGColorLUMINANCE,
+ VGColor_sLA			= VGColorLUMINANCE|VGColorNONLINEAR,
+ VGColor_lLA_PRE		= VGColorLUMINANCE|VGColorPREMULTIPLIED,
+ VGColor_sLA_PRE        = VGColorLUMINANCE|VGColorPREMULTIPLIED|VGColorNONLINEAR
+} VGColorInternalFormat;
+
+typedef struct  {
         int				redBits;
 		int				redShift;
 		int				greenBits;
@@ -183,7 +183,7 @@ struct VGColorDescriptor {
 		VGImageFormat	format;
 		VGColorInternalFormat	internalFormat;
 		int				bitsPerPixel;
-};
+} VGColorDescriptor;
 
 typedef struct VGColor {
 	RIfloat		r;
@@ -320,7 +320,7 @@ void VGImageResize(VGImage *self,int newWidth, int newHeight, VGColor newPixelCo
 
 void VGImageClear(VGImage *self,VGColor clearColor, int x, int y, int w, int h);
 void VGImageBlit(VGImage *self,VGImage * src, int sx, int sy, int dx, int dy, int w, int h, bool dither);
-void VGImageMask(VGImage *self,const VGImage* src, VGMaskOperation operation, int x, int y, int w, int h);
+void VGImageMask(VGImage *self,VGImage* src, VGMaskOperation operation, int x, int y, int w, int h);
 VGColor VGImageReadPixel(VGImage *self,int x, int y);
 
 void VGImageWritePixel(VGImage *self,int x, int y, VGColor c);

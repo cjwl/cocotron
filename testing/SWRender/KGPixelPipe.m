@@ -67,7 +67,7 @@ KGPaint *KGPaintInit(KGPaint *self) {
 void     KGPaintDealloc(KGPaint *self) {
 	if(self->m_pattern)
 	{
-			delete self->m_pattern;
+			VGImageDealloc(self->m_pattern);
 	}
 }
 
@@ -196,27 +196,27 @@ void KGPixelPipeSetPaint(KGPixelPipe *self, KGPaint* paint) {
 * \note		
 *//*-------------------------------------------------------------------*/
 
-void KGPixelPipeLinearGradient(KGPixelPipe *self,RIfloat& g, RIfloat& rho, RIfloat x, RIfloat y) {
+void KGPixelPipeLinearGradient(KGPixelPipe *self,RIfloat *g, RIfloat *rho, RIfloat x, RIfloat y) {
 	RI_ASSERT(self->m_paint);
-	Vector2 u = self->m_paint->m_linearGradientPoint1 - self->m_paint->m_linearGradientPoint0;
+	Vector2 u = Vector2Subtract(self->m_paint->m_linearGradientPoint1 , self->m_paint->m_linearGradientPoint0);
 	RIfloat usq = Vector2Dot(u,u);
 	if( usq <= 0.0f )
 	{	//points are equal, gradient is always 1.0f
-		g = 1.0f;
-		rho = 0.0f;
+		*g = 1.0f;
+		*rho = 0.0f;
 		return;
 	}
 	RIfloat oou = 1.0f / usq;
 
 	Vector2 p=Vector2Make(x, y);
 	p = Matrix3x3TransformVector2(self->m_surfaceToPaintMatrix, p);
-	p = p-self->m_paint->m_linearGradientPoint0;
+	p = Vector2Subtract(p,self->m_paint->m_linearGradientPoint0);
 	RI_ASSERT(usq >= 0.0f);
-	g = Vector2Dot(p, u) * oou;
+	*g = Vector2Dot(p, u) * oou;
 	RIfloat dgdx = oou * u.x * self->m_surfaceToPaintMatrix.matrix[0][0] + oou * u.y * self->m_surfaceToPaintMatrix.matrix[1][0];
 	RIfloat dgdy = oou * u.x * self->m_surfaceToPaintMatrix.matrix[0][1] + oou * u.y * self->m_surfaceToPaintMatrix.matrix[1][1];
-	rho = (RIfloat)sqrt(dgdx*dgdx + dgdy*dgdy);
-	RI_ASSERT(rho >= 0.0f);
+	*rho = (RIfloat)sqrt(dgdx*dgdx + dgdy*dgdy);
+	RI_ASSERT(*rho >= 0.0f);
 }
 
 /*-------------------------------------------------------------------*//*!
@@ -226,12 +226,12 @@ void KGPixelPipeLinearGradient(KGPixelPipe *self,RIfloat& g, RIfloat& rho, RIflo
 * \note		
 *//*-------------------------------------------------------------------*/
 
-void KGPixelPipeRadialGradient(KGPixelPipe *self,RIfloat &g, RIfloat &rho, RIfloat x, RIfloat y) {
+void KGPixelPipeRadialGradient(KGPixelPipe *self,RIfloat *g, RIfloat *rho, RIfloat x, RIfloat y) {
 	RI_ASSERT(self->m_paint);
 	if( self->m_paint->m_radialGradientRadius <= 0.0f )
 	{
-		g = 1.0f;
-		rho = 0.0f;
+		*g = 1.0f;
+		*rho = 0.0f;
 		return;
 	}
 
@@ -241,27 +241,27 @@ void KGPixelPipeRadialGradient(KGPixelPipe *self,RIfloat &g, RIfloat &rho, RIflo
 	Vector2 gx=Vector2Make(self->m_surfaceToPaintMatrix.matrix[0][0], self->m_surfaceToPaintMatrix.matrix[1][0]);
 	Vector2 gy=Vector2Make(self->m_surfaceToPaintMatrix.matrix[0][1],self->m_surfaceToPaintMatrix.matrix[1][1]);
 
-	Vector2 fp = f - c;
+	Vector2 fp = Vector2Subtract(f,c);
 
 	//clamp the focal point inside the gradient circle
 	RIfloat fpLen = Vector2Length(fp);
 	if( fpLen > 0.999f * r )
-		fp = fp * (0.999f * r / fpLen);
+		fp = Vector2MultiplyByFloat(fp, (0.999f * r / fpLen));
 
 	RIfloat D = -1.0f / (Vector2Dot(fp,fp) - r*r);
 	Vector2 p=Vector2Make(x, y);
-	p = Matrix3x3TransformVector2(self->m_surfaceToPaintMatrix, p) - c;
-	Vector2 d = p - fp;
+	p = Vector2Subtract(Matrix3x3TransformVector2(self->m_surfaceToPaintMatrix, p), c);
+	Vector2 d = Vector2Subtract(p,fp);
 	RIfloat s = (RIfloat)sqrt(r*r*Vector2Dot(d,d) - RI_SQR(p.x*fp.y - p.y*fp.x));
-	g = (Vector2Dot(fp,d) + s) * D;
-	if(RI_ISNAN(g))
-		g = 0.0f;
+	*g = (Vector2Dot(fp,d) + s) * D;
+	if(RI_ISNAN(*g))
+		*g = 0.0f;
 	RIfloat dgdx = D*Vector2Dot(fp,gx) + (r*r*Vector2Dot(d,gx) - (gx.x*fp.y - gx.y*fp.x)*(p.x*fp.y - p.y*fp.x)) * (D / s);
 	RIfloat dgdy = D*Vector2Dot(fp,gy) + (r*r*Vector2Dot(d,gy) - (gy.x*fp.y - gy.y*fp.x)*(p.x*fp.y - p.y*fp.x)) * (D / s);
-	rho = (RIfloat)sqrt(dgdx*dgdx + dgdy*dgdy);
-	if(RI_ISNAN(rho))
-		rho = 0.0f;
-	RI_ASSERT(rho >= 0.0f);
+	*rho = (RIfloat)sqrt(dgdx*dgdx + dgdy*dgdy);
+	if(RI_ISNAN(*rho))
+		*rho = 0.0f;
+	RI_ASSERT(*rho >= 0.0f);
 }
 
 /*-------------------------------------------------------------------*//*!
@@ -371,8 +371,8 @@ VGColor KGPixelPipeColorRamp(KGPixelPipe *self,RIfloat gradient, RIfloat rho)
 			break;
 		}
 		RI_ASSERT(gradient >= 0.0f && gradient <= 1.0f);
-
-		for(int i=0;i<self->m_paint->m_colorRampStopsCount-1;i++)
+        int i;
+		for(i=0;i<self->m_paint->m_colorRampStopsCount-1;i++)
 		{
 			if(gradient >= self->m_paint->m_colorRampStops[i].offset && gradient < self->m_paint->m_colorRampStops[i+1].offset)
 			{
@@ -517,7 +517,7 @@ void KGPixelPipeWriteCoverage(KGPixelPipe *self,int x, int y, RIfloat coverage)
 	case VG_PAINT_TYPE_LINEAR_GRADIENT:
 	{
 		RIfloat g, rho;
-		KGPixelPipeLinearGradient(self,g, rho, x+0.5f, y+0.5f);
+		KGPixelPipeLinearGradient(self,&g, &rho, x+0.5f, y+0.5f);
 		s = KGPixelPipeColorRamp(self,g, rho);
 		RI_ASSERT((s.m_format == VGColor_sRGBA && !self->m_paint->m_colorRampPremultiplied) || (s.m_format == VGColor_sRGBA_PRE && self->m_paint->m_colorRampPremultiplied));
 		s=VGColorPremultiply(s);
@@ -527,7 +527,7 @@ void KGPixelPipeWriteCoverage(KGPixelPipe *self,int x, int y, RIfloat coverage)
 	case VG_PAINT_TYPE_RADIAL_GRADIENT:
 	{
 		RIfloat g, rho;
-		KGPixelPipeRadialGradient(self,g, rho, x+0.5f, y+0.5f);
+		KGPixelPipeRadialGradient(self,&g, &rho, x+0.5f, y+0.5f);
 		s = KGPixelPipeColorRamp(self,g, rho);
 		RI_ASSERT((s.m_format == VGColor_sRGBA && !self->m_paint->m_colorRampPremultiplied) || (s.m_format == VGColor_sRGBA_PRE && self->m_paint->m_colorRampPremultiplied));
 		s=VGColorPremultiply(s);

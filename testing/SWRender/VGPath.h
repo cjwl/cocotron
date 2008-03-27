@@ -30,52 +30,53 @@
 #import "KGRasterizer.h"
 
 typedef enum {
-  VG_CLOSE_PATH                               = ( 0 << 1),
-  VG_MOVE_TO                                  = ( 1 << 1),
-  VG_LINE_TO                                  = ( 2 << 1),
-  VG_HLINE_TO                                 = ( 3 << 1),
-  VG_VLINE_TO                                 = ( 4 << 1),
-  VG_QUAD_TO                                  = ( 5 << 1),
-  VG_CUBIC_TO                                 = ( 6 << 1),
-  VG_SQUAD_TO                                 = ( 7 << 1),
-  VG_SCUBIC_TO                                = ( 8 << 1),
-  VG_SCCWARC_TO                               = ( 9 << 1),
-  VG_SCWARC_TO                                = (10 << 1),
-  VG_LCCWARC_TO                               = (11 << 1),
-  VG_LCWARC_TO                                = (12 << 1)
+  VG_CLOSE_PATH,
+  VG_MOVE_TO,
+  VG_LINE_TO,
+  VG_QUAD_TO,
+  VG_CUBIC_TO,
+  VG_SQUAD_TO,
+  VG_SCUBIC_TO,
 } VGPathSegment;
 
-	struct Vertex
-	{
-		Vertex() : userPosition(), userTangent(), pathLength(0.0f), flags(0) {}
-		Vector2			userPosition;
-		Vector2			userTangent;
-		RIfloat			pathLength;
-		unsigned int	flags;
-	};
-	struct StrokeVertex
-	{
-		StrokeVertex() : p(), t(), ccw(), cw(), pathLength(0.0f), flags(0), inDash(false) {}
-		Vector2			p;
-		Vector2			t;
-		Vector2			ccw;
-		Vector2			cw;
-		RIfloat			pathLength;
-		unsigned int	flags;
-		bool			inDash;
-	};
-	//data produced by tessellation
-	struct VertexIndex
-	{
-		int		start;
-		int		end;
-	};
-
 typedef struct {
-	//input data
-	RIfloat				m_scale;
-	RIfloat				m_bias;
+   Vector2			userPosition;
+   Vector2			userTangent;
+   RIfloat			pathLength;
+   unsigned int	flags;
+} Vertex;
     
+typedef struct  {
+   Vector2			p;
+   Vector2			t;
+   Vector2			ccw;
+   Vector2			cw;
+   RIfloat			pathLength;
+   unsigned int	flags;
+   bool			inDash;
+} StrokeVertex;
+    
+static inline StrokeVertex StrokeVertexInit(){
+   StrokeVertex result;
+   
+   result.p=Vector2Make(0,0);
+   result.t=Vector2Make(0,0);
+   result.ccw=Vector2Make(0,0);
+   result.cw=Vector2Make(0,0);
+   result.pathLength=0;
+   result.flags=0;
+   result.inDash=false;
+        
+   return result;
+}
+    
+	//data produced by tessellation
+typedef struct {
+   int		start;
+   int		end;
+} VertexIndex;
+
+typedef struct {    
     int      _segmentCount;
     int      _segmentCapacity;
     RIuint8 *_segments;
@@ -106,17 +107,17 @@ static inline int VGPathGetNumCoordinates(VGPath *self){
    return self->_coordinateCount;
 }
 
-void VGPathAppendData(VGPath *self,const RIuint8* segments, int numSegments, const RIfloat* data);	//throws bad_alloc
-void VGPathAppend(VGPath *self,const VGPath* srcPath);	//throws bad_alloc
-void VGPathTransform(VGPath *self,const VGPath* srcPath, Matrix3x3 matrix);	//throws bad_alloc
+void VGPathAppendData(VGPath *self,const RIuint8* segments, int numSegments, const RIfloat* data);	
+void VGPathAppend(VGPath *self,VGPath* srcPath);	
+void VGPathTransform(VGPath *self,VGPath* srcPath, Matrix3x3 matrix);	
 	//returns true if interpolation succeeds, false if start and end paths are not compatible
-void VGPathFill(VGPath *self,Matrix3x3 pathToSurface, KGRasterizer *rasterizer);	//throws bad_alloc
-void VGPathStroke(VGPath *self,Matrix3x3 pathToSurface, KGRasterizer *rasterizer, const RIfloat* dashPattern,int dashPatternSize, RIfloat dashPhase, bool dashPhaseReset, RIfloat strokeWidth, CGLineCap capStyle, CGLineJoin joinStyle, RIfloat miterLimit);	//throws bad_alloc
+void VGPathFill(VGPath *self,Matrix3x3 pathToSurface, KGRasterizer *rasterizer);	
+void VGPathStroke(VGPath *self,Matrix3x3 pathToSurface, KGRasterizer *rasterizer, const RIfloat* dashPattern,int dashPatternSize, RIfloat dashPhase, bool dashPhaseReset, RIfloat strokeWidth, CGLineCap capStyle, CGLineJoin joinStyle, RIfloat miterLimit);	
 
-void VGPathGetPointAlong(VGPath *self,int startIndex, int numSegments, RIfloat distance, Vector2& p, Vector2& t);	//throws bad_alloc
-RIfloat getPathLength(VGPath *self,int startIndex, int numSegments);	//throws bad_alloc
-void VGPathGetPathBounds(VGPath *self,RIfloat& minx, RIfloat& miny, RIfloat& maxx, RIfloat& maxy);	//throws bad_alloc
-void VGPathGetPathTransformedBounds(VGPath *self,Matrix3x3 pathToSurface, RIfloat& minx, RIfloat& miny, RIfloat& maxx, RIfloat& maxy);	//throws bad_alloc
+void VGPathGetPointAlong(VGPath *self,int startIndex, int numSegments, RIfloat distance, Vector2 *p, Vector2 *t);	
+RIfloat getPathLength(VGPath *self,int startIndex, int numSegments);	
+void VGPathGetPathBounds(VGPath *self,RIfloat *minx, RIfloat *miny, RIfloat *maxx, RIfloat *maxy);	
+void VGPathGetPathTransformedBounds(VGPath *self,Matrix3x3 pathToSurface, RIfloat *minx, RIfloat *miny, RIfloat *maxx, RIfloat *maxy);	
 
 int VGPathSegmentToNumCoordinates(VGPathSegment segment);
 int VGPathCountNumCoordinates(const RIuint8* segments, int numSegments);
@@ -124,17 +125,16 @@ int VGPathCountNumCoordinates(const RIuint8* segments, int numSegments);
 RIfloat VGPathGetCoordinate(VGPath *self,int i);
 void VGPathSetCoordinate(VGPath *self,int i, RIfloat c);
 
-void VGPathAddVertex(VGPath *self,Vector2 p, Vector2 t, RIfloat pathLength, unsigned int flags);	//throws bad_alloc
-void VGPathAddEdge(VGPath *self,Vector2 p0, Vector2 p1, Vector2 t0, Vector2 t1, unsigned int startFlags, unsigned int endFlags);	//throws bad_alloc
+void VGPathAddVertex(VGPath *self,Vector2 p, Vector2 t, RIfloat pathLength, unsigned int flags);	
+void VGPathAddEdge(VGPath *self,Vector2 p0, Vector2 p1, Vector2 t0, Vector2 t1, unsigned int startFlags, unsigned int endFlags);	
 
-void VGPathAddEndPath(VGPath *self,Vector2 p0, Vector2 p1, bool subpathHasGeometry, unsigned int flags);	//throws bad_alloc
-bool VGPathAddLineTo(VGPath *self,Vector2 p0, Vector2 p1, bool subpathHasGeometry);	//throws bad_alloc
-bool VGPathAddQuadTo(VGPath *self,Vector2 p0, Vector2 p1, Vector2 p2, bool subpathHasGeometry);	//throws bad_alloc
-bool VGPathAddCubicTo(VGPath *self,Vector2 p0, Vector2 p1, Vector2 p2, Vector2 p3, bool subpathHasGeometry);	//throws bad_alloc
-bool VGPathAddArcTo(VGPath *self,Vector2 p0, RIfloat rh, RIfloat rv, RIfloat rot, Vector2 p1, VGPathSegment segment, bool subpathHasGeometry);	//throws bad_alloc
+void VGPathAddEndPath(VGPath *self,Vector2 p0, Vector2 p1, bool subpathHasGeometry, unsigned int flags);	
+bool VGPathAddLineTo(VGPath *self,Vector2 p0, Vector2 p1, bool subpathHasGeometry);	
+bool VGPathAddQuadTo(VGPath *self,Vector2 p0, Vector2 p1, Vector2 p2, bool subpathHasGeometry);	
+bool VGPathAddCubicTo(VGPath *self,Vector2 p0, Vector2 p1, Vector2 p2, Vector2 p3, bool subpathHasGeometry);	
 
-void VGPathTessellate(VGPath *self);	//throws bad_alloc
+void VGPathTessellate(VGPath *self);	
 
-void VGPathInterpolateStroke(VGPath *self,Matrix3x3 pathToSurface, KGRasterizer *rasterizer,StrokeVertex v0,StrokeVertex v1, RIfloat strokeWidth);	//throws bad_alloc
-void VGPathDoCap(VGPath *self,Matrix3x3 pathToSurface, KGRasterizer *rasterizer, const StrokeVertex& v, RIfloat strokeWidth, CGLineCap capStyle);	//throws bad_alloc
-void VGPathDoJoin(VGPath *self,Matrix3x3 pathToSurface, KGRasterizer *rasterizer, const StrokeVertex& v0, const StrokeVertex& v1, RIfloat strokeWidth, CGLineJoin joinStyle, RIfloat miterLimit);	//throws bad_alloc
+void VGPathInterpolateStroke(Matrix3x3 pathToSurface, KGRasterizer *rasterizer,StrokeVertex v0,StrokeVertex v1, RIfloat strokeWidth);	
+void VGPathDoCap(Matrix3x3 pathToSurface, KGRasterizer *rasterizer,StrokeVertex v, RIfloat strokeWidth, CGLineCap capStyle);	
+void VGPathDoJoin(Matrix3x3 pathToSurface, KGRasterizer *rasterizer,StrokeVertex v0,StrokeVertex v1, RIfloat strokeWidth, CGLineJoin joinStyle, RIfloat miterLimit);	

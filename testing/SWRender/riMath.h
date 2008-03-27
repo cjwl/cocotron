@@ -32,7 +32,6 @@
 
 #import <math.h>
 #import <assert.h>
-#import <new>	//for bad_alloc
 #import <ApplicationServices/ApplicationServices.h>
 
 typedef unsigned char	RIuint8;
@@ -43,19 +42,19 @@ typedef float RIfloat;
 #define RI_INT32_MAX  (0x7fffffff)
 #define RI_INT32_MIN  (-0x7fffffff-1)
 
-inline int RI_ISNAN(float a) {
+static inline int RI_ISNAN(float a) {
     return (a!=a)?1:0;
 }
 
-inline RIfloat	RI_MAX(RIfloat a, RIfloat b)				{ return (a > b) ? a : b; }
-inline RIfloat	RI_MIN(RIfloat a, RIfloat b)				{ return (a < b) ? a : b; }
-inline RIfloat	RI_CLAMP(RIfloat a, RIfloat l, RIfloat h)	{ if(RI_ISNAN(a)) return l; RI_ASSERT(l <= h); return (a < l) ? l : (a > h) ? h : a; }
-inline void		RI_SWAP(RIfloat &a, RIfloat &b)				{ RIfloat tmp = a; a = b; b = tmp; }
-inline RIfloat	RI_ABS(RIfloat a)							{ return (a < 0.0f) ? -a : a; }
-inline RIfloat	RI_SQR(RIfloat a)							{ return a * a; }
-inline RIfloat	RI_DEG_TO_RAD(RIfloat a)					{ return a * M_PI / 180.0f; }
-inline RIfloat	RI_RAD_TO_DEG(RIfloat a)					{ return a * 180.0f/ M_PI; }
-inline RIfloat	RI_MOD(RIfloat a, RIfloat b){
+static inline RIfloat	RI_MAX(RIfloat a, RIfloat b)				{ return (a > b) ? a : b; }
+static inline RIfloat	RI_MIN(RIfloat a, RIfloat b)				{ return (a < b) ? a : b; }
+static inline RIfloat	RI_CLAMP(RIfloat a, RIfloat l, RIfloat h)	{ if(RI_ISNAN(a)) return l; RI_ASSERT(l <= h); return (a < l) ? l : (a > h) ? h : a; }
+static inline void		RI_SWAP(RIfloat *a, RIfloat *b)				{ RIfloat tmp = *a; *a = *b; *b = tmp; }
+static inline RIfloat	RI_ABS(RIfloat a)							{ return (a < 0.0f) ? -a : a; }
+static inline RIfloat	RI_SQR(RIfloat a)							{ return a * a; }
+static inline RIfloat	RI_DEG_TO_RAD(RIfloat a)					{ return (RIfloat)(a * M_PI / 180.0f); }
+static inline RIfloat	RI_RAD_TO_DEG(RIfloat a)					{ return (RIfloat)(a * 180.0f/ M_PI); }
+static inline RIfloat	RI_MOD(RIfloat a, RIfloat b){
    if(RI_ISNAN(a) || RI_ISNAN(b))
     return 0.0f;
     
@@ -72,49 +71,56 @@ inline RIfloat	RI_MOD(RIfloat a, RIfloat b){
    return f;
 }
 
-inline int		RI_INT_MAX(int a, int b)			{ return (a > b) ? a : b; }
-inline int		RI_INT_MIN(int a, int b)			{ return (a < b) ? a : b; }
-inline int		RI_INT_MOD(int a, int b)			{ RI_ASSERT(b >= 0); if(!b) return 0; int i = a % b; if(i < 0) i += b; RI_ASSERT(i >= 0 && i < b); return i; }
-inline int		RI_INT_ADDSATURATE(int a, int b)	{ RI_ASSERT(b >= 0); int r = a + b; return (r >= a) ? r : RI_INT32_MAX; }
+static inline int		RI_INT_MAX(int a, int b)			{ return (a > b) ? a : b; }
+static inline int		RI_INT_MIN(int a, int b)			{ return (a < b) ? a : b; }
+static inline int		RI_INT_MOD(int a, int b)			{ RI_ASSERT(b >= 0); if(!b) return 0; int i = a % b; if(i < 0) i += b; RI_ASSERT(i >= 0 && i < b); return i; }
+static inline int		RI_INT_ADDSATURATE(int a, int b)	{ RI_ASSERT(b >= 0); int r = a + b; return (r >= a) ? r : RI_INT32_MAX; }
 
 typedef struct {
    RIfloat x,y;
 } Vector2;
 
-inline Vector2 Vector2Make(RIfloat fx,RIfloat fy){
+static inline Vector2 Vector2Make(RIfloat fx,RIfloat fy){
    Vector2 result;
    result.x=fx;
    result.y=fy;
    return result;
 }
 
-inline Vector2 Vector2Negate(Vector2 result){
+static inline Vector2 Vector2Negate(Vector2 result){
    return Vector2Make(-result.x,-result.y);
 }
 
-inline RIfloat Vector2Length(Vector2 v){
-   return sqrt((double)v.x*(double)v.x+(double)v.y*(double)v.y);
+static inline RIfloat Vector2Length(Vector2 v){
+   return (RIfloat)sqrt((double)v.x*(double)v.x+(double)v.y*(double)v.y);
 }
 
 static inline bool Vector2IsEqual(Vector2 v1,Vector2 v2 ){
    return (v1.x == v2.x) && (v1.y == v2.y);
 }
 
-inline bool Vector2IsZero(Vector2 v){
+static inline bool Vector2IsZero(Vector2 v){
   return (v.x == 0.0f) && (v.y == 0.0f);
 }
 
-inline const Vector2	operator*	( RIfloat f,Vector2 v )				{ return Vector2Make(v.x*f,v.y*f); }
-inline const Vector2	operator*	(Vector2 v, RIfloat f )				{ return Vector2Make(v.x*f,v.y*f); }
-inline const Vector2	operator+	(Vector2 v1,Vector2 v2 )	{ return Vector2Make(v1.x+v2.x, v1.y+v2.y); }
-inline const Vector2	operator-	(Vector2 v1,Vector2 v2)	{ return Vector2Make(v1.x-v2.x, v1.y-v2.y); }
+static inline Vector2 Vector2MultiplyByFloat(Vector2 v,RIfloat f){
+   return Vector2Make(v.x*f,v.y*f);
+}
 
-inline RIfloat Vector2Dot(Vector2 v1,Vector2 v2){
+static inline Vector2 Vector2Add(Vector2 v1,Vector2 v2 ){
+   return Vector2Make(v1.x+v2.x, v1.y+v2.y);
+}
+
+static inline Vector2 Vector2Subtract(Vector2 v1,Vector2 v2){
+   return Vector2Make(v1.x-v2.x, v1.y-v2.y);
+}
+
+static inline RIfloat Vector2Dot(Vector2 v1,Vector2 v2){
    return v1.x*v2.x+v1.y*v2.y;
 }
 
 //if v is a zero vector, returns a zero vector
-inline const Vector2 Vector2Normalize(Vector2 v){
+static inline Vector2 Vector2Normalize(Vector2 v){
    double l = (double)v.x*(double)v.x+(double)v.y*(double)v.y;
    
    if( l != 0.0 )
@@ -123,15 +129,15 @@ inline const Vector2 Vector2Normalize(Vector2 v){
    return Vector2Make((RIfloat)((double)v.x * l), (RIfloat)((double)v.y * l));
 }
 
-inline const Vector2 Vector2PerpendicularCW(Vector2 v){
+static inline Vector2 Vector2PerpendicularCW(Vector2 v){
    return Vector2Make(v.y, -v.x);
 }
 
-inline const Vector2 Vector2PerpendicularCCW(Vector2 v){
+static inline Vector2 Vector2PerpendicularCCW(Vector2 v){
    return Vector2Make(-v.y, v.x);
 }
 
-inline const Vector2 Vector2Perpendicular(Vector2 v, bool cw){
+static inline Vector2 Vector2Perpendicular(Vector2 v, bool cw){
    if(cw)
     return Vector2Make(v.y, -v.x);
     
@@ -163,9 +169,10 @@ typedef struct {
 
 static inline Matrix3x3 Matrix3x3Identity(){
    Matrix3x3 result;
+   int       i,j;
    
-   for(int i=0;i<3;i++)
-    for(int j=0;j<3;j++)
+   for(i=0;i<3;i++)
+    for(j=0;j<3;j++)
      result.matrix[i][j] = (i == j) ? 1.0f : 0.0f;
      
    return result;
@@ -210,11 +217,12 @@ static inline Matrix3x3 Matrix3x3Invert(Matrix3x3 result){
    return result;
 }
 
-inline Matrix3x3 Matrix3x3Multiply(Matrix3x3 m1,Matrix3x3 m2){
+static inline Matrix3x3 Matrix3x3Multiply(Matrix3x3 m1,Matrix3x3 m2){
    Matrix3x3 t;
+   int       i,j;
    
-   for(int i=0;i<3;i++)
-    for(int j=0;j<3;j++)
+   for(i=0;i<3;i++)
+    for(j=0;j<3;j++)
      t.matrix[i][j] = m1.matrix[i][0] * m2.matrix[0][j] + m1.matrix[i][1] * m2.matrix[1][j] + m1.matrix[i][2] * m2.matrix[2][j];
      
    return t;
@@ -224,7 +232,7 @@ static inline bool Matrix3x3IsAffine(Matrix3x3 m){
    return (m.matrix[2][0] == 0.0f && m.matrix[2][1] == 0.0f && m.matrix[2][2] == 1.0f)?true:false;
 }
 
- inline void Matrix3x3ForceAffinity(Matrix3x3 *xform){
+ static inline void Matrix3x3ForceAffinity(Matrix3x3 *xform){
    xform->matrix[2][0]=0;
    xform->matrix[2][1]=0;
    xform->matrix[2][2]=1;
@@ -243,7 +251,7 @@ static inline Vector2 Matrix3x3TangentTransformVector2(Matrix3x3 m, Vector2 v){
 }
 
 //matrix * column vector
-inline const Vector3 Matrix3x3MultiplyVector3( Matrix3x3 m,Vector3 v){
+static inline Vector3 Matrix3x3MultiplyVector3( Matrix3x3 m,Vector3 v){
    return Vector3Make(v.x*m.matrix[0][0]+v.y*m.matrix[0][1]+v.z*m.matrix[0][2],v.x*m.matrix[1][0]+v.y*m.matrix[1][1]+v.z*m.matrix[1][2], v.x*m.matrix[2][0]+v.y*m.matrix[2][1]+v.z*m.matrix[2][2] );
 }
 

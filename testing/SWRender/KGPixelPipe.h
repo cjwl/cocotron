@@ -36,23 +36,23 @@
 #import "VGImage.h"
 
 typedef enum {
-  VG_PAINT_TYPE_COLOR                         = 0x1B00,
-  VG_PAINT_TYPE_LINEAR_GRADIENT               = 0x1B01,
-  VG_PAINT_TYPE_RADIAL_GRADIENT               = 0x1B02,
-  VG_PAINT_TYPE_PATTERN                       = 0x1B03
+  VG_PAINT_TYPE_COLOR,
+  VG_PAINT_TYPE_LINEAR_GRADIENT,
+  VG_PAINT_TYPE_RADIAL_GRADIENT,
+  VG_PAINT_TYPE_PATTERN
 } VGPaintType;
 
 typedef enum {
-  VG_COLOR_RAMP_SPREAD_PAD                    = 0x1C00,
-  VG_COLOR_RAMP_SPREAD_REPEAT                 = 0x1C01,
-  VG_COLOR_RAMP_SPREAD_REFLECT                = 0x1C02
+  VG_COLOR_RAMP_SPREAD_PAD,
+  VG_COLOR_RAMP_SPREAD_REPEAT,
+  VG_COLOR_RAMP_SPREAD_REFLECT
 } VGColorRampSpreadMode;
 
 
-struct GradientStop {
+typedef struct  {
    RIfloat		offset;
    VGColor		color;
-};
+} GradientStop;
 
 typedef struct {
 	VGPaintType				m_paintType;
@@ -77,13 +77,6 @@ KGPaint *KGPaintAlloc();
 KGPaint *KGPaintInit(KGPaint *self);
 void     KGPaintDealloc(KGPaint *self);
 
-/*-------------------------------------------------------------------*//*!
-* \brief	Encapsulates all information needed for painting a pixel.
-* \param	
-* \return	
-* \note		
-*//*-------------------------------------------------------------------*/
-	
 typedef struct {
    VGImage*                 m_renderingSurface;
    VGImage*           m_mask;
@@ -111,8 +104,8 @@ void KGPixelPipeSetImageQuality(KGPixelPipe *self,CGInterpolationQuality imageQu
 void KGPixelPipeSetTileFillColor(KGPixelPipe *self,VGColor c);
 void KGPixelPipeSetPaint(KGPixelPipe *self,KGPaint* paint);
 //private
-void KGPixelPipeLinearGradient(KGPixelPipe *self,RIfloat& g, RIfloat& rho, RIfloat x, RIfloat y);
-void KGPixelPipeRadialGradient(KGPixelPipe *self,RIfloat &g, RIfloat &rho, RIfloat x, RIfloat y);
+void KGPixelPipeLinearGradient(KGPixelPipe *self,RIfloat *g, RIfloat *rho, RIfloat x, RIfloat y);
+void KGPixelPipeRadialGradient(KGPixelPipe *self,RIfloat *g, RIfloat *rho, RIfloat x, RIfloat y);
 VGColor KGPixelPipeIntegrateColorRamp(KGPixelPipe *self,RIfloat gmin, RIfloat gmax);
 VGColor KGPixelPipeColorRamp(KGPixelPipe *self,RIfloat gradient, RIfloat rho);
 void KGPixelPipeWriteCoverage(KGPixelPipe *self,int x, int y, RIfloat coverage);
