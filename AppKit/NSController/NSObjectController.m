@@ -16,6 +16,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @end
 
 @implementation NSObjectController
++(void)initialize
+{
+	[self setKeys:[NSArray arrayWithObjects:@"editable", nil]
+triggerChangeNotificationsForDependentKey:@"canAdd"];
+	[self setKeys:[NSArray arrayWithObjects:@"editable", nil]
+triggerChangeNotificationsForDependentKey:@"canInsert"];
+	[self setKeys:[NSArray arrayWithObjects:@"editable", @"selection", nil]
+triggerChangeNotificationsForDependentKey:@"canRemove"];
+}
+
 -(id)initWithCoder:(NSCoder*)coder
 {
 	if(self=[super init])

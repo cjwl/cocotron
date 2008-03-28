@@ -484,5 +484,27 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	}
 	return ret;
 }
+
+-(NSUInteger)countByEnumeratingWithState:(NSFastEnumerationState *)state objects:(id *)stackbuf count:(NSUInteger)length;
+{
+	int numObjects=MIN([self count] - state->extra[0], length);
+	int i;
+	state->itemsPtr=stackbuf;
+
+	for(i=state->extra[0]; i<numObjects; i++)
+	{
+		state->itemsPtr[i]=[self objectAtIndex:i];
+	}
+
+	state->extra[0]+=numObjects;
+	
+	state->mutationsPtr=self;
+
+	return numObjects;
+}
 @end
 
+void objc_enumerationMutation()
+{
+	[NSException raise:NSInternalInconsistencyException format:@"collection was mutated during enumeration"];
+}

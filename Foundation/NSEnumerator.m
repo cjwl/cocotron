@@ -28,4 +28,20 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return array;
 }
 
+-(NSUInteger)countByEnumeratingWithState:(NSFastEnumerationState *)state objects:(id *)stackbuf count:(NSUInteger)length;
+{
+	int i;
+	state->itemsPtr=stackbuf;
+	state->mutationsPtr=self;
+
+	for(i=0; i<length; i++)
+	{
+		state->itemsPtr[i]=[self nextObject];
+		if(!state->itemsPtr[i])
+			return i;
+	}	
+	return i;
+}
+
+
 @end

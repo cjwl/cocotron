@@ -357,7 +357,9 @@ BOOL object_cxxConstruct(id self, Class class)
 	
 	if(!self)
 		return YES;
-	return OBJCCallCXXSelector(self, class, cxx_constructor);
+	if(class->info&CLASS_HAS_CXX_STRUCTORS)
+		return OBJCCallCXXSelector(self, class, cxx_constructor);
+	return YES;
 }
 
 BOOL object_cxxDestruct(id self, Class class)
@@ -368,7 +370,9 @@ BOOL object_cxxDestruct(id self, Class class)
 
 	if(!self)
 		return YES;
-	return OBJCCallCXXSelector(self, class, cxx_destructor);
+	if(class->info&CLASS_HAS_CXX_STRUCTORS)
+		return OBJCCallCXXSelector(self, class, cxx_destructor);
+	return YES;
 }
 
 

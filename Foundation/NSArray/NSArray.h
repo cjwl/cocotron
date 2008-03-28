@@ -11,7 +11,19 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @class NSString,NSEnumerator,NSDictionary,NSPredicate,NSIndexSet,NSURL;
 
-@interface NSArray : NSObject <NSCopying,NSMutableCopying,NSCoding>
+typedef struct
+	{
+		unsigned long state;
+		id *itemsPtr;
+		unsigned long *mutationsPtr;
+		unsigned long extra[5];
+	} NSFastEnumerationState;
+
+@protocol NSFastEnumeration
+-(NSUInteger)countByEnumeratingWithState:(NSFastEnumerationState *)state objects:(id *)stackbuf count:(NSUInteger)length;
+@end
+
+@interface NSArray : NSObject <NSCopying,NSMutableCopying,NSCoding,NSFastEnumeration>
 
 -initWithArray:(NSArray *)array;
 -initWithArray:(NSArray *)array copyItems:(BOOL)copyItems;
@@ -74,7 +86,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(NSArray *)sortedArrayUsingDescriptors:(NSArray *)descriptors;
 -(NSArray *)filteredArrayUsingPredicate:(NSPredicate *)predicate;
-
 @end
 
 #import <Foundation/NSMutableArray.h>

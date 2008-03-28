@@ -98,4 +98,8 @@ id NSAutorelease(id object){
    return object;
 }
 
+-(void)drain
+{
+	[self release];
+}
 @end

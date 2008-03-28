@@ -9,6 +9,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSArray.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSException.h>
+#import <Foundation/NSRaise.h>
 #import <Foundation/NSEnumerator.h>
 #import <Foundation/NSNull.h>
 #import <Foundation/NSValue.h>
@@ -18,6 +19,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSKeyValueObserving.h>
 #include <objc/objc-class.h>
 #include <string.h>
+#include <stdio.h>
+#include <malloc.h>
 
 #import "NSKVCMutableArray.h"
 #import "NSString+KVCAdditions.h"
@@ -187,6 +190,27 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	if([self respondsToSelector:sel])
 	{
 		return [self _wrapReturnValueForSelector:sel];
+	}
+	else
+	{
+		char *keyname=alloca(strlen([key cString])+5);
+		strcpy(keyname, [key cString]);
+		char *selname=alloca(strlen(keyname)+5);
+		
+#define TRY_FORMAT( format ) \
+sprintf(selname, format, keyname); \
+sel = sel_getUid(selname); \
+if([self respondsToSelector:sel]) \
+{ \
+return [self _wrapReturnValueForSelector:sel]; \
+}
+		TRY_FORMAT("_%s");
+		keyname[0]=toupper(keyname[0]);
+		TRY_FORMAT("is%s");		
+		TRY_FORMAT("_is%s");
+//		TRY_FORMAT("get%s");
+//		TRY_FORMAT("_get%s");
+#undef TRY_FORMAT
 	}
 	
 	if([isa accessInstanceVariablesDirectly])
@@ -381,3 +405,34 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 
 
+void objc_setProperty (id self, SEL _cmd, size_t offset, id value, BOOL isAtomic, BOOL shouldCopy)
+{
+	if(isAtomic)
+	{
+		NSUnimplementedFunction();
+	}
+	NSLog(@"objc_setProperty %@, %@, %i, %@, %i, %i", self, NSStringFromSelector(_cmd), offset, value, isAtomic, shouldCopy);
+	
+	const char* origName = sel_getName(_cmd);
+	int selLen=strlen(origName);
+	char *sel=__builtin_alloca(selLen+1);
+	strcpy(sel, origName);
+	sel[selLen-1]='\0';
+	if(sel[0]=='_')
+		sel+=4;
+	else
+		sel+=3;
+	sel[0]=tolower(sel[0]);
+	NSString *key=[[NSString alloc] initWithCString:sel];
+	[self willChangeValueForKey:key];
+	
+	void *buffer=(void*)self+offset;
+	if(shouldCopy)
+		*(id*)buffer=[value copy];
+	else
+		*(id*)buffer=[value retain];
+	[self didChangeValueForKey:key];
+
+	[key release];
+
+}

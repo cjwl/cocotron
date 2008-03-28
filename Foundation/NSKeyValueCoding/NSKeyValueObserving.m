@@ -209,6 +209,9 @@ static NSLock *kvoLock=nil;
 -(void)_willChangeValueForKey:(NSString*)key changeOptions:(NSDictionary*)changeOptions
 {
 	NSMutableDictionary* observationInfo=[self observationInfo];
+	
+	if(!observationInfo)
+		return;
 
 	{
 		NSDictionary *dependencies=[(id)[isa observationInfo] objectForKey:_KVO_UnionOfKeysTriggeringChangeNotification];
@@ -298,6 +301,9 @@ static NSLock *kvoLock=nil;
 -(void)_didChangeValueForKey:(NSString*)key changeOptions:(NSDictionary*)ignored
 {
 	NSMutableDictionary* observationInfo=[self observationInfo];
+
+	if(!observationInfo)
+		return;
 
 	{
 		NSDictionary *dependencies=[(id)[isa observationInfo] objectForKey:_KVO_UnionOfKeysTriggeringChangeNotification];
