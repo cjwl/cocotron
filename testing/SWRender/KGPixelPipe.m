@@ -494,8 +494,7 @@ VGColor KGPixelPipeColorRamp(KGPixelPipe *self,RIfloat gradient, RIfloat rho)
 			r = rsrc + rdst
 *//*-------------------------------------------------------------------*/
 
-void KGPixelPipeWriteCoverage(KGPixelPipe *self,int x, int y, RIfloat coverage) 
-{
+static void KGPixelPipeWriteCoverage(KGPixelPipe *self,int x, int y, RIfloat coverage)  {
 	RI_ASSERT(self->m_renderingSurface);
 
 	//apply masking
@@ -823,6 +822,13 @@ void KGPixelPipeWriteCoverage(KGPixelPipe *self,int x, int y, RIfloat coverage)
 	//write result to the destination surface
 	r=VGColorConvert(r,VGImageColorDescriptor(self->m_renderingSurface).internalFormat);
 	VGImageWritePixel(self->m_renderingSurface,x, y, r);
+}
+
+void KGPixelPipeWriteCoverageSpan(KGPixelPipe *self,int x, int y, int length, RIfloat coverage) {
+   int i;
+   
+   for(i=0;i<length;i++,x++)
+    KGPixelPipeWriteCoverage(self,x,y,coverage);
 }
 
 

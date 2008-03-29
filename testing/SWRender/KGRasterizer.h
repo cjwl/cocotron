@@ -48,6 +48,9 @@ typedef struct {
    int         direction;
    Vector2     normal;
    RIfloat     cnst;
+// These are modified per scanline
+   RIfloat		minx;			//for the current scanline
+   RIfloat		maxx;			//for the current scanline
 } Edge;
 
 typedef struct {
@@ -56,13 +59,21 @@ typedef struct {
    RIfloat		weight;
 } Sample;
 
+typedef struct {
+   int    edgeCount;
+   Edge **edges;
+} Scanline;
+
 typedef struct {    
     int _vpx,_vpy,_vpwidth,_vpheight;
     
-    int          _edgeCount;
-    int          _edgeCapacity;
+    int   _edgeCount;
+    int   _edgeCapacity;
     Edge *_edges;
 
+    int       _scanlineCount;
+    Scanline *_scanlines;
+    
 	Sample samples[32];
 	int numSamples;
 	RIfloat sumWeights ;

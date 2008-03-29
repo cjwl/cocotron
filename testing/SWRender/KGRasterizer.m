@@ -44,6 +44,9 @@ KGRasterizer *KGRasterizerInit(KGRasterizer *self) {
    self->_edgeCount=0;
    self->_edgeCapacity=256;
    self->_edges=(Edge *)NSZoneMalloc(NULL,self->_edgeCapacity*sizeof(Edge));
+   
+   self->_scanlineCount=0;
+   self->_scanlines=NULL;
    return self;
 }
 
@@ -59,6 +62,26 @@ void KGRasterizerSetViewport(KGRasterizer *self,int vpx,int vpy,int vpwidth,int 
     self->_vpy=vpy;
     self->_vpwidth=vpwidth;
     self->_vpheight=vpheight;
+    
+    if(self->_scanlineCount>vpheight){
+     int i;
+     
+     for(i=vpheight;i<self->_scanlineCount;i++)
+      if(self->_scanlines[i].edges!=NULL){
+       NSZoneFree(NULL,self->_scanlines[i].edges);
+       self->_scanlines[i].edges=NULL;
+       self->_scanlines[i].edgeCount=0;
+      }
+    }
+    if(self->_scanlineCount<vpheight){
+     self->_scanlines=NSZoneRealloc(NULL,self->_scanlines,vpheight*sizeof(Scanline));
+     int i;
+     for(i=self->_scanlineCount;i<vpheight;i++){
+      self->_scanlines[i].edgeCount=0;
+      self->_scanlines[i].edges=NULL;
+     }
+    }
+    self->_scanlineCount=vpheight;
 }
 
 /*-------------------------------------------------------------------*//*!
@@ -70,6 +93,15 @@ void KGRasterizerSetViewport(KGRasterizer *self,int vpx,int vpy,int vpwidth,int 
 
 void KGRasterizerClear(KGRasterizer *self) {
    self->_edgeCount=0;
+   int i;
+   for(i=0;i<self->_scanlineCount;i++){
+    self->_scanlines[i].edgeCount=0;
+    if(self->_scanlines[i].edges!=NULL){
+     NSZoneFree(NULL,self->_scanlines[i].edges);
+     self->_scanlines[i].edges=NULL;
+    }
+   }
+   
 }
 
 /*-------------------------------------------------------------------*//*!
@@ -80,34 +112,36 @@ void KGRasterizerClear(KGRasterizer *self) {
 *//*-------------------------------------------------------------------*/
 
 void KGRasterizerAddEdge(KGRasterizer *self,const Vector2 v0, const Vector2 v1) {	//throws bad_alloc
-	if( self->_edgeCount >= RI_MAX_EDGES )
-     NSLog(@"too many edges");
-
 	if(v0.y == v1.y)
 		return;	//skip horizontal edges (they don't affect rasterization since we scan horizontally)
 
-	Edge e;
-    
-    if(v0.y < v1.y)
-    {	//edge is going upward
-        e.v0 = v0;
-        e.v1 = v1;
-        e.direction = 1;
-    }
-    else
-    {	//edge is going downward
-        e.v0 = v1;
-        e.v1 = v0;
-        e.direction = -1;
-    }
-    e.normal=Vector2Make(e.v0.y - e.v1.y, e.v1.x - e.v0.x);	//edge normal
-    e.cnst = Vector2Dot(e.v0, e.normal);	//distance of v0 from the origin along the edge normal
-    
+	if( self->_edgeCount >= RI_MAX_EDGES )
+     NSLog(@"too many edges");
+
+	Edge *edge;
     if(self->_edgeCount+1>=self->_edgeCapacity){
      self->_edgeCapacity*=2;
      self->_edges=(Edge *)NSZoneRealloc(NULL,self->_edges,self->_edgeCapacity*sizeof(Edge));
     }
-    self->_edges[self->_edgeCount++]=e;
+    edge=self->_edges+self->_edgeCount;
+    self->_edgeCount++;
+    
+    if(v0.y < v1.y)
+    {	//edge is going upward
+        edge->v0 = v0;
+        edge->v1 = v1;
+        edge->direction = 1;
+    }
+    else
+    {	//edge is going downward
+        edge->v0 = v1;
+        edge->v1 = v0;
+        edge->direction = -1;
+    }
+    edge->normal=Vector2Make(edge->v0.y - edge->v1.y, edge->v1.x - edge->v0.x);	//edge normal
+    edge->cnst = Vector2Dot(edge->v0, edge->normal);	//distance of v0 from the origin along the edge normal
+    edge->minx=edge->maxx=0;
+    
 }
 
 /*-------------------------------------------------------------------*//*!
@@ -156,6 +190,9 @@ void KGRasterizerSetShouldAntialias(KGRasterizer *self,BOOL antialias) {
 		self->numSamples = 8;
 		self->fradius = .75;
         int i;
+        RIfloat px=0;
+        RIfloat py=0;
+        
 		for(i=0;i<self->numSamples;i++)
 		{	//Gaussian filter, implemented using Hammersley point set for sample point locations
 			RIfloat x = (RIfloat)radicalInverseBase2(i);
@@ -173,6 +210,7 @@ void KGRasterizerSetShouldAntialias(KGRasterizer *self,BOOL antialias) {
 			
 			self->samples[i].x = x;
 			self->samples[i].y = y;
+            
 			self->sumWeights += self->samples[i].weight;
 		}
 	}
@@ -187,94 +225,24 @@ void KGRasterizerSetShouldAntialias(KGRasterizer *self,BOOL antialias) {
 * \note		
 *//*-------------------------------------------------------------------*/
 
-typedef struct {
-   Vector2		v0;
-   Vector2		v1;
-   int			direction;		//-1 down, 1 up
-   RIfloat		minx;			//for the current scanline
-   RIfloat		maxx;			//for the current scanline
-   Vector2		n;
-   RIfloat		cnst;
-} ActiveEdge;
-
-typedef struct {
-   int _count;
-   int _capacity;
-   ActiveEdge *_activeEdges;
-} ActiveEdgeTable;
-
-static inline void activeEdgeTableInit(ActiveEdgeTable *aet){
-   aet->_count=0;
-   aet->_capacity=512;
-   aet->_activeEdges=(ActiveEdge *)NSZoneMalloc(NULL,aet->_capacity*sizeof(ActiveEdge));
-}
-
-static inline void activeEdgeTableFree(ActiveEdgeTable *aet){
-   NSZoneFree(NULL,aet->_activeEdges);
-}
-
-static inline int activeEdgeTableCount(ActiveEdgeTable *aet){
-   return aet->_count;
-}
-
-static inline void activeEdgeTableReset(ActiveEdgeTable *aet){
-   aet->_count=0;
-}
-
-static inline ActiveEdge *activeEdgeTableAt(ActiveEdgeTable *aet,int i){
-   RI_ASSERT(i<aet->_count);
-   
-   return aet->_activeEdges+i;
-}
-
-static inline void activeEdgeTableAdd(ActiveEdgeTable *aet,ActiveEdge edge){
-   if(aet->_count+1>=aet->_capacity){
-    aet->_capacity*=2;
-    aet->_activeEdges=(ActiveEdge *)NSZoneRealloc(NULL,aet->_activeEdges,aet->_capacity*sizeof(ActiveEdge));
-   }
-
-   aet->_activeEdges[aet->_count++]=edge;
-}
-
-static inline void activeEdgeTableSort(ActiveEdgeTable *aet,int start,int end){
+static inline void scanlineSort(Scanline *scanline,int start,int end){
     if (start < end) { 
-      ActiveEdge pivot=aet->_activeEdges[end];
+      Edge *pivot=scanline->edges[end];
       int i = start; 
       int j = end; 
       while (i != j) { 
-        if (aet->_activeEdges[i].minx < pivot.minx) { 
+        if (scanline->edges[i]->minx < pivot->minx) { 
           i++; 
         } 
         else { 
-          aet->_activeEdges[j] = aet->_activeEdges[i]; 
-          aet->_activeEdges[i] = aet->_activeEdges[j-1]; 
+          scanline->edges[j] = scanline->edges[i]; 
+          scanline->edges[i] = scanline->edges[j-1]; 
           j--; 
         } 
       } 
-      aet->_activeEdges[j] = pivot; 
-      activeEdgeTableSort(aet, start, j-1); 
-      activeEdgeTableSort(aet, j+1, end); 
-    } 
-}
-
-void KGRasterizerSortEdgeTable(KGRasterizer *self,int start,int end) {
-    if (start < end) { 
-      Edge pivot=self->_edges[end];
-      int i = start; 
-      int j = end; 
-      while (i != j) { 
-        if (self->_edges[i].v0.y < pivot.v0.y || (self->_edges[i].v0.y==pivot.v0.y && self->_edges[i].v1.y<pivot.v1.y)) { 
-          i ++; 
-        } 
-        else { 
-          self->_edges[j] = self->_edges[i]; 
-          self->_edges[i] = self->_edges[j-1]; 
-          j --; 
-        } 
-      } 
-      self->_edges[j] = pivot; 
-      KGRasterizerSortEdgeTable(self,start, j-1); 
-      KGRasterizerSortEdgeTable(self,j+1, end); 
+      scanline->edges[j] = pivot; 
+      scanlineSort(scanline, start, j-1); 
+      scanlineSort(scanline, j+1, end); 
     } 
 }
 
@@ -295,136 +263,148 @@ void KGRasterizerFill(KGRasterizer *self,VGFillRule fillRule, KGPixelPipe *pixel
 	int fillRuleMask = 1;
 	if(fillRule == VG_NON_ZERO)
 		fillRuleMask = -1;
-
-	//fill the screen
-	ActiveEdgeTable aet;
-
-    activeEdgeTableInit(&aet);
-    
-    KGRasterizerSortEdgeTable(self,0,self->_edgeCount-1);
     
     int miny=self->_vpy;
     int maxy=self->_vpy+self->_vpheight;
 
-    if(self->_edgeCount>0){
-     int lowesty=floorf(self->_edges[0].v0.y-self->fradius+0.5f);
+    // build scanlines 
+    int i;
+    for(i=0;i<self->_edgeCount;i++){
+     Edge *edge=self->_edges+i;
      
-     if(lowesty>miny){
-      miny=lowesty;
+     // FIX, quadruple check these two calculations
+     int miny=floorf(edge->v0.y-  self->fradius);
+     int maxy=ceilf(edge->v1.y+ self->fradius);
+
+     miny=RI_INT_MAX(miny,self->_vpy);
+     maxy=RI_INT_MIN(maxy,(self->_vpy+self->_vpheight-1));
+     miny-=self->_vpy;
+     maxy-=self->_vpy;
+     for(;miny<=maxy;miny++){
+      Scanline *line=self->_scanlines+miny;
+     
+      line->edgeCount++;
+      line->edges=NSZoneRealloc(NULL,line->edges,line->edgeCount*sizeof(Edge *));
+      line->edges[line->edgeCount-1]=edge;
      }
     }
     
-    int startAtEdge=0;
     int j;
-	for(j=miny;j<maxy;j++)
-	{
-        RIfloat cminy = (RIfloat)j - self->fradius + 0.5f;
-		RIfloat cmaxy = (RIfloat)j + self->fradius + 0.5f;
+	for(j=miny;j<maxy;j++){
+     Scanline *scanline=self->_scanlines+(j-self->_vpy);
+     
+     if(scanline->edgeCount==0)
+      continue;
+      
+     Vector2 pc=Vector2Make(0,j+0.5f); // pixel center
+     RIfloat cminy = (RIfloat)j - self->fradius + 0.5f;
+     RIfloat cmaxy = (RIfloat)j + self->fradius + 0.5f;
         
-		//simple AET: scan through all the edges and pick the ones intersecting this scanline
-        activeEdgeTableReset(&aet);
-        BOOL gotActiveEdge=NO;
-        int  e;
-		for(e=startAtEdge;e<self->_edgeCount;e++) {
-			const Edge ed = self->_edges[e];
+     int  e;
 
-			if(cmaxy >= ed.v0.y && cminy < ed.v1.y){
-                if(!gotActiveEdge){
-                 gotActiveEdge=YES;
-                 startAtEdge=e;
-                }
-			    ActiveEdge ae;
-            
-                ae.v0=ed.v0;
-                ae.v1=ed.v1;
-                ae.direction=ed.direction;
-                ae.n=ed.normal;
-                ae.cnst=ed.cnst;
-                
-				//compute edge min and max x-coordinates for this scanline
-				Vector2 vd = Vector2Subtract(ae.v1,ae.v0);
-				RIfloat wl = 1.0f / vd.y;
-				RIfloat bminx = RI_MIN(ae.v0.x, ae.v1.x);
-				RIfloat bmaxx = RI_MAX(ae.v0.x, ae.v1.x);
-				RIfloat sx = ae.v0.x + vd.x * (cminy - ae.v0.y) * wl;
-				RIfloat ex = ae.v0.x + vd.x * (cmaxy - ae.v0.y) * wl;
-				sx = RI_CLAMP(sx, bminx, bmaxx);
-				ex = RI_CLAMP(ex, bminx, bmaxx);
-				ae.minx = RI_MIN(sx,ex);
-				ae.maxx = RI_MAX(sx,ex);
-                activeEdgeTableAdd(&aet,ae);
-			}
-            else if(ed.v0.y>cmaxy)
-             break;
-		}
+     for(e=0;e<scanline->edgeCount;e++) {
+	  Edge *edge = scanline->edges[e];
 
-		if(!activeEdgeTableCount(&aet))
-			continue;	//no edges on the whole scanline, skip it
+      //compute edge min and max x-coordinates for this scanline
+        Vector2 vd = Vector2Subtract(edge->v1,edge->v0);
+        RIfloat wl = 1.0f / vd.y;
+        RIfloat bminx = RI_MIN(edge->v0.x, edge->v1.x);
+        RIfloat bmaxx = RI_MAX(edge->v0.x, edge->v1.x);
+        RIfloat sx = edge->v0.x + vd.x * (cminy - edge->v0.y) * wl;
+        RIfloat ex = edge->v0.x + vd.x * (cmaxy - edge->v0.y) * wl;
+        sx = RI_CLAMP(sx, bminx, bmaxx);
+        ex = RI_CLAMP(ex, bminx, bmaxx);
+        edge->minx = RI_MIN(sx,ex);
+        edge->maxx = RI_MAX(sx,ex);
+    }
+     scanlineSort(scanline,0,scanline->edgeCount-1);
 
-        activeEdgeTableSort(&aet,0,activeEdgeTableCount(&aet)-1);
+        int     s;
+      
+      float sidePre[scanline->edgeCount][self->numSamples];
+      for(e=0;e<scanline->edgeCount;e++){
+ 	    Edge *edge = scanline->edges[e];
         
+        for(s=0;s<self->numSamples;s++){
+           RIfloat spy = pc.y+self->samples[s].y;
+          if(spy >= edge->v0.y && spy < edge->v1.y)
+           sidePre[e][s] = (spy*edge->normal.y - edge->cnst + self->samples[s].x*edge->normal.x);
+         else
+           sidePre[e][s]=0.0/0.0;//NaN
+        }
+      }
+      
 		//fill the scanline
 		int aes = 0;
 		int aen = 0;
         int i;
-		for(i=self->_vpx;i<self->_vpx+self->_vpwidth;)
-		{
-			Vector2 pc=Vector2Make(i + 0.5f, j + 0.5f);		//pixel center
-			
+        
+		for(i=self->_vpx;i<self->_vpx+self->_vpwidth;){
+            pc.x=i+0.5f;
+            			
 			//find edges that intersect or are to the left of the pixel antialiasing filter
-			while(aes < activeEdgeTableCount(&aet) && pc.x + self->fradius >= activeEdgeTableAt(&aet,aes)->minx)
+			while(aes < scanline->edgeCount && pc.x + self->fradius >= scanline->edges[aes]->minx)
 				aes++;
 			//edges [0,aes] may have an effect on winding, and need to be evaluated while sampling
 
-			//compute coverage
-			RIfloat coverage = 0.0f;
-            int     s;
-			for(s=0;s<self->numSamples;s++){
-				Vector2 sp = pc;	//sampling point
-			    sp.x += self->samples[s].x;
-                sp.y += self->samples[s].y;
-
+            int winding[self->numSamples];
+            
+            for(s=0;s<self->numSamples;s++)
+             winding[s]=0;
+             
 				//compute winding number by evaluating the edge functions of edges to the left of the sampling point
-				int winding = 0;
-				for(e=0;e<aes;e++){
-                
-					if(sp.y >= activeEdgeTableAt(&aet,e)->v0.y && sp.y < activeEdgeTableAt(&aet,e)->v1.y){
-                    	//evaluate edge function to determine on which side of the edge the sampling point lies
-						RIfloat side = Vector2Dot(sp, activeEdgeTableAt(&aet,e)->n) - activeEdgeTableAt(&aet,e)->cnst;
-						if(side <= 0.0f)	//implicit tie breaking: a sampling point on an opening edge is in, on a closing edge it's out
-							winding += activeEdgeTableAt(&aet,e)->direction;
-					}
-				}
-				if( winding & fillRuleMask )
-					coverage += self->samples[s].weight;
+            for(e=0;e<aes;e++){
+             Edge   *edge=scanline->edges[e];
+             int     direction=edge->direction;
+             RIfloat pcxnormal=pc.x*edge->normal.x;
+#if 0
+             RIfloat side[self->numSamples];
+             
+             for(s=0;s<self->numSamples;s++)
+              side[s]=pcxnormal;
+              
+             for(s=0;s<self->numSamples;s++)
+              side[s]+=sidePre[e][s];
+              
+             for(s=0;s<self->numSamples;s++)
+              if(side[s]<0.0f)
+               winding[s]+=direction;
+#else            
+             for(s=0;s<self->numSamples;s++){
+              RIfloat side=pcxnormal+sidePre[e][s];
+                        
+			  if(side <= 0.0f)	//implicit tie breaking: a sampling point on an opening edge is in, on a closing edge it's out
+			   winding[s] += direction;
+		     }
+#endif
 			}
+
+			RIfloat coverage = 0.0f;
+            
+            for(s=0;s<self->numSamples;s++)
+                if( winding[s] & fillRuleMask )
+					coverage += self->samples[s].weight;
+            
+			coverage /= self->sumWeights;
 
 			//constant coverage optimization:
 			//scan AET from left to right and skip all the edges that are completely to the left of the pixel filter.
 			//since AET is sorted by minx, the edge we stop at is the leftmost of the edges we haven't passed yet.
 			//if that edge is to the right of this pixel, coverage is constant between this pixel and the start of the edge.
-			while(aen < activeEdgeTableCount(&aet) && activeEdgeTableAt(&aet,aen)->maxx < pc.x - self->fradius - 0.01f)	//0.01 is a safety region to prevent too aggressive optimization due to numerical inaccuracy
+
+			while(aen < scanline->edgeCount && scanline->edges[aen]->maxx < pc.x - self->fradius - 0.01f)	//0.01 is a safety region to prevent too aggressive optimization due to numerical inaccuracy
 				aen++;
 
 			int endSpan = self->_vpx + self->_vpwidth;	//endSpan is the first pixel NOT part of the span
-			if(aen < activeEdgeTableCount(&aet))
-				endSpan = RI_INT_MAX(i+1, RI_INT_MIN(endSpan, (int)ceil(activeEdgeTableAt(&aet,aen)->minx - self->fradius - 0.5f)));
-
-			coverage /= self->sumWeights;
+			if(aen < scanline->edgeCount)
+				endSpan = RI_INT_MAX(i+1, RI_INT_MIN(endSpan, (int)ceil(scanline->edges[aen]->minx - self->fradius - 0.5f)));
 
 			//fill a run of pixels with constant coverage
 			if(coverage > 0.0f)
-			{
-				for(;i<endSpan;i++)
-				{
-						KGPixelPipeWriteCoverage(pixelPipe,i, j, coverage);
-				}
-			}
+			 KGPixelPipeWriteCoverageSpan(pixelPipe,i,j,(endSpan-i),coverage);
 
 			i = endSpan;
-		}
+        }
 	}
-
-    activeEdgeTableFree(&aet);
 }
 

@@ -176,32 +176,21 @@ unsigned int VGColorPack(VGColor color,VGColorDescriptor outputDesc) {
 
 // Can't use 'gamma' ?
 static RIfloat dogamma(RIfloat c)
-{
-#if 1
-#warning no gamma
-    return c;
-#else
-    
+{    
 	if( c <= 0.00304f )
 		c *= 12.92f;
 	else
 		c = 1.0556f * (RIfloat)pow(c, 1.0f/2.4f) - 0.0556f;
 	return c;
-#endif
 }
 
 static RIfloat invgamma(RIfloat c)
 {
-#if 1
-#warning no gamma
-    return c;
-#else
 	if( c <= 0.03928f )
 		c /= 12.92f;
 	else
 		c = (RIfloat)pow((c + 0.0556f)/1.0556f, 2.4f);
 	return c;
-#endif
 }
 
 static RIfloat lRGBtoL(RIfloat r, RIfloat g, RIfloat b)
