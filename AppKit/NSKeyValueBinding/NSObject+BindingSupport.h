@@ -42,6 +42,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 // unbinds all bindings used; should be called in -dealloc
 -(void)_unbindAllBindings;
+
+// the currently set value is a placeholder and should be displayed accordingly
+-(id)_setCurrentValueIsPlaceholder:(BOOL)isPlaceholder;
 @end
 
 APPKIT_EXPORT NSString* NSObservedObjectKey;

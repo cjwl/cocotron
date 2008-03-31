@@ -11,9 +11,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @interface _NSMultipleValueBinder : _NSBinder 
 {
-	NSArray* rowValues;
-	NSString* arrayKeyPath;
-	NSString* valueKeyPath;
+	NSArray* _rowValues;
+	NSString* _arrayKeyPath;
+	NSString* _valueKeyPath;
 }
 -(void)applyToCell:(id)cell inRow:(int)row;
 -(void)applyFromCell:(id)cell inRow:(int)row;

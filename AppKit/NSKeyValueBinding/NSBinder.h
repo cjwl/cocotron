@@ -11,12 +11,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @class NSString, NSMutableDictionary, NSValueTransformer;
 
 @interface _NSBinder : NSObject {
-	id source;
-	id destination;
-	NSString* keyPath;
-	NSString* bindingPath;
-	NSString* binding;
-	NSMutableDictionary *options;
+	id _source;
+	id _destination;
+	NSString* _keyPath;
+	NSString* _bindingPath;
+	NSString* _binding;
+	NSMutableDictionary *_options;
 }
 
 
@@ -55,5 +55,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(BOOL)raisesForNotApplicableKeys;
 -(id)multipleValuesPlaceholder;
 -(id)noSelectionPlaceholder;
+-(id)nullPlaceholder;
 @end
 

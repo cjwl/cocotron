@@ -22,36 +22,36 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @implementation _NSBinder (BindingOptions)
 -(BOOL)conditionallySetsEditable
 {
-	return [[options objectForKey:NSConditionallySetsEditableBindingOption] boolValue];
+	return [[_options objectForKey:NSConditionallySetsEditableBindingOption] boolValue];
 }
 
 -(BOOL)conditionallySetsEnabled
 {
 	// FIX: needs to read from options
-	if([source respondsToSelector:@selector(setEditable:)])
+	if([_source respondsToSelector:@selector(setEditable:)])
 		return YES;
 	return NO;
 }
 
 -(BOOL)allowsEditingMultipleValues
 {
-	return [[options objectForKey:NSAllowsEditingMultipleValuesSelectionBindingOption] boolValue];
+	return [[_options objectForKey:NSAllowsEditingMultipleValuesSelectionBindingOption] boolValue];
 }
 
 -(BOOL)createsSortDescriptor
 {
-	return [[options objectForKey:NSCreatesSortDescriptorBindingOption] boolValue];
+	return [[_options objectForKey:NSCreatesSortDescriptorBindingOption] boolValue];
 }
 
 
 -(BOOL)raisesForNotApplicableKeys
 {
-	return [[options objectForKey:NSRaisesForNotApplicableKeysBindingOption] boolValue];
+	return [[_options objectForKey:NSRaisesForNotApplicableKeysBindingOption] boolValue];
 }
 
 -(id)multipleValuesPlaceholder
 {
-	id ret=[options objectForKey:NSMultipleValuesPlaceholderBindingOption];
+	id ret=[_options objectForKey:NSMultipleValuesPlaceholderBindingOption];
 	if(!ret)
 		return NSMultipleValuesMarker;
 	return ret;
@@ -59,7 +59,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(id)noSelectionPlaceholder
 {
-	id ret=[options objectForKey:NSNoSelectionPlaceholderBindingOption];
+	id ret=[_options objectForKey:NSNoSelectionPlaceholderBindingOption];
 	if(!ret)
 		return NSNoSelectionMarker;
 	return ret;
@@ -67,7 +67,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(id)nullPlaceholder
 {
-	id ret=[options objectForKey:NSNullPlaceholderBindingOption];
+	id ret=[_options objectForKey:NSNullPlaceholderBindingOption];
 	if(!ret)
 		return NSNoSelectionMarker;
 	return ret;
@@ -75,14 +75,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(id)valueTransformer
 {
-	id ret=[options objectForKey:NSValueTransformerBindingOption];
+	id ret=[_options objectForKey:NSValueTransformerBindingOption];
 	if(!ret)
 	{
-		ret=[options objectForKey:NSValueTransformerNameBindingOption];
+		ret=[_options objectForKey:NSValueTransformerNameBindingOption];
 		if(!ret)
 			return nil;
 		ret=[NSValueTransformer valueTransformerForName:ret];
-		[options setObject:ret forKey:NSValueTransformerBindingOption];
+		[_options setObject:ret forKey:NSValueTransformerBindingOption];
 	}
 	return ret;	
 }
@@ -110,78 +110,78 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @implementation _NSBinder
 
 - (id)source {
-    return [[source retain] autorelease];
+    return [[_source retain] autorelease];
 }
 
 - (void)setSource:(id)value {
-    if (source != value) 
+    if (_source != value) 
 	{
-        source = value;
-		[self setBindingPath:[source _replacementKeyPathForBinding:binding]];
+        _source = value;
+		[self setBindingPath:[_source _replacementKeyPathForBinding:_binding]];
     }
 }
 
 - (id)destination 
 {
-    return [[destination retain] autorelease];
+    return [[_destination retain] autorelease];
 }
 
 - (void)setDestination:(id)value 
 {
-    if (destination != value) 
+    if (_destination != value) 
 	{
-		[destination release];
-        destination = [value retain];
+		[_destination release];
+        _destination = [value retain];
     }
 }
 
 - (NSString*)keyPath {
-    return [[keyPath retain] autorelease];
+    return [[_keyPath retain] autorelease];
 }
 
 - (void)setKeyPath:(NSString*)value {
-    if (keyPath != value) {
-        [keyPath release];
-        keyPath = [value copy];
+    if (_keyPath != value) {
+        [_keyPath release];
+        _keyPath = [value copy];
     }
 }
 
 - (NSString*)binding {
-    return [[binding retain] autorelease];
+    return [[_binding retain] autorelease];
 }
 
 - (void)setBinding:(NSString*)value {
-    if (binding != value) {
-        [binding release];
-        binding = [value copy];
-		[self setBindingPath:[source _replacementKeyPathForBinding:binding]];
+    if (_binding != value) {
+        [_binding release];
+        _binding = [value copy];
+		[self setBindingPath:[_source _replacementKeyPathForBinding:_binding]];
     }
 }
 
 -(id)defaultBindingOptionsForBinding:(id)thisBinding
 {
-	return [source _defaultBindingOptionsForBinding:thisBinding];
+	return [_source _defaultBindingOptionsForBinding:thisBinding];
 }
 
 - (id)options {
-    return [[options retain] autorelease];
+    return [[_options retain] autorelease];
 }
 
 - (void)setOptions:(id)value {
-	[options release];
-	options=[[self defaultBindingOptionsForBinding:binding] mutableCopy];
+	[_options release];
+	_options=[[self defaultBindingOptionsForBinding:_binding] mutableCopy];
 	if(value)
-		[options setValuesForKeysWithDictionary:value];
+		[_options setValuesForKeysWithDictionary:value];
 }
 
 - (id)bindingPath {
-    return [[bindingPath retain] autorelease];
+    return [[_bindingPath retain] autorelease];
 }
 
 - (void)setBindingPath:(id)value {
-    if (bindingPath != value) {
-        [bindingPath release];
-        bindingPath = [value copy];
+    if (_bindingPath != value) {
+        [_bindingPath release];
+        _bindingPath = [value copy];
     }
 }
 
@@ -191,11 +191,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)dealloc
 {
 	[self stopObservingChanges];
-	[keyPath release];
-	[binding release];
-	[options release];
-	[bindingPath release];
-	[destination retain];
+	[_keyPath release];
+	[_binding release];
+	[_options release];
+	[_bindingPath release];
+	[_destination retain];
 	[super dealloc];
 }
 
@@ -210,7 +210,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(NSComparisonResult)compare:(id)other
 {
 	// FIXME: needs to be a compare understanding that 11<20
-	return [binding compare:[other binding]];
+	return [_binding compare:[other binding]];
 }
 
 -(id)peerBinders
@@ -218,15 +218,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	//NSRange numberAtEnd=[binding rangeOfCharacterFromSet:[NSCharacterSet decimalDigitCharacterSet]
 	//											 options:NSBackwardsSearch|NSAnchoredSearch];
 	// FIXME: total hack. assume only one digit at end, 1-9
-	NSRange numberAtEnd=NSMakeRange([binding length]-1, 1);
-	if([[binding substringWithRange:numberAtEnd] intValue]==0)
+	NSRange numberAtEnd=NSMakeRange([_binding length]-1, 1);
+	if([[_binding substringWithRange:numberAtEnd] intValue]==0)
 		return nil;
 	
 	if(numberAtEnd.location==NSNotFound)
 		return nil;
-	id baseName=[binding substringToIndex:numberAtEnd.location];
+	id baseName=[_binding substringToIndex:numberAtEnd.location];
 	
-	id binders=[[source _allUsedBinders] objectEnumerator];
+	id binders=[[_source _allUsedBinders] objectEnumerator];
 	id binder;
 	id ret=[NSMutableArray array];
 	while((binder=[binders nextObject])!=nil)
@@ -239,7 +239,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(NSString*)description
 {
-	return [NSString stringWithFormat:@"%@: %@", [self className], binding];
+	return [NSString stringWithFormat:@"%@: %@", [self className], _binding];
 }
 @end
 

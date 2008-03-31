@@ -20,12 +20,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 {
 	//NSLog(@"binding between %@.%@ alias %@ and %@.%@ (%@)", [source className], binding, bindingPath, [destination className], keyPath, self);
 
-	[source addObserver:self
-			 forKeyPath:bindingPath 
+	[_source addObserver:self
+			 forKeyPath:_bindingPath 
 				options:0
 				context:nil];
-	[destination addObserver:self 
-				  forKeyPath:keyPath 
+	[_destination addObserver:self 
+				  forKeyPath:_keyPath 
 					 options:0
 					 context:nil];
 }
@@ -33,8 +33,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)stopObservingChanges
 {
 	NS_DURING
-		[source removeObserver:self forKeyPath:bindingPath];
-		[destination removeObserver:self forKeyPath:keyPath];
+		[_source removeObserver:self forKeyPath:_bindingPath];
+		[_destination removeObserver:self forKeyPath:_keyPath];
 	NS_HANDLER
 	NS_ENDHANDLER
 }
@@ -51,7 +51,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 		peers=[peers sortedArrayUsingSelector:@selector(compare:)];
 		id values=[peers valueForKeyPath:@"realDestinationValue"];
 		int i;
-		id pattern=[[[options objectForKey:@"NSDisplayPattern"] mutableCopy] autorelease];
+		id pattern=[[[_options objectForKey:@"NSDisplayPattern"] mutableCopy] autorelease];
 		if(pattern)
 		{
 			for(i=0; i<[peers count]; i++)
@@ -65,7 +65,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 		else if([[values lastObject] isKindOfClass:[NSNumber class]])
 		{
 			BOOL ret;
-			if([binding isEqual:@"hidden"])
+			if([_binding isEqual:@"hidden"])
 			{
 				ret=NO;
 				for(i=0; i<[peers count]; i++)
@@ -94,19 +94,19 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 		return pattern;
 	}
 	else
-		return [destination valueForKeyPath:keyPath];
+		return [_destination valueForKeyPath:_keyPath];
 }
 
 -(id)_realDestinationValue
 {
-	return [destination valueForKeyPath:keyPath];
+	return [_destination valueForKeyPath:_keyPath];
 }
 
 -(void)syncUp
 {
 	NS_DURING
 	if([self destinationValue])
-		[source setValue:[self destinationValue] forKeyPath:bindingPath];
+		[_source setValue:[self destinationValue] forKeyPath:_bindingPath];
 	NS_HANDLER
 		if([self raisesForNotApplicableKeys])
 			[localException raise];
@@ -118,14 +118,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 {
 	[self stopObservingChanges];
 
-	if(object==source)
+	if(object==_source)
 	{
 		//NSLog(@"bind event from %@.%@ alias %@ to %@.%@ (%@)", [source className], binding, bindingPath, [destination className], keyPath, self);
 
-		[destination setValue:[source valueForKeyPath:bindingPath]
-				   forKeyPath:keyPath];
+		[_destination setValue:[_source valueForKeyPath:_bindingPath]
+				   forKeyPath:_keyPath];
 	}
-	else if(object==destination)
+	else if(object==_destination)
 	{
 		//NSLog(@"bind event from %@.%@ to %@.%@ alias %@ (%@)", [destination className], keyPath, [source className], binding, bindingPath, self);
 		id newValue=[self destinationValue];
@@ -152,19 +152,19 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 		}
 
 		if([self conditionallySetsEditable])
-			[source setEditable:editable];
+			[_source setEditable:editable];
 		if([self conditionallySetsEnabled])
-			[source setEnabled:editable];
+			[_source setEnabled:editable];
 		
-		[source setValue:newValue
-			  forKeyPath:bindingPath];
+		[_source setValue:newValue
+			  forKeyPath:_bindingPath];
 
-		if(isPlaceholder && [source respondsToSelector:@selector(_setCurrentValueIsPlaceholder:)])
-			[source _setCurrentValueIsPlaceholder:YES];
+		if(isPlaceholder && [_source respondsToSelector:@selector(_setCurrentValueIsPlaceholder:)])
+			[_source _setCurrentValueIsPlaceholder:YES];
 	}
 	else
 	{
-		NSLog(@"unexpected change notification for object %@ (src %@, dest %@)", object, source, destination);
+		NSLog(@"unexpected change notification for object %@ (src %@, dest %@)", object, _source, _destination);
 	}
 	
 	[self startObservingChanges];

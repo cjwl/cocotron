@@ -418,19 +418,20 @@ void objc_setProperty (id self, SEL _cmd, size_t offset, id value, BOOL isAtomic
 	char *sel=__builtin_alloca(selLen+1);
 	strcpy(sel, origName);
 	sel[selLen-1]='\0';
-	if(sel[0]=='_')
-		sel+=4;
-	else
-		sel+=3;
+	sel+=3;
 	sel[0]=tolower(sel[0]);
 	NSString *key=[[NSString alloc] initWithCString:sel];
 	[self willChangeValueForKey:key];
 	
 	void *buffer=(void*)self+offset;
+	id oldValue=*(id*)buffer;
+	
 	if(shouldCopy)
 		*(id*)buffer=[value copy];
 	else
 		*(id*)buffer=[value retain];
+	
+	[oldValue release];
 	[self didChangeValueForKey:key];
 
 	[key release];

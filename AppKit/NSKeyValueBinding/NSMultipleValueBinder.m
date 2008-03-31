@@ -33,58 +33,58 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 - (NSArray *)rowValues 
 {
-    return [[rowValues retain] autorelease];
+    return [[_rowValues retain] autorelease];
 }
 
 - (void)setRowValues:(NSArray *)value 
 {
-    if (rowValues != value)
+    if (_rowValues != value)
 	{
-        [rowValues release];
-        rowValues = [value retain];
+        [_rowValues release];
+        _rowValues = [value retain];
     }
 }
 
 -(void)applyToObject:(id)object inRow:(int)row keyPath:(id)path
 {
-	[object setValue:[[rowValues objectAtIndex:row] valueForKeyPath:valueKeyPath] forKey:path];
+	[object setValue:[[_rowValues objectAtIndex:row] valueForKeyPath:_valueKeyPath] forKey:path];
 }
 
 -(void)applyToObject:(id)object inRow:(int)row
 {
-	[self applyToObject:object inRow:row keyPath:bindingPath];
+	[self applyToObject:object inRow:row keyPath:_bindingPath];
 }
 
 -(void)applyToCell:(id)cell inRow:(int)row
 {
-	[self applyToObject:cell inRow:row keyPath:bindingPath];
+	[self applyToObject:cell inRow:row keyPath:_bindingPath];
 }
 
 -(void)applyFromObject:(id)object inRow:(int)row keyPath:(id)keypath
 {
-	[[rowValues objectAtIndex:row] setValue:[object valueForKeyPath:keypath] 
-								 forKeyPath:valueKeyPath];
+	[[_rowValues objectAtIndex:row] setValue:[object valueForKeyPath:keypath] 
+								 forKeyPath:_valueKeyPath];
 }
 
 -(void)applyFromObject:(id)object inRow:(int)row
 {
-	[self applyFromObject:object inRow:row keyPath:bindingPath];
+	[self applyFromObject:object inRow:row keyPath:_bindingPath];
 }
 
 -(void)applyFromCell:(id)cell inRow:(int)row
 {
-	[self applyFromObject:cell inRow:row keyPath:bindingPath];
+	[self applyFromObject:cell inRow:row keyPath:_bindingPath];
 }
 
 
 -(unsigned)count
 {
-	return [rowValues count];
+	return [_rowValues count];
 }
 
 -(id)objectAtIndex:(unsigned)row
 {
-	return [[rowValues objectAtIndex:row] valueForKeyPath:valueKeyPath];
+	return [[_rowValues objectAtIndex:row] valueForKeyPath:_valueKeyPath];
 }
 
 #pragma mark -
@@ -98,11 +98,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	 In case the last component is actually a parameter to an operator,
 	 we have to take the last two components.	 
 	 */
-	id components=[keyPath componentsSeparatedByString:@"."];
+	id components=[_keyPath componentsSeparatedByString:@"."];
 	if([components count]==1)
 	{
-		valueKeyPath=@"self";
-		arrayKeyPath=[components lastObject];
+		_valueKeyPath=@"self";
+		_arrayKeyPath=[components lastObject];
 	}
 	else
 	{
@@ -110,17 +110,17 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 		
 		if([secondToLast hasPrefix:@"@"])
 		{
-			valueKeyPath=keyPath;
-			arrayKeyPath=@"self";
+			_valueKeyPath=_keyPath;
+			_arrayKeyPath=@"self";
 		}
 		else
 		{
-			valueKeyPath=[components lastObject];
-			arrayKeyPath= [keyPath substringToIndex:[keyPath length]-[valueKeyPath length]-1];
+			_valueKeyPath=[components lastObject];
+			_arrayKeyPath= [_keyPath substringToIndex:[_keyPath length]-[_valueKeyPath length]-1];
 		}
 	}
-	[valueKeyPath retain];
-	[arrayKeyPath retain];
+	[_valueKeyPath retain];
+	[_arrayKeyPath retain];
 }
 
 -(BOOL)allowsEditingForRow:(int)row
@@ -131,8 +131,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)dealloc
 {
-	[arrayKeyPath release];
-	[valueKeyPath release];
+	[_arrayKeyPath release];
+	[_valueKeyPath release];
 	[self setRowValues:nil];
 	[super dealloc];
 }
@@ -140,11 +140,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)startObservingChanges
 {
 	NS_DURING
-	[destination addObserver:self forKeyPath:arrayKeyPath options:0 context:destination];
-	if(![valueKeyPath hasPrefix:@"@"])
-		[rowValues addObserver:self
-			toObjectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, [rowValues count])]
-					forKeyPath:valueKeyPath 
+	[_destination addObserver:self forKeyPath:_arrayKeyPath options:0 context:_destination];
+	if(![_valueKeyPath hasPrefix:@"@"])
+		[_rowValues addObserver:self
+			toObjectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, [_rowValues count])]
+					forKeyPath:_valueKeyPath 
 					   options:0
 					   context:nil];
 	NS_HANDLER
@@ -154,11 +154,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)stopObservingChanges
 {
 	NS_DURING
-	[destination removeObserver:self forKeyPath:arrayKeyPath];
-	if(![valueKeyPath hasPrefix:@"@"])
-		[rowValues removeObserver:self
-			 fromObjectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, [rowValues count])]
-					   forKeyPath:valueKeyPath];
+	[_destination removeObserver:self forKeyPath:_arrayKeyPath];
+	if(![_valueKeyPath hasPrefix:@"@"])
+		[_rowValues removeObserver:self
+			 fromObjectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, [_rowValues count])]
+					   forKeyPath:_valueKeyPath];
 	NS_HANDLER
 	NS_ENDHANDLER
 }
@@ -170,11 +170,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 - (void)observeValueForKeyPath:(NSString *)kp ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
-	if(object==source)
+	if(object==_source)
 	{
 		//NSLog(@"bind event from %@.%@ alias %@ to %@.%@ (%@)", [source className], binding, bindingPath, [destination className], keyPath, self);
 	}
-	else if(context==destination)
+	else if(context==_destination)
 	{
 		[self stopObservingChanges];
 
@@ -182,27 +182,27 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 		[self updateRowValues];
 		
-		if([source respondsToSelector:@selector(_boundValuesChanged)])
-			[source _boundValuesChanged];
+		if([_source respondsToSelector:@selector(_boundValuesChanged)])
+			[_source _boundValuesChanged];
 
 		[self startObservingChanges];
 	}
 	else if(context==nil)
 	{
-		if([source respondsToSelector:@selector(reloadData)])
-			[source reloadData];
-		if([source respondsToSelector:@selector(tableView)])
-			[[source tableView] reloadData];
+		if([_source respondsToSelector:@selector(reloadData)])
+			[_source reloadData];
+		if([_source respondsToSelector:@selector(tableView)])
+			[[_source tableView] reloadData];
 		
-		if([destination respondsToSelector:@selector(_selectionMayHaveChanged)])
-			[destination performSelector:@selector(_selectionMayHaveChanged)];
+		if([_destination respondsToSelector:@selector(_selectionMayHaveChanged)])
+			[_destination performSelector:@selector(_selectionMayHaveChanged)];
 
 	}
 }
 
 -(id)defaultBindingOptionsForBinding:(id)thisBinding
 {
-	return [[source dataCell] _defaultBindingOptionsForBinding:thisBinding];
+	return [[_source dataCell] _defaultBindingOptionsForBinding:thisBinding];
 }
 
 -(void)bind
@@ -212,15 +212,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	[self syncUp];
 	[self startObservingChanges];
 
-	if([self createsSortDescriptor] && [binding isEqual:@"value"])
+	if([self createsSortDescriptor] && [_binding isEqual:@"value"])
 	{
-		[source setSortDescriptorPrototype:[[[NSSortDescriptor alloc] initWithKey:valueKeyPath
+		[_source setSortDescriptorPrototype:[[[NSSortDescriptor alloc] initWithKey:_valueKeyPath
 																		ascending:NO] autorelease]];
 	}
-	if([source respondsToSelector:@selector(_establishBindingsWithDestinationIfUnbound:)])
+	if([_source respondsToSelector:@selector(_establishBindingsWithDestinationIfUnbound:)])
 	{
-		[source performSelector:@selector(_establishBindingsWithDestinationIfUnbound:)
-					 withObject:destination
+		[_source performSelector:@selector(_establishBindingsWithDestinationIfUnbound:)
+					 withObject:_destination
 					 afterDelay:0.0];
 	}
 }
@@ -240,7 +240,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)updateRowValues
 {
-	id value=[destination valueForKeyPath:arrayKeyPath];
+	id value=[_destination valueForKeyPath:_arrayKeyPath];
 	if(![value respondsToSelector:@selector(objectAtIndex:)])
 		value=[[[_NSMultipleValueWrapperArray alloc] initWithObject:value] autorelease];
 	[self setRowValues:value];
@@ -258,9 +258,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @implementation _NSTableViewContentBinder
 -(void)startObservingChanges
 {
-	NSParameterAssert([source isKindOfClass:[NSTableView class]]);
-	[destination addObserver:self 
-				  forKeyPath:keyPath 
+	NSParameterAssert([_source isKindOfClass:[NSTableView class]]);
+	[_destination addObserver:self 
+				  forKeyPath:_keyPath 
 					 options:NSKeyValueObservingOptionNew
 					 context:nil];
 }
@@ -268,26 +268,26 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)stopObservingChanges
 {
 	NS_DURING
-		[destination removeObserver:self forKeyPath:keyPath];
+		[_destination removeObserver:self forKeyPath:_keyPath];
 	NS_HANDLER
 	NS_ENDHANDLER
 }
 
 -(void)syncUp
 {
-	[source performSelector:@selector(reloadData) 
+	[_source performSelector:@selector(reloadData) 
 				 withObject:nil
 				 afterDelay:0.0];
-	[source reloadData];
+	[_source reloadData];
 }
 
 - (void)observeValueForKeyPath:(NSString *)kp ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
 	[self stopObservingChanges];
 
-	if(object==destination)
+	if(object==_destination)
 	{
-		[source _boundValuesChanged];
+		[_source _boundValuesChanged];
 	}
 
 	[self startObservingChanges];
@@ -306,7 +306,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(unsigned)numberOfRows
 {
-	return [[destination valueForKeyPath:keyPath] count];
+	return [[_destination valueForKeyPath:_keyPath] count];
 }
 @end
 
