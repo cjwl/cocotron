@@ -208,6 +208,7 @@
 		0867D690FE84028FC02AAC07 /* Project object */ = {
 			isa = PBXProject;
 			buildConfigurationList = 1DEB91B108733DA50010E9CD /* Build configuration list for PBXProject "Cocoa" */;
+			compatibilityVersion = "Xcode 2.4";
 			hasScannedForEncodings = 1;
 			mainGroup = 0867D691FE84028FC02AAC07 /* Cocoa */;
 			productRefGroup = 034768DFFF38A50411DB9C8B /* Products */;
@@ -222,6 +223,7 @@
 					ProjectRef = FE3217D10BB41D16004F000A /* ApplicationServices.xcodeproj */;
 				},
 			);
+			projectRoot = "";
 			targets = (
 				FE01AB110C5D9C3400AEA51A /* Cocoa-Windows-i386 */,
 			);

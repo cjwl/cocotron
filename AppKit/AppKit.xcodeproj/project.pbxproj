@@ -2870,6 +2870,7 @@
 		6E2B57700976075500DA0954 /* Project object */ = {
 			isa = PBXProject;
 			buildConfigurationList = 6E2B57740976075500DA0954 /* Build configuration list for PBXProject "AppKit" */;
+			compatibilityVersion = "Xcode 2.4";
 			hasScannedForEncodings = 0;
 			mainGroup = 6E2B531A0976074C00DA0954 /* AppKit */;
 			productRefGroup = 6E2B53230976074C00DA0954 /* Products */;
@@ -2880,6 +2881,7 @@
 					ProjectRef = 6E46FEBE0A2D2DCF004CD27E /* Foundation.xcodeproj */;
 				},
 			);
+			projectRoot = "";
 			targets = (
 				FE01A8070C5D9BCB00AEA51A /* AppKit-Windows-i386 */,
 			);
@@ -3417,7 +3419,7 @@
 				GCC_OPTIMIZATION_LEVEL = 3;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = "";
-				GCC_UNROLL_LOOPS = YES;
+				GCC_UNROLL_LOOPS = NO;
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_MODE_FLAG = "og-w,a+rX";
 				INSTALL_PATH = /Developer/Cocotron/1.0/Windows/i386/Frameworks;
