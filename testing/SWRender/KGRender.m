@@ -10,6 +10,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @implementation KGRender
 
+
 -init {
   _pixelsWide=386;
   _pixelsHigh=386;
@@ -19,7 +20,29 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
   _colorSpace=CGColorSpaceCreateDeviceRGB();
   _bitmapInfo=kCGImageAlphaPremultipliedLast|kCGBitmapByteOrder32Little;
   _data=NSZoneMalloc([self zone],_bytesPerRow*_pixelsHigh);
+
+  CGDataProviderRef provider=CGDataProviderCreateWithData(NULL,_data,_pixelsWide*_pixelsHigh*4,NULL);
+  _imageRef=CGImageCreate(_pixelsWide,_pixelsHigh,_bitsPerComponent,_bitsPerPixel,_bytesPerRow,_colorSpace,
+     kCGImageAlphaPremultipliedLast|kCGBitmapByteOrder32Little,provider,NULL,NO,kCGRenderingIntentDefault);
   return self;
+}
+
+-(CGImageRef)imageRef {
+   return _imageRef;
+}
+
+-(CGImageRef)imageRefOfDifferences:(KGRender *)other {
+  unsigned char *diff=NSZoneMalloc([self zone],_bytesPerRow*_pixelsHigh);
+int i;
+  for(i=0;i<_bytesPerRow*_pixelsHigh;i++){
+   int d1=((unsigned char *)_data)[i];
+   int d2=((unsigned char *)other->_data)[i];
+   diff[i]=ABS(d2-d1);
+  }
+  
+  CGDataProviderRef provider=CGDataProviderCreateWithData(NULL,diff,_pixelsWide*_pixelsHigh*4,NULL);
+   return CGImageCreate(_pixelsWide,_pixelsHigh,_bitsPerComponent,_bitsPerPixel,_bytesPerRow,_colorSpace,
+     kCGImageAlphaPremultipliedLast|kCGBitmapByteOrder32Little,provider,NULL,NO,kCGRenderingIntentDefault);
 }
 
 -(void)setSize:(NSSize)size {
@@ -29,40 +52,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    _data=NSZoneRealloc([self zone],_data,_bytesPerRow*_pixelsHigh);
 }
 
--(void)drawImageInContext:(CGContextRef)context {
-   CGDataProviderRef provider=CGDataProviderCreateWithData(NULL,_data,_pixelsWide*_pixelsHigh*4,NULL);
-   CGImageRef        image=CGImageCreate(_pixelsWide,_pixelsHigh,_bitsPerComponent,_bitsPerPixel,_bytesPerRow,_colorSpace,
-     kCGImageAlphaPremultipliedLast|kCGBitmapByteOrder32Little,provider,NULL,NO,kCGRenderingIntentDefault);
-
-   CGContextSaveGState(context);
-   CGContextSetBlendMode(context,kCGBlendModeNormal);
-   CGContextSetShouldAntialias(context,NO);
-   CGContextDrawImage(context,CGRectMake(0,0,_pixelsWide,_pixelsHigh),image);
-   CGContextRestoreGState(context);
-  
-   CGDataProviderRelease(provider);
-   CGImageRelease(image);
-}
-
 -(void)clear {
    int i;
    
    for(i=0;i<_pixelsHigh*_bytesPerRow;i++)
     ((char *)_data)[i]=0;
-}
-
--(void)setShadowColor:(CGColorRef)value {
-   value=CGColorRetain(value);
-   CGColorRelease(_shadowColor);
-   _shadowColor=value;
-}
-
--(void)setShadowOffset:(CGSize)value {
-   _shadowOffset=value;
-}
-
--(void)setShadowBlur:(float)value {
-   _shadowBlur=value;
 }
 
 -(void)drawPath:(CGPathRef)path drawingMode:(CGPathDrawingMode)drawingMode blendMode:(CGBlendMode)blendMode interpolationQuality:(CGInterpolationQuality)interpolationQuality fillColor:(CGColorRef)fillColor strokeColor:(CGColorRef)strokeColor lineWidth:(float)lineWidth lineCap:(CGLineCap)lineCap lineJoin:(CGLineJoin)lineJoin miterLimit:(float)miterLimit dashPhase:(float)dashPhase dashLengthsCount:(unsigned)dashLengthsCount dashLengths:(float *)dashLengths transform:(CGAffineTransform)xform antialias:(BOOL)antialias {

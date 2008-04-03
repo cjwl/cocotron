@@ -50,7 +50,7 @@ typedef struct {
    RIfloat     cnst;
 // These are modified per scanline
    RIfloat		minx;			//for the current scanline
-   RIfloat		maxx;			//for the current scanline
+   int  		maxx;			//for the current scanline
 } Edge;
 
 typedef struct {

@@ -9,13 +9,46 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Cocoa/Cocoa.h>
 #import <ApplicationServices/ApplicationServices.h>
 
-@class KGRenderView;
+@class KGRender,KGImageView;
 
 @interface KGRenderController : NSObject {
-   IBOutlet KGRenderView *_cgView;
-   IBOutlet KGRenderView *_kgView;
+   IBOutlet NSPopUpButton *_testPopUp;
+   
+   KGRender *_cgRender;
+   KGRender *_kgRender;
+   IBOutlet NSTextField *_cgTime;
+   IBOutlet NSTextField *_kgTime;
+   
+   IBOutlet KGImageView *_cgView;
+   IBOutlet KGImageView *_kgView;
+   IBOutlet KGImageView *_diffView;
    NSBitmapImageRep *_imageRep;
+   
+   struct {
+    BOOL        _shouldAntialias;
+    CGInterpolationQuality _interpolationQuality;
+    float       _scalex;
+    float       _scaley;
+    float       _rotation;
+    CGBlendMode _blendMode;
+    CGColorRef  _shadowColor;
+    float       _shadowBlur;
+    CGSize      _shadowOffset;
+    float       _lineWidth;
+    CGLineCap   _lineCap;
+    CGLineJoin  _lineJoin;
+    float        _miterLimit;
+    float        _dashPhase;
+    unsigned     _dashLengthsCount;
+    float       *_dashLengths;
+   } gStateX,*gState;
+   
+   NSColor *_destinationColor;
+   NSColor *_sourceColor;
+   CGPathDrawingMode _pathDrawingMode;
 }
+
+-(void)selectTest:sender;
 
 -(void)selectDestinationColor:sender;
 -(void)setectSourceColor:sender;

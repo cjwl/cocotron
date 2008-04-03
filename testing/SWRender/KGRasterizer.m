@@ -190,8 +190,6 @@ void KGRasterizerSetShouldAntialias(KGRasterizer *self,BOOL antialias) {
 		self->numSamples = 8;
 		self->fradius = .75;
         int i;
-        RIfloat px=0;
-        RIfloat py=0;
         
 		for(i=0;i<self->numSamples;i++)
 		{	//Gaussian filter, implemented using Hammersley point set for sample point locations
@@ -289,20 +287,22 @@ void KGRasterizerFill(KGRasterizer *self,VGFillRule fillRule, KGPixelPipe *pixel
      }
     }
     
-    int j;
-	for(j=miny;j<maxy;j++){
-     Scanline *scanline=self->_scanlines+(j-self->_vpy);
+    int xlimit=self->_vpx+self->_vpwidth;
+    int scany;
+	for(scany=miny;scany<maxy;scany++){
+     Scanline *scanline=self->_scanlines+(scany-self->_vpy);
+     int       edgeCount=scanline->edgeCount;
      
-     if(scanline->edgeCount==0)
+     if(edgeCount==0)
       continue;
       
-     Vector2 pc=Vector2Make(0,j+0.5f); // pixel center
-     RIfloat cminy = (RIfloat)j - self->fradius + 0.5f;
-     RIfloat cmaxy = (RIfloat)j + self->fradius + 0.5f;
+     Vector2 pc=Vector2Make(0,scany+0.5f); // pixel center
+     RIfloat cminy = (RIfloat)scany - self->fradius + 0.5f;
+     RIfloat cmaxy = (RIfloat)scany + self->fradius + 0.5f;
         
      int  e;
 
-     for(e=0;e<scanline->edgeCount;e++) {
+     for(e=0;e<edgeCount;e++) {
 	  Edge *edge = scanline->edges[e];
 
       //compute edge min and max x-coordinates for this scanline
@@ -313,16 +313,22 @@ void KGRasterizerFill(KGRasterizer *self,VGFillRule fillRule, KGPixelPipe *pixel
         RIfloat sx = edge->v0.x + vd.x * (cminy - edge->v0.y) * wl;
         RIfloat ex = edge->v0.x + vd.x * (cmaxy - edge->v0.y) * wl;
         sx = RI_CLAMP(sx, bminx, bmaxx);
-        ex = RI_CLAMP(ex, bminx, bmaxx);
-        edge->minx = RI_MIN(sx,ex);
-        edge->maxx = RI_MAX(sx,ex);
+        ex = RI_CLAMP(ex, bminx, bmaxx);        
+        edge->minx = RI_MIN(sx,ex)-self->fradius-0.5f;
+        
+        // these can really be eliminated from the scanline, but this will save a MIN() operation at least
+        if(edge->minx>xlimit)
+         edge->minx=xlimit;
+         
+            //0.01 is a safety region to prevent too aggressive optimization due to numerical inaccuracy
+        edge->maxx = RI_MAX(sx,ex)+0.01f+self->fradius-0.5f;
     }
-     scanlineSort(scanline,0,scanline->edgeCount-1);
+     scanlineSort(scanline,0,edgeCount-1);
 
         int     s;
       
-      float sidePre[scanline->edgeCount][self->numSamples];
-      for(e=0;e<scanline->edgeCount;e++){
+      float sidePre[edgeCount][self->numSamples];
+      for(e=0;e<edgeCount;e++){
  	    Edge *edge = scanline->edges[e];
         
         for(s=0;s<self->numSamples;s++){
@@ -333,78 +339,75 @@ void KGRasterizerFill(KGRasterizer *self,VGFillRule fillRule, KGPixelPipe *pixel
            sidePre[e][s]=0.0/0.0;//NaN
         }
       }
-      
+
 		//fill the scanline
-		int aes = 0;
-		int aen = 0;
-        int i;
+        int scanx;
+        int winding[self->numSamples];
+        int nextEdge=0;
+        int lastWinding=0;
         
-		for(i=self->_vpx;i<self->_vpx+self->_vpwidth;){
-            pc.x=i+0.5f;
-            			
-			//find edges that intersect or are to the left of the pixel antialiasing filter
-			while(aes < scanline->edgeCount && pc.x + self->fradius >= scanline->edges[aes]->minx)
-				aes++;
-			//edges [0,aes] may have an effect on winding, and need to be evaluated while sampling
+		for(scanx=RI_INT_MAX(self->_vpx,scanline->edges[0]->minx);scanx<xlimit;){            			
 
-            int winding[self->numSamples];
-            
             for(s=0;s<self->numSamples;s++)
-             winding[s]=0;
-             
-				//compute winding number by evaluating the edge functions of edges to the left of the sampling point
-            for(e=0;e<aes;e++){
-             Edge   *edge=scanline->edges[e];
-             int     direction=edge->direction;
-             RIfloat pcxnormal=pc.x*edge->normal.x;
-#if 0
-             RIfloat side[self->numSamples];
-             
-             for(s=0;s<self->numSamples;s++)
-              side[s]=pcxnormal;
-              
-             for(s=0;s<self->numSamples;s++)
-              side[s]+=sidePre[e][s];
-              
-             for(s=0;s<self->numSamples;s++)
-              if(side[s]<0.0f)
-               winding[s]+=direction;
-#else            
-             for(s=0;s<self->numSamples;s++){
-              RIfloat side=pcxnormal+sidePre[e][s];
+             winding[s]=lastWinding;
                         
-			  if(side <= 0.0f)	//implicit tie breaking: a sampling point on an opening edge is in, on a closing edge it's out
-			   winding[s] += direction;
-		     }
-#endif
-			}
-
-			RIfloat coverage = 0.0f;
+			int endSpan = xlimit;
             
-            for(s=0;s<self->numSamples;s++)
-                if( winding[s] & fillRuleMask )
-					coverage += self->samples[s].weight;
+            for(e=nextEdge;e<edgeCount;e++){
+             Edge   *edge=scanline->edges[e];
+
+             if(scanx<=edge->maxx){
+			  endSpan = RI_INT_MAX(scanx+1,(int)ceil(edge->minx));
+              break;
+             }
+            }
             
-			coverage /= self->sumWeights;
+            for(e=nextEdge;e<edgeCount;e++){
+             Edge   *edge=scanline->edges[e];
+             RIfloat minx=edge->minx;
 
-			//constant coverage optimization:
-			//scan AET from left to right and skip all the edges that are completely to the left of the pixel filter.
-			//since AET is sorted by minx, the edge we stop at is the leftmost of the edges we haven't passed yet.
-			//if that edge is to the right of this pixel, coverage is constant between this pixel and the start of the edge.
+             if(scanx<minx)
+              break;
+             else{
+              int     direction=edge->direction;
+              RIfloat pcxnormal=-((scanx+0.5f)*edge->normal.x);
+              RIfloat *pre=sidePre[e];
+              
+              BOOL rightOf=YES;
+              
+              s=self->numSamples;
+              while(--s>=0){  
+               BOOL check=  (pcxnormal > pre[s]);                     
+	 		   rightOf=rightOf && check;
+                
+               if(check)
+	 		    winding[s] += direction;
+	 	      }
 
-			while(aen < scanline->edgeCount && scanline->edges[aen]->maxx < pc.x - self->fradius - 0.01f)	//0.01 is a safety region to prevent too aggressive optimization due to numerical inaccuracy
-				aen++;
+              if(rightOf && nextEdge==e){
+               nextEdge=e+1;
+               lastWinding=winding[0];
+              }
 
-			int endSpan = self->_vpx + self->_vpwidth;	//endSpan is the first pixel NOT part of the span
-			if(aen < scanline->edgeCount)
-				endSpan = RI_INT_MAX(i+1, RI_INT_MIN(endSpan, (int)ceil(scanline->edges[aen]->minx - self->fradius - 0.5f)));
+             }
+              
+		   }
 
-			//fill a run of pixels with constant coverage
-			if(coverage > 0.0f)
-			 KGPixelPipeWriteCoverageSpan(pixelPipe,i,j,(endSpan-i),coverage);
+		   RIfloat coverage = 0.0f;
+           s=self->numSamples;
+           while(--s>=0)                  
+            if( winding[s] & fillRuleMask )
+			 coverage += self->samples[s].weight;
+            
+		   if(coverage > 0.0f){
+             coverage /= self->sumWeights;
 
-			i = endSpan;
+             KGPixelPipeWriteCoverageSpan(pixelPipe,scanx,scany,(endSpan-scanx),coverage);
+           }
+
+		   scanx = endSpan;             
         }
+
 	}
 }
 

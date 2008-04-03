@@ -1,37 +1,87 @@
-{
-    IBClasses = (
-        {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 
-        {
-            ACTIONS = {
-                selectAntialias = id; 
-                selectBlendMode = id; 
-                selectDashLength = id; 
-                selectDashPhase = id; 
-                selectDestinationColor = id; 
-                selectInterpolationQuality = id; 
-                selectLineWidth = id; 
-                selectPathDrawingMode = id; 
-                selectRotation = id; 
-                selectScaleX = id; 
-                selectScaleY = id; 
-                selectShadowBlur = id; 
-                selectShadowColor = id; 
-                selectShadowOffsetX = id; 
-                selectShadowOffsetY = id; 
-                setectSourceColor = id; 
-            }; 
-            CLASS = KGRenderController; 
-            LANGUAGE = ObjC; 
-            OUTLETS = {"_cgView" = KGRenderView; "_kgView" = KGRenderView; }; 
-            SUPERCLASS = NSObject; 
-        }, 
-        {CLASS = KGRenderView; LANGUAGE = ObjC; SUPERCLASS = NSView; }, 
-        {
-            ACTIONS = {selectBlendMode = id; }; 
-            CLASS = MyView; 
-            LANGUAGE = ObjC; 
-            SUPERCLASS = NSView; 
-        }
-    ); 
-    IBVersion = 1; 
-}
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IBClasses</key>
+	<array>
+		<dict>
+			<key>CLASS</key>
+			<string>KGImageView</string>
+			<key>LANGUAGE</key>
+			<string>ObjC</string>
+			<key>SUPERCLASS</key>
+			<string>NSView</string>
+		</dict>
+		<dict>
+			<key>CLASS</key>
+			<string>FirstResponder</string>
+			<key>LANGUAGE</key>
+			<string>ObjC</string>
+			<key>SUPERCLASS</key>
+			<string>NSObject</string>
+		</dict>
+		<dict>
+			<key>ACTIONS</key>
+			<dict>
+				<key>selectAntialias</key>
+				<string>id</string>
+				<key>selectBlendMode</key>
+				<string>id</string>
+				<key>selectDashLength</key>
+				<string>id</string>
+				<key>selectDashPhase</key>
+				<string>id</string>
+				<key>selectDestinationColor</key>
+				<string>id</string>
+				<key>selectInterpolationQuality</key>
+				<string>id</string>
+				<key>selectLineWidth</key>
+				<string>id</string>
+				<key>selectPathDrawingMode</key>
+				<string>id</string>
+				<key>selectRotation</key>
+				<string>id</string>
+				<key>selectScaleX</key>
+				<string>id</string>
+				<key>selectScaleY</key>
+				<string>id</string>
+				<key>selectShadowBlur</key>
+				<string>id</string>
+				<key>selectShadowColor</key>
+				<string>id</string>
+				<key>selectShadowOffsetX</key>
+				<string>id</string>
+				<key>selectShadowOffsetY</key>
+				<string>id</string>
+				<key>selectTest</key>
+				<string>id</string>
+				<key>setectSourceColor</key>
+				<string>id</string>
+			</dict>
+			<key>CLASS</key>
+			<string>KGRenderController</string>
+			<key>LANGUAGE</key>
+			<string>ObjC</string>
+			<key>OUTLETS</key>
+			<dict>
+				<key>_cgTime</key>
+				<string>NSTextField</string>
+				<key>_cgView</key>
+				<string>KGImageView</string>
+				<key>_diffView</key>
+				<string>KGImageView</string>
+				<key>_kgTime</key>
+				<string>NSTextField</string>
+				<key>_kgView</key>
+				<string>KGImageView</string>
+				<key>_testPopUp</key>
+				<string>NSPopUpButton</string>
+			</dict>
+			<key>SUPERCLASS</key>
+			<string>NSObject</string>
+		</dict>
+	</array>
+	<key>IBVersion</key>
+	<string>1</string>
+</dict>
+</plist>

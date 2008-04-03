@@ -15,7 +15,7 @@
 		FE1F932E0D7EEDF900969491 /* KGRender.m in Sources */ = {isa = PBXBuildFile; fileRef = FE1F932D0D7EEDF900969491 /* KGRender.m */; };
 		FE1F93370D7EEE6900969491 /* KGRender_cg.m in Sources */ = {isa = PBXBuildFile; fileRef = FE1F93360D7EEE6900969491 /* KGRender_cg.m */; };
 		FE1F93430D7EEECA00969491 /* KGRender_baseline.m in Sources */ = {isa = PBXBuildFile; fileRef = FE1F93420D7EEECA00969491 /* KGRender_baseline.m */; };
-		FE1F93630D7EF19900969491 /* KGRenderView.m in Sources */ = {isa = PBXBuildFile; fileRef = FE1F93620D7EF19900969491 /* KGRenderView.m */; };
+		FE1F93630D7EF19900969491 /* KGImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = FE1F93620D7EF19900969491 /* KGImageView.m */; };
 		FE1F937A0D7EF1F800969491 /* KGRenderController.m in Sources */ = {isa = PBXBuildFile; fileRef = FE1F93790D7EF1F800969491 /* KGRenderController.m */; };
 		FE9552810D77CA67009B765B /* VGImage.m in Sources */ = {isa = PBXBuildFile; fileRef = FE9552780D77CA67009B765B /* VGImage.m */; };
 		FE9552820D77CA67009B765B /* riMath.m in Sources */ = {isa = PBXBuildFile; fileRef = FE95527A0D77CA67009B765B /* riMath.m */; };
@@ -27,7 +27,7 @@
 /* Begin PBXBuildRule section */
 		FEC64D790D92F14E0020233A /* PBXBuildRule */ = {
 			isa = PBXBuildRule;
-			compilerSpec = com.apple.compilers.gcc.4_0;
+			compilerSpec = com.apple.compilers.gcc.4_2;
 			fileType = sourcecode.c;
 			isEditable = 1;
 			outputFiles = (
@@ -52,8 +52,8 @@
 		FE1F93360D7EEE6900969491 /* KGRender_cg.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGRender_cg.m; sourceTree = "<group>"; };
 		FE1F93410D7EEECA00969491 /* KGRender_baseline.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGRender_baseline.h; sourceTree = "<group>"; };
 		FE1F93420D7EEECA00969491 /* KGRender_baseline.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGRender_baseline.m; sourceTree = "<group>"; };
-		FE1F93610D7EF19900969491 /* KGRenderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGRenderView.h; sourceTree = "<group>"; };
-		FE1F93620D7EF19900969491 /* KGRenderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGRenderView.m; sourceTree = "<group>"; };
+		FE1F93610D7EF19900969491 /* KGImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGImageView.h; sourceTree = "<group>"; };
+		FE1F93620D7EF19900969491 /* KGImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGImageView.m; sourceTree = "<group>"; };
 		FE1F93780D7EF1F800969491 /* KGRenderController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGRenderController.h; sourceTree = "<group>"; };
 		FE1F93790D7EF1F800969491 /* KGRenderController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGRenderController.m; sourceTree = "<group>"; };
 		FE9552770D77CA67009B765B /* VGImage.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = VGImage.h; sourceTree = "<group>"; };
@@ -116,8 +116,8 @@
 				FE1F93360D7EEE6900969491 /* KGRender_cg.m */,
 				FE1F93780D7EF1F800969491 /* KGRenderController.h */,
 				FE1F93790D7EF1F800969491 /* KGRenderController.m */,
-				FE1F93610D7EF19900969491 /* KGRenderView.h */,
-				FE1F93620D7EF19900969491 /* KGRenderView.m */,
+				FE1F93610D7EF19900969491 /* KGImageView.h */,
+				FE1F93620D7EF19900969491 /* KGImageView.m */,
 				FE9552770D77CA67009B765B /* VGImage.h */,
 				FE9552780D77CA67009B765B /* VGImage.m */,
 				FE9552790D77CA67009B765B /* riMath.h */,
@@ -231,7 +231,7 @@
 				FE1F932E0D7EEDF900969491 /* KGRender.m in Sources */,
 				FE1F93370D7EEE6900969491 /* KGRender_cg.m in Sources */,
 				FE1F93430D7EEECA00969491 /* KGRender_baseline.m in Sources */,
-				FE1F93630D7EF19900969491 /* KGRenderView.m in Sources */,
+				FE1F93630D7EF19900969491 /* KGImageView.m in Sources */,
 				FE1F937A0D7EF1F800969491 /* KGRenderController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -264,10 +264,13 @@
 				ARCHS = i386;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_AUTO_VECTORIZATION = YES;
 				GCC_ENABLE_CPP_EXCEPTIONS = NO;
 				GCC_ENABLE_CPP_RTTI = NO;
-				GCC_ENABLE_SSE3_EXTENSIONS = NO;
+				GCC_ENABLE_SSE3_EXTENSIONS = YES;
+				GCC_ENABLE_SUPPLEMENTAL_SSE3_INSTRUCTIONS = YES;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_INSTRUMENT_PROGRAM_FLOW_ARCS = NO;
 				GCC_MODEL_TUNING = "";
 				GCC_WARN_64_TO_32_BIT_CONVERSION = NO;
 				GCC_WARN_SHADOW = NO;
@@ -278,6 +281,7 @@
 				GENERATE_PROFILING_CODE = NO;
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
+				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = SWRender;
 				WRAPPER_EXTENSION = app;
 			};

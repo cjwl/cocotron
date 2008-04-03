@@ -37,9 +37,6 @@ lineWidth:(float)lineWidth lineCap:(CGLineCap)lineCap lineJoin:(CGLineJoin)lineJ
    CGContextSetLineDash(_context,dashPhase,dashLengths,dashLengthsCount);
    CGContextBeginPath(_context);
    CGContextAddPath(_context,path);
-   if(_shadowColor!=NULL){
-   // CGContextSetShadowWithColor(_context,_shadowOffset,_shadowBlur,_shadowColor);
-   }
    
    CGContextDrawPath(_context,drawingMode);
    CGContextRestoreGState(_context);
