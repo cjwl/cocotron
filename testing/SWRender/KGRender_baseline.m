@@ -129,9 +129,9 @@ static KGPaint *paintFromColor(CGColorRef color){
    const float *components=CGColorGetComponents(color);
 
    if(count==2)
-    result->m_inputPaintColor=VGColorRGBA(components[0],components[0],components[0],components[1],VGColor_sRGBA);
+    result->m_inputPaintColor=VGColorRGBA(components[0],components[0],components[0],components[1],VGColor_lRGBA);
    if(count==4)
-    result->m_inputPaintColor=VGColorRGBA(components[0],components[1],components[2],components[3],VGColor_sRGBA);
+    result->m_inputPaintColor=VGColorRGBA(components[0],components[1],components[2],components[3],VGColor_lRGBA);
 
    result->m_paintColor = result->m_inputPaintColor;
    result->m_paintColor=VGColorClamp(result->m_paintColor);

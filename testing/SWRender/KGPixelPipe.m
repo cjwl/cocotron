@@ -38,8 +38,8 @@ KGPaint *KGPaintAlloc() {
 
 KGPaint *KGPaintInit(KGPaint *self) {
 	self->m_paintType=VG_PAINT_TYPE_COLOR;
-	self->m_paintColor=VGColorRGBA(0,0,0,1,VGColor_sRGBA_PRE);
-	self->m_inputPaintColor=VGColorRGBA(0,0,0,1,VGColor_sRGBA);
+	self->m_paintColor=VGColorRGBA(0,0,0,1,VGColor_lRGBA_PRE);
+	self->m_inputPaintColor=VGColorRGBA(0,0,0,1,VGColor_lRGBA);
 	self->m_colorRampSpreadMode=VG_COLOR_RAMP_SPREAD_PAD;
     self->m_colorRampStopsCount=2;
     self->m_colorRampStopsCapacity=2;
@@ -84,7 +84,7 @@ KGPixelPipe *KGPixelPipeInit(KGPixelPipe *self) {
 	self->m_blendMode=kCGBlendModeNormal;
 	self->m_imageMode=VG_DRAW_IMAGE_NORMAL;
 	self->m_imageQuality=kCGInterpolationLow;
-	self->m_tileFillColor=VGColorRGBA(0,0,0,0,VGColor_sRGBA);
+	self->m_tileFillColor=VGColorRGBA(0,0,0,0,VGColor_lRGBA);
 	self->m_surfaceToPaintMatrix=Matrix3x3Identity();
 	self->m_surfaceToImageMatrix=Matrix3x3Identity();
     return self;

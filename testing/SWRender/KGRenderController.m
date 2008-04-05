@@ -111,7 +111,7 @@ static void addSliceToPath(CGMutablePathRef path,float innerRadius,float outerRa
    CGAffineTransform t=CGAffineTransformMakeTranslation(-[_imageRep pixelsWide],-[_imageRep pixelsHigh]);
    ctm=CGAffineTransformConcat(t,ctm);
    ctm=CGAffineTransformScale(ctm,2,2);
-   [render drawBitmapImageRep:_imageRep antialias:YES interpolationQuality:gState->_interpolationQuality blendMode:gState->_blendMode fillColor:blackColor transform:ctm];
+//   [render drawBitmapImageRep:_imageRep antialias:YES interpolationQuality:gState->_interpolationQuality blendMode:gState->_blendMode fillColor:blackColor transform:ctm];
 }
 
 -(void)drawStraightLinesInRender:(KGRender *)render {
