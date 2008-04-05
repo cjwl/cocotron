@@ -204,7 +204,7 @@ DWORD NSPlatformDetachThread(unsigned (*func)(void *arg), void *arg) {
 	DWORD	threadId = 0;
 	HANDLE win32Handle = (HANDLE)_beginthreadex(NULL, 0, func, arg, 0, &threadId);
 	
-	if (win32Handle) {
+	if (!win32Handle) {
 		threadId = 0; // just to be sure
 	}
 	

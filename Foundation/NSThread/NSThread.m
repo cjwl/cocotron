@@ -26,8 +26,11 @@ static id mainThread = nil;
 
 +initialize
 {
-	mainThread = [NSThread new];
-	NSPlatformSetCurrentThread(mainThread);
+	if(self==[NSThread class])
+	{
+		mainThread = [NSThread new];
+		NSPlatformSetCurrentThread(mainThread);
+	}
 }
 
 + (BOOL) isMultiThreaded {
@@ -65,7 +68,6 @@ static unsigned nsThreadStartThread(void* thread)
 	return 0;
 }
 
-
 +(void)detachNewThreadSelector:(SEL)selector toTarget:target withObject:argument {
 	id newThread = [[self alloc] initWithTarget: target selector: selector object: argument];
 
@@ -74,8 +76,9 @@ static unsigned nsThreadStartThread(void* thread)
 															object: nil
 														  userInfo: nil];
 		isMultiThreaded = YES;
+		_NSInitializeSynchronizedDirective();
 	}
-	
+
 	[newThread start];
 }
 
@@ -266,5 +269,4 @@ void NSThreadSetUncaughtExceptionHandler(NSUncaughtExceptionHandler *function) {
 FOUNDATION_EXPORT NSThread *NSCurrentThread(void) {
    return NSPlatformCurrentThread();
 }
-
 

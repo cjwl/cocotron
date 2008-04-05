@@ -783,6 +783,26 @@
 		6EC4AAEA0A34D9B200E8D6CA /* NSKeyedUnarchiver.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EC4AAE80A34D9B200E8D6CA /* NSKeyedUnarchiver.m */; };
 		6EC4AAED0A34D9B200E8D6CA /* NSKeyedUnarchiver.h in Headers */ = {isa = PBXBuildFile; fileRef = 6EC4AAE70A34D9B200E8D6CA /* NSKeyedUnarchiver.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6EC4AAEE0A34D9B200E8D6CA /* NSKeyedUnarchiver.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EC4AAE80A34D9B200E8D6CA /* NSKeyedUnarchiver.m */; };
+		C844CF950DA7EBE500A8F3A2 /* NSRecursiveLock.h in Headers */ = {isa = PBXBuildFile; fileRef = C844CF930DA7EBE500A8F3A2 /* NSRecursiveLock.h */; };
+		C844CF960DA7EBE500A8F3A2 /* NSRecursiveLock.m in Sources */ = {isa = PBXBuildFile; fileRef = C844CF940DA7EBE500A8F3A2 /* NSRecursiveLock.m */; };
+		C844CF970DA7EBE500A8F3A2 /* NSRecursiveLock.h in Headers */ = {isa = PBXBuildFile; fileRef = C844CF930DA7EBE500A8F3A2 /* NSRecursiveLock.h */; };
+		C844CF980DA7EBE500A8F3A2 /* NSRecursiveLock.m in Sources */ = {isa = PBXBuildFile; fileRef = C844CF940DA7EBE500A8F3A2 /* NSRecursiveLock.m */; };
+		C844CF990DA7EBE500A8F3A2 /* NSRecursiveLock.h in Headers */ = {isa = PBXBuildFile; fileRef = C844CF930DA7EBE500A8F3A2 /* NSRecursiveLock.h */; };
+		C844CF9A0DA7EBE500A8F3A2 /* NSRecursiveLock.m in Sources */ = {isa = PBXBuildFile; fileRef = C844CF940DA7EBE500A8F3A2 /* NSRecursiveLock.m */; };
+		C844CF9B0DA7EBE500A8F3A2 /* NSRecursiveLock.h in Headers */ = {isa = PBXBuildFile; fileRef = C844CF930DA7EBE500A8F3A2 /* NSRecursiveLock.h */; };
+		C844CF9C0DA7EBE500A8F3A2 /* NSRecursiveLock.m in Sources */ = {isa = PBXBuildFile; fileRef = C844CF940DA7EBE500A8F3A2 /* NSRecursiveLock.m */; };
+		C844CF9D0DA7EBE500A8F3A2 /* NSRecursiveLock.h in Headers */ = {isa = PBXBuildFile; fileRef = C844CF930DA7EBE500A8F3A2 /* NSRecursiveLock.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C844CF9E0DA7EBE500A8F3A2 /* NSRecursiveLock.m in Sources */ = {isa = PBXBuildFile; fileRef = C844CF940DA7EBE500A8F3A2 /* NSRecursiveLock.m */; };
+		C844CFD00DA7F21400A8F3A2 /* NSSynchronization.h in Headers */ = {isa = PBXBuildFile; fileRef = C844CFCE0DA7F21400A8F3A2 /* NSSynchronization.h */; };
+		C844CFD10DA7F21400A8F3A2 /* NSSynchronization.m in Sources */ = {isa = PBXBuildFile; fileRef = C844CFCF0DA7F21400A8F3A2 /* NSSynchronization.m */; };
+		C844CFD20DA7F21400A8F3A2 /* NSSynchronization.h in Headers */ = {isa = PBXBuildFile; fileRef = C844CFCE0DA7F21400A8F3A2 /* NSSynchronization.h */; };
+		C844CFD30DA7F21400A8F3A2 /* NSSynchronization.m in Sources */ = {isa = PBXBuildFile; fileRef = C844CFCF0DA7F21400A8F3A2 /* NSSynchronization.m */; };
+		C844CFD40DA7F21400A8F3A2 /* NSSynchronization.h in Headers */ = {isa = PBXBuildFile; fileRef = C844CFCE0DA7F21400A8F3A2 /* NSSynchronization.h */; };
+		C844CFD50DA7F21400A8F3A2 /* NSSynchronization.m in Sources */ = {isa = PBXBuildFile; fileRef = C844CFCF0DA7F21400A8F3A2 /* NSSynchronization.m */; };
+		C844CFD60DA7F21400A8F3A2 /* NSSynchronization.h in Headers */ = {isa = PBXBuildFile; fileRef = C844CFCE0DA7F21400A8F3A2 /* NSSynchronization.h */; };
+		C844CFD70DA7F21400A8F3A2 /* NSSynchronization.m in Sources */ = {isa = PBXBuildFile; fileRef = C844CFCF0DA7F21400A8F3A2 /* NSSynchronization.m */; };
+		C844CFD80DA7F21400A8F3A2 /* NSSynchronization.h in Headers */ = {isa = PBXBuildFile; fileRef = C844CFCE0DA7F21400A8F3A2 /* NSSynchronization.h */; };
+		C844CFD90DA7F21400A8F3A2 /* NSSynchronization.m in Sources */ = {isa = PBXBuildFile; fileRef = C844CFCF0DA7F21400A8F3A2 /* NSSynchronization.m */; };
 		FE01A59B0C5D9B6900AEA51A /* NSArray_concrete.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E280311097478CC00EC542B /* NSArray_concrete.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE01A59C0C5D9B6900AEA51A /* NSArray_placeholder.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E280313097478CC00EC542B /* NSArray_placeholder.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE01A59D0C5D9B6900AEA51A /* NSArray.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E280315097478CC00EC542B /* NSArray.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -3607,6 +3627,10 @@
 		6EC4AAE70A34D9B200E8D6CA /* NSKeyedUnarchiver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSKeyedUnarchiver.h; sourceTree = "<group>"; };
 		6EC4AAE80A34D9B200E8D6CA /* NSKeyedUnarchiver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSKeyedUnarchiver.m; sourceTree = "<group>"; };
 		8DC2EF5A0486A6940098B216 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		C844CF930DA7EBE500A8F3A2 /* NSRecursiveLock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSRecursiveLock.h; sourceTree = "<group>"; };
+		C844CF940DA7EBE500A8F3A2 /* NSRecursiveLock.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSRecursiveLock.m; sourceTree = "<group>"; };
+		C844CFCE0DA7F21400A8F3A2 /* NSSynchronization.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSSynchronization.h; sourceTree = "<group>"; };
+		C844CFCF0DA7F21400A8F3A2 /* NSSynchronization.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSSynchronization.m; sourceTree = "<group>"; };
 		FE01A7EC0C5D9B6900AEA51A /* Foundation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Foundation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FE1935150B5D449E00FB74CC /* NSAssertionHandler.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSAssertionHandler.h; sourceTree = "<group>"; };
 		FE1935160B5D449E00FB74CC /* NSAssertionHandler.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSAssertionHandler.m; sourceTree = "<group>"; };
@@ -4162,6 +4186,10 @@
 				FED311CB0BCC0E1D00552615 /* NSConditionLock.m */,
 				6E2803C609747B7100EC542B /* NSLock.h */,
 				6E2803C709747B7100EC542B /* NSLock.m */,
+				C844CF930DA7EBE500A8F3A2 /* NSRecursiveLock.h */,
+				C844CF940DA7EBE500A8F3A2 /* NSRecursiveLock.m */,
+				C844CFCE0DA7F21400A8F3A2 /* NSSynchronization.h */,
+				C844CFCF0DA7F21400A8F3A2 /* NSSynchronization.m */,
 			);
 			path = NSLock;
 			sourceTree = "<group>";
@@ -5297,6 +5325,8 @@
 				FEDFA10C0CF7D41F00F21F87 /* NSCachedURLResponse.h in Headers */,
 				FEA9D0900D16C55E00123D51 /* NSPropertyListReader_binary1.h in Headers */,
 				FE7FE5C50D7CF08B006CCA28 /* NSFileHandle_stream.h in Headers */,
+				C844CF9B0DA7EBE500A8F3A2 /* NSRecursiveLock.h in Headers */,
+				C844CFD60DA7F21400A8F3A2 /* NSSynchronization.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5595,6 +5625,8 @@
 				FEDFA10A0CF7D41F00F21F87 /* NSCachedURLResponse.h in Headers */,
 				FEA9D08E0D16C55E00123D51 /* NSPropertyListReader_binary1.h in Headers */,
 				FE7FE5C30D7CF08B006CCA28 /* NSFileHandle_stream.h in Headers */,
+				C844CF970DA7EBE500A8F3A2 /* NSRecursiveLock.h in Headers */,
+				C844CFD20DA7F21400A8F3A2 /* NSSynchronization.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5897,6 +5929,8 @@
 				FEA9D08A0D16C55E00123D51 /* NSPropertyListReader_binary1.h in Headers */,
 				FE9E1A310D5C0676004AE7BA /* NSLocale+windows.h in Headers */,
 				FE7FE5C10D7CF08B006CCA28 /* NSFileHandle_stream.h in Headers */,
+				C844CF9D0DA7EBE500A8F3A2 /* NSRecursiveLock.h in Headers */,
+				C844CFD80DA7F21400A8F3A2 /* NSSynchronization.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6195,6 +6229,8 @@
 				FEDFA1020CF7D41F00F21F87 /* NSCachedURLResponse.h in Headers */,
 				FEA9D0920D16C55E00123D51 /* NSPropertyListReader_binary1.h in Headers */,
 				FE7FE5C70D7CF08B006CCA28 /* NSFileHandle_stream.h in Headers */,
+				C844CF950DA7EBE500A8F3A2 /* NSRecursiveLock.h in Headers */,
+				C844CFD00DA7F21400A8F3A2 /* NSSynchronization.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6493,6 +6529,8 @@
 				FEDFA1040CF7D41F00F21F87 /* NSCachedURLResponse.h in Headers */,
 				FEA9D0940D16C55E00123D51 /* NSPropertyListReader_binary1.h in Headers */,
 				FE7FE5C90D7CF08B006CCA28 /* NSFileHandle_stream.h in Headers */,
+				C844CF990DA7EBE500A8F3A2 /* NSRecursiveLock.h in Headers */,
+				C844CFD40DA7F21400A8F3A2 /* NSSynchronization.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7064,6 +7102,8 @@
 				FEDFA10D0CF7D41F00F21F87 /* NSCachedURLResponse.m in Sources */,
 				FEA9D0910D16C55E00123D51 /* NSPropertyListReader_binary1.m in Sources */,
 				FE7FE5C60D7CF08B006CCA28 /* NSFileHandle_stream.m in Sources */,
+				C844CF9C0DA7EBE500A8F3A2 /* NSRecursiveLock.m in Sources */,
+				C844CFD70DA7F21400A8F3A2 /* NSSynchronization.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7356,6 +7396,8 @@
 				FEDFA10B0CF7D41F00F21F87 /* NSCachedURLResponse.m in Sources */,
 				FEA9D08F0D16C55E00123D51 /* NSPropertyListReader_binary1.m in Sources */,
 				FE7FE5C40D7CF08B006CCA28 /* NSFileHandle_stream.m in Sources */,
+				C844CF980DA7EBE500A8F3A2 /* NSRecursiveLock.m in Sources */,
+				C844CFD30DA7F21400A8F3A2 /* NSSynchronization.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7652,6 +7694,8 @@
 				FEA9D08B0D16C55E00123D51 /* NSPropertyListReader_binary1.m in Sources */,
 				FE9E1A320D5C0676004AE7BA /* NSLocale+windows.m in Sources */,
 				FE7FE5C20D7CF08B006CCA28 /* NSFileHandle_stream.m in Sources */,
+				C844CF9E0DA7EBE500A8F3A2 /* NSRecursiveLock.m in Sources */,
+				C844CFD90DA7F21400A8F3A2 /* NSSynchronization.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7946,6 +7990,8 @@
 				FEDFA1030CF7D41F00F21F87 /* NSCachedURLResponse.m in Sources */,
 				FEA9D0930D16C55E00123D51 /* NSPropertyListReader_binary1.m in Sources */,
 				FE7FE5C80D7CF08B006CCA28 /* NSFileHandle_stream.m in Sources */,
+				C844CF960DA7EBE500A8F3A2 /* NSRecursiveLock.m in Sources */,
+				C844CFD10DA7F21400A8F3A2 /* NSSynchronization.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8240,6 +8286,8 @@
 				FEDFA1050CF7D41F00F21F87 /* NSCachedURLResponse.m in Sources */,
 				FEA9D0950D16C55E00123D51 /* NSPropertyListReader_binary1.m in Sources */,
 				FE7FE5CA0D7CF08B006CCA28 /* NSFileHandle_stream.m in Sources */,
+				C844CF9A0DA7EBE500A8F3A2 /* NSRecursiveLock.m in Sources */,
+				C844CFD50DA7F21400A8F3A2 /* NSSynchronization.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

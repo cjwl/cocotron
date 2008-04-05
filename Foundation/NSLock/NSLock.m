@@ -54,36 +54,3 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 @end
-
-enum {
-	OBJC_SYNC_SUCCESS                 = 0,
-	OBJC_SYNC_NOT_OWNING_THREAD_ERROR = -1,
-	OBJC_SYNC_TIMED_OUT               = -2,
-	OBJC_SYNC_NOT_INITIALIZED         = -3		
-};
-
-FOUNDATION_EXPORT int objc_sync_enter(id obj)
-{
-	return OBJC_SYNC_SUCCESS;
-}
-
-
-FOUNDATION_EXPORT int objc_sync_exit(id obj)
-{
-	return OBJC_SYNC_SUCCESS;
-}
-
-FOUNDATION_EXPORT int objc_sync_wait(id obj, long long milliSecondsMaxWait)
-{
-	return OBJC_SYNC_SUCCESS;
-}
-
-FOUNDATION_EXPORT int objc_sync_notify(id obj)
-{
-	return OBJC_SYNC_SUCCESS;
-}
-
-FOUNDATION_EXPORT int objc_sync_notifyAll(id obj)
-{
-	return OBJC_SYNC_SUCCESS;
-}
