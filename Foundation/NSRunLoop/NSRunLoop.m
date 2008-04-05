@@ -29,8 +29,7 @@ NSString *NSDefaultRunLoopMode=@"NSDefaultRunLoopMode";
 }
 
 +(NSRunLoop *)mainRunLoop {
-   NSUnimplementedMethod();
-   return nil;
+	return [[NSThread mainThread] sharedObjectForClassName:@"NSRunLoop"];
 }
 
 -init {
@@ -46,6 +45,14 @@ NSString *NSDefaultRunLoopMode=@"NSDefaultRunLoopMode";
    return self;
 }
 
+-(void)dealloc
+{
+	NSFreeMapTable(_modes);
+	[_currentMode release];
+	[_orderedPerforms release];
+	[super dealloc];
+}
+
 -(NSRunLoopState *)stateForMode:(NSString *)mode {
    NSRunLoopState *state=NSMapGet(_modes,mode);
 
@@ -58,14 +65,26 @@ NSString *NSDefaultRunLoopMode=@"NSDefaultRunLoopMode";
 }
 
 -(void)_orderedPerforms {
-   int count=[_orderedPerforms count];
+	id performs=nil;
+	@synchronized(_orderedPerforms)
+	{
+		performs=[_orderedPerforms mutableCopy];
+	}
+   int count=[performs count];
 
    while(--count>=0){
-    NSOrderedPerform *check=[_orderedPerforms objectAtIndex:count];
+    NSOrderedPerform *check=[performs objectAtIndex:count];
 
+	   	// be careful the lock on _orderedPerforms is not held while we fire the perform
     if([check fireInMode:_currentMode])
-     [_orderedPerforms removeObjectAtIndex:count];
+	{
+		@synchronized(_orderedPerforms)
+		{
+			[_orderedPerforms removeObjectIdenticalTo:check];
+		}
+	}
    }
+	[performs release];
 }
 
 -(NSString *)currentMode {
@@ -163,28 +182,34 @@ NSString *NSDefaultRunLoopMode=@"NSDefaultRunLoopMode";
 
 -(void)performSelector:(SEL)selector target:target argument:argument order:(unsigned)order modes:(NSArray *)modes {
    NSOrderedPerform *perform=[NSOrderedPerform orderedPerformWithSelector:selector target:target argument:argument order:order modes:modes];
-  int count=[_orderedPerforms count];
+	@synchronized(_orderedPerforms)
+	{
+		int count=[_orderedPerforms count];
 
-   while(--count>=0){
-    NSOrderedPerform *check=[_orderedPerforms objectAtIndex:count];
-    unsigned          checkOrder=[check order];
+		while(--count>=0){
+			NSOrderedPerform *check=[_orderedPerforms objectAtIndex:count];
+			unsigned          checkOrder=[check order];
 
-    if(checkOrder>order)
-     break;
-   }
+			if(checkOrder>order)
+				break;
+		}
 
-   [_orderedPerforms insertObject:perform atIndex:count+1];
+		[_orderedPerforms insertObject:perform atIndex:count+1];
+	}
 }
 
 -(void)cancelPerformSelector:(SEL)selector target:target argument:argument {
-   int count=[_orderedPerforms count];
+	@synchronized(_orderedPerforms)
+	{
+		int count=[_orderedPerforms count];
 
-   while(--count>=0){
-    NSOrderedPerform *check=[_orderedPerforms objectAtIndex:count];
-
-    if([check selector]==selector && [check target]==target && [check argument]==argument)
-     [_orderedPerforms removeObjectAtIndex:count];
-   }
+		while(--count>=0){
+			NSOrderedPerform *check=[_orderedPerforms objectAtIndex:count];
+			
+			if([check selector]==selector && [check target]==target && [check argument]==argument)
+				[_orderedPerforms removeObjectAtIndex:count];
+		}
+	}
 }
 
 @end

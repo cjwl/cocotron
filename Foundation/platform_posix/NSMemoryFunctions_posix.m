@@ -40,23 +40,6 @@ void NSCopyMemoryPages(const void *src,void *dst,unsigned byteCount) {
     dstb[i]=srcb[i];
 }
 
-NSThread *NSPlatformCurrentThread() {
-   static pthread_key_t key = -1;
-   NSThread *thread;
-
-   if (key == -1) 
-      if (pthread_key_create(&key, NULL) != 0)
-         return nil;
-
-   thread = pthread_getspecific(key);
-   if(thread==nil) {
-    thread=[[NSThread alloc] init];
-    pthread_setspecific(key, thread);
-   }
-
-   return thread;
-}
-
 id NSAllocateObject(Class class,unsigned extraBytes,NSZone *zone) {
     id result;
 
@@ -136,3 +119,45 @@ void *NSZoneMalloc(NSZone *zone,unsigned size){
 void *NSZoneRealloc(NSZone *zone,void *pointer,unsigned size){
    return realloc(pointer, size);
 }
+
+static pthread_key_t _NSThreadInstanceKey() {
+	static pthread_key_t key = -1;	
+	if (key == -1) 
+	{
+		if (pthread_key_create(&key, NULL) != 0)
+			[NSException raise:NSInternalInconsistencyException format:@"pthread_key_create failed"];
+	}
+
+	return key;
+}
+
+void NSPlatformSetCurrentThread(NSThread *thread) {
+	pthread_setspecific(_NSThreadInstanceKey(), thread);
+}
+
+NSThread *NSPlatformCurrentThread() {
+	NSThread *thread=pthread_getspecific(_NSThreadInstanceKey());
+	
+	if(!thread)
+	{
+		// maybe NSThread is not +initialize'd
+		[NSThread class];
+		thread=pthread_getspecific(_NSThreadInstanceKey());
+		if(!thread)
+		{
+			[NSException raise:NSInternalInconsistencyException format:@"No current thread"];
+		}
+	}
+	
+	return thread;
+}
+
+int NSPlatformDetachThread(unsigned (*func)(void *arg), void *arg) {
+	pthread_t thread;
+	if(_useGC)
+		GC_pthread_create(&thread, NULL, func, arg);
+	else
+		pthread_create(&thread, NULL, func, arg);
+	return thread;
+}
+

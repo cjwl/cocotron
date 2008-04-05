@@ -64,17 +64,6 @@ static DWORD Win32ThreadStorageIndex() {
    return tlsIndex;
 }
 
-NSThread *NSPlatformCurrentThread() {
-   NSThread *thread=TlsGetValue(Win32ThreadStorageIndex());
-
-   if(thread==nil){
-    thread=[NSThread new];
-    TlsSetValue(Win32ThreadStorageIndex(),thread);
-   }
-
-   return thread;
-}
-
 id NSAllocateObject(Class class,unsigned extraBytes,NSZone *zone) {
    id result;
 
@@ -187,4 +176,38 @@ void *NSZoneRealloc(NSZone *zone,void *pointer,unsigned size){
     return HeapAlloc(zone,0,size);
    else
     return HeapReAlloc(zone,0,pointer,size);
+}
+
+
+void NSPlatformSetCurrentThread(NSThread *thread) {
+	TlsSetValue(Win32ThreadStorageIndex(),thread);
+}
+
+
+NSThread *NSPlatformCurrentThread() {
+    NSThread *thread=TlsGetValue(Win32ThreadStorageIndex());
+	
+	if(!thread) {
+		// maybe NSThread is not +initialize'd
+		[NSThread class];
+		thread=TlsGetValue(Win32ThreadStorageIndex());
+		if(!thread)	{
+			[NSException raise:NSInternalInconsistencyException format:@"No current thread"];
+		}
+	}
+
+    return thread;
+}
+
+/* Create a new thread of execution. */
+DWORD NSPlatformDetachThread(unsigned (*func)(void *arg), void *arg) {
+	DWORD	threadId = 0;
+	HANDLE win32Handle = (HANDLE)_beginthreadex(NULL, 0, func, arg, 0, &threadId);
+	
+	if (win32Handle) {
+		threadId = 0; // just to be sure
+	}
+	
+	CloseHandle(win32Handle);
+	return threadId;
 }
