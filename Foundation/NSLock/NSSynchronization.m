@@ -55,9 +55,8 @@ FOUNDATION_EXPORT int objc_sync_enter(id obj)
 	
 	[syncLocksLock unlock];
 	[key release];
-	
+
 	[lock lock];
-			 
 	return OBJC_SYNC_SUCCESS;
 }
 
@@ -76,11 +75,6 @@ FOUNDATION_EXPORT int objc_sync_exit(id obj)
 	if(lock)
 	{
 		[lock unlock];
-	
-		if(![lock isLocked])
-		{
-			[synchronizationLocks removeObjectForKey:key];
-		}
 	}
 	
 	[syncLocksLock unlock];

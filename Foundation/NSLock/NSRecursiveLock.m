@@ -51,7 +51,10 @@
 	{
 		_numberOfLocks--;
 		if(_numberOfLocks==0)
+		{
+			_lockingThread=nil;
 			[_lock unlock];
+		}
 	}
 	else
 		[NSException raise:NSInternalInconsistencyException format:@"tried to unlock lock %@ owned by thread %@ from thread %@", self, _lockingThread, currentThread];
@@ -94,6 +97,11 @@
 -(BOOL)isLocked
 {
 	return _numberOfLocks!=0;
+}
+
+-(id)description
+{
+	return [NSString stringWithFormat:@"(%@, name %@, locked %i times", [super description], _name, _numberOfLocks];
 }
 @end
 
