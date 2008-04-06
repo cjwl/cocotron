@@ -9,8 +9,23 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/ObjectiveC.h>
 #import <stdarg.h>
 #import <stdint.h>
+#import <limits.h>
 
 @class NSString;
+
+#if defined(__LP64__)
+    typedef long          NSInteger;
+    typedef unsigned long NSUInteger;
+    #define NSIntegerMax  LONG_MAX
+    #define NSIntegerMin  LONG_MIN
+    #define NSUIntegerMax ULONG_MAX
+#else
+    typedef int           NSInteger;
+    typedef unsigned int  NSUInteger;
+    #define NSIntegerMax  INT_MAX
+    #define NSIntegerMin  INT_MIN
+    #define NSUIntegerMax UINT_MAX
+#endif
 
 typedef enum {
    NSOrderedAscending=-1,
@@ -18,14 +33,25 @@ typedef enum {
    NSOrderedDescending=1
 } NSComparisonResult;
 
-FOUNDATION_EXPORT const unsigned NSNotFound;
+#define NSNotFound NSIntegerMax
 
-typedef int      NSInteger;
-typedef unsigned NSUInteger;
+#ifndef MIN
+#define MIN(a,b) ({__typeof__(a) _a = (a); __typeof__(b) _b = (b); (_a < _b) ? _a : _b; })
+#else
+#warning MIN is already defined, MIN(a, b) may not behave as expected.
+#endif
+  
+#ifndef MAX
+#define MAX(a,b) ({__typeof__(a) _a = (a); __typeof__(b) _b = (b); (_a > _b) ? _a : _b; })
+#else
+#warning MAX is already defined, MAX(a, b) may not not behave as expected.
+#endif
 
-#define MIN(a,b) ((a)<(b)?(a):(b))
-#define MAX(a,b) ((a)>(b)?(a):(b))
-#define ABS(a)   ((a)<0?(-(a)):(a))
+#ifndef ABS
+#define ABS(a) ({__typeof__(a) _a = (a); (_a < 0) ? -_a : _a; })
+#else
+#warning ABS is already defined, ABS(a) may not behave as expected.
+#endif
 
 FOUNDATION_EXPORT void NSLog(NSString *format,...);
 FOUNDATION_EXPORT void NSLogv(NSString *format,va_list args);

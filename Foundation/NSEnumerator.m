@@ -32,7 +32,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 {
 	int i;
 	state->itemsPtr=stackbuf;
-	state->mutationsPtr=self;
+	state->mutationsPtr=(unsigned long *)self;
 
 	for(i=0; i<length; i++)
 	{

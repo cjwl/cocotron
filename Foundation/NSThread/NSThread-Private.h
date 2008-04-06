@@ -19,4 +19,6 @@ void NSThreadSetCurrentHandler(NSExceptionFrame *handler);
 NSUncaughtExceptionHandler *NSThreadUncaughtExceptionHandler(void);
 void NSThreadSetUncaughtExceptionHandler(NSUncaughtExceptionHandler *function);
 
+-sharedObjectForClassName:(NSString *)className;
+
 @end

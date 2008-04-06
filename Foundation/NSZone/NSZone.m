@@ -6,7 +6,6 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
-// Original - Christopher Lloyd <cjwl@objc.net>
 #import <Foundation/NSZone.h>
 #import <Foundation/NSObject.h>
 #import <Foundation/NSHashTable.h>
@@ -27,12 +26,12 @@ BOOL NSShouldRetainWithZone(id object,NSZone *zone) {
 typedef struct RefCountBucket {
    struct RefCountBucket *next;
    id                     object;
-   unsigned               count;
+   NSUInteger             count;
 } RefCountBucket;
 
 typedef struct {
-   unsigned         count;
-   unsigned         nBuckets;
+   NSUInteger       count;
+   NSUInteger       nBuckets;
    RefCountBucket **buckets;
 } RefCountTable;
 
@@ -60,7 +59,7 @@ static inline unsigned hashObject(id ptr){
 }
 
 static inline RefCountBucket *XXHashGet(RefCountTable *table,id object) {
-   unsigned        i=hashObject(object)%table->nBuckets;
+   NSUInteger      i=hashObject(object)%table->nBuckets;
    RefCountBucket *check;
 
    for(check=table->buckets[i];check!=NULL;check=check->next)
@@ -71,11 +70,11 @@ static inline RefCountBucket *XXHashGet(RefCountTable *table,id object) {
 }
 
 static inline void XXHashInsert(RefCountTable *table,RefCountBucket *insert) {
-   unsigned hash=hashObject(insert->object);
-   unsigned i=hash%table->nBuckets;
+   NSUInteger hash=hashObject(insert->object);
+   NSUInteger i=hash%table->nBuckets;
 
    if(table->count>=table->nBuckets){
-    int              oldnBuckets=table->nBuckets;
+    NSInteger        oldnBuckets=table->nBuckets;
     RefCountBucket **buckets=table->buckets;
 
     table->nBuckets=oldnBuckets*2;
@@ -84,7 +83,7 @@ static inline void XXHashInsert(RefCountTable *table,RefCountBucket *insert) {
      RefCountBucket *check,*next;
 
      for(check=buckets[i];check!=NULL;check=next){
-      unsigned newi=hashObject(check->object)%table->nBuckets;
+      NSUInteger newi=hashObject(check->object)%table->nBuckets;
       next=check->next;
       check->next=table->buckets[newi];
       table->buckets[newi]=check;
@@ -100,7 +99,7 @@ static inline void XXHashInsert(RefCountTable *table,RefCountBucket *insert) {
 }
 
 static inline void XXHashRemove(RefCountTable *table,RefCountBucket *remove) {
-   unsigned        i=hashObject(remove->object)%table->nBuckets;
+   NSUInteger      i=hashObject(remove->object)%table->nBuckets;
    RefCountBucket *check=table->buckets[i],*prev=check;
 
    for(;check!=NULL;check=check->next){
@@ -154,8 +153,8 @@ BOOL NSDecrementExtraRefCountWasZero(id object) {
    return result;
 }
 
-unsigned NSExtraRefCount(id object) {
-   unsigned        result=1;
+NSUInteger NSExtraRefCount(id object) {
+   NSUInteger      result=1;
    RefCountBucket *refCount;
 
    if((refCount=XXHashGet(refTable(),object))!=NULL)

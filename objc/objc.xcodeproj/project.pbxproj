@@ -55,7 +55,7 @@
 		};
 		FE4034560B42E8AF00CEC41A /* PBXBuildRule */ = {
 			isa = PBXBuildRule;
-			compilerSpec = org.cocotron.1.0.linux.i386.gcc.4_0_3;
+			compilerSpec = org.cocotron.1.0.linux.i386.gcc.default;
 			fileType = sourcecode.c;
 			isEditable = 1;
 			outputFiles = (

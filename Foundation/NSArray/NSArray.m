@@ -498,13 +498,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 	state->extra[0]+=numObjects;
 	
-	state->mutationsPtr=self;
+	state->mutationsPtr=(unsigned long *)self;
 
 	return numObjects;
 }
 @end
 
-void objc_enumerationMutation()
+void objc_enumerationMutation(id collection)
 {
 	[NSException raise:NSInternalInconsistencyException format:@"collection was mutated during enumeration"];
 }
