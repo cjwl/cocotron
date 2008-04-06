@@ -25,6 +25,9 @@ FOUNDATION_EXPORT NSString *NSThreadWillExitNotification;
    SEL _selector;
    id  _argument;
    id  _target;
+	BOOL _cancelled;
+	BOOL _executing;
+	BOOL _finished;
 }
 
 +(BOOL)isMultiThreaded;

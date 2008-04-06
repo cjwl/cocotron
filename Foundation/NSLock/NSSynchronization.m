@@ -26,15 +26,6 @@ void _NSInitializeSynchronizedDirective()
 		synchronizationLocks=[NSMutableDictionary new];
 		syncLocksLock=[NSLock new];
 	}
-
-	if(![syncLocksLock respondsToSelector:@selector(tryLock)])
-	{
-		NSLog(@"%@ doesn't respond to tryLock in _NSInitializeSynchronizedDirective. Synchronization will be disabled.", syncLocksLock);
-		[synchronizationLocks release];
-		synchronizationLocks=nil;
-		[syncLocksLock release];
-		syncLocksLock=nil;
-	}
 }
 
 enum {
@@ -52,7 +43,6 @@ FOUNDATION_EXPORT int objc_sync_enter(id obj)
 		return OBJC_SYNC_NOT_INITIALIZED;
 	id key=[[NSValue alloc] initWithBytes:&obj objCType:@encode(id)];
 
-	
 	[syncLocksLock lock];
 	
 	id lock=[synchronizationLocks objectForKey:key];

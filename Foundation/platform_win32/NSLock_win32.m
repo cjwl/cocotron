@@ -8,25 +8,36 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 // Original - Christopher Lloyd <cjwl@objc.net>
 #import <Foundation/NSLock_win32.h>
+#import <Foundation/NSDate.h>
 
 @implementation NSLock_win32
 
 -init {
-   InitializeCriticalSection(&_lock);
+	_lock=CreateSemaphore(NULL, 1, 1, NULL);
    return self;
 }
 
 -(void)dealloc {
-   DeleteCriticalSection(&_lock);
+   CloseHandle(_lock);
    [super dealloc];
 }
 
 -(void)lock {
-   EnterCriticalSection(&_lock);
+   WaitForSingleObject(_lock, INFINITE);
 }
 
 -(void)unlock {
-   LeaveCriticalSection(&_lock);
+   ReleaseSemaphore(_lock, 1, NULL);
 }
 
+-(BOOL)lockBeforeDate:(NSDate*)date
+{
+	DWORD timeout=[date timeIntervalSinceNow]*1000.0;
+	return (WaitForSingleObject(_lock, timeout)==0);
+}
+
+-(BOOL)tryLock
+{
+	return (WaitForSingleObject(_lock, 0)==0);
+}
 @end

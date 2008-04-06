@@ -21,4 +21,7 @@ void NSThreadSetUncaughtExceptionHandler(NSUncaughtExceptionHandler *function);
 
 -sharedObjectForClassName:(NSString *)className;
 
+
+-(void)setExecuting:(BOOL)executing;
+-(void)setFinished:(BOOL)finished;
 @end

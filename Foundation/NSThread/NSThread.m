@@ -14,6 +14,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSRaise.h>
 #import <Foundation/NSPlatform.h>
 #import <Foundation/NSNotificationCenter.h>
+#import <Foundation/NSRunLoop.h>
+#import "NSThread-Private.h"
 
 NSString *NSDidBecomeSingleThreadedNotification=@"NSDidBecomeSingleThreadedNotification";
 NSString *NSWillBecomeMultiThreadedNotification=@"NSWillBecomeMultiThreadedNotification";
@@ -59,10 +61,13 @@ static id mainThread = nil;
 	[_target performSelector: _selector withObject: _argument];
 }
 
-static unsigned nsThreadStartThread(void* thread)
+static unsigned nsThreadStartThread(NSThread* thread)
 {
 	NSPlatformSetCurrentThread(thread);
+	[thread setExecuting:YES];
     [(NSThread*)thread main];
+	[thread setExecuting:NO];
+	[thread setFinished:YES];
 	NSPlatformSetCurrentThread(nil);
     [(NSThread*)thread release];
 	return 0;
@@ -145,26 +150,33 @@ static unsigned nsThreadStartThread(void* thread)
 }
 
 -(BOOL)isCancelled {
-   NSUnimplementedMethod();
-   return 0;
+	return _cancelled;
 }
 
 -(BOOL)isExecuting {
-   NSUnimplementedMethod();
-   return 0;
+	return _executing;
 }
 
 -(BOOL)isFinished {
-   NSUnimplementedMethod();
-   return 0;
+	return _finished;
 }
 
 -(void)cancel {
-   NSUnimplementedMethod();
+	_cancelled=YES;
 }
 
 -(NSString *)name {
 	return _name;
+}
+
+-(void)setExecuting:(BOOL)executing
+{
+	_executing=executing;
+}
+
+-(void)setFinished:(BOOL)finished
+{
+	_finished=finished;
 }
 
 -(NSUInteger)stackSize {
@@ -251,17 +263,62 @@ void NSThreadSetUncaughtExceptionHandler(NSUncaughtExceptionHandler *function) {
 @end
 
 @implementation NSObject(NSThread)
+-(void)_performSelectorOnMainThreadHelper:(NSArray*)selectorAndArguments {
+	NSLock* waitingLock=[selectorAndArguments objectAtIndex:0];
+	SEL selector=NSSelectorFromString([selectorAndArguments objectAtIndex:1]);
+	id object=[[selectorAndArguments objectAtIndex:2] pointerValue];
+
+	[self performSelector:selector withObject:object];
+	[waitingLock unlock];
+}
+
+- (void)performSelector:(SEL)selector onThread:(NSThread *)thread withObject:(id)object waitUntilDone:(BOOL)waitUntilDone modes:(NSArray *)modes
+{
+	id runloop=_NSThreadSharedInstance(thread, @"NSRunLoop", NO);
+
+	if(waitUntilDone)
+	{
+		if(thread==[NSThread currentThread])
+		{
+			[self performSelector:selector withObject:object];
+		}
+		else
+		{
+			if(!runloop)
+				[NSException raise:NSInvalidArgumentException format:@"thread %@ has no runloop in %@", thread, NSStringFromSelector(_cmd)];
+			NSLock *waitingLock=[NSLock new];
+			[waitingLock lock];
+			[runloop performSelector:@selector(_performSelectorOnMainThreadHelper:)
+							  target:self 
+							argument:[NSArray arrayWithObjects:waitingLock, NSStringFromSelector(selector), [NSValue valueWithPointer:object], nil] 
+							   order:0 
+							   modes:modes];
+
+			[waitingLock lock];
+			[waitingLock unlock];
+			[waitingLock release];
+		}
+	}
+	else
+	{
+		if(!runloop)
+			[NSException raise:NSInvalidArgumentException format:@"thread %@ has no runloop in %@", thread, NSStringFromSelector(_cmd)];
+
+		[runloop performSelector:selector target:self argument:object order:0 modes:modes];
+	}
+}
 
 -(void)performSelectorOnMainThread:(SEL)selector withObject:(id)object waitUntilDone:(BOOL)waitUntilDone modes:(NSArray *)modes {
-	NSUnimplementedMethod();
+	[self performSelector:selector onThread:[NSThread mainThread] withObject:object waitUntilDone:waitUntilDone modes:modes];
 }
 
 -(void)performSelectorOnMainThread:(SEL)selector withObject:(id)object waitUntilDone:(BOOL)waitUntilDone {
-	NSUnimplementedMethod();
+	// TODO: should be NSRunLoopCommonModes here
+	[self performSelectorOnMainThread:selector withObject:object waitUntilDone:waitUntilDone modes:[NSArray arrayWithObject:NSDefaultRunLoopMode]];
 }
 
 -(void)performSelectorInBackground:(SEL)selector withObject:object {
-	NSUnimplementedMethod();
+	[NSThread detachNewThreadSelector:selector toTarget:self withObject:object];
 }
 
 @end

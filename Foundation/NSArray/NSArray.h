@@ -8,20 +8,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/NSObject.h>
 #import <Foundation/NSRange.h>
+#import <Foundation/NSEnumerator.h>
 
-@class NSString,NSEnumerator,NSDictionary,NSPredicate,NSIndexSet,NSURL;
-
-typedef struct
-	{
-		unsigned long state;
-		id *itemsPtr;
-		unsigned long *mutationsPtr;
-		unsigned long extra[5];
-	} NSFastEnumerationState;
-
-@protocol NSFastEnumeration
--(NSUInteger)countByEnumeratingWithState:(NSFastEnumerationState *)state objects:(id *)stackbuf count:(NSUInteger)length;
-@end
+@class NSString,NSDictionary,NSPredicate,NSIndexSet,NSURL;
 
 @interface NSArray : NSObject <NSCopying,NSMutableCopying,NSCoding,NSFastEnumeration>
 
