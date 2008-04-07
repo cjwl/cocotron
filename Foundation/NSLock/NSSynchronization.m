@@ -10,21 +10,28 @@
 #import <Foundation/NSRecursiveLock.h>
 #import <Foundation/NSValue.h>
 
-// TODO: These are all horribly expensive. The Apple implementation uses a per-thread 
-// list of already acquired locks, a cache of unused preallocated locks and a hash table
-// for this. They also use pthreads directly. Maybe making this platform-specific
-// is the way to go?
+static NSLock *lockChainLock=nil;
 
-static NSMutableDictionary *synchronizationLocks=nil;
-static NSLock *syncLocksLock=nil;
+struct LockChain;
+typedef struct LockChain
+	{
+		id lock;
+		id object;
+		struct LockChain *next;
+	} LockChain;
+
+LockChain *allLocks=NULL;
 
 void _NSInitializeSynchronizedDirective()
 {
-	return;
-	if(!synchronizationLocks)
+	if(!lockChainLock)
 	{
-		synchronizationLocks=[NSMutableDictionary new];
-		syncLocksLock=[NSLock new];
+		lockChainLock=[NSLock new];
+		allLocks=NSZoneMalloc(NULL, sizeof(LockChain));
+
+		allLocks->object=0;
+		allLocks->next=0;
+		allLocks->lock=[NSRecursiveLock new];
 	}
 }
 
@@ -35,28 +42,49 @@ enum {
 	OBJC_SYNC_NOT_INITIALIZED         = -3		
 };
 
+LockChain* lockForObject(id object)
+{
+	LockChain *result=NULL;
+	LockChain *firstFree=NULL;
+	[lockChainLock lock];
+
+	for(result=allLocks; result; result=result->next)
+	{
+		if(result->object==object)
+			goto done;
+		if(result->object==NULL)
+			firstFree=result;
+	}
+
+	if(firstFree)
+	{
+		firstFree->object=object;
+		result=firstFree;
+		goto done;
+	}
+
+	result=NSZoneMalloc(NULL, sizeof(LockChain));
+	result->object=object;
+	result->next=allLocks;
+	result->lock=[NSRecursiveLock new];
+	allLocks=result;
+
+done:
+
+	[lockChainLock unlock];
+	return result;
+}
+
 FOUNDATION_EXPORT int objc_sync_enter(id obj)
 {
 	if(!obj)
 		return OBJC_SYNC_SUCCESS;
-	if(!synchronizationLocks)
+	if(!allLocks)
 		return OBJC_SYNC_NOT_INITIALIZED;
-	id key=[[NSValue alloc] initWithBytes:&obj objCType:@encode(id)];
 
-	[syncLocksLock lock];
-	
-	id lock=[synchronizationLocks objectForKey:key];
-	if(!lock)
-	{
-		lock=[NSRecursiveLock new];
-		[synchronizationLocks setObject:lock forKey:key];
-		[lock release];
-	}
-	
-	[syncLocksLock unlock];
-	[key release];
+	LockChain *result=lockForObject(obj);
 
-	[lock lock];
+	[result->lock lock];
 	return OBJC_SYNC_SUCCESS;
 }
 
@@ -65,21 +93,13 @@ FOUNDATION_EXPORT int objc_sync_exit(id obj)
 {
 	if(!obj)
 		return OBJC_SYNC_SUCCESS;
-	if(!synchronizationLocks)
+	if(!allLocks)
 		return OBJC_SYNC_NOT_INITIALIZED;
-	id key=[[NSValue alloc] initWithBytes:&obj objCType:@encode(id)];
-	
-	[syncLocksLock lock];
-	
-	id lock=[synchronizationLocks objectForKey:key];
-	if(lock)
-	{
-		[lock unlock];
-	}
-	
-	[syncLocksLock unlock];
-	
-	[key release];
-	
+
+	LockChain *result=lockForObject(obj);
+
+	result->object=NULL;
+	[result->lock unlock];
+
 	return OBJC_SYNC_SUCCESS;
 }
