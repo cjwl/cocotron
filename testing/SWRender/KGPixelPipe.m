@@ -494,6 +494,82 @@ VGColor KGPixelPipeColorRamp(KGPixelPipe *self,RIfloat gradient, RIfloat rho)
 			r = rsrc + rdst
 *//*-------------------------------------------------------------------*/
 
+static inline float colorFromTemp(float c,float q,float p){
+    if(6.0*c<1)
+     c=p+(q-p)*6.0*c;
+    else if(2.0*c<1)
+     c=q;
+    else if(3.0*c<2)
+     c=p+(q-p)*((2.0/3.0)-c)*6.0;
+    else
+     c=p;
+    return c;
+}
+
+static inline void HSLToRGB(float hue,float saturation,float luminance,float *redp,float *greenp,float *bluep) {
+   float red=luminance,green=luminance,blue=luminance;
+
+   if(saturation!=0){
+    float p,q;
+
+    if(luminance<0.5)
+     q=luminance*(1+saturation);
+    else
+     q=luminance+saturation-(luminance*saturation);
+    p=2*luminance-q;
+    
+    red=hue+1.0/3.0;
+    if(red<0)
+     red+=1.0;
+    green=hue;
+    if(green<0)
+     green+=1.0;
+    blue=hue-1.0/3.0;
+    if(blue<0)
+     blue+=1.0;
+    
+    red=colorFromTemp(red,q,p);
+    green=colorFromTemp(green,q,p);
+    blue=colorFromTemp(blue,q,p);
+   }
+
+   *redp=red;
+   *greenp=green;
+   *bluep=blue;
+}
+
+static inline void RGBToHSL(float r,float g,float b,float *huep,float *saturationp,float *luminancep) {
+   float hue=0,saturation=0,luminance,min,max;
+
+   max=MAX(r,MAX(g,b));
+   min=MIN(r,MIN(g,b));
+   if(max==min)
+    hue=0;
+   else if(max==r && g>=b)
+    hue=60*((g-b)/(max-min));
+   else if(max==r && g<b)
+    hue=60*((g-b)/(max-min))+360;
+   else if(max==g)
+    hue=60*((b-r)/(max-min))+120;
+   else if(max==b)
+    hue=60*((r-g)/(max-min))+240;
+    
+   luminance=(max+min)/2.0;
+   if(max==min)
+    saturation=0;
+   else if(luminance<=0.5)
+    saturation=(max-min)/(max+min);
+   else
+    saturation=(max-min)/(2-(max+min));
+    
+   if(huep!=NULL)
+    *huep=fmod(hue,360)/360.0;
+   if(saturationp!=NULL)
+    *saturationp=saturation;
+   if(luminancep!=NULL)
+    *luminancep=luminance;
+}
+
 static void KGPixelPipeWriteCoverage(KGPixelPipe *self,int x, int y, RIfloat coverage)  {
 	RI_ASSERT(self->m_renderingSurface);
 
@@ -634,42 +710,58 @@ static void KGPixelPipeWriteCoverage(KGPixelPipe *self,int x, int y, RIfloat cov
 	RI_ASSERT(d.b >= 0.0f && d.b <= d.a);
 	switch(self->m_blendMode)
 	{
-	case kCGBlendModeNormal:
-		r.r = s.r + d.r * (1.0f - ar);
-		r.g = s.g + d.g * (1.0f - ag);
-		r.b = s.b + d.b * (1.0f - ab);
+	case kCGBlendModeNormal: // Passes Visual Test
+		r.r = s.r + d.r * (1.0f - s.a);
+		r.g = s.g + d.g * (1.0f - s.a);
+		r.b = s.b + d.b * (1.0f - s.a);
 		r.a = s.a + d.a * (1.0f - s.a);
 		break;
 
-	case kCGBlendModeMultiply:
-		r.r = s.r * (1.0f - d.a + d.r) + d.r * (1.0f - ar);
-		r.g = s.g * (1.0f - d.a + d.g) + d.g * (1.0f - ag);
-		r.b = s.b * (1.0f - d.a + d.b) + d.b * (1.0f - ab);
+	case kCGBlendModeMultiply: // Passes Visual Test
+		r.r = s.r * (1.0f - d.a + d.r) + d.r * (1.0f - s.a);
+		r.g = s.g * (1.0f - d.a + d.g) + d.g * (1.0f - s.a);
+		r.b = s.b * (1.0f - d.a + d.b) + d.b * (1.0f - s.a);
 		r.a = s.a + d.a * (1.0f - s.a);
 		break;
         
-	case kCGBlendModeScreen:
-		r.r = s.r + d.r * (1.0f - s.r);
-		r.g = s.g + d.g * (1.0f - s.g);
-		r.b = s.b + d.b * (1.0f - s.b);
+	case kCGBlendModeScreen: // Passes Visual Test
+ 		r.r = s.r + d.r - s.r*d.r;
+ 		r.g = s.g + d.g - s.g*d.g;
+ 		r.b = s.b + d.b - s.b*d.b;
 		r.a = s.a + d.a * (1.0f - s.a);
 		break;
 
-	case kCGBlendModeOverlay:
-        r.r=(2*d.r<d.a)?(2*s.r*d.r+s.r*(1-d.a)+d.r*(1-s.a)):(s.r*d.r-2*(d.a-d.r)*(s.a-s.r)+s.r*(1-d.a)+d.r*(1-s.a));
-        r.g=(2*d.g<d.a)?(2*s.g*d.g+s.g*(1-d.a)+d.g*(1-s.a)):(s.g*d.g-2*(d.a-d.g)*(s.a-s.g)+s.g*(1-d.a)+d.g*(1-s.a));
-        r.b=(2*d.b<d.a)?(2*s.b*d.b+s.b*(1-d.a)+d.b*(1-s.a)):(s.b*d.b-2*(d.a-d.b)*(s.a-s.b)+s.b*(1-d.a)+d.b*(1-s.a));
-        r.a=(2*d.a<d.a)?(2*s.a*d.a+s.a*(1-d.a)+d.a*(1-s.a)):(s.a*d.a-2*(d.a-d.a)*(s.a-s.a)+s.a*(1-d.a)+d.a*(1-s.a));
-        break;
+	case kCGBlendModeOverlay:// broken
+        {
+         RIfloat max=RI_MAX(s.r,RI_MAX(s.g,s.b));
+         RIfloat min=RI_MIN(s.r,RI_MIN(s.g,s.b));
+         RIfloat lum=(max+min)/2*(1.0-d.a);
+        if(lum<=0.5)
+		 r.r = s.r * (1.0f - d.a + d.r) + d.r * (1.0f - s.a);
+        else
+ 	 	 r.r = s.r + d.r - s.r*d.r;
+
+        if(lum<=0.5)
+		 r.g = s.g * (1.0f - d.a + d.g) + d.g * (1.0f - s.a);
+        else
+ 		 r.g = s.g + d.g - s.g*d.g;
         
-	case kCGBlendModeDarken:
+        if(lum<=0.5)
+		 r.b = s.b * (1.0f - d.a + d.b) + d.b * (1.0f - s.a);
+        else
+   		 r.b = s.b + d.b - s.b*d.b;
+
+		r.a = s.a + d.a * (1.0f - s.a);
+        }break;
+        
+	case kCGBlendModeDarken: // Passes Visual Test
 		r.r = RI_MIN(s.r + d.r * (1.0f - ar), d.r + s.r * (1.0f - d.a));
 		r.g = RI_MIN(s.g + d.g * (1.0f - ag), d.g + s.g * (1.0f - d.a));
 		r.b = RI_MIN(s.b + d.b * (1.0f - ab), d.b + s.b * (1.0f - d.a));
 		r.a = s.a + d.a * (1.0f - s.a);
 		break;
 
-	case kCGBlendModeLighten:
+	case kCGBlendModeLighten: // Passes Visual Test
 		r.r = RI_MAX(s.r + d.r * (1.0f - ar), d.r + s.r * (1.0f - d.a));
 		r.g = RI_MAX(s.g + d.g * (1.0f - ag), d.g + s.g * (1.0f - d.a));
 		r.b = RI_MAX(s.b + d.b * (1.0f - ab), d.b + s.b * (1.0f - d.a));
@@ -684,7 +776,7 @@ static void KGPixelPipeWriteCoverage(KGPixelPipe *self,int x, int y, RIfloat cov
         r.r=(s.r==1)?1:RI_MIN(1,d.r/(1.0-s.r));
         r.g=(s.g==1)?1:RI_MIN(1,d.g/(1.0-s.g));
         r.b=(s.b==1)?1:RI_MIN(1,d.b/(1.0-s.b));
-        r.a=(s.a==1)?1:RI_MIN(1,d.a/(1.0-s.a));
+		r.a = s.a + d.a * (1.0f - s.a);
         break;
         
 	case kCGBlendModeColorBurn:
@@ -700,24 +792,40 @@ static void KGPixelPipeWriteCoverage(KGPixelPipe *self,int x, int y, RIfloat cov
 	case kCGBlendModeSoftLight:
         break;
         
-	case kCGBlendModeDifference:
-        r.r=RI_ABS(d.r-s.r);
-        r.g=RI_ABS(d.g-s.g);
-        r.b=RI_ABS(d.b-s.b);
-        r.a=RI_ABS(d.a-s.a);
+	case kCGBlendModeDifference: // Passes Visual Test
+        r.r=s.r+d.r-2*(RI_MIN(s.r*d.a,d.r*s.a));
+        r.g=s.g+d.g-2*(RI_MIN(s.g*d.a,d.g*s.a));
+        r.b=s.b+d.b-2*(RI_MIN(s.b*d.a,d.b*s.a));
+		r.a = s.a + d.a * (1.0f - s.a);
         break;
         
 	case kCGBlendModeExclusion:
-        r.r=d.r+s.r-2.0*d.r*s.r;
-        r.g=d.g+s.g-2.0*d.g*s.g;
-        r.b=d.b+s.b-2.0*d.b*s.b;
-        r.a=d.a+s.a-2.0*d.a*s.a;
+        r.r = (s.r * d.a + d.r * s.a - 2 * s.r * d.r) + s.r * (1 - d.a) + d.r * (1 - s.a);
+        r.g = (s.g * d.a + d.g * s.a - 2 * s.g * d.r) + s.g * (1 - d.a) + d.g * (1 - s.a);
+        r.b = (s.b * d.a + d.b * s.a - 2 * s.b * d.r) + s.b * (1 - d.a) + d.b * (1 - s.a);
+		r.a = s.a + d.a * (1.0f - s.a);
         break;
         
-	case kCGBlendModeHue:
-        break;
+	case kCGBlendModeHue:{
+         RIfloat sh,ss,sl;
+         RIfloat dh,ds,dl;
         
-	case kCGBlendModeSaturation:
+         RGBToHSL(s.r,s.g,s.b,&sh,&ss,&sl);
+         RGBToHSL(d.r,d.g,d.b,&dh,&ds,&dl);
+         HSLToRGB(sh,ds,dl,&r.r,&r.g,&r.b);
+		 r.a = s.a + d.a * (1.0f - s.a);
+        }
+        break; 
+        
+	case kCGBlendModeSaturation:{
+         RIfloat sh,ss,sl;
+         RIfloat dh,ds,dl;
+        
+         RGBToHSL(s.r,s.g,s.b,&sh,&ss,&sl);
+         RGBToHSL(d.r,d.g,d.b,&dh,&ds,&dl);
+         HSLToRGB(dh,ss,dl,&r.r,&r.g,&r.b);
+		 r.a = s.a + d.a * (1.0f - s.a);
+        }
         break;
         
 	case kCGBlendModeColor:
@@ -726,86 +834,92 @@ static void KGPixelPipeWriteCoverage(KGPixelPipe *self,int x, int y, RIfloat cov
 	case kCGBlendModeLuminosity:
         break;
         
-	case kCGBlendModeClear:
+	case kCGBlendModeClear: // Passes Visual Test, duh
         r.r=0;
         r.g=0;
         r.b=0;
         r.a=0;
         break;
 
-	case kCGBlendModeCopy:
+	case kCGBlendModeCopy: // Passes Visual Test
 		r = s;
 		break;
 
-	case kCGBlendModeSourceIn:
+	case kCGBlendModeSourceIn: // Passes Visual Test
 		r.r = s.r * d.a;
 		r.g = s.g * d.a;
 		r.b = s.b * d.a;
 		r.a = s.a * d.a;
 		break;
 
-	case kCGBlendModeSourceOut:
+	case kCGBlendModeSourceOut: // Passes Visual Test
 		r.r = s.r *(1.0- d.a);
 		r.g = s.g * (1.0- d.a);
 		r.b = s.b * (1.0- d.a);
 		r.a = s.a * (1.0- d.a);
         break;
 
-	case kCGBlendModeSourceAtop:
-		r.r = s.r*d.a+d.r*(1.0-ar);
-		r.g = s.g*d.a+d.g*(1.0-ag);
-		r.b = s.b*d.a+d.b*(1.0-ab);
+	case kCGBlendModeSourceAtop: // Passes Visual Test
+		r.r = s.r*d.a+d.r*(1.0-s.a);
+		r.g = s.g*d.a+d.g*(1.0-s.a);
+		r.b = s.b*d.a+d.b*(1.0-s.a);
 		r.a = s.a*d.a+d.a*(1.0-s.a);
         break;
 
-	case kCGBlendModeDestinationOver:
+	case kCGBlendModeDestinationOver: // Passes Visual Test
 		r.r = s.r * (1.0f - d.a) + d.r;
 		r.g = s.g * (1.0f - d.a) + d.g;
 		r.b = s.b * (1.0f - d.a) + d.b;
 		r.a = s.a * (1.0f - d.a) + d.a;
 		break;
 
-	case kCGBlendModeDestinationIn:
-		r.r = d.r * ar;
-		r.g = d.g * ag;
-		r.b = d.b * ab;
+	case kCGBlendModeDestinationIn: // Passes Visual Test
+		r.r = d.r * s.a;
+		r.g = d.g * s.a;
+		r.b = d.b * s.a;
 		r.a = d.a * s.a;
 		break;
 
 
-	case kCGBlendModeDestinationOut:
-		r.r = d.r *(1.0- ar);
-		r.g = d.g * (1.0- ag);
-		r.b = d.b * (1.0- ab);
+	case kCGBlendModeDestinationOut: // Passes Visual Test
+		r.r = d.r *(1.0- s.a);
+		r.g = d.g * (1.0- s.a);
+		r.b = d.b * (1.0- s.a);
 		r.a = d.a * (1.0- s.a);
         break;
 
-	case kCGBlendModeDestinationAtop:
-        r.r=ar*(1.0-d.a)+d.r*s.a;
-        r.g=ag*(1.0-d.a)+d.g*s.a;
-        r.b=ab*(1.0-d.a)+d.b*s.a;
+	case kCGBlendModeDestinationAtop: // Passes Visual Test
+        r.r=s.r*(1.0-d.a)+d.r*s.a;
+        r.g=s.g*(1.0-d.a)+d.g*s.a;
+        r.b=s.b*(1.0-d.a)+d.b*s.a;
         r.a=s.a*(1.0-d.a)+d.a*s.a;
         break;
 
-	case kCGBlendModeXOR:
-        r.r=ar*(1.0-d.a)+d.r*(1.0-s.a);
-        r.g=ag*(1.0-d.a)+d.g*(1.0-s.a);
-        r.b=ab*(1.0-d.a)+d.b*(1.0-s.a);
+	case kCGBlendModeXOR: // Passes Visual Test
+        r.r=s.r*(1.0-d.a)+d.r*(1.0-s.a);
+        r.g=s.g*(1.0-d.a)+d.g*(1.0-s.a);
+        r.b=s.b*(1.0-d.a)+d.b*(1.0-s.a);
         r.a=s.a*(1.0-d.a)+d.a*(1.0-s.a);
         break;
 
 	case kCGBlendModePlusDarker:
-        r.r=RI_MAX(0,(1.0-d.r)+(1-s.r));
-        r.g=RI_MAX(0,(1.0-d.g)+(1-s.g));
-        r.b=RI_MAX(0,(1.0-d.b)+(1-s.b));
-        r.a=RI_MAX(0,(1.0-d.a)+(1-s.a));
-        r.r=RI_MIN(1,r.r);
-        r.g=RI_MIN(1,r.g);
-        r.b=RI_MIN(1,r.b);
-        r.a=RI_MIN(1,r.a);
+#if 0
+// Doc.s say:  R = MAX(0, (1 - D) + (1 - S)). No workie, no make sense.
+        r.r=RI_MAX(0,(1-d.r)+(1-s.r));
+        r.g=RI_MAX(0,(1-d.g)+(1-s.g));
+        r.b=RI_MAX(0,(1-d.b)+(1-s.b));
+        r.a=RI_MAX(0,(1-d.a)+(1-s.a));
+#else
+        r.r=RI_MIN(1.0,(1-d.r)+(1-s.r));
+        r.g=RI_MIN(1.0,(1-d.g)+(1-s.g));
+        r.b=RI_MIN(1.0,(1-d.b)+(1-s.b));
+		r.a = s.a ;
+//        r.a=RI_MIN(1.0,(1-d.a)+(1-s.a));
+#endif
         break;
 
-	case kCGBlendModePlusLighter:
+// Doc.s say: R = MIN(1, S + D). That works
+	case kCGBlendModePlusLighter: // Passes Visual Test
 		r.r = RI_MIN(s.r + d.r, 1.0f);
 		r.g = RI_MIN(s.g + d.g, 1.0f);
 		r.b = RI_MIN(s.b + d.b, 1.0f);

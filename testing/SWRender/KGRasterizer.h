@@ -50,12 +50,12 @@ typedef struct {
    RIfloat     cnst;
    int         minscany;
    int         maxscany;
-   Vector2     vd;
-   RIfloat     wl;
-   RIfloat     bminx;
-   RIfloat     bmaxx;
+   RIfloat     vdxwl;
+   RIfloat     sxPre;
+   RIfloat     exPre;
 // These are modified per scanline
-   RIfloat		minx;			//for the current scanline
+   int          minx;			//for the current scanline
+   int          ceilMinX;
    int  		maxx;			//for the current scanline
 } Edge;
 
@@ -65,18 +65,14 @@ typedef struct {
    RIfloat		weight;
 } Sample;
 
-typedef struct {
-   int    edgeCount;
-   int    edgeCapacity;
-   Edge **edges;
-} Scanline;
 
 typedef struct {    
     int _vpx,_vpy,_vpwidth,_vpheight;
     
-    int   _edgeCount;
-    int   _edgeCapacity;
-    Edge *_edges;
+    int    _edgeCount;
+    int    _edgeCapacity;
+    Edge  *_edgePool;
+    Edge **_edges;
     
 	Sample samples[32];
 	int numSamples;

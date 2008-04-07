@@ -12,8 +12,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 
 -init {
-  _pixelsWide=386;
-  _pixelsHigh=386;
+  _pixelsWide=400;
+  _pixelsHigh=400;
   _bitsPerComponent=8;
   _bitsPerPixel=32;
   _bytesPerRow=(_pixelsWide*_bitsPerPixel)/8;
@@ -32,17 +32,18 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(CGImageRef)imageRefOfDifferences:(KGRender *)other {
-  unsigned char *diff=NSZoneMalloc([self zone],_bytesPerRow*_pixelsHigh);
+   char *diff=NSZoneMalloc([self zone],_bytesPerRow*_pixelsHigh);
 int i;
   for(i=0;i<_bytesPerRow*_pixelsHigh;i++){
-   int d1=((unsigned char *)_data)[i];
-   int d2=((unsigned char *)other->_data)[i];
-   diff[i]=ABS(d2-d1);
+    unsigned char d1=((unsigned char *)_data)[i];
+    unsigned char d2=((unsigned char *)other->_data)[i];
+    
+    diff[i]=d1^d2;
   }
   
   CGDataProviderRef provider=CGDataProviderCreateWithData(NULL,diff,_pixelsWide*_pixelsHigh*4,NULL);
    return CGImageCreate(_pixelsWide,_pixelsHigh,_bitsPerComponent,_bitsPerPixel,_bytesPerRow,_colorSpace,
-     kCGImageAlphaPremultipliedLast|kCGBitmapByteOrder32Little,provider,NULL,NO,kCGRenderingIntentDefault);
+     kCGBitmapByteOrder32Little,provider,NULL,NO,kCGRenderingIntentDefault);
 }
 
 -(void)setSize:(NSSize)size {
