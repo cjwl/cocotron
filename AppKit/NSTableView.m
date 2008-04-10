@@ -435,16 +435,16 @@ bounds].size.height);
 }
 
 -(void)setDataSource:dataSource {
-    if ([dataSource respondsToSelector:@selector(numberOfRowsInTableView:)] == NO) {
-        [NSException raise:NSInternalInconsistencyException
-                    format:@"data source does not respond to numberOfRowsInTableView:"];
-    }
-    if ([dataSource respondsToSelector:@selector(tableView:objectValueForTableColumn:row:)] == NO) {
-        [NSException raise:NSInternalInconsistencyException
-                    format:@"data source does not respond to tableView:objectValueForTableColumn:row:"];
-    }
-
-    _dataSource=dataSource;
+    if (dataSource)
+	{
+		if(([dataSource respondsToSelector:@selector(numberOfRowsInTableView:)] == NO) ||
+		   ([dataSource respondsToSelector:@selector(tableView:objectValueForTableColumn:row:)] == NO)) {
+			// Apple AppKit only logs here, so we do the same
+			NSLog(@"data source %@ does not respond to numberOfRowsInTableView: or tableView:objectValueForTableColumn:row:", dataSource);
+			// data source is set no matter what in AppKit. Fall through.
+		}
+	}
+	_dataSource=dataSource;
 }
 
 -(void)setDelegate:delegate {
