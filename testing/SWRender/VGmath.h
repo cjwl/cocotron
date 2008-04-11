@@ -24,20 +24,17 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE MATERIALS OR
  * THE USE OR OTHER DEALINGS IN THE MATERIALS.
  *
- *//**
- * \file
- * \brief	Math functions, Vector and Matrix classes.
- * \note	
- *//*-------------------------------------------------------------------*/
+ *-------------------------------------------------------------------*/
 
 #import <math.h>
-#import <assert.h>
 #import <ApplicationServices/ApplicationServices.h>
+#import <Foundation/Foundation.h>
 
 typedef unsigned char	RIuint8;
 typedef float RIfloat;
 
-#define RI_ASSERT(_) assert(_)
+//#define RI_ASSERT(_) NSCParameterAssert(_)
+#define RI_ASSERT(_) 
 
 #define RI_INT32_MAX  (0x7fffffff)
 #define RI_INT32_MIN  (-0x7fffffff-1)
@@ -75,6 +72,13 @@ static inline int		RI_INT_MAX(int a, int b)			{ return (a > b) ? a : b; }
 static inline int		RI_INT_MIN(int a, int b)			{ return (a < b) ? a : b; }
 static inline int		RI_INT_MOD(int a, int b)			{ RI_ASSERT(b >= 0); if(!b) return 0; int i = a % b; if(i < 0) i += b; RI_ASSERT(i >= 0 && i < b); return i; }
 static inline int		RI_INT_ADDSATURATE(int a, int b)	{ RI_ASSERT(b >= 0); int r = a + b; return (r >= a) ? r : RI_INT32_MAX; }
+
+static inline int RI_FLOOR_TO_INT(RIfloat value){
+   if(value<0)
+    return floor(value);
+    
+   return value;
+}
 
 typedef struct {
    RIfloat x,y;
@@ -194,28 +198,7 @@ static inline Matrix3x3 Matrix3x3WithCGAffineTransform(CGAffineTransform transfo
    return result;
 }
 
-static inline Matrix3x3 Matrix3x3Make( RIfloat m00, RIfloat m01, RIfloat m02, RIfloat m10, RIfloat m11, RIfloat m12, RIfloat m20, RIfloat m21, RIfloat m22 ) {
-   Matrix3x3 result;
-   
-   result.matrix[0][0] = m00;
-   result.matrix[0][1] = m01;
-   result.matrix[0][2] = m02;
-   result.matrix[1][0] = m10;
-   result.matrix[1][1] = m11;
-   result.matrix[1][2] = m12;
-   result.matrix[2][0] = m20;
-   result.matrix[2][1] = m21;
-   result.matrix[2][2] = m22;
-   
-   return result;
-}
-
 bool Matrix3x3InplaceInvert(Matrix3x3 *m);
-
-static inline Matrix3x3 Matrix3x3Invert(Matrix3x3 result){   
-   Matrix3x3InplaceInvert(&result);
-   return result;
-}
 
 static inline Matrix3x3 Matrix3x3Multiply(Matrix3x3 m1,Matrix3x3 m2){
    Matrix3x3 t;
@@ -242,12 +225,6 @@ static inline bool Matrix3x3IsAffine(Matrix3x3 m){
 static inline Vector2 Matrix3x3TransformVector2(Matrix3x3 m,Vector2 v){
    RI_ASSERT(Matrix3x3IsAffine(m));
    return Vector2Make(v.x * m.matrix[0][0] + v.y * m.matrix[0][1] + m.matrix[0][2], v.x * m.matrix[1][0] + v.y * m.matrix[1][1] + m.matrix[1][2]);
-}
-
-//matrix * column vector. The input vector2 is implicitly expanded to (x,y,0)
-static inline Vector2 Matrix3x3TangentTransformVector2(Matrix3x3 m, Vector2 v){
-   RI_ASSERT(Matrix3x3IsAffine(m));
-   return Vector2Make(v.x * m.matrix[0][0] + v.y * m.matrix[0][1], v.x * m.matrix[1][0] + v.y * m.matrix[1][1]);
 }
 
 //matrix * column vector

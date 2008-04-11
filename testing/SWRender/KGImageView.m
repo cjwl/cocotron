@@ -22,7 +22,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)drawRect:(NSRect)rect {
    CGContextRef context=(CGContextRef)[[NSGraphicsContext currentContext] graphicsPort];
    
-   [[NSColor whiteColor] set];
+   [[NSColor blackColor] set];
    NSRectFill([self bounds]);
    if(_imageRef!=NULL){
     CGContextSaveGState(context);

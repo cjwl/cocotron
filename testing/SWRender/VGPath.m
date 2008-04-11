@@ -34,7 +34,7 @@
 #warning verify pointers arent assigned false or 0
 
 #import "VGPath.h"
-#import "riMath.h"
+#import "VGmath.h"
 
 	enum VertexFlags
 	{
@@ -46,26 +46,7 @@
 		IMPLICIT_CLOSE_SUBPATH	= (1<<5)
 	};
 
-
-/* maximum mantissa is 23 */
-#define RI_MANTISSA_BITS 23
-
-/* maximum exponent is 8 */
-#define RI_EXPONENT_BITS 8
-
-typedef union
-{
-	float	f;
-	unsigned	i;
-} RIfloatInt;
-
-inline float	getFloatMax()
-{
-	RIfloatInt v;
-	v.i = (((1<<(RI_EXPONENT_BITS-1))-1+127) << 23) | (((1<<RI_MANTISSA_BITS)-1) << (23-RI_MANTISSA_BITS));
-	return v.f;
-}
-#define RI_FLOAT_MAX  getFloatMax()
+#define RI_FLOAT_MAX FLT_MAX
 
 static inline RIfloat inputFloat(RIfloat f) {
 	//this function is used for all floating point input values
@@ -192,12 +173,11 @@ static Vector2 circularLerp(Vector2 t0, Vector2 t1, RIfloat ratio)
 	return u0;
 }
 
-/*-------------------------------------------------------------------*//*!
-* \brief	VGPath constructor.
-* \param	
-* \return	
-* \note		
-*//*-------------------------------------------------------------------*/
+@implementation VGPath
+
+static inline int VGPathGetNumCoordinates(VGPath *self){
+   return self->_coordinateCount;
+}
 
 VGPath *VGPathAlloc(){
    return (VGPath *)NSZoneCalloc(NULL,1,sizeof(VGPath));
@@ -273,9 +253,9 @@ void VGPathSetCoordinate(VGPath *self,int i, RIfloat c){
 * \note		
 *//*-------------------------------------------------------------------*/
 
-int VGPathSegmentToNumCoordinates(VGPathSegment segment){
+int CGPathElementTypeToNumCoordinates(CGPathElementType segment){
 	RI_ASSERT(((int)segment) >= 0 && ((int)segment) <= 6);
-	static const int coords[13] = {0,2,2,4,6,2,4};
+	static const int coords[13] = {2,2,4,6,0};
 	return coords[(int)segment];
 }
 
@@ -294,7 +274,7 @@ int VGPathCountNumCoordinates(const RIuint8* segments, int numSegments)
 	int coordinates = 0;
     int i;
 	for(i=0;i<numSegments;i++)
-		coordinates += VGPathSegmentToNumCoordinates((VGPathSegment)segments[i]);
+		coordinates += CGPathElementTypeToNumCoordinates((CGPathElementType)segments[i]);
 	return coordinates;
 }
 
@@ -457,8 +437,8 @@ void VGPathTransform(VGPath *self,VGPath* srcPath, Matrix3x3 matrix){
     int i;
 	for(i=0;i<srcPath->_segmentCount;i++)
 	{
-		VGPathSegment segment = (VGPathSegment)srcPath->_segments[i];
-		int coords = VGPathSegmentToNumCoordinates(segment);
+		CGPathElementType segment = (CGPathElementType)srcPath->_segments[i];
+		int coords = CGPathElementTypeToNumCoordinates(segment);
 		numSrcCoords += coords;
 		numDstCoords += coords;
 	}
@@ -509,19 +489,19 @@ void VGPathTransform(VGPath *self,VGPath* srcPath, Matrix3x3 matrix){
 	Vector2 o=Vector2Make(0,0);		//the last point of the previous segment
 	for(i=0;i<srcPath->_segmentCount;i++)
 	{
-		VGPathSegment segment = (VGPathSegment)srcPath->_segments[i];
-		int coords = VGPathSegmentToNumCoordinates(segment);
+		CGPathElementType segment = (CGPathElementType)srcPath->_segments[i];
+		int coords = CGPathElementTypeToNumCoordinates(segment);
 
 		switch(segment)
 		{
-		case VG_CLOSE_PATH:
+		case kCGPathElementCloseSubpath:
 		{
 			RI_ASSERT(coords == 0);
 			o = s;
 			break;
 		}
 
-		case VG_MOVE_TO:
+		case kCGPathElementMoveToPoint:
 		{
 			RI_ASSERT(coords == 2);
 			Vector2 c=Vector2Make(VGPathGetCoordinate(srcPath,srcCoord+0), VGPathGetCoordinate(srcPath,srcCoord+1));
@@ -533,7 +513,7 @@ void VGPathTransform(VGPath *self,VGPath* srcPath, Matrix3x3 matrix){
 			break;
 		}
 
-		case VG_LINE_TO:
+		case kCGPathElementAddLineToPoint:
 		{
 			RI_ASSERT(coords == 2);
 			Vector2 c=Vector2Make(VGPathGetCoordinate(srcPath,srcCoord+0), VGPathGetCoordinate(srcPath,srcCoord+1));
@@ -544,7 +524,7 @@ void VGPathTransform(VGPath *self,VGPath* srcPath, Matrix3x3 matrix){
 			break;
 		}
 
-		case VG_QUAD_TO:
+		case kCGPathElementAddQuadCurveToPoint:
 		{
 			RI_ASSERT(coords == 4);
 			Vector2 c0=Vector2Make(VGPathGetCoordinate(srcPath,srcCoord+0), VGPathGetCoordinate(srcPath,srcCoord+1));
@@ -559,7 +539,7 @@ void VGPathTransform(VGPath *self,VGPath* srcPath, Matrix3x3 matrix){
 			break;
 		}
 
-		case VG_CUBIC_TO:
+		case kCGPathElementAddCurveToPoint:
 		{
 			RI_ASSERT(coords == 6);
 			Vector2 c0=Vector2Make(VGPathGetCoordinate(srcPath,srcCoord+0), VGPathGetCoordinate(srcPath,srcCoord+1));
@@ -568,32 +548,6 @@ void VGPathTransform(VGPath *self,VGPath* srcPath, Matrix3x3 matrix){
 			Vector2 tc0 = Matrix3x3TransformVector2(matrix, c0);
 			VGPathSetCoordinate(self, self->_coordinateCount++, tc0.x);
 			VGPathSetCoordinate(self, self->_coordinateCount++, tc0.y);
-			Vector2 tc1 = Matrix3x3TransformVector2(matrix, c1);
-			VGPathSetCoordinate(self, self->_coordinateCount++, tc1.x);
-			VGPathSetCoordinate(self, self->_coordinateCount++, tc1.y);
-			Vector2 tc2 = Matrix3x3TransformVector2(matrix, c2);
-			VGPathSetCoordinate(self, self->_coordinateCount++, tc2.x);
-			VGPathSetCoordinate(self, self->_coordinateCount++, tc2.y);
-			o = c2;
-			break;
-		}
-
-		case VG_SQUAD_TO:
-		{
-			RI_ASSERT(coords == 2);
-			Vector2 c1=Vector2Make(VGPathGetCoordinate(srcPath,srcCoord+0), VGPathGetCoordinate(srcPath,srcCoord+1));
-			Vector2 tc1 = Matrix3x3TransformVector2(matrix, c1);
-			VGPathSetCoordinate(self, self->_coordinateCount++, tc1.x);
-			VGPathSetCoordinate(self, self->_coordinateCount++, tc1.y);
-			o = c1;
-			break;
-		}
-
-		case VG_SCUBIC_TO:
-		{
-			RI_ASSERT(coords == 4);
-			Vector2 c1=Vector2Make(VGPathGetCoordinate(srcPath,srcCoord+0), VGPathGetCoordinate(srcPath,srcCoord+1));
-			Vector2 c2=Vector2Make(VGPathGetCoordinate(srcPath,srcCoord+2), VGPathGetCoordinate(srcPath,srcCoord+3));
 			Vector2 tc1 = Matrix3x3TransformVector2(matrix, c1);
 			VGPathSetCoordinate(self, self->_coordinateCount++, tc1.x);
 			VGPathSetCoordinate(self, self->_coordinateCount++, tc1.y);
@@ -1435,6 +1389,10 @@ bool VGPathAddLineTo(VGPath *self,Vector2 p0, Vector2 p1, bool subpathHasGeometr
 * \note		
 *//*-------------------------------------------------------------------*/
 
+/*
+ Given a quadratic BŽzier curve with control points (x0, y0), (x1, y1), and (x2, y2), an identical cubic BŽzier curve may be formed using the control points (x0, y0), (x0 + 2*x1, y0 + 2*y1)/3, (x2 + 2*x1, y2 + 2*y1)/3, (x2, y2)
+  */
+  
 bool VGPathAddQuadTo(VGPath *self,Vector2 p0, Vector2 p1, Vector2 p2, bool subpathHasGeometry){
 	if(Vector2IsEqual(p0,p1) && Vector2IsEqual(p0,p2))
 	{
@@ -1580,17 +1538,17 @@ void VGPathTessellate(VGPath *self){
 		o=Vector2Make(0,0);
 		p=Vector2Make(0,0);
 		bool subpathHasGeometry = false;
-		VGPathSegment prevSegment = VG_MOVE_TO;
+		CGPathElementType prevSegment = kCGPathElementMoveToPoint;
         int i;
 		for(i=0;i<self->_segmentCount;i++)
 		{
-			VGPathSegment segment = (VGPathSegment)self->_segments[i];
-			int coords = VGPathSegmentToNumCoordinates(segment);
+			CGPathElementType segment = (CGPathElementType)self->_segments[i];
+			int coords = CGPathElementTypeToNumCoordinates(segment);
 			self->_segmentToVertex[i].start = self->_vertexCount;
 
 			switch(segment)
 			{
-			case VG_CLOSE_PATH:
+			case kCGPathElementCloseSubpath:
 			{
 				RI_ASSERT(coords == 0);
 				VGPathAddEndPath(self,o, s, subpathHasGeometry, CLOSE_SUBPATH);
@@ -1600,11 +1558,11 @@ void VGPathTessellate(VGPath *self){
 				break;
 			}
 
-			case VG_MOVE_TO:
+			case kCGPathElementMoveToPoint:
 			{
 				RI_ASSERT(coords == 2);
 				Vector2 c=Vector2Make(VGPathGetCoordinate(self,coordIndex+0), VGPathGetCoordinate(self,coordIndex+1));
-				if(prevSegment != VG_MOVE_TO && prevSegment != VG_CLOSE_PATH)
+				if(prevSegment != kCGPathElementMoveToPoint && prevSegment != kCGPathElementCloseSubpath)
 					VGPathAddEndPath(self,o, s, subpathHasGeometry, IMPLICIT_CLOSE_SUBPATH);
 				s = c;
 				p = c;
@@ -1613,7 +1571,7 @@ void VGPathTessellate(VGPath *self){
 				break;
 			}
 
-			case VG_LINE_TO:
+			case kCGPathElementAddLineToPoint:
 			{
 				RI_ASSERT(coords == 2);
 				Vector2 c=Vector2Make(VGPathGetCoordinate(self,coordIndex+0), VGPathGetCoordinate(self,coordIndex+1));
@@ -1624,7 +1582,7 @@ void VGPathTessellate(VGPath *self){
 				break;
 			}
 
-			case VG_QUAD_TO:
+			case kCGPathElementAddQuadCurveToPoint:
 			{
 				RI_ASSERT(coords == 4);
 				Vector2 c0=Vector2Make(VGPathGetCoordinate(self,coordIndex+0), VGPathGetCoordinate(self,coordIndex+1));
@@ -1636,37 +1594,12 @@ void VGPathTessellate(VGPath *self){
 				break;
 			}
 
-			case VG_SQUAD_TO:
-			{
-				RI_ASSERT(coords == 2);
-				Vector2 c0 = Vector2Subtract(Vector2MultiplyByFloat(o,2.0f) , p);
-				Vector2 c1=Vector2Make(VGPathGetCoordinate(self,coordIndex+0), VGPathGetCoordinate(self,coordIndex+1));
-				if(VGPathAddQuadTo(self,o, c0, c1, subpathHasGeometry))
-					subpathHasGeometry = true;
-				p = c0;
-				o = c1;
-				break;
-			}
-
-			case VG_CUBIC_TO:
+			case kCGPathElementAddCurveToPoint:
 			{
 				RI_ASSERT(coords == 6);
 				Vector2 c0=Vector2Make(VGPathGetCoordinate(self,coordIndex+0), VGPathGetCoordinate(self,coordIndex+1));
 				Vector2 c1=Vector2Make(VGPathGetCoordinate(self,coordIndex+2), VGPathGetCoordinate(self,coordIndex+3));
 				Vector2 c2=Vector2Make(VGPathGetCoordinate(self,coordIndex+4), VGPathGetCoordinate(self,coordIndex+5));
-				if(VGPathAddCubicTo(self,o, c0, c1, c2, subpathHasGeometry))
-					subpathHasGeometry = true;
-				p = c1;
-				o = c2;
-				break;
-			}
-
-			case VG_SCUBIC_TO:
-			{
-				RI_ASSERT(coords == 4);
-				Vector2 c0 = Vector2Subtract(Vector2MultiplyByFloat(o,2.0f) , p);
-				Vector2 c1=Vector2Make(VGPathGetCoordinate(self,coordIndex+0), VGPathGetCoordinate(self,coordIndex+1));
-				Vector2 c2=Vector2Make(VGPathGetCoordinate(self,coordIndex+2), VGPathGetCoordinate(self,coordIndex+3));
 				if(VGPathAddCubicTo(self,o, c0, c1, c2, subpathHasGeometry))
 					subpathHasGeometry = true;
 				p = c1;
@@ -1691,7 +1624,7 @@ void VGPathTessellate(VGPath *self){
 		//add an implicit MOVE_TO to the end to close the last subpath.
 		//if the subpath contained only zero-length segments, this produces the necessary geometry to get it stroked
 		// and included in path bounds. The geometry won't be included in the pointAlongPath query.
-		if(prevSegment != VG_MOVE_TO && prevSegment != VG_CLOSE_PATH)
+		if(prevSegment != kCGPathElementMoveToPoint && prevSegment != kCGPathElementCloseSubpath)
 			VGPathAddEndPath(self,o, s, subpathHasGeometry, IMPLICIT_CLOSE_SUBPATH);
 
 #if 0 // DEBUG
@@ -1781,3 +1714,5 @@ void VGPathTessellate(VGPath *self){
 	}
 #endif
 }
+
+@end

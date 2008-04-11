@@ -26,7 +26,7 @@
  *
  *-------------------------------------------------------------------*/
 
-#import "riMath.h"
+#import "VGmath.h"
 #import "KGPixelPipe.h"
 
 /*-------------------------------------------------------------------*//*!
@@ -65,7 +65,6 @@ typedef struct {
    RIfloat		weight;
 } Sample;
 
-
 typedef struct {    
     int _vpx,_vpy,_vpwidth,_vpheight;
     
@@ -74,11 +73,10 @@ typedef struct {
     Edge  *_edgePool;
     Edge **_edges;
     
-	Sample samples[32];
-	int numSamples;
-	RIfloat sumWeights ;
-	RIfloat fradius ;		//max offset of the sampling points from a pixel center
-	bool reflect ;
+	int     numSamples;
+	RIfloat sumWeights;
+	RIfloat fradius;		//max offset of the sampling points from a pixel center
+	Sample  samples[32];
 } KGRasterizer;
 
 KGRasterizer *KGRasterizerAlloc();

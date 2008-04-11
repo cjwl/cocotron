@@ -26,18 +26,8 @@
  *
  *-------------------------------------------------------------------*/
 
-#import "riMath.h"
+#import "VGmath.h"
 #import "KGRasterizer.h"
-
-typedef enum {
-  VG_CLOSE_PATH,
-  VG_MOVE_TO,
-  VG_LINE_TO,
-  VG_QUAD_TO,
-  VG_CUBIC_TO,
-  VG_SQUAD_TO,
-  VG_SCUBIC_TO,
-} VGPathSegment;
 
 typedef struct {
    Vector2			userPosition;
@@ -76,7 +66,7 @@ typedef struct {
    int		end;
 } VertexIndex;
 
-typedef struct {    
+@interface VGPath : NSObject {    
     int      _segmentCount;
     int      _segmentCapacity;
     RIuint8 *_segments;
@@ -97,15 +87,11 @@ typedef struct {
 	RIfloat				m_userMiny;
 	RIfloat				m_userMaxx;
 	RIfloat				m_userMaxy;
-} VGPath;
+}
 
 VGPath *VGPathAlloc();
 VGPath *VGPathInit(VGPath *self,int segmentCapacityHint, int coordCapacityHint);
 void VGPathDealloc(VGPath *self);
-
-static inline int VGPathGetNumCoordinates(VGPath *self){
-   return self->_coordinateCount;
-}
 
 void VGPathAppendData(VGPath *self,const RIuint8* segments, int numSegments, const RIfloat* data);	
 void VGPathAppend(VGPath *self,VGPath* srcPath);	
@@ -119,7 +105,7 @@ RIfloat getPathLength(VGPath *self,int startIndex, int numSegments);
 void VGPathGetPathBounds(VGPath *self,RIfloat *minx, RIfloat *miny, RIfloat *maxx, RIfloat *maxy);	
 void VGPathGetPathTransformedBounds(VGPath *self,Matrix3x3 pathToSurface, RIfloat *minx, RIfloat *miny, RIfloat *maxx, RIfloat *maxy);	
 
-int VGPathSegmentToNumCoordinates(VGPathSegment segment);
+int CGPathElementTypeToNumCoordinates(CGPathElementType segment);
 int VGPathCountNumCoordinates(const RIuint8* segments, int numSegments);
 
 RIfloat VGPathGetCoordinate(VGPath *self,int i);
@@ -138,3 +124,5 @@ void VGPathTessellate(VGPath *self);
 void VGPathInterpolateStroke(Matrix3x3 pathToSurface, KGRasterizer *rasterizer,StrokeVertex v0,StrokeVertex v1, RIfloat strokeWidth);	
 void VGPathDoCap(Matrix3x3 pathToSurface, KGRasterizer *rasterizer,StrokeVertex v, RIfloat strokeWidth, CGLineCap capStyle);	
 void VGPathDoJoin(Matrix3x3 pathToSurface, KGRasterizer *rasterizer,StrokeVertex v0,StrokeVertex v1, RIfloat strokeWidth, CGLineJoin joinStyle, RIfloat miterLimit);	
+
+@end

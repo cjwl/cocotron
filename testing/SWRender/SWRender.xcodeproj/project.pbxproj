@@ -18,7 +18,7 @@
 		FE1F93630D7EF19900969491 /* KGImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = FE1F93620D7EF19900969491 /* KGImageView.m */; };
 		FE1F937A0D7EF1F800969491 /* KGRenderController.m in Sources */ = {isa = PBXBuildFile; fileRef = FE1F93790D7EF1F800969491 /* KGRenderController.m */; };
 		FE9552810D77CA67009B765B /* VGImage.m in Sources */ = {isa = PBXBuildFile; fileRef = FE9552780D77CA67009B765B /* VGImage.m */; };
-		FE9552820D77CA67009B765B /* riMath.m in Sources */ = {isa = PBXBuildFile; fileRef = FE95527A0D77CA67009B765B /* riMath.m */; };
+		FE9552820D77CA67009B765B /* VGmath.m in Sources */ = {isa = PBXBuildFile; fileRef = FE95527A0D77CA67009B765B /* VGmath.m */; };
 		FE9552830D77CA67009B765B /* VGPath.m in Sources */ = {isa = PBXBuildFile; fileRef = FE95527C0D77CA67009B765B /* VGPath.m */; };
 		FE9552840D77CA67009B765B /* KGPixelPipe.m in Sources */ = {isa = PBXBuildFile; fileRef = FE95527E0D77CA67009B765B /* KGPixelPipe.m */; };
 		FE9552850D77CA67009B765B /* KGRasterizer.m in Sources */ = {isa = PBXBuildFile; fileRef = FE9552800D77CA67009B765B /* KGRasterizer.m */; };
@@ -58,8 +58,8 @@
 		FE1F93790D7EF1F800969491 /* KGRenderController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGRenderController.m; sourceTree = "<group>"; };
 		FE9552770D77CA67009B765B /* VGImage.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = VGImage.h; sourceTree = "<group>"; };
 		FE9552780D77CA67009B765B /* VGImage.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = VGImage.m; sourceTree = "<group>"; };
-		FE9552790D77CA67009B765B /* riMath.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = riMath.h; sourceTree = "<group>"; };
-		FE95527A0D77CA67009B765B /* riMath.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = riMath.m; sourceTree = "<group>"; };
+		FE9552790D77CA67009B765B /* VGmath.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = VGmath.h; sourceTree = "<group>"; };
+		FE95527A0D77CA67009B765B /* VGmath.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = VGmath.m; sourceTree = "<group>"; };
 		FE95527B0D77CA67009B765B /* VGPath.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = VGPath.h; sourceTree = "<group>"; };
 		FE95527C0D77CA67009B765B /* VGPath.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = VGPath.m; sourceTree = "<group>"; };
 		FE95527D0D77CA67009B765B /* KGPixelPipe.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = KGPixelPipe.h; sourceTree = "<group>"; };
@@ -120,8 +120,8 @@
 				FE1F93620D7EF19900969491 /* KGImageView.m */,
 				FE9552770D77CA67009B765B /* VGImage.h */,
 				FE9552780D77CA67009B765B /* VGImage.m */,
-				FE9552790D77CA67009B765B /* riMath.h */,
-				FE95527A0D77CA67009B765B /* riMath.m */,
+				FE9552790D77CA67009B765B /* VGmath.h */,
+				FE95527A0D77CA67009B765B /* VGmath.m */,
 				FE95527B0D77CA67009B765B /* VGPath.h */,
 				FE95527C0D77CA67009B765B /* VGPath.m */,
 				FE95527D0D77CA67009B765B /* KGPixelPipe.h */,
@@ -224,7 +224,7 @@
 			files = (
 				8D11072D0486CEB800E47090 /* main.m in Sources */,
 				FE9552810D77CA67009B765B /* VGImage.m in Sources */,
-				FE9552820D77CA67009B765B /* riMath.m in Sources */,
+				FE9552820D77CA67009B765B /* VGmath.m in Sources */,
 				FE9552830D77CA67009B765B /* VGPath.m in Sources */,
 				FE9552840D77CA67009B765B /* KGPixelPipe.m in Sources */,
 				FE9552850D77CA67009B765B /* KGRasterizer.m in Sources */,

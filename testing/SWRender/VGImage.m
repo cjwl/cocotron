@@ -33,6 +33,8 @@
 #import "VGImage.h"
 #import "KGRasterizer.h"
 
+@implementation VGImage
+
 #define RI_MAX_GAUSSIAN_STD_DEVIATION	128.0f
 
 bool VGImageIsValidFormat(int f)
@@ -64,7 +66,7 @@ static unsigned int bitsToMask(unsigned int bits, unsigned int shift)
 	
 static unsigned int colorToInt(RIfloat c, int maxc)
 {
-	return RI_INT_MIN(RI_INT_MAX((int)floor(c * (RIfloat)maxc + 0.5f), 0), maxc);
+	return RI_INT_MIN(RI_INT_MAX(RI_FLOOR_TO_INT(c * (RIfloat)maxc + 0.5f), 0), maxc);
 }
 
 /*-------------------------------------------------------------------*//*!
@@ -87,21 +89,21 @@ static inline RIfloat intToColor(unsigned int i, unsigned int maxi)
 * \note		
 *//*-------------------------------------------------------------------*/
 
-VGColor VGColorUnpack(unsigned int inputData,VGColorDescriptor inputDesc) {
+VGColor VGColorUnpack(unsigned int inputData,VGImage *img){
    VGColor result;
    
-	int rb = inputDesc.redBits;
-	int gb = inputDesc.greenBits;
-	int bb = inputDesc.blueBits;
-	int ab = inputDesc.alphaBits;
-	int lb = inputDesc.luminanceBits;
-	int rs = inputDesc.redShift;
-	int gs = inputDesc.greenShift;
-	int bs = inputDesc.blueShift;
-	int as = inputDesc.alphaShift;
-	int ls = inputDesc.luminanceShift;
+	int rb = img->m_desc.redBits;
+	int gb = img->m_desc.greenBits;
+	int bb = img->m_desc.blueBits;
+	int ab = img->m_desc.alphaBits;
+	int lb = img->m_desc.luminanceBits;
+	int rs = img->m_desc.redShift;
+	int gs = img->m_desc.greenShift;
+	int bs = img->m_desc.blueShift;
+	int as = img->m_desc.alphaShift;
+	int ls = img->m_desc.luminanceShift;
 
-	result.m_format = inputDesc.internalFormat;
+	result.m_format = img->m_desc.internalFormat;
 	if(lb)
 	{	//luminance
 		result.r = result.g = result.b = intToColor(inputData >> ls, (1<<lb)-1);
@@ -131,7 +133,7 @@ VGColor VGColorUnpack(unsigned int inputData,VGColorDescriptor inputDesc) {
 * \note		
 *//*-------------------------------------------------------------------*/
 
-unsigned int VGColorPack(VGColor color,VGColorDescriptor outputDesc) {
+unsigned int VGColorPack(VGColor color,VGImage *img) {
 	RI_ASSERT(color.r >= 0.0f && color.r <= 1.0f);
 	RI_ASSERT(color.g >= 0.0f && color.g <= 1.0f);
 	RI_ASSERT(color.b >= 0.0f && color.b <= 1.0f);
@@ -140,16 +142,16 @@ unsigned int VGColorPack(VGColor color,VGColorDescriptor outputDesc) {
 	RI_ASSERT(!(color.m_format & VGColorPREMULTIPLIED) || (color.r <= color.a && color.g <= color.a && color.b <= color.a));	//premultiplied colors must have color channels less than or equal to alpha
 	RI_ASSERT((color.m_format & VGColorLUMINANCE && color.r == color.g && color.r == color.b) || !(color.m_format & VGColorLUMINANCE));	//if luminance, r=g=b
 
-	int rb = outputDesc.redBits;
-	int gb = outputDesc.greenBits;
-	int bb = outputDesc.blueBits;
-	int ab = outputDesc.alphaBits;
-	int lb = outputDesc.luminanceBits;
-	int rs = outputDesc.redShift;
-	int gs = outputDesc.greenShift;
-	int bs = outputDesc.blueShift;
-	int as = outputDesc.alphaShift;
-	int ls = outputDesc.luminanceShift;
+	int rb = img->m_desc.redBits;
+	int gb = img->m_desc.greenBits;
+	int bb = img->m_desc.blueBits;
+	int ab = img->m_desc.alphaBits;
+	int lb = img->m_desc.luminanceBits;
+	int rs = img->m_desc.redShift;
+	int gs = img->m_desc.greenShift;
+	int bs = img->m_desc.blueShift;
+	int as = img->m_desc.alphaShift;
+	int ls = img->m_desc.luminanceShift;
 
 	if(lb)
 	{	//luminance
@@ -535,6 +537,18 @@ void VGImageDealloc(VGImage *self) {
 	}
 }
 
+VGColorDescriptor	VGImageColorDescriptor(VGImage *image){
+   return image->m_desc;
+}
+
+int VGImageGetWidth(VGImage *image){
+   return image->m_width;
+}
+
+int VGImageGetHeight(VGImage *image){
+   return image->m_height;
+}
+
 /*-------------------------------------------------------------------*//*!
 * \brief	Resizes an image. New pixels are set to the given color.
 * \param	
@@ -572,7 +586,7 @@ void VGImageResize(VGImage *self,int newWidth, int newHeight, VGColor newPixelCo
 	VGColor col = newPixelColor;
 	col=VGColorClamp(col);
 	col=VGColorConvert(col,self->m_desc.internalFormat);
-	unsigned int c = VGColorPack(col,self->m_desc);
+	unsigned int c = VGColorPack(col,self);
 
 	int w = RI_INT_MIN(self->m_width, newWidth);
     int j;
@@ -942,7 +956,7 @@ void VGImageMask(VGImage *self,VGImage* src, VGMaskOperation operation, int x, i
 * \note		
 *//*-------------------------------------------------------------------*/
 
-VGColor VGImageReadPixel(VGImage *self,int x, int y) {
+VGColor inline VGImageReadPixel(VGImage *self,int x, int y) {
 	RI_ASSERT(self->m_data);
 	RI_ASSERT(x >= 0 && x < self->m_width);
 	RI_ASSERT(y >= 0 && y < self->m_height);
@@ -981,8 +995,136 @@ VGColor VGImageReadPixel(VGImage *self,int x, int y) {
 		break;
 	}
 	}
-	return VGColorUnpack(p, self->m_desc);
+	return VGColorUnpack(p, self);
  }
+
+static  RIfloat byteToColor(unsigned int i){
+	return (RIfloat)(i & 0xFF) / (RIfloat)0xFF;
+}
+
+static void VGImageReadPixelSpan_RGBA_8888(VGImage *self,RIuint8 *scanline,int x,int y,VGColor *span,int length){
+   int format=self->m_desc.internalFormat;
+   int      i;
+   
+   for(i=0;i<length;i++,x++){
+    RIuint32 p = *(((RIuint32*)scanline) + x);
+    VGColor  result;
+    
+    result.r = byteToColor(p >> 24);
+    result.g = byteToColor(p >> 16);
+    result.b = byteToColor(p >> 8);
+	result.a = byteToColor(p >> 0);
+    result.m_format=format;
+    span[i]=result;
+   }
+}
+
+static void VGImageReadPixelSpan_32(VGImage *self,RIuint8 *scanline,int x,int y,VGColor *span,int length){
+   int          i;
+   unsigned int p;
+
+        for(i=0;i<length;i++,x++){
+            RIuint32* s = (((RIuint32*)scanline) + x);
+            p = (unsigned int)*s;
+            span[i]=VGColorUnpack(p, self);
+        }
+}
+
+static void VGImageReadPixelSpan_16(VGImage *self,RIuint8 *scanline,int x,int y,VGColor *span,int length){
+   int          i;
+   unsigned int p;
+
+        for(i=0;i<length;i++,x++){
+            RIuint16* s = ((RIuint16*)scanline) + x;
+            p = (unsigned int)*s;
+            span[i]=VGColorUnpack(p, self);
+        }
+}
+
+static void VGImageReadPixelSpan_08(VGImage *self,RIuint8 *scanline,int x,int y,VGColor *span,int length){
+   int          i;
+   unsigned int p;
+
+        for(i=0;i<length;i++,x++){
+            RIuint8* s = ((RIuint8*)scanline) + x;
+            p = (unsigned int)*s;
+            span[i]=VGColorUnpack(p, self);
+        }
+}
+
+static void VGImageReadPixelSpan_01(VGImage *self,RIuint8 *scanline,int x,int y,VGColor *span,int length){
+   int          i;
+   unsigned int p;
+
+        for(i=0;i<length;i++,x++){
+            x += self->m_bitOffset;
+            RIuint8* s = scanline + (x>>3);
+            p = (((unsigned int)*s) >> (x&7)) & 1u;
+            span[i]=VGColorUnpack(p, self);
+        }
+}
+
+static void premultiplySpan(VGColor *span,int length){
+   int i;
+      
+   for(i=0;i<length;i++)
+    span[i]=VGColorPremultiply(span[i]);
+}
+
+//clamp premultiplied color to alpha to enforce consistency
+static void clampPremultipliedSpan(VGColor *span,int length){
+   int i;
+   
+   for(i=0;i<length;i++){
+    span[i].r = RI_MIN(span[i].r, span[i].a);
+    span[i].g = RI_MIN(span[i].g, span[i].a);
+    span[i].b = RI_MIN(span[i].b, span[i].a);
+   }
+}
+
+VGColorInternalFormat VGImageReadPremultipliedPixelSpan(VGImage *self,int x,int y,VGColor *span,int length) {
+   RIuint8 *scanline = self->m_data + y * self->m_stride;
+   
+   switch(self->m_desc.format){
+    case VG_sRGBA_8888:
+    case VG_lRGBA_8888:
+     VGImageReadPixelSpan_RGBA_8888(self,scanline,x,y,span,length);
+     premultiplySpan(span,length);
+     break;
+         
+    case VG_sRGBA_8888_PRE:
+    case VG_lRGBA_8888_PRE:
+     VGImageReadPixelSpan_RGBA_8888(self,scanline,x,y,span,length);
+     clampPremultipliedSpan(span,length); // We don't need to do this for internally generated images (context)
+     break;
+
+    default:
+     switch(self->m_desc.bitsPerPixel){
+      case 32:
+       VGImageReadPixelSpan_32(self,scanline,x,y,span,length);
+       break;
+
+      case 16:
+       VGImageReadPixelSpan_16(self,scanline,x,y,span,length);
+       break;
+
+      case  8:
+       VGImageReadPixelSpan_08(self,scanline,x,y,span,length);
+       break;
+
+      default:
+       RI_ASSERT(self->m_desc.bitsPerPixel == 1);
+       VGImageReadPixelSpan_01(self,scanline,x,y,span,length);
+       break;
+     }
+     if(!(self->m_desc.internalFormat&VGColorPREMULTIPLIED))
+      premultiplySpan(span,length);
+
+     break;
+   }
+
+   return span[0].m_format; // not internal format
+}
 
 /*-------------------------------------------------------------------*//*!
 * \brief	Writes the color to pixel (x,y). Internal color formats must
@@ -992,13 +1134,13 @@ VGColor VGImageReadPixel(VGImage *self,int x, int y) {
 * \note		
 *//*-------------------------------------------------------------------*/
 
-void VGImageWritePixel(VGImage *self,int x, int y, VGColor c) {
+void inline VGImageWritePixel(VGImage *self,int x, int y, VGColor c) {
 	RI_ASSERT(self->m_data);
 	RI_ASSERT(x >= 0 && x < self->m_width);
 	RI_ASSERT(y >= 0 && y < self->m_height);
 	RI_ASSERT(c.m_format == self->m_desc.internalFormat);
 
-	unsigned int p = VGColorPack(c,self->m_desc);
+	unsigned int p = VGColorPack(c,self);
 	RIuint8* scanline = self->m_data + y * self->m_stride;
 	switch(self->m_desc.bitsPerPixel)
 	{
@@ -1037,6 +1179,122 @@ void VGImageWritePixel(VGImage *self,int x, int y, VGColor c) {
 	}
 	self->m_mipmapsValid = false;
 }
+
+static void VGImageWritePixelSpan_RGBA_8888(VGImage *self,RIuint8 *scanline,int x,int y,VGColor *span,int length){
+   int i;
+   
+   for(i=0;i<length;i++,x++){
+    
+    unsigned int cr = colorToInt(span[i].r, 0xFF);
+    unsigned int cg = colorToInt(span[i].g, 0xFF);
+    unsigned int cb = colorToInt(span[i].b, 0xFF);
+    unsigned int ca = colorToInt(span[i].a, 0xFF);
+    unsigned int p= (cr << 24) | (cg << 16) | (cb << 8) | (ca << 0);
+    
+    RIuint32* s = ((RIuint32*)scanline) + x;
+	*s = (RIuint32)p;
+   }
+}
+
+static void VGImageWritePixelSpan_32(VGImage *self,RIuint8 *scanline,int x,int y,VGColor *span,int length){
+   int i;
+   
+   for(i=0;i<length;i++,x++){
+    unsigned int p=VGColorPack(span[i],self);
+    
+		RIuint32* s = ((RIuint32*)scanline) + x;
+		*s = (RIuint32)p;
+   }
+}
+
+static void VGImageWritePixelSpan_16(VGImage *self,RIuint8 *scanline,int x,int y,VGColor *span,int length){
+   int i;
+   
+   for(i=0;i<length;i++,x++){
+    unsigned int p=VGColorPack(span[i],self);
+    
+		RIuint16* s = ((RIuint16*)scanline) + x;
+		*s = (RIuint16)p;
+    
+   }
+}
+
+static void VGImageWritePixelSpan_08(VGImage *self,RIuint8 *scanline,int x,int y,VGColor *span,int length){
+   int i;
+   
+   for(i=0;i<length;i++,x++){
+    unsigned int p=VGColorPack(span[i],self);
+		RIuint8* s = ((RIuint8*)scanline) + x;
+		*s = (RIuint8)p;
+   }
+}
+
+static void VGImageWritePixelSpan_01(VGImage *self,RIuint8 *scanline,int x,int y,VGColor *span,int length){
+   int i;
+   
+   for(i=0;i<length;i++,x++){
+    unsigned int p=VGColorPack(span[i],self);
+ 		x += self->m_bitOffset;
+		RIuint8* s = scanline + (x>>3);
+		RIuint8 d = *s;
+		d &= ~(1<<(x&7));
+		d |= (RIuint8)(p<<(x&7));
+		*s = d;
+   
+   }
+}
+
+static void convertSpan(VGColor *span,int length,int format){
+   int i;
+   
+   for(i=0;i<length;i++)
+    span[i]=VGColorConvert(span[i],format);
+}
+
+void VGImageWritePixelSpan(VGImage *self,int x,int y,VGColor *span,int length) {
+   RIuint8* scanline = self->m_data + y * self->m_stride;
+   
+   if(length==0)
+    return;
+    
+   if(span[0].m_format!=self->m_desc.internalFormat)
+    convertSpan(span,length,self->m_desc.internalFormat);
+   
+   switch(self->m_desc.format){
+    case VG_sRGBA_8888:
+    case VG_lRGBA_8888:
+     VGImageWritePixelSpan_RGBA_8888(self,scanline,x,y,span,length);
+     break;
+         
+    case VG_sRGBA_8888_PRE:
+    case VG_lRGBA_8888_PRE:
+     VGImageWritePixelSpan_RGBA_8888(self,scanline,x,y,span,length);
+     break;
+
+    default:
+     switch(self->m_desc.bitsPerPixel){
+   
+       case 32:
+          VGImageWritePixelSpan_32(self,scanline,x,y,span,length);
+		  break;
+
+       case 16:
+          VGImageWritePixelSpan_16(self,scanline,x,y,span,length);
+          break;
+
+	   case 8:
+          VGImageWritePixelSpan_08(self,scanline,x,y,span,length);
+          break;
+
+       default:
+         RI_ASSERT(self->m_desc.bitsPerPixel == 1);
+         VGImageWritePixelSpan_01(self,scanline,x,y,span,length);
+        break;
+      }
+      break;
+   }
+}
+
 
 /*-------------------------------------------------------------------*//*!
 * \brief	Writes a filtered color to destination surface
@@ -1102,6 +1360,14 @@ RIfloat VGImageReadMaskPixel(VGImage *self,int x, int y){
 			return c.a;
 		return c.r;
 	}
+}
+
+void VGImageReadMaskPixelSpanIntoCoverage(VGImage *self,int x,int y,RIfloat *coverage,int length) {
+   int i;
+   
+   for(i=0;i<length;i++,x++){
+    coverage[i] *= VGImageReadMaskPixel(self,x, y);
+   }
 }
 
 /*-------------------------------------------------------------------*//*!
@@ -1185,6 +1451,23 @@ VGColor VGImageReadTexel(VGImage *self,int u, int v, int level, VGTilingMode til
 * \note		
 *//*-------------------------------------------------------------------*/
 
+static inline float cubic(float v0,float v1,float v2,float v3,float fraction){
+  float p = (v3 - v2) - (v0 - v1);
+  float q = (v0 - v1) - p;
+
+  return RI_CLAMP((p * (fraction*fraction*fraction)) + (q * fraction*fraction) + ((v2 - v0) * fraction) + v1,0,1);
+}
+
+VGColor bicubicInterpolate(VGColor a,VGColor b,VGColor c,VGColor d,float fraction)
+{
+  return VGColorRGBA(
+   cubic(a.r, b.r, c.r, d.r, fraction),
+   cubic(a.g, b.g, c.g, d.g, fraction),
+   cubic(a.b, b.b, c.b, d.b, fraction),
+   cubic(a.a, b.a, c.a, d.a, fraction),a.m_format);
+}
+
+
 VGColor VGImageResample(VGImage *self,RIfloat x, RIfloat y, Matrix3x3 surfaceToImage, CGInterpolationQuality quality, VGTilingMode tilingMode, VGColor tileFillColor)	//throws bad_alloc
 {
 	Vector3 uvw=Vector3Make(x,y,1);
@@ -1193,7 +1476,10 @@ VGColor VGImageResample(VGImage *self,RIfloat x, RIfloat y, Matrix3x3 surfaceToI
 	uvw=Vector3MultiplyByFloat(uvw,oow);
 
 	if(quality== kCGInterpolationHigh)
+#if 1
+// Visual test indicates this is close to what Apple is using 
 	{	//EWA on mipmaps
+   
 		VGImageMakeMipMaps(self);	//throws bad_alloc
 
 		VGColorInternalFormat procFormat = (VGColorInternalFormat)(self->m_desc.internalFormat | VGColorPREMULTIPLIED);
@@ -1263,10 +1549,10 @@ VGColor VGImageResample(VGImage *self,RIfloat x, RIfloat y, Matrix3x3 surfaceToI
 		//calculate bounding box in texture space
 		RIfloat usize = (RIfloat)sqrt(C);
 		RIfloat vsize = (RIfloat)sqrt(A);
-		int u1 = (int)floor(U0 - usize + 0.5f);
-		int u2 = (int)floor(U0 + usize + 0.5f);
-		int v1 = (int)floor(V0 - vsize + 0.5f);
-		int v2 = (int)floor(V0 + vsize + 0.5f);
+		int u1 = RI_FLOOR_TO_INT(U0 - usize + 0.5f);
+		int u2 = RI_FLOOR_TO_INT(U0 + usize + 0.5f);
+		int v1 = RI_FLOOR_TO_INT(V0 - vsize + 0.5f);
+		int v2 = RI_FLOOR_TO_INT(V0 + vsize + 0.5f);
 		if( u1 == u2 || v1 == v2 )
 			return VGColorRGBA(0,0,0,0,procFormat);
 
@@ -1309,12 +1595,44 @@ VGColor VGImageResample(VGImage *self,RIfloat x, RIfloat y, Matrix3x3 surfaceToI
 		sumweight = 1.0f / sumweight;
 		return VGColorMultiplyByFloat(color,sumweight);
 	}
+#else
+    // bicubic
+    {
+		uvw.x -= 0.5f;
+		uvw.y -= 0.5f;
+		int u = RI_FLOOR_TO_INT(uvw.x);
+        float ufrac=uvw.x-u;
+        
+		int v = RI_FLOOR_TO_INT(uvw.y);
+        float vfrac=uvw.y-v;
+        
+     VGColor t0,t1,t2,t3;
+     
+     t0 = bicubicInterpolate(
+      VGImageReadTexel(self,u - 1,v - 1, 0, tilingMode, tileFillColor),
+      VGImageReadTexel(self,u,v - 1, 0, tilingMode, tileFillColor),
+      VGImageReadTexel(self,u + 1,v - 1, 0, tilingMode, tileFillColor),
+      VGImageReadTexel(self,u + 2,v - 1, 0, tilingMode, tileFillColor), ufrac);
+     t1 = bicubicInterpolate(
+      VGImageReadTexel(self,u - 1,v, 0, tilingMode, tileFillColor),
+      VGImageReadTexel(self,u,v, 0, tilingMode, tileFillColor),
+      VGImageReadTexel(self,u + 1,v, 0, tilingMode, tileFillColor), VGImageReadTexel(self,u + 2,v, 0, tilingMode, tileFillColor), ufrac);
+     t2 = bicubicInterpolate(
+      VGImageReadTexel(self,u - 1,v + 1, 0, tilingMode, tileFillColor),
+      VGImageReadTexel(self,u,v + 1, 0, tilingMode, tileFillColor),
+      VGImageReadTexel(self,u + 1,v + 1, 0, tilingMode, tileFillColor),
+      VGImageReadTexel(self,u + 2,v + 1, 0, tilingMode, tileFillColor), ufrac);
+     t3 = bicubicInterpolate(VGImageReadTexel(self,u - 1,v + 2, 0, tilingMode, tileFillColor), VGImageReadTexel(self,u,v + 2, 0, tilingMode, tileFillColor), VGImageReadTexel(self,u + 1,v + 2, 0, tilingMode, tileFillColor), VGImageReadTexel(self,u + 2,v + 2, 0, tilingMode, tileFillColor), ufrac);
+
+      return  bicubicInterpolate(t0,t1,t2,t3, vfrac);
+    }
+#endif
 	else if(quality== kCGInterpolationLow)
 	{	//bilinear
 		uvw.x -= 0.5f;
 		uvw.y -= 0.5f;
-		int u = (int)floor(uvw.x);
-		int v = (int)floor(uvw.y);
+		int u = RI_FLOOR_TO_INT(uvw.x);
+		int v = RI_FLOOR_TO_INT(uvw.y);
 		VGColor c00 = VGImageReadTexel(self,u,v, 0, tilingMode, tileFillColor);
 		VGColor c10 = VGImageReadTexel(self,u+1,v, 0, tilingMode, tileFillColor);
 		VGColor c01 = VGImageReadTexel(self,u,v+1, 0, tilingMode, tileFillColor);
@@ -1327,7 +1645,7 @@ VGColor VGImageResample(VGImage *self,RIfloat x, RIfloat y, Matrix3x3 surfaceToI
 	}
 	else
 	{	//point sampling
-		return VGImageReadTexel(self,(int)floor(uvw.x), (int)floor(uvw.y), 0, tilingMode, tileFillColor);
+		return VGImageReadTexel(self,RI_FLOOR_TO_INT(uvw.x), RI_FLOOR_TO_INT(uvw.y), 0, tilingMode, tileFillColor);
 	}
 }
 
@@ -1390,9 +1708,9 @@ void VGImageMakeMipMaps(VGImage *self) {
 					v0 *= prev->m_height;
 					v1 *= prev->m_height;
 
-					int su = (int)floor(u0);
+					int su = RI_FLOOR_TO_INT(u0);
 					int eu = (int)ceil(u1);
-					int sv = (int)floor(v0);
+					int sv = RI_FLOOR_TO_INT(v0);
 					int ev = (int)ceil(v1);
 
 					VGColor c=VGColorRGBA(0,0,0,0,procFormat);
@@ -1993,3 +2311,5 @@ void VGImageLookupSingle(VGImage *self,VGImage * src, const RIuint32 * lookupTab
 		}
 	}
 }
+
+@end

@@ -116,8 +116,8 @@ void KGRasterizerAddEdge(KGRasterizer *self,const Vector2 v0, const Vector2 v1) 
     }
     edge->normal=Vector2Make(edge->v0.y - edge->v1.y, edge->v1.x - edge->v0.x);	//edge normal
     edge->cnst = Vector2Dot(edge->v0, edge->normal);	//distance of v0 from the origin along the edge normal
-    edge->minscany=floorf(edge->v0.y-self->fradius);
-    edge->maxscany=ceilf(edge->v1.y+self->fradius);
+    edge->minscany=RI_FLOOR_TO_INT(edge->v0.y-self->fradius);
+    edge->maxscany=ceil(edge->v1.y+self->fradius);
     Vector2 vd = Vector2Subtract(edge->v1,edge->v0);
     RIfloat wl = 1.0f /vd.y;
     edge->vdxwl=vd.x*wl;
@@ -447,6 +447,9 @@ void KGRasterizerFill(KGRasterizer *self,VGFillRule fillRule, KGPixelPipe *pixel
         int nextEdge=0;
         int lastBestWinding=0;
         int rightOfLastEdge=NO;
+        int spanCapacity=256;
+        int spanCount=0,spanX=-1;
+        RIfloat span[spanCapacity];
         
 		for(scanx=RI_INT_MAX(self->_vpx,activeEdges[0]->minx);nextEdge<activeCount && scanx<xlimit;){            			
             
@@ -469,15 +472,14 @@ void KGRasterizerFill(KGRasterizer *self,VGFillRule fillRule, KGPixelPipe *pixel
               RIfloat  pcxnormal=scanx*edge->normal.x;
               
               s=self->numSamples;
-              while(--s>=0){  
-                
-               if(pcxnormal > pre[s])
+              while(--s>=0){
+               if(pcxnormal>pre[s])
                 rightOfLastEdge=NO;
                else {
-	 		    winding[s] += direction;
+                winding[s]+=direction;
  	 		    rightOfLastEdge&=YES;
                }
-	 	      }
+              }
 
               if(rightOfLastEdge){
                rightOfLastEdge=YES;
@@ -509,12 +511,32 @@ void KGRasterizerFill(KGRasterizer *self,VGFillRule fillRule, KGPixelPipe *pixel
 		   if(coverage > 0.0f){
              coverage /= self->sumWeights;
 
-             KGPixelPipeWriteCoverageSpan(pixelPipe,scanx,scany,(nextx-scanx),coverage);
+             if(spanCount==0)
+              spanX=scanx;
+             else if(scanx!=(spanX+spanCount)){
+              KGPixelPipeWriteCoverage(pixelPipe,spanX,scany,span,spanCount);
+              spanCount=0;
+              spanX=scanx;
+             }
+             
+             for(i=0;i<(nextx-scanx);i++){
+             
+              if(spanCount>=spanCapacity){
+               KGPixelPipeWriteCoverage(pixelPipe,spanX,scany,span,spanCount);
+               spanCount=0;
+               spanX=scanx+i;
+              }
+              span[spanCount++]=coverage;
+             }
            }
             
 		   scanx = nextx;             
         }
-
+        
+        if(spanCount>0){
+         KGPixelPipeWriteCoverage(pixelPipe,spanX,scany,span,spanCount);
+         spanCount=0;
+        }
 	}
     
     NSZoneFree(NULL,activeEdges);

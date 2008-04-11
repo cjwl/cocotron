@@ -26,7 +26,9 @@
  *
  *-------------------------------------------------------------------*/
 
-#import "riMath.h"
+#import <Foundation/NSObject.h>
+
+#import "VGmath.h"
 
 typedef unsigned int	RIuint32;
 typedef short			RIint16;
@@ -218,9 +220,6 @@ static inline VGColor VGColorRGBA(RIfloat cr, RIfloat cg, RIfloat cb, RIfloat ca
    return result;
 }
 
-VGColor VGColorUnpack(unsigned int inputData,VGColorDescriptor inputDesc);
-unsigned int VGColorPack(VGColor color,VGColorDescriptor outputDesc);
-
 static inline VGColor VGColorMultiplyByFloat(VGColor c,RIfloat f){
    return VGColorRGBA(c.r*f, c.g*f, c.b*f, c.a*f, c.m_format);
 }
@@ -272,14 +271,7 @@ VGColor VGColorConvert(VGColor result,VGColorInternalFormat outputFormat);
 
 //==============================================================================================
 
-/*-------------------------------------------------------------------*//*!
-* \brief	Storage and operations for VGImage.
-* \param	
-* \return	
-* \note		
-*//*-------------------------------------------------------------------*/
-
-typedef struct VGImage {
+@interface VGImage : NSObject {
 	VGColorDescriptor	m_desc;
 	int					m_width;
 	int					m_height;
@@ -292,7 +284,7 @@ typedef struct VGImage {
     int                 _mipmapsCount;
     int                 _mipmapsCapacity;
     struct VGImage    **_mipmaps;
-} VGImage;
+} 
 
 VGImage *VGImageAlloc();
 VGImage *VGImageInit(VGImage *self,VGColorDescriptor desc, int width, int height);	//throws bad_alloc
@@ -304,29 +296,28 @@ void VGImageDealloc(VGImage *self);
 
 bool VGImageIsValidFormat(int format);
 
-static inline VGColorDescriptor	VGImageColorDescriptor(VGImage *image){
-   return image->m_desc;
-}
+VGColorDescriptor	VGImageColorDescriptor(VGImage *image);
 
-static inline int VGImageGetWidth(VGImage *image){
-   return image->m_width;
-}
+int VGImageGetWidth(VGImage *image);
 
-static inline int VGImageGetHeight(VGImage *image){
-   return image->m_height;
-}
+int VGImageGetHeight(VGImage *image);
 
 void VGImageResize(VGImage *self,int newWidth, int newHeight, VGColor newPixelColor);
 
 void VGImageClear(VGImage *self,VGColor clearColor, int x, int y, int w, int h);
 void VGImageBlit(VGImage *self,VGImage * src, int sx, int sy, int dx, int dy, int w, int h, bool dither);
 void VGImageMask(VGImage *self,VGImage* src, VGMaskOperation operation, int x, int y, int w, int h);
-VGColor VGImageReadPixel(VGImage *self,int x, int y);
+VGColor inline VGImageReadPixel(VGImage *self,int x, int y);
+VGColorInternalFormat VGImageReadPremultipliedPixelSpan(VGImage *self,int x,int y,VGColor *span,int length);
 
-void VGImageWritePixel(VGImage *self,int x, int y, VGColor c);
+void inline VGImageWritePixel(VGImage *self,int x, int y, VGColor c);
+void VGImageWritePixelSpan(VGImage *self,int x,int y,VGColor *span,int length);
+
 void VGImageWriteFilteredPixel(VGImage *self,int x, int y, VGColor c, VGbitfield channelMask);
 
 RIfloat VGImageReadMaskPixel(VGImage *self,int x, int y);		//can read any image format
+void VGImageReadMaskPixelSpanIntoCoverage(VGImage *self,int x,int y,RIfloat *coverage,int length);
+
 void VGImageWriteMaskPixel(VGImage *self,int x, int y, RIfloat m);	//can write only to VG_A_8
 
 VGColor VGImageResample(VGImage *self,RIfloat x, RIfloat y, Matrix3x3 surfaceToImage, CGInterpolationQuality quality, VGTilingMode tilingMode, VGColor tileFillColor);
@@ -339,3 +330,5 @@ void VGImageSeparableConvolve(VGImage *self,VGImage * src, int kernelWidth, int 
 void VGImageGaussianBlur(VGImage *self,VGImage * src, RIfloat stdDeviationX, RIfloat stdDeviationY, VGTilingMode tilingMode, VGColor edgeFillColor, bool filterFormatLinear, bool filterFormatPremultiplied, VGbitfield channelMask);
 void VGImageLookup(VGImage *self,VGImage * src, const RIuint8 * redLUT, const RIuint8 * greenLUT, const RIuint8 * blueLUT, const RIuint8 * alphaLUT, bool outputLinear, bool outputPremultiplied, bool filterFormatLinear, bool filterFormatPremultiplied, VGbitfield channelMask);
 void VGImageLookupSingle(VGImage *self,VGImage * src, const RIuint32 * lookupTable, VGImageChannel sourceChannel, bool outputLinear, bool outputPremultiplied, bool filterFormatLinear, bool filterFormatPremultiplied, VGbitfield channelMask);
+
+@end

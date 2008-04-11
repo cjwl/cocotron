@@ -30,7 +30,7 @@
  * \note	
  *//*-------------------------------------------------------------------*/
 
-#import "riMath.h"
+#import "VGmath.h"
 
 /*-------------------------------------------------------------------*//*!
 * \brief	Inverts a 3x3 m->matrix. Returns false if the matrix is singular.

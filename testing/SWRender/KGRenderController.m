@@ -111,7 +111,7 @@ static void addSliceToPath(CGMutablePathRef path,float innerRadius,float outerRa
    CGAffineTransform t=CGAffineTransformMakeTranslation(-[_imageRep pixelsWide],-[_imageRep pixelsHigh]);
    ctm=CGAffineTransformConcat(t,ctm);
    ctm=CGAffineTransformScale(ctm,2,2);
-//   [render drawBitmapImageRep:_imageRep antialias:YES interpolationQuality:gState->_interpolationQuality blendMode:gState->_blendMode fillColor:blackColor transform:ctm];
+   [render drawBitmapImageRep:_imageRep antialias:YES interpolationQuality:gState->_interpolationQuality blendMode:gState->_blendMode fillColor:blackColor transform:ctm];
 }
 
 -(void)drawStraightLinesInRender:(KGRender *)render {
@@ -179,21 +179,29 @@ static void addSliceToPath(CGMutablePathRef path,float innerRadius,float outerRa
    }
 }
 
+-(void)performTest:(SEL)selector {
+   double start=[NSDate timeIntervalSinceReferenceDate];
+   
+   [self performSelector:selector withObject:_cgRender];
+   [_cgTime setDoubleValue:[NSDate timeIntervalSinceReferenceDate]-start];
+   start=[NSDate timeIntervalSinceReferenceDate];
+   [self performSelector:selector withObject:_kgRender];
+   [_kgTime setDoubleValue:[NSDate timeIntervalSinceReferenceDate]-start];
+}
+
 -(void)setNeedsDisplay {
+
    switch([_testPopUp selectedTag]){
     case 0:
-     [self drawSampleInRender:_cgRender];
-     [self drawSampleInRender:_kgRender];
+     [self performTest:@selector(drawSampleInRender:)];
      break;
 
     case 1:
-     [self drawStraightLinesInRender:_cgRender];
-     [self drawStraightLinesInRender:_kgRender];
+     [self performTest:@selector(drawStraightLinesInRender:)];
      break;
     
     case 2:
-     [self drawBlendingInRender:_cgRender];
-     [self drawBlendingInRender:_kgRender];
+     [self performTest:@selector(drawBlendingInRender:)];
      break;
    }
    

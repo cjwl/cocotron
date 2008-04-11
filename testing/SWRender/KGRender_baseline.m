@@ -23,7 +23,7 @@
  
 #import "KGRender_baseline.h"
 #import "VGPath.h"
-#import "riMath.h"
+#import "VGmath.h"
 
 typedef float CGFloat;
 
@@ -55,7 +55,7 @@ static void applyPath(void *info,const CGPathElement *element) {
    switch(element->type){
 
     case kCGPathElementMoveToPoint:{
-      RIuint8 segment[1]={VG_MOVE_TO};
+      RIuint8 segment[1]={kCGPathElementMoveToPoint};
       RIfloat coords[2];
        
       coords[0]=points[pointIndex].x;
@@ -66,7 +66,7 @@ static void applyPath(void *info,const CGPathElement *element) {
      break;
        
     case kCGPathElementAddLineToPoint:{
-      RIuint8 segment[1]={VG_LINE_TO};
+      RIuint8 segment[1]={kCGPathElementAddLineToPoint};
       RIfloat coords[2];
        
       coords[0]=points[pointIndex].x;
@@ -77,7 +77,7 @@ static void applyPath(void *info,const CGPathElement *element) {
      break;
 
     case kCGPathElementAddCurveToPoint:{
-      RIuint8 segment[1]={VG_CUBIC_TO};
+      RIuint8 segment[1]={kCGPathElementAddCurveToPoint};
       RIfloat coords[6];
        
       coords[0]=points[pointIndex].x;
@@ -92,7 +92,7 @@ static void applyPath(void *info,const CGPathElement *element) {
      break;
 
     case kCGPathElementAddQuadCurveToPoint:{
-      RIuint8 segment[1]={VG_QUAD_TO};
+      RIuint8 segment[1]={kCGPathElementAddQuadCurveToPoint};
       RIfloat coords[4];
        
       coords[0]=points[pointIndex].x;
@@ -105,7 +105,7 @@ static void applyPath(void *info,const CGPathElement *element) {
      break;
 
     case kCGPathElementCloseSubpath:{
-      RIuint8 segment[1]={VG_CLOSE_PATH};
+      RIuint8 segment[1]={kCGPathElementCloseSubpath};
       RIfloat coords[1];
        
       VGPathAppendData(vgPath,segment,1,coords);
