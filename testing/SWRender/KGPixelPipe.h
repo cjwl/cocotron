@@ -109,4 +109,3 @@ void KGPixelPipeRadialGradient(KGPixelPipe *self,RIfloat *g, RIfloat *rho, RIflo
 VGColor KGPixelPipeIntegrateColorRamp(KGPixelPipe *self,RIfloat gmin, RIfloat gmax);
 VGColor KGPixelPipeColorRamp(KGPixelPipe *self,RIfloat gradient, RIfloat rho);
 void KGPixelPipeWriteCoverage(KGPixelPipe *self,int x, int y,RIfloat *coverage,int length);
-void KGPixelPipeWriteConstantCoverageSpan(KGPixelPipe *self,int x, int y, int length, RIfloat coverage);

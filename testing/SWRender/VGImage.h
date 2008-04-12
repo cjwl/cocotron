@@ -171,21 +171,6 @@ typedef enum {
  VGColor_sLA_PRE        = VGColorLUMINANCE|VGColorPREMULTIPLIED|VGColorNONLINEAR
 } VGColorInternalFormat;
 
-typedef struct  {
-        int				redBits;
-		int				redShift;
-		int				greenBits;
-		int				greenShift;
-		int				blueBits;
-		int				blueShift;
-		int				alphaBits;
-		int				alphaShift;
-		int				luminanceBits;
-		int				luminanceShift;
-		VGImageFormat	format;
-		VGColorInternalFormat	internalFormat;
-		int				bitsPerPixel;
-} VGColorDescriptor;
 
 typedef struct VGColor {
 	RIfloat		r;
@@ -194,6 +179,50 @@ typedef struct VGColor {
 	RIfloat		a;
 	VGColorInternalFormat	m_format;
 } VGColor;
+
+typedef struct KGRGBA {
+   RIfloat r;
+   RIfloat g;
+   RIfloat b;
+   RIfloat a;
+} KGRGBA;
+
+static inline VGColor VGColorFromKGRGBA(KGRGBA rgba,VGColorInternalFormat format){
+   VGColor result;
+   
+   result.r=rgba.r;
+   result.g=rgba.g;
+   result.b=rgba.b;
+   result.a=rgba.a;
+   result.m_format=format;
+   
+   return result;
+}
+
+static inline KGRGBA KGRGBAFromColor(VGColor color){
+   KGRGBA result;
+   result.r=color.r;
+   result.g=color.g;
+   result.b=color.b;
+   result.a=color.a;
+   return result;
+}
+
+static inline KGRGBA KGRGBAMultiplyByFloat(KGRGBA result,RIfloat value){
+   result.r*=value;
+   result.g*=value;
+   result.b*=value;
+   result.a*=value;
+   return result;
+}
+
+static inline KGRGBA KGRGBAAdd(KGRGBA result,KGRGBA other){
+   result.r+=other.r;
+   result.g+=other.g;
+   result.b+=other.b;
+   result.a+=other.a;
+   return result;
+}
 
 static inline VGColor VGColorZero(){
    VGColor result;
@@ -255,6 +284,13 @@ static inline VGColor VGColorPremultiply(VGColor result){
     return result;
 }
 
+static inline KGRGBA KGRGBAPremultiply(KGRGBA result){
+   result.r *= result.a;
+   result.g *= result.a;
+   result.b *= result.a; 
+   return result;
+}
+
 static inline VGColor VGColorUnpremultiply(VGColor result){
    if(result.m_format & VGColorPREMULTIPLIED) {
     RIfloat ooa = (result.a != 0.0f) ? 1.0f/result.a : (RIfloat)0.0f;
@@ -266,20 +302,35 @@ static inline VGColor VGColorUnpremultiply(VGColor result){
 
 VGColor VGColorConvert(VGColor result,VGColorInternalFormat outputFormat);
 
-	VGColorDescriptor			VGColorFormatToDescriptor(VGImageFormat format);
-	bool					VGColorIsValidDescriptor(VGColorDescriptor desc);
-
-//==============================================================================================
+typedef struct  {
+   int redBits;
+   int redShift;
+   int greenBits;
+   int greenShift;
+   int blueBits;
+   int blueShift;
+   int alphaBits;
+   int alphaShift;
+   int luminanceBits;
+   int luminanceShift;
+} VGPixelDecode;
 
 @interface VGImage : NSObject {
-	VGColorDescriptor	m_desc;
-	int					m_width;
-	int					m_height;
-	int					m_stride;
+   size_t       _width;
+   size_t       _height;
+   size_t       _bitsPerComponent;
+   size_t       _bitsPerPixel;
+   size_t       _bytesPerRow;
+   NSString    *_colorSpaceName;
+   CGBitmapInfo _bitmapInfo;
+   
+   VGImageFormat         _imageFormat;
+   VGColorInternalFormat _colorFormat;
+    
+	VGPixelDecode	m_desc;
 	RIuint8*			m_data;
-	int					m_bitOffset;	//VG_lBW_1 only
 	bool				m_ownsData;
-
+    bool                _clampExternalPixels;
 	bool				m_mipmapsValid;
     int                 _mipmapsCount;
     int                 _mipmapsCapacity;
@@ -287,16 +338,13 @@ VGColor VGColorConvert(VGColor result,VGColorInternalFormat outputFormat);
 } 
 
 VGImage *VGImageAlloc();
-VGImage *VGImageInit(VGImage *self,VGColorDescriptor desc, int width, int height);	//throws bad_alloc
+VGImage *VGImageInit(VGImage *self,size_t width,size_t height,size_t bitsPerComponent,size_t bitsPerPixel,NSString *colorSpaceName,CGBitmapInfo bitmapInfo,VGImageFormat imageFormat);	//throws bad_alloc
 //use data from a memory buffer. NOTE: data is not copied, so it is user's responsibility to make sure the data remains valid while the VGImage is in use.
-VGImage *VGImageInitWithBytes(VGImage *self,VGColorDescriptor desc, int width, int height, int stride, RIuint8* data);	//throws bad_alloc
+VGImage *VGImageInitWithBytes(VGImage *self,size_t width,size_t height,size_t bitsPerComponent,size_t bitsPerPixel,size_t bytesPerRow,NSString *colorSpaceName,CGBitmapInfo bitmapInfo,VGImageFormat imageFormat,RIuint8* data);	//throws bad_alloc
 
 void VGImageDealloc(VGImage *self);
 
-
 bool VGImageIsValidFormat(int format);
-
-VGColorDescriptor	VGImageColorDescriptor(VGImage *image);
 
 int VGImageGetWidth(VGImage *image);
 
@@ -308,10 +356,10 @@ void VGImageClear(VGImage *self,VGColor clearColor, int x, int y, int w, int h);
 void VGImageBlit(VGImage *self,VGImage * src, int sx, int sy, int dx, int dy, int w, int h, bool dither);
 void VGImageMask(VGImage *self,VGImage* src, VGMaskOperation operation, int x, int y, int w, int h);
 VGColor inline VGImageReadPixel(VGImage *self,int x, int y);
-VGColorInternalFormat VGImageReadPremultipliedPixelSpan(VGImage *self,int x,int y,VGColor *span,int length);
+VGColorInternalFormat VGImageReadPremultipliedPixelSpan(VGImage *self,int x,int y,KGRGBA *span,int length);
 
 void inline VGImageWritePixel(VGImage *self,int x, int y, VGColor c);
-void VGImageWritePixelSpan(VGImage *self,int x,int y,VGColor *span,int length);
+void VGImageWritePixelSpan(VGImage *self,int x,int y,KGRGBA *span,int length,VGColorInternalFormat format);
 
 void VGImageWriteFilteredPixel(VGImage *self,int x, int y, VGColor c, VGbitfield channelMask);
 

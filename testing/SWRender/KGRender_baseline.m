@@ -30,9 +30,7 @@ typedef float CGFloat;
 @implementation KGRender_baseline
 
 -(void)buildImage {
-   VGColorDescriptor descriptor=VGColorFormatToDescriptor(VG_lRGBA_8888_PRE);
-   
-   _image=VGImageInitWithBytes(VGImageAlloc(),descriptor,_pixelsWide,_pixelsHigh,_pixelsWide*4,(RIuint8 *)_data);
+   _image=VGImageInitWithBytes(VGImageAlloc(),_pixelsWide,_pixelsHigh,8,32,_pixelsWide*4,_colorSpaceName,_bitmapInfo,VG_lRGBA_8888_PRE,(RIuint8 *)_data);
 }
 
 -init {
@@ -211,8 +209,7 @@ xform=CGAffineTransformConcat(xform,u2d);
 -(void)drawBitmapImageRep:(NSBitmapImageRep *)imageRep antialias:(BOOL)antialias interpolationQuality:(CGInterpolationQuality)interpolationQuality blendMode:(CGBlendMode)blendMode fillColor:(CGColorRef)fillColor transform:(CGAffineTransform)xform {
 	VGImage* img;
 
-   VGColorDescriptor descriptor=VGColorFormatToDescriptor(VG_lRGBA_8888);
-   img=VGImageInitWithBytes(VGImageAlloc(),descriptor,[imageRep pixelsWide],[imageRep pixelsHigh],[imageRep bytesPerRow],(RIuint8 *)[imageRep bitmapData]);
+   img=VGImageInitWithBytes(VGImageAlloc(),[imageRep pixelsWide],[imageRep pixelsHigh],8,32,[imageRep bytesPerRow],kCGColorSpaceGenericRGBLinear,kCGImageAlphaLast|kCGBitmapByteOrder32Little,VG_lRGBA_8888,(RIuint8 *)[imageRep bitmapData]);
    
     CGAffineTransform i2u=CGAffineTransformMakeTranslation(0,[imageRep pixelsHigh]);
 i2u=CGAffineTransformScale(i2u,1,-1);

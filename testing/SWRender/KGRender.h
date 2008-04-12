@@ -15,6 +15,7 @@
    int               _bitsPerComponent;
    int               _bitsPerPixel;
    int               _bytesPerRow;
+   NSString         *_colorSpaceName;
    CGColorSpaceRef   _colorSpace;
    CGBitmapInfo      _bitmapInfo;
    void             *_data;
