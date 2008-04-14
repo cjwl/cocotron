@@ -104,23 +104,9 @@ void KGPixelPipeSetBlendMode(KGPixelPipe *self,CGBlendMode blendMode) {
 	self->m_blendMode = blendMode;
 }
 
-/*-------------------------------------------------------------------*//*!
-* \brief	Sets the mask image. NULL disables masking.
-* \param	
-* \return	
-* \note		
-*//*-------------------------------------------------------------------*/
-
 void KGPixelPipeSetMask(KGPixelPipe *self,VGImage* mask) {
 	self->m_mask = mask;
 }
-
-/*-------------------------------------------------------------------*//*!
-* \brief	Sets the image to be drawn. NULL disables image drawing.
-* \param	
-* \return	
-* \note		
-*//*-------------------------------------------------------------------*/
 
 void KGPixelPipeSetImage(KGPixelPipe *self,VGImage* image, VGImageMode imageMode) {
 	RI_ASSERT(imageMode == VG_DRAW_IMAGE_NORMAL || imageMode == VG_DRAW_IMAGE_MULTIPLY || imageMode == VG_DRAW_IMAGE_STENCIL);
@@ -128,58 +114,23 @@ void KGPixelPipeSetImage(KGPixelPipe *self,VGImage* image, VGImageMode imageMode
 	self->m_imageMode = imageMode;
 }
 
-/*-------------------------------------------------------------------*//*!
-* \brief	Sets the surface-to-paint matrix.
-* \param	
-* \return	
-* \note		
-*//*-------------------------------------------------------------------*/
-
 void KGPixelPipeSetSurfaceToPaintMatrix(KGPixelPipe *self,Matrix3x3 surfaceToPaintMatrix) {
 	self->m_surfaceToPaintMatrix = surfaceToPaintMatrix;
 }
 
-/*-------------------------------------------------------------------*//*!
-* \brief	Sets the surface-to-image matrix.
-* \param	
-* \return	
-* \note		
-*//*-------------------------------------------------------------------*/
-
 void KGPixelPipeSetSurfaceToImageMatrix(KGPixelPipe *self,Matrix3x3 surfaceToImageMatrix) {
 	self->m_surfaceToImageMatrix = surfaceToImageMatrix;
 }
-
-/*-------------------------------------------------------------------*//*!
-* \brief	Sets image quality.
-* \param	
-* \return	
-* \note		
-*//*-------------------------------------------------------------------*/
 
 void KGPixelPipeSetImageQuality(KGPixelPipe *self,CGInterpolationQuality imageQuality) {
 	RI_ASSERT(imageQuality == kCGInterpolationNone || imageQuality == kCGInterpolationLow || imageQuality == kCGInterpolationHigh);
 	self->m_imageQuality = imageQuality;
 }
 
-/*-------------------------------------------------------------------*//*!
-* \brief	Sets fill color for VG_TILE_FILL tiling mode (pattern only).
-* \param	
-* \return	
-* \note		
-*//*-------------------------------------------------------------------*/
-
 void KGPixelPipeSetTileFillColor(KGPixelPipe *self,VGColor c) {
 	self->m_tileFillColor = c;
 	self->m_tileFillColor=VGColorClamp(self->m_tileFillColor);
 }
-
-/*-------------------------------------------------------------------*//*!
-* \brief	Sets paint.
-* \param	
-* \return	
-* \note		
-*//*-------------------------------------------------------------------*/
 
 void KGPixelPipeSetPaint(KGPixelPipe *self, KGPaint* paint) {
 	self->m_paint = paint;
@@ -188,13 +139,6 @@ void KGPixelPipeSetPaint(KGPixelPipe *self, KGPaint* paint) {
 	if(self->m_paint->m_pattern)
 		self->m_tileFillColor=VGColorConvert(self->m_tileFillColor,self->m_paint->m_pattern->_colorFormat);
 }
-
-/*-------------------------------------------------------------------*//*!
-* \brief	Computes the linear gradient function at (x,y).
-* \param	
-* \return	
-* \note		
-*//*-------------------------------------------------------------------*/
 
 void KGPixelPipeLinearGradient(KGPixelPipe *self,RIfloat *g, RIfloat *rho, RIfloat x, RIfloat y) {
 	RI_ASSERT(self->m_paint);
@@ -218,13 +162,6 @@ void KGPixelPipeLinearGradient(KGPixelPipe *self,RIfloat *g, RIfloat *rho, RIflo
 	*rho = (RIfloat)sqrt(dgdx*dgdx + dgdy*dgdy);
 	RI_ASSERT(*rho >= 0.0f);
 }
-
-/*-------------------------------------------------------------------*//*!
-* \brief	Computes the radial gradient function at (x,y).
-* \param	
-* \return	
-* \note		
-*//*-------------------------------------------------------------------*/
 
 void KGPixelPipeRadialGradient(KGPixelPipe *self,RIfloat *g, RIfloat *rho, RIfloat x, RIfloat y) {
 	RI_ASSERT(self->m_paint);
@@ -595,14 +532,6 @@ static inline VGColor radialGradientColorAt(KGPixelPipe *self,int x,int y){
    return VGColorPremultiply(result);
 }
 
-static inline VGColor patternColorAt(KGPixelPipe *self,int x,int y){
-   RI_ASSERT(self->m_paint->m_paintType == VG_PAINT_TYPE_PATTERN);
-   if(self->m_paint->m_pattern)
-    return  VGImageResample(self->m_paint->m_pattern,x+0.5f, y+0.5f, self->m_surfaceToPaintMatrix, self->m_imageQuality, self->m_paint->m_patternTilingMode, self->m_tileFillColor);
-   else
-    return self->m_paint->m_paintColor;
-}
-
 static void KGPixelPipeReadPremultipliedConstantSourceSpan(KGPixelPipe *self,int x,int y,KGRGBA *span,int length,int format){
    KGRGBA  rgba=KGRGBAFromColor(VGColorConvert(self->m_paint->m_paintColor,format));
    int i;
@@ -611,55 +540,88 @@ static void KGPixelPipeReadPremultipliedConstantSourceSpan(KGPixelPipe *self,int
     span[i]=rgba;
 }
 
+static void KGPixelPipeReadPremultipliedLinearGradientSpan(KGPixelPipe *self,int x,int y,KGRGBA *span,int length,int format){
+   int i;
+   
+   for(i=0;i<length;i++,x++){
+    VGColor s=linearGradientColorAt(self,x,y);
+    span[i]=KGRGBAFromColor(VGColorConvert(s,format));
+   }
+}
+
+static void KGPixelPipeReadPremultipliedRadialGradientSpan(KGPixelPipe *self,int x,int y,KGRGBA *span,int length,int format){
+   int i;
+   
+   for(i=0;i<length;i++,x++){
+    VGColor s=radialGradientColorAt(self,x,y);
+    span[i]=KGRGBAFromColor(VGColorConvert(s,format));
+   }
+}
+
+static void KGPixelPipeReadPremultipliedPatternSpan(KGPixelPipe *self,int x,int y,KGRGBA *span,int length,int format){
+   if(self->m_paint->m_pattern==NULL)
+    KGPixelPipeReadPremultipliedConstantSourceSpan(self,x,y,span,length,format);
+   else {
+    VGImageReadTexelTileSpan tilingFunction=VGImageTexelTilingFunctionForMode(self->m_paint->m_patternTilingMode);
+    
+    VGImageResampleSpan(self->m_paint->m_pattern,x, y,span,length,format, self->m_surfaceToPaintMatrix, self->m_imageQuality, tilingFunction, self->m_tileFillColor);
+   }
+   
+}
+
+static void KGPixelPipeReadPremultipliedImageNormalSpan(KGPixelPipe *self,int x,int y,KGRGBA *span,int length,int format){
+   VGImageReadTexelTileSpan tilingFunction=VGImageTexelTilingFunctionForMode(VG_TILE_PAD);
+   VGImageResampleSpan(self->m_image,x, y,span,length,format, self->m_surfaceToImageMatrix, self->m_imageQuality, tilingFunction, VGColorRGBA(0,0,0,0,self->m_image->_colorFormat));
+}
+
 static void KGPixelPipeReadPremultipliedSourceSpan(KGPixelPipe *self,int x,int y,KGRGBA *span,int length,int format){
    int i;
    
-   if(self->m_paint->m_paintType==VG_PAINT_TYPE_COLOR && self->m_image==NULL){
-    KGPixelPipeReadPremultipliedConstantSourceSpan(self,x,y,span,length,format);
-    return;
-   }
-   
-   for(i=0;i<length;i++,x++){
-	//evaluate paint
-	VGColor s;
-	RI_ASSERT(self->m_paint);
-	switch(self->m_paint->m_paintType)
-	{
+   RI_ASSERT(self->m_paint);
+   switch(self->m_paint->m_paintType){
 	case VG_PAINT_TYPE_COLOR:
-		s = self->m_paint->m_paintColor;
+        KGPixelPipeReadPremultipliedConstantSourceSpan(self,x,y,span,length,format);
 		break;
 
 	case VG_PAINT_TYPE_LINEAR_GRADIENT:
-        s=linearGradientColorAt(self,x,y);
+        KGPixelPipeReadPremultipliedLinearGradientSpan(self,x,y,span,length,format);
 		break;
 
 	case VG_PAINT_TYPE_RADIAL_GRADIENT:
-        s=radialGradientColorAt(self,x,y);
+        KGPixelPipeReadPremultipliedRadialGradientSpan(self,x,y,span,length,format);
 		break;
 
-	default:
-        s=patternColorAt(self,x,y);
+	case VG_PAINT_TYPE_PATTERN:
+        KGPixelPipeReadPremultipliedPatternSpan(self,x,y,span,length,format);
 		break;
-	}
+   }
 
+   if(self->m_image!=NULL){
+    if(self->m_imageMode==VG_DRAW_IMAGE_NORMAL){
+     KGPixelPipeReadPremultipliedImageNormalSpan(self,x,y,span,length,format);
+    }
+    else {
+     KGRGBA imageSpan[length];
+     
+     KGPixelPipeReadPremultipliedImageNormalSpan(self,x,y,imageSpan,length,self->m_image->_colorFormat);
+     
+   for(i=0;i<length;i++,x++){
+	//evaluate paint
+	VGColor s=VGColorFromKGRGBA(span[i],format);
+    VGColor im=VGColorFromKGRGBA(imageSpan[i],self->m_image->_colorFormat);
+    
 	//apply image (vgDrawImage only)
 	//1. paint: convert paint to dst space
 	//2. image: convert image to dst space
 	//3. paint MULTIPLY image: convert paint to image number of channels, multiply with image, and convert to dst
 	//4. paint STENCIL image: convert paint to dst, convert image to dst number of channels, multiply
-	if(self->m_image==NULL)
-	 s=VGColorConvert(s,format);	//convert paint color to destination color space
-    else {
-		VGColor im = VGImageResample(self->m_image,x+0.5f, y+0.5f, self->m_surfaceToImageMatrix, self->m_imageQuality, VG_TILE_PAD, VGColorRGBA(0,0,0,0,self->m_image->_colorFormat));
+
 		RI_ASSERT((s.m_format & VGColorLUMINANCE && s.r == s.g && s.r == s.b) || !(s.m_format & VGColorLUMINANCE));	//if luminance, r=g=b
 		RI_ASSERT((im.m_format & VGColorLUMINANCE && im.r == im.g && im.r == im.b) || !(im.m_format & VGColorLUMINANCE));	//if luminance, r=g=b
 
 		switch(self->m_imageMode)
 		{
-		case VG_DRAW_IMAGE_NORMAL:
-			s = im;
-			s=VGColorConvert(s,format);	//convert image color to destination color space
-			break;
+
 		case VG_DRAW_IMAGE_MULTIPLY:
 			//the result will be in image color space. If the number of channels in image and paint
 			// colors differ, convert to the number of channels in the image color.
@@ -679,7 +641,7 @@ static void KGPixelPipeReadPremultipliedSourceSpan(KGPixelPipe *self,int x,int y
 			s = im;
 			s=VGColorConvert(s,format);	//convert resulting color to destination color space
 			break;
-		default:
+		case VG_DRAW_IMAGE_STENCIL:
 {
  // FIX
  // This needs to be changed to a nonpremultplied form. This is the only case which uses ar, ag, ab premultiplied values for source.
@@ -716,10 +678,13 @@ static void KGPixelPipeReadPremultipliedSourceSpan(KGPixelPipe *self,int x,int y
 }
 			break;
 		}
-	}
 
     span[i]=KGRGBAFromColor(s);
    }
+   }
+   }
+   
+      
 }
 
 static void KGBlendSpan_Normal(KGRGBA *src,KGRGBA *dst,int length){

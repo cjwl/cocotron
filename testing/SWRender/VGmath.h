@@ -33,8 +33,8 @@
 typedef unsigned char	RIuint8;
 typedef float RIfloat;
 
-#define RI_ASSERT(_) NSCParameterAssert(_)
-//#define RI_ASSERT(_) 
+//#define RI_ASSERT(_) NSCParameterAssert(_)
+#define RI_ASSERT(_) 
 
 #define RI_INT32_MAX  (0x7fffffff)
 #define RI_INT32_MIN  (-0x7fffffff-1)

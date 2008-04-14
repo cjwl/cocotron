@@ -104,9 +104,10 @@ static void addSliceToPath(CGMutablePathRef path,float innerRadius,float outerRa
    [render drawPath:path1 drawingMode:_pathDrawingMode blendMode:kCGBlendModeNormal
       interpolationQuality:kCGInterpolationDefault fillColor:redColor strokeColor:blackColor lineWidth:gState->_lineWidth lineCap:gState->_lineCap lineJoin:gState->_lineJoin miterLimit:gState->_miterLimit dashPhase:gState->_dashPhase dashLengthsCount:gState->_dashLengthsCount dashLengths:gState->_dashLengths transform:ctm antialias:gState->_shouldAntialias];
  #endif
-      
+#if 0      
    [render drawPath:path2 drawingMode:_pathDrawingMode blendMode:gState->_blendMode
       interpolationQuality:kCGInterpolationDefault fillColor:blueColor strokeColor:blackColor lineWidth:gState->_lineWidth lineCap:gState->_lineCap lineJoin:gState->_lineJoin miterLimit:gState->_miterLimit dashPhase:gState->_dashPhase dashLengthsCount:gState->_dashLengthsCount dashLengths:gState->_dashLengths transform:ctm antialias:gState->_shouldAntialias];
+ #endif
     
    CGAffineTransform t=CGAffineTransformMakeTranslation(-[_imageRep pixelsWide],-[_imageRep pixelsHigh]);
    ctm=CGAffineTransformConcat(t,ctm);

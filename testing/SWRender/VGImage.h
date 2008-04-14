@@ -39,7 +39,6 @@ typedef enum {
   VG_TILE_FILL                                = 0x1D00,
   VG_TILE_PAD                                 = 0x1D01,
   VG_TILE_REPEAT                              = 0x1D02,
-  VG_TILE_REFLECT                             = 0x1D03
 } VGTilingMode;
 
 typedef enum {
@@ -187,6 +186,15 @@ typedef struct KGRGBA {
    RIfloat a;
 } KGRGBA;
 
+static inline KGRGBA KGRGBAInit(RIfloat r,RIfloat g,RIfloat b,RIfloat a){
+   KGRGBA result;
+   result.r=r;
+   result.g=g;
+   result.b=b;
+   result.a=a;
+   return result;
+}
+
 static inline VGColor VGColorFromKGRGBA(KGRGBA rgba,VGColorInternalFormat format){
    VGColor result;
    
@@ -315,6 +323,12 @@ typedef struct  {
    int luminanceShift;
 } VGPixelDecode;
 
+@class VGImage;
+
+typedef void (*VGImageReadSpan_KGRGBA)(VGImage *self,int x,int y,KGRGBA *span,int length);
+typedef void (*VGImageWriteSpan_KGRGBA)(VGImage *self,int x,int y,KGRGBA *span,int length);
+typedef void (*VGImageReadTexelTileSpan)(VGImage *self,int u, int v, KGRGBA *span,int length,int level, KGRGBA tileFillColor);
+
 @interface VGImage : NSObject {
    size_t       _width;
    size_t       _height;
@@ -323,6 +337,9 @@ typedef struct  {
    size_t       _bytesPerRow;
    NSString    *_colorSpaceName;
    CGBitmapInfo _bitmapInfo;
+   
+   VGImageReadSpan_KGRGBA  _readSpan;
+   VGImageWriteSpan_KGRGBA _writeSpan;
    
    VGImageFormat         _imageFormat;
    VGColorInternalFormat _colorFormat;
@@ -368,7 +385,8 @@ void VGImageReadMaskPixelSpanIntoCoverage(VGImage *self,int x,int y,RIfloat *cov
 
 void VGImageWriteMaskPixel(VGImage *self,int x, int y, RIfloat m);	//can write only to VG_A_8
 
-VGColor VGImageResample(VGImage *self,RIfloat x, RIfloat y, Matrix3x3 surfaceToImage, CGInterpolationQuality quality, VGTilingMode tilingMode, VGColor tileFillColor);
+VGImageReadTexelTileSpan VGImageTexelTilingFunctionForMode(VGTilingMode tilingMode);
+void VGImageResampleSpan(VGImage *self,RIfloat x, RIfloat y, KGRGBA *span,int length,int colorFormat, Matrix3x3 surfaceToImage, CGInterpolationQuality quality, VGImageReadTexelTileSpan tilingFunction, VGColor tileFillColor);
 
 void VGImageMakeMipMaps(VGImage *self);
 
