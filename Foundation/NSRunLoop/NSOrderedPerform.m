@@ -15,8 +15,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -initWithSelector:(SEL)selector target:target argument:argument order:(unsigned)order modes:(NSArray *)modes {
    _selector=selector;
-   _target=target;
-   _argument=argument;
+   _target=[target retain];
+   _argument=[argument retain];
    _order=order;
    _modes=[modes copy];
    return self;
@@ -24,6 +24,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)dealloc {
    [_modes release];
+	[_target release];
+	[_argument release];
    [super dealloc];
 }
 
@@ -49,7 +51,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(BOOL)fireInMode:(NSString *)mode {
    if([_modes containsObject:mode]){
-    [_target performSelector:_selector withObject:_argument];
+	   @try
+	   {
+		   [_target performSelector:_selector withObject:_argument];
+	   }
+	   @catch(id ex)
+	   {
+		   NSLog(@"exception %@ raised during ordered perform", ex);		   
+	   }
     return YES;
    }
    return NO;

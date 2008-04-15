@@ -12,6 +12,9 @@ typedef enum {
    NSLineBreakByWordWrapping,
    NSLineBreakByCharWrapping,
    NSLineBreakByClipping,
+   NSLineBreakByTruncatingHead,
+   NSLineBreakByTruncatingTail,
+   NSLineBreakByTruncatingMiddle
 } NSLineBreakMode;
 
 @interface NSParagraphStyle : NSObject <NSCopying,NSMutableCopying> {

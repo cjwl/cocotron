@@ -13,10 +13,16 @@ typedef struct {
    float y;
 } NSPoint;
 
+typedef NSPoint *NSPointArray;
+typedef NSPoint *NSPointPointer;
+
 typedef struct {
    float width;
    float height;
 } NSSize;
+
+typedef NSSize *NSSizeArray;
+typedef NSSize *NSSizePointer;
 
 typedef struct {
    NSPoint origin;

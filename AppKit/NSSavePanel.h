@@ -16,6 +16,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    NSString *_filename;
    NSString *_directory;
    NSString *_requiredFileType;
+   NSString *_message;
 
    BOOL      _treatsFilePackagesAsDirectories;
    NSView   *_accessoryView;
@@ -42,4 +43,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)setAccessoryView:(NSView *)view;
 
+-(void)setMessage:(NSString*)message;
+-(NSString*)message;
+
+- (void)beginSheetForDirectory:(NSString *)path
+						  file:(NSString *)name 
+				modalForWindow:(NSWindow *)docWindow
+				 modalDelegate:(id)modalDelegate 
+				didEndSelector:(SEL)didEndSelector 
+				   contextInfo:(void *)contextInfo;
 @end

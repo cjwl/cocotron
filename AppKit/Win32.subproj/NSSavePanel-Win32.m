@@ -55,76 +55,83 @@ static unsigned *saveFileHook(HWND hdlg,UINT uiMsg,WPARAM wParam,LPARAM lParam) 
 
 -(int)_GetOpenFileName {
    OPENFILENAME openFileName;
-   char         filename[1025]="";
-   char        *fileTypes,*ptr;
-   int          fileTypesLength;
-   int          typeLength=[_requiredFileType cStringLength];
-   int          check;
+	int          check;
 
-   fileTypesLength=0;
-   fileTypesLength+=strlen("Document (*.")+typeLength+1+1+strlen("*.");
-   fileTypesLength+=typeLength +1;
-   fileTypesLength++;
-
-   fileTypes=alloca(sizeof(char)*fileTypesLength);
-   ptr=fileTypes;
-   strcpy(ptr,"Document (*.");
-   ptr+=strlen("Document (*.");
-   [_requiredFileType getCString:ptr];
-   ptr+=typeLength;
-   strcpy(ptr,")");
-   ptr+=2;
-
-   strcpy(ptr,"*.");
-   ptr+=strlen("*.");
-    
-   [_requiredFileType getCString:ptr];
-   ptr+=typeLength+1;
-   *ptr='\0';
-
-   openFileName.lStructSize=sizeof(OPENFILENAME);
-   openFileName.hwndOwner=[(Win32Window *)[[NSApp keyWindow] platformWindow] windowHandle];
-   openFileName.hInstance=NULL;
-   openFileName.lpstrFilter=fileTypes;
-   openFileName.lpstrCustomFilter=NULL;
-   openFileName.nMaxCustFilter=0;
-   openFileName.nFilterIndex=1;
-   strncpy(filename,[_filename fileSystemRepresentation],1024);
-   openFileName.lpstrFile=filename;
-   openFileName.nMaxFile=1024;
-   openFileName.lpstrFileTitle=NULL;
-   openFileName.nMaxFileTitle=0;
-   openFileName.lpstrInitialDir=[_directory fileSystemRepresentation];
-   openFileName.lpstrTitle=[_dialogTitle cString];
-   openFileName.Flags=
-    OFN_CREATEPROMPT|
-    OFN_NOTESTFILECREATE|
-    OFN_EXPLORER|
-    OFN_HIDEREADONLY|
-    OFN_OVERWRITEPROMPT
-    |OFN_ENABLEHOOK
-    ;
-   openFileName.nFileOffset=0;
-   openFileName.nFileExtension=0;
-   openFileName.lpstrDefExt=NULL;
-   openFileName.lCustData=(LPARAM)_requiredFileType;
-   openFileName.lpfnHook=(void *)saveFileHook;
-   openFileName.lpTemplateName=NULL;
+	@synchronized(self)
+	{
+		char         filename[1025]="";
+		char        *fileTypes,*ptr;
+		int          fileTypesLength;
+		int          typeLength=[_requiredFileType cStringLength];
+		
+		fileTypesLength=0;
+		fileTypesLength+=strlen("Document (*.")+typeLength+1+1+strlen("*.");
+		fileTypesLength+=typeLength +1;
+		fileTypesLength++;
+		
+		fileTypes=alloca(sizeof(char)*fileTypesLength);
+		ptr=fileTypes;
+		strcpy(ptr,"Document (*.");
+		ptr+=strlen("Document (*.");
+		[_requiredFileType getCString:ptr];
+		ptr+=typeLength;
+		strcpy(ptr,")");
+		ptr+=2;
+		
+		strcpy(ptr,"*.");
+		ptr+=strlen("*.");
+		
+		[_requiredFileType getCString:ptr];
+		ptr+=typeLength+1;
+		*ptr='\0';
+		
+		openFileName.lStructSize=sizeof(OPENFILENAME);
+		openFileName.hwndOwner=[(Win32Window *)[[NSApp keyWindow] platformWindow] windowHandle];
+		openFileName.hInstance=NULL;
+		openFileName.lpstrFilter=fileTypes;
+		openFileName.lpstrCustomFilter=NULL;
+		openFileName.nMaxCustFilter=0;
+		openFileName.nFilterIndex=1;
+		strncpy(filename,[_filename fileSystemRepresentation],1024);
+		openFileName.lpstrFile=filename;
+		openFileName.nMaxFile=1024;
+		openFileName.lpstrFileTitle=NULL;
+		openFileName.nMaxFileTitle=0;
+		openFileName.lpstrInitialDir=[_directory fileSystemRepresentation];
+		openFileName.lpstrTitle=[_dialogTitle cString];
+		openFileName.Flags=
+		OFN_CREATEPROMPT|
+		OFN_NOTESTFILECREATE|
+		OFN_EXPLORER|
+		OFN_HIDEREADONLY|
+		OFN_OVERWRITEPROMPT
+		|OFN_ENABLEHOOK
+		;
+		openFileName.nFileOffset=0;
+		openFileName.nFileExtension=0;
+		openFileName.lpstrDefExt=NULL;
+		openFileName.lCustData=(LPARAM)_requiredFileType;
+		openFileName.lpfnHook=(void *)saveFileHook;
+		openFileName.lpTemplateName=NULL;
+	}
 
    [(Win32Display *)[NSDisplay currentDisplay] stopWaitCursor];
    check=GetSaveFileName(&openFileName);
    [(Win32Display *)[NSDisplay currentDisplay] startWaitCursor];
 
-   if(!check && openFileName.lCustData!=0xFFFFFFFF){
-    return NSCancelButton;
-   }
-
-   [_filename release];
-   _filename=[[NSString stringWithCString:openFileName.lpstrFile] copy];
-   if(![[_filename pathExtension] isEqualToString:_requiredFileType]){
-    [_filename autorelease];
-    _filename=[[_filename stringByAppendingPathExtension:_requiredFileType] copy];
-   }
+	@synchronized(self)
+	{
+		if(!check && openFileName.lCustData!=0xFFFFFFFF){
+			return NSCancelButton;
+		}
+		
+		[_filename release];
+		_filename=[[NSString stringWithCString:openFileName.lpstrFile] copy];
+		if(![[_filename pathExtension] isEqualToString:_requiredFileType]){
+			[_filename autorelease];
+			_filename=[[_filename stringByAppendingPathExtension:_requiredFileType] copy];
+		}
+	}
 
    return NSOKButton;
 }

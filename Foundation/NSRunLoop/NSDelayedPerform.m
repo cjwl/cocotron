@@ -8,14 +8,22 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 // Original - Christopher Lloyd <cjwl@objc.net>
 #import <Foundation/NSDelayedPerform.h>
+#import <Foundation/NSString.h>
 
 @implementation NSDelayedPerform
 
 -initWithObject:object selector:(SEL)selector argument:argument {
-   _object=object;
+   _object=[object retain];
    _selector=selector;
-   _argument=argument;
+   _argument=[argument retain];
    return self;
+}
+
+-(void)dealloc
+{
+	[_object release];
+	[_argument release];
+	[super dealloc];
 }
 
 +(NSDelayedPerform *)delayedPerformWithObject:object selector:(SEL)selector argument:argument {
@@ -34,7 +42,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)perform {
-   [_object performSelector:_selector withObject:_argument];
+	@try
+	{
+		[_object performSelector:_selector withObject:_argument];
+	}
+	@catch(id ex)
+	{
+		NSLog(@"exception %@ raised during delayed perform", ex);
+	}
 }
 
 @end

@@ -187,6 +187,11 @@ static void loadGlyphAndCharacterCacheForLocation(NSTypesetter_concrete *self,un
      case NSLineBreakByClipping:
       break;
 
+	 case NSLineBreakByTruncatingHead:
+	 case NSLineBreakByTruncatingTail:
+	 case NSLineBreakByTruncatingMiddle:
+			// TODO: implement these styles
+	  break;
      default:
       break;
     }

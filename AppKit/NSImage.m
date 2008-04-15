@@ -438,7 +438,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)drawInRect:(NSRect)rect fromRect:(NSRect)source operation:(NSCompositingOperation)operation fraction:(float)fraction {
-   NSUnimplementedMethod();
+	CGContextRef context=NSCurrentGraphicsPort();
+	
+	CGContextSaveGState(context);
+	CGContextSetAlpha(context,fraction);
+	// TODO: source rect, operation unimplemented
+	[[_representations lastObject] drawInRect:rect];
+	CGContextRestoreGState(context);
 }
 
 -(NSString *)description {
