@@ -72,7 +72,7 @@ static NSMapTable *_cache=NULL;
 
     first=NO;
 
-    while((*next>='0' && *next<='9') || *next=='+' || *next=='-')
+    while((*next>='0' && *next<='9') || *next=='+' || *next=='-' || *next=='?')
      next++; 
 
     if(*next=='\0')

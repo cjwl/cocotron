@@ -125,9 +125,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    _accessoryView=view;
 }
 
-@end
-
-@implementation NSSavePanel (PanelSheet)
+#pragma mark -
+#pragma mark Sheet methods
 - (void)beginSheetForDirectory:(NSString *)path
 						  file:(NSString *)name 
 				modalForWindow:(NSWindow *)docWindow

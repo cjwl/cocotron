@@ -164,6 +164,10 @@ const char *NSGetSizeAndAlignment(const char *type,unsigned *size,
       *size=sizeof(SEL);
       quit=YES;
       break;
+			
+	  case '?':
+		*size=0;
+		quit=YES;
 
      case '[':
     {
@@ -217,6 +221,7 @@ const char *NSGetSizeAndAlignment(const char *type,unsigned *size,
 		 type++;
 		 	 
 		 type=NSGetSizeAndAlignment(type,&subsize,&subalignment);
+		 type--;
 		 *size=sizeof(void*);
 		 quit=YES;
 		 break;

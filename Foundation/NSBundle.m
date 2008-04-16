@@ -265,10 +265,7 @@ static NSMapTable *pathToObject=NULL;
    NSUnimplementedMethod();
    return 0;
 }
--(NSString *)executablePath {
-   NSUnimplementedMethod();
-   return 0;
-}
+
 -(NSArray *)localizations {
    NSUnimplementedMethod();
    return 0;
@@ -361,17 +358,20 @@ static NSMapTable *pathToObject=NULL;
    return [[_path stringByAppendingPathComponent:name] stringByAppendingPathExtension:loadableObjectFileExtension];
 }
 
+-(NSString *)executablePath {
+	return [_path stringByAppendingPathComponent:[self _findExecutable]];
+}
+
 -(BOOL)load {
    if(!_isLoaded){
     NSString *load=[self _findExecutable];
-
-    _isLoaded=YES;
 
     if(NSLoadModule([load fileSystemRepresentation]) == NULL){
      NSLog(@"load of %@ FAILED",load);
      return NO;
     }
    }
+	_isLoaded=YES;
    return YES;
 }
 

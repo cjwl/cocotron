@@ -25,10 +25,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return self;
 }
 
+/*
+ FIXME: should we implement this? The Apple implementation does _not_ throw an exception, so we may not, either
 +(BOOL)respondsToSelector:(SEL)selector {
    NSUnimplementedMethod();
    return NO;
 }
+ */
 
 +allocWithZone:(NSZone *)zone {
    return NSAllocateObject(self,0,zone);

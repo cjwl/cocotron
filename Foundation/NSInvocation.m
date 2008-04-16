@@ -41,6 +41,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -initWithMethodSignature:(NSMethodSignature *)signature {
+	if(!signature)
+	{
+		[NSException raise:NSInvalidArgumentException
+					format:@"nil signature in NSInvocation creation"];		
+	}
+	
    _signature=[signature retain];
 
    [self buildFrame];
@@ -211,7 +217,9 @@ static void byteCopy(void *src,void *dst,unsigned length){
      
    }
    else
+   {
     [NSException raise:NSInvalidArgumentException format:@"Unable to convert naturalSize=%d to promotedSize=%d",naturalSize,promotedSize];
+   }
     
 }
 
@@ -232,7 +240,10 @@ static void byteCopy(void *src,void *dst,unsigned length){
     byteCopy(promoted,_argumentFrame+_argumentOffsets[index],promotedSize);
    }
    else
+   {
+	   *(char*)0=0;
     [NSException raise:NSInvalidArgumentException format:@"Unable to convert naturalSize=%d to promotedSize=%d",naturalSize,promotedSize];
+   }
 }
 
 -(void)retainArguments {

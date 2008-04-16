@@ -24,8 +24,11 @@ NSString *NSTaskDidTerminateNotification=@"NSTaskDidTerminateNotification";
 }
 
 +(NSTask *)launchedTaskWithLaunchPath:(NSString *)path arguments:(NSArray *)arguments {
-   NSUnimplementedMethod();
-   return nil;
+	NSTask *task=[[NSTask new] autorelease];
+	[task setLaunchPath:path];
+	[task setArguments:arguments];
+	[task launch];
+   return task;
 }
 
 -init {

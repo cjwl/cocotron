@@ -150,7 +150,11 @@ void NSSetUncaughtExceptionHandler(NSUncaughtExceptionHandler *proc) {
 
 @end
 
-
+void __gnu_objc_personality_sj0()
+{
+	printf("shouldn't get here");
+	abort();
+}
 
 void objc_exception_try_enter(void* exceptionFrame)
 {

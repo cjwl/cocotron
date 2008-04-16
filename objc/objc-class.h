@@ -28,6 +28,7 @@ enum {
  _C_UINT='I',
  _C_FLT='f',
  _C_DBL='d',
+ _C_VOID='v'
 };
 
 typedef struct objc_ivar {
