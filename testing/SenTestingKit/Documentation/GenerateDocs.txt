@@ -1,6 +1,0 @@
-This file was created on 1-Apr-2005 by William Swats.
-
-Run the the following command in a terminal window. You might have to change the -proj path and the -dest path to work on your computer.
-
-
-~/bin/autodoc -tree -format html -timestamp  -force -copyright "Sente SA" -proj /Users/william/Projects/OCUnit/SourceCode/SenTestingKit -dest /Users/william/Projects/OCUnit/SourceCode/SenTestingKit/Documentation

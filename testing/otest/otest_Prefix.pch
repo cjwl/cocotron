@@ -1,7 +1,0 @@
-//
-// Prefix header for all source files of the 'otest' target in the 'otest' project.
-//
-
-#ifdef __OBJC__
-    #import <Foundation/Foundation.h>
-#endif
