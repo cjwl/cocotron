@@ -1,0 +1,482 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 45;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		8D5B49B0048680CD000E48DA /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C167DFE841241C02AAC07 /* InfoPlist.strings */; };
+		C8C802810DB51FEF0089C0D7 /* KVC.m in Sources */ = {isa = PBXBuildFile; fileRef = C8C802800DB51FEF0089C0D7 /* KVC.m */; };
+		C8C8030F0DB52A010089C0D7 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 089C167FFE841241C02AAC07 /* AppKit.framework */; };
+		C8C803100DB52A010089C0D7 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 089C1672FE841209C02AAC07 /* Foundation.framework */; };
+		C8C8046F0DB5466E0089C0D7 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C8C8046E0DB5466E0089C0D7 /* SenTestingKit.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXBuildRule section */
+		C8C8027E0DB51FE60089C0D7 /* PBXBuildRule */ = {
+			isa = PBXBuildRule;
+			compilerSpec = org.cocotron.1.0.windows.i386.gcc.default;
+			fileType = sourcecode.c;
+			isEditable = 1;
+			outputFiles = (
+			);
+		};
+/* End PBXBuildRule section */
+
+/* Begin PBXContainerItemProxy section */
+		C84D61E30DB6144C000E722B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C84D61DC0DB6144C000E722B /* otest.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 8DD76FA10486AA7600D96B5E;
+			remoteInfo = otest;
+		};
+		C84D61E50DB61453000E722B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C84D61DC0DB6144C000E722B /* otest.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 8DD76F960486AA7600D96B5E;
+			remoteInfo = otest;
+		};
+		C84D61E70DB61457000E722B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C8C804070DB53EAB0089C0D7 /* Foundation.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = FE01A5970C5D9B6900AEA51A;
+			remoteInfo = "Foundation-Windows-i386";
+		};
+		C84D61F10DB61467000E722B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C84D61E90DB61467000E722B /* SenTestingKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 8DC2EF5B0486A6940098B216;
+			remoteInfo = SenTestingKit;
+		};
+		C84D61F30DB61467000E722B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C84D61E90DB61467000E722B /* SenTestingKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E98E64A5056D17830033599A;
+			remoteInfo = SenTestingKit_UnitTests;
+		};
+		C84D61F50DB6146E000E722B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C84D61E90DB61467000E722B /* SenTestingKit.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 8DC2EF4F0486A6940098B216;
+			remoteInfo = SenTestingKit;
+		};
+		C8C804100DB53EAB0089C0D7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C8C804070DB53EAB0089C0D7 /* Foundation.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = FE01A7EC0C5D9B6900AEA51A;
+			remoteInfo = "Foundation-Windows-i386";
+		};
+		C8C804120DB53EAB0089C0D7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C8C804070DB53EAB0089C0D7 /* Foundation.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 6EA04A7709E57D5F0067589C;
+			remoteInfo = "Foundation-Linux-i386";
+		};
+		C8C804140DB53EAB0089C0D7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C8C804070DB53EAB0089C0D7 /* Foundation.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 6E4D932B0A2642BD003D335C;
+			remoteInfo = "Foundation-Solaris-sparc";
+		};
+		C8C804160DB53EAB0089C0D7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C8C804070DB53EAB0089C0D7 /* Foundation.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = FED70A6B0C3B3D2C000CBE5B;
+			remoteInfo = "Foundation-Darwin-i386";
+		};
+		C8C804180DB53EAB0089C0D7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C8C804070DB53EAB0089C0D7 /* Foundation.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = FED70FB70C3C09C7000CBE5B;
+			remoteInfo = "Foundation-Darwin-ppc";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		089C1672FE841209C02AAC07 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
+		089C167EFE841241C02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		089C167FFE841241C02AAC07 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
+		32DBCF630370AF2F00C91783 /* UnitTests_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UnitTests_Prefix.pch; sourceTree = "<group>"; };
+		8D5B49B6048680CD000E48DA /* UnitTests.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UnitTests.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
+		8D5B49B7048680CD000E48DA /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C84D61DC0DB6144C000E722B /* otest.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = otest.xcodeproj; path = ../otest/otest.xcodeproj; sourceTree = SOURCE_ROOT; };
+		C84D61E90DB61467000E722B /* SenTestingKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SenTestingKit.xcodeproj; path = ../SenTestingKit/SenTestingKit.xcodeproj; sourceTree = SOURCE_ROOT; };
+		C84D62830DB61BEB000E722B /* local_server_config.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = local_server_config.sh; sourceTree = "<group>"; };
+		C8C8027F0DB51FEF0089C0D7 /* KVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KVC.h; sourceTree = "<group>"; };
+		C8C802800DB51FEF0089C0D7 /* KVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KVC.m; sourceTree = "<group>"; };
+		C8C804070DB53EAB0089C0D7 /* Foundation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Foundation.xcodeproj; path = ../../Foundation/Foundation.xcodeproj; sourceTree = SOURCE_ROOT; };
+		C8C8046E0DB5466E0089C0D7 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Cocotron/1.0/Windows/i386/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		8D5B49B3048680CD000E48DA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C8C8046F0DB5466E0089C0D7 /* SenTestingKit.framework in Frameworks */,
+				C8C8030F0DB52A010089C0D7 /* AppKit.framework in Frameworks */,
+				C8C803100DB52A010089C0D7 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		089C166AFE841209C02AAC07 /* UnitTests */ = {
+			isa = PBXGroup;
+			children = (
+				C84D61E90DB61467000E722B /* SenTestingKit.xcodeproj */,
+				C84D61DC0DB6144C000E722B /* otest.xcodeproj */,
+				C8C804070DB53EAB0089C0D7 /* Foundation.xcodeproj */,
+				08FB77AFFE84173DC02AAC07 /* Classes */,
+				32C88E010371C26100C91783 /* Other Sources */,
+				089C167CFE841241C02AAC07 /* Resources */,
+				089C1671FE841209C02AAC07 /* Frameworks and Libraries */,
+				19C28FB8FE9D52D311CA2CBB /* Products */,
+			);
+			name = UnitTests;
+			sourceTree = "<group>";
+		};
+		089C1671FE841209C02AAC07 /* Frameworks and Libraries */ = {
+			isa = PBXGroup;
+			children = (
+				1058C7ACFEA557BF11CA2CBB /* Linked Frameworks */,
+				1058C7AEFEA557BF11CA2CBB /* Other Frameworks */,
+			);
+			name = "Frameworks and Libraries";
+			sourceTree = "<group>";
+		};
+		089C167CFE841241C02AAC07 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				8D5B49B7048680CD000E48DA /* Info.plist */,
+				089C167DFE841241C02AAC07 /* InfoPlist.strings */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		08FB77AFFE84173DC02AAC07 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				C8C8027F0DB51FEF0089C0D7 /* KVC.h */,
+				C8C802800DB51FEF0089C0D7 /* KVC.m */,
+			);
+			name = Classes;
+			sourceTree = "<group>";
+		};
+		1058C7ACFEA557BF11CA2CBB /* Linked Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				C8C8046E0DB5466E0089C0D7 /* SenTestingKit.framework */,
+				089C167FFE841241C02AAC07 /* AppKit.framework */,
+				089C1672FE841209C02AAC07 /* Foundation.framework */,
+			);
+			name = "Linked Frameworks";
+			sourceTree = "<group>";
+		};
+		1058C7AEFEA557BF11CA2CBB /* Other Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "Other Frameworks";
+			sourceTree = "<group>";
+		};
+		19C28FB8FE9D52D311CA2CBB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8D5B49B6048680CD000E48DA /* UnitTests.bundle */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		32C88E010371C26100C91783 /* Other Sources */ = {
+			isa = PBXGroup;
+			children = (
+				C84D62830DB61BEB000E722B /* local_server_config.sh */,
+				32DBCF630370AF2F00C91783 /* UnitTests_Prefix.pch */,
+			);
+			name = "Other Sources";
+			sourceTree = "<group>";
+		};
+		C84D61DD0DB6144C000E722B /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				C84D61E40DB6144C000E722B /* otest.exe */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		C84D61EA0DB61467000E722B /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				C84D61F20DB61467000E722B /* SenTestingKit.framework */,
+				C84D61F40DB61467000E722B /* SenTestingKit_UnitTests.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		C8C804080DB53EAB0089C0D7 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				C8C804110DB53EAB0089C0D7 /* Foundation.framework */,
+				C8C804130DB53EAB0089C0D7 /* Foundation.framework */,
+				C8C804150DB53EAB0089C0D7 /* Foundation.framework */,
+				C8C804170DB53EAB0089C0D7 /* Foundation.framework */,
+				C8C804190DB53EAB0089C0D7 /* Foundation.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		8D5B49AC048680CD000E48DA /* UnitTests-i386-Windows */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1DEB913A08733D840010E9CD /* Build configuration list for PBXNativeTarget "UnitTests-i386-Windows" */;
+			buildPhases = (
+				8D5B49AF048680CD000E48DA /* Resources */,
+				8D5B49B1048680CD000E48DA /* Sources */,
+				8D5B49B3048680CD000E48DA /* Frameworks */,
+				C8C803EA0DB53B5C0089C0D7 /* ShellScript */,
+			);
+			buildRules = (
+				C8C8027E0DB51FE60089C0D7 /* PBXBuildRule */,
+			);
+			dependencies = (
+				C84D61E80DB61457000E722B /* PBXTargetDependency */,
+				C84D61F60DB6146E000E722B /* PBXTargetDependency */,
+				C84D61E60DB61453000E722B /* PBXTargetDependency */,
+			);
+			name = "UnitTests-i386-Windows";
+			productInstallPath = "$(HOME)/Library/Bundles";
+			productName = UnitTests;
+			productReference = 8D5B49B6048680CD000E48DA /* UnitTests.bundle */;
+			productType = "com.apple.product-type.bundle";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		089C1669FE841209C02AAC07 /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = 1DEB913E08733D840010E9CD /* Build configuration list for PBXProject "UnitTests" */;
+			compatibilityVersion = "Xcode 3.1";
+			hasScannedForEncodings = 1;
+			mainGroup = 089C166AFE841209C02AAC07 /* UnitTests */;
+			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = C8C804080DB53EAB0089C0D7 /* Products */;
+					ProjectRef = C8C804070DB53EAB0089C0D7 /* Foundation.xcodeproj */;
+				},
+				{
+					ProductGroup = C84D61DD0DB6144C000E722B /* Products */;
+					ProjectRef = C84D61DC0DB6144C000E722B /* otest.xcodeproj */;
+				},
+				{
+					ProductGroup = C84D61EA0DB61467000E722B /* Products */;
+					ProjectRef = C84D61E90DB61467000E722B /* SenTestingKit.xcodeproj */;
+				},
+			);
+			projectRoot = "";
+			targets = (
+				8D5B49AC048680CD000E48DA /* UnitTests-i386-Windows */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		C84D61E40DB6144C000E722B /* otest.exe */ = {
+			isa = PBXReferenceProxy;
+			fileType = "compiled.mach-o.executable";
+			path = otest.exe;
+			remoteRef = C84D61E30DB6144C000E722B /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		C84D61F20DB61467000E722B /* SenTestingKit.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = SenTestingKit.framework;
+			remoteRef = C84D61F10DB61467000E722B /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		C84D61F40DB61467000E722B /* SenTestingKit_UnitTests.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = SenTestingKit_UnitTests.framework;
+			remoteRef = C84D61F30DB61467000E722B /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		C8C804110DB53EAB0089C0D7 /* Foundation.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Foundation.framework;
+			remoteRef = C8C804100DB53EAB0089C0D7 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		C8C804130DB53EAB0089C0D7 /* Foundation.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Foundation.framework;
+			remoteRef = C8C804120DB53EAB0089C0D7 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		C8C804150DB53EAB0089C0D7 /* Foundation.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Foundation.framework;
+			remoteRef = C8C804140DB53EAB0089C0D7 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		C8C804170DB53EAB0089C0D7 /* Foundation.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Foundation.framework;
+			remoteRef = C8C804160DB53EAB0089C0D7 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		C8C804190DB53EAB0089C0D7 /* Foundation.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Foundation.framework;
+			remoteRef = C8C804180DB53EAB0089C0D7 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
+
+/* Begin PBXResourcesBuildPhase section */
+		8D5B49AF048680CD000E48DA /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8D5B49B0048680CD000E48DA /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		C8C803EA0DB53B5C0089C0D7 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "/Developer/Cocotron/1.0/bin/retargetBundle -framework Foundation -framework SenTestingKit -destination $TARGET_BUILD_DIR\ncp /Developer/Cocotron/1.0/Windows/i386/otest.exe \"$TARGET_BUILD_DIR\"\n\nif [ -f $SOURCE_ROOT/local_server_config.sh ];then\n\t. $SOURCE_ROOT/local_server_config.sh\nfi\n\nif [ \"\"$TESTING_SERVER\"\" = \"\" ];then\n\techo \"error: TESTING_SERVER not set; create a local_server_config.sh in source directory\"\n\texit 1\nfi\n\nif [ \"\"$TESTING_DIR\"\" = \"\" ];then\n\techo \"error: TESTING_DIR not set; create a local_server_config.sh in source directory\"\n\texit 1\nfi\n\necho \"#!/bin/sh\" > $TARGET_BUILD_DIR/run_tests.sh\necho \"cd $TESTING_DIR\" >> $TARGET_BUILD_DIR/run_tests.sh\necho \"./otest.exe -SenTest All $WRAPPER_NAME\" >> $TARGET_BUILD_DIR/run_tests.sh\n\nssh $TESTING_SERVER -- sh $TESTING_DIR/run_tests.sh ";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		8D5B49B1048680CD000E48DA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C8C802810DB51FEF0089C0D7 /* KVC.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		C84D61E60DB61453000E722B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = otest;
+			targetProxy = C84D61E50DB61453000E722B /* PBXContainerItemProxy */;
+		};
+		C84D61E80DB61457000E722B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "Foundation-Windows-i386";
+			targetProxy = C84D61E70DB61457000E722B /* PBXContainerItemProxy */;
+		};
+		C84D61F60DB6146E000E722B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = SenTestingKit;
+			targetProxy = C84D61F50DB6146E000E722B /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		089C167DFE841241C02AAC07 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				089C167EFE841241C02AAC07 /* English */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		1DEB913C08733D840010E9CD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(NATIVE_ARCH)";
+				EXECUTABLE_FOLDER_PATH = "$(CONTENTS_FOLDER_PATH)/Windows";
+				EXECUTABLE_SUFFIX = .dll;
+				FRAMEWORK_SEARCH_PATHS = /Developer/Cocotron/1.0/Windows/i386/Frameworks;
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = UnitTests_Prefix.pch;
+				INFOPLIST_FILE = Info.plist;
+				INSTALL_PATH = "$(HOME)/Library/Bundles";
+				OTHER_LDFLAGS = "-shared";
+				PRODUCT_NAME = UnitTests;
+				SDKROOT = "";
+				WRAPPER_EXTENSION = bundle;
+			};
+			name = Release;
+		};
+		1DEB914008733D840010E9CD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				PREBINDING = NO;
+				SDKROOT = macosx10.5;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		1DEB913A08733D840010E9CD /* Build configuration list for PBXNativeTarget "UnitTests-i386-Windows" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1DEB913C08733D840010E9CD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1DEB913E08733D840010E9CD /* Build configuration list for PBXProject "UnitTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1DEB914008733D840010E9CD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 089C1669FE841209C02AAC07 /* Project object */;
+}

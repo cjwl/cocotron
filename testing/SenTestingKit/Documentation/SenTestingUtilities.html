@@ -1,0 +1,138 @@
+<HTML><HEAD><TITLE></TITLE></HEAD>
+<BODY BGCOLOR="#FFFFFF">
+
+
+<BR><BR><FONT COLOR="#000066"><H1><A NAME="//apple_ref/occ/cl/NSFileManager (SenTestingAdditions)">NSFileManager (SenTestingAdditions)</A></H1></FONT><BR>
+
+
+
+
+
+
+
+	<blockquote><DL><DT><B>Declared In:</B></DT>
+	<DD>SenTestingUtilities.h</DD>
+	</DL></blockquote>
+
+<BR><BR>
+
+
+<H2>Category Description</H2>
+No category description.
+
+
+
+
+
+	<P><HR WIDTH=50% ALIGN=LEFT>
+	<H2>Symbolic Constants</H2>
+	<blockquote>
+	
+		
+		<H4>Synopsis:</H4>
+		
+			<CODE><B><A NAME="//apple_ref/c/econst/ASSIGN">ASSIGN</A></B>&nbsp;&nbsp;RETAIN</CODE><BR>
+		
+		
+	
+	</blockquote>
+
+
+
+	<P><HR WIDTH=50% ALIGN=LEFT>
+	<H2>Macro Definitions</H2>
+	<blockquote>
+	
+		
+		<H4>Synopsis:</H4>
+		
+			<CODE><B><A NAME="//apple_ref/c/func/RETAIN">RETAIN</A></B>(var,val)</CODE><BR>
+		
+			<CODE><B><A NAME="//apple_ref/c/func/ASSIGN">ASSIGN</A></B>(var,val)</CODE><BR>
+		
+		
+	
+		<hr WIDTH=25% ALIGN=LEFT>
+		<H4>Synopsis:</H4>
+		
+			<CODE><B><A NAME="//apple_ref/c/func/RELEASE">RELEASE</A></B>(var)</CODE><BR>
+		
+			<CODE><B><A NAME="//apple_ref/c/func/RELEASE">RELEASE</A></B>(var)</CODE><BR>
+		
+		
+	
+	</blockquote>
+
+
+
+	<P><HR WIDTH=50% ALIGN=LEFT>
+	<H2>Functions</H2>
+	<blockquote>
+	
+		
+		<H4>Synopsis:</H4>
+		
+			<CODE>NSString *<B><A NAME="//apple_ref/c/func/STComposeString">STComposeString</A></B>(NSString *, ...);</CODE><BR>
+		
+			<CODE>NSString *<B><A NAME="//apple_ref/c/func/getScalarDescription">getScalarDescription</A></B>(NSValue *left);</CODE><BR>
+		
+		
+	
+	</blockquote>
+
+
+
+
+
+
+
+
+
+
+
+
+	<P><HR WIDTH=50% ALIGN=LEFT>
+	<H2>Method Types</H2>
+	<blockquote>
+	
+		
+		<DL><DT></DT>
+		
+			<DD> <A HREF="#- fileExistsAtPathOrLink:">- fileExistsAtPathOrLink:</A></DD>
+		
+		</DL>
+	
+	</blockquote>
+
+
+
+
+ 
+
+	<HR WIDTH=50% ALIGN=LEFT>
+	<H2>Instance Methods</H2>
+ 
+	
+		
+		<A NAME="- fileExistsAtPathOrLink:"></A><H3><A NAME="//apple_ref/occ/instm/NSFileManager (SenTestingAdditions)/fileExistsAtPathOrLink:">fileExistsAtPathOrLink:</A></H3><P>
+		<CODE>- (BOOL)<B>fileExistsAtPathOrLink:</B>(NSString *)<EM>aPath</EM>
+			
+		</CODE><P>
+		This checks to see if the file path in the argument <I>aPath</I> points to an 
+existing file or directory. If it does then this method returns YES; 
+otherwise NO is returned (i.e. <I>aPath</I> is <B>nil</B>, empty or does not exists). 
+This method follows links.<P>
+
+We are using this method in place of <B>-fileExistsAtPath:</B> in 
+NSFileManager since that method does not follow links even though the 
+documentation says it does. This was the case with Xcode on Jaguar says 
+William Swats as of 22-Oct-2003.
+	
+
+
+
+
+<P><HR>
+CVS Version 1.6 Copyright &copy;2005 by Sente SA.  All Rights Reserved.   Fri Apr 01 13:49:07 2005
+<P>
+</BODY></HTML>
