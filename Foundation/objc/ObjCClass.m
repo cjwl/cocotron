@@ -226,6 +226,9 @@ void OBJCInitializeClass(Class class) {
 
     if(!(class->info&CLASS_INFO_INITIALIZED)) {
      SEL         selector=@selector(initialize);
+		/* "If a particular class does not implement initialize, the initialize
+		 method of its superclass is invoked twice, once for the superclass and 
+		 once for the non-implementing subclass." */
      struct objc_method *method=OBJCLookupUniqueIdInClass(class->isa,OBJCSelectorUniqueId(selector));
 
      class->info|=CLASS_INFO_INITIALIZED;

@@ -10,16 +10,11 @@
 
 @implementation KVC
 -(void)testKVC
-{
-	[NSClassFromString(@"SenTestObserver") class];
-	
-	[self raiseAfterFailure];
+{	
 	NSMutableDictionary *dict=[NSMutableDictionary dictionary];
 	
 	[dict setValue:@"value" forKey:@"key"];
 
-
 	STAssertEqualObjects([dict valueForKey:@"key"] , @"value", nil);
-	
 }
 @end

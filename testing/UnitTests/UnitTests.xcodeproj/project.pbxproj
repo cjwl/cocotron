@@ -8,10 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		8D5B49B0048680CD000E48DA /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C167DFE841241C02AAC07 /* InfoPlist.strings */; };
+		C827EA570DB62A9200360D99 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C827EA560DB62A9200360D99 /* SenTestingKit.framework */; };
+		C827EA770DB630DC00360D99 /* KVC.m in Sources */ = {isa = PBXBuildFile; fileRef = C8C802800DB51FEF0089C0D7 /* KVC.m */; };
 		C8C802810DB51FEF0089C0D7 /* KVC.m in Sources */ = {isa = PBXBuildFile; fileRef = C8C802800DB51FEF0089C0D7 /* KVC.m */; };
 		C8C8030F0DB52A010089C0D7 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 089C167FFE841241C02AAC07 /* AppKit.framework */; };
 		C8C803100DB52A010089C0D7 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 089C1672FE841209C02AAC07 /* Foundation.framework */; };
-		C8C8046F0DB5466E0089C0D7 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C8C8046E0DB5466E0089C0D7 /* SenTestingKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
@@ -110,15 +111,16 @@
 		089C167EFE841241C02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		089C167FFE841241C02AAC07 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		32DBCF630370AF2F00C91783 /* UnitTests_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UnitTests_Prefix.pch; sourceTree = "<group>"; };
-		8D5B49B6048680CD000E48DA /* UnitTests.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UnitTests.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
+		8D5B49B6048680CD000E48DA /* UnitTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UnitTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
 		8D5B49B7048680CD000E48DA /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C827EA560DB62A9200360D99 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = /System/Library/Frameworks/SenTestingKit.framework; sourceTree = "<absolute>"; };
+		C827EA6F0DB630BB00360D99 /* UnitTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UnitTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C84D61DC0DB6144C000E722B /* otest.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = otest.xcodeproj; path = ../otest/otest.xcodeproj; sourceTree = SOURCE_ROOT; };
 		C84D61E90DB61467000E722B /* SenTestingKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SenTestingKit.xcodeproj; path = ../SenTestingKit/SenTestingKit.xcodeproj; sourceTree = SOURCE_ROOT; };
 		C84D62830DB61BEB000E722B /* local_server_config.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = local_server_config.sh; sourceTree = "<group>"; };
 		C8C8027F0DB51FEF0089C0D7 /* KVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KVC.h; sourceTree = "<group>"; };
 		C8C802800DB51FEF0089C0D7 /* KVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KVC.m; sourceTree = "<group>"; };
 		C8C804070DB53EAB0089C0D7 /* Foundation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Foundation.xcodeproj; path = ../../Foundation/Foundation.xcodeproj; sourceTree = SOURCE_ROOT; };
-		C8C8046E0DB5466E0089C0D7 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Cocotron/1.0/Windows/i386/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -126,9 +128,16 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C8C8046F0DB5466E0089C0D7 /* SenTestingKit.framework in Frameworks */,
 				C8C8030F0DB52A010089C0D7 /* AppKit.framework in Frameworks */,
 				C8C803100DB52A010089C0D7 /* Foundation.framework in Frameworks */,
+				C827EA570DB62A9200360D99 /* SenTestingKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C827EA6C0DB630BB00360D99 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -180,7 +189,7 @@
 		1058C7ACFEA557BF11CA2CBB /* Linked Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				C8C8046E0DB5466E0089C0D7 /* SenTestingKit.framework */,
+				C827EA560DB62A9200360D99 /* SenTestingKit.framework */,
 				089C167FFE841241C02AAC07 /* AppKit.framework */,
 				089C1672FE841209C02AAC07 /* Foundation.framework */,
 			);
@@ -197,7 +206,8 @@
 		19C28FB8FE9D52D311CA2CBB /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				8D5B49B6048680CD000E48DA /* UnitTests.bundle */,
+				8D5B49B6048680CD000E48DA /* UnitTests.octest */,
+				C827EA6F0DB630BB00360D99 /* UnitTests.octest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -263,7 +273,25 @@
 			name = "UnitTests-i386-Windows";
 			productInstallPath = "$(HOME)/Library/Bundles";
 			productName = UnitTests;
-			productReference = 8D5B49B6048680CD000E48DA /* UnitTests.bundle */;
+			productReference = 8D5B49B6048680CD000E48DA /* UnitTests.octest */;
+			productType = "com.apple.product-type.bundle";
+		};
+		C827EA6E0DB630BB00360D99 /* UnitTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C827EA720DB630BB00360D99 /* Build configuration list for PBXNativeTarget "UnitTests" */;
+			buildPhases = (
+				C827EA6A0DB630BB00360D99 /* Resources */,
+				C827EA6B0DB630BB00360D99 /* Sources */,
+				C827EA6C0DB630BB00360D99 /* Frameworks */,
+				C827EA6D0DB630BB00360D99 /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = UnitTests;
+			productName = UnitTests;
+			productReference = C827EA6F0DB630BB00360D99 /* UnitTests.octest */;
 			productType = "com.apple.product-type.bundle";
 		};
 /* End PBXNativeTarget section */
@@ -293,6 +321,7 @@
 			projectRoot = "";
 			targets = (
 				8D5B49AC048680CD000E48DA /* UnitTests-i386-Windows */,
+				C827EA6E0DB630BB00360D99 /* UnitTests */,
 			);
 		};
 /* End PBXProject section */
@@ -365,9 +394,29 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		C827EA6A0DB630BB00360D99 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		C827EA6D0DB630BB00360D99 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
+		};
 		C8C803EA0DB53B5C0089C0D7 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -379,7 +428,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "/Developer/Cocotron/1.0/bin/retargetBundle -framework Foundation -framework SenTestingKit -destination $TARGET_BUILD_DIR\ncp /Developer/Cocotron/1.0/Windows/i386/otest.exe \"$TARGET_BUILD_DIR\"\n\nif [ -f $SOURCE_ROOT/local_server_config.sh ];then\n\t. $SOURCE_ROOT/local_server_config.sh\nfi\n\nif [ \"\"$TESTING_SERVER\"\" = \"\" ];then\n\techo \"error: TESTING_SERVER not set; create a local_server_config.sh in source directory\"\n\texit 1\nfi\n\nif [ \"\"$TESTING_DIR\"\" = \"\" ];then\n\techo \"error: TESTING_DIR not set; create a local_server_config.sh in source directory\"\n\texit 1\nfi\n\necho \"#!/bin/sh\" > $TARGET_BUILD_DIR/run_tests.sh\necho \"cd $TESTING_DIR\" >> $TARGET_BUILD_DIR/run_tests.sh\necho \"./otest.exe -SenTest All $WRAPPER_NAME\" >> $TARGET_BUILD_DIR/run_tests.sh\n\nssh $TESTING_SERVER -- sh $TESTING_DIR/run_tests.sh ";
+			shellScript = "mkdir $TARGET_BUILD_DIR/TestHarness\n\nif [ -f $SOURCE_ROOT/local_server_config.sh ];then\n\t. $SOURCE_ROOT/local_server_config.sh\nfi\n\nif [ \"\"$TESTING_LINK_FILES\"\" = \"YES\" ];then\n\t/Developer/Cocotron/1.0/bin/retargetBundle -link -framework AppKit -framework Foundation -framework SenTestingKit -destination $TARGET_BUILD_DIR/TestHarness\n\tln -s /Developer/Cocotron/1.0/Windows/i386/otest.exe $TARGET_BUILD_DIR/TestHarness/otest.exe\nelse\n\t/Developer/Cocotron/1.0/bin/retargetBundle -framework Foundation -framework SenTestingKit -destination $TARGET_BUILD_DIR/TestHarness\n\tcp /Developer/Cocotron/1.0/Windows/i386/otest.exe $TARGET_BUILD_DIR/TestHarness/otest.exe\nfi\n\nif [ \"\"$TESTING_SERVER\"\" = \"\" ];then\n\techo \"error: TESTING_SERVER not set; create a local_server_config.sh in source directory\"\n\texit 1\nfi\n\nif [ \"\"$TESTING_DIR\"\" = \"\" ];then\n\techo \"error: TESTING_DIR not set; create a local_server_config.sh in source directory\"\n\texit 1\nfi\n\necho \"#!/bin/sh\" > $TARGET_BUILD_DIR/TestHarness/run_tests.sh\necho \"cd $TESTING_DIR/TestHarness\" >> $TARGET_BUILD_DIR/TestHarness/run_tests.sh\necho \"./otest.exe -SenTest All ../$WRAPPER_NAME\" >> $TARGET_BUILD_DIR/TestHarness/run_tests.sh\n\nssh $TESTING_SERVER -- sh $TESTING_DIR/TestHarness/run_tests.sh ";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -389,6 +438,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				C8C802810DB51FEF0089C0D7 /* KVC.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C827EA6B0DB630BB00360D99 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C827EA770DB630DC00360D99 /* KVC.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -440,7 +497,7 @@
 				OTHER_LDFLAGS = "-shared";
 				PRODUCT_NAME = UnitTests;
 				SDKROOT = "";
-				WRAPPER_EXTENSION = bundle;
+				WRAPPER_EXTENSION = octest;
 			};
 			name = Release;
 		};
@@ -448,12 +505,39 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				PREBINDING = NO;
-				SDKROOT = macosx10.5;
+			};
+			name = Release;
+		};
+		C827EA710DB630BB00360D99 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				FRAMEWORK_SEARCH_PATHS = "$(DEVELOPER_LIBRARY_DIR)/Frameworks";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Cocoa.framework/Headers/Cocoa.h";
+				INFOPLIST_FILE = Info.plist;
+				INSTALL_PATH = "$(USER_LIBRARY_DIR)/Bundles";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Cocoa,
+					"-framework",
+					SenTestingKit,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = UnitTests;
+				SDKROOT = "";
+				WRAPPER_EXTENSION = octest;
+				ZERO_LINK = NO;
 			};
 			name = Release;
 		};
@@ -472,6 +556,14 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				1DEB914008733D840010E9CD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C827EA720DB630BB00360D99 /* Build configuration list for PBXNativeTarget "UnitTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C827EA710DB630BB00360D99 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
