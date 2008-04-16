@@ -10,7 +10,11 @@
 		8D5B49B0048680CD000E48DA /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C167DFE841241C02AAC07 /* InfoPlist.strings */; };
 		C827EA570DB62A9200360D99 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C827EA560DB62A9200360D99 /* SenTestingKit.framework */; };
 		C827EA770DB630DC00360D99 /* KVC.m in Sources */ = {isa = PBXBuildFile; fileRef = C8C802800DB51FEF0089C0D7 /* KVC.m */; };
-		C8C802810DB51FEF0089C0D7 /* KVC.m in Sources */ = {isa = PBXBuildFile; fileRef = C8C802800DB51FEF0089C0D7 /* KVC.m */; };
+		C827EB3B0DB63FFA00360D99 /* Properties.m in Sources */ = {isa = PBXBuildFile; fileRef = C827EB3A0DB63FFA00360D99 /* Properties.m */; };
+		C827EB3C0DB63FFA00360D99 /* Properties.m in Sources */ = {isa = PBXBuildFile; fileRef = C827EB3A0DB63FFA00360D99 /* Properties.m */; };
+		C827EB850DB643C400360D99 /* KVC.m in Sources */ = {isa = PBXBuildFile; fileRef = C8C802800DB51FEF0089C0D7 /* KVC.m */; };
+		C827EC6A0DB6661400360D99 /* NewStyleExceptions.m in Sources */ = {isa = PBXBuildFile; fileRef = C827EC690DB6661400360D99 /* NewStyleExceptions.m */; };
+		C827EC6B0DB6661400360D99 /* NewStyleExceptions.m in Sources */ = {isa = PBXBuildFile; fileRef = C827EC690DB6661400360D99 /* NewStyleExceptions.m */; };
 		C8C8030F0DB52A010089C0D7 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 089C167FFE841241C02AAC07 /* AppKit.framework */; };
 		C8C803100DB52A010089C0D7 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 089C1672FE841209C02AAC07 /* Foundation.framework */; };
 /* End PBXBuildFile section */
@@ -115,6 +119,10 @@
 		8D5B49B7048680CD000E48DA /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C827EA560DB62A9200360D99 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = /System/Library/Frameworks/SenTestingKit.framework; sourceTree = "<absolute>"; };
 		C827EA6F0DB630BB00360D99 /* UnitTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UnitTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
+		C827EB390DB63FFA00360D99 /* Properties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Properties.h; sourceTree = "<group>"; };
+		C827EB3A0DB63FFA00360D99 /* Properties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Properties.m; sourceTree = "<group>"; };
+		C827EC680DB6661400360D99 /* NewStyleExceptions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewStyleExceptions.h; sourceTree = "<group>"; };
+		C827EC690DB6661400360D99 /* NewStyleExceptions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewStyleExceptions.m; sourceTree = "<group>"; };
 		C84D61DC0DB6144C000E722B /* otest.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = otest.xcodeproj; path = ../otest/otest.xcodeproj; sourceTree = SOURCE_ROOT; };
 		C84D61E90DB61467000E722B /* SenTestingKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SenTestingKit.xcodeproj; path = ../SenTestingKit/SenTestingKit.xcodeproj; sourceTree = SOURCE_ROOT; };
 		C84D62830DB61BEB000E722B /* local_server_config.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = local_server_config.sh; sourceTree = "<group>"; };
@@ -182,6 +190,10 @@
 			children = (
 				C8C8027F0DB51FEF0089C0D7 /* KVC.h */,
 				C8C802800DB51FEF0089C0D7 /* KVC.m */,
+				C827EB390DB63FFA00360D99 /* Properties.h */,
+				C827EB3A0DB63FFA00360D99 /* Properties.m */,
+				C827EC680DB6661400360D99 /* NewStyleExceptions.h */,
+				C827EC690DB6661400360D99 /* NewStyleExceptions.m */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -437,7 +449,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C8C802810DB51FEF0089C0D7 /* KVC.m in Sources */,
+				C827EB850DB643C400360D99 /* KVC.m in Sources */,
+				C827EB3C0DB63FFA00360D99 /* Properties.m in Sources */,
+				C827EC6B0DB6661400360D99 /* NewStyleExceptions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -446,6 +460,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				C827EA770DB630DC00360D99 /* KVC.m in Sources */,
+				C827EB3B0DB63FFA00360D99 /* Properties.m in Sources */,
+				C827EC6A0DB6661400360D99 /* NewStyleExceptions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -489,12 +505,17 @@
 				EXECUTABLE_FOLDER_PATH = "$(CONTENTS_FOLDER_PATH)/Windows";
 				EXECUTABLE_SUFFIX = .dll;
 				FRAMEWORK_SEARCH_PATHS = /Developer/Cocotron/1.0/Windows/i386/Frameworks;
-				GCC_MODEL_TUNING = G5;
+				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = UnitTests_Prefix.pch;
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Library/Bundles";
-				OTHER_LDFLAGS = "-shared";
+				MACH_O_TYPE = mh_dylib;
+				OTHER_CFLAGS = "-fgnu89-inline";
+				OTHER_LDFLAGS = (
+					"-shared",
+					"-Wl,--export-all-symbols",
+				);
 				PRODUCT_NAME = UnitTests;
 				SDKROOT = "";
 				WRAPPER_EXTENSION = octest;
@@ -516,7 +537,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				ARCHS = "$(NATIVE_ARCH)";
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				FRAMEWORK_SEARCH_PATHS = "$(DEVELOPER_LIBRARY_DIR)/Frameworks";

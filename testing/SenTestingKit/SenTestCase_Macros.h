@@ -206,6 +206,34 @@ do { \
                                             atLine: __LINE__ \
                                    withDescription: STComposeString(description, ##__VA_ARGS__)]]
 
+/*" Generates a failure when a1 is not nil.
+    _{a1    An object.}
+	_{description A format string as in the printf() function. Can be nil or
+		an empty string but must be present.}
+	_{... A variable number of arguments to the format string. Can be absent.}
+"*/
+#define STAssertNil(a1, description, ...) \
+do { \
+    @try {\
+        id a1value = (a1); \
+                if (a1value != nil) { \
+                    NSString *_a1 = [NSString stringWithUTF8String: #a1]; \
+                    NSString *_expression = [NSString stringWithFormat:@"((%@) == nil)", _a1]; \
+                    [self failWithException:[NSException failureInCondition: _expression \
+                                                                     isTrue: NO \
+                                                                     inFile: [NSString stringWithUTF8String:__FILE__] \
+                                                                     atLine: __LINE__ \
+                                                            withDescription: STComposeString(description, ##__VA_ARGS__)]]; \
+                } \
+    }\
+    @catch (id anException) {\
+        [self failWithException:[NSException failureInRaise:[NSString stringWithFormat: @"(%s) == nil fails", #a1] \
+                                                  exception:anException \
+                                                     inFile:[NSString stringWithUTF8String:__FILE__] \
+                                                     atLine:__LINE__ \
+                                            withDescription:STComposeString(description, ##__VA_ARGS__)]]; \
+    }\
+} while(0)
 
 
 /*" Generates a failure when a1 is nil.

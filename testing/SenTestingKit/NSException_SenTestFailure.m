@@ -35,7 +35,7 @@
 #include <stdarg.h>
 
 
-#define AsNotNilObject(object) ((object != nil) ? (id)object : [NSNull null])
+#define AsNotNilObject(object) ((object != nil) ? (id)object : (id)[NSNull null])
 
 @implementation NSException (SenTestFailure)
 
