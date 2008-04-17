@@ -13,7 +13,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSTextContainer.h>
 #import <AppKit/NSView.h>
 #import <AppKit/NSGraphicsContextFunctions.h>
-#import <AppKit/CGContext.h>
+#import <ApplicationServices/CGContext.h>
 
 static NSSize largeSize={1000000,1000000};
 

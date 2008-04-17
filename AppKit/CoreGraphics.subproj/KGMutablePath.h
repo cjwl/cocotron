@@ -7,9 +7,9 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
 #import "KGPath.h"
-#import <AppKit/CGAffineTransform.h>
+#import <ApplicationServices/ApplicationServices.h>
 
-void KGMutablePathEllipseToBezier(NSPoint *cp,float x,float y,float xradius,float yradius);
+void KGMutablePathEllipseToBezier(CGPoint *cp,float x,float y,float xradius,float yradius);
 
 @interface KGMutablePath : KGPath <NSCopying> {
    unsigned _capacityOfOperators;
@@ -18,30 +18,30 @@ void KGMutablePathEllipseToBezier(NSPoint *cp,float x,float y,float xradius,floa
 
 -(void)reset;
 
--(void)moveToPoint:(NSPoint)point withTransform:(CGAffineTransform *)matrix;
--(void)addLineToPoint:(NSPoint)point withTransform:(CGAffineTransform *)matrix;
--(void)addCurveToControlPoint:(NSPoint)cp1 controlPoint:(NSPoint)cp2 endPoint:(NSPoint)endPoint withTransform:(CGAffineTransform *)matrix;
--(void)addCurveToControlPoint:(NSPoint)cp1 endPoint:(NSPoint)endPoint withTransform:(CGAffineTransform *)matrix;
+-(void)moveToPoint:(CGPoint)point withTransform:(CGAffineTransform *)matrix;
+-(void)addLineToPoint:(CGPoint)point withTransform:(CGAffineTransform *)matrix;
+-(void)addCurveToControlPoint:(CGPoint)cp1 controlPoint:(CGPoint)cp2 endPoint:(CGPoint)endPoint withTransform:(CGAffineTransform *)matrix;
+-(void)addCurveToControlPoint:(CGPoint)cp1 endPoint:(CGPoint)endPoint withTransform:(CGAffineTransform *)matrix;
 -(void)closeSubpath;
 
--(void)relativeMoveToPoint:(NSPoint)point withTransform:(CGAffineTransform *)matrix;
--(void)addRelativeLineToPoint:(NSPoint)point withTransform:(CGAffineTransform *)matrix;
--(void)addRelativeCurveToControlPoint:(NSPoint)cp1 controlPoint:(NSPoint)cp2 endPoint:(NSPoint)endPoint withTransform:(CGAffineTransform *)matrix;
+-(void)relativeMoveToPoint:(CGPoint)point withTransform:(CGAffineTransform *)matrix;
+-(void)addRelativeLineToPoint:(CGPoint)point withTransform:(CGAffineTransform *)matrix;
+-(void)addRelativeCurveToControlPoint:(CGPoint)cp1 controlPoint:(CGPoint)cp2 endPoint:(CGPoint)endPoint withTransform:(CGAffineTransform *)matrix;
 
--(void)addLinesWithPoints:(NSPoint *)points count:(unsigned)count withTransform:(CGAffineTransform *)matrix;
+-(void)addLinesWithPoints:(CGPoint *)points count:(unsigned)count withTransform:(CGAffineTransform *)matrix;
 
--(void)addRect:(NSRect)rect withTransform:(CGAffineTransform *)matrix;
--(void)addRects:(const NSRect *)rects count:(unsigned)count withTransform:(CGAffineTransform *)matrix;
+-(void)addRect:(CGRect)rect withTransform:(CGAffineTransform *)matrix;
+-(void)addRects:(const CGRect *)rects count:(unsigned)count withTransform:(CGAffineTransform *)matrix;
 
--(void)addArcAtPoint:(NSPoint)point radius:(float)radius startAngle:(float)startRadian endAngle:(float)endRadian clockwise:(BOOL)clockwise withTransform:(CGAffineTransform *)matrix;
--(void)addArcToPoint:(NSPoint)point1 point:(NSPoint)point2 radius:(float)radius withTransform:(CGAffineTransform *)matrix;
+-(void)addArcAtPoint:(CGPoint)point radius:(float)radius startAngle:(float)startRadian endAngle:(float)endRadian clockwise:(BOOL)clockwise withTransform:(CGAffineTransform *)matrix;
+-(void)addArcToPoint:(CGPoint)point1 point:(CGPoint)point2 radius:(float)radius withTransform:(CGAffineTransform *)matrix;
 
--(void)addEllipseInRect:(NSRect)rect withTransform:(CGAffineTransform *)matrix;
+-(void)addEllipseInRect:(CGRect)rect withTransform:(CGAffineTransform *)matrix;
 
 -(void)addPath:(KGPath *)path withTransform:(CGAffineTransform *)matrix;
 
 -(void)applyTransform:(CGAffineTransform)matrix;
 
--(void)setPoints:(NSPoint *)points count:(unsigned)count atIndex:(unsigned)index;
+-(void)setPoints:(CGPoint *)points count:(unsigned)count atIndex:(unsigned)index;
 
 @end

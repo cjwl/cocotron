@@ -12,9 +12,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSString.h>
 #import <Foundation/NSData.h>
 #import <AppKit/KGzlib.h>
-#import <AppKit/CGDataProvider.h>
-#import <AppKit/CGColorSpace.h>
-#import <AppKit/CGImage.h>
+#import <ApplicationServices/CGDataProvider.h>
+#import <ApplicationServices/CGColorSpace.h>
+#import <ApplicationServices/CGImage.h>
 
 #import <assert.h>
 

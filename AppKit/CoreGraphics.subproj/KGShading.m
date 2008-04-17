@@ -6,7 +6,6 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
-// Original - Christopher Lloyd <cjwl@objc.net>
 #import "KGShading.h"
 #import "KGColorSpace.h"
 #import "KGFunction.h"
@@ -17,7 +16,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @implementation KGShading
 
--initWithColorSpace:(KGColorSpace *)colorSpace startPoint:(NSPoint)startPoint endPoint:(NSPoint)endPoint function:(KGFunction *)function extendStart:(BOOL)extendStart extendEnd:(BOOL)extendEnd domain:(float[])domain {
+-initWithColorSpace:(KGColorSpace *)colorSpace startPoint:(CGPoint)startPoint endPoint:(CGPoint)endPoint function:(KGFunction *)function extendStart:(BOOL)extendStart extendEnd:(BOOL)extendEnd domain:(float[])domain {
    _colorSpace=[colorSpace retain];
    _startPoint=startPoint;
    _endPoint=endPoint;
@@ -30,7 +29,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return self;
 }
 
--initWithColorSpace:(KGColorSpace *)colorSpace startPoint:(NSPoint)startPoint startRadius:(float)startRadius endPoint:(NSPoint)endPoint endRadius:(float)endRadius function:(KGFunction *)function extendStart:(BOOL)extendStart extendEnd:(BOOL)extendEnd domain:(float[])domain {
+-initWithColorSpace:(KGColorSpace *)colorSpace startPoint:(CGPoint)startPoint startRadius:(float)startRadius endPoint:(CGPoint)endPoint endRadius:(float)endRadius function:(KGFunction *)function extendStart:(BOOL)extendStart extendEnd:(BOOL)extendEnd domain:(float[])domain {
    _colorSpace=[colorSpace retain];
    _startPoint=startPoint;
    _endPoint=endPoint;
@@ -55,11 +54,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return _colorSpace;
 }
 
--(NSPoint)startPoint {
+-(CGPoint)startPoint {
    return _startPoint;
 }
 
--(NSPoint)endPoint {
+-(CGPoint)endPoint {
    return _endPoint;
 }
 
@@ -133,8 +132,8 @@ KGShading *axialShading(KGPDFDictionary *dictionary,KGColorSpace *colorSpace){
    float       domain[2]={0,1};
    KGPDFDictionary *fnDictionary;
    KGPDFArray *extendArray;
-   NSPoint     start;
-   NSPoint     end;
+   CGPoint     start;
+   CGPoint     end;
    KGFunction *function;
    KGPDFBoolean extendStart=NO;
    KGPDFBoolean extendEnd=NO;
@@ -204,9 +203,9 @@ KGShading *radialShading(KGPDFDictionary *dictionary,KGColorSpace *colorSpace){
    float       domain[2]={0,1};
    KGPDFDictionary *fnDictionary;
    KGPDFArray *extendArray;
-   NSPoint     start;
+   CGPoint     start;
    KGPDFReal    startRadius;
-   NSPoint     end;
+   CGPoint     end;
    KGPDFReal    endRadius;
    KGFunction *function;
    KGPDFBoolean extendStart=NO;

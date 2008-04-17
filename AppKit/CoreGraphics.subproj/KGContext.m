@@ -6,17 +6,18 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
-// Original - Christopher Lloyd <cjwl@objc.net>
 #import "KGContext.h"
-#import <AppKit/KGGraphicsState.h>
-#import <AppKit/KGColor.h>
-#import <AppKit/KGColorSpace.h>
-#import <AppKit/KGFont.h>
+#import "KGGraphicsState.h"
+#import "KGColor.h"
+#import "KGColorSpace.h"
+#import "KGFont.h"
 #import "KGMutablePath.h"
 #import "KGLayer.h"
 #import "KGPDFPage.h"
 #import "KGClipPhase.h"
-#import <Foundation/NSRaise.h>
+#import "KGExceptions.h"
+#import <Foundation/NSBundle.h>
+#import <Foundation/NSArray.h>
 
 @implementation KGContext
 
@@ -56,7 +57,7 @@ static NSMutableArray *possibleContextClasses=nil;
    return result;
 }
 
-+(KGContext *)createContextWithSize:(NSSize)size window:(CGWindow *)window {
++(KGContext *)createContextWithSize:(CGSize)size window:(CGWindow *)window {
    NSArray *array=[self allContextClasses];
    int      count=[array count];
    
@@ -74,7 +75,7 @@ static NSMutableArray *possibleContextClasses=nil;
    return nil;
 }
 
-+(KGContext *)createContextWithSize:(NSSize)size context:(KGContext *)context {
++(KGContext *)createContextWithSize:(CGSize)size context:(KGContext *)context {
    NSArray *array=[self allContextClasses];
    int      count=[array count];
    
@@ -104,13 +105,13 @@ static NSMutableArray *possibleContextClasses=nil;
    return NO;
 }
 
--initWithSize:(NSSize)size window:(CGWindow *)window {
-   NSInvalidAbstractInvocation();
+-initWithSize:(CGSize)size window:(CGWindow *)window {
+   KGInvalidAbstractInvocation();
    return nil;
 }
 
--initWithSize:(NSSize)size context:(KGContext *)context {
-   NSInvalidAbstractInvocation();
+-initWithSize:(CGSize)size context:(KGContext *)context {
+   KGInvalidAbstractInvocation();
    return nil;
 }
 
@@ -144,26 +145,26 @@ static inline KGGraphicsState *currentState(KGContext *self){
 }
 
 -(void)beginTransparencyLayerWithInfo:(NSDictionary *)unused {
-   NSUnimplementedMethod();
+   KGUnimplementedMethod();
 }
 
 -(void)endTransparencyLayer {
-   NSUnimplementedMethod();
+   KGUnimplementedMethod();
 }
 
 -(BOOL)pathIsEmpty {
    return (_path==nil)?YES:[_path isEmpty];
 }
 
--(NSPoint)pathCurrentPoint {
-   return (_path==nil)?NSZeroPoint:[_path currentPoint];
+-(CGPoint)pathCurrentPoint {
+   return (_path==nil)?CGPointZero:[_path currentPoint];
 }
 
--(NSRect)pathBoundingBox {
-   return (_path==nil)?NSZeroRect:[_path boundingBox];
+-(CGRect)pathBoundingBox {
+   return (_path==nil)?CGRectZero:[_path boundingBox];
 }
 
--(BOOL)pathContainsPoint:(NSPoint)point drawingMode:(int)pathMode {
+-(BOOL)pathContainsPoint:(CGPoint)point drawingMode:(int)pathMode {
    CGAffineTransform ctm=[currentState(self) userSpaceToDeviceSpaceTransform];
 
 // FIX  evenOdd
@@ -181,38 +182,38 @@ static inline KGGraphicsState *currentState(KGContext *self){
 -(void)moveToPoint:(float)x:(float)y {
    CGAffineTransform ctm=[currentState(self) userSpaceToDeviceSpaceTransform];
    
-   [_path moveToPoint:NSMakePoint(x,y) withTransform:&ctm];
+   [_path moveToPoint:CGPointMake(x,y) withTransform:&ctm];
 }
 
 -(void)addLineToPoint:(float)x:(float)y {
    CGAffineTransform ctm=[currentState(self) userSpaceToDeviceSpaceTransform];
 
-   [_path addLineToPoint:NSMakePoint(x,y) withTransform:&ctm];
+   [_path addLineToPoint:CGPointMake(x,y) withTransform:&ctm];
 }
 
 -(void)addCurveToPoint:(float)cx1:(float)cy1:(float)cx2:(float)cy2:(float)x:(float)y {
    CGAffineTransform ctm=[currentState(self) userSpaceToDeviceSpaceTransform];
 
-   [_path addCurveToControlPoint:NSMakePoint(cx1,cy1) controlPoint:NSMakePoint(cx2,cy2) endPoint:NSMakePoint(x,y) withTransform:&ctm];
+   [_path addCurveToControlPoint:CGPointMake(cx1,cy1) controlPoint:CGPointMake(cx2,cy2) endPoint:CGPointMake(x,y) withTransform:&ctm];
 }
 
 -(void)addQuadCurveToPoint:(float)cx1:(float)cy1:(float)x:(float)y {
    CGAffineTransform ctm=[currentState(self) userSpaceToDeviceSpaceTransform];
 
-   [_path addCurveToControlPoint:NSMakePoint(cx1,cy1) endPoint:NSMakePoint(x,y) withTransform:&ctm];
+   [_path addCurveToControlPoint:CGPointMake(cx1,cy1) endPoint:CGPointMake(x,y) withTransform:&ctm];
 }
 
--(void)addLinesWithPoints:(NSPoint *)points count:(unsigned)count {
+-(void)addLinesWithPoints:(CGPoint *)points count:(unsigned)count {
    CGAffineTransform ctm=[currentState(self) userSpaceToDeviceSpaceTransform];
    
    [_path addLinesWithPoints:points count:count withTransform:&ctm];
 }
 
--(void)addRect:(NSRect)rect {
+-(void)addRect:(CGRect)rect {
    [self addRects:&rect count:1];
 }
 
--(void)addRects:(const NSRect *)rect count:(unsigned)count {
+-(void)addRects:(const CGRect *)rect count:(unsigned)count {
    CGAffineTransform ctm=[currentState(self) userSpaceToDeviceSpaceTransform];
    
    [_path addRects:rect count:count withTransform:&ctm];
@@ -221,16 +222,16 @@ static inline KGGraphicsState *currentState(KGContext *self){
 -(void)addArc:(float)x:(float)y:(float)radius:(float)startRadian:(float)endRadian:(int)clockwise {
    CGAffineTransform ctm=[currentState(self) userSpaceToDeviceSpaceTransform];
 
-   [_path addArcAtPoint:NSMakePoint(x,y) radius:radius startAngle:startRadian endAngle:endRadian clockwise:clockwise withTransform:&ctm];
+   [_path addArcAtPoint:CGPointMake(x,y) radius:radius startAngle:startRadian endAngle:endRadian clockwise:clockwise withTransform:&ctm];
 }
 
 -(void)addArcToPoint:(float)x1:(float)y1:(float)x2:(float)y2:(float)radius {
    CGAffineTransform ctm=[currentState(self) userSpaceToDeviceSpaceTransform];
 
-   [_path addArcToPoint:NSMakePoint(x1,y1) point:NSMakePoint(x2,y2) radius:radius withTransform:&ctm];
+   [_path addArcToPoint:CGPointMake(x1,y1) point:CGPointMake(x2,y2) radius:radius withTransform:&ctm];
 }
 
--(void)addEllipseInRect:(NSRect)rect {
+-(void)addEllipseInRect:(CGRect)rect {
    CGAffineTransform ctm=[currentState(self) userSpaceToDeviceSpaceTransform];
 
    [_path addEllipseInRect:rect withTransform:&ctm];
@@ -243,7 +244,7 @@ static inline KGGraphicsState *currentState(KGContext *self){
 }
 
 -(void)replacePathWithStrokedPath {
-   NSUnimplementedMethod();
+   KGUnimplementedMethod();
 }
 
 -(KGGraphicsState *)currentState {
@@ -301,7 +302,7 @@ static inline KGGraphicsState *currentState(KGContext *self){
    return [currentState(self) userSpaceTransform];
 }
 
--(NSRect)clipBoundingBox {
+-(CGRect)clipBoundingBox {
    return [currentState(self) clipBoundingBox];
 }
 
@@ -313,31 +314,31 @@ static inline KGGraphicsState *currentState(KGContext *self){
    return [currentState(self) interpolationQuality];
 }
 
--(NSPoint)textPosition {
+-(CGPoint)textPosition {
    return [currentState(self) textPosition];
 }
 
--(NSPoint)convertPointToDeviceSpace:(NSPoint)point {
+-(CGPoint)convertPointToDeviceSpace:(CGPoint)point {
    return [currentState(self) convertPointToDeviceSpace:point];
 }
 
--(NSPoint)convertPointToUserSpace:(NSPoint)point {
+-(CGPoint)convertPointToUserSpace:(CGPoint)point {
    return [currentState(self) convertPointToUserSpace:point];
 }
 
--(NSSize)convertSizeToDeviceSpace:(NSSize)size {
+-(CGSize)convertSizeToDeviceSpace:(CGSize)size {
    return [currentState(self) convertSizeToDeviceSpace:size];
 }
 
--(NSSize)convertSizeToUserSpace:(NSSize)size {
+-(CGSize)convertSizeToUserSpace:(CGSize)size {
    return [currentState(self) convertSizeToUserSpace:size];
 }
 
--(NSRect)convertRectToDeviceSpace:(NSRect)rect {
+-(CGRect)convertRectToDeviceSpace:(CGRect)rect {
    return [currentState(self) convertRectToDeviceSpace:rect];
 }
 
--(NSRect)convertRectToUserSpace:(NSRect)rect {
+-(CGRect)convertRectToUserSpace:(CGRect)rect {
    return [currentState(self) convertRectToUserSpace:rect];
 }
 
@@ -385,16 +386,16 @@ static inline KGGraphicsState *currentState(KGContext *self){
    [_path reset];
 }
 
--(void)clipToMask:(KGImage *)image inRect:(NSRect)rect {
+-(void)clipToMask:(KGImage *)image inRect:(CGRect)rect {
    [currentState(self) addClipToMask:image inRect:rect];
    [self deviceClipToMask:image inRect:rect];
 }
 
--(void)clipToRect:(NSRect)rect {
+-(void)clipToRect:(CGRect)rect {
    [self clipToRects:&rect count:1];
 }
 
--(void)clipToRects:(const NSRect *)rects count:(unsigned)count {
+-(void)clipToRects:(const CGRect *)rects count:(unsigned)count {
    CGAffineTransform ctm=[currentState(self) userSpaceToDeviceSpaceTransform];
    
    [_path reset];
@@ -566,7 +567,7 @@ static inline KGGraphicsState *currentState(KGContext *self){
    [self setCMYKFillColor:c:m:y:k:alpha];
 }
 
--(void)setPatternPhase:(NSSize)phase {
+-(void)setPatternPhase:(CGSize)phase {
    [currentState(self) setPatternPhase:phase];
 }
 
@@ -656,11 +657,11 @@ static inline KGGraphicsState *currentState(KGContext *self){
    [currentState(self) setInterpolationQuality:quality];
 }
 
--(void)setShadowOffset:(NSSize)offset blur:(float)blur color:(KGColor *)color {
+-(void)setShadowOffset:(CGSize)offset blur:(float)blur color:(KGColor *)color {
    [currentState(self) setShadowOffset:offset blur:blur color:color];
 }
 
--(void)setShadowOffset:(NSSize)offset blur:(float)blur {
+-(void)setShadowOffset:(CGSize)offset blur:(float)blur {
    [currentState(self) setShadowOffset:offset blur:blur];
 }
 
@@ -668,7 +669,7 @@ static inline KGGraphicsState *currentState(KGContext *self){
    [currentState(self) setShouldAntialias:flag];
 }
 
--(void)strokeLineSegmentsWithPoints:(NSPoint *)points count:(unsigned)count {
+-(void)strokeLineSegmentsWithPoints:(CGPoint *)points count:(unsigned)count {
    int i;
    
    [self beginPath];
@@ -679,13 +680,13 @@ static inline KGGraphicsState *currentState(KGContext *self){
    [self strokePath];
 }
 
--(void)strokeRect:(NSRect)rect {
+-(void)strokeRect:(CGRect)rect {
    [self beginPath];
    [self addRect:rect];
    [self strokePath];
 }
 
--(void)strokeRect:(NSRect)rect width:(float)width {
+-(void)strokeRect:(CGRect)rect width:(float)width {
    [self saveGState];
    [self setLineWidth:width];
    [self beginPath];
@@ -694,30 +695,30 @@ static inline KGGraphicsState *currentState(KGContext *self){
    [self restoreGState];
 }
 
--(void)strokeEllipseInRect:(NSRect)rect {
+-(void)strokeEllipseInRect:(CGRect)rect {
    [self beginPath];
    [self addEllipseInRect:rect];
    [self strokePath];
 }
 
--(void)fillRect:(NSRect)rect {
+-(void)fillRect:(CGRect)rect {
    [self fillRects:&rect count:1];
 }
 
--(void)fillRects:(const NSRect *)rects count:(unsigned)count {
+-(void)fillRects:(const CGRect *)rects count:(unsigned)count {
    [self beginPath];
    [self addRects:rects count:count];
    [self fillPath];
 }
 
--(void)fillEllipseInRect:(NSRect)rect {
+-(void)fillEllipseInRect:(CGRect)rect {
    [self beginPath];
    [self addEllipseInRect:rect];
    [self fillPath];
 }
 
 -(void)drawPath:(CGPathDrawingMode)pathMode {
-   NSInvalidAbstractInvocation();
+   KGInvalidAbstractInvocation();
 // reset path in subclass
 }
 
@@ -741,7 +742,7 @@ static inline KGGraphicsState *currentState(KGContext *self){
    [self drawPath:kCGPathEOFillStroke];
 }
 
--(void)clearRect:(NSRect)rect {
+-(void)clearRect:(CGRect)rect {
 // doc.s are not clear. CGContextClearRect resets the path and does not affect gstate color
    [self saveGState];
    [self setGrayFillColor:0:0];
@@ -750,7 +751,7 @@ static inline KGGraphicsState *currentState(KGContext *self){
 }
 
 -(void)showGlyphs:(const CGGlyph *)glyphs count:(unsigned)count {
-   NSInvalidAbstractInvocation();
+   KGInvalidAbstractInvocation();
 }
 
 -(void)showGlyphs:(const CGGlyph *)glyphs count:(unsigned)count atPoint:(float)x:(float)y {
@@ -758,7 +759,7 @@ static inline KGGraphicsState *currentState(KGContext *self){
    [self showGlyphs:glyphs count:count];
 }
 
--(void)showGlyphs:(const CGGlyph *)glyphs count:(unsigned)count advances:(const NSSize *)advances {
+-(void)showGlyphs:(const CGGlyph *)glyphs count:(unsigned)count advances:(const CGSize *)advances {
    CGAffineTransform textMatrix=[currentState(self) textMatrix];
    float             x=textMatrix.tx;
    float             y=textMatrix.ty;
@@ -792,22 +793,22 @@ static inline KGGraphicsState *currentState(KGContext *self){
 }
 
 -(void)drawShading:(KGShading *)shading {
-   NSInvalidAbstractInvocation();
+   KGInvalidAbstractInvocation();
 }
 
--(void)drawImage:(KGImage *)image inRect:(NSRect)rect {
-   NSInvalidAbstractInvocation();
+-(void)drawImage:(KGImage *)image inRect:(CGRect)rect {
+   KGInvalidAbstractInvocation();
 }
 
--(void)drawLayer:(KGLayer *)layer atPoint:(NSPoint)point {
-   NSSize size=[layer size];
-   NSRect rect={point,size};
+-(void)drawLayer:(KGLayer *)layer atPoint:(CGPoint)point {
+   CGSize size=[layer size];
+   CGRect rect={point,size};
    
    [self drawLayer:layer inRect:rect];
 }
 
--(void)drawLayer:(KGLayer *)layer inRect:(NSRect)rect {
-   NSInvalidAbstractInvocation();
+-(void)drawLayer:(KGLayer *)layer inRect:(CGRect)rect {
+   KGInvalidAbstractInvocation();
 }
 
 -(void)drawPDFPage:(KGPDFPage *)page {
@@ -822,7 +823,7 @@ static inline KGGraphicsState *currentState(KGContext *self){
    // do nothing
 }
 
--(void)beginPage:(const NSRect *)mediaBox {
+-(void)beginPage:(const CGRect *)mediaBox {
    // do nothing
 }
 
@@ -830,31 +831,31 @@ static inline KGGraphicsState *currentState(KGContext *self){
    // do nothing
 }
 
--(KGLayer *)layerWithSize:(NSSize)size unused:(NSDictionary *)unused {
-   NSInvalidAbstractInvocation();
+-(KGLayer *)layerWithSize:(CGSize)size unused:(NSDictionary *)unused {
+   KGInvalidAbstractInvocation();
    return nil;
 }
 
 -(void)beginPrintingWithDocumentName:(NSString *)documentName {
-   NSInvalidAbstractInvocation();
+   KGInvalidAbstractInvocation();
 }
 
 -(void)endPrinting {
-   NSInvalidAbstractInvocation();
+   KGInvalidAbstractInvocation();
 }
 
--(BOOL)getImageableRect:(NSRect *)rect {
+-(BOOL)getImageableRect:(CGRect *)rect {
    return NO;
 }
 
 // temporary
 
 -(void)drawContext:(KGContext *)other inRect:(CGRect)rect {
-   NSInvalidAbstractInvocation();
+   KGInvalidAbstractInvocation();
 }
 
--(void)copyContext:(KGContext *)other size:(NSSize)size {
-   NSInvalidAbstractInvocation();
+-(void)copyContext:(KGContext *)other size:(CGSize)size {
+   KGInvalidAbstractInvocation();
 }
 
 -(void)resetClip {
@@ -896,12 +897,12 @@ static inline KGGraphicsState *currentState(KGContext *self){
    [self setRGBFillColor:r:g:b:alpha];
 }
 
--(void)copyBitsInRect:(NSRect)rect toPoint:(NSPoint)point gState:(int)gState {
-   NSInvalidAbstractInvocation();
+-(void)copyBitsInRect:(CGRect)rect toPoint:(CGPoint)point gState:(int)gState {
+   KGInvalidAbstractInvocation();
 }
 
--(NSData *)captureBitmapInRect:(NSRect)rect {
-   NSInvalidAbstractInvocation();
+-(NSData *)captureBitmapInRect:(CGRect)rect {
+   KGInvalidAbstractInvocation();
    return nil;
 }
 
@@ -910,23 +911,23 @@ static inline KGGraphicsState *currentState(KGContext *self){
 }
 
 -(void)deviceClipReset {
-   NSInvalidAbstractInvocation();
+   KGInvalidAbstractInvocation();
 }
 
 -(void)deviceClipToNonZeroPath:(KGPath *)path {
-   NSInvalidAbstractInvocation();
+   KGInvalidAbstractInvocation();
 }
 
 -(void)deviceClipToEvenOddPath:(KGPath *)path {
-   NSInvalidAbstractInvocation();
+   KGInvalidAbstractInvocation();
 }
 
--(void)deviceClipToMask:(KGImage *)mask inRect:(NSRect)rect {
-   NSInvalidAbstractInvocation();
+-(void)deviceClipToMask:(KGImage *)mask inRect:(CGRect)rect {
+   KGInvalidAbstractInvocation();
 }
 
 -(void)deviceSelectFontWithName:(const char *)name pointSize:(float)pointSize antialias:(BOOL)antialias {
-   NSInvalidAbstractInvocation();
+   KGInvalidAbstractInvocation();
 }
 
 -(void)deviceSelectFontWithName:(const char *)name pointSize:(float)pointSize {

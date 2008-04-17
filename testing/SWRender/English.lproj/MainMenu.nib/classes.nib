@@ -33,6 +33,8 @@
 				<string>id</string>
 				<key>selectDestinationColor</key>
 				<string>id</string>
+				<key>selectFlatness</key>
+				<string>id</string>
 				<key>selectInterpolationQuality</key>
 				<string>id</string>
 				<key>selectLineWidth</key>

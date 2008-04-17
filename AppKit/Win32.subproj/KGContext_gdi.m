@@ -187,21 +187,21 @@ static RECT NSRectToRECT(NSRect rect) {
    for(i=0;i<opCount;i++){
     switch(operators[i]){
 
-     case kCGPathOperatorMoveToPoint:{
+     case kCGPathElementMoveToPoint:{
        NSPoint point=points[pointIndex++];
         
        MoveToEx(_dc,float2int(point.x),float2int(point.y),NULL);
       }
       break;
        
-     case kCGPathOperatorLineToPoint:{
+     case kCGPathElementAddLineToPoint:{
        NSPoint point=points[pointIndex++];
         
        LineTo(_dc,float2int(point.x),float2int(point.y));
       }
       break;
 
-     case kCGPathOperatorCurveToPoint:{
+     case kCGPathElementAddCurveToPoint:{
        NSPoint cp1=points[pointIndex++];
        NSPoint cp2=points[pointIndex++];
        NSPoint end=points[pointIndex++];
@@ -216,7 +216,7 @@ static RECT NSRectToRECT(NSRect rect) {
       break;
 
 // FIX, this is wrong
-     case kCGPathOperatorQuadCurveToPoint:{
+     case kCGPathElementAddQuadCurveToPoint:{
        NSPoint cp1=points[pointIndex++];
        NSPoint cp2=points[pointIndex++];
        NSPoint end=cp2;
@@ -230,7 +230,7 @@ static RECT NSRectToRECT(NSRect rect) {
       }
       break;
 
-     case kCGPathOperatorCloseSubpath:
+     case kCGPathElementCloseSubpath:
       CloseFigure(_dc);
       break;
     }

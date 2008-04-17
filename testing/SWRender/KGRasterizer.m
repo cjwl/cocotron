@@ -24,12 +24,8 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE MATERIALS OR
  * THE USE OR OTHER DEALINGS IN THE MATERIALS.
  *
- *//**
- * \file
- * \brief	Implementation of polygon rasterizer.
- * \note	
- *//*-------------------------------------------------------------------*/
-
+ *-------------------------------------------------------------------*/
+ 
 #import "KGRasterizer.h"
 
 #define RI_MAX_EDGES					262144
@@ -44,6 +40,7 @@ KGRasterizer *KGRasterizerInit(KGRasterizer *self) {
    self->_edgeCount=0;
    self->_edgeCapacity=256;
    self->_edgePool=NSZoneMalloc(NULL,self->_edgeCapacity*sizeof(Edge));
+
    return self;
 }
 
@@ -61,25 +58,11 @@ void KGRasterizerSetViewport(KGRasterizer *self,int vpx,int vpy,int vpwidth,int 
     self->_vpheight=vpheight;
 }
 
-/*-------------------------------------------------------------------*//*!
-* \brief	Removes all appended edges.
-* \param	
-* \return	
-* \note		
-*//*-------------------------------------------------------------------*/
-
 void KGRasterizerClear(KGRasterizer *self) {
    self->_edgeCount=0;   
 }
 
-/*-------------------------------------------------------------------*//*!
-* \brief	Appends an edge to the rasterizer.
-* \param	
-* \return	
-* \note		
-*//*-------------------------------------------------------------------*/
-
-void KGRasterizerAddEdge(KGRasterizer *self,const Vector2 v0, const Vector2 v1) {	//throws bad_alloc
+void KGRasterizerAddEdge(KGRasterizer *self,const Vector2 v0, const Vector2 v1) {
 	if(v0.y == v1.y)
 		return;	//skip horizontal edges (they don't affect rasterization since we scan horizontally)
 
@@ -118,23 +101,10 @@ void KGRasterizerAddEdge(KGRasterizer *self,const Vector2 v0, const Vector2 v1) 
     edge->cnst = Vector2Dot(edge->v0, edge->normal);	//distance of v0 from the origin along the edge normal
     edge->minscany=RI_FLOOR_TO_INT(edge->v0.y-self->fradius);
     edge->maxscany=ceil(edge->v1.y+self->fradius);
-    Vector2 vd = Vector2Subtract(edge->v1,edge->v0);
-    RIfloat wl = 1.0f /vd.y;
-    edge->vdxwl=vd.x*wl;
-    edge->sxPre = edge->v0.x  - vd.x *edge->v0.y* wl;
-    edge->exPre = edge->v0.x  - vd.x *edge->v0.y* wl;
-    edge->minx=edge->maxx=0;
     
 }
 
-/*-------------------------------------------------------------------*//*!
-* \brief	Returns a radical inverse of a given integer for Hammersley
-*			point set.
-* \param	
-* \return	
-* \note		
-*//*-------------------------------------------------------------------*/
-
+// Returns a radical inverse of a given integer for Hammersley point set.
 static double radicalInverseBase2(unsigned int i)
 {
 	if( i == 0 )
@@ -153,12 +123,12 @@ static double radicalInverseBase2(unsigned int i)
 }
 
 void KGRasterizerSetShouldAntialias(KGRasterizer *self,BOOL antialias) {
-
+   self->_antialias=antialias;
 	//make a sampling pattern
     self->sumWeights = 0.0f;
 	 self->fradius = 0.0f;		//max offset of the sampling points from a pixel center
 
-	if(!antialias){
+	if(NO && !antialias){
 		self->numSamples = 1;
 		self->samples[0].x = 0.0f;
 		self->samples[0].y = 0.0f;
@@ -188,9 +158,9 @@ void KGRasterizerSetShouldAntialias(KGRasterizer *self,BOOL antialias) {
 		}
 		self->fradius = 0.5f;
     #else
-        // The Quartz AA filter is different than this,  16 is better than 8 but more expensive
-        // FIX, 8 actually generates some bad rendering
-		self->numSamples = 8;
+        // The Quartz AA filter is different than this
+        // 8, 16 also work, but all of them generate misdrawing with the classic test & stroking, this might be a fill bug
+		self->numSamples = 32;
 		self->fradius = .75;
         int i;
         
@@ -218,14 +188,6 @@ void KGRasterizerSetShouldAntialias(KGRasterizer *self,BOOL antialias) {
 	}
 
 }
-
-/*-------------------------------------------------------------------*//*!
-* \brief	Calls KGPixelPipe::pixelPipe for each pixel with coverage greater
-*			than zero.
-* \param	
-* \return	
-* \note		
-*//*-------------------------------------------------------------------*/
 
 static void scanlineSort(Edge **edges,int count,Edge **B){
   int h, i, j, k, l, m, n = count;
@@ -293,31 +255,91 @@ static void sortEdgesByMinY(Edge **edges,int count,Edge **B){
   }
 }
 
+static void initEdgeSidePre(Edge *edge,Sample *samples,int numSamples,RIfloat pcy){
+   RIfloat *sidePre=edge->sidePre;
+   int s;
+        
+   for(s=0;s<numSamples;s++){
+    RIfloat spy = pcy+samples[s].y;
+    if(spy >= edge->v0.y && spy < edge->v1.y)
+     sidePre[s] = -(spy*edge->normal.y - edge->cnst + samples[s].x*edge->normal.x)-0.5f*edge->normal.x;
+    else
+     sidePre[s]=-LONG_MAX; // arbitrary large number
+   }
+}
+
 static void initEdgeForAET(Edge *edge,RIfloat cminy,RIfloat cmaxy,RIfloat fradius,int xlimit){
    //compute edge min and max x-coordinates for this scanline
-    RIfloat bminx = RI_MIN(edge->v0.x, edge->v1.x);
-    RIfloat bmaxx = RI_MAX(edge->v0.x, edge->v1.x);
-   RIfloat sx = edge->sxPre+ edge->vdxwl*cminy;
-   RIfloat ex = edge->exPre+ edge->vdxwl*cmaxy;
-   sx = RI_CLAMP(sx, bminx, bmaxx);
-   ex = RI_CLAMP(ex, bminx, bmaxx); 
-   RIfloat minx=       RI_MIN(sx,ex)-fradius-0.5f;
+   
+   Vector2 vd = Vector2Subtract(edge->v1,edge->v0);
+   RIfloat wl = 1.0f /vd.y;
+   edge->vdxwl=vd.x*wl;
+
+   edge->bminx = RI_MIN(edge->v0.x, edge->v1.x);
+   edge->bmaxx = RI_MAX(edge->v0.x, edge->v1.x);
+
+   edge->sxPre = (edge->v0.x  - edge->v0.y* edge->vdxwl)+ edge->vdxwl*cminy;
+   edge->exPre = (edge->v0.x  - edge->v0.y* edge->vdxwl)+ edge->vdxwl*cmaxy;
+   RIfloat autosx = RI_CLAMP(edge->sxPre, edge->bminx, edge->bmaxx);
+   RIfloat autoex  = RI_CLAMP(edge->exPre, edge->bminx, edge->bmaxx); 
+   RIfloat minx=RI_MIN(autosx,autoex);
+   RIfloat maxx=RI_MAX(autosx,autoex);
+   
+   minx-=fradius+0.5f;
+   //0.01 is a safety region to prevent too aggressive optimization due to numerical inaccuracy
+   maxx+=fradius+0.5f+0.01f;
    
    edge->minx = minx;
 // FIX, we may not need this field
    edge->ceilMinX=RI_INT_MIN(xlimit,ceil(minx));
-   //0.01 is a safety region to prevent too aggressive optimization due to numerical inaccuracy
-   edge->maxx = RI_MAX(sx,ex)+fradius+0.5f+0.01f;
+   edge->maxx = maxx;
 }
 
 static void incrementEdgeForAET(Edge *edge,RIfloat cminy,RIfloat cmaxy,RIfloat fradius,int xlimit){
-   initEdgeForAET(edge,cminy,cmaxy,fradius,xlimit);
-//   edge->minx += edge->vdxwl;
-//   edge->maxx += edge->vdxwl;
+   edge->sxPre+= edge->vdxwl;
+   edge->exPre+= edge->vdxwl;
+   
+   RIfloat autosx = RI_CLAMP(edge->sxPre, edge->bminx, edge->bmaxx);
+   RIfloat autoex  = RI_CLAMP(edge->exPre, edge->bminx, edge->bmaxx); 
+   RIfloat minx=RI_MIN(autosx,autoex);
+   RIfloat maxx=RI_MAX(autosx,autoex);
+   
+   minx-=fradius+0.5f;
+   //0.01 is a safety region to prevent too aggressive optimization due to numerical inaccuracy
+   maxx+=fradius+0.5f+0.01f;
+   
+   edge->minx = minx;
+// FIX, we may not need this field
+   edge->ceilMinX=RI_INT_MIN(xlimit,ceil(minx));
+   edge->maxx = maxx;
 }
 
-void KGRasterizerFill(KGRasterizer *self,VGFillRule fillRule, KGPixelPipe *pixelPipe) 
-{
+/*
+  AA filter
+  
+  Apple's AA filter is unknown at this point, so the sampling loop remains unoptimally optimized. The box filter is decent but
+  is not as good. The Gaussian filter is closer, but it has a less uniform appearance than Apple's. The current Gaussian implementation
+  also has big artifacts in some case shown by the Classic test. I'm not sure if the original filter was broken or the fill optimizations
+  created a problem. When we figure out something closer/same as Apple's the sampling loops can be constant for the one filter.
+  
+  Aliased Drawing
+  
+  Apple's aliased drawing appears to use the same scanline fill as the anti-aliased drawing, the difference
+  being that when the coverage value is greater than 0 it is promoted to 1. This makes for more filled out
+  shapes, we do that here and it matchs much better than the 1 sample filter. As the quality of the AA filter
+  is improved, it matches Apple's drawing more closely for both AA and non-AA. Thin lines have the largest
+  amount of error, there are probably scan conversion adjustments being made in Apple's.
+  
+  Edge Clipping
+  
+  We can easily clip edges which fall below or above the viewport and do that. Edges which are outside the x
+  values of the viewport must be clipped more carefully as they affect winding on minx and coverage on maxx,
+  we don't do that here yet. Apple clearly does it as performance goes up when most of the edges are
+  outside minx/maxx. The more edges you can keep out of the AET the better.
+
+ */
+ 
+void KGRasterizerFill(KGRasterizer *self,VGFillRule fillRule, KGPixelPipe *pixelPipe) {
 	RI_ASSERT(fillRule == VG_EVEN_ODD || fillRule == VG_NON_ZERO);
 
 	//proceed scanline by scanline
@@ -337,8 +359,8 @@ void KGRasterizerFill(KGRasterizer *self,VGFillRule fillRule, KGPixelPipe *pixel
     int xlimit=self->_vpx+self->_vpwidth;
 
     int    edgeCount=self->_edgeCount;
-    Edge **edges=NSZoneMalloc(NULL,edgeCount*sizeof(Edge *));
-    Edge **sortTmp=NSZoneMalloc(NULL,(edgeCount/2 + 1) * sizeof(Edge *));
+    Edge **edges=NSZoneMalloc(NULL,(edgeCount+(edgeCount/2 + 1))*sizeof(Edge *));
+    Edge **sortTmp=edges+edgeCount;
     
     int i;
     int nextAvailableEdge=0;
@@ -355,23 +377,26 @@ void KGRasterizerFill(KGRasterizer *self,VGFillRule fillRule, KGPixelPipe *pixel
       break;
     }
     
-    int     scany;
     int     activeCount=0;
-    int     activeCapacity=1024;
+    int     activeCapacity=512;
     Edge  **activeEdges=NSZoneMalloc(NULL,activeCapacity*sizeof(Edge *));
     RIfloat cminy = (RIfloat)miny - self->fradius + 0.5f;
     RIfloat cmaxy = (RIfloat)miny + self->fradius + 0.5f;
+    int     scany;
 
 	for(scany=miny;scany<ylimit;scany++,cminy+=1.0,cmaxy+=1.0){
      
+     RIfloat pcy=scany+0.5f; // pixel center
      int removeNulls=0;
      
      // remove edges out of range, load empty slot with an available edge
      for(i=0;i<activeCount;i++){
       Edge *check=activeEdges[i];
       
-      if(check->maxscany>=scany)
+      if(check->maxscany>=scany){
        incrementEdgeForAET(check,cminy,cmaxy,self->fradius,xlimit);
+       initEdgeSidePre(check,self->samples,self->numSamples,pcy);
+      }
       else {
        activeEdges[i]=NULL;
        removeNulls++;
@@ -381,6 +406,7 @@ void KGRasterizerFill(KGRasterizer *self,VGFillRule fillRule, KGPixelPipe *pixel
         
         if(check->minscany<=scany){
          initEdgeForAET(check,cminy,cmaxy,self->fradius,xlimit);
+       initEdgeSidePre(check,self->samples,self->numSamples,pcy);
          activeEdges[i]=check;
          nextAvailableEdge++;
          removeNulls--;
@@ -416,6 +442,7 @@ void KGRasterizerFill(KGRasterizer *self,VGFillRule fillRule, KGPixelPipe *pixel
         activeEdges=NSZoneRealloc(NULL,activeEdges,activeCapacity*sizeof(Edge *));
        }
        initEdgeForAET(check,cminy,cmaxy,self->fradius,xlimit);
+       initEdgeSidePre(check,self->samples,self->numSamples,pcy);
        activeEdges[activeCount++]=check;
       }
      }
@@ -426,20 +453,6 @@ void KGRasterizerFill(KGRasterizer *self,VGFillRule fillRule, KGPixelPipe *pixel
      scanlineSort(activeEdges,activeCount,sortTmp);
 
         int     s;
-      
-      float sidePre[activeCount][self->numSamples];
-      RIfloat pcy=scany+0.5f; // pixel center
-      for(i=0;i<activeCount;i++){
- 	    Edge *edge = activeEdges[i];
-        
-        for(s=0;s<self->numSamples;s++){
-           RIfloat spy = pcy+self->samples[s].y;
-          if(spy >= edge->v0.y && spy < edge->v1.y)
-           sidePre[i][s] = -(spy*edge->normal.y - edge->cnst + self->samples[s].x*edge->normal.x)-0.5f*edge->normal.x;
-         else
-           sidePre[i][s]=-LONG_MAX; // arbitrary large number
-        }
-      }
 
 		//fill the scanline
         int scanx;
@@ -468,9 +481,9 @@ void KGRasterizerFill(KGRasterizer *self,VGFillRule fillRule, KGPixelPipe *pixel
               break;
              else {
               int     direction=edge->direction;
-              RIfloat *pre=sidePre[i];
+              RIfloat *pre=edge->sidePre;
               RIfloat  pcxnormal=scanx*edge->normal.x;
-              
+
               s=self->numSamples;
               while(--s>=0){
                if(pcxnormal>pre[s])
@@ -510,6 +523,9 @@ void KGRasterizerFill(KGRasterizer *self,VGFillRule fillRule, KGPixelPipe *pixel
             
 		   if(coverage > 0.0f){
              coverage /= self->sumWeights;
+
+             if(!self->_antialias)
+               coverage=1;
 
              if(spanCount==0)
               spanX=scanx;

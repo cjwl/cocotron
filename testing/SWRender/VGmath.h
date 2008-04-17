@@ -68,10 +68,11 @@ static inline RIfloat	RI_MOD(RIfloat a, RIfloat b){
    return f;
 }
 
-static inline int		RI_INT_MAX(int a, int b)			{ return (a > b) ? a : b; }
-static inline int		RI_INT_MIN(int a, int b)			{ return (a < b) ? a : b; }
-static inline int		RI_INT_MOD(int a, int b)			{ RI_ASSERT(b >= 0); if(!b) return 0; int i = a % b; if(i < 0) i += b; RI_ASSERT(i >= 0 && i < b); return i; }
-static inline int		RI_INT_ADDSATURATE(int a, int b)	{ RI_ASSERT(b >= 0); int r = a + b; return (r >= a) ? r : RI_INT32_MAX; }
+static inline int RI_INT_MAX(int a, int b)			{ return (a > b) ? a : b; }
+static inline int RI_INT_MIN(int a, int b)			{ return (a < b) ? a : b; }
+static inline int RI_INT_MOD(int a, int b)			{ RI_ASSERT(b >= 0); if(!b) return 0; int i = a % b; if(i < 0) i += b; RI_ASSERT(i >= 0 && i < b); return i; }
+static inline int RI_INT_ADDSATURATE(int a, int b)	{ RI_ASSERT(b >= 0); int r = a + b; return (r >= a) ? r : RI_INT32_MAX; }
+static inline int RI_INT_CLAMP(int a, int l, int h)	{ RI_ASSERT(l <= h); return (a < l) ? l : (a > h) ? h : a; }
 
 static inline int RI_FLOOR_TO_INT(RIfloat value){
    if(value<0)

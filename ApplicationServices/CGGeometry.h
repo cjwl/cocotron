@@ -8,14 +8,46 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/Foundation.h>
 
+typedef float CGFloat;
+
 typedef NSPoint CGPoint;
 typedef NSSize CGSize;
 typedef NSRect CGRect;
 
-static inline CGRect CGRectMake(float x, float y, float width, float height) {
+static CGRect CGRectZero={{0,0},{0,0}};
+static CGPoint CGPointZero={0,0};
+static CGSize CGSizeZero={0,0};
+
+static inline CGRect CGRectMake(CGFloat x, CGFloat y, CGFloat width, CGFloat height) {
    return NSMakeRect(x,y,width,height);
 }
 
-static inline CGPoint CGPointMake(float x,float y){
+static inline CGPoint CGPointMake(CGFloat x,CGFloat y){
    return NSMakePoint(x,y);
 }
+
+static inline CGSize CGSizeMake(CGFloat x,CGFloat y){
+   CGSize result={x,y};
+   return result;
+}
+
+static inline CGFloat CGRectGetMinX(CGRect rect){
+   return rect.origin.x;
+}
+
+static inline CGFloat CGRectGetMaxX(CGRect rect){
+   return rect.origin.x+rect.size.width;
+}
+
+static inline CGFloat CGRectGetMinY(CGRect rect){
+   return rect.origin.y;
+}
+
+static inline CGFloat CGRectGetMaxY(CGRect rect){
+   return rect.origin.y+rect.size.height;
+}
+
+static inline BOOL CGPointEqualToPoint(CGPoint a,CGPoint b){
+   return ((a.x==b.x) && (a.y==b.y))?YES:NO;
+}
+

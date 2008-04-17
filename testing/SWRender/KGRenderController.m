@@ -100,15 +100,23 @@ static void addSliceToPath(CGMutablePathRef path,float innerRadius,float outerRa
    [render setShadowOffset:CGSizeMake(gState->_shadowOffset.width,gState->_shadowOffset.height)];
    [render setShadowBlur:gState->_shadowBlur];
 #endif
-#if 0   
+#if 0
    [render drawPath:path1 drawingMode:_pathDrawingMode blendMode:kCGBlendModeNormal
-      interpolationQuality:kCGInterpolationDefault fillColor:redColor strokeColor:blackColor lineWidth:gState->_lineWidth lineCap:gState->_lineCap lineJoin:gState->_lineJoin miterLimit:gState->_miterLimit dashPhase:gState->_dashPhase dashLengthsCount:gState->_dashLengthsCount dashLengths:gState->_dashLengths transform:ctm antialias:gState->_shouldAntialias];
+      interpolationQuality:kCGInterpolationDefault fillColor:redColor strokeColor:blackColor lineWidth:gState->_lineWidth lineCap:gState->_lineCap lineJoin:gState->_lineJoin miterLimit:gState->_miterLimit dashPhase:gState->_dashPhase dashLengthsCount:gState->_dashLengthsCount dashLengths:gState->_dashLengths flatness:gState->_flatness transform:ctm antialias:gState->_shouldAntialias];
  #endif
-#if 0      
+#if 1
    [render drawPath:path2 drawingMode:_pathDrawingMode blendMode:gState->_blendMode
-      interpolationQuality:kCGInterpolationDefault fillColor:blueColor strokeColor:blackColor lineWidth:gState->_lineWidth lineCap:gState->_lineCap lineJoin:gState->_lineJoin miterLimit:gState->_miterLimit dashPhase:gState->_dashPhase dashLengthsCount:gState->_dashLengthsCount dashLengths:gState->_dashLengths transform:ctm antialias:gState->_shouldAntialias];
+      interpolationQuality:kCGInterpolationDefault fillColor:blueColor strokeColor:redColor lineWidth:gState->_lineWidth lineCap:gState->_lineCap lineJoin:gState->_lineJoin miterLimit:gState->_miterLimit dashPhase:gState->_dashPhase dashLengthsCount:gState->_dashLengthsCount dashLengths:gState->_dashLengths flatness:gState->_flatness transform:ctm antialias:gState->_shouldAntialias];
  #endif
     
+}
+
+-(void)drawImageInRender:(KGRender *)render {
+   float      blackComponents[4]={0,0,0,1};
+   CGColorRef blackColor=CGColorCreate(CGColorSpaceCreateDeviceRGB(),blackComponents);
+   [render clear];
+  
+   CGAffineTransform ctm=[self ctm];
    CGAffineTransform t=CGAffineTransformMakeTranslation(-[_imageRep pixelsWide],-[_imageRep pixelsHigh]);
    ctm=CGAffineTransformConcat(t,ctm);
    ctm=CGAffineTransformScale(ctm,2,2);
@@ -117,7 +125,7 @@ static void addSliceToPath(CGMutablePathRef path,float innerRadius,float outerRa
 
 -(void)drawStraightLinesInRender:(KGRender *)render {
    float      blackComponents[4]={0,0,0,1};
-   CGColorRef blackColor=CGColorCreate(CGColorSpaceCreateDeviceRGB(),blackComponents);
+ //  CGColorRef blackColor=CGColorCreate(CGColorSpaceCreateDeviceRGB(),blackComponents);
    CGColorRef redColor=cgColorFromColor(_destinationColor);
     CGAffineTransform ctm=[self ctm];
   int               i,width=400,height=400;
@@ -137,7 +145,7 @@ static void addSliceToPath(CGMutablePathRef path,float innerRadius,float outerRa
    }
    
    [render drawPath:path drawingMode:_pathDrawingMode blendMode:kCGBlendModeNormal
-      interpolationQuality:kCGInterpolationDefault fillColor:redColor strokeColor:blackColor lineWidth:gState->_lineWidth lineCap:gState->_lineCap lineJoin:gState->_lineJoin miterLimit:gState->_miterLimit dashPhase:gState->_dashPhase dashLengthsCount:gState->_dashLengthsCount dashLengths:gState->_dashLengths transform:ctm antialias:gState->_shouldAntialias];
+      interpolationQuality:kCGInterpolationDefault fillColor:redColor strokeColor:redColor lineWidth:gState->_lineWidth lineCap:gState->_lineCap lineJoin:gState->_lineJoin miterLimit:gState->_miterLimit dashPhase:gState->_dashPhase dashLengthsCount:gState->_dashLengthsCount dashLengths:gState->_dashLengths flatness:gState->_flatness transform:ctm antialias:gState->_shouldAntialias];
       
    CGPathRelease(path);
 }
@@ -160,7 +168,7 @@ static void addSliceToPath(CGMutablePathRef path,float innerRadius,float outerRa
     CGPathAddRect(path,NULL,CGRectMake(i*width/limit,0,width/limit,height));
     
     [render drawPath:path drawingMode:_pathDrawingMode blendMode:kCGBlendModeCopy
-      interpolationQuality:kCGInterpolationDefault fillColor:fillColor strokeColor:NULL lineWidth:gState->_lineWidth lineCap:gState->_lineCap lineJoin:gState->_lineJoin miterLimit:gState->_miterLimit dashPhase:gState->_dashPhase dashLengthsCount:gState->_dashLengthsCount dashLengths:gState->_dashLengths transform:ctm antialias:gState->_shouldAntialias];
+      interpolationQuality:kCGInterpolationDefault fillColor:fillColor strokeColor:NULL lineWidth:gState->_lineWidth lineCap:gState->_lineCap lineJoin:gState->_lineJoin miterLimit:gState->_miterLimit dashPhase:gState->_dashPhase dashLengthsCount:gState->_dashLengthsCount dashLengths:gState->_dashLengths flatness:gState->_flatness transform:ctm antialias:gState->_shouldAntialias];
     CGColorRelease(fillColor);
     CGPathRelease(path);
    }
@@ -174,7 +182,7 @@ static void addSliceToPath(CGMutablePathRef path,float innerRadius,float outerRa
     CGPathAddRect(path,NULL,CGRectMake(0,0,width,height-i*height/limit));
     
     [render drawPath:path drawingMode:_pathDrawingMode blendMode:gState->_blendMode
-      interpolationQuality:kCGInterpolationDefault fillColor:fillColor strokeColor:NULL lineWidth:gState->_lineWidth lineCap:gState->_lineCap lineJoin:gState->_lineJoin miterLimit:gState->_miterLimit dashPhase:gState->_dashPhase dashLengthsCount:gState->_dashLengthsCount dashLengths:gState->_dashLengths transform:ctm antialias:gState->_shouldAntialias];
+      interpolationQuality:kCGInterpolationDefault fillColor:fillColor strokeColor:NULL lineWidth:gState->_lineWidth lineCap:gState->_lineCap lineJoin:gState->_lineJoin miterLimit:gState->_miterLimit dashPhase:gState->_dashPhase dashLengthsCount:gState->_dashLengthsCount dashLengths:gState->_dashLengths  flatness:gState->_flatness transform:ctm antialias:gState->_shouldAntialias];
     CGColorRelease(fillColor);
     CGPathRelease(path);
    }
@@ -203,6 +211,9 @@ static void addSliceToPath(CGMutablePathRef path,float innerRadius,float outerRa
     
     case 2:
      [self performTest:@selector(drawBlendingInRender:)];
+     break;
+    case 3:
+     [self performTest:@selector(drawImageInRender:)];
      break;
    }
    
@@ -287,6 +298,10 @@ static void addSliceToPath(CGMutablePathRef path,float innerRadius,float outerRa
    }
 }
 
+-(void)setFlatness:(float)value {
+   gState->_flatness=value;
+}
+
 -(void)setScaleX:(float)value {
    gState->_scalex=value;
 }
@@ -360,6 +375,11 @@ static void addSliceToPath(CGMutablePathRef path,float innerRadius,float outerRa
 
 -(void)selectDashLength:sender {
    [self setDashLength:[sender floatValue]];
+   [self setNeedsDisplay];
+}
+
+-(void)selectFlatness:sender {
+   [self setFlatness:[sender floatValue]];
    [self setNeedsDisplay];
 }
 

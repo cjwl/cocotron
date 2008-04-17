@@ -68,7 +68,6 @@ typedef struct {
 	Vector2					m_radialGradientCenter;
 	Vector2					m_radialGradientFocalPoint;
 	RIfloat					m_radialGradientRadius;
-	VGTilingMode			m_patternTilingMode;
 	VGImage*					m_pattern;
 
 } KGPaint;
@@ -86,7 +85,6 @@ typedef struct {
    CGBlendMode            m_blendMode;
    VGImageMode            m_imageMode;
    CGInterpolationQuality m_imageQuality;
-   VGColor                  m_tileFillColor;
    Matrix3x3              m_surfaceToPaintMatrix;
    Matrix3x3              m_surfaceToImageMatrix;
 } KGPixelPipe;
@@ -101,7 +99,6 @@ void KGPixelPipeSetImage(KGPixelPipe *self,VGImage* image, VGImageMode imageMode
 void KGPixelPipeSetSurfaceToPaintMatrix(KGPixelPipe *self,Matrix3x3 surfaceToPaintMatrix);
 void KGPixelPipeSetSurfaceToImageMatrix(KGPixelPipe *self,Matrix3x3 surfaceToImageMatrix);
 void KGPixelPipeSetImageQuality(KGPixelPipe *self,CGInterpolationQuality imageQuality);
-void KGPixelPipeSetTileFillColor(KGPixelPipe *self,VGColor c);
 void KGPixelPipeSetPaint(KGPixelPipe *self,KGPaint* paint);
 //private
 void KGPixelPipeLinearGradient(KGPixelPipe *self,RIfloat *g, RIfloat *rho, RIfloat x, RIfloat y);

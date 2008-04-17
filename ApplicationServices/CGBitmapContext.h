@@ -7,17 +7,5 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
 #import <Foundation/NSObject.h>
-#import <AppKit/AppKitExport.h>
-#import <AppKit/CGGeometry.h>
-#import <AppKit/CGColorSpace.h>
-#import <AppKit/CGFunction.h>
-
-@class KGShading;
-
-typedef KGShading *CGShadingRef;
-
-APPKIT_EXPORT CGShadingRef CGShadingRetain(CGShadingRef self);
-APPKIT_EXPORT void         CGShadingRelease(CGShadingRef self);
-
-APPKIT_EXPORT CGShadingRef CGShadingCreateAxial(CGColorSpaceRef colorSpace,CGPoint startPoint,CGPoint endPoint,CGFunctionRef function,BOOL extendStart,BOOL extendEnd);
-APPKIT_EXPORT CGShadingRef CGShadingCreateRadial(CGColorSpaceRef colorSpace,CGPoint startPoint,float startRadius,CGPoint endPoint,float endRadius,CGFunctionRef function,BOOL extendStart,BOOL extendEnd);
+#import <ApplicationServices/CGContext.h>
+#import <ApplicationServices/CGImage.h>

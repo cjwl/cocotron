@@ -138,7 +138,7 @@ static KGPaint *paintFromColor(CGColorRef color){
 }
 
 -(void)drawPath:(CGPathRef)path drawingMode:(CGPathDrawingMode)drawingMode blendMode:(CGBlendMode)blendMode interpolationQuality:(CGInterpolationQuality)interpolationQuality fillColor:(CGColorRef)fillColor strokeColor:(CGColorRef)strokeColor 
-lineWidth:(float)lineWidth lineCap:(CGLineCap)lineCap lineJoin:(CGLineJoin)lineJoin miterLimit:(float)miterLimit dashPhase:(float)dashPhase dashLengthsCount:(unsigned)dashLengthsCount dashLengths:(float *)dashLengths transform:(CGAffineTransform)xform antialias:(BOOL)antialias {
+lineWidth:(float)lineWidth lineCap:(CGLineCap)lineCap lineJoin:(CGLineJoin)lineJoin miterLimit:(float)miterLimit dashPhase:(float)dashPhase dashLengthsCount:(unsigned)dashLengthsCount dashLengths:(float *)dashLengths  flatness:(float)flatness transform:(CGAffineTransform)xform antialias:(BOOL)antialias {
    VGPath *vgPath=[self buildDeviceSpacePath:path];
 
    KGPixelPipe *pixelPipe=KGPixelPipeInit(KGPixelPipeAlloc());
@@ -175,11 +175,11 @@ xform=CGAffineTransformConcat(xform,u2d);
 				Matrix3x3ForceAffinity(&surfaceToPaintMatrix);
 				KGPixelPipeSetSurfaceToPaintMatrix(pixelPipe,surfaceToPaintMatrix);
 
-				VGPathFill(vgPath,userToSurfaceMatrix,rasterizer);	//throws bad_alloc
+				VGPathFill(vgPath,userToSurfaceMatrix,rasterizer);
                 
                 VGFillRule fillRule=(drawingMode==kCGPathFill || drawingMode==kCGPathFillStroke)?VG_NON_ZERO:VG_EVEN_ODD;
                 
-				KGRasterizerFill(rasterizer,fillRule, pixelPipe);	//throws bad_alloc
+				KGRasterizerFill(rasterizer,fillRule, pixelPipe);
 			}
 		}
 
@@ -196,8 +196,8 @@ xform=CGAffineTransformConcat(xform,u2d);
 				KGRasterizerClear(rasterizer);
                                  
 				VGPathStroke(vgPath,userToSurfaceMatrix, rasterizer, dashLengths,dashLengthsCount, dashPhase, true /* context->m_strokeDashPhaseReset ? true : false*/,
-									  lineWidth, lineCap,  lineJoin, RI_MAX(miterLimit, 1.0f));	//throws bad_alloc
-				KGRasterizerFill(rasterizer,VG_NON_ZERO,pixelPipe);	//throws bad_alloc
+									  lineWidth, lineCap,  lineJoin, RI_MAX(miterLimit, 1.0f));
+				KGRasterizerFill(rasterizer,VG_NON_ZERO,pixelPipe);
 			}
 		 }
         }
@@ -273,11 +273,11 @@ xform=CGAffineTransformConcat(xform,u2d);
 			KGPixelPipeSetSurfaceToPaintMatrix(pixelPipe,surfaceToPaintMatrix);
 			KGPixelPipeSetSurfaceToImageMatrix(pixelPipe,surfaceToImageMatrix);
 
-			KGRasterizerAddEdge(rasterizer,Vector2Make(p0.x,p0.y), Vector2Make(p1.x,p1.y));	//throws bad_alloc
-			KGRasterizerAddEdge(rasterizer,Vector2Make(p1.x,p1.y), Vector2Make(p2.x,p2.y));	//throws bad_alloc
-			KGRasterizerAddEdge(rasterizer,Vector2Make(p2.x,p2.y), Vector2Make(p3.x,p3.y));	//throws bad_alloc
-			KGRasterizerAddEdge(rasterizer,Vector2Make(p3.x,p3.y), Vector2Make(p0.x,p0.y));	//throws bad_alloc
-			KGRasterizerFill(rasterizer,VG_EVEN_ODD, pixelPipe);	//throws bad_alloc
+			KGRasterizerAddEdge(rasterizer,Vector2Make(p0.x,p0.y), Vector2Make(p1.x,p1.y));
+			KGRasterizerAddEdge(rasterizer,Vector2Make(p1.x,p1.y), Vector2Make(p2.x,p2.y));
+			KGRasterizerAddEdge(rasterizer,Vector2Make(p2.x,p2.y), Vector2Make(p3.x,p3.y));
+			KGRasterizerAddEdge(rasterizer,Vector2Make(p3.x,p3.y), Vector2Make(p0.x,p0.y));
+			KGRasterizerFill(rasterizer,VG_EVEN_ODD, pixelPipe);
 		}
    KGRasterizerDealloc(rasterizer);
    KGPixelPipeDealloc(pixelPipe);

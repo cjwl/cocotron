@@ -17,7 +17,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 const NSPoint NSZeroPoint={0,0};
 
 BOOL NSEqualPoints(NSPoint point0,NSPoint point1) {
-   return (point0.x==point1.x) && (point0.y==point1.y);
+   return ((point0.x==point1.x) && (point0.y==point1.y))?YES:NO;
 }
 
 NSString *NSStringFromPoint(NSPoint point) {

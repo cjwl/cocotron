@@ -9,7 +9,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 // Original - Christopher Lloyd <cjwl@objc.net>
 #import "NSInterfaceGraphics.h"
 #import <AppKit/NSGraphicsContextFunctions.h>
-#import <AppKit/CoreGraphics.h>
+#import <ApplicationServices/ApplicationServices.h>
 #import <AppKit/NSColor.h>
 #import <AppKit/NSView.h>
 

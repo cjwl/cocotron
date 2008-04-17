@@ -41,6 +41,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     float        _dashPhase;
     unsigned     _dashLengthsCount;
     float       *_dashLengths;
+    float        _flatness;
    } gStateX,*gState;
    
    NSColor *_destinationColor;
@@ -63,6 +64,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)selectLineWidth:sender;
 -(void)selectDashPhase:sender;
 -(void)selectDashLength:sender;
+-(void)selectFlatness:sender;
 
 -(void)selectScaleX:sender;
 -(void)selectScaleY:sender;

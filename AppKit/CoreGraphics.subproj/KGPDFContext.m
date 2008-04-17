@@ -6,23 +6,29 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
-#import <AppKit/KGPDFContext.h>
+#import "KGPDFContext.h"
 #import "KGPDFArray.h"
-#import <AppKit/KGPDFDictionary.h>
-#import <AppKit/KGPDFPage.h>
-#import <AppKit/KGPDFContext.h>
+#import "KGPDFDictionary.h"
+#import "KGPDFPage.h"
+#import "KGPDFContext.h"
 #import "KGPDFxref.h"
 #import "KGPDFxrefEntry.h"
 #import "KGPDFObject_R.h"
 #import "KGPDFObject_Name.h"
 #import "KGPDFStream.h"
 #import "KGPDFString.h"
-#import <AppKit/KGShading.h>
-#import <AppKit/KGImage.h>
-#import <AppKit/KGFont.h>
-#import <AppKit/KGMutablePath.h>
-#import <AppKit/KGColor.h>
-#import <AppKit/KGColorSpace.h>
+#import "KGShading.h"
+#import "KGImage.h"
+#import "KGFont.h"
+#import "KGMutablePath.h"
+#import "KGColor.h"
+#import "KGColorSpace.h"
+#import <Foundation/NSProcessInfo.h>
+#import <Foundation/NSDictionary.h>
+#import <Foundation/NSArray.h>
+#import <Foundation/NSData.h>
+#import <Foundation/NSPathUtilities.h>
+#import "KGExceptions.h"
 
 @implementation KGPDFContext
 
@@ -293,7 +299,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [self contentWithFormat:@"%f %f %f %f v ",cx1,cy1,x,y];
 }
 
--(void)addLinesWithPoints:(const NSPoint *)points count:(unsigned)count {
+-(void)addLinesWithPoints:(const CGPoint *)points count:(unsigned)count {
    [super addLinesWithPoints:points count:count];
    
    int i;
@@ -302,7 +308,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     [self contentWithFormat:@"%f %f l ",points[i].x,points[i].y];
 }
 
--(void)addRects:(const NSRect *)rects count:(unsigned)count {
+-(void)addRects:(const CGRect *)rects count:(unsigned)count {
    [super addRects:rects count:count];
    
    int i;
@@ -314,45 +320,45 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)_pathContentFromOperator:(int)start {
    int                  i,numberOfOperators=[_path numberOfOperators];
    const unsigned char *operators=[_path operators];
-   const NSPoint       *points=[_path points];
+   const CGPoint       *points=[_path points];
    int                  pi=0;
    
    for(i=0;i<numberOfOperators;i++){
     switch(operators[i]){
     
-     case kCGPathOperatorMoveToPoint:{
-       NSPoint point=points[pi++];
+     case kCGPathElementMoveToPoint:{
+       CGPoint point=points[pi++];
        
        if(i>=start)
         [self contentWithFormat:@"%f %f m ",point.x,point.y];
       }
       break;
       
-     case kCGPathOperatorLineToPoint:{
-       NSPoint point=points[pi++];
+     case kCGPathElementAddLineToPoint:{
+       CGPoint point=points[pi++];
 
        if(i>=start)
         [self contentWithFormat:@"%f %f l ",point.x,point.y];
       }
       break;
 
-     case kCGPathOperatorCurveToPoint:{
-       NSPoint c1=points[pi++];
-       NSPoint c2=points[pi++];
-       NSPoint end=points[pi++];
+     case kCGPathElementAddCurveToPoint:{
+       CGPoint c1=points[pi++];
+       CGPoint c2=points[pi++];
+       CGPoint end=points[pi++];
 
        if(i>=start)
         [self contentWithFormat:@"%f %f %f %f %f %f c ",c1.x,c1.y,c2.x,c2.y,end.x,end.y];
       }
       break;
       
-     case kCGPathOperatorCloseSubpath:
+     case kCGPathElementCloseSubpath:
       [self contentWithString:@"h "];
       break;
       
-     case kCGPathOperatorQuadCurveToPoint:{
-       NSPoint c1=points[pi++];
-       NSPoint end=points[pi++];
+     case kCGPathElementAddQuadCurveToPoint:{
+       CGPoint c1=points[pi++];
+       CGPoint end=points[pi++];
 
        if(i>=start)
         [self contentWithFormat:@"%f %f %f %f v ",c1.x,c1.y,end.x,end.y];
@@ -376,7 +382,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [self _pathContentFromOperator:start];
 }
 
--(void)addEllipseInRect:(NSRect)rect {
+-(void)addEllipseInRect:(CGRect)rect {
    int start=[_path numberOfOperators];
    [super addEllipseInRect:rect];
    [self _pathContentFromOperator:start];
@@ -401,7 +407,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)setCTM:(CGAffineTransform)matrix {
    [super setCTM:matrix];
-   NSUnimplementedMethod();
+   KGUnimplementedMethod();
 }
 
 -(void)concatCTM:(CGAffineTransform)matrix {
@@ -419,7 +425,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [self contentWithString:@"W* "];
 }
 
--(void)clipToMask:(KGImage *)image inRect:(NSRect)rect {
+-(void)clipToMask:(KGImage *)image inRect:(CGRect)rect {
    KGPDFObject *pdfObject=[image encodeReferenceWithContext:self];
    KGPDFObject *name=[self nameForResource:pdfObject inCategory:"XObject"];
    
@@ -430,7 +436,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [self contentWithString:@"Q "];
 }
 
--(void)clipToRects:(const NSRect *)rects count:(unsigned)count {
+-(void)clipToRects:(const CGRect *)rects count:(unsigned)count {
    [self beginPath];
    [self addRects:rects count:count];
    [self clipToPath];
@@ -474,7 +480,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    }
 }
 
--(void)setPatternPhase:(NSSize)phase {
+-(void)setPatternPhase:(CGSize)phase {
    [super setPatternPhase:phase];
 }
 
@@ -569,12 +575,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [super setInterpolationQuality:quality];
 }
 
--(void)setShadowOffset:(NSSize)offset blur:(float)blur color:(KGColor *)color {
+-(void)setShadowOffset:(CGSize)offset blur:(float)blur color:(KGColor *)color {
    [super setShadowOffset:offset blur:blur color:color];
    
 }
 
--(void)setShadowOffset:(NSSize)offset blur:(float)blur {
+-(void)setShadowOffset:(CGSize)offset blur:(float)blur {
    [super setShadowOffset:offset blur:blur];
    
 }
@@ -639,7 +645,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [self contentWithFormat:@"%@ sh ",name];
 }
 
--(void)drawImage:(KGImage *)image inRect:(NSRect)rect {
+-(void)drawImage:(KGImage *)image inRect:(CGRect)rect {
    KGPDFObject *pdfObject=[image encodeReferenceWithContext:self];
    KGPDFObject *name=[self nameForResource:pdfObject inCategory:"XObject"];
    
@@ -650,10 +656,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [self contentWithString:@"Q "];
 }
 
--(void)drawLayer:(KGLayer *)layer inRect:(NSRect)rect {
+-(void)drawLayer:(KGLayer *)layer inRect:(CGRect)rect {
 }
 
--(void)beginPage:(const NSRect *)mediaBox {
+-(void)beginPage:(const CGRect *)mediaBox {
    KGPDFObject *stream;
    
    _page=[[KGPDFDictionary pdfDictionary] retain];

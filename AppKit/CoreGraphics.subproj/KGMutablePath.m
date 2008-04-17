@@ -6,34 +6,34 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
-// Original - Christopher Lloyd <cjwl@objc.net>
 #import "KGMutablePath.h"
 #import "KGPath.h"
+#import "KGExceptions.h"
 
 // ellipse to 4 spline bezier, http://www.tinaja.com/glib/ellipse4.pdf
-void KGMutablePathEllipseToBezier(NSPoint *cp,float x,float y,float xrad,float yrad){
+void KGMutablePathEllipseToBezier(CGPoint *cp,float x,float y,float xrad,float yrad){
    float magic=0.551784;
    float xmag=xrad*magic;
    float ymag=yrad*magic;
    int   i=0;
 
-   cp[i++]=NSMakePoint(-xrad,0);
+   cp[i++]=CGPointMake(-xrad,0);
 
-   cp[i++]=NSMakePoint(-xrad,ymag);
-   cp[i++]=NSMakePoint(-xmag,yrad);
-   cp[i++]=NSMakePoint(0,yrad);
+   cp[i++]=CGPointMake(-xrad,ymag);
+   cp[i++]=CGPointMake(-xmag,yrad);
+   cp[i++]=CGPointMake(0,yrad);
    
-   cp[i++]=NSMakePoint(xmag,yrad);
-   cp[i++]=NSMakePoint(xrad,ymag);
-   cp[i++]=NSMakePoint(xrad,0);
+   cp[i++]=CGPointMake(xmag,yrad);
+   cp[i++]=CGPointMake(xrad,ymag);
+   cp[i++]=CGPointMake(xrad,0);
 
-   cp[i++]=NSMakePoint(xrad,-ymag);
-   cp[i++]=NSMakePoint(xmag,-yrad);
-   cp[i++]=NSMakePoint(0,-yrad);
+   cp[i++]=CGPointMake(xrad,-ymag);
+   cp[i++]=CGPointMake(xmag,-yrad);
+   cp[i++]=CGPointMake(0,-yrad);
 
-   cp[i++]=NSMakePoint(-xmag,-yrad);
-   cp[i++]=NSMakePoint(-xrad,-ymag);
-   cp[i++]=NSMakePoint(-xrad,0);
+   cp[i++]=CGPointMake(-xmag,-yrad);
+   cp[i++]=CGPointMake(-xrad,-ymag);
+   cp[i++]=CGPointMake(-xrad,0);
    
    for(i=0;i<13;i++){
     cp[i].x+=x;
@@ -79,7 +79,7 @@ static void bezier(KGGraphicsState *self,double x1,double y1,double x2, double y
 
 #endif
 
--initWithOperators:(unsigned char *)operators numberOfOperators:(unsigned)numberOfOperators points:(NSPoint *)points numberOfPoints:(unsigned)numberOfPoints {
+-initWithOperators:(unsigned char *)operators numberOfOperators:(unsigned)numberOfOperators points:(CGPoint *)points numberOfPoints:(unsigned)numberOfPoints {
    [super initWithOperators:operators numberOfOperators:numberOfOperators points:points numberOfPoints:numberOfPoints];
    _capacityOfOperators=numberOfOperators;
    _capacityOfPoints=numberOfPoints;
@@ -107,31 +107,31 @@ static void expandPointCapacity(KGMutablePath *self,unsigned delta){
    if(self->_numberOfPoints+delta>self->_capacityOfPoints){
     self->_capacityOfPoints=self->_numberOfPoints+delta;
     self->_capacityOfPoints=(self->_capacityOfPoints/32+1)*32;
-    self->_points=NSZoneRealloc(NULL,self->_points,self->_capacityOfPoints*sizeof(NSPoint));
+    self->_points=NSZoneRealloc(NULL,self->_points,self->_capacityOfPoints*sizeof(CGPoint));
    }
 }
 
--(void)moveToPoint:(NSPoint)point withTransform:(CGAffineTransform *)matrix {
+-(void)moveToPoint:(CGPoint)point withTransform:(CGAffineTransform *)matrix {
    if(matrix!=NULL)
     point=CGPointApplyAffineTransform(point,*matrix);
 
    expandOperatorCapacity(self,1);
    expandPointCapacity(self,1);
-   _operators[_numberOfOperators++]=kCGPathOperatorMoveToPoint;
+   _operators[_numberOfOperators++]=kCGPathElementMoveToPoint;
    _points[_numberOfPoints++]=point;
 }
 
--(void)addLineToPoint:(NSPoint)point withTransform:(CGAffineTransform *)matrix {
+-(void)addLineToPoint:(CGPoint)point withTransform:(CGAffineTransform *)matrix {
    if(matrix!=NULL)
     point=CGPointApplyAffineTransform(point,*matrix);
 
    expandOperatorCapacity(self,1);
    expandPointCapacity(self,1);
-   _operators[_numberOfOperators++]=kCGPathOperatorLineToPoint;
+   _operators[_numberOfOperators++]=kCGPathElementAddLineToPoint;
    _points[_numberOfPoints++]=point;
 }
 
--(void)addCurveToControlPoint:(NSPoint)cp1 controlPoint:(NSPoint)cp2 endPoint:(NSPoint)endPoint withTransform:(CGAffineTransform *)matrix {
+-(void)addCurveToControlPoint:(CGPoint)cp1 controlPoint:(CGPoint)cp2 endPoint:(CGPoint)endPoint withTransform:(CGAffineTransform *)matrix {
    if(matrix!=NULL){
     cp1=CGPointApplyAffineTransform(cp1,*matrix);
     cp2=CGPointApplyAffineTransform(cp2,*matrix);
@@ -140,13 +140,13 @@ static void expandPointCapacity(KGMutablePath *self,unsigned delta){
 
    expandOperatorCapacity(self,1);
    expandPointCapacity(self,3);
-   _operators[_numberOfOperators++]=kCGPathOperatorCurveToPoint;   
+   _operators[_numberOfOperators++]=kCGPathElementAddCurveToPoint;   
    _points[_numberOfPoints++]=cp1;
    _points[_numberOfPoints++]=cp2;
    _points[_numberOfPoints++]=endPoint;
 }
 
--(void)addCurveToControlPoint:(NSPoint)cp1 endPoint:(NSPoint)endPoint withTransform:(CGAffineTransform *)matrix {
+-(void)addCurveToControlPoint:(CGPoint)cp1 endPoint:(CGPoint)endPoint withTransform:(CGAffineTransform *)matrix {
    if(matrix!=NULL){
     cp1=CGPointApplyAffineTransform(cp1,*matrix);
     endPoint=CGPointApplyAffineTransform(endPoint,*matrix);
@@ -154,18 +154,18 @@ static void expandPointCapacity(KGMutablePath *self,unsigned delta){
 
    expandOperatorCapacity(self,1);
    expandPointCapacity(self,2);
-   _operators[_numberOfOperators++]=kCGPathOperatorQuadCurveToPoint;   
+   _operators[_numberOfOperators++]=kCGPathElementAddQuadCurveToPoint;   
    _points[_numberOfPoints++]=cp1;
    _points[_numberOfPoints++]=endPoint;
 }
 
 -(void)closeSubpath {
    expandOperatorCapacity(self,1);
-   _operators[_numberOfOperators++]=kCGPathOperatorCloseSubpath;   
+   _operators[_numberOfOperators++]=kCGPathElementCloseSubpath;   
 }
 
--(void)relativeMoveToPoint:(NSPoint)point withTransform:(CGAffineTransform *)matrix {
-   NSPoint current=[self currentPoint];
+-(void)relativeMoveToPoint:(CGPoint)point withTransform:(CGAffineTransform *)matrix {
+   CGPoint current=[self currentPoint];
    
    point.x+=current.x;
    point.y+=current.y;
@@ -173,8 +173,8 @@ static void expandPointCapacity(KGMutablePath *self,unsigned delta){
    [self moveToPoint:point withTransform:matrix];
 }
 
--(void)addRelativeLineToPoint:(NSPoint)point withTransform:(CGAffineTransform *)matrix {
-   NSPoint current=[self currentPoint];
+-(void)addRelativeLineToPoint:(CGPoint)point withTransform:(CGAffineTransform *)matrix {
+   CGPoint current=[self currentPoint];
 
    point.x+=current.x;
    point.y+=current.y;
@@ -182,8 +182,8 @@ static void expandPointCapacity(KGMutablePath *self,unsigned delta){
    [self addLineToPoint:point withTransform:matrix];
 }
 
--(void)addRelativeCurveToControlPoint:(NSPoint)cp1 controlPoint:(NSPoint)cp2 endPoint:(NSPoint)endPoint withTransform:(CGAffineTransform *)matrix {
-   NSPoint current=[self currentPoint];
+-(void)addRelativeCurveToControlPoint:(CGPoint)cp1 controlPoint:(CGPoint)cp2 endPoint:(CGPoint)endPoint withTransform:(CGAffineTransform *)matrix {
+   CGPoint current=[self currentPoint];
 
    cp1.x+=current.x;
    cp1.y+=current.y;
@@ -195,7 +195,7 @@ static void expandPointCapacity(KGMutablePath *self,unsigned delta){
    [self addCurveToControlPoint:cp1 controlPoint:cp2 endPoint:endPoint withTransform:matrix];
 }
 
--(void)addLinesWithPoints:(NSPoint *)points count:(unsigned)count withTransform:(CGAffineTransform *)matrix {
+-(void)addLinesWithPoints:(CGPoint *)points count:(unsigned)count withTransform:(CGAffineTransform *)matrix {
    int i;
    
    if(count==0)
@@ -206,22 +206,22 @@ static void expandPointCapacity(KGMutablePath *self,unsigned delta){
     [self addLineToPoint:points[i] withTransform:matrix];
 }
 
--(void)addRect:(NSRect)rect withTransform:(CGAffineTransform *)matrix {
-   [self moveToPoint:NSMakePoint(NSMinX(rect),NSMinY(rect)) withTransform:matrix];
-   [self addLineToPoint:NSMakePoint(NSMaxX(rect),NSMinY(rect)) withTransform:matrix];
-   [self addLineToPoint:NSMakePoint(NSMaxX(rect),NSMaxY(rect)) withTransform:matrix];
-   [self addLineToPoint:NSMakePoint(NSMinX(rect),NSMaxY(rect)) withTransform:matrix];
+-(void)addRect:(CGRect)rect withTransform:(CGAffineTransform *)matrix {
+   [self moveToPoint:CGPointMake(CGRectGetMinX(rect),CGRectGetMinY(rect)) withTransform:matrix];
+   [self addLineToPoint:CGPointMake(CGRectGetMaxX(rect),CGRectGetMinY(rect)) withTransform:matrix];
+   [self addLineToPoint:CGPointMake(CGRectGetMaxX(rect),CGRectGetMaxY(rect)) withTransform:matrix];
+   [self addLineToPoint:CGPointMake(CGRectGetMinX(rect),CGRectGetMaxY(rect)) withTransform:matrix];
    [self closeSubpath];
 }
 
--(void)addRects:(const NSRect *)rects count:(unsigned)count withTransform:(CGAffineTransform *)matrix {
+-(void)addRects:(const CGRect *)rects count:(unsigned)count withTransform:(CGAffineTransform *)matrix {
    int i;
    
    for(i=0;i<count;i++)
     [self addRect:rects[i] withTransform:matrix];
 }
 
--(void)addArcAtPoint:(NSPoint)point radius:(float)radius startAngle:(float)startRadian endAngle:(float)endRadian clockwise:(BOOL)clockwise withTransform:(CGAffineTransform *)matrix {
+-(void)addArcAtPoint:(CGPoint)point radius:(float)radius startAngle:(float)startRadian endAngle:(float)endRadian clockwise:(BOOL)clockwise withTransform:(CGAffineTransform *)matrix {
 // This is not complete, doesn't handle clockwise and probably doesn't manipulate the current
 // point properly
    float   radiusx=radius,radiusy=radius;
@@ -232,7 +232,7 @@ static void expandPointCapacity(KGMutablePath *self,unsigned delta){
    for(;remainder>0;startRadian+=delta,remainder-=delta){
     double  sweepangle=(remainder>delta)?delta:remainder;
     double  XY[8];
-    NSPoint points[4];
+    CGPoint points[4];
     double  B=sin(sweepangle/2);
     double  C=cos(sweepangle/2);
     double  A=1-C;
@@ -260,16 +260,16 @@ static void expandPointCapacity(KGMutablePath *self,unsigned delta){
    }
 }
 
--(void)addArcToPoint:(NSPoint)point1 point:(NSPoint)point2 radius:(float)radius withTransform:(CGAffineTransform *)matrix {
-	NSUnimplementedMethod();
+-(void)addArcToPoint:(CGPoint)point1 point:(CGPoint)point2 radius:(float)radius withTransform:(CGAffineTransform *)matrix {
+	KGUnimplementedMethod();
 }
 
--(void)addEllipseInRect:(NSRect)rect withTransform:(CGAffineTransform *)matrix {
+-(void)addEllipseInRect:(CGRect)rect withTransform:(CGAffineTransform *)matrix {
     float             xradius=rect.size.width/2;
     float             yradius=rect.size.height/2;
     float             x=rect.origin.x+xradius;
     float             y=rect.origin.y+yradius;
-    NSPoint           cp[13];
+    CGPoint           cp[13];
     int               i;
     
     KGMutablePathEllipseToBezier(cp,x,y,xradius,yradius);
@@ -283,7 +283,7 @@ static void expandPointCapacity(KGMutablePath *self,unsigned delta){
    unsigned             opsCount=[path numberOfOperators];
    const unsigned char *ops=[path operators];
    unsigned             pointCount=[path numberOfPoints];
-   const NSPoint       *points=[path points];
+   const CGPoint       *points=[path points];
    unsigned             i;
    
    expandOperatorCapacity(self,opsCount);
@@ -309,7 +309,7 @@ static void expandPointCapacity(KGMutablePath *self,unsigned delta){
     _points[i]=CGPointApplyAffineTransform(_points[i],matrix);
 }
 
--(void)setPoints:(NSPoint *)points count:(unsigned)count atIndex:(unsigned)index {
+-(void)setPoints:(CGPoint *)points count:(unsigned)count atIndex:(unsigned)index {
    int i;
    
    for(i=0;i<count;i++)

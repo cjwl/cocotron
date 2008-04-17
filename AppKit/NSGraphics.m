@@ -13,7 +13,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSView.h>
 
 #import <AppKit/NSDisplay.h>
-#import <AppKit/CoreGraphics.h>
+#import <ApplicationServices/ApplicationServices.h>
 
 const float NSBlack=0;
 const float NSDarkGray=0.333;

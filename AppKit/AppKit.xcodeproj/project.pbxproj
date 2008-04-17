@@ -145,11 +145,6 @@
 		FE01A8920C5D9BCB00AEA51A /* NSEvent_periodic.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B55A80976075300DA0954 /* NSEvent_periodic.h */; settings = {ATTRIBUTES = (Project, Private, ); }; };
 		FE01A8930C5D9BCB00AEA51A /* NSEvent.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B55AA0976075300DA0954 /* NSEvent.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
 		FE01A8940C5D9BCB00AEA51A /* NSEvent_CoreGraphics.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B55AC0976075300DA0954 /* NSEvent_CoreGraphics.h */; settings = {ATTRIBUTES = (Project, Private, ); }; };
-		FE01A8950C5D9BCB00AEA51A /* CGContext.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B55C70976075300DA0954 /* CGContext.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
-		FE01A8960C5D9BCB00AEA51A /* CGGeometry.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B55C90976075300DA0954 /* CGGeometry.h */; settings = {ATTRIBUTES = (Project, Public, ); }; };
-		FE01A8970C5D9BCB00AEA51A /* CGAffineTransform.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B55CB0976075300DA0954 /* CGAffineTransform.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
-		FE01A8980C5D9BCB00AEA51A /* CGFont.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B55CD0976075300DA0954 /* CGFont.h */; settings = {ATTRIBUTES = (Project, Public, ); }; };
-		FE01A8990C5D9BCB00AEA51A /* CoreGraphics.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B55CF0976075300DA0954 /* CoreGraphics.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
 		FE01A89A0C5D9BCB00AEA51A /* KGGraphicsState.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B55D10976075300DA0954 /* KGGraphicsState.h */; settings = {ATTRIBUTES = (Project, Private, ); }; };
 		FE01A89C0C5D9BCB00AEA51A /* CGWindow.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B55D70976075300DA0954 /* CGWindow.h */; settings = {ATTRIBUTES = (Project, Private, ); }; };
 		FE01A89D0C5D9BCB00AEA51A /* CGEvent.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B55D90976075300DA0954 /* CGEvent.h */; settings = {ATTRIBUTES = (Project, Private, ); }; };
@@ -281,15 +276,6 @@
 		FE01A9200C5D9BCB00AEA51A /* KGPDFxref.h in Headers */ = {isa = PBXBuildFile; fileRef = FE64B8DB0B81239D007EE513 /* KGPDFxref.h */; };
 		FE01A9210C5D9BCB00AEA51A /* KGPDFxrefEntry.h in Headers */ = {isa = PBXBuildFile; fileRef = FE64B8DD0B81239D007EE513 /* KGPDFxrefEntry.h */; };
 		FE01A9220C5D9BCB00AEA51A /* KGShading.h in Headers */ = {isa = PBXBuildFile; fileRef = FE64B8DF0B81239D007EE513 /* KGShading.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		FE01A9230C5D9BCB00AEA51A /* CGImage.h in Headers */ = {isa = PBXBuildFile; fileRef = FE64B9200B8123F1007EE513 /* CGImage.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		FE01A9240C5D9BCB00AEA51A /* CGColor.h in Headers */ = {isa = PBXBuildFile; fileRef = FE064AA90B8B805000853FBB /* CGColor.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		FE01A9250C5D9BCB00AEA51A /* CGColorSpace.h in Headers */ = {isa = PBXBuildFile; fileRef = FE064AAB0B8B805000853FBB /* CGColorSpace.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		FE01A9260C5D9BCB00AEA51A /* CGDataProvider.h in Headers */ = {isa = PBXBuildFile; fileRef = FE064AAD0B8B805000853FBB /* CGDataProvider.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		FE01A9270C5D9BCB00AEA51A /* CGFunction.h in Headers */ = {isa = PBXBuildFile; fileRef = FE064AAF0B8B805000853FBB /* CGFunction.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		FE01A9280C5D9BCB00AEA51A /* CGLayer.h in Headers */ = {isa = PBXBuildFile; fileRef = FE064AB30B8B805000853FBB /* CGLayer.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		FE01A9290C5D9BCB00AEA51A /* CGPath.h in Headers */ = {isa = PBXBuildFile; fileRef = FE064AB50B8B805000853FBB /* CGPath.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		FE01A92A0C5D9BCB00AEA51A /* CGPattern.h in Headers */ = {isa = PBXBuildFile; fileRef = FE064AB70B8B805000853FBB /* CGPattern.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		FE01A92B0C5D9BCB00AEA51A /* CGShading.h in Headers */ = {isa = PBXBuildFile; fileRef = FE064AB90B8B805000853FBB /* CGShading.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE01A92C0C5D9BCB00AEA51A /* KGColor.h in Headers */ = {isa = PBXBuildFile; fileRef = FE064ABB0B8B805000853FBB /* KGColor.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE01A92D0C5D9BCB00AEA51A /* KGLayer.h in Headers */ = {isa = PBXBuildFile; fileRef = FE064AC10B8B805000853FBB /* KGLayer.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE01A92E0C5D9BCB00AEA51A /* KGPath.h in Headers */ = {isa = PBXBuildFile; fileRef = FE064AC30B8B805000853FBB /* KGPath.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -298,10 +284,8 @@
 		FE01A9310C5D9BCB00AEA51A /* KGImageSource_PNG.h in Headers */ = {isa = PBXBuildFile; fileRef = FE267E850B8BCC3C0000DDC0 /* KGImageSource_PNG.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE01A9320C5D9BCB00AEA51A /* KGImageSource_TIFF.h in Headers */ = {isa = PBXBuildFile; fileRef = FE267E870B8BCC3C0000DDC0 /* KGImageSource_TIFF.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE01A9330C5D9BCB00AEA51A /* KGImageSource.h in Headers */ = {isa = PBXBuildFile; fileRef = FE267E890B8BCC3C0000DDC0 /* KGImageSource.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		FE01A9340C5D9BCB00AEA51A /* CGBitmapContext.h in Headers */ = {isa = PBXBuildFile; fileRef = FE267EB30B8BD2690000DDC0 /* CGBitmapContext.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE01A9350C5D9BCB00AEA51A /* KGBitmapContext.h in Headers */ = {isa = PBXBuildFile; fileRef = FE267EB50B8BD2690000DDC0 /* KGBitmapContext.h */; };
 		FE01A9360C5D9BCB00AEA51A /* KGMutablePath.h in Headers */ = {isa = PBXBuildFile; fileRef = FEF33BFF0B93543C00DC0B6F /* KGMutablePath.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		FE01A9370C5D9BCB00AEA51A /* CGPDFPage.h in Headers */ = {isa = PBXBuildFile; fileRef = FEEF00570B96441800069FD1 /* CGPDFPage.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE01A9380C5D9BCB00AEA51A /* NSOpenGLPixelBuffer.h in Headers */ = {isa = PBXBuildFile; fileRef = FE6DC16A0BA85BEC0082AC66 /* NSOpenGLPixelBuffer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE01A9390C5D9BCB00AEA51A /* NSDatePicker.h in Headers */ = {isa = PBXBuildFile; fileRef = FE6DC3DC0BA9A6EB0082AC66 /* NSDatePicker.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE01A93A0C5D9BCB00AEA51A /* NSDatePickerCell.h in Headers */ = {isa = PBXBuildFile; fileRef = FE6DC3EE0BA9A7100082AC66 /* NSDatePickerCell.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -689,6 +673,7 @@
 		FE572D900CA0809500FB3E79 /* KGImageSource_BMP.m in Sources */ = {isa = PBXBuildFile; fileRef = FE572D8C0CA0809500FB3E79 /* KGImageSource_BMP.m */; };
 		FE5C69A10D76039F00098551 /* KGDeviceContext_gdiDIBSection.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5C699F0D76039F00098551 /* KGDeviceContext_gdiDIBSection.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE5C69A20D76039F00098551 /* KGDeviceContext_gdiDIBSection.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5C69A00D76039F00098551 /* KGDeviceContext_gdiDIBSection.m */; };
+		FE6EDE340DB797D9005503A1 /* KGExceptions.h in Headers */ = {isa = PBXBuildFile; fileRef = FE6EDE330DB797D9005503A1 /* KGExceptions.h */; };
 		FE82867F0D34727900F7489F /* NSApplicationIcon.tiff in Resources */ = {isa = PBXBuildFile; fileRef = FE8286770D34727900F7489F /* NSApplicationIcon.tiff */; };
 		FE8286800D34727900F7489F /* NSSystemInfoPanel.h in Headers */ = {isa = PBXBuildFile; fileRef = FE8286780D34727900F7489F /* NSSystemInfoPanel.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE8286810D34727900F7489F /* NSSystemInfoPanel.m in Sources */ = {isa = PBXBuildFile; fileRef = FE8286790D34727900F7489F /* NSSystemInfoPanel.m */; };
@@ -751,6 +736,20 @@
 			proxyType = 1;
 			remoteGlobalIDString = FE01A5970C5D9B6900AEA51A;
 			remoteInfo = "Foundation-Windows-i386";
+		};
+		FE6EDEBC0DB7AF94005503A1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FECAF4C80DB710EE00BA2A8E /* ApplicationServices.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = FE01AAE20C5D9BF900AEA51A /* ApplicationServices-Windows-i386 */;
+			remoteInfo = "ApplicationServices-Windows-i386";
+		};
+		FECAF4D00DB710EE00BA2A8E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FECAF4C80DB710EE00BA2A8E /* ApplicationServices.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = FE01AAED0C5D9BF900AEA51A;
+			remoteInfo = "ApplicationServices-Windows-i386";
 		};
 		FED70AC90C3B3FD9000CBE5B /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -1068,11 +1067,6 @@
 		6E2B55BC0976075300DA0954 /* KGGraphicsState.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KGGraphicsState.m; sourceTree = "<group>"; };
 		6E2B55C20976075300DA0954 /* CGWindow.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CGWindow.m; sourceTree = "<group>"; };
 		6E2B55C40976075300DA0954 /* CGEvent.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CGEvent.m; sourceTree = "<group>"; };
-		6E2B55C70976075300DA0954 /* CGContext.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CGContext.h; sourceTree = "<group>"; };
-		6E2B55C90976075300DA0954 /* CGGeometry.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CGGeometry.h; sourceTree = "<group>"; };
-		6E2B55CB0976075300DA0954 /* CGAffineTransform.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CGAffineTransform.h; sourceTree = "<group>"; };
-		6E2B55CD0976075300DA0954 /* CGFont.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CGFont.h; sourceTree = "<group>"; };
-		6E2B55CF0976075300DA0954 /* CoreGraphics.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CoreGraphics.h; sourceTree = "<group>"; };
 		6E2B55D10976075300DA0954 /* KGGraphicsState.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KGGraphicsState.h; sourceTree = "<group>"; };
 		6E2B55D70976075300DA0954 /* CGWindow.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CGWindow.h; sourceTree = "<group>"; };
 		6E2B55D90976075300DA0954 /* CGEvent.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CGEvent.h; sourceTree = "<group>"; };
@@ -1235,21 +1229,13 @@
 		C8E4F57F0BFF7A8A0076D5E6 /* NSAffineTransform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSAffineTransform.h; sourceTree = "<group>"; };
 		C8E4F5800BFF7A8A0076D5E6 /* NSAffineTransform.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSAffineTransform.m; sourceTree = "<group>"; };
 		FE01AAC10C5D9BCB00AEA51A /* AppKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AppKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		FE064AA90B8B805000853FBB /* CGColor.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = CGColor.h; sourceTree = "<group>"; };
 		FE064AAA0B8B805000853FBB /* CGColor.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = CGColor.m; sourceTree = "<group>"; };
-		FE064AAB0B8B805000853FBB /* CGColorSpace.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = CGColorSpace.h; sourceTree = "<group>"; };
 		FE064AAC0B8B805000853FBB /* CGColorSpace.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = CGColorSpace.m; sourceTree = "<group>"; };
-		FE064AAD0B8B805000853FBB /* CGDataProvider.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = CGDataProvider.h; sourceTree = "<group>"; };
 		FE064AAE0B8B805000853FBB /* CGDataProvider.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = CGDataProvider.m; sourceTree = "<group>"; };
-		FE064AAF0B8B805000853FBB /* CGFunction.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = CGFunction.h; sourceTree = "<group>"; };
 		FE064AB00B8B805000853FBB /* CGFunction.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = CGFunction.m; sourceTree = "<group>"; };
-		FE064AB30B8B805000853FBB /* CGLayer.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = CGLayer.h; sourceTree = "<group>"; };
 		FE064AB40B8B805000853FBB /* CGLayer.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = CGLayer.m; sourceTree = "<group>"; };
-		FE064AB50B8B805000853FBB /* CGPath.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = CGPath.h; sourceTree = "<group>"; };
 		FE064AB60B8B805000853FBB /* CGPath.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = CGPath.m; sourceTree = "<group>"; };
-		FE064AB70B8B805000853FBB /* CGPattern.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = CGPattern.h; sourceTree = "<group>"; };
 		FE064AB80B8B805000853FBB /* CGPattern.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = CGPattern.m; sourceTree = "<group>"; };
-		FE064AB90B8B805000853FBB /* CGShading.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = CGShading.h; sourceTree = "<group>"; };
 		FE064ABA0B8B805000853FBB /* CGShading.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = CGShading.m; sourceTree = "<group>"; };
 		FE064ABB0B8B805000853FBB /* KGColor.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = KGColor.h; sourceTree = "<group>"; };
 		FE064ABC0B8B805000853FBB /* KGColor.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = KGColor.m; sourceTree = "<group>"; };
@@ -1271,7 +1257,6 @@
 		FE267E880B8BCC3C0000DDC0 /* KGImageSource_TIFF.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = KGImageSource_TIFF.m; sourceTree = "<group>"; };
 		FE267E890B8BCC3C0000DDC0 /* KGImageSource.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = KGImageSource.h; sourceTree = "<group>"; };
 		FE267E8A0B8BCC3C0000DDC0 /* KGImageSource.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = KGImageSource.m; sourceTree = "<group>"; };
-		FE267EB30B8BD2690000DDC0 /* CGBitmapContext.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = CGBitmapContext.h; sourceTree = "<group>"; };
 		FE267EB40B8BD2690000DDC0 /* CGBitmapContext.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = CGBitmapContext.m; sourceTree = "<group>"; };
 		FE267EB50B8BD2690000DDC0 /* KGBitmapContext.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = KGBitmapContext.h; sourceTree = "<group>"; };
 		FE267EB60B8BD2690000DDC0 /* KGBitmapContext.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = KGBitmapContext.m; sourceTree = "<group>"; };
@@ -1410,7 +1395,6 @@
 		FE64B8DE0B81239D007EE513 /* KGPDFxrefEntry.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = KGPDFxrefEntry.m; sourceTree = "<group>"; };
 		FE64B8DF0B81239D007EE513 /* KGShading.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = KGShading.h; sourceTree = "<group>"; };
 		FE64B8E00B81239D007EE513 /* KGShading.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = KGShading.m; sourceTree = "<group>"; };
-		FE64B9200B8123F1007EE513 /* CGImage.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = CGImage.h; sourceTree = "<group>"; };
 		FE64B9210B8123F1007EE513 /* CGImage.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = CGImage.m; sourceTree = "<group>"; };
 		FE6DC16A0BA85BEC0082AC66 /* NSOpenGLPixelBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSOpenGLPixelBuffer.h; sourceTree = "<group>"; };
 		FE6DC16B0BA85BEC0082AC66 /* NSOpenGLPixelBuffer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSOpenGLPixelBuffer.m; sourceTree = "<group>"; };
@@ -1418,6 +1402,7 @@
 		FE6DC3DD0BA9A6EB0082AC66 /* NSDatePicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSDatePicker.m; sourceTree = "<group>"; };
 		FE6DC3EE0BA9A7100082AC66 /* NSDatePickerCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSDatePickerCell.h; sourceTree = "<group>"; };
 		FE6DC3EF0BA9A7100082AC66 /* NSDatePickerCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSDatePickerCell.m; sourceTree = "<group>"; };
+		FE6EDE330DB797D9005503A1 /* KGExceptions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGExceptions.h; sourceTree = "<group>"; };
 		FE7247670C06202B007CBC51 /* NSTextList.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSTextList.h; sourceTree = "<group>"; };
 		FE7247680C06202B007CBC51 /* NSTextList.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSTextList.m; sourceTree = "<group>"; };
 		FE7247A40C0622F2007CBC51 /* NSTextAttachmentCell.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSTextAttachmentCell.h; sourceTree = "<group>"; };
@@ -1452,6 +1437,7 @@
 		FEABD5E90CB9CEE40035F828 /* KGLayer_gdi.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = KGLayer_gdi.m; sourceTree = "<group>"; };
 		FEABD6030CB9D0C90035F828 /* KGContext_gdi.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = KGContext_gdi.h; sourceTree = "<group>"; };
 		FEABD6040CB9D0C90035F828 /* KGContext_gdi.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = KGContext_gdi.m; sourceTree = "<group>"; };
+		FECAF4C80DB710EE00BA2A8E /* ApplicationServices.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ApplicationServices.xcodeproj; path = ../ApplicationServices/ApplicationServices.xcodeproj; sourceTree = SOURCE_ROOT; };
 		FED166D40BE502AD00BF9889 /* NSSegment.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSSegment.h; sourceTree = "<group>"; };
 		FED166D50BE502AD00BF9889 /* NSSegment.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSSegment.m; sourceTree = "<group>"; };
 		FED167A40BE57EB300BF9889 /* NSTextBlock.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSTextBlock.h; sourceTree = "<group>"; };
@@ -1466,7 +1452,6 @@
 		FED310E00BCC027200552615 /* NSViewAnimation.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSViewAnimation.m; sourceTree = "<group>"; };
 		FEDF951B0CAF43E7009DC96F /* KGPDFContext.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = KGPDFContext.h; sourceTree = "<group>"; };
 		FEDF951C0CAF43E7009DC96F /* KGPDFContext.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = KGPDFContext.m; sourceTree = "<group>"; };
-		FEEF00570B96441800069FD1 /* CGPDFPage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGPDFPage.h; sourceTree = "<group>"; };
 		FEEF00580B96441800069FD1 /* CGPDFPage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CGPDFPage.m; sourceTree = "<group>"; };
 		FEF2EC330C891E7C001FC5A8 /* NSOpenGLDrawable_gdiView.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSOpenGLDrawable_gdiView.h; sourceTree = "<group>"; };
 		FEF2EC790C8A03CC001FC5A8 /* NSOpenGLDrawable_gdiView.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSOpenGLDrawable_gdiView.m; sourceTree = "<group>"; };
@@ -1490,6 +1475,7 @@
 			isa = PBXGroup;
 			children = (
 				6E46FEBE0A2D2DCF004CD27E /* Foundation.xcodeproj */,
+				FECAF4C80DB710EE00BA2A8E /* ApplicationServices.xcodeproj */,
 				6E2B53240976075200DA0954 /* Classes */,
 				6E2B54DE0976075300DA0954 /* Interfaces */,
 				6E2B54E60976075300DA0954 /* Images */,
@@ -1958,43 +1944,28 @@
 		6E2B55B20976075300DA0954 /* CoreGraphics */ = {
 			isa = PBXGroup;
 			children = (
+				FE6EDE330DB797D9005503A1 /* KGExceptions.h */,
 				FE34FBC60D6F24A5008D2C1A /* KGClipPhase.h */,
 				FE34FBC70D6F24A5008D2C1A /* KGClipPhase.m */,
-				6E2B55CB0976075300DA0954 /* CGAffineTransform.h */,
 				6E2B55B80976075300DA0954 /* CGAffineTransform.m */,
-				FE267EB30B8BD2690000DDC0 /* CGBitmapContext.h */,
 				FE267EB40B8BD2690000DDC0 /* CGBitmapContext.m */,
-				FE064AA90B8B805000853FBB /* CGColor.h */,
 				FE064AAA0B8B805000853FBB /* CGColor.m */,
-				FE064AAB0B8B805000853FBB /* CGColorSpace.h */,
 				FE064AAC0B8B805000853FBB /* CGColorSpace.m */,
-				6E2B55C70976075300DA0954 /* CGContext.h */,
 				6E2B55B40976075300DA0954 /* CGContext.m */,
-				FE064AAD0B8B805000853FBB /* CGDataProvider.h */,
 				FE064AAE0B8B805000853FBB /* CGDataProvider.m */,
 				6E2B55D90976075300DA0954 /* CGEvent.h */,
 				6E2B55C40976075300DA0954 /* CGEvent.m */,
-				6E2B55CD0976075300DA0954 /* CGFont.h */,
 				6E2B55BA0976075300DA0954 /* CGFont.m */,
-				FE064AAF0B8B805000853FBB /* CGFunction.h */,
 				FE064AB00B8B805000853FBB /* CGFunction.m */,
-				6E2B55C90976075300DA0954 /* CGGeometry.h */,
 				6E2B55B60976075300DA0954 /* CGGeometry.m */,
-				FE64B9200B8123F1007EE513 /* CGImage.h */,
 				FE64B9210B8123F1007EE513 /* CGImage.m */,
-				FE064AB30B8B805000853FBB /* CGLayer.h */,
 				FE064AB40B8B805000853FBB /* CGLayer.m */,
-				FE064AB50B8B805000853FBB /* CGPath.h */,
 				FE064AB60B8B805000853FBB /* CGPath.m */,
-				FE064AB70B8B805000853FBB /* CGPattern.h */,
 				FE064AB80B8B805000853FBB /* CGPattern.m */,
-				FEEF00570B96441800069FD1 /* CGPDFPage.h */,
 				FEEF00580B96441800069FD1 /* CGPDFPage.m */,
-				FE064AB90B8B805000853FBB /* CGShading.h */,
 				FE064ABA0B8B805000853FBB /* CGShading.m */,
 				6E2B55D70976075300DA0954 /* CGWindow.h */,
 				6E2B55C20976075300DA0954 /* CGWindow.m */,
-				6E2B55CF0976075300DA0954 /* CoreGraphics.h */,
 				FE267EB50B8BD2690000DDC0 /* KGBitmapContext.h */,
 				FE267EB60B8BD2690000DDC0 /* KGBitmapContext.m */,
 				FE064ABB0B8B805000853FBB /* KGColor.h */,
@@ -2471,6 +2442,14 @@
 			path = NSKeyValueBinding;
 			sourceTree = "<group>";
 		};
+		FECAF4C90DB710EE00BA2A8E /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				FECAF4D10DB710EE00BA2A8E /* ApplicationServices.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		FED166CC0BE5022A00BF9889 /* NSSegmentedControl */ = {
 			isa = PBXGroup;
 			children = (
@@ -2640,11 +2619,6 @@
 				FE01A8920C5D9BCB00AEA51A /* NSEvent_periodic.h in Headers */,
 				FE01A8930C5D9BCB00AEA51A /* NSEvent.h in Headers */,
 				FE01A8940C5D9BCB00AEA51A /* NSEvent_CoreGraphics.h in Headers */,
-				FE01A8950C5D9BCB00AEA51A /* CGContext.h in Headers */,
-				FE01A8960C5D9BCB00AEA51A /* CGGeometry.h in Headers */,
-				FE01A8970C5D9BCB00AEA51A /* CGAffineTransform.h in Headers */,
-				FE01A8980C5D9BCB00AEA51A /* CGFont.h in Headers */,
-				FE01A8990C5D9BCB00AEA51A /* CoreGraphics.h in Headers */,
 				FE01A89A0C5D9BCB00AEA51A /* KGGraphicsState.h in Headers */,
 				FE01A89C0C5D9BCB00AEA51A /* CGWindow.h in Headers */,
 				FE01A89D0C5D9BCB00AEA51A /* CGEvent.h in Headers */,
@@ -2776,15 +2750,6 @@
 				FE01A9200C5D9BCB00AEA51A /* KGPDFxref.h in Headers */,
 				FE01A9210C5D9BCB00AEA51A /* KGPDFxrefEntry.h in Headers */,
 				FE01A9220C5D9BCB00AEA51A /* KGShading.h in Headers */,
-				FE01A9230C5D9BCB00AEA51A /* CGImage.h in Headers */,
-				FE01A9240C5D9BCB00AEA51A /* CGColor.h in Headers */,
-				FE01A9250C5D9BCB00AEA51A /* CGColorSpace.h in Headers */,
-				FE01A9260C5D9BCB00AEA51A /* CGDataProvider.h in Headers */,
-				FE01A9270C5D9BCB00AEA51A /* CGFunction.h in Headers */,
-				FE01A9280C5D9BCB00AEA51A /* CGLayer.h in Headers */,
-				FE01A9290C5D9BCB00AEA51A /* CGPath.h in Headers */,
-				FE01A92A0C5D9BCB00AEA51A /* CGPattern.h in Headers */,
-				FE01A92B0C5D9BCB00AEA51A /* CGShading.h in Headers */,
 				FE01A92C0C5D9BCB00AEA51A /* KGColor.h in Headers */,
 				FE01A92D0C5D9BCB00AEA51A /* KGLayer.h in Headers */,
 				FE01A92E0C5D9BCB00AEA51A /* KGPath.h in Headers */,
@@ -2793,10 +2758,8 @@
 				FE01A9310C5D9BCB00AEA51A /* KGImageSource_PNG.h in Headers */,
 				FE01A9320C5D9BCB00AEA51A /* KGImageSource_TIFF.h in Headers */,
 				FE01A9330C5D9BCB00AEA51A /* KGImageSource.h in Headers */,
-				FE01A9340C5D9BCB00AEA51A /* CGBitmapContext.h in Headers */,
 				FE01A9350C5D9BCB00AEA51A /* KGBitmapContext.h in Headers */,
 				FE01A9360C5D9BCB00AEA51A /* KGMutablePath.h in Headers */,
-				FE01A9370C5D9BCB00AEA51A /* CGPDFPage.h in Headers */,
 				FE01A9380C5D9BCB00AEA51A /* NSOpenGLPixelBuffer.h in Headers */,
 				FE01A9390C5D9BCB00AEA51A /* NSDatePicker.h in Headers */,
 				FE01A93A0C5D9BCB00AEA51A /* NSDatePickerCell.h in Headers */,
@@ -2836,6 +2799,7 @@
 				FE8286800D34727900F7489F /* NSSystemInfoPanel.h in Headers */,
 				FE34FBC80D6F24A5008D2C1A /* KGClipPhase.h in Headers */,
 				FE5C69A10D76039F00098551 /* KGDeviceContext_gdiDIBSection.h in Headers */,
+				FE6EDE340DB797D9005503A1 /* KGExceptions.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2857,6 +2821,7 @@
 			);
 			dependencies = (
 				FE01AACC0C5D9BE700AEA51A /* PBXTargetDependency */,
+				FE6EDEBD0DB7AF94005503A1 /* PBXTargetDependency */,
 			);
 			name = "AppKit-Windows-i386";
 			productInstallPath = /Library/Frameworks;
@@ -2876,6 +2841,10 @@
 			productRefGroup = 6E2B53230976074C00DA0954 /* Products */;
 			projectDirPath = "";
 			projectReferences = (
+				{
+					ProductGroup = FECAF4C90DB710EE00BA2A8E /* Products */;
+					ProjectRef = FECAF4C80DB710EE00BA2A8E /* ApplicationServices.xcodeproj */;
+				},
 				{
 					ProductGroup = 6E46FEBF0A2D2DCF004CD27E /* Products */;
 					ProjectRef = 6E46FEBE0A2D2DCF004CD27E /* Foundation.xcodeproj */;
@@ -2908,6 +2877,13 @@
 			fileType = wrapper.framework;
 			path = Foundation.framework;
 			remoteRef = FE01AAC90C5D9BCC00AEA51A /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FECAF4D10DB710EE00BA2A8E /* ApplicationServices.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = ApplicationServices.framework;
+			remoteRef = FECAF4D00DB710EE00BA2A8E /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		FED70ACA0C3B3FD9000CBE5B /* Foundation.framework */ = {
@@ -3328,6 +3304,11 @@
 			name = "Foundation-Windows-i386";
 			targetProxy = FE01AACB0C5D9BE700AEA51A /* PBXContainerItemProxy */;
 		};
+		FE6EDEBD0DB7AF94005503A1 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "ApplicationServices-Windows-i386";
+			targetProxy = FE6EDEBC0DB7AF94005503A1 /* PBXContainerItemProxy */;
+		};
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
@@ -3427,6 +3408,7 @@
 				INSTALL_PATH = /Developer/Cocotron/1.0/Windows/i386/Frameworks;
 				OTHER_CFLAGS = (
 					"-DAPPKIT_INSIDE_BUILD",
+					"-DCOREGRAPHICS_INSIDE_BUILD",
 					"-D__LITTLE_ENDIAN__",
 					"-Wreturn-type",
 				);

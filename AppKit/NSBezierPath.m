@@ -9,7 +9,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 // Original - Christopher Lloyd <cjwl@objc.net>
 #import <AppKit/NSBezierPath.h>
 #import <AppKit/KGMutablePath.h>
-#import <AppKit/CGContext.h>
+#import <ApplicationServices/CGContext.h>
 #import <AppKit/NSGraphicsContext.h>
 #import <Foundation/NSAffineTransform.h>
 #import <Foundation/NSRaise.h>
@@ -254,11 +254,11 @@ static NSLineJoinStyle _defaultLineJoinStyle=NSMiterLineJoinStyle;
 
 static int numberOfPointsForOperator(int op){
    switch(op){
-    case kCGPathOperatorMoveToPoint: return 1;
-    case kCGPathOperatorLineToPoint: return 1;
-    case kCGPathOperatorCurveToPoint: return 3;
-    case kCGPathOperatorCloseSubpath: return 0;
-    case kCGPathOperatorQuadCurveToPoint: return 2;
+    case kCGPathElementMoveToPoint: return 1;
+    case kCGPathElementAddLineToPoint: return 1;
+    case kCGPathElementAddCurveToPoint: return 3;
+    case kCGPathElementAddQuadCurveToPoint: return 2;
+    case kCGPathElementCloseSubpath: return 0;
    }
    return 0;
 }

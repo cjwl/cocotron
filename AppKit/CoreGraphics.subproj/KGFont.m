@@ -1,8 +1,9 @@
-#import <AppKit/KGFont.h>
+#import "KGFont.h"
 #import "KGPDFArray.h"
-#import <AppKit/KGPDFDictionary.h>
+#import "KGPDFDictionary.h"
 #import "KGPDFContext.h"
-#import <Foundation/NSRaise.h>
+#import "KGExceptions.h"
+#import <Foundation/NSArray.h>
 
 @implementation KGFont
 
@@ -134,8 +135,8 @@ static inline CGGlyphMetrics *fetchGlyphAdvancementIfNeeded(KGFont *self,CGGlyph
    return _size;
 }
 
--(NSRect)boundingRect {
-   NSRect result=_metrics.boundingRect;
+-(CGRect)boundingRect {
+   CGRect result=_metrics.boundingRect;
    
    result.origin.x/=_metrics.emsquare*_metrics.scale;
    result.origin.y/=_metrics.emsquare*_metrics.scale;
@@ -191,8 +192,8 @@ static inline CGGlyphMetrics *fetchGlyphAdvancementIfNeeded(KGFont *self,CGGlyph
    return (info!=NULL)?YES:NO;
 }
 
--(NSSize)advancementForGlyph:(CGGlyph)glyph {
-   NSSize       result=NSMakeSize(0,0);
+-(CGSize)advancementForGlyph:(CGGlyph)glyph {
+   CGSize       result=CGSizeMake(0,0);
    CGGlyphMetrics *info=fetchGlyphAdvancementIfNeeded(self,glyph);
 
    if(info==NULL){
@@ -205,14 +206,14 @@ static inline CGGlyphMetrics *fetchGlyphAdvancementIfNeeded(KGFont *self,CGGlyph
    return result;
 }
 
--(NSSize)maximumAdvancement {
-   NSSize max=NSZeroSize;
+-(CGSize)maximumAdvancement {
+   CGSize max=CGSizeZero;
    int    glyph;
 
    fetchAllGlyphRangesIfNeeded(self);
 
    for(glyph=0;glyph<self->_glyphInfoSet->numberOfGlyphs;glyph++){
-    NSSize advance=[self advancementForGlyph:glyph];
+    CGSize advance=[self advancementForGlyph:glyph];
 
     max.width=MAX(max.width,advance.width);
     max.height=MAX(max.height,advance.height);
@@ -221,10 +222,10 @@ static inline CGGlyphMetrics *fetchGlyphAdvancementIfNeeded(KGFont *self,CGGlyph
    return max;
 }
 
--(NSPoint)positionOfGlyph:(CGGlyph)current precededByGlyph:(CGGlyph)previous isNominal:(BOOL *)isNominalp {
+-(CGPoint)positionOfGlyph:(CGGlyph)current precededByGlyph:(CGGlyph)previous isNominal:(BOOL *)isNominalp {
    CGGlyphMetrics *previousInfo;
    CGGlyphMetrics *currentInfo;
-   NSPoint      result=NSMakePoint(0,0);
+   CGPoint      result=CGPointMake(0,0);
 
    previousInfo=fetchGlyphAdvancementIfNeeded(self,previous);
    currentInfo=fetchGlyphAdvancementIfNeeded(self,current);
@@ -297,7 +298,7 @@ static inline CGGlyphMetrics *fetchGlyphAdvancementIfNeeded(KGFont *self,CGGlyph
    [self getGlyphs:glyphs forCharacters:characters length:length];
 }
 
--(void)getAdvancements:(NSSize *)advancements forGlyphs:(const CGGlyph *)glyphs count:(unsigned)count {
+-(void)getAdvancements:(CGSize *)advancements forGlyphs:(const CGGlyph *)glyphs count:(unsigned)count {
    int i;
    
    for(i=0;i<count;i++){
@@ -315,8 +316,8 @@ static inline CGGlyphMetrics *fetchGlyphAdvancementIfNeeded(KGFont *self,CGGlyph
    }
 }
 
--(NSSize)advancementForNominalGlyphs:(const CGGlyph *)glyphs count:(unsigned)count {
-   NSSize result=NSMakeSize(0,0);
+-(CGSize)advancementForNominalGlyphs:(const CGGlyph *)glyphs count:(unsigned)count {
+   CGSize result=CGSizeMake(0,0);
    int i;
    
    for(i=0;i<count;i++){
@@ -337,7 +338,7 @@ static inline CGGlyphMetrics *fetchGlyphAdvancementIfNeeded(KGFont *self,CGGlyph
    KGPDFArray   *result=[KGPDFArray pdfArray];
    unsigned char bytes[256];
    CGGlyph       glyphs[256];
-   NSSize        advancements[256];
+   CGSize        advancements[256];
    int           i;
    
    for(i=0;i<256;i++)
@@ -409,23 +410,23 @@ static inline CGGlyphMetrics *fetchGlyphAdvancementIfNeeded(KGFont *self,CGGlyph
 }
 
 -(void)fetchMetrics {
-   NSInvalidAbstractInvocation();
+   KGInvalidAbstractInvocation();
 }
 
 -(void)loadGlyphRangeTable {
-   NSInvalidAbstractInvocation();
+   KGInvalidAbstractInvocation();
 }
 
 -(void)fetchGlyphKerning {
-   NSInvalidAbstractInvocation();
+   KGInvalidAbstractInvocation();
 }
 
 -(void)fetchAdvancementsForGlyph:(CGGlyph)glyph {
-   NSInvalidAbstractInvocation();
+   KGInvalidAbstractInvocation();
 }
 
 -(void)appendCubicOutlinesToPath:(KGMutablePath *)path glyphs:(CGGlyph *)glyphs length:(unsigned)length {
-   NSInvalidAbstractInvocation();
+   KGInvalidAbstractInvocation();
 }
 
 @end

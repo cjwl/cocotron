@@ -8,6 +8,23 @@
 
 /* Begin PBXBuildFile section */
 		FE01AAE60C5D9BF900AEA51A /* ApplicationServices.h in Headers */ = {isa = PBXBuildFile; fileRef = FE32179C0BB41C65004F000A /* ApplicationServices.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FECAF4E90DB7110900BA2A8E /* CGAffineTransform.h in Headers */ = {isa = PBXBuildFile; fileRef = FECAF4DA0DB7110900BA2A8E /* CGAffineTransform.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FECAF4EA0DB7110900BA2A8E /* CGBitmapContext.h in Headers */ = {isa = PBXBuildFile; fileRef = FECAF4DB0DB7110900BA2A8E /* CGBitmapContext.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FECAF4EB0DB7110900BA2A8E /* CGColor.h in Headers */ = {isa = PBXBuildFile; fileRef = FECAF4DC0DB7110900BA2A8E /* CGColor.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FECAF4EC0DB7110900BA2A8E /* CGColorSpace.h in Headers */ = {isa = PBXBuildFile; fileRef = FECAF4DD0DB7110900BA2A8E /* CGColorSpace.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FECAF4ED0DB7110900BA2A8E /* CGContext.h in Headers */ = {isa = PBXBuildFile; fileRef = FECAF4DE0DB7110900BA2A8E /* CGContext.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FECAF4EE0DB7110900BA2A8E /* CGDataProvider.h in Headers */ = {isa = PBXBuildFile; fileRef = FECAF4DF0DB7110900BA2A8E /* CGDataProvider.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FECAF4EF0DB7110900BA2A8E /* CGFont.h in Headers */ = {isa = PBXBuildFile; fileRef = FECAF4E00DB7110900BA2A8E /* CGFont.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FECAF4F00DB7110900BA2A8E /* CGFunction.h in Headers */ = {isa = PBXBuildFile; fileRef = FECAF4E10DB7110900BA2A8E /* CGFunction.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FECAF4F10DB7110900BA2A8E /* CGGeometry.h in Headers */ = {isa = PBXBuildFile; fileRef = FECAF4E20DB7110900BA2A8E /* CGGeometry.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FECAF4F20DB7110900BA2A8E /* CGImage.h in Headers */ = {isa = PBXBuildFile; fileRef = FECAF4E30DB7110900BA2A8E /* CGImage.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FECAF4F30DB7110900BA2A8E /* CGLayer.h in Headers */ = {isa = PBXBuildFile; fileRef = FECAF4E40DB7110900BA2A8E /* CGLayer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FECAF4F40DB7110900BA2A8E /* CGPath.h in Headers */ = {isa = PBXBuildFile; fileRef = FECAF4E50DB7110900BA2A8E /* CGPath.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FECAF4F50DB7110900BA2A8E /* CGPattern.h in Headers */ = {isa = PBXBuildFile; fileRef = FECAF4E60DB7110900BA2A8E /* CGPattern.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FECAF4F60DB7110900BA2A8E /* CGShading.h in Headers */ = {isa = PBXBuildFile; fileRef = FECAF4E70DB7110900BA2A8E /* CGShading.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FECAF4F70DB7110900BA2A8E /* CoreGraphics.h in Headers */ = {isa = PBXBuildFile; fileRef = FECAF4E80DB7110900BA2A8E /* CoreGraphics.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FECAF5160DB711BC00BA2A8E /* CoreGraphicsExport.h in Headers */ = {isa = PBXBuildFile; fileRef = FECAF5150DB711BC00BA2A8E /* CoreGraphicsExport.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FECAF52E0DB7134F00BA2A8E /* CGPDFPage.h in Headers */ = {isa = PBXBuildFile; fileRef = FECAF52D0DB7134F00BA2A8E /* CGPDFPage.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
@@ -22,19 +39,40 @@
 /* End PBXBuildRule section */
 
 /* Begin PBXContainerItemProxy section */
-		FE01AAF20C5D9C1500AEA51A /* PBXContainerItemProxy */ = {
+		FECAF50A0DB7119B00BA2A8E /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = FE3217E10BB41D2D004F000A /* AppKit.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = FE01A8070C5D9BCB00AEA51A;
-			remoteInfo = "AppKit-Windows-i386";
-		};
-		FE3217E50BB41D2D004F000A /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = FE3217E10BB41D2D004F000A /* AppKit.xcodeproj */;
+			containerPortal = FECAF5010DB7119B00BA2A8E /* Foundation.xcodeproj */;
 			proxyType = 2;
-			remoteGlobalIDString = 6E2B53220976074C00DA0954;
-			remoteInfo = "AppKit-Windows-i386";
+			remoteGlobalIDString = FE01A7EC0C5D9B6900AEA51A;
+			remoteInfo = "Foundation-Windows-i386";
+		};
+		FECAF50C0DB7119B00BA2A8E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FECAF5010DB7119B00BA2A8E /* Foundation.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 6EA04A7709E57D5F0067589C;
+			remoteInfo = "Foundation-Linux-i386";
+		};
+		FECAF50E0DB7119B00BA2A8E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FECAF5010DB7119B00BA2A8E /* Foundation.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 6E4D932B0A2642BD003D335C;
+			remoteInfo = "Foundation-Solaris-sparc";
+		};
+		FECAF5100DB7119B00BA2A8E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FECAF5010DB7119B00BA2A8E /* Foundation.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = FED70A6B0C3B3D2C000CBE5B;
+			remoteInfo = "Foundation-Darwin-i386";
+		};
+		FECAF5120DB7119B00BA2A8E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FECAF5010DB7119B00BA2A8E /* Foundation.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = FED70FB70C3C09C7000CBE5B;
+			remoteInfo = "Foundation-Darwin-ppc";
 		};
 /* End PBXContainerItemProxy section */
 
@@ -44,7 +82,24 @@
 		8DC2EF5A0486A6940098B216 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		FE01AAED0C5D9BF900AEA51A /* ApplicationServices.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ApplicationServices.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FE32179C0BB41C65004F000A /* ApplicationServices.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = ApplicationServices.h; sourceTree = "<group>"; };
-		FE3217E10BB41D2D004F000A /* AppKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AppKit.xcodeproj; path = ../AppKit/AppKit.xcodeproj; sourceTree = SOURCE_ROOT; };
+		FECAF4DA0DB7110900BA2A8E /* CGAffineTransform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGAffineTransform.h; sourceTree = "<group>"; };
+		FECAF4DB0DB7110900BA2A8E /* CGBitmapContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGBitmapContext.h; sourceTree = "<group>"; };
+		FECAF4DC0DB7110900BA2A8E /* CGColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGColor.h; sourceTree = "<group>"; };
+		FECAF4DD0DB7110900BA2A8E /* CGColorSpace.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGColorSpace.h; sourceTree = "<group>"; };
+		FECAF4DE0DB7110900BA2A8E /* CGContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGContext.h; sourceTree = "<group>"; };
+		FECAF4DF0DB7110900BA2A8E /* CGDataProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGDataProvider.h; sourceTree = "<group>"; };
+		FECAF4E00DB7110900BA2A8E /* CGFont.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGFont.h; sourceTree = "<group>"; };
+		FECAF4E10DB7110900BA2A8E /* CGFunction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGFunction.h; sourceTree = "<group>"; };
+		FECAF4E20DB7110900BA2A8E /* CGGeometry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGGeometry.h; sourceTree = "<group>"; };
+		FECAF4E30DB7110900BA2A8E /* CGImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGImage.h; sourceTree = "<group>"; };
+		FECAF4E40DB7110900BA2A8E /* CGLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGLayer.h; sourceTree = "<group>"; };
+		FECAF4E50DB7110900BA2A8E /* CGPath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGPath.h; sourceTree = "<group>"; };
+		FECAF4E60DB7110900BA2A8E /* CGPattern.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGPattern.h; sourceTree = "<group>"; };
+		FECAF4E70DB7110900BA2A8E /* CGShading.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGShading.h; sourceTree = "<group>"; };
+		FECAF4E80DB7110900BA2A8E /* CoreGraphics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreGraphics.h; sourceTree = "<group>"; };
+		FECAF5010DB7119B00BA2A8E /* Foundation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Foundation.xcodeproj; path = ../Foundation/Foundation.xcodeproj; sourceTree = SOURCE_ROOT; };
+		FECAF5150DB711BC00BA2A8E /* CoreGraphicsExport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreGraphicsExport.h; sourceTree = "<group>"; };
+		FECAF52D0DB7134F00BA2A8E /* CGPDFPage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGPDFPage.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -69,7 +124,24 @@
 		0867D691FE84028FC02AAC07 /* ApplicationServices */ = {
 			isa = PBXGroup;
 			children = (
-				FE3217E10BB41D2D004F000A /* AppKit.xcodeproj */,
+				FECAF52D0DB7134F00BA2A8E /* CGPDFPage.h */,
+				FECAF5150DB711BC00BA2A8E /* CoreGraphicsExport.h */,
+				FECAF5010DB7119B00BA2A8E /* Foundation.xcodeproj */,
+				FECAF4DA0DB7110900BA2A8E /* CGAffineTransform.h */,
+				FECAF4DB0DB7110900BA2A8E /* CGBitmapContext.h */,
+				FECAF4DC0DB7110900BA2A8E /* CGColor.h */,
+				FECAF4DD0DB7110900BA2A8E /* CGColorSpace.h */,
+				FECAF4DE0DB7110900BA2A8E /* CGContext.h */,
+				FECAF4DF0DB7110900BA2A8E /* CGDataProvider.h */,
+				FECAF4E00DB7110900BA2A8E /* CGFont.h */,
+				FECAF4E10DB7110900BA2A8E /* CGFunction.h */,
+				FECAF4E20DB7110900BA2A8E /* CGGeometry.h */,
+				FECAF4E30DB7110900BA2A8E /* CGImage.h */,
+				FECAF4E40DB7110900BA2A8E /* CGLayer.h */,
+				FECAF4E50DB7110900BA2A8E /* CGPath.h */,
+				FECAF4E60DB7110900BA2A8E /* CGPattern.h */,
+				FECAF4E70DB7110900BA2A8E /* CGShading.h */,
+				FECAF4E80DB7110900BA2A8E /* CoreGraphics.h */,
 				08FB77AEFE84172EC02AAC07 /* Classes */,
 				32C88DFF0371C24200C91783 /* Other Sources */,
 				089C1665FE841158C02AAC07 /* Resources */,
@@ -127,10 +199,14 @@
 			name = "Other Sources";
 			sourceTree = "<group>";
 		};
-		FE3217E20BB41D2D004F000A /* Products */ = {
+		FECAF5020DB7119B00BA2A8E /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				FE3217E60BB41D2D004F000A /* AppKit.framework */,
+				FECAF50B0DB7119B00BA2A8E /* Foundation.framework */,
+				FECAF50D0DB7119B00BA2A8E /* Foundation.framework */,
+				FECAF50F0DB7119B00BA2A8E /* Foundation.framework */,
+				FECAF5110DB7119B00BA2A8E /* Foundation.framework */,
+				FECAF5130DB7119B00BA2A8E /* Foundation.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -143,6 +219,23 @@
 			buildActionMask = 2147483647;
 			files = (
 				FE01AAE60C5D9BF900AEA51A /* ApplicationServices.h in Headers */,
+				FECAF4E90DB7110900BA2A8E /* CGAffineTransform.h in Headers */,
+				FECAF4EA0DB7110900BA2A8E /* CGBitmapContext.h in Headers */,
+				FECAF4EB0DB7110900BA2A8E /* CGColor.h in Headers */,
+				FECAF4EC0DB7110900BA2A8E /* CGColorSpace.h in Headers */,
+				FECAF4ED0DB7110900BA2A8E /* CGContext.h in Headers */,
+				FECAF4EE0DB7110900BA2A8E /* CGDataProvider.h in Headers */,
+				FECAF4EF0DB7110900BA2A8E /* CGFont.h in Headers */,
+				FECAF4F00DB7110900BA2A8E /* CGFunction.h in Headers */,
+				FECAF4F10DB7110900BA2A8E /* CGGeometry.h in Headers */,
+				FECAF4F20DB7110900BA2A8E /* CGImage.h in Headers */,
+				FECAF4F30DB7110900BA2A8E /* CGLayer.h in Headers */,
+				FECAF4F40DB7110900BA2A8E /* CGPath.h in Headers */,
+				FECAF4F50DB7110900BA2A8E /* CGPattern.h in Headers */,
+				FECAF4F60DB7110900BA2A8E /* CGShading.h in Headers */,
+				FECAF4F70DB7110900BA2A8E /* CoreGraphics.h in Headers */,
+				FECAF5160DB711BC00BA2A8E /* CoreGraphicsExport.h in Headers */,
+				FECAF52E0DB7134F00BA2A8E /* CGPDFPage.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -162,7 +255,6 @@
 				FE01AAEA0C5D9BF900AEA51A /* PBXBuildRule */,
 			);
 			dependencies = (
-				FE01AAF30C5D9C1500AEA51A /* PBXTargetDependency */,
 			);
 			name = "ApplicationServices-Windows-i386";
 			productInstallPath = "$(HOME)/Library/Frameworks";
@@ -176,16 +268,18 @@
 		0867D690FE84028FC02AAC07 /* Project object */ = {
 			isa = PBXProject;
 			buildConfigurationList = 1DEB91B108733DA50010E9CD /* Build configuration list for PBXProject "ApplicationServices" */;
+			compatibilityVersion = "Xcode 2.4";
 			hasScannedForEncodings = 1;
 			mainGroup = 0867D691FE84028FC02AAC07 /* ApplicationServices */;
 			productRefGroup = 034768DFFF38A50411DB9C8B /* Products */;
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = FE3217E20BB41D2D004F000A /* Products */;
-					ProjectRef = FE3217E10BB41D2D004F000A /* AppKit.xcodeproj */;
+					ProductGroup = FECAF5020DB7119B00BA2A8E /* Products */;
+					ProjectRef = FECAF5010DB7119B00BA2A8E /* Foundation.xcodeproj */;
 				},
 			);
+			projectRoot = "";
 			targets = (
 				FE01AAE20C5D9BF900AEA51A /* ApplicationServices-Windows-i386 */,
 			);
@@ -193,11 +287,39 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		FE3217E60BB41D2D004F000A /* AppKit.framework */ = {
+		FECAF50B0DB7119B00BA2A8E /* Foundation.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
-			path = AppKit.framework;
-			remoteRef = FE3217E50BB41D2D004F000A /* PBXContainerItemProxy */;
+			path = Foundation.framework;
+			remoteRef = FECAF50A0DB7119B00BA2A8E /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FECAF50D0DB7119B00BA2A8E /* Foundation.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Foundation.framework;
+			remoteRef = FECAF50C0DB7119B00BA2A8E /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FECAF50F0DB7119B00BA2A8E /* Foundation.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Foundation.framework;
+			remoteRef = FECAF50E0DB7119B00BA2A8E /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FECAF5110DB7119B00BA2A8E /* Foundation.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Foundation.framework;
+			remoteRef = FECAF5100DB7119B00BA2A8E /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FECAF5130DB7119B00BA2A8E /* Foundation.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Foundation.framework;
+			remoteRef = FECAF5120DB7119B00BA2A8E /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -221,14 +343,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		FE01AAF30C5D9C1500AEA51A /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = "AppKit-Windows-i386";
-			targetProxy = FE01AAF20C5D9C1500AEA51A /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		1DEB91B308733DA50010E9CD /* Release */ = {

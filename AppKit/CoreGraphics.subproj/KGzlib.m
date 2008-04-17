@@ -226,7 +226,6 @@ static int parse_huffman_block(KGFlateDecode *inflate) {
          expand(inflate,1);
          inflate->outBytes[inflate->outPosition++] = z;
       } else {
-      unsigned char *p;
          int len,dist;
          
          if (z == 256)

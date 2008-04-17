@@ -1,5 +1,6 @@
-#import <Foundation/NSObject.h>
-#import <AppKit/CGFont.h>
+#import <Foundation/NSString.h>
+#import <Foundation/NSGeometry.h>
+#import <ApplicationServices/ApplicationServices.h>
 
 @class KGPDFObject,KGPDFContext,KGMutablePath;
 
@@ -10,7 +11,7 @@ enum {
 typedef struct CGFontMetrics {
    float  emsquare;
    float  scale;
-   NSRect boundingRect;
+   CGRect boundingRect;
    float  ascender;
    float  descender;
    float  leading;
@@ -68,7 +69,7 @@ typedef struct CGGlyphMetricsSet {
 -(float)pointSize;
 -(float)nominalSize;
 
--(NSRect)boundingRect;
+-(CGRect)boundingRect;
 -(float)ascender;
 -(float)descender;
 -(float)leading;
@@ -82,19 +83,19 @@ typedef struct CGGlyphMetricsSet {
 
 -(unsigned)numberOfGlyphs;
 -(BOOL)glyphIsEncoded:(CGGlyph)glyph;
--(NSSize)advancementForGlyph:(CGGlyph)glyph;
--(NSSize)maximumAdvancement;
+-(CGSize)advancementForGlyph:(CGGlyph)glyph;
+-(CGSize)maximumAdvancement;
 
--(NSPoint)positionOfGlyph:(CGGlyph)current precededByGlyph:(CGGlyph)previous isNominal:(BOOL *)isNominalp;
+-(CGPoint)positionOfGlyph:(CGGlyph)current precededByGlyph:(CGGlyph)previous isNominal:(BOOL *)isNominalp;
 
 -(void)getGlyphs:(CGGlyph *)glyphs forCharacters:(const unichar *)characters length:(unsigned)length;
 -(void)getCharacters:(unichar *)characters forGlyphs:(const CGGlyph *)glyphs length:(unsigned)length;
 -(void)getBytes:(unsigned char *)bytes forGlyphs:(const CGGlyph *)glyphs length:(unsigned)length;
 -(void)getGlyphs:(CGGlyph *)glyphs forBytes:(const unsigned char *)bytes length:(unsigned)length;
 
--(void)getAdvancements:(NSSize *)advancements forGlyphs:(const CGGlyph *)glyphs count:(unsigned)count;
+-(void)getAdvancements:(CGSize *)advancements forGlyphs:(const CGGlyph *)glyphs count:(unsigned)count;
 
--(NSSize)advancementForNominalGlyphs:(const CGGlyph *)glyphs count:(unsigned)count;
+-(CGSize)advancementForNominalGlyphs:(const CGGlyph *)glyphs count:(unsigned)count;
 
 -(KGPDFObject *)encodeReferenceWithContext:(KGPDFContext *)context;
 

@@ -23,7 +23,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)drawPath:(CGPathRef)path drawingMode:(CGPathDrawingMode)drawingMode blendMode:(CGBlendMode)blendMode interpolationQuality:(CGInterpolationQuality)interpolationQuality fillColor:(CGColorRef)fillColor strokeColor:(CGColorRef)strokeColor 
-lineWidth:(float)lineWidth lineCap:(CGLineCap)lineCap lineJoin:(CGLineJoin)lineJoin miterLimit:(float)miterLimit dashPhase:(float)dashPhase dashLengthsCount:(unsigned)dashLengthsCount dashLengths:(float *)dashLengths transform:(CGAffineTransform)xform antialias:(BOOL)antialias {
+lineWidth:(float)lineWidth lineCap:(CGLineCap)lineCap lineJoin:(CGLineJoin)lineJoin miterLimit:(float)miterLimit dashPhase:(float)dashPhase dashLengthsCount:(unsigned)dashLengthsCount dashLengths:(float *)dashLengths  flatness:(float)flatness transform:(CGAffineTransform)xform antialias:(BOOL)antialias {
    CGContextSaveGState(_context);
    CGContextConcatCTM(_context,xform);
    CGContextSetShouldAntialias(_context,antialias);
@@ -35,6 +35,7 @@ lineWidth:(float)lineWidth lineCap:(CGLineCap)lineCap lineJoin:(CGLineJoin)lineJ
    CGContextSetLineJoin(_context,lineJoin);
    CGContextSetMiterLimit(_context,miterLimit);
    CGContextSetLineDash(_context,dashPhase,dashLengths,dashLengthsCount);
+   CGContextSetFlatness(_context,flatness);
    CGContextBeginPath(_context);
    CGContextAddPath(_context,path);
    

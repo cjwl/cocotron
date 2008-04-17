@@ -8,34 +8,32 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/NSObject.h>
 #import <Foundation/NSGeometry.h>
-#import <AppKit/CGAffineTransform.h>
-#import <AppKit/CGPath.h>
-#import <AppKit/CGContext.h>
+#import <ApplicationServices/ApplicationServices.h>
 
 @interface KGPath : NSObject <NSCopying,NSMutableCopying> {
    unsigned       _numberOfOperators;
    unsigned char *_operators;
    unsigned       _numberOfPoints;
-   NSPoint       *_points;
+   CGPoint       *_points;
 }
 
--initWithOperators:(unsigned char *)operators numberOfOperators:(unsigned)numberOfOperators points:(NSPoint *)points numberOfPoints:(unsigned)numberOfPoints;
+-initWithOperators:(unsigned char *)operators numberOfOperators:(unsigned)numberOfOperators points:(CGPoint *)points numberOfPoints:(unsigned)numberOfPoints;
 
 -(unsigned)numberOfOperators;
 -(const unsigned char *)operators;
 
 -(unsigned)numberOfPoints;
--(const NSPoint *)points;
+-(const CGPoint *)points;
 
--(NSPoint)currentPoint;
+-(CGPoint)currentPoint;
 
 -(BOOL)isEqualToPath:(KGPath *)other;
 
 -(BOOL)isEmpty;
 -(BOOL)isRect:(CGRect *)rect;
 
--(BOOL)containsPoint:(NSPoint)point evenOdd:(BOOL)evenOdd withTransform:(CGAffineTransform *)matrix;
+-(BOOL)containsPoint:(CGPoint)point evenOdd:(BOOL)evenOdd withTransform:(CGAffineTransform *)matrix;
 
--(NSRect)boundingBox;
+-(CGRect)boundingBox;
 
 @end

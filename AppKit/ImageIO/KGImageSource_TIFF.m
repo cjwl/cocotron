@@ -8,9 +8,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import "KGImageSource_TIFF.h"
 #import "NSTIFFReader.h"
-#import <AppKit/CGDataProvider.h>
-#import <AppKit/CGColorSpace.h>
-#import <AppKit/CGImage.h>
+#import <ApplicationServices/CGDataProvider.h>
+#import <ApplicationServices/CGColorSpace.h>
+#import <ApplicationServices/CGImage.h>
 
 @implementation KGImageSource_TIFF
 

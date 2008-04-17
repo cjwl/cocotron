@@ -23,7 +23,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSParagraphStyle.h>
 #import <AppKit/NSColor.h>
 #import <AppKit/NSGraphics.h>
-#import <AppKit/CGContext.h>
+#import <ApplicationServices/CGContext.h>
 #import <Foundation/NSRangeEntries.h>
 #import <AppKit/NSNibKeyedUnarchiver.h>
 

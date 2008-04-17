@@ -10,7 +10,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSColor_cmykDevice.h>
 #import <AppKit/NSGraphics.h>
 #import <AppKit/NSGraphicsContextFunctions.h>
-#import <AppKit/CoreGraphics.h>
+#import <ApplicationServices/ApplicationServices.h>
 
 @implementation NSColor_cmykDevice
 

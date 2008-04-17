@@ -695,13 +695,6 @@ static BOOL initFunctionsForParameters(VGImage *self,size_t bitsPerComponent,siz
    
 }
 
-static void premultiplySpan(KGRGBA *span,int length){
-   int i;
-      
-   for(i=0;i<length;i++)
-    span[i]=KGRGBAPremultiply(span[i]);
-}
-
 //clamp premultiplied color to alpha to enforce consistency
 static void clampPremultipliedSpan(KGRGBA *span,int length){
    int i;
@@ -717,7 +710,7 @@ VGImage *VGImageAlloc() {
    return (VGImage *)NSZoneCalloc(NULL,1,sizeof(VGImage));
 }
 
-VGImage *VGImageInit(VGImage *self,size_t width, size_t height,size_t bitsPerComponent,size_t bitsPerPixel,NSString *colorSpaceName,CGBitmapInfo bitmapInfo,VGImageFormat imageFormat){	//throws bad_alloc
+VGImage *VGImageInit(VGImage *self,size_t width, size_t height,size_t bitsPerComponent,size_t bitsPerPixel,NSString *colorSpaceName,CGBitmapInfo bitmapInfo,VGImageFormat imageFormat){
 	self->_width=width;
 	self->_height=height;
     self->_bitsPerComponent=bitsPerComponent;
@@ -760,7 +753,7 @@ VGImage *VGImageInit(VGImage *self,size_t width, size_t height,size_t bitsPerCom
     return self;
 }
 
-VGImage *VGImageInitWithBytes(VGImage *self,size_t width,size_t height,size_t bitsPerComponent,size_t bitsPerPixel,size_t bytesPerRow,NSString *colorSpaceName,CGBitmapInfo bitmapInfo,VGImageFormat imageFormat,RIuint8* data) {	//throws bad_alloc
+VGImage *VGImageInitWithBytes(VGImage *self,size_t width,size_t height,size_t bitsPerComponent,size_t bitsPerPixel,size_t bytesPerRow,NSString *colorSpaceName,CGBitmapInfo bitmapInfo,VGImageFormat imageFormat,RIuint8* data) {
 	self->_width=width;
 	self->_height=height;
     self->_bitsPerComponent=bitsPerComponent;
@@ -1247,7 +1240,7 @@ KGRGBA inline VGImageReadRGBA(VGImage *self,int x, int y) {
    return span;
 }
 
-VGColorInternalFormat VGImageReadPremultipliedPixelSpan(VGImage *self,int x,int y,KGRGBA *span,int length) {
+VGColorInternalFormat VGImageReadPremultipliedSpan_ffff(VGImage *self,int x,int y,KGRGBA *span,int length) {
    self->_readSpan(self,x,y,span,length);
    
    
@@ -1267,15 +1260,6 @@ VGColorInternalFormat VGImageReadPremultipliedPixelSpan(VGImage *self,int x,int 
 * \note		
 *//*-------------------------------------------------------------------*/
 
-
-static void convertSpan(KGRGBA *span,int length,VGColorInternalFormat fromFormat,VGColorInternalFormat toFormat){
-   if(fromFormat!=toFormat){
-    int i;
-   
-    for(i=0;i<length;i++)
-     span[i]=KGRGBAFromColor(VGColorConvert(VGColorFromKGRGBA(span[i],fromFormat),toFormat));
-   }
-}
 
 void VGImageWritePixelSpan(VGImage *self,int x,int y,KGRGBA *span,int length,VGColorInternalFormat format) {   
    if(length==0)
@@ -1441,7 +1425,7 @@ void VGImageWriteMaskPixel(VGImage *self,int x, int y, RIfloat m)	//can write on
 * \note		
 *//*-------------------------------------------------------------------*/
 
-void VGImageReadTexelTileFill(VGImage *self,int u, int v, KGRGBA *span,int length,int level, KGRGBA tileFillColor){
+VGImage *VGImageMipMapForLevel(VGImage *self,int level){
 	VGImage* image = self;
     
 	if( level > 0 ){
@@ -1449,59 +1433,34 @@ void VGImageReadTexelTileFill(VGImage *self,int u, int v, KGRGBA *span,int lengt
 		image = self->_mipmaps[level-1];
 	}
 	RI_ASSERT(image);
+    return image;
+}
 
+/* Theoretically the edges of the polygon fill used to draw resampled images would
+   perfectly fit the edges of the raster image, however, numerical error will probably
+   place some sampled pixels outside the image. Two good choices are to use the edge value
+   or zero. This uses the edge value.  I don't know what Apple does.
+ */
+void VGImageReadTexelTilePad(VGImage *self,int u, int v, KGRGBA *span,int length){
    int i;
 
- 	KGRGBA p;
-   for(i=0;i<length;i++,u++){
-		if(u < 0 || v < 0 || u >= image->_width || v >= image->_height)
-			p = tileFillColor;
-		else
-			p = VGImageReadRGBA(image,u, v);
-	span[i]=KGRGBAPremultiply(p);
+   v = RI_INT_CLAMP(v,0,self->_height-1);
+   
+   for(i=0;i<length && u<0;u++,i++)
+    span[i]=VGImageReadRGBA(self,0,v);
+
+   int chunk=RI_MIN(length-i,self->_width-u);
+   self->_readSpan(self,u,v,span+i,chunk);
+   i+=chunk;
+   u+=chunk;
+
+   for(;i<length;i++)
+    span[i]=VGImageReadRGBA(self,self->_width-1,v);
+
+   if(self->_clampExternalPixels)
+    clampPremultipliedSpan(span,length); // We don't need to do this for internally generated images (context)
 }
-	}
 
-void VGImageReadTexelTilePad(VGImage *self,int u, int v, KGRGBA *span,int length,int level, KGRGBA tileFillColor){
-	VGImage* image = self;
-    
-	if( level > 0 ){
-		RI_ASSERT(level <= self->_mipmapsCount);
-		image = self->_mipmaps[level-1];
-	}
-	RI_ASSERT(image);
-
-   int i;
-
- 	KGRGBA p;
-   for(i=0;i<length;i++,u++){
-		u = RI_INT_MIN(RI_INT_MAX(u,0),image->_width-1);
-		v = RI_INT_MIN(RI_INT_MAX(v,0),image->_height-1);
-		p = VGImageReadRGBA(image,u, v);
-	span[i]=KGRGBAPremultiply(p);
-}
-	}
-
-void VGImageReadTexelTileRepeat(VGImage *self,int u, int v, KGRGBA *span,int length,int level, KGRGBA tileFillColor){
-	VGImage* image = self;
-    
-	if( level > 0 ){
-		RI_ASSERT(level <= self->_mipmapsCount);
-		image = self->_mipmaps[level-1];
-	}
-	RI_ASSERT(image);
-
-   int i;
-
- 	KGRGBA p;
-   for(i=0;i<length;i++,u++){
-		u = RI_INT_MOD(u, image->_width);
-		v = RI_INT_MOD(v, image->_height);
-		p = VGImageReadRGBA(image,u, v);
-	span[i]=KGRGBAPremultiply(p);
-}
-	}
-    
 /*-------------------------------------------------------------------*//*!
 * \brief	Maps point (x,y) to an image and returns a filtered,
 *			premultiplied color value.
@@ -1540,7 +1499,7 @@ static inline float fastExp(float value){
    return table[(int)(-value*2)];
 }
 
-void VGImageResample_EWAOnMipmaps(VGImage *self,RIfloat x, RIfloat y,KGRGBA *span,int length, Matrix3x3 surfaceToImage, CGInterpolationQuality quality, VGImageReadTexelTileSpan tilingFunction, KGRGBA tileFillColor){	//EWA on mipmaps
+VGColorInternalFormat VGImageResample_EWAOnMipmaps(VGImage *self,RIfloat x, RIfloat y,KGRGBA *span,int length, Matrix3x3 surfaceToImage){
 // Visual test indicates this is very close to what Apple is using 
    int i;
    		RIfloat m_pixelFilterRadius = 1.25f;
@@ -1548,18 +1507,16 @@ void VGImageResample_EWAOnMipmaps(VGImage *self,RIfloat x, RIfloat y,KGRGBA *spa
 
    VGImageMakeMipMaps(self);
    
-   for(i=0;i<length;i++,x++){
-	Vector3 uvw=Vector3Make(x+0.5,y+0.5,1);
-	RIfloat oow = 1.0f / uvw.z;
-	uvw=Vector3MultiplyByFloat(Matrix3x3MultiplyVector3(surfaceToImage ,uvw),oow);
+   Vector3 uvw=Vector3Make(0,0,1);
+   uvw=Matrix3x3MultiplyVector3(surfaceToImage ,uvw);
+   RIfloat oow = 1.0f / uvw.z;
+   RIfloat VxPRE = (surfaceToImage.matrix[1][0] - uvw.y * surfaceToImage.matrix[2][0]) * oow * m_pixelFilterRadius;
+   RIfloat VyPRE = (surfaceToImage.matrix[1][1] - uvw.y * surfaceToImage.matrix[2][1]) * oow * m_pixelFilterRadius;
    
-
 		RIfloat Ux = (surfaceToImage.matrix[0][0] - uvw.x * surfaceToImage.matrix[2][0]) * oow * m_pixelFilterRadius;
-		RIfloat Vx = (surfaceToImage.matrix[1][0] - uvw.y * surfaceToImage.matrix[2][0]) * oow * m_pixelFilterRadius;
+		RIfloat Vx = VxPRE;
 		RIfloat Uy = (surfaceToImage.matrix[0][1] - uvw.x * surfaceToImage.matrix[2][1]) * oow * m_pixelFilterRadius;
-		RIfloat Vy = (surfaceToImage.matrix[1][1] - uvw.y * surfaceToImage.matrix[2][1]) * oow * m_pixelFilterRadius;
-		RIfloat U0 = uvw.x;
-		RIfloat V0 = uvw.y;
+		RIfloat Vy = VyPRE;
 
 		//calculate mip level
 		int level = 0;
@@ -1579,6 +1536,20 @@ void VGImageResample_EWAOnMipmaps(VGImage *self,RIfloat x, RIfloat y,KGRGBA *spa
 			sx = (RIfloat)self->_mipmaps[level-1]->_width / (RIfloat)self->_width;
 			sy = (RIfloat)self->_mipmaps[level-1]->_height / (RIfloat)self->_height;
 		}
+        VGImage *mipmap=VGImageMipMapForLevel(self,level);
+
+   for(i=0;i<length;i++,x++){
+    uvw=Vector3Make(x+0.5,y+0.5,1);
+    uvw=Matrix3x3MultiplyVector3(surfaceToImage ,uvw);
+	uvw=Vector3MultiplyByFloat(uvw,oow);
+   
+		 Ux = (surfaceToImage.matrix[0][0] - uvw.x * surfaceToImage.matrix[2][0]) * oow * m_pixelFilterRadius;
+		 Vx = VxPRE;
+		 Uy = (surfaceToImage.matrix[0][1] - uvw.x * surfaceToImage.matrix[2][1]) * oow * m_pixelFilterRadius;
+		 Vy = VyPRE;
+
+		RIfloat U0 = uvw.x;
+		RIfloat V0 = uvw.y;
 		Ux *= sx;
 		Vx *= sx;
 		U0 *= sx;
@@ -1642,6 +1613,7 @@ void VGImageResample_EWAOnMipmaps(VGImage *self,RIfloat x, RIfloat y,KGRGBA *spa
 		RIfloat DDQ = 2.0f * A;
 		RIfloat U = (RIfloat)u1 - U0 + 0.5f;
         int v;
+        
 		for(v=v1;v<v2;v++)
 		{
 			RIfloat V = (RIfloat)v - V0 + 0.5f;
@@ -1650,7 +1622,7 @@ void VGImageResample_EWAOnMipmaps(VGImage *self,RIfloat x, RIfloat y,KGRGBA *spa
             int u;
             
             KGRGBA texel[u2-u1];
-            tilingFunction(self,u1, v,texel,(u2-u1), level, tileFillColor);
+            VGImageReadTexelTilePad(mipmap,u1, v,texel,(u2-u1));
 			for(u=u1;u<u2;u++)
 			{
 				if( Q >= 0.0f && Q < 1.0f )
@@ -1676,9 +1648,12 @@ void VGImageResample_EWAOnMipmaps(VGImage *self,RIfloat x, RIfloat y,KGRGBA *spa
 		sumweight = 1.0f / sumweight;
 		span[i]=KGRGBAMultiplyByFloat(color,sumweight);
 	}
+
+
+   return self->_colorFormat;
 }
 
-void VGImageResample_Bicubic(VGImage *self,RIfloat x, RIfloat y,KGRGBA *span,int length, Matrix3x3 surfaceToImage, CGInterpolationQuality quality, VGImageReadTexelTileSpan tilingFunction, KGRGBA tileFillColor){
+VGColorInternalFormat VGImageResample_Bicubic(VGImage *self,RIfloat x, RIfloat y,KGRGBA *span,int length, Matrix3x3 surfaceToImage){
    int i;
    
    for(i=0;i<length;i++,x++){
@@ -1686,34 +1661,89 @@ void VGImageResample_Bicubic(VGImage *self,RIfloat x, RIfloat y,KGRGBA *span,int
 	uvw = Matrix3x3MultiplyVector3(surfaceToImage ,uvw);
 	RIfloat oow = 1.0f / uvw.z;
 	uvw=Vector3MultiplyByFloat(uvw,oow);
-		uvw.x -= 0.5f;
-		uvw.y -= 0.5f;
-		int u = RI_FLOOR_TO_INT(uvw.x);
-        float ufrac=uvw.x-u;
+    uvw.x -= 0.5f;
+    uvw.y -= 0.5f;
+    int u = RI_FLOOR_TO_INT(uvw.x);
+    float ufrac=uvw.x-u;
         
-		int v = RI_FLOOR_TO_INT(uvw.y);
-        float vfrac=uvw.y-v;
+    int v = RI_FLOOR_TO_INT(uvw.y);
+    float vfrac=uvw.y-v;
         
-     KGRGBA t0,t1,t2,t3;
-     KGRGBA cspan[4];
+    KGRGBA t0,t1,t2,t3;
+    KGRGBA cspan[4];
      
-     tilingFunction(self,u - 1,v - 1,cspan,4, 0, tileFillColor);
-     t0 = bicubicInterpolate(cspan[0],cspan[1],cspan[2],cspan[3],ufrac);
+    VGImageReadTexelTilePad(self,u - 1,v - 1,cspan,4);
+    t0 = bicubicInterpolate(cspan[0],cspan[1],cspan[2],cspan[3],ufrac);
       
-     tilingFunction(self,u - 1,v,cspan,4, 0, tileFillColor);
-     t1 = bicubicInterpolate(cspan[0],cspan[1],cspan[2],cspan[3],ufrac);
+    VGImageReadTexelTilePad(self,u - 1,v,cspan,4);
+    t1 = bicubicInterpolate(cspan[0],cspan[1],cspan[2],cspan[3],ufrac);
      
-     tilingFunction(self,u - 1,v+1,cspan,4, 0, tileFillColor);     
-     t2 = bicubicInterpolate(cspan[0],cspan[1],cspan[2],cspan[3],ufrac);
+    VGImageReadTexelTilePad(self,u - 1,v+1,cspan,4);     
+    t2 = bicubicInterpolate(cspan[0],cspan[1],cspan[2],cspan[3],ufrac);
      
-     tilingFunction(self,u - 1,v+2,cspan,4, 0, tileFillColor);     
-     t3 = bicubicInterpolate(cspan[0],cspan[1],cspan[2],cspan[3],ufrac);
+    VGImageReadTexelTilePad(self,u - 1,v+2,cspan,4);     
+    t3 = bicubicInterpolate(cspan[0],cspan[1],cspan[2],cspan[3],ufrac);
 
-      span[i]=bicubicInterpolate(t0,t1,t2,t3, vfrac);
-    }
+    span[i]=bicubicInterpolate(t0,t1,t2,t3, vfrac);
+   }
+
+   return self->_colorFormat;
 }
 
-void VGImageResample_Bilinear(VGImage *self,RIfloat x, RIfloat y,KGRGBA *span,int length, Matrix3x3 surfaceToImage, CGInterpolationQuality quality, VGImageReadTexelTileSpan tilingFunction, KGRGBA tileFillColor){	//bilinear
+VGColorInternalFormat VGImageResample_Bilinear(VGImage *self,RIfloat x, RIfloat y,KGRGBA *span,int length, Matrix3x3 surfaceToImage){
+   int i;
+
+   for(i=0;i<length;i++,x++){
+	Vector3 uvw=Vector3Make(x+0.5,y+0.5,1);
+	uvw = Matrix3x3MultiplyVector3(surfaceToImage,uvw);
+	RIfloat oow = 1.0f / uvw.z;
+	uvw=Vector3MultiplyByFloat(uvw,oow);
+    uvw.x -= 0.5f;
+	uvw.y -= 0.5f;
+	int u = RI_FLOOR_TO_INT(uvw.x);
+	int v = RI_FLOOR_TO_INT(uvw.y);
+	KGRGBA c00c01[2];
+    VGImageReadTexelTilePad(self,u,v,c00c01,2);
+
+    KGRGBA c01c11[2];
+    VGImageReadTexelTilePad(self,u,v+1,c01c11,2);
+
+    RIfloat fu = uvw.x - (RIfloat)u;
+    RIfloat fv = uvw.y - (RIfloat)v;
+    KGRGBA c0 = KGRGBAAdd(KGRGBAMultiplyByFloat(c00c01[0],(1.0f - fu)),KGRGBAMultiplyByFloat(c00c01[1],fu));
+    KGRGBA c1 = KGRGBAAdd(KGRGBAMultiplyByFloat(c01c11[0],(1.0f - fu)),KGRGBAMultiplyByFloat(c01c11[1],fu));
+    span[i]=KGRGBAAdd(KGRGBAMultiplyByFloat(c0,(1.0f - fv)),KGRGBAMultiplyByFloat(c1, fv));
+   }
+
+   return self->_colorFormat;
+}
+
+VGColorInternalFormat VGImageResample_PointSampling(VGImage *self,RIfloat x, RIfloat y,KGRGBA *span,int length, Matrix3x3 surfaceToImage){
+   int i;
+   
+   for(i=0;i<length;i++,x++){
+    Vector3 uvw=Vector3Make(x+0.5,y+0.5,1);
+	uvw = Matrix3x3MultiplyVector3(surfaceToImage ,uvw);
+	RIfloat oow = 1.0f / uvw.z;
+	uvw=Vector3MultiplyByFloat(uvw,oow);
+    VGImageReadTexelTilePad(self,RI_FLOOR_TO_INT(uvw.x), RI_FLOOR_TO_INT(uvw.y),span+i,1);
+   }
+   return self->_colorFormat;
+}
+
+void VGImageReadTexelTileRepeat(VGImage *self,int u, int v, KGRGBA *span,int length){
+   int i;
+
+   v = RI_INT_MOD(v, self->_height);
+   
+   for(i=0;i<length;i++,u++){
+    u = RI_INT_MOD(u, self->_width);
+
+	span[i]=KGRGBAPremultiply(VGImageReadRGBA(self,u, v));
+   }
+}
+
+void VGImagePattern_Bilinear(VGImage *self,RIfloat x, RIfloat y,KGRGBA *span,int length, Matrix3x3 surfaceToImage){
    int i;
    
    for(i=0;i<length;i++,x++){
@@ -1726,10 +1756,10 @@ void VGImageResample_Bilinear(VGImage *self,RIfloat x, RIfloat y,KGRGBA *span,in
 	int u = RI_FLOOR_TO_INT(uvw.x);
 	int v = RI_FLOOR_TO_INT(uvw.y);
 	KGRGBA c00c01[2];
-    tilingFunction(self,u,v,c00c01,2, 0, tileFillColor);
+    VGImageReadTexelTileRepeat(self,u,v,c00c01,2);
 
     KGRGBA c01c11[2];
-    tilingFunction(self,u,v+1,c01c11,2, 0, tileFillColor);
+    VGImageReadTexelTileRepeat(self,u,v+1,c01c11,2);
 
     RIfloat fu = uvw.x - (RIfloat)u;
     RIfloat fv = uvw.y - (RIfloat)v;
@@ -1739,7 +1769,7 @@ void VGImageResample_Bilinear(VGImage *self,RIfloat x, RIfloat y,KGRGBA *span,in
    }
 }
 
-void VGImageResample_PointSampling(VGImage *self,RIfloat x, RIfloat y,KGRGBA *span,int length, Matrix3x3 surfaceToImage, CGInterpolationQuality quality, VGImageReadTexelTileSpan tilingFunction, KGRGBA tileFillColor){	//point sampling
+void VGImagePattern_PointSampling(VGImage *self,RIfloat x, RIfloat y,KGRGBA *span,int length, Matrix3x3 surfaceToImage){	//point sampling
    int i;
    
    for(i=0;i<length;i++,x++){
@@ -1747,35 +1777,25 @@ void VGImageResample_PointSampling(VGImage *self,RIfloat x, RIfloat y,KGRGBA *sp
 	uvw = Matrix3x3MultiplyVector3(surfaceToImage ,uvw);
 	RIfloat oow = 1.0f / uvw.z;
 	uvw=Vector3MultiplyByFloat(uvw,oow);
-    tilingFunction(self,RI_FLOOR_TO_INT(uvw.x), RI_FLOOR_TO_INT(uvw.y),span+i,1, 0, tileFillColor);
+    VGImageReadTexelTileRepeat(self,RI_FLOOR_TO_INT(uvw.x), RI_FLOOR_TO_INT(uvw.y),span+i,1);
    }
 }
 
-void VGImageResampleSpan(VGImage *self,RIfloat x, RIfloat y, KGRGBA *span,int length,int colorFormat, Matrix3x3 surfaceToImage, CGInterpolationQuality quality, VGImageReadTexelTileSpan tilingFunction, VGColor tileFillColor)	{
-    tileFillColor=VGColorConvert(tileFillColor,self->_colorFormat);
-    KGRGBA tileFillrgba=KGRGBAFromColor(tileFillColor);
+void VGImagePatternSpan(VGImage *self,RIfloat x, RIfloat y, KGRGBA *span,int length,int colorFormat, Matrix3x3 surfaceToImage, CGPatternTiling distortion)	{
     
-	if(quality== kCGInterpolationHigh){
-      return VGImageResample_EWAOnMipmaps(self,x,y,span,length,surfaceToImage,quality,tilingFunction,tileFillrgba);
-      //return VGImageResample_Bicubic(self,x,y,span,length,surfaceToImage,quality,tilingFunction,tileFillrgba);
-    }
-	else if(quality== kCGInterpolationLow)
-      return VGImageResample_Bilinear(self,x,y,span,length,surfaceToImage,quality,tilingFunction,tileFillrgba);
-	else
-     return VGImageResample_PointSampling(self,x,y,span,length,surfaceToImage,quality,tilingFunction,tileFillrgba);
-   
-   convertSpan(span,length,self->_colorFormat|VGColorPREMULTIPLIED,colorFormat);
-}
+   switch(distortion){
+    case kCGPatternTilingNoDistortion:
+      VGImagePattern_PointSampling(self,x,y,span,length,surfaceToImage);
+      break;
 
-VGImageReadTexelTileSpan VGImageTexelTilingFunctionForMode(VGTilingMode tilingMode){
-   if(tilingMode == VG_TILE_FILL)
-    return VGImageReadTexelTileFill;
-   else if(tilingMode == VG_TILE_PAD)
-    return VGImageReadTexelTilePad;
-   else if(tilingMode == VG_TILE_REPEAT)
-    return VGImageReadTexelTileRepeat;
-   
-   return NULL;
+    case kCGPatternTilingConstantSpacingMinimalDistortion:
+    case kCGPatternTilingConstantSpacing:
+     default:
+      VGImagePattern_Bilinear(self,x,y,span,length,surfaceToImage);
+      break;
+   }
+       
+   convertSpan(span,length,self->_colorFormat|VGColorPREMULTIPLIED,colorFormat);
 }
 
 /*-------------------------------------------------------------------*//*!
@@ -1821,7 +1841,7 @@ void VGImageMakeMipMaps(VGImage *self) {
             self->_mipmapsCount++;
 			self->_mipmaps[self->_mipmapsCount-1] = NULL;
 
-			VGImage* next =  VGImageInit(VGImageAlloc(),nextw, nexth,self->_bitsPerComponent,self->_bitsPerPixel,self->_colorSpaceName,self->_bitmapInfo,self->_imageFormat);	//throws bad_alloc
+			VGImage* next =  VGImageInit(VGImageAlloc(),nextw, nexth,self->_bitsPerComponent,self->_bitsPerPixel,self->_colorSpaceName,self->_bitmapInfo,self->_imageFormat);
             int j;
 			for(j=0;j<next->_height;j++)
 			{

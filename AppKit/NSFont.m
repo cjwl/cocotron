@@ -11,7 +11,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSFontFamily.h>
 #import <AppKit/NSWindow.h>
 #import <AppKit/NSGraphicsContextFunctions.h>
-#import <AppKit/CoreGraphics.h>
+#import <ApplicationServices/ApplicationServices.h>
 #import <AppKit/NSDisplay.h>
 #import <AppKit/NSNibKeyedUnarchiver.h>
 

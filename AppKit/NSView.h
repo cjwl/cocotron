@@ -9,7 +9,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSResponder.h>
 #import <AppKit/NSGraphics.h>
 #import <AppKit/AppKitExport.h>
-#import <AppKit/CGAffineTransform.h>
+#import <ApplicationServices/CGAffineTransform.h>
 
 @class NSWindow, NSMenu, NSCursor, NSPasteboard, NSImage, NSScrollView;
 

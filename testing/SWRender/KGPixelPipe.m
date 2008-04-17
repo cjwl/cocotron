@@ -31,6 +31,7 @@
  *//*-------------------------------------------------------------------*/
 
 #import "KGPixelPipe.h"
+#import "KGBlending.h"
 
 KGPaint *KGPaintAlloc() {
    return (KGPaint *)NSZoneCalloc(NULL,1,sizeof(KGPaint));
@@ -50,7 +51,6 @@ KGPaint *KGPaintInit(KGPaint *self) {
 	self->m_radialGradientCenter=Vector2Make(0,0);
 	self->m_radialGradientFocalPoint=Vector2Make(0,0);
 	self->m_radialGradientRadius=1.0f;
-	self->m_patternTilingMode=VG_TILE_FILL;
 	self->m_pattern=NULL;
 
 	GradientStop gs;
@@ -60,7 +60,7 @@ KGPaint *KGPaintInit(KGPaint *self) {
     
 	gs.offset = 1.0f;
 	gs.color=VGColorRGBA(1,1,1,1,VGColor_sRGBA);
-	self->m_colorRampStops[1]=gs;	//throws bad_alloc
+	self->m_colorRampStops[1]=gs;
     return self;
 }
 
@@ -84,7 +84,6 @@ KGPixelPipe *KGPixelPipeInit(KGPixelPipe *self) {
 	self->m_blendMode=kCGBlendModeNormal;
 	self->m_imageMode=VG_DRAW_IMAGE_NORMAL;
 	self->m_imageQuality=kCGInterpolationLow;
-	self->m_tileFillColor=VGColorRGBA(0,0,0,0,VGColor_lRGBA);
 	self->m_surfaceToPaintMatrix=Matrix3x3Identity();
 	self->m_surfaceToImageMatrix=Matrix3x3Identity();
     return self;
@@ -127,17 +126,10 @@ void KGPixelPipeSetImageQuality(KGPixelPipe *self,CGInterpolationQuality imageQu
 	self->m_imageQuality = imageQuality;
 }
 
-void KGPixelPipeSetTileFillColor(KGPixelPipe *self,VGColor c) {
-	self->m_tileFillColor = c;
-	self->m_tileFillColor=VGColorClamp(self->m_tileFillColor);
-}
-
 void KGPixelPipeSetPaint(KGPixelPipe *self, KGPaint* paint) {
 	self->m_paint = paint;
 	if(!self->m_paint)
 		self->m_paint = self->m_defaultPaint;
-	if(self->m_paint->m_pattern)
-		self->m_tileFillColor=VGColorConvert(self->m_tileFillColor,self->m_paint->m_pattern->_colorFormat);
 }
 
 void KGPixelPipeLinearGradient(KGPixelPipe *self,RIfloat *g, RIfloat *rho, RIfloat x, RIfloat y) {
@@ -394,122 +386,6 @@ VGColor KGPixelPipeColorRamp(KGPixelPipe *self,RIfloat gradient, RIfloat rho)
 	return VGColorAdd(VGColorMultiplyByFloat(avg , ratio) , VGColorMultiplyByFloat(c , (1.0f - ratio)));
 }
 
-/*-------------------------------------------------------------------*//*!
-* \brief	Applies paint, image drawing, masking and blending at pixel (x,y).
-* \param	
-* \return	
-* \note		premultiplied blending formulas
-			//src
-			a = asrc
-			r = rsrc
-			//src over
-			a = asrc + adst * (1-asrc)
-			r = rsrc + rdst * (1-asrc)
-			//dst over
-			a = asrc * (1-adst) + adst
-			r = rsrc * (1-adst) + adst
-			//src in
-			a = asrc * adst
-			r = rsrc * adst
-			//dst in
-			a = adst * asrc
-			r = rdst * asrc
-			//multiply
-			a = asrc + adst * (1-asrc)
-			r = rsrc * (1-adst) + rdst * (1-asrc) + rsrc * rdst
-			//screen
-			a = asrc + adst * (1-asrc)
-			r = rsrc + rdst - rsrc * rdst
-			//darken
-			a = asrc + adst * (1-asrc)
-			r = MIN(rsrc + rdst * (1-asrc), rdst + rsrc * (1-adst))
-			//lighten
-			a = asrc + adst * (1-asrc)
-			r = MAX(rsrc + rdst * (1-asrc), rdst + rsrc * (1-adst))
-			//additive
-			a = MIN(asrc+adst,1)
-			r = rsrc + rdst
-*//*-------------------------------------------------------------------*/
-
-
-
-
-static inline float colorFromTemp(float c,float q,float p){
-    if(6.0*c<1)
-     c=p+(q-p)*6.0*c;
-    else if(2.0*c<1)
-     c=q;
-    else if(3.0*c<2)
-     c=p+(q-p)*((2.0/3.0)-c)*6.0;
-    else
-     c=p;
-    return c;
-}
-
-static inline void HSLToRGB(float hue,float saturation,float luminance,float *redp,float *greenp,float *bluep) {
-   float red=luminance,green=luminance,blue=luminance;
-
-   if(saturation!=0){
-    float p,q;
-
-    if(luminance<0.5)
-     q=luminance*(1+saturation);
-    else
-     q=luminance+saturation-(luminance*saturation);
-    p=2*luminance-q;
-    
-    red=hue+1.0/3.0;
-    if(red<0)
-     red+=1.0;
-    green=hue;
-    if(green<0)
-     green+=1.0;
-    blue=hue-1.0/3.0;
-    if(blue<0)
-     blue+=1.0;
-    
-    red=colorFromTemp(red,q,p);
-    green=colorFromTemp(green,q,p);
-    blue=colorFromTemp(blue,q,p);
-   }
-
-   *redp=red;
-   *greenp=green;
-   *bluep=blue;
-}
-
-static inline void RGBToHSL(float r,float g,float b,float *huep,float *saturationp,float *luminancep) {
-   float hue=0,saturation=0,luminance,min,max;
-
-   max=MAX(r,MAX(g,b));
-   min=MIN(r,MIN(g,b));
-   if(max==min)
-    hue=0;
-   else if(max==r && g>=b)
-    hue=60*((g-b)/(max-min));
-   else if(max==r && g<b)
-    hue=60*((g-b)/(max-min))+360;
-   else if(max==g)
-    hue=60*((b-r)/(max-min))+120;
-   else if(max==b)
-    hue=60*((r-g)/(max-min))+240;
-    
-   luminance=(max+min)/2.0;
-   if(max==min)
-    saturation=0;
-   else if(luminance<=0.5)
-    saturation=(max-min)/(max+min);
-   else
-    saturation=(max-min)/(2-(max+min));
-    
-   if(huep!=NULL)
-    *huep=fmod(hue,360)/360.0;
-   if(saturationp!=NULL)
-    *saturationp=saturation;
-   if(luminancep!=NULL)
-    *luminancep=luminance;
-}
-
 static inline VGColor linearGradientColorAt(KGPixelPipe *self,int x,int y){
    VGColor result;
    
@@ -562,16 +438,28 @@ static void KGPixelPipeReadPremultipliedPatternSpan(KGPixelPipe *self,int x,int 
    if(self->m_paint->m_pattern==NULL)
     KGPixelPipeReadPremultipliedConstantSourceSpan(self,x,y,span,length,format);
    else {
-    VGImageReadTexelTileSpan tilingFunction=VGImageTexelTilingFunctionForMode(self->m_paint->m_patternTilingMode);
-    
-    VGImageResampleSpan(self->m_paint->m_pattern,x, y,span,length,format, self->m_surfaceToPaintMatrix, self->m_imageQuality, tilingFunction, self->m_tileFillColor);
+    VGImagePatternSpan(self->m_paint->m_pattern,x, y,span,length,format, self->m_surfaceToPaintMatrix, kCGPatternTilingConstantSpacing);
    }
    
 }
 
-static void KGPixelPipeReadPremultipliedImageNormalSpan(KGPixelPipe *self,int x,int y,KGRGBA *span,int length,int format){
-   VGImageReadTexelTileSpan tilingFunction=VGImageTexelTilingFunctionForMode(VG_TILE_PAD);
-   VGImageResampleSpan(self->m_image,x, y,span,length,format, self->m_surfaceToImageMatrix, self->m_imageQuality, tilingFunction, VGColorRGBA(0,0,0,0,self->m_image->_colorFormat));
+static void KGPixelPipeReadPremultipliedImageNormalSpan(KGPixelPipe *self,int x,int y,KGRGBA *span,int length,VGColorInternalFormat format){
+   VGColorInternalFormat spanFormat;
+   
+   if(self->m_imageQuality== kCGInterpolationHigh){
+    spanFormat=VGImageResample_EWAOnMipmaps(self->m_image,x,y,span,length,self->m_surfaceToImageMatrix);
+    // spanFormat=VGImageResample_Bicubic(self->m_image,x,y,span,length,self->m_surfaceToImageMatrix);
+   }
+   else if(self->m_imageQuality== kCGInterpolationLow)
+    spanFormat=VGImageResample_Bilinear(self->m_image,x,y,span,length,self->m_surfaceToImageMatrix);
+   else
+    spanFormat=VGImageResample_PointSampling(self->m_image,x,y,span,length,self->m_surfaceToImageMatrix);
+  
+   if(!(spanFormat&VGColorPREMULTIPLIED)){
+    premultiplySpan(span,length);
+    spanFormat|=VGColorPREMULTIPLIED;
+   }
+   convertSpan(span,length,spanFormat,format);
 }
 
 static void KGPixelPipeReadPremultipliedSourceSpan(KGPixelPipe *self,int x,int y,KGRGBA *span,int length,int format){
@@ -603,7 +491,7 @@ static void KGPixelPipeReadPremultipliedSourceSpan(KGPixelPipe *self,int x,int y
     else {
      KGRGBA imageSpan[length];
      
-     KGPixelPipeReadPremultipliedImageNormalSpan(self,x,y,imageSpan,length,self->m_image->_colorFormat);
+     KGPixelPipeReadPremultipliedImageNormalSpan(self,x,y,imageSpan,length,self->m_image->_colorFormat|VGColorPREMULTIPLIED);
      
    for(i=0;i<length;i++,x++){
 	//evaluate paint
@@ -644,7 +532,7 @@ static void KGPixelPipeReadPremultipliedSourceSpan(KGPixelPipe *self,int x,int y
 		case VG_DRAW_IMAGE_STENCIL:
 {
  // FIX
- // This needs to be changed to a nonpremultplied form. This is the only case which uses ar, ag, ab premultiplied values for source.
+ // This needs to be changed to a nonpremultplied form. This is the only case which used ar, ag, ab premultiplied values for source.
 
 	RIfloat ar = s.a, ag = s.a, ab = s.a;
 			//the result will be in paint color space.
@@ -687,562 +575,120 @@ static void KGPixelPipeReadPremultipliedSourceSpan(KGPixelPipe *self,int x,int y
       
 }
 
-static void KGBlendSpan_Normal(KGRGBA *src,KGRGBA *dst,int length){
-// Passes Visual Test
-   int i;
-   
-   for(i=0;i<length;i++){
-    KGRGBA s=src[i];
-    KGRGBA d=dst[i];
-    KGRGBA r;
-    
-    r.r = s.r + d.r * (1.0f - s.a);
-    r.g = s.g + d.g * (1.0f - s.a);
-    r.b = s.b + d.b * (1.0f - s.a);
-    r.a = s.a + d.a * (1.0f - s.a);
-    
-    src[i]=r;
-   }
-}
 
-static void KGBlendSpan_Multiply(KGRGBA *src,KGRGBA *dst,int length){
-   int i;
-   
-   for(i=0;i<length;i++){
-    KGRGBA s=src[i];
-    KGRGBA d=dst[i];
-    KGRGBA r;
-
-    r.r = s.r * (1.0f - d.a + d.r) + d.r * (1.0f - s.a);
-    r.g = s.g * (1.0f - d.a + d.g) + d.g * (1.0f - s.a);
-    r.b = s.b * (1.0f - d.a + d.b) + d.b * (1.0f - s.a);
-    r.a = s.a + d.a * (1.0f - s.a);
-    
-    src[i]=r;
-   }
-}
-
-static void KGBlendSpan_Screen(KGRGBA *src,KGRGBA *dst,int length){
-   int i;
-   
-   for(i=0;i<length;i++){
-    KGRGBA s=src[i];
-    KGRGBA d=dst[i];
-    KGRGBA r;
-    
-    r.r = s.r + d.r - s.r*d.r;
-    r.g = s.g + d.g - s.g*d.g;
-    r.b = s.b + d.b - s.b*d.b;
-    r.a = s.a + d.a * (1.0f - s.a);
-
-    src[i]=r;
-   }
-}
-
-static void KGBlendSpan_Overlay(KGRGBA *src,KGRGBA *dst,int length){
-   int i;
-   
-   for(i=0;i<length;i++){
-    KGRGBA s=src[i];
-    KGRGBA d=dst[i];
-    KGRGBA r;
-    
-    RIfloat max=RI_MAX(s.r,RI_MAX(s.g,s.b));
-    RIfloat min=RI_MIN(s.r,RI_MIN(s.g,s.b));
-    RIfloat lum=(max+min)/2*(1.0-d.a);
-    if(lum<=0.5)
-     r.r = s.r * (1.0f - d.a + d.r) + d.r * (1.0f - s.a);
-    else
-     r.r = s.r + d.r - s.r*d.r;
-
-    if(lum<=0.5)
-     r.g = s.g * (1.0f - d.a + d.g) + d.g * (1.0f - s.a);
-    else
-     r.g = s.g + d.g - s.g*d.g;
-        
-    if(lum<=0.5)
-     r.b = s.b * (1.0f - d.a + d.b) + d.b * (1.0f - s.a);
-    else
-     r.b = s.b + d.b - s.b*d.b;
-
-    r.a = s.a + d.a * (1.0f - s.a);
-
-    src[i]=r;
-   }
-}
-static void KGBlendSpan_Darken(KGRGBA *src,KGRGBA *dst,int length){
-   int i;
-   
-   for(i=0;i<length;i++){
-    KGRGBA s=src[i];
-    KGRGBA d=dst[i];
-    KGRGBA r;
-    
-    r.r = RI_MIN(s.r + d.r * (1.0f - s.a), d.r + s.r * (1.0f - d.a));
-    r.g = RI_MIN(s.g + d.g * (1.0f - s.a), d.g + s.g * (1.0f - d.a));
-    r.b = RI_MIN(s.b + d.b * (1.0f - s.a), d.b + s.b * (1.0f - d.a));
-    r.a = s.a + d.a * (1.0f - s.a);
-    src[i]=r;
-   }
-}
-static void KGBlendSpan_Lighten(KGRGBA *src,KGRGBA *dst,int length){
-   int i;
-   
-   for(i=0;i<length;i++){
-    KGRGBA s=src[i];
-    KGRGBA d=dst[i];
-    KGRGBA r;
-    
-    r.r = RI_MAX(s.r + d.r * (1.0f - s.a), d.r + s.r * (1.0f - d.a));
-    r.g = RI_MAX(s.g + d.g * (1.0f - s.a), d.g + s.g * (1.0f - d.a));
-    r.b = RI_MAX(s.b + d.b * (1.0f - s.a), d.b + s.b * (1.0f - d.a));
-    //although the statement below is equivalent to r.a = s.a + d.a * (1.0f - s.a)
-    //in practice there can be a very slight difference because
-    //of the max operation in the blending formula that may cause color to exceed alpha.
-    //Because of this, we compute the result both ways and return the maximum.
-    r.a = RI_MAX(s.a + d.a * (1.0f - s.a), d.a + s.a * (1.0f - d.a));
-    src[i]=r;
-   }
-}
-static void KGBlendSpan_ColorDodge(KGRGBA *src,KGRGBA *dst,int length){
-   int i;
-   
-   for(i=0;i<length;i++){
-    KGRGBA s=src[i];
-    KGRGBA d=dst[i];
-    KGRGBA r;
-    
-    r.r=(s.r==1)?1:RI_MIN(1,d.r/(1.0-s.r));
-    r.g=(s.g==1)?1:RI_MIN(1,d.g/(1.0-s.g));
-    r.b=(s.b==1)?1:RI_MIN(1,d.b/(1.0-s.b));
-    r.a = s.a + d.a * (1.0f - s.a);
-    src[i]=r;
-   }
-}
-static void KGBlendSpan_ColorBurn(KGRGBA *src,KGRGBA *dst,int length){
-   int i;
-   
-   for(i=0;i<length;i++){
-    KGRGBA s=src[i];
-    KGRGBA d=dst[i];
-    KGRGBA r;
-
-    r.r=(s.r==0)?0:1.0-RI_MIN(1.0,(1.0-d.r)/s.r);
-    r.g=(s.g==0)?0:1.0-RI_MIN(1.0,(1.0-d.g)/s.g);
-    r.b=(s.b==0)?0:1.0-RI_MIN(1.0,(1.0-d.b)/s.b);
-    r.a=(s.a==0)?0:1.0-RI_MIN(1.0,(1.0-d.a)/s.a);
-    src[i]=r;
-   }
-}
-static void KGBlendSpan_HardLight(KGRGBA *src,KGRGBA *dst,int length){
-   int i;
-   
-   for(i=0;i<length;i++){
-    //KGRGBA s=src[i];
-    KGRGBA d=dst[i];
-    KGRGBA r=d;
-    
-    src[i]=r;
-   }
-}
-static void KGBlendSpan_SoftLight(KGRGBA *src,KGRGBA *dst,int length){
-   int i;
-   
-   for(i=0;i<length;i++){
-    //KGRGBA s=src[i];
-    KGRGBA d=dst[i];
-    KGRGBA r=d;
-    
-    src[i]=r;
-   }
-}
-static void KGBlendSpan_Difference(KGRGBA *src,KGRGBA *dst,int length){
-   int i;
-   
-   for(i=0;i<length;i++){
-    KGRGBA s=src[i];
-    KGRGBA d=dst[i];
-    KGRGBA r;
-    
-    r.r=s.r+d.r-2*(RI_MIN(s.r*d.a,d.r*s.a));
-    r.g=s.g+d.g-2*(RI_MIN(s.g*d.a,d.g*s.a));
-    r.b=s.b+d.b-2*(RI_MIN(s.b*d.a,d.b*s.a));
-    r.a = s.a + d.a * (1.0f - s.a);
-    src[i]=r;
-   }
-}
-static void KGBlendSpan_Exclusion(KGRGBA *src,KGRGBA *dst,int length){
-   int i;
-   
-   for(i=0;i<length;i++){
-    KGRGBA s=src[i];
-    KGRGBA d=dst[i];
-    KGRGBA r;
-    
-    r.r = (s.r * d.a + d.r * s.a - 2 * s.r * d.r) + s.r * (1 - d.a) + d.r * (1 - s.a);
-    r.g = (s.g * d.a + d.g * s.a - 2 * s.g * d.r) + s.g * (1 - d.a) + d.g * (1 - s.a);
-    r.b = (s.b * d.a + d.b * s.a - 2 * s.b * d.r) + s.b * (1 - d.a) + d.b * (1 - s.a);
-    r.a = s.a + d.a * (1.0f - s.a);
-    src[i]=r;
-   }
-}
-static void KGBlendSpan_Hue(KGRGBA *src,KGRGBA *dst,int length){
-   int i;
-   
-   for(i=0;i<length;i++){
-    KGRGBA s=src[i];
-    KGRGBA d=dst[i];
-    KGRGBA r;
-    
-    RIfloat sh,ss,sl;
-    RIfloat dh,ds,dl;
-        
-    RGBToHSL(s.r,s.g,s.b,&sh,&ss,&sl);
-    RGBToHSL(d.r,d.g,d.b,&dh,&ds,&dl);
-    HSLToRGB(sh,ds,dl,&r.r,&r.g,&r.b);
-    r.a = s.a + d.a * (1.0f - s.a);
-    src[i]=r;
-   }
-}
-static void KGBlendSpan_Saturation(KGRGBA *src,KGRGBA *dst,int length){
-   int i;
-   
-   for(i=0;i<length;i++){
-    KGRGBA s=src[i];
-    KGRGBA d=dst[i];
-    KGRGBA r;
-    
-    RIfloat sh,ss,sl;
-    RIfloat dh,ds,dl;
-        
-    RGBToHSL(s.r,s.g,s.b,&sh,&ss,&sl);
-    RGBToHSL(d.r,d.g,d.b,&dh,&ds,&dl);
-    HSLToRGB(dh,ss,dl,&r.r,&r.g,&r.b);
-    r.a = s.a + d.a * (1.0f - s.a);
-    src[i]=r;
-   }
-}
-static void KGBlendSpan_Color(KGRGBA *src,KGRGBA *dst,int length){
-   int i;
-   
-   for(i=0;i<length;i++){
-    //KGRGBA s=src[i];
-    KGRGBA d=dst[i];
-    KGRGBA r=d;
-    
-    src[i]=r;
-   }
-}
-static void KGBlendSpan_Luminosity(KGRGBA *src,KGRGBA *dst,int length){
-   int i;
-   
-   for(i=0;i<length;i++){
-    //KGRGBA s=src[i];
-    KGRGBA d=dst[i];
-    KGRGBA r=d;
-    
-    src[i]=r;
-   }
-}
-static void KGBlendSpan_Clear(KGRGBA *src,KGRGBA *dst,int length){
-   int i;
-   
-   for(i=0;i<length;i++){
-    KGRGBA r;
-    
-        r.r=0;
-        r.g=0;
-        r.b=0;
-        r.a=0;
-
-    src[i]=r;
-   }
-}
-static void KGBlendSpan_Copy(KGRGBA *src,KGRGBA *dst,int length){
-   // do nothing src already contains values
-}
-
-static void KGBlendSpan_SourceIn(KGRGBA *src,KGRGBA *dst,int length){
-   int i;
-   
-   for(i=0;i<length;i++){
-    KGRGBA s=src[i];
-    KGRGBA d=dst[i];
-    KGRGBA r;
-    
-    r.r = s.r * d.a;
-    r.g = s.g * d.a;
-    r.b = s.b * d.a;
-    r.a = s.a * d.a;
-    src[i]=r;
-   }
-}
-static void KGBlendSpan_SourceOut(KGRGBA *src,KGRGBA *dst,int length){
-   int i;
-   
-   for(i=0;i<length;i++){
-    KGRGBA s=src[i];
-    KGRGBA d=dst[i];
-    KGRGBA r;
-    
-    r.r = s.r *(1.0- d.a);
-    r.g = s.g * (1.0- d.a);
-    r.b = s.b * (1.0- d.a);
-    r.a = s.a * (1.0- d.a);
-    src[i]=r;
-   }
-}
-static void KGBlendSpan_SourceAtop(KGRGBA *src,KGRGBA *dst,int length){
-   int i;
-   
-   for(i=0;i<length;i++){
-    KGRGBA s=src[i];
-    KGRGBA d=dst[i];
-    KGRGBA r;
-    
-    r.r = s.r*d.a+d.r*(1.0-s.a);
-    r.g = s.g*d.a+d.g*(1.0-s.a);
-    r.b = s.b*d.a+d.b*(1.0-s.a);
-    r.a = s.a*d.a+d.a*(1.0-s.a);
-    src[i]=r;
-   }
-}
-static void KGBlendSpan_DestinationOver(KGRGBA *src,KGRGBA *dst,int length){
-   int i;
-   
-   for(i=0;i<length;i++){
-    KGRGBA s=src[i];
-    KGRGBA d=dst[i];
-    KGRGBA r;
-    
-    r.r = s.r * (1.0f - d.a) + d.r;
-    r.g = s.g * (1.0f - d.a) + d.g;
-    r.b = s.b * (1.0f - d.a) + d.b;
-    r.a = s.a * (1.0f - d.a) + d.a;
-
-    src[i]=r;
-   }
-}
-static void KGBlendSpan_DestinationIn(KGRGBA *src,KGRGBA *dst,int length){
-   int i;
-   
-   for(i=0;i<length;i++){
-    KGRGBA s=src[i];
-    KGRGBA d=dst[i];
-    KGRGBA r;
-    
-    r.r = d.r * s.a;
-    r.g = d.g * s.a;
-    r.b = d.b * s.a;
-    r.a = d.a * s.a;
-    
-    src[i]=r;
-   }
-}
-static void KGBlendSpan_DestinationOut(KGRGBA *src,KGRGBA *dst,int length){
-   int i;
-   
-   for(i=0;i<length;i++){
-    KGRGBA s=src[i];
-    KGRGBA d=dst[i];
-    KGRGBA r;
-    
-    r.r = d.r *(1.0- s.a);
-    r.g = d.g * (1.0- s.a);
-    r.b = d.b * (1.0- s.a);
-    r.a = d.a * (1.0- s.a);
-
-    src[i]=r;
-   }
-}
-static void KGBlendSpan_DestinationAtop(KGRGBA *src,KGRGBA *dst,int length){
-   int i;
-   
-   for(i=0;i<length;i++){
-    KGRGBA s=src[i];
-    KGRGBA d=dst[i];
-    KGRGBA r;
-    
-    r.r=s.r*(1.0-d.a)+d.r*s.a;
-    r.g=s.g*(1.0-d.a)+d.g*s.a;
-    r.b=s.b*(1.0-d.a)+d.b*s.a;
-    r.a=s.a*(1.0-d.a)+d.a*s.a;
-    
-    src[i]=r;
-   }
-}
-static void KGBlendSpan_XOR(KGRGBA *src,KGRGBA *dst,int length){
-   int i;
-   
-   for(i=0;i<length;i++){
-    KGRGBA s=src[i];
-    KGRGBA d=dst[i];
-    KGRGBA r;
-    
-    r.r=s.r*(1.0-d.a)+d.r*(1.0-s.a);
-    r.g=s.g*(1.0-d.a)+d.g*(1.0-s.a);
-    r.b=s.b*(1.0-d.a)+d.b*(1.0-s.a);
-    r.a=s.a*(1.0-d.a)+d.a*(1.0-s.a);
-    
-    src[i]=r;
-   }
-}
-static void KGBlendSpan_PlusDarker(KGRGBA *src,KGRGBA *dst,int length){
-   int i;
-   
-   for(i=0;i<length;i++){
-    KGRGBA s=src[i];
-    KGRGBA d=dst[i];
-    KGRGBA r;
-    
-#if 0
-// Doc.s say:  R = MAX(0, (1 - D) + (1 - S)). No workie.
-    r.r=RI_MAX(0,(1-d.r)+(1-s.r));
-    r.g=RI_MAX(0,(1-d.g)+(1-s.g));
-    r.b=RI_MAX(0,(1-d.b)+(1-s.b));
-    r.a=RI_MAX(0,(1-d.a)+(1-s.a));
-#else
-    r.r=RI_MIN(1.0,(1-d.r)+(1-s.r));
-    r.g=RI_MIN(1.0,(1-d.g)+(1-s.g));
-    r.b=RI_MIN(1.0,(1-d.b)+(1-s.b));
-    r.a = s.a ;
-//        r.a=RI_MIN(1.0,(1-d.a)+(1-s.a));
-#endif
-    src[i]=r;
-   }
-}
-
-static void KGBlendSpan_PlusLighter(KGRGBA *src,KGRGBA *dst,int length){
-// Doc.s say: R = MIN(1, S + D). That works
-   int i;
-   
-   for(i=0;i<length;i++){
-    KGRGBA s=src[i];
-    KGRGBA d=dst[i];
-    KGRGBA r;
-    
-    r.r = RI_MIN(s.r + d.r, 1.0f);
-    r.g = RI_MIN(s.g + d.g, 1.0f);
-    r.b = RI_MIN(s.b + d.b, 1.0f);
-    r.a = RI_MIN(s.a + d.a, 1.0f);
-
-    src[i]=r;
-   }
-}
-
-static void KGBlendSpanWithMode(KGRGBA *src,KGRGBA *dst,int length,CGBlendMode blendMode){
+static void KGBlendSpanWithMode_ffff(KGRGBA *src,KGRGBA *dst,int length,CGBlendMode blendMode){
    switch(blendMode){
    
     case kCGBlendModeNormal:
-     KGBlendSpan_Normal(src,dst,length);
+     KGBlendSpanNormal_ffff(src,dst,length);
      break;
      
-	case kCGBlendModeMultiply: // Passes Visual Test
-     KGBlendSpan_Multiply(src,dst,length);
+	case kCGBlendModeMultiply:
+     KGBlendSpanMultiply_ffff(src,dst,length);
      break;
      
-	case kCGBlendModeScreen: // Passes Visual Test
-     KGBlendSpan_Screen(src,dst,length);
+	case kCGBlendModeScreen:
+     KGBlendSpanScreen_ffff(src,dst,length);
 	 break;
 
-	case kCGBlendModeOverlay:// broken
-     KGBlendSpan_Overlay(src,dst,length);
+	case kCGBlendModeOverlay:
+     KGBlendSpanOverlay_ffff(src,dst,length);
      break;
         
-	case kCGBlendModeDarken: // Passes Visual Test
-     KGBlendSpan_Darken(src,dst,length);
+	case kCGBlendModeDarken:
+     KGBlendSpanDarken_ffff(src,dst,length);
      break;
 
-	case kCGBlendModeLighten: // Passes Visual Test
-     KGBlendSpan_Lighten(src,dst,length);
+	case kCGBlendModeLighten:
+     KGBlendSpanLighten_ffff(src,dst,length);
      break;
 
 	case kCGBlendModeColorDodge:
-     KGBlendSpan_ColorDodge(src,dst,length);
+     KGBlendSpanColorDodge_ffff(src,dst,length);
      break;
         
 	case kCGBlendModeColorBurn:
-     KGBlendSpan_ColorBurn(src,dst,length);
+     KGBlendSpanColorBurn_ffff(src,dst,length);
      break;
         
 	case kCGBlendModeHardLight:
-     KGBlendSpan_HardLight(src,dst,length);
+     KGBlendSpanHardLight_ffff(src,dst,length);
      break;
         
 	case kCGBlendModeSoftLight:
-     KGBlendSpan_SoftLight(src,dst,length);
+     KGBlendSpanSoftLight_ffff(src,dst,length);
      break;
         
-	case kCGBlendModeDifference: // Passes Visual Test
-     KGBlendSpan_Difference(src,dst,length);
+	case kCGBlendModeDifference:
+     KGBlendSpanDifference_ffff(src,dst,length);
      break;
         
 	case kCGBlendModeExclusion:
-     KGBlendSpan_Exclusion(src,dst,length);
+     KGBlendSpanExclusion_ffff(src,dst,length);
      break;
         
 	case kCGBlendModeHue:
-     KGBlendSpan_Hue(src,dst,length);
+     KGBlendSpanHue_ffff(src,dst,length);
      break; 
         
 	case kCGBlendModeSaturation:
-     KGBlendSpan_Saturation(src,dst,length);
+     KGBlendSpanSaturation_ffff(src,dst,length);
      break;
         
 	case kCGBlendModeColor:
-     KGBlendSpan_Color(src,dst,length);
+     KGBlendSpanColor_ffff(src,dst,length);
      break;
         
 	case kCGBlendModeLuminosity:
-     KGBlendSpan_Luminosity(src,dst,length);
+     KGBlendSpanLuminosity_ffff(src,dst,length);
      break;
         
-	case kCGBlendModeClear: // Passes Visual Test, duh
-     KGBlendSpan_Clear(src,dst,length);
+	case kCGBlendModeClear:
+     KGBlendSpanClear_ffff(src,dst,length);
      break;
 
-	case kCGBlendModeCopy: // Passes Visual Test
-     KGBlendSpan_Copy(src,dst,length);
+	case kCGBlendModeCopy:
+     KGBlendSpanCopy_ffff(src,dst,length);
      break;
 
-	case kCGBlendModeSourceIn: // Passes Visual Test
-     KGBlendSpan_SourceIn(src,dst,length);
+	case kCGBlendModeSourceIn:
+     KGBlendSpanSourceIn_ffff(src,dst,length);
      break;
 
-	case kCGBlendModeSourceOut: // Passes Visual Test
-     KGBlendSpan_SourceOut(src,dst,length);
+	case kCGBlendModeSourceOut:
+     KGBlendSpanSourceOut_ffff(src,dst,length);
      break;
 
-	case kCGBlendModeSourceAtop: // Passes Visual Test
-     KGBlendSpan_SourceAtop(src,dst,length);
+	case kCGBlendModeSourceAtop:
+     KGBlendSpanSourceAtop_ffff(src,dst,length);
      break;
 
-	case kCGBlendModeDestinationOver: // Passes Visual Test
-     KGBlendSpan_DestinationOver(src,dst,length);
+	case kCGBlendModeDestinationOver:
+     KGBlendSpanDestinationOver_ffff(src,dst,length);
      break;
 
-	case kCGBlendModeDestinationIn: // Passes Visual Test
-     KGBlendSpan_DestinationIn(src,dst,length);
+	case kCGBlendModeDestinationIn:
+     KGBlendSpanDestinationIn_ffff(src,dst,length);
      break;
 
-	case kCGBlendModeDestinationOut: // Passes Visual Test
-     KGBlendSpan_DestinationOut(src,dst,length);
+	case kCGBlendModeDestinationOut:
+     KGBlendSpanDestinationOut_ffff(src,dst,length);
      break;
 
-	case kCGBlendModeDestinationAtop: // Passes Visual Test
-     KGBlendSpan_DestinationAtop(src,dst,length);
+	case kCGBlendModeDestinationAtop:
+     KGBlendSpanDestinationAtop_ffff(src,dst,length);
      break;
 
-	case kCGBlendModeXOR: // Passes Visual Test
-     KGBlendSpan_XOR(src,dst,length);
+	case kCGBlendModeXOR:
+     KGBlendSpanXOR_ffff(src,dst,length);
      break;
 
 	case kCGBlendModePlusDarker:
-     KGBlendSpan_PlusDarker(src,dst,length);
+     KGBlendSpanPlusDarker_ffff(src,dst,length);
      break;
 
-	case kCGBlendModePlusLighter: // Passes Visual Test
-     KGBlendSpan_PlusLighter(src,dst,length);
+	case kCGBlendModePlusLighter:
+     KGBlendSpanPlusLighter_ffff(src,dst,length);
      break;
    }
 }
@@ -1299,12 +745,12 @@ void KGPixelPipeWriteCoverage(KGPixelPipe *self,int x, int y,RIfloat *coverage,i
 
 	//read destination color
     KGRGBA d[length];
-    VGColorInternalFormat dFormat=VGImageReadPremultipliedPixelSpan(self->m_renderingSurface,x,y,d,length);
+    VGColorInternalFormat dFormat=VGImageReadPremultipliedSpan_ffff(self->m_renderingSurface,x,y,d,length);
 
     KGRGBA src[length];
     KGPixelPipeReadPremultipliedSourceSpan(self,x,y,src,length,dFormat);
     
-    KGBlendSpanWithMode(src,d,length,self->m_blendMode);
+    KGBlendSpanWithMode_ffff(src,d,length,self->m_blendMode);
     VGColorInternalFormat resultFormat;
     
     resultFormat=KGApplyCoverageToSpan(d,coverage,src,length,dFormat);

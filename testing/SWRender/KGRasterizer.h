@@ -29,18 +29,12 @@
 #import "VGmath.h"
 #import "KGPixelPipe.h"
 
-/*-------------------------------------------------------------------*//*!
-* \brief	Converts a set of edges to coverage values for each pixel and
-*			calls KGPixelPipe::pixelPipe for painting a pixel.
-* \param	
-* \return	
-* \note		
-*//*-------------------------------------------------------------------*/
-
 typedef enum {
   VG_EVEN_ODD,
   VG_NON_ZERO
 } VGFillRule;
+
+#define MAX_SAMPLES 32
 
 typedef struct {
    Vector2		v0;
@@ -50,13 +44,16 @@ typedef struct {
    RIfloat     cnst;
    int         minscany;
    int         maxscany;
+// These are init/modified during AET processing, should be broken out to save memory
    RIfloat     vdxwl;
    RIfloat     sxPre;
    RIfloat     exPre;
-// These are modified per scanline
-   int          minx;			//for the current scanline
+   RIfloat     bminx;
+   RIfloat     bmaxx;
+   int          minx;
    int          ceilMinX;
-   int  		maxx;			//for the current scanline
+   int  		maxx;
+   RIfloat     sidePre[MAX_SAMPLES];
 } Edge;
 
 typedef struct {
@@ -72,7 +69,7 @@ typedef struct {
     int    _edgeCapacity;
     Edge  *_edgePool;
     Edge **_edges;
-    
+    BOOL    _antialias;
 	int     numSamples;
 	RIfloat sumWeights;
 	RIfloat fradius;		//max offset of the sampling points from a pixel center
@@ -84,7 +81,7 @@ KGRasterizer *KGRasterizerInit(KGRasterizer *self);
 void KGRasterizerDealloc(KGRasterizer *self);
 void KGRasterizerSetViewport(KGRasterizer *self,int vpx,int vpy,int vpwidth,int vpheight);
 void KGRasterizerClear(KGRasterizer *self);
-void KGRasterizerAddEdge(KGRasterizer *self,const Vector2 v0, const Vector2 v1);	//throws bad_alloc
+void KGRasterizerAddEdge(KGRasterizer *self,const Vector2 v0, const Vector2 v1);
 void KGRasterizerSetShouldAntialias(KGRasterizer *self,BOOL antialias);
 void KGRasterizerFill(KGRasterizer *self,VGFillRule fillRule, KGPixelPipe *pixelPipe);
 

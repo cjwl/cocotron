@@ -6,15 +6,16 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
-// Original - Christopher Lloyd <cjwl@objc.net>
-#import <AppKit/KGGraphicsState.h>
+#import "KGGraphicsState.h"
 
-#import <AppKit/CoreGraphics.h>
+#import <ApplicationServices/ApplicationServices.h>
 #import "KGColor.h"
 #import "KGColorSpace.h"
 #import "KGMutablePath.h"
 #import "KGFont.h"
 #import "KGClipPhase.h"
+#import <Foundation/NSArray.h>
+#import "KGExceptions.h"
 
 @implementation KGGraphicsState
 
@@ -57,7 +58,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    if(_dashLengths!=NULL){
     int i;
     
-    copy->_dashLengths==NSZoneMalloc(zone,sizeof(float)*_dashLengthsCount);
+    copy->_dashLengths=NSZoneMalloc(zone,sizeof(float)*_dashLengthsCount);
     for(i=0;i<_dashLengthsCount;i++)
      copy->_dashLengths[i]=_dashLengths[i];
    }
@@ -75,9 +76,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return _userSpaceTransform;
 }
 
--(NSRect)clipBoundingBox {
-   NSUnimplementedMethod();
-   return NSZeroRect;
+-(CGRect)clipBoundingBox {
+   KGUnimplementedMethod();
+   return CGRectZero;
 }
 
 -(CGAffineTransform)textMatrix {
@@ -88,35 +89,35 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return _interpolationQuality;
 }
 
--(NSPoint)textPosition {
+-(CGPoint)textPosition {
 // FIX, is this right?
-  return NSMakePoint(_textTransform.tx,_textTransform.ty);
+  return CGPointMake(_textTransform.tx,_textTransform.ty);
 }
 
--(NSPoint)convertPointToDeviceSpace:(NSPoint)point {
+-(CGPoint)convertPointToDeviceSpace:(CGPoint)point {
    return CGPointApplyAffineTransform(point,_deviceSpaceTransform);
 }
 
--(NSPoint)convertPointToUserSpace:(NSPoint)point {
+-(CGPoint)convertPointToUserSpace:(CGPoint)point {
    return CGPointApplyAffineTransform(point,CGAffineTransformInvert(_deviceSpaceTransform));
 }
 
--(NSSize)convertSizeToDeviceSpace:(NSSize)size {
+-(CGSize)convertSizeToDeviceSpace:(CGSize)size {
    return CGSizeApplyAffineTransform(size,_deviceSpaceTransform);
 }
 
--(NSSize)convertSizeToUserSpace:(NSSize)size {
+-(CGSize)convertSizeToUserSpace:(CGSize)size {
    return CGSizeApplyAffineTransform(size,CGAffineTransformInvert(_deviceSpaceTransform));
 }
 
--(NSRect)convertRectToDeviceSpace:(NSRect)rect {
-   NSUnimplementedMethod();
-   return NSMakeRect(0,0,0,0);
+-(CGRect)convertRectToDeviceSpace:(CGRect)rect {
+   KGUnimplementedMethod();
+   return CGRectZero;
 }
 
--(NSRect)convertRectToUserSpace:(NSRect)rect {
-   NSUnimplementedMethod();
-   return NSMakeRect(0,0,0,0);
+-(CGRect)convertRectToUserSpace:(CGRect)rect {
+   KGUnimplementedMethod();
+   return CGRectZero;
 }
 
 -(void)setDeviceSpaceCTM:(CGAffineTransform)transform {
@@ -154,7 +155,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [phase release];
 }
 
--(void)addClipToMask:(KGImage *)image inRect:(NSRect)rect {
+-(void)addClipToMask:(KGImage *)image inRect:(CGRect)rect {
    KGClipPhase *phase=[[KGClipPhase alloc] initWithMask:image rect:rect transform:_deviceSpaceTransform];
    
    [_clipPhases addObject:phase];
@@ -181,7 +182,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    _fillColor=color;
 }
 
--(void)setPatternPhase:(NSSize)phase {
+-(void)setPatternPhase:(CGSize)phase {
    _patternPhase=phase;
 }
 
@@ -272,7 +273,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    _interpolationQuality=quality;
 }
 
--(void)setShadowOffset:(NSSize)offset blur:(float)blur color:(KGColor *)color {
+-(void)setShadowOffset:(CGSize)offset blur:(float)blur color:(KGColor *)color {
    _shadowOffset=offset;
    _shadowBlur=blur;
    [color retain];
@@ -280,7 +281,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    _shadowColor=color;
 }
 
--(void)setShadowOffset:(NSSize)offset blur:(float)blur {
+-(void)setShadowOffset:(CGSize)offset blur:(float)blur {
    KGColorSpace *colorSpace=[[KGColorSpace alloc] initWithDeviceRGB];
    float         components[4]={0,0,0,1.0/3.0};
 

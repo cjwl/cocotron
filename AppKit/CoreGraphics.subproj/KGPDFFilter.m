@@ -10,12 +10,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 // First revision - Christopher Lloyd <cjwl@objc.net>
 #import "KGPDFFilter.h"
-#import <AppKit/KGPDFObject.h>
+#import "KGPDFObject.h"
 #import "KGPDFDictionary.h"
 #import <Foundation/NSData.h>
 #import <Foundation/NSException.h>
 #import <Foundation/NSString.h>
-#import <AppKit/KGzlib.h>
+#import "KGzlib.h"
 
 
 NSData *KGPDFFilterWithName(const char *name,NSData *data,KGPDFDictionary *parameters) {

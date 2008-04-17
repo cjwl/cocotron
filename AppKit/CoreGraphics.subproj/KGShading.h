@@ -7,14 +7,14 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
 #import <Foundation/NSObject.h>
-#import <Foundation/NSGeometry.h>
+#import <ApplicationServices/ApplicationServices.h>
 
 @class KGColorSpace,KGFunction,KGPDFObject,KGPDFContext;
 
 @interface KGShading : NSObject {
    KGColorSpace *_colorSpace;
-   NSPoint       _startPoint;
-   NSPoint       _endPoint;
+   CGPoint       _startPoint;
+   CGPoint       _endPoint;
    KGFunction   *_function;
    BOOL          _extendStart;
    BOOL          _extendEnd;
@@ -24,14 +24,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    float         _domain[2];
 }
 
--initWithColorSpace:(KGColorSpace *)colorSpace startPoint:(NSPoint)startPoint endPoint:(NSPoint)endPoint function:(KGFunction *)function extendStart:(BOOL)extendStart extendEnd:(BOOL)extendEnd domain:(float[2])domain;
+-initWithColorSpace:(KGColorSpace *)colorSpace startPoint:(CGPoint)startPoint endPoint:(CGPoint)endPoint function:(KGFunction *)function extendStart:(BOOL)extendStart extendEnd:(BOOL)extendEnd domain:(float[2])domain;
 
--initWithColorSpace:(KGColorSpace *)colorSpace startPoint:(NSPoint)startPoint startRadius:(float)startRadius endPoint:(NSPoint)endPoint endRadius:(float)endRadius function:(KGFunction *)function extendStart:(BOOL)extendStart extendEnd:(BOOL)extendEnd domain:(float[2])domain;
+-initWithColorSpace:(KGColorSpace *)colorSpace startPoint:(CGPoint)startPoint startRadius:(float)startRadius endPoint:(CGPoint)endPoint endRadius:(float)endRadius function:(KGFunction *)function extendStart:(BOOL)extendStart extendEnd:(BOOL)extendEnd domain:(float[2])domain;
 
 -(KGColorSpace *)colorSpace;
 
--(NSPoint)startPoint;
--(NSPoint)endPoint;
+-(CGPoint)startPoint;
+-(CGPoint)endPoint;
 
 -(float)startRadius;
 -(float)endRadius;

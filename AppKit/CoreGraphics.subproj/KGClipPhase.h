@@ -1,5 +1,5 @@
 #import <Foundation/NSObject.h>
-#import <AppKit/CGAffineTransform.h>
+#import <ApplicationServices/ApplicationServices.h>
 
 @class KGPath,KGImage;
 

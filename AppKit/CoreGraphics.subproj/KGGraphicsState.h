@@ -8,12 +8,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/NSObject.h>
 #import <Foundation/NSGeometry.h>
-#import <AppKit/CGAffineTransform.h>
-#import <AppKit/CGFont.h>
-#import <AppKit/CGGeometry.h>
-#import <AppKit/CGContext.h>
+#import <ApplicationServices/ApplicationServices.h>
 
-@class KGImage,KGColorSpace,KGColor,KGPattern,KGShading,KGMutablePath,KGPath;
+@class KGImage,KGColorSpace,KGColor,KGPattern,KGShading,KGMutablePath,KGPath,NSArray,NSMutableArray,KGFont;
 
 @interface KGGraphicsState : NSObject <NSCopying> {
 @public
@@ -25,7 +22,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    KGColor            *_strokeColor;
    KGColor            *_fillColor;
    KGFont             *_font;
-   NSSize              _patternPhase;   
+   CGSize              _patternPhase;   
    float               _characterSpacing;
    int                 _textDrawingMode;
    BOOL                _shouldSmoothFonts;
@@ -40,7 +37,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    CGBlendMode          _blendMode;
    float               _flatness;
    CGInterpolationQuality _interpolationQuality;
-   NSSize              _shadowOffset;
+   CGSize              _shadowOffset;
    float               _shadowBlur;
    KGColor            *_shadowColor;
    BOOL                _shouldAntialias;
@@ -54,16 +51,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(CGAffineTransform)userSpaceToDeviceSpaceTransform;
 -(CGAffineTransform)userSpaceTransform;
--(NSRect)clipBoundingBox;
+-(CGRect)clipBoundingBox;
 -(CGAffineTransform)textMatrix;
 -(CGInterpolationQuality)interpolationQuality;
--(NSPoint)textPosition;
--(NSPoint)convertPointToDeviceSpace:(NSPoint)point;
--(NSPoint)convertPointToUserSpace:(NSPoint)point;
--(NSSize)convertSizeToDeviceSpace:(NSSize)size;
--(NSSize)convertSizeToUserSpace:(NSSize)size;
--(NSRect)convertRectToDeviceSpace:(NSRect)rect;
--(NSRect)convertRectToUserSpace:(NSRect)rect;
+-(CGPoint)textPosition;
+-(CGPoint)convertPointToDeviceSpace:(CGPoint)point;
+-(CGPoint)convertPointToUserSpace:(CGPoint)point;
+-(CGSize)convertSizeToDeviceSpace:(CGSize)size;
+-(CGSize)convertSizeToUserSpace:(CGSize)size;
+-(CGRect)convertRectToDeviceSpace:(CGRect)rect;
+-(CGRect)convertRectToUserSpace:(CGRect)rect;
 
 -(void)setDeviceSpaceCTM:(CGAffineTransform)transform;
 -(void)setUserSpaceCTM:(CGAffineTransform)transform;
@@ -73,7 +70,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)removeAllClipPhases;
 -(void)addClipToPath:(KGPath *)path;
 -(void)addEvenOddClipToPath:(KGPath *)path;
--(void)addClipToMask:(KGImage *)image inRect:(NSRect)rect;
+-(void)addClipToMask:(KGImage *)image inRect:(CGRect)rect;
 
 -(KGColor *)strokeColor;
 -(KGColor *)fillColor;
@@ -81,7 +78,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)setStrokeColor:(KGColor *)color;
 -(void)setFillColor:(KGColor *)color;
 
--(void)setPatternPhase:(NSSize)phase;
+-(void)setPatternPhase:(CGSize)phase;
 -(void)setStrokePattern:(KGPattern *)pattern components:(const float *)components;
 -(void)setFillPattern:(KGPattern *)pattern components:(const float *)components;
 
@@ -105,8 +102,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)setFlatness:(float)flatness;
 -(void)setInterpolationQuality:(CGInterpolationQuality)quality;
 
--(void)setShadowOffset:(NSSize)offset blur:(float)blur color:(KGColor *)color;
--(void)setShadowOffset:(NSSize)offset blur:(float)blur;
+-(void)setShadowOffset:(CGSize)offset blur:(float)blur color:(KGColor *)color;
+-(void)setShadowOffset:(CGSize)offset blur:(float)blur;
 
 -(void)setShouldAntialias:(BOOL)flag;
 

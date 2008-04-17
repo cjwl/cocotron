@@ -24,14 +24,7 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE MATERIALS OR
  * THE USE OR OTHER DEALINGS IN THE MATERIALS.
  *
- *//**
- * \file
- * \brief	Implementation of VGPath functions.
- * \note	
- *//*-------------------------------------------------------------------*/
-
-#warning verify inital state of Vertex, Strokevertex
-#warning verify pointers arent assigned false or 0
+ *-------------------------------------------------------------------*/
 
 #import "VGPath.h"
 #import "VGmath.h"
@@ -588,7 +581,7 @@ void VGPathTransform(VGPath *self,VGPath* srcPath, Matrix3x3 matrix){
 void VGPathFill(VGPath *self,Matrix3x3 pathToSurface, KGRasterizer *rasterizer){
 	RI_ASSERT(Matrix3x3IsAffine(pathToSurface));
 
-	VGPathTessellate(self);	//throws bad_alloc
+	VGPathTessellate(self);
 
 //	try
 	{
@@ -600,7 +593,7 @@ void VGPathFill(VGPath *self,Matrix3x3 pathToSurface, KGRasterizer *rasterizer){
 
 			if(!(self->_vertices[i].flags & START_SEGMENT))
 			{	//in the middle of a segment
-				KGRasterizerAddEdge(rasterizer,p0, p1);	//throws bad_alloc
+				KGRasterizerAddEdge(rasterizer,p0, p1);
 			}
 
 			p0 = p1;
@@ -658,24 +651,24 @@ void VGPathInterpolateStroke(Matrix3x3 pathToSurface, KGRasterizer *rasterizer,S
 		Vector2 nnccw = Matrix3x3TransformVector2(pathToSurface,Vector2Add(position,n));
 		Vector2 nncw = Matrix3x3TransformVector2(pathToSurface, Vector2Subtract(position , n));
 
-		KGRasterizerAddEdge(rasterizer,npccw, nnccw);	//throws bad_alloc
-		KGRasterizerAddEdge(rasterizer,nnccw, nncw);	//throws bad_alloc
-		KGRasterizerAddEdge(rasterizer,nncw, npcw);		//throws bad_alloc
-		KGRasterizerAddEdge(rasterizer,npcw, npccw);	//throws bad_alloc
+		KGRasterizerAddEdge(rasterizer,npccw, nnccw);
+		KGRasterizerAddEdge(rasterizer,nnccw, nncw);
+		KGRasterizerAddEdge(rasterizer,nncw, npcw);	
+		KGRasterizerAddEdge(rasterizer,npcw, npccw);
 
 		if(Vector2Dot(n,prevt) <= 0.0f)
 		{
-			KGRasterizerAddEdge(rasterizer,pnccw, npcw);	//throws bad_alloc
-			KGRasterizerAddEdge(rasterizer,npcw, pncw);		//throws bad_alloc
-			KGRasterizerAddEdge(rasterizer,pncw, npccw);	//throws bad_alloc
-			KGRasterizerAddEdge(rasterizer,npccw, pnccw);	//throws bad_alloc
+			KGRasterizerAddEdge(rasterizer,pnccw, npcw);
+			KGRasterizerAddEdge(rasterizer,npcw, pncw);	
+			KGRasterizerAddEdge(rasterizer,pncw, npccw);
+			KGRasterizerAddEdge(rasterizer,npccw, pnccw);
 		}
 		else
 		{
-			KGRasterizerAddEdge(rasterizer,pnccw, npccw);	//throws bad_alloc
-			KGRasterizerAddEdge(rasterizer,npccw, pncw);	//throws bad_alloc
-			KGRasterizerAddEdge(rasterizer,pncw, npcw);		//throws bad_alloc
-			KGRasterizerAddEdge(rasterizer,npcw, pnccw);	//throws bad_alloc
+			KGRasterizerAddEdge(rasterizer,pnccw, npccw);
+			KGRasterizerAddEdge(rasterizer,npccw, pncw);
+			KGRasterizerAddEdge(rasterizer,pncw, npcw);	
+			KGRasterizerAddEdge(rasterizer,npcw, pnccw);
 		}
 
 		ppccw = npccw;
@@ -690,17 +683,17 @@ void VGPathInterpolateStroke(Matrix3x3 pathToSurface, KGRasterizer *rasterizer,S
 	Vector2 n = Vector2PerpendicularCCW(v1.t);
 	if(Vector2Dot(n,prevt) <= 0.0f)
 	{
-		KGRasterizerAddEdge(rasterizer,pnccw, endcw);	//throws bad_alloc
-		KGRasterizerAddEdge(rasterizer,endcw, pncw);	//throws bad_alloc
-		KGRasterizerAddEdge(rasterizer,pncw, endccw);	//throws bad_alloc
-		KGRasterizerAddEdge(rasterizer,endccw, pnccw);	//throws bad_alloc
+		KGRasterizerAddEdge(rasterizer,pnccw, endcw);
+		KGRasterizerAddEdge(rasterizer,endcw, pncw);
+		KGRasterizerAddEdge(rasterizer,pncw, endccw);
+		KGRasterizerAddEdge(rasterizer,endccw, pnccw);
 	}
 	else
 	{
-		KGRasterizerAddEdge(rasterizer,pnccw, endccw);	//throws bad_alloc
-		KGRasterizerAddEdge(rasterizer,endccw, pncw);	//throws bad_alloc
-		KGRasterizerAddEdge(rasterizer,pncw, endcw);	//throws bad_alloc
-		KGRasterizerAddEdge(rasterizer,endcw, pnccw);	//throws bad_alloc
+		KGRasterizerAddEdge(rasterizer,pnccw, endccw);
+		KGRasterizerAddEdge(rasterizer,endccw, pncw);
+		KGRasterizerAddEdge(rasterizer,pncw, endcw);
+		KGRasterizerAddEdge(rasterizer,endcw, pnccw);
 	}
 }
 
@@ -732,18 +725,18 @@ void VGPathDoCap(Matrix3x3 pathToSurface, KGRasterizer *rasterizer,StrokeVertex 
 		Vector2 u0 = Vector2Normalize(Vector2Subtract(v.ccw,v.p));
 		Vector2 u1 = Vector2Normalize(Vector2Subtract(v.cw,v.p));
 		Vector2 prev = ccwt;
-		KGRasterizerAddEdge(rasterizer,cwt, ccwt);	//throws bad_alloc
+		KGRasterizerAddEdge(rasterizer,cwt, ccwt);
         int j;
 		for(j=1;j<samples;j++)
 		{
 			Vector2 next = Vector2Add(v.p , Vector2MultiplyByFloat(circularLerpWithDirection(u0, u1, t, true) , strokeWidth * 0.5f));
 			next = Matrix3x3TransformVector2(pathToSurface, next);
 
-			KGRasterizerAddEdge(rasterizer,prev, next);	//throws bad_alloc
+			KGRasterizerAddEdge(rasterizer,prev, next);
 			prev = next;
 			t += step;
 		}
-		KGRasterizerAddEdge(rasterizer,prev, cwt);	//throws bad_alloc
+		KGRasterizerAddEdge(rasterizer,prev, cwt);
 		break;
 	}
 
@@ -754,10 +747,10 @@ void VGPathDoCap(Matrix3x3 pathToSurface, KGRasterizer *rasterizer,StrokeVertex 
 		t=Vector2Normalize(t);
 		Vector2 ccws = Matrix3x3TransformVector2(pathToSurface, Vector2Add(v.ccw , Vector2MultiplyByFloat(t , strokeWidth * 0.5f)));
 		Vector2 cws = Matrix3x3TransformVector2(pathToSurface, Vector2Add(v.cw , Vector2MultiplyByFloat(t , strokeWidth * 0.5f)));
-		KGRasterizerAddEdge(rasterizer,cwt, ccwt);	//throws bad_alloc
-		KGRasterizerAddEdge(rasterizer,ccwt, ccws);	//throws bad_alloc
-		KGRasterizerAddEdge(rasterizer,ccws, cws);	//throws bad_alloc
-		KGRasterizerAddEdge(rasterizer,cws, cwt);	//throws bad_alloc
+		KGRasterizerAddEdge(rasterizer,cwt, ccwt);
+		KGRasterizerAddEdge(rasterizer,ccwt, ccws);
+		KGRasterizerAddEdge(rasterizer,ccws, cws);
+		KGRasterizerAddEdge(rasterizer,cws, cwt);
 		break;
 	}
 	}
@@ -790,9 +783,9 @@ void VGPathDoJoin(Matrix3x3 pathToSurface, KGRasterizer *rasterizer, StrokeVerte
 		et = v1.t;
 		m = v0.ccw;
 		cw = false;
-		KGRasterizerAddEdge(rasterizer,m0t, ccw0t);	//throws bad_alloc
-		KGRasterizerAddEdge(rasterizer,ccw1t, m1t);	//throws bad_alloc
-		KGRasterizerAddEdge(rasterizer,m1t, m0t);	//throws bad_alloc
+		KGRasterizerAddEdge(rasterizer,m0t, ccw0t);
+		KGRasterizerAddEdge(rasterizer,ccw1t, m1t);
+		KGRasterizerAddEdge(rasterizer,m1t, m0t);
 	}
 	else
 	{	//draw cw miter (draw from point 1 to 0)
@@ -802,9 +795,9 @@ void VGPathDoJoin(Matrix3x3 pathToSurface, KGRasterizer *rasterizer, StrokeVerte
 		et = v0.t;
 		m = v0.cw;
 		cw = true;
-		KGRasterizerAddEdge(rasterizer,cw0t, m0t);	//throws bad_alloc
-		KGRasterizerAddEdge(rasterizer,m1t, cw1t);	//throws bad_alloc
-		KGRasterizerAddEdge(rasterizer,m0t, m1t);	//throws bad_alloc
+		KGRasterizerAddEdge(rasterizer,cw0t, m0t);
+		KGRasterizerAddEdge(rasterizer,m1t, cw1t);
+		KGRasterizerAddEdge(rasterizer,m0t, m1t);
 	}
 
 	switch(joinStyle)
@@ -819,12 +812,12 @@ void VGPathDoJoin(Matrix3x3 pathToSurface, KGRasterizer *rasterizer, StrokeVerte
 			l = RI_MIN(l, RI_FLOAT_MAX);	//force finite
 			Vector2 c = Vector2Add(m , Vector2MultiplyByFloat(v0.t, l));
 			c = Matrix3x3TransformVector2(pathToSurface, c);
-			KGRasterizerAddEdge(rasterizer,s, c);	//throws bad_alloc
-			KGRasterizerAddEdge(rasterizer,c, e);	//throws bad_alloc
+			KGRasterizerAddEdge(rasterizer,s, c);
+			KGRasterizerAddEdge(rasterizer,c, e);
 		}
 		else
 		{	//bevel
-			KGRasterizerAddEdge(rasterizer,s, e);	//throws bad_alloc
+			KGRasterizerAddEdge(rasterizer,s, e);
 		}
 		break;
 	}
@@ -849,21 +842,21 @@ void VGPathDoJoin(Matrix3x3 pathToSurface, KGRasterizer *rasterizer, StrokeVerte
 				Vector2 next = Vector2Add(position , Vector2MultiplyByFloat(Vector2Normalize(Vector2Perpendicular(tangent, cw)) , strokeWidth * 0.5f));
 				next = Matrix3x3TransformVector2(pathToSurface, next);
 
-				KGRasterizerAddEdge(rasterizer,prev, next);	//throws bad_alloc
+				KGRasterizerAddEdge(rasterizer,prev, next);
 				prev = next;
 				t += step;
 			}
 		}
-		KGRasterizerAddEdge(rasterizer,prev, e);	//throws bad_alloc
+		KGRasterizerAddEdge(rasterizer,prev, e);
 		break;
 	}
 
 	default:
 		RI_ASSERT(joinStyle == kCGLineJoinBevel);
 		if(!cw)
-			KGRasterizerAddEdge(rasterizer,ccw0t, ccw1t);	//throws bad_alloc
+			KGRasterizerAddEdge(rasterizer,ccw0t, ccw1t);
 		else
-			KGRasterizerAddEdge(rasterizer,cw1t, cw0t);		//throws bad_alloc
+			KGRasterizerAddEdge(rasterizer,cw1t, cw0t);	
 		break;
 	}
 }
@@ -881,7 +874,7 @@ void VGPathStroke(VGPath *self,Matrix3x3 pathToSurface, KGRasterizer *rasterizer
 	RI_ASSERT(strokeWidth >= 0.0f);
 	RI_ASSERT(miterLimit >= 1.0f);
 
-	VGPathTessellate(self);	//throws bad_alloc
+	VGPathTessellate(self);
 
 	if(!self->_vertexCount)
 		return;
@@ -964,21 +957,21 @@ void VGPathStroke(VGPath *self,Matrix3x3 pathToSurface, KGRasterizer *rasterizer
 					if( v.flags & IMPLICIT_CLOSE_SUBPATH )
 					{	//do caps for the start and end of the current subpath
 						if( v0.inDash )
-							VGPathDoCap(pathToSurface, rasterizer, v0, strokeWidth, capStyle);	//end cap	//throws bad_alloc
+							VGPathDoCap(pathToSurface, rasterizer, v0, strokeWidth, capStyle);	//end cap
 						if( vs.inDash )
 						{
 							StrokeVertex vi = vs;
 							vi.t = Vector2Negate(vi.t);
 							RI_SWAP(&vi.ccw.x, &vi.cw.x);
 							RI_SWAP(&vi.ccw.y, &vi.cw.y);
-							VGPathDoCap(pathToSurface, rasterizer, vi, strokeWidth, capStyle);	//start cap	//throws bad_alloc
+							VGPathDoCap(pathToSurface, rasterizer, vi, strokeWidth, capStyle);	//start cap
 						}
 					}
 					else
 					{	//join two segments
 						RI_ASSERT(v0.inDash == v1.inDash);
 						if( v0.inDash )
-							VGPathDoJoin(pathToSurface, rasterizer, v0, v1, strokeWidth, joinStyle, miterLimit);	//throws bad_alloc
+							VGPathDoJoin(pathToSurface, rasterizer, v0, v1, strokeWidth, joinStyle, miterLimit);
 					}
 				}
 			}
@@ -1003,7 +996,7 @@ void VGPathStroke(VGPath *self,Matrix3x3 pathToSurface, KGRasterizer *rasterizer
 							RIfloat ratio = 0.0f;
 							if(edgeLength > 0.0f)
 								ratio = (nextDash - v0.pathLength) / edgeLength;
-							StrokeVertex nextDashVertex;
+							StrokeVertex nextDashVertex=StrokeVertexInit();
 							nextDashVertex.p = Vector2Add(Vector2MultiplyByFloat(v0.p , (1.0f - ratio)) , Vector2MultiplyByFloat(v1.p , ratio));
 							nextDashVertex.t = circularLerp(v0.t, v1.t, ratio);
 							nextDashVertex.ccw = Vector2Add(nextDashVertex.p , Vector2MultiplyByFloat(Vector2Normalize(Vector2PerpendicularCCW(nextDashVertex.t)) , strokeWidth * 0.5f));
@@ -1017,10 +1010,10 @@ void VGPathStroke(VGPath *self,Matrix3x3 pathToSurface, KGRasterizer *rasterizer
 									vi.t = Vector2Negate(vi.t);
 									RI_SWAP(&vi.ccw.x, &vi.cw.x);
 									RI_SWAP(&vi.ccw.y, &vi.cw.y);
-									VGPathDoCap(pathToSurface, rasterizer, vi, strokeWidth, capStyle);	//throws bad_alloc
+									VGPathDoCap(pathToSurface, rasterizer, vi, strokeWidth, capStyle);
 								}
-								VGPathInterpolateStroke(pathToSurface, rasterizer, prevDashVertex, nextDashVertex, strokeWidth);	//throws bad_alloc
-								VGPathDoCap(pathToSurface, rasterizer, nextDashVertex, strokeWidth, capStyle);	//end cap	//throws bad_alloc
+								VGPathInterpolateStroke(pathToSurface, rasterizer, prevDashVertex, nextDashVertex, strokeWidth);
+								VGPathDoCap(pathToSurface, rasterizer, nextDashVertex, strokeWidth, capStyle);	//end cap
 							}
 							prevDashVertex = nextDashVertex;
 
@@ -1047,34 +1040,34 @@ void VGPathStroke(VGPath *self,Matrix3x3 pathToSurface, KGRasterizer *rasterizer
 								vi.t = Vector2Negate(vi.t);
 								RI_SWAP(&vi.ccw.x, &vi.cw.x);
 								RI_SWAP(&vi.ccw.y, &vi.cw.y);
-								VGPathDoCap(pathToSurface, rasterizer, vi, strokeWidth, capStyle);	//throws bad_alloc
+								VGPathDoCap(pathToSurface, rasterizer, vi, strokeWidth, capStyle);
 							}
-							VGPathInterpolateStroke(pathToSurface, rasterizer, prevDashVertex, v1, strokeWidth);	//throws bad_alloc
+							VGPathInterpolateStroke(pathToSurface, rasterizer, prevDashVertex, v1, strokeWidth);
 							//no cap, leave path open
 						}
 
 						v1.inDash = inDash;	//update inDash status of the segment end point
 					}
 					else	//no dashing, just interpolate segment end points
-						VGPathInterpolateStroke(pathToSurface, rasterizer, v0, v1, strokeWidth);	//throws bad_alloc
+						VGPathInterpolateStroke(pathToSurface, rasterizer, v0, v1, strokeWidth);
 				}
 			}
 
 			if((v.flags & END_SEGMENT) && (v.flags & CLOSE_SUBPATH))
 			{	//join start and end of the current subpath
 				if( v1.inDash && vs.inDash )
-					VGPathDoJoin(pathToSurface, rasterizer, v1, vs, strokeWidth, joinStyle, miterLimit);	//throws bad_alloc
+					VGPathDoJoin(pathToSurface, rasterizer, v1, vs, strokeWidth, joinStyle, miterLimit);
 				else
 				{	//both start and end are not in dash, cap them
 					if( v1.inDash )
-						VGPathDoCap(pathToSurface, rasterizer, v1, strokeWidth, capStyle);	//end cap	//throws bad_alloc
+						VGPathDoCap(pathToSurface, rasterizer, v1, strokeWidth, capStyle);	//end cap
 					if( vs.inDash )
 					{
 						StrokeVertex vi = vs;
 						vi.t = Vector2Negate(vi.t);
 						RI_SWAP(&vi.ccw.x, &vi.cw.x);
 						RI_SWAP(&vi.ccw.y, &vi.cw.y);
-						VGPathDoCap(pathToSurface, rasterizer, vi, strokeWidth, capStyle);	//start cap	//throws bad_alloc
+						VGPathDoCap(pathToSurface, rasterizer, vi, strokeWidth, capStyle);	//start cap
 					}
 				}
 			}
@@ -1102,7 +1095,7 @@ void VGPathStroke(VGPath *self,Matrix3x3 pathToSurface, KGRasterizer *rasterizer
 void VGPathGetPointAlong(VGPath *self,int startIndex, int numSegments, RIfloat distance, Vector2 *p, Vector2 *t){
 	RI_ASSERT(startIndex >= 0 && startIndex + numSegments <= self->_segmentCount && numSegments > 0);
 
-	VGPathTessellate(self);	//throws bad_alloc
+	VGPathTessellate(self);
 
 	RI_ASSERT(startIndex >= 0 && startIndex < self->_segmentToVertexCount);
 	RI_ASSERT(startIndex + numSegments >= 0 && startIndex + numSegments <= self->_segmentToVertexCount);
@@ -1184,7 +1177,7 @@ void VGPathGetPointAlong(VGPath *self,int startIndex, int numSegments, RIfloat d
 RIfloat getPathLength(VGPath *self,int startIndex, int numSegments){
 	RI_ASSERT(startIndex >= 0 && startIndex + numSegments <= self->_segmentCount && numSegments > 0);
 
-	VGPathTessellate(self);	//throws bad_alloc
+	VGPathTessellate(self);
 
 	RI_ASSERT(startIndex >= 0 && startIndex < self->_segmentToVertexCount);
 	RI_ASSERT(startIndex + numSegments >= 0 && startIndex + numSegments <= self->_segmentToVertexCount);
@@ -1219,7 +1212,7 @@ RIfloat getPathLength(VGPath *self,int startIndex, int numSegments){
 *//*-------------------------------------------------------------------*/
 
 void VGPathGetPathBounds(VGPath *self,RIfloat *minx, RIfloat *miny, RIfloat *maxx, RIfloat *maxy){
-	VGPathTessellate(self);	//throws bad_alloc
+	VGPathTessellate(self);
 
 	if(self->_vertexCount)
 	{
@@ -1245,7 +1238,7 @@ void VGPathGetPathBounds(VGPath *self,RIfloat *minx, RIfloat *miny, RIfloat *max
 void VGPathGetPathTransformedBounds(VGPath *self,Matrix3x3 pathToSurface, RIfloat *minx, RIfloat *miny, RIfloat *maxx, RIfloat *maxy){
 	RI_ASSERT(Matrix3x3IsAffine(pathToSurface));
 
-	VGPathTessellate(self);	//throws bad_alloc
+	VGPathTessellate(self);
 
 	if(self->_vertexCount)
 	{
@@ -1316,7 +1309,7 @@ void VGPathAddEdge(VGPath *self,Vector2 p0, Vector2 p1, Vector2 t0, Vector2 t1, 
 		if(self->_vertexCount > 0)
 			pathLength = self->_vertices[self->_vertexCount-1].pathLength;
 
-		VGPathAddVertex(self,p0, t0, pathLength, startFlags);	//throws bad_alloc
+		VGPathAddVertex(self,p0, t0, pathLength, startFlags);
 	}
 
 	//other than implicit close paths (caused by a MOVE_TO) add to path length
@@ -1328,7 +1321,7 @@ void VGPathAddEdge(VGPath *self,Vector2 p0, Vector2 p1, Vector2 t0, Vector2 t1, 
 		pathLength = RI_MIN(pathLength, RI_FLOAT_MAX);
 	}
 
-	VGPathAddVertex(self,p1, t1, pathLength, endFlags);	//throws bad_alloc
+	VGPathAddVertex(self,p1, t1, pathLength, endFlags);
 }
 
 /*-------------------------------------------------------------------*//*!
@@ -1342,8 +1335,8 @@ void VGPathAddEndPath(VGPath *self,Vector2 p0, Vector2 p1, bool subpathHasGeomet
 	if(!subpathHasGeometry)
 	{	//single vertex
 		Vector2 t=Vector2Make(1.0f,0.0f);
-		VGPathAddEdge(self,p0, p1, t, t, START_SEGMENT | START_SUBPATH, END_SEGMENT | END_SUBPATH);	//throws bad_alloc
-		VGPathAddEdge(self,p0, p1, Vector2Negate(t), Vector2Negate(t), IMPLICIT_CLOSE_SUBPATH | START_SEGMENT, IMPLICIT_CLOSE_SUBPATH | END_SEGMENT);	//throws bad_alloc
+		VGPathAddEdge(self,p0, p1, t, t, START_SEGMENT | START_SUBPATH, END_SEGMENT | END_SUBPATH);
+		VGPathAddEdge(self,p0, p1, Vector2Negate(t), Vector2Negate(t), IMPLICIT_CLOSE_SUBPATH | START_SEGMENT, IMPLICIT_CLOSE_SUBPATH | END_SEGMENT);
 		return;
 	}
 	//the subpath contains segment commands that have generated geometry
@@ -1357,7 +1350,7 @@ void VGPathAddEndPath(VGPath *self,Vector2 p0, Vector2 p1, bool subpathHasGeomet
 		t = self->_vertices[self->_vertexCount-1].userTangent;	//if the segment is zero-length, use the tangent of the last segment end point so that proper join will be generated
 	RI_ASSERT(!Vector2IsZero(t));
 
-	VGPathAddEdge(self,p0, p1, t, t, flags | START_SEGMENT, flags | END_SEGMENT);	//throws bad_alloc
+	VGPathAddEdge(self,p0, p1, t, t, flags | START_SEGMENT, flags | END_SEGMENT);
 }
 
 /*-------------------------------------------------------------------*//*!
@@ -1378,7 +1371,7 @@ bool VGPathAddLineTo(VGPath *self,Vector2 p0, Vector2 p1, bool subpathHasGeometr
 	unsigned int startFlags = START_SEGMENT;
 	if(!subpathHasGeometry)
 		startFlags |= START_SUBPATH;
-	VGPathAddEdge(self,p0, p1, t, t, startFlags, END_SEGMENT);	//throws bad_alloc
+	VGPathAddEdge(self,p0, p1, t, t, startFlags, END_SEGMENT);
 	return true;
 }
 
@@ -1429,13 +1422,13 @@ bool VGPathAddQuadTo(VGPath *self,Vector2 p0, Vector2 p1, Vector2 p2, bool subpa
 		if(Vector2IsZero(tn))
 			tn = tp;
 
-		VGPathAddEdge(self,pp, pn, tp, tn, prevFlags, 0);	//throws bad_alloc
+		VGPathAddEdge(self,pp, pn, tp, tn, prevFlags, 0);
 
 		pp = pn;
 		tp = tn;
 		prevFlags = 0;
 	}
-	VGPathAddEdge(self,pp, p2, tp, outgoingTangent, prevFlags, END_SEGMENT);	//throws bad_alloc
+	VGPathAddEdge(self,pp, p2, tp, outgoingTangent, prevFlags, END_SEGMENT);
 	return true;
 }
 
@@ -1445,6 +1438,44 @@ bool VGPathAddQuadTo(VGPath *self,Vector2 p0, Vector2 p1, Vector2 p2, bool subpa
 * \return	
 * \note		
 *//*-------------------------------------------------------------------*/
+
+// Bezier to lines from: Windows Graphics Programming by Feng Yuan
+static void bezier(VGPath *self,double x1,double y1,double x2, double y2,double x3,double y3,double x4,double y4,unsigned *prevFlags,Vector2 *pp,Vector2 *tp){
+   // Ax+By+C=0 is the line (x1,y1) (x4,y4);
+   double A=y4-y1;
+   double B=x1-x4;
+   double C=y1*(x4-x1)-x1*(y4-y1);
+   double AB=A*A+B*B;
+
+   if((A*x2+B*y2+C)*(A*x2+B*y2+C)<AB && (A*x3+B*y3+C)*(A*x3+B*y3+C)<AB){
+    Vector2 v0=Vector2Make(x1,y1);
+    Vector2 v1=Vector2Make(x4,y4);
+    Vector2 t = Vector2Normalize(Vector2Subtract(v1,v0));
+
+    VGPathAddEdge(self,v0, v1, *tp, t, *prevFlags, 0);
+    *prevFlags=0;
+    *pp=v1;
+    *tp=t;
+    return;
+   }
+   else {
+    double x12=x1+x2;
+    double y12=y1+y2;
+    double x23=x2+x3;
+    double y23=y2+y3;
+    double x34=x3+x4;
+    double y34=y3+y4;
+    double x1223=x12+x23;
+    double y1223=y12+y23;
+    double x2334=x23+x34;
+    double y2334=y23+y34;
+    double x=x1223+x2334;
+    double y=y1223+y2334;
+
+    bezier(self,x1,y1,x12/2,y12/2,x1223/4,y1223/4,x/8,y/8,prevFlags,pp,tp);
+    bezier(self,x/8,y/8,x2334/4,y2334/4,x34/2,y34/2,x4,y4,prevFlags,pp,tp);
+   }
+}
 
 bool VGPathAddCubicTo(VGPath *self,Vector2 p0, Vector2 p1, Vector2 p2, Vector2 p3, bool subpathHasGeometry){
 	if(Vector2IsEqual(p0,p1) && Vector2IsEqual(p0,p2) && Vector2IsEqual(p0 ,p3))
@@ -1474,6 +1505,14 @@ bool VGPathAddCubicTo(VGPath *self,Vector2 p0, Vector2 p1, Vector2 p2, Vector2 p
 	if(!subpathHasGeometry)
 		startFlags |= START_SUBPATH;
 
+#if 1
+// This works, but does not take the CTM (i.e. scaling) into effect
+	unsigned int prevFlags = startFlags;
+	Vector2 pp = p0;
+	Vector2 tp = incomingTangent;
+    bezier(self,p0.x,p0.y,p1.x,p1.y,p2.x,p2.y,p3.x,p3.y,&prevFlags,&pp,&tp);
+	VGPathAddEdge(self,pp, p3, tp, outgoingTangent, prevFlags, END_SEGMENT);
+#else
 	const int segments = 256;
 	Vector2 pp = p0;
 	Vector2 tp = incomingTangent;
@@ -1489,13 +1528,14 @@ bool VGPathAddCubicTo(VGPath *self,Vector2 p0, Vector2 p1, Vector2 p2, Vector2 p
 		if(Vector2IsZero(tn))
 			tn = tp;
 
-		VGPathAddEdge(self,pp, pn, tp, tn, prevFlags, 0);	//throws bad_alloc
+		VGPathAddEdge(self,pp, pn, tp, tn, prevFlags, 0);
 
 		pp = pn;
 		tp = tn;
 		prevFlags = 0;
 	}
-	VGPathAddEdge(self,pp, p3, tp, outgoingTangent, prevFlags, END_SEGMENT);	//throws bad_alloc
+	VGPathAddEdge(self,pp, p3, tp, outgoingTangent, prevFlags, END_SEGMENT);
+#endif
 	return true;
 }
 

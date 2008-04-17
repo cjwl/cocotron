@@ -36,9 +36,9 @@ typedef unsigned short	RIuint16;
 typedef unsigned int VGbitfield;
 
 typedef enum {
-  VG_TILE_FILL                                = 0x1D00,
-  VG_TILE_PAD                                 = 0x1D01,
-  VG_TILE_REPEAT                              = 0x1D02,
+  VG_TILE_FILL,
+  VG_TILE_PAD,
+  VG_TILE_REPEAT,
 } VGTilingMode;
 
 typedef enum {
@@ -148,9 +148,6 @@ static inline KGIntRect KGIntRectIntersect(KGIntRect self,KGIntRect other) {
 /*-------------------------------------------------------------------*//*!
 * \brief	A class representing color for processing and converting it
 *			to and from various surface formats.
-* \param	
-* \return	
-* \note		
 *//*-------------------------------------------------------------------*/
 
 enum {
@@ -310,6 +307,23 @@ static inline VGColor VGColorUnpremultiply(VGColor result){
 
 VGColor VGColorConvert(VGColor result,VGColorInternalFormat outputFormat);
 
+static inline void convertSpan(KGRGBA *span,int length,VGColorInternalFormat fromFormat,VGColorInternalFormat toFormat){
+   if(fromFormat!=toFormat){
+    int i;
+   
+    for(i=0;i<length;i++)
+     span[i]=KGRGBAFromColor(VGColorConvert(VGColorFromKGRGBA(span[i],fromFormat),toFormat));
+   }
+}
+
+static inline void premultiplySpan(KGRGBA *span,int length){
+   int i;
+      
+   for(i=0;i<length;i++)
+    span[i]=KGRGBAPremultiply(span[i]);
+}
+
+
 typedef struct  {
    int redBits;
    int redShift;
@@ -327,7 +341,6 @@ typedef struct  {
 
 typedef void (*VGImageReadSpan_KGRGBA)(VGImage *self,int x,int y,KGRGBA *span,int length);
 typedef void (*VGImageWriteSpan_KGRGBA)(VGImage *self,int x,int y,KGRGBA *span,int length);
-typedef void (*VGImageReadTexelTileSpan)(VGImage *self,int u, int v, KGRGBA *span,int length,int level, KGRGBA tileFillColor);
 
 @interface VGImage : NSObject {
    size_t       _width;
@@ -355,9 +368,9 @@ typedef void (*VGImageReadTexelTileSpan)(VGImage *self,int u, int v, KGRGBA *spa
 } 
 
 VGImage *VGImageAlloc();
-VGImage *VGImageInit(VGImage *self,size_t width,size_t height,size_t bitsPerComponent,size_t bitsPerPixel,NSString *colorSpaceName,CGBitmapInfo bitmapInfo,VGImageFormat imageFormat);	//throws bad_alloc
+VGImage *VGImageInit(VGImage *self,size_t width,size_t height,size_t bitsPerComponent,size_t bitsPerPixel,NSString *colorSpaceName,CGBitmapInfo bitmapInfo,VGImageFormat imageFormat);
 //use data from a memory buffer. NOTE: data is not copied, so it is user's responsibility to make sure the data remains valid while the VGImage is in use.
-VGImage *VGImageInitWithBytes(VGImage *self,size_t width,size_t height,size_t bitsPerComponent,size_t bitsPerPixel,size_t bytesPerRow,NSString *colorSpaceName,CGBitmapInfo bitmapInfo,VGImageFormat imageFormat,RIuint8* data);	//throws bad_alloc
+VGImage *VGImageInitWithBytes(VGImage *self,size_t width,size_t height,size_t bitsPerComponent,size_t bitsPerPixel,size_t bytesPerRow,NSString *colorSpaceName,CGBitmapInfo bitmapInfo,VGImageFormat imageFormat,RIuint8* data);
 
 void VGImageDealloc(VGImage *self);
 
@@ -373,7 +386,7 @@ void VGImageClear(VGImage *self,VGColor clearColor, int x, int y, int w, int h);
 void VGImageBlit(VGImage *self,VGImage * src, int sx, int sy, int dx, int dy, int w, int h, bool dither);
 void VGImageMask(VGImage *self,VGImage* src, VGMaskOperation operation, int x, int y, int w, int h);
 VGColor inline VGImageReadPixel(VGImage *self,int x, int y);
-VGColorInternalFormat VGImageReadPremultipliedPixelSpan(VGImage *self,int x,int y,KGRGBA *span,int length);
+VGColorInternalFormat VGImageReadPremultipliedSpan_ffff(VGImage *self,int x,int y,KGRGBA *span,int length);
 
 void inline VGImageWritePixel(VGImage *self,int x, int y, VGColor c);
 void VGImageWritePixelSpan(VGImage *self,int x,int y,KGRGBA *span,int length,VGColorInternalFormat format);
@@ -385,8 +398,12 @@ void VGImageReadMaskPixelSpanIntoCoverage(VGImage *self,int x,int y,RIfloat *cov
 
 void VGImageWriteMaskPixel(VGImage *self,int x, int y, RIfloat m);	//can write only to VG_A_8
 
-VGImageReadTexelTileSpan VGImageTexelTilingFunctionForMode(VGTilingMode tilingMode);
-void VGImageResampleSpan(VGImage *self,RIfloat x, RIfloat y, KGRGBA *span,int length,int colorFormat, Matrix3x3 surfaceToImage, CGInterpolationQuality quality, VGImageReadTexelTileSpan tilingFunction, VGColor tileFillColor);
+VGColorInternalFormat VGImageResample_EWAOnMipmaps(VGImage *self,RIfloat x, RIfloat y,KGRGBA *span,int length, Matrix3x3 surfaceToImage);
+VGColorInternalFormat VGImageResample_Bicubic(VGImage *self,RIfloat x, RIfloat y,KGRGBA *span,int length, Matrix3x3 surfaceToImage);
+VGColorInternalFormat VGImageResample_Bilinear(VGImage *self,RIfloat x, RIfloat y,KGRGBA *span,int length, Matrix3x3 surfaceToImage);
+VGColorInternalFormat VGImageResample_PointSampling(VGImage *self,RIfloat x, RIfloat y,KGRGBA *span,int length, Matrix3x3 surfaceToImage);
+
+void VGImagePatternSpan(VGImage *self,RIfloat x, RIfloat y, KGRGBA *span,int length,int colorFormat, Matrix3x3 surfaceToImage, CGPatternTiling distortion);
 
 void VGImageMakeMipMaps(VGImage *self);
 

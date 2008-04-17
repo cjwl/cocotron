@@ -19,7 +19,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSEvent_CoreGraphics.h>
 #import <AppKit/NSColor.h>
 #import <AppKit/CGWindow.h>
-#import <AppKit/CGContext.h>
+#import <ApplicationServices/CGContext.h>
 #import <AppKit/NSGraphics.h>
 #import <AppKit/NSMenu.h>
 #import <AppKit/NSMenuItem.h>
