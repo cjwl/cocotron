@@ -359,13 +359,17 @@ static NSMapTable *pathToObject=NULL;
 }
 
 -(NSString *)executablePath {
-	return [_path stringByAppendingPathComponent:[self _findExecutable]];
+	if(!_executablePath)
+	{
+		_executablePath=[[self _findExecutable] retain];
+	}
+	return _executablePath;
 }
 
 -(BOOL)load {
-   if(!_isLoaded){
-    NSString *load=[self _findExecutable];
-
+	if(!_isLoaded){
+		NSString *load=[self executablePath];
+		
     if(NSLoadModule([load fileSystemRepresentation]) == NULL){
      NSLog(@"load of %@ FAILED",load);
      return NO;

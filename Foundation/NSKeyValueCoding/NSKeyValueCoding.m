@@ -411,7 +411,6 @@ void objc_setProperty (id self, SEL _cmd, size_t offset, id value, BOOL isAtomic
 	{
 		NSUnimplementedFunction();
 	}
-	NSLog(@"objc_setProperty %@, %@, %i, %@, %i, %i", self, NSStringFromSelector(_cmd), offset, value, isAtomic, shouldCopy);
 	
 	const char* origName = sel_getName(_cmd);
 	int selLen=strlen(origName);

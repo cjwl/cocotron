@@ -106,6 +106,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(NSString *)stringByAppendingPathExtension:(NSString *)other {
    unsigned selfLength=[self length];
+	if(selfLength && [self characterAtIndex:selfLength-1]==SLASH)
+		selfLength--;
    unsigned otherLength=[other length];
    unsigned totalLength=selfLength+1+otherLength;
    unichar  characters[totalLength];
