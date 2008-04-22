@@ -23,7 +23,11 @@ NSString *NSNibTopLevelObjects=@"NSNibTopLevelObjects";
 @implementation NSNib
 
 -initWithContentsOfFile:(NSString *)path {
-   NSString *keyedobjects=[[path stringByAppendingPathComponent:@"keyedobjects"] stringByAppendingPathExtension:@"nib"];
+   NSString *keyedobjects=path;
+   BOOL      isDirectory=NO;
+   
+   if([[NSFileManager defaultManager] fileExistsAtPath:path isDirectory:&isDirectory] && isDirectory)
+    keyedobjects=[[path stringByAppendingPathComponent:@"keyedobjects"] stringByAppendingPathExtension:@"nib"];
    
    if((_data=[[NSData alloc] initWithContentsOfFile:keyedobjects])==nil){
     [self dealloc];

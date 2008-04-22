@@ -741,7 +741,7 @@
 			isa = PBXContainerItemProxy;
 			containerPortal = FECAF4C80DB710EE00BA2A8E /* ApplicationServices.xcodeproj */;
 			proxyType = 1;
-			remoteGlobalIDString = FE01AAE20C5D9BF900AEA51A /* ApplicationServices-Windows-i386 */;
+			remoteGlobalIDString = FE01AAE20C5D9BF900AEA51A;
 			remoteInfo = "ApplicationServices-Windows-i386";
 		};
 		FECAF4D00DB710EE00BA2A8E /* PBXContainerItemProxy */ = {
