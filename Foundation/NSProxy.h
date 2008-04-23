@@ -18,7 +18,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 +alloc;
 
 +(Class)class;
-+(BOOL)respondsToSelector:(SEL)selector;
+//+(BOOL)respondsToSelector:(SEL)selector;
 
 -(void)dealloc;
 -(void)finalize;

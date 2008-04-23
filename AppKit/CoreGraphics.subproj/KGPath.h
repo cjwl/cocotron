@@ -11,16 +11,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <ApplicationServices/ApplicationServices.h>
 
 @interface KGPath : NSObject <NSCopying,NSMutableCopying> {
-   unsigned       _numberOfOperators;
-   unsigned char *_operators;
+   unsigned       _numberOfElements;
+   unsigned char *_elements;
    unsigned       _numberOfPoints;
    CGPoint       *_points;
 }
 
--initWithOperators:(unsigned char *)operators numberOfOperators:(unsigned)numberOfOperators points:(CGPoint *)points numberOfPoints:(unsigned)numberOfPoints;
+-initWithOperators:(unsigned char *)elements numberOfElements:(unsigned)numberOfElements points:(CGPoint *)points numberOfPoints:(unsigned)numberOfPoints;
 
--(unsigned)numberOfOperators;
--(const unsigned char *)operators;
+-(unsigned)numberOfElements;
+-(const unsigned char *)elements;
 
 -(unsigned)numberOfPoints;
 -(const CGPoint *)points;
@@ -32,8 +32,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(BOOL)isEmpty;
 -(BOOL)isRect:(CGRect *)rect;
 
--(BOOL)containsPoint:(CGPoint)point evenOdd:(BOOL)evenOdd withTransform:(CGAffineTransform *)matrix;
+-(BOOL)containsPoint:(CGPoint)point evenOdd:(BOOL)evenOdd withTransform:(const CGAffineTransform *)matrix;
 
 -(CGRect)boundingBox;
+
+-(void)applyWithInfo:(void *)info function:(CGPathApplierFunction)function;
 
 @end

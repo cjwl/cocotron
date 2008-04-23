@@ -13,12 +13,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @interface KGDataProvider : NSObject {
    NSData     *_data;
    const void *_bytes;
-   unsigned    _length;
+   size_t      _length;
 }
 
 -initWithData:(NSData *)data;
+-initWithBytes:(const void *)bytes length:(size_t)length;
 
 -(const void *)bytes;
--(unsigned)length;
+-(size_t)length;
 
 @end

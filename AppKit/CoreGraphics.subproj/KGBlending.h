@@ -1,6 +1,6 @@
 /*------------------------------------------------------------------------
  *
- * OpenVG 1.0.1 Reference Implementation
+ * Derivative of the OpenVG 1.0.1 Reference Implementation
  * -------------------------------------
  *
  * Copyright (c) 2007 The Khronos Group Inc.

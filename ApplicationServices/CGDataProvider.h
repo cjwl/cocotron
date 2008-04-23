@@ -13,7 +13,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 typedef KGDataProvider *CGDataProviderRef;
 
+typedef void (*CGDataProviderReleaseDataCallback)(void *info,const void *data,size_t size);
+
 COREGRAPHICS_EXPORT CGDataProviderRef CGDataProviderRetain(CGDataProviderRef provider);
 COREGRAPHICS_EXPORT void CGDataProviderRelease(CGDataProviderRef provider);
 
 COREGRAPHICS_EXPORT CGDataProviderRef CGDataProviderCreateWithCFData(NSData *data);
+
+COREGRAPHICS_EXPORT CGDataProviderRef CGDataProviderCreateWithData(void *info,const void *data,size_t size,CGDataProviderReleaseDataCallback releaseCallback);

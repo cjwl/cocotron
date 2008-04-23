@@ -20,3 +20,7 @@ void CGDataProviderRelease(CGDataProviderRef provider) {
 CGDataProviderRef CGDataProviderCreateWithCFData(NSData *data) {
    return [[KGDataProvider alloc] initWithData:data];
 }
+
+COREGRAPHICS_EXPORT CGDataProviderRef CGDataProviderCreateWithData(void *info,const void *data,size_t size,CGDataProviderReleaseDataCallback releaseCallback) {
+   return [[KGDataProvider alloc] initWithBytes:data length:size];
+}

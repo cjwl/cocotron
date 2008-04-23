@@ -39,6 +39,9 @@ FOUNDATION_EXPORT const void *NSNotAPointerMapKey;
 
 FOUNDATION_EXPORT const NSMapTableKeyCallBacks NSIntMapKeyCallBacks; 
 FOUNDATION_EXPORT const NSMapTableValueCallBacks NSIntMapValueCallBacks; 
+
+FOUNDATION_EXPORT const NSMapTableKeyCallBacks NSIntegerMapKeyCallBacks; 
+FOUNDATION_EXPORT const NSMapTableValueCallBacks NSIntegerMapValueCallBacks; 
 FOUNDATION_EXPORT const NSMapTableKeyCallBacks NSNonOwnedPointerMapKeyCallBacks; 
 FOUNDATION_EXPORT const NSMapTableValueCallBacks NSNonOwnedPointerMapValueCallBacks;
 FOUNDATION_EXPORT const NSMapTableKeyCallBacks NSNonOwnedPointerOrNullMapKeyCallBacks; 

@@ -1149,7 +1149,7 @@ U+2029 (Unicode paragraph separator), \r\n, in that order (also known as CRLF)
 
 -(const char *)cStringUsingEncoding:(NSStringEncoding)encoding {
    NSUnimplementedMethod();
-   return 0;
+   return [self cString];
 }
 
 -(BOOL)getCString:(char *)cString maxLength:(NSUInteger)maxLength encoding:(NSStringEncoding)encoding {

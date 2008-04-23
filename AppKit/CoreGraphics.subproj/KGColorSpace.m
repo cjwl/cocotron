@@ -18,18 +18,18 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @implementation KGColorSpace
 
--initWithDeviceGray {
-   _type=KGColorSpaceDeviceGray;
+-initWithGenericGray {
+   _type=KGColorSpaceGenericGray;
    return self;
 }
 
--initWithDeviceRGB {
-   _type=KGColorSpaceDeviceRGB;
+-initWithGenericRGB {
+   _type=KGColorSpaceGenericRGB;
    return self;
 }
 
--initWithDeviceCMYK {
-   _type=KGColorSpaceDeviceCMYK;
+-initWithGenericCMYK {
+   _type=KGColorSpaceGenericCMYK;
    return self;
 }
 
@@ -48,12 +48,18 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(unsigned)numberOfComponents {
    switch(_type){
-    case KGColorSpaceDeviceGray: return 1;
-    case KGColorSpaceDeviceRGB: return 3;
-    case KGColorSpaceDeviceCMYK: return 4;
+    case KGColorSpaceGenericGray: return 1;
+    case KGColorSpaceGenericRGB: return 3;
+    case KGColorSpaceGenericCMYK: return 4;
     case KGColorSpaceIndexed: return 1;
     default: return 0;
    }
+}
+
+-(BOOL)isEqualToColorSpace:(KGColorSpace *)other {
+   if(self->_type!=other->_type)
+    return NO;
+   return YES;
 }
 
 -(KGPDFObject *)encodeReferenceWithContext:(KGPDFContext *)context {
@@ -61,15 +67,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    
    switch(_type){
    
-    case KGColorSpaceDeviceGray:
+    case KGColorSpaceGenericGray:
      name=[KGPDFObject_Name pdfObjectWithCString:"DeviceGray"];
      break;
      
-    case KGColorSpaceDeviceRGB:
+    case KGColorSpaceGenericRGB:
      name=[KGPDFObject_Name pdfObjectWithCString:"DeviceRGB"];
      break;
 
-    case KGColorSpaceDeviceCMYK:
+    case KGColorSpaceGenericCMYK:
      name=[KGPDFObject_Name pdfObjectWithCString:"DeviceCMYK"];
      break;
 
@@ -86,11 +92,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
    if([object checkForType:kKGPDFObjectTypeName value:&colorSpaceName]){
     if(strcmp(colorSpaceName,"DeviceGray")==0)
-     return [[KGColorSpace alloc] initWithDeviceGray];
+     return [[KGColorSpace alloc] initWithGenericGray];
     else if(strcmp(colorSpaceName,"DeviceRGB")==0)
-     return [[KGColorSpace alloc] initWithDeviceRGB];
+     return [[KGColorSpace alloc] initWithGenericRGB];
     else if(strcmp(colorSpaceName,"DeviceCMYK")==0)
-     return [[KGColorSpace alloc] initWithDeviceCMYK];
+     return [[KGColorSpace alloc] initWithGenericCMYK];
     else {
      NSLog(@"does not handle color space named %s",colorSpaceName);
     }
@@ -169,13 +175,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
      switch(numberOfComponents){
 
       case 1:
-       return [[KGColorSpace alloc] initWithDeviceGray];
+       return [[KGColorSpace alloc] initWithGenericGray];
        
       case 3:
-       return [[KGColorSpace alloc] initWithDeviceRGB];
+       return [[KGColorSpace alloc] initWithGenericRGB];
        
       case 4:
-       return [[KGColorSpace alloc] initWithDeviceCMYK];
+       return [[KGColorSpace alloc] initWithGenericCMYK];
        
       default:
        NSLog(@"Invalid N in ICCBased stream");
@@ -215,6 +221,24 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [_base release];
    NSZoneFree(NSDefaultMallocZone(),_bytes);
    [super dealloc];
+}
+
+-(BOOL)isEqualToColorSpace:(KGColorSpace *)otherX {
+   KGColorSpace_indexed *other=(KGColorSpace_indexed *)other;
+   if(self->_type!=other->_type)
+    return NO;
+    
+   if(![self->_base isEqualToColorSpace:other->_base])
+    return NO;
+   if(self->_hival!=other->_hival)
+    return NO;
+    
+   int i,max=[self->_base numberOfComponents]*(self->_hival+1);
+   for(i=0;i<max;i++)
+    if(self->_bytes[i]!=other->_bytes[i])
+     return NO;
+     
+   return YES;
 }
 
 -(KGColorSpace *)baseColorSpace {

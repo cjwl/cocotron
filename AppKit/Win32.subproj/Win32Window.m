@@ -217,7 +217,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(KGContext *)createBackingCGContextIfNeeded {
    if(_backingContext==nil)
-    _backingContext=[KGContext createContextWithSize:_size context:[self createCGContextIfNeeded]];
+    _backingContext=[KGContext createBackingContextWithSize:_size context:[self createCGContextIfNeeded]];
    
    return _backingContext;
 }

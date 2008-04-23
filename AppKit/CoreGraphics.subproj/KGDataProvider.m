@@ -18,6 +18,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return self;
 }
 
+-initWithBytes:(const void *)bytes length:(size_t)length {
+   _data=nil;
+   _bytes=bytes;
+   _length=length;
+   return self;
+}
+
 -(void)dealloc {
    [_data release];
    [super dealloc];
@@ -31,7 +38,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return _bytes;
 }
 
--(unsigned)length {
+-(size_t)length {
    return _length;
 }
 

@@ -1,6 +1,6 @@
 /*------------------------------------------------------------------------
  *
- * OpenVG 1.0.1 Reference Implementation
+ * Derivative of the OpenVG 1.0.1 Reference Implementation
  * -------------------------------------
  *
  * Copyright (c) 2007 The Khronos Group Inc.
@@ -52,13 +52,13 @@ static inline RIfloat inputFloat(RIfloat f) {
 *           The average always lies to the given direction from the first
 *			vector.
 * \param	u0, u1 Unit input vectors.
-* \param	cw True if the average should be clockwise from u0, false if
+* \param	cw True if the average should be clockwise from u0, NO if
 *              counterclockwise.
 * \return	Average of the two input vectors.
 * \note		
 *//*-------------------------------------------------------------------*/
 
-static Vector2 unitAverageWithDirection(Vector2 u0, Vector2 u1, bool cw)
+static Vector2 unitAverageWithDirection(Vector2 u0, Vector2 u1, BOOL cw)
 {
 	Vector2 u =Vector2MultiplyByFloat(Vector2Add(u0 , u1), 0.5f);
 	Vector2 n0 = Vector2PerpendicularCCW(u0);
@@ -112,7 +112,7 @@ static Vector2 unitAverage(Vector2 u0, Vector2 u1)
 * \note		
 *//*-------------------------------------------------------------------*/
 
-static Vector2 circularLerpWithDirection(Vector2 t0, Vector2 t1, RIfloat ratio, bool cw)
+static Vector2 circularLerpWithDirection(Vector2 t0, Vector2 t1, RIfloat ratio, BOOL cw)
 {
 	Vector2 u0 = t0, u1 = t1;
 	RIfloat l0 = 0.0f, l1 = 1.0f;
@@ -169,7 +169,7 @@ static Vector2 circularLerp(Vector2 t0, Vector2 t1, RIfloat ratio)
 @implementation VGPath
 
 static inline int VGPathGetNumCoordinates(VGPath *self){
-   return self->_coordinateCount;
+   return self->_numberOfPoints;
 }
 
 VGPath *VGPathAlloc(){
@@ -181,18 +181,17 @@ VGPath *VGPathInit(VGPath *self,int segmentCapacityHint, int coordCapacityHint){
 	self->m_userMiny=0.0f;
 	self->m_userMaxx=0.0f;
 	self->m_userMaxy=0.0f;
-    self->_segmentCount=0;
-    self->_segmentCapacity=(segmentCapacityHint>0)?RI_INT_MIN(segmentCapacityHint,65536):2;
-    self->_segments=(RIuint8 *)NSZoneMalloc(NULL,self->_segmentCapacity*sizeof(RIuint8));
-    self->_coordinateCount=0;
-    self->_coordinateCapacity=(coordCapacityHint>0)?RI_INT_MIN(coordCapacityHint, 65536):2;
-    self->_coordinates=(RIfloat *)NSZoneMalloc(NULL,self->_coordinateCapacity*sizeof(RIfloat));
+    self->_numberOfElements=0;
+    self->_capacityOfElements=(segmentCapacityHint>0)?RI_INT_MIN(segmentCapacityHint,65536):2;
+    self->_elements=NSZoneMalloc(NULL,self->_capacityOfElements*sizeof(unsigned char));
+    self->_numberOfPoints=0;
+    self->_capacityOfPoints=(coordCapacityHint>0)?RI_INT_MIN(coordCapacityHint, 65536):2;
+    self->_points=NSZoneMalloc(NULL,self->_capacityOfPoints*sizeof(CGPoint));
     self->_vertexCount=0;
     self->_vertexCapacity=2;
-    self->_vertices=(Vertex *)NSZoneMalloc(NULL,self->_vertexCapacity*sizeof(Vertex));
-    self->_segmentToVertexCount=0;
+    self->_vertices=NSZoneMalloc(NULL,self->_vertexCapacity*sizeof(Vertex));
     self->_segmentToVertexCapacity=2;
-    self->_segmentToVertex=(VertexIndex *)NSZoneMalloc(NULL,self->_segmentToVertexCapacity*sizeof(VertexIndex));
+    self->_segmentToVertex=NSZoneMalloc(NULL,self->_segmentToVertexCapacity*sizeof(VertexIndex));
     return self;
 }
 
@@ -204,8 +203,8 @@ VGPath *VGPathInit(VGPath *self,int segmentCapacityHint, int coordCapacityHint){
 *//*-------------------------------------------------------------------*/
 
 void VGPathDealloc(VGPath *self){
-   NSZoneFree(NULL,self->_segments);
-   NSZoneFree(NULL,self->_coordinates);
+   NSZoneFree(NULL,self->_elements);
+   NSZoneFree(NULL,self->_points);
    NSZoneFree(NULL,self->_vertices);
    NSZoneFree(NULL,self->_segmentToVertex);
    NSZoneFree(NULL,self);
@@ -217,11 +216,10 @@ void VGPathDealloc(VGPath *self){
 * \return	
 *//*-------------------------------------------------------------------*/
 
-RIfloat VGPathGetCoordinate(VGPath *self,int i)
-{
-	RI_ASSERT(i >= 0 && i < self->_coordinateCount);
+Vector2 VGPathGetCoordinate(VGPath *self,int i){
+	RI_ASSERT(i >= 0 && i < self->_numberOfPoints);
 
-    return self->_coordinates[i];
+    return self->_points[i];
 }
 
 /*-------------------------------------------------------------------*//*!
@@ -232,10 +230,10 @@ RIfloat VGPathGetCoordinate(VGPath *self,int i)
 *			will overflow silently.
 *//*-------------------------------------------------------------------*/
 
-void VGPathSetCoordinate(VGPath *self,int i, RIfloat c){
+void VGPathSetCoordinate(VGPath *self,int i, Vector2 c){
 	RI_ASSERT(i >= 0);
     
-    self->_coordinates[i]=c;
+    self->_points[i]=c;
 }
 
 /*-------------------------------------------------------------------*//*!
@@ -247,8 +245,8 @@ void VGPathSetCoordinate(VGPath *self,int i, RIfloat c){
 *//*-------------------------------------------------------------------*/
 
 int CGPathElementTypeToNumCoordinates(CGPathElementType segment){
-	RI_ASSERT(((int)segment) >= 0 && ((int)segment) <= 6);
-	static const int coords[13] = {2,2,4,6,0};
+	RI_ASSERT(((int)segment) >= 0 && ((int)segment) <= 4);
+	static const int coords[13] = {1,1,2,3,0};
 	return coords[(int)segment];
 }
 
@@ -278,23 +276,23 @@ int VGPathCountNumCoordinates(const RIuint8* segments, int numSegments)
 * \note		if runs out of memory, throws bad_alloc and leaves the path as it was
 *//*-------------------------------------------------------------------*/
 
-void VGPathAppendData(VGPath *self,const RIuint8* segments, int numSegments, const RIfloat* data){
+void VGPathAppendData(VGPath *self,const RIuint8* segments, int numSegments, const CGPoint* data){
 	RI_ASSERT(numSegments > 0);
 	RI_ASSERT(segments && data);
 
 	//allocate new arrays
     RIuint8 *newSegments=NULL;
-    int      newSegmentCapacity=self->_segmentCount+numSegments;
+    int      newSegmentCapacity=self->_numberOfElements+numSegments;
     
-    if(newSegmentCapacity>self->_segmentCapacity)
-     newSegments=(RIuint8 *)NSZoneMalloc(NULL,newSegmentCapacity*sizeof(RIuint8));
+    if(newSegmentCapacity>self->_capacityOfElements)
+     newSegments=NSZoneMalloc(NULL,newSegmentCapacity*sizeof(unsigned char));
     
-    RIfloat *newCoordinates=NULL;
+    CGPoint *newCoordinates=NULL;
     int      newCoordinateCount=VGPathCountNumCoordinates(segments,numSegments);
-    int      newCoordinateCapacity=self->_coordinateCount+newCoordinateCount;
+    int      newCoordinateCapacity=self->_numberOfPoints+newCoordinateCount;
     
-    if(newCoordinateCapacity>self->_coordinateCapacity)
-     newCoordinates=(RIfloat *)NSZoneMalloc(NULL,newCoordinateCapacity*sizeof(RIfloat));
+    if(newCoordinateCapacity>self->_capacityOfPoints)
+     newCoordinates=NSZoneMalloc(NULL,newCoordinateCapacity*sizeof(CGPoint));
     
 	//if we get here, the memory allocations have succeeded
 
@@ -304,32 +302,32 @@ void VGPathAppendData(VGPath *self,const RIuint8* segments, int numSegments, con
     if(newSegments!=NULL){
      RIuint8 *tmp;
 
-     for(i=0;i<self->_segmentCount;i++)
-      newSegments[i]=self->_segments[i];
+     for(i=0;i<self->_numberOfElements;i++)
+      newSegments[i]=self->_elements[i];
       
-     tmp=self->_segments;
-     self->_segments=newSegments;
-     self->_segmentCapacity=newSegmentCapacity;
+     tmp=self->_elements;
+     self->_elements=newSegments;
+     self->_capacityOfElements=newSegmentCapacity;
      newSegments=tmp;
     }
     for(i=0;i<numSegments;i++)
-     self->_segments[self->_segmentCount++]=segments[i];
+     self->_elements[self->_numberOfElements++]=segments[i];
     
     if(newCoordinates!=NULL){
-     RIfloat *tmp;
+     CGPoint *tmp;
 
-     for(i=0;i<self->_coordinateCount;i++)
-      newCoordinates[i]=self->_coordinates[i];
+     for(i=0;i<self->_numberOfPoints;i++)
+      newCoordinates[i]=self->_points[i];
       
-     tmp=self->_coordinates;
-     self->_coordinates=newCoordinates;
-     self->_coordinateCapacity=newCoordinateCapacity;
+     tmp=self->_points;
+     self->_points=newCoordinates;
+     self->_capacityOfPoints=newCoordinateCapacity;
      newCoordinates=tmp;
     }
     for(i=0;i<newCoordinateCount;i++)
-     self->_coordinates[self->_coordinateCount++]=inputFloat(data[i]);
+     self->_points[self->_numberOfPoints++]=CGPointMake(inputFloat(data[i].x),inputFloat(data[i].y));
      
-	RI_ASSERT(self->_coordinateCount == VGPathCountNumCoordinates(self->_segments,self->_segmentCount));
+	RI_ASSERT(self->_numberOfPoints == VGPathCountNumCoordinates(self->_elements,self->_numberOfElements));
 
     if(newSegments!=NULL)
      NSZoneFree(NULL,newSegments);
@@ -350,20 +348,20 @@ void VGPathAppendData(VGPath *self,const RIuint8* segments, int numSegments, con
 void VGPathAppend(VGPath *self,VGPath* srcPath){
 	RI_ASSERT(srcPath);
 
-	if(srcPath->_segmentCount)
+	if(srcPath->_numberOfElements>0)
 	{
 		//allocate new arrays
         RIuint8 *newSegments=NULL;
-        int      newSegmentCapacity=self->_segmentCount+srcPath->_segmentCount;
+        int      newSegmentCapacity=self->_numberOfElements+srcPath->_numberOfElements;
     
-        if(newSegmentCapacity>self->_segmentCapacity)
-            newSegments=(RIuint8 *)NSZoneMalloc(NULL,newSegmentCapacity*sizeof(RIuint8));
+        if(newSegmentCapacity>self->_capacityOfElements)
+            newSegments=NSZoneMalloc(NULL,newSegmentCapacity*sizeof(unsigned char));
     
-        RIfloat *newCoordinates=NULL;
-        int      newCoordinateCapacity=self->_coordinateCount+VGPathGetNumCoordinates(srcPath);
+        CGPoint *newCoordinates=NULL;
+        int      newCoordinateCapacity=self->_numberOfPoints+VGPathGetNumCoordinates(srcPath);
     
-        if(newCoordinateCapacity>self->_coordinateCapacity)
-            newCoordinates=(RIfloat *)NSZoneMalloc(NULL,newCoordinateCapacity*sizeof(RIfloat));
+        if(newCoordinateCapacity>self->_capacityOfPoints)
+            newCoordinates=NSZoneMalloc(NULL,newCoordinateCapacity*sizeof(CGPoint));
 
 		//if we get here, the memory allocations have succeeded
 
@@ -373,32 +371,32 @@ void VGPathAppend(VGPath *self,VGPath* srcPath){
     if(newSegments!=NULL){
      RIuint8 *tmp;
 
-     for(i=0;i<self->_segmentCount;i++)
-      newSegments[i]=self->_segments[i];
+     for(i=0;i<self->_numberOfElements;i++)
+      newSegments[i]=self->_elements[i];
       
-     tmp=self->_segments;
-     self->_segments=newSegments;
-     self->_segmentCapacity=newSegmentCapacity;
+     tmp=self->_elements;
+     self->_elements=newSegments;
+     self->_capacityOfElements=newSegmentCapacity;
      newSegments=tmp;
     }
-    for(i=0;i<srcPath->_segmentCount;i++)
-     self->_segments[self->_segmentCount++]=srcPath->_segments[i];
+    for(i=0;i<srcPath->_numberOfElements;i++)
+     self->_elements[self->_numberOfElements++]=srcPath->_elements[i];
     
     if(newCoordinates!=NULL){
-     RIfloat *tmp;
+     CGPoint *tmp;
 
-     for(i=0;i<self->_coordinateCount;i++)
-      newCoordinates[i]=self->_coordinates[i];
+     for(i=0;i<self->_numberOfPoints;i++)
+      newCoordinates[i]=self->_points[i];
       
-     tmp=self->_coordinates;
-     self->_coordinates=newCoordinates;
-     self->_coordinateCapacity=newCoordinateCapacity;
+     tmp=self->_points;
+     self->_points=newCoordinates;
+     self->_capacityOfPoints=newCoordinateCapacity;
      newCoordinates=tmp;
     }
     for(i=0;i<VGPathGetNumCoordinates(srcPath);i++){
-        VGPathSetCoordinate(self,self->_coordinateCount++, VGPathGetCoordinate(srcPath,i));
+        VGPathSetCoordinate(self,self->_numberOfPoints++, VGPathGetCoordinate(srcPath,i));
      }
-		RI_ASSERT(self->_coordinateCount == VGPathCountNumCoordinates(self->_segments,self->_segmentCount) );
+		RI_ASSERT(self->_numberOfPoints == VGPathCountNumCoordinates(self->_elements,self->_numberOfElements) );
 
     if(newSegments!=NULL)
      NSZoneFree(NULL,newSegments);
@@ -421,16 +419,16 @@ void VGPathTransform(VGPath *self,VGPath* srcPath, Matrix3x3 matrix){
 	RI_ASSERT(srcPath);
 	RI_ASSERT(Matrix3x3IsAffine(matrix));
 
-	if(!srcPath->_segmentCount)
+	if(srcPath->_numberOfElements==0)
 		return;
 
 	//count the number of resulting coordinates
 	int numSrcCoords = 0;
 	int numDstCoords = 0;
     int i;
-	for(i=0;i<srcPath->_segmentCount;i++)
+	for(i=0;i<srcPath->_numberOfElements;i++)
 	{
-		CGPathElementType segment = (CGPathElementType)srcPath->_segments[i];
+		CGPathElementType segment = (CGPathElementType)srcPath->_elements[i];
 		int coords = CGPathElementTypeToNumCoordinates(segment);
 		numSrcCoords += coords;
 		numDstCoords += coords;
@@ -438,16 +436,16 @@ void VGPathTransform(VGPath *self,VGPath* srcPath, Matrix3x3 matrix){
 
 	//allocate new arrays
         RIuint8 *newSegments=NULL;
-        int      newSegmentCapacity=self->_segmentCount+srcPath->_segmentCount;
+        int      newSegmentCapacity=self->_numberOfElements+srcPath->_numberOfElements;
     
-        if(newSegmentCapacity>self->_segmentCapacity)
-            newSegments=(RIuint8 *)NSZoneMalloc(NULL,newSegmentCapacity*sizeof(RIuint8));
+        if(newSegmentCapacity>self->_capacityOfElements)
+            newSegments=NSZoneMalloc(NULL,newSegmentCapacity*sizeof(RIuint8));
     
-        RIfloat *newCoordinates=NULL;
-        int      newCoordinateCapacity=self->_coordinateCount+numDstCoords;
+        CGPoint *newCoordinates=NULL;
+        int      newCoordinateCapacity=self->_numberOfPoints+numDstCoords;
     
-        if(newCoordinateCapacity>self->_coordinateCapacity)
-            newCoordinates=(RIfloat *)NSZoneMalloc(NULL,newCoordinateCapacity*sizeof(RIfloat));
+        if(newCoordinateCapacity>self->_capacityOfPoints)
+            newCoordinates=NSZoneMalloc(NULL,newCoordinateCapacity*sizeof(CGPoint));
 
 	//if we get here, the memory allocations have succeeded
 
@@ -455,34 +453,34 @@ void VGPathTransform(VGPath *self,VGPath* srcPath, Matrix3x3 matrix){
     if(newSegments!=NULL){
      RIuint8 *tmp;
           
-     for(i=0;i<self->_segmentCount;i++)
-      newSegments[i]=self->_segments[i];
+     for(i=0;i<self->_numberOfElements;i++)
+      newSegments[i]=self->_elements[i];
       
-     tmp=self->_segments;
-     self->_segments=newSegments;
-     self->_segmentCapacity=newSegmentCapacity;
+     tmp=self->_elements;
+     self->_elements=newSegments;
+     self->_capacityOfElements=newSegmentCapacity;
      newSegments=tmp;
     }
 
 	//copy old data
     if(newCoordinates!=NULL){
-     RIfloat *tmp;
+     CGPoint *tmp;
      
-     for(i=0;i<self->_coordinateCount;i++)
-      newCoordinates[i]=self->_coordinates[i];
+     for(i=0;i<self->_numberOfPoints;i++)
+      newCoordinates[i]=self->_points[i];
       
-     tmp=self->_coordinates;
-     self->_coordinates=newCoordinates;
-     self->_coordinateCapacity=newCoordinateCapacity;
+     tmp=self->_points;
+     self->_points=newCoordinates;
+     self->_capacityOfPoints=newCoordinateCapacity;
      newCoordinates=tmp;
     }
     
 	int srcCoord = 0;
 	Vector2 s=Vector2Make(0,0);		//the beginning of the current subpath
 	Vector2 o=Vector2Make(0,0);		//the last point of the previous segment
-	for(i=0;i<srcPath->_segmentCount;i++)
+	for(i=0;i<srcPath->_numberOfElements;i++)
 	{
-		CGPathElementType segment = (CGPathElementType)srcPath->_segments[i];
+		CGPathElementType segment = (CGPathElementType)srcPath->_elements[i];
 		int coords = CGPathElementTypeToNumCoordinates(segment);
 
 		switch(segment)
@@ -496,11 +494,10 @@ void VGPathTransform(VGPath *self,VGPath* srcPath, Matrix3x3 matrix){
 
 		case kCGPathElementMoveToPoint:
 		{
-			RI_ASSERT(coords == 2);
-			Vector2 c=Vector2Make(VGPathGetCoordinate(srcPath,srcCoord+0), VGPathGetCoordinate(srcPath,srcCoord+1));
+			RI_ASSERT(coords == 1);
+			Vector2 c=VGPathGetCoordinate(srcPath,srcCoord);
 			Vector2 tc = Matrix3x3TransformVector2(matrix, c);
-			VGPathSetCoordinate(self, self->_coordinateCount++, tc.x);
-			VGPathSetCoordinate(self, self->_coordinateCount++, tc.y);
+			VGPathSetCoordinate(self, self->_numberOfPoints++, tc);
 			s = c;
 			o = c;
 			break;
@@ -508,57 +505,51 @@ void VGPathTransform(VGPath *self,VGPath* srcPath, Matrix3x3 matrix){
 
 		case kCGPathElementAddLineToPoint:
 		{
-			RI_ASSERT(coords == 2);
-			Vector2 c=Vector2Make(VGPathGetCoordinate(srcPath,srcCoord+0), VGPathGetCoordinate(srcPath,srcCoord+1));
+			RI_ASSERT(coords == 1);
+			Vector2 c=VGPathGetCoordinate(srcPath,srcCoord);
 			Vector2 tc = Matrix3x3TransformVector2(matrix, c);
-			VGPathSetCoordinate(self, self->_coordinateCount++, tc.x);
-			VGPathSetCoordinate(self, self->_coordinateCount++, tc.y);
+			VGPathSetCoordinate(self, self->_numberOfPoints++, tc);
 			o = c;
 			break;
 		}
 
 		case kCGPathElementAddQuadCurveToPoint:
 		{
-			RI_ASSERT(coords == 4);
-			Vector2 c0=Vector2Make(VGPathGetCoordinate(srcPath,srcCoord+0), VGPathGetCoordinate(srcPath,srcCoord+1));
-			Vector2 c1=Vector2Make(VGPathGetCoordinate(srcPath,srcCoord+2), VGPathGetCoordinate(srcPath,srcCoord+3));
+			RI_ASSERT(coords == 2);
+			Vector2 c0=VGPathGetCoordinate(srcPath,srcCoord);
+			Vector2 c1=VGPathGetCoordinate(srcPath,srcCoord+1);
 			Vector2 tc0 = Matrix3x3TransformVector2(matrix, c0);
-			VGPathSetCoordinate(self, self->_coordinateCount++, tc0.x);
-			VGPathSetCoordinate(self, self->_coordinateCount++, tc0.y);
+			VGPathSetCoordinate(self, self->_numberOfPoints++, tc0);
 			Vector2 tc1 = Matrix3x3TransformVector2(matrix, c1);
-			VGPathSetCoordinate(self, self->_coordinateCount++, tc1.x);
-			VGPathSetCoordinate(self, self->_coordinateCount++, tc1.y);
+			VGPathSetCoordinate(self, self->_numberOfPoints++, tc1);
 			o = c1;
 			break;
 		}
 
 		case kCGPathElementAddCurveToPoint:
 		{
-			RI_ASSERT(coords == 6);
-			Vector2 c0=Vector2Make(VGPathGetCoordinate(srcPath,srcCoord+0), VGPathGetCoordinate(srcPath,srcCoord+1));
-			Vector2 c1=Vector2Make(VGPathGetCoordinate(srcPath,srcCoord+2), VGPathGetCoordinate(srcPath,srcCoord+3));
-			Vector2 c2=Vector2Make(VGPathGetCoordinate(srcPath,srcCoord+4), VGPathGetCoordinate(srcPath,srcCoord+5));
+			RI_ASSERT(coords == 3);
+			Vector2 c0=VGPathGetCoordinate(srcPath,srcCoord+0);
+			Vector2 c1=VGPathGetCoordinate(srcPath,srcCoord+1);
+			Vector2 c2=VGPathGetCoordinate(srcPath,srcCoord+2);
 			Vector2 tc0 = Matrix3x3TransformVector2(matrix, c0);
-			VGPathSetCoordinate(self, self->_coordinateCount++, tc0.x);
-			VGPathSetCoordinate(self, self->_coordinateCount++, tc0.y);
+			VGPathSetCoordinate(self, self->_numberOfPoints++, tc0);
 			Vector2 tc1 = Matrix3x3TransformVector2(matrix, c1);
-			VGPathSetCoordinate(self, self->_coordinateCount++, tc1.x);
-			VGPathSetCoordinate(self, self->_coordinateCount++, tc1.y);
+			VGPathSetCoordinate(self, self->_numberOfPoints++, tc1);
 			Vector2 tc2 = Matrix3x3TransformVector2(matrix, c2);
-			VGPathSetCoordinate(self, self->_coordinateCount++, tc2.x);
-			VGPathSetCoordinate(self, self->_coordinateCount++, tc2.y);
+			VGPathSetCoordinate(self, self->_numberOfPoints++, tc2);
 			o = c2;
 			break;
 		}
 
 		}
 
-		self->_segments[self->_segmentCount++] = (RIuint8)segment;
+		self->_elements[self->_numberOfElements++] = (RIuint8)segment;
 		srcCoord += coords;
 	}
 	RI_ASSERT(srcCoord == numSrcCoords);
 
-	RI_ASSERT(self->_coordinateCount == VGPathCountNumCoordinates(self->_segments,self->_segmentCount));
+	RI_ASSERT(self->_numberOfPoints == VGPathCountNumCoordinates(self->_elements,self->_numberOfElements));
 
     if(newSegments!=NULL)
      NSZoneFree(NULL,newSegments);
@@ -729,7 +720,7 @@ void VGPathDoCap(Matrix3x3 pathToSurface, KGRasterizer *rasterizer,StrokeVertex 
         int j;
 		for(j=1;j<samples;j++)
 		{
-			Vector2 next = Vector2Add(v.p , Vector2MultiplyByFloat(circularLerpWithDirection(u0, u1, t, true) , strokeWidth * 0.5f));
+			Vector2 next = Vector2Add(v.p , Vector2MultiplyByFloat(circularLerpWithDirection(u0, u1, t, YES) , strokeWidth * 0.5f));
 			next = Matrix3x3TransformVector2(pathToSurface, next);
 
 			KGRasterizerAddEdge(rasterizer,prev, next);
@@ -773,7 +764,7 @@ void VGPathDoJoin(Matrix3x3 pathToSurface, KGRasterizer *rasterizer, StrokeVerte
 
 	Vector2 tccw = Vector2Subtract(v1.ccw,v0.ccw);
 	Vector2 s, e, m, st, et;
-	bool cw;
+	BOOL cw;
 
 	if( Vector2Dot(tccw, v0.t) > 0.0f )
 	{	//draw ccw miter (draw from point 0 to 1)
@@ -782,7 +773,7 @@ void VGPathDoJoin(Matrix3x3 pathToSurface, KGRasterizer *rasterizer, StrokeVerte
 		st = v0.t;
 		et = v1.t;
 		m = v0.ccw;
-		cw = false;
+		cw = NO;
 		KGRasterizerAddEdge(rasterizer,m0t, ccw0t);
 		KGRasterizerAddEdge(rasterizer,ccw1t, m1t);
 		KGRasterizerAddEdge(rasterizer,m1t, m0t);
@@ -794,7 +785,7 @@ void VGPathDoJoin(Matrix3x3 pathToSurface, KGRasterizer *rasterizer, StrokeVerte
 		st = v1.t;
 		et = v0.t;
 		m = v0.cw;
-		cw = true;
+		cw = YES;
 		KGRasterizerAddEdge(rasterizer,cw0t, m0t);
 		KGRasterizerAddEdge(rasterizer,m1t, cw1t);
 		KGRasterizerAddEdge(rasterizer,m0t, m1t);
@@ -837,7 +828,7 @@ void VGPathDoJoin(Matrix3x3 pathToSurface, KGRasterizer *rasterizer, StrokeVerte
 			for(j=1;j<samples;j++)
 			{
 				Vector2 position = Vector2Add(Vector2MultiplyByFloat(v0.p , (1.0f - t)) , Vector2MultiplyByFloat(v1.p , t));
-				Vector2 tangent = circularLerpWithDirection(st, et, t, true);
+				Vector2 tangent = circularLerpWithDirection(st, et, t, YES);
 
 				Vector2 next = Vector2Add(position , Vector2MultiplyByFloat(Vector2Normalize(Vector2Perpendicular(tangent, cw)) , strokeWidth * 0.5f));
 				next = Matrix3x3TransformVector2(pathToSurface, next);
@@ -869,7 +860,7 @@ void VGPathDoJoin(Matrix3x3 pathToSurface, KGRasterizer *rasterizer, StrokeVerte
 * \note		if runs out of memory, throws bad_alloc and leaves the path as it was
 *//*-------------------------------------------------------------------*/
 
-void VGPathStroke(VGPath *self,Matrix3x3 pathToSurface, KGRasterizer *rasterizer, const RIfloat* dashPattern,int dashPatternSize, RIfloat dashPhase, bool dashPhaseReset, RIfloat strokeWidth, CGLineCap capStyle, CGLineJoin joinStyle, RIfloat miterLimit){
+void VGPathStroke(VGPath *self,Matrix3x3 pathToSurface, KGRasterizer *rasterizer, const RIfloat* dashPattern,int dashPatternSize, RIfloat dashPhase, BOOL dashPhaseReset, RIfloat strokeWidth, CGLineCap capStyle, CGLineJoin joinStyle, RIfloat miterLimit){
 	RI_ASSERT(Matrix3x3IsAffine(pathToSurface));
 	RI_ASSERT(strokeWidth >= 0.0f);
 	RI_ASSERT(miterLimit >= 1.0f);
@@ -879,7 +870,7 @@ void VGPathStroke(VGPath *self,Matrix3x3 pathToSurface, KGRasterizer *rasterizer
 	if(!self->_vertexCount)
 		return;
 
-	bool dashing = true;
+	BOOL dashing = YES;
 
 	if( dashPatternSize & 1 )
 		dashPatternSize--;	//odd number of dash pattern entries, discard the last one
@@ -888,7 +879,7 @@ void VGPathStroke(VGPath *self,Matrix3x3 pathToSurface, KGRasterizer *rasterizer
 	for(i=0;i<dashPatternSize;i++)
 		dashPatternLength += RI_MAX(dashPattern[i], 0.0f);
 	if(!dashPatternSize || dashPatternLength == 0.0f )
-		dashing = false;
+		dashing = NO;
 	dashPatternLength = RI_MIN(dashPatternLength, RI_FLOAT_MAX);
 
 	//walk along the path
@@ -903,7 +894,7 @@ void VGPathStroke(VGPath *self,Matrix3x3 pathToSurface, KGRasterizer *rasterizer
 	{
 		RIfloat nextDash = 0.0f;
 		int d = 0;
-		bool inDash = true;
+		BOOL inDash = YES;
 		StrokeVertex v0=StrokeVertexInit(), v1=StrokeVertexInit(), vs=StrokeVertexInit();
         
 		for(i=0;i<self->_vertexCount;i++)
@@ -917,7 +908,7 @@ void VGPathStroke(VGPath *self,Matrix3x3 pathToSurface, KGRasterizer *rasterizer
 			v1.cw = Vector2Add(v1.p , Vector2MultiplyByFloat(Vector2Normalize(Vector2PerpendicularCW(v1.t)) , strokeWidth * 0.5f));
 			v1.pathLength = v.pathLength;
 			v1.flags = v.flags;
-			v1.inDash = dashing ? inDash : true;	//NOTE: for other than START_SEGMENT vertices inDash will be updated after dashing
+			v1.inDash = dashing ? inDash : YES;	//NOTE: for other than START_SEGMENT vertices inDash will be updated after dashing
 
 			//process the vertex event
 			if(v.flags & START_SEGMENT)
@@ -929,7 +920,7 @@ void VGPathStroke(VGPath *self,Matrix3x3 pathToSurface, KGRasterizer *rasterizer
 						if(dashPhaseReset || i == 0)
 						{
 							d = 0;
-							inDash = true;
+							inDash = YES;
 							nextDash = v1.pathLength - RI_MOD(dashPhase, dashPatternLength);
 							for(;;)
 							{
@@ -939,15 +930,15 @@ void VGPathStroke(VGPath *self,Matrix3x3 pathToSurface, KGRasterizer *rasterizer
 									break;
 
 								if( d & 1 )
-									inDash = true;
+									inDash = YES;
 								else
-									inDash = false;
+									inDash = NO;
 								d = (d+1) % dashPatternSize;
 							}
 							v1.inDash = inDash;
 							//the first point of the path lies between prevDash and nextDash
 							//d in the index of the next dash stop
-							//inDash is true if the first point is in a dash
+							//inDash is YES if the first point is in a dash
 						}
 					}
 					vs = v1;	//save the subpath start point
@@ -1020,12 +1011,12 @@ void VGPathStroke(VGPath *self,Matrix3x3 pathToSurface, KGRasterizer *rasterizer
 							if( d & 1 )
 							{	//dash starts
 								RI_ASSERT(!inDash);
-								inDash = true;
+								inDash = YES;
 							}
 							else
 							{	//dash ends
 								RI_ASSERT(inDash);
-								inDash = false;
+								inDash = NO;
 							}
 							d = (d+1) % dashPatternSize;
 							nextDash += RI_MAX(dashPattern[d], 0.0f);
@@ -1093,12 +1084,12 @@ void VGPathStroke(VGPath *self,Matrix3x3 pathToSurface, KGRasterizer *rasterizer
 *//*-------------------------------------------------------------------*/
 
 void VGPathGetPointAlong(VGPath *self,int startIndex, int numSegments, RIfloat distance, Vector2 *p, Vector2 *t){
-	RI_ASSERT(startIndex >= 0 && startIndex + numSegments <= self->_segmentCount && numSegments > 0);
+	RI_ASSERT(startIndex >= 0 && startIndex + numSegments <= self->_numberOfElements && numSegments > 0);
 
 	VGPathTessellate(self);
 
-	RI_ASSERT(startIndex >= 0 && startIndex < self->_segmentToVertexCount);
-	RI_ASSERT(startIndex + numSegments >= 0 && startIndex + numSegments <= self->_segmentToVertexCount);
+	RI_ASSERT(startIndex >= 0 && startIndex < self->_numberOfElements);
+	RI_ASSERT(startIndex + numSegments >= 0 && startIndex + numSegments <= self->_numberOfElements);
 
 	int startVertex = self->_segmentToVertex[startIndex].start;
 	int endVertex = self->_segmentToVertex[startIndex + numSegments - 1].end;
@@ -1175,12 +1166,12 @@ void VGPathGetPointAlong(VGPath *self,int startIndex, int numSegments, RIfloat d
 *//*-------------------------------------------------------------------*/
 
 RIfloat getPathLength(VGPath *self,int startIndex, int numSegments){
-	RI_ASSERT(startIndex >= 0 && startIndex + numSegments <= self->_segmentCount && numSegments > 0);
+	RI_ASSERT(startIndex >= 0 && startIndex + numSegments <= self->_numberOfElements && numSegments > 0);
 
 	VGPathTessellate(self);
 
-	RI_ASSERT(startIndex >= 0 && startIndex < self->_segmentToVertexCount);
-	RI_ASSERT(startIndex + numSegments >= 0 && startIndex + numSegments <= self->_segmentToVertexCount);
+	RI_ASSERT(startIndex >= 0 && startIndex < self->_numberOfElements);
+	RI_ASSERT(startIndex + numSegments >= 0 && startIndex + numSegments <= self->_numberOfElements);
 
 	int startVertex = self->_segmentToVertex[startIndex].start;
 	int endVertex = self->_segmentToVertex[startIndex + numSegments - 1].end;
@@ -1331,7 +1322,7 @@ void VGPathAddEdge(VGPath *self,Vector2 p0, Vector2 p1, Vector2 t0, Vector2 t1, 
 * \note		
 *//*-------------------------------------------------------------------*/
 
-void VGPathAddEndPath(VGPath *self,Vector2 p0, Vector2 p1, bool subpathHasGeometry, unsigned int flags){
+void VGPathAddEndPath(VGPath *self,Vector2 p0, Vector2 p1, BOOL subpathHasGeometry, unsigned int flags){
 	if(!subpathHasGeometry)
 	{	//single vertex
 		Vector2 t=Vector2Make(1.0f,0.0f);
@@ -1360,9 +1351,9 @@ void VGPathAddEndPath(VGPath *self,Vector2 p0, Vector2 p1, bool subpathHasGeomet
 * \note		
 *//*-------------------------------------------------------------------*/
 
-bool VGPathAddLineTo(VGPath *self,Vector2 p0, Vector2 p1, bool subpathHasGeometry){
+BOOL VGPathAddLineTo(VGPath *self,Vector2 p0, Vector2 p1, BOOL subpathHasGeometry){
 	if(Vector2IsEqual(p0 ,p1))
-		return false;	//discard zero-length segments
+		return NO;	//discard zero-length segments
 
 	//compute end point tangents
 	Vector2 t = Vector2Normalize(Vector2Subtract(p1,p0));
@@ -1372,7 +1363,7 @@ bool VGPathAddLineTo(VGPath *self,Vector2 p0, Vector2 p1, bool subpathHasGeometr
 	if(!subpathHasGeometry)
 		startFlags |= START_SUBPATH;
 	VGPathAddEdge(self,p0, p1, t, t, startFlags, END_SEGMENT);
-	return true;
+	return YES;
 }
 
 /*-------------------------------------------------------------------*//*!
@@ -1386,11 +1377,11 @@ bool VGPathAddLineTo(VGPath *self,Vector2 p0, Vector2 p1, bool subpathHasGeometr
  Given a quadratic BŽzier curve with control points (x0, y0), (x1, y1), and (x2, y2), an identical cubic BŽzier curve may be formed using the control points (x0, y0), (x0 + 2*x1, y0 + 2*y1)/3, (x2 + 2*x1, y2 + 2*y1)/3, (x2, y2)
   */
   
-bool VGPathAddQuadTo(VGPath *self,Vector2 p0, Vector2 p1, Vector2 p2, bool subpathHasGeometry){
+BOOL VGPathAddQuadTo(VGPath *self,Vector2 p0, Vector2 p1, Vector2 p2, BOOL subpathHasGeometry){
 	if(Vector2IsEqual(p0,p1) && Vector2IsEqual(p0,p2))
 	{
 		RI_ASSERT(Vector2IsEqual(p1,p2));
-		return false;	//discard zero-length segments
+		return NO;	//discard zero-length segments
 	}
 
 	//compute end point tangents
@@ -1429,7 +1420,7 @@ bool VGPathAddQuadTo(VGPath *self,Vector2 p0, Vector2 p1, Vector2 p2, bool subpa
 		prevFlags = 0;
 	}
 	VGPathAddEdge(self,pp, p2, tp, outgoingTangent, prevFlags, END_SEGMENT);
-	return true;
+	return YES;
 }
 
 /*-------------------------------------------------------------------*//*!
@@ -1477,11 +1468,11 @@ static void bezier(VGPath *self,double x1,double y1,double x2, double y2,double 
    }
 }
 
-bool VGPathAddCubicTo(VGPath *self,Vector2 p0, Vector2 p1, Vector2 p2, Vector2 p3, bool subpathHasGeometry){
+BOOL VGPathAddCubicTo(VGPath *self,Vector2 p0, Vector2 p1, Vector2 p2, Vector2 p3, BOOL subpathHasGeometry){
 	if(Vector2IsEqual(p0,p1) && Vector2IsEqual(p0,p2) && Vector2IsEqual(p0 ,p3))
 	{
 		RI_ASSERT(Vector2IsEqual(p1 , p2) && Vector2IsEqual(p1 , p3) && Vector2IsEqual(p2 , p3));
-		return false;	//discard zero-length segments
+		return NO;	//discard zero-length segments
 	}
 
 	//compute end point tangents
@@ -1536,7 +1527,7 @@ bool VGPathAddCubicTo(VGPath *self,Vector2 p0, Vector2 p1, Vector2 p2, Vector2 p
 	}
 	VGPathAddEdge(self,pp, p3, tp, outgoingTangent, prevFlags, END_SEGMENT);
 #endif
-	return true;
+	return YES;
 }
 
 /*-------------------------------------------------------------------*//*!
@@ -1562,9 +1553,9 @@ void VGPathTessellate(VGPath *self){
 
 //	try
 	{
-        if(self->_segmentToVertexCapacity<self->_segmentCount){
-         self->_segmentToVertexCapacity=self->_segmentCount;
-         self->_segmentToVertex=(VertexIndex *)NSZoneMalloc(NULL,self->_segmentToVertexCapacity*sizeof(VertexIndex));
+        if(self->_segmentToVertexCapacity<self->_numberOfElements){
+         self->_segmentToVertexCapacity=self->_numberOfElements;
+         self->_segmentToVertex=NSZoneMalloc(NULL,self->_segmentToVertexCapacity*sizeof(VertexIndex));
         }
         
 		int coordIndex = 0;
@@ -1577,12 +1568,12 @@ void VGPathTessellate(VGPath *self){
 		s=Vector2Make(0,0);
 		o=Vector2Make(0,0);
 		p=Vector2Make(0,0);
-		bool subpathHasGeometry = false;
+		BOOL subpathHasGeometry = NO;
 		CGPathElementType prevSegment = kCGPathElementMoveToPoint;
         int i;
-		for(i=0;i<self->_segmentCount;i++)
+		for(i=0;i<self->_numberOfElements;i++)
 		{
-			CGPathElementType segment = (CGPathElementType)self->_segments[i];
+			CGPathElementType segment = (CGPathElementType)self->_elements[i];
 			int coords = CGPathElementTypeToNumCoordinates(segment);
 			self->_segmentToVertex[i].start = self->_vertexCount;
 
@@ -1594,29 +1585,29 @@ void VGPathTessellate(VGPath *self){
 				VGPathAddEndPath(self,o, s, subpathHasGeometry, CLOSE_SUBPATH);
 				p = s;
 				o = s;
-				subpathHasGeometry = false;
+				subpathHasGeometry = NO;
 				break;
 			}
 
 			case kCGPathElementMoveToPoint:
 			{
-				RI_ASSERT(coords == 2);
-				Vector2 c=Vector2Make(VGPathGetCoordinate(self,coordIndex+0), VGPathGetCoordinate(self,coordIndex+1));
+				RI_ASSERT(coords == 1);
+				Vector2 c=VGPathGetCoordinate(self,coordIndex);
 				if(prevSegment != kCGPathElementMoveToPoint && prevSegment != kCGPathElementCloseSubpath)
 					VGPathAddEndPath(self,o, s, subpathHasGeometry, IMPLICIT_CLOSE_SUBPATH);
 				s = c;
 				p = c;
 				o = c;
-				subpathHasGeometry = false;
+				subpathHasGeometry = NO;
 				break;
 			}
 
 			case kCGPathElementAddLineToPoint:
 			{
-				RI_ASSERT(coords == 2);
-				Vector2 c=Vector2Make(VGPathGetCoordinate(self,coordIndex+0), VGPathGetCoordinate(self,coordIndex+1));
+				RI_ASSERT(coords == 1);
+				Vector2 c=VGPathGetCoordinate(self,coordIndex);
 				if(VGPathAddLineTo(self,o, c, subpathHasGeometry))
-					subpathHasGeometry = true;
+					subpathHasGeometry = YES;
 				p = c;
 				o = c;
 				break;
@@ -1624,11 +1615,11 @@ void VGPathTessellate(VGPath *self){
 
 			case kCGPathElementAddQuadCurveToPoint:
 			{
-				RI_ASSERT(coords == 4);
-				Vector2 c0=Vector2Make(VGPathGetCoordinate(self,coordIndex+0), VGPathGetCoordinate(self,coordIndex+1));
-				Vector2 c1=Vector2Make(VGPathGetCoordinate(self,coordIndex+2), VGPathGetCoordinate(self,coordIndex+3));
+				RI_ASSERT(coords == 2);
+				Vector2 c0=VGPathGetCoordinate(self,coordIndex);
+				Vector2 c1=VGPathGetCoordinate(self,coordIndex+1);
 				if(VGPathAddQuadTo(self,o, c0, c1, subpathHasGeometry))
-					subpathHasGeometry = true;
+					subpathHasGeometry = YES;
 				p = c0;
 				o = c1;
 				break;
@@ -1636,12 +1627,12 @@ void VGPathTessellate(VGPath *self){
 
 			case kCGPathElementAddCurveToPoint:
 			{
-				RI_ASSERT(coords == 6);
-				Vector2 c0=Vector2Make(VGPathGetCoordinate(self,coordIndex+0), VGPathGetCoordinate(self,coordIndex+1));
-				Vector2 c1=Vector2Make(VGPathGetCoordinate(self,coordIndex+2), VGPathGetCoordinate(self,coordIndex+3));
-				Vector2 c2=Vector2Make(VGPathGetCoordinate(self,coordIndex+4), VGPathGetCoordinate(self,coordIndex+5));
+				RI_ASSERT(coords == 3);
+				Vector2 c0=VGPathGetCoordinate(self,coordIndex+0);
+				Vector2 c1=VGPathGetCoordinate(self,coordIndex+1);
+				Vector2 c2=VGPathGetCoordinate(self,coordIndex+2);
 				if(VGPathAddCubicTo(self,o, c0, c1, c2, subpathHasGeometry))
-					subpathHasGeometry = true;
+					subpathHasGeometry = YES;
 				p = c1;
 				o = c2;
 				break;
@@ -1670,8 +1661,8 @@ void VGPathTessellate(VGPath *self){
 #if 0 // DEBUG
 		//check that the flags are correct
 		int prev = -1;
-		bool subpathStarted = false;
-		bool segmentStarted = false;
+		BOOL subpathStarted = NO;
+		BOOL segmentStarted = NO;
 		for(int i=0;i<self->_vertexCount;i++)
 		{
 			Vertex& v = self->_vertices[i];
@@ -1684,7 +1675,7 @@ void VGPathTessellate(VGPath *self){
 				RI_ASSERT(!(v.flags & END_SEGMENT));
 				RI_ASSERT(!(v.flags & CLOSE_SUBPATH));
 				RI_ASSERT(!(v.flags & IMPLICIT_CLOSE_SUBPATH));
-				subpathStarted = true;
+				subpathStarted = YES;
 			}
 			
 			if(v.flags & START_SEGMENT)
@@ -1693,7 +1684,7 @@ void VGPathTessellate(VGPath *self){
 				RI_ASSERT(!segmentStarted);
 				RI_ASSERT(!(v.flags & END_SUBPATH));
 				RI_ASSERT(!(v.flags & END_SEGMENT));
-				segmentStarted = true;
+				segmentStarted = YES;
 			}
 			
 			if( v.flags & CLOSE_SUBPATH )
@@ -1729,7 +1720,7 @@ void VGPathTessellate(VGPath *self){
 				RI_ASSERT(segmentStarted);
 				RI_ASSERT(!(v.flags & START_SUBPATH));
 				RI_ASSERT(!(v.flags & START_SEGMENT));
-				segmentStarted = false;
+				segmentStarted = NO;
 				prev = -1;
 			}
 			
@@ -1741,7 +1732,7 @@ void VGPathTessellate(VGPath *self){
 				RI_ASSERT(!(v.flags & START_SEGMENT));
 				RI_ASSERT(!(v.flags & CLOSE_SUBPATH));
 				RI_ASSERT(!(v.flags & IMPLICIT_CLOSE_SUBPATH));
-				subpathStarted = false;
+				subpathStarted = NO;
 			}
 		}
 #endif	//RI_DEBUG

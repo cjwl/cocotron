@@ -11,12 +11,26 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @implementation KGColor
 
--initWithColorSpace:(KGColorSpace *)colorSpace components:(const float *)components {
+-initWithColorSpace:(KGColorSpace *)colorSpace pattern:(KGPattern *)pattern components:(const CGFloat *)components {
    int i;
    
    _colorSpace=[colorSpace retain];
+   _pattern=[pattern retain];
    _numberOfComponents=[_colorSpace numberOfComponents]+1;
-   _components=NSZoneMalloc([self zone],sizeof(float)*_numberOfComponents);
+   _components=NSZoneMalloc([self zone],sizeof(CGFloat)*_numberOfComponents);
+   for(i=0;i<_numberOfComponents;i++)
+    _components[i]=components[i];
+    
+   return self;
+}
+
+-initWithColorSpace:(KGColorSpace *)colorSpace components:(const CGFloat *)components {
+   int i;
+   
+   _colorSpace=[colorSpace retain];
+   _pattern=nil;
+   _numberOfComponents=[_colorSpace numberOfComponents]+1;
+   _components=NSZoneMalloc([self zone],sizeof(CGFloat)*_numberOfComponents);
    for(i=0;i<_numberOfComponents;i++)
     _components[i]=components[i];
     
@@ -25,7 +39,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -initWithColorSpace:(KGColorSpace *)colorSpace {
    int   i,length=[_colorSpace numberOfComponents];
-   float components[length+1];
+   CGFloat components[length+1];
    
    for(i=0;i<length;i++)
     components[i]=0;
@@ -34,9 +48,33 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return [self initWithColorSpace:colorSpace components:components];
 }
 
+-initWithGenericGray:(CGFloat)gray alpha:(CGFloat)alpha {
+   CGFloat components[2]={gray,alpha};
+   KGColorSpace *colorSpace=[[KGColorSpace alloc] initWithGenericGray];
+   [self initWithColorSpace:colorSpace components:components];
+   [colorSpace release];
+   return self;
+}
+
+-initWithGenericRed:(CGFloat)red green:(CGFloat)green blue:(CGFloat)blue alpha:(CGFloat)alpha {
+   CGFloat components[4]={red,green,blue,alpha};
+   KGColorSpace *colorSpace=[[KGColorSpace alloc] initWithGenericRGB];
+   [self initWithColorSpace:colorSpace components:components];
+   [colorSpace release];
+   return self;
+}
+
+-initWithGenericCyan:(CGFloat)cyan magenta:(CGFloat)magenta yellow:(CGFloat)yellow black:(CGFloat)black alpha:(CGFloat)alpha {
+   CGFloat components[5]={cyan,magenta,yellow,black,alpha};
+   KGColorSpace *colorSpace=[[KGColorSpace alloc] initWithGenericCMYK];
+   [self initWithColorSpace:colorSpace components:components];
+   [colorSpace release];
+   return self;
+}
+
 -init {
-   KGColorSpace *gray=[[[KGColorSpace alloc] initWithDeviceGray] autorelease];
-   float         components[2]={0,1};
+   KGColorSpace *gray=[[[KGColorSpace alloc] initWithGenericGray] autorelease];
+   CGFloat         components[2]={0,1};
    
    return [self initWithColorSpace:gray components:components];
 }
@@ -51,9 +89,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return [self retain];
 }
 
--copyWithAlpha:(float)alpha {
+-copyWithAlpha:(CGFloat)alpha {
    int   i;
-   float components[_numberOfComponents];
+   CGFloat components[_numberOfComponents];
 
    for(i=0;i<_numberOfComponents-1;i++)
     components[i]=_components[i];
@@ -70,12 +108,28 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return _numberOfComponents;
 }
 
--(float *)components {
+-(CGFloat *)components {
    return _components;
 }
 
--(float)alpha {
+-(CGFloat)alpha {
    return _components[_numberOfComponents-1];
+}
+
+-(KGPattern *)pattern {
+   return _pattern;
+}
+
+-(BOOL)isEqualToColor:(KGColor *)other {
+   if(![_colorSpace isEqualToColorSpace:other->_colorSpace])
+    return NO;
+
+   int i;
+   for(i=0;i<_numberOfComponents;i++)
+    if(_components[i]!=other->_components[i])
+     return NO;
+
+   return YES;
 }
 
 @end

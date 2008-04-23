@@ -12,9 +12,9 @@
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 		FE0997430D87095000033630 /* overlay.png in Resources */ = {isa = PBXBuildFile; fileRef = FE0997420D87095000033630 /* overlay.png */; };
-		FE1F932E0D7EEDF900969491 /* KGRender.m in Sources */ = {isa = PBXBuildFile; fileRef = FE1F932D0D7EEDF900969491 /* KGRender.m */; };
-		FE1F93370D7EEE6900969491 /* KGRender_cg.m in Sources */ = {isa = PBXBuildFile; fileRef = FE1F93360D7EEE6900969491 /* KGRender_cg.m */; };
-		FE1F93430D7EEECA00969491 /* KGRender_baseline.m in Sources */ = {isa = PBXBuildFile; fileRef = FE1F93420D7EEECA00969491 /* KGRender_baseline.m */; };
+		FE14EC4B0DBD9BF00070928C /* DemoCGContext.m in Sources */ = {isa = PBXBuildFile; fileRef = FE14EC490DBD9BF00070928C /* DemoCGContext.m */; };
+		FE14EC4C0DBD9BF00070928C /* DemoKGContext.m in Sources */ = {isa = PBXBuildFile; fileRef = FE14EC4A0DBD9BF00070928C /* DemoKGContext.m */; };
+		FE14EC960DBDA5420070928C /* DemoContext.m in Sources */ = {isa = PBXBuildFile; fileRef = FE14EC950DBDA5420070928C /* DemoContext.m */; };
 		FE1F93630D7EF19900969491 /* KGImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = FE1F93620D7EF19900969491 /* KGImageView.m */; };
 		FE1F937A0D7EF1F800969491 /* KGRenderController.m in Sources */ = {isa = PBXBuildFile; fileRef = FE1F93790D7EF1F800969491 /* KGRenderController.m */; };
 		FE6EDCE60DB78E7C005503A1 /* KGBitmapContext.m in Sources */ = {isa = PBXBuildFile; fileRef = FE6EDCCB0DB78E7C005503A1 /* KGBitmapContext.m */; };
@@ -57,7 +57,8 @@
 		FE6EDD3F0DB78EA1005503A1 /* KGPDFxref.m in Sources */ = {isa = PBXBuildFile; fileRef = FE6EDD240DB78EA1005503A1 /* KGPDFxref.m */; };
 		FE6EDD400DB78EA1005503A1 /* KGPDFxrefEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = FE6EDD260DB78EA1005503A1 /* KGPDFxrefEntry.m */; };
 		FE6EDD410DB78EA1005503A1 /* KGzlib.m in Sources */ = {isa = PBXBuildFile; fileRef = FE6EDD280DB78EA1005503A1 /* KGzlib.m */; };
-		FE9552810D77CA67009B765B /* VGImage.m in Sources */ = {isa = PBXBuildFile; fileRef = FE9552780D77CA67009B765B /* VGImage.m */; };
+		FE6EE00B0DB7CE0B005503A1 /* KGContext_builtin.m in Sources */ = {isa = PBXBuildFile; fileRef = FE6EE00A0DB7CE0B005503A1 /* KGContext_builtin.m */; };
+		FE9552810D77CA67009B765B /* KGSurface.m in Sources */ = {isa = PBXBuildFile; fileRef = FE9552780D77CA67009B765B /* KGSurface.m */; };
 		FE9552820D77CA67009B765B /* VGmath.m in Sources */ = {isa = PBXBuildFile; fileRef = FE95527A0D77CA67009B765B /* VGmath.m */; };
 		FE9552830D77CA67009B765B /* VGPath.m in Sources */ = {isa = PBXBuildFile; fileRef = FE95527C0D77CA67009B765B /* VGPath.m */; };
 		FE9552840D77CA67009B765B /* KGPixelPipe.m in Sources */ = {isa = PBXBuildFile; fileRef = FE95527E0D77CA67009B765B /* KGPixelPipe.m */; };
@@ -86,17 +87,19 @@
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* SWRender.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SWRender.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FE0997420D87095000033630 /* overlay.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = overlay.png; sourceTree = "<group>"; };
-		FE1474D20DB44967001B5634 /* KGBlending.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGBlending.h; sourceTree = "<group>"; };
+		FE1474D20DB44967001B5634 /* KGBlending.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KGBlending.h; path = ../../AppKit/CoreGraphics.subproj/KGBlending.h; sourceTree = "<group>"; };
+		FE14EC480DBD9BF00070928C /* DemoContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DemoContext.h; sourceTree = "<group>"; };
+		FE14EC490DBD9BF00070928C /* DemoCGContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DemoCGContext.m; sourceTree = "<group>"; };
+		FE14EC4A0DBD9BF00070928C /* DemoKGContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DemoKGContext.m; sourceTree = "<group>"; };
+		FE14EC950DBDA5420070928C /* DemoContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DemoContext.m; sourceTree = "<group>"; };
 		FE1F932C0D7EEDF900969491 /* KGRender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGRender.h; sourceTree = "<group>"; };
 		FE1F932D0D7EEDF900969491 /* KGRender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGRender.m; sourceTree = "<group>"; };
-		FE1F93350D7EEE6900969491 /* KGRender_cg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGRender_cg.h; sourceTree = "<group>"; };
-		FE1F93360D7EEE6900969491 /* KGRender_cg.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGRender_cg.m; sourceTree = "<group>"; };
-		FE1F93410D7EEECA00969491 /* KGRender_baseline.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGRender_baseline.h; sourceTree = "<group>"; };
-		FE1F93420D7EEECA00969491 /* KGRender_baseline.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGRender_baseline.m; sourceTree = "<group>"; };
 		FE1F93610D7EF19900969491 /* KGImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGImageView.h; sourceTree = "<group>"; };
 		FE1F93620D7EF19900969491 /* KGImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGImageView.m; sourceTree = "<group>"; };
 		FE1F93780D7EF1F800969491 /* KGRenderController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGRenderController.h; sourceTree = "<group>"; };
 		FE1F93790D7EF1F800969491 /* KGRenderController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGRenderController.m; sourceTree = "<group>"; };
+		FE3396000DBA8CF7009AB3E0 /* CoreGraphics_KG.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreGraphics_KG.h; sourceTree = "<group>"; };
+		FE33964B0DBAE733009AB3E0 /* DemosTemplate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DemosTemplate.m; sourceTree = "<group>"; };
 		FE6EDCCA0DB78E7C005503A1 /* KGBitmapContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KGBitmapContext.h; path = ../../AppKit/CoreGraphics.subproj/KGBitmapContext.h; sourceTree = SOURCE_ROOT; };
 		FE6EDCCB0DB78E7C005503A1 /* KGBitmapContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KGBitmapContext.m; path = ../../AppKit/CoreGraphics.subproj/KGBitmapContext.m; sourceTree = SOURCE_ROOT; };
 		FE6EDCCC0DB78E7C005503A1 /* KGClipPhase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KGClipPhase.h; path = ../../AppKit/CoreGraphics.subproj/KGClipPhase.h; sourceTree = SOURCE_ROOT; };
@@ -178,16 +181,18 @@
 		FE6EDD270DB78EA1005503A1 /* KGzlib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KGzlib.h; path = ../../AppKit/CoreGraphics.subproj/KGzlib.h; sourceTree = SOURCE_ROOT; };
 		FE6EDD280DB78EA1005503A1 /* KGzlib.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KGzlib.m; path = ../../AppKit/CoreGraphics.subproj/KGzlib.m; sourceTree = SOURCE_ROOT; };
 		FE6EDE380DB797FA005503A1 /* KGExceptions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KGExceptions.h; path = ../../AppKit/CoreGraphics.subproj/KGExceptions.h; sourceTree = SOURCE_ROOT; };
-		FE9552770D77CA67009B765B /* VGImage.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = VGImage.h; sourceTree = "<group>"; };
-		FE9552780D77CA67009B765B /* VGImage.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = VGImage.m; sourceTree = "<group>"; };
-		FE9552790D77CA67009B765B /* VGmath.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = VGmath.h; sourceTree = "<group>"; };
-		FE95527A0D77CA67009B765B /* VGmath.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = VGmath.m; sourceTree = "<group>"; };
-		FE95527B0D77CA67009B765B /* VGPath.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = VGPath.h; sourceTree = "<group>"; };
-		FE95527C0D77CA67009B765B /* VGPath.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = VGPath.m; sourceTree = "<group>"; };
-		FE95527D0D77CA67009B765B /* KGPixelPipe.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = KGPixelPipe.h; sourceTree = "<group>"; };
-		FE95527E0D77CA67009B765B /* KGPixelPipe.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = KGPixelPipe.m; sourceTree = "<group>"; };
-		FE95527F0D77CA67009B765B /* KGRasterizer.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = KGRasterizer.h; sourceTree = "<group>"; };
-		FE9552800D77CA67009B765B /* KGRasterizer.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = KGRasterizer.m; sourceTree = "<group>"; };
+		FE6EE0090DB7CE0B005503A1 /* KGContext_builtin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KGContext_builtin.h; path = ../../AppKit/CoreGraphics.subproj/KGContext_builtin.h; sourceTree = "<group>"; };
+		FE6EE00A0DB7CE0B005503A1 /* KGContext_builtin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KGContext_builtin.m; path = ../../AppKit/CoreGraphics.subproj/KGContext_builtin.m; sourceTree = "<group>"; };
+		FE9552770D77CA67009B765B /* KGSurface.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = KGSurface.h; path = ../../AppKit/CoreGraphics.subproj/KGSurface.h; sourceTree = "<group>"; };
+		FE9552780D77CA67009B765B /* KGSurface.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = KGSurface.m; path = ../../AppKit/CoreGraphics.subproj/KGSurface.m; sourceTree = "<group>"; };
+		FE9552790D77CA67009B765B /* VGmath.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = VGmath.h; path = ../../AppKit/CoreGraphics.subproj/VGmath.h; sourceTree = "<group>"; };
+		FE95527A0D77CA67009B765B /* VGmath.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = VGmath.m; path = ../../AppKit/CoreGraphics.subproj/VGmath.m; sourceTree = "<group>"; };
+		FE95527B0D77CA67009B765B /* VGPath.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = VGPath.h; path = ../../AppKit/CoreGraphics.subproj/VGPath.h; sourceTree = "<group>"; };
+		FE95527C0D77CA67009B765B /* VGPath.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = VGPath.m; path = ../../AppKit/CoreGraphics.subproj/VGPath.m; sourceTree = "<group>"; };
+		FE95527D0D77CA67009B765B /* KGPixelPipe.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = KGPixelPipe.h; path = ../../AppKit/CoreGraphics.subproj/KGPixelPipe.h; sourceTree = "<group>"; };
+		FE95527E0D77CA67009B765B /* KGPixelPipe.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = KGPixelPipe.m; path = ../../AppKit/CoreGraphics.subproj/KGPixelPipe.m; sourceTree = "<group>"; };
+		FE95527F0D77CA67009B765B /* KGRasterizer.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = KGRasterizer.h; path = ../../AppKit/CoreGraphics.subproj/KGRasterizer.h; sourceTree = "<group>"; };
+		FE9552800D77CA67009B765B /* KGRasterizer.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = KGRasterizer.m; path = ../../AppKit/CoreGraphics.subproj/KGRasterizer.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -230,28 +235,19 @@
 		29B97314FDCFA39411CA2CEA /* SWRender */ = {
 			isa = PBXGroup;
 			children = (
+				FE14EC950DBDA5420070928C /* DemoContext.m */,
+				FE14EC480DBD9BF00070928C /* DemoContext.h */,
+				FE14EC490DBD9BF00070928C /* DemoCGContext.m */,
+				FE14EC4A0DBD9BF00070928C /* DemoKGContext.m */,
+				FE33964B0DBAE733009AB3E0 /* DemosTemplate.m */,
+				FE3396000DBA8CF7009AB3E0 /* CoreGraphics_KG.h */,
 				FE6EDCC70DB78E3C005503A1 /* KoreGraphics */,
-				FE1474D20DB44967001B5634 /* KGBlending.h */,
 				FE1F932C0D7EEDF900969491 /* KGRender.h */,
 				FE1F932D0D7EEDF900969491 /* KGRender.m */,
-				FE1F93410D7EEECA00969491 /* KGRender_baseline.h */,
-				FE1F93420D7EEECA00969491 /* KGRender_baseline.m */,
-				FE1F93350D7EEE6900969491 /* KGRender_cg.h */,
-				FE1F93360D7EEE6900969491 /* KGRender_cg.m */,
 				FE1F93780D7EF1F800969491 /* KGRenderController.h */,
 				FE1F93790D7EF1F800969491 /* KGRenderController.m */,
 				FE1F93610D7EF19900969491 /* KGImageView.h */,
 				FE1F93620D7EF19900969491 /* KGImageView.m */,
-				FE9552770D77CA67009B765B /* VGImage.h */,
-				FE9552780D77CA67009B765B /* VGImage.m */,
-				FE9552790D77CA67009B765B /* VGmath.h */,
-				FE95527A0D77CA67009B765B /* VGmath.m */,
-				FE95527B0D77CA67009B765B /* VGPath.h */,
-				FE95527C0D77CA67009B765B /* VGPath.m */,
-				FE95527D0D77CA67009B765B /* KGPixelPipe.h */,
-				FE95527E0D77CA67009B765B /* KGPixelPipe.m */,
-				FE95527F0D77CA67009B765B /* KGRasterizer.h */,
-				FE9552800D77CA67009B765B /* KGRasterizer.m */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
 				29B97315FDCFA39411CA2CEA /* Other Sources */,
@@ -292,6 +288,19 @@
 		FE6EDCC70DB78E3C005503A1 /* KoreGraphics */ = {
 			isa = PBXGroup;
 			children = (
+				FE1474D20DB44967001B5634 /* KGBlending.h */,
+				FE6EE0090DB7CE0B005503A1 /* KGContext_builtin.h */,
+				FE6EE00A0DB7CE0B005503A1 /* KGContext_builtin.m */,
+				FE95527B0D77CA67009B765B /* VGPath.h */,
+				FE95527C0D77CA67009B765B /* VGPath.m */,
+				FE95527D0D77CA67009B765B /* KGPixelPipe.h */,
+				FE95527E0D77CA67009B765B /* KGPixelPipe.m */,
+				FE95527F0D77CA67009B765B /* KGRasterizer.h */,
+				FE9552800D77CA67009B765B /* KGRasterizer.m */,
+				FE9552770D77CA67009B765B /* KGSurface.h */,
+				FE9552780D77CA67009B765B /* KGSurface.m */,
+				FE9552790D77CA67009B765B /* VGmath.h */,
+				FE95527A0D77CA67009B765B /* VGmath.m */,
 				FE6EDE380DB797FA005503A1 /* KGExceptions.h */,
 				FE6EDCF70DB78EA1005503A1 /* KGPDFArray.h */,
 				FE6EDCF80DB78EA1005503A1 /* KGPDFArray.m */,
@@ -435,14 +444,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				8D11072D0486CEB800E47090 /* main.m in Sources */,
-				FE9552810D77CA67009B765B /* VGImage.m in Sources */,
+				FE9552810D77CA67009B765B /* KGSurface.m in Sources */,
 				FE9552820D77CA67009B765B /* VGmath.m in Sources */,
 				FE9552830D77CA67009B765B /* VGPath.m in Sources */,
 				FE9552840D77CA67009B765B /* KGPixelPipe.m in Sources */,
 				FE9552850D77CA67009B765B /* KGRasterizer.m in Sources */,
-				FE1F932E0D7EEDF900969491 /* KGRender.m in Sources */,
-				FE1F93370D7EEE6900969491 /* KGRender_cg.m in Sources */,
-				FE1F93430D7EEECA00969491 /* KGRender_baseline.m in Sources */,
 				FE1F93630D7EF19900969491 /* KGImageView.m in Sources */,
 				FE1F937A0D7EF1F800969491 /* KGRenderController.m in Sources */,
 				FE6EDCE60DB78E7C005503A1 /* KGBitmapContext.m in Sources */,
@@ -485,6 +491,10 @@
 				FE6EDD3F0DB78EA1005503A1 /* KGPDFxref.m in Sources */,
 				FE6EDD400DB78EA1005503A1 /* KGPDFxrefEntry.m in Sources */,
 				FE6EDD410DB78EA1005503A1 /* KGzlib.m in Sources */,
+				FE6EE00B0DB7CE0B005503A1 /* KGContext_builtin.m in Sources */,
+				FE14EC4B0DBD9BF00070928C /* DemoCGContext.m in Sources */,
+				FE14EC4C0DBD9BF00070928C /* DemoKGContext.m in Sources */,
+				FE14EC960DBDA5420070928C /* DemoContext.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -521,7 +531,7 @@
 				GCC_ENABLE_CPP_RTTI = NO;
 				GCC_ENABLE_SSE3_EXTENSIONS = YES;
 				GCC_ENABLE_SUPPLEMENTAL_SSE3_INSTRUCTIONS = NO;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
 				GCC_INSTRUMENT_PROGRAM_FLOW_ARCS = NO;
 				GCC_MODEL_TUNING = "";
 				GCC_OPTIMIZATION_LEVEL = s;
@@ -537,6 +547,7 @@
 				INSTALL_PATH = "$(HOME)/Applications";
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = SWRender;
+				SDKROOT = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

@@ -1,6 +1,6 @@
 /*------------------------------------------------------------------------
  *
- * OpenVG 1.0.1 Reference Implementation
+ * Derivative of the OpenVG 1.0.1 Reference Implementation
  * -------------------------------------
  *
  * Copyright (c) 2007 The Khronos Group Inc.
@@ -26,24 +26,23 @@
  *
  *//**
  * \file
- * \brief	Implementation of VGColor and VGImage functions.
+ * \brief	Implementation of VGColor and KGSurface functions.
  * \note	
  *//*-------------------------------------------------------------------*/
 
 // http://lists.apple.com/archives/Quartz-dev/2006/Feb/msg00031.html
 
-#import "VGImage.h"
-#import "KGRasterizer.h"
+#import "KGSurface.h"
 
-@implementation VGImage
+@implementation KGSurface
 
 #define RI_MAX_GAUSSIAN_STD_DEVIATION	128.0f
 
-bool VGImageIsValidFormat(int f)
+BOOL KGSurfaceIsValidFormat(int f)
 {
 	if(f < VG_sRGBX_8888 || f > VG_lABGR_8888_PRE)
-		return false;
-	return true;
+		return NO;
+	return YES;
 }
 
 /*-------------------------------------------------------------------*//*!
@@ -91,36 +90,8 @@ static inline RIfloat intToColor(unsigned int i, unsigned int maxi)
 * \note		
 *//*-------------------------------------------------------------------*/
 
-KGRGBA KGRGBAUnpack(unsigned int inputData,VGImage *img){
-   KGRGBA result;
-   
-	int rb = img->m_desc.redBits;
-	int gb = img->m_desc.greenBits;
-	int bb = img->m_desc.blueBits;
-	int ab = img->m_desc.alphaBits;
-	int lb = img->m_desc.luminanceBits;
-	int rs = img->m_desc.redShift;
-	int gs = img->m_desc.greenShift;
-	int bs = img->m_desc.blueShift;
-	int as = img->m_desc.alphaShift;
-	int ls = img->m_desc.luminanceShift;
 
-	if(lb)
-	{	//luminance
-		result.r = result.g = result.b = intToColor(inputData >> ls, (1<<lb)-1);
-		result.a = 1.0f;
-	}
-	else
-	{	//rgba
-		result.r = rb ? intToColor(inputData >> rs, (1<<rb)-1) : (RIfloat)1.0f;
-		result.g = gb ? intToColor(inputData >> gs, (1<<gb)-1) : (RIfloat)1.0f;
-		result.b = bb ? intToColor(inputData >> bs, (1<<bb)-1) : (RIfloat)1.0f;
-		result.a = ab ? intToColor(inputData >> as, (1<<ab)-1) : (RIfloat)1.0f;
-	}
-    return result;
-}
-
-VGColor VGColorUnpack(unsigned int inputData,VGImage *img){
+VGColor VGColorUnpack(unsigned int inputData,KGSurface *img){
    KGRGBA rgba=KGRGBAUnpack(inputData,img);
   
    VGColor result;
@@ -148,7 +119,7 @@ VGColor VGColorUnpack(unsigned int inputData,VGImage *img){
 * \note		
 *//*-------------------------------------------------------------------*/
 
-unsigned int KGRGBAPack(KGRGBA rgba,VGImage *img) {{
+unsigned int KGRGBAPack(KGRGBA rgba,KGSurface *img) {{
 	RI_ASSERT(rgba.r >= 0.0f && rgba.r <= 1.0f);
 	RI_ASSERT(rgba.g >= 0.0f && rgba.g <= 1.0f);
 	RI_ASSERT(rgba.b >= 0.0f && rgba.b <= 1.0f);
@@ -179,7 +150,7 @@ unsigned int KGRGBAPack(KGRGBA rgba,VGImage *img) {{
 	}
 }}
 
-unsigned int VGColorPack(VGColor color,VGImage *img) {
+unsigned int VGColorPack(VGColor color,KGSurface *img) {
 	RI_ASSERT(color.r >= 0.0f && color.r <= 1.0f);
 	RI_ASSERT(color.g >= 0.0f && color.g <= 1.0f);
 	RI_ASSERT(color.b >= 0.0f && color.b <= 1.0f);
@@ -277,10 +248,10 @@ VGColor VGColorConvert(VGColor result,VGColorInternalFormat outputFormat){
 	//7: sRGB = sL
 
 	//Source/Dest lRGB sRGB   lL   sL 
-	//lRGB          Ñ    1    3    3,5 
-	//sRGB          2    Ñ    2,3  2,3,5 
-	//lL            4    4,1  Ñ    5 
-	//sL            7,2  7    6    Ñ 
+	//lRGB          â€”    1    3    3,5 
+	//sRGB          2    â€”    2,3  2,3,5 
+	//lL            4    4,1  â€”    5 
+	//sL            7,2  7    6    â€” 
 
 	const unsigned int shift = 3;
 	unsigned int conversion = (result.m_format & (VGColorNONLINEAR | VGColorLUMINANCE)) | ((outputFormat & (VGColorNONLINEAR | VGColorLUMINANCE)) << shift);
@@ -316,16 +287,16 @@ VGColor VGColorConvert(VGColor result,VGColorInternalFormat outputFormat){
 }
 
 /*-------------------------------------------------------------------*//*!
-* \brief	Creates a pixel format descriptor out of VGImageFormat
+* \brief	Creates a pixel format descriptor out of KGSurfaceFormat
 * \param	
 * \return	
 * \note		
 *//*-------------------------------------------------------------------*/
 
-VGPixelDecode VGImageParametersToPixelLayout(VGImageFormat format,size_t *bitsPerPixel,VGColorInternalFormat	*colorFormat){
+VGPixelDecode KGSurfaceParametersToPixelLayout(KGSurfaceFormat format,size_t *bitsPerPixel,VGColorInternalFormat	*colorFormat){
 	VGPixelDecode desc;
 	memset(&desc, 0, sizeof(VGPixelDecode));
-	RI_ASSERT(VGImageIsValidFormat(format));
+	RI_ASSERT(KGSurfaceIsValidFormat(format));
 
 	int baseFormat = (int)format & 15;
 	RI_ASSERT(baseFormat >= 0 && baseFormat <= 12);
@@ -397,7 +368,7 @@ VGPixelDecode VGImageParametersToPixelLayout(VGImageFormat format,size_t *bitsPe
 
 
 
-bool VGImageParametersAreValid(VGPixelDecode desc,VGImageFormat imageFormat,size_t bitsPerPixel,VGColorInternalFormat colorFormat){
+BOOL KGSurfaceParametersAreValid(VGPixelDecode desc,KGSurfaceFormat imageFormat,size_t bitsPerPixel,VGColorInternalFormat colorFormat){
 	//A valid descriptor has 1, 8, 16, or 32 bits per pixel, and either luminance or rgba channels, but not both.
 	//Any of the rgba channels can be missing, and not all bits need to be used. Maximum channel bit depth is 8.
 	int rb = desc.redBits;
@@ -414,160 +385,79 @@ bool VGImageParametersAreValid(VGPixelDecode desc,VGImageFormat imageFormat,size
 
 	int rgbaBits = rb + gb + bb + ab;
 	if(rb < 0 || rb > 8 || rs < 0 || rs + rb > bpp || !(rb || !rs))
-		return false;	//invalid channel description
+		return NO;	//invalid channel description
 	if(gb < 0 || gb > 8 || gs < 0 || gs + gb > bpp || !(gb || !gs))
-		return false;	//invalid channel description
+		return NO;	//invalid channel description
 	if(bb < 0 || bb > 8 || bs < 0 || bs + bb > bpp || !(bb || !bs))
-		return false;	//invalid channel description
+		return NO;	//invalid channel description
 	if(ab < 0 || ab > 8 || as < 0 || as + ab > bpp || !(ab || !as))
-		return false;	//invalid channel description
+		return NO;	//invalid channel description
 	if(lb < 0 || lb > 8 || ls < 0 || ls + lb > bpp || !(lb || !ls))
-		return false;	//invalid channel description
+		return NO;	//invalid channel description
 
 	if(rgbaBits && lb)
-		return false;	//can't have both rgba and luminance
+		return NO;	//can't have both rgba and luminance
 	if(!rgbaBits && !lb)
-		return false;	//must have either rgba or luminance
+		return NO;	//must have either rgba or luminance
 	if(rgbaBits)
 	{	//rgba
 		if(rb+gb+bb == 0)
 		{	//alpha only
 			if(rs || gs || bs || as || ls)
-				return false;	//wrong shifts (even alpha shift must be zero)
+				return NO;	//wrong shifts (even alpha shift must be zero)
 			if(ab != 8 || bpp != ab)
-				return false;	//alpha size must be 8, bpp must match
+				return NO;	//alpha size must be 8, bpp must match
 		}
 		else
 		{	//rgba
 			if(rgbaBits > bpp)
-				return false;	//bpp must be greater than or equal to the sum of rgba bits
+				return NO;	//bpp must be greater than or equal to the sum of rgba bits
 			if(!(bpp == 32 || bpp == 16 || bpp == 8))
-				return false;	//only 1, 2, and 4 byte formats are supported for rgba
+				return NO;	//only 1, 2, and 4 byte formats are supported for rgba
 			
 			unsigned int rm = bitsToMask((unsigned int)rb, (unsigned int)rs);
 			unsigned int gm = bitsToMask((unsigned int)gb, (unsigned int)gs);
 			unsigned int bm = bitsToMask((unsigned int)bb, (unsigned int)bs);
 			unsigned int am = bitsToMask((unsigned int)ab, (unsigned int)as);
 			if((rm & gm) || (rm & bm) || (rm & am) || (gm & bm) || (gm & am) || (bm & am))
-				return false;	//channels overlap
+				return NO;	//channels overlap
 		}
 	}
 	else
 	{	//luminance
 		if(rs || gs || bs || as || ls)
-			return false;	//wrong shifts (even luminance shift must be zero)
+			return NO;	//wrong shifts (even luminance shift must be zero)
 		if(!(lb == 1 || lb == 8) || bpp != lb)
-			return false;	//luminance size must be either 1 or 8, bpp must match
+			return NO;	//luminance size must be either 1 or 8, bpp must match
 	}
 
 	if(imageFormat != -1)
 	{
-		if(!VGImageIsValidFormat(imageFormat))
-			return false;	//invalid image format
+		if(!KGSurfaceIsValidFormat(imageFormat))
+			return NO;	//invalid image format
 
         size_t checkBpp;
         VGColorInternalFormat checkFormat;
-		VGPixelDecode d = VGImageParametersToPixelLayout(imageFormat,&checkBpp,&checkFormat);
+		VGPixelDecode d = KGSurfaceParametersToPixelLayout(imageFormat,&checkBpp,&checkFormat);
 		if(d.redBits != rb || d.greenBits != gb || d.blueBits != bb || d.alphaBits != ab || d.luminanceBits != lb ||
 		   d.redShift != rs || d.greenShift != gs || d.blueShift != bs || d.alphaShift != as || d.luminanceShift != ls ||
 		   checkBpp != bpp)
-		   return false;	//if the descriptor has a VGImageFormat, it must match the bits, shifts, and bpp
+		   return NO;	//if the descriptor has a KGSurfaceFormat, it must match the bits, shifts, and bpp
 	}
 
 	if((unsigned int)colorFormat & ~(VGColorPREMULTIPLIED | VGColorNONLINEAR | VGColorLUMINANCE))
-		return false;	//invalid internal format
+		return NO;	//invalid internal format
 
-	return true;
+	return YES;
 }
 
-
-static  RIfloat byteToColor(unsigned char i){
-	return (RIfloat)(i) / (RIfloat)0xFF;
-}
-
-static void VGImageReadPixelSpan_RGBA_8888(VGImage *self,int x,int y,KGRGBA *span,int length){
-   RIuint8 *scanline = self->m_data + y * self->_bytesPerRow;
-   int i;
-
-   scanline+=x*4;
-   for(i=0;i<length;i++){
-#if 0
-// The original implementation "RGBA"  = in host endianess, so until endian-ness is fixed everywhere
-    unsigned char r=*scanline++;
-    unsigned char g=*scanline++;
-    unsigned char b=*scanline++;
-    unsigned char a=*scanline++;
-#else
-// use this
-    unsigned char a=*scanline++;
-    unsigned char b=*scanline++;
-    unsigned char g=*scanline++;
-    unsigned char r=*scanline++;
-#endif
-    KGRGBA  result;
-    
-    result.r = byteToColor(r);
-    result.g = byteToColor(g);
-    result.b = byteToColor(b);
-	result.a = byteToColor(a);
-    *span++=result;
-   }
-}
-
-static void VGImageReadPixelSpan_32(VGImage *self,int x,int y,KGRGBA *span,int length){
-   RIuint8 *scanline = self->m_data + y * self->_bytesPerRow;
-   int          i;
-   unsigned int p;
-
-        for(i=0;i<length;i++,x++){
-            RIuint32* s = (((RIuint32*)scanline) + x);
-            p = (unsigned int)*s;
-            span[i]=KGRGBAUnpack(p, self);
-        }
-}
-
-static void VGImageReadPixelSpan_16(VGImage *self,int x,int y,KGRGBA *span,int length){
-   RIuint8 *scanline = self->m_data + y * self->_bytesPerRow;
-   int          i;
-   unsigned int p;
-
-        for(i=0;i<length;i++,x++){
-            RIuint16* s = ((RIuint16*)scanline) + x;
-            p = (unsigned int)*s;
-            span[i]=KGRGBAUnpack(p, self);
-        }
-}
-
-static void VGImageReadPixelSpan_08(VGImage *self,int x,int y,KGRGBA *span,int length){
-   RIuint8 *scanline = self->m_data + y * self->_bytesPerRow;
-   int          i;
-   unsigned int p;
-
-        for(i=0;i<length;i++,x++){
-            RIuint8* s = ((RIuint8*)scanline) + x;
-            p = (unsigned int)*s;
-            span[i]=KGRGBAUnpack(p, self);
-        }
-}
-
-static void VGImageReadPixelSpan_01(VGImage *self,int x,int y,KGRGBA *span,int length){
-   RIuint8 *scanline = self->m_data + y * self->_bytesPerRow;
-   int          i;
-   unsigned int p;
-
-        for(i=0;i<length;i++,x++){
-            RIuint8* s = scanline + (x>>3);
-            p = (((unsigned int)*s) >> (x&7)) & 1u;
-            span[i]=KGRGBAUnpack(p, self);
-        }
-}
 
 static unsigned char colorToByte(RIfloat c){
 	return RI_INT_MIN(RI_INT_MAX(RI_FLOOR_TO_INT(c * (RIfloat)0xFF + 0.5f), 0), 0xFF);
 }
 
-static void VGImageWritePixelSpan_RGBA_8888(VGImage *self,int x,int y,KGRGBA *span,int length){
-   RIuint8* scanline = self->m_data + y * self->_bytesPerRow;
+static void KGSurfaceWritePixelSpan_RGBA_8888(KGSurface *self,int x,int y,KGRGBA *span,int length){
+   RIuint8* scanline = self->_bytes + y * self->_bytesPerRow;
    int i;
    
    scanline+=x*4;
@@ -592,8 +482,8 @@ static void VGImageWritePixelSpan_RGBA_8888(VGImage *self,int x,int y,KGRGBA *sp
    }
 }
 
-static void VGImageWritePixelSpan_32(VGImage *self,int x,int y,KGRGBA *span,int length){
-   RIuint8* scanline = self->m_data + y * self->_bytesPerRow;
+static void KGSurfaceWritePixelSpan_32(KGSurface *self,int x,int y,KGRGBA *span,int length){
+   RIuint8* scanline = self->_bytes + y * self->_bytesPerRow;
    int i;
    
    for(i=0;i<length;i++,x++){
@@ -604,8 +494,8 @@ static void VGImageWritePixelSpan_32(VGImage *self,int x,int y,KGRGBA *span,int 
    }
 }
 
-static void VGImageWritePixelSpan_16(VGImage *self,int x,int y,KGRGBA *span,int length){
-   RIuint8* scanline = self->m_data + y * self->_bytesPerRow;
+static void KGSurfaceWritePixelSpan_16(KGSurface *self,int x,int y,KGRGBA *span,int length){
+   RIuint8* scanline = self->_bytes + y * self->_bytesPerRow;
    int i;
    
    for(i=0;i<length;i++,x++){
@@ -617,8 +507,8 @@ static void VGImageWritePixelSpan_16(VGImage *self,int x,int y,KGRGBA *span,int 
    }
 }
 
-static void VGImageWritePixelSpan_08(VGImage *self,int x,int y,KGRGBA *span,int length){
-   RIuint8* scanline = self->m_data + y * self->_bytesPerRow;
+static void KGSurfaceWritePixelSpan_08(KGSurface *self,int x,int y,KGRGBA *span,int length){
+   RIuint8* scanline = self->_bytes + y * self->_bytesPerRow;
    int i;
    
    for(i=0;i<length;i++,x++){
@@ -628,8 +518,8 @@ static void VGImageWritePixelSpan_08(VGImage *self,int x,int y,KGRGBA *span,int 
    }
 }
 
-static void VGImageWritePixelSpan_01(VGImage *self,int x,int y,KGRGBA *span,int length){
-   RIuint8* scanline = self->m_data + y * self->_bytesPerRow;
+static void KGSurfaceWritePixelSpan_01(KGSurface *self,int x,int y,KGRGBA *span,int length){
+   RIuint8* scanline = self->_bytes + y * self->_bytesPerRow;
    int i;
    
    for(i=0;i<length;i++,x++){
@@ -643,19 +533,33 @@ static void VGImageWritePixelSpan_01(VGImage *self,int x,int y,KGRGBA *span,int 
    }
 }
 
-static BOOL initFunctionsForParameters(VGImage *self,size_t bitsPerComponent,size_t bitsPerPixel,NSString *colorSpaceName,CGBitmapInfo bitmapInfo,VGImageFormat imageFormat){
+static BOOL initFunctionsForParameters(KGSurface *self,size_t bitsPerComponent,size_t bitsPerPixel,KGColorSpace *colorSpaceName,CGBitmapInfo bitmapInfo,KGSurfaceFormat imageFormat){
+
+   switch(bitsPerComponent){
+    case 32:
+    
+    case  8:
+     switch(bitsPerPixel){
+     }
+     break;
+     
+    case  4:
+    case  2:
+    case  1:
+     break;
+   }
    
    switch(imageFormat){
     case VG_sRGBA_8888:
     case VG_lRGBA_8888:
-     self->_readSpan=VGImageReadPixelSpan_RGBA_8888;
-     self->_writeSpan=VGImageWritePixelSpan_RGBA_8888;
+     self->_readSpan=KGImageReadPixelSpan_RGBA_8888;
+     self->_writeSpan=KGSurfaceWritePixelSpan_RGBA_8888;
      return YES;
      
     case VG_sRGBA_8888_PRE:
     case VG_lRGBA_8888_PRE:
-     self->_readSpan=VGImageReadPixelSpan_RGBA_8888;
-     self->_writeSpan=VGImageWritePixelSpan_RGBA_8888;
+     self->_readSpan=KGImageReadPixelSpan_RGBA_8888;
+     self->_writeSpan=KGSurfaceWritePixelSpan_RGBA_8888;
      return YES;
 
     default:
@@ -669,24 +573,24 @@ static BOOL initFunctionsForParameters(VGImage *self,size_t bitsPerComponent,siz
           break;
         }
         
-        self->_readSpan=VGImageReadPixelSpan_32;
-          self->_writeSpan=VGImageWritePixelSpan_32;
+        self->_readSpan=KGImageReadPixelSpan_32;
+          self->_writeSpan=KGSurfaceWritePixelSpan_32;
         return YES;
        }
 
       case 16:
-       self->_readSpan=VGImageReadPixelSpan_16;
-          self->_writeSpan=VGImageWritePixelSpan_16;
+       self->_readSpan=KGImageReadPixelSpan_16;
+          self->_writeSpan=KGSurfaceWritePixelSpan_16;
        return YES;
  
       case  8:
-       self->_readSpan=VGImageReadPixelSpan_08;
-          self->_writeSpan=VGImageWritePixelSpan_08;
+       self->_readSpan=KGImageReadPixelSpan_08;
+          self->_writeSpan=KGSurfaceWritePixelSpan_08;
        return YES;
      
       case  1:
-       self->_readSpan=VGImageReadPixelSpan_01;
-         self->_writeSpan=VGImageWritePixelSpan_01;
+       self->_readSpan=KGImageReadPixelSpan_01;
+         self->_writeSpan=KGSurfaceWritePixelSpan_01;
        return YES;
      }
      break;
@@ -706,33 +610,33 @@ static void clampPremultipliedSpan(KGRGBA *span,int length){
    }
 }
 
-VGImage *VGImageAlloc() {
-   return (VGImage *)NSZoneCalloc(NULL,1,sizeof(VGImage));
+KGSurface *KGSurfaceAlloc() {
+   return (KGSurface *)NSZoneCalloc(NULL,1,sizeof(KGSurface));
 }
 
-VGImage *VGImageInit(VGImage *self,size_t width, size_t height,size_t bitsPerComponent,size_t bitsPerPixel,NSString *colorSpaceName,CGBitmapInfo bitmapInfo,VGImageFormat imageFormat){
+KGSurface *KGSurfaceInit(KGSurface *self,size_t width, size_t height,size_t bitsPerComponent,size_t bitsPerPixel,KGColorSpace *colorSpace,CGBitmapInfo bitmapInfo,KGSurfaceFormat imageFormat){
 	self->_width=width;
 	self->_height=height;
     self->_bitsPerComponent=bitsPerComponent;
     self->_bitsPerPixel=bitsPerPixel;
 	self->_bytesPerRow=0;
-    self->_colorSpaceName=[colorSpaceName copy];
+    self->_colorSpace=[colorSpace copy];
     self->_bitmapInfo=bitmapInfo;
     
-    if(!initFunctionsForParameters(self,bitsPerComponent,bitsPerPixel,colorSpaceName,bitmapInfo,imageFormat))
+    if(!initFunctionsForParameters(self,bitsPerComponent,bitsPerPixel,colorSpace,bitmapInfo,imageFormat))
      NSLog(@"error, return");
     
     self->_imageFormat=imageFormat;
     size_t checkBPP;
-	self->m_desc=VGImageParametersToPixelLayout(imageFormat,&checkBPP,&(self->_colorFormat));
+	self->m_desc=KGSurfaceParametersToPixelLayout(imageFormat,&checkBPP,&(self->_colorFormat));
     RI_ASSERT(checkBPP==bitsPerPixel);
     
-	self->m_data=NULL;
-	self->m_ownsData=true;
-    self->_clampExternalPixels=false; // only set to yes if premultiplied
-	self->m_mipmapsValid=false;
+	self->_bytes=NULL;
+	self->m_ownsData=YES;
+    self->_clampExternalPixels=NO; // only set to yes if premultiplied
+	self->m_mipmapsValid=NO;
 
-	RI_ASSERT(VGImageParametersAreValid(self->m_desc,self->_imageFormat,self->_bitsPerPixel,self->_colorFormat));
+	RI_ASSERT(KGSurfaceParametersAreValid(self->m_desc,self->_imageFormat,self->_bitsPerPixel,self->_colorFormat));
 	RI_ASSERT(width > 0 && height > 0);
 	
 	if( self->_bitsPerPixel != 1 )
@@ -745,63 +649,55 @@ VGImage *VGImageInit(VGImage *self,size_t width, size_t height,size_t bitsPerCom
 		RI_ASSERT(self->_bitsPerPixel == 1);
 		self->_bytesPerRow = (self->_width+7)/8;
 	}
-	self->m_data = NSZoneMalloc(NULL,self->_bytesPerRow*self->_height*sizeof(RIuint8));
-	memset(self->m_data, 0, self->_bytesPerRow*self->_height);	//clear image
+	self->_bytes = NSZoneMalloc(NULL,self->_bytesPerRow*self->_height*sizeof(RIuint8));
+	memset(self->_bytes, 0, self->_bytesPerRow*self->_height);	//clear image
     self->_mipmapsCount=0;
     self->_mipmapsCapacity=2;
-    self->_mipmaps=(VGImage **)NSZoneMalloc(NULL,self->_mipmapsCapacity*sizeof(VGImage *));
+    self->_mipmaps=(KGSurface **)NSZoneMalloc(NULL,self->_mipmapsCapacity*sizeof(KGSurface *));
     return self;
 }
 
-VGImage *VGImageInitWithBytes(VGImage *self,size_t width,size_t height,size_t bitsPerComponent,size_t bitsPerPixel,size_t bytesPerRow,NSString *colorSpaceName,CGBitmapInfo bitmapInfo,VGImageFormat imageFormat,RIuint8* data) {
+KGSurface *KGSurfaceInitWithBytes(KGSurface *self,size_t width,size_t height,size_t bitsPerComponent,size_t bitsPerPixel,size_t bytesPerRow,KGColorSpace *colorSpace,CGBitmapInfo bitmapInfo,KGSurfaceFormat imageFormat,RIuint8* data) {
 	self->_width=width;
 	self->_height=height;
     self->_bitsPerComponent=bitsPerComponent;
     self->_bitsPerPixel=bitsPerPixel;
 	self->_bytesPerRow=bytesPerRow;
-    self->_colorSpaceName=[colorSpaceName copy];
+    self->_colorSpace=[colorSpace copy];
     self->_bitmapInfo=bitmapInfo;
-    if(!initFunctionsForParameters(self,bitsPerComponent,bitsPerPixel,colorSpaceName,bitmapInfo,imageFormat))
+    if(!initFunctionsForParameters(self,bitsPerComponent,bitsPerPixel,colorSpace,bitmapInfo,imageFormat))
      NSLog(@"error, return");
 
     self->_imageFormat=imageFormat;
     size_t checkBPP;
-	self->m_desc=VGImageParametersToPixelLayout(imageFormat,&checkBPP,&(self->_colorFormat));
+	self->m_desc=KGSurfaceParametersToPixelLayout(imageFormat,&checkBPP,&(self->_colorFormat));
     RI_ASSERT(checkBPP==bitsPerPixel);
 
-	self->m_data=data;
-	self->m_ownsData=false;
-    self->_clampExternalPixels=false; // only set to yes if premultiplied
-	self->m_mipmapsValid=false;
-	RI_ASSERT(VGImageParametersAreValid(self->m_desc,self->_imageFormat,self->_bitsPerPixel,self->_colorFormat));
+	self->_bytes=data;
+	self->m_ownsData=NO;
+    self->_clampExternalPixels=NO; // only set to yes if premultiplied
+	self->m_mipmapsValid=NO;
+	RI_ASSERT(KGSurfaceParametersAreValid(self->m_desc,self->_imageFormat,self->_bitsPerPixel,self->_colorFormat));
 	RI_ASSERT(width > 0 && height > 0);
 	RI_ASSERT(data);
     self->_mipmapsCount=0;
     self->_mipmapsCapacity=2;
-    self->_mipmaps=(VGImage **)NSZoneMalloc(NULL,self->_mipmapsCapacity*sizeof(VGImage *));
+    self->_mipmaps=(KGSurface **)NSZoneMalloc(NULL,self->_mipmapsCapacity*sizeof(KGSurface *));
     return self;
 }
 
-void VGImageDealloc(VGImage *self) {
+void KGSurfaceDealloc(KGSurface *self) {
     int i;
     
 	for(i=0;i<self->_mipmapsCount;i++){
-			VGImageDealloc(self->_mipmaps[i]);
+			KGSurfaceDealloc(self->_mipmaps[i]);
 	}
 	self->_mipmapsCount=0;
 
 	if(self->m_ownsData)
 	{
-		NSZoneFree(NULL,self->m_data);	//delete image data if we own it
+		NSZoneFree(NULL,self->_bytes);	//delete image data if we own it
 	}
-}
-
-int VGImageGetWidth(VGImage *image){
-   return image->_width;
-}
-
-int VGImageGetHeight(VGImage *image){
-   return image->_height;
 }
 
 /*-------------------------------------------------------------------*//*!
@@ -811,17 +707,17 @@ int VGImageGetHeight(VGImage *image){
 * \note		
 *//*-------------------------------------------------------------------*/
 
-void VGImageResize(VGImage *self,int newWidth, int newHeight, VGColor newPixelColor){
+void KGSurfaceResize(KGSurface *self,int newWidth, int newHeight, VGColor newPixelColor){
 	RI_ASSERT(newWidth > 0 && newHeight > 0);
 
 	//destroy mipmaps
     int i;
 	for(i=0;i<self->_mipmapsCount;i++)
 	{
-			VGImageDealloc(self->_mipmaps[i]);
+			KGSurfaceDealloc(self->_mipmaps[i]);
 	}
 	self->_mipmapsCount=0;
-	self->m_mipmapsValid = false;
+	self->m_mipmapsValid = NO;
 	
 	int newStride;
 	if( self->_bitsPerPixel != 1 )
@@ -849,7 +745,7 @@ void VGImageResize(VGImage *self,int newWidth, int newHeight, VGColor newPixelCo
 		if(j >= self->_height)
 			w = 0;		//clear new scanlines
 		RIuint8* d = newData + j * newStride;
-		RIuint8* s = self->m_data + j * self->_bytesPerRow;
+		RIuint8* s = self->_bytes + j * self->_bytesPerRow;
 		switch(self->_bitsPerPixel)
 		{
 		case 32:
@@ -920,8 +816,8 @@ void VGImageResize(VGImage *self,int newWidth, int newHeight, VGColor newPixelCo
 		}
 	}
 
-	NSZoneFree(NULL,self->m_data);
-	self->m_data = newData;
+	NSZoneFree(NULL,self->_bytes);
+	self->_bytes = newData;
 	self->_width = newWidth;
 	self->_height = newHeight;
 	self->_bytesPerRow = newStride;
@@ -934,8 +830,8 @@ void VGImageResize(VGImage *self,int newWidth, int newHeight, VGColor newPixelCo
 * \note		
 *//*-------------------------------------------------------------------*/
 
-void VGImageClear(VGImage *self,VGColor clearColor, int x, int y, int w, int h){
-	RI_ASSERT(self->m_data);
+void KGSurfaceClear(KGSurface *self,VGColor clearColor, int x, int y, int w, int h){
+	RI_ASSERT(self->_bytes);
 
 	//intersect clear region with image bounds
 	KGIntRect r=KGIntRectInit(0,0,self->_width,self->_height);
@@ -953,11 +849,11 @@ void VGImageClear(VGImage *self,VGColor clearColor, int x, int y, int w, int h){
         int i;
 		for(i=r.x;i<r.x + r.width;i++)
 		{
-			VGImageWritePixel(self,i, j, col);
+			KGSurfaceWritePixel(self,i, j, col);
 		}
 	}
 
-	self->m_mipmapsValid = false;
+	self->m_mipmapsValid = NO;
 }
 
 /*-------------------------------------------------------------------*//*!
@@ -976,9 +872,9 @@ static RIfloat ditherChannel(RIfloat c, int bits, RIfloat m)
 	return RI_MIN(ic / (RIfloat)((1<<bits)-1), 1.0f);
 }
 
-void VGImageBlit(VGImage *self,VGImage * src, int sx, int sy, int dx, int dy, int w, int h, bool dither) {
-	RI_ASSERT(src->m_data);	//source exists
-	RI_ASSERT(self->m_data);	//destination exists
+void KGSurfaceBlit(KGSurface *self,KGSurface * src, int sx, int sy, int dx, int dy, int w, int h, BOOL dither) {
+	RI_ASSERT(src->_bytes);	//source exists
+	RI_ASSERT(self->_bytes);	//destination exists
 	RI_ASSERT(w > 0 && h > 0);
 
 	sx = RI_INT_MIN(RI_INT_MAX(sx, (int)(RI_INT32_MIN>>2)), (int)(RI_INT32_MAX>>2));
@@ -1050,7 +946,7 @@ void VGImageBlit(VGImage *self,VGImage * src, int sx, int sy, int dx, int dy, in
         int i;
 		for(i=0;i<w;i++)
 		{
-			VGColor c = VGImageReadPixel(src,srcsx + i, srcsy + j);
+			VGColor c = KGSurfaceReadPixel(src,srcsx + i, srcsy + j);
 			c=VGColorConvert(c,self->_colorFormat);
 			tmp[j*w+i] = c;
 		}
@@ -1088,11 +984,11 @@ void VGImageBlit(VGImage *self,VGImage * src, int sx, int sy, int dx, int dy, in
 				if(abits) col.a = ditherChannel(col.a, abits, m);
 			}
 
-			VGImageWritePixel(self,dstsx + i, dstsy + j, col);
+			KGSurfaceWritePixel(self,dstsx + i, dstsy + j, col);
 		}
 	}
     NSZoneFree(NULL,tmp);
-	self->m_mipmapsValid = false;
+	self->m_mipmapsValid = NO;
 }
 
 /*-------------------------------------------------------------------*//*!
@@ -1102,23 +998,23 @@ void VGImageBlit(VGImage *self,VGImage * src, int sx, int sy, int dx, int dy, in
 * \note		
 *//*-------------------------------------------------------------------*/
 
-void VGImageMask(VGImage *self,VGImage* src, VGMaskOperation operation, int x, int y, int w, int h) {
-	RI_ASSERT(self->m_data);	//destination exists
+void KGSurfaceMask(KGSurface *self,KGSurface* src, VGMaskOperation operation, int x, int y, int w, int h) {
+	RI_ASSERT(self->_bytes);	//destination exists
 	RI_ASSERT(w > 0 && h > 0);
 
-	self->m_mipmapsValid = false;
+	self->m_mipmapsValid = NO;
 	if(operation == VG_CLEAR_MASK)
 	{
-		VGImageClear(self,VGColorRGBA(0,0,0,0,VGColor_lRGBA), x, y, w, h);
+		KGSurfaceClear(self,VGColorRGBA(0,0,0,0,VGColor_lRGBA), x, y, w, h);
 		return;
 	}
 	if(operation == VG_FILL_MASK)
 	{
-		VGImageClear(self,VGColorRGBA(1,1,1,1,VGColor_lRGBA), x, y, w, h);
+		KGSurfaceClear(self,VGColorRGBA(1,1,1,1,VGColor_lRGBA), x, y, w, h);
 		return;
 	}
 
-	RI_ASSERT(src->m_data);	//source exists
+	RI_ASSERT(src->_bytes);	//source exists
 
 	//intersect destination region with source and destination image bounds
 	x = RI_INT_MIN(RI_INT_MAX(x, (int)(RI_INT32_MIN>>2)), (int)(RI_INT32_MAX>>2));
@@ -1176,8 +1072,8 @@ void VGImageMask(VGImage *self,VGImage* src, VGMaskOperation operation, int x, i
         int i;
 		for(i=0;i<w;i++)
 		{
-			RIfloat aprev = VGImageReadMaskPixel(self,dstsx + i, dstsy + j);
-			RIfloat amask = VGImageReadMaskPixel(src,srcsx + i, srcsy + j);
+			RIfloat aprev = KGSurfaceReadMaskPixel(self,dstsx + i, dstsy + j);
+			RIfloat amask = KGSurfaceReadMaskPixel(src,srcsx + i, srcsy + j);
 			RIfloat anew = 0.0f;
 			switch(operation)
 			{
@@ -1198,7 +1094,7 @@ void VGImageMask(VGImage *self,VGImage* src, VGMaskOperation operation, int x, i
 				anew = aprev * (1.0f - amask);
 				break;
 			}
-			VGImageWriteMaskPixel(self,dstsx + i, dstsy + j, anew);
+			KGSurfaceWriteMaskPixel(self,dstsx + i, dstsy + j, anew);
 		}
 	}
 }
@@ -1210,8 +1106,8 @@ void VGImageMask(VGImage *self,VGImage* src, VGMaskOperation operation, int x, i
 * \note		
 *//*-------------------------------------------------------------------*/
 
-VGColor inline VGImageReadPixel(VGImage *self,int x, int y) {
-	RI_ASSERT(self->m_data);
+VGColor inline KGSurfaceReadPixel(KGImage *self,int x, int y) {
+	RI_ASSERT(self->_bytes);
 	RI_ASSERT(x >= 0 && x < self->_width);
 	RI_ASSERT(y >= 0 && y < self->_height);
  
@@ -1225,8 +1121,8 @@ VGColor inline VGImageReadPixel(VGImage *self,int x, int y) {
    return VGColorFromKGRGBA(span,self->_colorFormat);
 }
 
-KGRGBA inline VGImageReadRGBA(VGImage *self,int x, int y) {
-	RI_ASSERT(self->m_data);
+KGRGBA inline KGSurfaceReadRGBA(KGImage *self,int x, int y) {
+	RI_ASSERT(self->_bytes);
 	RI_ASSERT(x >= 0 && x < self->_width);
 	RI_ASSERT(y >= 0 && y < self->_height);
  
@@ -1240,12 +1136,12 @@ KGRGBA inline VGImageReadRGBA(VGImage *self,int x, int y) {
    return span;
 }
 
-VGColorInternalFormat VGImageReadPremultipliedSpan_ffff(VGImage *self,int x,int y,KGRGBA *span,int length) {
+VGColorInternalFormat KGSurfaceReadPremultipliedSpan_ffff(KGSurface *self,int x,int y,KGRGBA *span,int length) {
    self->_readSpan(self,x,y,span,length);
    
    
    if(!(self->_colorFormat&VGColorPREMULTIPLIED))
-    premultiplySpan(span,length);
+    KGRGBPremultiplySpan(span,length);
    else if(self->_clampExternalPixels)
     clampPremultipliedSpan(span,length); // We don't need to do this for internally generated images (context)
 
@@ -1261,7 +1157,7 @@ VGColorInternalFormat VGImageReadPremultipliedSpan_ffff(VGImage *self,int x,int 
 *//*-------------------------------------------------------------------*/
 
 
-void VGImageWritePixelSpan(VGImage *self,int x,int y,KGRGBA *span,int length,VGColorInternalFormat format) {   
+void KGSurfaceWritePixelSpan(KGSurface *self,int x,int y,KGRGBA *span,int length,VGColorInternalFormat format) {   
    if(length==0)
     return;
     
@@ -1269,20 +1165,20 @@ void VGImageWritePixelSpan(VGImage *self,int x,int y,KGRGBA *span,int length,VGC
    
    self->_writeSpan(self,x,y,span,length);
    
-   self->m_mipmapsValid = false;
+   self->m_mipmapsValid = NO;
 }
 
-void inline VGImageWritePixel(VGImage *self,int x, int y, VGColor c) {
-	RI_ASSERT(self->m_data);
+void inline KGSurfaceWritePixel(KGSurface *self,int x, int y, VGColor c) {
+	RI_ASSERT(self->_bytes);
 	RI_ASSERT(x >= 0 && x < self->_width);
 	RI_ASSERT(y >= 0 && y < self->_height);
 	RI_ASSERT(c.m_format == self->_colorFormat);
     KGRGBA span=KGRGBAFromColor(c);
     
-    VGImageWritePixelSpan(self,x,y,&span,1,c.m_format);
+    KGSurfaceWritePixelSpan(self,x,y,&span,1,c.m_format);
 #if 0    
 	unsigned int p = VGColorPack(c,self);
-	RIuint8* scanline = self->m_data + y * self->_bytesPerRow;
+	RIuint8* scanline = self->_bytes + y * self->_bytesPerRow;
 	switch(self->_bitsPerPixel)
 	{
 	case 32:
@@ -1317,7 +1213,7 @@ void inline VGImageWritePixel(VGImage *self,int x, int y, VGColor c) {
 		break;
 	}
 	}
-	self->m_mipmapsValid = false;
+	self->m_mipmapsValid = NO;
 #endif
 }
 
@@ -1330,7 +1226,7 @@ void inline VGImageWritePixel(VGImage *self,int x, int y, VGColor c) {
 * \note		
 *//*-------------------------------------------------------------------*/
 
-void VGImageWriteFilteredPixel(VGImage *self,int i, int j, VGColor color, VGbitfield channelMask) {
+void KGSurfaceWriteFilteredPixel(KGSurface *self,int i, int j, VGColor color, VGbitfield channelMask) {
 	//section 3.4.4: before color space conversion, premultiplied colors are
 	//clamped to alpha, and the color is converted to nonpremultiplied format
 	//section 11.2: how to deal with channel mask
@@ -1343,7 +1239,7 @@ void VGImageWriteFilteredPixel(VGImage *self,int i, int j, VGColor color, VGbitf
 	f=VGColorConvert(f,(VGColorInternalFormat)(self->_colorFormat & (VGColorNONLINEAR | VGColorLUMINANCE)));
 
 	//step 3: read the destination color and convert it to nonpremultiplied
-	VGColor d = VGImageReadPixel(self,i,j);
+	VGColor d = KGSurfaceReadPixel(self,i,j);
 	d=VGColorUnpremultiply(d);
 	RI_ASSERT(d.m_format == f.m_format);
 
@@ -1361,7 +1257,7 @@ void VGImageWriteFilteredPixel(VGImage *self,int i, int j, VGColor color, VGbitf
 	if(self->_colorFormat & VGColorPREMULTIPLIED)
 		d=VGColorPremultiply(d);
 	//write the color to destination
-	VGImageWritePixel(self,i,j,d);
+	KGSurfaceWritePixel(self,i,j,d);
 }
 
 /*-------------------------------------------------------------------*//*!
@@ -1371,12 +1267,12 @@ void VGImageWriteFilteredPixel(VGImage *self,int i, int j, VGColor color, VGbitf
 * \note		
 *//*-------------------------------------------------------------------*/
 
-RIfloat VGImageReadMaskPixel(VGImage *self,int x, int y){
-	RI_ASSERT(self->m_data);
+RIfloat KGSurfaceReadMaskPixel(KGSurface *self,int x, int y){
+	RI_ASSERT(self->_bytes);
 	RI_ASSERT(x >= 0 && x < self->_width);
 	RI_ASSERT(y >= 0 && y < self->_height);
 
-	VGColor c = VGImageReadPixel(self,x,y);
+	VGColor c = KGSurfaceReadPixel(self,x,y);
 	if(self->m_desc.luminanceBits)
 	{	//luminance
 		return c.r;	//luminance/luma is read into the color channels
@@ -1389,11 +1285,11 @@ RIfloat VGImageReadMaskPixel(VGImage *self,int x, int y){
 	}
 }
 
-void VGImageReadMaskPixelSpanIntoCoverage(VGImage *self,int x,int y,RIfloat *coverage,int length) {
+void KGSurfaceReadMaskPixelSpanIntoCoverage(KGSurface *self,int x,int y,RIfloat *coverage,int length) {
    int i;
    
    for(i=0;i<length;i++,x++){
-    coverage[i] *= VGImageReadMaskPixel(self,x, y);
+    coverage[i] *= KGSurfaceReadMaskPixel(self,x, y);
    }
 }
 
@@ -1404,16 +1300,16 @@ void VGImageReadMaskPixelSpanIntoCoverage(VGImage *self,int x,int y,RIfloat *cov
 * \note		
 *//*-------------------------------------------------------------------*/
 
-void VGImageWriteMaskPixel(VGImage *self,int x, int y, RIfloat m)	//can write only to VG_A_8
+void KGSurfaceWriteMaskPixel(KGSurface *self,int x, int y, RIfloat m)	//can write only to VG_A_8
 {
-	RI_ASSERT(self->m_data);
+	RI_ASSERT(self->_bytes);
 	RI_ASSERT(x >= 0 && x < self->_width);
 	RI_ASSERT(y >= 0 && y < self->_height);
 	RI_ASSERT(self->m_desc.alphaBits == 8 && self->m_desc.redBits == 0 && self->m_desc.greenBits == 0 && self->m_desc.blueBits == 0 && self->m_desc.luminanceBits == 0 && self->_bitsPerPixel == 8);
 
-	RIuint8* s = ((RIuint8*)(self->m_data + y * self->_bytesPerRow)) + x;
+	RIuint8* s = ((RIuint8*)(self->_bytes + y * self->_bytesPerRow)) + x;
 	*s = (RIuint8)colorToInt(m, 255);
-	self->m_mipmapsValid = false;
+	self->m_mipmapsValid = NO;
 }
 
 /*-------------------------------------------------------------------*//*!
@@ -1425,29 +1321,18 @@ void VGImageWriteMaskPixel(VGImage *self,int x, int y, RIfloat m)	//can write on
 * \note		
 *//*-------------------------------------------------------------------*/
 
-VGImage *VGImageMipMapForLevel(VGImage *self,int level){
-	VGImage* image = self;
-    
-	if( level > 0 ){
-		RI_ASSERT(level <= self->_mipmapsCount);
-		image = self->_mipmaps[level-1];
-	}
-	RI_ASSERT(image);
-    return image;
-}
-
 /* Theoretically the edges of the polygon fill used to draw resampled images would
    perfectly fit the edges of the raster image, however, numerical error will probably
    place some sampled pixels outside the image. Two good choices are to use the edge value
    or zero. This uses the edge value.  I don't know what Apple does.
  */
-void VGImageReadTexelTilePad(VGImage *self,int u, int v, KGRGBA *span,int length){
+void KGSurfaceReadTexelTilePad(KGImage *self,int u, int v, KGRGBA *span,int length){
    int i;
 
    v = RI_INT_CLAMP(v,0,self->_height-1);
    
    for(i=0;i<length && u<0;u++,i++)
-    span[i]=VGImageReadRGBA(self,0,v);
+    span[i]=KGSurfaceReadRGBA(self,0,v);
 
    int chunk=RI_MIN(length-i,self->_width-u);
    self->_readSpan(self,u,v,span+i,chunk);
@@ -1455,7 +1340,7 @@ void VGImageReadTexelTilePad(VGImage *self,int u, int v, KGRGBA *span,int length
    u+=chunk;
 
    for(;i<length;i++)
-    span[i]=VGImageReadRGBA(self,self->_width-1,v);
+    span[i]=KGSurfaceReadRGBA(self,self->_width-1,v);
 
    if(self->_clampExternalPixels)
     clampPremultipliedSpan(span,length); // We don't need to do this for internally generated images (context)
@@ -1469,269 +1354,8 @@ void VGImageReadTexelTilePad(VGImage *self,int u, int v, KGRGBA *span,int length
 * \note		
 *//*-------------------------------------------------------------------*/
 
-static inline float cubic(float v0,float v1,float v2,float v3,float fraction){
-  float p = (v3 - v2) - (v0 - v1);
-  float q = (v0 - v1) - p;
 
-  return RI_CLAMP((p * (fraction*fraction*fraction)) + (q * fraction*fraction) + ((v2 - v0) * fraction) + v1,0,1);
-}
-
-KGRGBA bicubicInterpolate(KGRGBA a,KGRGBA b,KGRGBA c,KGRGBA d,float fraction)
-{
-  return KGRGBAInit(
-   cubic(a.r, b.r, c.r, d.r, fraction),
-   cubic(a.g, b.g, c.g, d.g, fraction),
-   cubic(a.b, b.b, c.b, d.b, fraction),
-   cubic(a.a, b.a, c.a, d.a, fraction));
-}
-
-// accuracy doesn't seem to matter much, it appears
-static inline float fastExp(float value){
-   static float table[10];
-   static BOOL initTable=YES;
-   
-   if(initTable){
-    initTable=NO;
-    int i;
-    for(i=0;i<10;i++)
-     table[i]=exp(-i/2.0);
-   }
-   return table[(int)(-value*2)];
-}
-
-VGColorInternalFormat VGImageResample_EWAOnMipmaps(VGImage *self,RIfloat x, RIfloat y,KGRGBA *span,int length, Matrix3x3 surfaceToImage){
-// Visual test indicates this is very close to what Apple is using 
-   int i;
-   		RIfloat m_pixelFilterRadius = 1.25f;
-		RIfloat m_resamplingFilterRadius = 1.25f;
-
-   VGImageMakeMipMaps(self);
-   
-   Vector3 uvw=Vector3Make(0,0,1);
-   uvw=Matrix3x3MultiplyVector3(surfaceToImage ,uvw);
-   RIfloat oow = 1.0f / uvw.z;
-   RIfloat VxPRE = (surfaceToImage.matrix[1][0] - uvw.y * surfaceToImage.matrix[2][0]) * oow * m_pixelFilterRadius;
-   RIfloat VyPRE = (surfaceToImage.matrix[1][1] - uvw.y * surfaceToImage.matrix[2][1]) * oow * m_pixelFilterRadius;
-   
-		RIfloat Ux = (surfaceToImage.matrix[0][0] - uvw.x * surfaceToImage.matrix[2][0]) * oow * m_pixelFilterRadius;
-		RIfloat Vx = VxPRE;
-		RIfloat Uy = (surfaceToImage.matrix[0][1] - uvw.x * surfaceToImage.matrix[2][1]) * oow * m_pixelFilterRadius;
-		RIfloat Vy = VyPRE;
-
-		//calculate mip level
-		int level = 0;
-		RIfloat axis1sq = Ux*Ux + Vx*Vx;
-		RIfloat axis2sq = Uy*Uy + Vy*Vy;
-		RIfloat minorAxissq = RI_MIN(axis1sq,axis2sq);
-		while(minorAxissq > 9.0f && level < self->_mipmapsCount)	//half the minor axis must be at least three texels
-		{
-			level++;
-			minorAxissq *= 0.25f;
-		}
-
-		RIfloat sx = 1.0f;
-		RIfloat sy = 1.0f;
-		if(level > 0)
-		{
-			sx = (RIfloat)self->_mipmaps[level-1]->_width / (RIfloat)self->_width;
-			sy = (RIfloat)self->_mipmaps[level-1]->_height / (RIfloat)self->_height;
-		}
-        VGImage *mipmap=VGImageMipMapForLevel(self,level);
-
-   for(i=0;i<length;i++,x++){
-    uvw=Vector3Make(x+0.5,y+0.5,1);
-    uvw=Matrix3x3MultiplyVector3(surfaceToImage ,uvw);
-	uvw=Vector3MultiplyByFloat(uvw,oow);
-   
-		 Ux = (surfaceToImage.matrix[0][0] - uvw.x * surfaceToImage.matrix[2][0]) * oow * m_pixelFilterRadius;
-		 Vx = VxPRE;
-		 Uy = (surfaceToImage.matrix[0][1] - uvw.x * surfaceToImage.matrix[2][1]) * oow * m_pixelFilterRadius;
-		 Vy = VyPRE;
-
-		RIfloat U0 = uvw.x;
-		RIfloat V0 = uvw.y;
-		Ux *= sx;
-		Vx *= sx;
-		U0 *= sx;
-		Uy *= sy;
-		Vy *= sy;
-		V0 *= sy;
-		
-		//clamp filter size so that filtering doesn't take excessive amount of time (clamping results in aliasing)
-		RIfloat lim = 100.0f;
-		axis1sq = Ux*Ux + Vx*Vx;
-		axis2sq = Uy*Uy + Vy*Vy;
-		if( axis1sq > lim*lim )
-		{
-			RIfloat s = lim / (RIfloat)sqrt(axis1sq);
-			Ux *= s;
-			Vx *= s;
-		}
-		if( axis2sq > lim*lim )
-		{
-			RIfloat s = lim / (RIfloat)sqrt(axis2sq);
-			Uy *= s;
-			Vy *= s;
-		}
-		
-		
-		//form elliptic filter by combining texel and pixel filters
-		RIfloat A = Vx*Vx + Vy*Vy + 1.0f;
-		RIfloat B = -2.0f*(Ux*Vx + Uy*Vy);
-		RIfloat C = Ux*Ux + Uy*Uy + 1.0f;
-		//scale by the user-defined size of the kernel
-		A *= m_resamplingFilterRadius;
-		B *= m_resamplingFilterRadius;
-		C *= m_resamplingFilterRadius;
-		
-		//calculate bounding box in texture space
-		RIfloat usize = (RIfloat)sqrt(C);
-		RIfloat vsize = (RIfloat)sqrt(A);
-		int u1 = RI_FLOOR_TO_INT(U0 - usize + 0.5f);
-		int u2 = RI_FLOOR_TO_INT(U0 + usize + 0.5f);
-		int v1 = RI_FLOOR_TO_INT(V0 - vsize + 0.5f);
-		int v2 = RI_FLOOR_TO_INT(V0 + vsize + 0.5f);
-		if( u1 == u2 || v1 == v2 ){
-			span[i]=KGRGBAInit(0,0,0,0);
-            continue;
-        }
-        
-		//scale the filter so that Q = 1 at the cutoff radius
-		RIfloat F = A*C - 0.25f * B*B;
-		if( F <= 0.0f ){
-			span[i]=KGRGBAInit(0,0,0,0);	//invalid filter shape due to numerical inaccuracies => return black
-            continue;
-        }
-		RIfloat ooF = 1.0f / F;
-		A *= ooF;
-		B *= ooF;
-		C *= ooF;
-		
-		//evaluate filter by using forward differences to calculate Q = A*U^2 + B*U*V + C*V^2
-		KGRGBA color=KGRGBAInit(0,0,0,0);
-		RIfloat sumweight = 0.0f;
-		RIfloat DDQ = 2.0f * A;
-		RIfloat U = (RIfloat)u1 - U0 + 0.5f;
-        int v;
-        
-		for(v=v1;v<v2;v++)
-		{
-			RIfloat V = (RIfloat)v - V0 + 0.5f;
-			RIfloat DQ = A*(2.0f*U+1.0f) + B*V;
-			RIfloat Q = (C*V+B*U)*V + A*U*U;
-            int u;
-            
-            KGRGBA texel[u2-u1];
-            VGImageReadTexelTilePad(mipmap,u1, v,texel,(u2-u1));
-			for(u=u1;u<u2;u++)
-			{
-				if( Q >= 0.0f && Q < 1.0f )
-				{	//Q = r^2, fit gaussian to the range [0,1]
-#if 0
-					RIfloat weight = (RIfloat)expf(-0.5f * 10.0f * Q);	//gaussian at radius 10 equals 0.0067
-#else
-					RIfloat weight = (RIfloat)fastExp(-0.5f * 10.0f * Q);	//gaussian at radius 10 equals 0.0067
-#endif
-                    
-					color=KGRGBAAdd(color,  KGRGBAMultiplyByFloat(texel[u-u1],weight));
-					sumweight += weight;
-				}
-				Q += DQ;
-				DQ += DDQ;
-			}
-		}
-		if( sumweight == 0.0f ){
-			span[i]=KGRGBAInit(0,0,0,0);
-            continue;
-        }
-		RI_ASSERT(sumweight > 0.0f);
-		sumweight = 1.0f / sumweight;
-		span[i]=KGRGBAMultiplyByFloat(color,sumweight);
-	}
-
-
-   return self->_colorFormat;
-}
-
-VGColorInternalFormat VGImageResample_Bicubic(VGImage *self,RIfloat x, RIfloat y,KGRGBA *span,int length, Matrix3x3 surfaceToImage){
-   int i;
-   
-   for(i=0;i<length;i++,x++){
-	Vector3 uvw=Vector3Make(x+0.5,y+0.5,1);
-	uvw = Matrix3x3MultiplyVector3(surfaceToImage ,uvw);
-	RIfloat oow = 1.0f / uvw.z;
-	uvw=Vector3MultiplyByFloat(uvw,oow);
-    uvw.x -= 0.5f;
-    uvw.y -= 0.5f;
-    int u = RI_FLOOR_TO_INT(uvw.x);
-    float ufrac=uvw.x-u;
-        
-    int v = RI_FLOOR_TO_INT(uvw.y);
-    float vfrac=uvw.y-v;
-        
-    KGRGBA t0,t1,t2,t3;
-    KGRGBA cspan[4];
-     
-    VGImageReadTexelTilePad(self,u - 1,v - 1,cspan,4);
-    t0 = bicubicInterpolate(cspan[0],cspan[1],cspan[2],cspan[3],ufrac);
-      
-    VGImageReadTexelTilePad(self,u - 1,v,cspan,4);
-    t1 = bicubicInterpolate(cspan[0],cspan[1],cspan[2],cspan[3],ufrac);
-     
-    VGImageReadTexelTilePad(self,u - 1,v+1,cspan,4);     
-    t2 = bicubicInterpolate(cspan[0],cspan[1],cspan[2],cspan[3],ufrac);
-     
-    VGImageReadTexelTilePad(self,u - 1,v+2,cspan,4);     
-    t3 = bicubicInterpolate(cspan[0],cspan[1],cspan[2],cspan[3],ufrac);
-
-    span[i]=bicubicInterpolate(t0,t1,t2,t3, vfrac);
-   }
-
-   return self->_colorFormat;
-}
-
-VGColorInternalFormat VGImageResample_Bilinear(VGImage *self,RIfloat x, RIfloat y,KGRGBA *span,int length, Matrix3x3 surfaceToImage){
-   int i;
-
-   for(i=0;i<length;i++,x++){
-	Vector3 uvw=Vector3Make(x+0.5,y+0.5,1);
-	uvw = Matrix3x3MultiplyVector3(surfaceToImage,uvw);
-	RIfloat oow = 1.0f / uvw.z;
-	uvw=Vector3MultiplyByFloat(uvw,oow);
-    uvw.x -= 0.5f;
-	uvw.y -= 0.5f;
-	int u = RI_FLOOR_TO_INT(uvw.x);
-	int v = RI_FLOOR_TO_INT(uvw.y);
-	KGRGBA c00c01[2];
-    VGImageReadTexelTilePad(self,u,v,c00c01,2);
-
-    KGRGBA c01c11[2];
-    VGImageReadTexelTilePad(self,u,v+1,c01c11,2);
-
-    RIfloat fu = uvw.x - (RIfloat)u;
-    RIfloat fv = uvw.y - (RIfloat)v;
-    KGRGBA c0 = KGRGBAAdd(KGRGBAMultiplyByFloat(c00c01[0],(1.0f - fu)),KGRGBAMultiplyByFloat(c00c01[1],fu));
-    KGRGBA c1 = KGRGBAAdd(KGRGBAMultiplyByFloat(c01c11[0],(1.0f - fu)),KGRGBAMultiplyByFloat(c01c11[1],fu));
-    span[i]=KGRGBAAdd(KGRGBAMultiplyByFloat(c0,(1.0f - fv)),KGRGBAMultiplyByFloat(c1, fv));
-   }
-
-   return self->_colorFormat;
-}
-
-VGColorInternalFormat VGImageResample_PointSampling(VGImage *self,RIfloat x, RIfloat y,KGRGBA *span,int length, Matrix3x3 surfaceToImage){
-   int i;
-   
-   for(i=0;i<length;i++,x++){
-    Vector3 uvw=Vector3Make(x+0.5,y+0.5,1);
-	uvw = Matrix3x3MultiplyVector3(surfaceToImage ,uvw);
-	RIfloat oow = 1.0f / uvw.z;
-	uvw=Vector3MultiplyByFloat(uvw,oow);
-    VGImageReadTexelTilePad(self,RI_FLOOR_TO_INT(uvw.x), RI_FLOOR_TO_INT(uvw.y),span+i,1);
-   }
-   return self->_colorFormat;
-}
-
-void VGImageReadTexelTileRepeat(VGImage *self,int u, int v, KGRGBA *span,int length){
+void KGSurfaceReadTexelTileRepeat(KGSurface *self,int u, int v, KGRGBA *span,int length){
    int i;
 
    v = RI_INT_MOD(v, self->_height);
@@ -1739,11 +1363,11 @@ void VGImageReadTexelTileRepeat(VGImage *self,int u, int v, KGRGBA *span,int len
    for(i=0;i<length;i++,u++){
     u = RI_INT_MOD(u, self->_width);
 
-	span[i]=KGRGBAPremultiply(VGImageReadRGBA(self,u, v));
+	span[i]=KGRGBAPremultiply(KGSurfaceReadRGBA(self,u, v));
    }
 }
 
-void VGImagePattern_Bilinear(VGImage *self,RIfloat x, RIfloat y,KGRGBA *span,int length, Matrix3x3 surfaceToImage){
+void KGSurfacePattern_Bilinear(KGSurface *self,RIfloat x, RIfloat y,KGRGBA *span,int length, Matrix3x3 surfaceToImage){
    int i;
    
    for(i=0;i<length;i++,x++){
@@ -1756,10 +1380,10 @@ void VGImagePattern_Bilinear(VGImage *self,RIfloat x, RIfloat y,KGRGBA *span,int
 	int u = RI_FLOOR_TO_INT(uvw.x);
 	int v = RI_FLOOR_TO_INT(uvw.y);
 	KGRGBA c00c01[2];
-    VGImageReadTexelTileRepeat(self,u,v,c00c01,2);
+    KGSurfaceReadTexelTileRepeat(self,u,v,c00c01,2);
 
     KGRGBA c01c11[2];
-    VGImageReadTexelTileRepeat(self,u,v+1,c01c11,2);
+    KGSurfaceReadTexelTileRepeat(self,u,v+1,c01c11,2);
 
     RIfloat fu = uvw.x - (RIfloat)u;
     RIfloat fv = uvw.y - (RIfloat)v;
@@ -1769,7 +1393,7 @@ void VGImagePattern_Bilinear(VGImage *self,RIfloat x, RIfloat y,KGRGBA *span,int
    }
 }
 
-void VGImagePattern_PointSampling(VGImage *self,RIfloat x, RIfloat y,KGRGBA *span,int length, Matrix3x3 surfaceToImage){	//point sampling
+void KGSurfacePattern_PointSampling(KGSurface *self,RIfloat x, RIfloat y,KGRGBA *span,int length, Matrix3x3 surfaceToImage){	//point sampling
    int i;
    
    for(i=0;i<length;i++,x++){
@@ -1777,21 +1401,21 @@ void VGImagePattern_PointSampling(VGImage *self,RIfloat x, RIfloat y,KGRGBA *spa
 	uvw = Matrix3x3MultiplyVector3(surfaceToImage ,uvw);
 	RIfloat oow = 1.0f / uvw.z;
 	uvw=Vector3MultiplyByFloat(uvw,oow);
-    VGImageReadTexelTileRepeat(self,RI_FLOOR_TO_INT(uvw.x), RI_FLOOR_TO_INT(uvw.y),span+i,1);
+    KGSurfaceReadTexelTileRepeat(self,RI_FLOOR_TO_INT(uvw.x), RI_FLOOR_TO_INT(uvw.y),span+i,1);
    }
 }
 
-void VGImagePatternSpan(VGImage *self,RIfloat x, RIfloat y, KGRGBA *span,int length,int colorFormat, Matrix3x3 surfaceToImage, CGPatternTiling distortion)	{
+void KGSurfacePatternSpan(KGSurface *self,RIfloat x, RIfloat y, KGRGBA *span,int length,int colorFormat, Matrix3x3 surfaceToImage, CGPatternTiling distortion)	{
     
    switch(distortion){
     case kCGPatternTilingNoDistortion:
-      VGImagePattern_PointSampling(self,x,y,span,length,surfaceToImage);
+      KGSurfacePattern_PointSampling(self,x,y,span,length,surfaceToImage);
       break;
 
     case kCGPatternTilingConstantSpacingMinimalDistortion:
     case kCGPatternTilingConstantSpacing:
      default:
-      VGImagePattern_Bilinear(self,x,y,span,length,surfaceToImage);
+      KGSurfacePattern_Bilinear(self,x,y,span,length,surfaceToImage);
       break;
    }
        
@@ -1806,8 +1430,8 @@ void VGImagePatternSpan(VGImage *self,RIfloat x, RIfloat y, KGRGBA *span,int len
 *			filter for downsampling.
 *//*-------------------------------------------------------------------*/
 
-void VGImageMakeMipMaps(VGImage *self) {
-	RI_ASSERT(self->m_data);
+void KGSurfaceMakeMipMaps(KGImage *self) {
+	RI_ASSERT(self->_bytes);
 
 	if(self->m_mipmapsValid)
 		return;
@@ -1816,7 +1440,7 @@ void VGImageMakeMipMaps(VGImage *self) {
     int i;
 	for(i=0;i<self->_mipmapsCount;i++)
 	{
-			VGImageDealloc(self->_mipmaps[i]);
+			KGSurfaceDealloc(self->_mipmaps[i]);
 	}
 	self->_mipmapsCount=0;
 
@@ -1826,7 +1450,7 @@ void VGImageMakeMipMaps(VGImage *self) {
 		procFormat = (VGColorInternalFormat)(procFormat | VGColorPREMULTIPLIED);	//premultiplied
 
 		//generate mipmaps until width and height are one
-		VGImage* prev = self;
+		KGImage* prev = self;
 		while( prev->_width > 1 || prev->_height > 1 )
 		{
 			int nextw = (int)ceil(prev->_width*0.5f);
@@ -1836,12 +1460,12 @@ void VGImageMakeMipMaps(VGImage *self) {
 
             if(self->_mipmapsCount+1>self->_mipmapsCapacity){
              self->_mipmapsCapacity*=2;
-             self->_mipmaps=(VGImage **)NSZoneRealloc(NULL,self->_mipmaps,sizeof(VGImage *)*self->_mipmapsCapacity);
+             self->_mipmaps=(KGSurface **)NSZoneRealloc(NULL,self->_mipmaps,sizeof(KGSurface *)*self->_mipmapsCapacity);
             }
             self->_mipmapsCount++;
 			self->_mipmaps[self->_mipmapsCount-1] = NULL;
 
-			VGImage* next =  VGImageInit(VGImageAlloc(),nextw, nexth,self->_bitsPerComponent,self->_bitsPerPixel,self->_colorSpaceName,self->_bitmapInfo,self->_imageFormat);
+			KGSurface* next =  KGSurfaceInit(KGSurfaceAlloc(),nextw, nexth,self->_bitsPerComponent,self->_bitsPerPixel,self->_colorSpace,self->_bitmapInfo,self->_imageFormat);
             int j;
 			for(j=0;j<next->_height;j++)
 			{
@@ -1870,7 +1494,7 @@ void VGImageMakeMipMaps(VGImage *self) {
                         int x;
 						for(x=su;x<eu;x++)
 						{
-							VGColor p = VGImageReadPixel(prev,x, y);
+							VGColor p = KGSurfaceReadPixel(prev,x, y);
 							p=VGColorConvert(p,procFormat);
 							c=VGColorAdd(c, p);
 							samples++;
@@ -1878,14 +1502,14 @@ void VGImageMakeMipMaps(VGImage *self) {
 					}
 					c=VGColorMultiplyByFloat(c,(1.0f/samples));
 					c=VGColorConvert(c,self->_colorFormat);
-					VGImageWritePixel(next,i,j,c);
+					KGSurfaceWritePixel(next,i,j,c);
 				}
 			}
 			self->_mipmaps[self->_mipmapsCount-1] = next;
 			prev = next;
 		}
 		RI_ASSERT(prev->_width == 1 && prev->_height == 1);
-		self->m_mipmapsValid = true;
+		self->m_mipmapsValid = YES;
 	}
 #if 0
 	catch(std::bad_alloc)
@@ -1895,11 +1519,11 @@ void VGImageMakeMipMaps(VGImage *self) {
 		{
 			if(self->_mipmaps[i])
 			{
-					VGImageDealloc(self->_mipmaps[i]);
+					KGSurfaceDealloc(self->_mipmaps[i]);
 			}
 		}
 		self->_mipmapsCount=0;
-		self->m_mipmapsValid = false;
+		self->m_mipmapsValid = NO;
 		throw;
 	}
 #endif
@@ -1912,9 +1536,9 @@ void VGImageMakeMipMaps(VGImage *self) {
 * \note		
 *//*-------------------------------------------------------------------*/
 
-void VGImageColorMatrix(VGImage *self,VGImage * src, const RIfloat* matrix, bool filterFormatLinear, bool filterFormatPremultiplied, VGbitfield channelMask) {
-	RI_ASSERT(src->m_data);	//source exists
-	RI_ASSERT(self->m_data);	//destination exists
+void KGSurfaceColorMatrix(KGSurface *self,KGSurface * src, const RIfloat* matrix, BOOL filterFormatLinear, BOOL filterFormatPremultiplied, VGbitfield channelMask) {
+	RI_ASSERT(src->_bytes);	//source exists
+	RI_ASSERT(self->_bytes);	//destination exists
 	RI_ASSERT(matrix);
 
 	int w = RI_INT_MIN(self->_width, src->_width);
@@ -1938,7 +1562,7 @@ void VGImageColorMatrix(VGImage *self,VGImage * src, const RIfloat* matrix, bool
 	{
 		for(i=0;i<w;i++)
 		{
-			VGColor s = VGImageReadPixel(src,i,j);	//convert to RGBA [0,1]
+			VGColor s = KGSurfaceReadPixel(src,i,j);	//convert to RGBA [0,1]
 			s=VGColorConvert(s,procFormat);
 
 			VGColor d=VGColorRGBA(0,0,0,0,procFormat);
@@ -1947,7 +1571,7 @@ void VGImageColorMatrix(VGImage *self,VGImage * src, const RIfloat* matrix, bool
 			d.b = matrix[2+4*0] * s.r + matrix[2+4*1] * s.g + matrix[2+4*2] * s.b + matrix[2+4*3] * s.a + matrix[2+4*4];
 			d.a = matrix[3+4*0] * s.r + matrix[3+4*1] * s.g + matrix[3+4*2] * s.b + matrix[3+4*3] * s.a + matrix[3+4*4];
 
-			VGImageWriteFilteredPixel(self,i, j, d, channelMask);
+			KGSurfaceWriteFilteredPixel(self,i, j, d, channelMask);
 		}
 	}
 }
@@ -1998,7 +1622,7 @@ static VGColor readTiledPixel(int x, int y, int w, int h, VGTilingMode tilingMod
 * \note		
 *//*-------------------------------------------------------------------*/
 
-static VGColorInternalFormat getProcessingFormat(VGColorInternalFormat srcFormat, bool filterFormatLinear, bool filterFormatPremultiplied)
+static VGColorInternalFormat getProcessingFormat(VGColorInternalFormat srcFormat, BOOL filterFormatLinear, BOOL filterFormatPremultiplied)
 {
 	VGColorInternalFormat procFormat = (VGColorInternalFormat)(srcFormat & ~VGColorLUMINANCE);	//process in RGB, not luminance
 	if(filterFormatLinear)
@@ -2020,9 +1644,9 @@ static VGColorInternalFormat getProcessingFormat(VGColorInternalFormat srcFormat
 * \note		
 *//*-------------------------------------------------------------------*/
 
-void VGImageConvolve(VGImage *self,VGImage * src, int kernelWidth, int kernelHeight, int shiftX, int shiftY, const RIint16* kernel, RIfloat scale, RIfloat bias, VGTilingMode tilingMode, VGColor edgeFillColor, bool filterFormatLinear, bool filterFormatPremultiplied, VGbitfield channelMask) {
-	RI_ASSERT(src->m_data);	//source exists
-	RI_ASSERT(self->m_data);	//destination exists
+void KGSurfaceConvolve(KGSurface *self,KGSurface * src, int kernelWidth, int kernelHeight, int shiftX, int shiftY, const RIint16* kernel, RIfloat scale, RIfloat bias, VGTilingMode tilingMode, VGColor edgeFillColor, BOOL filterFormatLinear, BOOL filterFormatPremultiplied, VGbitfield channelMask) {
+	RI_ASSERT(src->_bytes);	//source exists
+	RI_ASSERT(self->_bytes);	//destination exists
 	RI_ASSERT(kernel && kernelWidth > 0 && kernelHeight > 0);
 
 	//the area to be written is an intersection of source and destination image areas.
@@ -2046,7 +1670,7 @@ void VGImageConvolve(VGImage *self,VGImage * src, int kernelWidth, int kernelHei
         int i;
 		for(i=0;i<src->_width;i++)
 		{
-			VGColor s = VGImageReadPixel(src,i, j);
+			VGColor s = KGSurfaceReadPixel(src,i, j);
 			s=VGColorConvert(s,procFormat);
 			tmp[j*src->_width+i] = s;
 		}
@@ -2082,7 +1706,7 @@ void VGImageConvolve(VGImage *self,VGImage * src, int kernelWidth, int kernelHei
 			sum.b += bias;
 			sum.a += bias;
 
-			VGImageWriteFilteredPixel(self,i, j, sum, channelMask);
+			KGSurfaceWriteFilteredPixel(self,i, j, sum, channelMask);
 		}
 	}
     NSZoneFree(NULL,tmp);
@@ -2095,9 +1719,9 @@ void VGImageConvolve(VGImage *self,VGImage * src, int kernelWidth, int kernelHei
 * \note		
 *//*-------------------------------------------------------------------*/
 
-void VGImageSeparableConvolve(VGImage *self,VGImage * src, int kernelWidth, int kernelHeight, int shiftX, int shiftY, const RIint16* kernelX, const RIint16* kernelY, RIfloat scale, RIfloat bias, VGTilingMode tilingMode, VGColor edgeFillColor, bool filterFormatLinear, bool filterFormatPremultiplied, VGbitfield channelMask) {
-	RI_ASSERT(src->m_data);	//source exists
-	RI_ASSERT(self->m_data);	//destination exists
+void KGSurfaceSeparableConvolve(KGSurface *self,KGSurface * src, int kernelWidth, int kernelHeight, int shiftX, int shiftY, const RIint16* kernelX, const RIint16* kernelY, RIfloat scale, RIfloat bias, VGTilingMode tilingMode, VGColor edgeFillColor, BOOL filterFormatLinear, BOOL filterFormatPremultiplied, VGbitfield channelMask) {
+	RI_ASSERT(src->_bytes);	//source exists
+	RI_ASSERT(self->_bytes);	//destination exists
 	RI_ASSERT(kernelX && kernelY && kernelWidth > 0 && kernelHeight > 0);
 
 	//the area to be written is an intersection of source and destination image areas.
@@ -2121,7 +1745,7 @@ void VGImageSeparableConvolve(VGImage *self,VGImage * src, int kernelWidth, int 
         int i;
 		for(i=0;i<src->_width;i++)
 		{
-			VGColor s = VGImageReadPixel(src,i, j);
+			VGColor s = KGSurfaceReadPixel(src,i, j);
 			s=VGColorConvert(s,procFormat);
 			tmp[j*src->_width+i] = s;
 		}
@@ -2186,7 +1810,7 @@ void VGImageSeparableConvolve(VGImage *self,VGImage * src, int kernelWidth, int 
 			sum.b += bias;
 			sum.a += bias;
 
-			VGImageWriteFilteredPixel(self,i, j, sum, channelMask);
+			KGSurfaceWriteFilteredPixel(self,i, j, sum, channelMask);
 		}
 	}
     NSZoneFree(NULL,tmp);
@@ -2200,9 +1824,9 @@ void VGImageSeparableConvolve(VGImage *self,VGImage * src, int kernelWidth, int 
 * \note		
 *//*-------------------------------------------------------------------*/
 
-void VGImageGaussianBlur(VGImage *self,VGImage * src, RIfloat stdDeviationX, RIfloat stdDeviationY, VGTilingMode tilingMode, VGColor edgeFillColor, bool filterFormatLinear, bool filterFormatPremultiplied, VGbitfield channelMask){
-	RI_ASSERT(src->m_data);	//source exists
-	RI_ASSERT(self->m_data);	//destination exists
+void KGSurfaceGaussianBlur(KGSurface *self,KGSurface * src, RIfloat stdDeviationX, RIfloat stdDeviationY, VGTilingMode tilingMode, VGColor edgeFillColor, BOOL filterFormatLinear, BOOL filterFormatPremultiplied, VGbitfield channelMask){
+	RI_ASSERT(src->_bytes);	//source exists
+	RI_ASSERT(self->_bytes);	//destination exists
 	RI_ASSERT(stdDeviationX > 0.0f && stdDeviationY > 0.0f);
 	RI_ASSERT(stdDeviationX <= RI_MAX_GAUSSIAN_STD_DEVIATION && stdDeviationY <= RI_MAX_GAUSSIAN_STD_DEVIATION);
 
@@ -2227,7 +1851,7 @@ void VGImageGaussianBlur(VGImage *self,VGImage * src, RIfloat stdDeviationX, RIf
         int i;
 		for(i=0;i<src->_width;i++)
 		{
-			VGColor s = VGImageReadPixel(src,i, j);
+			VGColor s = KGSurfaceReadPixel(src,i, j);
 			s=VGColorConvert(s,procFormat);
 			tmp[j*src->_width+i] = s;
 		}
@@ -2318,7 +1942,7 @@ void VGImageGaussianBlur(VGImage *self,VGImage * src, RIfloat stdDeviationX, RIf
 				int y = j+kj-shiftY;
 				sum=VGColorAdd(sum,  VGColorMultiplyByFloat(readTiledPixel(i, y, w, src->_height, tilingMode, tmp2, edge), kernelY[kj]));
 			}
-			VGImageWriteFilteredPixel(self,i, j, VGColorMultiplyByFloat(sum, scaleY), channelMask);
+			KGSurfaceWriteFilteredPixel(self,i, j, VGColorMultiplyByFloat(sum, scaleY), channelMask);
 		}
 	}
     NSZoneFree(NULL,tmp);
@@ -2332,7 +1956,7 @@ void VGImageGaussianBlur(VGImage *self,VGImage * src, RIfloat stdDeviationX, RIf
 * \note		
 *//*-------------------------------------------------------------------*/
 
-static VGColorInternalFormat getLUTFormat(bool outputLinear, bool outputPremultiplied)
+static VGColorInternalFormat getLUTFormat(BOOL outputLinear, BOOL outputPremultiplied)
 {
 	VGColorInternalFormat lutFormat = VGColor_lRGBA;
 	if(outputLinear && outputPremultiplied)
@@ -2351,9 +1975,9 @@ static VGColorInternalFormat getLUTFormat(bool outputLinear, bool outputPremulti
 * \note		
 *//*-------------------------------------------------------------------*/
 
-void VGImageLookup(VGImage *self,VGImage * src, const RIuint8 * redLUT, const RIuint8 * greenLUT, const RIuint8 * blueLUT, const RIuint8 * alphaLUT, bool outputLinear, bool outputPremultiplied, bool filterFormatLinear, bool filterFormatPremultiplied, VGbitfield channelMask){
-	RI_ASSERT(src->m_data);	//source exists
-	RI_ASSERT(self->m_data);	//destination exists
+void KGSurfaceLookup(KGSurface *self,KGSurface * src, const RIuint8 * redLUT, const RIuint8 * greenLUT, const RIuint8 * blueLUT, const RIuint8 * alphaLUT, BOOL outputLinear, BOOL outputPremultiplied, BOOL filterFormatLinear, BOOL filterFormatPremultiplied, VGbitfield channelMask){
+	RI_ASSERT(src->_bytes);	//source exists
+	RI_ASSERT(self->_bytes);	//destination exists
 	RI_ASSERT(redLUT && greenLUT && blueLUT && alphaLUT);
 
 	//the area to be written is an intersection of source and destination image areas.
@@ -2371,7 +1995,7 @@ void VGImageLookup(VGImage *self,VGImage * src, const RIuint8 * redLUT, const RI
         int i;
 		for(i=0;i<w;i++)
 		{
-			VGColor s = VGImageReadPixel(src,i,j);	//convert to RGBA [0,1]
+			VGColor s = KGSurfaceReadPixel(src,i,j);	//convert to RGBA [0,1]
 			s=VGColorConvert(s,procFormat);
 
 			VGColor d=VGColorRGBA(0,0,0,0,lutFormat);
@@ -2380,7 +2004,7 @@ void VGImageLookup(VGImage *self,VGImage * src, const RIuint8 * redLUT, const RI
 			d.b = intToColor( blueLUT[colorToInt(s.b, 255)], 255);
 			d.a = intToColor(alphaLUT[colorToInt(s.a, 255)], 255);
 
-			VGImageWriteFilteredPixel(self,i, j, d, channelMask);
+			KGSurfaceWriteFilteredPixel(self,i, j, d, channelMask);
 		}
 	}
 }
@@ -2392,9 +2016,9 @@ void VGImageLookup(VGImage *self,VGImage * src, const RIuint8 * redLUT, const RI
 * \note		
 *//*-------------------------------------------------------------------*/
 
-void VGImageLookupSingle(VGImage *self,VGImage * src, const RIuint32 * lookupTable, VGImageChannel sourceChannel, bool outputLinear, bool outputPremultiplied, bool filterFormatLinear, bool filterFormatPremultiplied, VGbitfield channelMask){
-	RI_ASSERT(src->m_data);	//source exists
-	RI_ASSERT(self->m_data);	//destination exists
+void KGSurfaceLookupSingle(KGSurface *self,KGSurface * src, const RIuint32 * lookupTable, KGSurfaceChannel sourceChannel, BOOL outputLinear, BOOL outputPremultiplied, BOOL filterFormatLinear, BOOL filterFormatPremultiplied, VGbitfield channelMask){
+	RI_ASSERT(src->_bytes);	//source exists
+	RI_ASSERT(self->_bytes);	//destination exists
 	RI_ASSERT(lookupTable);
 
 	//the area to be written is an intersection of source and destination image areas.
@@ -2420,7 +2044,7 @@ void VGImageLookupSingle(VGImage *self,VGImage * src, const RIuint32 * lookupTab
         int i;
 		for(i=0;i<w;i++)
 		{
-			VGColor s = VGImageReadPixel(src,i,j);	//convert to RGBA [0,1]
+			VGColor s = KGSurfaceReadPixel(src,i,j);	//convert to RGBA [0,1]
 			s=VGColorConvert(s,procFormat);
 			int e;
 			switch(sourceChannel)
@@ -2447,7 +2071,7 @@ void VGImageLookupSingle(VGImage *self,VGImage * src, const RIuint32 * lookupTab
 			d.b = intToColor((l>> 8), 255);
 			d.a = intToColor((l    ), 255);
 
-			VGImageWriteFilteredPixel(self,i, j, d, channelMask);
+			KGSurfaceWriteFilteredPixel(self,i, j, d, channelMask);
 		}
 	}
 }

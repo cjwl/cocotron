@@ -9,3 +9,47 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <ApplicationServices/CGBitmapContext.h>
 #import "KGBitmapContext.h"
 
+CGContextRef CGBitmapContextCreate(void *bytes,size_t width,size_t height,size_t bitsPerComponent,size_t bytesPerRow,CGColorSpaceRef colorSpace,CGBitmapInfo bitmapInfo) {
+   return [KGContext createWithBytes:bytes width:width height:height bitsPerComponent:bitsPerComponent bytesPerRow:bytesPerRow colorSpace:colorSpace bitmapInfo:bitmapInfo];
+}
+
+void *CGBitmapContextGetData(CGContextRef self) {
+   return [self bytes];
+}
+
+size_t CGBitmapContextGetWidth(CGContextRef self) {
+   return [self width];
+}
+
+size_t CGBitmapContextGetHeight(CGContextRef self) {
+   return [self height];
+}
+
+size_t CGBitmapContextGetBitsPerComponent(CGContextRef self) {
+   return [self bitsPerComponent];
+}
+
+size_t CGBitmapContextGetBytesPerRow(CGContextRef self) {
+   return [self bytesPerRow];
+}
+
+CGColorSpaceRef CGBitmapContextGetColorSpace(CGContextRef self) {
+   return [self colorSpace];
+}
+
+CGBitmapInfo CGBitmapContextGetBitmapInfo(CGContextRef self) {
+   return [self bitmapInfo];
+}
+
+size_t CGBitmapContextGetBitsPerPixel(CGContextRef self) {
+   return [self bitsPerPixel];
+}
+
+CGImageAlphaInfo CGBitmapContextGetAlphaInfo(CGContextRef self) {
+   return [self alphaInfo];
+}
+
+CGImageRef CGBitmapContextCreateImage(CGContextRef self) {
+   return [self createImage];
+}
+ 

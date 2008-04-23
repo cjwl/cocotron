@@ -242,14 +242,14 @@ static NSLineJoinStyle _defaultLineJoinStyle=NSMiterLineJoinStyle;
 }
 
 -(int)elementCount {
-   return [_path numberOfOperators];
+   return [_path numberOfElements];
 }
 
 -(NSBezierPathElement)elementAtIndex:(int)index {
-   if(index>=[_path numberOfOperators])
-    [NSException raise:NSInvalidArgumentException format:@"index (%d) >= numberOfOperators (%d)",index,[_path numberOfOperators]];
+   if(index>=[_path numberOfElements])
+    [NSException raise:NSInvalidArgumentException format:@"index (%d) >= numberOfElements (%d)",index,[_path numberOfElements]];
 
-   return [_path operators][index];
+   return [_path elements][index];
 }
 
 static int numberOfPointsForOperator(int op){
@@ -264,21 +264,21 @@ static int numberOfPointsForOperator(int op){
 }
 
 -(NSBezierPathElement)elementAtIndex:(int)index associatedPoints:(NSPoint *)associated {
-   const unsigned char *operators=[_path operators];
+   const unsigned char *elements=[_path elements];
    const CGPoint       *points=[_path points];
    int                  i,pi=0,pcount;
    
-   if(index>=[_path numberOfOperators])
-    [NSException raise:NSInvalidArgumentException format:@"index (%d) >= numberOfOperators (%d)",index,[_path numberOfOperators]];
+   if(index>=[_path numberOfElements])
+    [NSException raise:NSInvalidArgumentException format:@"index (%d) >= numberOfElements (%d)",index,[_path numberOfElements]];
     
    for(i=0;i<index;i++)
-    pi+=numberOfPointsForOperator(operators[i]);
+    pi+=numberOfPointsForOperator(elements[i]);
     
-   pcount=numberOfPointsForOperator(operators[i]);
+   pcount=numberOfPointsForOperator(elements[i]);
    for(i=0;i<pcount;i++,pi++)
     associated[i]=points[pi];
     
-   return operators[index];
+   return elements[index];
 }
 
 -(void)setLineWidth:(float)width {
@@ -449,16 +449,16 @@ static int numberOfPointsForOperator(int op){
 }
 
 -(void)setAssociatedPoints:(NSPoint *)points atIndex:(int)index {
-   const unsigned char *operators=[_path operators];
+   const unsigned char *elements=[_path elements];
    int                  i,pi=0,pcount;
    
-   if(index>=[_path numberOfOperators])
-    [NSException raise:NSInvalidArgumentException format:@"index (%d) >= numberOfOperators (%d)",index,[_path numberOfOperators]];
+   if(index>=[_path numberOfElements])
+    [NSException raise:NSInvalidArgumentException format:@"index (%d) >= numberOfElements (%d)",index,[_path numberOfElements]];
     
    for(i=0;i<index;i++)
-    pi+=numberOfPointsForOperator(operators[i]);
+    pi+=numberOfPointsForOperator(elements[i]);
     
-   pcount=numberOfPointsForOperator(operators[i]);
+   pcount=numberOfPointsForOperator(elements[i]);
    
    [_path setPoints:points count:pcount atIndex:pi];
 }

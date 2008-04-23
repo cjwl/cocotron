@@ -13,188 +13,29 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @implementation KGRenderController
 
-static CGColorRef cgColorFromColor(NSColor *color){
-   NSColor *rgbColor=[color colorUsingColorSpaceName:NSDeviceRGBColorSpace];
-   float rgba[4];
-   
-   [rgbColor getComponents:rgba];
-   return (CGColorRef)[(id)CGColorCreate(CGColorSpaceCreateDeviceRGB(),rgba) autorelease];
-}
-
 -init {
-   gState=&gStateX;
-   gState->_shouldAntialias=YES;
-   gState->_interpolationQuality=kCGInterpolationDefault;
-   gState->_scalex=1;
-   gState->_scaley=1;
-   gState->_rotation=0;
-   gState->_blendMode=kCGBlendModeNormal;
-   gState->_shadowColor=cgColorFromColor([NSColor blackColor]);
-   gState->_shadowBlur=0;
-   gState->_shadowOffset=CGSizeMake(10,10);
-   gState->_lineWidth=1;
-   gState->_lineCap=kCGLineCapButt;
-   gState->_lineJoin=kCGLineJoinMiter;
-   gState->_miterLimit=1;
-   gState->_dashPhase=100;
-   gState->_dashLengthsCount=0;
-   gState->_dashLengths=NSZoneMalloc([self zone],sizeof(float)*4);
-   _destinationColor=[[NSColor redColor] copy];
-   _sourceColor=[[NSColor blueColor] copy];
+   [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"CGEnableBuiltin"];
+   _cgContext=[[NSClassFromString(@"DemoCGContext") alloc] init];
+   _kgContext=[[NSClassFromString(@"DemoKGContext") alloc] init];
+   
+   CGDataProviderRef provider=CGDataProviderCreateWithData(NULL,[_cgContext bytes],[_cgContext bytesPerRow]*[_cgContext pixelsHigh],NULL);
+  _cgImageRef=CGImageCreate([_cgContext pixelsWide],[_cgContext pixelsHigh],[_cgContext bitsPerComponent],[_cgContext bitsPerPixel],[_cgContext bytesPerRow],CGColorSpaceCreateDeviceRGB(),[_cgContext bitmapInfo],provider,NULL,NO,kCGRenderingIntentDefault);
+   CGDataProviderRelease(provider);
+   
+   provider=CGDataProviderCreateWithData(NULL,[_kgContext bytes],[_kgContext bytesPerRow]*[_kgContext pixelsHigh],NULL);
+  _kgImageRef=CGImageCreate([_kgContext pixelsWide],[_kgContext pixelsHigh],[_kgContext bitsPerComponent],[_kgContext bitsPerPixel],[_kgContext bytesPerRow],CGColorSpaceCreateDeviceRGB(),[_kgContext bitmapInfo],provider,NULL,NO,kCGRenderingIntentDefault);
+   CGDataProviderRelease(provider);
    return self;
+
 }
 
-
--(CGAffineTransform)ctm {
-   CGAffineTransform ctm=CGAffineTransformMakeTranslation(400/2,400/2);
-   
-   ctm=CGAffineTransformScale(ctm, gState->_scalex,gState->_scaley);
-   
-   return CGAffineTransformRotate(ctm,M_PI*gState->_rotation/180.0);
-}
-
-static void addSliceToPath(CGMutablePathRef path,float innerRadius,float outerRadius,float startAngle,float endAngle){
-   CGPoint point;
-
-   point=CGPointApplyAffineTransform(CGPointMake(outerRadius,0),CGAffineTransformMakeRotation(startAngle));
-   CGPathMoveToPoint(path,NULL,point.x,point.y);
-   CGPathAddArc(path,NULL,0,0,outerRadius,startAngle,endAngle,NO);
-   point=CGPointApplyAffineTransform(CGPointMake(innerRadius,0),CGAffineTransformMakeRotation(endAngle));
-   CGPathAddLineToPoint(path,NULL,point.x,point.y);
-   CGPathAddArc(path,NULL,0,0,innerRadius,endAngle,startAngle,YES);
-   CGPathCloseSubpath(path);
-}
-
--(void)drawSampleInRender:(KGRender *)render {
-   float      blackComponents[4]={0,0,0,1};
-   CGColorRef blackColor=CGColorCreate(CGColorSpaceCreateDeviceRGB(),blackComponents);
-   CGColorRef redColor=cgColorFromColor(_destinationColor);
-   CGColorRef blueColor=cgColorFromColor(_sourceColor);
-   
-   CGMutablePathRef  path1=CGPathCreateMutable();
-   CGMutablePathRef  path2=CGPathCreateMutable();
-   CGAffineTransform xform=CGAffineTransformMakeScale(.5,.5);
-#if 1   
-   addSliceToPath(path1,50,100,M_PI*30/180.0,M_PI*330/180.0);
-
-   addSliceToPath(path1,150,300,M_PI*0/180.0,M_PI*60/180.0);
-   addSliceToPath(path1,150,300,M_PI*120/180.0,M_PI*180/180.0);
-   addSliceToPath(path1,150,300,M_PI*240/180.0,M_PI*300/180.0);
-#else      
-   CGPathMoveToPoint(path1,NULL,0,0);
-   CGPathAddLineToPoint(path1,NULL,100,100);
-   CGPathAddCurveToPoint(path1,NULL,0,100,100,200,200,200);
-   CGPathAddLineToPoint(path1,NULL,100,100);
-   CGPathAddLineToPoint(path1,NULL,200,10);
-   CGPathCloseSubpath(path1);
-#endif
-
-   CGPathAddPath(path2,&xform,path1);
-   
-   [render clear];
-  
-   CGAffineTransform ctm=[self ctm];
-   
-#if 0   
-   [render setShadowColor:cgColorFromColor(gState->_shadowColor)];
-   [render setShadowOffset:CGSizeMake(gState->_shadowOffset.width,gState->_shadowOffset.height)];
-   [render setShadowBlur:gState->_shadowBlur];
-#endif
-#if 0
-   [render drawPath:path1 drawingMode:_pathDrawingMode blendMode:kCGBlendModeNormal
-      interpolationQuality:kCGInterpolationDefault fillColor:redColor strokeColor:blackColor lineWidth:gState->_lineWidth lineCap:gState->_lineCap lineJoin:gState->_lineJoin miterLimit:gState->_miterLimit dashPhase:gState->_dashPhase dashLengthsCount:gState->_dashLengthsCount dashLengths:gState->_dashLengths flatness:gState->_flatness transform:ctm antialias:gState->_shouldAntialias];
- #endif
-#if 1
-   [render drawPath:path2 drawingMode:_pathDrawingMode blendMode:gState->_blendMode
-      interpolationQuality:kCGInterpolationDefault fillColor:blueColor strokeColor:redColor lineWidth:gState->_lineWidth lineCap:gState->_lineCap lineJoin:gState->_lineJoin miterLimit:gState->_miterLimit dashPhase:gState->_dashPhase dashLengthsCount:gState->_dashLengthsCount dashLengths:gState->_dashLengths flatness:gState->_flatness transform:ctm antialias:gState->_shouldAntialias];
- #endif
-    
-}
-
--(void)drawImageInRender:(KGRender *)render {
-   float      blackComponents[4]={0,0,0,1};
-   CGColorRef blackColor=CGColorCreate(CGColorSpaceCreateDeviceRGB(),blackComponents);
-   [render clear];
-  
-   CGAffineTransform ctm=[self ctm];
-   CGAffineTransform t=CGAffineTransformMakeTranslation(-[_imageRep pixelsWide],-[_imageRep pixelsHigh]);
-   ctm=CGAffineTransformConcat(t,ctm);
-   ctm=CGAffineTransformScale(ctm,2,2);
-   [render drawBitmapImageRep:_imageRep antialias:YES interpolationQuality:gState->_interpolationQuality blendMode:gState->_blendMode fillColor:blackColor transform:ctm];
-}
-
--(void)drawStraightLinesInRender:(KGRender *)render {
-   float      blackComponents[4]={0,0,0,1};
- //  CGColorRef blackColor=CGColorCreate(CGColorSpaceCreateDeviceRGB(),blackComponents);
-   CGColorRef redColor=cgColorFromColor(_destinationColor);
-    CGAffineTransform ctm=[self ctm];
-  int               i,width=400,height=400;
-   [render clear];
-
-    CGMutablePathRef  path=CGPathCreateMutable();
-
-   for(i=0;i<400;i+=10){
-    
-   CGPathMoveToPoint(path,NULL,i,0);
-   CGPathAddLineToPoint(path,NULL,i,height);
-   }
-   
-   for(i=0;i<400;i+=10){
-   CGPathMoveToPoint(path,NULL,0,i);
-   CGPathAddLineToPoint(path,NULL,width,i);
-   }
-   
-   [render drawPath:path drawingMode:_pathDrawingMode blendMode:kCGBlendModeNormal
-      interpolationQuality:kCGInterpolationDefault fillColor:redColor strokeColor:redColor lineWidth:gState->_lineWidth lineCap:gState->_lineCap lineJoin:gState->_lineJoin miterLimit:gState->_miterLimit dashPhase:gState->_dashPhase dashLengthsCount:gState->_dashLengthsCount dashLengths:gState->_dashLengths flatness:gState->_flatness transform:ctm antialias:gState->_shouldAntialias];
-      
-   CGPathRelease(path);
-}
-
--(void)drawBlendingInRender:(KGRender *)render {
-   int width=400;
-   int height=400;
-   int i,limit=10;
-   CGAffineTransform ctm=[self ctm];
-
-   ctm=CGAffineTransformTranslate(ctm,-200,-200);
-   [render clear];
-
-   for(i=0;i<limit;i++){
-    CGMutablePathRef path=CGPathCreateMutable();
-    float      g=(i+1)/(float)limit;
-    float      components[4]={g,g,g,g};
-    CGColorRef fillColor=CGColorCreate(CGColorSpaceCreateDeviceRGB(),components);
-
-    CGPathAddRect(path,NULL,CGRectMake(i*width/limit,0,width/limit,height));
-    
-    [render drawPath:path drawingMode:_pathDrawingMode blendMode:kCGBlendModeCopy
-      interpolationQuality:kCGInterpolationDefault fillColor:fillColor strokeColor:NULL lineWidth:gState->_lineWidth lineCap:gState->_lineCap lineJoin:gState->_lineJoin miterLimit:gState->_miterLimit dashPhase:gState->_dashPhase dashLengthsCount:gState->_dashLengthsCount dashLengths:gState->_dashLengths flatness:gState->_flatness transform:ctm antialias:gState->_shouldAntialias];
-    CGColorRelease(fillColor);
-    CGPathRelease(path);
-   }
-
-   for(i=0;i<limit;i++){
-    CGMutablePathRef path=CGPathCreateMutable();
-    float      g=(i+1)/(float)limit;
-    float      components[4]={g/2,(1.0-g),g,g};
-    CGColorRef fillColor=CGColorCreate(CGColorSpaceCreateDeviceRGB(),components);
-
-    CGPathAddRect(path,NULL,CGRectMake(0,0,width,height-i*height/limit));
-    
-    [render drawPath:path drawingMode:_pathDrawingMode blendMode:gState->_blendMode
-      interpolationQuality:kCGInterpolationDefault fillColor:fillColor strokeColor:NULL lineWidth:gState->_lineWidth lineCap:gState->_lineCap lineJoin:gState->_lineJoin miterLimit:gState->_miterLimit dashPhase:gState->_dashPhase dashLengthsCount:gState->_dashLengthsCount dashLengths:gState->_dashLengths  flatness:gState->_flatness transform:ctm antialias:gState->_shouldAntialias];
-    CGColorRelease(fillColor);
-    CGPathRelease(path);
-   }
-}
-
--(void)performTest:(SEL)selector {
+-(void)performTest:(SEL)selector withObject:object {
    double start=[NSDate timeIntervalSinceReferenceDate];
    
-   [self performSelector:selector withObject:_cgRender];
+   [_cgContext performSelector:selector withObject:object];
    [_cgTime setDoubleValue:[NSDate timeIntervalSinceReferenceDate]-start];
    start=[NSDate timeIntervalSinceReferenceDate];
-   [self performSelector:selector withObject:_kgRender];
+   [_kgContext performSelector:selector withObject:object];
    [_kgTime setDoubleValue:[NSDate timeIntervalSinceReferenceDate]-start];
 }
 
@@ -202,36 +43,33 @@ static void addSliceToPath(CGMutablePathRef path,float innerRadius,float outerRa
 
    switch([_testPopUp selectedTag]){
     case 0:
-     [self performTest:@selector(drawSampleInRender:)];
+     [self performTest:@selector(drawClassic)  withObject:nil];
      break;
 
     case 1:
-     [self performTest:@selector(drawStraightLinesInRender:)];
+     [self performTest:@selector(drawStraightLines)  withObject:nil];
      break;
     
     case 2:
-     [self performTest:@selector(drawBlendingInRender:)];
+     [self performTest:@selector(drawBlending) withObject:nil];
      break;
     case 3:
-     [self performTest:@selector(drawImageInRender:)];
+     [self performTest:@selector(drawBitmapImageRep:) withObject:_imageRep];
      break;
    }
    
-   [_cgView setImageRef:[_cgRender imageRef]];
-   [_kgView setImageRef:[_kgRender imageRef]];
-   [_diffView setImageRef:[_kgRender imageRefOfDifferences:_cgRender]];
+   [_cgView setImageRef:_cgImageRef];
+   [_kgView setImageRef:_kgImageRef];
+//   [_diffView setImageRef:[_kgRender imageRefOfDifferences:_cgRender]];
 }
 
 -(void)awakeFromNib {
-   _cgRender=[[KGRender_cg alloc] init];
-   _kgRender=[[KGRender_baseline alloc] init] ;
    [[NSColorPanel sharedColorPanel] setShowsAlpha:YES];
    
    NSString         *path=[[NSBundle bundleForClass:[self class]] pathForResource:@"overlay" ofType:@"png"];
    
   _imageRep=[[NSBitmapImageRep imageRepWithContentsOfFile:path] retain];
   [self setNeedsDisplay];
-  
 }
 
 -(void)selectTest:sender {
@@ -239,87 +77,88 @@ static void addSliceToPath(CGMutablePathRef path,float innerRadius,float outerRa
 }
 
 -(void)setDestinationColor:(NSColor *)color {
-   [_destinationColor autorelease];
-   _destinationColor=[color copy];
+   [_cgContext setFillColor:color];
+   [_kgContext setFillColor:color];
 }
 
 -(void)setSourceColor:(NSColor *)color {
-   [_sourceColor autorelease];
-   _sourceColor=[color copy];
+   [_cgContext setStrokeColor:color];
+   [_kgContext setStrokeColor:color];
 }
 
 -(void)setBlendMode:(CGBlendMode)blendMode {
-   gState->_blendMode=blendMode;
+   [_cgContext setBlendMode:blendMode];
+   [_kgContext setBlendMode:blendMode];
 }
 
 -(void)setShadowBlur:(float)value {
-   gState->_shadowBlur=value;
+   [_cgContext setShadowBlur:value];
+   [_kgContext setShadowBlur:value];
 }
 
 -(void)setShadowOffsetX:(float)value {
-   gState->_shadowOffset.width=value;
+   [_cgContext setShadowOffsetX:value];
+   [_kgContext setShadowOffsetX:value];
 }
 
 -(void)setShadowOffsetY:(float)value {
-   gState->_shadowOffset.height=value;
+   [_cgContext setShadowOffsetY:value];
+   [_kgContext setShadowOffsetY:value];
 }
 
--(void)setShadowColor:(CGColorRef)value {
-   value=CGColorRetain(value);
-   CGColorRelease(gState->_shadowColor);
-   gState->_shadowColor=value;
-}
-
--(void)setShadowOffset:(CGSize)value {
-   gState->_shadowOffset=value;
+-(void)setShadowColor:(NSColor *)value {
+   [_cgContext setShadowColor:value];
+   [_kgContext setShadowColor:value];
 }
 
 -(void)setPathDrawingMode:(CGPathDrawingMode)pathDrawingMode {
-   _pathDrawingMode=pathDrawingMode;
+   [_cgContext setPathDrawingMode:pathDrawingMode];
+   [_kgContext setPathDrawingMode:pathDrawingMode];
 }
 
 -(void)setLineWidth:(float)width {
-   gState->_lineWidth=width;
+   [_cgContext setLineWidth:width];
+   [_kgContext setLineWidth:width];
 }
 
 -(void)setDashPhase:(float)value {
-   gState->_dashPhase=value;
+   [_cgContext setDashPhase:value];
+   [_kgContext setDashPhase:value];
 }
 
 -(void)setDashLength:(float)value {
-   if(value<1)
-    gState->_dashLengthsCount=0;
-   else {
-    int i;
-    
-    gState->_dashLengthsCount=4;
-    for(i=0;i<4;i++)
-     gState->_dashLengths[i]=value*(i+1);
-   }
+   [_cgContext setDashLength:value];
+   [_kgContext setDashLength:value];
 }
 
 -(void)setFlatness:(float)value {
-   gState->_flatness=value;
+   [_cgContext setFlatness:value];
+   [_kgContext setFlatness:value];
 }
 
 -(void)setScaleX:(float)value {
-   gState->_scalex=value;
+   [_cgContext setScaleX:value];
+   [_kgContext setScaleX:value];
 }
 
 -(void)setScaleY:(float)value {
-   gState->_scaley=value;
+   [_cgContext setScaleY:value];
+   [_kgContext setScaleY:value];
 }
 
 -(void)setRotation:(float)value {
-   gState->_rotation=value;
+   [_cgContext setRotation:value];
+   [_kgContext setRotation:value];
 }
 
 -(void)setShouldAntialias:(BOOL)value {
-   gState->_shouldAntialias=value;
+   [_cgContext setShouldAntialias:value];
+   [_kgContext setShouldAntialias:value];
 }
 
 -(void)setInterpolationQuality:(CGInterpolationQuality)value {
-   gState->_interpolationQuality=value;
+   [_cgContext setInterpolationQuality:value];
+   [_kgContext setInterpolationQuality:value];
 }
 
 
@@ -339,7 +178,7 @@ static void addSliceToPath(CGMutablePathRef path,float innerRadius,float outerRa
 }
 
 -(void)selectShadowColor:sender {
-   [self setShadowColor:cgColorFromColor([sender color])];
+   [self setShadowColor:[sender color]];
    [self setNeedsDisplay];
 }
 

@@ -23,6 +23,26 @@ void OBJCLog(const char *format,...) {
    fflush(stderr);
 }
 
+void OBJCPartialLog(const char *format,...) {
+   va_list arguments;
+
+   va_start(arguments,format);
+
+   fprintf(stderr,"ObjC:");
+   vfprintf(stderr,format,arguments);
+   fflush(stderr);
+}
+
+void OBJCFinishLog(const char *format,...) {
+   va_list arguments;
+
+   va_start(arguments,format);
+
+   vfprintf(stderr,format,arguments);
+   fprintf(stderr,"\n");
+   fflush(stderr);
+}
+
 void OBJCRaiseException(const char *name,const char *format,...) {
    va_list arguments;
 

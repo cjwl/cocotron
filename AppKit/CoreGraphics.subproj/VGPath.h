@@ -1,6 +1,6 @@
 /*------------------------------------------------------------------------
  *
- * OpenVG 1.0.1 Reference Implementation
+ * Derivative of the OpenVG 1.0.1 Reference Implementation
  * -------------------------------------
  *
  * Copyright (c) 2007 The Khronos Group Inc.
@@ -28,6 +28,7 @@
 
 #import "VGmath.h"
 #import "KGRasterizer.h"
+#import "KGPath.h"
 
 typedef struct {
    Vector2			userPosition;
@@ -43,7 +44,7 @@ typedef struct  {
    Vector2			cw;
    RIfloat			pathLength;
    unsigned int	flags;
-   bool			inDash;
+   BOOL			inDash;
 } StrokeVertex;
     
 static inline StrokeVertex StrokeVertexInit(){
@@ -55,7 +56,7 @@ static inline StrokeVertex StrokeVertexInit(){
    result.cw=Vector2Make(0,0);
    result.pathLength=0;
    result.flags=0;
-   result.inDash=false;
+   result.inDash=NO;
         
    return result;
 }
@@ -66,20 +67,14 @@ typedef struct {
    int		end;
 } VertexIndex;
 
-@interface VGPath : NSObject {    
-    int      _segmentCount;
-    int      _segmentCapacity;
-    RIuint8 *_segments;
-    
-    int      _coordinateCount;
-    int      _coordinateCapacity;
-    RIfloat *_coordinates;
+@interface VGPath : KGPath {
+    int      _capacityOfElements;
+    int      _capacityOfPoints;
     
     int     _vertexCount;
     int     _vertexCapacity;
     Vertex *_vertices;
     
-    int     _segmentToVertexCount;
     int     _segmentToVertexCapacity;
     VertexIndex *_segmentToVertex;
     
@@ -93,12 +88,12 @@ VGPath *VGPathAlloc();
 VGPath *VGPathInit(VGPath *self,int segmentCapacityHint, int coordCapacityHint);
 void VGPathDealloc(VGPath *self);
 
-void VGPathAppendData(VGPath *self,const RIuint8* segments, int numSegments, const RIfloat* data);	
+void VGPathAppendData(VGPath *self,const RIuint8* segments, int numSegments, const CGPoint *data);	
 void VGPathAppend(VGPath *self,VGPath* srcPath);	
 void VGPathTransform(VGPath *self,VGPath* srcPath, Matrix3x3 matrix);	
-	//returns true if interpolation succeeds, false if start and end paths are not compatible
+	//returns YES if interpolation succeeds, NO if start and end paths are not compatible
 void VGPathFill(VGPath *self,Matrix3x3 pathToSurface, KGRasterizer *rasterizer);	
-void VGPathStroke(VGPath *self,Matrix3x3 pathToSurface, KGRasterizer *rasterizer, const RIfloat* dashPattern,int dashPatternSize, RIfloat dashPhase, bool dashPhaseReset, RIfloat strokeWidth, CGLineCap capStyle, CGLineJoin joinStyle, RIfloat miterLimit);	
+void VGPathStroke(VGPath *self,Matrix3x3 pathToSurface, KGRasterizer *rasterizer, const RIfloat* dashPattern,int dashPatternSize, RIfloat dashPhase, BOOL dashPhaseReset, RIfloat strokeWidth, CGLineCap capStyle, CGLineJoin joinStyle, RIfloat miterLimit);	
 
 void VGPathGetPointAlong(VGPath *self,int startIndex, int numSegments, RIfloat distance, Vector2 *p, Vector2 *t);	
 RIfloat getPathLength(VGPath *self,int startIndex, int numSegments);	
@@ -108,16 +103,13 @@ void VGPathGetPathTransformedBounds(VGPath *self,Matrix3x3 pathToSurface, RIfloa
 int CGPathElementTypeToNumCoordinates(CGPathElementType segment);
 int VGPathCountNumCoordinates(const RIuint8* segments, int numSegments);
 
-RIfloat VGPathGetCoordinate(VGPath *self,int i);
-void VGPathSetCoordinate(VGPath *self,int i, RIfloat c);
-
 void VGPathAddVertex(VGPath *self,Vector2 p, Vector2 t, RIfloat pathLength, unsigned int flags);	
 void VGPathAddEdge(VGPath *self,Vector2 p0, Vector2 p1, Vector2 t0, Vector2 t1, unsigned int startFlags, unsigned int endFlags);	
 
-void VGPathAddEndPath(VGPath *self,Vector2 p0, Vector2 p1, bool subpathHasGeometry, unsigned int flags);	
-bool VGPathAddLineTo(VGPath *self,Vector2 p0, Vector2 p1, bool subpathHasGeometry);	
-bool VGPathAddQuadTo(VGPath *self,Vector2 p0, Vector2 p1, Vector2 p2, bool subpathHasGeometry);	
-bool VGPathAddCubicTo(VGPath *self,Vector2 p0, Vector2 p1, Vector2 p2, Vector2 p3, bool subpathHasGeometry);	
+void VGPathAddEndPath(VGPath *self,Vector2 p0, Vector2 p1, BOOL subpathHasGeometry, unsigned int flags);	
+BOOL VGPathAddLineTo(VGPath *self,Vector2 p0, Vector2 p1, BOOL subpathHasGeometry);	
+BOOL VGPathAddQuadTo(VGPath *self,Vector2 p0, Vector2 p1, Vector2 p2, BOOL subpathHasGeometry);	
+BOOL VGPathAddCubicTo(VGPath *self,Vector2 p0, Vector2 p1, Vector2 p2, Vector2 p3, BOOL subpathHasGeometry);	
 
 void VGPathTessellate(VGPath *self);	
 

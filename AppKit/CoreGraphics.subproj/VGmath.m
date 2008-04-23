@@ -1,6 +1,6 @@
 /*------------------------------------------------------------------------
  *
- * OpenVG 1.0.1 Reference Implementation
+ * Derivative of the OpenVG 1.0.1 Reference Implementation
  * -------------------------------------
  *
  * Copyright (c) 2007 The Khronos Group Inc.
@@ -33,20 +33,20 @@
 #import "VGmath.h"
 
 /*-------------------------------------------------------------------*//*!
-* \brief	Inverts a 3x3 m->matrix. Returns false if the matrix is singular.
+* \brief	Inverts a 3x3 m->matrix. Returns NO if the matrix is singular.
 * \param	
 * \return	
 * \note		
 *//*-------------------------------------------------------------------*/
 
-bool Matrix3x3InplaceInvert(Matrix3x3 *m)
+BOOL Matrix3x3InplaceInvert(Matrix3x3 *m)
 {
 	RIfloat det00 = m->matrix[1][1]*m->matrix[2][2] - m->matrix[2][1]*m->matrix[1][2];
 	RIfloat det01 = m->matrix[2][0]*m->matrix[1][2] - m->matrix[1][0]*m->matrix[2][2];
 	RIfloat det02 = m->matrix[1][0]*m->matrix[2][1] - m->matrix[2][0]*m->matrix[1][1];
 
 	RIfloat d = m->matrix[0][0]*det00 + m->matrix[0][1]*det01 + m->matrix[0][2]*det02;
-	if( d == 0.0f ) return false;	//singular, leave the m->matrix unmodified and return false
+	if( d == 0.0f ) return NO;	//singular, leave the m->matrix unmodified and return NO
 	d = 1.0f / d;
 
 	Matrix3x3 t;
@@ -60,5 +60,5 @@ bool Matrix3x3InplaceInvert(Matrix3x3 *m)
 	t.matrix[1][2] = d * (m->matrix[1][0]*m->matrix[0][2] - m->matrix[0][0]*m->matrix[1][2]);
 	t.matrix[2][2] = d * (m->matrix[0][0]*m->matrix[1][1] - m->matrix[1][0]*m->matrix[0][1]);
 	*m = t;
-	return true;
+	return YES;
 }

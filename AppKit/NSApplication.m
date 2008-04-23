@@ -338,8 +338,9 @@ id NSApp=nil;
     if (itemIndex != -1) {
         [[self windowsMenu] removeItemAtIndex:itemIndex];
 
-        if ([[[[self windowsMenu] itemArray] lastObject] isSeparatorItem])
+        if ([[[[self windowsMenu] itemArray] lastObject] isSeparatorItem]){
             [[self windowsMenu] removeItem:[[[self windowsMenu] itemArray] lastObject]];
+          }
     }
 }
 

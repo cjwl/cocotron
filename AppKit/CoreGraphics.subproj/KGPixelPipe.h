@@ -1,6 +1,6 @@
 /*------------------------------------------------------------------------
  *
- * OpenVG 1.0.1 Reference Implementation
+ * Derivative of the OpenVG 1.0.1 Reference Implementation
  * -------------------------------------
  *
  * Copyright (c) 2007 The Khronos Group Inc.
@@ -24,16 +24,12 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE MATERIALS OR
  * THE USE OR OTHER DEALINGS IN THE MATERIALS.
  *
- *//**
- * \file
- * \brief	KGPaint and KGPixelPipe classes.
- * \note	
- *//*-------------------------------------------------------------------*/
+ *-------------------------------------------------------------------*/
 
 #import <Foundation/Foundation.h>
 #import <ApplicationServices/ApplicationServices.h>
 #import "VGmath.h"
-#import "VGImage.h"
+#import "KGSurface.h"
 
 typedef enum {
   VG_PAINT_TYPE_COLOR,
@@ -68,7 +64,7 @@ typedef struct {
 	Vector2					m_radialGradientCenter;
 	Vector2					m_radialGradientFocalPoint;
 	RIfloat					m_radialGradientRadius;
-	VGImage*					m_pattern;
+	KGSurface*					m_pattern;
 
 } KGPaint;
 
@@ -76,26 +72,26 @@ KGPaint *KGPaintAlloc();
 KGPaint *KGPaintInit(KGPaint *self);
 void     KGPaintDealloc(KGPaint *self);
 
-typedef struct {
-   VGImage*                 m_renderingSurface;
-   VGImage*           m_mask;
-   VGImage*                 m_image;
+@interface KGPixelPipe : NSObject {
+   KGSurface*                 m_renderingSurface;
+   KGSurface*           m_mask;
+   KGImage*                 m_image;
    KGPaint*           m_paint;
    KGPaint                 * m_defaultPaint;
    CGBlendMode            m_blendMode;
-   VGImageMode            m_imageMode;
+   KGSurfaceMode            m_imageMode;
    CGInterpolationQuality m_imageQuality;
    Matrix3x3              m_surfaceToPaintMatrix;
    Matrix3x3              m_surfaceToImageMatrix;
-} KGPixelPipe;
+}
 
 KGPixelPipe *KGPixelPipeAlloc();
 KGPixelPipe *KGPixelPipeInit(KGPixelPipe *self);
 void KGPixelPipeDealloc(KGPixelPipe *self);
-void KGPixelPipeSetRenderingSurface(KGPixelPipe *self,VGImage *renderingSurface);
+void KGPixelPipeSetRenderingSurface(KGPixelPipe *self,KGSurface *renderingSurface);
 void KGPixelPipeSetBlendMode(KGPixelPipe *self,CGBlendMode blendMode);
-void KGPixelPipeSetMask(KGPixelPipe *self,VGImage* mask);
-void KGPixelPipeSetImage(KGPixelPipe *self,VGImage* image, VGImageMode imageMode);
+void KGPixelPipeSetMask(KGPixelPipe *self,KGSurface* mask);
+void KGPixelPipeSetImage(KGPixelPipe *self,KGImage *image, KGSurfaceMode imageMode);
 void KGPixelPipeSetSurfaceToPaintMatrix(KGPixelPipe *self,Matrix3x3 surfaceToPaintMatrix);
 void KGPixelPipeSetSurfaceToImageMatrix(KGPixelPipe *self,Matrix3x3 surfaceToImageMatrix);
 void KGPixelPipeSetImageQuality(KGPixelPipe *self,CGInterpolationQuality imageQuality);
@@ -106,3 +102,5 @@ void KGPixelPipeRadialGradient(KGPixelPipe *self,RIfloat *g, RIfloat *rho, RIflo
 VGColor KGPixelPipeIntegrateColorRamp(KGPixelPipe *self,RIfloat gmin, RIfloat gmax);
 VGColor KGPixelPipeColorRamp(KGPixelPipe *self,RIfloat gradient, RIfloat rho);
 void KGPixelPipeWriteCoverage(KGPixelPipe *self,int x, int y,RIfloat *coverage,int length);
+
+@end

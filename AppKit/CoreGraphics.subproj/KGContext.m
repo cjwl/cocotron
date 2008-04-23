@@ -7,6 +7,7 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
 #import "KGContext.h"
+#import "KGBitmapContext.h"
 #import "KGGraphicsState.h"
 #import "KGColor.h"
 #import "KGColorSpace.h"
@@ -28,6 +29,7 @@ static NSMutableArray *possibleContextClasses=nil;
     possibleContextClasses=[NSMutableArray new];
     
     [possibleContextClasses addObject:@"KGContext_gdi"];
+    [possibleContextClasses addObject:@"KGContext_builtin"];
     
     NSArray *allPaths=[[NSBundle bundleForClass:self] pathsForResourcesOfType:@"cgContext" inDirectory:nil];
     int      i,count=[allPaths count];
@@ -75,15 +77,33 @@ static NSMutableArray *possibleContextClasses=nil;
    return nil;
 }
 
-+(KGContext *)createContextWithSize:(CGSize)size context:(KGContext *)context {
++(KGContext *)createBackingContextWithSize:(CGSize)size context:(KGContext *)context {
    NSArray *array=[self allContextClasses];
    int      count=[array count];
    
    while(--count>=0){
     Class check=[array objectAtIndex:count];
     
-    if([check canInitWithContext:context]){
+    if([check canInitBackingWithContext:context]){
      KGContext *result=[[check alloc] initWithSize:size context:context];
+
+     if(result!=nil)
+      return result;
+    }
+   }
+   
+   return nil;
+}
+
++(KGContext *)createWithBytes:(void *)bytes width:(size_t)width height:(size_t)height bitsPerComponent:(size_t)bitsPerComponent bytesPerRow:(size_t)bytesPerRow colorSpace:(KGColorSpace *)colorSpace bitmapInfo:(CGBitmapInfo)bitmapInfo {
+   NSArray *array=[self allContextClasses];
+   int      count=[array count];
+   
+   while(--count>=0){
+    Class check=[array objectAtIndex:count];
+    
+    if([check canInitBitmap]){
+     KGContext *result=[[check alloc] initWithBytes:bytes width:width height:height bitsPerComponent:bitsPerComponent bytesPerRow:bytesPerRow colorSpace:colorSpace bitmapInfo:bitmapInfo];
 
      if(result!=nil)
       return result;
@@ -101,7 +121,11 @@ static NSMutableArray *possibleContextClasses=nil;
    return NO;
 }
 
-+(BOOL)canInitWithContext:(KGContext *)context {
++(BOOL)canInitBackingWithContext:(KGContext *)context {
+   return NO;
+}
+
++(BOOL)canInitBitmap {
    return NO;
 }
 
@@ -179,68 +203,48 @@ static inline KGGraphicsState *currentState(KGContext *self){
    [_path closeSubpath];
 }
 
--(void)moveToPoint:(float)x:(float)y {
-   CGAffineTransform ctm=[currentState(self) userSpaceToDeviceSpaceTransform];
-   
-   [_path moveToPoint:CGPointMake(x,y) withTransform:&ctm];
+-(void)moveToPoint:(float)x:(float)y {   
+   [_path moveToPoint:CGPointMake(x,y) withTransform:NULL];
 }
 
 -(void)addLineToPoint:(float)x:(float)y {
-   CGAffineTransform ctm=[currentState(self) userSpaceToDeviceSpaceTransform];
-
-   [_path addLineToPoint:CGPointMake(x,y) withTransform:&ctm];
+   [_path addLineToPoint:CGPointMake(x,y) withTransform:NULL];
 }
 
 -(void)addCurveToPoint:(float)cx1:(float)cy1:(float)cx2:(float)cy2:(float)x:(float)y {
-   CGAffineTransform ctm=[currentState(self) userSpaceToDeviceSpaceTransform];
-
-   [_path addCurveToControlPoint:CGPointMake(cx1,cy1) controlPoint:CGPointMake(cx2,cy2) endPoint:CGPointMake(x,y) withTransform:&ctm];
+   [_path addCurveToControlPoint:CGPointMake(cx1,cy1) controlPoint:CGPointMake(cx2,cy2) endPoint:CGPointMake(x,y) withTransform:NULL];
 }
 
 -(void)addQuadCurveToPoint:(float)cx1:(float)cy1:(float)x:(float)y {
-   CGAffineTransform ctm=[currentState(self) userSpaceToDeviceSpaceTransform];
-
-   [_path addCurveToControlPoint:CGPointMake(cx1,cy1) endPoint:CGPointMake(x,y) withTransform:&ctm];
+   [_path addQuadCurveToControlPoint:CGPointMake(cx1,cy1) endPoint:CGPointMake(x,y) withTransform:NULL];
 }
 
--(void)addLinesWithPoints:(CGPoint *)points count:(unsigned)count {
-   CGAffineTransform ctm=[currentState(self) userSpaceToDeviceSpaceTransform];
-   
-   [_path addLinesWithPoints:points count:count withTransform:&ctm];
+-(void)addLinesWithPoints:(CGPoint *)points count:(unsigned)count {   
+   [_path addLinesWithPoints:points count:count withTransform:NULL];
 }
 
 -(void)addRect:(CGRect)rect {
    [self addRects:&rect count:1];
 }
 
--(void)addRects:(const CGRect *)rect count:(unsigned)count {
-   CGAffineTransform ctm=[currentState(self) userSpaceToDeviceSpaceTransform];
-   
-   [_path addRects:rect count:count withTransform:&ctm];
+-(void)addRects:(const CGRect *)rect count:(unsigned)count {   
+   [_path addRects:rect count:count withTransform:NULL];
 }
 
 -(void)addArc:(float)x:(float)y:(float)radius:(float)startRadian:(float)endRadian:(int)clockwise {
-   CGAffineTransform ctm=[currentState(self) userSpaceToDeviceSpaceTransform];
-
-   [_path addArcAtPoint:CGPointMake(x,y) radius:radius startAngle:startRadian endAngle:endRadian clockwise:clockwise withTransform:&ctm];
+   [_path addArcAtPoint:CGPointMake(x,y) radius:radius startAngle:startRadian endAngle:endRadian clockwise:clockwise withTransform:NULL];
 }
 
 -(void)addArcToPoint:(float)x1:(float)y1:(float)x2:(float)y2:(float)radius {
-   CGAffineTransform ctm=[currentState(self) userSpaceToDeviceSpaceTransform];
-
-   [_path addArcToPoint:CGPointMake(x1,y1) point:CGPointMake(x2,y2) radius:radius withTransform:&ctm];
+   [_path addArcToPoint:CGPointMake(x1,y1) point:CGPointMake(x2,y2) radius:radius withTransform:NULL];
 }
 
 -(void)addEllipseInRect:(CGRect)rect {
-   CGAffineTransform ctm=[currentState(self) userSpaceToDeviceSpaceTransform];
-
-   [_path addEllipseInRect:rect withTransform:&ctm];
+   [_path addEllipseInRect:rect withTransform:NULL];
 }
 
 -(void)addPath:(KGPath *)path {
-   CGAffineTransform ctm=[currentState(self) userSpaceToDeviceSpaceTransform];
-
-   [_path addPath:path withTransform:&ctm];
+   [_path addPath:path withTransform:NULL];
 }
 
 -(void)replacePathWithStrokedPath {
@@ -369,7 +373,7 @@ static inline KGGraphicsState *currentState(KGContext *self){
 }
 
 -(void)clipToPath {
-   if([_path numberOfOperators]==0)
+   if([_path numberOfElements]==0)
     return;
    
    [currentState(self) addClipToPath:_path];
@@ -378,7 +382,7 @@ static inline KGGraphicsState *currentState(KGContext *self){
 }
 
 -(void)evenOddClipToPath {
-   if([_path numberOfOperators]==0)
+   if([_path numberOfElements]==0)
     return;
 
    [currentState(self) addEvenOddClipToPath:_path];
@@ -395,11 +399,9 @@ static inline KGGraphicsState *currentState(KGContext *self){
    [self clipToRects:&rect count:1];
 }
 
--(void)clipToRects:(const CGRect *)rects count:(unsigned)count {
-   CGAffineTransform ctm=[currentState(self) userSpaceToDeviceSpaceTransform];
-   
+-(void)clipToRects:(const CGRect *)rects count:(unsigned)count {   
    [_path reset];
-   [_path addRects:rects count:count withTransform:&ctm];
+   [_path addRects:rects count:count withTransform:NULL];
    [self clipToPath];
 }
 
@@ -441,7 +443,7 @@ static inline KGGraphicsState *currentState(KGContext *self){
 }
 
 -(void)setGrayStrokeColor:(float)gray:(float)alpha {
-   KGColorSpace *colorSpace=[[KGColorSpace alloc] initWithDeviceGray];
+   KGColorSpace *colorSpace=[[KGColorSpace alloc] initWithGenericGray];
    float         components[2]={gray,alpha};
    KGColor      *color=[[KGColor alloc] initWithColorSpace:colorSpace components:components];
    
@@ -452,7 +454,7 @@ static inline KGGraphicsState *currentState(KGContext *self){
 }
 
 -(void)setRGBStrokeColor:(float)r:(float)g:(float)b:(float)alpha {
-   KGColorSpace *colorSpace=[[KGColorSpace alloc] initWithDeviceRGB];
+   KGColorSpace *colorSpace=[[KGColorSpace alloc] initWithGenericRGB];
    float         components[4]={r,g,b,alpha};
    KGColor      *color=[[KGColor alloc] initWithColorSpace:colorSpace components:components];
    
@@ -463,7 +465,7 @@ static inline KGGraphicsState *currentState(KGContext *self){
 }
 
 -(void)setCMYKStrokeColor:(float)c:(float)m:(float)y:(float)k:(float)alpha {
-   KGColorSpace *colorSpace=[[KGColorSpace alloc] initWithDeviceCMYK];
+   KGColorSpace *colorSpace=[[KGColorSpace alloc] initWithGenericCMYK];
    float         components[5]={c,m,y,k,alpha};
    KGColor      *color=[[KGColor alloc] initWithColorSpace:colorSpace components:components];
    
@@ -487,7 +489,7 @@ static inline KGGraphicsState *currentState(KGContext *self){
 }
 
 -(void)setGrayFillColor:(float)gray:(float)alpha {
-   KGColorSpace *colorSpace=[[KGColorSpace alloc] initWithDeviceGray];
+   KGColorSpace *colorSpace=[[KGColorSpace alloc] initWithGenericGray];
    float         components[2]={gray,alpha};
    KGColor      *color=[[KGColor alloc] initWithColorSpace:colorSpace components:components];
    
@@ -498,7 +500,7 @@ static inline KGGraphicsState *currentState(KGContext *self){
 }
 
 -(void)setRGBFillColor:(float)r:(float)g:(float)b:(float)alpha {
-   KGColorSpace *colorSpace=[[KGColorSpace alloc] initWithDeviceRGB];
+   KGColorSpace *colorSpace=[[KGColorSpace alloc] initWithGenericRGB];
    float         components[4]={r,g,b,alpha};
    KGColor      *color=[[KGColor alloc] initWithColorSpace:colorSpace components:components];
    
@@ -509,7 +511,7 @@ static inline KGGraphicsState *currentState(KGContext *self){
 }
 
 -(void)setCMYKFillColor:(float)c:(float)m:(float)y:(float)k:(float)alpha {
-   KGColorSpace *colorSpace=[[KGColorSpace alloc] initWithDeviceCMYK];
+   KGColorSpace *colorSpace=[[KGColorSpace alloc] initWithGenericCMYK];
    float         components[5]={c,m,y,k,alpha};
    KGColor      *color=[[KGColor alloc] initWithColorSpace:colorSpace components:components];
    
@@ -745,6 +747,7 @@ static inline KGGraphicsState *currentState(KGContext *self){
 -(void)clearRect:(CGRect)rect {
 // doc.s are not clear. CGContextClearRect resets the path and does not affect gstate color
    [self saveGState];
+   [self setBlendMode:kCGBlendModeCopy]; // does it set the blend mode?
    [self setGrayFillColor:0:0];
    [self fillRect:rect];
    [self restoreGState];
@@ -846,6 +849,48 @@ static inline KGGraphicsState *currentState(KGContext *self){
 
 -(BOOL)getImageableRect:(CGRect *)rect {
    return NO;
+}
+
+// bitmap context 
+
+-(void *)bytes {
+   return NULL;
+}
+
+-(size_t)width {
+   return 0;
+}
+
+-(size_t)height {
+   return 0;
+}
+
+-(size_t)bitsPerComponent {
+   return 0;
+}
+
+-(size_t)bytesPerRow {
+   return 0;
+}
+
+-(KGColorSpace *)colorSpace {
+   return nil;
+}
+
+-(CGBitmapInfo)bitmapInfo {
+   return 0;
+}
+
+-(size_t)bitsPerPixel {
+   return 0;
+}
+
+-(CGImageAlphaInfo)alphaInfo {
+   return 0;
+}
+
+-(KGImage *)createImage {
+   return nil;
 }
 
 // temporary

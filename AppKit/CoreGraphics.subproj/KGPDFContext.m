@@ -318,13 +318,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)_pathContentFromOperator:(int)start {
-   int                  i,numberOfOperators=[_path numberOfOperators];
-   const unsigned char *operators=[_path operators];
+   int                  i,numberOfElements=[_path numberOfElements];
+   const unsigned char *elements=[_path elements];
    const CGPoint       *points=[_path points];
    int                  pi=0;
    
-   for(i=0;i<numberOfOperators;i++){
-    switch(operators[i]){
+   for(i=0;i<numberOfElements;i++){
+    switch(elements[i]){
     
      case kCGPathElementMoveToPoint:{
        CGPoint point=points[pi++];
@@ -370,26 +370,26 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)addArc:(float)x:(float)y:(float)radius:(float)startRadian:(float)endRadian:(int)clockwise {
-   int start=[_path numberOfOperators];
+   int start=[_path numberOfElements];
    
    [super addArc:x:y:radius:startRadian:endRadian:clockwise];
    [self _pathContentFromOperator:start];
 }
 
 -(void)addArcToPoint:(float)x1:(float)y1:(float)x2:(float)y2:(float)radius {
-   int start=[_path numberOfOperators];
+   int start=[_path numberOfElements];
    [super addArcToPoint:x1:y1:x2:y2:radius];
    [self _pathContentFromOperator:start];
 }
 
 -(void)addEllipseInRect:(CGRect)rect {
-   int start=[_path numberOfOperators];
+   int start=[_path numberOfElements];
    [super addEllipseInRect:rect];
    [self _pathContentFromOperator:start];
 }
 
 -(void)addPath:(KGPath *)path {
-   int start=[_path numberOfOperators];
+   int start=[_path numberOfElements];
    [super addPath:path];
    [self _pathContentFromOperator:start];
    
@@ -447,15 +447,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    
    switch([[color colorSpace] type]){
    
-    case KGColorSpaceDeviceGray:
+    case KGColorSpaceGenericGray:
      [self contentWithFormat:@"%f G ",components[0]];
      break;
      
-    case KGColorSpaceDeviceRGB:
+    case KGColorSpaceGenericRGB:
      [self contentWithFormat:@"%f %f %f RG ",components[0],components[1],components[2]];
      break;
      
-    case KGColorSpaceDeviceCMYK:
+    case KGColorSpaceGenericCMYK:
      [self contentWithFormat:@"%f %f %f %f K ",components[0],components[1],components[2],components[3]];
      break;
    }
@@ -466,15 +466,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    
    switch([[color colorSpace] type]){
    
-    case KGColorSpaceDeviceGray:
+    case KGColorSpaceGenericGray:
      [self contentWithFormat:@"%f g ",components[0]];
      break;
      
-    case KGColorSpaceDeviceRGB:
+    case KGColorSpaceGenericRGB:
      [self contentWithFormat:@"%f %f %f rg ",components[0],components[1],components[2]];
      break;
      
-    case KGColorSpaceDeviceCMYK:
+    case KGColorSpaceGenericCMYK:
      [self contentWithFormat:@"%f %f %f %f k ",components[0],components[1],components[2],components[3]];
      break;
    }

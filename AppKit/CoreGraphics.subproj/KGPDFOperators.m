@@ -140,11 +140,11 @@ KGColorSpace *colorSpaceFromScannerInfo(KGPDFScanner *scanner,void *info,const c
    KGColorSpace *result=NULL;
    
    if(strcmp(name,"DeviceGray")==0)
-    result=[[KGColorSpace alloc] initWithDeviceGray];
+    result=[[KGColorSpace alloc] initWithGenericGray];
    else if(strcmp(name,"DeviceRGB")==0)
-    result=[[KGColorSpace alloc] initWithDeviceRGB];
+    result=[[KGColorSpace alloc] initWithGenericRGB];
    else if(strcmp(name,"DeviceCMYK")==0)
-    result=[[KGColorSpace alloc] initWithDeviceCMYK];
+    result=[[KGColorSpace alloc] initWithGenericCMYK];
    else {
     KGPDFContentStream *content=[scanner contentStream];
     KGPDFObject        *object=[content resourceForCategory:"ColorSpace" name:name];
@@ -772,9 +772,6 @@ void KGPDF_render_sh(KGPDFScanner *scanner,void *info) {
    KGPDFContentStream *content=[scanner contentStream];
    KGPDFObject        *resource;
    const char         *name;
-   KGPDFInteger        shadingType;
-   KGPDFObject        *colorSpaceObject;
-   KGColorSpace *colorSpace;
    KGShading *shading=NULL;
    
    if(![scanner popName:&name])

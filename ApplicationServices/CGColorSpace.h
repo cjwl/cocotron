@@ -22,6 +22,7 @@ typedef enum {
    kCGRenderingIntentPerceptual,
 } CGColorRenderingIntent;
 
+
 COREGRAPHICS_EXPORT void CGColorSpaceRelease(CGColorSpaceRef colorSpace);
 
 COREGRAPHICS_EXPORT CGColorSpaceRef CGColorSpaceCreateDeviceRGB();

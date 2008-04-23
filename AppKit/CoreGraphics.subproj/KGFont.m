@@ -358,7 +358,6 @@ static inline CGGlyphMetrics *fetchGlyphAdvancementIfNeeded(KGFont *self,CGGlyph
 }
 
 -(const char *)pdfFontName {
-// lame
    return [[[_name componentsSeparatedByString:@" "] componentsJoinedByString:@","] cString];
 }
 

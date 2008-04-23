@@ -12,13 +12,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @implementation KGPath
 
--initWithOperators:(unsigned char *)operators numberOfOperators:(unsigned)numberOfOperators points:(CGPoint *)points numberOfPoints:(unsigned)numberOfPoints {
+-initWithOperators:(unsigned char *)elements numberOfElements:(unsigned)numberOfElements points:(CGPoint *)points numberOfPoints:(unsigned)numberOfPoints {
    int i;
    
-   _numberOfOperators=numberOfOperators;
-   _operators=NSZoneMalloc(NULL,(_numberOfOperators==0)?1:_numberOfOperators);
-   for(i=0;i<_numberOfOperators;i++)
-    _operators[i]=operators[i];
+   _numberOfElements=numberOfElements;
+   _elements=NSZoneMalloc(NULL,(_numberOfElements==0)?1:_numberOfElements);
+   for(i=0;i<_numberOfElements;i++)
+    _elements[i]=elements[i];
 
    _numberOfPoints=numberOfPoints;
    _points=NSZoneMalloc(NULL,(_numberOfPoints==0?1:_numberOfPoints)*sizeof(CGPoint));
@@ -29,11 +29,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -init {
-   return [self initWithOperators:NULL numberOfOperators:0 points:NULL numberOfPoints:0];
+   return [self initWithOperators:NULL numberOfElements:0 points:NULL numberOfPoints:0];
 }
 
 -(void)dealloc {
-   NSZoneFree(NULL,_operators);
+   NSZoneFree(NULL,_elements);
    NSZoneFree(NULL,_points);
    [super dealloc];
 }
@@ -43,15 +43,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -mutableCopyWithZone:(NSZone *)zone {
-   return [[KGMutablePath allocWithZone:zone] initWithOperators:_operators numberOfOperators:_numberOfOperators points:_points numberOfPoints:_numberOfPoints];
+   return [[KGMutablePath allocWithZone:zone] initWithOperators:_elements numberOfElements:_numberOfElements points:_points numberOfPoints:_numberOfPoints];
 }
 
--(unsigned)numberOfOperators {
-   return _numberOfOperators;
+-(unsigned)numberOfElements {
+   return _numberOfElements;
 }
 
--(const unsigned char *)operators {
-   return _operators;
+-(const unsigned char *)elements {
+   return _elements;
 }
 
 -(unsigned)numberOfPoints {
@@ -68,18 +68,18 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(BOOL)isEqualToPath:(KGPath *)other {
-   unsigned otherNumberOfOperators=[other numberOfOperators];
+   unsigned otherNumberOfOperators=[other numberOfElements];
    
-   if(_numberOfOperators==otherNumberOfOperators){
+   if(_numberOfElements==otherNumberOfOperators){
     unsigned otherNumberOfPoints=[other numberOfPoints];
     
     if(_numberOfPoints==otherNumberOfPoints){
-     const unsigned char *otherOperators=[other operators];
+     const unsigned char *otherOperators=[other elements];
      const CGPoint       *otherPoints;
      int i;
      
-     for(i=0;i<_numberOfOperators;i++)
-      if(_operators[i]!=otherOperators[i])
+     for(i=0;i<_numberOfElements;i++)
+      if(_elements[i]!=otherOperators[i])
        return NO;
        
      otherPoints=[other points];
@@ -95,21 +95,21 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(BOOL)isEmpty {
-   return _numberOfOperators==0;
+   return _numberOfElements==0;
 }
 
 -(BOOL)isRect:(CGRect *)rect {   
-   if(_numberOfOperators!=5)
+   if(_numberOfElements!=5)
     return NO;
-   if(_operators[0]!=kCGPathElementMoveToPoint)
+   if(_elements[0]!=kCGPathElementMoveToPoint)
     return NO;
-   if(_operators[1]!=kCGPathElementAddLineToPoint)
+   if(_elements[1]!=kCGPathElementAddLineToPoint)
     return NO;
-   if(_operators[2]!=kCGPathElementAddLineToPoint)
+   if(_elements[2]!=kCGPathElementAddLineToPoint)
     return NO;
-   if(_operators[3]!=kCGPathElementAddLineToPoint)
+   if(_elements[3]!=kCGPathElementAddLineToPoint)
     return NO;
-   if(_operators[4]!=kCGPathElementCloseSubpath)
+   if(_elements[4]!=kCGPathElementCloseSubpath)
     return NO;
    
    if(_points[0].y!=_points[1].y)
@@ -127,7 +127,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return YES;
 }
 
--(BOOL)containsPoint:(CGPoint)point evenOdd:(BOOL)evenOdd withTransform:(CGAffineTransform *)matrix {
+-(BOOL)containsPoint:(CGPoint)point evenOdd:(BOOL)evenOdd withTransform:(const CGAffineTransform *)matrix {
    KGUnimplementedMethod();
    return NO;
 }
@@ -160,6 +160,40 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    }   
 
    return result;
+}
+
+-(void)applyWithInfo:(void *)info function:(CGPathApplierFunction)function {
+   int           i,pointIndex=0;
+   CGPathElement element;
+   
+   for(i=0;i<_numberOfElements;i++){
+    element.type=_elements[i];
+    element.points=_points+pointIndex;
+
+    switch(element.type){
+    
+     case kCGPathElementMoveToPoint:
+      pointIndex+=1;
+      break;
+       
+     case kCGPathElementAddLineToPoint:
+      pointIndex+=1;
+      break;
+
+     case kCGPathElementAddCurveToPoint:
+      pointIndex+=3;
+      break;
+
+     case kCGPathElementAddQuadCurveToPoint:
+      pointIndex+=2;
+      break;
+
+     case kCGPathElementCloseSubpath:
+      pointIndex+=0;
+      break;
+     }
+    function(info,&element);
+   }
 }
 
 @end

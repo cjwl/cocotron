@@ -10,23 +10,99 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSString.h>
 #import "KGImage.h"
 
-KGImage *CGImageRetain(KGImage *image) {
+CGImageRef CGImageRetain(CGImageRef image) {
    return [image retain];
 }
 
-void CGImageRelease(KGImage *image) {
+void CGImageRelease(CGImageRef image) {
    [image release];
 }
 
-KGImage *CGImageCreate(unsigned width,unsigned height,unsigned bitsPerComponent,unsigned bitsPerPixel,unsigned bytesPerRow,CGColorSpaceRef colorSpace,CGBitmapInfo bitmapInfo,CGDataProviderRef dataProvider,const float *decode,BOOL interpolate,CGColorRenderingIntent renderingIntent) {
+CGImageRef CGImageCreate(size_t width,size_t height,size_t bitsPerComponent,size_t bitsPerPixel,size_t bytesPerRow,CGColorSpaceRef colorSpace,CGBitmapInfo bitmapInfo,CGDataProviderRef dataProvider,const CGFloat *decode,BOOL interpolate,CGColorRenderingIntent renderingIntent) {
    return [[KGImage alloc] initWithWidth:width height:height bitsPerComponent:bitsPerComponent bitsPerPixel:bitsPerPixel bytesPerRow:bytesPerRow colorSpace:colorSpace bitmapInfo:bitmapInfo provider:dataProvider decode:decode interpolate:interpolate renderingIntent:renderingIntent];
-
 }
 
-unsigned CGImageGetWidth(KGImage *image) {
-   return [image width];
+CGImageRef CGImageMaskCreate(size_t width,size_t height,size_t bitsPerComponent,size_t bitsPerPixel,size_t bytesPerRow,CGDataProviderRef dataProvider,const CGFloat *decode,BOOL interpolate) {
+   return [[KGImage alloc] initMaskWithWidth:width height:height bitsPerComponent:bitsPerComponent bitsPerPixel:bitsPerPixel bytesPerRow:bytesPerRow provider:dataProvider decode:decode interpolate:interpolate];
 }
 
-unsigned CGImageGetHeight(KGImage *image) {
-   return [image height];
+CGImageRef CGImageCreateCopy(CGImageRef self) {
+   return [self copy];
 }
+
+CGImageRef CGImageCreateCopyWithColorSpace(CGImageRef self,CGColorSpaceRef colorSpace) {
+   return [self copyWithColorSpace:colorSpace];
+}
+
+CGImageRef CGImageCreateWithImageInRect(CGImageRef self,CGRect rect) {
+   return [self childImageInRect:rect];
+}
+
+CGImageRef CGImageCreateWithJPEGDataProvider(CGDataProviderRef jpegProvider,const CGFloat *decode,BOOL interpolate,CGColorRenderingIntent renderingIntent) {
+   return [[KGImage alloc] initWithJPEGDataProvider:jpegProvider decode:decode interpolate:interpolate renderingIntent:renderingIntent];
+}
+
+CGImageRef CGImageCreateWithPNGDataProvider(CGDataProviderRef pngProvider,const CGFloat *decode,BOOL interpolate,CGColorRenderingIntent renderingIntent) {
+   return [[KGImage alloc] initWithPNGDataProvider:pngProvider decode:decode interpolate:interpolate renderingIntent:renderingIntent];
+}
+
+CGImageRef CGImageCreateWithMask(CGImageRef self,CGImageRef mask) {
+   return [self copyWithMask:mask];
+}
+
+CGImageRef CGImageCreateWithMaskingColors(CGImageRef self,const CGFloat *components) {
+   return [self copyWithMaskingColors:components];
+}
+
+size_t CGImageGetWidth(CGImageRef self) {
+   return [self width];
+}
+
+size_t CGImageGetHeight(CGImageRef self) {
+   return [self height];
+}
+
+size_t CGImageGetBitsPerComponent(CGImageRef self) {
+   return [self bitsPerComponent];
+}
+
+size_t CGImageGetBitsPerPixel(CGImageRef self) {
+   return [self bitsPerPixel];
+}
+
+size_t CGImageGetBytesPerRow(CGImageRef self) {
+   return [self bytesPerRow];
+}
+
+CGColorSpaceRef CGImageGetColorSpace(CGImageRef self) {
+   return [self colorSpace];
+}
+
+CGBitmapInfo CGImageGetBitmapInfo(CGImageRef self) {
+   return [self bitmapInfo];
+}
+
+CGDataProviderRef CGImageGetDataProvider(CGImageRef self) {
+   return [self dataProvider];
+}
+
+const CGFloat *CGImageGetDecode(CGImageRef self) {
+   return [self decode];
+}
+
+BOOL CGImageGetShouldInterpolate(CGImageRef self) {
+   return [self shouldInterpolate];
+}
+
+CGColorRenderingIntent CGImageGetRenderingIntent(CGImageRef self) {
+   return [self renderingIntent];
+}
+
+BOOL CGImageIsMask(CGImageRef self) {
+   return [self isMask];
+}
+
+CGImageAlphaInfo CGImageGetAlphaInfo(CGImageRef self) {
+   return [self alphaInfo];
+}
+

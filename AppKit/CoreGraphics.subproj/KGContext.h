@@ -21,11 +21,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 +(KGContext *)createContextWithSize:(CGSize)size window:(CGWindow *)window;
-+(KGContext *)createContextWithSize:(CGSize)size context:(KGContext *)context;
++(KGContext *)createBackingContextWithSize:(CGSize)size context:(KGContext *)context;
++(KGContext *)createWithBytes:(void *)bytes width:(size_t)width height:(size_t)height bitsPerComponent:(size_t)bitsPerComponent bytesPerRow:(size_t)bytesPerRow colorSpace:(KGColorSpace *)colorSpace bitmapInfo:(CGBitmapInfo)bitmapInfo;
 
 +(BOOL)isAvailable;
 +(BOOL)canInitWithWindow:(CGWindow *)window;
-+(BOOL)canInitWithContext:(KGContext *)context;
++(BOOL)canInitBackingWithContext:(KGContext *)context;
++(BOOL)canInitBitmap;
 
 -initWithSize:(CGSize)size window:(CGWindow *)window;
 -initWithSize:(CGSize)size context:(KGContext *)context;
@@ -196,6 +198,20 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)endPrinting;
 
 -(BOOL)getImageableRect:(CGRect *)rect;
+
+// bitmap context
+
+-(void *)bytes;
+-(size_t)width;
+-(size_t)height;
+-(size_t)bitsPerComponent;
+-(size_t)bytesPerRow;
+-(KGColorSpace *)colorSpace;
+-(CGBitmapInfo)bitmapInfo;
+
+-(size_t)bitsPerPixel;
+-(CGImageAlphaInfo)alphaInfo;
+-(KGImage *)createImage;
 
 // temporary
 

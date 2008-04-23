@@ -75,9 +75,10 @@ NSData *KGPDFFilterWithName(const char *name,NSData *data,KGPDFDictionary *param
       if((length%rowLength)!=0)
        ;//NSLog(@"length mod rowLength=%d",length%rowLength);
         
+       char *change=__builtin_alloca(rowLength);
+       
       for(row=0;row<numberOfRows;row++){
        int i,filter=bytes[0];
-        char change[rowLength];
        
        for(i=0;i<rowLength-1;i++)
         change[i]=bytes[1+i];

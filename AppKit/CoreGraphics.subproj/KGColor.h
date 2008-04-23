@@ -7,23 +7,33 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
 #import <Foundation/NSObject.h>
+#import <ApplicationServices/ApplicationServices.h>
 
-@class KGColorSpace;
+@class KGColorSpace,KGPattern;
 
 @interface KGColor : NSObject <NSCopying> {
   KGColorSpace *_colorSpace;
   unsigned      _numberOfComponents;
-  float        *_components;
+  CGFloat        *_components;
+  KGPattern    *_pattern;
 }
 
--initWithColorSpace:(KGColorSpace *)colorSpace components:(const float *)components;
+-initWithColorSpace:(KGColorSpace *)colorSpace pattern:(KGPattern *)pattern components:(const CGFloat *)components;
+-initWithColorSpace:(KGColorSpace *)colorSpace components:(const CGFloat *)components;
 -initWithColorSpace:(KGColorSpace *)colorSpace;
 
--copyWithAlpha:(float)alpha;
+-initWithGenericGray:(CGFloat)gray alpha:(CGFloat)alpha;
+-initWithGenericRed:(CGFloat)red green:(CGFloat)green blue:(CGFloat)blue alpha:(CGFloat)alpha;
+-initWithGenericCyan:(CGFloat)cyan magenta:(CGFloat)magenta yellow:(CGFloat)yellow black:(CGFloat)black alpha:(CGFloat)alpha;
+
+-copyWithAlpha:(CGFloat)alpha;
 
 -(KGColorSpace *)colorSpace;
 -(unsigned)numberOfComponents;
--(float *)components;
--(float)alpha;
+-(CGFloat *)components;
+-(CGFloat)alpha;
+-(KGPattern *)pattern;
+
+-(BOOL)isEqualToColor:(KGColor *)other;
 
 @end

@@ -14,6 +14,6 @@ void CGColorSpaceRelease(CGColorSpaceRef colorSpace) {
 }
 
 CGColorSpaceRef CGColorSpaceCreateDeviceRGB() {
-   return [[KGColorSpace alloc] initWithDeviceRGB];
+   return [[KGColorSpace alloc] initWithGenericRGB];
 }
 

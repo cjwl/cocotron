@@ -23,7 +23,7 @@ FOUNDATION_EXPORT id objc_getOrigClass(const char *name);
 FOUNDATION_EXPORT void OBJCRegisterClass(Class class);
 FOUNDATION_EXPORT void OBJCRegisterCategory(OBJCCategory *category,Class class);
 
-FOUNDATION_EXPORT struct objc_method *OBJCLookupUniqueIdInClass(Class class,SEL uniqueId);
+FOUNDATION_EXPORT inline struct objc_method *OBJCLookupUniqueIdInClass(Class class,SEL uniqueId);
 FOUNDATION_EXPORT IMP OBJCLookupAndCacheUniqueIdInClass(Class class,SEL uniqueId);
 FOUNDATION_EXPORT IMP OBJCInitializeLookupAndCacheUniqueIdForObject(id object,SEL message);
 

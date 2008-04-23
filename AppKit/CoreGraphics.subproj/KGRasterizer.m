@@ -1,6 +1,6 @@
 /*------------------------------------------------------------------------
  *
- * OpenVG 1.0.1 Reference Implementation
+ * Derivative of the OpenVG 1.0.1 Reference Implementation
  * -------------------------------------
  *
  * Copyright (c) 2007 The Khronos Group Inc.
@@ -27,8 +27,11 @@
  *-------------------------------------------------------------------*/
  
 #import "KGRasterizer.h"
+#import "KGPixelPipe.h"
 
 #define RI_MAX_EDGES					262144
+
+@implementation KGRasterizer
 
 KGRasterizer *KGRasterizerAlloc(){
    return (KGRasterizer *)NSZoneCalloc(NULL,1,sizeof(KGRasterizer));
@@ -559,3 +562,4 @@ void KGRasterizerFill(KGRasterizer *self,VGFillRule fillRule, KGPixelPipe *pixel
     NSZoneFree(NULL,edges);
 }
 
+@end

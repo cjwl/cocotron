@@ -75,7 +75,7 @@ static RECT NSRectToRECT(NSRect rect) {
    return YES;
 }
 
-+(BOOL)canInitWithContext:(KGContext *)context {
++(BOOL)canInitBackingWithContext:(KGContext *)context {
    return YES;
 }
 
@@ -175,8 +175,9 @@ static RECT NSRectToRECT(NSRect rect) {
 }
 
 -(void)establishDeviceSpacePath:(KGPath *)path {
-   unsigned             opCount=[path numberOfOperators];
-   const unsigned char *operators=[path operators];
+   CGAffineTransform    xform=[self currentState]->_deviceSpaceTransform;
+   unsigned             opCount=[path numberOfElements];
+   const unsigned char *elements=[path elements];
    unsigned             pointCount=[path numberOfPoints];
    const NSPoint       *points=[path points];
    unsigned             i,pointIndex;
@@ -185,26 +186,26 @@ static RECT NSRectToRECT(NSRect rect) {
    
    pointIndex=0;
    for(i=0;i<opCount;i++){
-    switch(operators[i]){
+    switch(elements[i]){
 
      case kCGPathElementMoveToPoint:{
-       NSPoint point=points[pointIndex++];
+       NSPoint point=CGPointApplyAffineTransform(points[pointIndex++],xform);
         
        MoveToEx(_dc,float2int(point.x),float2int(point.y),NULL);
       }
       break;
        
      case kCGPathElementAddLineToPoint:{
-       NSPoint point=points[pointIndex++];
+       NSPoint point=CGPointApplyAffineTransform(points[pointIndex++],xform);
         
        LineTo(_dc,float2int(point.x),float2int(point.y));
       }
       break;
 
      case kCGPathElementAddCurveToPoint:{
-       NSPoint cp1=points[pointIndex++];
-       NSPoint cp2=points[pointIndex++];
-       NSPoint end=points[pointIndex++];
+       NSPoint cp1=CGPointApplyAffineTransform(points[pointIndex++],xform);
+       NSPoint cp2=CGPointApplyAffineTransform(points[pointIndex++],xform);
+       NSPoint end=CGPointApplyAffineTransform(points[pointIndex++],xform);
        POINT   points[3]={
         { float2int(cp1.x), float2int(cp1.y) },
         { float2int(cp2.x), float2int(cp2.y) },
@@ -217,8 +218,8 @@ static RECT NSRectToRECT(NSRect rect) {
 
 // FIX, this is wrong
      case kCGPathElementAddQuadCurveToPoint:{
-       NSPoint cp1=points[pointIndex++];
-       NSPoint cp2=points[pointIndex++];
+       NSPoint cp1=CGPointApplyAffineTransform(points[pointIndex++],xform);
+       NSPoint cp2=CGPointApplyAffineTransform(points[pointIndex++],xform);
        NSPoint end=cp2;
        POINT   points[3]={
         { float2int(cp1.x), float2int(cp1.y) },
@@ -248,14 +249,14 @@ static RECT NSRectToRECT(NSRect rect) {
    [self establishDeviceSpacePath:path];
    SetPolyFillMode(_dc,WINDING);
    if(!SelectClipPath(_dc,RGN_AND))
-    NSLog(@"SelectClipPath failed (%i), path size= %d", GetLastError(),[path numberOfOperators]);
+    NSLog(@"SelectClipPath failed (%i), path size= %d", GetLastError(),[path numberOfElements]);
 }
 
 -(void)deviceClipToEvenOddPath:(KGPath *)path {
    [self establishDeviceSpacePath:path];
    SetPolyFillMode(_dc,ALTERNATE);
    if(!SelectClipPath(_dc,RGN_AND))
-    NSLog(@"SelectClipPath failed (%i), path size= %d", GetLastError(),[path numberOfOperators]);
+    NSLog(@"SelectClipPath failed (%i), path size= %d", GetLastError(),[path numberOfElements]);
 }
 
 -(void)deviceClipToMask:(KGImage *)mask inRect:(NSRect)rect {
@@ -413,15 +414,15 @@ static inline void CMYKAToRGBA(float *input,float *output){
 
    switch(colorSpaceType){
 
-    case KGColorSpaceDeviceGray:
+    case KGColorSpaceGenericGray:
      outputToRGBA=GrayAToRGBA;
      break;
      
-    case KGColorSpaceDeviceRGB:
+    case KGColorSpaceGenericRGB:
      outputToRGBA=RGBAToRGBA;
      break;
      
-    case KGColorSpaceDeviceCMYK:
+    case KGColorSpaceGenericCMYK:
      outputToRGBA=CMYKAToRGBA;
      break;
      
@@ -721,15 +722,15 @@ static void extend(HDC dc,int i,int direction,float bandInterval,NSPoint startPo
 
    switch(colorSpaceType){
 
-    case KGColorSpaceDeviceGray:
+    case KGColorSpaceGenericGray:
      outputToRGBA=GrayAToRGBA;
      break;
      
-    case KGColorSpaceDeviceRGB:
+    case KGColorSpaceGenericRGB:
      outputToRGBA=RGBAToRGBA;
      break;
      
-    case KGColorSpaceDeviceCMYK:
+    case KGColorSpaceGenericCMYK:
      outputToRGBA=CMYKAToRGBA;
      break;
      

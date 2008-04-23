@@ -1,6 +1,6 @@
-/* Copyright (c) 2006 Christopher J. W. Lloyd
+/* Copyright(c) 2006 Christopher J. W. Lloyd
 
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files(the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
@@ -10,16 +10,69 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <ApplicationServices/CoreGraphicsExport.h>
 #import <ApplicationServices/CGColorSpace.h>
 #import <ApplicationServices/CGDataProvider.h>
+#import <ApplicationServices/CGGeometry.h>
+
+#define kCGBitmapAlphaInfoMask 0x1F
+
+typedef enum {
+   kCGImageAlphaNone,
+   kCGImageAlphaPremultipliedLast,
+   kCGImageAlphaPremultipliedFirst,
+   kCGImageAlphaLast,
+   kCGImageAlphaFirst,
+   kCGImageAlphaNoneSkipLast,
+   kCGImageAlphaNoneSkipFirst,
+} CGImageAlphaInfo;
+
+enum {
+   kCGBitmapFloatComponents=0x100,
+};
+
+#define kCGBitmapByteOrderMask 0x7000
+
+enum {
+   kCGBitmapByteOrderDefault=0,
+   kCGBitmapByteOrder16Little=0x1000,
+   kCGBitmapByteOrder32Little=0x2000,
+   kCGBitmapByteOrder16Big=0x3000,
+   kCGBitmapByteOrder32Big=0x4000,
+};
+
+typedef unsigned CGBitmapInfo;
+
 @class KGImage;
 
 typedef KGImage *CGImageRef;
 
-typedef unsigned CGBitmapInfo;
+COREGRAPHICS_EXPORT CGImageRef CGImageRetain(CGImageRef image);
+COREGRAPHICS_EXPORT void       CGImageRelease(CGImageRef image);
 
-COREGRAPHICS_EXPORT KGImage *CGImageRetain(KGImage *image);
-COREGRAPHICS_EXPORT void CGImageRelease(KGImage *image);
+COREGRAPHICS_EXPORT CGImageRef CGImageCreate(size_t width,size_t height,size_t bitsPerComponent,size_t bitsPerPixel,size_t bytesPerRow,CGColorSpaceRef colorSpace,CGBitmapInfo bitmapInfo,CGDataProviderRef dataProvider,const CGFloat *decode,BOOL interpolate,CGColorRenderingIntent renderingIntent);
+COREGRAPHICS_EXPORT CGImageRef CGImageMaskCreate(size_t width,size_t height,size_t bitsPerComponent,size_t bitsPerPixel,size_t bytesPerRow,CGDataProviderRef dataProvider,const CGFloat *decode,BOOL interpolate);
 
-COREGRAPHICS_EXPORT KGImage *CGImageCreate(unsigned width,unsigned height,unsigned bitsPerComponent,unsigned bitsPerPixel,unsigned bytesPerRow,CGColorSpaceRef colorSpace,CGBitmapInfo bitmapInfo,CGDataProviderRef dataProvider,const float *decode,BOOL interpolate,CGColorRenderingIntent renderingIntent);
+COREGRAPHICS_EXPORT CGImageRef CGImageCreateCopy(CGImageRef self);
+COREGRAPHICS_EXPORT CGImageRef CGImageCreateCopyWithColorSpace(CGImageRef self,CGColorSpaceRef colorSpace);
 
-COREGRAPHICS_EXPORT unsigned CGImageGetWidth(KGImage *image);
-COREGRAPHICS_EXPORT unsigned CGImageGetHeight(KGImage *image);
+COREGRAPHICS_EXPORT CGImageRef CGImageCreateWithImageInRect(CGImageRef self,CGRect rect);
+
+COREGRAPHICS_EXPORT CGImageRef CGImageCreateWithJPEGDataProvider(CGDataProviderRef jpegProvider,const CGFloat *decode,BOOL interpolate,CGColorRenderingIntent renderingIntent);
+COREGRAPHICS_EXPORT CGImageRef CGImageCreateWithPNGDataProvider(CGDataProviderRef pngProvider,const CGFloat *decode,BOOL interpolate,CGColorRenderingIntent renderingIntent);
+
+COREGRAPHICS_EXPORT CGImageRef CGImageCreateWithMask(CGImageRef self,CGImageRef mask);
+COREGRAPHICS_EXPORT CGImageRef CGImageCreateWithMaskingColors(CGImageRef self,const CGFloat *components);
+
+COREGRAPHICS_EXPORT size_t                 CGImageGetWidth(CGImageRef self);
+COREGRAPHICS_EXPORT size_t                 CGImageGetHeight(CGImageRef self);
+COREGRAPHICS_EXPORT size_t                 CGImageGetBitsPerComponent(CGImageRef self);
+COREGRAPHICS_EXPORT size_t                 CGImageGetBitsPerPixel(CGImageRef self);
+COREGRAPHICS_EXPORT size_t                 CGImageGetBytesPerRow(CGImageRef self);
+COREGRAPHICS_EXPORT CGColorSpaceRef        CGImageGetColorSpace(CGImageRef self);
+COREGRAPHICS_EXPORT CGBitmapInfo           CGImageGetBitmapInfo(CGImageRef self);
+COREGRAPHICS_EXPORT CGDataProviderRef      CGImageGetDataProvider(CGImageRef self);
+COREGRAPHICS_EXPORT const CGFloat         *CGImageGetDecode(CGImageRef self);
+COREGRAPHICS_EXPORT BOOL                   CGImageGetShouldInterpolate(CGImageRef self);
+COREGRAPHICS_EXPORT CGColorRenderingIntent CGImageGetRenderingIntent(CGImageRef self);
+
+COREGRAPHICS_EXPORT BOOL                   CGImageIsMask(CGImageRef self);
+COREGRAPHICS_EXPORT CGImageAlphaInfo       CGImageGetAlphaInfo(CGImageRef self);
+

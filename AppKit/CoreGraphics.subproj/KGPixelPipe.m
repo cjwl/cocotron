@@ -1,6 +1,6 @@
 /*------------------------------------------------------------------------
  *
- * OpenVG 1.0.1 Reference Implementation
+ * Derivative of the OpenVG 1.0.1 Reference Implementation
  * -------------------------------------
  *
  * Copyright (c) 2007 The Khronos Group Inc.
@@ -32,6 +32,7 @@
 
 #import "KGPixelPipe.h"
 #import "KGBlending.h"
+#import "KGSurface.h"
 
 KGPaint *KGPaintAlloc() {
    return (KGPaint *)NSZoneCalloc(NULL,1,sizeof(KGPaint));
@@ -67,9 +68,11 @@ KGPaint *KGPaintInit(KGPaint *self) {
 void     KGPaintDealloc(KGPaint *self) {
 	if(self->m_pattern)
 	{
-			VGImageDealloc(self->m_pattern);
+			KGSurfaceDealloc(self->m_pattern);
 	}
 }
+
+@implementation KGPixelPipe
 
 KGPixelPipe *KGPixelPipeAlloc() {
    return (KGPixelPipe *)NSZoneCalloc(NULL,1,sizeof(KGPixelPipe));
@@ -93,7 +96,7 @@ void KGPixelPipeDealloc(KGPixelPipe *self) {
    NSZoneFree(NULL,self);
 }
 
-void KGPixelPipeSetRenderingSurface(KGPixelPipe *self,VGImage *renderingSurface) {
+void KGPixelPipeSetRenderingSurface(KGPixelPipe *self,KGSurface *renderingSurface) {
 	RI_ASSERT(renderingSurface);
 	self->m_renderingSurface = renderingSurface;
 }
@@ -103,11 +106,11 @@ void KGPixelPipeSetBlendMode(KGPixelPipe *self,CGBlendMode blendMode) {
 	self->m_blendMode = blendMode;
 }
 
-void KGPixelPipeSetMask(KGPixelPipe *self,VGImage* mask) {
+void KGPixelPipeSetMask(KGPixelPipe *self,KGSurface* mask) {
 	self->m_mask = mask;
 }
 
-void KGPixelPipeSetImage(KGPixelPipe *self,VGImage* image, VGImageMode imageMode) {
+void KGPixelPipeSetImage(KGPixelPipe *self,KGImage *image, KGSurfaceMode imageMode) {
 	RI_ASSERT(imageMode == VG_DRAW_IMAGE_NORMAL || imageMode == VG_DRAW_IMAGE_MULTIPLY || imageMode == VG_DRAW_IMAGE_STENCIL);
 	self->m_image = image;
 	self->m_imageMode = imageMode;
@@ -438,7 +441,7 @@ static void KGPixelPipeReadPremultipliedPatternSpan(KGPixelPipe *self,int x,int 
    if(self->m_paint->m_pattern==NULL)
     KGPixelPipeReadPremultipliedConstantSourceSpan(self,x,y,span,length,format);
    else {
-    VGImagePatternSpan(self->m_paint->m_pattern,x, y,span,length,format, self->m_surfaceToPaintMatrix, kCGPatternTilingConstantSpacing);
+    KGSurfacePatternSpan(self->m_paint->m_pattern,x, y,span,length,format, self->m_surfaceToPaintMatrix, kCGPatternTilingConstantSpacing);
    }
    
 }
@@ -447,16 +450,16 @@ static void KGPixelPipeReadPremultipliedImageNormalSpan(KGPixelPipe *self,int x,
    VGColorInternalFormat spanFormat;
    
    if(self->m_imageQuality== kCGInterpolationHigh){
-    spanFormat=VGImageResample_EWAOnMipmaps(self->m_image,x,y,span,length,self->m_surfaceToImageMatrix);
-    // spanFormat=VGImageResample_Bicubic(self->m_image,x,y,span,length,self->m_surfaceToImageMatrix);
+    spanFormat=KGImageResample_EWAOnMipmaps(self->m_image,x,y,span,length,self->m_surfaceToImageMatrix);
+    // spanFormat=KGImageResample_Bicubic(self->m_image,x,y,span,length,self->m_surfaceToImageMatrix);
    }
    else if(self->m_imageQuality== kCGInterpolationLow)
-    spanFormat=VGImageResample_Bilinear(self->m_image,x,y,span,length,self->m_surfaceToImageMatrix);
+    spanFormat=KGImageResample_Bilinear(self->m_image,x,y,span,length,self->m_surfaceToImageMatrix);
    else
-    spanFormat=VGImageResample_PointSampling(self->m_image,x,y,span,length,self->m_surfaceToImageMatrix);
+    spanFormat=KGImageResample_PointSampling(self->m_image,x,y,span,length,self->m_surfaceToImageMatrix);
   
    if(!(spanFormat&VGColorPREMULTIPLIED)){
-    premultiplySpan(span,length);
+    KGRGBPremultiplySpan(span,length);
     spanFormat|=VGColorPREMULTIPLIED;
    }
    convertSpan(span,length,spanFormat,format);
@@ -738,14 +741,14 @@ void KGPixelPipeWriteCoverage(KGPixelPipe *self,int x, int y,RIfloat *coverage,i
 
 	//apply masking
 	if(self->m_mask)
-     VGImageReadMaskPixelSpanIntoCoverage(self->m_mask,x,y,coverage,length);
+     KGSurfaceReadMaskPixelSpanIntoCoverage(self->m_mask,x,y,coverage,length);
 // This optimization may not make sense in the bulk computations
 //	if(coverage[0..length] == 0.0f)
 //		return;
 
 	//read destination color
     KGRGBA d[length];
-    VGColorInternalFormat dFormat=VGImageReadPremultipliedSpan_ffff(self->m_renderingSurface,x,y,d,length);
+    VGColorInternalFormat dFormat=KGSurfaceReadPremultipliedSpan_ffff(self->m_renderingSurface,x,y,d,length);
 
     KGRGBA src[length];
     KGPixelPipeReadPremultipliedSourceSpan(self,x,y,src,length,dFormat);
@@ -756,5 +759,7 @@ void KGPixelPipeWriteCoverage(KGPixelPipe *self,int x, int y,RIfloat *coverage,i
     resultFormat=KGApplyCoverageToSpan(d,coverage,src,length,dFormat);
     
 	//write result to the destination surface
-    VGImageWritePixelSpan(self->m_renderingSurface,x,y,src,length,resultFormat);
+    KGSurfaceWritePixelSpan(self->m_renderingSurface,x,y,src,length,resultFormat);
 }
+
+@end

@@ -1,6 +1,6 @@
 /*------------------------------------------------------------------------
  *
- * OpenVG 1.0.1 Reference Implementation
+ * Derivative of the OpenVG 1.0.1 Reference Implementation
  * -------------------------------------
  *
  * Copyright (c) 2007 The Khronos Group Inc.
@@ -81,9 +81,7 @@ static inline int RI_FLOOR_TO_INT(RIfloat value){
    return value;
 }
 
-typedef struct {
-   RIfloat x,y;
-} Vector2;
+typedef CGPoint Vector2;
 
 static inline Vector2 Vector2Make(RIfloat fx,RIfloat fy){
    Vector2 result;
@@ -100,11 +98,11 @@ static inline RIfloat Vector2Length(Vector2 v){
    return (RIfloat)sqrt((double)v.x*(double)v.x+(double)v.y*(double)v.y);
 }
 
-static inline bool Vector2IsEqual(Vector2 v1,Vector2 v2 ){
+static inline BOOL Vector2IsEqual(Vector2 v1,Vector2 v2 ){
    return (v1.x == v2.x) && (v1.y == v2.y);
 }
 
-static inline bool Vector2IsZero(Vector2 v){
+static inline BOOL Vector2IsZero(Vector2 v){
   return (v.x == 0.0f) && (v.y == 0.0f);
 }
 
@@ -142,7 +140,7 @@ static inline Vector2 Vector2PerpendicularCCW(Vector2 v){
    return Vector2Make(-v.y, v.x);
 }
 
-static inline Vector2 Vector2Perpendicular(Vector2 v, bool cw){
+static inline Vector2 Vector2Perpendicular(Vector2 v, BOOL cw){
    if(cw)
     return Vector2Make(v.y, -v.x);
     
@@ -199,7 +197,7 @@ static inline Matrix3x3 Matrix3x3WithCGAffineTransform(CGAffineTransform transfo
    return result;
 }
 
-bool Matrix3x3InplaceInvert(Matrix3x3 *m);
+BOOL Matrix3x3InplaceInvert(Matrix3x3 *m);
 
 static inline Matrix3x3 Matrix3x3Multiply(Matrix3x3 m1,Matrix3x3 m2){
    Matrix3x3 t;
@@ -212,8 +210,8 @@ static inline Matrix3x3 Matrix3x3Multiply(Matrix3x3 m1,Matrix3x3 m2){
    return t;
 }
 
-static inline bool Matrix3x3IsAffine(Matrix3x3 m){
-   return (m.matrix[2][0] == 0.0f && m.matrix[2][1] == 0.0f && m.matrix[2][2] == 1.0f)?true:false;
+static inline BOOL Matrix3x3IsAffine(Matrix3x3 m){
+   return (m.matrix[2][0] == 0.0f && m.matrix[2][1] == 0.0f && m.matrix[2][2] == 1.0f)?YES:NO;
 }
 
  static inline void Matrix3x3ForceAffinity(Matrix3x3 *xform){

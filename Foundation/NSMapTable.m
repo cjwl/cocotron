@@ -81,7 +81,15 @@ const NSMapTableKeyCallBacks NSIntMapKeyCallBacks={
 const NSMapTableValueCallBacks NSIntMapValueCallBacks={
  NULL, NULL, NULL
 };
- 
+
+const NSMapTableKeyCallBacks NSIntegerMapKeyCallBacks={
+ NULL, NULL, NULL, NULL, NULL
+};
+
+const NSMapTableValueCallBacks NSIntegerMapValueCallBacks={
+ NULL, NULL, NULL
+};
+
 const NSMapTableKeyCallBacks NSNonOwnedPointerMapKeyCallBacks={
  NULL, NULL, NULL, NULL, NULL
 };

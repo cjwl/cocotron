@@ -1,6 +1,6 @@
 /*------------------------------------------------------------------------
  *
- * OpenVG 1.0.1 Reference Implementation
+ * Derivative of the OpenVG 1.0.1 Reference Implementation
  * -------------------------------------
  *
  * Copyright (c) 2007 The Khronos Group Inc.
@@ -27,7 +27,8 @@
  *-------------------------------------------------------------------*/
 
 #import "VGmath.h"
-#import "KGPixelPipe.h"
+
+@class KGPixelPipe;
 
 typedef enum {
   VG_EVEN_ODD,
@@ -62,7 +63,7 @@ typedef struct {
    RIfloat		weight;
 } Sample;
 
-typedef struct {    
+@interface KGRasterizer : NSObject {    
     int _vpx,_vpy,_vpwidth,_vpheight;
     
     int    _edgeCount;
@@ -74,7 +75,7 @@ typedef struct {
 	RIfloat sumWeights;
 	RIfloat fradius;		//max offset of the sampling points from a pixel center
 	Sample  samples[32];
-} KGRasterizer;
+}
 
 KGRasterizer *KGRasterizerAlloc();
 KGRasterizer *KGRasterizerInit(KGRasterizer *self);
@@ -85,3 +86,4 @@ void KGRasterizerAddEdge(KGRasterizer *self,const Vector2 v0, const Vector2 v1);
 void KGRasterizerSetShouldAntialias(KGRasterizer *self,BOOL antialias);
 void KGRasterizerFill(KGRasterizer *self,VGFillRule fillRule, KGPixelPipe *pixelPipe);
 
+@end

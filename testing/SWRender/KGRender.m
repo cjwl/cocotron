@@ -17,7 +17,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
   _bitsPerComponent=8;
   _bitsPerPixel=32;
   _bytesPerRow=(_pixelsWide*_bitsPerPixel)/8;
-  _colorSpaceName=kCGColorSpaceGenericRGBLinear;
   _colorSpace=CGColorSpaceCreateDeviceRGB();
   _bitmapInfo=kCGImageAlphaPremultipliedLast|kCGBitmapByteOrder32Little;
   _data=NSZoneMalloc([self zone],_bytesPerRow*_pixelsHigh);
@@ -61,11 +60,11 @@ int i;
     ((char *)_data)[i]=0;
 }
 
--(void)drawPath:(CGPathRef)path drawingMode:(CGPathDrawingMode)drawingMode blendMode:(CGBlendMode)blendMode interpolationQuality:(CGInterpolationQuality)interpolationQuality fillColor:(CGColorRef)fillColor strokeColor:(CGColorRef)strokeColor lineWidth:(float)lineWidth lineCap:(CGLineCap)lineCap lineJoin:(CGLineJoin)lineJoin miterLimit:(float)miterLimit dashPhase:(float)dashPhase dashLengthsCount:(unsigned)dashLengthsCount dashLengths:(float *)dashLengths  flatness:(float)flatness transform:(CGAffineTransform)xform antialias:(BOOL)antialias {
+-(void)drawPath:(CGPathRef)path drawingMode:(CGPathDrawingMode)drawingMode blendMode:(CGBlendMode)blendMode interpolationQuality:(CGInterpolationQuality)interpolationQuality fillColor:(NSColor *)fillColor strokeColor:(NSColor *)strokeColor lineWidth:(float)lineWidth lineCap:(CGLineCap)lineCap lineJoin:(CGLineJoin)lineJoin miterLimit:(float)miterLimit dashPhase:(float)dashPhase dashLengthsCount:(unsigned)dashLengthsCount dashLengths:(float *)dashLengths  flatness:(float)flatness transform:(CGAffineTransform)xform antialias:(BOOL)antialias {
    [self doesNotRecognizeSelector:_cmd];
 }
 
--(void)drawBitmapImageRep:(NSBitmapImageRep *)imageRep antialias:(BOOL)antialias interpolationQuality:(CGInterpolationQuality)interpolationQuality blendMode:(CGBlendMode)blendMode fillColor:(CGColorRef)fillColor transform:(CGAffineTransform)xform {
+-(void)drawBitmapImageRep:(NSBitmapImageRep *)imageRep antialias:(BOOL)antialias interpolationQuality:(CGInterpolationQuality)interpolationQuality blendMode:(CGBlendMode)blendMode fillColor:(NSColor *)fillColor transform:(CGAffineTransform)xform {
    [self doesNotRecognizeSelector:_cmd];
 }
 

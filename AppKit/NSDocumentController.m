@@ -356,7 +356,6 @@ static NSDocumentController *shared=nil;
 }
 
 -(int)runModalOpenPanel:(NSOpenPanel *)openPanel forTypes:(NSArray *)extensions {
-
    return [openPanel runModalForTypes:extensions];
 }
 
@@ -400,14 +399,14 @@ static NSDocumentController *shared=nil;
 }
 
 -(void)_removeAllRecentDocumentsFromMenu:(NSMenu *)menu {
-   NSArray *items=[menu itemArray];
-   int      count=[items count];
+   int count=[[menu itemArray] count];
 
    while(--count>=0){
-    NSMenuItem *check=[items objectAtIndex:count];
+    NSMenuItem *check=[[menu itemArray] objectAtIndex:count];
     
-    if([check action]==@selector(_openRecentDocument:))
+    if([check action]==@selector(_openRecentDocument:)){
      [menu removeItemAtIndex:count];
+    }
    }
 }
 

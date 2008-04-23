@@ -12,33 +12,33 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 void KGMutablePathEllipseToBezier(CGPoint *cp,float x,float y,float xradius,float yradius);
 
 @interface KGMutablePath : KGPath <NSCopying> {
-   unsigned _capacityOfOperators;
+   unsigned _capacityOfElements;
    unsigned _capacityOfPoints;
 }
 
 -(void)reset;
 
--(void)moveToPoint:(CGPoint)point withTransform:(CGAffineTransform *)matrix;
--(void)addLineToPoint:(CGPoint)point withTransform:(CGAffineTransform *)matrix;
--(void)addCurveToControlPoint:(CGPoint)cp1 controlPoint:(CGPoint)cp2 endPoint:(CGPoint)endPoint withTransform:(CGAffineTransform *)matrix;
--(void)addCurveToControlPoint:(CGPoint)cp1 endPoint:(CGPoint)endPoint withTransform:(CGAffineTransform *)matrix;
+-(void)moveToPoint:(CGPoint)point withTransform:(const CGAffineTransform *)matrix;
+-(void)addLineToPoint:(CGPoint)point withTransform:(const CGAffineTransform *)matrix;
+-(void)addCurveToControlPoint:(CGPoint)cp1 controlPoint:(CGPoint)cp2 endPoint:(CGPoint)endPoint withTransform:(const CGAffineTransform *)matrix;
+-(void)addQuadCurveToControlPoint:(CGPoint)cp1 endPoint:(CGPoint)endPoint withTransform:(const CGAffineTransform *)matrix;
 -(void)closeSubpath;
 
--(void)relativeMoveToPoint:(CGPoint)point withTransform:(CGAffineTransform *)matrix;
--(void)addRelativeLineToPoint:(CGPoint)point withTransform:(CGAffineTransform *)matrix;
--(void)addRelativeCurveToControlPoint:(CGPoint)cp1 controlPoint:(CGPoint)cp2 endPoint:(CGPoint)endPoint withTransform:(CGAffineTransform *)matrix;
+-(void)relativeMoveToPoint:(CGPoint)point withTransform:(const CGAffineTransform *)matrix;
+-(void)addRelativeLineToPoint:(CGPoint)point withTransform:(const CGAffineTransform *)matrix;
+-(void)addRelativeCurveToControlPoint:(CGPoint)cp1 controlPoint:(CGPoint)cp2 endPoint:(CGPoint)endPoint withTransform:(const CGAffineTransform *)matrix;
 
--(void)addLinesWithPoints:(CGPoint *)points count:(unsigned)count withTransform:(CGAffineTransform *)matrix;
+-(void)addLinesWithPoints:(const CGPoint *)points count:(unsigned)count withTransform:(const CGAffineTransform *)matrix;
 
--(void)addRect:(CGRect)rect withTransform:(CGAffineTransform *)matrix;
--(void)addRects:(const CGRect *)rects count:(unsigned)count withTransform:(CGAffineTransform *)matrix;
+-(void)addRect:(CGRect)rect withTransform:(const CGAffineTransform *)matrix;
+-(void)addRects:(const CGRect *)rects count:(unsigned)count withTransform:(const CGAffineTransform *)matrix;
 
--(void)addArcAtPoint:(CGPoint)point radius:(float)radius startAngle:(float)startRadian endAngle:(float)endRadian clockwise:(BOOL)clockwise withTransform:(CGAffineTransform *)matrix;
--(void)addArcToPoint:(CGPoint)point1 point:(CGPoint)point2 radius:(float)radius withTransform:(CGAffineTransform *)matrix;
+-(void)addArcAtPoint:(CGPoint)point radius:(float)radius startAngle:(float)startRadian endAngle:(float)endRadian clockwise:(BOOL)clockwise withTransform:(const CGAffineTransform *)matrix;
+-(void)addArcToPoint:(CGPoint)point1 point:(CGPoint)point2 radius:(float)radius withTransform:(const CGAffineTransform *)matrix;
 
--(void)addEllipseInRect:(CGRect)rect withTransform:(CGAffineTransform *)matrix;
+-(void)addEllipseInRect:(CGRect)rect withTransform:(const CGAffineTransform *)matrix;
 
--(void)addPath:(KGPath *)path withTransform:(CGAffineTransform *)matrix;
+-(void)addPath:(KGPath *)path withTransform:(const CGAffineTransform *)matrix;
 
 -(void)applyTransform:(CGAffineTransform)matrix;
 
