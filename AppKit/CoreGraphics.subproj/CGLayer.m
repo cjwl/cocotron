@@ -8,3 +8,24 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <ApplicationServices/CGLayer.h>
 #import "KGLayer.h"
+
+CGLayerRef CGLayerRetain(CGLayerRef self) {
+   return [self retain];
+}
+
+void CGLayerRelease(CGLayerRef self) {
+   [self release];
+}
+
+CGLayerRef CGLayerCreateWithContext(CGContextRef context,CGSize size,id unused) {
+   return [[KGLayer alloc] initRelativeToContext:context size:size unused:unused];
+}
+
+CGSize CGLayerGetSize(CGLayerRef self) {
+   return [self size];
+}
+
+CGContextRef CGLayerGetContext(CGLayerRef self) {
+   return [self context];
+}
+

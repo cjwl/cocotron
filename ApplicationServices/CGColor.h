@@ -8,13 +8,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/NSObject.h>
 #import <ApplicationServices/CoreGraphicsExport.h>
-#import "CGGeometry.h"
-#import "CGColorSpace.h"
-#import "CGPattern.h"
 
 @class KGColor;
 
 typedef KGColor *CGColorRef;
+
+#import "CGGeometry.h"
+#import "CGColorSpace.h"
+#import "CGPattern.h"
+
 
 COREGRAPHICS_EXPORT CGColorRef CGColorRetain(CGColorRef self);
 COREGRAPHICS_EXPORT void       CGColorRelease(CGColorRef self);

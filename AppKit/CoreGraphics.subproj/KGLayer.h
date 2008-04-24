@@ -16,9 +16,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    NSDictionary *_unused;
 }
 
--initWithSize:(CGSize)size unused:(NSDictionary *)unused;
+-initRelativeToContext:(KGContext *)context size:(CGSize)size unused:(NSDictionary *)unused;
 
--(KGContext *)cgContext;
 -(CGSize)size;
+-(KGContext *)context;
 
 @end

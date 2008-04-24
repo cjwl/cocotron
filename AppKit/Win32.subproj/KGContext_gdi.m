@@ -1020,7 +1020,7 @@ static void zeroBytes(void *bytes,int size){
 }
 
 -(void)drawLayer:(KGLayer *)layer inRect:(NSRect)rect {
-   KGContext *context=[layer cgContext];
+   KGContext *context=[layer context];
    
    if(![context isKindOfClass:[KGContext_gdi class]]){
     NSLog(@"layer class is not right %@!=%@",[context class],[self class]);

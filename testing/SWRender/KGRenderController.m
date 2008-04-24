@@ -8,8 +8,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import "KGRenderController.h"
 #import "KGImageView.h"
-#import "KGRender_cg.h"
-#import "KGRender_baseline.h"
 
 @implementation KGRenderController
 

@@ -10,6 +10,8 @@
 		8DC2EF530486A6940098B216 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C1666FE841158C02AAC07 /* InfoPlist.strings */; };
 		FE21313A0DBFC72700CEDC65 /* dllmain.m in Sources */ = {isa = PBXBuildFile; fileRef = FE2131390DBFC72700CEDC65 /* dllmain.m */; };
 		FE2131420DBFC74200CEDC65 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0867D69BFE84028FC02AAC07 /* Foundation.framework */; };
+		FE2132900DBFD21900CEDC65 /* CoreDataExports.h in Headers */ = {isa = PBXBuildFile; fileRef = FE21328F0DBFD21900CEDC65 /* CoreDataExports.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE2132920DBFD22000CEDC65 /* CoreData.h in Headers */ = {isa = PBXBuildFile; fileRef = FE2132910DBFD22000CEDC65 /* CoreData.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE82F3D40BF1042F00B18B54 /* NSAttributeDescription.h in Headers */ = {isa = PBXBuildFile; fileRef = FE82F3BE0BF1042F00B18B54 /* NSAttributeDescription.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE82F3D50BF1042F00B18B54 /* NSAttributeDescription.m in Sources */ = {isa = PBXBuildFile; fileRef = FE82F3BF0BF1042F00B18B54 /* NSAttributeDescription.m */; };
 		FE82F3D60BF1042F00B18B54 /* NSEntityDescription.h in Headers */ = {isa = PBXBuildFile; fileRef = FE82F3C00BF1042F00B18B54 /* NSEntityDescription.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -89,6 +91,8 @@
 		8DC2EF5A0486A6940098B216 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		8DC2EF5B0486A6940098B216 /* CoreData.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CoreData.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FE2131390DBFC72700CEDC65 /* dllmain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = dllmain.m; sourceTree = "<group>"; };
+		FE21328F0DBFD21900CEDC65 /* CoreDataExports.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreDataExports.h; sourceTree = "<group>"; };
+		FE2132910DBFD22000CEDC65 /* CoreData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreData.h; sourceTree = "<group>"; };
 		FE59F2FF0D54301C00D54A25 /* Foundation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Foundation.xcodeproj; path = ../Foundation/Foundation.xcodeproj; sourceTree = SOURCE_ROOT; };
 		FE82F3BE0BF1042F00B18B54 /* NSAttributeDescription.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSAttributeDescription.h; sourceTree = "<group>"; };
 		FE82F3BF0BF1042F00B18B54 /* NSAttributeDescription.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSAttributeDescription.m; sourceTree = "<group>"; };
@@ -137,6 +141,8 @@
 		0867D691FE84028FC02AAC07 /* CoreData */ = {
 			isa = PBXGroup;
 			children = (
+				FE2132910DBFD22000CEDC65 /* CoreData.h */,
+				FE21328F0DBFD21900CEDC65 /* CoreDataExports.h */,
 				FE59F2FF0D54301C00D54A25 /* Foundation.xcodeproj */,
 				FE82F3BE0BF1042F00B18B54 /* NSAttributeDescription.h */,
 				FE82F3BF0BF1042F00B18B54 /* NSAttributeDescription.m */,
@@ -247,6 +253,8 @@
 				FE82F3E40BF1042F00B18B54 /* NSPersistentStoreCoordinator.h in Headers */,
 				FE82F3E60BF1042F00B18B54 /* NSPropertyDescription.h in Headers */,
 				FE82F3E80BF1042F00B18B54 /* NSRelationshipDescription.h in Headers */,
+				FE2132900DBFD21900CEDC65 /* CoreDataExports.h in Headers */,
+				FE2132920DBFD22000CEDC65 /* CoreData.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -290,6 +298,7 @@
 					ProjectRef = FE59F2FF0D54301C00D54A25 /* Foundation.xcodeproj */;
 				},
 			);
+			projectRoot = "";
 			targets = (
 				8DC2EF4F0486A6940098B216 /* CoreData-Windows-i386 */,
 			);
@@ -423,9 +432,9 @@
 				FRAMEWORK_SEARCH_PATHS = /Developer/Cocotron/1.0/Windows/i386/Frameworks;
 				GCC_ENABLE_CPP_EXCEPTIONS = NO;
 				GCC_ENABLE_CPP_RTTI = NO;
-				GCC_ENABLE_OBJC_EXCEPTIONS = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_OPTIMIZATION_LEVEL = s;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_UNROLL_LOOPS = YES;
 				INFOPLIST_FILE = Info.plist;

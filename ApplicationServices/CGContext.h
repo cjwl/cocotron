@@ -8,6 +8,11 @@ THE SOFTWARE IS PROVIDED "AS IS",WITHOUT WARRANTY OF ANY KIND,EXPRESS OR IMPLIED
 
 #import <Foundation/NSObject.h>
 #import <ApplicationServices/CoreGraphicsExport.h>
+
+@class KGContext;
+
+typedef KGContext *CGContextRef;
+
 #import <ApplicationServices/CGGeometry.h>
 #import <ApplicationServices/CGAffineTransform.h>
 #import <ApplicationServices/CGFont.h>
@@ -88,9 +93,6 @@ typedef enum {
 
 typedef int CGTextDrawingMode;
 
-@class KGContext;
-
-typedef KGContext *CGContextRef;
 
 COREGRAPHICS_EXPORT CGContextRef CGContextRetain(CGContextRef context);
 COREGRAPHICS_EXPORT void         CGContextRelease(CGContextRef context);

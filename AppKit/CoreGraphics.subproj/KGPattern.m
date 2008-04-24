@@ -1,4 +1,4 @@
-/* Copyright (c) 2006-2007 Christopher J. W. Lloyd
+/* Copyright (c) 2008 Christopher J. W. Lloyd
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
@@ -9,5 +9,17 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "KGPattern.h"
 
 @implementation KGPattern
+
+-initWithInfo:(void *)info bounds:(CGRect)bounds matrix:(CGAffineTransform)matrix xstep:(CGFloat)xstep ystep:(CGFloat)ystep tiling:(CGPatternTiling)tiling isColored:(BOOL)isColored callbacks:(const CGPatternCallbacks *)callbacks {
+   _info=info;
+   _bounds=bounds;
+   _matrix=matrix;
+   _xstep=xstep;
+   _ystep=ystep;
+   _tiling=tiling;
+   _isColored=isColored;
+   _callbacks=*callbacks;
+   return self;
+}
 
 @end

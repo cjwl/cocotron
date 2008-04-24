@@ -1,5 +1,7 @@
 #import <Foundation/NSObject.h>
 
+@class NSEntityDescription,NSArray,NSDictionary;
+
 @interface NSPropertyDescription : NSObject <NSCoding,NSCopying> {
 }
 

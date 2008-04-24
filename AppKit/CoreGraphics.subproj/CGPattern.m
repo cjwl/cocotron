@@ -8,3 +8,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <ApplicationServices/CGPattern.h>
 #import "KGPattern.h"
+
+CGPatternRef CGPatternRetain(CGPatternRef self) {
+   return [self retain];
+}
+
+void CGPatternRelease(CGPatternRef self) {
+   [self release];
+}
+
+CGPatternRef CGPatternCreate(void *info,CGRect bounds,CGAffineTransform matrix,CGFloat xstep,CGFloat ystep,CGPatternTiling tiling,BOOL isColored,const CGPatternCallbacks *callbacks) {
+   return [[KGPattern alloc] initWithInfo:info bounds:bounds matrix:matrix xstep:xstep ystep:ystep tiling:tiling isColored:isColored callbacks:callbacks];
+}
+

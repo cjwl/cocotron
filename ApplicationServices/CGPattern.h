@@ -7,6 +7,21 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
 #import <Foundation/NSObject.h>
+#import "CoreGraphicsExport.h"
+
+@class KGPattern;
+
+typedef KGPattern *CGPatternRef;
+
+#import "CGGeometry.h"
+#import "CGContext.h"
+
+
+typedef struct {
+   unsigned int version;
+   void       (*drawPattern)(void *,CGContextRef);
+   void       (*releaseInfo)(void *);
+} CGPatternCallbacks;
 
 typedef enum  {
    kCGPatternTilingNoDistortion,
@@ -14,6 +29,7 @@ typedef enum  {
    kCGPatternTilingConstantSpacing,
 } CGPatternTiling;
 
-@class KGPattern;
+COREGRAPHICS_EXPORT CGPatternRef CGPatternRetain(CGPatternRef self);
+COREGRAPHICS_EXPORT void         CGPatternRelease(CGPatternRef self);
 
-typedef KGPattern *CGPatternRef;
+COREGRAPHICS_EXPORT CGPatternRef CGPatternCreate(void *info,CGRect bounds,CGAffineTransform matrix,CGFloat xstep,CGFloat ystep,CGPatternTiling tiling,BOOL isColored,const CGPatternCallbacks *callbacks);
