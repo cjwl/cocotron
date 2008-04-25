@@ -280,7 +280,7 @@
 		FE01A92D0C5D9BCB00AEA51A /* KGLayer.h in Headers */ = {isa = PBXBuildFile; fileRef = FE064AC10B8B805000853FBB /* KGLayer.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE01A92E0C5D9BCB00AEA51A /* KGPath.h in Headers */ = {isa = PBXBuildFile; fileRef = FE064AC30B8B805000853FBB /* KGPath.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE01A92F0C5D9BCB00AEA51A /* KGPattern.h in Headers */ = {isa = PBXBuildFile; fileRef = FE064AC50B8B805000853FBB /* KGPattern.h */; };
-		FE01A9300C5D9BCB00AEA51A /* KGImageSource_JPEG.h in Headers */ = {isa = PBXBuildFile; fileRef = FE267E830B8BCC3C0000DDC0 /* KGImageSource_JPEG.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE01A9300C5D9BCB00AEA51A /* KGImageSource_JPEG.m in Headers */ = {isa = PBXBuildFile; fileRef = FE267E830B8BCC3C0000DDC0 /* KGImageSource_JPEG.m */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE01A9310C5D9BCB00AEA51A /* KGImageSource_PNG.h in Headers */ = {isa = PBXBuildFile; fileRef = FE267E850B8BCC3C0000DDC0 /* KGImageSource_PNG.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE01A9320C5D9BCB00AEA51A /* KGImageSource_TIFF.h in Headers */ = {isa = PBXBuildFile; fileRef = FE267E870B8BCC3C0000DDC0 /* KGImageSource_TIFF.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE01A9330C5D9BCB00AEA51A /* KGImageSource.h in Headers */ = {isa = PBXBuildFile; fileRef = FE267E890B8BCC3C0000DDC0 /* KGImageSource.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -672,6 +672,7 @@
 		FE33955A0DB930F4009AB3E0 /* KGContext_builtin.m in Sources */ = {isa = PBXBuildFile; fileRef = FE3395580DB930F4009AB3E0 /* KGContext_builtin.m */; };
 		FE34FBC80D6F24A5008D2C1A /* KGClipPhase.h in Headers */ = {isa = PBXBuildFile; fileRef = FE34FBC60D6F24A5008D2C1A /* KGClipPhase.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE34FBC90D6F24A5008D2C1A /* KGClipPhase.m in Sources */ = {isa = PBXBuildFile; fileRef = FE34FBC70D6F24A5008D2C1A /* KGClipPhase.m */; };
+		FE45EDCC0DC2407E00F49290 /* CGImageSource.m in Sources */ = {isa = PBXBuildFile; fileRef = FE45EDCB0DC2407E00F49290 /* CGImageSource.m */; };
 		FE572D8F0CA0809500FB3E79 /* KGImageSource_BMP.h in Headers */ = {isa = PBXBuildFile; fileRef = FE572D8B0CA0809500FB3E79 /* KGImageSource_BMP.h */; };
 		FE572D900CA0809500FB3E79 /* KGImageSource_BMP.m in Sources */ = {isa = PBXBuildFile; fileRef = FE572D8C0CA0809500FB3E79 /* KGImageSource_BMP.m */; };
 		FE5C69A10D76039F00098551 /* KGDeviceContext_gdiDIBSection.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5C699F0D76039F00098551 /* KGDeviceContext_gdiDIBSection.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -781,10 +782,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		6E14EC6509A3C40F009C8693 /* NSTIFFImageFileDirectory.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSTIFFImageFileDirectory.h; sourceTree = "<group>"; };
-		6E14EC6609A3C40F009C8693 /* NSTIFFImageFileDirectory.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSTIFFImageFileDirectory.m; sourceTree = "<group>"; };
-		6E14EC6709A3C40F009C8693 /* NSTIFFReader.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSTIFFReader.h; sourceTree = "<group>"; };
-		6E14EC6809A3C40F009C8693 /* NSTIFFReader.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSTIFFReader.m; sourceTree = "<group>"; };
+		6E14EC6509A3C40F009C8693 /* NSTIFFImageFileDirectory.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = NSTIFFImageFileDirectory.h; path = CoreGraphics.subproj/NSTIFFImageFileDirectory.h; sourceTree = "<group>"; };
+		6E14EC6609A3C40F009C8693 /* NSTIFFImageFileDirectory.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = NSTIFFImageFileDirectory.m; path = CoreGraphics.subproj/NSTIFFImageFileDirectory.m; sourceTree = "<group>"; };
+		6E14EC6709A3C40F009C8693 /* NSTIFFReader.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = NSTIFFReader.h; path = CoreGraphics.subproj/NSTIFFReader.h; sourceTree = "<group>"; };
+		6E14EC6809A3C40F009C8693 /* NSTIFFReader.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = NSTIFFReader.m; path = CoreGraphics.subproj/NSTIFFReader.m; sourceTree = "<group>"; };
 		6E2B53250976075200DA0954 /* NSActionCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NSActionCell.m; sourceTree = "<group>"; };
 		6E2B53290976075200DA0954 /* NSAlertPanel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NSAlertPanel.m; sourceTree = "<group>"; };
 		6E2B532B0976075200DA0954 /* NSApplication.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NSApplication.m; sourceTree = "<group>"; };
@@ -1262,14 +1263,14 @@
 		FE1CEA6C0C8F12F800184630 /* opengl_dll.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = opengl_dll.m; sourceTree = "<group>"; };
 		FE1E86BF0BBCA62D0013B968 /* NSGraphicsStyle.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSGraphicsStyle.h; sourceTree = "<group>"; };
 		FE1E86C00BBCA62D0013B968 /* NSGraphicsStyle.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSGraphicsStyle.m; sourceTree = "<group>"; };
-		FE267E830B8BCC3C0000DDC0 /* KGImageSource_JPEG.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = KGImageSource_JPEG.h; sourceTree = "<group>"; };
-		FE267E840B8BCC3C0000DDC0 /* KGImageSource_JPEG.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = KGImageSource_JPEG.m; sourceTree = "<group>"; };
-		FE267E850B8BCC3C0000DDC0 /* KGImageSource_PNG.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = KGImageSource_PNG.h; sourceTree = "<group>"; };
-		FE267E860B8BCC3C0000DDC0 /* KGImageSource_PNG.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = KGImageSource_PNG.m; sourceTree = "<group>"; };
-		FE267E870B8BCC3C0000DDC0 /* KGImageSource_TIFF.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = KGImageSource_TIFF.h; sourceTree = "<group>"; };
-		FE267E880B8BCC3C0000DDC0 /* KGImageSource_TIFF.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = KGImageSource_TIFF.m; sourceTree = "<group>"; };
-		FE267E890B8BCC3C0000DDC0 /* KGImageSource.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = KGImageSource.h; sourceTree = "<group>"; };
-		FE267E8A0B8BCC3C0000DDC0 /* KGImageSource.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = KGImageSource.m; sourceTree = "<group>"; };
+		FE267E830B8BCC3C0000DDC0 /* KGImageSource_JPEG.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = KGImageSource_JPEG.m; path = CoreGraphics.subproj/KGImageSource_JPEG.m; sourceTree = "<group>"; };
+		FE267E840B8BCC3C0000DDC0 /* KGImageSource_JPEG.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = KGImageSource_JPEG.m; path = CoreGraphics.subproj/KGImageSource_JPEG.m; sourceTree = "<group>"; };
+		FE267E850B8BCC3C0000DDC0 /* KGImageSource_PNG.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = KGImageSource_PNG.h; path = CoreGraphics.subproj/KGImageSource_PNG.h; sourceTree = "<group>"; };
+		FE267E860B8BCC3C0000DDC0 /* KGImageSource_PNG.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = KGImageSource_PNG.m; path = CoreGraphics.subproj/KGImageSource_PNG.m; sourceTree = "<group>"; };
+		FE267E870B8BCC3C0000DDC0 /* KGImageSource_TIFF.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = KGImageSource_TIFF.h; path = CoreGraphics.subproj/KGImageSource_TIFF.h; sourceTree = "<group>"; };
+		FE267E880B8BCC3C0000DDC0 /* KGImageSource_TIFF.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = KGImageSource_TIFF.m; path = CoreGraphics.subproj/KGImageSource_TIFF.m; sourceTree = "<group>"; };
+		FE267E890B8BCC3C0000DDC0 /* KGImageSource.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = KGImageSource.h; path = CoreGraphics.subproj/KGImageSource.h; sourceTree = "<group>"; };
+		FE267E8A0B8BCC3C0000DDC0 /* KGImageSource.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = KGImageSource.m; path = CoreGraphics.subproj/KGImageSource.m; sourceTree = "<group>"; };
 		FE267EB40B8BD2690000DDC0 /* CGBitmapContext.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = CGBitmapContext.m; sourceTree = "<group>"; };
 		FE267EB50B8BD2690000DDC0 /* KGBitmapContext.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = KGBitmapContext.h; sourceTree = "<group>"; };
 		FE267EB60B8BD2690000DDC0 /* KGBitmapContext.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = KGBitmapContext.m; sourceTree = "<group>"; };
@@ -1339,12 +1340,13 @@
 		FE352F690BF3998E00223FAF /* NSArrayControllerSelectionProxy.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSArrayControllerSelectionProxy.m; sourceTree = "<group>"; };
 		FE4434020BB9833B00411464 /* NSGraphicsStyle_uxtheme.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSGraphicsStyle_uxtheme.h; sourceTree = "<group>"; };
 		FE4434030BB9833B00411464 /* NSGraphicsStyle_uxtheme.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSGraphicsStyle_uxtheme.m; sourceTree = "<group>"; };
+		FE45EDCB0DC2407E00F49290 /* CGImageSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CGImageSource.m; sourceTree = "<group>"; };
 		FE4BDC090BCD40C600E19685 /* NSFontDescriptor.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSFontDescriptor.h; sourceTree = "<group>"; };
 		FE4BDC0A0BCD40C600E19685 /* NSFontDescriptor.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSFontDescriptor.m; sourceTree = "<group>"; };
 		FE56BA020B1221330046B7D9 /* NSMutableAttributedString.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSMutableAttributedString.h; sourceTree = "<group>"; };
 		FE56BA030B1221330046B7D9 /* NSMutableAttributedString.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSMutableAttributedString.m; sourceTree = "<group>"; };
-		FE572D8B0CA0809500FB3E79 /* KGImageSource_BMP.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = KGImageSource_BMP.h; sourceTree = "<group>"; };
-		FE572D8C0CA0809500FB3E79 /* KGImageSource_BMP.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = KGImageSource_BMP.m; sourceTree = "<group>"; };
+		FE572D8B0CA0809500FB3E79 /* KGImageSource_BMP.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = KGImageSource_BMP.h; path = CoreGraphics.subproj/KGImageSource_BMP.h; sourceTree = "<group>"; };
+		FE572D8C0CA0809500FB3E79 /* KGImageSource_BMP.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = KGImageSource_BMP.m; path = CoreGraphics.subproj/KGImageSource_BMP.m; sourceTree = "<group>"; };
 		FE57F8D00C46B68C0078FFC1 /* KGDeviceContext_gdi.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = KGDeviceContext_gdi.h; sourceTree = "<group>"; };
 		FE57F8D10C46B68C0078FFC1 /* KGDeviceContext_gdi.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = KGDeviceContext_gdi.m; sourceTree = "<group>"; };
 		FE57FAB50C47F2010078FFC1 /* NSPrintPanel.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSPrintPanel.h; sourceTree = "<group>"; };
@@ -1970,6 +1972,7 @@
 		6E2B55B20976075300DA0954 /* CoreGraphics */ = {
 			isa = PBXGroup;
 			children = (
+				FE45EDCB0DC2407E00F49290 /* CGImageSource.m */,
 				FE3395570DB930F4009AB3E0 /* KGContext_builtin.h */,
 				FE3395580DB930F4009AB3E0 /* KGContext_builtin.m */,
 				FE33952C0DB92D25009AB3E0 /* KGBlending.h */,
@@ -2389,7 +2392,7 @@
 				FE572D8C0CA0809500FB3E79 /* KGImageSource_BMP.m */,
 				FE267E890B8BCC3C0000DDC0 /* KGImageSource.h */,
 				FE267E8A0B8BCC3C0000DDC0 /* KGImageSource.m */,
-				FE267E830B8BCC3C0000DDC0 /* KGImageSource_JPEG.h */,
+				FE267E830B8BCC3C0000DDC0 /* KGImageSource_JPEG.m */,
 				FE267E840B8BCC3C0000DDC0 /* KGImageSource_JPEG.m */,
 				FE267E850B8BCC3C0000DDC0 /* KGImageSource_PNG.h */,
 				FE267E860B8BCC3C0000DDC0 /* KGImageSource_PNG.m */,
@@ -2400,7 +2403,7 @@
 				6E14EC6709A3C40F009C8693 /* NSTIFFReader.h */,
 				6E14EC6809A3C40F009C8693 /* NSTIFFReader.m */,
 			);
-			path = ImageIO;
+			name = ImageIO;
 			sourceTree = "<group>";
 		};
 		FE2A10250B44A239006C03DE /* NSController */ = {
@@ -2793,7 +2796,7 @@
 				FE01A92D0C5D9BCB00AEA51A /* KGLayer.h in Headers */,
 				FE01A92E0C5D9BCB00AEA51A /* KGPath.h in Headers */,
 				FE01A92F0C5D9BCB00AEA51A /* KGPattern.h in Headers */,
-				FE01A9300C5D9BCB00AEA51A /* KGImageSource_JPEG.h in Headers */,
+				FE01A9300C5D9BCB00AEA51A /* KGImageSource_JPEG.m in Headers */,
 				FE01A9310C5D9BCB00AEA51A /* KGImageSource_PNG.h in Headers */,
 				FE01A9320C5D9BCB00AEA51A /* KGImageSource_TIFF.h in Headers */,
 				FE01A9330C5D9BCB00AEA51A /* KGImageSource.h in Headers */,
@@ -3345,6 +3348,7 @@
 				FE6EE2E20DB92B05005503A1 /* KGRasterizer.m in Sources */,
 				FE6EE2E60DB92B11005503A1 /* VGPath.m in Sources */,
 				FE33955A0DB930F4009AB3E0 /* KGContext_builtin.m in Sources */,
+				FE45EDCC0DC2407E00F49290 /* CGImageSource.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

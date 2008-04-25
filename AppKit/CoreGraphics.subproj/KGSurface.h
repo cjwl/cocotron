@@ -113,7 +113,7 @@ typedef struct VGColor {
 	VGColorInternalFormat	m_format;
 } VGColor;
 
-static inline VGColor VGColorFromKGRGBA(KGRGBA rgba,VGColorInternalFormat format){
+static inline VGColor VGColorFromKGRGBA_ffff(KGRGBAffff rgba,VGColorInternalFormat format){
    VGColor result;
    
    result.r=rgba.r;
@@ -125,8 +125,8 @@ static inline VGColor VGColorFromKGRGBA(KGRGBA rgba,VGColorInternalFormat format
    return result;
 }
 
-static inline KGRGBA KGRGBAFromColor(VGColor color){
-   KGRGBA result;
+static inline KGRGBAffff KGRGBAffffFromColor(VGColor color){
+   KGRGBAffff result;
    result.r=color.r;
    result.g=color.g;
    result.b=color.b;
@@ -207,22 +207,22 @@ static inline VGColor VGColorUnpremultiply(VGColor result){
 
 VGColor VGColorConvert(VGColor result,VGColorInternalFormat outputFormat);
 
-static inline void convertSpan(KGRGBA *span,int length,VGColorInternalFormat fromFormat,VGColorInternalFormat toFormat){
+static inline void convertSpan(KGRGBAffff *span,int length,VGColorInternalFormat fromFormat,VGColorInternalFormat toFormat){
    if(fromFormat!=toFormat){
     int i;
    
     for(i=0;i<length;i++)
-     span[i]=KGRGBAFromColor(VGColorConvert(VGColorFromKGRGBA(span[i],fromFormat),toFormat));
+     span[i]=KGRGBAffffFromColor(VGColorConvert(VGColorFromKGRGBA_ffff(span[i],fromFormat),toFormat));
    }
 }
 
 
 @class KGSurface;
 
-typedef void (*KGSurfaceWriteSpan_KGRGBA)(KGSurface *self,int x,int y,KGRGBA *span,int length);
+typedef void (*KGSurfaceWriteSpan_KGRGBA_ffff)(KGSurface *self,int x,int y,KGRGBAffff *span,int length);
 
 @interface KGSurface : KGImage {
-   KGSurfaceWriteSpan_KGRGBA _writeSpan;
+   KGSurfaceWriteSpan_KGRGBA_ffff _writeSpan;
    
 } 
 
@@ -235,18 +235,16 @@ void KGSurfaceDealloc(KGSurface *self);
 
 BOOL KGSurfaceIsValidFormat(int format);
 
-void KGSurfaceResize(KGSurface *self,int newWidth, int newHeight, VGColor newPixelColor);
-
 VGPixelDecode KGSurfaceParametersToPixelLayout(KGSurfaceFormat format,size_t *bitsPerPixel,VGColorInternalFormat *colorFormat);
 
 void KGSurfaceClear(KGSurface *self,VGColor clearColor, int x, int y, int w, int h);
 void KGSurfaceBlit(KGSurface *self,KGSurface * src, int sx, int sy, int dx, int dy, int w, int h, BOOL dither);
 void KGSurfaceMask(KGSurface *self,KGSurface* src, VGMaskOperation operation, int x, int y, int w, int h);
 VGColor inline KGSurfaceReadPixel(KGImage *self,int x, int y);
-VGColorInternalFormat KGSurfaceReadPremultipliedSpan_ffff(KGSurface *self,int x,int y,KGRGBA *span,int length);
+VGColorInternalFormat KGSurfaceReadPremultipliedSpan_ffff(KGSurface *self,int x,int y,KGRGBAffff *span,int length);
 
 void inline KGSurfaceWritePixel(KGSurface *self,int x, int y, VGColor c);
-void KGSurfaceWritePixelSpan(KGSurface *self,int x,int y,KGRGBA *span,int length,VGColorInternalFormat format);
+void KGSurfaceWritePixelSpan(KGSurface *self,int x,int y,KGRGBAffff *span,int length,VGColorInternalFormat format);
 
 void KGSurfaceWriteFilteredPixel(KGSurface *self,int x, int y, VGColor c, VGbitfield channelMask);
 
@@ -256,7 +254,7 @@ void KGSurfaceReadMaskPixelSpanIntoCoverage(KGSurface *self,int x,int y,RIfloat 
 void KGSurfaceWriteMaskPixel(KGSurface *self,int x, int y, RIfloat m);	//can write only to VG_A_8
 
 
-void KGSurfacePatternSpan(KGSurface *self,RIfloat x, RIfloat y, KGRGBA *span,int length,int colorFormat, Matrix3x3 surfaceToImage, CGPatternTiling distortion);
+void KGSurfacePatternSpan(KGSurface *self,RIfloat x, RIfloat y, KGRGBAffff *span,int length,int colorFormat, Matrix3x3 surfaceToImage, CGPatternTiling distortion);
 
 void KGSurfaceMakeMipMaps(KGImage *self);
 

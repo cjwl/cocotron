@@ -4,6 +4,7 @@
 #import "KGColor.h"
 #import "KGColorSpace.h"
 #import "KGImage.h"
+#import "KGImageSource.h"
 #import "KGDataProvider.h"
 
 #define CGContextRef KGContext *
@@ -13,6 +14,7 @@
 #define CGMutablePathRef KGMutablePath *
 #define CGDataProviderRef KGDataProvider *
 #define CGImageRef KGImage *
+#define CGImageSourceRef KGImageSource *
 
 #define CGContextRetain(context) \
     [context retain]
@@ -394,6 +396,12 @@
 #define CGColorSpaceCreateDeviceRGB() \
     [[KGColorSpace alloc] initWithGenericRGB]
 
+#define CGColorSpaceCreateDeviceGray() \
+    [[KGColorSpace alloc] initWithGenericGray]
+
+#define CGColorSpaceCreateDeviceCMYK() \
+    [[KGColorSpace alloc] initWithGenericCMYK]
+
 // CGImage
 
 #define  CGImageRetain(image) \
@@ -495,3 +503,13 @@
 
 #define CGDataProviderCreateWithData(info,data,size, releaseCallback) \
    [[KGDataProvider alloc] initWithBytes:data length:size]
+   
+// image source
+
+#define CGImageSourceCreateWithData(data,opts) \
+   [KGImageSource newImageSourceWithData:data options:opts]
+
+#define CGImageSourceCreateImageAtIndex(self,index,opts) \
+   [self imageAtIndex:index options:opts]
+
+

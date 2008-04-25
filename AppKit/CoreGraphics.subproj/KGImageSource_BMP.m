@@ -11,9 +11,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "KGImageSource_BMP.h"
 #import <Foundation/NSString.h>
 #import <Foundation/NSData.h>
-#import <ApplicationServices/CGDataProvider.h>
-#import <ApplicationServices/CGColorSpace.h>
-#import <ApplicationServices/CGImage.h>
+#import "KGDataProvider.h"
+#import "KGColorSpace.h"
+#import "KGImage.h"
 #import <assert.h>
 
 typedef unsigned char uint8;
@@ -436,13 +436,13 @@ stbi_uc *stbi_bmp_load_from_memory (const stbi_uc *buffer, int len, int *x, int 
    
    bitmap=[[NSData alloc] initWithBytesNoCopy:pixels length:bytesPerRow*height];
 
-   CGDataProviderRef provider=CGDataProviderCreateWithCFData(bitmap);
-   CGColorSpaceRef   colorSpace=CGColorSpaceCreateDeviceRGB();
-   CGImageRef        image=CGImageCreate(width,height,8,bitsPerPixel,bytesPerRow,
-      colorSpace,0/*kCGImageAlphaLast|kCGBitmapByteOrder32Little*/,provider,NULL,NO,kCGRenderingIntentDefault);
+   KGDataProvider *provider=[[KGDataProvider alloc] initWithData:bitmap];
+   KGColorSpace   *colorSpace=[[KGColorSpace alloc] initWithGenericRGB];
+   KGImage        *image=[[KGImage alloc] initWithWidth:width height:height bitsPerComponent:8 bitsPerPixel:bitsPerPixel bytesPerRow:bytesPerRow
+      colorSpace:colorSpace bitmapInfo:0/*kCGImageAlphaLast|kCGBitmapByteOrder32Little*/ provider:provider decode:NULL interpolate:NO renderingIntent:kCGRenderingIntentDefault];
       
-   CGColorSpaceRelease(colorSpace);
-   CGDataProviderRelease(provider);
+   [colorSpace release];
+   [provider release];
    [bitmap release];
    
    return image;

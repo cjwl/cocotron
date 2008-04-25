@@ -11,10 +11,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "KGImageSource_PNG.h"
 #import <Foundation/NSString.h>
 #import <Foundation/NSData.h>
-#import <AppKit/KGzlib.h>
-#import <ApplicationServices/CGDataProvider.h>
-#import <ApplicationServices/CGColorSpace.h>
-#import <ApplicationServices/CGImage.h>
+#import "KGzlib.h"
+#import "KGDataProvider.h"
+#import "KGColorSpace.h"
+#import "KGImage.h"
 
 #import <assert.h>
 
@@ -353,7 +353,7 @@ static int parse_png_file(int scan, int req_comp)
             if (c.length != 13) return e("bad IHDR len","Corrupt PNG");
             img_x = get32(); if (img_x > (1 << 24)) return e("too large","Very large image (corrupt?)");
             img_y = get32(); if (img_y > (1 << 24)) return e("too large","Very large image (corrupt?)");
-            NSLog(@"img_x=%d,img_y=%d",img_x,img_y);
+
             depth = get8();  if (depth != 8)        return e("8bit only","PNG not supported: 8-bit only");
             color = get8();  if (color > 6)         return e("bad ctype","Corrupt PNG");
             if (color == 3) pal_img_n = 3; else if (color & 1) return e("bad ctype","Corrupt PNG");
@@ -545,13 +545,13 @@ unsigned char *stbi_png_load_from_memory(const unsigned char *buffer, int len, i
    
    bitmap=[[NSData alloc] initWithBytesNoCopy:pixels length:bytesPerRow*height];
 
-   CGDataProviderRef provider=CGDataProviderCreateWithCFData(bitmap);
-   CGColorSpaceRef   colorSpace=CGColorSpaceCreateDeviceRGB();
-   CGImageRef        image=CGImageCreate(width,height,8,bitsPerPixel,bytesPerRow,
-      colorSpace,0/*kCGImageAlphaLast|kCGBitmapByteOrder32Little*/,provider,NULL,NO,kCGRenderingIntentDefault);
+   KGDataProvider *provider=[[KGDataProvider alloc] initWithData:bitmap];
+   KGColorSpace *colorSpace=[[KGColorSpace alloc] initWithGenericRGB];
+   KGImage *image=[[KGImage alloc] initWithWidth:width height:height bitsPerComponent:8 bitsPerPixel:bitsPerPixel bytesPerRow:bytesPerRow
+      colorSpace:colorSpace bitmapInfo:0/*kCGImageAlphaLast|kCGBitmapByteOrder32Little*/ provider:provider decode:NULL interpolate:NO renderingIntent:kCGRenderingIntentDefault];
       
-   CGColorSpaceRelease(colorSpace);
-   CGDataProviderRelease(provider);
+   [colorSpace release];
+   [provider release];
    [bitmap release];
    
    return image;

@@ -1,4 +1,5 @@
 #import <Foundation/NSException.h>
+#import <Foundation/NSString.h>
 
 static inline void _KGInvalidAbstractInvocation(SEL selector,id object,const char *file,int line) {
    [NSException raise:NSInvalidArgumentException

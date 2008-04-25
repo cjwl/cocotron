@@ -17,6 +17,14 @@
 		FE14EC960DBDA5420070928C /* DemoContext.m in Sources */ = {isa = PBXBuildFile; fileRef = FE14EC950DBDA5420070928C /* DemoContext.m */; };
 		FE1F93630D7EF19900969491 /* KGImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = FE1F93620D7EF19900969491 /* KGImageView.m */; };
 		FE1F937A0D7EF1F800969491 /* KGRenderController.m in Sources */ = {isa = PBXBuildFile; fileRef = FE1F93790D7EF1F800969491 /* KGRenderController.m */; };
+		FE45ED3D0DC2374E00F49290 /* KGImageSource.m in Sources */ = {isa = PBXBuildFile; fileRef = FE45ED340DC2374E00F49290 /* KGImageSource.m */; };
+		FE45ED3E0DC2374E00F49290 /* KGImageSource_BMP.m in Sources */ = {isa = PBXBuildFile; fileRef = FE45ED360DC2374E00F49290 /* KGImageSource_BMP.m */; };
+		FE45ED3F0DC2374E00F49290 /* KGImageSource_JPEG.m in Sources */ = {isa = PBXBuildFile; fileRef = FE45ED380DC2374E00F49290 /* KGImageSource_JPEG.m */; };
+		FE45ED400DC2374E00F49290 /* KGImageSource_PNG.m in Sources */ = {isa = PBXBuildFile; fileRef = FE45ED3A0DC2374E00F49290 /* KGImageSource_PNG.m */; };
+		FE45ED410DC2374E00F49290 /* KGImageSource_TIFF.m in Sources */ = {isa = PBXBuildFile; fileRef = FE45ED3C0DC2374E00F49290 /* KGImageSource_TIFF.m */; };
+		FE45ED460DC2376700F49290 /* NSTIFFImageFileDirectory.m in Sources */ = {isa = PBXBuildFile; fileRef = FE45ED430DC2376700F49290 /* NSTIFFImageFileDirectory.m */; };
+		FE45ED470DC2376700F49290 /* NSTIFFReader.m in Sources */ = {isa = PBXBuildFile; fileRef = FE45ED450DC2376700F49290 /* NSTIFFReader.m */; };
+		FE45EE650DC254C700F49290 /* overlay.jpg in Resources */ = {isa = PBXBuildFile; fileRef = FE45EE640DC254C700F49290 /* overlay.jpg */; };
 		FE6EDCE60DB78E7C005503A1 /* KGBitmapContext.m in Sources */ = {isa = PBXBuildFile; fileRef = FE6EDCCB0DB78E7C005503A1 /* KGBitmapContext.m */; };
 		FE6EDCE70DB78E7C005503A1 /* KGClipPhase.m in Sources */ = {isa = PBXBuildFile; fileRef = FE6EDCCD0DB78E7C005503A1 /* KGClipPhase.m */; };
 		FE6EDCE80DB78E7C005503A1 /* KGColor.m in Sources */ = {isa = PBXBuildFile; fileRef = FE6EDCCF0DB78E7C005503A1 /* KGColor.m */; };
@@ -100,6 +108,21 @@
 		FE1F93790D7EF1F800969491 /* KGRenderController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGRenderController.m; sourceTree = "<group>"; };
 		FE3396000DBA8CF7009AB3E0 /* CoreGraphics_KG.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreGraphics_KG.h; sourceTree = "<group>"; };
 		FE33964B0DBAE733009AB3E0 /* DemosTemplate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DemosTemplate.m; sourceTree = "<group>"; };
+		FE45ED330DC2374E00F49290 /* KGImageSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KGImageSource.h; path = ../../AppKit/CoreGraphics.subproj/KGImageSource.h; sourceTree = SOURCE_ROOT; };
+		FE45ED340DC2374E00F49290 /* KGImageSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KGImageSource.m; path = ../../AppKit/CoreGraphics.subproj/KGImageSource.m; sourceTree = SOURCE_ROOT; };
+		FE45ED350DC2374E00F49290 /* KGImageSource_BMP.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KGImageSource_BMP.h; path = ../../AppKit/CoreGraphics.subproj/KGImageSource_BMP.h; sourceTree = SOURCE_ROOT; };
+		FE45ED360DC2374E00F49290 /* KGImageSource_BMP.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KGImageSource_BMP.m; path = ../../AppKit/CoreGraphics.subproj/KGImageSource_BMP.m; sourceTree = SOURCE_ROOT; };
+		FE45ED370DC2374E00F49290 /* KGImageSource_JPEG.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KGImageSource_JPEG.h; path = ../../AppKit/CoreGraphics.subproj/KGImageSource_JPEG.h; sourceTree = SOURCE_ROOT; };
+		FE45ED380DC2374E00F49290 /* KGImageSource_JPEG.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KGImageSource_JPEG.m; path = ../../AppKit/CoreGraphics.subproj/KGImageSource_JPEG.m; sourceTree = SOURCE_ROOT; };
+		FE45ED390DC2374E00F49290 /* KGImageSource_PNG.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KGImageSource_PNG.h; path = ../../AppKit/CoreGraphics.subproj/KGImageSource_PNG.h; sourceTree = SOURCE_ROOT; };
+		FE45ED3A0DC2374E00F49290 /* KGImageSource_PNG.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KGImageSource_PNG.m; path = ../../AppKit/CoreGraphics.subproj/KGImageSource_PNG.m; sourceTree = SOURCE_ROOT; };
+		FE45ED3B0DC2374E00F49290 /* KGImageSource_TIFF.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KGImageSource_TIFF.h; path = ../../AppKit/CoreGraphics.subproj/KGImageSource_TIFF.h; sourceTree = SOURCE_ROOT; };
+		FE45ED3C0DC2374E00F49290 /* KGImageSource_TIFF.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KGImageSource_TIFF.m; path = ../../AppKit/CoreGraphics.subproj/KGImageSource_TIFF.m; sourceTree = SOURCE_ROOT; };
+		FE45ED420DC2376700F49290 /* NSTIFFImageFileDirectory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NSTIFFImageFileDirectory.h; path = ../../AppKit/CoreGraphics.subproj/NSTIFFImageFileDirectory.h; sourceTree = SOURCE_ROOT; };
+		FE45ED430DC2376700F49290 /* NSTIFFImageFileDirectory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NSTIFFImageFileDirectory.m; path = ../../AppKit/CoreGraphics.subproj/NSTIFFImageFileDirectory.m; sourceTree = SOURCE_ROOT; };
+		FE45ED440DC2376700F49290 /* NSTIFFReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NSTIFFReader.h; path = ../../AppKit/CoreGraphics.subproj/NSTIFFReader.h; sourceTree = SOURCE_ROOT; };
+		FE45ED450DC2376700F49290 /* NSTIFFReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NSTIFFReader.m; path = ../../AppKit/CoreGraphics.subproj/NSTIFFReader.m; sourceTree = SOURCE_ROOT; };
+		FE45EE640DC254C700F49290 /* overlay.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = overlay.jpg; sourceTree = "<group>"; };
 		FE6EDCCA0DB78E7C005503A1 /* KGBitmapContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KGBitmapContext.h; path = ../../AppKit/CoreGraphics.subproj/KGBitmapContext.h; sourceTree = SOURCE_ROOT; };
 		FE6EDCCB0DB78E7C005503A1 /* KGBitmapContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KGBitmapContext.m; path = ../../AppKit/CoreGraphics.subproj/KGBitmapContext.m; sourceTree = SOURCE_ROOT; };
 		FE6EDCCC0DB78E7C005503A1 /* KGClipPhase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KGClipPhase.h; path = ../../AppKit/CoreGraphics.subproj/KGClipPhase.h; sourceTree = SOURCE_ROOT; };
@@ -235,6 +258,7 @@
 		29B97314FDCFA39411CA2CEA /* SWRender */ = {
 			isa = PBXGroup;
 			children = (
+				FE21384A0DC2303100CEDC65 /* ImageIO */,
 				FE14EC950DBDA5420070928C /* DemoContext.m */,
 				FE14EC480DBD9BF00070928C /* DemoContext.h */,
 				FE14EC490DBD9BF00070928C /* DemoCGContext.m */,
@@ -268,6 +292,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				FE45EE640DC254C700F49290 /* overlay.jpg */,
 				FE0997420D87095000033630 /* overlay.png */,
 				8D1107310486CEB800E47090 /* Info.plist */,
 				089C165CFE840E0CC02AAC07 /* InfoPlist.strings */,
@@ -283,6 +308,27 @@
 				1058C7A2FEA54F0111CA2CBB /* Other Frameworks */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		FE21384A0DC2303100CEDC65 /* ImageIO */ = {
+			isa = PBXGroup;
+			children = (
+				FE45ED420DC2376700F49290 /* NSTIFFImageFileDirectory.h */,
+				FE45ED430DC2376700F49290 /* NSTIFFImageFileDirectory.m */,
+				FE45ED440DC2376700F49290 /* NSTIFFReader.h */,
+				FE45ED450DC2376700F49290 /* NSTIFFReader.m */,
+				FE45ED330DC2374E00F49290 /* KGImageSource.h */,
+				FE45ED340DC2374E00F49290 /* KGImageSource.m */,
+				FE45ED350DC2374E00F49290 /* KGImageSource_BMP.h */,
+				FE45ED360DC2374E00F49290 /* KGImageSource_BMP.m */,
+				FE45ED370DC2374E00F49290 /* KGImageSource_JPEG.h */,
+				FE45ED380DC2374E00F49290 /* KGImageSource_JPEG.m */,
+				FE45ED390DC2374E00F49290 /* KGImageSource_PNG.h */,
+				FE45ED3A0DC2374E00F49290 /* KGImageSource_PNG.m */,
+				FE45ED3B0DC2374E00F49290 /* KGImageSource_TIFF.h */,
+				FE45ED3C0DC2374E00F49290 /* KGImageSource_TIFF.m */,
+			);
+			name = ImageIO;
 			sourceTree = "<group>";
 		};
 		FE6EDCC70DB78E3C005503A1 /* KoreGraphics */ = {
@@ -433,6 +479,7 @@
 				8D11072A0486CEB800E47090 /* MainMenu.nib in Resources */,
 				8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */,
 				FE0997430D87095000033630 /* overlay.png in Resources */,
+				FE45EE650DC254C700F49290 /* overlay.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -495,6 +542,13 @@
 				FE14EC4B0DBD9BF00070928C /* DemoCGContext.m in Sources */,
 				FE14EC4C0DBD9BF00070928C /* DemoKGContext.m in Sources */,
 				FE14EC960DBDA5420070928C /* DemoContext.m in Sources */,
+				FE45ED3D0DC2374E00F49290 /* KGImageSource.m in Sources */,
+				FE45ED3E0DC2374E00F49290 /* KGImageSource_BMP.m in Sources */,
+				FE45ED3F0DC2374E00F49290 /* KGImageSource_JPEG.m in Sources */,
+				FE45ED400DC2374E00F49290 /* KGImageSource_PNG.m in Sources */,
+				FE45ED410DC2374E00F49290 /* KGImageSource_TIFF.m in Sources */,
+				FE45ED460DC2376700F49290 /* NSTIFFImageFileDirectory.m in Sources */,
+				FE45ED470DC2376700F49290 /* NSTIFFReader.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

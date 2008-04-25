@@ -11,12 +11,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "KGImageSource_JPEG.h"
 #import <Foundation/NSString.h>
 #import <Foundation/NSData.h>
-#import <AppKit/KGzlib.h>
-#import <ApplicationServices/CGDataProvider.h>
-#import <ApplicationServices/CGColorSpace.h>
-#import <ApplicationServices/CGImage.h>
+#import "KGDataProvider.h"
+#import "KGColorSpace.h"
+#import "KGImage.h"
 
 #import <assert.h>
+#import <string.h>
+
+@implementation KGImageSource_JPEG
 
 typedef unsigned char uint8;
 typedef unsigned short uint16;
@@ -24,9 +26,6 @@ typedef   signed short  int16;
 typedef unsigned int   uint32;
 typedef   signed int    int32;
 typedef unsigned int   uint;
-
-static uint32 img_x, img_y;
-static int img_n, img_out_n;
 
 enum
 {
@@ -47,50 +46,47 @@ enum
 
 typedef unsigned char stbi_uc;
 
-static const uint8 *img_buffer, *img_buffer_end;
-
-static char *failure_reason;
-static int e(char *str)
+static int e(KGImageSource_JPEG *self,char *str)
 {
-   failure_reason = str;
+   self->failure_reason = str;
    return 0;
 }
 
-   #define e(x,y)  e(x)
-#define ep(x,y)   (e(x,y),NULL)   
+#define e(self,x,y)  e(self,x)
+#define ep(x,y)   (e(self,x,y),NULL)   
 
-static void start_mem(const uint8 *buffer, int len)
+static void start_mem(KGImageSource_JPEG *self,const uint8 *buffer, int len)
 {
-   img_buffer = buffer;
-   img_buffer_end = buffer+len;
+   self->img_buffer = buffer;
+   self->img_buffer_end = buffer+len;
 }
 
-static int at_eof(void)
+static int at_eof(KGImageSource_JPEG *self)
 {
-   return img_buffer >= img_buffer_end;   
+   return self->img_buffer >= self->img_buffer_end;   
 }
 
-static int get8(void)
+static int get8(KGImageSource_JPEG *self)
 {
-   if (img_buffer < img_buffer_end)
-      return *img_buffer++;
+   if (self->img_buffer < self->img_buffer_end)
+      return *self->img_buffer++;
    return 0;
 }
 
-static uint8 get8u(void)
+static uint8 get8u(KGImageSource_JPEG *self)
 {
-   return (uint8) get8();
+   return (uint8) get8(self);
 }
 
-static int get16(void)
+static int get16(KGImageSource_JPEG *self)
 {
-   int z = get8();
-   return (z << 8) + get8();
+   int z = get8(self);
+   return (z << 8) + get8(self);
 }
 
-static void skip(int n)
+static void skip(KGImageSource_JPEG *self,int n)
 {
-      img_buffer += n;
+      self->img_buffer += n;
 }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -120,27 +116,11 @@ static void skip(int n)
 //          IJG 1998:   0.98 seconds (MSVC6, makefile provided by IJG)
 //          IJG 1998:   0.95 seconds (MSVC6, makefile + proc=PPro)
 
-int stbi_jpeg_dc_only;
 
-// huffman decoding acceleration
-#define FAST_BITS   9  // larger handles more cases; smaller stomps less cache
 
-typedef struct
-{
-   uint8  fast[1 << FAST_BITS];
-   // weirdly, repacking this into AoS is a 10% speed loss, instead of a win
-   uint16 code[256];
-   uint8  values[256];
-   uint8  size[257];
-   unsigned int maxcode[18];
-   int    delta[17];   // old 'firstsymbol' - old 'firstcode'
-} huffman;
 
-static huffman huff_dc[4];  // baseline is 2 tables, extended is 4
-static huffman huff_ac[4];
-static uint8 dequant[4][64];
 
-static int build_huffman(huffman *h, int *count)
+static int build_huffman(KGImageSource_JPEG *self,huffman *h, int *count)
 {
    int i,j,k=0,code;
    // build size list for each symbol (from JPEG spec)
@@ -158,7 +138,7 @@ static int build_huffman(huffman *h, int *count)
       if (h->size[k] == j) {
          while (h->size[k] == j)
             h->code[k++] = (uint16) (code++);
-         if (code-1 >= (1 << j)) return e("bad code lengths","Corrupt JPEG");
+         if (code-1 >= (1 << j)) return e(self,"bad code lengths","Corrupt JPEG");
       }
       // compute largest code + 1 for this size, preshifted as needed later
       h->maxcode[j] = code << (16-j);
@@ -181,108 +161,88 @@ static int build_huffman(huffman *h, int *count)
    return 1;
 }
 
-// sizes for components, interleaved MCUs
-static int img_h_max, img_v_max;
-static int img_mcu_x, img_mcu_y;
-static int img_mcu_w, img_mcu_h;
 
-// definition of jpeg image component
-static struct
-{
-   int id;
-   int h,v;
-   int tq;
-   int hd,ha;
-   int dc_pred;
 
-   int x,y,w2,h2;
-   uint8 *data;
-} img_comp[4];
-
-static unsigned long  code_buffer; // jpeg entropy-coded buffer
-static int            code_bits;   // number of valid bits
-static unsigned char  marker;      // marker seen while filling entropy buffer
-static int            nomore;      // flag if we saw a marker so must stop
  
-static void grow_buffer_unsafe(void)
+static void grow_buffer_unsafe(KGImageSource_JPEG *self)
 {
    do {
-      int b = nomore ? 0 : get8();
+      int b = self->nomore ? 0 : get8(self);
       if (b == 0xff) {
-         int c = get8();
+         int c = get8(self);
          if (c != 0) {
-            marker = (unsigned char) c;
-            nomore = 1;
+            self->marker = (unsigned char) c;
+            self->nomore = 1;
             return;
          }
       }
-      code_buffer = (code_buffer << 8) | b;
-      code_bits += 8;
-   } while (code_bits <= 24);
+      self->code_buffer = (self->code_buffer << 8) | b;
+      self->code_bits += 8;
+   } while (self->code_bits <= 24);
 }
 
 // (1 << n) - 1
 static unsigned long bmask[17]={0,1,3,7,15,31,63,127,255,511,1023,2047,4095,8191,16383,32767,65535};
 
 // decode a jpeg huffman value from the bitstream
-static int decode(huffman *h)
+static int decode(KGImageSource_JPEG *self,huffman *h)
 {
    unsigned int temp;
    int c,k;
 
-   if (code_bits < 16) grow_buffer_unsafe();
+   if (self->code_bits < 16) grow_buffer_unsafe(self);
 
    // look at the top FAST_BITS and determine what symbol ID it is,
    // if the code is <= FAST_BITS
-   c = (code_buffer >> (code_bits - FAST_BITS)) & ((1 << FAST_BITS)-1);
+   c = (self->code_buffer >> (self->code_bits - FAST_BITS)) & ((1 << FAST_BITS)-1);
    k = h->fast[c];
    if (k < 255) {
-      if (h->size[k] > code_bits)
+      if (h->size[k] > self->code_bits)
          return -1;
-      code_bits -= h->size[k];
+      self->code_bits -= h->size[k];
       return h->values[k];
    }
 
-   // naive test is to shift the code_buffer down so k bits are
+   // naive test is to shift the self->code_buffer down so k bits are
    // valid, then test against maxcode. To speed this up, we've
    // preshifted maxcode left so that it has (16-k) 0s at the
    // end; in other words, regardless of the number of bits, it
    // wants to be compared against something shifted to have 16;
    // that way we don't need to shift inside the loop.
-   if (code_bits < 16)
-      temp = (code_buffer << (16 - code_bits)) & 0xffff;
+   if (self->code_bits < 16)
+      temp = (self->code_buffer << (16 - self->code_bits)) & 0xffff;
    else
-      temp = (code_buffer >> (code_bits - 16)) & 0xffff;
+      temp = (self->code_buffer >> (self->code_bits - 16)) & 0xffff;
    for (k=FAST_BITS+1 ; ; ++k)
       if (temp < h->maxcode[k])
          break;
    if (k == 17) {
       // error! code not found
-      code_bits -= 16;
+      self->code_bits -= 16;
       return -1;
    }
 
-   if (k > code_bits)
+   if (k > self->code_bits)
       return -1;
 
    // convert the huffman code to the symbol id
-   c = ((code_buffer >> (code_bits - k)) & bmask[k]) + h->delta[k];
-   assert((((code_buffer) >> (code_bits - h->size[c])) & bmask[h->size[c]]) == h->code[c]);
+   c = ((self->code_buffer >> (self->code_bits - k)) & bmask[k]) + h->delta[k];
+   assert((((self->code_buffer) >> (self->code_bits - h->size[c])) & bmask[h->size[c]]) == h->code[c]);
 
    // convert the id to a symbol
-   code_bits -= k;
+   self->code_bits -= k;
    return h->values[c];
 }
 
 // combined JPEG 'receive' and JPEG 'extend', since baseline
 // always extends everything it receives.
-static int extend_receive(int n)
+static int extend_receive(KGImageSource_JPEG *self,int n)
 {
    unsigned int m = 1 << (n-1);
    unsigned int k;
-   if (code_bits < n) grow_buffer_unsafe();
-   k = (code_buffer >> (code_bits - n)) & bmask[n];
-   code_bits -= n;
+   if (self->code_bits < n) grow_buffer_unsafe(self);
+   k = (self->code_buffer >> (self->code_bits - n)) & bmask[n];
+   self->code_bits -= n;
    // the following test is probably a random branch that won't
    // predict well. I tried to table accelerate it but failed.
    // maybe it's compiling as a conditional move?
@@ -310,16 +270,16 @@ static uint8 dezigzag[64+15] =
 };
 
 // decode one 64-entry block--
-static int decode_block(short data[64], huffman *hdc, huffman *hac, int b)
+static int decode_block(KGImageSource_JPEG *self,short data[64], huffman *hdc, huffman *hac, int b)
 {
    int diff,dc,k;
-   int t = decode(hdc);
-   if (t < 0) return e("bad huffman code","Corrupt JPEG");
+   int t = decode(self,hdc);
+   if (t < 0) return e(self,"bad huffman code","Corrupt JPEG");
 
    // 0 all the ac values now so we can do it 32-bits at a time
    memset(data,0,64*sizeof(data[0]));
 
-   diff = t ? extend_receive(t) : 0;
+   diff = t ? extend_receive(self,t) : 0;
    dc = img_comp[b].dc_pred + diff;
    img_comp[b].dc_pred = dc;
    data[0] = (short) dc;
@@ -328,8 +288,8 @@ static int decode_block(short data[64], huffman *hdc, huffman *hac, int b)
    k = 1;
    do {
       int r,s;
-      int rs = decode(hac);
-      if (rs < 0) return e("bad huffman code","Corrupt JPEG");
+      int rs = decode(self,hac);
+      if (rs < 0) return e(self,"bad huffman code","Corrupt JPEG");
       s = rs & 15;
       r = rs >> 4;
       if (s == 0) {
@@ -338,7 +298,7 @@ static int decode_block(short data[64], huffman *hdc, huffman *hac, int b)
       } else {
          k += r;
          // decode into unzigzag'd location
-         data[dezigzag[k++]] = (short) extend_receive(s);
+         data[dezigzag[k++]] = (short) extend_receive(self,s);
       }
    } while (k < 64);
    return 1;
@@ -398,13 +358,13 @@ static uint8 clamp(int x)
    t0 += p1+p3;
 
 // .344 seconds on 3*anemones.jpg
-static void idct_block(uint8 *out, int out_stride, short data[64], uint8 *dequantize)
+static void idct_block(KGImageSource_JPEG *self,uint8 *out, int out_stride, short data[64], uint8 *dequantize)
 {
    int i,val[64],*v=val;
    uint8 *o,*dq = dequantize;
    short *d = data;
 
-   if (stbi_jpeg_dc_only) {
+   if (self->stbi_jpeg_dc_only) {
       // ok, I don't really know why this is right, but it seems to be:
       int z = 128 + ((d[0] * dq[0]) >> 3);
       for (i=0; i < 8; ++i) {
@@ -417,8 +377,7 @@ static void idct_block(uint8 *out, int out_stride, short data[64], uint8 *dequan
    // columns
    for (i=0; i < 8; ++i,++d,++dq, ++v) {
       // if all zeroes, shortcut -- this avoids dequantizing 0s and IDCTing
-      if (d[ 8]==0 && d[16]==0 && d[24]==0 && d[32]==0
-           && d[40]==0 && d[48]==0 && d[56]==0) {
+      if (d[ 8]==0 && d[16]==0 && d[24]==0 && d[32]==0 && d[40]==0 && d[48]==0 && d[56]==0) {
          //    no shortcut                 0     seconds
          //    (1|2|3|4|5|6|7)==0          0     seconds
          //    all separate               -0.047 seconds
@@ -426,8 +385,7 @@ static void idct_block(uint8 *out, int out_stride, short data[64], uint8 *dequan
          int dcterm = d[0] * dq[0] << 2;
          v[0] = v[8] = v[16] = v[24] = v[32] = v[40] = v[48] = v[56] = dcterm;
       } else {
-         IDCT_1D(d[ 0]*dq[ 0],d[ 8]*dq[ 8],d[16]*dq[16],d[24]*dq[24],
-                 d[32]*dq[32],d[40]*dq[40],d[48]*dq[48],d[56]*dq[56])
+         IDCT_1D(d[ 0]*dq[ 0],d[ 8]*dq[ 8],d[16]*dq[16],d[24]*dq[24],d[32]*dq[32],d[40]*dq[40],d[48]*dq[48],d[56]*dq[56])
          // constants scaled things up by 1<<12; let's bring them back
          // down, but keep 2 extra bits of precision
          x0 += 512; x1 += 512; x2 += 512; x3 += 512;
@@ -464,44 +422,40 @@ static void idct_block(uint8 *out, int out_stride, short data[64], uint8 *dequan
 // if there's a pending marker from the entropy stream, return that
 // otherwise, fetch from the stream and get a marker. if there's no
 // marker, return 0xff, which is never a valid marker value
-static uint8 get_marker(void)
+static uint8 get_marker(KGImageSource_JPEG *self)
 {
    uint8 x;
-   if (marker != MARKER_none) { x = marker; marker = MARKER_none; return x; }
-   x = get8u();
+   if (self->marker != MARKER_none) { x = self->marker; self->marker = MARKER_none; return x; }
+   x = get8u(self);
    if (x != 0xff) return MARKER_none;
    while (x == 0xff)
-      x = get8u();
+      x = get8u(self);
    return x;
 }
 
-// in each scan, we'll have scan_n components, and the order
-// of the components is specified by order[]
-static int scan_n, order[4];
-static int restart_interval, todo;
 #define RESTART(x)     ((x) >= 0xd0 && (x) <= 0xd7)
 
 // after a restart interval, reset the entropy decoder and
 // the dc prediction
-static void reset(void)
+static void reset(KGImageSource_JPEG *self)
 {
-   code_bits = 0;
-   code_buffer = 0;
-   nomore = 0;
+   self->code_bits = 0;
+   self->code_buffer = 0;
+   self->nomore = 0;
    img_comp[0].dc_pred = img_comp[1].dc_pred = img_comp[2].dc_pred = 0;
-   marker = MARKER_none;
-   todo = restart_interval ? restart_interval : 0x7fffffff;
+   self->marker = MARKER_none;
+   self->todo = self->restart_interval ? self->restart_interval : 0x7fffffff;
    // no more than 1<<31 MCUs if no restart_interal? that's plenty safe,
    // since we don't even allow 1<<30 pixels
 }
 
-static int parse_entropy_coded_data(void)
+static int parse_entropy_coded_data(KGImageSource_JPEG *self)
 {
-   reset();
-   if (scan_n == 1) {
+   reset(self);
+   if (self->scan_n == 1) {
       int i,j;
       short data[64];
-      int n = order[0];
+      int n = self->order[0];
       // non-interleaved data, we just need to process one block at a time,
       // in trivial scanline order
       // number of blocks to do just depends on how many actual "pixels" this
@@ -510,45 +464,45 @@ static int parse_entropy_coded_data(void)
       int h = (img_comp[n].y+7) >> 3;
       for (j=0; j < h; ++j) {
          for (i=0; i < w; ++i) {
-            if (!decode_block(data, huff_dc+img_comp[n].hd, huff_ac+img_comp[n].ha, n)) return 0;
-            idct_block(img_comp[n].data+img_comp[n].w2*j*8+i*8, img_comp[n].w2, data, dequant[img_comp[n].tq]);
+            if (!decode_block(self,data, self->huff_dc+img_comp[n].hd, self->huff_ac+img_comp[n].ha, n)) return 0;
+            idct_block(self,img_comp[n].data+img_comp[n].w2*j*8+i*8, img_comp[n].w2, data, self->dequant[img_comp[n].tq]);
             // every data block is an MCU, so countdown the restart interval
-            if (--todo <= 0) {
-               if (code_bits < 24) grow_buffer_unsafe();
+            if (--self->todo <= 0) {
+               if (self->code_bits < 24) grow_buffer_unsafe(self);
                // if it's NOT a restart, then just bail, so we get corrupt data
                // rather than no data
-               if (!RESTART(marker)) return 1;
-               reset();
+               if (!RESTART(self->marker)) return 1;
+               reset(self);
             }
          }
       }
    } else { // interleaved!
       int i,j,k,x,y;
       short data[64];
-      for (j=0; j < img_mcu_y; ++j) {
-         for (i=0; i < img_mcu_x; ++i) {
+      for (j=0; j < self->img_mcu_y; ++j) {
+         for (i=0; i < self->img_mcu_x; ++i) {
             // scan an interleaved mcu... process scan_n components in order
-            for (k=0; k < scan_n; ++k) {
-               int n = order[k];
+            for (k=0; k < self->scan_n; ++k) {
+               int n = self->order[k];
                // scan out an mcu's worth of this component; that's just determined
                // by the basic H and V specified for the component
                for (y=0; y < img_comp[n].v; ++y) {
                   for (x=0; x < img_comp[n].h; ++x) {
                      int x2 = (i*img_comp[n].h + x)*8;
                      int y2 = (j*img_comp[n].v + y)*8;
-                     if (!decode_block(data, huff_dc+img_comp[n].hd, huff_ac+img_comp[n].ha, n)) return 0;
-                     idct_block(img_comp[n].data+img_comp[n].w2*y2+x2, img_comp[n].w2, data, dequant[img_comp[n].tq]);
+                     if (!decode_block(self,data, self->huff_dc+img_comp[n].hd, self->huff_ac+img_comp[n].ha, n)) return 0;
+                     idct_block(self,img_comp[n].data+img_comp[n].w2*y2+x2, img_comp[n].w2, data, self->dequant[img_comp[n].tq]);
                   }
                }
             }
             // after all interleaved components, that's an interleaved MCU,
             // so now count down the restart interval
-            if (--todo <= 0) {
-               if (code_bits < 24) grow_buffer_unsafe();
+            if (--self->todo <= 0) {
+               if (self->code_bits < 24) grow_buffer_unsafe(self);
                // if it's NOT a restart, then just bail, so we get corrupt data
                // rather than no data
-               if (!RESTART(marker)) return 1;
-               reset();
+               if (!RESTART(self->marker)) return 1;
+               reset(self);
             }
          }
       }
@@ -556,151 +510,151 @@ static int parse_entropy_coded_data(void)
    return 1;
 }
 
-static int process_marker(int m)
+static int process_marker(KGImageSource_JPEG *self,int m)
 {
    int L;
    switch (m) {
       case MARKER_none: // no marker found
-         return e("expected marker","Corrupt JPEG");
+         return e(self,"expected marker","Corrupt JPEG");
 
       case 0xC2: // SOF - progressive
-         return e("progressive jpeg","JPEG format not supported (progressive)");
+         return e(self,"progressive jpeg","JPEG format not supported (progressive)");
 
       case 0xDD: // DRI - specify restart interval
-         if (get16() != 4) return e("bad DRI len","Corrupt JPEG");
-         restart_interval = get16();
+         if (get16(self) != 4) return e(self,"bad DRI len","Corrupt JPEG");
+         self->restart_interval = get16(self);
          return 1;
 
       case 0xDB: // DQT - define quantization table
-         L = get16()-2;
+         L = get16(self)-2;
          while (L > 0) {
-            int z = get8();
+            int z = get8(self);
             int p = z >> 4;
             int t = z & 15,i;
-            if (p != 0) return e("bad DQT type","Corrupt JPEG");
-            if (t > 3) return e("bad DQT table","Corrupt JPEG");
+            if (p != 0) return e(self,"bad DQT type","Corrupt JPEG");
+            if (t > 3) return e(self,"bad DQT table","Corrupt JPEG");
             for (i=0; i < 64; ++i)
-               dequant[t][dezigzag[i]] = get8u();
+               self->dequant[t][dezigzag[i]] = get8u(self);
             L -= 65;
          }
          return L==0;
 
       case 0xC4: // DHT - define huffman table
-         L = get16()-2;
+         L = get16(self)-2;
          while (L > 0) {
             uint8 *v;
             int sizes[16],i,m=0;
-            int z = get8();
+            int z = get8(self);
             int tc = z >> 4;
             int th = z & 15;
-            if (tc > 1 || th > 3) return e("bad DHT header","Corrupt JPEG");
+            if (tc > 1 || th > 3) return e(self,"bad DHT header","Corrupt JPEG");
             for (i=0; i < 16; ++i) {
-               sizes[i] = get8();
+               sizes[i] = get8(self);
                m += sizes[i];
             }
             L -= 17;
             if (tc == 0) {
-               if (!build_huffman(huff_dc+th, sizes)) return 0;
-               v = huff_dc[th].values;
+               if (!build_huffman(self,self->huff_dc+th, sizes)) return 0;
+               v = self->huff_dc[th].values;
             } else {
-               if (!build_huffman(huff_ac+th, sizes)) return 0;
-               v = huff_ac[th].values;
+               if (!build_huffman(self,self->huff_ac+th, sizes)) return 0;
+               v = self->huff_ac[th].values;
             }
             for (i=0; i < m; ++i)
-               v[i] = get8u();
+               v[i] = get8u(self);
             L -= m;
          }
          return L==0;
    }
    // check for comment block or APP blocks
    if ((m >= 0xE0 && m <= 0xEF) || m == 0xFE) {
-      skip(get16()-2);
+      skip(self,get16(self)-2);
       return 1;
    }
    return 0;
 }
 
 // after we see SOS
-static int process_scan_header(void)
+static int process_scan_header(KGImageSource_JPEG *self)
 {
    int i;
-   int Ls = get16();
-   scan_n = get8();
-   if (scan_n < 1 || scan_n > 4 || scan_n > (int) img_n) return e("bad SOS component count","Corrupt JPEG");
-   if (Ls != 6+2*scan_n) return e("bad SOS len","Corrupt JPEG");
-   for (i=0; i < scan_n; ++i) {
-      int id = get8(), which;
-      int z = get8();
-      for (which = 0; which < img_n; ++which)
+   int Ls = get16(self);
+   self->scan_n = get8(self);
+   if (self->scan_n < 1 || self->scan_n > 4 || self->scan_n > (int) self->img_n) return e(self,"bad SOS component count","Corrupt JPEG");
+   if (Ls != 6+2*self->scan_n) return e(self,"bad SOS len","Corrupt JPEG");
+   for (i=0; i < self->scan_n; ++i) {
+      int id = get8(self), which;
+      int z = get8(self);
+      for (which = 0; which < self->img_n; ++which)
          if (img_comp[which].id == id)
             break;
-      if (which == img_n) return 0;
-      img_comp[which].hd = z >> 4;   if (img_comp[which].hd > 3) return e("bad DC huff","Corrupt JPEG");
-      img_comp[which].ha = z & 15;   if (img_comp[which].ha > 3) return e("bad AC huff","Corrupt JPEG");
-      order[i] = which;
+      if (which == self->img_n) return 0;
+      img_comp[which].hd = z >> 4;   if (img_comp[which].hd > 3) return e(self,"bad DC huff","Corrupt JPEG");
+      img_comp[which].ha = z & 15;   if (img_comp[which].ha > 3) return e(self,"bad AC huff","Corrupt JPEG");
+      self->order[i] = which;
    }
-   if (get8() != 0) return e("bad SOS","Corrupt JPEG");
-   get8(); // should be 63, but might be 0
-   if (get8() != 0) return e("bad SOS","Corrupt JPEG");
+   if (get8(self) != 0) return e(self,"bad SOS","Corrupt JPEG");
+   get8(self); // should be 63, but might be 0
+   if (get8(self) != 0) return e(self,"bad SOS","Corrupt JPEG");
 
    return 1;
 }
 
-static int process_frame_header(int scan)
+static int process_frame_header(KGImageSource_JPEG *self,int scan)
 {
    int Lf,p,i,z, h_max=1,v_max=1;
-   Lf = get16();         if (Lf < 11) return e("bad SOF len","Corrupt JPEG"); // JPEG
-   p  = get8();          if (p != 8) return e("only 8-bit","JPEG format not supported: 8-bit only"); // JPEG baseline
-   img_y = get16();      if (img_y == 0) return e("no header height", "JPEG format not supported: delayed height"); // Legal, but we don't handle it--but neither does IJG
-   img_x = get16();      if (img_x == 0) return e("0 width","Corrupt JPEG"); // JPEG requires
-   img_n = get8();
-   if (img_n != 3 && img_n != 1) return e("bad component count","Corrupt JPEG");    // JFIF requires
+   Lf = get16(self);         if (Lf < 11) return e(self,"bad SOF len","Corrupt JPEG"); // JPEG
+   p  = get8(self);          if (p != 8) return e(self,"only 8-bit","JPEG format not supported: 8-bit only"); // JPEG baseline
+   self->img_y = get16(self);      if (self->img_y == 0) return e(self,"no header height", "JPEG format not supported: delayed height"); // Legal, but we don't handle it--but neither does IJG
+   self->img_x = get16(self);      if (self->img_x == 0) return e(self,"0 width","Corrupt JPEG"); // JPEG requires
+   self->img_n = get8(self);
+   if (self->img_n != 3 && self->img_n != 1) return e(self,"bad component count","Corrupt JPEG");    // JFIF requires
 
-   if (Lf != 8+3*img_n) return e("bad SOF len","Corrupt JPEG");
+   if (Lf != 8+3*self->img_n) return e(self,"bad SOF len","Corrupt JPEG");
 
-   for (i=0; i < img_n; ++i) {
-      img_comp[i].id = get8();
+   for (i=0; i < self->img_n; ++i) {
+      img_comp[i].id = get8(self);
       if (img_comp[i].id != i+1)   // JFIF requires
          if (img_comp[i].id != i)  // jpegtran outputs non-JFIF-compliant files!
-            return e("bad component ID","Corrupt JPEG");
-      z = get8();
-      img_comp[i].h = (z >> 4);  if (!img_comp[i].h || img_comp[i].h > 4) return e("bad H","Corrupt JPEG");
-      img_comp[i].v = z & 15;    if (!img_comp[i].v || img_comp[i].v > 4) return e("bad V","Corrupt JPEG");
-      img_comp[i].tq = get8();   if (img_comp[i].tq > 3) return e("bad TQ","Corrupt JPEG");
+            return e(self,"bad component ID","Corrupt JPEG");
+      z = get8(self);
+      img_comp[i].h = (z >> 4);  if (!img_comp[i].h || img_comp[i].h > 4) return e(self,"bad H","Corrupt JPEG");
+      img_comp[i].v = z & 15;    if (!img_comp[i].v || img_comp[i].v > 4) return e(self,"bad V","Corrupt JPEG");
+      img_comp[i].tq = get8(self);   if (img_comp[i].tq > 3) return e(self,"bad TQ","Corrupt JPEG");
    }
 
    if (scan != SCAN_load) return 1;
 
-   if ((1 << 30) / img_x / img_n < img_y) return e("too large", "Image too large to decode");
+   if ((1 << 30) / self->img_x / self->img_n < self->img_y) return e(self,"too large", "Image too large to decode");
 
-   for (i=0; i < img_n; ++i) {
+   for (i=0; i < self->img_n; ++i) {
       if (img_comp[i].h > h_max) h_max = img_comp[i].h;
       if (img_comp[i].v > v_max) v_max = img_comp[i].v;
    }
 
    // compute interleaved mcu info
-   img_h_max = h_max;
-   img_v_max = v_max;
-   img_mcu_w = h_max * 8;
-   img_mcu_h = v_max * 8;
-   img_mcu_x = (img_x + img_mcu_w-1) / img_mcu_w;
-   img_mcu_y = (img_y + img_mcu_h-1) / img_mcu_h;
+   self->img_h_max = h_max;
+   self->img_v_max = v_max;
+   self->img_mcu_w = h_max * 8;
+   self->img_mcu_h = v_max * 8;
+   self->img_mcu_x = (self->img_x + self->img_mcu_w-1) / self->img_mcu_w;
+   self->img_mcu_y = (self->img_y + self->img_mcu_h-1) / self->img_mcu_h;
 
-   for (i=0; i < img_n; ++i) {
+   for (i=0; i < self->img_n; ++i) {
       // number of effective pixels (e.g. for non-interleaved MCU)
-      img_comp[i].x = (img_x * img_comp[i].h + h_max-1) / h_max;
-      img_comp[i].y = (img_y * img_comp[i].v + v_max-1) / v_max;
+      img_comp[i].x = (self->img_x * img_comp[i].h + h_max-1) / h_max;
+      img_comp[i].y = (self->img_y * img_comp[i].v + v_max-1) / v_max;
       // to simplify generation, we'll allocate enough memory to decode
       // the bogus oversized data from using interleaved MCUs and their
       // big blocks (e.g. a 16x16 iMCU on an image of width 33); we won't
       // discard the extra data until colorspace conversion
-      img_comp[i].w2 = img_mcu_x * img_comp[i].h * 8;
-      img_comp[i].h2 = img_mcu_y * img_comp[i].v * 8;
+      img_comp[i].w2 = self->img_mcu_x * img_comp[i].h * 8;
+      img_comp[i].h2 = self->img_mcu_y * img_comp[i].v * 8;
       img_comp[i].data = (uint8 *) NSZoneMalloc(NULL,img_comp[i].w2 * img_comp[i].h2);
       if (img_comp[i].data == NULL) {
          for(--i; i >= 0; --i)
             NSZoneFree(NULL,img_comp[i].data);
-         return e("outofmem", "Out of memory");
+         return e(self,"outofmem", "Out of memory");
       }
    }
 
@@ -714,41 +668,41 @@ static int process_frame_header(int scan)
 #define SOF(x)         ((x) == 0xc0 || (x) == 0xc1)
 #define SOS(x)         ((x) == 0xda)
 
-static int decode_jpeg_header(int scan)
+static int decode_jpeg_header(KGImageSource_JPEG *self,int scan)
 {
    int m;
-   marker = MARKER_none; // initialize cached marker to empty
-   m = get_marker();
-   if (!SOI(m)) return e("no SOI","Corrupt JPEG");
+   self->marker = MARKER_none; // initialize cached marker to empty
+   m = get_marker(self);
+   if (!SOI(m)) return e(self,"no SOI","Corrupt JPEG");
    if (scan == SCAN_type) return 1;
-   m = get_marker();
+   m = get_marker(self);
    while (!SOF(m)) {
-      if (!process_marker(m)) return 0;
-      m = get_marker();
+      if (!process_marker(self,m)) return 0;
+      m = get_marker(self);
       while (m == MARKER_none) {
          // some files have extra padding after their blocks, so ok, we'll scan
-         if (at_eof()) return e("no SOF", "Corrupt JPEG");
-         m = get_marker();
+         if (at_eof(self)) return e(self,"no SOF", "Corrupt JPEG");
+         m = get_marker(self);
       }
    }
-   if (!process_frame_header(scan)) return 0;
+   if (!process_frame_header(self,scan)) return 0;
    return 1;
 }
 
-static int decode_jpeg_image(void)
+static int decode_jpeg_image(KGImageSource_JPEG *self)
 {
    int m;
-   restart_interval = 0;
-   if (!decode_jpeg_header(SCAN_load)) return 0;
-   m = get_marker();
+   self->restart_interval = 0;
+   if (!decode_jpeg_header(self,SCAN_load)) return 0;
+   m = get_marker(self);
    while (!EOI(m)) {
       if (SOS(m)) {
-         if (!process_scan_header()) return 0;
-         if (!parse_entropy_coded_data()) return 0;
+         if (!process_scan_header(self)) return 0;
+         if (!parse_entropy_coded_data(self)) return 0;
       } else {
-         if (!process_marker(m)) return 0;
+         if (!process_marker(self,m)) return 0;
       }
-      m = get_marker();
+      m = get_marker(self);
    }
    return 1;
 }
@@ -853,6 +807,27 @@ static void resample_hv_2(uint8 *out, uint8 *input, int w, int h, int s)
 static void YCbCr_to_RGB_row(uint8 *out, uint8 *y, uint8 *pcb, uint8 *pcr, int count, int step)
 {
    int i;
+#if 1
+   for (i=0; i < count; ++i) {
+      int y_fixed = (y[i] << 16) + 32768; // rounding
+      int r,g,b;
+      int cr = pcr[i] - 128;
+      int cb = pcb[i] - 128;
+      r=g=b=y_fixed;
+      
+      r >>= 16;
+      g >>= 16;
+      b >>= 16;
+      if ((unsigned) r > 255) { if (r < 0) r = 0; else r = 255; }
+      if ((unsigned) g > 255) { if (g < 0) g = 0; else g = 255; }
+      if ((unsigned) b > 255) { if (b < 0) b = 0; else b = 255; }
+      out[0] = (uint8)r;
+      out[1] = (uint8)g;
+      out[2] = (uint8)b;
+      if (step == 4) out[3] = 255;
+      out += step;
+   }
+#else
    for (i=0; i < count; ++i) {
       int y_fixed = (y[i] << 16) + 32768; // rounding
       int r,g,b;
@@ -873,13 +848,14 @@ static void YCbCr_to_RGB_row(uint8 *out, uint8 *y, uint8 *pcb, uint8 *pcr, int c
       if (step == 4) out[3] = 255;
       out += step;
    }
+#endif
 }
 
 // clean up the temporary component buffers
-static void cleanup_jpeg(void)
+static void cleanup_jpeg(KGImageSource_JPEG *self)
 {
    int i;
-   for (i=0; i < img_n; ++i) {
+   for (i=0; i < self->img_n; ++i) {
       if (img_comp[i].data) {
          NSZoneFree(NULL,img_comp[i].data);
          img_comp[i].data = NULL;
@@ -887,51 +863,56 @@ static void cleanup_jpeg(void)
    }
 }
 
-static uint8 *load_jpeg_image(int *out_x, int *out_y, int *comp, int req_comp)
+static void load_jpeg_image(KGImageSource_JPEG *self,int *out_x, int *out_y, int *comp, int req_comp)
 {
    int i, n;
    // validate req_comp
-   if (req_comp < 0 || req_comp > 4) return ep("bad req_comp", "Internal error");
-
+   if (req_comp < 0 || req_comp > 4){
+    ep("bad req_comp", "Internal error");
+    return;
+   }
+   
    // load a jpeg image from whichever source
-   if (!decode_jpeg_image()) { cleanup_jpeg(); return NULL; }
+   if (!decode_jpeg_image(self)) { cleanup_jpeg(self); return ; }
 
    // determine actual number of components to generate
-   n = req_comp ? req_comp : img_n;
+   n = req_comp ? req_comp : self->img_n;
 
    // resample components to full size... memory wasteful, but this
    // lets us bilerp across blocks while upsampling
-   for (i=0; i < img_n; ++i) {
+   for (i=0; i < self->img_n; ++i) {
       // if we're outputting fewer than 3 components, we're grey not RGB;
       // in that case, don't bother upsampling Cb or Cr
-      if (n < 3 && i) continue;
+        if (n < 3 && i) continue;
 
       // check if the component scale is less than max; if so it needs upsampling
-      if (img_comp[i].h != img_h_max || img_comp[i].v != img_v_max) {
-         int stride = img_x;
+      if (img_comp[i].h != self->img_h_max || img_comp[i].v != self->img_v_max) {
+         int stride = self->img_x;
          // allocate final size; make sure it's big enough for upsampling off
          // the edges with upsample up to 4x4 (although we only support 2x2
          // currently)
-         uint8 *new_data = (uint8 *) NSZoneMalloc(NULL,(img_x+3)*(img_y+3));
+         uint8 *new_data = (uint8 *) NSZoneMalloc(NULL,(self->img_x+3)*(self->img_y+3));
          if (new_data == NULL) {
-            cleanup_jpeg();
-            return ep("outofmem", "Out of memory (image too large?)");
+            cleanup_jpeg(self);
+            ep("outofmem", "Out of memory (image too large?)");
+            return;
          }
-         if (img_comp[i].h*2 == img_h_max && img_comp[i].v*2 == img_v_max) {
-            int tx = (img_x+1)>>1;
-            resample_hv_2(new_data, img_comp[i].data, tx,(img_y+1)>>1, img_comp[i].w2);
+         if (img_comp[i].h*2 == self->img_h_max && img_comp[i].v*2 == self->img_v_max) {
+            int tx = (self->img_x+1)>>1;
+            resample_hv_2(new_data, img_comp[i].data, tx,(self->img_y+1)>>1, img_comp[i].w2);
             stride = tx*2;
-         } else if (img_comp[i].h == img_h_max && img_comp[i].v*2 == img_v_max) {
-            resample_v_2(new_data, img_comp[i].data, img_x,(img_y+1)>>1, img_comp[i].w2);
-         } else if (img_comp[i].h*2 == img_h_max && img_comp[i].v == img_v_max) {
-            int tx = (img_x+1)>>1;
-            resample_h_2(new_data, img_comp[i].data, tx,img_y, img_comp[i].w2);
+         } else if (img_comp[i].h == self->img_h_max && img_comp[i].v*2 == self->img_v_max) {
+            resample_v_2(new_data, img_comp[i].data, self->img_x,(self->img_y+1)>>1, img_comp[i].w2);
+         } else if (img_comp[i].h*2 == self->img_h_max && img_comp[i].v == self->img_v_max) {
+            int tx = (self->img_x+1)>>1;
+            resample_h_2(new_data, img_comp[i].data, tx,self->img_y, img_comp[i].w2);
             stride = tx*2;
          } else {
             // @TODO resample uncommon sampling pattern with nearest neighbor
             NSZoneFree(NULL,new_data);
-            cleanup_jpeg();
-            return ep("uncommon H or V", "JPEG not supported: atypical downsampling mode");
+            cleanup_jpeg(self);
+            ep("uncommon H or V", "JPEG not supported: atypical downsampling mode");
+            return;
          }
          img_comp[i].w2 = stride;
          NSZoneFree(NULL,img_comp[i].data);
@@ -942,17 +923,18 @@ static uint8 *load_jpeg_image(int *out_x, int *out_y, int *comp, int req_comp)
    // now convert components to output image
    {
       uint32 i,j;
-      uint8 *output = (uint8 *) NSZoneMalloc(NULL,n * img_x * img_y + 1);
+      self->_bitmap=NSZoneMalloc(NULL,n * self->img_x * self->img_y + 1);
+
       if (n >= 3) { // output STBI_rgb_*
-         for (j=0; j < img_y; ++j) {
+         for (j=0; j < self->img_y; ++j) {
             uint8 *y  = img_comp[0].data + j*img_comp[0].w2;
-            uint8 *out = output + n * img_x * j;
-            if (img_n == 3) {
+            uint8 *out = self->_bitmap + n * self->img_x * j;
+            if (self->img_n == 3) {
                uint8 *cb = img_comp[1].data + j*img_comp[1].w2;
                uint8 *cr = img_comp[2].data + j*img_comp[2].w2;
-               YCbCr_to_RGB_row(out, y, cb, cr, img_x, n);
+               YCbCr_to_RGB_row(out, y, cb, cr, self->img_x, n);
             } else {
-               for (i=0; i < img_x; ++i) {
+               for (i=0; i < self->img_x; ++i) {
                   out[0] = out[1] = out[2] = y[i];
                   out[3] = 255; // not used if n == 3
                   out += n;
@@ -960,31 +942,29 @@ static uint8 *load_jpeg_image(int *out_x, int *out_y, int *comp, int req_comp)
             }
          }
       } else {      // output STBI_grey_*
-         for (j=0; j < img_y; ++j) {
+         for (j=0; j < self->img_y; ++j) {
             uint8 *y  = img_comp[0].data + j*img_comp[0].w2;
-            uint8 *out = output + n * img_x * j;
+            uint8 *out = self->_bitmap + n * self->img_x * j;
             if (n == 1)
-               for (i=0; i < img_x; ++i) *out++ = *y++;
+               for (i=0; i < self->img_x; ++i) *out++ = *y++;
             else
-               for (i=0; i < img_x; ++i) *out++ = *y++, *out++ = 255;
+               for (i=0; i < self->img_x; ++i) *out++ = *y++, *out++ = 255;
          }
       }
-      cleanup_jpeg();
-      *out_x = img_x;
-      *out_y = img_y;
-      if (comp) *comp  = img_n; // report original components, not output
-      return output;
+      cleanup_jpeg(self);
+      *out_x = self->img_x;
+      *out_y = self->img_y;
+      if (comp) *comp  = self->img_n; // report original components, not output
+
    }
 }
 
 
-unsigned char *stbi_jpeg_load_from_memory(const stbi_uc *buffer, int len, int *x, int *y, int *comp, int req_comp)
+static void stbi_jpeg_load_from_memory(KGImageSource_JPEG *self,const stbi_uc *buffer, int len, int *x, int *y, int *comp, int req_comp)
 {
-   start_mem(buffer,len);
-   return load_jpeg_image(x,y,comp,req_comp);
+   start_mem(self,buffer,len);
+    load_jpeg_image(self,x,y,comp,req_comp);
 }
-
-@implementation KGImageSource_JPEG
 
 +(BOOL)isTypeOfData:(NSData *)data {
    const unsigned char *bytes=[data bytes];
@@ -1006,6 +986,16 @@ unsigned char *stbi_jpeg_load_from_memory(const stbi_uc *buffer, int len, int *x
    return self;
 }
 
+-initWithContentsOfFile:(NSString *)path {
+   NSData *data=[NSData dataWithContentsOfFile:path];
+   if(data==nil){
+    [self dealloc];
+    return nil;
+   }
+   
+   return [self initWithData:data options:nil];
+}
+
 -(void)dealloc {
    [_jpg release];
    [super dealloc];
@@ -1018,21 +1008,21 @@ unsigned char *stbi_jpeg_load_from_memory(const stbi_uc *buffer, int len, int *x
 -(KGImage *)imageAtIndex:(unsigned)index options:(NSDictionary *)options {
    int            width,height;
    int            comp;
-   unsigned char *pixels=stbi_jpeg_load_from_memory([_jpg bytes],[_jpg length],&width,&height,&comp,STBI_rgb_alpha);
-   int            npixels=width*height;
+
+   stbi_jpeg_load_from_memory(self,[_jpg bytes],[_jpg length],&width,&height,&comp,STBI_rgb_alpha);
    int            bitsPerPixel=32;
    int            bytesPerRow=(bitsPerPixel/(sizeof(char)*8))*width;
    NSData        *bitmap;
 
-   bitmap=[[NSData alloc] initWithBytesNoCopy:pixels length:bytesPerRow*height];
+   bitmap=[[NSData alloc] initWithBytesNoCopy:_bitmap length:bytesPerRow*height];
 
-   CGDataProviderRef provider=CGDataProviderCreateWithCFData(bitmap);
-   CGColorSpaceRef   colorSpace=CGColorSpaceCreateDeviceRGB();
-   CGImageRef        image=CGImageCreate(width,height,8,bitsPerPixel,bytesPerRow,
-      colorSpace,0/*kCGImageAlphaLast|kCGBitmapByteOrder32Little*/,provider,NULL,NO,kCGRenderingIntentDefault);
+   KGDataProvider *provider=[[KGDataProvider alloc] initWithData:bitmap];
+   KGColorSpace   *colorSpace=[[KGColorSpace alloc] initWithGenericRGB];
+   KGImage        *image=[[KGImage alloc] initWithWidth:width height:height bitsPerComponent:8 bitsPerPixel:bitsPerPixel bytesPerRow:bytesPerRow
+      colorSpace:colorSpace bitmapInfo:0/*kCGImageAlphaLast|kCGBitmapByteOrder32Little*/ provider:provider decode:NULL interpolate:NO renderingIntent:kCGRenderingIntentDefault];
       
-   CGColorSpaceRelease(colorSpace);
-   CGDataProviderRelease(provider);
+   [colorSpace release];
+   [provider release];
    [bitmap release];
    
    return image;

@@ -32,6 +32,8 @@
     unsigned     _dashLengthsCount;
     float       *_dashLengths;
     float        _flatness;
+    
+    CGImageRef _resamplingImage;
 }
 @end
 
@@ -52,7 +54,7 @@ static CGColorRef cgColorFromColor(NSColor *color){
    _bitsPerPixel=32;
    _bytesPerRow=(_pixelsWide*_bitsPerPixel)/8;
    _colorSpace=CGColorSpaceCreateDeviceRGB();
-   _bitmapInfo=kCGImageAlphaPremultipliedLast|kCGBitmapByteOrder32Little;
+   _bitmapInfo=kCGImageAlphaPremultipliedLast|kCGBitmapByteOrder32Big;
    _data=NSZoneMalloc(NULL,_bytesPerRow*_pixelsHigh);
    _context=CGBitmapContextCreate(_data,_pixelsWide,_pixelsHigh,_bitsPerComponent,_bytesPerRow,_colorSpace,_bitmapInfo);
 
@@ -74,6 +76,12 @@ static CGColorRef cgColorFromColor(NSColor *color){
    _dashPhase=100;
    _dashLengthsCount=0;
    _dashLengths=NSZoneMalloc([self zone],sizeof(float)*4);
+   
+   NSString *path=[[NSBundle bundleForClass:[self class]] pathForResource:@"overlay" ofType:@"jpg"];
+   NSData   *data=[NSData dataWithContentsOfFile:path];
+   CGImageSourceRef source=CGImageSourceCreateWithData((CFDataRef)data,nil);
+   _resamplingImage=CGImageSourceCreateImageAtIndex(source,0,nil);
+   [(id)source release];
    return self;
 }
 
@@ -241,36 +249,29 @@ static void addSliceToPath(CGMutablePathRef path,float innerRadius,float outerRa
    CGContextRestoreGState(_context);
 }
 
--(void)drawBitmapImageRep:(NSBitmapImageRep *)imageRep {
-   float      blackComponents[4]={0,0,0,1};
-   CGColorRef blackColor=CGColorCreate(CGColorSpaceCreateDeviceRGB(),blackComponents);
-   
+-(void)drawBitmapImageRep {   
    CGContextClearRect(_context,CGRectMake(0,0,400,400));
   
    CGAffineTransform ctm=[self ctm];
-   CGAffineTransform t=CGAffineTransformMakeTranslation(-[imageRep pixelsWide],-[imageRep pixelsHigh]);
+   CGAffineTransform t=CGAffineTransformMakeTranslation(-(int)CGImageGetWidth(_resamplingImage),-(int)CGImageGetHeight(_resamplingImage));
    ctm=CGAffineTransformConcat(t,ctm);
    ctm=CGAffineTransformScale(ctm,2,2);
-   
-   CGDataProviderRef provider=CGDataProviderCreateWithData(NULL,[imageRep bitmapData],[imageRep pixelsHigh]*[imageRep bytesPerRow],NULL);
-
-   CGImageRef image=CGImageCreate([imageRep pixelsWide],[imageRep pixelsHigh],8,[imageRep bitsPerPixel],[imageRep bytesPerRow],CGColorSpaceCreateDeviceRGB(),kCGImageAlphaLast|kCGBitmapByteOrder32Little,provider,NULL,NO,kCGRenderingIntentDefault);
-   
+      
    CGContextSaveGState(_context);
    CGContextClearRect(_context,CGRectMake(0,0,400,400));
    CGContextConcatCTM(_context,ctm);
    CGContextSetShouldAntialias(_context,_shouldAntialias);
    CGContextSetInterpolationQuality(_context,_interpolationQuality);
    CGContextSetBlendMode(_context,_blendMode);
-   CGContextDrawImage(_context,CGRectMake(0,0,[imageRep pixelsWide],[imageRep pixelsHigh]),image);
+
+
+   CGContextDrawImage(_context,CGRectMake(0,0,CGImageGetWidth(_resamplingImage),CGImageGetHeight(_resamplingImage)),_resamplingImage);
    
    CGContextRestoreGState(_context);
 }
 
 -(void)drawStraightLines {
    CGAffineTransform xform=[self ctm];
-   float      blackComponents[4]={0,0,0,1};
-    CGAffineTransform ctm=[self ctm];
   int               i,width=400,height=400;
 
     CGMutablePathRef  path=CGPathCreateMutable();

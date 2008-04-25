@@ -13,16 +13,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -init {
    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"CGEnableBuiltin"];
+
    _cgContext=[[NSClassFromString(@"DemoCGContext") alloc] init];
    _kgContext=[[NSClassFromString(@"DemoKGContext") alloc] init];
-   
-   CGDataProviderRef provider=CGDataProviderCreateWithData(NULL,[_cgContext bytes],[_cgContext bytesPerRow]*[_cgContext pixelsHigh],NULL);
-  _cgImageRef=CGImageCreate([_cgContext pixelsWide],[_cgContext pixelsHigh],[_cgContext bitsPerComponent],[_cgContext bitsPerPixel],[_cgContext bytesPerRow],CGColorSpaceCreateDeviceRGB(),[_cgContext bitmapInfo],provider,NULL,NO,kCGRenderingIntentDefault);
-   CGDataProviderRelease(provider);
-   
-   provider=CGDataProviderCreateWithData(NULL,[_kgContext bytes],[_kgContext bytesPerRow]*[_kgContext pixelsHigh],NULL);
-  _kgImageRef=CGImageCreate([_kgContext pixelsWide],[_kgContext pixelsHigh],[_kgContext bitsPerComponent],[_kgContext bitsPerPixel],[_kgContext bytesPerRow],CGColorSpaceCreateDeviceRGB(),[_kgContext bitmapInfo],provider,NULL,NO,kCGRenderingIntentDefault);
-   CGDataProviderRelease(provider);
+
    return self;
 
 }
@@ -52,21 +46,34 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
      [self performTest:@selector(drawBlending) withObject:nil];
      break;
     case 3:
-     [self performTest:@selector(drawBitmapImageRep:) withObject:_imageRep];
+     [self performTest:@selector(drawBitmapImageRep) withObject:nil];
      break;
    }
    
-   [_cgView setImageRef:_cgImageRef];
-   [_kgView setImageRef:_kgImageRef];
+   CGDataProviderRef provider;
+   CGImageRef        image;
+   
+   if(_cgContext!=nil){
+    provider=CGDataProviderCreateWithData(NULL,[_cgContext bytes],[_cgContext bytesPerRow]*[_cgContext pixelsHigh],NULL);
+  image=CGImageCreate([_cgContext pixelsWide],[_cgContext pixelsHigh],[_cgContext bitsPerComponent],[_cgContext bitsPerPixel],[_cgContext bytesPerRow],CGColorSpaceCreateDeviceRGB(),[_cgContext bitmapInfo],provider,NULL,NO,kCGRenderingIntentDefault);
+     CGDataProviderRelease(provider);
+    [_cgView setImageRef:image];
+    CGImageRelease(image);
+   }
+   
+   if(_kgContext!=nil){
+   provider=CGDataProviderCreateWithData(NULL,[_kgContext bytes],[_kgContext bytesPerRow]*[_kgContext pixelsHigh],NULL);
+  image=CGImageCreate([_kgContext pixelsWide],[_kgContext pixelsHigh],[_kgContext bitsPerComponent],[_kgContext bitsPerPixel],[_kgContext bytesPerRow],CGColorSpaceCreateDeviceRGB(),[_kgContext bitmapInfo],provider,NULL,NO,kCGRenderingIntentDefault);
+    CGDataProviderRelease(provider);
+    [_kgView setImageRef:image];
+    CGImageRelease(image);
+   }
 //   [_diffView setImageRef:[_kgRender imageRefOfDifferences:_cgRender]];
 }
 
 -(void)awakeFromNib {
    [[NSColorPanel sharedColorPanel] setShowsAlpha:YES];
-   
-   NSString         *path=[[NSBundle bundleForClass:[self class]] pathForResource:@"overlay" ofType:@"png"];
-   
-  _imageRep=[[NSBitmapImageRep imageRepWithContentsOfFile:path] retain];
+
   [self setNeedsDisplay];
 }
 

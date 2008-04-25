@@ -12,7 +12,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "KGImageSource_JPEG.h"
 #import "KGImageSource_BMP.h"
 #import <Foundation/NSData.h>
-#import <Foundation/NSRaise.h>
+#import "KGExceptions.h"
 
 @implementation KGImageSource
 
@@ -33,12 +33,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 +(BOOL)isTypeOfData:(NSData *)data {
-   NSInvalidAbstractInvocation();
+   KGInvalidAbstractInvocation();
    return NO;
 }
 
 -initWithData:(NSData *)data options:(NSDictionary *)options {
-  NSInvalidAbstractInvocation();
+  KGInvalidAbstractInvocation();
   return nil;
 }
 
@@ -54,12 +54,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(unsigned)count {
-   NSInvalidAbstractInvocation();
+   KGInvalidAbstractInvocation();
    return 0;
 }
 
 -(KGImage *)imageAtIndex:(unsigned)index options:(NSDictionary *)options {
-  NSInvalidAbstractInvocation();
+  KGInvalidAbstractInvocation();
   return nil;
 }
 

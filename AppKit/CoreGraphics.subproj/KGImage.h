@@ -112,15 +112,22 @@ typedef struct  {
 } VGPixelDecode;
 
 
-typedef struct KGRGBA {
+typedef struct {
    CGFloat r;
    CGFloat g;
    CGFloat b;
    CGFloat a;
-} KGRGBA;
+} KGRGBAffff;
 
-static inline KGRGBA KGRGBAInit(CGFloat r,CGFloat g,CGFloat b,CGFloat a){
-   KGRGBA result;
+typedef struct {
+   unsigned char r;
+   unsigned char g;
+   unsigned char b;
+   unsigned char a;
+} KGRGBA8888;
+
+static inline KGRGBAffff KGRGBAffffInit(CGFloat r,CGFloat g,CGFloat b,CGFloat a){
+   KGRGBAffff result;
    result.r=r;
    result.g=g;
    result.b=b;
@@ -128,7 +135,7 @@ static inline KGRGBA KGRGBAInit(CGFloat r,CGFloat g,CGFloat b,CGFloat a){
    return result;
 }
 
-static inline KGRGBA KGRGBAMultiplyByFloat(KGRGBA result,CGFloat value){
+static inline KGRGBAffff KGRGBAffffMultiplyByFloat(KGRGBAffff result,CGFloat value){
    result.r*=value;
    result.g*=value;
    result.b*=value;
@@ -136,7 +143,7 @@ static inline KGRGBA KGRGBAMultiplyByFloat(KGRGBA result,CGFloat value){
    return result;
 }
 
-static inline KGRGBA KGRGBAAdd(KGRGBA result,KGRGBA other){
+static inline KGRGBAffff KGRGBAffffAdd(KGRGBAffff result,KGRGBAffff other){
    result.r+=other.r;
    result.g+=other.g;
    result.b+=other.b;
@@ -144,45 +151,48 @@ static inline KGRGBA KGRGBAAdd(KGRGBA result,KGRGBA other){
    return result;
 }
 
-static inline KGRGBA KGRGBAPremultiply(KGRGBA result){
+static inline KGRGBAffff KGRGBAffffPremultiply(KGRGBAffff result){
    result.r*=result.a;
    result.g*=result.a;
    result.b*=result.a; 
    return result;
 }
 
-static inline void KGRGBPremultiplySpan(KGRGBA *span,int length){
+static inline void KGRGBPremultiplySpan(KGRGBAffff *span,int length){
    int i;
       
    for(i=0;i<length;i++)
-    span[i]=KGRGBAPremultiply(span[i]);
+    span[i]=KGRGBAffffPremultiply(span[i]);
 }
 
 @class KGImage;
-
-typedef void (*KGImageReadSpan_KGRGBA)(KGImage *self,int x,int y,KGRGBA *span,int length);
+ 
+typedef void (*KGImageReadSpan_RGBA8888)(KGImage *self,int x,int y,KGRGBA8888 *span,int length);
+typedef void (*KGImageReadSpan_RGBAffff)(KGImage *self,int x,int y,KGRGBAffff *span,int length);
 
 @interface KGImage : NSObject <NSCopying> {
-@public // the public thing is temporary
-   size_t        _width;
-   size_t        _height;
-   size_t        _bitsPerComponent;
-   size_t        _bitsPerPixel;
-   size_t        _bytesPerRow;
-   KGColorSpace   *_colorSpace;
-   CGBitmapInfo        _bitmapInfo;
-   KGDataProvider *_provider;
-   float          *_decode;
-   BOOL            _interpolate;
-   BOOL            _isMask;
-   CGColorRenderingIntent        _renderingIntent;
-   KGImage        *_mask;
+   size_t _width;
+   size_t _height;
+   size_t _bitsPerComponent;
+   size_t _bitsPerPixel;
+   size_t _bytesPerRow;
+   
+   KGColorSpace          *_colorSpace;
+   CGBitmapInfo           _bitmapInfo;
+   KGDataProvider        *_provider;
+   float                 *_decode;
+   BOOL                   _interpolate;
+   BOOL                   _isMask;
+   CGColorRenderingIntent _renderingIntent;
+   KGImage               *_mask;
 
    unsigned char *_bytes;
    BOOL           _clampExternalPixels;
    KGSurfaceFormat         _imageFormat;
    VGColorInternalFormat _colorFormat;
-   KGImageReadSpan_KGRGBA  _readSpan;
+
+   KGImageReadSpan_RGBA8888 _readRGBA8888;
+   KGImageReadSpan_RGBAffff _readRGBAffff;
     
 	VGPixelDecode	m_desc;
 	BOOL				m_ownsData;
@@ -234,14 +244,25 @@ const char *KGImageNameWithIntent(CGColorRenderingIntent intent);
 size_t KGImageGetWidth(KGImage *self);
 size_t KGImageGetHeight(KGImage *self);
 
-KGRGBA KGRGBAUnpack(unsigned int inputData,KGImage *img);
-void KGImageReadPixelSpan_RGBA_8888(KGImage *self,int x,int y,KGRGBA *span,int length);
-void KGImageReadPixelSpan_32(KGImage *self,int x,int y,KGRGBA *span,int length);
-void KGImageReadPixelSpan_16(KGImage *self,int x,int y,KGRGBA *span,int length);
-void KGImageReadPixelSpan_08(KGImage *self,int x,int y,KGRGBA *span,int length);
-void KGImageReadPixelSpan_01(KGImage *self,int x,int y,KGRGBA *span,int length);
+KGRGBAffff KGRGBAffffUnpack(unsigned int inputData,KGImage *img);
 
-VGColorInternalFormat KGImageResample_EWAOnMipmaps(KGImage *self,RIfloat x, RIfloat y,KGRGBA *span,int length, Matrix3x3 surfaceToImage);
-VGColorInternalFormat KGImageResample_Bicubic(KGImage *self,RIfloat x, RIfloat y,KGRGBA *span,int length, Matrix3x3 surfaceToImage);
-VGColorInternalFormat KGImageResample_Bilinear(KGImage *self,RIfloat x, RIfloat y,KGRGBA *span,int length, Matrix3x3 surfaceToImage);
-VGColorInternalFormat KGImageResample_PointSampling(KGImage *self,RIfloat x, RIfloat y,KGRGBA *span,int length, Matrix3x3 surfaceToImage);
+void KGImageRead_G8_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span,int length);
+void KGImageRead_GA88_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span,int length);
+void KGImageRead_RGBA8888_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span,int length);
+void KGImageRead_ABGR8888_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span,int length);
+void KGImageRead_RGBA4444_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span,int length);
+void KGImageRead_BARG4444_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span,int length);
+void KGImageRead_RGBA2222_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span,int length);
+void KGImageRead_CMYK8888_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span,int length);
+
+void KGImageRead_ANY_to_RGBA8888_to_RGBAffff(KGImage *self,int x,int y,KGRGBAffff *span,int length);
+
+void KGImageRead_RGBAffffLittle_to_RGBAffff(KGImage *self,int x,int y,KGRGBAffff *span,int length);
+void KGImageRead_RGBAffffBig_to_RGBAffff(KGImage *self,int x,int y,KGRGBAffff *span,int length);
+
+
+
+VGColorInternalFormat KGImageResample_EWAOnMipmaps(KGImage *self,RIfloat x, RIfloat y,KGRGBAffff *span,int length, Matrix3x3 surfaceToImage);
+VGColorInternalFormat KGImageResample_Bicubic(KGImage *self,RIfloat x, RIfloat y,KGRGBAffff *span,int length, Matrix3x3 surfaceToImage);
+VGColorInternalFormat KGImageResample_Bilinear(KGImage *self,RIfloat x, RIfloat y,KGRGBAffff *span,int length, Matrix3x3 surfaceToImage);
+VGColorInternalFormat KGImageResample_PointSampling(KGImage *self,RIfloat x, RIfloat y,KGRGBAffff *span,int length, Matrix3x3 surfaceToImage);

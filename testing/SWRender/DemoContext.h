@@ -34,7 +34,7 @@
 -(void)setInterpolationQuality:(CGInterpolationQuality)value;
 
 -(void)drawClassic;
--(void)drawBitmapImageRep:(NSBitmapImageRep *)imageRep;
+-(void)drawBitmapImageRep;
 
 
 @end

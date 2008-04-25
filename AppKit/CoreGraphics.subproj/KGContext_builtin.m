@@ -51,7 +51,36 @@ BOOL _isAvailable=NO;
    if([super initWithBytes:bytes width:width height:height bitsPerComponent:bitsPerComponent bytesPerRow:bytesPerRow colorSpace:colorSpace bitmapInfo:bitmapInfo]==nil)
     return nil;
 
-   _surface=KGSurfaceInitWithBytes(KGSurfaceAlloc(),_width,_height,8,32,bytesPerRow,colorSpace,bitmapInfo,VG_lRGBA_8888_PRE,_bytes);
+   size_t bitsPerPixel=bitsPerComponent*[colorSpace numberOfComponents];
+   switch(_bitmapInfo&kCGBitmapAlphaInfoMask){
+   
+    case kCGImageAlphaNone:
+     break;
+     
+    case kCGImageAlphaPremultipliedLast:
+     bitsPerPixel+=_bitsPerComponent;
+     break;
+
+    case kCGImageAlphaPremultipliedFirst:
+     bitsPerPixel+=_bitsPerComponent;
+     break;
+
+    case kCGImageAlphaLast:
+     bitsPerPixel+=_bitsPerComponent;
+     break;
+
+    case kCGImageAlphaFirst:
+     bitsPerPixel+=_bitsPerComponent;
+     break;
+
+    case kCGImageAlphaNoneSkipLast:
+     break;
+
+    case kCGImageAlphaNoneSkipFirst:
+     break;
+   }
+   
+   _surface=KGSurfaceInitWithBytes(KGSurfaceAlloc(),_width,_height,bitsPerComponent,bitsPerPixel,bytesPerRow,colorSpace,bitmapInfo,VG_lRGBA_8888_PRE,_bytes);
    _rasterizer=KGRasterizerInit(KGRasterizerAlloc());
    _pixelPipe=KGPixelPipeInit(KGPixelPipeAlloc());
    KGPixelPipeSetRenderingSurface(_pixelPipe,_surface);

@@ -18,8 +18,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    
    DemoContext *_cgContext;
    DemoContext *_kgContext;
-   CGImageRef _cgImageRef;
-   CGImageRef _kgImageRef;
    
    IBOutlet NSTextField *_cgTime;
    IBOutlet NSTextField *_kgTime;
@@ -27,7 +25,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    IBOutlet KGImageView *_cgView;
    IBOutlet KGImageView *_kgView;
    IBOutlet KGImageView *_diffView;
-   NSBitmapImageRep *_imageRep;
 }
 
 -(void)selectTest:sender;

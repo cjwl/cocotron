@@ -40,65 +40,133 @@
 
 @implementation KGImage
 
-static BOOL initFunctionsForParameters(KGImage *self,size_t bitsPerComponent,size_t bitsPerPixel,KGColorSpace *colorSpace,CGBitmapInfo bitmapInfo,KGSurfaceFormat imageFormat){
+static BOOL initFunctionsForParameters(KGImage *self,size_t bitsPerComponent,size_t bitsPerPixel,KGColorSpace *colorSpace,CGBitmapInfo bitmapInfo){
 
    switch(bitsPerComponent){
+   
     case 32:
+     switch(bitsPerPixel){
+      case 32:
+       break;
+      case 128:
+       switch(bitmapInfo&kCGBitmapByteOrderMask){
+        case kCGBitmapByteOrderDefault:
+        case kCGBitmapByteOrder16Little:
+        case kCGBitmapByteOrder32Little:
+         self->_readRGBAffff=KGImageRead_RGBAffffLittle_to_RGBAffff;
+         return YES;
+         
+        case kCGBitmapByteOrder16Big:
+        case kCGBitmapByteOrder32Big:
+         self->_readRGBAffff=KGImageRead_RGBAffffBig_to_RGBAffff;
+         return YES;
+       }
+     }
      break;
      
     case  8:
      switch(bitsPerPixel){
+     
+      case 8:
+       self->_readRGBA8888=KGImageRead_G8_to_RGBA8888;
+       self->_readRGBAffff=KGImageRead_ANY_to_RGBA8888_to_RGBAffff;
+       return YES;
+      
+      case 16:
+       self->_readRGBA8888=KGImageRead_GA88_to_RGBA8888;
+       self->_readRGBAffff=KGImageRead_ANY_to_RGBA8888_to_RGBAffff;
+       return YES;
+       
+      case 24:
+       break;
+       
+      case 32:
+       if([colorSpace type]==KGColorSpaceGenericRGB){
+        switch(bitmapInfo&kCGBitmapByteOrderMask){
+         case kCGBitmapByteOrderDefault:
+         case kCGBitmapByteOrder16Little:
+         case kCGBitmapByteOrder32Little:
+          self->_readRGBA8888=KGImageRead_ABGR8888_to_RGBA8888;
+          self->_readRGBAffff=KGImageRead_ANY_to_RGBA8888_to_RGBAffff;
+          return YES;
+         
+         case kCGBitmapByteOrder16Big:
+         case kCGBitmapByteOrder32Big:
+          self->_readRGBA8888=KGImageRead_RGBA8888_to_RGBA8888;
+          self->_readRGBAffff=KGImageRead_ANY_to_RGBA8888_to_RGBAffff;
+          return YES;
+        }
+       }
+       else if([colorSpace type]==KGColorSpaceGenericCMYK){
+        switch(bitmapInfo&kCGBitmapByteOrderMask){
+         case kCGBitmapByteOrderDefault:
+         case kCGBitmapByteOrder16Little:
+         case kCGBitmapByteOrder32Little:
+          break;
+         
+         case kCGBitmapByteOrder16Big:
+         case kCGBitmapByteOrder32Big:
+          self->_readRGBA8888=KGImageRead_CMYK8888_to_RGBA8888;
+          self->_readRGBAffff=KGImageRead_ANY_to_RGBA8888_to_RGBAffff;
+          return YES;
+        }
+       }
+       break;
      }
      break;
      
     case  4:
-    case  2:
-    case  1:
-     break;
-   }
-   
-   switch(imageFormat){
-    case VG_sRGBA_8888:
-    case VG_lRGBA_8888:
-     self->_readSpan=KGImageReadPixelSpan_RGBA_8888;
-     return YES;
-     
-    case VG_sRGBA_8888_PRE:
-    case VG_lRGBA_8888_PRE:
-     self->_readSpan=KGImageReadPixelSpan_RGBA_8888;
-     return YES;
-
-    default:
      switch(bitsPerPixel){
-      case 32:
-       if(bitmapInfo&kCGBitmapFloatComponents){
-       }
-       else {
-        switch(bitmapInfo&kCGBitmapAlphaInfoMask){
-         case kCGImageAlphaNone:
-          break;
-        }
-        
-        self->_readSpan=KGImageReadPixelSpan_32;
-        return YES;
+      case 4:
+       break;
+      case 12:
+       break;
+      case 16:
+       switch(bitmapInfo&kCGBitmapByteOrderMask){
+        case kCGBitmapByteOrderDefault:
+        case kCGBitmapByteOrder16Little:
+        case kCGBitmapByteOrder32Little:
+         self->_readRGBA8888=KGImageRead_BARG4444_to_RGBA8888;
+         self->_readRGBAffff=KGImageRead_ANY_to_RGBA8888_to_RGBAffff;
+         return YES;
+         
+        case kCGBitmapByteOrder16Big:
+        case kCGBitmapByteOrder32Big:
+         self->_readRGBA8888=KGImageRead_RGBA4444_to_RGBA8888;
+         self->_readRGBAffff=KGImageRead_ANY_to_RGBA8888_to_RGBAffff;
+         return YES;
        }
 
-      case 16:
-       self->_readSpan=KGImageReadPixelSpan_16;
        return YES;
- 
-      case  8:
-       self->_readSpan=KGImageReadPixelSpan_08;
-       return YES;
+     }
+     break;
      
-      case  1:
-       self->_readSpan=KGImageReadPixelSpan_01;
+    case  2:
+     switch(bitsPerPixel){
+      case 2:
+       break;
+      case 6:
+       break;
+      case 8:
+       self->_readRGBA8888=KGImageRead_RGBA2222_to_RGBA8888;
+       self->_readRGBAffff=KGImageRead_ANY_to_RGBA8888_to_RGBAffff;
        return YES;
+     }
+     break;
+
+    case  1:
+     switch(bitsPerPixel){
+      case 1:
+    //   self->_readRGBAffff=KGImageReadPixelSpan_01;
+     //  return YES;
+       
+      case 3:
+       break;
      }
      break;
    }
    return NO;
-   
+      
 }
 
 -initWithWidth:(size_t)width height:(size_t)height bitsPerComponent:(size_t)bitsPerComponent bitsPerPixel:(size_t)bitsPerPixel bytesPerRow:(size_t)bytesPerRow colorSpace:(KGColorSpace *)colorSpace bitmapInfo:(unsigned)bitmapInfo provider:(KGDataProvider *)provider decode:(const CGFloat *)decode interpolate:(BOOL)interpolate renderingIntent:(CGColorRenderingIntent)renderingIntent {
@@ -118,10 +186,10 @@ static BOOL initFunctionsForParameters(KGImage *self,size_t bitsPerComponent,siz
    
    _bytes=(void *)[_provider bytes];
    _clampExternalPixels=NO; // only do this if premultiplied format
-   _imageFormat=VG_lRGBA_8888;
-   initFunctionsForParameters(self,bitsPerComponent,bitsPerPixel,colorSpace,bitmapInfo,_imageFormat);
+
+   initFunctionsForParameters(self,bitsPerComponent,bitsPerPixel,colorSpace,bitmapInfo);
     size_t checkBPP;
-	self->m_desc=KGSurfaceParametersToPixelLayout(_imageFormat,&checkBPP,&(self->_colorFormat));
+	self->m_desc=KGSurfaceParametersToPixelLayout(VG_lRGBA_8888,&checkBPP,&(self->_colorFormat));
     RI_ASSERT(checkBPP==bitsPerPixel);
    m_ownsData=NO;
     _mipmapsCount=0;
@@ -449,119 +517,256 @@ size_t KGImageGetHeight(KGImage *self) {
    return self->_height;
 }
 
-static inline RIfloat intToColor(unsigned int i, unsigned int maxi)
-{
-	return (RIfloat)(i & maxi) / (RIfloat)maxi;
-}
-
-KGRGBA KGRGBAUnpack(unsigned int inputData,KGImage *img){
-   KGRGBA result;
-   
-	int rb = img->m_desc.redBits;
-	int gb = img->m_desc.greenBits;
-	int bb = img->m_desc.blueBits;
-	int ab = img->m_desc.alphaBits;
-	int lb = img->m_desc.luminanceBits;
-	int rs = img->m_desc.redShift;
-	int gs = img->m_desc.greenShift;
-	int bs = img->m_desc.blueShift;
-	int as = img->m_desc.alphaShift;
-	int ls = img->m_desc.luminanceShift;
-
-	if(lb)
-	{	//luminance
-		result.r = result.g = result.b = intToColor(inputData >> ls, (1<<lb)-1);
-		result.a = 1.0f;
-	}
-	else
-	{	//rgba
-		result.r = rb ? intToColor(inputData >> rs, (1<<rb)-1) : (RIfloat)1.0f;
-		result.g = gb ? intToColor(inputData >> gs, (1<<gb)-1) : (RIfloat)1.0f;
-		result.b = bb ? intToColor(inputData >> bs, (1<<bb)-1) : (RIfloat)1.0f;
-		result.a = ab ? intToColor(inputData >> as, (1<<ab)-1) : (RIfloat)1.0f;
-	}
-    return result;
-}
-
 static  RIfloat byteToColor(unsigned char i){
 	return (RIfloat)(i) / (RIfloat)0xFF;
 }
 
-void KGImageReadPixelSpan_RGBA_8888(KGImage *self,int x,int y,KGRGBA *span,int length){
+static  RIfloat nibbleToColor(unsigned char i){
+	return (RIfloat)(i) / (RIfloat)0x0F;
+}
+
+static  RIfloat twoBitsToColor(unsigned char i){
+	return (RIfloat)(i) / (RIfloat)0x03;
+}
+
+void KGImageRead_ANY_to_RGBA8888_to_RGBAffff(KGImage *self,int x,int y,KGRGBAffff *span,int length){
+   KGRGBA8888 span8888[length];
+
+   self->_readRGBA8888(self,x,y,span8888,length);
+   int i;
+   for(i=0;i<length;i++){
+    KGRGBAffff  result;
+    
+    result.r = byteToColor(span8888[i].r);
+    result.g = byteToColor(span8888[i].g);
+    result.b = byteToColor(span8888[i].b);
+	result.a = byteToColor(span8888[i].a);
+    *span++=result;
+   }
+}
+
+float bytesLittleToFloat(unsigned char *scanline){
+   union {
+    unsigned char bytes[4];
+    float         f;
+   } u;
+
+#ifdef __LITTLE_ENDIAN__   
+   u.bytes[0]=scanline[0];
+   u.bytes[1]=scanline[1];
+   u.bytes[2]=scanline[2];
+   u.bytes[3]=scanline[3];
+#else
+   u.bytes[0]=scanline[3];
+   u.bytes[1]=scanline[2];
+   u.bytes[2]=scanline[1];
+   u.bytes[3]=scanline[0];
+#endif
+
+   return u.f;
+}
+
+void KGImageRead_RGBAffffLittle_to_RGBAffff(KGImage *self,int x,int y,KGRGBAffff *span,int length){
+   RIuint8 *scanline = self->_bytes + y * self->_bytesPerRow;
+   int i;
+
+   scanline+=x*16;
+   for(i=0;i<length;i++){
+    KGRGBAffff result;
+    
+    result.r=bytesLittleToFloat(scanline);
+    scanline+=4;
+    result.g=bytesLittleToFloat(scanline);
+    scanline+=4;
+    result.b=bytesLittleToFloat(scanline);
+    scanline+=4;
+    result.a=bytesLittleToFloat(scanline);
+    scanline+=4;
+        
+    *span++=result;
+   }
+}
+
+float bytesBigToFloat(unsigned char *scanline){
+   union {
+    unsigned char bytes[4];
+    float         f;
+   } u;
+
+#ifdef __BIG_ENDIAN__   
+   u.bytes[0]=scanline[0];
+   u.bytes[1]=scanline[1];
+   u.bytes[2]=scanline[2];
+   u.bytes[3]=scanline[3];
+#else
+   u.bytes[0]=scanline[3];
+   u.bytes[1]=scanline[2];
+   u.bytes[2]=scanline[1];
+   u.bytes[3]=scanline[0];
+#endif
+
+   return u.f;
+}
+
+void KGImageRead_RGBAffffBig_to_RGBAffff(KGImage *self,int x,int y,KGRGBAffff *span,int length){
+   RIuint8 *scanline = self->_bytes + y * self->_bytesPerRow;
+   int i;
+
+   scanline+=x*16;
+   for(i=0;i<length;i++){
+    KGRGBAffff result;
+    
+    result.r=bytesBigToFloat(scanline);
+    scanline+=4;
+    result.g=bytesBigToFloat(scanline);
+    scanline+=4;
+    result.b=bytesBigToFloat(scanline);
+    scanline+=4;
+    result.a=bytesBigToFloat(scanline);
+    scanline+=4;
+        
+    *span++=result;
+   }
+}
+
+void KGImageRead_G8_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span,int length){
+   RIuint8 *scanline = self->_bytes + y * self->_bytesPerRow;
+   int i;
+
+   scanline+=x;
+   for(i=0;i<length;i++){
+    KGRGBA8888 result;
+    
+    result.r=*scanline++;
+    result.g=result.r;
+    result.b=result.r;
+    result.a=0xFF;
+    
+    *span++=result;
+   }
+}
+
+void KGImageRead_GA88_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span,int length){
+   RIuint8 *scanline = self->_bytes + y * self->_bytesPerRow;
+   int i;
+
+   scanline+=x*2;
+   for(i=0;i<length;i++){
+    KGRGBA8888  result;
+    
+    result.r = *scanline++;
+    result.g=result.r;
+    result.b=result.r;
+	result.a = *scanline++;
+    *span++=result;
+   }
+}
+
+void KGImageRead_RGBA8888_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span,int length){
    RIuint8 *scanline = self->_bytes + y * self->_bytesPerRow;
    int i;
 
    scanline+=x*4;
    for(i=0;i<length;i++){
-#if 0
-// The original implementation "RGBA"  = in host endianess, so until endian-ness is fixed everywhere
-    unsigned char r=*scanline++;
-    unsigned char g=*scanline++;
-    unsigned char b=*scanline++;
-    unsigned char a=*scanline++;
-#else
-// use this
-    unsigned char a=*scanline++;
-    unsigned char b=*scanline++;
-    unsigned char g=*scanline++;
-    unsigned char r=*scanline++;
-#endif
-    KGRGBA  result;
+    KGRGBA8888  result;
     
-    result.r = byteToColor(r);
-    result.g = byteToColor(g);
-    result.b = byteToColor(b);
-	result.a = byteToColor(a);
+    result.r = *scanline++;
+    result.g = *scanline++;
+    result.b = *scanline++;
+	result.a = *scanline++;
     *span++=result;
    }
 }
 
-void KGImageReadPixelSpan_32(KGImage *self,int x,int y,KGRGBA *span,int length){
+void KGImageRead_ABGR8888_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span,int length){
    RIuint8 *scanline = self->_bytes + y * self->_bytesPerRow;
-   int          i;
-   unsigned int p;
+   int i;
 
-        for(i=0;i<length;i++,x++){
-            RIuint32* s = (((RIuint32*)scanline) + x);
-            p = (unsigned int)*s;
-            span[i]=KGRGBAUnpack(p, self);
-        }
+   scanline+=x*4;
+   for(i=0;i<length;i++){
+    KGRGBA8888  result;
+    
+    result.a = *scanline++;
+    result.b = *scanline++;
+    result.g = *scanline++;
+	result.r = *scanline++;
+    *span++=result;
+   }
 }
 
-void KGImageReadPixelSpan_16(KGImage *self,int x,int y,KGRGBA *span,int length){
+void KGImageRead_RGBA4444_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span,int length){
    RIuint8 *scanline = self->_bytes + y * self->_bytesPerRow;
-   int          i;
-   unsigned int p;
+   int i;
 
-        for(i=0;i<length;i++,x++){
-            RIuint16* s = ((RIuint16*)scanline) + x;
-            p = (unsigned int)*s;
-            span[i]=KGRGBAUnpack(p, self);
-        }
+   scanline+=x*2;
+   for(i=0;i<length;i++){
+    KGRGBA8888  result;
+    
+    result.r = *scanline&0xF0;
+    result.g = (*scanline&0x0F)<<4;
+    scanline++;
+    result.b = *scanline&0xF0;
+    result.a = (*scanline&0x0F)<<4;
+    scanline++;
+    *span++=result;
+   }
 }
 
-void KGImageReadPixelSpan_08(KGImage *self,int x,int y,KGRGBA *span,int length){
+void KGImageRead_BARG4444_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span,int length){
    RIuint8 *scanline = self->_bytes + y * self->_bytesPerRow;
-   int          i;
-   unsigned int p;
+   int i;
 
-        for(i=0;i<length;i++,x++){
-            RIuint8* s = ((RIuint8*)scanline) + x;
-            p = (unsigned int)*s;
-            span[i]=KGRGBAUnpack(p, self);
-        }
+   scanline+=x*2;
+   for(i=0;i<length;i++){
+    KGRGBA8888  result;
+    
+    result.b = *scanline&0xF0;
+    result.a = (*scanline&0x0F)<<4;
+    scanline++;
+    result.r = *scanline&0xF0;
+    result.g = (*scanline&0x0F)<<4;
+    scanline++;
+    *span++=result;
+   }
 }
 
-void KGImageReadPixelSpan_01(KGImage *self,int x,int y,KGRGBA *span,int length){
+void KGImageRead_RGBA2222_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span,int length){
    RIuint8 *scanline = self->_bytes + y * self->_bytesPerRow;
-   int          i;
-   unsigned int p;
+   int i;
 
-        for(i=0;i<length;i++,x++){
-            RIuint8* s = scanline + (x>>3);
-            p = (((unsigned int)*s) >> (x&7)) & 1u;
-            span[i]=KGRGBAUnpack(p, self);
-        }
+   scanline+=x;
+   for(i=0;i<length;i++){
+    KGRGBA8888  result;
+    
+    result.r = *scanline&0xC0;
+    result.g = (*scanline&0x03)<<2;
+    result.b = (*scanline&0x0C)<<4;
+	result.a = (*scanline&0x03)<<6;
+    scanline++;
+    *span++=result;
+   }
+}
+
+void KGImageRead_CMYK8888_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span,int length){
+// poor results
+   RIuint8 *scanline = self->_bytes + y * self->_bytesPerRow;
+   int i;
+
+   scanline+=x*4;
+   for(i=0;i<length;i++){
+    KGRGBA8888  result;
+    unsigned char c=*scanline++;
+    unsigned char y=*scanline++;
+    unsigned char m=*scanline++;
+    unsigned char k=*scanline++;
+    unsigned char w=0xff-k;
+    
+    result.r = c>w?0:w-c;
+    result.g = m>w?0:w-m;
+    result.b = y>w?0:w-y;
+	result.a = 1;
+    *span++=result;
+   }
 }
 
 // accuracy doesn't seem to matter much, it appears
@@ -590,7 +795,7 @@ KGImage *KGSurfaceMipMapForLevel(KGImage *self,int level){
 }
 
 
-VGColorInternalFormat KGImageResample_EWAOnMipmaps(KGImage *self,RIfloat x, RIfloat y,KGRGBA *span,int length, Matrix3x3 surfaceToImage){
+VGColorInternalFormat KGImageResample_EWAOnMipmaps(KGImage *self,RIfloat x, RIfloat y,KGRGBAffff *span,int length, Matrix3x3 surfaceToImage){
 // Visual test indicates this is very close to what Apple is using 
    int i;
    		RIfloat m_pixelFilterRadius = 1.25f;
@@ -683,14 +888,14 @@ VGColorInternalFormat KGImageResample_EWAOnMipmaps(KGImage *self,RIfloat x, RIfl
 		int v1 = RI_FLOOR_TO_INT(V0 - vsize + 0.5f);
 		int v2 = RI_FLOOR_TO_INT(V0 + vsize + 0.5f);
 		if( u1 == u2 || v1 == v2 ){
-			span[i]=KGRGBAInit(0,0,0,0);
+			span[i]=KGRGBAffffInit(0,0,0,0);
             continue;
         }
         
 		//scale the filter so that Q = 1 at the cutoff radius
 		RIfloat F = A*C - 0.25f * B*B;
 		if( F <= 0.0f ){
-			span[i]=KGRGBAInit(0,0,0,0);	//invalid filter shape due to numerical inaccuracies => return black
+			span[i]=KGRGBAffffInit(0,0,0,0);	//invalid filter shape due to numerical inaccuracies => return black
             continue;
         }
 		RIfloat ooF = 1.0f / F;
@@ -699,7 +904,7 @@ VGColorInternalFormat KGImageResample_EWAOnMipmaps(KGImage *self,RIfloat x, RIfl
 		C *= ooF;
 		
 		//evaluate filter by using forward differences to calculate Q = A*U^2 + B*U*V + C*V^2
-		KGRGBA color=KGRGBAInit(0,0,0,0);
+		KGRGBAffff color=KGRGBAffffInit(0,0,0,0);
 		RIfloat sumweight = 0.0f;
 		RIfloat DDQ = 2.0f * A;
 		RIfloat U = (RIfloat)u1 - U0 + 0.5f;
@@ -712,7 +917,7 @@ VGColorInternalFormat KGImageResample_EWAOnMipmaps(KGImage *self,RIfloat x, RIfl
 			RIfloat Q = (C*V+B*U)*V + A*U*U;
             int u;
             
-            KGRGBA texel[u2-u1];
+            KGRGBAffff texel[u2-u1];
             KGSurfaceReadTexelTilePad(mipmap,u1, v,texel,(u2-u1));
 			for(u=u1;u<u2;u++)
 			{
@@ -724,7 +929,7 @@ VGColorInternalFormat KGImageResample_EWAOnMipmaps(KGImage *self,RIfloat x, RIfl
 					RIfloat weight = (RIfloat)fastExp(-0.5f * 10.0f * Q);	//gaussian at radius 10 equals 0.0067
 #endif
                     
-					color=KGRGBAAdd(color,  KGRGBAMultiplyByFloat(texel[u-u1],weight));
+					color=KGRGBAffffAdd(color,  KGRGBAffffMultiplyByFloat(texel[u-u1],weight));
 					sumweight += weight;
 				}
 				Q += DQ;
@@ -732,12 +937,12 @@ VGColorInternalFormat KGImageResample_EWAOnMipmaps(KGImage *self,RIfloat x, RIfl
 			}
 		}
 		if( sumweight == 0.0f ){
-			span[i]=KGRGBAInit(0,0,0,0);
+			span[i]=KGRGBAffffInit(0,0,0,0);
             continue;
         }
 		RI_ASSERT(sumweight > 0.0f);
 		sumweight = 1.0f / sumweight;
-		span[i]=KGRGBAMultiplyByFloat(color,sumweight);
+		span[i]=KGRGBAffffMultiplyByFloat(color,sumweight);
 	}
 
 
@@ -752,16 +957,16 @@ static inline float cubic(float v0,float v1,float v2,float v3,float fraction){
   return RI_CLAMP((p * (fraction*fraction*fraction)) + (q * fraction*fraction) + ((v2 - v0) * fraction) + v1,0,1);
 }
 
-KGRGBA bicubicInterpolate(KGRGBA a,KGRGBA b,KGRGBA c,KGRGBA d,float fraction)
+KGRGBAffff bicubicInterpolate(KGRGBAffff a,KGRGBAffff b,KGRGBAffff c,KGRGBAffff d,float fraction)
 {
-  return KGRGBAInit(
+  return KGRGBAffffInit(
    cubic(a.r, b.r, c.r, d.r, fraction),
    cubic(a.g, b.g, c.g, d.g, fraction),
    cubic(a.b, b.b, c.b, d.b, fraction),
    cubic(a.a, b.a, c.a, d.a, fraction));
 }
 
-VGColorInternalFormat KGImageResample_Bicubic(KGImage *self,RIfloat x, RIfloat y,KGRGBA *span,int length, Matrix3x3 surfaceToImage){
+VGColorInternalFormat KGImageResample_Bicubic(KGImage *self,RIfloat x, RIfloat y,KGRGBAffff *span,int length, Matrix3x3 surfaceToImage){
    int i;
    
    for(i=0;i<length;i++,x++){
@@ -777,8 +982,8 @@ VGColorInternalFormat KGImageResample_Bicubic(KGImage *self,RIfloat x, RIfloat y
     int v = RI_FLOOR_TO_INT(uvw.y);
     float vfrac=uvw.y-v;
         
-    KGRGBA t0,t1,t2,t3;
-    KGRGBA cspan[4];
+    KGRGBAffff t0,t1,t2,t3;
+    KGRGBAffff cspan[4];
      
     KGSurfaceReadTexelTilePad(self,u - 1,v - 1,cspan,4);
     t0 = bicubicInterpolate(cspan[0],cspan[1],cspan[2],cspan[3],ufrac);
@@ -798,7 +1003,7 @@ VGColorInternalFormat KGImageResample_Bicubic(KGImage *self,RIfloat x, RIfloat y
    return self->_colorFormat;
 }
 
-VGColorInternalFormat KGImageResample_Bilinear(KGImage *self,RIfloat x, RIfloat y,KGRGBA *span,int length, Matrix3x3 surfaceToImage){
+VGColorInternalFormat KGImageResample_Bilinear(KGImage *self,RIfloat x, RIfloat y,KGRGBAffff *span,int length, Matrix3x3 surfaceToImage){
    int i;
 
    for(i=0;i<length;i++,x++){
@@ -810,23 +1015,23 @@ VGColorInternalFormat KGImageResample_Bilinear(KGImage *self,RIfloat x, RIfloat 
 	uvw.y -= 0.5f;
 	int u = RI_FLOOR_TO_INT(uvw.x);
 	int v = RI_FLOOR_TO_INT(uvw.y);
-	KGRGBA c00c01[2];
+	KGRGBAffff c00c01[2];
     KGSurfaceReadTexelTilePad(self,u,v,c00c01,2);
 
-    KGRGBA c01c11[2];
+    KGRGBAffff c01c11[2];
     KGSurfaceReadTexelTilePad(self,u,v+1,c01c11,2);
 
     RIfloat fu = uvw.x - (RIfloat)u;
     RIfloat fv = uvw.y - (RIfloat)v;
-    KGRGBA c0 = KGRGBAAdd(KGRGBAMultiplyByFloat(c00c01[0],(1.0f - fu)),KGRGBAMultiplyByFloat(c00c01[1],fu));
-    KGRGBA c1 = KGRGBAAdd(KGRGBAMultiplyByFloat(c01c11[0],(1.0f - fu)),KGRGBAMultiplyByFloat(c01c11[1],fu));
-    span[i]=KGRGBAAdd(KGRGBAMultiplyByFloat(c0,(1.0f - fv)),KGRGBAMultiplyByFloat(c1, fv));
+    KGRGBAffff c0 = KGRGBAffffAdd(KGRGBAffffMultiplyByFloat(c00c01[0],(1.0f - fu)),KGRGBAffffMultiplyByFloat(c00c01[1],fu));
+    KGRGBAffff c1 = KGRGBAffffAdd(KGRGBAffffMultiplyByFloat(c01c11[0],(1.0f - fu)),KGRGBAffffMultiplyByFloat(c01c11[1],fu));
+    span[i]=KGRGBAffffAdd(KGRGBAffffMultiplyByFloat(c0,(1.0f - fv)),KGRGBAffffMultiplyByFloat(c1, fv));
    }
 
    return self->_colorFormat;
 }
 
-VGColorInternalFormat KGImageResample_PointSampling(KGImage *self,RIfloat x, RIfloat y,KGRGBA *span,int length, Matrix3x3 surfaceToImage){
+VGColorInternalFormat KGImageResample_PointSampling(KGImage *self,RIfloat x, RIfloat y,KGRGBAffff *span,int length, Matrix3x3 surfaceToImage){
    int i;
    
    for(i=0;i<length;i++,x++){

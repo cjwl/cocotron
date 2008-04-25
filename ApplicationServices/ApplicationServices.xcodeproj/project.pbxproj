@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		FE01AAE60C5D9BF900AEA51A /* ApplicationServices.h in Headers */ = {isa = PBXBuildFile; fileRef = FE32179C0BB41C65004F000A /* ApplicationServices.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE45EDC30DC2400F00F49290 /* CGImageSource.h in Headers */ = {isa = PBXBuildFile; fileRef = FE45EDC20DC2400F00F49290 /* CGImageSource.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FECAF4E90DB7110900BA2A8E /* CGAffineTransform.h in Headers */ = {isa = PBXBuildFile; fileRef = FECAF4DA0DB7110900BA2A8E /* CGAffineTransform.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FECAF4EA0DB7110900BA2A8E /* CGBitmapContext.h in Headers */ = {isa = PBXBuildFile; fileRef = FECAF4DB0DB7110900BA2A8E /* CGBitmapContext.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FECAF4EB0DB7110900BA2A8E /* CGColor.h in Headers */ = {isa = PBXBuildFile; fileRef = FECAF4DC0DB7110900BA2A8E /* CGColor.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -82,6 +83,7 @@
 		8DC2EF5A0486A6940098B216 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		FE01AAED0C5D9BF900AEA51A /* ApplicationServices.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ApplicationServices.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FE32179C0BB41C65004F000A /* ApplicationServices.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = ApplicationServices.h; sourceTree = "<group>"; };
+		FE45EDC20DC2400F00F49290 /* CGImageSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGImageSource.h; sourceTree = "<group>"; };
 		FECAF4DA0DB7110900BA2A8E /* CGAffineTransform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGAffineTransform.h; sourceTree = "<group>"; };
 		FECAF4DB0DB7110900BA2A8E /* CGBitmapContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGBitmapContext.h; sourceTree = "<group>"; };
 		FECAF4DC0DB7110900BA2A8E /* CGColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGColor.h; sourceTree = "<group>"; };
@@ -124,6 +126,7 @@
 		0867D691FE84028FC02AAC07 /* ApplicationServices */ = {
 			isa = PBXGroup;
 			children = (
+				FE45EDC20DC2400F00F49290 /* CGImageSource.h */,
 				FECAF52D0DB7134F00BA2A8E /* CGPDFPage.h */,
 				FECAF5150DB711BC00BA2A8E /* CoreGraphicsExport.h */,
 				FECAF5010DB7119B00BA2A8E /* Foundation.xcodeproj */,
@@ -236,6 +239,7 @@
 				FECAF4F70DB7110900BA2A8E /* CoreGraphics.h in Headers */,
 				FECAF5160DB711BC00BA2A8E /* CoreGraphicsExport.h in Headers */,
 				FECAF52E0DB7134F00BA2A8E /* CGPDFPage.h in Headers */,
+				FE45EDC30DC2400F00F49290 /* CGImageSource.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

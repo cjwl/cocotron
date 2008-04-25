@@ -411,33 +411,33 @@ static inline VGColor radialGradientColorAt(KGPixelPipe *self,int x,int y){
    return VGColorPremultiply(result);
 }
 
-static void KGPixelPipeReadPremultipliedConstantSourceSpan(KGPixelPipe *self,int x,int y,KGRGBA *span,int length,int format){
-   KGRGBA  rgba=KGRGBAFromColor(VGColorConvert(self->m_paint->m_paintColor,format));
+static void KGPixelPipeReadPremultipliedConstantSourceSpan(KGPixelPipe *self,int x,int y,KGRGBAffff *span,int length,int format){
+   KGRGBAffff  rgba=KGRGBAffffFromColor(VGColorConvert(self->m_paint->m_paintColor,format));
    int i;
    
    for(i=0;i<length;i++)
     span[i]=rgba;
 }
 
-static void KGPixelPipeReadPremultipliedLinearGradientSpan(KGPixelPipe *self,int x,int y,KGRGBA *span,int length,int format){
+static void KGPixelPipeReadPremultipliedLinearGradientSpan(KGPixelPipe *self,int x,int y,KGRGBAffff *span,int length,int format){
    int i;
    
    for(i=0;i<length;i++,x++){
     VGColor s=linearGradientColorAt(self,x,y);
-    span[i]=KGRGBAFromColor(VGColorConvert(s,format));
+    span[i]=KGRGBAffffFromColor(VGColorConvert(s,format));
    }
 }
 
-static void KGPixelPipeReadPremultipliedRadialGradientSpan(KGPixelPipe *self,int x,int y,KGRGBA *span,int length,int format){
+static void KGPixelPipeReadPremultipliedRadialGradientSpan(KGPixelPipe *self,int x,int y,KGRGBAffff *span,int length,int format){
    int i;
    
    for(i=0;i<length;i++,x++){
     VGColor s=radialGradientColorAt(self,x,y);
-    span[i]=KGRGBAFromColor(VGColorConvert(s,format));
+    span[i]=KGRGBAffffFromColor(VGColorConvert(s,format));
    }
 }
 
-static void KGPixelPipeReadPremultipliedPatternSpan(KGPixelPipe *self,int x,int y,KGRGBA *span,int length,int format){
+static void KGPixelPipeReadPremultipliedPatternSpan(KGPixelPipe *self,int x,int y,KGRGBAffff *span,int length,int format){
    if(self->m_paint->m_pattern==NULL)
     KGPixelPipeReadPremultipliedConstantSourceSpan(self,x,y,span,length,format);
    else {
@@ -446,7 +446,7 @@ static void KGPixelPipeReadPremultipliedPatternSpan(KGPixelPipe *self,int x,int 
    
 }
 
-static void KGPixelPipeReadPremultipliedImageNormalSpan(KGPixelPipe *self,int x,int y,KGRGBA *span,int length,VGColorInternalFormat format){
+static void KGPixelPipeReadPremultipliedImageNormalSpan(KGPixelPipe *self,int x,int y,KGRGBAffff *span,int length,VGColorInternalFormat format){
    VGColorInternalFormat spanFormat;
    
    if(self->m_imageQuality== kCGInterpolationHigh){
@@ -465,7 +465,7 @@ static void KGPixelPipeReadPremultipliedImageNormalSpan(KGPixelPipe *self,int x,
    convertSpan(span,length,spanFormat,format);
 }
 
-static void KGPixelPipeReadPremultipliedSourceSpan(KGPixelPipe *self,int x,int y,KGRGBA *span,int length,int format){
+static void KGPixelPipeReadPremultipliedSourceSpan(KGPixelPipe *self,int x,int y,KGRGBAffff *span,int length,int format){
    int i;
    
    RI_ASSERT(self->m_paint);
@@ -492,14 +492,14 @@ static void KGPixelPipeReadPremultipliedSourceSpan(KGPixelPipe *self,int x,int y
      KGPixelPipeReadPremultipliedImageNormalSpan(self,x,y,span,length,format);
     }
     else {
-     KGRGBA imageSpan[length];
+     KGRGBAffff imageSpan[length];
      
      KGPixelPipeReadPremultipliedImageNormalSpan(self,x,y,imageSpan,length,self->m_image->_colorFormat|VGColorPREMULTIPLIED);
      
    for(i=0;i<length;i++,x++){
 	//evaluate paint
-	VGColor s=VGColorFromKGRGBA(span[i],format);
-    VGColor im=VGColorFromKGRGBA(imageSpan[i],self->m_image->_colorFormat);
+	VGColor s=VGColorFromKGRGBA_ffff(span[i],format);
+    VGColor im=VGColorFromKGRGBA_ffff(imageSpan[i],self->m_image->_colorFormat);
     
 	//apply image (vgDrawImage only)
 	//1. paint: convert paint to dst space
@@ -570,7 +570,7 @@ static void KGPixelPipeReadPremultipliedSourceSpan(KGPixelPipe *self,int x,int y
 			break;
 		}
 
-    span[i]=KGRGBAFromColor(s);
+    span[i]=KGRGBAffffFromColor(s);
    }
    }
    }
@@ -579,7 +579,7 @@ static void KGPixelPipeReadPremultipliedSourceSpan(KGPixelPipe *self,int x,int y
 }
 
 
-static void KGBlendSpanWithMode_ffff(KGRGBA *src,KGRGBA *dst,int length,CGBlendMode blendMode){
+static void KGBlendSpanWithMode_ffff(KGRGBAffff *src,KGRGBAffff *dst,int length,CGBlendMode blendMode){
    switch(blendMode){
    
     case kCGBlendModeNormal:
@@ -696,39 +696,39 @@ static void KGBlendSpanWithMode_ffff(KGRGBA *src,KGRGBA *dst,int length,CGBlendM
    }
 }
 
-static inline KGRGBA KGRGBAConvert(KGRGBA rgba,int fromFormat,int toFormat){
-   VGColor color=VGColorFromKGRGBA(rgba,fromFormat);
+static inline KGRGBAffff KGRGBAffffConvert(KGRGBAffff rgba,int fromFormat,int toFormat){
+   VGColor color=VGColorFromKGRGBA_ffff(rgba,fromFormat);
    
    color=VGColorConvert(color,toFormat);
    
-   return KGRGBAFromColor(color);
+   return KGRGBAffffFromColor(color);
 }
 
-static VGColorInternalFormat KGApplyCoverageToSpan(KGRGBA *dst,RIfloat *coverage,KGRGBA *result,int length,VGColorInternalFormat dFormat){
+static VGColorInternalFormat KGApplyCoverageToSpan(KGRGBAffff *dst,RIfloat *coverage,KGRGBAffff *result,int length,VGColorInternalFormat dFormat){
    //apply antialiasing in linear color space
    VGColorInternalFormat aaFormat = (dFormat & VGColorLUMINANCE) ? VGColor_lLA_PRE : VGColor_lRGBA_PRE;
    int i;
    
    if(aaFormat!=dFormat){
     for(i=0;i<length;i++){
-     KGRGBA r=result[i];
-     KGRGBA d=dst[i];
+     KGRGBAffff r=result[i];
+     KGRGBAffff d=dst[i];
      RIfloat cov=coverage[i];
 
-     r=KGRGBAConvert(r,dFormat,aaFormat);
-     d=KGRGBAConvert(d,dFormat,aaFormat);
+     r=KGRGBAffffConvert(r,dFormat,aaFormat);
+     d=KGRGBAffffConvert(d,dFormat,aaFormat);
    
-     result[i]=KGRGBAAdd(KGRGBAMultiplyByFloat(r , cov) , KGRGBAMultiplyByFloat(d , (1.0f - cov)));
+     result[i]=KGRGBAffffAdd(KGRGBAffffMultiplyByFloat(r , cov) , KGRGBAffffMultiplyByFloat(d , (1.0f - cov)));
     }
     return aaFormat;
    }
    else {
     for(i=0;i<length;i++){
-     KGRGBA r=result[i];
-     KGRGBA d=dst[i];
+     KGRGBAffff r=result[i];
+     KGRGBAffff d=dst[i];
      RIfloat cov=coverage[i];
      
-     result[i]=KGRGBAAdd(KGRGBAMultiplyByFloat(r , cov) , KGRGBAMultiplyByFloat(d , (1.0f - cov)));
+     result[i]=KGRGBAffffAdd(KGRGBAffffMultiplyByFloat(r , cov) , KGRGBAffffMultiplyByFloat(d , (1.0f - cov)));
     }
     
     return dFormat;
@@ -747,10 +747,10 @@ void KGPixelPipeWriteCoverage(KGPixelPipe *self,int x, int y,RIfloat *coverage,i
 //		return;
 
 	//read destination color
-    KGRGBA d[length];
+    KGRGBAffff d[length];
     VGColorInternalFormat dFormat=KGSurfaceReadPremultipliedSpan_ffff(self->m_renderingSurface,x,y,d,length);
 
-    KGRGBA src[length];
+    KGRGBAffff src[length];
     KGPixelPipeReadPremultipliedSourceSpan(self,x,y,src,length,dFormat);
     
     KGBlendSpanWithMode_ffff(src,d,length,self->m_blendMode);
