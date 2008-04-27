@@ -39,6 +39,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 				type++;
 			type++;
 		}
+		while(isdigit(*type))
+			type++;
 		*cleanType=*type;
 		type++; cleanType++;
 		*cleanType=0;
@@ -84,20 +86,21 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(BOOL)_setValue:(id)value toBuffer:(void*)buffer ofType:(const char*)type
 {
-	if(type[0]!='@' && strlen(type)>1)
+	char* cleanType=__builtin_alloca(strlen(type)+1);
+	[self _demangleTypeEncoding:type to:cleanType];
+	
+	if(cleanType[0]!='@' && strlen(cleanType)>1)
 	{
-		char* cleanType=__builtin_alloca(strlen(type)+1);
-		[self _demangleTypeEncoding:type to:cleanType];
-
 		if(strcmp([value objCType], cleanType))
 		{
+			NSLog(@"trying to set value of type %s for type %@", cleanType, [value objCType]);
 			return NO;
 		}
 		[value getValue:buffer];
 		return YES;
 	}
 	
-	switch(type[0])
+	switch(cleanType[0])
 	{
 		case '@':
 			*(id*)buffer = value;
@@ -409,7 +412,7 @@ void objc_setProperty (id self, SEL _cmd, size_t offset, id value, BOOL isAtomic
 {
 	if(isAtomic)
 	{
-		NSUnimplementedFunction();
+	//	NSUnimplementedFunction();
 	}
 	
 	const char* origName = sel_getName(_cmd);
@@ -434,5 +437,18 @@ void objc_setProperty (id self, SEL _cmd, size_t offset, id value, BOOL isAtomic
 	[self didChangeValueForKey:key];
 
 	[key release];
-
 }
+
+id objc_getProperty (id self, SEL _cmd, ptrdiff_t offset, BOOL isAtomic)
+{
+	if(isAtomic)
+	{
+	//	NSUnimplementedFunction();
+	}
+
+	void *buffer=(void*)self+offset;
+	id value=*(id*)buffer;
+	
+	return [[value retain] autorelease];
+}
+

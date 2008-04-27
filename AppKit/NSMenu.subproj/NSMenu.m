@@ -286,7 +286,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       }
      }
 
-     if(enabled!=[item isEnabled]){
+     if(enabled!=[item isEnabled] && ![item _binderForBinding:@"enabled" create:NO]){
       [item setEnabled:enabled];
       [self itemChanged:item];
      }
