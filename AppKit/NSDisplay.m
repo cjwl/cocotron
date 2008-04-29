@@ -69,6 +69,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return nil;
 }
 
+-(void)_addSystemColor:(NSColor *) result forName:(NSString *)colorName {
+   NSInvalidAbstractInvocation();
+ }
+
+
 -(NSString *)menuFontNameAndSize:(float *)pointSize {
    NSInvalidAbstractInvocation();
    return nil;

@@ -29,6 +29,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(CGWindow *)panelWithFrame:(NSRect)frame styleMask:(unsigned)styleMask backingType:(unsigned)backingType;
 
 -(NSColor *)colorWithName:(NSString *)colorName;
+-(void)_addSystemColor:(NSColor *) result forName:(NSString *)colorName;
+
 -(NSString *)menuFontNameAndSize:(float *)pointSize;
 
 -(NSTimeInterval)textCaretBlinkInterval;
