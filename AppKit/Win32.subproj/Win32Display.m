@@ -250,6 +250,12 @@ BOOL CALLBACK monitorEnumerator(HMONITOR hMonitor,HDC hdcMonitor,LPRECT rect,LPA
    return [_nameToColor objectForKey:colorName];
 }
 
+-(void) _addSystemColor: (NSColor *) color forName: (NSString *) name {
+   if([_nameToColor count]==0)
+    [self buildSystemColors];
+   [_nameToColor setObject: color forKey: name];
+}
+
 -(NSString *)menuFontNameAndSize:(float *)pointSize {
 #if 1
    *pointSize=10;

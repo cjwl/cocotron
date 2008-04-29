@@ -21,6 +21,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSPasteboard.h>
 #import <AppKit/NSNibKeyedUnarchiver.h>
 
+#import <AppKit/NSDisplay.h>
+
 @implementation NSColor
 
 -(void)encodeWithCoder:(NSCoder *)coder {
@@ -117,10 +119,21 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
      case 6:{
        NSString *catalogName=[keyed decodeObjectForKey:@"NSCatalogName"];
        NSString *colorName=[keyed decodeObjectForKey:@"NSColorName"];
-       NSColor  *color=[keyed decodeObjectForKey:@"NSColor"]; // backup ?
+       NSColor  *color=[keyed decodeObjectForKey:@"NSColor"];
        
-       if((result=[NSColor colorWithCatalogName:catalogName colorName:colorName])==nil)
-        result=color;
+       if([catalogName isEqualToString: @"System"]) {
+	   NSDisplay *display = [NSDisplay currentDisplay];
+	   result = [display colorWithName: colorName];
+	   if(!result) {
+	       result = color;
+	       [display _addSystemColor: result forName: colorName];
+	   }
+       } else {
+	   result = [NSColor colorWithCatalogName: catalogName colorName: colorName];
+	   if(!result) {
+	       result=color;
+	   }
+       }
       }
       break;
 
@@ -129,9 +142,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       result=[NSColor blackColor];
       break;
     }
-
+    
     return [result retain];
    }
+
+   
    else {
     [NSException raise:NSInvalidArgumentException format:@"%@ can not initWithCoder:%@",isa,[coder class]];
     return nil;
