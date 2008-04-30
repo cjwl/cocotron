@@ -138,6 +138,7 @@ enum {
 
 @interface NSEvent : NSObject {
    int       _type;
+   NSTimeInterval _timestamp;
    NSPoint   _locationInWindow;
    unsigned  _modifierFlags;
    NSWindow *_window;
