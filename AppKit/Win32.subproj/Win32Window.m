@@ -203,6 +203,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return _delegate;
 }
 
+-(NSWindow *)appkitWindow {
+   return _delegate;
+}
 
 -(HWND)windowHandle {
    return _handle;
@@ -376,6 +379,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    point.y=[self primaryScreenHeight]-point.y;
 
    return point;
+}
+
+-(void)adjustEventLocation:(NSPoint *)location {
+    location->y=(_size.height-1)-location->y;
 }
 
 -(void)sendEvent:(CGEvent *)eventX {

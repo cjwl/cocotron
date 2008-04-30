@@ -60,6 +60,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSImage.h>
 #import <AppKit/NSImageCell.h>
 #import <AppKit/NSImageRep.h>
+#import <AppKit/NSImageView.h>
 #import <AppKit/NSInterfaceStyle.h>
 #import <AppKit/NSObject+BindingSupport.h>
 #import <AppKit/NSLayoutManager.h>

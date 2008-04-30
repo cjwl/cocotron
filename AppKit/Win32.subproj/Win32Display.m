@@ -631,18 +631,17 @@ The values should be upgraded to something which is more generic to implement, p
 
 -(BOOL)postMSG:(MSG)msg {
    NSEventType  type;
-   Win32Window *platformWindow=(id)GetProp(msg.hwnd,"self");
-   NSWindow    *window;
+   id           platformWindow=(id)GetProp(msg.hwnd,"self");
+   NSWindow    *window=nil;
    POINT        deviceLocation;
    NSPoint      location;
    unsigned     modifierFlags;
    DWORD        tickCount=GetTickCount();
    int          lastClickCount=_clickCount;
 
-   if(![platformWindow isKindOfClass:[Win32Window class]])
-    platformWindow=nil;
-
-   window=[platformWindow delegate];
+   if([platformWindow respondsToSelector:@selector(appkitWindow)])
+    window=[platformWindow performSelector:@selector(appkitWindow)];
+    
    if(![window isKindOfClass:[NSWindow class]])
     window=nil;
 
@@ -744,8 +743,8 @@ The values should be upgraded to something which is more generic to implement, p
 
     location.x=deviceLocation.x;
     location.y=deviceLocation.y;
-    location.y=[window frame].size.height-location.y;
-
+    [platformWindow adjustEventLocation:&location];
+    
     modifierFlags=[self currentModifierFlags];
 
     switch(type){

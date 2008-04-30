@@ -539,7 +539,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    if(drawImage){
     NSRect rect=NSMakeRect(imageOrigin.x,imageOrigin.y,imageSize.width,imageSize.height);
     
-    [[_controlView graphicsStyle] drawButtonImage:image inRect:rect enabled:enabled mixed:mixed];
+    [[controlView graphicsStyle] drawButtonImage:image inRect:rect enabled:enabled mixed:mixed];
    }
 
    if(drawTitle){

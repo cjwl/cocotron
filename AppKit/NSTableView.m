@@ -297,8 +297,7 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
     int i = 0;
 
     if (row < 0 || row >= _numberOfRows) {
-        [NSException raise:NSInternalInconsistencyException
-                    format:@"rectOfRow: invalid index %d (valid {%d, %d})", row, 0, _numberOfRows];
+        return NSZeroRect;
     }
 
     rect.size.width = 0;

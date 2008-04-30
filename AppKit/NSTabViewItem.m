@@ -103,7 +103,7 @@ NSString *_NSTruncatedStringWithAttributesInRect(NSString *string, NSDictionary 
 -(void)setLabel:(NSString *)label {
    label=[label copy];
    [_label release];
-   _label=[label copy];
+   _label=label;
 }
 
 -(void)setView:(NSView *)view {

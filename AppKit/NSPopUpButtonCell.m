@@ -119,8 +119,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)setMenu:(NSMenu *)menu
 {
+    menu = [menu retain];
     [_menu release];
-    _menu = [_menu retain];
+    _menu = menu;
 }
 
 -(void)addItemWithTitle:(NSString *)title {

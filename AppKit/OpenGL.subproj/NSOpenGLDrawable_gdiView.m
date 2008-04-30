@@ -160,6 +160,17 @@ static void pfdFromPixelFormat(PIXELFORMATDESCRIPTOR *pfd,NSOpenGLPixelFormat *p
    [super dealloc];
 }
 
+-(NSWindow *)appkitWindow {
+   return [_view window];
+}
+
+-(void)adjustEventLocation:(NSPoint *)location {
+   if(![_view isFlipped])
+    location->y=([_view frame].size.height-1)-location->y;
+    
+   *location=[_view convertPoint:*location toView:nil];
+}
+
 -(HDC)dc {
    return _dc;
 }

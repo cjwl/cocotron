@@ -530,13 +530,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)addColumn {
-   int i=_numberOfRows*_numberOfColumns;
+   int i=_numberOfRows;
+   for(;i>0;i--){
+    NSCell *cell=[self makeCellAtRow:i-1 column:_numberOfColumns];
 
-   for(;i>0;i-=_numberOfRows){
-    int     row= i/_numberOfColumns;
-    NSCell *cell=[self makeCellAtRow:row column:_numberOfColumns];
-
-    [_cells insertObject:cell atIndex:i];
+    [_cells insertObject:cell atIndex:i*_numberOfColumns];
    }
 
    _numberOfColumns++;

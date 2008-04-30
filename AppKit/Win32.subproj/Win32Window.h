@@ -68,6 +68,8 @@ typedef enum {
 -(NSPoint)convertPOINTLToBase:(POINTL)point;
 -(NSPoint)mouseLocationOutsideOfEventStream;
 
+-(void)adjustEventLocation:(NSPoint *)location;
+
 -(void)sendEvent:(CGEvent *)event;
 
 @end
