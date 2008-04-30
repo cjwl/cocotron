@@ -181,6 +181,7 @@ static NSLock *kvoLock=nil;
 	[dict setObject:[NSNumber numberWithInt:NSKeyValueChangeSetting] 
 			 forKey:NSKeyValueChangeKindKey];
 	[self _willChangeValueForKey:key changeOptions:dict];
+	[dict release];
 }
 
 -(void)didChangeValueForKey:(NSString*)key
@@ -196,6 +197,7 @@ static NSLock *kvoLock=nil;
 	[dict setObject:indexes
 			 forKey:NSKeyValueChangeIndexesKey];
 	[self _willChangeValueForKey:key changeOptions:dict];
+	[dict release];
 }
 
 - (void)didChange:(NSKeyValueChange)change valuesAtIndexes:(NSIndexSet *)indexes forKey:(NSString *)key

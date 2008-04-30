@@ -47,7 +47,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(id)_representedObject
 {
 	if(accessor)
+	{
 		return accessor(proxyObject, accessorSel);
+	}
 	return [proxyObject valueForKey:key];
 }
 
@@ -96,7 +98,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 - (void)insertObject:(id)anObject atIndex:(unsigned)index;
 {
 	if(insert)
+	{
 		insert(proxyObject, insertSel, anObject, index); 
+	}
 	else
 	{
 		id target=[[self _representedObject] mutableCopy];
