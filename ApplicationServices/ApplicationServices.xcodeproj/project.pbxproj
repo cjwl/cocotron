@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		FE01AAE60C5D9BF900AEA51A /* ApplicationServices.h in Headers */ = {isa = PBXBuildFile; fileRef = FE32179C0BB41C65004F000A /* ApplicationServices.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE45EDC30DC2400F00F49290 /* CGImageSource.h in Headers */ = {isa = PBXBuildFile; fileRef = FE45EDC20DC2400F00F49290 /* CGImageSource.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE7ABE640DC2C0290060D15B /* CGPDFDocument.h in Headers */ = {isa = PBXBuildFile; fileRef = FE7ABE630DC2C0290060D15B /* CGPDFDocument.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FECAF4E90DB7110900BA2A8E /* CGAffineTransform.h in Headers */ = {isa = PBXBuildFile; fileRef = FECAF4DA0DB7110900BA2A8E /* CGAffineTransform.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FECAF4EA0DB7110900BA2A8E /* CGBitmapContext.h in Headers */ = {isa = PBXBuildFile; fileRef = FECAF4DB0DB7110900BA2A8E /* CGBitmapContext.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FECAF4EB0DB7110900BA2A8E /* CGColor.h in Headers */ = {isa = PBXBuildFile; fileRef = FECAF4DC0DB7110900BA2A8E /* CGColor.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -84,6 +85,7 @@
 		FE01AAED0C5D9BF900AEA51A /* ApplicationServices.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ApplicationServices.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FE32179C0BB41C65004F000A /* ApplicationServices.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = ApplicationServices.h; sourceTree = "<group>"; };
 		FE45EDC20DC2400F00F49290 /* CGImageSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGImageSource.h; sourceTree = "<group>"; };
+		FE7ABE630DC2C0290060D15B /* CGPDFDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGPDFDocument.h; sourceTree = "<group>"; };
 		FECAF4DA0DB7110900BA2A8E /* CGAffineTransform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGAffineTransform.h; sourceTree = "<group>"; };
 		FECAF4DB0DB7110900BA2A8E /* CGBitmapContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGBitmapContext.h; sourceTree = "<group>"; };
 		FECAF4DC0DB7110900BA2A8E /* CGColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGColor.h; sourceTree = "<group>"; };
@@ -126,10 +128,6 @@
 		0867D691FE84028FC02AAC07 /* ApplicationServices */ = {
 			isa = PBXGroup;
 			children = (
-				FE45EDC20DC2400F00F49290 /* CGImageSource.h */,
-				FECAF52D0DB7134F00BA2A8E /* CGPDFPage.h */,
-				FECAF5150DB711BC00BA2A8E /* CoreGraphicsExport.h */,
-				FECAF5010DB7119B00BA2A8E /* Foundation.xcodeproj */,
 				FECAF4DA0DB7110900BA2A8E /* CGAffineTransform.h */,
 				FECAF4DB0DB7110900BA2A8E /* CGBitmapContext.h */,
 				FECAF4DC0DB7110900BA2A8E /* CGColor.h */,
@@ -140,16 +138,21 @@
 				FECAF4E10DB7110900BA2A8E /* CGFunction.h */,
 				FECAF4E20DB7110900BA2A8E /* CGGeometry.h */,
 				FECAF4E30DB7110900BA2A8E /* CGImage.h */,
+				FE45EDC20DC2400F00F49290 /* CGImageSource.h */,
 				FECAF4E40DB7110900BA2A8E /* CGLayer.h */,
 				FECAF4E50DB7110900BA2A8E /* CGPath.h */,
 				FECAF4E60DB7110900BA2A8E /* CGPattern.h */,
+				FE7ABE630DC2C0290060D15B /* CGPDFDocument.h */,
+				FECAF52D0DB7134F00BA2A8E /* CGPDFPage.h */,
 				FECAF4E70DB7110900BA2A8E /* CGShading.h */,
-				FECAF4E80DB7110900BA2A8E /* CoreGraphics.h */,
 				08FB77AEFE84172EC02AAC07 /* Classes */,
-				32C88DFF0371C24200C91783 /* Other Sources */,
-				089C1665FE841158C02AAC07 /* Resources */,
+				FECAF4E80DB7110900BA2A8E /* CoreGraphics.h */,
+				FECAF5150DB711BC00BA2A8E /* CoreGraphicsExport.h */,
 				0867D69AFE84028FC02AAC07 /* External Frameworks and Libraries */,
+				FECAF5010DB7119B00BA2A8E /* Foundation.xcodeproj */,
+				32C88DFF0371C24200C91783 /* Other Sources */,
 				034768DFFF38A50411DB9C8B /* Products */,
+				089C1665FE841158C02AAC07 /* Resources */,
 			);
 			name = ApplicationServices;
 			sourceTree = "<group>";
@@ -240,6 +243,7 @@
 				FECAF5160DB711BC00BA2A8E /* CoreGraphicsExport.h in Headers */,
 				FECAF52E0DB7134F00BA2A8E /* CGPDFPage.h in Headers */,
 				FE45EDC30DC2400F00F49290 /* CGImageSource.h in Headers */,
+				FE7ABE640DC2C0290060D15B /* CGPDFDocument.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

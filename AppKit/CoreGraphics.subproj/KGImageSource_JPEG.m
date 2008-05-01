@@ -1019,7 +1019,7 @@ static void stbi_jpeg_load_from_memory(KGImageSource_JPEG *self,const stbi_uc *b
    KGDataProvider *provider=[[KGDataProvider alloc] initWithData:bitmap];
    KGColorSpace   *colorSpace=[[KGColorSpace alloc] initWithGenericRGB];
    KGImage        *image=[[KGImage alloc] initWithWidth:width height:height bitsPerComponent:8 bitsPerPixel:bitsPerPixel bytesPerRow:bytesPerRow
-      colorSpace:colorSpace bitmapInfo:0/*kCGImageAlphaLast|kCGBitmapByteOrder32Little*/ provider:provider decode:NULL interpolate:NO renderingIntent:kCGRenderingIntentDefault];
+      colorSpace:colorSpace bitmapInfo:kCGBitmapByteOrder32Big provider:provider decode:NULL interpolate:NO renderingIntent:kCGRenderingIntentDefault];
       
    [colorSpace release];
    [provider release];

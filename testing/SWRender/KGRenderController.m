@@ -48,6 +48,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     case 3:
      [self performTest:@selector(drawBitmapImageRep) withObject:nil];
      break;
+
+    case 4:
+     [self performTest:@selector(drawPDF) withObject:nil];
+     break;
    }
    
    CGDataProviderRef provider;
@@ -68,7 +72,28 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     [_kgView setImageRef:image];
     CGImageRelease(image);
    }
-//   [_diffView setImageRef:[_kgRender imageRefOfDifferences:_cgRender]];
+   
+   if(_cgContext!=nil && _kgContext!=nil){
+    unsigned char *cgData=[_cgContext bytes];
+    unsigned char *kgData=[_kgContext bytes];
+    
+   char *diff=NSZoneMalloc([self zone],[_kgContext bytesPerRow]*[_kgContext pixelsHigh]);
+int i;
+  for(i=0;i<[_kgContext bytesPerRow]*[_kgContext pixelsHigh];i++){
+    int d1=cgData[i];
+    int d2=kgData[i];
+    
+    diff[i]=(d1!=d2)?0xFF:00;
+  
+}
+  CGDataProviderRef provider=CGDataProviderCreateWithData(NULL,diff,[_cgContext bytesPerRow]*[_cgContext pixelsHigh],NULL);
+   CGImageRef diffImage=CGImageCreate([_cgContext pixelsWide],[_cgContext pixelsHigh],[_cgContext bitsPerComponent],[_cgContext bitsPerPixel],[_cgContext bytesPerRow],CGColorSpaceCreateDeviceRGB(),
+     [_kgContext bitmapInfo],provider,NULL,NO,kCGRenderingIntentDefault);
+   [_diffView setImageRef:diffImage];
+
+   }
+
+   
 }
 
 -(void)awakeFromNib {
@@ -250,6 +275,18 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)selectInterpolationQuality:sender {
    [self setInterpolationQuality:(CGInterpolationQuality)[sender selectedTag]];
    [self setNeedsDisplay];
+}
+
+-(void)selectPDFPath:sender {
+   NSOpenPanel *openPanel=[NSOpenPanel openPanel];
+   
+   if([openPanel runModalForTypes:[NSArray arrayWithObject:@"pdf"]]){
+    NSData *data=[NSData dataWithContentsOfFile:[openPanel filename]];
+   [_cgContext setPDFData:data];
+   [_kgContext setPDFData:data];
+   [self setNeedsDisplay];
+   }
+   
 }
 
 @end

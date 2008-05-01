@@ -34,6 +34,7 @@
     float        _flatness;
     
     CGImageRef _resamplingImage;
+    CGPDFDocumentRef _pdfDocument;
 }
 @end
 
@@ -60,6 +61,7 @@ static CGColorRef cgColorFromColor(NSColor *color){
 
    _fillColor=cgColorFromColor([NSColor blueColor]);
    _strokeColor=cgColorFromColor([NSColor redColor]);
+   _pathDrawingMode=kCGPathStroke;
    _shouldAntialias=YES;
    _interpolationQuality=kCGInterpolationDefault;
    _scalex=1;
@@ -198,12 +200,35 @@ static CGColorRef cgColorFromColor(NSColor *color){
    _interpolationQuality=value;
 }
 
+-(void)setPDFData:(NSData *)data {
+   if(_pdfDocument!=NULL)
+    CGPDFDocumentRelease(_pdfDocument);
+   
+   CGDataProviderRef provider=CGDataProviderCreateWithCFData(data);
+   
+   _pdfDocument=CGPDFDocumentCreateWithProvider(provider);
+   CGDataProviderRelease(provider);
+}
+
 -(CGAffineTransform)ctm {
    CGAffineTransform ctm=CGAffineTransformMakeTranslation(400/2,400/2);
    
    ctm=CGAffineTransformScale(ctm, _scalex,_scaley);
    
    return CGAffineTransformRotate(ctm,M_PI*_rotation/180.0);
+}
+
+-(void)establishContextState {
+   CGContextSetShouldAntialias(_context,_shouldAntialias);
+   CGContextSetBlendMode(_context,_blendMode);
+   CGContextSetFillColorWithColor(_context,_fillColor);
+   CGContextSetStrokeColorWithColor(_context,_strokeColor);
+   CGContextSetLineWidth(_context,_lineWidth);
+   CGContextSetLineCap(_context,_lineCap);
+   CGContextSetLineJoin(_context,_lineJoin);
+   CGContextSetMiterLimit(_context,_miterLimit);
+   CGContextSetLineDash(_context,_dashPhase,_dashLengths,_dashLengthsCount);
+   CGContextSetFlatness(_context,_flatness);
 }
 
 static void addSliceToPath(CGMutablePathRef path,float innerRadius,float outerRadius,float startAngle,float endAngle){
@@ -232,16 +257,9 @@ static void addSliceToPath(CGMutablePathRef path,float innerRadius,float outerRa
    CGContextSaveGState(_context);
    CGContextClearRect(_context,CGRectMake(0,0,400,400));
    CGContextConcatCTM(_context,xform);
-   CGContextSetShouldAntialias(_context,_shouldAntialias);
-   CGContextSetBlendMode(_context,_blendMode);
-   CGContextSetFillColorWithColor(_context,_fillColor);
-   CGContextSetStrokeColorWithColor(_context,_strokeColor);
-   CGContextSetLineWidth(_context,_lineWidth);
-   CGContextSetLineCap(_context,_lineCap);
-   CGContextSetLineJoin(_context,_lineJoin);
-   CGContextSetMiterLimit(_context,_miterLimit);
-   CGContextSetLineDash(_context,_dashPhase,_dashLengths,_dashLengthsCount);
-   CGContextSetFlatness(_context,_flatness);
+
+   [self establishContextState];
+
    CGContextBeginPath(_context);
    CGContextAddPath(_context,path);
    
@@ -260,9 +278,7 @@ static void addSliceToPath(CGMutablePathRef path,float innerRadius,float outerRa
    CGContextSaveGState(_context);
    CGContextClearRect(_context,CGRectMake(0,0,400,400));
    CGContextConcatCTM(_context,ctm);
-   CGContextSetShouldAntialias(_context,_shouldAntialias);
-   CGContextSetInterpolationQuality(_context,_interpolationQuality);
-   CGContextSetBlendMode(_context,_blendMode);
+   [self establishContextState];
 
 
    CGContextDrawImage(_context,CGRectMake(0,0,CGImageGetWidth(_resamplingImage),CGImageGetHeight(_resamplingImage)),_resamplingImage);
@@ -290,16 +306,7 @@ static void addSliceToPath(CGMutablePathRef path,float innerRadius,float outerRa
    CGContextSaveGState(_context);
    CGContextClearRect(_context,CGRectMake(0,0,400,400));
    CGContextConcatCTM(_context,xform);
-   CGContextSetShouldAntialias(_context,_shouldAntialias);
-   CGContextSetBlendMode(_context,_blendMode);
-   CGContextSetFillColorWithColor(_context,_fillColor);
-   CGContextSetStrokeColorWithColor(_context,_strokeColor);
-   CGContextSetLineWidth(_context,_lineWidth);
-   CGContextSetLineCap(_context,_lineCap);
-   CGContextSetLineJoin(_context,_lineJoin);
-   CGContextSetMiterLimit(_context,_miterLimit);
-   CGContextSetLineDash(_context,_dashPhase,_dashLengths,_dashLengthsCount);
-   CGContextSetFlatness(_context,_flatness);
+   [self establishContextState];
    CGContextBeginPath(_context);
    CGContextAddPath(_context,path);
    
@@ -320,15 +327,7 @@ static void addSliceToPath(CGMutablePathRef path,float innerRadius,float outerRa
    CGContextSaveGState(_context);
    CGContextClearRect(_context,CGRectMake(0,0,400,400));
    CGContextConcatCTM(_context,ctm);
-   CGContextSetShouldAntialias(_context,_shouldAntialias);
-   CGContextSetFillColorWithColor(_context,_fillColor);
-   CGContextSetStrokeColorWithColor(_context,_strokeColor);
-   CGContextSetLineWidth(_context,_lineWidth);
-   CGContextSetLineCap(_context,_lineCap);
-   CGContextSetLineJoin(_context,_lineJoin);
-   CGContextSetMiterLimit(_context,_miterLimit);
-   CGContextSetLineDash(_context,_dashPhase,_dashLengths,_dashLengthsCount);
-   CGContextSetFlatness(_context,_flatness);
+   [self establishContextState];
 
    for(i=0;i<limit;i++){
     CGMutablePathRef path=CGPathCreateMutable();
@@ -365,6 +364,22 @@ static void addSliceToPath(CGMutablePathRef path,float innerRadius,float outerRa
     CGPathRelease(path);
    }
    
+   CGContextRestoreGState(_context);
+}
+
+-(void)drawPDF {
+   CGAffineTransform ctm=[self ctm];
+   CGContextSaveGState(_context);
+   CGContextClearRect(_context,CGRectMake(0,0,400,400));
+   ctm=CGAffineTransformTranslate(ctm,-200,-200);
+   CGContextConcatCTM(_context,ctm);
+
+   if(_pdfDocument!=NULL){
+    CGPDFPageRef page=CGPDFDocumentGetPage(_pdfDocument,1);
+   
+    CGContextDrawPDFPage(_context,page);
+  // CGPDFPageRelease(page);
+   }
    CGContextRestoreGState(_context);
 }
 

@@ -18,8 +18,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <ApplicationServices/CGFunction.h>
 #import <ApplicationServices/CGGeometry.h>
 #import <ApplicationServices/CGImage.h>
+#import <ApplicationServices/CGImageSource.h>
 #import <ApplicationServices/CGLayer.h>
 #import <ApplicationServices/CGPath.h>
 #import <ApplicationServices/CGPattern.h>
+#import <ApplicationServices/CGPDFDocument.h>
 #import <ApplicationServices/CGPDFPage.h>
 #import <ApplicationServices/CGShading.h>

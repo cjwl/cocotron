@@ -7,10 +7,9 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
 #import <AppKit/NSPDFImageRep.h>
-#import <AppKit/KGPDFDocument.h>
-#import <AppKit/KGPDFPage.h>
 #import <AppKit/NSGraphicsContext.h>
 #import <ApplicationServices/CGContext.h>
+#import <AppKit/KGPDFPage.h>
 
 @implementation NSPDFImageRep
 
@@ -36,13 +35,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -initWithData:(NSData *)data {
    _pdf=[data retain];
    _currentPage=0;
-   _document=[[KGPDFDocument alloc] initWithData:_pdf];
+   CGDataProviderRef provider=CGDataProviderCreateWithCFData(_pdf);
+   _document=CGPDFDocumentCreateWithProvider(provider);
+   CGDataProviderRelease(provider);
    return self;
 }
 
 -(void)dealloc {
    [_pdf release];
-   [_document release];
+   CGPDFDocumentRelease(_document);
    [super dealloc];
 }
 
@@ -55,7 +56,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(int)pageCount {
-   return [_document pageCount];
+   return CGPDFDocumentGetNumberOfPages(_document);
 }
 
 -(int)currentPage {
@@ -67,10 +68,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(NSSize)size {
-   KGPDFPage *page=[_document pageAtNumber:_currentPage];
+   CGPDFPageRef page=CGPDFDocumentGetPage(_document,_currentPage);
    NSRect     mediaBox;
-   
-   if(![page getRect:&mediaBox forBox:kKGPDFMediaBox])
+      
+   if(![page getRect:&mediaBox forBox:kCGPDFMediaBox])
     return NSMakeSize(0,0);
    
    return mediaBox.size;
@@ -78,13 +79,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(BOOL)drawInRect:(NSRect)rect {
    CGContextRef context=[[NSGraphicsContext currentContext] graphicsPort];
-   KGPDFPage   *page=[_document pageAtNumber:_currentPage];
+   CGPDFPageRef page=CGPDFDocumentGetPage(_document,_currentPage);
 
    if(page==nil)
     return NO;
    
    CGContextSaveGState(context);
-   CGContextConcatCTM(context,[page drawingTransformForBox:kKGPDFMediaBox inRect:rect rotate:0 preserveAspectRatio:NO]);
+   CGContextConcatCTM(context,[page drawingTransformForBox:kCGPDFMediaBox inRect:rect rotate:0 preserveAspectRatio:NO]);
    CGContextDrawPDFPage(context,page);
    CGContextRestoreGState(context);
    return YES;

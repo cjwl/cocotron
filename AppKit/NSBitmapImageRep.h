@@ -8,6 +8,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <AppKit/NSImageRep.h>
 #import <AppKit/NSGraphics.h>
+#import <ApplicationServices/ApplicationServices.h>
 
 @class KGImage;
 
@@ -49,7 +50,7 @@ typedef enum {
    unsigned char **_bitmapPlanes;
    NSMutableDictionary *_properties;
    
-   KGImage *_image;
+   CGImageRef _image;
 }
 
 +(void)getTIFFCompressionTypes:(const NSTIFFCompression **)types count:(int *)count;

@@ -129,42 +129,32 @@ void KGRasterizerSetShouldAntialias(KGRasterizer *self,BOOL antialias) {
    self->_antialias=antialias;
 	//make a sampling pattern
     self->sumWeights = 0.0f;
-	 self->fradius = 0.0f;		//max offset of the sampling points from a pixel center
 
-	if(NO && !antialias){
-		self->numSamples = 1;
-		self->samples[0].x = 0.0f;
-		self->samples[0].y = 0.0f;
-		self->samples[0].weight = 1.0f;
-		self->fradius = 0.0f;
-		self->sumWeights = 1.0f;
-	}
-    else  {
-    #if 1
-		//box filter of diameter 1.0f, 8-queen sampling pattern
-		self->numSamples = 8;
-		self->samples[0].x = 3;
-		self->samples[1].x = 7;
-		self->samples[2].x = 0;
-		self->samples[3].x = 2;
-		self->samples[4].x = 5;
-		self->samples[5].x = 1;
-		self->samples[6].x = 6;
-		self->samples[7].x = 4;
-        int i;
-		for(i=0;i<self->numSamples;i++)
-		{
-			self->samples[i].x = (self->samples[i].x + 0.5f) / (RIfloat)self->numSamples - 0.5f;
-			self->samples[i].y = ((RIfloat)i + 0.5f) / (RIfloat)self->numSamples - 0.5f;
-			self->samples[i].weight = 1.0f / (RIfloat)self->numSamples;
-			self->sumWeights += self->samples[i].weight;
-		}
-		self->fradius = 0.5f;
-    #else
+   if(NO && !self->_antialias){
+    self->numSamples=1;
+    self->fradius=0.6;
+    self->sumWeights=1;
+			self->samples[0].x = 0;
+			self->samples[0].y = 0;
+			self->samples[0].weight = 1;
+   }
+   else {
+/*
+   The exact specifications of the Quartz AA filter are unknown. We want something very close in quality.
+   
+   Visual comparisons indicate the Quartz filter quality is at least the quality of a 64 sample one.
+   32 samples appears too low regardless of the function. More samples with an inferior weighting function
+   doesn't help and is more expensive.
+      
+   Visual comparisons indicate the Quartz filter radius is not large, 0.75 is too big and results
+   in extra pixels being drawn which Quartz does not generate. 0.6 is extremely close if not identical using
+   any reasonable weighting.
+
+ */
         // The Quartz AA filter is different than this
         // 8, 16 also work, but all of them generate misdrawing with the classic test & stroking, this might be a fill bug
-		self->numSamples = 32;
-		self->fradius = .75;
+		self->numSamples = 64;
+		self->fradius = 0.6;
         int i;
         
 		for(i=0;i<self->numSamples;i++)
@@ -178,8 +168,8 @@ void KGRasterizerSetShouldAntialias(KGRasterizer *self,BOOL antialias) {
 			RIfloat r = (RIfloat)sqrt(x) * self->fradius;
 			x = r * (RIfloat)sin(y*2.0f*M_PI);
 			y = r * (RIfloat)cos(y*2.0f*M_PI);
-			self->samples[i].weight = (RIfloat)exp(-0.5f * RI_SQR(r/self->fradius));
-
+			self->samples[i].weight = (RIfloat)exp(-0.5*RI_SQR(r));
+//			self->samples[i].weight = (RIfloat)exp(-0.5*RI_SQR(r/self->fradius));
 			RI_ASSERT(x >= -1.5f && x <= 1.5f && y >= -1.5f && y <= 1.5f);	//the specification restricts the filter radius to be less than or equal to 1.5
 			
 			self->samples[i].x = x;
@@ -187,9 +177,8 @@ void KGRasterizerSetShouldAntialias(KGRasterizer *self,BOOL antialias) {
             
 			self->sumWeights += self->samples[i].weight;
 		}
-     #endif
-	}
 
+    }
 }
 
 static void scanlineSort(Edge **edges,int count,Edge **B){
@@ -318,12 +307,6 @@ static void incrementEdgeForAET(Edge *edge,RIfloat cminy,RIfloat cmaxy,RIfloat f
 }
 
 /*
-  AA filter
-  
-  Apple's AA filter is unknown at this point, so the sampling loop remains unoptimally optimized. The box filter is decent but
-  is not as good. The Gaussian filter is closer, but it has a less uniform appearance than Apple's. The current Gaussian implementation
-  also has big artifacts in some case shown by the Classic test. I'm not sure if the original filter was broken or the fill optimizations
-  created a problem. When we figure out something closer/same as Apple's the sampling loops can be constant for the one filter.
   
   Aliased Drawing
   
@@ -483,20 +466,20 @@ void KGRasterizerFill(KGRasterizer *self,VGFillRule fillRule, KGPixelPipe *pixel
              if(scanx<minx)
               break;
              else {
-              int     direction=edge->direction;
+              int      direction=edge->direction;
               RIfloat *pre=edge->sidePre;
+              int     *windptr=winding;
               RIfloat  pcxnormal=scanx*edge->normal.x;
-
-              s=self->numSamples;
-              while(--s>=0){
-               if(pcxnormal>pre[s])
-                rightOfLastEdge=NO;
-               else {
-                winding[s]+=direction;
- 	 		    rightOfLastEdge&=YES;
+              int      rightOfThisEdge=0;
+              
+              for(s=0;s<self->numSamples;s++,windptr++){
+               if(pcxnormal<=*pre++) {
+                *windptr+=direction;
+ 	 		    rightOfThisEdge+=direction;
                }
               }
 
+              rightOfLastEdge&=(ABS(rightOfThisEdge)==self->numSamples)?YES:NO;
               if(rightOfLastEdge){
                rightOfLastEdge=YES;
                nextEdge=i+1;

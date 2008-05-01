@@ -12,14 +12,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @class KGPDFDocument,KGPDFDictionary,KGContext;
 
-typedef enum  {
-   kKGPDFMediaBox,
-   kKGPDFCropBox,
-   kKGPDFBleedBox,
-   kKGPDFTrimBox,
-   kKGPDFArtBox
-} KGPDFBox;
-
 @interface KGPDFPage : NSObject {
    KGPDFDocument   *_document;
    int                _pageNumber;
@@ -35,11 +27,11 @@ typedef enum  {
 
 -(KGPDFDictionary *)dictionary;
 
--(BOOL)getRect:(CGRect *)rect forBox:(KGPDFBox)box;
+-(BOOL)getRect:(CGRect *)rect forBox:(CGPDFBox)box;
 
 -(int)rotationAngle;
 
--(CGAffineTransform)drawingTransformForBox:(KGPDFBox)box inRect:(CGRect)rect rotate:(int)degrees preserveAspectRatio:(BOOL)preserveAspectRatio;
+-(CGAffineTransform)drawingTransformForBox:(CGPDFBox)box inRect:(CGRect)rect rotate:(int)degrees preserveAspectRatio:(BOOL)preserveAspectRatio;
 
 -(void)drawInContext:(KGContext *)context;
 

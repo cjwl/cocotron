@@ -39,6 +39,8 @@
 				<string>id</string>
 				<key>selectLineWidth</key>
 				<string>id</string>
+				<key>selectPDFPath</key>
+				<string>id</string>
 				<key>selectPathDrawingMode</key>
 				<string>id</string>
 				<key>selectRotation</key>

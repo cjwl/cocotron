@@ -626,7 +626,7 @@ KGSurface *KGSurfaceInit(KGSurface *self,size_t width, size_t height,size_t bits
     self->_bitmapInfo=bitmapInfo;
     
     if(!initFunctionsForParameters(self,bitsPerComponent,bitsPerPixel,colorSpace,bitmapInfo))
-     NSLog(@"error, return");
+     NSLog(@"KGSurface error, return");
     
     self->_imageFormat=imageFormat;
     size_t checkBPP;

@@ -79,7 +79,7 @@ BOOL _isAvailable=NO;
     case kCGImageAlphaNoneSkipFirst:
      break;
    }
-   
+  
    _surface=KGSurfaceInitWithBytes(KGSurfaceAlloc(),_width,_height,bitsPerComponent,bitsPerPixel,bytesPerRow,colorSpace,bitmapInfo,VG_lRGBA_8888_PRE,_bytes);
    _rasterizer=KGRasterizerInit(KGRasterizerAlloc());
    _pixelPipe=KGPixelPipeInit(KGPixelPipeAlloc());
@@ -223,11 +223,13 @@ xform=CGAffineTransformConcat(xform,u2d);
 }
 
 -(void)showGlyphs:(const CGGlyph *)glyphs count:(unsigned)count {
-   KGInvalidAbstractInvocation();
+  // KGInvalidAbstractInvocation();
 }
 
 -(void)drawShading:(KGShading *)shading {
-   KGInvalidAbstractInvocation();
+
+
+   //KGInvalidAbstractInvocation();
 }
 
 -(void)drawImage:(KGImage *)image inRect:(CGRect)rect {
@@ -302,7 +304,7 @@ xform=CGAffineTransformConcat(xform,u2d);
 }
 
 -(void)drawLayer:(KGLayer *)layer inRect:(CGRect)rect {
-   KGInvalidAbstractInvocation();
+   //KGInvalidAbstractInvocation();
 }
 
 

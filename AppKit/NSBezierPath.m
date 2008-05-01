@@ -6,10 +6,10 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
-// Original - Christopher Lloyd <cjwl@objc.net>
 #import <AppKit/NSBezierPath.h>
 #import <AppKit/KGMutablePath.h>
 #import <ApplicationServices/CGContext.h>
+#import <ApplicationServices/CGPath.h>
 #import <AppKit/NSGraphicsContext.h>
 #import <Foundation/NSAffineTransform.h>
 #import <Foundation/NSRaise.h>
@@ -24,7 +24,7 @@ static NSLineCapStyle  _defaultLineCapStyle=NSButtLineCapStyle;
 static NSLineJoinStyle _defaultLineJoinStyle=NSMiterLineJoinStyle;
 
 -init {
-   _path=[[KGMutablePath alloc] init];
+   _path=CGPathCreateMutable();
    _lineWidth=_defaultLineWidth;
    _miterLimit=_defaultMiterLimit;
    _flatness=_defaultFlatness;
@@ -45,7 +45,7 @@ static NSLineJoinStyle _defaultLineJoinStyle=NSMiterLineJoinStyle;
 }
 
 -(void)dealloc {
-   [_path release];
+   CGPathRelease(_path);
    if(_dashes!=NULL)
     NSZoneFree(NULL,_dashes);
    [super dealloc];
@@ -54,7 +54,7 @@ static NSLineJoinStyle _defaultLineJoinStyle=NSMiterLineJoinStyle;
 -copyWithZone:(NSZone *)zone {
    NSBezierPath *copy=NSCopyObject(self,0,zone);
    
-   copy->_path=[_path mutableCopy];
+   copy->_path=CGPathCreateMutableCopy(_path);
    if(_dashCount>0){
     int i;
     

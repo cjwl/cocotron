@@ -70,18 +70,18 @@ BOOL KGPDFGetPageArrayForKey(KGPDFPage *page,const char *key,KGPDFArray **arrayp
    return [check checkForType:kKGPDFObjectTypeArray value:arrayp];
 }
 
--(BOOL)getRect:(CGRect *)rect forBox:(KGPDFBox)box {
+-(BOOL)getRect:(CGRect *)rect forBox:(CGPDFBox)box {
    const char *string=NULL;
    KGPDFArray *array;
    KGPDFReal  *numbers;
    unsigned    count;
    
    switch(box){
-    case kKGPDFMediaBox: string="MediaBox"; break;
-    case kKGPDFCropBox:  string="CropBox"; break;
-    case kKGPDFBleedBox: string="BleedBox"; break;
-    case kKGPDFTrimBox:  string="TrimBox"; break;
-    case kKGPDFArtBox:   string="ArtBox"; break;
+    case kCGPDFMediaBox: string="MediaBox"; break;
+    case kCGPDFCropBox:  string="CropBox"; break;
+    case kCGPDFBleedBox: string="BleedBox"; break;
+    case kCGPDFTrimBox:  string="TrimBox"; break;
+    case kCGPDFArtBox:   string="ArtBox"; break;
    }
    
    if(string==NULL)
@@ -112,7 +112,7 @@ BOOL KGPDFGetPageArrayForKey(KGPDFPage *page,const char *key,KGPDFArray **arrayp
 }
 
 
--(CGAffineTransform)drawingTransformForBox:(KGPDFBox)box inRect:(CGRect)rect rotate:(int)degrees preserveAspectRatio:(BOOL)preserveAspectRatio {
+-(CGAffineTransform)drawingTransformForBox:(CGPDFBox)box inRect:(CGRect)rect rotate:(int)degrees preserveAspectRatio:(BOOL)preserveAspectRatio {
    CGAffineTransform result=CGAffineTransformIdentity;
    CGRect boxRect;
    

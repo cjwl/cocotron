@@ -35,7 +35,7 @@ typedef enum {
   VG_NON_ZERO
 } VGFillRule;
 
-#define MAX_SAMPLES 32
+#define MAX_SAMPLES 256
 
 typedef struct {
    Vector2		v0;
@@ -74,7 +74,7 @@ typedef struct {
 	int     numSamples;
 	RIfloat sumWeights;
 	RIfloat fradius;		//max offset of the sampling points from a pixel center
-	Sample  samples[32];
+	Sample  samples[MAX_SAMPLES];
 }
 
 KGRasterizer *KGRasterizerAlloc();

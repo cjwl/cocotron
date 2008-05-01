@@ -243,6 +243,7 @@ const char *KGImageNameWithIntent(CGColorRenderingIntent intent);
 
 size_t KGImageGetWidth(KGImage *self);
 size_t KGImageGetHeight(KGImage *self);
+VGColorInternalFormat KGImageColorFormat(KGImage *self);
 
 KGRGBAffff KGRGBAffffUnpack(unsigned int inputData,KGImage *img);
 

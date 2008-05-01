@@ -517,6 +517,10 @@ size_t KGImageGetHeight(KGImage *self) {
    return self->_height;
 }
 
+VGColorInternalFormat KGImageColorFormat(KGImage *self) {
+   return self->_colorFormat;
+}
+
 static  RIfloat byteToColor(unsigned char i){
 	return (RIfloat)(i) / (RIfloat)0xFF;
 }

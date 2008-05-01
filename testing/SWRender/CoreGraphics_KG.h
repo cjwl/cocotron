@@ -6,6 +6,8 @@
 #import "KGImage.h"
 #import "KGImageSource.h"
 #import "KGDataProvider.h"
+#import "KGPDFDocument.h"
+#import "KGPDFPage.h"
 
 #define CGContextRef KGContext *
 #define CGColorRef KGColor *
@@ -15,6 +17,8 @@
 #define CGDataProviderRef KGDataProvider *
 #define CGImageRef KGImage *
 #define CGImageSourceRef KGImageSource *
+#define CGPDFDocumentRef KGPDFDocument *
+#define CGPDFPageRef KGPDFPage *
 
 #define CGContextRetain(context) \
     [context retain]
@@ -503,6 +507,9 @@
 
 #define CGDataProviderCreateWithData(info,data,size, releaseCallback) \
    [[KGDataProvider alloc] initWithBytes:data length:size]
+
+#define CGDataProviderCreateWithCFData(data) \
+   [[KGDataProvider alloc] initWithData:data]
    
 // image source
 
@@ -512,4 +519,29 @@
 #define CGImageSourceCreateImageAtIndex(self,index,opts) \
    [self imageAtIndex:index options:opts]
 
+
+// pdf document
+
+#define CGPDFDocumentRetain(self) \
+   [self retain]
+
+#define CGPDFDocumentRelease(self) \
+   [self release]
+
+#define CGPDFDocumentCreateWithProvider(provider) \
+   [[KGPDFDocument alloc] initWithDataProvider:provider]
+
+#define CGPDFDocumentGetNumberOfPages(self) \
+   [self pageCount]
+
+#define CGPDFDocumentGetPage(self,pageNumber) \
+   [self pageAtNumber:pageNumber]
+
+// pdf page
+
+#define CGPDFPageRetain(self) \
+   [self retain]
+
+#define CGPDFPageRelease(self) \
+   [self release]
 

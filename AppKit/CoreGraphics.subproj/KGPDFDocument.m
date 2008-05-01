@@ -35,6 +35,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return self;
 }
 
+-initWithDataProvider:(KGDataProvider *)provider {
+   return [self initWithData:[provider data]];
+}
+
 -(void)dealloc{
    [_xref release];
    [super dealloc];
@@ -142,7 +146,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(KGPDFPage *)pageAtNumber:(int)pageNumber {
    KGPDFDictionary *pages=[self pagesRoot];
-   KGPDFPage       *page=[self pageAtNumber:pageNumber pages:pages pagesOffset:0];
+   KGPDFPage       *page=[self pageAtNumber:pageNumber-1 pages:pages pagesOffset:0];
 
    return page;
 }

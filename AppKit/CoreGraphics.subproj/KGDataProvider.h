@@ -19,6 +19,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -initWithData:(NSData *)data;
 -initWithBytes:(const void *)bytes length:(size_t)length;
 
+-(NSData *)data;
 -(const void *)bytes;
 -(size_t)length;
 

@@ -494,12 +494,12 @@ static void KGPixelPipeReadPremultipliedSourceSpan(KGPixelPipe *self,int x,int y
     else {
      KGRGBAffff imageSpan[length];
      
-     KGPixelPipeReadPremultipliedImageNormalSpan(self,x,y,imageSpan,length,self->m_image->_colorFormat|VGColorPREMULTIPLIED);
+     KGPixelPipeReadPremultipliedImageNormalSpan(self,x,y,imageSpan,length,KGImageColorFormat(self->m_image)|VGColorPREMULTIPLIED);
      
    for(i=0;i<length;i++,x++){
 	//evaluate paint
 	VGColor s=VGColorFromKGRGBA_ffff(span[i],format);
-    VGColor im=VGColorFromKGRGBA_ffff(imageSpan[i],self->m_image->_colorFormat);
+    VGColor im=VGColorFromKGRGBA_ffff(imageSpan[i],KGImageColorFormat(self->m_image));
     
 	//apply image (vgDrawImage only)
 	//1. paint: convert paint to dst space

@@ -9,9 +9,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSBitmapImageRep.h>
 #import <AppKit/NSGraphicsContextFunctions.h>
 #import <AppKit/NSView.h>
-#import <ApplicationServices/ApplicationServices.h>
-#import <AppKit/KGImageSource.h>
-#import <AppKit/KGImage.h>
 
 @implementation NSBitmapImageRep
 
@@ -116,9 +113,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -initWithData:(NSData *)data {
-   KGImageSource *imageSource=[KGImageSource newImageSourceWithData:data options:nil];
+   CGImageSourceRef imageSource=CGImageSourceCreateWithData(data,nil);
    
-   _image=[imageSource imageAtIndex:0 options:nil];
+   _image=CGImageSourceCreateImageAtIndex(imageSource,0,nil);
    _size.width=CGImageGetWidth(_image);
    _size.height=CGImageGetHeight(_image);
    
