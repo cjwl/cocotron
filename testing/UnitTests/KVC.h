@@ -15,3 +15,12 @@
 }
 
 @end
+
+
+
+@interface KVCArrayContainer : NSObject
+{
+	NSMutableArray *_contents;
+}
+
+@end

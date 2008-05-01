@@ -10,11 +10,59 @@
 
 @implementation KVC
 -(void)testKVC
-{	
+{
 	NSMutableDictionary *dict=[NSMutableDictionary dictionary];
 	
 	[dict setValue:@"value" forKey:@"key"];
 
 	STAssertEqualObjects([dict valueForKey:@"key"] , @"value", nil);
+}
+
+-(void)testMutableArray
+{
+	id container=[KVCArrayContainer new];
+	
+	id array=[container mutableArrayValueForKey:@"contents"];
+
+	[array addObject:@"SomeObject"];
+	[array insertObject:@"Stuff" atIndex:0];
+	[array removeObject:@"SomeObject"];
+	
+
+	[container release];	
+}
+@end
+
+
+
+@implementation KVCArrayContainer
+
+-(void)_setContents:(id)contents
+{
+	if(_contents!=contents)
+	{
+		[_contents release];
+		_contents=[contents retain];
+	}
+}
+
+-(id)contents
+{
+	return _contents;
+}
+
+-(id)init
+{
+	if(self=[super init])
+	{
+		_contents=[NSMutableArray new];
+	}
+	return self;
+}
+
+-(void)dealloc
+{
+	[_contents release];
+	[super dealloc];
 }
 @end
