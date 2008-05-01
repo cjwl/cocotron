@@ -208,6 +208,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return nil;
 }
 
+-(unsigned)hash {
+	return [self count];
+}
+
 -(BOOL)isEqual:other {
    if(self==other)
     return YES;
@@ -306,6 +310,28 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(NSString *)descriptionWithLocale:(NSDictionary *)locale {
    return nil;
+}
+
+-(NSUInteger)countByEnumeratingWithState:(NSFastEnumerationState *)state objects:(id *)stackbuf count:(NSUInteger)length;
+{
+	int i;
+	state->itemsPtr=stackbuf;
+	
+	state->mutationsPtr=(unsigned long*)self;
+	if(!state->state)
+		state->state=(unsigned long)[self objectEnumerator];
+
+	id en=(id)state->state;
+	
+	for(i=0; i<length; i++)
+	{
+		state->itemsPtr[i]=[en nextObject];
+		if(!state->itemsPtr[i])
+			return i;
+	}
+
+	return i;
+	
 }
 
 @end

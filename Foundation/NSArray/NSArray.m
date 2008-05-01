@@ -240,7 +240,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return NSAutorelease(NSArray_concreteWithArrayRange(self,range));
 }
 
--(unsigned)hash {
+-(NSUInteger)hash {
    return [self count];
 }
 
@@ -488,12 +488,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(NSUInteger)countByEnumeratingWithState:(NSFastEnumerationState *)state objects:(id *)stackbuf count:(NSUInteger)length;
 {
 	int numObjects=MIN([self count] - state->extra[0], length);
-	int i;
+	int i=state->extra[0];
+	int j=0;
 	state->itemsPtr=stackbuf;
 
-	for(i=state->extra[0]; i<numObjects; i++)
+	for(j=0; j<numObjects; j++, i++)
 	{
-		state->itemsPtr[i]=[self objectAtIndex:i];
+		state->itemsPtr[j]=[self objectAtIndex:i];
 	}
 
 	state->extra[0]+=numObjects;
@@ -502,9 +503,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 	return numObjects;
 }
+
 @end
 
 void objc_enumerationMutation(id collection)
 {
-	[NSException raise:NSInternalInconsistencyException format:@"collection was mutated during enumeration"];
+	[NSException raise:NSInternalInconsistencyException format:@"Collection %p was mutated during enumeration. Break on objc_enumerationMutation to debug.", collection];
 }
