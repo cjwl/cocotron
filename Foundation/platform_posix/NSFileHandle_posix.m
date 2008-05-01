@@ -188,7 +188,7 @@ CONFORMING TO
 // POSIX programmer's guide p. 272
 - (BOOL)isNonBlocking {
     int flags = fcntl(_fileDescriptor, F_GETFD);
-    return flags & O_NONBLOCK;
+    return (flags & O_NONBLOCK)?YES:NO;
 }
 
 - (void)setNonBlocking:(BOOL)flag {

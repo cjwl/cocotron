@@ -6,7 +6,6 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
-// Original - David Young <daver@geeks.org>
 #import <Foundation/ObjectiveC.h>
 #import <Foundation/Foundation.h>
 #import <Foundation/NSPlatform_darwin.h>
@@ -18,6 +17,29 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <netdb.h>
 #import <unistd.h>
 #import <crt_externs.h>
+#import <sys/sysctl.h>
+
+// Handy functions for extracting various values from sysctl.
+// These should work on FreeBSD as well, though the sysctl names might be different.
+
+static int int32SysctlByName(const char *sysctlName) {
+  int sysctlInt32Value = 0; size_t len = sizeof(int);
+  sysctlbyname(sysctlName, &sysctlInt32Value, &len, NULL, 0);
+  return(sysctlInt32Value);
+}
+
+static int64_t int64SysctlByName(const char *sysctlName) {
+  int64_t sysctlInt64Value = 0; size_t len = sizeof(int64_t);
+  sysctlbyname(sysctlName, &sysctlInt64Value, &len, NULL, 0);
+  return(sysctlInt64Value);
+}
+
+static NSString *stringSysctlByName(const char *sysctlName) {
+  char sysctlBuffer[1024]; size_t len = 1020; memset(sysctlBuffer, 0, 1024);
+  sysctlbyname(sysctlName, &sysctlBuffer[0], &len, NULL, 0);
+  return([NSString stringWithUTF8String:sysctlBuffer]);
+}
+
 
 NSString *NSPlatformClassName=@"NSPlatform_darwin";
 
@@ -54,32 +76,25 @@ NSString *NSPlatformClassName=@"NSPlatform_darwin";
 
    // similar to Win32's implementation
    tzset();
-   
-#if MAC_OS_X_VERSION_MAX_ALLOWED <= MAC_OS_X_VERSION_10_4
-   secondsFromGMT = -__DARWIN_ALIAS(timezone) + daylight*3600;
-#else
+
    secondsFromGMT = -timezone + daylight*3600;
-#endif
    systemTimeZone = [NSTimeZone timeZoneForSecondsFromGMT:secondsFromGMT];
 
    return systemTimeZone;
 }
 
-/*
- BSD  4.3.  The SUSv2 version returns int, and this is also
- the prototype used by glibc 2.2.2.  Only the EINVAL  error
- return is documented by SUSv2.
- */
--(void)sleepThreadForTimeInterval:(NSTimeInterval)interval {
-    if (interval <= 0.0)
-        return;
+// nanosleep() is IEEE Std 1003.1b-1993, POSIX.1
+// This can probably move down to NSPlatform_posix
 
-    if (interval > 1.0)
-        sleep((unsigned int) interval);
-    else {
-     unsigned long value= 1000.0*interval;
-     poll(NULL,0,value);
-    }
+-(void)sleepThreadForTimeInterval:(NSTimeInterval)interval {
+  double intervalIntegralPart, intervalFractionalPart;
+  struct timespec intervalTimeSpec;
+  
+  intervalFractionalPart   = modf((double)interval, &intervalIntegralPart);
+  intervalTimeSpec.tv_sec  = (long)(intervalIntegralPart);
+  intervalTimeSpec.tv_nsec = (long)(intervalFractionalPart * 1.0E9);
+
+  nanosleep(&intervalTimeSpec, NULL);
 }
 
 /*
@@ -117,6 +132,44 @@ NSString *NSPlatformClassName=@"NSPlatform_darwin";
 
 -(Class)taskClass {
    return [NSTask_darwin class];
+}
+
+- (NSUInteger)processorCount
+{
+  return((NSUInteger)int32SysctlByName("hw.ncpu"));
+}
+
+- (NSUInteger)activeProcessorCount
+{
+  return((NSUInteger)int32SysctlByName("hw.activecpu"));
+}
+
+-(unsigned long long)physicalMemory {
+  return((unsigned long long)int64SysctlByName("hw.memsize"));
+}
+
+-(unsigned int)operatingSystem {
+  return(NSMACHOperatingSystem);
+}
+
+-(NSString *)operatingSystemName {
+  return(@"NSMACHOperatingSystem");
+}
+
+-(NSString *)operatingSystemVersionString {
+  static NSString *operatingSystemVersionString = NULL;
+  
+  if(operatingSystemVersionString == NULL) {  
+    NSDictionary *operatingSystemVersionDictionary = [NSDictionary dictionaryWithContentsOfFile:@"/System/Library/CoreServices/SystemVersion.plist"];
+    if(operatingSystemVersionDictionary == NULL) { operatingSystemVersionDictionary = [NSDictionary dictionaryWithContentsOfFile:@"/System/Library/CoreServices/ServerVersion.plist"]; }
+    if(operatingSystemVersionDictionary != NULL) {
+      operatingSystemVersionString = [[NSString alloc] initWithFormat:@"Version %@ (Build %@)", [operatingSystemVersionDictionary objectForKey:@"ProductVersion"], [operatingSystemVersionDictionary objectForKey:@"ProductBuildVersion"]];
+    } else {
+      operatingSystemVersionString = [[NSString alloc] initWithFormat:@"%@ Version %@ (Build %@)", stringSysctlByName("kern.ostype"), stringSysctlByName("kern.osrelease"), stringSysctlByName("kern.osversion")];
+    }
+  }
+  
+  return(operatingSystemVersionString);
 }
 
 @end

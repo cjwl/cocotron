@@ -785,7 +785,7 @@
 		6EC4AAEE0A34D9B200E8D6CA /* NSKeyedUnarchiver.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EC4AAE80A34D9B200E8D6CA /* NSKeyedUnarchiver.m */; };
 		C844CF950DA7EBE500A8F3A2 /* NSRecursiveLock.h in Headers */ = {isa = PBXBuildFile; fileRef = C844CF930DA7EBE500A8F3A2 /* NSRecursiveLock.h */; };
 		C844CF960DA7EBE500A8F3A2 /* NSRecursiveLock.m in Sources */ = {isa = PBXBuildFile; fileRef = C844CF940DA7EBE500A8F3A2 /* NSRecursiveLock.m */; };
-		C844CF970DA7EBE500A8F3A2 /* NSRecursiveLock.h in Headers */ = {isa = PBXBuildFile; fileRef = C844CF930DA7EBE500A8F3A2 /* NSRecursiveLock.h */; };
+		C844CF970DA7EBE500A8F3A2 /* NSRecursiveLock.h in Headers */ = {isa = PBXBuildFile; fileRef = C844CF930DA7EBE500A8F3A2 /* NSRecursiveLock.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C844CF980DA7EBE500A8F3A2 /* NSRecursiveLock.m in Sources */ = {isa = PBXBuildFile; fileRef = C844CF940DA7EBE500A8F3A2 /* NSRecursiveLock.m */; };
 		C844CF990DA7EBE500A8F3A2 /* NSRecursiveLock.h in Headers */ = {isa = PBXBuildFile; fileRef = C844CF930DA7EBE500A8F3A2 /* NSRecursiveLock.h */; };
 		C844CF9A0DA7EBE500A8F3A2 /* NSRecursiveLock.m in Sources */ = {isa = PBXBuildFile; fileRef = C844CF940DA7EBE500A8F3A2 /* NSRecursiveLock.m */; };
@@ -8329,6 +8329,7 @@
 				DSTROOT = /;
 				EXECUTABLE_PREFIX = lib;
 				EXECUTABLE_SUFFIX = .so;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				INFOPLIST_FILE = Info.plist;

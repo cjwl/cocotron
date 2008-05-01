@@ -154,9 +154,9 @@ NSThread *NSPlatformCurrentThread() {
 
 int NSPlatformDetachThread(unsigned (*func)(void *arg), void *arg) {
 	pthread_t thread;
-	if(_useGC)
-		GC_pthread_create(&thread, NULL, func, arg);
-	else
+//	if(_useGC)
+//		GC_pthread_create(&thread, NULL, func, arg);
+//	else
 		pthread_create(&thread, NULL, func, arg);
 	return thread;
 }

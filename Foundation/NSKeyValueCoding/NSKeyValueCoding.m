@@ -20,7 +20,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #include <objc/objc-class.h>
 #include <string.h>
 #include <stdio.h>
-#include <malloc.h>
+#include <stdlib.h>
+#include <stddef.h>
 
 #import "NSKVCMutableArray.h"
 #import "NSString+KVCAdditions.h"
@@ -196,9 +197,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	}
 	else
 	{
-		char *keyname=alloca(strlen([key cString])+5);
+		char *keyname=__builtin_alloca(strlen([key cString])+5);
 		strcpy(keyname, [key cString]);
-		char *selname=alloca(strlen(keyname)+5);
+		char *selname=__builtin_alloca(strlen(keyname)+5);
 		
 #define TRY_FORMAT( format ) \
 sprintf(selname, format, keyname); \
