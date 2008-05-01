@@ -156,8 +156,36 @@ NSRect NSIntersectionRect(NSRect rect0,NSRect rect1) {
    return result;
 }
 
-void NSDivideRect(NSRect rect,NSRect *parts,NSRect *remainder,float amount,NSRectEdge edge) {
-   NSUnimplementedFunction();
+
+void NSDivideRect(NSRect rect,NSRect *slice,NSRect *remainder,float amount,NSRectEdge edge) {
+    *slice = rect;
+    *remainder = rect;
+    float temp;
+
+    switch(edge) {
+    case NSMinXEdge:
+	slice->size.width = amount;
+	remainder->size.width -= amount;
+	remainder->origin.x += amount;
+	break;
+    case NSMinYEdge:
+	slice->size.height = amount;
+	remainder->size.height -= amount;
+	remainder->origin.y += amount;
+	break;
+    case NSMaxXEdge:
+	temp = slice->size.width - amount;
+	remainder->size.width = temp;
+	slice->size.width = amount;
+	slice->origin.x += temp;
+	break;
+    case NSMaxYEdge:
+	temp = slice->size.height - amount;
+	remainder->size.height = temp;
+	slice->size.height = amount;
+	slice->origin.y += temp;
+	break;
+    }
 }
 
 

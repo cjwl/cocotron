@@ -19,14 +19,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <string.h>
 #import <assert.h>
 
-#import <Foundation/CFAllocator.h>
-#import <Foundation/CFBase.h>
-#import <Foundation/CFLocale.h>
-#import <Foundation/CFMutableDictionary.h>
-#import <Foundation/CFNumber.h>
-#import <Foundation/CFNumberFormatter.h>
-#import <Foundation/CFString.h>
-
 #import <Foundation/NSAffineTransform.h>
 #import <Foundation/NSArchiver.h>
 #import <Foundation/NSArray.h>
