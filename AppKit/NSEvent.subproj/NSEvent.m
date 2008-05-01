@@ -55,6 +55,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return _type;
 }
 
+-(NSTimeInterval)timestamp {
+   return _timestamp;
+}
+
 -(NSPoint)locationInWindow {
    return _locationInWindow;
 }

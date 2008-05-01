@@ -155,6 +155,7 @@ enum {
 +(NSEvent *)keyEventWithType:(NSEventType)type location:(NSPoint)location modifierFlags:(unsigned int)modifierFlags timestamp:(NSTimeInterval)timestamp windowNumber:(int)windowNumber context:(NSGraphicsContext *)context characters:(NSString *)characters charactersIgnoringModifiers:(NSString *)charactersIgnoringModifiers isARepeat:(BOOL)isARepeat keyCode:(unsigned short)keyCode;
 
 -(NSEventType)type;
+-(NSTimeInterval)timestamp;
 -(NSPoint)locationInWindow;
 -(unsigned)modifierFlags;
 -(NSWindow *)window;
