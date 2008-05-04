@@ -39,24 +39,6 @@
 
 #define RI_MAX_GAUSSIAN_STD_DEVIATION	128.0f
 
-BOOL KGSurfaceIsValidFormat(int f)
-{
-	if(f < VG_sRGBX_8888 || f > VG_lABGR_8888_PRE)
-		return NO;
-	return YES;
-}
-
-/*-------------------------------------------------------------------*//*!
-* \brief	Converts from numBits into a shifted mask
-* \param	
-* \return	
-* \note
-*//*-------------------------------------------------------------------*/
-	
-static unsigned int bitsToMask(unsigned int bits, unsigned int shift)
-{
-	return ((1<<bits)-1) << shift;
-}
 
 /*-------------------------------------------------------------------*//*!
 * \brief	Converts from color (RIfloat) to an int with 1.0f mapped to the
@@ -147,10 +129,10 @@ VGColor VGColorConvert(VGColor result,VGColorInternalFormat outputFormat){
 	//7: sRGB = sL
 
 	//Source/Dest lRGB sRGB   lL   sL 
-	//lRGB          â€”    1    3    3,5 
-	//sRGB          2    â€”    2,3  2,3,5 
-	//lL            4    4,1  â€”    5 
-	//sL            7,2  7    6    â€” 
+	//lRGB          Ñ    1    3    3,5 
+	//sRGB          2    Ñ    2,3  2,3,5 
+	//lL            4    4,1  Ñ    5 
+	//sL            7,2  7    6    Ñ 
 
 	const unsigned int shift = 3;
 	unsigned int conversion = (result.m_format & (VGColorNONLINEAR | VGColorLUMINANCE)) | ((outputFormat & (VGColorNONLINEAR | VGColorLUMINANCE)) << shift);
@@ -195,7 +177,6 @@ VGColor VGColorConvert(VGColor result,VGColorInternalFormat outputFormat){
 VGPixelDecode KGSurfaceParametersToPixelLayout(KGSurfaceFormat format,size_t *bitsPerPixel,VGColorInternalFormat	*colorFormat){
 	VGPixelDecode desc;
 	memset(&desc, 0, sizeof(VGPixelDecode));
-	RI_ASSERT(KGSurfaceIsValidFormat(format));
 
 	int baseFormat = (int)format & 15;
 	RI_ASSERT(baseFormat >= 0 && baseFormat <= 12);
@@ -1232,7 +1213,7 @@ void KGSurfaceReadTexelTilePad(KGImage *self,int u, int v, KGRGBAffff *span,int 
 *//*-------------------------------------------------------------------*/
 
 
-void KGSurfaceReadTexelTileRepeat(KGSurface *self,int u, int v, KGRGBAffff *span,int length){
+void KGSurfaceReadTexelTileRepeat(KGImage *self,int u, int v, KGRGBAffff *span,int length){
    int i;
 
    v = RI_INT_MOD(v, self->_height);
@@ -1244,7 +1225,7 @@ void KGSurfaceReadTexelTileRepeat(KGSurface *self,int u, int v, KGRGBAffff *span
    }
 }
 
-void KGSurfacePattern_Bilinear(KGSurface *self,RIfloat x, RIfloat y,KGRGBAffff *span,int length, Matrix3x3 surfaceToImage){
+void KGSurfacePattern_Bilinear(KGImage *self,RIfloat x, RIfloat y,KGRGBAffff *span,int length, Matrix3x3 surfaceToImage){
    int i;
    
    for(i=0;i<length;i++,x++){
@@ -1270,7 +1251,7 @@ void KGSurfacePattern_Bilinear(KGSurface *self,RIfloat x, RIfloat y,KGRGBAffff *
    }
 }
 
-void KGSurfacePattern_PointSampling(KGSurface *self,RIfloat x, RIfloat y,KGRGBAffff *span,int length, Matrix3x3 surfaceToImage){	//point sampling
+void KGSurfacePattern_PointSampling(KGImage *self,RIfloat x, RIfloat y,KGRGBAffff *span,int length, Matrix3x3 surfaceToImage){	//point sampling
    int i;
    
    for(i=0;i<length;i++,x++){
@@ -1282,7 +1263,7 @@ void KGSurfacePattern_PointSampling(KGSurface *self,RIfloat x, RIfloat y,KGRGBAf
    }
 }
 
-void KGSurfacePatternSpan(KGSurface *self,RIfloat x, RIfloat y, KGRGBAffff *span,int length,int colorFormat, Matrix3x3 surfaceToImage, CGPatternTiling distortion)	{
+VGColorInternalFormat KGSurfacePatternSpan(KGImage *self,RIfloat x, RIfloat y, KGRGBAffff *span,int length, Matrix3x3 surfaceToImage, CGPatternTiling distortion)	{
     
    switch(distortion){
     case kCGPatternTilingNoDistortion:
@@ -1295,8 +1276,8 @@ void KGSurfacePatternSpan(KGSurface *self,RIfloat x, RIfloat y, KGRGBAffff *span
       KGSurfacePattern_Bilinear(self,x,y,span,length,surfaceToImage);
       break;
    }
-       
-   convertSpan(span,length,self->_colorFormat|VGColorPREMULTIPLIED,colorFormat);
+   
+   return self->_colorFormat|VGColorPREMULTIPLIED;
 }
 
 /*-------------------------------------------------------------------*//*!

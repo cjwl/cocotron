@@ -69,8 +69,14 @@
 		FE9552810D77CA67009B765B /* KGSurface.m in Sources */ = {isa = PBXBuildFile; fileRef = FE9552780D77CA67009B765B /* KGSurface.m */; };
 		FE9552820D77CA67009B765B /* VGmath.m in Sources */ = {isa = PBXBuildFile; fileRef = FE95527A0D77CA67009B765B /* VGmath.m */; };
 		FE9552830D77CA67009B765B /* VGPath.m in Sources */ = {isa = PBXBuildFile; fileRef = FE95527C0D77CA67009B765B /* VGPath.m */; };
-		FE9552840D77CA67009B765B /* KGPixelPipe.m in Sources */ = {isa = PBXBuildFile; fileRef = FE95527E0D77CA67009B765B /* KGPixelPipe.m */; };
 		FE9552850D77CA67009B765B /* KGRasterizer.m in Sources */ = {isa = PBXBuildFile; fileRef = FE9552800D77CA67009B765B /* KGRasterizer.m */; };
+		FEBF55B90DCA0DE500CE5A1C /* KGPaint.m in Sources */ = {isa = PBXBuildFile; fileRef = FEBF55B80DCA0DE500CE5A1C /* KGPaint.m */; };
+		FEBF575B0DCA60CD00CE5A1C /* KGPaint_image.m in Sources */ = {isa = PBXBuildFile; fileRef = FEBF575A0DCA60CD00CE5A1C /* KGPaint_image.m */; };
+		FEBF59190DCC063400CE5A1C /* KGPaint_pattern.m in Sources */ = {isa = PBXBuildFile; fileRef = FEBF59050DCC063400CE5A1C /* KGPaint_pattern.m */; };
+		FEBF59350DCC0E2000CE5A1C /* KGPaint_color.m in Sources */ = {isa = PBXBuildFile; fileRef = FEBF59340DCC0E2000CE5A1C /* KGPaint_color.m */; };
+		FEBF596B0DCC1B5C00CE5A1C /* KGPaint_axialGradient.m in Sources */ = {isa = PBXBuildFile; fileRef = FEBF59660DCC1B5C00CE5A1C /* KGPaint_axialGradient.m */; };
+		FEBF596C0DCC1B5C00CE5A1C /* KGPaint_radialGradient.m in Sources */ = {isa = PBXBuildFile; fileRef = FEBF59680DCC1B5C00CE5A1C /* KGPaint_radialGradient.m */; };
+		FEBF596D0DCC1B5C00CE5A1C /* KGPaint_ramp.m in Sources */ = {isa = PBXBuildFile; fileRef = FEBF596A0DCC1B5C00CE5A1C /* KGPaint_ramp.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
@@ -212,10 +218,22 @@
 		FE95527A0D77CA67009B765B /* VGmath.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = VGmath.m; path = ../../AppKit/CoreGraphics.subproj/VGmath.m; sourceTree = "<group>"; };
 		FE95527B0D77CA67009B765B /* VGPath.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = VGPath.h; path = ../../AppKit/CoreGraphics.subproj/VGPath.h; sourceTree = "<group>"; };
 		FE95527C0D77CA67009B765B /* VGPath.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = VGPath.m; path = ../../AppKit/CoreGraphics.subproj/VGPath.m; sourceTree = "<group>"; };
-		FE95527D0D77CA67009B765B /* KGPixelPipe.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = KGPixelPipe.h; path = ../../AppKit/CoreGraphics.subproj/KGPixelPipe.h; sourceTree = "<group>"; };
-		FE95527E0D77CA67009B765B /* KGPixelPipe.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = KGPixelPipe.m; path = ../../AppKit/CoreGraphics.subproj/KGPixelPipe.m; sourceTree = "<group>"; };
 		FE95527F0D77CA67009B765B /* KGRasterizer.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = KGRasterizer.h; path = ../../AppKit/CoreGraphics.subproj/KGRasterizer.h; sourceTree = "<group>"; };
 		FE9552800D77CA67009B765B /* KGRasterizer.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = KGRasterizer.m; path = ../../AppKit/CoreGraphics.subproj/KGRasterizer.m; sourceTree = "<group>"; };
+		FEBF55B70DCA0DE500CE5A1C /* KGPaint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KGPaint.h; path = ../../AppKit/CoreGraphics.subproj/KGPaint.h; sourceTree = "<group>"; };
+		FEBF55B80DCA0DE500CE5A1C /* KGPaint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KGPaint.m; path = ../../AppKit/CoreGraphics.subproj/KGPaint.m; sourceTree = "<group>"; };
+		FEBF57590DCA60CD00CE5A1C /* KGPaint_image.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KGPaint_image.h; path = ../../AppKit/CoreGraphics.subproj/KGPaint_image.h; sourceTree = SOURCE_ROOT; };
+		FEBF575A0DCA60CD00CE5A1C /* KGPaint_image.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KGPaint_image.m; path = ../../AppKit/CoreGraphics.subproj/KGPaint_image.m; sourceTree = SOURCE_ROOT; };
+		FEBF59040DCC063400CE5A1C /* KGPaint_pattern.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KGPaint_pattern.h; path = ../../AppKit/CoreGraphics.subproj/KGPaint_pattern.h; sourceTree = SOURCE_ROOT; };
+		FEBF59050DCC063400CE5A1C /* KGPaint_pattern.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KGPaint_pattern.m; path = ../../AppKit/CoreGraphics.subproj/KGPaint_pattern.m; sourceTree = SOURCE_ROOT; };
+		FEBF59330DCC0E2000CE5A1C /* KGPaint_color.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KGPaint_color.h; path = ../../AppKit/CoreGraphics.subproj/KGPaint_color.h; sourceTree = SOURCE_ROOT; };
+		FEBF59340DCC0E2000CE5A1C /* KGPaint_color.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KGPaint_color.m; path = ../../AppKit/CoreGraphics.subproj/KGPaint_color.m; sourceTree = SOURCE_ROOT; };
+		FEBF59650DCC1B5C00CE5A1C /* KGPaint_axialGradient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KGPaint_axialGradient.h; path = ../../AppKit/CoreGraphics.subproj/KGPaint_axialGradient.h; sourceTree = SOURCE_ROOT; };
+		FEBF59660DCC1B5C00CE5A1C /* KGPaint_axialGradient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KGPaint_axialGradient.m; path = ../../AppKit/CoreGraphics.subproj/KGPaint_axialGradient.m; sourceTree = SOURCE_ROOT; };
+		FEBF59670DCC1B5C00CE5A1C /* KGPaint_radialGradient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KGPaint_radialGradient.h; path = ../../AppKit/CoreGraphics.subproj/KGPaint_radialGradient.h; sourceTree = SOURCE_ROOT; };
+		FEBF59680DCC1B5C00CE5A1C /* KGPaint_radialGradient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KGPaint_radialGradient.m; path = ../../AppKit/CoreGraphics.subproj/KGPaint_radialGradient.m; sourceTree = SOURCE_ROOT; };
+		FEBF59690DCC1B5C00CE5A1C /* KGPaint_ramp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KGPaint_ramp.h; path = ../../AppKit/CoreGraphics.subproj/KGPaint_ramp.h; sourceTree = SOURCE_ROOT; };
+		FEBF596A0DCC1B5C00CE5A1C /* KGPaint_ramp.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KGPaint_ramp.m; path = ../../AppKit/CoreGraphics.subproj/KGPaint_ramp.m; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -334,13 +352,25 @@
 		FE6EDCC70DB78E3C005503A1 /* KoreGraphics */ = {
 			isa = PBXGroup;
 			children = (
+				FEBF59650DCC1B5C00CE5A1C /* KGPaint_axialGradient.h */,
+				FEBF59660DCC1B5C00CE5A1C /* KGPaint_axialGradient.m */,
+				FEBF59670DCC1B5C00CE5A1C /* KGPaint_radialGradient.h */,
+				FEBF59680DCC1B5C00CE5A1C /* KGPaint_radialGradient.m */,
+				FEBF59690DCC1B5C00CE5A1C /* KGPaint_ramp.h */,
+				FEBF596A0DCC1B5C00CE5A1C /* KGPaint_ramp.m */,
+				FEBF59330DCC0E2000CE5A1C /* KGPaint_color.h */,
+				FEBF59340DCC0E2000CE5A1C /* KGPaint_color.m */,
+				FEBF59040DCC063400CE5A1C /* KGPaint_pattern.h */,
+				FEBF59050DCC063400CE5A1C /* KGPaint_pattern.m */,
+				FEBF57590DCA60CD00CE5A1C /* KGPaint_image.h */,
+				FEBF575A0DCA60CD00CE5A1C /* KGPaint_image.m */,
+				FEBF55B70DCA0DE500CE5A1C /* KGPaint.h */,
+				FEBF55B80DCA0DE500CE5A1C /* KGPaint.m */,
 				FE1474D20DB44967001B5634 /* KGBlending.h */,
 				FE6EE0090DB7CE0B005503A1 /* KGContext_builtin.h */,
 				FE6EE00A0DB7CE0B005503A1 /* KGContext_builtin.m */,
 				FE95527B0D77CA67009B765B /* VGPath.h */,
 				FE95527C0D77CA67009B765B /* VGPath.m */,
-				FE95527D0D77CA67009B765B /* KGPixelPipe.h */,
-				FE95527E0D77CA67009B765B /* KGPixelPipe.m */,
 				FE95527F0D77CA67009B765B /* KGRasterizer.h */,
 				FE9552800D77CA67009B765B /* KGRasterizer.m */,
 				FE9552770D77CA67009B765B /* KGSurface.h */,
@@ -494,7 +524,6 @@
 				FE9552810D77CA67009B765B /* KGSurface.m in Sources */,
 				FE9552820D77CA67009B765B /* VGmath.m in Sources */,
 				FE9552830D77CA67009B765B /* VGPath.m in Sources */,
-				FE9552840D77CA67009B765B /* KGPixelPipe.m in Sources */,
 				FE9552850D77CA67009B765B /* KGRasterizer.m in Sources */,
 				FE1F93630D7EF19900969491 /* KGImageView.m in Sources */,
 				FE1F937A0D7EF1F800969491 /* KGRenderController.m in Sources */,
@@ -549,6 +578,13 @@
 				FE45ED410DC2374E00F49290 /* KGImageSource_TIFF.m in Sources */,
 				FE45ED460DC2376700F49290 /* NSTIFFImageFileDirectory.m in Sources */,
 				FE45ED470DC2376700F49290 /* NSTIFFReader.m in Sources */,
+				FEBF55B90DCA0DE500CE5A1C /* KGPaint.m in Sources */,
+				FEBF575B0DCA60CD00CE5A1C /* KGPaint_image.m in Sources */,
+				FEBF59190DCC063400CE5A1C /* KGPaint_pattern.m in Sources */,
+				FEBF59350DCC0E2000CE5A1C /* KGPaint_color.m in Sources */,
+				FEBF596B0DCC1B5C00CE5A1C /* KGPaint_axialGradient.m in Sources */,
+				FEBF596C0DCC1B5C00CE5A1C /* KGPaint_radialGradient.m in Sources */,
+				FEBF596D0DCC1B5C00CE5A1C /* KGPaint_ramp.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

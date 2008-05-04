@@ -525,14 +525,6 @@ static  RIfloat byteToColor(unsigned char i){
 	return (RIfloat)(i) / (RIfloat)0xFF;
 }
 
-static  RIfloat nibbleToColor(unsigned char i){
-	return (RIfloat)(i) / (RIfloat)0x0F;
-}
-
-static  RIfloat twoBitsToColor(unsigned char i){
-	return (RIfloat)(i) / (RIfloat)0x03;
-}
-
 void KGImageRead_ANY_to_RGBA8888_to_RGBAffff(KGImage *self,int x,int y,KGRGBAffff *span,int length){
    KGRGBA8888 span8888[length];
 
@@ -800,7 +792,6 @@ KGImage *KGSurfaceMipMapForLevel(KGImage *self,int level){
 
 
 VGColorInternalFormat KGImageResample_EWAOnMipmaps(KGImage *self,RIfloat x, RIfloat y,KGRGBAffff *span,int length, Matrix3x3 surfaceToImage){
-// Visual test indicates this is very close to what Apple is using 
    int i;
    		RIfloat m_pixelFilterRadius = 1.25f;
 		RIfloat m_resamplingFilterRadius = 1.25f;

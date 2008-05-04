@@ -27,8 +27,9 @@
  *-------------------------------------------------------------------*/
 
 #import "VGmath.h"
+#import "KGSurface.h"
 
-@class KGPixelPipe;
+@class KGPaint;
 
 typedef enum {
   VG_EVEN_ODD,
@@ -63,7 +64,15 @@ typedef struct {
    RIfloat		weight;
 } Sample;
 
+typedef void (*KGRasterizeBlendSpan_RGBAffff)(KGRGBAffff *src,KGRGBAffff *dst,int length);
+
 @interface KGRasterizer : NSObject {    
+   KGSurface  *m_renderingSurface;
+   KGSurface  *m_mask;
+   KGPaint    *m_paint;
+   KGRasterizeBlendSpan_RGBAffff _blendRGBAffff;
+
+
     int _vpx,_vpy,_vpwidth,_vpheight;
     
     int    _edgeCount;
@@ -78,12 +87,18 @@ typedef struct {
 }
 
 KGRasterizer *KGRasterizerAlloc();
-KGRasterizer *KGRasterizerInit(KGRasterizer *self);
+KGRasterizer *KGRasterizerInit(KGRasterizer *self,KGSurface *renderingSurface);
 void KGRasterizerDealloc(KGRasterizer *self);
 void KGRasterizerSetViewport(KGRasterizer *self,int vpx,int vpy,int vpwidth,int vpheight);
 void KGRasterizerClear(KGRasterizer *self);
 void KGRasterizerAddEdge(KGRasterizer *self,const Vector2 v0, const Vector2 v1);
 void KGRasterizerSetShouldAntialias(KGRasterizer *self,BOOL antialias);
-void KGRasterizerFill(KGRasterizer *self,VGFillRule fillRule, KGPixelPipe *pixelPipe);
+void KGRasterizerFill(KGRasterizer *self,VGFillRule fillRule);
+
+void KGRasterizeSetBlendMode(KGRasterizer *self,CGBlendMode blendMode);
+void KGRasterizeSetMask(KGRasterizer *self,KGSurface* mask);
+void KGRasterizeSetPaint(KGRasterizer *self,KGPaint* paint);
+//private
+void KGRasterizeWriteCoverage(KGRasterizer *self,int x, int y,RIfloat *coverage,int length);
 
 @end

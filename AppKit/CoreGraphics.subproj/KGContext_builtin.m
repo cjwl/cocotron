@@ -27,9 +27,10 @@
 #import "KGSurface.h"
 #import "KGExceptions.h"
 #import "KGRasterizer.h"
-#import "KGPixelPipe.h"
 #import "KGGraphicsState.h"
 #import "VGPath.h"
+#import "KGPaint_image.h"
+#import "KGPaint_color.h"
 
 @implementation KGContext_builtin
 
@@ -81,9 +82,8 @@ BOOL _isAvailable=NO;
    }
   
    _surface=KGSurfaceInitWithBytes(KGSurfaceAlloc(),_width,_height,bitsPerComponent,bitsPerPixel,bytesPerRow,colorSpace,bitmapInfo,VG_lRGBA_8888_PRE,_bytes);
-   _rasterizer=KGRasterizerInit(KGRasterizerAlloc());
-   _pixelPipe=KGPixelPipeInit(KGPixelPipeAlloc());
-   KGPixelPipeSetRenderingSurface(_pixelPipe,_surface);
+   _rasterizer=KGRasterizerInit(KGRasterizerAlloc(),_surface);
+
    KGRasterizerSetViewport(_rasterizer,0,0,KGImageGetWidth(_surface),KGImageGetHeight(_surface));
    return self;
 }
@@ -142,32 +142,25 @@ static void applyPath(void *info,const CGPathElement *element) {
 }
 
 static KGPaint *paintFromColor(KGColor *color){
-   KGPaint *result=KGPaintInit(KGPaintAlloc());
    int    count=[color numberOfComponents];
    const float *components=[color components];
 
    if(count==2)
-    result->m_inputPaintColor=VGColorRGBA(components[0],components[0],components[0],components[1],VGColor_lRGBA);
+    return [[KGPaint_color alloc] initWithGray:components[0]  alpha:components[1]];
    if(count==4)
-    result->m_inputPaintColor=VGColorRGBA(components[0],components[1],components[2],components[3],VGColor_lRGBA);
-
-   result->m_paintColor = result->m_inputPaintColor;
-   result->m_paintColor=VGColorClamp(result->m_paintColor);
-   result->m_paintColor=VGColorPremultiply(result->m_paintColor);
-   return result;
+    return [[KGPaint_color alloc] initWithRed:components[0] green:components[1] blue:components[2] alpha:components[3]];
+    
+   return [[KGPaint_color alloc] initWithGray:0 alpha:1];
 }
 
 -(void)drawPath:(CGPathDrawingMode)drawingMode {
    VGPath *vgPath=[self buildDeviceSpacePath:_path];
    KGGraphicsState *gState=[self currentState];
    
-//		KGPixelPipeSetMask(context->m_masking ? context->getMask() : NULL);
-   		KGPixelPipeSetBlendMode(_pixelPipe,gState->_blendMode);
-//		KGPixelPipeSetTileFillColor(context->m_tileFillColor);
-        if(gState->_interpolationQuality==kCGInterpolationDefault)
-            KGPixelPipeSetImageQuality(_pixelPipe,kCGInterpolationHigh);
-        else
-            KGPixelPipeSetImageQuality(_pixelPipe,gState->_interpolationQuality);
+//		KGRasterizeSetMask(context->m_masking ? context->getMask() : NULL);
+   		KGRasterizeSetBlendMode(_rasterizer,gState->_blendMode);
+//		KGRasterizeSetTileFillColor(context->m_tileFillColor);
+
 
        KGRasterizerSetShouldAntialias(_rasterizer,gState->_shouldAntialias);
 
@@ -183,37 +176,39 @@ xform=CGAffineTransformConcat(xform,u2d);
 
 		if(drawingMode!=kCGPathStroke)
 		{
-			KGPixelPipeSetPaint(_pixelPipe,paintFromColor(gState->_fillColor));
+            KGPaint *paint=paintFromColor(gState->_fillColor);
+			KGRasterizeSetPaint(_rasterizer,paint);
 
 			Matrix3x3 surfaceToPaintMatrix =Matrix3x3WithCGAffineTransform(xform);//context->m_pathUserToSurface * context->m_fillPaintToUser;
 			if(Matrix3x3InplaceInvert(&surfaceToPaintMatrix))
 			{
 				Matrix3x3ForceAffinity(&surfaceToPaintMatrix);
-				KGPixelPipeSetSurfaceToPaintMatrix(_pixelPipe,surfaceToPaintMatrix);
+				KGPaintSetSurfaceToPaintMatrix(paint,surfaceToPaintMatrix);
 
 				VGPathFill(vgPath,userToSurfaceMatrix,_rasterizer);
                 
                 VGFillRule fillRule=(drawingMode==kCGPathFill || drawingMode==kCGPathFillStroke)?VG_NON_ZERO:VG_EVEN_ODD;
                 
-				KGRasterizerFill(_rasterizer,fillRule, _pixelPipe);
+				KGRasterizerFill(_rasterizer,fillRule);
 			}
 		}
 
 		if(drawingMode>=kCGPathStroke){
          if(gState->_lineWidth > 0.0f){
-			KGPixelPipeSetPaint(_pixelPipe,paintFromColor(gState->_strokeColor));
+            KGPaint *paint=paintFromColor(gState->_strokeColor);
+			KGRasterizeSetPaint(_rasterizer,paint);
 
 			Matrix3x3 surfaceToPaintMatrix=Matrix3x3WithCGAffineTransform(xform);// = context->m_pathUserToSurface * context->m_strokePaintToUser;
 			if(Matrix3x3InplaceInvert(&surfaceToPaintMatrix))
 			{
 				Matrix3x3ForceAffinity(&surfaceToPaintMatrix);
-				KGPixelPipeSetSurfaceToPaintMatrix(_pixelPipe,surfaceToPaintMatrix);
+				KGPaintSetSurfaceToPaintMatrix(paint,surfaceToPaintMatrix);
 
 				KGRasterizerClear(_rasterizer);
                                  
 				VGPathStroke(vgPath,userToSurfaceMatrix, _rasterizer, gState->_dashLengths,gState->_dashLengthsCount, gState->_dashPhase, YES /* context->m_strokeDashPhaseReset ? YES : NO*/,
 									  gState->_lineWidth, gState->_lineCap,  gState->_lineJoin, RI_MAX(gState->_miterLimit, 1.0f));
-				KGRasterizerFill(_rasterizer,VG_NON_ZERO,_pixelPipe);
+				KGRasterizerFill(_rasterizer,VG_NON_ZERO);
 			}
 		 }
         }
@@ -270,16 +265,21 @@ xform=CGAffineTransformConcat(xform,u2d);
 
         KGRasterizerSetShouldAntialias(_rasterizer,gState->_shouldAntialias);
 
-		// KGPixelPipeSetTileFillColor(context->m_tileFillColor);
-        KGPixelPipeSetPaint(_pixelPipe,paintFromColor(gState->_fillColor));
+		// KGRasterizeSetTileFillColor(context->m_tileFillColor);
+        KGPaint *paint=paintFromColor(gState->_fillColor);
+        CGInterpolationQuality iq;
         if(gState->_interpolationQuality==kCGInterpolationDefault)
-            KGPixelPipeSetImageQuality(_pixelPipe,kCGInterpolationHigh);
+            iq=kCGInterpolationHigh;
         else
-            KGPixelPipeSetImageQuality(_pixelPipe,gState->_interpolationQuality);
+            iq=gState->_interpolationQuality;
 
-		KGPixelPipeSetBlendMode(_pixelPipe,gState->_blendMode);
+        KGPaint *imagePaint=[[KGPaint_image alloc] initWithImage:image mode:VG_DRAW_IMAGE_NORMAL paint:paint interpolationQuality:iq];
+        
+        KGRasterizeSetPaint(_rasterizer,imagePaint);
 
-//		KGPixelPipeSetMask(context->m_masking ? context->getMask() : NULL);
+		KGRasterizeSetBlendMode(_rasterizer,gState->_blendMode);
+
+//		KGRasterizeSetMask(context->m_masking ? context->getMask() : NULL);
 
 		Matrix3x3 surfaceToImageMatrix = imageUserToSurface;
 		Matrix3x3 surfaceToPaintMatrix = Matrix3x3Multiply(imageUserToSurface,fillPaintToUser);
@@ -288,16 +288,16 @@ xform=CGAffineTransformConcat(xform,u2d);
 			KGSurfaceMode imode = VG_DRAW_IMAGE_NORMAL;
 			if(!Matrix3x3IsAffine(surfaceToPaintMatrix))
 				imode = VG_DRAW_IMAGE_NORMAL;	//if paint matrix is not affine, always use normal image mode
-			KGPixelPipeSetImage(_pixelPipe,image, imode);
-			KGPixelPipeSetSurfaceToPaintMatrix(_pixelPipe,surfaceToPaintMatrix);
-			KGPixelPipeSetSurfaceToImageMatrix(_pixelPipe,surfaceToImageMatrix);
+
+			KGPaintSetSurfaceToPaintMatrix(paint,surfaceToPaintMatrix);
+			KGPaintSetSurfaceToPaintMatrix(imagePaint,surfaceToImageMatrix);
 
 			KGRasterizerAddEdge(_rasterizer,Vector2Make(p0.x,p0.y), Vector2Make(p1.x,p1.y));
 			KGRasterizerAddEdge(_rasterizer,Vector2Make(p1.x,p1.y), Vector2Make(p2.x,p2.y));
 			KGRasterizerAddEdge(_rasterizer,Vector2Make(p2.x,p2.y), Vector2Make(p3.x,p3.y));
 			KGRasterizerAddEdge(_rasterizer,Vector2Make(p3.x,p3.y), Vector2Make(p0.x,p0.y));
-			KGRasterizerFill(_rasterizer,VG_EVEN_ODD, _pixelPipe);
-			KGPixelPipeSetImage(_pixelPipe,nil, imode);
+			KGRasterizerFill(_rasterizer,VG_EVEN_ODD);
+        KGRasterizeSetPaint(_rasterizer,nil);
 		}
    KGRasterizerClear(_rasterizer);
 

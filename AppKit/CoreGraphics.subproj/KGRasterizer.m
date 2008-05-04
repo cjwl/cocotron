@@ -27,7 +27,9 @@
  *-------------------------------------------------------------------*/
  
 #import "KGRasterizer.h"
-#import "KGPixelPipe.h"
+#import "KGPaint_color.h"
+#import "KGSurface.h"
+#import "KGBlending.h"
 
 #define RI_MAX_EDGES					262144
 
@@ -37,7 +39,12 @@ KGRasterizer *KGRasterizerAlloc(){
    return (KGRasterizer *)NSZoneCalloc(NULL,1,sizeof(KGRasterizer));
 }
 
-KGRasterizer *KGRasterizerInit(KGRasterizer *self) {
+KGRasterizer *KGRasterizerInit(KGRasterizer *self,KGSurface *renderingSurface) {
+	self->m_renderingSurface = renderingSurface;
+	self->m_mask=NULL;
+	self->m_paint=NULL;
+    self->_blendRGBAffff=KGBlendSpanNormal_ffff;
+
    self->_vpx=self->_vpy=self->_vpwidth=self->_vpheight=0;
    
    self->_edgeCount=0;
@@ -325,7 +332,7 @@ static void incrementEdgeForAET(Edge *edge,RIfloat cminy,RIfloat cmaxy,RIfloat f
 
  */
  
-void KGRasterizerFill(KGRasterizer *self,VGFillRule fillRule, KGPixelPipe *pixelPipe) {
+void KGRasterizerFill(KGRasterizer *self,VGFillRule fillRule) {
 	RI_ASSERT(fillRule == VG_EVEN_ODD || fillRule == VG_NON_ZERO);
 
 	//proceed scanline by scanline
@@ -488,7 +495,7 @@ void KGRasterizerFill(KGRasterizer *self,VGFillRule fillRule, KGPixelPipe *pixel
 
              }
 		   }
-           
+
 		   int nextx = xlimit;
            
            for(i=nextEdge;i<activeCount;i++){
@@ -500,7 +507,6 @@ void KGRasterizerFill(KGRasterizer *self,VGFillRule fillRule, KGPixelPipe *pixel
             }
            }
             
-
 		   RIfloat coverage = 0.0f;
            s=self->numSamples;
            while(--s>=0)                  
@@ -516,7 +522,7 @@ void KGRasterizerFill(KGRasterizer *self,VGFillRule fillRule, KGPixelPipe *pixel
              if(spanCount==0)
               spanX=scanx;
              else if(scanx!=(spanX+spanCount)){
-              KGPixelPipeWriteCoverage(pixelPipe,spanX,scany,span,spanCount);
+              KGRasterizeWriteCoverage(self,spanX,scany,span,spanCount);
               spanCount=0;
               spanX=scanx;
              }
@@ -524,7 +530,7 @@ void KGRasterizerFill(KGRasterizer *self,VGFillRule fillRule, KGPixelPipe *pixel
              for(i=0;i<(nextx-scanx);i++){
              
               if(spanCount>=spanCapacity){
-               KGPixelPipeWriteCoverage(pixelPipe,spanX,scany,span,spanCount);
+               KGRasterizeWriteCoverage(self,spanX,scany,span,spanCount);
                spanCount=0;
                spanX=scanx+i;
               }
@@ -536,13 +542,215 @@ void KGRasterizerFill(KGRasterizer *self,VGFillRule fillRule, KGPixelPipe *pixel
         }
         
         if(spanCount>0){
-         KGPixelPipeWriteCoverage(pixelPipe,spanX,scany,span,spanCount);
+         KGRasterizeWriteCoverage(self,spanX,scany,span,spanCount);
          spanCount=0;
         }
 	}
     
     NSZoneFree(NULL,activeEdges);
     NSZoneFree(NULL,edges);
+}
+
+void KGRasterizeSetBlendMode(KGRasterizer *self,CGBlendMode blendMode) {
+   RI_ASSERT(blendMode >= kCGBlendModeNormal && blendMode <= kCGBlendModePlusLighter);
+    
+   switch(blendMode){
+   
+    case kCGBlendModeNormal:
+     self->_blendRGBAffff=KGBlendSpanNormal_ffff;
+     break;
+     
+	case kCGBlendModeMultiply:
+     self->_blendRGBAffff=KGBlendSpanMultiply_ffff;
+     break;
+     
+	case kCGBlendModeScreen:
+     self->_blendRGBAffff=KGBlendSpanScreen_ffff;
+	 break;
+
+	case kCGBlendModeOverlay:
+     self->_blendRGBAffff=KGBlendSpanOverlay_ffff;
+     break;
+        
+	case kCGBlendModeDarken:
+     self->_blendRGBAffff=KGBlendSpanDarken_ffff;
+     break;
+
+	case kCGBlendModeLighten:
+     self->_blendRGBAffff=KGBlendSpanLighten_ffff;
+     break;
+
+	case kCGBlendModeColorDodge:
+     self->_blendRGBAffff=KGBlendSpanColorDodge_ffff;
+     break;
+        
+	case kCGBlendModeColorBurn:
+     self->_blendRGBAffff=KGBlendSpanColorBurn_ffff;
+     break;
+        
+	case kCGBlendModeHardLight:
+     self->_blendRGBAffff=KGBlendSpanHardLight_ffff;
+     break;
+        
+	case kCGBlendModeSoftLight:
+     self->_blendRGBAffff=KGBlendSpanSoftLight_ffff;
+     break;
+        
+	case kCGBlendModeDifference:
+     self->_blendRGBAffff=KGBlendSpanDifference_ffff;
+     break;
+        
+	case kCGBlendModeExclusion:
+     self->_blendRGBAffff=KGBlendSpanExclusion_ffff;
+     break;
+        
+	case kCGBlendModeHue:
+     self->_blendRGBAffff=KGBlendSpanHue_ffff;
+     break; 
+        
+	case kCGBlendModeSaturation:
+     self->_blendRGBAffff=KGBlendSpanSaturation_ffff;
+     break;
+        
+	case kCGBlendModeColor:
+     self->_blendRGBAffff=KGBlendSpanColor_ffff;
+     break;
+        
+	case kCGBlendModeLuminosity:
+     self->_blendRGBAffff=KGBlendSpanLuminosity_ffff;
+     break;
+        
+	case kCGBlendModeClear:
+     self->_blendRGBAffff=KGBlendSpanClear_ffff;
+     break;
+
+	case kCGBlendModeCopy:
+     self->_blendRGBAffff=KGBlendSpanCopy_ffff;
+     break;
+
+	case kCGBlendModeSourceIn:
+     self->_blendRGBAffff=KGBlendSpanSourceIn_ffff;
+     break;
+
+	case kCGBlendModeSourceOut:
+     self->_blendRGBAffff=KGBlendSpanSourceOut_ffff;
+     break;
+
+	case kCGBlendModeSourceAtop:
+     self->_blendRGBAffff=KGBlendSpanSourceAtop_ffff;
+     break;
+
+	case kCGBlendModeDestinationOver:
+     self->_blendRGBAffff=KGBlendSpanDestinationOver_ffff;
+     break;
+
+	case kCGBlendModeDestinationIn:
+     self->_blendRGBAffff=KGBlendSpanDestinationIn_ffff;
+     break;
+
+	case kCGBlendModeDestinationOut:
+     self->_blendRGBAffff=KGBlendSpanDestinationOut_ffff;
+     break;
+
+	case kCGBlendModeDestinationAtop:
+     self->_blendRGBAffff=KGBlendSpanDestinationAtop_ffff;
+     break;
+
+	case kCGBlendModeXOR:
+     self->_blendRGBAffff=KGBlendSpanXOR_ffff;
+     break;
+
+	case kCGBlendModePlusDarker:
+     self->_blendRGBAffff=KGBlendSpanPlusDarker_ffff;
+     break;
+
+	case kCGBlendModePlusLighter:
+     self->_blendRGBAffff=KGBlendSpanPlusLighter_ffff;
+     break;
+   }
+}
+
+void KGRasterizeSetMask(KGRasterizer *self,KGSurface* mask) {
+	self->m_mask = mask;
+}
+
+void KGRasterizeSetPaint(KGRasterizer *self, KGPaint* paint) {
+	self->m_paint = paint;
+	if(!self->m_paint)
+		self->m_paint = [[KGPaint_color alloc] initWithGray:0 alpha:1];
+}
+
+
+static inline KGRGBAffff KGRGBAffffConvert(KGRGBAffff rgba,int fromFormat,int toFormat){
+   VGColor color=VGColorFromKGRGBA_ffff(rgba,fromFormat);
+   
+   color=VGColorConvert(color,toFormat);
+   
+   return KGRGBAffffFromColor(color);
+}
+
+static VGColorInternalFormat KGApplyCoverageToSpan(KGRGBAffff *dst,RIfloat *coverage,KGRGBAffff *result,int length,VGColorInternalFormat dFormat){
+   //apply antialiasing in linear color space
+   VGColorInternalFormat aaFormat = (dFormat & VGColorLUMINANCE) ? VGColor_lLA_PRE : VGColor_lRGBA_PRE;
+   int i;
+   
+   if(aaFormat!=dFormat){
+    for(i=0;i<length;i++){
+     KGRGBAffff r=result[i];
+     KGRGBAffff d=dst[i];
+     RIfloat cov=coverage[i];
+
+     r=KGRGBAffffConvert(r,dFormat,aaFormat);
+     d=KGRGBAffffConvert(d,dFormat,aaFormat);
+   
+     result[i]=KGRGBAffffAdd(KGRGBAffffMultiplyByFloat(r , cov) , KGRGBAffffMultiplyByFloat(d , (1.0f - cov)));
+    }
+    return aaFormat;
+   }
+   else {
+    for(i=0;i<length;i++){
+     KGRGBAffff r=result[i];
+     KGRGBAffff d=dst[i];
+     RIfloat cov=coverage[i];
+     
+     result[i]=KGRGBAffffAdd(KGRGBAffffMultiplyByFloat(r , cov) , KGRGBAffffMultiplyByFloat(d , (1.0f - cov)));
+    }
+    
+    return dFormat;
+   }
+   
+}
+
+void KGRasterizeWriteCoverage(KGRasterizer *self,int x, int y,RIfloat *coverage,int length)  {
+	RI_ASSERT(self->m_renderingSurface);
+
+	//apply masking
+	if(self->m_mask)
+     KGSurfaceReadMaskPixelSpanIntoCoverage(self->m_mask,x,y,coverage,length);
+// This optimization may not make sense in the bulk computations
+//	if(coverage[0..length] == 0.0f)
+//		return;
+
+	//read destination color
+    KGRGBAffff d[length];
+    VGColorInternalFormat dFormat=KGSurfaceReadPremultipliedSpan_ffff(self->m_renderingSurface,x,y,d,length);
+
+    KGRGBAffff src[length];
+    VGColorInternalFormat srcFormat=self->m_paint->_readRGBAffff(self->m_paint,x,y,src,length);
+
+   if(!(srcFormat&VGColorPREMULTIPLIED)){
+    KGRGBPremultiplySpan(src,length);
+    srcFormat|=VGColorPREMULTIPLIED;
+   }
+   convertSpan(src,length,srcFormat,dFormat);      
+    
+    self->_blendRGBAffff(src,d,length);
+    VGColorInternalFormat resultFormat;
+    
+    resultFormat=KGApplyCoverageToSpan(d,coverage,src,length,dFormat);
+    
+	//write result to the destination surface
+    KGSurfaceWritePixelSpan(self->m_renderingSurface,x,y,src,length,resultFormat);
 }
 
 @end

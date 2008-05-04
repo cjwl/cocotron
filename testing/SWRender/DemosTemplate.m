@@ -229,6 +229,7 @@ static CGColorRef cgColorFromColor(NSColor *color){
    CGContextSetMiterLimit(_context,_miterLimit);
    CGContextSetLineDash(_context,_dashPhase,_dashLengths,_dashLengthsCount);
    CGContextSetFlatness(_context,_flatness);
+   CGContextSetInterpolationQuality(_context,_interpolationQuality);
 }
 
 static void addSliceToPath(CGMutablePathRef path,float innerRadius,float outerRadius,float startAngle,float endAngle){

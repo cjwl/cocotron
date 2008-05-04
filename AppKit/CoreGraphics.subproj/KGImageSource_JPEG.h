@@ -28,17 +28,6 @@ typedef struct {
 } huffman;
 
 // definition of jpeg image component
-static struct
-{
-   int id;
-   int h,v;
-   int tq;
-   int hd,ha;
-   int dc_pred;
-
-   int x,y,w2,h2;
-   uint8_t *data;
-} img_comp[4];
 
 @interface KGImageSource_JPEG : KGImageSource {
    NSData *_jpg;
@@ -51,6 +40,18 @@ static struct
    huffman huff_dc[4];  // baseline is 2 tables, extended is 4
    huffman huff_ac[4];
    uint8_t dequant[4][64];
+
+ struct
+{
+   int id;
+   int h,v;
+   int tq;
+   int hd,ha;
+   int dc_pred;
+
+   int x,y,w2,h2;
+   uint8_t *data;
+} img_comp[4];
 
 // sizes for components, interleaved MCUs
    int img_h_max, img_v_max;
