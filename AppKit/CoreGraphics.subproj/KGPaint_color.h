@@ -32,7 +32,7 @@
    VGColor m_paintColor;
 }
 
--initWithGray:(RIfloat)gray alpha:(RIfloat)alpha;
--initWithRed:(RIfloat)red green:(RIfloat)green blue:(RIfloat)blue alpha:(RIfloat)alpha;
+-initWithGray:(CGFloat)gray alpha:(CGFloat)alpha;
+-initWithRed:(CGFloat)red green:(CGFloat)green blue:(CGFloat)blue alpha:(CGFloat)alpha;
 
 @end

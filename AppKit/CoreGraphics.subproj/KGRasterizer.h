@@ -39,29 +39,29 @@ typedef enum {
 #define MAX_SAMPLES 256
 
 typedef struct {
-   Vector2		v0;
-   Vector2		v1;
+   CGPoint		v0;
+   CGPoint		v1;
    int         direction;
-   Vector2     normal;
-   RIfloat     cnst;
+   CGPoint     normal;
+   CGFloat     cnst;
    int         minscany;
    int         maxscany;
 // These are init/modified during AET processing, should be broken out to save memory
-   RIfloat     vdxwl;
-   RIfloat     sxPre;
-   RIfloat     exPre;
-   RIfloat     bminx;
-   RIfloat     bmaxx;
+   CGFloat     vdxwl;
+   CGFloat     sxPre;
+   CGFloat     exPre;
+   CGFloat     bminx;
+   CGFloat     bmaxx;
    int          minx;
    int          ceilMinX;
    int  		maxx;
-   RIfloat     sidePre[MAX_SAMPLES];
+   CGFloat     sidePre[MAX_SAMPLES];
 } Edge;
 
 typedef struct {
-   RIfloat		x;
-   RIfloat		y;
-   RIfloat		weight;
+   CGFloat		x;
+   CGFloat		y;
+   CGFloat		weight;
 } Sample;
 
 typedef void (*KGRasterizeBlendSpan_RGBAffff)(KGRGBAffff *src,KGRGBAffff *dst,int length);
@@ -81,8 +81,8 @@ typedef void (*KGRasterizeBlendSpan_RGBAffff)(KGRGBAffff *src,KGRGBAffff *dst,in
     Edge **_edges;
     BOOL    _antialias;
 	int     numSamples;
-	RIfloat sumWeights;
-	RIfloat fradius;		//max offset of the sampling points from a pixel center
+	CGFloat sumWeights;
+	CGFloat fradius;		//max offset of the sampling points from a pixel center
 	Sample  samples[MAX_SAMPLES];
 }
 
@@ -91,7 +91,7 @@ KGRasterizer *KGRasterizerInit(KGRasterizer *self,KGSurface *renderingSurface);
 void KGRasterizerDealloc(KGRasterizer *self);
 void KGRasterizerSetViewport(KGRasterizer *self,int vpx,int vpy,int vpwidth,int vpheight);
 void KGRasterizerClear(KGRasterizer *self);
-void KGRasterizerAddEdge(KGRasterizer *self,const Vector2 v0, const Vector2 v1);
+void KGRasterizerAddEdge(KGRasterizer *self,const CGPoint v0, const CGPoint v1);
 void KGRasterizerSetShouldAntialias(KGRasterizer *self,BOOL antialias);
 void KGRasterizerFill(KGRasterizer *self,VGFillRule fillRule);
 
@@ -99,6 +99,6 @@ void KGRasterizeSetBlendMode(KGRasterizer *self,CGBlendMode blendMode);
 void KGRasterizeSetMask(KGRasterizer *self,KGSurface* mask);
 void KGRasterizeSetPaint(KGRasterizer *self,KGPaint* paint);
 //private
-void KGRasterizeWriteCoverage(KGRasterizer *self,int x, int y,RIfloat *coverage,int length);
+void KGRasterizeWriteCoverage(KGRasterizer *self,int x, int y,CGFloat *coverage,int length);
 
 @end

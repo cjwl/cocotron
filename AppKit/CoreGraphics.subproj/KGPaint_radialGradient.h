@@ -28,9 +28,9 @@
 #import "KGPaint_ramp.h"
 
 @interface KGPaint_radialGradient : KGPaint_ramp {
-   Vector2 m_radialGradientCenter;
-   Vector2 m_radialGradientFocalPoint;
-   RIfloat m_radialGradientRadius;
+   CGPoint m_radialGradientCenter;
+   CGPoint m_radialGradientFocalPoint;
+   CGFloat m_radialGradientRadius;
 }
 
 @end

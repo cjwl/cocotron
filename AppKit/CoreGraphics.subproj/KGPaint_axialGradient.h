@@ -28,8 +28,8 @@
 #import "KGPaint_ramp.h"
 
 @interface KGPaint_axialGradient : KGPaint_ramp {
-   Vector2 m_linearGradientPoint0;
-   Vector2 m_linearGradientPoint1;
+   CGPoint m_linearGradientPoint0;
+   CGPoint m_linearGradientPoint1;
 }
 
 @end

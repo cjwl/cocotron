@@ -206,9 +206,9 @@ static void KGBlendSpanOverlay_ffff(KGRGBAffff *src,KGRGBAffff *dst,int length){
     KGRGBAffff d=dst[i];
     KGRGBAffff r;
     
-    RIfloat max=RI_MAX(s.r,RI_MAX(s.g,s.b));
-    RIfloat min=RI_MIN(s.r,RI_MIN(s.g,s.b));
-    RIfloat lum=(max+min)/2*(1.0-d.a);
+    CGFloat max=RI_MAX(s.r,RI_MAX(s.g,s.b));
+    CGFloat min=RI_MIN(s.r,RI_MIN(s.g,s.b));
+    CGFloat lum=(max+min)/2*(1.0-d.a);
     if(lum<=0.5)
      r.r = s.r * (1.0f - d.a + d.r) + d.r * (1.0f - s.a);
     else
@@ -362,8 +362,8 @@ static void KGBlendSpanHue_ffff(KGRGBAffff *src,KGRGBAffff *dst,int length){
     KGRGBAffff d=dst[i];
     KGRGBAffff r;
     
-    RIfloat sh,ss,sl;
-    RIfloat dh,ds,dl;
+    CGFloat sh,ss,sl;
+    CGFloat dh,ds,dl;
         
     RGBToHSL(s.r,s.g,s.b,&sh,&ss,&sl);
     RGBToHSL(d.r,d.g,d.b,&dh,&ds,&dl);
@@ -381,8 +381,8 @@ static void KGBlendSpanSaturation_ffff(KGRGBAffff *src,KGRGBAffff *dst,int lengt
     KGRGBAffff d=dst[i];
     KGRGBAffff r;
     
-    RIfloat sh,ss,sl;
-    RIfloat dh,ds,dl;
+    CGFloat sh,ss,sl;
+    CGFloat dh,ds,dl;
         
     RGBToHSL(s.r,s.g,s.b,&sh,&ss,&sl);
     RGBToHSL(d.r,d.g,d.b,&dh,&ds,&dl);

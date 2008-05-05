@@ -106,10 +106,10 @@ static inline KGIntRect KGIntRectIntersect(KGIntRect self,KGIntRect other) {
 
 
 typedef struct VGColor {
-	RIfloat		r;
-	RIfloat		g;
-	RIfloat		b;
-	RIfloat		a;
+	CGFloat		r;
+	CGFloat		g;
+	CGFloat		b;
+	CGFloat		a;
 	VGColorInternalFormat	m_format;
 } VGColor;
 
@@ -147,7 +147,7 @@ static inline VGColor VGColorZero(){
    return result;
 }
 
-static inline VGColor VGColorRGBA(RIfloat cr, RIfloat cg, RIfloat cb, RIfloat ca, VGColorInternalFormat cs){
+static inline VGColor VGColorRGBA(CGFloat cr, CGFloat cg, CGFloat cb, CGFloat ca, VGColorInternalFormat cs){
    VGColor result;
    
    RI_ASSERT(cs == VGColor_lRGBA || cs == VGColor_sRGBA || cs == VGColor_lRGBA_PRE || cs == VGColor_sRGBA_PRE || cs == VGColor_lLA || cs == VGColor_sLA || cs == VGColor_lLA_PRE || cs == VGColor_sLA_PRE);
@@ -160,7 +160,7 @@ static inline VGColor VGColorRGBA(RIfloat cr, RIfloat cg, RIfloat cb, RIfloat ca
    return result;
 }
 
-static inline VGColor VGColorMultiplyByFloat(VGColor c,RIfloat f){
+static inline VGColor VGColorMultiplyByFloat(VGColor c,CGFloat f){
    return VGColorRGBA(c.r*f, c.g*f, c.b*f, c.a*f, c.m_format);
 }
 
@@ -181,7 +181,7 @@ static inline VGColor VGColorSubtract(VGColor result,VGColor c1){
 //clamps nonpremultiplied colors and alpha to [0,1] range, and premultiplied alpha to [0,1], colors to [0,a]
 static inline VGColor VGColorClamp(VGColor result){
    result.a = RI_CLAMP(result.a,0.0f,1.0f);
-   RIfloat u = (result.m_format & VGColorPREMULTIPLIED) ? result.a : (RIfloat)1.0f;
+   CGFloat u = (result.m_format & VGColorPREMULTIPLIED) ? result.a : (CGFloat)1.0f;
    result.r = RI_CLAMP(result.r,0.0f,u);
    result.g = RI_CLAMP(result.g,0.0f,u);
    result.b = RI_CLAMP(result.b,0.0f,u);
@@ -198,7 +198,7 @@ static inline VGColor VGColorPremultiply(VGColor result){
 
 static inline VGColor VGColorUnpremultiply(VGColor result){
    if(result.m_format & VGColorPREMULTIPLIED) {
-    RIfloat ooa = (result.a != 0.0f) ? 1.0f/result.a : (RIfloat)0.0f;
+    CGFloat ooa = (result.a != 0.0f) ? 1.0f/result.a : (CGFloat)0.0f;
     result.r *= ooa; result.g *= ooa; result.b *= ooa;
     result.m_format = (VGColorInternalFormat) (result.m_format & ~VGColorPREMULTIPLIED);
    }
@@ -248,20 +248,20 @@ void KGSurfaceWritePixelSpan(KGSurface *self,int x,int y,KGRGBAffff *span,int le
 
 void KGSurfaceWriteFilteredPixel(KGSurface *self,int x, int y, VGColor c, VGbitfield channelMask);
 
-RIfloat KGSurfaceReadMaskPixel(KGSurface *self,int x, int y);		//can read any image format
-void KGSurfaceReadMaskPixelSpanIntoCoverage(KGSurface *self,int x,int y,RIfloat *coverage,int length);
+CGFloat KGSurfaceReadMaskPixel(KGSurface *self,int x, int y);		//can read any image format
+void KGSurfaceReadMaskPixelSpanIntoCoverage(KGSurface *self,int x,int y,CGFloat *coverage,int length);
 
-void KGSurfaceWriteMaskPixel(KGSurface *self,int x, int y, RIfloat m);	//can write only to VG_A_8
+void KGSurfaceWriteMaskPixel(KGSurface *self,int x, int y, CGFloat m);	//can write only to VG_A_8
 
 
-VGColorInternalFormat KGSurfacePatternSpan(KGImage *self,RIfloat x, RIfloat y, KGRGBAffff *span,int length, Matrix3x3 surfaceToImage, CGPatternTiling distortion);
+VGColorInternalFormat KGSurfacePatternSpan(KGImage *self,CGFloat x, CGFloat y, KGRGBAffff *span,int length, Matrix3x3 surfaceToImage, CGPatternTiling distortion);
 
 void KGSurfaceMakeMipMaps(KGImage *self);
 
-void KGSurfaceColorMatrix(KGSurface *self,KGSurface * src, const RIfloat* matrix, BOOL filterFormatLinear, BOOL filterFormatPremultiplied, VGbitfield channelMask);
-void KGSurfaceConvolve(KGSurface *self,KGSurface * src, int kernelWidth, int kernelHeight, int shiftX, int shiftY, const RIint16* kernel, RIfloat scale, RIfloat bias, VGTilingMode tilingMode, VGColor edgeFillColor, BOOL filterFormatLinear, BOOL filterFormatPremultiplied, VGbitfield channelMask);
-void KGSurfaceSeparableConvolve(KGSurface *self,KGSurface * src, int kernelWidth, int kernelHeight, int shiftX, int shiftY, const RIint16* kernelX, const RIint16* kernelY, RIfloat scale, RIfloat bias, VGTilingMode tilingMode, VGColor edgeFillColor, BOOL filterFormatLinear, BOOL filterFormatPremultiplied, VGbitfield channelMask);
-void KGSurfaceGaussianBlur(KGSurface *self,KGSurface * src, RIfloat stdDeviationX, RIfloat stdDeviationY, VGTilingMode tilingMode, VGColor edgeFillColor, BOOL filterFormatLinear, BOOL filterFormatPremultiplied, VGbitfield channelMask);
+void KGSurfaceColorMatrix(KGSurface *self,KGSurface * src, const CGFloat* matrix, BOOL filterFormatLinear, BOOL filterFormatPremultiplied, VGbitfield channelMask);
+void KGSurfaceConvolve(KGSurface *self,KGSurface * src, int kernelWidth, int kernelHeight, int shiftX, int shiftY, const RIint16* kernel, CGFloat scale, CGFloat bias, VGTilingMode tilingMode, VGColor edgeFillColor, BOOL filterFormatLinear, BOOL filterFormatPremultiplied, VGbitfield channelMask);
+void KGSurfaceSeparableConvolve(KGSurface *self,KGSurface * src, int kernelWidth, int kernelHeight, int shiftX, int shiftY, const RIint16* kernelX, const RIint16* kernelY, CGFloat scale, CGFloat bias, VGTilingMode tilingMode, VGColor edgeFillColor, BOOL filterFormatLinear, BOOL filterFormatPremultiplied, VGbitfield channelMask);
+void KGSurfaceGaussianBlur(KGSurface *self,KGSurface * src, CGFloat stdDeviationX, CGFloat stdDeviationY, VGTilingMode tilingMode, VGColor edgeFillColor, BOOL filterFormatLinear, BOOL filterFormatPremultiplied, VGbitfield channelMask);
 void KGSurfaceLookup(KGSurface *self,KGSurface * src, const RIuint8 * redLUT, const RIuint8 * greenLUT, const RIuint8 * blueLUT, const RIuint8 * alphaLUT, BOOL outputLinear, BOOL outputPremultiplied, BOOL filterFormatLinear, BOOL filterFormatPremultiplied, VGbitfield channelMask);
 void KGSurfaceLookupSingle(KGSurface *self,KGSurface * src, const RIuint32 * lookupTable, KGSurfaceChannel sourceChannel, BOOL outputLinear, BOOL outputPremultiplied, BOOL filterFormatLinear, BOOL filterFormatPremultiplied, VGbitfield channelMask);
 

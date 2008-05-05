@@ -41,10 +41,10 @@
 
 #define RI_FLOAT_MAX FLT_MAX
 
-static inline RIfloat inputFloat(RIfloat f) {
+static inline CGFloat inputFloat(CGFloat f) {
 	//this function is used for all floating point input values
 	if(RI_ISNAN(f)) return 0.0f;	//convert NaN to zero
-	return RI_CLAMP(f, -RI_FLOAT_MAX, RI_FLOAT_MAX);	//clamp +-inf to +-RIfloat max
+	return RI_CLAMP(f, -RI_FLOAT_MAX, RI_FLOAT_MAX);	//clamp +-inf to +-CGFloat max
 }
 
 /*-------------------------------------------------------------------*//*!
@@ -58,10 +58,10 @@ static inline RIfloat inputFloat(RIfloat f) {
 * \note		
 *//*-------------------------------------------------------------------*/
 
-static Vector2 unitAverageWithDirection(Vector2 u0, Vector2 u1, BOOL cw)
+static CGPoint unitAverageWithDirection(CGPoint u0, CGPoint u1, BOOL cw)
 {
-	Vector2 u =Vector2MultiplyByFloat(Vector2Add(u0 , u1), 0.5f);
-	Vector2 n0 = Vector2PerpendicularCCW(u0);
+	CGPoint u =Vector2MultiplyByFloat(Vector2Add(u0 , u1), 0.5f);
+	CGPoint n0 = Vector2PerpendicularCCW(u0);
 
 	if( Vector2Dot(u, u) > 0.25f )
 	{	//the average is long enough and thus reliable
@@ -70,7 +70,7 @@ static Vector2 unitAverageWithDirection(Vector2 u0, Vector2 u1, BOOL cw)
 	}
 	else
 	{	// the average is too short, use the average of the normals to the vectors instead
-		Vector2 n1 = Vector2PerpendicularCW(u1);
+		CGPoint n1 = Vector2PerpendicularCW(u1);
 		u = Vector2MultiplyByFloat(Vector2Add(n0 , n1), 0.5f);
 	}
 	if( cw )
@@ -88,14 +88,14 @@ static Vector2 unitAverageWithDirection(Vector2 u0, Vector2 u1, BOOL cw)
 * \note		
 *//*-------------------------------------------------------------------*/
 
-static Vector2 unitAverage(Vector2 u0, Vector2 u1)
+static CGPoint unitAverage(CGPoint u0, CGPoint u1)
 {
-	Vector2 u =Vector2MultiplyByFloat(Vector2Add(u0 , u1), 0.5f);
+	CGPoint u =Vector2MultiplyByFloat(Vector2Add(u0 , u1), 0.5f);
 
 	if( Vector2Dot(u, u) < 0.25f )
 	{	// the average is unreliable, use the average of the normals to the vectors instead
-		Vector2 n0 = Vector2PerpendicularCCW(u0);
-		Vector2 n1 = Vector2PerpendicularCW(u1);
+		CGPoint n0 = Vector2PerpendicularCCW(u0);
+		CGPoint n1 = Vector2PerpendicularCW(u1);
 		u = Vector2MultiplyByFloat(Vector2Add(n0 , n1) , 0.5f);
 		if( Vector2Dot(n1, u0) < 0.0f )
 			u = Vector2Negate(u);
@@ -112,15 +112,15 @@ static Vector2 unitAverage(Vector2 u0, Vector2 u1)
 * \note		
 *//*-------------------------------------------------------------------*/
 
-static Vector2 circularLerpWithDirection(Vector2 t0, Vector2 t1, RIfloat ratio, BOOL cw)
+static CGPoint circularLerpWithDirection(CGPoint t0, CGPoint t1, CGFloat ratio, BOOL cw)
 {
-	Vector2 u0 = t0, u1 = t1;
-	RIfloat l0 = 0.0f, l1 = 1.0f;
+	CGPoint u0 = t0, u1 = t1;
+	CGFloat l0 = 0.0f, l1 = 1.0f;
     int i;
 	for(i=0;i<8;i++)
 	{
-		Vector2 n = unitAverageWithDirection(u0, u1, cw);
-		RIfloat l = 0.5f * (l0 + l1);
+		CGPoint n = unitAverageWithDirection(u0, u1, cw);
+		CGFloat l = 0.5f * (l0 + l1);
 		if( ratio < l )
 		{
 			u1 = n;
@@ -143,15 +143,15 @@ static Vector2 circularLerpWithDirection(Vector2 t0, Vector2 t1, RIfloat ratio, 
 * \note		
 *//*-------------------------------------------------------------------*/
 
-static Vector2 circularLerp(Vector2 t0, Vector2 t1, RIfloat ratio)
+static CGPoint circularLerp(CGPoint t0, CGPoint t1, CGFloat ratio)
 {
-	Vector2 u0 = t0, u1 = t1;
-	RIfloat l0 = 0.0f, l1 = 1.0f;
+	CGPoint u0 = t0, u1 = t1;
+	CGFloat l0 = 0.0f, l1 = 1.0f;
     int i;
 	for(i=0;i<8;i++)
 	{
-		Vector2 n = unitAverage(u0, u1);
-		RIfloat l = 0.5f * (l0 + l1);
+		CGPoint n = unitAverage(u0, u1);
+		CGFloat l = 0.5f * (l0 + l1);
 		if( ratio < l )
 		{
 			u1 = n;
@@ -216,7 +216,7 @@ void VGPathDealloc(VGPath *self){
 * \return	
 *//*-------------------------------------------------------------------*/
 
-Vector2 VGPathGetCoordinate(VGPath *self,int i){
+CGPoint VGPathGetCoordinate(VGPath *self,int i){
 	RI_ASSERT(i >= 0 && i < self->_numberOfPoints);
 
     return self->_points[i];
@@ -230,7 +230,7 @@ Vector2 VGPathGetCoordinate(VGPath *self,int i){
 *			will overflow silently.
 *//*-------------------------------------------------------------------*/
 
-void VGPathSetCoordinate(VGPath *self,int i, Vector2 c){
+void VGPathSetCoordinate(VGPath *self,int i, CGPoint c){
 	RI_ASSERT(i >= 0);
     
     self->_points[i]=c;
@@ -476,8 +476,8 @@ void VGPathTransform(VGPath *self,VGPath* srcPath, Matrix3x3 matrix){
     }
     
 	int srcCoord = 0;
-	Vector2 s=Vector2Make(0,0);		//the beginning of the current subpath
-	Vector2 o=Vector2Make(0,0);		//the last point of the previous segment
+	CGPoint s=Vector2Make(0,0);		//the beginning of the current subpath
+	CGPoint o=Vector2Make(0,0);		//the last point of the previous segment
 	for(i=0;i<srcPath->_numberOfElements;i++)
 	{
 		CGPathElementType segment = (CGPathElementType)srcPath->_elements[i];
@@ -495,8 +495,8 @@ void VGPathTransform(VGPath *self,VGPath* srcPath, Matrix3x3 matrix){
 		case kCGPathElementMoveToPoint:
 		{
 			RI_ASSERT(coords == 1);
-			Vector2 c=VGPathGetCoordinate(srcPath,srcCoord);
-			Vector2 tc = Matrix3x3TransformVector2(matrix, c);
+			CGPoint c=VGPathGetCoordinate(srcPath,srcCoord);
+			CGPoint tc = Matrix3x3TransformVector2(matrix, c);
 			VGPathSetCoordinate(self, self->_numberOfPoints++, tc);
 			s = c;
 			o = c;
@@ -506,8 +506,8 @@ void VGPathTransform(VGPath *self,VGPath* srcPath, Matrix3x3 matrix){
 		case kCGPathElementAddLineToPoint:
 		{
 			RI_ASSERT(coords == 1);
-			Vector2 c=VGPathGetCoordinate(srcPath,srcCoord);
-			Vector2 tc = Matrix3x3TransformVector2(matrix, c);
+			CGPoint c=VGPathGetCoordinate(srcPath,srcCoord);
+			CGPoint tc = Matrix3x3TransformVector2(matrix, c);
 			VGPathSetCoordinate(self, self->_numberOfPoints++, tc);
 			o = c;
 			break;
@@ -516,11 +516,11 @@ void VGPathTransform(VGPath *self,VGPath* srcPath, Matrix3x3 matrix){
 		case kCGPathElementAddQuadCurveToPoint:
 		{
 			RI_ASSERT(coords == 2);
-			Vector2 c0=VGPathGetCoordinate(srcPath,srcCoord);
-			Vector2 c1=VGPathGetCoordinate(srcPath,srcCoord+1);
-			Vector2 tc0 = Matrix3x3TransformVector2(matrix, c0);
+			CGPoint c0=VGPathGetCoordinate(srcPath,srcCoord);
+			CGPoint c1=VGPathGetCoordinate(srcPath,srcCoord+1);
+			CGPoint tc0 = Matrix3x3TransformVector2(matrix, c0);
 			VGPathSetCoordinate(self, self->_numberOfPoints++, tc0);
-			Vector2 tc1 = Matrix3x3TransformVector2(matrix, c1);
+			CGPoint tc1 = Matrix3x3TransformVector2(matrix, c1);
 			VGPathSetCoordinate(self, self->_numberOfPoints++, tc1);
 			o = c1;
 			break;
@@ -529,14 +529,14 @@ void VGPathTransform(VGPath *self,VGPath* srcPath, Matrix3x3 matrix){
 		case kCGPathElementAddCurveToPoint:
 		{
 			RI_ASSERT(coords == 3);
-			Vector2 c0=VGPathGetCoordinate(srcPath,srcCoord+0);
-			Vector2 c1=VGPathGetCoordinate(srcPath,srcCoord+1);
-			Vector2 c2=VGPathGetCoordinate(srcPath,srcCoord+2);
-			Vector2 tc0 = Matrix3x3TransformVector2(matrix, c0);
+			CGPoint c0=VGPathGetCoordinate(srcPath,srcCoord+0);
+			CGPoint c1=VGPathGetCoordinate(srcPath,srcCoord+1);
+			CGPoint c2=VGPathGetCoordinate(srcPath,srcCoord+2);
+			CGPoint tc0 = Matrix3x3TransformVector2(matrix, c0);
 			VGPathSetCoordinate(self, self->_numberOfPoints++, tc0);
-			Vector2 tc1 = Matrix3x3TransformVector2(matrix, c1);
+			CGPoint tc1 = Matrix3x3TransformVector2(matrix, c1);
 			VGPathSetCoordinate(self, self->_numberOfPoints++, tc1);
-			Vector2 tc2 = Matrix3x3TransformVector2(matrix, c2);
+			CGPoint tc2 = Matrix3x3TransformVector2(matrix, c2);
 			VGPathSetCoordinate(self, self->_numberOfPoints++, tc2);
 			o = c2;
 			break;
@@ -576,7 +576,7 @@ void VGPathFill(VGPath *self,Matrix3x3 pathToSurface, KGRasterizer *rasterizer){
 
 //	try
 	{
-		Vector2 p0=Vector2Make(0,0), p1=Vector2Make(0,0);
+		CGPoint p0=Vector2Make(0,0), p1=Vector2Make(0,0);
         int     i;
 		for(i=0;i<self->_vertexCount;i++)
 		{
@@ -610,37 +610,37 @@ void VGPathFill(VGPath *self,Matrix3x3 pathToSurface, KGRasterizer *rasterizer){
 * \note		
 *//*-------------------------------------------------------------------*/
 
-void VGPathInterpolateStroke(Matrix3x3 pathToSurface, KGRasterizer *rasterizer,StrokeVertex v0,StrokeVertex v1, RIfloat strokeWidth)
+void VGPathInterpolateStroke(Matrix3x3 pathToSurface, KGRasterizer *rasterizer,StrokeVertex v0,StrokeVertex v1, CGFloat strokeWidth)
 {
-	Vector2 ppccw = Matrix3x3TransformVector2(pathToSurface, v0.ccw);
-	Vector2 ppcw = Matrix3x3TransformVector2(pathToSurface, v0.cw);
-	Vector2 endccw = Matrix3x3TransformVector2(pathToSurface, v1.ccw);
-	Vector2 endcw = Matrix3x3TransformVector2(pathToSurface, v1.cw);
+	CGPoint ppccw = Matrix3x3TransformVector2(pathToSurface, v0.ccw);
+	CGPoint ppcw = Matrix3x3TransformVector2(pathToSurface, v0.cw);
+	CGPoint endccw = Matrix3x3TransformVector2(pathToSurface, v1.ccw);
+	CGPoint endcw = Matrix3x3TransformVector2(pathToSurface, v1.cw);
 
-	const RIfloat tessellationAngle = 5.0f;
+	const CGFloat tessellationAngle = 5.0f;
 
-	RIfloat angle = RI_RAD_TO_DEG((RIfloat)acos(RI_CLAMP(Vector2Dot(v0.t, v1.t), -1.0f, 1.0f))) / tessellationAngle;
+	CGFloat angle = RI_RAD_TO_DEG((CGFloat)acos(RI_CLAMP(Vector2Dot(v0.t, v1.t), -1.0f, 1.0f))) / tessellationAngle;
 	int samples = RI_INT_MAX((int)ceil(angle), 1);
-	Vector2 prev = v0.p;
-	Vector2 prevt = v0.t;
-	Vector2 position = v0.p;
-	Vector2 pnccw = ppccw;
-	Vector2 pncw = ppcw;
+	CGPoint prev = v0.p;
+	CGPoint prevt = v0.t;
+	CGPoint position = v0.p;
+	CGPoint pnccw = ppccw;
+	CGPoint pncw = ppcw;
     int     j;
 	for(j=0;j<samples;j++)
 	{
-		RIfloat t = (RIfloat)(j+1) / (RIfloat)samples;
+		CGFloat t = (CGFloat)(j+1) / (CGFloat)samples;
 		position = Vector2Add(Vector2MultiplyByFloat(v0.p , (1.0f - t)) , Vector2MultiplyByFloat(v1.p ,t));
-		Vector2 tangent = circularLerp(v0.t, v1.t, t);
-		Vector2 n = Vector2MultiplyByFloat(Vector2Normalize(Vector2PerpendicularCCW(tangent)) , strokeWidth * 0.5f);
+		CGPoint tangent = circularLerp(v0.t, v1.t, t);
+		CGPoint n = Vector2MultiplyByFloat(Vector2Normalize(Vector2PerpendicularCCW(tangent)) , strokeWidth * 0.5f);
 
 		if(j == samples-1)
 			position = v1.p;
 
-		Vector2 npccw = Matrix3x3TransformVector2(pathToSurface, Vector2Add(prev, n));
-		Vector2 npcw = Matrix3x3TransformVector2(pathToSurface, Vector2Subtract(prev, n));
-		Vector2 nnccw = Matrix3x3TransformVector2(pathToSurface,Vector2Add(position,n));
-		Vector2 nncw = Matrix3x3TransformVector2(pathToSurface, Vector2Subtract(position , n));
+		CGPoint npccw = Matrix3x3TransformVector2(pathToSurface, Vector2Add(prev, n));
+		CGPoint npcw = Matrix3x3TransformVector2(pathToSurface, Vector2Subtract(prev, n));
+		CGPoint nnccw = Matrix3x3TransformVector2(pathToSurface,Vector2Add(position,n));
+		CGPoint nncw = Matrix3x3TransformVector2(pathToSurface, Vector2Subtract(position , n));
 
 		KGRasterizerAddEdge(rasterizer,npccw, nnccw);
 		KGRasterizerAddEdge(rasterizer,nnccw, nncw);
@@ -671,7 +671,7 @@ void VGPathInterpolateStroke(Matrix3x3 pathToSurface, KGRasterizer *rasterizer,S
 	}
 
 	//connect the last segment to the end coordinates
-	Vector2 n = Vector2PerpendicularCCW(v1.t);
+	CGPoint n = Vector2PerpendicularCCW(v1.t);
 	if(Vector2Dot(n,prevt) <= 0.0f)
 	{
 		KGRasterizerAddEdge(rasterizer,pnccw, endcw);
@@ -695,9 +695,9 @@ void VGPathInterpolateStroke(Matrix3x3 pathToSurface, KGRasterizer *rasterizer,S
 * \note		
 *//*-------------------------------------------------------------------*/
 
-void VGPathDoCap(Matrix3x3 pathToSurface, KGRasterizer *rasterizer,StrokeVertex v, RIfloat strokeWidth, CGLineCap capStyle){
-	Vector2 ccwt = Matrix3x3TransformVector2(pathToSurface, v.ccw);
-	Vector2 cwt = Matrix3x3TransformVector2(pathToSurface, v.cw);
+void VGPathDoCap(Matrix3x3 pathToSurface, KGRasterizer *rasterizer,StrokeVertex v, CGFloat strokeWidth, CGLineCap capStyle){
+	CGPoint ccwt = Matrix3x3TransformVector2(pathToSurface, v.ccw);
+	CGPoint cwt = Matrix3x3TransformVector2(pathToSurface, v.cw);
 
 	switch(capStyle)
 	{
@@ -706,21 +706,21 @@ void VGPathDoCap(Matrix3x3 pathToSurface, KGRasterizer *rasterizer,StrokeVertex 
 
 	case kCGLineCapRound:
 	{
-		const RIfloat tessellationAngle = 5.0f;
+		const CGFloat tessellationAngle = 5.0f;
 
-		RIfloat angle = 180.0f / tessellationAngle;
+		CGFloat angle = 180.0f / tessellationAngle;
 
 		int samples = (int)ceil(angle);
-		RIfloat step = 1.0f / samples;
-		RIfloat t = step;
-		Vector2 u0 = Vector2Normalize(Vector2Subtract(v.ccw,v.p));
-		Vector2 u1 = Vector2Normalize(Vector2Subtract(v.cw,v.p));
-		Vector2 prev = ccwt;
+		CGFloat step = 1.0f / samples;
+		CGFloat t = step;
+		CGPoint u0 = Vector2Normalize(Vector2Subtract(v.ccw,v.p));
+		CGPoint u1 = Vector2Normalize(Vector2Subtract(v.cw,v.p));
+		CGPoint prev = ccwt;
 		KGRasterizerAddEdge(rasterizer,cwt, ccwt);
         int j;
 		for(j=1;j<samples;j++)
 		{
-			Vector2 next = Vector2Add(v.p , Vector2MultiplyByFloat(circularLerpWithDirection(u0, u1, t, YES) , strokeWidth * 0.5f));
+			CGPoint next = Vector2Add(v.p , Vector2MultiplyByFloat(circularLerpWithDirection(u0, u1, t, YES) , strokeWidth * 0.5f));
 			next = Matrix3x3TransformVector2(pathToSurface, next);
 
 			KGRasterizerAddEdge(rasterizer,prev, next);
@@ -734,10 +734,10 @@ void VGPathDoCap(Matrix3x3 pathToSurface, KGRasterizer *rasterizer,StrokeVertex 
 	default:
 	{
 		RI_ASSERT(capStyle == kCGLineCapSquare);
-		Vector2 t = v.t;
+		CGPoint t = v.t;
 		t=Vector2Normalize(t);
-		Vector2 ccws = Matrix3x3TransformVector2(pathToSurface, Vector2Add(v.ccw , Vector2MultiplyByFloat(t , strokeWidth * 0.5f)));
-		Vector2 cws = Matrix3x3TransformVector2(pathToSurface, Vector2Add(v.cw , Vector2MultiplyByFloat(t , strokeWidth * 0.5f)));
+		CGPoint ccws = Matrix3x3TransformVector2(pathToSurface, Vector2Add(v.ccw , Vector2MultiplyByFloat(t , strokeWidth * 0.5f)));
+		CGPoint cws = Matrix3x3TransformVector2(pathToSurface, Vector2Add(v.cw , Vector2MultiplyByFloat(t , strokeWidth * 0.5f)));
 		KGRasterizerAddEdge(rasterizer,cwt, ccwt);
 		KGRasterizerAddEdge(rasterizer,ccwt, ccws);
 		KGRasterizerAddEdge(rasterizer,ccws, cws);
@@ -754,16 +754,16 @@ void VGPathDoCap(Matrix3x3 pathToSurface, KGRasterizer *rasterizer,StrokeVertex 
 * \note		
 *//*-------------------------------------------------------------------*/
 
-void VGPathDoJoin(Matrix3x3 pathToSurface, KGRasterizer *rasterizer, StrokeVertex v0, StrokeVertex v1, RIfloat strokeWidth, CGLineJoin joinStyle, RIfloat miterLimit){
-	Vector2 ccw0t = Matrix3x3TransformVector2(pathToSurface, v0.ccw);
-	Vector2 cw0t = Matrix3x3TransformVector2(pathToSurface, v0.cw);
-	Vector2 ccw1t = Matrix3x3TransformVector2(pathToSurface, v1.ccw);
-	Vector2 cw1t = Matrix3x3TransformVector2(pathToSurface, v1.cw);
-	Vector2 m0t = Matrix3x3TransformVector2(pathToSurface, v0.p);
-	Vector2 m1t = Matrix3x3TransformVector2(pathToSurface, v1.p);
+void VGPathDoJoin(Matrix3x3 pathToSurface, KGRasterizer *rasterizer, StrokeVertex v0, StrokeVertex v1, CGFloat strokeWidth, CGLineJoin joinStyle, CGFloat miterLimit){
+	CGPoint ccw0t = Matrix3x3TransformVector2(pathToSurface, v0.ccw);
+	CGPoint cw0t = Matrix3x3TransformVector2(pathToSurface, v0.cw);
+	CGPoint ccw1t = Matrix3x3TransformVector2(pathToSurface, v1.ccw);
+	CGPoint cw1t = Matrix3x3TransformVector2(pathToSurface, v1.cw);
+	CGPoint m0t = Matrix3x3TransformVector2(pathToSurface, v0.p);
+	CGPoint m1t = Matrix3x3TransformVector2(pathToSurface, v1.p);
 
-	Vector2 tccw = Vector2Subtract(v1.ccw,v0.ccw);
-	Vector2 s, e, m, st, et;
+	CGPoint tccw = Vector2Subtract(v1.ccw,v0.ccw);
+	CGPoint s, e, m, st, et;
 	BOOL cw;
 
 	if( Vector2Dot(tccw, v0.t) > 0.0f )
@@ -795,13 +795,13 @@ void VGPathDoJoin(Matrix3x3 pathToSurface, KGRasterizer *rasterizer, StrokeVerte
 	{
 	case kCGLineJoinMiter:
 	{
-		RIfloat theta = (RIfloat)acos(RI_CLAMP(Vector2Dot(v0.t, Vector2Negate(v1.t)), -1.0f, 1.0f));
-		RIfloat miterLengthPerStrokeWidth = 1.0f / (RIfloat)sin(theta*0.5f);
+		CGFloat theta = (CGFloat)acos(RI_CLAMP(Vector2Dot(v0.t, Vector2Negate(v1.t)), -1.0f, 1.0f));
+		CGFloat miterLengthPerStrokeWidth = 1.0f / (CGFloat)sin(theta*0.5f);
 		if( miterLengthPerStrokeWidth < miterLimit )
 		{	//miter
-			RIfloat l = (RIfloat)cos(theta*0.5f) * miterLengthPerStrokeWidth * (strokeWidth * 0.5f);
+			CGFloat l = (CGFloat)cos(theta*0.5f) * miterLengthPerStrokeWidth * (strokeWidth * 0.5f);
 			l = RI_MIN(l, RI_FLOAT_MAX);	//force finite
-			Vector2 c = Vector2Add(m , Vector2MultiplyByFloat(v0.t, l));
+			CGPoint c = Vector2Add(m , Vector2MultiplyByFloat(v0.t, l));
 			c = Matrix3x3TransformVector2(pathToSurface, c);
 			KGRasterizerAddEdge(rasterizer,s, c);
 			KGRasterizerAddEdge(rasterizer,c, e);
@@ -815,22 +815,22 @@ void VGPathDoJoin(Matrix3x3 pathToSurface, KGRasterizer *rasterizer, StrokeVerte
 
 	case kCGLineJoinRound:
 	{
-		const RIfloat tessellationAngle = 5.0f;
+		const CGFloat tessellationAngle = 5.0f;
 
-		Vector2 prev = s;
-		RIfloat angle = RI_RAD_TO_DEG((RIfloat)acos(RI_CLAMP(Vector2Dot(st, et), -1.0f, 1.0f))) / tessellationAngle;
+		CGPoint prev = s;
+		CGFloat angle = RI_RAD_TO_DEG((CGFloat)acos(RI_CLAMP(Vector2Dot(st, et), -1.0f, 1.0f))) / tessellationAngle;
 		int samples = (int)ceil(angle);
 		if( samples )
 		{
-			RIfloat step = 1.0f / samples;
-			RIfloat t = step;
+			CGFloat step = 1.0f / samples;
+			CGFloat t = step;
             int     j;
 			for(j=1;j<samples;j++)
 			{
-				Vector2 position = Vector2Add(Vector2MultiplyByFloat(v0.p , (1.0f - t)) , Vector2MultiplyByFloat(v1.p , t));
-				Vector2 tangent = circularLerpWithDirection(st, et, t, YES);
+				CGPoint position = Vector2Add(Vector2MultiplyByFloat(v0.p , (1.0f - t)) , Vector2MultiplyByFloat(v1.p , t));
+				CGPoint tangent = circularLerpWithDirection(st, et, t, YES);
 
-				Vector2 next = Vector2Add(position , Vector2MultiplyByFloat(Vector2Normalize(Vector2Perpendicular(tangent, cw)) , strokeWidth * 0.5f));
+				CGPoint next = Vector2Add(position , Vector2MultiplyByFloat(Vector2Normalize(Vector2Perpendicular(tangent, cw)) , strokeWidth * 0.5f));
 				next = Matrix3x3TransformVector2(pathToSurface, next);
 
 				KGRasterizerAddEdge(rasterizer,prev, next);
@@ -860,7 +860,7 @@ void VGPathDoJoin(Matrix3x3 pathToSurface, KGRasterizer *rasterizer, StrokeVerte
 * \note		if runs out of memory, throws bad_alloc and leaves the path as it was
 *//*-------------------------------------------------------------------*/
 
-void VGPathStroke(VGPath *self,Matrix3x3 pathToSurface, KGRasterizer *rasterizer, const RIfloat* dashPattern,int dashPatternSize, RIfloat dashPhase, BOOL dashPhaseReset, RIfloat strokeWidth, CGLineCap capStyle, CGLineJoin joinStyle, RIfloat miterLimit){
+void VGPathStroke(VGPath *self,Matrix3x3 pathToSurface, KGRasterizer *rasterizer, const CGFloat* dashPattern,int dashPatternSize, CGFloat dashPhase, BOOL dashPhaseReset, CGFloat strokeWidth, CGLineCap capStyle, CGLineJoin joinStyle, CGFloat miterLimit){
 	RI_ASSERT(Matrix3x3IsAffine(pathToSurface));
 	RI_ASSERT(strokeWidth >= 0.0f);
 	RI_ASSERT(miterLimit >= 1.0f);
@@ -874,7 +874,7 @@ void VGPathStroke(VGPath *self,Matrix3x3 pathToSurface, KGRasterizer *rasterizer
 
 	if( dashPatternSize & 1 )
 		dashPatternSize--;	//odd number of dash pattern entries, discard the last one
-	RIfloat dashPatternLength = 0.0f;
+	CGFloat dashPatternLength = 0.0f;
     int     i;
 	for(i=0;i<dashPatternSize;i++)
 		dashPatternLength += RI_MAX(dashPattern[i], 0.0f);
@@ -892,7 +892,7 @@ void VGPathStroke(VGPath *self,Matrix3x3 pathToSurface, KGRasterizer *rasterizer
 	//loop vertex events
 //	try
 	{
-		RIfloat nextDash = 0.0f;
+		CGFloat nextDash = 0.0f;
 		int d = 0;
 		BOOL inDash = YES;
 		StrokeVertex v0=StrokeVertexInit(), v1=StrokeVertexInit(), vs=StrokeVertexInit();
@@ -924,7 +924,7 @@ void VGPathStroke(VGPath *self,Matrix3x3 pathToSurface, KGRasterizer *rasterizer
 							nextDash = v1.pathLength - RI_MOD(dashPhase, dashPatternLength);
 							for(;;)
 							{
-								RIfloat prevDash = nextDash;
+								CGFloat prevDash = nextDash;
 								nextDash = prevDash + RI_MAX(dashPattern[d], 0.0f);
 								if(nextDash >= v1.pathLength)
 									break;
@@ -983,8 +983,8 @@ void VGPathStroke(VGPath *self,Matrix3x3 pathToSurface, KGRasterizer *rasterizer
 						int numDashStops = 0;
 						while(nextDash < v1.pathLength || (nextDash <= v1.pathLength && dashPattern[(d+1) % dashPatternSize] == 0.0f))
 						{
-							RIfloat edgeLength = v1.pathLength - v0.pathLength;
-							RIfloat ratio = 0.0f;
+							CGFloat edgeLength = v1.pathLength - v0.pathLength;
+							CGFloat ratio = 0.0f;
 							if(edgeLength > 0.0f)
 								ratio = (nextDash - v0.pathLength) / edgeLength;
 							StrokeVertex nextDashVertex=StrokeVertexInit();
@@ -1083,7 +1083,7 @@ void VGPathStroke(VGPath *self,Matrix3x3 pathToSurface, KGRasterizer *rasterizer
 * \note		if runs out of memory, throws bad_alloc and leaves the path as it was
 *//*-------------------------------------------------------------------*/
 
-void VGPathGetPointAlong(VGPath *self,int startIndex, int numSegments, RIfloat distance, Vector2 *p, Vector2 *t){
+void VGPathGetPointAlong(VGPath *self,int startIndex, int numSegments, CGFloat distance, CGPoint *p, CGPoint *t){
 	RI_ASSERT(startIndex >= 0 && startIndex + numSegments <= self->_numberOfElements && numSegments > 0);
 
 	VGPathTessellate(self);
@@ -1144,9 +1144,9 @@ void VGPathGetPointAlong(VGPath *self,int startIndex, int numSegments, RIfloat d
 				Vertex v1 = self->_vertices[i+1];
 				if(distance >= v0.pathLength && distance < v1.pathLength)
 				{	//segment found, interpolate linearly between its end points
-					RIfloat edgeLength = v1.pathLength - v0.pathLength;
+					CGFloat edgeLength = v1.pathLength - v0.pathLength;
 					RI_ASSERT(edgeLength > 0.0f);
-					RIfloat r = (distance - v0.pathLength) / edgeLength;
+					CGFloat r = (distance - v0.pathLength) / edgeLength;
 					*p = Vector2Add(Vector2MultiplyByFloat(v0.userPosition , (1.0f - r)) , Vector2MultiplyByFloat(v1.userPosition , r));
 					*t = Vector2Add(Vector2MultiplyByFloat(v0.userTangent,(1.0f - r))  , Vector2MultiplyByFloat(v1.userTangent,r));
 					return;
@@ -1165,7 +1165,7 @@ void VGPathGetPointAlong(VGPath *self,int startIndex, int numSegments, RIfloat d
 * \note		if runs out of memory, throws bad_alloc and leaves the path as it was
 *//*-------------------------------------------------------------------*/
 
-RIfloat getPathLength(VGPath *self,int startIndex, int numSegments){
+CGFloat getPathLength(VGPath *self,int startIndex, int numSegments){
 	RI_ASSERT(startIndex >= 0 && startIndex + numSegments <= self->_numberOfElements && numSegments > 0);
 
 	VGPathTessellate(self);
@@ -1179,13 +1179,13 @@ RIfloat getPathLength(VGPath *self,int startIndex, int numSegments){
 	if(!self->_vertexCount)
 		return 0.0f;
 
-	RIfloat startPathLength = 0.0f;
+	CGFloat startPathLength = 0.0f;
 	if(startVertex >= 0)
 	{
 		RI_ASSERT(startVertex >= 0 && startVertex < self->_vertexCount);
 		startPathLength = self->_vertices[startVertex].pathLength;
 	}
-	RIfloat endPathLength = 0.0f;
+	CGFloat endPathLength = 0.0f;
 	if(endVertex >= 0)
 	{
 		RI_ASSERT(endVertex >= 0 && endVertex < self->_vertexCount);
@@ -1202,7 +1202,7 @@ RIfloat getPathLength(VGPath *self,int startIndex, int numSegments){
 * \note		if runs out of memory, throws bad_alloc and leaves the path as it was
 *//*-------------------------------------------------------------------*/
 
-void VGPathGetPathBounds(VGPath *self,RIfloat *minx, RIfloat *miny, RIfloat *maxx, RIfloat *maxy){
+void VGPathGetPathBounds(VGPath *self,CGFloat *minx, CGFloat *miny, CGFloat *maxx, CGFloat *maxy){
 	VGPathTessellate(self);
 
 	if(self->_vertexCount)
@@ -1226,21 +1226,21 @@ void VGPathGetPathBounds(VGPath *self,RIfloat *minx, RIfloat *miny, RIfloat *max
 * \note		if runs out of memory, throws bad_alloc and leaves the path as it was
 *//*-------------------------------------------------------------------*/
 
-void VGPathGetPathTransformedBounds(VGPath *self,Matrix3x3 pathToSurface, RIfloat *minx, RIfloat *miny, RIfloat *maxx, RIfloat *maxy){
+void VGPathGetPathTransformedBounds(VGPath *self,Matrix3x3 pathToSurface, CGFloat *minx, CGFloat *miny, CGFloat *maxx, CGFloat *maxy){
 	RI_ASSERT(Matrix3x3IsAffine(pathToSurface));
 
 	VGPathTessellate(self);
 
 	if(self->_vertexCount)
 	{
-		Vector3 p0=Vector3Make(self->m_userMinx, self->m_userMiny,1);
-		Vector3 p1=Vector3Make(self->m_userMinx, self->m_userMaxy,1);
-		Vector3 p2=Vector3Make(self->m_userMaxx, self->m_userMaxy,1);
-		Vector3 p3=Vector3Make(self->m_userMaxx, self->m_userMiny,1);
-		p0 = Matrix3x3MultiplyVector3(pathToSurface,p0);
-		p1 = Matrix3x3MultiplyVector3(pathToSurface, p1);
-		p2 = Matrix3x3MultiplyVector3(pathToSurface, p2);
-		p3 = Matrix3x3MultiplyVector3(pathToSurface,p3);
+		CGPoint p0=Vector2Make(self->m_userMinx, self->m_userMiny);
+		CGPoint p1=Vector2Make(self->m_userMinx, self->m_userMaxy);
+		CGPoint p2=Vector2Make(self->m_userMaxx, self->m_userMaxy);
+		CGPoint p3=Vector2Make(self->m_userMaxx, self->m_userMiny);
+		p0 = Matrix3x3TransformVector2(pathToSurface,p0);
+		p1 = Matrix3x3TransformVector2(pathToSurface, p1);
+		p2 = Matrix3x3TransformVector2(pathToSurface, p2);
+		p3 = Matrix3x3TransformVector2(pathToSurface,p3);
 
 		*minx = RI_MIN(RI_MIN(RI_MIN(p0.x, p1.x), p2.x), p3.x);
 		*miny = RI_MIN(RI_MIN(RI_MIN(p0.y, p1.y), p2.y), p3.y);
@@ -1261,7 +1261,7 @@ void VGPathGetPathTransformedBounds(VGPath *self,Matrix3x3 pathToSurface, RIfloa
 * \note		
 *//*-------------------------------------------------------------------*/
 
-void VGPathAddVertex(VGPath *self,Vector2 p, Vector2 t, RIfloat pathLength, unsigned int flags){
+void VGPathAddVertex(VGPath *self,CGPoint p, CGPoint t, CGFloat pathLength, unsigned int flags){
 	RI_ASSERT(!Vector2IsZero(t));
 
 	Vertex v;
@@ -1289,8 +1289,8 @@ void VGPathAddVertex(VGPath *self,Vector2 p, Vector2 t, RIfloat pathLength, unsi
 * \note		
 *//*-------------------------------------------------------------------*/
 
-void VGPathAddEdge(VGPath *self,Vector2 p0, Vector2 p1, Vector2 t0, Vector2 t1, unsigned int startFlags, unsigned int endFlags){
-	RIfloat pathLength = 0.0f;
+void VGPathAddEdge(VGPath *self,CGPoint p0, CGPoint p1, CGPoint t0, CGPoint t1, unsigned int startFlags, unsigned int endFlags){
+	CGFloat pathLength = 0.0f;
 
 	RI_ASSERT(!Vector2IsZero(t0) && !Vector2IsZero(t1));
 
@@ -1307,7 +1307,7 @@ void VGPathAddEdge(VGPath *self,Vector2 p0, Vector2 p1, Vector2 t0, Vector2 t1, 
 	if( !(endFlags & IMPLICIT_CLOSE_SUBPATH) )
 	{
 		//NOTE: with extremely large coordinates the floating point path length is infinite
-		RIfloat l = Vector2Length(Vector2Subtract(p1,p0));
+		CGFloat l = Vector2Length(Vector2Subtract(p1,p0));
 		pathLength = self->_vertices[self->_vertexCount-1].pathLength + l;
 		pathLength = RI_MIN(pathLength, RI_FLOAT_MAX);
 	}
@@ -1322,10 +1322,10 @@ void VGPathAddEdge(VGPath *self,Vector2 p0, Vector2 p1, Vector2 t0, Vector2 t1, 
 * \note		
 *//*-------------------------------------------------------------------*/
 
-void VGPathAddEndPath(VGPath *self,Vector2 p0, Vector2 p1, BOOL subpathHasGeometry, unsigned int flags){
+void VGPathAddEndPath(VGPath *self,CGPoint p0, CGPoint p1, BOOL subpathHasGeometry, unsigned int flags){
 	if(!subpathHasGeometry)
 	{	//single vertex
-		Vector2 t=Vector2Make(1.0f,0.0f);
+		CGPoint t=Vector2Make(1.0f,0.0f);
 		VGPathAddEdge(self,p0, p1, t, t, START_SEGMENT | START_SUBPATH, END_SEGMENT | END_SUBPATH);
 		VGPathAddEdge(self,p0, p1, Vector2Negate(t), Vector2Negate(t), IMPLICIT_CLOSE_SUBPATH | START_SEGMENT, IMPLICIT_CLOSE_SUBPATH | END_SEGMENT);
 		return;
@@ -1336,7 +1336,7 @@ void VGPathAddEndPath(VGPath *self,Vector2 p0, Vector2 p1, BOOL subpathHasGeomet
 	RI_ASSERT(self->_vertexCount > 0);
 	self->_vertices[self->_vertexCount-1].flags |= END_SUBPATH;
 
-	Vector2 t = Vector2Normalize(Vector2Subtract(p1,p0));
+	CGPoint t = Vector2Normalize(Vector2Subtract(p1,p0));
 	if(Vector2IsZero(t))
 		t = self->_vertices[self->_vertexCount-1].userTangent;	//if the segment is zero-length, use the tangent of the last segment end point so that proper join will be generated
 	RI_ASSERT(!Vector2IsZero(t));
@@ -1351,12 +1351,12 @@ void VGPathAddEndPath(VGPath *self,Vector2 p0, Vector2 p1, BOOL subpathHasGeomet
 * \note		
 *//*-------------------------------------------------------------------*/
 
-BOOL VGPathAddLineTo(VGPath *self,Vector2 p0, Vector2 p1, BOOL subpathHasGeometry){
+BOOL VGPathAddLineTo(VGPath *self,CGPoint p0, CGPoint p1, BOOL subpathHasGeometry){
 	if(Vector2IsEqual(p0 ,p1))
 		return NO;	//discard zero-length segments
 
 	//compute end point tangents
-	Vector2 t = Vector2Normalize(Vector2Subtract(p1,p0));
+	CGPoint t = Vector2Normalize(Vector2Subtract(p1,p0));
 	RI_ASSERT(!Vector2IsZero(t));
 
 	unsigned int startFlags = START_SEGMENT;
@@ -1377,7 +1377,7 @@ BOOL VGPathAddLineTo(VGPath *self,Vector2 p0, Vector2 p1, BOOL subpathHasGeometr
  Given a quadratic BŽzier curve with control points (x0, y0), (x1, y1), and (x2, y2), an identical cubic BŽzier curve may be formed using the control points (x0, y0), (x0 + 2*x1, y0 + 2*y1)/3, (x2 + 2*x1, y2 + 2*y1)/3, (x2, y2)
   */
   
-BOOL VGPathAddQuadTo(VGPath *self,Vector2 p0, Vector2 p1, Vector2 p2, BOOL subpathHasGeometry){
+BOOL VGPathAddQuadTo(VGPath *self,CGPoint p0, CGPoint p1, CGPoint p2, BOOL subpathHasGeometry){
 	if(Vector2IsEqual(p0,p1) && Vector2IsEqual(p0,p2))
 	{
 		RI_ASSERT(Vector2IsEqual(p1,p2));
@@ -1386,8 +1386,8 @@ BOOL VGPathAddQuadTo(VGPath *self,Vector2 p0, Vector2 p1, Vector2 p2, BOOL subpa
 
 	//compute end point tangents
 
-	Vector2 incomingTangent = Vector2Normalize(Vector2Subtract(p1,p0));
-	Vector2 outgoingTangent = Vector2Normalize(Vector2Subtract(p2,p1));
+	CGPoint incomingTangent = Vector2Normalize(Vector2Subtract(p1,p0));
+	CGPoint outgoingTangent = Vector2Normalize(Vector2Subtract(p2,p1));
 	if(Vector2IsEqual(p0,p1))
 		incomingTangent = Vector2Normalize(Vector2Subtract(p2,p0));
 	if(Vector2IsEqual(p1,p2))
@@ -1399,16 +1399,16 @@ BOOL VGPathAddQuadTo(VGPath *self,Vector2 p0, Vector2 p1, Vector2 p2, BOOL subpa
 		startFlags |= START_SUBPATH;
 
 	const int segments = 256;
-	Vector2 pp = p0;
-	Vector2 tp = incomingTangent;
+	CGPoint pp = p0;
+	CGPoint tp = incomingTangent;
 	unsigned int prevFlags = startFlags;
     int i;
 	for(i=1;i<segments;i++)
 	{
-		RIfloat t = (RIfloat)i / (RIfloat)segments;
-		RIfloat u = 1.0f-t;
-		Vector2 pn = Vector2Add(Vector2Add(Vector2MultiplyByFloat(p0,u*u) , Vector2MultiplyByFloat(p1,2.0f*t*u)),Vector2MultiplyByFloat(p2,t*t));
-		Vector2 tn = Vector2Add(Vector2Add(Vector2MultiplyByFloat(p0,(-1.0f+t)), Vector2MultiplyByFloat(p1,(1.0f-2.0f*t))),Vector2MultiplyByFloat(p2,t));
+		CGFloat t = (CGFloat)i / (CGFloat)segments;
+		CGFloat u = 1.0f-t;
+		CGPoint pn = Vector2Add(Vector2Add(Vector2MultiplyByFloat(p0,u*u) , Vector2MultiplyByFloat(p1,2.0f*t*u)),Vector2MultiplyByFloat(p2,t*t));
+		CGPoint tn = Vector2Add(Vector2Add(Vector2MultiplyByFloat(p0,(-1.0f+t)), Vector2MultiplyByFloat(p1,(1.0f-2.0f*t))),Vector2MultiplyByFloat(p2,t));
 		tn = Vector2Normalize(tn);
 		if(Vector2IsZero(tn))
 			tn = tp;
@@ -1431,7 +1431,7 @@ BOOL VGPathAddQuadTo(VGPath *self,Vector2 p0, Vector2 p1, Vector2 p2, BOOL subpa
 *//*-------------------------------------------------------------------*/
 
 // Bezier to lines from: Windows Graphics Programming by Feng Yuan
-static void bezier(VGPath *self,double x1,double y1,double x2, double y2,double x3,double y3,double x4,double y4,unsigned *prevFlags,Vector2 *pp,Vector2 *tp){
+static void bezier(VGPath *self,double x1,double y1,double x2, double y2,double x3,double y3,double x4,double y4,unsigned *prevFlags,CGPoint *pp,CGPoint *tp){
    // Ax+By+C=0 is the line (x1,y1) (x4,y4);
    double A=y4-y1;
    double B=x1-x4;
@@ -1439,9 +1439,9 @@ static void bezier(VGPath *self,double x1,double y1,double x2, double y2,double 
    double AB=A*A+B*B;
 
    if((A*x2+B*y2+C)*(A*x2+B*y2+C)<AB && (A*x3+B*y3+C)*(A*x3+B*y3+C)<AB){
-    Vector2 v0=Vector2Make(x1,y1);
-    Vector2 v1=Vector2Make(x4,y4);
-    Vector2 t = Vector2Normalize(Vector2Subtract(v1,v0));
+    CGPoint v0=Vector2Make(x1,y1);
+    CGPoint v1=Vector2Make(x4,y4);
+    CGPoint t = Vector2Normalize(Vector2Subtract(v1,v0));
 
     VGPathAddEdge(self,v0, v1, *tp, t, *prevFlags, 0);
     *prevFlags=0;
@@ -1468,7 +1468,7 @@ static void bezier(VGPath *self,double x1,double y1,double x2, double y2,double 
    }
 }
 
-BOOL VGPathAddCubicTo(VGPath *self,Vector2 p0, Vector2 p1, Vector2 p2, Vector2 p3, BOOL subpathHasGeometry){
+BOOL VGPathAddCubicTo(VGPath *self,CGPoint p0, CGPoint p1, CGPoint p2, CGPoint p3, BOOL subpathHasGeometry){
 	if(Vector2IsEqual(p0,p1) && Vector2IsEqual(p0,p2) && Vector2IsEqual(p0 ,p3))
 	{
 		RI_ASSERT(Vector2IsEqual(p1 , p2) && Vector2IsEqual(p1 , p3) && Vector2IsEqual(p2 , p3));
@@ -1476,8 +1476,8 @@ BOOL VGPathAddCubicTo(VGPath *self,Vector2 p0, Vector2 p1, Vector2 p2, Vector2 p
 	}
 
 	//compute end point tangents
-	Vector2 incomingTangent = Vector2Normalize(Vector2Subtract(p1, p0));
-	Vector2 outgoingTangent = Vector2Normalize(Vector2Subtract(p3, p2));
+	CGPoint incomingTangent = Vector2Normalize(Vector2Subtract(p1, p0));
+	CGPoint outgoingTangent = Vector2Normalize(Vector2Subtract(p3, p2));
 	if(Vector2IsEqual(p0 , p1))
 	{
 		incomingTangent = Vector2Normalize(Vector2Subtract(p2 ,p0));
@@ -1499,22 +1499,22 @@ BOOL VGPathAddCubicTo(VGPath *self,Vector2 p0, Vector2 p1, Vector2 p2, Vector2 p
 #if 1
 // This works, but does not take the CTM (i.e. scaling) into effect
 	unsigned int prevFlags = startFlags;
-	Vector2 pp = p0;
-	Vector2 tp = incomingTangent;
+	CGPoint pp = p0;
+	CGPoint tp = incomingTangent;
     bezier(self,p0.x,p0.y,p1.x,p1.y,p2.x,p2.y,p3.x,p3.y,&prevFlags,&pp,&tp);
 	VGPathAddEdge(self,pp, p3, tp, outgoingTangent, prevFlags, END_SEGMENT);
 #else
 	const int segments = 256;
-	Vector2 pp = p0;
-	Vector2 tp = incomingTangent;
+	CGPoint pp = p0;
+	CGPoint tp = incomingTangent;
 	unsigned int prevFlags = startFlags;
     int i;
 	for(i=1;i<segments;i++)
 	{
-		RIfloat t = (RIfloat)i / (RIfloat)segments;
-		RIfloat u = 1.0f-t;
-		Vector2 pn = Vector2Add(Vector2Add(Vector2Add(Vector2MultiplyByFloat(p0,u*u*u), Vector2MultiplyByFloat(p1,3.0f*t*u*u)) ,Vector2MultiplyByFloat(p2,3.0f*t*t*u)),Vector2MultiplyByFloat(p3,t*t*t));
-		Vector2 tn = Vector2Add(Vector2Add(Vector2Add(Vector2MultiplyByFloat(p0,(-1.0f + 2.0f*t - t*t)) , Vector2MultiplyByFloat(p1,(1.0f - 4.0f*t + 3.0f*t*t))) , Vector2MultiplyByFloat(p2,(2.0f*t - 3.0f*t*t) )) ,Vector2MultiplyByFloat(p3,t*t));
+		CGFloat t = (CGFloat)i / (CGFloat)segments;
+		CGFloat u = 1.0f-t;
+		CGPoint pn = Vector2Add(Vector2Add(Vector2Add(Vector2MultiplyByFloat(p0,u*u*u), Vector2MultiplyByFloat(p1,3.0f*t*u*u)) ,Vector2MultiplyByFloat(p2,3.0f*t*t*u)),Vector2MultiplyByFloat(p3,t*t*t));
+		CGPoint tn = Vector2Add(Vector2Add(Vector2Add(Vector2MultiplyByFloat(p0,(-1.0f + 2.0f*t - t*t)) , Vector2MultiplyByFloat(p1,(1.0f - 4.0f*t + 3.0f*t*t))) , Vector2MultiplyByFloat(p2,(2.0f*t - 3.0f*t*t) )) ,Vector2MultiplyByFloat(p3,t*t));
 		tn = Vector2Normalize(tn);
 		if(Vector2IsZero(tn))
 			tn = tp;
@@ -1559,9 +1559,9 @@ void VGPathTessellate(VGPath *self){
         }
         
 		int coordIndex = 0;
-		Vector2 s=Vector2Make(0,0);		//the beginning of the current subpath
-		Vector2 o=Vector2Make(0,0);		//the last point of the previous segment
-		Vector2 p=Vector2Make(0,0);		//the last internal control point of the previous segment, if the segment was a (regular or smooth) quadratic or cubic Bezier, or else the last point of the previous segment
+		CGPoint s=Vector2Make(0,0);		//the beginning of the current subpath
+		CGPoint o=Vector2Make(0,0);		//the last point of the previous segment
+		CGPoint p=Vector2Make(0,0);		//the last internal control point of the previous segment, if the segment was a (regular or smooth) quadratic or cubic Bezier, or else the last point of the previous segment
 
 		//tessellate the path segments
 		coordIndex = 0;
@@ -1592,7 +1592,7 @@ void VGPathTessellate(VGPath *self){
 			case kCGPathElementMoveToPoint:
 			{
 				RI_ASSERT(coords == 1);
-				Vector2 c=VGPathGetCoordinate(self,coordIndex);
+				CGPoint c=VGPathGetCoordinate(self,coordIndex);
 				if(prevSegment != kCGPathElementMoveToPoint && prevSegment != kCGPathElementCloseSubpath)
 					VGPathAddEndPath(self,o, s, subpathHasGeometry, IMPLICIT_CLOSE_SUBPATH);
 				s = c;
@@ -1605,7 +1605,7 @@ void VGPathTessellate(VGPath *self){
 			case kCGPathElementAddLineToPoint:
 			{
 				RI_ASSERT(coords == 1);
-				Vector2 c=VGPathGetCoordinate(self,coordIndex);
+				CGPoint c=VGPathGetCoordinate(self,coordIndex);
 				if(VGPathAddLineTo(self,o, c, subpathHasGeometry))
 					subpathHasGeometry = YES;
 				p = c;
@@ -1616,8 +1616,8 @@ void VGPathTessellate(VGPath *self){
 			case kCGPathElementAddQuadCurveToPoint:
 			{
 				RI_ASSERT(coords == 2);
-				Vector2 c0=VGPathGetCoordinate(self,coordIndex);
-				Vector2 c1=VGPathGetCoordinate(self,coordIndex+1);
+				CGPoint c0=VGPathGetCoordinate(self,coordIndex);
+				CGPoint c1=VGPathGetCoordinate(self,coordIndex+1);
 				if(VGPathAddQuadTo(self,o, c0, c1, subpathHasGeometry))
 					subpathHasGeometry = YES;
 				p = c0;
@@ -1628,9 +1628,9 @@ void VGPathTessellate(VGPath *self){
 			case kCGPathElementAddCurveToPoint:
 			{
 				RI_ASSERT(coords == 3);
-				Vector2 c0=VGPathGetCoordinate(self,coordIndex+0);
-				Vector2 c1=VGPathGetCoordinate(self,coordIndex+1);
-				Vector2 c2=VGPathGetCoordinate(self,coordIndex+2);
+				CGPoint c0=VGPathGetCoordinate(self,coordIndex+0);
+				CGPoint c1=VGPathGetCoordinate(self,coordIndex+1);
+				CGPoint c2=VGPathGetCoordinate(self,coordIndex+2);
 				if(VGPathAddCubicTo(self,o, c0, c1, c2, subpathHasGeometry))
 					subpathHasGeometry = YES;
 				p = c1;

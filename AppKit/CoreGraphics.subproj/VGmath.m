@@ -41,11 +41,11 @@
 
 BOOL Matrix3x3InplaceInvert(Matrix3x3 *m)
 {
-	RIfloat det00 = m->matrix[1][1]*m->matrix[2][2] - m->matrix[2][1]*m->matrix[1][2];
-	RIfloat det01 = m->matrix[2][0]*m->matrix[1][2] - m->matrix[1][0]*m->matrix[2][2];
-	RIfloat det02 = m->matrix[1][0]*m->matrix[2][1] - m->matrix[2][0]*m->matrix[1][1];
+	CGFloat det00 = m->matrix[1][1]*m->matrix[2][2] - m->matrix[2][1]*m->matrix[1][2];
+	CGFloat det01 = m->matrix[2][0]*m->matrix[1][2] - m->matrix[1][0]*m->matrix[2][2];
+	CGFloat det02 = m->matrix[1][0]*m->matrix[2][1] - m->matrix[2][0]*m->matrix[1][1];
 
-	RIfloat d = m->matrix[0][0]*det00 + m->matrix[0][1]*det01 + m->matrix[0][2]*det02;
+	CGFloat d = m->matrix[0][0]*det00 + m->matrix[0][1]*det01 + m->matrix[0][2]*det02;
 	if( d == 0.0f ) return NO;	//singular, leave the m->matrix unmodified and return NO
 	d = 1.0f / d;
 

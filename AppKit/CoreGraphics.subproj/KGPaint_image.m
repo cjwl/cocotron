@@ -132,7 +132,7 @@ static VGColorInternalFormat stencil(KGPaint_image *self,int x,int y,KGRGBAffff 
  // FIX
  // This needs to be changed to a nonpremultplied form. This is the only case which used ar, ag, ab premultiplied values for source.
 
-	RIfloat ar = s.a, ag = s.a, ab = s.a;
+	CGFloat ar = s.a, ag = s.a, ab = s.a;
 			//the result will be in paint color space.
 			//dst == RGB && image == RGB: RGB*RGB
 			//dst == RGB && image == L  : RGB*LLL

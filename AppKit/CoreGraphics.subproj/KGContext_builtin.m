@@ -244,23 +244,14 @@ xform=CGAffineTransformConcat(xform,u2d);
         Matrix3x3 fillPaintToUser=Matrix3x3Identity();
         
 		//transform image corners into the surface space
-		Vector3 p0=Vector3Make(0, 0,1);
-		Vector3 p1=Vector3Make(0, (CGFloat)KGImageGetHeight(image),1);
-		Vector3 p2=Vector3Make((CGFloat)KGImageGetWidth(image), (CGFloat)KGImageGetHeight(image),1);
-		Vector3 p3=Vector3Make((CGFloat)KGImageGetWidth(image), 0,1);
-		p0 = Matrix3x3MultiplyVector3(imageUserToSurface , p0);
-		p1 = Matrix3x3MultiplyVector3(imageUserToSurface , p1);
-		p2 = Matrix3x3MultiplyVector3(imageUserToSurface , p2);
-		p3 = Matrix3x3MultiplyVector3(imageUserToSurface , p3);
-		if(p0.z <= 0.0f || p1.z <= 0.0f || p2.z <= 0.0f || p3.z <= 0.0f)
-		{
-			return;
-		}
-		//projection
-		p0=Vector3MultiplyByFloat(p0,1.0f/p0.z);
-		p1=Vector3MultiplyByFloat(p1,1.0f/p1.z);
-		p2=Vector3MultiplyByFloat(p2,1.0f/p2.z);
-		p3=Vector3MultiplyByFloat(p3,1.0f/p3.z);
+		CGPoint p0=Vector2Make(0, 0);
+		CGPoint p1=Vector2Make(0, (CGFloat)KGImageGetHeight(image));
+		CGPoint p2=Vector2Make((CGFloat)KGImageGetWidth(image), (CGFloat)KGImageGetHeight(image));
+		CGPoint p3=Vector2Make((CGFloat)KGImageGetWidth(image), 0);
+		p0 = Matrix3x3TransformVector2(imageUserToSurface , p0);
+		p1 = Matrix3x3TransformVector2(imageUserToSurface , p1);
+		p2 = Matrix3x3TransformVector2(imageUserToSurface , p2);
+		p3 = Matrix3x3TransformVector2(imageUserToSurface , p3);
 
 
         KGRasterizerSetShouldAntialias(_rasterizer,gState->_shouldAntialias);

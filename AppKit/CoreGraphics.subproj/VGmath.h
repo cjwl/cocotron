@@ -31,7 +31,6 @@
 #import <Foundation/Foundation.h>
 
 typedef unsigned char	RIuint8;
-typedef float RIfloat;
 
 //#define RI_ASSERT(_) NSCParameterAssert(_)
 #define RI_ASSERT(_) 
@@ -43,15 +42,15 @@ static inline int RI_ISNAN(float a) {
     return (a!=a)?1:0;
 }
 
-static inline RIfloat	RI_MAX(RIfloat a, RIfloat b)				{ return (a > b) ? a : b; }
-static inline RIfloat	RI_MIN(RIfloat a, RIfloat b)				{ return (a < b) ? a : b; }
-static inline RIfloat	RI_CLAMP(RIfloat a, RIfloat l, RIfloat h)	{ if(RI_ISNAN(a)) return l; RI_ASSERT(l <= h); return (a < l) ? l : (a > h) ? h : a; }
-static inline void		RI_SWAP(RIfloat *a, RIfloat *b)				{ RIfloat tmp = *a; *a = *b; *b = tmp; }
-static inline RIfloat	RI_ABS(RIfloat a)							{ return (a < 0.0f) ? -a : a; }
-static inline RIfloat	RI_SQR(RIfloat a)							{ return a * a; }
-static inline RIfloat	RI_DEG_TO_RAD(RIfloat a)					{ return (RIfloat)(a * M_PI / 180.0f); }
-static inline RIfloat	RI_RAD_TO_DEG(RIfloat a)					{ return (RIfloat)(a * 180.0f/ M_PI); }
-static inline RIfloat	RI_MOD(RIfloat a, RIfloat b){
+static inline CGFloat	RI_MAX(CGFloat a, CGFloat b)				{ return (a > b) ? a : b; }
+static inline CGFloat	RI_MIN(CGFloat a, CGFloat b)				{ return (a < b) ? a : b; }
+static inline CGFloat	RI_CLAMP(CGFloat a, CGFloat l, CGFloat h)	{ if(RI_ISNAN(a)) return l; RI_ASSERT(l <= h); return (a < l) ? l : (a > h) ? h : a; }
+static inline void		RI_SWAP(CGFloat *a, CGFloat *b)				{ CGFloat tmp = *a; *a = *b; *b = tmp; }
+static inline CGFloat	RI_ABS(CGFloat a)							{ return (a < 0.0f) ? -a : a; }
+static inline CGFloat	RI_SQR(CGFloat a)							{ return a * a; }
+static inline CGFloat	RI_DEG_TO_RAD(CGFloat a)					{ return (CGFloat)(a * M_PI / 180.0f); }
+static inline CGFloat	RI_RAD_TO_DEG(CGFloat a)					{ return (CGFloat)(a * 180.0f/ M_PI); }
+static inline CGFloat	RI_MOD(CGFloat a, CGFloat b){
    if(RI_ISNAN(a) || RI_ISNAN(b))
     return 0.0f;
     
@@ -60,7 +59,7 @@ static inline RIfloat	RI_MOD(RIfloat a, RIfloat b){
    if(b == 0.0f)
     return 0.0f;
     
-   RIfloat f = (RIfloat)fmod(a, b);
+   CGFloat f = (CGFloat)fmod(a, b);
    
    if(f < 0.0f)
     f += b;
@@ -74,100 +73,79 @@ static inline int RI_INT_MOD(int a, int b)			{ RI_ASSERT(b >= 0); if(!b) return 
 static inline int RI_INT_ADDSATURATE(int a, int b)	{ RI_ASSERT(b >= 0); int r = a + b; return (r >= a) ? r : RI_INT32_MAX; }
 static inline int RI_INT_CLAMP(int a, int l, int h)	{ RI_ASSERT(l <= h); return (a < l) ? l : (a > h) ? h : a; }
 
-static inline int RI_FLOOR_TO_INT(RIfloat value){
+static inline int RI_FLOOR_TO_INT(CGFloat value){
    if(value<0)
     return floor(value);
     
    return value;
 }
 
-typedef CGPoint Vector2;
-
-static inline Vector2 Vector2Make(RIfloat fx,RIfloat fy){
-   Vector2 result;
+static inline CGPoint Vector2Make(CGFloat fx,CGFloat fy){
+   CGPoint result;
    result.x=fx;
    result.y=fy;
    return result;
 }
 
-static inline Vector2 Vector2Negate(Vector2 result){
+static inline CGPoint Vector2Negate(CGPoint result){
    return Vector2Make(-result.x,-result.y);
 }
 
-static inline RIfloat Vector2Length(Vector2 v){
-   return (RIfloat)sqrt((double)v.x*(double)v.x+(double)v.y*(double)v.y);
+static inline CGFloat Vector2Length(CGPoint v){
+   return (CGFloat)sqrt((double)v.x*(double)v.x+(double)v.y*(double)v.y);
 }
 
-static inline BOOL Vector2IsEqual(Vector2 v1,Vector2 v2 ){
+static inline BOOL Vector2IsEqual(CGPoint v1,CGPoint v2 ){
    return (v1.x == v2.x) && (v1.y == v2.y);
 }
 
-static inline BOOL Vector2IsZero(Vector2 v){
+static inline BOOL Vector2IsZero(CGPoint v){
   return (v.x == 0.0f) && (v.y == 0.0f);
 }
 
-static inline Vector2 Vector2MultiplyByFloat(Vector2 v,RIfloat f){
+static inline CGPoint Vector2MultiplyByFloat(CGPoint v,CGFloat f){
    return Vector2Make(v.x*f,v.y*f);
 }
 
-static inline Vector2 Vector2Add(Vector2 v1,Vector2 v2 ){
+static inline CGPoint Vector2Add(CGPoint v1,CGPoint v2 ){
    return Vector2Make(v1.x+v2.x, v1.y+v2.y);
 }
 
-static inline Vector2 Vector2Subtract(Vector2 v1,Vector2 v2){
+static inline CGPoint Vector2Subtract(CGPoint v1,CGPoint v2){
    return Vector2Make(v1.x-v2.x, v1.y-v2.y);
 }
 
-static inline RIfloat Vector2Dot(Vector2 v1,Vector2 v2){
+static inline CGFloat Vector2Dot(CGPoint v1,CGPoint v2){
    return v1.x*v2.x+v1.y*v2.y;
 }
 
 //if v is a zero vector, returns a zero vector
-static inline Vector2 Vector2Normalize(Vector2 v){
+static inline CGPoint Vector2Normalize(CGPoint v){
    double l = (double)v.x*(double)v.x+(double)v.y*(double)v.y;
    
    if( l != 0.0 )
     l = 1.0 / sqrt(l);
     
-   return Vector2Make((RIfloat)((double)v.x * l), (RIfloat)((double)v.y * l));
+   return Vector2Make((CGFloat)((double)v.x * l), (CGFloat)((double)v.y * l));
 }
 
-static inline Vector2 Vector2PerpendicularCW(Vector2 v){
+static inline CGPoint Vector2PerpendicularCW(CGPoint v){
    return Vector2Make(v.y, -v.x);
 }
 
-static inline Vector2 Vector2PerpendicularCCW(Vector2 v){
+static inline CGPoint Vector2PerpendicularCCW(CGPoint v){
    return Vector2Make(-v.y, v.x);
 }
 
-static inline Vector2 Vector2Perpendicular(Vector2 v, BOOL cw){
+static inline CGPoint Vector2Perpendicular(CGPoint v, BOOL cw){
    if(cw)
     return Vector2Make(v.y, -v.x);
     
    return Vector2Make(-v.y, v.x);
 }
 
-typedef struct  {
-   RIfloat x,y,z;
-} Vector3;
-
-static inline Vector3 Vector3Make( RIfloat fx, RIfloat fy, RIfloat fz ){
-   Vector3 result;
-   result.x=fx;
-   result.y=fy;
-   result.z=fz;
-   return result;
-}
-
-static inline Vector3 Vector3MultiplyByFloat(Vector3 v,RIfloat f){
-   v.x *= f;
-   v.y *= f;
-   v.z *= f; 
-   return v;
-}
-
 typedef struct {    
-   RIfloat matrix[3][3];
+   CGFloat matrix[3][3];
 } Matrix3x3;
 
 static inline Matrix3x3 Matrix3x3Identity(){
@@ -221,14 +199,10 @@ static inline BOOL Matrix3x3IsAffine(Matrix3x3 m){
 }
 
 //matrix * column vector. The input vector2 is implicitly expanded to (x,y,1)
-static inline Vector2 Matrix3x3TransformVector2(Matrix3x3 m,Vector2 v){
+static inline CGPoint Matrix3x3TransformVector2(Matrix3x3 m,CGPoint v){
    RI_ASSERT(Matrix3x3IsAffine(m));
    return Vector2Make(v.x * m.matrix[0][0] + v.y * m.matrix[0][1] + m.matrix[0][2], v.x * m.matrix[1][0] + v.y * m.matrix[1][1] + m.matrix[1][2]);
 }
 
-//matrix * column vector
-static inline Vector3 Matrix3x3MultiplyVector3( Matrix3x3 m,Vector3 v){
-   return Vector3Make(v.x*m.matrix[0][0]+v.y*m.matrix[0][1]+v.z*m.matrix[0][2],v.x*m.matrix[1][0]+v.y*m.matrix[1][1]+v.z*m.matrix[1][2], v.x*m.matrix[2][0]+v.y*m.matrix[2][1]+v.z*m.matrix[2][2] );
-}
 
 

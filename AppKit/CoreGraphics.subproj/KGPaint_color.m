@@ -40,7 +40,7 @@ static VGColorInternalFormat KGPaintReadPremultipliedConstantSourceSpan(KGPaint_
    return self->m_paintColor.m_format;
 }
 
--initWithGray:(RIfloat)gray alpha:(RIfloat)alpha {
+-initWithGray:(CGFloat)gray alpha:(CGFloat)alpha {
    KGPaintInit(self);
    _readRGBAffff=(KGPaintReadSpan_RGBAffff)KGPaintReadPremultipliedConstantSourceSpan;
    m_paintColor=VGColorRGBA(gray,gray,gray,alpha,VGColor_lRGBA);
@@ -49,7 +49,7 @@ static VGColorInternalFormat KGPaintReadPremultipliedConstantSourceSpan(KGPaint_
    return self;
 }
 
--initWithRed:(RIfloat)red green:(RIfloat)green blue:(RIfloat)blue alpha:(RIfloat)alpha {
+-initWithRed:(CGFloat)red green:(CGFloat)green blue:(CGFloat)blue alpha:(CGFloat)alpha {
    KGPaintInit(self);
    _readRGBAffff=(KGPaintReadSpan_RGBAffff)KGPaintReadPremultipliedConstantSourceSpan;
    m_paintColor=VGColorRGBA(red,green,blue,alpha,VGColor_lRGBA);

@@ -263,7 +263,7 @@ void KGImageRead_RGBAffffBig_to_RGBAffff(KGImage *self,int x,int y,KGRGBAffff *s
 
 
 
-VGColorInternalFormat KGImageResample_EWAOnMipmaps(KGImage *self,RIfloat x, RIfloat y,KGRGBAffff *span,int length, Matrix3x3 surfaceToImage);
-VGColorInternalFormat KGImageResample_Bicubic(KGImage *self,RIfloat x, RIfloat y,KGRGBAffff *span,int length, Matrix3x3 surfaceToImage);
-VGColorInternalFormat KGImageResample_Bilinear(KGImage *self,RIfloat x, RIfloat y,KGRGBAffff *span,int length, Matrix3x3 surfaceToImage);
-VGColorInternalFormat KGImageResample_PointSampling(KGImage *self,RIfloat x, RIfloat y,KGRGBAffff *span,int length, Matrix3x3 surfaceToImage);
+VGColorInternalFormat KGImageResample_EWAOnMipmaps(KGImage *self,CGFloat x, CGFloat y,KGRGBAffff *span,int length, Matrix3x3 surfaceToImage);
+VGColorInternalFormat KGImageResample_Bicubic(KGImage *self,CGFloat x, CGFloat y,KGRGBAffff *span,int length, Matrix3x3 surfaceToImage);
+VGColorInternalFormat KGImageResample_Bilinear(KGImage *self,CGFloat x, CGFloat y,KGRGBAffff *span,int length, Matrix3x3 surfaceToImage);
+VGColorInternalFormat KGImageResample_PointSampling(KGImage *self,CGFloat x, CGFloat y,KGRGBAffff *span,int length, Matrix3x3 surfaceToImage);

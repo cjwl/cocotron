@@ -72,7 +72,7 @@ void KGRasterizerClear(KGRasterizer *self) {
    self->_edgeCount=0;   
 }
 
-void KGRasterizerAddEdge(KGRasterizer *self,const Vector2 v0, const Vector2 v1) {
+void KGRasterizerAddEdge(KGRasterizer *self,const CGPoint v0, const CGPoint v1) {
 	if(v0.y == v1.y)
 		return;	//skip horizontal edges (they don't affect rasterization since we scan horizontally)
 
@@ -166,17 +166,17 @@ void KGRasterizerSetShouldAntialias(KGRasterizer *self,BOOL antialias) {
         
 		for(i=0;i<self->numSamples;i++)
 		{	//Gaussian filter, implemented using Hammersley point set for sample point locations
-			RIfloat x = (RIfloat)radicalInverseBase2(i);
-			RIfloat y = ((RIfloat)i + 0.5f) / (RIfloat)self->numSamples;
+			CGFloat x = (CGFloat)radicalInverseBase2(i);
+			CGFloat y = ((CGFloat)i + 0.5f) / (CGFloat)self->numSamples;
 			RI_ASSERT(x >= 0.0f && x < 1.0f);
 			RI_ASSERT(y >= 0.0f && y < 1.0f);
 
 			//map unit square to unit circle
-			RIfloat r = (RIfloat)sqrt(x) * self->fradius;
-			x = r * (RIfloat)sin(y*2.0f*M_PI);
-			y = r * (RIfloat)cos(y*2.0f*M_PI);
-			self->samples[i].weight = (RIfloat)exp(-0.5*RI_SQR(r));
-//			self->samples[i].weight = (RIfloat)exp(-0.5*RI_SQR(r/self->fradius));
+			CGFloat r = (CGFloat)sqrt(x) * self->fradius;
+			x = r * (CGFloat)sin(y*2.0f*M_PI);
+			y = r * (CGFloat)cos(y*2.0f*M_PI);
+			self->samples[i].weight = (CGFloat)exp(-0.5*RI_SQR(r));
+//			self->samples[i].weight = (CGFloat)exp(-0.5*RI_SQR(r/self->fradius));
 			RI_ASSERT(x >= -1.5f && x <= 1.5f && y >= -1.5f && y <= 1.5f);	//the specification restricts the filter radius to be less than or equal to 1.5
 			
 			self->samples[i].x = x;
@@ -254,12 +254,12 @@ static void sortEdgesByMinY(Edge **edges,int count,Edge **B){
   }
 }
 
-static void initEdgeSidePre(Edge *edge,Sample *samples,int numSamples,RIfloat pcy){
-   RIfloat *sidePre=edge->sidePre;
+static void initEdgeSidePre(Edge *edge,Sample *samples,int numSamples,CGFloat pcy){
+   CGFloat *sidePre=edge->sidePre;
    int s;
         
    for(s=0;s<numSamples;s++){
-    RIfloat spy = pcy+samples[s].y;
+    CGFloat spy = pcy+samples[s].y;
     if(spy >= edge->v0.y && spy < edge->v1.y)
      sidePre[s] = -(spy*edge->normal.y - edge->cnst + samples[s].x*edge->normal.x)-0.5f*edge->normal.x;
     else
@@ -267,11 +267,11 @@ static void initEdgeSidePre(Edge *edge,Sample *samples,int numSamples,RIfloat pc
    }
 }
 
-static void initEdgeForAET(Edge *edge,RIfloat cminy,RIfloat cmaxy,RIfloat fradius,int xlimit){
+static void initEdgeForAET(Edge *edge,CGFloat cminy,CGFloat cmaxy,CGFloat fradius,int xlimit){
    //compute edge min and max x-coordinates for this scanline
    
-   Vector2 vd = Vector2Subtract(edge->v1,edge->v0);
-   RIfloat wl = 1.0f /vd.y;
+   CGPoint vd = Vector2Subtract(edge->v1,edge->v0);
+   CGFloat wl = 1.0f /vd.y;
    edge->vdxwl=vd.x*wl;
 
    edge->bminx = RI_MIN(edge->v0.x, edge->v1.x);
@@ -279,10 +279,10 @@ static void initEdgeForAET(Edge *edge,RIfloat cminy,RIfloat cmaxy,RIfloat fradiu
 
    edge->sxPre = (edge->v0.x  - edge->v0.y* edge->vdxwl)+ edge->vdxwl*cminy;
    edge->exPre = (edge->v0.x  - edge->v0.y* edge->vdxwl)+ edge->vdxwl*cmaxy;
-   RIfloat autosx = RI_CLAMP(edge->sxPre, edge->bminx, edge->bmaxx);
-   RIfloat autoex  = RI_CLAMP(edge->exPre, edge->bminx, edge->bmaxx); 
-   RIfloat minx=RI_MIN(autosx,autoex);
-   RIfloat maxx=RI_MAX(autosx,autoex);
+   CGFloat autosx = RI_CLAMP(edge->sxPre, edge->bminx, edge->bmaxx);
+   CGFloat autoex  = RI_CLAMP(edge->exPre, edge->bminx, edge->bmaxx); 
+   CGFloat minx=RI_MIN(autosx,autoex);
+   CGFloat maxx=RI_MAX(autosx,autoex);
    
    minx-=fradius+0.5f;
    //0.01 is a safety region to prevent too aggressive optimization due to numerical inaccuracy
@@ -294,14 +294,14 @@ static void initEdgeForAET(Edge *edge,RIfloat cminy,RIfloat cmaxy,RIfloat fradiu
    edge->maxx = maxx;
 }
 
-static void incrementEdgeForAET(Edge *edge,RIfloat cminy,RIfloat cmaxy,RIfloat fradius,int xlimit){
+static void incrementEdgeForAET(Edge *edge,CGFloat cminy,CGFloat cmaxy,CGFloat fradius,int xlimit){
    edge->sxPre+= edge->vdxwl;
    edge->exPre+= edge->vdxwl;
    
-   RIfloat autosx = RI_CLAMP(edge->sxPre, edge->bminx, edge->bmaxx);
-   RIfloat autoex  = RI_CLAMP(edge->exPre, edge->bminx, edge->bmaxx); 
-   RIfloat minx=RI_MIN(autosx,autoex);
-   RIfloat maxx=RI_MAX(autosx,autoex);
+   CGFloat autosx = RI_CLAMP(edge->sxPre, edge->bminx, edge->bmaxx);
+   CGFloat autoex  = RI_CLAMP(edge->exPre, edge->bminx, edge->bmaxx); 
+   CGFloat minx=RI_MIN(autosx,autoex);
+   CGFloat maxx=RI_MAX(autosx,autoex);
    
    minx-=fradius+0.5f;
    //0.01 is a safety region to prevent too aggressive optimization due to numerical inaccuracy
@@ -373,13 +373,13 @@ void KGRasterizerFill(KGRasterizer *self,VGFillRule fillRule) {
     int     activeCount=0;
     int     activeCapacity=512;
     Edge  **activeEdges=NSZoneMalloc(NULL,activeCapacity*sizeof(Edge *));
-    RIfloat cminy = (RIfloat)miny - self->fradius + 0.5f;
-    RIfloat cmaxy = (RIfloat)miny + self->fradius + 0.5f;
+    CGFloat cminy = (CGFloat)miny - self->fradius + 0.5f;
+    CGFloat cmaxy = (CGFloat)miny + self->fradius + 0.5f;
     int     scany;
 
 	for(scany=miny;scany<ylimit;scany++,cminy+=1.0,cmaxy+=1.0){
      
-     RIfloat pcy=scany+0.5f; // pixel center
+     CGFloat pcy=scany+0.5f; // pixel center
      int removeNulls=0;
      
      // remove edges out of range, load empty slot with an available edge
@@ -455,7 +455,7 @@ void KGRasterizerFill(KGRasterizer *self,VGFillRule fillRule) {
         int rightOfLastEdge=NO;
         int spanCapacity=256;
         int spanCount=0,spanX=-1;
-        RIfloat span[spanCapacity];
+        CGFloat span[spanCapacity];
         
 		for(scanx=RI_INT_MAX(self->_vpx,activeEdges[0]->minx);nextEdge<activeCount && scanx<xlimit;){            			
             
@@ -468,15 +468,15 @@ void KGRasterizerFill(KGRasterizer *self,VGFillRule fillRule) {
             
             for(i=nextEdge;i<activeCount;i++){
              Edge   *edge=activeEdges[i];
-             RIfloat minx=edge->minx;
+             CGFloat minx=edge->minx;
 
              if(scanx<minx)
               break;
              else {
               int      direction=edge->direction;
-              RIfloat *pre=edge->sidePre;
+              CGFloat *pre=edge->sidePre;
               int     *windptr=winding;
-              RIfloat  pcxnormal=scanx*edge->normal.x;
+              CGFloat  pcxnormal=scanx*edge->normal.x;
               int      rightOfThisEdge=0;
               
               for(s=0;s<self->numSamples;s++,windptr++){
@@ -507,7 +507,7 @@ void KGRasterizerFill(KGRasterizer *self,VGFillRule fillRule) {
             }
            }
             
-		   RIfloat coverage = 0.0f;
+		   CGFloat coverage = 0.0f;
            s=self->numSamples;
            while(--s>=0)                  
             if( winding[s] & fillRuleMask )
@@ -689,7 +689,7 @@ static inline KGRGBAffff KGRGBAffffConvert(KGRGBAffff rgba,int fromFormat,int to
    return KGRGBAffffFromColor(color);
 }
 
-static VGColorInternalFormat KGApplyCoverageToSpan(KGRGBAffff *dst,RIfloat *coverage,KGRGBAffff *result,int length,VGColorInternalFormat dFormat){
+static VGColorInternalFormat KGApplyCoverageToSpan(KGRGBAffff *dst,CGFloat *coverage,KGRGBAffff *result,int length,VGColorInternalFormat dFormat){
    //apply antialiasing in linear color space
    VGColorInternalFormat aaFormat = (dFormat & VGColorLUMINANCE) ? VGColor_lLA_PRE : VGColor_lRGBA_PRE;
    int i;
@@ -698,7 +698,7 @@ static VGColorInternalFormat KGApplyCoverageToSpan(KGRGBAffff *dst,RIfloat *cove
     for(i=0;i<length;i++){
      KGRGBAffff r=result[i];
      KGRGBAffff d=dst[i];
-     RIfloat cov=coverage[i];
+     CGFloat cov=coverage[i];
 
      r=KGRGBAffffConvert(r,dFormat,aaFormat);
      d=KGRGBAffffConvert(d,dFormat,aaFormat);
@@ -711,7 +711,7 @@ static VGColorInternalFormat KGApplyCoverageToSpan(KGRGBAffff *dst,RIfloat *cove
     for(i=0;i<length;i++){
      KGRGBAffff r=result[i];
      KGRGBAffff d=dst[i];
-     RIfloat cov=coverage[i];
+     CGFloat cov=coverage[i];
      
      result[i]=KGRGBAffffAdd(KGRGBAffffMultiplyByFloat(r , cov) , KGRGBAffffMultiplyByFloat(d , (1.0f - cov)));
     }
@@ -721,7 +721,7 @@ static VGColorInternalFormat KGApplyCoverageToSpan(KGRGBAffff *dst,RIfloat *cove
    
 }
 
-void KGRasterizeWriteCoverage(KGRasterizer *self,int x, int y,RIfloat *coverage,int length)  {
+void KGRasterizeWriteCoverage(KGRasterizer *self,int x, int y,CGFloat *coverage,int length)  {
 	RI_ASSERT(self->m_renderingSurface);
 
 	//apply masking

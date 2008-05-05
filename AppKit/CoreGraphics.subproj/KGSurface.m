@@ -41,29 +41,29 @@
 
 
 /*-------------------------------------------------------------------*//*!
-* \brief	Converts from color (RIfloat) to an int with 1.0f mapped to the
+* \brief	Converts from color (CGFloat) to an int with 1.0f mapped to the
 *			given maximum with round-to-nearest semantics.
 * \param	
 * \return	
 * \note		
 *//*-------------------------------------------------------------------*/
 	
-static unsigned int colorToInt(RIfloat c, int maxc)
+static unsigned int colorToInt(CGFloat c, int maxc)
 {
-	return RI_INT_MIN(RI_INT_MAX(RI_FLOOR_TO_INT(c * (RIfloat)maxc + 0.5f), 0), maxc);
+	return RI_INT_MIN(RI_INT_MAX(RI_FLOOR_TO_INT(c * (CGFloat)maxc + 0.5f), 0), maxc);
 }
 
 /*-------------------------------------------------------------------*//*!
-* \brief	Converts from int to color (RIfloat) with the given maximum
+* \brief	Converts from int to color (CGFloat) with the given maximum
 *			mapped to 1.0f.
 * \param	
 * \return	
 * \note		
 *//*-------------------------------------------------------------------*/
 
-static inline RIfloat intToColor(unsigned int i, unsigned int maxi)
+static inline CGFloat intToColor(unsigned int i, unsigned int maxi)
 {
-	return (RIfloat)(i & maxi) / (RIfloat)maxi;
+	return (CGFloat)(i & maxi) / (CGFloat)maxi;
 }
 
 
@@ -75,25 +75,25 @@ static inline RIfloat intToColor(unsigned int i, unsigned int maxi)
 *//*-------------------------------------------------------------------*/
 
 // Can't use 'gamma' ?
-static RIfloat dogamma(RIfloat c)
+static CGFloat dogamma(CGFloat c)
 {    
 	if( c <= 0.00304f )
 		c *= 12.92f;
 	else
-		c = 1.0556f * (RIfloat)pow(c, 1.0f/2.4f) - 0.0556f;
+		c = 1.0556f * (CGFloat)pow(c, 1.0f/2.4f) - 0.0556f;
 	return c;
 }
 
-static RIfloat invgamma(RIfloat c)
+static CGFloat invgamma(CGFloat c)
 {
 	if( c <= 0.03928f )
 		c /= 12.92f;
 	else
-		c = (RIfloat)pow((c + 0.0556f)/1.0556f, 2.4f);
+		c = (CGFloat)pow((c + 0.0556f)/1.0556f, 2.4f);
 	return c;
 }
 
-static RIfloat lRGBtoL(RIfloat r, RIfloat g, RIfloat b)
+static CGFloat lRGBtoL(CGFloat r, CGFloat g, CGFloat b)
 {
 	return 0.2126f*r + 0.7152f*g + 0.0722f*b;
 }
@@ -113,7 +113,7 @@ VGColor VGColorConvert(VGColor result,VGColorInternalFormat outputFormat){
 		RI_ASSERT(result.r <= result.a);
 		RI_ASSERT(result.g <= result.a);
 		RI_ASSERT(result.b <= result.a);
-		RIfloat ooa = (result.a != 0.0f) ? 1.0f / result.a : (RIfloat)0.0f;
+		CGFloat ooa = (result.a != 0.0f) ? 1.0f / result.a : (CGFloat)0.0f;
 		result.r *= ooa;
 		result.g *= ooa;
 		result.b *= ooa;
@@ -246,7 +246,7 @@ VGPixelDecode KGSurfaceParametersToPixelLayout(KGSurfaceFormat format,size_t *bi
 	return desc;
 }
 
-static void colorToBytesLittle(RIfloat color,RIuint8 *scanline){
+static void colorToBytesLittle(CGFloat color,RIuint8 *scanline){
    union {
     unsigned char bytes[4];
     float         f;
@@ -286,7 +286,7 @@ static void KGSurfaceWrite_RGBAffff_to_RGBAffffLittle(KGSurface *self,int x,int 
    }
 }
 
-static void colorToBytesBig(RIfloat color,RIuint8 *scanline){
+static void colorToBytesBig(CGFloat color,RIuint8 *scanline){
    union {
     unsigned char bytes[4];
     float         f;
@@ -326,12 +326,12 @@ static void KGSurfaceWrite_RGBAffff_to_RGBAffffBig(KGSurface *self,int x,int y,K
    }
 }
 
-static unsigned char colorToByte(RIfloat c){
-	return RI_INT_MIN(RI_INT_MAX(RI_FLOOR_TO_INT(c * (RIfloat)0xFF + 0.5f), 0), 0xFF);
+static unsigned char colorToByte(CGFloat c){
+	return RI_INT_MIN(RI_INT_MAX(RI_FLOOR_TO_INT(c * (CGFloat)0xFF + 0.5f), 0), 0xFF);
 }
 
-static unsigned char colorToNibble(RIfloat c){
-	return RI_INT_MIN(RI_INT_MAX(RI_FLOOR_TO_INT(c * (RIfloat)0xF + 0.5f), 0), 0xF);
+static unsigned char colorToNibble(CGFloat c){
+	return RI_INT_MIN(RI_INT_MAX(RI_FLOOR_TO_INT(c * (CGFloat)0xF + 0.5f), 0), 0xF);
 }
 
 static void KGSurfaceWrite_RGBAffff_to_GA88(KGSurface *self,int x,int y,KGRGBAffff *span,int length){
@@ -722,12 +722,12 @@ void KGSurfaceClear(KGSurface *self,VGColor clearColor, int x, int y, int w, int
 * \note		
 *//*-------------------------------------------------------------------*/
 
-static RIfloat ditherChannel(RIfloat c, int bits, RIfloat m)
+static CGFloat ditherChannel(CGFloat c, int bits, CGFloat m)
 {
-	RIfloat fc = c * (RIfloat)((1<<bits)-1);
-	RIfloat ic = (RIfloat)floor(fc);
+	CGFloat fc = c * (CGFloat)((1<<bits)-1);
+	CGFloat ic = (CGFloat)floor(fc);
 	if(fc - ic > m) ic += 1.0f;
-	return RI_MIN(ic / (RIfloat)((1<<bits)-1), 1.0f);
+	return RI_MIN(ic / (CGFloat)((1<<bits)-1), 1.0f);
 }
 
 void KGSurfaceBlit(KGSurface *self,KGSurface * src, int sx, int sy, int dx, int dy, int w, int h, BOOL dither) {
@@ -834,7 +834,7 @@ void KGSurfaceBlit(KGSurface *self,KGSurface * src, int sx, int sy, int dx, int 
 					15, 7,  13, 5};
 				int x = i & 3;
 				int y = j & 3;
-				RIfloat m = matrix[y*4+x] / 16.0f;
+				CGFloat m = matrix[y*4+x] / 16.0f;
 
 				if(rbits) col.r = ditherChannel(col.r, rbits, m);
 				if(gbits) col.g = ditherChannel(col.g, gbits, m);
@@ -930,9 +930,9 @@ void KGSurfaceMask(KGSurface *self,KGSurface* src, VGMaskOperation operation, in
         int i;
 		for(i=0;i<w;i++)
 		{
-			RIfloat aprev = KGSurfaceReadMaskPixel(self,dstsx + i, dstsy + j);
-			RIfloat amask = KGSurfaceReadMaskPixel(src,srcsx + i, srcsy + j);
-			RIfloat anew = 0.0f;
+			CGFloat aprev = KGSurfaceReadMaskPixel(self,dstsx + i, dstsy + j);
+			CGFloat amask = KGSurfaceReadMaskPixel(src,srcsx + i, srcsy + j);
+			CGFloat anew = 0.0f;
 			switch(operation)
 			{
 			case VG_SET_MASK:
@@ -1125,7 +1125,7 @@ void KGSurfaceWriteFilteredPixel(KGSurface *self,int i, int j, VGColor color, VG
 * \note		
 *//*-------------------------------------------------------------------*/
 
-RIfloat KGSurfaceReadMaskPixel(KGSurface *self,int x, int y){
+CGFloat KGSurfaceReadMaskPixel(KGSurface *self,int x, int y){
 	RI_ASSERT(self->_bytes);
 	RI_ASSERT(x >= 0 && x < self->_width);
 	RI_ASSERT(y >= 0 && y < self->_height);
@@ -1143,7 +1143,7 @@ RIfloat KGSurfaceReadMaskPixel(KGSurface *self,int x, int y){
 	}
 }
 
-void KGSurfaceReadMaskPixelSpanIntoCoverage(KGSurface *self,int x,int y,RIfloat *coverage,int length) {
+void KGSurfaceReadMaskPixelSpanIntoCoverage(KGSurface *self,int x,int y,CGFloat *coverage,int length) {
    int i;
    
    for(i=0;i<length;i++,x++){
@@ -1158,7 +1158,7 @@ void KGSurfaceReadMaskPixelSpanIntoCoverage(KGSurface *self,int x,int y,RIfloat 
 * \note		
 *//*-------------------------------------------------------------------*/
 
-void KGSurfaceWriteMaskPixel(KGSurface *self,int x, int y, RIfloat m)	//can write only to VG_A_8
+void KGSurfaceWriteMaskPixel(KGSurface *self,int x, int y, CGFloat m)	//can write only to VG_A_8
 {
 	RI_ASSERT(self->_bytes);
 	RI_ASSERT(x >= 0 && x < self->_width);
@@ -1225,14 +1225,13 @@ void KGSurfaceReadTexelTileRepeat(KGImage *self,int u, int v, KGRGBAffff *span,i
    }
 }
 
-void KGSurfacePattern_Bilinear(KGImage *self,RIfloat x, RIfloat y,KGRGBAffff *span,int length, Matrix3x3 surfaceToImage){
+void KGSurfacePattern_Bilinear(KGImage *self,CGFloat x, CGFloat y,KGRGBAffff *span,int length, Matrix3x3 surfaceToImage){
    int i;
    
    for(i=0;i<length;i++,x++){
-	Vector3 uvw=Vector3Make(x+0.5,y+0.5,1);
-	uvw = Matrix3x3MultiplyVector3(surfaceToImage ,uvw);
-	RIfloat oow = 1.0f / uvw.z;
-	uvw=Vector3MultiplyByFloat(uvw,oow);
+	CGPoint uvw=Vector2Make(x+0.5,y+0.5);
+	uvw = Matrix3x3TransformVector2(surfaceToImage ,uvw);
+
     uvw.x -= 0.5f;
 	uvw.y -= 0.5f;
 	int u = RI_FLOOR_TO_INT(uvw.x);
@@ -1243,27 +1242,26 @@ void KGSurfacePattern_Bilinear(KGImage *self,RIfloat x, RIfloat y,KGRGBAffff *sp
     KGRGBAffff c01c11[2];
     KGSurfaceReadTexelTileRepeat(self,u,v+1,c01c11,2);
 
-    RIfloat fu = uvw.x - (RIfloat)u;
-    RIfloat fv = uvw.y - (RIfloat)v;
+    CGFloat fu = uvw.x - (CGFloat)u;
+    CGFloat fv = uvw.y - (CGFloat)v;
     KGRGBAffff c0 = KGRGBAffffAdd(KGRGBAffffMultiplyByFloat(c00c01[0],(1.0f - fu)),KGRGBAffffMultiplyByFloat(c00c01[1],fu));
     KGRGBAffff c1 = KGRGBAffffAdd(KGRGBAffffMultiplyByFloat(c01c11[0],(1.0f - fu)),KGRGBAffffMultiplyByFloat(c01c11[1],fu));
     span[i]=KGRGBAffffAdd(KGRGBAffffMultiplyByFloat(c0,(1.0f - fv)),KGRGBAffffMultiplyByFloat(c1, fv));
    }
 }
 
-void KGSurfacePattern_PointSampling(KGImage *self,RIfloat x, RIfloat y,KGRGBAffff *span,int length, Matrix3x3 surfaceToImage){	//point sampling
+void KGSurfacePattern_PointSampling(KGImage *self,CGFloat x, CGFloat y,KGRGBAffff *span,int length, Matrix3x3 surfaceToImage){	//point sampling
    int i;
    
    for(i=0;i<length;i++,x++){
-    Vector3 uvw=Vector3Make(x+0.5,y+0.5,1);
-	uvw = Matrix3x3MultiplyVector3(surfaceToImage ,uvw);
-	RIfloat oow = 1.0f / uvw.z;
-	uvw=Vector3MultiplyByFloat(uvw,oow);
+    CGPoint uvw=Vector2Make(x+0.5,y+0.5);
+	uvw = Matrix3x3TransformVector2(surfaceToImage ,uvw);
+
     KGSurfaceReadTexelTileRepeat(self,RI_FLOOR_TO_INT(uvw.x), RI_FLOOR_TO_INT(uvw.y),span+i,1);
    }
 }
 
-VGColorInternalFormat KGSurfacePatternSpan(KGImage *self,RIfloat x, RIfloat y, KGRGBAffff *span,int length, Matrix3x3 surfaceToImage, CGPatternTiling distortion)	{
+VGColorInternalFormat KGSurfacePatternSpan(KGImage *self,CGFloat x, CGFloat y, KGRGBAffff *span,int length, Matrix3x3 surfaceToImage, CGPatternTiling distortion)	{
     
    switch(distortion){
     case kCGPatternTilingNoDistortion:
@@ -1329,10 +1327,10 @@ void KGSurfaceMakeMipMaps(KGImage *self) {
 			{
 				for(i=0;i<next->_width;i++)
 				{
-					RIfloat u0 = (RIfloat)i / (RIfloat)next->_width;
-					RIfloat u1 = (RIfloat)(i+1) / (RIfloat)next->_width;
-					RIfloat v0 = (RIfloat)j / (RIfloat)next->_height;
-					RIfloat v1 = (RIfloat)(j+1) / (RIfloat)next->_height;
+					CGFloat u0 = (CGFloat)i / (CGFloat)next->_width;
+					CGFloat u1 = (CGFloat)(i+1) / (CGFloat)next->_width;
+					CGFloat v0 = (CGFloat)j / (CGFloat)next->_height;
+					CGFloat v1 = (CGFloat)(j+1) / (CGFloat)next->_height;
 
 					u0 *= prev->_width;
 					u1 *= prev->_width;
@@ -1394,7 +1392,7 @@ void KGSurfaceMakeMipMaps(KGImage *self) {
 * \note		
 *//*-------------------------------------------------------------------*/
 
-void KGSurfaceColorMatrix(KGSurface *self,KGSurface * src, const RIfloat* matrix, BOOL filterFormatLinear, BOOL filterFormatPremultiplied, VGbitfield channelMask) {
+void KGSurfaceColorMatrix(KGSurface *self,KGSurface * src, const CGFloat* matrix, BOOL filterFormatLinear, BOOL filterFormatPremultiplied, VGbitfield channelMask) {
 	RI_ASSERT(src->_bytes);	//source exists
 	RI_ASSERT(self->_bytes);	//destination exists
 	RI_ASSERT(matrix);
@@ -1502,7 +1500,7 @@ static VGColorInternalFormat getProcessingFormat(VGColorInternalFormat srcFormat
 * \note		
 *//*-------------------------------------------------------------------*/
 
-void KGSurfaceConvolve(KGSurface *self,KGSurface * src, int kernelWidth, int kernelHeight, int shiftX, int shiftY, const RIint16* kernel, RIfloat scale, RIfloat bias, VGTilingMode tilingMode, VGColor edgeFillColor, BOOL filterFormatLinear, BOOL filterFormatPremultiplied, VGbitfield channelMask) {
+void KGSurfaceConvolve(KGSurface *self,KGSurface * src, int kernelWidth, int kernelHeight, int shiftX, int shiftY, const RIint16* kernel, CGFloat scale, CGFloat bias, VGTilingMode tilingMode, VGColor edgeFillColor, BOOL filterFormatLinear, BOOL filterFormatPremultiplied, VGbitfield channelMask) {
 	RI_ASSERT(src->_bytes);	//source exists
 	RI_ASSERT(self->_bytes);	//destination exists
 	RI_ASSERT(kernel && kernelWidth > 0 && kernelHeight > 0);
@@ -1554,7 +1552,7 @@ void KGSurfaceConvolve(KGSurface *self,KGSurface * src, int kernelWidth, int ker
 					int ky = kernelHeight-kj-1;
 					RI_ASSERT(kx >= 0 && kx < kernelWidth && ky >= 0 && ky < kernelHeight);
 
-					sum=VGColorAdd(sum, VGColorMultiplyByFloat(s,(RIfloat)kernel[kx*kernelHeight+ky]));
+					sum=VGColorAdd(sum, VGColorMultiplyByFloat(s,(CGFloat)kernel[kx*kernelHeight+ky]));
 				}
 			}
 
@@ -1577,7 +1575,7 @@ void KGSurfaceConvolve(KGSurface *self,KGSurface * src, int kernelWidth, int ker
 * \note		
 *//*-------------------------------------------------------------------*/
 
-void KGSurfaceSeparableConvolve(KGSurface *self,KGSurface * src, int kernelWidth, int kernelHeight, int shiftX, int shiftY, const RIint16* kernelX, const RIint16* kernelY, RIfloat scale, RIfloat bias, VGTilingMode tilingMode, VGColor edgeFillColor, BOOL filterFormatLinear, BOOL filterFormatPremultiplied, VGbitfield channelMask) {
+void KGSurfaceSeparableConvolve(KGSurface *self,KGSurface * src, int kernelWidth, int kernelHeight, int shiftX, int shiftY, const RIint16* kernelX, const RIint16* kernelY, CGFloat scale, CGFloat bias, VGTilingMode tilingMode, VGColor edgeFillColor, BOOL filterFormatLinear, BOOL filterFormatPremultiplied, VGbitfield channelMask) {
 	RI_ASSERT(src->_bytes);	//source exists
 	RI_ASSERT(self->_bytes);	//destination exists
 	RI_ASSERT(kernelX && kernelY && kernelWidth > 0 && kernelHeight > 0);
@@ -1627,7 +1625,7 @@ void KGSurfaceSeparableConvolve(KGSurface *self,KGSurface * src, int kernelWidth
 				int kx = kernelWidth-ki-1;
 				RI_ASSERT(kx >= 0 && kx < kernelWidth);
 
-				sum=VGColorAdd(sum , VGColorMultiplyByFloat(s,(RIfloat)kernelX[kx])) ;
+				sum=VGColorAdd(sum , VGColorMultiplyByFloat(s,(CGFloat)kernelX[kx])) ;
 			}
 			tmp2[j*w+i] = sum;
 		}
@@ -1639,7 +1637,7 @@ void KGSurfaceSeparableConvolve(KGSurface *self,KGSurface * src, int kernelWidth
         int ki;
 		for(ki=0;ki<kernelWidth;ki++)
 		{
-			sum=VGColorAdd(sum, VGColorMultiplyByFloat(edge, (RIfloat)kernelX[ki]));
+			sum=VGColorAdd(sum, VGColorMultiplyByFloat(edge, (CGFloat)kernelX[ki]));
 		}
 		edge = sum;
 	}
@@ -1659,7 +1657,7 @@ void KGSurfaceSeparableConvolve(KGSurface *self,KGSurface * src, int kernelWidth
 				int ky = kernelHeight-kj-1;
 				RI_ASSERT(ky >= 0 && ky < kernelHeight);
 
-				sum=VGColorAdd(sum, VGColorMultiplyByFloat(s, (RIfloat)kernelY[ky]));
+				sum=VGColorAdd(sum, VGColorMultiplyByFloat(s, (CGFloat)kernelY[ky]));
 			}
 
 			sum=VGColorMultiplyByFloat(sum,scale);
@@ -1682,7 +1680,7 @@ void KGSurfaceSeparableConvolve(KGSurface *self,KGSurface * src, int kernelWidth
 * \note		
 *//*-------------------------------------------------------------------*/
 
-void KGSurfaceGaussianBlur(KGSurface *self,KGSurface * src, RIfloat stdDeviationX, RIfloat stdDeviationY, VGTilingMode tilingMode, VGColor edgeFillColor, BOOL filterFormatLinear, BOOL filterFormatPremultiplied, VGbitfield channelMask){
+void KGSurfaceGaussianBlur(KGSurface *self,KGSurface * src, CGFloat stdDeviationX, CGFloat stdDeviationY, VGTilingMode tilingMode, VGColor edgeFillColor, BOOL filterFormatLinear, BOOL filterFormatPremultiplied, VGbitfield channelMask){
 	RI_ASSERT(src->_bytes);	//source exists
 	RI_ASSERT(self->_bytes);	//destination exists
 	RI_ASSERT(stdDeviationX > 0.0f && stdDeviationY > 0.0f);
@@ -1716,57 +1714,57 @@ void KGSurfaceGaussianBlur(KGSurface *self,KGSurface * src, RIfloat stdDeviation
 	}
 
 	//find a size for the kernel
-	RIfloat totalWeightX = stdDeviationX*(RIfloat)sqrt(2.0f*M_PI);
-	RIfloat totalWeightY = stdDeviationY*(RIfloat)sqrt(2.0f*M_PI);
-	const RIfloat tolerance = 0.99f;	//use a kernel that covers 99% of the total Gaussian support
+	CGFloat totalWeightX = stdDeviationX*(CGFloat)sqrt(2.0f*M_PI);
+	CGFloat totalWeightY = stdDeviationY*(CGFloat)sqrt(2.0f*M_PI);
+	const CGFloat tolerance = 0.99f;	//use a kernel that covers 99% of the total Gaussian support
 
-	RIfloat expScaleX = -1.0f / (2.0f*stdDeviationX*stdDeviationX);
-	RIfloat expScaleY = -1.0f / (2.0f*stdDeviationY*stdDeviationY);
+	CGFloat expScaleX = -1.0f / (2.0f*stdDeviationX*stdDeviationX);
+	CGFloat expScaleY = -1.0f / (2.0f*stdDeviationY*stdDeviationY);
 
 	int kernelWidth = 0;
-	RIfloat e = 0.0f;
-	RIfloat sumX = 1.0f;	//the weight of the middle entry counted already
+	CGFloat e = 0.0f;
+	CGFloat sumX = 1.0f;	//the weight of the middle entry counted already
 	do
 	{
 		kernelWidth++;
-		e = (RIfloat)exp((RIfloat)(kernelWidth * kernelWidth) * expScaleX);
+		e = (CGFloat)exp((CGFloat)(kernelWidth * kernelWidth) * expScaleX);
 		sumX += e*2.0f;	//count left&right lobes
 	}
 	while(sumX < tolerance*totalWeightX);
 
 	int kernelHeight = 0;
 	e = 0.0f;
-	RIfloat sumY = 1.0f;	//the weight of the middle entry counted already
+	CGFloat sumY = 1.0f;	//the weight of the middle entry counted already
 	do
 	{
 		kernelHeight++;
-		e = (RIfloat)exp((RIfloat)(kernelHeight * kernelHeight) * expScaleY);
+		e = (CGFloat)exp((CGFloat)(kernelHeight * kernelHeight) * expScaleY);
 		sumY += e*2.0f;	//count left&right lobes
 	}
 	while(sumY < tolerance*totalWeightY);
 
 	//make a separable kernel
     int kernelXSize=kernelWidth*2+1;
-	RIfloat kernelX[kernelXSize];
+	CGFloat kernelX[kernelXSize];
 	int shiftX = kernelWidth;
-	RIfloat scaleX = 0.0f;
+	CGFloat scaleX = 0.0f;
     int i;
 	for(i=0;i<kernelXSize;i++)
 	{
 		int x = i-shiftX;
-		kernelX[i] = (RIfloat)exp((RIfloat)x*(RIfloat)x * expScaleX);
+		kernelX[i] = (CGFloat)exp((CGFloat)x*(CGFloat)x * expScaleX);
 		scaleX += kernelX[i];
 	}
 	scaleX = 1.0f / scaleX;	//NOTE: using the mathematical definition of the scaling term doesn't work since we cut the filter support early for performance
 
     int kernelYSize=kernelHeight*2+1;
-	RIfloat kernelY[kernelYSize];
+	CGFloat kernelY[kernelYSize];
 	int shiftY = kernelHeight;
-	RIfloat scaleY = 0.0f;
+	CGFloat scaleY = 0.0f;
 	for(i=0;i<kernelYSize;i++)
 	{
 		int y = i-shiftY;
-		kernelY[i] = (RIfloat)exp((RIfloat)y*(RIfloat)y * expScaleY);
+		kernelY[i] = (CGFloat)exp((CGFloat)y*(CGFloat)y * expScaleY);
 		scaleY += kernelY[i];
 	}
 	scaleY = 1.0f / scaleY;	//NOTE: using the mathematical definition of the scaling term doesn't work since we cut the filter support early for performance

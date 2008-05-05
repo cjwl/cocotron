@@ -35,7 +35,7 @@ typedef enum {
 
 
 typedef struct  {
-   RIfloat		offset;
+   CGFloat		offset;
    VGColor		color;
 } GradientStop;
 
@@ -48,8 +48,8 @@ typedef struct  {
 	BOOL				    m_colorRampPremultiplied;
 }
 
-VGColor KGPaintIntegrateColorRamp(KGPaint_ramp *self,RIfloat gmin, RIfloat gmax);
-VGColor KGPaintColorRamp(KGPaint_ramp *self,RIfloat gradient, RIfloat rho);
+VGColor KGPaintIntegrateColorRamp(KGPaint_ramp *self,CGFloat gmin, CGFloat gmax);
+VGColor KGPaintColorRamp(KGPaint_ramp *self,CGFloat gradient, CGFloat rho);
 
 
 @end
