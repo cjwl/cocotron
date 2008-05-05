@@ -41,8 +41,8 @@ void KGPaintRadialGradient(KGPaint_radialGradient *self,CGFloat *g, CGFloat *rho
 	CGFloat r = self->m_radialGradientRadius;
 	CGPoint c = self->m_radialGradientCenter;
 	CGPoint f = self->m_radialGradientFocalPoint;
-	CGPoint gx=Vector2Make(self->m_surfaceToPaintMatrix.matrix[0][0], self->m_surfaceToPaintMatrix.matrix[1][0]);
-	CGPoint gy=Vector2Make(self->m_surfaceToPaintMatrix.matrix[0][1],self->m_surfaceToPaintMatrix.matrix[1][1]);
+	CGPoint gx=CGPointMake(self->m_surfaceToPaintMatrix.a, self->m_surfaceToPaintMatrix.b);
+	CGPoint gy=CGPointMake(self->m_surfaceToPaintMatrix.c,self->m_surfaceToPaintMatrix.d);
 
 	CGPoint fp = Vector2Subtract(f,c);
 
@@ -52,7 +52,7 @@ void KGPaintRadialGradient(KGPaint_radialGradient *self,CGFloat *g, CGFloat *rho
 		fp = Vector2MultiplyByFloat(fp, (0.999f * r / fpLen));
 
 	CGFloat D = -1.0f / (Vector2Dot(fp,fp) - r*r);
-	CGPoint p=Vector2Make(x, y);
+	CGPoint p=CGPointMake(x, y);
 	p = Vector2Subtract(Matrix3x3TransformVector2(self->m_surfaceToPaintMatrix, p), c);
 	CGPoint d = Vector2Subtract(p,fp);
 	CGFloat s = (CGFloat)sqrt(r*r*Vector2Dot(d,d) - RI_SQR(p.x*fp.y - p.y*fp.x));
@@ -95,8 +95,8 @@ VGColorInternalFormat KGPaintReadPremultipliedRadialGradientSpan(KGPaint_radialG
    [super init];
         self->_readRGBAffff=(KGPaintReadSpan_RGBAffff)KGPaintReadPremultipliedRadialGradientSpan;
 	self->m_radialGradientRadius=1.0f;
-	self->m_radialGradientCenter=Vector2Make(0,0);
-	self->m_radialGradientFocalPoint=Vector2Make(0,0);
+	self->m_radialGradientCenter=CGPointMake(0,0);
+	self->m_radialGradientFocalPoint=CGPointMake(0,0);
    return self;
 }
 

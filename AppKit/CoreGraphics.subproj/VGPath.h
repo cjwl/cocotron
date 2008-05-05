@@ -50,10 +50,10 @@ typedef struct  {
 static inline StrokeVertex StrokeVertexInit(){
    StrokeVertex result;
    
-   result.p=Vector2Make(0,0);
-   result.t=Vector2Make(0,0);
-   result.ccw=Vector2Make(0,0);
-   result.cw=Vector2Make(0,0);
+   result.p=CGPointMake(0,0);
+   result.t=CGPointMake(0,0);
+   result.ccw=CGPointMake(0,0);
+   result.cw=CGPointMake(0,0);
    result.pathLength=0;
    result.flags=0;
    result.inDash=NO;
@@ -90,15 +90,15 @@ void VGPathDealloc(VGPath *self);
 
 void VGPathAppendData(VGPath *self,const RIuint8* segments, int numSegments, const CGPoint *data);	
 void VGPathAppend(VGPath *self,VGPath* srcPath);	
-void VGPathTransform(VGPath *self,VGPath* srcPath, Matrix3x3 matrix);	
+void VGPathTransform(VGPath *self,VGPath* srcPath, CGAffineTransform matrix);	
 	//returns YES if interpolation succeeds, NO if start and end paths are not compatible
-void VGPathFill(VGPath *self,Matrix3x3 pathToSurface, KGRasterizer *rasterizer);	
-void VGPathStroke(VGPath *self,Matrix3x3 pathToSurface, KGRasterizer *rasterizer, const CGFloat* dashPattern,int dashPatternSize, CGFloat dashPhase, BOOL dashPhaseReset, CGFloat strokeWidth, CGLineCap capStyle, CGLineJoin joinStyle, CGFloat miterLimit);	
+void VGPathFill(VGPath *self,CGAffineTransform pathToSurface, KGRasterizer *rasterizer);	
+void VGPathStroke(VGPath *self,CGAffineTransform pathToSurface, KGRasterizer *rasterizer, const CGFloat* dashPattern,int dashPatternSize, CGFloat dashPhase, BOOL dashPhaseReset, CGFloat strokeWidth, CGLineCap capStyle, CGLineJoin joinStyle, CGFloat miterLimit);	
 
 void VGPathGetPointAlong(VGPath *self,int startIndex, int numSegments, CGFloat distance, CGPoint *p, CGPoint *t);	
 CGFloat getPathLength(VGPath *self,int startIndex, int numSegments);	
 void VGPathGetPathBounds(VGPath *self,CGFloat *minx, CGFloat *miny, CGFloat *maxx, CGFloat *maxy);	
-void VGPathGetPathTransformedBounds(VGPath *self,Matrix3x3 pathToSurface, CGFloat *minx, CGFloat *miny, CGFloat *maxx, CGFloat *maxy);	
+void VGPathGetPathTransformedBounds(VGPath *self,CGAffineTransform pathToSurface, CGFloat *minx, CGFloat *miny, CGFloat *maxx, CGFloat *maxy);	
 
 int CGPathElementTypeToNumCoordinates(CGPathElementType segment);
 int VGPathCountNumCoordinates(const RIuint8* segments, int numSegments);
@@ -113,8 +113,8 @@ BOOL VGPathAddCubicTo(VGPath *self,CGPoint p0, CGPoint p1, CGPoint p2, CGPoint p
 
 void VGPathTessellate(VGPath *self);	
 
-void VGPathInterpolateStroke(Matrix3x3 pathToSurface, KGRasterizer *rasterizer,StrokeVertex v0,StrokeVertex v1, CGFloat strokeWidth);	
-void VGPathDoCap(Matrix3x3 pathToSurface, KGRasterizer *rasterizer,StrokeVertex v, CGFloat strokeWidth, CGLineCap capStyle);	
-void VGPathDoJoin(Matrix3x3 pathToSurface, KGRasterizer *rasterizer,StrokeVertex v0,StrokeVertex v1, CGFloat strokeWidth, CGLineJoin joinStyle, CGFloat miterLimit);	
+void VGPathInterpolateStroke(CGAffineTransform pathToSurface, KGRasterizer *rasterizer,StrokeVertex v0,StrokeVertex v1, CGFloat strokeWidth);	
+void VGPathDoCap(CGAffineTransform pathToSurface, KGRasterizer *rasterizer,StrokeVertex v, CGFloat strokeWidth, CGLineCap capStyle);	
+void VGPathDoJoin(CGAffineTransform pathToSurface, KGRasterizer *rasterizer,StrokeVertex v0,StrokeVertex v1, CGFloat strokeWidth, CGLineJoin joinStyle, CGFloat miterLimit);	
 
 @end

@@ -85,7 +85,6 @@ static VGColorInternalFormat multiply(KGPaint_image *self,int x,int y,KGRGBAffff
 			{
 				s.r = s.g = s.b = RI_MIN(0.2126f*s.r + 0.7152f*s.g + 0.0722f*s.b, s.a);
 			}
- 			RI_ASSERT(Matrix3x3IsAffine(self->m_paint->m_surfaceToPaintMatrix));
 			im.r *= s.r;
 			im.g *= s.g;
 			im.b *= s.b;
@@ -144,7 +143,6 @@ static VGColorInternalFormat stencil(KGPaint_image *self,int x,int y,KGRGBAffff 
 			{
 				im.r = im.g = im.b = RI_MIN(0.2126f*im.r + 0.7152f*im.g + 0.0722f*im.b, im.a);
 			}
-			RI_ASSERT(Matrix3x3IsAffine(self->m_paint->m_surfaceToPaintMatrix));
 			//s and im are both in premultiplied format. Each image channel acts as an alpha channel.
 			s=VGColorConvert(s,format);	//convert paint color to destination space already here, since convert cannot deal with per channel alphas used in this mode.
 #endif

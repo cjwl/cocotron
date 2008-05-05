@@ -41,13 +41,13 @@ void KGPaintLinearGradient(KGPaint_axialGradient *self,CGFloat *g, CGFloat *rho,
 	}
 	CGFloat oou = 1.0f / usq;
 
-	CGPoint p=Vector2Make(x, y);
+	CGPoint p=CGPointMake(x, y);
 	p = Matrix3x3TransformVector2(self->m_surfaceToPaintMatrix, p);
 	p = Vector2Subtract(p,self->m_linearGradientPoint0);
 	RI_ASSERT(usq >= 0.0f);
 	*g = Vector2Dot(p, u) * oou;
-	CGFloat dgdx = oou * u.x * self->m_surfaceToPaintMatrix.matrix[0][0] + oou * u.y * self->m_surfaceToPaintMatrix.matrix[1][0];
-	CGFloat dgdy = oou * u.x * self->m_surfaceToPaintMatrix.matrix[0][1] + oou * u.y * self->m_surfaceToPaintMatrix.matrix[1][1];
+	CGFloat dgdx = oou * u.x * self->m_surfaceToPaintMatrix.a + oou * u.y * self->m_surfaceToPaintMatrix.b;
+	CGFloat dgdy = oou * u.x * self->m_surfaceToPaintMatrix.c + oou * u.y * self->m_surfaceToPaintMatrix.d;
 	*rho = (CGFloat)sqrt(dgdx*dgdx + dgdy*dgdy);
 	RI_ASSERT(*rho >= 0.0f);
 }
@@ -79,8 +79,8 @@ VGColorInternalFormat KGPaintReadPremultipliedLinearGradientSpan(KGPaint_axialGr
 -init {
    [super init];
         self->_readRGBAffff=(KGPaintReadSpan_RGBAffff)KGPaintReadPremultipliedLinearGradientSpan;
-	self->m_linearGradientPoint0=Vector2Make(0,0);
-	self->m_linearGradientPoint1=Vector2Make(1,0);
+	self->m_linearGradientPoint0=CGPointMake(0,0);
+	self->m_linearGradientPoint1=CGPointMake(1,0);
    return self;
 }
 

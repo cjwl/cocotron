@@ -44,13 +44,13 @@ typedef VGColorInternalFormat (*KGPaintReadSpan_RGBAffff)(KGPaint *self,int x,in
     KGPaintReadSpan_RGBAffff _readRGBAffff;
 @protected
 	VGPaintType				m_paintType;
-    Matrix3x3               m_surfaceToPaintMatrix;
+    CGAffineTransform               m_surfaceToPaintMatrix;
 }
 
 KGPaint *KGPaintAlloc();
 KGPaint *KGPaintInit(KGPaint *self);
 
-void KGPaintSetSurfaceToPaintMatrix(KGPaint *self,Matrix3x3 surfaceToPaintMatrix);
+void KGPaintSetSurfaceToPaintMatrix(KGPaint *self,CGAffineTransform surfaceToPaintMatrix);
 void     KGPaintDealloc(KGPaint *self);
 
 @end

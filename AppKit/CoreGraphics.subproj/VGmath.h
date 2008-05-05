@@ -80,15 +80,8 @@ static inline int RI_FLOOR_TO_INT(CGFloat value){
    return value;
 }
 
-static inline CGPoint Vector2Make(CGFloat fx,CGFloat fy){
-   CGPoint result;
-   result.x=fx;
-   result.y=fy;
-   return result;
-}
-
 static inline CGPoint Vector2Negate(CGPoint result){
-   return Vector2Make(-result.x,-result.y);
+   return CGPointMake(-result.x,-result.y);
 }
 
 static inline CGFloat Vector2Length(CGPoint v){
@@ -104,15 +97,15 @@ static inline BOOL Vector2IsZero(CGPoint v){
 }
 
 static inline CGPoint Vector2MultiplyByFloat(CGPoint v,CGFloat f){
-   return Vector2Make(v.x*f,v.y*f);
+   return CGPointMake(v.x*f,v.y*f);
 }
 
 static inline CGPoint Vector2Add(CGPoint v1,CGPoint v2 ){
-   return Vector2Make(v1.x+v2.x, v1.y+v2.y);
+   return CGPointMake(v1.x+v2.x, v1.y+v2.y);
 }
 
 static inline CGPoint Vector2Subtract(CGPoint v1,CGPoint v2){
-   return Vector2Make(v1.x-v2.x, v1.y-v2.y);
+   return CGPointMake(v1.x-v2.x, v1.y-v2.y);
 }
 
 static inline CGFloat Vector2Dot(CGPoint v1,CGPoint v2){
@@ -126,83 +119,30 @@ static inline CGPoint Vector2Normalize(CGPoint v){
    if( l != 0.0 )
     l = 1.0 / sqrt(l);
     
-   return Vector2Make((CGFloat)((double)v.x * l), (CGFloat)((double)v.y * l));
+   return CGPointMake((CGFloat)((double)v.x * l), (CGFloat)((double)v.y * l));
 }
 
 static inline CGPoint Vector2PerpendicularCW(CGPoint v){
-   return Vector2Make(v.y, -v.x);
+   return CGPointMake(v.y, -v.x);
 }
 
 static inline CGPoint Vector2PerpendicularCCW(CGPoint v){
-   return Vector2Make(-v.y, v.x);
+   return CGPointMake(-v.y, v.x);
 }
 
 static inline CGPoint Vector2Perpendicular(CGPoint v, BOOL cw){
    if(cw)
-    return Vector2Make(v.y, -v.x);
+    return CGPointMake(v.y, -v.x);
     
-   return Vector2Make(-v.y, v.x);
-}
-
-typedef struct {    
-   CGFloat matrix[3][3];
-} Matrix3x3;
-
-static inline Matrix3x3 Matrix3x3Identity(){
-   Matrix3x3 result;
-   int       i,j;
-   
-   for(i=0;i<3;i++)
-    for(j=0;j<3;j++)
-     result.matrix[i][j] = (i == j) ? 1.0f : 0.0f;
-     
-   return result;
-}
-
-static inline Matrix3x3 Matrix3x3WithCGAffineTransform(CGAffineTransform transform) {
-   Matrix3x3 result;
-
-   result.matrix[0][0]=transform.a;
-   result.matrix[0][1]=transform.c;
-   result.matrix[0][2]=transform.tx;
-   result.matrix[1][0]=transform.b;
-   result.matrix[1][1]=transform.d;
-   result.matrix[1][2]=transform.ty;
-   result.matrix[2][0]=0;
-   result.matrix[2][1]=0;
-   result.matrix[2][2]=1;
-
-   return result;
-}
-
-BOOL Matrix3x3InplaceInvert(Matrix3x3 *m);
-
-static inline Matrix3x3 Matrix3x3Multiply(Matrix3x3 m1,Matrix3x3 m2){
-   Matrix3x3 t;
-   int       i,j;
-   
-   for(i=0;i<3;i++)
-    for(j=0;j<3;j++)
-     t.matrix[i][j] = m1.matrix[i][0] * m2.matrix[0][j] + m1.matrix[i][1] * m2.matrix[1][j] + m1.matrix[i][2] * m2.matrix[2][j];
-     
-   return t;
-}
-
-static inline BOOL Matrix3x3IsAffine(Matrix3x3 m){
-   return (m.matrix[2][0] == 0.0f && m.matrix[2][1] == 0.0f && m.matrix[2][2] == 1.0f)?YES:NO;
-}
-
- static inline void Matrix3x3ForceAffinity(Matrix3x3 *xform){
-   xform->matrix[2][0]=0;
-   xform->matrix[2][1]=0;
-   xform->matrix[2][2]=1;
-}
-
-//matrix * column vector. The input vector2 is implicitly expanded to (x,y,1)
-static inline CGPoint Matrix3x3TransformVector2(Matrix3x3 m,CGPoint v){
-   RI_ASSERT(Matrix3x3IsAffine(m));
-   return Vector2Make(v.x * m.matrix[0][0] + v.y * m.matrix[0][1] + m.matrix[0][2], v.x * m.matrix[1][0] + v.y * m.matrix[1][1] + m.matrix[1][2]);
+   return CGPointMake(-v.y, v.x);
 }
 
 
+BOOL Matrix3x3InplaceInvert(CGAffineTransform *m);
+
+//matrix * column vector. 
+
+static inline CGPoint Matrix3x3TransformVector2(CGAffineTransform m,CGPoint v){
+   return CGPointMake(v.x * m.a + v.y * m.c + m.tx, v.x * m.b + v.y * m.d + m.ty);
+}
 

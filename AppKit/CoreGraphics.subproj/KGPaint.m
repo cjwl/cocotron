@@ -35,13 +35,13 @@ KGPaint *KGPaintAlloc() {
 
 KGPaint *KGPaintInit(KGPaint *self) {
 
-	self->m_surfaceToPaintMatrix=Matrix3x3Identity();
+	self->m_surfaceToPaintMatrix=CGAffineTransformIdentity;
 
     return self;
 }
 
 
-void KGPaintSetSurfaceToPaintMatrix(KGPaint *self,Matrix3x3 surfaceToPaintMatrix) {
+void KGPaintSetSurfaceToPaintMatrix(KGPaint *self,CGAffineTransform surfaceToPaintMatrix) {
 	self->m_surfaceToPaintMatrix = surfaceToPaintMatrix;
 }
 

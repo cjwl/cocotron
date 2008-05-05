@@ -415,9 +415,8 @@ void VGPathAppend(VGPath *self,VGPath* srcPath){
 * \note		if runs out of memory, throws bad_alloc and leaves the path as it was
 *//*-------------------------------------------------------------------*/
 
-void VGPathTransform(VGPath *self,VGPath* srcPath, Matrix3x3 matrix){
+void VGPathTransform(VGPath *self,VGPath* srcPath, CGAffineTransform matrix){
 	RI_ASSERT(srcPath);
-	RI_ASSERT(Matrix3x3IsAffine(matrix));
 
 	if(srcPath->_numberOfElements==0)
 		return;
@@ -476,8 +475,8 @@ void VGPathTransform(VGPath *self,VGPath* srcPath, Matrix3x3 matrix){
     }
     
 	int srcCoord = 0;
-	CGPoint s=Vector2Make(0,0);		//the beginning of the current subpath
-	CGPoint o=Vector2Make(0,0);		//the last point of the previous segment
+	CGPoint s=CGPointMake(0,0);		//the beginning of the current subpath
+	CGPoint o=CGPointMake(0,0);		//the last point of the previous segment
 	for(i=0;i<srcPath->_numberOfElements;i++)
 	{
 		CGPathElementType segment = (CGPathElementType)srcPath->_elements[i];
@@ -569,14 +568,13 @@ void VGPathTransform(VGPath *self,VGPath* srcPath, Matrix3x3 matrix){
 * \note		if runs out of memory, throws bad_alloc and leaves the path as it was
 *//*-------------------------------------------------------------------*/
 
-void VGPathFill(VGPath *self,Matrix3x3 pathToSurface, KGRasterizer *rasterizer){
-	RI_ASSERT(Matrix3x3IsAffine(pathToSurface));
+void VGPathFill(VGPath *self,CGAffineTransform pathToSurface, KGRasterizer *rasterizer){
 
 	VGPathTessellate(self);
 
 //	try
 	{
-		CGPoint p0=Vector2Make(0,0), p1=Vector2Make(0,0);
+		CGPoint p0=CGPointMake(0,0), p1=CGPointMake(0,0);
         int     i;
 		for(i=0;i<self->_vertexCount;i++)
 		{
@@ -610,7 +608,7 @@ void VGPathFill(VGPath *self,Matrix3x3 pathToSurface, KGRasterizer *rasterizer){
 * \note		
 *//*-------------------------------------------------------------------*/
 
-void VGPathInterpolateStroke(Matrix3x3 pathToSurface, KGRasterizer *rasterizer,StrokeVertex v0,StrokeVertex v1, CGFloat strokeWidth)
+void VGPathInterpolateStroke(CGAffineTransform pathToSurface, KGRasterizer *rasterizer,StrokeVertex v0,StrokeVertex v1, CGFloat strokeWidth)
 {
 	CGPoint ppccw = Matrix3x3TransformVector2(pathToSurface, v0.ccw);
 	CGPoint ppcw = Matrix3x3TransformVector2(pathToSurface, v0.cw);
@@ -695,7 +693,7 @@ void VGPathInterpolateStroke(Matrix3x3 pathToSurface, KGRasterizer *rasterizer,S
 * \note		
 *//*-------------------------------------------------------------------*/
 
-void VGPathDoCap(Matrix3x3 pathToSurface, KGRasterizer *rasterizer,StrokeVertex v, CGFloat strokeWidth, CGLineCap capStyle){
+void VGPathDoCap(CGAffineTransform pathToSurface, KGRasterizer *rasterizer,StrokeVertex v, CGFloat strokeWidth, CGLineCap capStyle){
 	CGPoint ccwt = Matrix3x3TransformVector2(pathToSurface, v.ccw);
 	CGPoint cwt = Matrix3x3TransformVector2(pathToSurface, v.cw);
 
@@ -754,7 +752,7 @@ void VGPathDoCap(Matrix3x3 pathToSurface, KGRasterizer *rasterizer,StrokeVertex 
 * \note		
 *//*-------------------------------------------------------------------*/
 
-void VGPathDoJoin(Matrix3x3 pathToSurface, KGRasterizer *rasterizer, StrokeVertex v0, StrokeVertex v1, CGFloat strokeWidth, CGLineJoin joinStyle, CGFloat miterLimit){
+void VGPathDoJoin(CGAffineTransform pathToSurface, KGRasterizer *rasterizer, StrokeVertex v0, StrokeVertex v1, CGFloat strokeWidth, CGLineJoin joinStyle, CGFloat miterLimit){
 	CGPoint ccw0t = Matrix3x3TransformVector2(pathToSurface, v0.ccw);
 	CGPoint cw0t = Matrix3x3TransformVector2(pathToSurface, v0.cw);
 	CGPoint ccw1t = Matrix3x3TransformVector2(pathToSurface, v1.ccw);
@@ -860,8 +858,7 @@ void VGPathDoJoin(Matrix3x3 pathToSurface, KGRasterizer *rasterizer, StrokeVerte
 * \note		if runs out of memory, throws bad_alloc and leaves the path as it was
 *//*-------------------------------------------------------------------*/
 
-void VGPathStroke(VGPath *self,Matrix3x3 pathToSurface, KGRasterizer *rasterizer, const CGFloat* dashPattern,int dashPatternSize, CGFloat dashPhase, BOOL dashPhaseReset, CGFloat strokeWidth, CGLineCap capStyle, CGLineJoin joinStyle, CGFloat miterLimit){
-	RI_ASSERT(Matrix3x3IsAffine(pathToSurface));
+void VGPathStroke(VGPath *self,CGAffineTransform pathToSurface, KGRasterizer *rasterizer, const CGFloat* dashPattern,int dashPatternSize, CGFloat dashPhase, BOOL dashPhaseReset, CGFloat strokeWidth, CGLineCap capStyle, CGLineJoin joinStyle, CGFloat miterLimit){
 	RI_ASSERT(strokeWidth >= 0.0f);
 	RI_ASSERT(miterLimit >= 1.0f);
 
@@ -1096,8 +1093,8 @@ void VGPathGetPointAlong(VGPath *self,int startIndex, int numSegments, CGFloat d
 
 	if(!self->_vertexCount || (startVertex == -1 && endVertex == -1))
 	{	// no vertices in the tessellated path. The path is empty or consists only of zero-length segments.
-		*p=Vector2Make(0,0);
-		*t=Vector2Make(1,0);
+		*p=CGPointMake(0,0);
+		*t=CGPointMake(1,0);
 		return;
 	}
 	if(startVertex == -1)
@@ -1226,17 +1223,16 @@ void VGPathGetPathBounds(VGPath *self,CGFloat *minx, CGFloat *miny, CGFloat *max
 * \note		if runs out of memory, throws bad_alloc and leaves the path as it was
 *//*-------------------------------------------------------------------*/
 
-void VGPathGetPathTransformedBounds(VGPath *self,Matrix3x3 pathToSurface, CGFloat *minx, CGFloat *miny, CGFloat *maxx, CGFloat *maxy){
-	RI_ASSERT(Matrix3x3IsAffine(pathToSurface));
+void VGPathGetPathTransformedBounds(VGPath *self,CGAffineTransform pathToSurface, CGFloat *minx, CGFloat *miny, CGFloat *maxx, CGFloat *maxy){
 
 	VGPathTessellate(self);
 
 	if(self->_vertexCount)
 	{
-		CGPoint p0=Vector2Make(self->m_userMinx, self->m_userMiny);
-		CGPoint p1=Vector2Make(self->m_userMinx, self->m_userMaxy);
-		CGPoint p2=Vector2Make(self->m_userMaxx, self->m_userMaxy);
-		CGPoint p3=Vector2Make(self->m_userMaxx, self->m_userMiny);
+		CGPoint p0=CGPointMake(self->m_userMinx, self->m_userMiny);
+		CGPoint p1=CGPointMake(self->m_userMinx, self->m_userMaxy);
+		CGPoint p2=CGPointMake(self->m_userMaxx, self->m_userMaxy);
+		CGPoint p3=CGPointMake(self->m_userMaxx, self->m_userMiny);
 		p0 = Matrix3x3TransformVector2(pathToSurface,p0);
 		p1 = Matrix3x3TransformVector2(pathToSurface, p1);
 		p2 = Matrix3x3TransformVector2(pathToSurface, p2);
@@ -1325,7 +1321,7 @@ void VGPathAddEdge(VGPath *self,CGPoint p0, CGPoint p1, CGPoint t0, CGPoint t1, 
 void VGPathAddEndPath(VGPath *self,CGPoint p0, CGPoint p1, BOOL subpathHasGeometry, unsigned int flags){
 	if(!subpathHasGeometry)
 	{	//single vertex
-		CGPoint t=Vector2Make(1.0f,0.0f);
+		CGPoint t=CGPointMake(1.0f,0.0f);
 		VGPathAddEdge(self,p0, p1, t, t, START_SEGMENT | START_SUBPATH, END_SEGMENT | END_SUBPATH);
 		VGPathAddEdge(self,p0, p1, Vector2Negate(t), Vector2Negate(t), IMPLICIT_CLOSE_SUBPATH | START_SEGMENT, IMPLICIT_CLOSE_SUBPATH | END_SEGMENT);
 		return;
@@ -1439,8 +1435,8 @@ static void bezier(VGPath *self,double x1,double y1,double x2, double y2,double 
    double AB=A*A+B*B;
 
    if((A*x2+B*y2+C)*(A*x2+B*y2+C)<AB && (A*x3+B*y3+C)*(A*x3+B*y3+C)<AB){
-    CGPoint v0=Vector2Make(x1,y1);
-    CGPoint v1=Vector2Make(x4,y4);
+    CGPoint v0=CGPointMake(x1,y1);
+    CGPoint v1=CGPointMake(x4,y4);
     CGPoint t = Vector2Normalize(Vector2Subtract(v1,v0));
 
     VGPathAddEdge(self,v0, v1, *tp, t, *prevFlags, 0);
@@ -1559,15 +1555,15 @@ void VGPathTessellate(VGPath *self){
         }
         
 		int coordIndex = 0;
-		CGPoint s=Vector2Make(0,0);		//the beginning of the current subpath
-		CGPoint o=Vector2Make(0,0);		//the last point of the previous segment
-		CGPoint p=Vector2Make(0,0);		//the last internal control point of the previous segment, if the segment was a (regular or smooth) quadratic or cubic Bezier, or else the last point of the previous segment
+		CGPoint s=CGPointMake(0,0);		//the beginning of the current subpath
+		CGPoint o=CGPointMake(0,0);		//the last point of the previous segment
+		CGPoint p=CGPointMake(0,0);		//the last internal control point of the previous segment, if the segment was a (regular or smooth) quadratic or cubic Bezier, or else the last point of the previous segment
 
 		//tessellate the path segments
 		coordIndex = 0;
-		s=Vector2Make(0,0);
-		o=Vector2Make(0,0);
-		p=Vector2Make(0,0);
+		s=CGPointMake(0,0);
+		o=CGPointMake(0,0);
+		p=CGPointMake(0,0);
 		BOOL subpathHasGeometry = NO;
 		CGPathElementType prevSegment = kCGPathElementMoveToPoint;
         int i;

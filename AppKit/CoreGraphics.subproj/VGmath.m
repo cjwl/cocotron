@@ -33,32 +33,28 @@
 #import "VGmath.h"
 
 /*-------------------------------------------------------------------*//*!
-* \brief	Inverts a 3x3 m->matrix. Returns NO if the matrix is singular.
+* \brief	Inverts a 3x3 m->mat. Returns NO if the matrix is singular.
 * \param	
 * \return	
 * \note		
 *//*-------------------------------------------------------------------*/
 
-BOOL Matrix3x3InplaceInvert(Matrix3x3 *m)
+BOOL Matrix3x3InplaceInvert(CGAffineTransform *m)
 {
-	CGFloat det00 = m->matrix[1][1]*m->matrix[2][2] - m->matrix[2][1]*m->matrix[1][2];
-	CGFloat det01 = m->matrix[2][0]*m->matrix[1][2] - m->matrix[1][0]*m->matrix[2][2];
-	CGFloat det02 = m->matrix[1][0]*m->matrix[2][1] - m->matrix[2][0]*m->matrix[1][1];
+	CGFloat det00 = m->d ;
+	CGFloat det01 =  - m->b;
 
-	CGFloat d = m->matrix[0][0]*det00 + m->matrix[0][1]*det01 + m->matrix[0][2]*det02;
-	if( d == 0.0f ) return NO;	//singular, leave the m->matrix unmodified and return NO
+	CGFloat d = m->a*det00 + m->c*det01 ;
+	if( d == 0.0f ) return NO;	//singular, leave the m->mat unmodified and return NO
 	d = 1.0f / d;
 
-	Matrix3x3 t;
-	t.matrix[0][0] = d * det00;
-	t.matrix[1][0] = d * det01;
-	t.matrix[2][0] = d * det02;
-	t.matrix[0][1] = d * (m->matrix[2][1]*m->matrix[0][2] - m->matrix[0][1]*m->matrix[2][2]);
-	t.matrix[1][1] = d * (m->matrix[0][0]*m->matrix[2][2] - m->matrix[2][0]*m->matrix[0][2]);
-	t.matrix[2][1] = d * (m->matrix[2][0]*m->matrix[0][1] - m->matrix[0][0]*m->matrix[2][1]);
-	t.matrix[0][2] = d * (m->matrix[0][1]*m->matrix[1][2] - m->matrix[1][1]*m->matrix[0][2]);
-	t.matrix[1][2] = d * (m->matrix[1][0]*m->matrix[0][2] - m->matrix[0][0]*m->matrix[1][2]);
-	t.matrix[2][2] = d * (m->matrix[0][0]*m->matrix[1][1] - m->matrix[1][0]*m->matrix[0][1]);
+	CGAffineTransform t;
+	t.a = d * det00;
+	t.b = d * det01;
+	t.c = d * ( - m->c);
+	t.d = d * (m->a );
+	t.tx = d * (m->c*m->ty - m->d*m->tx);
+	t.ty = d * (m->b*m->tx - m->a*m->ty);
 	*m = t;
 	return YES;
 }

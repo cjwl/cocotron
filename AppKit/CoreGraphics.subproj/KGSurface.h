@@ -254,7 +254,7 @@ void KGSurfaceReadMaskPixelSpanIntoCoverage(KGSurface *self,int x,int y,CGFloat 
 void KGSurfaceWriteMaskPixel(KGSurface *self,int x, int y, CGFloat m);	//can write only to VG_A_8
 
 
-VGColorInternalFormat KGSurfacePatternSpan(KGImage *self,CGFloat x, CGFloat y, KGRGBAffff *span,int length, Matrix3x3 surfaceToImage, CGPatternTiling distortion);
+VGColorInternalFormat KGSurfacePatternSpan(KGImage *self,CGFloat x, CGFloat y, KGRGBAffff *span,int length, CGAffineTransform surfaceToImage, CGPatternTiling distortion);
 
 void KGSurfaceMakeMipMaps(KGImage *self);
 

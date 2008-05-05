@@ -1225,43 +1225,43 @@ void KGSurfaceReadTexelTileRepeat(KGImage *self,int u, int v, KGRGBAffff *span,i
    }
 }
 
-void KGSurfacePattern_Bilinear(KGImage *self,CGFloat x, CGFloat y,KGRGBAffff *span,int length, Matrix3x3 surfaceToImage){
+void KGSurfacePattern_Bilinear(KGImage *self,CGFloat x, CGFloat y,KGRGBAffff *span,int length, CGAffineTransform surfaceToImage){
    int i;
    
    for(i=0;i<length;i++,x++){
-	CGPoint uvw=Vector2Make(x+0.5,y+0.5);
-	uvw = Matrix3x3TransformVector2(surfaceToImage ,uvw);
+	CGPoint uv=CGPointMake(x+0.5,y+0.5);
+	uv = Matrix3x3TransformVector2(surfaceToImage ,uv);
 
-    uvw.x -= 0.5f;
-	uvw.y -= 0.5f;
-	int u = RI_FLOOR_TO_INT(uvw.x);
-	int v = RI_FLOOR_TO_INT(uvw.y);
+    uv.x -= 0.5f;
+	uv.y -= 0.5f;
+	int u = RI_FLOOR_TO_INT(uv.x);
+	int v = RI_FLOOR_TO_INT(uv.y);
 	KGRGBAffff c00c01[2];
     KGSurfaceReadTexelTileRepeat(self,u,v,c00c01,2);
 
     KGRGBAffff c01c11[2];
     KGSurfaceReadTexelTileRepeat(self,u,v+1,c01c11,2);
 
-    CGFloat fu = uvw.x - (CGFloat)u;
-    CGFloat fv = uvw.y - (CGFloat)v;
+    CGFloat fu = uv.x - (CGFloat)u;
+    CGFloat fv = uv.y - (CGFloat)v;
     KGRGBAffff c0 = KGRGBAffffAdd(KGRGBAffffMultiplyByFloat(c00c01[0],(1.0f - fu)),KGRGBAffffMultiplyByFloat(c00c01[1],fu));
     KGRGBAffff c1 = KGRGBAffffAdd(KGRGBAffffMultiplyByFloat(c01c11[0],(1.0f - fu)),KGRGBAffffMultiplyByFloat(c01c11[1],fu));
     span[i]=KGRGBAffffAdd(KGRGBAffffMultiplyByFloat(c0,(1.0f - fv)),KGRGBAffffMultiplyByFloat(c1, fv));
    }
 }
 
-void KGSurfacePattern_PointSampling(KGImage *self,CGFloat x, CGFloat y,KGRGBAffff *span,int length, Matrix3x3 surfaceToImage){	//point sampling
+void KGSurfacePattern_PointSampling(KGImage *self,CGFloat x, CGFloat y,KGRGBAffff *span,int length, CGAffineTransform surfaceToImage){	//point sampling
    int i;
    
    for(i=0;i<length;i++,x++){
-    CGPoint uvw=Vector2Make(x+0.5,y+0.5);
-	uvw = Matrix3x3TransformVector2(surfaceToImage ,uvw);
+    CGPoint uv=CGPointMake(x+0.5,y+0.5);
+	uv = Matrix3x3TransformVector2(surfaceToImage ,uv);
 
-    KGSurfaceReadTexelTileRepeat(self,RI_FLOOR_TO_INT(uvw.x), RI_FLOOR_TO_INT(uvw.y),span+i,1);
+    KGSurfaceReadTexelTileRepeat(self,RI_FLOOR_TO_INT(uv.x), RI_FLOOR_TO_INT(uv.y),span+i,1);
    }
 }
 
-VGColorInternalFormat KGSurfacePatternSpan(KGImage *self,CGFloat x, CGFloat y, KGRGBAffff *span,int length, Matrix3x3 surfaceToImage, CGPatternTiling distortion)	{
+VGColorInternalFormat KGSurfacePatternSpan(KGImage *self,CGFloat x, CGFloat y, KGRGBAffff *span,int length, CGAffineTransform surfaceToImage, CGPatternTiling distortion)	{
     
    switch(distortion){
     case kCGPatternTilingNoDistortion:

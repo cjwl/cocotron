@@ -107,7 +107,7 @@ void KGRasterizerAddEdge(KGRasterizer *self,const CGPoint v0, const CGPoint v1) 
         edge->v1 = v0;
         edge->direction = -1;
     }
-    edge->normal=Vector2Make(edge->v0.y - edge->v1.y, edge->v1.x - edge->v0.x);	//edge normal
+    edge->normal=CGPointMake(edge->v0.y - edge->v1.y, edge->v1.x - edge->v0.x);	//edge normal
     edge->cnst = Vector2Dot(edge->v0, edge->normal);	//distance of v0 from the origin along the edge normal
     edge->minscany=RI_FLOOR_TO_INT(edge->v0.y-self->fradius);
     edge->maxscany=ceil(edge->v1.y+self->fradius);

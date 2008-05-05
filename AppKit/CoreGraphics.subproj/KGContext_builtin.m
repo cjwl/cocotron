@@ -170,8 +170,7 @@ CGAffineTransform u2d=CGAffineTransformMakeTranslation(0,_height);
 u2d=CGAffineTransformScale(u2d,1,-1);
 xform=CGAffineTransformConcat(xform,u2d);
 
-		Matrix3x3 userToSurfaceMatrix=Matrix3x3WithCGAffineTransform(xform);// context->m_pathUserToSurface;
-		Matrix3x3ForceAffinity(&userToSurfaceMatrix);
+		CGAffineTransform userToSurfaceMatrix=xform;// context->m_pathUserToSurface;
 
 
 		if(drawingMode!=kCGPathStroke)
@@ -179,10 +178,9 @@ xform=CGAffineTransformConcat(xform,u2d);
             KGPaint *paint=paintFromColor(gState->_fillColor);
 			KGRasterizeSetPaint(_rasterizer,paint);
 
-			Matrix3x3 surfaceToPaintMatrix =Matrix3x3WithCGAffineTransform(xform);//context->m_pathUserToSurface * context->m_fillPaintToUser;
+			CGAffineTransform surfaceToPaintMatrix =xform;//context->m_pathUserToSurface * context->m_fillPaintToUser;
 			if(Matrix3x3InplaceInvert(&surfaceToPaintMatrix))
 			{
-				Matrix3x3ForceAffinity(&surfaceToPaintMatrix);
 				KGPaintSetSurfaceToPaintMatrix(paint,surfaceToPaintMatrix);
 
 				VGPathFill(vgPath,userToSurfaceMatrix,_rasterizer);
@@ -198,10 +196,9 @@ xform=CGAffineTransformConcat(xform,u2d);
             KGPaint *paint=paintFromColor(gState->_strokeColor);
 			KGRasterizeSetPaint(_rasterizer,paint);
 
-			Matrix3x3 surfaceToPaintMatrix=Matrix3x3WithCGAffineTransform(xform);// = context->m_pathUserToSurface * context->m_strokePaintToUser;
+			CGAffineTransform surfaceToPaintMatrix=xform;// = context->m_pathUserToSurface * context->m_strokePaintToUser;
 			if(Matrix3x3InplaceInvert(&surfaceToPaintMatrix))
 			{
-				Matrix3x3ForceAffinity(&surfaceToPaintMatrix);
 				KGPaintSetSurfaceToPaintMatrix(paint,surfaceToPaintMatrix);
 
 				KGRasterizerClear(_rasterizer);
@@ -238,16 +235,16 @@ CGAffineTransform u2d=CGAffineTransformMakeTranslation(0,_height);
 u2d=CGAffineTransformScale(u2d,1,-1);
 xform=CGAffineTransformConcat(i2u,xform);
 xform=CGAffineTransformConcat(xform,u2d);
-        Matrix3x3 imageUserToSurface=Matrix3x3WithCGAffineTransform(xform);
+        CGAffineTransform imageUserToSurface=xform;
 
  // FIX, adjustable
-        Matrix3x3 fillPaintToUser=Matrix3x3Identity();
+        CGAffineTransform fillPaintToUser=CGAffineTransformIdentity;
         
 		//transform image corners into the surface space
-		CGPoint p0=Vector2Make(0, 0);
-		CGPoint p1=Vector2Make(0, (CGFloat)KGImageGetHeight(image));
-		CGPoint p2=Vector2Make((CGFloat)KGImageGetWidth(image), (CGFloat)KGImageGetHeight(image));
-		CGPoint p3=Vector2Make((CGFloat)KGImageGetWidth(image), 0);
+		CGPoint p0=CGPointMake(0, 0);
+		CGPoint p1=CGPointMake(0, (CGFloat)KGImageGetHeight(image));
+		CGPoint p2=CGPointMake((CGFloat)KGImageGetWidth(image), (CGFloat)KGImageGetHeight(image));
+		CGPoint p3=CGPointMake((CGFloat)KGImageGetWidth(image), 0);
 		p0 = Matrix3x3TransformVector2(imageUserToSurface , p0);
 		p1 = Matrix3x3TransformVector2(imageUserToSurface , p1);
 		p2 = Matrix3x3TransformVector2(imageUserToSurface , p2);
@@ -272,21 +269,17 @@ xform=CGAffineTransformConcat(xform,u2d);
 
 //		KGRasterizeSetMask(context->m_masking ? context->getMask() : NULL);
 
-		Matrix3x3 surfaceToImageMatrix = imageUserToSurface;
-		Matrix3x3 surfaceToPaintMatrix = Matrix3x3Multiply(imageUserToSurface,fillPaintToUser);
+		CGAffineTransform surfaceToImageMatrix = imageUserToSurface;
+		CGAffineTransform surfaceToPaintMatrix = CGAffineTransformConcat(imageUserToSurface,fillPaintToUser);
 		if(Matrix3x3InplaceInvert(&surfaceToImageMatrix) && Matrix3x3InplaceInvert(&surfaceToPaintMatrix))
 		{
-			KGSurfaceMode imode = VG_DRAW_IMAGE_NORMAL;
-			if(!Matrix3x3IsAffine(surfaceToPaintMatrix))
-				imode = VG_DRAW_IMAGE_NORMAL;	//if paint matrix is not affine, always use normal image mode
-
 			KGPaintSetSurfaceToPaintMatrix(paint,surfaceToPaintMatrix);
 			KGPaintSetSurfaceToPaintMatrix(imagePaint,surfaceToImageMatrix);
 
-			KGRasterizerAddEdge(_rasterizer,Vector2Make(p0.x,p0.y), Vector2Make(p1.x,p1.y));
-			KGRasterizerAddEdge(_rasterizer,Vector2Make(p1.x,p1.y), Vector2Make(p2.x,p2.y));
-			KGRasterizerAddEdge(_rasterizer,Vector2Make(p2.x,p2.y), Vector2Make(p3.x,p3.y));
-			KGRasterizerAddEdge(_rasterizer,Vector2Make(p3.x,p3.y), Vector2Make(p0.x,p0.y));
+			KGRasterizerAddEdge(_rasterizer,CGPointMake(p0.x,p0.y), CGPointMake(p1.x,p1.y));
+			KGRasterizerAddEdge(_rasterizer,CGPointMake(p1.x,p1.y), CGPointMake(p2.x,p2.y));
+			KGRasterizerAddEdge(_rasterizer,CGPointMake(p2.x,p2.y), CGPointMake(p3.x,p3.y));
+			KGRasterizerAddEdge(_rasterizer,CGPointMake(p3.x,p3.y), CGPointMake(p0.x,p0.y));
 			KGRasterizerFill(_rasterizer,VG_EVEN_ODD);
         KGRasterizeSetPaint(_rasterizer,nil);
 		}
