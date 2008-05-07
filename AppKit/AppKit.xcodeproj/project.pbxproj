@@ -3471,6 +3471,7 @@
 				INSTALL_PATH = /Developer/Cocotron/1.0/Windows/i386/Frameworks;
 				OTHER_CFLAGS = (
 					"-DAPPKIT_INSIDE_BUILD",
+					"-DCOREGRAPHICS_INSIDE_BUILD",
 					"-D__LITTLE_ENDIAN__",
 					"-Wreturn-type",
 				);

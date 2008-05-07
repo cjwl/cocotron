@@ -134,7 +134,7 @@ VGColor VGColorConvert(VGColor result,VGColorInternalFormat outputFormat){
 	//lL            4    4,1  Ñ    5 
 	//sL            7,2  7    6    Ñ 
 
-	const unsigned int shift = 3;
+	#define shift 3
 	unsigned int conversion = (result.m_format & (VGColorNONLINEAR | VGColorLUMINANCE)) | ((outputFormat & (VGColorNONLINEAR | VGColorLUMINANCE)) << shift);
 
 	switch(conversion)
