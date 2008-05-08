@@ -179,7 +179,7 @@ xform=CGAffineTransformConcat(xform,u2d);
 			KGRasterizeSetPaint(_rasterizer,paint);
 
 			CGAffineTransform surfaceToPaintMatrix =xform;//context->m_pathUserToSurface * context->m_fillPaintToUser;
-			if(Matrix3x3InplaceInvert(&surfaceToPaintMatrix))
+			if(CGAffineTransformInplaceInvert(&surfaceToPaintMatrix))
 			{
 				KGPaintSetSurfaceToPaintMatrix(paint,surfaceToPaintMatrix);
 
@@ -197,7 +197,7 @@ xform=CGAffineTransformConcat(xform,u2d);
 			KGRasterizeSetPaint(_rasterizer,paint);
 
 			CGAffineTransform surfaceToPaintMatrix=xform;// = context->m_pathUserToSurface * context->m_strokePaintToUser;
-			if(Matrix3x3InplaceInvert(&surfaceToPaintMatrix))
+			if(CGAffineTransformInplaceInvert(&surfaceToPaintMatrix))
 			{
 				KGPaintSetSurfaceToPaintMatrix(paint,surfaceToPaintMatrix);
 
@@ -245,10 +245,10 @@ xform=CGAffineTransformConcat(xform,u2d);
 		CGPoint p1=CGPointMake(0, (CGFloat)KGImageGetHeight(image));
 		CGPoint p2=CGPointMake((CGFloat)KGImageGetWidth(image), (CGFloat)KGImageGetHeight(image));
 		CGPoint p3=CGPointMake((CGFloat)KGImageGetWidth(image), 0);
-		p0 = Matrix3x3TransformVector2(imageUserToSurface , p0);
-		p1 = Matrix3x3TransformVector2(imageUserToSurface , p1);
-		p2 = Matrix3x3TransformVector2(imageUserToSurface , p2);
-		p3 = Matrix3x3TransformVector2(imageUserToSurface , p3);
+		p0 = CGAffineTransformTransformVector2(imageUserToSurface , p0);
+		p1 = CGAffineTransformTransformVector2(imageUserToSurface , p1);
+		p2 = CGAffineTransformTransformVector2(imageUserToSurface , p2);
+		p3 = CGAffineTransformTransformVector2(imageUserToSurface , p3);
 
 
         KGRasterizerSetShouldAntialias(_rasterizer,gState->_shouldAntialias);
@@ -271,7 +271,7 @@ xform=CGAffineTransformConcat(xform,u2d);
 
 		CGAffineTransform surfaceToImageMatrix = imageUserToSurface;
 		CGAffineTransform surfaceToPaintMatrix = CGAffineTransformConcat(imageUserToSurface,fillPaintToUser);
-		if(Matrix3x3InplaceInvert(&surfaceToImageMatrix) && Matrix3x3InplaceInvert(&surfaceToPaintMatrix))
+		if(CGAffineTransformInplaceInvert(&surfaceToImageMatrix) && CGAffineTransformInplaceInvert(&surfaceToPaintMatrix))
 		{
 			KGPaintSetSurfaceToPaintMatrix(paint,surfaceToPaintMatrix);
 			KGPaintSetSurfaceToPaintMatrix(imagePaint,surfaceToImageMatrix);

@@ -28,13 +28,6 @@
 
 #import "KGSurface.h"
 
-typedef enum {
-  VG_PAINT_TYPE_COLOR,
-  VG_PAINT_TYPE_LINEAR_GRADIENT,
-  VG_PAINT_TYPE_RADIAL_GRADIENT,
-  VG_PAINT_TYPE_PATTERN
-} VGPaintType;
-
 @class KGPaint;
 
 typedef VGColorInternalFormat (*KGPaintReadSpan_RGBAffff)(KGPaint *self,int x,int y,KGRGBAffff *span,int length);
@@ -43,14 +36,11 @@ typedef VGColorInternalFormat (*KGPaintReadSpan_RGBAffff)(KGPaint *self,int x,in
 @public
     KGPaintReadSpan_RGBAffff _readRGBAffff;
 @protected
-	VGPaintType				m_paintType;
     CGAffineTransform               m_surfaceToPaintMatrix;
 }
 
-KGPaint *KGPaintAlloc();
-KGPaint *KGPaintInit(KGPaint *self);
+-init;
 
 void KGPaintSetSurfaceToPaintMatrix(KGPaint *self,CGAffineTransform surfaceToPaintMatrix);
-void     KGPaintDealloc(KGPaint *self);
 
 @end

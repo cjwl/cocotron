@@ -495,7 +495,7 @@ void VGPathTransform(VGPath *self,VGPath* srcPath, CGAffineTransform matrix){
 		{
 			RI_ASSERT(coords == 1);
 			CGPoint c=VGPathGetCoordinate(srcPath,srcCoord);
-			CGPoint tc = Matrix3x3TransformVector2(matrix, c);
+			CGPoint tc = CGAffineTransformTransformVector2(matrix, c);
 			VGPathSetCoordinate(self, self->_numberOfPoints++, tc);
 			s = c;
 			o = c;
@@ -506,7 +506,7 @@ void VGPathTransform(VGPath *self,VGPath* srcPath, CGAffineTransform matrix){
 		{
 			RI_ASSERT(coords == 1);
 			CGPoint c=VGPathGetCoordinate(srcPath,srcCoord);
-			CGPoint tc = Matrix3x3TransformVector2(matrix, c);
+			CGPoint tc = CGAffineTransformTransformVector2(matrix, c);
 			VGPathSetCoordinate(self, self->_numberOfPoints++, tc);
 			o = c;
 			break;
@@ -517,9 +517,9 @@ void VGPathTransform(VGPath *self,VGPath* srcPath, CGAffineTransform matrix){
 			RI_ASSERT(coords == 2);
 			CGPoint c0=VGPathGetCoordinate(srcPath,srcCoord);
 			CGPoint c1=VGPathGetCoordinate(srcPath,srcCoord+1);
-			CGPoint tc0 = Matrix3x3TransformVector2(matrix, c0);
+			CGPoint tc0 = CGAffineTransformTransformVector2(matrix, c0);
 			VGPathSetCoordinate(self, self->_numberOfPoints++, tc0);
-			CGPoint tc1 = Matrix3x3TransformVector2(matrix, c1);
+			CGPoint tc1 = CGAffineTransformTransformVector2(matrix, c1);
 			VGPathSetCoordinate(self, self->_numberOfPoints++, tc1);
 			o = c1;
 			break;
@@ -531,11 +531,11 @@ void VGPathTransform(VGPath *self,VGPath* srcPath, CGAffineTransform matrix){
 			CGPoint c0=VGPathGetCoordinate(srcPath,srcCoord+0);
 			CGPoint c1=VGPathGetCoordinate(srcPath,srcCoord+1);
 			CGPoint c2=VGPathGetCoordinate(srcPath,srcCoord+2);
-			CGPoint tc0 = Matrix3x3TransformVector2(matrix, c0);
+			CGPoint tc0 = CGAffineTransformTransformVector2(matrix, c0);
 			VGPathSetCoordinate(self, self->_numberOfPoints++, tc0);
-			CGPoint tc1 = Matrix3x3TransformVector2(matrix, c1);
+			CGPoint tc1 = CGAffineTransformTransformVector2(matrix, c1);
 			VGPathSetCoordinate(self, self->_numberOfPoints++, tc1);
-			CGPoint tc2 = Matrix3x3TransformVector2(matrix, c2);
+			CGPoint tc2 = CGAffineTransformTransformVector2(matrix, c2);
 			VGPathSetCoordinate(self, self->_numberOfPoints++, tc2);
 			o = c2;
 			break;
@@ -578,7 +578,7 @@ void VGPathFill(VGPath *self,CGAffineTransform pathToSurface, KGRasterizer *rast
         int     i;
 		for(i=0;i<self->_vertexCount;i++)
 		{
-			p1 = Matrix3x3TransformVector2(pathToSurface, self->_vertices[i].userPosition);
+			p1 = CGAffineTransformTransformVector2(pathToSurface, self->_vertices[i].userPosition);
 
 			if(!(self->_vertices[i].flags & START_SEGMENT))
 			{	//in the middle of a segment
@@ -610,10 +610,10 @@ void VGPathFill(VGPath *self,CGAffineTransform pathToSurface, KGRasterizer *rast
 
 void VGPathInterpolateStroke(CGAffineTransform pathToSurface, KGRasterizer *rasterizer,StrokeVertex v0,StrokeVertex v1, CGFloat strokeWidth)
 {
-	CGPoint ppccw = Matrix3x3TransformVector2(pathToSurface, v0.ccw);
-	CGPoint ppcw = Matrix3x3TransformVector2(pathToSurface, v0.cw);
-	CGPoint endccw = Matrix3x3TransformVector2(pathToSurface, v1.ccw);
-	CGPoint endcw = Matrix3x3TransformVector2(pathToSurface, v1.cw);
+	CGPoint ppccw = CGAffineTransformTransformVector2(pathToSurface, v0.ccw);
+	CGPoint ppcw = CGAffineTransformTransformVector2(pathToSurface, v0.cw);
+	CGPoint endccw = CGAffineTransformTransformVector2(pathToSurface, v1.ccw);
+	CGPoint endcw = CGAffineTransformTransformVector2(pathToSurface, v1.cw);
 
 	const CGFloat tessellationAngle = 5.0f;
 
@@ -635,10 +635,10 @@ void VGPathInterpolateStroke(CGAffineTransform pathToSurface, KGRasterizer *rast
 		if(j == samples-1)
 			position = v1.p;
 
-		CGPoint npccw = Matrix3x3TransformVector2(pathToSurface, Vector2Add(prev, n));
-		CGPoint npcw = Matrix3x3TransformVector2(pathToSurface, Vector2Subtract(prev, n));
-		CGPoint nnccw = Matrix3x3TransformVector2(pathToSurface,Vector2Add(position,n));
-		CGPoint nncw = Matrix3x3TransformVector2(pathToSurface, Vector2Subtract(position , n));
+		CGPoint npccw = CGAffineTransformTransformVector2(pathToSurface, Vector2Add(prev, n));
+		CGPoint npcw = CGAffineTransformTransformVector2(pathToSurface, Vector2Subtract(prev, n));
+		CGPoint nnccw = CGAffineTransformTransformVector2(pathToSurface,Vector2Add(position,n));
+		CGPoint nncw = CGAffineTransformTransformVector2(pathToSurface, Vector2Subtract(position , n));
 
 		KGRasterizerAddEdge(rasterizer,npccw, nnccw);
 		KGRasterizerAddEdge(rasterizer,nnccw, nncw);
@@ -694,8 +694,8 @@ void VGPathInterpolateStroke(CGAffineTransform pathToSurface, KGRasterizer *rast
 *//*-------------------------------------------------------------------*/
 
 void VGPathDoCap(CGAffineTransform pathToSurface, KGRasterizer *rasterizer,StrokeVertex v, CGFloat strokeWidth, CGLineCap capStyle){
-	CGPoint ccwt = Matrix3x3TransformVector2(pathToSurface, v.ccw);
-	CGPoint cwt = Matrix3x3TransformVector2(pathToSurface, v.cw);
+	CGPoint ccwt = CGAffineTransformTransformVector2(pathToSurface, v.ccw);
+	CGPoint cwt = CGAffineTransformTransformVector2(pathToSurface, v.cw);
 
 	switch(capStyle)
 	{
@@ -719,7 +719,7 @@ void VGPathDoCap(CGAffineTransform pathToSurface, KGRasterizer *rasterizer,Strok
 		for(j=1;j<samples;j++)
 		{
 			CGPoint next = Vector2Add(v.p , Vector2MultiplyByFloat(circularLerpWithDirection(u0, u1, t, YES) , strokeWidth * 0.5f));
-			next = Matrix3x3TransformVector2(pathToSurface, next);
+			next = CGAffineTransformTransformVector2(pathToSurface, next);
 
 			KGRasterizerAddEdge(rasterizer,prev, next);
 			prev = next;
@@ -734,8 +734,8 @@ void VGPathDoCap(CGAffineTransform pathToSurface, KGRasterizer *rasterizer,Strok
 		RI_ASSERT(capStyle == kCGLineCapSquare);
 		CGPoint t = v.t;
 		t=Vector2Normalize(t);
-		CGPoint ccws = Matrix3x3TransformVector2(pathToSurface, Vector2Add(v.ccw , Vector2MultiplyByFloat(t , strokeWidth * 0.5f)));
-		CGPoint cws = Matrix3x3TransformVector2(pathToSurface, Vector2Add(v.cw , Vector2MultiplyByFloat(t , strokeWidth * 0.5f)));
+		CGPoint ccws = CGAffineTransformTransformVector2(pathToSurface, Vector2Add(v.ccw , Vector2MultiplyByFloat(t , strokeWidth * 0.5f)));
+		CGPoint cws = CGAffineTransformTransformVector2(pathToSurface, Vector2Add(v.cw , Vector2MultiplyByFloat(t , strokeWidth * 0.5f)));
 		KGRasterizerAddEdge(rasterizer,cwt, ccwt);
 		KGRasterizerAddEdge(rasterizer,ccwt, ccws);
 		KGRasterizerAddEdge(rasterizer,ccws, cws);
@@ -753,12 +753,12 @@ void VGPathDoCap(CGAffineTransform pathToSurface, KGRasterizer *rasterizer,Strok
 *//*-------------------------------------------------------------------*/
 
 void VGPathDoJoin(CGAffineTransform pathToSurface, KGRasterizer *rasterizer, StrokeVertex v0, StrokeVertex v1, CGFloat strokeWidth, CGLineJoin joinStyle, CGFloat miterLimit){
-	CGPoint ccw0t = Matrix3x3TransformVector2(pathToSurface, v0.ccw);
-	CGPoint cw0t = Matrix3x3TransformVector2(pathToSurface, v0.cw);
-	CGPoint ccw1t = Matrix3x3TransformVector2(pathToSurface, v1.ccw);
-	CGPoint cw1t = Matrix3x3TransformVector2(pathToSurface, v1.cw);
-	CGPoint m0t = Matrix3x3TransformVector2(pathToSurface, v0.p);
-	CGPoint m1t = Matrix3x3TransformVector2(pathToSurface, v1.p);
+	CGPoint ccw0t = CGAffineTransformTransformVector2(pathToSurface, v0.ccw);
+	CGPoint cw0t = CGAffineTransformTransformVector2(pathToSurface, v0.cw);
+	CGPoint ccw1t = CGAffineTransformTransformVector2(pathToSurface, v1.ccw);
+	CGPoint cw1t = CGAffineTransformTransformVector2(pathToSurface, v1.cw);
+	CGPoint m0t = CGAffineTransformTransformVector2(pathToSurface, v0.p);
+	CGPoint m1t = CGAffineTransformTransformVector2(pathToSurface, v1.p);
 
 	CGPoint tccw = Vector2Subtract(v1.ccw,v0.ccw);
 	CGPoint s, e, m, st, et;
@@ -800,7 +800,7 @@ void VGPathDoJoin(CGAffineTransform pathToSurface, KGRasterizer *rasterizer, Str
 			CGFloat l = (CGFloat)cos(theta*0.5f) * miterLengthPerStrokeWidth * (strokeWidth * 0.5f);
 			l = RI_MIN(l, RI_FLOAT_MAX);	//force finite
 			CGPoint c = Vector2Add(m , Vector2MultiplyByFloat(v0.t, l));
-			c = Matrix3x3TransformVector2(pathToSurface, c);
+			c = CGAffineTransformTransformVector2(pathToSurface, c);
 			KGRasterizerAddEdge(rasterizer,s, c);
 			KGRasterizerAddEdge(rasterizer,c, e);
 		}
@@ -829,7 +829,7 @@ void VGPathDoJoin(CGAffineTransform pathToSurface, KGRasterizer *rasterizer, Str
 				CGPoint tangent = circularLerpWithDirection(st, et, t, YES);
 
 				CGPoint next = Vector2Add(position , Vector2MultiplyByFloat(Vector2Normalize(Vector2Perpendicular(tangent, cw)) , strokeWidth * 0.5f));
-				next = Matrix3x3TransformVector2(pathToSurface, next);
+				next = CGAffineTransformTransformVector2(pathToSurface, next);
 
 				KGRasterizerAddEdge(rasterizer,prev, next);
 				prev = next;
@@ -1233,10 +1233,10 @@ void VGPathGetPathTransformedBounds(VGPath *self,CGAffineTransform pathToSurface
 		CGPoint p1=CGPointMake(self->m_userMinx, self->m_userMaxy);
 		CGPoint p2=CGPointMake(self->m_userMaxx, self->m_userMaxy);
 		CGPoint p3=CGPointMake(self->m_userMaxx, self->m_userMiny);
-		p0 = Matrix3x3TransformVector2(pathToSurface,p0);
-		p1 = Matrix3x3TransformVector2(pathToSurface, p1);
-		p2 = Matrix3x3TransformVector2(pathToSurface, p2);
-		p3 = Matrix3x3TransformVector2(pathToSurface,p3);
+		p0 = CGAffineTransformTransformVector2(pathToSurface,p0);
+		p1 = CGAffineTransformTransformVector2(pathToSurface, p1);
+		p2 = CGAffineTransformTransformVector2(pathToSurface, p2);
+		p3 = CGAffineTransformTransformVector2(pathToSurface,p3);
 
 		*minx = RI_MIN(RI_MIN(RI_MIN(p0.x, p1.x), p2.x), p3.x);
 		*miny = RI_MIN(RI_MIN(RI_MIN(p0.y, p1.y), p2.y), p3.y);

@@ -42,7 +42,7 @@ void KGPaintLinearGradient(KGPaint_axialGradient *self,CGFloat *g, CGFloat *rho,
 	CGFloat oou = 1.0f / usq;
 
 	CGPoint p=CGPointMake(x, y);
-	p = Matrix3x3TransformVector2(self->m_surfaceToPaintMatrix, p);
+	p = CGAffineTransformTransformVector2(self->m_surfaceToPaintMatrix, p);
 	p = Vector2Subtract(p,self->m_linearGradientPoint0);
 	RI_ASSERT(usq >= 0.0f);
 	*g = Vector2Dot(p, u) * oou;

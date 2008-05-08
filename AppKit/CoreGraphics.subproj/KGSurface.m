@@ -1230,7 +1230,7 @@ void KGSurfacePattern_Bilinear(KGImage *self,CGFloat x, CGFloat y,KGRGBAffff *sp
    
    for(i=0;i<length;i++,x++){
 	CGPoint uv=CGPointMake(x+0.5,y+0.5);
-	uv = Matrix3x3TransformVector2(surfaceToImage ,uv);
+	uv = CGAffineTransformTransformVector2(surfaceToImage ,uv);
 
     uv.x -= 0.5f;
 	uv.y -= 0.5f;
@@ -1255,7 +1255,7 @@ void KGSurfacePattern_PointSampling(KGImage *self,CGFloat x, CGFloat y,KGRGBAfff
    
    for(i=0;i<length;i++,x++){
     CGPoint uv=CGPointMake(x+0.5,y+0.5);
-	uv = Matrix3x3TransformVector2(surfaceToImage ,uv);
+	uv = CGAffineTransformTransformVector2(surfaceToImage ,uv);
 
     KGSurfaceReadTexelTileRepeat(self,RI_FLOOR_TO_INT(uv.x), RI_FLOOR_TO_INT(uv.y),span+i,1);
    }

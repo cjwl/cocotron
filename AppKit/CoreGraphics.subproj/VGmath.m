@@ -39,22 +39,21 @@
 * \note		
 *//*-------------------------------------------------------------------*/
 
-BOOL Matrix3x3InplaceInvert(CGAffineTransform *m)
+BOOL CGAffineTransformInplaceInvert(CGAffineTransform *m)
 {
 	CGFloat det00 = m->d ;
 	CGFloat det01 =  - m->b;
 
 	CGFloat d = m->a*det00 + m->c*det01 ;
 	if( d == 0.0f ) return NO;	//singular, leave the m->mat unmodified and return NO
-	d = 1.0f / d;
 
 	CGAffineTransform t;
-	t.a = d * det00;
-	t.b = d * det01;
-	t.c = d * ( - m->c);
-	t.d = d * (m->a );
-	t.tx = d * (m->c*m->ty - m->d*m->tx);
-	t.ty = d * (m->b*m->tx - m->a*m->ty);
+	t.a = det00/d;
+	t.b = det01/d;
+	t.c =  ( - m->c)/d;
+	t.d = (m->a )/d;
+	t.tx = (m->c*m->ty - m->d*m->tx)/d;
+	t.ty = (m->b*m->tx - m->a*m->ty)/d;
 	*m = t;
 	return YES;
 }

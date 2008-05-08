@@ -189,7 +189,22 @@ static BOOL initFunctionsForParameters(KGImage *self,size_t bitsPerComponent,siz
 
    initFunctionsForParameters(self,bitsPerComponent,bitsPerPixel,colorSpace,bitmapInfo);
     size_t checkBPP;
-	self->m_desc=KGSurfaceParametersToPixelLayout(VG_lRGBA_8888,&checkBPP,&(self->_colorFormat));
+    _imageFormat=VG_lRGBA_8888;
+    switch(bitmapInfo&kCGBitmapAlphaInfoMask){
+     case kCGImageAlphaPremultipliedLast:
+     case kCGImageAlphaPremultipliedFirst:
+      _imageFormat|=VGColorPREMULTIPLIED;
+      break;
+      
+     case kCGImageAlphaNone:
+     case kCGImageAlphaLast:
+     case kCGImageAlphaFirst:
+     case kCGImageAlphaNoneSkipLast:
+     case kCGImageAlphaNoneSkipFirst:
+      break;
+    }
+    
+	self->m_desc=KGSurfaceParametersToPixelLayout(_imageFormat,&checkBPP,&(self->_colorFormat));
     RI_ASSERT(checkBPP==bitsPerPixel);
    m_ownsData=NO;
     _mipmapsCount=0;
@@ -799,15 +814,13 @@ VGColorInternalFormat KGImageResample_EWAOnMipmaps(KGImage *self,CGFloat x, CGFl
    KGSurfaceMakeMipMaps(self);
    
    CGPoint uv=CGPointMake(0,0);
-   uv=Matrix3x3TransformVector2(surfaceToImage ,uv);
+   uv=CGAffineTransformTransformVector2(surfaceToImage ,uv);
 
-   CGFloat VxPRE = (surfaceToImage.b ) * m_pixelFilterRadius;
-   CGFloat VyPRE = (surfaceToImage.d ) * m_pixelFilterRadius;
    
 		CGFloat Ux = (surfaceToImage.a ) * m_pixelFilterRadius;
-		CGFloat Vx = VxPRE;
+		CGFloat Vx = (surfaceToImage.b ) * m_pixelFilterRadius;
 		CGFloat Uy = (surfaceToImage.c ) * m_pixelFilterRadius;
-		CGFloat Vy = VyPRE;
+		CGFloat Vy = (surfaceToImage.d ) * m_pixelFilterRadius;
 
 		//calculate mip level
 		int level = 0;
@@ -828,25 +841,12 @@ VGColorInternalFormat KGImageResample_EWAOnMipmaps(KGImage *self,CGFloat x, CGFl
 			sy = (CGFloat)KGImageGetHeight(self->_mipmaps[level-1]) / (CGFloat)self->_height;
 		}
         KGImage *mipmap=KGSurfaceMipMapForLevel(self,level);
-
-   for(i=0;i<length;i++,x++){
-    uv=CGPointMake(x+0.5,y+0.5);
-    uv=Matrix3x3TransformVector2(surfaceToImage ,uv);
-   
-		 Ux = (surfaceToImage.a )  * m_pixelFilterRadius;
-		 Vx = VxPRE;
-		 Uy = (surfaceToImage.c )  * m_pixelFilterRadius;
-		 Vy = VyPRE;
-
-		CGFloat U0 = uv.x;
-		CGFloat V0 = uv.y;
+        
 		Ux *= sx;
 		Vx *= sx;
-		U0 *= sx;
 		Uy *= sy;
 		Vy *= sy;
-		V0 *= sy;
-		
+
 		//clamp filter size so that filtering doesn't take excessive amount of time (clamping results in aliasing)
 		CGFloat lim = 100.0f;
 		axis1sq = Ux*Ux + Vx*Vx;
@@ -863,8 +863,7 @@ VGColorInternalFormat KGImageResample_EWAOnMipmaps(KGImage *self,CGFloat x, CGFl
 			Uy *= s;
 			Vy *= s;
 		}
-		
-		
+
 		//form elliptic filter by combining texel and pixel filters
 		CGFloat A = Vx*Vx + Vy*Vy + 1.0f;
 		CGFloat B = -2.0f*(Ux*Vx + Uy*Vy);
@@ -873,10 +872,33 @@ VGColorInternalFormat KGImageResample_EWAOnMipmaps(KGImage *self,CGFloat x, CGFl
 		A *= m_resamplingFilterRadius;
 		B *= m_resamplingFilterRadius;
 		C *= m_resamplingFilterRadius;
-		
+
 		//calculate bounding box in texture space
 		CGFloat usize = (CGFloat)sqrt(C);
 		CGFloat vsize = (CGFloat)sqrt(A);
+
+		//scale the filter so that Q = 1 at the cutoff radius
+		CGFloat F = A*C - 0.25f * B*B;
+		if( F <= 0.0f ){
+         for(i=0;i<length;i++)
+		  span[i]=KGRGBAffffInit(0,0,0,0);	//invalid filter shape due to numerical inaccuracies => return black
+          
+         return  self->_colorFormat;
+        }
+		CGFloat ooF = 1.0f / F;
+		A *= ooF;
+		B *= ooF;
+		C *= ooF;
+
+   for(i=0;i<length;i++,x++){
+    uv=CGPointMake(x+0.5,y+0.5);
+    uv=CGAffineTransformTransformVector2(surfaceToImage ,uv);
+   
+		CGFloat U0 = uv.x;
+		CGFloat V0 = uv.y;
+		U0 *= sx;
+		V0 *= sy;
+		
 		int u1 = RI_FLOOR_TO_INT(U0 - usize + 0.5f);
 		int u2 = RI_FLOOR_TO_INT(U0 + usize + 0.5f);
 		int v1 = RI_FLOOR_TO_INT(V0 - vsize + 0.5f);
@@ -886,16 +908,6 @@ VGColorInternalFormat KGImageResample_EWAOnMipmaps(KGImage *self,CGFloat x, CGFl
             continue;
         }
         
-		//scale the filter so that Q = 1 at the cutoff radius
-		CGFloat F = A*C - 0.25f * B*B;
-		if( F <= 0.0f ){
-			span[i]=KGRGBAffffInit(0,0,0,0);	//invalid filter shape due to numerical inaccuracies => return black
-            continue;
-        }
-		CGFloat ooF = 1.0f / F;
-		A *= ooF;
-		B *= ooF;
-		C *= ooF;
 		
 		//evaluate filter by using forward differences to calculate Q = A*U^2 + B*U*V + C*V^2
 		KGRGBAffff color=KGRGBAffffInit(0,0,0,0);
@@ -965,7 +977,7 @@ VGColorInternalFormat KGImageResample_Bicubic(KGImage *self,CGFloat x, CGFloat y
    
    for(i=0;i<length;i++,x++){
 	CGPoint uv=CGPointMake(x+0.5,y+0.5);
-	uv = Matrix3x3TransformVector2(surfaceToImage ,uv);
+	uv = CGAffineTransformTransformVector2(surfaceToImage ,uv);
 
     uv.x -= 0.5f;
     uv.y -= 0.5f;
@@ -1001,7 +1013,7 @@ VGColorInternalFormat KGImageResample_Bilinear(KGImage *self,CGFloat x, CGFloat 
 
    for(i=0;i<length;i++,x++){
 	CGPoint uv=CGPointMake(x+0.5,y+0.5);
-	uv = Matrix3x3TransformVector2(surfaceToImage,uv);
+	uv = CGAffineTransformTransformVector2(surfaceToImage,uv);
 
     uv.x -= 0.5f;
 	uv.y -= 0.5f;
@@ -1028,7 +1040,7 @@ VGColorInternalFormat KGImageResample_PointSampling(KGImage *self,CGFloat x, CGF
    
    for(i=0;i<length;i++,x++){
     CGPoint uv=CGPointMake(x+0.5,y+0.5);
-	uv = Matrix3x3TransformVector2(surfaceToImage ,uv);
+	uv = CGAffineTransformTransformVector2(surfaceToImage ,uv);
 
     KGSurfaceReadTexelTilePad(self,RI_FLOOR_TO_INT(uv.x), RI_FLOOR_TO_INT(uv.y),span+i,1);
    }

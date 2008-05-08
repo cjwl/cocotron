@@ -171,7 +171,7 @@ static VGColorInternalFormat stencil(KGPaint_image *self,int x,int y,KGRGBAffff 
 
 
 -initWithImage:(KGImage *)image mode:(KGSurfaceMode)mode paint:(KGPaint *)paint interpolationQuality:(CGInterpolationQuality)interpolationQuality {
-   KGPaintInit(self);
+   [super init];
    switch(mode){
     case VG_DRAW_IMAGE_MULTIPLY:
      _readRGBAffff=(KGPaintReadSpan_RGBAffff)multiply;

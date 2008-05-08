@@ -63,7 +63,7 @@ static CGColorRef cgColorFromColor(NSColor *color){
    _strokeColor=cgColorFromColor([NSColor redColor]);
    _pathDrawingMode=kCGPathStroke;
    _shouldAntialias=YES;
-   _interpolationQuality=kCGInterpolationDefault;
+   _interpolationQuality=kCGInterpolationLow;
    _scalex=1;
    _scaley=1;
    _rotation=0;
@@ -274,7 +274,7 @@ static void addSliceToPath(CGMutablePathRef path,float innerRadius,float outerRa
    CGAffineTransform ctm=[self ctm];
    CGAffineTransform t=CGAffineTransformMakeTranslation(-(int)CGImageGetWidth(_resamplingImage),-(int)CGImageGetHeight(_resamplingImage));
    ctm=CGAffineTransformConcat(t,ctm);
-   ctm=CGAffineTransformScale(ctm,2,2);
+ //  ctm=CGAffineTransformScale(ctm,2,2);
       
    CGContextSaveGState(_context);
    CGContextClearRect(_context,CGRectMake(0,0,400,400));

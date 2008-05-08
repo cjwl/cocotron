@@ -29,29 +29,15 @@
 
 @implementation KGPaint
 
-KGPaint *KGPaintAlloc() {
-   return [KGPaint alloc];
-}
-
-KGPaint *KGPaintInit(KGPaint *self) {
-
-	self->m_surfaceToPaintMatrix=CGAffineTransformIdentity;
-
-    return self;
+-init {
+   self->m_surfaceToPaintMatrix=CGAffineTransformIdentity;
+   return self;
 }
 
 
 void KGPaintSetSurfaceToPaintMatrix(KGPaint *self,CGAffineTransform surfaceToPaintMatrix) {
 	self->m_surfaceToPaintMatrix = surfaceToPaintMatrix;
 }
-
-
-void     KGPaintDealloc(KGPaint *self) {
-
-}
-
-
-
 
 @end
 

@@ -138,11 +138,11 @@ static inline CGPoint Vector2Perpendicular(CGPoint v, BOOL cw){
 }
 
 
-BOOL Matrix3x3InplaceInvert(CGAffineTransform *m);
+BOOL CGAffineTransformInplaceInvert(CGAffineTransform *m);
 
 //matrix * column vector. 
 
-static inline CGPoint Matrix3x3TransformVector2(CGAffineTransform m,CGPoint v){
+static inline CGPoint CGAffineTransformTransformVector2(CGAffineTransform m,CGPoint v){
    return CGPointMake(v.x * m.a + v.y * m.c + m.tx, v.x * m.b + v.y * m.d + m.ty);
 }
 
