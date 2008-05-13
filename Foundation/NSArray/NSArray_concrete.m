@@ -104,10 +104,10 @@ NSArray *NSArray_concreteWithArrayRange(NSArray *array,NSRange range) {
 -(NSUInteger)countByEnumeratingWithState:(NSFastEnumerationState *)state objects:(id *)stackbuf count:(NSUInteger)length;
 {
 	int numObjects=MIN([self count] - state->extra[0], length);
-	state->mutationsPtr=(unsigned long*)_objects;
+	state->mutationsPtr=(unsigned long*)&_objects;
 	state->itemsPtr=&_objects[state->extra[0]];
 	state->extra[0]+=numObjects;
-
+	
 	return numObjects;
 }
 

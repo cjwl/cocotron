@@ -508,5 +508,5 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 void objc_enumerationMutation(id collection)
 {
-	[NSException raise:NSInternalInconsistencyException format:@"Collection %p was mutated during enumeration. Break on objc_enumerationMutation to debug.", collection];
+	[NSException raise:NSInternalInconsistencyException format:@"Collection %p of class %@ was mutated during enumeration. Break on objc_enumerationMutation to debug.", collection, [collection className]];
 }
