@@ -10,6 +10,9 @@
 #import <Foundation/NSRecursiveLock.h>
 #import <Foundation/NSValue.h>
 
+
+// lock to serialize accesses to the lock chain; also serves as a marker if we 
+// are currently locking (locking is disabled as long as there's no multithreading)
 static NSLock *lockChainLock=nil;
 
 struct LockChain;
@@ -26,12 +29,15 @@ void _NSInitializeSynchronizedDirective()
 {
 	if(!lockChainLock)
 	{
-		lockChainLock=[NSLock new];
 		allLocks=NSZoneMalloc(NULL, sizeof(LockChain));
 
 		allLocks->object=0;
 		allLocks->next=0;
 		allLocks->lock=[NSRecursiveLock new];
+        
+        // this needs to be initialized last: it also serves as a marker that the locking
+        // mechanism is actually initialized.
+        lockChainLock=[NSLock new];
 	}
 }
 
@@ -79,7 +85,7 @@ FOUNDATION_EXPORT int objc_sync_enter(id obj)
 {
 	if(!obj)
 		return OBJC_SYNC_SUCCESS;
-	if(!allLocks)
+	if(!lockChainLock)
 		return OBJC_SYNC_NOT_INITIALIZED;
 
 	LockChain *result=lockForObject(obj);
@@ -93,7 +99,7 @@ FOUNDATION_EXPORT int objc_sync_exit(id obj)
 {
 	if(!obj)
 		return OBJC_SYNC_SUCCESS;
-	if(!allLocks)
+	if(!lockChainLock)
 		return OBJC_SYNC_NOT_INITIALIZED;
 
 	LockChain *result=lockForObject(obj);
