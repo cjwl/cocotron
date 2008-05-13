@@ -63,7 +63,7 @@ static BOOL initFunctionsForParameters(KGImage *self,size_t bitsPerComponent,siz
        }
      }
      break;
-     
+        
     case  8:
      switch(bitsPerPixel){
      

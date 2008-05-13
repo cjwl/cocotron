@@ -13,23 +13,46 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(BOOL)isTransparent;
 -(NSString *)keyEquivalent;
+-(NSUInteger)keyEquivalentModifierMask;
 -(NSImage *)image;
 -(NSCellImagePosition)imagePosition;
 -(NSString *)title;
--(int)state;
+-(NSInteger)state;
 -(BOOL)allowsMixedState;
 -(NSSound *)sound;
 
--(void)setTransparent:(BOOL)flag;
--(void)setKeyEquivalent:(NSString *)keyEquivalent;
--(void)setImage:(NSImage *)image;
--(void)setImagePosition:(NSCellImagePosition)position;
--(void)setTitle:(NSString *)title;
--(void)setState:(int)value;
--(void)setNextState;
--(void)setAllowsMixedState:(BOOL)flag;
--(void)setSound:(NSSound *)sound;
+-(NSBezelStyle)bezelStyle;
+-(NSString *)alternateTitle;
+-(NSImage *)alternateImage;
+-(NSAttributedString *)attributedTitle;
+-(NSAttributedString *)attributedAlternateTitle;
+-(BOOL)showsBorderOnlyWhileMouseInside;
+-(void)getPeriodicDelay:(float *)delay interval:(float *)interval;
 
+-(void)setTransparent:(BOOL)value;
+-(void)setKeyEquivalent:(NSString *)value;
+-(void)setKeyEquivalentModifierMask:(NSUInteger)value;
+-(void)setImage:(NSImage *)value;
+-(void)setImagePosition:(NSCellImagePosition)value;
+-(void)setTitle:(NSString *)value;
+-(void)setState:(NSInteger)value;
+-(void)setNextState;
+-(void)setAllowsMixedState:(BOOL)value;
+-(void)setSound:(NSSound *)value;
+
+-(void)setBezelStyle:(NSBezelStyle)value;
+-(void)setAlternateTitle:(NSString *)value;
+-(void)setAlternateImage:(NSImage *)value;
+-(void)setAttributedTitle:(NSAttributedString *)value;
+-(void)setAttributedAlternateTitle:(NSAttributedString *)value;
+-(void)setShowsBorderOnlyWhileMouseInside:(BOOL)value;
+-(void)setPeriodicDelay:(float)delay interval:(float)interval;
+
+-(void)setButtonType:(NSButtonType)value;
+-(void)setTitleWithMnemonic:(NSString *)value;
+
+-(void)highlight:(BOOL)value;
+-(BOOL)performKeyEquivalent:(NSEvent *)event;
 -(void)performClick:sender;
 
 @end

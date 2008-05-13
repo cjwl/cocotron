@@ -688,11 +688,12 @@ id NSApp=nil;
 
 -(void)beginSheet:(NSWindow *)sheet modalForWindow:(NSWindow *)window modalDelegate:modalDelegate didEndSelector:(SEL)didEndSelector contextInfo:(void *)contextInfo {
     NSSheetContext *context=[NSSheetContext sheetContextWithSheet:sheet modalDelegate:modalDelegate didEndSelector:didEndSelector contextInfo:contextInfo frame:[sheet frame]];
-//    // Hmmm
-#if 1
+
+// Hmmmm, is this correct? 
+
     if ([sheet styleMask] != NSDocModalWindowMask)
         [sheet _setStyleMask:NSDocModalWindowMask];
-#endif
+
 //    if ([sheet styleMask] != NSBorderlessWindowMask)
 //        [sheet _setStyleMask:NSBorderlessWindowMask];
    

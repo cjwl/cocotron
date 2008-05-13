@@ -254,6 +254,10 @@ static NSMutableDictionary *cellClassDictionary = nil;
    [self setObjectValue:[NSNumber numberWithDouble:value]];
 }
 
+-(void)setAttributedStringValue:(NSAttributedString *)value {
+   [self setObjectValue:value];
+}
+
 -(void)takeObjectValueFrom:sender {
    [self setObjectValue:[sender objectValue]];
 }

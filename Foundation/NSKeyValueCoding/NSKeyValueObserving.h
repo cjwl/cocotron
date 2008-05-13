@@ -8,7 +8,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/NSObject.h>
 #import <Foundation/NSArray.h>
-@class NSDictionary;
+@class NSDictionary,NSSet;
 
 FOUNDATION_EXPORT NSString *const NSKeyValueChangeKindKey;
 FOUNDATION_EXPORT NSString *const NSKeyValueChangeNewKey;

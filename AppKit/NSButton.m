@@ -35,6 +35,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return [_cell keyEquivalent];
 }
 
+-(NSUInteger)keyEquivalentModifierMask {
+   return [_cell keyEquivalentModifierMask];
+}
+
 -(NSImage *)image {
    return [_cell image];
 }
@@ -47,7 +51,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return [_cell title];
 }
 
--(int)state {
+-(NSInteger)state {
    return [_cell state];
 }
 
@@ -59,31 +63,63 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return [_cell sound];
 }
 
--(void)setTransparent:(BOOL)flag {
-   [_cell setTransparent:flag];
+-(NSBezelStyle)bezelStyle {
+   return [_cell bezelStyle];
+}
+
+-(NSString *)alternateTitle {
+   return [_cell alternateTitle];
+}
+
+-(NSImage *)alternateImage {
+   return [_cell alternateImage];
+}
+
+-(NSAttributedString *)attributedTitle {
+   return [_cell attributedTitle];
+}
+
+-(NSAttributedString *)attributedAlternateTitle {
+   return [_cell attributedAlternateTitle];
+}
+
+-(BOOL)showsBorderOnlyWhileMouseInside {
+   return [_cell showsBorderOnlyWhileMouseInside];
+}
+
+-(void)getPeriodicDelay:(float *)delay interval:(float *)interval {
+   NSUnimplementedMethod();
+}
+
+-(void)setTransparent:(BOOL)value {
+   [_cell setTransparent:value];
    [self setNeedsDisplay:YES];
 }
 
--(void)setKeyEquivalent:(NSString *)keyEquivalent {
-   [_cell setKeyEquivalent:keyEquivalent];
+-(void)setKeyEquivalent:(NSString *)value {
+   [_cell setKeyEquivalent:value];
 }
 
--(void)setImage:(NSImage *)image {
-   [_cell setImage:image];
+-(void)setKeyEquivalentModifierMask:(NSUInteger)value {
+   [_cell setKeyEquivalentModifierMask:value];
+}
+
+-(void)setImage:(NSImage *)value {
+   [_cell setImage:value];
    [self setNeedsDisplay:YES];
 }
 
--(void)setImagePosition:(NSCellImagePosition)position {
-   [_cell setImagePosition:position];
+-(void)setImagePosition:(NSCellImagePosition)value {
+   [_cell setImagePosition:value];
    [self setNeedsDisplay:YES];
 }
 
--(void)setTitle:(NSString *)title {
-   [_cell setTitle:title];
+-(void)setTitle:(NSString *)value {
+   [_cell setTitle:value];
    [self setNeedsDisplay:YES];
 }
 
--(void)setState:(int)value {
+-(void)setState:(NSInteger)value {
    [_cell setState:value];
    [self setNeedsDisplay:YES];
 }
@@ -101,12 +137,53 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [_cell setSound:sound];
 }
 
--(unsigned)keyEquivalentModifierMask {
-   return [_cell keyEquivalentModifierMask];
+-(void)setBezelStyle:(NSBezelStyle)value {
+   [_cell setBezelStyle:value];
+   [self setNeedsDisplay:YES];
 }
 
--(void)setKeyEquivalentModifierMask:(unsigned)mask {
-   [_cell setKeyEquivalentModifierMask:mask];
+-(void)setAlternateTitle:(NSString *)value {
+   [_cell setAlternateTitle:value];
+   [self setNeedsDisplay:YES];
+}
+
+-(void)setAlternateImage:(NSImage *)value {
+   [_cell setAlternateImage:value];
+   [self setNeedsDisplay:YES];
+}
+
+-(void)setAttributedTitle:(NSAttributedString *)value {
+   [_cell setAttributedTitle:value];
+   [self setNeedsDisplay:YES];
+}
+
+-(void)setAttributedAlternateTitle:(NSAttributedString *)value {
+   [_cell setAttributedAlternateTitle:value];
+   [self setNeedsDisplay:YES];
+}
+
+-(void)setShowsBorderOnlyWhileMouseInside:(BOOL)value {
+   [_cell setShowsBorderOnlyWhileMouseInside:value];
+   [self setNeedsDisplay:YES];
+}
+
+-(void)setButtonType:(NSButtonType)value {
+   NSUnimplementedMethod();
+}
+
+-(void)setTitleWithMnemonic:(NSString *)value {
+   NSUnimplementedMethod();
+}
+
+-(void)setPeriodicDelay:(float)delay interval:(float)interval {
+   NSUnimplementedMethod();
+}
+
+-(void)highlight:(BOOL)value {
+   [self lockFocus];
+   [_cell highlight:value withFrame:[self bounds] inView:self];
+   [self unlockFocus];
+   [[self window] flushWindow];
 }
 
 -(BOOL)performKeyEquivalent:(NSEvent *)event {
@@ -129,19 +206,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)performClick:sender {
-   [self lockFocus];
-   [_cell highlight:YES withFrame:[self bounds] inView:self];
-   [self unlockFocus];
-   [[self window] flushWindow];
+   [self highlight:YES];
 
    [[self cell] setState:[[self cell] nextState]];
 
    [self sendAction:[self action] to:[self target]];
 
-   [self lockFocus];
-   [_cell highlight:NO withFrame:[self bounds] inView:self];
-   [self unlockFocus];
-   [[self window] flushWindow];
+   [self highlight:NO];
 }
 
 -(void)keyDown:(NSEvent *)event {

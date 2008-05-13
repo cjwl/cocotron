@@ -61,7 +61,7 @@ typedef NSUInteger NSControlTint;
    NSWritingDirection _writingDirection;
    int       _cellType;
    NSFormatter *_formatter;
-   NSString *_title;
+   id        _titleOrAttributedTitle;
    id        _representedObject;
    NSControlSize _controlSize;
 

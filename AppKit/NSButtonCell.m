@@ -6,7 +6,6 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
-// Original - Christopher Lloyd <cjwl@objc.net>
 #import <AppKit/NSButtonCell.h>
 #import <AppKit/NSApplication.h>
 #import <AppKit/NSGraphics.h>
@@ -31,7 +30,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)encodeWithCoder:(NSCoder *)coder {
    [super encodeWithCoder:coder];
-   [coder encodeObject:_title forKey:@"NSButtonCell title"];
+   [coder encodeObject:_titleOrAttributedTitle forKey:@"NSButtonCell title"];
    [coder encodeObject:_alternateTitle forKey:@"NSButtonCell alternateTitle"];
    [coder encodeInt:_imagePosition forKey:@"NSButtonCell imagePosition"];
    [coder encodeInt:_highlightsBy forKey:@"NSButtonCell highlightsBy"];
@@ -52,7 +51,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     unsigned           flags2=[keyed decodeIntForKey:@"NSButtonFlags2"];
     id                 check;
     
-    _title=[[keyed decodeObjectForKey:@"NSContents"] retain];
+    _titleOrAttributedTitle=[[keyed decodeObjectForKey:@"NSContents"] retain];
     _alternateTitle=[[keyed decodeObjectForKey:@"NSAlternateContents"] retain];
     
     _imagePosition=NSNoImage;
@@ -174,7 +173,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(NSString *)title {
-   return _title;
+   if([_titleOrAttributedTitle isKindOfClass:[NSAttributedString class]])
+    return [_titleOrAttributedTitle string];
+   else
+    return _titleOrAttributedTitle;
 }
 
 -(NSString *)alternateTitle {
@@ -186,26 +188,30 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(NSAttributedString *)attributedTitle {
-   NSMutableDictionary *attributes=[NSMutableDictionary dictionary];
-   NSMutableParagraphStyle *paraStyle=[[[NSParagraphStyle defaultParagraphStyle] mutableCopy] autorelease];
-   NSFont              *font=[self font];
+   if([_titleOrAttributedTitle isKindOfClass:[NSAttributedString class]])
+    return _titleOrAttributedTitle;
+   else {
+    NSMutableDictionary *attributes=[NSMutableDictionary dictionary];
+    NSMutableParagraphStyle *paraStyle=[[[NSParagraphStyle defaultParagraphStyle] mutableCopy] autorelease];
+    NSFont              *font=[self font];
 
-   if(font!=nil)
-    [attributes setObject:font forKey:NSFontAttributeName];
+    if(font!=nil)
+     [attributes setObject:font forKey:NSFontAttributeName];
 
-   if(![self wraps])
-    [paraStyle setLineBreakMode:NSLineBreakByClipping];
-   [paraStyle setAlignment:_textAlignment];
-   [attributes setObject:paraStyle forKey:NSParagraphStyleAttributeName];
+    if(![self wraps])
+     [paraStyle setLineBreakMode:NSLineBreakByClipping];
+    [paraStyle setAlignment:_textAlignment];
+    [attributes setObject:paraStyle forKey:NSParagraphStyleAttributeName];
 
-   if([self isEnabled])
-    [attributes setObject:[NSColor controlTextColor]
+    if([self isEnabled])
+     [attributes setObject:[NSColor controlTextColor]
                    forKey:NSForegroundColorAttributeName];
-   else
-    [attributes setObject:[NSColor disabledControlTextColor]
+    else
+     [attributes setObject:[NSColor disabledControlTextColor]
                    forKey:NSForegroundColorAttributeName];
 
-   return [[[NSAttributedString alloc] initWithString:[self title] attributes:attributes] autorelease];
+    return [[[NSAttributedString alloc] initWithString:_titleOrAttributedTitle attributes:attributes] autorelease];
+   }
 }
 
 -(NSAttributedString *)attributedAlternateTitle {
@@ -280,8 +286,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)setTitle:(NSString *)title {
    title=[title copy];
-   [_title release];
-   _title=title;
+   [_titleOrAttributedTitle release];
+   _titleOrAttributedTitle=title;
 }
 
 -(void)setAlternateTitle:(NSString *)title {
@@ -297,7 +303,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)setAttributedTitle:(NSAttributedString *)title {
-   NSUnimplementedMethod();
+   title=[title copy];
+   [_titleOrAttributedTitle release];
+   _titleOrAttributedTitle=title;
 }
 
 -(void)setAttributedAlternateTitle:(NSAttributedString *)title {

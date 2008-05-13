@@ -8,13 +8,19 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/NSObject.h>
 
-@class NSButton,NSImage,NSArray,NSWindow,NSError;
+@class NSButton,NSImage,NSArray,NSWindow,NSError,NSView,NSMutableArray;
 
 typedef enum  {
    NSWarningAlertStyle,
    NSInformationalAlertStyle,
-   NSCriticalAlertStyle
+   NSCriticalAlertStyle,
 } NSAlertStyle;
+
+enum {
+   NSAlertFirstButtonReturn=1000,
+   NSAlertSecondButtonReturn=1001,
+   NSAlertThirdButtonReturn=1002,
+};
 
 @interface NSAlert : NSObject {
    id           _delegate;
@@ -22,10 +28,17 @@ typedef enum  {
    NSImage     *_icon;
    NSString    *_messageText;
    NSString    *_informativeText;
+   NSView      *_accessoryView;
    BOOL         _showsHelp;
+   BOOL         _showsSuppressionButton;
    NSString    *_helpAnchor;
-   NSArray     *_buttons;
+   NSMutableArray *_buttons;
+   NSButton    *_supressionButton;
    NSWindow    *_window;
+
+   BOOL         _needsLayout;
+   id  _sheetDelegate;
+   SEL _sheetDidEnd;
 }
 
 +(NSAlert *)alertWithError:(NSError *)error;
@@ -36,23 +49,30 @@ typedef enum  {
 -(NSImage *)icon;
 -(NSString *)messageText;
 -(NSString *)informativeText;
+-(NSView *)accessoryView;
 -(BOOL)showsHelp;
+-(BOOL)showsSuppressionButton;
 -(NSString *)helpAnchor;
 -(NSArray *)buttons;
+-(NSButton *)supressionButton;
 -window;
 
 -(void)setDelegate:delegate;
--(void)setAlertStyle:(NSAlertStyle)style;
--(void)setIcon:(NSImage *)icon;
--(void)setMessageText:(NSString *)string;
--(void)setInformativeText:(NSString *)string;
--(void)setShowsHelp:(BOOL)flag;
--(void)setHelpAnchor:(NSString *)anchor;
+-(void)setAlertStyle:(NSAlertStyle)value;
+-(void)setIcon:(NSImage *)value;
+-(void)setMessageText:(NSString *)value;
+-(void)setInformativeText:(NSString *)value;
+-(void)setAccessoryView:(NSView *)value;
+-(void)setShowsHelp:(BOOL)value;
+-(void)setShowsSuppressionButton:(BOOL)value;
+-(void)setHelpAnchor:(NSString *)value;
 
 -(NSButton *)addButtonWithTitle:(NSString *)title;
 
+-(void)layout;
+
 -(void)beginSheetModalForWindow:(NSWindow *)window modalDelegate:delegate didEndSelector:(SEL)selector contextInfo:(void *)info;
--(int)runModal;
+-(NSInteger)runModal;
 
 @end
 

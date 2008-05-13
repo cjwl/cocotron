@@ -124,7 +124,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [_objectValue release];
    [_image release];
    [_formatter release];
-   [_title release];
+   [_titleOrAttributedTitle release];
    [_representedObject release];
    [super dealloc];
 }
@@ -136,7 +136,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    copy->_objectValue=[_objectValue copy];
    copy->_image=[_image retain];
    copy->_formatter=[_formatter retain];
-   copy->_title=[_title retain];
+   copy->_titleOrAttributedTitle=[_titleOrAttributedTitle copy];
    copy->_representedObject=[_representedObject retain];
 
    return copy;
@@ -204,7 +204,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(NSString *)title {
-    return _title;
+    return _titleOrAttributedTitle;
 }
 
 -(BOOL)isEnabled {
@@ -440,8 +440,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)setTitle:(NSString *)title {
     title = [title retain];
-    [_title release];
-    _title = title;
+    [_titleOrAttributedTitle release];
+    _titleOrAttributedTitle = title;
 }
 
 -(void)setEnabled:(BOOL)flag {
