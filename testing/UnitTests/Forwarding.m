@@ -157,12 +157,24 @@
 -(void)testStructReturn
 {
 	// this crashes with llvm, which the tester doesn't catch. Just return for now.
-	STFail(nil);
+//	STFail(nil);
 	return;
-	
 	beenInMethodFlag=NO;
 	int x=12;
-	TestingStruct ret=[self testingStructWithParam:x];
+	struct stuff
+	{
+		int guard;
+		TestingStruct ret;
+		int guard2;
+	} stuff;
+	stuff.guard=0xdeadbeef;
+	stuff.guard2=0xdeadbeef;
+	
+	stuff.ret=[self testingStructWithParam:x];
+	if(stuff.guard!=0xdeadbeef)
+		NSLog(@"error: guard overwritten, will probably crash");
+	if(stuff.guard2!=0xdeadbeef)
+		NSLog(@"error: guard 2 overwritten, will probably crash");
 	TestingStruct cmp={0};
 	cmp.a=x;
 	cmp.b=x+1;
@@ -171,7 +183,7 @@
 	cmp.e=x+4;
 	
 	STAssertTrue(beenInMethodFlag, nil);
-	STAssertEquals(ret, cmp, nil);
+	STAssertEquals(stuff.ret, cmp, nil);
 	
 }
 

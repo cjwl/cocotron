@@ -28,6 +28,8 @@
 		C85D1F880DBBBAD7005A5FD6 /* SizeAndAlignment.m in Sources */ = {isa = PBXBuildFile; fileRef = C8C031A30DBB4F7D00558D7B /* SizeAndAlignment.m */; };
 		C85D1F8B0DBBBAD7005A5FD6 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 089C1672FE841209C02AAC07 /* Foundation.framework */; };
 		C85D1F8C0DBBBAD7005A5FD6 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C827EA560DB62A9200360D99 /* SenTestingKit.framework */; };
+		C88470DB0DD3A9F600853747 /* KVO.m in Sources */ = {isa = PBXBuildFile; fileRef = C88470DA0DD3A9F600853747 /* KVO.m */; };
+		C88470DC0DD3A9F600853747 /* KVO.m in Sources */ = {isa = PBXBuildFile; fileRef = C88470DA0DD3A9F600853747 /* KVO.m */; };
 		C88B859C0DB90282000A8500 /* ForEach.m in Sources */ = {isa = PBXBuildFile; fileRef = C88B859B0DB90282000A8500 /* ForEach.m */; };
 		C88B859D0DB90282000A8500 /* ForEach.m in Sources */ = {isa = PBXBuildFile; fileRef = C88B859B0DB90282000A8500 /* ForEach.m */; };
 		C88B86DB0DBA0305000A8500 /* Forwarding.m in Sources */ = {isa = PBXBuildFile; fileRef = C88B86D90DBA0305000A8500 /* Forwarding.m */; };
@@ -35,6 +37,8 @@
 		C8C031A50DBB4F7E00558D7B /* SizeAndAlignment.m in Sources */ = {isa = PBXBuildFile; fileRef = C8C031A30DBB4F7D00558D7B /* SizeAndAlignment.m */; };
 		C8C8030F0DB52A010089C0D7 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 089C167FFE841241C02AAC07 /* AppKit.framework */; };
 		C8C803100DB52A010089C0D7 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 089C1672FE841209C02AAC07 /* Foundation.framework */; };
+		C8CB8CAF0DD34DA6005C1BAC /* Array.m in Sources */ = {isa = PBXBuildFile; fileRef = C8CB8CAE0DD34DA6005C1BAC /* Array.m */; };
+		C8CB8CB00DD34DA6005C1BAC /* Array.m in Sources */ = {isa = PBXBuildFile; fileRef = C8CB8CAE0DD34DA6005C1BAC /* Array.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
@@ -48,7 +52,7 @@
 		};
 		C8C8027E0DB51FE60089C0D7 /* PBXBuildRule */ = {
 			isa = PBXBuildRule;
-			compilerSpec = org.cocotron.1.0.windows.i386.gcc.default;
+			compilerSpec = "org.cocotron.1.0.windows.i386.gcc.4.2.1-llvm";
 			fileType = sourcecode.c;
 			isEditable = 1;
 			outputFiles = (
@@ -63,6 +67,8 @@
 		32DBCF630370AF2F00C91783 /* UnitTests_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UnitTests_Prefix.pch; sourceTree = "<group>"; };
 		8D5B49B6048680CD000E48DA /* UnitTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UnitTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
 		8D5B49B7048680CD000E48DA /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C81F5A3E0DD22B94006F82C7 /* Runloop.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Runloop.h; sourceTree = "<group>"; };
+		C81F5A3F0DD22B94006F82C7 /* Runloop.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Runloop.m; sourceTree = "<group>"; };
 		C827EA560DB62A9200360D99 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = /System/Library/Frameworks/SenTestingKit.framework; sourceTree = "<absolute>"; };
 		C827EA6F0DB630BB00360D99 /* UnitTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UnitTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C827EB390DB63FFA00360D99 /* Properties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Properties.h; sourceTree = "<group>"; };
@@ -72,6 +78,8 @@
 		C84D62830DB61BEB000E722B /* local_server_config.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = local_server_config.sh; sourceTree = "<group>"; };
 		C84DA1BD0DB8D896000CD913 /* README */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README; sourceTree = "<group>"; };
 		C85D1F910DBBBAD7005A5FD6 /* UnitTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UnitTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
+		C88470D90DD3A9F600853747 /* KVO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KVO.h; sourceTree = "<group>"; };
+		C88470DA0DD3A9F600853747 /* KVO.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KVO.m; sourceTree = "<group>"; };
 		C88B859A0DB90282000A8500 /* ForEach.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ForEach.h; sourceTree = "<group>"; };
 		C88B859B0DB90282000A8500 /* ForEach.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ForEach.m; sourceTree = "<group>"; };
 		C88B86D80DBA0305000A8500 /* Forwarding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Forwarding.h; sourceTree = "<group>"; };
@@ -80,6 +88,8 @@
 		C8C031A30DBB4F7D00558D7B /* SizeAndAlignment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SizeAndAlignment.m; sourceTree = "<group>"; };
 		C8C8027F0DB51FEF0089C0D7 /* KVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KVC.h; sourceTree = "<group>"; };
 		C8C802800DB51FEF0089C0D7 /* KVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KVC.m; sourceTree = "<group>"; };
+		C8CB8CAD0DD34DA6005C1BAC /* Array.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Array.h; sourceTree = "<group>"; };
+		C8CB8CAE0DD34DA6005C1BAC /* Array.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Array.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -158,6 +168,12 @@
 				C88B86D90DBA0305000A8500 /* Forwarding.m */,
 				C8C031A20DBB4F7D00558D7B /* SizeAndAlignment.h */,
 				C8C031A30DBB4F7D00558D7B /* SizeAndAlignment.m */,
+				C88470D90DD3A9F600853747 /* KVO.h */,
+				C88470DA0DD3A9F600853747 /* KVO.m */,
+				C81F5A3E0DD22B94006F82C7 /* Runloop.h */,
+				C81F5A3F0DD22B94006F82C7 /* Runloop.m */,
+				C8CB8CAD0DD34DA6005C1BAC /* Array.h */,
+				C8CB8CAE0DD34DA6005C1BAC /* Array.m */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -360,6 +376,8 @@
 				C850BE140DBAA27C005F1047 /* KVC.m in Sources */,
 				C8C031A40DBB4F7D00558D7B /* SizeAndAlignment.m in Sources */,
 				C813609D0DC4A5D800EAFF07 /* Forwarding.m in Sources */,
+				C8CB8CAF0DD34DA6005C1BAC /* Array.m in Sources */,
+				C88470DB0DD3A9F600853747 /* KVO.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -373,6 +391,8 @@
 				C88B86DB0DBA0305000A8500 /* Forwarding.m in Sources */,
 				C850BE150DBAA27D005F1047 /* KVC.m in Sources */,
 				C8C031A50DBB4F7E00558D7B /* SizeAndAlignment.m in Sources */,
+				C8CB8CB00DD34DA6005C1BAC /* Array.m in Sources */,
+				C88470DC0DD3A9F600853747 /* KVO.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -413,6 +433,7 @@
 				EXECUTABLE_FOLDER_PATH = "$(CONTENTS_FOLDER_PATH)/Windows";
 				EXECUTABLE_SUFFIX = .dll;
 				FRAMEWORK_SEARCH_PATHS = /Developer/Cocotron/1.0/Windows/i386/Frameworks;
+				GCC_DEBUGGING_SYMBOLS = full;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
