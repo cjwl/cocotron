@@ -45,6 +45,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return self;
 }
 
+-initWithContentsOfMappedFile:(NSString *)path {
+    NSUnimplementedMethod();
+}
+
 +dataWithCapacity:(unsigned)capacity {
    return [[[self allocWithZone:NULL] initWithCapacity:capacity] autorelease];
 }

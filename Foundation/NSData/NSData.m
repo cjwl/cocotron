@@ -180,6 +180,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return 0;
 }
 
+-(NSUInteger)hash {
+	return [self length];
+}
+
 -(BOOL)isEqual:other {
    if(self==other)
     return YES;

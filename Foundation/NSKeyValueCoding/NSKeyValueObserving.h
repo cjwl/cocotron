@@ -34,6 +34,7 @@ typedef unsigned int NSKeyValueChange;
 
 @interface NSObject (NSKeyValueObserving)
 + (BOOL)automaticallyNotifiesObserversForKey:(NSString *)key;
++(NSSet*)keyPathsForValuesAffectingValueForKey:(NSString*)key;
 +(void)setKeys:(NSArray *)keys triggerChangeNotificationsForDependentKey:(NSString *)dependentKey;
 
 -(void)observeValueForKeyPath:(NSString*)keyPath ofObject:(id)object change:(NSDictionary*)changeDict context:(void*)context;

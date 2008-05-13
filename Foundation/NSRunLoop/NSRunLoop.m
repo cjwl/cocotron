@@ -68,7 +68,7 @@ NSString *NSDefaultRunLoopMode=@"NSDefaultRunLoopMode";
 	id performs=nil;
 	@synchronized(_orderedPerforms)
 	{
-		performs=[_orderedPerforms mutableCopy];
+		performs=[_orderedPerforms copy];
 	}
    int count=[performs count];
 

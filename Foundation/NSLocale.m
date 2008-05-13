@@ -56,7 +56,7 @@ static NSLocale *_sharedCurrentLocale = nil;
    return _sharedCurrentLocale;
 }
 
--dealloc {
+-(void)dealloc {
    [_locale release];
    [super dealloc];
 }

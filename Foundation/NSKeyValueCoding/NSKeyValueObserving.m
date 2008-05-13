@@ -33,7 +33,7 @@ NSString *const NSKeyValueChangeIndexesKey=@"NSKeyValueChangeIndexesKey";
 NSString *const NSKeyValueChangeNotificationIsPriorKey=@"NSKeyValueChangeNotificationIsPriorKey";
 
 NSString *const _KVO_DependentKeysTriggeringChangeNotification=@"_KVO_DependentKeysTriggeringChangeNotification";
-NSString *const _KVO_UnionOfKeysTriggeringChangeNotification=@"_KVO_UnionOfKeysTriggeringChangeNotification";
+NSString *const _KVO_KeyPathsForValuesAffectingValueForKey=@"_KVO_KeyPathsForValuesAffectingValueForKey";
 
 static BOOL CreateClassDefinition( const char * name, const char * superclassName );
 
@@ -130,6 +130,14 @@ static NSLock *kvoLock=nil;
 									   context:context];
 	}
 	
+	NSSet* keysPathsForKey=[isa keyPathsForValuesAffectingValueForKey:key];
+	for(NSString *path in keysPathsForKey)
+	{
+		[self addObserver:info
+			   forKeyPath:path
+				  options:options
+				  context:context];
+	}
 	
 	if(options & NSKeyValueObservingOptionInitial)
 	{
@@ -141,12 +149,12 @@ static NSLock *kvoLock=nil;
 
 -(void)removeObserver:(id)observer forKeyPath:(NSString*)keyPath;
 {
-	NSString* firstPart, *rest;
-	[keyPath _KVC_partBeforeDot:&firstPart afterDot:&rest];
+	NSString* key, *remainingKeyPath;
+	[keyPath _KVC_partBeforeDot:&key afterDot:&remainingKeyPath];
 
 	// now remove own observer
 	NSMutableDictionary* dict=[self observationInfo];
-	NSMutableArray *observers=[dict objectForKey:firstPart];
+	NSMutableArray *observers=[dict objectForKey:key];
 
 	NSEnumerator *en=[observers objectEnumerator];
 	_NSObservationInfo *info;
@@ -158,7 +166,7 @@ static NSLock *kvoLock=nil;
 			[observers removeObject:info];
 			if(![observers count])
 			{
-				[dict removeObjectForKey:firstPart];
+				[dict removeObjectForKey:key];
 			}
 			if(![dict count])
 			{
@@ -166,8 +174,16 @@ static NSLock *kvoLock=nil;
 				[self setObservationInfo:nil];
 			}
 
-			if(rest)
-				[[self valueForKey:firstPart] removeObserver:info forKeyPath:rest];
+			if(remainingKeyPath)
+				[[self valueForKey:key] removeObserver:info forKeyPath:remainingKeyPath];
+			
+			NSSet* keysPathsForKey=[isa keyPathsForValuesAffectingValueForKey:key];
+			for(NSString *path in keysPathsForKey)
+			{
+				[self removeObserver:info
+					   forKeyPath:path];
+			}
+			
 			return;
 		}
 	}
@@ -215,30 +231,6 @@ static NSLock *kvoLock=nil;
 	if(!observationInfo)
 		return;
 
-	{
-		NSDictionary *dependencies=[(id)[isa observationInfo] objectForKey:_KVO_UnionOfKeysTriggeringChangeNotification];
-
-		if(!dependencies)
-		{
-			[isa _KVO_buildDependencyUnion];
-			dependencies=[(id)[isa observationInfo] objectForKey:_KVO_UnionOfKeysTriggeringChangeNotification];
-		}
-		
-		
-		NSArray *dependents=[dependencies objectForKey:key];
-
-		
-		if(dependents)
-		{
-			id dep;
-			id en=[dependents objectEnumerator];
-			int i;
-			while(dep=[en nextObject])
-			{
-				[self willChangeValueForKey:dep];
-			}
-		}
-	}
 	NSMutableArray *observers=[observationInfo objectForKey:key];
 	
 	NSEnumerator *en=[observers objectEnumerator];
@@ -288,7 +280,6 @@ static NSLock *kvoLock=nil;
 			 change:info->changeDictionary
 			 context:info->context];
 			[info->changeDictionary removeObjectForKey:NSKeyValueChangeNotificationIsPriorKey];
-
 		}
 
 		NSString* firstPart, *rest;
@@ -307,29 +298,6 @@ static NSLock *kvoLock=nil;
 	if(!observationInfo)
 		return;
 
-	{
-		NSDictionary *dependencies=[(id)[isa observationInfo] objectForKey:_KVO_UnionOfKeysTriggeringChangeNotification];
-		
-		if(!dependencies)
-		{
-			[isa _KVO_buildDependencyUnion];
-			dependencies=[(id)[isa observationInfo] objectForKey:_KVO_UnionOfKeysTriggeringChangeNotification];
-		}
-		
-		NSSet *dependents=[dependencies objectForKey:key];
-		
-
-		if(dependents)
-		{
-			id dep;
-			id en=[dependents objectEnumerator];
-			int i;
-			while(dep=[en nextObject])
-			{
-				[self didChangeValueForKey:dep];
-			}
-		}
-	}
 	NSMutableArray *observers=[[observationInfo objectForKey:key] copy];
 
 	NSEnumerator *en=[observers objectEnumerator];
@@ -418,6 +386,26 @@ static NSLock *kvoLock=nil;
 		[allDependencies addObject:dependentKey];
 	}
 }
+
++ (NSSet *)keyPathsForValuesAffectingValueForKey:(NSString *)key
+{
+	NSString *methodName=[[NSString alloc] initWithFormat:@"keyPathsForValuesAffecting%@", [key capitalizedString]];
+	NSSet* ret=nil;
+	SEL sel=NSSelectorFromString(methodName);
+	if([self respondsToSelector:sel])
+	{
+		ret=[self performSelector:sel];		
+	}
+	else
+	{
+		[self _KVO_buildDependencyUnion];
+		NSMutableDictionary* observationInfo=[self observationInfo];
+		NSMutableDictionary *keyPathsByKey=[observationInfo objectForKey:_KVO_KeyPathsForValuesAffectingValueForKey];
+		ret=[keyPathsByKey objectForKey:key];
+	}
+	[methodName release];
+	return ret;
+}
 @end
 
 
@@ -489,6 +477,25 @@ CHANGE_DECLARATION(NSRange)
 CHANGE_DECLARATION(char)
 CHANGE_DECLARATION(long)
 CHANGE_DECLARATION(SEL)
+
+-(void)KVO_notifying_change_setObject:(id)object forKey:(NSString*)key
+{
+	[self willChangeValueForKey:key];
+	typedef id (*sender)(id obj, SEL selector, id object, id key);
+	sender implementation=(sender)[[self superclass] instanceMethodForSelector:_cmd];
+	implementation(self, _cmd, object, key);
+	[self didChangeValueForKey:key];
+}
+
+-(void)KVO_notifying_change_removeObjectForKey:(NSString*)key
+{
+	[self willChangeValueForKey:key];
+	typedef id (*sender)(id obj, SEL selector, id key);
+	sender implementation=(sender)[[self superclass] instanceMethodForSelector:_cmd];
+	implementation(self, _cmd, key);
+	[self didChangeValueForKey:key];
+}
+
 
 -(void)KVO_notifying_change_insertObject:(id)object inKeyAtIndex:(NSInteger)index
 { 
@@ -563,41 +570,38 @@ CHANGE_DECLARATION(SEL)
 	/*
 	 This method gathers dependent keys from all superclasses and merges them together
 	 */
-	NSMutableDictionary* dict=[self observationInfo];
-	if(!dict)
+	NSMutableDictionary* observationInfo=[self observationInfo];
+	if(!observationInfo)
 	{
 		[self setObservationInfo:[NSMutableDictionary new]];
-		dict=[self observationInfo];
+		observationInfo=[self observationInfo];
 	}
 
-
-	NSMutableDictionary *ownDependents=[NSMutableDictionary dictionary];
+	NSMutableDictionary *keyPathsByKey=[NSMutableDictionary dictionary];
 
 	id class=self;
 	while(class != [NSObject class])
 	{
 		NSDictionary* classDependents=[(NSDictionary*)[class observationInfo] objectForKey:_KVO_DependentKeysTriggeringChangeNotification];
 
-		id keys=[classDependents allKeys];
-		int i;
-		int ct=[keys count];
-		for(i=0; i<ct; i++)
+		for(id key in [classDependents allKeys])
 		{
-			id key=[keys objectAtIndex:i];
-			NSMutableSet* dependentsForKey=[ownDependents objectForKey:key];
-			if(!dependentsForKey)
+			for(id value in [classDependents objectForKey:key])
 			{
-				dependentsForKey=[NSMutableSet set];
-				[ownDependents setObject:dependentsForKey forKey:key];
+				NSMutableSet *pathSet=[keyPathsByKey objectForKey:value];
+				if(!pathSet)
+				{
+					pathSet=[NSMutableSet set];
+					[keyPathsByKey setObject:pathSet forKey:value];
+				}
+				[pathSet addObject:key];
 			}
-			[dependentsForKey unionSet:[classDependents objectForKey:key]];
 		}
 
 		class=[class superclass];
 	}
-
-	[dict setObject:ownDependents
-				 forKey:_KVO_UnionOfKeysTriggeringChangeNotification];
+	[observationInfo setObject:keyPathsByKey
+						forKey:_KVO_KeyPathsForValuesAffectingValueForKey];
 }
 
 
@@ -739,6 +743,16 @@ CHANGE_DECLARATION(SEL)
 				{
 					kvoSelector = @selector(KVO_notifying_change_replaceObjectInKeyAtIndex:withObject:);
 				}
+			}
+			
+			// these are swizzled so e.g. subclasses of NSMutableDictionary get change notifications in setObject:forKey:
+			if([methodName isEqualToString:@"setObject:forKey:"])
+			{
+				kvoSelector = @selector(KVO_notifying_change_setObject:forKey:);
+			}
+			if([methodName isEqualToString:@"removeObjectForKey:"])
+			{
+				kvoSelector = @selector(KVO_notifying_change_removeObjectForKey:forKey:);
 			}
 				
 			// there's a suitable selector for us

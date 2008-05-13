@@ -25,11 +25,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @implementation NSMutableDictionary (NSKeyValueCoding)
 -(void)setValue:(id)value forKey:(NSString*)key
 {
-	[self willChangeValueForKey:key];
 	if(value)
 		[self setObject:value forKey:key];
 	else
 		[self removeObjectForKey:key];
-	[self didChangeValueForKey:key];
 }
 @end

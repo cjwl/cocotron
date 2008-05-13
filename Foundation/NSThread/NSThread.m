@@ -65,11 +65,11 @@ static unsigned nsThreadStartThread(NSThread* thread)
 {
 	NSPlatformSetCurrentThread(thread);
 	[thread setExecuting:YES];
-    [(NSThread*)thread main];
+    [thread main];
 	[thread setExecuting:NO];
 	[thread setFinished:YES];
 	NSPlatformSetCurrentThread(nil);
-    [(NSThread*)thread release];
+    [thread release];
 	return 0;
 }
 
@@ -85,6 +85,7 @@ static unsigned nsThreadStartThread(NSThread* thread)
 	}
 
 	[newThread start];
+	[newThread release];
 }
 
 +(NSThread *)currentThread {
@@ -128,6 +129,8 @@ static unsigned nsThreadStartThread(NSThread* thread)
 }
 
 - (void) dealloc {
+	if([self isExecuting])
+		[NSException raise:NSInternalInconsistencyException format:@"trying to dealloc thread %@ while it's running", self];
 	[_name release];
 	[_dictionary release];
 	[_sharedObjects release];
@@ -137,12 +140,13 @@ static unsigned nsThreadStartThread(NSThread* thread)
 }
 
 -(void)start {
+	[self retain]; // balanced by release in nsThreadStartThread
 	if (NSPlatformDetachThread( &nsThreadStartThread, self) == 0) {
 		// No thread has been created. Don't leak:
 		[self release];
 		[NSException raise: @"NSThreadCreationFailedException"
 					format: @"Creation of Objective-C thread failed."];
-	}	
+	}
 }
 
 -(BOOL)isMainThread {
@@ -206,12 +210,16 @@ static unsigned nsThreadStartThread(NSThread* thread)
 
 static inline id _NSThreadSharedInstance(NSThread *thread,NSString *className,BOOL create) {
    NSMutableDictionary *shared=thread->_sharedObjects;
-   id                   result=[shared objectForKey:className];
+	id result=nil;
+	@synchronized(shared)
+	{
+		result=[shared objectForKey:className];
 
-   if(result==nil && create){
-    result=[[NSClassFromString(className) new] autorelease];
-    [shared setObject:result forKey:className];
-   }
+		if(result==nil && create){
+			result=[[NSClassFromString(className) new] autorelease];
+			[shared setObject:result forKey:className];
+		}
+	}
 
    return result;
 }
@@ -229,7 +237,9 @@ FOUNDATION_EXPORT id NSThreadSharedInstanceDoNotCreate(NSString *className) {
 }
 
 -(void)setSharedObject:object forClassName:(NSString *)className {
-   [_sharedObjects setObject:object forKey:className];
+	@synchronized(_sharedObjects) {
+		[_sharedObjects setObject:object forKey:className];
+	}
 }
 
 -(NSString *)description {
@@ -306,6 +316,12 @@ void NSThreadSetUncaughtExceptionHandler(NSUncaughtExceptionHandler *function) {
 
 		[runloop performSelector:selector target:self argument:object order:0 modes:modes];
 	}
+}
+
+- (void)performSelector:(SEL)selector onThread:(NSThread *)thread withObject:(id)object waitUntilDone:(BOOL)waitUntilDone
+{
+	// TODO: should be NSRunLoopCommonModes here
+	[self performSelector:selector onThread:thread withObject:object waitUntilDone:waitUntilDone modes:[NSArray arrayWithObject:NSDefaultRunLoopMode]];
 }
 
 -(void)performSelectorOnMainThread:(SEL)selector withObject:(id)object waitUntilDone:(BOOL)waitUntilDone modes:(NSArray *)modes {

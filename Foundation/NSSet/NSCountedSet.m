@@ -53,4 +53,33 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return NSSetTableObjectCount(_table,object);
 }
 
+-(BOOL)isEqualToSet:(NSSet *)other {
+	NSEnumerator *state;
+	id            object;
+	
+	if(self==other)
+		return YES;
+	
+	if([self count]!=[other count])
+		return NO;
+	if([other isKindOfClass:[NSCountedSet class]])
+	{
+		state=[self objectEnumerator];
+		while((object=[state nextObject])!=nil)
+		{
+			if([(NSCountedSet*)other countForObject:object]!=[self countForObject:object])
+				return NO;
+		}
+		return YES;
+	}
+	
+	// FIXME: what to do here? Can't compare counts, but can the sets still be equal?
+	
+	state=[self objectEnumerator];
+	while((object=[state nextObject])!=nil)
+		if([other member:object]==nil)
+			return NO;
+	
+	return YES;
+}
 @end

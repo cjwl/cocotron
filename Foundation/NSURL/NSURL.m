@@ -529,6 +529,10 @@ static BOOL scanURL(urlScanner *scanner,NSURL *url){
    return [self retain];
 }
 
+-(NSUInteger)hash {
+	return [_host hash];
+}
+
 -(BOOL)isEqual:other {
    NSURL *otherURL;
    
