@@ -211,15 +211,14 @@ static unsigned nsThreadStartThread(NSThread* thread)
 static inline id _NSThreadSharedInstance(NSThread *thread,NSString *className,BOOL create) {
    NSMutableDictionary *shared=thread->_sharedObjects;
 	id result=nil;
-	@synchronized(shared)
-	{
-		result=[shared objectForKey:className];
+    // FIXME: this needs to be synchronized, but without using @synchronized (because that in turn
+    // will call _NSThreadSharedInstance) during lock allocation
+    result=[shared objectForKey:className];
 
-		if(result==nil && create){
-			result=[[NSClassFromString(className) new] autorelease];
-			[shared setObject:result forKey:className];
-		}
-	}
+    if(result==nil && create){
+        result=[[NSClassFromString(className) new] autorelease];
+        [shared setObject:result forKey:className];
+    }
 
    return result;
 }
@@ -237,9 +236,8 @@ FOUNDATION_EXPORT id NSThreadSharedInstanceDoNotCreate(NSString *className) {
 }
 
 -(void)setSharedObject:object forClassName:(NSString *)className {
-	@synchronized(_sharedObjects) {
-		[_sharedObjects setObject:object forKey:className];
-	}
+    // FIXME: see above
+    [_sharedObjects setObject:object forKey:className];
 }
 
 -(NSString *)description {
