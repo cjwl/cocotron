@@ -31,6 +31,8 @@ static inline NSAffineTransformStruct invertStruct(NSAffineTransformStruct matri
    float determinant;
 
    determinant=matrix.m11*matrix.m22-matrix.m21*matrix.m12;
+   if(determinant == 0.)
+       [NSException raise:NSGenericException format:@"NSAffineTransform: Transform has no inverse"];
 
    result.m11=matrix.m22/determinant;
    result.m12=-matrix.m12/determinant;
@@ -62,12 +64,13 @@ static inline NSAffineTransformStruct invertStruct(NSAffineTransformStruct matri
 }
 
 -initWithTransform:(NSAffineTransform *)other {
+    // Cocoa doesn't raise when 'other' is nil
    _matrix=[other transformStruct];
    return self;
 }
 
 -copyWithZone:(NSZone *)zone {
-   return [[NSAffineTransform alloc] initWithTransform:self];
+   return [[[self class] allocWithZone:zone] initWithTransform:self];
 }
 
 +(NSAffineTransform *)transform {
@@ -87,10 +90,12 @@ static inline NSAffineTransformStruct invertStruct(NSAffineTransformStruct matri
 }
 
 -(void)appendTransform:(NSAffineTransform *)other {
+    // Cocoa doesn't raise when 'other' is nil
    _matrix=multiplyStruct(_matrix,[other transformStruct]);
 }
 
 -(void)prependTransform:(NSAffineTransform *)other {
+    // Cocoa doesn't raise when 'other' is nil
    _matrix=multiplyStruct([other transformStruct],_matrix);
 }
 
@@ -109,8 +114,12 @@ static inline NSAffineTransformStruct invertStruct(NSAffineTransformStruct matri
 }
 
 -(NSSize)transformSize:(NSSize)value {
-   NSUnimplementedMethod();
-   return value;
+    NSSize result;
+    
+    result.width  = _matrix.m11 * value.width + _matrix.m21 * value.height;
+    result.height = _matrix.m12 * value.width + _matrix.m22 * value.height;
+    
+    return result;
 }
 
 -(void)rotateByDegrees:(float)angle
@@ -125,13 +134,18 @@ static inline NSAffineTransformStruct invertStruct(NSAffineTransformStruct matri
 }
 
 -(void)scaleBy:(float)value {
-	NSAffineTransformStruct rotate={1,0,0,1,value,value};
+	NSAffineTransformStruct rotate={value,0,0,value,0,0};
 	_matrix=multiplyStruct(_matrix,rotate);
 }
 
 -(void)scaleXBy:(float)xvalue yBy:(float)yvalue {
-	NSAffineTransformStruct rotate={1,0,0,1,xvalue,yvalue};
+	NSAffineTransformStruct rotate={xvalue,0,0,yvalue,0,0};
 	_matrix=multiplyStruct(_matrix,rotate);
+}
+
+- (NSString *)description
+{
+    return [NSString stringWithFormat:@"<%@ 0x%p> {%g, %g, %g, %g, %g, %g}", NSStringFromClass([self class]), self, _matrix.m11, _matrix.m12, _matrix.m21, _matrix.m22, _matrix.tX, _matrix.tY];
 }
 
 @end

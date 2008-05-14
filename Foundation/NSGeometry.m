@@ -13,6 +13,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSObjCRuntime.h>
 #import <Foundation/NSRaise.h>
 #import <math.h>
+#import <stdio.h>
 
 const NSPoint NSZeroPoint={0,0};
 
@@ -21,29 +22,15 @@ BOOL NSEqualPoints(NSPoint point0,NSPoint point1) {
 }
 
 NSString *NSStringFromPoint(NSPoint point) {
-   NSDictionary *dictionary=[NSDictionary
-    dictionaryWithObjectsAndKeys:
-     [NSString stringWithFormat:@"%g",point.x],@"x",
-     [NSString stringWithFormat:@"%g",point.y],@"y",
-     nil];
-
-   return [dictionary description];
+    return [NSString stringWithFormat:@"{%g, %g}", point.x, point.y];
 }
 
 NSPoint NSPointFromString(NSString *string) {
-   NSPoint       result=NSZeroPoint;
-
-   NS_DURING
-    NSDictionary *plist=[string propertyList];
-
-    if(plist!=nil){
-     result.x=[[plist objectForKey:@"x"] floatValue];
-     result.y=[[plist objectForKey:@"y"] floatValue];
-    }
-   NS_HANDLER
-   NS_ENDHANDLER
-
-   return result;
+    NSPoint   result = NSZeroPoint;
+    
+    if(string != nil)
+        sscanf([string cString], "{%g, %g}", &result.x, &result.y);
+    return result;
 }
 
 //
@@ -54,29 +41,15 @@ BOOL NSEqualSizes(NSSize size0,NSSize size1) {
 }
 
 NSString *NSStringFromSize(NSSize size) {
-   NSDictionary *dictionary=[NSDictionary
-    dictionaryWithObjectsAndKeys:
-     [NSString stringWithFormat:@"%g",size.width],@"width",
-     [NSString stringWithFormat:@"%g",size.height],@"height",
-     nil];
-
-   return [dictionary description];
+   return [NSString stringWithFormat:@"{%g, %g}", size.width, size.height];
 }
 
 NSSize NSSizeFromString(NSString *string) {
-   NSSize result=NSZeroSize;
-
-   NS_DURING
-    NSDictionary *plist=[string propertyList];
-
-    if(plist!=nil){
-     result.width=[[plist objectForKey:@"width"] floatValue];
-     result.height=[[plist objectForKey:@"height"] floatValue];
-    }
-   NS_HANDLER
-   NS_ENDHANDLER
-
-   return result;
+   NSSize   result = NSZeroSize;
+   
+   if(string != nil)
+       sscanf([string cString], "{%g, %g}", &result.width, &result.height);
+   return NSZeroSize;
 }
 
 //
@@ -204,33 +177,15 @@ BOOL NSIntersectsRect(NSRect rect0,NSRect rect1) {
 
 
 NSString *NSStringFromRect(NSRect rect) {
-   NSDictionary *dictionary=[NSDictionary
-    dictionaryWithObjectsAndKeys:
-     [NSString stringWithFormat:@"%g",rect.origin.x],@"x",
-     [NSString stringWithFormat:@"%g",rect.origin.y],@"y",
-     [NSString stringWithFormat:@"%g",rect.size.width],@"width",
-     [NSString stringWithFormat:@"%g",rect.size.height],@"height",
-     nil];
-
-   return [dictionary description];
+    return [NSString stringWithFormat:@"{{%g, %g}, {%g, %g}}", rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
 }
 
 NSRect NSRectFromString(NSString *string) {
-   NSRect result=NSZeroRect;
-
-   NS_DURING
-    NSDictionary *plist=[string propertyList];
-
-    if(plist!=nil){
-     result.origin.x=[[plist objectForKey:@"x"] floatValue];
-     result.origin.y=[[plist objectForKey:@"y"] floatValue];
-     result.size.width=[[plist objectForKey:@"width"] floatValue];
-     result.size.height=[[plist objectForKey:@"height"] floatValue];
-    }
-   NS_HANDLER
-   NS_ENDHANDLER
-
-   return result;
+    NSRect   result = NSZeroRect;
+    
+    if(string != nil)
+        sscanf([string cString], "{{%g, %g}, {%g, %g}}", &result.origin.x, &result.origin.y, &result.size.width, &result.size.height);
+    return result;
 }
 
 BOOL NSPointInRect(NSPoint point,NSRect rect) {
