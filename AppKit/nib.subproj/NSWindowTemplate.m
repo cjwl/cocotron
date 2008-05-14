@@ -70,6 +70,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [result setContentView:_windowView];
    [_windowView setAutoresizesSubviews:YES];
    [_windowView setAutoresizingMask:NSViewWidthSizable|NSViewHeightSizable];
+   [self release];
 
    return result;
 }

@@ -35,7 +35,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 {
     id copy = [[[self class] alloc] initWithFrame:NSMakeRect(0, 0, _frame.size.width, _frame.size.height)];
 
-    [copy setCell:[[self cell] copy]];
+    [copy setCell:[[[self cell] copy] autorelease]];
     
     return copy;
 }

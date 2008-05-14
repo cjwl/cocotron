@@ -9,12 +9,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 // Original - David Young <daver@geeks.org>
 #import <AppKit/AppKit.h>
 #import <AppKit/NSBrowserCellColorList.h>
-#import <AppKit/NSStringDrawer.h>
 
 @implementation NSBrowserCellColorList
 
 - (NSColor *)color { return _color; }
-- (void)setColor:(NSColor *)color { [_color release]; _color = [color retain]; }
+- (void)setColor:(NSColor *)color { color = [color retain]; [_color release]; _color = color; }
 
 - (void)dealloc
 {
@@ -24,28 +23,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 - (void)drawInteriorWithFrame:(NSRect)frame inView:(NSView *)control
 {
-   NSAttributedString *title=[self attributedStringValue];
-   NSRect              colorRect = frame;
-   NSSize              titleSize=[title size];
-   NSRect              titleRect=frame;
-
-   colorRect.size.width = colorRect.size.height;
-
-   titleRect.origin.x += colorRect.size.width + 2;
-   titleRect.origin.y += (titleRect.size.height-titleSize.height)/2;
-   titleRect.size.height = titleSize.height;
-
-   titleRect.size.width -= (colorRect.size.width+2);
-
-   if([self isHighlighted] || [self state])
-    [[NSColor selectedControlColor] set];
-   else
-    [[NSColor controlBackgroundColor] set];	// was whiteColor
-
-   NSRectFill(frame);
-
+   NSRect   colorRect, remainderRect;
+   
+   NSDivideRect(frame, &colorRect, &remainderRect, NSHeight(frame), NSMinXEdge);
    [_color drawSwatchInRect:colorRect];
-   [title _clipAndDrawInRect:titleRect];
+
+   [super drawInteriorWithFrame:remainderRect inView:control];
 }
 
 @end

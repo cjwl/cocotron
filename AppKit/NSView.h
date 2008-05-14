@@ -66,6 +66,7 @@ APPKIT_EXPORT NSString *NSViewFocusDidChangeNotification;
 }
 
 +(NSView *)focusView;
++(NSMenu *)defaultMenu;
 
 -initWithFrame:(NSRect)frame;
 

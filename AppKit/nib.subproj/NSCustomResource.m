@@ -38,8 +38,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    if([_className isEqualToString:@"NSImage"]){
     NSImage *image=[NSImage imageNamed:_resourceName];
      
-    if(image!=nil)
-     return image;
+    if(image!=nil){
+        [self release];
+        return [image retain];
+    }
    }
 
    [NSException raise:NSInvalidArgumentException format:@"-[%@ %s] unknown resource %@, with resource class %@",[self class],SELNAME(_cmd),_resourceName,_className];

@@ -19,6 +19,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    BOOL        _shouldCloseDocument;
    BOOL        _shouldCascadeWindows;
    NSString   *_windowFrameAutosaveName;
+   NSArray    *_topLevelObjects;
 }
 
 -initWithWindow:(NSWindow *)window;

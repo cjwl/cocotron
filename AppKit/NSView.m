@@ -45,6 +45,10 @@ NSString *NSViewFocusDidChangeNotification=@"NSViewFocusDidChangeNotification";
    return [NSCurrentFocusStack() lastObject];
 }
 
++(NSMenu *)defaultMenu {
+   return nil;
+}
+
 -(void)encodeWithCoder:(NSCoder *)coder {
    NSUnimplementedMethod();
 }
@@ -314,7 +318,12 @@ static inline void buildTransformsIfNeeded(NSView *self) {
 }
 
 -(NSMenu *)menuForEvent:(NSEvent *)event {
-   return [self menu];
+   NSMenu *result=[self menu];
+   
+   if(result==nil)
+    result=[isa defaultMenu];
+   
+   return result;
 }
 
 - (NSString *)toolTip

@@ -9,6 +9,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 // Original - Christopher Lloyd <cjwl@objc.net>
 #import "NSIBObjectData.h"
 #import <Foundation/NSArray.h>
+#import <Foundation/NSMutableIndexSet.h>
 #import <Foundation/NSString.h>
 #import <Foundation/NSSet.h>
 #import <Foundation/NSDebug.h>
@@ -16,6 +17,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "NSCustomObject.h"
 #import <AppKit/NSNibConnector.h>
 #import <AppKit/NSFontManager.h>
+#import <AppKit/NSNib.h>
 
 @implementation NSIBObjectData
 
@@ -27,7 +29,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     int                   i,count;
     id                    owner;
 
-    if((owner=[nameTable objectForKey:@"NSOwner"])!=nil)
+    if((owner=[nameTable objectForKey:NSNibOwner])!=nil)
      [nameTable setObject:owner forKey:@"File's Owner"];
     
     [nameTable setObject:[NSFontManager sharedFontManager] forKey:@"Font Manager"];
@@ -121,13 +123,40 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)buildConnectionsWithNameTable:(NSDictionary *)nameTable {
-   id owner=[nameTable objectForKey:@"NSOwner"];
+   id owner=[nameTable objectForKey:NSNibOwner];
 
    [self replaceObject:_fileOwner withObject:owner];
    [_fileOwner autorelease];
    _fileOwner=[owner retain];
 
    [self establishConnections];
+}
+
+/*!
+ * @result  All top-level objects in the nib, except the File's Owner (and the virtual First Responder)
+ */
+- (NSArray *)topLevelObjects
+{
+    NSMutableIndexSet   *indexes = [NSMutableIndexSet indexSet];
+    int                 i;
+    NSMutableArray      *topLevelObjects;
+    
+    for(i = [_objectsValues count] - 1; i >= 0; i--){
+        id  eachObject = [_objectsValues objectAtIndex:i];
+        
+        if(eachObject == _fileOwner)
+            [indexes addIndex:i];
+    }
+    
+    topLevelObjects = [NSMutableArray arrayWithCapacity:[indexes count]];
+    for(i = [indexes firstIndex]; i != NSNotFound; i = [indexes indexGreaterThanIndex:i]){
+        id  anObject = [_objectsKeys objectAtIndex:i];
+        
+        if(anObject != _fileOwner)
+            [topLevelObjects addObject:anObject];
+    }
+    
+    return topLevelObjects;
 }
 
 @end

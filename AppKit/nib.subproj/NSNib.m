@@ -30,7 +30,8 @@ NSString *NSNibTopLevelObjects=@"NSNibTopLevelObjects";
     keyedobjects=[[path stringByAppendingPathComponent:@"keyedobjects"] stringByAppendingPathExtension:@"nib"];
    
    if((_data=[[NSData alloc] initWithContentsOfFile:keyedobjects])==nil){
-    [self dealloc];
+    NSLog(@"%s: unable to init nib from file '%@'", __PRETTY_FUNCTION__, keyedobjects);
+    [self release];
     return nil;
    }
 
@@ -39,7 +40,7 @@ NSString *NSNibTopLevelObjects=@"NSNibTopLevelObjects";
 
 -initWithContentsOfURL:(NSURL *)url {
    if(![url isFileURL]){
-    [self dealloc];
+    [self release];
     return nil;
    }
    
@@ -50,7 +51,8 @@ NSString *NSNibTopLevelObjects=@"NSNibTopLevelObjects";
    NSString *path=[bundle pathForResource:name ofType:@"nib"];
    
    if(path==nil){
-    [self dealloc];
+    NSLog(@"%s: unable to init nib from file '%@'", __PRETTY_FUNCTION__, path);
+    [self release];
     return nil;
    }
    
@@ -68,6 +70,7 @@ NSString *NSNibTopLevelObjects=@"NSNibTopLevelObjects";
     NSArray           *allObjects;
     int                i,count;
     NSMenu            *menu;
+    NSArray           *topLevelObjects;
     
     /*
     TO DO:
@@ -83,6 +86,19 @@ NSString *NSNibTopLevelObjects=@"NSNibTopLevelObjects";
     if((menu=[objectData mainMenu])!=nil)
      [NSApp setMainMenu:menu];
      
+    NSMutableDictionary *aDict = [NSMutableDictionary dictionaryWithDictionary:nameTable];
+    [aDict removeObjectForKey:NSNibTopLevelObjects];
+    nameTable = aDict;
+
+    // Top-level objects are always retained; if external table contains a mutable
+    // array for key NSNibTopLevelObjects, then this array retains all top-level objects,
+    // else we simply do a retain on them.
+    topLevelObjects = [objectData topLevelObjects];
+    if([nameTable objectForKey:NSNibTopLevelObjects])
+        [[nameTable objectForKey:NSNibTopLevelObjects] setArray:topLevelObjects];
+    else
+        [topLevelObjects makeObjectsPerformSelector:@selector(retain)];
+    
     allObjects=[[unarchiver allObjects] arrayByAddingObjectsFromArray:[nameTable allValues]];
     count=[allObjects count];
 
@@ -105,13 +121,17 @@ NSString *NSNibTopLevelObjects=@"NSNibTopLevelObjects";
 }
 
 -(BOOL)instantiateNibWithOwner:owner topLevelObjects:(NSArray **)objects {
-   NSDictionary *nameTable=[NSDictionary dictionaryWithObject:owner forKey:NSNibOwner];
-
-   if(objects!=NULL){
-    NSLog(@"-[%@ %s] specifying non-NULL for topLevelObjects not implemented",isa,SELNAME(_cmd));
+   NSMutableArray   *topLevelObjects = (objects != NULL ? [[NSMutableArray alloc] init] : nil);
+   NSDictionary     *nameTable=[NSDictionary dictionaryWithObjectsAndKeys:owner, NSNibOwner, topLevelObjects, NSNibTopLevelObjects, nil];
+   BOOL             result = [self instantiateNibWithExternalNameTable:nameTable];
+   
+   if(objects != NULL){
+       if(result)
+           *objects = [NSArray arrayWithArray:topLevelObjects];
+       [topLevelObjects release];
    }
    
-   return [self instantiateNibWithExternalNameTable:nameTable];
+   return result;
 }
 
 @end

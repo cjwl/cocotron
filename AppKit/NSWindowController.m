@@ -11,6 +11,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSWindow.h>
 #import <AppKit/NSNibLoading.h>
 #import <AppKit/NSDocument.h>
+#import <AppKit/NSNib.h>
 
 @implementation NSWindowController
 
@@ -52,6 +53,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [_window release];
    [_nibPath release];
    [_windowFrameAutosaveName release];
+   [_topLevelObjects release];
    [super dealloc];
 }
 
@@ -84,9 +86,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)loadWindow {
    static       NSPoint cascadeTopLeftSavedPoint={0.0, 0.0};
    NSString     *path=[self windowNibPath];
-   NSDictionary *nameTable=[NSDictionary dictionaryWithObject:_owner forKey:@"NSOwner"];
+   NSDictionary *nameTable;
+   
+   _topLevelObjects = [[NSMutableArray alloc] init];
+   nameTable=[NSDictionary dictionaryWithObjectsAndKeys:_owner, NSNibOwner, _topLevelObjects, NSNibTopLevelObjects, nil];
 
-   [NSBundle loadNibFile:path externalNameTable:nameTable withZone:NULL];
+   NSAssert2([NSBundle loadNibFile:path externalNameTable:nameTable withZone:NULL], @"%s: unable to load nib from file '%@'", __PRETTY_FUNCTION__, path);
    [self synchronizeWindowTitleWithDocumentName];
    
    if (_shouldCascadeWindows)

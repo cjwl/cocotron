@@ -19,7 +19,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(id)initWithCoder:(NSCoder *)coder
 {
-	if(self = [super initWithCoder:coder])
+	if((self = [super initWithCoder:coder]))
 	{
 		int version=[coder decodeIntForKey:@"NSNibBindingConnectorVersion"];
 		if(version != 2)

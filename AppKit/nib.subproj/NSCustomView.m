@@ -27,15 +27,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
          else if([keyed containsValueForKey:@"NSFrameSize"])
             frame.size=[keyed decodeSizeForKey:@"NSFrameSize"];
 
-         [self release];
-         self=[[class alloc] initWithFrame:frame];
+         NSView *newView=[[class alloc] initWithFrame:frame];
          if([keyed containsValueForKey:@"NSvFlags"])
-            _autoresizingMask=((unsigned int)[keyed decodeIntForKey:@"NSvFlags"])&0x3F;
+             newView->_autoresizingMask=((unsigned int)[keyed decodeIntForKey:@"NSvFlags"])&0x3F;
          if([keyed containsValueForKey:@"NSTag"])
-            _tag=[keyed decodeIntForKey:@"NSTag"];
-         [_subviews addObjectsFromArray:[keyed decodeObjectForKey:@"NSSubviews"]];
-         [_subviews makeObjectsPerformSelector:@selector(_setSuperview:) withObject:self];
-         return self;
+             newView->_tag=[keyed decodeIntForKey:@"NSTag"];
+         [newView->_subviews addObjectsFromArray:[keyed decodeObjectForKey:@"NSSubviews"]];
+         [newView->_subviews makeObjectsPerformSelector:@selector(_setSuperview:) withObject:newView];
+         [_subviews removeAllObjects];
+         [self release];
+         return newView;
       }
    }
    else {
