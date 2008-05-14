@@ -92,9 +92,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
      [_plistStack addObject:plist];
      result=[class allocWithKeyedUnarchiver:self];
      NSMapInsert(_uidToObject,(void *)uidIntValue,result);
-     result=[[result initWithCoder:self] autorelease];
+     result=[result initWithCoder:self];
      NSMapInsert(_uidToObject,(void *)uidIntValue,result);
      result=[result awakeAfterUsingCoder:self];
+     [result autorelease];
      NSMapInsert(_uidToObject,(void *)uidIntValue,result);
      [_plistStack removeLastObject];
     }
