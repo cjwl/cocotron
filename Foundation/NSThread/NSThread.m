@@ -30,8 +30,7 @@ static id mainThread = nil;
 {
 	if(self==[NSThread class])
 	{
-		mainThread = [NSThread new];
-		NSPlatformSetCurrentThread(mainThread);
+      [NSThread new];
 	}
 }
 
@@ -125,6 +124,12 @@ static unsigned nsThreadStartThread(NSThread* thread)
 -init {
    _dictionary=[NSMutableDictionary new];
    _sharedObjects=[NSMutableDictionary new];
+   if(!mainThread)
+   {
+      mainThread = self;
+		NSPlatformSetCurrentThread(mainThread);
+   }
+   _sharedObjectLock=[NSLock new];
    return self;
 }
 
@@ -134,6 +139,7 @@ static unsigned nsThreadStartThread(NSThread* thread)
 	[_name release];
 	[_dictionary release];
 	[_sharedObjects release];
+   [_sharedObjectLock release];
 	[_argument release];
 	[_target release];
 	[super dealloc];
@@ -209,16 +215,19 @@ static unsigned nsThreadStartThread(NSThread* thread)
 }
 
 static inline id _NSThreadSharedInstance(NSThread *thread,NSString *className,BOOL create) {
+
    NSMutableDictionary *shared=thread->_sharedObjects;
 	id result=nil;
-    // FIXME: this needs to be synchronized, but without using @synchronized (because that in turn
-    // will call _NSThreadSharedInstance) during lock allocation
-    result=[shared objectForKey:className];
+   [thread->_sharedObjectLock lock];
+   result=[shared objectForKey:className];
+   [thread->_sharedObjectLock unlock];
 
-    if(result==nil && create){
-        result=[[NSClassFromString(className) new] autorelease];
-        [shared setObject:result forKey:className];
-    }
+   if(result==nil && create){
+      result=[[NSClassFromString(className) new] autorelease];
+      [thread->_sharedObjectLock lock];
+      [shared setObject:result forKey:className];
+      [thread->_sharedObjectLock unlock];
+   }
 
    return result;
 }
@@ -236,8 +245,9 @@ FOUNDATION_EXPORT id NSThreadSharedInstanceDoNotCreate(NSString *className) {
 }
 
 -(void)setSharedObject:object forClassName:(NSString *)className {
-    // FIXME: see above
-    [_sharedObjects setObject:object forKey:className];
+   [_sharedObjectLock lock];
+   [_sharedObjects setObject:object forKey:className];
+   [_sharedObjectLock unlock];
 }
 
 -(NSString *)description {

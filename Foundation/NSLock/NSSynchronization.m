@@ -50,16 +50,18 @@ enum {
 
 LockChain* lockForObject(id object)
 {
-	LockChain *result=NULL;
+	LockChain *result=allLocks;
 	LockChain *firstFree=NULL;
+
 	[lockChainLock lock];
 
-	for(result=allLocks; result; result=result->next)
+	while(result)
 	{
 		if(result->object==object)
 			goto done;
 		if(result->object==NULL)
 			firstFree=result;
+        result=result->next;
 	}
 
 	if(firstFree)

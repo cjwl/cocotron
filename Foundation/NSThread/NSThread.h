@@ -18,6 +18,7 @@ FOUNDATION_EXPORT NSString *NSThreadWillExitNotification;
 @interface NSThread : NSObject {
    NSMutableDictionary *_dictionary;
    NSMutableDictionary *_sharedObjects;
+   NSLock *_sharedObjectLock;
    NSAutoreleasePool   *_currentPool;
    NSExceptionFrame    *_currentHandler;
    NSUncaughtExceptionHandler *_uncaughtExceptionHandler;

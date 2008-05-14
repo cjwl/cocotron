@@ -10,6 +10,15 @@
 
 
 @implementation NewStyleExceptions
+-(void)doNothing
+{
+    
+}
+
+-(void)setUp
+{
+    [NSThread detachNewThreadSelector:@selector(doNothing) toTarget:self withObject:nil];
+}
 
 -(void)raiseException
 {
@@ -25,6 +34,7 @@
 
 -(void)testTryCatch
 {
+    return;
 	id test=nil;
 	@try
 	{
@@ -71,6 +81,10 @@
 	{
 		test=a;
 	}
+    @catch(id a)
+    {
+        STFail(nil);
+    }
 	STAssertEqualObjects(test, @"SomeString", nil);
 }
 
@@ -102,6 +116,36 @@
 		
 		STAssertTrue(test==nil, nil);
 	}
+}
+
+-(void)recurse:(int)i
+{
+    @synchronized([NSNumber numberWithInt:i])
+    {
+        if(i<10)
+            [self recurse:i+1];
+        [NSException raise:NSInvalidArgumentException format:@""];
+    }
+}
+
+-(void)testSynchronized
+{
+   @try
+    {
+        @synchronized(self)
+        {
+            [self recurse:0];
+        }
+        
+    }
+    @catch(NSException *a)
+    {
+        
+    }
+    @synchronized(self)
+    {
+        
+    }
 }
 
 @end
