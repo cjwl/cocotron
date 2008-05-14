@@ -9,7 +9,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSException.h>
 #import <Foundation/NSDate.h>
 
-@class NSDictionary,NSMutableDictionary,NSAutoreleasePool;
+@class NSDictionary,NSMutableDictionary,NSAutoreleasePool,NSLock;
 
 FOUNDATION_EXPORT NSString *NSDidBecomeSingleThreadedNotification;
 FOUNDATION_EXPORT NSString *NSWillBecomeMultiThreadedNotification;
