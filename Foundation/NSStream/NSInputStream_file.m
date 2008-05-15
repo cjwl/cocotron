@@ -69,9 +69,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(BOOL)hasBytesAvailable {
+    return NO;
 }
 
 -(int)read:(unsigned char *)buffer maxLength:(unsigned)length {
+    return -1;
 }
 
 @end

@@ -154,7 +154,7 @@ NSString *NSConditionallySetsEditableBindingOption=@"NSConditionallySetsEditable
 	id ownBinders = [bindersForObjects objectForKey:key];
 	id binder=nil;
 	id en=[[ownBinders allValues] objectEnumerator];
-	while(binder=[en nextObject])
+	while((binder=[en nextObject]))
 	{
 		[binder unbind];
 	}

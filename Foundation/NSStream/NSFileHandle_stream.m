@@ -77,7 +77,6 @@ enum {
 }
 
 -(NSData *)readDataOfLength:(unsigned)length {
-   NSData *result;
    void   *bytes=NSZoneMalloc(NULL,length);
    int     bytesRead=[_inputStream read:bytes maxLength:length];
    

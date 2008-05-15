@@ -22,6 +22,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <objc/objc-runtime.h>
 #import <objc/objc-class.h>
 #import <string.h>
+#import <ctype.h>
 
 #import "NSString+KVCAdditions.h"
 #import "NSKeyValueObserving-Private.h"
@@ -100,7 +101,7 @@ static NSLock *kvoLock=nil;
 	NSEnumerator *en=[observers objectEnumerator];
 	_NSObservationInfo *current;
 	_NSObservationInfo *info=nil;
-	while(current=[en nextObject])
+	while((current=[en nextObject]))
 	{
 		if([current observer]==observer)
 			info=current;
@@ -158,7 +159,7 @@ static NSLock *kvoLock=nil;
 
 	NSEnumerator *en=[observers objectEnumerator];
 	_NSObservationInfo *info;
-	while(info=[en nextObject])
+	while((info=[en nextObject]))
 	{
 		if(info->observer==observer)
 		{
@@ -236,7 +237,7 @@ static NSLock *kvoLock=nil;
 	NSEnumerator *en=[observers objectEnumerator];
 	_NSObservationInfo *info;
 	// for all observers
-	while(info=[en nextObject])
+	while((info=[en nextObject]))
 	{
 		// increment change count for nested did/willChangeValue's
 		info->willChangeCount++;
@@ -303,7 +304,7 @@ static NSLock *kvoLock=nil;
 	NSEnumerator *en=[observers objectEnumerator];
 	_NSObservationInfo *info;
 	// for all observers
-	while(info=[en nextObject])
+	while((info=[en nextObject]))
 	{
 		// decrement count and only notify after last didChange
 		info->willChangeCount--;
@@ -373,7 +374,7 @@ static NSLock *kvoLock=nil;
 
 	id key;
 	id en=[keys objectEnumerator];
-	while(key = [en nextObject])
+	while((key = [en nextObject]))
 	{
 		NSMutableSet* allDependencies=[dependencies objectForKey:key];
 		if(!allDependencies)
@@ -444,7 +445,7 @@ static NSLock *kvoLock=nil;
 	[self willChangeValueForKey:key]; \
 	typedef id (*sender)(id obj, SEL selector, type value); \
 	sender implementation=(sender)[[self superclass] instanceMethodForSelector:_cmd]; \
-	*implementation(self, _cmd, value); \
+	(void)*implementation(self, _cmd, value); \
 	[self didChangeValueForKey:key]; \
 	[key release]; \
 }
@@ -514,7 +515,7 @@ CHANGE_DECLARATION(SEL)
 	[self willChange:NSKeyValueChangeInsertion valuesAtIndexes:[NSIndexSet indexSetWithIndex:index] forKey:key];
 	typedef id (*sender)(id obj, SEL selector, id value, int index); 
 	sender implementation=(sender)[[self superclass] instanceMethodForSelector:_cmd]; 
-	*implementation(self, _cmd, object, index); 
+	(void)*implementation(self, _cmd, object, index); 
 	[self didChange:NSKeyValueChangeInsertion valuesAtIndexes:[NSIndexSet indexSetWithIndex:index] forKey:key];
 	[key release]; 
 }
@@ -534,7 +535,7 @@ CHANGE_DECLARATION(SEL)
 	[self willChange:NSKeyValueChangeRemoval valuesAtIndexes:[NSIndexSet indexSetWithIndex:index] forKey:key];
 	typedef id (*sender)(id obj, SEL selector, int index); 
 	sender implementation=(sender)[[self superclass] instanceMethodForSelector:_cmd]; 
-	*implementation(self, _cmd, index); 
+	(void)*implementation(self, _cmd, index); 
 	[self didChange:NSKeyValueChangeRemoval valuesAtIndexes:[NSIndexSet indexSetWithIndex:index] forKey:key];
 	[key release]; 
 }
@@ -554,7 +555,7 @@ CHANGE_DECLARATION(SEL)
 	[self willChange:NSKeyValueChangeReplacement valuesAtIndexes:[NSIndexSet indexSetWithIndex:index] forKey:key];
 	typedef id (*sender)(id obj, SEL selector, int index, id object); 
 	sender implementation=(sender)[[self superclass] instanceMethodForSelector:_cmd]; 
-	*implementation(self, _cmd, index, object); 
+	(void)*implementation(self, _cmd, index, object); 
 	[self didChange:NSKeyValueChangeReplacement valuesAtIndexes:[NSIndexSet indexSetWithIndex:index] forKey:key];
 	[key release];
 }

@@ -16,7 +16,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @implementation NSControllerSelectionProxy
 -(id)initWithController:(id)cont
 {
-	if(self=[super init])
+	if((self=[super init]))
 	{
 		values=[NSMutableDictionary new];
 		controller = [cont retain];

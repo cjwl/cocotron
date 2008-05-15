@@ -22,6 +22,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #include <stdio.h>
 #include <stdlib.h>
 #include <stddef.h>
+#include <ctype.h>
 
 #import "NSKVCMutableArray.h"
 #import "NSString+KVCAdditions.h"
@@ -370,7 +371,7 @@ return [self _wrapReturnValueForSelector:sel]; \
 	id en=[keys objectEnumerator];
 	id ret=[NSMutableDictionary dictionary];
 	id key;
-	while(key=[en nextObject])
+	while((key=[en nextObject]))
 	{
 		id value=[self valueForKey:key];
 		[ret setObject:value ? value : (id)[NSNull null] forKey:key];
@@ -384,7 +385,7 @@ return [self _wrapReturnValueForSelector:sel]; \
 	id en=[keyedValues keyEnumerator];
 	NSString* key;
 	NSNull* null=[NSNull null];
-	while(key=[en nextObject])
+	while((key=[en nextObject]))
 	{
 		id value=[keyedValues objectForKey:key];
 		[self setValue:value == null ? nil : value forKey:key];

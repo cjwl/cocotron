@@ -81,6 +81,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)dealloc {
    [_colorSpace release];
+   [_pattern release];
    NSZoneFree([self zone],_components);
    [super dealloc];
 }

@@ -38,7 +38,7 @@ static NSMutableSet* pathCache = nil;
 }
 
 - (id) initWithIndexes: (unsigned int*) indexes length: (unsigned int) length {
-	if (self = [self init]) {
+	if ((self = [self init])) {
 		int i;
 		
 		_length  = length;
@@ -151,6 +151,7 @@ static NSMutableSet* pathCache = nil;
 
 - (id) initWithCoder: (NSCoder*) aDecoder {
 	NSUnimplementedMethod();
+    return nil;
 }
 
 @end

@@ -6,7 +6,6 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
-// Original - Christopher Lloyd <cjwl@objc.net>
 #import <Foundation/NSBundle.h>
 #import <Foundation/NSLocale.h>
 #import <Foundation/NSMapTable.h>
@@ -19,6 +18,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSRaise.h>
 #import <Foundation/NSPlatform.h>
 #import <Foundation/ObjectiveC.h>
+#import <Foundation/ObjCException.h>
 
 NSString *NSBundleDidLoadNotification=@"NSBundleDidLoadNotification";
 NSString *NSLoadedClasses=@"NSLoadedClasses";

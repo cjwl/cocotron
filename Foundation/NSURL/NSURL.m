@@ -72,7 +72,7 @@ static int nextCharacter(urlScanner *scanner){
    return scanner->unicode[scanner->position++];
 }
 
-static int backupCharacter(urlScanner *scanner){
+static void backupCharacter(urlScanner *scanner){
    if(scanner->position==0)
     [NSException raise:@"NSURLInternalErrorException" format:@"scanning before string in backupCharacter()"];
 
@@ -640,7 +640,6 @@ static BOOL scanURL(urlScanner *scanner,NSURL *url){
     return _string;
    else {
     NSMutableString *result=[NSMutableString string];
-    NSString        *part;
    
     if([self scheme]!=nil){
      [result appendString:[self scheme]];

@@ -66,3 +66,5 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 // These functions are implemented in the platform subproject
 
 NSThread *NSPlatformCurrentThread();
+void NSPlatformSetCurrentThread(NSThread *thread);
+unsigned NSPlatformDetachThread(unsigned (*__stdcall func)(void *arg), void *arg);

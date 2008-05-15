@@ -28,7 +28,7 @@ triggerChangeNotificationsForDependentKey:@"canRemove"];
 
 -(id)initWithCoder:(NSCoder*)coder
 {
-	if(self=[super init])
+	if((self=[super init]))
 	{
 		_objectClassName=[[coder decodeObjectForKey:@"NSObjectClassName"] retain];
 		_editable = [coder decodeBoolForKey:@"NSEditable"];

@@ -17,6 +17,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/ObjectiveC.h>
 #import <objc/objc.h>
+#include <ctype.h>
 
 static void NSLogFormat(NSString *format,...){
    NSString *string;

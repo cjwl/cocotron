@@ -16,6 +16,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/ObjCClass.h>
 
 #import <windows.h>
+#import <process.h>
 
 unsigned NSPageSize(void) {
    SYSTEM_INFO info;
@@ -200,8 +201,8 @@ NSThread *NSPlatformCurrentThread() {
 }
 
 /* Create a new thread of execution. */
-DWORD NSPlatformDetachThread(unsigned (*func)(void *arg), void *arg) {
-	DWORD	threadId = 0;
+unsigned NSPlatformDetachThread(unsigned (*__stdcall func)(void *arg), void *arg) {
+	unsigned	threadId = 0;
 	HANDLE win32Handle = (HANDLE)_beginthreadex(NULL, 0, func, arg, 0, &threadId);
 	
 	if (!win32Handle) {

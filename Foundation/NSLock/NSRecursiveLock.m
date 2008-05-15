@@ -11,7 +11,7 @@
 @implementation NSRecursiveLock
 -(id)init
 {
-	if(self = [super init])
+	if((self = [super init]))
 	{
 		_lock=[NSLock new];
 	}

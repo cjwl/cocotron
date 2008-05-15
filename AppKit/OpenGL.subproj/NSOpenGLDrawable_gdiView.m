@@ -2,6 +2,7 @@
 #import <AppKit/NSOpenGLPixelFormat.h>
 #import <AppKit/NSWindow-Private.h>
 #import <AppKit/Win32Window.h>
+#import "opengl_dll.h"
 
 @implementation NSOpenGLDrawable_gdiView 
 
@@ -80,7 +81,6 @@ static inline BOOL attributeBool(NSOpenGLPixelFormat *pixelFormat,NSOpenGLPixelF
 
 static void pfdFromPixelFormat(PIXELFORMATDESCRIPTOR *pfd,NSOpenGLPixelFormat *pixelFormat){
    int  virtualScreen=0;
-   long value;
    
    pfd->nSize=sizeof(PIXELFORMATDESCRIPTOR);
    pfd->nVersion=1;

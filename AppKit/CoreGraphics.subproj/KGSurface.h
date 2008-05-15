@@ -265,4 +265,6 @@ void KGSurfaceGaussianBlur(KGSurface *self,KGSurface * src, CGFloat stdDeviation
 void KGSurfaceLookup(KGSurface *self,KGSurface * src, const RIuint8 * redLUT, const RIuint8 * greenLUT, const RIuint8 * blueLUT, const RIuint8 * alphaLUT, BOOL outputLinear, BOOL outputPremultiplied, BOOL filterFormatLinear, BOOL filterFormatPremultiplied, VGbitfield channelMask);
 void KGSurfaceLookupSingle(KGSurface *self,KGSurface * src, const RIuint32 * lookupTable, KGSurfaceChannel sourceChannel, BOOL outputLinear, BOOL outputPremultiplied, BOOL filterFormatLinear, BOOL filterFormatPremultiplied, VGbitfield channelMask);
 
+void KGSurfaceReadTexelTilePad(KGImage *self,int u, int v, KGRGBAffff *span,int length);
+
 @end

@@ -30,7 +30,7 @@ static unsigned int uniquenum = 0;
 	NSArray *types = [NSSound soundUnfilteredFileTypes];
 	NSString *type;
 	NSEnumerator *enumerator = [types objectEnumerator];
-	while (type = [enumerator nextObject])
+	while ((type = [enumerator nextObject]))
 	{
 		if ([[NSBundle mainBundle] pathForResource:name ofType:type])
 			return [[NSSound alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:name ofType:type] byReference:NO];
@@ -40,7 +40,7 @@ static unsigned int uniquenum = 0;
 }
 
 -initWithContentsOfFile:(NSString *)path byReference:(BOOL)byReference {
-	if (self = [super init])
+	if ((self = [super init]))
 	{
 		_soundFilePath = [path copy];
 		_paused = FALSE;

@@ -6,7 +6,6 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
-// Original - Christopher Lloyd <cjwl@objc.net>
 #import <Foundation/NSThread.h>
 #import <Foundation/NSDate.h>
 #import <Foundation/NSArray.h>
@@ -16,6 +15,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSNotificationCenter.h>
 #import <Foundation/NSRunLoop.h>
 #import "NSThread-Private.h"
+#import <Foundation/NSSynchronization.h>
 
 NSString *NSDidBecomeSingleThreadedNotification=@"NSDidBecomeSingleThreadedNotification";
 NSString *NSWillBecomeMultiThreadedNotification=@"NSWillBecomeMultiThreadedNotification";
@@ -26,7 +26,7 @@ NSString *NSThreadWillExitNotification=@"NSThreadWillExitNotification";
 static BOOL isMultiThreaded = NO;
 static id mainThread = nil;
 
-+initialize
++(void)initialize
 {
 	if(self==[NSThread class])
 	{
@@ -60,8 +60,9 @@ static id mainThread = nil;
 	[_target performSelector: _selector withObject: _argument];
 }
 
-static unsigned nsThreadStartThread(NSThread* thread)
+static unsigned __stdcall nsThreadStartThread(void* t)
 {
+    NSThread    *thread = t;
 	NSPlatformSetCurrentThread(thread);
 	[thread setExecuting:YES];
     [thread main];

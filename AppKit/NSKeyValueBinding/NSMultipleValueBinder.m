@@ -313,7 +313,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @implementation _NSMultipleValueWrapperArray
 -(id)initWithObject:(id)obj
 {
-	if(self = [super init])
+	if((self = [super init]))
 	{
 		object=[obj retain];
 	}

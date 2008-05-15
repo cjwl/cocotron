@@ -97,7 +97,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -expressionValueWithObject:object context:(NSMutableDictionary *)context {
-
+    NSUnimplementedMethod();
+    return nil;
 }
 
 -(NSExpression *)_expressionWithSubstitutionVariables:(NSDictionary *)variables {

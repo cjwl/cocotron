@@ -72,7 +72,7 @@ Aug 10 14:40:35 formatters[12645] 0.11111: $
 
 -(id)initWithCoder:(NSCoder*)coder
 {
-	if(self=[super initWithCoder:coder])
+	if((self=[super initWithCoder:coder]))
 	{
 		// FIX: decode & set other values
 		/*NS.allowsfloats = 1;

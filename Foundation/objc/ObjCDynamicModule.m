@@ -9,6 +9,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 // Original - David Young <daver@geeks.org>, Christopher Lloyd <cjwl@objc.net>
 #import <Foundation/ObjCDynamicModule.h>
 #import <Foundation/ObjCModule.h>
+#import <Foundation/ObjCException.h>
 
 #ifdef WIN32
 #import <windows.h>

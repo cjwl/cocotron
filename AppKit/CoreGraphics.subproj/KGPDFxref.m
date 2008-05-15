@@ -11,6 +11,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "KGPDFObject_const.h"
 #import "KGPDFDictionary.h"
 #import "KGPDFContext.h"
+#import "KGPDFScanner.h"
 #import <Foundation/NSData.h>
 #import <Foundation/NSArray.h>
 #import <Foundation/NSString.h>

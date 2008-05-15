@@ -34,7 +34,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 - (id) initWithPath: (NSString*) aPath
 {
-	if (self = [super init]) {
+	if ((self = [super init])) {
 		startPath = [aPath copy];
 		fm        = [[NSFileManager defaultManager] retain];
 		list      = [[fm directoryContentsAtPath: aPath] retain];
@@ -75,7 +75,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 				
 				//NSLog(@"Found dir content of '%@' to be %@", lastFilePathAbs, dirContent);
 				
-				while (filename = [dirContentEnumerator nextObject]) {
+				while ((filename = [dirContentEnumerator nextObject])) {
 					NSString* filePath = [lastFilePath stringByAppendingPathComponent: filename];
 					[list insertObject: filePath atIndex: 0];
 				}

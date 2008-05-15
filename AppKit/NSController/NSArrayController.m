@@ -58,7 +58,7 @@ triggerChangeNotificationsForDependentKey:@"selectionIndex"];
 
 -(id)initWithCoder:(NSCoder*)coder
 {
-	if(self = [super initWithCoder:coder])
+	if((self = [super initWithCoder:coder]))
 	{
 		_flags.avoidsEmptySelection = [coder decodeBoolForKey:@"NSAvoidsEmptySelection"];
 		_flags.clearsFilterPredicateOnInsertion = [coder decodeBoolForKey:@"NSClearsFilterPredicateOnInsertion"];
@@ -416,7 +416,7 @@ triggerChangeNotificationsForDependentKey:@"selectionIndex"];
 
 -initWithObjects:(id *)objects count:(unsigned)count;
 {
-	if(self=[super init])
+	if((self=[super init]))
 	{
 		_array=[[NSArray alloc] initWithObjects:objects count:count];
 		_observationProxies=[NSMutableArray new];
@@ -505,7 +505,7 @@ triggerChangeNotificationsForDependentKey:@"selectionIndex"];
 @implementation _NSObservationProxy 
 -(id)initWithKeyPath:(id)keyPath observer:(id)observer object:(id)object
 {
-	if(self=[super init])
+	if((self=[super init]))
 	{
 		_keyPath=[keyPath retain];
 		_observer=observer;

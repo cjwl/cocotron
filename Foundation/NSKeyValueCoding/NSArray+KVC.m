@@ -49,7 +49,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	NSMutableArray *array=[NSMutableArray array];
 	id en=[self objectEnumerator];
 	id obj;
-	while(obj=[en nextObject])
+	while((obj=[en nextObject]))
 	{
 		id val=[obj valueForKey:key];
 		if(!val)
@@ -92,7 +92,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	 */	NSMutableArray *array=[NSMutableArray array];
 	id en=[self objectEnumerator];
 	id obj;
-	while(obj=[en nextObject])
+	while((obj=[en nextObject]))
 	{
 		id val=[obj valueForKeyPath:keyPath];
 		if(!val)
@@ -180,7 +180,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 {
 	id en=[self objectEnumerator];
 	id obj;
-	while(obj=[en nextObject])
+	while((obj=[en nextObject]))
 	{
 		[obj setValue:value forKey:key];
 	}
@@ -190,7 +190,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 {
 	id en=[self objectEnumerator];
 	id obj;
-	while(obj=[en nextObject])
+	while((obj=[en nextObject]))
 	{
 		[obj setValue:value forKeyPath:keyPath];
 	}
