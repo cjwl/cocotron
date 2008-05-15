@@ -24,13 +24,17 @@ NSString *NSThreadWillExitNotification=@"NSThreadWillExitNotification";
 @implementation NSThread
 
 static BOOL isMultiThreaded = NO;
-static id mainThread = nil;
+static NSThread* mainThread = nil;
 
 +(void)initialize
 {
 	if(self==[NSThread class])
 	{
-      [NSThread new];
+      if(!mainThread)
+      {
+         mainThread = [NSThread new];
+         NSPlatformSetCurrentThread(mainThread);
+      }
 	}
 }
 
@@ -75,15 +79,6 @@ static unsigned __stdcall nsThreadStartThread(void* t)
 
 +(void)detachNewThreadSelector:(SEL)selector toTarget:target withObject:argument {
 	id newThread = [[self alloc] initWithTarget: target selector: selector object: argument];
-
-	if (!isMultiThreaded) {
-		[[NSNotificationCenter defaultCenter] postNotificationName: NSWillBecomeMultiThreadedNotification
-															object: nil
-														  userInfo: nil];
-		isMultiThreaded = YES;
-		_NSInitializeSynchronizedDirective();
-	}
-
 	[newThread start];
 	[newThread release];
 }
@@ -125,12 +120,8 @@ static unsigned __stdcall nsThreadStartThread(void* t)
 -init {
    _dictionary=[NSMutableDictionary new];
    _sharedObjects=[NSMutableDictionary new];
-   if(!mainThread)
-   {
-      mainThread = self;
-		NSPlatformSetCurrentThread(mainThread);
-   }
-   _sharedObjectLock=[NSLock new];
+   if(isMultiThreaded)
+      _sharedObjectLock=[NSLock new];
    return self;
 }
 
@@ -148,6 +139,20 @@ static unsigned __stdcall nsThreadStartThread(void* t)
 
 -(void)start {
 	[self retain]; // balanced by release in nsThreadStartThread
+
+   if (!isMultiThreaded) {
+		[[NSNotificationCenter defaultCenter] postNotificationName: NSWillBecomeMultiThreadedNotification
+                                                          object: nil
+                                                        userInfo: nil];
+		isMultiThreaded = YES;
+      // lazily initialize mainThread's lock
+      mainThread->_sharedObjectLock=[NSLock new];
+		_NSInitializeSynchronizedDirective();
+	}
+   // if we were init'ed before didBecomeMultithreaded, we won't have a lock either
+   if(!_sharedObjectLock)
+      _sharedObjectLock=[NSLock new];
+   
 	if (NSPlatformDetachThread( &nsThreadStartThread, self) == 0) {
 		// No thread has been created. Don't leak:
 		[self release];
@@ -224,6 +229,7 @@ static inline id _NSThreadSharedInstance(NSThread *thread,NSString *className,BO
    [thread->_sharedObjectLock unlock];
 
    if(result==nil && create){
+      // do not hold lock during object allocation
       result=[[NSClassFromString(className) new] autorelease];
       [thread->_sharedObjectLock lock];
       [shared setObject:result forKey:className];
