@@ -11,7 +11,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -initWithValue:value {
    [super initWithExpressionType:NSConstantValueExpressionType];
-   _value=[value copy];
+   _value=[value retain]; // not copy despite the object being "constant"
    return self;
 }
 
