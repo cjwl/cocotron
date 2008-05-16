@@ -104,11 +104,11 @@ enum {
     NSRect    itemRect=[self rectForItemAtIndex:index];
 
     if(index==_selectedIndex){
-     [[NSColor selectedTextBackgroundColor] set];
+     [[NSColor selectedTextBackgroundColor] setFill];
      NSRectFill(itemRect);
     }
     else {
-     [[NSColor textBackgroundColor] set];
+     [[NSColor textBackgroundColor] setFill];
      NSRectFill(itemRect);
     }
 
@@ -123,7 +123,7 @@ enum {
 -(void)drawRect:(NSRect)rect {
    int i,count=[_objects count];
 
-   [[NSColor textBackgroundColor] set];
+   [[NSColor textBackgroundColor] setFill];
    NSRectFill([self bounds]);
 
    for(i=0;i<count;i++){

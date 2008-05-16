@@ -126,11 +126,11 @@ enum {
     NSRect    itemRect=[self rectForItemAtIndex:index];
 
     if(index==_selectedIndex){
-     [[NSColor selectedTextBackgroundColor] set];
+     [[NSColor selectedTextBackgroundColor] setFill];
      NSRectFill(itemRect);
     }
     else {
-     [[NSColor controlColor] set];
+     [[NSColor controlColor] setFill];
      NSRectFill(itemRect);
     }
 

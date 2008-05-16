@@ -871,7 +871,7 @@ bounds].size.height);
 
 -(void)drawHighlightedSelectionForColumn:(int)column row:(int)row inRect:(NSRect)rect
 {
-    [[NSColor selectedControlColor] set];
+    [[NSColor selectedControlColor] setFill];
     NSRectFill(rect);
 }
 
@@ -926,7 +926,7 @@ bounds].size.height);
     float originX = _bounds.origin.x;
     float originY = _bounds.origin.y;
 
-    [_gridColor set];
+    [_gridColor setFill];
 
     // vertical ruling
     for (i = 0; i < [_tableColumns count]; ++i) {
@@ -1115,7 +1115,7 @@ bounds].size.height);
     NSRange visibleRows;
     int drawThisRow;
 
-    [_backgroundColor set];
+    [_backgroundColor setFill];
     NSRectFill(_bounds);
 
     _numberOfRows = [self numberOfRows];
@@ -1138,7 +1138,7 @@ bounds].size.height);
         if(_draggingRow >= 0) 
         { 
                 NSRect rowRect; 
-                [[NSColor blackColor] set]; 
+                [[NSColor blackColor] setStroke]; 
                 if([self numberOfRows] == 0) 
                         [NSBezierPath strokeLineFromPoint:NSMakePoint(0, 0) toPoint:NSMakePoint([self 
 bounds].size.width, 0)]; 

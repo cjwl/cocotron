@@ -257,9 +257,9 @@ static inline RECT transformToRECT(CGAffineTransform matrix,NSRect rect) {
 }
 
 -(void)drawMenuWindowBackgroundInRect:(NSRect)rect {
-   [[NSColor menuBackgroundColor] set];
+   [[NSColor menuBackgroundColor] setFill];
    NSRectFill(rect);
-   [[NSColor blackColor] set];
+   [[NSColor blackColor] setStroke];
    NSFrameRect(rect);
 }
 
@@ -268,9 +268,9 @@ static inline RECT transformToRECT(CGAffineTransform matrix,NSRect rect) {
    if(![self drawPartId:MENU_POPUPBORDERS stateId:0 classList:L"MENU" inRect:rect])
     [super drawPopUpButtonWindowBackgroundInRect:rect];
 #else
-   [[NSColor menuBackgroundColor] set];
+   [[NSColor menuBackgroundColor] setFill];
    NSRectFill(rect);
-   [[NSColor blackColor] set];
+   [[NSColor blackColor] setStroke];
    NSFrameRect(rect);
 #endif
 }

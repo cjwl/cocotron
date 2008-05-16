@@ -27,15 +27,15 @@
    NSPoint point=rect.origin;
    float   width=rect.size.width;
      
-   [[NSColor darkGrayColor] set];
+   [[NSColor darkGrayColor] setFill];
    NSRectFill(NSMakeRect(point.x,point.y,width,1));
-   [[NSColor whiteColor] set];
+   [[NSColor whiteColor] setFill];
    NSRectFill(NSMakeRect(point.x,point.y+1,width,1));
 }
 
 -(NSRect)drawUnborderedButtonInRect:(NSRect)rect defaulted:(BOOL)defaulted {
    if(defaulted){
-    [[NSColor blackColor] set];
+    [[NSColor blackColor] setFill];
     NSRectFill(rect);
     rect = NSInsetRect(rect,1,1);
    }
@@ -44,7 +44,7 @@
 
 -(void)drawPushButtonNormalInRect:(NSRect)rect defaulted:(BOOL)defaulted {
    if(defaulted){
-    [[NSColor blackColor] set];
+    [[NSColor blackColor] setFill];
     NSRectFill(rect);
     rect = NSInsetRect(rect,1,1);
    }
@@ -174,14 +174,14 @@
     return NSInsetRect(rect,2,2);
    }
    else {
-    [[[_view window] backgroundColor] set];
+    [[[_view window] backgroundColor] setFill];
     NSRectFill(rect);
     return rect;
    }
 }
 
 -(void)drawProgressIndicatorChunk:(NSRect)rect {
-   [[NSColor selectedControlColor] set];
+   [[NSColor selectedControlColor] setFill];
    NSRectFill(rect);
 }
 
@@ -227,7 +227,7 @@
             blockRect.size.width -= (NSMaxX(blockRect) - NSMaxX(progressRect));
 
         if (blockRect.size.width > 0) {
-            [[NSColor selectedControlColor] set];
+            [[NSColor selectedControlColor] setFill];
             NSRectFill(blockRect);
             blockRect.origin.x += BLOCK_WIDTH + BLOCK_SPACING;
         }
@@ -295,7 +295,7 @@
 }
 
 -(void)drawScrollerTrackInRect:(NSRect)rect vertical:(BOOL)vertical upOrLeft:(BOOL)upOrLeft {
-   [[NSColor colorWithCalibratedWhite:0.9 alpha:1] set];
+   [[NSColor colorWithCalibratedWhite:0.9 alpha:1] setFill];
    NSRectFill(rect);
 }
 
@@ -307,7 +307,7 @@
    NSDrawButton(rect,rect);
 
    if(highlighted) {
-    [[NSColor whiteColor] set];
+    [[NSColor whiteColor] setFill];
     NSRectFill(NSInsetRect(rect,1,1));
    }
 }
@@ -328,7 +328,7 @@
 }
 
 -(void)drawSliderTickInRect:(NSRect)rect {
-   [[NSColor blackColor] set];
+   [[NSColor blackColor] setFill];
    NSRectFill(rect);
 }
 
@@ -357,7 +357,7 @@
    NSDrawButton(rect, rect);
     
    if(highlighted){
-    [[NSColor darkGrayColor] set];
+    [[NSColor darkGrayColor] setFill];
     NSRectFill(NSInsetRect(rect,2,2));
    }
 }
@@ -367,7 +367,7 @@
 }
 
 -(void)drawBoxWithLineInRect:(NSRect)rect {
-   [[NSColor blackColor] set];
+   [[NSColor blackColor] setStroke];
    NSFrameRect(rect);
 }
 
@@ -456,14 +456,14 @@
     }
 
     for(i=0; i<8; i++) {
-        [colors[i] set];
+        [colors[i] setFill];
         NSRectFill(rects[i]);
     }
     
     if(selected){ // cleanup
      NSRect erase=originalRect;
      
-     [[NSColor controlColor] set];
+     [[NSColor controlColor] setFill];
      erase.size.height=2;
      erase=NSInsetRect(erase,1,0);
      NSRectFill(erase);
@@ -482,13 +482,13 @@
    if(bezeledNotLine)
     NSDrawWhiteBezel(rect,rect);
    else {
-    [[NSColor blackColor] set];
+    [[NSColor blackColor] setStroke];
     NSFrameRect(rect);
    }
 }
 
 -(void)drawTextViewInsertionPointInRect:(NSRect)rect color:(NSColor *)color {
-   [color set];
+   [color setFill];
    NSRectFill(rect);
 }
 

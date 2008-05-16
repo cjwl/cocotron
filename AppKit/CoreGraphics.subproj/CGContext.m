@@ -455,12 +455,20 @@ void CGContextResetClip(CGContextRef context) {
    [context resetClip];
 }
 
-void CGContextSetCalibratedGrayColor(CGContextRef context,float gray,float alpha) {
-   [context setCalibratedColorWhite:gray alpha:alpha];
+void CGContextSetCalibratedGrayStrokeColor(CGContextRef context,float gray,float alpha) {
+   [context setCalibratedStrokeColorWhite:gray alpha:alpha];
 }
 
-void CGContextSetCalibratedRGBColor(CGContextRef context,float red,float green,float blue,float alpha) {
-   [context setCalibratedColorRed:red green:green blue:blue alpha:alpha];
+void CGContextSetCalibratedGrayFillColor(CGContextRef context,float gray,float alpha) {
+    [context setCalibratedFillColorWhite:gray alpha:alpha];
+}
+
+void CGContextSetCalibratedRGBStrokeColor(CGContextRef context,float red,float green,float blue,float alpha) {
+   [context setCalibratedStrokeColorRed:red green:green blue:blue alpha:alpha];
+}
+
+void CGContextSetCalibratedRGBFillColor(CGContextRef context,float red,float green,float blue,float alpha) {
+    [context setCalibratedFillColorRed:red green:green blue:blue alpha:alpha];
 }
 
 void CGContextCopyBits(CGContextRef context,CGRect rect,CGPoint point,int gState) {

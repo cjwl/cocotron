@@ -53,8 +53,8 @@ void NSRectFillListWithColors(const NSRect *rects,NSColor **colors,int count) {
    int i;
 
    for(i=0;i<count;i++){
-    [colors[i] set];
-// FIX, the groove/button rect generating code can generate negative size rects which draw incorrectly
+    [colors[i] setFill];
+// FIXME: the groove/button rect generating code can generate negative size rects which draw incorrectly
 // this either needs to be fixed in the drawing or the rect generation
     if(rects[i].size.width>0 && rects[i].size.height>0)
      NSRectFill(rects[i]);
@@ -66,8 +66,8 @@ void NSRectFillListWithGrays(const NSRect *rects,const float *grays,int count) {
    int        i;
 
    for(i=0;i<count;i++){
-    CGContextSetCalibratedGrayColor(graphicsPort,grays[i],1.0);
-// FIX, the groove/button rect generating code can generate negative size rects which draw incorrectly
+    CGContextSetCalibratedGrayFillColor(graphicsPort,grays[i],1.0);
+// FIXME: the groove/button rect generating code can generate negative size rects which draw incorrectly
 // this either needs to be fixed in the drawing or the rect generation
     if(rects[i].size.width>0 && rects[i].size.height>0)
      CGContextFillRect(graphicsPort,rects[i]);
@@ -83,7 +83,8 @@ void NSRectFill(NSRect rect) {
 }
 
 void NSRectFillUsingOperation(NSRect rect,NSCompositingOperation op) {
-// FIX wrong
+// FIXME: wrong
+    NSUnimplementedFunction();
    CGContextFillRect(NSCurrentGraphicsPort(),rect);
 }
 
@@ -96,7 +97,7 @@ void NSFrameRect(NSRect rect) {
 }
 
 void NSDottedFrameRect(NSRect rect) {
-   [[NSColor blackColor] set];
+   [[NSColor blackColor] setFill];
 /* Win32 has poor dashed line support...
 
     DrawFocusRect produces dark spots for the gaps sometimes 
@@ -397,7 +398,7 @@ void NSDrawGroove(NSRect rect, NSRect clipRect) {
 }
 
 void NSDrawWindowBackground(NSRect rect) {
-   [[NSColor windowBackgroundColor] set];
+   [[NSColor windowBackgroundColor] setFill];
    NSRectFill(rect);
 }
 
@@ -406,7 +407,7 @@ NSRect NSDrawTiledRects(NSRect bounds,NSRect clip,const NSRectEdge *sides,const 
 }
 
 void NSHighlightRect(NSRect rect) {
-   [[NSColor highlightColor] set];
+   [[NSColor highlightColor] setFill];
    CGContextFillRect(NSCurrentGraphicsPort(),rect);
 }
 

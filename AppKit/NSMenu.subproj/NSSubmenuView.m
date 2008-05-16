@@ -138,7 +138,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
      nil] retain];
    _itemWhiteAttributes=[[NSDictionary dictionaryWithObjectsAndKeys:
      _itemFont,NSFontAttributeName,
-     [NSColor selectedControlTextColor],NSForegroundColorAttributeName,
+     [NSColor selectedMenuItemTextColor],NSForegroundColorAttributeName,
      nil] retain];
    _itemGrayAttributes=[[NSDictionary dictionaryWithObjectsAndKeys:
      _itemFont,NSFontAttributeName,
@@ -209,7 +209,7 @@ static NSRect boundsToTitleAreaRect(NSRect rect){
 
      if(selected){
       NSRect fill=NSMakeRect(origin.x,origin.y,itemArea.size.width,itemHeight);
-      [[NSColor selectedControlColor] set];
+      [[NSColor selectedMenuItemColor] setFill];
       NSRectFill(fill);
      }
 

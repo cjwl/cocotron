@@ -964,7 +964,7 @@ void KGSurfaceMask(KGSurface *self,KGSurface* src, VGMaskOperation operation, in
 * \note		
 *//*-------------------------------------------------------------------*/
 
-VGColor inline KGSurfaceReadPixel(KGImage *self,int x, int y) {
+VGColor KGSurfaceReadPixel(KGImage *self,int x, int y) {
 	RI_ASSERT(self->_bytes);
 	RI_ASSERT(x >= 0 && x < self->_width);
 	RI_ASSERT(y >= 0 && y < self->_height);
@@ -979,7 +979,7 @@ VGColor inline KGSurfaceReadPixel(KGImage *self,int x, int y) {
    return VGColorFromKGRGBA_ffff(span,self->_colorFormat);
 }
 
-KGRGBAffff inline KGSurfaceReadRGBA(KGImage *self,int x, int y) {
+KGRGBAffff KGSurfaceReadRGBA(KGImage *self,int x, int y) {
 	RI_ASSERT(self->_bytes);
 	RI_ASSERT(x >= 0 && x < self->_width);
 	RI_ASSERT(y >= 0 && y < self->_height);
@@ -1026,7 +1026,7 @@ void KGSurfaceWritePixelSpan(KGSurface *self,int x,int y,KGRGBAffff *span,int le
    self->m_mipmapsValid = NO;
 }
 
-void inline KGSurfaceWritePixel(KGSurface *self,int x, int y, VGColor c) {
+void KGSurfaceWritePixel(KGSurface *self,int x, int y, VGColor c) {
 	RI_ASSERT(self->_bytes);
 	RI_ASSERT(x >= 0 && x < self->_width);
 	RI_ASSERT(y >= 0 && y < self->_height);

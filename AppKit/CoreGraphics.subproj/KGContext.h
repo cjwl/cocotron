@@ -224,8 +224,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)setWordSpacing:(float)spacing;
 -(void)setTextLeading:(float)leading;
 
--(void)setCalibratedColorWhite:(float)white alpha:(float)alpha;
--(void)setCalibratedColorRed:(float)red green:(float)green blue:(float)blue alpha:(float)alpha;
+-(void)setCalibratedStrokeColorWhite:(float)white alpha:(float)alpha;
+-(void)setCalibratedFillColorWhite:(float)white alpha:(float)alpha;
+-(void)setCalibratedStrokeColorRed:(float)red green:(float)green blue:(float)blue alpha:(float)alpha;
+-(void)setCalibratedFillColorRed:(float)red green:(float)green blue:(float)blue alpha:(float)alpha;
 
 -(void)copyBitsInRect:(CGRect)rect toPoint:(CGPoint)point gState:(int)gState;
 

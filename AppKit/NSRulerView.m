@@ -327,7 +327,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         
         // not in a view!
         // experimental
-        if (_orientation = NSHorizontalRuler)
+        if ((_orientation == NSHorizontalRuler))
             location = point.x;
         else
             location = point.y;
@@ -395,7 +395,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     
     // Draw major hash marks with labels.
     frame = originalFrame;
-    [[NSColor controlShadowColor] set];
+    [[NSColor controlShadowColor] setStroke];
     for (i = 0; i < count; ++i) {
         NSString *label = [NSString stringWithFormat:@"%d", i];
         NSPoint textOrigin = frame.origin;
@@ -475,7 +475,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         frame.size.width = _thicknessForMarkers;
 
     // Clear marker area.    
-    [[NSColor windowBackgroundColor] set];
+    [[NSColor windowBackgroundColor] setFill];
     NSRectFill(frame);
     for (i = 0; i < count; ++i)
         [[_markers objectAtIndex:i] drawRect:frame];
@@ -490,7 +490,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     else
         rect.size.height = 1;
     
-    [[NSColor controlHighlightColor] set];
+    [[NSColor controlHighlightColor] setStroke];
     for (i = 0; i < count; ++i) {
         if (_orientation == NSHorizontalRuler)
             rect.origin.x = [[_rulerlineLocations objectAtIndex:i] floatValue];
@@ -511,7 +511,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         _scrollViewNeedsTiling = NO;
     }
 
-    [[NSColor controlShadowColor] set];
+    [[NSColor controlShadowColor] setStroke];
     if (_orientation == NSHorizontalRuler) {
         rect.origin.y += rect.size.height - 1;
         rect.size.height = 1;

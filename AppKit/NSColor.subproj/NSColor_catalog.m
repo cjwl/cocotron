@@ -72,13 +72,22 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return result;
 }
 
--(void)set {
-   NSColor *color=[[NSDisplay currentDisplay] colorWithName:_colorName];
+-(void)setFill {
+    NSColor *color=[[NSDisplay currentDisplay] colorWithName:_colorName];
+    
+    if(color==nil)
+        [NSException raise:@"NSUnknownColor" format:@"Unknown color %@ in catalog %@",_colorName,_catalogName];
+    
+    [color setFill];
+}
 
-   if(color==nil)
-    [NSException raise:@"NSUnknownColor" format:@"Unknown color %@ in catalog %@",_colorName,_catalogName];
-
-   [color set];
+-(void)setStroke {
+    NSColor *color=[[NSDisplay currentDisplay] colorWithName:_colorName];
+    
+    if(color==nil)
+        [NSException raise:@"NSUnknownColor" format:@"Unknown color %@ in catalog %@",_colorName,_catalogName];
+    
+    [color setStroke];
 }
 
 @end

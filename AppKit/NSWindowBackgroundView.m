@@ -42,7 +42,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
             break;
             
         case NSLineBorder:
-            [[NSColor blackColor] set];
+            [[NSColor blackColor] setStroke];
             NSFrameRect(rect);
             rect = NSInsetRect(rect, 1, 1);
             cheatSheet = 1;
@@ -72,7 +72,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     if ([[[self window] _animationContext] stepCount] > 0)
         rect.size.height += cheatSheet;
 
-    [[[self window] backgroundColor] set];
+    [[[self window] backgroundColor] setFill];
     NSRectFill(rect);
 }
 

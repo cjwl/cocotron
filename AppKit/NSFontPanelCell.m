@@ -29,9 +29,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    titleRect.size.height=titleSize.height;
 
    if([self isHighlighted] || [self state])
-    [[NSColor selectedControlColor] set];
+    [[NSColor selectedControlColor] setFill];
    else
-    [[NSColor whiteColor] set];
+    [[NSColor whiteColor] setFill];
 
    NSRectFill(frame);
 

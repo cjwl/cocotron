@@ -240,10 +240,10 @@ VGPixelDecode KGSurfaceParametersToPixelLayout(KGSurfaceFormat format,size_t *bi
 void KGSurfaceClear(KGSurface *self,VGColor clearColor, int x, int y, int w, int h);
 void KGSurfaceBlit(KGSurface *self,KGSurface * src, int sx, int sy, int dx, int dy, int w, int h, BOOL dither);
 void KGSurfaceMask(KGSurface *self,KGSurface* src, VGMaskOperation operation, int x, int y, int w, int h);
-VGColor inline KGSurfaceReadPixel(KGImage *self,int x, int y);
+VGColor KGSurfaceReadPixel(KGImage *self,int x, int y);
 VGColorInternalFormat KGSurfaceReadPremultipliedSpan_ffff(KGSurface *self,int x,int y,KGRGBAffff *span,int length);
 
-void inline KGSurfaceWritePixel(KGSurface *self,int x, int y, VGColor c);
+void KGSurfaceWritePixel(KGSurface *self,int x, int y, VGColor c);
 void KGSurfaceWritePixelSpan(KGSurface *self,int x,int y,KGRGBAffff *span,int length,VGColorInternalFormat format);
 
 void KGSurfaceWriteFilteredPixel(KGSurface *self,int x, int y, VGColor c, VGbitfield channelMask);

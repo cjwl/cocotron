@@ -202,7 +202,7 @@ static void drawSunkenBorder(NSRect rect){
    NSRect        previousBorderRect=NSMakeRect(0,0,0,0);
    BOOL          overflow=NO;
 
-   [[NSColor menuBackgroundColor] set];
+   [[NSColor menuBackgroundColor] setFill];
    NSRectFill(bounds);
 
    for(i=0;i<count;i++){
@@ -232,7 +232,7 @@ static void drawSunkenBorder(NSRect rect){
     NSPoint  origin;
     NSRect   fill=rect;
 
-    [[NSColor controlColor] set];
+    [[NSColor controlColor] setFill];
     fill.origin.x-=4;
     fill.size.width+=4;
     NSRectFill(fill);

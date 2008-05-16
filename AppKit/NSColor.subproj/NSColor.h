@@ -9,6 +9,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/Foundation.h>
 #import <AppKit/AppKitExport.h>
 
+@class NSImage;
 @class NSPasteboard;
 
 @interface NSColor : NSObject <NSCopying> 
@@ -17,7 +18,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 +(NSColor *)shadowColor;
 +(NSColor *)gridColor;
 
++(NSColor *)alternateSelectedControlColor;
++(NSColor *)alternateSelectedControlTextColor;
 +(NSColor *)controlColor;
++(NSColor *)secondarySelectedControlColor;
 +(NSColor *)selectedControlColor;
 +(NSColor *)controlTextColor;
 +(NSColor *)selectedControlTextColor;
@@ -28,6 +32,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 +(NSColor *)controlLightHighlightColor;
 +(NSColor *)controlShadowColor;
 +(NSArray *)controlAlternatingRowBackgroundColors;
+
++ (NSColor *)keyboardFocusIndicatorColor;
 
 +(NSColor *)textColor;
 +(NSColor *)textBackgroundColor;
@@ -42,6 +48,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 +(NSColor *)selectedKnobColor;
 
 +(NSColor *)windowBackgroundColor;
++(NSColor *)windowFrameColor;
+
++ (NSColor *)selectedMenuItemColor;
++ (NSColor *)selectedMenuItemTextColor;
 
 // private
 +(NSColor *)menuBackgroundColor;
@@ -77,6 +87,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 +(NSColor *)colorFromPasteboard:(NSPasteboard *)pasteboard;
 
++(NSColor *)colorWithPatternImage:(NSImage *)image;
+
 -(NSString *)colorSpaceName;
 
 -(void)getWhite:(float *)white alpha:(float *)alpha;
@@ -109,6 +121,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(NSColor *)blendedColorWithFraction:(float)fraction ofColor:(NSColor *)color;
 
 -(void)set;
+-(void)setStroke;
+-(void)setFill;
 
 -(void)drawSwatchInRect:(NSRect)rect;
 

@@ -183,7 +183,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     if(NSEqualRects(bounds,intersection))
      return;
    }
-   [_backgroundColor set];
+   [_backgroundColor setFill];
    NSRectFill(rect);
 }
 

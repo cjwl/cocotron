@@ -23,6 +23,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <AppKit/NSDisplay.h>
 
+@interface NSDisplay(revelation)
+-(void) _addSystemColor: (NSColor *) color forName: (NSString *) name;
+@end
+
 @implementation NSColor
 
 -(void)encodeWithCoder:(NSCoder *)coder {
@@ -157,6 +161,18 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return [self retain];
 }
 
++(NSColor *)alternateSelectedControlColor {
+    return [NSColor colorWithCatalogName:@"System" colorName:@"alternateSelectedControlColor"];
+}
+
++(NSColor *)alternateSelectedControlTextColor {
+    return [NSColor colorWithCatalogName:@"System" colorName:@"alternateSelectedControlTextColor"];
+}
+
++ (NSColor *)keyboardFocusIndicatorColor {
+    return [NSColor colorWithCatalogName:@"System" colorName:@"keyboardFocusIndicatorColor"];
+}
+
 +(NSColor *)highlightColor {
    return [NSColor colorWithCatalogName:@"System" colorName:@"highlightColor"];
 }
@@ -175,6 +191,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 +(NSColor *)selectedControlColor {
    return [NSColor colorWithCatalogName:@"System" colorName:@"selectedControlColor"];
+}
+
++(NSColor *)secondarySelectedControlColor {
+    return [NSColor colorWithCatalogName:@"System" colorName:@"secondarySelectedControlColor"];
 }
 
 +(NSColor *)controlTextColor {
@@ -211,8 +231,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 +(NSArray *)controlAlternatingRowBackgroundColors {
    return [NSArray arrayWithObjects:
-    [NSColor whiteColor],
-    [NSColor whiteColor],
+    [NSColor controlBackgroundColor],
+    [NSColor controlHighlightColor], // FIXME:
     nil];
 }
 
@@ -254,6 +274,18 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 +(NSColor *)windowBackgroundColor {
    return [NSColor controlColor];
+}
+
++(NSColor *)windowFrameColor {
+    return [NSColor colorWithCatalogName:@"System" colorName:@"windowFrameColor"];
+}
+
++ (NSColor *)selectedMenuItemColor {
+    return [NSColor colorWithCatalogName:@"System" colorName:@"selectedMenuItemColor"];
+}
+
++ (NSColor *)selectedMenuItemTextColor {
+    return [NSColor colorWithCatalogName:@"System" colorName:@"selectedMenuItemTextColor"];
 }
 
 +(NSColor *)menuBackgroundColor {
@@ -362,6 +394,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return [NSUnarchiver unarchiveObjectWithData:data];
 }
 
++(NSColor *)colorWithPatternImage:(NSImage *)image
+{
+   NSUnimplementedMethod();
+   return [self lightGrayColor];
+}
+
 -(NSString *)colorSpaceName {
    NSInvalidAbstractInvocation();
    return nil;
@@ -384,85 +422,85 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(float)whiteComponent {
-    float white, alpha;
+    float white;
 
-    [self getWhite:&white alpha:&alpha];
+    [self getWhite:&white alpha:NULL];
     return white;
 }
 
 -(float)redComponent {
-   float red,green,blue,alpha;
+   float red;
 
-   [self getRed:&red green:&green blue:&blue alpha:&alpha];
+   [self getRed:&red green:NULL blue:NULL alpha:NULL];
 
    return red;
 }
 
 -(float)greenComponent {
-   float red,green,blue,alpha;
+   float green;
 
-   [self getRed:&red green:&green blue:&blue alpha:&alpha];
+   [self getRed:NULL green:&green blue:NULL alpha:NULL];
 
    return green;
 }
 
 -(float)blueComponent {
-   float red,green,blue,alpha;
+   float blue;
 
-   [self getRed:&red green:&green blue:&blue alpha:&alpha];
+   [self getRed:NULL green:NULL blue:&blue alpha:NULL];
 
    return blue;
 }
 
 -(float)hueComponent {
-   float hue,saturation,brightness,alpha;
+   float hue;
 
-   [self getHue:&hue saturation:&saturation brightness:&brightness alpha:&alpha];
+   [self getHue:&hue saturation:NULL brightness:NULL alpha:NULL];
 
    return hue;
 }
 
 -(float)saturationComponent {
-   float hue,saturation,brightness,alpha;
+   float saturation;
 
-   [self getHue:&hue saturation:&saturation brightness:&brightness alpha:&alpha];
+   [self getHue:NULL saturation:&saturation brightness:NULL alpha:NULL];
 
    return saturation;
 }
 
 -(float)brightnessComponent {
-   float hue,saturation,brightness,alpha;
+   float brightness;
 
-   [self getHue:&hue saturation:&saturation brightness:&brightness alpha:&alpha];
+   [self getHue:NULL saturation:NULL brightness:&brightness alpha:NULL];
 
    return brightness;
 }
 
 -(float)cyanComponent {
-    float cyan, magenta, yellow, black, alpha;
+    float cyan;
 
-    [self getCyan:&cyan magenta:&magenta yellow:&yellow black:&black alpha:&alpha];
+    [self getCyan:&cyan magenta:NULL yellow:NULL black:NULL alpha:NULL];
     return cyan;
 }
 
 -(float)magentaComponent {
-    float cyan, magenta, yellow, black, alpha;
+    float magenta;
 
-    [self getCyan:&cyan magenta:&magenta yellow:&yellow black:&black alpha:&alpha];
+    [self getCyan:NULL magenta:&magenta yellow:NULL black:NULL alpha:NULL];
     return magenta;
 }
 
 -(float)yellowComponent {
-    float cyan, magenta, yellow, black, alpha;
+    float yellow;
 
-    [self getCyan:&cyan magenta:&magenta yellow:&yellow black:&black alpha:&alpha];
+    [self getCyan:NULL magenta:NULL yellow:&yellow black:NULL alpha:NULL];
     return yellow;
 }
 
 -(float)blackComponent {
-    float cyan, magenta, yellow, black, alpha;
+    float black;
 
-    [self getCyan:&cyan magenta:&magenta yellow:&yellow black:&black alpha:&alpha];
+    [self getCyan:NULL magenta:NULL yellow:NULL black:&black alpha:NULL];
     return black;
 }
 
@@ -510,11 +548,20 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)set {
-   NSInvalidAbstractInvocation();
+    [self setStroke];
+    [self setFill];
+}
+
+-(void)setFill {
+    NSInvalidAbstractInvocation();
+}
+
+-(void)setStroke {
+    NSInvalidAbstractInvocation();
 }
 
 -(void)drawSwatchInRect:(NSRect)rect {
-    [self set];
+    [self setFill];
     NSRectFill(rect);
 }
 

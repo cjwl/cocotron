@@ -482,7 +482,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
     NSRange          glyphRange;
 
-    [_backgroundColor set];
+    [_backgroundColor setFill];
     NSRectFill(rect);
 
     rect.origin.x-=_textContainerInset.width;
@@ -2081,7 +2081,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    NSRange          gRange=[layoutManager glyphRangeForBoundingRect:glyphRect inTextContainer:[self textContainer]];
 
    if([self drawsBackground]){
-    [_backgroundColor set];
+    [_backgroundColor setFill];
     NSRectFill(rect);
    }
 

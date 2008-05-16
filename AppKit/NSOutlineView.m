@@ -648,7 +648,7 @@ static void loadItemIntoMapTables(NSOutlineView *self,id item,unsigned *rowCount
     BOOL temp = _indentationMarkerFollowsCell;
     int  i,count=numberOfChildrenOfItemAndReload(self,nil,NO);
 
-    [[NSColor grayColor] set];
+    [[NSColor grayColor] setStroke];
 
     [self setIndentationMarkerFollowsCell:YES];
     for(i=0;i<count;i++)

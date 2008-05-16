@@ -74,11 +74,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     float rowHeight = 0;
     NSRect itemFrame = NSInsetRect(frame, 1, 1);
         
-    [[NSColor windowBackgroundColor] set];
+    [[NSColor windowBackgroundColor] setFill];
     NSRectFill(frame);
 
     if ([self isDefaultSetView]) {
-        [[NSColor blackColor] set];
+        [[NSColor blackColor] setStroke];
         NSFrameRect(frame);
         
         identifiers = [[_toolbar delegate] toolbarDefaultItemIdentifiers:_toolbar];
@@ -248,7 +248,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
                 [image setCachedSeparately:YES];
                 [image lockFocus];
                 [cell drawWithFrame:NSInsetRect(frame, 1, 1) inView:nil];
-                [[NSColor blackColor] set];
+                [[NSColor blackColor] setStroke];
                 NSFrameRect(frame);
                 [image unlockFocus];
                 

@@ -172,7 +172,7 @@ extern NSSize _NSToolbarIconSizeSmall;
 {
     [_toolbar _reloadToolbarIfNeeded];
     
-    [[NSColor windowBackgroundColor] set];
+    [[NSColor windowBackgroundColor] setFill];
     NSRectFill(rect);
     
     [super drawRect:rect];
@@ -183,7 +183,7 @@ extern NSSize _NSToolbarIconSizeSmall;
             
         case NSLineBorder:
             rect.size.height = 1;
-            [[NSColor blackColor] set];
+            [[NSColor blackColor] setStroke];
             NSFrameRect(rect);
             break;
             
@@ -449,7 +449,7 @@ extern NSSize _NSToolbarIconSizeSmall;
         [image setCachedSeparately:YES];
         [image lockFocus];
         [cell drawWithFrame:NSInsetRect(frame, 1, 1) inView:nil];
-        [[NSColor blackColor] set];
+        [[NSColor blackColor] setStroke];
         NSFrameRect(frame);
         [image unlockFocus];
         

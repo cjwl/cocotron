@@ -216,7 +216,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     if (frame.size.height>frame.size.width)
         _isVertical = YES;
 
-    [[NSColor controlColor] set];
+    [[NSColor controlColor] setFill];
     NSRectFill(frame);
     [self drawBarInside:[self _sliderRect] flipped:[controlView isFlipped]];
     [self drawKnob];

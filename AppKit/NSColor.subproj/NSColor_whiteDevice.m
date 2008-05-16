@@ -67,9 +67,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return [[[[self class] alloc] initWithGray:_white alpha:alpha] autorelease]; 
 } 
 
--(void)set {
+-(void)setStroke {
    CGContextSetGrayStrokeColor(NSCurrentGraphicsPort(),_white,_alpha);
-   CGContextSetGrayFillColor(NSCurrentGraphicsPort(),_white,_alpha);
+}
+
+-(void)setFill {
+    CGContextSetGrayFillColor(NSCurrentGraphicsPort(),_white,_alpha);
 }
 
 @end

@@ -112,9 +112,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return NSDeviceRGBColorSpace;
 }
 
--(void)set {
+-(void)setStroke {
    CGContextSetRGBStrokeColor(NSCurrentGraphicsPort(),_red,_green,_blue,_alpha);
-   CGContextSetRGBFillColor(NSCurrentGraphicsPort(),_red,_green,_blue,_alpha);
+}
+
+-(void)setFill {
+    CGContextSetRGBFillColor(NSCurrentGraphicsPort(),_red,_green,_blue,_alpha);
 }
 
 @end

@@ -105,13 +105,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     NSBitmapImageRep     *rep;
     
     if(tiff==NULL){
-     [self dealloc];
+        [self release];
      return nil;
     }
    
     rep=[NSBitmapImageRep imageRepWithData:[NSData dataWithBytes:tiff length:length]];
     if(rep==nil){
-     [self dealloc];
+        [self release];
      return nil;
     }
     
@@ -143,7 +143,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    NSArray *reps=[NSImageRep imageRepsWithContentsOfFile:path];
 
    if([reps count]==0){
-    [self dealloc];
+       [self release];
     return nil;
    }
 
@@ -369,8 +369,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    KGContext         *graphicsPort;
 
    if(cached==nil){
-    cached=[[[NSCachedImageRep alloc] initWithSize:_size depth:0 separate:YES alpha:YES] autorelease];
+    cached=[[NSCachedImageRep alloc] initWithSize:_size depth:0 separate:YES alpha:YES];
     [self addRepresentation:cached];
+    [cached release];
    }
 
    context=[NSGraphicsContext graphicsContextWithWindow:[cached window]];
@@ -396,7 +397,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(BOOL)drawRepresentation:(NSImageRep *)representation inRect:(NSRect)rect {
-   [[self backgroundColor] set];
+   [[self backgroundColor] setFill];
    NSRectFill(rect);
    
    return [representation drawInRect:rect];

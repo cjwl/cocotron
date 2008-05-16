@@ -150,7 +150,7 @@ NSString *NSSplitViewWillResizeSubviewsNotification = @"NSSplitViewWillResizeSub
    NSImage *image=[self dimpleImage];
    NSPoint  point;
 
-   [[NSColor controlColor] set];
+   [[NSColor controlColor] setFill];
    NSRectFill(rect);
 
    point=rect.origin;

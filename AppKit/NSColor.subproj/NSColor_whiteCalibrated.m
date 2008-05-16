@@ -61,7 +61,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    static NSColor *shared=nil;
 
    if(shared==nil)
-    shared=[[NSColor_whiteCalibrated alloc] initWithGray:0.333 alpha:1.0];
+    shared=[[NSColor_whiteCalibrated alloc] initWithGray:1/3. alpha:1.0];
 
    return shared;
 }
@@ -70,7 +70,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    static NSColor *shared=nil;
 
    if(shared==nil)
-    shared=[[NSColor_whiteCalibrated alloc] initWithGray:0.667 alpha:1.0];
+    shared=[[NSColor_whiteCalibrated alloc] initWithGray:2/3. alpha:1.0];
 
    return shared;
 }
@@ -125,8 +125,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return [super colorUsingColorSpaceName:colorSpace device:device];
 }
 
--(void)set {
-   CGContextSetCalibratedGrayColor(NSCurrentGraphicsPort(),_white,_alpha);
+-(void)setStroke {
+   CGContextSetCalibratedGrayStrokeColor(NSCurrentGraphicsPort(),_white,_alpha);
+}
+
+-(void)setFill {
+    CGContextSetCalibratedGrayFillColor(NSCurrentGraphicsPort(),_white,_alpha);
 }
 
 @end

@@ -176,7 +176,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    if([self drawsBackground]){
     NSColor *color=(_backgroundColor==nil)?[NSColor controlColor]:_backgroundColor;
 
-    [color set];
+    [color setFill];
     NSRectFill(backRect);
    }
 

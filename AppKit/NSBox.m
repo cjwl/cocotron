@@ -248,7 +248,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
      break;
    }
 
-   [[NSColor controlColor] set];
+   [[NSColor controlColor] setFill];
    NSRectFill(rect);
 
    switch(_borderType){
@@ -269,7 +269,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    }
 
    if(drawTitle){
-    [[NSColor windowBackgroundColor] set];
+    [[NSColor windowBackgroundColor] setFill];
     titleRect.origin.x-=TEXTGAP;
     titleRect.size.width+=TEXTGAP*2;
     NSRectFill(titleRect);

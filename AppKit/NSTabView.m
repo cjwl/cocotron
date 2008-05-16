@@ -410,13 +410,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
             break;
             
         case NSNoTabsLineBorder:
-            [[NSColor blackColor] set];
+            [[NSColor blackColor] setStroke];
             NSFrameRect([self rectForBorder]);
             break;
             
         case NSNoTabsNoBorder:
             if (_drawsBackground) {
-                [[NSColor controlColor] set];
+                [[NSColor controlColor] setFill];
                 NSRectFill([self rectForBorder]);
             }
             break;

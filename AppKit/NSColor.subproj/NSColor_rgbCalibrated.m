@@ -99,15 +99,19 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    if([colorSpace isEqualToString:NSCalibratedWhiteColorSpace])
     return [NSColor colorWithCalibratedWhite:(_red+_green+_blue)/3 alpha:_alpha];
 
-// FIX, This is not accurate
+// FIXME: This is not accurate
    if([colorSpace isEqualToString:NSDeviceCMYKColorSpace])
     return [NSColor colorWithDeviceCyan:1.0-_red magenta:1.0-_green yellow:1.0-_blue black:0.0 alpha:_alpha];
 
    return [super colorUsingColorSpaceName:colorSpace device:device];
 }
 
--(void)set {
-   CGContextSetCalibratedRGBColor(NSCurrentGraphicsPort(),_red,_green,_blue,_alpha);
+-(void)setFill {
+    CGContextSetCalibratedRGBFillColor(NSCurrentGraphicsPort(),_red,_green,_blue,_alpha);
+}
+
+-(void)setStroke {
+    CGContextSetCalibratedRGBStrokeColor(NSCurrentGraphicsPort(),_red,_green,_blue,_alpha);
 }
 
 @end

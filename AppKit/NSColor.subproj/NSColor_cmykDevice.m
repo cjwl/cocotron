@@ -98,18 +98,24 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     return [super colorUsingColorSpaceName:colorSpace device:device];
 }
 
--(void)set {
-    // temporary fix
+-(void)setFill {
+    // FIXME: temporary fix
+    NSColor *convertedColor = [self colorUsingColorSpaceName:NSCalibratedRGBColorSpace];
+    
+    CGContextSetRGBFillColor(NSCurrentGraphicsPort(),
+                             [convertedColor redComponent],
+                             [convertedColor greenComponent],
+                             [convertedColor blueComponent], _alpha);
+}
+
+-(void)setStroke {
+    // FIXME: temporary fix
     NSColor *convertedColor = [self colorUsingColorSpaceName:NSCalibratedRGBColorSpace];
     
     CGContextSetRGBStrokeColor(NSCurrentGraphicsPort(),
-                                   [convertedColor redComponent],
-                                   [convertedColor greenComponent],
-                                   [convertedColor blueComponent], _alpha);
-    CGContextSetRGBFillColor(NSCurrentGraphicsPort(),
-                                   [convertedColor redComponent],
-                                   [convertedColor greenComponent],
-                                   [convertedColor blueComponent], _alpha);
+                               [convertedColor redComponent],
+                               [convertedColor greenComponent],
+                               [convertedColor blueComponent], _alpha);
 }
 
 @end

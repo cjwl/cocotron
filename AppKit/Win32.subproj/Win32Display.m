@@ -220,6 +220,13 @@ BOOL CALLBACK monitorEnumerator(HMONITOR hMonitor,HDC hdcMonitor,LPRECT rect,LPA
     { @"gridColor", COLOR_3DLIGHT },		// what should this be?
     { @"headerColor", COLOR_3DFACE },		// these do not appear in the user-space System color list,
     { @"headerTextColor", COLOR_BTNTEXT },	// probably because Apple builds that off System.clr
+   { @"alternateSelectedControlColor", COLOR_WINDOW }, // FIXME:
+   { @"alternateSelectedControlTextColor", COLOR_WINDOWTEXT }, // FIXME:
+   { @"secondarySelectedControlColor", COLOR_HIGHLIGHT }, // FIXME:
+   { @"keyboardFocusIndicatorColor", COLOR_HIGHLIGHT }, // FIXME:
+   { @"windowFrameColor", COLOR_WINDOWFRAME }, // FIXME:
+   { @"selectedMenuItemColor", COLOR_HIGHLIGHT }, // FIXME:
+   { @"selectedMenuItemTextColor", COLOR_HIGHLIGHTTEXT }, // FIXME:
 // extensions
     { @"menuBackgroundColor", COLOR_MENU },
     { @"menuItemTextColor", COLOR_MENUTEXT },
@@ -781,7 +788,7 @@ The values should be upgraded to something which is more generic to implement, p
 static int CALLBACK buildFamily(const LOGFONTA *lofFont_old,
    const TEXTMETRICA *textMetric_old,DWORD fontType,LPARAM lParam){
    LPENUMLOGFONTEX  logFont=(LPENUMLOGFONTEX)lofFont_old;
-   NEWTEXTMETRICEX *textMetric=(NEWTEXTMETRICEX *)textMetric_old;
+//   NEWTEXTMETRICEX *textMetric=(NEWTEXTMETRICEX *)textMetric_old;
    NSMutableSet *set=(NSMutableSet *)lParam;
 //   NSString     *name=[NSString stringWithCString:logFont->elfFullName];
    NSString     *name=[NSString stringWithCString:logFont->elfLogFont.lfFaceName];

@@ -916,11 +916,15 @@ static inline KGGraphicsState *currentState(KGContext *self){
    [currentState(self) setTextLeading:leading];
 }
 
--(void)setCalibratedColorWhite:(float)white alpha:(float)alpha {
-   [self setCalibratedColorRed:white green:white blue:white alpha:alpha];
+-(void)setCalibratedStrokeColorWhite:(float)white alpha:(float)alpha {
+   [self setCalibratedStrokeColorRed:white green:white blue:white alpha:alpha];
 }
 
--(void)setCalibratedColorRed:(float)r green:(float)g blue:(float)b alpha:(float)alpha {
+-(void)setCalibratedFillColorWhite:(float)white alpha:(float)alpha {
+    [self setCalibratedFillColorRed:white green:white blue:white alpha:alpha];
+}
+
+-(void)setCalibratedStrokeColorRed:(float)r green:(float)g blue:(float)b alpha:(float)alpha {
 // lame gamma adjustment so that non-system colors appear similar to those on a Mac
 
    const float assumedGamma=1.3;
@@ -937,9 +941,27 @@ static inline KGGraphicsState *currentState(KGContext *self){
    b=pow(b,assumedGamma/displayGamma);
    if(b>1.0)
     b=1.0;
-
    [self setRGBStrokeColor:r:g:b:alpha];
-   [self setRGBFillColor:r:g:b:alpha];
+}
+
+-(void)setCalibratedFillColorRed:(float)r green:(float)g blue:(float)b alpha:(float)alpha {
+    // lame gamma adjustment so that non-system colors appear similar to those on a Mac
+    
+    const float assumedGamma=1.3;
+    const float displayGamma=2.2;
+    
+    r=pow(r,assumedGamma/displayGamma);
+    if(r>1.0)
+        r=1.0;
+    
+    g=pow(g,assumedGamma/displayGamma);
+    if(g>1.0)
+        g=1.0;
+    
+    b=pow(b,assumedGamma/displayGamma);
+    if(b>1.0)
+        b=1.0;
+    [self setRGBFillColor:r:g:b:alpha];
 }
 
 -(void)copyBitsInRect:(CGRect)rect toPoint:(CGPoint)point gState:(int)gState {

@@ -124,13 +124,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     if([title attribute:NSForegroundColorAttributeName atIndex:0 effectiveRange:NULL]==nil){
      NSMutableAttributedString *change=[[title mutableCopy] autorelease];
 
-     [change addAttribute:NSForegroundColorAttributeName value:[NSColor whiteColor] range:NSMakeRange(0,[title length])];
+     [change addAttribute:NSForegroundColorAttributeName value:[NSColor selectedControlTextColor] range:NSMakeRange(0,[title length])];
      title=change;
     }
-    [[NSColor selectedControlColor] set];
+    [[NSColor selectedControlColor] setFill];
    }
-   else
-    [[NSColor controlBackgroundColor] set];
+   else{
+    [[NSColor controlBackgroundColor] setFill];
+   }
 
    NSRectFill(frame);
 

@@ -62,14 +62,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 {
     NSRect titleFrame = frame;
     NSToolbar *toolbar = [[control window] toolbar];
-    NSDictionary *attributes = [NSToolbarView attributesWithSizeMode:[toolbar sizeMode]];
+    NSMutableDictionary *attributes = [NSMutableDictionary dictionaryWithDictionary:[NSToolbarView attributesWithSizeMode:[toolbar sizeMode]]];
+    
+    [attributes setObject:([self isEnabled] ? [NSColor controlTextColor] : [NSColor disabledControlTextColor]) forKey:NSForegroundColorAttributeName];
     
     titleFrame.size.height = [[self title] sizeWithAttributes:attributes].height;
     
     if ([toolbar displayMode] == NSToolbarDisplayModeIconAndLabel ||
         [toolbar displayMode] == NSToolbarDisplayModeDefault ||
         [toolbar displayMode] == NSToolbarDisplayModeLabelOnly) {
-            [[NSColor controlTextColor] set];
             [[self title] _clipAndDrawInRect:titleFrame withAttributes:attributes];
             if ([self isHighlighted]) {
                 titleFrame.origin.x++;
@@ -97,7 +98,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 - (void)drawWithFrame:(NSRect)frame inView:(NSView *)control
 {
-    [[NSColor windowBackgroundColor] set];
+    [[NSColor windowBackgroundColor] setFill];
     NSRectFill(frame);
     
     [self drawInteriorWithFrame:frame inView:control];

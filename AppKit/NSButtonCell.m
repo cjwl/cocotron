@@ -526,11 +526,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
    if(![self isBordered]){
     if([self isVisuallyHighlighted]){
-     [[NSColor whiteColor] set];
+     [[NSColor whiteColor] setFill];
      NSRectFill(frame);
     }
     else {
-     [[NSColor controlColor] set];
+     [[NSColor controlColor] setFill];
      NSRectFill(frame);
     }
    }
@@ -602,7 +602,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    
    if(_bezelStyle==NSDisclosureBezelStyle){
 // FIX The background isn't getting erased during pressing ? shouldn't the view be doing this during tracking ?
-    [[NSColor controlColor] set];
+    [[NSColor controlColor] setFill];
     NSRectFill(frame);
    }
    else if(![self isBordered])

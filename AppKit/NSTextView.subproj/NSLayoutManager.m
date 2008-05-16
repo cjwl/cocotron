@@ -725,7 +725,7 @@ static inline void _appendRectToCache(NSLayoutManager *self,NSRect rect){
    if(selectedColor==nil)
     selectedColor=[NSColor selectedTextBackgroundColor];
 
-   [selectedColor set];
+   [selectedColor setFill];
    for(i=0;i<rectCount;i++){
     NSRect fill=rectArray[i];
     fill.origin.x+=origin.x;
@@ -755,7 +755,7 @@ static inline void _appendRectToCache(NSLayoutManager *self,NSRect rect){
       unsigned         i,rectCount;
       NSRect *      rects=[self rectArrayForCharacterRange:effectiveRange withinSelectedCharacterRange:NSMakeRange(NSNotFound,0) inTextContainer:container rectCount:&rectCount];
 
-      [color set];
+      [color setFill];
 
       for(i=0;i<rectCount;i++){
        NSRect fill=rects[i];
@@ -912,7 +912,7 @@ static inline void _appendRectToCache(NSLayoutManager *self,NSRect rect){
 
     i = result.location;
     j = result.location;
-    while (fragment = NSRangeEntryAtIndex(self->_glyphFragments, i-1, NULL)) {
+    while ((fragment = NSRangeEntryAtIndex(self->_glyphFragments, i-1, NULL))) {
         if (fragment->location.y != origin)
             break;
         result.location=i;
@@ -920,7 +920,7 @@ static inline void _appendRectToCache(NSLayoutManager *self,NSRect rect){
     }
 
     result.location = i;
-    while (fragment = NSRangeEntryAtIndex(self->_glyphFragments, j, NULL)) {
+    while ((fragment = NSRangeEntryAtIndex(self->_glyphFragments, j, NULL))) {
         if (fragment->location.y != origin)
             break;
         j++;
