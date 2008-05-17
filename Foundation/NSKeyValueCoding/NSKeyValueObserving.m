@@ -154,8 +154,8 @@ static NSLock *kvoLock=nil;
 	[keyPath _KVC_partBeforeDot:&key afterDot:&remainingKeyPath];
 
 	// now remove own observer
-	NSMutableDictionary* dict=[self observationInfo];
-	NSMutableArray *observers=[dict objectForKey:key];
+	NSMutableDictionary* observationInfo=[self observationInfo];
+	NSMutableArray *observers=[observationInfo objectForKey:key];
 
 	NSEnumerator *en=[observers objectEnumerator];
 	_NSObservationInfo *info;
@@ -167,12 +167,12 @@ static NSLock *kvoLock=nil;
 			[observers removeObject:info];
 			if(![observers count])
 			{
-				[dict removeObjectForKey:key];
+				[observationInfo removeObjectForKey:key];
 			}
-			if(![dict count])
+			if(![observationInfo count])
 			{
-				[dict release];
 				[self setObservationInfo:nil];
+            [observationInfo release];
 			}
 
 			if(remainingKeyPath)
