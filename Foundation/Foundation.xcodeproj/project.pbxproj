@@ -803,6 +803,16 @@
 		C844CFD70DA7F21400A8F3A2 /* NSSynchronization.m in Sources */ = {isa = PBXBuildFile; fileRef = C844CFCF0DA7F21400A8F3A2 /* NSSynchronization.m */; };
 		C844CFD80DA7F21400A8F3A2 /* NSSynchronization.h in Headers */ = {isa = PBXBuildFile; fileRef = C844CFCE0DA7F21400A8F3A2 /* NSSynchronization.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		C844CFD90DA7F21400A8F3A2 /* NSSynchronization.m in Sources */ = {isa = PBXBuildFile; fileRef = C844CFCF0DA7F21400A8F3A2 /* NSSynchronization.m */; };
+		C8BAA5730DDEFC6C005C4769 /* objc_size_alignment.h in Headers */ = {isa = PBXBuildFile; fileRef = C8BAA5710DDEFC6C005C4769 /* objc_size_alignment.h */; };
+		C8BAA5740DDEFC6C005C4769 /* objc_size_alignment.m in Sources */ = {isa = PBXBuildFile; fileRef = C8BAA5720DDEFC6C005C4769 /* objc_size_alignment.m */; };
+		C8BAA5750DDEFC6C005C4769 /* objc_size_alignment.h in Headers */ = {isa = PBXBuildFile; fileRef = C8BAA5710DDEFC6C005C4769 /* objc_size_alignment.h */; };
+		C8BAA5760DDEFC6C005C4769 /* objc_size_alignment.m in Sources */ = {isa = PBXBuildFile; fileRef = C8BAA5720DDEFC6C005C4769 /* objc_size_alignment.m */; };
+		C8BAA5770DDEFC6C005C4769 /* objc_size_alignment.h in Headers */ = {isa = PBXBuildFile; fileRef = C8BAA5710DDEFC6C005C4769 /* objc_size_alignment.h */; };
+		C8BAA5780DDEFC6C005C4769 /* objc_size_alignment.m in Sources */ = {isa = PBXBuildFile; fileRef = C8BAA5720DDEFC6C005C4769 /* objc_size_alignment.m */; };
+		C8BAA5790DDEFC6C005C4769 /* objc_size_alignment.h in Headers */ = {isa = PBXBuildFile; fileRef = C8BAA5710DDEFC6C005C4769 /* objc_size_alignment.h */; };
+		C8BAA57A0DDEFC6C005C4769 /* objc_size_alignment.m in Sources */ = {isa = PBXBuildFile; fileRef = C8BAA5720DDEFC6C005C4769 /* objc_size_alignment.m */; };
+		C8BAA57B0DDEFC6C005C4769 /* objc_size_alignment.h in Headers */ = {isa = PBXBuildFile; fileRef = C8BAA5710DDEFC6C005C4769 /* objc_size_alignment.h */; };
+		C8BAA57C0DDEFC6C005C4769 /* objc_size_alignment.m in Sources */ = {isa = PBXBuildFile; fileRef = C8BAA5720DDEFC6C005C4769 /* objc_size_alignment.m */; };
 		FE01A59B0C5D9B6900AEA51A /* NSArray_concrete.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E280311097478CC00EC542B /* NSArray_concrete.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE01A59C0C5D9B6900AEA51A /* NSArray_placeholder.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E280313097478CC00EC542B /* NSArray_placeholder.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE01A59D0C5D9B6900AEA51A /* NSArray.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E280315097478CC00EC542B /* NSArray.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -3596,6 +3606,8 @@
 		C844CF940DA7EBE500A8F3A2 /* NSRecursiveLock.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSRecursiveLock.m; sourceTree = "<group>"; };
 		C844CFCE0DA7F21400A8F3A2 /* NSSynchronization.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSSynchronization.h; sourceTree = "<group>"; };
 		C844CFCF0DA7F21400A8F3A2 /* NSSynchronization.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSSynchronization.m; sourceTree = "<group>"; };
+		C8BAA5710DDEFC6C005C4769 /* objc_size_alignment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = objc_size_alignment.h; sourceTree = "<group>"; };
+		C8BAA5720DDEFC6C005C4769 /* objc_size_alignment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = objc_size_alignment.m; sourceTree = "<group>"; };
 		FE01A7EC0C5D9B6900AEA51A /* Foundation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Foundation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FE1935150B5D449E00FB74CC /* NSAssertionHandler.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSAssertionHandler.h; sourceTree = "<group>"; };
 		FE1935160B5D449E00FB74CC /* NSAssertionHandler.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSAssertionHandler.m; sourceTree = "<group>"; };
@@ -4517,6 +4529,8 @@
 				6E28055B09747C9900EC542B /* platform_solaris */,
 				6E28055C09747CAC00EC542B /* platform_win32 */,
 				FE35CAEC0B4AB85800FE7AB3 /* objc.m */,
+				C8BAA5710DDEFC6C005C4769 /* objc_size_alignment.h */,
+				C8BAA5720DDEFC6C005C4769 /* objc_size_alignment.m */,
 			);
 			path = objc;
 			sourceTree = "<group>";
@@ -5271,6 +5285,7 @@
 				FE7FE5C50D7CF08B006CCA28 /* NSFileHandle_stream.h in Headers */,
 				C844CF9B0DA7EBE500A8F3A2 /* NSRecursiveLock.h in Headers */,
 				C844CFD60DA7F21400A8F3A2 /* NSSynchronization.h in Headers */,
+				C8BAA57B0DDEFC6C005C4769 /* objc_size_alignment.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5564,6 +5579,7 @@
 				FE7FE5C30D7CF08B006CCA28 /* NSFileHandle_stream.h in Headers */,
 				C844CF970DA7EBE500A8F3A2 /* NSRecursiveLock.h in Headers */,
 				C844CFD20DA7F21400A8F3A2 /* NSSynchronization.h in Headers */,
+				C8BAA5730DDEFC6C005C4769 /* objc_size_alignment.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5861,6 +5877,7 @@
 				FE7FE5C10D7CF08B006CCA28 /* NSFileHandle_stream.h in Headers */,
 				C844CF9D0DA7EBE500A8F3A2 /* NSRecursiveLock.h in Headers */,
 				C844CFD80DA7F21400A8F3A2 /* NSSynchronization.h in Headers */,
+				C8BAA5750DDEFC6C005C4769 /* objc_size_alignment.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6154,6 +6171,7 @@
 				FE7FE5C70D7CF08B006CCA28 /* NSFileHandle_stream.h in Headers */,
 				C844CF950DA7EBE500A8F3A2 /* NSRecursiveLock.h in Headers */,
 				C844CFD00DA7F21400A8F3A2 /* NSSynchronization.h in Headers */,
+				C8BAA5770DDEFC6C005C4769 /* objc_size_alignment.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6447,6 +6465,7 @@
 				FE7FE5C90D7CF08B006CCA28 /* NSFileHandle_stream.h in Headers */,
 				C844CF990DA7EBE500A8F3A2 /* NSRecursiveLock.h in Headers */,
 				C844CFD40DA7F21400A8F3A2 /* NSSynchronization.h in Headers */,
+				C8BAA5790DDEFC6C005C4769 /* objc_size_alignment.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7020,6 +7039,7 @@
 				FE7FE5C60D7CF08B006CCA28 /* NSFileHandle_stream.m in Sources */,
 				C844CF9C0DA7EBE500A8F3A2 /* NSRecursiveLock.m in Sources */,
 				C844CFD70DA7F21400A8F3A2 /* NSSynchronization.m in Sources */,
+				C8BAA57C0DDEFC6C005C4769 /* objc_size_alignment.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7314,6 +7334,7 @@
 				FE7FE5C40D7CF08B006CCA28 /* NSFileHandle_stream.m in Sources */,
 				C844CF980DA7EBE500A8F3A2 /* NSRecursiveLock.m in Sources */,
 				C844CFD30DA7F21400A8F3A2 /* NSSynchronization.m in Sources */,
+				C8BAA5740DDEFC6C005C4769 /* objc_size_alignment.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7612,6 +7633,7 @@
 				FE7FE5C20D7CF08B006CCA28 /* NSFileHandle_stream.m in Sources */,
 				C844CF9E0DA7EBE500A8F3A2 /* NSRecursiveLock.m in Sources */,
 				C844CFD90DA7F21400A8F3A2 /* NSSynchronization.m in Sources */,
+				C8BAA5760DDEFC6C005C4769 /* objc_size_alignment.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7908,6 +7930,7 @@
 				FE7FE5C80D7CF08B006CCA28 /* NSFileHandle_stream.m in Sources */,
 				C844CF960DA7EBE500A8F3A2 /* NSRecursiveLock.m in Sources */,
 				C844CFD10DA7F21400A8F3A2 /* NSSynchronization.m in Sources */,
+				C8BAA5780DDEFC6C005C4769 /* objc_size_alignment.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8204,6 +8227,7 @@
 				FE7FE5CA0D7CF08B006CCA28 /* NSFileHandle_stream.m in Sources */,
 				C844CF9A0DA7EBE500A8F3A2 /* NSRecursiveLock.m in Sources */,
 				C844CFD50DA7F21400A8F3A2 /* NSSynchronization.m in Sources */,
+				C8BAA57A0DDEFC6C005C4769 /* objc_size_alignment.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -14,6 +14,23 @@ NSGetSizeAndAlignment(@encode(type), &size, &alignment);\
 STAssertEquals(size, sizeof(type), @"size of type %i != %i", size, sizeof(type));\
 STAssertEquals(alignment, __alignof__(type), @"alignment of type %i != %i", alignment, __alignof__(type)); }
 
+typedef struct 
+   {
+      float a;
+      union
+      {
+         long long b;
+         char c;
+      } blah;
+      TestingStruct str;
+      TestingStruct *strPtr;
+      NSArray *array;
+      union
+      {
+         float d;
+         double e;
+      };
+   } TestingStruct2;
 
 @implementation SizeAndAlignment
 -(void)testPrimitives
@@ -30,6 +47,6 @@ STAssertEquals(alignment, __alignof__(type), @"alignment of type %i != %i", alig
 -(void)testComposites
 {
 	TEST_TYPE(TestingStruct);
-	
+   TEST_TYPE(TestingStruct2);
 }
 @end
