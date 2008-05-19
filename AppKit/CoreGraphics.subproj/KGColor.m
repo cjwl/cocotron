@@ -48,32 +48,32 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return [self initWithColorSpace:colorSpace components:components];
 }
 
--initWithGenericGray:(CGFloat)gray alpha:(CGFloat)alpha {
+-initWithDeviceGray:(CGFloat)gray alpha:(CGFloat)alpha {
    CGFloat components[2]={gray,alpha};
-   KGColorSpace *colorSpace=[[KGColorSpace alloc] initWithGenericGray];
+   KGColorSpace *colorSpace=[[KGColorSpace alloc] initWithDeviceGray];
    [self initWithColorSpace:colorSpace components:components];
    [colorSpace release];
    return self;
 }
 
--initWithGenericRed:(CGFloat)red green:(CGFloat)green blue:(CGFloat)blue alpha:(CGFloat)alpha {
+-initWithDeviceRed:(CGFloat)red green:(CGFloat)green blue:(CGFloat)blue alpha:(CGFloat)alpha {
    CGFloat components[4]={red,green,blue,alpha};
-   KGColorSpace *colorSpace=[[KGColorSpace alloc] initWithGenericRGB];
+   KGColorSpace *colorSpace=[[KGColorSpace alloc] initWithDeviceRGB];
    [self initWithColorSpace:colorSpace components:components];
    [colorSpace release];
    return self;
 }
 
--initWithGenericCyan:(CGFloat)cyan magenta:(CGFloat)magenta yellow:(CGFloat)yellow black:(CGFloat)black alpha:(CGFloat)alpha {
+-initWithDeviceCyan:(CGFloat)cyan magenta:(CGFloat)magenta yellow:(CGFloat)yellow black:(CGFloat)black alpha:(CGFloat)alpha {
    CGFloat components[5]={cyan,magenta,yellow,black,alpha};
-   KGColorSpace *colorSpace=[[KGColorSpace alloc] initWithGenericCMYK];
+   KGColorSpace *colorSpace=[[KGColorSpace alloc] initWithDeviceCMYK];
    [self initWithColorSpace:colorSpace components:components];
    [colorSpace release];
    return self;
 }
 
 -init {
-   KGColorSpace *gray=[[[KGColorSpace alloc] initWithGenericGray] autorelease];
+   KGColorSpace *gray=[[[KGColorSpace alloc] initWithDeviceGray] autorelease];
    CGFloat         components[2]={0,1};
    
    return [self initWithColorSpace:gray components:components];
@@ -131,6 +131,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
      return NO;
 
    return YES;
+}
+
+-(KGColor *)convertToColorSpace:(KGColorSpace *)otherSpace {
 }
 
 @end

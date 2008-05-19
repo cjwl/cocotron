@@ -66,7 +66,7 @@ void NSRectFillListWithGrays(const NSRect *rects,const float *grays,int count) {
    int        i;
 
    for(i=0;i<count;i++){
-    CGContextSetCalibratedGrayFillColor(graphicsPort,grays[i],1.0);
+    CGContextSetGrayFillColor(graphicsPort,grays[i],1.0);
 // FIXME: the groove/button rect generating code can generate negative size rects which draw incorrectly
 // this either needs to be fixed in the drawing or the rect generation
     if(rects[i].size.width>0 && rects[i].size.height>0)

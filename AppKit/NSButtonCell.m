@@ -210,7 +210,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
      [attributes setObject:[NSColor disabledControlTextColor]
                    forKey:NSForegroundColorAttributeName];
 
-    return [[[NSAttributedString alloc] initWithString:_titleOrAttributedTitle attributes:attributes] autorelease];
+    return [[[NSAttributedString alloc] initWithString:[self title] attributes:attributes] autorelease];
    }
 }
 

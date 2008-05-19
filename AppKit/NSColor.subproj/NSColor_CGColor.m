@@ -6,72 +6,73 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
-#import <AppKit/NSColor_whiteDevice.h>
+#import <AppKit/NSColor_CGColor.h>
 #import <AppKit/NSGraphics.h>
 #import <AppKit/NSGraphicsContextFunctions.h>
 #import <ApplicationServices/ApplicationServices.h>
 
-@implementation NSColor_whiteDevice
+#import <AppKit/conversions.h>
 
--initWithGray:(float)gray alpha:(float)alpha {
-   _white=gray;
-   _alpha=alpha;
+@implementation NSColor_CGColor
+
+-initWithColorRef:(CGColorRef)colorRef {
+   _colorRef=CGColorRetain(colorRef);
    return self;
 }
 
--(void)encodeWithCoder:(NSCoder *)coder {
-   [coder encodeObject:[self colorSpaceName]];
-   [coder encodeValuesOfObjCTypes:"ff",&_white,&_alpha];
+-(void)dealloc {
+   CGColorRelease(_colorRef);
+   [super dealloc];
 }
+
++(NSColor *)colorWithColorRef:(CGColorRef)colorRef {
+   return [[[self alloc] initWithColorRef:colorRef] autorelease];
+}
+
 
 -(BOOL)isEqual:otherObject {
    if(self==otherObject)
     return YES;
 
    if([otherObject isKindOfClass:[self class]]){
-    NSColor_whiteDevice *other=otherObject;
+    NSColor_CGColor *other=otherObject;
 
-    return (_white==other->_white && _alpha==other->_alpha);
+    return CGColorEqualToColor(_colorRef,other->_colorRef);
    }
 
    return NO;
 }
 
-- (NSString *)description
-{
-    return [NSString stringWithFormat:@"<%@ _white: %f alpha: %f>",
-        [[self class] description], _white, _alpha];
-}
-
-+(NSColor *)colorWithGray:(float)gray alpha:(float)alpha {
-   return [[[self alloc] initWithGray:gray alpha:alpha] autorelease];
-}
-
--(NSString *)colorSpaceName {
-   return NSDeviceWhiteColorSpace;
-}
-
--(void)getWhite:(float *)white alpha:(float *)alpha {
-   if(white!=NULL)
-    *white = _white;
-   if(alpha!=NULL)
-    *alpha = _alpha;
+-(NSString *)description {
+   return [NSString stringWithFormat:@"<%@ colorRef=%@>",[self class], _colorRef];
 }
 
 -(float)alphaComponent {
-   return _alpha;
+   return CGColorGetAlpha(_colorRef);
 }
 
--(NSColor *)colorWithAlphaComponent:(float)alpha { 
-   return [[[[self class] alloc] initWithGray:_white alpha:alpha] autorelease]; 
+-(NSColor *)colorWithAlphaComponent:(CGFloat)alpha {
+   CGColorRef ref=CGColorCreateCopyWithAlpha(_colorRef,alpha);
+   NSColor   *result=[[[isa alloc] initWithColorRef:ref] autorelease];
+   
+   CGColorRelease(ref);
+   return result;
 } 
 
+-(NSColor *)colorUsingColorSpaceName:(NSString *)colorSpace device:(NSDictionary *)device {
+   return nil;
+}
+
+-(NSString *)colorSpaceName {
+   return nil;
+}
+
 -(void)setStroke {
-   CGContextSetGrayStrokeColor(NSCurrentGraphicsPort(),_white,_alpha);
+   CGContextSetStrokeColorWithColor(NSCurrentGraphicsPort(),_colorRef);
 }
 
 -(void)setFill {
-    CGContextSetGrayFillColor(NSCurrentGraphicsPort(),_white,_alpha);
+   CGContextSetFillColorWithColor(NSCurrentGraphicsPort(),_colorRef);
 }
 
 @end

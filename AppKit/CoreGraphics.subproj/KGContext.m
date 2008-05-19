@@ -443,7 +443,7 @@ static inline KGGraphicsState *currentState(KGContext *self){
 }
 
 -(void)setGrayStrokeColor:(float)gray:(float)alpha {
-   KGColorSpace *colorSpace=[[KGColorSpace alloc] initWithGenericGray];
+   KGColorSpace *colorSpace=[[KGColorSpace alloc] initWithDeviceGray];
    float         components[2]={gray,alpha};
    KGColor      *color=[[KGColor alloc] initWithColorSpace:colorSpace components:components];
    
@@ -454,7 +454,7 @@ static inline KGGraphicsState *currentState(KGContext *self){
 }
 
 -(void)setRGBStrokeColor:(float)r:(float)g:(float)b:(float)alpha {
-   KGColorSpace *colorSpace=[[KGColorSpace alloc] initWithGenericRGB];
+   KGColorSpace *colorSpace=[[KGColorSpace alloc] initWithDeviceRGB];
    float         components[4]={r,g,b,alpha};
    KGColor      *color=[[KGColor alloc] initWithColorSpace:colorSpace components:components];
    
@@ -465,7 +465,7 @@ static inline KGGraphicsState *currentState(KGContext *self){
 }
 
 -(void)setCMYKStrokeColor:(float)c:(float)m:(float)y:(float)k:(float)alpha {
-   KGColorSpace *colorSpace=[[KGColorSpace alloc] initWithGenericCMYK];
+   KGColorSpace *colorSpace=[[KGColorSpace alloc] initWithDeviceCMYK];
    float         components[5]={c,m,y,k,alpha};
    KGColor      *color=[[KGColor alloc] initWithColorSpace:colorSpace components:components];
    
@@ -489,7 +489,7 @@ static inline KGGraphicsState *currentState(KGContext *self){
 }
 
 -(void)setGrayFillColor:(float)gray:(float)alpha {
-   KGColorSpace *colorSpace=[[KGColorSpace alloc] initWithGenericGray];
+   KGColorSpace *colorSpace=[[KGColorSpace alloc] initWithDeviceGray];
    float         components[2]={gray,alpha};
    KGColor      *color=[[KGColor alloc] initWithColorSpace:colorSpace components:components];
    
@@ -500,7 +500,7 @@ static inline KGGraphicsState *currentState(KGContext *self){
 }
 
 -(void)setRGBFillColor:(float)r:(float)g:(float)b:(float)alpha {
-   KGColorSpace *colorSpace=[[KGColorSpace alloc] initWithGenericRGB];
+   KGColorSpace *colorSpace=[[KGColorSpace alloc] initWithDeviceRGB];
    float         components[4]={r,g,b,alpha};
    KGColor      *color=[[KGColor alloc] initWithColorSpace:colorSpace components:components];
    
@@ -511,7 +511,7 @@ static inline KGGraphicsState *currentState(KGContext *self){
 }
 
 -(void)setCMYKFillColor:(float)c:(float)m:(float)y:(float)k:(float)alpha {
-   KGColorSpace *colorSpace=[[KGColorSpace alloc] initWithGenericCMYK];
+   KGColorSpace *colorSpace=[[KGColorSpace alloc] initWithDeviceCMYK];
    float         components[5]={c,m,y,k,alpha};
    KGColor      *color=[[KGColor alloc] initWithColorSpace:colorSpace components:components];
    
@@ -914,54 +914,6 @@ static inline KGGraphicsState *currentState(KGContext *self){
 
 -(void)setTextLeading:(float)leading {
    [currentState(self) setTextLeading:leading];
-}
-
--(void)setCalibratedStrokeColorWhite:(float)white alpha:(float)alpha {
-   [self setCalibratedStrokeColorRed:white green:white blue:white alpha:alpha];
-}
-
--(void)setCalibratedFillColorWhite:(float)white alpha:(float)alpha {
-    [self setCalibratedFillColorRed:white green:white blue:white alpha:alpha];
-}
-
--(void)setCalibratedStrokeColorRed:(float)r green:(float)g blue:(float)b alpha:(float)alpha {
-// lame gamma adjustment so that non-system colors appear similar to those on a Mac
-
-   const float assumedGamma=1.3;
-   const float displayGamma=2.2;
-
-   r=pow(r,assumedGamma/displayGamma);
-   if(r>1.0)
-    r=1.0;
-
-   g=pow(g,assumedGamma/displayGamma);
-   if(g>1.0)
-    g=1.0;
-
-   b=pow(b,assumedGamma/displayGamma);
-   if(b>1.0)
-    b=1.0;
-   [self setRGBStrokeColor:r:g:b:alpha];
-}
-
--(void)setCalibratedFillColorRed:(float)r green:(float)g blue:(float)b alpha:(float)alpha {
-    // lame gamma adjustment so that non-system colors appear similar to those on a Mac
-    
-    const float assumedGamma=1.3;
-    const float displayGamma=2.2;
-    
-    r=pow(r,assumedGamma/displayGamma);
-    if(r>1.0)
-        r=1.0;
-    
-    g=pow(g,assumedGamma/displayGamma);
-    if(g>1.0)
-        g=1.0;
-    
-    b=pow(b,assumedGamma/displayGamma);
-    if(b>1.0)
-        b=1.0;
-    [self setRGBFillColor:r:g:b:alpha];
 }
 
 -(void)copyBitsInRect:(CGRect)rect toPoint:(CGPoint)point gState:(int)gState {

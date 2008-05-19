@@ -141,9 +141,9 @@ void KGRasterizerSetShouldAntialias(KGRasterizer *self,BOOL antialias) {
     self->numSamples=1;
     self->fradius=0.6;
     self->sumWeights=1;
-			self->samples[0].x = 0;
-			self->samples[0].y = 0;
-			self->samples[0].weight = 1;
+			self->samplesX[0] = 0;
+			self->samplesY[0] = 0;
+			self->samplesWeight[0] = 1;
    }
    else {
 /*
@@ -175,14 +175,14 @@ void KGRasterizerSetShouldAntialias(KGRasterizer *self,BOOL antialias) {
 			CGFloat r = (CGFloat)sqrt(x) * self->fradius;
 			x = r * (CGFloat)sin(y*2.0f*M_PI);
 			y = r * (CGFloat)cos(y*2.0f*M_PI);
-			self->samples[i].weight = (CGFloat)exp(-0.5*RI_SQR(r));
-//			self->samples[i].weight = (CGFloat)exp(-0.5*RI_SQR(r/self->fradius));
+			self->samplesWeight[i] = (CGFloat)exp(-0.5*RI_SQR(r));
+//			self->samplesWeight[i] = (CGFloat)exp(-0.5*RI_SQR(r/self->fradius));
 			RI_ASSERT(x >= -1.5f && x <= 1.5f && y >= -1.5f && y <= 1.5f);	//the specification restricts the filter radius to be less than or equal to 1.5
 			
-			self->samples[i].x = x;
-			self->samples[i].y = y;
+			self->samplesX[i] = x;
+			self->samplesY[i] = y;
             
-			self->sumWeights += self->samples[i].weight;
+			self->sumWeights += self->samplesWeight[i];
 		}
 
     }
@@ -254,14 +254,14 @@ static void sortEdgesByMinY(Edge **edges,int count,Edge **B){
   }
 }
 
-static void initEdgeSidePre(Edge *edge,Sample *samples,int numSamples,CGFloat pcy){
+static void initEdgeSidePre(Edge *edge,CGFloat *samplesX,CGFloat *samplesY,int numSamples,CGFloat pcy){
    CGFloat *sidePre=edge->sidePre;
    int s;
         
    for(s=0;s<numSamples;s++){
-    CGFloat spy = pcy+samples[s].y;
+    CGFloat spy = pcy+samplesY[s];
     if(spy >= edge->v0.y && spy < edge->v1.y)
-     sidePre[s] = -(spy*edge->normal.y - edge->cnst + samples[s].x*edge->normal.x)-0.5f*edge->normal.x;
+     sidePre[s] = -(spy*edge->normal.y - edge->cnst + samplesX[s]*edge->normal.x)-0.5f*edge->normal.x;
     else
      sidePre[s]=-LONG_MAX; // arbitrary large number
    }
@@ -388,7 +388,7 @@ void KGRasterizerFill(KGRasterizer *self,VGFillRule fillRule) {
       
       if(check->maxscany>=scany){
        incrementEdgeForAET(check,cminy,cmaxy,self->fradius,xlimit);
-       initEdgeSidePre(check,self->samples,self->numSamples,pcy);
+       initEdgeSidePre(check,self->samplesX,self->samplesY,self->numSamples,pcy);
       }
       else {
        activeEdges[i]=NULL;
@@ -399,7 +399,7 @@ void KGRasterizerFill(KGRasterizer *self,VGFillRule fillRule) {
         
         if(check->minscany<=scany){
          initEdgeForAET(check,cminy,cmaxy,self->fradius,xlimit);
-       initEdgeSidePre(check,self->samples,self->numSamples,pcy);
+       initEdgeSidePre(check,self->samplesX,self->samplesY,self->numSamples,pcy);
          activeEdges[i]=check;
          nextAvailableEdge++;
          removeNulls--;
@@ -435,7 +435,7 @@ void KGRasterizerFill(KGRasterizer *self,VGFillRule fillRule) {
         activeEdges=NSZoneRealloc(NULL,activeEdges,activeCapacity*sizeof(Edge *));
        }
        initEdgeForAET(check,cminy,cmaxy,self->fradius,xlimit);
-       initEdgeSidePre(check,self->samples,self->numSamples,pcy);
+       initEdgeSidePre(check,self->samplesX,self->samplesY,self->numSamples,pcy);
        activeEdges[activeCount++]=check;
       }
      }
@@ -511,7 +511,7 @@ void KGRasterizerFill(KGRasterizer *self,VGFillRule fillRule) {
            s=self->numSamples;
            while(--s>=0)                  
             if( winding[s] & fillRuleMask )
-			 coverage += self->samples[s].weight;
+			 coverage += self->samplesWeight[s];
             
 		   if(coverage > 0.0f){
              coverage /= self->sumWeights;

@@ -6,7 +6,6 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
-// Original - David Young <daver@geeks.org>, Christopher Lloyd <cjwl@objc.net>
 #import <AppKit/NSColor_cmykDevice.h>
 #import <AppKit/NSGraphics.h>
 #import <AppKit/NSGraphicsContextFunctions.h>
@@ -99,23 +98,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)setFill {
-    // FIXME: temporary fix
-    NSColor *convertedColor = [self colorUsingColorSpaceName:NSCalibratedRGBColorSpace];
-    
-    CGContextSetRGBFillColor(NSCurrentGraphicsPort(),
-                             [convertedColor redComponent],
-                             [convertedColor greenComponent],
-                             [convertedColor blueComponent], _alpha);
+    CGContextSetCMYKFillColor(NSCurrentGraphicsPort(),_cyan,_magenta,_yellow,_black, _alpha);
 }
 
--(void)setStroke {
-    // FIXME: temporary fix
-    NSColor *convertedColor = [self colorUsingColorSpaceName:NSCalibratedRGBColorSpace];
-    
-    CGContextSetRGBStrokeColor(NSCurrentGraphicsPort(),
-                               [convertedColor redComponent],
-                               [convertedColor greenComponent],
-                               [convertedColor blueComponent], _alpha);
+-(void)setStroke {    
+    CGContextSetCMYKStrokeColor(NSCurrentGraphicsPort(),_cyan,_magenta,_yellow, _black, _alpha);
 }
 
 @end

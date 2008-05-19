@@ -663,6 +663,8 @@
 		FE01AAB90C5D9BCB00AEA51A /* NSButtonCell_disclosure_selected.tif in Resources */ = {isa = PBXBuildFile; fileRef = FE86887E0BC3FFA4009F515C /* NSButtonCell_disclosure_selected.tif */; };
 		FE01AABA0C5D9BCB00AEA51A /* defaultBindingOptions.plist in Resources */ = {isa = PBXBuildFile; fileRef = C8B239A20BF8EEB500CA33AF /* defaultBindingOptions.plist */; };
 		FE01AABC0C5D9BCB00AEA51A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E2B575B0976075500DA0954 /* Foundation.framework */; };
+		FE08C3230DDF299800B3169A /* NSColor_CGColor.h in Headers */ = {isa = PBXBuildFile; fileRef = FE08C3210DDF299800B3169A /* NSColor_CGColor.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE08C3240DDF299800B3169A /* NSColor_CGColor.m in Sources */ = {isa = PBXBuildFile; fileRef = FE08C3220DDF299800B3169A /* NSColor_CGColor.m */; };
 		FE1CEA6F0C8F12F800184630 /* opengl_dll.h in Headers */ = {isa = PBXBuildFile; fileRef = FE1CEA6B0C8F12F800184630 /* opengl_dll.h */; };
 		FE1CEA700C8F12F800184630 /* opengl_dll.m in Sources */ = {isa = PBXBuildFile; fileRef = FE1CEA6C0C8F12F800184630 /* opengl_dll.m */; };
 		FE311FA80CCC430200EBD696 /* KGFont_gdi.h in Headers */ = {isa = PBXBuildFile; fileRef = FE311FA40CCC430200EBD696 /* KGFont_gdi.h */; };
@@ -1273,6 +1275,8 @@
 		FE064AC40B8B805000853FBB /* KGPath.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = KGPath.m; sourceTree = "<group>"; };
 		FE064AC50B8B805000853FBB /* KGPattern.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = KGPattern.h; sourceTree = "<group>"; };
 		FE064AC60B8B805000853FBB /* KGPattern.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = KGPattern.m; sourceTree = "<group>"; };
+		FE08C3210DDF299800B3169A /* NSColor_CGColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSColor_CGColor.h; sourceTree = "<group>"; };
+		FE08C3220DDF299800B3169A /* NSColor_CGColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSColor_CGColor.m; sourceTree = "<group>"; };
 		FE1CEA6B0C8F12F800184630 /* opengl_dll.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = opengl_dll.h; sourceTree = "<group>"; };
 		FE1CEA6C0C8F12F800184630 /* opengl_dll.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = opengl_dll.m; sourceTree = "<group>"; };
 		FE1E86BF0BBCA62D0013B968 /* NSGraphicsStyle.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSGraphicsStyle.h; sourceTree = "<group>"; };
@@ -1926,6 +1930,8 @@
 		6E2B55430976075300DA0954 /* NSColor */ = {
 			isa = PBXGroup;
 			children = (
+				FE08C3210DDF299800B3169A /* NSColor_CGColor.h */,
+				FE08C3220DDF299800B3169A /* NSColor_CGColor.m */,
 				6E2B55620976075300DA0954 /* conversions.h */,
 				6E2B55540976075300DA0954 /* NSColor.h */,
 				6E2B55450976075300DA0954 /* NSColor.m */,
@@ -2898,6 +2904,7 @@
 				FEBF5A130DCD450700CE5A1C /* KGPaint_pattern.h in Headers */,
 				FEBF5A150DCD450700CE5A1C /* KGPaint_radialGradient.h in Headers */,
 				FEBF5A170DCD450700CE5A1C /* KGPaint_ramp.h in Headers */,
+				FE08C3230DDF299800B3169A /* NSColor_CGColor.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3405,6 +3412,7 @@
 				FEBF5A140DCD450700CE5A1C /* KGPaint_pattern.m in Sources */,
 				FEBF5A160DCD450700CE5A1C /* KGPaint_radialGradient.m in Sources */,
 				FEBF5A180DCD450700CE5A1C /* KGPaint_ramp.m in Sources */,
+				FE08C3240DDF299800B3169A /* NSColor_CGColor.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

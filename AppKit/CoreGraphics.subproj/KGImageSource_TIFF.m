@@ -78,7 +78,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    bitmap=[[NSData alloc] initWithBytesNoCopy:bytes length:bytesPerRow*height];
 
    KGDataProvider *provider=[[KGDataProvider alloc] initWithData:bitmap];
-   KGColorSpace *colorSpace=[[KGColorSpace alloc] initWithGenericRGB];
+   KGColorSpace *colorSpace=[[KGColorSpace alloc] initWithDeviceRGB];
    KGImage *image=[[KGImage alloc] initWithWidth:width height:height bitsPerComponent:8 bitsPerPixel:bitsPerPixel bytesPerRow:bytesPerRow
       colorSpace:colorSpace bitmapInfo:0/*kCGImageAlphaLast|kCGBitmapByteOrder32Little*/ provider:provider decode:NULL interpolate:NO renderingIntent:kCGRenderingIntentDefault];
       

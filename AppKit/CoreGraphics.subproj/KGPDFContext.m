@@ -447,15 +447,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    
    switch([[color colorSpace] type]){
    
-    case KGColorSpaceGenericGray:
+    case KGColorSpaceDeviceGray:
      [self contentWithFormat:@"%f G ",components[0]];
      break;
      
-    case KGColorSpaceGenericRGB:
+    case KGColorSpaceDeviceRGB:
+    case KGColorSpacePlatformRGB:
      [self contentWithFormat:@"%f %f %f RG ",components[0],components[1],components[2]];
      break;
      
-    case KGColorSpaceGenericCMYK:
+    case KGColorSpaceDeviceCMYK:
      [self contentWithFormat:@"%f %f %f %f K ",components[0],components[1],components[2],components[3]];
      break;
    }
@@ -466,15 +467,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    
    switch([[color colorSpace] type]){
    
-    case KGColorSpaceGenericGray:
+    case KGColorSpaceDeviceGray:
      [self contentWithFormat:@"%f g ",components[0]];
      break;
      
-    case KGColorSpaceGenericRGB:
+    case KGColorSpaceDeviceRGB:
+    case KGColorSpacePlatformRGB:
      [self contentWithFormat:@"%f %f %f rg ",components[0],components[1],components[2]];
      break;
      
-    case KGColorSpaceGenericCMYK:
+    case KGColorSpaceDeviceCMYK:
      [self contentWithFormat:@"%f %f %f %f k ",components[0],components[1],components[2],components[3]];
      break;
    }

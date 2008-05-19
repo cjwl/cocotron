@@ -546,7 +546,7 @@ unsigned char *stbi_png_load_from_memory(const unsigned char *buffer, int len, i
    bitmap=[[NSData alloc] initWithBytesNoCopy:pixels length:bytesPerRow*height];
 
    KGDataProvider *provider=[[KGDataProvider alloc] initWithData:bitmap];
-   KGColorSpace *colorSpace=[[KGColorSpace alloc] initWithGenericRGB];
+   KGColorSpace *colorSpace=[[KGColorSpace alloc] initWithDeviceRGB];
    KGImage *image=[[KGImage alloc] initWithWidth:width height:height bitsPerComponent:8 bitsPerPixel:bitsPerPixel bytesPerRow:bytesPerRow
       colorSpace:colorSpace bitmapInfo:kCGBitmapByteOrder32Big provider:provider decode:NULL interpolate:NO renderingIntent:kCGRenderingIntentDefault];
       

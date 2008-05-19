@@ -27,7 +27,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSWindow-Private.h>
 #import <AppKit/NSMenu.h>
 #import <AppKit/NSCursor.h>
-#import <AppKit/NSColor.h>
+#import <AppKit/NSColor_CGColor.h>
+#import <AppKit/KGColorSpace.h>
 #import <AppKit/NSPrintInfo.h>
 #import <AppKit/NSSavePanel-Win32.h>
 #import <AppKit/NSOpenPanel-Win32.h>
@@ -234,20 +235,29 @@ BOOL CALLBACK monitorEnumerator(HMONITOR hMonitor,HDC hdcMonitor,LPRECT rect,LPA
     { nil, 0 }
    };
    int i;
-
+   CGColorSpaceRef colorSpace=[[KGColorSpace alloc] initWithPlatformRGB];
 
    for(i=0;table[i].name!=nil;i++){
-    LOGBRUSH contents;
-    NSColor *color;
+    LOGBRUSH   contents;
+    CGColorRef colorRef;
+    CGFloat    components[4];
+    NSColor   *color;
 
     GetObject(GetSysColorBrush(table[i].value),sizeof(LOGBRUSH),&contents);
 
-    color=[NSColor colorWithDeviceRed:GetRValue(contents.lbColor)/255.0
-      green:GetGValue(contents.lbColor)/255.0
-       blue:GetBValue(contents.lbColor)/255.0 alpha:1.0];
+    components[0]=GetRValue(contents.lbColor)/255.0;
+    components[1]=GetGValue(contents.lbColor)/255.0;
+    components[2]=GetBValue(contents.lbColor)/255.0;
+    components[3]=1;
+    
+    colorRef=CGColorCreate(colorSpace,components);
 
+    color=[NSColor_CGColor colorWithColorRef:colorRef];
+    CGColorRelease(colorRef);
     [_nameToColor setObject:color forKey:table[i].name];
    }
+   
+   CGColorSpaceRelease(colorSpace);
 }
 
 -(NSColor *)colorWithName:(NSString *)colorName {

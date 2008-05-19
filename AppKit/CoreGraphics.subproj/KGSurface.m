@@ -489,7 +489,7 @@ static BOOL initFunctionsForParameters(KGSurface *self,size_t bitsPerComponent,s
        break;
        
       case 32:
-       if([colorSpace type]==KGColorSpaceGenericRGB){
+       if([colorSpace type]==KGColorSpaceDeviceRGB){
 
         switch(bitmapInfo&kCGBitmapByteOrderMask){
          case kCGBitmapByteOrderDefault:
@@ -508,7 +508,7 @@ static BOOL initFunctionsForParameters(KGSurface *self,size_t bitsPerComponent,s
           return YES;
         }
        }
-       else if([colorSpace type]==KGColorSpaceGenericCMYK){
+       else if([colorSpace type]==KGColorSpaceDeviceCMYK){
         switch(bitmapInfo&kCGBitmapByteOrderMask){
          case kCGBitmapByteOrderDefault:
          case kCGBitmapByteOrder16Little:

@@ -282,7 +282,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)setShadowOffset:(CGSize)offset blur:(float)blur {
-   KGColorSpace *colorSpace=[[KGColorSpace alloc] initWithGenericRGB];
+   KGColorSpace *colorSpace=[[KGColorSpace alloc] initWithDeviceRGB];
    float         components[4]={0,0,0,1.0/3.0};
 
    _shadowOffset=offset;

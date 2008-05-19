@@ -58,12 +58,6 @@ typedef struct {
    CGFloat     sidePre[MAX_SAMPLES];
 } Edge;
 
-typedef struct {
-   CGFloat		x;
-   CGFloat		y;
-   CGFloat		weight;
-} Sample;
-
 typedef void (*KGRasterizeBlendSpan_RGBAffff)(KGRGBAffff *src,KGRGBAffff *dst,int length);
 
 @interface KGRasterizer : NSObject {    
@@ -80,10 +74,13 @@ typedef void (*KGRasterizeBlendSpan_RGBAffff)(KGRGBAffff *src,KGRGBAffff *dst,in
     Edge  *_edgePool;
     Edge **_edges;
     BOOL    _antialias;
+    
 	int     numSamples;
 	CGFloat sumWeights;
 	CGFloat fradius;		//max offset of the sampling points from a pixel center
-	Sample  samples[MAX_SAMPLES];
+    CGFloat samplesX[MAX_SAMPLES];
+    CGFloat samplesY[MAX_SAMPLES];
+    CGFloat samplesWeight[MAX_SAMPLES];
 }
 
 KGRasterizer *KGRasterizerAlloc();

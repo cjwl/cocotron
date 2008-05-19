@@ -23,15 +23,15 @@ CGColorRef CGColorCreate(CGColorSpaceRef colorSpace,const CGFloat *components) {
 }
 
 CGColorRef CGColorCreateGenericGray(CGFloat gray,CGFloat a) {
-   return [[KGColor alloc] initWithGenericGray:gray alpha:a];
+   return [[KGColor alloc] initWithDeviceGray:gray alpha:a];
 }
 
 CGColorRef CGColorCreateGenericRGB(CGFloat r,CGFloat g,CGFloat b,CGFloat a) {
-   return [[KGColor alloc] initWithGenericRed:r green:g blue:b alpha:a];
+   return [[KGColor alloc] initWithDeviceRed:r green:g blue:b alpha:a];
 }
 
 CGColorRef CGColorCreateGenericCMYK(CGFloat c,CGFloat m,CGFloat y,CGFloat k,CGFloat a) {
-   return [[KGColor alloc] initWithGenericCyan:c magenta:m yellow:y black:k alpha:a];
+   return [[KGColor alloc] initWithDeviceCyan:c magenta:m yellow:y black:k alpha:a];
 }
 
 CGColorRef CGColorCreateWithPattern(CGColorSpaceRef colorSpace,CGPatternRef pattern,const CGFloat *components) {

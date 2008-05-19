@@ -360,13 +360,13 @@
    [[KGColor alloc] initWithColorSpace:colorSpace components:ccomponents]
 
 #define CGColorCreateGenericGray(gray,a) \
-   [[KGColor alloc] initWithGenericGray:gray alpha:a]
+   [[KGColor alloc] initWithDeviceGray:gray alpha:a]
 
 #define CGColorCreateGenericRGB(r,g,b,a) \
-   [[KGColor alloc] initWithGenericRed:r green:g blue:b alpha:a]
+   [[KGColor alloc] initWithDeviceRed:r green:g blue:b alpha:a]
 
 #define CGColorCreateGenericCMYK(c,m,y,k,a) \
-   [[KGColor alloc] initWithGenericCyan:c magenta:m yellow:y black:k alpha:a]
+   [[KGColor alloc] initWithDeviceCyan:c magenta:m yellow:y black:k alpha:a]
 
 #define CGColorCreateWithPattern(colorSpace,pattern,ccomponents) \
    [[KGColor alloc] initWithColorSpace:colorSpace pattern:pattern components:ccomponents]
@@ -398,13 +398,13 @@
 // CGColorSpace
 
 #define CGColorSpaceCreateDeviceRGB() \
-    [[KGColorSpace alloc] initWithGenericRGB]
+    [[KGColorSpace alloc] initWithDeviceRGB]
 
 #define CGColorSpaceCreateDeviceGray() \
-    [[KGColorSpace alloc] initWithGenericGray]
+    [[KGColorSpace alloc] initWithDeviceGray]
 
 #define CGColorSpaceCreateDeviceCMYK() \
-    [[KGColorSpace alloc] initWithGenericCMYK]
+    [[KGColorSpace alloc] initWithDeviceCMYK]
 
 // CGImage
 

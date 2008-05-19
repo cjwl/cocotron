@@ -37,16 +37,78 @@ static NSRect Win32TransformRect(CGAffineTransform matrix,NSRect rect) {
   return NSMakeRect(point1.x,point1.y,point2.x-point1.x,point2.y-point1.y);
 }
 
-static COLORREF RGBFromColor(KGColor *color){
-   int    count=[color numberOfComponents];
-   float *components=[color components];
+static inline void GrayAToRGBA(float *input,float *output){
+   output[0]=input[0];
+   output[1]=input[0];
+   output[2]=input[0];
+   output[3]=input[1];
+}
+
+static inline void RGBAToRGBA(float *input,float *output){
+   output[0]=input[0];
+   output[1]=input[1];
+   output[2]=input[2];
+   output[3]=input[3];
+}
+
+static inline void CMYKAToRGBA(float *input,float *output){
+   float white=1-input[3];
    
-   if(count==2)
-    return RGB(components[0]*255,components[0]*255,components[0]*255);
-   if(count==4)
-    return RGB(components[0]*255,components[1]*255,components[2]*255);
+   output[0]=(input[0]>white)?0:white-input[0];
+   output[1]=(input[1]>white)?0:white-input[1];
+   output[2]=(input[2]>white)?0:white-input[2];
+   output[3]=input[4];
+}
+
+
+static COLORREF gammaAdjustedRGBFromComponents(float r,float g,float b){
+// lame gamma adjustment so that non-system colors appear similar to those on a Mac
+
+   const float assumedGamma=1.3;
+   const float displayGamma=2.2;
+
+   r=pow(r,assumedGamma/displayGamma);
+   if(r>1.0)
+    r=1.0;
+
+   g=pow(g,assumedGamma/displayGamma);
+   if(g>1.0)
+    g=1.0;
+
+   b=pow(b,assumedGamma/displayGamma);
+   if(b>1.0)
+    b=1.0;
     
-   return RGB(0,0,0);
+   return RGB(r*255,g*255,b*255);
+}
+
+static COLORREF RGBFromColor(KGColor *color){
+   KGColorSpace *colorSpace=[color colorSpace];
+   float        *components=[color components];
+   
+   switch([colorSpace type]){
+
+    case KGColorSpaceDeviceGray:
+     return gammaAdjustedRGBFromComponents(components[0],components[0],components[0]);
+     
+    case KGColorSpaceDeviceRGB:
+     return gammaAdjustedRGBFromComponents(components[0],components[1],components[2]);
+     
+    case KGColorSpaceDeviceCMYK:{
+      float rgba[4];
+      
+      CMYKAToRGBA(components,rgba);
+      return gammaAdjustedRGBFromComponents(rgba[0],rgba[1],rgba[2]);
+     }
+     break;
+     
+     case KGColorSpacePlatformRGB:
+     return RGB(components[0]*255,components[1]*255,components[2]*255);
+          
+    default:
+     NSLog(@"GDI context can't translate from colorspace %@",colorSpace);
+     return RGB(0,0,0);
+   }
 }
 
 static RECT NSRectToRECT(NSRect rect) {
@@ -344,29 +406,6 @@ static inline float axialBandIntervalFromMagnitude(KGFunction *function,float ma
    return magnitude/4; // 4== arbitrary
 }
 
-static inline void GrayAToRGBA(float *input,float *output){
-   output[0]=input[0];
-   output[1]=input[0];
-   output[2]=input[0];
-   output[3]=input[1];
-}
-
-static inline void RGBAToRGBA(float *input,float *output){
-   output[0]=input[0];
-   output[1]=input[1];
-   output[2]=input[2];
-   output[3]=input[3];
-}
-
-static inline void CMYKAToRGBA(float *input,float *output){
-   float white=1-input[3];
-   
-   output[0]=(input[0]>white)?0:white-input[0];
-   output[1]=(input[1]>white)?0:white-input[1];
-   output[2]=(input[2]>white)?0:white-input[2];
-   output[3]=input[4];
-}
-
 #ifndef GRADIENT_FILL_RECT_H
 #define GRADIENT_FILL_RECT_H 0
 #endif
@@ -414,15 +453,16 @@ static inline void CMYKAToRGBA(float *input,float *output){
 
    switch(colorSpaceType){
 
-    case KGColorSpaceGenericGray:
+    case KGColorSpaceDeviceGray:
      outputToRGBA=GrayAToRGBA;
      break;
      
-    case KGColorSpaceGenericRGB:
+    case KGColorSpaceDeviceRGB:
+    case KGColorSpacePlatformRGB:
      outputToRGBA=RGBAToRGBA;
      break;
      
-    case KGColorSpaceGenericCMYK:
+    case KGColorSpaceDeviceCMYK:
      outputToRGBA=CMYKAToRGBA;
      break;
      
@@ -722,15 +762,16 @@ static void extend(HDC dc,int i,int direction,float bandInterval,NSPoint startPo
 
    switch(colorSpaceType){
 
-    case KGColorSpaceGenericGray:
+    case KGColorSpaceDeviceGray:
      outputToRGBA=GrayAToRGBA;
      break;
      
-    case KGColorSpaceGenericRGB:
+    case KGColorSpaceDeviceRGB:
+    case KGColorSpacePlatformRGB:
      outputToRGBA=RGBAToRGBA;
      break;
      
-    case KGColorSpaceGenericCMYK:
+    case KGColorSpaceDeviceCMYK:
      outputToRGBA=CMYKAToRGBA;
      break;
      

@@ -11,9 +11,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @class KGPDFObject,KGPDFContext;
 
 typedef enum {
-   KGColorSpaceGenericGray,
-   KGColorSpaceGenericRGB,
-   KGColorSpaceGenericCMYK,
+   KGColorSpaceDeviceGray,
+   KGColorSpaceDeviceRGB,
+   KGColorSpaceDeviceCMYK,
+   KGColorSpacePlatformRGB, // The platform color space, e.g. System colors
    KGColorSpaceIndexed
 } KGColorSpaceType;
 
@@ -23,9 +24,10 @@ typedef enum {
 
 -(KGColorSpaceType)type;
 
--initWithGenericGray;
--initWithGenericRGB;
--initWithGenericCMYK;
+-initWithDeviceGray;
+-initWithDeviceRGB;
+-initWithDeviceCMYK;
+-initWithPlatformRGB;
 -initWithColorSpace:(KGColorSpace *)baseColorSpace hival:(unsigned)hival bytes:(const unsigned char *)bytes;
 
 -(unsigned)numberOfComponents;
