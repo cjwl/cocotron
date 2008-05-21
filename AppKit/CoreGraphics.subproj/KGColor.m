@@ -134,6 +134,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(KGColor *)convertToColorSpace:(KGColorSpace *)otherSpace {
+   return nil;
 }
 
 @end

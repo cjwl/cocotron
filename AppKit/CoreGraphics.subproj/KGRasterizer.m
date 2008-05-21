@@ -159,7 +159,6 @@ void KGRasterizerSetShouldAntialias(KGRasterizer *self,BOOL antialias) {
 
  */
         // The Quartz AA filter is different than this
-        // 8, 16 also work, but all of them generate misdrawing with the classic test & stroking, this might be a fill bug
 		self->numSamples = 64;
 		self->fradius = 0.6;
         int i;
@@ -257,13 +256,16 @@ static void sortEdgesByMinY(Edge **edges,int count,Edge **B){
 static void initEdgeSidePre(Edge *edge,CGFloat *samplesX,CGFloat *samplesY,int numSamples,CGFloat pcy){
    CGFloat *sidePre=edge->sidePre;
    int s;
-        
+   
    for(s=0;s<numSamples;s++){
     CGFloat spy = pcy+samplesY[s];
-    if(spy >= edge->v0.y && spy < edge->v1.y)
-     sidePre[s] = -(spy*edge->normal.y - edge->cnst + samplesX[s]*edge->normal.x)-0.5f*edge->normal.x;
-    else
-     sidePre[s]=-LONG_MAX; // arbitrary large number
+    if(spy >= edge->v0.y && spy < edge->v1.y){
+
+     sidePre[s] = -(spy*edge->normal.y + samplesX[s]*edge->normal.x)-0.5f*edge->normal.x;
+    }
+    else {
+     sidePre[s]=-INT_MAX;
+    }
    }
 }
 
@@ -313,25 +315,6 @@ static void incrementEdgeForAET(Edge *edge,CGFloat cminy,CGFloat cmaxy,CGFloat f
    edge->maxx = maxx;
 }
 
-/*
-  
-  Aliased Drawing
-  
-  Apple's aliased drawing appears to use the same scanline fill as the anti-aliased drawing, the difference
-  being that when the coverage value is greater than 0 it is promoted to 1. This makes for more filled out
-  shapes, we do that here and it matchs much better than the 1 sample filter. As the quality of the AA filter
-  is improved, it matches Apple's drawing more closely for both AA and non-AA. Thin lines have the largest
-  amount of error, there are probably scan conversion adjustments being made in Apple's.
-  
-  Edge Clipping
-  
-  We can easily clip edges which fall below or above the viewport and do that. Edges which are outside the x
-  values of the viewport must be clipped more carefully as they affect winding on minx and coverage on maxx,
-  we don't do that here yet. Apple clearly does it as performance goes up when most of the edges are
-  outside minx/maxx. The more edges you can keep out of the AET the better.
-
- */
- 
 void KGRasterizerFill(KGRasterizer *self,VGFillRule fillRule) {
 	RI_ASSERT(fillRule == VG_EVEN_ODD || fillRule == VG_NON_ZERO);
 
@@ -475,16 +458,20 @@ void KGRasterizerFill(KGRasterizer *self,VGFillRule fillRule) {
              else {
               int      direction=edge->direction;
               CGFloat *pre=edge->sidePre;
+              CGFloat *preEnd=pre+self->numSamples;
               int     *windptr=winding;
-              CGFloat  pcxnormal=scanx*edge->normal.x;
+              // Due to numerical inaccuracy edge->cnst needs to be substracted here instead of in sidePre
+              CGFloat  pcxnormal=scanx*edge->normal.x-edge->cnst;
               int      rightOfThisEdge=0;
               
-              for(s=0;s<self->numSamples;s++,windptr++){
-               if(pcxnormal<=*pre++) {
+              do{
+               if(pcxnormal<=*pre) {
                 *windptr+=direction;
  	 		    rightOfThisEdge+=direction;
                }
-              }
+               windptr++;
+               pre++;
+              }while(pre<preEnd);
 
               rightOfLastEdge&=(ABS(rightOfThisEdge)==self->numSamples)?YES:NO;
               if(rightOfLastEdge){
