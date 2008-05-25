@@ -69,11 +69,11 @@ static unsigned __stdcall nsThreadStartThread(void* t)
     NSThread    *thread = t;
 	NSPlatformSetCurrentThread(thread);
 	[thread setExecuting:YES];
-    [thread main];
+   [thread main];
 	[thread setExecuting:NO];
 	[thread setFinished:YES];
-	NSPlatformSetCurrentThread(nil);
-    [thread release];
+   [thread release];
+   NSPlatformSetCurrentThread(nil);
 	return 0;
 }
 
@@ -128,12 +128,16 @@ static unsigned __stdcall nsThreadStartThread(void* t)
 - (void) dealloc {
 	if([self isExecuting])
 		[NSException raise:NSInternalInconsistencyException format:@"trying to dealloc thread %@ while it's running", self];
-	[_name release];
-	[_dictionary release];
-	[_sharedObjects release];
-   [_sharedObjectLock release];
-	[_argument release];
-	[_target release];
+	[_dictionary release]; _dictionary=nil;
+
+   id oldSharedObjects=_sharedObjects;
+   _sharedObjects=nil;
+	[oldSharedObjects release];
+
+   [_sharedObjectLock release]; _sharedObjectLock=nil;
+   [_name release]; _name=nil;
+	[_argument release]; _argument=nil;
+	[_target release]; _target=nil;
 	[super dealloc];
 }
 
@@ -221,8 +225,9 @@ static unsigned __stdcall nsThreadStartThread(void* t)
 }
 
 static inline id _NSThreadSharedInstance(NSThread *thread,NSString *className,BOOL create) {
-
    NSMutableDictionary *shared=thread->_sharedObjects;
+   if(!shared)
+      return nil;
 	id result=nil;
    [thread->_sharedObjectLock lock];
    result=[shared objectForKey:className];
@@ -230,10 +235,11 @@ static inline id _NSThreadSharedInstance(NSThread *thread,NSString *className,BO
 
    if(result==nil && create){
       // do not hold lock during object allocation
-      result=[[NSClassFromString(className) new] autorelease];
+      result=[NSClassFromString(className) new];
       [thread->_sharedObjectLock lock];
       [shared setObject:result forKey:className];
       [thread->_sharedObjectLock unlock];
+      [result release];
    }
 
    return result;
@@ -291,10 +297,13 @@ void NSThreadSetUncaughtExceptionHandler(NSUncaughtExceptionHandler *function) {
 -(void)_performSelectorOnThreadHelper:(NSArray*)selectorAndArguments {
 	NSLock* waitingLock=[selectorAndArguments objectAtIndex:0];
 	SEL selector=NSSelectorFromString([selectorAndArguments objectAtIndex:1]);
-	id object=[[selectorAndArguments objectAtIndex:2] pointerValue];
+	id object=nil;
+   if([selectorAndArguments count]==3)
+      object=[[selectorAndArguments objectAtIndex:2] pointerValue];
 
 	[self performSelector:selector withObject:object];
 	[waitingLock unlock];
+   [selectorAndArguments release];
 }
 
 - (void)performSelector:(SEL)selector onThread:(NSThread *)thread withObject:(id)object waitUntilDone:(BOOL)waitUntilDone modes:(NSArray *)modes
@@ -313,9 +322,10 @@ void NSThreadSetUncaughtExceptionHandler(NSUncaughtExceptionHandler *function) {
 				[NSException raise:NSInvalidArgumentException format:@"thread %@ has no runloop in %@", thread, NSStringFromSelector(_cmd)];
 			NSLock *waitingLock=[NSLock new];
 			[waitingLock lock];
+         // array retain balanced in _performSelectorOnThreadHelper:
 			[runloop performSelector:@selector(_performSelectorOnThreadHelper:)
 							  target:self 
-							argument:[NSArray arrayWithObjects:waitingLock, NSStringFromSelector(selector), [NSValue valueWithPointer:object], nil] 
+							argument:[[NSArray arrayWithObjects:waitingLock, NSStringFromSelector(selector), [NSValue valueWithPointer:object], nil] retain] 
 							   order:0 
 							   modes:modes];
 

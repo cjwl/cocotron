@@ -26,14 +26,17 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    LPMALLOC    mallocInterface;
    char        displayName[MAX_PATH+1];
 
-   browseInfo.hwndOwner=[(Win32Window *)[[NSApp keyWindow] platformWindow] windowHandle];
-   browseInfo.pidlRoot=NULL;
-   browseInfo.pszDisplayName=displayName;
-   browseInfo.lpszTitle=[_dialogTitle cString];
-   browseInfo.ulFlags=0;
-   browseInfo.lpfn=NULL;
-   browseInfo.lParam=0;
-   browseInfo.iImage=0;
+   @synchronized(self)
+	{
+      browseInfo.hwndOwner=[(Win32Window *)[[NSApp keyWindow] platformWindow] windowHandle];
+      browseInfo.pidlRoot=NULL;
+      browseInfo.pszDisplayName=displayName;
+      browseInfo.lpszTitle=[_dialogTitle cString];
+      browseInfo.ulFlags=0;
+      browseInfo.lpfn=NULL;
+      browseInfo.lParam=0;
+      browseInfo.iImage=0;
+   }
 
    [(Win32Display *)[NSDisplay currentDisplay] stopWaitCursor];
    itemIdList=SHBrowseForFolder(&browseInfo);
@@ -51,14 +54,17 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    mallocInterface->lpVtbl->Free(mallocInterface,itemIdList);
    mallocInterface->lpVtbl->Release(mallocInterface);
 
-   [_filenames release];
-   _filenames=[[NSArray arrayWithObject:[NSString stringWithCString:displayName]] retain];   
-
-   if([_filenames count]>0){
-    [_filename release];
-    _filename=[[_filenames objectAtIndex:0] copy];
-    [_directory release];
-    _directory=[[_filename stringByDeletingLastPathComponent] copy];
+   @synchronized(self)
+	{
+      [_filenames release];
+      _filenames=[[NSArray arrayWithObject:[NSString stringWithCString:displayName]] retain];   
+      
+      if([_filenames count]>0){
+         [_filename release];
+         _filename=[[_filenames objectAtIndex:0] copy];
+         [_directory release];
+         _directory=[[_filename stringByDeletingLastPathComponent] copy];
+      }
    }
 
    return NSOKButton;
@@ -136,71 +142,77 @@ static unsigned *openFileHook(HWND hdlg,UINT uiMsg,WPARAM wParam,LPARAM lParam) 
    }
    *ptr='\0';
 
-   openFileName.lStructSize=sizeof(OPENFILENAME);
-   openFileName.hwndOwner=[(Win32Window *)[[NSApp keyWindow] platformWindow] windowHandle];
-   openFileName.hInstance=NULL;
-   openFileName.lpstrFilter=fileTypes;
-   openFileName.lpstrCustomFilter=NULL;
-   openFileName.nMaxCustFilter=0;
-   openFileName.nFilterIndex=1;
-   strncpy(filename,[_filename fileSystemRepresentation],MAX_PATH);
-   openFileName.lpstrFile=filename;
-   openFileName.nMaxFile=1024;
-   openFileName.lpstrFileTitle=NULL;
-   openFileName.nMaxFileTitle=0;
-   openFileName.lpstrInitialDir=[_directory fileSystemRepresentation];
-   openFileName.lpstrTitle=[_dialogTitle cString];
-   openFileName.Flags=
-    (_allowsMultipleSelection?OFN_ALLOWMULTISELECT:0)|
-    OFN_NOTESTFILECREATE|
-    OFN_EXPLORER|
-    OFN_HIDEREADONLY|
-    OFN_ENABLEHOOK
-    ;
-   openFileName.nFileOffset=0;
-   openFileName.nFileExtension=0;
-   openFileName.lpstrDefExt=NULL;
-   openFileName.lCustData=(LPARAM)types;
-   openFileName.lpfnHook=(void *)openFileHook;
-   openFileName.lpTemplateName=NULL;
-
+   @synchronized(self)
+	{
+      openFileName.lStructSize=sizeof(OPENFILENAME);
+      openFileName.hwndOwner=[(Win32Window *)[[NSApp keyWindow] platformWindow] windowHandle];
+      openFileName.hInstance=NULL;
+      openFileName.lpstrFilter=fileTypes;
+      openFileName.lpstrCustomFilter=NULL;
+      openFileName.nMaxCustFilter=0;
+      openFileName.nFilterIndex=1;
+      strncpy(filename,[_filename fileSystemRepresentation],MAX_PATH);
+      openFileName.lpstrFile=filename;
+      openFileName.nMaxFile=1024;
+      openFileName.lpstrFileTitle=NULL;
+      openFileName.nMaxFileTitle=0;
+      openFileName.lpstrInitialDir=[_directory fileSystemRepresentation];
+      openFileName.lpstrTitle=[_dialogTitle cString];
+      openFileName.Flags=
+      (_allowsMultipleSelection?OFN_ALLOWMULTISELECT:0)|
+      OFN_NOTESTFILECREATE|
+      OFN_EXPLORER|
+      OFN_HIDEREADONLY|
+      OFN_ENABLEHOOK
+      ;
+      openFileName.nFileOffset=0;
+      openFileName.nFileExtension=0;
+      openFileName.lpstrDefExt=NULL;
+      openFileName.lCustData=(LPARAM)types;
+      openFileName.lpfnHook=(void *)openFileHook;
+      openFileName.lpTemplateName=NULL;
+   }
+   
    [(Win32Display *)[NSDisplay currentDisplay] stopWaitCursor];
    check=GetOpenFileName(&openFileName);
    [(Win32Display *)[NSDisplay currentDisplay] startWaitCursor];
 
    if(!check && openFileName.lCustData!=0xFFFFFFFF)
     return NSCancelButton;
-
-   [_filenames release];
-   {
-    NSString *firstFile=[NSString stringWithCString:openFileName.lpstrFile];
-    int       offset=openFileName.nFileOffset;
-
-    if(offset<[firstFile length])
-     _filenames=[[NSArray arrayWithObject:firstFile] retain];
-    else {
-     NSMutableArray *list=[NSMutableArray array];
-
-     while(YES){
-      NSString *next=[NSString stringWithCString:openFileName.lpstrFile+offset];
-
-      if([next length]==0)
-       break;
-
-      [list addObject:[firstFile stringByAppendingPathComponent:next]];
-      offset+=[next length]+1;
-     }
-     _filenames=[list retain];
-    }
-   }
-   if([_filenames count]>0){
-    [_filename release];
-    _filename=[[_filenames objectAtIndex:0] copy];
-    [_directory release];
-    _directory=[[_filename stringByDeletingLastPathComponent] copy];
-   }
-
    
+   @synchronized(self)
+	{
+
+      [_filenames release];
+      {
+         NSString *firstFile=[NSString stringWithCString:openFileName.lpstrFile];
+         int       offset=openFileName.nFileOffset;
+         
+         if(offset<[firstFile length])
+            _filenames=[[NSArray arrayWithObject:firstFile] retain];
+         else {
+            NSMutableArray *list=[NSMutableArray array];
+            
+            while(YES){
+               NSString *next=[NSString stringWithCString:openFileName.lpstrFile+offset];
+               
+               if([next length]==0)
+                  break;
+               
+               [list addObject:[firstFile stringByAppendingPathComponent:next]];
+               offset+=[next length]+1;
+            }
+            _filenames=[list retain];
+         }
+      }
+      if([_filenames count]>0){
+         [_filename release];
+         _filename=[[_filenames objectAtIndex:0] copy];
+         [_directory release];
+         _directory=[[_filename stringByDeletingLastPathComponent] copy];
+      }
+   }
+      
    return NSOKButton;
 }
 

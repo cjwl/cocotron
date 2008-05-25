@@ -40,10 +40,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(NSString *)filename {
+   id ret=nil;
 	@synchronized(self)
 	{
-		return _filename;
+		ret=[[_filename copy] autorelease];
 	}
+   return ret;
 }
 
 -(int)runModalForDirectory:(NSString *)directory file:(NSString *)file {
@@ -89,10 +91,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(NSString*)requiredFileType
 {
+   id ret=nil;
 	@synchronized(self)
 	{
-		return [[_requiredFileType retain] autorelease];
+		ret=[[_requiredFileType copy] autorelease];
 	}
+   return ret;
 }
 
 -(void)setMessage:(NSString*)message;
@@ -109,10 +113,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(NSString*)message;
 {
+   id ret=nil;
 	@synchronized(self)
 	{
-		return [[_message retain] autorelease];
+		ret=[[_message copy] autorelease];
 	}
+   return ret;
 }
 
 -(void)setTreatsFilePackagesAsDirectories:(BOOL)flag {
@@ -161,17 +167,18 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 {
 	id pool=[NSAutoreleasePool new];
 	int ret=[self runModalForDirectory:path file:name];
-	
+   
 	id inv=[NSInvocation invocationWithMethodSignature:[self methodSignatureForSelector:@selector(_selector_savePanelDidEnd:returnCode:contextInfo:)]];
 	
 	[inv setTarget:modalDelegate];
 	[inv setSelector:didEndSelector];
 	[inv setArgument:&self atIndex:2];
-	[inv setArgument:&didEndSelector atIndex:3];	
+	[inv setArgument:&ret atIndex:3];
 	[inv setArgument:&contextInfo atIndex:4];
 	[inv retainArguments];
 	
-	[inv performSelectorOnMainThread:@selector(invoke) withObject:nil waitUntilDone:NO];
+	[inv performSelectorOnMainThread:@selector(invoke) withObject:nil waitUntilDone:YES];
+   [pool release];
 }
 
 @end

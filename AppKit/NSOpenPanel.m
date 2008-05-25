@@ -35,7 +35,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(NSArray *)filenames {
-   return _filenames;
+   id ret=nil;
+   @synchronized(self)
+   {
+      ret=[[_filenames copy] autorelease];
+   }
+   return ret;
 }
 
 -(NSArray *)URLs {
@@ -87,6 +92,54 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)setCanChooseFiles:(BOOL)flag {
    _canChooseFiles=flag;
+}
+
+#pragma mark -
+#pragma mark Sheet methods
+- (void)beginSheetForDirectory:(NSString *)path
+                          file:(NSString *)name 
+                         types:(NSArray *)fileTypes
+                modalForWindow:(NSWindow *)docWindow
+                 modalDelegate:(id)modalDelegate 
+                didEndSelector:(SEL)didEndSelector 
+                   contextInfo:(void *)contextInfo
+{
+	id inv=[NSInvocation invocationWithMethodSignature:[self methodSignatureForSelector:@selector(_background_beginSheetForDirectory:file:types:modalForWindow:modalDelegate:didEndSelector:contextInfo:)]];
+	[inv setTarget:self];
+	[inv setSelector:@selector(_background_beginSheetForDirectory:file:types:modalForWindow:modalDelegate:didEndSelector:contextInfo:)];
+	[inv setArgument:&path atIndex:2];
+	[inv setArgument:&name atIndex:3];
+   [inv setArgument:&fileTypes atIndex:4];
+	[inv setArgument:&docWindow atIndex:5];
+	[inv setArgument:&modalDelegate atIndex:6];
+	[inv setArgument:&didEndSelector atIndex:7];
+	[inv setArgument:&contextInfo atIndex:8];
+	[inv retainArguments];
+	[inv performSelectorInBackground:@selector(invoke) withObject:nil];
+}
+
+- (void)_background_beginSheetForDirectory:(NSString *)path
+                                      file:(NSString *)name 
+                                     types:(NSArray *)fileTypes
+                            modalForWindow:(NSWindow *)docWindow
+                             modalDelegate:(id)modalDelegate 
+                            didEndSelector:(SEL)didEndSelector 
+                               contextInfo:(void *)contextInfo
+{
+	id pool=[NSAutoreleasePool new];
+	int ret=[self runModalForDirectory:path file:name types:fileTypes];
+	
+	id inv=[NSInvocation invocationWithMethodSignature:[self methodSignatureForSelector:@selector(_selector_savePanelDidEnd:returnCode:contextInfo:)]];
+	
+	[inv setTarget:modalDelegate];
+	[inv setSelector:didEndSelector];
+	[inv setArgument:&self atIndex:2];
+	[inv setArgument:&ret atIndex:3];
+	[inv setArgument:&contextInfo atIndex:4];
+	[inv retainArguments];
+	
+	[inv performSelectorOnMainThread:@selector(invoke) withObject:nil waitUntilDone:NO];
+   [pool release];
 }
 
 @end
