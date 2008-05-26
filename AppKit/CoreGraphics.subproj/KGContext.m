@@ -745,7 +745,7 @@ static inline KGGraphicsState *currentState(KGContext *self){
 }
 
 -(void)clearRect:(CGRect)rect {
-// doc.s are not clear. CGContextClearRect resets the path and does not affect gstate color
+// doc.s are not clear. tests say CGContextClearRect resets the path and does not affect gstate color
    [self saveGState];
    [self setBlendMode:kCGBlendModeCopy]; // does it set the blend mode?
    [self setGrayFillColor:0:0];

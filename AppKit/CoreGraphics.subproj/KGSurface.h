@@ -34,7 +34,6 @@
 
 typedef unsigned int	RIuint32;
 typedef short			RIint16;
-typedef unsigned short	RIuint16;
 typedef unsigned int VGbitfield;
 
 typedef enum {
@@ -44,9 +43,9 @@ typedef enum {
 } VGTilingMode;
 
 typedef enum {
-  VG_DRAW_IMAGE_NORMAL                        = 0x1F00,
-  VG_DRAW_IMAGE_MULTIPLY                      = 0x1F01,
-  VG_DRAW_IMAGE_STENCIL                       = 0x1F02
+   VG_DRAW_IMAGE_NORMAL,
+   VG_DRAW_IMAGE_MULTIPLY,
+   VG_DRAW_IMAGE_STENCIL,
 } KGSurfaceMode;
 
 typedef enum {
@@ -113,7 +112,7 @@ typedef struct VGColor {
 	VGColorInternalFormat	m_format;
 } VGColor;
 
-static inline VGColor VGColorFromKGRGBA_ffff(KGRGBAffff rgba,VGColorInternalFormat format){
+static inline VGColor VGColorFromRGBAffff(KGRGBAffff rgba,VGColorInternalFormat format){
    VGColor result;
    
    result.r=rgba.r;
@@ -207,56 +206,48 @@ static inline VGColor VGColorUnpremultiply(VGColor result){
 
 VGColor VGColorConvert(VGColor result,VGColorInternalFormat outputFormat);
 
-static inline void convertSpan(KGRGBAffff *span,int length,VGColorInternalFormat fromFormat,VGColorInternalFormat toFormat){
+static inline void KGRGBAffffConvertSpan(KGRGBAffff *span,int length,VGColorInternalFormat fromFormat,VGColorInternalFormat toFormat){
    if(fromFormat!=toFormat){
     int i;
    
     for(i=0;i<length;i++)
-     span[i]=KGRGBAffffFromColor(VGColorConvert(VGColorFromKGRGBA_ffff(span[i],fromFormat),toFormat));
+     span[i]=KGRGBAffffFromColor(VGColorConvert(VGColorFromRGBAffff(span[i],fromFormat),toFormat));
    }
 }
 
 
 @class KGSurface;
 
-typedef void (*KGSurfaceWriteSpan_KGRGBA_ffff)(KGSurface *self,int x,int y,KGRGBAffff *span,int length);
+typedef void (*KGSurfaceWriteSpan_RGBA8888)(KGSurface *self,int x,int y,KGRGBA8888 *span,int length);
+typedef void (*KGSurfaceWriteSpan_RGBAffff)(KGSurface *self,int x,int y,KGRGBAffff *span,int length);
 
 @interface KGSurface : KGImage {
-   KGSurfaceWriteSpan_KGRGBA_ffff _writeSpan;
-   
+   KGSurfaceWriteSpan_RGBA8888 _writeRGBA8888;
+   KGSurfaceWriteSpan_RGBAffff _writeRGBAffff;
 } 
 
 KGSurface *KGSurfaceAlloc();
-KGSurface *KGSurfaceInit(KGSurface *self,size_t width,size_t height,size_t bitsPerComponent,size_t bitsPerPixel,KGColorSpace *colorSpace,CGBitmapInfo bitmapInfo,KGSurfaceFormat imageFormat);
+KGSurface *KGSurfaceInit(KGSurface *self,size_t width,size_t height,size_t bitsPerComponent,size_t bitsPerPixel,KGColorSpace *colorSpace,CGBitmapInfo bitmapInfo,KGImageFormat imageFormat);
 //use data from a memory buffer. NOTE: data is not copied, so it is user's responsibility to make sure the data remains valid while the KGSurface is in use.
-KGSurface *KGSurfaceInitWithBytes(KGSurface *self,size_t width,size_t height,size_t bitsPerComponent,size_t bitsPerPixel,size_t bytesPerRow,KGColorSpace *colorSpace,CGBitmapInfo bitmapInfo,KGSurfaceFormat imageFormat,RIuint8* data);
+KGSurface *KGSurfaceInitWithBytes(KGSurface *self,size_t width,size_t height,size_t bitsPerComponent,size_t bitsPerPixel,size_t bytesPerRow,KGColorSpace *colorSpace,CGBitmapInfo bitmapInfo,KGImageFormat imageFormat,RIuint8* data);
 
 void KGSurfaceDealloc(KGSurface *self);
 
 BOOL KGSurfaceIsValidFormat(int format);
 
-VGPixelDecode KGSurfaceParametersToPixelLayout(KGSurfaceFormat format,size_t *bitsPerPixel,VGColorInternalFormat *colorFormat);
-
 void KGSurfaceClear(KGSurface *self,VGColor clearColor, int x, int y, int w, int h);
 void KGSurfaceBlit(KGSurface *self,KGSurface * src, int sx, int sy, int dx, int dy, int w, int h, BOOL dither);
 void KGSurfaceMask(KGSurface *self,KGSurface* src, VGMaskOperation operation, int x, int y, int w, int h);
 VGColor KGSurfaceReadPixel(KGImage *self,int x, int y);
-VGColorInternalFormat KGSurfaceReadPremultipliedSpan_ffff(KGSurface *self,int x,int y,KGRGBAffff *span,int length);
 
 void KGSurfaceWritePixel(KGSurface *self,int x, int y, VGColor c);
-void KGSurfaceWritePixelSpan(KGSurface *self,int x,int y,KGRGBAffff *span,int length,VGColorInternalFormat format);
+void KGSurfaceWriteSpan_lRGBA8888_PRE(KGSurface *self,int x,int y,KGRGBA8888 *span,int length);
+void KGSurfaceWriteSpan_lRGBAffff_PRE(KGSurface *self,int x,int y,KGRGBAffff *span,int length);
 
 void KGSurfaceWriteFilteredPixel(KGSurface *self,int x, int y, VGColor c, VGbitfield channelMask);
 
-CGFloat KGSurfaceReadMaskPixel(KGSurface *self,int x, int y);		//can read any image format
-void KGSurfaceReadMaskPixelSpanIntoCoverage(KGSurface *self,int x,int y,CGFloat *coverage,int length);
-
 void KGSurfaceWriteMaskPixel(KGSurface *self,int x, int y, CGFloat m);	//can write only to VG_A_8
 
-
-VGColorInternalFormat KGSurfacePatternSpan(KGImage *self,CGFloat x, CGFloat y, KGRGBAffff *span,int length, CGAffineTransform surfaceToImage, CGPatternTiling distortion);
-
-void KGSurfaceMakeMipMaps(KGImage *self);
 
 void KGSurfaceColorMatrix(KGSurface *self,KGSurface * src, const CGFloat* matrix, BOOL filterFormatLinear, BOOL filterFormatPremultiplied, VGbitfield channelMask);
 void KGSurfaceConvolve(KGSurface *self,KGSurface * src, int kernelWidth, int kernelHeight, int shiftX, int shiftY, const RIint16* kernel, CGFloat scale, CGFloat bias, VGTilingMode tilingMode, VGColor edgeFillColor, BOOL filterFormatLinear, BOOL filterFormatPremultiplied, VGbitfield channelMask);
@@ -264,7 +255,5 @@ void KGSurfaceSeparableConvolve(KGSurface *self,KGSurface * src, int kernelWidth
 void KGSurfaceGaussianBlur(KGSurface *self,KGSurface * src, CGFloat stdDeviationX, CGFloat stdDeviationY, VGTilingMode tilingMode, VGColor edgeFillColor, BOOL filterFormatLinear, BOOL filterFormatPremultiplied, VGbitfield channelMask);
 void KGSurfaceLookup(KGSurface *self,KGSurface * src, const RIuint8 * redLUT, const RIuint8 * greenLUT, const RIuint8 * blueLUT, const RIuint8 * alphaLUT, BOOL outputLinear, BOOL outputPremultiplied, BOOL filterFormatLinear, BOOL filterFormatPremultiplied, VGbitfield channelMask);
 void KGSurfaceLookupSingle(KGSurface *self,KGSurface * src, const RIuint32 * lookupTable, KGSurfaceChannel sourceChannel, BOOL outputLinear, BOOL outputPremultiplied, BOOL filterFormatLinear, BOOL filterFormatPremultiplied, VGbitfield channelMask);
-
-void KGSurfaceReadTexelTilePad(KGImage *self,int u, int v, KGRGBAffff *span,int length);
 
 @end

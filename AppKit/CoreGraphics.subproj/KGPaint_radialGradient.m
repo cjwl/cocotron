@@ -79,21 +79,18 @@ static inline VGColor radialGradientColorAt(KGPaint_radialGradient *self,int x,i
    return VGColorPremultiply(result);
 }
 
-VGColorInternalFormat KGPaintReadPremultipliedRadialGradientSpan(KGPaint_radialGradient *self,int x,int y,KGRGBAffff *span,int length){
-    VGColorInternalFormat result=0;
+void radial_span_lRGBAffff_PRE(KGPaint *selfX,int x,int y,KGRGBAffff *span,int length){
+   KGPaint_radialGradient *self=(KGPaint_radialGradient *)selfX;
    int i;
    
    for(i=0;i<length;i++,x++){
-    VGColor s=radialGradientColorAt(self,x,y);
-    result=s.m_format;
-    span[i]=KGRGBAffffFromColor(s);
+    span[i]=KGRGBAffffFromColor(radialGradientColorAt(self,x,y));
    }
-   return result;
 }
 
 -init {
    [super init];
-        self->_readRGBAffff=(KGPaintReadSpan_RGBAffff)KGPaintReadPremultipliedRadialGradientSpan;
+   self->_read_lRGBAffff_PRE=radial_span_lRGBAffff_PRE;
 	self->m_radialGradientRadius=1.0f;
 	self->m_radialGradientCenter=CGPointMake(0,0);
 	self->m_radialGradientFocalPoint=CGPointMake(0,0);

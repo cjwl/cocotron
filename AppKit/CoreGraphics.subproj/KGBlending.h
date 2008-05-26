@@ -142,6 +142,23 @@ static inline void RGBToHSL(float r,float g,float b,float *huep,float *saturatio
     *luminancep=luminance;
 }
 
+static void KGBlendSpanNormal_8888(KGRGBA8888 *src,KGRGBA8888 *dst,int length){
+// Passes Visual Test
+   int i;
+   
+   for(i=0;i<length;i++){
+    KGRGBA8888 s=src[i];
+    KGRGBA8888 d=dst[i];
+    KGRGBA8888 r;
+    
+    r.r=RI_INT_MIN((unsigned)s.r+((unsigned)d.r*(255-(unsigned)s.a))/255,255);
+    r.g=RI_INT_MIN((unsigned)s.g+((unsigned)d.g*(255-(unsigned)s.a))/255,255);
+    r.b=RI_INT_MIN((unsigned)s.b+((unsigned)d.b*(255-(unsigned)s.a))/255,255);
+    r.a=RI_INT_MIN((unsigned)s.a+((unsigned)d.a*(255-(unsigned)s.a))/255,255);
+    
+    src[i]=r;
+   }
+}
 
 static void KGBlendSpanNormal_ffff(KGRGBAffff *src,KGRGBAffff *dst,int length){
 // Passes Visual Test
@@ -415,6 +432,23 @@ static void KGBlendSpanLuminosity_ffff(KGRGBAffff *src,KGRGBAffff *dst,int lengt
     src[i]=r;
    }
 }
+
+static void KGBlendSpanClear_8888(KGRGBA8888 *src,KGRGBA8888 *dst,int length){
+// Passes Visual Test
+   int i;
+   
+   for(i=0;i<length;i++){
+    KGRGBA8888 r;
+    
+    r.r=0;
+    r.g=0;
+    r.b=0;
+    r.a=0;
+
+    src[i]=r;
+   }
+}
+
 static void KGBlendSpanClear_ffff(KGRGBAffff *src,KGRGBAffff *dst,int length){
 // Passes Visual Test
    int i;
@@ -422,17 +456,40 @@ static void KGBlendSpanClear_ffff(KGRGBAffff *src,KGRGBAffff *dst,int length){
    for(i=0;i<length;i++){
     KGRGBAffff r;
     
-        r.r=0;
-        r.g=0;
-        r.b=0;
-        r.a=0;
+    r.r=0;
+    r.g=0;
+    r.b=0;
+    r.a=0;
 
     src[i]=r;
    }
 }
+
+static void KGBlendSpanCopy_8888(KGRGBA8888 *src,KGRGBA8888 *dst,int length){
+// Passes Visual Test
+   // do nothing src already contains values
+}
+
 static void KGBlendSpanCopy_ffff(KGRGBAffff *src,KGRGBAffff *dst,int length){
 // Passes Visual Test
    // do nothing src already contains values
+}
+
+static void KGBlendSpanSourceIn_8888(KGRGBA8888 *src,KGRGBA8888 *dst,int length){
+// Passes Visual Test
+   int i;
+   
+   for(i=0;i<length;i++){
+    KGRGBA8888 s=src[i];
+    KGRGBA8888 d=dst[i];
+    KGRGBA8888 r;
+    
+    r.r = ((unsigned)s.r * (unsigned)d.a)/255;
+    r.g = ((unsigned)s.g * (unsigned)d.a)/255;
+    r.b = ((unsigned)s.b * (unsigned)d.a)/255;
+    r.a = ((unsigned)s.a * (unsigned)d.a)/255;
+    src[i]=r;
+   }
 }
 
 static void KGBlendSpanSourceIn_ffff(KGRGBAffff *src,KGRGBAffff *dst,int length){
@@ -534,6 +591,7 @@ static void KGBlendSpanDestinationOut_ffff(KGRGBAffff *src,KGRGBAffff *dst,int l
     src[i]=r;
    }
 }
+
 static void KGBlendSpanDestinationAtop_ffff(KGRGBAffff *src,KGRGBAffff *dst,int length){
 // Passes Visual Test
    int i;
@@ -551,6 +609,25 @@ static void KGBlendSpanDestinationAtop_ffff(KGRGBAffff *src,KGRGBAffff *dst,int 
     src[i]=r;
    }
 }
+
+static void KGBlendSpanXOR_8888(KGRGBA8888 *src,KGRGBA8888 *dst,int length){
+// Passes Visual Test
+   int i;
+   
+   for(i=0;i<length;i++){
+    KGRGBA8888 s=src[i];
+    KGRGBA8888 d=dst[i];
+    KGRGBA8888 r;
+    
+    r.r=RI_INT_MIN(((unsigned)s.r*(255-(unsigned)d.a)+(unsigned)d.r*(255-(unsigned)s.a))/255,255);
+    r.g=RI_INT_MIN(((unsigned)s.g*(255-(unsigned)d.a)+(unsigned)d.g*(255-(unsigned)s.a))/255,255);
+    r.b=RI_INT_MIN(((unsigned)s.b*(255-(unsigned)d.a)+(unsigned)d.b*(255-(unsigned)s.a))/255,255);
+    r.a=RI_INT_MIN(((unsigned)s.a*(255-(unsigned)d.a)+(unsigned)d.a*(255-(unsigned)s.a))/255,255);
+    
+    src[i]=r;
+   }
+}
+
 static void KGBlendSpanXOR_ffff(KGRGBAffff *src,KGRGBAffff *dst,int length){
 // Passes Visual Test
    int i;
@@ -568,6 +645,7 @@ static void KGBlendSpanXOR_ffff(KGRGBAffff *src,KGRGBAffff *dst,int length){
     src[i]=r;
    }
 }
+
 static void KGBlendSpanPlusDarker_ffff(KGRGBAffff *src,KGRGBAffff *dst,int length){
 // broken
    int i;
@@ -590,6 +668,25 @@ static void KGBlendSpanPlusDarker_ffff(KGRGBAffff *src,KGRGBAffff *dst,int lengt
     r.a = s.a ;
 //        r.a=RI_MIN(1.0,(1-d.a)+(1-s.a));
 #endif
+    src[i]=r;
+   }
+}
+
+static void KGBlendSpanPlusLighter_8888(KGRGBA8888 *src,KGRGBA8888 *dst,int length){
+// Passes Visual Test
+// Doc.s say: R = MIN(1, S + D). That works
+   int i;
+   
+   for(i=0;i<length;i++){
+    KGRGBA8888 s=src[i];
+    KGRGBA8888 d=dst[i];
+    KGRGBA8888 r;
+    
+    r.r = RI_INT_MIN((unsigned)s.r + (unsigned)d.r, 255);
+    r.g = RI_INT_MIN((unsigned)s.g + (unsigned)d.g, 255);
+    r.b = RI_INT_MIN((unsigned)s.b + (unsigned)d.b, 255);
+    r.a = RI_INT_MIN((unsigned)s.a + (unsigned)d.a, 255);
+
     src[i]=r;
    }
 }

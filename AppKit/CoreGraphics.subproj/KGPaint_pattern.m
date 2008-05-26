@@ -30,13 +30,15 @@
 
 @implementation KGPaint_pattern
 
-static VGColorInternalFormat KGPaintReadPremultipliedPatternSpan(KGPaint_pattern *self,int x,int y,KGRGBAffff *span,int length){
-   return KGSurfacePatternSpan(self->m_pattern,x, y,span,length, self->m_surfaceToPaintMatrix, kCGPatternTilingConstantSpacing);
+static void KGPaintReadPremultipliedPatternSpan(KGPaint *selfX,int x,int y,KGRGBAffff *span,int length){
+   KGPaint_pattern *self=(KGPaint_pattern *)selfX;
+   
+   KGImageReadPatternSpan_lRGBAffff_PRE(self->m_pattern,x, y,span,length, self->m_surfaceToPaintMatrix, kCGPatternTilingConstantSpacing);
 }
 
 -initWithImage:(KGImage *)image {
    [super init];
-   _readRGBAffff=(KGPaintReadSpan_RGBAffff)KGPaintReadPremultipliedPatternSpan;
+   _read_lRGBAffff_PRE=KGPaintReadPremultipliedPatternSpan;
    m_pattern=[image retain];
    return self;
 }

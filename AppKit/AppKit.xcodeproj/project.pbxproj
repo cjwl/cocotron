@@ -684,8 +684,6 @@
 		FE6EE27F0DB91EA8005503A1 /* VGmath.m in Sources */ = {isa = PBXBuildFile; fileRef = FE6EE27D0DB91EA8005503A1 /* VGmath.m */; };
 		FE6EE28E0DB91FDF005503A1 /* KGSurface.h in Headers */ = {isa = PBXBuildFile; fileRef = FE6EE28C0DB91FDF005503A1 /* KGSurface.h */; };
 		FE6EE28F0DB91FDF005503A1 /* KGSurface.m in Sources */ = {isa = PBXBuildFile; fileRef = FE6EE28D0DB91FDF005503A1 /* KGSurface.m */; };
-		FE6EE2E10DB92B05005503A1 /* KGRasterizer.h in Headers */ = {isa = PBXBuildFile; fileRef = FE6EE2DD0DB92B05005503A1 /* KGRasterizer.h */; };
-		FE6EE2E20DB92B05005503A1 /* KGRasterizer.m in Sources */ = {isa = PBXBuildFile; fileRef = FE6EE2DE0DB92B05005503A1 /* KGRasterizer.m */; };
 		FE6EE2E50DB92B11005503A1 /* VGPath.h in Headers */ = {isa = PBXBuildFile; fileRef = FE6EE2E30DB92B11005503A1 /* VGPath.h */; };
 		FE6EE2E60DB92B11005503A1 /* VGPath.m in Sources */ = {isa = PBXBuildFile; fileRef = FE6EE2E40DB92B11005503A1 /* VGPath.m */; };
 		FE7ABEBE0DC2C9BA0060D15B /* CGPDFDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = FE7ABEBD0DC2C9BA0060D15B /* CGPDFDocument.m */; };
@@ -1443,8 +1441,6 @@
 		FE6EE27D0DB91EA8005503A1 /* VGmath.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VGmath.m; sourceTree = "<group>"; };
 		FE6EE28C0DB91FDF005503A1 /* KGSurface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGSurface.h; sourceTree = "<group>"; };
 		FE6EE28D0DB91FDF005503A1 /* KGSurface.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGSurface.m; sourceTree = "<group>"; };
-		FE6EE2DD0DB92B05005503A1 /* KGRasterizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGRasterizer.h; sourceTree = "<group>"; };
-		FE6EE2DE0DB92B05005503A1 /* KGRasterizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGRasterizer.m; sourceTree = "<group>"; };
 		FE6EE2E30DB92B11005503A1 /* VGPath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VGPath.h; sourceTree = "<group>"; };
 		FE6EE2E40DB92B11005503A1 /* VGPath.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VGPath.m; sourceTree = "<group>"; };
 		FE7247670C06202B007CBC51 /* NSTextList.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSTextList.h; sourceTree = "<group>"; };
@@ -2028,8 +2024,6 @@
 				FE33952C0DB92D25009AB3E0 /* KGBlending.h */,
 				FE6EE2E30DB92B11005503A1 /* VGPath.h */,
 				FE6EE2E40DB92B11005503A1 /* VGPath.m */,
-				FE6EE2DD0DB92B05005503A1 /* KGRasterizer.h */,
-				FE6EE2DE0DB92B05005503A1 /* KGRasterizer.m */,
 				FE6EE28C0DB91FDF005503A1 /* KGSurface.h */,
 				FE6EE28D0DB91FDF005503A1 /* KGSurface.m */,
 				FE6EE27C0DB91EA8005503A1 /* VGmath.h */,
@@ -2892,7 +2886,6 @@
 				FE6EDE340DB797D9005503A1 /* KGExceptions.h in Headers */,
 				FE6EE27E0DB91EA8005503A1 /* VGmath.h in Headers */,
 				FE6EE28E0DB91FDF005503A1 /* KGSurface.h in Headers */,
-				FE6EE2E10DB92B05005503A1 /* KGRasterizer.h in Headers */,
 				FE6EE2E50DB92B11005503A1 /* VGPath.h in Headers */,
 				FE33952D0DB92D25009AB3E0 /* KGBlending.h in Headers */,
 				FE3395590DB930F4009AB3E0 /* KGContext_builtin.h in Headers */,
@@ -3400,7 +3393,6 @@
 				FE5C69A20D76039F00098551 /* KGDeviceContext_gdiDIBSection.m in Sources */,
 				FE6EE27F0DB91EA8005503A1 /* VGmath.m in Sources */,
 				FE6EE28F0DB91FDF005503A1 /* KGSurface.m in Sources */,
-				FE6EE2E20DB92B05005503A1 /* KGRasterizer.m in Sources */,
 				FE6EE2E60DB92B11005503A1 /* VGPath.m in Sources */,
 				FE33955A0DB930F4009AB3E0 /* KGContext_builtin.m in Sources */,
 				FE45EDCC0DC2407E00F49290 /* CGImageSource.m in Sources */,
@@ -3455,6 +3447,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COPY_PHASE_STRIP = YES;
+				SDKROOT = "";
 			};
 			name = Release;
 		};

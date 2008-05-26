@@ -27,8 +27,9 @@
  *-------------------------------------------------------------------*/
 
 #import "VGmath.h"
-#import "KGRasterizer.h"
 #import "KGPath.h"
+
+@class KGRasterizer;
 
 typedef struct {
    CGPoint			userPosition;

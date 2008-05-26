@@ -30,31 +30,43 @@
 
 @implementation KGPaint_color
 
-static VGColorInternalFormat KGPaintReadPremultipliedConstantSourceSpan(KGPaint_color *self,int x,int y,KGRGBAffff *span,int length){
-   KGRGBAffff  rgba=KGRGBAffffFromColor(self->m_paintColor);
+static void color_lRGBA8888_PRE(KGPaint *selfX,int x,int y,KGRGBA8888 *span,int length){
+   KGPaint_color *self=(KGPaint_color *)selfX;
+   KGRGBA8888  rgba=KGRGBA8888FromKGRGBAffff(self->_RGBAffff_PRE);
    int i;
    
    for(i=0;i<length;i++)
     span[i]=rgba;
-    
-   return self->m_paintColor.m_format;
+}
+
+static void color_lRGBAffff_PRE(KGPaint *selfX,int x,int y,KGRGBAffff *span,int length){
+   KGPaint_color *self=(KGPaint_color *)selfX;
+   KGRGBAffff  rgba=self->_RGBAffff_PRE;
+   int i;
+   
+   for(i=0;i<length;i++)
+    span[i]=rgba;
 }
 
 -initWithGray:(CGFloat)gray alpha:(CGFloat)alpha {
    [super init];
-   _readRGBAffff=(KGPaintReadSpan_RGBAffff)KGPaintReadPremultipliedConstantSourceSpan;
+   _read_lRGBA8888_PRE=color_lRGBA8888_PRE;
+   _read_lRGBAffff_PRE=color_lRGBAffff_PRE;
    m_paintColor=VGColorRGBA(gray,gray,gray,alpha,VGColor_lRGBA);
    m_paintColor=VGColorClamp(m_paintColor);
    m_paintColor=VGColorPremultiply(m_paintColor);
+   _RGBAffff_PRE=KGRGBAffffFromColor(VGColorConvert(self->m_paintColor,VGColor_lRGBA_PRE));
    return self;
 }
 
 -initWithRed:(CGFloat)red green:(CGFloat)green blue:(CGFloat)blue alpha:(CGFloat)alpha {
    [super init];
-   _readRGBAffff=(KGPaintReadSpan_RGBAffff)KGPaintReadPremultipliedConstantSourceSpan;
+   _read_lRGBA8888_PRE=color_lRGBA8888_PRE;
+   _read_lRGBAffff_PRE=color_lRGBAffff_PRE;
    m_paintColor=VGColorRGBA(red,green,blue,alpha,VGColor_lRGBA);
    m_paintColor=VGColorClamp(m_paintColor);
    m_paintColor=VGColorPremultiply(m_paintColor);
+   _RGBAffff_PRE=KGRGBAffffFromColor(VGColorConvert(self->m_paintColor,VGColor_lRGBA_PRE));
    return self;
 }
 

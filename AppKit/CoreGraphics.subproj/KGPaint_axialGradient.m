@@ -64,21 +64,18 @@ static inline VGColor linearGradientColorAt(KGPaint_axialGradient *self,int x,in
 }
 
 
-VGColorInternalFormat KGPaintReadPremultipliedLinearGradientSpan(KGPaint_axialGradient *self,int x,int y,KGRGBAffff *span,int length){
-    VGColorInternalFormat result=0;
+static void linear_span_lRGBAffff_PRE(KGPaint *selfX,int x,int y,KGRGBAffff *span,int length){
+   KGPaint_axialGradient *self=(KGPaint_axialGradient *)selfX;
    int i;
    
    for(i=0;i<length;i++,x++){
-    VGColor s=linearGradientColorAt(self,x,y);
-    result=s.m_format;
-    span[i]=KGRGBAffffFromColor(s);
+    span[i]=KGRGBAffffFromColor(linearGradientColorAt(self,x,y));
    }
-   return result;
 }
 
 -init {
    [super init];
-        self->_readRGBAffff=(KGPaintReadSpan_RGBAffff)KGPaintReadPremultipliedLinearGradientSpan;
+   self->_read_lRGBAffff_PRE=linear_span_lRGBAffff_PRE;
 	self->m_linearGradientPoint0=CGPointMake(0,0);
 	self->m_linearGradientPoint1=CGPointMake(1,0);
    return self;

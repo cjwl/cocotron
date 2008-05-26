@@ -30,11 +30,13 @@
 
 @class KGPaint;
 
-typedef VGColorInternalFormat (*KGPaintReadSpan_RGBAffff)(KGPaint *self,int x,int y,KGRGBAffff *span,int length);
+typedef void (*KGPaintReadSpan_lRGBA8888_PRE_function)(KGPaint *self,int x,int y,KGRGBA8888 *span,int length);
+typedef void (*KGPaintReadSpan_lRGBAffff_PRE_function)(KGPaint *self,int x,int y,KGRGBAffff *span,int length);
 
 @interface KGPaint : NSObject {
 @public
-    KGPaintReadSpan_RGBAffff _readRGBAffff;
+    KGPaintReadSpan_lRGBA8888_PRE_function _read_lRGBA8888_PRE;
+    KGPaintReadSpan_lRGBAffff_PRE_function _read_lRGBAffff_PRE;
 @protected
     CGAffineTransform               m_surfaceToPaintMatrix;
 }
@@ -42,5 +44,7 @@ typedef VGColorInternalFormat (*KGPaintReadSpan_RGBAffff)(KGPaint *self,int x,in
 -init;
 
 void KGPaintSetSurfaceToPaintMatrix(KGPaint *self,CGAffineTransform surfaceToPaintMatrix);
+void KGPaintReadSpan_lRGBA8888_PRE(KGPaint *self,int x,int y,KGRGBA8888 *span,int length);
+void KGPaintReadSpan_lRGBAffff_PRE(KGPaint *self,int x,int y,KGRGBAffff *span,int length);
 
 @end

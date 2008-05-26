@@ -39,5 +39,14 @@ void KGPaintSetSurfaceToPaintMatrix(KGPaint *self,CGAffineTransform surfaceToPai
 	self->m_surfaceToPaintMatrix = surfaceToPaintMatrix;
 }
 
+
+void KGPaintReadSpan_lRGBA8888_PRE(KGPaint *self,int x,int y,KGRGBA8888 *span,int length) {
+   self->_read_lRGBA8888_PRE(self,x,y,span,length);
+}
+
+void KGPaintReadSpan_lRGBAffff_PRE(KGPaint *self,int x,int y,KGRGBAffff *span,int length) {
+   self->_read_lRGBAffff_PRE(self,x,y,span,length);
+}
+
 @end
 

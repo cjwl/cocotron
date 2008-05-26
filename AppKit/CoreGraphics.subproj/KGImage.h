@@ -79,7 +79,7 @@ typedef enum {
   VG_lXBGR_8888                               =  7 | (1 << 6) | (1 << 7),
   VG_lABGR_8888                               =  8 | (1 << 6) | (1 << 7),
   VG_lABGR_8888_PRE                           =  9 | (1 << 6) | (1 << 7)
-} KGSurfaceFormat;
+} KGImageFormat;
 
 enum {
  VGColorNONLINEAR		= (1<<0),
@@ -119,13 +119,6 @@ typedef struct {
    CGFloat a;
 } KGRGBAffff;
 
-typedef struct {
-   unsigned char r;
-   unsigned char g;
-   unsigned char b;
-   unsigned char a;
-} KGRGBA8888;
-
 static inline KGRGBAffff KGRGBAffffInit(CGFloat r,CGFloat g,CGFloat b,CGFloat a){
    KGRGBAffff result;
    result.r=r;
@@ -151,18 +144,65 @@ static inline KGRGBAffff KGRGBAffffAdd(KGRGBAffff result,KGRGBAffff other){
    return result;
 }
 
-static inline KGRGBAffff KGRGBAffffPremultiply(KGRGBAffff result){
-   result.r*=result.a;
-   result.g*=result.a;
-   result.b*=result.a; 
-   return result;
-}
-
 static inline void KGRGBPremultiplySpan(KGRGBAffff *span,int length){
    int i;
       
-   for(i=0;i<length;i++)
-    span[i]=KGRGBAffffPremultiply(span[i]);
+   for(i=0;i<length;i++){
+    span[i].r*=span[i].a;
+    span[i].g*=span[i].a;
+    span[i].b*=span[i].a; 
+   }
+}
+
+typedef struct {
+   uint8_t r;
+   uint8_t g;
+   uint8_t b;
+   uint8_t a;
+} KGRGBA8888;
+
+static inline KGRGBA8888 KGRGBA8888Init(int r,int g,int b,int a){
+   KGRGBA8888 result;
+   result.r=r;
+   result.g=g;
+   result.b=b;
+   result.a=a;
+   return result;
+}
+
+
+static inline CGFloat CGFloatFromByte(uint8_t i){
+	return (CGFloat)(i) / (CGFloat)0xFF;
+}
+
+static inline uint8_t CGByteFromFloat(CGFloat c){
+	return RI_INT_MIN(RI_INT_MAX(RI_FLOOR_TO_INT(c * (CGFloat)0xFF + 0.5), 0), 0xFF);
+}
+
+static inline KGRGBA8888 KGRGBA8888FromKGRGBAffff(KGRGBAffff rgba){
+   KGRGBA8888 result;
+   result.r=CGByteFromFloat(rgba.r);
+   result.g=CGByteFromFloat(rgba.g);
+   result.b=CGByteFromFloat(rgba.b);
+   result.a=CGByteFromFloat(rgba.a);
+   return result;
+}
+
+static inline KGRGBA8888 KGRGBA8888MultiplyByCoverageByte(KGRGBA8888 result,int value){
+   result.r=((int)result.r*value)/255;
+   result.g=((int)result.g*value)/255;
+   result.b=((int)result.b*value)/255;
+   result.a=((int)result.a*value)/255;
+
+   return result;
+}
+
+static inline KGRGBA8888 KGRGBA8888Add(KGRGBA8888 result,KGRGBA8888 other){
+   result.r=RI_INT_CLAMP((int)result.r+(int)other.r,0,255);
+   result.g=RI_INT_CLAMP((int)result.g+(int)other.g,0,255);
+   result.b=RI_INT_CLAMP((int)result.b+(int)other.b,0,255);
+   result.a=RI_INT_CLAMP((int)result.a+(int)other.a,0,255);
+   return result;
 }
 
 @class KGImage;
@@ -188,7 +228,7 @@ typedef void (*KGImageReadSpan_RGBAffff)(KGImage *self,int x,int y,KGRGBAffff *s
 
    unsigned char *_bytes;
    BOOL           _clampExternalPixels;
-   KGSurfaceFormat         _imageFormat;
+   KGImageFormat         _imageFormat;
    VGColorInternalFormat _colorFormat;
 
    KGImageReadSpan_RGBA8888 _readRGBA8888;
@@ -238,14 +278,14 @@ typedef void (*KGImageReadSpan_RGBAffff)(KGImage *self,int x,int y,KGRGBAffff *s
 
 @end
 
+VGPixelDecode KGImageParametersToPixelLayout(KGImageFormat format,size_t *bitsPerPixel,VGColorInternalFormat *colorFormat);
+
 CGColorRenderingIntent KGImageRenderingIntentWithName(const char *name);
 const char *KGImageNameWithIntent(CGColorRenderingIntent intent);
 
 size_t KGImageGetWidth(KGImage *self);
 size_t KGImageGetHeight(KGImage *self);
 VGColorInternalFormat KGImageColorFormat(KGImage *self);
-
-KGRGBAffff KGRGBAffffUnpack(unsigned int inputData,KGImage *img);
 
 void KGImageRead_G8_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span,int length);
 void KGImageRead_GA88_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span,int length);
@@ -261,9 +301,17 @@ void KGImageRead_ANY_to_RGBA8888_to_RGBAffff(KGImage *self,int x,int y,KGRGBAfff
 void KGImageRead_RGBAffffLittle_to_RGBAffff(KGImage *self,int x,int y,KGRGBAffff *span,int length);
 void KGImageRead_RGBAffffBig_to_RGBAffff(KGImage *self,int x,int y,KGRGBAffff *span,int length);
 
+void KGImageReadSpan_lRGBA8888_PRE(KGImage *self,int x,int y,KGRGBA8888 *span,int length);
+void KGImageReadSpan_lRGBAffff_PRE(KGImage *self,int x,int y,KGRGBAffff *span,int length);
+void KGImageReadSpan_A8_MASK(KGImage *self,int x,int y,uint8_t *coverage,int length);
+void KGImageReadSpan_Af_MASK(KGImage *self,int x,int y,CGFloat *coverage,int length);
 
+void KGImageEWAOnMipmaps_lRGBAffff_PRE(KGImage *self,CGFloat x, CGFloat y,KGRGBAffff *span,int length, CGAffineTransform surfaceToImage);
+void KGImageBicubic_lRGBA8888_PRE(KGImage *self,CGFloat x, CGFloat y,KGRGBA8888 *span,int length, CGAffineTransform surfaceToImage);
+void KGImageBicubic_lRGBAffff_PRE(KGImage *self,CGFloat x, CGFloat y,KGRGBAffff *span,int length, CGAffineTransform surfaceToImage);
+void KGImageBilinear_lRGBA8888_PRE(KGImage *self,CGFloat x, CGFloat y,KGRGBA8888 *span,int length, CGAffineTransform surfaceToImage);
+void KGImageBilinear_lRGBAffff_PRE(KGImage *self,CGFloat x, CGFloat y,KGRGBAffff *span,int length, CGAffineTransform surfaceToImage);
+void KGImagePointSampling_lRGBA8888_PRE(KGImage *self,CGFloat x, CGFloat y,KGRGBA8888 *span,int length, CGAffineTransform surfaceToImage);
+void KGImagePointSampling_lRGBAffff_PRE(KGImage *self,CGFloat x, CGFloat y,KGRGBAffff *span,int length, CGAffineTransform surfaceToImage);
 
-VGColorInternalFormat KGImageResample_EWAOnMipmaps(KGImage *self,CGFloat x, CGFloat y,KGRGBAffff *span,int length, CGAffineTransform surfaceToImage);
-VGColorInternalFormat KGImageResample_Bicubic(KGImage *self,CGFloat x, CGFloat y,KGRGBAffff *span,int length, CGAffineTransform surfaceToImage);
-VGColorInternalFormat KGImageResample_Bilinear(KGImage *self,CGFloat x, CGFloat y,KGRGBAffff *span,int length, CGAffineTransform surfaceToImage);
-VGColorInternalFormat KGImageResample_PointSampling(KGImage *self,CGFloat x, CGFloat y,KGRGBAffff *span,int length, CGAffineTransform surfaceToImage);
+void KGImageReadPatternSpan_lRGBAffff_PRE(KGImage *self,CGFloat x, CGFloat y, KGRGBAffff *span,int length, CGAffineTransform surfaceToImage, CGPatternTiling distortion);

@@ -29,103 +29,75 @@
 
 @implementation KGPaint_image
 
-static VGColorInternalFormat KGPaintReadPremultipliedImageNormalSpan(KGPaint_image *self,int x,int y,KGRGBAffff *span,int length){
-   VGColorInternalFormat spanFormat;
+static void KGPaintReadResampledSpan_lRGBAffff_PRE(KGPaint *selfX,int x,int y,KGRGBAffff *span,int length){   
+   KGPaint_image *self=(KGPaint_image *)selfX;
    
    if(self->_interpolationQuality==kCGInterpolationHigh){
-    spanFormat=KGImageResample_EWAOnMipmaps(self->_image,x,y,span,length,self->m_surfaceToPaintMatrix);
-    // spanFormat=KGImageResample_Bicubic(self->_image,x,y,span,length,self->m_surfaceToPaintMatrix);
+   // KGImageEWAOnMipmaps_lRGBAffff_PRE(self->_image,x,y,span,length,self->m_surfaceToPaintMatrix);
+     KGImageBicubic_lRGBAffff_PRE(self->_image,x,y,span,length,self->m_surfaceToPaintMatrix);
    }
    else if(self->_interpolationQuality==kCGInterpolationLow)
-    spanFormat=KGImageResample_Bilinear(self->_image,x,y,span,length,self->m_surfaceToPaintMatrix);
+    KGImageBilinear_lRGBAffff_PRE(self->_image,x,y,span,length,self->m_surfaceToPaintMatrix);
    else
-    spanFormat=KGImageResample_PointSampling(self->_image,x,y,span,length,self->m_surfaceToPaintMatrix);
-  
-   return spanFormat;
+    KGImagePointSampling_lRGBAffff_PRE(self->_image,x,y,span,length,self->m_surfaceToPaintMatrix);
 }
 
-static VGColorInternalFormat multiply(KGPaint_image *self,int x,int y,KGRGBAffff *span,int length){
-   VGColorInternalFormat paintFormat;
-
-   paintFormat=self->_paint->_readRGBAffff(self->_paint,x,y,span,length);
-   if(!(paintFormat&VGColorPREMULTIPLIED)){
-    KGRGBPremultiplySpan(span,length);
-    paintFormat|=VGColorPREMULTIPLIED;
+static void KGPaintReadResampledSpan_lRGBA8888_PRE(KGPaint *selfX,int x,int y,KGRGBA8888 *span,int length){   
+   KGPaint_image *self=(KGPaint_image *)selfX;
+   if(self->_interpolationQuality==kCGInterpolationHigh){
+   // KGImageEWAOnMipmaps_lRGBA8888_PRE(self->_image,x,y,span,length,self->m_surfaceToPaintMatrix);
+     KGImageBicubic_lRGBA8888_PRE(self->_image,x,y,span,length,self->m_surfaceToPaintMatrix);
    }
+   else if(self->_interpolationQuality==kCGInterpolationLow)
+    KGImageBilinear_lRGBA8888_PRE(self->_image,x,y,span,length,self->m_surfaceToPaintMatrix);
+   else
+    KGImagePointSampling_lRGBA8888_PRE(self->_image,x,y,span,length,self->m_surfaceToPaintMatrix);
+}
+
+static void multiply(KGPaint *selfX,int x,int y,KGRGBAffff *span,int length){
+   KGPaint_image *self=(KGPaint_image *)selfX;
+
+   KGPaintReadSpan_lRGBAffff_PRE(self->_paint,x,y,span,length);
 
    KGRGBAffff imageSpan[length];
-   VGColorInternalFormat imageFormat=KGPaintReadPremultipliedImageNormalSpan(self,x,y,imageSpan,length);
-   if(!(imageFormat&VGColorPREMULTIPLIED)){
-    KGRGBPremultiplySpan(span,length);
-    imageFormat|=VGColorPREMULTIPLIED;
-   }
+   KGPaintReadResampledSpan_lRGBAffff_PRE(self,x,y,imageSpan,length);
+
    int i;
    
    for(i=0;i<length;i++,x++){
 	//evaluate paint
-	VGColor s=VGColorFromKGRGBA_ffff(span[i],paintFormat);
-    VGColor im=VGColorFromKGRGBA_ffff(imageSpan[i],imageFormat);
+	KGRGBAffff s=span[i];
+    KGRGBAffff im=imageSpan[i];
     
-	//apply image (vgDrawImage only)
-	//1. paint: convert paint to dst space
-	//2. image: convert image to dst space
-	//3. paint MULTIPLY image: convert paint to image number of channels, multiply with image, and convert to dst
-	//4. paint STENCIL image: convert paint to dst, convert image to dst number of channels, multiply
+	//apply image 
+	// paint MULTIPLY image: convert paint to image number of channels, multiply with image, and convert to dst
 
-		RI_ASSERT((s.m_format & VGColorLUMINANCE && s.r == s.g && s.r == s.b) || !(s.m_format & VGColorLUMINANCE));	//if luminance, r=g=b
-		RI_ASSERT((im.m_format & VGColorLUMINANCE && im.r == im.g && im.r == im.b) || !(im.m_format & VGColorLUMINANCE));	//if luminance, r=g=b
-
-			//the result will be in image color space. If the number of channels in image and paint
-			// colors differ, convert to the number of channels in the image color.
-			//paint == RGB && image == RGB: RGB*RGB
-			//paint == RGB && image == L  : (0.2126 R + 0.7152 G + 0.0722 B)*L
-			//paint == L   && image == RGB: LLL*RGB
-			//paint == L   && image == L  : L*L
-			if(!(s.m_format & VGColorLUMINANCE) && im.m_format & VGColorLUMINANCE)
-			{
-				s.r = s.g = s.b = RI_MIN(0.2126f*s.r + 0.7152f*s.g + 0.0722f*s.b, s.a);
-			}
 			im.r *= s.r;
 			im.g *= s.g;
 			im.b *= s.b;
 			im.a *= s.a;
 			s = im;
-			// s=VGColorConvert(s,format);	//convert resulting color to destination color space
 
-    span[i]=KGRGBAffffFromColor(s);
+    span[i]=s;
    }
-   return imageFormat;
 }
-static VGColorInternalFormat stencil(KGPaint_image *self,int x,int y,KGRGBAffff *span,int length){
-   VGColorInternalFormat paintFormat;
+static void stencil(KGPaint *selfX,int x,int y,KGRGBAffff *span,int length){
+   KGPaint_image *self=(KGPaint_image *)selfX;
 
-   paintFormat=self->_paint->_readRGBAffff(self->_paint,x,y,span,length);
-   if(!(paintFormat&VGColorPREMULTIPLIED)){
-    KGRGBPremultiplySpan(span,length);
-    paintFormat|=VGColorPREMULTIPLIED;
-   }
+   self->_paint->_read_lRGBAffff_PRE(self->_paint,x,y,span,length);
 
    KGRGBAffff imageSpan[length];
-   VGColorInternalFormat imageFormat=KGPaintReadPremultipliedImageNormalSpan(self,x,y,imageSpan,length);
-   if(!(imageFormat&VGColorPREMULTIPLIED)){
-    KGRGBPremultiplySpan(span,length);
-    imageFormat|=VGColorPREMULTIPLIED;
-   }
+   KGPaintReadResampledSpan_lRGBAffff_PRE(self,x,y,imageSpan,length);
+
    int i;
    
    for(i=0;i<length;i++,x++){
 	//evaluate paint
-	VGColor s=VGColorFromKGRGBA_ffff(span[i],paintFormat);
-    VGColor im=VGColorFromKGRGBA_ffff(imageSpan[i],imageFormat);
+	KGRGBAffff s=span[i];
+    KGRGBAffff im=imageSpan[i];
     
-	//apply image (vgDrawImage only)
-	//1. paint: convert paint to dst space
-	//2. image: convert image to dst space
-	//3. paint MULTIPLY image: convert paint to image number of channels, multiply with image, and convert to dst
-	//4. paint STENCIL image: convert paint to dst, convert image to dst number of channels, multiply
-
-		RI_ASSERT((s.m_format & VGColorLUMINANCE && s.r == s.g && s.r == s.b) || !(s.m_format & VGColorLUMINANCE));	//if luminance, r=g=b
-		RI_ASSERT((im.m_format & VGColorLUMINANCE && im.r == im.g && im.r == im.b) || !(im.m_format & VGColorLUMINANCE));	//if luminance, r=g=b
+	//apply image 
+	// paint STENCIL image: convert paint to dst, convert image to dst number of channels, multiply
 
 {
  // FIX
@@ -137,15 +109,7 @@ static VGColorInternalFormat stencil(KGPaint_image *self,int x,int y,KGRGBAffff 
 			//dst == RGB && image == L  : RGB*LLL
 			//dst == L   && image == RGB: L*(0.2126 R + 0.7152 G + 0.0722 B)
 			//dst == L   && image == L  : L*L
-			RI_ASSERT(self->m_imageMode == VG_DRAW_IMAGE_STENCIL);
-#if 0
-			if(format & VGColorLUMINANCE && !(im.m_format & VGColorLUMINANCE))
-			{
-				im.r = im.g = im.b = RI_MIN(0.2126f*im.r + 0.7152f*im.g + 0.0722f*im.b, im.a);
-			}
-			//s and im are both in premultiplied format. Each image channel acts as an alpha channel.
-			s=VGColorConvert(s,format);	//convert paint color to destination space already here, since convert cannot deal with per channel alphas used in this mode.
-#endif
+
 			s.r *= im.r;
 			s.g *= im.g;
 			s.b *= im.b;
@@ -163,10 +127,8 @@ static VGColorInternalFormat stencil(KGPaint_image *self,int x,int y,KGRGBAffff 
 	RI_ASSERT(s.b >= 0.0f && s.b <= s.a && s.b <= ab);
 }
 
-    span[i]=KGRGBAffffFromColor(s);
+    span[i]=s;
    }
-   
-   return paintFormat;
 }
 
 
@@ -174,13 +136,14 @@ static VGColorInternalFormat stencil(KGPaint_image *self,int x,int y,KGRGBAffff 
    [super init];
    switch(mode){
     case VG_DRAW_IMAGE_MULTIPLY:
-     _readRGBAffff=(KGPaintReadSpan_RGBAffff)multiply;
+     _read_lRGBAffff_PRE=multiply;
      break;
     case VG_DRAW_IMAGE_STENCIL:
-     _readRGBAffff=(KGPaintReadSpan_RGBAffff)stencil;
+     _read_lRGBAffff_PRE=stencil;
      break;
     default:
-     _readRGBAffff=(KGPaintReadSpan_RGBAffff)KGPaintReadPremultipliedImageNormalSpan;
+     _read_lRGBA8888_PRE=KGPaintReadResampledSpan_lRGBA8888_PRE;
+     _read_lRGBAffff_PRE=KGPaintReadResampledSpan_lRGBAffff_PRE;
      break;
    }
    

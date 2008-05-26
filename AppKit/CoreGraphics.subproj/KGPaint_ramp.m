@@ -34,7 +34,6 @@
     self->m_colorRampStopsCount=2;
     self->m_colorRampStopsCapacity=2;
 	self->m_colorRampStops=(GradientStop *)NSZoneCalloc(NULL,self->m_colorRampStopsCapacity,sizeof(GradientStop));
-	self->m_colorRampPremultiplied=YES;
 
 
 	GradientStop gs;
@@ -55,12 +54,11 @@
 * \note		
 *//*-------------------------------------------------------------------*/
 
-static VGColor readStopColor(GradientStop *colorRampStops,int colorRampStopsCount, int i, BOOL colorRampPremultiplied)
+static VGColor readStopColor(GradientStop *colorRampStops,int colorRampStopsCount, int i)
 {
 	RI_ASSERT(i >= 0 && i < colorRampStopsCount);
 	VGColor c = colorRampStops[i].color;
 	RI_ASSERT(c.m_format == VGColor_sRGBA);
-	if(colorRampPremultiplied)
 		c=VGColorPremultiply(c);
 
 	return c;
@@ -72,7 +70,7 @@ VGColor KGPaintIntegrateColorRamp(KGPaint_ramp *self,CGFloat gmin, CGFloat gmax)
 	RI_ASSERT(gmax >= 0.0f && gmax <= 1.0f);
 	RI_ASSERT(self->m_colorRampStopsCount >= 2);	//there are at least two stops
 
-	VGColor c=VGColorRGBA(0,0,0,0,self->m_colorRampPremultiplied ? VGColor_sRGBA_PRE : VGColor_sRGBA);
+	VGColor c=VGColorRGBA(0,0,0,0, VGColor_sRGBA_PRE);
 	if(gmin == 1.0f || gmax == 0.0f)
 		return c;
 
@@ -86,8 +84,8 @@ VGColor KGPaintIntegrateColorRamp(KGPaint_ramp *self,CGFloat gmin, CGFloat gmax)
 			RI_ASSERT(s < e);
 			CGFloat g = (gmin - s) / (e - s);
 
-			VGColor sc = readStopColor(self->m_colorRampStops,self->m_colorRampStopsCount, i, self->m_colorRampPremultiplied);
-			VGColor ec = readStopColor(self->m_colorRampStops,self->m_colorRampStopsCount, i+1, self->m_colorRampPremultiplied);
+			VGColor sc = readStopColor(self->m_colorRampStops,self->m_colorRampStopsCount, i);
+			VGColor ec = readStopColor(self->m_colorRampStops,self->m_colorRampStopsCount, i+1);
 			VGColor rc = VGColorAdd(VGColorMultiplyByFloat(sc, (1.0f-g)),VGColorMultiplyByFloat(ec , g));
 
 			//subtract the average color from the start of the stop to gmin
@@ -102,8 +100,8 @@ VGColor KGPaintIntegrateColorRamp(KGPaint_ramp *self,CGFloat gmin, CGFloat gmax)
 		CGFloat e = self->m_colorRampStops[i+1].offset;
 		RI_ASSERT(s <= e);
 
-		VGColor sc = readStopColor(self->m_colorRampStops,self->m_colorRampStopsCount, i, self->m_colorRampPremultiplied);
-		VGColor ec = readStopColor(self->m_colorRampStops,self->m_colorRampStopsCount, i+1, self->m_colorRampPremultiplied);
+		VGColor sc = readStopColor(self->m_colorRampStops,self->m_colorRampStopsCount, i);
+		VGColor ec = readStopColor(self->m_colorRampStops,self->m_colorRampStopsCount, i+1);
 
 		//average of the stop
 		c=VGColorAdd(c , VGColorMultiplyByFloat(VGColorAdd(sc , ec), 0.5f*(e-s)));
@@ -133,7 +131,7 @@ VGColor KGPaintColorRamp(KGPaint_ramp *self,CGFloat gradient, CGFloat rho)
 	RI_ASSERT(self);
 	RI_ASSERT(rho >= 0.0f);
 
-	VGColor c=VGColorRGBA(0,0,0,0,self->m_colorRampPremultiplied ? VGColor_sRGBA_PRE : VGColor_sRGBA);
+	VGColor c=VGColorRGBA(0,0,0,0, VGColor_sRGBA_PRE );
 	VGColor avg=VGColorZero();
 
 	if(rho == 0.0f)
@@ -165,12 +163,12 @@ VGColor KGPaintColorRamp(KGPaint_ramp *self,CGFloat gradient, CGFloat rho)
 				RI_ASSERT(s < e);
 				CGFloat g = RI_CLAMP((gradient - s) / (e - s), 0.0f, 1.0f);	//clamp needed due to numerical inaccuracies
 
-				VGColor sc = readStopColor(self->m_colorRampStops,self->m_colorRampStopsCount, i, self->m_colorRampPremultiplied);
-				VGColor ec = readStopColor(self->m_colorRampStops,self->m_colorRampStopsCount, i+1, self->m_colorRampPremultiplied);
+				VGColor sc = readStopColor(self->m_colorRampStops,self->m_colorRampStopsCount, i);
+				VGColor ec = readStopColor(self->m_colorRampStops,self->m_colorRampStopsCount, i+1);
 				return VGColorAdd(VGColorMultiplyByFloat(sc , (1.0f-g)) , VGColorMultiplyByFloat(ec , g));	//return interpolated value
 			}
 		}
-		return readStopColor(self->m_colorRampStops,self->m_colorRampStopsCount, self->m_colorRampStopsCount-1, self->m_colorRampPremultiplied);
+		return readStopColor(self->m_colorRampStops,self->m_colorRampStopsCount, self->m_colorRampStopsCount-1);
 	}
 
 	CGFloat gmin = gradient - rho*0.5f;			//filter starting from the gradient point (if starts earlier, radial gradient center will be an average of the first and the last stop, which doesn't look good)
@@ -181,9 +179,9 @@ VGColor KGPaintColorRamp(KGPaint_ramp *self,CGFloat gradient, CGFloat rho)
 	case VG_COLOR_RAMP_SPREAD_PAD:
 	{
 		if(gmin < 0.0f)
-			c=VGColorAdd(c,VGColorMultiplyByFloat(readStopColor(self->m_colorRampStops,self->m_colorRampStopsCount, 0, self->m_colorRampPremultiplied), (RI_MIN(gmax, 0.0f) - gmin)));
+			c=VGColorAdd(c,VGColorMultiplyByFloat(readStopColor(self->m_colorRampStops,self->m_colorRampStopsCount, 0), (RI_MIN(gmax, 0.0f) - gmin)));
 		if(gmax > 1.0f)
-			c=VGColorAdd(c,VGColorMultiplyByFloat(readStopColor(self->m_colorRampStops,self->m_colorRampStopsCount, self->m_colorRampStopsCount-1, self->m_colorRampPremultiplied) , (gmax - RI_MAX(gmin, 1.0f))));
+			c=VGColorAdd(c,VGColorMultiplyByFloat(readStopColor(self->m_colorRampStops,self->m_colorRampStopsCount, self->m_colorRampStopsCount-1) , (gmax - RI_MAX(gmin, 1.0f))));
 		gmin = RI_CLAMP(gmin, 0.0f, 1.0f);
 		gmax = RI_CLAMP(gmax, 0.0f, 1.0f);
 		c=VGColorAdd(c, KGPaintIntegrateColorRamp(self,gmin, gmax));

@@ -40,6 +40,86 @@
 
 @implementation KGImage
 
+/*-------------------------------------------------------------------*//*!
+* \brief	Creates a pixel format descriptor out of KGImageFormat
+* \param	
+* \return	
+* \note		
+*//*-------------------------------------------------------------------*/
+
+VGPixelDecode KGImageParametersToPixelLayout(KGImageFormat format,size_t *bitsPerPixel,VGColorInternalFormat	*colorFormat){
+	VGPixelDecode desc;
+	memset(&desc, 0, sizeof(VGPixelDecode));
+
+	int baseFormat = (int)format & 15;
+	RI_ASSERT(baseFormat >= 0 && baseFormat <= 12);
+	int swizzleBits = ((int)format >> 6) & 3;
+
+	/* base formats
+	VG_sRGBX_8888                               =  0,
+	VG_sRGBA_8888                               =  1,
+	VG_sRGBA_8888_PRE                           =  2,
+	VG_sRGB_565                                 =  3,
+	VG_sRGBA_5551                               =  4,
+	VG_sRGBA_4444                               =  5,
+	VG_sL_8                                     =  6,
+	VG_lRGBX_8888                               =  7,
+	VG_lRGBA_8888                               =  8,
+	VG_lRGBA_8888_PRE                           =  9,
+	VG_lL_8                                     = 10,
+	VG_A_8                                      = 11,
+	VG_BW_1                                     = 12,
+	*/
+
+	static const int redBits[13] =       {8, 8, 8, 5, 5, 4, 0, 8, 8, 8, 0, 0, 0};
+	static const int greenBits[13] =     {8, 8, 8, 6, 5, 4, 0, 8, 8, 8, 0, 0, 0};
+	static const int blueBits[13] =      {8, 8, 8, 5, 5, 4, 0, 8, 8, 8, 0, 0, 0};
+	static const int alphaBits[13] =     {0, 8, 8, 0, 1, 4, 0, 0, 8, 8, 0, 8, 0};
+	static const int luminanceBits[13] = {0, 0, 0, 0, 0, 0, 8, 0, 0, 0, 8, 0, 1};
+
+	static const int redShifts[4*13] =   {24, 24, 24, 11, 11, 12, 0, 24, 24, 24, 0, 0, 0,	//RGBA
+                                          16, 16, 16, 11, 10, 8,  0, 16, 16, 16, 0, 0, 0,	//ARGB
+                                          8,  8,  8,  0,  1,  4,  0, 8,  8,  8,  0, 0, 0,	//BGRA
+                                          0,  0,  0,  0,  0,  0,  0, 0,  0,  0,  0, 0, 0};	//ABGR
+
+	static const int greenShifts[4*13] = {16, 16, 16, 5,  6,  8,  0, 16, 16, 16, 0, 0, 0,	//RGBA
+                                          8,  8,  8,  5,  5,  4,  0, 8,  8,  8,  0, 0, 0,	//ARGB
+                                          16, 16, 16, 5,  6,  8,  0, 16, 16, 16, 0, 0, 0,	//BGRA
+                                          8,  8,  8,  5,  5,  4,  0, 8,  8,  8,  0, 0, 0};	//ABGR
+
+	static const int blueShifts[4*13] =  {8,  8,  8,  0,  1,  4,  0, 8,  8,  8,  0, 0, 0,	//RGBA
+                                          0,  0,  0,  0,  0,  0,  0, 0,  0,  0,  0, 0, 0,	//ARGB
+                                          24, 24, 24, 11, 11, 12, 0, 24, 24, 24, 0, 0, 0,	//BGRA
+                                          16, 16, 16, 11, 10, 8,  0, 16, 16, 16, 0, 0, 0};	//ABGR
+
+	static const int alphaShifts[4*13] = {0,  0,  0,  0,  0,  0,  0, 0,  0,  0,  0, 0, 0,	//RGBA
+                                          0,  24, 24, 0,  15, 12, 0, 0,  24, 24, 0, 0, 0,	//ARGB
+                                          0,  0,  0,  0,  0,  0,  0, 0,  0,  0,  0, 0, 0,	//BGRA
+                                          0,  24, 24, 0,  15, 12, 0, 0,  24, 24, 0, 0, 0};	//ABGR
+
+	static const int bpps[13] = {32, 32, 32, 16, 16, 16, 8, 32, 32, 32, 8, 8, 1};
+
+	static const VGColorInternalFormat internalFormats[13] = {VGColor_sRGBA, VGColor_sRGBA, VGColor_sRGBA_PRE, VGColor_sRGBA, VGColor_sRGBA, VGColor_sRGBA, VGColor_sLA, VGColor_lRGBA, VGColor_lRGBA, VGColor_lRGBA_PRE, VGColor_lLA, VGColor_lRGBA, VGColor_lLA};
+
+	desc.redBits = redBits[baseFormat];
+	desc.greenBits = greenBits[baseFormat];
+	desc.blueBits = blueBits[baseFormat];
+	desc.alphaBits = alphaBits[baseFormat];
+	desc.luminanceBits = luminanceBits[baseFormat];
+
+	desc.redShift = redShifts[swizzleBits * 13 + baseFormat];
+	desc.greenShift = greenShifts[swizzleBits * 13 + baseFormat];
+	desc.blueShift = blueShifts[swizzleBits * 13 + baseFormat];
+	desc.alphaShift = alphaShifts[swizzleBits * 13 + baseFormat];
+	desc.luminanceShift = 0;	//always zero
+
+	*bitsPerPixel = bpps[baseFormat];
+	*colorFormat = internalFormats[baseFormat];
+
+	return desc;
+}
+
+
 static BOOL initFunctionsForParameters(KGImage *self,size_t bitsPerComponent,size_t bitsPerPixel,KGColorSpace *colorSpace,CGBitmapInfo bitmapInfo){
 
    switch(bitsPerComponent){
@@ -204,7 +284,7 @@ static BOOL initFunctionsForParameters(KGImage *self,size_t bitsPerComponent,siz
       break;
     }
     
-	self->m_desc=KGSurfaceParametersToPixelLayout(_imageFormat,&checkBPP,&(self->_colorFormat));
+	self->m_desc=KGImageParametersToPixelLayout(_imageFormat,&checkBPP,&(self->_colorFormat));
     RI_ASSERT(checkBPP==bitsPerPixel);
    m_ownsData=NO;
     _mipmapsCount=0;
@@ -536,10 +616,6 @@ VGColorInternalFormat KGImageColorFormat(KGImage *self) {
    return self->_colorFormat;
 }
 
-static  CGFloat byteToColor(unsigned char i){
-	return (CGFloat)(i) / (CGFloat)0xFF;
-}
-
 void KGImageRead_ANY_to_RGBA8888_to_RGBAffff(KGImage *self,int x,int y,KGRGBAffff *span,int length){
    KGRGBA8888 span8888[length];
 
@@ -548,10 +624,10 @@ void KGImageRead_ANY_to_RGBA8888_to_RGBAffff(KGImage *self,int x,int y,KGRGBAfff
    for(i=0;i<length;i++){
     KGRGBAffff  result;
     
-    result.r = byteToColor(span8888[i].r);
-    result.g = byteToColor(span8888[i].g);
-    result.b = byteToColor(span8888[i].b);
-	result.a = byteToColor(span8888[i].a);
+    result.r = CGFloatFromByte(span8888[i].r);
+    result.g = CGFloatFromByte(span8888[i].g);
+    result.b = CGFloatFromByte(span8888[i].b);
+	result.a = CGFloatFromByte(span8888[i].a);
     *span++=result;
    }
 }
@@ -780,6 +856,163 @@ void KGImageRead_CMYK8888_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span
    }
 }
 
+/*-------------------------------------------------------------------*//*!
+* \brief	Reads a texel (u,v) at the given mipmap level. Tiling modes and
+*			color space conversion are applied. Outputs color in premultiplied
+*			format.
+* \param	
+* \return	
+* \note		
+*//*-------------------------------------------------------------------*/
+
+/* Theoretically the edges of the polygon fill used to draw resampled images would
+   perfectly fit the edges of the raster image, however, numerical error will probably
+   place some sampled pixels outside the image. Two good choices are to use the edge value
+   or zero. This uses the edge value.  I don't know what Apple does.
+ */
+
+void KGImageReadTilePadSpan_lRGBA8888_PRE(KGImage *self,int u, int v, KGRGBA8888 *span,int length){
+   int i;
+
+   v = RI_INT_CLAMP(v,0,self->_height-1);
+   
+   for(i=0;i<length && u<0;u++,i++)
+    KGImageReadSpan_lRGBA8888_PRE(self,0,v,span+i,1);
+
+   int chunk=RI_MIN(length-i,self->_width-u);
+   KGImageReadSpan_lRGBA8888_PRE(self,u,v,span+i,chunk);
+   i+=chunk;
+   u+=chunk;
+
+   for(;i<length;i++)
+    KGImageReadSpan_lRGBA8888_PRE(self,self->_width-1,v,span+i,1);
+}
+
+void KGImageReadTilePadSpan_lRGBAffff_PRE(KGImage *self,int u, int v, KGRGBAffff *span,int length){
+   int i;
+
+   v = RI_INT_CLAMP(v,0,self->_height-1);
+   
+   for(i=0;i<length && u<0;u++,i++)
+    KGImageReadSpan_lRGBAffff_PRE(self,0,v,span+i,1);
+
+   int chunk=RI_MIN(length-i,self->_width-u);
+   KGImageReadSpan_lRGBAffff_PRE(self,u,v,span+i,chunk);
+   i+=chunk;
+   u+=chunk;
+
+   for(;i<length;i++)
+    KGImageReadSpan_lRGBAffff_PRE(self,self->_width-1,v,span+i,1);
+}
+
+
+/*-------------------------------------------------------------------*//*!
+* \brief	Generates mip maps for an image.
+* \param	
+* \return	
+* \note		Downsampling is done in the input color space. We use a box
+*			filter for downsampling.
+*//*-------------------------------------------------------------------*/
+
+void KGImageMakeMipMaps(KGImage *self) {
+	RI_ASSERT(self->_bytes);
+
+	if(self->m_mipmapsValid)
+		return;
+
+	//delete existing mipmaps
+    int i;
+	for(i=0;i<self->_mipmapsCount;i++)
+	{
+			KGSurfaceDealloc(self->_mipmaps[i]);
+	}
+	self->_mipmapsCount=0;
+
+//	try
+	{
+		VGColorInternalFormat procFormat = self->_colorFormat;
+		procFormat = (VGColorInternalFormat)(procFormat | VGColorPREMULTIPLIED);	//premultiplied
+
+		//generate mipmaps until width and height are one
+		KGImage* prev = self;
+		while( prev->_width > 1 || prev->_height > 1 )
+		{
+			int nextw = (int)ceil(prev->_width*0.5f);
+			int nexth = (int)ceil(prev->_height*0.5f);
+			RI_ASSERT(nextw >= 1 && nexth >= 1);
+			RI_ASSERT(nextw < prev->_width || nexth < prev->_height);
+
+            if(self->_mipmapsCount+1>self->_mipmapsCapacity){
+             self->_mipmapsCapacity*=2;
+             self->_mipmaps=(KGSurface **)NSZoneRealloc(NULL,self->_mipmaps,sizeof(KGSurface *)*self->_mipmapsCapacity);
+            }
+            self->_mipmapsCount++;
+			self->_mipmaps[self->_mipmapsCount-1] = NULL;
+
+			KGSurface* next =  KGSurfaceInit(KGSurfaceAlloc(),nextw, nexth,self->_bitsPerComponent,self->_bitsPerPixel,self->_colorSpace,self->_bitmapInfo,self->_imageFormat);
+            int j;
+			for(j=0;j<KGImageGetHeight(next);j++)
+			{
+				for(i=0;i<KGImageGetWidth(next);i++)
+				{
+					CGFloat u0 = (CGFloat)i / (CGFloat)KGImageGetWidth(next);
+					CGFloat u1 = (CGFloat)(i+1) / (CGFloat)KGImageGetWidth(next);
+					CGFloat v0 = (CGFloat)j / (CGFloat)KGImageGetHeight(next);
+					CGFloat v1 = (CGFloat)(j+1) / (CGFloat)KGImageGetHeight(next);
+
+					u0 *= prev->_width;
+					u1 *= prev->_width;
+					v0 *= prev->_height;
+					v1 *= prev->_height;
+
+					int su = RI_FLOOR_TO_INT(u0);
+					int eu = (int)ceil(u1);
+					int sv = RI_FLOOR_TO_INT(v0);
+					int ev = (int)ceil(v1);
+
+					VGColor c=VGColorRGBA(0,0,0,0,procFormat);
+					int samples = 0;
+                    int y;
+					for(y=sv;y<ev;y++)
+					{
+                        int x;
+						for(x=su;x<eu;x++)
+						{
+							VGColor p = KGSurfaceReadPixel(prev,x, y);
+							p=VGColorConvert(p,procFormat);
+							c=VGColorAdd(c, p);
+							samples++;
+						}
+					}
+					c=VGColorMultiplyByFloat(c,(1.0f/samples));
+					c=VGColorConvert(c,self->_colorFormat);
+					KGSurfaceWritePixel(next,i,j,c);
+				}
+			}
+			self->_mipmaps[self->_mipmapsCount-1] = next;
+			prev = next;
+		}
+		RI_ASSERT(prev->_width == 1 && prev->_height == 1);
+		self->m_mipmapsValid = YES;
+	}
+#if 0
+	catch(std::bad_alloc)
+	{
+		//delete existing mipmaps
+		for(int i=0;i<self->_mipmapsCount;i++)
+		{
+			if(self->_mipmaps[i])
+			{
+					KGSurfaceDealloc(self->_mipmaps[i]);
+			}
+		}
+		self->_mipmapsCount=0;
+		self->m_mipmapsValid = NO;
+		throw;
+	}
+#endif
+}
+
 // accuracy doesn't seem to matter much, it appears
 static inline float fastExp(float value){
    static float table[10];
@@ -794,7 +1027,7 @@ static inline float fastExp(float value){
    return table[(int)(-value*2)];
 }
 
-KGImage *KGSurfaceMipMapForLevel(KGImage *self,int level){
+KGImage *KGImageMipMapForLevel(KGImage *self,int level){
 	KGImage* image = self;
     
 	if( level > 0 ){
@@ -806,12 +1039,12 @@ KGImage *KGSurfaceMipMapForLevel(KGImage *self,int level){
 }
 
 
-VGColorInternalFormat KGImageResample_EWAOnMipmaps(KGImage *self,CGFloat x, CGFloat y,KGRGBAffff *span,int length, CGAffineTransform surfaceToImage){
+void KGImageEWAOnMipmaps_lRGBAffff_PRE(KGImage *self,CGFloat x, CGFloat y,KGRGBAffff *span,int length, CGAffineTransform surfaceToImage){
    int i;
    		CGFloat m_pixelFilterRadius = 1.25f;
 		CGFloat m_resamplingFilterRadius = 1.25f;
 
-   KGSurfaceMakeMipMaps(self);
+   KGImageMakeMipMaps(self);
    
    CGPoint uv=CGPointMake(0,0);
    uv=CGAffineTransformTransformVector2(surfaceToImage ,uv);
@@ -840,7 +1073,7 @@ VGColorInternalFormat KGImageResample_EWAOnMipmaps(KGImage *self,CGFloat x, CGFl
 			sx = (CGFloat)KGImageGetWidth(self->_mipmaps[level-1]) / (CGFloat)self->_width;
 			sy = (CGFloat)KGImageGetHeight(self->_mipmaps[level-1]) / (CGFloat)self->_height;
 		}
-        KGImage *mipmap=KGSurfaceMipMapForLevel(self,level);
+        KGImage *mipmap=KGImageMipMapForLevel(self,level);
         
 		Ux *= sx;
 		Vx *= sx;
@@ -883,7 +1116,7 @@ VGColorInternalFormat KGImageResample_EWAOnMipmaps(KGImage *self,CGFloat x, CGFl
          for(i=0;i<length;i++)
 		  span[i]=KGRGBAffffInit(0,0,0,0);	//invalid filter shape due to numerical inaccuracies => return black
           
-         return  self->_colorFormat;
+         return ;
         }
 		CGFloat ooF = 1.0f / F;
 		A *= ooF;
@@ -924,7 +1157,7 @@ VGColorInternalFormat KGImageResample_EWAOnMipmaps(KGImage *self,CGFloat x, CGFl
             int u;
             
             KGRGBAffff texel[u2-u1];
-            KGSurfaceReadTexelTilePad(mipmap,u1, v,texel,(u2-u1));
+            KGImageReadTilePadSpan_lRGBAffff_PRE(mipmap,u1, v,texel,(u2-u1));
 			for(u=u1;u<u2;u++)
 			{
 				if( Q >= 0.0f && Q < 1.0f )
@@ -950,29 +1183,73 @@ VGColorInternalFormat KGImageResample_EWAOnMipmaps(KGImage *self,CGFloat x, CGFl
 		sumweight = 1.0f / sumweight;
 		span[i]=KGRGBAffffMultiplyByFloat(color,sumweight);
 	}
-
-
-   return self->_colorFormat;
 }
 
+static inline int cubic_8(int v0,int v1,int v2,int v3,int fraction){
+  int p = (v3 - v2) - (v0 - v1);
+  int q = (v0 - v1) - p;
 
-static inline float cubic(float v0,float v1,float v2,float v3,float fraction){
+  return RI_INT_CLAMP((p * (fraction*fraction*fraction))/(255*255*255) + (q * fraction*fraction)/(255*255) + ((v2 - v0) * fraction)/255 + v1,0,255);
+}
+
+KGRGBA8888 bicubic_lRGBA8888_PRE(KGRGBA8888 a,KGRGBA8888 b,KGRGBA8888 c,KGRGBA8888 d,int fraction) {
+  return KGRGBA8888Init(
+   cubic_8(a.r, b.r, c.r, d.r, fraction),
+   cubic_8(a.g, b.g, c.g, d.g, fraction),
+   cubic_8(a.b, b.b, c.b, d.b, fraction),
+   cubic_8(a.a, b.a, c.a, d.a, fraction));
+}
+
+void KGImageBicubic_lRGBA8888_PRE(KGImage *self,CGFloat x, CGFloat y,KGRGBA8888 *span,int length, CGAffineTransform surfaceToImage){
+   int i;
+   
+   for(i=0;i<length;i++,x++){
+	CGPoint uv=CGPointMake(x+0.5,y+0.5);
+	uv = CGAffineTransformTransformVector2(surfaceToImage ,uv);
+
+    uv.x -= 0.5f;
+    uv.y -= 0.5f;
+    int u = RI_FLOOR_TO_INT(uv.x);
+    int ufrac=(uv.x-u)*255;
+        
+    int v = RI_FLOOR_TO_INT(uv.y);
+    int vfrac=(uv.y-v)*255;
+        
+    KGRGBA8888 t0,t1,t2,t3;
+    KGRGBA8888 cspan[4];
+     
+    KGImageReadTilePadSpan_lRGBA8888_PRE(self,u - 1,v - 1,cspan,4);
+    t0 = bicubic_lRGBA8888_PRE(cspan[0],cspan[1],cspan[2],cspan[3],ufrac);
+      
+    KGImageReadTilePadSpan_lRGBA8888_PRE(self,u - 1,v,cspan,4);
+    t1 = bicubic_lRGBA8888_PRE(cspan[0],cspan[1],cspan[2],cspan[3],ufrac);
+     
+    KGImageReadTilePadSpan_lRGBA8888_PRE(self,u - 1,v+1,cspan,4);     
+    t2 = bicubic_lRGBA8888_PRE(cspan[0],cspan[1],cspan[2],cspan[3],ufrac);
+     
+    KGImageReadTilePadSpan_lRGBA8888_PRE(self,u - 1,v+2,cspan,4);     
+    t3 = bicubic_lRGBA8888_PRE(cspan[0],cspan[1],cspan[2],cspan[3],ufrac);
+
+    span[i]=bicubic_lRGBA8888_PRE(t0,t1,t2,t3, vfrac);
+   }
+}
+
+static inline float cubic_f(float v0,float v1,float v2,float v3,float fraction){
   float p = (v3 - v2) - (v0 - v1);
   float q = (v0 - v1) - p;
 
   return RI_CLAMP((p * (fraction*fraction*fraction)) + (q * fraction*fraction) + ((v2 - v0) * fraction) + v1,0,1);
 }
 
-KGRGBAffff bicubicInterpolate(KGRGBAffff a,KGRGBAffff b,KGRGBAffff c,KGRGBAffff d,float fraction)
-{
+KGRGBAffff bicubic_lRGBAffff_PRE(KGRGBAffff a,KGRGBAffff b,KGRGBAffff c,KGRGBAffff d,float fraction) {
   return KGRGBAffffInit(
-   cubic(a.r, b.r, c.r, d.r, fraction),
-   cubic(a.g, b.g, c.g, d.g, fraction),
-   cubic(a.b, b.b, c.b, d.b, fraction),
-   cubic(a.a, b.a, c.a, d.a, fraction));
+   cubic_f(a.r, b.r, c.r, d.r, fraction),
+   cubic_f(a.g, b.g, c.g, d.g, fraction),
+   cubic_f(a.b, b.b, c.b, d.b, fraction),
+   cubic_f(a.a, b.a, c.a, d.a, fraction));
 }
 
-VGColorInternalFormat KGImageResample_Bicubic(KGImage *self,CGFloat x, CGFloat y,KGRGBAffff *span,int length, CGAffineTransform surfaceToImage){
+void KGImageBicubic_lRGBAffff_PRE(KGImage *self,CGFloat x, CGFloat y,KGRGBAffff *span,int length, CGAffineTransform surfaceToImage){
    int i;
    
    for(i=0;i<length;i++,x++){
@@ -990,25 +1267,49 @@ VGColorInternalFormat KGImageResample_Bicubic(KGImage *self,CGFloat x, CGFloat y
     KGRGBAffff t0,t1,t2,t3;
     KGRGBAffff cspan[4];
      
-    KGSurfaceReadTexelTilePad(self,u - 1,v - 1,cspan,4);
-    t0 = bicubicInterpolate(cspan[0],cspan[1],cspan[2],cspan[3],ufrac);
+    KGImageReadTilePadSpan_lRGBAffff_PRE(self,u - 1,v - 1,cspan,4);
+    t0 = bicubic_lRGBAffff_PRE(cspan[0],cspan[1],cspan[2],cspan[3],ufrac);
       
-    KGSurfaceReadTexelTilePad(self,u - 1,v,cspan,4);
-    t1 = bicubicInterpolate(cspan[0],cspan[1],cspan[2],cspan[3],ufrac);
+    KGImageReadTilePadSpan_lRGBAffff_PRE(self,u - 1,v,cspan,4);
+    t1 = bicubic_lRGBAffff_PRE(cspan[0],cspan[1],cspan[2],cspan[3],ufrac);
      
-    KGSurfaceReadTexelTilePad(self,u - 1,v+1,cspan,4);     
-    t2 = bicubicInterpolate(cspan[0],cspan[1],cspan[2],cspan[3],ufrac);
+    KGImageReadTilePadSpan_lRGBAffff_PRE(self,u - 1,v+1,cspan,4);     
+    t2 = bicubic_lRGBAffff_PRE(cspan[0],cspan[1],cspan[2],cspan[3],ufrac);
      
-    KGSurfaceReadTexelTilePad(self,u - 1,v+2,cspan,4);     
-    t3 = bicubicInterpolate(cspan[0],cspan[1],cspan[2],cspan[3],ufrac);
+    KGImageReadTilePadSpan_lRGBAffff_PRE(self,u - 1,v+2,cspan,4);     
+    t3 = bicubic_lRGBAffff_PRE(cspan[0],cspan[1],cspan[2],cspan[3],ufrac);
 
-    span[i]=bicubicInterpolate(t0,t1,t2,t3, vfrac);
+    span[i]=bicubic_lRGBAffff_PRE(t0,t1,t2,t3, vfrac);
    }
-
-   return self->_colorFormat;
 }
 
-VGColorInternalFormat KGImageResample_Bilinear(KGImage *self,CGFloat x, CGFloat y,KGRGBAffff *span,int length, CGAffineTransform surfaceToImage){
+void KGImageBilinear_lRGBA8888_PRE(KGImage *self,CGFloat x, CGFloat y,KGRGBA8888 *span,int length, CGAffineTransform surfaceToImage){
+   int i;
+
+   for(i=0;i<length;i++,x++){
+	CGPoint uv=CGPointMake(x+0.5,y+0.5);
+	uv = CGAffineTransformTransformVector2(surfaceToImage,uv);
+
+    uv.x -= 0.5f;
+	uv.y -= 0.5f;
+	int u = RI_FLOOR_TO_INT(uv.x);
+	int v = RI_FLOOR_TO_INT(uv.y);
+	KGRGBA8888 c00c01[2];
+    KGImageReadTilePadSpan_lRGBA8888_PRE(self,u,v,c00c01,2);
+
+    KGRGBA8888 c01c11[2];
+    KGImageReadTilePadSpan_lRGBA8888_PRE(self,u,v+1,c01c11,2);
+
+    CGFloat fu = uv.x - (CGFloat)u;
+    CGFloat fv = uv.y - (CGFloat)v;
+    KGRGBA8888 c0 = KGRGBA8888Add(KGRGBA8888MultiplyByCoverageByte(c00c01[0],(1.0f - fu)*255),KGRGBA8888MultiplyByCoverageByte(c00c01[1],fu*255));
+    KGRGBA8888 c1 = KGRGBA8888Add(KGRGBA8888MultiplyByCoverageByte(c01c11[0],(1.0f - fu)*255),KGRGBA8888MultiplyByCoverageByte(c01c11[1],fu*255));
+    span[i]=KGRGBA8888Add(KGRGBA8888MultiplyByCoverageByte(c0,(1.0f - fv)*255),KGRGBA8888MultiplyByCoverageByte(c1, fv*255));
+   }
+}
+
+
+void KGImageBilinear_lRGBAffff_PRE(KGImage *self,CGFloat x, CGFloat y,KGRGBAffff *span,int length, CGAffineTransform surfaceToImage){
    int i;
 
    for(i=0;i<length;i++,x++){
@@ -1020,10 +1321,10 @@ VGColorInternalFormat KGImageResample_Bilinear(KGImage *self,CGFloat x, CGFloat 
 	int u = RI_FLOOR_TO_INT(uv.x);
 	int v = RI_FLOOR_TO_INT(uv.y);
 	KGRGBAffff c00c01[2];
-    KGSurfaceReadTexelTilePad(self,u,v,c00c01,2);
+    KGImageReadTilePadSpan_lRGBAffff_PRE(self,u,v,c00c01,2);
 
     KGRGBAffff c01c11[2];
-    KGSurfaceReadTexelTilePad(self,u,v+1,c01c11,2);
+    KGImageReadTilePadSpan_lRGBAffff_PRE(self,u,v+1,c01c11,2);
 
     CGFloat fu = uv.x - (CGFloat)u;
     CGFloat fv = uv.y - (CGFloat)v;
@@ -1031,20 +1332,204 @@ VGColorInternalFormat KGImageResample_Bilinear(KGImage *self,CGFloat x, CGFloat 
     KGRGBAffff c1 = KGRGBAffffAdd(KGRGBAffffMultiplyByFloat(c01c11[0],(1.0f - fu)),KGRGBAffffMultiplyByFloat(c01c11[1],fu));
     span[i]=KGRGBAffffAdd(KGRGBAffffMultiplyByFloat(c0,(1.0f - fv)),KGRGBAffffMultiplyByFloat(c1, fv));
    }
-
-   return self->_colorFormat;
 }
 
-VGColorInternalFormat KGImageResample_PointSampling(KGImage *self,CGFloat x, CGFloat y,KGRGBAffff *span,int length, CGAffineTransform surfaceToImage){
+void KGImagePointSampling_lRGBA8888_PRE(KGImage *self,CGFloat x, CGFloat y,KGRGBA8888 *span,int length, CGAffineTransform surfaceToImage){
    int i;
    
    for(i=0;i<length;i++,x++){
     CGPoint uv=CGPointMake(x+0.5,y+0.5);
 	uv = CGAffineTransformTransformVector2(surfaceToImage ,uv);
 
-    KGSurfaceReadTexelTilePad(self,RI_FLOOR_TO_INT(uv.x), RI_FLOOR_TO_INT(uv.y),span+i,1);
+    KGImageReadTilePadSpan_lRGBA8888_PRE(self,RI_FLOOR_TO_INT(uv.x), RI_FLOOR_TO_INT(uv.y),span+i,1);
    }
-   return self->_colorFormat;
 }
+
+void KGImagePointSampling_lRGBAffff_PRE(KGImage *self,CGFloat x, CGFloat y,KGRGBAffff *span,int length, CGAffineTransform surfaceToImage){
+   int i;
+   
+   for(i=0;i<length;i++,x++){
+    CGPoint uv=CGPointMake(x+0.5,y+0.5);
+	uv = CGAffineTransformTransformVector2(surfaceToImage ,uv);
+
+    KGImageReadTilePadSpan_lRGBAffff_PRE(self,RI_FLOOR_TO_INT(uv.x), RI_FLOOR_TO_INT(uv.y),span+i,1);
+   }
+}
+
+void KGImageReadSpan_lRGBA8888_PRE(KGImage *self,int x,int y,KGRGBA8888 *span,int length) {
+   VGColorInternalFormat format=self->_colorFormat;
+   
+   self->_readRGBA8888(self,x,y,span,length);
+#if 0   
+   if(format&VGColorNONLINEAR){
+    KGRGBAffffConvertSpan(span,length,format,VGColor_lRGBA_PRE);
+   }
+   if(!(format&VGColorPREMULTIPLIED)){
+    KGRGBPremultiplySpan(span,length);
+    format|=VGColorPREMULTIPLIED;
+   }
+   else {
+    if(self->_clampExternalPixels)
+      clampSpan_lRGBAffff_PRE(span,length); // We don't need to do this for internally generated images (context)
+   }
+#endif
+}
+
+//clamp premultiplied color to alpha to enforce consistency
+static void clampSpan_lRGBAffff_PRE(KGRGBAffff *span,int length){
+   int i;
+   
+   for(i=0;i<length;i++){
+    span[i].r = RI_MIN(span[i].r, span[i].a);
+    span[i].g = RI_MIN(span[i].g, span[i].a);
+    span[i].b = RI_MIN(span[i].b, span[i].a);
+   }
+}
+
+void KGImageReadSpan_lRGBAffff_PRE(KGImage *self,int x,int y,KGRGBAffff *span,int length) {
+   VGColorInternalFormat format=self->_colorFormat;
+   
+   self->_readRGBAffff(self,x,y,span,length);
+   
+   if(format&VGColorNONLINEAR){
+    KGRGBAffffConvertSpan(span,length,format,VGColor_lRGBA_PRE);
+   }
+   if(!(format&VGColorPREMULTIPLIED)){
+    KGRGBPremultiplySpan(span,length);
+    format|=VGColorPREMULTIPLIED;
+   }
+   else {
+    if(self->_clampExternalPixels)
+      clampSpan_lRGBAffff_PRE(span,length); // We don't need to do this for internally generated images (context)
+   }
+}
+
+/*-------------------------------------------------------------------*//*!
+* \brief	Reads the pixel (x,y) and converts it into an alpha mask value.
+* \param	
+* \return	
+* \note		
+*//*-------------------------------------------------------------------*/
+
+void KGImageReadSpan_A8_MASK(KGImage *self,int x,int y,uint8_t *coverage,int length){
+   int i;
+   
+   RI_ASSERT(self->_bytes);
+   RI_ASSERT(y >= 0 && y < self->_height);
+
+   for(i=0;i<length;i++,x++){
+	RI_ASSERT(x >= 0 && x < self->_width);
+
+    KGRGBA8888 span;
+    KGImageReadSpan_lRGBA8888_PRE(self,x,y,&span,1);
+   
+	if(self->m_desc.luminanceBits) {	//luminance
+     coverage[i]= span.r;	//luminance/luma is read into the color channels
+	}
+	else {	//rgba
+     if(self->m_desc.alphaBits)
+	  coverage[i]=span.a;
+     else
+      coverage[i]=span.r;
+	}
+   }
+}
+
+void KGImageReadSpan_Af_MASK(KGImage *self,int x,int y,CGFloat *coverage,int length) {
+   int i;
+   
+   RI_ASSERT(self->_bytes);
+   RI_ASSERT(y >= 0 && y < self->_height);
+
+   for(i=0;i<length;i++,x++){
+	RI_ASSERT(x >= 0 && x < self->_width);
+
+    KGRGBAffff span;
+    KGImageReadSpan_lRGBAffff_PRE(self,x,y,&span,1);
+   
+	if(self->m_desc.luminanceBits) {	//luminance
+     coverage[i]= span.r;	//luminance/luma is read into the color channels
+	}
+	else {	//rgba
+     if(self->m_desc.alphaBits)
+	  coverage[i]=span.a;
+     else
+      coverage[i]=span.r;
+	}
+   }
+}
+
+
+/*-------------------------------------------------------------------*//*!
+* \brief	Maps point (x,y) to an image and returns a filtered,
+*			premultiplied color value.
+* \param	
+* \return	
+* \note		
+*//*-------------------------------------------------------------------*/
+
+void KGImageReadTexelTileRepeat(KGImage *self,int u, int v, KGRGBAffff *span,int length){
+   int i;
+
+   v = RI_INT_MOD(v, self->_height);
+   
+   for(i=0;i<length;i++,u++){
+    u = RI_INT_MOD(u, self->_width);
+
+    KGImageReadSpan_lRGBAffff_PRE(self,u,v,span+i,1);
+   }
+}
+
+void KGImagePattern_Bilinear(KGImage *self,CGFloat x, CGFloat y,KGRGBAffff *span,int length, CGAffineTransform surfaceToImage){
+   int i;
+   
+   for(i=0;i<length;i++,x++){
+	CGPoint uv=CGPointMake(x+0.5,y+0.5);
+	uv = CGAffineTransformTransformVector2(surfaceToImage ,uv);
+
+    uv.x -= 0.5f;
+	uv.y -= 0.5f;
+	int u = RI_FLOOR_TO_INT(uv.x);
+	int v = RI_FLOOR_TO_INT(uv.y);
+	KGRGBAffff c00c01[2];
+    KGImageReadTexelTileRepeat(self,u,v,c00c01,2);
+
+    KGRGBAffff c01c11[2];
+    KGImageReadTexelTileRepeat(self,u,v+1,c01c11,2);
+
+    CGFloat fu = uv.x - (CGFloat)u;
+    CGFloat fv = uv.y - (CGFloat)v;
+    KGRGBAffff c0 = KGRGBAffffAdd(KGRGBAffffMultiplyByFloat(c00c01[0],(1.0f - fu)),KGRGBAffffMultiplyByFloat(c00c01[1],fu));
+    KGRGBAffff c1 = KGRGBAffffAdd(KGRGBAffffMultiplyByFloat(c01c11[0],(1.0f - fu)),KGRGBAffffMultiplyByFloat(c01c11[1],fu));
+    span[i]=KGRGBAffffAdd(KGRGBAffffMultiplyByFloat(c0,(1.0f - fv)),KGRGBAffffMultiplyByFloat(c1, fv));
+   }
+}
+
+void KGImagePattern_PointSampling(KGImage *self,CGFloat x, CGFloat y,KGRGBAffff *span,int length, CGAffineTransform surfaceToImage){	//point sampling
+   int i;
+   
+   for(i=0;i<length;i++,x++){
+    CGPoint uv=CGPointMake(x+0.5,y+0.5);
+	uv = CGAffineTransformTransformVector2(surfaceToImage ,uv);
+
+    KGImageReadTexelTileRepeat(self,RI_FLOOR_TO_INT(uv.x), RI_FLOOR_TO_INT(uv.y),span+i,1);
+   }
+}
+
+void KGImageReadPatternSpan_lRGBAffff_PRE(KGImage *self,CGFloat x, CGFloat y, KGRGBAffff *span,int length, CGAffineTransform surfaceToImage, CGPatternTiling distortion)	{
+    
+   switch(distortion){
+    case kCGPatternTilingNoDistortion:
+      KGImagePattern_PointSampling(self,x,y,span,length,surfaceToImage);
+      break;
+
+    case kCGPatternTilingConstantSpacingMinimalDistortion:
+    case kCGPatternTilingConstantSpacing:
+     default:
+      KGImagePattern_Bilinear(self,x,y,span,length,surfaceToImage);
+      break;
+   }
+}
+
 
 @end
