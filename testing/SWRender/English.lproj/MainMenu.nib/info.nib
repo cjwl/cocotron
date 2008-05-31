@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>IBFramework Version</key>
-	<string>644</string>
+	<string>667</string>
 	<key>IBLastKnownRelativeProjectPath</key>
 	<string>../SWRender.xcodeproj</string>
 	<key>IBOldestOS</key>
@@ -14,7 +14,7 @@
 		<integer>29</integer>
 	</array>
 	<key>IBSystem Version</key>
-	<string>9C31</string>
+	<string>9D34</string>
 	<key>targetFramework</key>
 	<string>IBCocoaFramework</string>
 </dict>

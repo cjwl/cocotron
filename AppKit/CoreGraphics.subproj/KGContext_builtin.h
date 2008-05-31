@@ -37,7 +37,7 @@ typedef enum {
   VG_NON_ZERO
 } VGFillRule;
 
-#define MAX_SAMPLES 64
+#define MAX_SAMPLES 256
 
 typedef struct {
    CGPoint		v0;
@@ -56,7 +56,6 @@ typedef struct {
    int          minx;
    int          ceilMinX;
    int  		maxx;
-   CGFloat     sidePre[MAX_SAMPLES];
 } Edge;
 
 typedef void (*KGBlendSpan_RGBA8888)(KGRGBA8888 *src,KGRGBA8888 *dst,int length);
@@ -85,7 +84,6 @@ typedef void (*KGWriteCoverageSpans)(KGContext_builtin *self,int *x, int *y,CGFl
     int    _edgeCapacity;
     Edge  *_edgePool;
     Edge **_edges;
-    BOOL    _antialias;
     
 	int     numSamples;
 	CGFloat sumWeights;
@@ -97,7 +95,7 @@ typedef void (*KGWriteCoverageSpans)(KGContext_builtin *self,int *x, int *y,CGFl
 
 KGRasterizer *KGRasterizerInit(KGRasterizer *self,KGSurface *renderingSurface);
 void KGRasterizerDealloc(KGRasterizer *self);
-void KGRasterizerSetViewport(KGRasterizer *self,int vpx,int vpy,int vpwidth,int vpheight);
+void KGRasterizerSetViewport(KGRasterizer *self,int vpwidth,int vpheight);
 void KGRasterizerClear(KGRasterizer *self);
 void KGRasterizerAddEdge(KGRasterizer *self,const CGPoint v0, const CGPoint v1);
 void KGRasterizerSetShouldAntialias(KGRasterizer *self,BOOL antialias);
