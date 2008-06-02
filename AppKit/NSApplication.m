@@ -569,6 +569,9 @@ id NSApp=nil;
    if([[self delegate] respondsToSelector:action])
     return [self delegate];
 
+   if([[NSDocumentController sharedDocumentController] respondsToSelector:action])
+    return [NSDocumentController sharedDocumentController];
+    
    return nil;
 }
 
