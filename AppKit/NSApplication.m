@@ -6,8 +6,6 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
-// "Window" menu - David Young <daver@geeks.org>
-// Original - Christopher Lloyd <cjwl@objc.net>
 #import <AppKit/NSApplication.h>
 #import <AppKit/NSWindow-Private.h>
 #import <AppKit/NSPanel.h>
@@ -374,27 +372,33 @@ id NSApp=nil;
 
    [self _closeSplashImage];
 
-   if(_delegate==nil){
-    id types=[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleDocumentTypes"];
+   NSDocumentController *controller = nil;
+   id types=[[[NSBundle mainBundle]
+		 infoDictionary]
+		objectForKey:@"CFBundleDocumentTypes"];
+   if([types count] > 0)
+       controller = [NSDocumentController sharedDocumentController];
+   
+   if(_delegate && [_delegate respondsToSelector: @selector(application:openFile:)]) {
+       NSString *openFile = [[NSUserDefaults standardUserDefaults]
+				stringForKey:@"NSOpen"];
 
-    if([types count]>0)
-     _delegate=[NSDocumentController sharedDocumentController];
+       if([openFile length] > 0) {
+	   if([_delegate application: self openFile: openFile])
+	       needsUntitled = NO;
+       }
    }
 
-   if([_delegate respondsToSelector:@selector(application:openFile:)]){
-    NSString *openFile=[[NSUserDefaults standardUserDefaults] stringForKey:@"NSOpen"];
-
-    if([openFile length]>0){
-     if([_delegate application:self openFile:openFile])
-      needsUntitled=NO;
-    }
+   if(needsUntitled && _delegate &&
+      [_delegate respondsToSelector: @selector(applicationShouldOpenUntitledFile:)]) {
+       needsUntitled = [_delegate applicationShouldOpenUntitledFile: self];
    }
-
-   if(needsUntitled && [_delegate isKindOfClass:[NSDocumentController class]]){
-    [_delegate _updateRecentDocumentsMenu]; 
-    [_delegate newDocument:self];
+   
+   if(needsUntitled && controller) {
+       [controller _updateRecentDocumentsMenu]; 
+       [controller newDocument: self];
    }
-
+   
    NS_DURING
     [[NSNotificationCenter defaultCenter] postNotificationName:NSApplicationDidFinishLaunchingNotification object:self];
    NS_HANDLER
@@ -439,14 +443,16 @@ id NSApp=nil;
 }
 
 -(void)run {
-
+    
+   NSAutoreleasePool *pool=[NSAutoreleasePool new];
    [self finishLaunching];
+   [pool release];
    
    _isRunning=YES;
    
    do {
-    NSAutoreleasePool *pool=[NSAutoreleasePool new];
-    NSEvent           *event;
+       pool = [NSAutoreleasePool new];
+       NSEvent           *event;
 
     //OBJCReportStatistics();
 
