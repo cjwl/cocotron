@@ -188,11 +188,11 @@ static inline KGRGBA8888 KGRGBA8888FromKGRGBAffff(KGRGBAffff rgba){
    return result;
 }
 
-static inline KGRGBA8888 KGRGBA8888MultiplyByCoverageByte(KGRGBA8888 result,int value){
-   result.r=((int)result.r*value)/255;
-   result.g=((int)result.g*value)/255;
-   result.b=((int)result.b*value)/255;
-   result.a=((int)result.a*value)/255;
+static inline KGRGBA8888 KGRGBA8888MultiplyByCoverage256(KGRGBA8888 result,int value){
+   result.r=((int)result.r*value)/256;
+   result.g=((int)result.g*value)/256;
+   result.b=((int)result.b*value)/256;
+   result.a=((int)result.a*value)/256;
 
    return result;
 }

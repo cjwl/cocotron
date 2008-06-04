@@ -37,7 +37,7 @@ typedef enum {
   VG_NON_ZERO
 } VGFillRule;
 
-#define MAX_SAMPLES 256
+#define MAX_SAMPLES 128
 
 typedef struct {
    CGPoint		v0;
@@ -54,8 +54,7 @@ typedef struct {
    CGFloat     bminx;
    CGFloat     bmaxx;
    int          minx;
-   int          ceilMinX;
-   int  		maxx;
+   int          maxx;
 } Edge;
 
 typedef void (*KGBlendSpan_RGBA8888)(KGRGBA8888 *src,KGRGBA8888 *dst,int length);
@@ -63,7 +62,7 @@ typedef void (*KGBlendSpan_RGBAffff)(KGRGBAffff *src,KGRGBAffff *dst,int length)
 
 @class KGSurface,KGContext_builtin;
 
-typedef void (*KGWriteCoverageSpans)(KGContext_builtin *self,int *x, int *y,CGFloat *coverage,int *lengths,int count);
+typedef void (*KGWriteCoverageSpans)(KGContext_builtin *self,int *x, int *y,int *coverage,int *lengths,int count);
 
 
 #define KGRasterizer KGContext_builtin
@@ -85,12 +84,15 @@ typedef void (*KGWriteCoverageSpans)(KGContext_builtin *self,int *x, int *y,CGFl
     Edge  *_edgePool;
     Edge **_edges;
     
+    int *_winding;
+    int *_increase;
+    
+    int     sampleSizeShift;
 	int     numSamples;
-	CGFloat sumWeights;
 	CGFloat fradius;		//max offset of the sampling points from a pixel center
     CGFloat samplesX[MAX_SAMPLES];
     CGFloat samplesY[MAX_SAMPLES];
-    CGFloat samplesWeight[MAX_SAMPLES];
+    int samplesWeight[MAX_SAMPLES];
 }
 
 KGRasterizer *KGRasterizerInit(KGRasterizer *self,KGSurface *renderingSurface);
@@ -105,7 +107,7 @@ void KGRasterizeSetBlendMode(KGRasterizer *self,CGBlendMode blendMode);
 void KGRasterizeSetMask(KGRasterizer *self,KGSurface* mask);
 void KGRasterizeSetPaint(KGRasterizer *self,KGPaint* paint);
 //private
-void KGRasterizeWriteCoverageSpans_RGBAffff(KGRasterizer *self,int *x, int *y,CGFloat *coverage,int *lengths,int count);
-void KGRasterizeWriteCoverageSpans_RGBA8888(KGRasterizer *self,int *x, int *y,CGFloat *coverage,int *lengths,int count);
+void KGRasterizeWriteCoverageSpans_RGBAffff(KGRasterizer *self,int *x, int *y,int *coverage,int *lengths,int count);
+void KGRasterizeWriteCoverageSpans_RGBA8888(KGRasterizer *self,int *x, int *y,int *coverage,int *lengths,int count);
 
 @end

@@ -1302,9 +1302,9 @@ void KGImageBilinear_lRGBA8888_PRE(KGImage *self,CGFloat x, CGFloat y,KGRGBA8888
 
     CGFloat fu = uv.x - (CGFloat)u;
     CGFloat fv = uv.y - (CGFloat)v;
-    KGRGBA8888 c0 = KGRGBA8888Add(KGRGBA8888MultiplyByCoverageByte(c00c01[0],(1.0f - fu)*255),KGRGBA8888MultiplyByCoverageByte(c00c01[1],fu*255));
-    KGRGBA8888 c1 = KGRGBA8888Add(KGRGBA8888MultiplyByCoverageByte(c01c11[0],(1.0f - fu)*255),KGRGBA8888MultiplyByCoverageByte(c01c11[1],fu*255));
-    span[i]=KGRGBA8888Add(KGRGBA8888MultiplyByCoverageByte(c0,(1.0f - fv)*255),KGRGBA8888MultiplyByCoverageByte(c1, fv*255));
+    KGRGBA8888 c0 = KGRGBA8888Add(KGRGBA8888MultiplyByCoverage256(c00c01[0],(1.0f - fu)*256),KGRGBA8888MultiplyByCoverage256(c00c01[1],fu*256));
+    KGRGBA8888 c1 = KGRGBA8888Add(KGRGBA8888MultiplyByCoverage256(c01c11[0],(1.0f - fu)*256),KGRGBA8888MultiplyByCoverage256(c01c11[1],fu*256));
+    span[i]=KGRGBA8888Add(KGRGBA8888MultiplyByCoverage256(c0,(1.0f - fv)*256),KGRGBA8888MultiplyByCoverage256(c1, fv*256));
    }
 }
 
