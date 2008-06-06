@@ -31,6 +31,7 @@
 @interface KGPaint_color : KGPaint {
    VGColor m_paintColor;
    KGRGBAffff _RGBAffff_PRE;
+   KGRGBA8888 _RGBA8888_PRE;
 }
 
 -initWithGray:(CGFloat)gray alpha:(CGFloat)alpha;

@@ -32,7 +32,7 @@
 
 static void color_lRGBA8888_PRE(KGPaint *selfX,int x,int y,KGRGBA8888 *span,int length){
    KGPaint_color *self=(KGPaint_color *)selfX;
-   KGRGBA8888  rgba=KGRGBA8888FromKGRGBAffff(self->_RGBAffff_PRE);
+   KGRGBA8888  rgba=self->_RGBA8888_PRE;
    int i;
    
    for(i=0;i<length;i++)
@@ -56,6 +56,7 @@ static void color_lRGBAffff_PRE(KGPaint *selfX,int x,int y,KGRGBAffff *span,int 
    m_paintColor=VGColorClamp(m_paintColor);
    m_paintColor=VGColorPremultiply(m_paintColor);
    _RGBAffff_PRE=KGRGBAffffFromColor(VGColorConvert(self->m_paintColor,VGColor_lRGBA_PRE));
+   _RGBA8888_PRE=KGRGBA8888FromKGRGBAffff(_RGBAffff_PRE);
    return self;
 }
 
@@ -67,6 +68,7 @@ static void color_lRGBAffff_PRE(KGPaint *selfX,int x,int y,KGRGBAffff *span,int 
    m_paintColor=VGColorClamp(m_paintColor);
    m_paintColor=VGColorPremultiply(m_paintColor);
    _RGBAffff_PRE=KGRGBAffffFromColor(VGColorConvert(self->m_paintColor,VGColor_lRGBA_PRE));
+   _RGBA8888_PRE=KGRGBA8888FromKGRGBAffff(_RGBAffff_PRE);
    return self;
 }
 

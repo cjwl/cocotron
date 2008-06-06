@@ -293,13 +293,13 @@ static void addSliceToPath(CGMutablePathRef path,float innerRadius,float outerRa
 
     CGMutablePathRef  path=CGPathCreateMutable();
 
-   for(i=0;i<400;i+=10){
+   for(i=0;i<400;i+=4){
     
    CGPathMoveToPoint(path,NULL,i,0);
    CGPathAddLineToPoint(path,NULL,i,height);
    }
    
-   for(i=0;i<400;i+=10){
+   for(i=0;i<400;i+=4){
    CGPathMoveToPoint(path,NULL,0,i);
    CGPathAddLineToPoint(path,NULL,width,i);
    }
@@ -320,7 +320,7 @@ static void addSliceToPath(CGMutablePathRef path,float innerRadius,float outerRa
 -(void)drawBlending {
    int width=400;
    int height=400;
-   int i,limit=10;
+   int i,limit=40;
    CGAffineTransform ctm=[self ctm];
 
    ctm=CGAffineTransformTranslate(ctm,-200,-200);

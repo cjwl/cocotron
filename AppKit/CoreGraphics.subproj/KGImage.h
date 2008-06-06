@@ -170,7 +170,6 @@ static inline KGRGBA8888 KGRGBA8888Init(int r,int g,int b,int a){
    return result;
 }
 
-
 static inline CGFloat CGFloatFromByte(uint8_t i){
 	return (CGFloat)(i) / (CGFloat)0xFF;
 }
