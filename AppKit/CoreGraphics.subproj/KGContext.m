@@ -267,7 +267,7 @@ static inline KGGraphicsState *currentState(KGContext *self){
    [_stateStack removeLastObject];
 
    KGFont *font=[[self currentState] font];
-   [self deviceSelectFontWithName:[[font name] cString] pointSize:[font pointSize]];
+   [self deviceSelectFontWithName:[font name] pointSize:[font pointSize]];
 
    NSArray *phases=[[self currentState] clipPhases];
    int      i,count=[phases count];
@@ -603,7 +603,7 @@ static inline KGGraphicsState *currentState(KGContext *self){
 
 -(void)setFont:(KGFont *)font {
    [currentState(self) setFont:font];
-   [self deviceSelectFontWithName:[[font name] cString] pointSize:[font pointSize] ];
+   [self deviceSelectFontWithName:[font name] pointSize:[font pointSize] ];
 }
 
 -(void)setFontSize:(float)size {
@@ -945,11 +945,11 @@ static inline KGGraphicsState *currentState(KGContext *self){
    KGInvalidAbstractInvocation();
 }
 
--(void)deviceSelectFontWithName:(const char *)name pointSize:(float)pointSize antialias:(BOOL)antialias {
+-(void)deviceSelectFontWithName:(NSString *)name pointSize:(float)pointSize antialias:(BOOL)antialias {
    KGInvalidAbstractInvocation();
 }
 
--(void)deviceSelectFontWithName:(const char *)name pointSize:(float)pointSize {
+-(void)deviceSelectFontWithName:(NSString *)name pointSize:(float)pointSize {
    [self deviceSelectFontWithName:name pointSize:pointSize antialias:NO];
 }
 

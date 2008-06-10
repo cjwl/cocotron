@@ -210,6 +210,7 @@ typedef void (*KGImageReadSpan_RGBA8888)(KGImage *self,int x,int y,KGRGBA8888 *s
 typedef void (*KGImageReadSpan_RGBAffff)(KGImage *self,int x,int y,KGRGBAffff *span,int length);
 
 @interface KGImage : NSObject <NSCopying> {
+@public
    size_t _width;
    size_t _height;
    size_t _bitsPerComponent;
@@ -304,6 +305,9 @@ void KGImageReadSpan_lRGBA8888_PRE(KGImage *self,int x,int y,KGRGBA8888 *span,in
 void KGImageReadSpan_lRGBAffff_PRE(KGImage *self,int x,int y,KGRGBAffff *span,int length);
 void KGImageReadSpan_A8_MASK(KGImage *self,int x,int y,uint8_t *coverage,int length);
 void KGImageReadSpan_Af_MASK(KGImage *self,int x,int y,CGFloat *coverage,int length);
+
+void KGImageReadTileSpanExtendEdge__lRGBA8888_PRE(KGImage *self,int u, int v, KGRGBA8888 *span,int length);
+void KGImageReadTileSpanExtendEdge__lRGBAffff_PRE(KGImage *self,int u, int v, KGRGBAffff *span,int length);
 
 void KGImageEWAOnMipmaps_lRGBAffff_PRE(KGImage *self,CGFloat x, CGFloat y,KGRGBAffff *span,int length, CGAffineTransform surfaceToImage);
 void KGImageBicubic_lRGBA8888_PRE(KGImage *self,CGFloat x, CGFloat y,KGRGBA8888 *span,int length, CGAffineTransform surfaceToImage);

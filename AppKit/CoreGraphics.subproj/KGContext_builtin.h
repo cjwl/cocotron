@@ -94,6 +94,8 @@ typedef void (*KGWriteCoverageSpans)(KGContext_builtin *self,int *x, int *y,int 
     CGFloat *samplesY;
 }
 
+-(void)setWidth:(size_t)width height:(size_t)height reallocateOnlyIfRequired:(BOOL)roir;
+
 KGRasterizer *KGRasterizerInit(KGRasterizer *self,KGSurface *renderingSurface);
 void KGRasterizerDealloc(KGRasterizer *self);
 void KGRasterizerSetViewport(KGRasterizer *self,int vpwidth,int vpheight);

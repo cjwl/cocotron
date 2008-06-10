@@ -85,12 +85,27 @@ BOOL _isAvailable=NO;
      break;
    }
   
-   KGSurface *surface=KGSurfaceInitWithBytes(KGSurfaceAlloc(),_width,_height,bitsPerComponent,bitsPerPixel,bytesPerRow,colorSpace,bitmapInfo,VG_lRGBA_8888_PRE,_bytes);
+   KGSurface *surface=KGSurfaceInitWithBytes([KGSurface alloc],_width,_height,bitsPerComponent,bitsPerPixel,bytesPerRow,colorSpace,bitmapInfo,VG_lRGBA_8888_PRE,_bytes);
    KGRasterizerInit(self,surface);
 
    KGRasterizerSetViewport(self,KGImageGetWidth(m_renderingSurface),KGImageGetHeight(m_renderingSurface));
    return self;
 }
+
+-(void)setWidth:(size_t)width height:(size_t)height reallocateOnlyIfRequired:(BOOL)roir {
+
+  [m_renderingSurface setWidth:width height:height reallocateOnlyIfRequired:roir];
+  KGRasterizerSetViewport(self,KGImageGetWidth(m_renderingSurface),KGImageGetHeight(m_renderingSurface));
+}
+
+-(void *)bytes {
+   return m_renderingSurface->_bytes;
+}
+
+-(size_t)bytesPerRow {
+   return m_renderingSurface->_bytesPerRow;
+}
+
 
 static void applyPath(void *info,const CGPathElement *element) {
    VGPath *vgPath=( VGPath *)info;
@@ -316,12 +331,12 @@ xform=CGAffineTransformConcat(xform,u2d);
 //   KGInvalidAbstractInvocation();
 }
 
--(void)deviceSelectFontWithName:(const char *)name pointSize:(float)pointSize antialias:(BOOL)antialias {
+-(void)deviceSelectFontWithName:(NSString *)name pointSize:(float)pointSize antialias:(BOOL)antialias {
 //   KGInvalidAbstractInvocation();
 }
 
 KGRasterizer *KGRasterizerInit(KGRasterizer *self,KGSurface *renderingSurface) {
-	self->m_renderingSurface = renderingSurface;
+	self->m_renderingSurface = [renderingSurface retain];
 	self->m_mask=NULL;
 	self->m_paint=NULL;
     KGRasterizeSetBlendMode(self,kCGBlendModeNormal);
@@ -842,7 +857,10 @@ void KGRasterizeSetMask(KGRasterizer *self,KGSurface* mask) {
 }
 
 void KGRasterizeSetPaint(KGRasterizer *self, KGPaint* paint) {
-	self->m_paint = paint;
+   paint=[paint retain];
+   [self->m_paint release];
+   self->m_paint=paint;
+   
 	if(!self->m_paint)
 		self->m_paint = [[KGPaint_color alloc] initWithGray:0 alpha:1];
 }

@@ -232,7 +232,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)deviceClipToNonZeroPath:(KGPath *)path;
 -(void)deviceClipToEvenOddPath:(KGPath *)path;
 -(void)deviceClipToMask:(KGImage *)mask inRect:(CGRect)rect;
--(void)deviceSelectFontWithName:(const char *)name pointSize:(float)pointSize antialias:(BOOL)antialias;
--(void)deviceSelectFontWithName:(const char *)name pointSize:(float)pointSize;
+-(void)deviceSelectFontWithName:(NSString *)name pointSize:(float)pointSize antialias:(BOOL)antialias;
+-(void)deviceSelectFontWithName:(NSString *)name pointSize:(float)pointSize;
 
 @end

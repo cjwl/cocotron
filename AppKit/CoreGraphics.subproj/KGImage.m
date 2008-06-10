@@ -865,13 +865,12 @@ void KGImageRead_CMYK8888_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span
 * \note		
 *//*-------------------------------------------------------------------*/
 
-/* Theoretically the edges of the polygon fill used to draw resampled images would
-   perfectly fit the edges of the raster image, however, numerical error will probably
-   place some sampled pixels outside the image. Two good choices are to use the edge value
-   or zero. This uses the edge value.  I don't know what Apple does.
- */
-
-void KGImageReadTilePadSpan_lRGBA8888_PRE(KGImage *self,int u, int v, KGRGBA8888 *span,int length){
+/* KGImageReadTileSpanExtendEdge__ is used by the image resampling functions to read
+   translated spans. When a coordinate is outside the image it uses the edge
+   value. This works better than say, zero, with averaging algorithms (bilinear,bicubic, etc)
+   as you get good values at the edges. */
+   
+void KGImageReadTileSpanExtendEdge__lRGBA8888_PRE(KGImage *self,int u, int v, KGRGBA8888 *span,int length){
    int i;
 
    v = RI_INT_CLAMP(v,0,self->_height-1);
@@ -888,7 +887,7 @@ void KGImageReadTilePadSpan_lRGBA8888_PRE(KGImage *self,int u, int v, KGRGBA8888
     KGImageReadSpan_lRGBA8888_PRE(self,self->_width-1,v,span+i,1);
 }
 
-void KGImageReadTilePadSpan_lRGBAffff_PRE(KGImage *self,int u, int v, KGRGBAffff *span,int length){
+void KGImageReadTileSpanExtendEdge__lRGBAffff_PRE(KGImage *self,int u, int v, KGRGBAffff *span,int length){
    int i;
 
    v = RI_INT_CLAMP(v,0,self->_height-1);
@@ -949,7 +948,7 @@ void KGImageMakeMipMaps(KGImage *self) {
             self->_mipmapsCount++;
 			self->_mipmaps[self->_mipmapsCount-1] = NULL;
 
-			KGSurface* next =  KGSurfaceInit(KGSurfaceAlloc(),nextw, nexth,self->_bitsPerComponent,self->_bitsPerPixel,self->_colorSpace,self->_bitmapInfo,self->_imageFormat);
+			KGSurface* next =  KGSurfaceInitWithBytes([KGSurface alloc],nextw, nexth,self->_bitsPerComponent,self->_bitsPerPixel,0,self->_colorSpace,self->_bitmapInfo,self->_imageFormat,NULL);
             int j;
 			for(j=0;j<KGImageGetHeight(next);j++)
 			{
@@ -1157,7 +1156,7 @@ void KGImageEWAOnMipmaps_lRGBAffff_PRE(KGImage *self,CGFloat x, CGFloat y,KGRGBA
             int u;
             
             KGRGBAffff texel[u2-u1];
-            KGImageReadTilePadSpan_lRGBAffff_PRE(mipmap,u1, v,texel,(u2-u1));
+            KGImageReadTileSpanExtendEdge__lRGBAffff_PRE(mipmap,u1, v,texel,(u2-u1));
 			for(u=u1;u<u2;u++)
 			{
 				if( Q >= 0.0f && Q < 1.0f )
@@ -1218,16 +1217,16 @@ void KGImageBicubic_lRGBA8888_PRE(KGImage *self,CGFloat x, CGFloat y,KGRGBA8888 
     KGRGBA8888 t0,t1,t2,t3;
     KGRGBA8888 cspan[4];
      
-    KGImageReadTilePadSpan_lRGBA8888_PRE(self,u - 1,v - 1,cspan,4);
+    KGImageReadTileSpanExtendEdge__lRGBA8888_PRE(self,u - 1,v - 1,cspan,4);
     t0 = bicubic_lRGBA8888_PRE(cspan[0],cspan[1],cspan[2],cspan[3],ufrac);
       
-    KGImageReadTilePadSpan_lRGBA8888_PRE(self,u - 1,v,cspan,4);
+    KGImageReadTileSpanExtendEdge__lRGBA8888_PRE(self,u - 1,v,cspan,4);
     t1 = bicubic_lRGBA8888_PRE(cspan[0],cspan[1],cspan[2],cspan[3],ufrac);
      
-    KGImageReadTilePadSpan_lRGBA8888_PRE(self,u - 1,v+1,cspan,4);     
+    KGImageReadTileSpanExtendEdge__lRGBA8888_PRE(self,u - 1,v+1,cspan,4);     
     t2 = bicubic_lRGBA8888_PRE(cspan[0],cspan[1],cspan[2],cspan[3],ufrac);
      
-    KGImageReadTilePadSpan_lRGBA8888_PRE(self,u - 1,v+2,cspan,4);     
+    KGImageReadTileSpanExtendEdge__lRGBA8888_PRE(self,u - 1,v+2,cspan,4);     
     t3 = bicubic_lRGBA8888_PRE(cspan[0],cspan[1],cspan[2],cspan[3],ufrac);
 
     span[i]=bicubic_lRGBA8888_PRE(t0,t1,t2,t3, vfrac);
@@ -1267,16 +1266,16 @@ void KGImageBicubic_lRGBAffff_PRE(KGImage *self,CGFloat x, CGFloat y,KGRGBAffff 
     KGRGBAffff t0,t1,t2,t3;
     KGRGBAffff cspan[4];
      
-    KGImageReadTilePadSpan_lRGBAffff_PRE(self,u - 1,v - 1,cspan,4);
+    KGImageReadTileSpanExtendEdge__lRGBAffff_PRE(self,u - 1,v - 1,cspan,4);
     t0 = bicubic_lRGBAffff_PRE(cspan[0],cspan[1],cspan[2],cspan[3],ufrac);
       
-    KGImageReadTilePadSpan_lRGBAffff_PRE(self,u - 1,v,cspan,4);
+    KGImageReadTileSpanExtendEdge__lRGBAffff_PRE(self,u - 1,v,cspan,4);
     t1 = bicubic_lRGBAffff_PRE(cspan[0],cspan[1],cspan[2],cspan[3],ufrac);
      
-    KGImageReadTilePadSpan_lRGBAffff_PRE(self,u - 1,v+1,cspan,4);     
+    KGImageReadTileSpanExtendEdge__lRGBAffff_PRE(self,u - 1,v+1,cspan,4);     
     t2 = bicubic_lRGBAffff_PRE(cspan[0],cspan[1],cspan[2],cspan[3],ufrac);
      
-    KGImageReadTilePadSpan_lRGBAffff_PRE(self,u - 1,v+2,cspan,4);     
+    KGImageReadTileSpanExtendEdge__lRGBAffff_PRE(self,u - 1,v+2,cspan,4);     
     t3 = bicubic_lRGBAffff_PRE(cspan[0],cspan[1],cspan[2],cspan[3],ufrac);
 
     span[i]=bicubic_lRGBAffff_PRE(t0,t1,t2,t3, vfrac);
@@ -1295,10 +1294,10 @@ void KGImageBilinear_lRGBA8888_PRE(KGImage *self,CGFloat x, CGFloat y,KGRGBA8888
 	int u = RI_FLOOR_TO_INT(uv.x);
 	int v = RI_FLOOR_TO_INT(uv.y);
 	KGRGBA8888 c00c01[2];
-    KGImageReadTilePadSpan_lRGBA8888_PRE(self,u,v,c00c01,2);
+    KGImageReadTileSpanExtendEdge__lRGBA8888_PRE(self,u,v,c00c01,2);
 
     KGRGBA8888 c01c11[2];
-    KGImageReadTilePadSpan_lRGBA8888_PRE(self,u,v+1,c01c11,2);
+    KGImageReadTileSpanExtendEdge__lRGBA8888_PRE(self,u,v+1,c01c11,2);
 
     CGFloat fu = uv.x - (CGFloat)u;
     CGFloat fv = uv.y - (CGFloat)v;
@@ -1321,10 +1320,10 @@ void KGImageBilinear_lRGBAffff_PRE(KGImage *self,CGFloat x, CGFloat y,KGRGBAffff
 	int u = RI_FLOOR_TO_INT(uv.x);
 	int v = RI_FLOOR_TO_INT(uv.y);
 	KGRGBAffff c00c01[2];
-    KGImageReadTilePadSpan_lRGBAffff_PRE(self,u,v,c00c01,2);
+    KGImageReadTileSpanExtendEdge__lRGBAffff_PRE(self,u,v,c00c01,2);
 
     KGRGBAffff c01c11[2];
-    KGImageReadTilePadSpan_lRGBAffff_PRE(self,u,v+1,c01c11,2);
+    KGImageReadTileSpanExtendEdge__lRGBAffff_PRE(self,u,v+1,c01c11,2);
 
     CGFloat fu = uv.x - (CGFloat)u;
     CGFloat fv = uv.y - (CGFloat)v;
@@ -1341,7 +1340,7 @@ void KGImagePointSampling_lRGBA8888_PRE(KGImage *self,CGFloat x, CGFloat y,KGRGB
     CGPoint uv=CGPointMake(x+0.5,y+0.5);
 	uv = CGAffineTransformTransformVector2(surfaceToImage ,uv);
 
-    KGImageReadTilePadSpan_lRGBA8888_PRE(self,RI_FLOOR_TO_INT(uv.x), RI_FLOOR_TO_INT(uv.y),span+i,1);
+    KGImageReadTileSpanExtendEdge__lRGBA8888_PRE(self,RI_FLOOR_TO_INT(uv.x), RI_FLOOR_TO_INT(uv.y),span+i,1);
    }
 }
 
@@ -1352,7 +1351,7 @@ void KGImagePointSampling_lRGBAffff_PRE(KGImage *self,CGFloat x, CGFloat y,KGRGB
     CGPoint uv=CGPointMake(x+0.5,y+0.5);
 	uv = CGAffineTransformTransformVector2(surfaceToImage ,uv);
 
-    KGImageReadTilePadSpan_lRGBAffff_PRE(self,RI_FLOOR_TO_INT(uv.x), RI_FLOOR_TO_INT(uv.y),span+i,1);
+    KGImageReadTileSpanExtendEdge__lRGBAffff_PRE(self,RI_FLOOR_TO_INT(uv.x), RI_FLOOR_TO_INT(uv.y),span+i,1);
    }
 }
 

@@ -228,7 +228,7 @@ static RECT NSRectToRECT(NSRect rect) {
    return _deviceContext;
 }
 
--(void)deviceSelectFontWithName:(const char *)name pointSize:(float)pointSize antialias:(BOOL)antialias {
+-(void)deviceSelectFontWithName:(NSString *)name pointSize:(float)pointSize antialias:(BOOL)antialias {
    int height=(pointSize*GetDeviceCaps(_dc,LOGPIXELSY))/72.0;
 
    [_gdiFont release];

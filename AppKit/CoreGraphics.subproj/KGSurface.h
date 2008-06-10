@@ -224,14 +224,15 @@ typedef void (*KGSurfaceWriteSpan_RGBAffff)(KGSurface *self,int x,int y,KGRGBAff
 @interface KGSurface : KGImage {
    KGSurfaceWriteSpan_RGBA8888 _writeRGBA8888;
    KGSurfaceWriteSpan_RGBAffff _writeRGBAffff;
+   
+   size_t _allocatedSize;
 } 
 
-KGSurface *KGSurfaceAlloc();
-KGSurface *KGSurfaceInit(KGSurface *self,size_t width,size_t height,size_t bitsPerComponent,size_t bitsPerPixel,KGColorSpace *colorSpace,CGBitmapInfo bitmapInfo,KGImageFormat imageFormat);
-//use data from a memory buffer. NOTE: data is not copied, so it is user's responsibility to make sure the data remains valid while the KGSurface is in use.
 KGSurface *KGSurfaceInitWithBytes(KGSurface *self,size_t width,size_t height,size_t bitsPerComponent,size_t bitsPerPixel,size_t bytesPerRow,KGColorSpace *colorSpace,CGBitmapInfo bitmapInfo,KGImageFormat imageFormat,RIuint8* data);
 
 void KGSurfaceDealloc(KGSurface *self);
+
+-(void)setWidth:(size_t)width height:(size_t)height reallocateOnlyIfRequired:(BOOL)roir;
 
 BOOL KGSurfaceIsValidFormat(int format);
 

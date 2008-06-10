@@ -34,7 +34,7 @@
 -(HDC)deviceContextSelfSelected {
    KGContext_gdi *context=[[Win32Display currentDisplay] contextOnPrimaryScreen];
    
-   [context deviceSelectFontWithName:[_name cString] pointSize:[self pointSize]];
+   [context deviceSelectFontWithName:_name pointSize:[self pointSize]];
 
    return [context dc];
 }

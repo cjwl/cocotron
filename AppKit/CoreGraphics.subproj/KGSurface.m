@@ -95,10 +95,10 @@ VGColor VGColorConvert(VGColor result,VGColorInternalFormat outputFormat){
 	//7: sRGB = sL
 
 	//Source/Dest lRGB sRGB   lL   sL 
-	//lRGB          Ñ    1    3    3,5 
-	//sRGB          2    Ñ    2,3  2,3,5 
-	//lL            4    4,1  Ñ    5 
-	//sL            7,2  7    6    Ñ 
+	//lRGB          â€”    1    3    3,5 
+	//sRGB          2    â€”    2,3  2,3,5 
+	//lL            4    4,1  â€”    5 
+	//sL            7,2  7    6    â€” 
 
 	#define shift 3
 	unsigned int conversion = (result.m_format & (VGColorNONLINEAR | VGColorLUMINANCE)) | ((outputFormat & (VGColorNONLINEAR | VGColorLUMINANCE)) << shift);
@@ -496,52 +496,6 @@ static BOOL initFunctionsForParameters(KGSurface *self,size_t bitsPerComponent,s
    return NO;   
 }
 
-KGSurface *KGSurfaceAlloc() {
-   return (KGSurface *)NSZoneCalloc(NULL,1,sizeof(KGSurface));
-}
-
-KGSurface *KGSurfaceInit(KGSurface *self,size_t width, size_t height,size_t bitsPerComponent,size_t bitsPerPixel,KGColorSpace *colorSpace,CGBitmapInfo bitmapInfo,KGImageFormat imageFormat){
-	self->_width=width;
-	self->_height=height;
-    self->_bitsPerComponent=bitsPerComponent;
-    self->_bitsPerPixel=bitsPerPixel;
-	self->_bytesPerRow=0;
-    self->_colorSpace=[colorSpace copy];
-    self->_bitmapInfo=bitmapInfo;
-    
-    if(!initFunctionsForParameters(self,bitsPerComponent,bitsPerPixel,colorSpace,bitmapInfo))
-     NSLog(@"KGSurface error, return");
-    
-    self->_imageFormat=imageFormat;
-    size_t checkBPP;
-	self->m_desc=KGImageParametersToPixelLayout(imageFormat,&checkBPP,&(self->_colorFormat));
-    RI_ASSERT(checkBPP==bitsPerPixel);
-    
-	self->_bytes=NULL;
-	self->m_ownsData=YES;
-    self->_clampExternalPixels=NO; // only set to yes if premultiplied
-	self->m_mipmapsValid=NO;
-
-	RI_ASSERT(width > 0 && height > 0);
-	
-	if( self->_bitsPerPixel != 1 )
-	{
-		RI_ASSERT(self->_bitsPerPixel == 8 || self->_bitsPerPixel == 16 || self->_bitsPerPixel == 32);
-		self->_bytesPerRow = self->_width*self->_bitsPerPixel/8;
-	}
-	else
-	{
-		RI_ASSERT(self->_bitsPerPixel == 1);
-		self->_bytesPerRow = (self->_width+7)/8;
-	}
-	self->_bytes = NSZoneMalloc(NULL,self->_bytesPerRow*self->_height*sizeof(RIuint8));
-	memset(self->_bytes, 0, self->_bytesPerRow*self->_height);	//clear image
-    self->_mipmapsCount=0;
-    self->_mipmapsCapacity=2;
-    self->_mipmaps=(KGSurface **)NSZoneMalloc(NULL,self->_mipmapsCapacity*sizeof(KGSurface *));
-    return self;
-}
-
 KGSurface *KGSurfaceInitWithBytes(KGSurface *self,size_t width,size_t height,size_t bitsPerComponent,size_t bitsPerPixel,size_t bytesPerRow,KGColorSpace *colorSpace,CGBitmapInfo bitmapInfo,KGImageFormat imageFormat,RIuint8* data) {
 	self->_width=width;
 	self->_height=height;
@@ -558,8 +512,17 @@ KGSurface *KGSurfaceInitWithBytes(KGSurface *self,size_t width,size_t height,siz
 	self->m_desc=KGImageParametersToPixelLayout(imageFormat,&checkBPP,&(self->_colorFormat));
     RI_ASSERT(checkBPP==bitsPerPixel);
 
-	self->_bytes=data;
-	self->m_ownsData=NO;
+	if((self->_bytes=data)!=NULL)
+  	 self->m_ownsData=NO;
+    else {
+     int bpr=self->_width*self->_bitsPerPixel/8;
+     if(self->_bytesPerRow==0 || self->_bytesPerRow<bpr)
+      self->_bytesPerRow=bpr;
+      
+     self->_bytes=NSZoneMalloc(NULL,self->_bytesPerRow*self->_height*sizeof(RIuint8));
+  	 self->m_ownsData=YES;
+	 memset(self->_bytes, 0, self->_bytesPerRow*self->_height);	//clear image
+    }
     self->_clampExternalPixels=NO; // only set to yes if premultiplied
 	self->m_mipmapsValid=NO;
 	RI_ASSERT(width > 0 && height > 0);
@@ -582,6 +545,26 @@ void KGSurfaceDealloc(KGSurface *self) {
 	{
 		NSZoneFree(NULL,self->_bytes);	//delete image data if we own it
 	}
+}
+
+-(void)setWidth:(size_t)width height:(size_t)height reallocateOnlyIfRequired:(BOOL)roir {
+   int bpr=width*_bitsPerPixel/8;
+   int size=bpr*height*sizeof(RIuint8);
+   
+   if(!m_ownsData)
+    return;
+   
+   self->_height=height;
+   self->_width=width;
+   self->_bytesPerRow=bpr;
+   
+   if((size>_allocatedSize) || (!roir && size!=_allocatedSize)){
+    NSZoneFree(NULL,self->_bytes);
+    _bytes=NSZoneMalloc(NULL,size);
+    _allocatedSize=size;
+   }
+   
+   memset(_bytes, 0,size);
 }
 
 /*-------------------------------------------------------------------*//*!
