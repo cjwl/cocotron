@@ -3485,6 +3485,7 @@
 					"-lwinmm",
 					"-Wl,--enable-auto-import",
 					"-Wl,--export-all-symbols",
+					"-Wl,--image-base=0x20000000",
 					"-Wl,--out-implib,$TARGET_BUILD_DIR/AppKit.framework/libAppKit.a",
 				);
 				PREBINDING = NO;
@@ -3532,10 +3533,10 @@
 					"-lgdi32",
 					"-luser32",
 					"-lcomdlg32",
-					"-lopengl32",
 					"-lwinmm",
 					"-Wl,--enable-auto-import",
 					"-Wl,--export-all-symbols",
+					"-Wl,--image-base=0x20000000",
 					"-Wl,--out-implib,$TARGET_BUILD_DIR/AppKit.framework/libAppKit.a",
 				);
 				PREBINDING = NO;
