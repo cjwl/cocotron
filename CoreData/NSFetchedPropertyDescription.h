@@ -1,5 +1,6 @@
-#import <CoreData/NSPropertyDescription.h>
+#import "NSPropertyDescription.h"
 
+@class NSFetchRequest;
 @interface NSFetchedPropertyDescription : NSPropertyDescription {
 }
 

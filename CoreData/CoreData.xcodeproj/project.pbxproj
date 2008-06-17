@@ -8,6 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		8DC2EF530486A6940098B216 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C1666FE841158C02AAC07 /* InfoPlist.strings */; };
+		E205443B0DC209DC00E9DD09 /* NSPersistentDocument.h in Headers */ = {isa = PBXBuildFile; fileRef = E20544390DC209DC00E9DD09 /* NSPersistentDocument.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E205443C0DC209DC00E9DD09 /* NSPersistentDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = E205443A0DC209DC00E9DD09 /* NSPersistentDocument.m */; };
+		E2054A2C0DC3FFBE00E9DD09 /* _NSManagedProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = E2054A2A0DC3FFBE00E9DD09 /* _NSManagedProxy.m */; };
+		E2054A2D0DC3FFBE00E9DD09 /* _NSManagedProxy.h in Headers */ = {isa = PBXBuildFile; fileRef = E2054A2B0DC3FFBE00E9DD09 /* _NSManagedProxy.h */; };
+		E2F490290DC80FE600310CCE /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2F490280DC80FE600310CCE /* AppKit.framework */; };
 		FE21313A0DBFC72700CEDC65 /* dllmain.m in Sources */ = {isa = PBXBuildFile; fileRef = FE2131390DBFC72700CEDC65 /* dllmain.m */; };
 		FE2131420DBFC74200CEDC65 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0867D69BFE84028FC02AAC07 /* Foundation.framework */; };
 		FE2132900DBFD21900CEDC65 /* CoreDataExports.h in Headers */ = {isa = PBXBuildFile; fileRef = FE21328F0DBFD21900CEDC65 /* CoreDataExports.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -48,6 +53,13 @@
 /* End PBXBuildRule section */
 
 /* Begin PBXContainerItemProxy section */
+		E2F48FA50DC80FAE00310CCE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E2F48FA10DC80FAE00310CCE /* AppKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = FE01AAC10C5D9BCB00AEA51A;
+			remoteInfo = "AppKit-Windows-i386";
+		};
 		FE59F30F0D54301D00D54A25 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FE59F2FF0D54301C00D54A25 /* Foundation.xcodeproj */;
@@ -90,6 +102,12 @@
 		089C1667FE841158C02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		8DC2EF5A0486A6940098B216 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		8DC2EF5B0486A6940098B216 /* CoreData.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CoreData.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E20544390DC209DC00E9DD09 /* NSPersistentDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSPersistentDocument.h; sourceTree = "<group>"; };
+		E205443A0DC209DC00E9DD09 /* NSPersistentDocument.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSPersistentDocument.m; sourceTree = "<group>"; };
+		E2054A2A0DC3FFBE00E9DD09 /* _NSManagedProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _NSManagedProxy.m; sourceTree = "<group>"; };
+		E2054A2B0DC3FFBE00E9DD09 /* _NSManagedProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _NSManagedProxy.h; sourceTree = "<group>"; };
+		E2F48FA10DC80FAE00310CCE /* AppKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AppKit.xcodeproj; path = ../AppKit/AppKit.xcodeproj; sourceTree = SOURCE_ROOT; };
+		E2F490280DC80FE600310CCE /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = Cocotron/1.0/Windows/i386/Frameworks/AppKit.framework; sourceTree = SYSTEM_DEVELOPER_DIR; };
 		FE2131390DBFC72700CEDC65 /* dllmain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = dllmain.m; sourceTree = "<group>"; };
 		FE21328F0DBFD21900CEDC65 /* CoreDataExports.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreDataExports.h; sourceTree = "<group>"; };
 		FE2132910DBFD22000CEDC65 /* CoreData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreData.h; sourceTree = "<group>"; };
@@ -124,6 +142,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FE2131420DBFC74200CEDC65 /* Foundation.framework in Frameworks */,
+				E2F490290DC80FE600310CCE /* AppKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -141,6 +160,12 @@
 		0867D691FE84028FC02AAC07 /* CoreData */ = {
 			isa = PBXGroup;
 			children = (
+				E2F490280DC80FE600310CCE /* AppKit.framework */,
+				E2F48FA10DC80FAE00310CCE /* AppKit.xcodeproj */,
+				E2054A2A0DC3FFBE00E9DD09 /* _NSManagedProxy.m */,
+				E2054A2B0DC3FFBE00E9DD09 /* _NSManagedProxy.h */,
+				E20544390DC209DC00E9DD09 /* NSPersistentDocument.h */,
+				E205443A0DC209DC00E9DD09 /* NSPersistentDocument.m */,
 				FE2132910DBFD22000CEDC65 /* CoreData.h */,
 				FE21328F0DBFD21900CEDC65 /* CoreDataExports.h */,
 				FE59F2FF0D54301C00D54A25 /* Foundation.xcodeproj */,
@@ -223,6 +248,14 @@
 			name = "Other Sources";
 			sourceTree = "<group>";
 		};
+		E2F48FA20DC80FAE00310CCE /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				E2F48FA60DC80FAE00310CCE /* AppKit.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		FE59F3000D54301C00D54A25 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -255,6 +288,8 @@
 				FE82F3E80BF1042F00B18B54 /* NSRelationshipDescription.h in Headers */,
 				FE2132900DBFD21900CEDC65 /* CoreDataExports.h in Headers */,
 				FE2132920DBFD22000CEDC65 /* CoreData.h in Headers */,
+				E205443B0DC209DC00E9DD09 /* NSPersistentDocument.h in Headers */,
+				E2054A2D0DC3FFBE00E9DD09 /* _NSManagedProxy.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -294,6 +329,10 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
+					ProductGroup = E2F48FA20DC80FAE00310CCE /* Products */;
+					ProjectRef = E2F48FA10DC80FAE00310CCE /* AppKit.xcodeproj */;
+				},
+				{
 					ProductGroup = FE59F3000D54301C00D54A25 /* Products */;
 					ProjectRef = FE59F2FF0D54301C00D54A25 /* Foundation.xcodeproj */;
 				},
@@ -306,6 +345,13 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		E2F48FA60DC80FAE00310CCE /* AppKit.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = AppKit.framework;
+			remoteRef = E2F48FA50DC80FAE00310CCE /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		FE59F3100D54301D00D54A25 /* Foundation.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
@@ -371,6 +417,8 @@
 				FE82F3E70BF1042F00B18B54 /* NSPropertyDescription.m in Sources */,
 				FE82F3E90BF1042F00B18B54 /* NSRelationshipDescription.m in Sources */,
 				FE21313A0DBFC72700CEDC65 /* dllmain.m in Sources */,
+				E205443C0DC209DC00E9DD09 /* NSPersistentDocument.m in Sources */,
+				E2054A2C0DC3FFBE00E9DD09 /* _NSManagedProxy.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -392,17 +440,24 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = i386;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = stabs;
 				DEPLOYMENT_LOCATION = YES;
 				DEPLOYMENT_POSTPROCESSING = YES;
 				DSTROOT = /;
 				EXECUTABLE_SUFFIX = .1.0.dll;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
+				);
+				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(DEVELOPER_DIR)/Cocotron/1.0/Windows/i386/Frameworks\"";
 				GCC_ENABLE_CPP_EXCEPTIONS = NO;
 				GCC_ENABLE_CPP_RTTI = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = NO;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
-				GCC_UNROLL_LOOPS = YES;
+				GCC_UNROLL_LOOPS = NO;
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = /Developer/Cocotron/1.0/Windows/i386/Frameworks;
 				OTHER_CFLAGS = (
@@ -416,7 +471,7 @@
 				);
 				PREBINDING = NO;
 				PRODUCT_NAME = CoreData;
-				STRIP_INSTALLED_PRODUCT = YES;
+				STRIP_INSTALLED_PRODUCT = NO;
 				SYMROOT = /Developer/Cocotron/1.0/build/CoreData/Windows;
 			};
 			name = Debug;
@@ -425,6 +480,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = i386;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = stabs;
 				DEPLOYMENT_LOCATION = YES;
 				DEPLOYMENT_POSTPROCESSING = YES;
 				DSTROOT = /;
@@ -433,10 +490,10 @@
 				GCC_ENABLE_CPP_EXCEPTIONS = NO;
 				GCC_ENABLE_CPP_RTTI = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_OPTIMIZATION_LEVEL = s;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
-				GCC_UNROLL_LOOPS = YES;
+				GCC_UNROLL_LOOPS = NO;
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_MODE_FLAG = "a+w,a+rX";
 				INSTALL_PATH = /Developer/Cocotron/1.0/Windows/i386/Frameworks;
@@ -451,7 +508,7 @@
 				);
 				PREBINDING = NO;
 				PRODUCT_NAME = CoreData;
-				STRIP_INSTALLED_PRODUCT = YES;
+				STRIP_INSTALLED_PRODUCT = NO;
 				SYMROOT = /Developer/Cocotron/1.0/build/CoreData/Windows;
 			};
 			name = Release;
