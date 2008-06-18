@@ -64,7 +64,11 @@ static NSThread* mainThread = nil;
 	[_target performSelector: _selector withObject: _argument];
 }
 
+#ifdef WINDOWS
 static unsigned __stdcall nsThreadStartThread(void* t)
+#else
+static int  nsThreadStartThread(void* t)
+#endif
 {
     NSThread    *thread = t;
 	NSPlatformSetCurrentThread(thread);

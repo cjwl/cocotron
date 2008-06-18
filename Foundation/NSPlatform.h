@@ -67,4 +67,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 NSThread *NSPlatformCurrentThread();
 void NSPlatformSetCurrentThread(NSThread *thread);
+#ifdef WINDOWS
 unsigned NSPlatformDetachThread(unsigned (*__stdcall func)(void *arg), void *arg);
+#else
+int NSPlatformDetachThread(unsigned (* func)(void *arg), void *arg);
+#endif
