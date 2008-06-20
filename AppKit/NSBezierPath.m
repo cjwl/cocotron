@@ -365,7 +365,7 @@ static int numberOfPointsForOperator(int op){
 }
 
 -(void)curveToPoint:(NSPoint)point controlPoint1:(NSPoint)cp1 controlPoint2:(NSPoint)cp2 {
-   [_path addCurveToControlPoint:point controlPoint:cp1 endPoint:cp2 withTransform:NULL];
+   [_path addCurveToControlPoint:cp1 controlPoint:cp2 endPoint:point withTransform:NULL];
 }
 
 -(void)closePath {
