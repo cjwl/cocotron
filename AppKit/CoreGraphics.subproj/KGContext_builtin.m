@@ -32,9 +32,7 @@
 #import "KGPaint_color.h"
 #import "KGBlending.h"
 
-#define SAMPLING_RADIUS 0.5
-#define MAX_SAMPLES     128
-#define RI_MAX_EDGES    262144
+#define MAX_SAMPLES     COVERAGE_MULTIPLIER
 
 @implementation KGContext_builtin
 
@@ -93,7 +91,8 @@ BOOL _isAvailable=NO;
 }
 
 -(void)setWidth:(size_t)width height:(size_t)height reallocateOnlyIfRequired:(BOOL)roir {
-
+  _width=width;
+  _height=height;
   [m_renderingSurface setWidth:width height:height reallocateOnlyIfRequired:roir];
   KGRasterizerSetViewport(self,KGImageGetWidth(m_renderingSurface),KGImageGetHeight(m_renderingSurface));
 }
@@ -181,7 +180,7 @@ static KGPaint *paintFromColor(KGColor *color){
 //		KGRasterizeSetTileFillColor(context->m_tileFillColor);
 
 
-       KGRasterizerSetShouldAntialias(self,gState->_shouldAntialias);
+       KGRasterizerSetShouldAntialias(self,gState->_shouldAntialias,gState->_antialiasingQuality);
 
 //CGAffineTransform xform=CGAffineTransformIdentity;//gState->_userSpaceTransform;
 CGAffineTransform xform=gState->_userSpaceTransform;
@@ -274,7 +273,7 @@ xform=CGAffineTransformConcat(xform,u2d);
 		p3 = CGAffineTransformTransformVector2(imageUserToSurface , p3);
 
 
-        KGRasterizerSetShouldAntialias(self,gState->_shouldAntialias);
+       KGRasterizerSetShouldAntialias(self,gState->_shouldAntialias,gState->_antialiasingQuality);
 
 		// KGRasterizeSetTileFillColor(context->m_tileFillColor);
         KGPaint *paint=paintFromColor(gState->_fillColor);
@@ -345,8 +344,9 @@ KGRasterizer *KGRasterizerInit(KGRasterizer *self,KGSurface *renderingSurface) {
    
    self->_edgeCount=0;
    self->_edgeCapacity=256;
-   self->_edgePool=NSZoneMalloc(NULL,self->_edgeCapacity*sizeof(Edge));
-
+   self->_edges=NSZoneMalloc(NULL,self->_edgeCapacity*sizeof(Edge *));
+   self->_sortCache=NSZoneMalloc(NULL,(self->_edgeCapacity/2 + 1)*sizeof(Edge *));
+   
    self->samplesX=NSZoneMalloc(NULL,MAX_SAMPLES*sizeof(CGFloat));
    self->samplesY=NSZoneMalloc(NULL,MAX_SAMPLES*sizeof(CGFloat));
    
@@ -354,7 +354,12 @@ KGRasterizer *KGRasterizerInit(KGRasterizer *self,KGSurface *renderingSurface) {
 }
 
 void KGRasterizerDealloc(KGRasterizer *self) {
-   NSZoneFree(NULL,self->_edgePool);
+   int i;
+   for(i=0;i<self->_edgeCount;i++)
+    NSZoneFree(NULL,self->_edges[i]);
+
+   NSZoneFree(NULL,self->_edges);
+   NSZoneFree(NULL,self->_sortCache);
    NSZoneFree(NULL,self);
 }
 
@@ -366,51 +371,58 @@ void KGRasterizerSetViewport(KGRasterizer *self,int vpwidth,int vpheight) {
     self->_winding=malloc((vpwidth*MAX_SAMPLES)*sizeof(int));
     free(self->_increase);
     self->_increase=malloc(vpwidth*sizeof(int));
+    free(self->_xIndexSet);
+    self->_xIndexSet=malloc(vpwidth*sizeof(int));
+    int i;
+    for(i=0;i<vpwidth;i++)
+     self->_xIndexSet[i]=-1;
 }
 
 void KGRasterizerClear(KGRasterizer *self) {
+   int i;
+   for(i=0;i<self->_edgeCount;i++)
+    NSZoneFree(NULL,self->_edges[i]);
+    
    self->_edgeCount=0;   
 }
 
 void KGRasterizerAddEdge(KGRasterizer *self,const CGPoint v0, const CGPoint v1) {
+
 	if(v0.y == v1.y)
 		return;	//skip horizontal edges (they don't affect rasterization since we scan horizontally)
 
-    if(v0.y<self->_vpy && v1.y<self->_vpy)
+    if((v0.y+0.5f)<self->_vpy && (v1.y+0.5f)<self->_vpy)  // ignore below miny
      return;
     
     int MaxY=self->_vpy+self->_vpheight;
     
-    if(v0.y>=MaxY && v1.y>=MaxY)
+    if((v0.y-0.5f)>=MaxY && (v1.y-0.5f)>=MaxY) // ignore above maxy
      return;
          
-	if( self->_edgeCount >= RI_MAX_EDGES )
-     NSLog(@"too many edges");
-
-	Edge *edge;
+	Edge *edge=NSZoneMalloc(NULL,sizeof(Edge));
     if(self->_edgeCount+1>=self->_edgeCapacity){
      self->_edgeCapacity*=2;
-     self->_edgePool=NSZoneRealloc(NULL,self->_edgePool,self->_edgeCapacity*sizeof(Edge));
+     self->_edges=NSZoneRealloc(NULL,self->_edges,self->_edgeCapacity*sizeof(Edge *));
+     self->_sortCache=NSZoneRealloc(NULL,self->_sortCache,(self->_edgeCapacity/2 + 1)*sizeof(Edge *));
     }
-    edge=self->_edgePool+self->_edgeCount;
+    self->_edges[self->_edgeCount]=edge;
     self->_edgeCount++;
     
-    if(v0.y < v1.y)
-    {	//edge is going upward
+    if(v0.y < v1.y){	//edge is going upward
         edge->v0 = v0;
         edge->v1 = v1;
         edge->direction = 1;
     }
-    else
-    {	//edge is going downward
+    else {	//edge is going downward
         edge->v0 = v1;
         edge->v1 = v0;
         edge->direction = -1;
     }
-    edge->normal=CGPointMake(edge->v0.y - edge->v1.y, edge->v1.x - edge->v0.x);	//edge normal
+    edge->normal=CGPointMake(edge->v0.y-edge->v1.y , edge->v1.x - edge->v0.x);	//edge normal
     edge->cnst = Vector2Dot(edge->v0, edge->normal);	//distance of v0 from the origin along the edge normal
-    edge->minscany=RI_FLOOR_TO_INT(edge->v0.y-SAMPLING_RADIUS);
-    edge->maxscany=ceil(edge->v1.y+SAMPLING_RADIUS);
+    edge->normal.y=-edge->normal.y;
+    edge->minscany=RI_FLOOR_TO_INT(edge->v0.y-0.5f);
+    edge->maxscany=ceil(edge->v1.y+0.5f);
     edge->next=NULL;
 }
 
@@ -420,7 +432,7 @@ static double radicalInverseBase2(unsigned int i)
 	if( i == 0 )
 		return 0.0;
 	double p = 0.0;
-	double f = 0.5;
+	double f = 0.5f;
 	double ff = f;
     unsigned int j;
 	for(j=0;j<32;j++)
@@ -432,34 +444,44 @@ static double radicalInverseBase2(unsigned int i)
 	return p;
 }
 
-void KGRasterizerSetShouldAntialias(KGRasterizer *self,BOOL antialias) {
+void KGRasterizerSetShouldAntialias(KGRasterizer *self,BOOL antialias,int quality) {
+/* RULES:
+    - samplesY must be in ascending order
+ */
+ 
 	//make a sampling pattern
 
-   if(!antialias){
+   quality=RI_INT_CLAMP(quality,1,MAX_SAMPLES);
+   
+   if(!antialias || quality==1){
     self->numSamples=1;
 			self->samplesX[0] = 0;
-			self->samplesY[0] = 0;
-			self->samplesWeight = 256;
+			self->samplesY[0] = 0.5f;
+			self->samplesWeight = MAX_SAMPLES;
    }
    else {
+    int shift;
+    int numberOfSamples=1;
+    
+    for(shift=0;numberOfSamples<quality;shift++)
+     numberOfSamples<<=1;
 /*
-   At this point I am pretty convinced Apple is using a box shaped filter
+   At this point I am pretty convinced Apple is using a box filter
    The sampling pattern is different than this
  */
-        self->sampleSizeShift=6;
-		self->numSamples = 1<<self->sampleSizeShift; // 64
+        self->sampleSizeShift=shift;
+		self->numSamples = numberOfSamples;
         int i;
-        
-        for(i=0;i<self->numSamples;i++){
-	     self->samplesX[i] = (CGFloat)radicalInverseBase2(i)-0.5;
-		 self->samplesY[i] = ((CGFloat)(i+0.5)) / (CGFloat)self->numSamples-0.5;
-         self->samplesWeight=256/self->numSamples;
-        }
 
+        for(i=0;i<numberOfSamples;i++){
+	     self->samplesX[i] = (CGFloat)radicalInverseBase2(i)-0.5f;
+		 self->samplesY[i] = ((CGFloat)(i+0.5f)) / (CGFloat)numberOfSamples-0.5f;
+         self->samplesWeight=MAX_SAMPLES/numberOfSamples;
+        }
     }
 }
 
-static void sortEdgesByMinY(Edge **edges,int count,Edge **B){
+static inline void sortEdgesByMinY(Edge **edges,int count,Edge **B){
   int h, i, j, k, l, m, n = count;
   Edge  *A;
 
@@ -492,7 +514,7 @@ static void sortEdgesByMinY(Edge **edges,int count,Edge **B){
   }
 }
 
-static void initEdgeForAET(Edge *edge,CGFloat cminy,CGFloat cmaxy,int xlimit){
+static inline void initEdgeForAET(Edge *edge,int scany){
    //compute edge min and max x-coordinates for this scanline
    
    CGPoint vd = Vector2Subtract(edge->v1,edge->v0);
@@ -502,22 +524,22 @@ static void initEdgeForAET(Edge *edge,CGFloat cminy,CGFloat cmaxy,int xlimit){
    edge->bminx = RI_MIN(edge->v0.x, edge->v1.x);
    edge->bmaxx = RI_MAX(edge->v0.x, edge->v1.x);
 
-   edge->sxPre = (edge->v0.x  - edge->v0.y* edge->vdxwl)+ edge->vdxwl*cminy;
-   edge->exPre = (edge->v0.x  - edge->v0.y* edge->vdxwl)+ edge->vdxwl*cmaxy;
+   edge->sxPre = (edge->v0.x  - edge->v0.y* edge->vdxwl)+ edge->vdxwl*(scany-1);
+   edge->exPre = (edge->v0.x  - edge->v0.y* edge->vdxwl)+ edge->vdxwl*(scany+1);
    CGFloat autosx = RI_CLAMP(edge->sxPre, edge->bminx, edge->bmaxx);
    CGFloat autoex  = RI_CLAMP(edge->exPre, edge->bminx, edge->bmaxx); 
    CGFloat minx=RI_MIN(autosx,autoex);
    CGFloat maxx=RI_MAX(autosx,autoex);
    
-   minx-=SAMPLING_RADIUS+0.5f;
+   minx-=0.5f+0.5f;
    //0.01 is a safety region to prevent too aggressive optimization due to numerical inaccuracy
-   maxx+=SAMPLING_RADIUS+0.5f+0.01f;
+   maxx+=0.5f+0.5f+0.01f;
    
    edge->minx = minx;
    edge->maxx = maxx;
 }
 
-static void incrementEdgeForAET(Edge *edge,CGFloat cminy,CGFloat cmaxy,int xlimit){
+static inline void incrementEdgeForAET(Edge *edge){
    edge->sxPre+= edge->vdxwl;
    edge->exPre+= edge->vdxwl;
    
@@ -526,63 +548,213 @@ static void incrementEdgeForAET(Edge *edge,CGFloat cminy,CGFloat cmaxy,int xlimi
    CGFloat minx=RI_MIN(autosx,autoex);
    CGFloat maxx=RI_MAX(autosx,autoex);
    
-   minx-=SAMPLING_RADIUS+0.5f;
+   minx-=0.5f+0.5f;
    //0.01 is a safety region to prevent too aggressive optimization due to numerical inaccuracy
-   maxx+=SAMPLING_RADIUS+0.5f+0.01f;
+   maxx+=0.5f+0.5f+0.01f;
    
    edge->minx = minx;
    edge->maxx = maxx;
 }
 
-void KGRasterizerFill(KGRasterizer *self,VGFillRuleMask fillRuleMask) {    
-    int    edgeCount=self->_edgeCount;
-    Edge **edges=NSZoneMalloc(NULL,(edgeCount+(edgeCount/2 + 1))*sizeof(Edge *));
-    Edge **sortTmp=edges+edgeCount;
+static void KGApplyCoverageAndMaskToSpan_lRGBAffff_PRE(KGRGBAffff *dst,int icoverage,CGFloat *mask,KGRGBAffff *src,int length){
+   int i;
+   
+   for(i=0;i<length;i++){
+    KGRGBAffff r=src[i];
+    KGRGBAffff d=dst[i];
+    CGFloat coverage=zeroToOneFromCoverage(icoverage);
+    CGFloat cov=mask[i]*coverage;
+     
+    dst[i]=KGRGBAffffAdd(KGRGBAffffMultiplyByFloat(r , cov) , KGRGBAffffMultiplyByFloat(d , (1.0f - cov)));
+   }
+}
 
-    int ylimit=self->_vpheight;
-    int xlimit=self->_vpwidth;
-    
-    int nextAvailableEdge=0;
-    int i;
-    
-    for(i=0;i<edgeCount;i++)
-     edges[i]=self->_edgePool+i;
+static void KGApplyCoverageToSpan_lRGBAffff_PRE(KGRGBAffff *dst,int icoverage,KGRGBAffff *src,int length){
+   int i;
+   CGFloat coverage=zeroToOneFromCoverage(icoverage);
+   
+   for(i=0;i<length;i++){
+    KGRGBAffff r=src[i];
+    KGRGBAffff d=dst[i];
      
-    sortEdgesByMinY(edges,edgeCount,sortTmp);
-    
-    for(;nextAvailableEdge<edgeCount;nextAvailableEdge++){
-     Edge *check=edges[nextAvailableEdge];
+    dst[i]=KGRGBAffffAdd(KGRGBAffffMultiplyByFloat(r , coverage) , KGRGBAffffMultiplyByFloat(d , (1.0f - coverage)));
+   }
+}
+         
+static void KGApplyCoverageAndMaskToSpan_lRGBA8888_PRE(KGRGBA8888 *dst,int icoverage,uint8_t *mask,KGRGBA8888 *src,int length){
+   int i;
+   
+   for(i=0;i<length;i++){
+    KGRGBA8888 r=src[i];
+    KGRGBA8888 d=dst[i];
+    int cov=(mask[i]*icoverage)/255;
+    int oneMinusCov=inverseCoverage(cov);
      
-     if(check->maxscany>=self->_vpy)
+    dst[i]=KGRGBA8888Add(KGRGBA8888MultiplyByCoverage(r , cov) , KGRGBA8888MultiplyByCoverage(d , oneMinusCov));
+   }
+}
+
+static void KGApplyCoverageToSpan_lRGBA8888_PRE(KGRGBA8888 *dst,int coverage,KGRGBA8888 *src,int length){
+   int i;
+   int oneMinusCoverage=inverseCoverage(coverage);
+   
+   for(i=0;i<length;i++,src++,dst++){
+    KGRGBA8888 r=*src;
+    KGRGBA8888 d=*dst;
+    
+    *dst=KGRGBA8888Add(KGRGBA8888MultiplyByCoverage(r , coverage) , KGRGBA8888MultiplyByCoverage(d , oneMinusCoverage));
+   }
+}
+
+static void KGBlendSpanNormal_8888_coverage(KGRGBA8888 *src,KGRGBA8888 *dst,int coverage,int length){
+// Passes Visual Test
+   int i;
+   int oneMinusCoverage=inverseCoverage(coverage);
+
+   for(i=0;i<length;i++,src++,dst++){
+    KGRGBA8888 s=*src;
+    KGRGBA8888 d=*dst;
+    KGRGBA8888 r;
+    
+    r.r=RI_INT_MIN((int)s.r+((int)d.r*(255-s.a))/255,255);
+    r.r=multiplyByCoverage(r.r,coverage);
+    d.r=(d.r*oneMinusCoverage)/256;
+    r.r=RI_INT_MIN((int)r.r+(int)d.r,255);
+    
+    r.g=RI_INT_MIN((int)s.g+((int)d.g*(255-s.a))/255,255);
+    r.g=multiplyByCoverage(r.g,coverage);
+    d.g=(d.g*oneMinusCoverage)/256;
+    r.g=RI_INT_MIN((int)r.g+(int)d.g,255);
+    
+    r.b=RI_INT_MIN((int)s.b+((int)d.b*(255-s.a))/255,255);
+    r.b=multiplyByCoverage(r.b,coverage);
+    d.b=(d.b*oneMinusCoverage)/256;
+    r.b=RI_INT_MIN((int)r.b+(int)d.b,255);
+    
+    r.a=RI_INT_MIN((int)s.a+((int)d.a*(255-s.a))/255,255);
+    r.a=multiplyByCoverage(r.a,coverage);
+    d.a=(d.a*oneMinusCoverage)/256;
+    r.a=RI_INT_MIN((int)r.a+(int)d.a,255);
+    
+    *dst=r;
+   }
+}
+
+static void KGBlendSpanCopy_8888_coverage(KGRGBA8888 *src,KGRGBA8888 *dst,int coverage,int length){
+// Passes Visual Test
+   int i;
+   int oneMinusCoverage=256-coverage;
+
+   for(i=0;i<length;i++,src++,dst++){
+    KGRGBA8888 d=*dst;
+    KGRGBA8888 r=*src;
+    
+    r.r=multiplyByCoverage(r.r,coverage);
+    d.r=(d.r*oneMinusCoverage)/256;
+    r.r=RI_INT_MIN((int)r.r+(int)d.r,255);
+    
+    r.g=multiplyByCoverage(r.g,coverage);
+    d.g=(d.g*oneMinusCoverage)/256;
+    r.g=RI_INT_MIN((int)r.g+(int)d.g,255);
+    
+    r.b=multiplyByCoverage(r.b,coverage);
+    d.b=(d.b*oneMinusCoverage)/256;
+    r.b=RI_INT_MIN((int)r.b+(int)d.b,255);
+    
+    r.a=multiplyByCoverage(r.a,coverage);
+    d.a=(d.a*oneMinusCoverage)/256;
+    r.a=RI_INT_MIN((int)r.a+(int)d.a,255);
+    
+    *dst=r;
+   }
+}
+
+static inline void KGRasterizeWriteCoverageSpan(KGRasterizer *self,int x, int y,int coverage,int length) {
+   if(self->_useRGBA8888){
+    KGRGBA8888 dst[length];
+    KGImageReadSpan_lRGBA8888_PRE(self->m_renderingSurface,x,y,dst,length);
+
+    KGRGBA8888 src[length];
+    KGPaintReadSpan_lRGBA8888_PRE(self->m_paint,x,y,src,length);
+
+    switch(self->_blendMode){
+    
+     case kCGBlendModeNormal:
+      KGBlendSpanNormal_8888_coverage(src,dst,coverage,length);
+      break;
+
+     case kCGBlendModeCopy:
+      KGBlendSpanCopy_8888_coverage(src,dst,coverage,length);
+      break;
+
+     default:
+      self->_blend_lRGBA8888_PRE(src,dst,length);
+    
+	  //apply masking
+	  if(!self->m_mask)
+       KGApplyCoverageToSpan_lRGBA8888_PRE(dst,coverage,src,length);
+      else {
+       uint8_t maskSpan[length];
+     
+       KGImageReadSpan_A8_MASK(self->m_mask,x,y,maskSpan,length);
+       KGApplyCoverageAndMaskToSpan_lRGBA8888_PRE(dst,coverage,maskSpan,src,length);
+      }
       break;
     }
+       
+	//write result to the destination surface
+    KGSurfaceWriteSpan_lRGBA8888_PRE(self->m_renderingSurface,x,y,dst,length);
+   }
+   else {
+    KGRGBAffff dst[length];
+    KGImageReadSpan_lRGBAffff_PRE(self->m_renderingSurface,x,y,dst,length);
+
+    KGRGBAffff src[length];
+    KGPaintReadSpan_lRGBAffff_PRE(self->m_paint,x,y,src,length);
     
+    self->_blend_lRGBAffff_PRE(src,dst,length);
+    
+	//apply masking
+	if(!self->m_mask)
+     KGApplyCoverageToSpan_lRGBAffff_PRE(dst,coverage,src,length);
+    else {
+     CGFloat maskSpan[length];
+     
+     KGImageReadSpan_Af_MASK(self->m_mask,x,y,maskSpan,length);
+     KGApplyCoverageAndMaskToSpan_lRGBAffff_PRE(dst,coverage,maskSpan,src,length);
+    }
+        
+	//write result to the destination surface
+    KGSurfaceWriteSpan_lRGBAffff_PRE(self->m_renderingSurface,x,y,dst,length);
+   }
+}
+
+void KGRasterizerFill(KGRasterizer *self,VGFillRuleMask fillRuleMask) {    
+    int    edgeCount=self->_edgeCount;
+    Edge **edges=self->_edges;
+
+    int ylimit=self->_vpy+self->_vpheight;
+    int xlimit=self->_vpx+self->_vpwidth;
+    
+    int nextAvailableEdge=0;
+         
+    sortEdgesByMinY(edges,edgeCount,self->_sortCache);
+        
     Edge   *activeRoot=NULL;
     
-    CGFloat cminy = (CGFloat)0 - SAMPLING_RADIUS + 0.5f;
-    CGFloat cmaxy = (CGFloat)0 + SAMPLING_RADIUS + 0.5f;
     int     scany;
 
-    int *winding=self->_winding;
-    int *increase=self->_increase;
-                
-   for(scany=0;scany<ylimit;scany++,cminy+=1.0,cmaxy+=1.0){
+   int *winding=self->_winding;
+   int *increase=self->_increase;
+   int *xIndexSet=self->_xIndexSet;
+   int  numberOfSamples=self->numSamples;
+   int  shiftNumberOfSamples=self->sampleSizeShift;
+   CGFloat  sidePre[numberOfSamples];
+   CGFloat *preEnd=sidePre+numberOfSamples;
+   
+   for(scany=self->_vpy;scany<ylimit;scany++){
      Edge *edge,*previous=NULL;
-     
-     // remove edges out of range
-     for(edge=activeRoot;edge!=NULL;edge=edge->next){      
-      if(edge->maxscany>=scany){
-       incrementEdgeForAET(edge,cminy,cmaxy,xlimit);
-       previous=edge;
-      }
-      else {
-       if(previous==NULL)
-        activeRoot=edge->next;
-       else
-        previous->next=edge->next;
-      }
-     }
-     
+
      // load more available edges
      for(;nextAvailableEdge<edgeCount;nextAvailableEdge++){
       edge=edges[nextAvailableEdge];
@@ -592,88 +764,111 @@ void KGRasterizerFill(KGRasterizer *self,VGFillRuleMask fillRuleMask) {
       
       edge->next=activeRoot;
       activeRoot=edge;
-      initEdgeForAET(edge,cminy,cmaxy,xlimit);
+      initEdgeForAET(edge,scany);
      }
 
-     if(activeRoot==NULL)
-      continue;
-
-     int      numberOfSamples=self->numSamples;
-     int      accum=0;
-     int      s;
-     int      scanx,minx=xlimit,maxx=0;
-     int      xIndexSet[xlimit];
-     int      nextXIndex=0;
-     CGFloat  sidePre[numberOfSamples];
-     CGFloat *preEnd=sidePre+numberOfSamples;
-     CGFloat  pcy=scany+0.5f; // pixel center
-     
-     for(scanx=0;scanx<xlimit;scanx++)
-      xIndexSet[scanx]=-1;
-
+     int accum=0;
+     int minx=xlimit,maxx=0;
+     int nextXIndex=0;
+     int scanx;
      for(edge=activeRoot;edge!=NULL;edge=edge->next){
       CGFloat *pre=sidePre;
       CGFloat *samplesY=self->samplesY;
       CGFloat *samplesX=self->samplesX;
-      CGFloat  v0y=edge->v0.y;
-      CGFloat  v1y=edge->v1.y;
+      CGFloat  pcy=scany+0.5f;
+      CGFloat  v0y=edge->v0.y-pcy;
+      CGFloat  v1y=edge->v1.y-pcy;
       CGFloat  normalX=edge->normal.x;
       CGFloat  normalY=edge->normal.y;
+      int      deltaStart=0;
+      int      deltaEnd=0;
       
-      s=numberOfSamples;
-      do {
-       CGFloat spy = pcy+*samplesY++;
-       if(spy >= v0y && spy < v1y)
-        *pre++ = -(spy*normalY + *samplesX++*normalX)-0.5f*normalX;
-       else {
-        *pre++=-INT_MAX;
-        }
-      }while(--s>0);
- 
-      int      direction=edge->direction;
+      for(;*samplesY<v0y && pre<preEnd;samplesY++,samplesX++){
+       pre++;
+       deltaStart++;
+      }
+      for(;*samplesY<v1y && pre<preEnd;samplesY++,samplesX++)
+       *pre++ = (*samplesY*normalY-*samplesX*normalX);
+      for(;pre<preEnd;){
+       pre++;
+       deltaEnd++;
+      }
+      
+      int direction=edge->direction;
       
        minx=MIN(minx,edge->minx);
+
+       scanx=MAX(0,edge->minx);
+       CGFloat pcxnormal=scanx*normalX+0.5f*normalX-(pcy*normalY)-edge->cnst;
        
-       for(scanx=MAX(0,edge->minx);scanx<xlimit;scanx++){
+       for(;scanx<xlimit;scanx++,pcxnormal+=normalX){
         int xIndex=xIndexSet[scanx];
-        int *windptr;
-        
+        int *windptr;       
+        int leftOfEdge=deltaStart+deltaEnd;
+
         if(xIndex==-1){
          xIndex=nextXIndex++;
          xIndexSet[scanx]=xIndex;
          
-         windptr=winding+(xIndex<<self->sampleSizeShift);
-         s=numberOfSamples;
-         do {
+         pre=sidePre;
+         windptr=winding+(xIndex<<shiftNumberOfSamples);
+         int k;
+         for(k=0;k<deltaStart;k++,pre++)
           *windptr++=0;
-         }while(--s>0);
-
+          
+         while(pre<(preEnd-deltaEnd)){
+          if(*pre>=pcxnormal)
+           *windptr=direction;
+          else {
+           *windptr=0;
+           leftOfEdge++;
+          }
+         
+          windptr++;
+          pre++;
+         }
+         for(k=0;k<deltaEnd;k++)
+          *windptr++=0;
+          
          increase[xIndex]=0;
         }
-        
-        pre=sidePre;
-        windptr=winding+(xIndex<<self->sampleSizeShift);
-        CGFloat  pcxnormal=scanx*edge->normal.x-edge->cnst;
-        int      rightOfEdge=0;
-          
-        do{
-         if(pcxnormal<=*pre){
-          *windptr+=direction;
-          rightOfEdge++;
+        else {
+         pre=sidePre+deltaStart;
+         windptr=winding+(xIndex<<shiftNumberOfSamples)+deltaStart;
+
+         while(pre<(preEnd-deltaEnd)){
+          if(*pre>=pcxnormal)
+           *windptr+=direction;
+          else 
+           leftOfEdge++;
+
+          windptr++;
+          pre++;
          }
-         windptr++;
-         pre++;
-        }while(pre<preEnd);
+         
+        }
         
-        if(rightOfEdge==0 && scanx>edge->maxx)
-         break;
-                
-        if(rightOfEdge==numberOfSamples){
+        if(leftOfEdge==0){
          increase[xIndex]+=direction;
          break;
         }
+                 
+        if(leftOfEdge==numberOfSamples && scanx>edge->maxx)
+         break;
        }
        maxx=MAX(maxx,scanx);
+
+// increment and remove edges out of range
+      if(edge->maxscany>=scany){
+       incrementEdgeForAET(edge);
+       previous=edge;
+      }
+      else {
+       if(previous==NULL)
+        activeRoot=edge->next;
+       else
+        previous->next=edge->next;
+      }
       }        
     minx=MAX(0,minx);
     maxx=MIN(xlimit,maxx+1);
@@ -681,9 +876,11 @@ void KGRasterizerFill(KGRasterizer *self,VGFillRuleMask fillRuleMask) {
     int xIndex=-1;
     
     for(scanx=minx;scanx<maxx;)               
-     if((xIndex=xIndexSet[scanx])!=-1)
+     if((xIndex=xIndexSet[scanx])!=-1){
+      xIndexSet[scanx]=-1;
       break;
-    
+     }
+     
     if(xIndex==-1)
      continue;
     
@@ -691,12 +888,12 @@ void KGRasterizerFill(KGRasterizer *self,VGFillRuleMask fillRuleMask) {
     
  	int coverage=0;
     
-    for(scanx=minx;scanx<maxx;){ 
-     int *windptr=winding+(xIndex<<self->sampleSizeShift);
+    for(scanx=minx;scanx<maxx;){
+     int *windptr=winding+(xIndex<<shiftNumberOfSamples);
        
-     s=numberOfSamples;
+     int s=numberOfSamples;
      do {      
-      if((*windptr+++accum) & fillRuleMask )
+      if((*windptr+++accum) & fillRuleMask)
 	   coverage +=weight;
      }while(--s>0);
       
@@ -704,8 +901,10 @@ void KGRasterizerFill(KGRasterizer *self,VGFillRuleMask fillRuleMask) {
      
      int advance;
      for(advance=scanx+1;advance<maxx;advance++)
-      if((xIndex=xIndexSet[advance])!=-1)
+      if((xIndex=xIndexSet[advance])!=-1){
+       xIndexSet[advance]=-1;
        break;
+      }
 
 	 if(coverage>0){
       KGRasterizeWriteCoverageSpan(self,scanx,scany,coverage,(advance-scanx));
@@ -715,13 +914,12 @@ void KGRasterizerFill(KGRasterizer *self,VGFillRuleMask fillRuleMask) {
      scanx=advance;
     }
    }
-        
-    NSZoneFree(NULL,edges);
 }
 
 void KGRasterizeSetBlendMode(KGRasterizer *self,CGBlendMode blendMode) {
    RI_ASSERT(blendMode >= kCGBlendModeNormal && blendMode <= kCGBlendModePlusLighter);
    
+   self->_blendMode=blendMode;
    self->_useRGBA8888=NO;
    
    switch(blendMode){
@@ -865,103 +1063,5 @@ void KGRasterizeSetPaint(KGRasterizer *self, KGPaint* paint) {
 		self->m_paint = [[KGPaint_color alloc] initWithGray:0 alpha:1];
 }
 
-
-static void KGApplyCoverageAndMaskToSpan_lRGBAffff_PRE(KGRGBAffff *dst,int coverage256,CGFloat *mask,KGRGBAffff *result,int length){
-   int i;
-   
-   for(i=0;i<length;i++){
-    KGRGBAffff r=result[i];
-    KGRGBAffff d=dst[i];
-    CGFloat coverage=(CGFloat)coverage256/256.0;
-    CGFloat cov=mask[i]*coverage;
-     
-    result[i]=KGRGBAffffAdd(KGRGBAffffMultiplyByFloat(r , cov) , KGRGBAffffMultiplyByFloat(d , (1.0f - cov)));
-   }
-}
-
-static void KGApplyCoverageToSpan_lRGBAffff_PRE(KGRGBAffff *dst,int coverage256,KGRGBAffff *result,int length){
-   int i;
-   CGFloat coverage=(CGFloat)coverage256/256.0;
-   
-   for(i=0;i<length;i++){
-    KGRGBAffff r=result[i];
-    KGRGBAffff d=dst[i];
-     
-    result[i]=KGRGBAffffAdd(KGRGBAffffMultiplyByFloat(r , coverage) , KGRGBAffffMultiplyByFloat(d , (1.0f - coverage)));
-   }
-}
-         
-static void KGApplyCoverageAndMaskToSpan_lRGBA8888_PRE(KGRGBA8888 *dst,int coverage256,uint8_t *mask,KGRGBA8888 *result,int length){
-   int i;
-   
-   for(i=0;i<length;i++){
-    KGRGBA8888 r=result[i];
-    KGRGBA8888 d=dst[i];
-    int cov=(mask[i]*coverage256)/255;
-    int oneMinusCov=(256-cov);
-     
-    result[i]=KGRGBA8888Add(KGRGBA8888MultiplyByCoverage256(r , cov) , KGRGBA8888MultiplyByCoverage256(d , oneMinusCov));
-   }
-}
-
-static void KGApplyCoverageToSpan_lRGBA8888_PRE(KGRGBA8888 *dst,int coverage256,KGRGBA8888 *result,int length){
-   int i;
-   int coverage=coverage256;
-   int oneMinusCoverage=256-coverage256;
-   
-   for(i=0;i<length;i++){
-    KGRGBA8888 r=result[i];
-    KGRGBA8888 d=dst[i];
-    
-    result[i]=KGRGBA8888Add(KGRGBA8888MultiplyByCoverage256(r , coverage) , KGRGBA8888MultiplyByCoverage256(d , oneMinusCoverage));
-   }
-}
-         
-void KGRasterizeWriteCoverageSpan(KGRasterizer *self,int x, int y,int coverage,int length) {
-   if(self->_useRGBA8888){
-    KGRGBA8888 dst[length];
-    KGImageReadSpan_lRGBA8888_PRE(self->m_renderingSurface,x,y,dst,length);
-
-    KGRGBA8888 src[length];
-    KGPaintReadSpan_lRGBA8888_PRE(self->m_paint,x,y,src,length);
-    
-    self->_blend_lRGBA8888_PRE(src,dst,length);
-    
-	//apply masking
-	if(!self->m_mask)
-     KGApplyCoverageToSpan_lRGBA8888_PRE(dst,coverage,src,length);
-    else {
-     uint8_t maskSpan[length];
-     
-     KGImageReadSpan_A8_MASK(self->m_mask,x,y,maskSpan,length);
-     KGApplyCoverageAndMaskToSpan_lRGBA8888_PRE(dst,coverage,maskSpan,src,length);
-    }
-        
-	//write result to the destination surface
-    KGSurfaceWriteSpan_lRGBA8888_PRE(self->m_renderingSurface,x,y,src,length);
-   }
-   else {
-    KGRGBAffff dst[length];
-    KGImageReadSpan_lRGBAffff_PRE(self->m_renderingSurface,x,y,dst,length);
-
-    KGRGBAffff src[length];
-    KGPaintReadSpan_lRGBAffff_PRE(self->m_paint,x,y,src,length);
-    
-    self->_blend_lRGBAffff_PRE(src,dst,length);
-    
-	//apply masking
-	if(!self->m_mask)
-     KGApplyCoverageToSpan_lRGBAffff_PRE(dst,coverage,src,length);
-    else {
-     CGFloat maskSpan[length];
-     
-     KGImageReadSpan_Af_MASK(self->m_mask,x,y,maskSpan,length);
-     KGApplyCoverageAndMaskToSpan_lRGBAffff_PRE(dst,coverage,maskSpan,src,length);
-    }
-        
-	//write result to the destination surface
-    KGSurfaceWriteSpan_lRGBAffff_PRE(self->m_renderingSurface,x,y,src,length);
-   }
-}
 
 @end

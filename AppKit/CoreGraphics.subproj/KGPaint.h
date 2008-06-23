@@ -44,7 +44,14 @@ typedef void (*KGPaintReadSpan_lRGBAffff_PRE_function)(KGPaint *self,int x,int y
 -init;
 
 void KGPaintSetSurfaceToPaintMatrix(KGPaint *self,CGAffineTransform surfaceToPaintMatrix);
-void KGPaintReadSpan_lRGBA8888_PRE(KGPaint *self,int x,int y,KGRGBA8888 *span,int length);
-void KGPaintReadSpan_lRGBAffff_PRE(KGPaint *self,int x,int y,KGRGBAffff *span,int length);
+
 
 @end
+
+static inline void KGPaintReadSpan_lRGBA8888_PRE(KGPaint *self,int x,int y,KGRGBA8888 *span,int length) {
+   self->_read_lRGBA8888_PRE(self,x,y,span,length);
+}
+
+static inline void KGPaintReadSpan_lRGBAffff_PRE(KGPaint *self,int x,int y,KGRGBAffff *span,int length) {
+   self->_read_lRGBAffff_PRE(self,x,y,span,length);
+}

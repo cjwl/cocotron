@@ -908,6 +908,10 @@ static inline KGGraphicsState *currentState(KGContext *self){
    [self deviceClipReset];
 }
 
+-(void)setAntialiasingQuality:(int)value {
+   [currentState(self) setAntialiasingQuality:value];
+}
+
 -(void)setWordSpacing:(float)spacing {
    [currentState(self) setWordSpacing:spacing];
 }

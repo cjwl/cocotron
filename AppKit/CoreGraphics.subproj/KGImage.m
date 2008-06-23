@@ -4,7 +4,7 @@
  * -------------------------------------
  *
  * Copyright (c) 2007 The Khronos Group Inc.
- * Copyright (c) 2007-2008 Christopher J. W. Lloyd
+ * Copyright (c) 2008 Christopher J. W. Lloyd
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and /or associated documentation files
@@ -190,6 +190,19 @@ static BOOL initFunctionsForParameters(KGImage *self,size_t bitsPerComponent,siz
           self->_readRGBAffff=KGImageRead_ANY_to_RGBA8888_to_RGBAffff;
           return YES;
         }
+       }
+       break;
+     }
+     break;
+    
+    case 5:
+     switch(bitsPerPixel){
+     
+      case 16:
+       if(bitmapInfo==(kCGBitmapByteOrder16Little|kCGImageAlphaNoneSkipFirst)){
+         self->_readRGBA8888=KGImageRead_G3B5X1R5G2_to_RGBA8888;
+         self->_readRGBAffff=KGImageRead_ANY_to_RGBA8888_to_RGBAffff;
+         break;
        }
        break;
      }
@@ -781,6 +794,27 @@ void KGImageRead_ABGR8888_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span
    }
 }
 
+// kCGBitmapByteOrder16Little|kCGImageAlphaNoneSkipFirst
+void KGImageRead_G3B5X1R5G2_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span,int length){
+   RIuint8 *scanline = self->_bytes + y * self->_bytesPerRow;
+   int i;
+
+   scanline+=x*2;
+   for(i=0;i<length;i++){
+    unsigned short low=*scanline++;
+    unsigned short high=*scanline;
+    unsigned short value=low|(high<<8);
+    KGRGBA8888  result;
+    
+    result.r = ((value>>10)&0x1F)<<3;
+    result.g = ((value>>5)&0x1F)<<3;
+    result.b = ((value&0x1F)<<3);
+    result.a = 255;
+    scanline++;
+    *span++=result;
+   }
+}
+
 void KGImageRead_RGBA4444_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span,int length){
    RIuint8 *scanline = self->_bytes + y * self->_bytesPerRow;
    int i;
@@ -1038,7 +1072,7 @@ KGImage *KGImageMipMapForLevel(KGImage *self,int level){
 }
 
 
-void KGImageEWAOnMipmaps_lRGBAffff_PRE(KGImage *self,CGFloat x, CGFloat y,KGRGBAffff *span,int length, CGAffineTransform surfaceToImage){
+void KGImageEWAOnMipmaps_lRGBAffff_PRE(KGImage *self,int x, int y,KGRGBAffff *span,int length, CGAffineTransform surfaceToImage){
    int i;
    		CGFloat m_pixelFilterRadius = 1.25f;
 		CGFloat m_resamplingFilterRadius = 1.25f;
@@ -1188,7 +1222,7 @@ static inline int cubic_8(int v0,int v1,int v2,int v3,int fraction){
   int p = (v3 - v2) - (v0 - v1);
   int q = (v0 - v1) - p;
 
-  return RI_INT_CLAMP((p * (fraction*fraction*fraction))/(255*255*255) + (q * fraction*fraction)/(255*255) + ((v2 - v0) * fraction)/255 + v1,0,255);
+  return RI_INT_CLAMP((p * (fraction*fraction*fraction))/(256*256*256) + (q * fraction*fraction)/(256*256) + ((v2 - v0) * fraction)/256 + v1,0,255);
 }
 
 KGRGBA8888 bicubic_lRGBA8888_PRE(KGRGBA8888 a,KGRGBA8888 b,KGRGBA8888 c,KGRGBA8888 d,int fraction) {
@@ -1199,7 +1233,7 @@ KGRGBA8888 bicubic_lRGBA8888_PRE(KGRGBA8888 a,KGRGBA8888 b,KGRGBA8888 c,KGRGBA88
    cubic_8(a.a, b.a, c.a, d.a, fraction));
 }
 
-void KGImageBicubic_lRGBA8888_PRE(KGImage *self,CGFloat x, CGFloat y,KGRGBA8888 *span,int length, CGAffineTransform surfaceToImage){
+void KGImageBicubic_lRGBA8888_PRE(KGImage *self,int x, int y,KGRGBA8888 *span,int length, CGAffineTransform surfaceToImage){
    int i;
    
    for(i=0;i<length;i++,x++){
@@ -1209,10 +1243,10 @@ void KGImageBicubic_lRGBA8888_PRE(KGImage *self,CGFloat x, CGFloat y,KGRGBA8888 
     uv.x -= 0.5f;
     uv.y -= 0.5f;
     int u = RI_FLOOR_TO_INT(uv.x);
-    int ufrac=(uv.x-u)*255;
+    int ufrac=coverageFromZeroToOne(uv.x-u);
         
     int v = RI_FLOOR_TO_INT(uv.y);
-    int vfrac=(uv.y-v)*255;
+    int vfrac=coverageFromZeroToOne(uv.y-v);
         
     KGRGBA8888 t0,t1,t2,t3;
     KGRGBA8888 cspan[4];
@@ -1248,7 +1282,7 @@ KGRGBAffff bicubic_lRGBAffff_PRE(KGRGBAffff a,KGRGBAffff b,KGRGBAffff c,KGRGBAff
    cubic_f(a.a, b.a, c.a, d.a, fraction));
 }
 
-void KGImageBicubic_lRGBAffff_PRE(KGImage *self,CGFloat x, CGFloat y,KGRGBAffff *span,int length, CGAffineTransform surfaceToImage){
+void KGImageBicubic_lRGBAffff_PRE(KGImage *self,int x, int y,KGRGBAffff *span,int length, CGAffineTransform surfaceToImage){
    int i;
    
    for(i=0;i<length;i++,x++){
@@ -1282,7 +1316,7 @@ void KGImageBicubic_lRGBAffff_PRE(KGImage *self,CGFloat x, CGFloat y,KGRGBAffff 
    }
 }
 
-void KGImageBilinear_lRGBA8888_PRE(KGImage *self,CGFloat x, CGFloat y,KGRGBA8888 *span,int length, CGAffineTransform surfaceToImage){
+void KGImageBilinear_lRGBA8888_PRE(KGImage *self,int x, int y,KGRGBA8888 *span,int length, CGAffineTransform surfaceToImage){
    int i;
 
    for(i=0;i<length;i++,x++){
@@ -1299,16 +1333,18 @@ void KGImageBilinear_lRGBA8888_PRE(KGImage *self,CGFloat x, CGFloat y,KGRGBA8888
     KGRGBA8888 c01c11[2];
     KGImageReadTileSpanExtendEdge__lRGBA8888_PRE(self,u,v+1,c01c11,2);
 
-    CGFloat fu = uv.x - (CGFloat)u;
-    CGFloat fv = uv.y - (CGFloat)v;
-    KGRGBA8888 c0 = KGRGBA8888Add(KGRGBA8888MultiplyByCoverage256(c00c01[0],(1.0f - fu)*256),KGRGBA8888MultiplyByCoverage256(c00c01[1],fu*256));
-    KGRGBA8888 c1 = KGRGBA8888Add(KGRGBA8888MultiplyByCoverage256(c01c11[0],(1.0f - fu)*256),KGRGBA8888MultiplyByCoverage256(c01c11[1],fu*256));
-    span[i]=KGRGBA8888Add(KGRGBA8888MultiplyByCoverage256(c0,(1.0f - fv)*256),KGRGBA8888MultiplyByCoverage256(c1, fv*256));
+    int fu = coverageFromZeroToOne(uv.x - (CGFloat)u);
+    int oneMinusFu=inverseCoverage(fu);
+    int fv = coverageFromZeroToOne(uv.y - (CGFloat)v);
+    int oneMinusFv=inverseCoverage(fv);
+    KGRGBA8888 c0 = KGRGBA8888Add(KGRGBA8888MultiplyByCoverage(c00c01[0],oneMinusFu),KGRGBA8888MultiplyByCoverage(c00c01[1],fu));
+    KGRGBA8888 c1 = KGRGBA8888Add(KGRGBA8888MultiplyByCoverage(c01c11[0],oneMinusFu),KGRGBA8888MultiplyByCoverage(c01c11[1],fu));
+    span[i]=KGRGBA8888Add(KGRGBA8888MultiplyByCoverage(c0,oneMinusFv),KGRGBA8888MultiplyByCoverage(c1, fv));
    }
 }
 
 
-void KGImageBilinear_lRGBAffff_PRE(KGImage *self,CGFloat x, CGFloat y,KGRGBAffff *span,int length, CGAffineTransform surfaceToImage){
+void KGImageBilinear_lRGBAffff_PRE(KGImage *self,int x, int y,KGRGBAffff *span,int length, CGAffineTransform surfaceToImage){
    int i;
 
    for(i=0;i<length;i++,x++){
@@ -1333,7 +1369,7 @@ void KGImageBilinear_lRGBAffff_PRE(KGImage *self,CGFloat x, CGFloat y,KGRGBAffff
    }
 }
 
-void KGImagePointSampling_lRGBA8888_PRE(KGImage *self,CGFloat x, CGFloat y,KGRGBA8888 *span,int length, CGAffineTransform surfaceToImage){
+void KGImagePointSampling_lRGBA8888_PRE(KGImage *self,int x, int y,KGRGBA8888 *span,int length, CGAffineTransform surfaceToImage){
    int i;
    
    for(i=0;i<length;i++,x++){
@@ -1344,7 +1380,7 @@ void KGImagePointSampling_lRGBA8888_PRE(KGImage *self,CGFloat x, CGFloat y,KGRGB
    }
 }
 
-void KGImagePointSampling_lRGBAffff_PRE(KGImage *self,CGFloat x, CGFloat y,KGRGBAffff *span,int length, CGAffineTransform surfaceToImage){
+void KGImagePointSampling_lRGBAffff_PRE(KGImage *self,int x, int y,KGRGBAffff *span,int length, CGAffineTransform surfaceToImage){
    int i;
    
    for(i=0;i<length;i++,x++){

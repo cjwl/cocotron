@@ -30,6 +30,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    _blendMode=kCGBlendModeNormal;
    _interpolationQuality=kCGInterpolationDefault;
    _shouldAntialias=NO;
+   _antialiasingQuality=64;
    return self;
 }
 
@@ -297,6 +298,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 // temporary
+
+-(void)setAntialiasingQuality:(int)value {
+   _antialiasingQuality=value;
+}
 
 -(void)setWordSpacing:(float)spacing {
    _wordSpacing=spacing;

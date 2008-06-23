@@ -4,7 +4,7 @@
  * -------------------------------------
  *
  * Copyright (c) 2007 The Khronos Group Inc.
- * Copyright (c) 2007-2008 Christopher J. W. Lloyd
+ * Copyright (c) 2008 Christopher J. W. Lloyd
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and /or associated documentation files
@@ -187,20 +187,38 @@ static inline KGRGBA8888 KGRGBA8888FromKGRGBAffff(KGRGBAffff rgba){
    return result;
 }
 
-static inline KGRGBA8888 KGRGBA8888MultiplyByCoverage256(KGRGBA8888 result,int value){
-   result.r=((int)result.r*value)/256;
-   result.g=((int)result.g*value)/256;
-   result.b=((int)result.b*value)/256;
-   result.a=((int)result.a*value)/256;
+#define COVERAGE_MULTIPLIER 256
+
+static inline CGFloat zeroToOneFromCoverage(int coverage){
+   return (CGFloat)coverage/(CGFloat)COVERAGE_MULTIPLIER;
+}
+
+static inline CGFloat coverageFromZeroToOne(CGFloat value){
+   return value*COVERAGE_MULTIPLIER;
+}
+
+static inline int inverseCoverage(int coverage){
+   return COVERAGE_MULTIPLIER-coverage;
+}
+
+static inline int multiplyByCoverage(int value,int coverage){
+   return (value*coverage)/COVERAGE_MULTIPLIER;
+}
+
+static inline KGRGBA8888 KGRGBA8888MultiplyByCoverage(KGRGBA8888 result,int value){
+   result.r=((int)result.r*value)/COVERAGE_MULTIPLIER;
+   result.g=((int)result.g*value)/COVERAGE_MULTIPLIER;
+   result.b=((int)result.b*value)/COVERAGE_MULTIPLIER;
+   result.a=((int)result.a*value)/COVERAGE_MULTIPLIER;
 
    return result;
 }
 
 static inline KGRGBA8888 KGRGBA8888Add(KGRGBA8888 result,KGRGBA8888 other){
-   result.r=RI_INT_CLAMP((int)result.r+(int)other.r,0,255);
-   result.g=RI_INT_CLAMP((int)result.g+(int)other.g,0,255);
-   result.b=RI_INT_CLAMP((int)result.b+(int)other.b,0,255);
-   result.a=RI_INT_CLAMP((int)result.a+(int)other.a,0,255);
+   result.r=MIN((int)result.r+(int)other.r,255);
+   result.g=MIN((int)result.g+(int)other.g,255);
+   result.b=MIN((int)result.b+(int)other.b,255);
+   result.a=MIN((int)result.a+(int)other.a,255);
    return result;
 }
 
@@ -208,6 +226,8 @@ static inline KGRGBA8888 KGRGBA8888Add(KGRGBA8888 result,KGRGBA8888 other){
  
 typedef void (*KGImageReadSpan_RGBA8888)(KGImage *self,int x,int y,KGRGBA8888 *span,int length);
 typedef void (*KGImageReadSpan_RGBAffff)(KGImage *self,int x,int y,KGRGBAffff *span,int length);
+typedef void (*KGImageReadSpan_A8)(KGImage *self,int x,int y,uint8_t *span,int length);
+typedef void (*KGImageReadSpan_Af)(KGImage *self,int x,int y,CGFloat *span,int length);
 
 @interface KGImage : NSObject <NSCopying> {
 @public
@@ -233,7 +253,9 @@ typedef void (*KGImageReadSpan_RGBAffff)(KGImage *self,int x,int y,KGRGBAffff *s
 
    KGImageReadSpan_RGBA8888 _readRGBA8888;
    KGImageReadSpan_RGBAffff _readRGBAffff;
-    
+   KGImageReadSpan_RGBA8888 _readA8;
+   KGImageReadSpan_RGBAffff _readAf;
+
 	VGPixelDecode	m_desc;
 	BOOL				m_ownsData;
 	BOOL				m_mipmapsValid;
@@ -242,7 +264,7 @@ typedef void (*KGImageReadSpan_RGBAffff)(KGImage *self,int x,int y,KGRGBAffff *s
     struct KGSurface    **_mipmaps;
 }
 
--initWithWidth:(size_t)width height:(size_t)height bitsPerComponent:(size_t)bitsPerComponent bitsPerPixel:(size_t)bitsPerPixel bytesPerRow:(size_t)bytesPerRow colorSpace:(KGColorSpace *)colorSpace bitmapInfo:(unsigned)bitmapInfo provider:(KGDataProvider *)provider decode:(const CGFloat *)decode interpolate:(BOOL)interpolate renderingIntent:(CGColorRenderingIntent)renderingIntent;
+-initWithWidth:(size_t)width height:(size_t)height bitsPerComponent:(size_t)bitsPerComponent bitsPerPixel:(size_t)bitsPerPixel bytesPerRow:(size_t)bytesPerRow colorSpace:(KGColorSpace *)colorSpace bitmapInfo:(CGBitmapInfo)bitmapInfo provider:(KGDataProvider *)provider decode:(const CGFloat *)decode interpolate:(BOOL)interpolate renderingIntent:(CGColorRenderingIntent)renderingIntent;
 
 -initMaskWithWidth:(size_t)width height:(size_t)height bitsPerComponent:(size_t)bitsPerComponent bitsPerPixel:(size_t)bitsPerPixel bytesPerRow:(size_t)bytesPerRow provider:(KGDataProvider *)provider decode:(const float *)decode interpolate:(BOOL)interpolate ;
 
@@ -291,6 +313,7 @@ void KGImageRead_G8_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span,int l
 void KGImageRead_GA88_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span,int length);
 void KGImageRead_RGBA8888_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span,int length);
 void KGImageRead_ABGR8888_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span,int length);
+void KGImageRead_G3B5X1R5G2_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span,int length);
 void KGImageRead_RGBA4444_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span,int length);
 void KGImageRead_BARG4444_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span,int length);
 void KGImageRead_RGBA2222_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span,int length);
@@ -309,12 +332,12 @@ void KGImageReadSpan_Af_MASK(KGImage *self,int x,int y,CGFloat *coverage,int len
 void KGImageReadTileSpanExtendEdge__lRGBA8888_PRE(KGImage *self,int u, int v, KGRGBA8888 *span,int length);
 void KGImageReadTileSpanExtendEdge__lRGBAffff_PRE(KGImage *self,int u, int v, KGRGBAffff *span,int length);
 
-void KGImageEWAOnMipmaps_lRGBAffff_PRE(KGImage *self,CGFloat x, CGFloat y,KGRGBAffff *span,int length, CGAffineTransform surfaceToImage);
-void KGImageBicubic_lRGBA8888_PRE(KGImage *self,CGFloat x, CGFloat y,KGRGBA8888 *span,int length, CGAffineTransform surfaceToImage);
-void KGImageBicubic_lRGBAffff_PRE(KGImage *self,CGFloat x, CGFloat y,KGRGBAffff *span,int length, CGAffineTransform surfaceToImage);
-void KGImageBilinear_lRGBA8888_PRE(KGImage *self,CGFloat x, CGFloat y,KGRGBA8888 *span,int length, CGAffineTransform surfaceToImage);
-void KGImageBilinear_lRGBAffff_PRE(KGImage *self,CGFloat x, CGFloat y,KGRGBAffff *span,int length, CGAffineTransform surfaceToImage);
-void KGImagePointSampling_lRGBA8888_PRE(KGImage *self,CGFloat x, CGFloat y,KGRGBA8888 *span,int length, CGAffineTransform surfaceToImage);
-void KGImagePointSampling_lRGBAffff_PRE(KGImage *self,CGFloat x, CGFloat y,KGRGBAffff *span,int length, CGAffineTransform surfaceToImage);
+void KGImageEWAOnMipmaps_lRGBAffff_PRE(KGImage *self,int x, int y,KGRGBAffff *span,int length, CGAffineTransform surfaceToImage);
+void KGImageBicubic_lRGBA8888_PRE(KGImage *self,int x, int y,KGRGBA8888 *span,int length, CGAffineTransform surfaceToImage);
+void KGImageBicubic_lRGBAffff_PRE(KGImage *self,int x, int y,KGRGBAffff *span,int length, CGAffineTransform surfaceToImage);
+void KGImageBilinear_lRGBA8888_PRE(KGImage *self,int x, int y,KGRGBA8888 *span,int length, CGAffineTransform surfaceToImage);
+void KGImageBilinear_lRGBAffff_PRE(KGImage *self,int x, int y,KGRGBAffff *span,int length, CGAffineTransform surfaceToImage);
+void KGImagePointSampling_lRGBA8888_PRE(KGImage *self,int x, int y,KGRGBA8888 *span,int length, CGAffineTransform surfaceToImage);
+void KGImagePointSampling_lRGBAffff_PRE(KGImage *self,int x, int y,KGRGBAffff *span,int length, CGAffineTransform surfaceToImage);
 
 void KGImageReadPatternSpan_lRGBAffff_PRE(KGImage *self,CGFloat x, CGFloat y, KGRGBAffff *span,int length, CGAffineTransform surfaceToImage, CGPatternTiling distortion);

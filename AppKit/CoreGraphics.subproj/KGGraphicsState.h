@@ -42,6 +42,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    KGColor            *_shadowColor;
    BOOL                _shouldAntialias;
    
+   int                 _antialiasingQuality;
    float               _wordSpacing;
    float               _textLeading;
 }
@@ -108,7 +109,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)setShouldAntialias:(BOOL)flag;
 
 // temporary?
-
+-(void)setAntialiasingQuality:(int)value;
 -(void)setWordSpacing:(float)spacing;
 -(void)setTextLeading:(float)leading;
 

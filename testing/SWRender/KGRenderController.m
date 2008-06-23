@@ -78,8 +78,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     unsigned char *kgData=[_kgContext bytes];
     
    char *diff=NSZoneMalloc([self zone],[_kgContext bytesPerRow]*[_kgContext pixelsHigh]);
-int i;
-  for(i=0;i<[_kgContext bytesPerRow]*[_kgContext pixelsHigh];i++){
+int i,max=[_kgContext bytesPerRow]*[_kgContext pixelsHigh];
+
+  for(i=0;i<max;i++){
     int d1=cgData[i];
     int d2=kgData[i];
     

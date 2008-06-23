@@ -95,18 +95,18 @@ static void bezier(KGGraphicsState *self,double x1,double y1,double x2, double y
    _numberOfPoints=0;
 }
 
-static void expandOperatorCapacity(KGMutablePath *self,unsigned delta){
+static inline void expandOperatorCapacity(KGMutablePath *self,unsigned delta){
    if(self->_numberOfElements+delta>self->_capacityOfElements){
     self->_capacityOfElements=self->_numberOfElements+delta;
-    self->_capacityOfElements=(self->_capacityOfElements/16+1)*16;
+    self->_capacityOfElements=(self->_capacityOfElements/32+1)*32;
     self->_elements=NSZoneRealloc(NULL,self->_elements,self->_capacityOfElements);
    }
 }
 
-static void expandPointCapacity(KGMutablePath *self,unsigned delta){
+static inline void expandPointCapacity(KGMutablePath *self,unsigned delta){
    if(self->_numberOfPoints+delta>self->_capacityOfPoints){
     self->_capacityOfPoints=self->_numberOfPoints+delta;
-    self->_capacityOfPoints=(self->_capacityOfPoints/32+1)*32;
+    self->_capacityOfPoints=(self->_capacityOfPoints/64+1)*64;
     self->_points=NSZoneRealloc(NULL,self->_points,self->_capacityOfPoints*sizeof(CGPoint));
    }
 }
