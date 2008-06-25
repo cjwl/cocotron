@@ -224,9 +224,17 @@ static inline void expandPointCapacity(KGMutablePath *self,unsigned delta){
 -(void)addArcAtPoint:(CGPoint)point radius:(float)radius startAngle:(float)startRadian endAngle:(float)endRadian clockwise:(BOOL)clockwise withTransform:(const CGAffineTransform *)matrix {
 // This is not complete, doesn't handle clockwise and probably doesn't manipulate the current
 // point properly
+   if (endRadian < startRadian) {
+      if (endRadian < 0) {
+         endRadian = 2*M_PI + endRadian;
+      }
+      if ((endRadian < startRadian) && (startRadian > (float)M_PI)) {
+         startRadian = -(2*M_PI - startRadian);
+      }
+   }
    float   radiusx=radius,radiusy=radius;
    double  remainder=endRadian-startRadian;
-   double  delta=3.141592653589793238/2; // 90 degrees
+   double  delta=M_PI_2; // 90 degrees
    int     i;
 
    for(;remainder>0;startRadian+=delta,remainder-=delta){
@@ -255,7 +263,11 @@ static inline void expandPointCapacity(KGMutablePath *self,unsigned delta){
      points[i].y=point.y+(XY[i*2]*s+XY[i*2+1]*c)*radiusy;
     }
 
-    [self moveToPoint:points[0] withTransform:matrix];
+    if([self isEmpty]) {
+       [self moveToPoint:points[0] withTransform:matrix];
+    } else {
+       [self addLineToPoint:points[0] withTransform:matrix];
+    }
     [self addCurveToControlPoint:points[1] controlPoint:points[2] endPoint:points[3] withTransform:matrix];
    }
 }
