@@ -1,8 +1,16 @@
+/* Copyright (c) 2006-2007 Christopher J. W. Lloyd
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 #import "KGContext_gdi.h"
 #import "KGLayer_gdi.h"
 #import "Win32Window.h"
 #import "Win32DeviceContextPrinter.h"
 #import "KGDeviceContext_gdi_ddb.h"
+#import "KGSurface_DIBSection.h"
 #import "Win32DeviceContextWindow.h"
 #import <AppKit/KGGraphicsState.h>
 #import <AppKit/KGDeviceContext_gdi.h>
@@ -12,7 +20,7 @@
 #import <AppKit/KGShading.h>
 #import <AppKit/KGFunction.h>
 #import <AppKit/KGFont.h>
-#import <AppKit/KGImage.h>
+#import "../CoreGraphics.subproj/KGImage.h"
 #import <AppKit/KGClipPhase.h>
 #import <AppKit/Win32Font.h>
 
@@ -206,6 +214,10 @@ static RECT NSRectToRECT(NSRect rect) {
    [_deviceContext release];
    [_gdiFont release];
    [super dealloc];
+}
+
+-(KGSurface *)createSurfaceWithWidth:(size_t)width height:(size_t)height {
+   return [[KGSurface_DIBSection alloc] initWithWidth:width height:height compatibleWithDeviceContext:[self deviceContext]];
 }
 
 -(NSSize)pointSize {
@@ -1043,21 +1055,13 @@ static void zeroBytes(void *bytes,int size){
    [self drawBitmapImage:image inRect:rect ctm:transformToDevice fraction:[[self fillColor] alpha]];
 }
 
--(void)copyColorsToContext:(KGContext_gdi *)other size:(NSSize)size toPoint:(NSPoint)toPoint  {
-   BitBlt([other dc],toPoint.x,toPoint.y,size.width,size.height,_dc,0,0,SRCCOPY);
-}
-
--(void)copyColorsToContext:(KGContext_gdi *)other size:(NSSize)size {
-   [self copyColorsToContext:other size:size toPoint:NSMakePoint(0,0)];
-}
-
--(void)drawOther:(KGContext_gdi *)other inRect:(NSRect)rect ctm:(CGAffineTransform)ctm {
+-(void)drawDeviceContext:(KGDeviceContext_gdi *)deviceContext inRect:(NSRect)rect ctm:(CGAffineTransform)ctm {
    rect.origin=CGPointApplyAffineTransform(rect.origin,ctm);
 
    if(transformIsFlipped(ctm))
     rect.origin.y-=rect.size.height;
 
-   [other copyColorsToContext:self size:rect.size toPoint:rect.origin];
+   BitBlt([self dc],rect.origin.x,rect.origin.y,rect.size.width,rect.size.height,[deviceContext dc],0,0,SRCCOPY);
 }
 
 -(void)drawLayer:(KGLayer *)layer inRect:(NSRect)rect {
@@ -1067,8 +1071,9 @@ static void zeroBytes(void *bytes,int size){
     NSLog(@"layer class is not right %@!=%@",[context class],[self class]);
     return;
    }
+   KGDeviceContext_gdi *deviceContext=[(KGContext_gdi *)context deviceContext];
    
-   [self drawOther:(KGContext_gdi *)context inRect:rect ctm:[self currentState]->_deviceSpaceTransform];
+   [self drawDeviceContext:deviceContext inRect:rect ctm:[self currentState]->_deviceSpaceTransform];
 }
 
 -(void)copyBitsInRect:(NSRect)rect toPoint:(NSPoint)point gState:(int)gState {
@@ -1118,14 +1123,25 @@ static void zeroBytes(void *bytes,int size){
    
    CGAffineTransform ctm=[self userSpaceToDeviceSpaceTransform];
          
-   [self drawOther:(KGContext_gdi *)other inRect:rect ctm:ctm];
- }
+   KGDeviceContext_gdi *deviceContext=[(KGContext_gdi *)other deviceContext];
 
--(void)copyContext:(KGContext *)other size:(NSSize)size {
-   if(![other isKindOfClass:[KGContext_gdi class]])
-    return;
+   [self drawDeviceContext:deviceContext inRect:rect ctm:ctm];
+}
 
-   [self drawOther:(KGContext_gdi *)other inRect:NSMakeRect(0,0,size.width,size.height) ctm:CGAffineTransformIdentity];
+-(void)drawBackingContext:(KGContext *)other size:(NSSize)size {
+   KGDeviceContext_gdi *deviceContext=nil;
+
+   if([other isKindOfClass:[KGContext_gdi class]])
+    deviceContext=[(KGContext_gdi *)other deviceContext];
+   else {
+    KGSurface *surface=[other surface];
+    
+    if([surface isKindOfClass:[KGSurface_DIBSection class]])
+     deviceContext=[(KGSurface_DIBSection *)surface deviceContext];
+   }
+
+   if(deviceContext!=nil)
+    [self drawDeviceContext:deviceContext inRect:NSMakeRect(0,0,size.width,size.height) ctm:CGAffineTransformIdentity];
 }
 
 -(void)flush {

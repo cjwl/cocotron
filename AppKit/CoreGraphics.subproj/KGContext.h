@@ -10,7 +10,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSGeometry.h>
 #import <ApplicationServices/ApplicationServices.h>
 
-@class KGColor,KGColorSpace,KGShading,KGImage,KGGraphicsState,KGMutablePath,KGPath,KGPattern,KGLayer,KGPDFPage,NSMutableArray,CGWindow,KGFont;
+@class KGColor,KGColorSpace,KGShading,KGImage,KGGraphicsState,KGMutablePath,KGPath,KGPattern,KGLayer,KGPDFPage,NSMutableArray,CGWindow,KGFont,KGSurface;
 
 @interface KGContext : NSObject {
    CGAffineTransform _userToDeviceTransform;
@@ -34,6 +34,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -initWithGraphicsState:(KGGraphicsState *)state;
 -init;
+
+-(KGSurface *)surface;
+-(KGSurface *)createSurfaceWithWidth:(size_t)width height:(size_t)height;
 
 -(void)setAllowsAntialiasing:(BOOL)yesOrNo;
 
@@ -217,7 +220,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)drawContext:(KGContext *)other inRect:(CGRect)rect;
 
--(void)copyContext:(KGContext *)other size:(CGSize)size;
+-(void)drawBackingContext:(KGContext *)other size:(CGSize)size;
 
 -(void)resetClip;
 

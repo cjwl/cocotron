@@ -17,12 +17,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "KGPDFObject_Name.h"
 #import "KGPDFStream.h"
 #import "KGPDFString.h"
-#import "KGShading.h"
-#import "KGImage.h"
-#import "KGFont.h"
+#import "KGShading+PDF.h"
+#import "KGImage+PDF.h"
+#import "KGFont+PDF.h"
 #import "KGMutablePath.h"
 #import "KGColor.h"
-#import "KGColorSpace.h"
+#import "KGColorSpace+PDF.h"
 #import <Foundation/NSProcessInfo.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSArray.h>

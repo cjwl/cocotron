@@ -1084,7 +1084,7 @@ static unsigned char *stbi_jpeg_load_from_memory(jpeg *j,stbi_uc const *buffer, 
 }
 
 -(KGImage *)imageAtIndex:(unsigned)index options:(NSDictionary *)options {
-   int            width,height;
+   int            width=0,height=0;
    int            comp;
 
    _bitmap=stbi_jpeg_load_from_memory(&(self->jpeg_decoder),[_jpg bytes],[_jpg length],&width,&height,&comp,STBI_rgb_alpha);

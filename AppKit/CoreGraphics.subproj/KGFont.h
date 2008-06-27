@@ -2,7 +2,7 @@
 #import <Foundation/NSGeometry.h>
 #import <ApplicationServices/ApplicationServices.h>
 
-@class KGPDFObject,KGPDFContext,KGMutablePath;
+@class KGMutablePath;
 
 enum {
    CGNullGlyph=0x0
@@ -96,8 +96,6 @@ typedef struct CGGlyphMetricsSet {
 -(void)getAdvancements:(CGSize *)advancements forGlyphs:(const CGGlyph *)glyphs count:(unsigned)count;
 
 -(CGSize)advancementForNominalGlyphs:(const CGGlyph *)glyphs count:(unsigned)count;
-
--(KGPDFObject *)encodeReferenceWithContext:(KGPDFContext *)context;
 
 // implement in subclass
 -(void)fetchMetrics;

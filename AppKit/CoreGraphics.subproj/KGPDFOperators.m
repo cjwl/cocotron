@@ -21,10 +21,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import "KGContext.h"
 #import "KGColor.h"
-#import "KGColorSpace.h"
-#import "KGImage.h"
-#import "KGFunction.h"
-#import "KGShading.h"
+#import "KGColorSpace+PDF.h"
+#import "KGImage+PDF.h"
+#import "KGFunction+PDF.h"
+#import "KGShading+PDF.h"
 #import <Foundation/NSData.h>
 #import <Foundation/NSString.h>
 #import <Foundation/NSArray.h>

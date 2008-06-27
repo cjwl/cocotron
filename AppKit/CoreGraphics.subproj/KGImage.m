@@ -30,11 +30,6 @@
 #import "KGImage.h"
 #import "KGSurface.h"
 #import "KGColorSpace.h"
-#import "KGDataProvider.h"
-#import "KGPDFArray.h"
-#import "KGPDFDictionary.h"
-#import "KGPDFStream.h"
-#import "KGPDFContext.h"
 #import "KGExceptions.h"
 #import <Foundation/NSData.h>
 
@@ -122,6 +117,9 @@ VGPixelDecode KGImageParametersToPixelLayout(KGImageFormat format,size_t *bitsPe
 
 static BOOL initFunctionsForParameters(KGImage *self,size_t bitsPerComponent,size_t bitsPerPixel,KGColorSpace *colorSpace,CGBitmapInfo bitmapInfo){
 
+   self->_readA8=KGImageRead_ANY_to_RGBA8888_to_A8;
+   self->_readAf=KGImageRead_ANY_to_A8_to_Af;
+   
    switch(bitsPerComponent){
    
     case 32:
@@ -148,6 +146,7 @@ static BOOL initFunctionsForParameters(KGImage *self,size_t bitsPerComponent,siz
      switch(bitsPerPixel){
      
       case 8:
+       self->_readA8=KGImageRead_G8_to_A8;
        self->_readRGBA8888=KGImageRead_G8_to_RGBA8888;
        self->_readRGBAffff=KGImageRead_ANY_to_RGBA8888_to_RGBAffff;
        return YES;
@@ -281,12 +280,11 @@ static BOOL initFunctionsForParameters(KGImage *self,size_t bitsPerComponent,siz
    _clampExternalPixels=NO; // only do this if premultiplied format
 
    initFunctionsForParameters(self,bitsPerComponent,bitsPerPixel,colorSpace,bitmapInfo);
-    size_t checkBPP;
-    _imageFormat=VG_lRGBA_8888;
+    KGImageFormat imageFormat=VG_lRGBA_8888;
     switch(bitmapInfo&kCGBitmapAlphaInfoMask){
      case kCGImageAlphaPremultipliedLast:
      case kCGImageAlphaPremultipliedFirst:
-      _imageFormat|=VGColorPREMULTIPLIED;
+      imageFormat|=VGColorPREMULTIPLIED;
       break;
       
      case kCGImageAlphaNone:
@@ -297,7 +295,8 @@ static BOOL initFunctionsForParameters(KGImage *self,size_t bitsPerComponent,siz
       break;
     }
     
-	self->m_desc=KGImageParametersToPixelLayout(_imageFormat,&checkBPP,&(self->_colorFormat));
+    size_t checkBPP;
+	KGImageParametersToPixelLayout(imageFormat,&checkBPP,&(self->_colorFormat));
     RI_ASSERT(checkBPP==bitsPerPixel);
    m_ownsData=NO;
     _mipmapsCount=0;
@@ -422,199 +421,11 @@ static BOOL initFunctionsForParameters(KGImage *self,size_t bitsPerComponent,siz
 }
 
 -(const void *)bytes {
-   return [_provider bytes];
+   return _bytes;
 }
 
 -(unsigned)length {
    return [_provider length];
-}
-
-CGColorRenderingIntent KGImageRenderingIntentWithName(const char *name) {
-   if(name==NULL)
-    return kCGRenderingIntentDefault;
-    
-   if(strcmp(name,"AbsoluteColorimetric")==0)
-    return kCGRenderingIntentAbsoluteColorimetric;
-   else if(strcmp(name,"RelativeColorimetric")==0)
-    return kCGRenderingIntentRelativeColorimetric;
-   else if(strcmp(name,"Saturation")==0)
-    return kCGRenderingIntentSaturation;
-   else if(strcmp(name,"Perceptual")==0)
-    return kCGRenderingIntentPerceptual;
-   else
-    return kCGRenderingIntentDefault; // unknown
-}
-
-const char *KGImageNameWithIntent(CGColorRenderingIntent intent){
-   switch(intent){
-   
-    case kCGRenderingIntentAbsoluteColorimetric:
-     return "AbsoluteColorimetric";
-
-    case kCGRenderingIntentRelativeColorimetric:
-     return "RelativeColorimetric";
-
-    case kCGRenderingIntentSaturation:
-     return "Saturation";
-     
-    default:
-    case kCGRenderingIntentDefault:
-    case kCGRenderingIntentPerceptual:
-     return "Perceptual";
-   } 
-}
-
--(KGPDFObject *)encodeReferenceWithContext:(KGPDFContext *)context {
-   KGPDFStream     *result=[KGPDFStream pdfStream];
-   KGPDFDictionary *dictionary=[KGPDFDictionary pdfDictionary];
-
-   [dictionary setNameForKey:"Type" value:"XObject"];
-   [dictionary setNameForKey:"Subtype" value:"Image"];
-   [dictionary setIntegerForKey:"Width" value:_width];
-   [dictionary setIntegerForKey:"Height" value:_height];
-   if(_colorSpace!=nil)
-    [dictionary setObjectForKey:"ColorSpace" value:[_colorSpace encodeReferenceWithContext:context]];
-   [dictionary setIntegerForKey:"BitsPerComponent" value:_bitsPerComponent];
-   [dictionary setNameForKey:"Intent" value:KGImageNameWithIntent(_renderingIntent)];
-   [dictionary setBooleanForKey:"ImageMask" value:_isMask];
-   if(_mask!=nil)
-    [dictionary setObjectForKey:"Mask" value:[_mask encodeReferenceWithContext:context]];
-   if(_decode!=NULL)
-    [dictionary setObjectForKey:"Decode" value:[KGPDFArray pdfArrayWithNumbers:_decode count:[_colorSpace numberOfComponents]*2]];
-   [dictionary setBooleanForKey:"Interpolate" value:_interpolate];
-   /* FIX, generate soft mask
-    [dictionary setObjectForKey:"SMask" value:[softMask encodeReferenceWithContext:context]];
-    */
-  
-   /* FIX
-    */
-    
-   return [context encodeIndirectPDFObject:result];
-}
-
-
-
-+(KGImage *)imageWithPDFObject:(KGPDFObject *)object {
-   KGPDFStream     *stream=(KGPDFStream *)object;
-   KGPDFDictionary *dictionary=[stream dictionary];
-   KGPDFInteger width;
-   KGPDFInteger height;
-   KGPDFObject *colorSpaceObject;
-   KGPDFInteger bitsPerComponent;
-   const char  *intent;
-   KGPDFBoolean isImageMask;
-   KGPDFObject *imageMaskObject=NULL;
-   KGColorSpace *colorSpace=NULL;
-    int               componentsPerPixel;
-   KGPDFArray     *decodeArray;
-   float            *decode=NULL;
-   BOOL              interpolate;
-   KGPDFStream *softMaskStream=nil;
-   KGImage *softMask=NULL;
-    
-   // NSLog(@"Image=%@",dictionary);
-    
-   if(![dictionary getIntegerForKey:"Width" value:&width]){
-    NSLog(@"Image has no Width");
-    return NULL;
-   }
-   if(![dictionary getIntegerForKey:"Height" value:&height]){
-    NSLog(@"Image has no Height");
-    return NULL;
-   }
-    
-   if(![dictionary getObjectForKey:"ColorSpace" value:&colorSpaceObject]){
-    NSLog(@"Image has no ColorSpace");
-    return NULL;
-   }
-   if((colorSpace=[KGColorSpace colorSpaceFromPDFObject:colorSpaceObject])==NULL)
-    return NULL;
-     
-   componentsPerPixel=[colorSpace numberOfComponents];
-    
-   if(![dictionary getIntegerForKey:"BitsPerComponent" value:&bitsPerComponent]){
-    NSLog(@"Image has no BitsPerComponent");
-    return NULL;
-   }
-   if(![dictionary getNameForKey:"Intent" value:&intent])
-    intent=NULL;
-   if(![dictionary getBooleanForKey:"ImageMask" value:&isImageMask])
-    isImageMask=NO;
-     
-   if(!isImageMask && [dictionary getObjectForKey:"Mask" value:&imageMaskObject]){
-    
-    
-   }
-
-   if(![dictionary getArrayForKey:"Decode" value:&decodeArray])
-    decode=NULL;
-   else {
-    int i,count=[decodeArray count];
-     
-    if(count!=componentsPerPixel*2){
-     NSLog(@"Invalid decode array, count=%d, should be %d",count,componentsPerPixel*2);
-     return NULL;
-    }
-    
-    decode=__builtin_alloca(sizeof(float)*count);
-    for(i=0;i<count;i++){
-     KGPDFReal number;
-      
-     if(![decodeArray getNumberAtIndex:i value:&number]){
-      NSLog(@"Invalid decode array entry at %d",i);
-      return NULL;
-     }
-     decode[i]=number;
-    }
-   }
-    
-   if(![dictionary getBooleanForKey:"Interpolate" value:&interpolate])
-    interpolate=NO;
-    
-   if([dictionary getStreamForKey:"SMask" value:&softMaskStream]){
-//    NSLog(@"SMask=%@",[softMaskStream dictionary]);
-    softMask=[self imageWithPDFObject:softMaskStream];
-   }
-    
-   if(colorSpace!=NULL){
-    int               bitsPerPixel=componentsPerPixel*bitsPerComponent;
-    int               bytesPerRow=((width*bitsPerPixel)+7)/8;
-    NSData           *data=[stream data];
-    KGDataProvider * provider;
-    KGImage *image=NULL;
-       
-//     NSLog(@"width=%d,height=%d,bpc=%d,bpp=%d,bpr=%d,cpp=%d",width,height,bitsPerComponent,bitsPerPixel,bytesPerRow,componentsPerPixel);
-     
-    if(height*bytesPerRow!=[data length]){
-     NSMutableData *mutable=[NSMutableData dataWithLength:height*bytesPerRow];
-     char *mbytes=[mutable mutableBytes];
-      int i;
-      for(i=0;i<height*bytesPerRow;i++)
-       mbytes[i]=0x33;
-       
-     NSLog(@"Invalid data length=%d,should be %d=%d",[data length],height*bytesPerRow,[data length]-height*bytesPerRow);
-     data=mutable;
-      //return NULL;
-    }
-    provider=[[KGDataProvider alloc] initWithData:data];
-    if(isImageMask){
-     float decodeDefault[2]={0,1};
-      
-     if(decode==NULL)
-      decode=decodeDefault;
-      
-     image=[[KGImage alloc] initMaskWithWidth:width height:height bitsPerComponent:bitsPerComponent bitsPerPixel:bitsPerPixel bytesPerRow:bytesPerRow provider:provider decode:decode interpolate:interpolate];
-    }
-    else {
-     image=[[KGImage alloc] initWithWidth:width height:height bitsPerComponent:bitsPerComponent bitsPerPixel:bitsPerPixel bytesPerRow:bytesPerRow colorSpace:colorSpace bitmapInfo:0 provider:provider decode:decode interpolate:interpolate renderingIntent:KGImageRenderingIntentWithName(intent)];
-
-     if(softMask!=NULL)
-      [image addMask:softMask];
-    }
-
-    return image;
-   }
-   return nil;
 }
 
 size_t KGImageGetWidth(KGImage *self) {
@@ -623,10 +434,6 @@ size_t KGImageGetWidth(KGImage *self) {
 
 size_t KGImageGetHeight(KGImage *self) {
    return self->_height;
-}
-
-VGColorInternalFormat KGImageColorFormat(KGImage *self) {
-   return self->_colorFormat;
 }
 
 void KGImageRead_ANY_to_RGBA8888_to_RGBAffff(KGImage *self,int x,int y,KGRGBAffff *span,int length){
@@ -729,6 +536,35 @@ void KGImageRead_RGBAffffBig_to_RGBAffff(KGImage *self,int x,int y,KGRGBAffff *s
    }
 }
 
+void KGImageRead_G8_to_A8(KGImage *self,int x,int y,uint8_t *alpha,int length) {
+   RIuint8 *scanline = self->_bytes + y * self->_bytesPerRow;
+   int i;
+
+   scanline+=x;
+   for(i=0;i<length;i++){
+    *alpha++=*scanline++;
+   }
+}
+
+void KGImageRead_ANY_to_RGBA8888_to_A8(KGImage *self,int x,int y,uint8_t *alpha,int length) {
+   KGRGBA8888 span[length];
+   int i;
+   
+   self->_readRGBA8888(self,x,y,span,length);
+   for(i=0;i<length;i++){
+    *alpha++=span[i].a;
+   }
+}
+
+void KGImageRead_ANY_to_A8_to_Af(KGImage *self,int x,int y,CGFloat *alpha,int length) {
+   uint8_t span[length];
+   int     i;
+   
+   self->_readA8(self,x,y,span,length);
+   for(i=0;i<length;i++)
+    alpha[i]=CGFloatFromByte(span[i]);
+}
+
 void KGImageRead_G8_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span,int length){
    RIuint8 *scanline = self->_bytes + y * self->_bytesPerRow;
    int i;
@@ -790,6 +626,22 @@ void KGImageRead_ABGR8888_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span
     result.b = *scanline++;
     result.g = *scanline++;
 	result.r = *scanline++;
+    *span++=result;
+   }
+}
+
+void KGImageRead_BGRA8888_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span,int length) {
+   RIuint8 *scanline = self->_bytes + y * self->_bytesPerRow;
+   int i;
+
+   scanline+=x*4;
+   for(i=0;i<length;i++){
+    KGRGBA8888  result;
+    
+    result.b = *scanline++;
+    result.g = *scanline++;
+	result.r = *scanline++;
+    result.a = *scanline++;
     *span++=result;
    }
 }
@@ -957,7 +809,7 @@ void KGImageMakeMipMaps(KGImage *self) {
     int i;
 	for(i=0;i<self->_mipmapsCount;i++)
 	{
-			KGSurfaceDealloc(self->_mipmaps[i]);
+			[self->_mipmaps[i] release];
 	}
 	self->_mipmapsCount=0;
 
@@ -982,7 +834,8 @@ void KGImageMakeMipMaps(KGImage *self) {
             self->_mipmapsCount++;
 			self->_mipmaps[self->_mipmapsCount-1] = NULL;
 
-			KGSurface* next =  KGSurfaceInitWithBytes([KGSurface alloc],nextw, nexth,self->_bitsPerComponent,self->_bitsPerPixel,0,self->_colorSpace,self->_bitmapInfo,self->_imageFormat,NULL);
+			KGSurface* next =[[KGSurface alloc] initWithBytes:NULL width:nextw height:nexth bitsPerComponent:self->_bitsPerComponent bytesPerRow:self->_bytesPerRow colorSpace:self->_colorSpace bitmapInfo:self->_bitmapInfo];
+            
             int j;
 			for(j=0;j<KGImageGetHeight(next);j++)
 			{
@@ -1036,7 +889,7 @@ void KGImageMakeMipMaps(KGImage *self) {
 		{
 			if(self->_mipmaps[i])
 			{
-					KGSurfaceDealloc(self->_mipmaps[i]);
+					[self->_mipmaps[i] release];
 			}
 		}
 		self->_mipmapsCount=0;
@@ -1391,9 +1244,7 @@ void KGImagePointSampling_lRGBAffff_PRE(KGImage *self,int x, int y,KGRGBAffff *s
    }
 }
 
-void KGImageReadSpan_lRGBA8888_PRE(KGImage *self,int x,int y,KGRGBA8888 *span,int length) {
-   VGColorInternalFormat format=self->_colorFormat;
-   
+void KGImageReadSpan_lRGBA8888_PRE(KGImage *self,int x,int y,KGRGBA8888 *span,int length) {   
    self->_readRGBA8888(self,x,y,span,length);
 #if 0   
    if(format&VGColorNONLINEAR){
@@ -1447,51 +1298,11 @@ void KGImageReadSpan_lRGBAffff_PRE(KGImage *self,int x,int y,KGRGBAffff *span,in
 *//*-------------------------------------------------------------------*/
 
 void KGImageReadSpan_A8_MASK(KGImage *self,int x,int y,uint8_t *coverage,int length){
-   int i;
-   
-   RI_ASSERT(self->_bytes);
-   RI_ASSERT(y >= 0 && y < self->_height);
-
-   for(i=0;i<length;i++,x++){
-	RI_ASSERT(x >= 0 && x < self->_width);
-
-    KGRGBA8888 span;
-    KGImageReadSpan_lRGBA8888_PRE(self,x,y,&span,1);
-   
-	if(self->m_desc.luminanceBits) {	//luminance
-     coverage[i]= span.r;	//luminance/luma is read into the color channels
-	}
-	else {	//rgba
-     if(self->m_desc.alphaBits)
-	  coverage[i]=span.a;
-     else
-      coverage[i]=span.r;
-	}
-   }
+   self->_readA8(self,x,y,coverage,length);
 }
 
 void KGImageReadSpan_Af_MASK(KGImage *self,int x,int y,CGFloat *coverage,int length) {
-   int i;
-   
-   RI_ASSERT(self->_bytes);
-   RI_ASSERT(y >= 0 && y < self->_height);
-
-   for(i=0;i<length;i++,x++){
-	RI_ASSERT(x >= 0 && x < self->_width);
-
-    KGRGBAffff span;
-    KGImageReadSpan_lRGBAffff_PRE(self,x,y,&span,1);
-   
-	if(self->m_desc.luminanceBits) {	//luminance
-     coverage[i]= span.r;	//luminance/luma is read into the color channels
-	}
-	else {	//rgba
-     if(self->m_desc.alphaBits)
-	  coverage[i]=span.a;
-     else
-      coverage[i]=span.r;
-	}
-   }
+   self->_readAf(self,x,y,coverage,length);
 }
 
 

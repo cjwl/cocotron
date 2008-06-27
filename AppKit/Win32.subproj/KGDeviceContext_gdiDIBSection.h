@@ -13,13 +13,18 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    KGDeviceContext_gdi *_compatible;
    HBITMAP              _bitmap;
    int                  _bitsPerPixel;
+   size_t               _bitsPerComponent;
+   size_t               _bytesPerRow;
    void                *_bits;
 }
 
--initWithSize:(NSSize)size deviceContext:(KGDeviceContext_gdi *)compatible bitsPerPixel:(int)bpp;
--initWithSize:(NSSize)size deviceContext:(KGDeviceContext_gdi *)compatible;
+-initWithWidth:(size_t)width height:(size_t)height deviceContext:(KGDeviceContext_gdi *)compatible bitsPerPixel:(int)bpp;
+-initWithWidth:(size_t)width height:(size_t)height deviceContext:(KGDeviceContext_gdi *)compatible;
 
 -(void *)bitmapBytes;
+
+-(size_t)bitsPerComponent;
+-(size_t)bytesPerRow;
 
 -(int)bitsPerPixel;
 

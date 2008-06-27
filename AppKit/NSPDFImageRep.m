@@ -73,7 +73,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       
    if(![page getRect:&mediaBox forBox:kCGPDFMediaBox])
     return NSMakeSize(0,0);
-   
+
    return mediaBox.size;
 }
 

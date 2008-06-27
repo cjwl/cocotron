@@ -14,7 +14,7 @@ CGContextRef CGBitmapContextCreate(void *bytes,size_t width,size_t height,size_t
 }
 
 void *CGBitmapContextGetData(CGContextRef self) {
-   return [self bytes];
+   return [self mutableBytes];
 }
 
 size_t CGBitmapContextGetWidth(CGContextRef self) {

@@ -226,13 +226,15 @@ typedef void (*KGSurfaceWriteSpan_RGBAffff)(KGSurface *self,int x,int y,KGRGBAff
    KGSurfaceWriteSpan_RGBAffff _writeRGBAffff;
    
    size_t _allocatedSize;
+	VGPixelDecode	m_desc;
 } 
 
-KGSurface *KGSurfaceInitWithBytes(KGSurface *self,size_t width,size_t height,size_t bitsPerComponent,size_t bitsPerPixel,size_t bytesPerRow,KGColorSpace *colorSpace,CGBitmapInfo bitmapInfo,KGImageFormat imageFormat,RIuint8* data);
+-initWithBytes:(void *)bytes width:(size_t)width height:(size_t)height bitsPerComponent:(size_t)bitsPerComponent bytesPerRow:(size_t)bytesPerRow colorSpace:(KGColorSpace *)colorSpace bitmapInfo:(CGBitmapInfo)bitmapInfo;
 
-void KGSurfaceDealloc(KGSurface *self);
+-(void *)mutableBytes;
 
 -(void)setWidth:(size_t)width height:(size_t)height reallocateOnlyIfRequired:(BOOL)roir;
+
 
 BOOL KGSurfaceIsValidFormat(int format);
 

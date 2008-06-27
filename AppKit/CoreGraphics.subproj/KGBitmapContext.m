@@ -7,80 +7,86 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
 #import "KGBitmapContext.h"
+#import "KGGraphicsState.h"
 #import "KGImage.h"
 #import "KGDataProvider.h"
 #import "KGColorSpace.h"
 #import "KGExceptions.h"
+#import "KGSurface.h"
 
 @implementation KGBitmapContext
 
+-initWithSurface:(KGSurface *)surface {
+   CGAffineTransform flip={1,0,0,-1,0,[surface height]};
+   KGGraphicsState  *initialState=[[[KGGraphicsState alloc] initWithDeviceTransform:flip] autorelease];
+   [super initWithGraphicsState:initialState];
+   _surface=[surface retain];
+   return self;
+}
+
 -initWithBytes:(void *)bytes width:(size_t)width height:(size_t)height bitsPerComponent:(size_t)bitsPerComponent bytesPerRow:(size_t)bytesPerRow colorSpace:(KGColorSpace *)colorSpace bitmapInfo:(CGBitmapInfo)bitmapInfo {
-   [super init];
-   _bytes=bytes;
-   _width=width;
-   _height=height;
-   _bitsPerComponent=bitsPerComponent;
-   _bytesPerRow=bytesPerRow;
-   _colorSpace=[colorSpace retain];
-   _bitmapInfo=bitmapInfo;
+   KGSurface *surface=[[KGSurface alloc] initWithBytes:bytes width:width height:height bitsPerComponent:bitsPerComponent bytesPerRow:bytesPerRow colorSpace:colorSpace bitmapInfo:bitmapInfo];
+
+   [self initWithSurface:surface];
+   [surface release];
    return self;
 }
 
 -(void)dealloc {
-   [_colorSpace release];
+   [_surface release];
    [super dealloc];
 }
 
--(void *)bytes {
-   return _bytes;
+-(void *)mutableBytes {
+   return [_surface mutableBytes];
 }
 
 -(size_t)width {
-   return _width;
+   return [_surface width];
 }
 
 -(size_t)height {
-   return _height;
+   return [_surface height];
 }
 
 -(size_t)bitsPerComponent {
-   return _bitsPerComponent;
+   return [_surface bitsPerComponent];
 }
 
 -(size_t)bytesPerRow {
-   return _bytesPerRow;
+   return [_surface bytesPerRow];
 }
 
 -(KGColorSpace *)colorSpace {
-   return _colorSpace;
+   return [_surface colorSpace];
 }
 
 -(CGBitmapInfo)bitmapInfo {
-   return _bitmapInfo;
+   return [_surface bitmapInfo];
 }
 
 -(size_t)bitsPerPixel {
-   size_t result=_bitsPerComponent*[_colorSpace numberOfComponents];
+   size_t result=[self bitsPerComponent]*[[self colorSpace] numberOfComponents];
    
-   switch(_bitmapInfo&kCGBitmapAlphaInfoMask){
+   switch([self bitmapInfo]&kCGBitmapAlphaInfoMask){
    
     case kCGImageAlphaNone:
      break;
      
     case kCGImageAlphaPremultipliedLast:
-     result+=_bitsPerComponent;
+     result+=[self bitsPerComponent];
      break;
 
     case kCGImageAlphaPremultipliedFirst:
-     result+=_bitsPerComponent;
+     result+=[self bitsPerComponent];
      break;
 
     case kCGImageAlphaLast:
-     result+=_bitsPerComponent;
+     result+=[self bitsPerComponent];
      break;
 
     case kCGImageAlphaFirst:
-     result+=_bitsPerComponent;
+     result+=[self bitsPerComponent];
      break;
 
     case kCGImageAlphaNoneSkipLast:
@@ -94,12 +100,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(CGImageAlphaInfo)alphaInfo {
-   return _bitmapInfo&kCGBitmapAlphaInfoMask;
+   return [self bitmapInfo]&kCGBitmapAlphaInfoMask;
 }
 
 -(KGImage *)createImage {
 #if 1
-   return nil;
+   return _surface;
 #else
   CGDataProviderRef provider=CGDataProviderCreateWithData(NULL,_data,_pixelsWide*_pixelsHigh*4,NULL);
   

@@ -84,9 +84,11 @@ int i,max=[_kgContext bytesPerRow]*[_kgContext pixelsHigh];
     int d1=cgData[i];
     int d2=kgData[i];
     
-    diff[i]=(d1!=d2)?0xFF:00;
-  
-}
+    if((i+1)%4==0)
+     diff[i]=0xff;
+    else
+     diff[i]=(d1!=d2)?ABS(d1-d2):00;
+  }
   CGDataProviderRef provider=CGDataProviderCreateWithData(NULL,diff,[_cgContext bytesPerRow]*[_cgContext pixelsHigh],NULL);
    CGImageRef diffImage=CGImageCreate([_cgContext pixelsWide],[_cgContext pixelsHigh],[_cgContext bitsPerComponent],[_cgContext bitsPerPixel],[_cgContext bytesPerRow],CGColorSpaceCreateDeviceRGB(),
      [_kgContext bitmapInfo],provider,NULL,NO,kCGRenderingIntentDefault);

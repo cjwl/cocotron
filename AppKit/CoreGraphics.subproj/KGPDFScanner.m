@@ -751,7 +751,7 @@ BOOL KGPDFParse_xrefAtPosition(NSData *data,KGPDFInteger position,KGPDFxref **xr
    unsigned                length=[data length];
    KGPDFxref         *table;
    KGPDFDictionary        *trailer;
-   KGPDFObject_identifier *identifier;
+   KGPDFObject_identifier *identifier=nil;
 
    if(!KGPDFScanIdentifier(bytes,length,position,&position,&identifier))
     return debugError(bytes,length,position,@"Expecting xref identifier",identifier);

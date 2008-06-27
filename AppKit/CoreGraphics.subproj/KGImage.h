@@ -31,7 +31,7 @@
 #import <ApplicationServices/ApplicationServices.h>
 #import "VGmath.h"
 
-@class KGColorSpace,KGDataProvider,KGPDFObject,KGPDFContext;
+@class KGColorSpace,KGDataProvider;
 
 typedef enum {
   /* RGB{A,X} channel ordering */
@@ -230,7 +230,6 @@ typedef void (*KGImageReadSpan_A8)(KGImage *self,int x,int y,uint8_t *span,int l
 typedef void (*KGImageReadSpan_Af)(KGImage *self,int x,int y,CGFloat *span,int length);
 
 @interface KGImage : NSObject <NSCopying> {
-@public
    size_t _width;
    size_t _height;
    size_t _bitsPerComponent;
@@ -248,15 +247,13 @@ typedef void (*KGImageReadSpan_Af)(KGImage *self,int x,int y,CGFloat *span,int l
 
    unsigned char *_bytes;
    BOOL           _clampExternalPixels;
-   KGImageFormat         _imageFormat;
    VGColorInternalFormat _colorFormat;
 
    KGImageReadSpan_RGBA8888 _readRGBA8888;
    KGImageReadSpan_RGBAffff _readRGBAffff;
-   KGImageReadSpan_RGBA8888 _readA8;
-   KGImageReadSpan_RGBAffff _readAf;
+   KGImageReadSpan_A8 _readA8;
+   KGImageReadSpan_Af _readAf;
 
-	VGPixelDecode	m_desc;
 	BOOL				m_ownsData;
 	BOOL				m_mipmapsValid;
     int                 _mipmapsCount;
@@ -295,9 +292,6 @@ typedef void (*KGImageReadSpan_Af)(KGImage *self,int x,int y,CGFloat *span,int l
 -(const void *)bytes;
 -(unsigned)length;
 
--(KGPDFObject *)encodeReferenceWithContext:(KGPDFContext *)context;
-+(KGImage *)imageWithPDFObject:(KGPDFObject *)object;
-
 @end
 
 VGPixelDecode KGImageParametersToPixelLayout(KGImageFormat format,size_t *bitsPerPixel,VGColorInternalFormat *colorFormat);
@@ -307,12 +301,21 @@ const char *KGImageNameWithIntent(CGColorRenderingIntent intent);
 
 size_t KGImageGetWidth(KGImage *self);
 size_t KGImageGetHeight(KGImage *self);
-VGColorInternalFormat KGImageColorFormat(KGImage *self);
+
+/* KGImage and KGSurface can read and write any image format provided functions are provided to translate to/from either KGRGBA8888 or KGRGBAffff spans. 
+
+  The nomenclature for the RGBA8888 functions is the byte sequencing regardless of endianness
+ */
+
+void KGImageRead_G8_to_A8(KGImage *self,int x,int y,uint8_t *alpha,int length);
+void KGImageRead_ANY_to_A8_to_Af(KGImage *self,int x,int y,CGFloat *alpha,int length);
+void KGImageRead_ANY_to_RGBA8888_to_A8(KGImage *self,int x,int y,uint8_t *alpha,int length);
 
 void KGImageRead_G8_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span,int length);
 void KGImageRead_GA88_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span,int length);
 void KGImageRead_RGBA8888_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span,int length);
 void KGImageRead_ABGR8888_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span,int length);
+void KGImageRead_BGRA8888_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span,int length);
 void KGImageRead_G3B5X1R5G2_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span,int length);
 void KGImageRead_RGBA4444_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span,int length);
 void KGImageRead_BARG4444_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span,int length);

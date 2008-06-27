@@ -9,8 +9,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSObject.h>
 #import <ApplicationServices/ApplicationServices.h>
 
-@class KGPDFArray,KGPDFDictionary,KGPDFObject,KGPDFContext;
-
 @interface KGFunction : NSObject {
    void               *_info;
    unsigned            _domainCount;
@@ -20,7 +18,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    CGFunctionCallbacks _callbacks;
 }
 
--initWithDomain:(KGPDFArray *)domain range:(KGPDFArray *)range;
 -initWithInfo:(void *)info domainCount:(unsigned)domainCount domain:(const float *)domain rangeCount:(unsigned)rangeCount range:(const float *)range callbacks:(const CGFunctionCallbacks *)callbacks;
 
 -(unsigned)domainCount;
@@ -32,8 +29,5 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 // FIX, only works for one input value
 -(void)evaluateInput:(float)x output:(float *)outp;
-
--(KGPDFObject *)encodeReferenceWithContext:(KGPDFContext *)context;
-+(KGFunction *)pdfFunctionWithDictionary:(KGPDFDictionary *)dictionary;
 
 @end

@@ -65,7 +65,6 @@ typedef void (*KGBlendSpan_RGBAffff)(KGRGBAffff *src,KGRGBAffff *dst,int length)
 #define KGRasterizer KGContext_builtin
 
 @interface KGContext_builtin : KGBitmapContext {
-   KGSurface  *m_renderingSurface;
    KGSurface  *m_mask;
    KGPaint    *m_paint;
    
@@ -83,18 +82,17 @@ typedef void (*KGBlendSpan_RGBAffff)(KGRGBAffff *src,KGRGBAffff *dst,int length)
     
     int *_winding;
     int *_increase;
-    int *_xIndexSet;
     
     int     sampleSizeShift;
 	int     numSamples;
     int     samplesWeight;
     CGFloat *samplesX;
-    CGFloat *samplesY;
+    CGFloat  samplesInitialY;
+    CGFloat  samplesDeltaY;
 }
 
 -(void)setWidth:(size_t)width height:(size_t)height reallocateOnlyIfRequired:(BOOL)roir;
 
-KGRasterizer *KGRasterizerInit(KGRasterizer *self,KGSurface *renderingSurface);
 void KGRasterizerDealloc(KGRasterizer *self);
 void KGRasterizerSetViewport(KGRasterizer *self,int vpwidth,int vpheight);
 void KGRasterizerClear(KGRasterizer *self);

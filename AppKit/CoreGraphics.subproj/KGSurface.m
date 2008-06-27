@@ -273,6 +273,21 @@ static void KGSurfaceWrite_RGBA8888_to_RGBA8888(KGSurface *self,int x,int y,KGRG
    }
 }
 
+static void KGSurfaceWrite_RGBA8888_to_BGRA8888(KGSurface *self,int x,int y,KGRGBA8888 *span,int length){
+   RIuint8* scanline = self->_bytes + y * self->_bytesPerRow;
+   int i;
+   
+   scanline+=x*4;
+   for(i=0;i<length;i++){
+    KGRGBA8888 rgba=*span++;
+
+    *scanline++=rgba.b;
+    *scanline++=rgba.g;
+    *scanline++=rgba.r;
+    *scanline++=rgba.a;
+   }
+}
+
 static void KGImageWrite_RGBAffff_to_ABGR8888(KGSurface *self,int x,int y,KGRGBAffff *span,int length){
    RIuint8* scanline = self->_bytes + y * self->_bytesPerRow;
    int i;
@@ -341,7 +356,7 @@ static void KGSurfaceWrite_RGBAffff_to_CMYK8888(KGSurface *self,int x,int y,KGRG
    }
 }
 
-static void KGSurfaceWrite_RGBAffff_to_ANY_RGBA8888(KGSurface *self,int x,int y,KGRGBAffff *span,int length){
+static void KGSurfaceWrite_RGBAffff_to_RGBA8888_to_ANY(KGSurface *self,int x,int y,KGRGBAffff *span,int length){
    KGRGBA8888 span8888[length];
    int i;
    
@@ -357,7 +372,8 @@ static void KGSurfaceWrite_RGBAffff_to_ANY_RGBA8888(KGSurface *self,int x,int y,
 }
 
 static BOOL initFunctionsForParameters(KGSurface *self,size_t bitsPerComponent,size_t bitsPerPixel,KGColorSpace *colorSpace,CGBitmapInfo bitmapInfo){
-   self->_writeRGBAffff=KGSurfaceWrite_RGBAffff_to_ANY_RGBA8888;// default
+   self->_readRGBAffff=KGImageRead_ANY_to_RGBA8888_to_RGBAffff;
+   self->_writeRGBAffff=KGSurfaceWrite_RGBAffff_to_RGBA8888_to_ANY;// default
    
    switch(bitsPerComponent){
    
@@ -388,13 +404,11 @@ static BOOL initFunctionsForParameters(KGSurface *self,size_t bitsPerComponent,s
      
       case 8:
        self->_readRGBA8888=KGImageRead_G8_to_RGBA8888;
-       self->_readRGBAffff=KGImageRead_ANY_to_RGBA8888_to_RGBAffff;
        self->_writeRGBAffff=KGSurfaceWrite_RGBAffff_to_G8;
        return YES;
 
       case 16:
        self->_readRGBA8888=KGImageRead_GA88_to_RGBA8888;
-       self->_readRGBAffff=KGImageRead_ANY_to_RGBA8888_to_RGBAffff;
        self->_writeRGBAffff=KGSurfaceWrite_RGBAffff_to_GA88;
        return YES;
 
@@ -404,22 +418,51 @@ static BOOL initFunctionsForParameters(KGSurface *self,size_t bitsPerComponent,s
       case 32:
        if([colorSpace type]==KGColorSpaceDeviceRGB){
 
-        switch(bitmapInfo&kCGBitmapByteOrderMask){
-         case kCGBitmapByteOrderDefault:
-         case kCGBitmapByteOrder16Little:
-         case kCGBitmapByteOrder32Little:
-          self->_readRGBA8888=KGImageRead_ABGR8888_to_RGBA8888;
-          self->_readRGBAffff=KGImageRead_ANY_to_RGBA8888_to_RGBAffff;
-          self->_writeRGBAffff=KGImageWrite_RGBAffff_to_ABGR8888;
-          return YES;
+        switch(bitmapInfo&kCGBitmapAlphaInfoMask){
+         case kCGImageAlphaNone:
+          break;
+          
+         case kCGImageAlphaPremultipliedLast:
+          switch(bitmapInfo&kCGBitmapByteOrderMask){
+           case kCGBitmapByteOrderDefault:
+           case kCGBitmapByteOrder16Little:
+           case kCGBitmapByteOrder32Little:
+            self->_readRGBA8888=KGImageRead_ABGR8888_to_RGBA8888;
+            self->_writeRGBAffff=KGImageWrite_RGBAffff_to_ABGR8888;
+            return YES;
 
-         case kCGBitmapByteOrder16Big:
-         case kCGBitmapByteOrder32Big:
-          self->_readRGBA8888=KGImageRead_RGBA8888_to_RGBA8888;
-          self->_readRGBAffff=KGImageRead_ANY_to_RGBA8888_to_RGBAffff;
-          self->_writeRGBAffff=KGSurfaceWrite_RGBAffff_to_RGBA8888;
-          self->_writeRGBA8888=KGSurfaceWrite_RGBA8888_to_RGBA8888;
-          return YES;
+           case kCGBitmapByteOrder16Big:
+           case kCGBitmapByteOrder32Big:
+            self->_readRGBA8888=KGImageRead_RGBA8888_to_RGBA8888;
+            self->_writeRGBAffff=KGSurfaceWrite_RGBAffff_to_RGBA8888;
+            self->_writeRGBA8888=KGSurfaceWrite_RGBA8888_to_RGBA8888;
+            return YES;
+          }
+
+          break;
+          
+         case kCGImageAlphaPremultipliedFirst:
+          switch(bitmapInfo&kCGBitmapByteOrderMask){
+           case kCGBitmapByteOrderDefault:
+           case kCGBitmapByteOrder16Little:
+           case kCGBitmapByteOrder32Little:
+            self->_readRGBA8888=KGImageRead_BGRA8888_to_RGBA8888;
+            self->_writeRGBA8888=KGSurfaceWrite_RGBA8888_to_BGRA8888;
+            return YES;
+          }
+          break;
+          
+         case kCGImageAlphaLast:
+          break;
+          
+         case kCGImageAlphaFirst:
+          break;
+          
+         case kCGImageAlphaNoneSkipLast:
+          break;
+          
+         case kCGImageAlphaNoneSkipFirst:
+          break;
         }
        }
        else if([colorSpace type]==KGColorSpaceDeviceCMYK){
@@ -432,7 +475,6 @@ static BOOL initFunctionsForParameters(KGSurface *self,size_t bitsPerComponent,s
          case kCGBitmapByteOrder16Big:
          case kCGBitmapByteOrder32Big:
           self->_readRGBA8888=KGImageRead_CMYK8888_to_RGBA8888;
-          self->_readRGBAffff=KGImageRead_ANY_to_RGBA8888_to_RGBAffff;
           self->_writeRGBAffff=KGSurfaceWrite_RGBAffff_to_CMYK8888;
          return YES;
         }
@@ -453,14 +495,12 @@ static BOOL initFunctionsForParameters(KGSurface *self,size_t bitsPerComponent,s
         case kCGBitmapByteOrder16Little:
         case kCGBitmapByteOrder32Little:
          self->_readRGBA8888=KGImageRead_BARG4444_to_RGBA8888;
-         self->_readRGBAffff=KGImageRead_ANY_to_RGBA8888_to_RGBAffff;
          self->_writeRGBAffff=KGSurfaceWrite_RGBAffff_to_BARG4444;
          return YES;
          
         case kCGBitmapByteOrder16Big:
         case kCGBitmapByteOrder32Big:
          self->_readRGBA8888=KGImageRead_RGBA4444_to_RGBA8888;
-         self->_readRGBAffff=KGImageRead_ANY_to_RGBA8888_to_RGBAffff;
          self->_writeRGBAffff=KGSurfaceWrite_RGBAffff_to_RGBA4444;
          return YES;
        }
@@ -475,7 +515,6 @@ static BOOL initFunctionsForParameters(KGSurface *self,size_t bitsPerComponent,s
        break;
       case 8:
        self->_readRGBA8888=KGImageRead_RGBA2222_to_RGBA8888;
-       self->_readRGBAffff=KGImageRead_ANY_to_RGBA8888_to_RGBAffff;
        self->_writeRGBAffff=KGSurfaceWrite_RGBAffff_to_RGBA2222;
        return YES;
      }
@@ -496,55 +535,58 @@ static BOOL initFunctionsForParameters(KGSurface *self,size_t bitsPerComponent,s
    return NO;   
 }
 
-KGSurface *KGSurfaceInitWithBytes(KGSurface *self,size_t width,size_t height,size_t bitsPerComponent,size_t bitsPerPixel,size_t bytesPerRow,KGColorSpace *colorSpace,CGBitmapInfo bitmapInfo,KGImageFormat imageFormat,RIuint8* data) {
-	self->_width=width;
-	self->_height=height;
-    self->_bitsPerComponent=bitsPerComponent;
-    self->_bitsPerPixel=bitsPerPixel;
-	self->_bytesPerRow=bytesPerRow;
-    self->_colorSpace=[colorSpace copy];
-    self->_bitmapInfo=bitmapInfo;
-    if(!initFunctionsForParameters(self,bitsPerComponent,bitsPerPixel,colorSpace,bitmapInfo))
-     NSLog(@"error, return");
+-initWithBytes:(void *)bytes width:(size_t)width height:(size_t)height bitsPerComponent:(size_t)bitsPerComponent bytesPerRow:(size_t)bytesPerRow colorSpace:(KGColorSpace *)colorSpace bitmapInfo:(CGBitmapInfo)bitmapInfo {
+	_width=width;
+	_height=height;
+    _bitsPerComponent=bitsPerComponent;
+    _bitsPerPixel=32;
+	_bytesPerRow=bytesPerRow;
+    _colorSpace=[colorSpace copy];
+    _bitmapInfo=bitmapInfo;
+    if(!initFunctionsForParameters(self,bitsPerComponent,_bitsPerPixel,colorSpace,bitmapInfo))
+     NSLog(@"KGSurface -init error, return");
 
-    self->_imageFormat=imageFormat;
     size_t checkBPP;
-	self->m_desc=KGImageParametersToPixelLayout(imageFormat,&checkBPP,&(self->_colorFormat));
+	m_desc=KGImageParametersToPixelLayout(VG_lRGBA_8888_PRE,&checkBPP,&(_colorFormat));
     RI_ASSERT(checkBPP==bitsPerPixel);
 
-	if((self->_bytes=data)!=NULL)
-  	 self->m_ownsData=NO;
+	if((_bytes=bytes)!=NULL)
+  	 m_ownsData=NO;
     else {
-     int bpr=self->_width*self->_bitsPerPixel/8;
-     if(self->_bytesPerRow==0 || self->_bytesPerRow<bpr)
-      self->_bytesPerRow=bpr;
+     int bpr=_width*_bitsPerPixel/8;
+     if(_bytesPerRow==0 || _bytesPerRow<bpr)
+      _bytesPerRow=bpr;
       
-     self->_bytes=NSZoneMalloc(NULL,self->_bytesPerRow*self->_height*sizeof(RIuint8));
-  	 self->m_ownsData=YES;
-	 memset(self->_bytes, 0, self->_bytesPerRow*self->_height);	//clear image
+     _bytes=NSZoneMalloc(NULL,_bytesPerRow*_height*sizeof(RIuint8));
+  	 m_ownsData=YES;
+	 memset(_bytes, 0, _bytesPerRow*_height);	//clear image
     }
-    self->_clampExternalPixels=NO; // only set to yes if premultiplied
-	self->m_mipmapsValid=NO;
+    _clampExternalPixels=NO; // only set to yes if premultiplied
+	m_mipmapsValid=NO;
 	RI_ASSERT(width > 0 && height > 0);
 	RI_ASSERT(data);
-    self->_mipmapsCount=0;
-    self->_mipmapsCapacity=2;
-    self->_mipmaps=(KGSurface **)NSZoneMalloc(NULL,self->_mipmapsCapacity*sizeof(KGSurface *));
-    return self;
+    _mipmapsCount=0;
+    _mipmapsCapacity=2;
+    _mipmaps=(KGSurface **)NSZoneMalloc(NULL,_mipmapsCapacity*sizeof(KGSurface *));
+   return self;
 }
 
-void KGSurfaceDealloc(KGSurface *self) {
+-(void)dealloc {
     int i;
     
-	for(i=0;i<self->_mipmapsCount;i++){
-			KGSurfaceDealloc(self->_mipmaps[i]);
+	for(i=0;i<_mipmapsCount;i++){
+     [_mipmaps[i] release];
 	}
-	self->_mipmapsCount=0;
+	_mipmapsCount=0;
 
-	if(self->m_ownsData)
-	{
-		NSZoneFree(NULL,self->_bytes);	//delete image data if we own it
-	}
+	if(m_ownsData){
+     NSZoneFree(NULL,_bytes);
+    }
+    [super dealloc];
+}
+
+-(void *)mutableBytes {
+   return _bytes;
 }
 
 -(void)setWidth:(size_t)width height:(size_t)height reallocateOnlyIfRequired:(BOOL)roir {

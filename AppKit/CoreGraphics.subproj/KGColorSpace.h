@@ -8,8 +8,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/NSObject.h>
 
-@class KGPDFObject,KGPDFContext;
-
 typedef enum {
    KGColorSpaceDeviceGray,
    KGColorSpaceDeviceRGB,
@@ -33,9 +31,6 @@ typedef enum {
 -(unsigned)numberOfComponents;
 
 -(BOOL)isEqualToColorSpace:(KGColorSpace *)other;
-
--(KGPDFObject *)encodeReferenceWithContext:(KGPDFContext *)context;
-+(KGColorSpace *)colorSpaceFromPDFObject:(KGPDFObject *)object;
 
 @end
 

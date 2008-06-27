@@ -73,10 +73,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -init {
-   KGColorSpace *gray=[[[KGColorSpace alloc] initWithDeviceGray] autorelease];
-   CGFloat         components[2]={0,1};
+   KGColorSpace *gray=[[KGColorSpace alloc] initWithDeviceGray];
+   CGFloat       components[2]={0,1};
    
-   return [self initWithColorSpace:gray components:components];
+   [self initWithColorSpace:gray components:components];
+   [gray release];
+   return self;
 }
 
 -(void)dealloc {

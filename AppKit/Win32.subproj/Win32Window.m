@@ -353,7 +353,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
     case Win32BackingStoreBuffered:
      if(_backingContext!=nil)
-      [_cgContext copyContext:_backingContext size:_size];
+      [_cgContext drawBackingContext:_backingContext size:_size];
      break;
    }
 }

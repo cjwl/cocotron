@@ -8,19 +8,17 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import "KGContext.h"
 
+@class KGSurface;
+
 @interface KGBitmapContext : KGContext {
-   void         *_bytes;
-   size_t        _width;
-   size_t        _height;
-   size_t        _bitsPerComponent;
-   size_t        _bytesPerRow;
-   KGColorSpace *_colorSpace;
-   CGBitmapInfo  _bitmapInfo;
+   KGSurface *_surface;
 }
+
+-initWithSurface:(KGSurface *)surface;
 
 -initWithBytes:(void *)bytes width:(size_t)width height:(size_t)height bitsPerComponent:(size_t)bitsPerComponent bytesPerRow:(size_t)bytesPerRow colorSpace:(KGColorSpace *)colorSpace bitmapInfo:(CGBitmapInfo)bitmapInfo;
 
--(void *)bytes;
+-(void *)mutableBytes;
 -(size_t)width;
 -(size_t)height;
 -(size_t)bitsPerComponent;

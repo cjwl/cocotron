@@ -6,14 +6,13 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
-// Original - Christopher Lloyd <cjwl@objc.net>
 #import <AppKit/KGDeviceContext_gdiDIBSection.h>
 #import <AppKit/Win32Display.h>
 #import <AppKit/KGContext_gdi.h>
 
 @implementation KGDeviceContext_gdiDIBSection
 
--initWithSize:(NSSize)size deviceContext:(KGDeviceContext_gdi *)compatible bitsPerPixel:(int)bpp {
+-initWithWidth:(size_t)width height:(size_t)height deviceContext:(KGDeviceContext_gdi *)compatible bitsPerPixel:(int)bpp {
    [self initWithDC:CreateCompatibleDC([compatible dc])];
     _compatible=[compatible retain];
 
@@ -34,10 +33,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     if((_bitsPerPixel=bpp)==0)
      _bitsPerPixel=dibInfo.bitmapInfo.bV4BitCount;
 
+    _bitsPerComponent=8;
+    _bytesPerRow=4*width;
+    
     DeleteObject(probe);
 
-    dibInfo.bitmapInfo.bV4Width=size.width;
-    dibInfo.bitmapInfo.bV4Height=size.height;
+    dibInfo.bitmapInfo.bV4Width=width;
+    dibInfo.bitmapInfo.bV4Height=-(int)height;
     dibInfo.bitmapInfo.bV4BitCount=32;
     dibInfo.bitmapInfo.bV4V4Compression=BI_RGB;
 
@@ -48,10 +50,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return self;
 }
 
--initWithSize:(NSSize)size deviceContext:(KGDeviceContext_gdi *)compatible {
-   return [self initWithSize:size deviceContext:compatible bitsPerPixel:0];
+-initWithWidth:(size_t)width height:(size_t)height deviceContext:(KGDeviceContext_gdi *)compatible {
+   return [self initWithWidth:width height:height deviceContext:compatible bitsPerPixel:0];
 }
-
 
 -(void)dealloc {
    [_compatible release];
@@ -62,6 +63,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void *)bitmapBytes {
    return _bits;
+}
+
+-(size_t)bitsPerComponent {
+   return _bitsPerComponent;
+}
+
+-(size_t)bytesPerRow {
+   return _bytesPerRow;
 }
 
 -(int)bitsPerPixel {

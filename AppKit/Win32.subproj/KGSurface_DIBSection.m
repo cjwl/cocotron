@@ -1,38 +1,42 @@
-/* Copyright (c) 2006-2007 Christopher J. W. Lloyd
+/* Copyright (c) 2008 Christopher J. W. Lloyd
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
+#import "KGSurface_DIBSection.h"
+#import "KGDeviceContext_gdiDIBSection.h"
+#import <AppKit/KGColorSpace.h>
 
-#import <AppKit/KGDeviceContext_gdi_ddb.h>
-#import <AppKit/Win32Display.h>
-#import <AppKit/KGContext_gdi.h>
+@implementation KGSurface_DIBSection
 
-@implementation KGDeviceContext_gdi_ddb
+-initWithWidth:(size_t)width height:(size_t)height compatibleWithDeviceContext:(KGDeviceContext_gdi *)compatible {
+   _deviceContext=[[KGDeviceContext_gdiDIBSection alloc] initWithWidth:width height:height deviceContext:compatible];
 
--initWithSize:(NSSize)size deviceContext:(KGDeviceContext_gdi *)compatible {
-   [self initWithDC:CreateCompatibleDC([compatible dc])];
-   _compatible=[compatible retain];
-   _bitmap=CreateCompatibleBitmap([compatible dc],size.width,size.height);
-   SelectObject(_dc,_bitmap);
+   if(_deviceContext==nil){
+    [super dealloc];
+    return nil;
+   }
+   KGColorSpace *colorSpace=[[KGColorSpace alloc] initWithDeviceRGB];
+   
+   if([super initWithBytes:[_deviceContext bitmapBytes] width:width height:height bitsPerComponent:[_deviceContext bitsPerComponent] bytesPerRow:[_deviceContext bytesPerRow] colorSpace:[[KGColorSpace alloc] initWithDeviceRGB] bitmapInfo:kCGImageAlphaPremultipliedFirst|kCGBitmapByteOrder32Little]==nil){
+    [colorSpace release];
+    return nil;
+   }
+   [colorSpace release];
+
    return self;
-}
 
--initWithSize:(NSSize)size {
-   return [self initWithSize:size deviceContext:[[[Win32Display currentDisplay] contextOnPrimaryScreen] deviceContext]];
 }
 
 -(void)dealloc {
-   [_compatible release];
-   DeleteObject(_bitmap);
-   DeleteDC(_dc);
+   [_deviceContext release];
    [super dealloc];
 }
 
--(Win32DeviceContextWindow *)windowDeviceContext {
-   return [_compatible windowDeviceContext];
+-(KGDeviceContext_gdi *)deviceContext {
+   return _deviceContext;
 }
 
 @end

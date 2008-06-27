@@ -284,7 +284,7 @@
 		FE01A9310C5D9BCB00AEA51A /* KGImageSource_PNG.h in Headers */ = {isa = PBXBuildFile; fileRef = FE267E850B8BCC3C0000DDC0 /* KGImageSource_PNG.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE01A9320C5D9BCB00AEA51A /* KGImageSource_TIFF.h in Headers */ = {isa = PBXBuildFile; fileRef = FE267E870B8BCC3C0000DDC0 /* KGImageSource_TIFF.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE01A9330C5D9BCB00AEA51A /* KGImageSource.h in Headers */ = {isa = PBXBuildFile; fileRef = FE267E890B8BCC3C0000DDC0 /* KGImageSource.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		FE01A9350C5D9BCB00AEA51A /* KGBitmapContext.h in Headers */ = {isa = PBXBuildFile; fileRef = FE267EB50B8BD2690000DDC0 /* KGBitmapContext.h */; };
+		FE01A9350C5D9BCB00AEA51A /* KGBitmapContext.h in Headers */ = {isa = PBXBuildFile; fileRef = FE267EB50B8BD2690000DDC0 /* KGBitmapContext.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE01A9360C5D9BCB00AEA51A /* KGMutablePath.h in Headers */ = {isa = PBXBuildFile; fileRef = FEF33BFF0B93543C00DC0B6F /* KGMutablePath.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE01A9380C5D9BCB00AEA51A /* NSOpenGLPixelBuffer.h in Headers */ = {isa = PBXBuildFile; fileRef = FE6DC16A0BA85BEC0082AC66 /* NSOpenGLPixelBuffer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE01A9390C5D9BCB00AEA51A /* NSDatePicker.h in Headers */ = {isa = PBXBuildFile; fileRef = FE6DC3DC0BA9A6EB0082AC66 /* NSDatePicker.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -670,7 +670,7 @@
 		FE311FA80CCC430200EBD696 /* KGFont_gdi.h in Headers */ = {isa = PBXBuildFile; fileRef = FE311FA40CCC430200EBD696 /* KGFont_gdi.h */; };
 		FE311FA90CCC430200EBD696 /* KGFont_gdi.m in Sources */ = {isa = PBXBuildFile; fileRef = FE311FA50CCC430200EBD696 /* KGFont_gdi.m */; };
 		FE33952D0DB92D25009AB3E0 /* KGBlending.h in Headers */ = {isa = PBXBuildFile; fileRef = FE33952C0DB92D25009AB3E0 /* KGBlending.h */; };
-		FE3395590DB930F4009AB3E0 /* KGContext_builtin.h in Headers */ = {isa = PBXBuildFile; fileRef = FE3395570DB930F4009AB3E0 /* KGContext_builtin.h */; };
+		FE3395590DB930F4009AB3E0 /* KGContext_builtin.h in Headers */ = {isa = PBXBuildFile; fileRef = FE3395570DB930F4009AB3E0 /* KGContext_builtin.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE33955A0DB930F4009AB3E0 /* KGContext_builtin.m in Sources */ = {isa = PBXBuildFile; fileRef = FE3395580DB930F4009AB3E0 /* KGContext_builtin.m */; };
 		FE34FBC80D6F24A5008D2C1A /* KGClipPhase.h in Headers */ = {isa = PBXBuildFile; fileRef = FE34FBC60D6F24A5008D2C1A /* KGClipPhase.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE34FBC90D6F24A5008D2C1A /* KGClipPhase.m in Sources */ = {isa = PBXBuildFile; fileRef = FE34FBC70D6F24A5008D2C1A /* KGClipPhase.m */; };
@@ -682,7 +682,7 @@
 		FE6EDE340DB797D9005503A1 /* KGExceptions.h in Headers */ = {isa = PBXBuildFile; fileRef = FE6EDE330DB797D9005503A1 /* KGExceptions.h */; };
 		FE6EE27E0DB91EA8005503A1 /* VGmath.h in Headers */ = {isa = PBXBuildFile; fileRef = FE6EE27C0DB91EA8005503A1 /* VGmath.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE6EE27F0DB91EA8005503A1 /* VGmath.m in Sources */ = {isa = PBXBuildFile; fileRef = FE6EE27D0DB91EA8005503A1 /* VGmath.m */; };
-		FE6EE28E0DB91FDF005503A1 /* KGSurface.h in Headers */ = {isa = PBXBuildFile; fileRef = FE6EE28C0DB91FDF005503A1 /* KGSurface.h */; };
+		FE6EE28E0DB91FDF005503A1 /* KGSurface.h in Headers */ = {isa = PBXBuildFile; fileRef = FE6EE28C0DB91FDF005503A1 /* KGSurface.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE6EE28F0DB91FDF005503A1 /* KGSurface.m in Sources */ = {isa = PBXBuildFile; fileRef = FE6EE28D0DB91FDF005503A1 /* KGSurface.m */; };
 		FE6EE2E50DB92B11005503A1 /* VGPath.h in Headers */ = {isa = PBXBuildFile; fileRef = FE6EE2E30DB92B11005503A1 /* VGPath.h */; };
 		FE6EE2E60DB92B11005503A1 /* VGPath.m in Sources */ = {isa = PBXBuildFile; fileRef = FE6EE2E40DB92B11005503A1 /* VGPath.m */; };
@@ -721,6 +721,20 @@
 		FEDF95200CAF43E7009DC96F /* KGPDFContext.m in Sources */ = {isa = PBXBuildFile; fileRef = FEDF951C0CAF43E7009DC96F /* KGPDFContext.m */; };
 		FEF2EC350C891E7C001FC5A8 /* NSOpenGLDrawable_gdiView.h in Headers */ = {isa = PBXBuildFile; fileRef = FEF2EC330C891E7C001FC5A8 /* NSOpenGLDrawable_gdiView.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FEF2EC7B0C8A03CC001FC5A8 /* NSOpenGLDrawable_gdiView.m in Sources */ = {isa = PBXBuildFile; fileRef = FEF2EC790C8A03CC001FC5A8 /* NSOpenGLDrawable_gdiView.m */; };
+		FEF9CAE90E133FF2003502ED /* KGSurface_DIBSection.h in Headers */ = {isa = PBXBuildFile; fileRef = FEF9CAE70E133FF2003502ED /* KGSurface_DIBSection.h */; };
+		FEF9CAEA0E133FF2003502ED /* KGSurface_DIBSection.m in Sources */ = {isa = PBXBuildFile; fileRef = FEF9CAE80E133FF2003502ED /* KGSurface_DIBSection.m */; };
+		FEF9CB9F0E13EB8E003502ED /* KGColorSpace+PDF.h in Headers */ = {isa = PBXBuildFile; fileRef = FEF9CB780E13EB8E003502ED /* KGColorSpace+PDF.h */; };
+		FEF9CBA00E13EB8E003502ED /* KGColorSpace+PDF.m in Sources */ = {isa = PBXBuildFile; fileRef = FEF9CB790E13EB8E003502ED /* KGColorSpace+PDF.m */; };
+		FEF9CBBE0E13EB8E003502ED /* KGFont+PDF.h in Headers */ = {isa = PBXBuildFile; fileRef = FEF9CB970E13EB8E003502ED /* KGFont+PDF.h */; };
+		FEF9CBBF0E13EB8E003502ED /* KGFont+PDF.m in Sources */ = {isa = PBXBuildFile; fileRef = FEF9CB980E13EB8E003502ED /* KGFont+PDF.m */; };
+		FEF9CBC00E13EB8E003502ED /* KGFunction+PDF.h in Headers */ = {isa = PBXBuildFile; fileRef = FEF9CB990E13EB8E003502ED /* KGFunction+PDF.h */; };
+		FEF9CBC10E13EB8E003502ED /* KGFunction+PDF.m in Sources */ = {isa = PBXBuildFile; fileRef = FEF9CB9A0E13EB8E003502ED /* KGFunction+PDF.m */; };
+		FEF9CBC20E13EB8E003502ED /* KGImage+PDF.h in Headers */ = {isa = PBXBuildFile; fileRef = FEF9CB9B0E13EB8E003502ED /* KGImage+PDF.h */; };
+		FEF9CBC30E13EB8E003502ED /* KGImage+PDF.m in Sources */ = {isa = PBXBuildFile; fileRef = FEF9CB9C0E13EB8E003502ED /* KGImage+PDF.m */; };
+		FEF9CBC40E13EB8E003502ED /* KGShading+PDF.h in Headers */ = {isa = PBXBuildFile; fileRef = FEF9CB9D0E13EB8E003502ED /* KGShading+PDF.h */; };
+		FEF9CBC50E13EB8E003502ED /* KGShading+PDF.m in Sources */ = {isa = PBXBuildFile; fileRef = FEF9CB9E0E13EB8E003502ED /* KGShading+PDF.m */; };
+		FEF9CCC30E1416C4003502ED /* KGContext_builtin_gdi.h in Headers */ = {isa = PBXBuildFile; fileRef = FEF9CCC10E1416C4003502ED /* KGContext_builtin_gdi.h */; };
+		FEF9CCC40E1416C4003502ED /* KGContext_builtin_gdi.m in Sources */ = {isa = PBXBuildFile; fileRef = FEF9CCC20E1416C4003502ED /* KGContext_builtin_gdi.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
@@ -1513,6 +1527,20 @@
 		FEF2EC790C8A03CC001FC5A8 /* NSOpenGLDrawable_gdiView.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSOpenGLDrawable_gdiView.m; sourceTree = "<group>"; };
 		FEF33BFF0B93543C00DC0B6F /* KGMutablePath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGMutablePath.h; sourceTree = "<group>"; };
 		FEF33C000B93543C00DC0B6F /* KGMutablePath.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGMutablePath.m; sourceTree = "<group>"; };
+		FEF9CAE70E133FF2003502ED /* KGSurface_DIBSection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGSurface_DIBSection.h; sourceTree = "<group>"; };
+		FEF9CAE80E133FF2003502ED /* KGSurface_DIBSection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGSurface_DIBSection.m; sourceTree = "<group>"; };
+		FEF9CB780E13EB8E003502ED /* KGColorSpace+PDF.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "KGColorSpace+PDF.h"; sourceTree = "<group>"; };
+		FEF9CB790E13EB8E003502ED /* KGColorSpace+PDF.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "KGColorSpace+PDF.m"; sourceTree = "<group>"; };
+		FEF9CB970E13EB8E003502ED /* KGFont+PDF.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "KGFont+PDF.h"; sourceTree = "<group>"; };
+		FEF9CB980E13EB8E003502ED /* KGFont+PDF.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "KGFont+PDF.m"; sourceTree = "<group>"; };
+		FEF9CB990E13EB8E003502ED /* KGFunction+PDF.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "KGFunction+PDF.h"; sourceTree = "<group>"; };
+		FEF9CB9A0E13EB8E003502ED /* KGFunction+PDF.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "KGFunction+PDF.m"; sourceTree = "<group>"; };
+		FEF9CB9B0E13EB8E003502ED /* KGImage+PDF.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "KGImage+PDF.h"; sourceTree = "<group>"; };
+		FEF9CB9C0E13EB8E003502ED /* KGImage+PDF.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "KGImage+PDF.m"; sourceTree = "<group>"; };
+		FEF9CB9D0E13EB8E003502ED /* KGShading+PDF.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "KGShading+PDF.h"; sourceTree = "<group>"; };
+		FEF9CB9E0E13EB8E003502ED /* KGShading+PDF.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "KGShading+PDF.m"; sourceTree = "<group>"; };
+		FEF9CCC10E1416C4003502ED /* KGContext_builtin_gdi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGContext_builtin_gdi.h; sourceTree = "<group>"; };
+		FEF9CCC20E1416C4003502ED /* KGContext_builtin_gdi.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGContext_builtin_gdi.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -2002,6 +2030,16 @@
 		6E2B55B20976075300DA0954 /* CoreGraphics */ = {
 			isa = PBXGroup;
 			children = (
+				FEF9CB780E13EB8E003502ED /* KGColorSpace+PDF.h */,
+				FEF9CB790E13EB8E003502ED /* KGColorSpace+PDF.m */,
+				FEF9CB970E13EB8E003502ED /* KGFont+PDF.h */,
+				FEF9CB980E13EB8E003502ED /* KGFont+PDF.m */,
+				FEF9CB990E13EB8E003502ED /* KGFunction+PDF.h */,
+				FEF9CB9A0E13EB8E003502ED /* KGFunction+PDF.m */,
+				FEF9CB9B0E13EB8E003502ED /* KGImage+PDF.h */,
+				FEF9CB9C0E13EB8E003502ED /* KGImage+PDF.m */,
+				FEF9CB9D0E13EB8E003502ED /* KGShading+PDF.h */,
+				FEF9CB9E0E13EB8E003502ED /* KGShading+PDF.m */,
 				FEBF5A010DCD450700CE5A1C /* KGPaint_axialGradient.h */,
 				FEBF5A020DCD450700CE5A1C /* KGPaint_axialGradient.m */,
 				FEBF5A030DCD450700CE5A1C /* KGPaint_color.h */,
@@ -2175,17 +2213,23 @@
 		6E2B56060976075300DA0954 /* Win32 */ = {
 			isa = PBXGroup;
 			children = (
-				FE5C699F0D76039F00098551 /* KGDeviceContext_gdiDIBSection.h */,
-				FE5C69A00D76039F00098551 /* KGDeviceContext_gdiDIBSection.m */,
+				FEF9CCC10E1416C4003502ED /* KGContext_builtin_gdi.h */,
+				FEF9CCC20E1416C4003502ED /* KGContext_builtin_gdi.m */,
 				6E2B56620976075400DA0954 /* dllmain.m */,
 				FEABD6030CB9D0C90035F828 /* KGContext_gdi.h */,
 				FEABD6040CB9D0C90035F828 /* KGContext_gdi.m */,
 				FE57F8D00C46B68C0078FFC1 /* KGDeviceContext_gdi.h */,
 				FE57F8D10C46B68C0078FFC1 /* KGDeviceContext_gdi.m */,
+				6E2B563B0976075400DA0954 /* KGDeviceContext_gdi_ddb.h */,
+				6E2B560E0976075300DA0954 /* KGDeviceContext_gdi_ddb.m */,
+				FE5C699F0D76039F00098551 /* KGDeviceContext_gdiDIBSection.h */,
+				FE5C69A00D76039F00098551 /* KGDeviceContext_gdiDIBSection.m */,
 				FE311FA40CCC430200EBD696 /* KGFont_gdi.h */,
 				FE311FA50CCC430200EBD696 /* KGFont_gdi.m */,
 				FEABD5E80CB9CEE40035F828 /* KGLayer_gdi.h */,
 				FEABD5E90CB9CEE40035F828 /* KGLayer_gdi.m */,
+				FEF9CAE70E133FF2003502ED /* KGSurface_DIBSection.h */,
+				FEF9CAE80E133FF2003502ED /* KGSurface_DIBSection.m */,
 				FE4434020BB9833B00411464 /* NSGraphicsStyle_uxtheme.h */,
 				FE4434030BB9833B00411464 /* NSGraphicsStyle_uxtheme.m */,
 				6E2B565D0976075400DA0954 /* NSOpenPanel-Win32.h */,
@@ -2195,8 +2239,6 @@
 				6E2B562E0976075400DA0954 /* NSSavePanel-Win32.m */,
 				6E2B56370976075400DA0954 /* Win32Cursor.h */,
 				6E2B560A0976075300DA0954 /* Win32Cursor.m */,
-				6E2B563B0976075400DA0954 /* KGDeviceContext_gdi_ddb.h */,
-				6E2B560E0976075300DA0954 /* KGDeviceContext_gdi_ddb.m */,
 				6E2B563D0976075400DA0954 /* Win32DeviceContextPrinter.h */,
 				6E2B56100976075300DA0954 /* Win32DeviceContextPrinter.m */,
 				6E2B563F0976075400DA0954 /* Win32DeviceContextWindow.h */,
@@ -2898,6 +2940,13 @@
 				FEBF5A150DCD450700CE5A1C /* KGPaint_radialGradient.h in Headers */,
 				FEBF5A170DCD450700CE5A1C /* KGPaint_ramp.h in Headers */,
 				FE08C3230DDF299800B3169A /* NSColor_CGColor.h in Headers */,
+				FEF9CAE90E133FF2003502ED /* KGSurface_DIBSection.h in Headers */,
+				FEF9CB9F0E13EB8E003502ED /* KGColorSpace+PDF.h in Headers */,
+				FEF9CBBE0E13EB8E003502ED /* KGFont+PDF.h in Headers */,
+				FEF9CBC00E13EB8E003502ED /* KGFunction+PDF.h in Headers */,
+				FEF9CBC20E13EB8E003502ED /* KGImage+PDF.h in Headers */,
+				FEF9CBC40E13EB8E003502ED /* KGShading+PDF.h in Headers */,
+				FEF9CCC30E1416C4003502ED /* KGContext_builtin_gdi.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3405,6 +3454,13 @@
 				FEBF5A160DCD450700CE5A1C /* KGPaint_radialGradient.m in Sources */,
 				FEBF5A180DCD450700CE5A1C /* KGPaint_ramp.m in Sources */,
 				FE08C3240DDF299800B3169A /* NSColor_CGColor.m in Sources */,
+				FEF9CAEA0E133FF2003502ED /* KGSurface_DIBSection.m in Sources */,
+				FEF9CBA00E13EB8E003502ED /* KGColorSpace+PDF.m in Sources */,
+				FEF9CBBF0E13EB8E003502ED /* KGFont+PDF.m in Sources */,
+				FEF9CBC10E13EB8E003502ED /* KGFunction+PDF.m in Sources */,
+				FEF9CBC30E13EB8E003502ED /* KGImage+PDF.m in Sources */,
+				FEF9CBC50E13EB8E003502ED /* KGShading+PDF.m in Sources */,
+				FEF9CCC40E1416C4003502ED /* KGContext_builtin_gdi.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3470,6 +3526,11 @@
 				GCC_UNROLL_LOOPS = YES;
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = /Developer/Cocotron/1.0/Windows/i386/Frameworks;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(LIBRARY_SEARCH_PATHS_QUOTED_1)",
+				);
+				LIBRARY_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/CoreGraphics.subproj\"";
 				OTHER_CFLAGS = (
 					"-DAPPKIT_INSIDE_BUILD",
 					"-DCOREGRAPHICS_INSIDE_BUILD",
@@ -3521,6 +3582,11 @@
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_MODE_FLAG = "og-w,a+rX";
 				INSTALL_PATH = /Developer/Cocotron/1.0/Windows/i386/Frameworks;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
+				);
+				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/CoreGraphics.subproj\"";
 				OTHER_CFLAGS = (
 					"-DAPPKIT_INSIDE_BUILD",
 					"-DCOREGRAPHICS_INSIDE_BUILD",

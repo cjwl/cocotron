@@ -30,6 +30,7 @@ static NSMutableArray *possibleContextClasses=nil;
     
     [possibleContextClasses addObject:@"KGContext_gdi"];
     [possibleContextClasses addObject:@"KGContext_builtin"];
+    [possibleContextClasses addObject:@"KGContext_builtin_gdi"];
     
     NSArray *allPaths=[[NSBundle bundleForClass:self] pathsForResourcesOfType:@"cgContext" inDirectory:nil];
     int      i,count=[allPaths count];
@@ -162,6 +163,14 @@ static NSMutableArray *possibleContextClasses=nil;
 
 static inline KGGraphicsState *currentState(KGContext *self){        
    return [self->_stateStack lastObject];
+}
+
+-(KGSurface *)surface {
+   return nil;
+}
+
+-(KGSurface *)createSurfaceWithWidth:(size_t)width height:(size_t)height {
+   return nil;
 }
 
 -(void)setAllowsAntialiasing:(BOOL)yesOrNo {
@@ -899,7 +908,7 @@ static inline KGGraphicsState *currentState(KGContext *self){
    KGInvalidAbstractInvocation();
 }
 
--(void)copyContext:(KGContext *)other size:(CGSize)size {
+-(void)drawBackingContext:(KGContext *)other size:(CGSize)size {
    KGInvalidAbstractInvocation();
 }
 
