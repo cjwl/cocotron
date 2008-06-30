@@ -204,7 +204,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 // bitmap context
 
--(void *)bytes;
+-(void *)mutableBytes;
 -(size_t)width;
 -(size_t)height;
 -(size_t)bitsPerComponent;

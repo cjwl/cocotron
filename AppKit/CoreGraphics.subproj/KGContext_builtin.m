@@ -54,6 +54,19 @@ BOOL _isAvailable=NO;
    return YES;
 }
 
+-(void)reallocateForSurface {
+   size_t width=KGImageGetWidth(_surface);
+   
+    free(self->_winding);
+    self->_winding=malloc((width*MAX_SAMPLES)*sizeof(int));
+    free(self->_increase);
+    self->_increase=malloc(width*sizeof(int));
+    int i;
+    for(i=0;i<width;i++)
+     self->_increase[i]=INT_MAX;
+}
+
+
 -initWithSurface:(KGSurface *)surface {
    [super initWithSurface:surface];
         
@@ -71,7 +84,8 @@ BOOL _isAvailable=NO;
    
    samplesX=NSZoneMalloc(NULL,MAX_SAMPLES*sizeof(CGFloat));
 
-   KGRasterizerSetViewport(self,KGImageGetWidth(_surface),KGImageGetHeight(_surface));
+   KGRasterizerSetViewport(self,0,0,KGImageGetWidth(_surface),KGImageGetHeight(_surface));
+   [self reallocateForSurface];
    return self;
 }
 
@@ -101,8 +115,11 @@ BOOL _isAvailable=NO;
 }
 
 -(void)setWidth:(size_t)width height:(size_t)height reallocateOnlyIfRequired:(BOOL)roir {
-  [_surface setWidth:width height:height reallocateOnlyIfRequired:roir];
-  KGRasterizerSetViewport(self,KGImageGetWidth(_surface),KGImageGetHeight(_surface));
+   [_surface setWidth:width height:height reallocateOnlyIfRequired:roir];
+   [self reallocateForSurface];
+   KGRasterizerSetViewport(self,0,0,KGImageGetWidth(_surface),KGImageGetHeight(_surface));
+   CGAffineTransform flip={1,0,0,-1,0,[_surface height]};
+   [[self currentState] setDeviceSpaceCTM:flip];
 }
 
 -(const void *)bytes {
@@ -167,6 +184,25 @@ static void applyPath(void *info,const CGPathElement *element) {
    return vgPath;
 }
 
+-(void)deviceClipReset {
+   KGRasterizerSetViewport(self,0,0,KGImageGetWidth(_surface),KGImageGetHeight(_surface));
+}
+
+-(void)deviceClipToNonZeroPath:(KGPath *)path {
+ #if 0
+   CGRect rect;
+
+   if([path isEmpty])
+    [self deviceClipReset];
+   else if([path isRect:&rect]){
+    _vpx=MAX(rect.origin.x,0);
+    _vpwidth=MIN(KGImageGetWidth(_surface),CGRectGetMaxX(rect))-_vpx;
+    _vpy=MAX(rect.origin.y,0);
+    _vpheight=MIN(KGImageGetHeight(_surface),CGRectGetMaxY(rect))-_vpy;
+   }
+#endif
+}
+
 static KGPaint *paintFromColor(KGColor *color){
    int    count=[color numberOfComponents];
    const float *components=[color components];
@@ -188,55 +224,51 @@ static KGPaint *paintFromColor(KGColor *color){
 //		KGRasterizeSetTileFillColor(context->m_tileFillColor);
 
        KGRasterizerSetShouldAntialias(self,gState->_shouldAntialias,gState->_antialiasingQuality);
-CGAffineTransform xform;
-#if 0
- xform=gState->_userSpaceTransform;
-CGAffineTransform u2d=CGAffineTransformMakeTranslation(0,[_surface height]);
-u2d=CGAffineTransformScale(u2d,1,-1);
-xform=CGAffineTransformConcat(xform,u2d);
-#endif
 
-xform=gState->_deviceSpaceTransform;
+/*
+  Path construction is affected by the CTM , and the stroke pen is affected by the CTM , this means path points and the stroke can be affected by different transforms as the CTM can change during path construction and before stroking. For example, creation of transformed shapes which are drawn using an untransformed pen. The current tesselator expects everything to be in user coordinates and it tesselates from there into device space, but the path points are already in base coordinates. So, path points are brought from  base coordinates into the active coordinate space using an inverted transform and then everything is tesselated using the CTM into device space. 
+ */
+ 
+   CGAffineTransform userToSurfaceMatrix=gState->_deviceSpaceTransform;
 
-		CGAffineTransform userToSurfaceMatrix=xform;// context->m_pathUserToSurface;
+   VGPathTransform(vgPath,CGAffineTransformInvert(gState->_userSpaceTransform));
 
 
-		if(drawingMode!=kCGPathStroke)
-		{
-            KGPaint *paint=paintFromColor(gState->_fillColor);
-			KGRasterizeSetPaint(self,paint);
+   if(drawingMode!=kCGPathStroke){
+    KGPaint *paint=paintFromColor(gState->_fillColor);
+    KGRasterizeSetPaint(self,paint);
+    [paint release];
+    
+    CGAffineTransform surfaceToPaintMatrix =userToSurfaceMatrix;//context->m_pathUserToSurface * context->m_fillPaintToUser;
+    if(CGAffineTransformInplaceInvert(&surfaceToPaintMatrix)){
+     KGPaintSetSurfaceToPaintMatrix(paint,surfaceToPaintMatrix);
 
-			CGAffineTransform surfaceToPaintMatrix =xform;//context->m_pathUserToSurface * context->m_fillPaintToUser;
-			if(CGAffineTransformInplaceInvert(&surfaceToPaintMatrix))
-			{
-				KGPaintSetSurfaceToPaintMatrix(paint,surfaceToPaintMatrix);
-
-				VGPathFill(vgPath,userToSurfaceMatrix,self);
+     VGPathFill(vgPath,userToSurfaceMatrix,self);
                 
-                VGFillRuleMask fillRule=(drawingMode==kCGPathFill || drawingMode==kCGPathFillStroke)?VG_NON_ZERO:VG_EVEN_ODD;
+     VGFillRuleMask fillRule=(drawingMode==kCGPathFill || drawingMode==kCGPathFillStroke)?VG_NON_ZERO:VG_EVEN_ODD;
                 
-				KGRasterizerFill(self,fillRule);
-			}
-		}
+     KGRasterizerFill(self,fillRule);
+    }
+   }
 
-		if(drawingMode>=kCGPathStroke){
-         if(gState->_lineWidth > 0.0f){
-            KGPaint *paint=paintFromColor(gState->_strokeColor);
-			KGRasterizeSetPaint(self,paint);
+   if(drawingMode>=kCGPathStroke){
+    if(gState->_lineWidth > 0.0f){
+     KGPaint *paint=paintFromColor(gState->_strokeColor);
+     KGRasterizeSetPaint(self,paint);
+     [paint release];
+     
+     CGAffineTransform surfaceToPaintMatrix=userToSurfaceMatrix;// = context->m_pathUserToSurface * context->m_strokePaintToUser;
+     if(CGAffineTransformInplaceInvert(&surfaceToPaintMatrix)){
+      KGPaintSetSurfaceToPaintMatrix(paint,surfaceToPaintMatrix);
 
-			CGAffineTransform surfaceToPaintMatrix=xform;// = context->m_pathUserToSurface * context->m_strokePaintToUser;
-			if(CGAffineTransformInplaceInvert(&surfaceToPaintMatrix))
-			{
-				KGPaintSetSurfaceToPaintMatrix(paint,surfaceToPaintMatrix);
-
-				KGRasterizerClear(self);
+      KGRasterizerClear(self);
                                  
-				VGPathStroke(vgPath,userToSurfaceMatrix, self, gState->_dashLengths,gState->_dashLengthsCount, gState->_dashPhase, YES /* context->m_strokeDashPhaseReset ? YES : NO*/,
-									  gState->_lineWidth, gState->_lineCap,  gState->_lineJoin, RI_MAX(gState->_miterLimit, 1.0f));
-				KGRasterizerFill(self,VG_NON_ZERO);
-			}
-		 }
-        }
+      VGPathStroke(vgPath,userToSurfaceMatrix, self, gState->_dashLengths,gState->_dashLengthsCount, gState->_dashPhase, YES /* context->m_strokeDashPhaseReset ? YES : NO*/,
+        gState->_lineWidth, gState->_lineCap,  gState->_lineJoin, RI_MAX(gState->_miterLimit, 1.0f));
+      KGRasterizerFill(self,VG_NON_ZERO);
+     }
+    }
+   }
 
    KGRasterizerClear(self);
    [_path reset];
@@ -255,18 +287,18 @@ xform=gState->_deviceSpaceTransform;
 -(void)drawImage:(KGImage *)image inRect:(CGRect)rect {
    KGGraphicsState *gState=[self currentState];
    
-    CGAffineTransform i2u=CGAffineTransformMakeTranslation(0,[image height]);
+CGAffineTransform xform=gState->_deviceSpaceTransform;
+
+CGAffineTransform foo=CGAffineTransformIdentity;
+foo=CGAffineTransformTranslate(foo,rect.origin.x,rect.origin.y);
+foo=CGAffineTransformScale(foo,rect.size.width/(CGFloat)[image width],rect.size.height/(CGFloat)[image height]);
+xform=CGAffineTransformConcat(xform,foo);
+
+CGAffineTransform i2u=CGAffineTransformMakeTranslation(0,(int)[image height]);
 i2u=CGAffineTransformScale(i2u,1,-1);
 
-CGAffineTransform xform=gState->_userSpaceTransform;
-xform=CGAffineTransformTranslate(xform,rect.origin.x,rect.origin.y);
-xform=CGAffineTransformScale(xform,rect.size.width/(CGFloat)[image width],rect.size.height/(CGFloat)[image height]);
-
-
-CGAffineTransform u2d=CGAffineTransformMakeTranslation(0,[_surface height]);
-u2d=CGAffineTransformScale(u2d,1,-1);
 xform=CGAffineTransformConcat(i2u,xform);
-xform=CGAffineTransformConcat(xform,u2d);
+
         CGAffineTransform imageUserToSurface=xform;
 
  // FIX, adjustable
@@ -324,13 +356,6 @@ xform=CGAffineTransformConcat(xform,u2d);
 }
 
 
--(void)deviceClipReset {
-//   KGInvalidAbstractInvocation();
-}
-
--(void)deviceClipToNonZeroPath:(KGPath *)path {
-//   KGInvalidAbstractInvocation();
-}
 
 -(void)deviceClipToEvenOddPath:(KGPath *)path {
 //   KGInvalidAbstractInvocation();
@@ -344,17 +369,12 @@ xform=CGAffineTransformConcat(xform,u2d);
 //   KGInvalidAbstractInvocation();
 }
 
-void KGRasterizerSetViewport(KGRasterizer *self,int vpwidth,int vpheight) {
+void KGRasterizerSetViewport(KGRasterizer *self,int x,int y,int width,int height) {
 	RI_ASSERT(vpwidth >= 0 && vpheight >= 0);
-    self->_vpwidth=vpwidth;
-    self->_vpheight=vpheight;
-    free(self->_winding);
-    self->_winding=malloc((vpwidth*MAX_SAMPLES)*sizeof(int));
-    free(self->_increase);
-    self->_increase=malloc(vpwidth*sizeof(int));
-    int i;
-    for(i=0;i<vpwidth;i++)
-     self->_increase[i]=INT_MAX;
+    self->_vpx=x;
+    self->_vpy=y;
+    self->_vpwidth=width;
+    self->_vpheight=height;
 }
 
 void KGRasterizerClear(KGRasterizer *self) {
@@ -587,34 +607,54 @@ static void KGApplyCoverageToSpan_lRGBA8888_PRE(KGRGBA8888 *dst,int coverage,KGR
 static void KGBlendSpanNormal_8888_coverage(KGRGBA8888 *src,KGRGBA8888 *dst,int coverage,int length){
 // Passes Visual Test
    int i;
-   int oneMinusCoverage=inverseCoverage(coverage);
+   
+   if(coverage==256){
+    for(i=0;i<length;i++,src++,dst++){
+     KGRGBA8888 s=*src;
+     KGRGBA8888 d=*dst;
+     KGRGBA8888 r;
+    
+     if(s.a==255)
+      r=*src;
+     else {
+      r.r=RI_INT_MIN((int)s.r+((int)d.r*(255-s.a))/255,255);
+      r.g=RI_INT_MIN((int)s.g+((int)d.g*(255-s.a))/255,255);
+      r.b=RI_INT_MIN((int)s.b+((int)d.b*(255-s.a))/255,255);
+      r.a=RI_INT_MIN((int)s.a+((int)d.a*(255-s.a))/255,255);
+     }
+     *dst=r;
+    }
+   }
+   else {
+    int oneMinusCoverage=inverseCoverage(coverage);
 
-   for(i=0;i<length;i++,src++,dst++){
-    KGRGBA8888 s=*src;
-    KGRGBA8888 d=*dst;
-    KGRGBA8888 r;
+    for(i=0;i<length;i++,src++,dst++){
+     KGRGBA8888 s=*src;
+     KGRGBA8888 d=*dst;
+     KGRGBA8888 r;
     
-    r.r=RI_INT_MIN((int)s.r+((int)d.r*(255-s.a))/255,255);
-    r.r=multiplyByCoverage(r.r,coverage);
-    d.r=(d.r*oneMinusCoverage)/256;
-    r.r=RI_INT_MIN((int)r.r+(int)d.r,255);
+     r.r=RI_INT_MIN((int)s.r+((int)d.r*(255-s.a))/255,255);
+     r.r=multiplyByCoverage(r.r,coverage);
+     d.r=(d.r*oneMinusCoverage)/256;
+     r.r=RI_INT_MIN((int)r.r+(int)d.r,255);
     
-    r.g=RI_INT_MIN((int)s.g+((int)d.g*(255-s.a))/255,255);
-    r.g=multiplyByCoverage(r.g,coverage);
-    d.g=(d.g*oneMinusCoverage)/256;
-    r.g=RI_INT_MIN((int)r.g+(int)d.g,255);
+     r.g=RI_INT_MIN((int)s.g+((int)d.g*(255-s.a))/255,255);
+     r.g=multiplyByCoverage(r.g,coverage);
+     d.g=(d.g*oneMinusCoverage)/256;
+     r.g=RI_INT_MIN((int)r.g+(int)d.g,255);
     
-    r.b=RI_INT_MIN((int)s.b+((int)d.b*(255-s.a))/255,255);
-    r.b=multiplyByCoverage(r.b,coverage);
-    d.b=(d.b*oneMinusCoverage)/256;
-    r.b=RI_INT_MIN((int)r.b+(int)d.b,255);
+     r.b=RI_INT_MIN((int)s.b+((int)d.b*(255-s.a))/255,255);
+     r.b=multiplyByCoverage(r.b,coverage);
+     d.b=(d.b*oneMinusCoverage)/256;
+     r.b=RI_INT_MIN((int)r.b+(int)d.b,255);
     
-    r.a=RI_INT_MIN((int)s.a+((int)d.a*(255-s.a))/255,255);
-    r.a=multiplyByCoverage(r.a,coverage);
-    d.a=(d.a*oneMinusCoverage)/256;
-    r.a=RI_INT_MIN((int)r.a+(int)d.a,255);
+     r.a=RI_INT_MIN((int)s.a+((int)d.a*(255-s.a))/255,255);
+     r.a=multiplyByCoverage(r.a,coverage);
+     d.a=(d.a*oneMinusCoverage)/256;
+     r.a=RI_INT_MIN((int)r.a+(int)d.a,255);
     
-    *dst=r;
+     *dst=r;
+    }
    }
 }
 
@@ -847,7 +887,7 @@ void KGRasterizerFill(KGRasterizer *self,VGFillRuleMask fillRuleMask) {
         previous->next=edge->next;
       }
       }        
-    minx=MAX(0,minx);
+    minx=MAX(self->_vpx,minx);
     maxx=MIN(xlimit,maxx+1);
             
     for(scanx=minx;scanx<maxx;scanx++)               

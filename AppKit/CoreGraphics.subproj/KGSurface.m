@@ -422,6 +422,7 @@ static BOOL initFunctionsForParameters(KGSurface *self,size_t bitsPerComponent,s
          case kCGImageAlphaNone:
           break;
           
+         case kCGImageAlphaLast:
          case kCGImageAlphaPremultipliedLast:
           switch(bitmapInfo&kCGBitmapByteOrderMask){
            case kCGBitmapByteOrderDefault:
@@ -451,10 +452,7 @@ static BOOL initFunctionsForParameters(KGSurface *self,size_t bitsPerComponent,s
             return YES;
           }
           break;
-          
-         case kCGImageAlphaLast:
-          break;
-          
+                    
          case kCGImageAlphaFirst:
           break;
           

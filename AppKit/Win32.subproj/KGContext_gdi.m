@@ -182,7 +182,7 @@ static RECT NSRectToRECT(NSRect rect) {
    NSSize                  pointSize=[deviceContext pointSize];
    NSSize                  pixelsPerInch=[deviceContext pixelsPerInch];
    CGAffineTransform       flip={1,0,0,-1,0, pointSize.height};
-   CGAffineTransform       scale=CGAffineTransformConcat(CGAffineTransformMakeScale(pixelsPerInch.width/72.0,pixelsPerInch.height/72.0),flip);
+   CGAffineTransform       scale=CGAffineTransformConcat(flip,CGAffineTransformMakeScale(pixelsPerInch.width/72.0,pixelsPerInch.height/72.0));
    KGGraphicsState        *initialState=[[[KGGraphicsState alloc] initWithDeviceTransform:scale] autorelease];
       
    return [self initWithGraphicsState:initialState deviceContext:deviceContext];
@@ -249,7 +249,7 @@ static RECT NSRectToRECT(NSRect rect) {
 }
 
 -(void)establishDeviceSpacePath:(KGPath *)path {
-   CGAffineTransform    xform=[self currentState]->_deviceSpaceTransform;
+   CGAffineTransform    xform=_userToDeviceTransform;
    unsigned             opCount=[path numberOfElements];
    const unsigned char *elements=[path elements];
    unsigned             pointCount=[path numberOfPoints];
@@ -382,7 +382,7 @@ static RECT NSRectToRECT(NSRect rect) {
 
 -(void)showGlyphs:(const CGGlyph *)glyphs count:(unsigned)count {
    CGAffineTransform transformToDevice=[self userSpaceToDeviceSpaceTransform];
-   CGAffineTransform Trm=CGAffineTransformConcat(transformToDevice,[self currentState]->_textTransform);
+   CGAffineTransform Trm=CGAffineTransformConcat([self currentState]->_textTransform,transformToDevice);
    NSPoint           point=CGPointApplyAffineTransform(NSMakePoint(0,0),Trm);
    
    SetTextColor(_dc,RGBFromColor([self fillColor]));

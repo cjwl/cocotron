@@ -94,7 +94,7 @@ typedef void (*KGBlendSpan_RGBAffff)(KGRGBAffff *src,KGRGBAffff *dst,int length)
 -(void)setWidth:(size_t)width height:(size_t)height reallocateOnlyIfRequired:(BOOL)roir;
 
 void KGRasterizerDealloc(KGRasterizer *self);
-void KGRasterizerSetViewport(KGRasterizer *self,int vpwidth,int vpheight);
+void KGRasterizerSetViewport(KGRasterizer *self,int x,int y,int vpwidth,int vpheight);
 void KGRasterizerClear(KGRasterizer *self);
 void KGRasterizerAddEdge(KGRasterizer *self,const CGPoint v0, const CGPoint v1);
 void KGRasterizerSetShouldAntialias(KGRasterizer *self,BOOL antialias,int quality);

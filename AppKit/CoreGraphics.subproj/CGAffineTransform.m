@@ -6,7 +6,6 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
-// Original - Christopher Lloyd <cjwl@objc.net>
 #import <ApplicationServices/CGAffineTransform.h>
 
 const CGAffineTransform CGAffineTransformIdentity={1,0,0,1,0,0};
@@ -34,12 +33,12 @@ CGAffineTransform CGAffineTransformMakeTranslation(float tx,float ty){
 CGAffineTransform CGAffineTransformConcat(CGAffineTransform xform,CGAffineTransform append){
    CGAffineTransform result;
 
-   result.a=append.a*xform.a+append.b*xform.c;
-   result.b=append.a*xform.b+append.b*xform.d;
-   result.c=append.c*xform.a+append.d*xform.c;
-   result.d=append.c*xform.b+append.d*xform.d;
-   result.tx=append.tx*xform.a+append.ty*xform.c+xform.tx;
-   result.ty=append.tx*xform.b+append.ty*xform.d+xform.ty;
+   result.a=xform.a*append.a+xform.b*append.c;
+   result.b=xform.a*append.b+xform.b*append.d;
+   result.c=xform.c*append.a+xform.d*append.c;
+   result.d=xform.c*append.b+xform.d*append.d;
+   result.tx=xform.tx*append.a+xform.ty*append.c+append.tx;
+   result.ty=xform.tx*append.b+xform.ty*append.d+append.ty;
 
    return result;
 }
@@ -49,8 +48,9 @@ CGAffineTransform CGAffineTransformInvert(CGAffineTransform xform){
    float determinant;
 
    determinant=xform.a*xform.d-xform.c*xform.b;
-   if(determinant==0)
+   if(determinant==0){
     return xform;
+   }
 
    result.a=xform.d/determinant;
    result.b=-xform.b/determinant;
@@ -64,17 +64,17 @@ CGAffineTransform CGAffineTransformInvert(CGAffineTransform xform){
 
 CGAffineTransform CGAffineTransformRotate(CGAffineTransform xform,float radians){
    CGAffineTransform rotate=CGAffineTransformMakeRotation(radians);
-   return CGAffineTransformConcat(xform,rotate);
+   return CGAffineTransformConcat(rotate,xform);
 }
 
 CGAffineTransform CGAffineTransformScale(CGAffineTransform xform,float scalex,float scaley){
    CGAffineTransform scale=CGAffineTransformMakeScale(scalex,scaley);
-   return CGAffineTransformConcat(xform,scale);
+   return CGAffineTransformConcat(scale,xform);
 }
 
 CGAffineTransform CGAffineTransformTranslate(CGAffineTransform xform,float tx,float ty){
    CGAffineTransform translate=CGAffineTransformMakeTranslation(tx,ty);
-   return CGAffineTransformConcat(xform,translate);
+   return CGAffineTransformConcat(translate,xform);
 }
 
 CGPoint CGPointApplyAffineTransform(CGPoint point,CGAffineTransform xform){

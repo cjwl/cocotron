@@ -19,6 +19,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -initWithSurface:(KGSurface *)surface {
    CGAffineTransform flip={1,0,0,-1,0,[surface height]};
    KGGraphicsState  *initialState=[[[KGGraphicsState alloc] initWithDeviceTransform:flip] autorelease];
+
    [super initWithGraphicsState:initialState];
    _surface=[surface retain];
    return self;

@@ -101,7 +101,7 @@ static COLORREF RGBFromColor(KGColor *color){
 
 -(void)showGlyphs:(const CGGlyph *)glyphs count:(unsigned)count {
    CGAffineTransform transformToDevice=[self userSpaceToDeviceSpaceTransform];
-   CGAffineTransform Trm=CGAffineTransformConcat(transformToDevice,[self currentState]->_textTransform);
+   CGAffineTransform Trm=CGAffineTransformConcat([self currentState]->_textTransform,transformToDevice);
    NSPoint           point=CGPointApplyAffineTransform(NSMakePoint(0,0),Trm);
    
    SetTextColor(_dc,RGBFromColor([self fillColor]));

@@ -112,8 +112,6 @@
 		FE14EC490DBD9BF00070928C /* DemoCGContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DemoCGContext.m; sourceTree = "<group>"; };
 		FE14EC4A0DBD9BF00070928C /* DemoKGContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DemoKGContext.m; sourceTree = "<group>"; };
 		FE14EC950DBDA5420070928C /* DemoContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DemoContext.m; sourceTree = "<group>"; };
-		FE1F932C0D7EEDF900969491 /* KGRender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGRender.h; sourceTree = "<group>"; };
-		FE1F932D0D7EEDF900969491 /* KGRender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGRender.m; sourceTree = "<group>"; };
 		FE1F93610D7EF19900969491 /* KGImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGImageView.h; sourceTree = "<group>"; };
 		FE1F93620D7EF19900969491 /* KGImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGImageView.m; sourceTree = "<group>"; };
 		FE1F93780D7EF1F800969491 /* KGRenderController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGRenderController.h; sourceTree = "<group>"; };
@@ -300,8 +298,6 @@
 				FE33964B0DBAE733009AB3E0 /* DemosTemplate.m */,
 				FE3396000DBA8CF7009AB3E0 /* CoreGraphics_KG.h */,
 				FE6EDCC70DB78E3C005503A1 /* KoreGraphics */,
-				FE1F932C0D7EEDF900969491 /* KGRender.h */,
-				FE1F932D0D7EEDF900969491 /* KGRender.m */,
 				FE1F93780D7EF1F800969491 /* KGRenderController.h */,
 				FE1F93790D7EF1F800969491 /* KGRenderController.m */,
 				FE1F93610D7EF19900969491 /* KGImageView.h */,

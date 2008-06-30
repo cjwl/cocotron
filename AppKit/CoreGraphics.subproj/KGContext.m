@@ -212,24 +212,34 @@ static inline KGGraphicsState *currentState(KGContext *self){
    [_path closeSubpath];
 }
 
--(void)moveToPoint:(float)x:(float)y {   
-   [_path moveToPoint:CGPointMake(x,y) withTransform:NULL];
+-(void)moveToPoint:(float)x:(float)y {      
+   CGAffineTransform ctm=[currentState(self) userSpaceTransform];
+
+   [_path moveToPoint:CGPointMake(x,y) withTransform:&ctm];
 }
 
 -(void)addLineToPoint:(float)x:(float)y {
-   [_path addLineToPoint:CGPointMake(x,y) withTransform:NULL];
+   CGAffineTransform ctm=[currentState(self) userSpaceTransform];
+
+   [_path addLineToPoint:CGPointMake(x,y) withTransform:&ctm];
 }
 
 -(void)addCurveToPoint:(float)cx1:(float)cy1:(float)cx2:(float)cy2:(float)x:(float)y {
-   [_path addCurveToControlPoint:CGPointMake(cx1,cy1) controlPoint:CGPointMake(cx2,cy2) endPoint:CGPointMake(x,y) withTransform:NULL];
+   CGAffineTransform ctm=[currentState(self) userSpaceTransform];
+
+   [_path addCurveToControlPoint:CGPointMake(cx1,cy1) controlPoint:CGPointMake(cx2,cy2) endPoint:CGPointMake(x,y) withTransform:&ctm];
 }
 
 -(void)addQuadCurveToPoint:(float)cx1:(float)cy1:(float)x:(float)y {
-   [_path addQuadCurveToControlPoint:CGPointMake(cx1,cy1) endPoint:CGPointMake(x,y) withTransform:NULL];
+   CGAffineTransform ctm=[currentState(self) userSpaceTransform];
+
+   [_path addQuadCurveToControlPoint:CGPointMake(cx1,cy1) endPoint:CGPointMake(x,y) withTransform:&ctm];
 }
 
 -(void)addLinesWithPoints:(CGPoint *)points count:(unsigned)count {   
-   [_path addLinesWithPoints:points count:count withTransform:NULL];
+   CGAffineTransform ctm=[currentState(self) userSpaceTransform];
+
+   [_path addLinesWithPoints:points count:count withTransform:&ctm];
 }
 
 -(void)addRect:(CGRect)rect {
@@ -237,23 +247,33 @@ static inline KGGraphicsState *currentState(KGContext *self){
 }
 
 -(void)addRects:(const CGRect *)rect count:(unsigned)count {   
-   [_path addRects:rect count:count withTransform:NULL];
+   CGAffineTransform ctm=[currentState(self) userSpaceTransform];
+
+   [_path addRects:rect count:count withTransform:&ctm];
 }
 
 -(void)addArc:(float)x:(float)y:(float)radius:(float)startRadian:(float)endRadian:(int)clockwise {
-   [_path addArcAtPoint:CGPointMake(x,y) radius:radius startAngle:startRadian endAngle:endRadian clockwise:clockwise withTransform:NULL];
+   CGAffineTransform ctm=[currentState(self) userSpaceTransform];
+
+   [_path addArcAtPoint:CGPointMake(x,y) radius:radius startAngle:startRadian endAngle:endRadian clockwise:clockwise withTransform:&ctm];
 }
 
 -(void)addArcToPoint:(float)x1:(float)y1:(float)x2:(float)y2:(float)radius {
-   [_path addArcToPoint:CGPointMake(x1,y1) point:CGPointMake(x2,y2) radius:radius withTransform:NULL];
+   CGAffineTransform ctm=[currentState(self) userSpaceTransform];
+
+   [_path addArcToPoint:CGPointMake(x1,y1) point:CGPointMake(x2,y2) radius:radius withTransform:&ctm];
 }
 
 -(void)addEllipseInRect:(CGRect)rect {
-   [_path addEllipseInRect:rect withTransform:NULL];
+   CGAffineTransform ctm=[currentState(self) userSpaceTransform];
+
+   [_path addEllipseInRect:rect withTransform:&ctm];
 }
 
 -(void)addPath:(KGPath *)path {
-   [_path addPath:path withTransform:NULL];
+   CGAffineTransform ctm=[currentState(self) userSpaceTransform];
+
+   [_path addPath:path withTransform:&ctm];
 }
 
 -(void)replacePathWithStrokedPath {
@@ -358,7 +378,7 @@ static inline KGGraphicsState *currentState(KGContext *self){
 -(void)setCTM:(CGAffineTransform)matrix {
    CGAffineTransform deviceTransform=_userToDeviceTransform;
    
-   deviceTransform=CGAffineTransformConcat(deviceTransform,matrix);
+   deviceTransform=CGAffineTransformConcat(matrix,deviceTransform);
    
    [currentState(self) setDeviceSpaceCTM:deviceTransform];
 
@@ -409,8 +429,10 @@ static inline KGGraphicsState *currentState(KGContext *self){
 }
 
 -(void)clipToRects:(const CGRect *)rects count:(unsigned)count {   
+   CGAffineTransform ctm=[currentState(self) userSpaceTransform];
+
    [_path reset];
-   [_path addRects:rects count:count withTransform:NULL];
+   [_path addRects:rects count:count withTransform:&ctm];
    [self clipToPath];
 }
 
@@ -862,7 +884,7 @@ static inline KGGraphicsState *currentState(KGContext *self){
 
 // bitmap context 
 
--(void *)bytes {
+-(void *)mutableBytes {
    return NULL;
 }
 

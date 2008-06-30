@@ -90,7 +90,7 @@ void VGPathDealloc(VGPath *self);
 
 void VGPathAppendData(VGPath *self,const RIuint8* segments, int numSegments, const CGPoint *data);	
 void VGPathAppend(VGPath *self,VGPath* srcPath);	
-void VGPathTransform(VGPath *self,VGPath* srcPath, CGAffineTransform matrix);	
+void VGPathTransform(VGPath *self,CGAffineTransform matrix);
 	//returns YES if interpolation succeeds, NO if start and end paths are not compatible
 void VGPathFill(VGPath *self,CGAffineTransform pathToSurface, KGRasterizer *rasterizer);	
 void VGPathStroke(VGPath *self,CGAffineTransform pathToSurface, KGRasterizer *rasterizer, const CGFloat* dashPattern,int dashPatternSize, CGFloat dashPhase, BOOL dashPhaseReset, CGFloat strokeWidth, CGLineCap capStyle, CGLineJoin joinStyle, CGFloat miterLimit);	

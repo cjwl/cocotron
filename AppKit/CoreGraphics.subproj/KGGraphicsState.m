@@ -130,8 +130,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)concatCTM:(CGAffineTransform)transform {
-   _deviceSpaceTransform=CGAffineTransformConcat(_deviceSpaceTransform,transform);
-   _userSpaceTransform=CGAffineTransformConcat(_userSpaceTransform,transform);
+   _deviceSpaceTransform=CGAffineTransformConcat(transform,_deviceSpaceTransform);
+   _userSpaceTransform=CGAffineTransformConcat(transform,_userSpaceTransform);
 }
 
 -(NSArray *)clipPhases {
