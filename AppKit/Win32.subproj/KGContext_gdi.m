@@ -248,8 +248,7 @@ static RECT NSRectToRECT(NSRect rect) {
    SelectObject(_dc,[_gdiFont fontHandle]);
 }
 
--(void)establishDeviceSpacePath:(KGPath *)path {
-   CGAffineTransform    xform=_userToDeviceTransform;
+-(void)establishDeviceSpacePath:(KGPath *)path withTransform:(CGAffineTransform)xform {
    unsigned             opCount=[path numberOfElements];
    const unsigned char *elements=[path elements];
    unsigned             pointCount=[path numberOfPoints];
@@ -320,14 +319,14 @@ static RECT NSRectToRECT(NSRect rect) {
 }
 
 -(void)deviceClipToNonZeroPath:(KGPath *)path {
-   [self establishDeviceSpacePath:path];
+   [self establishDeviceSpacePath:path withTransform:_userToDeviceTransform];
    SetPolyFillMode(_dc,WINDING);
    if(!SelectClipPath(_dc,RGN_AND))
     NSLog(@"SelectClipPath failed (%i), path size= %d", GetLastError(),[path numberOfElements]);
 }
 
 -(void)deviceClipToEvenOddPath:(KGPath *)path {
-   [self establishDeviceSpacePath:path];
+   [self establishDeviceSpacePath:path withTransform:_userToDeviceTransform];
    SetPolyFillMode(_dc,ALTERNATE);
    if(!SelectClipPath(_dc,RGN_AND))
     NSLog(@"SelectClipPath failed (%i), path size= %d", GetLastError(),[path numberOfElements]);
@@ -339,11 +338,18 @@ static RECT NSRectToRECT(NSRect rect) {
 
 -(void)drawPathInDeviceSpace:(KGPath *)path drawingMode:(int)mode state:(KGGraphicsState *)state {
    CGAffineTransform deviceTransform=state->_deviceSpaceTransform;
-   float    lineWidth=state->_lineWidth;
    KGColor *fillColor=state->_fillColor;
    KGColor *strokeColor=state->_strokeColor;
+   XFORM current;
+   XFORM userToDevice={deviceTransform.a,deviceTransform.b,deviceTransform.c,deviceTransform.d,deviceTransform.tx,deviceTransform.ty};
+   
+   if(!GetWorldTransform(_dc,&current))
+    NSLog(@"GetWorldTransform failed");
 
-   [self establishDeviceSpacePath:path];
+   if(!SetWorldTransform(_dc,&userToDevice))
+    NSLog(@"ModifyWorldTransform failed");
+
+   [self establishDeviceSpacePath:path withTransform:CGAffineTransformInvert(state->_userSpaceTransform)];
       
    {
     HBRUSH fillBrush=CreateSolidBrush(RGBFromColor(fillColor));
@@ -362,14 +368,58 @@ static RECT NSRectToRECT(NSRect rect) {
    }
    
    if(mode==kCGPathStroke || mode==kCGPathFillStroke || mode==kCGPathEOFillStroke){
-    NSSize lineSize=CGSizeApplyAffineTransform(NSMakeSize(lineWidth,lineWidth),deviceTransform);
-    HPEN   pen=CreatePen(PS_SOLID,(lineSize.width+lineSize.height)/2,RGBFromColor(strokeColor));
+    DWORD    style;
+    LOGBRUSH logBrush={BS_SOLID,RGBFromColor(strokeColor),0};
+    
+    if(state->_dashLengthsCount==0)
+     style=PS_SOLID;
+    else
+     style=PS_USERSTYLE;
+     
+    switch(state->_lineCap){
+     case kCGLineCapButt:
+      style|=PS_ENDCAP_FLAT;
+      break;
+     case kCGLineCapRound:
+      style|=PS_ENDCAP_ROUND;
+      break;
+     case kCGLineCapSquare:
+      style|=PS_ENDCAP_SQUARE;
+      break;
+    }
+    
+    switch(state->_lineJoin){
+     case kCGLineJoinMiter:
+      style|=PS_JOIN_MITER;
+      break;
+     case kCGLineJoinRound:
+      style|=PS_JOIN_ROUND;
+      break;
+     case kCGLineJoinBevel:
+      style|=PS_JOIN_BEVEL;
+      break;
+    }
+    
+    DWORD   dashesCount=state->_dashLengthsCount;
+    DWORD  *dashes=__builtin_alloca(MAX(dashesCount,1)*sizeof(DWORD));
+    
+    if(dashesCount!=0){
+     int i;
+          
+     for(i=0;i<dashesCount;i++)
+      dashes[i]=float2int(state->_dashLengths[i]);
+    }
+    
+    HPEN   pen=ExtCreatePen(style,float2int(state->_lineWidth),&logBrush,dashesCount,dashes);
     HPEN   oldpen=SelectObject(_dc,pen);
 
     StrokePath(_dc);
     SelectObject(_dc,oldpen);
     DeleteObject(pen);
    }
+   
+   if(!SetWorldTransform(_dc,&current))
+    NSLog(@"SetWorldTransform failed");
 }
 
 

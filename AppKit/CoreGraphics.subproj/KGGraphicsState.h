@@ -31,7 +31,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    CGLineJoin          _lineJoin;
    float               _miterLimit;
    float               _dashPhase;
-   float               _dashLengthsCount;
+   int                 _dashLengthsCount;
    float              *_dashLengths;
    CGColorRenderingIntent _renderingIntent;
    CGBlendMode          _blendMode;

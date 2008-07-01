@@ -225,9 +225,7 @@ static KGPaint *paintFromColor(KGColor *color){
 
        KGRasterizerSetShouldAntialias(self,gState->_shouldAntialias,gState->_antialiasingQuality);
 
-/*
-  Path construction is affected by the CTM , and the stroke pen is affected by the CTM , this means path points and the stroke can be affected by different transforms as the CTM can change during path construction and before stroking. For example, creation of transformed shapes which are drawn using an untransformed pen. The current tesselator expects everything to be in user coordinates and it tesselates from there into device space, but the path points are already in base coordinates. So, path points are brought from  base coordinates into the active coordinate space using an inverted transform and then everything is tesselated using the CTM into device space. 
- */
+/* Path construction is affected by the CTM, and the stroke pen is affected by the CTM , this means path points and the stroke can be affected by different transforms as the CTM can change during path construction and before stroking. For example, creation of transformed shapes which are drawn using an untransformed pen. The current tesselator expects everything to be in user coordinates and it tesselates from there into device space, but the path points are already in base coordinates. So, path points are brought from base coordinates into the active coordinate space using an inverted transform and then everything is tesselated using the CTM into device space.  */
  
    CGAffineTransform userToSurfaceMatrix=gState->_deviceSpaceTransform;
 
@@ -348,7 +346,6 @@ xform=CGAffineTransformConcat(i2u,xform);
         KGRasterizeSetPaint(self,nil);
 		}
    KGRasterizerClear(self);
-
 }
 
 -(void)drawLayer:(KGLayer *)layer inRect:(CGRect)rect {

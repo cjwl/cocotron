@@ -131,7 +131,7 @@ static COLORREF RGBFromColor(KGColor *color){
 }
 
 -(void)drawContext:(KGContext *)other inRect:(CGRect)rect {
-   if([other respondsToSelector:@selector(deviceContext)])
+   if(![other respondsToSelector:@selector(deviceContext)])
     return;
    
    CGAffineTransform ctm=[self userSpaceToDeviceSpaceTransform];
