@@ -412,7 +412,8 @@ static RECT NSRectToRECT(NSRect rect) {
     
     HPEN   pen=ExtCreatePen(style,float2int(state->_lineWidth),&logBrush,dashesCount,dashes);
     HPEN   oldpen=SelectObject(_dc,pen);
-
+    
+    SetMiterLimit(_dc,state->_miterLimit,NULL);
     StrokePath(_dc);
     SelectObject(_dc,oldpen);
     DeleteObject(pen);

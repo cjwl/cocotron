@@ -25,6 +25,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    _textTransform=CGAffineTransformIdentity;
    _clipPhases=[NSMutableArray new];
    _lineWidth=1.0;
+   _miterLimit=10;
    _strokeColor=[[KGColor alloc] init];
    _fillColor=[[KGColor alloc] init];
    _blendMode=kCGBlendModeNormal;
