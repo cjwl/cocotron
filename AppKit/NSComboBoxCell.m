@@ -168,13 +168,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(int)indexOfSelectedItem {
-   NSUnimplementedMethod();
-   return 0;
+   int index = [_objectValues indexOfObject:[self objectValue]];
+   return (index != NSNotFound)?index:-1;
 }
 
 -objectValueOfSelectedItem {
-   NSUnimplementedMethod();
-   return 0;
+   return [self objectValue];
 }
 
 -(void)selectItemAtIndex:(int)index {
