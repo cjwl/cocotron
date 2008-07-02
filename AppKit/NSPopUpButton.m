@@ -128,6 +128,17 @@ static NSString *NSPopUpButtonBindingObservationContext=@"NSPopUpButtonBindingOb
    [self setNeedsDisplay:YES];
 }
 
+-(BOOL)selectItemWithTag:(int)tag {
+   int index = [self indexOfItemWithTag:tag];
+   if (index >= 0)
+   {
+      [self selectItemAtIndex:index];
+      return YES;
+   }
+   else
+      return NO;
+}
+
 -(void)mouseDown:(NSEvent *)event {
    if(![self isEnabled])
     return;
