@@ -16,8 +16,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @implementation KGBitmapContext
 
--initWithSurface:(KGSurface *)surface {
-   CGAffineTransform flip={1,0,0,-1,0,[surface height]};
+-initWithSurface:(KGSurface *)surface flipped:(BOOL)flipped {
+   CGAffineTransform flip=flipped?CGAffineTransformIdentity:CGAffineTransformMake(1,0,0,-1,0,[surface height]);
    KGGraphicsState  *initialState=[[[KGGraphicsState alloc] initWithDeviceTransform:flip] autorelease];
 
    [super initWithGraphicsState:initialState];
@@ -25,10 +25,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return self;
 }
 
--initWithBytes:(void *)bytes width:(size_t)width height:(size_t)height bitsPerComponent:(size_t)bitsPerComponent bytesPerRow:(size_t)bytesPerRow colorSpace:(KGColorSpace *)colorSpace bitmapInfo:(CGBitmapInfo)bitmapInfo {
+-initWithBytes:(void *)bytes width:(size_t)width height:(size_t)height bitsPerComponent:(size_t)bitsPerComponent bytesPerRow:(size_t)bytesPerRow colorSpace:(KGColorSpace *)colorSpace bitmapInfo:(CGBitmapInfo)bitmapInfo flipped:(BOOL)flipped {
    KGSurface *surface=[[KGSurface alloc] initWithBytes:bytes width:width height:height bitsPerComponent:bitsPerComponent bytesPerRow:bytesPerRow colorSpace:colorSpace bitmapInfo:bitmapInfo];
 
-   [self initWithSurface:surface];
+   [self initWithSurface:surface flipped:flipped];
    [surface release];
    return self;
 }

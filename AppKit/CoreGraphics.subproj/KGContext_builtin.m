@@ -67,8 +67,8 @@ BOOL _isAvailable=NO;
 }
 
 
--initWithSurface:(KGSurface *)surface {
-   [super initWithSurface:surface];
+-initWithSurface:(KGSurface *)surface flipped:(BOOL)flipped {
+   [super initWithSurface:surface flipped:flipped];
         
    m_mask=NULL;
    m_paint=[[KGPaint_color alloc] initWithGray:0 alpha:1];
@@ -97,7 +97,7 @@ BOOL _isAvailable=NO;
     return nil;
    }
    
-   return [self initWithSurface:surface];
+   return [self initWithSurface:surface flipped:NO];
 }
 
 -(void)dealloc {
@@ -686,9 +686,12 @@ static void KGBlendSpanCopy_8888_coverage(KGRGBA8888 *src,KGRGBA8888 *dst,int co
 
 static inline void KGRasterizeWriteCoverageSpan(KGRasterizer *self,int x, int y,int coverage,int length) {
    if(self->_useRGBA8888){
-    KGRGBA8888 dst[length];
-    KGImageReadSpan_lRGBA8888_PRE(self->_surface,x,y,dst,length);
-
+    KGRGBA8888 *dst=__builtin_alloca(length*sizeof(KGRGBA8888));
+    KGRGBA8888 *direct=KGImageReadSpan_lRGBA8888_PRE(self->_surface,x,y,dst,length);
+   
+    if(direct!=NULL)
+     dst=direct;
+     
     KGRGBA8888 src[length];
     KGPaintReadSpan_lRGBA8888_PRE(self->m_paint,x,y,src,length);
 
@@ -717,12 +720,17 @@ static inline void KGRasterizeWriteCoverageSpan(KGRasterizer *self,int x, int y,
       break;
     }
        
-	//write result to the destination surface
-    KGSurfaceWriteSpan_lRGBA8888_PRE(self->_surface,x,y,dst,length);
+    if(direct==NULL){
+  	//write result to the destination surface
+     KGSurfaceWriteSpan_lRGBA8888_PRE(self->_surface,x,y,dst,length);
+    }
    }
    else {
-    KGRGBAffff dst[length];
-    KGImageReadSpan_lRGBAffff_PRE(self->_surface,x,y,dst,length);
+    KGRGBAffff *dst=__builtin_alloca(length*sizeof(KGRGBAffff));
+    KGRGBAffff *direct=KGImageReadSpan_lRGBAffff_PRE(self->_surface,x,y,dst,length);
+
+    if(direct!=NULL)
+     dst=direct;
 
     KGRGBAffff src[length];
     KGPaintReadSpan_lRGBAffff_PRE(self->m_paint,x,y,src,length);
@@ -738,9 +746,11 @@ static inline void KGRasterizeWriteCoverageSpan(KGRasterizer *self,int x, int y,
      KGImageReadSpan_Af_MASK(self->m_mask,x,y,maskSpan,length);
      KGApplyCoverageAndMaskToSpan_lRGBAffff_PRE(dst,coverage,maskSpan,src,length);
     }
-        
-	//write result to the destination surface
-    KGSurfaceWriteSpan_lRGBAffff_PRE(self->_surface,x,y,dst,length);
+    
+    if(direct==NULL){
+  	//write result to the destination surface
+     KGSurfaceWriteSpan_lRGBAffff_PRE(self->_surface,x,y,dst,length);
+    }
    }
 }
 

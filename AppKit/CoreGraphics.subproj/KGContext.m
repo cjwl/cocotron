@@ -104,7 +104,7 @@ static NSMutableArray *possibleContextClasses=nil;
     Class check=[array objectAtIndex:count];
     
     if([check canInitBitmap]){
-     KGContext *result=[[check alloc] initWithBytes:bytes width:width height:height bitsPerComponent:bitsPerComponent bytesPerRow:bytesPerRow colorSpace:colorSpace bitmapInfo:bitmapInfo];
+     KGContext *result=[[check alloc] initWithBytes:bytes width:width height:height bitsPerComponent:bitsPerComponent bytesPerRow:bytesPerRow colorSpace:colorSpace bitmapInfo:bitmapInfo flipped:NO];
 
      if(result!=nil)
       return result;

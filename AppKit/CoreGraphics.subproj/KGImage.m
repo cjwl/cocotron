@@ -119,7 +119,8 @@ static BOOL initFunctionsForParameters(KGImage *self,size_t bitsPerComponent,siz
 
    self->_readA8=KGImageRead_ANY_to_RGBA8888_to_A8;
    self->_readAf=KGImageRead_ANY_to_A8_to_Af;
-   
+   self->_readRGBAffff=KGImageRead_ANY_to_RGBA8888_to_RGBAffff;
+
    switch(bitsPerComponent){
    
     case 32:
@@ -148,12 +149,10 @@ static BOOL initFunctionsForParameters(KGImage *self,size_t bitsPerComponent,siz
       case 8:
        self->_readA8=KGImageRead_G8_to_A8;
        self->_readRGBA8888=KGImageRead_G8_to_RGBA8888;
-       self->_readRGBAffff=KGImageRead_ANY_to_RGBA8888_to_RGBAffff;
        return YES;
       
       case 16:
        self->_readRGBA8888=KGImageRead_GA88_to_RGBA8888;
-       self->_readRGBAffff=KGImageRead_ANY_to_RGBA8888_to_RGBAffff;
        return YES;
        
       case 24:
@@ -161,18 +160,59 @@ static BOOL initFunctionsForParameters(KGImage *self,size_t bitsPerComponent,siz
        
       case 32:
        if([colorSpace type]==KGColorSpaceDeviceRGB){
+       
+        switch(bitmapInfo&kCGBitmapAlphaInfoMask){
+         case kCGImageAlphaNone:
+          break;
+          
+         case kCGImageAlphaLast:
+         case kCGImageAlphaPremultipliedLast:
+          switch(bitmapInfo&kCGBitmapByteOrderMask){
+           case kCGBitmapByteOrderDefault:
+           case kCGBitmapByteOrder16Little:
+           case kCGBitmapByteOrder32Little:
+            self->_readRGBA8888=KGImageRead_ABGR8888_to_RGBA8888;
+            return YES;
+
+           case kCGBitmapByteOrder16Big:
+           case kCGBitmapByteOrder32Big:
+            self->_readRGBA8888=KGImageRead_RGBA8888_to_RGBA8888;
+            return YES;
+          }
+
+          break;
+          
+         case kCGImageAlphaPremultipliedFirst:
+          switch(bitmapInfo&kCGBitmapByteOrderMask){
+           case kCGBitmapByteOrderDefault:
+           case kCGBitmapByteOrder16Little:
+           case kCGBitmapByteOrder32Little:
+            self->_readRGBA8888=KGImageRead_BGRA8888_to_RGBA8888;
+            return YES;
+          }
+          break;
+                    
+         case kCGImageAlphaFirst:
+          break;
+          
+         case kCGImageAlphaNoneSkipLast:
+          break;
+          
+         case kCGImageAlphaNoneSkipFirst:
+          break;
+        }
+              
+       
         switch(bitmapInfo&kCGBitmapByteOrderMask){
          case kCGBitmapByteOrderDefault:
          case kCGBitmapByteOrder16Little:
          case kCGBitmapByteOrder32Little:
           self->_readRGBA8888=KGImageRead_ABGR8888_to_RGBA8888;
-          self->_readRGBAffff=KGImageRead_ANY_to_RGBA8888_to_RGBAffff;
           return YES;
          
          case kCGBitmapByteOrder16Big:
          case kCGBitmapByteOrder32Big:
           self->_readRGBA8888=KGImageRead_RGBA8888_to_RGBA8888;
-          self->_readRGBAffff=KGImageRead_ANY_to_RGBA8888_to_RGBAffff;
           return YES;
         }
        }
@@ -186,7 +226,6 @@ static BOOL initFunctionsForParameters(KGImage *self,size_t bitsPerComponent,siz
          case kCGBitmapByteOrder16Big:
          case kCGBitmapByteOrder32Big:
           self->_readRGBA8888=KGImageRead_CMYK8888_to_RGBA8888;
-          self->_readRGBAffff=KGImageRead_ANY_to_RGBA8888_to_RGBAffff;
           return YES;
         }
        }
@@ -200,7 +239,6 @@ static BOOL initFunctionsForParameters(KGImage *self,size_t bitsPerComponent,siz
       case 16:
        if(bitmapInfo==(kCGBitmapByteOrder16Little|kCGImageAlphaNoneSkipFirst)){
          self->_readRGBA8888=KGImageRead_G3B5X1R5G2_to_RGBA8888;
-         self->_readRGBAffff=KGImageRead_ANY_to_RGBA8888_to_RGBAffff;
          break;
        }
        break;
@@ -219,13 +257,11 @@ static BOOL initFunctionsForParameters(KGImage *self,size_t bitsPerComponent,siz
         case kCGBitmapByteOrder16Little:
         case kCGBitmapByteOrder32Little:
          self->_readRGBA8888=KGImageRead_BARG4444_to_RGBA8888;
-         self->_readRGBAffff=KGImageRead_ANY_to_RGBA8888_to_RGBAffff;
          return YES;
          
         case kCGBitmapByteOrder16Big:
         case kCGBitmapByteOrder32Big:
          self->_readRGBA8888=KGImageRead_RGBA4444_to_RGBA8888;
-         self->_readRGBAffff=KGImageRead_ANY_to_RGBA8888_to_RGBAffff;
          return YES;
        }
 
@@ -241,7 +277,6 @@ static BOOL initFunctionsForParameters(KGImage *self,size_t bitsPerComponent,siz
        break;
       case 8:
        self->_readRGBA8888=KGImageRead_RGBA2222_to_RGBA8888;
-       self->_readRGBAffff=KGImageRead_ANY_to_RGBA8888_to_RGBAffff;
        return YES;
      }
      break;
@@ -436,10 +471,13 @@ size_t KGImageGetHeight(KGImage *self) {
    return self->_height;
 }
 
-void KGImageRead_ANY_to_RGBA8888_to_RGBAffff(KGImage *self,int x,int y,KGRGBAffff *span,int length){
-   KGRGBA8888 span8888[length];
-
-   self->_readRGBA8888(self,x,y,span8888,length);
+KGRGBAffff *KGImageRead_ANY_to_RGBA8888_to_RGBAffff(KGImage *self,int x,int y,KGRGBAffff *span,int length){
+   KGRGBA8888 *span8888=__builtin_alloca(length*sizeof(KGRGBA8888));
+   KGRGBA8888 *direct=self->_readRGBA8888(self,x,y,span8888,length);
+   
+   if(direct!=NULL)
+    span8888=direct;
+    
    int i;
    for(i=0;i<length;i++){
     KGRGBAffff  result;
@@ -450,6 +488,7 @@ void KGImageRead_ANY_to_RGBA8888_to_RGBAffff(KGImage *self,int x,int y,KGRGBAfff
 	result.a = CGFloatFromByte(span8888[i].a);
     *span++=result;
    }
+   return NULL;
 }
 
 float bytesLittleToFloat(unsigned char *scanline){
@@ -473,7 +512,7 @@ float bytesLittleToFloat(unsigned char *scanline){
    return u.f;
 }
 
-void KGImageRead_RGBAffffLittle_to_RGBAffff(KGImage *self,int x,int y,KGRGBAffff *span,int length){
+KGRGBAffff *KGImageRead_RGBAffffLittle_to_RGBAffff(KGImage *self,int x,int y,KGRGBAffff *span,int length){
    RIuint8 *scanline = self->_bytes + y * self->_bytesPerRow;
    int i;
 
@@ -492,6 +531,7 @@ void KGImageRead_RGBAffffLittle_to_RGBAffff(KGImage *self,int x,int y,KGRGBAffff
         
     *span++=result;
    }
+   return NULL;
 }
 
 float bytesBigToFloat(unsigned char *scanline){
@@ -515,7 +555,7 @@ float bytesBigToFloat(unsigned char *scanline){
    return u.f;
 }
 
-void KGImageRead_RGBAffffBig_to_RGBAffff(KGImage *self,int x,int y,KGRGBAffff *span,int length){
+KGRGBAffff *KGImageRead_RGBAffffBig_to_RGBAffff(KGImage *self,int x,int y,KGRGBAffff *span,int length){
    RIuint8 *scanline = self->_bytes + y * self->_bytesPerRow;
    int i;
 
@@ -534,9 +574,10 @@ void KGImageRead_RGBAffffBig_to_RGBAffff(KGImage *self,int x,int y,KGRGBAffff *s
         
     *span++=result;
    }
+   return NULL;
 }
 
-void KGImageRead_G8_to_A8(KGImage *self,int x,int y,uint8_t *alpha,int length) {
+uint8_t *KGImageRead_G8_to_A8(KGImage *self,int x,int y,uint8_t *alpha,int length) {
    RIuint8 *scanline = self->_bytes + y * self->_bytesPerRow;
    int i;
 
@@ -544,28 +585,35 @@ void KGImageRead_G8_to_A8(KGImage *self,int x,int y,uint8_t *alpha,int length) {
    for(i=0;i<length;i++){
     *alpha++=*scanline++;
    }
+   return NULL;
 }
 
-void KGImageRead_ANY_to_RGBA8888_to_A8(KGImage *self,int x,int y,uint8_t *alpha,int length) {
-   KGRGBA8888 span[length];
+uint8_t *KGImageRead_ANY_to_RGBA8888_to_A8(KGImage *self,int x,int y,uint8_t *alpha,int length) {
+   KGRGBA8888 *span=__builtin_alloca(length*sizeof(KGRGBA8888));
    int i;
    
-   self->_readRGBA8888(self,x,y,span,length);
+   KGRGBA8888 *direct=self->_readRGBA8888(self,x,y,span,length);
+   if(direct!=NULL)
+    span=direct;
+    
    for(i=0;i<length;i++){
     *alpha++=span[i].a;
    }
+   return NULL;
 }
 
-void KGImageRead_ANY_to_A8_to_Af(KGImage *self,int x,int y,CGFloat *alpha,int length) {
+CGFloat *KGImageRead_ANY_to_A8_to_Af(KGImage *self,int x,int y,CGFloat *alpha,int length) {
    uint8_t span[length];
    int     i;
    
    self->_readA8(self,x,y,span,length);
    for(i=0;i<length;i++)
     alpha[i]=CGFloatFromByte(span[i]);
+    
+   return NULL;
 }
 
-void KGImageRead_G8_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span,int length){
+KGRGBA8888 *KGImageRead_G8_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span,int length){
    RIuint8 *scanline = self->_bytes + y * self->_bytesPerRow;
    int i;
 
@@ -580,9 +628,10 @@ void KGImageRead_G8_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span,int l
     
     *span++=result;
    }
+   return NULL;
 }
 
-void KGImageRead_GA88_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span,int length){
+KGRGBA8888 *KGImageRead_GA88_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span,int length){
    RIuint8 *scanline = self->_bytes + y * self->_bytesPerRow;
    int i;
 
@@ -596,9 +645,10 @@ void KGImageRead_GA88_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span,int
 	result.a = *scanline++;
     *span++=result;
    }
+   return NULL;
 }
 
-void KGImageRead_RGBA8888_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span,int length){
+KGRGBA8888 *KGImageRead_RGBA8888_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span,int length){
    RIuint8 *scanline = self->_bytes + y * self->_bytesPerRow;
    int i;
 
@@ -612,9 +662,10 @@ void KGImageRead_RGBA8888_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span
 	result.a = *scanline++;
     *span++=result;
    }
+   return NULL;
 }
 
-void KGImageRead_ABGR8888_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span,int length){
+KGRGBA8888 *KGImageRead_ABGR8888_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span,int length){
    RIuint8 *scanline = self->_bytes + y * self->_bytesPerRow;
    int i;
 
@@ -628,13 +679,18 @@ void KGImageRead_ABGR8888_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span
 	result.r = *scanline++;
     *span++=result;
    }
+   return NULL;
 }
 
-void KGImageRead_BGRA8888_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span,int length) {
+KGRGBA8888 *KGImageRead_BGRA8888_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span,int length) {
    RIuint8 *scanline = self->_bytes + y * self->_bytesPerRow;
    int i;
 
    scanline+=x*4;
+#ifdef __LITTLE_ENDIAN__
+   return (KGRGBA8888 *)scanline;
+#endif
+   
    for(i=0;i<length;i++){
     KGRGBA8888  result;
     
@@ -644,10 +700,11 @@ void KGImageRead_BGRA8888_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span
     result.a = *scanline++;
     *span++=result;
    }
+   return NULL;
 }
 
 // kCGBitmapByteOrder16Little|kCGImageAlphaNoneSkipFirst
-void KGImageRead_G3B5X1R5G2_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span,int length){
+KGRGBA8888 *KGImageRead_G3B5X1R5G2_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span,int length){
    RIuint8 *scanline = self->_bytes + y * self->_bytesPerRow;
    int i;
 
@@ -665,9 +722,10 @@ void KGImageRead_G3B5X1R5G2_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *sp
     scanline++;
     *span++=result;
    }
+   return NULL;
 }
 
-void KGImageRead_RGBA4444_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span,int length){
+KGRGBA8888 *KGImageRead_RGBA4444_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span,int length){
    RIuint8 *scanline = self->_bytes + y * self->_bytesPerRow;
    int i;
 
@@ -683,9 +741,10 @@ void KGImageRead_RGBA4444_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span
     scanline++;
     *span++=result;
    }
+   return NULL;
 }
 
-void KGImageRead_BARG4444_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span,int length){
+KGRGBA8888 *KGImageRead_BARG4444_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span,int length){
    RIuint8 *scanline = self->_bytes + y * self->_bytesPerRow;
    int i;
 
@@ -701,9 +760,10 @@ void KGImageRead_BARG4444_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span
     scanline++;
     *span++=result;
    }
+   return NULL;
 }
 
-void KGImageRead_RGBA2222_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span,int length){
+KGRGBA8888 *KGImageRead_RGBA2222_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span,int length){
    RIuint8 *scanline = self->_bytes + y * self->_bytesPerRow;
    int i;
 
@@ -718,9 +778,10 @@ void KGImageRead_RGBA2222_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span
     scanline++;
     *span++=result;
    }
+   return NULL;
 }
 
-void KGImageRead_CMYK8888_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span,int length){
+KGRGBA8888 *KGImageRead_CMYK8888_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span,int length){
 // poor results
    RIuint8 *scanline = self->_bytes + y * self->_bytesPerRow;
    int i;
@@ -740,6 +801,7 @@ void KGImageRead_CMYK8888_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span
 	result.a = 1;
     *span++=result;
    }
+   return NULL;
 }
 
 /*-------------------------------------------------------------------*//*!
@@ -756,38 +818,66 @@ void KGImageRead_CMYK8888_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span
    value. This works better than say, zero, with averaging algorithms (bilinear,bicubic, etc)
    as you get good values at the edges. */
    
-void KGImageReadTileSpanExtendEdge__lRGBA8888_PRE(KGImage *self,int u, int v, KGRGBA8888 *span,int length){
+void KGImageReadTileSpanExtendEdge_lRGBA8888_PRE(KGImage *self,int u, int v, KGRGBA8888 *span,int length){
    int i;
-
+   KGRGBA8888 *direct;
    v = RI_INT_CLAMP(v,0,self->_height-1);
-   
-   for(i=0;i<length && u<0;u++,i++)
-    KGImageReadSpan_lRGBA8888_PRE(self,0,v,span+i,1);
+      
+   for(i=0;i<length && u<0;u++,i++){
+    direct=KGImageReadSpan_lRGBA8888_PRE(self,0,v,span+i,1);
+
+    if(direct!=NULL)
+     span[i]=direct[0];
+   }   
 
    int chunk=RI_MIN(length-i,self->_width-u);
-   KGImageReadSpan_lRGBA8888_PRE(self,u,v,span+i,chunk);
+   direct=KGImageReadSpan_lRGBA8888_PRE(self,u,v,span+i,chunk);
+   if(direct!=NULL) {
+    int k;
+    
+    for(k=0;k<chunk;k++)
+     span[i+k]=direct[k];
+   }
+   
    i+=chunk;
    u+=chunk;
 
-   for(;i<length;i++)
-    KGImageReadSpan_lRGBA8888_PRE(self,self->_width-1,v,span+i,1);
+   for(;i<length;i++){
+    direct=KGImageReadSpan_lRGBA8888_PRE(self,self->_width-1,v,span+i,1);
+    
+    if(direct!=NULL)
+     span[i]=direct[0];
+   }
 }
 
 void KGImageReadTileSpanExtendEdge__lRGBAffff_PRE(KGImage *self,int u, int v, KGRGBAffff *span,int length){
    int i;
-
+   KGRGBAffff *direct;
+   
    v = RI_INT_CLAMP(v,0,self->_height-1);
    
-   for(i=0;i<length && u<0;u++,i++)
-    KGImageReadSpan_lRGBAffff_PRE(self,0,v,span+i,1);
-
+   for(i=0;i<length && u<0;u++,i++){
+    direct=KGImageReadSpan_lRGBAffff_PRE(self,0,v,span+i,1);
+    if(direct!=NULL)
+     span[i]=direct[0];
+   }
+   
    int chunk=RI_MIN(length-i,self->_width-u);
-   KGImageReadSpan_lRGBAffff_PRE(self,u,v,span+i,chunk);
+   direct=KGImageReadSpan_lRGBAffff_PRE(self,u,v,span+i,chunk);
+   if(direct!=NULL) {
+    int k;
+    
+    for(k=0;k<chunk;k++)
+     span[i+k]=direct[k];
+   }
    i+=chunk;
    u+=chunk;
 
-   for(;i<length;i++)
-    KGImageReadSpan_lRGBAffff_PRE(self,self->_width-1,v,span+i,1);
+   for(;i<length;i++){
+    direct=KGImageReadSpan_lRGBAffff_PRE(self,self->_width-1,v,span+i,1);
+    if(direct!=NULL)
+     span[i]=direct[0];
+   }
 }
 
 
@@ -1104,16 +1194,16 @@ void KGImageBicubic_lRGBA8888_PRE(KGImage *self,int x, int y,KGRGBA8888 *span,in
     KGRGBA8888 t0,t1,t2,t3;
     KGRGBA8888 cspan[4];
      
-    KGImageReadTileSpanExtendEdge__lRGBA8888_PRE(self,u - 1,v - 1,cspan,4);
+    KGImageReadTileSpanExtendEdge_lRGBA8888_PRE(self,u - 1,v - 1,cspan,4);
     t0 = bicubic_lRGBA8888_PRE(cspan[0],cspan[1],cspan[2],cspan[3],ufrac);
       
-    KGImageReadTileSpanExtendEdge__lRGBA8888_PRE(self,u - 1,v,cspan,4);
+    KGImageReadTileSpanExtendEdge_lRGBA8888_PRE(self,u - 1,v,cspan,4);
     t1 = bicubic_lRGBA8888_PRE(cspan[0],cspan[1],cspan[2],cspan[3],ufrac);
      
-    KGImageReadTileSpanExtendEdge__lRGBA8888_PRE(self,u - 1,v+1,cspan,4);     
+    KGImageReadTileSpanExtendEdge_lRGBA8888_PRE(self,u - 1,v+1,cspan,4);     
     t2 = bicubic_lRGBA8888_PRE(cspan[0],cspan[1],cspan[2],cspan[3],ufrac);
      
-    KGImageReadTileSpanExtendEdge__lRGBA8888_PRE(self,u - 1,v+2,cspan,4);     
+    KGImageReadTileSpanExtendEdge_lRGBA8888_PRE(self,u - 1,v+2,cspan,4);     
     t3 = bicubic_lRGBA8888_PRE(cspan[0],cspan[1],cspan[2],cspan[3],ufrac);
 
     span[i]=bicubic_lRGBA8888_PRE(t0,t1,t2,t3, vfrac);
@@ -1181,10 +1271,10 @@ void KGImageBilinear_lRGBA8888_PRE(KGImage *self,int x, int y,KGRGBA8888 *span,i
 	int u = RI_FLOOR_TO_INT(uv.x);
 	int v = RI_FLOOR_TO_INT(uv.y);
 	KGRGBA8888 c00c01[2];
-    KGImageReadTileSpanExtendEdge__lRGBA8888_PRE(self,u,v,c00c01,2);
+    KGImageReadTileSpanExtendEdge_lRGBA8888_PRE(self,u,v,c00c01,2);
 
     KGRGBA8888 c01c11[2];
-    KGImageReadTileSpanExtendEdge__lRGBA8888_PRE(self,u,v+1,c01c11,2);
+    KGImageReadTileSpanExtendEdge_lRGBA8888_PRE(self,u,v+1,c01c11,2);
 
     int fu = coverageFromZeroToOne(uv.x - (CGFloat)u);
     int oneMinusFu=inverseCoverage(fu);
@@ -1229,7 +1319,7 @@ void KGImagePointSampling_lRGBA8888_PRE(KGImage *self,int x, int y,KGRGBA8888 *s
     CGPoint uv=CGPointMake(x+0.5,y+0.5);
 	uv = CGAffineTransformTransformVector2(surfaceToImage ,uv);
 
-    KGImageReadTileSpanExtendEdge__lRGBA8888_PRE(self,RI_FLOOR_TO_INT(uv.x), RI_FLOOR_TO_INT(uv.y),span+i,1);
+    KGImageReadTileSpanExtendEdge_lRGBA8888_PRE(self,RI_FLOOR_TO_INT(uv.x), RI_FLOOR_TO_INT(uv.y),span+i,1);
    }
 }
 
@@ -1244,8 +1334,8 @@ void KGImagePointSampling_lRGBAffff_PRE(KGImage *self,int x, int y,KGRGBAffff *s
    }
 }
 
-void KGImageReadSpan_lRGBA8888_PRE(KGImage *self,int x,int y,KGRGBA8888 *span,int length) {   
-   self->_readRGBA8888(self,x,y,span,length);
+KGRGBA8888 *KGImageReadSpan_lRGBA8888_PRE(KGImage *self,int x,int y,KGRGBA8888 *span,int length) {   
+   return self->_readRGBA8888(self,x,y,span,length);
 #if 0   
    if(format&VGColorNONLINEAR){
     KGRGBAffffConvertSpan(span,length,format,VGColor_lRGBA_PRE);
@@ -1272,11 +1362,14 @@ static void clampSpan_lRGBAffff_PRE(KGRGBAffff *span,int length){
    }
 }
 
-void KGImageReadSpan_lRGBAffff_PRE(KGImage *self,int x,int y,KGRGBAffff *span,int length) {
+KGRGBAffff *KGImageReadSpan_lRGBAffff_PRE(KGImage *self,int x,int y,KGRGBAffff *span,int length) {
    VGColorInternalFormat format=self->_colorFormat;
    
-   self->_readRGBAffff(self,x,y,span,length);
+   KGRGBAffff *direct=self->_readRGBAffff(self,x,y,span,length);
    
+   if(direct!=NULL)
+    span=direct;
+    
    if(format&VGColorNONLINEAR){
     KGRGBAffffConvertSpan(span,length,format,VGColor_lRGBA_PRE);
    }
@@ -1288,6 +1381,7 @@ void KGImageReadSpan_lRGBAffff_PRE(KGImage *self,int x,int y,KGRGBAffff *span,in
     if(self->_clampExternalPixels)
       clampSpan_lRGBAffff_PRE(span,length); // We don't need to do this for internally generated images (context)
    }
+   return NULL;
 }
 
 /*-------------------------------------------------------------------*//*!
@@ -1297,12 +1391,12 @@ void KGImageReadSpan_lRGBAffff_PRE(KGImage *self,int x,int y,KGRGBAffff *span,in
 * \note		
 *//*-------------------------------------------------------------------*/
 
-void KGImageReadSpan_A8_MASK(KGImage *self,int x,int y,uint8_t *coverage,int length){
-   self->_readA8(self,x,y,coverage,length);
+uint8_t *KGImageReadSpan_A8_MASK(KGImage *self,int x,int y,uint8_t *coverage,int length){
+   return self->_readA8(self,x,y,coverage,length);
 }
 
-void KGImageReadSpan_Af_MASK(KGImage *self,int x,int y,CGFloat *coverage,int length) {
-   self->_readAf(self,x,y,coverage,length);
+CGFloat *KGImageReadSpan_Af_MASK(KGImage *self,int x,int y,CGFloat *coverage,int length) {
+   return self->_readAf(self,x,y,coverage,length);
 }
 
 
@@ -1322,7 +1416,9 @@ void KGImageReadTexelTileRepeat(KGImage *self,int u, int v, KGRGBAffff *span,int
    for(i=0;i<length;i++,u++){
     u = RI_INT_MOD(u, self->_width);
 
-    KGImageReadSpan_lRGBAffff_PRE(self,u,v,span+i,1);
+    KGRGBAffff *direct=KGImageReadSpan_lRGBAffff_PRE(self,u,v,span+i,1);
+    if(direct!=NULL)
+     span[i]=direct[0];
    }
 }
 

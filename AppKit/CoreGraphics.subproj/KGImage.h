@@ -113,10 +113,10 @@ typedef struct  {
 
 
 typedef struct {
+   CGFloat a;
    CGFloat r;
    CGFloat g;
    CGFloat b;
-   CGFloat a;
 } KGRGBAffff;
 
 static inline KGRGBAffff KGRGBAffffInit(CGFloat r,CGFloat g,CGFloat b,CGFloat a){
@@ -155,10 +155,18 @@ static inline void KGRGBPremultiplySpan(KGRGBAffff *span,int length){
 }
 
 typedef struct {
+#ifdef __LITTLE_ENDIAN__
+   uint8_t b;
+   uint8_t g;
+   uint8_t r;
+   uint8_t a;
+#endif
+#ifdef __BIG_ENDIAN__
+   uint8_t a;
    uint8_t r;
    uint8_t g;
    uint8_t b;
-   uint8_t a;
+#endif
 } KGRGBA8888;
 
 static inline KGRGBA8888 KGRGBA8888Init(int r,int g,int b,int a){
@@ -224,10 +232,10 @@ static inline KGRGBA8888 KGRGBA8888Add(KGRGBA8888 result,KGRGBA8888 other){
 
 @class KGImage;
  
-typedef void (*KGImageReadSpan_RGBA8888)(KGImage *self,int x,int y,KGRGBA8888 *span,int length);
-typedef void (*KGImageReadSpan_RGBAffff)(KGImage *self,int x,int y,KGRGBAffff *span,int length);
-typedef void (*KGImageReadSpan_A8)(KGImage *self,int x,int y,uint8_t *span,int length);
-typedef void (*KGImageReadSpan_Af)(KGImage *self,int x,int y,CGFloat *span,int length);
+typedef KGRGBA8888 *(*KGImageReadSpan_RGBA8888)(KGImage *self,int x,int y,KGRGBA8888 *span,int length);
+typedef KGRGBAffff *(*KGImageReadSpan_RGBAffff)(KGImage *self,int x,int y,KGRGBAffff *span,int length);
+typedef uint8_t    *(*KGImageReadSpan_A8)(KGImage *self,int x,int y,uint8_t *span,int length);
+typedef CGFloat    *(*KGImageReadSpan_Af)(KGImage *self,int x,int y,CGFloat *span,int length);
 
 @interface KGImage : NSObject <NSCopying> {
    size_t _width;
@@ -304,36 +312,38 @@ size_t KGImageGetHeight(KGImage *self);
 
 /* KGImage and KGSurface can read and write any image format provided functions are provided to translate to/from either KGRGBA8888 or KGRGBAffff spans. 
 
-  The nomenclature for the RGBA8888 functions is the byte sequencing regardless of endianness
+  The return value will be either NULL or a pointer to the image data if direct access is available for the given format. You must use the return value if it is not NULL. If the value is not NULL you don't do a write back. This is a big boost for native ARGB format as it avoids a copy out and a copy in.
+  
+  The nomenclature for the RGBA8888 functions is the bit sequencing in big endian
  */
 
-void KGImageRead_G8_to_A8(KGImage *self,int x,int y,uint8_t *alpha,int length);
-void KGImageRead_ANY_to_A8_to_Af(KGImage *self,int x,int y,CGFloat *alpha,int length);
-void KGImageRead_ANY_to_RGBA8888_to_A8(KGImage *self,int x,int y,uint8_t *alpha,int length);
+uint8_t *KGImageRead_G8_to_A8(KGImage *self,int x,int y,uint8_t *alpha,int length);
+CGFloat *KGImageRead_ANY_to_A8_to_Af(KGImage *self,int x,int y,CGFloat *alpha,int length);
+uint8_t *KGImageRead_ANY_to_RGBA8888_to_A8(KGImage *self,int x,int y,uint8_t *alpha,int length);
 
-void KGImageRead_G8_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span,int length);
-void KGImageRead_GA88_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span,int length);
-void KGImageRead_RGBA8888_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span,int length);
-void KGImageRead_ABGR8888_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span,int length);
-void KGImageRead_BGRA8888_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span,int length);
-void KGImageRead_G3B5X1R5G2_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span,int length);
-void KGImageRead_RGBA4444_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span,int length);
-void KGImageRead_BARG4444_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span,int length);
-void KGImageRead_RGBA2222_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span,int length);
-void KGImageRead_CMYK8888_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span,int length);
+KGRGBA8888 *KGImageRead_G8_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span,int length);
+KGRGBA8888 *KGImageRead_GA88_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span,int length);
+KGRGBA8888 *KGImageRead_RGBA8888_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span,int length);
+KGRGBA8888 *KGImageRead_ABGR8888_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span,int length);
+KGRGBA8888 *KGImageRead_BGRA8888_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span,int length);
+KGRGBA8888 *KGImageRead_G3B5X1R5G2_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span,int length);
+KGRGBA8888 *KGImageRead_RGBA4444_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span,int length);
+KGRGBA8888 *KGImageRead_BARG4444_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span,int length);
+KGRGBA8888 *KGImageRead_RGBA2222_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span,int length);
+KGRGBA8888 *KGImageRead_CMYK8888_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span,int length);
 
-void KGImageRead_ANY_to_RGBA8888_to_RGBAffff(KGImage *self,int x,int y,KGRGBAffff *span,int length);
+KGRGBAffff *KGImageRead_ANY_to_RGBA8888_to_RGBAffff(KGImage *self,int x,int y,KGRGBAffff *span,int length);
 
-void KGImageRead_RGBAffffLittle_to_RGBAffff(KGImage *self,int x,int y,KGRGBAffff *span,int length);
-void KGImageRead_RGBAffffBig_to_RGBAffff(KGImage *self,int x,int y,KGRGBAffff *span,int length);
+KGRGBAffff *KGImageRead_RGBAffffLittle_to_RGBAffff(KGImage *self,int x,int y,KGRGBAffff *span,int length);
+KGRGBAffff *KGImageRead_RGBAffffBig_to_RGBAffff(KGImage *self,int x,int y,KGRGBAffff *span,int length);
 
-void KGImageReadSpan_lRGBA8888_PRE(KGImage *self,int x,int y,KGRGBA8888 *span,int length);
-void KGImageReadSpan_lRGBAffff_PRE(KGImage *self,int x,int y,KGRGBAffff *span,int length);
-void KGImageReadSpan_A8_MASK(KGImage *self,int x,int y,uint8_t *coverage,int length);
-void KGImageReadSpan_Af_MASK(KGImage *self,int x,int y,CGFloat *coverage,int length);
+KGRGBA8888 *KGImageReadSpan_lRGBA8888_PRE(KGImage *self,int x,int y,KGRGBA8888 *span,int length);
+KGRGBAffff *KGImageReadSpan_lRGBAffff_PRE(KGImage *self,int x,int y,KGRGBAffff *span,int length);
+uint8_t    *KGImageReadSpan_A8_MASK(KGImage *self,int x,int y,uint8_t *coverage,int length);
+CGFloat    *KGImageReadSpan_Af_MASK(KGImage *self,int x,int y,CGFloat *coverage,int length);
 
-void KGImageReadTileSpanExtendEdge__lRGBA8888_PRE(KGImage *self,int u, int v, KGRGBA8888 *span,int length);
-void KGImageReadTileSpanExtendEdge__lRGBAffff_PRE(KGImage *self,int u, int v, KGRGBAffff *span,int length);
+void KGImageReadTileSpanExtendEdge_lRGBA8888_PRE(KGImage *self,int u, int v, KGRGBA8888 *span,int length);
+void KGImageReadTileSpanExtendEdge_lRGBAffff_PRE(KGImage *self,int u, int v, KGRGBAffff *span,int length);
 
 void KGImageEWAOnMipmaps_lRGBAffff_PRE(KGImage *self,int x, int y,KGRGBAffff *span,int length, CGAffineTransform surfaceToImage);
 void KGImageBicubic_lRGBA8888_PRE(KGImage *self,int x, int y,KGRGBA8888 *span,int length, CGAffineTransform surfaceToImage);

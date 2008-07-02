@@ -20,8 +20,8 @@ static inline BOOL transformIsFlipped(CGAffineTransform matrix){
    return (matrix.d<0)?YES:NO;
 }
 
--initWithSurface:(KGSurface *)surface {
-   [super initWithSurface:surface];
+-initWithSurface:(KGSurface *)surface flipped:(BOOL)flipped {
+   [super initWithSurface:surface flipped:flipped];
    _dc=[[(KGSurface_DIBSection *)[self surface] deviceContext] dc];
    
    if(SetMapMode(_dc,MM_ANISOTROPIC)==0)

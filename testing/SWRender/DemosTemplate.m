@@ -55,10 +55,10 @@ static CGColorRef cgColorFromColor(NSColor *color){
    _bitsPerPixel=32;
    _bytesPerRow=(_pixelsWide*_bitsPerPixel)/8;
    _colorSpace=CGColorSpaceCreateDeviceRGB();
-   _bitmapInfo=kCGImageAlphaPremultipliedLast|kCGBitmapByteOrder32Big;
+   _bitmapInfo=kCGImageAlphaPremultipliedFirst|kCGBitmapByteOrder32Little;
    _data=NSZoneMalloc(NULL,_bytesPerRow*_pixelsHigh);
    _context=CGBitmapContextCreate(_data,_pixelsWide,_pixelsHigh,_bitsPerComponent,_bytesPerRow,_colorSpace,_bitmapInfo);
-
+   
    _fillColor=cgColorFromColor([NSColor blueColor]);
    _strokeColor=cgColorFromColor([NSColor redColor]);
    _pathDrawingMode=kCGPathStroke;

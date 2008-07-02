@@ -653,10 +653,12 @@ VGColor KGSurfaceReadPixel(KGImage *self,int x, int y) {
 	RI_ASSERT(x >= 0 && x < self->_width);
 	RI_ASSERT(y >= 0 && y < self->_height);
  
-    KGRGBAffff span;
-    KGImageReadSpan_lRGBAffff_PRE(self,x,y,&span,1);
+    KGRGBAffff span,*direct=KGImageReadSpan_lRGBAffff_PRE(self,x,y,&span,1);
    
-   return VGColorFromRGBAffff(span,VGColor_lRGBA_PRE);
+    if(direct!=NULL)
+     return VGColorFromRGBAffff(*direct,VGColor_lRGBA_PRE);
+    else
+     return VGColorFromRGBAffff(span,VGColor_lRGBA_PRE);
 }
 
 
