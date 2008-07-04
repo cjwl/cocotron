@@ -89,7 +89,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    unsigned  location=_range.location;
    unsigned  limit=NSMaxRange(_range);
 
-   [self appendCString:"{\\rtf0\\ansi"];
+   [self appendCString:"{\\rtf0\\ansi "];
 
    while(location<limit){
     NSRange         effectiveRange;
