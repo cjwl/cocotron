@@ -113,7 +113,7 @@ typedef enum {
 -(void)curveToPoint:(NSPoint)point controlPoint1:(NSPoint)cp1 controlPoint2:(NSPoint)cp2;
 -(void)closePath;
 -(void)relativeMoveToPoint:(NSPoint)point;
--(void)relativeLinetoPoint:(NSPoint)point;
+-(void)relativeLineToPoint:(NSPoint)point;
 -(void)relativeCurveToPoint:(NSPoint)point controlPoint1:(NSPoint)cp1 controlPoint2:(NSPoint)cp2;
 
 -(void)appendBezierPathWithPoints:(NSPoint *)points count:(unsigned)count;

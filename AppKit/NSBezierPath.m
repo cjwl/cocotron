@@ -376,7 +376,7 @@ static int numberOfPointsForOperator(int op){
    [_path relativeMoveToPoint:point withTransform:NULL];
 }
 
--(void)relativeLinetoPoint:(NSPoint)point {
+-(void)relativeLineToPoint:(NSPoint)point {
    [_path addRelativeLineToPoint:point withTransform:NULL];
 }
 
