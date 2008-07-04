@@ -189,18 +189,16 @@ static void applyPath(void *info,const CGPathElement *element) {
 }
 
 -(void)deviceClipToNonZeroPath:(KGPath *)path {
- #if 0
-   CGRect rect;
-
-   if([path isEmpty])
-    [self deviceClipReset];
-   else if([path isRect:&rect]){
-    _vpx=MAX(rect.origin.x,0);
-    _vpwidth=MIN(KGImageGetWidth(_surface),CGRectGetMaxX(rect))-_vpx;
-    _vpy=MAX(rect.origin.y,0);
-    _vpheight=MIN(KGImageGetHeight(_surface),CGRectGetMaxY(rect))-_vpy;
-   }
-#endif
+   KGMutablePath *copy=[path mutableCopy];
+    
+   [copy applyTransform:CGAffineTransformInvert([self currentState]->_userSpaceTransform)];
+   [copy applyTransform:[self currentState]->_deviceSpaceTransform];
+   CGRect rect=[copy boundingBox];
+   
+   _vpx=MAX(rect.origin.x,0);
+   _vpwidth=MIN(KGImageGetWidth(_surface),CGRectGetMaxX(rect))-_vpx;
+   _vpy=MAX(rect.origin.y,0);
+   _vpheight=MIN(KGImageGetHeight(_surface),CGRectGetMaxY(rect))-_vpy;
 }
 
 static KGPaint *paintFromColor(KGColor *color){

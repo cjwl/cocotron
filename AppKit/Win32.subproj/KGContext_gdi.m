@@ -248,88 +248,19 @@ static RECT NSRectToRECT(NSRect rect) {
    SelectObject(_dc,[_gdiFont fontHandle]);
 }
 
--(void)establishDeviceSpacePath:(KGPath *)path withTransform:(CGAffineTransform)xform {
-   unsigned             opCount=[path numberOfElements];
-   const unsigned char *elements=[path elements];
-   unsigned             pointCount=[path numberOfPoints];
-   const NSPoint       *points=[path points];
-   unsigned             i,pointIndex;
-       
-   BeginPath(_dc);
-   
-   pointIndex=0;
-   for(i=0;i<opCount;i++){
-    switch(elements[i]){
-
-     case kCGPathElementMoveToPoint:{
-       NSPoint point=CGPointApplyAffineTransform(points[pointIndex++],xform);
-        
-       MoveToEx(_dc,float2int(point.x),float2int(point.y),NULL);
-      }
-      break;
-       
-     case kCGPathElementAddLineToPoint:{
-       NSPoint point=CGPointApplyAffineTransform(points[pointIndex++],xform);
-        
-       LineTo(_dc,float2int(point.x),float2int(point.y));
-      }
-      break;
-
-     case kCGPathElementAddCurveToPoint:{
-       NSPoint cp1=CGPointApplyAffineTransform(points[pointIndex++],xform);
-       NSPoint cp2=CGPointApplyAffineTransform(points[pointIndex++],xform);
-       NSPoint end=CGPointApplyAffineTransform(points[pointIndex++],xform);
-       POINT   points[3]={
-        { float2int(cp1.x), float2int(cp1.y) },
-        { float2int(cp2.x), float2int(cp2.y) },
-        { float2int(end.x), float2int(end.y) },
-       };
-        
-       PolyBezierTo(_dc,points,3);
-      }
-      break;
-
-// FIX, this is wrong
-     case kCGPathElementAddQuadCurveToPoint:{
-       NSPoint cp1=CGPointApplyAffineTransform(points[pointIndex++],xform);
-       NSPoint cp2=CGPointApplyAffineTransform(points[pointIndex++],xform);
-       NSPoint end=cp2;
-       POINT   points[3]={
-        { float2int(cp1.x), float2int(cp1.y) },
-        { float2int(cp2.x), float2int(cp2.y) },
-        { float2int(end.x), float2int(end.y) },
-       };
-        
-       PolyBezierTo(_dc,points,3);
-      }
-      break;
-
-     case kCGPathElementCloseSubpath:
-      CloseFigure(_dc);
-      break;
-    }
-   }
-   EndPath(_dc);
-}
 
 -(void)deviceClipReset {
-   HRGN _clipRegion=CreateRectRgn(0,0,GetDeviceCaps(_dc,HORZRES),GetDeviceCaps(_dc,VERTRES));
-   SelectClipRgn(_dc,_clipRegion);
-   DeleteObject(_clipRegion);
+   [_deviceContext clipReset];
 }
 
 -(void)deviceClipToNonZeroPath:(KGPath *)path {
-   [self establishDeviceSpacePath:path withTransform:_userToDeviceTransform];
-   SetPolyFillMode(_dc,WINDING);
-   if(!SelectClipPath(_dc,RGN_AND))
-    NSLog(@"SelectClipPath failed (%i), path size= %d", GetLastError(),[path numberOfElements]);
+   KGGraphicsState *state=[self currentState];
+   [_deviceContext clipToNonZeroPath:path withTransform:CGAffineTransformInvert(state->_userSpaceTransform) deviceTransform:state->_deviceSpaceTransform];
 }
 
 -(void)deviceClipToEvenOddPath:(KGPath *)path {
-   [self establishDeviceSpacePath:path withTransform:_userToDeviceTransform];
-   SetPolyFillMode(_dc,ALTERNATE);
-   if(!SelectClipPath(_dc,RGN_AND))
-    NSLog(@"SelectClipPath failed (%i), path size= %d", GetLastError(),[path numberOfElements]);
+   KGGraphicsState *state=[self currentState];
+   [_deviceContext clipToEvenOddPath:path withTransform:CGAffineTransformInvert(state->_userSpaceTransform) deviceTransform:state->_deviceSpaceTransform];
 }
 
 -(void)deviceClipToMask:(KGImage *)mask inRect:(NSRect)rect {
@@ -349,7 +280,7 @@ static RECT NSRectToRECT(NSRect rect) {
    if(!SetWorldTransform(_dc,&userToDevice))
     NSLog(@"ModifyWorldTransform failed");
 
-   [self establishDeviceSpacePath:path withTransform:CGAffineTransformInvert(state->_userSpaceTransform)];
+   [_deviceContext establishDeviceSpacePath:path withTransform:CGAffineTransformInvert(state->_userSpaceTransform)];
       
    {
     HBRUSH fillBrush=CreateSolidBrush(RGBFromColor(fillColor));

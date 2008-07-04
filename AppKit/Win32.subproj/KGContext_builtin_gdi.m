@@ -24,6 +24,8 @@ static inline BOOL transformIsFlipped(CGAffineTransform matrix){
    [super initWithSurface:surface flipped:flipped];
    _dc=[[(KGSurface_DIBSection *)[self surface] deviceContext] dc];
    
+   SetGraphicsMode(_dc,GM_ADVANCED);
+
    if(SetMapMode(_dc,MM_ANISOTROPIC)==0)
     NSLog(@"SetMapMode failed");
    //SetICMMode(_dc,ICM_ON); MSDN says only available on 2000, not NT.
@@ -97,6 +99,25 @@ static COLORREF RGBFromColor(KGColor *color){
      NSLog(@"GDI context can't translate from colorspace %@",colorSpace);
      return RGB(0,0,0);
    }
+}
+
+-(void)deviceClipReset {
+   [super deviceClipReset];
+   [[self deviceContext] clipReset];
+}
+
+-(void)deviceClipToNonZeroPath:(KGPath *)path {
+   [super deviceClipToNonZeroPath:path];
+
+   KGGraphicsState *state=[self currentState];
+   [[self deviceContext] clipToNonZeroPath:path withTransform:CGAffineTransformInvert(state->_userSpaceTransform) deviceTransform:state->_deviceSpaceTransform];
+}
+
+-(void)deviceClipToEvenOddPath:(KGPath *)path {
+   [super deviceClipToEvenOddPath:path];
+
+   KGGraphicsState *state=[self currentState];
+   [[self deviceContext] clipToEvenOddPath:path withTransform:CGAffineTransformInvert(state->_userSpaceTransform) deviceTransform:state->_deviceSpaceTransform];
 }
 
 -(void)showGlyphs:(const CGGlyph *)glyphs count:(unsigned)count {

@@ -8,8 +8,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/NSObject.h>
 #import <Foundation/NSGeometry.h>
+#import <ApplicationServices/ApplicationServices.h>
 
-@class Win32DeviceContextWindow;
+@class Win32DeviceContextWindow,KGPath;
 
 @interface KGDeviceContext_gdi : NSObject {
    HDC _dc;
@@ -20,6 +21,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(HDC)dc;
 
 -(Win32DeviceContextWindow *)windowDeviceContext;
+
+-(void)establishDeviceSpacePath:(KGPath *)path withTransform:(CGAffineTransform)xform;
+-(void)clipReset;
+-(void)clipToNonZeroPath:(KGPath *)path withTransform:(CGAffineTransform)xform deviceTransform:(CGAffineTransform)deviceXFORM;
+-(void)clipToEvenOddPath:(KGPath *)path withTransform:(CGAffineTransform)xform deviceTransform:(CGAffineTransform)deviceXFORM;
 
 -(void)beginPrintingWithDocumentName:(NSString *)name;
 -(void)endPrinting;

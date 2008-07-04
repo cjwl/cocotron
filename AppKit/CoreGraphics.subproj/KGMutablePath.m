@@ -208,9 +208,9 @@ static inline void expandPointCapacity(KGMutablePath *self,unsigned delta){
 
 -(void)addRect:(CGRect)rect withTransform:(const CGAffineTransform *)matrix {
    [self moveToPoint:CGPointMake(CGRectGetMinX(rect),CGRectGetMinY(rect)) withTransform:matrix];
-   [self addLineToPoint:CGPointMake(CGRectGetMaxX(rect),CGRectGetMinY(rect)) withTransform:matrix];
-   [self addLineToPoint:CGPointMake(CGRectGetMaxX(rect),CGRectGetMaxY(rect)) withTransform:matrix];
    [self addLineToPoint:CGPointMake(CGRectGetMinX(rect),CGRectGetMaxY(rect)) withTransform:matrix];
+   [self addLineToPoint:CGPointMake(CGRectGetMaxX(rect),CGRectGetMaxY(rect)) withTransform:matrix];
+   [self addLineToPoint:CGPointMake(CGRectGetMaxX(rect),CGRectGetMinY(rect)) withTransform:matrix];
    [self closeSubpath];
 }
 

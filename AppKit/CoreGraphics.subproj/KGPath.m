@@ -112,17 +112,17 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    if(_elements[4]!=kCGPathElementCloseSubpath)
     return NO;
    
-   if(_points[0].y!=_points[1].y)
+   if(_points[0].x!=_points[1].x)
     return NO;
-   if(_points[1].x!=_points[2].x)
+   if(_points[1].y!=_points[2].y)
     return NO;
-   if(_points[3].y!=_points[3].y)
+   if(_points[2].x!=_points[3].x)
     return NO;
-   if(_points[3].x!=_points[0].x)
+   if(_points[3].y!=_points[0].y)
     return NO;
    
    rect->origin=_points[0];
-   rect->size=CGSizeMake(_points[1].x-_points[0].x,_points[2].y-_points[0].y);
+   rect->size=CGSizeMake(_points[2].x-_points[0].x,_points[2].y-_points[0].y);
    
    return YES;
 }

@@ -391,8 +391,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 +(NSNumber *)numberWithInteger:(NSInteger)value {
-   NSUnimplementedMethod();
-   return nil;
+#if defined(__LP64__)
+   return [self numberWithLong:value];
+#else
+   return [self numberWithInt:value];
+#endif
 }
 
 +(NSNumber *)numberWithUnsignedChar:(unsigned char)value {
@@ -431,8 +434,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 +(NSNumber *)numberWithUnsignedInteger:(NSUInteger)value {
-   NSUnimplementedMethod();
-   return nil;
+#if defined(__LP64__)
+   return [self numberWithUnsignedLong:value];
+#else
+   return [self numberWithUnsignedInt:value];
+#endif
 }
 
 
