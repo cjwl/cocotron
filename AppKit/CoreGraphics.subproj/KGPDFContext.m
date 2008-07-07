@@ -724,4 +724,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [self encodePDFObject:(id)_xref];
 }
 
+-(void)deviceClipReset {
+}
+
+-(void)deviceSelectFontWithName:(NSString *)name pointSize:(float)pointSize antialias:(BOOL)antialias {
+}
+
 @end
