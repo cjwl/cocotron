@@ -14,7 +14,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSCoder.h>
 
 // given in spec. is this a default someplace?
-#define DEFAULT_CALENDAR_FORMAT		@"%Y-%m-%d %H:%M:%S %z"
+#define DEFAULT_CALENDAR_FORMAT                @"%Y-%m-%d %H:%M:%S%z"
 
 @implementation NSCalendarDate
 
@@ -50,11 +50,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
     
 -initWithString:(NSString *)string calendarFormat:(NSString *)format locale:(NSDictionary *)locale {
+   NSMutableString* mu=[[string mutableCopy] autorelease];
+   [mu replaceCharactersInRange:[mu rangeOfString:@"T"] withString:@" "];
+   
     NSDateFormatter *dateFormatter = [[[NSDateFormatter allocWithZone:NULL] initWithDateFormat:format allowNaturalLanguage:YES locale:locale] autorelease];
     NSString *error;
     
     [self autorelease];
-    if ([dateFormatter getObjectValue:&self forString:string errorDescription:&error]) {
+    if ([dateFormatter getObjectValue:&self forString:mu errorDescription:&error]) {
         [self retain];	// getObjectValues are autoreleased
         return self;
     }

@@ -15,6 +15,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSArray.h>
 #import <Foundation/NSData.h>
+#import <Foundation/NSDate.h>
 #import <Foundation/NSNumber.h>
 
 @implementation NSPropertyListReader_xml1
@@ -127,6 +128,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return result;
 }
 
++(NSDate *) dateFromElement:(NSOldXMLElement*) element {
+   NSString* string=[element stringValue];
+
+   NSDate* result= [NSDate dateWithString:string];
+   if (result)
+      return result;
+   else
+      return [NSDate date];
+}
 
 +(NSObject *)propertyListFromElement:(NSOldXMLElement *)element {
    NSString *name=[element name];
@@ -148,6 +158,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     result=[NSNumber numberWithBool:NO];
    else if([name isEqualToString:@"data"])
     result=[self dataFromElement:element];
+   else if([name isEqualToString:@"date"])
+    result=[self dateFromElement:element];
         
    return result;
 }

@@ -21,6 +21,7 @@
 @implementation Forwarding
 -(void)forwardInvocation:(NSInvocation*)inv
 {
+   NSLog(@"selector %@", NSStringFromSelector([inv selector]));
 	if([inv selector]==@selector(doStuffWithObjects:::))
 	{
 		[inv setSelector:@selector(concatObjects:::)];
@@ -35,7 +36,11 @@
 	}
 	if([inv selector]==@selector(doStuffWithFloats:::))
 	{
+
 		[inv setSelector:@selector(addFloats:::)];
+      NSLog(@"blah");
+      NSLog(@"new %@", NSStringFromSelector([inv selector]));
+
 		[inv invoke];
 		return;
 	}
@@ -108,12 +113,16 @@
 	
 	STAssertTrue(beenInMethodFlag, nil);
 	STAssertEquals(6, retInt, nil);
+}
 
-	beenInMethodFlag=NO;
-	float retFloat=[self doStuffWithFloats:1. :2. :3.];
-	
-	STAssertTrue(beenInMethodFlag, nil);
-	STAssertEqualsWithAccuracy(6.0f, retFloat, 0.001, nil);	
+
+-(void)testFloatReturn
+{
+   beenInMethodFlag=NO;
+	float ret=[self doStuffWithFloats:1. :2. :3.];
+   ret=[self doStuffWithFloats:1. :2. :3.];
+	STAssertTrue(beenInMethodFlag, nil);   
+	STAssertEqualsWithAccuracy(6.0f, ret, 0.001, nil);   
 }
 
 -(id)makeStringFromStructs:(NSSize)size :(char)c :(NSRange)range :(NSRect)rect :(double)d :(long long)l
@@ -156,9 +165,6 @@
 
 -(void)testStructReturn
 {
-	// this crashes with llvm, which the tester doesn't catch. Just return for now.
-//	STFail(nil);
-	return;
 	beenInMethodFlag=NO;
 	int x=12;
 	struct stuff

@@ -93,6 +93,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(NSString *)stringByAppendingPathComponent:(NSString *)other {
    unsigned selfLength=[self length];
+   if(!selfLength)
+      return [[other copy] autorelease];
+
    unsigned otherLength=[other length];
    unsigned totalLength=selfLength+1+otherLength;
    unichar  characters[totalLength];

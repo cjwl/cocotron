@@ -54,7 +54,7 @@ void OBJCArrayRemoveItemAtIndex(OBJCArray *array, unsigned index) {
    if (index > array->count)
      OBJCRaiseException("OBJCArrayIndexBeyondBounds","OBJCArrayItemAtIndex index (%d) beyond bounds (%d)",index,array->count);
     
-   while (index < array->count) {
+   while (index < array->count-1) {
     array->data[index] = array->data[index+1];
     index++;
    }
