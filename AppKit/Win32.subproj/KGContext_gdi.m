@@ -302,10 +302,11 @@ static RECT NSRectToRECT(NSRect rect) {
     DWORD    style;
     LOGBRUSH logBrush={BS_SOLID,RGBFromColor(strokeColor),0};
     
+    style=PS_GEOMETRIC;
     if(state->_dashLengthsCount==0)
-     style=PS_SOLID;
+     style|=PS_SOLID;
     else
-     style=PS_USERSTYLE;
+     style|=PS_USERSTYLE;
      
     switch(state->_lineCap){
      case kCGLineCapButt:
@@ -330,13 +331,13 @@ static RECT NSRectToRECT(NSRect rect) {
       style|=PS_JOIN_BEVEL;
       break;
     }
-    
+
+    DWORD  *dashes=NULL;
     DWORD   dashesCount=state->_dashLengthsCount;
-    DWORD  *dashes=__builtin_alloca(MAX(dashesCount,1)*sizeof(DWORD));
-    
-    if(dashesCount!=0){
+    if(dashesCount>0){
      int i;
-          
+     dashes=__builtin_alloca(dashesCount*sizeof(DWORD));
+     
      for(i=0;i<dashesCount;i++)
       dashes[i]=float2int(state->_dashLengths[i]);
     }
