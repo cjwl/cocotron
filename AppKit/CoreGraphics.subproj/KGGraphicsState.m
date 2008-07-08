@@ -24,13 +24,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    _userSpaceTransform=CGAffineTransformIdentity;
    _textTransform=CGAffineTransformIdentity;
    _clipPhases=[NSMutableArray new];
-   _lineWidth=1.0;
-   _miterLimit=10;
    _strokeColor=[[KGColor alloc] init];
    _fillColor=[[KGColor alloc] init];
+   _font=nil;
+   _patternPhase=CGSizeMake(0,0);
+   _lineWidth=1.0;
+   _miterLimit=10;
    _blendMode=kCGBlendModeNormal;
    _interpolationQuality=kCGInterpolationDefault;
-   _shouldAntialias=NO;
+   _shouldAntialias=YES;
    _antialiasingQuality=64;
    return self;
 }

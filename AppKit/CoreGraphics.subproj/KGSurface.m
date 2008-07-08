@@ -28,6 +28,7 @@
 
 #import "KGSurface.h"
 #import "KGColorSpace.h"
+#import "KGDataProvider.h"
 
 @implementation KGSurface
 
@@ -554,8 +555,11 @@ static BOOL initFunctionsForParameters(KGSurface *self,size_t bitsPerComponent,s
      int bpr=_width*_bitsPerPixel/8;
      if(_bytesPerRow==0 || _bytesPerRow<bpr)
       _bytesPerRow=bpr;
-      
-     _bytes=NSZoneMalloc(NULL,_bytesPerRow*_height*sizeof(RIuint8));
+     
+     _allocatedSize=_bytesPerRow*_height*sizeof(RIuint8);    
+     NSMutableData *data=[NSMutableData dataWithLength:_allocatedSize];
+     _provider=[[KGDataProvider alloc] initWithData:data];
+     _bytes=[data mutableBytes];
   	 m_ownsData=YES;
 	 memset(_bytes, 0, _bytesPerRow*_height);	//clear image
     }
@@ -577,13 +581,16 @@ static BOOL initFunctionsForParameters(KGSurface *self,size_t bitsPerComponent,s
 	}
 	_mipmapsCount=0;
 
-	if(m_ownsData){
-     NSZoneFree(NULL,_bytes);
-    }
+    _bytes=NULL; // if we own it, it's in the provider, if not, no release
+
     [super dealloc];
 }
 
--(void *)mutableBytes {
+-(NSData *)pixelData {
+   return [_provider data];
+}
+
+-(void *)pixelBytes {
    return _bytes;
 }
 
@@ -599,8 +606,11 @@ static BOOL initFunctionsForParameters(KGSurface *self,size_t bitsPerComponent,s
    self->_bytesPerRow=bpr;
    
    if((size>_allocatedSize) || (!roir && size!=_allocatedSize)){
-    NSZoneFree(NULL,self->_bytes);
-    _bytes=NSZoneMalloc(NULL,size);
+    [_provider release];
+    
+    NSMutableData *data=[NSMutableData dataWithLength:size];
+    _provider=[[KGDataProvider alloc] initWithData:data];
+    _bytes=[data mutableBytes];
     _allocatedSize=size;
    }
    

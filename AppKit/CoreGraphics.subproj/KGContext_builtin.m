@@ -40,6 +40,8 @@ BOOL _isAvailable=NO;
 
 +(void)initialize {
    _isAvailable=[[NSUserDefaults standardUserDefaults] boolForKey:@"CGEnableBuiltin"];
+   if(_isAvailable) // temporary 
+    NSLog(@"KGContext_builtin enabled");
 }
 
 +(BOOL)isAvailable {
@@ -283,12 +285,9 @@ static KGPaint *paintFromColor(KGColor *color){
 -(void)drawImage:(KGImage *)image inRect:(CGRect)rect {
    KGGraphicsState *gState=[self currentState];
    
-CGAffineTransform xform=gState->_deviceSpaceTransform;
-
-CGAffineTransform foo=CGAffineTransformIdentity;
-foo=CGAffineTransformTranslate(foo,rect.origin.x,rect.origin.y);
-foo=CGAffineTransformScale(foo,rect.size.width/(CGFloat)[image width],rect.size.height/(CGFloat)[image height]);
-xform=CGAffineTransformConcat(xform,foo);
+CGAffineTransform xform=CGAffineTransformMakeTranslation(rect.origin.x,rect.origin.y);
+xform=CGAffineTransformScale(xform,rect.size.width/(CGFloat)[image width],rect.size.height/(CGFloat)[image height]);
+xform=CGAffineTransformConcat(xform,gState->_deviceSpaceTransform);
 
 CGAffineTransform i2u=CGAffineTransformMakeTranslation(0,(int)[image height]);
 i2u=CGAffineTransformScale(i2u,1,-1);

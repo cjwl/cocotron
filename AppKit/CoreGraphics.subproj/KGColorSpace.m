@@ -31,12 +31,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return self;
 }
 
-
--initWithColorSpace:(KGColorSpace *)baseColorSpace hival:(unsigned)hival bytes:(const unsigned char *)bytes  {
-   [self dealloc];
-   return [[KGColorSpace_indexed alloc] initWithColorSpace:baseColorSpace hival:hival bytes:bytes];
-}
-
 -copyWithZone:(NSZone *)zone {
    return [self retain];
 }
@@ -62,6 +56,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    if(self->_type!=other->_type)
     return NO;
    return YES;
+}
+
+-(NSString *)description {
+   return [NSString stringWithFormat:@"<%@: %p, type=%d",isa,self,_type];
 }
 
 @end
@@ -106,6 +104,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(KGColorSpace *)baseColorSpace {
    return _base;
+}
+
+-(unsigned)hival {
+   return _hival;
+}
+
+-(const unsigned char *)paletteBytes {
+   return _bytes;
 }
 
 @end

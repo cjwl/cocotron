@@ -3,15 +3,15 @@
 <plist version="1.0">
 <dict>
 	<key>IBFramework Version</key>
-	<string>667</string>
+	<string>670</string>
 	<key>IBLastKnownRelativeProjectPath</key>
 	<string>../SWRender.xcodeproj</string>
 	<key>IBOldestOS</key>
 	<integer>5</integer>
 	<key>IBOpenObjects</key>
 	<array>
+		<integer>2</integer>
 		<integer>29</integer>
-		<integer>21</integer>
 	</array>
 	<key>IBSystem Version</key>
 	<string>9D34</string>

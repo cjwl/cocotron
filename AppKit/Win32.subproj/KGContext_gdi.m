@@ -68,57 +68,6 @@ static inline void CMYKAToRGBA(float *input,float *output){
    output[3]=input[4];
 }
 
-
-static COLORREF gammaAdjustedRGBFromComponents(float r,float g,float b){
-// lame gamma adjustment so that non-system colors appear similar to those on a Mac
-
-   const float assumedGamma=1.3;
-   const float displayGamma=2.2;
-
-   r=pow(r,assumedGamma/displayGamma);
-   if(r>1.0)
-    r=1.0;
-
-   g=pow(g,assumedGamma/displayGamma);
-   if(g>1.0)
-    g=1.0;
-
-   b=pow(b,assumedGamma/displayGamma);
-   if(b>1.0)
-    b=1.0;
-    
-   return RGB(r*255,g*255,b*255);
-}
-
-static COLORREF RGBFromColor(KGColor *color){
-   KGColorSpace *colorSpace=[color colorSpace];
-   float        *components=[color components];
-   
-   switch([colorSpace type]){
-
-    case KGColorSpaceDeviceGray:
-     return gammaAdjustedRGBFromComponents(components[0],components[0],components[0]);
-     
-    case KGColorSpaceDeviceRGB:
-     return gammaAdjustedRGBFromComponents(components[0],components[1],components[2]);
-     
-    case KGColorSpaceDeviceCMYK:{
-      float rgba[4];
-      
-      CMYKAToRGBA(components,rgba);
-      return gammaAdjustedRGBFromComponents(rgba[0],rgba[1],rgba[2]);
-     }
-     break;
-     
-     case KGColorSpacePlatformRGB:
-     return RGB(components[0]*255,components[1]*255,components[2]*255);
-          
-    default:
-     NSLog(@"GDI context can't translate from colorspace %@",colorSpace);
-     return RGB(0,0,0);
-   }
-}
-
 static RECT NSRectToRECT(NSRect rect) {
    RECT result;
 
@@ -153,16 +102,6 @@ static RECT NSRectToRECT(NSRect rect) {
    [self initWithGraphicsState:state];
    _deviceContext=[deviceContext retain];
    _dc=[_deviceContext dc];
-
-   _isAdvanced=(SetGraphicsMode(_dc,GM_ADVANCED)!=0)?YES:NO;
-   
-   if(SetMapMode(_dc,MM_ANISOTROPIC)==0)
-    NSLog(@"SetMapMode failed");
-   //SetICMMode(_dc,ICM_ON); MSDN says only available on 2000, not NT.
-
-   SetBkMode(_dc,TRANSPARENT);
-   SetTextAlign(_dc,TA_BASELINE);
-
    _gdiFont=nil;
 
    return self;
@@ -283,7 +222,7 @@ static RECT NSRectToRECT(NSRect rect) {
    [_deviceContext establishDeviceSpacePath:path withTransform:CGAffineTransformInvert(state->_userSpaceTransform)];
       
    {
-    HBRUSH fillBrush=CreateSolidBrush(RGBFromColor(fillColor));
+    HBRUSH fillBrush=CreateSolidBrush(COLORREFFromColor(fillColor));
     HBRUSH oldBrush=SelectObject(_dc,fillBrush);
 
     if(mode==kCGPathFill || mode==kCGPathFillStroke){
@@ -300,7 +239,7 @@ static RECT NSRectToRECT(NSRect rect) {
    
    if(mode==kCGPathStroke || mode==kCGPathFillStroke || mode==kCGPathEOFillStroke){
     DWORD    style;
-    LOGBRUSH logBrush={BS_SOLID,RGBFromColor(strokeColor),0};
+    LOGBRUSH logBrush={BS_SOLID,COLORREFFromColor(strokeColor),0};
     
     style=PS_GEOMETRIC;
     if(state->_dashLengthsCount==0)
@@ -368,7 +307,7 @@ static RECT NSRectToRECT(NSRect rect) {
    CGAffineTransform Trm=CGAffineTransformConcat([self currentState]->_textTransform,transformToDevice);
    NSPoint           point=CGPointApplyAffineTransform(NSMakePoint(0,0),Trm);
    
-   SetTextColor(_dc,RGBFromColor([self fillColor]));
+   SetTextColor(_dc,COLORREFFromColor([self fillColor]));
    ExtTextOutW(_dc,point.x,point.y,ETO_GLYPH_INDEX,NULL,(void *)glyphs,count,NULL);
    
    NSSize advancement=[[self currentFont] advancementForNominalGlyphs:glyphs count:count];
@@ -437,10 +376,7 @@ static inline float axialBandIntervalFromMagnitude(KGFunction *function,float ma
    typedef WINGDIAPI BOOL WINAPI (*gradientType)(HDC,PTRIVERTEX,ULONG,PVOID,ULONG,ULONG);
    HANDLE        library=LoadLibrary("MSIMG32");
    gradientType  gradientFill=(gradientType)GetProcAddress(library,"GradientFill");
-      
-   if(!_isAdvanced)
-    return;
-    
+          
    if(gradientFill==NULL){
     NSLog(@"Unable to locate GradientFill");
     return;

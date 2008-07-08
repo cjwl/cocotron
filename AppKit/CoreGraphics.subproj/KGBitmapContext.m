@@ -38,8 +38,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [super dealloc];
 }
 
--(void *)mutableBytes {
-   return [_surface mutableBytes];
+-(NSData *)pixelData {
+   return [_surface pixelData];
+}
+
+-(void *)pixelBytes {
+   return [_surface pixelBytes];
 }
 
 -(size_t)width {

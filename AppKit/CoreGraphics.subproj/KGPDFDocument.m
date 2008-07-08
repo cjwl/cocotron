@@ -57,7 +57,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    
    if(![[self trailer] getDictionaryForKey:"Root" value:&result])
     return nil;
-    
+
    return result;
 }
 
@@ -84,7 +84,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    
    if(![[self catalog] getDictionaryForKey:"Pages" value:&result])
     return nil;
-    
+   
    return result;
 }
 
@@ -106,7 +106,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
    if(![pages getIntegerForKey:"Count" value:&pageCount])
     return nil;
-   
+
    kidsCount=[kids count];
    for(i=0;i<kidsCount;i++){
     KGPDFDictionary *check;

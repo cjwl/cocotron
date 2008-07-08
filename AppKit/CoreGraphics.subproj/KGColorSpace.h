@@ -26,7 +26,6 @@ typedef enum {
 -initWithDeviceRGB;
 -initWithDeviceCMYK;
 -initWithPlatformRGB;
--initWithColorSpace:(KGColorSpace *)baseColorSpace hival:(unsigned)hival bytes:(const unsigned char *)bytes;
 
 -(unsigned)numberOfComponents;
 
@@ -40,6 +39,9 @@ typedef enum {
    unsigned char *_bytes;
 }
 
+-initWithColorSpace:(KGColorSpace *)baseColorSpace hival:(unsigned)hival bytes:(const unsigned char *)bytes;
 -(KGColorSpace *)baseColorSpace;
+-(unsigned)hival;
+-(const unsigned char *)paletteBytes;
 
 @end

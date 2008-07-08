@@ -8,11 +8,82 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <AppKit/KGDeviceContext_gdi.h>
 #import <AppKit/KGPath.h>
+#import <AppKit/KGColor.h>
+#import <AppKit/KGColorSpace.h>
+
+static inline void CMYKAToRGBA(float *input,float *output){
+   float white=1-input[3];
+   
+   output[0]=(input[0]>white)?0:white-input[0];
+   output[1]=(input[1]>white)?0:white-input[1];
+   output[2]=(input[2]>white)?0:white-input[2];
+   output[3]=input[4];
+}
+
+static COLORREF gammaAdjustedRGBFromComponents(float r,float g,float b){
+// lame gamma adjustment so that non-system colors appear similar to those on a Mac
+
+   const float assumedGamma=1.3;
+   const float displayGamma=2.2;
+
+   r=pow(r,assumedGamma/displayGamma);
+   if(r>1.0)
+    r=1.0;
+
+   g=pow(g,assumedGamma/displayGamma);
+   if(g>1.0)
+    g=1.0;
+
+   b=pow(b,assumedGamma/displayGamma);
+   if(b>1.0)
+    b=1.0;
+    
+   return RGB(r*255,g*255,b*255);
+}
+
+COLORREF COLORREFFromColor(KGColor *color){
+   KGColorSpace *colorSpace=[color colorSpace];
+   float        *components=[color components];
+   
+   switch([colorSpace type]){
+
+    case KGColorSpaceDeviceGray:
+     return gammaAdjustedRGBFromComponents(components[0],components[0],components[0]);
+     
+    case KGColorSpaceDeviceRGB:
+     return gammaAdjustedRGBFromComponents(components[0],components[1],components[2]);
+     
+    case KGColorSpaceDeviceCMYK:{
+      float rgba[4];
+      
+      CMYKAToRGBA(components,rgba);
+      return gammaAdjustedRGBFromComponents(rgba[0],rgba[1],rgba[2]);
+     }
+     break;
+     
+     case KGColorSpacePlatformRGB:
+     return RGB(components[0]*255,components[1]*255,components[2]*255);
+          
+    default:
+     NSLog(@"GDI context can't translate from colorspace %@",colorSpace);
+     return RGB(0,0,0);
+   }
+}
 
 @implementation KGDeviceContext_gdi
 
 -initWithDC:(HDC)dc {
    _dc=dc;
+   
+   SetGraphicsMode(_dc,GM_ADVANCED);
+
+   if(SetMapMode(_dc,MM_ANISOTROPIC)==0)
+    NSLog(@"SetMapMode failed");
+   //SetICMMode(_dc,ICM_ON); MSDN says only available on 2000, not NT.
+
+   SetBkMode(_dc,TRANSPARENT);
+   SetTextAlign(_dc,TA_BASELINE);
+
    return self;
 }
 

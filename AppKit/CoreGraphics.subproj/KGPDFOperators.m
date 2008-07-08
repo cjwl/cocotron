@@ -288,8 +288,9 @@ if(doIt)
    else if(strcmp(subtype,"Image")==0){
     KGImage *image=[KGImage imageWithPDFObject:stream];
     
-    if(image!=NULL)
+    if(image!=NULL){
      [context drawImage:image inRect:CGRectMake(0,0,1,1)];
+    }
 
     if(image!=NULL)
      [image release];

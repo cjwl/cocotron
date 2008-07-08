@@ -212,6 +212,11 @@ static inline KGGraphicsState *currentState(KGContext *self){
    [_path closeSubpath];
 }
 
+/* Path building is affected by the CTM, we transform them here into base coordinates (first quadrant, no transformation)
+
+   A backend can then convert them to where it needs them, base,  current, or device space.
+ */
+
 -(void)moveToPoint:(float)x:(float)y {      
    CGAffineTransform ctm=[currentState(self) userSpaceTransform];
 
@@ -884,7 +889,11 @@ static inline KGGraphicsState *currentState(KGContext *self){
 
 // bitmap context 
 
--(void *)mutableBytes {
+-(NSData *)pixelData {
+   return nil;
+}
+
+-(void *)pixelBytes {
    return NULL;
 }
 

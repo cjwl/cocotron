@@ -18,7 +18,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -initWithBytes:(void *)bytes width:(size_t)width height:(size_t)height bitsPerComponent:(size_t)bitsPerComponent bytesPerRow:(size_t)bytesPerRow colorSpace:(KGColorSpace *)colorSpace bitmapInfo:(CGBitmapInfo)bitmapInfo flipped:(BOOL)flipped;
 
--(void *)mutableBytes;
+-(NSData *)pixelData;
+-(void *)pixelBytes;
 -(size_t)width;
 -(size_t)height;
 -(size_t)bitsPerComponent;

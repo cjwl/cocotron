@@ -114,13 +114,7 @@ VGPixelDecode KGImageParametersToPixelLayout(KGImageFormat format,size_t *bitsPe
 	return desc;
 }
 
-
-static BOOL initFunctionsForParameters(KGImage *self,size_t bitsPerComponent,size_t bitsPerPixel,KGColorSpace *colorSpace,CGBitmapInfo bitmapInfo){
-
-   self->_readA8=KGImageRead_ANY_to_RGBA8888_to_A8;
-   self->_readAf=KGImageRead_ANY_to_A8_to_Af;
-   self->_readRGBAffff=KGImageRead_ANY_to_RGBA8888_to_RGBAffff;
-
+static BOOL initFunctionsForRGBColorSpace(KGImage *self,size_t bitsPerComponent,size_t bitsPerPixel,CGBitmapInfo bitmapInfo){   
    switch(bitsPerComponent){
    
     case 32:
@@ -159,8 +153,6 @@ static BOOL initFunctionsForParameters(KGImage *self,size_t bitsPerComponent,siz
        break;
        
       case 32:
-       if([colorSpace type]==KGColorSpaceDeviceRGB){
-       
         switch(bitmapInfo&kCGBitmapAlphaInfoMask){
          case kCGImageAlphaNone:
           break;
@@ -199,6 +191,13 @@ static BOOL initFunctionsForParameters(KGImage *self,size_t bitsPerComponent,siz
           break;
           
          case kCGImageAlphaNoneSkipFirst:
+          switch(bitmapInfo&kCGBitmapByteOrderMask){
+           case kCGBitmapByteOrderDefault:
+           case kCGBitmapByteOrder16Big:
+           case kCGBitmapByteOrder32Big:
+            self->_readRGBA8888=KGImageRead_XRGB8888_to_RGBA8888;
+            return YES;
+          }
           break;
         }
               
@@ -215,20 +214,6 @@ static BOOL initFunctionsForParameters(KGImage *self,size_t bitsPerComponent,siz
           self->_readRGBA8888=KGImageRead_RGBA8888_to_RGBA8888;
           return YES;
         }
-       }
-       else if([colorSpace type]==KGColorSpaceDeviceCMYK){
-        switch(bitmapInfo&kCGBitmapByteOrderMask){
-         case kCGBitmapByteOrderDefault:
-         case kCGBitmapByteOrder16Little:
-         case kCGBitmapByteOrder32Little:
-          break;
-         
-         case kCGBitmapByteOrder16Big:
-         case kCGBitmapByteOrder32Big:
-          self->_readRGBA8888=KGImageRead_CMYK8888_to_RGBA8888;
-          return YES;
-        }
-       }
        break;
      }
      break;
@@ -238,8 +223,8 @@ static BOOL initFunctionsForParameters(KGImage *self,size_t bitsPerComponent,siz
      
       case 16:
        if(bitmapInfo==(kCGBitmapByteOrder16Little|kCGImageAlphaNoneSkipFirst)){
-         self->_readRGBA8888=KGImageRead_G3B5X1R5G2_to_RGBA8888;
-         break;
+        self->_readRGBA8888=KGImageRead_G3B5X1R5G2_to_RGBA8888;
+        return YES;
        }
        break;
      }
@@ -296,6 +281,58 @@ static BOOL initFunctionsForParameters(KGImage *self,size_t bitsPerComponent,siz
       
 }
 
+static BOOL initFunctionsForCMYKColorSpace(KGImage *self,size_t bitsPerComponent,size_t bitsPerPixel,CGBitmapInfo bitmapInfo){   
+   switch(bitsPerComponent){
+        
+    case  8:
+     switch(bitsPerPixel){
+     
+      case 32:
+        switch(bitmapInfo&kCGBitmapByteOrderMask){
+         case kCGBitmapByteOrder16Big:
+         case kCGBitmapByteOrder32Big:
+          self->_readRGBA8888=KGImageRead_CMYK8888_to_RGBA8888;
+          return YES;
+        }
+       break;
+     }
+     break;
+   }
+   return NO;
+}
+
+static BOOL initFunctionsForIndexedColorSpace(KGImage *self,size_t bitsPerComponent,size_t bitsPerPixel,KGColorSpace *colorSpace,CGBitmapInfo bitmapInfo){
+
+   switch([[(KGColorSpace_indexed *)colorSpace baseColorSpace] type]){
+    case KGColorSpaceDeviceRGB:
+     self->_readRGBA8888=KGImageRead_I8_to_RGBA8888;
+     return YES;
+   }
+   
+   return NO;
+}
+
+static BOOL initFunctionsForParameters(KGImage *self,size_t bitsPerComponent,size_t bitsPerPixel,KGColorSpace *colorSpace,CGBitmapInfo bitmapInfo){
+
+   self->_readA8=KGImageRead_ANY_to_RGBA8888_to_A8;
+   self->_readAf=KGImageRead_ANY_to_A8_to_Af;
+   self->_readRGBAffff=KGImageRead_ANY_to_RGBA8888_to_RGBAffff;
+
+   switch([colorSpace type]){
+    case KGColorSpaceDeviceGray:
+     break;
+    case KGColorSpaceDeviceRGB:
+     return initFunctionsForRGBColorSpace(self,bitsPerComponent,bitsPerPixel,bitmapInfo);
+    case KGColorSpaceDeviceCMYK:
+     return initFunctionsForCMYKColorSpace(self,bitsPerComponent,bitsPerPixel,bitmapInfo);
+    case KGColorSpaceIndexed:
+     return initFunctionsForIndexedColorSpace(self,bitsPerComponent,bitsPerPixel,colorSpace,bitmapInfo);
+   }
+   
+   return NO;
+      
+}
+
 -initWithWidth:(size_t)width height:(size_t)height bitsPerComponent:(size_t)bitsPerComponent bitsPerPixel:(size_t)bitsPerPixel bytesPerRow:(size_t)bytesPerRow colorSpace:(KGColorSpace *)colorSpace bitmapInfo:(unsigned)bitmapInfo provider:(KGDataProvider *)provider decode:(const CGFloat *)decode interpolate:(BOOL)interpolate renderingIntent:(CGColorRenderingIntent)renderingIntent {
    _width=width;
    _height=height;
@@ -313,8 +350,12 @@ static BOOL initFunctionsForParameters(KGImage *self,size_t bitsPerComponent,siz
    
    _bytes=(void *)[_provider bytes];
    _clampExternalPixels=NO; // only do this if premultiplied format
-
-   initFunctionsForParameters(self,bitsPerComponent,bitsPerPixel,colorSpace,bitmapInfo);
+   if(!initFunctionsForParameters(self,bitsPerComponent,bitsPerPixel,colorSpace,bitmapInfo)){
+    NSLog(@"KGImage failed to init with bpc=%d, bpp=%d,colorSpace=%@,bitmapInfo=%0X",bitsPerComponent,bitsPerPixel,colorSpace,bitmapInfo);
+    [self dealloc];
+    return nil;
+   }
+   
     KGImageFormat imageFormat=VG_lRGBA_8888;
     switch(bitmapInfo&kCGBitmapAlphaInfoMask){
      case kCGImageAlphaPremultipliedLast:
@@ -703,6 +744,24 @@ KGRGBA8888 *KGImageRead_BGRA8888_to_RGBA8888(KGImage *self,int x,int y,KGRGBA888
    return NULL;
 }
 
+KGRGBA8888 *KGImageRead_XRGB8888_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span,int length) {
+   RIuint8 *scanline = self->_bytes + y * self->_bytesPerRow;
+   int i;
+
+   scanline+=x*4;
+   
+   for(i=0;i<length;i++){
+    KGRGBA8888  result;
+    
+    result.a = *scanline++;
+    result.r = *scanline++;
+	result.g = *scanline++;
+    result.b = *scanline++;
+    *span++=result;
+   }
+   return NULL;
+}
+
 // kCGBitmapByteOrder16Little|kCGImageAlphaNoneSkipFirst
 KGRGBA8888 *KGImageRead_G3B5X1R5G2_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span,int length){
    RIuint8 *scanline = self->_bytes + y * self->_bytesPerRow;
@@ -801,6 +860,32 @@ KGRGBA8888 *KGImageRead_CMYK8888_to_RGBA8888(KGImage *self,int x,int y,KGRGBA888
 	result.a = 1;
     *span++=result;
    }
+   return NULL;
+}
+
+KGRGBA8888 *KGImageRead_I8_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span,int length) {
+   KGColorSpace_indexed *indexed=(KGColorSpace_indexed *)self->_colorSpace;
+   unsigned hival=[indexed hival];
+   const unsigned char *palette=[indexed paletteBytes];
+
+   RIuint8 *scanline = self->_bytes + y * self->_bytesPerRow;
+   int i;
+   
+   scanline+=x;
+
+   for(i=0;i<length;i++){
+    unsigned index=*scanline++;
+    KGRGBA8888 argb;
+
+    RI_INT_CLAMP(index,0,hival); // it is external data after all
+    
+    argb.r=palette[index*3+0];
+    argb.g=palette[index*3+1];
+    argb.b=palette[index*3+2];
+    argb.a=255;
+    *span++=argb;
+   }
+   
    return NULL;
 }
 

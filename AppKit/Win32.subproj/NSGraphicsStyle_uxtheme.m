@@ -3,7 +3,8 @@
 #import <AppKit/KGContext.h>
 #import <AppKit/NSImage.h>
 #import <AppKit/NSColor.h>
-#import "KGContext_gdi.h"
+#import "Win32DeviceContextWindow.h"
+
 #undef _WIN32_WINNT
 #define _WIN32_WINNT 0x0501
 #import <uxtheme.h>
@@ -108,8 +109,8 @@ static BOOL drawThemeBackground(HANDLE theme,HDC dc,int partId,int stateId,const
 
 @implementation NSGraphicsStyle_uxtheme
 
--(HANDLE)themeForClassList:(LPCWSTR)classList context:(KGContext_gdi *)context  {
-   HWND windowHandle=[context windowHandle];
+-(HANDLE)themeForClassList:(LPCWSTR)classList deviceContext:(KGDeviceContext_gdi *)deviceContext  {
+   HWND windowHandle=[[deviceContext windowDeviceContext] windowHandle];
    
    if(windowHandle==NULL)
     return NULL;
@@ -136,17 +137,36 @@ static inline RECT transformToRECT(CGAffineTransform matrix,NSRect rect) {
    return result;
 }
 
--(BOOL)sizeOfPartId:(int)partId stateId:(int)stateId classList:(LPCWSTR)classList size:(NSSize *)result {
-   KGContext_gdi          *context_gdi=(KGContext_gdi *)[[NSGraphicsContext currentContext] graphicsPort];
-   HANDLE                  theme;
+-(KGContext *)context {
+   KGContext *context=[[NSGraphicsContext currentContext] graphicsPort];
+   
+   return context;
+}
 
-   if(![context_gdi isKindOfClass:[KGContext_gdi class]])
+-(KGDeviceContext_gdi *)deviceContext {
+   KGContext *context=[[NSGraphicsContext currentContext] graphicsPort];
+   
+   if([context respondsToSelector:@selector(deviceContext)]){
+    KGDeviceContext_gdi *result=[context performSelector:@selector(deviceContext)];
+    
+    if([result isKindOfClass:[KGDeviceContext_gdi class]])
+     return result;
+   }
+   
+   return nil;
+}
+
+-(BOOL)sizeOfPartId:(int)partId stateId:(int)stateId classList:(LPCWSTR)classList size:(NSSize *)result {
+   KGDeviceContext_gdi *deviceContext=[self deviceContext];
+   HANDLE               theme;
+
+   if(deviceContext==nil)
     return NO;
     
-   if((theme=[self themeForClassList:classList context:context_gdi])!=NULL){
+   if((theme=[self themeForClassList:classList deviceContext:deviceContext])!=NULL){
     SIZE size;
      
-    if(getThemePartSize(theme,[context_gdi dc],partId,stateId,NULL,TS_DRAW,&size)){
+    if(getThemePartSize(theme,[deviceContext dc],partId,stateId,NULL,TS_DRAW,&size)){
      result->width=size.cx;
      result->height=size.cy;
      // should invert translate here
@@ -158,20 +178,20 @@ static inline RECT transformToRECT(CGAffineTransform matrix,NSRect rect) {
 }
 
 -(BOOL)drawPartId:(int)partId stateId:(int)stateId classList:(LPCWSTR)classList inRect:(NSRect)rect {
-   KGContext_gdi          *context_gdi=(KGContext_gdi *)[[NSGraphicsContext currentContext] graphicsPort];
+   KGDeviceContext_gdi *deviceContext=[self deviceContext];
    HANDLE                  theme;
    
-   if(![context_gdi isKindOfClass:[KGContext_gdi class]])
+   if(deviceContext==nil)
     return NO;
        
-   if((theme=[self themeForClassList:classList context:context_gdi])!=NULL){
+   if((theme=[self themeForClassList:classList deviceContext:deviceContext])!=NULL){
     CGAffineTransform matrix;
     RECT tlbr;
 
-    matrix=[context_gdi userSpaceToDeviceSpaceTransform];
+    matrix=[[self context] userSpaceToDeviceSpaceTransform];
     tlbr=transformToRECT(matrix,rect);
 
-    drawThemeBackground(theme,[context_gdi dc],partId,stateId,&tlbr,NULL);
+    drawThemeBackground(theme,[deviceContext dc],partId,stateId,&tlbr,NULL);
        
     closeThemeData(theme);
     return YES;

@@ -108,7 +108,7 @@ const char *KGImageNameWithIntent(CGColorRenderingIntent intent){
    }
    if((colorSpace=[KGColorSpace colorSpaceFromPDFObject:colorSpaceObject])==NULL)
     return NULL;
-     
+          
    componentsPerPixel=[colorSpace numberOfComponents];
     
    if(![dictionary getIntegerForKey:"BitsPerComponent" value:&bitsPerComponent]){

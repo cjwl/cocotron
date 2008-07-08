@@ -56,7 +56,7 @@
      NSLog(@"first element of color space array is not name");
      return nil;
     }
-     
+    
     if(strcmp(name,"Indexed")==0){
      KGPDFObject    *baseObject;
      KGColorSpace *baseColorSpace;
@@ -64,11 +64,12 @@
      KGPDFStream    *tableStream;
      int             baseNumberOfComponents;
      KGPDFInteger    hival,tableSize;
-     
+
      if(![colorSpaceArray getObjectAtIndex:1 value:&baseObject]){
       NSLog(@"Indexed color space missing base");
       return nil;
      }
+
      if((baseColorSpace=[KGColorSpace colorSpaceFromPDFObject:baseObject])==NULL){
       NSLog(@"Indexed color space invalid base %@",baseObject);
       return nil;
@@ -91,7 +92,7 @@
        NSLog(@"lookup invalid size,string length=%d,tableSize=%d",[tableString length],tableSize);
        return nil;
       }
-      return [[KGColorSpace alloc] initWithColorSpace:baseColorSpace hival:hival bytes:(const unsigned char *)[tableString bytes]];
+      return [[KGColorSpace_indexed alloc] initWithColorSpace:baseColorSpace hival:hival bytes:(const unsigned char *)[tableString bytes]];
      }
      else if([colorSpaceArray getStreamAtIndex:3 value:&tableStream]){
       NSData *data=[tableStream data];
@@ -100,7 +101,7 @@
        NSLog(@"lookup invalid size,data length=%d,tableSize=%d",[data length],tableSize);
        return nil;
       }
-      return [[KGColorSpace alloc] initWithColorSpace:baseColorSpace hival:hival bytes:[data bytes]];
+      return [[KGColorSpace_indexed alloc] initWithColorSpace:baseColorSpace hival:hival bytes:(const unsigned char *)[data bytes]];
      }
      else {
       NSLog(@"indexed color space table invalid");

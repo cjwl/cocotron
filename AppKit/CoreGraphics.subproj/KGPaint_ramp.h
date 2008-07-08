@@ -33,7 +33,6 @@ typedef enum {
   VG_COLOR_RAMP_SPREAD_REFLECT
 } VGColorRampSpreadMode;
 
-
 typedef struct  {
    CGFloat		offset;
    VGColor		color;
