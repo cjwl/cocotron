@@ -173,7 +173,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -objectValueOfSelectedItem {
-   return [self objectValue];
+   if (!_usesDataSource)
+     return [self objectValue];
+   else
+   {
+     NSLog(@"*** -[%@ %s] should not be called when usesDataSource is set to YES",isa,SELNAME(_cmd));
+     return NULL;
+   }
 }
 
 -(void)selectItemAtIndex:(int)index {
