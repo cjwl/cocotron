@@ -1645,6 +1645,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return [_textStorage string];
 }
 
+-(NSData *)RTFFromRange:(NSRange)range {
+   return [NSRichTextWriter dataWithAttributedString:_textStorage range:range];
+}
+
 -(NSData *)RTFDFromRange:(NSRange)range {
    return [NSRichTextWriter dataWithAttributedString:_textStorage range:range];
 }
@@ -1756,6 +1760,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [_textStorage setAttributedString:[NSRichTextReader attributedStringWithContentsOfFile:path]];
 
    return NO;
+}
+
+-(void)replaceCharactersInRange:(NSRange)range withRTF:(NSData *)rtf {
+   NSAttributedString *astring=[NSRichTextReader attributedStringWithData:rtf];
+
+   [_textStorage replaceCharactersInRange:range withAttributedString:astring];
+   [self setSelectedRange:NSMakeRange(range.location+[astring length],0)];
 }
 
 -(void)replaceCharactersInRange:(NSRange)range withRTFD:(NSData *)rtfd {
