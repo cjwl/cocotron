@@ -16,9 +16,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #define PAGESIZE 1024
 
+void objc_noAutoreleasePool(id object)
+{
+   OBJCLog("autorelease pool is nil, leaking %@", object);
+}
+
 static inline void addObject(NSAutoreleasePool *self,id object){
    if(self==nil){
-    OBJCLog("autorelease pool is nil, leaking %@",[object class]);
+      objc_noAutoreleasePool(object);
     return;
    }
    

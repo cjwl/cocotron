@@ -51,12 +51,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(id)_wrapValue:(void*)value ofType:(const char*)type
 {
-	if(type[0]!='@' && strlen(type)>1)
-	{
-		// valueWithBytes:objCType: doesn't like quotes in its types
-		char* cleanType=__builtin_alloca(strlen(type)+1);
-		[self _demangleTypeEncoding:type to:cleanType];
+   char* cleanType=__builtin_alloca(strlen(type)+1);
+   // strip offsets & quotes from type
+   [self _demangleTypeEncoding:type to:cleanType];
 
+	if(type[0]!='@' && strlen(cleanType)>1)
+	{
 		return [NSValue valueWithBytes:value objCType:cleanType];
 	}
 

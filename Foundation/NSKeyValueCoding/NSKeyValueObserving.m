@@ -684,15 +684,19 @@ CHANGE_DECLARATION(SEL)
 				const char* firstParameterType=[[self methodSignatureForSelector:method->method_name] getArgumentTypeAtIndex:2];
 				const char* returnType=[[self methodSignatureForSelector:method->method_name] methodReturnType];
 
+            char *cleanFirstParameterType=alloca(strlen(firstParameterType)+1);
+            [self _demangleTypeEncoding:firstParameterType to:cleanFirstParameterType];
+            
+            
 				/* check for correct type: either perfect match
 				or primitive signed type matching unsigned type
 				(i.e. tolower(@encode(unsigned long)[0])==@encode(long)[0])
 				*/
 #define CHECK_AND_ASSIGN(a) \
-				if(!strcmp(firstParameterType, @encode(a)) || \
+				if(!strcmp(cleanFirstParameterType, @encode(a)) || \
 				   (strlen(@encode(a))==1 && \
-					strlen(firstParameterType)==1 && \
-					tolower(firstParameterType[0])==@encode(a)[0])) \
+					strlen(cleanFirstParameterType)==1 && \
+					tolower(cleanFirstParameterType[0])==@encode(a)[0])) \
 				{ \
 					kvoSelector = @selector( CHANGE_SELECTOR(a) ); \
 				}
@@ -709,20 +713,24 @@ CHANGE_DECLARATION(SEL)
 				CHECK_AND_ASSIGN(long);
 				CHECK_AND_ASSIGN(SEL);
 				
-				if(kvoSelector==0 && NSDebugEnabled)
+            if(kvoSelector==0 && NSDebugEnabled)
 				{
-					//NSLog(@"type %s not defined in %s:%i (selector %s on class %@)", firstParameterType, __FILE__, __LINE__, SELNAME(method->method_name), [self className]);
+					NSLog(@"type %s not defined in %s:%i (selector %s on class %@)", cleanFirstParameterType, __FILE__, __LINE__, SELNAME(method->method_name), [self className]);
 				}
-				if(strcmp(returnType, @encode(void)))
+				if(returnType[0]!=_C_VOID)
 				{
 					if(NSDebugEnabled)
 						NSLog(@"selector %s on class %@ has return type %s and will not be modified for automatic KVO notification", SELNAME(method->method_name), [self className], returnType);
 					kvoSelector=0;
 				}
+            
+
 			}
-			
+         
+
+         
 			// long selectors
-			if(!kvoSelector)
+			if(kvoSelector==0)
 			{
 				id ret=nil;
 			
@@ -755,7 +763,7 @@ CHANGE_DECLARATION(SEL)
 			{
 				kvoSelector = @selector(KVO_notifying_change_removeObjectForKey:forKey:);
 			}
-				
+
 			// there's a suitable selector for us
 			if(kvoSelector!=0)
 			{

@@ -41,7 +41,16 @@
 
 -(void)lock
 {
-	[self lockBeforeDate:[NSDate distantFuture]];
+   if(_lockingThread==[NSThread currentThread])
+   {
+      _numberOfLocks++;
+      return;
+   }
+   
+   [_lock lock];
+   // got the lock. so it's ours now
+   _lockingThread=[NSThread currentThread];
+   _numberOfLocks=1;
 }
 
 -(void)unlock
