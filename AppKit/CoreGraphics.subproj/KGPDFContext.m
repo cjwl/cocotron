@@ -50,6 +50,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [_info setObjectForKey:"Author" value:[KGPDFString pdfObjectWithString:NSFullUserName()]];
    [_info setObjectForKey:"Creator" value:[KGPDFString pdfObjectWithString:[[NSProcessInfo processInfo] processName]]];
    [_info setObjectForKey:"Producer" value:[KGPDFString pdfObjectWithCString:"THE COCOTRON http://www.cocotron.org KGPDFContext"]];
+   [[_xref trailer] setObjectForKey:"Info" value:_info];
    
    _catalog=[[KGPDFDictionary pdfDictionary] retain];
    [[_xref trailer] setObjectForKey:"Root" value:_catalog];
@@ -82,6 +83,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [_kids release];
    [_page release];
    [_categoryToNext release];
+   [_textStateStack release];
    [_contentStreamStack release];
    [super dealloc];
 }
@@ -121,6 +123,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    string=[[NSString alloc] initWithFormat:format arguments:arguments];
    [self appendString:string];
    [string release];
+
+   va_end(arguments);
 }
 
 -(void)appendPDFStringWithBytes:(const void *)bytesV length:(unsigned)length mutableData:(NSMutableData *)data {
@@ -221,6 +225,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    string=[[NSString alloc] initWithFormat:format arguments:arguments];
    [self contentWithString:string];
    [string release];
+
+   va_end(arguments);
 }
 
 -(void)contentPDFStringWithBytes:(const void *)bytes length:(unsigned)length {
@@ -281,22 +287,22 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)moveToPoint:(float)x:(float)y {
    [super moveToPoint:x:y];
-   [self contentWithFormat:@"%f %f m ",x,y];
+   [self contentWithFormat:@"%g %g m ",x,y];
 }
 
 -(void)addLineToPoint:(float)x:(float)y {
    [super addLineToPoint:x:y];
-   [self contentWithFormat:@"%f %f l ",x,y];
+   [self contentWithFormat:@"%g %g l ",x,y];
 }
 
 -(void)addCurveToPoint:(float)cx1:(float)cy1:(float)cx2:(float)cy2:(float)x:(float)y {
    [super addCurveToPoint:cx1:cy1:cx2:cy2:x:y];
-   [self contentWithFormat:@"%f %f %f %f %f %f c ",cx1,cy1,cx2,cy2,x,y];
+   [self contentWithFormat:@"%g %g %g %g %g %g c ",cx1,cy1,cx2,cy2,x,y];
 }
 
 -(void)addQuadCurveToPoint:(float)cx1:(float)cy1:(float)x:(float)y {
    [super addQuadCurveToPoint:(float)cx1:(float)cy1:(float)x:(float)y];
-   [self contentWithFormat:@"%f %f %f %f v ",cx1,cy1,x,y];
+   [self contentWithFormat:@"%g %g %g %g v ",cx1,cy1,x,y];
 }
 
 -(void)addLinesWithPoints:(const CGPoint *)points count:(unsigned)count {
@@ -305,7 +311,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    int i;
    
    for(i=0;i<count;i++)
-    [self contentWithFormat:@"%f %f l ",points[i].x,points[i].y];
+    [self contentWithFormat:@"%g %g l ",points[i].x,points[i].y];
 }
 
 -(void)addRects:(const CGRect *)rects count:(unsigned)count {
@@ -314,7 +320,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    int i;
    
    for(i=0;i<count;i++)
-    [self contentWithFormat:@"%f %f %f %f re ",rects[i].origin.x,rects[i].origin.y,rects[i].size.width,rects[i].size.height];
+    [self contentWithFormat:@"%g %g %g %g re ",rects[i].origin.x,rects[i].origin.y,rects[i].size.width,rects[i].size.height];
 }
 
 -(void)_pathContentFromOperator:(int)start {
@@ -330,7 +336,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
        CGPoint point=points[pi++];
        
        if(i>=start)
-        [self contentWithFormat:@"%f %f m ",point.x,point.y];
+        [self contentWithFormat:@"%g %g m ",point.x,point.y];
       }
       break;
       
@@ -338,7 +344,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
        CGPoint point=points[pi++];
 
        if(i>=start)
-        [self contentWithFormat:@"%f %f l ",point.x,point.y];
+        [self contentWithFormat:@"%g %g l ",point.x,point.y];
       }
       break;
 
@@ -348,7 +354,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
        CGPoint end=points[pi++];
 
        if(i>=start)
-        [self contentWithFormat:@"%f %f %f %f %f %f c ",c1.x,c1.y,c2.x,c2.y,end.x,end.y];
+        [self contentWithFormat:@"%g %g %g %g %g %g c ",c1.x,c1.y,c2.x,c2.y,end.x,end.y];
       }
       break;
       
@@ -361,7 +367,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
        CGPoint end=points[pi++];
 
        if(i>=start)
-        [self contentWithFormat:@"%f %f %f %f v ",c1.x,c1.y,end.x,end.y];
+        [self contentWithFormat:@"%g %g %g %g v ",c1.x,c1.y,end.x,end.y];
       }
       break;
     }
@@ -412,7 +418,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)concatCTM:(CGAffineTransform)matrix {
    [super concatCTM:matrix];
-   [self contentWithFormat:@"%f %f %f %f %f %f cm ",matrix.a,matrix.b,matrix.c,matrix.d,matrix.tx,matrix.ty];
+   [self contentWithFormat:@"%g %g %g %g %g %g cm ",matrix.a,matrix.b,matrix.c,matrix.d,matrix.tx,matrix.ty];
 }
 
 -(void)clipToPath {
@@ -496,7 +502,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)setCharacterSpacing:(float)spacing {
    [super setCharacterSpacing:spacing];
-   [self contentWithFormat:@"%f Tc ",spacing];
+   [self contentWithFormat:@"%g Tc ",spacing];
 }
 
 -(void)setTextDrawingMode:(int)textMode {
@@ -505,7 +511,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)setLineWidth:(float)width {
    [super setLineWidth:width];
-   [self contentWithFormat:@"%f w ",width];
+   [self contentWithFormat:@"%g w ",width];
 }
 
 -(void)setLineCap:(int)lineCap {
@@ -520,7 +526,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)setMiterLimit:(float)limit {
    [super setMiterLimit:limit];
-   [self contentWithFormat:@"%f M ",limit];
+   [self contentWithFormat:@"%g M ",limit];
 }
 
 -(void)setLineDashPhase:(float)phase lengths:(const float *)lengths count:(unsigned)count {
@@ -532,7 +538,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    for(i=0;i<count;i++)
     [array addNumber:lengths[i]];
    
-   [self contentWithFormat:@"%@ %f d ",array,phase];
+   [self contentWithFormat:@"%@ %g d ",array,phase];
 }
 
 -(void)setRenderingIntent:(CGColorRenderingIntent)intent {
@@ -570,7 +576,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)setFlatness:(float)flatness {
    [super setFlatness:flatness];
    
-   [self contentWithFormat:@"%f i ",flatness];
+   [self contentWithFormat:@"%g i ",flatness];
 }
 
 -(void)setInterpolationQuality:(CGInterpolationQuality)quality {
@@ -628,10 +634,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    KGPDFObject *pdfObject=[font encodeReferenceWithContext:self];
    KGPDFObject *name=[self nameForResource:pdfObject inCategory:"Font"];
 
-   [self contentWithFormat:@"%@ %f Tf ",name,[font nominalSize]];
+   [self contentWithFormat:@"%@ %g Tf ",name,[font nominalSize]];
 
    CGAffineTransform matrix=[self textMatrix];
-   [self contentWithFormat:@"%f %f %f %f %f %f Tm ",matrix.a,matrix.b,matrix.c,matrix.d,matrix.tx,matrix.ty];
+   [self contentWithFormat:@"%g %g %g %g %g %g Tm ",matrix.a,matrix.b,matrix.c,matrix.d,matrix.tx,matrix.ty];
    
    [[self currentFont] getBytes:bytes forGlyphs:glyphs length:count];
    [self contentPDFStringWithBytes:bytes length:count];
@@ -709,7 +715,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [_page release];
    _page=nil;
    
-   [self internIndirectObjects];
+   // Do not invoke [self internIndirectObjects], it's too early: do it only after -endPrinting,
+   // else subsequent pages are not saved, because the 'Kids' array has already been encoded!
 }
 
 -(void)beginPrintingWithDocumentName:(NSString *)documentName {

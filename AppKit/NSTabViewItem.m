@@ -113,6 +113,8 @@ NSString *_NSTruncatedStringWithAttributesInRect(NSString *string, NSDictionary 
 
    if (_initialFirstResponder==nil)
        _initialFirstResponder=view;
+   [view removeFromSuperview];
+   [_tabView _itemViewDidChange:self];
 }
 
 -(void)setColor:(NSColor *)color {

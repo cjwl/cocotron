@@ -306,6 +306,18 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     [[_selectedItem view] setFrame:[self contentRect]];
 }
 
+- (void)_itemViewDidChange:(NSTabViewItem *)item
+{
+    if(item == _selectedItem){
+        NSView  *itemView = [item view];
+        
+        if(itemView != nil){
+            [self addSubview:itemView];
+            [itemView setFrame:[self contentRect]];
+        }
+    }
+}
+
 // delegate methods go here
 -(void)selectTabViewItem:(NSTabViewItem *)item {
     if(item!=_selectedItem) {

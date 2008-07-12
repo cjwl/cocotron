@@ -49,7 +49,7 @@ NSSize NSSizeFromString(NSString *string) {
    
    if(string != nil)
        sscanf([string cString], "{%g, %g}", &result.width, &result.height);
-   return NSZeroSize;
+   return result;
 }
 
 //
@@ -84,10 +84,10 @@ NSRect NSOffsetRect(NSRect rect,float dx,float dy) {
 
 NSRect NSIntegralRect(NSRect rect) {
    if (!NSIsEmptyRect(rect)) { 
-      rect.origin.x = floor(rect.origin.x); 
-      rect.origin.y = floor(rect.origin.y); 
-      rect.size.width = ceil(rect.size.width); 
-      rect.size.height = ceil(rect.size.height); 
+      rect.origin.x = floorf(rect.origin.x); 
+      rect.origin.y = floorf(rect.origin.y); 
+      rect.size.width = ceilf(rect.size.width); 
+      rect.size.height = ceilf(rect.size.height); 
    } 
    return rect; 
 

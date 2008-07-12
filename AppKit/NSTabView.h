@@ -66,6 +66,8 @@ typedef enum  {
 -(void)selectFirstTabViewItem:sender;
 -(void)takeSelectedTabViewItemFromSender:sender;
 
+- (void)_itemViewDidChange:(NSTabViewItem *)item;
+
 @end
 
 @interface NSObject(NSTabView_delegate)
