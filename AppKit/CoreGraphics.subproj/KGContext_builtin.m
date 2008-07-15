@@ -31,6 +31,7 @@
 #import "KGPaint_image.h"
 #import "KGPaint_color.h"
 #import "KGPaint_axialGradient.h"
+#import "KGPaint_radialGradient.h"
 #import "KGBlending.h"
 #import "KGShading.h"
 
@@ -289,7 +290,7 @@ static KGPaint *paintFromColor(KGColor *color){
     paint=[[KGPaint_axialGradient alloc] initWithShading:shading deviceTransform:gState->_deviceSpaceTransform];
    }
    else {
-    return;
+    paint=[[KGPaint_radialGradient alloc] initWithShading:shading deviceTransform:gState->_deviceSpaceTransform];
    }
   
 

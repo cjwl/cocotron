@@ -26,6 +26,7 @@
  *
  *-------------------------------------------------------------------*/
 #import "KGPaint_radialGradient.h"
+#import "KGShading.h"
 
 @implementation KGPaint_radialGradient
 
@@ -78,7 +79,16 @@ static inline KGRGBAffff radialGradientColorAt(KGPaint_radialGradient *self,int 
    return result;
 }
 
-void radial_span_lRGBAffff_PRE(KGPaint *selfX,int x,int y,KGRGBAffff *span,int length){
+static void radial_span_lRGBA8888_PRE(KGPaint *selfX,int x,int y,KGRGBA8888 *span,int length){
+   KGPaint_radialGradient *self=(KGPaint_radialGradient *)selfX;
+   int i;
+   
+   for(i=0;i<length;i++,x++){
+    span[i]=KGRGBA8888FromKGRGBAffff(radialGradientColorAt(self,x,y));
+   }
+}
+
+static void radial_span_lRGBAffff_PRE(KGPaint *selfX,int x,int y,KGRGBAffff *span,int length){
    KGPaint_radialGradient *self=(KGPaint_radialGradient *)selfX;
    int i;
    
@@ -87,12 +97,13 @@ void radial_span_lRGBAffff_PRE(KGPaint *selfX,int x,int y,KGRGBAffff *span,int l
    }
 }
 
--init {
-   [super init];
-   self->_read_lRGBAffff_PRE=radial_span_lRGBAffff_PRE;
-	self->m_radialGradientRadius=1.0f;
-	self->m_radialGradientCenter=CGPointMake(0,0);
-	self->m_radialGradientFocalPoint=CGPointMake(0,0);
+-initWithShading:(KGShading *)shading deviceTransform:(CGAffineTransform)deviceTransform {
+   [super initWithShading:shading deviceTransform:deviceTransform numberOfSamples:1024];
+   _read_lRGBA8888_PRE=radial_span_lRGBA8888_PRE;
+   _read_lRGBAffff_PRE=radial_span_lRGBAffff_PRE;
+   m_radialGradientRadius=[shading endRadius];
+   m_radialGradientCenter=[shading startPoint];
+   m_radialGradientFocalPoint=[shading endPoint];
    return self;
 }
 

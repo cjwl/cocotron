@@ -33,4 +33,6 @@
    CGFloat m_radialGradientRadius;
 }
 
+-initWithShading:(KGShading *)shading deviceTransform:(CGAffineTransform)deviceTransform;
+
 @end
