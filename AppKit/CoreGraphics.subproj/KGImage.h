@@ -144,6 +144,28 @@ static inline KGRGBAffff KGRGBAffffAdd(KGRGBAffff result,KGRGBAffff other){
    return result;
 }
 
+static inline KGRGBAffff KGRGBAffffSubtract(KGRGBAffff result,KGRGBAffff other){
+   result.r-=other.r;
+   result.g-=other.g;
+   result.b-=other.b;
+   result.a-=other.a;
+   return result;
+}
+
+static inline KGRGBAffff KGRGBAffffPremultiply(KGRGBAffff result){
+   result.r*=result.a;
+   result.g*=result.a;
+   result.b*=result.a;
+   return result;
+}
+static inline KGRGBAffff KGRGBAffffClamp(KGRGBAffff result){
+   result.r=RI_CLAMP(result.r,0.0f,1.0f);
+   result.g=RI_CLAMP(result.g,0.0f,1.0f);
+   result.b=RI_CLAMP(result.b,0.0f,1.0f);
+   result.a=RI_CLAMP(result.a,0.0f,1.0f);
+   return result;
+}
+
 static inline void KGRGBPremultiplySpan(KGRGBAffff *span,int length){
    int i;
       
@@ -253,7 +275,7 @@ typedef CGFloat    *(*KGImageReadSpan_Af)(KGImage *self,int x,int y,CGFloat *spa
    CGColorRenderingIntent _renderingIntent;
    KGImage               *_mask;
 
-   unsigned char *_bytes;
+   const unsigned char *_directBytes;
    BOOL           _clampExternalPixels;
    VGColorInternalFormat _colorFormat;
 

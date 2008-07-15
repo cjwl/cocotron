@@ -30,7 +30,9 @@
 #import "VGPath.h"
 #import "KGPaint_image.h"
 #import "KGPaint_color.h"
+#import "KGPaint_axialGradient.h"
 #import "KGBlending.h"
+#import "KGShading.h"
 
 #define MAX_SAMPLES     COVERAGE_MULTIPLIER
 
@@ -277,9 +279,32 @@ static KGPaint *paintFromColor(KGColor *color){
 }
 
 -(void)drawShading:(KGShading *)shading {
+   KGGraphicsState *gState=[self currentState];
+   KGPaint         *paint;
 
+   KGRasterizeSetBlendMode(self,gState->_blendMode);
+   KGRasterizerSetShouldAntialias(self,gState->_shouldAntialias,gState->_antialiasingQuality);
 
-   //KGInvalidAbstractInvocation();
+   if([shading isAxial]){
+    paint=[[KGPaint_axialGradient alloc] initWithShading:shading deviceTransform:gState->_deviceSpaceTransform];
+   }
+   else {
+    return;
+   }
+  
+
+   KGRasterizeSetPaint(self,paint);
+   [paint release];
+
+/* FIXME: If either extend is off we need to generate the bounding shape, the paint classes generate alpha=0 for out of extend which
+   is a problem for some blending ops, copy in particular.
+ */
+ 
+   KGRasterizerAddEdge(self,CGPointMake(0,0), CGPointMake(0,KGImageGetHeight(_surface)));
+   KGRasterizerAddEdge(self,CGPointMake(KGImageGetWidth(_surface),0), CGPointMake(KGImageGetWidth(_surface),KGImageGetHeight(_surface)));
+
+   KGRasterizerFill(self,VG_NON_ZERO);
+   KGRasterizerClear(self);
 }
 
 -(void)drawImage:(KGImage *)image inRect:(CGRect)rect {

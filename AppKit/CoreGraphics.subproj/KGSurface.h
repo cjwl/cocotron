@@ -222,10 +222,10 @@ typedef void (*KGSurfaceWriteSpan_RGBA8888)(KGSurface *self,int x,int y,KGRGBA88
 typedef void (*KGSurfaceWriteSpan_RGBAffff)(KGSurface *self,int x,int y,KGRGBAffff *span,int length);
 
 @interface KGSurface : KGImage {
+   unsigned char              *_pixelBytes;
    KGSurfaceWriteSpan_RGBA8888 _writeRGBA8888;
    KGSurfaceWriteSpan_RGBAffff _writeRGBAffff;
    
-   size_t _allocatedSize;
 	VGPixelDecode	m_desc;
 } 
 

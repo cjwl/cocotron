@@ -27,28 +27,26 @@
  *-------------------------------------------------------------------*/
 #import "KGPaint.h"
 
-typedef enum {
-  VG_COLOR_RAMP_SPREAD_PAD,
-  VG_COLOR_RAMP_SPREAD_REPEAT,
-  VG_COLOR_RAMP_SPREAD_REFLECT
-} VGColorRampSpreadMode;
+@class KGShading;
 
 typedef struct  {
-   CGFloat		offset;
-   VGColor		color;
+   CGFloat    offset;
+   KGRGBAffff color;
 } GradientStop;
 
-
 @interface KGPaint_ramp : KGPaint {
-	VGColorRampSpreadMode	m_colorRampSpreadMode;
-    int                     m_colorRampStopsCount;
-    int                     m_colorRampStopsCapacity;
-	GradientStop	       *m_colorRampStops;
-	BOOL				    m_colorRampPremultiplied;
+   CGPoint _startPoint;
+   CGPoint _endPoint;
+   BOOL    _extendStart;
+   BOOL    _extendEnd;
+   
+   size_t       _numberOfColorStops;
+   GradientStop *_colorStops;
 }
 
-VGColor KGPaintIntegrateColorRamp(KGPaint_ramp *self,CGFloat gmin, CGFloat gmax);
-VGColor KGPaintColorRamp(KGPaint_ramp *self,CGFloat gradient, CGFloat rho);
+KGRGBAffff KGPaintIntegrateColorRamp(KGPaint_ramp *self,CGFloat gmin, CGFloat gmax);
+KGRGBAffff KGPaintColorRamp(KGPaint_ramp *self,CGFloat gradient, CGFloat rho);
 
+-initWithShading:(KGShading *)shading deviceTransform:(CGAffineTransform)deviceTransform numberOfSamples:(int)numberOfSamples;
 
 @end

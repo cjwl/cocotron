@@ -8,18 +8,23 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/NSObject.h>
 
-@class NSData;
+@class NSData,NSInputStream;
 
 @interface KGDataProvider : NSObject {
-   NSData     *_data;
+   id          _dataOrStream;
+   BOOL        _isDirectAccess;
    const void *_bytes;
    size_t      _length;
 }
 
 -initWithData:(NSData *)data;
 -initWithBytes:(const void *)bytes length:(size_t)length;
+-initWithFilename:(const char *)pathCString;
+
+-(BOOL)isDirectAccess;
 
 -(NSData *)data;
+-(NSInputStream *)inputStream;
 -(const void *)bytes;
 -(size_t)length;
 

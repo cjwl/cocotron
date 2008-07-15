@@ -156,7 +156,7 @@ static void colorToBytesLittle(CGFloat color,RIuint8 *scanline){
 }
 
 static void KGSurfaceWrite_RGBAffff_to_RGBAffffLittle(KGSurface *self,int x,int y,KGRGBAffff *span,int length){
-   RIuint8* scanline = self->_bytes + y * self->_bytesPerRow;
+   RIuint8* scanline = self->_pixelBytes + y * self->_bytesPerRow;
    int i;
    
    scanline+=x*16;
@@ -196,7 +196,7 @@ static void colorToBytesBig(CGFloat color,RIuint8 *scanline){
 }
 
 static void KGSurfaceWrite_RGBAffff_to_RGBAffffBig(KGSurface *self,int x,int y,KGRGBAffff *span,int length){
-   RIuint8* scanline = self->_bytes + y * self->_bytesPerRow;
+   RIuint8* scanline = self->_pixelBytes + y * self->_bytesPerRow;
    int i;
    
    scanline+=x*16;
@@ -219,7 +219,7 @@ static unsigned char colorToNibble(CGFloat c){
 }
 
 static void KGSurfaceWrite_RGBAffff_to_GA88(KGSurface *self,int x,int y,KGRGBAffff *span,int length){
-   RIuint8* scanline = self->_bytes + y * self->_bytesPerRow;
+   RIuint8* scanline = self->_pixelBytes + y * self->_bytesPerRow;
    int i;
    
    scanline+=x*2;
@@ -232,7 +232,7 @@ static void KGSurfaceWrite_RGBAffff_to_GA88(KGSurface *self,int x,int y,KGRGBAff
 }
 
 static void KGSurfaceWrite_RGBAffff_to_G8(KGSurface *self,int x,int y,KGRGBAffff *span,int length){
-   RIuint8* scanline = self->_bytes + y * self->_bytesPerRow;
+   RIuint8* scanline = self->_pixelBytes + y * self->_bytesPerRow;
    int i;
    
    scanline+=x;
@@ -245,7 +245,7 @@ static void KGSurfaceWrite_RGBAffff_to_G8(KGSurface *self,int x,int y,KGRGBAffff
 
 
 static void KGSurfaceWrite_RGBAffff_to_RGBA8888(KGSurface *self,int x,int y,KGRGBAffff *span,int length){
-   RIuint8* scanline = self->_bytes + y * self->_bytesPerRow;
+   RIuint8* scanline = self->_pixelBytes + y * self->_bytesPerRow;
    int i;
    
    scanline+=x*4;
@@ -260,7 +260,7 @@ static void KGSurfaceWrite_RGBAffff_to_RGBA8888(KGSurface *self,int x,int y,KGRG
 }
 
 static void KGSurfaceWrite_RGBA8888_to_RGBA8888(KGSurface *self,int x,int y,KGRGBA8888 *span,int length){
-   RIuint8* scanline = self->_bytes + y * self->_bytesPerRow;
+   RIuint8* scanline = self->_pixelBytes + y * self->_bytesPerRow;
    int i;
    
    scanline+=x*4;
@@ -275,7 +275,7 @@ static void KGSurfaceWrite_RGBA8888_to_RGBA8888(KGSurface *self,int x,int y,KGRG
 }
 
 static void KGSurfaceWrite_RGBA8888_to_BGRA8888(KGSurface *self,int x,int y,KGRGBA8888 *span,int length){
-   RIuint8* scanline = self->_bytes + y * self->_bytesPerRow;
+   RIuint8* scanline = self->_pixelBytes + y * self->_bytesPerRow;
    int i;
    
    scanline+=x*4;
@@ -290,7 +290,7 @@ static void KGSurfaceWrite_RGBA8888_to_BGRA8888(KGSurface *self,int x,int y,KGRG
 }
 
 static void KGImageWrite_RGBAffff_to_ABGR8888(KGSurface *self,int x,int y,KGRGBAffff *span,int length){
-   RIuint8* scanline = self->_bytes + y * self->_bytesPerRow;
+   RIuint8* scanline = self->_pixelBytes + y * self->_bytesPerRow;
    int i;
    
    scanline+=x*4;
@@ -305,7 +305,7 @@ static void KGImageWrite_RGBAffff_to_ABGR8888(KGSurface *self,int x,int y,KGRGBA
 }
 
 static void KGSurfaceWrite_RGBAffff_to_RGBA4444(KGSurface *self,int x,int y,KGRGBAffff *span,int length){
-   RIuint8* scanline = self->_bytes + y * self->_bytesPerRow;
+   RIuint8* scanline = self->_pixelBytes + y * self->_bytesPerRow;
    int i;
    
    scanline+=x*2;
@@ -318,7 +318,7 @@ static void KGSurfaceWrite_RGBAffff_to_RGBA4444(KGSurface *self,int x,int y,KGRG
 }
 
 static void KGSurfaceWrite_RGBAffff_to_BARG4444(KGSurface *self,int x,int y,KGRGBAffff *span,int length){
-   RIuint8* scanline = self->_bytes + y * self->_bytesPerRow;
+   RIuint8* scanline = self->_pixelBytes + y * self->_bytesPerRow;
    int i;
    
    scanline+=x*2;
@@ -331,7 +331,7 @@ static void KGSurfaceWrite_RGBAffff_to_BARG4444(KGSurface *self,int x,int y,KGRG
 }
 
 static void KGSurfaceWrite_RGBAffff_to_RGBA2222(KGSurface *self,int x,int y,KGRGBAffff *span,int length){
-   RIuint8* scanline = self->_bytes + y * self->_bytesPerRow;
+   RIuint8* scanline = self->_pixelBytes + y * self->_bytesPerRow;
    int i;
    
    scanline+=x;
@@ -343,7 +343,7 @@ static void KGSurfaceWrite_RGBAffff_to_RGBA2222(KGSurface *self,int x,int y,KGRG
 }
 
 static void KGSurfaceWrite_RGBAffff_to_CMYK8888(KGSurface *self,int x,int y,KGRGBAffff *span,int length){
-   RIuint8* scanline = self->_bytes + y * self->_bytesPerRow;
+   RIuint8* scanline = self->_pixelBytes + y * self->_bytesPerRow;
    int i;
    
    scanline+=x*4;
@@ -373,7 +373,6 @@ static void KGSurfaceWrite_RGBAffff_to_RGBA8888_to_ANY(KGSurface *self,int x,int
 }
 
 static BOOL initFunctionsForParameters(KGSurface *self,size_t bitsPerComponent,size_t bitsPerPixel,KGColorSpace *colorSpace,CGBitmapInfo bitmapInfo){
-   self->_readRGBAffff=KGImageRead_ANY_to_RGBA8888_to_RGBAffff;
    self->_writeRGBAffff=KGSurfaceWrite_RGBAffff_to_RGBA8888_to_ANY;// default
    
    switch(bitsPerComponent){
@@ -387,13 +386,11 @@ static BOOL initFunctionsForParameters(KGSurface *self,size_t bitsPerComponent,s
         case kCGBitmapByteOrderDefault:
         case kCGBitmapByteOrder16Little:
         case kCGBitmapByteOrder32Little:
-         self->_readRGBAffff=KGImageRead_RGBAffffLittle_to_RGBAffff;
          self->_writeRGBAffff=KGSurfaceWrite_RGBAffff_to_RGBAffffLittle;
          return YES;
          
         case kCGBitmapByteOrder16Big:
         case kCGBitmapByteOrder32Big:
-         self->_readRGBAffff=KGImageRead_RGBAffffBig_to_RGBAffff;
          self->_writeRGBAffff=KGSurfaceWrite_RGBAffff_to_RGBAffffBig;
          return YES;
        }
@@ -404,12 +401,10 @@ static BOOL initFunctionsForParameters(KGSurface *self,size_t bitsPerComponent,s
      switch(bitsPerPixel){
      
       case 8:
-       self->_readRGBA8888=KGImageRead_G8_to_RGBA8888;
        self->_writeRGBAffff=KGSurfaceWrite_RGBAffff_to_G8;
        return YES;
 
       case 16:
-       self->_readRGBA8888=KGImageRead_GA88_to_RGBA8888;
        self->_writeRGBAffff=KGSurfaceWrite_RGBAffff_to_GA88;
        return YES;
 
@@ -429,13 +424,11 @@ static BOOL initFunctionsForParameters(KGSurface *self,size_t bitsPerComponent,s
            case kCGBitmapByteOrderDefault:
            case kCGBitmapByteOrder16Little:
            case kCGBitmapByteOrder32Little:
-            self->_readRGBA8888=KGImageRead_ABGR8888_to_RGBA8888;
             self->_writeRGBAffff=KGImageWrite_RGBAffff_to_ABGR8888;
             return YES;
 
            case kCGBitmapByteOrder16Big:
            case kCGBitmapByteOrder32Big:
-            self->_readRGBA8888=KGImageRead_RGBA8888_to_RGBA8888;
             self->_writeRGBAffff=KGSurfaceWrite_RGBAffff_to_RGBA8888;
             self->_writeRGBA8888=KGSurfaceWrite_RGBA8888_to_RGBA8888;
             return YES;
@@ -448,7 +441,6 @@ static BOOL initFunctionsForParameters(KGSurface *self,size_t bitsPerComponent,s
            case kCGBitmapByteOrderDefault:
            case kCGBitmapByteOrder16Little:
            case kCGBitmapByteOrder32Little:
-            self->_readRGBA8888=KGImageRead_BGRA8888_to_RGBA8888;
             self->_writeRGBA8888=KGSurfaceWrite_RGBA8888_to_BGRA8888;
             return YES;
           }
@@ -473,7 +465,6 @@ static BOOL initFunctionsForParameters(KGSurface *self,size_t bitsPerComponent,s
          
          case kCGBitmapByteOrder16Big:
          case kCGBitmapByteOrder32Big:
-          self->_readRGBA8888=KGImageRead_CMYK8888_to_RGBA8888;
           self->_writeRGBAffff=KGSurfaceWrite_RGBAffff_to_CMYK8888;
          return YES;
         }
@@ -493,13 +484,11 @@ static BOOL initFunctionsForParameters(KGSurface *self,size_t bitsPerComponent,s
         case kCGBitmapByteOrderDefault:
         case kCGBitmapByteOrder16Little:
         case kCGBitmapByteOrder32Little:
-         self->_readRGBA8888=KGImageRead_BARG4444_to_RGBA8888;
          self->_writeRGBAffff=KGSurfaceWrite_RGBAffff_to_BARG4444;
          return YES;
          
         case kCGBitmapByteOrder16Big:
         case kCGBitmapByteOrder32Big:
-         self->_readRGBA8888=KGImageRead_RGBA4444_to_RGBA8888;
          self->_writeRGBAffff=KGSurfaceWrite_RGBAffff_to_RGBA4444;
          return YES;
        }
@@ -513,7 +502,6 @@ static BOOL initFunctionsForParameters(KGSurface *self,size_t bitsPerComponent,s
       case 6:
        break;
       case 8:
-       self->_readRGBA8888=KGImageRead_RGBA2222_to_RGBA8888;
        self->_writeRGBAffff=KGSurfaceWrite_RGBAffff_to_RGBA2222;
        return YES;
      }
@@ -522,7 +510,6 @@ static BOOL initFunctionsForParameters(KGSurface *self,size_t bitsPerComponent,s
     case  1:
      switch(bitsPerPixel){
       case 1:
-       //self->_readRGBAffff=KGImageReadPixelSpan_01;
        //  self->_writeRGBAffff=KGSurfaceWriteSpan_lRGBAffff_PRE_01;
        return YES;
        
@@ -535,41 +522,41 @@ static BOOL initFunctionsForParameters(KGSurface *self,size_t bitsPerComponent,s
 }
 
 -initWithBytes:(void *)bytes width:(size_t)width height:(size_t)height bitsPerComponent:(size_t)bitsPerComponent bytesPerRow:(size_t)bytesPerRow colorSpace:(KGColorSpace *)colorSpace bitmapInfo:(CGBitmapInfo)bitmapInfo {
-	_width=width;
-	_height=height;
-    _bitsPerComponent=bitsPerComponent;
-    _bitsPerPixel=32;
-	_bytesPerRow=bytesPerRow;
-    _colorSpace=[colorSpace copy];
-    _bitmapInfo=bitmapInfo;
-    if(!initFunctionsForParameters(self,bitsPerComponent,_bitsPerPixel,colorSpace,bitmapInfo))
-     NSLog(@"KGSurface -init error, return");
-
-    size_t checkBPP;
-	m_desc=KGImageParametersToPixelLayout(VG_lRGBA_8888_PRE,&checkBPP,&(_colorFormat));
-    RI_ASSERT(checkBPP==bitsPerPixel);
-
-	if((_bytes=bytes)!=NULL)
-  	 m_ownsData=NO;
-    else {
-     int bpr=_width*_bitsPerPixel/8;
-     if(_bytesPerRow==0 || _bytesPerRow<bpr)
-      _bytesPerRow=bpr;
+   KGDataProvider *provider;
+   int bitsPerPixel=32;
+   
+   if(bytes!=NULL){
+    provider=[[[KGDataProvider alloc] initWithBytes:bytes length:_bytesPerRow*_height] autorelease];
+    m_ownsData=NO;
+   }
+   else {
+    if(bytesPerRow==0)
+     bytesPerRow=(width*bitsPerPixel)/8;
      
-     _allocatedSize=_bytesPerRow*_height*sizeof(RIuint8);    
-     NSMutableData *data=[NSMutableData dataWithLength:_allocatedSize];
-     _provider=[[KGDataProvider alloc] initWithData:data];
-     _bytes=[data mutableBytes];
-  	 m_ownsData=YES;
-	 memset(_bytes, 0, _bytesPerRow*_height);	//clear image
-    }
-    _clampExternalPixels=NO; // only set to yes if premultiplied
-	m_mipmapsValid=NO;
-	RI_ASSERT(width > 0 && height > 0);
-	RI_ASSERT(data);
-    _mipmapsCount=0;
-    _mipmapsCapacity=2;
-    _mipmaps=(KGSurface **)NSZoneMalloc(NULL,_mipmapsCapacity*sizeof(KGSurface *));
+    NSMutableData *data=[NSMutableData dataWithLength:bytesPerRow*height*sizeof(RIuint8)]; // this will also zero the bytes
+    provider=[[[KGDataProvider alloc] initWithData:data] autorelease];
+  	m_ownsData=YES;
+   }
+   
+   if([super initWithWidth:width height:height bitsPerComponent:bitsPerComponent bitsPerPixel:bitsPerPixel bytesPerRow:bytesPerRow colorSpace:colorSpace bitmapInfo:bitmapInfo provider:provider decode:NULL interpolate:YES renderingIntent:kCGRenderingIntentDefault]==nil)
+    return nil;
+   
+   if([provider isDirectAccess])
+    _pixelBytes=(void *)[provider bytes];
+    
+   if(!initFunctionsForParameters(self,bitsPerComponent,_bitsPerPixel,colorSpace,bitmapInfo))
+    NSLog(@"KGSurface -init error, return");
+
+   size_t checkBPP;
+   m_desc=KGImageParametersToPixelLayout(VG_lRGBA_8888_PRE,&checkBPP,&(_colorFormat));
+   RI_ASSERT(checkBPP==bitsPerPixel);
+
+   _clampExternalPixels=NO; // only set to yes if premultiplied
+   m_mipmapsValid=NO;
+
+   _mipmapsCount=0;
+   _mipmapsCapacity=2;
+   _mipmaps=(KGSurface **)NSZoneMalloc(NULL,_mipmapsCapacity*sizeof(KGSurface *));
    return self;
 }
 
@@ -581,7 +568,7 @@ static BOOL initFunctionsForParameters(KGSurface *self,size_t bitsPerComponent,s
 	}
 	_mipmapsCount=0;
 
-    _bytes=NULL; // if we own it, it's in the provider, if not, no release
+    _pixelBytes=NULL; // if we own it, it's in the provider, if not, no release
 
     [super dealloc];
 }
@@ -591,30 +578,27 @@ static BOOL initFunctionsForParameters(KGSurface *self,size_t bitsPerComponent,s
 }
 
 -(void *)pixelBytes {
-   return _bytes;
+   return _pixelBytes;
 }
 
 -(void)setWidth:(size_t)width height:(size_t)height reallocateOnlyIfRequired:(BOOL)roir {
-   int bpr=width*_bitsPerPixel/8;
-   int size=bpr*height*sizeof(RIuint8);
-   
    if(!m_ownsData)
     return;
    
-   self->_height=height;
-   self->_width=width;
-   self->_bytesPerRow=bpr;
+   _width=width;
+   _height=height;
+   _bytesPerRow=width*_bitsPerPixel/8;
    
-   if((size>_allocatedSize) || (!roir && size!=_allocatedSize)){
+   NSUInteger size=_bytesPerRow*height*sizeof(RIuint8);
+   NSUInteger allocateSize=[[_provider data] length];
+   
+   if((size>allocateSize) || (!roir && size!=allocateSize)){
     [_provider release];
     
     NSMutableData *data=[NSMutableData dataWithLength:size];
     _provider=[[KGDataProvider alloc] initWithData:data];
-    _bytes=[data mutableBytes];
-    _allocatedSize=size;
+    _pixelBytes=[data mutableBytes];
    }
-   
-   memset(_bytes, 0,size);
 }
 
 /*-------------------------------------------------------------------*//*!
@@ -625,7 +609,7 @@ static BOOL initFunctionsForParameters(KGSurface *self,size_t bitsPerComponent,s
 *//*-------------------------------------------------------------------*/
 
 void KGSurfaceClear(KGSurface *self,VGColor clearColor, int x, int y, int w, int h){
-	RI_ASSERT(self->_bytes);
+	RI_ASSERT(self->_pixelBytes);
 
 	//intersect clear region with image bounds
 	KGIntRect r=KGIntRectInit(0,0,self->_width,self->_height);
@@ -659,7 +643,7 @@ void KGSurfaceClear(KGSurface *self,VGColor clearColor, int x, int y, int w, int
 *//*-------------------------------------------------------------------*/
 
 VGColor KGSurfaceReadPixel(KGImage *self,int x, int y) {
-	RI_ASSERT(self->_bytes);
+	RI_ASSERT(self->_pixelBytes);
 	RI_ASSERT(x >= 0 && x < self->_width);
 	RI_ASSERT(y >= 0 && y < self->_height);
  
@@ -689,8 +673,8 @@ static CGFloat ditherChannel(CGFloat c, int bits, CGFloat m)
 }
 
 void KGSurfaceBlit(KGSurface *self,KGSurface * src, int sx, int sy, int dx, int dy, int w, int h, BOOL dither) {
-	RI_ASSERT(src->_bytes);	//source exists
-	RI_ASSERT(self->_bytes);	//destination exists
+	RI_ASSERT(src->_pixelBytes);	//source exists
+	RI_ASSERT(self->_pixelBytes);	//destination exists
 	RI_ASSERT(w > 0 && h > 0);
 
 	sx = RI_INT_MIN(RI_INT_MAX(sx, (int)(RI_INT32_MIN>>2)), (int)(RI_INT32_MAX>>2));
@@ -815,7 +799,7 @@ void KGSurfaceBlit(KGSurface *self,KGSurface * src, int sx, int sy, int dx, int 
 *//*-------------------------------------------------------------------*/
 
 void KGSurfaceMask(KGSurface *self,KGSurface* src, VGMaskOperation operation, int x, int y, int w, int h) {
-	RI_ASSERT(self->_bytes);	//destination exists
+	RI_ASSERT(self->_pixelBytes);	//destination exists
 	RI_ASSERT(w > 0 && h > 0);
 
 	self->m_mipmapsValid = NO;
@@ -830,7 +814,7 @@ void KGSurfaceMask(KGSurface *self,KGSurface* src, VGMaskOperation operation, in
 		return;
 	}
 
-	RI_ASSERT(src->_bytes);	//source exists
+	RI_ASSERT(src->_pixelBytes);	//source exists
 
 	//intersect destination region with source and destination image bounds
 	x = RI_INT_MIN(RI_INT_MAX(x, (int)(RI_INT32_MIN>>2)), (int)(RI_INT32_MAX>>2));
@@ -941,7 +925,7 @@ void KGSurfaceWriteSpan_lRGBAffff_PRE(KGSurface *self,int x,int y,KGRGBAffff *sp
 }
 
 void KGSurfaceWritePixel(KGSurface *self,int x, int y, VGColor c) {
-	RI_ASSERT(self->_bytes);
+	RI_ASSERT(self->_pixelBytes);
 	RI_ASSERT(x >= 0 && x < self->_width);
 	RI_ASSERT(y >= 0 && y < self->_height);
 	RI_ASSERT(c.m_format == self->_colorFormat);
@@ -1003,12 +987,12 @@ void KGSurfaceWriteFilteredPixel(KGSurface *self,int i, int j, VGColor color, VG
 
 void KGSurfaceWriteMaskPixel(KGSurface *self,int x, int y, CGFloat m)	//can write only to VG_A_8
 {
-	RI_ASSERT(self->_bytes);
+	RI_ASSERT(self->_pixelBytes);
 	RI_ASSERT(x >= 0 && x < self->_width);
 	RI_ASSERT(y >= 0 && y < self->_height);
 	RI_ASSERT(self->m_desc.alphaBits == 8 && self->m_desc.redBits == 0 && self->m_desc.greenBits == 0 && self->m_desc.blueBits == 0 && self->m_desc.luminanceBits == 0 && self->_bitsPerPixel == 8);
 
-	RIuint8* s = ((RIuint8*)(self->_bytes + y * self->_bytesPerRow)) + x;
+	RIuint8* s = ((RIuint8*)(self->_pixelBytes + y * self->_bytesPerRow)) + x;
 	*s = (RIuint8)CGByteFromFloat(m);
 	self->m_mipmapsValid = NO;
 }
@@ -1022,8 +1006,8 @@ void KGSurfaceWriteMaskPixel(KGSurface *self,int x, int y, CGFloat m)	//can writ
 *//*-------------------------------------------------------------------*/
 
 void KGSurfaceColorMatrix(KGSurface *self,KGSurface * src, const CGFloat* matrix, BOOL filterFormatLinear, BOOL filterFormatPremultiplied, VGbitfield channelMask) {
-	RI_ASSERT(src->_bytes);	//source exists
-	RI_ASSERT(self->_bytes);	//destination exists
+	RI_ASSERT(src->_pixelBytes);	//source exists
+	RI_ASSERT(self->_pixelBytes);	//destination exists
 	RI_ASSERT(matrix);
 
 	int w = RI_INT_MIN(self->_width, src->_width);
@@ -1130,8 +1114,8 @@ static VGColorInternalFormat getProcessingFormat(VGColorInternalFormat srcFormat
 *//*-------------------------------------------------------------------*/
 
 void KGSurfaceConvolve(KGSurface *self,KGSurface * src, int kernelWidth, int kernelHeight, int shiftX, int shiftY, const RIint16* kernel, CGFloat scale, CGFloat bias, VGTilingMode tilingMode, VGColor edgeFillColor, BOOL filterFormatLinear, BOOL filterFormatPremultiplied, VGbitfield channelMask) {
-	RI_ASSERT(src->_bytes);	//source exists
-	RI_ASSERT(self->_bytes);	//destination exists
+	RI_ASSERT(src->_pixelBytes);	//source exists
+	RI_ASSERT(self->_pixelBytes);	//destination exists
 	RI_ASSERT(kernel && kernelWidth > 0 && kernelHeight > 0);
 
 	//the area to be written is an intersection of source and destination image areas.
@@ -1205,8 +1189,8 @@ void KGSurfaceConvolve(KGSurface *self,KGSurface * src, int kernelWidth, int ker
 *//*-------------------------------------------------------------------*/
 
 void KGSurfaceSeparableConvolve(KGSurface *self,KGSurface * src, int kernelWidth, int kernelHeight, int shiftX, int shiftY, const RIint16* kernelX, const RIint16* kernelY, CGFloat scale, CGFloat bias, VGTilingMode tilingMode, VGColor edgeFillColor, BOOL filterFormatLinear, BOOL filterFormatPremultiplied, VGbitfield channelMask) {
-	RI_ASSERT(src->_bytes);	//source exists
-	RI_ASSERT(self->_bytes);	//destination exists
+	RI_ASSERT(src->_pixelBytes);	//source exists
+	RI_ASSERT(self->_pixelBytes);	//destination exists
 	RI_ASSERT(kernelX && kernelY && kernelWidth > 0 && kernelHeight > 0);
 
 	//the area to be written is an intersection of source and destination image areas.
@@ -1310,8 +1294,8 @@ void KGSurfaceSeparableConvolve(KGSurface *self,KGSurface * src, int kernelWidth
 *//*-------------------------------------------------------------------*/
 
 void KGSurfaceGaussianBlur(KGSurface *self,KGSurface * src, CGFloat stdDeviationX, CGFloat stdDeviationY, VGTilingMode tilingMode, VGColor edgeFillColor, BOOL filterFormatLinear, BOOL filterFormatPremultiplied, VGbitfield channelMask){
-	RI_ASSERT(src->_bytes);	//source exists
-	RI_ASSERT(self->_bytes);	//destination exists
+	RI_ASSERT(src->_pixelBytes);	//source exists
+	RI_ASSERT(self->_pixelBytes);	//destination exists
 	RI_ASSERT(stdDeviationX > 0.0f && stdDeviationY > 0.0f);
 	RI_ASSERT(stdDeviationX <= RI_MAX_GAUSSIAN_STD_DEVIATION && stdDeviationY <= RI_MAX_GAUSSIAN_STD_DEVIATION);
 
@@ -1461,8 +1445,8 @@ static VGColorInternalFormat getLUTFormat(BOOL outputLinear, BOOL outputPremulti
 *//*-------------------------------------------------------------------*/
 
 void KGSurfaceLookup(KGSurface *self,KGSurface * src, const RIuint8 * redLUT, const RIuint8 * greenLUT, const RIuint8 * blueLUT, const RIuint8 * alphaLUT, BOOL outputLinear, BOOL outputPremultiplied, BOOL filterFormatLinear, BOOL filterFormatPremultiplied, VGbitfield channelMask){
-	RI_ASSERT(src->_bytes);	//source exists
-	RI_ASSERT(self->_bytes);	//destination exists
+	RI_ASSERT(src->_pixelBytes);	//source exists
+	RI_ASSERT(self->_pixelBytes);	//destination exists
 	RI_ASSERT(redLUT && greenLUT && blueLUT && alphaLUT);
 
 	//the area to be written is an intersection of source and destination image areas.
@@ -1502,8 +1486,8 @@ void KGSurfaceLookup(KGSurface *self,KGSurface * src, const RIuint8 * redLUT, co
 *//*-------------------------------------------------------------------*/
 
 void KGSurfaceLookupSingle(KGSurface *self,KGSurface * src, const RIuint32 * lookupTable, KGSurfaceChannel sourceChannel, BOOL outputLinear, BOOL outputPremultiplied, BOOL filterFormatLinear, BOOL filterFormatPremultiplied, VGbitfield channelMask){
-	RI_ASSERT(src->_bytes);	//source exists
-	RI_ASSERT(self->_bytes);	//destination exists
+	RI_ASSERT(src->_pixelBytes);	//source exists
+	RI_ASSERT(self->_pixelBytes);	//destination exists
 	RI_ASSERT(lookupTable);
 
 	//the area to be written is an intersection of source and destination image areas.

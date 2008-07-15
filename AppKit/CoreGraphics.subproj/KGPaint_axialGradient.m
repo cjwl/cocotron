@@ -26,58 +26,74 @@
  *
  *-------------------------------------------------------------------*/
 #import "KGPaint_axialGradient.h"
+#import "KGShading.h"
 
 @implementation KGPaint_axialGradient
 
-void KGPaintLinearGradient(KGPaint_axialGradient *self,CGFloat *g, CGFloat *rho, CGFloat x, CGFloat y) {
-	RI_ASSERT(self);
-	CGPoint u = Vector2Subtract(self->m_linearGradientPoint1 , self->m_linearGradientPoint0);
-	CGFloat usq = Vector2Dot(u,u);
-	if( usq <= 0.0f )
-	{	//points are equal, gradient is always 1.0f
-		*g = 1.0f;
-		*rho = 0.0f;
-		return;
-	}
-	CGFloat oou = 1.0f / usq;
-
-	CGPoint p=CGPointMake(x, y);
-	p = CGAffineTransformTransformVector2(self->m_surfaceToPaintMatrix, p);
-	p = Vector2Subtract(p,self->m_linearGradientPoint0);
-	RI_ASSERT(usq >= 0.0f);
-	*g = Vector2Dot(p, u) * oou;
-	CGFloat dgdx = oou * u.x * self->m_surfaceToPaintMatrix.a + oou * u.y * self->m_surfaceToPaintMatrix.b;
-	CGFloat dgdy = oou * u.x * self->m_surfaceToPaintMatrix.c + oou * u.y * self->m_surfaceToPaintMatrix.d;
-	*rho = (CGFloat)sqrt(dgdx*dgdx + dgdy*dgdy);
-	RI_ASSERT(*rho >= 0.0f);
-}
-
-static inline VGColor linearGradientColorAt(KGPaint_axialGradient *self,int x,int y){
-   VGColor result;
+static inline KGRGBAffff linearGradientColorAt(KGPaint_axialGradient *self,int x,int y){
+   CGFloat g;
    
-   CGFloat g, rho;
-   KGPaintLinearGradient(self,&g, &rho, x+0.5f, y+0.5f);
-   result = KGPaintColorRamp(self,g, rho);
-   RI_ASSERT((result.m_format == VGColor_sRGBA && !self->m_colorRampPremultiplied) || (result.m_format == VGColor_sRGBA_PRE && self->m_colorRampPremultiplied));
+   if(self->_rho==0.0f)	//points are equal, gradient is always 1.0f
+    g=1.0f;
+   else {
+    CGPoint p=CGPointApplyAffineTransform(CGPointMake(x+0.5f, y+0.5f),self->m_surfaceToPaintMatrix);
+    
+    p=Vector2Subtract(p,self->_startPoint);
 
-   return VGColorPremultiply(result);
+    g=Vector2Dot(p, self->_u) * self->_oou;
+   }
+   
+   return KGPaintColorRamp(self,g, self->_rho);
 }
 
+static void linear_span_lRGBA8888_PRE(KGPaint *selfX,int x,int y,KGRGBA8888 *span,int length){
+   KGPaint_axialGradient *self=(KGPaint_axialGradient *)selfX;
+   int i;
+   
+   for(i=0;i<length;i++,x++){
+    span[i]=KGRGBA8888FromKGRGBAffff(linearGradientColorAt(self,x,y));
+   }
+}
 
 static void linear_span_lRGBAffff_PRE(KGPaint *selfX,int x,int y,KGRGBAffff *span,int length){
    KGPaint_axialGradient *self=(KGPaint_axialGradient *)selfX;
    int i;
    
    for(i=0;i<length;i++,x++){
-    span[i]=KGRGBAffffFromColor(linearGradientColorAt(self,x,y));
+    span[i]=linearGradientColorAt(self,x,y);
    }
 }
 
--init {
-   [super init];
-   self->_read_lRGBAffff_PRE=linear_span_lRGBAffff_PRE;
-	self->m_linearGradientPoint0=CGPointMake(0,0);
-	self->m_linearGradientPoint1=CGPointMake(1,0);
+-initWithShading:(KGShading *)shading deviceTransform:(CGAffineTransform)deviceTransform {
+
+// Calculate the number of samples based on the length of the gradient in device space
+   CGPoint startPoint=[shading startPoint];
+   CGPoint endPoint=[shading endPoint];
+   CGPoint deviceStart=CGPointApplyAffineTransform(startPoint,deviceTransform);
+   CGPoint deviceEnd=CGPointApplyAffineTransform(endPoint,deviceTransform);
+   CGFloat deltax=deviceStart.x-deviceEnd.x;
+   CGFloat deltay=deviceStart.y-deviceEnd.y;
+   CGFloat distance=sqrt(deltax*deltax+deltay*deltay);
+   int     numberOfSamples=RI_INT_CLAMP(distance,2,8192);
+
+   [super initWithShading:shading deviceTransform:deviceTransform numberOfSamples:numberOfSamples];
+
+   _read_lRGBA8888_PRE=linear_span_lRGBA8888_PRE;
+   _read_lRGBAffff_PRE=linear_span_lRGBAffff_PRE;
+   _u=Vector2Subtract(_endPoint,_startPoint);
+   CGFloat usq=Vector2Dot(_u,_u);
+   
+   if(usq<=0.0f){	//points are equal, gradient is always 1.0f
+    _oou=0.0f;
+    _rho=0.0f;
+   }
+   else {
+    _oou = 1.0f / usq;
+    CGFloat dgdx = _oou * _u.x * self->m_surfaceToPaintMatrix.a + _oou * _u.y * self->m_surfaceToPaintMatrix.b;
+    CGFloat dgdy = _oou * _u.x * self->m_surfaceToPaintMatrix.c + _oou * _u.y * self->m_surfaceToPaintMatrix.d;
+    _rho = (CGFloat)sqrt(dgdx*dgdx + dgdy*dgdy);
+   }
+
    return self;
 }
 

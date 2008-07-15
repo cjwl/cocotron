@@ -8,30 +8,61 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import "KGDataProvider.h"
 #import <Foundation/NSData.h>
+#import <Foundation/NSFileManager.h>
+#import <Foundation/NSStream.h>
+#import <string.h>
 
 @implementation KGDataProvider
 
 -initWithData:(NSData *)data {
-   _data=[data retain];
-   _bytes=[_data bytes];
-   _length=[_data length];
+   _dataOrStream=[data retain];
+   _isDirectAccess=YES;
+   _bytes=[data bytes];
+   _length=[data length];
    return self;
 }
 
 -initWithBytes:(const void *)bytes length:(size_t)length {
-   _data=nil;
+   _dataOrStream=nil;
+   _isDirectAccess=YES;
    _bytes=bytes;
    _length=length;
    return self;
 }
 
+-initWithFilename:(const char *)pathCString {
+// why doesn't CGDataProvider use CFString's, ugh
+   NSUInteger len=strlen(pathCString);
+   NSString  *path=[[NSFileManager defaultManager] stringWithFileSystemRepresentation:pathCString length:len];
+   
+   _dataOrStream=[[NSInputStream alloc] initWithFileAtPath:path];
+   _isDirectAccess=NO;
+   _bytes=NULL;
+   _length=0;
+   return self;
+}
+
 -(void)dealloc {
-   [_data release];
+   [_dataOrStream release];
    [super dealloc];
 }
 
+-(BOOL)isDirectAccess {
+   return _isDirectAccess;
+}
+
 -(NSData *)data {
-   return _data;
+   if([_dataOrStream isKindOfClass:[NSData class]])
+    return _dataOrStream;
+    
+   return nil;
+}
+
+-(NSInputStream *)inputStream {
+   if([_dataOrStream isKindOfClass:[NSInputStream class]])
+    return _dataOrStream;
+    
+   return nil;
 }
 
 -(const void *)bytes {

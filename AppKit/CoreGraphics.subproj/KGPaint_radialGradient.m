@@ -68,15 +68,14 @@ void KGPaintRadialGradient(KGPaint_radialGradient *self,CGFloat *g, CGFloat *rho
 }
 
 
-static inline VGColor radialGradientColorAt(KGPaint_radialGradient *self,int x,int y){
-   VGColor result;
+static inline KGRGBAffff radialGradientColorAt(KGPaint_radialGradient *self,int x,int y){
+   KGRGBAffff result;
    
    CGFloat g, rho;
    KGPaintRadialGradient(self,&g, &rho, x+0.5f, y+0.5f);
    result = KGPaintColorRamp(self,g, rho);
-   RI_ASSERT((result.m_format == VGColor_sRGBA && !self->m_colorRampPremultiplied) || (result.m_format == VGColor_sRGBA_PRE && self->m_colorRampPremultiplied));
 
-   return VGColorPremultiply(result);
+   return result;
 }
 
 void radial_span_lRGBAffff_PRE(KGPaint *selfX,int x,int y,KGRGBAffff *span,int length){
@@ -84,7 +83,7 @@ void radial_span_lRGBAffff_PRE(KGPaint *selfX,int x,int y,KGRGBAffff *span,int l
    int i;
    
    for(i=0;i<length;i++,x++){
-    span[i]=KGRGBAffffFromColor(radialGradientColorAt(self,x,y));
+    span[i]=radialGradientColorAt(self,x,y);
    }
 }
 

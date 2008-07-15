@@ -10,7 +10,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSGeometry.h>
 #import <ApplicationServices/ApplicationServices.h>
 
-@class KGImage,KGColorSpace,KGColor,KGPattern,KGShading,KGMutablePath,KGPath,NSArray,NSMutableArray,KGFont;
+@class KGImage,KGColorSpace,KGColor,KGPattern,KGMutablePath,KGPath,NSArray,NSMutableArray,KGFont;
 
 @interface KGGraphicsState : NSObject <NSCopying> {
 @public

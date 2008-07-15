@@ -30,6 +30,7 @@
 #import "KGImage.h"
 #import "KGSurface.h"
 #import "KGColorSpace.h"
+#import "KGDataProvider.h"
 #import "KGExceptions.h"
 #import <Foundation/NSData.h>
 
@@ -348,7 +349,11 @@ static BOOL initFunctionsForParameters(KGImage *self,size_t bitsPerComponent,siz
    _renderingIntent=renderingIntent;
    _mask=nil;
    
-   _bytes=(void *)[_provider bytes];
+   if([_provider isDirectAccess])
+    _directBytes=(void *)[_provider bytes];
+   else
+    _directBytes=NULL;
+    
    _clampExternalPixels=NO; // only do this if premultiplied format
    if(!initFunctionsForParameters(self,bitsPerComponent,bitsPerPixel,colorSpace,bitmapInfo)){
     NSLog(@"KGImage failed to init with bpc=%d, bpp=%d,colorSpace=%@,bitmapInfo=%0X",bitsPerComponent,bitsPerPixel,colorSpace,bitmapInfo);
@@ -497,7 +502,7 @@ static BOOL initFunctionsForParameters(KGImage *self,size_t bitsPerComponent,siz
 }
 
 -(const void *)bytes {
-   return _bytes;
+   return _directBytes;
 }
 
 -(unsigned)length {
@@ -532,7 +537,7 @@ KGRGBAffff *KGImageRead_ANY_to_RGBA8888_to_RGBAffff(KGImage *self,int x,int y,KG
    return NULL;
 }
 
-float bytesLittleToFloat(unsigned char *scanline){
+float bytesLittleToFloat(const unsigned char *scanline){
    union {
     unsigned char bytes[4];
     float         f;
@@ -554,7 +559,7 @@ float bytesLittleToFloat(unsigned char *scanline){
 }
 
 KGRGBAffff *KGImageRead_RGBAffffLittle_to_RGBAffff(KGImage *self,int x,int y,KGRGBAffff *span,int length){
-   RIuint8 *scanline = self->_bytes + y * self->_bytesPerRow;
+   const RIuint8 *scanline = self->_directBytes + y * self->_bytesPerRow;
    int i;
 
    scanline+=x*16;
@@ -575,7 +580,7 @@ KGRGBAffff *KGImageRead_RGBAffffLittle_to_RGBAffff(KGImage *self,int x,int y,KGR
    return NULL;
 }
 
-float bytesBigToFloat(unsigned char *scanline){
+float bytesBigToFloat(const unsigned char *scanline){
    union {
     unsigned char bytes[4];
     float         f;
@@ -597,7 +602,7 @@ float bytesBigToFloat(unsigned char *scanline){
 }
 
 KGRGBAffff *KGImageRead_RGBAffffBig_to_RGBAffff(KGImage *self,int x,int y,KGRGBAffff *span,int length){
-   RIuint8 *scanline = self->_bytes + y * self->_bytesPerRow;
+   const RIuint8 *scanline = self->_directBytes + y * self->_bytesPerRow;
    int i;
 
    scanline+=x*16;
@@ -619,7 +624,7 @@ KGRGBAffff *KGImageRead_RGBAffffBig_to_RGBAffff(KGImage *self,int x,int y,KGRGBA
 }
 
 uint8_t *KGImageRead_G8_to_A8(KGImage *self,int x,int y,uint8_t *alpha,int length) {
-   RIuint8 *scanline = self->_bytes + y * self->_bytesPerRow;
+   const RIuint8 *scanline = self->_directBytes + y * self->_bytesPerRow;
    int i;
 
    scanline+=x;
@@ -655,7 +660,7 @@ CGFloat *KGImageRead_ANY_to_A8_to_Af(KGImage *self,int x,int y,CGFloat *alpha,in
 }
 
 KGRGBA8888 *KGImageRead_G8_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span,int length){
-   RIuint8 *scanline = self->_bytes + y * self->_bytesPerRow;
+   const RIuint8 *scanline = self->_directBytes + y * self->_bytesPerRow;
    int i;
 
    scanline+=x;
@@ -673,7 +678,7 @@ KGRGBA8888 *KGImageRead_G8_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *spa
 }
 
 KGRGBA8888 *KGImageRead_GA88_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span,int length){
-   RIuint8 *scanline = self->_bytes + y * self->_bytesPerRow;
+   const RIuint8 *scanline = self->_directBytes + y * self->_bytesPerRow;
    int i;
 
    scanline+=x*2;
@@ -690,7 +695,7 @@ KGRGBA8888 *KGImageRead_GA88_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *s
 }
 
 KGRGBA8888 *KGImageRead_RGBA8888_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span,int length){
-   RIuint8 *scanline = self->_bytes + y * self->_bytesPerRow;
+   const RIuint8 *scanline = self->_directBytes + y * self->_bytesPerRow;
    int i;
 
    scanline+=x*4;
@@ -707,7 +712,7 @@ KGRGBA8888 *KGImageRead_RGBA8888_to_RGBA8888(KGImage *self,int x,int y,KGRGBA888
 }
 
 KGRGBA8888 *KGImageRead_ABGR8888_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span,int length){
-   RIuint8 *scanline = self->_bytes + y * self->_bytesPerRow;
+   const RIuint8 *scanline = self->_directBytes + y * self->_bytesPerRow;
    int i;
 
    scanline+=x*4;
@@ -724,7 +729,7 @@ KGRGBA8888 *KGImageRead_ABGR8888_to_RGBA8888(KGImage *self,int x,int y,KGRGBA888
 }
 
 KGRGBA8888 *KGImageRead_BGRA8888_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span,int length) {
-   RIuint8 *scanline = self->_bytes + y * self->_bytesPerRow;
+   const RIuint8 *scanline = self->_directBytes + y * self->_bytesPerRow;
    int i;
 
    scanline+=x*4;
@@ -745,7 +750,7 @@ KGRGBA8888 *KGImageRead_BGRA8888_to_RGBA8888(KGImage *self,int x,int y,KGRGBA888
 }
 
 KGRGBA8888 *KGImageRead_XRGB8888_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span,int length) {
-   RIuint8 *scanline = self->_bytes + y * self->_bytesPerRow;
+   const RIuint8 *scanline = self->_directBytes + y * self->_bytesPerRow;
    int i;
 
    scanline+=x*4;
@@ -764,7 +769,7 @@ KGRGBA8888 *KGImageRead_XRGB8888_to_RGBA8888(KGImage *self,int x,int y,KGRGBA888
 
 // kCGBitmapByteOrder16Little|kCGImageAlphaNoneSkipFirst
 KGRGBA8888 *KGImageRead_G3B5X1R5G2_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span,int length){
-   RIuint8 *scanline = self->_bytes + y * self->_bytesPerRow;
+   const RIuint8 *scanline = self->_directBytes + y * self->_bytesPerRow;
    int i;
 
    scanline+=x*2;
@@ -785,7 +790,7 @@ KGRGBA8888 *KGImageRead_G3B5X1R5G2_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8
 }
 
 KGRGBA8888 *KGImageRead_RGBA4444_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span,int length){
-   RIuint8 *scanline = self->_bytes + y * self->_bytesPerRow;
+   const RIuint8 *scanline = self->_directBytes + y * self->_bytesPerRow;
    int i;
 
    scanline+=x*2;
@@ -804,7 +809,7 @@ KGRGBA8888 *KGImageRead_RGBA4444_to_RGBA8888(KGImage *self,int x,int y,KGRGBA888
 }
 
 KGRGBA8888 *KGImageRead_BARG4444_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span,int length){
-   RIuint8 *scanline = self->_bytes + y * self->_bytesPerRow;
+   const RIuint8 *scanline = self->_directBytes + y * self->_bytesPerRow;
    int i;
 
    scanline+=x*2;
@@ -823,7 +828,7 @@ KGRGBA8888 *KGImageRead_BARG4444_to_RGBA8888(KGImage *self,int x,int y,KGRGBA888
 }
 
 KGRGBA8888 *KGImageRead_RGBA2222_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span,int length){
-   RIuint8 *scanline = self->_bytes + y * self->_bytesPerRow;
+   const RIuint8 *scanline = self->_directBytes + y * self->_bytesPerRow;
    int i;
 
    scanline+=x;
@@ -842,7 +847,7 @@ KGRGBA8888 *KGImageRead_RGBA2222_to_RGBA8888(KGImage *self,int x,int y,KGRGBA888
 
 KGRGBA8888 *KGImageRead_CMYK8888_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span,int length){
 // poor results
-   RIuint8 *scanline = self->_bytes + y * self->_bytesPerRow;
+   const RIuint8 *scanline = self->_directBytes + y * self->_bytesPerRow;
    int i;
 
    scanline+=x*4;
@@ -868,7 +873,7 @@ KGRGBA8888 *KGImageRead_I8_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *spa
    unsigned hival=[indexed hival];
    const unsigned char *palette=[indexed paletteBytes];
 
-   RIuint8 *scanline = self->_bytes + y * self->_bytesPerRow;
+   const RIuint8 *scanline = self->_directBytes + y * self->_bytesPerRow;
    int i;
    
    scanline+=x;
@@ -975,7 +980,7 @@ void KGImageReadTileSpanExtendEdge__lRGBAffff_PRE(KGImage *self,int u, int v, KG
 *//*-------------------------------------------------------------------*/
 
 void KGImageMakeMipMaps(KGImage *self) {
-	RI_ASSERT(self->_bytes);
+	RI_ASSERT(self->_directBytes);
 
 	if(self->m_mipmapsValid)
 		return;
@@ -1253,7 +1258,7 @@ static inline int cubic_8(int v0,int v1,int v2,int v3,int fraction){
   return RI_INT_CLAMP((p * (fraction*fraction*fraction))/(256*256*256) + (q * fraction*fraction)/(256*256) + ((v2 - v0) * fraction)/256 + v1,0,255);
 }
 
-KGRGBA8888 bicubic_lRGBA8888_PRE(KGRGBA8888 a,KGRGBA8888 b,KGRGBA8888 c,KGRGBA8888 d,int fraction) {
+static inline KGRGBA8888 bicubic_lRGBA8888_PRE(KGRGBA8888 a,KGRGBA8888 b,KGRGBA8888 c,KGRGBA8888 d,int fraction) {
   return KGRGBA8888Init(
    cubic_8(a.r, b.r, c.r, d.r, fraction),
    cubic_8(a.g, b.g, c.g, d.g, fraction),
