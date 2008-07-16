@@ -8,8 +8,24 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/Foundation.h>
 #import <ApplicationServices/ApplicationServices.h>
+#import <AppKit/NSGraphics.h>
 
-@class NSWindow, NSCachedImageRep;
+@class NSWindow,NSBitmapImageRep;
+
+typedef enum {
+   NSImageInterpolationDefault=kCGInterpolationDefault,
+   NSImageInterpolationNone=kCGInterpolationNone,
+   NSImageInterpolationLow=kCGInterpolationLow,
+   NSImageInterpolationHigh=kCGInterpolationHigh,
+} NSImageInterpolation;
+
+typedef enum {
+   NSColorRenderingIntentDefault=kCGRenderingIntentDefault,
+   NSColorRenderingIntentAbsoluteColorimetric=kCGRenderingIntentAbsoluteColorimetric,
+   NSColorRenderingIntentRelativeColorimetric=kCGRenderingIntentRelativeColorimetric,
+   NSColorRenderingIntentPerceptual=kCGRenderingIntentPerceptual,
+   NSColorRenderingIntentSaturation=kCGRenderingIntentSaturation,
+} NSColorRenderingIntent;
 
 @interface NSGraphicsContext : NSObject {
    KGContext      *_graphicsPort;
@@ -20,6 +36,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 +(NSGraphicsContext *)graphicsContextWithWindow:(NSWindow *)window;
 +(NSGraphicsContext *)graphicsContextWithGraphicsPort:(KGContext *)context flipped:(BOOL)flipped;
++(NSGraphicsContext *)graphicsContextWithBitmapImageRep:(NSBitmapImageRep *)imageRep;
 
 +(NSGraphicsContext *)currentContext;
 +(void)setCurrentContext:(NSGraphicsContext *)context;
@@ -33,8 +50,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(NSMutableArray *)focusStack;
 
 -(BOOL)isDrawingToScreen;
+-(BOOL)isFlipped;
 
--(void)setShouldAntialias:(BOOL)flag;
+-(void)setShouldAntialias:(BOOL)value;
+-(void)setImageInterpolation:(NSImageInterpolation)value;
+-(void)setColorRenderingIntent:(NSColorRenderingIntent)value;
+-(void)setCompositingOperation:(NSCompositingOperation)value;
 
 -(void)saveGraphicsState;
 -(void)restoreGraphicsState;

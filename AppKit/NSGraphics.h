@@ -8,6 +8,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/Foundation.h>
 #import <AppKit/AppKitExport.h>
+#import <ApplicationServices/ApplicationServices.h>
 
 @class NSColor;
 

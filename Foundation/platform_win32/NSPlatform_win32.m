@@ -35,6 +35,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSSelectInputSourceSet.h>
 
 #import <Foundation/ObjectiveC.h>
+#import <Foundation/ObjCModule.h>
 
 NSString *NSPlatformClassName=@"NSPlatform_win32";
 
@@ -51,8 +52,7 @@ NSString *NSPlatformClassName=@"NSPlatform_win32";
    
    [NSSocket_windows class]; // initialize winsock
 
-   _processName=[[[[NSString stringWithCString:__argv[0]] lastPathComponent] stringByDeletingPathExtension] copy];
-
+   _processName=[[[[NSString stringWithCString:OBJCModulePathForProcess()] lastPathComponent] stringByDeletingPathExtension] copy];
    entry=[@"SYSTEM\\CurrentControlSet\\Services\\Eventlog\\Application\\" stringByAppendingString:_processName];
 
    if(RegCreateKeyEx(HKEY_LOCAL_MACHINE,[entry cString],0,NULL,

@@ -5,11 +5,10 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
-
-// Original - Christopher Lloyd <cjwl@objc.net>
 #import <AppKit/NSGraphicsContext.h>
 #import <AppKit/NSWindow-Private.h>
 #import <AppKit/NSCachedImageRep.h>
+#import <AppKit/NSBitmapImageRep.h>
 #import <ApplicationServices/CGContext.h>
 
 @class NSColor;
@@ -32,8 +31,61 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return self;
 }
 
+static CGColorSpaceRef colorSpaceWithName(NSString *name){
+   if([name isEqualToString:NSDeviceRGBColorSpace])
+    return CGColorSpaceCreateDeviceRGB();
+   if([name isEqualToString:NSCalibratedRGBColorSpace])
+    return CGColorSpaceCreateDeviceRGB();
+
+   return NULL;
+}
+
+static CGBitmapInfo bitmapInfoForBitmapFormat(NSBitmapFormat bitmapFormat){
+   CGBitmapInfo result=kCGBitmapByteOrderDefault;
+   
+   if(bitmapFormat&NSAlphaFirstBitmapFormat){
+    if(bitmapFormat&NSAlphaNonpremultipliedBitmapFormat)
+     result|=kCGImageAlphaFirst;
+    else
+     result|=kCGImageAlphaPremultipliedFirst;
+   }
+   else {
+    if(bitmapFormat&NSAlphaNonpremultipliedBitmapFormat)
+     result|=kCGImageAlphaLast;
+    else
+     result|=kCGImageAlphaPremultipliedLast;
+   }
+   if(bitmapFormat&NSFloatingPointSamplesBitmapFormat)
+    result|=kCGBitmapFloatComponents;
+   
+   return result;
+}
+
+-initWithBitmapImageRep:(NSBitmapImageRep *)imageRep {
+   CGColorSpaceRef colorSpace=colorSpaceWithName([imageRep colorSpaceName]);
+   
+   if(colorSpace==nil){
+    [self dealloc];
+    return nil;
+   }
+   
+   _graphicsPort=CGBitmapContextCreate([imageRep bitmapData],[imageRep pixelsWide],[imageRep pixelsHigh],[imageRep bitsPerSample],[imageRep bytesPerRow],colorSpace,bitmapInfoForBitmapFormat([imageRep bitmapFormat]));
+   CGColorSpaceRelease(colorSpace);
+   
+   if(_graphicsPort==nil){
+    [self dealloc];
+    return nil;
+   }
+   
+   _focusStack=[NSMutableArray new];
+   _isDrawingToScreen=YES;
+   _isFlipped=NO;
+   return self;
+}
+
 -(void)dealloc {
-   CGContextRelease(_graphicsPort);
+   if(_graphicsPort!=NULL)
+    CGContextRelease(_graphicsPort);
    [_focusStack release];
    [super dealloc];
 }
@@ -44,6 +96,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 +(NSGraphicsContext *)graphicsContextWithGraphicsPort:(KGContext *)context flipped:(BOOL)flipped {
    return [[[self alloc] initWithGraphicsPort:context flipped:flipped] autorelease];
+}
+
++(NSGraphicsContext *)graphicsContextWithBitmapImageRep:(NSBitmapImageRep *)imageRep {
+   return [[[self alloc] initWithBitmapImageRep:imageRep] autorelease];
 }
 
 +(NSMutableArray *)_contextStack {
@@ -115,7 +171,48 @@ NSMutableArray *NSCurrentFocusStack() {
    return _isDrawingToScreen;
 }
 
+-(BOOL)isFlipped {
+   NSView *focusView=[_focusStack lastObject];
+   
+   if(focusView!=nil)
+    return [focusView isFlipped];
+    
+   return _isFlipped;
+}
+
 -(void)setShouldAntialias:(BOOL)flag {
+   CGContextSetShouldAntialias(_graphicsPort,flag);
+}
+
+-(void)setImageInterpolation:(NSImageInterpolation)value {
+   CGContextSetInterpolationQuality(_graphicsPort,value);
+}
+
+-(void)setColorRenderingIntent:(NSColorRenderingIntent)value {
+   CGContextSetRenderingIntent(_graphicsPort,value);
+}
+
+-(void)setCompositingOperation:(NSCompositingOperation)value {
+   CGBlendMode blendMode[]={
+    kCGBlendModeClear,
+    kCGBlendModeCopy,
+    kCGBlendModeNormal,
+    kCGBlendModeSourceIn,
+    kCGBlendModeSourceOut,
+    kCGBlendModeSourceAtop,
+    kCGBlendModeDestinationOver,
+    kCGBlendModeDestinationIn,
+    kCGBlendModeDestinationOut,
+    kCGBlendModeDestinationAtop,
+    kCGBlendModeXOR,
+    kCGBlendModePlusDarker,
+    kCGBlendModeNormal,
+    kCGBlendModePlusLighter,
+   };
+   if(value<NSCompositeClear || value>NSCompositePlusLighter)
+    return;
+   
+   CGContextSetBlendMode(_graphicsPort,blendMode[value]);
 }
 
 -(void)saveGraphicsState {
@@ -127,6 +224,7 @@ NSMutableArray *NSCurrentFocusStack() {
 }
 
 -(void)flushGraphics {
+   CGContextFlush(_graphicsPort);
 }
 
 @end

@@ -47,10 +47,12 @@ void KGPaintRadialGradient(KGPaint_radialGradient *self,CGFloat *g, CGFloat *rho
 
 	CGPoint fp = Vector2Subtract(f,c);
 
+#if 0
 	//clamp the focal point inside the gradient circle
 	CGFloat fpLen = Vector2Length(fp);
 	if( fpLen > 0.999f * r )
 		fp = Vector2MultiplyByFloat(fp, (0.999f * r / fpLen));
+#endif
 
 	CGFloat D = -1.0f / (Vector2Dot(fp,fp) - r*r);
 	CGPoint p=CGPointMake(x, y);
