@@ -23,6 +23,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "KGMutablePath.h"
 #import "KGColor.h"
 #import "KGColorSpace+PDF.h"
+#import "KGGraphicsState.h"
 #import <Foundation/NSProcessInfo.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSArray.h>
@@ -328,12 +329,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    const unsigned char *elements=[_path elements];
    const CGPoint       *points=[_path points];
    int                  pi=0;
+   CGAffineTransform    invertUserSpaceTransform=CGAffineTransformInvert([[self currentState] userSpaceTransform]);
    
    for(i=0;i<numberOfElements;i++){
     switch(elements[i]){
     
      case kCGPathElementMoveToPoint:{
-       CGPoint point=points[pi++];
+       CGPoint point=CGPointApplyAffineTransform(points[pi++],invertUserSpaceTransform);
        
        if(i>=start)
         [self contentWithFormat:@"%g %g m ",point.x,point.y];
@@ -341,7 +343,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       break;
       
      case kCGPathElementAddLineToPoint:{
-       CGPoint point=points[pi++];
+       CGPoint point=CGPointApplyAffineTransform(points[pi++],invertUserSpaceTransform);
 
        if(i>=start)
         [self contentWithFormat:@"%g %g l ",point.x,point.y];
@@ -349,9 +351,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       break;
 
      case kCGPathElementAddCurveToPoint:{
-       CGPoint c1=points[pi++];
-       CGPoint c2=points[pi++];
-       CGPoint end=points[pi++];
+       CGPoint c1=CGPointApplyAffineTransform(points[pi++],invertUserSpaceTransform);
+       CGPoint c2=CGPointApplyAffineTransform(points[pi++],invertUserSpaceTransform);
+       CGPoint end=CGPointApplyAffineTransform(points[pi++],invertUserSpaceTransform);
 
        if(i>=start)
         [self contentWithFormat:@"%g %g %g %g %g %g c ",c1.x,c1.y,c2.x,c2.y,end.x,end.y];
@@ -363,8 +365,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       break;
       
      case kCGPathElementAddQuadCurveToPoint:{
-       CGPoint c1=points[pi++];
-       CGPoint end=points[pi++];
+       CGPoint c1=CGPointApplyAffineTransform(points[pi++],invertUserSpaceTransform);
+       CGPoint end=CGPointApplyAffineTransform(points[pi++],invertUserSpaceTransform);
 
        if(i>=start)
         [self contentWithFormat:@"%g %g %g %g v ",c1.x,c1.y,end.x,end.y];
