@@ -582,9 +582,10 @@ static BOOL initFunctionsForParameters(KGSurface *self,size_t bitsPerComponent,s
 }
 
 -(void)setWidth:(size_t)width height:(size_t)height reallocateOnlyIfRequired:(BOOL)roir {
+
    if(!m_ownsData)
     return;
-   
+
    _width=width;
    _height=height;
    _bytesPerRow=width*_bitsPerPixel/8;

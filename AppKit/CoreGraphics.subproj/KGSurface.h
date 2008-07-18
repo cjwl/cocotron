@@ -226,6 +226,7 @@ typedef void (*KGSurfaceWriteSpan_RGBAffff)(KGSurface *self,int x,int y,KGRGBAff
    KGSurfaceWriteSpan_RGBA8888 _writeRGBA8888;
    KGSurfaceWriteSpan_RGBAffff _writeRGBAffff;
    
+	BOOL           m_ownsData;
 	VGPixelDecode	m_desc;
 } 
 

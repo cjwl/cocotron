@@ -7,16 +7,30 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 #import <Foundation/NSURLProtocol.h>
 #import <Foundation/NSRaise.h>
+#import <Foundation/NSArray.h>
+#import "NSURLProtocol_http.h"
 
 @implementation NSURLProtocol
 
+static NSMutableArray *_registeredClasses=nil;
+
++(void)initialize {
+   if(self==[NSURLProtocol class]){
+    _registeredClasses=[NSMutableArray new];
+    [_registeredClasses addObject:[NSURLProtocol_http class]];
+   }
+}
+
++(NSArray *)_registeredClasses {
+   return _registeredClasses;
+}
+
 +(BOOL)registerClass:(Class)cls {
-   NSUnimplementedMethod();
-   return 0;
+   [_registeredClasses addObject:cls];
 }
 
 +(void)unregisterClass:(Class)cls {
-   NSUnimplementedMethod();
+   [_registeredClasses removeObjectIdenticalTo:cls];
 }
 
 +propertyForKey:(NSString *)key inRequest:(NSURLRequest *)request {

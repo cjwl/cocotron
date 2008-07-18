@@ -7,20 +7,23 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 #import <Foundation/NSObject.h>
 
-@class NSURLRequest,NSData,NSURLResponse,NSError,NSURLAuthenticationChallenge,NSCachedURLResponse;
+@class NSURLRequest,NSData,NSURLResponse,NSError,NSURLAuthenticationChallenge,NSCachedURLResponse,NSURLProtocol;
 
 @interface NSURLConnection : NSObject {
-   NSURLRequest *_request;
-   id            _delegate;
+   NSURLRequest  *_request;
+   NSURLProtocol *_protocol;
+   id             _delegate;
 }
 
 +(BOOL)canHandleRequest:(NSURLRequest *)request;
-+(NSData *)sendSynchronousRequest:(NSURLRequest *)request returningResponse:(NSURLResponse **)response error:(NSError *)error;
++(NSData *)sendSynchronousRequest:(NSURLRequest *)request returningResponse:(NSURLResponse **)response error:(NSError **)error;
 
 +(NSURLConnection *)connectionWithRequest:(NSURLRequest *)request delegate:delegate;
 
+-initWithRequest:(NSURLRequest *)request delegate:delegate startImmediately:(BOOL)startLoading;
 -initWithRequest:(NSURLRequest *)request delegate:delegate;
 
+-(void)start;
 -(void)cancel;
 
 @end

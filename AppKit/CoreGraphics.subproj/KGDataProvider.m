@@ -15,35 +15,31 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @implementation KGDataProvider
 
 -initWithData:(NSData *)data {
-   _dataOrStream=[data retain];
+   _data=[data retain];
    _isDirectAccess=YES;
    _bytes=[data bytes];
-   _length=[data length];
    return self;
 }
 
 -initWithBytes:(const void *)bytes length:(size_t)length {
-   _dataOrStream=nil;
+   _data=nil;
    _isDirectAccess=YES;
    _bytes=bytes;
-   _length=length;
    return self;
 }
 
 -initWithFilename:(const char *)pathCString {
 // why doesn't CGDataProvider use CFString's, ugh
    NSUInteger len=strlen(pathCString);
-   NSString  *path=[[NSFileManager defaultManager] stringWithFileSystemRepresentation:pathCString length:len];
+   _path=[[[NSFileManager defaultManager] stringWithFileSystemRepresentation:pathCString length:len] copy];
    
-   _dataOrStream=[[NSInputStream alloc] initWithFileAtPath:path];
    _isDirectAccess=NO;
    _bytes=NULL;
-   _length=0;
    return self;
 }
 
 -(void)dealloc {
-   [_dataOrStream release];
+   [_data release];
    [super dealloc];
 }
 
@@ -52,25 +48,18 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(NSData *)data {
-   if([_dataOrStream isKindOfClass:[NSData class]])
-    return _dataOrStream;
-    
-   return nil;
-}
-
--(NSInputStream *)inputStream {
-   if([_dataOrStream isKindOfClass:[NSInputStream class]])
-    return _dataOrStream;
-    
-   return nil;
+   return _data;
 }
 
 -(const void *)bytes {
    return _bytes;
 }
 
--(size_t)length {
-   return _length;
+-(NSData *)copyData {
+   if(_data!=nil)
+    return [_data copy];
+   else
+    return [[NSData alloc] initWithContentsOfFile:_path]; 
 }
 
 @end

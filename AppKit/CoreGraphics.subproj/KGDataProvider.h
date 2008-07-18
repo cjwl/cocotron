@@ -11,10 +11,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @class NSData,NSInputStream;
 
 @interface KGDataProvider : NSObject {
-   id          _dataOrStream;
-   BOOL        _isDirectAccess;
-   const void *_bytes;
-   size_t      _length;
+   NSData        *_data;
+   NSString      *_path;
+   BOOL           _isDirectAccess;
+   const void    *_bytes;
+   size_t         _length;
 }
 
 -initWithData:(NSData *)data;
@@ -24,8 +25,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(BOOL)isDirectAccess;
 
 -(NSData *)data;
--(NSInputStream *)inputStream;
 -(const void *)bytes;
--(size_t)length;
+
+-(NSData *)copyData;
 
 @end

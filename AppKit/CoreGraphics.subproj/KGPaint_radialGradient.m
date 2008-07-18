@@ -32,27 +32,20 @@
 
 void KGPaintRadialGradient(KGPaint_radialGradient *self,CGFloat *g, CGFloat *rho, CGFloat x, CGFloat y) {
 	RI_ASSERT(self);
-	if( self->m_radialGradientRadius <= 0.0f )
+	if( self->_endRadius <= 0.0f )
 	{
 		*g = 1.0f;
 		*rho = 0.0f;
 		return;
 	}
 
-	CGFloat r = self->m_radialGradientRadius;
-	CGPoint c = self->m_radialGradientCenter;
-	CGPoint f = self->m_radialGradientFocalPoint;
+	CGFloat r = self->_endRadius;
+	CGPoint c = self->_endPoint;
+	CGPoint f = self->_startPoint;
 	CGPoint gx=CGPointMake(self->m_surfaceToPaintMatrix.a, self->m_surfaceToPaintMatrix.b);
 	CGPoint gy=CGPointMake(self->m_surfaceToPaintMatrix.c,self->m_surfaceToPaintMatrix.d);
 
 	CGPoint fp = Vector2Subtract(f,c);
-
-#if 0
-	//clamp the focal point inside the gradient circle
-	CGFloat fpLen = Vector2Length(fp);
-	if( fpLen > 0.999f * r )
-		fp = Vector2MultiplyByFloat(fp, (0.999f * r / fpLen));
-#endif
 
 	CGFloat D = -1.0f / (Vector2Dot(fp,fp) - r*r);
 	CGPoint p=CGPointMake(x, y);
@@ -62,6 +55,7 @@ void KGPaintRadialGradient(KGPaint_radialGradient *self,CGFloat *g, CGFloat *rho
 	*g = (Vector2Dot(fp,d) + s) * D;
 	if(RI_ISNAN(*g))
 		*g = 0.0f;
+        
 	CGFloat dgdx = D*Vector2Dot(fp,gx) + (r*r*Vector2Dot(d,gx) - (gx.x*fp.y - gx.y*fp.x)*(p.x*fp.y - p.y*fp.x)) * (D / s);
 	CGFloat dgdy = D*Vector2Dot(fp,gy) + (r*r*Vector2Dot(d,gy) - (gy.x*fp.y - gy.y*fp.x)*(p.x*fp.y - p.y*fp.x)) * (D / s);
 	*rho = (CGFloat)sqrt(dgdx*dgdx + dgdy*dgdy);
@@ -103,9 +97,8 @@ static void radial_span_lRGBAffff_PRE(KGPaint *selfX,int x,int y,KGRGBAffff *spa
    [super initWithShading:shading deviceTransform:deviceTransform numberOfSamples:1024];
    _read_lRGBA8888_PRE=radial_span_lRGBA8888_PRE;
    _read_lRGBAffff_PRE=radial_span_lRGBAffff_PRE;
-   m_radialGradientRadius=[shading endRadius];
-   m_radialGradientCenter=[shading startPoint];
-   m_radialGradientFocalPoint=[shading endPoint];
+   _endRadius=[shading endRadius];
+
    return self;
 }
 

@@ -28,9 +28,8 @@
 #import "KGPaint_ramp.h"
 
 @interface KGPaint_radialGradient : KGPaint_ramp {
-   CGPoint m_radialGradientCenter;
-   CGPoint m_radialGradientFocalPoint;
-   CGFloat m_radialGradientRadius;
+   CGFloat _startRadius;
+   CGFloat _endRadius;
 }
 
 -initWithShading:(KGShading *)shading deviceTransform:(CGAffineTransform)deviceTransform;

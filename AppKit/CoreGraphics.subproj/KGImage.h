@@ -275,6 +275,7 @@ typedef CGFloat    *(*KGImageReadSpan_Af)(KGImage *self,int x,int y,CGFloat *spa
    CGColorRenderingIntent _renderingIntent;
    KGImage               *_mask;
 
+   NSData              *_directData;
    const unsigned char *_directBytes;
    BOOL           _clampExternalPixels;
    VGColorInternalFormat _colorFormat;
@@ -284,11 +285,10 @@ typedef CGFloat    *(*KGImageReadSpan_Af)(KGImage *self,int x,int y,CGFloat *spa
    KGImageReadSpan_A8 _readA8;
    KGImageReadSpan_Af _readAf;
 
-	BOOL				m_ownsData;
-	BOOL				m_mipmapsValid;
-    int                 _mipmapsCount;
-    int                 _mipmapsCapacity;
-    struct KGSurface    **_mipmaps;
+   BOOL			     	m_mipmapsValid;
+   int                 _mipmapsCount;
+   int                 _mipmapsCapacity;
+   struct KGSurface    **_mipmaps;
 }
 
 -initWithWidth:(size_t)width height:(size_t)height bitsPerComponent:(size_t)bitsPerComponent bitsPerPixel:(size_t)bitsPerPixel bytesPerRow:(size_t)bytesPerRow colorSpace:(KGColorSpace *)colorSpace bitmapInfo:(CGBitmapInfo)bitmapInfo provider:(KGDataProvider *)provider decode:(const CGFloat *)decode interpolate:(BOOL)interpolate renderingIntent:(CGColorRenderingIntent)renderingIntent;
@@ -319,8 +319,8 @@ typedef CGFloat    *(*KGImageReadSpan_Af)(KGImage *self,int x,int y,CGFloat *spa
 -(BOOL)isMask;
 -(CGImageAlphaInfo)alphaInfo;
 
--(const void *)bytes;
--(unsigned)length;
+-(NSData *)directData;
+-(void)releaseDirectDataIfPossible;
 
 @end
 

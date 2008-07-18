@@ -27,6 +27,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSAutoreleasePool.h>
 #import <Foundation/NSBundle.h>
 #import <Foundation/NSByteOrder.h>
+#import <Foundation/NSCachedURLResponse.h>
 #import <Foundation/NSCalendar.h>
 #import <Foundation/NSCalendarDate.h>
 #import <Foundation/NSCharacterSet.h>

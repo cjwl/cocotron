@@ -127,15 +127,6 @@ BOOL _isAvailable=NO;
    [[self currentState] setDeviceSpaceCTM:flip];
 }
 
--(const void *)bytes {
-   return [_surface bytes];
-}
-
--(size_t)bytesPerRow {
-   return [_surface bytesPerRow];
-}
-
-
 static void applyPath(void *info,const CGPathElement *element) {
    VGPath *vgPath=( VGPath *)info;
    CGPoint *points=element->points;

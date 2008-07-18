@@ -48,6 +48,10 @@ static NSLock *kvoLock=nil;
 +(void)_KVO_buildDependencyUnion;
 @end
 
+@interface NSObject (KVCPrivateMethod)
+-(void)_demangleTypeEncoding:(const char*)type to:(char*)cleanType;
+@end
+
 @implementation NSObject (KeyValueObserving)
 
 -(void*)observationInfo
@@ -684,7 +688,7 @@ CHANGE_DECLARATION(SEL)
 				const char* firstParameterType=[[self methodSignatureForSelector:method->method_name] getArgumentTypeAtIndex:2];
 				const char* returnType=[[self methodSignatureForSelector:method->method_name] methodReturnType];
 
-            char *cleanFirstParameterType=alloca(strlen(firstParameterType)+1);
+            char *cleanFirstParameterType=__builtin_alloca(strlen(firstParameterType)+1);
             [self _demangleTypeEncoding:firstParameterType to:cleanFirstParameterType];
             
             

@@ -9,7 +9,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSPDFImageRep.h>
 #import <AppKit/NSGraphicsContext.h>
 #import <ApplicationServices/CGContext.h>
-#import <AppKit/KGPDFPage.h>
 
 @implementation NSPDFImageRep
 
@@ -69,11 +68,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(NSSize)size {
    CGPDFPageRef page=CGPDFDocumentGetPage(_document,_currentPage);
-   NSRect     mediaBox;
+   NSRect       mediaBox=CGPDFPageGetBoxRect(page,kCGPDFMediaBox);
       
-   if(![page getRect:&mediaBox forBox:kCGPDFMediaBox])
-    return NSMakeSize(0,0);
-
    return mediaBox.size;
 }
 
@@ -85,7 +81,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     return NO;
    
    CGContextSaveGState(context);
-   CGContextConcatCTM(context,[page drawingTransformForBox:kCGPDFMediaBox inRect:rect rotate:0 preserveAspectRatio:NO]);
+   CGContextConcatCTM(context,CGPDFPageGetDrawingTransform(page,kCGPDFMediaBox,rect,0,NO));
    CGContextDrawPDFPage(context,page);
    CGContextRestoreGState(context);
    return YES;

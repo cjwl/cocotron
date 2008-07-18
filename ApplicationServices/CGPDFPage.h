@@ -8,6 +8,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import "CoreGraphicsExport.h"
 #import <Foundation/NSObject.h>
+#import <ApplicationServices/CGGeometry.h>
+#import <ApplicationServices/CGAffineTransform.h>
 
 @class KGPDFPage;
 
@@ -21,5 +23,7 @@ typedef enum {
    kCGPDFArtBox,
 } CGPDFBox;
 
-COREGRAPHICS_EXPORT CGPDFPageRef CGPDFPageRetain(CGPDFPageRef self);
-COREGRAPHICS_EXPORT void         CGPDFPageRelease(CGPDFPageRef self);
+COREGRAPHICS_EXPORT CGPDFPageRef      CGPDFPageRetain(CGPDFPageRef self);
+COREGRAPHICS_EXPORT void              CGPDFPageRelease(CGPDFPageRef self);
+COREGRAPHICS_EXPORT CGRect            CGPDFPageGetBoxRect(CGPDFPageRef self,CGPDFBox box);
+COREGRAPHICS_EXPORT CGAffineTransform CGPDFPageGetDrawingTransform(CGPDFPageRef self,CGPDFBox box,CGRect rect,int clockwiseDegrees,BOOL preserveAspectRatio);
