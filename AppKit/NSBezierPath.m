@@ -334,7 +334,7 @@ static int numberOfPointsForOperator(int op){
 }
 
 -(BOOL)isEmpty {
-   return [_path isEmpty];
+   return CGPathIsEmpty(_path);
 }
 
 -(NSRect)bounds {
@@ -343,25 +343,25 @@ static int numberOfPointsForOperator(int op){
 }
 
 -(NSRect)controlPointBounds {
-   return [_path boundingBox];
+   return CGPathGetBoundingBox(_path);
 }
 
 -(BOOL)containsPoint:(NSPoint)point {
    BOOL evenOdd=([self windingRule]==NSEvenOddWindingRule)?YES:NO;
    
-   return [_path containsPoint:point evenOdd:evenOdd withTransform:NULL];
+   return CGPathContainsPoint(_path,NULL,point,evenOdd);
 }
 
 -(NSPoint)currentPoint {
-   return [_path currentPoint];
+   return CGPathGetCurrentPoint(_path);
 }
 
 -(void)moveToPoint:(NSPoint)point {
-   [_path moveToPoint:point withTransform:NULL];
+   CGPathMoveToPoint(_path,NULL,point.x,point.y);
 }
 
 -(void)lineToPoint:(NSPoint)point {
-   [_path addLineToPoint:point withTransform:NULL];
+   CGPathAddLineToPoint(_path,NULL,point.x,point.y);
 }
 
 -(void)curveToPoint:(NSPoint)point controlPoint1:(NSPoint)cp1 controlPoint2:(NSPoint)cp2 {
@@ -369,7 +369,7 @@ static int numberOfPointsForOperator(int op){
 }
 
 -(void)closePath {
-   [_path closeSubpath];
+   CGPathCloseSubpath(_path);
 }
 
 -(void)relativeMoveToPoint:(NSPoint)point {
@@ -385,27 +385,27 @@ static int numberOfPointsForOperator(int op){
 }
 
 -(void)appendBezierPathWithPoints:(NSPoint *)points count:(unsigned)count {
-   [_path addLinesWithPoints:points count:count withTransform:NULL];
+   CGPathAddLines(_path,NULL,points,count);
 }
 
 -(void)appendBezierPathWithRect:(NSRect)rect {
-   [_path addRect:rect withTransform:NULL];
+   CGPathAddRect(_path,NULL,rect);
 }
 
 -(void)appendBezierPathWithOvalInRect:(NSRect)rect {
-   [_path addEllipseInRect:rect withTransform:NULL];
+   CGPathAddEllipseInRect(_path,NULL,rect);
 }
 
 -(void)appendBezierPathWithArcFromPoint:(NSPoint)point toPoint:(NSPoint)toPoint radius:(float)radius {
-   [_path addArcToPoint:point point:toPoint radius:radius withTransform:NULL];
+   CGPathAddArcToPoint(_path,NULL,point.x,point.y,toPoint.x,toPoint.y,radius);
 }
 
 -(void)appendBezierPathWithArcWithCenter:(NSPoint)center radius:(float)radius startAngle:(float)startAngle endAngle:(float)endAngle {
-   [_path addArcAtPoint:center radius:radius startAngle:startAngle endAngle:endAngle clockwise:YES withTransform:NULL];
+   CGPathAddArc(_path,NULL,center.x,center.y,radius,startAngle,endAngle,YES);
 }
 
 -(void)appendBezierPathWithArcWithCenter:(NSPoint)center radius:(float)radius startAngle:(float)startAngle endAngle:(float)endAngle clockwise:(BOOL)clockwise {
-   [_path addArcAtPoint:center radius:radius startAngle:startAngle endAngle:endAngle clockwise:clockwise withTransform:NULL];
+   CGPathAddArc(_path,NULL,center.x,center.y,radius,startAngle,endAngle,clockwise);
 }
 
 -(void)appendBezierPathWithGlyph:(NSGlyph)glyph inFont:(NSFont *)font {
@@ -427,7 +427,7 @@ static int numberOfPointsForOperator(int op){
 }
 
 -(void)appendBezierPath:(NSBezierPath *)other {
-   [_path addPath:other->_path withTransform:NULL];
+   CGPathAddPath(_path,NULL,other->_path);
 }
 
 -(void)transformUsingAffineTransform:(NSAffineTransform *)matrix {
@@ -474,7 +474,7 @@ static int numberOfPointsForOperator(int op){
 }
 
 -(void)stroke {
-   KGContext *context=[[NSGraphicsContext currentContext] graphicsPort];
+   CGContextRef context=[[NSGraphicsContext currentContext] graphicsPort];
    
    CGContextSaveGState(context);
    CGContextSetLineWidth(context,[self lineWidth]);
@@ -490,7 +490,7 @@ static int numberOfPointsForOperator(int op){
 }
 
 -(void)fill {
-   KGContext *context=[[NSGraphicsContext currentContext] graphicsPort];
+   CGContextRef context=[[NSGraphicsContext currentContext] graphicsPort];
    
    CGContextBeginPath(context);
    CGContextAddPath(context,_path);
@@ -501,7 +501,7 @@ static int numberOfPointsForOperator(int op){
 }
 
 -(void)addClip {
-   KGContext *context=[[NSGraphicsContext currentContext] graphicsPort];
+   CGContextRef context=[[NSGraphicsContext currentContext] graphicsPort];
 
    if(CGContextIsPathEmpty(context))
     CGContextBeginPath(context);
@@ -510,7 +510,7 @@ static int numberOfPointsForOperator(int op){
 }
 
 -(void)setClip {
-   KGContext *context=[[NSGraphicsContext currentContext] graphicsPort];
+   CGContextRef context=[[NSGraphicsContext currentContext] graphicsPort];
 
    CGContextBeginPath(context);
    CGContextAddPath(context,_path);

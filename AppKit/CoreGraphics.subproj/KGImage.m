@@ -515,6 +515,10 @@ static inline const void *directBytes(KGImage *self){
    return _directData;
 }
 
+-(const void *)directBytes {
+   return directBytes(self);
+}
+
 -(void)releaseDirectDataIfPossible {
    if(![_provider isDirectAccess]){
     [_directData release];

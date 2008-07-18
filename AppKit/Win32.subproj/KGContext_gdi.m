@@ -815,7 +815,7 @@ void CGGraphicsSourceOver_rgba32_onto_bgrx32(unsigned char *sourceRGBA,unsigned 
 -(void)drawBitmapImage:(KGImage *)image inRect:(NSRect)rect ctm:(CGAffineTransform)ctm fraction:(float)fraction  {
    int            width=[image width];
    int            height=[image height];
-   const unsigned int *data=[image bytes];
+   const unsigned int *data=[image directBytes];
    HDC            sourceDC=_dc;
    HDC            combineDC;
    int            combineWidth=width;

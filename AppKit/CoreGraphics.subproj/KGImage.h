@@ -320,6 +320,7 @@ typedef CGFloat    *(*KGImageReadSpan_Af)(KGImage *self,int x,int y,CGFloat *spa
 -(CGImageAlphaInfo)alphaInfo;
 
 -(NSData *)directData;
+-(const void *)directBytes;
 -(void)releaseDirectDataIfPossible;
 
 @end
