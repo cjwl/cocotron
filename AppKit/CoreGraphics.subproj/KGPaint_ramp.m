@@ -195,7 +195,6 @@ KGRGBAffff KGPaintColorRamp(KGPaint_ramp *self,CGFloat gradient, CGFloat rho)  {
 	RI_ASSERT(rho >= 0.0f);
 
 	KGRGBAffff c=KGRGBAffffInit(0,0,0,0);
-	KGRGBAffff avg=KGRGBAffffInit(0,0,0,0);
 
 	if(rho == 0.0f)
 	{	//filter size is zero or gradient is degenerate

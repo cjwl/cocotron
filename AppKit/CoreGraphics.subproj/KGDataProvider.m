@@ -18,6 +18,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    _data=[data retain];
    _isDirectAccess=YES;
    _bytes=[data bytes];
+   _length=[data length];
    return self;
 }
 
@@ -25,6 +26,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    _data=nil;
    _isDirectAccess=YES;
    _bytes=bytes;
+   _length=length;
    return self;
 }
 
@@ -35,6 +37,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    
    _isDirectAccess=NO;
    _bytes=NULL;
+   _length=0;
    return self;
 }
 
@@ -53,6 +56,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(const void *)bytes {
    return _bytes;
+}
+
+-(size_t)length {
+   return _length;
 }
 
 -(NSData *)copyData {

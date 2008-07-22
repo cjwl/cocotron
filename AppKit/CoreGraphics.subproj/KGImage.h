@@ -277,6 +277,8 @@ typedef CGFloat    *(*KGImageReadSpan_Af)(KGImage *self,int x,int y,CGFloat *spa
 
    NSData              *_directData;
    const unsigned char *_directBytes;
+   unsigned             _directLength;
+   
    BOOL           _clampExternalPixels;
    VGColorInternalFormat _colorFormat;
 

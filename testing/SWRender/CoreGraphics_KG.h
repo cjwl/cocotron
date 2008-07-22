@@ -245,7 +245,7 @@
    [KGContext createWithBytes:bytes width:w height:h bitsPerComponent:bpc bytesPerRow:bpr colorSpace:cs bitmapInfo:bi]
 
 #define CGBitmapContextGetData(self) \
-   [self bytes]
+   [self pixelBytes]
 
 #define  CGBitmapContextGetWidth(self) \
    [self width]

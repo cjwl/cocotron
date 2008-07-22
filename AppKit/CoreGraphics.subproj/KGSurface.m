@@ -526,7 +526,7 @@ static BOOL initFunctionsForParameters(KGSurface *self,size_t bitsPerComponent,s
    int bitsPerPixel=32;
    
    if(bytes!=NULL){
-    provider=[[[KGDataProvider alloc] initWithBytes:bytes length:_bytesPerRow*_height] autorelease];
+    provider=[[[KGDataProvider alloc] initWithBytes:bytes length:bytesPerRow*height] autorelease];
     m_ownsData=NO;
    }
    else {
@@ -543,7 +543,7 @@ static BOOL initFunctionsForParameters(KGSurface *self,size_t bitsPerComponent,s
    
    if([provider isDirectAccess])
     _pixelBytes=(void *)[provider bytes];
-    
+
    if(!initFunctionsForParameters(self,bitsPerComponent,_bitsPerPixel,colorSpace,bitmapInfo))
     NSLog(@"KGSurface -init error, return");
 
