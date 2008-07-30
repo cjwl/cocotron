@@ -13,9 +13,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSRaise.h>
 #import <Foundation/NSEnumerator.h>
 #import <Foundation/NSKeyedUnarchiver.h>
+#import <Foundation/NSKeyedArchiver.h>
 #import <Foundation/NSSet_placeholder.h>
 #import <Foundation/NSSet_concrete.h>
 #import <Foundation/NSAutoreleasePool-private.h>
+
+
+@interface NSKeyedArchiver (PrivateToContainers)
+- (void)encodeArray:(NSArray *)array forKey:(NSString *)key;
+@end
+
 
 @implementation NSSet
 
@@ -183,14 +190,21 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)encodeWithCoder:(NSCoder *)coder {
-   unsigned      count=[self count];
-   NSEnumerator *state=[self objectEnumerator];
-   id            object;
+   if([coder isKindOfClass:[NSKeyedArchiver class]]){
+     NSKeyedArchiver *keyed=(NSKeyedArchiver *)coder;
+    
+     [keyed encodeArray:[self allObjects] forKey:@"NS.objects"];
+   }
+   else {
+    unsigned      count=[self count];
+    NSEnumerator *state=[self objectEnumerator];
+    id            object;
 
-   [coder encodeValueOfObjCType:@encode(unsigned) at:&count];
+    [coder encodeValueOfObjCType:@encode(unsigned) at:&count];
 
-   while((object=[state nextObject])!=nil)
-    [coder encodeObject:object];
+    while((object=[state nextObject])!=nil)
+     [coder encodeObject:object];
+   }
 }
 
 -copyWithZone:(NSZone *)zone {

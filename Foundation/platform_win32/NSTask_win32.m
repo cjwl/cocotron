@@ -127,7 +127,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
    if(_standardInput==nil)
     startupInfo.hStdInput=GetStdHandle(STD_INPUT_HANDLE);
-   if([_standardInput isKindOfClass:[NSPipe class]])
+   else if([_standardInput isKindOfClass:[NSPipe class]])
     startupInfo.hStdInput=[(NSFileHandle_win32 *)[_standardInput fileHandleForReading] fileHandle];
    else
     startupInfo.hStdInput=[_standardInput fileHandle];
@@ -141,7 +141,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
    if(_standardError==nil)
     startupInfo.hStdError=GetStdHandle(STD_ERROR_HANDLE);
-   if([_standardError isKindOfClass:[NSPipe class]])
+   else if([_standardError isKindOfClass:[NSPipe class]])
     startupInfo.hStdError=[(NSFileHandle_win32 *)[_standardError fileHandleForWriting] fileHandle];
    else
     startupInfo.hStdError=[_standardError fileHandle];

@@ -21,9 +21,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSPropertyListReader.h>
 #import <Foundation/NSPropertyListWriter_vintage.h>
 #import <Foundation/NSKeyedUnarchiver.h>
+#import <Foundation/NSKeyedArchiver.h>
 #import <Foundation/NSPredicate.h>
 #import <Foundation/NSIndexSet.h>
 #import <Foundation/NSURL.h>
+
+
+@interface NSKeyedArchiver (PrivateToContainers)
+- (void)encodeArray:(NSArray *)array forKey:(NSString *)key;
+@end
+
 
 @implementation NSArray 
 
@@ -133,11 +140,18 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 
 -(void)encodeWithCoder:(NSCoder *)coder {
-   unsigned i,count=[self count];
+  if([coder isKindOfClass:[NSKeyedArchiver class]]){
+    NSKeyedArchiver *keyed=(NSKeyedArchiver *)coder;
+    
+    [keyed encodeArray:self forKey:@"NS.objects"];
+  }
+  else {
+    unsigned i,count=[self count];
 
-   [coder encodeValueOfObjCType:@encode(int) at:&count];
-   for(i=0;i<count;i++)
-    [coder encodeObject:[self objectAtIndex:i]];
+    [coder encodeValueOfObjCType:@encode(int) at:&count];
+    for(i=0;i<count;i++)
+     [coder encodeObject:[self objectAtIndex:i]];
+  }
 }
 
 +array {

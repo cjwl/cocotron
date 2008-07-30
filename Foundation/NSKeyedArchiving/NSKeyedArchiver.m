@@ -11,6 +11,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSData.h>
 #import <Foundation/NSNumber.h>
+#import <Foundation/NSPropertyList.h>
+
 
 @implementation NSKeyedArchiver
 
@@ -35,11 +37,17 @@ static NSMapTable *_globalNameToClass=NULL;
    _data=[data retain];
    _plistStack=[NSMutableArray new];
    [_plistStack addObject:[NSMutableDictionary dictionary]];
-   [[_plistStack lastObject] setObject:[NSMutableDictionary dictionary] forKey:@"$top"];
+   
    _objects=[NSMutableArray new];
    [[_plistStack lastObject] setObject:_objects forKey:@"$objects"];
    [[_plistStack lastObject] setObject:[self className] forKey:@"$archiver"];
-   [[_plistStack lastObject] setObject:@"100000" forKey:@"$version"];
+   [[_plistStack lastObject] setObject:[NSNumber numberWithInt:100000] forKey:@"$version"];
+   
+   // Cocoa puts this default object here so that CF$UID==0 acts as nil
+   [_objects addObject:@"$null"];
+
+   _top=[NSMutableDictionary dictionary];
+   [[_plistStack lastObject] setObject:_top forKey:@"$top"];
    
    _nameToClass=NSCreateMapTable(NSNonRetainedObjectMapKeyCallBacks,NSObjectMapValueCallBacks,0);
    _pass=0;
@@ -140,6 +148,7 @@ static NSMapTable *_globalNameToClass=NULL;
    [[_plistStack lastObject] setObject:[NSData dataWithBytes:ptr length:length] forKey:key];
 }
 
+
 -plistForObject:object {
    NSNumber *uid=NSMapGet(_objectToUid,object);
    
@@ -147,19 +156,61 @@ static NSMapTable *_globalNameToClass=NULL;
     uid=[NSNumber numberWithInt:[_objects count]];
     NSMapInsert(_objectToUid,object,uid);
     
-    [_objects addObject:[NSMutableDictionary dictionary]];
-    [_plistStack addObject:[_objects lastObject]];
-    //encode class;
-    
-    [object encodeWithCoder:self];
-    [_plistStack removeLastObject];
+    if ([object isKindOfClass:[NSString class]]) {
+        [_objects addObject:[NSString stringWithString:object]];
+    }
+    else if ([object isKindOfClass:[NSNumber class]]) {
+        [_objects addObject:object];
+    }
+    else if ([object isKindOfClass:[NSData class]]) {
+        [_objects addObject:object];
+    }
+    else if ([object isKindOfClass:[NSDictionary class]]) {
+        [_objects addObject:object];
+    }
+    else {
+        [_objects addObject:[NSMutableDictionary dictionary]];
+        [_plistStack addObject:[_objects lastObject]];
+        
+        [object encodeWithCoder:self];
+        
+        // encode class name
+        NSString *objClass = NSStringFromClass([object class]);
+        
+        // hack: to hide the implementation of class cluster subclasses such as
+        // NSArray_concrete and NSMutableSet_concrete, remove the suffix
+        NSRange range = [objClass rangeOfString:@"_concrete" options:NSBackwardsSearch];
+        if (range.location != NSNotFound && range.location == [objClass length] - 9)
+            objClass = [objClass substringToIndex:range.location];
+
+        // TODO: in addition to $classname, should also encode list of superclasses as $classes.
+        // Cocotron's NSKeyedUnarchiver doesn't currently use $classes for anything, though --
+        // not sure if Cocoa does?
+                
+        NSDictionary *classMap = [NSDictionary dictionaryWithObjectsAndKeys:
+                                    objClass, @"$classname",
+                                    nil];
+                                    
+        [[_plistStack lastObject] setObject:[self plistForObject:classMap] forKey:@"$class"];
+        [_plistStack removeLastObject];
+    }
    }
    
    return [NSDictionary dictionaryWithObject:uid forKey:@"CF$UID"];
 }
 
 -(void)encodeObject:object forKey:(NSString *)key {
+    if (_pass == 0) {
+        [_plistStack addObject:_top];
+    }
+
+    _pass++;
    [[_plistStack lastObject] setObject:[self plistForObject:object] forKey:key];
+   _pass--;
+   
+    if (_pass == 0) {
+        [_plistStack removeLastObject];
+    }
 }
 
 -(void)encodeConditionalObject:object forKey:(NSString *)key {
@@ -170,9 +221,30 @@ static NSMapTable *_globalNameToClass=NULL;
 }
 
 
--(void)finishEncoding {
-   if(_pass==0)
-    return;
+// private, only called by the -encodeWithCoder methods of NSArray and NSSet
+- (void)encodeArray:(NSArray *)array forKey:(NSString *)key {
+    if(_pass==0)
+     return;
+    
+    int count = [array count];
+    NSMutableArray *plistArr = [NSMutableArray arrayWithCapacity:count];
+    int i;
+    for (i = 0; i < count; i++) {
+        id obj = [array objectAtIndex:i];
+        id plist = [self plistForObject:obj];
+        [plistArr addObject:plist];
+    }
+    
+    [[_plistStack lastObject] setObject:plistArr forKey:key];
+}
+
+
+-(void)finishEncoding {   
+   NSData *newData = [NSPropertyListSerialization dataFromPropertyList:[_plistStack lastObject]
+                                                  format:_outputFormat
+                                                  errorDescription:NULL];
+   
+   [_data appendData:newData];
 }
 
 @end

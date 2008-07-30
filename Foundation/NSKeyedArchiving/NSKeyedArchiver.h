@@ -17,6 +17,7 @@ FOUNDATION_EXPORT NSString *NSInvalidArchiveOperationException;
    NSMutableData       *_data;
    NSMutableArray      *_plistStack;
    NSMutableArray      *_objects;
+   NSMutableDictionary *_top;
    id                   _delegate;
    NSPropertyListFormat _outputFormat;
    NSMapTable          *_nameToClass;

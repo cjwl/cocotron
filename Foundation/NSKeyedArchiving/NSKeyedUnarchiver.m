@@ -103,6 +103,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
      result=plist;
      NSMapInsert(_uidToObject,(void *)uidIntValue,result);
     }
+    else if ([plist isKindOfClass:[NSData class]]) {
+     result=plist;
+     NSMapInsert(_uidToObject,(void *)uidIntValue,result);
+    }
     else
      NSLog(@"plist of class %@",[plist class]);
    }

@@ -7,6 +7,8 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
 #import <Foundation/Foundation.h>
+#import <Foundation/NSKeyedUnarchiver.h>
+#import <Foundation/NSKeyedArchiver.h>
 
 NSString *NSURLFileScheme=@"file";
 
@@ -528,6 +530,55 @@ static BOOL scanURL(urlScanner *scanner,NSURL *url){
 -copyWithZone:(NSZone *)zone {
    return [self retain];
 }
+
+-initWithCoder:(NSCoder *)coder {
+   if([coder isKindOfClass:[NSKeyedUnarchiver class]]){
+    NSKeyedUnarchiver *keyed=(NSKeyedUnarchiver *)coder;
+    NSString          *rel=[keyed decodeObjectForKey:@"NS.relative"];
+    
+    BOOL isLocalFileURL = NO;
+    if (rel) {
+      NSRange range;
+      if ((range = [rel rangeOfString:@"file://localhost"]).location == 0) {
+        rel = [rel substringFromIndex:range.length];
+        isLocalFileURL = YES;
+      }
+    }
+    if (isLocalFileURL)
+      [self initFileURLWithPath:rel];
+    else
+      [self initWithString:rel relativeToURL:[keyed decodeObjectForKey:@"NS.base"]];
+    
+    return self;
+   }
+   else {
+    NSLog(@"NSURL only supports keyed unarchiving");
+   [self release];
+   return nil;
+   }
+}
+
+-(void)encodeWithCoder:(NSCoder *)coder {
+   if([coder isKindOfClass:[NSKeyedArchiver class]]){
+     NSKeyedArchiver *keyed=(NSKeyedArchiver *)coder;
+     NSString        *rel=_string;
+    
+     if ([self isFileURL] && [_path length] > 0) {
+       NSString *path = _path;
+       if ( ![path hasPrefix:@"/"])
+         path = [@"/" stringByAppendingString:path];
+          
+       rel = [NSString stringWithFormat:@"file://localhost%@", path];
+     }
+     
+     if (_baseURL)  [keyed encodeObject:_baseURL forKey:@"NS.base"];
+     if (rel)       [keyed encodeObject:rel forKey:@"NS.relative"];
+   }
+   else {
+    NSLog(@"NSURL only supports keyed archiving");
+   }
+}
+
 
 -(NSUInteger)hash {
 	return [_host hash];

@@ -7,6 +7,7 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 #import <Foundation/NSPropertyList.h>
 #import <Foundation/NSRaise.h>
+#import "NSPropertyListWriter_xml1.h"
 #import "NSPropertyListWriter_vintage.h"
 #import <Foundation/NSPropertyListReader_xml1.h>
 #import <Foundation/NSPropertyListReader_vintage.h>
@@ -25,7 +26,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
      return [NSPropertyListWriter_vintage dataWithPropertyList:plist];
      
     case NSPropertyListXMLFormat_v1_0:
-     return nil;
+     return [NSPropertyListWriter_xml1 dataWithPropertyList:plist];
+     
     case NSPropertyListBinaryFormat_v1_0:
      return nil;
    }

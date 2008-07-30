@@ -11,7 +11,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 FOUNDATION_EXPORT NSString *NSURLFileScheme;
 
-@interface NSURL : NSObject <NSCopying> {
+@interface NSURL : NSObject <NSCopying, NSCoding> {
    NSURL    *_baseURL;
    NSString *_string;
    NSString *_scheme;

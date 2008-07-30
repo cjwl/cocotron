@@ -37,6 +37,7 @@ enum {
    STATE_Attribute_Value,
    STATE_Attribute_Value_DoubleQuote,
    STATE_Attribute_Value_SingleQuote,
+   STATE_CDATA
 };
 
 @implementation NSOldXMLReader
@@ -344,12 +345,34 @@ static inline BOOL codeIsNameContinue(unsigned char code){
        _state=STATE_ignore_unhandled;
        rangeAction=advanceLocationToNext;
       }
-      else if(code=='!'){ // FIX, to just get through !DOCTYPE
-       _state=STATE_ignore_unhandled;
-       rangeAction=advanceLocationToNext;
+      else if(code=='!'){
+       if (NSMaxRange(_range)+8 < _length) {
+         if (0 == memcmp(_bytes + NSMaxRange(_range), "![CDATA[", 8)) {
+           _state = STATE_CDATA;
+           _range.length += 8;
+           rangeAction = advanceLocationToCurrent;
+         }
+       }
+       if (_state != STATE_CDATA) {  // get through !DOCTYPE
+         _state=STATE_ignore_unhandled;
+         rangeAction=advanceLocationToNext;
+       }
       }
       else {
        [self unexpectedIn:@"Tag"];
+      }
+      break;
+      
+     case STATE_CDATA:
+      if (code==']' && NSMaxRange(_range)+3 < _length) {
+        if (0 == memcmp(_bytes + NSMaxRange(_range), "]]>", 3)) {
+          if(_range.length>0)
+            [self content:[self uniqueSelf]];
+        
+          _state = STATE_content;
+          _range.length += 3;
+          rangeAction = advanceLocationToCurrent;
+        }
       }
       break;
 
