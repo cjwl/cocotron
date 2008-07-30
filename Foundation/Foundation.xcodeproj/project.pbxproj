@@ -803,6 +803,16 @@
 		C844CFD70DA7F21400A8F3A2 /* NSSynchronization.m in Sources */ = {isa = PBXBuildFile; fileRef = C844CFCF0DA7F21400A8F3A2 /* NSSynchronization.m */; };
 		C844CFD80DA7F21400A8F3A2 /* NSSynchronization.h in Headers */ = {isa = PBXBuildFile; fileRef = C844CFCE0DA7F21400A8F3A2 /* NSSynchronization.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		C844CFD90DA7F21400A8F3A2 /* NSSynchronization.m in Sources */ = {isa = PBXBuildFile; fileRef = C844CFCF0DA7F21400A8F3A2 /* NSSynchronization.m */; };
+		C851D86D0E40E0D3001DAB69 /* NSPropertyListWriter_xml1.m in Sources */ = {isa = PBXBuildFile; fileRef = C851D86B0E40E0D3001DAB69 /* NSPropertyListWriter_xml1.m */; };
+		C851D86E0E40E0D3001DAB69 /* NSPropertyListWriter_xml1.h in Headers */ = {isa = PBXBuildFile; fileRef = C851D86C0E40E0D3001DAB69 /* NSPropertyListWriter_xml1.h */; };
+		C851D86F0E40E0D3001DAB69 /* NSPropertyListWriter_xml1.m in Sources */ = {isa = PBXBuildFile; fileRef = C851D86B0E40E0D3001DAB69 /* NSPropertyListWriter_xml1.m */; };
+		C851D8700E40E0D3001DAB69 /* NSPropertyListWriter_xml1.h in Headers */ = {isa = PBXBuildFile; fileRef = C851D86C0E40E0D3001DAB69 /* NSPropertyListWriter_xml1.h */; };
+		C851D8710E40E0D3001DAB69 /* NSPropertyListWriter_xml1.m in Sources */ = {isa = PBXBuildFile; fileRef = C851D86B0E40E0D3001DAB69 /* NSPropertyListWriter_xml1.m */; };
+		C851D8720E40E0D3001DAB69 /* NSPropertyListWriter_xml1.h in Headers */ = {isa = PBXBuildFile; fileRef = C851D86C0E40E0D3001DAB69 /* NSPropertyListWriter_xml1.h */; };
+		C851D8730E40E0D3001DAB69 /* NSPropertyListWriter_xml1.m in Sources */ = {isa = PBXBuildFile; fileRef = C851D86B0E40E0D3001DAB69 /* NSPropertyListWriter_xml1.m */; };
+		C851D8740E40E0D3001DAB69 /* NSPropertyListWriter_xml1.h in Headers */ = {isa = PBXBuildFile; fileRef = C851D86C0E40E0D3001DAB69 /* NSPropertyListWriter_xml1.h */; };
+		C851D8750E40E0D3001DAB69 /* NSPropertyListWriter_xml1.m in Sources */ = {isa = PBXBuildFile; fileRef = C851D86B0E40E0D3001DAB69 /* NSPropertyListWriter_xml1.m */; };
+		C851D8760E40E0D3001DAB69 /* NSPropertyListWriter_xml1.h in Headers */ = {isa = PBXBuildFile; fileRef = C851D86C0E40E0D3001DAB69 /* NSPropertyListWriter_xml1.h */; };
 		C8BAA5730DDEFC6C005C4769 /* objc_size_alignment.h in Headers */ = {isa = PBXBuildFile; fileRef = C8BAA5710DDEFC6C005C4769 /* objc_size_alignment.h */; };
 		C8BAA5740DDEFC6C005C4769 /* objc_size_alignment.m in Sources */ = {isa = PBXBuildFile; fileRef = C8BAA5720DDEFC6C005C4769 /* objc_size_alignment.m */; };
 		C8BAA5750DDEFC6C005C4769 /* objc_size_alignment.h in Headers */ = {isa = PBXBuildFile; fileRef = C8BAA5710DDEFC6C005C4769 /* objc_size_alignment.h */; };
@@ -3626,6 +3636,8 @@
 		C844CF940DA7EBE500A8F3A2 /* NSRecursiveLock.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSRecursiveLock.m; sourceTree = "<group>"; };
 		C844CFCE0DA7F21400A8F3A2 /* NSSynchronization.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSSynchronization.h; sourceTree = "<group>"; };
 		C844CFCF0DA7F21400A8F3A2 /* NSSynchronization.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSSynchronization.m; sourceTree = "<group>"; };
+		C851D86B0E40E0D3001DAB69 /* NSPropertyListWriter_xml1.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSPropertyListWriter_xml1.m; sourceTree = "<group>"; };
+		C851D86C0E40E0D3001DAB69 /* NSPropertyListWriter_xml1.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSPropertyListWriter_xml1.h; sourceTree = "<group>"; };
 		C8BAA5710DDEFC6C005C4769 /* objc_size_alignment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = objc_size_alignment.h; sourceTree = "<group>"; };
 		C8BAA5720DDEFC6C005C4769 /* objc_size_alignment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = objc_size_alignment.m; sourceTree = "<group>"; };
 		FE01A7EC0C5D9B6900AEA51A /* Foundation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Foundation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -4291,6 +4303,8 @@
 				6E28044509747BCB00EC542B /* NSPropertyListWriter_vintage.m */,
 				6E0084A20A19363F00F78605 /* NSPropertyListReader_xml1.h */,
 				6E0084A30A19363F00F78605 /* NSPropertyListReader_xml1.m */,
+				C851D86B0E40E0D3001DAB69 /* NSPropertyListWriter_xml1.m */,
+				C851D86C0E40E0D3001DAB69 /* NSPropertyListWriter_xml1.h */,
 				6E0084CD0A19371600F78605 /* NSPropertyListReader.h */,
 				6E0084CE0A19371600F78605 /* NSPropertyListReader.m */,
 				FEB9D4ED0B4436FD00C239BB /* NSPropertyList.h */,
@@ -5316,6 +5330,7 @@
 				C8BAA57B0DDEFC6C005C4769 /* objc_size_alignment.h in Headers */,
 				FEC9F6B20E2F98EA0034932A /* NSURLProtocol_http.h in Headers */,
 				FEC9F6C10E2F9BEA0034932A /* NSURLConnectionState.h in Headers */,
+				C851D8720E40E0D3001DAB69 /* NSPropertyListWriter_xml1.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5612,6 +5627,7 @@
 				C8BAA5730DDEFC6C005C4769 /* objc_size_alignment.h in Headers */,
 				FEC9F6B00E2F98EA0034932A /* NSURLProtocol_http.h in Headers */,
 				FEC9F6BF0E2F9BEA0034932A /* NSURLConnectionState.h in Headers */,
+				C851D8760E40E0D3001DAB69 /* NSPropertyListWriter_xml1.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5912,6 +5928,7 @@
 				C8BAA5750DDEFC6C005C4769 /* objc_size_alignment.h in Headers */,
 				FEC9F6AE0E2F98EA0034932A /* NSURLProtocol_http.h in Headers */,
 				FEC9F6BD0E2F9BEA0034932A /* NSURLConnectionState.h in Headers */,
+				C851D8740E40E0D3001DAB69 /* NSPropertyListWriter_xml1.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6208,6 +6225,7 @@
 				C8BAA5770DDEFC6C005C4769 /* objc_size_alignment.h in Headers */,
 				FEC9F6B40E2F98EA0034932A /* NSURLProtocol_http.h in Headers */,
 				FEC9F6C30E2F9BEA0034932A /* NSURLConnectionState.h in Headers */,
+				C851D86E0E40E0D3001DAB69 /* NSPropertyListWriter_xml1.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6504,6 +6522,7 @@
 				C8BAA5790DDEFC6C005C4769 /* objc_size_alignment.h in Headers */,
 				FEC9F6B60E2F98EA0034932A /* NSURLProtocol_http.h in Headers */,
 				FEC9F6C50E2F9BEA0034932A /* NSURLConnectionState.h in Headers */,
+				C851D8700E40E0D3001DAB69 /* NSPropertyListWriter_xml1.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7080,6 +7099,7 @@
 				C8BAA57C0DDEFC6C005C4769 /* objc_size_alignment.m in Sources */,
 				FEC9F6B30E2F98EA0034932A /* NSURLProtocol_http.m in Sources */,
 				FEC9F6C20E2F9BEA0034932A /* NSURLConnectionState.m in Sources */,
+				C851D8710E40E0D3001DAB69 /* NSPropertyListWriter_xml1.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7377,6 +7397,7 @@
 				C8BAA5740DDEFC6C005C4769 /* objc_size_alignment.m in Sources */,
 				FEC9F6B10E2F98EA0034932A /* NSURLProtocol_http.m in Sources */,
 				FEC9F6C00E2F9BEA0034932A /* NSURLConnectionState.m in Sources */,
+				C851D8750E40E0D3001DAB69 /* NSPropertyListWriter_xml1.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7678,6 +7699,7 @@
 				C8BAA5760DDEFC6C005C4769 /* objc_size_alignment.m in Sources */,
 				FEC9F6AF0E2F98EA0034932A /* NSURLProtocol_http.m in Sources */,
 				FEC9F6BE0E2F9BEA0034932A /* NSURLConnectionState.m in Sources */,
+				C851D8730E40E0D3001DAB69 /* NSPropertyListWriter_xml1.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7977,6 +7999,7 @@
 				C8BAA5780DDEFC6C005C4769 /* objc_size_alignment.m in Sources */,
 				FEC9F6B50E2F98EA0034932A /* NSURLProtocol_http.m in Sources */,
 				FEC9F6C40E2F9BEA0034932A /* NSURLConnectionState.m in Sources */,
+				C851D86D0E40E0D3001DAB69 /* NSPropertyListWriter_xml1.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8276,6 +8299,7 @@
 				C8BAA57A0DDEFC6C005C4769 /* objc_size_alignment.m in Sources */,
 				FEC9F6B70E2F98EA0034932A /* NSURLProtocol_http.m in Sources */,
 				FEC9F6C60E2F9BEA0034932A /* NSURLConnectionState.m in Sources */,
+				C851D86F0E40E0D3001DAB69 /* NSPropertyListWriter_xml1.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
