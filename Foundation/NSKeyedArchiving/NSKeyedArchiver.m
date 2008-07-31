@@ -175,14 +175,8 @@ static NSMapTable *_globalNameToClass=NULL;
         [object encodeWithCoder:self];
         
         // encode class name
-        NSString *objClass = NSStringFromClass([object class]);
+        NSString *objClass = NSStringFromClass([object classForArchiver]);
         
-        // hack: to hide the implementation of class cluster subclasses such as
-        // NSArray_concrete and NSMutableSet_concrete, remove the suffix
-        NSRange range = [objClass rangeOfString:@"_concrete" options:NSBackwardsSearch];
-        if (range.location != NSNotFound && range.location == [objClass length] - 9)
-            objClass = [objClass substringToIndex:range.location];
-
         // TODO: in addition to $classname, should also encode list of superclasses as $classes.
         // Cocotron's NSKeyedUnarchiver doesn't currently use $classes for anything, though --
         // not sure if Cocoa does?

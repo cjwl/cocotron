@@ -158,6 +158,9 @@ extern NSMethodSignature *NSMethodSignatureWithTypes(const char *types);
    return isa;
 }
 
+-(Class)classForArchiver {
+   return [self classForCoder];
+}
 
 -replacementObjectForCoder:(NSCoder *)coder {
    return self;

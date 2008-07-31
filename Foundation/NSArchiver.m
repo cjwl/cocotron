@@ -206,7 +206,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     else if(NSHashGet(_objects,object)!=NULL)
      [self _appendWordFour:(unsigned)object];
     else { // FIX do replacementForCoder ?
-     Class class=[object classForCoder];
+     Class class=[object classForArchiver];
 
      NSHashInsert(_objects,object);
 
