@@ -282,15 +282,16 @@ typedef CGFloat    *(*KGImageReadSpan_Af)(KGImage *self,int x,int y,CGFloat *spa
    BOOL           _clampExternalPixels;
    VGColorInternalFormat _colorFormat;
 
-   KGImageReadSpan_RGBA8888 _readRGBA8888;
-   KGImageReadSpan_RGBAffff _readRGBAffff;
-   KGImageReadSpan_A8 _readA8;
-   KGImageReadSpan_Af _readAf;
-
    BOOL			     	m_mipmapsValid;
    int                 _mipmapsCount;
    int                 _mipmapsCapacity;
    struct KGSurface    **_mipmaps;
+
+@public
+   KGImageReadSpan_RGBA8888 _read_lRGBA8888_PRE;
+   KGImageReadSpan_RGBAffff _read_lRGBAffff_PRE;
+   KGImageReadSpan_A8 _readA8;
+   KGImageReadSpan_Af _readAf;
 }
 
 -initWithWidth:(size_t)width height:(size_t)height bitsPerComponent:(size_t)bitsPerComponent bitsPerPixel:(size_t)bitsPerPixel bytesPerRow:(size_t)bytesPerRow colorSpace:(KGColorSpace *)colorSpace bitmapInfo:(CGBitmapInfo)bitmapInfo provider:(KGDataProvider *)provider decode:(const CGFloat *)decode interpolate:(BOOL)interpolate renderingIntent:(CGColorRenderingIntent)renderingIntent;
@@ -335,7 +336,7 @@ const char *KGImageNameWithIntent(CGColorRenderingIntent intent);
 size_t KGImageGetWidth(KGImage *self);
 size_t KGImageGetHeight(KGImage *self);
 
-/* KGImage and KGSurface can read and write any image format provided functions are provided to translate to/from either KGRGBA8888 or KGRGBAffff spans. 
+/* KGImage and KGSurface can read and write any image format provided functions are provided to translate to/from either KGRGBA8888 or KGRGBAffff spans.
 
   The return value will be either NULL or a pointer to the image data if direct access is available for the given format. You must use the return value if it is not NULL. If the value is not NULL you don't do a write back. This is a big boost for native ARGB format as it avoids a copy out and a copy in.
   
@@ -351,6 +352,7 @@ KGRGBA8888 *KGImageRead_GA88_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *s
 KGRGBA8888 *KGImageRead_RGBA8888_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span,int length);
 KGRGBA8888 *KGImageRead_ABGR8888_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span,int length);
 KGRGBA8888 *KGImageRead_BGRA8888_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span,int length);
+KGRGBA8888 *KGImageRead_BGRX8888_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span,int length);
 KGRGBA8888 *KGImageRead_XRGB8888_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span,int length);
 KGRGBA8888 *KGImageRead_G3B5X1R5G2_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span,int length);
 KGRGBA8888 *KGImageRead_RGBA4444_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span,int length);
@@ -364,7 +366,6 @@ KGRGBAffff *KGImageRead_ANY_to_RGBA8888_to_RGBAffff(KGImage *self,int x,int y,KG
 KGRGBAffff *KGImageRead_RGBAffffLittle_to_RGBAffff(KGImage *self,int x,int y,KGRGBAffff *span,int length);
 KGRGBAffff *KGImageRead_RGBAffffBig_to_RGBAffff(KGImage *self,int x,int y,KGRGBAffff *span,int length);
 
-KGRGBA8888 *KGImageReadSpan_lRGBA8888_PRE(KGImage *self,int x,int y,KGRGBA8888 *span,int length);
 KGRGBAffff *KGImageReadSpan_lRGBAffff_PRE(KGImage *self,int x,int y,KGRGBAffff *span,int length);
 uint8_t    *KGImageReadSpan_A8_MASK(KGImage *self,int x,int y,uint8_t *coverage,int length);
 CGFloat    *KGImageReadSpan_Af_MASK(KGImage *self,int x,int y,CGFloat *coverage,int length);

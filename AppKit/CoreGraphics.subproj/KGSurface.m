@@ -274,6 +274,36 @@ static void KGSurfaceWrite_RGBA8888_to_RGBA8888(KGSurface *self,int x,int y,KGRG
    }
 }
 
+static void KGSurfaceWrite_RGBAffff_to_ABGR8888(KGSurface *self,int x,int y,KGRGBAffff *span,int length){
+   RIuint8* scanline = self->_pixelBytes + y * self->_bytesPerRow;
+   int i;
+   
+   scanline+=x*4;
+   for(i=0;i<length;i++){
+    KGRGBAffff rgba=*span++;
+
+    *scanline++=CGByteFromFloat(rgba.a);
+    *scanline++=CGByteFromFloat(rgba.b);
+    *scanline++=CGByteFromFloat(rgba.g);
+    *scanline++=CGByteFromFloat(rgba.r);
+   }
+}
+
+static void KGSurfaceWrite_RGBA8888_to_ABGR8888(KGSurface *self,int x,int y,KGRGBA8888 *span,int length){
+   RIuint8* scanline = self->_pixelBytes + y * self->_bytesPerRow;
+   int i;
+   
+   scanline+=x*4;
+   for(i=0;i<length;i++){
+    KGRGBA8888 rgba=*span++;
+
+    *scanline++=rgba.a;
+    *scanline++=rgba.b;
+    *scanline++=rgba.g;
+    *scanline++=rgba.r;
+   }
+}
+
 static void KGSurfaceWrite_RGBA8888_to_BGRA8888(KGSurface *self,int x,int y,KGRGBA8888 *span,int length){
    RIuint8* scanline = self->_pixelBytes + y * self->_bytesPerRow;
    int i;
@@ -286,21 +316,6 @@ static void KGSurfaceWrite_RGBA8888_to_BGRA8888(KGSurface *self,int x,int y,KGRG
     *scanline++=rgba.g;
     *scanline++=rgba.r;
     *scanline++=rgba.a;
-   }
-}
-
-static void KGImageWrite_RGBAffff_to_ABGR8888(KGSurface *self,int x,int y,KGRGBAffff *span,int length){
-   RIuint8* scanline = self->_pixelBytes + y * self->_bytesPerRow;
-   int i;
-   
-   scanline+=x*4;
-   for(i=0;i<length;i++){
-    KGRGBAffff rgba=*span++;
-
-    *scanline++=CGByteFromFloat(rgba.a);
-    *scanline++=CGByteFromFloat(rgba.b);
-    *scanline++=CGByteFromFloat(rgba.g);
-    *scanline++=CGByteFromFloat(rgba.r);
    }
 }
 
@@ -424,7 +439,8 @@ static BOOL initFunctionsForParameters(KGSurface *self,size_t bitsPerComponent,s
            case kCGBitmapByteOrderDefault:
            case kCGBitmapByteOrder16Little:
            case kCGBitmapByteOrder32Little:
-            self->_writeRGBAffff=KGImageWrite_RGBAffff_to_ABGR8888;
+            self->_writeRGBAffff=KGSurfaceWrite_RGBAffff_to_ABGR8888;
+            self->_writeRGBA8888=KGSurfaceWrite_RGBA8888_to_ABGR8888;
             return YES;
 
            case kCGBitmapByteOrder16Big:

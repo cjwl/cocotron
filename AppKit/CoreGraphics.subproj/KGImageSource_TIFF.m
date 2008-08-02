@@ -80,7 +80,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    KGDataProvider *provider=[[KGDataProvider alloc] initWithData:bitmap];
    KGColorSpace *colorSpace=[[KGColorSpace alloc] initWithDeviceRGB];
    KGImage *image=[[KGImage alloc] initWithWidth:width height:height bitsPerComponent:8 bitsPerPixel:bitsPerPixel bytesPerRow:bytesPerRow
-      colorSpace:colorSpace bitmapInfo:kCGBitmapByteOrder32Big/*kCGImageAlphaLast*/ provider:provider decode:NULL interpolate:NO renderingIntent:kCGRenderingIntentDefault];
+      colorSpace:colorSpace bitmapInfo:kCGBitmapByteOrder32Big|kCGImageAlphaPremultipliedLast provider:provider decode:NULL interpolate:NO renderingIntent:kCGRenderingIntentDefault];
       
    [colorSpace release];
    [provider release];

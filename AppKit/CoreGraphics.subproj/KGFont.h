@@ -1,5 +1,4 @@
 #import <Foundation/NSString.h>
-#import <Foundation/NSGeometry.h>
 #import <ApplicationServices/ApplicationServices.h>
 
 @class KGMutablePath;
@@ -58,7 +57,7 @@ typedef struct CGGlyphMetricsSet {
    NSString                 *_name;
    float                     _size;
    CGFontMetrics             _metrics;
-   BOOL                      _glyphRangeTableLoaded;
+   // subclasses are responsible for alloc/dealloc of _glyphRangeTable
    struct CGGlyphRangeTable *_glyphRangeTable;
    struct CGGlyphMetricsSet *_glyphInfoSet;
 }

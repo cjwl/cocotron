@@ -29,29 +29,42 @@
 
 @implementation KGPaint_image
 
-static void KGPaintReadResampledSpan_lRGBAffff_PRE(KGPaint *selfX,int x,int y,KGRGBAffff *span,int length){   
+static void KGPaintReadResampledHighSpan_lRGBAffff_PRE(KGPaint *selfX,int x,int y,KGRGBAffff *span,int length){   
    KGPaint_image *self=(KGPaint_image *)selfX;
    
-   if(self->_interpolationQuality==kCGInterpolationHigh){
-   // KGImageEWAOnMipmaps_lRGBAffff_PRE(self->_image,x,y,span,length,self->m_surfaceToPaintMatrix);
-     KGImageBicubic_lRGBAffff_PRE(self->_image,x,y,span,length,self->m_surfaceToPaintMatrix);
-   }
-   else if(self->_interpolationQuality==kCGInterpolationLow)
-    KGImageBilinear_lRGBAffff_PRE(self->_image,x,y,span,length,self->m_surfaceToPaintMatrix);
-   else
-    KGImagePointSampling_lRGBAffff_PRE(self->_image,x,y,span,length,self->m_surfaceToPaintMatrix);
+   KGImageBicubic_lRGBAffff_PRE(self->_image,x,y,span,length,self->m_surfaceToPaintMatrix);
 }
 
-static void KGPaintReadResampledSpan_lRGBA8888_PRE(KGPaint *selfX,int x,int y,KGRGBA8888 *span,int length){   
+static void KGPaintReadResampledLowSpan_lRGBAffff_PRE(KGPaint *selfX,int x,int y,KGRGBAffff *span,int length){   
    KGPaint_image *self=(KGPaint_image *)selfX;
-   if(self->_interpolationQuality==kCGInterpolationHigh){
-   // KGImageEWAOnMipmaps_lRGBA8888_PRE(self->_image,x,y,span,length,self->m_surfaceToPaintMatrix);
-     KGImageBicubic_lRGBA8888_PRE(self->_image,x,y,span,length,self->m_surfaceToPaintMatrix);
-   }
-   else if(self->_interpolationQuality==kCGInterpolationLow)
-    KGImageBilinear_lRGBA8888_PRE(self->_image,x,y,span,length,self->m_surfaceToPaintMatrix);
-   else
-    KGImagePointSampling_lRGBA8888_PRE(self->_image,x,y,span,length,self->m_surfaceToPaintMatrix);
+   
+   KGImageBilinear_lRGBAffff_PRE(self->_image,x,y,span,length,self->m_surfaceToPaintMatrix);
+}
+
+static void KGPaintReadResampledNoneSpan_lRGBAffff_PRE(KGPaint *selfX,int x,int y,KGRGBAffff *span,int length){   
+   KGPaint_image *self=(KGPaint_image *)selfX;
+   
+   KGImagePointSampling_lRGBAffff_PRE(self->_image,x,y,span,length,self->m_surfaceToPaintMatrix);
+}
+
+//
+
+static void KGPaintReadResampledHighSpan_lRGBA8888_PRE(KGPaint *selfX,int x,int y,KGRGBA8888 *span,int length){   
+   KGPaint_image *self=(KGPaint_image *)selfX;
+
+   KGImageBicubic_lRGBA8888_PRE(self->_image,x,y,span,length,self->m_surfaceToPaintMatrix);
+}
+
+static void KGPaintReadResampledLowSpan_lRGBA8888_PRE(KGPaint *selfX,int x,int y,KGRGBA8888 *span,int length){   
+   KGPaint_image *self=(KGPaint_image *)selfX;
+
+   KGImageBilinear_lRGBA8888_PRE(self->_image,x,y,span,length,self->m_surfaceToPaintMatrix);
+}
+
+static void KGPaintReadResampledNoneSpan_lRGBA8888_PRE(KGPaint *selfX,int x,int y,KGRGBA8888 *span,int length){   
+   KGPaint_image *self=(KGPaint_image *)selfX;
+
+   KGImagePointSampling_lRGBA8888_PRE(self->_image,x,y,span,length,self->m_surfaceToPaintMatrix);
 }
 
 static void multiply(KGPaint *selfX,int x,int y,KGRGBAffff *span,int length){
@@ -60,7 +73,9 @@ static void multiply(KGPaint *selfX,int x,int y,KGRGBAffff *span,int length){
    KGPaintReadSpan_lRGBAffff_PRE(self->_paint,x,y,span,length);
 
    KGRGBAffff imageSpan[length];
-   KGPaintReadResampledSpan_lRGBAffff_PRE(self,x,y,imageSpan,length);
+   
+// FIXME: Should this take into account the interpolation quality? (depends on how it is used)
+   KGPaintReadResampledNoneSpan_lRGBAffff_PRE(self,x,y,imageSpan,length);
 
    int i;
    
@@ -87,7 +102,8 @@ static void stencil(KGPaint *selfX,int x,int y,KGRGBAffff *span,int length){
    self->_paint->_read_lRGBAffff_PRE(self->_paint,x,y,span,length);
 
    KGRGBAffff imageSpan[length];
-   KGPaintReadResampledSpan_lRGBAffff_PRE(self,x,y,imageSpan,length);
+// FIXME: Should this take into account the interpolation quality? (depends on how it is used)
+   KGPaintReadResampledNoneSpan_lRGBAffff_PRE(self,x,y,imageSpan,length);
 
    int i;
    
@@ -135,15 +151,35 @@ static void stencil(KGPaint *selfX,int x,int y,KGRGBAffff *span,int length){
 -initWithImage:(KGImage *)image mode:(KGSurfaceMode)mode paint:(KGPaint *)paint interpolationQuality:(CGInterpolationQuality)interpolationQuality {
    [super init];
    switch(mode){
+   
     case VG_DRAW_IMAGE_MULTIPLY:
      _read_lRGBAffff_PRE=multiply;
      break;
+     
     case VG_DRAW_IMAGE_STENCIL:
      _read_lRGBAffff_PRE=stencil;
      break;
+     
     default:
-     _read_lRGBA8888_PRE=KGPaintReadResampledSpan_lRGBA8888_PRE;
-     _read_lRGBAffff_PRE=KGPaintReadResampledSpan_lRGBAffff_PRE;
+     switch(interpolationQuality){
+     
+      case kCGInterpolationHigh:
+       _read_lRGBA8888_PRE=KGPaintReadResampledHighSpan_lRGBA8888_PRE;
+       _read_lRGBAffff_PRE=KGPaintReadResampledHighSpan_lRGBAffff_PRE;
+       break;
+       
+      case kCGInterpolationLow:
+       _read_lRGBA8888_PRE=KGPaintReadResampledLowSpan_lRGBA8888_PRE;
+       _read_lRGBAffff_PRE=KGPaintReadResampledLowSpan_lRGBAffff_PRE;
+       break;
+
+      case kCGInterpolationNone:
+      default:
+       _read_lRGBA8888_PRE=KGPaintReadResampledNoneSpan_lRGBA8888_PRE;
+       _read_lRGBAffff_PRE=KGPaintReadResampledNoneSpan_lRGBAffff_PRE;
+       break;
+    
+     }
      break;
    }
    

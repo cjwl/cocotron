@@ -116,6 +116,7 @@ VGPixelDecode KGImageParametersToPixelLayout(KGImageFormat format,size_t *bitsPe
 }
 
 static BOOL initFunctionsForRGBColorSpace(KGImage *self,size_t bitsPerComponent,size_t bitsPerPixel,CGBitmapInfo bitmapInfo){   
+
    switch(bitsPerComponent){
    
     case 32:
@@ -124,15 +125,14 @@ static BOOL initFunctionsForRGBColorSpace(KGImage *self,size_t bitsPerComponent,
        break;
       case 128:
        switch(bitmapInfo&kCGBitmapByteOrderMask){
-        case kCGBitmapByteOrderDefault:
         case kCGBitmapByteOrder16Little:
         case kCGBitmapByteOrder32Little:
-         self->_readRGBAffff=KGImageRead_RGBAffffLittle_to_RGBAffff;
+         self->_read_lRGBAffff_PRE=KGImageRead_RGBAffffLittle_to_RGBAffff;
          return YES;
          
         case kCGBitmapByteOrder16Big:
         case kCGBitmapByteOrder32Big:
-         self->_readRGBAffff=KGImageRead_RGBAffffBig_to_RGBAffff;
+         self->_read_lRGBAffff_PRE=KGImageRead_RGBAffffBig_to_RGBAffff;
          return YES;
        }
      }
@@ -143,11 +143,11 @@ static BOOL initFunctionsForRGBColorSpace(KGImage *self,size_t bitsPerComponent,
      
       case 8:
        self->_readA8=KGImageRead_G8_to_A8;
-       self->_readRGBA8888=KGImageRead_G8_to_RGBA8888;
+       self->_read_lRGBA8888_PRE=KGImageRead_G8_to_RGBA8888;
        return YES;
       
       case 16:
-       self->_readRGBA8888=KGImageRead_GA88_to_RGBA8888;
+       self->_read_lRGBA8888_PRE=KGImageRead_GA88_to_RGBA8888;
        return YES;
        
       case 24:
@@ -161,26 +161,23 @@ static BOOL initFunctionsForRGBColorSpace(KGImage *self,size_t bitsPerComponent,
          case kCGImageAlphaLast:
          case kCGImageAlphaPremultipliedLast:
           switch(bitmapInfo&kCGBitmapByteOrderMask){
-           case kCGBitmapByteOrderDefault:
            case kCGBitmapByteOrder16Little:
            case kCGBitmapByteOrder32Little:
-            self->_readRGBA8888=KGImageRead_ABGR8888_to_RGBA8888;
+            self->_read_lRGBA8888_PRE=KGImageRead_ABGR8888_to_RGBA8888;
             return YES;
 
            case kCGBitmapByteOrder16Big:
            case kCGBitmapByteOrder32Big:
-            self->_readRGBA8888=KGImageRead_RGBA8888_to_RGBA8888;
+            self->_read_lRGBA8888_PRE=KGImageRead_RGBA8888_to_RGBA8888;
             return YES;
           }
-
           break;
-          
+
          case kCGImageAlphaPremultipliedFirst:
           switch(bitmapInfo&kCGBitmapByteOrderMask){
-           case kCGBitmapByteOrderDefault:
            case kCGBitmapByteOrder16Little:
            case kCGBitmapByteOrder32Little:
-            self->_readRGBA8888=KGImageRead_BGRA8888_to_RGBA8888;
+            self->_read_lRGBA8888_PRE=KGImageRead_BGRA8888_to_RGBA8888;
             return YES;
           }
           break;
@@ -189,33 +186,36 @@ static BOOL initFunctionsForRGBColorSpace(KGImage *self,size_t bitsPerComponent,
           break;
           
          case kCGImageAlphaNoneSkipLast:
+          switch(bitmapInfo&kCGBitmapByteOrderMask){
+           case kCGBitmapByteOrder16Little:
+           case kCGBitmapByteOrder32Little:
+            self->_read_lRGBA8888_PRE=KGImageRead_ABGR8888_to_RGBA8888;
+            return YES;
+
+           case kCGBitmapByteOrder16Big:
+           case kCGBitmapByteOrder32Big:
+            self->_read_lRGBA8888_PRE=KGImageRead_RGBA8888_to_RGBA8888;
+            return YES;
+          }
           break;
           
          case kCGImageAlphaNoneSkipFirst:
           switch(bitmapInfo&kCGBitmapByteOrderMask){
-           case kCGBitmapByteOrderDefault:
+           
+           case kCGBitmapByteOrder16Little:
+           case kCGBitmapByteOrder32Little:
+            self->_read_lRGBA8888_PRE=KGImageRead_BGRX8888_to_RGBA8888;
+            return YES;
+
            case kCGBitmapByteOrder16Big:
            case kCGBitmapByteOrder32Big:
-            self->_readRGBA8888=KGImageRead_XRGB8888_to_RGBA8888;
+            self->_read_lRGBA8888_PRE=KGImageRead_XRGB8888_to_RGBA8888;
             return YES;
           }
           break;
         }
               
-       
-        switch(bitmapInfo&kCGBitmapByteOrderMask){
-         case kCGBitmapByteOrderDefault:
-         case kCGBitmapByteOrder16Little:
-         case kCGBitmapByteOrder32Little:
-          self->_readRGBA8888=KGImageRead_ABGR8888_to_RGBA8888;
-          return YES;
-         
-         case kCGBitmapByteOrder16Big:
-         case kCGBitmapByteOrder32Big:
-          self->_readRGBA8888=KGImageRead_RGBA8888_to_RGBA8888;
-          return YES;
-        }
-       break;
+        break;
      }
      break;
     
@@ -224,7 +224,7 @@ static BOOL initFunctionsForRGBColorSpace(KGImage *self,size_t bitsPerComponent,
      
       case 16:
        if(bitmapInfo==(kCGBitmapByteOrder16Little|kCGImageAlphaNoneSkipFirst)){
-        self->_readRGBA8888=KGImageRead_G3B5X1R5G2_to_RGBA8888;
+        self->_read_lRGBA8888_PRE=KGImageRead_G3B5X1R5G2_to_RGBA8888;
         return YES;
        }
        break;
@@ -239,15 +239,14 @@ static BOOL initFunctionsForRGBColorSpace(KGImage *self,size_t bitsPerComponent,
        break;
       case 16:
        switch(bitmapInfo&kCGBitmapByteOrderMask){
-        case kCGBitmapByteOrderDefault:
         case kCGBitmapByteOrder16Little:
         case kCGBitmapByteOrder32Little:
-         self->_readRGBA8888=KGImageRead_BARG4444_to_RGBA8888;
+         self->_read_lRGBA8888_PRE=KGImageRead_BARG4444_to_RGBA8888;
          return YES;
          
         case kCGBitmapByteOrder16Big:
         case kCGBitmapByteOrder32Big:
-         self->_readRGBA8888=KGImageRead_RGBA4444_to_RGBA8888;
+         self->_read_lRGBA8888_PRE=KGImageRead_RGBA4444_to_RGBA8888;
          return YES;
        }
 
@@ -262,7 +261,7 @@ static BOOL initFunctionsForRGBColorSpace(KGImage *self,size_t bitsPerComponent,
       case 6:
        break;
       case 8:
-       self->_readRGBA8888=KGImageRead_RGBA2222_to_RGBA8888;
+       self->_read_lRGBA8888_PRE=KGImageRead_RGBA2222_to_RGBA8888;
        return YES;
      }
      break;
@@ -270,7 +269,7 @@ static BOOL initFunctionsForRGBColorSpace(KGImage *self,size_t bitsPerComponent,
     case  1:
      switch(bitsPerPixel){
       case 1:
-    //   self->_readRGBAffff=KGImageReadPixelSpan_01;
+    //   self->_read_lRGBAffff_PRE=KGImageReadPixelSpan_01;
      //  return YES;
        
       case 3:
@@ -292,7 +291,7 @@ static BOOL initFunctionsForCMYKColorSpace(KGImage *self,size_t bitsPerComponent
         switch(bitmapInfo&kCGBitmapByteOrderMask){
          case kCGBitmapByteOrder16Big:
          case kCGBitmapByteOrder32Big:
-          self->_readRGBA8888=KGImageRead_CMYK8888_to_RGBA8888;
+          self->_read_lRGBA8888_PRE=KGImageRead_CMYK8888_to_RGBA8888;
           return YES;
         }
        break;
@@ -306,7 +305,7 @@ static BOOL initFunctionsForIndexedColorSpace(KGImage *self,size_t bitsPerCompon
 
    switch([[(KGColorSpace_indexed *)colorSpace baseColorSpace] type]){
     case KGColorSpaceDeviceRGB:
-     self->_readRGBA8888=KGImageRead_I8_to_RGBA8888;
+     self->_read_lRGBA8888_PRE=KGImageRead_I8_to_RGBA8888;
      return YES;
    }
    
@@ -317,8 +316,11 @@ static BOOL initFunctionsForParameters(KGImage *self,size_t bitsPerComponent,siz
 
    self->_readA8=KGImageRead_ANY_to_RGBA8888_to_A8;
    self->_readAf=KGImageRead_ANY_to_A8_to_Af;
-   self->_readRGBAffff=KGImageRead_ANY_to_RGBA8888_to_RGBAffff;
+   self->_read_lRGBAffff_PRE=KGImageRead_ANY_to_RGBA8888_to_RGBAffff;
 
+   if((bitmapInfo&kCGBitmapByteOrderMask)==kCGBitmapByteOrderDefault)
+    bitmapInfo|=kCGBitmapByteOrder32Big;
+   
    switch([colorSpace type]){
     case KGColorSpaceDeviceGray:
      break;
@@ -351,7 +353,7 @@ static BOOL initFunctionsForParameters(KGImage *self,size_t bitsPerComponent,siz
    
     _directBytes=NULL;
     _directLength=0;
-    
+
    _clampExternalPixels=NO; // only do this if premultiplied format
    if(!initFunctionsForParameters(self,bitsPerComponent,bitsPerPixel,colorSpace,bitmapInfo)){
     NSLog(@"KGImage failed to init with bpc=%d, bpp=%d,colorSpace=%@,bitmapInfo=%0X",bitsPerComponent,bitsPerPixel,colorSpace,bitmapInfo);
@@ -377,9 +379,10 @@ static BOOL initFunctionsForParameters(KGImage *self,size_t bitsPerComponent,siz
     size_t checkBPP;
 	KGImageParametersToPixelLayout(imageFormat,&checkBPP,&(self->_colorFormat));
     RI_ASSERT(checkBPP==bitsPerPixel);
+    m_mipmapsValid=NO;
     _mipmapsCount=0;
-    _mipmapsCapacity=2;
-    _mipmaps=(KGSurface **)NSZoneMalloc(NULL,self->_mipmapsCapacity*sizeof(KGSurface *));
+    _mipmapsCapacity=0;
+    _mipmaps=NULL;
    return self;
 }
 
@@ -413,6 +416,12 @@ static BOOL initFunctionsForParameters(KGImage *self,size_t bitsPerComponent,siz
 -(void)dealloc {
    [_colorSpace release];
    [_provider release];
+   if(_decode!=NULL)
+    NSZoneFree(NULL,_decode);
+   [_mask release];
+   [_directData release];
+   if(_mipmaps!=NULL)
+    NSZoneFree(NULL,_mipmaps);
    [super dealloc];
 }
 
@@ -553,7 +562,7 @@ size_t KGImageGetHeight(KGImage *self) {
 
 KGRGBAffff *KGImageRead_ANY_to_RGBA8888_to_RGBAffff(KGImage *self,int x,int y,KGRGBAffff *span,int length){
    KGRGBA8888 *span8888=__builtin_alloca(length*sizeof(KGRGBA8888));
-   KGRGBA8888 *direct=self->_readRGBA8888(self,x,y,span8888,length);
+   KGRGBA8888 *direct=self->_read_lRGBA8888_PRE(self,x,y,span8888,length);
    
    if(direct!=NULL)
     span8888=direct;
@@ -681,7 +690,7 @@ uint8_t *KGImageRead_ANY_to_RGBA8888_to_A8(KGImage *self,int x,int y,uint8_t *al
    KGRGBA8888 *span=__builtin_alloca(length*sizeof(KGRGBA8888));
    int i;
    
-   KGRGBA8888 *direct=self->_readRGBA8888(self,x,y,span,length);
+   KGRGBA8888 *direct=self->_read_lRGBA8888_PRE(self,x,y,span,length);
    if(direct!=NULL)
     span=direct;
     
@@ -802,6 +811,28 @@ KGRGBA8888 *KGImageRead_BGRA8888_to_RGBA8888(KGImage *self,int x,int y,KGRGBA888
     result.g = *scanline++;
 	result.r = *scanline++;
     result.a = *scanline++;
+    *span++=result;
+   }
+   return NULL;
+}
+
+KGRGBA8888 *KGImageRead_BGRX8888_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span,int length) {
+   const RIuint8 *scanline = scanlineAtY(self,y);
+   int i;
+   
+   if(scanline==NULL)
+    return NULL;
+
+   scanline+=x*4;
+
+   
+   for(i=0;i<length;i++){
+    KGRGBA8888  result;
+    
+    result.b = *scanline++;
+    result.g = *scanline++;
+	result.r = *scanline++;
+    result.a = 255; scanline++;
     *span++=result;
    }
    return NULL;
@@ -985,7 +1016,9 @@ KGRGBA8888 *KGImageRead_I8_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *spa
 /* KGImageReadTileSpanExtendEdge__ is used by the image resampling functions to read
    translated spans. When a coordinate is outside the image it uses the edge
    value. This works better than say, zero, with averaging algorithms (bilinear,bicubic, etc)
-   as you get good values at the edges. */
+   as you get good values at the edges.
+   
+   Ideally the averaging algorithms would only use the available pixels on the edges */
    
 void KGImageReadTileSpanExtendEdge_lRGBA8888_PRE(KGImage *self,int u, int v, KGRGBA8888 *span,int length){
    int i;
@@ -993,14 +1026,14 @@ void KGImageReadTileSpanExtendEdge_lRGBA8888_PRE(KGImage *self,int u, int v, KGR
    v = RI_INT_CLAMP(v,0,self->_height-1);
       
    for(i=0;i<length && u<0;u++,i++){
-    direct=KGImageReadSpan_lRGBA8888_PRE(self,0,v,span+i,1);
+    direct=self->_read_lRGBA8888_PRE(self,0,v,span+i,1);
 
     if(direct!=NULL)
      span[i]=direct[0];
    }   
 
    int chunk=RI_MIN(length-i,self->_width-u);
-   direct=KGImageReadSpan_lRGBA8888_PRE(self,u,v,span+i,chunk);
+   direct=self->_read_lRGBA8888_PRE(self,u,v,span+i,chunk);
    if(direct!=NULL) {
     int k;
     
@@ -1012,7 +1045,7 @@ void KGImageReadTileSpanExtendEdge_lRGBA8888_PRE(KGImage *self,int u, int v, KGR
    u+=chunk;
 
    for(;i<length;i++){
-    direct=KGImageReadSpan_lRGBA8888_PRE(self,self->_width-1,v,span+i,1);
+    direct=self->_read_lRGBA8888_PRE(self,self->_width-1,v,span+i,1);
     
     if(direct!=NULL)
      span[i]=direct[0];
@@ -1067,9 +1100,7 @@ void KGImageMakeMipMaps(KGImage *self) {
 	//delete existing mipmaps
     int i;
 	for(i=0;i<self->_mipmapsCount;i++)
-	{
-			[self->_mipmaps[i] release];
-	}
+     [self->_mipmaps[i] release];
 	self->_mipmapsCount=0;
 
 //	try
@@ -1087,7 +1118,11 @@ void KGImageMakeMipMaps(KGImage *self) {
 			RI_ASSERT(nextw < prev->_width || nexth < prev->_height);
 
             if(self->_mipmapsCount+1>self->_mipmapsCapacity){
-             self->_mipmapsCapacity*=2;
+             if(self->_mipmapsCapacity==0)
+              self->_mipmapsCapacity=self->_mipmapsCount+1;
+             else
+              self->_mipmapsCapacity*=2;
+              
              self->_mipmaps=(KGSurface **)NSZoneRealloc(NULL,self->_mipmaps,sizeof(KGSurface *)*self->_mipmapsCapacity);
             }
             self->_mipmapsCount++;
@@ -1269,7 +1304,7 @@ void KGImageEWAOnMipmaps_lRGBAffff_PRE(KGImage *self,int x, int y,KGRGBAffff *sp
 		C *= ooF;
 
    for(i=0;i<length;i++,x++){
-    uv=CGPointMake(x+0.5,y+0.5);
+    uv=CGPointMake(x+0.5f,y+0.5f);
     uv=CGAffineTransformTransformVector2(surfaceToImage ,uv);
    
 		CGFloat U0 = uv.x;
@@ -1346,11 +1381,12 @@ static inline KGRGBA8888 bicubic_lRGBA8888_PRE(KGRGBA8888 a,KGRGBA8888 b,KGRGBA8
 }
 
 void KGImageBicubic_lRGBA8888_PRE(KGImage *self,int x, int y,KGRGBA8888 *span,int length, CGAffineTransform surfaceToImage){
+   double du=(x+0.5) * surfaceToImage.a+(y+0.5)* surfaceToImage.c+surfaceToImage.tx;
+   double dv=(x+0.5) * surfaceToImage.b+(y+0.5)* surfaceToImage.d+surfaceToImage.ty;
    int i;
    
    for(i=0;i<length;i++,x++){
-	CGPoint uv=CGPointMake(x+0.5,y+0.5);
-	uv = CGAffineTransformTransformVector2(surfaceToImage ,uv);
+    CGPoint uv=CGPointMake(du,dv);
 
     uv.x -= 0.5f;
     uv.y -= 0.5f;
@@ -1376,6 +1412,9 @@ void KGImageBicubic_lRGBA8888_PRE(KGImage *self,int x, int y,KGRGBA8888 *span,in
     t3 = bicubic_lRGBA8888_PRE(cspan[0],cspan[1],cspan[2],cspan[3],ufrac);
 
     span[i]=bicubic_lRGBA8888_PRE(t0,t1,t2,t3, vfrac);
+
+    du+=surfaceToImage.a;
+    dv+=surfaceToImage.b;
    }
 }
 
@@ -1395,11 +1434,12 @@ KGRGBAffff bicubic_lRGBAffff_PRE(KGRGBAffff a,KGRGBAffff b,KGRGBAffff c,KGRGBAff
 }
 
 void KGImageBicubic_lRGBAffff_PRE(KGImage *self,int x, int y,KGRGBAffff *span,int length, CGAffineTransform surfaceToImage){
+   double du=(x+0.5) * surfaceToImage.a+(y+0.5)* surfaceToImage.c+surfaceToImage.tx;
+   double dv=(x+0.5) * surfaceToImage.b+(y+0.5)* surfaceToImage.d+surfaceToImage.ty;
    int i;
    
    for(i=0;i<length;i++,x++){
-	CGPoint uv=CGPointMake(x+0.5,y+0.5);
-	uv = CGAffineTransformTransformVector2(surfaceToImage ,uv);
+    CGPoint uv=CGPointMake(du,dv);
 
     uv.x -= 0.5f;
     uv.y -= 0.5f;
@@ -1425,18 +1465,21 @@ void KGImageBicubic_lRGBAffff_PRE(KGImage *self,int x, int y,KGRGBAffff *span,in
     t3 = bicubic_lRGBAffff_PRE(cspan[0],cspan[1],cspan[2],cspan[3],ufrac);
 
     span[i]=bicubic_lRGBAffff_PRE(t0,t1,t2,t3, vfrac);
+
+    du+=surfaceToImage.a;
+    dv+=surfaceToImage.b;
    }
 }
 
 void KGImageBilinear_lRGBA8888_PRE(KGImage *self,int x, int y,KGRGBA8888 *span,int length, CGAffineTransform surfaceToImage){
+   double du=(x+0.5) * surfaceToImage.a+(y+0.5)* surfaceToImage.c+surfaceToImage.tx;
+   double dv=(x+0.5) * surfaceToImage.b+(y+0.5)* surfaceToImage.d+surfaceToImage.ty;
    int i;
-
+   
    for(i=0;i<length;i++,x++){
-	CGPoint uv=CGPointMake(x+0.5,y+0.5);
-	uv = CGAffineTransformTransformVector2(surfaceToImage,uv);
-
-    uv.x -= 0.5f;
-	uv.y -= 0.5f;
+    CGPoint uv=CGPointMake(du,dv);
+    uv.x-=0.5f;
+    uv.y-=0.5f;
 	int u = RI_FLOOR_TO_INT(uv.x);
 	int v = RI_FLOOR_TO_INT(uv.y);
 	KGRGBA8888 c00c01[2];
@@ -1452,16 +1495,20 @@ void KGImageBilinear_lRGBA8888_PRE(KGImage *self,int x, int y,KGRGBA8888 *span,i
     KGRGBA8888 c0 = KGRGBA8888Add(KGRGBA8888MultiplyByCoverage(c00c01[0],oneMinusFu),KGRGBA8888MultiplyByCoverage(c00c01[1],fu));
     KGRGBA8888 c1 = KGRGBA8888Add(KGRGBA8888MultiplyByCoverage(c01c11[0],oneMinusFu),KGRGBA8888MultiplyByCoverage(c01c11[1],fu));
     span[i]=KGRGBA8888Add(KGRGBA8888MultiplyByCoverage(c0,oneMinusFv),KGRGBA8888MultiplyByCoverage(c1, fv));
+    
+    du+=surfaceToImage.a;
+    dv+=surfaceToImage.b;
    }
 }
 
 
 void KGImageBilinear_lRGBAffff_PRE(KGImage *self,int x, int y,KGRGBAffff *span,int length, CGAffineTransform surfaceToImage){
+   double du=(x+0.5) * surfaceToImage.a+(y+0.5)* surfaceToImage.c+surfaceToImage.tx;
+   double dv=(x+0.5) * surfaceToImage.b+(y+0.5)* surfaceToImage.d+surfaceToImage.ty;
    int i;
 
    for(i=0;i<length;i++,x++){
-	CGPoint uv=CGPointMake(x+0.5,y+0.5);
-	uv = CGAffineTransformTransformVector2(surfaceToImage,uv);
+    CGPoint uv=CGPointMake(du,dv);
 
     uv.x -= 0.5f;
 	uv.y -= 0.5f;
@@ -1478,46 +1525,40 @@ void KGImageBilinear_lRGBAffff_PRE(KGImage *self,int x, int y,KGRGBAffff *span,i
     KGRGBAffff c0 = KGRGBAffffAdd(KGRGBAffffMultiplyByFloat(c00c01[0],(1.0f - fu)),KGRGBAffffMultiplyByFloat(c00c01[1],fu));
     KGRGBAffff c1 = KGRGBAffffAdd(KGRGBAffffMultiplyByFloat(c01c11[0],(1.0f - fu)),KGRGBAffffMultiplyByFloat(c01c11[1],fu));
     span[i]=KGRGBAffffAdd(KGRGBAffffMultiplyByFloat(c0,(1.0f - fv)),KGRGBAffffMultiplyByFloat(c1, fv));
+
+    du+=surfaceToImage.a;
+    dv+=surfaceToImage.b;
    }
 }
 
 void KGImagePointSampling_lRGBA8888_PRE(KGImage *self,int x, int y,KGRGBA8888 *span,int length, CGAffineTransform surfaceToImage){
+   double du=(x+0.5) * surfaceToImage.a+(y+0.5)* surfaceToImage.c+surfaceToImage.tx;
+   double dv=(x+0.5) * surfaceToImage.b+(y+0.5)* surfaceToImage.d+surfaceToImage.ty;
    int i;
    
    for(i=0;i<length;i++,x++){
-    CGPoint uv=CGPointMake(x+0.5,y+0.5);
-	uv = CGAffineTransformTransformVector2(surfaceToImage ,uv);
+    CGPoint uv=CGPointMake(du,dv);
 
     KGImageReadTileSpanExtendEdge_lRGBA8888_PRE(self,RI_FLOOR_TO_INT(uv.x), RI_FLOOR_TO_INT(uv.y),span+i,1);
+
+    du+=surfaceToImage.a;
+    dv+=surfaceToImage.b;
    }
 }
 
 void KGImagePointSampling_lRGBAffff_PRE(KGImage *self,int x, int y,KGRGBAffff *span,int length, CGAffineTransform surfaceToImage){
+   double du=(x+0.5) * surfaceToImage.a+(y+0.5)* surfaceToImage.c+surfaceToImage.tx;
+   double dv=(x+0.5) * surfaceToImage.b+(y+0.5)* surfaceToImage.d+surfaceToImage.ty;
    int i;
    
    for(i=0;i<length;i++,x++){
-    CGPoint uv=CGPointMake(x+0.5,y+0.5);
-	uv = CGAffineTransformTransformVector2(surfaceToImage ,uv);
+    CGPoint uv=CGPointMake(du,dv);
 
     KGImageReadTileSpanExtendEdge__lRGBAffff_PRE(self,RI_FLOOR_TO_INT(uv.x), RI_FLOOR_TO_INT(uv.y),span+i,1);
-   }
-}
 
-KGRGBA8888 *KGImageReadSpan_lRGBA8888_PRE(KGImage *self,int x,int y,KGRGBA8888 *span,int length) {   
-   return self->_readRGBA8888(self,x,y,span,length);
-#if 0   
-   if(format&VGColorNONLINEAR){
-    KGRGBAffffConvertSpan(span,length,format,VGColor_lRGBA_PRE);
+    du+=surfaceToImage.a;
+    dv+=surfaceToImage.b;
    }
-   if(!(format&VGColorPREMULTIPLIED)){
-    KGRGBPremultiplySpan(span,length);
-    format|=VGColorPREMULTIPLIED;
-   }
-   else {
-    if(self->_clampExternalPixels)
-      clampSpan_lRGBAffff_PRE(span,length); // We don't need to do this for internally generated images (context)
-   }
-#endif
 }
 
 //clamp premultiplied color to alpha to enforce consistency
@@ -1534,7 +1575,7 @@ static void clampSpan_lRGBAffff_PRE(KGRGBAffff *span,int length){
 KGRGBAffff *KGImageReadSpan_lRGBAffff_PRE(KGImage *self,int x,int y,KGRGBAffff *span,int length) {
    VGColorInternalFormat format=self->_colorFormat;
    
-   KGRGBAffff *direct=self->_readRGBAffff(self,x,y,span,length);
+   KGRGBAffff *direct=self->_read_lRGBAffff_PRE(self,x,y,span,length);
    
    if(direct!=NULL)
     span=direct;
@@ -1592,11 +1633,12 @@ void KGImageReadTexelTileRepeat(KGImage *self,int u, int v, KGRGBAffff *span,int
 }
 
 void KGImagePattern_Bilinear(KGImage *self,CGFloat x, CGFloat y,KGRGBAffff *span,int length, CGAffineTransform surfaceToImage){
+   double du=(x+0.5) * surfaceToImage.a+(y+0.5)* surfaceToImage.c+surfaceToImage.tx;
+   double dv=(x+0.5) * surfaceToImage.b+(y+0.5)* surfaceToImage.d+surfaceToImage.ty;
    int i;
    
    for(i=0;i<length;i++,x++){
-	CGPoint uv=CGPointMake(x+0.5,y+0.5);
-	uv = CGAffineTransformTransformVector2(surfaceToImage ,uv);
+    CGPoint uv=CGPointMake(du,dv);
 
     uv.x -= 0.5f;
 	uv.y -= 0.5f;
@@ -1613,17 +1655,24 @@ void KGImagePattern_Bilinear(KGImage *self,CGFloat x, CGFloat y,KGRGBAffff *span
     KGRGBAffff c0 = KGRGBAffffAdd(KGRGBAffffMultiplyByFloat(c00c01[0],(1.0f - fu)),KGRGBAffffMultiplyByFloat(c00c01[1],fu));
     KGRGBAffff c1 = KGRGBAffffAdd(KGRGBAffffMultiplyByFloat(c01c11[0],(1.0f - fu)),KGRGBAffffMultiplyByFloat(c01c11[1],fu));
     span[i]=KGRGBAffffAdd(KGRGBAffffMultiplyByFloat(c0,(1.0f - fv)),KGRGBAffffMultiplyByFloat(c1, fv));
+
+    du+=surfaceToImage.a;
+    dv+=surfaceToImage.b;
    }
 }
 
 void KGImagePattern_PointSampling(KGImage *self,CGFloat x, CGFloat y,KGRGBAffff *span,int length, CGAffineTransform surfaceToImage){	//point sampling
+   double du=(x+0.5) * surfaceToImage.a+(y+0.5)* surfaceToImage.c+surfaceToImage.tx;
+   double dv=(x+0.5) * surfaceToImage.b+(y+0.5)* surfaceToImage.d+surfaceToImage.ty;
    int i;
    
    for(i=0;i<length;i++,x++){
-    CGPoint uv=CGPointMake(x+0.5,y+0.5);
-	uv = CGAffineTransformTransformVector2(surfaceToImage ,uv);
+    CGPoint uv=CGPointMake(du,dv);
 
     KGImageReadTexelTileRepeat(self,RI_FLOOR_TO_INT(uv.x), RI_FLOOR_TO_INT(uv.y),span+i,1);
+
+    du+=surfaceToImage.a;
+    dv+=surfaceToImage.b;
    }
 }
 

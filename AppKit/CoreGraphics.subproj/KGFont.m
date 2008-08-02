@@ -1,7 +1,6 @@
 #import "KGFont.h"
 #import "KGExceptions.h"
 #import <Foundation/NSArray.h>
-#import <Foundation/NSMapTable.h>
 
 @implementation KGFont
 
@@ -30,29 +29,8 @@ static inline CGGlyphMetrics *glyphInfoForGlyph(KGFont *self,CGGlyph glyph){
    return NULL;
 }
 
-#define MAXUNICHAR 0xFFFF
-
--(void)fetchSharedGlyphRangeTable {
-   static NSMapTable    *nameToGlyphRanges=NULL;
-   CGGlyphRangeTable    *result;
-
-   if(nameToGlyphRanges==NULL)
-    nameToGlyphRanges=NSCreateMapTable(NSObjectMapKeyCallBacks,NSNonOwnedPointerMapValueCallBacks,0);
-
-   result=NSMapGet(nameToGlyphRanges,_name);
-
-   if(result==NULL){
-    result=NSZoneCalloc(NULL,sizeof(CGGlyphRangeTable),1);
-    NSMapInsert(nameToGlyphRanges,_name,result);
-   }
-
-   _glyphRangeTable=result;
-}
-
 -(void)fetchGlyphRanges {
    [self loadGlyphRangeTable];
-
-   _glyphRangeTableLoaded=YES;
    _glyphInfoSet->numberOfGlyphs=_glyphRangeTable->numberOfGlyphs;
 }
 
@@ -63,7 +41,7 @@ static inline CGGlyphMetrics *glyphInfoForGlyph(KGFont *self,CGGlyph glyph){
 }
 
 static inline void fetchAllGlyphRangesIfNeeded(KGFont *self){
-   if(!self->_glyphRangeTableLoaded)
+   if(self->_glyphRangeTable==NULL)
     [self fetchGlyphRanges];
 }
 
@@ -93,7 +71,6 @@ static inline CGGlyphMetrics *fetchGlyphAdvancementIfNeeded(KGFont *self,CGGlyph
    _size=size;
    [self fetchMetrics];
    _glyphRangeTable=NULL;
-   [self fetchSharedGlyphRangeTable];
    _glyphInfoSet=NSZoneMalloc([self zone],sizeof(CGGlyphMetricsSet));
    _glyphInfoSet->numberOfGlyphs=0;
    _glyphInfoSet->info=NULL;

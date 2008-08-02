@@ -9,6 +9,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "KGMutablePath.h"
 #import "KGPath.h"
 #import "KGExceptions.h"
+#import <math.h>
 
 // ellipse to 4 spline bezier, http://www.tinaja.com/glib/ellipse4.pdf
 void KGMutablePathEllipseToBezier(CGPoint *cp,float x,float y,float xrad,float yrad){

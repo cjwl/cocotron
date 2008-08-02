@@ -156,7 +156,31 @@ static inline CGGlyphMetrics *glyphInfoForGlyph(CGGlyphMetricsSet *infoSet,NSGly
    _metrics.underlinePosition=ttMetrics->otmsUnderscorePosition;
 }
 
+-(BOOL)fetchSharedGlyphRangeTable {
+   static NSMapTable    *nameToGlyphRanges=NULL;
+   CGGlyphRangeTable    *shared;
+   BOOL                  result=YES;
+   
+   if(nameToGlyphRanges==NULL)
+    nameToGlyphRanges=NSCreateMapTable(NSObjectMapKeyCallBacks,NSNonOwnedPointerMapValueCallBacks,0);
+
+   shared=NSMapGet(nameToGlyphRanges,_name);
+
+   if(shared==NULL){
+    result=NO;
+    shared=NSZoneCalloc(NULL,sizeof(CGGlyphRangeTable),1);
+    NSMapInsert(nameToGlyphRanges,_name,shared);
+   }
+
+   _glyphRangeTable=shared;
+   
+   return result;
+}
+
 -(void)loadGlyphRangeTable {
+   if([self fetchSharedGlyphRangeTable])
+    return;
+
    HDC                dc=[self deviceContextSelfSelected];
    NSRange            range=NSMakeRange(0,MAXUNICHAR);
    unichar            characters[range.length];
@@ -187,7 +211,7 @@ static inline CGGlyphMetrics *glyphInfoForGlyph(CGGlyphMetricsSet *infoSet,NSGly
     if(GetCharacterPlacementW(dc,characters,range.length,0,&results,0)==0)
      NSLog(@"GetCharacterPlacementW failed");
    }
-
+   
    _glyphRangeTable->numberOfGlyphs=0;
    for(i=0;i<range.length;i++){
     unsigned short glyph=glyphs[i];

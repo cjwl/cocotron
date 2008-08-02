@@ -672,36 +672,43 @@ static void KGBlendSpanNormal_8888_coverage(KGRGBA8888 *src,KGRGBA8888 *dst,int 
 static void KGBlendSpanCopy_8888_coverage(KGRGBA8888 *src,KGRGBA8888 *dst,int coverage,int length){
 // Passes Visual Test
    int i;
-   int oneMinusCoverage=256-coverage;
 
-   for(i=0;i<length;i++,src++,dst++){
-    KGRGBA8888 d=*dst;
-    KGRGBA8888 r=*src;
+   if(coverage==256){
+    for(i=0;i<length;i++,src++,dst++)
+     *dst=*src;
+   }
+   else {
+    int oneMinusCoverage=256-coverage;
+
+    for(i=0;i<length;i++,src++,dst++){
+     KGRGBA8888 d=*dst;
+     KGRGBA8888 r=*src;
     
-    r.r=multiplyByCoverage(r.r,coverage);
-    d.r=(d.r*oneMinusCoverage)/256;
-    r.r=RI_INT_MIN((int)r.r+(int)d.r,255);
+     r.r=multiplyByCoverage(r.r,coverage);
+     d.r=(d.r*oneMinusCoverage)/256;
+     r.r=RI_INT_MIN((int)r.r+(int)d.r,255);
     
-    r.g=multiplyByCoverage(r.g,coverage);
-    d.g=(d.g*oneMinusCoverage)/256;
-    r.g=RI_INT_MIN((int)r.g+(int)d.g,255);
+     r.g=multiplyByCoverage(r.g,coverage);
+     d.g=(d.g*oneMinusCoverage)/256;
+     r.g=RI_INT_MIN((int)r.g+(int)d.g,255);
     
-    r.b=multiplyByCoverage(r.b,coverage);
-    d.b=(d.b*oneMinusCoverage)/256;
-    r.b=RI_INT_MIN((int)r.b+(int)d.b,255);
+     r.b=multiplyByCoverage(r.b,coverage);
+     d.b=(d.b*oneMinusCoverage)/256;
+     r.b=RI_INT_MIN((int)r.b+(int)d.b,255);
     
-    r.a=multiplyByCoverage(r.a,coverage);
-    d.a=(d.a*oneMinusCoverage)/256;
-    r.a=RI_INT_MIN((int)r.a+(int)d.a,255);
-    
-    *dst=r;
+     r.a=multiplyByCoverage(r.a,coverage);
+     d.a=(d.a*oneMinusCoverage)/256;
+     r.a=RI_INT_MIN((int)r.a+(int)d.a,255);
+     
+     *dst=r;
+    }
    }
 }
 
 static inline void KGRasterizeWriteCoverageSpan(KGRasterizer *self,int x, int y,int coverage,int length) {
    if(self->_useRGBA8888){
     KGRGBA8888 *dst=__builtin_alloca(length*sizeof(KGRGBA8888));
-    KGRGBA8888 *direct=KGImageReadSpan_lRGBA8888_PRE(self->_surface,x,y,dst,length);
+    KGRGBA8888 *direct=self->_surface->_read_lRGBA8888_PRE(self->_surface,x,y,dst,length);
    
     if(direct!=NULL)
      dst=direct;
