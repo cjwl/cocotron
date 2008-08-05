@@ -36,15 +36,15 @@
 		C8A24EBD0DDB468800953459 /* NewStyleExceptions.m in Sources */ = {isa = PBXBuildFile; fileRef = C8A24EBB0DDB468700953459 /* NewStyleExceptions.m */; };
 		C8A24EBE0DDB468800953459 /* NewStyleExceptions.m in Sources */ = {isa = PBXBuildFile; fileRef = C8A24EBB0DDB468700953459 /* NewStyleExceptions.m */; };
 		C8A24EBF0DDB468800953459 /* NewStyleExceptions.m in Sources */ = {isa = PBXBuildFile; fileRef = C8A24EBB0DDB468700953459 /* NewStyleExceptions.m */; };
-		C8A392820E48AF1D00A9C289 /* KeyedUnarchiver.m in Sources */ = {isa = PBXBuildFile; fileRef = C8A392810E48AF1D00A9C289 /* KeyedUnarchiver.m */; };
-		C8A392830E48AF1D00A9C289 /* KeyedUnarchiver.m in Sources */ = {isa = PBXBuildFile; fileRef = C8A392810E48AF1D00A9C289 /* KeyedUnarchiver.m */; };
-		C8A392840E48AF1D00A9C289 /* KeyedUnarchiver.m in Sources */ = {isa = PBXBuildFile; fileRef = C8A392810E48AF1D00A9C289 /* KeyedUnarchiver.m */; };
 		C8A392CA0E48B20F00A9C289 /* XML.plist in Resources */ = {isa = PBXBuildFile; fileRef = C8A392C90E48B20F00A9C289 /* XML.plist */; };
 		C8A392CB0E48B20F00A9C289 /* XML.plist in Resources */ = {isa = PBXBuildFile; fileRef = C8A392C90E48B20F00A9C289 /* XML.plist */; };
 		C8A392CC0E48B20F00A9C289 /* XML.plist in Resources */ = {isa = PBXBuildFile; fileRef = C8A392C90E48B20F00A9C289 /* XML.plist */; };
 		C8A392D80E48B26200A9C289 /* Binary.plist in Resources */ = {isa = PBXBuildFile; fileRef = C8A392D70E48B26200A9C289 /* Binary.plist */; };
 		C8A392D90E48B26200A9C289 /* Binary.plist in Resources */ = {isa = PBXBuildFile; fileRef = C8A392D70E48B26200A9C289 /* Binary.plist */; };
 		C8A392DA0E48B26200A9C289 /* Binary.plist in Resources */ = {isa = PBXBuildFile; fileRef = C8A392D70E48B26200A9C289 /* Binary.plist */; };
+		C8A3931E0E48B72300A9C289 /* PropertyListUnarchiving.m in Sources */ = {isa = PBXBuildFile; fileRef = C8A3931D0E48B72300A9C289 /* PropertyListUnarchiving.m */; };
+		C8A3931F0E48B72300A9C289 /* PropertyListUnarchiving.m in Sources */ = {isa = PBXBuildFile; fileRef = C8A3931D0E48B72300A9C289 /* PropertyListUnarchiving.m */; };
+		C8A393200E48B72300A9C289 /* PropertyListUnarchiving.m in Sources */ = {isa = PBXBuildFile; fileRef = C8A3931D0E48B72300A9C289 /* PropertyListUnarchiving.m */; };
 		C8C031A40DBB4F7D00558D7B /* SizeAndAlignment.m in Sources */ = {isa = PBXBuildFile; fileRef = C8C031A30DBB4F7D00558D7B /* SizeAndAlignment.m */; };
 		C8C031A50DBB4F7E00558D7B /* SizeAndAlignment.m in Sources */ = {isa = PBXBuildFile; fileRef = C8C031A30DBB4F7D00558D7B /* SizeAndAlignment.m */; };
 		C8C8030F0DB52A010089C0D7 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 089C167FFE841241C02AAC07 /* AppKit.framework */; };
@@ -109,10 +109,10 @@
 		C8A24EBB0DDB468700953459 /* NewStyleExceptions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewStyleExceptions.m; sourceTree = "<group>"; };
 		C8A24EBC0DDB468800953459 /* NewStyleExceptions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewStyleExceptions.h; sourceTree = "<group>"; };
 		C8A392530E48AD9000A9C289 /* TestingHarness.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = TestingHarness.xcodeproj; sourceTree = "<group>"; };
-		C8A392800E48AF1D00A9C289 /* KeyedUnarchiver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeyedUnarchiver.h; sourceTree = "<group>"; };
-		C8A392810E48AF1D00A9C289 /* KeyedUnarchiver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KeyedUnarchiver.m; sourceTree = "<group>"; };
 		C8A392C90E48B20F00A9C289 /* XML.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = XML.plist; sourceTree = "<group>"; };
 		C8A392D70E48B26200A9C289 /* Binary.plist */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = Binary.plist; sourceTree = "<group>"; };
+		C8A3931C0E48B72300A9C289 /* PropertyListUnarchiving.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PropertyListUnarchiving.h; sourceTree = "<group>"; };
+		C8A3931D0E48B72300A9C289 /* PropertyListUnarchiving.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PropertyListUnarchiving.m; sourceTree = "<group>"; };
 		C8C031A20DBB4F7D00558D7B /* SizeAndAlignment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SizeAndAlignment.h; sourceTree = "<group>"; };
 		C8C031A30DBB4F7D00558D7B /* SizeAndAlignment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SizeAndAlignment.m; sourceTree = "<group>"; };
 		C8C8027F0DB51FEF0089C0D7 /* KVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KVC.h; sourceTree = "<group>"; };
@@ -208,8 +208,8 @@
 				C81F5A3F0DD22B94006F82C7 /* Runloop.m */,
 				C8CB8CAD0DD34DA6005C1BAC /* Array.h */,
 				C8CB8CAE0DD34DA6005C1BAC /* Array.m */,
-				C8A392800E48AF1D00A9C289 /* KeyedUnarchiver.h */,
-				C8A392810E48AF1D00A9C289 /* KeyedUnarchiver.m */,
+				C8A3931C0E48B72300A9C289 /* PropertyListUnarchiving.h */,
+				C8A3931D0E48B72300A9C289 /* PropertyListUnarchiving.m */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -435,7 +435,7 @@
 				C88470DB0DD3A9F600853747 /* KVO.m in Sources */,
 				C8A24EBD0DDB468800953459 /* NewStyleExceptions.m in Sources */,
 				C84F02C40E1F8F17000C03D6 /* ObjCXXExceptions.mm in Sources */,
-				C8A392830E48AF1D00A9C289 /* KeyedUnarchiver.m in Sources */,
+				C8A3931F0E48B72300A9C289 /* PropertyListUnarchiving.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -452,7 +452,7 @@
 				C88470DC0DD3A9F600853747 /* KVO.m in Sources */,
 				C8A24EBE0DDB468800953459 /* NewStyleExceptions.m in Sources */,
 				C84F02C50E1F8F17000C03D6 /* ObjCXXExceptions.mm in Sources */,
-				C8A392840E48AF1D00A9C289 /* KeyedUnarchiver.m in Sources */,
+				C8A393200E48B72300A9C289 /* PropertyListUnarchiving.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -467,7 +467,7 @@
 				C8A24EBF0DDB468800953459 /* NewStyleExceptions.m in Sources */,
 				C84F07270E20EC7A000C03D6 /* ObjCXXExceptions.mm in Sources */,
 				C84F07620E20F089000C03D6 /* Forwarding.m in Sources */,
-				C8A392820E48AF1D00A9C289 /* KeyedUnarchiver.m in Sources */,
+				C8A3931E0E48B72300A9C289 /* PropertyListUnarchiving.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
