@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>array</key>
+	<array>
+		<string>first</string>
+		<string>second</string>
+		<string>third</string>
+	</array>
+	<key>boolean</key>
+	<true/>
+	<key>data</key>
+	<data>
+	AQIDBAU=
+	</data>
+	<key>date</key>
+	<date>1970-01-01T00:00:20Z</date>
+	<key>float</key>
+	<real>17.5</real>
+	<key>string</key>
+	<string>string</string>
+</dict>
+</plist>
