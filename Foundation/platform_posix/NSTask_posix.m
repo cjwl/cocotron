@@ -135,7 +135,7 @@ void childSignalHandler(int sig) {
 
    _processID = fork(); 
    if (_processID == 0) {  // child process
-       NSMutableArray *array = [_arguments mutableCopy];
+       NSMutableArray *array = [[_arguments mutableCopy] autorelease];
        const char     *path = [_launchPath cString];
        int            i,count=[array count];
        char          *args[count+1];

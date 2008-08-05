@@ -11,6 +11,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "NSPropertyListWriter_vintage.h"
 #import <Foundation/NSPropertyListReader_xml1.h>
 #import <Foundation/NSPropertyListReader_vintage.h>
+#import <Foundation/NSPropertyListReader_binary1.h>
 
 @implementation NSPropertyListSerialization
 
@@ -40,6 +41,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    if((result=[NSPropertyListReader_xml1 propertyListFromData:data])!=nil){
     *format=NSPropertyListXMLFormat_v1_0;
     return result;
+   }
+   
+   if((result=[NSPropertyListReader_binary1 propertyListFromData:data])!=nil){
+      *format=NSPropertyListBinaryFormat_v1_0;
+      return result;
    }
    
    if((result=[NSPropertyListReader_vintage propertyListFromData:data])!=nil){

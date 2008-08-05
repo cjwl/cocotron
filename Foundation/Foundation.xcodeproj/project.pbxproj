@@ -1572,7 +1572,7 @@
 		FE9E1A320D5C0676004AE7BA /* NSLocale+windows.m in Sources */ = {isa = PBXBuildFile; fileRef = FE9E1A300D5C0676004AE7BA /* NSLocale+windows.m */; };
 		FEA36F270C24C57000025A9C /* objc_cache.h in Headers */ = {isa = PBXBuildFile; fileRef = FEA36F250C24C57000025A9C /* objc_cache.h */; };
 		FEA36F280C24C57000025A9C /* objc_cache.h in Headers */ = {isa = PBXBuildFile; fileRef = FEA36F250C24C57000025A9C /* objc_cache.h */; };
-		FEA9D08A0D16C55E00123D51 /* NSPropertyListReader_binary1.h in Headers */ = {isa = PBXBuildFile; fileRef = FEA9D0880D16C55E00123D51 /* NSPropertyListReader_binary1.h */; };
+		FEA9D08A0D16C55E00123D51 /* NSPropertyListReader_binary1.h in Headers */ = {isa = PBXBuildFile; fileRef = FEA9D0880D16C55E00123D51 /* NSPropertyListReader_binary1.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FEA9D08B0D16C55E00123D51 /* NSPropertyListReader_binary1.m in Sources */ = {isa = PBXBuildFile; fileRef = FEA9D0890D16C55E00123D51 /* NSPropertyListReader_binary1.m */; };
 		FEA9D08E0D16C55E00123D51 /* NSPropertyListReader_binary1.h in Headers */ = {isa = PBXBuildFile; fileRef = FEA9D0880D16C55E00123D51 /* NSPropertyListReader_binary1.h */; };
 		FEA9D08F0D16C55E00123D51 /* NSPropertyListReader_binary1.m in Sources */ = {isa = PBXBuildFile; fileRef = FEA9D0890D16C55E00123D51 /* NSPropertyListReader_binary1.m */; };
