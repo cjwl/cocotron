@@ -1,0 +1,123 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 42;
+	objects = {
+
+/* Begin PBXAggregateTarget section */
+		C8A3916D0E48A4F100A9C289 /* Download and build OCUnit */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = C8A391700E48A51000A9C289 /* Build configuration list for PBXAggregateTarget "Download and build OCUnit" */;
+			buildPhases = (
+				C8A3916C0E48A4F100A9C289 /* ShellScript */,
+			);
+			dependencies = (
+			);
+			name = "Download and build OCUnit";
+			productName = "Download OCUnit";
+		};
+/* End PBXAggregateTarget section */
+
+/* Begin PBXGroup section */
+		C8A391550E48A49900A9C289 = {
+			isa = PBXGroup;
+			children = (
+			);
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXProject section */
+		C8A391570E48A49900A9C289 /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = C8A3915A0E48A49900A9C289 /* Build configuration list for PBXProject "TestingHarness" */;
+			compatibilityVersion = "Xcode 2.4";
+			hasScannedForEncodings = 0;
+			mainGroup = C8A391550E48A49900A9C289;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				C8A3916D0E48A4F100A9C289 /* Download and build OCUnit */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		C8A3916C0E48A4F100A9C289 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/bash;
+			shellScript = "# shell script goes here\n\n\ncd SenTestingKit-Projects\n\nif [ ! -e OCUnitHome-v41.tgz ]; then\n\tcurl -O http://www.sente.ch/pub/software/OCUnit/OCUnitHome-v41.tgz\nfi\n\nif [ ! -d OCUnitHome ]; then\n\ttar -zxf OCUnitHome-v41.tgz\n\tcp -r otest.xcodeproj OCUnitHome/OCUnit/SourceCode/otest/\n\tcp -r SenTestingKit.xcodeproj OCUnitHome/OCUnit/SourceCode/SenTestingKit/\n\txcodebuild -project SenTestingKit-Projects/OCUnitHome/OCUnit/SourceCode/SenTestingKit/SenTestingKit.xcodeproj\n\txcodebuild -project SenTestingKit-Projects/OCUnitHome/OCUnit/SourceCode/otest/otest.xcodeproj\nfi\n\ncd ..";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		C8A391580E48A49900A9C289 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+			};
+			name = Debug;
+		};
+		C8A391590E48A49900A9C289 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+			};
+			name = Release;
+		};
+		C8A3916E0E48A4F200A9C289 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				PRODUCT_NAME = "Download OCUnit";
+			};
+			name = Debug;
+		};
+		C8A3916F0E48A4F200A9C289 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				PRODUCT_NAME = "Download OCUnit";
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		C8A3915A0E48A49900A9C289 /* Build configuration list for PBXProject "TestingHarness" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C8A391580E48A49900A9C289 /* Debug */,
+				C8A391590E48A49900A9C289 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C8A391700E48A51000A9C289 /* Build configuration list for PBXAggregateTarget "Download and build OCUnit" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C8A3916E0E48A4F200A9C289 /* Debug */,
+				C8A3916F0E48A4F200A9C289 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = C8A391570E48A49900A9C289 /* Project object */;
+}

@@ -100,31 +100,6 @@
 }
 
 
--(void)testForwardSimple
-{
-	beenInMethodFlag=NO;
-	id retObj=[self doStuffWithObjects:@"First" :@"Second" :@"Third"];
-	
-	STAssertTrue(beenInMethodFlag, nil);
-	STAssertEqualObjects(@"FirstSecondThird", retObj, nil);
-	
-	beenInMethodFlag=NO;
-	int retInt=[self doStuffWithInts:1 :2 :3];
-	
-	STAssertTrue(beenInMethodFlag, nil);
-	STAssertEquals(6, retInt, nil);
-}
-
-
--(void)testFloatReturn
-{
-   beenInMethodFlag=NO;
-	float ret=[self doStuffWithFloats:1. :2. :3.];
-   ret=[self doStuffWithFloats:1. :2. :3.];
-	STAssertTrue(beenInMethodFlag, nil);   
-	STAssertEqualsWithAccuracy(6.0f, ret, 0.001, nil);   
-}
-
 -(id)makeStringFromStructs:(NSSize)size :(char)c :(NSRange)range :(NSRect)rect :(double)d :(long long)l
 {
 	beenInMethodFlag=YES;
@@ -193,5 +168,29 @@
 	
 }
 
+-(void)testForwardSimple
+{
+	beenInMethodFlag=NO;
+	id retObj=[self doStuffWithObjects:@"First" :@"Second" :@"Third"];
+	
+	STAssertTrue(beenInMethodFlag, nil);
+	STAssertEqualObjects(@"FirstSecondThird", retObj, nil);
+	
+	beenInMethodFlag=NO;
+	int retInt=[self doStuffWithInts:1 :2 :3];
+	
+	STAssertTrue(beenInMethodFlag, nil);
+	STAssertEquals(6, retInt, nil);
+}
+
+
+-(void)testFloatReturn
+{
+   beenInMethodFlag=NO;
+	float ret=[self doStuffWithFloats:1. :2. :3.];
+   ret=[self doStuffWithFloats:1. :2. :3.];
+	STAssertTrue(beenInMethodFlag, nil);   
+	STAssertEqualsWithAccuracy(6.0f, ret, 0.001, nil);   
+}
 
 @end
