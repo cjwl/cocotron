@@ -1,2 +1,1 @@
-To run the tests, you’ll need OCUnit. OCUnit can be found at http://www.sente.ch/pub/software/OCUnit/OCUnitHome-v41.tgz .
-You’ll need to copy the projects in SenTestingKit-Projects in the respective folders, then build them.
+To run the tests, you’ll need to build the TestingHarness project first, then copy local_server_config_example.sh to local_server_config.sh and edit it to contain the correct values for your system.
