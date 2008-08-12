@@ -8,6 +8,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import "KGImageSource_TIFF.h"
 #import "NSTIFFReader.h"
+#import "NSTIFFImageFileDirectory.h"
 #import "KGDataProvider.h"
 #import "KGColorSpace.h"
 #import "KGImage.h"
@@ -60,9 +61,28 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return [[_reader imageFileDirectory] count];
 }
 
+-(NSDictionary *)propertiesAtIndex:(unsigned)index options:(NSDictionary *)options {
+   NSArray *entries=[_reader imageFileDirectory];
+   
+   if([entries count]<=index)
+    return nil;
+   
+   NSTIFFImageFileDirectory *directory=[entries objectAtIndex:index];
+   
+   return [directory properties];
+}
+
+
 -(KGImage *)imageAtIndex:(unsigned)index options:(NSDictionary *)options {
-   int            width=[_reader pixelsWide];
-   int            height=[_reader pixelsHigh];
+   NSArray *entries=[_reader imageFileDirectory];
+   
+   if([entries count]<=index)
+    return nil;
+   
+   NSTIFFImageFileDirectory *directory=[entries objectAtIndex:index];
+   
+   int            width=[directory imageWidth];
+   int            height=[directory imageLength];
    int            bitsPerPixel=32;
    int            bytesPerRow=(bitsPerPixel/(sizeof(char)*8))*width;
    
@@ -70,7 +90,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    NSData        *bitmap;
    
    bytes=NSZoneMalloc([self zone],bytesPerRow*height);
-   if(![_reader getRGBAImageBytes:bytes width:width height:height]){
+   if(![directory getRGBAImageBytes:bytes data:[_reader data]]){
     NSZoneFree([self zone],bytes);
     return nil;
    }

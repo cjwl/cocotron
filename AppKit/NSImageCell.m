@@ -6,7 +6,6 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
-// Original - David Young <daver@geeks.org>
 #import <AppKit/NSImageCell.h>
 #import <AppKit/NSImage.h>
 #import <AppKit/NSGraphics.h>
@@ -80,8 +79,33 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     _imageScaling = imageScaling;
 }
 
--(NSPoint)alignedOriginInFrame:(NSRect)frame {
-    NSSize imageSize = [[self _imageValue] size];
+-(NSSize)_scaledImageSizeInFrame:(NSRect)frame {
+   NSSize imageSize=[[self _imageValue] size];
+      
+   switch(_imageScaling){
+    case NSScaleProportionally:{
+      float xscale=frame.size.width/imageSize.width;
+      float yscale=frame.size.height/imageSize.height;
+      float scale=MIN(xscale,yscale);
+      
+      imageSize.width*=scale;
+      imageSize.height*=scale;
+      
+      return imageSize;
+     }
+     
+    case NSScaleToFit:
+     return frame.size;
+    
+    default:
+    case NSScaleNone:
+     return imageSize;
+   }
+   
+}
+
+-(NSRect)_scaledAndAlignedImageFrame:(NSRect)frame {
+    NSSize imageSize = [self _scaledImageSizeInFrame:frame];
         
     switch (_imageAlignment) {
         default:
@@ -125,7 +149,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
             break;
     }
       
-   return frame.origin;
+   frame.size=imageSize;
+   return frame;
 }
 
 -(void)drawInteriorWithFrame:(NSRect)frame inView:(NSView *)control {
@@ -134,7 +159,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 		CGContextRef ctx=[[NSGraphicsContext currentContext] graphicsPort];
 		CGContextSaveGState(ctx);
 		CGContextClipToRect(ctx,frame);
-        [[self _imageValue] compositeToPoint:[self alignedOriginInFrame:frame] operation:NSCompositeSourceOver];
+
+        frame=[self _scaledAndAlignedImageFrame:frame];
+        [[self _imageValue] drawInRect:frame fromRect:NSZeroRect operation:NSCompositeSourceOver fraction:1.0];
+        
 		CGContextRestoreGState(ctx);
     }
 }

@@ -6,16 +6,21 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
-// Original - Christopher Lloyd <cjwl@objc.net>
 #import "NSTIFFImageFileDirectory.h"
 #import "NSTIFFReader.h"
 #import "KGPDFFilter.h"
+#import <ApplicationServices/CoreGraphics.h>
 
 @implementation NSTIFFImageFileDirectory
 
 -initWithTIFFReader:(NSTIFFReader *)reader {
    unsigned i,numberOfEntries=[reader nextUnsigned16];
 
+   _xPosition=0;
+   _xResolution=72.0;
+   _yPosition=0;
+   _yResolution=72.0;
+   
    for(i=0;i<numberOfEntries;i++){
     unsigned offset=[reader currentOffset];
     unsigned tag=[reader nextUnsigned16];
@@ -397,6 +402,15 @@ static void decode_R8_G8_B8_Afill(const unsigned char *stripBytes,unsigned byteC
    }
    
    return YES;
+}
+
+-(NSDictionary *)properties {
+   NSMutableDictionary *result=[NSMutableDictionary new];
+   
+   [result setObject:[NSNumber numberWithDouble:_xResolution] forKey:kCGImagePropertyDPIWidth];
+   [result setObject:[NSNumber numberWithDouble:_yResolution] forKey:kCGImagePropertyDPIHeight];
+   
+   return result;
 }
 
 @end

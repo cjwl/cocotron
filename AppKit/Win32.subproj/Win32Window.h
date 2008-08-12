@@ -34,6 +34,7 @@ typedef enum {
    BOOL                  _isPanel;
 
    id                    _delegate;
+   NSMutableDictionary  *_deviceDictionary;
 }
 
 -initWithFrame:(NSRect)frame styleMask:(unsigned)styleMask isPanel:(BOOL)isPanel backingType:(Win32BackingStoreType)backingType;

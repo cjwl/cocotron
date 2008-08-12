@@ -99,6 +99,8 @@ enum {
 
 -initWithContentsOfFile:(NSString *)path;
 
+-(NSData *)data;
+
 -(NSArray *)imageFileDirectory;
 
 -(BOOL)tracingEnabled;
@@ -116,10 +118,5 @@ enum {
 -(void)expectArrayOfUnsigned8:(unsigned char **)valuesp count:(unsigned *)countp;
 -(void)expectArrayOfUnsigned16:(unsigned **)valuesp count:(unsigned *)countp;
 -(void)expectArrayOfUnsigned16OrUnsigned32:(unsigned **)valuesp count:(unsigned *)countp;
-
--(int)pixelsWide;
--(int)pixelsHigh;
-
--(BOOL)getRGBAImageBytes:(unsigned char *)bytes width:(int)width height:(int)height;
 
 @end

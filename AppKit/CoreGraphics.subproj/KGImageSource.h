@@ -21,6 +21,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(unsigned)count;
 
+-(NSDictionary *)propertiesAtIndex:(unsigned)index options:(NSDictionary *)options;
 -(KGImage *)imageAtIndex:(unsigned)index options:(NSDictionary *)options;
 
 @end

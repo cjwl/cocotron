@@ -32,6 +32,7 @@ typedef enum {
    NSMutableArray *_focusStack;
    BOOL            _isDrawingToScreen;
    BOOL            _isFlipped;
+   NSWindow       *_window;
 }
 
 +(NSGraphicsContext *)graphicsContextWithWindow:(NSWindow *)window;

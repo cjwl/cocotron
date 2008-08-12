@@ -262,8 +262,16 @@ NSString *NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification";
 } 
 
 -(NSDictionary *)deviceDescription {
-   NSUnimplementedMethod();
-   return nil;
+   NSValue *resolution=[NSValue valueWithSize:NSMakeSize(72.0,72.0)];
+   NSValue *size=[NSValue valueWithSize:[self frame].size];
+   
+   return [NSDictionary dictionaryWithObjectsAndKeys:
+    resolution,NSDeviceResolution,
+    NSDeviceRGBColorSpace,NSDeviceColorSpaceName,
+    [NSNumber numberWithInt:8],NSDeviceBitsPerSample,
+    [NSNumber numberWithBool:YES],NSDeviceIsScreen,
+    size,NSDeviceSize,
+    nil];
 }
 
 -contentView {

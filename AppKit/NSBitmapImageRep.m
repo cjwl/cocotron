@@ -116,9 +116,25 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    CGImageSourceRef imageSource=CGImageSourceCreateWithData(data,nil);
    
    _image=CGImageSourceCreateImageAtIndex(imageSource,0,nil);
+   if(_image==nil){
+    [self dealloc];
+    return nil;
+   }
+   
+   NSDictionary *properties=CGImageSourceCopyPropertiesAtIndex(imageSource,0,nil);
+   NSNumber *xres=[properties objectForKey:kCGImagePropertyDPIWidth];
+   NSNumber *yres=[properties objectForKey:kCGImagePropertyDPIHeight];
+      
    _size.width=CGImageGetWidth(_image);
    _size.height=CGImageGetHeight(_image);
-   
+
+   if(xres!=nil && [xres doubleValue]>0)
+    _size.width*=72.0/[xres doubleValue];
+    
+   if(yres!=nil && [yres doubleValue]>0)
+    _size.height*=72.0/[yres doubleValue];
+      
+   [properties release];
    [imageSource release];
    return self;
 }
@@ -248,7 +264,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(BOOL)draw {
    CGContextRef context=NSCurrentGraphicsPort();
    NSSize size=[self size];
-   
+      
    CGContextDrawImage(context,NSMakeRect(0,0,size.width,size.height),_image);
    return YES;
 }

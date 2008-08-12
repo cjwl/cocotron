@@ -43,20 +43,22 @@ BOOL _isAvailable=NO;
 
 +(void)initialize {
    _isAvailable=[[NSUserDefaults standardUserDefaults] boolForKey:@"CGEnableBuiltin"];
-   if(_isAvailable) // temporary 
-    NSLog(@"KGContext_builtin enabled");
-}
-
-+(BOOL)isAvailable {
-   return _isAvailable;
 }
 
 +(BOOL)canInitBitmap {
-   return YES;
+   return _isAvailable;
 }
 
-+(BOOL)canInitBackingWithContext:(KGContext *)context {
-   return YES;
++(BOOL)canInitBackingWithContext:(KGContext *)context deviceDictionary:(NSDictionary *)deviceDictionary {
+   NSString *name=[deviceDictionary objectForKey:@"CGContext"];
+
+   if(name==nil)
+    return _isAvailable;
+    
+   if([name isEqual:@"Onyx"])
+    return YES;
+    
+   return NO;
 }
 
 -(void)reallocateForSurface {

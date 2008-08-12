@@ -53,7 +53,7 @@ static NSMutableArray *possibleContextClasses=nil;
    for(i=0;i<count;i++){
     Class check=NSClassFromString([possibleContextClasses objectAtIndex:i]);
     
-    if(check!=Nil && [check isAvailable])
+    if(check!=Nil)
      [result addObject:check];
    }
    
@@ -78,14 +78,14 @@ static NSMutableArray *possibleContextClasses=nil;
    return nil;
 }
 
-+(KGContext *)createBackingContextWithSize:(CGSize)size context:(KGContext *)context {
++(KGContext *)createBackingContextWithSize:(CGSize)size context:(KGContext *)context deviceDictionary:(NSDictionary *)deviceDictionary {
    NSArray *array=[self allContextClasses];
    int      count=[array count];
    
    while(--count>=0){
     Class check=[array objectAtIndex:count];
     
-    if([check canInitBackingWithContext:context]){
+    if([check canInitBackingWithContext:context deviceDictionary:deviceDictionary]){
      KGContext *result=[[check alloc] initWithSize:size context:context];
 
      if(result!=nil)
@@ -114,15 +114,11 @@ static NSMutableArray *possibleContextClasses=nil;
    return nil;
 }
 
-+(BOOL)isAvailable {
-   return NO;
-}
-
 +(BOOL)canInitWithWindow:(CGWindow *)window {
    return NO;
 }
 
-+(BOOL)canInitBackingWithContext:(KGContext *)context {
++(BOOL)canInitBackingWithContext:(KGContext *)context deviceDictionary:(NSDictionary *)deviceDictionary {
    return NO;
 }
 

@@ -20,12 +20,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 +(KGContext *)createContextWithSize:(CGSize)size window:(CGWindow *)window;
-+(KGContext *)createBackingContextWithSize:(CGSize)size context:(KGContext *)context;
++(KGContext *)createBackingContextWithSize:(CGSize)size context:(KGContext *)context deviceDictionary:(NSDictionary *)deviceDictionary;
 +(KGContext *)createWithBytes:(void *)bytes width:(size_t)width height:(size_t)height bitsPerComponent:(size_t)bitsPerComponent bytesPerRow:(size_t)bytesPerRow colorSpace:(KGColorSpace *)colorSpace bitmapInfo:(CGBitmapInfo)bitmapInfo;
 
-+(BOOL)isAvailable;
 +(BOOL)canInitWithWindow:(CGWindow *)window;
-+(BOOL)canInitBackingWithContext:(KGContext *)context;
++(BOOL)canInitBackingWithContext:(KGContext *)context deviceDictionary:(NSDictionary *)deviceDictionary;
 +(BOOL)canInitBitmap;
 
 -initWithSize:(CGSize)size window:(CGWindow *)window;

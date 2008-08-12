@@ -8,5 +8,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <AppKit/NSGraphicsContext.h>
 
-KGContext *NSCurrentGraphicsPort();
+CGContextRef NSCurrentGraphicsPort();
 NSMutableArray *NSCurrentFocusStack();
+
+@interface NSGraphicsContext(private)
+-(NSDictionary *)deviceDescription;
+@end
+

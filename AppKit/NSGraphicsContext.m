@@ -20,6 +20,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    _focusStack=[NSMutableArray new];
    _isDrawingToScreen=YES;
    _isFlipped=NO;
+   _window=[window retain];
    return self;
 }
 
@@ -87,6 +88,7 @@ static CGBitmapInfo bitmapInfoForBitmapFormat(NSBitmapFormat bitmapFormat){
    if(_graphicsPort!=NULL)
     CGContextRelease(_graphicsPort);
    [_focusStack release];
+   [_window release];
    [super dealloc];
 }
 
@@ -118,7 +120,7 @@ static NSGraphicsContext *_currentContext() {
    return NSThreadSharedInstanceDoNotCreate(@"NSGraphicsContext");
 }
 
-KGContext *NSCurrentGraphicsPort() {
+CGContextRef NSCurrentGraphicsPort() {
    return _currentContext()->_graphicsPort;
 }
 
@@ -225,6 +227,17 @@ NSMutableArray *NSCurrentFocusStack() {
 
 -(void)flushGraphics {
    CGContextFlush(_graphicsPort);
+}
+
+-(NSDictionary *)deviceDescription {
+   if(_window!=nil)
+    return [_window deviceDescription];
+   else if([self isDrawingToScreen]){
+    return [NSDictionary dictionaryWithObject:[NSNumber numberWithBool:YES] forKey:NSDeviceIsScreen];
+   }
+   else {
+    return [NSDictionary dictionaryWithObject:[NSNumber numberWithBool:YES] forKey:NSDeviceIsPrinter];
+   }
 }
 
 @end

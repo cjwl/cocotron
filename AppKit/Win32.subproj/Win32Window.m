@@ -6,7 +6,6 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
-// Original - Christopher Lloyd <cjwl@objc.net>
 #import <AppKit/Win32Window.h>
 #import <AppKit/Win32Event.h>
 #import <AppKit/Win32Display.h>
@@ -175,12 +174,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
    _ignoreMinMaxMessage=NO;
    _sentBeginSizing=NO;
-
+   _deviceDictionary=[NSMutableDictionary new];
+   
    return self;
 }
 
 -(void)dealloc {
    [self invalidate];
+   [_deviceDictionary release];
    [super dealloc];
 }
 
@@ -219,8 +220,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(KGContext *)createBackingCGContextIfNeeded {
-   if(_backingContext==nil)
-    _backingContext=[KGContext createBackingContextWithSize:_size context:[self createCGContextIfNeeded]];
+   if(_backingContext==nil){
+    _backingContext=[KGContext createBackingContextWithSize:_size context:[self createCGContextIfNeeded] deviceDictionary:_deviceDictionary];
+   }
    
    return _backingContext;
 }
@@ -390,6 +392,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    MSG         msg=[event msg];
 
    DispatchMessage(&msg);
+}
+
+-(void)addEntriesToDeviceDictionary:(NSDictionary *)entries {
+   [_deviceDictionary addEntriesFromDictionary:entries];
 }
 
 -(void)_GetWindowRect {

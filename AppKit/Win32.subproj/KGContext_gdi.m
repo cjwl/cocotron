@@ -86,16 +86,17 @@ static RECT NSRectToRECT(NSRect rect) {
 
 @implementation KGContext_gdi
 
-+(BOOL)isAvailable {
-   return YES;
-}
-
 +(BOOL)canInitWithWindow:(CGWindow *)window {
    return YES;
 }
 
-+(BOOL)canInitBackingWithContext:(KGContext *)context {
-   return YES;
++(BOOL)canInitBackingWithContext:(KGContext *)context deviceDictionary:(NSDictionary *)deviceDictionary {
+   NSString *name=[deviceDictionary objectForKey:@"CGContext"];
+   
+   if(name==nil || [name isEqual:@"GDI"])
+    return YES;
+    
+   return NO;
 }
 
 -initWithGraphicsState:(KGGraphicsState *)state deviceContext:(KGDeviceContext_gdi *)deviceContext {
@@ -1037,13 +1038,19 @@ static void zeroBytes(void *bytes,int size){
 }
 
 -(void)drawContext:(KGContext *)other inRect:(CGRect)rect {
-   if(![other isKindOfClass:[KGContext_gdi class]])
-    return;
+   KGDeviceContext_gdi *deviceContext=nil;
+
+   if([other isKindOfClass:[KGContext_gdi class]])
+    deviceContext=[(KGContext_gdi *)other deviceContext];
+   else {
+    KGSurface *surface=[other surface];
+    
+    if([surface isKindOfClass:[KGSurface_DIBSection class]])
+     deviceContext=[(KGSurface_DIBSection *)surface deviceContext];
+   }
    
    CGAffineTransform ctm=[self userSpaceToDeviceSpaceTransform];
          
-   KGDeviceContext_gdi *deviceContext=[(KGContext_gdi *)other deviceContext];
-
    [self drawDeviceContext:deviceContext inRect:rect ctm:ctm];
 }
 

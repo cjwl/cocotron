@@ -9,6 +9,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSGraphicsContextFunctions.h>
 #import <AppKit/NSWindow.h>
 #import <AppKit/NSGraphicsContext.h>
+#import <AppKit/CGWindow.h>
+#import <AppKit/NSWindow-Private.h>
 
 @implementation NSCachedImageRep
 
@@ -24,8 +26,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -initWithSize:(NSSize)size depth:(NSWindowDepth)windowDepth separate:(BOOL)separateWindow alpha:(BOOL)hasAlpha {
+// FIXME: Implement shared caches, but also update NSImage to handle caching in them
+
    NSWindow *window=[[NSWindow alloc] initWithContentRect:NSMakeRect(0,0,size.width,size.height) styleMask:NSBorderlessWindowMask backing:NSBackingStoreBuffered defer:NO];
 
+   NSDictionary *entries=[NSDictionary dictionaryWithObject:@"Onyx" forKey:@"CGContext"];
+   
+   [[window platformWindow] addEntriesToDeviceDictionary:entries];
+   
    return [self initWithWindow:window rect:NSMakeRect(0,0,size.width,size.height)];
 }
 

@@ -679,6 +679,7 @@
 		FE572D900CA0809500FB3E79 /* KGImageSource_BMP.m in Sources */ = {isa = PBXBuildFile; fileRef = FE572D8C0CA0809500FB3E79 /* KGImageSource_BMP.m */; };
 		FE5C69A10D76039F00098551 /* KGDeviceContext_gdiDIBSection.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5C699F0D76039F00098551 /* KGDeviceContext_gdiDIBSection.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE5C69A20D76039F00098551 /* KGDeviceContext_gdiDIBSection.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5C69A00D76039F00098551 /* KGDeviceContext_gdiDIBSection.m */; };
+		FE66F0060E513AE8006C5796 /* CGImageProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = FE66F0050E513AE8006C5796 /* CGImageProperties.m */; };
 		FE6EDE340DB797D9005503A1 /* KGExceptions.h in Headers */ = {isa = PBXBuildFile; fileRef = FE6EDE330DB797D9005503A1 /* KGExceptions.h */; };
 		FE6EE27E0DB91EA8005503A1 /* VGmath.h in Headers */ = {isa = PBXBuildFile; fileRef = FE6EE27C0DB91EA8005503A1 /* VGmath.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE6EE27F0DB91EA8005503A1 /* VGmath.m in Sources */ = {isa = PBXBuildFile; fileRef = FE6EE27D0DB91EA8005503A1 /* VGmath.m */; };
@@ -1444,6 +1445,7 @@
 		FE64B8DF0B81239D007EE513 /* KGShading.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = KGShading.h; sourceTree = "<group>"; };
 		FE64B8E00B81239D007EE513 /* KGShading.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = KGShading.m; sourceTree = "<group>"; };
 		FE64B9210B8123F1007EE513 /* CGImage.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = CGImage.m; sourceTree = "<group>"; };
+		FE66F0050E513AE8006C5796 /* CGImageProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CGImageProperties.m; path = CoreGraphics.subproj/CGImageProperties.m; sourceTree = "<group>"; };
 		FE6DC16A0BA85BEC0082AC66 /* NSOpenGLPixelBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSOpenGLPixelBuffer.h; sourceTree = "<group>"; };
 		FE6DC16B0BA85BEC0082AC66 /* NSOpenGLPixelBuffer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSOpenGLPixelBuffer.m; sourceTree = "<group>"; };
 		FE6DC3DC0BA9A6EB0082AC66 /* NSDatePicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSDatePicker.h; sourceTree = "<group>"; };
@@ -2472,6 +2474,7 @@
 		FE267E7F0B8BCB660000DDC0 /* ImageIO */ = {
 			isa = PBXGroup;
 			children = (
+				FE66F0050E513AE8006C5796 /* CGImageProperties.m */,
 				FE572D8B0CA0809500FB3E79 /* KGImageSource_BMP.h */,
 				FE572D8C0CA0809500FB3E79 /* KGImageSource_BMP.m */,
 				FE267E890B8BCC3C0000DDC0 /* KGImageSource.h */,
@@ -3461,6 +3464,7 @@
 				FEF9CBC30E13EB8E003502ED /* KGImage+PDF.m in Sources */,
 				FEF9CBC50E13EB8E003502ED /* KGShading+PDF.m in Sources */,
 				FEF9CCC40E1416C4003502ED /* KGContext_builtin_gdi.m in Sources */,
+				FE66F0060E513AE8006C5796 /* CGImageProperties.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

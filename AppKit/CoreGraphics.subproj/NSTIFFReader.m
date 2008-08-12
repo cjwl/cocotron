@@ -6,7 +6,6 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
-// Original - Christopher Lloyd <cjwl@objc.net>
 #import "NSTIFFReader.h"
 #import "NSTIFFImageFileDirectory.h"
 
@@ -398,30 +397,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [super dealloc];
 }
 
+-(NSData *)data {
+   return _data;
+}
+
 -(NSArray *)imageFileDirectory {
    return _directory;
-}
-
--(int)pixelsWide {
-   if([_directory count]==0)
-    return 0;
-
-   return [[_directory objectAtIndex:0] imageWidth];
-}
-
--(int)pixelsHigh {
-   if([_directory count]==0)
-    return 0;
-
-   return [[_directory objectAtIndex:0] imageLength];
-}
-
--(BOOL)getRGBAImageBytes:(unsigned char *)bytes width:(int)width height:(int)height {
-   if([_directory count]==0)
-    return NO;
-
-   [[_directory objectAtIndex:0] getRGBAImageBytes:bytes data:_data];
-   return YES;
 }
 
 @end

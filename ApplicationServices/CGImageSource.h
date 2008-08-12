@@ -8,11 +8,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import "CoreGraphicsExport.h"
 
-@class KGImageSource;
+@class KGImageSource,NSDictionary;
 typedef KGImageSource *CGImageSourceRef;
 
 #import "CGImage.h"
 
 COREGRAPHICS_EXPORT CGImageSourceRef CGImageSourceCreateWithData(id data,id options);
 
-COREGRAPHICS_EXPORT CGImageRef CGImageSourceCreateImageAtIndex(CGImageSourceRef self,size_t index,id options);
+COREGRAPHICS_EXPORT CGImageRef CGImageSourceCreateImageAtIndex(CGImageSourceRef self,size_t index,NSDictionary *options);
+COREGRAPHICS_EXPORT NSDictionary *CGImageSourceCopyPropertiesAtIndex(CGImageSourceRef self, size_t index,NSDictionary *options);

@@ -32,6 +32,7 @@ typedef enum {
    BOOL            _isCachedSeparately;
    BOOL            _cacheDepthMatchesImageDepth;
    BOOL            _isDataRetained;
+   BOOL            _cacheIsValid;
    NSImageCacheMode _cacheMode;
 }
 

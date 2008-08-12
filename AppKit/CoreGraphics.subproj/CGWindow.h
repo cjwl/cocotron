@@ -42,6 +42,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)sendEvent:(CGEvent *)event;
 
+-(void)addEntriesToDeviceDictionary:(NSDictionary *)entries;
+
 @end
 
 @interface NSObject(CGWindow_delegate)

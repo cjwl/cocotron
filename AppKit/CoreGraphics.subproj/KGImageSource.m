@@ -58,6 +58,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return 0;
 }
 
+-(NSDictionary *)propertiesAtIndex:(unsigned)index options:(NSDictionary *)options {
+   return nil;
+}
+
 -(KGImage *)imageAtIndex:(unsigned)index options:(NSDictionary *)options {
   KGInvalidAbstractInvocation();
   return nil;
