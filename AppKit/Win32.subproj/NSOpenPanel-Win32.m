@@ -9,6 +9,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 // Original - Christopher Lloyd <cjwl@objc.net>
 #import <AppKit/NSOpenPanel-Win32.h>
 #import <AppKit/NSApplication.h>
+#import <AppKit/NSDocumentController.h>
 #import <AppKit/NSWindow-Private.h>
 #import <AppKit/Win32Display.h>
 #import <AppKit/Win32Window.h>
@@ -17,6 +18,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <commdlg.h>
 #import <shlobj.h>
 #import <malloc.h>
+
+@implementation NSDocumentController(Win32)
+
+-(NSArray *)_allFileTypes {
+   return _fileTypes;
+}
+
+@end;
 
 @implementation NSOpenPanel(Win32)
 
@@ -108,39 +117,67 @@ static unsigned *openFileHook(HWND hdlg,UINT uiMsg,WPARAM wParam,LPARAM lParam) 
 }
 
 -(int)_GetOpenFileNameForTypes:(NSArray *)types {
-   OPENFILENAME openFileName;
-   char         filename[MAX_PATH+1];
-   char        *fileTypes,*ptr;
-   int          i,count=[types count],fileTypesLength,check;
+   OPENFILENAME  openFileName;
+   char          filename[MAX_PATH+1];
+   char         *fileTypes,*p,*q;
+   int           i,j,fileTypesLength,check;
+   NSArray      *allTypes = [[NSDocumentController sharedDocumentController] _allFileTypes];
+   NSDictionary *typeDict;
+   NSArray      *typeExtensions;
 
-   fileTypesLength=0;
-   for(i=0;i<count;i++){
-    int typeLength=[[types objectAtIndex:i] cStringLength];
+   types = [types sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)];
+   fileTypesLength=strlen("Supported (");
+   for(j=0;j<[types count];j++)
+    // 2 x length of *.<EXT> + semicolon
+    fileTypesLength+=2*(2+[[types objectAtIndex:j] cStringLength]+1);
+   fileTypesLength+=1; // space for one \0  
 
-    fileTypesLength+=strlen("Document (*.")+typeLength+1+1+strlen("*.");
-    fileTypesLength+=typeLength +1;
+   for(i=0;i<[allTypes count];i++){
+    typeDict=[allTypes objectAtIndex:i];
+    // length of the full name of the document type + blank + opening bracket
+    fileTypesLength+=[[typeDict objectForKey:@"CFBundleTypeName"] cStringLength]+2;
+    typeExtensions = [typeDict objectForKey:@"CFBundleTypeExtensions"];
+    for(j=0;j<[typeExtensions count];j++)
+     // 2 x length of *.<EXT> + semicolon
+     fileTypesLength+=2*(2+[[typeExtensions objectAtIndex:j] cStringLength]+1);
+    fileTypesLength+=1; // space for one \0  
    }
-   fileTypesLength++;
+   fileTypesLength++;   // the final \0
 
-   fileTypes=alloca(sizeof(char)*fileTypesLength);
-   ptr=fileTypes;
-   for(i=0;i<count;i++){
-    int typeLength=[[types objectAtIndex:i] cStringLength];
-
-    strcpy(ptr,"Document (*.");
-    ptr+=strlen("Document (*.");
-    [[types objectAtIndex:i] getCString:ptr];
-    ptr+=typeLength;
-    strcpy(ptr,")");
-    ptr+=2;
-
-    strcpy(ptr,"*.");
-    ptr+=strlen("*.");
-    
-    [[types objectAtIndex:i] getCString:ptr];
-    ptr+=typeLength+1;
+   // allocate the space and fill in the file types list
+   p=fileTypes=alloca(fileTypesLength);
+   strcpy(p, "Supported ("); p+=strlen("Supported (");
+   q=p;
+   for(j=0;j<[types count];j++){
+    *p++ ='*'; *p++ ='.';
+    [[types objectAtIndex:j] getCString:p]; p+=strlen(p);
+    *p++ =';';
    }
-   *ptr='\0';
+   *(p-1)=')'; // replace the last semicolon by the closing bracket
+   *p++ ='\0';
+   // duplicate the semicolon separated *.extension list
+   strcpy(p,q); p+=p-q-2;
+   *p++ ='\0'; // replace the stray closing bracket by '\0'
+
+   for(i=0;i<[allTypes count];i++){
+    typeDict=[allTypes objectAtIndex:i];
+    [[typeDict objectForKey:@"CFBundleTypeName"] getCString:p]; p+=strlen(p);
+    *p++ =' '; *p++ ='(';
+
+    typeExtensions = [typeDict objectForKey:@"CFBundleTypeExtensions"];
+    q=p;
+    for(j=0;j<[typeExtensions count]; j++){
+     *p++ ='*'; *p++ ='.';
+     [[typeExtensions objectAtIndex:j] getCString:p]; p+=strlen(p);
+     *p++ =';';
+    }
+    *(p-1)=')'; // replace the last semicolon by the closing bracket
+    *p++ ='\0';
+    // duplicate the semicolon separated *.extension list
+    strcpy(p,q); p+=p-q-2;
+    *p++ ='\0'; // replace the stray closing bracket by '\0'
+   }
+   *p='\0';
 
    @synchronized(self)
 	{
@@ -215,6 +252,5 @@ static unsigned *openFileHook(HWND hdlg,UINT uiMsg,WPARAM wParam,LPARAM lParam) 
       
    return NSOKButton;
 }
-
 
 @end

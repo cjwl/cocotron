@@ -29,7 +29,7 @@ static NSDocumentController *shared=nil;
 
 +sharedDocumentController {
    if(shared==nil)
-    [[NSDocumentController alloc] init];
+    shared = [[NSDocumentController alloc] init];
 
    return shared;
 }
