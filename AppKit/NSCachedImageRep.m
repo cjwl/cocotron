@@ -51,9 +51,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(BOOL)drawAtPoint:(NSPoint)point {
-   NSRect rect={point,_size};
+   NSRect     rect={point,_size};
+   CGImageRef imageRef=CGBitmapContextCreateImage([[_window graphicsContext] graphicsPort]);
    
-   CGContextDrawContextInRect(NSCurrentGraphicsPort(),[[_window graphicsContext] graphicsPort],rect);
+   CGContextDrawImage(NSCurrentGraphicsPort(),rect,imageRef);
    return YES;
 }
 
