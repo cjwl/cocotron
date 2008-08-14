@@ -258,8 +258,6 @@ COREGRAPHICS_EXPORT void CGContextSetCTM(CGContextRef context,CGAffineTransform 
 
 // Temporary hacks
 
-COREGRAPHICS_EXPORT void CGContextDrawContextInRect(CGContextRef context,CGContextRef other,CGRect rect);
-
 COREGRAPHICS_EXPORT void CGContextResetClip(CGContextRef context);
 
 COREGRAPHICS_EXPORT void CGContextSetCalibratedGrayColor(CGContextRef context,float gray,float alpha);

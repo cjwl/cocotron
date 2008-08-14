@@ -217,8 +217,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 // temporary
 
--(void)drawContext:(KGContext *)other inRect:(CGRect)rect;
-
 -(void)drawBackingContext:(KGContext *)other size:(CGSize)size;
 
 -(void)resetClip;

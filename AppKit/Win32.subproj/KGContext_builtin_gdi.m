@@ -72,24 +72,4 @@ static inline BOOL transformIsFlipped(CGAffineTransform matrix){
    SelectObject(_dc,[_gdiFont fontHandle]);
 }
 
--(void)drawDeviceContext:(KGDeviceContext_gdi *)deviceContext inRect:(NSRect)rect ctm:(CGAffineTransform)ctm {
-   rect.origin=CGPointApplyAffineTransform(rect.origin,ctm);
-
-   if(transformIsFlipped(ctm))
-    rect.origin.y-=rect.size.height;
-
-   BitBlt(_dc,rect.origin.x,rect.origin.y,rect.size.width,rect.size.height,[deviceContext dc],0,0,SRCCOPY);
-}
-
--(void)drawContext:(KGContext *)other inRect:(CGRect)rect {
-   if(![other respondsToSelector:@selector(deviceContext)])
-    return;
-   
-   CGAffineTransform ctm=[self userSpaceToDeviceSpaceTransform];
-         
-   KGDeviceContext_gdi *deviceContext=[(KGContext_builtin_gdi *)other deviceContext];
-
-   [self drawDeviceContext:deviceContext inRect:rect ctm:ctm];
-}
-
 @end

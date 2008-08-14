@@ -931,10 +931,6 @@ static inline KGGraphicsState *currentState(KGContext *self){
 
 // temporary
 
--(void)drawContext:(KGContext *)other inRect:(CGRect)rect {
-   KGInvalidAbstractInvocation();
-}
-
 -(void)drawBackingContext:(KGContext *)other size:(CGSize)size {
    KGInvalidAbstractInvocation();
 }

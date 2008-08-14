@@ -813,6 +813,38 @@ void CGGraphicsSourceOver_rgba32_onto_bgrx32(unsigned char *sourceRGBA,unsigned 
    }
 }
 
+void CGGraphicsSourceOver_bgra32_onto_bgrx32(unsigned char *sourceBGRA,unsigned char *resultBGRX,int width,int height,float fraction) {
+   int sourceIndex=0;
+   int sourceLength=width*height*4;
+   int destinationReadIndex=0;
+   int destinationWriteIndex=0;
+
+   fraction *= 256.0/255.0;
+   while(sourceIndex<sourceLength){
+    unsigned srcb=sourceBGRA[sourceIndex++];
+    unsigned srcg=sourceBGRA[sourceIndex++];
+    unsigned srcr=sourceBGRA[sourceIndex++];
+    unsigned srca=sourceBGRA[sourceIndex++]*fraction;
+
+    unsigned dstb=resultBGRX[destinationReadIndex++];
+    unsigned dstg=resultBGRX[destinationReadIndex++];
+    unsigned dstr=resultBGRX[destinationReadIndex++];
+    unsigned dsta=256-srca;
+
+    destinationReadIndex++;
+
+    dstr=(srcr*srca+dstr*dsta)>>8;
+    dstg=(srcg*srca+dstg*dsta)>>8;
+    dstb=(srcb*srca+dstb*dsta)>>8;
+
+    resultBGRX[destinationWriteIndex++]=dstb;
+    resultBGRX[destinationWriteIndex++]=dstg;
+    resultBGRX[destinationWriteIndex++]=dstr;
+    destinationWriteIndex++; // skip x
+   }
+}
+
+
 -(void)drawBitmapImage:(KGImage *)image inRect:(NSRect)rect ctm:(CGAffineTransform)ctm fraction:(float)fraction  {
    int            width=[image width];
    int            height=[image height];
@@ -858,7 +890,10 @@ void CGGraphicsSourceOver_rgba32_onto_bgrx32(unsigned char *sourceRGBA,unsigned 
    BitBlt(combineDC,0,0,combineWidth,combineHeight,sourceDC,point.x,point.y,SRCCOPY);
    GdiFlush();
 
-   CGGraphicsSourceOver_rgba32_onto_bgrx32(imageRGBA,combineBGRX,width,height,fraction);
+   if((CGImageGetAlphaInfo(image)==kCGImageAlphaPremultipliedFirst) && ([image bitmapInfo]&kCGBitmapByteOrderMask)==kCGBitmapByteOrder32Little)
+    CGGraphicsSourceOver_bgra32_onto_bgrx32(imageRGBA,combineBGRX,width,height,fraction);
+   else
+    CGGraphicsSourceOver_rgba32_onto_bgrx32(imageRGBA,combineBGRX,width,height,fraction);
 
    BitBlt(sourceDC,point.x,point.y,combineWidth,combineHeight,combineDC,0,0,SRCCOPY);
    DeleteObject(bitmap);
@@ -1035,23 +1070,6 @@ static void zeroBytes(void *bytes,int size){
     
    *rect=[deviceContext imageableRect];
    return YES;
-}
-
--(void)drawContext:(KGContext *)other inRect:(CGRect)rect {
-   KGDeviceContext_gdi *deviceContext=nil;
-
-   if([other isKindOfClass:[KGContext_gdi class]])
-    deviceContext=[(KGContext_gdi *)other deviceContext];
-   else {
-    KGSurface *surface=[other surface];
-    
-    if([surface isKindOfClass:[KGSurface_DIBSection class]])
-     deviceContext=[(KGSurface_DIBSection *)surface deviceContext];
-   }
-   
-   CGAffineTransform ctm=[self userSpaceToDeviceSpaceTransform];
-         
-   [self drawDeviceContext:deviceContext inRect:rect ctm:ctm];
 }
 
 -(void)drawBackingContext:(KGContext *)other size:(NSSize)size {
