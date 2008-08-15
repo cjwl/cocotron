@@ -7,6 +7,7 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
 #import <Foundation/NSDictionary.h>
+#import <Foundation/NSPropertyListReader.h>
 #import <Appkit/NSAttributedString.h>
 #import <AppKit/NSImage.h>
 #import <AppKit/NSNibLoading.h>
@@ -50,24 +51,7 @@ static NSSystemInfoPanel *_sharedInfoPanel = nil;
    else
       [creditScrollView setFrame:NSMakeRect(0, 0, 0, 0)];
 
-   resourceFileName = [[NSBundle mainBundle] pathForResource:@"InfoPlist" ofType:@"strings"];
-   if (resourceFileName != nil)
-   {
-      NSData *data = [NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"InfoPlist" ofType:@"strings"]];
-      char *p, *q, *r, *s  = calloc(1, [data length]+1);
-      [data getBytes:s];
-      if ((p = strstr(s, "NSHumanReadableCopyright")) != NULL)
-      {
-         p += 24;
-         while (*p != '\0' && *p++ != '"');
-         q = p;
-         while (*q != '\0' && *q != '"')
-            q++;
-         *q = '\0';
-         [legalTextField setStringValue:[[[NSString alloc] initWithUTF8String:p] autorelease]];
-      }
-      free(s);
-   }
+   [legalTextField setStringValue:[[NSBundle mainBundle] localizedStringForKey:@"NSHumanReadableCopyright" value:@" " table:@"InfoPlist"]];
 
    frame.origin.y = [[NSScreen mainScreen] frame].size.height - 150 - frame.size.height;
    frame.origin.x = ([[NSScreen mainScreen] frame].size.width - frame.size.width)/2.0;
