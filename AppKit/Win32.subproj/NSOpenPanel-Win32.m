@@ -125,50 +125,34 @@ static unsigned *openFileHook(HWND hdlg,UINT uiMsg,WPARAM wParam,LPARAM lParam) 
    NSDictionary *typeDict;
    NSArray      *typeExtensions;
 
-   types = [types sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)];
-   fileTypesLength=strlen("Supported (");
-   for(j=0;j<[types count];j++)
-    // 2 x length of *.<EXT> + semicolon
-    fileTypesLength+=2*(2+[[types objectAtIndex:j] cStringLength]+1);
-   fileTypesLength+=1; // space for one \0  
-
-   for(i=0;i<[allTypes count];i++){
-    typeDict=[allTypes objectAtIndex:i];
-    // length of the full name of the document type + blank + opening bracket
-    fileTypesLength+=[[typeDict objectForKey:@"CFBundleTypeName"] cStringLength]+2;
-    typeExtensions = [typeDict objectForKey:@"CFBundleTypeExtensions"];
-    for(j=0;j<[typeExtensions count];j++)
+   if(types)
+   {
+    types = [types sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)];
+    fileTypesLength=strlen("Supported (");
+    for(j=0;j<[types count];j++)
      // 2 x length of *.<EXT> + semicolon
-     fileTypesLength+=2*(2+[[typeExtensions objectAtIndex:j] cStringLength]+1);
+     fileTypesLength+=2*(2+[[types objectAtIndex:j] cStringLength]+1);
     fileTypesLength+=1; // space for one \0  
-   }
-   fileTypesLength++;   // the final \0
 
-   // allocate the space and fill in the file types list
-   p=fileTypes=alloca(fileTypesLength);
-   strcpy(p, "Supported ("); p+=strlen("Supported (");
-   q=p;
-   for(j=0;j<[types count];j++){
-    *p++ ='*'; *p++ ='.';
-    [[types objectAtIndex:j] getCString:p]; p+=strlen(p);
-    *p++ =';';
-   }
-   *(p-1)=')'; // replace the last semicolon by the closing bracket
-   *p++ ='\0';
-   // duplicate the semicolon separated *.extension list
-   strcpy(p,q); p+=p-q-2;
-   *p++ ='\0'; // replace the stray closing bracket by '\0'
+    for(i=0;i<[allTypes count];i++){
+     typeDict=[allTypes objectAtIndex:i];
+     // length of the full name of the document type + blank + opening bracket
+     fileTypesLength+=[[typeDict objectForKey:@"CFBundleTypeName"] cStringLength]+2;
+     typeExtensions = [typeDict objectForKey:@"CFBundleTypeExtensions"];
+     for(j=0;j<[typeExtensions count];j++)
+      // 2 x length of *.<EXT> + semicolon
+      fileTypesLength+=2*(2+[[typeExtensions objectAtIndex:j] cStringLength]+1);
+     fileTypesLength+=1; // space for one \0  
+    }
+    fileTypesLength++;   // the final \0
 
-   for(i=0;i<[allTypes count];i++){
-    typeDict=[allTypes objectAtIndex:i];
-    [[typeDict objectForKey:@"CFBundleTypeName"] getCString:p]; p+=strlen(p);
-    *p++ =' '; *p++ ='(';
-
-    typeExtensions = [typeDict objectForKey:@"CFBundleTypeExtensions"];
+    // allocate the space and fill in the file types list
+    p=fileTypes=alloca(fileTypesLength);
+    strcpy(p,"Supported ("); p+=strlen("Supported (");
     q=p;
-    for(j=0;j<[typeExtensions count]; j++){
+    for(j=0;j<[types count];j++){
      *p++ ='*'; *p++ ='.';
-     [[typeExtensions objectAtIndex:j] getCString:p]; p+=strlen(p);
+     [[types objectAtIndex:j] getCString:p]; p+=strlen(p);
      *p++ =';';
     }
     *(p-1)=')'; // replace the last semicolon by the closing bracket
@@ -176,8 +160,29 @@ static unsigned *openFileHook(HWND hdlg,UINT uiMsg,WPARAM wParam,LPARAM lParam) 
     // duplicate the semicolon separated *.extension list
     strcpy(p,q); p+=p-q-2;
     *p++ ='\0'; // replace the stray closing bracket by '\0'
+
+    for(i=0;i<[allTypes count];i++){
+     typeDict=[allTypes objectAtIndex:i];
+     [[typeDict objectForKey:@"CFBundleTypeName"] getCString:p]; p+=strlen(p);
+     *p++ =' '; *p++ ='(';
+
+     typeExtensions=[typeDict objectForKey:@"CFBundleTypeExtensions"];
+     q=p;
+     for(j=0;j<[typeExtensions count];j++){
+      *p++ ='*'; *p++ ='.';
+      [[typeExtensions objectAtIndex:j] getCString:p]; p+=strlen(p);
+      *p++ =';';
+     }
+     *(p-1)=')'; // replace the last semicolon by the closing bracket
+     *p++ ='\0';
+     // duplicate the semicolon separated *.extension list
+     strcpy(p,q); p+=p-q-2;
+     *p++ ='\0'; // replace the stray closing bracket by '\0'
+    }
+    *p='\0';
    }
-   *p='\0';
+   else
+    fileTypes="All files (*.*)\0*.*\0\0";
 
    @synchronized(self)
 	{
