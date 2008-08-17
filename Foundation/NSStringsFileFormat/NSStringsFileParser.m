@@ -15,6 +15,49 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSObjCRuntime.h>
 #import <Foundation/NSString_cString.h>
 
+static inline unsigned short SwapWord(unsigned short w){
+ __asm__("xchgb %b0, %h0" : "+q" (w));
+ return w;
+}
+
+static inline unsigned short PickWord(unsigned short w){
+ return w;
+}
+
+// this routine is applicable for conversion of utf32 to utf8 
+// as well as of utf16 to utf8 in the BMP range U+0000 through U+FFFF
+static int UnicodeToUTF8(unsigned utf32, unsigned char *utf8)
+{
+	if (utf32 < 0x80)
+   {
+	   *utf8 = utf32;
+      return 1;
+   }
+	else if (utf32 < 0x800)
+   {
+	   *utf8++ = 0xC0 | (utf32 >> 6);
+      *utf8   = 0x80 | (utf32 & 0x3F);
+      return 2;
+	}
+	else if (utf32 < 0x10000)
+   {
+      *utf8++ = 0xE0 | (utf32 >> 12);
+      *utf8++ = 0x80 | (utf32 >> 6);
+      *utf8   = 0x80 | (utf32 & 0x3F);
+      return 3;
+	}
+	else if (utf32 < 0x110000)
+   {
+      *utf8++ = 0xF0 | (utf32 >> 18);
+      *utf8++ = 0x80 | (utf32 >> 12);
+      *utf8++ = 0x80 | (utf32 >> 6);
+      *utf8   = 0x80 | (utf32 & 0x3F);
+      return 4;
+	}
+   else
+      return 0;
+}
+
 static NSArray *error(NSArray *array,char *strBuf,NSString *fmt,...) {
    va_list list;
    va_start(list,fmt);
@@ -28,9 +71,9 @@ static NSArray *error(NSArray *array,char *strBuf,NSString *fmt,...) {
    return nil;
 }
 
-static NSArray *stringListFromBytes(const char *bytes,int length){
+static NSArray *stringListFromBytes(const unichar unicode[],int length){
    NSMutableArray *array=[[NSMutableArray allocWithZone:NULL] initWithCapacity:1024];
-   int index,c,strSize=0,strMax=2048;
+   unsigned index,c,strSize=0,strMax=2048;
    char *strBuf=NSZoneMalloc(NSDefaultMallocZone(),strMax);
 
    enum {
@@ -39,6 +82,7 @@ static NSArray *stringListFromBytes(const char *bytes,int length){
     STATE_COMMENT,
     STATE_COMMENT_STAR,
     STATE_STRING,
+    STATE_STRING_KEY,
     STATE_STRING_SLASH,
     STATE_STRING_SLASH_X00,
     STATE_STRING_SLASH_XX0
@@ -50,8 +94,19 @@ static NSArray *stringListFromBytes(const char *bytes,int length){
     EXPECT_SEMI
    } expect=EXPECT_KEY;
 
-   for(index=0;index<length;){
-    c=bytes[index++];
+   unichar (*mapUC)(unichar);
+   if (unicode[0]==0xFEFE){
+    mapUC=SwapWord;
+    index=1;
+   }
+   else{
+    mapUC=PickWord;
+    index=0;
+   }
+   if(mapUC(unicode[(length>>=1)-1])==0x0A)
+    length--;
+   for(;index<length;index++){
+    c=mapUC(unicode[index]);
     switch(state){
 
      case STATE_WHITESPACE:
@@ -80,8 +135,14 @@ static NSArray *stringListFromBytes(const char *bytes,int length){
        strSize=0;
        state=STATE_STRING;
       }
-      else if(c>' ')
-       return error(array,strBuf,@"unexpected character %02X '%c'",c,c);
+      else if(c>' '){
+       if(expect!=EXPECT_KEY)
+        return error(array,strBuf,@"unexpected character %02X '%c'",c,c);
+
+       strBuf[0]=c;
+       strSize=1;
+       state=STATE_STRING_KEY;
+      }
       break;
 
      case STATE_COMMENT_SLASH:
@@ -103,10 +164,19 @@ static NSArray *stringListFromBytes(const char *bytes,int length){
        state=STATE_COMMENT;
       break;
 
+     case STATE_STRING_KEY:
+      switch(c){
+       case '\"':
+        return error(array,strBuf,@"unexpected character %02X '%c'",c,c);
+       case '=':
+         index-=2;
+       case ' ':
+         c='\"';
+      }
      case STATE_STRING:
       if(c=='\"'){
-       NSString *string=[[NSString allocWithZone:NULL] initWithCString:strBuf
-                                     length:strSize];
+       strBuf[strSize]='\0';
+       NSString *string=[[NSString allocWithZone:NULL] initWithUTF8String:strBuf];
        [array addObject:string];
        [string release];
        state=STATE_WHITESPACE;
@@ -123,7 +193,7 @@ static NSArray *stringListFromBytes(const char *bytes,int length){
        if(c=='\\')
         state=STATE_STRING_SLASH;
        else
-        strBuf[strSize++]=c;
+        strSize+=UnicodeToUTF8(c,&strBuf[strSize]);
       }
       break;
 
@@ -197,7 +267,7 @@ static NSArray *stringListFromBytes(const char *bytes,int length){
 }
 
 NSDictionary *NSDictionaryFromStringsFormatData(NSData *data) {
-   NSArray      *array=stringListFromBytes([data bytes],[data length]);
+   NSArray      *array=stringListFromBytes((unichar *)[data bytes],[data length]);
    NSDictionary *dictionary;
    id           *keys,*values;
    int           i,count;
