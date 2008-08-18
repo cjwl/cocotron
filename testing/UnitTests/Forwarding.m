@@ -21,7 +21,6 @@
 @implementation Forwarding
 -(void)forwardInvocation:(NSInvocation*)inv
 {
-   NSLog(@"selector %@", NSStringFromSelector([inv selector]));
 	if([inv selector]==@selector(doStuffWithObjects:::))
 	{
 		[inv setSelector:@selector(concatObjects:::)];
@@ -38,9 +37,7 @@
 	{
 
 		[inv setSelector:@selector(addFloats:::)];
-      NSLog(@"blah");
-      NSLog(@"new %@", NSStringFromSelector([inv selector]));
-
+      
 		[inv invoke];
 		return;
 	}

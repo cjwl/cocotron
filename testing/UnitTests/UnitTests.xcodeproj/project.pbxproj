@@ -8,6 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		8D5B49B0048680CD000E48DA /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C167DFE841241C02AAC07 /* InfoPlist.strings */; };
+		C80F9AE60E58BD7E00ECD487 /* MessageBenchmark.m in Sources */ = {isa = PBXBuildFile; fileRef = C80F9AE50E58BD7E00ECD487 /* MessageBenchmark.m */; settings = {COMPILER_FLAGS = "-fno-objc-msgsend"; }; };
+		C80F9B7B0E58C93800ECD487 /* MessageSend.m in Sources */ = {isa = PBXBuildFile; fileRef = C80F9B7A0E58C93800ECD487 /* MessageSend.m */; settings = {COMPILER_FLAGS = "-fobjc-msgsend"; }; };
+		C80F9D170E59E45100ECD487 /* CrashCatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = C80F9D160E59E45100ECD487 /* CrashCatcher.m */; };
+		C80F9D180E59E45100ECD487 /* CrashCatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = C80F9D160E59E45100ECD487 /* CrashCatcher.m */; };
+		C80F9D190E59E45100ECD487 /* CrashCatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = C80F9D160E59E45100ECD487 /* CrashCatcher.m */; };
 		C813609D0DC4A5D800EAFF07 /* Forwarding.m in Sources */ = {isa = PBXBuildFile; fileRef = C88B86D90DBA0305000A8500 /* Forwarding.m */; };
 		C827EA570DB62A9200360D99 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C827EA560DB62A9200360D99 /* SenTestingKit.framework */; };
 		C827EB3B0DB63FFA00360D99 /* Properties.m in Sources */ = {isa = PBXBuildFile; fileRef = C827EB3A0DB63FFA00360D99 /* Properties.m */; };
@@ -54,6 +59,14 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
+		C80F9AD10E58BADF00ECD487 /* PBXBuildRule */ = {
+			isa = PBXBuildRule;
+			compilerSpec = org.cocotron.1.0.windows.i386.gcc.default;
+			fileType = sourcecode.asm;
+			isEditable = 1;
+			outputFiles = (
+			);
+		};
 		C85D1F8E0DBBBAD7005A5FD6 /* PBXBuildRule */ = {
 			isa = PBXBuildRule;
 			compilerSpec = org.cocotron.1.0.linux.i386.gcc.4.3.1;
@@ -89,6 +102,10 @@
 		32DBCF630370AF2F00C91783 /* UnitTests_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UnitTests_Prefix.pch; sourceTree = "<group>"; };
 		8D5B49B6048680CD000E48DA /* UnitTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UnitTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
 		8D5B49B7048680CD000E48DA /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C80F9AE40E58BD7E00ECD487 /* MessageBenchmark.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageBenchmark.h; sourceTree = "<group>"; };
+		C80F9AE50E58BD7E00ECD487 /* MessageBenchmark.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageBenchmark.m; sourceTree = "<group>"; };
+		C80F9B7A0E58C93800ECD487 /* MessageSend.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageSend.m; sourceTree = "<group>"; };
+		C80F9D160E59E45100ECD487 /* CrashCatcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CrashCatcher.m; sourceTree = "<group>"; };
 		C81F5A3E0DD22B94006F82C7 /* Runloop.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Runloop.h; sourceTree = "<group>"; };
 		C81F5A3F0DD22B94006F82C7 /* Runloop.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Runloop.m; sourceTree = "<group>"; };
 		C827EA560DB62A9200360D99 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = /System/Library/Frameworks/SenTestingKit.framework; sourceTree = "<absolute>"; };
@@ -210,6 +227,10 @@
 				C8CB8CAE0DD34DA6005C1BAC /* Array.m */,
 				C8A3931C0E48B72300A9C289 /* PropertyListUnarchiving.h */,
 				C8A3931D0E48B72300A9C289 /* PropertyListUnarchiving.m */,
+				C80F9AE40E58BD7E00ECD487 /* MessageBenchmark.h */,
+				C80F9AE50E58BD7E00ECD487 /* MessageBenchmark.m */,
+				C80F9B7A0E58C93800ECD487 /* MessageSend.m */,
+				C80F9D160E59E45100ECD487 /* CrashCatcher.m */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -270,6 +291,7 @@
 				C8C803EA0DB53B5C0089C0D7 /* ShellScript */,
 			);
 			buildRules = (
+				C80F9AD10E58BADF00ECD487 /* PBXBuildRule */,
 				C8C8027E0DB51FE60089C0D7 /* PBXBuildRule */,
 			);
 			dependencies = (
@@ -436,6 +458,9 @@
 				C8A24EBD0DDB468800953459 /* NewStyleExceptions.m in Sources */,
 				C84F02C40E1F8F17000C03D6 /* ObjCXXExceptions.mm in Sources */,
 				C8A3931F0E48B72300A9C289 /* PropertyListUnarchiving.m in Sources */,
+				C80F9AE60E58BD7E00ECD487 /* MessageBenchmark.m in Sources */,
+				C80F9B7B0E58C93800ECD487 /* MessageSend.m in Sources */,
+				C80F9D170E59E45100ECD487 /* CrashCatcher.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -453,6 +478,7 @@
 				C8A24EBE0DDB468800953459 /* NewStyleExceptions.m in Sources */,
 				C84F02C50E1F8F17000C03D6 /* ObjCXXExceptions.mm in Sources */,
 				C8A393200E48B72300A9C289 /* PropertyListUnarchiving.m in Sources */,
+				C80F9D180E59E45100ECD487 /* CrashCatcher.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -468,6 +494,7 @@
 				C84F07270E20EC7A000C03D6 /* ObjCXXExceptions.mm in Sources */,
 				C84F07620E20F089000C03D6 /* Forwarding.m in Sources */,
 				C8A3931E0E48B72300A9C289 /* PropertyListUnarchiving.m in Sources */,
+				C80F9D190E59E45100ECD487 /* CrashCatcher.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

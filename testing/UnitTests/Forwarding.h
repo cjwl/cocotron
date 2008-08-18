@@ -9,25 +9,25 @@
 
 #import <SenTestingKit/SenTestingKit.h>
 
+typedef struct 
+{
+   float a;
+   long long b;
+   char padding[27];
+   char c;
+   struct
+   {
+      float d;
+      double e;
+   };
+} TestingStruct;
 
 @interface Forwarding : SenTestCase 
 {
 	BOOL beenInMethodFlag;
 }
-
-
+-(id)makeStringFromStructs:(NSSize)size :(char)c :(NSRange)range :(NSRect)rect :(double)d :(long long)l;
+-(TestingStruct)returnTestingStructWithParam:(float)x;
 @end
 
 
-typedef struct 
-{
-	float a;
-	long long b;
-	char padding[27];
-	char c;
-	struct
-	{
-		float d;
-		double e;
-	};
-} TestingStruct;

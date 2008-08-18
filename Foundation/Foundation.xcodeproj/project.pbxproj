@@ -8660,6 +8660,7 @@
 					"-DFOUNDATION_INSIDE_BUILD",
 					"-DOBJC_INSIDE_BUILD",
 					"-D__LITTLE_ENDIAN__",
+					"-DHAVE_LIBFFI",
 				);
 				OTHER_LDFLAGS = (
 					"-B,static",
