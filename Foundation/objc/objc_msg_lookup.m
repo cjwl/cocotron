@@ -10,6 +10,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/ObjectiveC.h>
 #import "objc_cache.h"
 #import <Foundation/ObjCException.h>
+#import "objc_forward_ffi.h"
+
+extern id objc_msgForward(id, SEL, ...);
 
 static int msg_tracing=0;
 
@@ -22,13 +25,19 @@ void OBJCDisableMsgTracing(){
   OBJCLog("OBJC msg tracing DISABLED");
 }
 
-IMP objc_msg_lookup(id object,SEL selector) {
+static id nil_message(id object,SEL message,...){
+   return nil;
+}
 
+IMP objc_msg_lookup(id object,SEL selector) {
+   if(object==nil)
+      return nil_message;
+   
    if(msg_tracing){
     OBJCPartialLog("objc_msg_lookup %x %s",selector,sel_getName(selector));
     OBJCFinishLog(" isa %x name %s",(object!=nil)?object->isa:Nil,(object!=nil)?object->isa->name:"");
    }
-   if(object!=nil){
+   {
     OBJCMethodCache      *cache=object->isa->cache;
     unsigned              index=(unsigned)selector&OBJCMethodCacheMask;
     OBJCMethodCacheEntry *checkEntry=((void *)cache->table)+index; 
@@ -43,7 +52,16 @@ IMP objc_msg_lookup(id object,SEL selector) {
     }while(checkEntry!=NULL);
    }
 
-   return OBJCInitializeLookupAndCacheUniqueIdForObject(object,selector);
+   IMP ret = OBJCInitializeLookupAndCacheUniqueIdForObject(object,selector);
+	if(!ret)
+   {
+#ifdef HAVE_LIBFFI
+		ret=objc_forward_ffi(object, selector);
+#else
+      ret=objc_msgForward;
+#endif
+   }
+	return ret;
 }
 
 IMP objc_msg_lookup_super(struct objc_super *super,SEL selector) {
@@ -59,5 +77,14 @@ IMP objc_msg_lookup_super(struct objc_super *super,SEL selector) {
      checkEntry=((void *)checkEntry)+checkEntry->offsetToNextEntry;
     }while(checkEntry!=NULL);
 
-   return OBJCLookupAndCacheUniqueIdInClass(super->class,selector);
+   IMP ret = OBJCLookupAndCacheUniqueIdInClass(super->class,selector);
+   if(!ret)
+   {
+#ifdef HAVE_LIBFFI
+		ret=objc_forward_ffi(super->receiver, selector);
+#else
+      ret=objc_msgForward;
+#endif
+   }
+   return ret;
 }

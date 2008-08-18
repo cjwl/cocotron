@@ -14,6 +14,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    const char     *_typesCString;
    NSString       *_returnType;
    NSMutableArray *_types;
+	void* _closure;
+	void* _closureInfo;
 }
 
 -(BOOL)isOneway;

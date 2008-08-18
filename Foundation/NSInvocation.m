@@ -13,6 +13,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSRaise.h>
 #import <string.h>
 
+@interface NSInvocation (FFICalling)
+-(void)_ffiInvokeWithTarget:target;
+@end
+
 @implementation NSInvocation
 
 -(void)buildFrame {
@@ -20,7 +24,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    unsigned align;
 
    NSGetSizeAndAlignment([_signature methodReturnType],&_returnSize,&align);
-   _returnValue=NSZoneCalloc([self zone],_returnSize,1);
+   _returnValue=NSZoneCalloc([self zone],MAX(_returnSize, sizeof(long)),1);
 
    _argumentFrameSize=0;
    _argumentSizes=NSZoneCalloc([self zone],count,sizeof(unsigned));
@@ -314,6 +318,12 @@ static void byteCopy(void *src,void *dst,unsigned length){
 }
 
 -(void)invokeWithTarget:target {
+	if([self respondsToSelector:@selector(_ffiInvokeWithTarget:)])
+	{
+		[self _ffiInvokeWithTarget:target];
+		return;
+	}
+	
    const char *returnType=[_signature methodReturnType];
    void *msgSendv=objc_msg_sendv;
 
@@ -434,6 +444,11 @@ static void byteCopy(void *src,void *dst,unsigned length){
      }
      break;
    }
+}
+
+-(id)description
+{
+   return [NSString stringWithFormat:@"<%@ with signature %@>", [super description], [_signature description]];
 }
 
 @end

@@ -87,6 +87,8 @@ static NSMapTable *_cache=NULL;
 -(void)dealloc {
    [_returnType release];
    [_types release];
+	if([self respondsToSelector:@selector(_deallocateClosure)])
+		[self performSelector:@selector(_deallocateClosure)];
    [super dealloc];
 }
 

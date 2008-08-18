@@ -311,6 +311,7 @@ static inline void OBJCCacheMethodInClass(Class class,struct objc_method *method
     while(((void *)check)+check->offsetToNextEntry!=NULL)
      check=((void *)check)+check->offsetToNextEntry;
      
+      // FIXME: this should be a cmpxchg, with retry in failure case
     check->offsetToNextEntry=((void *)entry)-((void *)check);
    }
 }
@@ -323,25 +324,18 @@ IMP OBJCLookupAndCacheUniqueIdInClass(Class class,SEL uniqueId){
     return method->method_imp;
    }
 
-   return objc_msgForward;
+	return NULL;
 }
 
-static id nil_message(id object,SEL message,...){
-   return nil;
-}
 
 IMP OBJCInitializeLookupAndCacheUniqueIdForObject(id object,SEL uniqueId){
-   if(object==nil)
-    return nil_message;
-   else {
     Class class=object->isa;
     Class checkInit=(class->info&CLASS_INFO_META)?(Class)object:class;
 
-    if(!(checkInit->info&CLASS_INFO_INITIALIZED))
+   if(!(checkInit->info&CLASS_INFO_INITIALIZED))
      OBJCInitializeClass(checkInit);
-
+   
     return OBJCLookupAndCacheUniqueIdInClass(class,uniqueId);
-   }
 }
 
 
@@ -395,6 +389,18 @@ BOOL object_cxxDestruct(id self, Class class)
 	return YES;
 }
 
+int objc_getMethodReturnLength(Class class, SEL sel) {
+	const char *types=OBJCTypesForSelector(class,sel);
+	int ret=0;
+	if(types)
+		NSGetSizeAndAlignment(types, &ret, NULL);
+	return ret;
+}
+
+const char *class_getName(Class cls)
+{
+   return cls->name;
+}
 
 void OBJCLogMsg(id object,SEL message){
 #if 1
