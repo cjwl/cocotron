@@ -316,6 +316,9 @@ invocation_closure(ffi_cif* cif, void* result, void** args, void* userdata)
 	return _closureInfo;		
 }
 
+
+#ifdef WINDOWS
+
 void *_NSClosureAlloc(unsigned size)
 {
    return VirtualAlloc(NULL, size, MEM_COMMIT|MEM_RESERVE, PAGE_EXECUTE_READWRITE);
@@ -330,6 +333,24 @@ void _NSClosureProtect(void* closure, unsigned size)
 {
    VirtualProtect(closure, size, PAGE_EXECUTE, NULL);
 }
+
+#else
+
+void *_NSClosureAlloc(unsigned size)
+{
+   return malloc(size);
+}
+
+void _NSClosureFree(void* closure)
+{
+   free(size);
+}
+
+void _NSClosureProtect(void* closure, unsigned size)
+{
+}
+
+#endif
 
 -(void*)_closure
 {

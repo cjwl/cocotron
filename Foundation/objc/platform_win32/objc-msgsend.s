@@ -96,4 +96,28 @@ _objc_msgSend_stret:
 	mov  %ebp, %esp
 	pop  %ebp
 	jmp		*%eax
+
+.globl _objc_msgSendSuper_stret
+	.def	_objc_msgSendSuper_stret;	.scl	2;	.type	32;	.endef
+_objc_msgSendSuper_stret:
+	pushl	%ebp
+	movl	%esp, %ebp
+   pushl	%edi
+   pushl %esi
+	subl	$32, %esp
+	movl	12(%ebp), %edi
+	movl	16(%ebp), %esi
+   movl	%esi, 4(%esp)
+	movl	%edi, (%esp)
    
+	call	_objc_msg_lookup_super
+
+   movl  (%edi), %esi
+	movl	%esi, 8(%ebp)
+   
+   addl  $32, %esp
+   popl %esi
+   popl %edi
+   mov  %ebp, %esp
+	pop  %ebp
+	jmp		*%eax   

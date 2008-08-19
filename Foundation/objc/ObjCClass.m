@@ -42,6 +42,11 @@ id objc_getClass(const char *name) {
    return OBJCHashValueForKey(OBJCClassTable(),name);
 }
 
+id objc_getMetaClass(const char *name) {
+   Class c=objc_getClass(name);
+   return c->isa;
+}
+
 Class objc_lookUpClass(const char *className) {
    return OBJCHashValueForKey(OBJCClassTable(),className);
 }
@@ -400,6 +405,33 @@ int objc_getMethodReturnLength(Class class, SEL sel) {
 const char *class_getName(Class cls)
 {
    return cls->name;
+}
+
+// this function will probably segfault if object doesn't point to a valid object.
+BOOL objc_check_object(id object)
+{
+   // assume no objects below a certain address 
+   if(object<(id)0x2000)
+      return NO;
+   Class isa=object->isa;
+   
+   if(isa<(Class)0x2000)
+      return NO;
+
+   // check if name is all-ascii. We can't assume that name points to a nul-terminated string,
+   // so only copy the first 256 characters.
+   char *saneName=__builtin_alloca(256);
+   strncpy(saneName, isa->name, 256);
+   saneName[255]='\0';
+   char* cur;
+   for(cur=saneName; cur!='\0'; cur++) {
+      if(*cur<=32 || *cur>128)
+         return NO;
+   }
+   // name is ok; lookup class and compare with what it should be
+   Class accordingToName=objc_lookUpClass(saneName);
+   
+   return (isa==accordingToName);
 }
 
 void OBJCLogMsg(id object,SEL message){
