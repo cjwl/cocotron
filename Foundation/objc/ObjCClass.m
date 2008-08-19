@@ -39,6 +39,7 @@ Class OBJCClassFromString(const char *name) {
 }
 
 id objc_getClass(const char *name) {
+   // technically, this should call a class lookup callback if class not found (unlike objc_lookUpClass)
    return OBJCHashValueForKey(OBJCClassTable(),name);
 }
 
@@ -50,6 +51,14 @@ id objc_getMetaClass(const char *name) {
 Class objc_lookUpClass(const char *className) {
    return OBJCHashValueForKey(OBJCClassTable(),className);
 }
+
+static id objc_lookUpMetaClass(const char *name) {
+   Class c=objc_lookUpClass(name);
+   if(c)
+      return c->isa;
+   return nil;
+}
+
 
 void objc_addClass(Class class) {
    OBJCRegisterClass(class);
@@ -408,7 +417,7 @@ const char *class_getName(Class cls)
 }
 
 // this function will probably segfault if object doesn't point to a valid object.
-BOOL objc_check_object(id object)
+BOOL _objc_checkObject(id object)
 {
    // assume no objects below a certain address 
    if(object<(id)0x2000)
@@ -424,14 +433,21 @@ BOOL objc_check_object(id object)
    strncpy(saneName, isa->name, 256);
    saneName[255]='\0';
    char* cur;
-   for(cur=saneName; cur!='\0'; cur++) {
-      if(*cur<=32 || *cur>128)
+   for(cur=saneName; *cur!='\0'; cur++) {
+      if((*cur<=32 || *cur>128))
+      {
          return NO;
+      }
    }
    // name is ok; lookup class and compare with what it should be
-   Class accordingToName=objc_lookUpClass(saneName);
-   
-   return (isa==accordingToName);
+   Class accordingToName=Nil;
+
+   if(isa->info&CLASS_INFO_META)
+      accordingToName=objc_lookUpMetaClass(saneName);
+   else
+      accordingToName=objc_lookUpClass(saneName);
+
+   return (isa==accordingToName) ? YES : NO;
 }
 
 void OBJCLogMsg(id object,SEL message){
