@@ -1585,13 +1585,13 @@
 		FEA36F280C24C57000025A9C /* objc_cache.h in Headers */ = {isa = PBXBuildFile; fileRef = FEA36F250C24C57000025A9C /* objc_cache.h */; };
 		FEA9D08A0D16C55E00123D51 /* NSPropertyListReader_binary1.h in Headers */ = {isa = PBXBuildFile; fileRef = FEA9D0880D16C55E00123D51 /* NSPropertyListReader_binary1.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FEA9D08B0D16C55E00123D51 /* NSPropertyListReader_binary1.m in Sources */ = {isa = PBXBuildFile; fileRef = FEA9D0890D16C55E00123D51 /* NSPropertyListReader_binary1.m */; };
-		FEA9D08E0D16C55E00123D51 /* NSPropertyListReader_binary1.h in Headers */ = {isa = PBXBuildFile; fileRef = FEA9D0880D16C55E00123D51 /* NSPropertyListReader_binary1.h */; };
+		FEA9D08E0D16C55E00123D51 /* NSPropertyListReader_binary1.h in Headers */ = {isa = PBXBuildFile; fileRef = FEA9D0880D16C55E00123D51 /* NSPropertyListReader_binary1.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FEA9D08F0D16C55E00123D51 /* NSPropertyListReader_binary1.m in Sources */ = {isa = PBXBuildFile; fileRef = FEA9D0890D16C55E00123D51 /* NSPropertyListReader_binary1.m */; };
-		FEA9D0900D16C55E00123D51 /* NSPropertyListReader_binary1.h in Headers */ = {isa = PBXBuildFile; fileRef = FEA9D0880D16C55E00123D51 /* NSPropertyListReader_binary1.h */; };
+		FEA9D0900D16C55E00123D51 /* NSPropertyListReader_binary1.h in Headers */ = {isa = PBXBuildFile; fileRef = FEA9D0880D16C55E00123D51 /* NSPropertyListReader_binary1.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FEA9D0910D16C55E00123D51 /* NSPropertyListReader_binary1.m in Sources */ = {isa = PBXBuildFile; fileRef = FEA9D0890D16C55E00123D51 /* NSPropertyListReader_binary1.m */; };
-		FEA9D0920D16C55E00123D51 /* NSPropertyListReader_binary1.h in Headers */ = {isa = PBXBuildFile; fileRef = FEA9D0880D16C55E00123D51 /* NSPropertyListReader_binary1.h */; };
+		FEA9D0920D16C55E00123D51 /* NSPropertyListReader_binary1.h in Headers */ = {isa = PBXBuildFile; fileRef = FEA9D0880D16C55E00123D51 /* NSPropertyListReader_binary1.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FEA9D0930D16C55E00123D51 /* NSPropertyListReader_binary1.m in Sources */ = {isa = PBXBuildFile; fileRef = FEA9D0890D16C55E00123D51 /* NSPropertyListReader_binary1.m */; };
-		FEA9D0940D16C55E00123D51 /* NSPropertyListReader_binary1.h in Headers */ = {isa = PBXBuildFile; fileRef = FEA9D0880D16C55E00123D51 /* NSPropertyListReader_binary1.h */; };
+		FEA9D0940D16C55E00123D51 /* NSPropertyListReader_binary1.h in Headers */ = {isa = PBXBuildFile; fileRef = FEA9D0880D16C55E00123D51 /* NSPropertyListReader_binary1.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FEA9D0950D16C55E00123D51 /* NSPropertyListReader_binary1.m in Sources */ = {isa = PBXBuildFile; fileRef = FEA9D0890D16C55E00123D51 /* NSPropertyListReader_binary1.m */; };
 		FEB6CBB20B4A139F004FADF2 /* NSKeyValueCoding.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB6CBAE0B4A139F004FADF2 /* NSKeyValueCoding.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FEB6CBB30B4A139F004FADF2 /* NSKeyValueCoding.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB6CBAF0B4A139F004FADF2 /* NSKeyValueCoding.m */; };

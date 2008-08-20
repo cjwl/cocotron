@@ -961,10 +961,6 @@ static inline KGGraphicsState *currentState(KGContext *self){
    return nil;
 }
 
--(NSString *)description {
-   return [_stateStack description];
-}
-
 -(void)deviceClipReset {
    KGInvalidAbstractInvocation();
 }

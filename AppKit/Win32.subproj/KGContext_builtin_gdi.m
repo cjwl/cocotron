@@ -27,6 +27,11 @@ static inline BOOL transformIsFlipped(CGAffineTransform matrix){
    return self;
 }
 
+-(void)dealloc {
+   [_gdiFont release];
+   [super dealloc];
+}
+
 -(KGDeviceContext_gdi *)deviceContext {
    return [(KGSurface_DIBSection *)[self surface] deviceContext];
 }

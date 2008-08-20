@@ -104,16 +104,29 @@ BOOL _isAvailable=NO;
     return nil;
    }
    
-   return [self initWithSurface:surface flipped:NO];
+   [self initWithSurface:surface flipped:NO];
+   
+   [surface release];
+   
+   return self;
 }
 
 -(void)dealloc {
+   [m_mask release];
+   [m_paint release];
+   
    int i;
    for(i=0;i<_edgeCount;i++)
     NSZoneFree(NULL,_edges[i]);
 
    NSZoneFree(NULL,_edges);
    NSZoneFree(NULL,_sortCache);
+   
+   free(_winding);
+   free(_increase);
+   
+   NSZoneFree(NULL,samplesX);
+   
    [super dealloc];
 }
 
@@ -349,15 +362,14 @@ xform=CGAffineTransformConcat(i2u,xform);
 
 		CGAffineTransform surfaceToImageMatrix = imageUserToSurface;
 		CGAffineTransform surfaceToPaintMatrix = CGAffineTransformConcat(imageUserToSurface,fillPaintToUser);
-		if(CGAffineTransformInplaceInvert(&surfaceToImageMatrix) && CGAffineTransformInplaceInvert(&surfaceToPaintMatrix))
-		{
+		if(CGAffineTransformInplaceInvert(&surfaceToImageMatrix) && CGAffineTransformInplaceInvert(&surfaceToPaintMatrix)){
 			KGPaintSetSurfaceToPaintMatrix(paint,surfaceToPaintMatrix);
 			KGPaintSetSurfaceToPaintMatrix(imagePaint,surfaceToImageMatrix);
 
-			KGRasterizerAddEdge(self,CGPointMake(p0.x,p0.y), CGPointMake(p1.x,p1.y));
-			KGRasterizerAddEdge(self,CGPointMake(p1.x,p1.y), CGPointMake(p2.x,p2.y));
-			KGRasterizerAddEdge(self,CGPointMake(p2.x,p2.y), CGPointMake(p3.x,p3.y));
-			KGRasterizerAddEdge(self,CGPointMake(p3.x,p3.y), CGPointMake(p0.x,p0.y));
+			KGRasterizerAddEdge(self,p0, p1);
+			KGRasterizerAddEdge(self,p1, p2);
+			KGRasterizerAddEdge(self,p2, p3);
+			KGRasterizerAddEdge(self,p3, p0);
 			KGRasterizerFill(self,VG_EVEN_ODD);
         KGRasterizeSetPaint(self,nil);
 		}

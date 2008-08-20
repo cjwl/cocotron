@@ -544,7 +544,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)drawInRect:(NSRect)rect fromRect:(NSRect)source operation:(NSCompositingOperation)operation fraction:(float)fraction {
    // FIXME: source rect, operation unimplemented
-   
+   NSAutoreleasePool *pool=[NSAutoreleasePool new];
    NSCachedImageRep *cached=[[NSCachedImageRep alloc] initWithSize:rect.size depth:0 separate:YES alpha:YES];
    NSImageRep       *uncached=[self _bestUncachedRepresentationForDevice:nil];
 
@@ -562,6 +562,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    CGContextRestoreGState(context);
 
    [cached release];
+   [pool release];
 }
 
 -(NSString *)description {

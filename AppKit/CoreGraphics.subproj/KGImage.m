@@ -156,6 +156,13 @@ static BOOL initFunctionsForRGBColorSpace(KGImage *self,size_t bitsPerComponent,
       case 32:
         switch(bitmapInfo&kCGBitmapAlphaInfoMask){
          case kCGImageAlphaNone:
+          switch(bitmapInfo&kCGBitmapByteOrderMask){
+           case kCGBitmapByteOrder16Little:
+           case kCGBitmapByteOrder32Little:
+            self->_read_lRGBA8888_PRE=KGImageRead_BGR888_to_RGBA8888;
+            return YES;
+          }
+          break;
           break;
           
          case kCGImageAlphaLast:
@@ -816,6 +823,27 @@ KGRGBA8888 *KGImageRead_BGRA8888_to_RGBA8888(KGImage *self,int x,int y,KGRGBA888
    return NULL;
 }
 
+KGRGBA8888 *KGImageRead_BGR888_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span,int length) {
+   const RIuint8 *scanline = scanlineAtY(self,y);
+   int i;
+   
+   if(scanline==NULL)
+    return NULL;
+
+   scanline+=x*3;
+   
+   for(i=0;i<length;i++){
+    KGRGBA8888  result;
+    
+    result.b = *scanline++;
+    result.g = *scanline++;
+	result.r = *scanline++;
+    result.a = 255;
+    *span++=result;
+   }
+   return NULL;
+}
+
 KGRGBA8888 *KGImageRead_BGRX8888_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span,int length) {
    const RIuint8 *scanline = scanlineAtY(self,y);
    int i;
@@ -825,7 +853,6 @@ KGRGBA8888 *KGImageRead_BGRX8888_to_RGBA8888(KGImage *self,int x,int y,KGRGBA888
 
    scanline+=x*4;
 
-   
    for(i=0;i<length;i++){
     KGRGBA8888  result;
     

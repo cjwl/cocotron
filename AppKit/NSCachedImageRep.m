@@ -34,7 +34,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    
    [[window platformWindow] addEntriesToDeviceDictionary:entries];
    
-   return [self initWithWindow:window rect:NSMakeRect(0,0,size.width,size.height)];
+   [self initWithWindow:window rect:NSMakeRect(0,0,size.width,size.height)];
+   
+   [window release];
+   
+   return self;
 }
 
 -(void)dealloc {
