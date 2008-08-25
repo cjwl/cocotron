@@ -303,7 +303,7 @@ static KGPaint *paintFromColor(KGColor *color){
    KGRasterizeSetPaint(self,paint);
    [paint release];
 
-/* FIXME: If either extend is off we need to generate the bounding shape, the paint classes generate alpha=0 for out of extend which
+/* FIXME: If either extend is off we need to generate the bounding shape and clip to it, the paint classes generate alpha=0 for out of extend which
    is a problem for some blending ops, copy in particular.
  */
  
@@ -356,6 +356,7 @@ xform=CGAffineTransformConcat(i2u,xform);
         
         KGRasterizeSetPaint(self,imagePaint);
 
+        
 		KGRasterizeSetBlendMode(self,gState->_blendMode);
 
 //		KGRasterizeSetMask(context->m_masking ? context->getMask() : NULL);
@@ -371,8 +372,11 @@ xform=CGAffineTransformConcat(i2u,xform);
 			KGRasterizerAddEdge(self,p2, p3);
 			KGRasterizerAddEdge(self,p3, p0);
 			KGRasterizerFill(self,VG_EVEN_ODD);
-        KGRasterizeSetPaint(self,nil);
 		}
+        KGRasterizeSetPaint(self,nil);
+        [paint release];
+        [imagePaint release];
+
    KGRasterizerClear(self);
 }
 

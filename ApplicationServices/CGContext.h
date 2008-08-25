@@ -260,7 +260,4 @@ COREGRAPHICS_EXPORT void CGContextSetCTM(CGContextRef context,CGAffineTransform 
 
 COREGRAPHICS_EXPORT void CGContextResetClip(CGContextRef context);
 
-COREGRAPHICS_EXPORT void CGContextSetCalibratedGrayColor(CGContextRef context,float gray,float alpha);
-COREGRAPHICS_EXPORT void CGContextSetCalibratedRGBColor(CGContextRef context,float red,float green,float blue,float alpha);
-
 COREGRAPHICS_EXPORT void CGContextCopyBits(CGContextRef context,CGRect rect,CGPoint point,int gState);
