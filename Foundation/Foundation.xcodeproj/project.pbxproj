@@ -1226,7 +1226,7 @@
 		FE01A7280C5D9B6900AEA51A /* NSValue.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28051509747C7300EC542B /* NSValue.m */; };
 		FE01A7290C5D9B6900AEA51A /* NSVirtualMemory.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28052009747C7E00EC542B /* NSVirtualMemory.m */; };
 		FE01A72A0C5D9B6900AEA51A /* NSZone.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28052209747C7E00EC542B /* NSZone.m */; };
-		FE01A72B0C5D9B6900AEA51A /* objc_functions.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28052609747C8900EC542B /* objc_functions.m */; };
+		FE01A72B0C5D9B6900AEA51A /* objc_functions.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28052609747C8900EC542B /* objc_functions.m */; settings = {COMPILER_FLAGS = "-g0"; }; };
 		FE01A72C0C5D9B6900AEA51A /* ObjCArray.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28052809747C8900EC542B /* ObjCArray.m */; };
 		FE01A72D0C5D9B6900AEA51A /* ObjCClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28052A09747C8900EC542B /* ObjCClass.m */; };
 		FE01A72E0C5D9B6900AEA51A /* ObjCDynamicModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28052C09747C8900EC542B /* ObjCDynamicModule.m */; };
@@ -1301,7 +1301,7 @@
 		FE01A7730C5D9B6900AEA51A /* NSPropertyListReader.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E0084CE0A19371600F78605 /* NSPropertyListReader.m */; };
 		FE01A7740C5D9B6900AEA51A /* NSKeyedUnarchiver.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EC4AAE80A34D9B200E8D6CA /* NSKeyedUnarchiver.m */; };
 		FE01A7750C5D9B6900AEA51A /* objc_msg_sendv.s in Sources */ = {isa = PBXBuildFile; fileRef = 6E28055D09747CC300EC542B /* objc_msg_sendv.s */; };
-		FE01A7760C5D9B6900AEA51A /* objc_msg_lookup.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E8115B20A55CB99000DE3F1 /* objc_msg_lookup.m */; };
+		FE01A7760C5D9B6900AEA51A /* objc_msg_lookup.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E8115B20A55CB99000DE3F1 /* objc_msg_lookup.m */; settings = {COMPILER_FLAGS = "-g0"; }; };
 		FE01A7770C5D9B6900AEA51A /* NSInputStream_socket.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EAD77300AAF1283004BCCC9 /* NSInputStream_socket.m */; };
 		FE01A7780C5D9B6900AEA51A /* NSOutputStream_socket.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EAD773A0AAF1293004BCCC9 /* NSOutputStream_socket.m */; };
 		FE01A7790C5D9B6900AEA51A /* NSInputStream_data.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9D30D0B4374F700C239BB /* NSInputStream_data.m */; };
