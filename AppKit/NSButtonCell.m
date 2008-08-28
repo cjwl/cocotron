@@ -23,6 +23,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSMatrix.h>
 #import <AppKit/NSNibKeyedUnarchiver.h>
 #import <AppKit/NSButtonImageSource.h>
+#import <AppKit/NSComboBoxCell.h>
 #import <AppKit/NSPopUpButtonCell.h>
 #import <AppKit/NSSound.h>
 
@@ -499,13 +500,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
     case NSImageLeft:
      imageOrigin.x=frame.origin.x;
-     titleRect.origin.x+=imageSize.width+2;
-     titleRect.size.width-=imageSize.width+2;
+     titleRect.origin.x+=imageSize.width+4;
+     titleRect.size.width-=imageSize.width+4;
      break;
 
     case NSImageRight:
      imageOrigin.x=frame.origin.x+(frame.size.width-imageSize.width);
-     titleRect.size.width-=(imageSize.width+2);
+     titleRect.size.width-=(imageSize.width+4);
      break;
 
     case NSImageBelow:
@@ -527,10 +528,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    if(![self isBordered]){
     if([self isVisuallyHighlighted]){
      [[NSColor whiteColor] setFill];
-     NSRectFill(frame);
-    }
-    else {
-     [[NSColor controlColor] setFill];
      NSRectFill(frame);
     }
    }
@@ -590,14 +587,61 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
  There is probably a way to streamline this, make NSPopUpButtonCell draw itself for starters
  NSGraphicsStyle should probably do this adjustment too
  */
-   if((_bezelStyle==NSRoundedBezelStyle) && (_highlightsBy&NSPushInCellMask) && (_highlightsBy&NSChangeGrayCellMask) && (_showsStateBy==NSNoCellMask)){
-    if (![self isKindOfClass:[NSPopUpButtonCell class]] && _controlSize <= NSSmallControlSize) 
-         { 
-            frame.size.width  -= 10 - _controlSize*2; 
-            frame.size.height -= 10 - _controlSize*2; 
-            frame.origin.x    +=  5 - _controlSize; 
-            frame.origin.y    += [control isFlipped] ? _controlSize*2 - 3 : 7 - _controlSize*2; 
-         } 
+   if ([self isKindOfClass:[NSComboBoxCell class]]) {
+      switch (_controlSize)
+      {
+         case NSRegularControlSize:
+            frame.size.width  -= 2;
+            frame.size.height -= 1;
+            frame.origin.x    += 1;
+            break;
+
+         case NSSmallControlSize:
+            frame.size.width  -= 4;
+            frame.size.height -= 8;
+            frame.origin.x    += 2;
+            frame.origin.y    += 6;
+            break;
+
+         case NSMiniControlSize:
+            frame.size.width  -= 6;
+            frame.size.height -= 4;
+            frame.origin.x    += 3;
+            frame.origin.y    += 4;
+            break;
+      }
+   }
+
+   else if ([self isKindOfClass:[NSPopUpButtonCell class]]) {
+      switch (_controlSize)
+      {
+         case NSRegularControlSize:
+            frame.size.width  -= 2;
+            frame.size.height -= 1;
+            frame.origin.x    += 1;
+            break;
+
+         case NSSmallControlSize:
+            frame.size.width  -= 4;
+            frame.size.height -= 3;
+            frame.origin.x    += 2;
+            frame.origin.y    += 3;
+            break;
+
+         case NSMiniControlSize:
+            frame.size.width  -= 6;
+            frame.size.height -= 4;
+            frame.origin.x    += 3;
+            frame.origin.y    += 4;
+            break;
+      }
+   }
+
+   else if((_bezelStyle==NSRoundedBezelStyle) && (_highlightsBy&NSPushInCellMask) && (_highlightsBy&NSChangeGrayCellMask) && (_showsStateBy==NSNoCellMask) || [self isKindOfClass:[NSPopUpButtonCell class]]) {
+      frame.size.width  -= 10 - _controlSize*2;
+      frame.size.height -= 10 - _controlSize*2;
+      frame.origin.x    +=  5 - _controlSize;
+      frame.origin.y    += [control isFlipped] ? _controlSize*2 - 3 : 7 - _controlSize*2;
    }
    
    if(_bezelStyle==NSDisclosureBezelStyle){
