@@ -381,8 +381,20 @@ static NSDocumentController *shared=nil;
    return [[self _runOpenPanel] URLs];
 }
 
--(NSArray *)_recentDocumentPaths {
-   return [[NSUserDefaults standardUserDefaults] arrayForKey:@"NSRecentDocumentPaths"];
+-(NSMutableArray *)_recentDocumentPaths {
+   NSFileManager  *fileManager = [NSFileManager defaultManager];
+   NSMutableArray *paths=[NSMutableArray arrayWithArray:[[NSUserDefaults standardUserDefaults] arrayForKey:@"NSRecentDocumentPaths"]];
+   int             i,count=[paths count];
+   BOOL            isDir;
+
+   for (i=count-1;i>=0;i--)
+    if (![fileManager fileExistsAtPath:[paths objectAtIndex:i] isDirectory:&isDir] || isDir)
+     [paths removeObjectAtIndex:i];
+
+   if ([paths count]!=count)
+     [[NSUserDefaults standardUserDefaults] setObject:paths forKey:@"NSRecentDocumentPaths"];
+
+   return paths;
 }
 
 -(void)_openRecentDocument:sender {
@@ -456,7 +468,7 @@ static NSDocumentController *shared=nil;
 
 -(void)noteNewRecentDocumentURL:(NSURL *)url {
    NSString       *path=[url path];
-   NSMutableArray *array=[NSMutableArray arrayWithArray:[self _recentDocumentPaths]];
+   NSMutableArray *array=[self _recentDocumentPaths];
 
    [array removeObject:path];
    [array insertObject:path atIndex:0];
