@@ -15,8 +15,38 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSArray.h>
 #import <Foundation/NSData.h>
-#import <Foundation/NSDate.h>
 #import <Foundation/NSNumber.h>
+#import <Foundation/NSCharacterSet.h>
+
+#import <Foundation/NSCalendarDate.h>
+#import <Foundation/NSScanner.h>
+
+NSDate* NSDateFromPlistString(NSString* string)
+{
+	NSScanner* sc=[NSScanner scannerWithString:string];
+	int y;
+	int mo;
+	int d;
+	int h;
+	int mi;
+	int s;
+	NSString* str;
+	[sc scanInt:&y];
+	[sc scanCharactersFromSet:[NSCharacterSet characterSetWithCharactersInString:@"-"] intoString:&str];
+	[sc scanInt:&mo];
+	[sc scanCharactersFromSet:[NSCharacterSet characterSetWithCharactersInString:@"-"] intoString:&str];
+	[sc scanInt:&d];
+	[sc scanCharactersFromSet:[NSCharacterSet characterSetWithCharactersInString:@"T "] intoString:&str];
+	[sc scanInt:&h];
+	[sc scanCharactersFromSet:[NSCharacterSet characterSetWithCharactersInString:@":"] intoString:&str];
+	[sc scanInt:&mi];
+	[sc scanCharactersFromSet:[NSCharacterSet characterSetWithCharactersInString:@":"] intoString:&str];
+	[sc scanInt:&s];
+	
+	NSCalendarDate* date= [NSCalendarDate dateWithYear:y month:mo day:d-1 hour:h minute:mi second:s timeZone: [NSTimeZone localTimeZone]];
+	return date;
+}
+
 
 @implementation NSPropertyListReader_xml1
 
@@ -130,12 +160,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 +(NSDate *) dateFromElement:(NSOldXMLElement*) element {
    NSString* string=[element stringValue];
-
-   NSDate* result= [NSDate dateWithString:string];
-   if (result)
-      return result;
-   else
-      return [NSDate date];
+	return NSDateFromPlistString(string);
 }
 
 +(NSObject *)propertyListFromElement:(NSOldXMLElement *)element {

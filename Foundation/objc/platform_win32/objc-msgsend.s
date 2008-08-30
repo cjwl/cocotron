@@ -4,6 +4,17 @@
 _objc_msgSend:
 	pushl	%ebp
 	movl	%esp, %ebp
+	subl	$16, %esp
+	pushl	12(%ebp)
+	pushl	8(%ebp)
+	call	_objc_msg_lookup
+	mov  %ebp, %esp
+	pop  %ebp
+	jmp		*%eax
+   
+   
+	pushl	%ebp
+	movl	%esp, %ebp
 	pushl	%esi
 	pushl	%ebx
 	movl	8(%ebp), %esi     # self
@@ -120,4 +131,18 @@ _objc_msgSendSuper_stret:
    popl %edi
    mov  %ebp, %esp
 	pop  %ebp
-	jmp		*%eax   
+	jmp		*%eax
+
+   
+.globl _objc_msgSend_fpret
+	.def	_objc_msgSend_fpret;	.scl	2;	.type	32;	.endef
+_objc_msgSend_fpret:
+	pushl	%ebp
+	movl	%esp, %ebp
+	subl	$16, %esp
+	pushl	12(%ebp)
+	pushl	8(%ebp)
+	call	_objc_msg_lookup
+	mov  %ebp, %esp
+	pop  %ebp
+	jmp		*%eax

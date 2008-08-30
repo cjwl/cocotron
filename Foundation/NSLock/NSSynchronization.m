@@ -35,9 +35,9 @@ void _NSInitializeSynchronizedDirective()
 		allLocks->next=0;
 		allLocks->lock=[NSRecursiveLock new];
         
-        // this needs to be initialized last: it also serves as a marker that the locking
-        // mechanism is actually initialized.
-        lockChainLock=[NSLock new];
+      // this needs to be initialized last: it also serves as a marker that the locking
+      // mechanism is actually initialized.
+      lockChainLock=[NSLock new];
 	}
 }
 
@@ -48,7 +48,7 @@ enum {
 	OBJC_SYNC_NOT_INITIALIZED         = -3		
 };
 
-LockChain* lockForObject(id object)
+LockChain* lockForObject(id object, BOOL create)
 {
 	LockChain *result=allLocks;
 	LockChain *firstFree=NULL;
@@ -61,8 +61,11 @@ LockChain* lockForObject(id object)
 			goto done;
 		if(result->object==NULL)
 			firstFree=result;
-        result=result->next;
+      result=result->next;
 	}
+   
+   if(!create)
+      return nil;
 
 	if(firstFree)
 	{
@@ -90,7 +93,7 @@ FOUNDATION_EXPORT int objc_sync_enter(id obj)
 	if(!lockChainLock)
 		return OBJC_SYNC_NOT_INITIALIZED;
 
-	LockChain *result=lockForObject(obj);
+	LockChain *result=lockForObject(obj, YES);
 
 	[result->lock lock];
 	return OBJC_SYNC_SUCCESS;
@@ -104,7 +107,9 @@ FOUNDATION_EXPORT int objc_sync_exit(id obj)
 	if(!lockChainLock)
 		return OBJC_SYNC_NOT_INITIALIZED;
 
-	LockChain *result=lockForObject(obj);
+	LockChain *result=lockForObject(obj, NO);
+   if(!result)
+		return OBJC_SYNC_NOT_INITIALIZED;
 
 	result->object=NULL;
 	[result->lock unlock];

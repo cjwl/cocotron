@@ -24,7 +24,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    switch(format){
    
     case NSPropertyListOpenStepFormat:
-     return [NSPropertyListWriter_vintage dataWithPropertyList:plist];
+		return [NSPropertyListWriter_vintage dataWithPropertyList:plist];
+
      
     case NSPropertyListXMLFormat_v1_0:
      return [NSPropertyListWriter_xml1 dataWithPropertyList:plist];
@@ -37,8 +38,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 +propertyListFromData:(NSData *)data mutabilityOption:(NSPropertyListMutabilityOptions)mutability format:(NSPropertyListFormat *)format errorDescription:(NSString **)errorDescriptionp {
    id result;
+	
+	@try{
 
-   if((result=[NSPropertyListReader_xml1 propertyListFromData:data])!=nil){
+		 if((result=[NSPropertyListReader_xml1 propertyListFromData:data])!=nil){
     *format=NSPropertyListXMLFormat_v1_0;
     return result;
    }
@@ -52,6 +55,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     *format=NSPropertyListOpenStepFormat;
     return result;
    }
+}
+	@catch (NSException* e) {
+		return nil;	
+	}
+	
    
    return nil;
 }
