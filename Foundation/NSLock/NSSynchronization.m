@@ -34,7 +34,7 @@ void _NSInitializeSynchronizedDirective()
 		allLocks->object=0;
 		allLocks->next=0;
 		allLocks->lock=[NSRecursiveLock new];
-        
+      
       // this needs to be initialized last: it also serves as a marker that the locking
       // mechanism is actually initialized.
       lockChainLock=[NSLock new];
@@ -65,7 +65,10 @@ LockChain* lockForObject(id object, BOOL create)
 	}
    
    if(!create)
-      return nil;
+   {
+      result=NULL;
+      goto done;
+   }
 
 	if(firstFree)
 	{
