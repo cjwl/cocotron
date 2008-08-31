@@ -52,14 +52,6 @@ Class objc_lookUpClass(const char *className) {
    return OBJCHashValueForKey(OBJCClassTable(),className);
 }
 
-static id objc_lookUpMetaClass(const char *name) {
-   Class c=objc_lookUpClass(name);
-   if(c)
-      return c->isa;
-   return nil;
-}
-
-
 void objc_addClass(Class class) {
    OBJCRegisterClass(class);
 }
@@ -414,40 +406,6 @@ int objc_getMethodReturnLength(Class class, SEL sel) {
 const char *class_getName(Class cls)
 {
    return cls->name;
-}
-
-// this function will probably segfault if object doesn't point to a valid object.
-BOOL _objc_checkObject(id object)
-{
-   // assume no objects below a certain address 
-   if(object<(id)0x2000)
-      return NO;
-   Class isa=object->isa;
-   
-   if(isa<(Class)0x2000)
-      return NO;
-
-   // check if name is all-ascii. We can't assume that name points to a nul-terminated string,
-   // so only copy the first 256 characters.
-   char *saneName=__builtin_alloca(256);
-   strncpy(saneName, isa->name, 256);
-   saneName[255]='\0';
-   char* cur;
-   for(cur=saneName; *cur!='\0'; cur++) {
-      if((*cur<=32 || *cur>128))
-      {
-         return NO;
-      }
-   }
-   // name is ok; lookup class and compare with what it should be
-   Class accordingToName=Nil;
-
-   if(isa->info&CLASS_INFO_META)
-      accordingToName=objc_lookUpMetaClass(saneName);
-   else
-      accordingToName=objc_lookUpClass(saneName);
-
-   return (isa==accordingToName) ? YES : NO;
 }
 
 void OBJCLogMsg(id object,SEL message){

@@ -56,6 +56,8 @@
 		C8C803100DB52A010089C0D7 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 089C1672FE841209C02AAC07 /* Foundation.framework */; };
 		C8CB8CAF0DD34DA6005C1BAC /* Array.m in Sources */ = {isa = PBXBuildFile; fileRef = C8CB8CAE0DD34DA6005C1BAC /* Array.m */; };
 		C8CB8CB00DD34DA6005C1BAC /* Array.m in Sources */ = {isa = PBXBuildFile; fileRef = C8CB8CAE0DD34DA6005C1BAC /* Array.m */; };
+		C8F971D10E6AD503007CBB04 /* MessageBenchmark.m in Sources */ = {isa = PBXBuildFile; fileRef = C80F9AE50E58BD7E00ECD487 /* MessageBenchmark.m */; };
+		C8F971D20E6AD503007CBB04 /* MessageSend.m in Sources */ = {isa = PBXBuildFile; fileRef = C80F9B7A0E58C93800ECD487 /* MessageSend.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
@@ -359,8 +361,8 @@
 			);
 			projectRoot = "";
 			targets = (
-				C85D1F7E0DBBBAD7005A5FD6 /* UnitTests-i386-Linux */,
 				8D5B49AC048680CD000E48DA /* UnitTests-i386-Windows */,
+				C85D1F7E0DBBBAD7005A5FD6 /* UnitTests-i386-Linux */,
 				C827EA6E0DB630BB00360D99 /* UnitTests */,
 			);
 		};
@@ -439,7 +441,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [ ! -e $TARGET_BUILD_DIR/TestHarness ]; then\n\tmkdir $TARGET_BUILD_DIR/TestHarness\nfi\n\nif [ -e $SOURCE_ROOT/local_server_config.sh ];then\n\t. $SOURCE_ROOT/local_server_config.sh\nfi\n\nif [ \"\"$TESTING_LINK_FILES\"\" = \"YES\" ];then\n\t/Developer/Cocotron/1.0/bin/retargetBundle -link -framework AppKit -framework Foundation -framework SenTestingKit -destination $TARGET_BUILD_DIR/TestHarness\n\tln -s /Developer/Cocotron/1.0/Windows/i386/otest.exe $TARGET_BUILD_DIR/TestHarness/otest.exe\nelse\n\t/Developer/Cocotron/1.0/bin/retargetBundle -framework Foundation -framework SenTestingKit -destination $TARGET_BUILD_DIR/TestHarness\n\tcp /Developer/Cocotron/1.0/Windows/i386/otest.exe $TARGET_BUILD_DIR/TestHarness/otest.exe\nfi\n\nif [ \"\"$TESTING_SERVER\"\" = \"\" ];then\n\techo \"error: TESTING_SERVER not set; create a local_server_config.sh in source directory\"\n\texit 1\nfi\n\nif [ \"\"$TESTING_DIR\"\" = \"\" ];then\n\techo \"error: TESTING_DIR not set; create a local_server_config.sh in source directory\"\n\texit 1\nfi\n\necho \"#!/bin/sh\" > $TARGET_BUILD_DIR/TestHarness/run_tests.sh\necho \"cd $TESTING_DIR/TestHarness\" >> $TARGET_BUILD_DIR/TestHarness/run_tests.sh\necho \"./otest.exe -SenTest All ../$WRAPPER_NAME\" >> $TARGET_BUILD_DIR/TestHarness/run_tests.sh\n\nssh $TESTING_SERVER -- sh $TESTING_DIR/TestHarness/run_tests.sh ";
+			shellScript = "if [ ! -e $TARGET_BUILD_DIR/TestHarness ]; then\n\tmkdir $TARGET_BUILD_DIR/TestHarness\nfi\n\nif [ -e $SOURCE_ROOT/local_server_config.sh ];then\n\t. $SOURCE_ROOT/local_server_config.sh\nfi\n\nif [ \"\"$TESTING_LINK_FILES\"\" = \"YES\" ];then\n\t/Developer/Cocotron/1.0/bin/retargetBundle -link -framework AppKit -framework Foundation -framework SenTestingKit -destination $TARGET_BUILD_DIR/TestHarness\n\tln -s /Developer/Cocotron/1.0/Windows/i386/otest.exe $TARGET_BUILD_DIR/TestHarness/otest.exe\nelse\n\t/Developer/Cocotron/1.0/bin/retargetBundle -framework Foundation -framework SenTestingKit -destination $TARGET_BUILD_DIR/TestHarness\n\tcp /Developer/Cocotron/1.0/Windows/i386/otest.exe $TARGET_BUILD_DIR/TestHarness/otest.exe\nfi\n\nif [ \"\"$TESTING_SERVER\"\" = \"\" ];then\n\techo \"error: TESTING_SERVER not set; create a local_server_config.sh in source directory\"\n\texit 1\nfi\n\nif [ \"\"$TESTING_DIR\"\" = \"\" ];then\n\techo \"error: TESTING_DIR not set; create a local_server_config.sh in source directory\"\n\texit 1\nfi\n\necho \"#!/bin/sh\" > $TARGET_BUILD_DIR/TestHarness/run_tests.sh\necho \"cd $TESTING_DIR/TestHarness\" >> $TARGET_BUILD_DIR/TestHarness/run_tests.sh\necho \"./otest.exe -SenTest All ../$WRAPPER_NAME\" >> $TARGET_BUILD_DIR/TestHarness/run_tests.sh\n\necho \"note: Running tests on $TESTING_SERVER...\"\n\nssh $TESTING_SERVER -- sh $TESTING_DIR/TestHarness/run_tests.sh \n\necho \"note: Finished.\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -495,6 +497,8 @@
 				C84F07620E20F089000C03D6 /* Forwarding.m in Sources */,
 				C8A3931E0E48B72300A9C289 /* PropertyListUnarchiving.m in Sources */,
 				C80F9D190E59E45100ECD487 /* CrashCatcher.m in Sources */,
+				C8F971D10E6AD503007CBB04 /* MessageBenchmark.m in Sources */,
+				C8F971D20E6AD503007CBB04 /* MessageSend.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

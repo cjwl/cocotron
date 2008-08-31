@@ -1,3 +1,5 @@
+#import <signal.h>
+
 static void print_error()
 {
 	fprintf(stderr, "error: testing host crashed\n");

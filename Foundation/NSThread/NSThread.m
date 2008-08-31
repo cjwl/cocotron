@@ -16,6 +16,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSRunLoop.h>
 #import "NSThread-Private.h"
 #import <Foundation/NSSynchronization.h>
+#import <Foundation/objc_debugHelpers.h>
 
 NSString *NSDidBecomeSingleThreadedNotification=@"NSDidBecomeSingleThreadedNotification";
 NSString *NSWillBecomeMultiThreadedNotification=@"NSWillBecomeMultiThreadedNotification";
@@ -92,9 +93,7 @@ static int  nsThreadStartThread(void* t)
 }
 
 +(NSArray *)callStackReturnAddresses {
-  // dont raise exception as NSException relies on this in raise
-  // NSUnimplementedMethod();
-   return [NSArray arrayWithObject:@"NSUnimplementedMethod"];
+   return _NSStackTrace();
 }
 
 +(double)threadPriority {

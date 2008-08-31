@@ -824,6 +824,16 @@
 		C851D8810E40E428001DAB69 /* objc_forward_ffi.m in Sources */ = {isa = PBXBuildFile; fileRef = C851D8790E40E428001DAB69 /* objc_forward_ffi.m */; };
 		C851D8820E40E428001DAB69 /* objc_forward_ffi.h in Headers */ = {isa = PBXBuildFile; fileRef = C851D8780E40E428001DAB69 /* objc_forward_ffi.h */; };
 		C851D8830E40E428001DAB69 /* objc_forward_ffi.m in Sources */ = {isa = PBXBuildFile; fileRef = C851D8790E40E428001DAB69 /* objc_forward_ffi.m */; };
+		C8B53BD70E6AC7C500E4467E /* objc_debugHelpers.h in Headers */ = {isa = PBXBuildFile; fileRef = C8B53BD50E6AC7C500E4467E /* objc_debugHelpers.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		C8B53BD80E6AC7C500E4467E /* objc_debugHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = C8B53BD60E6AC7C500E4467E /* objc_debugHelpers.m */; };
+		C8B53BD90E6AC7C500E4467E /* objc_debugHelpers.h in Headers */ = {isa = PBXBuildFile; fileRef = C8B53BD50E6AC7C500E4467E /* objc_debugHelpers.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		C8B53BDA0E6AC7C500E4467E /* objc_debugHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = C8B53BD60E6AC7C500E4467E /* objc_debugHelpers.m */; };
+		C8B53BDB0E6AC7C500E4467E /* objc_debugHelpers.h in Headers */ = {isa = PBXBuildFile; fileRef = C8B53BD50E6AC7C500E4467E /* objc_debugHelpers.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		C8B53BDC0E6AC7C500E4467E /* objc_debugHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = C8B53BD60E6AC7C500E4467E /* objc_debugHelpers.m */; };
+		C8B53BDD0E6AC7C500E4467E /* objc_debugHelpers.h in Headers */ = {isa = PBXBuildFile; fileRef = C8B53BD50E6AC7C500E4467E /* objc_debugHelpers.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		C8B53BDE0E6AC7C500E4467E /* objc_debugHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = C8B53BD60E6AC7C500E4467E /* objc_debugHelpers.m */; };
+		C8B53BDF0E6AC7C500E4467E /* objc_debugHelpers.h in Headers */ = {isa = PBXBuildFile; fileRef = C8B53BD50E6AC7C500E4467E /* objc_debugHelpers.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		C8B53BE00E6AC7C500E4467E /* objc_debugHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = C8B53BD60E6AC7C500E4467E /* objc_debugHelpers.m */; };
 		C8BAA5730DDEFC6C005C4769 /* objc_size_alignment.h in Headers */ = {isa = PBXBuildFile; fileRef = C8BAA5710DDEFC6C005C4769 /* objc_size_alignment.h */; };
 		C8BAA5740DDEFC6C005C4769 /* objc_size_alignment.m in Sources */ = {isa = PBXBuildFile; fileRef = C8BAA5720DDEFC6C005C4769 /* objc_size_alignment.m */; };
 		C8BAA5750DDEFC6C005C4769 /* objc_size_alignment.h in Headers */ = {isa = PBXBuildFile; fileRef = C8BAA5710DDEFC6C005C4769 /* objc_size_alignment.h */; };
@@ -3652,6 +3662,8 @@
 		C851D86C0E40E0D3001DAB69 /* NSPropertyListWriter_xml1.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSPropertyListWriter_xml1.h; sourceTree = "<group>"; };
 		C851D8780E40E428001DAB69 /* objc_forward_ffi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = objc_forward_ffi.h; sourceTree = "<group>"; };
 		C851D8790E40E428001DAB69 /* objc_forward_ffi.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = objc_forward_ffi.m; sourceTree = "<group>"; };
+		C8B53BD50E6AC7C500E4467E /* objc_debugHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = objc_debugHelpers.h; sourceTree = "<group>"; };
+		C8B53BD60E6AC7C500E4467E /* objc_debugHelpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = objc_debugHelpers.m; sourceTree = "<group>"; };
 		C8BAA5710DDEFC6C005C4769 /* objc_size_alignment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = objc_size_alignment.h; sourceTree = "<group>"; };
 		C8BAA5720DDEFC6C005C4769 /* objc_size_alignment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = objc_size_alignment.m; sourceTree = "<group>"; };
 		FE01A7EC0C5D9B6900AEA51A /* Foundation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Foundation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -4558,6 +4570,8 @@
 				6E28052609747C8900EC542B /* objc_functions.m */,
 				6E8115B20A55CB99000DE3F1 /* objc_msg_lookup.m */,
 				6E28055F09747CCA00EC542B /* objc_msg_sendv.m */,
+				C8B53BD50E6AC7C500E4467E /* objc_debugHelpers.h */,
+				C8B53BD60E6AC7C500E4467E /* objc_debugHelpers.m */,
 				6E28052709747C8900EC542B /* ObjCArray.h */,
 				6E28052809747C8900EC542B /* ObjCArray.m */,
 				6E28052909747C8900EC542B /* ObjCClass.h */,
@@ -5349,6 +5363,7 @@
 				FEC9F6C10E2F9BEA0034932A /* NSURLConnectionState.h in Headers */,
 				C851D8720E40E0D3001DAB69 /* NSPropertyListWriter_xml1.h in Headers */,
 				C851D87E0E40E428001DAB69 /* objc_forward_ffi.h in Headers */,
+				C8B53BD90E6AC7C500E4467E /* objc_debugHelpers.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5647,6 +5662,7 @@
 				FEC9F6BF0E2F9BEA0034932A /* NSURLConnectionState.h in Headers */,
 				C851D8760E40E0D3001DAB69 /* NSPropertyListWriter_xml1.h in Headers */,
 				C851D8820E40E428001DAB69 /* objc_forward_ffi.h in Headers */,
+				C8B53BDF0E6AC7C500E4467E /* objc_debugHelpers.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5949,6 +5965,7 @@
 				FEC9F6BD0E2F9BEA0034932A /* NSURLConnectionState.h in Headers */,
 				C851D8740E40E0D3001DAB69 /* NSPropertyListWriter_xml1.h in Headers */,
 				C851D8800E40E428001DAB69 /* objc_forward_ffi.h in Headers */,
+				C8B53BDD0E6AC7C500E4467E /* objc_debugHelpers.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6247,6 +6264,7 @@
 				FEC9F6C30E2F9BEA0034932A /* NSURLConnectionState.h in Headers */,
 				C851D86E0E40E0D3001DAB69 /* NSPropertyListWriter_xml1.h in Headers */,
 				C851D87A0E40E428001DAB69 /* objc_forward_ffi.h in Headers */,
+				C8B53BD70E6AC7C500E4467E /* objc_debugHelpers.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6545,6 +6563,7 @@
 				FEC9F6C50E2F9BEA0034932A /* NSURLConnectionState.h in Headers */,
 				C851D8700E40E0D3001DAB69 /* NSPropertyListWriter_xml1.h in Headers */,
 				C851D87C0E40E428001DAB69 /* objc_forward_ffi.h in Headers */,
+				C8B53BDB0E6AC7C500E4467E /* objc_debugHelpers.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7123,6 +7142,7 @@
 				FEC9F6C20E2F9BEA0034932A /* NSURLConnectionState.m in Sources */,
 				C851D8710E40E0D3001DAB69 /* NSPropertyListWriter_xml1.m in Sources */,
 				C851D87F0E40E428001DAB69 /* objc_forward_ffi.m in Sources */,
+				C8B53BDA0E6AC7C500E4467E /* objc_debugHelpers.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7422,6 +7442,7 @@
 				FEC9F6C00E2F9BEA0034932A /* NSURLConnectionState.m in Sources */,
 				C851D8750E40E0D3001DAB69 /* NSPropertyListWriter_xml1.m in Sources */,
 				C851D8830E40E428001DAB69 /* objc_forward_ffi.m in Sources */,
+				C8B53BE00E6AC7C500E4467E /* objc_debugHelpers.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7726,6 +7747,7 @@
 				C851D8730E40E0D3001DAB69 /* NSPropertyListWriter_xml1.m in Sources */,
 				C851D8810E40E428001DAB69 /* objc_forward_ffi.m in Sources */,
 				C80F9AE10E58BD5400ECD487 /* objc-msgsend.s in Sources */,
+				C8B53BDE0E6AC7C500E4467E /* objc_debugHelpers.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8027,6 +8049,7 @@
 				FEC9F6C40E2F9BEA0034932A /* NSURLConnectionState.m in Sources */,
 				C851D86D0E40E0D3001DAB69 /* NSPropertyListWriter_xml1.m in Sources */,
 				C851D87B0E40E428001DAB69 /* objc_forward_ffi.m in Sources */,
+				C8B53BD80E6AC7C500E4467E /* objc_debugHelpers.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8328,6 +8351,7 @@
 				FEC9F6C60E2F9BEA0034932A /* NSURLConnectionState.m in Sources */,
 				C851D86F0E40E0D3001DAB69 /* NSPropertyListWriter_xml1.m in Sources */,
 				C851D87D0E40E428001DAB69 /* objc_forward_ffi.m in Sources */,
+				C8B53BDC0E6AC7C500E4467E /* objc_debugHelpers.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8496,6 +8520,7 @@
 					"-DOBJC_INSIDE_BUILD",
 					"-D__LITTLE_ENDIAN__",
 					"-DHAVE_LIBFFI",
+					"-DDEBUG",
 				);
 				OTHER_LDFLAGS = (
 					"-B,static",
