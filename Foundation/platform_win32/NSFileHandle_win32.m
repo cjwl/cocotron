@@ -152,15 +152,83 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return result;
 }
 
--(NSData *)readDataToEndOfFile {
-   NSUnimplementedMethod();
-   return nil;
+- (NSData *)readDataToEndOfFile {
+	#define B 4096
+NSMutableData *result=[NSMutableData dataWithLength:B]; 
+DWORD          readLength=0; 
+DWORD		   sum=0;
+DWORD			error;
+LPVOID lpMsgBuf;
+ 
+
+while(GetLastError()!=ERROR_BROKEN_PIPE && 
+			  ReadFile(_handle,[result mutableBytes]+sum,B,&readLength,NULL))
+	  { 
+		       //[result appendBytes:buffer length:readLength]; 
+			sum+=readLength;
+		    [result increaseLengthBy:B];
+	  }
+	[result setLength:sum];
+#undef B
+	
+	error=GetLastError();
+	if(error!=ERROR_BROKEN_PIPE)
+	{
+		FormatMessage(
+					  FORMAT_MESSAGE_ALLOCATE_BUFFER | 
+					  FORMAT_MESSAGE_FROM_SYSTEM |
+					  FORMAT_MESSAGE_IGNORE_INSERTS,
+					  NULL,
+					  error,
+					  MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+					  (LPTSTR) &lpMsgBuf,
+					  0, NULL );
+	NSRaiseException(NSFileHandleOperationException, self, _cmd,
+			@"read(%d) %s", _handle,lpMsgBuf);
+		return nil;
+	}
+
+	return result;
+} 
+- (NSData *)availableData {
+    NSMutableData *mutableData = [NSMutableData dataWithLength:4096];
+    DWORD count;
+	BOOL success;
+	DWORD error;
+	LPVOID lpMsgBuf;
+    
+    OVERLAPPED ov;
+	memset(&ov,0,sizeof(ov));
+    ReadFile(_handle, [mutableData mutableBytes], 4096,NULL,&ov);
+    success=GetOverlappedResult(_handle,&ov,&count,TRUE);
+   
+	
+    if (!success) {
+		error=GetLastError();
+		if(error!=ERROR_BROKEN_PIPE)
+		{
+			FormatMessage(
+						  FORMAT_MESSAGE_ALLOCATE_BUFFER | 
+						  FORMAT_MESSAGE_FROM_SYSTEM |
+						  FORMAT_MESSAGE_IGNORE_INSERTS,
+						  NULL,
+						  error,
+						  MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+						  (LPTSTR) &lpMsgBuf,
+						  0, NULL );
+			NSRaiseException(NSFileHandleOperationException, self, _cmd,
+							 @"read(%d) %s", _handle,lpMsgBuf);
+			return nil;
+		}
+    }
+	
+    [mutableData setLength:count];
+    
+    return mutableData;
 }
 
--(NSData *)availableData {
-   NSUnimplementedMethod();
-   return nil;
-}
+
+
 
 -(void)writeData:(NSData *)data {
    DWORD bytesWritten=0;
