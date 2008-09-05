@@ -59,20 +59,23 @@ typedef struct Edge {
 
 typedef void (*KGBlendSpan_RGBA8888)(KGRGBA8888 *src,KGRGBA8888 *dst,int length);
 typedef void (*KGBlendSpan_RGBAffff)(KGRGBAffff *src,KGRGBAffff *dst,int length);
+typedef void (*KGWriteCoverage_RGBA8888)(KGSurface *surface,KGSurface *mask,KGPaint *paint,int x, int y,int coverage,int length,KGBlendSpan_RGBA8888 blendFunction);
 
 @class KGSurface,KGContext_builtin;
 
 #define KGRasterizer KGContext_builtin
 
 @interface KGContext_builtin : KGBitmapContext {
+
    KGSurface  *m_mask;
    KGPaint    *m_paint;
    
-   BOOL _useRGBA8888;
-   CGBlendMode _blendMode;
-   KGBlendSpan_RGBA8888 _blend_lRGBA8888_PRE;
-   KGBlendSpan_RGBAffff _blend_lRGBAffff_PRE;
-
+   KGBlendSpan_RGBA8888     _blend_lRGBA8888_PRE;
+   KGBlendSpan_RGBAffff     _blend_lRGBAffff_PRE;
+   KGWriteCoverage_RGBA8888 _writeCoverage_lRGBA8888_PRE;
+   void               (*_blendFunction)();
+   void               (*_writeCoverageFunction)();
+   
     int _vpx,_vpy,_vpwidth,_vpheight;
     
     int    _edgeCount;
@@ -98,7 +101,7 @@ void KGRasterizerSetViewport(KGRasterizer *self,int x,int y,int vpwidth,int vphe
 void KGRasterizerClear(KGRasterizer *self);
 void KGRasterizerAddEdge(KGRasterizer *self,const CGPoint v0, const CGPoint v1);
 void KGRasterizerSetShouldAntialias(KGRasterizer *self,BOOL antialias,int quality);
-void KGRasterizerFill(KGRasterizer *self,VGFillRuleMask fillRule);
+void KGRasterizerFill(KGRasterizer *self,int fillRule);
 
 void KGRasterizeSetBlendMode(KGRasterizer *self,CGBlendMode blendMode);
 void KGRasterizeSetMask(KGRasterizer *self,KGSurface* mask);

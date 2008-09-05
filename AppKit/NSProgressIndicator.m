@@ -130,9 +130,10 @@ void evaluate(void *info,const float *in, float *output) {
     function=CGFunctionCreate(self,1,domain,4,range,&callbacks);
     
     float radius=[self bounds].size.width/2;
+    CGColorSpaceRef colorSpace=CGColorSpaceCreateDeviceRGB();
     shading=CGShadingCreateRadial(CGColorSpaceCreateDeviceRGB(),CGPointMake(0,0),1,
        CGPointMake(radius *2,radius*2),radius,function,YES,NO);
-
+    CGColorSpaceRelease(colorSpace);
     CGContextDrawShading(graphicsPort,shading);
     CGContextRotateCTM(graphicsPort,M_PI*(120)/180.0);
     CGContextDrawShading(graphicsPort,shading);

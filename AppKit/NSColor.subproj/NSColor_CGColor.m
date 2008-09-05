@@ -67,6 +67,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return nil;
 }
 
+-(CGColorRef)createCGColorRef {
+   return CGColorRetain(_colorRef);
+}
+
 -(void)setStroke {
    CGContextSetStrokeColorWithColor(NSCurrentGraphicsPort(),_colorRef);
 }

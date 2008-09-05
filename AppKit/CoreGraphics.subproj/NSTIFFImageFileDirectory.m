@@ -9,7 +9,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "NSTIFFImageFileDirectory.h"
 #import "NSTIFFReader.h"
 #import "KGPDFFilter.h"
-#import <ApplicationServices/CoreGraphics.h>
+#import <ApplicationServices/ApplicationServices.h>
 
 @implementation NSTIFFImageFileDirectory
 

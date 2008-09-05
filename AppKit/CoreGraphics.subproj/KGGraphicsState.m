@@ -16,6 +16,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "KGClipPhase.h"
 #import <Foundation/NSArray.h>
 #import "KGExceptions.h"
+#import "KGSurface.h"
 
 @implementation KGGraphicsState
 
@@ -49,6 +50,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    if(_dashLengths!=NULL)
     NSZoneFree(NULL,_dashLengths);
    [_shadowColor release];
+   KGGaussianKernelRelease(_shadowKernel);
    [super dealloc];
 }
 
@@ -68,6 +70,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    }
     
    copy->_shadowColor=[_shadowColor copyWithZone:zone];
+   
+   copy->_shadowKernel=KGGaussianKernelRetain(_shadowKernel);
    
    return copy;
 }
@@ -283,16 +287,17 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [color retain];
    [_shadowColor release];
    _shadowColor=color;
+   KGGaussianKernelRelease(_shadowKernel);
+   _shadowKernel=(_shadowColor==nil)?NULL:KGCreateGaussianKernelWithDeviation(blur);
 }
 
 -(void)setShadowOffset:(CGSize)offset blur:(float)blur {
    KGColorSpace *colorSpace=[[KGColorSpace alloc] initWithDeviceRGB];
    float         components[4]={0,0,0,1.0/3.0};
+   KGColor      *color=[[KGColor alloc] initWithColorSpace:colorSpace components:components];
 
-   _shadowOffset=offset;
-   _shadowBlur=blur;
-   [_shadowColor release];
-   _shadowColor=[[KGColor alloc] initWithColorSpace:colorSpace components:components];
+   [self setShadowOffset:offset blur:blur color:color];
+   [color release];
    [colorSpace release];
 }
 

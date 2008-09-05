@@ -180,8 +180,8 @@
     [context setFlatness:flatness]
 #define CGContextSetInterpolationQuality(context,quality) \
     [context setInterpolationQuality:quality]
-#define CGContextSetShadowWithColor(context,offset,blur,color) \
-    [context setShadowOffset:offset blur:blur color:color]
+#define CGContextSetShadowWithColor(context,o,b,c) \
+    [context setShadowOffset:o blur:b color:c]
 #define CGContextSetShadow(context,offset,blur) \
     [context setShadowOffset:offset blur:blur]
 #define CGContextSetShouldAntialias(context,yesOrNo) \

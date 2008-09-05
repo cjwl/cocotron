@@ -79,7 +79,7 @@ static CGColorRef cgColorFromColor(NSColor *color){
    _dashLengthsCount=0;
    _dashLengths=NSZoneMalloc([self zone],sizeof(float)*4);
    
-   NSString *path=[[NSBundle bundleForClass:[self class]] pathForResource:@"overlay" ofType:@"jpg"];
+   NSString *path=[[NSBundle bundleForClass:[self class]] pathForResource:@"overlay" ofType:@"png"];
    NSData   *data=[NSData dataWithContentsOfFile:path];
    CGImageSourceRef source=CGImageSourceCreateWithData((CFDataRef)data,nil);
    _resamplingImage=CGImageSourceCreateImageAtIndex(source,0,nil);
@@ -281,6 +281,16 @@ static void addSliceToPath(CGMutablePathRef path,float innerRadius,float outerRa
    CGContextConcatCTM(_context,ctm);
    [self establishContextState];
 
+
+#if 0
+   CGColorRef color=CGColorCreateGenericRGB(1,0,0,1);
+   CGContextSetShadowWithColor(_context,CGSizeMake(-5,-5),5,color);
+   CGColorRelease(color);
+#endif
+#if 0
+   CGContextAddEllipseInRect(_context,CGRectMake(0,0,CGImageGetWidth(_resamplingImage),CGImageGetHeight(_resamplingImage)));
+   CGContextClip(_context);
+#endif
 
    CGContextDrawImage(_context,CGRectMake(0,0,CGImageGetWidth(_resamplingImage),CGImageGetHeight(_resamplingImage)),_resamplingImage);
    

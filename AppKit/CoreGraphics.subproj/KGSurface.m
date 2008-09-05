@@ -1310,38 +1310,41 @@ void KGSurfaceSeparableConvolve(KGSurface *self,KGSurface * src, int kernelWidth
 * \note		
 *//*-------------------------------------------------------------------*/
 
-void KGSurfaceGaussianBlur(KGSurface *self,KGSurface * src, CGFloat stdDeviationX, CGFloat stdDeviationY, VGTilingMode tilingMode, VGColor edgeFillColor, BOOL filterFormatLinear, BOOL filterFormatPremultiplied, VGbitfield channelMask){
-	RI_ASSERT(src->_pixelBytes);	//source exists
-	RI_ASSERT(self->_pixelBytes);	//destination exists
+static KGRGBAffff gaussianReadPixel(int x, int y, int w, int h,KGRGBAffff *image)
+{
+	if(x < 0 || x >= w || y < 0 || y >= h) {	//apply tiling mode
+	 return KGRGBAffffInit(0,0,0,0);
+	}
+	else
+	{
+		RI_ASSERT(x >= 0 && x < w && y >= 0 && y < h);
+		return image[y*w+x];
+	}
+}
+
+typedef struct KGGaussianKernel {
+ int      refCount;
+ int      xSize;
+ int      xShift;
+ CGFloat  xScale;
+ CGFloat *xValues;
+
+ int      ySize;
+ int      yShift;
+ CGFloat  yScale;
+ CGFloat *yValues;
+} KGGaussianKernel;
+
+KGGaussianKernel *KGCreateGaussianKernelWithDeviation(CGFloat stdDeviation){
+   KGGaussianKernel *kernel=NSZoneMalloc(NULL,sizeof(KGGaussianKernel));
+   
+   kernel->refCount=1;
+   
+   CGFloat stdDeviationX=stdDeviation;
+   CGFloat stdDeviationY=stdDeviation;
+   
 	RI_ASSERT(stdDeviationX > 0.0f && stdDeviationY > 0.0f);
 	RI_ASSERT(stdDeviationX <= RI_MAX_GAUSSIAN_STD_DEVIATION && stdDeviationY <= RI_MAX_GAUSSIAN_STD_DEVIATION);
-
-	//the area to be written is an intersection of source and destination image areas.
-	//lower-left corners of the images are aligned.
-	int w = RI_INT_MIN(self->_width, src->_width);
-	int h = RI_INT_MIN(self->_height, src->_height);
-	RI_ASSERT(w > 0 && h > 0);
-
-	VGColorInternalFormat procFormat = getProcessingFormat(src->_colorFormat, filterFormatLinear, filterFormatPremultiplied);
-
-	VGColor edge = edgeFillColor;
-	edge=VGColorClamp(edge);
-	edge=VGColorConvert(edge,procFormat);
-
-	VGColor *tmp=(VGColor *)NSZoneMalloc(NULL,src->_width*src->_height*sizeof(VGColor));
-
-	//copy source region to tmp and do conversion
-    int j;
-	for(j=0;j<src->_height;j++)
-	{
-        int i;
-		for(i=0;i<src->_width;i++)
-		{
-			VGColor s = KGSurfaceReadPixel(src,i, j);
-			s=VGColorConvert(s,procFormat);
-			tmp[j*src->_width+i] = s;
-		}
-	}
 
 	//find a size for the kernel
 	CGFloat totalWeightX = stdDeviationX*(CGFloat)sqrt(2.0f*M_PI);
@@ -1354,81 +1357,117 @@ void KGSurfaceGaussianBlur(KGSurface *self,KGSurface * src, CGFloat stdDeviation
 	int kernelWidth = 0;
 	CGFloat e = 0.0f;
 	CGFloat sumX = 1.0f;	//the weight of the middle entry counted already
-	do
-	{
+	do{
 		kernelWidth++;
 		e = (CGFloat)exp((CGFloat)(kernelWidth * kernelWidth) * expScaleX);
 		sumX += e*2.0f;	//count left&right lobes
-	}
-	while(sumX < tolerance*totalWeightX);
+	}while(sumX < tolerance*totalWeightX);
 
 	int kernelHeight = 0;
 	e = 0.0f;
 	CGFloat sumY = 1.0f;	//the weight of the middle entry counted already
-	do
-	{
+	do{
 		kernelHeight++;
 		e = (CGFloat)exp((CGFloat)(kernelHeight * kernelHeight) * expScaleY);
 		sumY += e*2.0f;	//count left&right lobes
-	}
-	while(sumY < tolerance*totalWeightY);
+	}while(sumY < tolerance*totalWeightY);
 
 	//make a separable kernel
-    int kernelXSize=kernelWidth*2+1;
-	CGFloat kernelX[kernelXSize];
-	int shiftX = kernelWidth;
-	CGFloat scaleX = 0.0f;
+    kernel->xSize=kernelWidth*2+1;
+    kernel->xValues=NSZoneMalloc(NULL,sizeof(CGFloat)*kernel->xSize);
+    kernel->xShift = kernelWidth;
+    kernel->xScale = 0.0f;
     int i;
-	for(i=0;i<kernelXSize;i++)
-	{
-		int x = i-shiftX;
-		kernelX[i] = (CGFloat)exp((CGFloat)x*(CGFloat)x * expScaleX);
-		scaleX += kernelX[i];
+	for(i=0;i<kernel->xSize;i++){
+		int x = i-kernel->xShift;
+		kernel->xValues[i] = (CGFloat)exp((CGFloat)x*(CGFloat)x * expScaleX);
+		kernel->xScale += kernel->xValues[i];
 	}
-	scaleX = 1.0f / scaleX;	//NOTE: using the mathematical definition of the scaling term doesn't work since we cut the filter support early for performance
+	kernel->xScale = 1.0f / kernel->xScale;	//NOTE: using the mathematical definition of the scaling term doesn't work since we cut the filter support early for performance
 
-    int kernelYSize=kernelHeight*2+1;
-	CGFloat kernelY[kernelYSize];
-	int shiftY = kernelHeight;
-	CGFloat scaleY = 0.0f;
-	for(i=0;i<kernelYSize;i++)
+    kernel->ySize=kernelHeight*2+1;
+    kernel->yValues=NSZoneMalloc(NULL,sizeof(CGFloat)*kernel->ySize);
+    kernel->yShift = kernelHeight;
+    kernel->yScale = 0.0f;
+	for(i=0;i<kernel->ySize;i++)
 	{
-		int y = i-shiftY;
-		kernelY[i] = (CGFloat)exp((CGFloat)y*(CGFloat)y * expScaleY);
-		scaleY += kernelY[i];
+		int y = i-kernel->yShift;
+		kernel->yValues[i] = (CGFloat)exp((CGFloat)y*(CGFloat)y * expScaleY);
+		kernel->yScale += kernel->yValues[i];
 	}
-	scaleY = 1.0f / scaleY;	//NOTE: using the mathematical definition of the scaling term doesn't work since we cut the filter support early for performance
+	kernel->yScale = 1.0f / kernel->yScale;	//NOTE: using the mathematical definition of the scaling term doesn't work since we cut the filter support early for performance
+    
+    return kernel;
+}
 
-	VGColor *tmp2=(VGColor *)NSZoneMalloc(NULL,w*src->_height*sizeof(VGColor));
+KGGaussianKernelRef KGGaussianKernelRetain(KGGaussianKernelRef kernel) {
+   if(kernel!=NULL)
+    kernel->refCount++;
+    
+   return kernel;
+}
+
+void KGGaussianKernelRelease(KGGaussianKernelRef kernel) {
+   if(kernel!=NULL){
+    kernel->refCount--;
+    if(kernel->refCount<=0){
+     NSZoneFree(NULL,kernel->xValues);
+     NSZoneFree(NULL,kernel->yValues);
+     NSZoneFree(NULL,kernel);
+    }
+   }
+}
+
+void KGSurfaceGaussianBlur(KGSurface *self,KGImage * src, KGGaussianKernel *kernel){
+	RI_ASSERT(src->_pixelBytes);	//source exists
+	RI_ASSERT(self->_pixelBytes);	//destination exists
+
+	//the area to be written is an intersection of source and destination image areas.
+	//lower-left corners of the images are aligned.
+	int w = RI_INT_MIN(self->_width, src->_width);
+	int h = RI_INT_MIN(self->_height, src->_height);
+	RI_ASSERT(w > 0 && h > 0);
+    
+	KGRGBAffff *tmp=NSZoneMalloc(NULL,src->_width*src->_height*sizeof(KGRGBAffff));
+
+	//copy source region to tmp and do conversion
+    int i,j;
+	for(j=0;j<src->_height;j++){
+     KGRGBAffff *tmpRow=tmp+j*src->_width;
+     int         i,width=src->_width;
+     KGRGBAffff *direct=KGImageReadSpan_lRGBAffff_PRE(src,0,j,tmpRow,width);
+     
+     if(direct!=NULL){
+      for(i=0;i<width;i++)
+       tmpRow[i]=direct[i];
+     }
+  	}
+
+	KGRGBAffff *tmp2=NSZoneMalloc(NULL,w*src->_height*sizeof(KGRGBAffff));
 
 	//horizontal pass
-	for(j=0;j<src->_height;j++)
-	{
-		for(i=0;i<w;i++)
-		{
-			VGColor sum=VGColorRGBA(0,0,0,0,procFormat);
+	for(j=0;j<src->_height;j++){
+		for(i=0;i<w;i++){
+			KGRGBAffff sum=KGRGBAffffInit(0,0,0,0);
             int ki;
-			for(ki=0;ki<kernelXSize;ki++)
-			{
-				int x = i+ki-shiftX;
-				sum=VGColorAdd(sum, VGColorMultiplyByFloat(readTiledPixel(x, j, src->_width, src->_height, tilingMode, tmp, edge),kernelX[ki]));
+			for(ki=0;ki<kernel->xSize;ki++){
+				int x = i+ki-kernel->xShift;
+				sum=KGRGBAffffAdd(sum, KGRGBAffffMultiplyByFloat(gaussianReadPixel(x, j, src->_width, src->_height, tmp),kernel->xValues[ki]));
 			}
-			tmp2[j*w+i] = VGColorMultiplyByFloat(sum, scaleX);
+			tmp2[j*w+i] = KGRGBAffffMultiplyByFloat(sum, kernel->xScale);
 		}
 	}
 	//vertical pass
-	for(j=0;j<h;j++)
-	{
-		for(i=0;i<w;i++)
-		{
-			VGColor sum=VGColorRGBA(0,0,0,0,procFormat);
+	for(j=0;j<h;j++){
+		for(i=0;i<w;i++){
+			KGRGBAffff sum=KGRGBAffffInit(0,0,0,0);
             int kj;
-			for(kj=0;kj<kernelYSize;kj++)
-			{
-				int y = j+kj-shiftY;
-				sum=VGColorAdd(sum,  VGColorMultiplyByFloat(readTiledPixel(i, y, w, src->_height, tilingMode, tmp2, edge), kernelY[kj]));
+			for(kj=0;kj<kernel->ySize;kj++){
+				int y = j+kj-kernel->yShift;
+				sum=KGRGBAffffAdd(sum,  KGRGBAffffMultiplyByFloat(gaussianReadPixel(i, y, w, src->_height, tmp2), kernel->yValues[kj]));
 			}
-			KGSurfaceWriteFilteredPixel(self,i, j, VGColorMultiplyByFloat(sum, scaleY), channelMask);
+            sum=KGRGBAffffMultiplyByFloat(sum, kernel->yScale);
+			KGSurfaceWriteSpan_lRGBAffff_PRE(self,i, j, &sum,1);
 		}
 	}
     NSZoneFree(NULL,tmp);

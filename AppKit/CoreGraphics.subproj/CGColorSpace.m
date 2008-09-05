@@ -16,3 +16,11 @@ void CGColorSpaceRelease(CGColorSpaceRef colorSpace) {
 CGColorSpaceRef CGColorSpaceCreateDeviceRGB() {
    return [[KGColorSpace alloc] initWithDeviceRGB];
 }
+
+CGColorSpaceRef CGColorSpaceCreateDeviceGray() {
+   return [[KGColorSpace alloc] initWithDeviceGray];
+}
+
+CGColorSpaceRef CGColorSpaceCreateDeviceCMYK() {
+   return [[KGColorSpace alloc] initWithDeviceCMYK];
+}

@@ -25,3 +25,5 @@ typedef enum {
 COREGRAPHICS_EXPORT void CGColorSpaceRelease(CGColorSpaceRef colorSpace);
 
 COREGRAPHICS_EXPORT CGColorSpaceRef CGColorSpaceCreateDeviceRGB();
+COREGRAPHICS_EXPORT CGColorSpaceRef CGColorSpaceCreateDeviceGray();
+COREGRAPHICS_EXPORT CGColorSpaceRef CGColorSpaceCreateDeviceCMYK();

@@ -97,6 +97,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     return [super colorUsingColorSpaceName:colorSpace device:device];
 }
 
+-(CGColorRef)createCGColorRef {
+   CGColorSpaceRef colorSpace=CGColorSpaceCreateDeviceCMYK();
+   float         components[5]={_cyan,_magenta,_yellow,_black,_alpha};
+   KGColor      *color=CGColorCreate(colorSpace,components);
+   
+   CGColorSpaceRelease(colorSpace);
+   
+   return color;
+}
+
 -(void)setFill {
     CGContextSetCMYKFillColor(NSCurrentGraphicsPort(),_cyan,_magenta,_yellow,_black, _alpha);
 }

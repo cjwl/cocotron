@@ -39,6 +39,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    CGSize              _shadowOffset;
    float               _shadowBlur;
    KGColor            *_shadowColor;
+   void               *_shadowKernel;
    BOOL                _shouldAntialias;
    
    int                 _antialiasingQuality;

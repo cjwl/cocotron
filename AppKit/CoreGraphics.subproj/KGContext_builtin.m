@@ -623,17 +623,25 @@ static void KGApplyCoverageAndMaskToSpan_lRGBA8888_PRE(KGRGBA8888 *dst,int icove
 
 static void KGApplyCoverageToSpan_lRGBA8888_PRE(KGRGBA8888 *dst,int coverage,KGRGBA8888 *src,int length){
    int i;
-   int oneMinusCoverage=inverseCoverage(coverage);
    
-   for(i=0;i<length;i++,src++,dst++){
-    KGRGBA8888 r=*src;
-    KGRGBA8888 d=*dst;
+   if(coverage==256){   
+    for(i=0;i<length;i++,src++,dst++){    
+     *dst=*src;
+    }
+   }
+   else {
+    int oneMinusCoverage=inverseCoverage(coverage);
+   
+    for(i=0;i<length;i++,src++,dst++){
+     KGRGBA8888 r=*src;
+     KGRGBA8888 d=*dst;
     
-    *dst=KGRGBA8888Add(KGRGBA8888MultiplyByCoverage(r , coverage) , KGRGBA8888MultiplyByCoverage(d , oneMinusCoverage));
+     *dst=KGRGBA8888Add(KGRGBA8888MultiplyByCoverage(r , coverage) , KGRGBA8888MultiplyByCoverage(d , oneMinusCoverage));
+    }
    }
 }
 
-static void KGBlendSpanNormal_8888_coverage(KGRGBA8888 *src,KGRGBA8888 *dst,int coverage,int length){
+static inline void KGBlendSpanNormal_8888_coverage(KGRGBA8888 *src,KGRGBA8888 *dst,int coverage,int length){
 // Passes Visual Test
    int i;
    
@@ -646,10 +654,12 @@ static void KGBlendSpanNormal_8888_coverage(KGRGBA8888 *src,KGRGBA8888 *dst,int 
      if(s.a==255)
       r=*src;
      else {
-      r.r=RI_INT_MIN((int)s.r+((int)d.r*(255-s.a))/255,255);
-      r.g=RI_INT_MIN((int)s.g+((int)d.g*(255-s.a))/255,255);
-      r.b=RI_INT_MIN((int)s.b+((int)d.b*(255-s.a))/255,255);
-      r.a=RI_INT_MIN((int)s.a+((int)d.a*(255-s.a))/255,255);
+      int sa=255-s.a;
+      
+      r.r=RI_INT_MIN((int)s.r+((int)d.r*sa)/255,255);
+      r.g=RI_INT_MIN((int)s.g+((int)d.g*sa)/255,255);
+      r.b=RI_INT_MIN((int)s.b+((int)d.b*sa)/255,255);
+      r.a=RI_INT_MIN((int)s.a+((int)d.a*sa)/255,255);
      }
      *dst=r;
     }
@@ -692,8 +702,8 @@ static void KGBlendSpanCopy_8888_coverage(KGRGBA8888 *src,KGRGBA8888 *dst,int co
    int i;
 
    if(coverage==256){
-    for(i=0;i<length;i++,src++,dst++)
-     *dst=*src;
+    for(i=0;i<length;i++)
+     *dst++=*src++;
    }
    else {
     int oneMinusCoverage=256-coverage;
@@ -723,77 +733,102 @@ static void KGBlendSpanCopy_8888_coverage(KGRGBA8888 *src,KGRGBA8888 *dst,int co
    }
 }
 
-static inline void KGRasterizeWriteCoverageSpan(KGRasterizer *self,int x, int y,int coverage,int length) {
-   if(self->_useRGBA8888){
+static inline void KGRasterizeWriteCoverageSpan8888_Normal(KGSurface *surface,KGSurface *mask,KGPaint *paint,int x, int y,int coverage,int length,KGBlendSpan_RGBA8888 blendFunction) {
     KGRGBA8888 *dst=__builtin_alloca(length*sizeof(KGRGBA8888));
-    KGRGBA8888 *direct=self->_surface->_read_lRGBA8888_PRE(self->_surface,x,y,dst,length);
+    KGRGBA8888 *direct=surface->_read_lRGBA8888_PRE(surface,x,y,dst,length);
    
     if(direct!=NULL)
      dst=direct;
      
     KGRGBA8888 src[length];
-    KGPaintReadSpan_lRGBA8888_PRE(self->m_paint,x,y,src,length);
+    KGPaintReadSpan_lRGBA8888_PRE(paint,x,y,src,length);
 
-    switch(self->_blendMode){
-    
-     case kCGBlendModeNormal:
-      KGBlendSpanNormal_8888_coverage(src,dst,coverage,length);
-      break;
+    KGBlendSpanNormal_8888_coverage(src,dst,coverage,length);
+    // FIXME: doesnt handle mask if present
 
-     case kCGBlendModeCopy:
-      KGBlendSpanCopy_8888_coverage(src,dst,coverage,length);
-      break;
-
-     default:
-      self->_blend_lRGBA8888_PRE(src,dst,length);
-    
-	  //apply masking
-	  if(!self->m_mask)
-       KGApplyCoverageToSpan_lRGBA8888_PRE(dst,coverage,src,length);
-      else {
-       uint8_t maskSpan[length];
-     
-       KGImageReadSpan_A8_MASK(self->m_mask,x,y,maskSpan,length);
-       KGApplyCoverageAndMaskToSpan_lRGBA8888_PRE(dst,coverage,maskSpan,src,length);
-      }
-      break;
-    }
-       
     if(direct==NULL){
   	//write result to the destination surface
-     KGSurfaceWriteSpan_lRGBA8888_PRE(self->_surface,x,y,dst,length);
+     KGSurfaceWriteSpan_lRGBA8888_PRE(surface,x,y,dst,length);
     }
-   }
+}
+
+
+static inline void KGRasterizeWriteCoverageSpan8888_Copy(KGSurface *surface,KGSurface *mask,KGPaint *paint,int x, int y,int coverage,int length,KGBlendSpan_RGBA8888 blendFunction) {
+    KGRGBA8888 *dst=__builtin_alloca(length*sizeof(KGRGBA8888));
+    KGRGBA8888 *direct=surface->_read_lRGBA8888_PRE(surface,x,y,dst,length);
+   
+    if(direct!=NULL)
+     dst=direct;
+     
+    KGRGBA8888 src[length];
+    KGPaintReadSpan_lRGBA8888_PRE(paint,x,y,src,length);
+
+    KGBlendSpanCopy_8888_coverage(src,dst,coverage,length);
+    // FIXME: doesnt handle mask if present
+
+    if(direct==NULL){
+  	//write result to the destination surface
+     KGSurfaceWriteSpan_lRGBA8888_PRE(surface,x,y,dst,length);
+    }
+}
+
+static inline void KGRasterizeWriteCoverageSpan8888(KGSurface *surface,KGSurface *mask,KGPaint *paint,int x, int y,int coverage,int length,KGBlendSpan_RGBA8888 blendFunction) {
+   KGRGBA8888 *dst=__builtin_alloca(length*sizeof(KGRGBA8888));
+   KGRGBA8888 *direct=surface->_read_lRGBA8888_PRE(surface,x,y,dst,length);
+   
+   if(direct!=NULL)
+    dst=direct;
+     
+   KGRGBA8888 src[length];
+   KGPaintReadSpan_lRGBA8888_PRE(paint,x,y,src,length);
+
+   blendFunction(src,dst,length);
+    
+   //apply masking
+   if(mask==NULL)
+    KGApplyCoverageToSpan_lRGBA8888_PRE(dst,coverage,src,length);
    else {
+    uint8_t maskSpan[length];
+     
+    KGImageReadSpan_A8_MASK(mask,x,y,maskSpan,length);
+    KGApplyCoverageAndMaskToSpan_lRGBA8888_PRE(dst,coverage,maskSpan,src,length);
+   }
+
+   if(direct==NULL){
+  //write result to the destination surface
+    KGSurfaceWriteSpan_lRGBA8888_PRE(surface,x,y,dst,length);
+   }
+}
+
+static inline void KGRasterizeWriteCoverageSpanffff(KGSurface *surface,KGSurface *mask,KGPaint *paint,int x, int y,int coverage,int length,KGBlendSpan_RGBAffff blendFunction) {
     KGRGBAffff *dst=__builtin_alloca(length*sizeof(KGRGBAffff));
-    KGRGBAffff *direct=KGImageReadSpan_lRGBAffff_PRE(self->_surface,x,y,dst,length);
+    KGRGBAffff *direct=KGImageReadSpan_lRGBAffff_PRE(surface,x,y,dst,length);
 
     if(direct!=NULL)
      dst=direct;
 
     KGRGBAffff src[length];
-    KGPaintReadSpan_lRGBAffff_PRE(self->m_paint,x,y,src,length);
+    KGPaintReadSpan_lRGBAffff_PRE(paint,x,y,src,length);
     
-    self->_blend_lRGBAffff_PRE(src,dst,length);
+    blendFunction(src,dst,length);
     
 	//apply masking
-	if(!self->m_mask)
+	if(mask==NULL)
      KGApplyCoverageToSpan_lRGBAffff_PRE(dst,coverage,src,length);
     else {
      CGFloat maskSpan[length];
      
-     KGImageReadSpan_Af_MASK(self->m_mask,x,y,maskSpan,length);
+     KGImageReadSpan_Af_MASK(mask,x,y,maskSpan,length);
      KGApplyCoverageAndMaskToSpan_lRGBAffff_PRE(dst,coverage,maskSpan,src,length);
     }
     
     if(direct==NULL){
   	//write result to the destination surface
-     KGSurfaceWriteSpan_lRGBAffff_PRE(self->_surface,x,y,dst,length);
+     KGSurfaceWriteSpan_lRGBAffff_PRE(surface,x,y,dst,length);
     }
-   }
 }
 
-void KGRasterizerFill(KGRasterizer *self,VGFillRuleMask fillRuleMask) {    
+void KGRasterizerFill(KGRasterizer *self,int fillRuleMask) {    
     int    edgeCount=self->_edgeCount;
     Edge **edges=self->_edges;
 
@@ -812,7 +847,7 @@ void KGRasterizerFill(KGRasterizer *self,VGFillRuleMask fillRuleMask) {
    int *increase=self->_increase;
    int  numberOfSamples=self->numSamples;
    int  shiftNumberOfSamples=self->sampleSizeShift;
-   CGFloat  sidePre[numberOfSamples];
+   CGFloat  sidePre[numberOfSamples];   
    
    for(scany=self->_vpy;scany<ylimit;scany++){
      Edge *edge,*previous=NULL;
@@ -851,7 +886,7 @@ void KGRasterizerFill(KGRasterizer *self,VGFillRuleMask fillRuleMask) {
        CGFloat  normalY=edge->normal.y;
        int      belowY=0;
        int      aboveY;
-      
+            
        for(;sampleY<v0y && pre<preEnd;sampleY+=sampleDeltaY,samplesX++){
         pre++;
         belowY++;
@@ -902,8 +937,8 @@ void KGRasterizerFill(KGRasterizer *self,VGFillRuleMask fillRuleMask) {
            if(pcxnormal<=*pre++)
             *windptr+++=direction;
            else {
-            leftOfEdge++;
             windptr++;
+            leftOfEdge++;
            }
           }
           
@@ -951,7 +986,10 @@ void KGRasterizerFill(KGRasterizer *self,VGFillRuleMask fillRuleMask) {
      
      for(;windptr<windend;) {
      // using ? with 0 is faster than not
-	   coverage +=((*windptr+++accum) & fillRuleMask)?weight:0;
+      
+	  coverage +=(((*windptr+accum) & fillRuleMask)?weight:0);
+       
+      windptr++;
      }
       
      accum+=increase[scanx];
@@ -964,7 +1002,7 @@ void KGRasterizerFill(KGRasterizer *self,VGFillRuleMask fillRuleMask) {
       }
 
 	 if(coverage>0){
-      KGRasterizeWriteCoverageSpan(self,scanx,scany,coverage,(advance-scanx));
+      self->_writeCoverageFunction(self->_surface,self->m_mask,self->m_paint,scanx,scany,coverage,(advance-scanx),self->_blendFunction);
       coverage=0;
      }
      
@@ -976,15 +1014,15 @@ void KGRasterizerFill(KGRasterizer *self,VGFillRuleMask fillRuleMask) {
 void KGRasterizeSetBlendMode(KGRasterizer *self,CGBlendMode blendMode) {
    RI_ASSERT(blendMode >= kCGBlendModeNormal && blendMode <= kCGBlendModePlusLighter);
    
-   self->_blendMode=blendMode;
-   self->_useRGBA8888=NO;
+   self->_blend_lRGBA8888_PRE=NULL;
+   self->_writeCoverage_lRGBA8888_PRE=NULL;
    
    switch(blendMode){
    
     case kCGBlendModeNormal:
-     self->_useRGBA8888=YES;
      self->_blend_lRGBA8888_PRE=KGBlendSpanNormal_8888;
      self->_blend_lRGBAffff_PRE=KGBlendSpanNormal_ffff;
+     self->_writeCoverage_lRGBA8888_PRE=KGRasterizeWriteCoverageSpan8888_Normal;
      break;
      
 	case kCGBlendModeMultiply:
@@ -1048,19 +1086,17 @@ void KGRasterizeSetBlendMode(KGRasterizer *self,CGBlendMode blendMode) {
      break;
         
 	case kCGBlendModeClear:
-     self->_useRGBA8888=YES;
      self->_blend_lRGBA8888_PRE=KGBlendSpanClear_8888;
      self->_blend_lRGBAffff_PRE=KGBlendSpanClear_ffff;
      break;
 
 	case kCGBlendModeCopy:
-     self->_useRGBA8888=YES;
      self->_blend_lRGBA8888_PRE=KGBlendSpanCopy_8888;
      self->_blend_lRGBAffff_PRE=KGBlendSpanCopy_ffff;
+     self->_writeCoverage_lRGBA8888_PRE=KGRasterizeWriteCoverageSpan8888_Copy;
      break;
 
 	case kCGBlendModeSourceIn:
-     self->_useRGBA8888=YES;
      self->_blend_lRGBA8888_PRE=KGBlendSpanSourceIn_8888;
      self->_blend_lRGBAffff_PRE=KGBlendSpanSourceIn_ffff;
      break;
@@ -1090,7 +1126,6 @@ void KGRasterizeSetBlendMode(KGRasterizer *self,CGBlendMode blendMode) {
      break;
 
 	case kCGBlendModeXOR:
-     self->_useRGBA8888=YES;
      self->_blend_lRGBA8888_PRE=KGBlendSpanXOR_8888;
      self->_blend_lRGBAffff_PRE=KGBlendSpanXOR_ffff;
      break;
@@ -1100,10 +1135,24 @@ void KGRasterizeSetBlendMode(KGRasterizer *self,CGBlendMode blendMode) {
      break;
 
 	case kCGBlendModePlusLighter:
-     self->_useRGBA8888=YES;
      self->_blend_lRGBA8888_PRE=KGBlendSpanPlusLighter_8888;
      self->_blend_lRGBAffff_PRE=KGBlendSpanPlusLighter_ffff;
      break;
+   }
+
+   if(self->_writeCoverage_lRGBA8888_PRE!=NULL){
+    self->_blendFunction=NULL;
+    self->_writeCoverageFunction=self->_writeCoverage_lRGBA8888_PRE;
+   }
+   else {
+    if(self->_blend_lRGBA8888_PRE!=NULL){
+     self->_blendFunction=self->_blend_lRGBA8888_PRE;
+     self->_writeCoverageFunction=KGRasterizeWriteCoverageSpan8888;
+    }
+    else {
+     self->_blendFunction=self->_blend_lRGBAffff_PRE;
+     self->_writeCoverageFunction=KGRasterizeWriteCoverageSpanffff;
+    }
    }
 }
 

@@ -124,6 +124,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return [super colorUsingColorSpaceName:colorSpace device:device];
 }
 
+-(CGColorRef)createCGColorRef {
+   CGColorSpaceRef colorSpace=CGColorSpaceCreateDeviceGray();
+   float         components[2]={_white,_alpha};
+   KGColor      *color=CGColorCreate(colorSpace,components);
+   
+   CGColorSpaceRelease(colorSpace);
+   return color;
+}
+
 -(void)setStroke {
    CGContextSetGrayStrokeColor(NSCurrentGraphicsPort(),_white,_alpha);
 }
