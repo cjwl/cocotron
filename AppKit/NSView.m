@@ -318,9 +318,19 @@ static inline void buildTransformsIfNeeded(NSView *self) {
 -(NSMenu *)menuForEvent:(NSEvent *)event {
    NSMenu *result=[self menu];
    
-   if(result==nil)
+   if(result==nil) {
     result=[isa defaultMenu];
-   
+
+    if(result) {
+     NSArray *itemArray=[result itemArray];
+     int i,count=[itemArray count];
+     for(i=0;i<count;i++) {
+      NSMenuItem *item = [itemArray objectAtIndex:i];
+      [item setTarget:self];
+     }
+    }
+   }
+
    return result;
 }
 

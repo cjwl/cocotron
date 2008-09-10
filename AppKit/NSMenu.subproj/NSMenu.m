@@ -18,6 +18,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @implementation NSMenu
 
 +(void)popUpContextMenu:(NSMenu *)menu withEvent:(NSEvent *)event forView:(NSView *)view {
+   [menu update];
    if([[menu itemArray] count]>0){
     NSPoint       point=[event locationInWindow];
     NSWindow     *window=[event window];
