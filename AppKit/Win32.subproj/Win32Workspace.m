@@ -40,8 +40,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(BOOL)selectFile:(NSString *)path inFileViewerRootedAtPath:(NSString *)rootFullpath {
-   NSUnimplementedMethod ();
-   return NO;
+   NSMutableData *args=[NSMutableData data];
+   [args appendBytes:"/select," length:8];
+   [args appendData:NSTaskArgumentDataFromString(path)];
+   [args appendBytes:"\0" length:1];
+   return ((int)ShellExecute(GetDesktopWindow(),"open","explorer",[args bytes],NULL,SW_SHOWNORMAL)<=32)?NO:YES;
 }
 
 -(int)extendPowerOffBy:(int)seconds {

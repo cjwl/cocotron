@@ -14,6 +14,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSAffineTransform.h>
 #import <Foundation/NSRaise.h>
 
+#import "CoreGraphics.subproj/VGmath.h"
+
 @implementation NSBezierPath
 
 static float           _defaultLineWidth=1.0;
@@ -401,11 +403,11 @@ static int numberOfPointsForOperator(int op){
 }
 
 -(void)appendBezierPathWithArcWithCenter:(NSPoint)center radius:(float)radius startAngle:(float)startAngle endAngle:(float)endAngle {
-   CGPathAddArc(_path,NULL,center.x,center.y,radius,startAngle,endAngle,YES);
+   CGPathAddArc(_path,NULL,center.x,center.y,radius,RI_DEG_TO_RAD(startAngle),RI_DEG_TO_RAD(endAngle),YES);
 }
 
 -(void)appendBezierPathWithArcWithCenter:(NSPoint)center radius:(float)radius startAngle:(float)startAngle endAngle:(float)endAngle clockwise:(BOOL)clockwise {
-   CGPathAddArc(_path,NULL,center.x,center.y,radius,startAngle,endAngle,clockwise);
+   CGPathAddArc(_path,NULL,center.x,center.y,radius,RI_DEG_TO_RAD(startAngle),RI_DEG_TO_RAD(endAngle),clockwise);
 }
 
 -(void)appendBezierPathWithGlyph:(NSGlyph)glyph inFont:(NSFont *)font {
