@@ -11,9 +11,12 @@
 #import <Foundation/NSValue.h>
 
 
+#define NUM_CHAINS 16
+#define ID_HASH(a) (((int)a >> 5) & (NUM_CHAINS - 1))
+
 // lock to serialize accesses to the lock chain; also serves as a marker if we 
 // are currently locking (locking is disabled as long as there's no multithreading)
-static NSLock *lockChainLock=nil;
+static NSLock **lockChainLock=NULL;
 
 struct LockChain;
 typedef struct LockChain
@@ -23,21 +26,24 @@ typedef struct LockChain
 		struct LockChain *next;
 	} LockChain;
 
-LockChain *allLocks=NULL;
+LockChain *allLocks[NUM_CHAINS]={0};
 
 void _NSInitializeSynchronizedDirective()
 {
 	if(!lockChainLock)
 	{
-		allLocks=NSZoneMalloc(NULL, sizeof(LockChain));
+      int i;
+      lockChainLock=NSZoneCalloc(NULL, NUM_CHAINS, sizeof(id));
+      for(i=0; i<NUM_CHAINS; i++)
+      {
+         allLocks[i]=NSZoneMalloc(NULL, sizeof(LockChain));
 
-		allLocks->object=0;
-		allLocks->next=0;
-		allLocks->lock=[NSRecursiveLock new];
-      
-      // this needs to be initialized last: it also serves as a marker that the locking
-      // mechanism is actually initialized.
-      lockChainLock=[NSLock new];
+         allLocks[i]->object=0;
+         allLocks[i]->next=0;
+         allLocks[i]->lock=[NSRecursiveLock new];
+
+         lockChainLock[i]=[NSLock new];
+      }
 	}
 }
 
@@ -48,12 +54,24 @@ enum {
 	OBJC_SYNC_NOT_INITIALIZED         = -3		
 };
 
-LockChain* lockForObject(id object, BOOL create)
+LockChain* lockForObject(id object, BOOL entering)
 {
-	LockChain *result=allLocks;
+	LockChain *result=allLocks[ID_HASH(object)];
+   NSLock *chainLock=lockChainLock[ID_HASH(object)];
 	LockChain *firstFree=NULL;
+   
+   if(!entering)
+   {
+    	while(result)
+      {
+         if(result->object==object)
+            return result;
+         result=result->next;
+      }
+      return NULL;
+   }
 
-	[lockChainLock lock];
+	[chainLock lock];
 
 	while(result)
 	{
@@ -63,12 +81,6 @@ LockChain* lockForObject(id object, BOOL create)
 			firstFree=result;
       result=result->next;
 	}
-   
-   if(!create)
-   {
-      result=NULL;
-      goto done;
-   }
 
 	if(firstFree)
 	{
@@ -79,13 +91,13 @@ LockChain* lockForObject(id object, BOOL create)
 
 	result=NSZoneMalloc(NULL, sizeof(LockChain));
 	result->object=object;
-	result->next=allLocks;
+	result->next=allLocks[ID_HASH(object)];
 	result->lock=[NSRecursiveLock new];
-	allLocks=result;
+	allLocks[ID_HASH(object)]=result;
 
 done:
 
-	[lockChainLock unlock];
+	[chainLock unlock];
 	return result;
 }
 

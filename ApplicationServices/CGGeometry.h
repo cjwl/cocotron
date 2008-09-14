@@ -52,3 +52,14 @@ static inline BOOL CGPointEqualToPoint(CGPoint a,CGPoint b){
    return ((a.x==b.x) && (a.y==b.y))?YES:NO;
 }
 
+static inline CGRect NSRectToCGRect(NSRect rect) {
+   return rect;
+}
+
+static inline CGSize NSSizeToCGSize(NSSize size) {
+   return size;
+}
+
+static inline CGPoint NSPointToCGPoint(NSPoint point) {
+   return point;
+}

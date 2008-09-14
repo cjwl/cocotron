@@ -364,8 +364,8 @@ static NSLock *kvoLock=nil;
 	NSMutableDictionary* observationInfo=[self observationInfo];
 	if(!observationInfo)
 	{
-		[self setObservationInfo:[NSMutableDictionary new]];
-		observationInfo=[self observationInfo];
+      observationInfo=[NSMutableDictionary new];
+		[self setObservationInfo:observationInfo];
 	}
 	
 	NSMutableDictionary *dependencies=[observationInfo objectForKey:_KVO_DependentKeysTriggeringChangeNotification];
@@ -678,7 +678,7 @@ CHANGE_DECLARATION(SEL)
 		{
 			struct objc_method *method=&list->method_list[i];
 			NSString* methodName = NSStringFromSelector(method->method_name);
-			SEL kvoSelector=nil;
+			SEL kvoSelector=0;
 			
 			// current method is a setter?
 			if(([methodName hasPrefix:@"set"] || [methodName hasPrefix:@"_set"]) &&

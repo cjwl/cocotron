@@ -1,4 +1,4 @@
-/* Copyright (c) 2006-2007 Christopher J. W. Lloyd
+/* Copyright (c) 2006-2007 Christopher J. W. Lloyd, 2008 Johannes Fortmann
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
@@ -8,9 +8,41 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <AppKit/NSSegmentedCell.h>
 #import <Foundation/NSRaise.h>
-#import "NSSegment.h"
+#import "NSSegmentItem.h"
+#import <AppKit/NSButtonCell.h>
 
 @implementation NSSegmentedCell
+
+- (id)initWithCoder:(NSCoder *)decoder {
+   _segments=[[decoder decodeObjectForKey:@"NSSegmentImages"] retain];
+   
+   NSView* view=[decoder decodeObjectForKey:@"NSControlView"];
+   if(view) {
+      float totalWidth=0;
+      int numUndefined=0;
+      for(NSSegmentItem *item in _segments)
+      {
+         float w=[item width];
+         totalWidth+=w;
+         if(w==0.0)
+            numUndefined++;
+      }
+      float remainingWidth=[view frame].size.width-totalWidth;
+      
+      for(NSSegmentItem *item in _segments)
+      {
+         if([item width]==0.0)
+            [item setWidth:remainingWidth/(float)numUndefined];
+      }
+   }
+   
+   return [super initWithCoder:decoder];
+}
+
+-(void)dealloc {
+   [_segments release];
+   [super dealloc];
+}
 
 -(int)segmentCount {
    return [_segments count];
@@ -125,8 +157,71 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    NSUnimplementedMethod();
 }
 
--(void)drawSegment:(int)segment inFrame:(NSRect)frame withView:(NSView *)view {
-   NSUnimplementedMethod();
+-(void)drawSegment:(int)idx inFrame:(NSRect)frame withView:(NSView *)view {
+   NSSegmentItem *segment=[_segments objectAtIndex:idx];
+   NSButtonCell *cell=[NSButtonCell new];
+   [cell setTitle:[segment label]];
+   [cell setHighlighted:[segment isSelected]];
+   
+   // TODO: implement setLineBreakMode on NSCell
+   //[cell setLineBreakMode:NSLineBreakByTruncatingTail];
+   
+   [cell drawWithFrame:frame inView:view];
+   
+   [cell release];
+}
+
+- (void)drawWithFrame:(NSRect)cellFrame inView:(NSView *)controlView {
+
+   int i=0, count=[self segmentCount];
+   NSRect segmentFrame=cellFrame;
+   
+   for(i=0; i<count; i++) {
+      segmentFrame.size.width=[[_segments objectAtIndex:i] width];
+      [self drawSegment:i inFrame:segmentFrame withView:controlView];
+      segmentFrame.origin.x+=segmentFrame.size.width;
+   }
+   
+   _lastDrawRect=cellFrame;
+}
+
+- (BOOL)startTrackingAt:(NSPoint)startPoint inView:(NSView *)controlView {
+   [self continueTracking:startPoint at:startPoint inView:controlView];
+   return YES;
+}
+
+- (BOOL)continueTracking:(NSPoint)lastPoint at:(NSPoint)currentPoint inView:(NSView *)controlView {
+   NSSegmentItem *selectedSegment=nil;
+   NSSegmentItem *newSegment=nil;
+   
+   NSPoint point=[controlView convertPoint:currentPoint fromView:nil];
+   
+   int i=0, count=[self segmentCount];
+   NSRect segmentFrame=_lastDrawRect;
+   
+   for(i=0; i<count; i++) {
+      NSSegmentItem *item=[_segments objectAtIndex:i];
+      
+      segmentFrame.size.width=[item width];
+      if(NSPointInRect(point, segmentFrame)) {
+         newSegment=item;
+      }
+      if([item isSelected]) {
+         selectedSegment=item;
+      }
+      segmentFrame.origin.x+=segmentFrame.size.width;
+   }
+   
+   if(newSegment && newSegment!=selectedSegment) {
+      [selectedSegment setSelected:NO];
+      [newSegment setSelected:YES];
+      [self drawWithFrame:_lastDrawRect inView:controlView];
+   }
+   return YES;
+}
+
+- (void)stopTracking:(NSPoint)lastPoint at:(NSPoint)stopPoint inView:(NSView *)controlView mouseIsUp:(BOOL)flag {
+   [self continueTracking:lastPoint at:stopPoint inView:controlView];
 }
 
 @end

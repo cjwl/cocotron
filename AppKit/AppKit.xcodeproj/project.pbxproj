@@ -298,7 +298,7 @@
 		FE01A9410C5D9BCB00AEA51A /* NSAnimation.h in Headers */ = {isa = PBXBuildFile; fileRef = FED310DD0BCC027200552615 /* NSAnimation.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE01A9420C5D9BCB00AEA51A /* NSViewAnimation.h in Headers */ = {isa = PBXBuildFile; fileRef = FED310DF0BCC027200552615 /* NSViewAnimation.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE01A9430C5D9BCB00AEA51A /* NSFontDescriptor.h in Headers */ = {isa = PBXBuildFile; fileRef = FE4BDC090BCD40C600E19685 /* NSFontDescriptor.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		FE01A9440C5D9BCB00AEA51A /* NSSegment.h in Headers */ = {isa = PBXBuildFile; fileRef = FED166D40BE502AD00BF9889 /* NSSegment.h */; };
+		FE01A9440C5D9BCB00AEA51A /* NSSegmentItem.h in Headers */ = {isa = PBXBuildFile; fileRef = FED166D40BE502AD00BF9889 /* NSSegmentItem.h */; };
 		FE01A9450C5D9BCB00AEA51A /* NSTextBlock.h in Headers */ = {isa = PBXBuildFile; fileRef = FED167A40BE57EB300BF9889 /* NSTextBlock.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE01A9460C5D9BCB00AEA51A /* NSTextTable.h in Headers */ = {isa = PBXBuildFile; fileRef = FED167A60BE57EB300BF9889 /* NSTextTable.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE01A9470C5D9BCB00AEA51A /* NSTextTableBlock.h in Headers */ = {isa = PBXBuildFile; fileRef = FED167A80BE57EB300BF9889 /* NSTextTableBlock.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -612,7 +612,7 @@
 		FE01AA830C5D9BCB00AEA51A /* NSAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = FED310DE0BCC027200552615 /* NSAnimation.m */; };
 		FE01AA840C5D9BCB00AEA51A /* NSViewAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = FED310E00BCC027200552615 /* NSViewAnimation.m */; };
 		FE01AA850C5D9BCB00AEA51A /* NSFontDescriptor.m in Sources */ = {isa = PBXBuildFile; fileRef = FE4BDC0A0BCD40C600E19685 /* NSFontDescriptor.m */; };
-		FE01AA860C5D9BCB00AEA51A /* NSSegment.m in Sources */ = {isa = PBXBuildFile; fileRef = FED166D50BE502AD00BF9889 /* NSSegment.m */; };
+		FE01AA860C5D9BCB00AEA51A /* NSSegmentItem.m in Sources */ = {isa = PBXBuildFile; fileRef = FED166D50BE502AD00BF9889 /* NSSegmentItem.m */; };
 		FE01AA870C5D9BCB00AEA51A /* NSTextBlock.m in Sources */ = {isa = PBXBuildFile; fileRef = FED167A50BE57EB300BF9889 /* NSTextBlock.m */; };
 		FE01AA880C5D9BCB00AEA51A /* NSTextTable.m in Sources */ = {isa = PBXBuildFile; fileRef = FED167A70BE57EB300BF9889 /* NSTextTable.m */; };
 		FE01AA890C5D9BCB00AEA51A /* NSTextTableBlock.m in Sources */ = {isa = PBXBuildFile; fileRef = FED167A90BE57EB300BF9889 /* NSTextTableBlock.m */; };
@@ -1511,8 +1511,8 @@
 		FEBF5A0B0DCD450700CE5A1C /* KGPaint_ramp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGPaint_ramp.h; sourceTree = "<group>"; };
 		FEBF5A0C0DCD450700CE5A1C /* KGPaint_ramp.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGPaint_ramp.m; sourceTree = "<group>"; };
 		FECAF4C80DB710EE00BA2A8E /* ApplicationServices.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ApplicationServices.xcodeproj; path = ../ApplicationServices/ApplicationServices.xcodeproj; sourceTree = SOURCE_ROOT; };
-		FED166D40BE502AD00BF9889 /* NSSegment.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSSegment.h; sourceTree = "<group>"; };
-		FED166D50BE502AD00BF9889 /* NSSegment.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSSegment.m; sourceTree = "<group>"; };
+		FED166D40BE502AD00BF9889 /* NSSegmentItem.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSSegmentItem.h; sourceTree = "<group>"; };
+		FED166D50BE502AD00BF9889 /* NSSegmentItem.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSSegmentItem.m; sourceTree = "<group>"; };
 		FED167A40BE57EB300BF9889 /* NSTextBlock.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSTextBlock.h; sourceTree = "<group>"; };
 		FED167A50BE57EB300BF9889 /* NSTextBlock.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSTextBlock.m; sourceTree = "<group>"; };
 		FED167A60BE57EB300BF9889 /* NSTextTable.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSTextTable.h; sourceTree = "<group>"; };
@@ -2585,8 +2585,8 @@
 		FED166CC0BE5022A00BF9889 /* NSSegmentedControl */ = {
 			isa = PBXGroup;
 			children = (
-				FED166D40BE502AD00BF9889 /* NSSegment.h */,
-				FED166D50BE502AD00BF9889 /* NSSegment.m */,
+				FED166D40BE502AD00BF9889 /* NSSegmentItem.h */,
+				FED166D50BE502AD00BF9889 /* NSSegmentItem.m */,
 				FE2A110B0B45BCCB006C03DE /* NSSegmentedCell.h */,
 				FE2A110C0B45BCCB006C03DE /* NSSegmentedCell.m */,
 				FE2A11130B45BCD8006C03DE /* NSSegmentedControl.h */,
@@ -2904,7 +2904,7 @@
 				FE01A9410C5D9BCB00AEA51A /* NSAnimation.h in Headers */,
 				FE01A9420C5D9BCB00AEA51A /* NSViewAnimation.h in Headers */,
 				FE01A9430C5D9BCB00AEA51A /* NSFontDescriptor.h in Headers */,
-				FE01A9440C5D9BCB00AEA51A /* NSSegment.h in Headers */,
+				FE01A9440C5D9BCB00AEA51A /* NSSegmentItem.h in Headers */,
 				FE01A9450C5D9BCB00AEA51A /* NSTextBlock.h in Headers */,
 				FE01A9460C5D9BCB00AEA51A /* NSTextTable.h in Headers */,
 				FE01A9470C5D9BCB00AEA51A /* NSTextTableBlock.h in Headers */,
@@ -3422,7 +3422,7 @@
 				FE01AA830C5D9BCB00AEA51A /* NSAnimation.m in Sources */,
 				FE01AA840C5D9BCB00AEA51A /* NSViewAnimation.m in Sources */,
 				FE01AA850C5D9BCB00AEA51A /* NSFontDescriptor.m in Sources */,
-				FE01AA860C5D9BCB00AEA51A /* NSSegment.m in Sources */,
+				FE01AA860C5D9BCB00AEA51A /* NSSegmentItem.m in Sources */,
 				FE01AA870C5D9BCB00AEA51A /* NSTextBlock.m in Sources */,
 				FE01AA880C5D9BCB00AEA51A /* NSTextTable.m in Sources */,
 				FE01AA890C5D9BCB00AEA51A /* NSTextTableBlock.m in Sources */,
@@ -3531,7 +3531,7 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = "";
-				GCC_UNROLL_LOOPS = YES;
+				GCC_UNROLL_LOOPS = NO;
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = /Developer/Cocotron/1.0/Windows/i386/Frameworks;
 				LIBRARY_SEARCH_PATHS = (
@@ -3586,7 +3586,6 @@
 				GCC_OPTIMIZATION_LEVEL = s;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = "";
-				GCC_UNROLL_LOOPS = NO;
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_MODE_FLAG = "og-w,a+rX";
 				INSTALL_PATH = /Developer/Cocotron/1.0/Windows/i386/Frameworks;

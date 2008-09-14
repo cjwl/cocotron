@@ -44,7 +44,7 @@ triggerChangeNotificationsForDependentKey:@"canRemove"];
 - (void)setContent:(id)value {
     if (_content != value) {
         [_content release];
-        _content = [value copy];
+        _content = [value retain];
 		[self _selectionMayHaveChanged];
     }
 }
