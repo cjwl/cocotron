@@ -35,6 +35,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
             [item setWidth:remainingWidth/(float)numUndefined];
       }
    }
+   [self setSelectedSegment:[decoder decodeIntForKey:@"NSSelectedSegment"]];
+   [self setTrackingMode:[decoder decodeIntForKey:@"NSTrackingMode"]];
    
    return [super initWithCoder:decoder];
 }
@@ -81,13 +83,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(int)selectedSegment {
-   int i,count=[_segments count];
    
-   for(i=0;i<count;i++)
-    if([[_segments objectAtIndex:i] isSelected])
-     return i;
+   if(_selectedSegment==NSNotFound) {
+      int i,count=[_segments count];
    
-   return -1;
+      for(i=0;i<count;i++)
+         if([[_segments objectAtIndex:i] isSelected])
+            return i;
+   }
+   
+   return _selectedSegment;
 }
 
 -(BOOL)isSelectedForSegment:(int)segment {
@@ -132,6 +137,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(BOOL)selectSegmentWithTag:(int)tag {
    int i,count=[_segments count];
+   _selectedSegment=NSNotFound;  // will be recomputed in -selectedSegment
    
    for(i=0;i<count;i++)
     if([[_segments objectAtIndex:i] tag]==tag){
@@ -143,10 +149,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)setSelected:(BOOL)flag forSegment:(int)segment {
+   _selectedSegment=NSNotFound;  // will be recomputed in -selectedSegment
    [[_segments objectAtIndex:segment] setSelected:flag];
 }
 
 -(void)setSelectedSegment:(int)segment {
+   _selectedSegment=NSNotFound;  // will be recomputed in -selectedSegment
    [[_segments objectAtIndex:segment] setSelected:YES];
 }
 
@@ -161,6 +169,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    NSSegmentItem *segment=[_segments objectAtIndex:idx];
    NSButtonCell *cell=[NSButtonCell new];
    [cell setTitle:[segment label]];
+   
    [cell setHighlighted:[segment isSelected]];
    
    // TODO: implement setLineBreakMode on NSCell
@@ -185,43 +194,96 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    _lastDrawRect=cellFrame;
 }
 
-- (BOOL)startTrackingAt:(NSPoint)startPoint inView:(NSView *)controlView {
-   [self continueTracking:startPoint at:startPoint inView:controlView];
-   return YES;
-}
-
-- (BOOL)continueTracking:(NSPoint)lastPoint at:(NSPoint)currentPoint inView:(NSView *)controlView {
-   NSSegmentItem *selectedSegment=nil;
-   NSSegmentItem *newSegment=nil;
-   
-   NSPoint point=[controlView convertPoint:currentPoint fromView:nil];
-   
+-(int)_segmentForPoint:(NSPoint)point {
    int i=0, count=[self segmentCount];
    NSRect segmentFrame=_lastDrawRect;
-   
+
    for(i=0; i<count; i++) {
       NSSegmentItem *item=[_segments objectAtIndex:i];
       
       segmentFrame.size.width=[item width];
       if(NSPointInRect(point, segmentFrame)) {
-         newSegment=item;
-      }
-      if([item isSelected]) {
-         selectedSegment=item;
+         return i;
       }
       segmentFrame.origin.x+=segmentFrame.size.width;
    }
+   return NSNotFound;
+}
+
+- (BOOL)startTrackingAt:(NSPoint)startPoint inView:(NSView *)controlView {
+   // save the segment clicked on and its state
+   _firstTrackingSegmentIndex=[self _segmentForPoint:[controlView convertPoint:startPoint fromView:nil]];
+   NSSegmentItem *item=[_segments objectAtIndex:_firstTrackingSegmentIndex];
+   _firstTrackingSegmentInitialState=[item isSelected];
+   [item setSelected:!_firstTrackingSegmentInitialState];
+
+   [self continueTracking:startPoint at:startPoint inView:controlView];
+   return YES;
+}
+
+- (BOOL)continueTracking:(NSPoint)lastPoint at:(NSPoint)currentPoint inView:(NSView *)controlView {
+   currentPoint=[controlView convertPoint:currentPoint fromView:nil];
+   lastPoint=[controlView convertPoint:lastPoint fromView:nil];
+
+   int currentSegmentIdx=[self _segmentForPoint:currentPoint];
    
-   if(newSegment && newSegment!=selectedSegment) {
-      [selectedSegment setSelected:NO];
-      [newSegment setSelected:YES];
-      [self drawWithFrame:_lastDrawRect inView:controlView];
+   // change segments state depending on if inside or outside
+   if(currentSegmentIdx==_firstTrackingSegmentIndex)  // we're inside, so switch state relative to initial state
+   {
+      [[_segments objectAtIndex:_firstTrackingSegmentIndex] setSelected:!_firstTrackingSegmentInitialState];
    }
+   else  // we're outside, so state is initial state
+   {
+      [[_segments objectAtIndex:_firstTrackingSegmentIndex] setSelected:_firstTrackingSegmentInitialState];
+   }
+   
+   
+   [controlView setNeedsDisplayInRect:_lastDrawRect];
+
    return YES;
 }
 
 - (void)stopTracking:(NSPoint)lastPoint at:(NSPoint)stopPoint inView:(NSView *)controlView mouseIsUp:(BOOL)flag {
    [self continueTracking:lastPoint at:stopPoint inView:controlView];
+
+   _selectedSegment=NSNotFound;
+   // if segment is still switched, it'll be the new "selected segment"
+   if([[_segments objectAtIndex:_firstTrackingSegmentIndex] isSelected]!=_firstTrackingSegmentInitialState)
+   {
+      _selectedSegment=_firstTrackingSegmentIndex;
+   }
+
+   // adapt other segments to fit tracking model
+   switch(_trackingMode)
+   {
+      case NSSegmentSwitchTrackingMomentary:
+      {
+         // deactivate all segments
+         for(NSSegmentItem *item in _segments)
+         {
+            [item setSelected:NO];
+         }
+         break;
+      }
+      case NSSegmentSwitchTrackingSelectAny:
+      {
+         // nothing
+         break;
+      }
+      case NSSegmentSwitchTrackingSelectOne:
+      {
+         if(_selectedSegment!=NSNotFound)
+         {
+            for(NSSegmentItem *item in _segments)
+            {
+               [item setSelected:NO];
+            }
+            // select only the selected item
+            [[_segments objectAtIndex:_selectedSegment] setSelected:YES];
+         }
+         break;
+      }
+   }
 }
 
 @end

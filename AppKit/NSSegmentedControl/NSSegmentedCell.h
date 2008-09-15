@@ -18,6 +18,9 @@ typedef enum {
    NSMutableArray         *_segments;
    NSSegmentSwitchTracking _trackingMode;
    NSRect                  _lastDrawRect;
+   int                     _selectedSegment;
+   int                     _firstTrackingSegmentIndex;
+   BOOL                    _firstTrackingSegmentInitialState;
 }
 
 -(int)segmentCount;

@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C8C52C8F0E7ED1FF003F03B5 /* NSObservationProxy.h in Headers */ = {isa = PBXBuildFile; fileRef = C8C52C8D0E7ED1FF003F03B5 /* NSObservationProxy.h */; };
+		C8C52C900E7ED1FF003F03B5 /* NSObservationProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = C8C52C8E0E7ED1FF003F03B5 /* NSObservationProxy.m */; };
 		FE01A80B0C5D9BCB00AEA51A /* AppKitExport.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B53FA0976075200DA0954 /* AppKitExport.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
 		FE01A80C0C5D9BCB00AEA51A /* AppKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B53FC0976075200DA0954 /* AppKit.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
 		FE01A80D0C5D9BCB00AEA51A /* NSActionCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B53FE0976075200DA0954 /* NSActionCell.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
@@ -1269,6 +1271,8 @@
 		6ECABE310A40520700AD7F7B /* NSNibKeyedUnarchiver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSNibKeyedUnarchiver.h; sourceTree = "<group>"; };
 		6ECABE320A40520700AD7F7B /* NSNibKeyedUnarchiver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSNibKeyedUnarchiver.m; sourceTree = "<group>"; };
 		C8B239A20BF8EEB500CA33AF /* defaultBindingOptions.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = defaultBindingOptions.plist; sourceTree = "<group>"; };
+		C8C52C8D0E7ED1FF003F03B5 /* NSObservationProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSObservationProxy.h; sourceTree = "<group>"; };
+		C8C52C8E0E7ED1FF003F03B5 /* NSObservationProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSObservationProxy.m; sourceTree = "<group>"; };
 		C8E4F57F0BFF7A8A0076D5E6 /* NSAffineTransform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSAffineTransform.h; sourceTree = "<group>"; };
 		C8E4F5800BFF7A8A0076D5E6 /* NSAffineTransform.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSAffineTransform.m; sourceTree = "<group>"; };
 		FE01AAC10C5D9BCB00AEA51A /* AppKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AppKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -2498,6 +2502,8 @@
 		FE2A10250B44A239006C03DE /* NSController */ = {
 			isa = PBXGroup;
 			children = (
+				C8C52C8D0E7ED1FF003F03B5 /* NSObservationProxy.h */,
+				C8C52C8E0E7ED1FF003F03B5 /* NSObservationProxy.m */,
 				FE8D94A90CE3A6C700AFB060 /* NSControllerSelectionProxy.h */,
 				FE8D94AA0CE3A6C700AFB060 /* NSControllerSelectionProxy.m */,
 				FE2A10280B44A26B006C03DE /* NSArrayController.h */,
@@ -2951,6 +2957,7 @@
 				FEF9CCC30E1416C4003502ED /* KGContext_builtin_gdi.h in Headers */,
 				FEF35E270E6DC186000BD639 /* NSColor-Private.h in Headers */,
 				FEA965B40E7EA97500413F40 /* NSBitmapImageRep-Private.h in Headers */,
+				C8C52C8F0E7ED1FF003F03B5 /* NSObservationProxy.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3465,6 +3472,7 @@
 				FEF9CBC50E13EB8E003502ED /* KGShading+PDF.m in Sources */,
 				FEF9CCC40E1416C4003502ED /* KGContext_builtin_gdi.m in Sources */,
 				FE66F0060E513AE8006C5796 /* CGImageProperties.m in Sources */,
+				C8C52C900E7ED1FF003F03B5 /* NSObservationProxy.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

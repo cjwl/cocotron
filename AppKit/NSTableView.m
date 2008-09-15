@@ -39,7 +39,7 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
 {
 	if([binding isEqual:@"selectionIndexes"])
 		return @"selectedRowIndexes";
-	return binding;
+   return [super _replacementKeyPathForBinding:binding];
 }
 
 +(Class)_binderClassForBinding:(id)binding
