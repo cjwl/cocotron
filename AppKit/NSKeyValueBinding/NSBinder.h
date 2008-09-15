@@ -45,6 +45,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)setBindingPath:(id)value;
 
 -(id)peerBinders;
+
+-(void)startObservingChanges;
+-(void)stopObservingChanges;
 @end
 
 @interface _NSBinder (BindingOptions)

@@ -18,6 +18,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSNibKeyedUnarchiver.h>
 #import <AppKit/NSGraphicsStyle.h>
 #import <AppKit/NSController.h>
+#import <AppKit/NSObject+BindingSupport.h>
 #import <Foundation/NSKeyValueObserving.h>
 
 @implementation NSColorWell
@@ -32,7 +33,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 {
 	if([binding isEqual:@"value"])
 		return @"color";
-	return binding;
+   return [super _replacementKeyPathForBinding:binding];
 }
 
 // private

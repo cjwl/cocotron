@@ -11,7 +11,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSArray.h>
 #import <Foundation/NSString.h>
 #import <Foundation/NSEnumerator.h>
+#import <Foundation/NSKeyValueObserving.h>
 #import <Foundation/NSKeyValueCoding.h>
+#import <Foundation/NSString+KVCAdditions.h>
+#import "NSObservationProxy.h"
+#import <Foundation/NSException.h>
 
 @implementation NSControllerSelectionProxy
 -(id)initWithController:(id)cont
@@ -20,6 +24,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	{
 		values=[NSMutableDictionary new];
 		controller = [cont retain];
+      _observationProxies = [NSMutableArray new];
 	}
 	return self;
 }
@@ -28,6 +33,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 {
 	[values release];
 	[controller release];
+   
+   if([_observationProxies count]>0)
+		[NSException raise:NSInvalidArgumentException
+                  format:@"NSControllerSelectionProxy still being observed by %@ on %@",
+       [[_observationProxies objectAtIndex:0] observer],
+       [[_observationProxies objectAtIndex:0] keyPath]];
+   
+   [_observationProxies release];
 	[super dealloc];
 }
 
@@ -68,6 +81,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	}
 	
 	[values setValue:val forKey:key];
+   
 	return val;
 }
 
@@ -93,4 +107,48 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 		[self className],
 		self];
 }
+
+-(void)notifyControllerChange
+{
+   id keys=[values allKeys];
+   for(id key in keys)
+   {
+      [self willChangeValueForKey:key];
+   }
+   [values removeAllObjects];
+   for(id key in keys)
+   {
+      [self didChangeValueForKey:key];
+   }
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath 
+                      ofObject:(id)object 
+                        change:(NSDictionary *)change
+                       context:(void *)context
+{
+   [values removeObjectForKey:keyPath];
+}
+
+- (void)addObserver:(NSObject *)observer forKeyPath:(NSString *)keyPath options:(NSKeyValueObservingOptions)options context:(void *)context
+{
+   _NSObservationProxy *proxy=[[_NSObservationProxy alloc] initWithKeyPath:keyPath observer:observer object:self];
+   [_observationProxies addObject:proxy];
+   
+   [[controller selectedObjects] addObserver:proxy forKeyPath:keyPath options:options context:context];
+
+   [proxy release];
+}
+
+- (void)removeObserver:(NSObject *)observer forKeyPath:(NSString *)keyPath
+{
+   _NSObservationProxy *proxy=[[_NSObservationProxy alloc] initWithKeyPath:keyPath observer:observer object:self];
+   int idx=[_observationProxies indexOfObject:proxy];
+   [proxy release];
+
+   [[controller selectedObjects] removeObserver:[_observationProxies objectAtIndex:idx] forKeyPath:keyPath];
+   
+   [_observationProxies removeObjectAtIndex:idx];
+}
+
 @end

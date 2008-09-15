@@ -12,6 +12,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSNumber.h>
 #import <Foundation/NSMutableArray.h>
 #import <Foundation/NSKeyValueCoding.h>
+#import <Foundation/NSKeyValueObserving.h>
 #import <Foundation/NSEnumerator.h>
 #import <Foundation/NSValueTransformer.h>
 #import <AppKit/NSController.h>
@@ -185,7 +186,32 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     }
 }
 
+-(void)startObservingChanges {
+   [_source addObserver:self
+             forKeyPath:_bindingPath 
+                options:0
+                context:nil];   
+}
+
+
 -(void)stopObservingChanges {
+   [_source removeObserver:self forKeyPath:_bindingPath];
+}
+
+- (void)observeValueForKeyPath:(NSString *)kp ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+   if(object==_source)
+   {
+      [self stopObservingChanges];
+
+      //NSLog(@"bind event from %@.%@ alias %@ to %@.%@ (%@)", [_source className], _binding, _bindingPath, [_destination className], _keyPath, self);
+      //NSLog(@"new value %@", [_source valueForKeyPath:_bindingPath]);
+      
+      [_destination setValue:[_source valueForKeyPath:_bindingPath]
+                  forKeyPath:_keyPath];
+      
+      [self startObservingChanges];
+   }
 }
 
 -(void)dealloc
@@ -239,7 +265,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(NSString*)description
 {
-	return [NSString stringWithFormat:@"%@: %@", [self className], _binding];
+	return [NSString stringWithFormat:@"%@: %@, %@ -> %@", [self className], _binding, _source, _destination];
 }
 @end
 

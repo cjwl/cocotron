@@ -18,25 +18,17 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @implementation _NSKVOBinder
 -(void)startObservingChanges
 {
-	//NSLog(@"binding between %@.%@ alias %@ and %@.%@ (%@)", [source className], binding, bindingPath, [destination className], keyPath, self);
-
-	[_source addObserver:self
-			 forKeyPath:_bindingPath 
-				options:0
-				context:nil];
+	//NSLog(@"binding between %@.%@ alias %@ and %@.%@ (%@)", [_source className], _binding, _bindingPath, [_destination className], _keyPath, self);
+   [super startObservingChanges];
 	[_destination addObserver:self 
-				  forKeyPath:_keyPath 
-					 options:0
-					 context:nil];
+                  forKeyPath:_keyPath 
+                     options:0
+                     context:nil];
 }
 
--(void)stopObservingChanges
-{
-	NS_DURING
-		[_source removeObserver:self forKeyPath:_bindingPath];
-		[_destination removeObserver:self forKeyPath:_keyPath];
-	NS_HANDLER
-	NS_ENDHANDLER
+-(void)stopObservingChanges {
+   [super stopObservingChanges];
+   [_destination removeObserver:self forKeyPath:_keyPath];
 }
 
 -(id)destinationValue
@@ -94,7 +86,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 		return pattern;
 	}
 	else
+   {
 		return [_destination valueForKeyPath:_keyPath];
+   }
 }
 
 -(id)_realDestinationValue
@@ -116,19 +110,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 - (void)observeValueForKeyPath:(NSString *)kp ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
-	[self stopObservingChanges];
-
-	if(object==_source)
+   //NSLog(@"observeValueForKeyPath %@, %@", kp, object);
+   if(object==_destination)
 	{
-		//NSLog(@"bind event from %@.%@ alias %@ to %@.%@ (%@)", [source className], binding, bindingPath, [destination className], keyPath, self);
+      [self stopObservingChanges];
 
-		[_destination setValue:[_source valueForKeyPath:_bindingPath]
-				   forKeyPath:_keyPath];
-	}
-	else if(object==_destination)
-	{
-		//NSLog(@"bind event from %@.%@ to %@.%@ alias %@ (%@)", [destination className], keyPath, [source className], binding, bindingPath, self);
+		//NSLog(@"bind event from %@.%@ to %@.%@ alias %@ (%@)", [_destination className], _keyPath, [_source className], _binding, _bindingPath, self);
 		id newValue=[self destinationValue];
+
+		//NSLog(@"new value %@", newValue);
 
 		BOOL editable=YES;
 		BOOL isPlaceholder=NO;
@@ -161,13 +151,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 		if(isPlaceholder && [_source respondsToSelector:@selector(_setCurrentValueIsPlaceholder:)])
 			[_source _setCurrentValueIsPlaceholder:YES];
+
+      [self startObservingChanges];
 	}
 	else
-	{
-		NSLog(@"unexpected change notification for object %@ (src %@, dest %@)", object, _source, _destination);
-	}
-	
-	[self startObservingChanges];
+      [super observeValueForKeyPath:kp ofObject:object change:change context:context];
 }
 
 -(void)bind

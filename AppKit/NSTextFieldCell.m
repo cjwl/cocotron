@@ -19,6 +19,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSParagraphStyle.h>
 #import <AppKit/NSStringDrawer.h>
 #import <AppKit/NSNibKeyedUnarchiver.h>
+#import <AppKit/NSObject+BindingSupport.h>
 
 @implementation NSTextFieldCell
 
@@ -181,6 +182,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    }
 
    [self drawInteriorWithFrame:titleRect inView:control];
+}
+
+-(id)_replacementKeyPathForBinding:(id)binding {
+   if([binding isEqual:@"value"])
+		return @"stringValue";
+   return [super _replacementKeyPathForBinding:binding];
 }
 
 @end

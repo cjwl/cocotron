@@ -303,7 +303,6 @@
 		FE01A9460C5D9BCB00AEA51A /* NSTextTable.h in Headers */ = {isa = PBXBuildFile; fileRef = FED167A60BE57EB300BF9889 /* NSTextTable.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE01A9470C5D9BCB00AEA51A /* NSTextTableBlock.h in Headers */ = {isa = PBXBuildFile; fileRef = FED167A80BE57EB300BF9889 /* NSTextTableBlock.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE01A9480C5D9BCB00AEA51A /* NSTextInput.h in Headers */ = {isa = PBXBuildFile; fileRef = FE27AC140BE9038000136B43 /* NSTextInput.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		FE01A9490C5D9BCB00AEA51A /* NSArrayControllerSelectionProxy.h in Headers */ = {isa = PBXBuildFile; fileRef = FE352F680BF3998E00223FAF /* NSArrayControllerSelectionProxy.h */; };
 		FE01A94B0C5D9BCB00AEA51A /* NSAffineTransform.h in Headers */ = {isa = PBXBuildFile; fileRef = C8E4F57F0BFF7A8A0076D5E6 /* NSAffineTransform.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE01A94C0C5D9BCB00AEA51A /* NSTextList.h in Headers */ = {isa = PBXBuildFile; fileRef = FE7247670C06202B007CBC51 /* NSTextList.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE01A94D0C5D9BCB00AEA51A /* NSTextAttachmentCell.h in Headers */ = {isa = PBXBuildFile; fileRef = FE7247A40C0622F2007CBC51 /* NSTextAttachmentCell.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -616,7 +615,6 @@
 		FE01AA870C5D9BCB00AEA51A /* NSTextBlock.m in Sources */ = {isa = PBXBuildFile; fileRef = FED167A50BE57EB300BF9889 /* NSTextBlock.m */; };
 		FE01AA880C5D9BCB00AEA51A /* NSTextTable.m in Sources */ = {isa = PBXBuildFile; fileRef = FED167A70BE57EB300BF9889 /* NSTextTable.m */; };
 		FE01AA890C5D9BCB00AEA51A /* NSTextTableBlock.m in Sources */ = {isa = PBXBuildFile; fileRef = FED167A90BE57EB300BF9889 /* NSTextTableBlock.m */; };
-		FE01AA8A0C5D9BCB00AEA51A /* NSArrayControllerSelectionProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = FE352F690BF3998E00223FAF /* NSArrayControllerSelectionProxy.m */; };
 		FE01AA8C0C5D9BCB00AEA51A /* NSAffineTransform.m in Sources */ = {isa = PBXBuildFile; fileRef = C8E4F5800BFF7A8A0076D5E6 /* NSAffineTransform.m */; };
 		FE01AA8D0C5D9BCB00AEA51A /* NSTextList.m in Sources */ = {isa = PBXBuildFile; fileRef = FE7247680C06202B007CBC51 /* NSTextList.m */; };
 		FE01AA8E0C5D9BCB00AEA51A /* NSTextAttachmentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FE7247A50C0622F2007CBC51 /* NSTextAttachmentCell.m */; };
@@ -1369,8 +1367,6 @@
 		FE3395580DB930F4009AB3E0 /* KGContext_builtin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGContext_builtin.m; sourceTree = "<group>"; };
 		FE34FBC60D6F24A5008D2C1A /* KGClipPhase.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = KGClipPhase.h; sourceTree = "<group>"; };
 		FE34FBC70D6F24A5008D2C1A /* KGClipPhase.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = KGClipPhase.m; sourceTree = "<group>"; };
-		FE352F680BF3998E00223FAF /* NSArrayControllerSelectionProxy.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSArrayControllerSelectionProxy.h; sourceTree = "<group>"; };
-		FE352F690BF3998E00223FAF /* NSArrayControllerSelectionProxy.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSArrayControllerSelectionProxy.m; sourceTree = "<group>"; };
 		FE4434020BB9833B00411464 /* NSGraphicsStyle_uxtheme.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSGraphicsStyle_uxtheme.h; sourceTree = "<group>"; };
 		FE4434030BB9833B00411464 /* NSGraphicsStyle_uxtheme.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSGraphicsStyle_uxtheme.m; sourceTree = "<group>"; };
 		FE45EDCB0DC2407E00F49290 /* CGImageSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CGImageSource.m; sourceTree = "<group>"; };
@@ -2504,8 +2500,6 @@
 			children = (
 				FE8D94A90CE3A6C700AFB060 /* NSControllerSelectionProxy.h */,
 				FE8D94AA0CE3A6C700AFB060 /* NSControllerSelectionProxy.m */,
-				FE352F680BF3998E00223FAF /* NSArrayControllerSelectionProxy.h */,
-				FE352F690BF3998E00223FAF /* NSArrayControllerSelectionProxy.m */,
 				FE2A10280B44A26B006C03DE /* NSArrayController.h */,
 				FE2A10290B44A26B006C03DE /* NSArrayController.m */,
 				FE2A10580B459984006C03DE /* NSController.h */,
@@ -2912,7 +2906,6 @@
 				FE01A9460C5D9BCB00AEA51A /* NSTextTable.h in Headers */,
 				FE01A9470C5D9BCB00AEA51A /* NSTextTableBlock.h in Headers */,
 				FE01A9480C5D9BCB00AEA51A /* NSTextInput.h in Headers */,
-				FE01A9490C5D9BCB00AEA51A /* NSArrayControllerSelectionProxy.h in Headers */,
 				FE01A94B0C5D9BCB00AEA51A /* NSAffineTransform.h in Headers */,
 				FE01A94C0C5D9BCB00AEA51A /* NSTextList.h in Headers */,
 				FE01A94D0C5D9BCB00AEA51A /* NSTextAttachmentCell.h in Headers */,
@@ -3430,7 +3423,6 @@
 				FE01AA870C5D9BCB00AEA51A /* NSTextBlock.m in Sources */,
 				FE01AA880C5D9BCB00AEA51A /* NSTextTable.m in Sources */,
 				FE01AA890C5D9BCB00AEA51A /* NSTextTableBlock.m in Sources */,
-				FE01AA8A0C5D9BCB00AEA51A /* NSArrayControllerSelectionProxy.m in Sources */,
 				FE01AA8C0C5D9BCB00AEA51A /* NSAffineTransform.m in Sources */,
 				FE01AA8D0C5D9BCB00AEA51A /* NSTextList.m in Sources */,
 				FE01AA8E0C5D9BCB00AEA51A /* NSTextAttachmentCell.m in Sources */,

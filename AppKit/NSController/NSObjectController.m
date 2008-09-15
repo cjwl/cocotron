@@ -10,6 +10,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSKeyedUnarchiver.h>
 #import <Foundation/NSKeyValueObserving.h>
 #import "NSControllerSelectionProxy.h"
+#import "NSObservationProxy.h"
 
 @interface NSObjectController(forward)
 -(void)_selectionMayHaveChanged;
@@ -51,7 +52,7 @@ triggerChangeNotificationsForDependentKey:@"canRemove"];
 
 -(NSArray *)selectedObjects
 {
-	return [NSArray arrayWithObject:_content];
+	return [_NSObservableArray arrayWithObject:_content];
 }
 
 -(id)selection
@@ -62,7 +63,6 @@ triggerChangeNotificationsForDependentKey:@"canRemove"];
 -(id)_defaultNewObject
 {
 	return [[NSClassFromString(_objectClassName) alloc] init];
-
 }
 
 -(id)newObject
@@ -74,8 +74,12 @@ triggerChangeNotificationsForDependentKey:@"canRemove"];
 -(void)_selectionMayHaveChanged
 {
 	[self willChangeValueForKey:@"selection"];
-	[_selection autorelease];
-	_selection=[[NSControllerSelectionProxy alloc] initWithController:self];
+   if(_selection)
+   {
+      [_selection notifyControllerChange];
+   }
+   else
+      _selection=[[NSControllerSelectionProxy alloc] initWithController:self];
 	[self didChangeValueForKey:@"selection"];	
 }
  

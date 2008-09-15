@@ -52,12 +52,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)applyToObject:(id)object inRow:(int)row
 {
-	[self applyToObject:object inRow:row keyPath:_bindingPath];
+	[self applyToObject:object inRow:row keyPath:[object _replacementKeyPathForBinding:_binding]];
 }
 
 -(void)applyToCell:(id)cell inRow:(int)row
 {
-	[self applyToObject:cell inRow:row keyPath:_bindingPath];
+	[self applyToObject:cell inRow:row keyPath:[cell _replacementKeyPathForBinding:_binding]];
 }
 
 -(void)applyFromObject:(id)object inRow:(int)row keyPath:(id)keypath
@@ -68,12 +68,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)applyFromObject:(id)object inRow:(int)row
 {
-	[self applyFromObject:object inRow:row keyPath:_bindingPath];
+	[self applyFromObject:object inRow:row keyPath:[object _replacementKeyPathForBinding:_binding]];
 }
 
 -(void)applyFromCell:(id)cell inRow:(int)row
 {
-	[self applyFromObject:cell inRow:row keyPath:_bindingPath];
+	[self applyFromObject:cell inRow:row keyPath:[cell _replacementKeyPathForBinding:_binding]];
 }
 
 
@@ -172,13 +172,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 {
 	if(object==_source)
 	{
-		//NSLog(@"bind event from %@.%@ alias %@ to %@.%@ (%@)", [source className], binding, bindingPath, [destination className], keyPath, self);
+		//NSLog(@"bind event from %@.%@ alias %@ to %@.%@ (%@)", [_source className], _binding, _bindingPath, [_destination className], _keyPath, self);
 	}
 	else if(context==_destination)
 	{
 		[self stopObservingChanges];
 
-		//NSLog(@"bind event from %@.%@ to %@.%@ alias %@ (%@)", [destination className], keyPath, [source className], binding, bindingPath, self);
+		//NSLog(@"bind event from %@.%@ to %@.%@ alias %@ (%@)", [_destination className], _keyPath, [_source className], _binding, _bindingPath, self);
 
 		[self updateRowValues];
 		
@@ -211,7 +211,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 	[self syncUp];
 	[self startObservingChanges];
-
+   
 	if([self createsSortDescriptor] && [_binding isEqual:@"value"])
 	{
 		[_source setSortDescriptorPrototype:[[[NSSortDescriptor alloc] initWithKey:_valueKeyPath
