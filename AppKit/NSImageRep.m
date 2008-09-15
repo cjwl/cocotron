@@ -177,7 +177,7 @@ static NSMutableArray *_registeredClasses=nil;
    return _colorSpaceName;
 }
 
--(int)bitsPerSample {
+-(NSInteger)bitsPerSample {
    return _bitsPerSample;
 }
 

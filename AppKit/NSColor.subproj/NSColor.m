@@ -6,7 +6,7 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
-#import <AppKit/NSColor.h>
+#import <AppKit/NSColor-Private.h>
 #import <AppKit/NSColor_whiteCalibrated.h>
 #import <AppKit/NSColor_rgbCalibrated.h>
 #import <AppKit/NSColor_whiteDevice.h>
@@ -402,6 +402,24 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(NSString *)colorSpaceName {
    NSInvalidAbstractInvocation();
    return nil;
+}
+
+-(NSInteger)numberOfComponents {
+   CGColorRef colorRef=[self createCGColorRef]; 
+   NSInteger result=CGColorGetNumberOfComponents(colorRef);
+   CGColorRelease(colorRef);
+   return result;
+}
+
+-(void)getComponents:(CGFloat *)components {
+   CGColorRef colorRef=[self createCGColorRef];
+   NSInteger  i,count=CGColorGetNumberOfComponents(colorRef);
+   const CGFloat *comps=CGColorGetComponents(colorRef);
+   
+   for(i=0;i<count;i++)
+    components[i]=comps[i];
+    
+   CGColorRelease(colorRef);
 }
 
 -(void)getWhite:(float *)white alpha:(float *)alpha {

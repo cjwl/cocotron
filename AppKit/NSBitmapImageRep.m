@@ -6,9 +6,10 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
-#import <AppKit/NSBitmapImageRep.h>
+#import <AppKit/NSBitmapImageRep-Private.h>
 #import <AppKit/NSGraphicsContextFunctions.h>
 #import <AppKit/NSView.h>
+#import <AppKit/NSColor.h>
 
 @implementation NSBitmapImageRep
 
@@ -53,15 +54,17 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -initWithBitmapDataPlanes:(unsigned char **)planes pixelsWide:(int)width pixelsHigh:(int)height bitsPerSample:(int)bitsPerSample samplesPerPixel:(int)samplesPerPixel hasAlpha:(BOOL)hasAlpha isPlanar:(BOOL)isPlanar colorSpaceName:(NSString *)colorSpaceName bitmapFormat:(NSBitmapFormat)bitmapFormat bytesPerRow:(int)bytesPerRow bitsPerPixel:(int)bitsPerPixel {
-   int i,numberOfPlanes=isPlanar?1:samplesPerPixel;
+   int i,numberOfPlanes=isPlanar?samplesPerPixel:1;
    
+   _size=NSMakeSize(width,height);
+   _colorSpaceName=[colorSpaceName copy];
+   _bitsPerSample=bitsPerSample;
    _pixelsWide=width;
    _pixelsHigh=height;
-   _bitsPerSample=bitsPerSample;
-   _samplesPerPixel=samplesPerPixel;
    _hasAlpha=hasAlpha;
+
+   _samplesPerPixel=samplesPerPixel;
    _isPlanar=isPlanar;
-   _colorSpaceName=[colorSpaceName copy];
    _bitmapFormat=bitmapFormat;
    
    if(bitsPerPixel!=0)
@@ -93,7 +96,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     if(!_freeWhenDone)
      _bitmapPlanes[i]=planes[i];
     else
-     _bitmapPlanes[i]=NSZoneCalloc(NULL,_bytesPerRow,1);
+     _bitmapPlanes[i]=NSZoneCalloc(NULL,_bytesPerRow*_pixelsHigh,1);
    }
 
    return self;
@@ -195,7 +198,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)getBitmapDataPlanes:(unsigned char **)planes {
-   int i,numberOfPlanes=_isPlanar?1:_samplesPerPixel;
+   int i,numberOfPlanes=_isPlanar?_samplesPerPixel:1;
 
    for(i=0;i<numberOfPlanes;i++)
     planes[i]=_bitmapPlanes[i];
@@ -209,7 +212,25 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)setPixel:(unsigned int[])pixel atX:(int)x y:(int)y {
-   NSUnimplementedMethod();
+   NSAssert(x>=0 && x<[self pixelsWide],@"x out of bounds");
+   NSAssert(y>=0 && y<[self pixelsHigh],@"y out of bounds");
+
+   
+   if(_isPlanar)
+    NSUnimplementedMethod();
+   else {
+    if(_bitsPerPixel/_samplesPerPixel!=8)
+     NSUnimplementedMethod();
+
+    unsigned char *bits=_bitmapPlanes[0]+_bytesPerRow*y+(x*_bitsPerPixel)/8;
+    
+    int i;
+   
+    for(i=0;i<_samplesPerPixel;i++){
+     bits[i]=pixel[i];
+    }
+
+   }
 }
 
 -(NSColor *)colorAtX:(int)x y:(int)y {   
@@ -218,7 +239,47 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)setColor:(NSColor *)color atX:(int)x y:(int)y {
-   NSUnimplementedMethod();
+   color=[color colorUsingColorSpaceName:[self colorSpaceName]];
+
+   NSInteger i,numberOfComponents=[color numberOfComponents];
+   CGFloat   components[numberOfComponents];
+   unsigned  pixels[numberOfComponents];
+
+   [color getComponents:components];
+   
+   if(!_hasAlpha)
+    numberOfComponents--;
+   else {
+    if(!(_bitmapFormat&NSAlphaNonpremultipliedBitmapFormat)){ // premultiplied
+     CGFloat alpha=components[numberOfComponents-1];
+     
+     for(i=0;i<numberOfComponents-1;i++)
+      components[i]*=alpha;
+    }
+    
+    if(_bitmapFormat&NSAlphaFirstBitmapFormat){
+     CGFloat alpha=components[numberOfComponents-1];
+     
+     for(i=numberOfComponents;--i>=1;)
+      components[i]=components[i-1];
+      
+     components[0]=alpha;
+    }
+   }
+
+   if(_bitmapFormat&NSFloatingPointSamplesBitmapFormat){
+    for(i=0;i<numberOfComponents;i++)
+     ((float *)pixels)[i]=MAX(0.0f,MIN(1.0f,components[i])); // clamp just in case
+   }
+   else {
+    int maxValue=(1<<[self bitsPerSample])-1;
+    
+    for(i=0;i<numberOfComponents;i++){
+     pixels[i]=MAX(0,MIN(maxValue,(int)(components[i]*maxValue))); // clamp just in case
+    }
+   }
+   
+   [self setPixel:pixels atX:x y:y];
 }
 
 -valueForProperty:(NSString *)property {
@@ -261,12 +322,57 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return nil;
 }
 
+-(CGImageRef)CGImage {
+   if(_image!=NULL)
+    return _image;
+
+   if(_isPlanar)
+    NSUnimplementedMethod();
+    
+  CGDataProviderRef provider=CGDataProviderCreateWithData(NULL,_bitmapPlanes[0],_bytesPerRow*_pixelsHigh,NULL);
+  
+  CGImageRef image=CGImageCreate(_pixelsWide,_pixelsHigh,_bitsPerPixel/_samplesPerPixel,_bitsPerPixel,_bytesPerRow,[self CGColorSpace],
+     [self CGBitmapInfo],provider,NULL,NO,kCGRenderingIntentDefault);
+     
+  return [image autorelease];
+}
+
 -(BOOL)draw {
    CGContextRef context=NSCurrentGraphicsPort();
    NSSize size=[self size];
-      
-   CGContextDrawImage(context,NSMakeRect(0,0,size.width,size.height),_image);
+
+   CGContextDrawImage(context,NSMakeRect(0,0,size.width,size.height),[self CGImage]);
    return YES;
+}
+
+-(CGColorSpaceRef)CGColorSpace {
+   if([_colorSpaceName isEqualToString:NSDeviceRGBColorSpace])
+    return CGColorSpaceCreateDeviceRGB();
+   if([_colorSpaceName isEqualToString:NSCalibratedRGBColorSpace])
+    return CGColorSpaceCreateDeviceRGB();
+
+   return NULL;
+}
+
+-(CGBitmapInfo)CGBitmapInfo {
+   CGBitmapInfo result=kCGBitmapByteOrderDefault;
+   
+   if(_bitmapFormat&NSAlphaFirstBitmapFormat){
+    if(_bitmapFormat&NSAlphaNonpremultipliedBitmapFormat)
+     result|=kCGImageAlphaFirst;
+    else
+     result|=kCGImageAlphaPremultipliedFirst;
+   }
+   else {
+    if(_bitmapFormat&NSAlphaNonpremultipliedBitmapFormat)
+     result|=kCGImageAlphaLast;
+    else
+     result|=kCGImageAlphaPremultipliedLast;
+   }
+   if(_bitmapFormat&NSFloatingPointSamplesBitmapFormat)
+    result|=kCGBitmapFloatComponents;
+   
+   return result;
 }
 
 @end

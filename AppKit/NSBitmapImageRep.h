@@ -108,4 +108,6 @@ typedef enum {
 -(NSData *)TIFFRepresentation;
 -(NSData *)TIFFRepresentationUsingCompression:(NSTIFFCompression)compression factor:(float)factor;
 
+-(CGImageRef)CGImage;
+
 @end

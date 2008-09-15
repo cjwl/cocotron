@@ -654,12 +654,12 @@ static inline void KGBlendSpanNormal_8888_coverage(KGRGBA8888 *src,KGRGBA8888 *d
      if(s.a==255)
       r=*src;
      else {
-      int sa=255-s.a;
-      
-      r.r=RI_INT_MIN((int)s.r+((int)d.r*sa)/255,255);
-      r.g=RI_INT_MIN((int)s.g+((int)d.g*sa)/255,255);
-      r.b=RI_INT_MIN((int)s.b+((int)d.b*sa)/255,255);
-      r.a=RI_INT_MIN((int)s.a+((int)d.a*sa)/255,255);
+      unsigned char sa=255-s.a;
+
+      r.r=RI_INT_MIN((int)s.r+alphaMultiply(d.r,sa),255);
+      r.g=RI_INT_MIN((int)s.g+alphaMultiply(d.g,sa),255);
+      r.b=RI_INT_MIN((int)s.b+alphaMultiply(d.b,sa),255);
+      r.a=RI_INT_MIN((int)s.a+alphaMultiply(d.a,sa),255);
      }
      *dst=r;
     }
@@ -671,23 +671,24 @@ static inline void KGBlendSpanNormal_8888_coverage(KGRGBA8888 *src,KGRGBA8888 *d
      KGRGBA8888 s=*src;
      KGRGBA8888 d=*dst;
      KGRGBA8888 r;
-    
-     r.r=RI_INT_MIN((int)s.r+((int)d.r*(255-s.a))/255,255);
+     unsigned char sa=255-s.a;
+     
+     r.r=RI_INT_MIN((int)s.r+alphaMultiply(d.r,sa),255);
      r.r=multiplyByCoverage(r.r,coverage);
      d.r=(d.r*oneMinusCoverage)/256;
      r.r=RI_INT_MIN((int)r.r+(int)d.r,255);
     
-     r.g=RI_INT_MIN((int)s.g+((int)d.g*(255-s.a))/255,255);
+     r.g=RI_INT_MIN((int)s.g+alphaMultiply(d.g,sa),255);
      r.g=multiplyByCoverage(r.g,coverage);
      d.g=(d.g*oneMinusCoverage)/256;
      r.g=RI_INT_MIN((int)r.g+(int)d.g,255);
     
-     r.b=RI_INT_MIN((int)s.b+((int)d.b*(255-s.a))/255,255);
+     r.b=RI_INT_MIN((int)s.b+alphaMultiply(d.b,sa),255);
      r.b=multiplyByCoverage(r.b,coverage);
      d.b=(d.b*oneMinusCoverage)/256;
      r.b=RI_INT_MIN((int)r.b+(int)d.b,255);
     
-     r.a=RI_INT_MIN((int)s.a+((int)d.a*(255-s.a))/255,255);
+     r.a=RI_INT_MIN((int)s.a+alphaMultiply(d.a,sa),255);
      r.a=multiplyByCoverage(r.a,coverage);
      d.a=(d.a*oneMinusCoverage)/256;
      r.a=RI_INT_MIN((int)r.a+(int)d.a,255);

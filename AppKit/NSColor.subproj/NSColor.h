@@ -8,6 +8,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/Foundation.h>
 #import <AppKit/AppKitExport.h>
+#import <ApplicationServices/ApplicationServices.h>
 
 @class NSImage;
 @class NSPasteboard;
@@ -90,6 +91,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 +(NSColor *)colorWithPatternImage:(NSImage *)image;
 
 -(NSString *)colorSpaceName;
+
+-(NSInteger)numberOfComponents;
+-(void)getComponents:(CGFloat *)components;
 
 -(void)getWhite:(float *)white alpha:(float *)alpha;
 -(void)getRed:(float *)red green:(float *)green blue:(float *)blue alpha:(float *)alpha;

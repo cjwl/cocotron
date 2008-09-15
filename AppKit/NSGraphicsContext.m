@@ -8,7 +8,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSGraphicsContext.h>
 #import <AppKit/NSWindow-Private.h>
 #import <AppKit/NSCachedImageRep.h>
-#import <AppKit/NSBitmapImageRep.h>
+#import <AppKit/NSBitmapImageRep-Private.h>
 #import <ApplicationServices/CGContext.h>
 
 @class NSColor;
@@ -32,45 +32,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return self;
 }
 
-static CGColorSpaceRef colorSpaceWithName(NSString *name){
-   if([name isEqualToString:NSDeviceRGBColorSpace])
-    return CGColorSpaceCreateDeviceRGB();
-   if([name isEqualToString:NSCalibratedRGBColorSpace])
-    return CGColorSpaceCreateDeviceRGB();
-
-   return NULL;
-}
-
-static CGBitmapInfo bitmapInfoForBitmapFormat(NSBitmapFormat bitmapFormat){
-   CGBitmapInfo result=kCGBitmapByteOrderDefault;
-   
-   if(bitmapFormat&NSAlphaFirstBitmapFormat){
-    if(bitmapFormat&NSAlphaNonpremultipliedBitmapFormat)
-     result|=kCGImageAlphaFirst;
-    else
-     result|=kCGImageAlphaPremultipliedFirst;
-   }
-   else {
-    if(bitmapFormat&NSAlphaNonpremultipliedBitmapFormat)
-     result|=kCGImageAlphaLast;
-    else
-     result|=kCGImageAlphaPremultipliedLast;
-   }
-   if(bitmapFormat&NSFloatingPointSamplesBitmapFormat)
-    result|=kCGBitmapFloatComponents;
-   
-   return result;
-}
-
 -initWithBitmapImageRep:(NSBitmapImageRep *)imageRep {
-   CGColorSpaceRef colorSpace=colorSpaceWithName([imageRep colorSpaceName]);
+   CGColorSpaceRef colorSpace=[imageRep CGColorSpace];
    
    if(colorSpace==nil){
     [self dealloc];
     return nil;
    }
    
-   _graphicsPort=CGBitmapContextCreate([imageRep bitmapData],[imageRep pixelsWide],[imageRep pixelsHigh],[imageRep bitsPerSample],[imageRep bytesPerRow],colorSpace,bitmapInfoForBitmapFormat([imageRep bitmapFormat]));
+   _graphicsPort=CGBitmapContextCreate([imageRep bitmapData],[imageRep pixelsWide],[imageRep pixelsHigh],[imageRep bitsPerSample],[imageRep bytesPerRow],colorSpace,[imageRep CGBitmapInfo]);
    CGColorSpaceRelease(colorSpace);
    
    if(_graphicsPort==nil){

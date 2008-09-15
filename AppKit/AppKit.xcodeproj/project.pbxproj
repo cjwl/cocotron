@@ -699,6 +699,7 @@
 		FE8F9F2A0C9C5D0000270AEE /* KGzlib.h in Headers */ = {isa = PBXBuildFile; fileRef = FE8F9F260C9C5D0000270AEE /* KGzlib.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE8F9F2B0C9C5D0000270AEE /* KGzlib.m in Sources */ = {isa = PBXBuildFile; fileRef = FE8F9F270C9C5D0000270AEE /* KGzlib.m */; };
 		FEA8A98D0CD2CBC000E1E936 /* NSUserInterfaceValidation.h in Headers */ = {isa = PBXBuildFile; fileRef = FEA8A98B0CD2CBC000E1E936 /* NSUserInterfaceValidation.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEA965B40E7EA97500413F40 /* NSBitmapImageRep-Private.h in Headers */ = {isa = PBXBuildFile; fileRef = FEA965B30E7EA97500413F40 /* NSBitmapImageRep-Private.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FEABD5EC0CB9CEE40035F828 /* KGLayer_gdi.h in Headers */ = {isa = PBXBuildFile; fileRef = FEABD5E80CB9CEE40035F828 /* KGLayer_gdi.h */; };
 		FEABD5ED0CB9CEE40035F828 /* KGLayer_gdi.m in Sources */ = {isa = PBXBuildFile; fileRef = FEABD5E90CB9CEE40035F828 /* KGLayer_gdi.m */; };
 		FEABD6070CB9D0C90035F828 /* KGContext_gdi.h in Headers */ = {isa = PBXBuildFile; fileRef = FEABD6030CB9D0C90035F828 /* KGContext_gdi.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -1491,6 +1492,7 @@
 		FE8F9F260C9C5D0000270AEE /* KGzlib.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = KGzlib.h; sourceTree = "<group>"; };
 		FE8F9F270C9C5D0000270AEE /* KGzlib.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = KGzlib.m; sourceTree = "<group>"; };
 		FEA8A98B0CD2CBC000E1E936 /* NSUserInterfaceValidation.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSUserInterfaceValidation.h; sourceTree = "<group>"; };
+		FEA965B30E7EA97500413F40 /* NSBitmapImageRep-Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSBitmapImageRep-Private.h"; sourceTree = "<group>"; };
 		FEABD5E80CB9CEE40035F828 /* KGLayer_gdi.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = KGLayer_gdi.h; sourceTree = "<group>"; };
 		FEABD5E90CB9CEE40035F828 /* KGLayer_gdi.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = KGLayer_gdi.m; sourceTree = "<group>"; };
 		FEABD6030CB9D0C90035F828 /* KGContext_gdi.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = KGContext_gdi.h; sourceTree = "<group>"; };
@@ -1606,6 +1608,7 @@
 				FE2A10320B44A27C006C03DE /* NSBezierPath.h */,
 				FE2A10330B44A27C006C03DE /* NSBezierPath.m */,
 				6E2B54080976075200DA0954 /* NSBitmapImageRep.h */,
+				FEA965B30E7EA97500413F40 /* NSBitmapImageRep-Private.h */,
 				6E2B532F0976075200DA0954 /* NSBitmapImageRep.m */,
 				6E2B540A0976075200DA0954 /* NSBox.h */,
 				6E2B53310976075200DA0954 /* NSBox.m */,
@@ -2954,6 +2957,7 @@
 				FEF9CBC40E13EB8E003502ED /* KGShading+PDF.h in Headers */,
 				FEF9CCC30E1416C4003502ED /* KGContext_builtin_gdi.h in Headers */,
 				FEF35E270E6DC186000BD639 /* NSColor-Private.h in Headers */,
+				FEA965B40E7EA97500413F40 /* NSBitmapImageRep-Private.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

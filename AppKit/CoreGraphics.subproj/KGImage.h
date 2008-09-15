@@ -235,12 +235,27 @@ static inline int multiplyByCoverage(int value,int coverage){
    return (value*coverage)/COVERAGE_MULTIPLIER;
 }
 
-static inline KGRGBA8888 KGRGBA8888MultiplyByCoverage(KGRGBA8888 result,int value){
-   result.r=((int)result.r*value)/COVERAGE_MULTIPLIER;
-   result.g=((int)result.g*value)/COVERAGE_MULTIPLIER;
-   result.b=((int)result.b*value)/COVERAGE_MULTIPLIER;
-   result.a=((int)result.a*value)/COVERAGE_MULTIPLIER;
+static inline unsigned char divideBy255(unsigned short t){
+// t/255
+// From Imaging Compositing Fundamentals, Technical Memo 4 by Alvy Ray Smith, Aug 15, 1995
+// Faster and more accurate in that it rounds instead of truncates   
+   t = t + 0x80;
+   t= ( ( ( (t)>>8 ) + (t) )>>8 );
+   
+   return t;
+}
 
+static inline unsigned char alphaMultiply(unsigned short c,unsigned short a){
+   return divideBy255(c*a);
+}
+
+static inline KGRGBA8888 KGRGBA8888MultiplyByCoverage(KGRGBA8888 result,unsigned short value){
+   if(value!=COVERAGE_MULTIPLIER){
+    result.r=((int)result.r*value)/COVERAGE_MULTIPLIER;
+    result.g=((int)result.g*value)/COVERAGE_MULTIPLIER;
+    result.b=((int)result.b*value)/COVERAGE_MULTIPLIER;
+    result.a=((int)result.a*value)/COVERAGE_MULTIPLIER;
+   }
    return result;
 }
 

@@ -150,11 +150,12 @@ static void KGBlendSpanNormal_8888(KGRGBA8888 *src,KGRGBA8888 *dst,int length){
     KGRGBA8888 s=src[i];
     KGRGBA8888 d=dst[i];
     KGRGBA8888 r;
+    unsigned char sa=255-s.a;
     
-    r.r=RI_INT_MIN((unsigned)s.r+((unsigned)d.r*(255-(unsigned)s.a))/255,255);
-    r.g=RI_INT_MIN((unsigned)s.g+((unsigned)d.g*(255-(unsigned)s.a))/255,255);
-    r.b=RI_INT_MIN((unsigned)s.b+((unsigned)d.b*(255-(unsigned)s.a))/255,255);
-    r.a=RI_INT_MIN((unsigned)s.a+((unsigned)d.a*(255-(unsigned)s.a))/255,255);
+    r.r=RI_INT_MIN((unsigned)s.r+alphaMultiply(d.r,sa),255);
+    r.g=RI_INT_MIN((unsigned)s.g+alphaMultiply(d.g,sa),255);
+    r.b=RI_INT_MIN((unsigned)s.b+alphaMultiply(d.b,sa),255);
+    r.a=RI_INT_MIN((unsigned)s.a+alphaMultiply(d.a,sa),255);
     
     src[i]=r;
    }
@@ -483,11 +484,12 @@ static void KGBlendSpanSourceIn_8888(KGRGBA8888 *src,KGRGBA8888 *dst,int length)
     KGRGBA8888 s=src[i];
     KGRGBA8888 d=dst[i];
     KGRGBA8888 r;
-    
-    r.r = ((unsigned)s.r * (unsigned)d.a)/255;
-    r.g = ((unsigned)s.g * (unsigned)d.a)/255;
-    r.b = ((unsigned)s.b * (unsigned)d.a)/255;
-    r.a = ((unsigned)s.a * (unsigned)d.a)/255;
+
+    r.r = alphaMultiply(s.r , d.a);
+    r.g = alphaMultiply(s.g , d.a);
+    r.b = alphaMultiply(s.b , d.a);
+    r.a = alphaMultiply(s.a , d.a);
+
     src[i]=r;
    }
 }

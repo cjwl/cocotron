@@ -14,7 +14,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @interface NSImageRep : NSObject {
    NSSize    _size;
    NSString *_colorSpaceName;
-   int       _bitsPerSample;
+   NSInteger _bitsPerSample;
    int       _pixelsWide;
    int       _pixelsHigh;
 
@@ -51,7 +51,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(BOOL)isOpaque;
 -(BOOL)hasAlpha;
 -(NSString *)colorSpaceName;
--(int)bitsPerSample;
+-(NSInteger)bitsPerSample;
 
 -(void)setSize:(NSSize)value;
 -(void)setPixelsWide:(int)value;
