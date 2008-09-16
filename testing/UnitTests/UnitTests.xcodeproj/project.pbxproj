@@ -53,6 +53,7 @@
 		C8A3931E0E48B72300A9C289 /* PropertyListUnarchiving.m in Sources */ = {isa = PBXBuildFile; fileRef = C8A3931D0E48B72300A9C289 /* PropertyListUnarchiving.m */; };
 		C8A3931F0E48B72300A9C289 /* PropertyListUnarchiving.m in Sources */ = {isa = PBXBuildFile; fileRef = C8A3931D0E48B72300A9C289 /* PropertyListUnarchiving.m */; };
 		C8A393200E48B72300A9C289 /* PropertyListUnarchiving.m in Sources */ = {isa = PBXBuildFile; fileRef = C8A3931D0E48B72300A9C289 /* PropertyListUnarchiving.m */; };
+		C8AEE9D60E7932FD00248617 /* Array.m in Sources */ = {isa = PBXBuildFile; fileRef = C8CB8CAE0DD34DA6005C1BAC /* Array.m */; };
 		C8C031A40DBB4F7D00558D7B /* SizeAndAlignment.m in Sources */ = {isa = PBXBuildFile; fileRef = C8C031A30DBB4F7D00558D7B /* SizeAndAlignment.m */; };
 		C8C031A50DBB4F7E00558D7B /* SizeAndAlignment.m in Sources */ = {isa = PBXBuildFile; fileRef = C8C031A30DBB4F7D00558D7B /* SizeAndAlignment.m */; };
 		C8C8030F0DB52A010089C0D7 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 089C167FFE841241C02AAC07 /* AppKit.framework */; };
@@ -509,6 +510,7 @@
 				C8F971D10E6AD503007CBB04 /* MessageBenchmark.m in Sources */,
 				C8F971D20E6AD503007CBB04 /* MessageSend.m in Sources */,
 				998CA84A0E6C3741009B2664 /* FileHandle.m in Sources */,
+				C8AEE9D60E7932FD00248617 /* Array.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

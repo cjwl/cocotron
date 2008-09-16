@@ -4,6 +4,7 @@
 #import <Foundation/NSException.h>
 #import <Foundation/NSString+KVCAdditions.h>
 #import <Foundation/NSKeyValueObserving.h>
+#import <Foundation/NSIndexSet.h>
 
 @implementation _NSObservationProxy 
 -(id)initWithKeyPath:(id)keyPath observer:(id)observer object:(id)object
