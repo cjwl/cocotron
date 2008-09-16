@@ -22,8 +22,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 {
 	if((self=[super init]))
 	{
-		values=[NSMutableDictionary new];
-		controller = [cont retain];
+		_values=[NSMutableDictionary new];
+		_controller = [cont retain];
       _observationProxies = [NSMutableArray new];
 	}
 	return self;
@@ -31,8 +31,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)dealloc
 {
-	[values release];
-	[controller release];
+   [_keys release];
+	[_values release];
+	[_controller release];
    
    if([_observationProxies count]>0)
 		[NSException raise:NSInvalidArgumentException
@@ -46,10 +47,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(id)valueForKey:(NSString*)key
 {
-	id val=[values objectForKey:key];
+	id val=[_values objectForKey:key];
 	if(val)
 		return val;
-	id allValues=[[controller selectedObjects] valueForKeyPath:key];
+	id allValues=[[_controller selectedObjects] valueForKeyPath:key];
 	
 	switch([allValues count])
 	{
@@ -61,7 +62,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 			break;
 		default:
 		{
-			if([controller alwaysUsesMultipleValuesMarker])
+			if([_controller alwaysUsesMultipleValuesMarker])
 			{
 				val=NSMultipleValuesMarker;
 			}
@@ -80,24 +81,24 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 		}
 	}
 	
-	[values setValue:val forKey:key];
+	[_values setValue:val forKey:key];
    
 	return val;
 }
 
 -(int)count
 {
-	return [values count];
+	return [_values count];
 }
 
 -(id)keyEnumerator
 {
-	return [values keyEnumerator];
+	return [_values keyEnumerator];
 }
 
 -(void)setValue:(id)value forKey:(NSString *)key
 {
-	[[controller selectedObjects] setValue:value forKey:key];
+	[[_controller selectedObjects] setValue:value forKey:key];
 }
 
 -(NSString*)description
@@ -108,18 +109,26 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 		self];
 }
 
--(void)notifyControllerChange
+-(void)controllerWillChange
 {
-   id keys=[values allKeys];
-   for(id key in keys)
+   [_keys autorelease];
+   _keys=[[_values allKeys] retain];
+   for(id key in _keys)
    {
       [self willChangeValueForKey:key];
    }
-   [values removeAllObjects];
-   for(id key in keys)
+   [_values removeAllObjects];
+}
+
+-(void)controllerDidChange
+{
+   [_values removeAllObjects];
+   for(id key in _keys)
    {
       [self didChangeValueForKey:key];
    }
+   [_keys autorelease];
+   _keys=nil;
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath 
@@ -127,7 +136,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
                         change:(NSDictionary *)change
                        context:(void *)context
 {
-   [values removeObjectForKey:keyPath];
+   [_values removeObjectForKey:keyPath];
 }
 
 - (void)addObserver:(NSObject *)observer forKeyPath:(NSString *)keyPath options:(NSKeyValueObservingOptions)options context:(void *)context
@@ -135,7 +144,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    _NSObservationProxy *proxy=[[_NSObservationProxy alloc] initWithKeyPath:keyPath observer:observer object:self];
    [_observationProxies addObject:proxy];
    
-   [[controller selectedObjects] addObserver:proxy forKeyPath:keyPath options:options context:context];
+   [[_controller selectedObjects] addObserver:proxy forKeyPath:keyPath options:options context:context];
 
    [proxy release];
 }
@@ -146,7 +155,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    int idx=[_observationProxies indexOfObject:proxy];
    [proxy release];
 
-   [[controller selectedObjects] removeObserver:[_observationProxies objectAtIndex:idx] forKeyPath:keyPath];
+   [[_controller selectedObjects] removeObserver:[_observationProxies objectAtIndex:idx] forKeyPath:keyPath];
    
    [_observationProxies removeObjectAtIndex:idx];
 }

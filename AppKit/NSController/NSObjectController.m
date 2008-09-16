@@ -13,7 +13,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "NSObservationProxy.h"
 
 @interface NSObjectController(forward)
--(void)_selectionMayHaveChanged;
+-(void)_selectionWillChange;
+-(void)_selectionDidChange;
+
 @end
 
 @implementation NSObjectController
@@ -44,9 +46,12 @@ triggerChangeNotificationsForDependentKey:@"canRemove"];
 
 - (void)setContent:(id)value {
     if (_content != value) {
+       [self _selectionWillChange];
+       
         [_content release];
         _content = [value retain];
-		[self _selectionMayHaveChanged];
+       
+		[self _selectionDidChange];
     }
 }
 
@@ -70,16 +75,19 @@ triggerChangeNotificationsForDependentKey:@"canRemove"];
 	return [self _defaultNewObject];
 }
 
-
--(void)_selectionMayHaveChanged
+-(void)_selectionWillChange
 {
-	[self willChangeValueForKey:@"selection"];
-   if(_selection)
-   {
-      [_selection notifyControllerChange];
-   }
-   else
+   [self willChangeValueForKey:@"selection"];
+   
+
+}
+
+
+-(void)_selectionDidChange
+{
+   if(!_selection)
       _selection=[[NSControllerSelectionProxy alloc] initWithController:self];
+   [_selection controllerDidChange];
 	[self didChangeValueForKey:@"selection"];	
 }
  

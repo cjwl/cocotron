@@ -13,10 +13,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @interface NSControllerSelectionProxy : NSObject
 {
-	id controller;
-	NSMutableDictionary *values;
+	id _controller;
+	NSMutableDictionary *_values;
    NSMutableArray *_observationProxies;
+   id _keys;
 }
 -(id)initWithController:(id)cont;
--(void)notifyControllerChange;
+-(void)controllerWillChange;
+
+-(void)controllerDidChange;
 @end

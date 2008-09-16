@@ -19,7 +19,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @interface NSObjectController(private)
 -(id)_defaultNewObject;
--(void)_selectionMayHaveChanged;
+-(void)_selectionWillChange;
+-(void)_selectionDidChange;
 @end
 
 @interface NSArrayController(forwardRefs)
@@ -87,7 +88,8 @@ triggerChangeNotificationsForDependentKey:@"selectionIndex"];
 
 -(void)awakeFromNib
 {
-	[self _selectionMayHaveChanged];
+   [self _selectionWillChange];
+   [self _selectionDidChange];
 }
 
 - (BOOL)preservesSelection
@@ -119,8 +121,6 @@ triggerChangeNotificationsForDependentKey:@"selectionIndex"];
 	{
 		[self setSelectionIndexes:oldSelectionIndexes];
 	}
-	
-	[self _selectionMayHaveChanged];
 }
 
 - (id)contentArray {
@@ -211,11 +211,12 @@ triggerChangeNotificationsForDependentKey:@"selectionIndex"];
 	// use isEqualToIndexSet: ?	
     if (_selectionIndexes != value) {
 		[self willChangeValueForKey:@"selectionIndexes"];
-
+       [self _selectionWillChange];
+       
         [_selectionIndexes release];
         _selectionIndexes = [value copy];
-		[self _selectionMayHaveChanged];
-
+       [self _selectionDidChange];
+       
 		[self didChangeValueForKey:@"selectionIndexes"];
 		return YES;
     }
