@@ -247,9 +247,13 @@ static NSDocumentController *shared=nil;
    id    result;
    Class class=[self documentClassForType:type];
 
-   result=[[[class alloc] init] autorelease];
-   [result setFileType:type];
-   [result _setUntitledNumber:nextUntitledNumber++];
+   NSError *error;
+   result=[[[class alloc] initWithType:type error:&error] autorelease];
+   if (result)
+    [result _setUntitledNumber:nextUntitledNumber++];
+   else
+    [self presentError:error];
+
    return result;
 }
 

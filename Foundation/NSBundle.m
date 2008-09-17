@@ -246,7 +246,7 @@ static NSMapTable *pathToObject=NULL;
 
 -(NSDictionary *)localizedInfoDictionary {
    NSUnimplementedMethod();
-   return 0;
+   return [self infoDictionary];
 }
 
 -objectForInfoDictionaryKey:(NSString *)key {

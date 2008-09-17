@@ -15,6 +15,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSData.h>
 #import <Foundation/NSArray.h>
 #import <Foundation/NSConcreteDirectoryEnumerator.h>
+#import <Foundation/NSBundle.h>
+#import <Foundation/NSPathUtilities.h>
 
 NSString *NSFileType = @"NSFileType";
 NSString *NSFileTypeRegular = @"NSFileTypeRegular";
@@ -86,8 +88,17 @@ NSString *NSFileHFSTypeCode = @"NSFileHFSTypeCode";
 }
 
 -(NSString *)displayNameAtPath:(NSString *)path {
-   NSUnimplementedMethod();
-   return 0;
+   NSBundle *bundle=[NSBundle bundleWithPath:path];
+   NSString *name=nil;
+   if(bundle) {
+    NSDictionary *localizedInfo=[bundle localizedInfoDictionary];
+    name=[localizedInfo objectForKey:@"CFBundleDisplayName"];
+    if(!name)
+     name=[localizedInfo objectForKey:@"CFBundleName"];
+   }
+   if(!name)
+    name=[path lastPathComponent];
+   return name;
 }
 
 -(NSDictionary *)fileSystemAttributesAtPath:(NSString *)path {

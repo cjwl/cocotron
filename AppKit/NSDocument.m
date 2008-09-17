@@ -264,10 +264,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(NSString *)displayName {
-   if(_fileURL==nil)
-    return [NSString stringWithFormat:@"Untitled-%d",_untitledNumber];
-   else
+   if(_fileURL==nil) {
+    NSString *bundlePath = [[NSBundle mainBundle] bundlePath];
+    NSString *appName = [[NSFileManager defaultManager] displayNameAtPath:bundlePath]; 
+    if(_untitledNumber > 1)
+     return [NSString stringWithFormat:@"Untitled %d - %@",_untitledNumber,appName];
+    else
+     return [NSString stringWithFormat:@"Untitled - %@",appName];
+   } else {
     return [[_fileURL path] lastPathComponent];
+   }
 }
 
 -(NSWindow *)windowForSheet {
