@@ -171,7 +171,17 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [cell setTitle:[segment label]];
    
    [cell setHighlighted:[segment isSelected]];
+   [cell setEnabled:[segment isEnabled]];
    
+   NSImage *image=[segment image];
+   if(image)
+   {
+      [cell setImage:image];
+      [cell setImagePosition:NSImageLeft];
+      // TODO: image scaling is unimplemented for NSButtonCell
+      // [cell setImageScaling:[segment imageScaling]];
+   }
+
    // TODO: implement setLineBreakMode on NSCell
    //[cell setLineBreakMode:NSLineBreakByTruncatingTail];
    
@@ -213,9 +223,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 - (BOOL)startTrackingAt:(NSPoint)startPoint inView:(NSView *)controlView {
    // save the segment clicked on and its state
    _firstTrackingSegmentIndex=[self _segmentForPoint:[controlView convertPoint:startPoint fromView:nil]];
-   NSSegmentItem *item=[_segments objectAtIndex:_firstTrackingSegmentIndex];
-   _firstTrackingSegmentInitialState=[item isSelected];
-   [item setSelected:!_firstTrackingSegmentInitialState];
+   NSSegmentItem *trackingItem=[_segments objectAtIndex:_firstTrackingSegmentIndex];
+   if(![trackingItem isEnabled])
+      return YES;
+
+   _firstTrackingSegmentInitialState=[trackingItem isSelected];
+   [trackingItem setSelected:!_firstTrackingSegmentInitialState];
 
    [self continueTracking:startPoint at:startPoint inView:controlView];
    return YES;
@@ -224,19 +237,22 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 - (BOOL)continueTracking:(NSPoint)lastPoint at:(NSPoint)currentPoint inView:(NSView *)controlView {
    currentPoint=[controlView convertPoint:currentPoint fromView:nil];
    lastPoint=[controlView convertPoint:lastPoint fromView:nil];
+   
+   NSSegmentItem *trackingItem=[_segments objectAtIndex:_firstTrackingSegmentIndex];
+   if(![trackingItem isEnabled])
+      return YES;
 
    int currentSegmentIdx=[self _segmentForPoint:currentPoint];
    
    // change segments state depending on if inside or outside
    if(currentSegmentIdx==_firstTrackingSegmentIndex)  // we're inside, so switch state relative to initial state
    {
-      [[_segments objectAtIndex:_firstTrackingSegmentIndex] setSelected:!_firstTrackingSegmentInitialState];
+      [trackingItem setSelected:!_firstTrackingSegmentInitialState];
    }
    else  // we're outside, so state is initial state
    {
-      [[_segments objectAtIndex:_firstTrackingSegmentIndex] setSelected:_firstTrackingSegmentInitialState];
+      [trackingItem setSelected:_firstTrackingSegmentInitialState];
    }
-   
    
    [controlView setNeedsDisplayInRect:_lastDrawRect];
 
@@ -245,10 +261,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 - (void)stopTracking:(NSPoint)lastPoint at:(NSPoint)stopPoint inView:(NSView *)controlView mouseIsUp:(BOOL)flag {
    [self continueTracking:lastPoint at:stopPoint inView:controlView];
+   
+   NSSegmentItem *trackingItem=[_segments objectAtIndex:_firstTrackingSegmentIndex];
+   if(![trackingItem isEnabled])
+      return;
 
    _selectedSegment=NSNotFound;
    // if segment is still switched, it'll be the new "selected segment"
-   if([[_segments objectAtIndex:_firstTrackingSegmentIndex] isSelected]!=_firstTrackingSegmentInitialState)
+   if([trackingItem isSelected]!=_firstTrackingSegmentInitialState)
    {
       _selectedSegment=_firstTrackingSegmentIndex;
    }

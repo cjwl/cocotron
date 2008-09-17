@@ -7,18 +7,20 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
 #import <Foundation/NSObject.h>
+#import <AppKit/NSImageCell.h> 
 
 @class NSImage,NSMenu;
 
 @interface NSSegmentItem : NSObject {
-   int       _tag;
-   NSImage  *_image;
-   BOOL      _isEnabled;
-   BOOL      _isSelected;
-   NSString *_label;
-   NSMenu   *_menu;
-   NSString *_toolTip;
-   float     _width;
+   int            _tag;
+   NSImage       *_image;
+   BOOL           _isEnabled;
+   BOOL           _isSelected;
+   NSString      *_label;
+   NSMenu        *_menu;
+   NSString      *_toolTip;
+   float          _width;
+   NSImageScaling _imageScaling;
 }
 
 -(int)tag;
@@ -29,6 +31,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(NSMenu *)menu;
 -(NSString *)toolTip;
 -(float)width;
+-(NSImageScaling)imageScaling;
 
 -(void)setTag:(int)tag;
 -(void)setImage:(NSImage *)image;

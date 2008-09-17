@@ -300,6 +300,7 @@ invocation_closure(ffi_cif* cif, void* result, void** args, void* userdata)
 		{
 			int i, numArgs=[self numberOfArguments];
 			ffi_type** arg_type=NSZoneCalloc(NULL, sizeof(ffi_type*),numArgs);
+
 			ffi_type* ret_type=signature_to_ffi_return_type([self methodReturnType]);
 
 			for(i=0; i<numArgs; i++)
@@ -317,7 +318,9 @@ invocation_closure(ffi_cif* cif, void* result, void** args, void* userdata)
 }
 
 
-#ifdef WINDOWS
+#ifdef WIN32
+
+#include <windows.h>
 
 void *_NSClosureAlloc(unsigned size)
 {
@@ -396,10 +399,13 @@ void _NSClosureProtect(void* closure, unsigned size)
 }
 @end
 
-id throwDoesNotRecognizeException(id object, SEL selector)
+id _objc_throwDoesNotRecognizeException(id object, SEL selector)
 {
 	Class       class=object->isa;
-	OBJCRaiseException("OBJCDoesNotRecognizeSelector","%c[%s %s(%d)]", class->info & CLASS_INFO_META ? '+' : '-', class->name,sel_getName(selector),selector);
+   NSRaiseException(NSInvalidArgumentException,
+                    object, 
+                    selector,
+                    @"Unrecognized selector sent to %p. Break on _objc_throwDoesNotRecognizeException to catch.", object);
 }
 
 IMP objc_forward_ffi(id object, SEL selector)
@@ -408,7 +414,7 @@ IMP objc_forward_ffi(id object, SEL selector)
 	
 	if(sig)
 		return (IMP)[sig _closure];
-	return (IMP)throwDoesNotRecognizeException;
+	return (IMP)_objc_throwDoesNotRecognizeException;
 }
 
 #endif // HAVE_LIBFFI

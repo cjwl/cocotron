@@ -15,7 +15,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 - (id)initWithCoder:(NSCoder *)decoder {
    _label=[[decoder decodeObjectForKey:@"NSSegmentItemLabel"] retain];
-   // NSSegmentItemImageScaling   
+   _image=[[decoder decodeObjectForKey:@"NSSegmentItemImage"] retain];
+   _isEnabled=![decoder decodeBoolForKey:@"NSSegmentItemDisabled"];
+   _imageScaling=[decoder decodeIntForKey:@"NSSegmentItemImageScaling"];
    _isSelected=[decoder decodeBoolForKey:@"NSSegmentItemSelected"];
    _tag=[decoder decodeIntForKey:@"NSSegmentItemTag"];
    _width=[decoder decodeFloatForKey:@"NSSegmentItemWidth"];
@@ -40,6 +42,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(NSImage *)image {
    return _image;
+}
+
+-(NSImageScaling)imageScaling {
+   return _imageScaling;
 }
 
 -(BOOL)isEnabled {
