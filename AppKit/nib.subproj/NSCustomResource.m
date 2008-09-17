@@ -44,8 +44,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     }
    }
 
-   [NSException raise:NSInvalidArgumentException format:@"-[%@ %s] unknown resource %@, with resource class %@",[self class],SELNAME(_cmd),_resourceName,_className];
-
+   NSLog(@"Could not find image named '%@'.", _resourceName);
+   
    return nil;
 }
 
