@@ -277,9 +277,12 @@ static inline RECT transformToRECT(CGAffineTransform matrix,NSRect rect) {
 }
 
 -(void)drawMenuWindowBackgroundInRect:(NSRect)rect {
+   rect.size.width-=1.0;
+   rect.size.height-=1.0;
+
    [[NSColor menuBackgroundColor] setFill];
    NSRectFill(rect);
-   [[NSColor blackColor] setStroke];
+   [[NSColor controlShadowColor] setStroke];
    NSFrameRect(rect);
 }
 
