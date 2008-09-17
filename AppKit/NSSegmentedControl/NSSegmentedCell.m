@@ -168,7 +168,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)drawSegment:(int)idx inFrame:(NSRect)frame withView:(NSView *)view {
    NSSegmentItem *segment=[_segments objectAtIndex:idx];
    NSButtonCell *cell=[NSButtonCell new];
-   [cell setTitle:[segment label]];
+   NSString *label=[segment label];
+   [cell setTitle:label];
    
    [cell setHighlighted:[segment isSelected]];
    [cell setEnabled:[segment isEnabled]];
@@ -177,7 +178,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    if(image)
    {
       [cell setImage:image];
-      [cell setImagePosition:NSImageLeft];
+      if([label length])
+      {
+         [cell setImagePosition:NSImageLeft];
+      }
+      else
+      {
+         // center if no label
+         [cell setImagePosition:NSImageOnly];
+      }
       // TODO: image scaling is unimplemented for NSButtonCell
       // [cell setImageScaling:[segment imageScaling]];
    }
