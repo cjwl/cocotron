@@ -10,7 +10,6 @@
 #import <Foundation/NSRecursiveLock.h>
 #import <Foundation/NSValue.h>
 
-
 #define NUM_CHAINS 16
 #define ID_HASH(a) (((int)a >> 5) & (NUM_CHAINS - 1))
 
@@ -23,6 +22,7 @@ typedef struct LockChain
 	{
 		id lock;
 		id object;
+      unsigned owningThreads;
 		struct LockChain *next;
 	} LockChain;
 
@@ -36,10 +36,11 @@ void _NSInitializeSynchronizedDirective()
       lockChainLock=NSZoneCalloc(NULL, NUM_CHAINS, sizeof(id));
       for(i=0; i<NUM_CHAINS; i++)
       {
-         allLocks[i]=NSZoneMalloc(NULL, sizeof(LockChain));
+         allLocks[i]=NSZoneCalloc(NULL, 1, sizeof(LockChain));
 
          allLocks[i]->object=0;
          allLocks[i]->next=0;
+         allLocks[i]->owningThreads=0;
          allLocks[i]->lock=[NSRecursiveLock new];
 
          lockChainLock[i]=[NSLock new];
@@ -56,22 +57,11 @@ enum {
 
 LockChain* lockForObject(id object, BOOL entering)
 {
-	LockChain *result=allLocks[ID_HASH(object)];
    NSLock *chainLock=lockChainLock[ID_HASH(object)];
+	LockChain *result=allLocks[ID_HASH(object)];
 	LockChain *firstFree=NULL;
-   
-   if(!entering)
-   {
-    	while(result)
-      {
-         if(result->object==object)
-            return result;
-         result=result->next;
-      }
-      return NULL;
-   }
 
-	[chainLock lock];
+   [chainLock lock];
 
 	while(result)
 	{
@@ -82,6 +72,9 @@ LockChain* lockForObject(id object, BOOL entering)
       result=result->next;
 	}
 
+   if(!entering)
+      goto done;
+
 	if(firstFree)
 	{
 		firstFree->object=object;
@@ -89,14 +82,29 @@ LockChain* lockForObject(id object, BOOL entering)
 		goto done;
 	}
 
-	result=NSZoneMalloc(NULL, sizeof(LockChain));
+	result=NSZoneCalloc(NULL, 1, sizeof(LockChain));
 	result->object=object;
+   result->owningThreads=0;
 	result->next=allLocks[ID_HASH(object)];
 	result->lock=[NSRecursiveLock new];
 	allLocks[ID_HASH(object)]=result;
 
 done:
 
+   if(entering)
+   {
+      result->owningThreads++;
+   }
+   else
+   {
+      if(result)
+      {
+         result->owningThreads--;
+         if(result->owningThreads==0)
+            result->object=NULL;
+      }
+   }
+   
 	[chainLock unlock];
 	return result;
 }
@@ -109,11 +117,11 @@ FOUNDATION_EXPORT int objc_sync_enter(id obj)
 		return OBJC_SYNC_NOT_INITIALIZED;
 
 	LockChain *result=lockForObject(obj, YES);
-
-	[result->lock lock];
-	return OBJC_SYNC_SUCCESS;
+      
+   [result->lock lock];
+   
+   return OBJC_SYNC_SUCCESS;
 }
-
 
 FOUNDATION_EXPORT int objc_sync_exit(id obj)
 {
@@ -124,10 +132,13 @@ FOUNDATION_EXPORT int objc_sync_exit(id obj)
 
 	LockChain *result=lockForObject(obj, NO);
    if(!result)
+   {
+      // this may happen only in the case where locking was initialized after a sync_enter,
+      // but before the corresponding sync_exit.
 		return OBJC_SYNC_NOT_INITIALIZED;
-
-	result->object=NULL;
-	[result->lock unlock];
+   }
+   
+   [result->lock unlock];
 
 	return OBJC_SYNC_SUCCESS;
 }
