@@ -538,7 +538,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    if([[self colorSpaceName] isEqualToString:colorSpace])
     return self;
 
-   return nil;
+   //NSLog(@"Warning, ignoring differences between color space %@ and %@", colorSpace, [self colorSpaceName]);
+   return self;
 }
 
 -(NSColor *)blendedColorWithFraction:(float)fraction ofColor:(NSColor *)color {

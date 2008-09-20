@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		36570F9B0E818CD5008FE1BE /* NSGradient.m in Sources */ = {isa = PBXBuildFile; fileRef = 36570F990E818CD5008FE1BE /* NSGradient.m */; };
+		365710650E81A10E008FE1BE /* NSGradient.h in Headers */ = {isa = PBXBuildFile; fileRef = 36570F980E818CD5008FE1BE /* NSGradient.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C8C52C8F0E7ED1FF003F03B5 /* NSObservationProxy.h in Headers */ = {isa = PBXBuildFile; fileRef = C8C52C8D0E7ED1FF003F03B5 /* NSObservationProxy.h */; };
 		C8C52C900E7ED1FF003F03B5 /* NSObservationProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = C8C52C8E0E7ED1FF003F03B5 /* NSObservationProxy.m */; };
 		FE01A80B0C5D9BCB00AEA51A /* AppKitExport.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B53FA0976075200DA0954 /* AppKitExport.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
@@ -813,6 +815,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		36570F980E818CD5008FE1BE /* NSGradient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSGradient.h; sourceTree = "<group>"; };
+		36570F990E818CD5008FE1BE /* NSGradient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSGradient.m; sourceTree = "<group>"; };
 		6E14EC6509A3C40F009C8693 /* NSTIFFImageFileDirectory.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = NSTIFFImageFileDirectory.h; path = CoreGraphics.subproj/NSTIFFImageFileDirectory.h; sourceTree = "<group>"; };
 		6E14EC6609A3C40F009C8693 /* NSTIFFImageFileDirectory.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = NSTIFFImageFileDirectory.m; path = CoreGraphics.subproj/NSTIFFImageFileDirectory.m; sourceTree = "<group>"; };
 		6E14EC6709A3C40F009C8693 /* NSTIFFReader.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = NSTIFFReader.h; path = CoreGraphics.subproj/NSTIFFReader.h; sourceTree = "<group>"; };
@@ -1696,6 +1700,8 @@
 				FE2A10C60B45BAC8006C03DE /* NSGlyphGenerator.m */,
 				FE2A10CD0B45BAE2006C03DE /* NSGlyphInfo.h */,
 				FE2A10CE0B45BAE2006C03DE /* NSGlyphInfo.m */,
+				36570F980E818CD5008FE1BE /* NSGradient.h */,
+				36570F990E818CD5008FE1BE /* NSGradient.m */,
 				6E2B54520976075200DA0954 /* NSGraphics.h */,
 				6E2B53770976075200DA0954 /* NSGraphics.m */,
 				6E2B54540976075200DA0954 /* NSGraphicsContext.h */,
@@ -2958,6 +2964,7 @@
 				FEF35E270E6DC186000BD639 /* NSColor-Private.h in Headers */,
 				FEA965B40E7EA97500413F40 /* NSBitmapImageRep-Private.h in Headers */,
 				C8C52C8F0E7ED1FF003F03B5 /* NSObservationProxy.h in Headers */,
+				365710650E81A10E008FE1BE /* NSGradient.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3473,6 +3480,7 @@
 				FEF9CCC40E1416C4003502ED /* KGContext_builtin_gdi.m in Sources */,
 				FE66F0060E513AE8006C5796 /* CGImageProperties.m in Sources */,
 				C8C52C900E7ED1FF003F03B5 /* NSObservationProxy.m in Sources */,
+				36570F9B0E818CD5008FE1BE /* NSGradient.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

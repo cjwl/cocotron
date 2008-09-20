@@ -211,7 +211,8 @@ static inline void appendFloat(NSStringBuffer *buffer,double value,
     double   integral,fractional,power;
     unsigned i,j,length=0;
     unichar  characters[100];
-    unichar  sign=(value<0)?'-':plusSign?'+':spaceSign?' ':'\0';
+    // copysign will give the correct result for negatve zero
+    unichar  sign=(copysign(1.0,value)<0)?'-':plusSign?'+':spaceSign?' ':'\0';
 
     if (value != 0.0)
     {

@@ -58,6 +58,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     *alpha = _alpha;
 }
 
+- (void)getRed:(float *)red green:(float *)green blue:(float *)blue alpha:(float *)alpha
+{
+	if (red)   *red = _white;
+	if (green) *green = _white;
+	if (blue)  *blue = _white;
+	if (alpha) *alpha = _alpha;
+}
+
 -(float)alphaComponent {
    return _alpha;
 }
