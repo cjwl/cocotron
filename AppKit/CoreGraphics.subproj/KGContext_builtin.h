@@ -107,4 +107,6 @@ void KGRasterizeSetBlendMode(KGRasterizer *self,CGBlendMode blendMode);
 void KGRasterizeSetMask(KGRasterizer *self,KGSurface* mask);
 void KGRasterizeSetPaint(KGRasterizer *self,KGPaint* paint);
 
+void KGBlendSpanNormal_8888_coverage(KGRGBA8888 *src,KGRGBA8888 *dst,int coverage,int length);
+
 @end

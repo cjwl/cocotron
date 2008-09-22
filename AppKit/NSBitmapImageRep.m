@@ -322,10 +322,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return nil;
 }
 
--(CGImageRef)CGImage {
-   if(_image!=NULL)
-    return _image;
-
+-(CGImageRef)createCGImage {
    if(_isPlanar)
     NSUnimplementedMethod();
     
@@ -337,11 +334,25 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
   return [image autorelease];
 }
 
+-(CGImageRef)CGImage {
+   if(_image!=NULL)
+    return _image;
+    
+   return [[self createCGImage] autorelease];
+}
+
 -(BOOL)draw {
    CGContextRef context=NSCurrentGraphicsPort();
    NSSize size=[self size];
+   CGImageRef image=[_image retain];
+   
+   if(image==nil)
+    image=[self createCGImage];
 
-   CGContextDrawImage(context,NSMakeRect(0,0,size.width,size.height),[self CGImage]);
+   CGContextDrawImage(context,NSMakeRect(0,0,size.width,size.height),image);
+   
+   CGImageRelease(image);
+   
    return YES;
 }
 
@@ -357,17 +368,21 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(CGBitmapInfo)CGBitmapInfo {
    CGBitmapInfo result=kCGBitmapByteOrderDefault;
    
-   if(_bitmapFormat&NSAlphaFirstBitmapFormat){
-    if(_bitmapFormat&NSAlphaNonpremultipliedBitmapFormat)
-     result|=kCGImageAlphaFirst;
-    else
-     result|=kCGImageAlphaPremultipliedFirst;
-   }
+   if(![self hasAlpha])
+    result|=kCGImageAlphaNone;
    else {
-    if(_bitmapFormat&NSAlphaNonpremultipliedBitmapFormat)
-     result|=kCGImageAlphaLast;
-    else
-     result|=kCGImageAlphaPremultipliedLast;
+    if(_bitmapFormat&NSAlphaFirstBitmapFormat){
+     if(_bitmapFormat&NSAlphaNonpremultipliedBitmapFormat)
+      result|=kCGImageAlphaFirst;
+     else
+      result|=kCGImageAlphaPremultipliedFirst;
+    }
+    else {
+     if(_bitmapFormat&NSAlphaNonpremultipliedBitmapFormat)
+      result|=kCGImageAlphaLast;
+     else
+      result|=kCGImageAlphaPremultipliedLast;
+    }
    }
    if(_bitmapFormat&NSFloatingPointSamplesBitmapFormat)
     result|=kCGBitmapFloatComponents;
