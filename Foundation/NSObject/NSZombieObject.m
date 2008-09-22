@@ -6,10 +6,10 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
-// Original - Christopher Lloyd <cjwl@objc.net>
 #import <Foundation/NSZombieObject.h>
 #import <Foundation/NSMapTable.h>
 #import <Foundation/NSString.h>
+#import <Foundation/NSInvocation.h>
 
 static NSMapTable *objectToClassName=NULL;
 
@@ -25,9 +25,20 @@ void NSRegisterZombie(NSObject *object) {
 
 @implementation NSZombieObject
 
+-(NSMethodSignature *)methodSignatureForSelector:(SEL)selector {
+   Class cls=NSMapGet(objectToClassName,self);
+   
+   NSLog(@"-[NSZombieObject %x methodSignatureForSelector:%s] %s",self,SELNAME(selector),OBJCStringFromClass((Class)NSMapGet(objectToClassName,self)));
+   
+   return [cls instanceMethodSignatureForSelector:selector];
+}
+
+-(void)forwardInvocation:(NSInvocation *)invocation {
+   NSLog(@"-[NSZombieObject %x forwardInvocation:%s] %s",self,SELNAME([invocation selector]),OBJCStringFromClass((Class)NSMapGet(objectToClassName,self)));
+}
+
 -(id)forwardSelector:(SEL)selector arguments:(void *)arguments {
-   NSLog(@"-[NSZombieObject %x %s] %s",self,SELNAME(selector),
-     OBJCStringFromClass((Class)NSMapGet(objectToClassName,self)));
+   NSLog(@"-[NSZombieObject %x %s] %s",self,SELNAME(selector),OBJCStringFromClass((Class)NSMapGet(objectToClassName,self)));
    return nil;
 }
 

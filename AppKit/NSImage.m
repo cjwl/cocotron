@@ -136,6 +136,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return self;
 }
 
+-init {
+   return [self initWithSize:NSMakeSize(0,0)];
+}
+
 -initWithData:(NSData *)data {
    NSUnimplementedMethod();
    return nil;
@@ -193,6 +197,18 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(NSSize)size {
+   if(_size.width==0.0 && _size.height==0.0){
+    int i,count=[_representations count];
+    
+    for(i=0;i<count;i++){
+     NSImageRep *check=[_representations objectAtIndex:i];
+     NSSize      checkSize=[check size];
+    
+     if(checkSize.width!=0.0 && checkSize.height!=0.0)
+      return checkSize;
+    }
+   }
+   
    return _size;
 }
 

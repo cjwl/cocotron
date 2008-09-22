@@ -331,7 +331,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
   CGImageRef image=CGImageCreate(_pixelsWide,_pixelsHigh,_bitsPerPixel/_samplesPerPixel,_bitsPerPixel,_bytesPerRow,[self CGColorSpace],
      [self CGBitmapInfo],provider,NULL,NO,kCGRenderingIntentDefault);
      
-  return [image autorelease];
+  return image;
 }
 
 -(CGImageRef)CGImage {
