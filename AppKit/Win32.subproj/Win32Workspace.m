@@ -8,6 +8,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <AppKit/Win32Workspace.h>
 #import <Foundation/NSString_win32.h>
+#import <AppKit/NSBitmapImageRep.h>
+#import <AppKit/NSColor.h>
+#import <AppKit/NSImage.h>
 #import <windows.h>
 #import <shellapi.h>
 
@@ -56,19 +59,94 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    NSUnimplementedMethod();
 }
 
+static NSImageRep *imageRepForIcon(SHFILEINFO * fileInfo) {
+   NSBitmapImageRep *bitmap;
+   ICONINFO iconInfo;
+   BITMAP bmp;
+   size_t masklen;
+   unsigned char *mask;
+   size_t pixelslen;
+   unsigned char *pixels;
+   int i, x, y, bit, hasAlpha;
+
+   GetIconInfo(fileInfo->hIcon, &iconInfo);
+
+   GetObject(iconInfo.hbmMask, sizeof(BITMAP), (void *) &bmp);
+   masklen = bmp.bmWidth * bmp.bmHeight * bmp.bmBitsPixel / 8;
+   mask = malloc(masklen);
+   GetBitmapBits(iconInfo.hbmMask, masklen, mask);
+
+   GetObject(iconInfo.hbmColor, sizeof(BITMAP), (void *) &bmp);
+   pixelslen = bmp.bmWidth * bmp.bmHeight * bmp.bmBitsPixel / 8;
+   pixels = malloc(pixelslen);
+   GetBitmapBits(iconInfo.hbmColor, pixelslen, pixels);
+
+   hasAlpha = 0;
+   for (i = 0; i < pixelslen; i+=4) {
+    if (pixels[i+3]) {
+     hasAlpha = 1;
+     break;
+    }
+   }
+
+#define BIT_SET(x,y) (((x) >> (8-(y))) & 1)
+
+   if (!hasAlpha) {
+    for (i = 0; i < masklen; i++) {
+     for (bit = 0; bit < 8; bit++) {
+      if (BIT_SET(mask[i], bit)) {
+       pixels[(i*8+bit)*4+3] = 0;
+      } else {
+       pixels[(i*8+bit)*4+3] = 255;
+      }
+     }
+    }
+   }
+
+   bitmap = [[[NSBitmapImageRep alloc] initWithBitmapDataPlanes:NULL
+    pixelsWide:bmp.bmWidth
+    pixelsHigh:bmp.bmHeight
+    bitsPerSample:8
+    samplesPerPixel:4
+    hasAlpha:YES
+    isPlanar:NO
+    colorSpaceName:NSCalibratedRGBColorSpace
+    bytesPerRow:bmp.bmWidth*4
+    bitsPerPixel:32] autorelease];
+
+   for (y = 0; y < bmp.bmHeight; y++)
+   {
+    for (x = 0; x < bmp.bmWidth; x++)
+    {
+     float b = (float) pixels[4*(y*bmp.bmWidth + x)+0] / 255.0f;
+     float g = (float) pixels[4*(y*bmp.bmWidth + x)+1] / 255.0f;
+     float r = (float) pixels[4*(y*bmp.bmWidth + x)+2] / 255.0f;
+     float a = (float) pixels[4*(y*bmp.bmWidth + x)+3] / 255.0f;
+     NSColor *color = [NSColor colorWithCalibratedRed:r green:g blue:b alpha:a];
+     [bitmap setColor:color atX:x y:y];
+    }
+   }
+
+   free(mask);
+   free(pixels);
+   DeleteObject(iconInfo.hbmMask);
+   DeleteObject(iconInfo.hbmColor);
+
+   return bitmap;
+}
+
 -(NSImage *)iconForFile:(NSString *)path {
    const char *pathCString=[path fileSystemRepresentation];
    SHFILEINFO fileInfo;
-   
-   if(!SHGetFileInfo(pathCString,0,&fileInfo,sizeof(SHFILEINFO),SHGFI_ICON|SHGFI_LARGEICON))
-    return nil;
 
-/*
-  get dimensions of icon, draw icon, put result in NSImage
- */
-   DestroyIcon(fileInfo.hIcon);
-   
-   return nil;
+   NSImage *icon=[[[NSImage alloc] init] autorelease];
+
+   if(SHGetFileInfo(pathCString,0,&fileInfo,sizeof(SHFILEINFO),SHGFI_ICON|SHGFI_SMALLICON))
+    [icon addRepresentation:imageRepForIcon(&fileInfo)];
+   if(SHGetFileInfo(pathCString,0,&fileInfo,sizeof(SHFILEINFO),SHGFI_ICON|SHGFI_LARGEICON))
+    [icon addRepresentation:imageRepForIcon(&fileInfo)];
+
+   return ([[icon representations] count]?icon:nil);
 }
 
 @end

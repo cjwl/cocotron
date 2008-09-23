@@ -69,8 +69,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     if(_styleMask&NSClosableWindowMask)
      result|=WS_CAPTION;
 
-    if(_styleMask&NSMiniaturizableWindowMask && !_isPanel)
-     result|=WS_MINIMIZEBOX|WS_MAXIMIZEBOX;
+    if(_styleMask&NSMiniaturizableWindowMask && !_isPanel){
+     result|=WS_MINIMIZEBOX;
+     if(_styleMask&NSResizableWindowMask)
+      result|=WS_MAXIMIZEBOX;
+    }
 
     if(_styleMask&NSResizableWindowMask)
      result|=WS_THICKFRAME;
