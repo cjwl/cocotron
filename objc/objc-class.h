@@ -115,5 +115,7 @@ typedef struct objc_class {
 
 OBJC_EXPORT Ivar class_getInstanceVariable(Class class,const char *variableName);
 OBJC_EXPORT void class_addMethods(Class class,struct objc_method_list *methodList);
+OBJC_EXPORT Method class_getClassMethod(Class class, SEL sel);
+OBJC_EXPORT Method class_getInstanceMethod(Class class, SEL sel);
 
 OBJC_EXPORT struct objc_method_list *class_nextMethodList(Class class,void **iterator);

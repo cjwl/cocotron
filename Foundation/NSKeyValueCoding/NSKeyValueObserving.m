@@ -643,30 +643,18 @@ CHANGE_DECLARATION(SEL)
 	struct objc_method *newMethods=calloc(sizeof(struct objc_method), maxMethods);
 	int currentMethod=0;
 
-#if 1 // Cocotron
 	{
 		// override className so it returns the original class name
 		struct objc_method *newMethod=&newMethods[currentMethod];
+      
+      Method className=class_getInstanceMethod([self class], @selector(_KVO_className));
 		
 		newMethod->method_name=@selector(className);
-		newMethod->method_types=@encode(id*(id, SEL));
-		newMethod->method_imp=[self methodForSelector:@selector(_KVO_className)];
+		newMethod->method_types=strdup(className->method_types);
+		newMethod->method_imp=className->method_imp;
 		
 		currentMethod++;
 	}
-#else // Apple
-	if(0)
-	{
-		// override className so it returns the original class name
-		struct objc_method *newMethod=&newMethods[currentMethod];
-		
-		newMethod->method_name=@selector(className);
-		newMethod->method_types=@encode(typeof(objc_msgSend));
-		newMethod->method_imp=[self methodForSelector:@selector(_KVO_className)];
-		
-		currentMethod++;
-	}
-#endif
 	
 	void *iterator=0;
 	Class currentClass=isa;	

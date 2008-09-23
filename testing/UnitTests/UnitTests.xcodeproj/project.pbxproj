@@ -8,25 +8,32 @@
 
 /* Begin PBXBuildFile section */
 		8D5B49B0048680CD000E48DA /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C167DFE841241C02AAC07 /* InfoPlist.strings */; };
-		998CA8490E6C3741009B2664 /* FileHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 998CA8480E6C3741009B2664 /* FileHandle.m */; };
 		998CA84A0E6C3741009B2664 /* FileHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 998CA8480E6C3741009B2664 /* FileHandle.m */; };
 		998CA84B0E6C3741009B2664 /* FileHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 998CA8480E6C3741009B2664 /* FileHandle.m */; };
-		C80F9AE60E58BD7E00ECD487 /* MessageBenchmark.m in Sources */ = {isa = PBXBuildFile; fileRef = C80F9AE50E58BD7E00ECD487 /* MessageBenchmark.m */; settings = {COMPILER_FLAGS = "-fno-objc-msgsend"; }; };
-		C80F9B7B0E58C93800ECD487 /* MessageSend.m in Sources */ = {isa = PBXBuildFile; fileRef = C80F9B7A0E58C93800ECD487 /* MessageSend.m */; settings = {COMPILER_FLAGS = "-fobjc-msgsend"; }; };
-		C80F9D170E59E45100ECD487 /* CrashCatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = C80F9D160E59E45100ECD487 /* CrashCatcher.m */; };
+		C80B6CB90E894CC30003C60D /* Properties.m in Sources */ = {isa = PBXBuildFile; fileRef = C827EB3A0DB63FFA00360D99 /* Properties.m */; };
+		C80B6D150E8951C60003C60D /* MessageSendTorture.m in Sources */ = {isa = PBXBuildFile; fileRef = C8EA12250E893B1F0051F4DF /* MessageSendTorture.m */; };
+		C80B6D370E8952A70003C60D /* Array.m in Sources */ = {isa = PBXBuildFile; fileRef = C8CB8CAE0DD34DA6005C1BAC /* Array.m */; };
+		C80B6D380E8952A90003C60D /* FileHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 998CA8480E6C3741009B2664 /* FileHandle.m */; };
+		C80B6D390E8952AA0003C60D /* ForEach.m in Sources */ = {isa = PBXBuildFile; fileRef = C88B859B0DB90282000A8500 /* ForEach.m */; };
+		C80B6D3A0E8952AC0003C60D /* Forwarding.m in Sources */ = {isa = PBXBuildFile; fileRef = C88B86D90DBA0305000A8500 /* Forwarding.m */; };
+		C80B6D3B0E8952B00003C60D /* KVC.m in Sources */ = {isa = PBXBuildFile; fileRef = C8C802800DB51FEF0089C0D7 /* KVC.m */; };
+		C80B6D3C0E8952B10003C60D /* KVO.m in Sources */ = {isa = PBXBuildFile; fileRef = C88470DA0DD3A9F600853747 /* KVO.m */; };
+		C80B6D3D0E8952B30003C60D /* MessageBenchmark.m in Sources */ = {isa = PBXBuildFile; fileRef = C80F9AE50E58BD7E00ECD487 /* MessageBenchmark.m */; };
+		C80B6D3E0E8952B70003C60D /* MessageSend.m in Sources */ = {isa = PBXBuildFile; fileRef = C80F9B7A0E58C93800ECD487 /* MessageSend.m */; };
+		C80B6D3F0E8952B90003C60D /* NewStyleExceptions.m in Sources */ = {isa = PBXBuildFile; fileRef = C8A24EBB0DDB468700953459 /* NewStyleExceptions.m */; };
+		C80B6D400E8952BA0003C60D /* ObjCXXExceptions.mm in Sources */ = {isa = PBXBuildFile; fileRef = C84F02C20E1F8F17000C03D6 /* ObjCXXExceptions.mm */; };
+		C80B6D410E8952BD0003C60D /* PropertyListUnarchiving.m in Sources */ = {isa = PBXBuildFile; fileRef = C8A3931D0E48B72300A9C289 /* PropertyListUnarchiving.m */; };
+		C80B6D420E8952C00003C60D /* RetainRelease.m in Sources */ = {isa = PBXBuildFile; fileRef = C8EA0F860E85665B0051F4DF /* RetainRelease.m */; };
+		C80B6D430E8952C10003C60D /* Runloop.m in Sources */ = {isa = PBXBuildFile; fileRef = C81F5A3F0DD22B94006F82C7 /* Runloop.m */; };
+		C80B6D440E8952C50003C60D /* SizeAndAlignment.m in Sources */ = {isa = PBXBuildFile; fileRef = C8C031A30DBB4F7D00558D7B /* SizeAndAlignment.m */; };
 		C80F9D180E59E45100ECD487 /* CrashCatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = C80F9D160E59E45100ECD487 /* CrashCatcher.m */; };
 		C80F9D190E59E45100ECD487 /* CrashCatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = C80F9D160E59E45100ECD487 /* CrashCatcher.m */; };
-		C813609D0DC4A5D800EAFF07 /* Forwarding.m in Sources */ = {isa = PBXBuildFile; fileRef = C88B86D90DBA0305000A8500 /* Forwarding.m */; };
-		C827EA570DB62A9200360D99 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C827EA560DB62A9200360D99 /* SenTestingKit.framework */; };
 		C827EB3B0DB63FFA00360D99 /* Properties.m in Sources */ = {isa = PBXBuildFile; fileRef = C827EB3A0DB63FFA00360D99 /* Properties.m */; };
-		C827EB3C0DB63FFA00360D99 /* Properties.m in Sources */ = {isa = PBXBuildFile; fileRef = C827EB3A0DB63FFA00360D99 /* Properties.m */; };
 		C84DA1BE0DB8D896000CD913 /* README in Resources */ = {isa = PBXBuildFile; fileRef = C84DA1BD0DB8D896000CD913 /* README */; };
 		C84DA1BF0DB8D896000CD913 /* README in Resources */ = {isa = PBXBuildFile; fileRef = C84DA1BD0DB8D896000CD913 /* README */; };
-		C84F02C40E1F8F17000C03D6 /* ObjCXXExceptions.mm in Sources */ = {isa = PBXBuildFile; fileRef = C84F02C20E1F8F17000C03D6 /* ObjCXXExceptions.mm */; };
 		C84F02C50E1F8F17000C03D6 /* ObjCXXExceptions.mm in Sources */ = {isa = PBXBuildFile; fileRef = C84F02C20E1F8F17000C03D6 /* ObjCXXExceptions.mm */; };
 		C84F07270E20EC7A000C03D6 /* ObjCXXExceptions.mm in Sources */ = {isa = PBXBuildFile; fileRef = C84F02C20E1F8F17000C03D6 /* ObjCXXExceptions.mm */; };
 		C84F07620E20F089000C03D6 /* Forwarding.m in Sources */ = {isa = PBXBuildFile; fileRef = C88B86D90DBA0305000A8500 /* Forwarding.m */; };
-		C850BE140DBAA27C005F1047 /* KVC.m in Sources */ = {isa = PBXBuildFile; fileRef = C8C802800DB51FEF0089C0D7 /* KVC.m */; };
 		C850BE150DBAA27D005F1047 /* KVC.m in Sources */ = {isa = PBXBuildFile; fileRef = C8C802800DB51FEF0089C0D7 /* KVC.m */; };
 		C85D1F800DBBBAD7005A5FD6 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C167DFE841241C02AAC07 /* InfoPlist.strings */; };
 		C85D1F810DBBBAD7005A5FD6 /* README in Resources */ = {isa = PBXBuildFile; fileRef = C84DA1BD0DB8D896000CD913 /* README */; };
@@ -36,30 +43,30 @@
 		C85D1F880DBBBAD7005A5FD6 /* SizeAndAlignment.m in Sources */ = {isa = PBXBuildFile; fileRef = C8C031A30DBB4F7D00558D7B /* SizeAndAlignment.m */; };
 		C85D1F8B0DBBBAD7005A5FD6 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 089C1672FE841209C02AAC07 /* Foundation.framework */; };
 		C85D1F8C0DBBBAD7005A5FD6 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C827EA560DB62A9200360D99 /* SenTestingKit.framework */; };
-		C88470DB0DD3A9F600853747 /* KVO.m in Sources */ = {isa = PBXBuildFile; fileRef = C88470DA0DD3A9F600853747 /* KVO.m */; };
 		C88470DC0DD3A9F600853747 /* KVO.m in Sources */ = {isa = PBXBuildFile; fileRef = C88470DA0DD3A9F600853747 /* KVO.m */; };
-		C88B859C0DB90282000A8500 /* ForEach.m in Sources */ = {isa = PBXBuildFile; fileRef = C88B859B0DB90282000A8500 /* ForEach.m */; };
 		C88B859D0DB90282000A8500 /* ForEach.m in Sources */ = {isa = PBXBuildFile; fileRef = C88B859B0DB90282000A8500 /* ForEach.m */; };
 		C88B86DB0DBA0305000A8500 /* Forwarding.m in Sources */ = {isa = PBXBuildFile; fileRef = C88B86D90DBA0305000A8500 /* Forwarding.m */; };
-		C8A24EBD0DDB468800953459 /* NewStyleExceptions.m in Sources */ = {isa = PBXBuildFile; fileRef = C8A24EBB0DDB468700953459 /* NewStyleExceptions.m */; };
 		C8A24EBE0DDB468800953459 /* NewStyleExceptions.m in Sources */ = {isa = PBXBuildFile; fileRef = C8A24EBB0DDB468700953459 /* NewStyleExceptions.m */; };
 		C8A24EBF0DDB468800953459 /* NewStyleExceptions.m in Sources */ = {isa = PBXBuildFile; fileRef = C8A24EBB0DDB468700953459 /* NewStyleExceptions.m */; };
 		C8A392CA0E48B20F00A9C289 /* XML.plist in Resources */ = {isa = PBXBuildFile; fileRef = C8A392C90E48B20F00A9C289 /* XML.plist */; };
 		C8A392CB0E48B20F00A9C289 /* XML.plist in Resources */ = {isa = PBXBuildFile; fileRef = C8A392C90E48B20F00A9C289 /* XML.plist */; };
 		C8A392CC0E48B20F00A9C289 /* XML.plist in Resources */ = {isa = PBXBuildFile; fileRef = C8A392C90E48B20F00A9C289 /* XML.plist */; };
 		C8A392D80E48B26200A9C289 /* Binary.plist in Resources */ = {isa = PBXBuildFile; fileRef = C8A392D70E48B26200A9C289 /* Binary.plist */; };
-		C8A392D90E48B26200A9C289 /* Binary.plist in Resources */ = {isa = PBXBuildFile; fileRef = C8A392D70E48B26200A9C289 /* Binary.plist */; };
 		C8A392DA0E48B26200A9C289 /* Binary.plist in Resources */ = {isa = PBXBuildFile; fileRef = C8A392D70E48B26200A9C289 /* Binary.plist */; };
 		C8A3931E0E48B72300A9C289 /* PropertyListUnarchiving.m in Sources */ = {isa = PBXBuildFile; fileRef = C8A3931D0E48B72300A9C289 /* PropertyListUnarchiving.m */; };
-		C8A3931F0E48B72300A9C289 /* PropertyListUnarchiving.m in Sources */ = {isa = PBXBuildFile; fileRef = C8A3931D0E48B72300A9C289 /* PropertyListUnarchiving.m */; };
 		C8A393200E48B72300A9C289 /* PropertyListUnarchiving.m in Sources */ = {isa = PBXBuildFile; fileRef = C8A3931D0E48B72300A9C289 /* PropertyListUnarchiving.m */; };
 		C8AEE9D60E7932FD00248617 /* Array.m in Sources */ = {isa = PBXBuildFile; fileRef = C8CB8CAE0DD34DA6005C1BAC /* Array.m */; };
-		C8C031A40DBB4F7D00558D7B /* SizeAndAlignment.m in Sources */ = {isa = PBXBuildFile; fileRef = C8C031A30DBB4F7D00558D7B /* SizeAndAlignment.m */; };
 		C8C031A50DBB4F7E00558D7B /* SizeAndAlignment.m in Sources */ = {isa = PBXBuildFile; fileRef = C8C031A30DBB4F7D00558D7B /* SizeAndAlignment.m */; };
 		C8C8030F0DB52A010089C0D7 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 089C167FFE841241C02AAC07 /* AppKit.framework */; };
 		C8C803100DB52A010089C0D7 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 089C1672FE841209C02AAC07 /* Foundation.framework */; };
-		C8CB8CAF0DD34DA6005C1BAC /* Array.m in Sources */ = {isa = PBXBuildFile; fileRef = C8CB8CAE0DD34DA6005C1BAC /* Array.m */; };
 		C8CB8CB00DD34DA6005C1BAC /* Array.m in Sources */ = {isa = PBXBuildFile; fileRef = C8CB8CAE0DD34DA6005C1BAC /* Array.m */; };
+		C8EA0F880E85665B0051F4DF /* RetainRelease.m in Sources */ = {isa = PBXBuildFile; fileRef = C8EA0F860E85665B0051F4DF /* RetainRelease.m */; };
+		C8EA0F890E85665B0051F4DF /* RetainRelease.m in Sources */ = {isa = PBXBuildFile; fileRef = C8EA0F860E85665B0051F4DF /* RetainRelease.m */; };
+		C8EA12270E893B1F0051F4DF /* MessageSendTorture.m in Sources */ = {isa = PBXBuildFile; fileRef = C8EA12250E893B1F0051F4DF /* MessageSendTorture.m */; };
+		C8EA12280E893B1F0051F4DF /* MessageSendTorture.m in Sources */ = {isa = PBXBuildFile; fileRef = C8EA12250E893B1F0051F4DF /* MessageSendTorture.m */; };
+		C8EA126C0E8941490051F4DF /* CrashCatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = C80F9D160E59E45100ECD487 /* CrashCatcher.m */; };
+		C8EA126E0E89414E0051F4DF /* Binary.plist in Resources */ = {isa = PBXBuildFile; fileRef = C8A392D70E48B26200A9C289 /* Binary.plist */; };
+		C8EA126F0E8941580051F4DF /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C827EA560DB62A9200360D99 /* SenTestingKit.framework */; };
 		C8F971D10E6AD503007CBB04 /* MessageBenchmark.m in Sources */ = {isa = PBXBuildFile; fileRef = C80F9AE50E58BD7E00ECD487 /* MessageBenchmark.m */; };
 		C8F971D20E6AD503007CBB04 /* MessageSend.m in Sources */ = {isa = PBXBuildFile; fileRef = C80F9B7A0E58C93800ECD487 /* MessageSend.m */; };
 /* End PBXBuildFile section */
@@ -144,6 +151,10 @@
 		C8C802800DB51FEF0089C0D7 /* KVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KVC.m; sourceTree = "<group>"; };
 		C8CB8CAD0DD34DA6005C1BAC /* Array.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Array.h; sourceTree = "<group>"; };
 		C8CB8CAE0DD34DA6005C1BAC /* Array.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Array.m; sourceTree = "<group>"; };
+		C8EA0F850E85665B0051F4DF /* RetainRelease.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RetainRelease.h; sourceTree = "<group>"; };
+		C8EA0F860E85665B0051F4DF /* RetainRelease.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RetainRelease.m; sourceTree = "<group>"; };
+		C8EA12240E893B1F0051F4DF /* MessageSendTorture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageSendTorture.h; sourceTree = "<group>"; };
+		C8EA12250E893B1F0051F4DF /* MessageSendTorture.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageSendTorture.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -153,7 +164,7 @@
 			files = (
 				C8C8030F0DB52A010089C0D7 /* AppKit.framework in Frameworks */,
 				C8C803100DB52A010089C0D7 /* Foundation.framework in Frameworks */,
-				C827EA570DB62A9200360D99 /* SenTestingKit.framework in Frameworks */,
+				C8EA126F0E8941580051F4DF /* SenTestingKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -233,6 +244,8 @@
 				C88470DA0DD3A9F600853747 /* KVO.m */,
 				C81F5A3E0DD22B94006F82C7 /* Runloop.h */,
 				C81F5A3F0DD22B94006F82C7 /* Runloop.m */,
+				C8EA12240E893B1F0051F4DF /* MessageSendTorture.h */,
+				C8EA12250E893B1F0051F4DF /* MessageSendTorture.m */,
 				C8CB8CAD0DD34DA6005C1BAC /* Array.h */,
 				C8CB8CAE0DD34DA6005C1BAC /* Array.m */,
 				C8A3931C0E48B72300A9C289 /* PropertyListUnarchiving.h */,
@@ -241,6 +254,8 @@
 				C80F9AE50E58BD7E00ECD487 /* MessageBenchmark.m */,
 				C80F9B7A0E58C93800ECD487 /* MessageSend.m */,
 				C80F9D160E59E45100ECD487 /* CrashCatcher.m */,
+				C8EA0F850E85665B0051F4DF /* RetainRelease.h */,
+				C8EA0F860E85665B0051F4DF /* RetainRelease.m */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -384,7 +399,7 @@
 				8D5B49B0048680CD000E48DA /* InfoPlist.strings in Resources */,
 				C84DA1BF0DB8D896000CD913 /* README in Resources */,
 				C8A392CB0E48B20F00A9C289 /* XML.plist in Resources */,
-				C8A392D90E48B26200A9C289 /* Binary.plist in Resources */,
+				C8EA126E0E89414E0051F4DF /* Binary.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -458,20 +473,23 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C827EB3C0DB63FFA00360D99 /* Properties.m in Sources */,
-				C88B859C0DB90282000A8500 /* ForEach.m in Sources */,
-				C850BE140DBAA27C005F1047 /* KVC.m in Sources */,
-				C8C031A40DBB4F7D00558D7B /* SizeAndAlignment.m in Sources */,
-				C813609D0DC4A5D800EAFF07 /* Forwarding.m in Sources */,
-				C8CB8CAF0DD34DA6005C1BAC /* Array.m in Sources */,
-				C88470DB0DD3A9F600853747 /* KVO.m in Sources */,
-				C8A24EBD0DDB468800953459 /* NewStyleExceptions.m in Sources */,
-				C84F02C40E1F8F17000C03D6 /* ObjCXXExceptions.mm in Sources */,
-				C8A3931F0E48B72300A9C289 /* PropertyListUnarchiving.m in Sources */,
-				C80F9AE60E58BD7E00ECD487 /* MessageBenchmark.m in Sources */,
-				C80F9B7B0E58C93800ECD487 /* MessageSend.m in Sources */,
-				C80F9D170E59E45100ECD487 /* CrashCatcher.m in Sources */,
-				998CA8490E6C3741009B2664 /* FileHandle.m in Sources */,
+				C8EA126C0E8941490051F4DF /* CrashCatcher.m in Sources */,
+				C80B6CB90E894CC30003C60D /* Properties.m in Sources */,
+				C80B6D150E8951C60003C60D /* MessageSendTorture.m in Sources */,
+				C80B6D370E8952A70003C60D /* Array.m in Sources */,
+				C80B6D380E8952A90003C60D /* FileHandle.m in Sources */,
+				C80B6D390E8952AA0003C60D /* ForEach.m in Sources */,
+				C80B6D3A0E8952AC0003C60D /* Forwarding.m in Sources */,
+				C80B6D3B0E8952B00003C60D /* KVC.m in Sources */,
+				C80B6D3C0E8952B10003C60D /* KVO.m in Sources */,
+				C80B6D3D0E8952B30003C60D /* MessageBenchmark.m in Sources */,
+				C80B6D3E0E8952B70003C60D /* MessageSend.m in Sources */,
+				C80B6D3F0E8952B90003C60D /* NewStyleExceptions.m in Sources */,
+				C80B6D400E8952BA0003C60D /* ObjCXXExceptions.mm in Sources */,
+				C80B6D410E8952BD0003C60D /* PropertyListUnarchiving.m in Sources */,
+				C80B6D420E8952C00003C60D /* RetainRelease.m in Sources */,
+				C80B6D430E8952C10003C60D /* Runloop.m in Sources */,
+				C80B6D440E8952C50003C60D /* SizeAndAlignment.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -491,6 +509,8 @@
 				C8A393200E48B72300A9C289 /* PropertyListUnarchiving.m in Sources */,
 				C80F9D180E59E45100ECD487 /* CrashCatcher.m in Sources */,
 				998CA84B0E6C3741009B2664 /* FileHandle.m in Sources */,
+				C8EA0F890E85665B0051F4DF /* RetainRelease.m in Sources */,
+				C8EA12270E893B1F0051F4DF /* MessageSendTorture.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -511,6 +531,8 @@
 				C8F971D20E6AD503007CBB04 /* MessageSend.m in Sources */,
 				998CA84A0E6C3741009B2664 /* FileHandle.m in Sources */,
 				C8AEE9D60E7932FD00248617 /* Array.m in Sources */,
+				C8EA0F880E85665B0051F4DF /* RetainRelease.m in Sources */,
+				C8EA12280E893B1F0051F4DF /* MessageSendTorture.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

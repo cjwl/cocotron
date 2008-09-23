@@ -8521,6 +8521,7 @@
 					"-D__LITTLE_ENDIAN__",
 					"-DHAVE_LIBFFI",
 					"-DDEBUG",
+					"-march=i686",
 				);
 				OTHER_LDFLAGS = (
 					"-B,static",
@@ -8686,6 +8687,7 @@
 					"-DOBJC_INSIDE_BUILD",
 					"-D__LITTLE_ENDIAN__",
 					"-DHAVE_LIBFFI",
+					"-march=i686",
 				);
 				OTHER_LDFLAGS = (
 					"-B,static",

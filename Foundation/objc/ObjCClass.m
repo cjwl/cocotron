@@ -58,6 +58,11 @@ void objc_addClass(Class class) {
 
 Method class_getClassMethod(Class class, SEL selector)
 {
+	return OBJCLookupUniqueIdInClass(class->isa, selector);
+}
+
+Method class_getInstanceMethod(Class class, SEL selector)
+{
 	return OBJCLookupUniqueIdInClass(class, selector);
 }
 
@@ -314,11 +319,15 @@ static inline void OBJCCacheMethodInClass(Class class,struct objc_method *method
     
     entry->method=method;
     
-    while(((void *)check)+check->offsetToNextEntry!=NULL)
-     check=((void *)check)+check->offsetToNextEntry;
-     
-      // FIXME: this should be a cmpxchg, with retry in failure case
-    check->offsetToNextEntry=((void *)entry)-((void *)check);
+      BOOL success=NO;
+      while(!success)
+      {
+         long offset=0;
+         while(offset=check->offsetToNextEntry, ((void *)check)+offset!=NULL)
+            check=((void *)check)+offset;
+
+         success=__sync_bool_compare_and_swap(&check->offsetToNextEntry, offset, ((void *)entry)-((void *)check));
+      }
    }
 }
 
