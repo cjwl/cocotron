@@ -348,7 +348,7 @@ xform=CGAffineTransformConcat(i2u,xform);
         KGPaint *paint=paintFromColor(gState->_fillColor);
         CGInterpolationQuality iq;
         if(gState->_interpolationQuality==kCGInterpolationDefault)
-            iq=kCGInterpolationHigh;
+            iq=kCGInterpolationLow;
         else
             iq=gState->_interpolationQuality;
 
