@@ -221,7 +221,7 @@ static inline void appendFloat(NSStringBuffer *buffer,double value,
          power=pow(10.0,precision);
        else 
          power=pow(10.0,precision-1-floor(log10(value)));
-       value=(1.0 + 1.0e-15)*round(value*power)/power;
+       value=(1.0 + 1.0e-15)*roundd(value*power)/power;
     }
 
     fractional=modf(value,&integral);

@@ -23,6 +23,9 @@
 #import <Foundation/NSException.h>
 #import <Foundation/NSInvocation.h>
 
+extern void* _NSClosureAlloc(size_t);
+extern void _NSClosureProtect(void*, size_t);
+
 #pragma mark Converting @encode to ffi type descriptors 
 
 static inline OBJCHashTable *ffi_type_table(void) {
@@ -317,47 +320,9 @@ invocation_closure(ffi_cif* cif, void* result, void** args, void* userdata)
 	return _closureInfo;		
 }
 
-
-#ifdef WIN32
-
-#include <windows.h>
-
-void *_NSClosureAlloc(unsigned size)
-{
-   return VirtualAlloc(NULL, size, MEM_COMMIT|MEM_RESERVE, PAGE_EXECUTE_READWRITE);
-}
-
-void _NSClosureFree(void* closure)
-{
-   VirtualFree(closure, 0, MEM_RELEASE);
-}
-
-void _NSClosureProtect(void* closure, unsigned size)
-{
-   VirtualProtect(closure, size, PAGE_EXECUTE, NULL);
-}
-
-#else
-
-void *_NSClosureAlloc(unsigned size)
-{
-   return malloc(size);
-}
-
-void _NSClosureFree(void* closure)
-{
-   free(size);
-}
-
-void _NSClosureProtect(void* closure, unsigned size)
-{
-}
-
-#endif
-
 -(void*)_closure
 {
-	@synchronized(self)
+	@synchronized([NSMethodSignature class])
 	{
 		if(!_closure)
 		{

@@ -12,16 +12,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSRaise.h>
 #import <Foundation/NSZombieObject.h>
 #import <Foundation/NSDebug.h>
+#import <Foundation/ObjCClass.h>
 
 // NSZone functions implemented in platform subproject
-
-// NSAllocateObject implemented in platform subproject
-// NSDeallocateObject implemented in platform subproject
-// NSCopyObject implemented in platform subproject
-
-BOOL NSShouldRetainWithZone(id object,NSZone *zone) {
-   return (zone==NULL || zone==NSDefaultMallocZone() || zone==[object zone])?YES:NO;
-}
 
 typedef struct RefCountBucket {
    struct RefCountBucket *next;
@@ -160,5 +153,50 @@ NSUInteger NSExtraRefCount(id object) {
    if((refCount=XXHashGet(refTable(),object))!=NULL)
     result=refCount->count;
 
+   return result;
+}
+
+BOOL NSShouldRetainWithZone(id object,NSZone *zone) {
+   return (zone==NULL || zone==NSDefaultMallocZone() || zone==[object zone])?YES:NO;
+}
+
+id NSAllocateObject(Class class,unsigned extraBytes,NSZone *zone) {
+   id result;
+   
+   if(zone==NULL)
+      zone=NSDefaultMallocZone();
+   
+   result=NSZoneCalloc(zone, 1, class->instance_size+extraBytes);
+   result->isa=class;
+	
+	if(!object_cxxConstruct(result, result->isa))
+	{
+		NSZoneFree(zone,result);
+		result=nil;
+	}
+	
+   return result;
+}
+
+void NSDeallocateObject(id object) {
+	object_cxxDestruct(object, object->isa);
+   
+   if(NSZombieEnabled)
+      NSRegisterZombie(object);
+   else {
+      NSZone *zone=NULL;
+      
+      if(zone==NULL)
+         zone=NSDefaultMallocZone();
+
+      NSZoneFree(zone,object);
+   }
+}
+
+id NSCopyObject(id object,unsigned extraBytes,NSZone *zone) {
+   id result=NSAllocateObject(object->isa,extraBytes,zone);
+   
+   memcpy(result, object, object->isa->instance_size+extraBytes);
+   
    return result;
 }

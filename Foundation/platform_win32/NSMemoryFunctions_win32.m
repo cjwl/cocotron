@@ -65,66 +65,6 @@ static DWORD Win32ThreadStorageIndex() {
    return tlsIndex;
 }
 
-id NSAllocateObject(Class class,unsigned extraBytes,NSZone *zone) {
-   id result;
-
-   if(class==Nil)
-    ;//OBJCRaiseException("OBJCClassIsNilException","OBJCAllocateObject class is Nil");
-
-   if(zone==NULL)
-    zone=GetProcessHeap();
-
-   result=HeapAlloc(zone,HEAP_ZERO_MEMORY,class->instance_size+extraBytes);
-
-   if(result==nil)
-    ;//OBJCRaiseException("OBJCAllocationFailure","OBJCAllocateObject, OBJCZoneCalloc returned NULL");
-
-    result->isa=class;
-
-//OBJCLog("allocated instance of %s at %d",class->name,result);
-	
-	if(!object_cxxConstruct(result, result->isa))
-	{
-		HeapFree(zone,0,result);
-		result=nil;
-	}
-	
-    return result;
-}
-
-void NSDeallocateObject(id object) {
-	object_cxxDestruct(object, object->isa);
-
-   if(NSZombieEnabled)
-    NSRegisterZombie(object);
-   else {
-    NSZone *zone=NULL;
-
-    if(zone==NULL)
-     zone=GetProcessHeap();
-
-    HeapFree(zone,0,object);
-   }
-}
-
-
-static inline void byteCopy(void *vsrc,void *vdst,unsigned length){
-   unsigned char *src=vsrc;
-   unsigned char *dst=vdst;
-   unsigned i;
-
-   for(i=0;i<length;i++)
-    dst[i]=src[i];
-}
-
-id NSCopyObject(id object,unsigned extraBytes,NSZone *zone) {
-   id result=NSAllocateObject(object->isa,extraBytes,zone);
-
-   byteCopy(object,result,object->isa->instance_size+extraBytes);
-
-   return result;
-}
-
 NSZone *NSCreateZone(unsigned startSize,unsigned granularity,BOOL canFree){
    return NULL;
 }
@@ -211,4 +151,35 @@ unsigned NSPlatformDetachThread(unsigned (*__stdcall func)(void *arg), void *arg
 	
 	CloseHandle(win32Handle);
 	return threadId;
+}
+
+
+static void *allocation=NULL;
+static long used=0;
+const long maxSize=64*1024;
+
+/* This must be protected by some kind of lock.
+ It is only called from _closure in objc_forward_ffi.m */
+void *_NSClosureAlloc(unsigned size)
+{
+   if(!allocation ||
+      used+size>maxSize)
+   {
+      allocation=VirtualAlloc(NULL, maxSize, MEM_COMMIT|MEM_RESERVE, PAGE_EXECUTE_READWRITE);
+      used=0;
+   }
+   else
+   {
+      VirtualProtect(allocation, maxSize, PAGE_EXECUTE_READWRITE, NULL);
+   }
+   
+   void *ret=allocation+used;
+   used+=size;
+   
+   return ret;
+}
+
+void _NSClosureProtect(void* closure, unsigned size)
+{
+   VirtualProtect(allocation, maxSize, PAGE_EXECUTE_READ, NULL);
 }

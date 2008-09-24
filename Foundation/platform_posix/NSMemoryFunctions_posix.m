@@ -40,47 +40,6 @@ void NSCopyMemoryPages(const void *src,void *dst,unsigned byteCount) {
     dstb[i]=srcb[i];
 }
 
-id NSAllocateObject(Class class,unsigned extraBytes,NSZone *zone) {
-    id result;
-
-    result=calloc(1,class->instance_size+extraBytes);
-    result->isa=class;
-	
-	if(!object_cxxConstruct(result, result->isa))
-	{
-		free(result);
-		result=nil;
-	}
-
-    return result;
-}
-
-void NSDeallocateObject(id object) {
-	object_cxxDestruct(object, object->isa);
-
-   if(NSZombieEnabled)
-    NSRegisterZombie(object);
-   else 
-    free(object);
-}
-
-static inline void byteCopy(void *vsrc,void *vdst,unsigned length){
-   unsigned char *src=vsrc;
-   unsigned char *dst=vdst;
-   unsigned i;
-
-   for(i=0;i<length;i++)
-    dst[i]=src[i];
-}
-
-id NSCopyObject(id object,unsigned extraBytes,NSZone *zone) {
-   id result=NSAllocateObject(object->isa,extraBytes,zone);
-
-   byteCopy(object,result,object->isa->instance_size+extraBytes);
-
-   return result;
-}
-
 NSZone *NSCreateZone(unsigned startSize,unsigned granularity,BOOL canFree){
    return NULL;
 }
@@ -158,3 +117,13 @@ int NSPlatformDetachThread(unsigned (*func)(void *arg), void *arg) {
 	return thread;
 }
 
+/* This will fail with W^X. See win32 implementation for how to get this running. */
+
+void *_NSClosureAlloc(unsigned size)
+{
+   return malloc(size);
+}
+
+void _NSClosureProtect(void* closure, unsigned size)
+{
+}
