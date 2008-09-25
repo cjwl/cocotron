@@ -51,8 +51,28 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -initWithArray:(NSArray *)array copyItems:(BOOL)copyItems {
-   NSUnimplementedMethod();
-   return nil;
+   if (copyItems == NO) {
+      return [self initWithArray:array];
+   }
+
+   const unsigned count=[array count];
+   id *oldObjects = __builtin_alloca(sizeof(id)*count);
+   id *newObjects = __builtin_alloca(sizeof(id)*count);
+
+   [array getObjects:oldObjects];
+
+   unsigned i;
+   for (i = 0; i < count; i++) {
+      newObjects[i] = [oldObjects[i] copyWithZone:NULL];
+   }
+   
+   self = [self initWithObjects:newObjects count:count];
+   
+   for (i = 0; i < count; i++) {
+      [newObjects[i] release];
+   }
+   
+   return self;
 }
 
 -initWithContentsOfFile:(NSString *)path {
