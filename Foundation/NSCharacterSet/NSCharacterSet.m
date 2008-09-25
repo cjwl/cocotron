@@ -137,12 +137,37 @@ static NSCharacterSet *sharedSetWithName(Class cls,NSString *name){
    return sharedSetWithName(self,@"uppercaseLetterCharacterSet");
 }
 
++newlineCharacterSet {
+    static NSString *setName = @"newlineCharacterSet";
+    id set;
+    if ( !(set = NSMapGet(nameToSet,setName))) {
+        unichar chars[5] = { 0x0A, 0x0B, 0x0C, 0x0D,  0x85 };
+        set = [NSCharacterSet characterSetWithCharactersInString:[NSString stringWithCharacters:chars length:5]];
+        NSMapInsert(nameToSet,setName,set);
+    }
+    return set;   
+}
+
 +whitespaceAndNewlineCharacterSet {
-   return sharedSetWithName(self,@"whitespaceAndNewlineCharacterSet");
+    static NSString *setName = @"whitespaceAndNewlineCharacterSet";
+    id set;
+    if ( !(set = NSMapGet(nameToSet,setName))) {
+        unichar chars[7] = { 0x20, 0x09,  0x0A, 0x0B, 0x0C, 0x0D,  0x85 };
+        set = [NSCharacterSet characterSetWithCharactersInString:[NSString stringWithCharacters:chars length:7]];
+        NSMapInsert(nameToSet,setName,set);
+    }
+    return set;
 }
 
 +whitespaceCharacterSet {
-   return sharedSetWithName(self,@"whitespaceCharacterSet");
+    static NSString *setName = @"whitespaceCharacterSet";
+    id set;
+    if ( !(set = NSMapGet(nameToSet,setName))) {
+        unichar chars[2] = { 0x20, 0x09 };
+        set = [NSCharacterSet characterSetWithCharactersInString:[NSString stringWithCharacters:chars length:2]];
+        NSMapInsert(nameToSet,setName,set);
+    }
+    return set;
 }
 
 -(BOOL)characterIsMember:(unichar)character {

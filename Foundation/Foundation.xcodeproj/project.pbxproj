@@ -391,8 +391,6 @@
 		6E4D93140A2642BD003D335C /* NSPropertyListReader.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E0084CE0A19371600F78605 /* NSPropertyListReader.m */; };
 		6E4D93180A2642BD003D335C /* punctuationCharacterSet.bitmap in Resources */ = {isa = PBXBuildFile; fileRef = 6E28068009747E0A00EC542B /* punctuationCharacterSet.bitmap */; };
 		6E4D93190A2642BD003D335C /* uppercaseLetterCharacterSet.bitmap in Resources */ = {isa = PBXBuildFile; fileRef = 6E28068109747E0A00EC542B /* uppercaseLetterCharacterSet.bitmap */; };
-		6E4D931A0A2642BD003D335C /* whitespaceAndNewlineCharacterSet.bitmap in Resources */ = {isa = PBXBuildFile; fileRef = 6E28068209747E0A00EC542B /* whitespaceAndNewlineCharacterSet.bitmap */; };
-		6E4D931B0A2642BD003D335C /* whitespaceCharacterSet.bitmap in Resources */ = {isa = PBXBuildFile; fileRef = 6E28068309747E0A00EC542B /* whitespaceCharacterSet.bitmap */; };
 		6E4D931C0A2642BD003D335C /* alphanumericCharacterSet.bitmap in Resources */ = {isa = PBXBuildFile; fileRef = 6E28068809747E2300EC542B /* alphanumericCharacterSet.bitmap */; };
 		6E4D931D0A2642BD003D335C /* controlCharacterSet.bitmap in Resources */ = {isa = PBXBuildFile; fileRef = 6E28068A09747E2300EC542B /* controlCharacterSet.bitmap */; };
 		6E4D931E0A2642BD003D335C /* decimalDigitCharacterSet.bitmap in Resources */ = {isa = PBXBuildFile; fileRef = 6E28068B09747E2300EC542B /* decimalDigitCharacterSet.bitmap */; };
@@ -746,8 +744,6 @@
 		6EA04A4A09E57D5F0067589C /* NSArchiver.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28030E0974787200EC542B /* NSArchiver.m */; };
 		6EA04A6309E57D5F0067589C /* punctuationCharacterSet.bitmap in Resources */ = {isa = PBXBuildFile; fileRef = 6E28068009747E0A00EC542B /* punctuationCharacterSet.bitmap */; };
 		6EA04A6409E57D5F0067589C /* uppercaseLetterCharacterSet.bitmap in Resources */ = {isa = PBXBuildFile; fileRef = 6E28068109747E0A00EC542B /* uppercaseLetterCharacterSet.bitmap */; };
-		6EA04A6509E57D5F0067589C /* whitespaceAndNewlineCharacterSet.bitmap in Resources */ = {isa = PBXBuildFile; fileRef = 6E28068209747E0A00EC542B /* whitespaceAndNewlineCharacterSet.bitmap */; };
-		6EA04A6609E57D5F0067589C /* whitespaceCharacterSet.bitmap in Resources */ = {isa = PBXBuildFile; fileRef = 6E28068309747E0A00EC542B /* whitespaceCharacterSet.bitmap */; };
 		6EA04A6709E57D5F0067589C /* alphanumericCharacterSet.bitmap in Resources */ = {isa = PBXBuildFile; fileRef = 6E28068809747E2300EC542B /* alphanumericCharacterSet.bitmap */; };
 		6EA04A6809E57D5F0067589C /* controlCharacterSet.bitmap in Resources */ = {isa = PBXBuildFile; fileRef = 6E28068A09747E2300EC542B /* controlCharacterSet.bitmap */; };
 		6EA04A6909E57D5F0067589C /* decimalDigitCharacterSet.bitmap in Resources */ = {isa = PBXBuildFile; fileRef = 6E28068B09747E2300EC542B /* decimalDigitCharacterSet.bitmap */; };
@@ -1413,8 +1409,6 @@
 		FE01A7D90C5D9B6900AEA51A /* NSValueTransformer_UnarchiveFromData.m in Sources */ = {isa = PBXBuildFile; fileRef = FE9D953B0C0387D5006DB214 /* NSValueTransformer_UnarchiveFromData.m */; };
 		FE01A7DC0C5D9B6900AEA51A /* punctuationCharacterSet.bitmap in Resources */ = {isa = PBXBuildFile; fileRef = 6E28068009747E0A00EC542B /* punctuationCharacterSet.bitmap */; };
 		FE01A7DD0C5D9B6900AEA51A /* uppercaseLetterCharacterSet.bitmap in Resources */ = {isa = PBXBuildFile; fileRef = 6E28068109747E0A00EC542B /* uppercaseLetterCharacterSet.bitmap */; };
-		FE01A7DE0C5D9B6900AEA51A /* whitespaceAndNewlineCharacterSet.bitmap in Resources */ = {isa = PBXBuildFile; fileRef = 6E28068209747E0A00EC542B /* whitespaceAndNewlineCharacterSet.bitmap */; };
-		FE01A7DF0C5D9B6900AEA51A /* whitespaceCharacterSet.bitmap in Resources */ = {isa = PBXBuildFile; fileRef = 6E28068309747E0A00EC542B /* whitespaceCharacterSet.bitmap */; };
 		FE01A7E00C5D9B6900AEA51A /* alphanumericCharacterSet.bitmap in Resources */ = {isa = PBXBuildFile; fileRef = 6E28068809747E2300EC542B /* alphanumericCharacterSet.bitmap */; };
 		FE01A7E10C5D9B6900AEA51A /* controlCharacterSet.bitmap in Resources */ = {isa = PBXBuildFile; fileRef = 6E28068A09747E2300EC542B /* controlCharacterSet.bitmap */; };
 		FE01A7E20C5D9B6900AEA51A /* decimalDigitCharacterSet.bitmap in Resources */ = {isa = PBXBuildFile; fileRef = 6E28068B09747E2300EC542B /* decimalDigitCharacterSet.bitmap */; };
@@ -2383,8 +2377,6 @@
 		FED70A580C3B3D2C000CBE5B /* NSValueTransformer_UnarchiveFromData.m in Sources */ = {isa = PBXBuildFile; fileRef = FE9D953B0C0387D5006DB214 /* NSValueTransformer_UnarchiveFromData.m */; };
 		FED70A5B0C3B3D2C000CBE5B /* punctuationCharacterSet.bitmap in Resources */ = {isa = PBXBuildFile; fileRef = 6E28068009747E0A00EC542B /* punctuationCharacterSet.bitmap */; };
 		FED70A5C0C3B3D2C000CBE5B /* uppercaseLetterCharacterSet.bitmap in Resources */ = {isa = PBXBuildFile; fileRef = 6E28068109747E0A00EC542B /* uppercaseLetterCharacterSet.bitmap */; };
-		FED70A5D0C3B3D2C000CBE5B /* whitespaceAndNewlineCharacterSet.bitmap in Resources */ = {isa = PBXBuildFile; fileRef = 6E28068209747E0A00EC542B /* whitespaceAndNewlineCharacterSet.bitmap */; };
-		FED70A5E0C3B3D2C000CBE5B /* whitespaceCharacterSet.bitmap in Resources */ = {isa = PBXBuildFile; fileRef = 6E28068309747E0A00EC542B /* whitespaceCharacterSet.bitmap */; };
 		FED70A5F0C3B3D2C000CBE5B /* alphanumericCharacterSet.bitmap in Resources */ = {isa = PBXBuildFile; fileRef = 6E28068809747E2300EC542B /* alphanumericCharacterSet.bitmap */; };
 		FED70A600C3B3D2C000CBE5B /* controlCharacterSet.bitmap in Resources */ = {isa = PBXBuildFile; fileRef = 6E28068A09747E2300EC542B /* controlCharacterSet.bitmap */; };
 		FED70A610C3B3D2C000CBE5B /* decimalDigitCharacterSet.bitmap in Resources */ = {isa = PBXBuildFile; fileRef = 6E28068B09747E2300EC542B /* decimalDigitCharacterSet.bitmap */; };
@@ -2964,8 +2956,6 @@
 		FED70FA30C3C09C7000CBE5B /* NSTask_darwin.m in Sources */ = {isa = PBXBuildFile; fileRef = FED70B030C3B4255000CBE5B /* NSTask_darwin.m */; };
 		FED70FA70C3C09C7000CBE5B /* punctuationCharacterSet.bitmap in Resources */ = {isa = PBXBuildFile; fileRef = 6E28068009747E0A00EC542B /* punctuationCharacterSet.bitmap */; };
 		FED70FA80C3C09C7000CBE5B /* uppercaseLetterCharacterSet.bitmap in Resources */ = {isa = PBXBuildFile; fileRef = 6E28068109747E0A00EC542B /* uppercaseLetterCharacterSet.bitmap */; };
-		FED70FA90C3C09C7000CBE5B /* whitespaceAndNewlineCharacterSet.bitmap in Resources */ = {isa = PBXBuildFile; fileRef = 6E28068209747E0A00EC542B /* whitespaceAndNewlineCharacterSet.bitmap */; };
-		FED70FAA0C3C09C7000CBE5B /* whitespaceCharacterSet.bitmap in Resources */ = {isa = PBXBuildFile; fileRef = 6E28068309747E0A00EC542B /* whitespaceCharacterSet.bitmap */; };
 		FED70FAB0C3C09C7000CBE5B /* alphanumericCharacterSet.bitmap in Resources */ = {isa = PBXBuildFile; fileRef = 6E28068809747E2300EC542B /* alphanumericCharacterSet.bitmap */; };
 		FED70FAC0C3C09C7000CBE5B /* controlCharacterSet.bitmap in Resources */ = {isa = PBXBuildFile; fileRef = 6E28068A09747E2300EC542B /* controlCharacterSet.bitmap */; };
 		FED70FAD0C3C09C7000CBE5B /* decimalDigitCharacterSet.bitmap in Resources */ = {isa = PBXBuildFile; fileRef = 6E28068B09747E2300EC542B /* decimalDigitCharacterSet.bitmap */; };
@@ -3612,8 +3602,6 @@
 		6E28067109747DF900EC542B /* NSMutableCharacterSet.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSMutableCharacterSet.m; sourceTree = "<group>"; };
 		6E28068009747E0A00EC542B /* punctuationCharacterSet.bitmap */ = {isa = PBXFileReference; lastKnownFileType = file; name = punctuationCharacterSet.bitmap; path = NSCharacterSet/punctuationCharacterSet.bitmap; sourceTree = "<group>"; };
 		6E28068109747E0A00EC542B /* uppercaseLetterCharacterSet.bitmap */ = {isa = PBXFileReference; lastKnownFileType = file; name = uppercaseLetterCharacterSet.bitmap; path = NSCharacterSet/uppercaseLetterCharacterSet.bitmap; sourceTree = "<group>"; };
-		6E28068209747E0A00EC542B /* whitespaceAndNewlineCharacterSet.bitmap */ = {isa = PBXFileReference; lastKnownFileType = file; name = whitespaceAndNewlineCharacterSet.bitmap; path = NSCharacterSet/whitespaceAndNewlineCharacterSet.bitmap; sourceTree = "<group>"; };
-		6E28068309747E0A00EC542B /* whitespaceCharacterSet.bitmap */ = {isa = PBXFileReference; lastKnownFileType = file; name = whitespaceCharacterSet.bitmap; path = NSCharacterSet/whitespaceCharacterSet.bitmap; sourceTree = "<group>"; };
 		6E28068809747E2300EC542B /* alphanumericCharacterSet.bitmap */ = {isa = PBXFileReference; lastKnownFileType = file; name = alphanumericCharacterSet.bitmap; path = NSCharacterSet/alphanumericCharacterSet.bitmap; sourceTree = "<group>"; };
 		6E28068909747E2300EC542B /* bitmapRepresentation.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = bitmapRepresentation.h; sourceTree = "<group>"; };
 		6E28068A09747E2300EC542B /* controlCharacterSet.bitmap */ = {isa = PBXFileReference; lastKnownFileType = file; name = controlCharacterSet.bitmap; path = NSCharacterSet/controlCharacterSet.bitmap; sourceTree = "<group>"; };
@@ -4813,8 +4801,6 @@
 				6E28068D09747E2300EC542B /* lowercaseLetterCharacterSet.bitmap */,
 				6E28068009747E0A00EC542B /* punctuationCharacterSet.bitmap */,
 				6E28068109747E0A00EC542B /* uppercaseLetterCharacterSet.bitmap */,
-				6E28068209747E0A00EC542B /* whitespaceAndNewlineCharacterSet.bitmap */,
-				6E28068309747E0A00EC542B /* whitespaceCharacterSet.bitmap */,
 			);
 			name = NSCharacterSet;
 			sourceTree = "<group>";
@@ -6754,8 +6740,6 @@
 			files = (
 				6E4D93180A2642BD003D335C /* punctuationCharacterSet.bitmap in Resources */,
 				6E4D93190A2642BD003D335C /* uppercaseLetterCharacterSet.bitmap in Resources */,
-				6E4D931A0A2642BD003D335C /* whitespaceAndNewlineCharacterSet.bitmap in Resources */,
-				6E4D931B0A2642BD003D335C /* whitespaceCharacterSet.bitmap in Resources */,
 				6E4D931C0A2642BD003D335C /* alphanumericCharacterSet.bitmap in Resources */,
 				6E4D931D0A2642BD003D335C /* controlCharacterSet.bitmap in Resources */,
 				6E4D931E0A2642BD003D335C /* decimalDigitCharacterSet.bitmap in Resources */,
@@ -6773,8 +6757,6 @@
 			files = (
 				6EA04A6309E57D5F0067589C /* punctuationCharacterSet.bitmap in Resources */,
 				6EA04A6409E57D5F0067589C /* uppercaseLetterCharacterSet.bitmap in Resources */,
-				6EA04A6509E57D5F0067589C /* whitespaceAndNewlineCharacterSet.bitmap in Resources */,
-				6EA04A6609E57D5F0067589C /* whitespaceCharacterSet.bitmap in Resources */,
 				6EA04A6709E57D5F0067589C /* alphanumericCharacterSet.bitmap in Resources */,
 				6EA04A6809E57D5F0067589C /* controlCharacterSet.bitmap in Resources */,
 				6EA04A6909E57D5F0067589C /* decimalDigitCharacterSet.bitmap in Resources */,
@@ -6792,8 +6774,6 @@
 			files = (
 				FE01A7DC0C5D9B6900AEA51A /* punctuationCharacterSet.bitmap in Resources */,
 				FE01A7DD0C5D9B6900AEA51A /* uppercaseLetterCharacterSet.bitmap in Resources */,
-				FE01A7DE0C5D9B6900AEA51A /* whitespaceAndNewlineCharacterSet.bitmap in Resources */,
-				FE01A7DF0C5D9B6900AEA51A /* whitespaceCharacterSet.bitmap in Resources */,
 				FE01A7E00C5D9B6900AEA51A /* alphanumericCharacterSet.bitmap in Resources */,
 				FE01A7E10C5D9B6900AEA51A /* controlCharacterSet.bitmap in Resources */,
 				FE01A7E20C5D9B6900AEA51A /* decimalDigitCharacterSet.bitmap in Resources */,
@@ -6811,8 +6791,6 @@
 			files = (
 				FED70A5B0C3B3D2C000CBE5B /* punctuationCharacterSet.bitmap in Resources */,
 				FED70A5C0C3B3D2C000CBE5B /* uppercaseLetterCharacterSet.bitmap in Resources */,
-				FED70A5D0C3B3D2C000CBE5B /* whitespaceAndNewlineCharacterSet.bitmap in Resources */,
-				FED70A5E0C3B3D2C000CBE5B /* whitespaceCharacterSet.bitmap in Resources */,
 				FED70A5F0C3B3D2C000CBE5B /* alphanumericCharacterSet.bitmap in Resources */,
 				FED70A600C3B3D2C000CBE5B /* controlCharacterSet.bitmap in Resources */,
 				FED70A610C3B3D2C000CBE5B /* decimalDigitCharacterSet.bitmap in Resources */,
@@ -6830,8 +6808,6 @@
 			files = (
 				FED70FA70C3C09C7000CBE5B /* punctuationCharacterSet.bitmap in Resources */,
 				FED70FA80C3C09C7000CBE5B /* uppercaseLetterCharacterSet.bitmap in Resources */,
-				FED70FA90C3C09C7000CBE5B /* whitespaceAndNewlineCharacterSet.bitmap in Resources */,
-				FED70FAA0C3C09C7000CBE5B /* whitespaceCharacterSet.bitmap in Resources */,
 				FED70FAB0C3C09C7000CBE5B /* alphanumericCharacterSet.bitmap in Resources */,
 				FED70FAC0C3C09C7000CBE5B /* controlCharacterSet.bitmap in Resources */,
 				FED70FAD0C3C09C7000CBE5B /* decimalDigitCharacterSet.bitmap in Resources */,
