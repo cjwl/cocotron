@@ -6,7 +6,6 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
-// Original - Christopher Lloyd <cjwl@objc.net>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSArray.h>
 #import <Foundation/NSData.h>
@@ -17,8 +16,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSRaise.h>
 #import <Foundation/NSCoder.h>
 #import <Foundation/NSKeyedUnarchiver.h>
+#import <Foundation/NSKeyedArchiver.h>
 #import <Foundation/NSURL.h>
 #import <Foundation/NSAutoreleasePool.h>
+
+
+@interface NSKeyedArchiver (PrivateToContainers)
+- (void)encodeArray:(NSArray *)array forKey:(NSString *)key;
+@end
+
 
 @implementation NSDictionary
 
@@ -223,6 +229,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)encodeWithCoder:(NSCoder *)coder {
+  if([coder isKindOfClass:[NSKeyedArchiver class]]){
+    NSKeyedArchiver *keyed=(NSKeyedArchiver *)coder;
+    
+    [keyed encodeArray:[self allKeys] forKey:@"NS.keys"];
+    [keyed encodeArray:[self allValues] forKey:@"NS.objects"];
+  }
+  else {
    NSEnumerator *state=[self keyEnumerator];
    unsigned      count=[self count];
    id            key;
@@ -235,6 +248,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     [coder encodeObject:key];
     [coder encodeObject:value];
    }
+  }
 }
 
 -objectForKey:key {
