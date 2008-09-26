@@ -8,6 +8,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSUserDefaultsController.h>
 #import <Foundation/NSUserDefaults.h>
 #import <Foundation/NSDictionary.h>
+#import <AppKit/NSUserDefaultsControllerProxy.h>
+#import <Foundation/NSString.h>
+#import <Foundation/NSCoder.h>
+#import <Foundation/NSRaise.h>
 
 @implementation NSUserDefaultsController
 
@@ -28,11 +32,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    _defaults=[defaults retain];
    _initialValues=[values copy];
    _appliesImmediately=YES;
+   _valueProxy=[[NSUserDefaultsControllerProxy alloc] initWithController:self];
    
    return self;
 }
 
 -(void)dealloc {
+   [_valueProxy release];
    [_defaults release];
    [_initialValues release];
    [super dealloc];
@@ -58,6 +64,25 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)setAppliesImmediately:(BOOL)flag {
    _appliesImmediately=flag;
+}
+
+-(id)values {
+   return _valueProxy;
+}
+
+-(id)initWithCoder:(id)coder {
+   if(![coder allowsKeyedCoding]) {
+      NSUnimplementedMethod();
+   }
+   else {
+      BOOL sharedInstance=[coder decodeBoolForKey:@"NSSharedInstance"];
+      if(sharedInstance)
+      {
+         [self release];
+         self=[NSUserDefaultsController sharedUserDefaultsController];
+      }
+   }
+   return self;
 }
 
 @end

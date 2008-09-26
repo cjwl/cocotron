@@ -13,7 +13,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    NSUserDefaults *_defaults;
    NSDictionary   *_initialValues;
    BOOL            _appliesImmediately;
-
+   id              _valueProxy;
 }
 
 +sharedUserDefaultsController;

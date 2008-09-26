@@ -338,7 +338,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)setObjectValue:(id <NSCopying>)value {
-   if ([(id)value isKindOfClass:[NSNumber class]])
+   if ([(id)value respondsToSelector:@selector(intValue)])
       [super setState:[(NSNumber *)value intValue]];
    else
       [super setState:0];

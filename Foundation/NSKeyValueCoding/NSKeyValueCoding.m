@@ -266,13 +266,16 @@ return [self _wrapReturnValueForSelector:sel]; \
 
 		if(ivar)
 		{
-			[self willChangeValueForKey:key];
+         BOOL shouldNotify=[self automaticallyNotifiesObserversForKey:key];
+         if(shouldNotify)
+            [self willChangeValueForKey:key];
 			// if value is nil and ivar is not an object type
 			if(!value && ivar->ivar_type[0]!='@')
 				return [self setNilValueForKey:key];
 
 			[self _setValue:value toBuffer:(void*)self+ivar->ivar_offset ofType:ivar->ivar_type];
-			[self didChangeValueForKey:key];
+         if(shouldNotify)
+            [self didChangeValueForKey:key];
 			return;
 		}
 	}

@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		36570F9B0E818CD5008FE1BE /* NSGradient.m in Sources */ = {isa = PBXBuildFile; fileRef = 36570F990E818CD5008FE1BE /* NSGradient.m */; };
 		365710650E81A10E008FE1BE /* NSGradient.h in Headers */ = {isa = PBXBuildFile; fileRef = 36570F980E818CD5008FE1BE /* NSGradient.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C84909370E8D1FB900BA6D3A /* NSUserDefaultsControllerProxy.h in Headers */ = {isa = PBXBuildFile; fileRef = C84909350E8D1FB900BA6D3A /* NSUserDefaultsControllerProxy.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		C84909380E8D1FB900BA6D3A /* NSUserDefaultsControllerProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = C84909360E8D1FB900BA6D3A /* NSUserDefaultsControllerProxy.m */; };
 		C8C52C8F0E7ED1FF003F03B5 /* NSObservationProxy.h in Headers */ = {isa = PBXBuildFile; fileRef = C8C52C8D0E7ED1FF003F03B5 /* NSObservationProxy.h */; };
 		C8C52C900E7ED1FF003F03B5 /* NSObservationProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = C8C52C8E0E7ED1FF003F03B5 /* NSObservationProxy.m */; };
 		FE01A80B0C5D9BCB00AEA51A /* AppKitExport.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B53FA0976075200DA0954 /* AppKitExport.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
@@ -1274,6 +1276,8 @@
 		6ECABDF80A3FA2B700AD7F7B /* NSCustomView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSCustomView.m; sourceTree = "<group>"; };
 		6ECABE310A40520700AD7F7B /* NSNibKeyedUnarchiver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSNibKeyedUnarchiver.h; sourceTree = "<group>"; };
 		6ECABE320A40520700AD7F7B /* NSNibKeyedUnarchiver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSNibKeyedUnarchiver.m; sourceTree = "<group>"; };
+		C84909350E8D1FB900BA6D3A /* NSUserDefaultsControllerProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSUserDefaultsControllerProxy.h; sourceTree = "<group>"; };
+		C84909360E8D1FB900BA6D3A /* NSUserDefaultsControllerProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSUserDefaultsControllerProxy.m; sourceTree = "<group>"; };
 		C8B239A20BF8EEB500CA33AF /* defaultBindingOptions.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = defaultBindingOptions.plist; sourceTree = "<group>"; };
 		C8C52C8D0E7ED1FF003F03B5 /* NSObservationProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSObservationProxy.h; sourceTree = "<group>"; };
 		C8C52C8E0E7ED1FF003F03B5 /* NSObservationProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSObservationProxy.m; sourceTree = "<group>"; };
@@ -2522,6 +2526,8 @@
 				FE2A10690B4599A3006C03DE /* NSTreeController.m */,
 				FE2A10700B4599BD006C03DE /* NSUserDefaultsController.h */,
 				FE2A10710B4599BD006C03DE /* NSUserDefaultsController.m */,
+				C84909350E8D1FB900BA6D3A /* NSUserDefaultsControllerProxy.h */,
+				C84909360E8D1FB900BA6D3A /* NSUserDefaultsControllerProxy.m */,
 			);
 			path = NSController;
 			sourceTree = "<group>";
@@ -2965,6 +2971,7 @@
 				FEA965B40E7EA97500413F40 /* NSBitmapImageRep-Private.h in Headers */,
 				C8C52C8F0E7ED1FF003F03B5 /* NSObservationProxy.h in Headers */,
 				365710650E81A10E008FE1BE /* NSGradient.h in Headers */,
+				C84909370E8D1FB900BA6D3A /* NSUserDefaultsControllerProxy.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3481,6 +3488,7 @@
 				FE66F0060E513AE8006C5796 /* CGImageProperties.m in Sources */,
 				C8C52C900E7ED1FF003F03B5 /* NSObservationProxy.m in Sources */,
 				36570F9B0E818CD5008FE1BE /* NSGradient.m in Sources */,
+				C84909380E8D1FB900BA6D3A /* NSUserDefaultsControllerProxy.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
