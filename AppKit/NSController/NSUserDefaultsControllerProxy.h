@@ -14,4 +14,8 @@
    NSMutableDictionary      *_cachedValues;
 }
 -(id)initWithController:(NSUserDefaultsController*)controller;
+-(void)save;
+-(void)revert;
+-(void)revertToInitialValues;
+-(BOOL)hasUnappliedChanges;
 @end

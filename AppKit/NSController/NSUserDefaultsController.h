@@ -27,8 +27,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)setInitialValues:(NSDictionary *)values;
 -(void)setAppliesImmediately:(BOOL)flag;
 
-#if 0
-
 -values;
 
 -(BOOL)hasUnappliedChanges;
@@ -36,6 +34,5 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)save:sender;
 -(void)revert:sender;
 -(void)revertToInitialValues:sender;
-#endif
 
 @end

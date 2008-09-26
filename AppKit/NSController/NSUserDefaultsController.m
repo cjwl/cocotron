@@ -85,4 +85,27 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return self;
 }
 
+
+-(BOOL)hasUnappliedChanges
+{
+   return [_valueProxy hasUnappliedChanges];
+}
+
+-(void)save:sender
+{
+   [_valueProxy save];
+}
+
+-(void)revert:sender
+{
+   [_valueProxy revert];  
+}
+
+-(void)revertToInitialValues:sender
+{
+   [_valueProxy revertToInitialValues];  
+}
+
+
+
 @end

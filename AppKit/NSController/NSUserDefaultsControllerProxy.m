@@ -21,8 +21,7 @@
    if(self=[super init])
    {
       _controller = controller;
-      _cachedValues=[NSMutableDictionary new];
-      
+      _cachedValues = [NSMutableDictionary new];
       [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userDefaultsDidChange:) name:NSUserDefaultsDidChangeNotification object:[_controller defaults]];
    }
    return self;
@@ -30,8 +29,8 @@
 
 -(void)dealloc
 {
-   [[NSNotificationCenter defaultCenter] removeObserver:self];
    [_cachedValues release];
+   [[NSNotificationCenter defaultCenter] removeObserver:self];
    [super dealloc];
 }
 
@@ -50,12 +49,49 @@
    return value;
 }
 
+
 -(void)setValue:(id)value forKey:(NSString*)key
 {
    [self willChangeValueForKey:key];
    [_cachedValues setObject:value forKey:key];
-   [[_controller defaults] setObject:value forKey:key];
+   if([_controller appliesImmediately])
+      [[_controller defaults] setObject:value forKey:key];
    [self didChangeValueForKey:key];
+}
+
+-(void)revert
+{
+   for(NSString *key in [_cachedValues allKeys])
+   {
+      [self willChangeValueForKey:key];
+      [_cachedValues removeObjectForKey:key];
+      [self didChangeValueForKey:key];
+   }
+}
+
+-(void)save
+{
+   for(NSString *key in [_cachedValues allKeys])
+   {
+      [[_controller defaults] setObject:[_cachedValues objectForKey:key] forKey:key];
+   }
+}
+
+-(void)revertToInitialValues
+{
+   id initial=[_controller initialValues];
+   for(NSString *key in [_cachedValues allKeys])
+   {
+      [self willChangeValueForKey:key];
+      
+      id val=[initial objectForKey:key];
+      if(val)
+         [_cachedValues setObject:val forKey:key];
+      else
+         [_cachedValues removeObjectForKey:key];
+      
+      [self didChangeValueForKey:key];
+   }
 }
 
 -(void)userDefaultsDidChange:(id)notification
@@ -74,6 +110,21 @@
          [self didChangeValueForKey:key];
       }      
    }
+}
+
+-(BOOL)hasUnappliedChanges
+{
+   id defaults=[_controller defaults];
+   for(NSString *key in [_cachedValues allKeys])
+   {
+      id val=[_cachedValues objectForKey:key];
+      id newVal=[defaults objectForKey:key];
+      if(![val isEqual:newVal])
+      {
+         return YES;
+      }      
+   }  
+   return NO;
 }
 
 @end
