@@ -89,7 +89,7 @@ static NSImageRep *imageRepForIcon(SHFILEINFO * fileInfo) {
     }
    }
 
-#define BIT_SET(x,y) (((x) >> (8-(y))) & 1)
+#define BIT_SET(x,y) (((x) >> (7-(y))) & 1)
 
    if (!hasAlpha) {
     for (i = 0; i < masklen; i++) {

@@ -26,7 +26,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(NSData *)dataForType:(NSString *)type {
-   return [_dataClient dataForType:type];
+   if([type isEqualToString:NSFilenamesPboardType]) {
+    NSString *error=nil;
+    NSData *result=[NSPropertyListSerialization dataFromPropertyList:[_dataClient filenames] format:NSPropertyListXMLFormat_v1_0 errorDescription:&error];
+    if(error) {
+     NSLog(@"Error: %@", error);
+     [error release];
+    }
+    return result;
+   } else
+    return [_dataClient dataForType:type];
 }
 
 -(id)propertyListForType:(NSString *)type {

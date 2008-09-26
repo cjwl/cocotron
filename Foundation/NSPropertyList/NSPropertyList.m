@@ -41,18 +41,18 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	
 	@try{
 
-		 if((result=[NSPropertyListReader_xml1 propertyListFromData:data])!=nil){
-    *format=NSPropertyListXMLFormat_v1_0;
+   if((result=[NSPropertyListReader_xml1 propertyListFromData:data])!=nil){
+    if(format)*format=NSPropertyListXMLFormat_v1_0;
     return result;
    }
    
    if((result=[NSPropertyListReader_binary1 propertyListFromData:data])!=nil){
-      *format=NSPropertyListBinaryFormat_v1_0;
-      return result;
+    if(format)*format=NSPropertyListBinaryFormat_v1_0;
+    return result;
    }
    
    if((result=[NSPropertyListReader_vintage propertyListFromData:data])!=nil){
-    *format=NSPropertyListOpenStepFormat;
+    if(format)*format=NSPropertyListOpenStepFormat;
     return result;
    }
 }
