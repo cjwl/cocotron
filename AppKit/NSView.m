@@ -242,7 +242,7 @@ static inline void buildTransformsIfNeeded(NSView *self) {
 }
 
 -(NSArray *)subviews {
-   return _subviews;
+   return [[_subviews copy] autorelease];
 }
 
 -(BOOL)autoresizesSubviews {

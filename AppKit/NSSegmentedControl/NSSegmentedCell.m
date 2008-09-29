@@ -136,24 +136,25 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(BOOL)selectSegmentWithTag:(int)tag {
-   int i,count=[_segments count];
-   _selectedSegment=NSNotFound;  // will be recomputed in -selectedSegment
-   
+   int i,count=[_segments count];   
    for(i=0;i<count;i++)
     if([[_segments objectAtIndex:i] tag]==tag){
-     [self setSelected:YES forSegment:i];
+       [self setSelectedSegment:i];
      return YES;
     }
-   
    return NO;
 }
 
 -(void)setSelected:(BOOL)flag forSegment:(int)segment {
+   [self willChangeValueForKey:@"selectedSegment"];
    _selectedSegment=NSNotFound;  // will be recomputed in -selectedSegment
    [[_segments objectAtIndex:segment] setSelected:flag];
+   [self didChangeValueForKey:@"selectedSegment"];
 }
 
 -(void)setSelectedSegment:(int)segment {
+   if(_selectedSegment!=NSNotFound)
+      [[_segments objectAtIndex:_selectedSegment] setSelected:NO];
    _selectedSegment=NSNotFound;  // will be recomputed in -selectedSegment
    [[_segments objectAtIndex:segment] setSelected:YES];
 }
@@ -274,7 +275,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    NSSegmentItem *trackingItem=[_segments objectAtIndex:_firstTrackingSegmentIndex];
    if(![trackingItem isEnabled])
       return;
-
+   
+   [self willChangeValueForKey:@"selectedSegment"];
    _selectedSegment=NSNotFound;
    // if segment is still switched, it'll be the new "selected segment"
    if([trackingItem isSelected]!=_firstTrackingSegmentInitialState)
@@ -313,6 +315,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
          break;
       }
    }
+   [self didChangeValueForKey:@"selectedSegment"];
 }
 
 @end

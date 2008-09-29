@@ -104,5 +104,55 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [_cell setSelectedSegment:segment];
    [self setNeedsDisplay:YES];
 }
+@end
 
+@implementation NSSegmentedControl (Bindings)
+-(id)_cell
+{
+   return _cell;
+}
+
+-(id)_selectedLabel
+{
+   return [_cell labelForSegment:[_cell selectedSegment]];
+}
+
+-(void)_setSelectedLabel:(id)label
+{
+   int idx=[[_cell valueForKeyPath:@"segments.label"] indexOfObject:label];
+   return [_cell setSelectedSegment:idx];
+}
+
++(NSSet*)keyPathsForValuesAffectingSelectedLabel
+{
+   return [NSSet setWithObject:@"cell.selectedSegment"];
+}
+
+-(int)_selectedTag
+{
+   return [_cell tagForSegment:[_cell selectedSegment]];
+}
+
+-(void)_setSelectedTag:(int)tag
+{
+   [_cell selectSegmentWithTag:tag];
+}
+
++(NSSet*)keyPathsForValuesAffectingSelectedTag {
+   return [NSSet setWithObject:@"cell.selectedSegment"];
+}
+
+-(int)_selectedIndex
+{
+   return [_cell selectedSegment];
+}
+
+-(void)_setSelectedIndex:(int)idx
+{
+   [_cell setSelectedSegment:idx];
+}
+
++(NSSet*)keyPathsForValuesAffectingSelectedIndex {
+   return [NSSet setWithObject:@"cell.selectedSegment"];
+}
 @end
