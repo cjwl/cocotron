@@ -67,17 +67,21 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)_invalidateTimer {
+   [self willChangeValueForKey:@"animate"];
     [_animationTimer invalidate];
     [_animationTimer release];
     _animationTimer=nil;
+   [self didChangeValueForKey:@"animate"];
 }
 
 -(void)_buildTimer {
+   [self willChangeValueForKey:@"animate"];
     _animationTimer = [[NSTimer scheduledTimerWithTimeInterval:_animationDelay
                                                         target:self
                                                       selector:@selector(animate:)
                                                       userInfo:nil
                                                        repeats:YES] retain];
+   [self didChangeValueForKey:@"animate"];
 }
 
 -(void)dealloc {
@@ -286,4 +290,24 @@ void evaluate(void *info,const float *in, float *output) {
    [self setNeedsDisplay:YES];
 }
 
+@end
+
+
+@implementation NSProgressIndicator (Bindings)
+-(BOOL)_animate
+{
+   return _animationTimer!=nil;
+}
+
+-(void)_setAnimate:(BOOL)animate
+{
+   if(animate)
+   {
+      [self startAnimation:nil];
+   }
+   else
+   {
+      [self stopAnimation:nil];
+   }
+}
 @end

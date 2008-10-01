@@ -11,6 +11,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSIndexSet.h>
 #import <Foundation/NSException.h>
 #import <Foundation/NSCoder.h>
+#import <Foundation/NSSet.h>
 #import <Foundation/NSPredicate.h>
 #import <Foundation/NSKeyValueObserving.h>
 #import <Foundation/NSKeyValueCoding.h>
@@ -25,8 +26,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @interface NSArrayController(forwardRefs)
 -(void)prepareContent;
-- (void)setArrangedObjects:(id)value;
-- (void)setContentArray:(id)value;
+- (void)_setArrangedObjects:(id)value;
+- (void)_setContentArray:(id)value;
 @end
 
 @implementation NSArrayController
@@ -64,7 +65,7 @@ triggerChangeNotificationsForDependentKey:@"selectionIndex"];
 		if([self automaticallyPreparesContent])
 			[self prepareContent];
 		else
-			[self setContentArray:[NSMutableArray array]];
+			[self _setContentArray:[NSMutableArray array]];
 
 	}
 	return self;
@@ -74,7 +75,7 @@ triggerChangeNotificationsForDependentKey:@"selectionIndex"];
 {
 	id array=[NSMutableArray array];
 	[array addObject:[[self newObject] autorelease]];
-	[self setContentArray:array];
+	[self _setContentArray:array];
 }
 
 -(void)dealloc
@@ -102,7 +103,7 @@ triggerChangeNotificationsForDependentKey:@"selectionIndex"];
 	_flags.preservesSelection=value;
 }
 
-- (void)setContentArray:(id)value 
+- (void)_setContentArray:(id)value 
 {
 	id oldSelection=nil; 
 	id oldSelectionIndexes=[[[self selectionIndexes] copy] autorelease];
@@ -139,10 +140,10 @@ triggerChangeNotificationsForDependentKey:@"selectionIndex"];
 
 - (void)rearrangeObjects
 {
-	[self setArrangedObjects:[self arrangeObjects:[self contentArray]]];
+	[self _setArrangedObjects:[self arrangeObjects:[self contentArray]]];
 }
 
-- (void)setArrangedObjects:(id)value {
+- (void)_setArrangedObjects:(id)value {
     if (_arrangedObjects != value) 
 	{
 		[_arrangedObjects release];
@@ -296,6 +297,18 @@ triggerChangeNotificationsForDependentKey:@"selectionIndex"];
 	}
 }
 
+#pragma mark -
+#pragma mark NSSet support
+
+-(id)_contentSet
+{
+   return [NSSet setWithArray:_content];
+}
+
+-(void)_setContentSet:(NSSet*)set
+{
+   [self _setContentArray:[set allObjects]];
+}
 
 #pragma mark -
 #pragma mark Add/Remove
@@ -353,7 +366,7 @@ triggerChangeNotificationsForDependentKey:@"selectionIndex"];
 	int i;
 	for(i=0; i<count; i++)
 		[contentArray addObject:[objects objectAtIndex:i]];
-	[self setContentArray:contentArray];
+	[self _setContentArray:contentArray];
 }
 
 
@@ -368,7 +381,7 @@ triggerChangeNotificationsForDependentKey:@"selectionIndex"];
 
 	for(i=0; i<count; i++)
 		[contentArray removeObject:[objects objectAtIndex:i]];
-	[self setContentArray:contentArray];
+	[self _setContentArray:contentArray];
 }
 
 -(BOOL)canInsert;

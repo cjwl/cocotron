@@ -13,6 +13,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSArray.h>
 #import <Foundation/NSException.h>
+#import <Foundation/NSScanner.h>
+#import <Foundation/NSNumber.h>
 
 @implementation NSPropertyListReader_vintage
 
@@ -110,6 +112,24 @@ static inline void appendCharacter(NSPropertyListReader_vintage *self,unsigned c
     self->_buffer=NSZoneRealloc(NULL,self->_buffer,self->_bufferCapacity*sizeof(unichar));
    }
    self->_buffer[self->_bufferSize++]=c;
+}
+
+-(id)convertString:(NSString*)string
+{
+   id scanner=[NSScanner scannerWithString:string];
+   double d;
+   long long l;
+   
+   if([scanner scanLongLong:&l] && [scanner isAtEnd])
+   {
+      return [NSNumber numberWithLongLong:l];
+   }
+   if([scanner scanDouble:&d] && [scanner isAtEnd])
+   {
+      return [NSNumber numberWithDouble:d];
+   }
+   return string;
+   
 }
 
 -(NSObject *)propertyListWithInfo:(NSString *)info {
@@ -303,10 +323,10 @@ static inline void appendCharacter(NSPropertyListReader_vintage *self,unsigned c
       if(code<128 && _NSPropertyListNameSet[code])
        appendCharacter(self,code);
       else{
-       NSString *string=[[NSString allocWithZone:NULL]
-         initWithCharacters:_buffer length:_bufferSize];
-       pushObject(self,string);
-       _index--;
+         NSString *string=[[NSString allocWithZone:NULL]
+                           initWithCharacters:_buffer length:_bufferSize];
+         pushObject(self,string);
+         _index--;
        state=STATE_WHITESPACE;
        if(expect==EXPECT_KEY)
         expect=EXPECT_EQUAL;
@@ -317,9 +337,10 @@ static inline void appendCharacter(NSPropertyListReader_vintage *self,unsigned c
 
      case STATE_STRING:
       if(code=='\"'){
-       NSString *string=[[NSString allocWithZone:NULL]
-                 initWithCharacters:_buffer length:_bufferSize];
-       pushObject(self,string);
+         
+         NSString *string=[NSString stringWithCharacters:_buffer length:_bufferSize];
+         pushObject(self,[[self convertString:string] retain]);
+
        state=STATE_WHITESPACE;
        if(_stackSize==1)
         expect=EXPECT_EOF;
@@ -419,7 +440,7 @@ static inline void appendCharacter(NSPropertyListReader_vintage *self,unsigned c
    if(state==STATE_NAME && _stackSize==0){
     NSString *result=[NSString stringWithCharacters:_buffer length:_bufferSize];
 
-    return result;
+    return [self convertString:result];
    }
 
    if(state!=STATE_WHITESPACE)

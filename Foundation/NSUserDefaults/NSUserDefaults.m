@@ -329,6 +329,8 @@ NSString *NSUserDefaultsDidChangeNotification=@"NSUserDefaultsDidChangeNotificat
    [[self persistantDomain] setObject:value forKey:key];
    [_dictionaryRep autorelease];
    _dictionaryRep=nil;
+   
+   [[NSNotificationCenter defaultCenter] postNotificationName:NSUserDefaultsDidChangeNotification object:self];
 }
 
 -(void)setBool:(BOOL)value forKey:(NSString *)defaultName {
@@ -345,6 +347,8 @@ NSString *NSUserDefaultsDidChangeNotification=@"NSUserDefaultsDidChangeNotificat
 
 -(void)removeObjectForKey:(NSString *)key {
    [[self persistantDomain] removeObjectForKey:key];
+   
+   [[NSNotificationCenter defaultCenter] postNotificationName:NSUserDefaultsDidChangeNotification object:self];
 }
 
 -(BOOL)objectIsForcedForKey:(NSString *)key {
