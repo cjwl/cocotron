@@ -1978,6 +1978,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(BOOL)resignFirstResponder {
+   if (_isEditable)
+     if ([_delegate respondsToSelector:@selector(textShouldEndEditing:)])
+       if ([_delegate textShouldEndEditing:self] == NO)
+         return NO;
+
    NSNotification *note;
    NSDictionary   *userInfo=nil;
 

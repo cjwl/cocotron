@@ -177,4 +177,22 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    }
 }
 
+-(BOOL)textShouldBeginEditing:(NSText *)text {
+   if ([_delegate respondsToSelector:@selector(control:textShouldBeginEditing:)])
+     if ([_delegate control:self textShouldBeginEditing:text] == NO) {
+       NSBeep();
+       return NO;
+     }
+   return YES;
+}
+
+-(BOOL)textShouldEndEditing:(NSText *)text {
+   if ([_delegate respondsToSelector:@selector(control:textShouldEndEditing:)])
+     if ([_delegate control:self textShouldEndEditing:text] == NO) {
+       NSBeep();
+       return NO;
+     }
+   return YES;
+}
+
 @end

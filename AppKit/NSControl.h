@@ -100,6 +100,8 @@ APPKIT_EXPORT NSString *NSControlTextDidEndEditingNotification;
 @end
 
 @interface NSObject(NSControl_delegate)
+-(BOOL)control:(NSControl *)control textShouldBeginEditing:(NSText *)fieldEditor;
+-(BOOL)control:(NSControl *)control textShouldEndEditing:(NSText *)fieldEditor;
 -(void)controlTextDidBeginEditing:(NSNotification *)note;
 -(void)controlTextDidChange:(NSNotification *)note;
 -(void)controlTextDidEndEditing:(NSNotification *)note;
