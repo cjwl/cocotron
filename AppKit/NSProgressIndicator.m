@@ -310,4 +310,11 @@ void evaluate(void *info,const float *in, float *output) {
       [self stopAnimation:nil];
    }
 }
+
+-(id)_replacementKeyPathForBinding:(id)binding
+{
+	if([binding isEqual:@"value"])
+      return @"doubleValue";
+   return [super _replacementKeyPathForBinding:binding];
+}
 @end

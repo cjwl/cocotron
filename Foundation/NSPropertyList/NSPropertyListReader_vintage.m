@@ -124,6 +124,7 @@ static inline void appendCharacter(NSPropertyListReader_vintage *self,unsigned c
    {
       return [NSNumber numberWithLongLong:l];
    }
+   [scanner setScanLocation:0];
    if([scanner scanDouble:&d] && [scanner isAtEnd])
    {
       return [NSNumber numberWithDouble:d];
