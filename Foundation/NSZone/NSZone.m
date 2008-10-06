@@ -194,6 +194,9 @@ void NSDeallocateObject(id object) {
 }
 
 id NSCopyObject(id object,unsigned extraBytes,NSZone *zone) {
+   if (object==nil)
+      return nil;
+
    id result=NSAllocateObject(object->isa,extraBytes,zone);
    
    memcpy(result, object, object->isa->instance_size+extraBytes);
