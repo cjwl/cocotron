@@ -474,15 +474,17 @@ bounds].size.height);
 }
 
 -(void)setHeaderView:(NSTableHeaderView *)headerView {
+    [headerView retain];
     [_headerView release];
-    _headerView = [headerView retain];
+    _headerView = headerView;
     [_headerView setTableView:self];
     [[self enclosingScrollView] tile];
 }
 
 -(void)setCornerView:(NSView *)view {
+    [view retain];
     [_cornerView release];
-    _cornerView = [view retain];
+    _cornerView = view;
     [[self enclosingScrollView] tile];
 }
 
