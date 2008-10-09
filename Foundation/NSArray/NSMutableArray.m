@@ -443,6 +443,30 @@ static NSComparisonResult compareObjectsUsingDescriptors(id A, id B, void *descr
    [self sortUsingFunction:compareObjectsUsingDescriptors context:descriptors];
 }
 
+-(void)_insertObject:(id)obj inArraySortedByDescriptors:(NSArray*)descriptors {
+   NSUInteger start=0;
+   NSUInteger end=[self count];
+   NSUInteger mid=0;
+   
+   // do a binary search to find an object NSOrderedSame
+   while (mid = (start + end) / 2, start < end) {
+      id other=[self objectAtIndex:mid];
+      NSComparisonResult res=compareObjectsUsingDescriptors(obj, other, descriptors);
+      
+      if(res==NSOrderedAscending) {
+            end = mid;
+      }
+      else if (res==NSOrderedDescending) {
+         start = mid + 1;
+      }
+      else {
+         [self insertObject:obj atIndex:mid];
+      }
+   }
+   // none found; current position must be where we should be at
+   return [self insertObject:obj atIndex:mid];
+}
+
 
 -(void)filterUsingPredicate:(NSPredicate *)predicate {
    int count=[self count];

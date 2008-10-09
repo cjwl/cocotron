@@ -8,6 +8,10 @@
 
 #import "Array.h"
 
+@interface NSArray (HiddenStuff)
+-(void)_insertObject:(id)obj inArraySortedByDescriptors:(id)desc;
+@end
+
 
 @implementation Array
 -(void)testMutableArray
@@ -35,5 +39,25 @@
 	[yetAnotherArray release];
 }
 
+-(void)testPrivateSortedInsert
+{
+   id sortDesc=[[[NSSortDescriptor alloc] initWithKey:@"self" ascending:NO] autorelease];
+   id descArray=[NSArray arrayWithObject:sortDesc];
+   NSMutableArray *array=[NSMutableArray new];
+   
+   for(int i=0; i<100; i++)
+   {
+      [array _insertObject:[NSNumber numberWithInt:rand()] inArraySortedByDescriptors:descArray];
+      id other=[array mutableCopy];
+      [other sortUsingDescriptors:descArray];
+
+      STAssertEqualObjects(array, other, @"sorted array not equal to array after insertion");
+      
+      [other release];
+   }
+   
+   [array release];
+   [descArray release];
+}
 
 @end
