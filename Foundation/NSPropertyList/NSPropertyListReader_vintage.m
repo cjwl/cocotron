@@ -16,7 +16,21 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSScanner.h>
 #import <Foundation/NSNumber.h>
 
+static Class NSStringClass=nil;
+static Class NSMutableDictionaryClass=nil;
+static Class NSMutableArrayClass=nil;
+
 @implementation NSPropertyListReader_vintage
+
++initialize
+{
+   if(self==[NSPropertyListReader_vintage class])
+   {
+      NSStringClass=[NSString class];
+      NSMutableDictionaryClass=[NSMutableDictionary class];
+      NSMutableArrayClass=[NSMutableArray class];
+   }
+}
 
 -initWithData:(NSData *)data {
    _data=[data retain];
@@ -114,9 +128,12 @@ static inline void appendCharacter(NSPropertyListReader_vintage *self,unsigned c
    self->_buffer[self->_bufferSize++]=c;
 }
 
--(id)convertString:(NSString*)string
+-(id)convertValue:(id)value
 {
-   id scanner=[NSScanner scannerWithString:string];
+   if(![value isKindOfClass:NSStringClass])
+      return value;
+   
+   id scanner=[NSScanner scannerWithString:value];
    double d;
    long long l;
    
@@ -129,15 +146,11 @@ static inline void appendCharacter(NSPropertyListReader_vintage *self,unsigned c
    {
       return [NSNumber numberWithDouble:d];
    }
-   return string;
+   return value;
    
 }
 
 -(NSObject *)propertyListWithInfo:(NSString *)info {
-   Class NSStringClass=[NSString class];
-   Class NSMutableDictionaryClass=[NSMutableDictionary class];
-   Class NSMutableArrayClass=[NSMutableArray class];
-
    enum {
     STATE_WHITESPACE,
     STATE_COMMENT_SLASH,
@@ -221,7 +234,7 @@ static inline void appendCharacter(NSPropertyListReader_vintage *self,unsigned c
         [object release];
         return [self internalError:NSMutableDictionaryClass];
        }
-       [dictionary setObject:object forKey:key];
+       [dictionary setObject:[self convertValue:object] forKey:key];
        [key release];
        [object release];
        expect=EXPECT_KEY;
@@ -257,7 +270,7 @@ static inline void appendCharacter(NSPropertyListReader_vintage *self,unsigned c
         return [self internalError:NSMutableArrayClass];
        }
 
-       [array addObject:object];
+       [array addObject:[self convertValue:object]];
        [object release];
        expect=EXPECT_VAL;
       }
@@ -280,7 +293,7 @@ static inline void appendCharacter(NSPropertyListReader_vintage *self,unsigned c
        }
 
        if(object!=nil){
-        [array addObject:object];
+        [array addObject:[self convertValue:object]];
         [object release];
        }
 
@@ -340,7 +353,7 @@ static inline void appendCharacter(NSPropertyListReader_vintage *self,unsigned c
       if(code=='\"'){
          
          NSString *string=[NSString stringWithCharacters:_buffer length:_bufferSize];
-         pushObject(self,[[self convertString:string] retain]);
+         pushObject(self,[string retain]);
 
        state=STATE_WHITESPACE;
        if(_stackSize==1)
@@ -441,7 +454,7 @@ static inline void appendCharacter(NSPropertyListReader_vintage *self,unsigned c
    if(state==STATE_NAME && _stackSize==0){
     NSString *result=[NSString stringWithCharacters:_buffer length:_bufferSize];
 
-    return [self convertString:result];
+      return [self convertValue:result];
    }
 
    if(state!=STATE_WHITESPACE)
