@@ -66,12 +66,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [result setReleasedWhenClosed:(_wtFlags&0x40000000)?NO:YES];
    [result setHidesOnDeactivate:(_wtFlags&0x80000000)?YES:NO];
    [result setTitle:_windowTitle];
-
+   
    [result setContentView:_windowView];
    [_windowView setAutoresizesSubviews:YES];
    [_windowView setAutoresizingMask:NSViewWidthSizable|NSViewHeightSizable];
-   [self release];
+   
+   if([_viewClass isKindOfClass:[NSToolbar class]]) {
+      [result setToolbar:_viewClass];
+   }
 
+   [self release];
    return result;
 }
 

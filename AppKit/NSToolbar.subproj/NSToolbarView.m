@@ -25,6 +25,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSMenu.h>
 #import <AppKit/NSMenuWindow.h>
 #import <AppKit/NSMenuView.h>
+#import <AppKit/NSToolbar-Private.h>
 
 extern NSSize _NSToolbarSizeRegular;
 extern NSSize _NSToolbarSizeSmall;
@@ -366,9 +367,7 @@ extern NSSize _NSToolbarIconSizeSmall;
         if ([droppedObject isKindOfClass:[NSString class]]) {
             NSToolbarItem *item;
             
-            item = [NSToolbarItem standardToolbarItemWithIdentifier:droppedObject];
-            if (item == nil)
-                item = [[_toolbar delegate] toolbar:_toolbar itemForItemIdentifier:droppedObject willBeInsertedIntoToolbar:NO];
+            item = [_toolbar _itemForItemIdentifier:droppedObject willBeInsertedIntoToolbar:NO];
 
             if ([[_toolbar itemIdentifiers] containsObject:droppedObject] &&
                 [item allowsDuplicatesInToolbar] == NO)

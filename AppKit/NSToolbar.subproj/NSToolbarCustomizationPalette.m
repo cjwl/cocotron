@@ -33,7 +33,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         index = 0;
     
     [_displayModePopUp selectItemAtIndex:index];
-    [self _setStyleMask:NSBorderlessWindowMask];    
+    [self _setStyleMask:NSDocModalWindowMask];    
     _toolbar = [toolbar retain];
     
     switch ([_toolbar sizeMode]) {

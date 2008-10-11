@@ -194,3 +194,37 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 NSString *NSToolbarOverflowItemIdentifier = @"NSToolbarOverflowItemIdentifier";
 
+
+@interface NSToolbarSpaceItem : NSToolbarItem
+@end
+
+@implementation NSToolbarSpaceItem
+-(id)initWithCoder:(id)coder
+{
+   [self release];
+   return [[NSToolbarItem spaceToolbarItem] retain];
+}
+@end
+
+
+@interface NSToolbarFlexibleSpaceItem : NSToolbarItem
+@end
+
+@implementation NSToolbarFlexibleSpaceItem
+-(id)initWithCoder:(id)coder
+{
+   [self release];
+   return [[NSToolbarItem flexibleSpaceToolbarItem] retain];
+}
+@end
+
+@interface NSToolbarSeparatorItem : NSToolbarItem
+@end
+
+@implementation NSToolbarSeparatorItem
+-(id)initWithCoder:(id)coder
+{
+   [self release];
+   return [[NSToolbarItem separatorToolbarItem] retain];
+}
+@end

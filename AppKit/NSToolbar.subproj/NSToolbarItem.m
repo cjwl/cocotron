@@ -50,7 +50,8 @@ extern NSSize _NSToolbarIconSizeSmall;
     [_itemIdentifier release];
     [_label release];
     [_paletteLabel release];
-    
+   [_image release];
+   
     [_menuFormRepresentation release];    
     [_view release];
     
@@ -298,5 +299,51 @@ extern NSSize _NSToolbarIconSizeSmall;
         [self class], self, _itemIdentifier, _label, [_view image] ? [_view image] : _image, _view];
 }
 
+-(id)initWithCoder:(id)coder
+{
+   if(![coder allowsKeyedCoding])
+      NSUnimplementedMethod();
+   else {
+      _itemIdentifier=[[coder decodeObjectForKey:@"NSToolbarItemIdentifier"] retain];
+      
+      NSToolbarItem *standardItem=[NSToolbarItem standardToolbarItemWithIdentifier:_itemIdentifier];
+      if(standardItem)
+      {
+         [self release];
+         return [standardItem retain];
+      }
+      
+      id view=[coder decodeObjectForKey:@"NSToolbarItemView"];
+      if(!view)
+      {
+         view=[[[NSToolbarButton alloc] initWithFrame:NSMakeRect(0, 0, 32, 32)] autorelease];
+         [view setTarget:[coder decodeObjectForKey:@"NSToolbarItemTarget"]];
+         [view setAction:NSSelectorFromString([coder decodeObjectForKey:@"NSToolbarItemAction"])];
+      }
+      [self setView:view];
+
+      [self setImage:[coder decodeObjectForKey:@"NSToolbarItemImage"]];
+      [self setLabel:[coder decodeObjectForKey:@"NSToolbarItemLabel"]];
+      [self setPaletteLabel:[coder decodeObjectForKey:@"NSToolbarItemPaletteLabel"]];
+
+      _maxSize=[coder decodeSizeForKey:@"NSToolbarItemMaxSize"];
+      _minSize=[coder decodeSizeForKey:@"NSToolbarItemMinSize"];
+      [self setEnabled:[coder decodeBoolForKey:@"NSToolbarItemEnabled"]];
+      [self setTag:[coder decodeIntForKey:@"NSToolbarItemTag"]];
+      
+      
+      /*
+       NSToolbarIsUserRemovable = 1;
+       NSToolbarItemAutovalidates = 1;
+       NSToolbarItemToolTip = {
+       CF$UID = 273;
+       };
+       NSToolbarItemVisibilityPriority = 0;
+       }"
+       */      
+   }
+
+   return self;
+}
 @end
 

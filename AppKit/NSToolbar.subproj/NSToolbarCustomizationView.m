@@ -19,6 +19,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSImage.h>
 #import <AppKit/NSPasteboard.h>
 #import <AppKit/NSDragging.h>
+#import <AppKit/NSToolbar-Private.h>
 
 #define ITEM_SPACING        4.0
 #define ITEM_LINE_THRESHOLD   4
@@ -69,7 +70,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 // Hmm. Well, for custom toolbar views, if the item's view provides a cell, it can use that to draw on the palette too.
 - (void)drawRect:(NSRect)frame
 {
-    NSArray *identifiers = [[_toolbar delegate] toolbarAllowedItemIdentifiers:_toolbar];
+    NSArray *items = [_toolbar _allowedToolbarItems];
     int i, count, thresholdCount = 0;
     float rowHeight = 0;
     NSRect itemFrame = NSInsetRect(frame, 1, 1);
@@ -81,20 +82,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         [[NSColor blackColor] setStroke];
         NSFrameRect(frame);
         
-        identifiers = [[_toolbar delegate] toolbarDefaultItemIdentifiers:_toolbar];
+        items = [_toolbar _defaultToolbarItems];
     }
-     
-    count = [identifiers count];
+
+    count = [items count];
     for (i = 0; i < count; ++i) {
-        NSString *identifier = [identifiers objectAtIndex:i];
-        NSToolbarItem *item = [NSToolbarItem standardToolbarItemWithIdentifier:identifier];
+        NSToolbarItem *item = [items objectAtIndex:i];
         id cell = nil;
-                
-        if (item == nil)
-            item = [[_toolbar delegate] toolbar:_toolbar itemForItemIdentifier:identifier willBeInsertedIntoToolbar:NO];
-        if (item == nil)
-            [NSException raise:NSInvalidArgumentException
-                        format:@"nil toolbar item returned for identifier %@", identifier];
 
         if ([[item view] respondsToSelector:@selector(cell)])
             cell = [[[(NSControl *)[item view] cell] copy] autorelease];
@@ -102,8 +96,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
             cell = [[[NSToolbarButtonCell alloc] init] autorelease];
 
         [cell setImage:[item image]];
-
-        if ([self isDefaultSetView] == YES) {
+       
+       if ([self isDefaultSetView] == YES) {
             [cell setTitle:[item label]];
             itemFrame = [NSToolbarView constrainedToolbarItemFrame:itemFrame minSize:[item minSize] maxSize:[self bounds].size sizeMode:NSToolbarDisplayModeDefault displayMode:NSToolbarSizeModeDefault];
         }
@@ -119,7 +113,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         if ([self isDefaultSetView] && ([item isSpaceToolbarItem] || [item isFlexibleSpaceToolbarItem]))
             ;
         else
+        {
             [cell drawWithFrame:itemFrame inView:nil];
+        }
         
         if ([self isDefaultSetView] == YES)
             itemFrame.origin.x += itemFrame.size.width; // + ITEM_SPACING;
@@ -141,25 +137,17 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 {
     NSSize viewSize = [self bounds].size;
     NSSize itemSize = NSMakeSize(0, 0);
-    NSArray *identifiers = [[_toolbar delegate] toolbarAllowedItemIdentifiers:_toolbar];
+    NSArray *items = [_toolbar _allowedToolbarItems];
     int i, count, thresholdCount = 0, rows = 0;
     float width = 0;
     
     if ([self isDefaultSetView])
-        identifiers = [[_toolbar delegate] toolbarDefaultItemIdentifiers:_toolbar];
+        items = [_toolbar _defaultToolbarItems];
     
-    count = [identifiers count];
+    count = [items count];
     for (i = 0; i < count; ++i) {
-        NSString *identifier = [identifiers objectAtIndex:i];
-        NSToolbarItem *item = [NSToolbarItem standardToolbarItemWithIdentifier:identifier];
-        
-        if (item == nil)
-            item = [[_toolbar delegate] toolbar:_toolbar itemForItemIdentifier:identifier willBeInsertedIntoToolbar:NO];
-        
-        if (item == nil)
-            [NSException raise:NSInvalidArgumentException
-                        format:@"nil toolbar item returned for identifier %@", identifier];
-
+       NSToolbarItem *item = [items objectAtIndex:i];
+       
         itemSize.width = MAX(itemSize.width, [item sizeForPalette].width);
         itemSize.height = MAX(itemSize.height, [item sizeForPalette].height);
         
@@ -198,7 +186,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     
     if ([self isDefaultSetView]) {
         NSImage *image = [[[NSImage alloc] initWithSize:_bounds.size] autorelease];
-        NSData *data = [NSArchiver archivedDataWithRootObject:[[_toolbar delegate] toolbarDefaultItemIdentifiers:_toolbar]];
+        NSData *data = [NSArchiver archivedDataWithRootObject:[[_toolbar _defaultToolbarItems] valueForKey:@"itemIdentifier"]];
         
         [image setCachedSeparately:YES];
         [image lockFocus];
@@ -212,21 +200,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     }
     else {
         NSPoint point = [self convertPoint:[event locationInWindow] fromView:nil];
-        NSArray *identifiers = [[_toolbar delegate] toolbarAllowedItemIdentifiers:_toolbar];
+        NSArray *items = [_toolbar _allowedToolbarItems];
         int i, count, thresholdCount = 0;
         float rowHeight = 0;
         NSRect itemFrame = NSInsetRect(_bounds, 1, 1);
         
-        count = [identifiers count];
+        count = [items count];
         for (i = 0; i < count; ++i) {
-            NSString *identifier = [identifiers objectAtIndex:i];
-            NSToolbarItem *item = [NSToolbarItem standardToolbarItemWithIdentifier:identifier];
-
-            if (item == nil)
-                item = [[_toolbar delegate] toolbar:_toolbar itemForItemIdentifier:identifier willBeInsertedIntoToolbar:NO];
-            if (item == nil)
-                [NSException raise:NSInvalidArgumentException
-                            format:@"nil toolbar item returned for identifier %@", identifier];
+            NSToolbarItem *item = [items objectAtIndex:i];
 
             itemFrame.size = [item sizeForPalette];
             itemFrame.size.width = [self frame].size.width / ITEM_LINE_THRESHOLD;

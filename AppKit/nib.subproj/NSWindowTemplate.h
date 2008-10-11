@@ -15,7 +15,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    NSSize    _maxSize;
    NSSize    _minSize;
    NSRect    _screenRect;
-   NSString *_viewClass;
+   id        _viewClass;
    unsigned  _wtFlags;
    int       _windowBacking;
    NSString *_windowClass;
