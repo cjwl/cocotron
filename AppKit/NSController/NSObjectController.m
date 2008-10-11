@@ -36,6 +36,7 @@ triggerChangeNotificationsForDependentKey:@"canRemove"];
 		_objectClassName=[[coder decodeObjectForKey:@"NSObjectClassName"] retain];
 		_editable = [coder decodeBoolForKey:@"NSEditable"];
 		_automaticallyPreparesContent = [coder decodeBoolForKey:@"NSAutomaticallyPreparesContent"];
+      _observedKeys=[[NSCountedSet alloc] init];
 	}
 	return self;
 }
@@ -45,7 +46,8 @@ triggerChangeNotificationsForDependentKey:@"canRemove"];
 }
 
 - (void)setContent:(id)value {
-    if (_content != value) {
+   if(value!=_content)
+   {
        [self _selectionWillChange];
        
         [_content release];
@@ -54,6 +56,15 @@ triggerChangeNotificationsForDependentKey:@"canRemove"];
 		[self _selectionDidChange];
     }
 }
+
+-(void)_setContentWithoutKVO:(id)value
+{
+   if (_content != value) {
+      [_content release];
+      _content = [value retain];
+   }
+}
+
 
 -(NSArray *)selectedObjects
 {
@@ -96,6 +107,7 @@ triggerChangeNotificationsForDependentKey:@"canRemove"];
 	[_selection release];
 	[_objectClassName release];
 	[_content release];
+   [_observedKeys release];
 	[super dealloc];
 }
 
@@ -126,5 +138,22 @@ triggerChangeNotificationsForDependentKey:@"canRemove"];
 
 - (void)setAutomaticallyPreparesContent:(BOOL)value {
 	_automaticallyPreparesContent = value;
+}
+
+- (void)addObserver:(NSObject *)observer forKeyPath:(NSString *)keyPath options:(NSKeyValueObservingOptions)options context:(void *)context
+{
+   [_observedKeys addObject:keyPath];
+   [super addObserver:observer forKeyPath:keyPath options:options context:context];
+}
+
+- (void)removeObserver:(NSObject *)observer forKeyPath:(NSString *)keyPath
+{
+   [_observedKeys removeObject:keyPath];
+   [super removeObserver:observer forKeyPath:keyPath];
+}
+
+-(id)_observedKeys
+{
+   return _observedKeys;
 }
 @end

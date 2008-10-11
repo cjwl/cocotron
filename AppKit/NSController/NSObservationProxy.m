@@ -14,8 +14,6 @@
 		_keyPath=[keyPath retain];
 		_observer=observer;
 		_object=object;
-      if([object respondsToSelector:@selector(observeValueForKeyPath:ofObject:change:context:)])
-         _notifyObject=YES;
 	}
 	return self;
 }
@@ -36,6 +34,21 @@
 	return _keyPath;
 }
 
+-(void*)context
+{
+   return _context;
+}
+
+-(NSKeyValueObservingOptions)options
+{
+   return _options;
+}
+
+-(void)setNotifiyObject:(BOOL)val
+{
+   _notifyObject=val;
+}
+
 - (BOOL)isEqual:(id)other
 {
 	if([other isMemberOfClass:isa])
@@ -53,10 +66,12 @@
                        context:(void *)context
 {
    if(_notifyObject)
+   {
       [_object observeValueForKeyPath:_keyPath
                              ofObject:_object
                                change:change
                               context:context];
+   }
 
 	[_observer observeValueForKeyPath:_keyPath
                             ofObject:_object
@@ -69,8 +84,6 @@
 	return [NSString stringWithFormat:@"observation proxy for %@ on key path %@", _observer, _keyPath];
 }
 @end
-
-
 
 @implementation _NSObservableArray 
 
@@ -117,6 +130,9 @@
 		_NSObservationProxy *proxy=[[_NSObservationProxy alloc] initWithKeyPath:keyPath
                                                                      observer:observer
                                                                        object:self];
+      proxy->_options=options;
+      proxy->_context=context;
+      
 		[_observationProxies addObject:proxy];
 		[proxy release];
       
@@ -169,6 +185,85 @@
 		  fromObjectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, [_array count])]
                   forKeyPath:keyPath];
 	}
+}
+
+-(void)insertObject:(id)obj atIndex:(NSUInteger)idx
+{
+   for(_NSObservationProxy *proxy in _observationProxies)
+   {
+      id keyPath=[proxy keyPath];
+      BOOL isOperator=NO;
+      if([keyPath hasPrefix:@"@"])
+         isOperator=YES;
+      
+      if(isOperator)
+         [self willChangeValueForKey:keyPath];
+      [obj addObserver:proxy
+            forKeyPath:keyPath
+               options:[proxy options]
+               context:[proxy context]];
+      if(isOperator)
+         [self didChangeValueForKey:keyPath];
+
+   }
+   [_array insertObject:obj atIndex:idx];
+}
+
+-(void)removeObjectAtIndex:(NSUInteger)idx
+{
+   id obj=[_array objectAtIndex:idx];
+   for(_NSObservationProxy *proxy in _observationProxies)
+   {
+      id keyPath=[proxy keyPath];
+      BOOL isOperator=NO;
+      if([keyPath hasPrefix:@"@"])
+         isOperator=YES;
+      
+      if(isOperator)
+         [self willChangeValueForKey:keyPath];
+      [obj removeObserver:proxy
+               forKeyPath:keyPath];
+      
+      if(isOperator)
+         [self didChangeValueForKey:keyPath];
+   }
+   [_array removeObjectAtIndex:idx];
+}
+
+-(void)addObject:(id)obj
+{
+   [self insertObject:obj atIndex:[self count]];
+}
+
+-(void)removeLastObject
+{
+   [self removeObjectAtIndex:[self count]];
+}
+
+-(void)replaceObjectAtIndex:(NSUInteger)idx withObject:(id)obj
+{
+   id old=[_array objectAtIndex:idx];
+   for(_NSObservationProxy *proxy in _observationProxies)
+   {
+      id keyPath=[proxy keyPath];
+      BOOL isOperator=NO;
+      if([keyPath hasPrefix:@"@"])
+         isOperator=YES;
+      
+      if(isOperator)
+         [self willChangeValueForKey:keyPath];
+      
+      [old removeObserver:proxy
+               forKeyPath:[proxy keyPath]];
+      [obj addObserver:proxy
+            forKeyPath:[proxy keyPath]
+               options:[proxy options]
+               context:[proxy context]];
+      
+      if(isOperator)
+         [self didChangeValueForKey:keyPath];
+   }
+   [_array replaceObjectAtIndex:idx withObject:obj];
 }
 @end
 

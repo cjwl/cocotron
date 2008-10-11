@@ -14,7 +14,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @interface NSControllerSelectionProxy : NSObject
 {
 	id _controller;
-	NSMutableDictionary *_values;
+	NSMutableDictionary *_cachedValues;
    NSMutableArray *_observationProxies;
    id _keys;
 }

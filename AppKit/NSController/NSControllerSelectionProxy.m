@@ -22,7 +22,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 {
 	if((self=[super init]))
 	{
-		_values=[NSMutableDictionary new];
+		_cachedValues=[NSMutableDictionary new];
 		_controller = [cont retain];
       _observationProxies = [NSMutableArray new];
 	}
@@ -32,7 +32,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)dealloc
 {
    [_keys release];
-	[_values release];
+	[_cachedValues release];
 	[_controller release];
    
    if([_observationProxies count]>0)
@@ -47,7 +47,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(id)valueForKey:(NSString*)key
 {
-	id val=[_values objectForKey:key];
+	id val=[_cachedValues objectForKey:key];
 	if(val)
 		return val;
 	id allValues=[[_controller selectedObjects] valueForKeyPath:key];
@@ -81,19 +81,19 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 		}
 	}
 	
-	[_values setValue:val forKey:key];
+	[_cachedValues setValue:val forKey:key];
    
 	return val;
 }
 
 -(int)count
 {
-	return [_values count];
+	return [_cachedValues count];
 }
 
 -(id)keyEnumerator
 {
-	return [_values keyEnumerator];
+	return [_cachedValues keyEnumerator];
 }
 
 -(void)setValue:(id)value forKey:(NSString *)key
@@ -112,17 +112,17 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)controllerWillChange
 {
    [_keys autorelease];
-   _keys=[[_values allKeys] retain];
+   _keys=[[_cachedValues allKeys] retain];
    for(id key in _keys)
    {
       [self willChangeValueForKey:key];
    }
-   [_values removeAllObjects];
+   [_cachedValues removeAllObjects];
 }
 
 -(void)controllerDidChange
 {
-   [_values removeAllObjects];
+   [_cachedValues removeAllObjects];
    for(id key in _keys)
    {
       [self didChangeValueForKey:key];
@@ -136,12 +136,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
                         change:(NSDictionary *)change
                        context:(void *)context
 {
-   [_values removeObjectForKey:keyPath];
+   // remove cached value for this key path
+   [_cachedValues removeObjectForKey:keyPath];
 }
 
 - (void)addObserver:(NSObject *)observer forKeyPath:(NSString *)keyPath options:(NSKeyValueObservingOptions)options context:(void *)context
 {
    _NSObservationProxy *proxy=[[_NSObservationProxy alloc] initWithKeyPath:keyPath observer:observer object:self];
+   [proxy setNotifiyObject:YES];
    [_observationProxies addObject:proxy];
    
    [[_controller selectedObjects] addObserver:proxy forKeyPath:keyPath options:options context:context];

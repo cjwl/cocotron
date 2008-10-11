@@ -125,6 +125,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(BOOL)allowsEditingForRow:(int)row
 {
+   if([[_rowValues objectAtIndex:row] classForCoder]==[NSDictionary class])
+      return NO;
 	return YES;
 }
 
