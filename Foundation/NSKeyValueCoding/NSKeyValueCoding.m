@@ -266,7 +266,7 @@ return [self _wrapReturnValueForSelector:sel]; \
 
 		if(ivar)
 		{
-         BOOL shouldNotify=[self automaticallyNotifiesObserversForKey:key];
+         BOOL shouldNotify=[isa automaticallyNotifiesObserversForKey:key];
          if(shouldNotify)
             [self willChangeValueForKey:key];
 			// if value is nil and ivar is not an object type

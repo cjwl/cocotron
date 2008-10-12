@@ -443,7 +443,7 @@ static NSComparisonResult compareObjectsUsingDescriptors(id A, id B, void *descr
    [self sortUsingFunction:compareObjectsUsingDescriptors context:descriptors];
 }
 
--(void)_insertObject:(id)obj inArraySortedByDescriptors:(NSArray*)descriptors {
+-(NSUInteger)_insertObject:(id)obj inArraySortedByDescriptors:(NSArray*)descriptors {
    NSUInteger start=0;
    NSUInteger end=[self count];
    NSUInteger mid=0;
@@ -461,10 +461,12 @@ static NSComparisonResult compareObjectsUsingDescriptors(id A, id B, void *descr
       }
       else {
          [self insertObject:obj atIndex:mid];
+         return mid;
       }
    }
    // none found; current position must be where we should be at
-   return [self insertObject:obj atIndex:mid];
+   [self insertObject:obj atIndex:mid];
+   return mid;
 }
 
 
