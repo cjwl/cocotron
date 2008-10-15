@@ -8463,6 +8463,7 @@
 					"-DOBJC_INSIDE_BUILD",
 					"-D__LITTLE_ENDIAN__",
 					"-fPIC",
+					"-march=i686",
 				);
 				OTHER_LDFLAGS = (
 					"-shared",
@@ -8531,7 +8532,9 @@
 					"-DFOUNDATION_INSIDE_BUILD",
 					"-DOBJC_INSIDE_BUILD",
 					"-D__LITTLE_ENDIAN__",
+					"-DDEBUG",
 					"-fPIC",
+					"-march=i686",
 				);
 				OTHER_LDFLAGS = (
 					"-shared",

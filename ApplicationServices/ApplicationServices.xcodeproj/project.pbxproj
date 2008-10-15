@@ -7,6 +7,27 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C889771E0EA0C0CD00D0A0A2 /* ApplicationServices.h in Headers */ = {isa = PBXBuildFile; fileRef = FE32179C0BB41C65004F000A /* ApplicationServices.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C889771F0EA0C0CD00D0A0A2 /* CGAffineTransform.h in Headers */ = {isa = PBXBuildFile; fileRef = FECAF4DA0DB7110900BA2A8E /* CGAffineTransform.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C88977200EA0C0CD00D0A0A2 /* CGBitmapContext.h in Headers */ = {isa = PBXBuildFile; fileRef = FECAF4DB0DB7110900BA2A8E /* CGBitmapContext.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C88977210EA0C0CD00D0A0A2 /* CGColor.h in Headers */ = {isa = PBXBuildFile; fileRef = FECAF4DC0DB7110900BA2A8E /* CGColor.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C88977220EA0C0CD00D0A0A2 /* CGColorSpace.h in Headers */ = {isa = PBXBuildFile; fileRef = FECAF4DD0DB7110900BA2A8E /* CGColorSpace.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C88977230EA0C0CD00D0A0A2 /* CGContext.h in Headers */ = {isa = PBXBuildFile; fileRef = FECAF4DE0DB7110900BA2A8E /* CGContext.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C88977240EA0C0CD00D0A0A2 /* CGDataProvider.h in Headers */ = {isa = PBXBuildFile; fileRef = FECAF4DF0DB7110900BA2A8E /* CGDataProvider.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C88977250EA0C0CD00D0A0A2 /* CGFont.h in Headers */ = {isa = PBXBuildFile; fileRef = FECAF4E00DB7110900BA2A8E /* CGFont.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C88977260EA0C0CD00D0A0A2 /* CGFunction.h in Headers */ = {isa = PBXBuildFile; fileRef = FECAF4E10DB7110900BA2A8E /* CGFunction.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C88977270EA0C0CD00D0A0A2 /* CGGeometry.h in Headers */ = {isa = PBXBuildFile; fileRef = FECAF4E20DB7110900BA2A8E /* CGGeometry.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C88977280EA0C0CD00D0A0A2 /* CGImage.h in Headers */ = {isa = PBXBuildFile; fileRef = FECAF4E30DB7110900BA2A8E /* CGImage.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C88977290EA0C0CD00D0A0A2 /* CGLayer.h in Headers */ = {isa = PBXBuildFile; fileRef = FECAF4E40DB7110900BA2A8E /* CGLayer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C889772A0EA0C0CD00D0A0A2 /* CGPath.h in Headers */ = {isa = PBXBuildFile; fileRef = FECAF4E50DB7110900BA2A8E /* CGPath.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C889772B0EA0C0CD00D0A0A2 /* CGPattern.h in Headers */ = {isa = PBXBuildFile; fileRef = FECAF4E60DB7110900BA2A8E /* CGPattern.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C889772C0EA0C0CD00D0A0A2 /* CGShading.h in Headers */ = {isa = PBXBuildFile; fileRef = FECAF4E70DB7110900BA2A8E /* CGShading.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C889772D0EA0C0CD00D0A0A2 /* CoreGraphics.h in Headers */ = {isa = PBXBuildFile; fileRef = FECAF4E80DB7110900BA2A8E /* CoreGraphics.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C889772E0EA0C0CD00D0A0A2 /* CoreGraphicsExport.h in Headers */ = {isa = PBXBuildFile; fileRef = FECAF5150DB711BC00BA2A8E /* CoreGraphicsExport.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C889772F0EA0C0CD00D0A0A2 /* CGPDFPage.h in Headers */ = {isa = PBXBuildFile; fileRef = FECAF52D0DB7134F00BA2A8E /* CGPDFPage.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C88977300EA0C0CD00D0A0A2 /* CGImageSource.h in Headers */ = {isa = PBXBuildFile; fileRef = FE45EDC20DC2400F00F49290 /* CGImageSource.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C88977310EA0C0CD00D0A0A2 /* CGPDFDocument.h in Headers */ = {isa = PBXBuildFile; fileRef = FE7ABE630DC2C0290060D15B /* CGPDFDocument.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C88977320EA0C0CD00D0A0A2 /* CGImageProperties.h in Headers */ = {isa = PBXBuildFile; fileRef = FE66EFFA0E513A3B006C5796 /* CGImageProperties.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE01AAE60C5D9BF900AEA51A /* ApplicationServices.h in Headers */ = {isa = PBXBuildFile; fileRef = FE32179C0BB41C65004F000A /* ApplicationServices.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE45EDC30DC2400F00F49290 /* CGImageSource.h in Headers */ = {isa = PBXBuildFile; fileRef = FE45EDC20DC2400F00F49290 /* CGImageSource.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE66EFFB0E513A3B006C5796 /* CGImageProperties.h in Headers */ = {isa = PBXBuildFile; fileRef = FE66EFFA0E513A3B006C5796 /* CGImageProperties.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -31,6 +52,14 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
+		C88977360EA0C0CD00D0A0A2 /* PBXBuildRule */ = {
+			isa = PBXBuildRule;
+			compilerSpec = org.cocotron.1.0.linux.i386.gcc.default;
+			fileType = sourcecode.c;
+			isEditable = 1;
+			outputFiles = (
+			);
+		};
 		FE01AAEA0C5D9BF900AEA51A /* PBXBuildRule */ = {
 			isa = PBXBuildRule;
 			compilerSpec = org.cocotron.1.0.windows.i386.gcc.default;
@@ -83,6 +112,8 @@
 		0867D69BFE84028FC02AAC07 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		0867D6A5FE840307C02AAC07 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		8DC2EF5A0486A6940098B216 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		C88977390EA0C0CD00D0A0A2 /* ApplicationServices.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ApplicationServices.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C889773A0EA0C0CD00D0A0A2 /* Info copy.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Info copy.plist"; sourceTree = "<group>"; };
 		FE01AAED0C5D9BF900AEA51A /* ApplicationServices.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ApplicationServices.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FE32179C0BB41C65004F000A /* ApplicationServices.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = ApplicationServices.h; sourceTree = "<group>"; };
 		FE45EDC20DC2400F00F49290 /* CGImageSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGImageSource.h; sourceTree = "<group>"; };
@@ -109,6 +140,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		C88977350EA0C0CD00D0A0A2 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		FE01AAE90C5D9BF900AEA51A /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -123,6 +161,7 @@
 			isa = PBXGroup;
 			children = (
 				FE01AAED0C5D9BF900AEA51A /* ApplicationServices.framework */,
+				C88977390EA0C0CD00D0A0A2 /* ApplicationServices.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -173,6 +212,7 @@
 			isa = PBXGroup;
 			children = (
 				8DC2EF5A0486A6940098B216 /* Info.plist */,
+				C889773A0EA0C0CD00D0A0A2 /* Info copy.plist */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -215,6 +255,34 @@
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
+		C889771D0EA0C0CD00D0A0A2 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C889771E0EA0C0CD00D0A0A2 /* ApplicationServices.h in Headers */,
+				C889771F0EA0C0CD00D0A0A2 /* CGAffineTransform.h in Headers */,
+				C88977200EA0C0CD00D0A0A2 /* CGBitmapContext.h in Headers */,
+				C88977210EA0C0CD00D0A0A2 /* CGColor.h in Headers */,
+				C88977220EA0C0CD00D0A0A2 /* CGColorSpace.h in Headers */,
+				C88977230EA0C0CD00D0A0A2 /* CGContext.h in Headers */,
+				C88977240EA0C0CD00D0A0A2 /* CGDataProvider.h in Headers */,
+				C88977250EA0C0CD00D0A0A2 /* CGFont.h in Headers */,
+				C88977260EA0C0CD00D0A0A2 /* CGFunction.h in Headers */,
+				C88977270EA0C0CD00D0A0A2 /* CGGeometry.h in Headers */,
+				C88977280EA0C0CD00D0A0A2 /* CGImage.h in Headers */,
+				C88977290EA0C0CD00D0A0A2 /* CGLayer.h in Headers */,
+				C889772A0EA0C0CD00D0A0A2 /* CGPath.h in Headers */,
+				C889772B0EA0C0CD00D0A0A2 /* CGPattern.h in Headers */,
+				C889772C0EA0C0CD00D0A0A2 /* CGShading.h in Headers */,
+				C889772D0EA0C0CD00D0A0A2 /* CoreGraphics.h in Headers */,
+				C889772E0EA0C0CD00D0A0A2 /* CoreGraphicsExport.h in Headers */,
+				C889772F0EA0C0CD00D0A0A2 /* CGPDFPage.h in Headers */,
+				C88977300EA0C0CD00D0A0A2 /* CGImageSource.h in Headers */,
+				C88977310EA0C0CD00D0A0A2 /* CGPDFDocument.h in Headers */,
+				C88977320EA0C0CD00D0A0A2 /* CGImageProperties.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		FE01AAE50C5D9BF900AEA51A /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
@@ -246,6 +314,26 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
+		C889771C0EA0C0CD00D0A0A2 /* ApplicationServices-Linux-i386 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C88977370EA0C0CD00D0A0A2 /* Build configuration list for PBXNativeTarget "ApplicationServices-Linux-i386" */;
+			buildPhases = (
+				C889771D0EA0C0CD00D0A0A2 /* Headers */,
+				C88977330EA0C0CD00D0A0A2 /* Resources */,
+				C88977340EA0C0CD00D0A0A2 /* Sources */,
+				C88977350EA0C0CD00D0A0A2 /* Frameworks */,
+			);
+			buildRules = (
+				C88977360EA0C0CD00D0A0A2 /* PBXBuildRule */,
+			);
+			dependencies = (
+			);
+			name = "ApplicationServices-Linux-i386";
+			productInstallPath = "$(HOME)/Library/Frameworks";
+			productName = ApplicationServices;
+			productReference = C88977390EA0C0CD00D0A0A2 /* ApplicationServices.framework */;
+			productType = "com.apple.product-type.framework";
+		};
 		FE01AAE20C5D9BF900AEA51A /* ApplicationServices-Windows-i386 */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = FE01AAEB0C5D9BF900AEA51A /* Build configuration list for PBXNativeTarget "ApplicationServices-Windows-i386" */;
@@ -286,6 +374,7 @@
 			projectRoot = "";
 			targets = (
 				FE01AAE20C5D9BF900AEA51A /* ApplicationServices-Windows-i386 */,
+				C889771C0EA0C0CD00D0A0A2 /* ApplicationServices-Linux-i386 */,
 			);
 		};
 /* End PBXProject section */
@@ -329,6 +418,13 @@
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
+		C88977330EA0C0CD00D0A0A2 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		FE01AAE70C5D9BF900AEA51A /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -339,6 +435,13 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		C88977340EA0C0CD00D0A0A2 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		FE01AAE80C5D9BF900AEA51A /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -356,6 +459,29 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				PREBINDING = NO;
 				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
+			};
+			name = Release;
+		};
+		C88977380EA0C0CD00D0A0A2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = i386;
+				DEPLOYMENT_LOCATION = YES;
+				DSTROOT = /;
+				EXECUTABLE_SUFFIX = .1.0.dll;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = "";
+				INFOPLIST_FILE = "/Users/jobi/Projekte/cocotron/ApplicationServices/Info copy.plist";
+				INSTALL_PATH = /Developer/Cocotron/1.0/Linux/i386/Frameworks;
+				OTHER_CFLAGS = (
+					"-DAPPLICATIONSERVICES_INSIDE_BUILD",
+					"-D__LITTLE_ENDIAN__",
+				);
+				OTHER_LDFLAGS = "";
+				PREBINDING = NO;
+				PRODUCT_NAME = ApplicationServices;
+				SYMROOT = /Developer/Cocotron/1.0/build/ApplicationServices/Linux/i386;
 			};
 			name = Release;
 		};
@@ -394,6 +520,14 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				1DEB91B308733DA50010E9CD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C88977370EA0C0CD00D0A0A2 /* Build configuration list for PBXNativeTarget "ApplicationServices-Linux-i386" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C88977380EA0C0CD00D0A0A2 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

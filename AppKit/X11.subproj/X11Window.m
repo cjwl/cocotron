@@ -1,0 +1,185 @@
+//
+//  X11Window.m
+//  AppKit
+//
+//  Created by Johannes Fortmann on 13.10.08.
+//  Copyright 2008 -. All rights reserved.
+//
+
+#import <AppKit/X11Window.h>
+#import <AppKit/NSWindow.h>
+#import <AppKit/X11Display.h>
+#import <X11/Xutil.h>
+#import <AppKit/CairoContext.h>
+
+@implementation X11Window
+
+-initWithFrame:(NSRect)frame styleMask:(unsigned)styleMask isPanel:(BOOL)isPanel backingType:(NSUInteger)backingType;
+{
+   if(self=[super init])
+	{
+      _deviceDictionary=[NSMutableDictionary new];
+      _dpy=[(X11Display*)[NSDisplay currentDisplay] display];
+      int s = DefaultScreen(_dpy);
+      _window = XCreateSimpleWindow(_dpy, DefaultRootWindow(_dpy),
+                              frame.origin.x, frame.origin.y, frame.size.width, frame.size.height, 
+                              1, BlackPixel(_dpy, s), WhitePixel(_dpy, s));
+
+      XSelectInput(_dpy, _window, ExposureMask | KeyPressMask | StructureNotifyMask |
+      ButtonPressMask | ButtonReleaseMask | ButtonMotionMask);
+      
+      XSetWindowAttributes xattr;
+      unsigned long xattr_mask;
+      xattr.backing_store = WhenMapped;
+      xattr_mask = CWBackingStore;
+      XChangeWindowAttributes(_dpy, _window, xattr_mask, &xattr);
+      
+      [(X11Display*)[NSDisplay currentDisplay] setWindow:self forID:_window];
+      [self sizeChanged];
+   }
+   return self;
+}
+
+
+
+-(void)setDelegate:delegate {
+   _delegate=delegate;
+}
+
+-delegate {
+   return _delegate;
+}
+
+-(void)invalidate {
+   [(X11Display*)[NSDisplay currentDisplay] setWindow:self forID:_window];
+         
+   XDestroyWindow(_dpy, _window);
+   _window=0;
+   _delegate=nil;
+}
+
+
+-(KGContext *)cgContext {
+   if(!_cgContext)
+   {
+      _cgContext=[[CairoContext alloc] initWithWindow:self];
+   }
+   
+   return _cgContext;
+}
+
+
+-(void)setTitle:(NSString *)title {
+   XTextProperty prop;
+   const char* text=[title cString];
+   XStringListToTextProperty((char**)&text, 1, &prop);
+   XSetWMName(_dpy, _window, &prop);
+}
+
+-(void)setFrame:(NSRect)frame {
+   XMoveResizeWindow(_dpy, _window, frame.origin.x, frame.origin.y, frame.size.width, frame.size.height);
+   [_cgContext setSize:[self frame].size];
+ }
+
+
+-(void)showWindowForAppActivation:(NSRect)frame {
+   NSUnimplementedMethod();
+}
+
+-(void)hideWindowForAppDeactivation:(NSRect)frame {
+   NSUnimplementedMethod();
+}
+
+
+-(void)hideWindow {
+   NSUnimplementedMethod();
+}
+
+
+-(void)placeAboveWindow:(CGWindow *)other {
+   NSUnimplementedMethod();
+}
+
+-(void)placeBelowWindow:(CGWindow *)other {
+   NSUnimplementedMethod();
+}
+
+
+-(void)makeKey {
+   XMapRaised(_dpy, _window);
+}
+
+-(void)captureEvents {
+   NSUnimplementedMethod();
+}
+
+-(void)miniaturize {
+   NSUnimplementedMethod();
+
+}
+
+-(void)deminiaturize {
+   NSUnimplementedMethod();
+
+}
+
+-(BOOL)isMiniaturized {
+   return NO;
+}
+
+-(void)flushBuffer {
+   [_cgContext flush];
+}
+
+
+-(NSPoint)mouseLocationOutsideOfEventStream {
+   NSUnimplementedMethod();
+   return NSZeroPoint;
+}
+
+
+-(void)sendEvent:(CGEvent *)event {
+   NSLog(@"%@", event);
+   NSUnimplementedMethod();
+}
+
+-(NSRect)frame
+{
+   return _frame;
+}
+
+-(void)sizeChanged
+{
+   Window root;
+   int x, y, w, h, b, d;
+   XGetGeometry(_dpy, _window, &root, 
+                &x, &y, &w, &h,
+                &b, &d);
+   
+   _frame = NSMakeRect(x, y, w, h);
+   
+   [_cgContext setSize:_frame.size];
+}
+
+-(Visual*)visual
+{
+   return DefaultVisual(_dpy, DefaultScreen(_dpy));
+}
+
+-(Drawable)drawable
+{
+   return _window;
+}
+
+-(void)addEntriesToDeviceDictionary:(NSDictionary *)entries 
+{
+   [_deviceDictionary addEntriesFromDictionary:entries];
+}
+
+
+-(NSPoint)transformPoint:(NSPoint)pos;
+{
+   return NSMakePoint(pos.x, _frame.size.height-pos.y);
+}
+
+@end
