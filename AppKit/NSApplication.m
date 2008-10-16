@@ -393,7 +393,11 @@ id NSApp=nil;
       [_delegate respondsToSelector: @selector(applicationShouldOpenUntitledFile:)]) {
        needsUntitled = [_delegate applicationShouldOpenUntitledFile: self];
    }
-   
+
+   if(needsUntitled && controller && ![controller documentClassForType:[controller defaultType]]) {
+       needsUntitled = NO;
+   }
+
    if(needsUntitled && controller) {
        [controller _updateRecentDocumentsMenu]; 
        [controller newDocument: self];
