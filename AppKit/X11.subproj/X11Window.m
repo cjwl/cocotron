@@ -23,7 +23,7 @@
       int s = DefaultScreen(_dpy);
       _window = XCreateSimpleWindow(_dpy, DefaultRootWindow(_dpy),
                               frame.origin.x, frame.origin.y, frame.size.width, frame.size.height, 
-                              1, BlackPixel(_dpy, s), WhitePixel(_dpy, s));
+                              0, BlackPixel(_dpy, s), WhitePixel(_dpy, s));
 
       XSelectInput(_dpy, _window, ExposureMask | KeyPressMask | StructureNotifyMask |
       ButtonPressMask | ButtonReleaseMask | ButtonMotionMask);
@@ -33,6 +33,8 @@
       xattr.backing_store = WhenMapped;
       xattr_mask = CWBackingStore;
       XChangeWindowAttributes(_dpy, _window, xattr_mask, &xattr);
+      XMoveWindow(_dpy, _window, frame.origin.x, frame.origin.y);
+      NSLog(@"frame: %f, %f", frame.origin.x, frame.origin.y);
       
       [(X11Display*)[NSDisplay currentDisplay] setWindow:self forID:_window];
       [self sizeChanged];
@@ -40,6 +42,14 @@
    return self;
 }
 
+-(void)ensureMapped
+{
+   if(!_mapped)
+   {
+      XMapWindow(_dpy, _window);
+      _mapped=YES;
+   }
+}
 
 
 -(void)setDelegate:delegate {
@@ -92,21 +102,40 @@
 
 
 -(void)hideWindow {
-   NSUnimplementedMethod();
+   XUnmapWindow(_dpy, _window);
+   _mapped=NO;
+   [_cgContext release];
+   _cgContext=nil;
 }
 
 
--(void)placeAboveWindow:(CGWindow *)other {
-   NSUnimplementedMethod();
+-(void)placeAboveWindow:(X11Window *)other {
+   [self ensureMapped];
+
+   if(!other) {
+      XRaiseWindow(_dpy, _window);
+   }
+   else {
+      Window w[2]={_window, other->_window};
+      XRestackWindows(_dpy, w, 1);
+   }
 }
 
--(void)placeBelowWindow:(CGWindow *)other {
-   NSUnimplementedMethod();
-}
+-(void)placeBelowWindow:(X11Window *)other {
+   [self ensureMapped];
 
+   if(!other) {
+      XLowerWindow(_dpy, _window);
+   }
+   else {
+      Window w[2]={other->_window, _window};
+      XRestackWindows(_dpy, w, 1);
+   }
+}
 
 -(void)makeKey {
-   XMapRaised(_dpy, _window);
+   [self ensureMapped];
+   XRaiseWindow(_dpy, _window);
 }
 
 -(void)captureEvents {

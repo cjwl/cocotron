@@ -14,12 +14,14 @@
 		C81D0ACA0E8E92C2003BE469 /* NSToolbar-Private.h in Headers */ = {isa = PBXBuildFile; fileRef = C81D0AC90E8E92C2003BE469 /* NSToolbar-Private.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		C84909370E8D1FB900BA6D3A /* NSUserDefaultsControllerProxy.h in Headers */ = {isa = PBXBuildFile; fileRef = C84909350E8D1FB900BA6D3A /* NSUserDefaultsControllerProxy.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		C84909380E8D1FB900BA6D3A /* NSUserDefaultsControllerProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = C84909360E8D1FB900BA6D3A /* NSUserDefaultsControllerProxy.m */; };
+		C8720C790EA782DB00F02725 /* CairoCacheImage.h in Headers */ = {isa = PBXBuildFile; fileRef = C8720C770EA782DB00F02725 /* CairoCacheImage.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		C8720C7A0EA782DB00F02725 /* CairoCacheImage.m in Sources */ = {isa = PBXBuildFile; fileRef = C8720C780EA782DB00F02725 /* CairoCacheImage.m */; };
 		C8746B290EA379CE007A6BE2 /* NSPlatform_linux.m in Sources */ = {isa = PBXBuildFile; fileRef = C8746B280EA379CE007A6BE2 /* NSPlatform_linux.m */; };
 		C8746B2E0EA379DE007A6BE2 /* X11Display.h in Headers */ = {isa = PBXBuildFile; fileRef = C8746B2C0EA379DE007A6BE2 /* X11Display.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		C8746B2F0EA379DE007A6BE2 /* X11Display.m in Sources */ = {isa = PBXBuildFile; fileRef = C8746B2D0EA379DE007A6BE2 /* X11Display.m */; };
 		C8746B410EA396D0007A6BE2 /* X11Window.h in Headers */ = {isa = PBXBuildFile; fileRef = C8746B3F0EA396D0007A6BE2 /* X11Window.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		C8746B420EA396D0007A6BE2 /* X11Window.m in Sources */ = {isa = PBXBuildFile; fileRef = C8746B400EA396D0007A6BE2 /* X11Window.m */; };
-		C8746BAD0EA3EE11007A6BE2 /* TTFFont.h in Headers */ = {isa = PBXBuildFile; fileRef = C8746BAB0EA3EE11007A6BE2 /* TTFFont.h */; };
+		C8746BAD0EA3EE11007A6BE2 /* TTFFont.h in Headers */ = {isa = PBXBuildFile; fileRef = C8746BAB0EA3EE11007A6BE2 /* TTFFont.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		C8746BAE0EA3EE11007A6BE2 /* TTFFont.m in Sources */ = {isa = PBXBuildFile; fileRef = C8746BAC0EA3EE11007A6BE2 /* TTFFont.m */; };
 		C88974240EA0BF3100D0A0A2 /* AppKitExport.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B53FA0976075200DA0954 /* AppKitExport.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
 		C88974250EA0BF3100D0A0A2 /* AppKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B53FC0976075200DA0954 /* AppKit.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
@@ -2014,6 +2016,8 @@
 		C81D0AC90E8E92C2003BE469 /* NSToolbar-Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSToolbar-Private.h"; sourceTree = "<group>"; };
 		C84909350E8D1FB900BA6D3A /* NSUserDefaultsControllerProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSUserDefaultsControllerProxy.h; sourceTree = "<group>"; };
 		C84909360E8D1FB900BA6D3A /* NSUserDefaultsControllerProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSUserDefaultsControllerProxy.m; sourceTree = "<group>"; };
+		C8720C770EA782DB00F02725 /* CairoCacheImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CairoCacheImage.h; sourceTree = "<group>"; };
+		C8720C780EA782DB00F02725 /* CairoCacheImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CairoCacheImage.m; sourceTree = "<group>"; };
 		C8746B280EA379CE007A6BE2 /* NSPlatform_linux.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSPlatform_linux.m; sourceTree = "<group>"; };
 		C8746B2C0EA379DE007A6BE2 /* X11Display.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = X11Display.h; sourceTree = "<group>"; };
 		C8746B2D0EA379DE007A6BE2 /* X11Display.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = X11Display.m; sourceTree = "<group>"; };
@@ -3225,6 +3229,8 @@
 				C8746BAC0EA3EE11007A6BE2 /* TTFFont.m */,
 				C81BEA0D0EA6038800478D50 /* CairoContext.h */,
 				C81BEA0E0EA6038800478D50 /* CairoContext.m */,
+				C8720C770EA782DB00F02725 /* CairoCacheImage.h */,
+				C8720C780EA782DB00F02725 /* CairoCacheImage.m */,
 			);
 			name = X11;
 			path = X11.subproj;
@@ -3741,6 +3747,7 @@
 				C8746B410EA396D0007A6BE2 /* X11Window.h in Headers */,
 				C8746BAD0EA3EE11007A6BE2 /* TTFFont.h in Headers */,
 				C81BEA0F0EA6038800478D50 /* CairoContext.h in Headers */,
+				C8720C790EA782DB00F02725 /* CairoCacheImage.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4656,6 +4663,7 @@
 				C8746B420EA396D0007A6BE2 /* X11Window.m in Sources */,
 				C8746BAE0EA3EE11007A6BE2 /* TTFFont.m in Sources */,
 				C81BEA100EA6038800478D50 /* CairoContext.m in Sources */,
+				C8720C7A0EA782DB00F02725 /* CairoCacheImage.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

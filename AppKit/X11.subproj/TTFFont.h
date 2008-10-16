@@ -11,9 +11,15 @@
 #import <ft2build.h>
 typedef size_t ptrdiff_t;
 #import FT_FREETYPE_H
+#import FT_RENDER_H
 
-@interface TTFFont : KGFont {
-   FT_Face _face;  
+@interface TTFFont : NSObject {
+   FT_Face _face; 
+   float _size;
+   id _name;
 }
-
+-(CGPoint)positionOfGlyph:(CGGlyph)current precededByGlyph:(CGGlyph)previous isNominal:(BOOL *)isNominalp;
+-(CGSize)advancementForGlyph:(CGGlyph)glyph;
+-(float)pointSize;
+-(FT_Face)face;
 @end

@@ -18,6 +18,7 @@
    CairoContext *_cgContext;
    NSMutableDictionary *_deviceDictionary;
    NSRect _frame;
+   BOOL _mapped;
 }
 -(NSRect)frame;
 -(Visual*)visual;

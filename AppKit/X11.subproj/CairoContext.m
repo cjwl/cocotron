@@ -12,6 +12,11 @@
 #import <AppKit/KGColor.h>
 #import <Foundation/NSException.h>
 #import <AppKit/KGGraphicsState.h>
+#import <AppKit/TTFFont.h>
+#import <AppKit/KGColorSpace.h>
+#import <AppKit/KGSurface.h>
+#import <AppKit/CairoCacheImage.h>
+#import <Foundation/NSException.h>
 
 @implementation CairoContext
 -(id)initWithWindow:(X11Window*)w
@@ -102,10 +107,24 @@
 	CGAffineTransform ctm=[self ctm];
 	cairo_matrix_t matrix={ctm.a, ctm.b, ctm.c, ctm.d, ctm.tx, ctm.ty};
    
-   NSLog(@"%f, %f, %f, %f, %f, %f", ctm.a, ctm.b, ctm.c, ctm.d, ctm.tx, ctm.ty);
 
 	cairo_transform(_context,&matrix);
 }
+
+-(void)synchronizeFontCTM
+{
+	CGAffineTransform ctm=[[self currentState] textMatrix];
+   id font=[[self currentState] font];
+	float size=12.0;
+	if(font)
+		size=[font pointSize];
+	ctm = CGAffineTransformScale(ctm, size, -size);
+	
+	cairo_matrix_t matrix={ctm.a, ctm.b, ctm.c, ctm.d, ctm.tx, ctm.ty};
+
+	cairo_set_font_matrix(_context, &matrix);
+}
+
 
 -(void)appendFlip
 {
@@ -247,17 +266,76 @@
 	}
 }
 
--(void)drawImage:(KGImage *)image inRect:(CGRect)rect {
+-(NSSize)size {
+   return NSMakeSize(cairo_xlib_surface_get_width(_surface), cairo_xlib_surface_get_height(_surface));
+}
+
+-(KGImage *)createImage {
+   NSSize size=[self size];
+   cairo_surface_t* img=cairo_image_surface_create(CAIRO_FORMAT_ARGB32, size.width, size.height);
+   
+   cairo_t *ctx=cairo_create(img);
+   
+   cairo_set_source_surface(ctx, _surface, 0, 0);
+   cairo_fill(ctx);
+   
+   cairo_destroy(ctx);
+   
+   id ret=[[CairoCacheImage alloc] initWithSurface:img];
+   [ret setSize:size];
+   
+   cairo_surface_destroy(img);
+   return ret;
+}
+
+-(void)drawImage:(id)image inRect:(CGRect)rect {
+   
+   BOOL shouldFreeImage=NO;
+   cairo_surface_t *img=NULL;
+   
+   if([image respondsToSelector:@selector(_cairoSurface)])
+	{
+		img=[image _cairoSurface];
+	}
+	else
+	{
+      shouldFreeImage=YES;
+		img=cairo_image_surface_create_for_data((void*)[image directBytes],
+                                              CAIRO_FORMAT_ARGB32,
+                                              [image width],
+                                              [image height],
+                                              [image bytesPerRow]);
+	}
+   
+   
+   NSAssert(img, nil);
    cairo_identity_matrix(_context);
    [self appendFlip];
    [self appendCTM];
    
    cairo_set_source_rgba(_context, 1.0, 0.0, 0.0, 0.5);
    cairo_new_path(_context);
-   cairo_rectangle(_context, rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
+   cairo_translate(_context, rect.origin.x, rect.origin.y);
+	cairo_scale(_context,
+               rect.size.width/[image width],
+               rect.size.height/[image height]);
+	cairo_rectangle(_context,
+                   0,
+                   0, 
+                   [image width],
+                   [image height]);  
    cairo_clip(_context);
-   cairo_paint(_context);
    
+   cairo_set_source_rgb(_context, 1.0, 1.0, 0.1);
+   cairo_paint(_context);
+
+	cairo_set_source_surface(_context, img, 0.0, 0.0);
+
+   
+	cairo_paint(_context);   
+   
+   if(shouldFreeImage)
+      cairo_surface_destroy(img);
 }
 
 -(void)deviceSelectFontWithName:(NSString *)name pointSize:(float)pointSize antialias:(BOOL)antialias {
@@ -265,7 +343,39 @@
 }
 
 -(void)showGlyphs:(const CGGlyph *)glyphs count:(unsigned)count {
-   cairo_show_glyphs(_context, glyphs, count);
+   TTFFont *font=(TTFFont*)[[self currentState] font];
+   int i;
+   cairo_glyph_t *cg=alloca(sizeof(cairo_glyph_t)*count);
+   BOOL nominal;
+
+   float x=0, y=0;
+   for(i=0; i<count; i++)
+   {
+      NSPoint pos=[font positionOfGlyph:glyphs[i] precededByGlyph:CGNullGlyph isNominal:&nominal];
+      
+      cg[i].x=x;
+      cg[i].y=y+pos.y;
+      cg[i].index=glyphs[i];
+      x+=pos.x;
+   }
+   
+   
+   cairo_font_face_t *face=(cairo_font_face_t *)cairo_ft_font_face_create_for_ft_face([font face], NULL);
+   cairo_set_font_face(_context, face);
+   cairo_set_font_size(_context, [font pointSize]);
+   
+   cairo_identity_matrix(_context);
+   cairo_reset_clip(_context);
+   [self appendFlip];
+
+   [self appendCTM];
+   [self synchronizeFontCTM];
+   [self setCurrentColor:[self fillColor]];
+   cairo_move_to(_context, 0, 0);
+   
+   cairo_show_glyphs(_context, cg, count);
+   
+   cairo_font_face_destroy(face);
 }
 
 -(void)flush {

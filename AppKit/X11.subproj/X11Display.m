@@ -86,6 +86,9 @@
       return [NSColor whiteColor];
    if([colorName isEqual:@"controlShadowColor"])
       return [NSColor darkGrayColor];
+   if([colorName isEqual:@"selectedControlColor"])
+      return [NSColor blueColor];
+
    
    
    NSLog(@"%@", colorName);
@@ -187,7 +190,6 @@
    int s=DefaultScreen(_display);
    
    if(XPeekEvent(_display, &e)) {
-      NSLog(@"type %i", e.type);
 
       switch(e.type) {
          case ConfigureNotify:
@@ -241,6 +243,10 @@
             [self postEvent:ev atStart:NO];
             break;
          }
+         default:
+            NSLog(@"type %i", e.type);
+            break;
+            
       }
       XNextEvent(_display, &e);
    }
