@@ -24,4 +24,8 @@
 -(Visual*)visual;
 -(Drawable)drawable;
 -(NSPoint)transformPoint:(NSPoint)pos;
+-(NSRect)transformFrame:(NSRect)frame;
+-(void)sizeChanged;
+-(void)frameChanged;
+-(void)removeDecoration;
 @end

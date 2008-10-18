@@ -47,12 +47,14 @@
 }
 
 -(NSString *)menuFontNameAndSize:(float *)pointSize {
-   *pointSize=10.0;
-   return @"Luxi Sans";
+   *pointSize=12.0;
+   return @"Vera";
 }
 
 -(NSArray *)screens {
-   NSRect frame=NSMakeRect(0, 0, 1024, 768);
+   NSRect frame=NSMakeRect(0, 0,
+                           DisplayWidth(_display, DefaultScreen(_display)),
+                           DisplayHeight(_display, DefaultScreen(_display)));
    return [NSArray arrayWithObject:[[[NSScreen alloc] initWithFrame:frame visibleFrame:frame] autorelease]];
 }
 
@@ -85,7 +87,7 @@
 
    
    
-   NSLog(@"%@", colorName);
+ //  NSLog(@"%@", colorName);
    
    return [NSColor redColor];
    
@@ -184,21 +186,28 @@
    int s=DefaultScreen(_display);
    
    if(XPeekEvent(_display, &e)) {
+      
+      //XFilterEvent(&xevent, None);
 
       switch(e.type) {
+         case DestroyNotify:
+         {
+            id window=[self windowForID:e.xdestroywindow.window];
+            [window invalidate];
+            break;
+         }
          case ConfigureNotify:
          {
             id window=[self windowForID:e.xconfigure.window];
-            NSRect frame=NSMakeRect(e.xconfigure.x, e.xconfigure.y, e.xconfigure.width, e.xconfigure.height);
-
-            [[window delegate] platformWindow:window frameChanged:frame];
-            [window sizeChanged];
+            [window frameChanged];
+            [[window delegate] platformWindow:window frameChanged:[window frame]];
             break;
          }
          case Expose:
          {
             id window=[self windowForID:e.xexpose.window];
-            [[window delegate] platformWindow:window needsDisplayInRect:NSMakeRect(e.xexpose.x, e.xexpose.y, e.xexpose.width, e.xexpose.height)];
+            NSRect rect=NSMakeRect(e.xexpose.x, e.xexpose.y, e.xexpose.width, e.xexpose.height);
+            [[window delegate] platformWindow:window needsDisplayInRect:[window transformFrame:rect]];
             break;
          }
          case ButtonPress:
@@ -235,6 +244,14 @@
                                        window:[window delegate]
                                    clickCount:1];
             [self postEvent:ev atStart:NO];
+            break;
+         }
+         case ClientMessage:
+         {
+            id window=[self windowForID:e.xclient.window];
+            if(e.xclient.format=32 &&
+               e.xclient.data.l[0]==XInternAtom(_display, "WM_DELETE_WINDOW", False))
+               [[window delegate] platformWindowWillClose:window];
             break;
          }
          default:

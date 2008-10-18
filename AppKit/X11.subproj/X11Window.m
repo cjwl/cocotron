@@ -21,25 +21,57 @@
       _deviceDictionary=[NSMutableDictionary new];
       _dpy=[(X11Display*)[NSDisplay currentDisplay] display];
       int s = DefaultScreen(_dpy);
+      frame=[self transformFrame:frame];
       _window = XCreateSimpleWindow(_dpy, DefaultRootWindow(_dpy),
-                              frame.origin.x, frame.origin.y, frame.size.width, frame.size.height, 
+                              frame.origin.x+20, frame.origin.y+20, frame.size.width, frame.size.height, 
                               0, BlackPixel(_dpy, s), WhitePixel(_dpy, s));
+
 
       XSelectInput(_dpy, _window, ExposureMask | KeyPressMask | StructureNotifyMask |
       ButtonPressMask | ButtonReleaseMask | ButtonMotionMask);
       
       XSetWindowAttributes xattr;
       unsigned long xattr_mask;
-      xattr.backing_store = WhenMapped;
-      xattr_mask = CWBackingStore;
+      xattr.backing_store = Always;
+      xattr.save_under = True;
+      xattr.win_gravity=CenterGravity;
+      xattr.override_redirect= styleMask == NSBorderlessWindowMask ? True : False;
+      xattr_mask = CWBackingStore | CWOverrideRedirect | CWWinGravity | CWSaveUnder;
       XChangeWindowAttributes(_dpy, _window, xattr_mask, &xattr);
       XMoveWindow(_dpy, _window, frame.origin.x, frame.origin.y);
-      NSLog(@"frame: %f, %f", frame.origin.x, frame.origin.y);
+      
+      Atom atm=XInternAtom(_dpy, "WM_DELETE_WINDOW", False);
+      XSetWMProtocols(_dpy, _window, &atm , 1);
       
       [(X11Display*)[NSDisplay currentDisplay] setWindow:self forID:_window];
       [self sizeChanged];
+      
+      if(styleMask == NSBorderlessWindowMask)
+      {
+         [self removeDecoration];
+      }
+      
    }
    return self;
+}
+
+-(void)removeDecoration
+{
+   struct {
+      unsigned long flags;
+      unsigned long functions;
+      unsigned long decorations;
+      long input_mode;
+      unsigned long status;
+   } hints = {
+      2, 0, 0, 0, 0,
+   };      
+   XChangeProperty (_dpy, _window,
+                    XInternAtom (_dpy, "_MOTIF_WM_HINTS", False),
+                    XInternAtom (_dpy, "_MOTIF_WM_HINTS", False),
+                    32, PropModeReplace,
+                    (const unsigned char *) &hints,
+                    sizeof (hints) / sizeof (long));
 }
 
 -(void)ensureMapped
@@ -61,11 +93,15 @@
 }
 
 -(void)invalidate {
-   [(X11Display*)[NSDisplay currentDisplay] setWindow:self forID:_window];
-         
-   XDestroyWindow(_dpy, _window);
-   _window=0;
    _delegate=nil;
+   [_cgContext release];
+   _cgContext=nil;
+
+   if(_window) {
+      [(X11Display*)[NSDisplay currentDisplay] setWindow:nil forID:_window];
+      XDestroyWindow(_dpy, _window);
+      _window=0;
+   }
 }
 
 
@@ -87,6 +123,7 @@
 }
 
 -(void)setFrame:(NSRect)frame {
+   frame=[self transformFrame:frame];
    XMoveResizeWindow(_dpy, _window, frame.origin.x, frame.origin.y, frame.size.width, frame.size.height);
    [_cgContext setSize:[self frame].size];
  }
@@ -139,7 +176,7 @@
 }
 
 -(void)captureEvents {
-   NSUnimplementedMethod();
+   // FIXME: find out what this is supposed to do
 }
 
 -(void)miniaturize {
@@ -168,25 +205,44 @@
 
 
 -(void)sendEvent:(CGEvent *)event {
-   NSLog(@"%@", event);
    NSUnimplementedMethod();
 }
 
+
 -(NSRect)frame
 {
-   return _frame;
+   return [self transformFrame:_frame];
+}
+
+-(void)frameChanged
+{
+   Window root, parent;
+   Window window=_window;
+   int x, y, w, h, d, b;
+   Window* children;
+   int nchild;
+   NSRect rect=NSZeroRect;
+   // recursively get geometry to get absolute position
+   while(window) {
+      XGetGeometry(_dpy, window, &root, &x, &y, &w, &h, &b, &d);
+      XQueryTree(_dpy, window, &root, &parent, &children, &nchild);
+      if(children)
+         XFree(children);
+      
+      // first iteration: save our own w, h
+      if(window==_window)
+         rect=NSMakeRect(0, 0, w, h);
+      rect.origin.x+=x;
+      rect.origin.y+=y;
+      window=parent;
+   };
+
+   _frame=rect;
+   [self sizeChanged];
 }
 
 -(void)sizeChanged
 {
-   Window root;
-   int x, y, w, h, b, d;
-   XGetGeometry(_dpy, _window, &root, 
-                &x, &y, &w, &h,
-                &b, &d);
-   
-   _frame = NSMakeRect(x, y, w, h);
-   
    [_cgContext setSize:_frame.size];
 }
 
@@ -205,6 +261,10 @@
    [_deviceDictionary addEntriesFromDictionary:entries];
 }
 
+-(NSRect)transformFrame:(NSRect)frame
+{
+   return NSMakeRect(frame.origin.x, DisplayHeight(_dpy, DefaultScreen(_dpy)) - frame.origin.y - frame.size.height, frame.size.width, frame.size.height);
+}
 
 -(NSPoint)transformPoint:(NSPoint)pos;
 {

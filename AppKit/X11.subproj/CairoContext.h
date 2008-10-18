@@ -19,4 +19,5 @@
 }
 -(id)initWithWindow:(X11Window*)w;
 -(void)setSize:(NSSize)size;
+-(NSSize)size;
 @end

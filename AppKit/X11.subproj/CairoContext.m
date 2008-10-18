@@ -34,6 +34,18 @@
    return self;
 }
 
+-(id)initWithSize:(NSSize)size
+{
+   KGGraphicsState  *initialState=[[[KGGraphicsState alloc] initWithDeviceTransform:CGAffineTransformIdentity] autorelease];
+   
+   if(self=[super initWithGraphicsState:initialState])
+   {
+      _surface = cairo_image_surface_create(CAIRO_FORMAT_ARGB32, size.width, size.height);
+      _context = cairo_create(_surface);
+   }
+   return self;
+}
+
 -(void)dealloc
 {
    cairo_surface_destroy(_surface);
@@ -45,7 +57,18 @@
 {
    if(_context)
       cairo_destroy(_context);
-   cairo_xlib_surface_set_size(_surface, size.width, size.height);
+
+   switch(cairo_surface_get_type(_surface))
+   {
+      case CAIRO_SURFACE_TYPE_XLIB:
+         cairo_xlib_surface_set_size(_surface, size.width, size.height);
+         break;
+      case CAIRO_SURFACE_TYPE_IMAGE:
+         cairo_surface_destroy(_surface);
+         _surface = cairo_image_surface_create(CAIRO_FORMAT_ARGB32, size.width, size.height);
+      default:
+         ;
+   }
    _context = cairo_create(_surface);
 }
 
@@ -128,7 +151,7 @@
 
 -(void)appendFlip
 {
-   cairo_matrix_t matrix={1, 0, 0, -1, 0, cairo_xlib_surface_get_height(_surface)};
+   cairo_matrix_t matrix={1, 0, 0, -1, 0, [self size].height};
 
 	cairo_transform(_context,&matrix);
 }
@@ -267,7 +290,15 @@
 }
 
 -(NSSize)size {
-   return NSMakeSize(cairo_xlib_surface_get_width(_surface), cairo_xlib_surface_get_height(_surface));
+   switch(cairo_surface_get_type(_surface))
+   {
+      case CAIRO_SURFACE_TYPE_XLIB:
+         return NSMakeSize(cairo_xlib_surface_get_width(_surface), cairo_xlib_surface_get_height(_surface));
+      case CAIRO_SURFACE_TYPE_IMAGE:
+         return NSMakeSize(cairo_image_surface_get_width(_surface), cairo_image_surface_get_height(_surface));
+      default:
+         return NSZeroSize;
+   }
 }
 
 -(KGImage *)createImage {
@@ -289,7 +320,7 @@
 }
 
 -(void)drawImage:(id)image inRect:(CGRect)rect {
-   
+
    BOOL shouldFreeImage=NO;
    cairo_surface_t *img=NULL;
    
@@ -313,17 +344,9 @@
    [self appendFlip];
    [self appendCTM];
    
-   cairo_set_source_rgba(_context, 1.0, 0.0, 0.0, 0.5);
    cairo_new_path(_context);
-   cairo_translate(_context, rect.origin.x, rect.origin.y);
-	cairo_scale(_context,
-               rect.size.width/[image width],
-               rect.size.height/[image height]);
 	cairo_rectangle(_context,
-                   0,
-                   0, 
-                   [image width],
-                   [image height]);  
+                   rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);  
    cairo_clip(_context);
    
    cairo_set_source_rgb(_context, 1.0, 1.0, 0.1);
@@ -331,7 +354,6 @@
 
 	cairo_set_source_surface(_context, img, 0.0, 0.0);
 
-   
 	cairo_paint(_context);   
    
    if(shouldFreeImage)
@@ -380,5 +402,17 @@
 
 -(void)flush {
    cairo_surface_flush(_surface);
+}
+
+-(cairo_surface_t*)_cairoSurface {
+   return _surface;
+}
+
+-(void)drawContext:(CairoContext*)other
+{
+   cairo_identity_matrix(_context);
+   cairo_reset_clip(_context);
+   cairo_set_source_surface (_context, [other _cairoSurface], 0, 0);
+	cairo_paint(_context);
 }
 @end
