@@ -152,7 +152,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(NSPredicate *)predicateWithSubstitutionVariables:(NSDictionary *)variables {
    NSExpression *left=[_left _expressionWithSubstitutionVariables:variables];
-   NSExpression *right=[_left _expressionWithSubstitutionVariables:variables];
+   NSExpression *right=[_right _expressionWithSubstitutionVariables:variables];
    
    if(_type!=NSCustomSelectorPredicateOperatorType)
     return [NSComparisonPredicate predicateWithLeftExpression:left rightExpression:right modifier:_modifier type:_type options:_options];
