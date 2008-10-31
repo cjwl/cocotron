@@ -197,7 +197,8 @@ static inline void byteZero(void *vsrc,int size){
     byteZero(&try,sizeof(struct sockaddr_in));
     try.sin_addr.s_addr=address;
     try.sin_family=AF_INET;
-    try.sin_port=portNumber;
+	short port=portNumber;
+    try.sin_port=htons(port);
 
     if(connect(_handle,(struct sockaddr *)&try,sizeof(try))==0){
      if(!block){

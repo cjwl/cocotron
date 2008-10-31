@@ -285,6 +285,7 @@ NSLog(@"transfer completed");
    NSURL    *url=[_request URL];
    NSString *hostName=[url host];
    NSNumber *portNumber=[url port];
+	NSLog(@"startloading");
    
    if(portNumber==nil)
     portNumber=[NSNumber numberWithInt:80];
@@ -318,6 +319,17 @@ NSLog(@"transfer completed");
     [self inputStream:stream handleEvent:streamEvent];
    else if(stream==_outputStream)
     [self outputStream:stream handleEvent:streamEvent];
+}
+
++(BOOL)canInitWithRequest:(NSURLRequest *)request {
+	if( [[[request URL]scheme] isEqual:@"http"]) return YES;
+	return 0;
+}
+-initWithRequest:(NSURLRequest *)request cachedResponse:(NSCachedURLResponse *)response client:(id <NSURLProtocolClient>)client {
+	_request=[request retain];
+	_response=[response retain];
+	_client=[(id)client retain];
+	return self;
 }
 
 @end

@@ -322,6 +322,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return YES;   
 }
 
+- (NSUInteger)countByEnumeratingWithState:(NSFastEnumerationState *)state objects:(id *)stackbuf count:(NSUInteger)len
+{
+	return [[self allKeys]countByEnumeratingWithState:state objects:stackbuf count:len];
+}
+
 -(NSArray *)allKeys {
    int i,count=[self count];
    id keys[count],obj;
