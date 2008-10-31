@@ -6,7 +6,6 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
-// Original - Christopher Lloyd <cjwl@objc.net>, David Young <daver@geeks.org>
 #import <Foundation/NSFileManager.h>
 #import <Foundation/NSPlatform.h>
 #import <Foundation/NSThread.h>
@@ -138,10 +137,34 @@ NSString *NSFileHFSTypeCode = @"NSFileHFSTypeCode";
    return 0;
 }
 
--(NSArray *)subpathsAtPath:(NSString *)path {
-   NSUnimplementedMethod();
-   return 0;
+-(NSArray *)_subpathsAtPath:(NSString *)path basePath:(NSString*)basePath 
+paths:(NSMutableArray*)paths
+{
+	NSArray* files = [self directoryContentsAtPath:path];
+
+	int x; for (x = 0; x < [files count]; x++)
+	{
+		[paths addObject:[basePath stringByAppendingPathComponent:[files objectAtIndex:x]]];
+	}
+	
+	for (x = 0; x < [files count]; x++)
+	{
+		BOOL isDir = NO;
+		NSString* newPath = [path stringByAppendingPathComponent:[files objectAtIndex:x]];
+		[self fileExistsAtPath:newPath isDirectory:&isDir];
+		if (isDir)
+			[self _subpathsAtPath:newPath basePath:[basePath 
+stringByAppendingPathComponent:[files objectAtIndex:x]] paths:paths];
+	}
 }
+
+-(NSArray *)subpathsAtPath:(NSString *)path {
+	NSMutableArray *result=[NSMutableArray array];
+	
+	[self _subpathsAtPath:path basePath:@"" paths:result];
+	return result;
+}
+
 -(NSArray *)subpathsOfDirectoryAtPath:(NSString *)path error:(NSError **)error {
    NSUnimplementedMethod();
    return 0;

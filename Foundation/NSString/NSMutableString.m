@@ -6,12 +6,13 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
-// Original - Christopher Lloyd <cjwl@objc.net>
 #import <Foundation/NSMutableString_unicodePtr.h>
 #import <Foundation/NSAutoreleasePool-private.h>
 #import <Foundation/NSStringFormatter.h>
 #import <Foundation/NSStringFileIO.h>
 #import <Foundation/NSRaise.h>
+#import <Foundation/NSNumber.h>
+#import <Foundation/NSArray.h>
 #import <string.h>
 
 @implementation NSMutableString : NSString
@@ -146,6 +147,39 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    NSRange range={0,[self length]};
 
    [self replaceCharactersInRange:range withString:string];
+}
+
+- (NSUInteger)replaceOccurrencesOfString:(NSString *)target withString:(NSString *)replacement 
+options:(NSStringCompareOptions)opts range:(NSRange)searchRange
+{
+	NSMutableArray* tokens = [NSMutableArray array];
+	NSRange found;
+
+	// Find all hits
+	found = [self rangeOfString:target options:opts range:searchRange];		
+	while (found.location != NSNotFound)
+	{
+		[tokens addObject:[NSNumber numberWithLong:found.location]];
+		int oldLocation = searchRange.location;
+		// Advance to after the hit
+		searchRange.location = found.location+found.length;
+		// Shorten the search range accordingly or bail if we're done
+		if (searchRange.length < searchRange.location-oldLocation)
+			break;
+		else
+			searchRange.length -= searchRange.location-oldLocation;
+		found = [self rangeOfString:target options:opts range:searchRange];		
+	} 
+
+	// Make replacements in reverse order
+	int x; for (x = [tokens count]-1; x >= 0; x--)
+	{
+		found.location = [[tokens objectAtIndex:x] longValue];
+		found.length = [target length];
+		[self replaceCharactersInRange:found withString:replacement];
+	}
+	
+	return [tokens count];
 }
 
 @end

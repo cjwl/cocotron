@@ -6,7 +6,6 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
-// Original - Christopher Lloyd <cjwl@objc.net>
 #import <AppKit/NSSplitView.h>
 #import <AppKit/NSColor.h>
 #import <AppKit/NSGraphics.h>
@@ -106,7 +105,7 @@ NSString *NSSplitViewWillResizeSubviewsNotification = @"NSSplitViewWillResizeSub
    NSPoint origin=[self bounds].origin;
 
    [self _postNoteWillResize];
-   
+      
    for(i=0;i<count;i++){
     NSSize size=[self bounds].size;
 
@@ -244,8 +243,8 @@ NSString *NSSplitViewWillResizeSubviewsNotification = @"NSSplitViewWillResizeSub
 
    for(i=0;i<count-1;i++){
     NSRect rect=[self dividerRectAtIndex:i];
-
-    [self drawDividerInRect:rect];
+	if ([self dividerThickness] > 0)
+		[self drawDividerInRect:rect];
    }
 }
 
@@ -359,14 +358,19 @@ static float constrainTo(float value,float min,float max){
     [pool release];
    }while(eventType!=NSLeftMouseUp);
 
-   [[self window] invalidateCursorRectsForView:self];
+	if ([self dividerThickness] > 0)
+		[[self window] invalidateCursorRectsForView:self];
 
    [self _postNoteDidResize];
 }
 
 
 -(void)resetCursorRects {
-   int       i,count=[_subviews count];
+	
+   if ([self dividerThickness] <= 0)
+	   return;
+
+	int       i,count=[_subviews count];
    NSCursor *cursor;
 
    if([self isVertical])

@@ -25,5 +25,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)replaceCharactersInRange:(NSRange)range withString:(NSString *)string;
 -(void)setString:(NSString *)string;
 
+-(NSUInteger)replaceOccurrencesOfString:(NSString *)target withString:(NSString *)replacement options:(NSStringCompareOptions)opts range:(NSRange)searchRange;
 
 @end

@@ -23,6 +23,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    int       _windowStyleMask;
    NSString *_windowTitle;
    NSView   *_windowView;
+   NSString* _windowAutosave;
 }
 
 @end

@@ -6,7 +6,6 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
-// Original - Christopher Lloyd <cjwl@objc.net>
 #import "NSWindowTemplate.h"
 #import <AppKit/NSNibKeyedUnarchiver.h>
 #import <AppKit/NSScreen.h>
@@ -30,6 +29,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     _windowStyleMask=[keyed decodeIntForKey:@"NSWindowStyleMask"];
     _windowTitle=[[keyed decodeObjectForKey:@"NSWindowTitle"] retain];
     _windowView=[[keyed decodeObjectForKey:@"NSWindowView"] retain];
+	_windowAutosave=[[keyed decodeObjectForKey:@"NSFrameAutosaveName"] retain];
 
     _windowRect.origin.y -= _screenRect.size.height - [[NSScreen mainScreen] frame].size.height;
     if (![_windowClass isEqualToString:@"NSPanel"])
@@ -46,6 +46,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [_windowClass release];
    [_windowTitle release];
    [_windowView release];
+   [_windowAutosave release];
    [super dealloc];
 }
 
@@ -74,6 +75,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    if([_viewClass isKindOfClass:[NSToolbar class]]) {
       [result setToolbar:_viewClass];
    }
+
+       if (_windowAutosave)
+       {
+	[result setFrameUsingName:_windowAutosave];
+	[result setFrameAutosaveName:_windowAutosave];
+      }
 
    [self release];
    return result;

@@ -323,8 +323,7 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
         rect.origin.x += [[_tableColumns objectAtIndex:i++] width] + _intercellSpacing.width;
 
     rect.size.width = [[_tableColumns objectAtIndex:column] width] + _intercellSpacing.width;
-    rect.size.height = MAX(_numberOfRows * (_rowHeight + _intercellSpacing.height), [self 
-bounds].size.height); 
+    rect.size.height = MAX(_numberOfRows * (_rowHeight + _intercellSpacing.height), [[self superview] bounds].size.height); 
 
     return rect;
 }

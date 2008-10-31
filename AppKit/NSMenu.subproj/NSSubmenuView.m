@@ -244,6 +244,12 @@ static NSRect boundsToTitleAreaRect(NSRect rect){
       [[self graphicsStyle] drawMenuBranchArrowAtPoint:point selected:selected];
      }
 
+	if([item state]){		
+		point.y--;
+		point.x=origin.x+2;
+		[[self graphicsStyle] drawMenuCheckmarkAtPoint:point selected:selected];
+	}
+
      origin.y+=[title sizeWithAttributes:attributes].height+TITLE_TOP_MARGIN+TITLE_BOTTOM_MARGIN;
     }
    }
