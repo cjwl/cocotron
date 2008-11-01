@@ -7,6 +7,9 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
 // Original - Christopher Lloyd <cjwl@objc.net>
+
+#define _WIN32_WINNT 0x0501
+
 #import <AppKit/NSOpenPanel-Win32.h>
 #import <AppKit/NSApplication.h>
 #import <AppKit/NSDocumentController.h>
@@ -117,7 +120,7 @@ static unsigned *openFileHook(HWND hdlg,UINT uiMsg,WPARAM wParam,LPARAM lParam) 
 }
 
 -(int)_GetOpenFileNameForTypes:(NSArray *)types {
-   OPENFILENAME  openFileName;
+   OPENFILENAME  openFileName={0};
    char          filename[MAX_PATH+1];
    char         *fileTypes,*p,*q;
    int           i,j,fileTypesLength,check;
@@ -205,7 +208,8 @@ static unsigned *openFileHook(HWND hdlg,UINT uiMsg,WPARAM wParam,LPARAM lParam) 
       OFN_NOTESTFILECREATE|
       OFN_EXPLORER|
       OFN_HIDEREADONLY|
-      OFN_ENABLEHOOK
+      OFN_ENABLEHOOK|
+      OFN_ENABLESIZING
       ;
       openFileName.nFileOffset=0;
       openFileName.nFileExtension=0;
