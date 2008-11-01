@@ -78,7 +78,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     if(stat([path fileSystemRepresentation],&buf)<0)
         return NO;
 
-    *isDirectory=S_ISDIR(buf.st_mode);
+    if(isDirectory!=NULL)
+     *isDirectory=S_ISDIR(buf.st_mode);
+     
     return YES;
 }
 

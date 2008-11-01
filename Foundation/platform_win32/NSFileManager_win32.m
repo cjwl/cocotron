@@ -58,7 +58,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    if(attributes==0xFFFFFFFF)
     return NO;
 
-   *isDirectory=(attributes&FILE_ATTRIBUTE_DIRECTORY)?YES:NO;
+   if(isDirectory!=NULL)
+    *isDirectory=(attributes&FILE_ATTRIBUTE_DIRECTORY)?YES:NO;
 
    return YES;
 #if 0
