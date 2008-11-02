@@ -21,7 +21,7 @@
 	while(![self isCancelled])
 	{
 		id pool2=[NSAutoreleasePool new];
-		[runLoop runUntilDate:[NSDate date]];
+		[runLoop run];
 		[pool2 drain];
 	}
 	[pool drain];

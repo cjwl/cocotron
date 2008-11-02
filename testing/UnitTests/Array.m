@@ -57,7 +57,6 @@
    }
    
    [array release];
-   [descArray release];
 }
 
 @end
