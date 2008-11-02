@@ -1455,4 +1455,50 @@ dropOperation:NSTableViewDropAbove];
         [self class], self, _tableColumns];
 }
 
+-(void)_moveUp:(BOOL)up extend:(BOOL)extend {
+	
+	int rowToSelect = -1;
+	
+	if ([_selectedRowIndexes count] == 0)
+		rowToSelect = 0;
+	else if (up)
+	{
+		int first = [_selectedRowIndexes firstIndex];
+		if (first > 0)
+			rowToSelect = first-1;
+		else if (!extend)
+			rowToSelect = first;
+	}
+	else
+	{
+		int last = [_selectedRowIndexes lastIndex];
+		if (last < [self numberOfRows]-1)
+			rowToSelect = last+1;
+		else if (!extend)
+			rowToSelect = last;
+	}
+	
+	if (rowToSelect != -1)
+	{
+		[self selectRow:rowToSelect byExtendingSelection:extend];	
+		[self scrollRowToVisible:rowToSelect];
+	}
+}
+
+-(void)moveUp:sender {
+   [self _moveUp:YES extend:NO];
+}
+
+-(void)moveUpAndModifySelection:sender {
+   [self _moveUp:YES extend:YES];
+}
+
+-(void)moveDown:sender {
+   [self _moveUp:NO extend:NO];
+}
+
+-(void)moveDownAndModifySelection:sender {
+   [self _moveUp:NO extend:YES];
+}
+
 @end
