@@ -7,7 +7,7 @@
  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
 #import <AppKit/CairoCacheImage.h>
-
+#import <Foundation/NSString.h>
 
 @implementation CairoCacheImage
 -(id)initWithSurface:(cairo_surface_t*)surf
@@ -33,6 +33,11 @@
 -(cairo_surface_t*)_cairoSurface
 {
    return _surface;  
+}
+
+-(id)description
+{
+   return [NSString stringWithFormat:@"%@: %p, (%fx%f)", [super description], _surface, _size.width, _size.height];
 }
 
 @synthesize size=_size;

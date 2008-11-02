@@ -21,24 +21,21 @@
       _deviceDictionary=[NSMutableDictionary new];
       _dpy=[(X11Display*)[NSDisplay currentDisplay] display];
       int s = DefaultScreen(_dpy);
-      frame=[self transformFrame:frame];
+      _frame=[self transformFrame:frame];
       _window = XCreateSimpleWindow(_dpy, DefaultRootWindow(_dpy),
-                              frame.origin.x+20, frame.origin.y+20, frame.size.width, frame.size.height, 
-                              0, BlackPixel(_dpy, s), WhitePixel(_dpy, s));
-
+                              _frame.origin.x, _frame.origin.y, _frame.size.width, _frame.size.height, 
+                              0, 0, 0);
 
       XSelectInput(_dpy, _window, ExposureMask | KeyPressMask | StructureNotifyMask |
       ButtonPressMask | ButtonReleaseMask | ButtonMotionMask);
       
       XSetWindowAttributes xattr;
       unsigned long xattr_mask;
-      xattr.backing_store = Always;
-      xattr.save_under = True;
       xattr.win_gravity=CenterGravity;
       xattr.override_redirect= styleMask == NSBorderlessWindowMask ? True : False;
-      xattr_mask = CWBackingStore | CWOverrideRedirect | CWWinGravity | CWSaveUnder;
+      xattr_mask = CWOverrideRedirect | CWWinGravity;
       XChangeWindowAttributes(_dpy, _window, xattr_mask, &xattr);
-      XMoveWindow(_dpy, _window, frame.origin.x, frame.origin.y);
+      XMoveWindow(_dpy, _window, _frame.origin.x, _frame.origin.y);
       
       Atom atm=XInternAtom(_dpy, "WM_DELETE_WINDOW", False);
       XSetWMProtocols(_dpy, _window, &atm , 1);
@@ -50,7 +47,6 @@
       {
          [self removeDecoration];
       }
-      
    }
    return self;
 }
@@ -65,7 +61,7 @@
       unsigned long status;
    } hints = {
       2, 0, 0, 0, 0,
-   };      
+   };
    XChangeProperty (_dpy, _window,
                     XInternAtom (_dpy, "_MOTIF_WM_HINTS", False),
                     XInternAtom (_dpy, "_MOTIF_WM_HINTS", False),
@@ -78,8 +74,11 @@
 {
    if(!_mapped)
    {
+      [_cgContext release];
+      
       XMapWindow(_dpy, _window);
       _mapped=YES;
+      _cgContext = [[CairoContext alloc] initWithWindow:self];
    }
 }
 
@@ -106,12 +105,12 @@
 
 
 -(KGContext *)cgContext {
-   if(!_cgContext)
+   if(!_backingContext)
    {
-      _cgContext=[[CairoContext alloc] initWithWindow:self];
+      _backingContext=[[CairoContext alloc] initWithSize:_frame.size];
    }
    
-   return _cgContext;
+   return _backingContext;
 }
 
 
@@ -126,6 +125,7 @@
    frame=[self transformFrame:frame];
    XMoveResizeWindow(_dpy, _window, frame.origin.x, frame.origin.y, frame.size.width, frame.size.height);
    [_cgContext setSize:[self frame].size];
+   [_backingContext setSize:[self frame].size];
  }
 
 
@@ -186,15 +186,15 @@
 
 -(void)deminiaturize {
    NSUnimplementedMethod();
-
 }
 
 -(BOOL)isMiniaturized {
    return NO;
 }
 
+
 -(void)flushBuffer {
-   [_cgContext flush];
+   [_cgContext drawContext:_backingContext]; 
 }
 
 
@@ -204,9 +204,6 @@
 }
 
 
--(void)sendEvent:(CGEvent *)event {
-   NSUnimplementedMethod();
-}
 
 
 -(NSRect)frame
@@ -244,6 +241,7 @@
 -(void)sizeChanged
 {
    [_cgContext setSize:_frame.size];
+   [_backingContext setSize:_frame.size];
 }
 
 -(Visual*)visual

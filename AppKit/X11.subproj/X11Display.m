@@ -10,6 +10,7 @@
 #import "X11Display.h"
 #import "X11Window.h"
 #import <AppKit/NSScreen.h>
+#import <AppKit/NSApplication.h>
 
 @implementation X11Display
 
@@ -17,9 +18,11 @@
 {
    if(self=[super init])
    {
+      XInitThreads();
       _display=XOpenDisplay(NULL);
       _windowsByID=[NSMutableDictionary new];
-      
+      [self performSelector:@selector(setupEventThread) withObject:nil afterDelay:0.0];
+      [[NSRunLoop currentRunLoop] addInputSource:self forMode:NSDefaultRunLoopMode];
    }
    return self;
 }
@@ -64,7 +67,7 @@
 }
 
 -(NSDraggingManager *)draggingManager {
-   NSUnimplementedMethod();
+//   NSUnimplementedMethod();
    return nil;
 }
 
@@ -98,7 +101,6 @@
 }
 
 -(NSTimeInterval)textCaretBlinkInterval {
-   NSUnimplementedMethod();
    return 1;
 }
 
@@ -181,89 +183,131 @@
    return [_windowsByID objectForKey:[NSNumber numberWithUnsignedLong:i]];
 }
 
--(NSEvent *)nextEventMatchingMask:(unsigned)mask untilDate:(NSDate *)untilDate inMode:(NSString *)mode dequeue:(BOOL)dequeue {
+-(void)handleEvent:(NSData*)data {
+   XEvent e;
+   [data getBytes:&e length:sizeof(XEvent)];
+   
+   switch(e.type) {
+      case DestroyNotify:
+      {
+         id window=[self windowForID:e.xdestroywindow.window];
+         [window invalidate];
+         break;
+      }
+      case ConfigureNotify:
+      {
+         id window=[self windowForID:e.xconfigure.window];
+         [window frameChanged];
+         [[window delegate] platformWindow:window frameChanged:[window frame]];
+         break;
+      }
+      case Expose:
+      {
+         id window=[self windowForID:e.xexpose.window];
+         NSRect rect=NSMakeRect(e.xexpose.x, e.xexpose.y, e.xexpose.width, e.xexpose.height);
+         [[window delegate] platformWindow:window needsDisplayInRect:[window transformFrame:rect]];
+         break;
+      }
+      case ButtonPress:
+      {
+         id window=[self windowForID:e.xbutton.window];
+         NSPoint pos=[window transformPoint:NSMakePoint(e.xbutton.x, e.xbutton.y)];
+         id ev=[NSEvent mouseEventWithType:NSLeftMouseDown
+                                  location:pos
+                             modifierFlags:0
+                                    window:[window delegate]
+                                clickCount:1];
+         [self postEvent:ev atStart:NO];
+         break;
+      }
+      case ButtonRelease:
+      {
+         id window=[self windowForID:e.xbutton.window];
+         NSPoint pos=[window transformPoint:NSMakePoint(e.xbutton.x, e.xbutton.y)];
+         id ev=[NSEvent mouseEventWithType:NSLeftMouseUp
+                                  location:pos
+                             modifierFlags:0
+                                    window:[window delegate]
+                                clickCount:1];
+         [self postEvent:ev atStart:NO];
+         break;
+      }
+      case MotionNotify:
+      {
+         id window=[self windowForID:e.xmotion.window];
+         NSPoint pos=[window transformPoint:NSMakePoint(e.xbutton.x, e.xbutton.y)];
+         id ev=[NSEvent mouseEventWithType:NSLeftMouseDragged
+                                  location:pos
+                             modifierFlags:0
+                                    window:[window delegate]
+                                clickCount:1];
+         [self postEvent:ev atStart:NO];
+         break;
+      }
+      case ClientMessage:
+      {
+         id window=[self windowForID:e.xclient.window];
+         if(e.xclient.format=32 &&
+            e.xclient.data.l[0]==XInternAtom(_display, "WM_DELETE_WINDOW", False))
+            [[window delegate] platformWindowWillClose:window];
+         break;
+      }
+      case KeyPress:
+      {
+         id window=[self windowForID:e.xkey.window];
+         char buf[128]={0};
+         XLookupString(&e, buf, 128, NULL, NULL);
+         id str=[[NSString alloc] initWithCString:buf encoding:NSISOLatin1StringEncoding];
+         NSPoint pos=[window transformPoint:NSMakePoint(e.xbutton.x, e.xbutton.y)];
+         
+         e.xkey.state=0;
+         XLookupString(&e, buf, 128, NULL, NULL);
+         id strIg=[[NSString alloc] initWithCString:buf encoding:NSISOLatin1StringEncoding];
+         
+         id ev=[NSEvent keyEventWithType:NSKeyDown 
+                                location:pos 
+                           modifierFlags:0 
+                                  window:[window delegate] 
+                              characters:str
+             charactersIgnoringModifiers:strIg
+                               isARepeat:NO keyCode:e.xkey.keycode];
+         [self postEvent:ev atStart:NO];
+         
+         [str release];
+         [strIg release];
+         break;
+      }
+      default:
+         NSLog(@"type %i", e.type);
+         break;
+   }
+}
+
+
+-(void)eventThread {
    XEvent e;
    int s=DefaultScreen(_display);
-   
-   if(XPeekEvent(_display, &e)) {
-      
-      //XFilterEvent(&xevent, None);
 
-      switch(e.type) {
-         case DestroyNotify:
-         {
-            id window=[self windowForID:e.xdestroywindow.window];
-            [window invalidate];
-            break;
-         }
-         case ConfigureNotify:
-         {
-            id window=[self windowForID:e.xconfigure.window];
-            [window frameChanged];
-            [[window delegate] platformWindow:window frameChanged:[window frame]];
-            break;
-         }
-         case Expose:
-         {
-            id window=[self windowForID:e.xexpose.window];
-            NSRect rect=NSMakeRect(e.xexpose.x, e.xexpose.y, e.xexpose.width, e.xexpose.height);
-            [[window delegate] platformWindow:window needsDisplayInRect:[window transformFrame:rect]];
-            break;
-         }
-         case ButtonPress:
-         {
-            id window=[self windowForID:e.xbutton.window];
-            NSPoint pos=[window transformPoint:NSMakePoint(e.xbutton.x, e.xbutton.y)];
-            id ev=[NSEvent mouseEventWithType:NSLeftMouseDown
-                                     location:pos
-                                modifierFlags:0
-                                       window:[window delegate]
-                                   clickCount:1];
-            [self postEvent:ev atStart:NO];
-            break;
-         }
-         case ButtonRelease:
-         {
-            id window=[self windowForID:e.xbutton.window];
-            NSPoint pos=[window transformPoint:NSMakePoint(e.xbutton.x, e.xbutton.y)];
-            id ev=[NSEvent mouseEventWithType:NSLeftMouseUp
-                                     location:pos
-                                modifierFlags:0
-                                       window:[window delegate]
-                                   clickCount:1];
-            [self postEvent:ev atStart:NO];
-            break;
-         }
-         case MotionNotify:
-         {
-            id window=[self windowForID:e.xmotion.window];
-            NSPoint pos=[window transformPoint:NSMakePoint(e.xbutton.x, e.xbutton.y)];
-            id ev=[NSEvent mouseEventWithType:NSLeftMouseDragged
-                                     location:pos
-                                modifierFlags:0
-                                       window:[window delegate]
-                                   clickCount:1];
-            [self postEvent:ev atStart:NO];
-            break;
-         }
-         case ClientMessage:
-         {
-            id window=[self windowForID:e.xclient.window];
-            if(e.xclient.format=32 &&
-               e.xclient.data.l[0]==XInternAtom(_display, "WM_DELETE_WINDOW", False))
-               [[window delegate] platformWindowWillClose:window];
-            break;
-         }
-         default:
-            NSLog(@"type %i", e.type);
-            break;
-            
-      }
+   while(1) {
+      id pool=[NSAutoreleasePool new];
       XNextEvent(_display, &e);
+      [self performSelectorOnMainThread:@selector(handleEvent:)
+                             withObject:[NSData dataWithBytes:&e 
+                                                       length:sizeof(XEvent)]
+                          waitUntilDone:YES
+                                  modes:[NSArray arrayWithObjects:NSDefaultRunLoopMode, NSEventTrackingRunLoopMode, NSModalPanelRunLoopMode, nil]];
+      [pool drain];
    }
-   
-   id ret=[super nextEventMatchingMask:mask untilDate:untilDate inMode:mode dequeue:dequeue];
-   return ret;
+}
+
+
+-(void)setupEventThread {
+   [NSThread detachNewThreadSelector:@selector(eventThread) toTarget:self withObject:nil];  
+}
+
+-(void)postEvent:(NSEvent *)event atStart:(BOOL)atStart {
+   [super postEvent:event atStart:atStart];
+   [[NSPlatform currentPlatform] cancelForRunloopMode:[[NSRunLoop currentRunLoop] currentMode]];
 }
 
 @end

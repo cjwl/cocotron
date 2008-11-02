@@ -15,6 +15,7 @@
    id _delegate;
    Window _window;
    Display *_dpy;
+   CairoContext *_backingContext;
    CairoContext *_cgContext;
    NSMutableDictionary *_deviceDictionary;
    NSRect _frame;

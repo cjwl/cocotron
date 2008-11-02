@@ -308,11 +308,13 @@
    cairo_t *ctx=cairo_create(img);
    
    cairo_set_source_surface(ctx, _surface, 0, 0);
-   cairo_fill(ctx);
+   cairo_set_operator(ctx, CAIRO_OPERATOR_SOURCE);
+   cairo_paint(ctx);
    
    cairo_destroy(ctx);
    
    id ret=[[CairoCacheImage alloc] initWithSurface:img];
+
    [ret setSize:size];
    
    cairo_surface_destroy(img);
@@ -320,7 +322,6 @@
 }
 
 -(void)drawImage:(id)image inRect:(CGRect)rect {
-
    BOOL shouldFreeImage=NO;
    cairo_surface_t *img=NULL;
    
@@ -338,19 +339,19 @@
                                               [image bytesPerRow]);
 	}
    
-   
    NSAssert(img, nil);
    cairo_identity_matrix(_context);
    [self appendFlip];
    [self appendCTM];
    
-   cairo_new_path(_context);
-	cairo_rectangle(_context,
-                   rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);  
-   cairo_clip(_context);
    
-   cairo_set_source_rgb(_context, 1.0, 1.0, 0.1);
-   cairo_paint(_context);
+   cairo_new_path(_context);
+   
+   cairo_translate(_context, rect.origin.x, rect.origin.y);
+	cairo_rectangle(_context,
+                   0, 0, rect.size.width, rect.size.height);  
+   
+   cairo_clip(_context);
 
 	cairo_set_source_surface(_context, img, 0.0, 0.0);
 
