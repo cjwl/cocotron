@@ -141,8 +141,30 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -initWithData:(NSData *)data {
-   NSUnimplementedMethod();
-   return nil;
+	Class repClass = [NSImageRep imageRepClassForData:data];
+    NSArray *reps=nil;
+    
+    if([repClass respondsToSelector:@selector(imageRepsWithData:)])
+     reps=[repClass performSelector:@selector(imageRepsWithData:) withObject:data];
+    else if([repClass respondsToSelector:@selector(imageRepWithData:)]){
+     NSImageRep *rep=[repClass performSelector:@selector(imageRepWithData:) withObject:data];
+     
+     if(rep!=nil)
+      reps=[NSArray arrayWithObject:rep];
+    }
+
+	if([reps count]==0){
+       [self dealloc];
+		return nil;
+	}
+	
+	_name=nil;
+	_size=[[reps lastObject] size];
+	_representations=[NSMutableArray new];
+	
+	[_representations addObjectsFromArray:reps];
+	
+	return self;
 }
 
 -initWithContentsOfFile:(NSString *)path {
