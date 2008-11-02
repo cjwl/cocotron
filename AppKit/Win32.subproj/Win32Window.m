@@ -674,6 +674,8 @@ static void initializeWindowClass(WNDCLASS *class){
     static WNDCLASS _standardWindowClass,_popupWindowClass,_glWindowClass;
     OSVERSIONINFOEX osVersion;
     
+    if(icon==NULL)
+     icon=LoadImage(NULL,IDI_APPLICATION,IMAGE_ICON,0,0,LR_DEFAULTCOLOR|LR_SHARED);
 
     initializeWindowClass(&_standardWindowClass);
     _standardWindowClass.lpszClassName="NSWin32StandardWindow";
