@@ -11,6 +11,7 @@
 #import "X11Window.h"
 #import <AppKit/NSScreen.h>
 #import <AppKit/NSApplication.h>
+#import <Foundation/NSPlatform.h>
 
 @implementation X11Display
 
