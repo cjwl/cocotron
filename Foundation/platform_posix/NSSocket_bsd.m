@@ -121,7 +121,7 @@ static inline void byteZero(void *vsrc,int size){
 -(NSError *)setOperationWouldBlock:(BOOL)blocks {
    u_long onoff=blocks?NO:YES;
 
-   [self errorForReturnValue:ioctl(_descriptor,FIONBIO,&onoff)];
+   return [self errorForReturnValue:ioctl(_descriptor,FIONBIO,&onoff)];
 }
 
 -(BOOL)operationWouldBlock {
@@ -204,7 +204,7 @@ static inline void byteZero(void *vsrc,int size){
    NSError        *error;
    
    error=[self errorForReturnValue:newSocket=accept(_descriptor,&addr,&addrlen)];
-   if(*errorp!=nil)
+   if(errorp!=NULL)
     *errorp=error;
     
    return (error!=nil)?nil:[[[NSSocket_bsd alloc] initWithDescriptor:newSocket] autorelease];

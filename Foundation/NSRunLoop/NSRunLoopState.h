@@ -21,7 +21,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)changingIntoMode:(NSString *)mode;
 
--(void)fireTimers;
+-(BOOL)fireTimers;
 -(NSDate *)limitDateForMode:(NSString *)mode;
 
 -(void)addInputSource:(NSInputSource *)source;

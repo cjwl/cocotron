@@ -85,8 +85,7 @@ int __CFConstantStringClassReference[1];
 }
 
 -initWithCString:(const char *)cString encoding:(NSStringEncoding)encoding {
-   NSUnimplementedMethod();
-   return 0;
+   return [self initWithData:[NSData dataWithBytes:cString length:strlen(cString)] encoding:encoding];
 }
 
 -initWithString:(NSString *)string {

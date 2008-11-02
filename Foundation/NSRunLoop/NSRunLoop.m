@@ -19,8 +19,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSRunLoopState.h>
 #import <Foundation/NSRunLoop-InputSource.h>
 #import <Foundation/NSPlatform.h>
+#import <Foundation/NSSelectInputSource.h>
 
 NSString *NSDefaultRunLoopMode=@"NSDefaultRunLoopMode";
+NSString *NSRunLoopCommonModes=@"NSRunLoopCommonModes";
 
 @implementation NSRunLoop
 
@@ -59,12 +61,14 @@ NSString *NSDefaultRunLoopMode=@"NSDefaultRunLoopMode";
    if(state==nil){
     state=[[NSRunLoopState new] autorelease];
     NSMapInsert(_modes,mode,state);
+    [[NSPlatform currentPlatform] addCancelEventToRunloopMode:mode];
    }
 
    return state;
 }
 
--(void)_orderedPerforms {
+-(BOOL)_orderedPerforms {
+   BOOL didPerform=NO;
 	id performs=nil;
 	@synchronized(_orderedPerforms)
 	{
@@ -75,9 +79,11 @@ NSString *NSDefaultRunLoopMode=@"NSDefaultRunLoopMode";
    while(--count>=0){
     NSOrderedPerform *check=[performs objectAtIndex:count];
 
-	   	// be careful the lock on _orderedPerforms is not held while we fire the perform
-    if([check fireInMode:_currentMode])
+   // be careful the lock on _orderedPerforms is not held while we fire the perform
+   // TODO: right now, all modes are common modes
+   if([check fireInMode:_currentMode] || [check fireInMode:NSRunLoopCommonModes])
 	{
+      didPerform=YES;
 		@synchronized(_orderedPerforms)
 		{
 			[_orderedPerforms removeObjectIdenticalTo:check];
@@ -85,6 +91,7 @@ NSString *NSDefaultRunLoopMode=@"NSDefaultRunLoopMode";
 	}
    }
 	[performs release];
+   return didPerform;
 }
 
 -(NSString *)currentMode {
@@ -100,8 +107,10 @@ NSString *NSDefaultRunLoopMode=@"NSDefaultRunLoopMode";
     [state changingIntoMode:mode];
    }
    
-   [self _orderedPerforms];
-   [state fireTimers];
+   if([self _orderedPerforms])
+      [[NSPlatform currentPlatform] cancelForRunloopMode:mode];
+   if([state fireTimers])
+      [[NSPlatform currentPlatform] cancelForRunloopMode:mode];
    [[NSNotificationQueue defaultQueue] asapProcessMode:mode];
 
    return [state limitDateForMode:mode];
@@ -128,15 +137,17 @@ NSString *NSDefaultRunLoopMode=@"NSDefaultRunLoopMode";
     [modeState invalidateTimerWithDelayedPerform:delayed];
 }
 
+@class NSSelectInputSource, NSSocket;
+
 -(BOOL)runMode:(NSString *)mode beforeDate:(NSDate *)date {
    NSAutoreleasePool *pool=[NSAutoreleasePool new];
    NSDate            *limitDate=[self limitDateForMode:mode];
-
+   
    if(limitDate!=nil){
     limitDate=[limitDate earlierDate:date];
     [self acceptInputForMode:mode beforeDate:limitDate];
    }
-
+   
    [pool release];
 
    return (limitDate!=nil);
@@ -193,9 +204,12 @@ NSString *NSDefaultRunLoopMode=@"NSDefaultRunLoopMode";
 			if(checkOrder>order)
 				break;
 		}
-
 		[_orderedPerforms insertObject:perform atIndex:count+1];
 	}
+   for(id mode in modes)
+   {
+      [[NSPlatform currentPlatform] cancelForRunloopMode:mode];
+   }
 }
 
 -(void)cancelPerformSelector:(SEL)selector target:target argument:argument {
@@ -211,6 +225,8 @@ NSString *NSDefaultRunLoopMode=@"NSDefaultRunLoopMode";
 		}
 	}
 }
+
+
 
 @end
 
@@ -246,6 +262,9 @@ NSString *NSDefaultRunLoopMode=@"NSDefaultRunLoopMode";
    [[self class] object:self performSelector:selector withObject:argument
       afterDelay:delay];
 }
+
+
+
 
 @end
 

@@ -9,6 +9,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 // Original - Christopher Lloyd <cjwl@objc.net>
 #import <AppKit/NSPlatform.h>
 #import <Foundation/NSString.h>
+#import <windows.h>
 
 @implementation NSPlatform(Win32AppKit)
 
@@ -20,4 +21,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return @"Win32Workspace";
 }
 
+
+-(void)addCancelEventToRunloopMode:(NSString*)mode {
+}
+
+-(void)cancelForRunloopMode:(NSString*)mode {
+   // if we have a windows event loop, we can just post an empty message to get it running
+   PostMessage(NULL, WM_APP, 0, 0);
+}
 @end

@@ -15,6 +15,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSInputSourceSet.h>
 #import <Foundation/NSPlatform.h>
 #import <Foundation/NSString.h>
+#import <Foundation/NSSocket.h>
+#import <Foundation/NSSelectInputSource.h>
+#import <Foundation/NSPipe.h>
 
 @implementation NSRunLoopState
 
@@ -45,21 +48,25 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     [[_asyncInputSourceSets objectAtIndex:i] changingIntoMode:mode];
 }
 
--(void)fireTimers {
+-(BOOL)fireTimers {
    NSMutableArray *fire=[NSMutableArray array];
    NSDate         *now=[NSDate date];
    int             count=[_timers count];
+   BOOL            didFireTimer=NO;
    
    while(--count>=0){
     NSTimer *timer=[_timers objectAtIndex:count];
 
     if(![timer isValid])
      [_timers removeObjectAtIndex:count];
-    else if([now compare:[timer fireDate]]!=NSOrderedAscending)
+    else if([now compare:[timer fireDate]]!=NSOrderedAscending) {
      [fire addObject:timer];
+       didFireTimer=YES;
+    }
    }
 
    [fire makeObjectsPerformSelector:@selector(fire)];
+   return didFireTimer;
 }
 
 -(NSDate *)limitDateForMode:(NSString *)mode {
@@ -151,6 +158,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     return YES;
 
    return [_inputSourceSet waitForInputInMode:mode beforeDate:[NSDate date]];
+}
+
+-(id)description {
+   return [NSString stringWithFormat:@"%@, %i inputSources", [super description], [_inputSourceSet count]];
 }
 
 @end
