@@ -840,6 +840,16 @@
 		C8BAA57A0DDEFC6C005C4769 /* objc_size_alignment.m in Sources */ = {isa = PBXBuildFile; fileRef = C8BAA5720DDEFC6C005C4769 /* objc_size_alignment.m */; };
 		C8BAA57B0DDEFC6C005C4769 /* objc_size_alignment.h in Headers */ = {isa = PBXBuildFile; fileRef = C8BAA5710DDEFC6C005C4769 /* objc_size_alignment.h */; };
 		C8BAA57C0DDEFC6C005C4769 /* objc_size_alignment.m in Sources */ = {isa = PBXBuildFile; fileRef = C8BAA5720DDEFC6C005C4769 /* objc_size_alignment.m */; };
+		C8C39E020EAB6646002568A3 /* NSConditionLock_posix.h in Headers */ = {isa = PBXBuildFile; fileRef = C8C39E000EAB6646002568A3 /* NSConditionLock_posix.h */; };
+		C8C39E030EAB6646002568A3 /* NSConditionLock_posix.m in Sources */ = {isa = PBXBuildFile; fileRef = C8C39E010EAB6646002568A3 /* NSConditionLock_posix.m */; };
+		C8C39E040EAB6646002568A3 /* NSConditionLock_posix.h in Headers */ = {isa = PBXBuildFile; fileRef = C8C39E000EAB6646002568A3 /* NSConditionLock_posix.h */; };
+		C8C39E050EAB6646002568A3 /* NSConditionLock_posix.m in Sources */ = {isa = PBXBuildFile; fileRef = C8C39E010EAB6646002568A3 /* NSConditionLock_posix.m */; };
+		C8C39E060EAB6646002568A3 /* NSConditionLock_posix.h in Headers */ = {isa = PBXBuildFile; fileRef = C8C39E000EAB6646002568A3 /* NSConditionLock_posix.h */; };
+		C8C39E070EAB6646002568A3 /* NSConditionLock_posix.m in Sources */ = {isa = PBXBuildFile; fileRef = C8C39E010EAB6646002568A3 /* NSConditionLock_posix.m */; };
+		C8C39E080EAB6646002568A3 /* NSConditionLock_posix.h in Headers */ = {isa = PBXBuildFile; fileRef = C8C39E000EAB6646002568A3 /* NSConditionLock_posix.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		C8C39E090EAB6646002568A3 /* NSConditionLock_posix.m in Sources */ = {isa = PBXBuildFile; fileRef = C8C39E010EAB6646002568A3 /* NSConditionLock_posix.m */; };
+		C8C970100EBDBC63009CE9BC /* NSConditionLock_win32.h in Headers */ = {isa = PBXBuildFile; fileRef = C8C9700E0EBDBC63009CE9BC /* NSConditionLock_win32.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		C8C970110EBDBC63009CE9BC /* NSConditionLock_win32.m in Sources */ = {isa = PBXBuildFile; fileRef = C8C9700F0EBDBC63009CE9BC /* NSConditionLock_win32.m */; };
 		FE01A59B0C5D9B6900AEA51A /* NSArray_concrete.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E280311097478CC00EC542B /* NSArray_concrete.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE01A59C0C5D9B6900AEA51A /* NSArray_placeholder.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E280313097478CC00EC542B /* NSArray_placeholder.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE01A59D0C5D9B6900AEA51A /* NSArray.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E280315097478CC00EC542B /* NSArray.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -3654,6 +3664,10 @@
 		C8B53BD60E6AC7C500E4467E /* objc_debugHelpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = objc_debugHelpers.m; sourceTree = "<group>"; };
 		C8BAA5710DDEFC6C005C4769 /* objc_size_alignment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = objc_size_alignment.h; sourceTree = "<group>"; };
 		C8BAA5720DDEFC6C005C4769 /* objc_size_alignment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = objc_size_alignment.m; sourceTree = "<group>"; };
+		C8C39E000EAB6646002568A3 /* NSConditionLock_posix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NSConditionLock_posix.h; path = platform_posix/NSConditionLock_posix.h; sourceTree = "<group>"; };
+		C8C39E010EAB6646002568A3 /* NSConditionLock_posix.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NSConditionLock_posix.m; path = platform_posix/NSConditionLock_posix.m; sourceTree = "<group>"; };
+		C8C9700E0EBDBC63009CE9BC /* NSConditionLock_win32.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NSConditionLock_win32.h; path = platform_win32/NSConditionLock_win32.h; sourceTree = "<group>"; };
+		C8C9700F0EBDBC63009CE9BC /* NSConditionLock_win32.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NSConditionLock_win32.m; path = platform_win32/NSConditionLock_win32.m; sourceTree = "<group>"; };
 		FE01A7EC0C5D9B6900AEA51A /* Foundation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Foundation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FE1935150B5D449E00FB74CC /* NSAssertionHandler.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSAssertionHandler.h; sourceTree = "<group>"; };
 		FE1935160B5D449E00FB74CC /* NSAssertionHandler.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSAssertionHandler.m; sourceTree = "<group>"; };
@@ -4625,6 +4639,8 @@
 				FE35D66D0B52AFBC00FE7AB3 /* NSSocket_bsd.m */,
 				6E28058309747CEE00EC542B /* NSTask_posix.h */,
 				6E28058409747CEE00EC542B /* NSTask_posix.m */,
+				C8C39E000EAB6646002568A3 /* NSConditionLock_posix.h */,
+				C8C39E010EAB6646002568A3 /* NSConditionLock_posix.m */,
 			);
 			name = platform_posix;
 			sourceTree = "<group>";
@@ -4677,6 +4693,8 @@
 				6E2805BC09747D0400EC542B /* NSString_win32.m */,
 				6E2805BD09747D0400EC542B /* NSTask_win32.h */,
 				6E2805BE09747D0400EC542B /* NSTask_win32.m */,
+				C8C9700E0EBDBC63009CE9BC /* NSConditionLock_win32.h */,
+				C8C9700F0EBDBC63009CE9BC /* NSConditionLock_win32.m */,
 			);
 			name = platform_win32;
 			sourceTree = "<group>";
@@ -5350,6 +5368,7 @@
 				C851D8720E40E0D3001DAB69 /* NSPropertyListWriter_xml1.h in Headers */,
 				C851D87E0E40E428001DAB69 /* objc_forward_ffi.h in Headers */,
 				C8B53BD90E6AC7C500E4467E /* objc_debugHelpers.h in Headers */,
+				C8C39E020EAB6646002568A3 /* NSConditionLock_posix.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5649,6 +5668,7 @@
 				C851D8760E40E0D3001DAB69 /* NSPropertyListWriter_xml1.h in Headers */,
 				C851D8820E40E428001DAB69 /* objc_forward_ffi.h in Headers */,
 				C8B53BDF0E6AC7C500E4467E /* objc_debugHelpers.h in Headers */,
+				C8C39E080EAB6646002568A3 /* NSConditionLock_posix.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5952,6 +5972,7 @@
 				C851D8740E40E0D3001DAB69 /* NSPropertyListWriter_xml1.h in Headers */,
 				C851D8800E40E428001DAB69 /* objc_forward_ffi.h in Headers */,
 				C8B53BDD0E6AC7C500E4467E /* objc_debugHelpers.h in Headers */,
+				C8C970100EBDBC63009CE9BC /* NSConditionLock_win32.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6251,6 +6272,7 @@
 				C851D86E0E40E0D3001DAB69 /* NSPropertyListWriter_xml1.h in Headers */,
 				C851D87A0E40E428001DAB69 /* objc_forward_ffi.h in Headers */,
 				C8B53BD70E6AC7C500E4467E /* objc_debugHelpers.h in Headers */,
+				C8C39E060EAB6646002568A3 /* NSConditionLock_posix.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6550,6 +6572,7 @@
 				C851D8700E40E0D3001DAB69 /* NSPropertyListWriter_xml1.h in Headers */,
 				C851D87C0E40E428001DAB69 /* objc_forward_ffi.h in Headers */,
 				C8B53BDB0E6AC7C500E4467E /* objc_debugHelpers.h in Headers */,
+				C8C39E040EAB6646002568A3 /* NSConditionLock_posix.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7119,6 +7142,7 @@
 				C851D8710E40E0D3001DAB69 /* NSPropertyListWriter_xml1.m in Sources */,
 				C851D87F0E40E428001DAB69 /* objc_forward_ffi.m in Sources */,
 				C8B53BDA0E6AC7C500E4467E /* objc_debugHelpers.m in Sources */,
+				C8C39E030EAB6646002568A3 /* NSConditionLock_posix.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7419,6 +7443,7 @@
 				C851D8750E40E0D3001DAB69 /* NSPropertyListWriter_xml1.m in Sources */,
 				C851D8830E40E428001DAB69 /* objc_forward_ffi.m in Sources */,
 				C8B53BE00E6AC7C500E4467E /* objc_debugHelpers.m in Sources */,
+				C8C39E090EAB6646002568A3 /* NSConditionLock_posix.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7724,6 +7749,7 @@
 				C851D8810E40E428001DAB69 /* objc_forward_ffi.m in Sources */,
 				C80F9AE10E58BD5400ECD487 /* objc-msgsend.s in Sources */,
 				C8B53BDE0E6AC7C500E4467E /* objc_debugHelpers.m in Sources */,
+				C8C970110EBDBC63009CE9BC /* NSConditionLock_win32.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8026,6 +8052,7 @@
 				C851D86D0E40E0D3001DAB69 /* NSPropertyListWriter_xml1.m in Sources */,
 				C851D87B0E40E428001DAB69 /* objc_forward_ffi.m in Sources */,
 				C8B53BD80E6AC7C500E4467E /* objc_debugHelpers.m in Sources */,
+				C8C39E070EAB6646002568A3 /* NSConditionLock_posix.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8328,6 +8355,7 @@
 				C851D86F0E40E0D3001DAB69 /* NSPropertyListWriter_xml1.m in Sources */,
 				C851D87D0E40E428001DAB69 /* objc_forward_ffi.m in Sources */,
 				C8B53BDC0E6AC7C500E4467E /* objc_debugHelpers.m in Sources */,
+				C8C39E050EAB6646002568A3 /* NSConditionLock_posix.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8487,7 +8515,6 @@
 				EXECUTABLE_SUFFIX = .1.0.dll;
 				GCC_ENABLE_CPP_EXCEPTIONS = NO;
 				GCC_ENABLE_CPP_RTTI = NO;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				INFOPLIST_FILE = Info.plist;
@@ -8524,7 +8551,6 @@
 				DSTROOT = /;
 				EXECUTABLE_PREFIX = lib;
 				EXECUTABLE_SUFFIX = .so;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = /Developer/Cocotron/1.0/Linux/i386/Frameworks;

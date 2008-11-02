@@ -24,6 +24,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(Class)taskClass;
 -(Class)pipeClass;
 -(Class)lockClass;
+-(Class)conditionLockClass;
 -(Class)persistantDomainClass;
 
 -(NSString *)userName;

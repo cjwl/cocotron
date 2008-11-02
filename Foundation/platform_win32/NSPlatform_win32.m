@@ -41,6 +41,8 @@ NSString *NSPlatformClassName=@"NSPlatform_win32";
 
 #define MAXHOSTNAMELEN 512
 
+@class NSConditionLock_win32;
+
 @implementation NSPlatform_win32
 
 -init {
@@ -109,6 +111,10 @@ NSString *NSPlatformClassName=@"NSPlatform_win32";
 
 -(Class)lockClass {
    return [NSLock_win32 class];
+}
+
+-(Class)conditionLockClass {
+   return [NSConditionLock_win32 class];
 }
 
 -(Class)persistantDomainClass {
