@@ -8,8 +8,9 @@
 
 #import <Foundation/NSConditionLock_win32.h>
 #import <Foundation/NSDate.h>
+#import <Foundation/NSString.h>
 
-#define UPDATE_TIME time=MAX([date timeIntervalSinceNow]*1000.0, 0)
+#define UPDATE_TIME time=MIN(MAX([date timeIntervalSinceNow]*1000.0, 0), INFINITE)
 
 @implementation NSConditionLock_win32
 
@@ -17,16 +18,15 @@
 {
    NSUInteger time=0;
 
-   UPDATE_TIME;
-   
    EnterCriticalSection(&_waitersNumber);
    _numberOfWaiters++;
    LeaveCriticalSection(&_waitersNumber);
    
    UPDATE_TIME;
    
-   if(SignalObjectAndWait(_mutex, _semaphore, time, NO))
+   if(SignalObjectAndWait(_mutex, _semaphore, time, NO)) {
       return NO;
+   }
    
    EnterCriticalSection(&_waitersNumber);
 
@@ -39,20 +39,24 @@
    
    if(wereLast)
    {
-      return !(BOOL)SignalObjectAndWait(_waitersDone, _mutex, time, NO);
+      if(SignalObjectAndWait(_waitersDone, _mutex, time, NO)) {
+         return NO;
+      }
    }
    else
    {
-      return !(BOOL)WaitForSingleObject(_mutex, time);
+      if(WaitForSingleObject(_mutex, time)) {
+         return NO;
+      }
    }
+   return YES;
 }
 
 -(void)_broadcastCondition {
    EnterCriticalSection(&_waitersNumber);
    _conditionWasBroadcast=_numberOfWaiters>0;
    
-   if(_conditionWasBroadcast)
-   {
+   if(_conditionWasBroadcast) {
       ReleaseSemaphore(_semaphore, 1, 0);
       LeaveCriticalSection(&_waitersNumber);
       WaitForSingleObject(_waitersDone, INFINITE);
@@ -74,8 +78,10 @@
    NSUInteger time=0;
    UPDATE_TIME;
 
-   if(WaitForSingleObject(_mutex, time))
+   HRESULT res;
+   if(res=WaitForSingleObject(_mutex, time)) {
       return NO;
+   }
 
    while(_value!=condition) {
       if(![self _waitForConditionBeforeDate:date]) {
@@ -107,12 +113,19 @@
    if(self = [super init]) {
       _value=value;
       _semaphore=CreateSemaphore(NULL, 0, INT_MAX, NULL);
-      HANDLE     _waitersDone=CreateEvent(NULL, NO, NO, NULL);
-      HANDLE     _mutex=CreateMutex(NULL, NO, NULL);
+      _waitersDone=CreateEvent(NULL, NO, NO, NULL);
+      _mutex=CreateMutex(NULL, NO, NULL);
       InitializeCriticalSection(&_waitersNumber);
    }
    return self;
 }
 
+-(void)dealloc {
+   CloseHandle(_semaphore);
+   CloseHandle(_waitersDone);
+   CloseHandle(_mutex);
+   DeleteCriticalSection(&_waitersNumber);
+   [super dealloc];
+}
 
 @end
