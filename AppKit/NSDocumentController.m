@@ -543,11 +543,11 @@ static BOOL actionIsDocumentController(SEL selector){
 }
 
 -(BOOL)validateMenuItem:(NSMenuItem *)item {
-   return actionIsDocumentController([item action]);
+   return (actionIsDocumentController([item action]) || [self respondsToSelector:[item action]]);
 }
 
 -(BOOL)validateUserInterfaceItem:(id <NSValidatedUserInterfaceItem>)item {
-   return actionIsDocumentController([item action]);
+   return (actionIsDocumentController([item action]) || [self respondsToSelector:[item action]]);
 }
 
 -(BOOL)application:sender openFile:(NSString *)path {
