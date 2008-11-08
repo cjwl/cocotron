@@ -155,6 +155,10 @@ static struct passwd *pwent = NULL;
     return getpid();
 }
 
+-(unsigned)threadID {
+    return pthread_self();
+}
+
 -(NSArray *)addressesForDNSHostName:(NSString *)name {
     NSMutableArray *result=[NSMutableArray array];
     char            cString[MAXHOSTNAMELEN+1];

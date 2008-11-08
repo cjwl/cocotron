@@ -79,6 +79,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)postNotification:(NSNotification *)note {
+// FIXME: NSNotificationCenter sends notifications in the order they are added for observation regardless of
+// the object registered. This implementation stores objects for observation seperately so if you observe nil
+// and a particular object you will always get the particular object notifications before the nil one instead
+// of in the order they are registered.
+
 // The copy and double check for presence is to deal with observers being removed during notification
    id         object=[note object];
    NSArray   *observers;

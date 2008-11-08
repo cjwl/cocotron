@@ -137,6 +137,11 @@ NSMutableDictionary *cancelEvents=nil;
    return 0;
 }
 
+-(unsigned)threadID {
+   NSInvalidAbstractInvocation();
+   return 0;
+}
+
 -(NSString *)hostName {
    NSInvalidAbstractInvocation();
    return nil;

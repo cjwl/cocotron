@@ -44,6 +44,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(NSTimeZone *)systemTimeZone;
 
 -(unsigned)processID;
+-(unsigned)threadID;
 
 -(NSString *)hostName;
 
