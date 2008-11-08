@@ -6,7 +6,6 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
-// Original - Christopher Lloyd <cjwl@objc.net>
 #import <Foundation/NSObjectToObservers.h>
 #import <Foundation/NSArray.h>
 #import <Foundation/NSEnumerator.h>
@@ -81,28 +80,30 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)postNotification:(NSNotification *)note {
 // The copy and double check for presence is to deal with observers being removed during notification
-   id       object=[note object];
-   NSArray *observers=[NSArray arrayWithArray:(id)NSMapGet(_objectToObservers,object)];
-   int      count;
-
-   count=[observers count];
-   while(--count>=0){
-    id observer=[observers objectAtIndex:count];
-
-    if([(NSArray *)NSMapGet(_objectToObservers,object) indexOfObjectIdenticalTo:observer]!=NSNotFound)
-     [observer performSelector:_cmd withObject:note];
-   }
-
+   id         object=[note object];
+   NSArray   *observers;
+   NSUInteger count;
+   
    if(object!=nil){
-    observers=[NSArray arrayWithArray:(id)NSMapGet(_objectToObservers,[NSNull null])];
+    observers=[NSArray arrayWithArray:(id)NSMapGet(_objectToObservers,object)];
 
     count=[observers count];
     while(--count>=0){
      id observer=[observers objectAtIndex:count];
 
-     if([(NSArray *)NSMapGet(_objectToObservers,[NSNull null]) indexOfObjectIdenticalTo:observer]!=NSNotFound)
+     if([(NSArray *)NSMapGet(_objectToObservers,object) indexOfObjectIdenticalTo:observer]!=NSNotFound)
       [observer performSelector:_cmd withObject:note];
     }
+   }
+
+   observers=[NSArray arrayWithArray:(id)NSMapGet(_objectToObservers,[NSNull null])];
+
+   count=[observers count];
+   while(--count>=0){
+    id observer=[observers objectAtIndex:count];
+
+    if([(NSArray *)NSMapGet(_objectToObservers,[NSNull null]) indexOfObjectIdenticalTo:observer]!=NSNotFound)
+     [observer performSelector:_cmd withObject:note];
    }
 }
 
