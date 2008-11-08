@@ -330,10 +330,13 @@ static NSMapTable *pathToObject=NULL;
    NSString *loadableObjectFileExtension=[[NSPlatform currentPlatform] loadableObjectFileExtension];
    NSString *executableDirectory=[[NSPlatform currentPlatform] executableDirectory];
    NSString *type=[_path pathExtension];
-   NSString *name=[[_path lastPathComponent] stringByDeletingPathExtension];
+   NSString *name=[[self infoDictionary] objectForKey:@"CFBundleExecutable"];
    NSString *checkDir;
    NSArray  *contents;
    int       i,count;
+
+   if(name==nil) 
+    name=[[_path lastPathComponent] stringByDeletingPathExtension];
 
    if([type isEqualToString:@"framework"])
     checkDir=[[[_path stringByDeletingLastPathComponent] stringByDeletingLastPathComponent] stringByAppendingPathComponent:@"Executables"];
