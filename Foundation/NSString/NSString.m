@@ -6,7 +6,6 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
-// Original - Christopher Lloyd <cjwl@objc.net>
 #import <Foundation/NSString.h>
 #import <Foundation/NSCoder.h>
 #import <Foundation/NSString_cString.h>
@@ -31,6 +30,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSAutoreleasePool-private.h>
 #import <Foundation/NSStringFileIO.h>
 #import <Foundation/NSKeyedUnarchiver.h>
+#import <Foundation/NSKeyedArchiver.h>
 #import <Foundation/NSStringHashing.h>
 #import <Foundation/NSScanner.h>
 #import <Foundation/NSAutoreleasePool.h>
@@ -308,14 +308,21 @@ int __CFConstantStringClassReference[1];
 }
 
 -(void)encodeWithCoder:(NSCoder *)coder {
-   unsigned length=[self length],utf8Length;
-   unichar  buffer[length];
-   char    *utf8;
+   if([coder isKindOfClass:[NSKeyedArchiver class]]){
+    NSKeyedArchiver *keyed=(NSKeyedArchiver *)coder;
+    
+    [keyed encodeObject:[NSString stringWithString:self] forKey:@"NS.string"];
+   }
+   else {
+    unsigned length=[self length],utf8Length;
+    unichar  buffer[length];
+    char    *utf8;
 
-   [self getCharacters:buffer];
-   utf8=NSUnicodeToUTF8(buffer,length,NO,&utf8Length,NULL,NO);
-   [coder encodeBytes:utf8 length:utf8Length];
-   NSZoneFree(NSZoneFromPointer(utf8),utf8);
+    [self getCharacters:buffer];
+    utf8=NSUnicodeToUTF8(buffer,length,NO,&utf8Length,NULL,NO);
+    [coder encodeBytes:utf8 length:utf8Length];
+    NSZoneFree(NSZoneFromPointer(utf8),utf8);
+   }
 }
 
 -(unichar)characterAtIndex:(unsigned)location {
@@ -526,12 +533,21 @@ static inline NSRange rangeOfPatternNext(unichar *buffer,unichar *patbuffer,int 
     return NSMakeRange(NSNotFound,0);
 }
 
+static inline void reverseString(unichar *buf, unsigned len) {
+    unsigned i;
+    unsigned half = len / 2;
+    for (i = 0; i < half; i++) {
+        unichar t = buf[len-1-i];
+        buf[len-1-i] = buf[i];
+        buf[i] = t;
+    }
+}
+
 -(NSRange)rangeOfString:(NSString *)string options:(unsigned)options range:(NSRange)range locale:(NSLocale *)locale {
    NSUnimplementedMethod();
    return NSMakeRange(0,0);
 }
 
-// FIX, add options
 -(NSRange)rangeOfString:(NSString *)pattern options:(unsigned)options range:(NSRange)range {
    unsigned length=[self length];
    unichar  buffer[length];
@@ -548,18 +564,32 @@ static inline NSRange rangeOfPatternNext(unichar *buffer,unichar *patbuffer,int 
    [self getCharacters:buffer];
    [pattern getCharacters:patbuffer];
 
-   if(options&NSCaseInsensitiveSearch){
+    // it seems that this search is always literal anyway, so the NSLiteralSearch option can be ignored...?
+    options &= ~((unsigned)NSLiteralSearch);
+
+   if(options & NSCaseInsensitiveSearch) {
     NSUnicodeToUppercase(buffer,length);
     NSUnicodeToUppercase(patbuffer,patlength);
    }
+   
+   if(options & NSBackwardsSearch) {
+    reverseString(buffer, length);
+    reverseString(patbuffer, patlength);
+    range.location = length - (range.location + range.length);
+   }
 
-// need to support NSBackwardsSearch 
-   if(options&(NSLiteralSearch|NSBackwardsSearch|NSAnchoredSearch))
+   if(options & NSAnchoredSearch) {
     NSUnimplementedMethod();
+   }
 
    computeNext(next,patbuffer,patlength);
    
-   return rangeOfPatternNext(buffer,patbuffer,next,patlength,range);
+   NSRange foundRange = rangeOfPatternNext(buffer,patbuffer,next,patlength,range);
+   
+   if((options & NSBackwardsSearch) && foundRange.location != NSNotFound) {
+    foundRange.location = length - foundRange.location - foundRange.length;
+   }
+   return foundRange;
 }
 
 -(NSRange)rangeOfString:(NSString *)string options:(unsigned)options {
@@ -575,27 +605,48 @@ static inline NSRange rangeOfPatternNext(unichar *buffer,unichar *patbuffer,int 
 -(NSRange)rangeOfCharacterFromSet:(NSCharacterSet *)set
    options:(unsigned)options range:(NSRange)range {
    NSRange  result=NSMakeRange(NSNotFound,0);
+   
+   if (range.length < 1)
+       return result;
+      
    unichar  buffer[range.length];
    unsigned i;
 
-   if(options!=0)
-    NSUnimplementedMethod();
+    const BOOL isLiteral = (options & NSLiteralSearch) ? YES : NO;
+    const BOOL isBackwards = (options & NSBackwardsSearch) ? YES : NO;
+    options &= ~((unsigned)NSLiteralSearch);
+    options &= ~((unsigned)NSBackwardsSearch);
+ 
+    if(options != 0)
+        NSUnimplementedMethod();
 
-   [self getCharacters:buffer range:range];
+    [self getCharacters:buffer range:range];
+    
+    // Cocoa documentation suggests that the returned range's length is always expected to be 1?
+    // The backwards search uses this assumption.
 
-   for(i=0;i<range.length;i++){
-    if([set characterIsMember:buffer[i]]){
-     result.location=i;
-
-     for(;i<range.length;i++)
-      if(![set characterIsMember:buffer[i]])
-       break;
-
-     result.length=i-result.location;
-     result.location+=range.location;
-     return result;
+    if (isBackwards) {
+        for(i = range.length; i > 0; i--) {
+            if([set characterIsMember:buffer[i-1]]) {
+                return NSMakeRange(range.location + (i-1), 1);
+            }
+        }
     }
-   }
+    else {
+       for(i=0;i<range.length;i++){
+        if([set characterIsMember:buffer[i]]){
+         result.location=i;
+
+         for(;i<range.length;i++)
+          if(![set characterIsMember:buffer[i]])
+           break;
+
+         result.length=i-result.location;
+         result.location+=range.location;
+         return result;
+        }
+       }
+    }
 
    return NSMakeRange(NSNotFound,0);
 }
@@ -1152,8 +1203,50 @@ U+2029 (Unicode paragraph separator), \r\n, in that order (also known as CRLF)
 }
 
 -(BOOL)getCString:(char *)cString maxLength:(NSUInteger)maxLength encoding:(NSStringEncoding)encoding {
-   NSUnimplementedMethod();
-   return 0;
+    NSRange range={0,[self length]};
+    
+    if (range.length > maxLength-1)
+        return NO;
+
+    BOOL result = YES;    
+    NSUInteger i;
+    unichar  unicode[range.length];
+    unsigned location;
+    [self getCharacters:unicode range:range];
+    
+    // this implementation is very basic, doesn't support most encodings
+    
+    switch (encoding) {
+        case NSASCIIStringEncoding: {
+            NSGetCStringWithMaxLength(unicode,range.length,&range.location,cString,maxLength-1,NO);
+            for (i = 0; i < maxLength-1; i++) {
+                if (cString[i] > 127) {  // invalid character for ASCII encoding
+                    cString[i] = 0;
+                    result = NO;
+                    break;
+                }
+            }
+            break;
+        }
+        case NSUnicodeStringEncoding: {
+            NSUInteger ucByteLen = (range.length+1)*sizeof(unichar);
+            result = (ucByteLen <= maxLength);
+            if (result) {
+                memcpy(cString, unicode, ucByteLen);
+                *((unichar *)(cString + ucByteLen)) = 0;
+            }
+            break;
+        }
+        case NSNEXTSTEPStringEncoding:
+            NSGetNEXTSTEPStringWithMaxLength(unicode,range.length,&range.location,cString,maxLength-1,NO);
+            break;
+        
+        default:
+            result = NO;
+            NSUnimplementedMethod();
+   }
+   
+    return result;
 }
 
 +(NSStringEncoding)defaultCStringEncoding {

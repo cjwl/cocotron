@@ -11,8 +11,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSStringFormatter.h>
 #import <Foundation/NSStringFileIO.h>
 #import <Foundation/NSRaise.h>
-#import <Foundation/NSNumber.h>
-#import <Foundation/NSArray.h>
 #import <string.h>
 
 @implementation NSMutableString : NSString
@@ -149,37 +147,36 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [self replaceCharactersInRange:range withString:string];
 }
 
-- (NSUInteger)replaceOccurrencesOfString:(NSString *)target withString:(NSString *)replacement 
-options:(NSStringCompareOptions)opts range:(NSRange)searchRange
-{
-	NSMutableArray* tokens = [NSMutableArray array];
-	NSRange found;
+// returns the number of replacements performed
+- (NSUInteger)replaceOccurrencesOfString:(NSString *)target withString:(NSString *)replacement options:(NSStringCompareOptions)opts range:(NSRange)searchRange {
+    if (target == nil) {
+        NSRaiseException(NSInvalidArgumentException,self,_cmd,@"nil target object");
+    }
+    if (replacement == nil) {
+        NSRaiseException(NSInvalidArgumentException,self,_cmd,@"nil replacement object");
+    }
+    if (searchRange.location+searchRange.length > [self length]){
+        NSRaiseException(NSRangeException,self,_cmd,@"end of search range %d beyond length %d", searchRange.location+searchRange.length, [self length]);
+    }
 
-	// Find all hits
-	found = [self rangeOfString:target options:opts range:searchRange];		
-	while (found.location != NSNotFound)
-	{
-		[tokens addObject:[NSNumber numberWithLong:found.location]];
-		int oldLocation = searchRange.location;
-		// Advance to after the hit
-		searchRange.location = found.location+found.length;
-		// Shorten the search range accordingly or bail if we're done
-		if (searchRange.length < searchRange.location-oldLocation)
-			break;
-		else
-			searchRange.length -= searchRange.location-oldLocation;
-		found = [self rangeOfString:target options:opts range:searchRange];		
-	} 
-
-	// Make replacements in reverse order
-	int x; for (x = [tokens count]-1; x >= 0; x--)
-	{
-		found.location = [[tokens objectAtIndex:x] longValue];
-		found.length = [target length];
-		[self replaceCharactersInRange:found withString:replacement];
-	}
-	
-	return [tokens count];
+    const BOOL isBackwards = (opts & NSBackwardsSearch) ? YES : NO;
+    const NSUInteger replacementLen = [replacement length];
+    NSRange subrange;
+    
+    NSUInteger n = 0;
+    while ((subrange = [self rangeOfString:target options:opts range:searchRange]).location != NSNotFound) {
+        [self replaceCharactersInRange:subrange withString:replacement];
+        
+        if ( !isBackwards) {
+            searchRange.length -= (subrange.location - searchRange.location) + subrange.length;
+            searchRange.location = subrange.location + replacementLen;
+        } else {
+            searchRange.length = subrange.location - searchRange.location;
+        }
+        
+        n++;
+    }
+    return n;
 }
 
 @end

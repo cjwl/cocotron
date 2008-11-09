@@ -209,8 +209,39 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(NSString *)stringByStandardizingPath {
-   NSUnimplementedMethod();
-   return self;
+    unsigned length = [self length];
+    if (length < 1)
+        return self;
+    
+    // expand tilde
+    NSString *standardPath = self;
+    if ([self characterAtIndex:0] == '~') {
+        standardPath = [standardPath stringByExpandingTildeInPath];
+        length = [standardPath length];
+    }
+
+    unichar buffer[length];
+    unichar cleanedBuffer[length];
+    int cleanedN = 0;
+    int i;
+
+    [standardPath getCharacters:buffer];
+    
+    for (i = 0; i < length; i++) {
+        cleanedBuffer[cleanedN++] = ISSLASH(buffer[i]) ? SLASH : buffer[i];  // convert all slashes to platform standard
+        
+        if (ISSLASH(buffer[i])) {
+            while (i+1 < length && ISSLASH(buffer[i+1])) {
+                i++;  // skip past all following slashes
+            }
+            if (i+2 < length && buffer[i+1] == '.' && ISSLASH(buffer[i+2]))
+                i+=2; // skip past "./" sequence
+        }
+    }
+    
+    // this implementation doesn't do all transformations described in Cocoa documentation
+    
+    return [NSString stringWithCharacters:cleanedBuffer length:cleanedN];
 }
 
 -(BOOL)isAbsolutePath {
