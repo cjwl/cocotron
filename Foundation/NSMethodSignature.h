@@ -18,6 +18,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	void* _closureInfo;
 }
 
++(NSMethodSignature *)signatureWithObjCTypes:(const char *)types;
+
 -(BOOL)isOneway;
 -(unsigned)frameLength;
 -(unsigned)methodReturnLength;

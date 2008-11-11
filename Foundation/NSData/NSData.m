@@ -161,13 +161,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 +dataWithContentsOfFile:(NSString *)path options:(NSUInteger)options error:(NSError **)errorp {
-   NSUnimplementedMethod();
-   return 0;
+   return [[[self alloc] initWithContentsOfFile:path options:options error:errorp] autorelease];
 }
 
 +dataWithContentsOfURL:(NSURL *)url options:(NSUInteger)options error:(NSError **)errorp {
-   NSUnimplementedMethod();
-   return 0;
+   return [[[self alloc] initWithContentsOfURL:url options:options error:errorp] autorelease];
 }
 
 -(const void *)bytes {

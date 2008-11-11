@@ -238,7 +238,10 @@ while(GetLastError()!=ERROR_BROKEN_PIPE &&
 }
 
 -(void)truncateFileAtOffset:(unsigned long long)offset {
-   NSUnimplementedMethod();
+   LONG  highWord=offset>>32;
+
+   SetFilePointer(_handle,offset&0xFFFFFFFF,&highWord,FILE_BEGIN);
+   SetEndOfFile(_handle);
 }
 
 -(void)readInBackground:(NSReadInBackground_win32 *)rib data:(NSData *)data {

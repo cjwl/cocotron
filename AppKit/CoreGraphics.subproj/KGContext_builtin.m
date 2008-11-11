@@ -206,6 +206,8 @@ static void applyPath(void *info,const CGPathElement *element) {
    [copy applyTransform:[self currentState]->_deviceSpaceTransform];
    CGRect rect=[copy boundingBox];
    
+   [copy release];
+   
    _vpx=MAX(rect.origin.x,0);
    _vpwidth=MIN(KGImageGetWidth(_surface),CGRectGetMaxX(rect))-_vpx;
    _vpy=MAX(rect.origin.y,0);
@@ -277,6 +279,7 @@ static KGPaint *paintFromColor(KGColor *color){
     }
    }
 
+   VGPathDealloc(vgPath);
    KGRasterizerClear(self);
    [_path reset];
 }

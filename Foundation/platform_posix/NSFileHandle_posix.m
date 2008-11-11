@@ -287,7 +287,7 @@ CONFORMING TO
 }
 
 - (void)truncateFileAtOffset:(unsigned long long)offset {
-    NSUnimplementedMethod();
+   ftruncate(_fileDescriptor,offset);
 }
 
 

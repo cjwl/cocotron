@@ -40,8 +40,7 @@ NSString *NSLocalizedDescriptionKey=@"NSLocalizedDescriptionKey";
 }
 
 -copyWithZone:(NSZone *)zone {
-   NSUnimplementedMethod();
-   return self;
+   return [self retain];
 }
 
 +errorWithDomain:(NSString *)domain code:(int)code userInfo:(NSDictionary *)userInfo {

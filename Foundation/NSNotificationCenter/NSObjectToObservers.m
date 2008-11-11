@@ -87,8 +87,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 // The copy and double check for presence is to deal with observers being removed during notification
    id         object=[note object];
    NSArray   *observers;
-   NSUInteger count;
-   
+   NSInteger  count;
+    
    if(object!=nil){
     observers=[NSArray arrayWithArray:(id)NSMapGet(_objectToObservers,object)];
 

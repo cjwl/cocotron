@@ -77,7 +77,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     unsigned char *cgData=[_cgContext bytes];
     unsigned char *kgData=[_kgContext bytes];
     
-   char *diff=NSZoneMalloc([self zone],[_kgContext bytesPerRow]*[_kgContext pixelsHigh]);
+    NSMutableData *diffData=[NSMutableData dataWithLength:[_kgContext bytesPerRow]*[_kgContext pixelsHigh]];
+   char *diff=[diffData mutableBytes];
+
 int i,max=[_kgContext bytesPerRow]*[_kgContext pixelsHigh];
 
   for(i=0;i<max;i++){
@@ -89,11 +91,12 @@ int i,max=[_kgContext bytesPerRow]*[_kgContext pixelsHigh];
     else
      diff[i]=(d1!=d2)?ABS(d1-d2):00;
   }
-  CGDataProviderRef provider=CGDataProviderCreateWithData(NULL,diff,[_cgContext bytesPerRow]*[_cgContext pixelsHigh],NULL);
+  CGDataProviderRef provider=CGDataProviderCreateWithCFData(diffData);
    CGImageRef diffImage=CGImageCreate([_cgContext pixelsWide],[_cgContext pixelsHigh],[_cgContext bitsPerComponent],[_cgContext bitsPerPixel],[_cgContext bytesPerRow],CGColorSpaceCreateDeviceRGB(),
      [_kgContext bitmapInfo],provider,NULL,NO,kCGRenderingIntentDefault);
    [_diffView setImageRef:diffImage];
-
+   CGDataProviderRelease(provider);
+   CGImageRelease(diffImage);
    }
 
    

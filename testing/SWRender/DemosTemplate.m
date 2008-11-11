@@ -382,6 +382,8 @@ static void addSliceToPath(CGMutablePathRef path,float innerRadius,float outerRa
    CGAffineTransform ctm=[self ctm];
    CGContextSaveGState(_context);
    CGContextClearRect(_context,CGRectMake(0,0,400,400));
+   CGContextSetRGBFillColor(_context,1,1,1,1);
+   CGContextFillRect(_context,CGRectMake(0,0,400,400));
    ctm=CGAffineTransformTranslate(ctm,-200,-200);
    CGContextConcatCTM(_context,ctm);
 

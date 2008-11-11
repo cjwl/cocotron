@@ -21,8 +21,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -init {
-   NSUnimplementedMethod();
-   return nil;
+   return self;
 }
 
 +pipe {
@@ -30,12 +29,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(NSFileHandle *)fileHandleForReading {
-   NSUnimplementedMethod();
+   NSInvalidAbstractInvocation();
    return nil;
 }
 
 -(NSFileHandle *)fileHandleForWriting {
-   NSUnimplementedMethod();
+   NSInvalidAbstractInvocation();
    return nil;
 }
 

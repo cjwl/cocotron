@@ -1414,7 +1414,7 @@ void VGPathTessellate(VGPath *self){
 	{
         if(self->_segmentToVertexCapacity<self->_numberOfElements){
          self->_segmentToVertexCapacity=self->_numberOfElements;
-         self->_segmentToVertex=NSZoneMalloc(NULL,self->_segmentToVertexCapacity*sizeof(VertexIndex));
+         self->_segmentToVertex=NSZoneRealloc(NULL,self->_segmentToVertex,self->_segmentToVertexCapacity*sizeof(VertexIndex));
         }
         
 		int coordIndex = 0;

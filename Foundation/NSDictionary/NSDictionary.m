@@ -61,18 +61,40 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    id            key,object,keys[count],objects[count];
 
    for(i=0;(key=[state nextObject])!=nil;i++){
-    object=[dictionary objectForKey:key];
-
     keys[i]=key;
-    objects[i]=object;
+    objects[i]=[dictionary objectForKey:key];
    }
 
    return [self initWithObjects:objects forKeys:keys count:count];
 }
 
 -initWithDictionary:(NSDictionary *)dictionary copyItems:(BOOL)copyItems {
-   NSUnimplementedMethod();
-   return nil;
+   unsigned      i,count=[dictionary count];
+   NSEnumerator *state=[dictionary keyEnumerator];
+   id            key,object,keys[count],objects[count];
+
+   for(i=0;(key=[state nextObject])!=nil;i++){
+    keys[i]=key;
+    objects[i]=[dictionary objectForKey:key];
+   }
+
+   if(copyItems){
+    for(i=0;i<count;i++){
+     keys[i]=[keys[i] copyWithZone:NULL];
+     objects[i]=[objects[i] copyWithZone:NULL];
+    }
+   }
+   
+   [self initWithObjects:objects forKeys:keys count:count];
+   
+   if(copyItems){
+    for(i=0;i<count;i++){
+     [keys[i] release];
+     [objects[i] release];
+    }
+   }
+    
+   return self;
 }
 
 -initWithObjectsAndKeys:first,... {
@@ -418,8 +440,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(NSString *)descriptionWithLocale:locale {
-   NSUnimplementedMethod();
-   return nil;
+   return [self descriptionWithLocale:locale indent:0];
 }
 
 -(NSString *)descriptionWithLocale:locale indent:(unsigned)indent {
