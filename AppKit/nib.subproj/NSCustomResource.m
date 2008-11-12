@@ -6,7 +6,6 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
-// Original - Christopher Lloyd <cjwl@objc.net>
 #import "NSCustomResource.h"
 #import <Foundation/NSString.h>
 #import <Foundation/NSException.h>
@@ -36,8 +35,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -awakeAfterUsingCoder:(NSCoder *)coder {
    if([_className isEqualToString:@"NSImage"]){
-    NSImage *image=[NSImage imageNamed:_resourceName];
-     
+    NSImage *image;
+    
+    if([_resourceName isEqualToString:@"NSRefreshTemplate"]){
+     image=[NSImage imageNamed:@"NSImageNameRefreshTemplate"];
+     [image setSize:NSMakeSize(12,12)];
+    }
+    else {
+     image=[NSImage imageNamed:_resourceName];
+    }
+        
     if(image!=nil){
         [self release];
         return [image retain];

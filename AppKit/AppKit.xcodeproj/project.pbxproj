@@ -1429,6 +1429,8 @@
 		FEBF5A180DCD450700CE5A1C /* KGPaint_ramp.m in Sources */ = {isa = PBXBuildFile; fileRef = FEBF5A0C0DCD450700CE5A1C /* KGPaint_ramp.m */; };
 		FEDF951F0CAF43E7009DC96F /* KGPDFContext.h in Headers */ = {isa = PBXBuildFile; fileRef = FEDF951B0CAF43E7009DC96F /* KGPDFContext.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FEDF95200CAF43E7009DC96F /* KGPDFContext.m in Sources */ = {isa = PBXBuildFile; fileRef = FEDF951C0CAF43E7009DC96F /* KGPDFContext.m */; };
+		FEED247A0EC9E8F200A5B07E /* NSImageNameRefreshTemplate.pdf in Resources */ = {isa = PBXBuildFile; fileRef = FEED24790EC9E8F200A5B07E /* NSImageNameRefreshTemplate.pdf */; };
+		FEED247B0EC9E8F200A5B07E /* NSImageNameRefreshTemplate.pdf in Resources */ = {isa = PBXBuildFile; fileRef = FEED24790EC9E8F200A5B07E /* NSImageNameRefreshTemplate.pdf */; };
 		FEF2EC350C891E7C001FC5A8 /* NSOpenGLDrawable_gdiView.h in Headers */ = {isa = PBXBuildFile; fileRef = FEF2EC330C891E7C001FC5A8 /* NSOpenGLDrawable_gdiView.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FEF2EC7B0C8A03CC001FC5A8 /* NSOpenGLDrawable_gdiView.m in Sources */ = {isa = PBXBuildFile; fileRef = FEF2EC790C8A03CC001FC5A8 /* NSOpenGLDrawable_gdiView.m */; };
 		FEF35E270E6DC186000BD639 /* NSColor-Private.h in Headers */ = {isa = PBXBuildFile; fileRef = FEF35E260E6DC186000BD639 /* NSColor-Private.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -2283,6 +2285,7 @@
 		FED310E00BCC027200552615 /* NSViewAnimation.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSViewAnimation.m; sourceTree = "<group>"; };
 		FEDF951B0CAF43E7009DC96F /* KGPDFContext.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = KGPDFContext.h; sourceTree = "<group>"; };
 		FEDF951C0CAF43E7009DC96F /* KGPDFContext.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = KGPDFContext.m; sourceTree = "<group>"; };
+		FEED24790EC9E8F200A5B07E /* NSImageNameRefreshTemplate.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = NSImageNameRefreshTemplate.pdf; sourceTree = "<group>"; };
 		FEEF00580B96441800069FD1 /* CGPDFPage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CGPDFPage.m; sourceTree = "<group>"; };
 		FEF2EC330C891E7C001FC5A8 /* NSOpenGLDrawable_gdiView.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSOpenGLDrawable_gdiView.h; sourceTree = "<group>"; };
 		FEF2EC790C8A03CC001FC5A8 /* NSOpenGLDrawable_gdiView.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSOpenGLDrawable_gdiView.m; sourceTree = "<group>"; };
@@ -2657,6 +2660,7 @@
 		6E2B54E60976075300DA0954 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				FEED24790EC9E8F200A5B07E /* NSImageNameRefreshTemplate.pdf */,
 				FE86887C0BC3FFA4009F515C /* NSButtonCell_disclosure_highlighted.tif */,
 				FE86887D0BC3FFA4009F515C /* NSButtonCell_disclosure_normal.tif */,
 				FE86887E0BC3FFA4009F515C /* NSButtonCell_disclosure_selected.tif */,
@@ -4278,6 +4282,7 @@
 				C88977020EA0BF3100D0A0A2 /* defaultBindingOptions.plist in Resources */,
 				C88977030EA0BF3100D0A0A2 /* NSApplicationIcon.tiff in Resources */,
 				C88977040EA0BF3100D0A0A2 /* NSSystemInfoPanel.nib in Resources */,
+				FEED247B0EC9E8F200A5B07E /* NSImageNameRefreshTemplate.pdf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4325,6 +4330,7 @@
 				FE01AABA0C5D9BCB00AEA51A /* defaultBindingOptions.plist in Resources */,
 				FE82867F0D34727900F7489F /* NSApplicationIcon.tiff in Resources */,
 				FE8286820D34727900F7489F /* NSSystemInfoPanel.nib in Resources */,
+				FEED247A0EC9E8F200A5B07E /* NSImageNameRefreshTemplate.pdf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
