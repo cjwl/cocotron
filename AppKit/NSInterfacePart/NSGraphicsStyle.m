@@ -85,7 +85,7 @@ pointSize:10 color:color] autorelease];
 -(void)drawButtonImage:(NSImage *)image inRect:(NSRect)rect enabled:(BOOL)enabled mixed:(BOOL)mixed {
    float fraction=enabled?1.0:0.5;
    
-   [image compositeToPoint:rect.origin operation:NSCompositeSourceOver fraction:fraction];
+   [image drawInRect:rect fromRect:NSZeroRect operation:NSCompositeSourceOver fraction:fraction];
 }
 
 -(void)drawBrowserTitleBackgroundInRect:(NSRect)rect {
