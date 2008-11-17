@@ -20,6 +20,7 @@ enum {
    NSSocket *_socket;
    id        _delegate;
    unsigned  _eventMask;
+   BOOL      _isValid;
 }
 
 -initWithSocket:(NSSocket *)socket;

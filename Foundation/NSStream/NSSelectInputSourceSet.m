@@ -38,7 +38,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(NSDate *)limitDateForMode:(NSString *)mode {
-   if([_inputSources count]>0)
+   if([[self validInputSources] count]>0)
     return [NSDate distantFuture];
 
    return [super limitDateForMode:mode];
@@ -52,6 +52,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(BOOL)immediateInputInMode:(NSString *)mode {
    NSArray *sources=[_outputSources allObjects];
+   NSSet   *validInputSources=[self validInputSources];
    int      i,count=[sources count];
 
    for(i=0;i<count;i++){   
@@ -59,7 +60,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     
     [_outputSources removeObject:check];
     
-    if([_inputSources containsObject:check]){
+    if([validInputSources containsObject:check]){
      NSSocket *socket=[check socket];
      unsigned  event=0;
     
@@ -84,7 +85,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(NSSelectSet *)inputSelectSet {
    NSSelectSet         *result=[[[NSSelectSet alloc] init] autorelease];
-   NSEnumerator        *state=[_inputSources objectEnumerator];
+   NSEnumerator        *state=[[self validInputSources] objectEnumerator];
    NSSelectInputSource *check;
    
    while((check=[state nextObject])!=nil){
@@ -112,7 +113,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)waitInBackgroundInMode:(NSString *)mode {
    NSSelectSet *selectSet=[self inputSelectSet];
    
-   [_outputSources setSet:_inputSources];
+   [_outputSources setSet:[self validInputSources]];
    [_outputSet autorelease];
    _outputSet=nil;
    
@@ -123,7 +124,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    NSSelectSet *selectSet=[self inputSelectSet];
    NSError     *error;
       
-   [_outputSources setSet:_inputSources];
+   [_outputSources setSet:[self validInputSources]];
    [_outputSet autorelease];
    _outputSet=nil;
    

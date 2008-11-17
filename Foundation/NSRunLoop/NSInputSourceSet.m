@@ -6,13 +6,13 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
-// Original - Christopher Lloyd <cjwl@objc.net>
 #import <Foundation/NSInputSourceSet.h>
 #import <Foundation/NSInputSource.h>
 #import <Foundation/NSRaise.h>
 #import <Foundation/NSMutableSet.h>
 #import <Foundation/NSEnumerator.h>
 #import <Foundation/NSDate.h>
+#import <Foundation/NSArray.h>
 
 @implementation NSInputSourceSet
 
@@ -24,6 +24,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)dealloc {
    [_inputSources release];
    [super dealloc];
+}
+
+-(NSUInteger)count {
+   return [_inputSources count];
 }
 
 -(BOOL)recognizesInputSource:(NSInputSource *)source {
@@ -42,10 +46,32 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
   // do nothing
 }
 
+-(NSSet *)validInputSources {
+   NSEnumerator   *state=[_inputSources objectEnumerator];
+   NSMutableArray *invalid=nil;
+   NSInputSource  *check;
+
+   while((check=[state nextObject])!=nil){
+    if(![check isValid]){
+     if(invalid==nil)
+      invalid=[NSMutableArray array];
+      
+     [invalid addObject:invalid];
+    }
+   }
+
+   while((check=[invalid lastObject])!=nil){
+    [_inputSources removeObject:check];
+    [invalid removeLastObject];
+   }
+   
+   return _inputSources;
+}
+
 -(NSDate *)limitDateForMode:(NSString *)mode {
-   NSDate        *result=nil;
-   NSEnumerator  *state=[_inputSources objectEnumerator];
-   NSInputSource *check;
+   NSDate         *result=nil;
+   NSEnumerator   *state=[[self validInputSources] objectEnumerator];
+   NSInputSource  *check;
 
    while((check=[state nextObject])!=nil){
     NSDate *limit=[check limitDateForMode:mode];
@@ -57,13 +83,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       result=[limit earlierDate:result];
     }
    }
-
+   
    return result;
 }
 
 -(BOOL)immediateInputInMode:(NSString *)mode {
-   NSEnumerator  *state=[_inputSources objectEnumerator];
-   NSInputSource *check;
+   NSEnumerator   *state=[[self validInputSources] objectEnumerator];
+   NSInputSource  *check;
 
    while((check=[state nextObject])!=nil){
     if([check processInputImmediately])

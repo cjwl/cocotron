@@ -5,8 +5,6 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
-
-// Original - Christopher Lloyd <cjwl@objc.net>
 #import "NSSocket_windows.h"
 #import <Foundation/NSError.h>
 #import <Foundation/NSHost.h>
@@ -254,3 +252,63 @@ static inline void byteZero(void *vsrc,int size){
 }
 
 @end
+
+NSData *NSSocketAddressDataForNetworkOrderAddressBytesAndPort(const void *address,unsigned length,int port) {
+#if 0
+   if(length==4){ // IPV4
+      char rdb[100]; // should be more than enough
+
+          struct sockaddr_in
+            ip4;
+          
+    memset(rdb, 0, sizeof rdb);
+         // oogly
+          sprintf(rdb, "%d.%d.%d.%d", rd[0], rd[1], rd[2], rd[3]);
+          LOG(@"Found IPv4 <%s>", rdb);
+          
+          length = sizeof (struct sockaddr_in);
+          memset(&ip4, 0, length);
+          
+          inet_pton(AF_INET, rdb, &ip4.sin_addr);
+          ip4.sin_family = AF_INET;
+          ip4.sin_port = htons(service->port);
+          
+          address = (struct sockaddr *) &ip4;
+   }
+   
+   if(length==16){ // IPV6
+#if defined( AF_INET6 )
+      char rdb[INET6_ADDRSTRLEN];
+
+          struct sockaddr_in6
+            ip6;
+          
+    memset(rdb, 0, sizeof rdb);
+          // Even more oogly
+          sprintf(rdb, "%x%x:%x%x:%x%x:%x%x:%x%x:%x%x:%x%x:%x%x",
+                       rd[0], rd[1], rd[2], rd[3],
+                       rd[4], rd[5], rd[6], rd[7],
+                       rd[8], rd[9], rd[10], rd[11],
+                       rd[12], rd[13], rd[14], rd[15]);
+          LOG(@"Found IPv6 <%s>", rdb);
+          
+          length = sizeof (struct sockaddr_in6);
+          memset(&ip6, 0, length);
+          
+          inet_pton(AF_INET6, rdb, &ip6.sin6_addr);
+#if ! defined( NOT_HAVE_SA_LEN )
+          ip6.sin6_len = sizeof ip6;
+#endif
+          ip6.sin6_family = AF_INET6;
+          ip6.sin6_port = htons(service->port);
+          ip6.sin6_flowinfo = 0;
+          ip6.sin6_scope_id = interfaceIndex;
+          
+          address = (struct sockaddr *) &ip6;
+#endif
+   }
+#endif
+
+   return nil;
+}
+

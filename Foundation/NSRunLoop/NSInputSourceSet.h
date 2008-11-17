@@ -8,16 +8,20 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/NSObject.h>
 
-@class NSDate, NSInputSource, NSMutableSet;
+@class NSDate, NSInputSource, NSSet, NSMutableSet;
 
 @interface NSInputSourceSet : NSObject {
    NSMutableSet *_inputSources;
 }
 
+-(NSUInteger)count;
+
 -(BOOL)recognizesInputSource:(NSInputSource *)source;
 
 -(void)addInputSource:(NSInputSource *)source;
 -(void)removeInputSource:(NSInputSource *)source;
+
+-(NSSet *)validInputSources;
 
 -(NSDate *)limitDateForMode:(NSString *)mode;
 

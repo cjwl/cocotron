@@ -1106,8 +1106,6 @@
 		FE01A6980C5D9B6900AEA51A /* NSMetadataQuery.h in Headers */ = {isa = PBXBuildFile; fileRef = FE7477CF0BAC519800829F4F /* NSMetadataQuery.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE01A6990C5D9B6900AEA51A /* NSMetadataQueryAttributeValueTuple.h in Headers */ = {isa = PBXBuildFile; fileRef = FE7477D10BAC519800829F4F /* NSMetadataQueryAttributeValueTuple.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE01A69A0C5D9B6900AEA51A /* NSMetadataQueryResultGroup.h in Headers */ = {isa = PBXBuildFile; fileRef = FE7477D30BAC519800829F4F /* NSMetadataQueryResultGroup.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		FE01A69B0C5D9B6900AEA51A /* NSNetService.h in Headers */ = {isa = PBXBuildFile; fileRef = FE74780B0BAC594600829F4F /* NSNetService.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		FE01A69C0C5D9B6900AEA51A /* NSNetServiceBrowser.h in Headers */ = {isa = PBXBuildFile; fileRef = FE74780D0BAC594600829F4F /* NSNetServiceBrowser.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE01A69D0C5D9B6900AEA51A /* NSSortDescriptor.h in Headers */ = {isa = PBXBuildFile; fileRef = FE7478410BAC5A8700829F4F /* NSSortDescriptor.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE01A69E0C5D9B6900AEA51A /* NSValueTransformer.h in Headers */ = {isa = PBXBuildFile; fileRef = FE7478700BAC5EB600829F4F /* NSValueTransformer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE01A69F0C5D9B6900AEA51A /* NSConcreteDirectoryEnumerator.h in Headers */ = {isa = PBXBuildFile; fileRef = FEE97EB40BBEDE3000DBAFF9 /* NSConcreteDirectoryEnumerator.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -1390,8 +1388,6 @@
 		FE01A7BC0C5D9B6900AEA51A /* NSMetadataQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = FE7477D00BAC519800829F4F /* NSMetadataQuery.m */; };
 		FE01A7BD0C5D9B6900AEA51A /* NSMetadataQueryAttributeValueTuple.m in Sources */ = {isa = PBXBuildFile; fileRef = FE7477D20BAC519800829F4F /* NSMetadataQueryAttributeValueTuple.m */; };
 		FE01A7BE0C5D9B6900AEA51A /* NSMetadataQueryResultGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = FE7477D40BAC519800829F4F /* NSMetadataQueryResultGroup.m */; };
-		FE01A7BF0C5D9B6900AEA51A /* NSNetService.m in Sources */ = {isa = PBXBuildFile; fileRef = FE74780C0BAC594600829F4F /* NSNetService.m */; };
-		FE01A7C00C5D9B6900AEA51A /* NSNetServiceBrowser.m in Sources */ = {isa = PBXBuildFile; fileRef = FE74780E0BAC594600829F4F /* NSNetServiceBrowser.m */; };
 		FE01A7C10C5D9B6900AEA51A /* NSSortDescriptor.m in Sources */ = {isa = PBXBuildFile; fileRef = FE7478420BAC5A8700829F4F /* NSSortDescriptor.m */; };
 		FE01A7C20C5D9B6900AEA51A /* NSValueTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = FE7478710BAC5EB600829F4F /* NSValueTransformer.m */; };
 		FE01A7C30C5D9B6900AEA51A /* NSDistributedLock.m in Sources */ = {isa = PBXBuildFile; fileRef = FEE17BA20BB43998006B4510 /* NSDistributedLock.m */; };
@@ -1551,14 +1547,6 @@
 		FE7477EA0BAC519800829F4F /* NSMetadataQueryAttributeValueTuple.m in Sources */ = {isa = PBXBuildFile; fileRef = FE7477D20BAC519800829F4F /* NSMetadataQueryAttributeValueTuple.m */; };
 		FE7477EB0BAC519800829F4F /* NSMetadataQueryResultGroup.h in Headers */ = {isa = PBXBuildFile; fileRef = FE7477D30BAC519800829F4F /* NSMetadataQueryResultGroup.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE7477EC0BAC519800829F4F /* NSMetadataQueryResultGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = FE7477D40BAC519800829F4F /* NSMetadataQueryResultGroup.m */; };
-		FE7478130BAC594600829F4F /* NSNetService.h in Headers */ = {isa = PBXBuildFile; fileRef = FE74780B0BAC594600829F4F /* NSNetService.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		FE7478140BAC594600829F4F /* NSNetService.m in Sources */ = {isa = PBXBuildFile; fileRef = FE74780C0BAC594600829F4F /* NSNetService.m */; };
-		FE7478150BAC594600829F4F /* NSNetServiceBrowser.h in Headers */ = {isa = PBXBuildFile; fileRef = FE74780D0BAC594600829F4F /* NSNetServiceBrowser.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		FE7478160BAC594600829F4F /* NSNetServiceBrowser.m in Sources */ = {isa = PBXBuildFile; fileRef = FE74780E0BAC594600829F4F /* NSNetServiceBrowser.m */; };
-		FE7478170BAC594600829F4F /* NSNetService.h in Headers */ = {isa = PBXBuildFile; fileRef = FE74780B0BAC594600829F4F /* NSNetService.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		FE7478180BAC594600829F4F /* NSNetService.m in Sources */ = {isa = PBXBuildFile; fileRef = FE74780C0BAC594600829F4F /* NSNetService.m */; };
-		FE7478190BAC594600829F4F /* NSNetServiceBrowser.h in Headers */ = {isa = PBXBuildFile; fileRef = FE74780D0BAC594600829F4F /* NSNetServiceBrowser.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		FE74781A0BAC594600829F4F /* NSNetServiceBrowser.m in Sources */ = {isa = PBXBuildFile; fileRef = FE74780E0BAC594600829F4F /* NSNetServiceBrowser.m */; };
 		FE7478450BAC5A8700829F4F /* NSSortDescriptor.h in Headers */ = {isa = PBXBuildFile; fileRef = FE7478410BAC5A8700829F4F /* NSSortDescriptor.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE7478460BAC5A8700829F4F /* NSSortDescriptor.m in Sources */ = {isa = PBXBuildFile; fileRef = FE7478420BAC5A8700829F4F /* NSSortDescriptor.m */; };
 		FE7478470BAC5A8700829F4F /* NSSortDescriptor.h in Headers */ = {isa = PBXBuildFile; fileRef = FE7478410BAC5A8700829F4F /* NSSortDescriptor.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -2080,8 +2068,6 @@
 		FED7091A0C3B3D2C000CBE5B /* NSMetadataQuery.h in Headers */ = {isa = PBXBuildFile; fileRef = FE7477CF0BAC519800829F4F /* NSMetadataQuery.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FED7091B0C3B3D2C000CBE5B /* NSMetadataQueryAttributeValueTuple.h in Headers */ = {isa = PBXBuildFile; fileRef = FE7477D10BAC519800829F4F /* NSMetadataQueryAttributeValueTuple.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FED7091C0C3B3D2C000CBE5B /* NSMetadataQueryResultGroup.h in Headers */ = {isa = PBXBuildFile; fileRef = FE7477D30BAC519800829F4F /* NSMetadataQueryResultGroup.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		FED7091D0C3B3D2C000CBE5B /* NSNetService.h in Headers */ = {isa = PBXBuildFile; fileRef = FE74780B0BAC594600829F4F /* NSNetService.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		FED7091E0C3B3D2C000CBE5B /* NSNetServiceBrowser.h in Headers */ = {isa = PBXBuildFile; fileRef = FE74780D0BAC594600829F4F /* NSNetServiceBrowser.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FED7091F0C3B3D2C000CBE5B /* NSSortDescriptor.h in Headers */ = {isa = PBXBuildFile; fileRef = FE7478410BAC5A8700829F4F /* NSSortDescriptor.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FED709200C3B3D2C000CBE5B /* NSValueTransformer.h in Headers */ = {isa = PBXBuildFile; fileRef = FE7478700BAC5EB600829F4F /* NSValueTransformer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FED709210C3B3D2C000CBE5B /* NSConcreteDirectoryEnumerator.h in Headers */ = {isa = PBXBuildFile; fileRef = FEE97EB40BBEDE3000DBAFF9 /* NSConcreteDirectoryEnumerator.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -2358,8 +2344,6 @@
 		FED70A3B0C3B3D2C000CBE5B /* NSMetadataQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = FE7477D00BAC519800829F4F /* NSMetadataQuery.m */; };
 		FED70A3C0C3B3D2C000CBE5B /* NSMetadataQueryAttributeValueTuple.m in Sources */ = {isa = PBXBuildFile; fileRef = FE7477D20BAC519800829F4F /* NSMetadataQueryAttributeValueTuple.m */; };
 		FED70A3D0C3B3D2C000CBE5B /* NSMetadataQueryResultGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = FE7477D40BAC519800829F4F /* NSMetadataQueryResultGroup.m */; };
-		FED70A3E0C3B3D2C000CBE5B /* NSNetService.m in Sources */ = {isa = PBXBuildFile; fileRef = FE74780C0BAC594600829F4F /* NSNetService.m */; };
-		FED70A3F0C3B3D2C000CBE5B /* NSNetServiceBrowser.m in Sources */ = {isa = PBXBuildFile; fileRef = FE74780E0BAC594600829F4F /* NSNetServiceBrowser.m */; };
 		FED70A400C3B3D2C000CBE5B /* NSSortDescriptor.m in Sources */ = {isa = PBXBuildFile; fileRef = FE7478420BAC5A8700829F4F /* NSSortDescriptor.m */; };
 		FED70A410C3B3D2C000CBE5B /* NSValueTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = FE7478710BAC5EB600829F4F /* NSValueTransformer.m */; };
 		FED70A420C3B3D2C000CBE5B /* NSDistributedLock.m in Sources */ = {isa = PBXBuildFile; fileRef = FEE17BA20BB43998006B4510 /* NSDistributedLock.m */; };
@@ -2654,8 +2638,6 @@
 		FED70E630C3C09C7000CBE5B /* NSMetadataQuery.h in Headers */ = {isa = PBXBuildFile; fileRef = FE7477CF0BAC519800829F4F /* NSMetadataQuery.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FED70E640C3C09C7000CBE5B /* NSMetadataQueryAttributeValueTuple.h in Headers */ = {isa = PBXBuildFile; fileRef = FE7477D10BAC519800829F4F /* NSMetadataQueryAttributeValueTuple.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FED70E650C3C09C7000CBE5B /* NSMetadataQueryResultGroup.h in Headers */ = {isa = PBXBuildFile; fileRef = FE7477D30BAC519800829F4F /* NSMetadataQueryResultGroup.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		FED70E660C3C09C7000CBE5B /* NSNetService.h in Headers */ = {isa = PBXBuildFile; fileRef = FE74780B0BAC594600829F4F /* NSNetService.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		FED70E670C3C09C7000CBE5B /* NSNetServiceBrowser.h in Headers */ = {isa = PBXBuildFile; fileRef = FE74780D0BAC594600829F4F /* NSNetServiceBrowser.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FED70E680C3C09C7000CBE5B /* NSSortDescriptor.h in Headers */ = {isa = PBXBuildFile; fileRef = FE7478410BAC5A8700829F4F /* NSSortDescriptor.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FED70E690C3C09C7000CBE5B /* NSValueTransformer.h in Headers */ = {isa = PBXBuildFile; fileRef = FE7478700BAC5EB600829F4F /* NSValueTransformer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FED70E6A0C3C09C7000CBE5B /* NSConcreteDirectoryEnumerator.h in Headers */ = {isa = PBXBuildFile; fileRef = FEE97EB40BBEDE3000DBAFF9 /* NSConcreteDirectoryEnumerator.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -2934,8 +2916,6 @@
 		FED70F830C3C09C7000CBE5B /* NSMetadataQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = FE7477D00BAC519800829F4F /* NSMetadataQuery.m */; };
 		FED70F840C3C09C7000CBE5B /* NSMetadataQueryAttributeValueTuple.m in Sources */ = {isa = PBXBuildFile; fileRef = FE7477D20BAC519800829F4F /* NSMetadataQueryAttributeValueTuple.m */; };
 		FED70F850C3C09C7000CBE5B /* NSMetadataQueryResultGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = FE7477D40BAC519800829F4F /* NSMetadataQueryResultGroup.m */; };
-		FED70F860C3C09C7000CBE5B /* NSNetService.m in Sources */ = {isa = PBXBuildFile; fileRef = FE74780C0BAC594600829F4F /* NSNetService.m */; };
-		FED70F870C3C09C7000CBE5B /* NSNetServiceBrowser.m in Sources */ = {isa = PBXBuildFile; fileRef = FE74780E0BAC594600829F4F /* NSNetServiceBrowser.m */; };
 		FED70F880C3C09C7000CBE5B /* NSSortDescriptor.m in Sources */ = {isa = PBXBuildFile; fileRef = FE7478420BAC5A8700829F4F /* NSSortDescriptor.m */; };
 		FED70F890C3C09C7000CBE5B /* NSValueTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = FE7478710BAC5EB600829F4F /* NSValueTransformer.m */; };
 		FED70F8A0C3C09C7000CBE5B /* NSDistributedLock.m in Sources */ = {isa = PBXBuildFile; fileRef = FEE17BA20BB43998006B4510 /* NSDistributedLock.m */; };
@@ -3001,6 +2981,21 @@
 		FEDFA10D0CF7D41F00F21F87 /* NSCachedURLResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = FEDFA1010CF7D41F00F21F87 /* NSCachedURLResponse.m */; };
 		FEE17BA40BB43998006B4510 /* NSDistributedLock.m in Sources */ = {isa = PBXBuildFile; fileRef = FEE17BA20BB43998006B4510 /* NSDistributedLock.m */; };
 		FEE17BA50BB43998006B4510 /* NSDistributedLock.m in Sources */ = {isa = PBXBuildFile; fileRef = FEE17BA20BB43998006B4510 /* NSDistributedLock.m */; };
+		FEE7D30B0ED1D2DE0032DCE0 /* NSNetServices.h in Headers */ = {isa = PBXBuildFile; fileRef = FEE7D3090ED1D2DE0032DCE0 /* NSNetServices.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEE7D30C0ED1D2DE0032DCE0 /* NSNetServices.m in Sources */ = {isa = PBXBuildFile; fileRef = FEE7D30A0ED1D2DE0032DCE0 /* NSNetServices.m */; };
+		FEE7D30D0ED1D2DE0032DCE0 /* NSNetServices.h in Headers */ = {isa = PBXBuildFile; fileRef = FEE7D3090ED1D2DE0032DCE0 /* NSNetServices.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEE7D30E0ED1D2DE0032DCE0 /* NSNetServices.m in Sources */ = {isa = PBXBuildFile; fileRef = FEE7D30A0ED1D2DE0032DCE0 /* NSNetServices.m */; };
+		FEE7D30F0ED1D2DE0032DCE0 /* NSNetServices.h in Headers */ = {isa = PBXBuildFile; fileRef = FEE7D3090ED1D2DE0032DCE0 /* NSNetServices.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEE7D3100ED1D2DE0032DCE0 /* NSNetServices.m in Sources */ = {isa = PBXBuildFile; fileRef = FEE7D30A0ED1D2DE0032DCE0 /* NSNetServices.m */; };
+		FEE7D3110ED1D2DE0032DCE0 /* NSNetServices.h in Headers */ = {isa = PBXBuildFile; fileRef = FEE7D3090ED1D2DE0032DCE0 /* NSNetServices.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEE7D3120ED1D2DE0032DCE0 /* NSNetServices.m in Sources */ = {isa = PBXBuildFile; fileRef = FEE7D30A0ED1D2DE0032DCE0 /* NSNetServices.m */; };
+		FEE7D3130ED1D2DE0032DCE0 /* NSNetServices.h in Headers */ = {isa = PBXBuildFile; fileRef = FEE7D3090ED1D2DE0032DCE0 /* NSNetServices.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEE7D3140ED1D2DE0032DCE0 /* NSNetServices.m in Sources */ = {isa = PBXBuildFile; fileRef = FEE7D30A0ED1D2DE0032DCE0 /* NSNetServices.m */; };
+		FEE7D33C0ED1D4E10032DCE0 /* bonjour.h in Headers */ = {isa = PBXBuildFile; fileRef = FEE7D33B0ED1D4E10032DCE0 /* bonjour.h */; };
+		FEE7D33D0ED1D4E10032DCE0 /* bonjour.h in Headers */ = {isa = PBXBuildFile; fileRef = FEE7D33B0ED1D4E10032DCE0 /* bonjour.h */; };
+		FEE7D33E0ED1D4E10032DCE0 /* bonjour.h in Headers */ = {isa = PBXBuildFile; fileRef = FEE7D33B0ED1D4E10032DCE0 /* bonjour.h */; };
+		FEE7D33F0ED1D4E10032DCE0 /* bonjour.h in Headers */ = {isa = PBXBuildFile; fileRef = FEE7D33B0ED1D4E10032DCE0 /* bonjour.h */; };
+		FEE7D3400ED1D4E10032DCE0 /* bonjour.h in Headers */ = {isa = PBXBuildFile; fileRef = FEE7D33B0ED1D4E10032DCE0 /* bonjour.h */; };
 		FEE97EB80BBEDE3000DBAFF9 /* NSConcreteDirectoryEnumerator.h in Headers */ = {isa = PBXBuildFile; fileRef = FEE97EB40BBEDE3000DBAFF9 /* NSConcreteDirectoryEnumerator.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FEE97EB90BBEDE3000DBAFF9 /* NSConcreteDirectoryEnumerator.m in Sources */ = {isa = PBXBuildFile; fileRef = FEE97EB50BBEDE3000DBAFF9 /* NSConcreteDirectoryEnumerator.m */; };
 		FEE97EBA0BBEDE3000DBAFF9 /* NSConcreteDirectoryEnumerator.h in Headers */ = {isa = PBXBuildFile; fileRef = FEE97EB40BBEDE3000DBAFF9 /* NSConcreteDirectoryEnumerator.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -3735,10 +3730,6 @@
 		FE7477D20BAC519800829F4F /* NSMetadataQueryAttributeValueTuple.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSMetadataQueryAttributeValueTuple.m; sourceTree = "<group>"; };
 		FE7477D30BAC519800829F4F /* NSMetadataQueryResultGroup.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSMetadataQueryResultGroup.h; sourceTree = "<group>"; };
 		FE7477D40BAC519800829F4F /* NSMetadataQueryResultGroup.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSMetadataQueryResultGroup.m; sourceTree = "<group>"; };
-		FE74780B0BAC594600829F4F /* NSNetService.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSNetService.h; sourceTree = "<group>"; };
-		FE74780C0BAC594600829F4F /* NSNetService.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSNetService.m; sourceTree = "<group>"; };
-		FE74780D0BAC594600829F4F /* NSNetServiceBrowser.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSNetServiceBrowser.h; sourceTree = "<group>"; };
-		FE74780E0BAC594600829F4F /* NSNetServiceBrowser.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSNetServiceBrowser.m; sourceTree = "<group>"; };
 		FE7478410BAC5A8700829F4F /* NSSortDescriptor.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSSortDescriptor.h; sourceTree = "<group>"; };
 		FE7478420BAC5A8700829F4F /* NSSortDescriptor.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSSortDescriptor.m; sourceTree = "<group>"; };
 		FE7478700BAC5EB600829F4F /* NSValueTransformer.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSValueTransformer.h; sourceTree = "<group>"; };
@@ -3880,6 +3871,9 @@
 		FEDFA1000CF7D41F00F21F87 /* NSCachedURLResponse.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSCachedURLResponse.h; sourceTree = "<group>"; };
 		FEDFA1010CF7D41F00F21F87 /* NSCachedURLResponse.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSCachedURLResponse.m; sourceTree = "<group>"; };
 		FEE17BA20BB43998006B4510 /* NSDistributedLock.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSDistributedLock.m; sourceTree = "<group>"; };
+		FEE7D3090ED1D2DE0032DCE0 /* NSNetServices.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSNetServices.h; sourceTree = "<group>"; };
+		FEE7D30A0ED1D2DE0032DCE0 /* NSNetServices.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSNetServices.m; sourceTree = "<group>"; };
+		FEE7D33B0ED1D4E10032DCE0 /* bonjour.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = bonjour.h; sourceTree = "<group>"; };
 		FEE97EB40BBEDE3000DBAFF9 /* NSConcreteDirectoryEnumerator.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSConcreteDirectoryEnumerator.h; sourceTree = "<group>"; };
 		FEE97EB50BBEDE3000DBAFF9 /* NSConcreteDirectoryEnumerator.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSConcreteDirectoryEnumerator.m; sourceTree = "<group>"; };
 		FEF5B4C60BBEFDBA00A8FF26 /* NSArray+KVC.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = "NSArray+KVC.m"; sourceTree = "<group>"; };
@@ -4870,10 +4864,9 @@
 		FE74780A0BAC591800829F4F /* NSNetService */ = {
 			isa = PBXGroup;
 			children = (
-				FE74780B0BAC594600829F4F /* NSNetService.h */,
-				FE74780C0BAC594600829F4F /* NSNetService.m */,
-				FE74780D0BAC594600829F4F /* NSNetServiceBrowser.h */,
-				FE74780E0BAC594600829F4F /* NSNetServiceBrowser.m */,
+				FEE7D33B0ED1D4E10032DCE0 /* bonjour.h */,
+				FEE7D3090ED1D2DE0032DCE0 /* NSNetServices.h */,
+				FEE7D30A0ED1D2DE0032DCE0 /* NSNetServices.m */,
 			);
 			path = NSNetService;
 			sourceTree = "<group>";
@@ -5328,8 +5321,6 @@
 				FE7477E70BAC519800829F4F /* NSMetadataQuery.h in Headers */,
 				FE7477E90BAC519800829F4F /* NSMetadataQueryAttributeValueTuple.h in Headers */,
 				FE7477EB0BAC519800829F4F /* NSMetadataQueryResultGroup.h in Headers */,
-				FE7478170BAC594600829F4F /* NSNetService.h in Headers */,
-				FE7478190BAC594600829F4F /* NSNetServiceBrowser.h in Headers */,
 				FE7478470BAC5A8700829F4F /* NSSortDescriptor.h in Headers */,
 				FE7478760BAC5EB600829F4F /* NSValueTransformer.h in Headers */,
 				FEE97EBA0BBEDE3000DBAFF9 /* NSConcreteDirectoryEnumerator.h in Headers */,
@@ -5369,6 +5360,8 @@
 				C851D87E0E40E428001DAB69 /* objc_forward_ffi.h in Headers */,
 				C8B53BD90E6AC7C500E4467E /* objc_debugHelpers.h in Headers */,
 				C8C39E020EAB6646002568A3 /* NSConditionLock_posix.h in Headers */,
+				FEE7D30D0ED1D2DE0032DCE0 /* NSNetServices.h in Headers */,
+				FEE7D33D0ED1D4E10032DCE0 /* bonjour.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5629,8 +5622,6 @@
 				FE7477DF0BAC519800829F4F /* NSMetadataQuery.h in Headers */,
 				FE7477E10BAC519800829F4F /* NSMetadataQueryAttributeValueTuple.h in Headers */,
 				FE7477E30BAC519800829F4F /* NSMetadataQueryResultGroup.h in Headers */,
-				FE7478130BAC594600829F4F /* NSNetService.h in Headers */,
-				FE7478150BAC594600829F4F /* NSNetServiceBrowser.h in Headers */,
 				FE7478450BAC5A8700829F4F /* NSSortDescriptor.h in Headers */,
 				FE7478740BAC5EB600829F4F /* NSValueTransformer.h in Headers */,
 				FEE97EB80BBEDE3000DBAFF9 /* NSConcreteDirectoryEnumerator.h in Headers */,
@@ -5669,6 +5660,8 @@
 				C851D8820E40E428001DAB69 /* objc_forward_ffi.h in Headers */,
 				C8B53BDF0E6AC7C500E4467E /* objc_debugHelpers.h in Headers */,
 				C8C39E080EAB6646002568A3 /* NSConditionLock_posix.h in Headers */,
+				FEE7D30B0ED1D2DE0032DCE0 /* NSNetServices.h in Headers */,
+				FEE7D33C0ED1D4E10032DCE0 /* bonjour.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5932,8 +5925,6 @@
 				FE01A6980C5D9B6900AEA51A /* NSMetadataQuery.h in Headers */,
 				FE01A6990C5D9B6900AEA51A /* NSMetadataQueryAttributeValueTuple.h in Headers */,
 				FE01A69A0C5D9B6900AEA51A /* NSMetadataQueryResultGroup.h in Headers */,
-				FE01A69B0C5D9B6900AEA51A /* NSNetService.h in Headers */,
-				FE01A69C0C5D9B6900AEA51A /* NSNetServiceBrowser.h in Headers */,
 				FE01A69D0C5D9B6900AEA51A /* NSSortDescriptor.h in Headers */,
 				FE01A69E0C5D9B6900AEA51A /* NSValueTransformer.h in Headers */,
 				FE01A69F0C5D9B6900AEA51A /* NSConcreteDirectoryEnumerator.h in Headers */,
@@ -5973,6 +5964,8 @@
 				C851D8800E40E428001DAB69 /* objc_forward_ffi.h in Headers */,
 				C8B53BDD0E6AC7C500E4467E /* objc_debugHelpers.h in Headers */,
 				C8C970100EBDBC63009CE9BC /* NSConditionLock_win32.h in Headers */,
+				FEE7D3130ED1D2DE0032DCE0 /* NSNetServices.h in Headers */,
+				FEE7D3400ED1D4E10032DCE0 /* bonjour.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6231,8 +6224,6 @@
 				FED7091A0C3B3D2C000CBE5B /* NSMetadataQuery.h in Headers */,
 				FED7091B0C3B3D2C000CBE5B /* NSMetadataQueryAttributeValueTuple.h in Headers */,
 				FED7091C0C3B3D2C000CBE5B /* NSMetadataQueryResultGroup.h in Headers */,
-				FED7091D0C3B3D2C000CBE5B /* NSNetService.h in Headers */,
-				FED7091E0C3B3D2C000CBE5B /* NSNetServiceBrowser.h in Headers */,
 				FED7091F0C3B3D2C000CBE5B /* NSSortDescriptor.h in Headers */,
 				FED709200C3B3D2C000CBE5B /* NSValueTransformer.h in Headers */,
 				FED709210C3B3D2C000CBE5B /* NSConcreteDirectoryEnumerator.h in Headers */,
@@ -6273,6 +6264,8 @@
 				C851D87A0E40E428001DAB69 /* objc_forward_ffi.h in Headers */,
 				C8B53BD70E6AC7C500E4467E /* objc_debugHelpers.h in Headers */,
 				C8C39E060EAB6646002568A3 /* NSConditionLock_posix.h in Headers */,
+				FEE7D30F0ED1D2DE0032DCE0 /* NSNetServices.h in Headers */,
+				FEE7D33E0ED1D4E10032DCE0 /* bonjour.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6531,8 +6524,6 @@
 				FED70E630C3C09C7000CBE5B /* NSMetadataQuery.h in Headers */,
 				FED70E640C3C09C7000CBE5B /* NSMetadataQueryAttributeValueTuple.h in Headers */,
 				FED70E650C3C09C7000CBE5B /* NSMetadataQueryResultGroup.h in Headers */,
-				FED70E660C3C09C7000CBE5B /* NSNetService.h in Headers */,
-				FED70E670C3C09C7000CBE5B /* NSNetServiceBrowser.h in Headers */,
 				FED70E680C3C09C7000CBE5B /* NSSortDescriptor.h in Headers */,
 				FED70E690C3C09C7000CBE5B /* NSValueTransformer.h in Headers */,
 				FED70E6A0C3C09C7000CBE5B /* NSConcreteDirectoryEnumerator.h in Headers */,
@@ -6573,6 +6564,8 @@
 				C851D87C0E40E428001DAB69 /* objc_forward_ffi.h in Headers */,
 				C8B53BDB0E6AC7C500E4467E /* objc_debugHelpers.h in Headers */,
 				C8C39E040EAB6646002568A3 /* NSConditionLock_posix.h in Headers */,
+				FEE7D3110ED1D2DE0032DCE0 /* NSNetServices.h in Headers */,
+				FEE7D33F0ED1D4E10032DCE0 /* bonjour.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7102,8 +7095,6 @@
 				FE7477E80BAC519800829F4F /* NSMetadataQuery.m in Sources */,
 				FE7477EA0BAC519800829F4F /* NSMetadataQueryAttributeValueTuple.m in Sources */,
 				FE7477EC0BAC519800829F4F /* NSMetadataQueryResultGroup.m in Sources */,
-				FE7478180BAC594600829F4F /* NSNetService.m in Sources */,
-				FE74781A0BAC594600829F4F /* NSNetServiceBrowser.m in Sources */,
 				FE7478480BAC5A8700829F4F /* NSSortDescriptor.m in Sources */,
 				FE7478770BAC5EB600829F4F /* NSValueTransformer.m in Sources */,
 				FEE17BA50BB43998006B4510 /* NSDistributedLock.m in Sources */,
@@ -7143,6 +7134,7 @@
 				C851D87F0E40E428001DAB69 /* objc_forward_ffi.m in Sources */,
 				C8B53BDA0E6AC7C500E4467E /* objc_debugHelpers.m in Sources */,
 				C8C39E030EAB6646002568A3 /* NSConditionLock_posix.m in Sources */,
+				FEE7D30E0ED1D2DE0032DCE0 /* NSNetServices.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7404,8 +7396,6 @@
 				FE7477E00BAC519800829F4F /* NSMetadataQuery.m in Sources */,
 				FE7477E20BAC519800829F4F /* NSMetadataQueryAttributeValueTuple.m in Sources */,
 				FE7477E40BAC519800829F4F /* NSMetadataQueryResultGroup.m in Sources */,
-				FE7478140BAC594600829F4F /* NSNetService.m in Sources */,
-				FE7478160BAC594600829F4F /* NSNetServiceBrowser.m in Sources */,
 				FE7478460BAC5A8700829F4F /* NSSortDescriptor.m in Sources */,
 				FE7478750BAC5EB600829F4F /* NSValueTransformer.m in Sources */,
 				FEE17BA40BB43998006B4510 /* NSDistributedLock.m in Sources */,
@@ -7444,6 +7434,7 @@
 				C851D8830E40E428001DAB69 /* objc_forward_ffi.m in Sources */,
 				C8B53BE00E6AC7C500E4467E /* objc_debugHelpers.m in Sources */,
 				C8C39E090EAB6646002568A3 /* NSConditionLock_posix.m in Sources */,
+				FEE7D30C0ED1D2DE0032DCE0 /* NSNetServices.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7708,8 +7699,6 @@
 				FE01A7BC0C5D9B6900AEA51A /* NSMetadataQuery.m in Sources */,
 				FE01A7BD0C5D9B6900AEA51A /* NSMetadataQueryAttributeValueTuple.m in Sources */,
 				FE01A7BE0C5D9B6900AEA51A /* NSMetadataQueryResultGroup.m in Sources */,
-				FE01A7BF0C5D9B6900AEA51A /* NSNetService.m in Sources */,
-				FE01A7C00C5D9B6900AEA51A /* NSNetServiceBrowser.m in Sources */,
 				FE01A7C10C5D9B6900AEA51A /* NSSortDescriptor.m in Sources */,
 				FE01A7C20C5D9B6900AEA51A /* NSValueTransformer.m in Sources */,
 				FE01A7C30C5D9B6900AEA51A /* NSDistributedLock.m in Sources */,
@@ -7750,6 +7739,7 @@
 				C80F9AE10E58BD5400ECD487 /* objc-msgsend.s in Sources */,
 				C8B53BDE0E6AC7C500E4467E /* objc_debugHelpers.m in Sources */,
 				C8C970110EBDBC63009CE9BC /* NSConditionLock_win32.m in Sources */,
+				FEE7D3140ED1D2DE0032DCE0 /* NSNetServices.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8008,8 +7998,6 @@
 				FED70A3B0C3B3D2C000CBE5B /* NSMetadataQuery.m in Sources */,
 				FED70A3C0C3B3D2C000CBE5B /* NSMetadataQueryAttributeValueTuple.m in Sources */,
 				FED70A3D0C3B3D2C000CBE5B /* NSMetadataQueryResultGroup.m in Sources */,
-				FED70A3E0C3B3D2C000CBE5B /* NSNetService.m in Sources */,
-				FED70A3F0C3B3D2C000CBE5B /* NSNetServiceBrowser.m in Sources */,
 				FED70A400C3B3D2C000CBE5B /* NSSortDescriptor.m in Sources */,
 				FED70A410C3B3D2C000CBE5B /* NSValueTransformer.m in Sources */,
 				FED70A420C3B3D2C000CBE5B /* NSDistributedLock.m in Sources */,
@@ -8053,6 +8041,7 @@
 				C851D87B0E40E428001DAB69 /* objc_forward_ffi.m in Sources */,
 				C8B53BD80E6AC7C500E4467E /* objc_debugHelpers.m in Sources */,
 				C8C39E070EAB6646002568A3 /* NSConditionLock_posix.m in Sources */,
+				FEE7D3100ED1D2DE0032DCE0 /* NSNetServices.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8311,8 +8300,6 @@
 				FED70F830C3C09C7000CBE5B /* NSMetadataQuery.m in Sources */,
 				FED70F840C3C09C7000CBE5B /* NSMetadataQueryAttributeValueTuple.m in Sources */,
 				FED70F850C3C09C7000CBE5B /* NSMetadataQueryResultGroup.m in Sources */,
-				FED70F860C3C09C7000CBE5B /* NSNetService.m in Sources */,
-				FED70F870C3C09C7000CBE5B /* NSNetServiceBrowser.m in Sources */,
 				FED70F880C3C09C7000CBE5B /* NSSortDescriptor.m in Sources */,
 				FED70F890C3C09C7000CBE5B /* NSValueTransformer.m in Sources */,
 				FED70F8A0C3C09C7000CBE5B /* NSDistributedLock.m in Sources */,
@@ -8356,6 +8343,7 @@
 				C851D87D0E40E428001DAB69 /* objc_forward_ffi.m in Sources */,
 				C8B53BDC0E6AC7C500E4467E /* objc_debugHelpers.m in Sources */,
 				C8C39E050EAB6646002568A3 /* NSConditionLock_posix.m in Sources */,
+				FEE7D3120ED1D2DE0032DCE0 /* NSNetServices.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -1,14 +1,4 @@
-/* FILE: CTNetServices.h
- *
- * Project              Tryst
- * Class                CTNetServices
- * Creator		Chris B. Vetter
- * Maintainer           Chris B. Vetter
- * Creation Date	Mon Sep 11 14:46:24 CEST 2006
- *
- * Copyright (c) 2006 Chris B. Vetter
- * Bugfixing by D. Theisen
- *
+/* Copyright (c) 2006 Chris B. Vetter
   
  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
  
@@ -17,140 +7,63 @@
  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 */
-
-/***************************************************************************/
-
-//
-// Include
-//
-
 #import <Foundation/NSObject.h>
 #import <Foundation/NSData.h>
 #import <Foundation/NSDate.h>
 #import <Foundation/NSArray.h>
 
-//
-// Define
-//
+@class NSInputStream,NSOutputStream,NSRunLoop,NSSelectInputSource,NSTimer,NSMutableDictionary;
 
-//
-// Typedef
-//
+typedef enum {
+  NSNetServicesUnknownError		= -72000L,
+  NSNetServicesCollisionError		= -72001L,
+  NSNetServicesNotFoundError		= -72002L,
+  NSNetServicesActivityInProgress	= -72003L,
+  NSNetServicesBadArgumentError		= -72004L,
+  NSNetServicesCancelledError		= -72005L,
+  NSNetServicesInvalidError		= -72006L,
+  NSNetServicesTimeoutError		= -72007L
+} NSNetServicesError;
 
-typedef enum
-{
-  /**
-   * <list>
-   *   <item>
-   *     <strong>CTNetServicesUnknownError</strong><br />
-   *     An unknown error occurred.
-   *     <br /><br />
-   *   </item>
-   *   <item>
-   *     <strong>CTNetServicesCollisionError</strong><br />
-   *     The given registration has had a name collision. Registration should
-   *     be cancelled and tried again with a different name.
-   *     <br /><br />
-   *   </item>
-   *   <item>
-   *     <strong>CTNetServicesNotFoundError</strong><br />
-   *     The service could not be found.
-   *     <br /><br />
-   *   </item>
-   *   <item>
-   *     <strong>CTNetServicesActivityInProgress</strong><br />
-   *     A request is already in progress.
-   *     <br /><br />
-   *   </item>
-   *   <item>
-   *     <strong>CTNetServicesBadArgumentError</strong><br />
-   *     An invalid argument was used to create the object.
-   *     <br /><br />
-   *   </item>
-   *   <item>
-   *     <strong>CTNetServicesCancelledError</strong><br />
-   *     The request has been cancelled.
-   *     <br /><br />
-   *   </item>
-   *   <item>
-   *     <strong>CTNetServicesInvalidError</strong><br />
-   *     The service was improperly configured.
-   *     <br /><br />
-   *   </item>
-   *   <item>
-   *     <strong>CTNetServicesTimeoutError</strong><br />
-   *     The request has timed out before a successful resolution.
-   *     <br /><br />
-   *   </item>
-   * </list>
-   */
-  CTNetServicesUnknownError		= -72000L,
-  CTNetServicesCollisionError		= -72001L,
-  CTNetServicesNotFoundError		= -72002L,
-  CTNetServicesActivityInProgress	= -72003L,
-  CTNetServicesBadArgumentError		= -72004L,
-  CTNetServicesCancelledError		= -72005L,
-  CTNetServicesInvalidError		= -72006L,
-  CTNetServicesTimeoutError		= -72007L
-} CTNetServicesError;
+enum {
+ NSNetServiceNoAutoRename=0x01,
+};
 
-//
-// Public
-//
+typedef NSUInteger NSNetServiceOptions;
 
-extern NSString * const CTNetServicesErrorCode;
-extern NSString * const CTNetServicesErrorDomain;
+FOUNDATION_EXPORT NSString *NSNetServicesErrorCode;
+FOUNDATION_EXPORT NSString *NSNetServicesErrorDomain;
 
-//
-// Referenced Classes
-//
-
-@class	NSInputStream,
-        NSOutputStream,
-        NSRunLoop;
-
-//
-// Interface
-//
-
-/**
- * <unit>
- *   <heading>
- *     CTNetService class description
- *   </heading>
- *   <p>
- *     <!-- Foreword -->
- *   </p>
- *   <unit />
- *   <p>
- *     <!-- Afterword -->
- *   </p>
- * </unit>
- * <p>
- *   [CTNetService] lets you publish a network service in a domain using
- *   multicast DNS. Additionally, it lets you resolve a network service that
- *   was discovered by [CTNetServiceBrowser].
- * </p>
- */
-
-@interface CTNetService : NSObject
-{
+@interface NSNetService : NSObject {
   @private
-  void		* _netService;
-  id		  _delegate;
-  void		* _reserved;
-}
+  void		          * _netService;
+  NSSelectInputSource *_inputSource;
+  id		           _delegate;
 
-//
-// Factory Methods
-//
+  void                *_netServiceMonitor;
+  NSSelectInputSource *_monitorInputSource;
+  
+  NSTimer		*_resolverTimeout;	
+  
+      NSMutableDictionary	*_info;
+    // The service's information, keys are
+    // - Domain (string)
+    // - Name (string)
+    // - Type (string)
+    // - Host (string)
+    // - Addresses (mutable array)
+    // - TXT (data)
+  
+  int _interfaceIndex;	// should also be in 'info'
+  int _port;
+  
+  
+  BOOL			 _isPublishing,		// true if publishing service
+                         _isMonitoring;		// true if monitoring
+}
 
 + (NSData *) dataFromTXTRecordDictionary: (NSDictionary *) txtDictionary;
 + (NSDictionary *) dictionaryFromTXTRecordData: (NSData *) txtData;
-
-//
-// Instance Methods
-//
 
 - (id) initWithDomain: (NSString *) domain
                  type: (NSString *) type
@@ -160,10 +73,12 @@ extern NSString * const CTNetServicesErrorDomain;
                  name: (NSString *) name
                  port: (int) port;
 
-- (void) removeFromRunLoop: (NSRunLoop *) aRunLoop
+- (void) removeFromRunLoop: (NSRunLoop *) runLoop
                    forMode: (NSString *) mode;
-- (void) scheduleInRunLoop: (NSRunLoop *) aRunLoop
+- (void) scheduleInRunLoop: (NSRunLoop *) runLoop
                    forMode: (NSString *) mode;
+
+- (void)publishWithOptions:(NSNetServiceOptions)options;
 
 - (void) publish;
 - (void) resolve;
@@ -172,10 +87,6 @@ extern NSString * const CTNetServicesErrorDomain;
 
 - (void) startMonitoring;
 - (void) stopMonitoring;
-
-//
-// Accessor Methods
-//
 
 - (id) delegate;
 - (void) setDelegate: (id) delegate;
@@ -197,296 +108,74 @@ extern NSString * const CTNetServicesErrorDomain;
 
 @end
 
-/***************************************************************************/
+@interface NSObject (NSNetServiceDelegateMethods)
 
-//
-// Interface
-//
-
-/**
- * <unit>
- *   <heading>
- *     CTNetServiceBrowser class description
- *   </heading>
- *   <p>
- *     <!-- Foreword -->
- *   </p>
- *   <unit />
- *   <p>
- *     <!-- Afterword -->
- *   </p>
- * </unit>
- * <p>
- *   [CTNetServiceBrowser] asynchronously lets you discover network domains
- *   and, additionally, search for a type of network service. It sends its
- *   delegate a message whenever it discovers a new network service, and
- *   whenever a network service goes away.
- * </p>
- * <p>
- *   Each [CTNetServiceBrowser] performs one search at a time. So in order
- *   to perform multiple searches simultaneously, create multiple instances.
- * </p>
- */
-
-@interface CTNetServiceBrowser : NSObject
-{
-  @private
-  void		* _netServiceBrowser;
-  id		  _delegate;
-  void		* _reserved;
-}
-
-//
-// Factory Methods
-//
-
-//
-// Instance Methods
-//
-
-- (id) init;
-
-- (void) removeFromRunLoop: (NSRunLoop *) aRunLoop
-                   forMode: (NSString *) mode;
-- (void) scheduleInRunLoop: (NSRunLoop *) aRunLoop
-                   forMode: (NSString *) mode;
-
-- (void) searchForAllDomains;
-- (void) searchForBrowsableDomains;
-- (void) searchForRegistrationDomains;
-
-- (void) searchForServicesOfType: (NSString *) serviceType
-                        inDomain: (NSString *) domainName;
-
-- (void) stop;
-
-//
-// Accessor Methods
-//
-
-- (id) delegate;
-- (void) setDelegate: (id) delegate;
-
-@end
-
-/***************************************************************************/
-
-//
-// Interface
-//
-
-/**
- * <unit>
- *   <heading>
- *     NSObject (CTNetServiceDelegateMethods) class description
- *   </heading>
- *   <p>
- *     <!-- Foreword -->
- *   </p>
- *   <unit />
- *   <p>
- *     <!-- Afterword -->
- *   </p>
- * </unit>
- * <p>
- *  This informal protocol must be adopted by any class wishing to implement
- *  an [CTNetService] delegate.
- * </p>
- */
-
-@interface NSObject (CTNetServiceDelegateMethods)
-
-/**
- * Notifies the delegate that the network is ready to publish the service.
- *
- * <p><strong>See also:</strong><br />
- *   [CTNetService-publish]<br />
- * </p>
- */
-
-- (void) netServiceWillPublish: (CTNetService *) sender;
-
-/**
- * Notifies the delegate that the service was successfully published.
- *
- * <p><strong>See also:</strong><br />
- *   [CTNetService-publish]<br />
- * </p>
- */
-
-- (void) netServiceDidPublish: (CTNetService *) sender;
-
-/**
- * Notifies the delegate that the service could not get published.
- *
- * <p><strong>See also:</strong><br />
- *   [CTNetService-publish]<br />
- * </p>
- */
-
-- (void) netService: (CTNetService *) sender
+- (void) netServiceWillPublish: (NSNetService *) sender;
+- (void) netServiceDidPublish: (NSNetService *) sender;
+- (void) netService: (NSNetService *) sender
       didNotPublish: (NSDictionary *) errorDict;
-
-/**
- * Notifies the delegate that the network is ready to resolve the service.
- *
- * <p><strong>See also:</strong><br />
- *   [CTNetService-resolveWithTimeout:]<br />
- * </p>
- */
-
-- (void) netServiceWillResolve: (CTNetService *) sender;
-
-/**
- * Notifies the delegate that the service was resolved.
- *
- * <p><strong>See also:</strong><br />
- *   [CTNetService-resolveWithTimeout:]<br />
- * </p>
- */
-
-- (void) netServiceDidResolveAddress: (CTNetService *) sender;
-
-/**
- * Notifies the delegate that the service could not get resolved.
- *
- * <p><strong>See also:</strong><br />
- *   [CTNetService-resolveWithTimeout:]<br />
- * </p>
- */
-
-- (void) netService: (CTNetService *) sender
+- (void) netServiceWillResolve: (NSNetService *) sender;
+- (void) netServiceDidResolveAddress: (NSNetService *) sender;
+- (void) netService: (NSNetService *) sender
       didNotResolve: (NSDictionary *) errorDict;
-
-/**
- * Notifies the delegate that the request was stopped.
- *
- * <p><strong>See also:</strong><br />
- *   [CTNetService-stop]<br />
- * </p>
- */
-
-- (void) netServiceDidStop: (CTNetService *) sender;
-
-/**
- * Notifies the delegate that the TXT record has been updated.
- *
- * <p><strong>See also:</strong><br />
- *   [CTNetService-startMonitoring]<br />
- *   [CTNetService-stopMonitoring]
- * </p>
- */
-
-- (void)      netService: (CTNetService *) sender
+- (void) netServiceDidStop: (NSNetService *) sender;
+- (void)      netService: (NSNetService *) sender
   didUpdateTXTRecordData: (NSData *) data;
 
 @end
 
-/***************************************************************************/
 
-//
-// Interface
-//
 
-/**
- * <unit>
- *   <heading>
- *     NSObject (CTNetServiceBrowserDelegateMethods) class description
- *   </heading>
- *   <p>
- *     <!-- Foreword -->
- *   </p>
- *   <unit />
- *   <p>
- *     <!-- Afterword -->
- *   </p>
- * </unit>
- * <p>
- *  This informal protocol must be adopted by any class wishing to implement
- *  an [CTNetServiceBrowser] delegate.
- * </p>
- */
+@class NSRunLoop,NSDictionary,NSNetService,NSSelectInputSource,NSMutableDictionary;
 
-@interface NSObject (CTNetServiceBrowserDelegateMethods)
+@interface NSNetServiceBrowser : NSObject {
+  @private
+  void		          *_netServiceBrowser;
+  NSSelectInputSource *_inputSource;
+  id                   _delegate;
+  
+  NSMutableDictionary	*_services;
+    // List of found services.
+    // Key is <_name_type_domain> and value is an initialized NSNetService.
+  
+  int			 _interfaceIndex;
+}
 
-/**
- * Notifies the delegate that the search is about to begin.
- *
- * <p><strong>See also:</strong><br />
- *   [CTNetServiceBrowser-netServiceBrowser:didNotSearch:]<br />
- * </p>
- */
+-init;
 
-- (void) netServiceBrowserWillSearch: (CTNetServiceBrowser *) aNetServiceBrowser;
+-delegate;
+-(void)setDelegate:delegate;
 
-/**
- * Notifies the delegate that the search was unsuccessful.
- *
- * <p><strong>See also:</strong><br />
- *   [CTNetServiceBrowser-netServiceBrowserWillSearch:]<br />
- * </p>
- */
+-(void)scheduleInRunLoop:(NSRunLoop *)runLoop forMode:(NSString *)mode;
+-(void)removeFromRunLoop:(NSRunLoop *)runLoop forMode:(NSString *)mode;
 
-- (void) netServiceBrowser: (CTNetServiceBrowser *) aNetServiceBrowser
-              didNotSearch: (NSDictionary *) errorDict;
+-(void)searchForAllDomains;
+-(void)searchForBrowsableDomains;
+-(void)searchForRegistrationDomains;
 
-/**
- * Notifies the delegate that the search was stopped.
- *
- * <p><strong>See also:</strong><br />
- *   [CTNetServiceBrowser-stop]<br />
- * </p>
- */
+-(void)searchForServicesOfType:(NSString *)serviceType inDomain:(NSString *)domainName;
 
-- (void) netServiceBrowserDidStopSearch: (CTNetServiceBrowser *) aNetServiceBrowser;
-
-/**
- * Notifies the delegate that a domain was found.
- *
- * <p><strong>See also:</strong><br />
- *   [CTNetServiceBrowser-searchForBrowsableDomains]<br />
- *   [CTNetServiceBrowser-searchForRegistrationDomains]<br />
- * </p>
- */
-
-- (void) netServiceBrowser: (CTNetServiceBrowser *) aNetServiceBrowser
-             didFindDomain: (NSString *) domainString
-                moreComing: (BOOL) moreComing;
-
-/**
- * Notifies the delegate that a domain has become unavailable.
- *
- * <p><strong>See also:</strong><br />
- *   <br />
- * </p>
- */
-
-- (void) netServiceBrowser: (CTNetServiceBrowser *) aNetServiceBrowser
-           didRemoveDomain: (NSString *) domainString
-                moreComing: (BOOL) moreComing;
-
-/**
- * Notifies the delegate that a service was found.
- *
- * <p><strong>See also:</strong><br />
- *   [CTNetServiceBrowser-searchForServicesOfType:inDomain:]<br />
- * </p>
- */
-
-- (void) netServiceBrowser: (CTNetServiceBrowser *) aNetServiceBrowser
-            didFindService: (CTNetService *) aNetService
-                moreComing: (BOOL) moreComing;
-
-/**
- * Notifies the delegate that a service has become unavailable.
- *
- * <p><strong>See also:</strong><br />
- *   <br />
- * </p>
- */
-
-- (void) netServiceBrowser: (CTNetServiceBrowser *) aNetServiceBrowser
-          didRemoveService: (CTNetService *) aNetService
-                moreComing: (BOOL) moreComing;
+-(void)stop;
 
 @end
+
+
+@interface NSObject(NSNetServiceBrowserDelegate)
+
+-(void)netServiceBrowserWillSearch:(NSNetServiceBrowser *)netServiceBrowser;
+-(void)netServiceBrowser:(NSNetServiceBrowser *)netServiceBrowser didNotSearch:(NSDictionary *)errorDict;
+-(void)netServiceBrowserDidStopSearch: (NSNetServiceBrowser *)netServiceBrowser;
+-(void)netServiceBrowser:(NSNetServiceBrowser *)netServiceBrowser didFindDomain:(NSString *)domainString moreComing:(BOOL)moreComing;
+-(void)netServiceBrowser:(NSNetServiceBrowser *)netServiceBrowser didRemoveDomain:(NSString *)domainString moreComing:(BOOL)moreComing;
+-(void)netServiceBrowser:(NSNetServiceBrowser *)netServiceBrowser didFindService:(NSNetService *)netService moreComing:(BOOL)moreComing;
+-(void)netServiceBrowser:(NSNetServiceBrowser *)netServiceBrowser didRemoveService:(NSNetService *)netService moreComing:(BOOL)moreComing;
+
+@end
+
+// debugging stuff and laziness on my part
+#if defined( VERBOSE )
+#  define LOG( f, args... )	NSDebugLLog(@"NSNetServices", f, ##args )
+#else
+#  define LOG( f, args... )
+#endif /* DEBUG */
+
