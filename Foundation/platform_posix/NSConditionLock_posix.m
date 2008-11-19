@@ -12,6 +12,7 @@
 #import <Foundation/NSThread.h>
 #import <pthread.h>
 #import <time.h>
+#import <math.h>
 
 @implementation NSConditionLock_posix
 -(id)init {
@@ -94,9 +95,8 @@
    pthread_mutex_lock(&_mutex);
    struct timespec t={0};
    NSTimeInterval d=[date timeIntervalSinceReferenceDate];
-   double frac;
-   t.tv_sec=fmodd(d, &frac);
-   t.tv_nsec=frac*1000000.0;
+   t.tv_sec=(unsigned int)d;
+   t.tv_nsec=fmod(d, 1.0)*1000000.0;
    
    if(pthread_cond_timedwait(&_cond, &_mutex, &t)<0) {
       return NO;
@@ -109,9 +109,8 @@
    pthread_mutex_lock(&_mutex);
    struct timespec t={0};
    NSTimeInterval d=[date timeIntervalSinceReferenceDate];
-   double frac;
-   t.tv_sec=fmodd(d, &frac);
-   t.tv_nsec=frac*1000000.0;
+   t.tv_sec=(unsigned int)d;
+   t.tv_nsec=fmod(d, 1.0)*1000000.0;
    
    while(_value!=condition) {
       if(pthread_cond_timedwait(&_cond, &_mutex, &t)<0)
