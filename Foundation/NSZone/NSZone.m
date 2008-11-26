@@ -20,12 +20,12 @@ typedef unsigned int OSSpinLock;
 
 BOOL OSSpinLockTry( volatile OSSpinLock *__lock )
 {
-   return __sync_bool_compare_and_swap(&__lock, 0, 1);
+   return __sync_bool_compare_and_swap(__lock, 0, 1);
 }
 
 void OSSpinLockLock( volatile OSSpinLock *__lock )
 {
-   while(__sync_bool_compare_and_swap(&__lock, 0, 1))
+   while(__sync_bool_compare_and_swap(__lock, 0, 1))
    {
 #ifdef WIN32
       Sleep(0);
@@ -37,7 +37,7 @@ void OSSpinLockLock( volatile OSSpinLock *__lock )
 
 void OSSpinLockUnlock( volatile OSSpinLock *__lock )
 {
-   __sync_bool_compare_and_swap(&__lock, 1, 0);
+   __sync_bool_compare_and_swap(__lock, 1, 0);
 }
 
 typedef struct RefCountBucket {
