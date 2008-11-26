@@ -1336,12 +1336,17 @@ toPoint:NSMakePoint(rowRect.size.width, rowRect.origin.y)];
     else if ([event clickCount] == 2) {
         // nb this logic was backwards previously
 		id binder=[[_tableColumns objectAtIndex:_clickedColumn] _binderForBinding:@"value" create:NO];
+       BOOL interpretedAsEdit=NO;
         if ([self dataSourceCanSetObjectValue] || 
 			[binder allowsEditingForRow:_clickedRow]) {
-            if (_clickedColumn != NSNotFound && _clickedRow != NSNotFound)
-                [self editColumn:[self clickedColumn] row:_clickedRow withEvent:event select:YES];
+           if (_clickedColumn != NSNotFound && _clickedRow != NSNotFound) {
+              if([self delegateShouldEditTableColumn:[_tableColumns objectAtIndex:_clickedColumn] row:_clickedRow]) {
+                 interpretedAsEdit=YES;
+                 [self editColumn:[self clickedColumn] row:_clickedRow withEvent:event select:YES];
+              }
+           }
         }
-        else
+        if(!interpretedAsEdit)
             [self sendAction:[self doubleAction] to:[self target]];
     }
 }

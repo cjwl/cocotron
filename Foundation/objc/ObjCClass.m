@@ -34,6 +34,15 @@ static inline OBJCHashTable *OBJCClassTable(void) {
    return allClasses;
 }
 
+static inline OBJCHashTable *OBJCFutureClassTable(void) {
+   static OBJCHashTable *allClasses=NULL;
+   
+   if(allClasses==NULL)
+      allClasses=OBJCCreateHashTable(INITIAL_CLASS_HASHTABLE_SIZE);
+   
+   return allClasses;
+}
+
 Class OBJCClassFromString(const char *name) {
    return OBJCHashValueForKey(OBJCClassTable(),name);
 }
@@ -120,8 +129,37 @@ static void OBJCCreateCacheForClass(Class class){
    }
 }
 
+Class objc_getFutureClass(const char *name) {
+   // first find if class is already defined
+   struct objc_class* ret=OBJCHashValueForKey(OBJCClassTable(), name);
+
+   // maybe there's a future class
+   if(!ret) {
+      ret=OBJCHashValueForKey(OBJCFutureClassTable(), name);
+   }
+   if(!ret) {
+      // no future class; build one
+      ret=NSZoneCalloc(NULL, 1, sizeof(struct objc_class));
+      ret->name=strdup(name);
+      OBJCHashInsertValueForKey(OBJCFutureClassTable(), ret->name, ret);
+   }
+   return ret;
+}
+
+void objc_setFutureClass(Class cls, const char *name) {
+   OBJCHashInsertValueForKey(OBJCFutureClassTable(), strdup(name), cls);
+}
 
 void OBJCRegisterClass(Class class) {
+
+   {
+      struct objc_class* futureClass=OBJCHashValueForKey(OBJCFutureClassTable(), class->name);
+
+      if(futureClass) {
+         memcpy(futureClass, class, sizeof(struct objc_class));
+         class=futureClass;
+      }
+   }
     
    OBJCHashInsertValueForKey(OBJCClassTable(), class->name, class);
 

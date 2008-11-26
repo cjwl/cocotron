@@ -106,8 +106,11 @@ OBJCObjectFile *OBJCCreateMainObjectFile(){
    return OBJCUniqueObjectFileWithPath(pathOfExecutable);
 }
 
-// This does not work if the parent process sets argv[0] to something other than the executable path, which is possible but not likely
 void OBJCInitializeProcess(int argc,const char *argv[]) {
+#ifdef LINUX
+   readlink("/proc/self/exe", pathOfExecutable, PATH_MAX);
+#else
+   // This does not work if the parent process sets argv[0] to something other than the executable path, which is possible but not likely
    const char *argv0=argv[0];
    
    if(argv0[0]=='/')
@@ -122,6 +125,8 @@ void OBJCInitializeProcess(int argc,const char *argv[]) {
       strncat(pathOfExecutable, argv0, PATH_MAX);
     }
    }
+#endif
+   
 #ifdef __APPLE__
    OBJCInitializeProcess_Darwin();
 #endif

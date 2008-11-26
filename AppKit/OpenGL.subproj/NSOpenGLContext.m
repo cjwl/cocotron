@@ -13,15 +13,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSRaise.h>
 #import "opengl_dll.h"
 
+static NSOpenGLContext *currentContext=nil;
+
 @implementation NSOpenGLContext
 
 +(NSOpenGLContext *)currentContext {
-   NSUnimplementedMethod();
-   return nil;
+   return currentContext;
 }
 
 +(void)clearCurrentContext {
-   NSUnimplementedMethod();
+   currentContext=nil;
 }
 
 -initWithFormat:(NSOpenGLPixelFormat *)pixelFormat shareContext:(NSOpenGLContext *)shareContext {
@@ -30,6 +31,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)dealloc {
+   if(currentContext==self)
+      currentContext=nil;
    [_pixelFormat release];
    _view=nil;
    [_drawable invalidate];
@@ -88,6 +91,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     }
    }
    [_drawable makeCurrentWithGLContext:_glContext];
+   currentContext=self;
 }
 
 -(int)currentVirtualScreen {
