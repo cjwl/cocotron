@@ -16,6 +16,30 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 // NSZone functions implemented in platform subproject
 
+typedef unsigned int OSSpinLock;
+
+BOOL OSSpinLockTry( volatile OSSpinLock *__lock )
+{
+   return __sync_bool_compare_and_swap(&__lock, 0, 1);
+}
+
+void OSSpinLockLock( volatile OSSpinLock *__lock )
+{
+   while(__sync_bool_compare_and_swap(&__lock, 0, 1))
+   {
+#ifdef WIN32
+      Sleep(0);
+#else
+      usleep(1);
+#endif
+   }
+}
+
+void OSSpinLockUnlock( volatile OSSpinLock *__lock )
+{
+   __sync_bool_compare_and_swap(&__lock, 1, 0);
+}
+
 typedef struct RefCountBucket {
    struct RefCountBucket *next;
    id                     object;
@@ -27,6 +51,8 @@ typedef struct {
    NSUInteger       nBuckets;
    RefCountBucket **buckets;
 } RefCountTable;
+
+OSSpinLock RefCountLock=0;
 
 static inline RefCountTable *CreateRefCountTable() {
    RefCountTable *table;
@@ -122,6 +148,7 @@ void NSIncrementExtraRefCount(id object) {
    RefCountBucket *refCount;
    RefCountTable  *table=refTable();
 
+   OSSpinLockLock(&RefCountLock);
    if((refCount=XXHashGet(table,object))==NULL){
     refCount=AllocBucketFromTable(table);
     refCount->object=object;
@@ -129,12 +156,14 @@ void NSIncrementExtraRefCount(id object) {
     XXHashInsert(refTable(),refCount);
    }
    refCount->count++;
+   OSSpinLockUnlock(&RefCountLock);
 }
 
 BOOL NSDecrementExtraRefCountWasZero(id object) {
    BOOL            result=NO;
    RefCountBucket *refCount;
 
+   OSSpinLockLock(&RefCountLock);
    if((refCount=XXHashGet(refTable(),object))==NULL)
     result=YES;
    else {
@@ -142,6 +171,7 @@ BOOL NSDecrementExtraRefCountWasZero(id object) {
     if(refCount->count==1)
      XXHashRemove(refTable(), refCount);
    }
+   OSSpinLockUnlock(&RefCountLock);
 
    return result;
 }
@@ -150,8 +180,10 @@ NSUInteger NSExtraRefCount(id object) {
    NSUInteger      result=1;
    RefCountBucket *refCount;
 
+   OSSpinLockLock(&RefCountLock);
    if((refCount=XXHashGet(refTable(),object))!=NULL)
     result=refCount->count;
+   OSSpinLockUnlock(&RefCountLock);
 
    return result;
 }
