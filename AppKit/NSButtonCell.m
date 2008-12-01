@@ -161,6 +161,22 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return result;
 }
 
+-(NSSize)cellSize 
+{
+	NSImage            *image=[self image];
+	BOOL                enabled=[self isEnabled]?YES:![self imageDimsWhenDisabled];
+	BOOL                mixed=([self state]==NSMixedState)?YES:NO;
+	NSSize              imageSize;
+	
+	if (_controlView)
+		imageSize =(image==nil)?NSMakeSize(0,0):[[_controlView graphicsStyle] 
+sizeOfButtonImage:image enabled:enabled mixed:mixed];
+	else
+		imageSize = (image==nil)?NSMakeSize(0,0):[image size];
+			  
+	return imageSize;
+}
+
 -(BOOL)isTransparent {
    return _isTransparent;
 }
