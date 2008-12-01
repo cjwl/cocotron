@@ -219,8 +219,21 @@ static id ExtractUID(NSPropertyListReader_binary1 *bplist, uint64_t offset)
                 return [NSNumber numberWithLongLong: [self _readIntOfSize: 1 << botNibble
                                                                                                                  atOffset: offset]];
         if( topNibble == 0x2 )
-                return [NSNumber numberWithDouble: [self _readFloatOfSize: 1 << botNibble
-                                                                                                                 atOffset: offset]];
+		{
+			unsigned size = 1 << botNibble;
+			uint64_t val = [self _readIntOfSize: size atOffset: offset];
+			
+			if( size == 4 )
+			{
+				uint32_t val32 = val;
+				return [NSNumber numberWithFloat: *(float*)&val32];
+			}
+			if( size == 8 )
+			{
+				return [NSNumber numberWithDouble: *(double*)&val];
+			}
+			return [NSNumber numberWithDouble:0.0];
+		}
         if( topNibble == 0x3 )
                 return [NSDate dateWithTimeIntervalSinceReferenceDate:
                                 [self _readFloatOfSize: 8 atOffset: offset]];
