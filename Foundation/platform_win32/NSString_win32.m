@@ -52,3 +52,27 @@ NSData *NSTaskArgumentDataFromString(NSString *string) {
 
    return [NSData dataWithBytes:result length:resultLength];
 }
+
+NSData *NSTaskArgumentDataFromStringW(NSString *string) {
+	unsigned       i,length=[string length],resultLength=0;
+	unichar        buffer[length];
+	unichar  result[1+length*2+1];
+	
+	[string getCharacters:buffer];
+	
+	result[resultLength++]=L'\"';
+	for(i=0;i<length;i++){
+		if(buffer[i]<=L' '){
+			result[resultLength++]=L' ';
+		}
+		else if(buffer[i]==L'\"'){
+			result[resultLength++]=L'\\';
+			result[resultLength++]=L'\"';
+		}
+		else
+			result[resultLength++]=buffer[i];
+	}
+	result[resultLength++]=L'\"';
+	
+	return [NSData dataWithBytes:result length:resultLength*2];
+}

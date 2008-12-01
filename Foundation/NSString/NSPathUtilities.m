@@ -263,6 +263,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
                        fileSystemRepresentationWithPath:self];
 }
 
+-(const unsigned short *)fileSystemRepresentationW {
+   return [[NSFileManager defaultManager]
+                       fileSystemRepresentationWithPathW:self];
+}
+
 @end
 
 NSString *NSHomeDirectory(void) {

@@ -103,6 +103,7 @@ FOUNDATION_EXPORT NSString *NSFileDeviceIdentifier;
 -(BOOL)changeFileAttributes:(NSDictionary *)attributes atPath:(NSString *)path;
 
 -(const char *)fileSystemRepresentationWithPath:(NSString *)path;
+-(const unsigned short *)fileSystemRepresentationWithPathW:(NSString *)path;
 
 @end
 

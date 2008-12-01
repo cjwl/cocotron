@@ -16,6 +16,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSWindow-Private.h>
 #import <malloc.h>
 
+#import <Foundation/NSString_win32.h>
+
 @implementation NSSavePanel(Win32)
 
 static unsigned *saveFileHook(HWND hdlg,UINT uiMsg,WPARAM wParam,LPARAM lParam) {
@@ -25,16 +27,16 @@ static unsigned *saveFileHook(HWND hdlg,UINT uiMsg,WPARAM wParam,LPARAM lParam) 
     pastInitialFolderChange=NO;
 
    if(uiMsg==WM_NOTIFY){
-    OFNOTIFY *notify=(void *)lParam;
+    OFNOTIFYW *notify=(void *)lParam;
 
     if(notify->hdr.code==CDN_FOLDERCHANGE){
      if(pastInitialFolderChange){ // we get one FOLDERCHANGE right after init, ignore it
       NSString *type=(NSString *)notify->lpOFN->lCustData;
-      char      folder[MAX_PATH+1];
+      unichar      folder[MAX_PATH+1];
       int       length=SendMessage(GetParent(hdlg),CDM_GETFOLDERPATH,MAX_PATH,(LPARAM)folder)-1;
 
       if(length>0){
-       NSString *file=[NSString stringWithCString:folder length:length];
+       NSString *file=[NSString stringWithCharacters:folder length:length];
        NSString *extension=[file pathExtension];
 
        if([type length]>0 && [type isEqualToString:extension]){
@@ -42,7 +44,7 @@ static unsigned *saveFileHook(HWND hdlg,UINT uiMsg,WPARAM wParam,LPARAM lParam) 
 
         if(result==NSAlertDefaultReturn){
          notify->lpOFN->lCustData=0xFFFFFFFF;
-         strcpy(notify->lpOFN->lpstrFile,folder);
+         wcscpy(notify->lpOFN->lpstrFile,folder);
          PostMessage(GetParent(hdlg),WM_SYSCOMMAND,SC_CLOSE,0); 
         }
        }
@@ -56,34 +58,34 @@ static unsigned *saveFileHook(HWND hdlg,UINT uiMsg,WPARAM wParam,LPARAM lParam) 
 }
 
 -(int)_GetOpenFileName {
-   OPENFILENAME openFileName={0};
+   OPENFILENAMEW openFileName={0};
 	int          check;
 
 	@synchronized(self)
 	{
-		char         filename[1025]="";
-		char        *fileTypes,*ptr;
+		unichar         filename[1025]=L"";
+		unichar        *fileTypes,*ptr;
 		int          fileTypesLength;
-		int          typeLength=[_requiredFileType cStringLength];
+		int          typeLength=[_requiredFileType cStringLength]*2;
 		
 		fileTypesLength=0;
-		fileTypesLength+=strlen("Document (*.")+typeLength+1+1+strlen("*.");
+		fileTypesLength+=wcslen(L"Document (*.")+typeLength+1+1+wcslen(L"*.");
 		fileTypesLength+=typeLength +1;
 		fileTypesLength++;
 		
-		fileTypes=alloca(sizeof(char)*fileTypesLength);
+		fileTypes=alloca(sizeof(unichar)*fileTypesLength);
 		ptr=fileTypes;
-		strcpy(ptr,"Document (*.");
-		ptr+=strlen("Document (*.");
-		[_requiredFileType getCString:ptr];
+		wcscpy(ptr,L"Document (*.");
+		ptr+=wcslen(L"Document (*.");
+		[_requiredFileType getCharacters:ptr];
 		ptr+=typeLength;
-		strcpy(ptr,")");
+		wcscpy(ptr,L")");
 		ptr+=2;
 		
-		strcpy(ptr,"*.");
-		ptr+=strlen("*.");
+		wcscpy(ptr,L"*.");
+		ptr+=wcslen(L"*.");
 		
-		[_requiredFileType getCString:ptr];
+		[_requiredFileType getCharacters:ptr];
 		ptr+=typeLength+1;
 		*ptr='\0';
 		
@@ -94,13 +96,13 @@ static unsigned *saveFileHook(HWND hdlg,UINT uiMsg,WPARAM wParam,LPARAM lParam) 
 		openFileName.lpstrCustomFilter=NULL;
 		openFileName.nMaxCustFilter=0;
 		openFileName.nFilterIndex=1;
-		strncpy(filename,[_filename fileSystemRepresentation],1024);
+		wcsncpy(filename,[_filename fileSystemRepresentationW],1024);
 		openFileName.lpstrFile=filename;
 		openFileName.nMaxFile=1024;
 		openFileName.lpstrFileTitle=NULL;
 		openFileName.nMaxFileTitle=0;
-		openFileName.lpstrInitialDir=[_directory fileSystemRepresentation];
-		openFileName.lpstrTitle=[_dialogTitle cString];
+		openFileName.lpstrInitialDir=[_directory fileSystemRepresentationW];
+		openFileName.lpstrTitle=NSNullTerminatedUnicodeFromString(_dialogTitle);
 		openFileName.Flags=
 		OFN_CREATEPROMPT|
 		OFN_NOTESTFILECREATE|
@@ -119,7 +121,7 @@ static unsigned *saveFileHook(HWND hdlg,UINT uiMsg,WPARAM wParam,LPARAM lParam) 
 	}
 
    [(Win32Display *)[NSDisplay currentDisplay] stopWaitCursor];
-   check=GetSaveFileName(&openFileName);
+   check=GetSaveFileNameW(&openFileName);
    [(Win32Display *)[NSDisplay currentDisplay] startWaitCursor];
 
 	@synchronized(self)
@@ -129,7 +131,7 @@ static unsigned *saveFileHook(HWND hdlg,UINT uiMsg,WPARAM wParam,LPARAM lParam) 
 		}
 		
 		[_filename release];
-		_filename=[[NSString stringWithCString:openFileName.lpstrFile] copy];
+		_filename=[[NSString stringWithCharacters:openFileName.lpstrFile length:wcslen(openFileName.lpstrFile)] copy];
 		if(![[_filename pathExtension] isEqualToString:_requiredFileType]){
 			[_filename autorelease];
 			_filename=[[_filename stringByAppendingPathExtension:_requiredFileType] copy];

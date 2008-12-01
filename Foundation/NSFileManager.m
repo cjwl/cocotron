@@ -274,6 +274,12 @@ stringByAppendingPathComponent:[files objectAtIndex:x]] paths:paths];
    return NULL;
 }
 
+-(const unsigned short *)fileSystemRepresentationWithPathW:(NSString *)path {
+   NSInvalidAbstractInvocation();
+   return NULL;
+}
+
+
 @end
 
 @implementation NSDictionary(NSFileAttributes)

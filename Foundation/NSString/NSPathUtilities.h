@@ -34,6 +34,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(BOOL)isAbsolutePath;
 
 -(const char *)fileSystemRepresentation;
+-(const unsigned short *)fileSystemRepresentationW;
 -(BOOL)getFileSystemRepresentation:(char *)bytes maxLength:(NSUInteger)maxLength;
 
 -(NSUInteger)completePathIntoString:(NSString **)string caseSensitive:(BOOL)caseSensitive matchesIntoArray:(NSArray **)array filterTypes:(NSArray *)types;

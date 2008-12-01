@@ -19,6 +19,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSThread-Private.h>
 
 #import <Foundation/NSPlatform_win32.h>
+#import <Foundation/NSString_win32.h>
 
 #import <windows.h>
 
@@ -31,16 +32,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(NSArray *)directoryContentsAtPath:(NSString *)path {
    NSMutableArray *result=[NSMutableArray array];
-   WIN32_FIND_DATA findData;
-   HANDLE          handle=FindFirstFile([[path stringByAppendingString:@"\\*.*"] fileSystemRepresentation],&findData);
+   WIN32_FIND_DATAW findData;
+   HANDLE          handle=FindFirstFileW([[path stringByAppendingString:@"\\*.*"] fileSystemRepresentationW],&findData);
 
    if(handle==INVALID_HANDLE_VALUE)
     return nil;
 
    do{
-    if(strcmp(findData.cFileName,".")!=0 && strcmp(findData.cFileName,"..")!=0)
-     [result addObject:[NSString stringWithCString:findData.cFileName]];
-   }while(FindNextFile(handle,&findData));
+    if(wcscmp(findData.cFileName,L".")!=0 && wcscmp(findData.cFileName,L"..")!=0)
+     [result addObject:[NSString stringWithCharacters:findData.cFileName length:wcslen(findData.cFileName)]];
+   }while(FindNextFileW(handle,&findData));
 
    FindClose(handle);
 
@@ -49,11 +50,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(BOOL)createDirectoryAtPath:(NSString *)path
                   attributes:(NSDictionary *)attributes {
-   return CreateDirectory([path fileSystemRepresentation],NULL)?YES:NO;
+   return CreateDirectoryW([path fileSystemRepresentationW],NULL)?YES:NO;
 }
 
 -(BOOL)fileExistsAtPath:(NSString *)path isDirectory:(BOOL *)isDirectory {
-   DWORD attributes=GetFileAttributes([path fileSystemRepresentation]);
+   DWORD attributes=GetFileAttributesW([path fileSystemRepresentationW]);
 
    if(attributes==0xFFFFFFFF)
     return NO;
@@ -67,7 +68,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
    *isDirectory=NO;
 
-   if(stat([path fileSystemRepresentation],&buf)<0)
+   if(stat([path fileSystemRepresentationW],&buf)<0)
     return NO;
 
    if((buf.st_mode&S_IFMT)==S_IFDIR)
@@ -80,7 +81,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 // we dont want to use fileExists... because it chases links 
 -(BOOL)_isDirectory:(NSString *)path {
-   DWORD attributes=GetFileAttributes([path fileSystemRepresentation]);
+   DWORD attributes=GetFileAttributesW([path fileSystemRepresentationW]);
 
    if(attributes==0xFFFFFFFF)
     return NO;
@@ -89,8 +90,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(BOOL)removeFileAtPath:(NSString *)path handler:handler {
-   const char *fsrep=[path fileSystemRepresentation];
-   DWORD       attribute=GetFileAttributes(fsrep);
+   const unichar *fsrep=[path fileSystemRepresentationW];
+   DWORD       attribute=GetFileAttributesW(fsrep);
 
    if([path isEqualToString:@"."] || [path isEqualToString:@".."])
     [NSException raise:NSInvalidArgumentException format:@"-[%@ %s] path should not be . or ..",isa,SELNAME(_cmd)];
@@ -100,12 +101,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
    if(attribute&FILE_ATTRIBUTE_READONLY){
     attribute&=~FILE_ATTRIBUTE_READONLY;
-    if(!SetFileAttributes(fsrep,attribute))
+    if(!SetFileAttributesW(fsrep,attribute))
      return NO;
    }
 
    if(![self _isDirectory:path]){
-    if(!DeleteFile(fsrep))
+    if(!DeleteFileW(fsrep))
      return NO;
    }
    else {
@@ -118,14 +119,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       return NO;
     }
 
-    if(!RemoveDirectory(fsrep))
+    if(!RemoveDirectoryW(fsrep))
      return NO;
    }
    return YES;
 }
 
 -(BOOL)movePath:(NSString *)src toPath:(NSString *)dest handler:handler {
-   return MoveFile([src fileSystemRepresentation],[dest fileSystemRepresentation])?YES:NO;
+   return MoveFileW([src fileSystemRepresentationW],[dest fileSystemRepresentationW])?YES:NO;
 }
 
 -(BOOL)copyPath:(NSString *)src toPath:(NSString *)dest handler:handler {
@@ -135,14 +136,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     return NO;
 
    if(!isDirectory){
-    if(!CopyFile([src fileSystemRepresentation],[dest fileSystemRepresentation],YES))
+    if(!CopyFileW([src fileSystemRepresentationW],[dest fileSystemRepresentationW],YES))
      return NO;
    }
    else {
     NSArray *files=[self directoryContentsAtPath:src];
     int      i,count=[files count];
 
-    if(!CreateDirectory([dest fileSystemRepresentation],NULL))
+    if(!CreateDirectoryW([dest fileSystemRepresentationW],NULL))
      return NO;
 
     for(i=0;i<count;i++){
@@ -164,7 +165,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    WIN32_FILE_ATTRIBUTE_DATA  fileData;
    NSDate                    *date;
 
-   if(!GetFileAttributesEx([path fileSystemRepresentation],GetFileExInfoStandard,&fileData))
+   if(!GetFileAttributesExW([path fileSystemRepresentationW],GetFileExInfoStandard,&fileData))
     return nil;
 
    date=[NSDate dateWithTimeIntervalSinceReferenceDate:Win32TimeIntervalFromFileTime(fileData.ftLastWriteTime)];
@@ -192,7 +193,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(BOOL)isReadableFileAtPath:(NSString *)path {
-   DWORD attributes=GetFileAttributes([path fileSystemRepresentation]);
+   DWORD attributes=GetFileAttributesW([path fileSystemRepresentationW]);
 
    if(attributes==-1)
     return NO;
@@ -204,7 +205,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(BOOL)isWritableFileAtPath:(NSString *)path {
-   DWORD attributes=GetFileAttributes([path fileSystemRepresentation]);
+   DWORD attributes=GetFileAttributesW([path fileSystemRepresentationW]);
 
    if(attributes==-1)
     return NO;
@@ -216,7 +217,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(BOOL)isExecutableFileAtPath:(NSString *)path {
-   DWORD attributes=GetFileAttributes([path fileSystemRepresentation]);
+   DWORD attributes=GetFileAttributesW([path fileSystemRepresentationW]);
 
    if(attributes==-1)
     return NO;
@@ -235,7 +236,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
    if(date!=nil){
     time_t timep[2]={ time(NULL),[date timeIntervalSince1970] };
-    if(utime((char *)[path fileSystemRepresentation],timep)<0)
+    if(utime((unichar *)[path fileSystemRepresentationW],timep)<0)
      return NO;
    }
    return YES;
@@ -243,17 +244,17 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(NSString *)currentDirectoryPath {
-   char  path[MAX_PATH+1];
+   unichar  path[MAX_PATH+1];
    DWORD length;
 
-   length=GetCurrentDirectory(MAX_PATH+1,path);
+   length=GetCurrentDirectoryW(MAX_PATH+1,path);
    Win32Assert("GetCurrentDirectory");
 
-   return [NSString stringWithCString:path length:length];
+   return [NSString stringWithCharacters:path length:length];
 }
 
 
--(const char *)fileSystemRepresentationWithPath:(NSString *)path {
+-(const unichar*)fileSystemRepresentationWithPathW:(NSString *)path {
    unsigned i,length=[path length];
    unichar  buffer[length];
    BOOL     converted=NO;
@@ -272,7 +273,31 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     path=[NSString stringWithCharacters:buffer length:length];
    }
 
+   return NSNullTerminatedUnicodeFromString(path);
+}
+
+-(const char*)fileSystemRepresentationWithPath:(NSString *)path {
+	unsigned i,length=[path length];
+	char  buffer[length];
+	BOOL     converted=NO;
+	
+	[path getCString:buffer];
+	
+	for(i=0;i<length;i++){
+		if(buffer[i]=='/'){
+			buffer[i]='\\';
+			converted=YES;
+		}
+	}
+	
+	if(converted){
+		//NSLog(@"%s %@",SELNAME(_cmd),path);
+		path=[NSString stringWithCString:buffer length:length];
+	}
+	//	NSLog(path);
    return [path cString];
 }
+
+
 
 @end

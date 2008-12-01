@@ -12,3 +12,4 @@ FOUNDATION_EXPORT NSString *NSStringFromNullTerminatedUnicode(const unichar *cha
 FOUNDATION_EXPORT const unichar *NSNullTerminatedUnicodeFromString(NSString *string);
 
 FOUNDATION_EXPORT NSData *NSTaskArgumentDataFromString(NSString *string);
+FOUNDATION_EXPORT NSData *NSTaskArgumentDataFromStringW(NSString *string);

@@ -22,6 +22,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <shlobj.h>
 #import <malloc.h>
 
+#import <Foundation/NSString_win32.h>
+
 @implementation NSDocumentController(Win32)
 
 -(NSArray *)_allFileTypes {
@@ -33,17 +35,17 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @implementation NSOpenPanel(Win32)
 
 -(int)_SHBrowseForFolder:(NSArray *)types {
-   BROWSEINFO  browseInfo;
+   BROWSEINFOW  browseInfo;
    ITEMIDLIST *itemIdList;
    LPMALLOC    mallocInterface;
-   char        displayName[MAX_PATH+1];
+   unichar        displayName[MAX_PATH+1];
 
    @synchronized(self)
 	{
       browseInfo.hwndOwner=[(Win32Window *)[[NSApp keyWindow] platformWindow] windowHandle];
       browseInfo.pidlRoot=NULL;
       browseInfo.pszDisplayName=displayName;
-      browseInfo.lpszTitle=[_dialogTitle cString];
+      browseInfo.lpszTitle=NSNullTerminatedUnicodeFromString(_dialogTitle);
       browseInfo.ulFlags=0;
       browseInfo.lpfn=NULL;
       browseInfo.lParam=0;
@@ -51,7 +53,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    }
 
    [(Win32Display *)[NSDisplay currentDisplay] stopWaitCursor];
-   itemIdList=SHBrowseForFolder(&browseInfo);
+   itemIdList=SHBrowseForFolderW(&browseInfo);
    [(Win32Display *)[NSDisplay currentDisplay] startWaitCursor];
 
    if(itemIdList==NULL)
@@ -60,7 +62,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    if(SHGetMalloc(&mallocInterface)!=NOERROR)
     NSLog(@"SHGetMalloc failed");
 
-   if(!SHGetPathFromIDList(itemIdList,displayName))
+   if(!SHGetPathFromIDListW(itemIdList,displayName))
     NSLog(@"SHGetPathFromIDList failed");
 
    mallocInterface->lpVtbl->Free(mallocInterface,itemIdList);
@@ -69,7 +71,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    @synchronized(self)
 	{
       [_filenames release];
-      _filenames=[[NSArray arrayWithObject:[NSString stringWithCString:displayName]] retain];   
+      _filenames=[[NSArray arrayWithObject:[NSString stringWithCharacters:displayName length:wcslen(displayName)]] retain];   
       
       if([_filenames count]>0){
          [_filename release];
@@ -93,21 +95,21 @@ static unsigned *openFileHook(HWND hdlg,UINT uiMsg,WPARAM wParam,LPARAM lParam) 
     pastInitialFolderChange=NO;
 
    if(uiMsg==WM_NOTIFY){
-    OFNOTIFY *notify=(void *)lParam;
+    OFNOTIFYW *notify=(void *)lParam;
 
     if(notify->hdr.code==CDN_FOLDERCHANGE){
      if(pastInitialFolderChange){ // we get one FOLDERCHANGE right after init, ignore it
       NSArray  *types=(NSArray *)notify->lpOFN->lCustData;
-      char      folder[MAX_PATH+1];
+      unichar      folder[MAX_PATH+1];
       int       length=SendMessage(GetParent(hdlg),CDM_GETFOLDERPATH,MAX_PATH,(LPARAM)folder)-1;
 
       if(length>0){
-       NSString *file=[NSString stringWithCString:folder length:length];
+       NSString *file=[NSString stringWithCharacters:folder length:length];
        NSString *extension=[file pathExtension];
 
        if([types containsObject:extension]){
         notify->lpOFN->lCustData=0xFFFFFFFF;
-        strcpy(notify->lpOFN->lpstrFile,folder);
+        wcscpy(notify->lpOFN->lpstrFile,folder);
         PostMessage(GetParent(hdlg),WM_SYSCOMMAND,SC_CLOSE,0); 
        }
       }
@@ -120,9 +122,9 @@ static unsigned *openFileHook(HWND hdlg,UINT uiMsg,WPARAM wParam,LPARAM lParam) 
 }
 
 -(int)_GetOpenFileNameForTypes:(NSArray *)types {
-   OPENFILENAME  openFileName={0};
-   char          filename[MAX_PATH+1];
-   char         *fileTypes,*p,*q;
+   OPENFILENAMEW  openFileName;
+   unichar          filename[MAX_PATH+1];
+   unichar         *fileTypes,*p,*q;
    int           i,j,fileTypesLength,check;
    NSArray      *allTypes = [[NSDocumentController sharedDocumentController] _allFileTypes];
    NSDictionary *typeDict;
@@ -134,7 +136,7 @@ static unsigned *openFileHook(HWND hdlg,UINT uiMsg,WPARAM wParam,LPARAM lParam) 
     fileTypesLength=strlen("Supported (");
     for(j=0;j<[types count];j++)
      // 2 x length of *.<EXT> + semicolon
-     fileTypesLength+=2*(2+[[types objectAtIndex:j] cStringLength]+1);
+    fileTypesLength+=2*(2+[[types objectAtIndex:j] cStringLength]+1);
     fileTypesLength+=1; // space for one \0  
 
     for(i=0;i<[allTypes count];i++){
@@ -151,41 +153,41 @@ static unsigned *openFileHook(HWND hdlg,UINT uiMsg,WPARAM wParam,LPARAM lParam) 
 
     // allocate the space and fill in the file types list
     p=fileTypes=alloca(fileTypesLength);
-    strcpy(p,"Supported ("); p+=strlen("Supported (");
+    wcscpy(p,L"Supported ("); p+=wcslen(L"Supported (");
     q=p;
     for(j=0;j<[types count];j++){
      *p++ ='*'; *p++ ='.';
-     [[types objectAtIndex:j] getCString:p]; p+=strlen(p);
-     *p++ =';';
-    }
-    *(p-1)=')'; // replace the last semicolon by the closing bracket
-    *p++ ='\0';
-    // duplicate the semicolon separated *.extension list
-    strcpy(p,q); p+=p-q-2;
-    *p++ ='\0'; // replace the stray closing bracket by '\0'
+		[[types objectAtIndex:j] getCharacters:p]; p+=wcslen(p);
+		*p++ =';';
+	   }
+	   *(p-1)=')'; // replace the last semicolon by the closing bracket
+	   *p++ ='\0';
+	   // duplicate the semicolon separated *.extension list
+	   wcscpy(p,q); p+=p-q-2;
+	   *p++ ='\0'; // replace the stray closing bracket by '\0'
 
-    for(i=0;i<[allTypes count];i++){
-     typeDict=[allTypes objectAtIndex:i];
-     [[typeDict objectForKey:@"CFBundleTypeName"] getCString:p]; p+=strlen(p);
+	   for(i=0;i<[allTypes count];i++){
+		typeDict=[allTypes objectAtIndex:i];
+		[[typeDict objectForKey:@"CFBundleTypeName"] getCharacters:p]; p+=wcslen(p);
      *p++ =' '; *p++ ='(';
 
      typeExtensions=[typeDict objectForKey:@"CFBundleTypeExtensions"];
      q=p;
      for(j=0;j<[typeExtensions count];j++){
       *p++ ='*'; *p++ ='.';
-      [[typeExtensions objectAtIndex:j] getCString:p]; p+=strlen(p);
-      *p++ =';';
-     }
-     *(p-1)=')'; // replace the last semicolon by the closing bracket
-     *p++ ='\0';
-     // duplicate the semicolon separated *.extension list
-     strcpy(p,q); p+=p-q-2;
+		 [[typeExtensions objectAtIndex:j] getCharacters:p]; p+=wcslen(p);
+		 *p++ =';';
+		}
+		*(p-1)=')'; // replace the last semicolon by the closing bracket
+		*p++ ='\0';
+		// duplicate the semicolon separated *.extension list
+		wcscpy(p,q); p+=p-q-2;
      *p++ ='\0'; // replace the stray closing bracket by '\0'
     }
     *p='\0';
    }
    else
-    fileTypes="All files (*.*)\0*.*\0\0";
+    fileTypes=L"All files (*.*)\0*.*\0\0";
 
    @synchronized(self)
 	{
@@ -196,13 +198,13 @@ static unsigned *openFileHook(HWND hdlg,UINT uiMsg,WPARAM wParam,LPARAM lParam) 
       openFileName.lpstrCustomFilter=NULL;
       openFileName.nMaxCustFilter=0;
       openFileName.nFilterIndex=1;
-      strncpy(filename,[_filename fileSystemRepresentation],MAX_PATH);
+      wcsncpy(filename,[_filename fileSystemRepresentationW],MAX_PATH);
       openFileName.lpstrFile=filename;
       openFileName.nMaxFile=1024;
       openFileName.lpstrFileTitle=NULL;
       openFileName.nMaxFileTitle=0;
-      openFileName.lpstrInitialDir=[_directory fileSystemRepresentation];
-      openFileName.lpstrTitle=[_dialogTitle cString];
+      openFileName.lpstrInitialDir=[_directory fileSystemRepresentationW];
+      openFileName.lpstrTitle= NSNullTerminatedUnicodeFromString(_dialogTitle);
       openFileName.Flags=
       (_allowsMultipleSelection?OFN_ALLOWMULTISELECT:0)|
       OFN_NOTESTFILECREATE|
@@ -220,7 +222,7 @@ static unsigned *openFileHook(HWND hdlg,UINT uiMsg,WPARAM wParam,LPARAM lParam) 
    }
    
    [(Win32Display *)[NSDisplay currentDisplay] stopWaitCursor];
-   check=GetOpenFileName(&openFileName);
+   check=GetOpenFileNameW(&openFileName);
    [(Win32Display *)[NSDisplay currentDisplay] startWaitCursor];
 
    if(!check && openFileName.lCustData!=0xFFFFFFFF)
@@ -231,7 +233,7 @@ static unsigned *openFileHook(HWND hdlg,UINT uiMsg,WPARAM wParam,LPARAM lParam) 
 
       [_filenames release];
       {
-         NSString *firstFile=[NSString stringWithCString:openFileName.lpstrFile];
+         NSString *firstFile=[NSString stringWithCharacters:openFileName.lpstrFile length:wcslen(openFileName.lpstrFile)];
          int       offset=openFileName.nFileOffset;
          
          if(offset<[firstFile length])
@@ -240,7 +242,7 @@ static unsigned *openFileHook(HWND hdlg,UINT uiMsg,WPARAM wParam,LPARAM lParam) 
             NSMutableArray *list=[NSMutableArray array];
             
             while(YES){
-               NSString *next=[NSString stringWithCString:openFileName.lpstrFile+offset];
+               NSString *next=[NSString stringWithCharacters:openFileName.lpstrFile+offset length:wcslen(openFileName.lpstrFile+offset)];
                
                if([next length]==0)
                   break;

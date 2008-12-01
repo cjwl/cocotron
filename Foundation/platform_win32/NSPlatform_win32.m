@@ -364,7 +364,7 @@ NSString *NSPlatformClassName=@"NSPlatform_win32";
 }
 
 -(void *)contentsOfFile:(NSString *)path length:(unsigned *)lengthp {
-   HANDLE file=CreateFile([path fileSystemRepresentation],GENERIC_READ,FILE_SHARE_READ,NULL,
+   HANDLE file=CreateFileW([path fileSystemRepresentationW],GENERIC_READ,FILE_SHARE_READ,NULL,
       OPEN_EXISTING,FILE_ATTRIBUTE_NORMAL,NULL);
    DWORD  length,readLength;
    void  *result;
@@ -399,7 +399,7 @@ NSString *NSPlatformClassName=@"NSPlatform_win32";
 
 -(void *)mapContentsOfFile:(NSString *)path length:(unsigned *)lengthp {
    void    *result;
-   HANDLE   file=CreateFile([path fileSystemRepresentation],GENERIC_READ,0,NULL,
+   HANDLE   file=CreateFileW([path fileSystemRepresentationW],GENERIC_READ,0,NULL,
       OPEN_EXISTING,FILE_ATTRIBUTE_NORMAL,NULL);
    HANDLE   mapping;
 
@@ -441,23 +441,23 @@ NSString *NSPlatformClassName=@"NSPlatform_win32";
    if(atomically){
     NSString *backup=[path stringByAppendingString:@"##"];
 
-    file=CreateFile([backup fileSystemRepresentation],GENERIC_WRITE,0,NULL,CREATE_ALWAYS,FILE_ATTRIBUTE_NORMAL,NULL);
+    file=CreateFileW([backup fileSystemRepresentationW],GENERIC_WRITE,0,NULL,CREATE_ALWAYS,FILE_ATTRIBUTE_NORMAL,NULL);
     if(!WriteFile(file,bytes,length,&wrote,NULL))
      CloseHandle(file);
     else {
      CloseHandle(file);
 
      if(wrote!=length)
-      DeleteFile([backup fileSystemRepresentation]);
+      DeleteFileW([backup fileSystemRepresentationW]);
      else {
-      if(MoveFileEx([backup fileSystemRepresentation],[path fileSystemRepresentation],MOVEFILE_REPLACE_EXISTING))
+      if(MoveFileExW([backup fileSystemRepresentationW],[path fileSystemRepresentationW],MOVEFILE_REPLACE_EXISTING))
        return YES;
      }
     }
     // atomic failure drops through to non-atomic
    }
 
-   file=CreateFile([path fileSystemRepresentation],GENERIC_WRITE,0,NULL,CREATE_ALWAYS,FILE_ATTRIBUTE_NORMAL,NULL);
+   file=CreateFileW([path fileSystemRepresentationW],GENERIC_WRITE,0,NULL,CREATE_ALWAYS,FILE_ATTRIBUTE_NORMAL,NULL);
 
    if(!WriteFile(file,bytes,length,&wrote,NULL)){
     CloseHandle(file);

@@ -16,14 +16,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @implementation Win32Workspace
 
--(BOOL)openURL:(NSURL *)url 
-{
-	return ((int)ShellExecute(GetDesktopWindow(),"open",[[url 
-absoluteString] cString],NULL,NULL,SW_SHOWNORMAL)<=32)?NO:YES;
+-(BOOL)openURL:(NSURL *)url {
+   return ((int)ShellExecuteW(GetDesktopWindow(),L"open",NSNullTerminatedUnicodeFromString([url absoluteString]),NULL,NULL,SW_SHOWNORMAL)<=32)?NO:YES;
 }
 
 -(BOOL)openFile:(NSString *)path {
-   return ((int)ShellExecute(GetDesktopWindow(),"open",[path fileSystemRepresentation],NULL,NULL,SW_SHOWNORMAL)<=32)?NO:YES;
+   return ((int)ShellExecuteW(GetDesktopWindow(),L"open",[path fileSystemRepresentationW],NULL,NULL,SW_SHOWNORMAL)<=32)?NO:YES;
 }
 
 -(BOOL)openFile:(NSString *)path withApplication:(NSString *)appName {
@@ -33,27 +31,34 @@ absoluteString] cString],NULL,NULL,SW_SHOWNORMAL)<=32)?NO:YES;
    NSString *app=[[[[[[[bundlePath stringByDeletingLastPathComponent] stringByDeletingLastPathComponent] stringByAppendingPathComponent:@"Applications"] stringByAppendingPathComponent:appName] stringByAppendingPathExtension:@"app"] stringByAppendingPathComponent:appName] stringByAppendingPathExtension:@"exe"];
    NSMutableData *args=[NSMutableData data];
 
-   [args appendData:NSTaskArgumentDataFromString(@"-NSOpen")];
-   [args appendBytes:" " length:1];
-   [args appendData:NSTaskArgumentDataFromString(path)];
-   [args appendBytes:"\0" length:1];
+   [args appendData:NSTaskArgumentDataFromStringW(@"-NSOpen")];
+   [args appendBytes:L" " length:2];
+   [args appendData:NSTaskArgumentDataFromStringW(path)];
+   [args appendBytes:L"\0" length:2];
 
-   return ((int)ShellExecute(GetDesktopWindow(),"open",[app fileSystemRepresentation],[args bytes],NULL,SW_SHOWNORMAL)<=32)?NO:YES;
+   return ((int)ShellExecuteW(GetDesktopWindow(),L"open",[app fileSystemRepresentationW],[args bytes],NULL,SW_SHOWNORMAL)<=32)?NO:YES;
 #else
-   return ((int)ShellExecute(GetDesktopWindow(),"open",[path fileSystemRepresentation],NULL,NULL,SW_SHOWNORMAL)<=32)?NO:YES;
+   return ((int)ShellExecuteW(GetDesktopWindow(),L"open",[path fileSystemRepresentationW],NULL,NULL,SW_SHOWNORMAL)<=32)?NO:YES;
 #endif
 }
 
 -(BOOL)openTempFile:(NSString *)path {
-   return ((int)ShellExecute(GetDesktopWindow(),"open",[path fileSystemRepresentation],NULL,NULL,SW_SHOWNORMAL)<=32)?NO:YES;
+   return ((int)ShellExecuteW(GetDesktopWindow(),L"open",[path fileSystemRepresentationW],NULL,NULL,SW_SHOWNORMAL)<=32)?NO:YES;
 }
 
 -(BOOL)selectFile:(NSString *)path inFileViewerRootedAtPath:(NSString *)rootFullpath {
-   NSMutableData *args=[NSMutableData data];
-   [args appendBytes:"/select," length:8];
-   [args appendData:NSTaskArgumentDataFromString(path)];
-   [args appendBytes:"\0" length:1];
-   return ((int)ShellExecute(GetDesktopWindow(),"open","explorer",[args bytes],NULL,SW_SHOWNORMAL)<=32)?NO:YES;
+	BOOL isDir = NO;
+	
+	if ([[NSFileManager defaultManager] fileExistsAtPath:path isDirectory:&isDir])
+	{
+		NSMutableData *args=[NSMutableData data];
+		[args appendBytes:L"/select," length:16];
+		[args appendData:NSTaskArgumentDataFromStringW(path)];
+		[args appendBytes:L"\0" length:2];
+
+		return ((int)ShellExecuteW(GetDesktopWindow(),L"open",L"explorer",[args bytes],NULL,SW_SHOWNORMAL)<=32)?NO:YES;
+	}
+	return NO;
 }
 
 -(int)extendPowerOffBy:(int)seconds {
@@ -65,7 +70,7 @@ absoluteString] cString],NULL,NULL,SW_SHOWNORMAL)<=32)?NO:YES;
    NSUnimplementedMethod();
 }
 
-static NSImageRep *imageRepForIcon(SHFILEINFO * fileInfo) {
+static NSImageRep *imageRepForIcon(SHFILEINFOW * fileInfo) {
    NSBitmapImageRep *bitmap;
    ICONINFO iconInfo;
    BITMAP bmp;
@@ -142,19 +147,19 @@ static NSImageRep *imageRepForIcon(SHFILEINFO * fileInfo) {
 }
 
 -(NSImage *)iconForFile:(NSString *)path {
-   const char *pathCString=[path fileSystemRepresentation];
-   SHFILEINFO fileInfo;
+   const unichar *pathCString=[path fileSystemRepresentationW];
+   SHFILEINFOW fileInfo;
 
    NSImage *icon=[[[NSImage alloc] init] autorelease];
 
-   if(SHGetFileInfo(pathCString,0,&fileInfo,sizeof(SHFILEINFO),SHGFI_ICON|SHGFI_SMALLICON))
+   if(SHGetFileInfoW(pathCString,0,&fileInfo,sizeof(SHFILEINFOW),SHGFI_ICON|SHGFI_SMALLICON))
     [icon addRepresentation:imageRepForIcon(&fileInfo)];
-   if(SHGetFileInfo(pathCString,0,&fileInfo,sizeof(SHFILEINFO),SHGFI_ICON|SHGFI_LARGEICON))
+   if(SHGetFileInfoW(pathCString,0,&fileInfo,sizeof(SHFILEINFOW),SHGFI_ICON|SHGFI_LARGEICON))
     [icon addRepresentation:imageRepForIcon(&fileInfo)];
 
    if([[icon representations] count]==0)
     return nil;
-   
+    
    return icon;
 }
 
