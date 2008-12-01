@@ -51,8 +51,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -validRequestorForSendType:(NSString *)sendType returnType:(NSString *)returnType {
-   NSUnimplementedMethod();
-   return nil;
+   return [_nextResponder validRequestorForSendType:sendType returnType:returnType];
 }
 
 -(void)doCommandBySelector:(SEL)selector {

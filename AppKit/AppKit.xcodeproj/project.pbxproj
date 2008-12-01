@@ -651,7 +651,6 @@
 		C88976BF0EA0BF3100D0A0A2 /* NSMultipleValueBinder.m in Sources */ = {isa = PBXBuildFile; fileRef = FE8D951F0CE4057300AFB060 /* NSMultipleValueBinder.m */; };
 		C88976C00EA0BF3100D0A0A2 /* NSSystemInfoPanel.m in Sources */ = {isa = PBXBuildFile; fileRef = FE8286790D34727900F7489F /* NSSystemInfoPanel.m */; };
 		C88976C10EA0BF3100D0A0A2 /* KGClipPhase.m in Sources */ = {isa = PBXBuildFile; fileRef = FE34FBC70D6F24A5008D2C1A /* KGClipPhase.m */; };
-		C88976C30EA0BF3100D0A0A2 /* VGmath.m in Sources */ = {isa = PBXBuildFile; fileRef = FE6EE27D0DB91EA8005503A1 /* VGmath.m */; };
 		C88976C40EA0BF3100D0A0A2 /* KGSurface.m in Sources */ = {isa = PBXBuildFile; fileRef = FE6EE28D0DB91FDF005503A1 /* KGSurface.m */; };
 		C88976C50EA0BF3100D0A0A2 /* VGPath.m in Sources */ = {isa = PBXBuildFile; fileRef = FE6EE2E40DB92B11005503A1 /* VGPath.m */; };
 		C88976C60EA0BF3100D0A0A2 /* KGContext_builtin.m in Sources */ = {isa = PBXBuildFile; fileRef = FE3395580DB930F4009AB3E0 /* KGContext_builtin.m */; };
@@ -1390,7 +1389,6 @@
 		FE66F0060E513AE8006C5796 /* CGImageProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = FE66F0050E513AE8006C5796 /* CGImageProperties.m */; };
 		FE6EDE340DB797D9005503A1 /* KGExceptions.h in Headers */ = {isa = PBXBuildFile; fileRef = FE6EDE330DB797D9005503A1 /* KGExceptions.h */; };
 		FE6EE27E0DB91EA8005503A1 /* VGmath.h in Headers */ = {isa = PBXBuildFile; fileRef = FE6EE27C0DB91EA8005503A1 /* VGmath.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		FE6EE27F0DB91EA8005503A1 /* VGmath.m in Sources */ = {isa = PBXBuildFile; fileRef = FE6EE27D0DB91EA8005503A1 /* VGmath.m */; };
 		FE6EE28E0DB91FDF005503A1 /* KGSurface.h in Headers */ = {isa = PBXBuildFile; fileRef = FE6EE28C0DB91FDF005503A1 /* KGSurface.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE6EE28F0DB91FDF005503A1 /* KGSurface.m in Sources */ = {isa = PBXBuildFile; fileRef = FE6EE28D0DB91FDF005503A1 /* KGSurface.m */; };
 		FE6EE2E50DB92B11005503A1 /* VGPath.h in Headers */ = {isa = PBXBuildFile; fileRef = FE6EE2E30DB92B11005503A1 /* VGPath.h */; };
@@ -2214,7 +2212,6 @@
 		FE6DC3EF0BA9A7100082AC66 /* NSDatePickerCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSDatePickerCell.m; sourceTree = "<group>"; };
 		FE6EDE330DB797D9005503A1 /* KGExceptions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGExceptions.h; sourceTree = "<group>"; };
 		FE6EE27C0DB91EA8005503A1 /* VGmath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VGmath.h; sourceTree = "<group>"; };
-		FE6EE27D0DB91EA8005503A1 /* VGmath.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VGmath.m; sourceTree = "<group>"; };
 		FE6EE28C0DB91FDF005503A1 /* KGSurface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGSurface.h; sourceTree = "<group>"; };
 		FE6EE28D0DB91FDF005503A1 /* KGSurface.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGSurface.m; sourceTree = "<group>"; };
 		FE6EE2E30DB92B11005503A1 /* VGPath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VGPath.h; sourceTree = "<group>"; };
@@ -2844,7 +2841,6 @@
 				FE6EE28C0DB91FDF005503A1 /* KGSurface.h */,
 				FE6EE28D0DB91FDF005503A1 /* KGSurface.m */,
 				FE6EE27C0DB91EA8005503A1 /* VGmath.h */,
-				FE6EE27D0DB91EA8005503A1 /* VGmath.m */,
 				FE6EDE330DB797D9005503A1 /* KGExceptions.h */,
 				FE34FBC60D6F24A5008D2C1A /* KGClipPhase.h */,
 				FE34FBC70D6F24A5008D2C1A /* KGClipPhase.m */,
@@ -4641,7 +4637,6 @@
 				C88976BF0EA0BF3100D0A0A2 /* NSMultipleValueBinder.m in Sources */,
 				C88976C00EA0BF3100D0A0A2 /* NSSystemInfoPanel.m in Sources */,
 				C88976C10EA0BF3100D0A0A2 /* KGClipPhase.m in Sources */,
-				C88976C30EA0BF3100D0A0A2 /* VGmath.m in Sources */,
 				C88976C40EA0BF3100D0A0A2 /* KGSurface.m in Sources */,
 				C88976C50EA0BF3100D0A0A2 /* VGPath.m in Sources */,
 				C88976C60EA0BF3100D0A0A2 /* KGContext_builtin.m in Sources */,
@@ -5002,7 +4997,6 @@
 				FE8286810D34727900F7489F /* NSSystemInfoPanel.m in Sources */,
 				FE34FBC90D6F24A5008D2C1A /* KGClipPhase.m in Sources */,
 				FE5C69A20D76039F00098551 /* KGDeviceContext_gdiDIBSection.m in Sources */,
-				FE6EE27F0DB91EA8005503A1 /* VGmath.m in Sources */,
 				FE6EE28F0DB91FDF005503A1 /* KGSurface.m in Sources */,
 				FE6EE2E60DB92B11005503A1 /* VGPath.m in Sources */,
 				FE33955A0DB930F4009AB3E0 /* KGContext_builtin.m in Sources */,

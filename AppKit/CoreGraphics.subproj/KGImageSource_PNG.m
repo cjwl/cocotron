@@ -543,6 +543,14 @@ unsigned char *stbi_png_load_from_memory(const unsigned char *buffer, int len, i
    int            bytesPerRow=(bitsPerPixel/(sizeof(char)*8))*width;
    NSData        *bitmap;
    
+// clamp premultiplied data, this should probably be moved into the KGImage init
+   int i;
+   for(i=0;i<bytesPerRow*height;i+=4){
+    pixels[i]=MIN(pixels[i],pixels[i+3]);
+    pixels[i+1]=MIN(pixels[i+1],pixels[i+3]);
+    pixels[i+2]=MIN(pixels[i+2],pixels[i+3]);
+   }
+
    bitmap=[[NSData alloc] initWithBytesNoCopy:pixels length:bytesPerRow*height];
 
    KGDataProvider *provider=[[KGDataProvider alloc] initWithData:bitmap];

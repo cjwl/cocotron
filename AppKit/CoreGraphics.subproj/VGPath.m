@@ -29,6 +29,59 @@
 #import "VGPath.h"
 #import "VGmath.h"
 
+static inline void		RI_SWAP(CGFloat *a, CGFloat *b)				{ CGFloat tmp = *a; *a = *b; *b = tmp; }
+static inline CGFloat	RI_RAD_TO_DEG(CGFloat a)					{ return (CGFloat)(a * 180.0f/ M_PI); }
+
+static inline CGPoint Vector2Negate(CGPoint result){
+   return CGPointMake(-result.x,-result.y);
+}
+
+static inline CGFloat Vector2Length(CGPoint v){
+   return sqrt((double)v.x*(double)v.x+(double)v.y*(double)v.y);
+}
+
+static inline BOOL Vector2IsEqual(CGPoint v1,CGPoint v2 ){
+   return (v1.x == v2.x) && (v1.y == v2.y);
+}
+
+static inline BOOL Vector2IsZero(CGPoint v){
+  return (v.x == 0.0f) && (v.y == 0.0f);
+}
+
+static inline CGPoint Vector2MultiplyByFloat(CGPoint v,CGFloat f){
+   return CGPointMake(v.x*f,v.y*f);
+}
+
+static inline CGPoint Vector2Add(CGPoint v1,CGPoint v2 ){
+   return CGPointMake(v1.x+v2.x, v1.y+v2.y);
+}
+
+//if v is a zero vector, returns a zero vector
+static inline CGPoint Vector2Normalize(CGPoint v){
+   double l = (double)v.x*(double)v.x+(double)v.y*(double)v.y;
+   
+   if( l != 0.0 )
+    l = 1.0 / sqrt(l);
+    
+   return CGPointMake((CGFloat)((double)v.x * l), (CGFloat)((double)v.y * l));
+}
+
+static inline CGPoint Vector2PerpendicularCW(CGPoint v){
+   return CGPointMake(v.y, -v.x);
+}
+
+static inline CGPoint Vector2PerpendicularCCW(CGPoint v){
+   return CGPointMake(-v.y, v.x);
+}
+
+static inline CGPoint Vector2Perpendicular(CGPoint v, BOOL cw){
+   if(cw)
+    return CGPointMake(v.y, -v.x);
+    
+   return CGPointMake(-v.y, v.x);
+}
+
+
 	enum VertexFlags
 	{
 		START_SUBPATH			= (1<<0),
@@ -39,13 +92,44 @@
 		IMPLICIT_CLOSE_SUBPATH	= (1<<5)
 	};
 
-#define RI_FLOAT_MAX FLT_MAX
+typedef struct Vertex {
+   CGPoint			userPosition;
+   CGPoint			userTangent;
+   CGFloat			pathLength;
+   unsigned int	flags;
+} Vertex;
+    
+	//data produced by tessellation
+typedef struct VertexIndex {
+   int		start;
+   int		end;
+} VertexIndex;
 
-static inline CGFloat inputFloat(CGFloat f) {
-	//this function is used for all floating point input values
-	if(RI_ISNAN(f)) return 0.0f;	//convert NaN to zero
-	return RI_CLAMP(f, -RI_FLOAT_MAX, RI_FLOAT_MAX);	//clamp +-inf to +-CGFloat max
+typedef struct  {
+   CGPoint			p;
+   CGPoint			t;
+   CGPoint			ccw;
+   CGPoint			cw;
+   CGFloat			pathLength;
+   unsigned int	flags;
+   BOOL			inDash;
+} StrokeVertex;
+    
+static inline StrokeVertex StrokeVertexInit(){
+   StrokeVertex result;
+   
+   result.p=CGPointMake(0,0);
+   result.t=CGPointMake(0,0);
+   result.ccw=CGPointMake(0,0);
+   result.cw=CGPointMake(0,0);
+   result.pathLength=0;
+   result.flags=0;
+   result.inDash=NO;
+        
+   return result;
 }
+
+#define RI_FLOAT_MAX FLT_MAX
 
 /*-------------------------------------------------------------------*//*!
 * \brief	Form a reliable normalized average of the two unit input vectors.
@@ -168,25 +252,12 @@ static CGPoint circularLerp(CGPoint t0, CGPoint t1, CGFloat ratio)
 
 @implementation VGPath
 
-static inline int VGPathGetNumCoordinates(VGPath *self){
-   return self->_numberOfPoints;
-}
-
-VGPath *VGPathAlloc(){
-   return (VGPath *)NSZoneCalloc(NULL,1,sizeof(VGPath));
-}
-
-VGPath *VGPathInit(VGPath *self,int segmentCapacityHint, int coordCapacityHint){
+-initWithKGPath:(KGPath *)path {
+   _path=[path retain];
 	self->m_userMinx=0.0f;
 	self->m_userMiny=0.0f;
 	self->m_userMaxx=0.0f;
 	self->m_userMaxy=0.0f;
-    self->_numberOfElements=0;
-    self->_capacityOfElements=(segmentCapacityHint>0)?RI_INT_MIN(segmentCapacityHint,65536):2;
-    self->_elements=NSZoneMalloc(NULL,self->_capacityOfElements*sizeof(unsigned char));
-    self->_numberOfPoints=0;
-    self->_capacityOfPoints=(coordCapacityHint>0)?RI_INT_MIN(coordCapacityHint, 65536):2;
-    self->_points=NSZoneMalloc(NULL,self->_capacityOfPoints*sizeof(CGPoint));
     self->_vertexCount=0;
     self->_vertexCapacity=2;
     self->_vertices=NSZoneMalloc(NULL,self->_vertexCapacity*sizeof(Vertex));
@@ -195,45 +266,10 @@ VGPath *VGPathInit(VGPath *self,int segmentCapacityHint, int coordCapacityHint){
     return self;
 }
 
-/*-------------------------------------------------------------------*//*!
-* \brief	VGPath destructor.
-* \param	
-* \return	
-* \note		
-*//*-------------------------------------------------------------------*/
-
-void VGPathDealloc(VGPath *self){
-   NSZoneFree(NULL,self->_elements);
-   NSZoneFree(NULL,self->_points);
+-(void)dealloc {
    NSZoneFree(NULL,self->_vertices);
    NSZoneFree(NULL,self->_segmentToVertex);
-   NSZoneFree(NULL,self);
-}
-
-/*-------------------------------------------------------------------*//*!
-* \brief	Reads a coordinate and applies scale and bias.
-* \param	
-* \return	
-*//*-------------------------------------------------------------------*/
-
-CGPoint VGPathGetCoordinate(VGPath *self,int i){
-	RI_ASSERT(i >= 0 && i < self->_numberOfPoints);
-
-    return self->_points[i];
-}
-
-/*-------------------------------------------------------------------*//*!
-* \brief	Writes a coordinate, subtracting bias and dividing out scale.
-* \param	
-* \return	
-* \note		If the coordinates do not fit into path datatype range, they
-*			will overflow silently.
-*//*-------------------------------------------------------------------*/
-
-void VGPathSetCoordinate(VGPath *self,int i, CGPoint c){
-	RI_ASSERT(i >= 0);
-    
-    self->_points[i]=c;
+   [super dealloc];
 }
 
 /*-------------------------------------------------------------------*//*!
@@ -270,160 +306,6 @@ int VGPathCountNumCoordinates(const RIuint8* segments, int numSegments)
 }
 
 /*-------------------------------------------------------------------*//*!
-* \brief	Appends user segments and data.
-* \param	
-* \return	
-* \note		if runs out of memory, throws bad_alloc and leaves the path as it was
-*//*-------------------------------------------------------------------*/
-
-void VGPathAppendData(VGPath *self,const RIuint8* segments, int numSegments, const CGPoint* data){
-	RI_ASSERT(numSegments > 0);
-	RI_ASSERT(segments && data);
-
-	//allocate new arrays
-    RIuint8 *newSegments=NULL;
-    int      newSegmentCapacity=self->_numberOfElements+numSegments;
-    
-    if(newSegmentCapacity>self->_capacityOfElements)
-     newSegments=NSZoneMalloc(NULL,newSegmentCapacity*sizeof(unsigned char));
-    
-    CGPoint *newCoordinates=NULL;
-    int      newCoordinateCount=VGPathCountNumCoordinates(segments,numSegments);
-    int      newCoordinateCapacity=self->_numberOfPoints+newCoordinateCount;
-    
-    if(newCoordinateCapacity>self->_capacityOfPoints)
-     newCoordinates=NSZoneMalloc(NULL,newCoordinateCapacity*sizeof(CGPoint));
-    
-	//if we get here, the memory allocations have succeeded
-
-	//copy old segments and append new ones
-    int i;
-    
-    if(newSegments!=NULL){
-     RIuint8 *tmp;
-
-     for(i=0;i<self->_numberOfElements;i++)
-      newSegments[i]=self->_elements[i];
-      
-     tmp=self->_elements;
-     self->_elements=newSegments;
-     self->_capacityOfElements=newSegmentCapacity;
-     newSegments=tmp;
-    }
-    for(i=0;i<numSegments;i++)
-     self->_elements[self->_numberOfElements++]=segments[i];
-    
-    if(newCoordinates!=NULL){
-     CGPoint *tmp;
-
-     for(i=0;i<self->_numberOfPoints;i++)
-      newCoordinates[i]=self->_points[i];
-      
-     tmp=self->_points;
-     self->_points=newCoordinates;
-     self->_capacityOfPoints=newCoordinateCapacity;
-     newCoordinates=tmp;
-    }
-    for(i=0;i<newCoordinateCount;i++)
-     self->_points[self->_numberOfPoints++]=CGPointMake(inputFloat(data[i].x),inputFloat(data[i].y));
-     
-	RI_ASSERT(self->_numberOfPoints == VGPathCountNumCoordinates(self->_elements,self->_numberOfElements));
-
-    if(newSegments!=NULL)
-     NSZoneFree(NULL,newSegments);
-    if(newCoordinates!=NULL)
-     NSZoneFree(NULL,newCoordinates);
-     
-	//clear tessellated path
-	self-> _vertexCount=0;
-}
-
-/*-------------------------------------------------------------------*//*!
-* \brief	Appends a path.
-* \param	
-* \return	
-* \note		if runs out of memory, throws bad_alloc and leaves the path as it was
-*//*-------------------------------------------------------------------*/
-
-void VGPathAppend(VGPath *self,VGPath* srcPath){
-	RI_ASSERT(srcPath);
-
-	if(srcPath->_numberOfElements>0)
-	{
-		//allocate new arrays
-        RIuint8 *newSegments=NULL;
-        int      newSegmentCapacity=self->_numberOfElements+srcPath->_numberOfElements;
-    
-        if(newSegmentCapacity>self->_capacityOfElements)
-            newSegments=NSZoneMalloc(NULL,newSegmentCapacity*sizeof(unsigned char));
-    
-        CGPoint *newCoordinates=NULL;
-        int      newCoordinateCapacity=self->_numberOfPoints+VGPathGetNumCoordinates(srcPath);
-    
-        if(newCoordinateCapacity>self->_capacityOfPoints)
-            newCoordinates=NSZoneMalloc(NULL,newCoordinateCapacity*sizeof(CGPoint));
-
-		//if we get here, the memory allocations have succeeded
-
-		//copy old segments and append new ones
-    int i;
-    
-    if(newSegments!=NULL){
-     RIuint8 *tmp;
-
-     for(i=0;i<self->_numberOfElements;i++)
-      newSegments[i]=self->_elements[i];
-      
-     tmp=self->_elements;
-     self->_elements=newSegments;
-     self->_capacityOfElements=newSegmentCapacity;
-     newSegments=tmp;
-    }
-    for(i=0;i<srcPath->_numberOfElements;i++)
-     self->_elements[self->_numberOfElements++]=srcPath->_elements[i];
-    
-    if(newCoordinates!=NULL){
-     CGPoint *tmp;
-
-     for(i=0;i<self->_numberOfPoints;i++)
-      newCoordinates[i]=self->_points[i];
-      
-     tmp=self->_points;
-     self->_points=newCoordinates;
-     self->_capacityOfPoints=newCoordinateCapacity;
-     newCoordinates=tmp;
-    }
-    for(i=0;i<VGPathGetNumCoordinates(srcPath);i++){
-        VGPathSetCoordinate(self,self->_numberOfPoints++, VGPathGetCoordinate(srcPath,i));
-     }
-		RI_ASSERT(self->_numberOfPoints == VGPathCountNumCoordinates(self->_elements,self->_numberOfElements) );
-
-    if(newSegments!=NULL)
-     NSZoneFree(NULL,newSegments);
-    if(newCoordinates!=NULL)
-     NSZoneFree(NULL,newCoordinates);
-	}
-
-	//clear tessellated path
-	self->_vertexCount=0;
-}
-
-/*-------------------------------------------------------------------*//*!
-* \brief	Appends a transformed copy of the source path.
-* \param	
-* \return	
-* \note		if runs out of memory, throws bad_alloc and leaves the path as it was
-*//*-------------------------------------------------------------------*/
-
-void VGPathTransform(VGPath *self,CGAffineTransform matrix){
-   int i;
-   
-   for(i=0;i<self->_numberOfPoints;i++)
-    self->_points[i]=CGPointApplyAffineTransform(self->_points[i],matrix);
-   self->_vertexCount=0;
-}
-
-/*-------------------------------------------------------------------*//*!
 * \brief	Tessellates a path for filling and appends resulting edges
 *			to a rasterizer.
 * \param	
@@ -435,7 +317,6 @@ void VGPathFill(VGPath *self,CGAffineTransform pathToSurface, KGRasterizer *rast
 
 	VGPathTessellate(self);
 
-//	try
 	{
 		CGPoint p0=CGPointMake(0,0), p1=CGPointMake(0,0);
         int     i;
@@ -451,13 +332,6 @@ void VGPathFill(VGPath *self,CGAffineTransform pathToSurface, KGRasterizer *rast
 			p0 = p1;
 		}
 	}
- #if 0
-	catch(std::bad_alloc)
-	{
-		KGRasterizerClear(rasterizer);	//remove the unfinished path
-		throw;
-	}
-#endif
 }
 
 /*-------------------------------------------------------------------*//*!
@@ -750,7 +624,6 @@ void VGPathStroke(VGPath *self,CGAffineTransform pathToSurface, KGRasterizer *ra
 	//inDash keeps track whether the last point was in dash or not
 
 	//loop vertex events
-//	try
 	{
 		CGFloat nextDash = 0.0f;
 		int d = 0;
@@ -926,13 +799,7 @@ void VGPathStroke(VGPath *self,CGAffineTransform pathToSurface, KGRasterizer *ra
 			v0 = v1;
 		}
 	}
- #if 0
-	catch(std::bad_alloc)
-	{
-		KGRasterizerClear(rasterizer);	//remove the unfinished path
-		throw;
-	}
-#endif
+
 }
 
 /*-------------------------------------------------------------------*//*!
@@ -1412,8 +1279,9 @@ void VGPathTessellate(VGPath *self){
 
 //	try
 	{
-        if(self->_segmentToVertexCapacity<self->_numberOfElements){
-         self->_segmentToVertexCapacity=self->_numberOfElements;
+        unsigned numberOfElements=[self->_path numberOfElements];
+        if(self->_segmentToVertexCapacity<numberOfElements){
+         self->_segmentToVertexCapacity=numberOfElements;
          self->_segmentToVertex=NSZoneRealloc(NULL,self->_segmentToVertex,self->_segmentToVertexCapacity*sizeof(VertexIndex));
         }
         
@@ -1430,9 +1298,12 @@ void VGPathTessellate(VGPath *self){
 		BOOL subpathHasGeometry = NO;
 		CGPathElementType prevSegment = kCGPathElementMoveToPoint;
         int i;
-		for(i=0;i<self->_numberOfElements;i++)
+        const unsigned char *elements=[self->_path elements];
+        const CGPoint *points=[self->_path points];
+        
+		for(i=0;i<numberOfElements;i++)
 		{
-			CGPathElementType segment = (CGPathElementType)self->_elements[i];
+			CGPathElementType segment = elements[i];
 			int coords = CGPathElementTypeToNumCoordinates(segment);
 			self->_segmentToVertex[i].start = self->_vertexCount;
 
@@ -1451,7 +1322,7 @@ void VGPathTessellate(VGPath *self){
 			case kCGPathElementMoveToPoint:
 			{
 				RI_ASSERT(coords == 1);
-				CGPoint c=VGPathGetCoordinate(self,coordIndex);
+				CGPoint c=points[coordIndex];
 				if(prevSegment != kCGPathElementMoveToPoint && prevSegment != kCGPathElementCloseSubpath)
 					VGPathAddEndPath(self,o, s, subpathHasGeometry, IMPLICIT_CLOSE_SUBPATH);
 				s = c;
@@ -1464,7 +1335,7 @@ void VGPathTessellate(VGPath *self){
 			case kCGPathElementAddLineToPoint:
 			{
 				RI_ASSERT(coords == 1);
-				CGPoint c=VGPathGetCoordinate(self,coordIndex);
+				CGPoint c=points[coordIndex];
 				if(VGPathAddLineTo(self,o, c, subpathHasGeometry))
 					subpathHasGeometry = YES;
 				p = c;
@@ -1475,8 +1346,8 @@ void VGPathTessellate(VGPath *self){
 			case kCGPathElementAddQuadCurveToPoint:
 			{
 				RI_ASSERT(coords == 2);
-				CGPoint c0=VGPathGetCoordinate(self,coordIndex);
-				CGPoint c1=VGPathGetCoordinate(self,coordIndex+1);
+				CGPoint c0=points[coordIndex];
+				CGPoint c1=points[coordIndex+1];
 				if(VGPathAddQuadTo(self,o, c0, c1, subpathHasGeometry))
 					subpathHasGeometry = YES;
 				p = c0;
@@ -1487,9 +1358,9 @@ void VGPathTessellate(VGPath *self){
 			case kCGPathElementAddCurveToPoint:
 			{
 				RI_ASSERT(coords == 3);
-				CGPoint c0=VGPathGetCoordinate(self,coordIndex+0);
-				CGPoint c1=VGPathGetCoordinate(self,coordIndex+1);
-				CGPoint c2=VGPathGetCoordinate(self,coordIndex+2);
+				CGPoint c0=points[coordIndex+0];
+				CGPoint c1=points[coordIndex+1];
+				CGPoint c2=points[coordIndex+2];
 				if(VGPathAddCubicTo(self,o, c0, c1, c2, subpathHasGeometry))
 					subpathHasGeometry = YES;
 				p = c1;

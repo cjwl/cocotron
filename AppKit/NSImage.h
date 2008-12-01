@@ -18,7 +18,7 @@ typedef enum {
    NSImageCacheNever,
 } NSImageCacheMode;
 
-@interface NSImage : NSObject <NSCopying> {
+@interface NSImage : NSObject <NSCopying,NSCoding> {
    NSString       *_name;
    NSSize          _size;
    NSColor        *_backgroundColor;

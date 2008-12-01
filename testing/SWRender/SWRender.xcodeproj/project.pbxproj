@@ -73,7 +73,6 @@
 		FE6EDD410DB78EA1005503A1 /* KGzlib.m in Sources */ = {isa = PBXBuildFile; fileRef = FE6EDD280DB78EA1005503A1 /* KGzlib.m */; };
 		FE6EE00B0DB7CE0B005503A1 /* KGContext_builtin.m in Sources */ = {isa = PBXBuildFile; fileRef = FE6EE00A0DB7CE0B005503A1 /* KGContext_builtin.m */; };
 		FE9552810D77CA67009B765B /* KGSurface.m in Sources */ = {isa = PBXBuildFile; fileRef = FE9552780D77CA67009B765B /* KGSurface.m */; };
-		FE9552820D77CA67009B765B /* VGmath.m in Sources */ = {isa = PBXBuildFile; fileRef = FE95527A0D77CA67009B765B /* VGmath.m */; };
 		FE9552830D77CA67009B765B /* VGPath.m in Sources */ = {isa = PBXBuildFile; fileRef = FE95527C0D77CA67009B765B /* VGPath.m */; };
 		FEBF55B90DCA0DE500CE5A1C /* KGPaint.m in Sources */ = {isa = PBXBuildFile; fileRef = FEBF55B80DCA0DE500CE5A1C /* KGPaint.m */; };
 		FEBF575B0DCA60CD00CE5A1C /* KGPaint_image.m in Sources */ = {isa = PBXBuildFile; fileRef = FEBF575A0DCA60CD00CE5A1C /* KGPaint_image.m */; };
@@ -229,7 +228,6 @@
 		FE9552770D77CA67009B765B /* KGSurface.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = KGSurface.h; path = ../../AppKit/CoreGraphics.subproj/KGSurface.h; sourceTree = "<group>"; };
 		FE9552780D77CA67009B765B /* KGSurface.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = KGSurface.m; path = ../../AppKit/CoreGraphics.subproj/KGSurface.m; sourceTree = "<group>"; };
 		FE9552790D77CA67009B765B /* VGmath.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = VGmath.h; path = ../../AppKit/CoreGraphics.subproj/VGmath.h; sourceTree = "<group>"; };
-		FE95527A0D77CA67009B765B /* VGmath.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = VGmath.m; path = ../../AppKit/CoreGraphics.subproj/VGmath.m; sourceTree = "<group>"; };
 		FE95527B0D77CA67009B765B /* VGPath.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = VGPath.h; path = ../../AppKit/CoreGraphics.subproj/VGPath.h; sourceTree = "<group>"; };
 		FE95527C0D77CA67009B765B /* VGPath.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = VGPath.m; path = ../../AppKit/CoreGraphics.subproj/VGPath.m; sourceTree = "<group>"; };
 		FEBF55B70DCA0DE500CE5A1C /* KGPaint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KGPaint.h; path = ../../AppKit/CoreGraphics.subproj/KGPaint.h; sourceTree = "<group>"; };
@@ -396,7 +394,6 @@
 				FE9552770D77CA67009B765B /* KGSurface.h */,
 				FE9552780D77CA67009B765B /* KGSurface.m */,
 				FE9552790D77CA67009B765B /* VGmath.h */,
-				FE95527A0D77CA67009B765B /* VGmath.m */,
 				FE6EDE380DB797FA005503A1 /* KGExceptions.h */,
 				FE6EDCF70DB78EA1005503A1 /* KGPDFArray.h */,
 				FE6EDCF80DB78EA1005503A1 /* KGPDFArray.m */,
@@ -542,7 +539,6 @@
 			files = (
 				8D11072D0486CEB800E47090 /* main.m in Sources */,
 				FE9552810D77CA67009B765B /* KGSurface.m in Sources */,
-				FE9552820D77CA67009B765B /* VGmath.m in Sources */,
 				FE9552830D77CA67009B765B /* VGPath.m in Sources */,
 				FE1F93630D7EF19900969491 /* KGImageView.m in Sources */,
 				FE1F937A0D7EF1F800969491 /* KGRenderController.m in Sources */,

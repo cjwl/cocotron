@@ -8,6 +8,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/NSSocketPort.h>
 #import <Foundation/NSRaise.h>
+#import <Foundation/NSStream.h>
 
 @implementation NSSocketPort
 
@@ -60,5 +61,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
   NSUnimplementedMethod();
   return 0;
 }
+
+-(void)stream:(NSStream *)stream handleEvent:(NSStreamEvent)streamEvent {
+  NSUnimplementedMethod();
+}
+
 
 @end

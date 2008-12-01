@@ -146,7 +146,10 @@ static NSImageRep *imageRepForIcon(SHFILEINFO * fileInfo) {
    if(SHGetFileInfo(pathCString,0,&fileInfo,sizeof(SHFILEINFO),SHGFI_ICON|SHGFI_LARGEICON))
     [icon addRepresentation:imageRepForIcon(&fileInfo)];
 
-   return ([[icon representations] count]?icon:nil);
+   if([[icon representations] count]==0)
+    return nil;
+   
+   return icon;
 }
 
 @end

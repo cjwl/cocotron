@@ -402,12 +402,16 @@ static int numberOfPointsForOperator(int op){
    CGPathAddArcToPoint(_path,NULL,point.x,point.y,toPoint.x,toPoint.y,radius);
 }
 
+static inline CGFloat degreesToRadians(CGFloat degrees){
+   return degrees*M_PI/180.0;
+}
+
 -(void)appendBezierPathWithArcWithCenter:(NSPoint)center radius:(float)radius startAngle:(float)startAngle endAngle:(float)endAngle {
-   CGPathAddArc(_path,NULL,center.x,center.y,radius,RI_DEG_TO_RAD(startAngle),RI_DEG_TO_RAD(endAngle),YES);
+   CGPathAddArc(_path,NULL,center.x,center.y,radius,degreesToRadians(startAngle),degreesToRadians(endAngle),YES);
 }
 
 -(void)appendBezierPathWithArcWithCenter:(NSPoint)center radius:(float)radius startAngle:(float)startAngle endAngle:(float)endAngle clockwise:(BOOL)clockwise {
-   CGPathAddArc(_path,NULL,center.x,center.y,radius,RI_DEG_TO_RAD(startAngle),RI_DEG_TO_RAD(endAngle),clockwise);
+   CGPathAddArc(_path,NULL,center.x,center.y,radius,degreesToRadians(startAngle),degreesToRadians(endAngle),clockwise);
 }
 
 -(void)appendBezierPathWithGlyph:(NSGlyph)glyph inFont:(NSFont *)font {

@@ -142,59 +142,6 @@ BOOL _isAvailable=NO;
    [[self currentState] setDeviceSpaceCTM:flip];
 }
 
-static void applyPath(void *info,const CGPathElement *element) {
-   VGPath *vgPath=( VGPath *)info;
-   CGPoint *points=element->points;
-      
-   switch(element->type){
-
-    case kCGPathElementMoveToPoint:{
-      RIuint8 segment[1]={kCGPathElementMoveToPoint};
-       
-       
-      VGPathAppendData(vgPath,segment,1,points);
-     }
-     break;
-       
-    case kCGPathElementAddLineToPoint:{
-      RIuint8 segment[1]={kCGPathElementAddLineToPoint};
-        
-      VGPathAppendData(vgPath,segment,1,points);
-     }
-     break;
-
-    case kCGPathElementAddCurveToPoint:{
-      RIuint8 segment[1]={kCGPathElementAddCurveToPoint};
-        
-      VGPathAppendData(vgPath,segment,1,points);
-     }
-     break;
-
-    case kCGPathElementAddQuadCurveToPoint:{
-      RIuint8 segment[1]={kCGPathElementAddQuadCurveToPoint};
-
-      VGPathAppendData(vgPath,segment,1,points);
-     }
-     break;
-
-    case kCGPathElementCloseSubpath:{
-      RIuint8 segment[1]={kCGPathElementCloseSubpath};
-       
-      VGPathAppendData(vgPath,segment,1,points);
-     }
-     break;
-   }
-}
-
--(VGPath *)buildDeviceSpacePath:(KGPath *)path {
-   
-   VGPath *vgPath=VGPathInit(VGPathAlloc(),1,1);
-   
-   [path applyWithInfo:vgPath function:applyPath];
-
-   return vgPath;
-}
-
 -(void)deviceClipReset {
    KGRasterizerSetViewport(self,0,0,KGImageGetWidth(_surface),KGImageGetHeight(_surface));
 }
@@ -227,7 +174,6 @@ static KGPaint *paintFromColor(KGColor *color){
 }
 
 -(void)drawPath:(CGPathDrawingMode)drawingMode {
-   VGPath *vgPath=[self buildDeviceSpacePath:_path];
    KGGraphicsState *gState=[self currentState];
    
 //		KGRasterizeSetMask(context->m_masking ? context->getMask() : NULL);
@@ -240,8 +186,8 @@ static KGPaint *paintFromColor(KGColor *color){
  
    CGAffineTransform userToSurfaceMatrix=gState->_deviceSpaceTransform;
 
-   VGPathTransform(vgPath,CGAffineTransformInvert(gState->_userSpaceTransform));
-
+   [_path applyTransform:CGAffineTransformInvert(gState->_userSpaceTransform)];
+   VGPath *vgPath=[[VGPath alloc] initWithKGPath:_path];
 
    if(drawingMode!=kCGPathStroke){
     KGPaint *paint=paintFromColor(gState->_fillColor);
@@ -249,7 +195,8 @@ static KGPaint *paintFromColor(KGColor *color){
     [paint release];
     
     CGAffineTransform surfaceToPaintMatrix =userToSurfaceMatrix;//context->m_pathUserToSurface * context->m_fillPaintToUser;
-    if(CGAffineTransformInplaceInvert(&surfaceToPaintMatrix)){
+    
+    surfaceToPaintMatrix=CGAffineTransformInvert(surfaceToPaintMatrix);
      KGPaintSetSurfaceToPaintMatrix(paint,surfaceToPaintMatrix);
 
      VGPathFill(vgPath,userToSurfaceMatrix,self);
@@ -257,7 +204,6 @@ static KGPaint *paintFromColor(KGColor *color){
      VGFillRuleMask fillRule=(drawingMode==kCGPathFill || drawingMode==kCGPathFillStroke)?VG_NON_ZERO:VG_EVEN_ODD;
                 
      KGRasterizerFill(self,fillRule);
-    }
    }
 
    if(drawingMode>=kCGPathStroke){
@@ -267,7 +213,8 @@ static KGPaint *paintFromColor(KGColor *color){
      [paint release];
      
      CGAffineTransform surfaceToPaintMatrix=userToSurfaceMatrix;// = context->m_pathUserToSurface * context->m_strokePaintToUser;
-     if(CGAffineTransformInplaceInvert(&surfaceToPaintMatrix)){
+
+     surfaceToPaintMatrix=CGAffineTransformInvert(surfaceToPaintMatrix);
       KGPaintSetSurfaceToPaintMatrix(paint,surfaceToPaintMatrix);
 
       KGRasterizerClear(self);
@@ -275,11 +222,10 @@ static KGPaint *paintFromColor(KGColor *color){
       VGPathStroke(vgPath,userToSurfaceMatrix, self, gState->_dashLengths,gState->_dashLengthsCount, gState->_dashPhase, YES /* context->m_strokeDashPhaseReset ? YES : NO*/,
         gState->_lineWidth, gState->_lineCap,  gState->_lineJoin, RI_MAX(gState->_miterLimit, 1.0f));
       KGRasterizerFill(self,VG_NON_ZERO);
-     }
     }
    }
 
-   VGPathDealloc(vgPath);
+   [vgPath release];
    KGRasterizerClear(self);
    [_path reset];
 }
@@ -366,7 +312,9 @@ xform=CGAffineTransformConcat(i2u,xform);
 
 		CGAffineTransform surfaceToImageMatrix = imageUserToSurface;
 		CGAffineTransform surfaceToPaintMatrix = CGAffineTransformConcat(imageUserToSurface,fillPaintToUser);
-		if(CGAffineTransformInplaceInvert(&surfaceToImageMatrix) && CGAffineTransformInplaceInvert(&surfaceToPaintMatrix)){
+        
+        surfaceToImageMatrix=CGAffineTransformInvert(surfaceToImageMatrix);
+        surfaceToPaintMatrix=CGAffineTransformInvert(surfaceToPaintMatrix);
 			KGPaintSetSurfaceToPaintMatrix(paint,surfaceToPaintMatrix);
 			KGPaintSetSurfaceToPaintMatrix(imagePaint,surfaceToImageMatrix);
 
@@ -375,7 +323,7 @@ xform=CGAffineTransformConcat(i2u,xform);
 			KGRasterizerAddEdge(self,p2, p3);
 			KGRasterizerAddEdge(self,p3, p0);
 			KGRasterizerFill(self,VG_EVEN_ODD);
-		}
+
         KGRasterizeSetPaint(self,nil);
         [paint release];
         [imagePaint release];
@@ -995,7 +943,7 @@ void KGRasterizerFill(KGRasterizer *self,int fillRuleMask) {
        
       windptr++;
      }
-      
+     
      accum+=increase[scanx];
      increase[scanx]=INT_MAX;
      

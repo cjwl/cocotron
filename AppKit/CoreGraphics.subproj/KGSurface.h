@@ -77,6 +77,10 @@ static inline KGIntRect KGIntRectInit(int x,int y,int width,int height) {
    return result;
 }
 
+#define RI_INT32_MAX  (0x7fffffff)
+#define RI_INT32_MIN  (-0x7fffffff-1)
+static inline int RI_INT_ADDSATURATE(int a, int b)	{ RI_ASSERT(b >= 0); int r = a + b; return (r >= a) ? r : RI_INT32_MAX; }
+
 static inline KGIntRect KGIntRectIntersect(KGIntRect self,KGIntRect other) {
 		if(self.width >= 0 && other.width >= 0 && self.height >= 0 && other.height >= 0)
 		{

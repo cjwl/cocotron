@@ -15,7 +15,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -initWithSendPort:(NSPort *)sendPort receivePort:(NSPort *)receivePort components:(NSArray *)components {
    _sendPort=[sendPort retain];
    _receivePort=[receivePort retain];
-   _components=[components retain];
+   _components=[[NSMutableArray alloc] initWithArray:components];
    _msgid=0;
    return self;
 }
@@ -48,8 +48,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(BOOL)sendBeforeDate:(NSDate *)date {
-   NSUnimplementedMethod();
-   return NO;
+   return [_sendPort sendBeforeDate:date msgid:_msgid components:_components from:_receivePort reserved:0];
 }
 
 @end

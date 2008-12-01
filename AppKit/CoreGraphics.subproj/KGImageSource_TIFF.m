@@ -95,6 +95,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     return nil;
    }
 
+// clamp premultiplied data, this should probably be moved into the KGImage init
+   int i;
+   for(i=0;i<bytesPerRow*height;i+=4){
+    bytes[i]=MIN(bytes[i],bytes[i+3]);
+    bytes[i+1]=MIN(bytes[i+1],bytes[i+3]);
+    bytes[i+2]=MIN(bytes[i+2],bytes[i+3]);
+   }
+
    bitmap=[[NSData alloc] initWithBytesNoCopy:bytes length:bytesPerRow*height];
 
    KGDataProvider *provider=[[KGDataProvider alloc] initWithData:bitmap];

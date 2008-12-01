@@ -797,7 +797,6 @@ static void sourceOverImage(KGImage *image,KGRGBA8888 *resultBGRX,int width,int 
      for(x=0;x<width;x++)
       span[x]=direct[x];
     }
-        
     KGBlendSpanNormal_8888_coverage(span,combine,coverage,width);
    }
 }
