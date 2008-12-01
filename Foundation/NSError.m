@@ -14,6 +14,10 @@ NSString *NSPOSIXErrorDomain=@"NSPOSIXErrorDomain";
 NSString *NSWINSOCKErrorDomain=@"NSWINSOCKErrorDomain";
 NSString *NSUnderlyingErrorKey=@"NSUnderlyingErrorKey";
 NSString *NSLocalizedDescriptionKey=@"NSLocalizedDescriptionKey";
+NSString *NSLocalizedFailureReasonErrorKey=@"NSLocalizedFailureReasonErrorKey";
+NSString *NSLocalizedRecoveryOptionsErrorKey=@"NSLocalizedRecoveryOptionsErrorKey";
+NSString *NSLocalizedRecoverySuggestionErrorKey=@"NSLocalizedRecoverySuggestionErrorKey";
+NSString *NSRecoveryAttempterErrorKey=@"NSRecoveryAttempterErrorKey";
 
 @implementation NSError
 
@@ -60,28 +64,33 @@ NSString *NSLocalizedDescriptionKey=@"NSLocalizedDescriptionKey";
 }
 
 -(NSString *)localizedDescription {
-// lame
-   return [NSString stringWithFormat:@"NSError %@ %d %@",_domain,_code,_userInfo];
+   NSString *localizedDescription;
+
+   localizedDescription = [_userInfo objectForKey:NSLocalizedDescriptionKey];
+   if (localizedDescription != nil)
+      return localizedDescription;
+
+   return [NSString stringWithFormat:@"%@ (%@ error %d)", NSLocalizedString(@"The operation could not be completed.", @"Default NSError description"), _domain, _code];
 }
 
 -(NSString *)localizedFailureReason {
-   NSUnimplementedMethod();
-   return nil;
+   return [_userInfo objectForKey:NSLocalizedFailureReasonErrorKey];
 }
 
 -(NSArray *)localizedRecoveryOptions {
-   NSUnimplementedMethod();
-   return nil;
+   return [_userInfo objectForKey:NSLocalizedRecoveryOptionsErrorKey];
 }
 
 -(NSString *)localizedRecoverySuggestion {
-   NSUnimplementedMethod();
-   return nil;
+   return [_userInfo objectForKey:NSLocalizedRecoverySuggestionErrorKey];
 }
 
--recoveryAttempter {
-   NSUnimplementedMethod();
-   return nil;
+-(id)recoveryAttempter {
+   return [_userInfo objectForKey:NSRecoveryAttempterErrorKey];
+}
+
+-(id)description {
+   return [NSString stringWithFormat:@"Error Domain=%@ Code=%d UserInfo=%p %@", _domain, _code, _userInfo, [self localizedDescription]];
 }
 
 @end
