@@ -797,7 +797,70 @@ static void sourceOverImage(KGImage *image,KGRGBA8888 *resultBGRX,int width,int 
      for(x=0;x<width;x++)
       span[x]=direct[x];
     }
+    
     KGBlendSpanNormal_8888_coverage(span,combine,coverage,width);
+   }
+}
+
+void CGGraphicsSourceOver_rgba32_onto_bgrx32(unsigned char *sourceRGBA,unsigned char *resultBGRX,int width,int height,float fraction) {
+   int sourceIndex=0;
+   int sourceLength=width*height*4;
+   int destinationReadIndex=0;
+   int destinationWriteIndex=0;
+
+   fraction *= 256.0/255.0;
+   while(sourceIndex<sourceLength){
+    unsigned srcr=sourceRGBA[sourceIndex++];
+    unsigned srcg=sourceRGBA[sourceIndex++];
+    unsigned srcb=sourceRGBA[sourceIndex++];
+    unsigned srca=sourceRGBA[sourceIndex++]*fraction;
+
+    unsigned dstb=resultBGRX[destinationReadIndex++];
+    unsigned dstg=resultBGRX[destinationReadIndex++];
+    unsigned dstr=resultBGRX[destinationReadIndex++];
+    unsigned dsta=256-srca;
+
+    destinationReadIndex++;
+
+    dstr=(srcr*srca+dstr*dsta)>>8;
+    dstg=(srcg*srca+dstg*dsta)>>8;
+    dstb=(srcb*srca+dstb*dsta)>>8;
+
+    resultBGRX[destinationWriteIndex++]=dstb;
+    resultBGRX[destinationWriteIndex++]=dstg;
+    resultBGRX[destinationWriteIndex++]=dstr;
+    destinationWriteIndex++; // skip x
+   }
+}
+
+void CGGraphicsSourceOver_bgra32_onto_bgrx32(unsigned char *sourceBGRA,unsigned char *resultBGRX,int width,int height,float fraction) {
+   int sourceIndex=0;
+   int sourceLength=width*height*4;
+   int destinationReadIndex=0;
+   int destinationWriteIndex=0;
+
+   fraction *= 256.0/255.0;
+   while(sourceIndex<sourceLength){
+    unsigned srcb=sourceBGRA[sourceIndex++];
+    unsigned srcg=sourceBGRA[sourceIndex++];
+    unsigned srcr=sourceBGRA[sourceIndex++];
+    unsigned srca=sourceBGRA[sourceIndex++]*fraction;
+
+    unsigned dstb=resultBGRX[destinationReadIndex++];
+    unsigned dstg=resultBGRX[destinationReadIndex++];
+    unsigned dstr=resultBGRX[destinationReadIndex++];
+    unsigned dsta=256-srca;
+
+    destinationReadIndex++;
+
+    dstr=(srcr*srca+dstr*dsta)>>8;
+    dstg=(srcg*srca+dstg*dsta)>>8;
+    dstb=(srcb*srca+dstb*dsta)>>8;
+
+    resultBGRX[destinationWriteIndex++]=dstb;
+    resultBGRX[destinationWriteIndex++]=dstg;
+    resultBGRX[destinationWriteIndex++]=dstr;
+    destinationWriteIndex++; // skip x
    }
 }
 
@@ -845,8 +908,15 @@ static void sourceOverImage(KGImage *image,KGRGBA8888 *resultBGRX,int width,int 
 
    BitBlt(combineDC,0,0,combineWidth,combineHeight,sourceDC,point.x,point.y,SRCCOPY);
    GdiFlush();
-
+   
+#if 1
+   if((CGImageGetAlphaInfo(image)==kCGImageAlphaPremultipliedFirst) && ([image bitmapInfo]&kCGBitmapByteOrderMask)==kCGBitmapByteOrder32Little)
+    CGGraphicsSourceOver_bgra32_onto_bgrx32(imageRGBA,(unsigned char *)combineBGRX,width,height,fraction);
+   else
+    CGGraphicsSourceOver_rgba32_onto_bgrx32(imageRGBA,(unsigned char *)combineBGRX,width,height,fraction);
+#else
    sourceOverImage(image,combineBGRX,width,height,fraction);
+#endif
 
    BitBlt(sourceDC,point.x,point.y,combineWidth,combineHeight,combineDC,0,0,SRCCOPY);
    DeleteObject(bitmap);

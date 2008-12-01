@@ -83,10 +83,11 @@ id NSApp=nil;
    if(image!=nil){
     NSSize    imageSize=[image size];
     NSWindow *splash=[[NSWindow alloc] initWithContentRect:NSMakeRect(0,0,imageSize.width,imageSize.height) styleMask:NSBorderlessWindowMask backing:NSBackingStoreBuffered defer:NO];
-    NSImageView *view=[[[NSImageView alloc] initWithFrame:NSMakeRect(0,0,imageSize.width,imageSize.height)] autorelease];
+    NSImageView *view=[[NSImageView alloc] initWithFrame:NSMakeRect(0,0,imageSize.width,imageSize.height)];
     
     [view setImage:image];
     [splash setContentView:view];
+    [view release];
     [splash setReleasedWhenClosed:YES];
     [splash center];
     [splash orderFront:nil];

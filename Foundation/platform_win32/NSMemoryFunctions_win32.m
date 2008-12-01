@@ -6,7 +6,6 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
-// Original - Christopher Lloyd <cjwl@objc.net>
 #import <Foundation/NSPlatform.h>
 #import <Foundation/NSDebug.h>
 #import <Foundation/NSZombieObject.h>
@@ -89,34 +88,22 @@ NSZone *NSZoneFromPointer(void *pointer){
 }
 
 void *NSZoneCalloc(NSZone *zone,unsigned numElems,unsigned numBytes){
-   if(zone==NULL)
-    zone=GetProcessHeap();
-
-   return HeapAlloc(zone,HEAP_ZERO_MEMORY,numElems*numBytes);
+   return calloc(numElems,numBytes);
 }
 
 void NSZoneFree(NSZone *zone,void *pointer){
-   if(zone==NULL)
-    zone=GetProcessHeap();
-
-   HeapFree(zone,0,pointer);
+   free(pointer);
 }
 
 void *NSZoneMalloc(NSZone *zone,unsigned size){
-   if(zone==NULL)
-    zone=GetProcessHeap();
-
-   return HeapAlloc(zone,0,size);
+   return malloc(size);
 }
 
 void *NSZoneRealloc(NSZone *zone,void *pointer,unsigned size){
-   if(zone==NULL)
-    zone=GetProcessHeap();
-
    if(pointer==NULL)
-    return HeapAlloc(zone,0,size);
+    return malloc(size);
    else
-    return HeapReAlloc(zone,0,pointer,size);
+    return realloc(pointer,size);
 }
 
 
