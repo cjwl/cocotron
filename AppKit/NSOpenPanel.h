@@ -31,4 +31,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)setCanChooseDirectories:(BOOL)flag;
 -(void)setCanChooseFiles:(BOOL)flag;
 
+- (void)beginSheetForDirectory:(NSString *)path
+                          file:(NSString *)name 
+                         types:(NSArray *)fileTypes
+                modalForWindow:(NSWindow *)docWindow
+                 modalDelegate:(id)modalDelegate 
+                didEndSelector:(SEL)didEndSelector 
+                   contextInfo:(void *)contextInfo;
+
 @end
