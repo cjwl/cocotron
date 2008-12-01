@@ -51,7 +51,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     
 -initWithString:(NSString *)string calendarFormat:(NSString *)format locale:(NSDictionary *)locale {
    NSMutableString* mu=[[string mutableCopy] autorelease];
-   [mu replaceCharactersInRange:[mu rangeOfString:@"T"] withString:@" "];
+   
+	if ([mu rangeOfString:@"T"].location != NSNotFound)
+ 	  [mu replaceCharactersInRange:[mu rangeOfString:@"T"] withString:@" "];
    
     NSDateFormatter *dateFormatter = [[[NSDateFormatter allocWithZone:NULL] initWithDateFormat:format allowNaturalLanguage:YES locale:locale] autorelease];
     NSString *error;
