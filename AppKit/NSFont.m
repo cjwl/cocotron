@@ -6,7 +6,6 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
-// Original - Christopher Lloyd <cjwl@objc.net>
 #import <AppKit/NSFont.h>
 #import <AppKit/NSFontFamily.h>
 #import <AppKit/NSWindow.h>
@@ -14,6 +13,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <ApplicationServices/ApplicationServices.h>
 #import <AppKit/NSDisplay.h>
 #import <AppKit/NSNibKeyedUnarchiver.h>
+#import <AppKit/KGContext.h>
 
 FOUNDATION_EXPORT char *NSUnicodeToSymbol(const unichar *characters,unsigned length,
   BOOL lossy,unsigned *resultLength,NSZone *zone);
@@ -216,7 +216,7 @@ static NSFont **_fontCache=NULL;
 
    [isa addFontToCache:self];
    
-   _kgFont=[[KGFontState alloc] initWithName:_name size:_pointSize];
+   _kgFontState=[[KGFontState alloc] initWithName:_name size:_pointSize];
 
    return self;
 }
@@ -225,7 +225,7 @@ static NSFont **_fontCache=NULL;
    [isa removeFontFromCache:self];
 
    [_name release];
-   [_kgFont release];
+   [_kgFontState release];
    [super dealloc];
 }
 
@@ -343,7 +343,7 @@ arrayWithArray:[_name componentsSeparatedByString:blank]];
 }
 
 -(NSRect)boundingRectForFont {
-   return [_kgFont boundingRect];
+   return [_kgFontState boundingRect];
 }
 
 -(NSRect)boundingRectForGlyph:(NSGlyph)glyph {
@@ -356,7 +356,7 @@ arrayWithArray:[_name componentsSeparatedByString:blank]];
 }
 
 -(unsigned)numberOfGlyphs {
-   return [_kgFont numberOfGlyphs];
+   return [_kgFontState numberOfGlyphs];
 }
 
 -(NSGlyph)glyphWithName:(NSString *)name {
@@ -365,61 +365,61 @@ arrayWithArray:[_name componentsSeparatedByString:blank]];
 }
 
 -(BOOL)glyphIsEncoded:(NSGlyph)glyph {
-   return [_kgFont glyphIsEncoded:glyph];
+   return [_kgFontState glyphIsEncoded:glyph];
 }
 
 -(NSSize)advancementForGlyph:(NSGlyph)glyph {
-   return [_kgFont advancementForGlyph:glyph];
+   return [_kgFontState advancementForGlyph:glyph];
 }
 
 -(NSSize)maximumAdvancement {
-   return [_kgFont maximumAdvancement];
+   return [_kgFontState maximumAdvancement];
 }
 
 -(float)underlinePosition {
-   return [_kgFont underlinePosition];
+   return [_kgFontState underlinePosition];
 }
 
 -(float)underlineThickness {
-   return [_kgFont underlineThickness];
+   return [_kgFontState underlineThickness];
 }
 
 -(float)ascender {
-   return [_kgFont ascender];
+   return [_kgFontState ascender];
 }
 
 -(float)descender {
-   return [_kgFont descender];
+   return [_kgFontState descender];
 }
 
 -(float)leading {
-   return [_kgFont leading];
+   return [_kgFontState leading];
 }
 
 -(float)defaultLineHeightForFont {
-   return [_kgFont ascender]-[_kgFont descender]+[_kgFont leading];
+   return [_kgFontState ascender]-[_kgFontState descender]+[_kgFontState leading];
 }
 
 -(BOOL)isFixedPitch {
-   return [_kgFont isFixedPitch];
+   return [_kgFontState isFixedPitch];
 }
 
 -(float)italicAngle {
-   return [_kgFont italicAngle];
+   return [_kgFontState italicAngle];
 }
 
 -(float)xHeight {
-   return [_kgFont xHeight];
+   return [_kgFontState xHeight];
 }
 
 -(float)capHeight {
-   return [_kgFont capHeight];
+   return [_kgFontState capHeight];
 }
 
 -(void)setInContext:(NSGraphicsContext *)context {
    CGContextRef cgContext=[context graphicsPort];
    
-   CGContextSetFont(cgContext,_kgFont);
+   [cgContext setFontState:_kgFontState];
 
 // FIX, should check the focusView in the context instead of NSView's
    if([[NSView focusView] isFlipped]){
@@ -434,7 +434,7 @@ arrayWithArray:[_name componentsSeparatedByString:blank]];
 }
 
 -(NSPoint)positionOfGlyph:(NSGlyph)current precededByGlyph:(NSGlyph)previous isNominal:(BOOL *)isNominalp {
-   return [_kgFont positionOfGlyph:current precededByGlyph:previous isNominal:isNominalp];
+   return [_kgFontState positionOfGlyph:current precededByGlyph:previous isNominal:isNominalp];
 }
 
 -(void)getAdvancements:(NSSize *)advancements forGlyphs:(const NSGlyph *)glyphs count:(unsigned)count {
@@ -444,11 +444,11 @@ arrayWithArray:[_name componentsSeparatedByString:blank]];
    for(i=0;i<count;i++)
     cgGlyphs[i]=glyphs[i];
     
-   [_kgFont getAdvancements:advancements forGlyphs:cgGlyphs count:count];
+   [_kgFontState getAdvancements:advancements forGlyphs:cgGlyphs count:count];
 }
 
 -(void)getAdvancements:(NSSize *)advancements forPackedGlyphs:(const void *)packed length:(unsigned)length {
-   [_kgFont getAdvancements:advancements forGlyphs:packed count:length];
+   [_kgFontState getAdvancements:advancements forGlyphs:packed count:length];
 }
 
 -(void)getBoundingRects:(NSRect *)rects forGlyphs:(const NSGlyph *)glyphs count:(unsigned)count {
@@ -459,7 +459,7 @@ arrayWithArray:[_name componentsSeparatedByString:blank]];
    CGGlyph  cgGlyphs[length];
    int      i;
    
-   [_kgFont getGlyphs:cgGlyphs forCharacters:characters length:length];
+   [_kgFontState getGlyphs:cgGlyphs forCharacters:characters length:length];
    
    for(i=0;i<length;i++){
     unichar check=characters[i];

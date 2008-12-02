@@ -296,8 +296,8 @@ static inline KGGraphicsState *currentState(KGContext *self){
 -(void)restoreGState {
    [_stateStack removeLastObject];
 
-   KGFontState *font=[[self currentState] font];
-   [self deviceSelectFontWithName:[font name] pointSize:[font pointSize]];
+   KGFontState *fontState=[[self currentState] fontState];
+   [self deviceSelectFontWithName:[fontState name] pointSize:[fontState pointSize]];
 
    NSArray *phases=[[self currentState] clipPhases];
    int      i,count=[phases count];
@@ -629,26 +629,26 @@ static inline KGGraphicsState *currentState(KGContext *self){
    [currentState(self) setTextDrawingMode:textMode];
 }
 
--(KGFontState *)currentFont {
-   return [currentState(self) font];
+-(KGFontState *)currentFontState {
+   return [currentState(self) fontState];
 }
 
--(void)setFont:(KGFontState *)font {
-   [currentState(self) setFont:font];
-   [self deviceSelectFontWithName:[font name] pointSize:[font pointSize] ];
+-(void)setFontState:(KGFontState *)fontState {
+   [currentState(self) setFontState:fontState];
+   [self deviceSelectFontWithName:[fontState name] pointSize:[fontState pointSize] ];
 }
 
 -(void)setFontSize:(float)size {
-   NSString *name=[[currentState(self) font] name];
-   KGFontState   *font=[[[KGFontState alloc] initWithName:name size:size] autorelease];
+   NSString *name=[[currentState(self) fontState] name];
+   KGFontState   *fontState=[[[KGFontState alloc] initWithName:name size:size] autorelease];
    
-   [self setFont:font];
+   [self setFontState:fontState];
 }
 
 -(void)selectFontWithName:(const char *)name size:(float)size encoding:(int)encoding {
-   KGFontState *font=[[[KGFontState alloc] initWithName:[NSString stringWithCString:name] size:size] autorelease];
+   KGFontState *fontState=[[[KGFontState alloc] initWithName:[NSString stringWithCString:name] size:size] autorelease];
    
-   [self setFont:font];
+   [self setFontState:fontState];
 }
 
 -(void)setShouldSmoothFonts:(BOOL)yesOrNo {
@@ -818,7 +818,7 @@ static inline KGGraphicsState *currentState(KGContext *self){
    for(i=0;i<length;i++)
     unicode[i]=text[i];
     
-   [[currentState(self) font] getGlyphs:glyphs forCharacters:unicode length:length];
+   [[currentState(self) fontState] getGlyphs:glyphs forCharacters:unicode length:length];
    [self showGlyphs:glyphs count:length];
 }
 

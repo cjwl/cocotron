@@ -137,7 +137,7 @@
 -(void)synchronizeFontCTM
 {
 	CGAffineTransform ctm=[[self currentState] textMatrix];
-   id font=[[self currentState] font];
+   id font=[[self currentState] fontState];
 	float size=12.0;
 	if(font)
 		size=[font pointSize];
@@ -366,7 +366,7 @@
 }
 
 -(void)showGlyphs:(const CGGlyph *)glyphs count:(unsigned)count {
-   TTFFont *font=(TTFFont*)[[self currentState] font];
+   TTFFont *font=(TTFFont*)[[self currentState] fontState];
    int i;
    cairo_glyph_t *cg=alloca(sizeof(cairo_glyph_t)*count);
    BOOL nominal;

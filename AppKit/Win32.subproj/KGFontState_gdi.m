@@ -1,20 +1,20 @@
-#import "KGFont_gdi.h"
+#import "KGFontState_gdi.h"
 #import "KGContext_gdi.h"
 #import "Win32Display.h"
 #import "Win32Font.h"
 
-@interface KGFontState(KGFont_gdi)
+@interface KGFontState(KGFontState_gdi)
 @end
 
-@implementation KGFontState(KGFont_gdi)
+@implementation KGFontState(KGFontState_gdi)
 
 +allocWithZone:(NSZone *)zone {
-   return NSAllocateObject([KGFont_gdi class],0,NULL);
+   return NSAllocateObject([KGFontState_gdi class],0,NULL);
 }
 
 @end
 
-@implementation KGFont_gdi
+@implementation KGFontState_gdi
 
 #define MAXUNICHAR 0xFFFF
 

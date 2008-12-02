@@ -311,7 +311,7 @@ static RECT NSRectToRECT(NSRect rect) {
    SetTextColor(_dc,COLORREFFromColor([self fillColor]));
    ExtTextOutW(_dc,point.x,point.y,ETO_GLYPH_INDEX,NULL,(void *)glyphs,count,NULL);
    
-   NSSize advancement=[[self currentFont] advancementForNominalGlyphs:glyphs count:count];
+   NSSize advancement=[[self currentFontState] advancementForNominalGlyphs:glyphs count:count];
    
    [self currentState]->_textTransform.tx+=advancement.width;
    [self currentState]->_textTransform.ty+=advancement.height;

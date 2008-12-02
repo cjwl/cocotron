@@ -27,7 +27,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    _clipPhases=[NSMutableArray new];
    _strokeColor=[[KGColor alloc] init];
    _fillColor=[[KGColor alloc] init];
-   _font=nil;
+   _fontState=nil;
    _patternPhase=CGSizeMake(0,0);
    _lineWidth=1.0;
    _miterLimit=10;
@@ -46,7 +46,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [_clipPhases release];
    [_strokeColor release];
    [_fillColor release];
-   [_font release];
+   [_fontState release];
    if(_dashLengths!=NULL)
     NSZoneFree(NULL,_dashLengths);
    [_shadowColor release];
@@ -60,7 +60,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    copy->_clipPhases=[[NSMutableArray alloc] initWithArray:_clipPhases];
    copy->_strokeColor=[_strokeColor copyWithZone:zone];
    copy->_fillColor=[_fillColor copyWithZone:zone];
-   copy->_font=[_font retain];
+   copy->_fontState=[_fontState retain];
    if(_dashLengths!=NULL){
     int i;
     
@@ -217,14 +217,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    _textDrawingMode=textMode;
 }
 
--(KGFontState *)font {
-   return _font;
+-(KGFontState *)fontState {
+   return _fontState;
 }
 
--(void)setFont:(KGFontState *)font {
-   font=[font retain];
-   [_font release];
-   _font=font;
+-(void)setFontState:(KGFontState *)fontState {
+   fontState=[fontState retain];
+   [_fontState release];
+   _fontState=fontState;
 }
 
 -(void)setShouldSmoothFonts:(BOOL)yesOrNo {

@@ -278,7 +278,7 @@ void CGContextSetTextDrawingMode(CGContextRef context,CGTextDrawingMode textMode
 }
 
 void CGContextSetFont(CGContextRef context,CGFontRef font) {
-   [context setFont:font];
+  // [context setFont:font];
 }
 
 void CGContextSetFontSize(CGContextRef context,float size) {

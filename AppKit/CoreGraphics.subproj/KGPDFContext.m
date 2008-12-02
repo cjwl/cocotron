@@ -632,7 +632,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    
    [self contentWithString:@"BT "];
    
-   KGFontState *font=[self currentFont];
+   KGFontState *font=[self currentFontState];
    KGPDFObject *pdfObject=[font encodeReferenceWithContext:self];
    KGPDFObject *name=[self nameForResource:pdfObject inCategory:"Font"];
 
@@ -641,7 +641,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    CGAffineTransform matrix=[self textMatrix];
    [self contentWithFormat:@"%g %g %g %g %g %g Tm ",matrix.a,matrix.b,matrix.c,matrix.d,matrix.tx,matrix.ty];
    
-   [[self currentFont] getBytes:bytes forGlyphs:glyphs length:count];
+   [[self currentFontState] getBytes:bytes forGlyphs:glyphs length:count];
    [self contentPDFStringWithBytes:bytes length:count];
    [self contentWithString:@" Tj "];
    
