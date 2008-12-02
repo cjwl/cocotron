@@ -524,6 +524,62 @@ CHANGE_DECLARATION(SEL)
 	[key release]; 
 }
 
+-(void)KVO_notifying_change_addKeyObject:(id)object
+{ 
+	const char* origName = sel_getName(_cmd); 
+   
+	int selLen=strlen(origName); 
+	char *sel=__builtin_alloca(selLen+1); 
+	strcpy(sel, origName); 
+	sel[selLen-1]='\0';
+	sel+=strlen("add");
+	sel[strlen(sel)-strlen("Object:")+1]='\0';
+
+   char *countSelName=__builtin_alloca(strlen(sel)+strlen("countOf")+1);
+   strcpy(countSelName, "countOf");
+   strcat(countSelName, sel);
+
+   NSUInteger idx=[self performSelector:sel_getUid(countSelName)];
+   
+	sel[0]=tolower(sel[0]);
+   
+	NSString *key=[[NSString alloc] initWithCString:sel]; 
+	[self willChange:NSKeyValueChangeInsertion valuesAtIndexes:[NSIndexSet indexSetWithIndex:idx] forKey:key];
+	typedef id (*sender)(id obj, SEL selector, id value); 
+	sender implementation=(sender)[[self superclass] instanceMethodForSelector:_cmd]; 
+	(void)*implementation(self, _cmd, object); 
+	[self didChange:NSKeyValueChangeInsertion valuesAtIndexes:[NSIndexSet indexSetWithIndex:idx] forKey:key];
+	[key release]; 
+}
+
+-(void)KVO_notifying_change_removeKeyObject:(id)object
+{ 
+	const char* origName = sel_getName(_cmd); 
+   
+	int selLen=strlen(origName); 
+	char *sel=__builtin_alloca(selLen+1); 
+	strcpy(sel, origName); 
+	sel[selLen-1]='\0';
+	sel+=strlen("remove");
+	sel[strlen(sel)-strlen("Object:")+1]='\0';
+   
+   char *countSelName=__builtin_alloca(strlen(sel)+strlen("countOf")+1);
+   strcpy(countSelName, "countOf");
+   strcat(countSelName, sel);
+   
+   NSUInteger idx=[self performSelector:sel_getUid(countSelName)];
+   
+	sel[0]=tolower(sel[0]);
+   
+	NSString *key=[[NSString alloc] initWithCString:sel]; 
+	[self willChange:NSKeyValueChangeRemoval valuesAtIndexes:[NSIndexSet indexSetWithIndex:idx] forKey:key];
+	typedef id (*sender)(id obj, SEL selector, id value); 
+	sender implementation=(sender)[[self superclass] instanceMethodForSelector:_cmd]; 
+	(void)*implementation(self, _cmd, object); 
+	[self didChange:NSKeyValueChangeRemoval valuesAtIndexes:[NSIndexSet indexSetWithIndex:idx] forKey:key];
+	[key release]; 
+}
+
 -(void)KVO_notifying_change_removeObjectFromKeyAtIndex:(int)index
 { 
 	const char* origName = sel_getName(_cmd); 
@@ -743,6 +799,18 @@ CHANGE_DECLARATION(SEL)
 						[[self methodSignatureForSelector:method->method_name] numberOfArguments] == 4)
 				{
 					kvoSelector = @selector(KVO_notifying_change_replaceObjectInKeyAtIndex:withObject:);
+				}
+				else if([methodName _KVC_setterKeyName:&ret forSelectorNameStartingWith:@"remove" endingWith:@"Object:"] &&
+						ret &&
+						[[self methodSignatureForSelector:method->method_name] numberOfArguments] == 3)
+				{
+					kvoSelector = @selector(KVO_notifying_change_removeKeyObject:);
+				}
+            else if([methodName _KVC_setterKeyName:&ret forSelectorNameStartingWith:@"add" endingWith:@"Object:"] &&
+                    ret &&
+                    [[self methodSignatureForSelector:method->method_name] numberOfArguments] == 3)
+				{
+					kvoSelector = @selector(KVO_notifying_change_addKeyObject:);
 				}
 			}
 			

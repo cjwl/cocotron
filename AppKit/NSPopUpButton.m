@@ -274,9 +274,14 @@ static NSString *NSPopUpButtonBindingObservationContext=@"NSPopUpButtonBindingOb
 			if([[change objectForKey:NSKeyValueChangeNotificationIsPriorKey] boolValue])
 			{
 				[self willChangeValueForKey:@"selectedIndex"];
+            [self willChangeValueForKey:@"selectedValue"];
+            [self willChangeValueForKey:@"selectedObject"];
+
 			}
 			else
 			{
+            [self didChangeValueForKey:@"selectedObject"];
+            [self didChangeValueForKey:@"selectedValue"];
 				[self didChangeValueForKey:@"selectedIndex"];
 			}
 		}
