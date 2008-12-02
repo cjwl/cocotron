@@ -19,7 +19,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/KGColorSpace.h>
 #import <AppKit/KGShading.h>
 #import <AppKit/KGFunction.h>
-#import <AppKit/KGFont.h>
+#import <AppKit/KGFontState.h>
 #import "../CoreGraphics.subproj/KGImage.h"
 #import <AppKit/KGClipPhase.h>
 #import <AppKit/Win32Font.h>

@@ -3,10 +3,10 @@
 #import "Win32Display.h"
 #import "Win32Font.h"
 
-@interface KGFont(KGFont_gdi)
+@interface KGFontState(KGFont_gdi)
 @end
 
-@implementation KGFont(KGFont_gdi)
+@implementation KGFontState(KGFont_gdi)
 
 +allocWithZone:(NSZone *)zone {
    return NSAllocateObject([KGFont_gdi class],0,NULL);

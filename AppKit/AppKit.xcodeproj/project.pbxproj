@@ -323,7 +323,7 @@
 		C889754D0EA0BF3100D0A0A2 /* NSTextList.h in Headers */ = {isa = PBXBuildFile; fileRef = FE7247670C06202B007CBC51 /* NSTextList.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C889754E0EA0BF3100D0A0A2 /* NSTextAttachmentCell.h in Headers */ = {isa = PBXBuildFile; fileRef = FE7247A40C0622F2007CBC51 /* NSTextAttachmentCell.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C889754F0EA0BF3100D0A0A2 /* NSTypesetter_concrete.h in Headers */ = {isa = PBXBuildFile; fileRef = FE72484F0C0676AA007CBC51 /* NSTypesetter_concrete.h */; };
-		C88975500EA0BF3100D0A0A2 /* KGFont.h in Headers */ = {isa = PBXBuildFile; fileRef = FE89AF470C33679100CD21FB /* KGFont.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		C88975500EA0BF3100D0A0A2 /* KGFontState.h in Headers */ = {isa = PBXBuildFile; fileRef = FE89AF470C33679100CD21FB /* KGFontState.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		C88975510EA0BF3100D0A0A2 /* KGDeviceContext_gdi.h in Headers */ = {isa = PBXBuildFile; fileRef = FE57F8D00C46B68C0078FFC1 /* KGDeviceContext_gdi.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		C88975520EA0BF3100D0A0A2 /* NSPrintPanel.h in Headers */ = {isa = PBXBuildFile; fileRef = FE57FAB50C47F2010078FFC1 /* NSPrintPanel.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C88975530EA0BF3100D0A0A2 /* NSOpenGLDrawable_gdiView.h in Headers */ = {isa = PBXBuildFile; fileRef = FEF2EC330C891E7C001FC5A8 /* NSOpenGLDrawable_gdiView.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -357,7 +357,7 @@
 		C889756F0EA0BF3100D0A0A2 /* NSColor_CGColor.h in Headers */ = {isa = PBXBuildFile; fileRef = FE08C3210DDF299800B3169A /* NSColor_CGColor.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		C88975700EA0BF3100D0A0A2 /* KGSurface_DIBSection.h in Headers */ = {isa = PBXBuildFile; fileRef = FEF9CAE70E133FF2003502ED /* KGSurface_DIBSection.h */; };
 		C88975710EA0BF3100D0A0A2 /* KGColorSpace+PDF.h in Headers */ = {isa = PBXBuildFile; fileRef = FEF9CB780E13EB8E003502ED /* KGColorSpace+PDF.h */; };
-		C88975720EA0BF3100D0A0A2 /* KGFont+PDF.h in Headers */ = {isa = PBXBuildFile; fileRef = FEF9CB970E13EB8E003502ED /* KGFont+PDF.h */; };
+		C88975720EA0BF3100D0A0A2 /* KGFontState+PDF.h in Headers */ = {isa = PBXBuildFile; fileRef = FEF9CB970E13EB8E003502ED /* KGFontState+PDF.h */; };
 		C88975730EA0BF3100D0A0A2 /* KGFunction+PDF.h in Headers */ = {isa = PBXBuildFile; fileRef = FEF9CB990E13EB8E003502ED /* KGFunction+PDF.h */; };
 		C88975740EA0BF3100D0A0A2 /* KGImage+PDF.h in Headers */ = {isa = PBXBuildFile; fileRef = FEF9CB9B0E13EB8E003502ED /* KGImage+PDF.h */; };
 		C88975750EA0BF3100D0A0A2 /* KGShading+PDF.h in Headers */ = {isa = PBXBuildFile; fileRef = FEF9CB9D0E13EB8E003502ED /* KGShading+PDF.h */; };
@@ -642,7 +642,7 @@
 		C88976B00EA0BF3100D0A0A2 /* NSTextList.m in Sources */ = {isa = PBXBuildFile; fileRef = FE7247680C06202B007CBC51 /* NSTextList.m */; };
 		C88976B10EA0BF3100D0A0A2 /* NSTextAttachmentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FE7247A50C0622F2007CBC51 /* NSTextAttachmentCell.m */; };
 		C88976B20EA0BF3100D0A0A2 /* NSTypesetter_concrete.m in Sources */ = {isa = PBXBuildFile; fileRef = FE7248500C0676AA007CBC51 /* NSTypesetter_concrete.m */; };
-		C88976B30EA0BF3100D0A0A2 /* KGFont.m in Sources */ = {isa = PBXBuildFile; fileRef = FE89AF480C33679100CD21FB /* KGFont.m */; };
+		C88976B30EA0BF3100D0A0A2 /* KGFontState.m in Sources */ = {isa = PBXBuildFile; fileRef = FE89AF480C33679100CD21FB /* KGFontState.m */; };
 		C88976B50EA0BF3100D0A0A2 /* NSPrintPanel.m in Sources */ = {isa = PBXBuildFile; fileRef = FE57FAB60C47F2010078FFC1 /* NSPrintPanel.m */; };
 		C88976B80EA0BF3100D0A0A2 /* KGzlib.m in Sources */ = {isa = PBXBuildFile; fileRef = FE8F9F270C9C5D0000270AEE /* KGzlib.m */; };
 		C88976B90EA0BF3100D0A0A2 /* KGImageSource_BMP.m in Sources */ = {isa = PBXBuildFile; fileRef = FE572D8C0CA0809500FB3E79 /* KGImageSource_BMP.m */; };
@@ -665,7 +665,7 @@
 		C88976CF0EA0BF3100D0A0A2 /* KGPaint_ramp.m in Sources */ = {isa = PBXBuildFile; fileRef = FEBF5A0C0DCD450700CE5A1C /* KGPaint_ramp.m */; };
 		C88976D00EA0BF3100D0A0A2 /* NSColor_CGColor.m in Sources */ = {isa = PBXBuildFile; fileRef = FE08C3220DDF299800B3169A /* NSColor_CGColor.m */; };
 		C88976D20EA0BF3100D0A0A2 /* KGColorSpace+PDF.m in Sources */ = {isa = PBXBuildFile; fileRef = FEF9CB790E13EB8E003502ED /* KGColorSpace+PDF.m */; };
-		C88976D30EA0BF3100D0A0A2 /* KGFont+PDF.m in Sources */ = {isa = PBXBuildFile; fileRef = FEF9CB980E13EB8E003502ED /* KGFont+PDF.m */; };
+		C88976D30EA0BF3100D0A0A2 /* KGFontState+PDF.m in Sources */ = {isa = PBXBuildFile; fileRef = FEF9CB980E13EB8E003502ED /* KGFontState+PDF.m */; };
 		C88976D40EA0BF3100D0A0A2 /* KGFunction+PDF.m in Sources */ = {isa = PBXBuildFile; fileRef = FEF9CB9A0E13EB8E003502ED /* KGFunction+PDF.m */; };
 		C88976D50EA0BF3100D0A0A2 /* KGImage+PDF.m in Sources */ = {isa = PBXBuildFile; fileRef = FEF9CB9C0E13EB8E003502ED /* KGImage+PDF.m */; };
 		C88976D60EA0BF3100D0A0A2 /* KGShading+PDF.m in Sources */ = {isa = PBXBuildFile; fileRef = FEF9CB9E0E13EB8E003502ED /* KGShading+PDF.m */; };
@@ -1016,7 +1016,7 @@
 		FE01A94C0C5D9BCB00AEA51A /* NSTextList.h in Headers */ = {isa = PBXBuildFile; fileRef = FE7247670C06202B007CBC51 /* NSTextList.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE01A94D0C5D9BCB00AEA51A /* NSTextAttachmentCell.h in Headers */ = {isa = PBXBuildFile; fileRef = FE7247A40C0622F2007CBC51 /* NSTextAttachmentCell.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE01A94E0C5D9BCB00AEA51A /* NSTypesetter_concrete.h in Headers */ = {isa = PBXBuildFile; fileRef = FE72484F0C0676AA007CBC51 /* NSTypesetter_concrete.h */; };
-		FE01A94F0C5D9BCB00AEA51A /* KGFont.h in Headers */ = {isa = PBXBuildFile; fileRef = FE89AF470C33679100CD21FB /* KGFont.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE01A94F0C5D9BCB00AEA51A /* KGFontState.h in Headers */ = {isa = PBXBuildFile; fileRef = FE89AF470C33679100CD21FB /* KGFontState.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE01A9510C5D9BCB00AEA51A /* KGDeviceContext_gdi.h in Headers */ = {isa = PBXBuildFile; fileRef = FE57F8D00C46B68C0078FFC1 /* KGDeviceContext_gdi.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE01A9520C5D9BCB00AEA51A /* NSPrintPanel.h in Headers */ = {isa = PBXBuildFile; fileRef = FE57FAB50C47F2010078FFC1 /* NSPrintPanel.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE01A9540C5D9BCB00AEA51A /* NSActionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B53250976075200DA0954 /* NSActionCell.m */; settings = {ATTRIBUTES = (); }; };
@@ -1328,7 +1328,7 @@
 		FE01AA8D0C5D9BCB00AEA51A /* NSTextList.m in Sources */ = {isa = PBXBuildFile; fileRef = FE7247680C06202B007CBC51 /* NSTextList.m */; };
 		FE01AA8E0C5D9BCB00AEA51A /* NSTextAttachmentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FE7247A50C0622F2007CBC51 /* NSTextAttachmentCell.m */; };
 		FE01AA8F0C5D9BCB00AEA51A /* NSTypesetter_concrete.m in Sources */ = {isa = PBXBuildFile; fileRef = FE7248500C0676AA007CBC51 /* NSTypesetter_concrete.m */; };
-		FE01AA900C5D9BCB00AEA51A /* KGFont.m in Sources */ = {isa = PBXBuildFile; fileRef = FE89AF480C33679100CD21FB /* KGFont.m */; };
+		FE01AA900C5D9BCB00AEA51A /* KGFontState.m in Sources */ = {isa = PBXBuildFile; fileRef = FE89AF480C33679100CD21FB /* KGFontState.m */; };
 		FE01AA920C5D9BCB00AEA51A /* KGDeviceContext_gdi.m in Sources */ = {isa = PBXBuildFile; fileRef = FE57F8D10C46B68C0078FFC1 /* KGDeviceContext_gdi.m */; };
 		FE01AA930C5D9BCB00AEA51A /* NSPrintPanel.m in Sources */ = {isa = PBXBuildFile; fileRef = FE57FAB60C47F2010078FFC1 /* NSPrintPanel.m */; };
 		FE01AA950C5D9BCB00AEA51A /* NSFontPanel.nib in Resources */ = {isa = PBXBuildFile; fileRef = 6E2B54DF0976075300DA0954 /* NSFontPanel.nib */; };
@@ -1436,8 +1436,8 @@
 		FEF9CAEA0E133FF2003502ED /* KGSurface_DIBSection.m in Sources */ = {isa = PBXBuildFile; fileRef = FEF9CAE80E133FF2003502ED /* KGSurface_DIBSection.m */; };
 		FEF9CB9F0E13EB8E003502ED /* KGColorSpace+PDF.h in Headers */ = {isa = PBXBuildFile; fileRef = FEF9CB780E13EB8E003502ED /* KGColorSpace+PDF.h */; };
 		FEF9CBA00E13EB8E003502ED /* KGColorSpace+PDF.m in Sources */ = {isa = PBXBuildFile; fileRef = FEF9CB790E13EB8E003502ED /* KGColorSpace+PDF.m */; };
-		FEF9CBBE0E13EB8E003502ED /* KGFont+PDF.h in Headers */ = {isa = PBXBuildFile; fileRef = FEF9CB970E13EB8E003502ED /* KGFont+PDF.h */; };
-		FEF9CBBF0E13EB8E003502ED /* KGFont+PDF.m in Sources */ = {isa = PBXBuildFile; fileRef = FEF9CB980E13EB8E003502ED /* KGFont+PDF.m */; };
+		FEF9CBBE0E13EB8E003502ED /* KGFontState+PDF.h in Headers */ = {isa = PBXBuildFile; fileRef = FEF9CB970E13EB8E003502ED /* KGFontState+PDF.h */; };
+		FEF9CBBF0E13EB8E003502ED /* KGFontState+PDF.m in Sources */ = {isa = PBXBuildFile; fileRef = FEF9CB980E13EB8E003502ED /* KGFontState+PDF.m */; };
 		FEF9CBC00E13EB8E003502ED /* KGFunction+PDF.h in Headers */ = {isa = PBXBuildFile; fileRef = FEF9CB990E13EB8E003502ED /* KGFunction+PDF.h */; };
 		FEF9CBC10E13EB8E003502ED /* KGFunction+PDF.m in Sources */ = {isa = PBXBuildFile; fileRef = FEF9CB9A0E13EB8E003502ED /* KGFunction+PDF.m */; };
 		FEF9CBC20E13EB8E003502ED /* KGImage+PDF.h in Headers */ = {isa = PBXBuildFile; fileRef = FEF9CB9B0E13EB8E003502ED /* KGImage+PDF.h */; };
@@ -2230,8 +2230,8 @@
 		FE86887C0BC3FFA4009F515C /* NSButtonCell_disclosure_highlighted.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = NSButtonCell_disclosure_highlighted.tif; sourceTree = "<group>"; };
 		FE86887D0BC3FFA4009F515C /* NSButtonCell_disclosure_normal.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = NSButtonCell_disclosure_normal.tif; sourceTree = "<group>"; };
 		FE86887E0BC3FFA4009F515C /* NSButtonCell_disclosure_selected.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = NSButtonCell_disclosure_selected.tif; sourceTree = "<group>"; };
-		FE89AF470C33679100CD21FB /* KGFont.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = KGFont.h; sourceTree = "<group>"; };
-		FE89AF480C33679100CD21FB /* KGFont.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = KGFont.m; sourceTree = "<group>"; };
+		FE89AF470C33679100CD21FB /* KGFontState.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = KGFontState.h; sourceTree = "<group>"; };
+		FE89AF480C33679100CD21FB /* KGFontState.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = KGFontState.m; sourceTree = "<group>"; };
 		FE8BAEC50BC9EA8D0007FACA /* NSNibBindingConnector.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSNibBindingConnector.h; sourceTree = "<group>"; };
 		FE8BAEC60BC9EA8D0007FACA /* NSNibBindingConnector.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSNibBindingConnector.m; sourceTree = "<group>"; };
 		FE8BAF1D0BC9EC680007FACA /* NSBinder.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSBinder.h; sourceTree = "<group>"; };
@@ -2293,8 +2293,8 @@
 		FEF9CAE80E133FF2003502ED /* KGSurface_DIBSection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGSurface_DIBSection.m; sourceTree = "<group>"; };
 		FEF9CB780E13EB8E003502ED /* KGColorSpace+PDF.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "KGColorSpace+PDF.h"; sourceTree = "<group>"; };
 		FEF9CB790E13EB8E003502ED /* KGColorSpace+PDF.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "KGColorSpace+PDF.m"; sourceTree = "<group>"; };
-		FEF9CB970E13EB8E003502ED /* KGFont+PDF.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "KGFont+PDF.h"; sourceTree = "<group>"; };
-		FEF9CB980E13EB8E003502ED /* KGFont+PDF.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "KGFont+PDF.m"; sourceTree = "<group>"; };
+		FEF9CB970E13EB8E003502ED /* KGFontState+PDF.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "KGFontState+PDF.h"; sourceTree = "<group>"; };
+		FEF9CB980E13EB8E003502ED /* KGFontState+PDF.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "KGFontState+PDF.m"; sourceTree = "<group>"; };
 		FEF9CB990E13EB8E003502ED /* KGFunction+PDF.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "KGFunction+PDF.h"; sourceTree = "<group>"; };
 		FEF9CB9A0E13EB8E003502ED /* KGFunction+PDF.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "KGFunction+PDF.m"; sourceTree = "<group>"; };
 		FEF9CB9B0E13EB8E003502ED /* KGImage+PDF.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "KGImage+PDF.h"; sourceTree = "<group>"; };
@@ -2808,8 +2808,8 @@
 			children = (
 				FEF9CB780E13EB8E003502ED /* KGColorSpace+PDF.h */,
 				FEF9CB790E13EB8E003502ED /* KGColorSpace+PDF.m */,
-				FEF9CB970E13EB8E003502ED /* KGFont+PDF.h */,
-				FEF9CB980E13EB8E003502ED /* KGFont+PDF.m */,
+				FEF9CB970E13EB8E003502ED /* KGFontState+PDF.h */,
+				FEF9CB980E13EB8E003502ED /* KGFontState+PDF.m */,
 				FEF9CB990E13EB8E003502ED /* KGFunction+PDF.h */,
 				FEF9CB9A0E13EB8E003502ED /* KGFunction+PDF.m */,
 				FEF9CB9B0E13EB8E003502ED /* KGImage+PDF.h */,
@@ -2873,8 +2873,8 @@
 				FE64B8AA0B81239D007EE513 /* KGContext.m */,
 				FE64B8AB0B81239D007EE513 /* KGDataProvider.h */,
 				FE64B8AC0B81239D007EE513 /* KGDataProvider.m */,
-				FE89AF470C33679100CD21FB /* KGFont.h */,
-				FE89AF480C33679100CD21FB /* KGFont.m */,
+				FE89AF470C33679100CD21FB /* KGFontState.h */,
+				FE89AF480C33679100CD21FB /* KGFontState.m */,
 				FE64B8AD0B81239D007EE513 /* KGFunction.h */,
 				FE64B8AE0B81239D007EE513 /* KGFunction.m */,
 				6E2B55D10976075300DA0954 /* KGGraphicsState.h */,
@@ -3698,7 +3698,7 @@
 				C889754D0EA0BF3100D0A0A2 /* NSTextList.h in Headers */,
 				C889754E0EA0BF3100D0A0A2 /* NSTextAttachmentCell.h in Headers */,
 				C889754F0EA0BF3100D0A0A2 /* NSTypesetter_concrete.h in Headers */,
-				C88975500EA0BF3100D0A0A2 /* KGFont.h in Headers */,
+				C88975500EA0BF3100D0A0A2 /* KGFontState.h in Headers */,
 				C88975510EA0BF3100D0A0A2 /* KGDeviceContext_gdi.h in Headers */,
 				C88975520EA0BF3100D0A0A2 /* NSPrintPanel.h in Headers */,
 				C88975530EA0BF3100D0A0A2 /* NSOpenGLDrawable_gdiView.h in Headers */,
@@ -3732,7 +3732,7 @@
 				C889756F0EA0BF3100D0A0A2 /* NSColor_CGColor.h in Headers */,
 				C88975700EA0BF3100D0A0A2 /* KGSurface_DIBSection.h in Headers */,
 				C88975710EA0BF3100D0A0A2 /* KGColorSpace+PDF.h in Headers */,
-				C88975720EA0BF3100D0A0A2 /* KGFont+PDF.h in Headers */,
+				C88975720EA0BF3100D0A0A2 /* KGFontState+PDF.h in Headers */,
 				C88975730EA0BF3100D0A0A2 /* KGFunction+PDF.h in Headers */,
 				C88975740EA0BF3100D0A0A2 /* KGImage+PDF.h in Headers */,
 				C88975750EA0BF3100D0A0A2 /* KGShading+PDF.h in Headers */,
@@ -4055,7 +4055,7 @@
 				FE01A94C0C5D9BCB00AEA51A /* NSTextList.h in Headers */,
 				FE01A94D0C5D9BCB00AEA51A /* NSTextAttachmentCell.h in Headers */,
 				FE01A94E0C5D9BCB00AEA51A /* NSTypesetter_concrete.h in Headers */,
-				FE01A94F0C5D9BCB00AEA51A /* KGFont.h in Headers */,
+				FE01A94F0C5D9BCB00AEA51A /* KGFontState.h in Headers */,
 				FE01A9510C5D9BCB00AEA51A /* KGDeviceContext_gdi.h in Headers */,
 				FE01A9520C5D9BCB00AEA51A /* NSPrintPanel.h in Headers */,
 				FEF2EC350C891E7C001FC5A8 /* NSOpenGLDrawable_gdiView.h in Headers */,
@@ -4089,7 +4089,7 @@
 				FE08C3230DDF299800B3169A /* NSColor_CGColor.h in Headers */,
 				FEF9CAE90E133FF2003502ED /* KGSurface_DIBSection.h in Headers */,
 				FEF9CB9F0E13EB8E003502ED /* KGColorSpace+PDF.h in Headers */,
-				FEF9CBBE0E13EB8E003502ED /* KGFont+PDF.h in Headers */,
+				FEF9CBBE0E13EB8E003502ED /* KGFontState+PDF.h in Headers */,
 				FEF9CBC00E13EB8E003502ED /* KGFunction+PDF.h in Headers */,
 				FEF9CBC20E13EB8E003502ED /* KGImage+PDF.h in Headers */,
 				FEF9CBC40E13EB8E003502ED /* KGShading+PDF.h in Headers */,
@@ -4628,7 +4628,7 @@
 				C88976B00EA0BF3100D0A0A2 /* NSTextList.m in Sources */,
 				C88976B10EA0BF3100D0A0A2 /* NSTextAttachmentCell.m in Sources */,
 				C88976B20EA0BF3100D0A0A2 /* NSTypesetter_concrete.m in Sources */,
-				C88976B30EA0BF3100D0A0A2 /* KGFont.m in Sources */,
+				C88976B30EA0BF3100D0A0A2 /* KGFontState.m in Sources */,
 				C88976B50EA0BF3100D0A0A2 /* NSPrintPanel.m in Sources */,
 				C88976B80EA0BF3100D0A0A2 /* KGzlib.m in Sources */,
 				C88976B90EA0BF3100D0A0A2 /* KGImageSource_BMP.m in Sources */,
@@ -4651,7 +4651,7 @@
 				C88976CF0EA0BF3100D0A0A2 /* KGPaint_ramp.m in Sources */,
 				C88976D00EA0BF3100D0A0A2 /* NSColor_CGColor.m in Sources */,
 				C88976D20EA0BF3100D0A0A2 /* KGColorSpace+PDF.m in Sources */,
-				C88976D30EA0BF3100D0A0A2 /* KGFont+PDF.m in Sources */,
+				C88976D30EA0BF3100D0A0A2 /* KGFontState+PDF.m in Sources */,
 				C88976D40EA0BF3100D0A0A2 /* KGFunction+PDF.m in Sources */,
 				C88976D50EA0BF3100D0A0A2 /* KGImage+PDF.m in Sources */,
 				C88976D60EA0BF3100D0A0A2 /* KGShading+PDF.m in Sources */,
@@ -4981,7 +4981,7 @@
 				FE01AA8D0C5D9BCB00AEA51A /* NSTextList.m in Sources */,
 				FE01AA8E0C5D9BCB00AEA51A /* NSTextAttachmentCell.m in Sources */,
 				FE01AA8F0C5D9BCB00AEA51A /* NSTypesetter_concrete.m in Sources */,
-				FE01AA900C5D9BCB00AEA51A /* KGFont.m in Sources */,
+				FE01AA900C5D9BCB00AEA51A /* KGFontState.m in Sources */,
 				FE01AA920C5D9BCB00AEA51A /* KGDeviceContext_gdi.m in Sources */,
 				FE01AA930C5D9BCB00AEA51A /* NSPrintPanel.m in Sources */,
 				FEF2EC7B0C8A03CC001FC5A8 /* NSOpenGLDrawable_gdiView.m in Sources */,
@@ -5012,7 +5012,7 @@
 				FE08C3240DDF299800B3169A /* NSColor_CGColor.m in Sources */,
 				FEF9CAEA0E133FF2003502ED /* KGSurface_DIBSection.m in Sources */,
 				FEF9CBA00E13EB8E003502ED /* KGColorSpace+PDF.m in Sources */,
-				FEF9CBBF0E13EB8E003502ED /* KGFont+PDF.m in Sources */,
+				FEF9CBBF0E13EB8E003502ED /* KGFontState+PDF.m in Sources */,
 				FEF9CBC10E13EB8E003502ED /* KGFunction+PDF.m in Sources */,
 				FEF9CBC30E13EB8E003502ED /* KGImage+PDF.m in Sources */,
 				FEF9CBC50E13EB8E003502ED /* KGShading+PDF.m in Sources */,

@@ -9,7 +9,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSObject.h>
 #import <ApplicationServices/ApplicationServices.h>
 
-@class KGColor,KGColorSpace,KGShading,KGImage,KGGraphicsState,KGMutablePath,KGPath,KGPattern,KGLayer,KGPDFPage,NSMutableArray,CGWindow,KGFont,KGSurface,NSDictionary,NSData;
+@class KGColor,KGColorSpace,KGShading,KGImage,KGGraphicsState,KGMutablePath,KGPath,KGPattern,KGLayer,KGPDFPage,NSMutableArray,CGWindow,KGFontState,KGSurface,NSDictionary,NSData;
 
 @interface KGContext : NSObject {
    CGAffineTransform _userToDeviceTransform;
@@ -131,8 +131,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)setTextPosition:(float)x:(float)y;
 -(void)setCharacterSpacing:(float)spacing;
 -(void)setTextDrawingMode:(int)textMode;
--(KGFont *)currentFont;
--(void)setFont:(KGFont *)font;
+-(KGFontState *)currentFont;
+-(void)setFont:(KGFontState *)font;
 -(void)setFontSize:(float)size;
 -(void)selectFontWithName:(const char *)name size:(float)size encoding:(int)encoding;
 -(void)setShouldSmoothFonts:(BOOL)yesOrNo;

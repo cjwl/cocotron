@@ -1,10 +1,10 @@
-#import "KGFont.h"
+#import "KGFontState.h"
 #import "KGExceptions.h"
 #import <Foundation/NSArray.h>
 
-@implementation KGFont
+@implementation KGFontState
 
-static inline CGGlyph glyphForCharacter(KGFont *self,unichar character){
+static inline CGGlyph glyphForCharacter(KGFontState *self,unichar character){
    CGGlyphRangeTable *table=self->_glyphRangeTable;
    unsigned           range=character>>8;
    unsigned           index=character&0xFF;
@@ -15,14 +15,14 @@ static inline CGGlyph glyphForCharacter(KGFont *self,unichar character){
    return CGNullGlyph;
 }
 
-static inline unichar characterForGlyph(KGFont *self,CGGlyph glyph){
+static inline unichar characterForGlyph(KGFontState *self,CGGlyph glyph){
    if(glyph<self->_glyphRangeTable->numberOfGlyphs)
     return self->_glyphRangeTable->characters[glyph];
    
    return 0;
 }
 
-static inline CGGlyphMetrics *glyphInfoForGlyph(KGFont *self,CGGlyph glyph){
+static inline CGGlyphMetrics *glyphInfoForGlyph(KGFontState *self,CGGlyph glyph){
    if(glyph<self->_glyphInfoSet->numberOfGlyphs)
     return self->_glyphInfoSet->info+glyph;
 
@@ -40,12 +40,12 @@ static inline CGGlyphMetrics *glyphInfoForGlyph(KGFont *self,CGGlyph glyph){
    
 }
 
-static inline void fetchAllGlyphRangesIfNeeded(KGFont *self){
+static inline void fetchAllGlyphRangesIfNeeded(KGFontState *self){
    if(self->_glyphRangeTable==NULL)
     [self fetchGlyphRanges];
 }
 
-static inline CGGlyphMetrics *fetchGlyphInfoIfNeeded(KGFont *self,CGGlyph glyph){
+static inline CGGlyphMetrics *fetchGlyphInfoIfNeeded(KGFontState *self,CGGlyph glyph){
    fetchAllGlyphRangesIfNeeded(self);
    if(self->_glyphInfoSet->info==NULL)
     [self fetchGlyphInfo];
@@ -53,7 +53,7 @@ static inline CGGlyphMetrics *fetchGlyphInfoIfNeeded(KGFont *self,CGGlyph glyph)
    return glyphInfoForGlyph(self,glyph);
 }
 
-static inline CGGlyphMetrics *fetchGlyphAdvancementIfNeeded(KGFont *self,CGGlyph glyph){
+static inline CGGlyphMetrics *fetchGlyphAdvancementIfNeeded(KGFontState *self,CGGlyph glyph){
    CGGlyphMetrics *info=fetchGlyphInfoIfNeeded(self,glyph);
 
    if(info==NULL)

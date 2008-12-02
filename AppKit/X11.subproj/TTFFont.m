@@ -8,7 +8,7 @@
 
 #import "TTFFont.h"
 
-@implementation KGFont(TTFFont)
+@implementation KGFontState(TTFFont)
 +(id)allocWithZone:(NSZone*)zone
 {
    return NSAllocateObject([TTFFont class], 0, NULL);

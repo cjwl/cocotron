@@ -9,7 +9,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSObject.h>
 #import <ApplicationServices/ApplicationServices.h>
 
-@class KGImage,KGColorSpace,KGColor,KGPattern,KGMutablePath,KGPath,NSArray,NSMutableArray,KGFont;
+@class KGImage,KGColorSpace,KGColor,KGPattern,KGMutablePath,KGPath,NSArray,NSMutableArray,KGFontState;
 
 @interface KGGraphicsState : NSObject <NSCopying> {
 @public
@@ -20,7 +20,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    NSMutableArray     *_clipPhases;
    KGColor            *_strokeColor;
    KGColor            *_fillColor;
-   KGFont             *_font;
+   KGFontState             *_font;
    CGSize              _patternPhase;   
    float               _characterSpacing;
    int                 _textDrawingMode;
@@ -87,8 +87,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)setTextPosition:(float)x:(float)y;
 -(void)setCharacterSpacing:(float)spacing;
 -(void)setTextDrawingMode:(int)textMode;
--(KGFont *)font;
--(void)setFont:(KGFont *)font;
+-(KGFontState *)font;
+-(void)setFont:(KGFontState *)font;
 -(void)setShouldSmoothFonts:(BOOL)yesOrNo;
 
 -(void)setLineWidth:(float)width;

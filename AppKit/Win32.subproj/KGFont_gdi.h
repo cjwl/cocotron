@@ -1,6 +1,6 @@
-#import <AppKit/KGFont.h>
+#import <AppKit/KGFontState.h>
 
-@interface KGFont_gdi : KGFont {
+@interface KGFont_gdi : KGFontState {
    BOOL _useMacMetrics;
 }
 

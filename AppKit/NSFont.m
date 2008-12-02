@@ -216,7 +216,7 @@ static NSFont **_fontCache=NULL;
 
    [isa addFontToCache:self];
    
-   _kgFont=[[KGFont alloc] initWithName:_name size:_pointSize];
+   _kgFont=[[KGFontState alloc] initWithName:_name size:_pointSize];
 
    return self;
 }

@@ -53,7 +53,7 @@ typedef struct CGGlyphMetricsSet {
    CGGlyphMetrics *info;
 } CGGlyphMetricsSet;
 
-@interface KGFont : NSObject {
+@interface KGFontState : NSObject {
    NSString                 *_name;
    float                     _size;
    CGFontMetrics             _metrics;

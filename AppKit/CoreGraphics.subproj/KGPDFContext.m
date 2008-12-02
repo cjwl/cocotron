@@ -19,7 +19,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "KGPDFString.h"
 #import "KGShading+PDF.h"
 #import "KGImage+PDF.h"
-#import "KGFont+PDF.h"
+#import "KGFontState+PDF.h"
 #import "KGMutablePath.h"
 #import "KGColor.h"
 #import "KGColorSpace+PDF.h"
@@ -632,7 +632,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    
    [self contentWithString:@"BT "];
    
-   KGFont *font=[self currentFont];
+   KGFontState *font=[self currentFont];
    KGPDFObject *pdfObject=[font encodeReferenceWithContext:self];
    KGPDFObject *name=[self nameForResource:pdfObject inCategory:"Font"];
 

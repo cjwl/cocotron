@@ -9,7 +9,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/KGGraphicsState.h>
 #import "KGSurface_DIBSection.h"
 #import "KGDeviceContext_gdi.h"
-#import <AppKit/KGFont.h>
+#import <AppKit/KGFontState.h>
 #import "../CoreGraphics.subproj/KGColorSpace.h"
 #import "../CoreGraphics.subproj/KGColor.h"
 #import <AppKit/Win32Font.h>

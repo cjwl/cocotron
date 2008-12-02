@@ -11,7 +11,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "KGGraphicsState.h"
 #import "KGColor.h"
 #import "KGColorSpace.h"
-#import "KGFont.h"
+#import "KGFontState.h"
 #import "KGMutablePath.h"
 #import "KGLayer.h"
 #import "KGPDFPage.h"
@@ -296,7 +296,7 @@ static inline KGGraphicsState *currentState(KGContext *self){
 -(void)restoreGState {
    [_stateStack removeLastObject];
 
-   KGFont *font=[[self currentState] font];
+   KGFontState *font=[[self currentState] font];
    [self deviceSelectFontWithName:[font name] pointSize:[font pointSize]];
 
    NSArray *phases=[[self currentState] clipPhases];
@@ -629,24 +629,24 @@ static inline KGGraphicsState *currentState(KGContext *self){
    [currentState(self) setTextDrawingMode:textMode];
 }
 
--(KGFont *)currentFont {
+-(KGFontState *)currentFont {
    return [currentState(self) font];
 }
 
--(void)setFont:(KGFont *)font {
+-(void)setFont:(KGFontState *)font {
    [currentState(self) setFont:font];
    [self deviceSelectFontWithName:[font name] pointSize:[font pointSize] ];
 }
 
 -(void)setFontSize:(float)size {
    NSString *name=[[currentState(self) font] name];
-   KGFont   *font=[[[KGFont alloc] initWithName:name size:size] autorelease];
+   KGFontState   *font=[[[KGFontState alloc] initWithName:name size:size] autorelease];
    
    [self setFont:font];
 }
 
 -(void)selectFontWithName:(const char *)name size:(float)size encoding:(int)encoding {
-   KGFont *font=[[[KGFont alloc] initWithName:[NSString stringWithCString:name] size:size] autorelease];
+   KGFontState *font=[[[KGFontState alloc] initWithName:[NSString stringWithCString:name] size:size] autorelease];
    
    [self setFont:font];
 }

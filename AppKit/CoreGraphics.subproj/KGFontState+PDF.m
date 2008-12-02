@@ -1,10 +1,10 @@
-#import "KGFont+PDF.h"
+#import "KGFontState+PDF.h"
 #import "KGPDFArray.h"
 #import "KGPDFDictionary.h"
 #import "KGPDFContext.h"
 #import <Foundation/NSArray.h>
 
-@implementation KGFont(PDF)
+@implementation KGFontState(PDF)
 
 -(KGPDFArray *)_pdfWidths {
    KGPDFArray   *result=[KGPDFArray pdfArray];
