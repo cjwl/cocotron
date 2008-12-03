@@ -9,9 +9,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "KGContext.h"
 #import "KGBitmapContext.h"
 #import "KGGraphicsState.h"
+#import "KGFontState.h"
 #import "KGColor.h"
 #import "KGColorSpace.h"
-#import "KGFontState.h"
 #import "KGMutablePath.h"
 #import "KGLayer.h"
 #import "KGPDFPage.h"
@@ -295,9 +295,6 @@ static inline KGGraphicsState *currentState(KGContext *self){
 
 -(void)restoreGState {
    [_stateStack removeLastObject];
-
-   KGFontState *fontState=[[self currentState] fontState];
-   [self deviceSelectFontWithName:[fontState name] pointSize:[fontState pointSize]];
 
    NSArray *phases=[[self currentState] clipPhases];
    int      i,count=[phases count];
@@ -629,26 +626,16 @@ static inline KGGraphicsState *currentState(KGContext *self){
    [currentState(self) setTextDrawingMode:textMode];
 }
 
--(KGFontState *)currentFontState {
-   return [currentState(self) fontState];
-}
-
--(void)setFontState:(KGFontState *)fontState {
-   [currentState(self) setFontState:fontState];
-   [self deviceSelectFontWithName:[fontState name] pointSize:[fontState pointSize] ];
+-(void)setFont:(KGFont *)font {
+   [currentState(self) setFont:font];
 }
 
 -(void)setFontSize:(float)size {
-   NSString *name=[[currentState(self) fontState] name];
-   KGFontState   *fontState=[[[KGFontState alloc] initWithName:name size:size] autorelease];
-   
-   [self setFontState:fontState];
+   [currentState(self) setFontSize:size];
 }
 
 -(void)selectFontWithName:(const char *)name size:(float)size encoding:(int)encoding {
-   KGFontState *fontState=[[[KGFontState alloc] initWithName:[NSString stringWithCString:name] size:size] autorelease];
-   
-   [self setFontState:fontState];
+   [currentState(self) selectFontWithName:name size:size encoding:encoding];
 }
 
 -(void)setShouldSmoothFonts:(BOOL)yesOrNo {
@@ -975,14 +962,6 @@ static inline KGGraphicsState *currentState(KGContext *self){
 
 -(void)deviceClipToMask:(KGImage *)mask inRect:(CGRect)rect {
    KGInvalidAbstractInvocation();
-}
-
--(void)deviceSelectFontWithName:(NSString *)name pointSize:(float)pointSize antialias:(BOOL)antialias {
-   KGInvalidAbstractInvocation();
-}
-
--(void)deviceSelectFontWithName:(NSString *)name pointSize:(float)pointSize {
-   [self deviceSelectFontWithName:name pointSize:pointSize antialias:NO];
 }
 
 @end

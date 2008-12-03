@@ -137,10 +137,8 @@
 -(void)synchronizeFontCTM
 {
 	CGAffineTransform ctm=[[self currentState] textMatrix];
-   id font=[[self currentState] fontState];
-	float size=12.0;
-	if(font)
-		size=[font pointSize];
+    CGFloat size=[[self currentState] pointSize];
+
 	ctm = CGAffineTransformScale(ctm, size, -size);
 	
 	cairo_matrix_t matrix={ctm.a, ctm.b, ctm.c, ctm.d, ctm.tx, ctm.ty};
@@ -361,12 +359,8 @@
       cairo_surface_destroy(img);
 }
 
--(void)deviceSelectFontWithName:(NSString *)name pointSize:(float)pointSize antialias:(BOOL)antialias {
-   
-}
-
 -(void)showGlyphs:(const CGGlyph *)glyphs count:(unsigned)count {
-   TTFFont *font=(TTFFont*)[[self currentState] fontState];
+   TTFFont *fontState=(TTFFont*)[[self currentState] fontState];
    int i;
    cairo_glyph_t *cg=alloca(sizeof(cairo_glyph_t)*count);
    BOOL nominal;
@@ -374,7 +368,7 @@
    float x=0, y=0;
    for(i=0; i<count; i++)
    {
-      NSPoint pos=[font positionOfGlyph:glyphs[i] precededByGlyph:CGNullGlyph isNominal:&nominal];
+      NSPoint pos=[fontState positionOfGlyph:glyphs[i] precededByGlyph:CGNullGlyph isNominal:&nominal];
       
       cg[i].x=x;
       cg[i].y=y+pos.y;
@@ -385,7 +379,7 @@
    
    cairo_font_face_t *face=(cairo_font_face_t *)cairo_ft_font_face_create_for_ft_face([font face], NULL);
    cairo_set_font_face(_context, face);
-   cairo_set_font_size(_context, [font pointSize]);
+   cairo_set_font_size(_context, [fontState pointSize]);
    
    cairo_identity_matrix(_context);
    cairo_reset_clip(_context);
@@ -416,4 +410,36 @@
    cairo_set_source_surface (_context, [other _cairoSurface], 0, 0);
 	cairo_paint(_context);
 }
+
+-(void)establishFontState {
+   KGGraphicsState *state=[self currentState];
+   KGFontState *fontState=[[TTFFont alloc] initWithName:[state fontName] size:[state pointSize]];
+   NSString    *name=[fontState name];
+   CGFloat      pointSize=[fontState pointSize];
+   
+   [state setFontState:fontState];
+   [fontState release];
+}
+
+-(void)setFont:(KGFont *)font {
+   [super setFont:font];
+   [self establishFontState];
+}
+
+-(void)setFontSize:(float)size {
+   [super setFontSize:size];
+   [self establishFontState];
+}
+
+-(void)selectFontWithName:(const char *)name size:(float)size encoding:(int)encoding {
+   [super selectFontWithName:name size:size encoding:encoding];
+   [self establishFontState];
+}
+
+-(void)restoreGState {
+   [super restoreGState];
+   [self establishFontState];
+}
+
+
 @end

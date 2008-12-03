@@ -36,6 +36,7 @@ typedef enum {
    float            _matrix[6];
    NSStringEncoding _encoding;
    
+   CGFontRef        _cgFont;
    KGFontState   *_kgFontState;
 }
 

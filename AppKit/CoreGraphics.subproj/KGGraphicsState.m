@@ -12,6 +12,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "KGColor.h"
 #import "KGColorSpace.h"
 #import "KGMutablePath.h"
+#import "KGFont.h"
 #import "KGFontState.h"
 #import "KGClipPhase.h"
 #import <Foundation/NSArray.h>
@@ -27,6 +28,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    _clipPhases=[NSMutableArray new];
    _strokeColor=[[KGColor alloc] init];
    _fillColor=[[KGColor alloc] init];
+   _font=nil;
+   _pointSize=12.0;
    _fontState=nil;
    _patternPhase=CGSizeMake(0,0);
    _lineWidth=1.0;
@@ -46,6 +49,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [_clipPhases release];
    [_strokeColor release];
    [_fillColor release];
+   [_font release];
    [_fontState release];
    if(_dashLengths!=NULL)
     NSZoneFree(NULL,_dashLengths);
@@ -60,6 +64,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    copy->_clipPhases=[[NSMutableArray alloc] initWithArray:_clipPhases];
    copy->_strokeColor=[_strokeColor copyWithZone:zone];
    copy->_fillColor=[_fillColor copyWithZone:zone];
+   copy->_font=[_font retain];
    copy->_fontState=[_fontState retain];
    if(_dashLengths!=NULL){
     int i;
@@ -217,6 +222,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    _textDrawingMode=textMode;
 }
 
+-(NSString *)fontName {
+   return [_font fontName];
+}
+
+-(CGFloat)pointSize {
+   return _pointSize;
+}
+
 -(KGFontState *)fontState {
    return _fontState;
 }
@@ -225,6 +238,27 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    fontState=[fontState retain];
    [_fontState release];
    _fontState=fontState;
+}
+
+-(void)setFont:(KGFont *)font {
+   font=[font retain];
+   [_font release];
+   _font=font;
+}
+
+-(void)setFontSize:(float)size {
+   _pointSize=size;
+}
+
+-(void)selectFontWithName:(const char *)name size:(float)size encoding:(int)encoding {
+   KGFont *font=[KGFont createWithFontName:[NSString stringWithCString:name]];
+   
+   if(font!=nil){
+    [_font release];
+    _font=font;
+   }
+   
+   _pointSize=size;
 }
 
 -(void)setShouldSmoothFonts:(BOOL)yesOrNo {

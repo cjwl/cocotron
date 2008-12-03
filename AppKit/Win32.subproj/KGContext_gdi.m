@@ -19,7 +19,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/KGColorSpace.h>
 #import <AppKit/KGShading.h>
 #import <AppKit/KGFunction.h>
-#import <AppKit/KGFontState.h>
+#import "KGFontState_gdi.h"
 #import "../CoreGraphics.subproj/KGImage.h"
 #import <AppKit/KGClipPhase.h>
 #import <AppKit/Win32Font.h>
@@ -180,7 +180,7 @@ static RECT NSRectToRECT(NSRect rect) {
    return _deviceContext;
 }
 
--(void)deviceSelectFontWithName:(NSString *)name pointSize:(float)pointSize antialias:(BOOL)antialias {
+-(void)deviceSelectFontWithName:(NSString *)name pointSize:(float)pointSize antialias:(BOOL)antialias {   
    int height=(pointSize*GetDeviceCaps(_dc,LOGPIXELSY))/72.0;
 
    [_gdiFont release];
@@ -188,6 +188,36 @@ static RECT NSRectToRECT(NSRect rect) {
    SelectObject(_dc,[_gdiFont fontHandle]);
 }
 
+-(void)establishFontState {
+   KGGraphicsState *state=[self currentState];
+   KGFontState *fontState=[[KGFontState_gdi alloc] initWithName:[state fontName] size:[state pointSize]];
+   NSString    *name=[fontState name];
+   CGFloat      pointSize=[fontState pointSize];
+   
+   [self deviceSelectFontWithName:name pointSize:pointSize antialias:NO];
+   [state setFontState:fontState];
+   [fontState release];
+}
+
+-(void)setFont:(KGFont *)font {
+   [super setFont:font];
+   [self establishFontState];
+}
+
+-(void)setFontSize:(float)size {
+   [super setFontSize:size];
+   [self establishFontState];
+}
+
+-(void)selectFontWithName:(const char *)name size:(float)size encoding:(int)encoding {
+   [super selectFontWithName:name size:size encoding:encoding];
+   [self establishFontState];
+}
+
+-(void)restoreGState {
+   [super restoreGState];
+   [self establishFontState];
+}
 
 -(void)deviceClipReset {
    [_deviceContext clipReset];
@@ -311,7 +341,7 @@ static RECT NSRectToRECT(NSRect rect) {
    SetTextColor(_dc,COLORREFFromColor([self fillColor]));
    ExtTextOutW(_dc,point.x,point.y,ETO_GLYPH_INDEX,NULL,(void *)glyphs,count,NULL);
    
-   NSSize advancement=[[self currentFontState] advancementForNominalGlyphs:glyphs count:count];
+   NSSize advancement=[[[self currentState] fontState] advancementForNominalGlyphs:glyphs count:count];
    
    [self currentState]->_textTransform.tx+=advancement.width;
    [self currentState]->_textTransform.ty+=advancement.height;

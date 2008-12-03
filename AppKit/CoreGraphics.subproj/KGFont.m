@@ -9,4 +9,22 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @implementation KGFont
 
+-initWithFontName:(NSString *)name {
+   _name=[name copy];
+   return self;
+}
+
+-(void)dealloc {
+   [_name release];
+   [super dealloc];
+}
+
++(KGFont *)createWithFontName:(NSString *)name {
+   return [[self alloc] initWithFontName:name];
+}
+
+-(NSString *)fontName {
+   return _name;
+}
+
 @end

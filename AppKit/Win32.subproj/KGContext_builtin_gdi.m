@@ -9,7 +9,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/KGGraphicsState.h>
 #import "KGSurface_DIBSection.h"
 #import "KGDeviceContext_gdi.h"
-#import <AppKit/KGFontState.h>
+#import "KGFontState_gdi.h"
 #import "../CoreGraphics.subproj/KGColorSpace.h"
 #import "../CoreGraphics.subproj/KGColor.h"
 #import <AppKit/Win32Font.h>
@@ -63,18 +63,49 @@ static inline BOOL transformIsFlipped(CGAffineTransform matrix){
    SetTextColor(_dc,COLORREFFromColor([self fillColor]));
    ExtTextOutW(_dc,point.x,point.y,ETO_GLYPH_INDEX,NULL,(void *)glyphs,count,NULL);
    
-   NSSize advancement=[[self currentFontState] advancementForNominalGlyphs:glyphs count:count];
+   NSSize advancement=[[[self currentState] fontState] advancementForNominalGlyphs:glyphs count:count];
    
    [self currentState]->_textTransform.tx+=advancement.width;
    [self currentState]->_textTransform.ty+=advancement.height;
 }
 
--(void)deviceSelectFontWithName:(NSString *)name pointSize:(float)pointSize antialias:(BOOL)antialias {
+-(void)deviceSelectFontWithName:(NSString *)name pointSize:(float)pointSize antialias:(BOOL)antialias {   
    int height=(pointSize*GetDeviceCaps(_dc,LOGPIXELSY))/72.0;
 
    [_gdiFont release];
    _gdiFont=[[Win32Font alloc] initWithName:name size:NSMakeSize(0,height) antialias:antialias];
    SelectObject(_dc,[_gdiFont fontHandle]);
+}
+
+-(void)establishFontState {
+   KGGraphicsState *state=[self currentState];
+   KGFontState *fontState=[[KGFontState_gdi alloc] initWithName:[state fontName] size:[state pointSize]];
+   NSString    *name=[fontState name];
+   CGFloat      pointSize=[fontState pointSize];
+   
+   [self deviceSelectFontWithName:name pointSize:pointSize antialias:NO];
+   [state setFontState:fontState];
+   [fontState release];
+}
+
+-(void)setFont:(KGFont *)font {
+   [super setFont:font];
+   [self establishFontState];
+}
+
+-(void)setFontSize:(float)size {
+   [super setFontSize:size];
+   [self establishFontState];
+}
+
+-(void)selectFontWithName:(const char *)name size:(float)size encoding:(int)encoding {
+   [super selectFontWithName:name size:size encoding:encoding];
+   [self establishFontState];
+}
+
+-(void)restoreGState {
+   [super restoreGState];
+   [self establishFontState];
 }
 
 @end

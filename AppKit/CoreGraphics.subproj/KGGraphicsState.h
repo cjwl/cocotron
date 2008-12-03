@@ -21,6 +21,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    KGColor            *_strokeColor;
    KGColor            *_fillColor;
    KGFont             *_font;
+   CGFloat             _pointSize;
    KGFontState        *_fontState;
    CGSize              _patternPhase;   
    float               _characterSpacing;
@@ -88,8 +89,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)setTextPosition:(float)x:(float)y;
 -(void)setCharacterSpacing:(float)spacing;
 -(void)setTextDrawingMode:(int)textMode;
+-(NSString *)fontName;
+-(CGFloat)pointSize;
 -(KGFontState *)fontState;
--(void)setFontState:(KGFontState *)font;
+-(void)setFontState:(KGFontState *)fontState;
+-(void)setFont:(KGFont *)font;
+-(void)setFontSize:(float)size;
+-(void)selectFontWithName:(const char *)name size:(float)size encoding:(int)encoding;
 -(void)setShouldSmoothFonts:(BOOL)yesOrNo;
 
 -(void)setLineWidth:(float)width;

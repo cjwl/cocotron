@@ -14,6 +14,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSDisplay.h>
 #import <AppKit/NSNibKeyedUnarchiver.h>
 #import <AppKit/KGContext.h>
+#import <AppKit/KGFontState.h>
 
 FOUNDATION_EXPORT char *NSUnicodeToSymbol(const unichar *characters,unsigned length,
   BOOL lossy,unsigned *resultLength,NSZone *zone);
@@ -216,6 +217,7 @@ static NSFont **_fontCache=NULL;
 
    [isa addFontToCache:self];
    
+   _cgFont=CGFontCreateWithFontName(_name);
    _kgFontState=[[KGFontState alloc] initWithName:_name size:_pointSize];
 
    return self;
@@ -225,6 +227,7 @@ static NSFont **_fontCache=NULL;
    [isa removeFontFromCache:self];
 
    [_name release];
+   CGFontRelease(_cgFont);
    [_kgFontState release];
    [super dealloc];
 }
@@ -419,7 +422,8 @@ arrayWithArray:[_name componentsSeparatedByString:blank]];
 -(void)setInContext:(NSGraphicsContext *)context {
    CGContextRef cgContext=[context graphicsPort];
    
-   [cgContext setFontState:_kgFontState];
+   CGContextSetFont(cgContext,_cgFont);
+   CGContextSetFontSize(cgContext,_pointSize);
 
 // FIX, should check the focusView in the context instead of NSView's
    if([[NSView focusView] isFlipped]){

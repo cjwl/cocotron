@@ -345,10 +345,6 @@ xform=CGAffineTransformConcat(i2u,xform);
 //   KGInvalidAbstractInvocation();
 }
 
--(void)deviceSelectFontWithName:(NSString *)name pointSize:(float)pointSize antialias:(BOOL)antialias {
-//   KGInvalidAbstractInvocation();
-}
-
 void KGRasterizerSetViewport(KGRasterizer *self,int x,int y,int width,int height) {
 	RI_ASSERT(vpwidth >= 0 && vpheight >= 0);
     self->_vpx=x;

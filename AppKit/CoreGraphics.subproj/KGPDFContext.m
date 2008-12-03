@@ -632,16 +632,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    
    [self contentWithString:@"BT "];
    
-   KGFontState *font=[self currentFontState];
-   KGPDFObject *pdfObject=[font encodeReferenceWithContext:self];
+   KGFontState *fontState=[[self currentState] fontState];
+   KGPDFObject *pdfObject=[fontState encodeReferenceWithContext:self];
    KGPDFObject *name=[self nameForResource:pdfObject inCategory:"Font"];
 
-   [self contentWithFormat:@"%@ %g Tf ",name,[font nominalSize]];
+   [self contentWithFormat:@"%@ %g Tf ",name,[[self currentState] pointSize]];
 
    CGAffineTransform matrix=[self textMatrix];
    [self contentWithFormat:@"%g %g %g %g %g %g Tm ",matrix.a,matrix.b,matrix.c,matrix.d,matrix.tx,matrix.ty];
    
-   [[self currentFontState] getBytes:bytes forGlyphs:glyphs length:count];
+   [fontState getBytes:bytes forGlyphs:glyphs length:count];
    [self contentPDFStringWithBytes:bytes length:count];
    [self contentWithString:@" Tj "];
    
@@ -734,9 +734,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)deviceClipReset {
-}
-
--(void)deviceSelectFontWithName:(NSString *)name pointSize:(float)pointSize antialias:(BOOL)antialias {
 }
 
 @end
