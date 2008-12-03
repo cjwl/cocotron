@@ -122,9 +122,9 @@ static unsigned *openFileHook(HWND hdlg,UINT uiMsg,WPARAM wParam,LPARAM lParam) 
 }
 
 -(int)_GetOpenFileNameForTypes:(NSArray *)types {
-   OPENFILENAMEW  openFileName;
-   unichar          filename[MAX_PATH+1];
-   unichar         *fileTypes,*p,*q;
+   OPENFILENAMEW openFileName;
+   unichar       filename[MAX_PATH+1];
+   unichar      *fileTypes,*p,*q;
    int           i,j,fileTypesLength,check;
    NSArray      *allTypes = [[NSDocumentController sharedDocumentController] _allFileTypes];
    NSDictionary *typeDict;
@@ -143,7 +143,7 @@ static unsigned *openFileHook(HWND hdlg,UINT uiMsg,WPARAM wParam,LPARAM lParam) 
      typeDict=[allTypes objectAtIndex:i];
      // length of the full name of the document type + blank + opening bracket
      fileTypesLength+=[[typeDict objectForKey:@"CFBundleTypeName"] cStringLength]+2;
-     typeExtensions = [typeDict objectForKey:@"CFBundleTypeExtensions"];
+     typeExtensions=[typeDict objectForKey:@"CFBundleTypeExtensions"];
      for(j=0;j<[typeExtensions count];j++)
       // 2 x length of *.<EXT> + semicolon
       fileTypesLength+=2*(2+[[typeExtensions objectAtIndex:j] cStringLength]+1);
@@ -152,36 +152,36 @@ static unsigned *openFileHook(HWND hdlg,UINT uiMsg,WPARAM wParam,LPARAM lParam) 
     fileTypesLength++;   // the final \0
 
     // allocate the space and fill in the file types list
-    p=fileTypes=alloca(fileTypesLength);
+    p=fileTypes=calloc(fileTypesLength, sizeof(unichar));
     wcscpy(p,L"Supported ("); p+=wcslen(L"Supported (");
     q=p;
     for(j=0;j<[types count];j++){
      *p++ ='*'; *p++ ='.';
-		[[types objectAtIndex:j] getCharacters:p]; p+=wcslen(p);
-		*p++ =';';
-	   }
-	   *(p-1)=')'; // replace the last semicolon by the closing bracket
-	   *p++ ='\0';
-	   // duplicate the semicolon separated *.extension list
-	   wcscpy(p,q); p+=p-q-2;
-	   *p++ ='\0'; // replace the stray closing bracket by '\0'
+     [[types objectAtIndex:j] getCharacters:p]; p+=wcslen(p);
+     *p++ =';';
+    }
+    *(p-1)=')'; // replace the last semicolon by the closing bracket
+    *p++ ='\0';
+    // duplicate the semicolon separated *.extension list
+    wcscpy(p,q); p+=p-q-2;
+    *p++ ='\0'; // replace the stray closing bracket by '\0'
 
-	   for(i=0;i<[allTypes count];i++){
-		typeDict=[allTypes objectAtIndex:i];
-		[[typeDict objectForKey:@"CFBundleTypeName"] getCharacters:p]; p+=wcslen(p);
+    for(i=0;i<[allTypes count];i++){
+     typeDict=[allTypes objectAtIndex:i];
+     [[typeDict objectForKey:@"CFBundleTypeName"] getCharacters:p]; p+=wcslen(p);
      *p++ =' '; *p++ ='(';
 
      typeExtensions=[typeDict objectForKey:@"CFBundleTypeExtensions"];
      q=p;
      for(j=0;j<[typeExtensions count];j++){
       *p++ ='*'; *p++ ='.';
-		 [[typeExtensions objectAtIndex:j] getCharacters:p]; p+=wcslen(p);
-		 *p++ =';';
-		}
-		*(p-1)=')'; // replace the last semicolon by the closing bracket
-		*p++ ='\0';
-		// duplicate the semicolon separated *.extension list
-		wcscpy(p,q); p+=p-q-2;
+      [[typeExtensions objectAtIndex:j] getCharacters:p]; p+=wcslen(p);
+      *p++ =';';
+     }
+     *(p-1)=')'; // replace the last semicolon by the closing bracket
+     *p++ ='\0';
+     // duplicate the semicolon separated *.extension list
+     wcscpy(p,q); p+=p-q-2;
      *p++ ='\0'; // replace the stray closing bracket by '\0'
     }
     *p='\0';
@@ -225,6 +225,8 @@ static unsigned *openFileHook(HWND hdlg,UINT uiMsg,WPARAM wParam,LPARAM lParam) 
    check=GetOpenFileNameW(&openFileName);
    [(Win32Display *)[NSDisplay currentDisplay] startWaitCursor];
 
+   if(types)
+    free(fileTypes);
    if(!check && openFileName.lCustData!=0xFFFFFFFF)
     return NSCancelButton;
    
