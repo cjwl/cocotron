@@ -16,3 +16,9 @@ CGFontRef CGFontCreateWithFontName(NSString *name) {
 void CGFontRelease(CGFontRef self){
    [self release];
 }
+
+size_t CGFontGetNumberOfGlyphs(CGFontRef self) {
+   return [self numberOfGlyphs];
+}
+
+

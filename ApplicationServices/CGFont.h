@@ -22,3 +22,5 @@ typedef unsigned short CGGlyph;
 COREGRAPHICS_EXPORT CGFontRef CGFontCreateWithFontName(NSString *name);
 
 COREGRAPHICS_EXPORT void CGFontRelease(CGFontRef self);
+COREGRAPHICS_EXPORT size_t CGFontGetNumberOfGlyphs(CGFontRef self);
+

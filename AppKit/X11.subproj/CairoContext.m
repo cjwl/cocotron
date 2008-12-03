@@ -395,6 +395,19 @@
    cairo_font_face_destroy(face);
 }
 
+-(void)showText:(const char *)text length:(unsigned)length {
+   unichar unicode[length];
+   CGGlyph glyphs[length];
+   int     i;
+   
+// FIX, encoding
+   for(i=0;i<length;i++)
+    unicode[i]=text[i];
+    
+   [[[self currentState] fontState] getGlyphs:glyphs forCharacters:unicode length:length];
+   [self showGlyphs:glyphs count:length];
+}
+
 -(void)flush {
    cairo_surface_flush(_surface);
 }
