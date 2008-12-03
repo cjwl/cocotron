@@ -29,6 +29,9 @@ NSString *NSNibTopLevelObjects=@"NSNibTopLevelObjects";
    if([[NSFileManager defaultManager] fileExistsAtPath:path isDirectory:&isDirectory] && isDirectory)
     keyedobjects=[[path stringByAppendingPathComponent:@"keyedobjects"] stringByAppendingPathExtension:@"nib"];
    
+   if(!keyedobjects && !isDirectory)
+      keyedobjects=path; // assume new-style compiled xib
+   
    if((_data=[[NSData alloc] initWithContentsOfFile:keyedobjects])==nil){
     NSLog(@"%s: unable to init nib from file '%@'", __PRETTY_FUNCTION__, keyedobjects);
     [self release];

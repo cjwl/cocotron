@@ -23,13 +23,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @implementation _NSBinder (BindingOptions)
 -(BOOL)conditionallySetsEditable
 {
-	return [[_options objectForKey:NSConditionallySetsEditableBindingOption] boolValue];
+	return [[_options objectForKey:NSConditionallySetsEditableBindingOption] boolValue] && 
+   [_source respondsToSelector:@selector(setEditable:)];
 }
 
 -(BOOL)conditionallySetsEnabled
 {
 	// FIX: needs to read from options
-	if([_source respondsToSelector:@selector(setEditable:)])
+	if([_source respondsToSelector:@selector(setEnabled:)])
 		return YES;
 	return NO;
 }

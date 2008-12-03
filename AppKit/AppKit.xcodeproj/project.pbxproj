@@ -14,6 +14,10 @@
 		C81D0ACA0E8E92C2003BE469 /* NSToolbar-Private.h in Headers */ = {isa = PBXBuildFile; fileRef = C81D0AC90E8E92C2003BE469 /* NSToolbar-Private.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		C84909370E8D1FB900BA6D3A /* NSUserDefaultsControllerProxy.h in Headers */ = {isa = PBXBuildFile; fileRef = C84909350E8D1FB900BA6D3A /* NSUserDefaultsControllerProxy.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		C84909380E8D1FB900BA6D3A /* NSUserDefaultsControllerProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = C84909360E8D1FB900BA6D3A /* NSUserDefaultsControllerProxy.m */; };
+		C85D91950EE6A806004EBAEA /* NSDictionaryController.h in Headers */ = {isa = PBXBuildFile; fileRef = C85D91930EE6A806004EBAEA /* NSDictionaryController.h */; };
+		C85D91960EE6A806004EBAEA /* NSDictionaryController.m in Sources */ = {isa = PBXBuildFile; fileRef = C85D91940EE6A806004EBAEA /* NSDictionaryController.m */; };
+		C85D91970EE6A806004EBAEA /* NSDictionaryController.h in Headers */ = {isa = PBXBuildFile; fileRef = C85D91930EE6A806004EBAEA /* NSDictionaryController.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C85D91980EE6A806004EBAEA /* NSDictionaryController.m in Sources */ = {isa = PBXBuildFile; fileRef = C85D91940EE6A806004EBAEA /* NSDictionaryController.m */; };
 		C8720C790EA782DB00F02725 /* CairoCacheImage.h in Headers */ = {isa = PBXBuildFile; fileRef = C8720C770EA782DB00F02725 /* CairoCacheImage.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		C8720C7A0EA782DB00F02725 /* CairoCacheImage.m in Sources */ = {isa = PBXBuildFile; fileRef = C8720C780EA782DB00F02725 /* CairoCacheImage.m */; };
 		C8746B290EA379CE007A6BE2 /* NSPlatform_linux.m in Sources */ = {isa = PBXBuildFile; fileRef = C8746B280EA379CE007A6BE2 /* NSPlatform_linux.m */; };
@@ -2020,6 +2024,8 @@
 		C81D0AC90E8E92C2003BE469 /* NSToolbar-Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSToolbar-Private.h"; sourceTree = "<group>"; };
 		C84909350E8D1FB900BA6D3A /* NSUserDefaultsControllerProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSUserDefaultsControllerProxy.h; sourceTree = "<group>"; };
 		C84909360E8D1FB900BA6D3A /* NSUserDefaultsControllerProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSUserDefaultsControllerProxy.m; sourceTree = "<group>"; };
+		C85D91930EE6A806004EBAEA /* NSDictionaryController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSDictionaryController.h; sourceTree = "<group>"; };
+		C85D91940EE6A806004EBAEA /* NSDictionaryController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSDictionaryController.m; sourceTree = "<group>"; };
 		C8720C770EA782DB00F02725 /* CairoCacheImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CairoCacheImage.h; sourceTree = "<group>"; };
 		C8720C780EA782DB00F02725 /* CairoCacheImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CairoCacheImage.m; sourceTree = "<group>"; };
 		C8746B280EA379CE007A6BE2 /* NSPlatform_linux.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSPlatform_linux.m; sourceTree = "<group>"; };
@@ -3289,6 +3295,8 @@
 		FE2A10250B44A239006C03DE /* NSController */ = {
 			isa = PBXGroup;
 			children = (
+				C85D91930EE6A806004EBAEA /* NSDictionaryController.h */,
+				C85D91940EE6A806004EBAEA /* NSDictionaryController.m */,
 				C8C52C8D0E7ED1FF003F03B5 /* NSObservationProxy.h */,
 				C8C52C8E0E7ED1FF003F03B5 /* NSObservationProxy.m */,
 				FE8D94A90CE3A6C700AFB060 /* NSControllerSelectionProxy.h */,
@@ -3757,6 +3765,7 @@
 				C81BEA0F0EA6038800478D50 /* CairoContext.h in Headers */,
 				C8720C790EA782DB00F02725 /* CairoCacheImage.h in Headers */,
 				FE25FF640EE58712009C91B1 /* KGFont.h in Headers */,
+				C85D91950EE6A806004EBAEA /* NSDictionaryController.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4110,6 +4119,7 @@
 				C84909370E8D1FB900BA6D3A /* NSUserDefaultsControllerProxy.h in Headers */,
 				C81D0ACA0E8E92C2003BE469 /* NSToolbar-Private.h in Headers */,
 				FE25FF620EE58712009C91B1 /* KGFont.h in Headers */,
+				C85D91970EE6A806004EBAEA /* NSDictionaryController.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4676,6 +4686,7 @@
 				C81BEA100EA6038800478D50 /* CairoContext.m in Sources */,
 				C8720C7A0EA782DB00F02725 /* CairoCacheImage.m in Sources */,
 				FE25FF650EE58712009C91B1 /* KGFont.m in Sources */,
+				C85D91960EE6A806004EBAEA /* NSDictionaryController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5033,6 +5044,7 @@
 				36570F9B0E818CD5008FE1BE /* NSGradient.m in Sources */,
 				C84909380E8D1FB900BA6D3A /* NSUserDefaultsControllerProxy.m in Sources */,
 				FE25FF630EE58712009C91B1 /* KGFont.m in Sources */,
+				C85D91980EE6A806004EBAEA /* NSDictionaryController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

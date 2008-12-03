@@ -22,6 +22,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	if([self hasPrefix:start] && [self hasSuffix:end])
 	{
 		NSString* keyName=[self substringWithRange:NSMakeRange([start length], [self length]-[end length]-[start length])];
+      if(![keyName length])
+         return NO;
 		*ret = [NSString stringWithFormat:@"%@%@", [[keyName substringToIndex:1] lowercaseString], [keyName substringFromIndex:1]]; 
 		return YES;
 	}

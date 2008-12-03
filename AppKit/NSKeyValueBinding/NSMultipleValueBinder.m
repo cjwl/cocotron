@@ -47,7 +47,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)applyToObject:(id)object inRow:(int)row keyPath:(id)path
 {
-	[object setValue:[[_rowValues objectAtIndex:row] valueForKeyPath:_valueKeyPath] forKey:path];
+   @try {
+      [object setValue:[[_rowValues objectAtIndex:row] valueForKeyPath:_valueKeyPath] forKey:path];
+   }
+   @catch(id e) {
+    //  NSLog(@"exception %@ while setting value for key path %@ for row %i", e, _valueKeyPath, row);
+   }
 }
 
 -(void)applyToObject:(id)object inRow:(int)row
@@ -141,7 +146,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)startObservingChanges
 {
-	NS_DURING
+	@try {
 	[_destination addObserver:self forKeyPath:_arrayKeyPath options:0 context:_destination];
 	if(![_valueKeyPath hasPrefix:@"@"])
 		[_rowValues addObserver:self
@@ -149,8 +154,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 					forKeyPath:_valueKeyPath 
 					   options:0
 					   context:nil];
-	NS_HANDLER
-	NS_ENDHANDLER
+	}
+   @catch(id e) {
+   }
 }
 
 -(void)stopObservingChanges
