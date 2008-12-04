@@ -188,15 +188,21 @@ static RECT NSRectToRECT(NSRect rect) {
    SelectObject(_dc,[_gdiFont fontHandle]);
 }
 
+-(void)establishFontStateInDevice {
+   KTFont   *font=[[self currentState] fontState];
+   NSString *name=[font name];
+   CGFloat   pointSize=[font pointSize];
+   
+   [self deviceSelectFontWithName:name pointSize:pointSize antialias:NO];
+}
+
 -(void)establishFontState {
    KGGraphicsState *state=[self currentState];
    KTFont *fontState=[[KTFont_gdi alloc] initWithFont:[state font] size:[state pointSize]];
-   NSString    *name=[fontState name];
-   CGFloat      pointSize=[fontState pointSize];
-   
-   [self deviceSelectFontWithName:name pointSize:pointSize antialias:NO];
+
    [state setFontState:fontState];
    [fontState release];
+   [self establishFontStateInDevice];
 }
 
 -(void)setFont:(KGFont *)font {
@@ -216,7 +222,7 @@ static RECT NSRectToRECT(NSRect rect) {
 
 -(void)restoreGState {
    [super restoreGState];
-   [self establishFontState];
+   [self establishFontStateInDevice];
 }
 
 

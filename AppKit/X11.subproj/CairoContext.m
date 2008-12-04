@@ -424,6 +424,10 @@
 	cairo_paint(_context);
 }
 
+-(void)establishFontStateInDevice {
+
+}
+
 -(void)establishFontState {
    KGGraphicsState *state=[self currentState];
    KGFont *cgFont=[state font];
@@ -452,8 +456,7 @@
 
 -(void)restoreGState {
    [super restoreGState];
-   [self establishFontState];
+   [self establishFontStateInDevice];
 }
-
 
 @end
