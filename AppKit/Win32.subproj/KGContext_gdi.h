@@ -29,7 +29,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(HFONT)fontHandle;
 
 -(KGDeviceContext_gdi *)deviceContext;
--(void)deviceSelectFontWithName:(NSString *)name pointSize:(float)pointSize antialias:(BOOL)antialias;
 
 @end
 

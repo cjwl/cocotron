@@ -15,6 +15,5 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -initWithSize:(NSSize)size deviceContext:(KGDeviceContext_gdi *)compatible;
--initWithSize:(NSSize)size;
 
 @end

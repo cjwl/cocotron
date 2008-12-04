@@ -180,20 +180,10 @@ static RECT NSRectToRECT(NSRect rect) {
    return _deviceContext;
 }
 
--(void)deviceSelectFontWithName:(NSString *)name pointSize:(float)pointSize antialias:(BOOL)antialias {   
-   int height=(pointSize*GetDeviceCaps(_dc,LOGPIXELSY))/72.0;
-
-   [_gdiFont release];
-   _gdiFont=[[Win32Font alloc] initWithName:name size:NSMakeSize(0,height) antialias:antialias];
-   SelectObject(_dc,[_gdiFont fontHandle]);
-}
-
 -(void)establishFontStateInDevice {
-   KTFont   *font=[[self currentState] fontState];
-   NSString *name=[font name];
-   CGFloat   pointSize=[font pointSize];
-   
-   [self deviceSelectFontWithName:name pointSize:pointSize antialias:NO];
+   KTFont *font=[[self currentState] fontState];
+   [_gdiFont release];
+   _gdiFont=[[[self currentState] fontState] createGDIFontSelectedInDC:_dc];
 }
 
 -(void)establishFontState {

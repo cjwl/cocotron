@@ -56,12 +56,12 @@ static inline CGGlyphMetrics *glyphInfoForGlyph(KTFont_gdi *self,CGGlyph glyph){
    }
 }
 
--(HDC)deviceContextSelfSelected {
-   KGContext_gdi *context=[[Win32Display currentDisplay] contextOnPrimaryScreen];
+-(Win32Font *)createGDIFontSelectedInDC:(HDC)dc {
+   int        height=([self pointSize]*GetDeviceCaps(dc,LOGPIXELSY))/72.0;
+   Win32Font *result=[[Win32Font alloc] initWithName:[self name] size:NSMakeSize(0,height) antialias:NO];
    
-   [context deviceSelectFontWithName:[self name] pointSize:[self pointSize] antialias:NO];
-
-   return [context dc];
+   SelectObject(dc,[result fontHandle]);
+   return result;
 }
 
 -(BOOL)fetchSharedGlyphRangeTable {
@@ -89,7 +89,8 @@ static inline CGGlyphMetrics *glyphInfoForGlyph(KTFont_gdi *self,CGGlyph glyph){
    if([self fetchSharedGlyphRangeTable])
     return;
 
-   HDC                dc=[self deviceContextSelfSelected];
+   HDC                dc=GetDC(NULL);
+   Win32Font         *gdiFont=[self createGDIFontSelectedInDC:dc];
    NSRange            range=NSMakeRange(0,MAXUNICHAR);
    unichar            characters[range.length];
    unsigned short     glyphs[range.length];
@@ -119,6 +120,8 @@ static inline CGGlyphMetrics *glyphInfoForGlyph(KTFont_gdi *self,CGGlyph glyph){
     if(GetCharacterPlacementW(dc,characters,range.length,0,&results,0)==0)
      NSLog(@"GetCharacterPlacementW failed");
    }
+   ReleaseDC(NULL,dc);
+   [gdiFont release];
    
    _glyphRangeTable->numberOfGlyphs=0;
    for(i=0;i<range.length;i++){
@@ -151,12 +154,15 @@ static inline CGGlyphMetrics *glyphInfoForGlyph(KTFont_gdi *self,CGGlyph glyph){
 }
 
 -(void)fetchGlyphKerning {
-   HDC         dc=[self deviceContextSelfSelected];
+   HDC         dc=GetDC(NULL);
+   Win32Font  *gdiFont=[self createGDIFontSelectedInDC:dc];
    int         i,numberOfPairs=GetKerningPairs(dc,0,NULL);
    KERNINGPAIR pairs[numberOfPairs];
 
    GetKerningPairsW(dc,numberOfPairs,pairs);
-
+   ReleaseDC(NULL,dc);
+   [gdiFont release];
+   
    for(i=0;i<numberOfPairs;i++){
     unichar previousCharacter=pairs[i].wFirst;
     unichar currentCharacter=pairs[i].wSecond;
@@ -211,7 +217,8 @@ static inline CGGlyphMetrics *fetchGlyphInfoIfNeeded(KTFont_gdi *self,CGGlyph gl
 }
 
 -(void)fetchAdvancementsForGlyph:(CGGlyph)glyph {
-   HDC       dc=[self deviceContextSelfSelected];
+   HDC        dc=GetDC(NULL);
+   Win32Font *gdiFont=[self createGDIFontSelectedInDC:dc];
    ABCFLOAT *abc;
    int       i,max;
 
@@ -251,6 +258,8 @@ static inline CGGlyphMetrics *fetchGlyphInfoIfNeeded(KTFont_gdi *self,CGGlyph gl
      }
     }
    }
+   ReleaseDC(NULL,dc);
+   [gdiFont release];
 }
 
 static inline CGGlyphMetrics *fetchGlyphAdvancementIfNeeded(KTFont_gdi *self,CGGlyph glyph){
@@ -267,7 +276,8 @@ static inline CGGlyphMetrics *fetchGlyphAdvancementIfNeeded(KTFont_gdi *self,CGG
 }
 
 -(void)fetchMetrics {
-   HDC           dc=[self deviceContextSelfSelected];
+   HDC           dc=GetDC(NULL);
+   Win32Font    *gdiFont=[self createGDIFontSelectedInDC:dc];
    TEXTMETRIC    gdiMetrics;
 
    GetTextMetrics(dc,&gdiMetrics);
@@ -292,40 +302,52 @@ static inline CGGlyphMetrics *fetchGlyphAdvancementIfNeeded(KTFont_gdi *self,CGG
 
    _metrics.underlinePosition=-(_metrics.underlineThickness*2);
 
-   if(!(gdiMetrics.tmPitchAndFamily&TMPF_TRUETYPE))
+   if(!(gdiMetrics.tmPitchAndFamily&TMPF_TRUETYPE)){
+    ReleaseDC(NULL,dc);
+    [gdiFont release];
     return;
+   }
     
    int size=GetOutlineTextMetricsA(dc,0,NULL);
    
    _useMacMetrics=NO;
    
-   if(size<=0)
+   if(size<=0){
+    ReleaseDC(NULL,dc);
+    [gdiFont release];
     return;
+   }
 
    OUTLINETEXTMETRICA *ttMetrics=__builtin_alloca(size);
 
    ttMetrics->otmSize=sizeof(OUTLINETEXTMETRICA);
-   if(!GetOutlineTextMetricsA(dc,size,ttMetrics))
+   if(!GetOutlineTextMetricsA(dc,size,ttMetrics)){
+    ReleaseDC(NULL,dc);
+    [gdiFont release];
     return;
-    
+   }
+       
 /* P. 931 "Windows Graphics Programming" by Feng Yuan, 1st Ed.
    A font with height of negative otmEMSquare will have precise metrics  */
    
-   HFONT   fontHandle=[[[Win32Display currentDisplay] contextOnPrimaryScreen] fontHandle];
    LOGFONT logFont;
-     
-   GetObject(fontHandle,sizeof(logFont),&logFont);
+   
+   GetObject([gdiFont fontHandle],sizeof(logFont),&logFont);
    logFont.lfHeight=-ttMetrics->otmEMSquare;
    logFont.lfWidth=0;
      
-   fontHandle=CreateFontIndirect(&logFont);
+   HFONT fontHandle=CreateFontIndirect(&logFont);
    SelectObject(dc,fontHandle);
    
    ttMetrics->otmSize=sizeof(OUTLINETEXTMETRICA);
    size=GetOutlineTextMetricsA(dc,size,ttMetrics);
    DeleteObject(fontHandle);
-   if(size<=0)
+   ReleaseDC(NULL,dc);
+   [gdiFont release];
+   
+   if(size<=0){
     return;
+   }
 
    if(![[self name] isEqualToString:@"Marlett"])
     _useMacMetrics=YES;
@@ -563,11 +585,15 @@ static inline CGGlyphMetrics *fetchGlyphAdvancementIfNeeded(KTFont_gdi *self,CGG
 
 // not complete
 -(void)appendCubicOutlinesToPath:(KGMutablePath *)path glyphs:(CGGlyph *)glyphs length:(unsigned)length {
-   HDC dc=[self deviceContextSelfSelected];
-   int size=GetOutlineTextMetricsA(dc,0,NULL);
+   HDC        dc=GetDC(NULL);
+   Win32Font *gdiFont=[self createGDIFontSelectedInDC:dc];
+   int        size=GetOutlineTextMetricsA(dc,0,NULL);
     
-   if(size<=0)
+   if(size<=0){
+    ReleaseDC(NULL,dc);
+    [gdiFont release];
     return;
+   }
 
    OUTLINETEXTMETRICA *ttMetrics=__builtin_alloca(size);
 
@@ -578,14 +604,13 @@ static inline CGGlyphMetrics *fetchGlyphAdvancementIfNeeded(KTFont_gdi *self,CGG
 /* P. 931 "Windows Graphics Programming" by Feng Yuan, 1st Ed.
    A font with height of negative otmEMSquare will have precise metrics  */
    
-   HFONT   fontHandle=[[[Win32Display currentDisplay] contextOnPrimaryScreen] fontHandle];
    LOGFONT logFont;
      
-   GetObject(fontHandle,sizeof(logFont),&logFont);
+   GetObject([gdiFont fontHandle],sizeof(logFont),&logFont);
    logFont.lfHeight=-ttMetrics->otmEMSquare;
    logFont.lfWidth=0;
      
-   fontHandle=CreateFontIndirect(&logFont);
+   HFONT fontHandle=CreateFontIndirect(&logFont);
    SelectObject(dc,fontHandle);
    DeleteObject(fontHandle);
 
@@ -598,7 +623,8 @@ static inline CGGlyphMetrics *fetchGlyphAdvancementIfNeeded(KTFont_gdi *self,CGG
     if(GetGlyphOutline(dc,glyphs[i],GGO_BEZIER|GGO_GLYPH_INDEX,&glyphMetrics,outlineSize,outline,NULL)==size){
     }
    }
-   
+   ReleaseDC(NULL,dc);
+   [gdiFont release];
 }
 
 @end

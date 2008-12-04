@@ -1,5 +1,7 @@
 #import <AppKit/KTFont.h>
 
+@class Win32Font;
+
 typedef struct CGFontMetrics {
    float  emsquare;
    float  scale;
@@ -52,6 +54,7 @@ typedef struct CGGlyphMetricsSet {
    BOOL _useMacMetrics;
 }
 
+-(Win32Font *)createGDIFontSelectedInDC:(HDC)dc;
 -(CGSize)advancementForNominalGlyphs:(const CGGlyph *)glyphs count:(unsigned)count;
 
 @end

@@ -87,7 +87,6 @@ static DWORD WINAPI runWaitCursor(LPVOID arg){
 -init {
    [super init];
 
-   _contextOnPrimaryScreen=[[KGContext_gdi alloc] initWithHWND:NULL];
    _eventInputSource=[Win32EventInputSource new];
    [[NSRunLoop currentRunLoop] addInputSource:_eventInputSource forMode:NSDefaultRunLoopMode];
    [[NSRunLoop currentRunLoop] addInputSource:_eventInputSource forMode:NSModalPanelRunLoopMode];
@@ -102,10 +101,6 @@ static DWORD WINAPI runWaitCursor(LPVOID arg){
    _cursorCache=[NSMutableDictionary new];
 
    return self;
-}
-
--(KGContext_gdi *)contextOnPrimaryScreen {
-   return _contextOnPrimaryScreen;
 }
 
 BOOL CALLBACK monitorEnumerator(HMONITOR hMonitor,HDC hdcMonitor,LPRECT rect,LPARAM dwData) {
@@ -289,7 +284,9 @@ BOOL CALLBACK monitorEnumerator(HMONITOR hMonitor,HDC hdcMonitor,LPRECT rect,LPA
 
    *pointSize=fontData.elfLogFont.lfHeight;
 
-   *pointSize=(fontData.elfLogFont.lfHeight*72.0)/GetDeviceCaps([_contextOnPrimaryScreen dc],LOGPIXELSY);
+   HDC dc=GetDC(NULL);
+   *pointSize=(fontData.elfLogFont.lfHeight*72.0)/GetDeviceCaps(dc,LOGPIXELSY);
+   ReleaseDC(NULL,dc);
 NSLog(@"name=%@,size=%f",[NSString stringWithCString:fontData. elfLogFont.lfFaceName],*pointSize);
 
    return [NSString stringWithCString:fontData. elfLogFont.lfFaceName];
@@ -810,7 +807,7 @@ static int CALLBACK buildFamily(const LOGFONTA *lofFont_old,
 
 -(NSSet *)allFontFamilyNames {
    NSMutableSet *result=[NSMutableSet set];
-   HDC           dc=[_contextOnPrimaryScreen dc];
+   HDC           dc=GetDC(NULL);
    LOGFONT       logFont;
 
    logFont.lfCharSet=DEFAULT_CHARSET;
@@ -820,6 +817,7 @@ static int CALLBACK buildFamily(const LOGFONTA *lofFont_old,
    if(!EnumFontFamiliesExA(dc,&logFont,buildFamily,(LPARAM)result,0))
     NSLog(@"EnumFontFamiliesExA failed %d",__LINE__);
 
+   ReleaseDC(NULL,dc);
    return result;
 }
 
@@ -865,7 +863,7 @@ static int CALLBACK buildTypeface(const LOGFONTA *lofFont_old,
 
 -(NSArray *)fontTypefacesForFamilyName:(NSString *)name {
    NSMutableDictionary *result=[NSMutableDictionary dictionary];
-   HDC             dc=[_contextOnPrimaryScreen dc];
+   HDC             dc=GetDC(NULL);
    LOGFONT         logFont;
 
    logFont.lfCharSet=DEFAULT_CHARSET;
@@ -876,6 +874,8 @@ static int CALLBACK buildTypeface(const LOGFONTA *lofFont_old,
    if(!EnumFontFamiliesExA(dc,&logFont,buildTypeface,(LPARAM)result,0))
     NSLog(@"EnumFontFamiliesExA failed %d",__LINE__);
 
+   ReleaseDC(NULL,dc);
+   
    return [result allValues];
 }
 

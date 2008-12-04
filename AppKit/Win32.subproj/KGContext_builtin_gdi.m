@@ -83,23 +83,20 @@ static inline BOOL transformIsFlipped(CGAffineTransform matrix){
    [self showGlyphs:glyphs count:length];
 }
 
--(void)deviceSelectFontWithName:(NSString *)name pointSize:(float)pointSize antialias:(BOOL)antialias {   
-   int height=(pointSize*GetDeviceCaps(_dc,LOGPIXELSY))/72.0;
 
+-(void)establishFontStateInDevice {
+   KTFont *font=[[self currentState] fontState];
    [_gdiFont release];
-   _gdiFont=[[Win32Font alloc] initWithName:name size:NSMakeSize(0,height) antialias:antialias];
-   SelectObject(_dc,[_gdiFont fontHandle]);
+   _gdiFont=[[[self currentState] fontState] createGDIFontSelectedInDC:_dc];
 }
 
 -(void)establishFontState {
    KGGraphicsState *state=[self currentState];
    KTFont *fontState=[[KTFont_gdi alloc] initWithFont:[state font] size:[state pointSize]];
-   NSString    *name=[fontState name];
-   CGFloat      pointSize=[fontState pointSize];
-   
-   [self deviceSelectFontWithName:name pointSize:pointSize antialias:NO];
+
    [state setFontState:fontState];
    [fontState release];
+   [self establishFontStateInDevice];
 }
 
 -(void)setFont:(KGFont *)font {
@@ -119,7 +116,7 @@ static inline BOOL transformIsFlipped(CGAffineTransform matrix){
 
 -(void)restoreGState {
    [super restoreGState];
-   [self establishFontState];
+   [self establishFontStateInDevice];
 }
 
 @end

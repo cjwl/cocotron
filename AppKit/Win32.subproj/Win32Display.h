@@ -18,8 +18,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @class NSEvent, NSColor, Win32EventInputSource,KGContext_gdi;
 
 @interface Win32Display : NSDisplay {
-   KGContext_gdi         *_contextOnPrimaryScreen;
-
    Win32EventInputSource *_eventInputSource;
 
    NSPasteboard          *_generalPasteboard;
@@ -38,8 +36,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 +(Win32Display *)currentDisplay;
-
--(KGContext_gdi *)contextOnPrimaryScreen;
 
 -(NSArray *)screens;
 
