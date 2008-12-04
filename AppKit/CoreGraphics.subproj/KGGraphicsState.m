@@ -13,7 +13,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "KGColorSpace.h"
 #import "KGMutablePath.h"
 #import "KGFont.h"
-#import "KGFontState.h"
+#import "KTFont.h"
 #import "KGClipPhase.h"
 #import <Foundation/NSArray.h>
 #import "KGExceptions.h"
@@ -222,6 +222,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    _textDrawingMode=textMode;
 }
 
+-(KGFont *)font {
+   return _font;
+}
+
 -(NSString *)fontName {
    return [_font fontName];
 }
@@ -230,11 +234,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return _pointSize;
 }
 
--(KGFontState *)fontState {
+-(id)fontState {
    return _fontState;
 }
 
--(void)setFontState:(KGFontState *)fontState {
+-(void)setFontState:(id)fontState {
    fontState=[fontState retain];
    [_fontState release];
    _fontState=fontState;

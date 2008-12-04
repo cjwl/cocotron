@@ -13,8 +13,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <ApplicationServices/ApplicationServices.h>
 #import <AppKit/NSDisplay.h>
 #import <AppKit/NSNibKeyedUnarchiver.h>
-#import <AppKit/KGContext.h>
-#import <AppKit/KGFontState.h>
+#import <AppKit/KTFont.h>
 
 FOUNDATION_EXPORT char *NSUnicodeToSymbol(const unichar *characters,unsigned length,
   BOOL lossy,unsigned *resultLength,NSZone *zone);
@@ -218,8 +217,8 @@ static NSFont **_fontCache=NULL;
    [isa addFontToCache:self];
    
    _cgFont=CGFontCreateWithFontName(_name);
-   _kgFontState=[[KGFontState alloc] initWithName:_name size:_pointSize];
-
+   _ctFont=CTFontCreateWithGraphicsFont(_cgFont,_pointSize,NULL,NULL);
+   
    return self;
 }
 
@@ -228,7 +227,7 @@ static NSFont **_fontCache=NULL;
 
    [_name release];
    CGFontRelease(_cgFont);
-   [_kgFontState release];
+   [_ctFont release];
    [super dealloc];
 }
 
@@ -346,7 +345,7 @@ arrayWithArray:[_name componentsSeparatedByString:blank]];
 }
 
 -(NSRect)boundingRectForFont {
-   return [_kgFontState boundingRect];
+   return CTFontGetBoundingBox(_ctFont);
 }
 
 -(NSRect)boundingRectForGlyph:(NSGlyph)glyph {
@@ -359,7 +358,7 @@ arrayWithArray:[_name componentsSeparatedByString:blank]];
 }
 
 -(unsigned)numberOfGlyphs {
-   return [_kgFontState numberOfGlyphs];
+   return CTFontGetGlyphCount(_ctFont);
 }
 
 -(NSGlyph)glyphWithName:(NSString *)name {
@@ -368,55 +367,91 @@ arrayWithArray:[_name componentsSeparatedByString:blank]];
 }
 
 -(BOOL)glyphIsEncoded:(NSGlyph)glyph {
-   return [_kgFontState glyphIsEncoded:glyph];
+   return (glyph<CTFontGetGlyphCount(_ctFont))?YES:NO;
 }
 
 -(NSSize)advancementForGlyph:(NSGlyph)glyph {
-   return [_kgFontState advancementForGlyph:glyph];
+   CGSize  cgSize;
+   CGGlyph cgGlyphs[1]={glyph};
+   
+   CTFontGetAdvancesForGlyphs(_ctFont,0,cgGlyphs,&cgSize,1);
+
+   return NSMakeSize(cgSize.width,cgSize.height);
 }
 
 -(NSSize)maximumAdvancement {
-   return [_kgFontState maximumAdvancement];
+   CGSize  max=CGSizeZero;
+   int     glyph,glyphCount=CTFontGetGlyphCount(_ctFont);
+   CGGlyph glyphs[glyphCount];
+   CGSize  advances[glyphCount];
+   
+   for(glyph=0;glyph<glyphCount;glyph++)
+    glyphs[glyph]=glyph;
+    
+   CTFontGetAdvancesForGlyphs(_ctFont,0,glyphs,advances,glyphCount);
+   
+   for(glyph=0;glyph<glyphCount;glyph++){
+    max.width=MAX(max.width,advances[glyph].width);
+    max.height=MAX(max.height,advances[glyph].height);
+   }
+
+   return max;
 }
 
 -(float)underlinePosition {
-   return [_kgFontState underlinePosition];
+   return CTFontGetUnderlinePosition(_ctFont);
 }
 
 -(float)underlineThickness {
-   return [_kgFontState underlineThickness];
+   return CTFontGetUnderlineThickness(_ctFont);
 }
 
 -(float)ascender {
-   return [_kgFontState ascender];
+   return CTFontGetAscent(_ctFont);
 }
 
 -(float)descender {
-   return [_kgFontState descender];
+   return CTFontGetDescent(_ctFont);
 }
 
 -(float)leading {
-   return [_kgFontState leading];
+   return CTFontGetLeading(_ctFont);
 }
 
 -(float)defaultLineHeightForFont {
-   return [_kgFontState ascender]-[_kgFontState descender]+[_kgFontState leading];
+   return CTFontGetAscent(_ctFont)-CTFontGetDescent(_ctFont)+CTFontGetLeading(_ctFont);;
 }
 
 -(BOOL)isFixedPitch {
-   return [_kgFontState isFixedPitch];
+   CGSize  current;
+   int     glyph,glyphCount=CTFontGetGlyphCount(_ctFont);
+   CGGlyph glyphs[glyphCount];
+   CGSize  advances[glyphCount];
+   
+   for(glyph=0;glyph<glyphCount;glyph++)
+    glyphs[glyph]=glyph;
+   
+   CTFontGetAdvancesForGlyphs(_ctFont,0,glyphs,advances,glyphCount);
+   current=advances[0];
+   
+   for(glyph=1;glyph<glyphCount;glyph++){
+    if(advances[glyph].width!=current.width || advances[glyph].height!=current.height)
+     return NO;
+   }
+
+   return YES;
 }
 
 -(float)italicAngle {
-   return [_kgFontState italicAngle];
+   return CTFontGetSlantAngle(_ctFont);
 }
 
 -(float)xHeight {
-   return [_kgFontState xHeight];
+   return CTFontGetXHeight(_ctFont);
 }
 
 -(float)capHeight {
-   return [_kgFontState capHeight];
+   return CTFontGetCapHeight(_ctFont);
 }
 
 -(void)setInContext:(NSGraphicsContext *)context {
@@ -438,7 +473,7 @@ arrayWithArray:[_name componentsSeparatedByString:blank]];
 }
 
 -(NSPoint)positionOfGlyph:(NSGlyph)current precededByGlyph:(NSGlyph)previous isNominal:(BOOL *)isNominalp {
-   return [_kgFontState positionOfGlyph:current precededByGlyph:previous isNominal:isNominalp];
+   return [_ctFont positionOfGlyph:current precededByGlyph:previous isNominal:isNominalp];
 }
 
 -(void)getAdvancements:(NSSize *)advancements forGlyphs:(const NSGlyph *)glyphs count:(unsigned)count {
@@ -447,12 +482,12 @@ arrayWithArray:[_name componentsSeparatedByString:blank]];
    
    for(i=0;i<count;i++)
     cgGlyphs[i]=glyphs[i];
-    
-   [_kgFontState getAdvancements:advancements forGlyphs:cgGlyphs count:count];
+   
+   CTFontGetAdvancesForGlyphs(_ctFont,0,cgGlyphs,advancements,count);
 }
 
 -(void)getAdvancements:(NSSize *)advancements forPackedGlyphs:(const void *)packed length:(unsigned)length {
-   [_kgFontState getAdvancements:advancements forGlyphs:packed count:length];
+   CTFontGetAdvancesForGlyphs(_ctFont,0,packed,advancements,length);
 }
 
 -(void)getBoundingRects:(NSRect *)rects forGlyphs:(const NSGlyph *)glyphs count:(unsigned)count {
@@ -463,7 +498,7 @@ arrayWithArray:[_name componentsSeparatedByString:blank]];
    CGGlyph  cgGlyphs[length];
    int      i;
    
-   [_kgFontState getGlyphs:cgGlyphs forCharacters:characters length:length];
+   CTFontGetGlyphsForCharacters(_ctFont,characters,cgGlyphs,length);
    
    for(i=0;i<length;i++){
     unichar check=characters[i];

@@ -1,7 +1,7 @@
-#import "KGFontState.h"
+#import "KTFont.h"
 
 @class KGPDFObject,KGPDFContext;
 
-@interface KGFontState(PDF)
+@interface KTFont(PDF)
 -(KGPDFObject *)encodeReferenceWithContext:(KGPDFContext *)context;
 @end

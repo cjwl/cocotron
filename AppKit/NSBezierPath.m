@@ -137,7 +137,7 @@ static NSLineJoinStyle _defaultLineJoinStyle=NSMiterLineJoinStyle;
 }
 
 +(void)fillRect:(NSRect)rect {
-   KGContext *context=[[NSGraphicsContext currentContext] graphicsPort];
+   CGContextRef context=[[NSGraphicsContext currentContext] graphicsPort];
    
    CGContextSaveGState(context);
    CGContextFillRect(context,rect);
@@ -145,7 +145,7 @@ static NSLineJoinStyle _defaultLineJoinStyle=NSMiterLineJoinStyle;
 }
 
 +(void)strokeRect:(NSRect)rect {
-   KGContext *context=[[NSGraphicsContext currentContext] graphicsPort];
+   CGContextRef context=[[NSGraphicsContext currentContext] graphicsPort];
    
    CGContextSaveGState(context);
    CGContextSetLineWidth(context,[self defaultLineWidth]);
@@ -159,7 +159,7 @@ static NSLineJoinStyle _defaultLineJoinStyle=NSMiterLineJoinStyle;
 }
 
 +(void)strokeLineFromPoint:(NSPoint)point toPoint:(NSPoint)toPoint {
-   KGContext *context=[[NSGraphicsContext currentContext] graphicsPort];
+   CGContextRef context=[[NSGraphicsContext currentContext] graphicsPort];
    
    CGContextBeginPath(context);
    CGContextMoveToPoint(context,point.x,point.y);
@@ -179,7 +179,7 @@ static NSLineJoinStyle _defaultLineJoinStyle=NSMiterLineJoinStyle;
 }
 
 +(void)clipRect:(NSRect)rect {
-   KGContext *context=[[NSGraphicsContext currentContext] graphicsPort];
+   CGContextRef context=[[NSGraphicsContext currentContext] graphicsPort];
    
    CGContextClipToRect(context,rect);
 }

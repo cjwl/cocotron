@@ -106,7 +106,7 @@ NSStringDrawer *NSCurrentStringDrawer() {
 @implementation NSString(NSStringDrawer)
 
 -(void)_clipAndDrawInRect:(NSRect)rect withAttributes:(NSDictionary *)attributes {
-   KGContext *graphicsPort=NSCurrentGraphicsPort();
+   CGContextRef graphicsPort=NSCurrentGraphicsPort();
 
    CGContextSaveGState(graphicsPort);
    CGContextClipToRect(graphicsPort,rect);
@@ -119,7 +119,7 @@ NSStringDrawer *NSCurrentStringDrawer() {
 @implementation NSAttributedString(NSStringDrawer)
 
 -(void)_clipAndDrawInRect:(NSRect)rect {
-   KGContext *graphicsPort=NSCurrentGraphicsPort();
+   CGContextRef graphicsPort=NSCurrentGraphicsPort();
 
    CGContextSaveGState(graphicsPort);
    CGContextClipToRect(graphicsPort,rect);

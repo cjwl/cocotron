@@ -36,7 +36,7 @@ typedef enum {
 }
 
 +(NSGraphicsContext *)graphicsContextWithWindow:(NSWindow *)window;
-+(NSGraphicsContext *)graphicsContextWithGraphicsPort:(KGContext *)context flipped:(BOOL)flipped;
++(NSGraphicsContext *)graphicsContextWithGraphicsPort:(CGContextRef)context flipped:(BOOL)flipped;
 +(NSGraphicsContext *)graphicsContextWithBitmapImageRep:(NSBitmapImageRep *)imageRep;
 
 +(NSGraphicsContext *)currentContext;
@@ -47,7 +47,7 @@ typedef enum {
 
 +(BOOL)currentContextDrawingToScreen;
 
--(KGContext *)graphicsPort;
+-(CGContextRef)graphicsPort;
 -(NSMutableArray *)focusStack;
 
 -(BOOL)isDrawingToScreen;

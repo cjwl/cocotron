@@ -10,7 +10,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <ApplicationServices/ApplicationServices.h>
 #import <AppKit/NSCell.h>
 
-@class NSFontDescriptor,KGFontState;
+@class NSFontDescriptor,KTFont;
 
 typedef unsigned NSGlyph;
 
@@ -37,7 +37,7 @@ typedef enum {
    NSStringEncoding _encoding;
    
    CGFontRef        _cgFont;
-   KGFontState   *_kgFontState;
+   CTFontRef        _ctFont;
 }
 
 +(float)systemFontSize;

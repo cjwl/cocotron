@@ -1,10 +1,10 @@
-#import "KGFontState+PDF.h"
+#import "KTFont+PDF.h"
 #import "KGPDFArray.h"
 #import "KGPDFDictionary.h"
 #import "KGPDFContext.h"
 #import <Foundation/NSArray.h>
 
-@implementation KGFontState(PDF)
+@implementation KTFont(PDF)
 
 -(KGPDFArray *)_pdfWidths {
    KGPDFArray   *result=[KGPDFArray pdfArray];
@@ -30,7 +30,7 @@
 }
 
 -(const char *)pdfFontName {
-   return [[[_name componentsSeparatedByString:@" "] componentsJoinedByString:@","] cString];
+   return [[[[self name] componentsSeparatedByString:@" "] componentsJoinedByString:@","] cString];
 }
 
 -(KGPDFDictionary *)_pdfFontDescriptor {
@@ -41,24 +41,25 @@
    [result setIntegerForKey:"Flags" value:4];
    
    KGPDFReal bbox[4];
+   CGRect    boundingRect=[self boundingRect];
    
-   bbox[0]=_metrics.boundingRect.origin.x;
-   bbox[1]=_metrics.boundingRect.origin.y;
-   bbox[2]=_metrics.boundingRect.size.width;
-   bbox[3]=_metrics.boundingRect.size.height;
+   bbox[0]=boundingRect.origin.x;
+   bbox[1]=boundingRect.origin.y;
+   bbox[2]=boundingRect.size.width;
+   bbox[3]=boundingRect.size.height;
    [result setObjectForKey:"FontBBox" value:[KGPDFArray pdfArrayWithNumbers:bbox count:4]];
-   [result setIntegerForKey:"ItalicAngle" value:_metrics.italicAngle];
-   [result setIntegerForKey:"Ascent" value:_metrics.ascender];
-   [result setIntegerForKey:"Descent" value:_metrics.descender];
-   [result setIntegerForKey:"CapHeight" value:_metrics.capHeight];
-   [result setIntegerForKey:"StemV" value:_metrics.stemV];
-   [result setIntegerForKey:"StemH" value:_metrics.stemH];
+   [result setIntegerForKey:"ItalicAngle" value:[self italicAngle]];
+   [result setIntegerForKey:"Ascent" value:[self ascender]];
+   [result setIntegerForKey:"Descent" value:[self descender]];
+   [result setIntegerForKey:"CapHeight" value:[self capHeight]];
+   [result setIntegerForKey:"StemV" value:[self stemV]];
+   [result setIntegerForKey:"StemH" value:[self stemH]];
    
    return result;
 }
 
 -(KGPDFObject *)encodeReferenceWithContext:(KGPDFContext *)context {
-   KGPDFObject *reference=[context referenceForFontWithName:_name size:_size];
+   KGPDFObject *reference=[context referenceForFontWithName:[self name] size:_size];
    
    if(reference==nil){
     KGPDFDictionary *result=[KGPDFDictionary pdfDictionary];
@@ -74,7 +75,7 @@
     [result setNameForKey:"Encoding" value:"WinAnsiEncoding"];
 
     reference=[context encodeIndirectPDFObject:result];
-    [context setReference:reference forFontWithName:_name size:_size];
+    [context setReference:reference forFontWithName:[self name] size:_size];
    }
    
    return reference;

@@ -426,7 +426,8 @@
 
 -(void)establishFontState {
    KGGraphicsState *state=[self currentState];
-   KGFontState *fontState=[[TTFFont alloc] initWithName:[state fontName] size:[state pointSize]];
+   KGFont *cgFont=[state font];
+   KTFont *fontState=[[TTFFont alloc] initWithFont:cgFont size:[state pointSize]];
    NSString    *name=[fontState name];
    CGFloat      pointSize=[fontState pointSize];
    

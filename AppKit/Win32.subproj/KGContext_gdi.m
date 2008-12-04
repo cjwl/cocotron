@@ -19,7 +19,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/KGColorSpace.h>
 #import <AppKit/KGShading.h>
 #import <AppKit/KGFunction.h>
-#import "KGFontState_gdi.h"
+#import "KTFont_gdi.h"
 #import "../CoreGraphics.subproj/KGImage.h"
 #import <AppKit/KGClipPhase.h>
 #import <AppKit/Win32Font.h>
@@ -190,7 +190,7 @@ static RECT NSRectToRECT(NSRect rect) {
 
 -(void)establishFontState {
    KGGraphicsState *state=[self currentState];
-   KGFontState *fontState=[[KGFontState_gdi alloc] initWithName:[state fontName] size:[state pointSize]];
+   KTFont *fontState=[[KTFont_gdi alloc] initWithFont:[state font] size:[state pointSize]];
    NSString    *name=[fontState name];
    CGFloat      pointSize=[fontState pointSize];
    
@@ -342,7 +342,8 @@ static RECT NSRectToRECT(NSRect rect) {
    SetTextColor(_dc,COLORREFFromColor([self fillColor]));
    ExtTextOutW(_dc,point.x,point.y,ETO_GLYPH_INDEX,NULL,(void *)glyphs,count,NULL);
    
-   NSSize advancement=[[[self currentState] fontState] advancementForNominalGlyphs:glyphs count:count];
+   KTFont_gdi *ktFont=[[self currentState] fontState];
+   NSSize advancement=[ktFont advancementForNominalGlyphs:glyphs count:count];
    
    [self currentState]->_textTransform.tx+=advancement.width;
    [self currentState]->_textTransform.ty+=advancement.height;

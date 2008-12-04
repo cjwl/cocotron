@@ -529,7 +529,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)unlockFocus {
-   KGContext *graphicsPort=NSCurrentGraphicsPort();
+   CGContextRef graphicsPort=NSCurrentGraphicsPort();
 
    CGContextRestoreGState(graphicsPort);
 

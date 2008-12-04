@@ -24,7 +24,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return self;
 }
 
--initWithGraphicsPort:(KGContext *)context flipped:(BOOL)flipped {
+-initWithGraphicsPort:(CGContextRef)context flipped:(BOOL)flipped {
    _graphicsPort=CGContextRetain(context);
    _focusStack=[NSMutableArray new];
    _isDrawingToScreen=NO;
@@ -66,7 +66,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return [[[self alloc] initWithWindow:window] autorelease];
 }
 
-+(NSGraphicsContext *)graphicsContextWithGraphicsPort:(KGContext *)context flipped:(BOOL)flipped {
++(NSGraphicsContext *)graphicsContextWithGraphicsPort:(CGContextRef)context flipped:(BOOL)flipped {
    return [[[self alloc] initWithGraphicsPort:context flipped:flipped] autorelease];
 }
 
@@ -131,7 +131,7 @@ NSMutableArray *NSCurrentFocusStack() {
    return [[NSGraphicsContext currentContext] isDrawingToScreen];
 }
 
--(KGContext *)graphicsPort {
+-(CGContextRef)graphicsPort {
    return _graphicsPort;
 }
 

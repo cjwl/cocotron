@@ -9,7 +9,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSObject.h>
 #import <ApplicationServices/ApplicationServices.h>
 
-@class KGImage,KGColorSpace,KGColor,KGPattern,KGMutablePath,KGPath,NSArray,NSMutableArray,KGFont,KGFontState;
+@class KGImage,KGColorSpace,KGColor,KGPattern,KGMutablePath,KGPath,NSArray,NSMutableArray,KGFont,KTFont;
 
 @interface KGGraphicsState : NSObject <NSCopying> {
 @public
@@ -22,7 +22,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    KGColor            *_fillColor;
    KGFont             *_font;
    CGFloat             _pointSize;
-   KGFontState        *_fontState;
+   id                  _fontState;
    CGSize              _patternPhase;   
    float               _characterSpacing;
    int                 _textDrawingMode;
@@ -89,10 +89,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)setTextPosition:(float)x:(float)y;
 -(void)setCharacterSpacing:(float)spacing;
 -(void)setTextDrawingMode:(int)textMode;
+-(KGFont *)font;
 -(NSString *)fontName;
 -(CGFloat)pointSize;
--(KGFontState *)fontState;
--(void)setFontState:(KGFontState *)fontState;
+-(id)fontState;
+-(void)setFontState:(id)fontState;
 -(void)setFont:(KGFont *)font;
 -(void)setFontSize:(float)size;
 -(void)selectFontWithName:(const char *)name size:(float)size encoding:(int)encoding;

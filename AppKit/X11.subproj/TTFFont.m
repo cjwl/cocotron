@@ -8,7 +8,7 @@
 
 #import "TTFFont.h"
 
-@implementation KGFontState(TTFFont)
+@implementation KTFont(TTFFont)
 +(id)allocWithZone:(NSZone*)zone
 {
    return NSAllocateObject([TTFFont class], 0, NULL);
@@ -48,7 +48,7 @@ FT_Library library;
    return 0.0;
 }
 
--initWithName:(NSString *)name size:(float)size {
+-initWithFont:(KGFont *)font size:(float)size {
    if(self=[super init])
    {
       int ret=FT_New_Face(library,
@@ -76,10 +76,14 @@ FT_Library library;
    }
 }
 
--(CGSize)advancementForGlyph:(CGGlyph)glyph {
-   FT_Load_Glyph(_face, glyph, FT_LOAD_DEFAULT);
-   return NSMakeSize(_face->glyph->bitmap_left,
+-(void)getAdvancements:(CGSize *)advancements forGlyphs:(const CGGlyph *)glyphs count:(unsigned)count {
+   int i;
+   
+   for(i=0;i<count;i++){
+    FT_Load_Glyph(_face, glyphs[i], FT_LOAD_DEFAULT);
+    advancements[i]= CGSizeMake(_face->glyph->bitmap_left,
                       0);
+   }
 }
 
 -(CGPoint)positionOfGlyph:(CGGlyph)current precededByGlyph:(CGGlyph)previous isNominal:(BOOL *)isNominalp {

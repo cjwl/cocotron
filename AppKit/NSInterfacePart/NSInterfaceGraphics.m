@@ -5,8 +5,6 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
-
-// Original - Christopher Lloyd <cjwl@objc.net>
 #import "NSInterfaceGraphics.h"
 #import <AppKit/NSGraphicsContextFunctions.h>
 #import <ApplicationServices/ApplicationServices.h>
@@ -14,7 +12,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSView.h>
 
 static NSRect NSInterfaceDrawRects(NSRect boundsRect,NSRect clipRect,const NSRect *sides,NSColor **colors,int count) {
-   KGContext *graphicsPort=NSCurrentGraphicsPort();
+   CGContextRef graphicsPort=NSCurrentGraphicsPort();
 
    CGContextSaveGState(graphicsPort);
    CGContextClipToRect(graphicsPort,clipRect);
@@ -237,7 +235,7 @@ void NSInterfaceDrawOutlineMarker(NSRect rect,NSRect clipRect, BOOL state) {
    NSInterfaceDrawRects(rect,clipRect,rects,colors,numDrawnRects);
 }
 
-void NSInterfaceDrawOutlineGrid(NSRect rect,KGContext *context) {
+void NSInterfaceDrawOutlineGrid(NSRect rect,CGContextRef context) {
 /* Win32 has poor dashed line support...
  */
    if(rect.size.width<0)

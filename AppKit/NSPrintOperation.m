@@ -6,7 +6,6 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
-// Original - Christopher Lloyd <cjwl@objc.net>
 #import <AppKit/NSPrintOperation.h>
 #import <AppKit/NSPrintInfo.h>
 #import <AppKit/NSPrintPanel.h>
@@ -118,7 +117,7 @@ static NSPrintOperation *_currentOperation=nil;
 }
 
 
--(void)_autopaginatePageRange:(NSRange)pageRange actualPageRange:(NSRange *)rangep context:(KGContext *)context {
+-(void)_autopaginatePageRange:(NSRange)pageRange actualPageRange:(NSRange *)rangep context:(CGContextRef)context {
    NSRange result=NSMakeRange(1,0);
    NSRect  bounds=[_view bounds];
    NSRect  imageableRect=[_printInfo imageablePageBounds];
@@ -178,7 +177,7 @@ static NSPrintOperation *_currentOperation=nil;
    *rangep=result;
 }
 
--(void)_paginateWithPageRange:(NSRange)pageRange context:(KGContext *)context {
+-(void)_paginateWithPageRange:(NSRange)pageRange context:(CGContextRef)context {
    int i;
 
    for(i=0,_currentPage=pageRange.location;i<pageRange.length;i++,_currentPage++){
@@ -192,7 +191,7 @@ static NSPrintOperation *_currentOperation=nil;
 }
 
 -(NSGraphicsContext *)createContext {
-   KGContext *context;
+   CGContextRef context;
    
    if(_type==NSPrintOperationPrinter){
     if(_showsPrintPanel){
