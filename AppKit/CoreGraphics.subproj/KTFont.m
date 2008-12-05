@@ -27,7 +27,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return [_font fontName];
 }
 
--(float)pointSize {
+-(CGFloat)pointSize {
    return _size;
 }
 
@@ -36,52 +36,52 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return CGRectZero;
 }
 
--(float)ascender {
+-(CGFloat)ascender {
    KGInvalidAbstractInvocation();
    return 0;
 }
 
--(float)descender {
+-(CGFloat)descender {
    KGInvalidAbstractInvocation();
    return 0;
 }
 
--(float)leading {
+-(CGFloat)leading {
    KGInvalidAbstractInvocation();
    return 0;
 }
 
--(float)stemV {
+-(CGFloat)stemV {
    KGInvalidAbstractInvocation();
    return 0;
 }
 
--(float)stemH {
+-(CGFloat)stemH {
    KGInvalidAbstractInvocation();
    return 0;
 }
 
--(float)underlineThickness {
+-(CGFloat)underlineThickness {
    KGInvalidAbstractInvocation();
    return 0;
 }
 
--(float)underlinePosition {
+-(CGFloat)underlinePosition {
    KGInvalidAbstractInvocation();
    return 0;
 }
 
--(float)italicAngle {
+-(CGFloat)italicAngle {
    KGInvalidAbstractInvocation();
    return 0;
 }
 
--(float)xHeight {
+-(CGFloat)xHeight {
    KGInvalidAbstractInvocation();
    return 0;
 }
 
--(float)capHeight {
+-(CGFloat)capHeight {
    KGInvalidAbstractInvocation();
    return 0;
 }
@@ -104,27 +104,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    KGInvalidAbstractInvocation();
 }
 
-// FIX, lame, this needs to do encoding properly
--(void)getBytes:(unsigned char *)bytes forGlyphs:(const CGGlyph *)glyphs length:(unsigned)length {
-   KGInvalidAbstractInvocation();
-}
-
-// FIX, lame, this needs to do encoding properly
--(void)getGlyphs:(CGGlyph *)glyphs forBytes:(const unsigned char *)bytes length:(unsigned)length {
-   KGInvalidAbstractInvocation();
-}
-
 -(void)getAdvancements:(CGSize *)advancements forGlyphs:(const CGGlyph *)glyphs count:(unsigned)count {
    KGInvalidAbstractInvocation();
 }
 
--(CGSize)advancementForNominalGlyphs:(const CGGlyph *)glyphs count:(unsigned)count {
+-(KGPath *)createPathForGlyph:(CGGlyph)glyph transform:(CGAffineTransform *)xform {
    KGInvalidAbstractInvocation();
-   return CGSizeZero;
-}
-
--(void)appendCubicOutlinesToPath:(KGMutablePath *)path glyphs:(CGGlyph *)glyphs length:(unsigned)length {
-   KGInvalidAbstractInvocation();
+   return nil;
 }
 
 @end

@@ -8,7 +8,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSString.h>
 #import <ApplicationServices/ApplicationServices.h>
 
-@class KGMutablePath,KGFont;
+@class KGPath,KGFont;
 
 enum {
    CGNullGlyph=0x0
@@ -22,31 +22,30 @@ enum {
 -initWithFont:(KGFont *)font size:(CGFloat)size;
 
 -(NSString *)name;
--(float)pointSize;
+-(CGFloat)pointSize;
 
 -(CGRect)boundingRect;
--(float)ascender;
--(float)descender;
--(float)leading;
--(float)stemV;
--(float)stemH;
--(float)underlineThickness;
--(float)underlinePosition;
--(float)italicAngle;
--(float)leading;
--(float)xHeight;
--(float)capHeight;
+-(CGFloat)ascender;
+-(CGFloat)descender;
+-(CGFloat)leading;
+-(CGFloat)stemV;
+-(CGFloat)stemH;
+-(CGFloat)underlineThickness;
+-(CGFloat)underlinePosition;
+-(CGFloat)italicAngle;
+-(CGFloat)leading;
+-(CGFloat)xHeight;
+-(CGFloat)capHeight;
 
 -(unsigned)numberOfGlyphs;
 
 -(CGPoint)positionOfGlyph:(CGGlyph)current precededByGlyph:(CGGlyph)previous isNominal:(BOOL *)isNominalp;
 
 -(void)getGlyphs:(CGGlyph *)glyphs forCharacters:(const unichar *)characters length:(unsigned)length;
--(void)getBytes:(unsigned char *)bytes forGlyphs:(const CGGlyph *)glyphs length:(unsigned)length;
--(void)getGlyphs:(CGGlyph *)glyphs forBytes:(const unsigned char *)bytes length:(unsigned)length;
+-(void)getCharacters:(unichar *)characters forGlyphs:(const CGGlyph *)glyphs length:(unsigned)length;
 
 -(void)getAdvancements:(CGSize *)advancements forGlyphs:(const CGGlyph *)glyphs count:(unsigned)count;
 
--(void)appendCubicOutlinesToPath:(KGMutablePath *)path glyphs:(CGGlyph *)glyphs length:(unsigned)length;
+-(KGPath *)createPathForGlyph:(CGGlyph)glyph transform:(CGAffineTransform *)xform;
 
 @end

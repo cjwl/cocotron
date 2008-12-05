@@ -6,17 +6,33 @@
 
 @implementation KTFont(PDF)
 
+// FIXME: needs to do encoding properly
+
+-(void)getBytes:(unsigned char *)bytes forGlyphs:(const CGGlyph *)glyphs length:(unsigned)length {
+   unichar  characters[length];
+   unsigned i;
+   
+   [self getCharacters:characters forGlyphs:glyphs length:length];
+   for(i=0;i<length;i++)
+    if(characters[i]<0xFF)
+     bytes[i]=characters[i];
+    else
+     bytes[i]=' ';
+}
+
 -(KGPDFArray *)_pdfWidths {
    KGPDFArray   *result=[KGPDFArray pdfArray];
-   unsigned char bytes[256];
+   unichar       characters[256];
    CGGlyph       glyphs[256];
    CGSize        advancements[256];
    int           i;
    
    for(i=0;i<256;i++)
-    bytes[i]=i;
-    
-   [self getGlyphs:glyphs forBytes:bytes length:256];
+    characters[i]=i;
+
+// FIXME: needs to do encoding properly
+
+   [self getGlyphs:glyphs forCharacters:characters length:256];
    [self getAdvancements:advancements forGlyphs:glyphs count:256];
 
 // FIX, probably not entirely accurate, you can get precise widths out of the TrueType data

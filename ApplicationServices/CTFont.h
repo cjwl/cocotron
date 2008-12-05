@@ -9,23 +9,23 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <ApplicationServices/CoreGraphicsExport.h>
 #import <ApplicationServices/CGAffineTransform.h>
 #import <ApplicationServices/CGFont.h>
+#import <ApplicationServices/CGPath.h>
 
 @class KTFont;
 
 typedef KTFont *CTFontRef;
 
 COREGRAPHICS_EXPORT CTFontRef CTFontCreateWithGraphicsFont(CGFontRef cgFont,CGFloat size,CGAffineTransform *xform,id attributes);
-
-COREGRAPHICS_EXPORT size_t  CTFontGetGlyphCount(CTFontRef self);
-COREGRAPHICS_EXPORT BOOL    CTFontGetGlyphsForCharacters(CTFontRef self,const unichar *characters,CGGlyph *glyphs,size_t count);
-COREGRAPHICS_EXPORT CGRect  CTFontGetBoundingBox(CTFontRef self);
-COREGRAPHICS_EXPORT void    CTFontGetAdvancesForGlyphs(CTFontRef self,int orientation,const CGGlyph *glyphs,CGSize *advances,size_t count);
-COREGRAPHICS_EXPORT CGFloat CTFontGetUnderlinePosition(CTFontRef self);
-COREGRAPHICS_EXPORT CGFloat CTFontGetUnderlineThickness(CTFontRef self);
-COREGRAPHICS_EXPORT CGFloat CTFontGetAscent(CTFontRef self);
-COREGRAPHICS_EXPORT CGFloat CTFontGetDescent(CTFontRef self);
-COREGRAPHICS_EXPORT CGFloat CTFontGetLeading(CTFontRef self);
-COREGRAPHICS_EXPORT CGFloat CTFontGetSlantAngle(CTFontRef self);
-COREGRAPHICS_EXPORT CGFloat CTFontGetXHeight(CTFontRef self);
-COREGRAPHICS_EXPORT CGFloat CTFontGetCapHeight(CTFontRef self);
-
+COREGRAPHICS_EXPORT size_t    CTFontGetGlyphCount(CTFontRef self);
+COREGRAPHICS_EXPORT BOOL      CTFontGetGlyphsForCharacters(CTFontRef self,const unichar *characters,CGGlyph *glyphs,size_t count);
+COREGRAPHICS_EXPORT CGRect    CTFontGetBoundingBox(CTFontRef self);
+COREGRAPHICS_EXPORT void      CTFontGetAdvancesForGlyphs(CTFontRef self,int orientation,const CGGlyph *glyphs,CGSize *advances,size_t count);
+COREGRAPHICS_EXPORT CGFloat   CTFontGetUnderlinePosition(CTFontRef self);
+COREGRAPHICS_EXPORT CGFloat   CTFontGetUnderlineThickness(CTFontRef self);
+COREGRAPHICS_EXPORT CGFloat   CTFontGetAscent(CTFontRef self);
+COREGRAPHICS_EXPORT CGFloat   CTFontGetDescent(CTFontRef self);
+COREGRAPHICS_EXPORT CGFloat   CTFontGetLeading(CTFontRef self);
+COREGRAPHICS_EXPORT CGFloat   CTFontGetSlantAngle(CTFontRef self);
+COREGRAPHICS_EXPORT CGFloat   CTFontGetXHeight(CTFontRef self);
+COREGRAPHICS_EXPORT CGFloat   CTFontGetCapHeight(CTFontRef self);
+COREGRAPHICS_EXPORT CGPathRef CTFontCreatePathForGlyph(CTFontRef self,CGGlyph glyph,CGAffineTransform *xform);

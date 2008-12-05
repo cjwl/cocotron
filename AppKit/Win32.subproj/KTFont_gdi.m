@@ -2,6 +2,7 @@
 #import "KGContext_gdi.h"
 #import "Win32Display.h"
 #import "Win32Font.h"
+#import <AppKit/KGMutablePath.h>
 
 #define MAXUNICHAR 0xFFFF
 
@@ -522,30 +523,6 @@ static inline CGGlyphMetrics *fetchGlyphAdvancementIfNeeded(KTFont_gdi *self,CGG
     characters[i]=characterForGlyph(self,glyphs[i]);
 }
 
-// FIX, lame, this needs to do encoding properly
--(void)getBytes:(unsigned char *)bytes forGlyphs:(const CGGlyph *)glyphs length:(unsigned)length {
-   unichar  characters[length];
-   unsigned i;
-   
-   [self getCharacters:characters forGlyphs:glyphs length:length];
-   for(i=0;i<length;i++)
-    if(characters[i]<0xFF)
-     bytes[i]=characters[i];
-    else
-     bytes[i]=' ';
-}
-
-// FIX, lame, this needs to do encoding properly
--(void)getGlyphs:(CGGlyph *)glyphs forBytes:(const unsigned char *)bytes length:(unsigned)length {
-   unichar characters[length];
-   int     i;
-   
-   for(i=0;i<length;i++)
-    characters[i]=bytes[i];
-   
-   [self getGlyphs:glyphs forCharacters:characters length:length];
-}
-
 -(void)getAdvancements:(CGSize *)advancements forGlyphs:(const CGGlyph *)glyphs count:(unsigned)count {
    int i;
    
@@ -584,7 +561,8 @@ static inline CGGlyphMetrics *fetchGlyphAdvancementIfNeeded(KTFont_gdi *self,CGG
 
 
 // not complete
--(void)appendCubicOutlinesToPath:(KGMutablePath *)path glyphs:(CGGlyph *)glyphs length:(unsigned)length {
+-(KGPath *)createPathForGlyph:(CGGlyph)glyph transform:(CGAffineTransform *)xform {
+   KGMutablePath *result=[[KGMutablePath alloc] init];
    HDC        dc=GetDC(NULL);
    Win32Font *gdiFont=[self createGDIFontSelectedInDC:dc];
    int        size=GetOutlineTextMetricsA(dc,0,NULL);
@@ -592,14 +570,14 @@ static inline CGGlyphMetrics *fetchGlyphAdvancementIfNeeded(KTFont_gdi *self,CGG
    if(size<=0){
     ReleaseDC(NULL,dc);
     [gdiFont release];
-    return;
+    return result;
    }
 
    OUTLINETEXTMETRICA *ttMetrics=__builtin_alloca(size);
 
    ttMetrics->otmSize=sizeof(OUTLINETEXTMETRICA);
    if(!GetOutlineTextMetricsA(dc,size,ttMetrics))
-    return;
+    return result;
     
 /* P. 931 "Windows Graphics Programming" by Feng Yuan, 1st Ed.
    A font with height of negative otmEMSquare will have precise metrics  */
@@ -614,17 +592,17 @@ static inline CGGlyphMetrics *fetchGlyphAdvancementIfNeeded(KTFont_gdi *self,CGG
    SelectObject(dc,fontHandle);
    DeleteObject(fontHandle);
 
-   int i;
-   for(i=0;i<length;i++){
-    int          outlineSize=GetGlyphOutline(dc,glyphs[i],GGO_BEZIER|GGO_GLYPH_INDEX,NULL,0,NULL,NULL);
-    GLYPHMETRICS glyphMetrics;
-    void        *outline=__builtin_alloca(outlineSize);
+   int          outlineSize=GetGlyphOutline(dc,glyph,GGO_BEZIER|GGO_GLYPH_INDEX,NULL,0,NULL,NULL);
+   GLYPHMETRICS glyphMetrics;
+   void        *outline=__builtin_alloca(outlineSize);
 
-    if(GetGlyphOutline(dc,glyphs[i],GGO_BEZIER|GGO_GLYPH_INDEX,&glyphMetrics,outlineSize,outline,NULL)==size){
-    }
+   if(GetGlyphOutline(dc,glyph,GGO_BEZIER|GGO_GLYPH_INDEX,&glyphMetrics,outlineSize,outline,NULL)==size){
    }
+
    ReleaseDC(NULL,dc);
    [gdiFont release];
+   
+   return result;
 }
 
 @end

@@ -63,3 +63,8 @@ CGFloat CTFontGetCapHeight(CTFontRef self) {
    return [self capHeight];
 }
 
+CGPathRef CTFontCreatePathForGlyph(CTFontRef self,CGGlyph glyph,CGAffineTransform *xform) {
+   return [self createPathForGlyph:glyph transform:xform];
+}
+
+
