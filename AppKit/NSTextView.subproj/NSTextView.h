@@ -36,6 +36,9 @@ typedef enum {
    NSFindPanelActionSelectAllInSelection
 } NSFindPanelAction;
 
+APPKIT_EXPORT NSString *NSTextViewDidChangeSelectionNotification;
+APPKIT_EXPORT NSString *NSOldSelectedCharacterRange;
+
 @interface NSTextView : NSText <NSTextInput> {
    NSTextStorage   *_textStorage;
    NSTextContainer *_textContainer;
@@ -160,8 +163,10 @@ typedef enum {
 -(NSUndoManager *)undoManagerForTextView:(NSTextView *)textView;
 @end
 
-// introduced to override arrow keys for keyboard UI, dwy
 @interface NSObject(NSTextView_delegate)
+
 -(BOOL)textView:(NSTextView *)textView doCommandBySelector:(SEL)selector;
 -(NSArray *)textView:(NSTextView *)textView completions:(NSArray *)words forPartialWordRange:(NSRange)range indexOfSelectedItem:(int *)index;
+
+-(void)textViewDidChangeSelection:(NSNotification *)note;
 @end

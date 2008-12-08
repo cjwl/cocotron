@@ -5,9 +5,6 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
-
-// Keyboard movement - David Young <daver@geeks.org>
-// Original - Christopher Lloyd <cjwl@objc.net>
 #import <AppKit/NSTextView.h>
 #import <AppKit/NSTextContainer.h>
 #import <AppKit/NSTextStorage.h>
@@ -40,6 +37,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSGraphicsStyle.h>
 #import <AppKit/NSGraphicsContext.h>
 #import "NSTextViewSharedData.h"
+
+NSString *NSTextViewDidChangeSelectionNotification=@"NSTextViewDidChangeSelectionNotification";
+NSString *NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
 
 @interface NSLayoutManager(NSLayoutManager_visualKeyboardMovement)
 - (NSRange)_softLineRangeForCharacterAtIndex:(unsigned)location;
@@ -330,11 +330,17 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     if (stillSelecting == NO && range.length == 0)
         _selectionOrigin = range.location;
 
+   NSRange oldRange=_selectedRange;
+   
    _selectedRange=range;
    _selectionAffinity=affinity;
    _selectionGranularity=NSSelectByCharacter;
    _insertionPointOn=[self shouldDrawInsertionPoint];
    [self setNeedsDisplay:YES];
+
+   if((!stillSelecting) && (!NSEqualRanges(oldRange ,_selectedRange))){
+    [[NSNotificationCenter defaultCenter] postNotificationName: NSTextViewDidChangeSelectionNotification  object: self userInfo:[NSDictionary dictionaryWithObject: [NSValue valueWithRange: oldRange] forKey: NSOldSelectedCharacterRange]];
+   }
 }
 
 - (NSRange)rangeForUserCompletion {
@@ -1714,6 +1720,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     { @selector(textDidBeginEditing:),NSTextDidBeginEditingNotification },
     { @selector(textDidEndEditing:), NSTextDidEndEditingNotification },
     { @selector(textDidChange:), NSTextDidChangeNotification },
+    { @selector(textViewDidChangeSelection:), NSTextViewDidChangeSelectionNotification },
     { NULL, nil }
    };
    int i;
