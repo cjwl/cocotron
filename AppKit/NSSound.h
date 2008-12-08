@@ -9,9 +9,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSBundle.h>
 
 @interface NSSound : NSObject {
-	NSString *_soundFilePath;
-	BOOL _paused;
-	unsigned int _handle;
 }
 
 +(NSArray *)soundUnfilteredFileTypes;

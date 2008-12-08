@@ -1418,6 +1418,8 @@
 		FE8D95210CE4057300AFB060 /* NSMultipleValueBinder.m in Sources */ = {isa = PBXBuildFile; fileRef = FE8D951F0CE4057300AFB060 /* NSMultipleValueBinder.m */; };
 		FE8F9F2A0C9C5D0000270AEE /* KGzlib.h in Headers */ = {isa = PBXBuildFile; fileRef = FE8F9F260C9C5D0000270AEE /* KGzlib.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE8F9F2B0C9C5D0000270AEE /* KGzlib.m in Sources */ = {isa = PBXBuildFile; fileRef = FE8F9F270C9C5D0000270AEE /* KGzlib.m */; };
+		FEA25F980EECCE4D008750D0 /* NSSound_win32.h in Headers */ = {isa = PBXBuildFile; fileRef = FEA25F960EECCE4D008750D0 /* NSSound_win32.h */; };
+		FEA25F990EECCE4D008750D0 /* NSSound_win32.m in Sources */ = {isa = PBXBuildFile; fileRef = FEA25F970EECCE4D008750D0 /* NSSound_win32.m */; };
 		FEA8A98D0CD2CBC000E1E936 /* NSUserInterfaceValidation.h in Headers */ = {isa = PBXBuildFile; fileRef = FEA8A98B0CD2CBC000E1E936 /* NSUserInterfaceValidation.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FEA965B40E7EA97500413F40 /* NSBitmapImageRep-Private.h in Headers */ = {isa = PBXBuildFile; fileRef = FEA965B30E7EA97500413F40 /* NSBitmapImageRep-Private.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FEABD5EC0CB9CEE40035F828 /* KGLayer_gdi.h in Headers */ = {isa = PBXBuildFile; fileRef = FEABD5E80CB9CEE40035F828 /* KGLayer_gdi.h */; };
@@ -2267,6 +2269,8 @@
 		FE8D951F0CE4057300AFB060 /* NSMultipleValueBinder.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSMultipleValueBinder.m; sourceTree = "<group>"; };
 		FE8F9F260C9C5D0000270AEE /* KGzlib.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = KGzlib.h; sourceTree = "<group>"; };
 		FE8F9F270C9C5D0000270AEE /* KGzlib.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = KGzlib.m; sourceTree = "<group>"; };
+		FEA25F960EECCE4D008750D0 /* NSSound_win32.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSSound_win32.h; sourceTree = "<group>"; };
+		FEA25F970EECCE4D008750D0 /* NSSound_win32.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSSound_win32.m; sourceTree = "<group>"; };
 		FEA8A98B0CD2CBC000E1E936 /* NSUserInterfaceValidation.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSUserInterfaceValidation.h; sourceTree = "<group>"; };
 		FEA965B30E7EA97500413F40 /* NSBitmapImageRep-Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSBitmapImageRep-Private.h"; sourceTree = "<group>"; };
 		FEABD5E80CB9CEE40035F828 /* KGLayer_gdi.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = KGLayer_gdi.h; sourceTree = "<group>"; };
@@ -3012,6 +3016,8 @@
 		6E2B56060976075300DA0954 /* Win32 */ = {
 			isa = PBXGroup;
 			children = (
+				FEA25F960EECCE4D008750D0 /* NSSound_win32.h */,
+				FEA25F970EECCE4D008750D0 /* NSSound_win32.m */,
 				FE1CEA6B0C8F12F800184630 /* opengl_dll.h */,
 				FE1CEA6C0C8F12F800184630 /* opengl_dll.m */,
 				FEF2EC330C891E7C001FC5A8 /* NSOpenGLDrawable_gdiView.h */,
@@ -4134,6 +4140,7 @@
 				FE25FF620EE58712009C91B1 /* KGFont.h in Headers */,
 				C85D91970EE6A806004EBAEA /* NSDictionaryController.h in Headers */,
 				FE54BEC90EEB086900B4559F /* NSOpenGLDrawable.h in Headers */,
+				FEA25F980EECCE4D008750D0 /* NSSound_win32.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5063,6 +5070,7 @@
 				C85D91980EE6A806004EBAEA /* NSDictionaryController.m in Sources */,
 				FE337FCA0EE77A6C00D4A751 /* CTFont.m in Sources */,
 				FE54BECA0EEB086900B4559F /* NSOpenGLDrawable.m in Sources */,
+				FEA25F990EECCE4D008750D0 /* NSSound_win32.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
