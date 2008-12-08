@@ -168,7 +168,7 @@ static NSLineJoinStyle _defaultLineJoinStyle=NSMiterLineJoinStyle;
 }
 
 +(void)drawPackedGlyphs:(const char *)packed atPoint:(NSPoint)point {
-   KGContext     *context=[[NSGraphicsContext currentContext] graphicsPort];
+   CGContextRef   context=[[NSGraphicsContext currentContext] graphicsPort];
    const CGGlyph *glyphs=(const CGGlyph *)packed;
    unsigned       count;
 

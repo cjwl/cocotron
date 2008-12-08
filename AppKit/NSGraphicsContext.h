@@ -28,7 +28,7 @@ typedef enum {
 } NSColorRenderingIntent;
 
 @interface NSGraphicsContext : NSObject {
-   KGContext      *_graphicsPort;
+   CGContextRef    _graphicsPort;
    NSMutableArray *_focusStack;
    BOOL            _isDrawingToScreen;
    BOOL            _isFlipped;

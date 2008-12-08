@@ -5,15 +5,15 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
-
-// Original - Christopher Lloyd <cjwl@objc.net>
 #import <AppKit/NSOpenGLContext.h>
 #import <AppKit/NSOpenGLPixelFormat.h>
-#import "NSOpenGLDrawable_gdiView.h"
+#import <AppKit/NSOpenGLDrawable.h>
 #import <Foundation/NSRaise.h>
-#import "opengl_dll.h"
 
 static NSOpenGLContext *currentContext=nil;
+
+// Platform must define this function
+void CGLContextDelete(void *glContext);
 
 @implementation NSOpenGLContext
 
@@ -37,11 +37,7 @@ static NSOpenGLContext *currentContext=nil;
    _view=nil;
    [_drawable invalidate];
    [_drawable release];
-   if(_glContext!=NULL){
-    if(opengl_wglGetCurrentContext()==_glContext)
-     opengl_wglMakeCurrent(NULL,NULL);
-    opengl_wglDeleteContext(_glContext);
-   }
+   CGLContextDelete(_glContext);
    [super dealloc];
 }
 
@@ -65,8 +61,7 @@ static NSOpenGLContext *currentContext=nil;
 }
 
 -(void *)CGLContextObj {
-   NSUnimplementedMethod();
-   return NULL;
+   return _glContext;
 }
 
 -(void)getValues:(long *)vals forParameter:(NSOpenGLContextParameter)parameter {
@@ -83,9 +78,9 @@ static NSOpenGLContext *currentContext=nil;
 
 -(void)makeCurrentContext {
    if(_drawable==nil){
-    _drawable=[[NSOpenGLDrawable_gdiView alloc] initWithPixelFormat:_pixelFormat view:_view];
+    _drawable=[[NSOpenGLDrawable alloc] initWithPixelFormat:_pixelFormat view:_view];
       
-    if((_glContext=opengl_wglCreateContext([_drawable dc]))==NULL){
+    if((_glContext=[_drawable createGLContext])==NULL){
      NSLog(@"unable to create _glContext");
      return;
     }

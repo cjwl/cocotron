@@ -8,22 +8,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/NSObject.h>
 
-#ifdef WIN32
-#import <windows.h>
-#endif
-
-@class NSOpenGLPixelFormat,NSOpenGLPixelBuffer,NSView,NSOpenGLDrawable_gdiView;
+@class NSOpenGLPixelFormat,NSOpenGLPixelBuffer,NSView,NSOpenGLDrawable;
 
 typedef int NSOpenGLContextParameter;
 
 @interface NSOpenGLContext : NSObject {
    NSOpenGLPixelFormat *_pixelFormat;
-   NSView           *_view;
-   NSOpenGLDrawable_gdiView *_drawable;
-   
-#ifdef WIN32
-   HGLRC   _glContext;
-#endif
+   NSView              *_view;
+   void                *_glContext;
+   NSOpenGLDrawable    *_drawable;
 }
 
 +(NSOpenGLContext *)currentContext;

@@ -4,6 +4,26 @@
 #import <AppKit/Win32Window.h>
 #import "opengl_dll.h"
 
+void CGLContextDelete(void *glContext) {
+   if(glContext!=NULL){
+    if(opengl_wglGetCurrentContext()==glContext)
+     opengl_wglMakeCurrent(NULL,NULL);
+    opengl_wglDeleteContext(glContext);
+   }
+}
+
+
+@interface NSOpenGLDrawable(GDI)
+@end
+
+@implementation NSOpenGLDrawable(GDI)
+
++allocWithZone:(NSZone *)zone {
+   return NSAllocateObject([NSOpenGLDrawable_gdiView class],0,NULL);
+}
+
+@end
+
 @implementation NSOpenGLDrawable_gdiView 
 
 -(LRESULT)windowProcedure:(UINT)message wParam:(WPARAM)wParam
@@ -173,6 +193,10 @@ static void pfdFromPixelFormat(PIXELFORMATDESCRIPTOR *pfd,NSOpenGLPixelFormat *p
 
 -(HDC)dc {
    return _dc;
+}
+
+-(void *)createGLContext {
+   return opengl_wglCreateContext([self dc]);
 }
 
 -(void)invalidate {

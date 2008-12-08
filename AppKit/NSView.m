@@ -932,7 +932,7 @@ static inline void buildTransformsIfNeeded(NSView *self) {
 
 -(void)lockFocus {
    NSGraphicsContext *context=[[self window] graphicsContext];
-   KGContext         *graphicsPort=[context graphicsPort];
+   CGContextRef       graphicsPort=[context graphicsPort];
 
    [NSGraphicsContext saveGraphicsState];
    [NSGraphicsContext setCurrentContext:context];
@@ -957,7 +957,7 @@ static inline void buildTransformsIfNeeded(NSView *self) {
 
 -(void)unlockFocus {
    NSGraphicsContext *context=[[self window] graphicsContext];
-   KGContext         *graphicsPort=[context graphicsPort];
+   CGContextRef       graphicsPort=[context graphicsPort];
 
    CGContextRestoreGState(graphicsPort);
    [NSCurrentFocusStack() removeLastObject];
@@ -1101,7 +1101,7 @@ static inline void buildTransformsIfNeeded(NSView *self) {
 }
 
 -(void)beginPageInRect:(NSRect)rect atPlacement:(NSPoint)placement {
-   KGContext        *graphicsPort=NSCurrentGraphicsPort();
+   CGContextRef      graphicsPort=NSCurrentGraphicsPort();
    CGRect            mediaBox=NSMakeRect(0,0,rect.size.width,rect.size.height);
    NSPrintInfo      *printInfo=[[NSPrintOperation currentOperation] printInfo];
    NSRect            imageableRect=[printInfo imageablePageBounds];
@@ -1127,7 +1127,7 @@ static inline void buildTransformsIfNeeded(NSView *self) {
 }
 
 -(void)endPage {
-   KGContext *graphicsPort=NSCurrentGraphicsPort();
+   CGContextRef graphicsPort=NSCurrentGraphicsPort();
 
    CGContextRestoreGState(graphicsPort);
    CGContextEndPage(graphicsPort);
