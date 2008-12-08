@@ -20,6 +20,7 @@ enum {
 }
 
 -initWithFont:(KGFont *)font size:(CGFloat)size;
+-initWithUIFontType:(CTFontUIFontType)uiFontType size:(CGFloat)size language:(NSString *)language;
 
 -(NSString *)name;
 -(CGFloat)pointSize;

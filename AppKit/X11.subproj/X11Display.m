@@ -50,11 +50,6 @@
    return _display;
 }
 
--(NSString *)menuFontNameAndSize:(float *)pointSize {
-   *pointSize=12.0;
-   return @"Vera";
-}
-
 -(NSArray *)screens {
    NSRect frame=NSMakeRect(0, 0,
                            DisplayWidth(_display, DefaultScreen(_display)),

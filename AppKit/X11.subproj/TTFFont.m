@@ -7,6 +7,7 @@
  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
 #import "TTFFont.h"
+#import <AppKit/KGFont.h>
 
 @implementation KTFont(TTFFont)
 +(id)allocWithZone:(NSZone*)zone
@@ -65,6 +66,30 @@ FT_Library library;
       _name=@"FreeSans";
       
    }
+   return self;
+}
+
+-initWithUIFontType:(CTFontUIFontType)uiFontType size:(CGFloat)size language:(NSString *)language {
+   KGFont *font=nil;
+   
+   switch(uiFontType){
+  
+    case kCTFontMenuTitleFontType:
+    case kCTFontMenuItemFontType:
+     if(size==0)
+      size=12;
+     font=[KGFont createWithFontName:@"Vera"];
+     break;
+ 
+    default:
+     NSUnimplementedMethod();
+     return nil;
+   }
+
+   self=[self initWithFont:font size:size];
+   
+   [font release];
+   
    return self;
 }
 

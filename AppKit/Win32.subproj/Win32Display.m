@@ -268,31 +268,6 @@ BOOL CALLBACK monitorEnumerator(HMONITOR hMonitor,HDC hdcMonitor,LPRECT rect,LPA
    [_nameToColor setObject: color forKey: name];
 }
 
--(NSString *)menuFontNameAndSize:(float *)pointSize {
-#if 1
-   *pointSize=10;
-
-   return @"Tahoma";
-#else
-// MS Shell Dlg
-// MS Shell Dlg 2
-// DEFAULT_GUI_FONT
-   HGDIOBJ    font=GetStockObject(SYSTEM_FONT);
-   EXTLOGFONT fontData;
-
-   GetObject(font,sizeof(fontData),&fontData);
-
-   *pointSize=fontData.elfLogFont.lfHeight;
-
-   HDC dc=GetDC(NULL);
-   *pointSize=(fontData.elfLogFont.lfHeight*72.0)/GetDeviceCaps(dc,LOGPIXELSY);
-   ReleaseDC(NULL,dc);
-NSLog(@"name=%@,size=%f",[NSString stringWithCString:fontData. elfLogFont.lfFaceName],*pointSize);
-
-   return [NSString stringWithCString:fontData. elfLogFont.lfFaceName];
-#endif
-}
-
 -(NSTimeInterval)textCaretBlinkInterval {
    return ((float)GetCaretBlinkTime())/1000.0;
 }

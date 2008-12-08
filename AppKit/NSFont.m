@@ -107,14 +107,31 @@ static NSFont **_fontCache=NULL;
 }
 
 +(NSFont *)menuFontOfSize:(float)size {
-   float     pointSize=0;
-   NSString *name=[[NSDisplay currentDisplay] menuFontNameAndSize:&pointSize];
-
-   return [NSFont fontWithName:name size:(size==0)?pointSize:size];
+   CTFontRef ctFont=CTFontCreateUIFontForLanguage(kCTFontMenuItemFontType,size,nil);
+   NSString *name=CTFontCopyFullName(ctFont);
+   
+   size=CTFontGetSize(ctFont);
+   
+   NSFont *result=[NSFont fontWithName:name size:size];
+   
+   [ctFont release];
+   [name release];
+   
+   return result;
 }
 
 +(NSFont *)menuBarFontOfSize:(float)size {
-   return [self menuFontOfSize:size];
+   CTFontRef ctFont=CTFontCreateUIFontForLanguage(kCTFontMenuTitleFontType,size,nil);
+   NSString *name=CTFontCopyFullName(ctFont);
+   
+   size=CTFontGetSize(ctFont);
+   
+   NSFont *result=[NSFont fontWithName:name size:size];
+   
+   [ctFont release];
+   [name release];
+   
+   return result;
 }
 
 +(NSFont *)messageFontOfSize:(float)size {

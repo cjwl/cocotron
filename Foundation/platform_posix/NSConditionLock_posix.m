@@ -10,7 +10,6 @@
 #import <Foundation/NSException.h>
 #import <Foundation/NSString.h>
 #import <Foundation/NSThread.h>
-#import <pthread.h>
 #import <time.h>
 #import <math.h>
 

@@ -18,6 +18,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return self;
 }
 
+-initWithUIFontType:(CTFontUIFontType)uiFontType size:(CGFloat)size language:(NSString *)language {
+   KGInvalidAbstractInvocation();
+   return nil;
+}
+
 -(void)dealloc {
    [_font release];
    [super dealloc];

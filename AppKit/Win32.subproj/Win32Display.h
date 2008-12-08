@@ -46,8 +46,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)invalidateSystemColors;
 -(NSColor *)colorWithName:(NSString *)colorName;
 
--(NSString *)menuFontNameAndSize:(float *)pointSize;
-
 -(void)hideCursor;
 -(void)unhideCursor;
 

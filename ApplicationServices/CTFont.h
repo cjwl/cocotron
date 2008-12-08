@@ -15,7 +15,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 typedef KTFont *CTFontRef;
 
+typedef enum {
+   kCTFontMenuTitleFontType,
+   kCTFontMenuItemFontType,
+} CTFontUIFontType;
+
 COREGRAPHICS_EXPORT CTFontRef CTFontCreateWithGraphicsFont(CGFontRef cgFont,CGFloat size,CGAffineTransform *xform,id attributes);
+COREGRAPHICS_EXPORT CTFontRef CTFontCreateUIFontForLanguage(CTFontUIFontType uiFontType,CGFloat size,NSString *language);
+COREGRAPHICS_EXPORT NSString *CTFontCopyFullName(CTFontRef self);
+COREGRAPHICS_EXPORT CGFloat   CTFontGetSize(CTFontRef self);
 COREGRAPHICS_EXPORT size_t    CTFontGetGlyphCount(CTFontRef self);
 COREGRAPHICS_EXPORT BOOL      CTFontGetGlyphsForCharacters(CTFontRef self,const unichar *characters,CGGlyph *glyphs,size_t count);
 COREGRAPHICS_EXPORT CGRect    CTFontGetBoundingBox(CTFontRef self);

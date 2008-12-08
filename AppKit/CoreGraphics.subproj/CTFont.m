@@ -13,6 +13,18 @@ CTFontRef CTFontCreateWithGraphicsFont(CGFontRef cgFont,CGFloat size,CGAffineTra
    return [[KTFont alloc] initWithFont:cgFont size:size];
 }
 
+CTFontRef CTFontCreateUIFontForLanguage(CTFontUIFontType uiFontType,CGFloat size,NSString *language ) {
+   return [[KTFont alloc] initWithUIFontType:uiFontType size:size language:language];
+}
+
+NSString *CTFontCopyFullName(CTFontRef self) {
+   return [[self name] copy];
+}
+
+CGFloat CTFontGetSize(CTFontRef self) {
+   return [self pointSize];
+}
+
 size_t CTFontGetGlyphCount(CTFontRef self) {
    return [self numberOfGlyphs];
 }

@@ -1,4 +1,5 @@
 #import "KTFont_gdi.h"
+#import <AppKit/KGFont.h>
 #import "KGContext_gdi.h"
 #import "Win32Display.h"
 #import "Win32Font.h"
@@ -393,6 +394,49 @@ static inline CGGlyphMetrics *fetchGlyphAdvancementIfNeeded(KTFont_gdi *self,CGG
    _glyphInfoSet=NSZoneMalloc([self zone],sizeof(CGGlyphMetricsSet));
    _glyphInfoSet->numberOfGlyphs=0;
    _glyphInfoSet->info=NULL;
+   return self;
+}
+
+-initWithUIFontType:(CTFontUIFontType)uiFontType size:(CGFloat)size language:(NSString *)language {
+   KGFont *font=nil;
+   
+   switch(uiFontType){
+  
+    case kCTFontMenuTitleFontType:
+    case kCTFontMenuItemFontType:
+     if(size==0)
+      size=10;
+     font=[KGFont createWithFontName:@"Tahoma"];
+     
+#if 0
+// We should be able to get the menu font but this doesnt work
+// MS Shell Dlg
+// MS Shell Dlg 2
+// DEFAULT_GUI_FONT
+   HGDIOBJ    font=GetStockObject(SYSTEM_FONT);
+   EXTLOGFONT fontData;
+
+   GetObject(font,sizeof(fontData),&fontData);
+
+   *pointSize=fontData.elfLogFont.lfHeight;
+
+   HDC dc=GetDC(NULL);
+   *pointSize=(fontData.elfLogFont.lfHeight*72.0)/GetDeviceCaps(dc,LOGPIXELSY);
+   ReleaseDC(NULL,dc);
+NSLog(@"name=%@,size=%f",[NSString stringWithCString:fontData. elfLogFont.lfFaceName],*pointSize);
+#endif
+
+     break;
+ 
+    default:
+     NSUnimplementedMethod();
+     return nil;
+   }
+
+   self=[self initWithFont:font size:size];
+   
+   [font release];
+   
    return self;
 }
 

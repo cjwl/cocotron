@@ -74,12 +74,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
  }
 
 
--(NSString *)menuFontNameAndSize:(float *)pointSize {
-   NSInvalidAbstractInvocation();
-   return nil;
-}
-
-
 -(NSTimeInterval)textCaretBlinkInterval {
    NSInvalidAbstractInvocation();
    return 1;
