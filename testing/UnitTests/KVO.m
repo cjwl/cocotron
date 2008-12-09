@@ -10,14 +10,23 @@
 
 
 @implementation KVO
+
 @synthesize someKey;
+@synthesize otherKey;
 @synthesize dict;
 @synthesize lastObserved;
+@synthesize propertyWithBadDependencies;
 
 +(NSSet*)keyPathsForValuesAffectingNewStyleDerived
 {
 	return [NSSet setWithObject:@"dict.derivedProperty"];
 }
+
++(NSSet*)keyPathsForValuesAffectingPropertyWithBadDependencies
+{
+	return [NSSet setWithObjects:@"dict.derivedProperty", @"path.which.doesnt.exist", nil];
+}
+
 
 -(void)setUp
 {
@@ -28,6 +37,7 @@
 -(void)dealloc
 {
 	[someKey release];
+   [otherKey release];
 	[dict release];
 	[lastObserved release];
 	[super dealloc];
@@ -36,7 +46,7 @@
 - (void) observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
     if (context == 0) {
-		observerCalled=YES;
+		observerCalled++;
 		self.lastObserved=keyPath;
 	}
 	else {
@@ -44,38 +54,95 @@
 	}
 }
 
+-(void)testDependencyKVOException
+{
+	observerCalled=0;
+   STAssertThrowsSpecificNamed([self addObserver:self forKeyPath:@"propertyWithBadDependencies" options:0 context:nil],
+                                NSException,
+                                NSUndefinedKeyException,
+                                nil);
+   STAssertTrue([self observationInfo]==nil, nil);
+
+   STAssertThrows([self removeObserver:self forKeyPath:@"propertyWithBadDependencies"], nil);
+   
+   STAssertTrue([self observationInfo]==nil, nil);
+}
+
+-(void)testDeepKVOException
+{
+	observerCalled=0;
+
+   STAssertThrowsSpecificNamed([self addObserver:self forKeyPath:@"nonExisting.other" options:0 context:nil],
+                               NSException,
+                               NSUndefinedKeyException,
+                               nil);
+   STAssertTrue([self observationInfo]==nil, nil);
+   
+   STAssertNoThrowSpecificNamed([self addObserver:self forKeyPath:@"nonExisting" options:0 context:nil],
+                                NSException,
+                                NSUndefinedKeyException,
+                                nil);
+	
+   STAssertNoThrow([self removeObserver:self forKeyPath:@"nonExisting"], nil);
+   STAssertThrows([self removeObserver:self forKeyPath:@"nonExisting.other"], nil);
+   STAssertTrue([self observationInfo]==nil, nil);
+
+}
+
+
+-(void)testMultiKVO
+{
+	observerCalled=0;
+	[self addObserver:self forKeyPath:@"someKey" options:0 context:nil];
+	[self addObserver:self forKeyPath:@"otherKey" options:0 context:nil];
+	
+   self.otherKey=@"SomeValue";	
+	STAssertTrue(observerCalled==1, nil);
+   observerCalled=0;
+   
+	self.someKey=@"SomeValue";	
+	STAssertTrue(observerCalled==1, nil);
+   observerCalled=0;
+   
+	STAssertEqualObjects(lastObserved, @"someKey", nil);
+   
+   [self removeObserver:self forKeyPath:@"otherKey"];
+   [self removeObserver:self forKeyPath:@"someKey"];
+   STAssertTrue([self observationInfo]==nil, nil);
+}
 
 -(void)testKVO
 {
-	observerCalled=NO;
+	observerCalled=0;
 	[self addObserver:self forKeyPath:@"someKey" options:0 context:nil];
 	
 	self.someKey=@"SomeValue";	
 	
 	[self removeObserver:self forKeyPath:@"someKey"];
-	STAssertTrue(observerCalled, nil);
+	STAssertTrue(observerCalled==1, nil);
 	STAssertEqualObjects(lastObserved, @"someKey", nil);
+   STAssertTrue([self observationInfo]==nil, nil);
 }
 
 -(void)testDeepKVO
 {
 	[self addObserver:self forKeyPath:@"dict.someKey" options:0 context:nil];
 
-	observerCalled=NO;
+	observerCalled=0;
 	[dict setObject:@"val1" forKey:@"someKey"];
-	STAssertTrue(observerCalled, nil);
+	STAssertTrue(observerCalled==1, nil);
 	STAssertEqualObjects([dict valueForKey:@"someKey"], @"val1", nil);
 	STAssertEqualObjects(lastObserved, @"dict.someKey", nil);
 
-	observerCalled=NO;
+	observerCalled=0;
 	[dict setValue:@"val2" forKey:@"someKey"];
-	STAssertTrue(observerCalled, nil);
+	STAssertTrue(observerCalled==1, nil);
 	STAssertEqualObjects([dict valueForKey:@"someKey"], @"val2", nil);
 	STAssertEqualObjects(lastObserved, @"dict.someKey", nil);
 
-	observerCalled=NO;
+	observerCalled=0;
 	[self setValue:@"val3" forKeyPath:@"dict.someKey"];
-	STAssertTrue(observerCalled, nil);
+	STAssertTrue(observerCalled==1, nil);
 	STAssertEqualObjects([dict valueForKey:@"someKey"], @"val3", nil);
 	STAssertEqualObjects(lastObserved, @"dict.someKey", nil);
 
@@ -87,22 +154,23 @@
 {
 	[self addObserver:self forKeyPath:@"derived" options:0 context:nil];
 
-	observerCalled=NO;
+	observerCalled=0;
 	[self setValue:@"val3" forKeyPath:@"someKey"];
-	STAssertTrue(observerCalled, nil);	
+	STAssertTrue(observerCalled==1, nil);	
 	STAssertEqualObjects(lastObserved, @"derived", nil);
 
 	[self removeObserver:self forKeyPath:@"derived"];
 	
 	[self addObserver:self forKeyPath:@"newStyleDerived" options:0 context:nil];
 	
-	observerCalled=NO;
+	observerCalled=0;
 	[self setValue:@"val3" forKeyPath:@"dict.derivedProperty"];
-	STAssertTrue(observerCalled, nil);	
+	STAssertTrue(observerCalled==1, nil);	
 	STAssertEqualObjects(lastObserved, @"newStyleDerived", nil);
 
 	[self removeObserver:self forKeyPath:@"newStyleDerived"];
-	
+   STAssertTrue([self observationInfo]==nil, nil);
+
 }
 
 -(NSString*)derived

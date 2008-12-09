@@ -8,67 +8,36 @@
 
 /* Begin PBXBuildFile section */
 		8D5B49B0048680CD000E48DA /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C167DFE841241C02AAC07 /* InfoPlist.strings */; };
-		998CA84A0E6C3741009B2664 /* FileHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 998CA8480E6C3741009B2664 /* FileHandle.m */; };
-		998CA84B0E6C3741009B2664 /* FileHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 998CA8480E6C3741009B2664 /* FileHandle.m */; };
-		C80B6CB90E894CC30003C60D /* Properties.m in Sources */ = {isa = PBXBuildFile; fileRef = C827EB3A0DB63FFA00360D99 /* Properties.m */; };
-		C80B6D150E8951C60003C60D /* MessageSendTorture.m in Sources */ = {isa = PBXBuildFile; fileRef = C8EA12250E893B1F0051F4DF /* MessageSendTorture.m */; };
-		C80B6D370E8952A70003C60D /* Array.m in Sources */ = {isa = PBXBuildFile; fileRef = C8CB8CAE0DD34DA6005C1BAC /* Array.m */; };
-		C80B6D380E8952A90003C60D /* FileHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 998CA8480E6C3741009B2664 /* FileHandle.m */; };
-		C80B6D390E8952AA0003C60D /* ForEach.m in Sources */ = {isa = PBXBuildFile; fileRef = C88B859B0DB90282000A8500 /* ForEach.m */; };
-		C80B6D3A0E8952AC0003C60D /* Forwarding.m in Sources */ = {isa = PBXBuildFile; fileRef = C88B86D90DBA0305000A8500 /* Forwarding.m */; };
-		C80B6D3B0E8952B00003C60D /* KVC.m in Sources */ = {isa = PBXBuildFile; fileRef = C8C802800DB51FEF0089C0D7 /* KVC.m */; };
-		C80B6D3C0E8952B10003C60D /* KVO.m in Sources */ = {isa = PBXBuildFile; fileRef = C88470DA0DD3A9F600853747 /* KVO.m */; };
-		C80B6D3D0E8952B30003C60D /* MessageBenchmark.m in Sources */ = {isa = PBXBuildFile; fileRef = C80F9AE50E58BD7E00ECD487 /* MessageBenchmark.m */; };
-		C80B6D3E0E8952B70003C60D /* MessageSend.m in Sources */ = {isa = PBXBuildFile; fileRef = C80F9B7A0E58C93800ECD487 /* MessageSend.m */; };
-		C80B6D3F0E8952B90003C60D /* NewStyleExceptions.m in Sources */ = {isa = PBXBuildFile; fileRef = C8A24EBB0DDB468700953459 /* NewStyleExceptions.m */; };
-		C80B6D400E8952BA0003C60D /* ObjCXXExceptions.mm in Sources */ = {isa = PBXBuildFile; fileRef = C84F02C20E1F8F17000C03D6 /* ObjCXXExceptions.mm */; };
-		C80B6D410E8952BD0003C60D /* PropertyListUnarchiving.m in Sources */ = {isa = PBXBuildFile; fileRef = C8A3931D0E48B72300A9C289 /* PropertyListUnarchiving.m */; };
-		C80B6D420E8952C00003C60D /* RetainRelease.m in Sources */ = {isa = PBXBuildFile; fileRef = C8EA0F860E85665B0051F4DF /* RetainRelease.m */; };
-		C80B6D430E8952C10003C60D /* Runloop.m in Sources */ = {isa = PBXBuildFile; fileRef = C81F5A3F0DD22B94006F82C7 /* Runloop.m */; };
-		C80B6D440E8952C50003C60D /* SizeAndAlignment.m in Sources */ = {isa = PBXBuildFile; fileRef = C8C031A30DBB4F7D00558D7B /* SizeAndAlignment.m */; };
 		C80F9D180E59E45100ECD487 /* CrashCatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = C80F9D160E59E45100ECD487 /* CrashCatcher.m */; };
 		C80F9D190E59E45100ECD487 /* CrashCatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = C80F9D160E59E45100ECD487 /* CrashCatcher.m */; };
-		C827EB3B0DB63FFA00360D99 /* Properties.m in Sources */ = {isa = PBXBuildFile; fileRef = C827EB3A0DB63FFA00360D99 /* Properties.m */; };
+		C8104F960ECCCC0600CEC3A3 /* PropertyListUnarchiving.m in Sources */ = {isa = PBXBuildFile; fileRef = C8A3931D0E48B72300A9C289 /* PropertyListUnarchiving.m */; };
 		C84DA1BE0DB8D896000CD913 /* README in Resources */ = {isa = PBXBuildFile; fileRef = C84DA1BD0DB8D896000CD913 /* README */; };
 		C84DA1BF0DB8D896000CD913 /* README in Resources */ = {isa = PBXBuildFile; fileRef = C84DA1BD0DB8D896000CD913 /* README */; };
-		C84F02C50E1F8F17000C03D6 /* ObjCXXExceptions.mm in Sources */ = {isa = PBXBuildFile; fileRef = C84F02C20E1F8F17000C03D6 /* ObjCXXExceptions.mm */; };
-		C84F07270E20EC7A000C03D6 /* ObjCXXExceptions.mm in Sources */ = {isa = PBXBuildFile; fileRef = C84F02C20E1F8F17000C03D6 /* ObjCXXExceptions.mm */; };
-		C84F07620E20F089000C03D6 /* Forwarding.m in Sources */ = {isa = PBXBuildFile; fileRef = C88B86D90DBA0305000A8500 /* Forwarding.m */; };
-		C850BE150DBAA27D005F1047 /* KVC.m in Sources */ = {isa = PBXBuildFile; fileRef = C8C802800DB51FEF0089C0D7 /* KVC.m */; };
 		C85D1F800DBBBAD7005A5FD6 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C167DFE841241C02AAC07 /* InfoPlist.strings */; };
 		C85D1F810DBBBAD7005A5FD6 /* README in Resources */ = {isa = PBXBuildFile; fileRef = C84DA1BD0DB8D896000CD913 /* README */; };
-		C85D1F830DBBBAD7005A5FD6 /* Properties.m in Sources */ = {isa = PBXBuildFile; fileRef = C827EB3A0DB63FFA00360D99 /* Properties.m */; };
-		C85D1F850DBBBAD7005A5FD6 /* ForEach.m in Sources */ = {isa = PBXBuildFile; fileRef = C88B859B0DB90282000A8500 /* ForEach.m */; };
-		C85D1F870DBBBAD7005A5FD6 /* KVC.m in Sources */ = {isa = PBXBuildFile; fileRef = C8C802800DB51FEF0089C0D7 /* KVC.m */; };
-		C85D1F880DBBBAD7005A5FD6 /* SizeAndAlignment.m in Sources */ = {isa = PBXBuildFile; fileRef = C8C031A30DBB4F7D00558D7B /* SizeAndAlignment.m */; };
-		C85D1F8B0DBBBAD7005A5FD6 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 089C1672FE841209C02AAC07 /* Foundation.framework */; };
 		C85D1F8C0DBBBAD7005A5FD6 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C827EA560DB62A9200360D99 /* SenTestingKit.framework */; };
-		C88470DC0DD3A9F600853747 /* KVO.m in Sources */ = {isa = PBXBuildFile; fileRef = C88470DA0DD3A9F600853747 /* KVO.m */; };
-		C88B859D0DB90282000A8500 /* ForEach.m in Sources */ = {isa = PBXBuildFile; fileRef = C88B859B0DB90282000A8500 /* ForEach.m */; };
-		C88B86DB0DBA0305000A8500 /* Forwarding.m in Sources */ = {isa = PBXBuildFile; fileRef = C88B86D90DBA0305000A8500 /* Forwarding.m */; };
-		C8A24EBE0DDB468800953459 /* NewStyleExceptions.m in Sources */ = {isa = PBXBuildFile; fileRef = C8A24EBB0DDB468700953459 /* NewStyleExceptions.m */; };
-		C8A24EBF0DDB468800953459 /* NewStyleExceptions.m in Sources */ = {isa = PBXBuildFile; fileRef = C8A24EBB0DDB468700953459 /* NewStyleExceptions.m */; };
+		C8711E600EE5DE5600EB06FD /* KVC.m in Sources */ = {isa = PBXBuildFile; fileRef = C8C802800DB51FEF0089C0D7 /* KVC.m */; };
+		C87948740EDDC87A00539601 /* RetainRelease.m in Sources */ = {isa = PBXBuildFile; fileRef = C8EA0F860E85665B0051F4DF /* RetainRelease.m */; };
+		C8794B900EE4727C00539601 /* KVC.m in Sources */ = {isa = PBXBuildFile; fileRef = C8C802800DB51FEF0089C0D7 /* KVC.m */; };
+		C8794B910EE4727C00539601 /* Properties.m in Sources */ = {isa = PBXBuildFile; fileRef = C827EB3A0DB63FFA00360D99 /* Properties.m */; };
+		C8794B920EE4727C00539601 /* ForEach.m in Sources */ = {isa = PBXBuildFile; fileRef = C88B859B0DB90282000A8500 /* ForEach.m */; };
+		C897902C0ECA1E5400C3E5EE /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C897902B0ECA1E5400C3E5EE /* main.m */; };
+		C897902D0ECA1E5400C3E5EE /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C897902B0ECA1E5400C3E5EE /* main.m */; };
+		C897902E0ECA1E5400C3E5EE /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C897902B0ECA1E5400C3E5EE /* main.m */; };
+		C89790710ECA202F00C3E5EE /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 089C1672FE841209C02AAC07 /* Foundation.framework */; };
 		C8A392CA0E48B20F00A9C289 /* XML.plist in Resources */ = {isa = PBXBuildFile; fileRef = C8A392C90E48B20F00A9C289 /* XML.plist */; };
 		C8A392CB0E48B20F00A9C289 /* XML.plist in Resources */ = {isa = PBXBuildFile; fileRef = C8A392C90E48B20F00A9C289 /* XML.plist */; };
 		C8A392CC0E48B20F00A9C289 /* XML.plist in Resources */ = {isa = PBXBuildFile; fileRef = C8A392C90E48B20F00A9C289 /* XML.plist */; };
 		C8A392D80E48B26200A9C289 /* Binary.plist in Resources */ = {isa = PBXBuildFile; fileRef = C8A392D70E48B26200A9C289 /* Binary.plist */; };
 		C8A392DA0E48B26200A9C289 /* Binary.plist in Resources */ = {isa = PBXBuildFile; fileRef = C8A392D70E48B26200A9C289 /* Binary.plist */; };
-		C8A3931E0E48B72300A9C289 /* PropertyListUnarchiving.m in Sources */ = {isa = PBXBuildFile; fileRef = C8A3931D0E48B72300A9C289 /* PropertyListUnarchiving.m */; };
-		C8A393200E48B72300A9C289 /* PropertyListUnarchiving.m in Sources */ = {isa = PBXBuildFile; fileRef = C8A3931D0E48B72300A9C289 /* PropertyListUnarchiving.m */; };
-		C8AEE9D60E7932FD00248617 /* Array.m in Sources */ = {isa = PBXBuildFile; fileRef = C8CB8CAE0DD34DA6005C1BAC /* Array.m */; };
-		C8C031A50DBB4F7E00558D7B /* SizeAndAlignment.m in Sources */ = {isa = PBXBuildFile; fileRef = C8C031A30DBB4F7D00558D7B /* SizeAndAlignment.m */; };
+		C8C0144B0EEB13DB0057F3FB /* NewStyleExceptions.m in Sources */ = {isa = PBXBuildFile; fileRef = C8A24EBB0DDB468700953459 /* NewStyleExceptions.m */; };
+		C8C014DB0EEBF1920057F3FB /* KVO.m in Sources */ = {isa = PBXBuildFile; fileRef = C88470DA0DD3A9F600853747 /* KVO.m */; };
 		C8C8030F0DB52A010089C0D7 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 089C167FFE841241C02AAC07 /* AppKit.framework */; };
 		C8C803100DB52A010089C0D7 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 089C1672FE841209C02AAC07 /* Foundation.framework */; };
-		C8CB8CB00DD34DA6005C1BAC /* Array.m in Sources */ = {isa = PBXBuildFile; fileRef = C8CB8CAE0DD34DA6005C1BAC /* Array.m */; };
-		C8EA0F880E85665B0051F4DF /* RetainRelease.m in Sources */ = {isa = PBXBuildFile; fileRef = C8EA0F860E85665B0051F4DF /* RetainRelease.m */; };
-		C8EA0F890E85665B0051F4DF /* RetainRelease.m in Sources */ = {isa = PBXBuildFile; fileRef = C8EA0F860E85665B0051F4DF /* RetainRelease.m */; };
-		C8EA12270E893B1F0051F4DF /* MessageSendTorture.m in Sources */ = {isa = PBXBuildFile; fileRef = C8EA12250E893B1F0051F4DF /* MessageSendTorture.m */; };
-		C8EA12280E893B1F0051F4DF /* MessageSendTorture.m in Sources */ = {isa = PBXBuildFile; fileRef = C8EA12250E893B1F0051F4DF /* MessageSendTorture.m */; };
+		C8D197020ECCD487005B24B1 /* Runloop.m in Sources */ = {isa = PBXBuildFile; fileRef = C81F5A3F0DD22B94006F82C7 /* Runloop.m */; };
 		C8EA126C0E8941490051F4DF /* CrashCatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = C80F9D160E59E45100ECD487 /* CrashCatcher.m */; };
 		C8EA126E0E89414E0051F4DF /* Binary.plist in Resources */ = {isa = PBXBuildFile; fileRef = C8A392D70E48B26200A9C289 /* Binary.plist */; };
 		C8EA126F0E8941580051F4DF /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C827EA560DB62A9200360D99 /* SenTestingKit.framework */; };
-		C8F971D10E6AD503007CBB04 /* MessageBenchmark.m in Sources */ = {isa = PBXBuildFile; fileRef = C80F9AE50E58BD7E00ECD487 /* MessageBenchmark.m */; };
-		C8F971D20E6AD503007CBB04 /* MessageSend.m in Sources */ = {isa = PBXBuildFile; fileRef = C80F9B7A0E58C93800ECD487 /* MessageSend.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
@@ -138,6 +107,7 @@
 		C88B859B0DB90282000A8500 /* ForEach.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ForEach.m; sourceTree = "<group>"; };
 		C88B86D80DBA0305000A8500 /* Forwarding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Forwarding.h; sourceTree = "<group>"; };
 		C88B86D90DBA0305000A8500 /* Forwarding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Forwarding.m; sourceTree = "<group>"; };
+		C897902B0ECA1E5400C3E5EE /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		C8A24EBB0DDB468700953459 /* NewStyleExceptions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewStyleExceptions.m; sourceTree = "<group>"; };
 		C8A24EBC0DDB468800953459 /* NewStyleExceptions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewStyleExceptions.h; sourceTree = "<group>"; };
 		C8A392530E48AD9000A9C289 /* TestingHarness.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = TestingHarness.xcodeproj; sourceTree = "<group>"; };
@@ -179,7 +149,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C85D1F8B0DBBBAD7005A5FD6 /* Foundation.framework in Frameworks */,
+				C89790710ECA202F00C3E5EE /* Foundation.framework in Frameworks */,
 				C85D1F8C0DBBBAD7005A5FD6 /* SenTestingKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -290,6 +260,7 @@
 		32C88E010371C26100C91783 /* Other Sources */ = {
 			isa = PBXGroup;
 			children = (
+				C897902B0ECA1E5400C3E5EE /* main.m */,
 				C84D62830DB61BEB000E722B /* local_server_config.sh */,
 				32DBCF630370AF2F00C91783 /* UnitTests_Prefix.pch */,
 			);
@@ -464,7 +435,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [ ! -e $TARGET_BUILD_DIR/TestHarness ]; then\n\tmkdir $TARGET_BUILD_DIR/TestHarness\nfi\n\nif [ -e $SOURCE_ROOT/local_server_config.sh ];then\n\t. $SOURCE_ROOT/local_server_config.sh\nfi\n\nif [ \"\"$TESTING_LINK_FILES\"\" = \"YES\" ];then\n\t/Developer/Cocotron/1.0/bin/retargetBundle -link -framework AppKit -framework Foundation -framework SenTestingKit -destination $TARGET_BUILD_DIR/TestHarness\n\tln -s /Developer/Cocotron/1.0/Windows/i386/otest.exe $TARGET_BUILD_DIR/TestHarness/otest.exe\nelse\n\t/Developer/Cocotron/1.0/bin/retargetBundle -framework Foundation -framework SenTestingKit -destination $TARGET_BUILD_DIR/TestHarness\n\tcp /Developer/Cocotron/1.0/Windows/i386/otest.exe $TARGET_BUILD_DIR/TestHarness/otest.exe\nfi\n\nif [ \"\"$TESTING_SERVER\"\" = \"\" ];then\n\techo \"error: TESTING_SERVER not set; create a local_server_config.sh in source directory\"\n\texit 1\nfi\n\nif [ \"\"$TESTING_DIR\"\" = \"\" ];then\n\techo \"error: TESTING_DIR not set; create a local_server_config.sh in source directory\"\n\texit 1\nfi\n\necho \"#!/bin/sh\" > $TARGET_BUILD_DIR/TestHarness/run_tests.sh\necho \"cd $TESTING_DIR/TestHarness\" >> $TARGET_BUILD_DIR/TestHarness/run_tests.sh\necho \"./otest.exe -SenTest All ../$WRAPPER_NAME\" >> $TARGET_BUILD_DIR/TestHarness/run_tests.sh\n\necho \"note: Running tests on $TESTING_SERVER...\"\n\nssh $TESTING_SERVER -- sh $TESTING_DIR/TestHarness/run_tests.sh \n\necho \"note: Finished.\"\n";
+			shellScript = "if [ -e $SOURCE_ROOT/local_server_config.sh ];then\n\t. $SOURCE_ROOT/local_server_config.sh\nfi\n\nif [ \"\"$TESTING_LINK_FILES\"\" = \"YES\" ];then\n\t/Developer/Cocotron/1.0/bin/retargetBundle -link -framework AppKit -framework Foundation -framework SenTestingKit -destination $TARGET_BUILD_DIR\"/\"$EXECUTABLE_FOLDER_PATH\nelse\n\t/Developer/Cocotron/1.0/bin/retargetBundle -framework Foundation -framework SenTestingKit -destination $TARGET_BUILD_DIR\"/\"$EXECUTABLE_FOLDER_PATH\nfi\n\nif [ \"\"$TESTING_SERVER\"\" = \"\" ];then\n\techo \"error: TESTING_SERVER not set; create a local_server_config.sh in source directory\"\n\texit 1\nfi\n\nif [ \"\"$TESTING_DIR\"\" = \"\" ];then\n\techo \"error: TESTING_DIR not set; create a local_server_config.sh in source directory\"\n\texit 1\nfi\n\necho \"#!/bin/sh\" > $TARGET_BUILD_DIR/run_tests.sh\necho \"cd $TESTING_DIR/$EXECUTABLE_FOLDER_PATH\" >> $TARGET_BUILD_DIR/run_tests.sh\necho \"./$EXECUTABLE_NAME\" >> $TARGET_BUILD_DIR/run_tests.sh\n\necho \"note: Running tests on $TESTING_SERVER...\"\n\nssh $TESTING_SERVER -- sh $TESTING_DIR/run_tests.sh \n\necho \"note: Finished.\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -474,22 +445,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				C8EA126C0E8941490051F4DF /* CrashCatcher.m in Sources */,
-				C80B6CB90E894CC30003C60D /* Properties.m in Sources */,
-				C80B6D150E8951C60003C60D /* MessageSendTorture.m in Sources */,
-				C80B6D370E8952A70003C60D /* Array.m in Sources */,
-				C80B6D380E8952A90003C60D /* FileHandle.m in Sources */,
-				C80B6D390E8952AA0003C60D /* ForEach.m in Sources */,
-				C80B6D3A0E8952AC0003C60D /* Forwarding.m in Sources */,
-				C80B6D3B0E8952B00003C60D /* KVC.m in Sources */,
-				C80B6D3C0E8952B10003C60D /* KVO.m in Sources */,
-				C80B6D3D0E8952B30003C60D /* MessageBenchmark.m in Sources */,
-				C80B6D3E0E8952B70003C60D /* MessageSend.m in Sources */,
-				C80B6D3F0E8952B90003C60D /* NewStyleExceptions.m in Sources */,
-				C80B6D400E8952BA0003C60D /* ObjCXXExceptions.mm in Sources */,
-				C80B6D410E8952BD0003C60D /* PropertyListUnarchiving.m in Sources */,
-				C80B6D420E8952C00003C60D /* RetainRelease.m in Sources */,
-				C80B6D430E8952C10003C60D /* Runloop.m in Sources */,
-				C80B6D440E8952C50003C60D /* SizeAndAlignment.m in Sources */,
+				C897902C0ECA1E5400C3E5EE /* main.m in Sources */,
+				C87948740EDDC87A00539601 /* RetainRelease.m in Sources */,
+				C8711E600EE5DE5600EB06FD /* KVC.m in Sources */,
+				C8C0144B0EEB13DB0057F3FB /* NewStyleExceptions.m in Sources */,
+				C8C014DB0EEBF1920057F3FB /* KVO.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -497,20 +457,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C827EB3B0DB63FFA00360D99 /* Properties.m in Sources */,
-				C88B859D0DB90282000A8500 /* ForEach.m in Sources */,
-				C88B86DB0DBA0305000A8500 /* Forwarding.m in Sources */,
-				C850BE150DBAA27D005F1047 /* KVC.m in Sources */,
-				C8C031A50DBB4F7E00558D7B /* SizeAndAlignment.m in Sources */,
-				C8CB8CB00DD34DA6005C1BAC /* Array.m in Sources */,
-				C88470DC0DD3A9F600853747 /* KVO.m in Sources */,
-				C8A24EBE0DDB468800953459 /* NewStyleExceptions.m in Sources */,
-				C84F02C50E1F8F17000C03D6 /* ObjCXXExceptions.mm in Sources */,
-				C8A393200E48B72300A9C289 /* PropertyListUnarchiving.m in Sources */,
 				C80F9D180E59E45100ECD487 /* CrashCatcher.m in Sources */,
-				998CA84B0E6C3741009B2664 /* FileHandle.m in Sources */,
-				C8EA0F890E85665B0051F4DF /* RetainRelease.m in Sources */,
-				C8EA12270E893B1F0051F4DF /* MessageSendTorture.m in Sources */,
+				C897902D0ECA1E5400C3E5EE /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -518,21 +466,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C85D1F830DBBBAD7005A5FD6 /* Properties.m in Sources */,
-				C85D1F850DBBBAD7005A5FD6 /* ForEach.m in Sources */,
-				C85D1F870DBBBAD7005A5FD6 /* KVC.m in Sources */,
-				C85D1F880DBBBAD7005A5FD6 /* SizeAndAlignment.m in Sources */,
-				C8A24EBF0DDB468800953459 /* NewStyleExceptions.m in Sources */,
-				C84F07270E20EC7A000C03D6 /* ObjCXXExceptions.mm in Sources */,
-				C84F07620E20F089000C03D6 /* Forwarding.m in Sources */,
-				C8A3931E0E48B72300A9C289 /* PropertyListUnarchiving.m in Sources */,
 				C80F9D190E59E45100ECD487 /* CrashCatcher.m in Sources */,
-				C8F971D10E6AD503007CBB04 /* MessageBenchmark.m in Sources */,
-				C8F971D20E6AD503007CBB04 /* MessageSend.m in Sources */,
-				998CA84A0E6C3741009B2664 /* FileHandle.m in Sources */,
-				C8AEE9D60E7932FD00248617 /* Array.m in Sources */,
-				C8EA0F880E85665B0051F4DF /* RetainRelease.m in Sources */,
-				C8EA12280E893B1F0051F4DF /* MessageSendTorture.m in Sources */,
+				C897902E0ECA1E5400C3E5EE /* main.m in Sources */,
+				C8104F960ECCCC0600CEC3A3 /* PropertyListUnarchiving.m in Sources */,
+				C8D197020ECCD487005B24B1 /* Runloop.m in Sources */,
+				C8794B900EE4727C00539601 /* KVC.m in Sources */,
+				C8794B910EE4727C00539601 /* Properties.m in Sources */,
+				C8794B920EE4727C00539601 /* ForEach.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -567,7 +507,7 @@
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = stabs;
 				EXECUTABLE_FOLDER_PATH = "$(CONTENTS_FOLDER_PATH)/Windows";
-				EXECUTABLE_SUFFIX = .dll;
+				EXECUTABLE_SUFFIX = .exe;
 				FRAMEWORK_SEARCH_PATHS = /Developer/Cocotron/1.0/Windows/i386/Frameworks;
 				GCC_DEBUGGING_SYMBOLS = full;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -577,12 +517,9 @@
 				GCC_PREFIX_HEADER = UnitTests_Prefix.pch;
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Library/Bundles";
-				MACH_O_TYPE = mh_dylib;
+				MACH_O_TYPE = mh_execute;
 				OTHER_CFLAGS = "-fgnu89-inline";
-				OTHER_LDFLAGS = (
-					"-shared",
-					"-Wl,--export-all-symbols",
-				);
+				OTHER_LDFLAGS = "-Wl,--export-all-symbols";
 				PRODUCT_NAME = UnitTests;
 				SDKROOT = "";
 				WRAPPER_EXTENSION = octest;
@@ -607,7 +544,10 @@
 				ARCHS = "$(NATIVE_ARCH)";
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				FRAMEWORK_SEARCH_PATHS = "$(DEVELOPER_LIBRARY_DIR)/Frameworks";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
+					"\"$(DEVELOPER_DIR)/Cocotron/1.0/Windows/i386/Frameworks\"",
+				);
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_MODEL_TUNING = G5;
@@ -635,16 +575,16 @@
 				ARCHS = "$(NATIVE_ARCH)";
 				COPY_PHASE_STRIP = NO;
 				EXECUTABLE_FOLDER_PATH = "$(CONTENTS_FOLDER_PATH)/Linux";
-				EXECUTABLE_SUFFIX = .so;
-				FRAMEWORK_SEARCH_PATHS = /Developer/Cocotron/1.0/Linux/i386/Frameworks;
+				FRAMEWORK_SEARCH_PATHS = (
+					/Developer/Cocotron/1.0/Linux/i386/Frameworks,
+					"\"$(DEVELOPER_DIR)/Cocotron/1.0/Windows/i386/Frameworks\"",
+				);
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = UnitTests_Prefix.pch;
 				INFOPLIST_FILE = /Users/jobi/Projekte/cocotron/testing/UnitTests/Info.plist;
 				INSTALL_PATH = "$(HOME)/Library/Bundles";
-				MACH_O_TYPE = mh_dylib;
+				MACH_O_TYPE = mh_execute;
 				OTHER_CFLAGS = "-fgnu89-inline";
-				OTHER_LDFLAGS = "-shared";
 				PRODUCT_NAME = UnitTests;
 				SDKROOT = "";
 				WRAPPER_EXTENSION = octest;

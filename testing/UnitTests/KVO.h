@@ -11,11 +11,15 @@
 
 @interface KVO : SenTestCase {
 	NSString *someKey;
+   NSString *otherKey;
+   NSString *propertyWithBadDependencies;
 	NSMutableDictionary *dict;
 	NSString *lastObserved;
-	BOOL observerCalled;
+	NSUInteger observerCalled;
 }
 @property (copy) NSString *someKey;
+@property (copy) NSString *otherKey;
+@property (copy) NSString *propertyWithBadDependencies;
 @property (copy) NSString *lastObserved;
 @property (retain) NSMutableDictionary *dict;
 @property (readonly) NSString *derived;

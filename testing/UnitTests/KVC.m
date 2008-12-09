@@ -31,6 +31,10 @@
 
 	[container release];	
 }
+
+-(void)testDescription {
+   STAssertNotNil([self valueForKeyPath:@"description"], nil);
+}
 @end
 
 

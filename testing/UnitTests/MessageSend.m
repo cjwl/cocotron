@@ -27,9 +27,22 @@
    STAssertTrue([[super self] isKindOfClass:[MessageBenchmark class]], nil);
 }
 
+-(float)floatReturn
+{
+   return 1.0;
+}
+
+
+-(void)testMessageSendFloatReturn
+{
+   STAssertTrue([self floatReturn]==1.0, nil);
+}
+
+
 @end
 
 @implementation Forwarding (MessageSend)
+
 -(void)testRegularStructs
 {
 	beenInMethodFlag=NO;

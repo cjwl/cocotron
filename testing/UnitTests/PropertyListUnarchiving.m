@@ -33,8 +33,10 @@
 {
    id error=nil;
    NSInteger format=NSPropertyListBinaryFormat_v1_0;
-   id data=[NSData dataWithContentsOfFile:[[NSBundle bundleForClass:isa] pathForResource:@"Binary" ofType:@"plist"]];
-   STAssertNotNil(data, @"Data file not found");
+   id path=[[NSBundle bundleForClass:isa] pathForResource:@"Binary" ofType:@"plist"];
+   STAssertNotNil(path, @"Data file not found");
+   id data=[NSData dataWithContentsOfFile:path];
+   STAssertNotNil(data, @"Data file couldn't be opened");
 
    id plist=[NSPropertyListSerialization propertyListFromData:data
                                              mutabilityOption:NSPropertyListImmutable 

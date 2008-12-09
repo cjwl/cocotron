@@ -31,10 +31,50 @@
 	@throw(@"SomeString");
 }
 
+-(void)testReraise
+{
+	id test=nil;
+   @try 
+   {
+      @try
+      {
+         [self raiseException];
+      }
+      @catch(NSException *a)
+      {
+         [a raise];
+      }
+   }
+   @catch(NSException *b)
+   {
+      test=b;
+   }
+	
+	STAssertNotNil(test, nil);
+}
+
+
+-(void)testMixedReraise
+{
+	id test=nil;
+   NS_DURING 
+      @try
+      {
+         [self raiseException];
+      }
+      @catch(NSException *a)
+      {
+         [a raise];
+      }
+   NS_HANDLER
+      test=localException;
+   NS_ENDHANDLER
+	
+	STAssertNotNil(test, nil);
+}
 
 -(void)testTryCatch
 {
-    return;
 	id test=nil;
 	@try
 	{
