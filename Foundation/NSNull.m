@@ -12,10 +12,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @class NSCoder;
 
+
 @implementation NSNull
 
 +(NSNull *)null {
-   return [self new];
+   static id instance=nil;
+   if(!instance)
+      instance=[self new];
+   return instance;
 }
 
 +allocWithZone:(NSZone *)zone {

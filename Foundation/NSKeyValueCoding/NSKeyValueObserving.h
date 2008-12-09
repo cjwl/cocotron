@@ -16,9 +16,10 @@ FOUNDATION_EXPORT NSString *const NSKeyValueChangeOldKey;
 FOUNDATION_EXPORT NSString *const NSKeyValueChangeIndexesKey;
 FOUNDATION_EXPORT NSString *const NSKeyValueChangeNotificationIsPriorKey;
 
+
 enum {
-    NSKeyValueObservingOptionNew = 0x01,
-    NSKeyValueObservingOptionOld = 0x02,
+   NSKeyValueObservingOptionNew = 0x01,
+   NSKeyValueObservingOptionOld = 0x02,
 	NSKeyValueObservingOptionInitial = 0x04,
 	NSKeyValueObservingOptionPrior = 0x08
 };

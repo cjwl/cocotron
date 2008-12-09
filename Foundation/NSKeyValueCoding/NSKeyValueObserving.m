@@ -84,65 +84,119 @@ static NSLock *kvoLock=nil;
 	NSString* remainingKeyPath;
 	NSString* key;
 	[keyPath _KVC_partBeforeDot:&key afterDot:&remainingKeyPath];
+   
+   // get observation info dictionary
+	NSMutableDictionary* observationInfo=[self observationInfo];
+	// get all observers for current key
+	NSMutableArray *observers=[observationInfo objectForKey:key];
+   
+	// find if already observing
+   _NSObservationInfo *oldInfo=nil;
+   for(_NSObservationInfo *current in observers) {
+		if(current->observer==observer) {
+			oldInfo=current;
+         break;
+      }
+   }
 	
-	// get observation info dictionary, creating it if it's not there
-	NSMutableDictionary* dict=[self observationInfo];
-	if(!dict)
+	// create new info
+   _NSObservationInfo *info=nil;
+   if(oldInfo)
+      info=oldInfo;
+   else
+      info=[[_NSObservationInfo new] autorelease];
+   
+   // We now add the observer to the rest of the path, then to the dependents.
+   // Any of the following may fail if a key path doesn't exist.
+   // We have to keep track of how far we have come to be able to roll back.
+   id lastPathTried=nil;
+   NSSet* dependentPathsForKey=[isa keyPathsForValuesAffectingValueForKey:key];
+   @try {
+      // if observing a key path, also observe all deeper levels
+      // info object acts as a proxy replacing remainingKeyPath with keyPath 
+      if([remainingKeyPath length])
+      {
+         lastPathTried=remainingKeyPath;
+         [[self valueForKey:key] addObserver:info
+                                  forKeyPath:remainingKeyPath
+                                     options:options
+                                     context:context];
+      }
+      
+      // now try all dependent key paths
+      for(NSString *path in dependentPathsForKey)
+      {
+         lastPathTried=path;  
+         [self addObserver:info
+                forKeyPath:path
+                   options:options
+                   context:context];
+      }
+   }
+   @catch(id ex) {
+      // something went wrong. rollback all the work we've done so far.
+      BOOL wasInDependentKey=NO;
+      
+      if(lastPathTried!=remainingKeyPath) {
+         wasInDependentKey=YES;
+         // adding to a dependent path failed. roll back for all the paths before.
+         if([remainingKeyPath length]) {
+            [[self valueForKey:key] removeObserver:info forKeyPath:remainingKeyPath];
+         }
+         
+         for(NSString *path in dependentPathsForKey)
+         {
+            if(path==lastPathTried)
+               break; // this is the one that failed
+            [self removeObserver:info forKeyPath:path];
+         }
+      }
+      
+      // reformat exceptions to be more expressive
+      if([[ex name] isEqualToString:NSUndefinedKeyException]) {
+         if(!wasInDependentKey) {
+            [NSException raise:NSUndefinedKeyException 
+                        format:@"Undefined key while adding observer for key path %@ to object %p", keyPath, self];
+         }
+         else {
+            [NSException raise:NSUndefinedKeyException 
+                        format:@"Undefined key while adding observer for dependent key path %@  of path %@ to object %p", lastPathTried, keyPath, self];
+         }
+      }
+      [ex raise];
+   }
+   
+   
+   // we were able to observe the full length of our key path, and the dependents.
+   // now make the changes to our own observers array
+   
+   // create observation info dictionary if it's not there
+   // (we have to re-check: it may have been created while observing our dependents
+	if(!observationInfo && !(observationInfo = [self observationInfo]))
 	{
 		[self setObservationInfo:[NSMutableDictionary new]];
-		dict=[self observationInfo];
+		observationInfo=[self observationInfo];
+      observers = [observationInfo objectForKey:key];
 	}
-
+   
 	// get all observers for current key
-	NSMutableArray *observers=[dict objectForKey:key];
 	if(!observers)
 	{
 		observers = [NSMutableArray array];
-		[dict setObject:observers forKey:key];
+		[observationInfo setObject:observers forKey:key];
 	}
-
-	// find if already observing
-	NSEnumerator *en=[observers objectEnumerator];
-	_NSObservationInfo *current;
-	_NSObservationInfo *info=nil;
-	while((current=[en nextObject]))
-	{
-		if([current observer]==observer)
-			info=current;
-	}
-	// create new info if not already observing
-	if(!info)
-	{
-		info=[_NSObservationInfo new];
-		[observers addObject:info];
-		[info release];
-	}
-
+   
 	// set info options
 	info->observer=observer;
 	info->options=options;
 	info->context=context;
 	info->object=self;
 	[info setKeyPath:keyPath];
-
-	// if observing a key path, also observe all deeper levels
-	// info object acts as a proxy replacing remainingKeyPath with keyPath 
-	if([remainingKeyPath length])
-	{
-		[[self valueForKey:key] addObserver:info
-									forKeyPath:remainingKeyPath
-									   options:options
-									   context:context];
-	}
-	
-	NSSet* keysPathsForKey=[isa keyPathsForValuesAffectingValueForKey:key];
-	for(NSString *path in keysPathsForKey)
-	{
-		[self addObserver:info
-			   forKeyPath:path
-				  options:options
-				  context:context];
-	}
+   
+   if(!oldInfo) {
+      [observers addObject:info];
+   }
+   
 	
 	if(options & NSKeyValueObservingOptionInitial)
 	{
@@ -161,9 +215,7 @@ static NSLock *kvoLock=nil;
 	NSMutableDictionary* observationInfo=[self observationInfo];
 	NSMutableArray *observers=[observationInfo objectForKey:key];
 
-	NSEnumerator *en=[observers objectEnumerator];
-	_NSObservationInfo *info;
-	while((info=[en nextObject]))
+	for(_NSObservationInfo *info in [[observers copy] autorelease])
 	{
 		if(info->observer==observer)
 		{
@@ -238,10 +290,7 @@ static NSLock *kvoLock=nil;
 
 	NSMutableArray *observers=[observationInfo objectForKey:key];
 	
-	NSEnumerator *en=[observers objectEnumerator];
-	_NSObservationInfo *info;
-	// for all observers
-	while((info=[en nextObject]))
+   for(_NSObservationInfo *info in [[observers copy] autorelease])
 	{
 		// increment change count for nested did/willChangeValue's
 		info->willChangeCount++;
@@ -305,10 +354,7 @@ static NSLock *kvoLock=nil;
 
 	NSMutableArray *observers=[[observationInfo objectForKey:key] copy];
 
-	NSEnumerator *en=[observers objectEnumerator];
-	_NSObservationInfo *info;
-	// for all observers
-	while((info=[en nextObject]))
+   for(_NSObservationInfo *info in observers)
 	{
 		// decrement count and only notify after last didChange
 		info->willChangeCount--;

@@ -51,17 +51,6 @@ static inline unsigned OBJCHashString (const void *data) {
 };
 
 static inline int OBJCIsStringEqual (const void *data1, const void *data2) {
-    if (data1 == data2)
-        return YES;
-
-    if (!data1)
-        return ! strlen ((char *) data2);
-
-    if (!data2)
-        return ! strlen ((char *) data1);
-
-    if (((char *) data1)[0] != ((char *) data2)[0])
-        return NO;
 
     return (strcmp ((char *) data1, (char *) data2)) ? NO : YES;
 };

@@ -27,6 +27,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "NSKVCMutableArray.h"
 #import "NSString+KVCAdditions.h"
 
+NSString *const NSUndefinedKeyException = @"NSUnknownKeyException";
+
+
 @implementation NSObject (KeyValueCoding)
 #pragma mark -
 #pragma mark Private helper methods
@@ -311,14 +314,14 @@ return [self _wrapReturnValueForSelector:sel]; \
 
 - (id)valueForUndefinedKey:(NSString *)key
 {
-	[NSException raise:@"NSUndefinedKeyException" 
+	[NSException raise:NSUndefinedKeyException
 				format:@"%@: trying to get undefined key %@", [self className], key];
 	return nil;
 }
 
 - (void)setValue:(id)value forUndefinedKey:(NSString *)key
 {
-	[NSException raise:@"NSUndefinedKeyException" 
+	[NSException raise:NSUndefinedKeyException
 				format:@"%@: trying to set undefined key %@", [self className], key];
 }
 

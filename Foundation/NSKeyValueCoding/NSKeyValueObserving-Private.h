@@ -14,7 +14,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	NSKeyValueObservingOptions options;
 	void* context;
 	id changeDictionary;
-	int willChangeCount;
+	NSUInteger willChangeCount;
 	NSString* keyPath;
 	id object;
 }
