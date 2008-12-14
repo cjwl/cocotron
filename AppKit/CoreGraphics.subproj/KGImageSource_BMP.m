@@ -238,9 +238,10 @@ static stbi_uc *bmp_load(int *x, int *y, int *comp, int req_comp)
             get32le();
          }
          if (bpp == 16 || bpp == 32) {
-            mr = mg = mb = 0;
+            mr = mg = mb = ma = 0;
             if (compress == 0) {
                if (bpp == 32) {
+                  ma = 0xff << 24;
                   mr = 0xff << 16;
                   mg = 0xff <<  8;
                   mb = 0xff <<  0;
@@ -439,7 +440,7 @@ stbi_uc *stbi_bmp_load_from_memory (const stbi_uc *buffer, int len, int *x, int 
    KGDataProvider *provider=[[KGDataProvider alloc] initWithData:bitmap];
    KGColorSpace   *colorSpace=[[KGColorSpace alloc] initWithDeviceRGB];
    KGImage        *image=[[KGImage alloc] initWithWidth:width height:height bitsPerComponent:8 bitsPerPixel:bitsPerPixel bytesPerRow:bytesPerRow
-      colorSpace:colorSpace bitmapInfo:kCGBitmapByteOrder32Big|kCGImageAlphaNoneSkipLast provider:provider decode:NULL interpolate:NO renderingIntent:kCGRenderingIntentDefault];
+      colorSpace:colorSpace bitmapInfo:kCGBitmapByteOrder32Big|kCGImageAlphaPremultipliedLast provider:provider decode:NULL interpolate:NO renderingIntent:kCGRenderingIntentDefault];
       
    [colorSpace release];
    [provider release];

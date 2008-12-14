@@ -13,6 +13,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    BOOL _allowsMultipleSelection;
    BOOL _canChooseDirectories;
    BOOL _canChooseFiles;
+   BOOL _resolvesAliases;
 }
 
 +(NSOpenPanel *)openPanel;
@@ -26,10 +27,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(BOOL)allowsMultipleSelection;
 -(BOOL)canChooseDirectories;
 -(BOOL)canChooseFiles;
+-(BOOL)resolvesAliases;
 
 -(void)setAllowsMultipleSelection:(BOOL)flag;
 -(void)setCanChooseDirectories:(BOOL)flag;
 -(void)setCanChooseFiles:(BOOL)flag;
+-(void)setResolvesAliases:(BOOL)value;
+
 
 - (void)beginSheetForDirectory:(NSString *)path
                           file:(NSString *)name 

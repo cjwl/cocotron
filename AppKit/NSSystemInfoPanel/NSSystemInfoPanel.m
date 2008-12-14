@@ -38,7 +38,16 @@ static NSSystemInfoPanel *_sharedInfoPanel = nil;
       [appIconView setImage:icon];
    
    [appNameField setStringValue:[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleName"]];
-   [versionField setStringValue:[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]];
+   
+   NSString *bundleVersion=[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
+   NSString *bundleShortVersion=[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
+   NSString *versionString=bundleVersion;
+   
+   if(bundleShortVersion!=nil)
+    versionString=[NSString stringWithFormat:@"%@ (%@)",bundleShortVersion,bundleVersion];
+   
+   if(versionString!=nil)
+    [versionField setStringValue:versionString];
 
    NSRect frame = [infoPanel frame];
    NSString *resourceFileName = [[NSBundle mainBundle] pathForResource:@"Credits" ofType:@"rtf"];
