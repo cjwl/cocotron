@@ -192,7 +192,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       pointIndex+=0;
       break;
      }
-    function(info,&element);
+    if(function!=NULL) // CG will ignore function if NULL
+     function(info,&element);
    }
 }
 
