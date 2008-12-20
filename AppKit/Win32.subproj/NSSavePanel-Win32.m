@@ -58,38 +58,27 @@ static unsigned *saveFileHook(HWND hdlg,UINT uiMsg,WPARAM wParam,LPARAM lParam) 
 }
 
 -(int)_GetOpenFileName {
-   OPENFILENAMEW openFileName={0};
+	OPENFILENAMEW openFileName={0};
 	int          check;
 
 	@synchronized(self)
 	{
-		unichar         filename[1025]=L"";
-		unichar        *fileTypes,*ptr;
-		int          fileTypesLength;
-		int          typeLength=[_requiredFileType cStringLength]*2;
-		
-		fileTypesLength=0;
-		fileTypesLength+=wcslen(L"Document (*.")+typeLength+1+1+wcslen(L"*.");
-		fileTypesLength+=typeLength +1;
-		fileTypesLength++;
-		
-		fileTypes=alloca(sizeof(unichar)*fileTypesLength);
-		ptr=fileTypes;
-		wcscpy(ptr,L"Document (*.");
-		ptr+=wcslen(L"Document (*.");
-		[_requiredFileType getCharacters:ptr];
-		ptr+=typeLength;
-		wcscpy(ptr,L")");
-		ptr+=2;
-		
-		wcscpy(ptr,L"*.");
-		ptr+=wcslen(L"*.");
-		
-		[_requiredFileType getCharacters:ptr];
-		ptr+=typeLength+1;
-		*ptr='\0';
-		
-		openFileName.lStructSize=sizeof(OPENFILENAME);
+		unichar filename[1025]=L"";
+		NSString *ext = (_requiredFileType && [_requiredFileType length] > 0) ? _requiredFileType : @"*";
+		NSString *first = [[[NSString alloc] initWithFormat:@"Document (*.%@)", ext] autorelease];
+		NSString *second = [[[NSString alloc] initWithFormat:@"*.%@", ext] autorelease];
+		size_t firstLength = [first cStringLength];
+		size_t secondLength = [second cStringLength];
+		size_t fileTypesLength = (firstLength + secondLength + 3);
+		unichar *fileTypes = (unichar *) alloca(sizeof(unichar) * fileTypesLength);
+
+		fileTypes[firstLength] = 0;
+		fileTypes[fileTypesLength - 2] = 0;
+		fileTypes[fileTypesLength - 1] = 0;
+		wcscpy(fileTypes, [first fileSystemRepresentationW]);
+		wcscpy(fileTypes + firstLength + 1, [second fileSystemRepresentationW]);
+
+		openFileName.lStructSize=sizeof(OPENFILENAMEW);
 		openFileName.hwndOwner=[(Win32Window *)[[NSApp keyWindow] platformWindow] windowHandle];
 		openFileName.hInstance=NULL;
 		openFileName.lpstrFilter=fileTypes;
