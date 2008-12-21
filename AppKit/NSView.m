@@ -515,9 +515,6 @@ static inline void buildTransformsIfNeeded(NSView *self) {
 }
 
 -(void)_setWindow:(NSWindow *)window {
-   if([_window firstResponder]==self)
-    [_window makeFirstResponder:nil];
-
    [self viewWillMoveToWindow:window];
 
    _window=window;
@@ -679,12 +676,20 @@ static inline void buildTransformsIfNeeded(NSView *self) {
    [self setNeedsDisplay:YES];
 }
 
+-(void)_deepResignFirstResponder {
+   if([_window firstResponder]==self)
+    [_window makeFirstResponder:nil];
+   
+   [[self subviews] makeObjectsPerformSelector:_cmd];
+}
+
 -(void)removeFromSuperview {
    NSView *removeFrom=_superview;
 
    [self discardCursorRects];
    [[self window] _discardTrackingRectsForView:self toolTipsOnly:YES];
 
+   [self _deepResignFirstResponder];
    [self _setSuperview:nil];
    [self _setWindow:nil];
 
@@ -701,6 +706,7 @@ static inline void buildTransformsIfNeeded(NSView *self) {
    [self discardCursorRects];
    [[self window] _discardTrackingRectsForView:self toolTipsOnly:YES];
 
+   [self _deepResignFirstResponder];
    [self _setSuperview:nil];
    [self _setWindow:nil];
 
@@ -1066,7 +1072,6 @@ static inline void buildTransformsIfNeeded(NSView *self) {
     [self unlockFocus];
    }
 
-// FIX, move this
    [[self window] flushWindow];
 }
 

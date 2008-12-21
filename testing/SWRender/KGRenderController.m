@@ -295,4 +295,22 @@ int i,max=[_kgContext bytesPerRow]*[_kgContext pixelsHigh];
    
 }
 
+- (id)outlineView:(NSOutlineView *)outlineView child:(NSInteger)index ofItem:(id)item {
+   if([item isEqual:@"expand"])
+    return @"leaf";
+   return @"expand";
+}
+
+- (BOOL)outlineView:(NSOutlineView *)outlineView isItemExpandable:(id)item {
+   return [item isEqual:@"expand"];
+}
+
+ -(NSInteger)outlineView:(NSOutlineView *)outlineView numberOfChildrenOfItem:(id)item {
+   return 10;
+  }
+ 
+-(id)outlineView:(NSOutlineView *)outlineView objectValueForTableColumn:(NSTableColumn *)tableColumn byItem:(id)item {
+  return @"bar";
+}
+
 @end

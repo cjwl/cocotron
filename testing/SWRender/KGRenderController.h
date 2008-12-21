@@ -14,6 +14,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @class KGImageView;
 
 @interface KGRenderController : NSObject {
+   NSDictionary           *_tests;
+   IBOutlet NSOutlineView *_outlineView;
+   
    IBOutlet NSPopUpButton *_testPopUp;
    
    DemoContext *_cgContext;

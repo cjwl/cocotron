@@ -236,6 +236,8 @@ NSString *NSPlatformClassName=@"NSPlatform_win32";
     [self checkEnvironmentKey:keys[count] value:objects[count]];
    }
 
+   FreeEnvironmentStrings(envString);
+   
    return [[NSDictionary allocWithZone:NULL] initWithObjects:objects forKeys:keys
      count:count];
 }

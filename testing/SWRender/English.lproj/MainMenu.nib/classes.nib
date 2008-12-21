@@ -78,6 +78,8 @@
 				<string>NSTextField</string>
 				<key>_kgView</key>
 				<string>KGImageView</string>
+				<key>_outlineView</key>
+				<string>NSOutlineView</string>
 				<key>_testPopUp</key>
 				<string>NSPopUpButton</string>
 			</dict>

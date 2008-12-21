@@ -13,7 +13,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "KGColorSpace.h"
 #import "KGMutablePath.h"
 #import "KGFont.h"
-#import "KTFont.h"
 #import "KGClipPhase.h"
 #import <Foundation/NSArray.h>
 #import "KGExceptions.h"

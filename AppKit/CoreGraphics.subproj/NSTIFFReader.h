@@ -64,6 +64,8 @@ enum {
 
  NSTIFFTagPhotoshopPrivate1=34377,
  NSTIFFTagPhotoshopPrivate2=37724,
+ NSTIFFTagExifIFD=34665,
+ NSTIFFTagGPSIFD=34853,
 };
 
 enum {

@@ -110,13 +110,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(KGImage *)createImage {
 #if 1
+// FIXME: this needs to be either a copy or a copy on write
    return [_surface retain];
 #else
   CGDataProviderRef provider=CGDataProviderCreateWithData(NULL,_data,_pixelsWide*_pixelsHigh*4,NULL);
   
   KGImage *image=CGImageCreate(_width,_height,_bitsPerComponent,_bitsPerPixel,_bytesPerRow,_colorSpace,
      _bitmapInfo,provider,NULL,NO,kCGRenderingIntentDefault);
-     
+  
+  CGDataProviderRelease(provider);
+  
   return image;
 #endif
 }

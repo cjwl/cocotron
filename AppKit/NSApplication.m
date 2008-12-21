@@ -23,6 +23,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSImage.h>
 #import <AppKit/NSImageView.h>
 #import <AppKit/NSSheetContext.h>
+#import <AppKit/NSWindowAnimationContext.h>
 #import <AppKit/NSSystemInfoPanel.h> 
 
 NSString *NSModalPanelRunLoopMode=@"NSModalPanelRunLoopMode";
@@ -712,6 +713,10 @@ id NSApp=nil;
 //        [sheet _setStyleMask:NSBorderlessWindowMask];
    
    [window _attachSheetContextOrderFrontAndAnimate:context];
+   
+   while([[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]])
+    if([[sheet _animationContext] stepCount]<=0)
+     break;
 }
 
 -(void)endSheet:(NSWindow *)sheet returnCode:(int)returnCode {

@@ -187,6 +187,8 @@ NSString *NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification";
 }
 
 -(void)dealloc {
+   [[NSNotificationCenter defaultCenter] removeObserver:self];
+   
    [_title release];
    [_miniwindowTitle release];
    [_miniwindowImage release];
@@ -1415,7 +1417,7 @@ NSString *NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification";
    NSHashInsert(_invalidatedCursorRectViews,view);
 }
 
--(void)close {
+-(void)close {   
 /*
   I am not sure if orderOut comes before the notification or not.
   If we order out after the notification, Windows sends the window a bunch of messages from the HIDE, and we
@@ -1490,7 +1492,7 @@ NSString *NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification";
          [NSApp changeWindowsItem:self title:_title filename:NO];
      break;
 
-    case NSWindowOut:
+    case NSWindowOut:   
      _isVisible=NO;
      [[self platformWindow] hideWindow];
      if (![self isKindOfClass:[NSPanel class]])
