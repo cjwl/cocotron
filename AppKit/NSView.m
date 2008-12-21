@@ -1072,6 +1072,8 @@ static inline void buildTransformsIfNeeded(NSView *self) {
     [self unlockFocus];
    }
 
+/*  We do the flushWindow here. If any of the display* methods are being used, you want it to update on screen immediately. If the view heirarchy is being displayed as needed at the end of an event, flushing will be disabled and this will just mark the window as needing flushing which will happen when all the views have finished being displayed */
+ 
    [[self window] flushWindow];
 }
 

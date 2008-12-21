@@ -713,7 +713,6 @@ id NSApp=nil;
 //        [sheet _setStyleMask:NSBorderlessWindowMask];
    
    [window _attachSheetContextOrderFrontAndAnimate:context];
-   
    while([[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]])
     if([[sheet _animationContext] stepCount]<=0)
      break;
@@ -731,6 +730,9 @@ id NSApp=nil;
      [[context retain] autorelease];
 
      [check _detachSheetContextAnimateAndOrderOut];
+     while([[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]])
+      if([[sheet _animationContext] stepCount]<=0)
+       break;
 
      function=objc_msg_lookup([context modalDelegate],[context didEndSelector]);
      function([context modalDelegate],[context didEndSelector],sheet,returnCode,[context contextInfo]);
