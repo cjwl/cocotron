@@ -44,7 +44,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       if(filename!=_filename) {
          [_filename release];
          _filename=[filename copy];
-      }      
+         if(_filename==nil) {
+            _filename=@"";
+         }
+      }
    }
 }
 
