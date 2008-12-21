@@ -5,8 +5,6 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
-
-// Original - David Young <daver@geeks.org>
 #import <AppKit/NSWindowBackgroundView.h>
 #import <AppKit/NSWindowAnimationContext.h>
 #import <AppKit/NSWindow.h>
@@ -35,6 +33,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)drawRect:(NSRect)rect {
+    NSRect bounds=[self bounds];
     float cheatSheet = 0;
     
     switch(_borderType){
@@ -43,26 +42,26 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
             
         case NSLineBorder:
             [[NSColor blackColor] setStroke];
-            NSFrameRect(rect);
-            rect = NSInsetRect(rect, 1, 1);
+            NSFrameRect(bounds);
+            bounds = NSInsetRect(bounds, 1, 1);
             cheatSheet = 1;
             break;
             
         case NSBezelBorder:
-            NSDrawGrayBezel(rect,rect);         // this looks pretty bad here too
-            rect = NSInsetRect(rect, 2, 2);
+            NSDrawGrayBezel(bounds,bounds);         // this looks pretty bad here too
+            bounds = NSInsetRect(bounds, 2, 2);
             cheatSheet = 2;
             break;
             
         case NSGrooveBorder:
-            NSDrawGroove(rect,rect);
-            rect = NSInsetRect(rect, 2, 2);
+            NSDrawGroove(bounds,bounds);
+            bounds = NSInsetRect(bounds, 2, 2);
             cheatSheet = 2;
             break;
             
         case NSButtonBorder:
-            NSDrawButton(rect,rect);
-            rect = NSInsetRect(rect, 2, 2);
+            NSDrawButton(bounds,bounds);
+            bounds = NSInsetRect(bounds, 2, 2);
             cheatSheet = 2;
             break;
     }
@@ -70,10 +69,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     // If we want to be *extra* tricky (and we do), we cheat for sheets: 
     // during the animation cycle, the top part of the border is not drawn.
     if ([[[self window] _animationContext] stepCount] > 0)
-        rect.size.height += cheatSheet;
+        bounds.size.height += cheatSheet;
 
     [[[self window] backgroundColor] setFill];
-    NSRectFill(rect);
+    NSRectFill(bounds);
 }
 
 - (BOOL)cachesImageForAnimation
