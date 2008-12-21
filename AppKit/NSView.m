@@ -1058,6 +1058,11 @@ static inline void buildTransformsIfNeeded(NSView *self) {
     [self lockFocus];
 // rect should be expanded to completely cover all the non-opaque subviews invalid rects
 // We may not completely erase the background of a non-opaque view
+
+    NSGraphicsContext *context=[[self window] graphicsContext];
+    CGContextRef       graphicsPort=[context graphicsPort];
+
+    CGContextClipToRect(graphicsPort,rect);
     [self drawRect:rect];
 
     for(i=0;i<count;i++){
