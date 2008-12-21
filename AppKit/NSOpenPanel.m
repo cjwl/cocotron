@@ -10,6 +10,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSDisplay.h>
 #import <Foundation/NSURL.h>
 
+@interface NSSavePanel (Private) 
+-(void)_setFilename:(NSString*)filename;
+@end
+
 @implementation NSOpenPanel
 
 +(NSOpenPanel *)openPanel {
@@ -54,6 +58,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(int)runModalForDirectory:(NSString *)directory file:(NSString *)file types:(NSArray *)types {
+   [self _setFilename:file];
+   [self setDirectory:directory];
    return [[NSDisplay currentDisplay] openPanel:self runModalForDirectory:directory file:file types:types];
 }
 

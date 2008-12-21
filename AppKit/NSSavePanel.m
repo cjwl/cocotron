@@ -39,6 +39,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [super dealloc];
 }
 
+-(void)_setFilename:(NSString*)filename {
+   @synchronized(self) {
+      if(filename!=_filename) {
+         [_filename release];
+         _filename=[filename copy];
+      }      
+   }
+}
+
 -(NSString *)filename {
    id ret=nil;
 	@synchronized(self)
@@ -49,6 +58,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(int)runModalForDirectory:(NSString *)directory file:(NSString *)file {
+   [self _setFilename:file];
+   [self setDirectory:directory];
    return [[NSDisplay currentDisplay] savePanel:self runModalForDirectory:directory file:file];
 }
 
