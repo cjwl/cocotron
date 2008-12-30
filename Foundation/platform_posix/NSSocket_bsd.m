@@ -211,3 +211,8 @@ static inline void byteZero(void *vsrc,int size){
 }
 
 @end
+
+
+NSData *NSSocketAddressDataForNetworkOrderAddressBytesAndPort(const void *address,unsigned length,int port) {   
+   return nil;
+}

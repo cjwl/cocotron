@@ -64,6 +64,8 @@ static void _objc_badAccessHandler()
 
 id _NSStackTrace()
 {
+   // this crashes after all. Disable for now.
+   return nil;
 #ifdef DEBUG
    NSMutableArray *ret=[NSMutableArray array];
 
@@ -135,9 +137,9 @@ BOOL _objc_checkObject(volatile id object)
    char *saneName=__builtin_alloca(256);
    strncpy(saneName, isa->name, 256);
    saneName[255]='\0';
-   unsigned char* cur;
+   char* cur;
    for(cur=saneName; *cur!='\0'; cur++) {
-      if((*cur<=32 || *cur>128))
+      if(((unsigned char)*cur<=32 || (unsigned char)*cur>128))
       {
          return NO;
       }

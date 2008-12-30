@@ -293,8 +293,11 @@ void OBJCQueueModule(OBJCModule *module) {
    OBJCSymbolTableRegisterSelectors(module->symbolTable);
    OBJCSymbolTableRegisterClasses(module->symbolTable);
    OBJCSymbolTableRegisterCategories(module->symbolTable);
+#ifndef __APPLE__
    OBJCSymbolTableRegisterStringsIfNeeded(module->symbolTable);
    OBJCSymbolTableRegisterProtocolsIfNeeded(module->symbolTable);
+#endif
+
    OBJCLinkClassTable();
 }
 

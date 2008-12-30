@@ -17,6 +17,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSPersistantDomain_posix.h>
 #import <Foundation/NSTask_posix.h>
 #import <Foundation/NSPipe_posix.h>
+#import <Foundation/NSSelectInputSource.h>
+#import <Foundation/NSSocket_bsd.h>
 
 #import <pwd.h>
 #import <unistd.h>
@@ -30,6 +32,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #include <netdb.h>
 #include <time.h>
 #include <stdio.h>
+#include <poll.h>
+
+static NSMutableDictionary *cancelEvents=nil;
+
 
 @implementation NSPlatform_posix
 
@@ -301,5 +307,44 @@ static struct passwd *pwent = NULL;
     return YES;
 }
 
+-(void)addCancelEventToRunloopMode:(NSString*)mode {
+   @synchronized((id)&cancelEvents) {
+      if(!cancelEvents) {
+         cancelEvents=[NSMutableDictionary new];
+      }
+
+      if([cancelEvents objectForKey:mode])
+         return;
+
+      id cancelPipe=[NSPipe pipe];
+      [cancelEvents setObject:cancelPipe forKey:mode];
+      id input=[NSSelectInputSource socketInputSourceWithSocket:
+                [NSSocket_bsd socketWithDescriptor:[[cancelPipe fileHandleForReading] fileDescriptor]]];
+      [input setDelegate:self];
+      [input setSelectEventMask:NSSelectReadEvent];
+      [[NSRunLoop currentRunLoop] addInputSource:input forMode:mode];
+   }
+}
+
+
+-(void)selectInputSource:(NSSelectInputSource *)inputSource selectEvent:(unsigned)selectEvent; {
+   id socket=[inputSource socket];
+   int desc=[socket descriptor];
+
+   // For some reason, on debugger break select() is canceled. We end up here, but there's nothing to read.
+   int flags = fcntl(desc, F_GETFL);
+   fcntl(desc, F_SETFL, flags | O_NONBLOCK);
+   char buf;
+   ssize_t ret = read(desc, &buf, 1);
+   fcntl(desc, F_SETFL, flags & ~O_NONBLOCK);
+}
+
+
+-(void)cancelForRunloopMode:(NSString*)mode {
+   @synchronized((id)&cancelEvents) {
+      id pipe=[cancelEvents objectForKey:mode];      
+      [[pipe fileHandleForWriting] writeData:[NSData dataWithBytes:"\0" length:1]]; 
+   }
+}
 @end
 

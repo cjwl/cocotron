@@ -12,8 +12,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <mach-o/getsect.h>
 #import "ObjCSelector.h"
 #import <string.h>
-
-#import <Foundation/NSString.h>
+#import <Foundation/NSDarwinString.h>
 
 /*
  * Fetches all Objective-C-Modules via the mach-o/dyld.h interface and initializes them.
@@ -120,11 +119,10 @@ void OBJCInitializeProcess_Darwin(void)
    // only Darwin ppc!?
    Class cls = OBJCClassFromString("NSConstantString");
    memcpy(&_NSConstantStringClassReference, cls, sizeof(_NSConstantStringClassReference));
+   cls=OBJCClassFromString("NSDarwinString");
+   memcpy(&__CFConstantStringClassReference, cls, sizeof(_NSConstantStringClassReference));
 
    // Override the compiler version of the class
    //objc_addClass(&_NSConstantStringClassReference);
-   
-  
-   
 }
 

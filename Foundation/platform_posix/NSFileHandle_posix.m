@@ -187,18 +187,18 @@ CONFORMING TO
 
 // POSIX programmer's guide p. 272
 - (BOOL)isNonBlocking {
-    int flags = fcntl(_fileDescriptor, F_GETFD);
+    int flags = fcntl(_fileDescriptor, F_GETFL);
     return (flags & O_NONBLOCK)?YES:NO;
 }
 
 - (void)setNonBlocking:(BOOL)flag {
-    int flags = fcntl(_fileDescriptor, F_GETFD);
+    int flags = fcntl(_fileDescriptor, F_GETFL);
     if (flag)
         flags |= O_NONBLOCK;
     else
         flags &= O_NONBLOCK;
     
-    fcntl(_fileDescriptor, F_SETFD, flags);
+    fcntl(_fileDescriptor, F_SETFL, flags);
 }
 
 - (NSData *)readDataOfLength:(unsigned)length {

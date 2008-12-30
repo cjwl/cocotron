@@ -34,7 +34,7 @@ typedef struct {
 } native_set;
 
 native_set *native_set_new(int max){
-   native_set *result=NSZoneMalloc(NULL,sizeof(native_set));
+   native_set *result=NSZoneCalloc(NULL,1,sizeof(native_set));
    
    result->max=FD_SETSIZE;
    while(result->max<max)
@@ -137,41 +137,47 @@ static void transferNativeToSetWithOriginals(native_set *sset,NSMutableSet *set,
 -(NSError *)waitForSelectWithOutputSet:(NSSelectSet **)outputSetX beforeDate:(NSDate *)beforeDate {
    NSError       *result=nil;
    NSSocket_bsd  *cheater=[NSSocket_bsd socketWithDescriptor:-1];
-   NSTimeInterval interval=[beforeDate timeIntervalSinceNow];
    int            maxDescriptor=maxDescriptorInThreeSets(_readSet,_writeSet,_exceptionSet);
    native_set    *activeRead=native_set_new(maxDescriptor);
    native_set    *activeWrite=native_set_new(maxDescriptor);
    native_set    *activeExcept=native_set_new(maxDescriptor);
    struct timeval timeval;
+   NSTimeInterval interval=-1.0;
 
    transferSetToNative(_readSet,activeRead);
    transferSetToNative(_writeSet,activeWrite);
    transferSetToNative(_exceptionSet,activeExcept);
-      
-   if(interval>1000000)
-    interval=1000000;
-   if(interval<0)
-    interval=0;
 
-   timeval.tv_sec=interval;
-   interval-=timeval.tv_sec;
-   timeval.tv_usec=interval*1000;
- 
+
     // See NSTask_linux.m
-   while(result!=nil){
-    if(select(maxDescriptor+1,activeRead->fdset,activeWrite->fdset,activeExcept->fdset,&timeval)<0){
-     if(errno!=EINTR)
-      result=[NSError errorWithDomain:NSPOSIXErrorDomain code:errno userInfo:nil];
-    }
+   int numFds=0;
+   while(result==nil && numFds==0 && interval!=0.0)
+   {
+      interval=[beforeDate timeIntervalSinceNow];
+
+      if(interval>1000000)
+         interval=1000000;
+      if(interval<0)
+         interval=0;
+
+      timeval.tv_sec=interval;
+      interval-=timeval.tv_sec;
+      timeval.tv_usec=interval*1000;
+      
+      if((numFds=select(maxDescriptor+1,activeRead->fdset,activeWrite->fdset,activeExcept->fdset,&timeval))<0)
+      {
+         if(errno!=EINTR)
+            result=[NSError errorWithDomain:NSPOSIXErrorDomain code:errno userInfo:nil];
+      }
    }
 
    if(result==nil){
     NSSelectSet_bsd *outputSet=[[[NSSelectSet alloc] init] autorelease];
-    
-    transferNativeToSetWithOriginals(activeRead,outputSet->_readSet,_readSet,cheater);
-    transferNativeToSetWithOriginals(activeWrite,outputSet->_writeSet,_writeSet,cheater);
-    transferNativeToSetWithOriginals(activeExcept,outputSet->_exceptionSet,_exceptionSet,cheater);
-    
+      if(numFds) {
+         transferNativeToSetWithOriginals(activeRead,outputSet->_readSet,_readSet,cheater);
+         transferNativeToSetWithOriginals(activeWrite,outputSet->_writeSet,_writeSet,cheater);
+         transferNativeToSetWithOriginals(activeExcept,outputSet->_exceptionSet,_exceptionSet,cheater);
+      }
     *outputSetX=outputSet;
     
    }
