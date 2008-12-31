@@ -2245,26 +2245,12 @@
 			remoteGlobalIDString = C889771C0EA0C0CD00D0A0A2;
 			remoteInfo = "ApplicationServices-Linux-i386";
 		};
-		C8A2E2990F07E9D50054397C /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = FECAF4C80DB710EE00BA2A8E /* ApplicationServices.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = C8A2E2900F07E9B70054397C;
-			remoteInfo = "ApplicationServices-Darwin-i386";
-		};
 		C8A2E5750F07EA440054397C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 6E46FEBE0A2D2DCF004CD27E /* Foundation.xcodeproj */;
 			proxyType = 1;
 			remoteGlobalIDString = FED7081C0C3B3D2C000CBE5B;
 			remoteInfo = "Foundation-Darwin-i386";
-		};
-		C8A2E5770F07EA440054397C /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = FECAF4C80DB710EE00BA2A8E /* ApplicationServices.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = C8A2E2710F07E9B70054397C;
-			remoteInfo = "ApplicationServices-Darwin-i386";
 		};
 		FE01AAC90C5D9BCC00AEA51A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -2790,7 +2776,6 @@
 		C8746BAC0EA3EE11007A6BE2 /* TTFFont.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTFFont.m; sourceTree = "<group>"; };
 		C889770C0EA0BF3100D0A0A2 /* AppKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AppKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C8A2E5730F07EA1F0054397C /* AppKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AppKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		C8A2E5740F07EA1F0054397C /* Info copy.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Info copy.plist"; sourceTree = "<group>"; };
 		C8A2E58F0F07EB600054397C /* NSPlatform_darwin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSPlatform_darwin.m; sourceTree = "<group>"; };
 		C8B239A20BF8EEB500CA33AF /* defaultBindingOptions.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = defaultBindingOptions.plist; sourceTree = "<group>"; };
 		C8C52C8D0E7ED1FF003F03B5 /* NSObservationProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSObservationProxy.h; sourceTree = "<group>"; };
@@ -3121,7 +3106,6 @@
 				6E2B55050976075300DA0954 /* Resources */,
 				6E2B575A0976075500DA0954 /* External Frameworks and Libraries */,
 				6E2B53230976074C00DA0954 /* Products */,
-				C8A2E5740F07EA1F0054397C /* Info copy.plist */,
 			);
 			name = AppKit;
 			sourceTree = "<group>";
@@ -4166,7 +4150,6 @@
 			children = (
 				FECAF4D10DB710EE00BA2A8E /* ApplicationServices.framework */,
 				C889773D0EA0C0EB00D0A0A2 /* ApplicationServices.framework */,
-				C8A2E29A0F07E9D50054397C /* ApplicationServices.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -5320,7 +5303,6 @@
 			);
 			dependencies = (
 				C8A2E5760F07EA440054397C /* PBXTargetDependency */,
-				C8A2E5780F07EA440054397C /* PBXTargetDependency */,
 			);
 			name = "AppKit-Darwin-i386";
 			productInstallPath = /Library/Frameworks;
@@ -5401,13 +5383,6 @@
 			fileType = wrapper.framework;
 			path = ApplicationServices.framework;
 			remoteRef = C889773C0EA0C0EB00D0A0A2 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		C8A2E29A0F07E9D50054397C /* ApplicationServices.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = ApplicationServices.framework;
-			remoteRef = C8A2E2990F07E9D50054397C /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		FE01AACA0C5D9BCC00AEA51A /* Foundation.framework */ = {
@@ -6640,11 +6615,6 @@
 			isa = PBXTargetDependency;
 			name = "Foundation-Darwin-i386";
 			targetProxy = C8A2E5750F07EA440054397C /* PBXContainerItemProxy */;
-		};
-		C8A2E5780F07EA440054397C /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = "ApplicationServices-Darwin-i386";
-			targetProxy = C8A2E5770F07EA440054397C /* PBXContainerItemProxy */;
 		};
 		FE01AACC0C5D9BE700AEA51A /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
