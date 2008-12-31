@@ -11,6 +11,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSString.h>
 #import <Foundation/NSException.h>
 #import <AppKit/NSNibKeyedUnarchiver.h>
+#import <AppKit/NSApplication.h>
 
 @implementation NSCustomObject
 
@@ -31,12 +32,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [super dealloc];
 }
 
--awakeAfterUsingCoder:(NSCoder *)coder {
+-awakeAfterUsingCoder:(NSCoder *)coder {   
    Class class=NSClassFromString(_className);
 
    if(class==Nil)
     NSLog(@"NSCustomObject unknown class %@",_className);
    [self release];
+   
+   if([_className isEqualToString:@"NSApplication"]) {
+      return [[NSApplication sharedApplication] retain];
+   }   
           
    return [[class alloc] init];
 }

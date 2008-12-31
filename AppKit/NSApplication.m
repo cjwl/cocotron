@@ -67,8 +67,7 @@ id NSApp=nil;
 +(NSApplication *)sharedApplication {
 
    if(NSApp==nil){
-    NSApp=[self alloc]; // NSApp must be valid inside init
-    NSApp=[NSApp init];
+      [[self alloc] init]; // NSApp must be nil inside init
    }
 
    return NSApp;
@@ -112,15 +111,19 @@ id NSApp=nil;
 }
 
 -init {
+   if(NSApp)
+      NSAssert(!NSApp, @"NSApplication is a singleton");
+   NSApp=self;
    _display=[[NSDisplay currentDisplay] retain];
 
    _windows=[NSMutableArray new];
    _mainMenu=nil;
-
+      
    _modalStack=[NSMutableArray new];
-
+      
    [self _showSplashImage];
-   return self;
+   
+   return NSApp;
 }
 
 -(NSGraphicsContext *)context {
