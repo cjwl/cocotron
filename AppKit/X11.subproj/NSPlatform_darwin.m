@@ -6,20 +6,19 @@
  
  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
-#import <AppKit/KTFont.h>
+#import <Foundation/NSPlatform_darwin.h>
+#import <Foundation/NSString.h>
+#import <AppKit/NSDisplay.h>
+#import <AppKit/X11AsyncInputSourceSet.h>
 
-#import <ft2build.h>
+@implementation NSPlatform_darwin (GTKAppKit)
 
-#import FT_FREETYPE_H
-#import FT_RENDER_H
-
-@interface TTFFont : NSObject {
-   FT_Face _face; 
-   float _size;
-   id _name;
+-(NSString *)displayClassName {
+	return @"X11Display";
 }
--(CGPoint)positionOfGlyph:(CGGlyph)current precededByGlyph:(CGGlyph)previous isNominal:(BOOL *)isNominalp;
--(void)getAdvancements:(CGSize *)advancements forGlyphs:(const CGGlyph *)glyphs count:(unsigned)count;
--(float)pointSize;
--(FT_Face)face;
+
+-(id)asynchronousInputSourceSets {
+   return [NSArray arrayWithObject:[[X11AsyncInputSourceSet new] autorelease]];
+}
+
 @end

@@ -12,6 +12,9 @@
 #import <AppKit/NSScreen.h>
 #import <AppKit/NSApplication.h>
 #import <Foundation/NSPlatform.h>
+#import <AppKit/X11InputSource.h>
+
+
 
 @implementation X11Display
 
@@ -19,11 +22,10 @@
 {
    if(self=[super init])
    {
-      XInitThreads();
+      //XInitThreads();
       _display=XOpenDisplay(NULL);
       _windowsByID=[NSMutableDictionary new];
-      [self performSelector:@selector(setupEventThread) withObject:nil afterDelay:0.0];
-      [[NSRunLoop currentRunLoop] addInputSource:self forMode:NSDefaultRunLoopMode];
+      [self performSelector:@selector(setupEventHandling) withObject:nil afterDelay:0.0];
    }
    return self;
 }
@@ -182,11 +184,13 @@
 -(void)handleEvent:(NSData*)data {
    XEvent e;
    [data getBytes:&e length:sizeof(XEvent)];
-   
+   NSLog(@"event handler");
    switch(e.type) {
       case DestroyNotify:
       {
          id window=[self windowForID:e.xdestroywindow.window];
+         // we should never get this message before the WM_DELETE_WINDOW ClientNotify
+         // so normally, window should be nil here.
          [window invalidate];
          break;
       }
@@ -199,9 +203,11 @@
       }
       case Expose:
       {
-         id window=[self windowForID:e.xexpose.window];
-         NSRect rect=NSMakeRect(e.xexpose.x, e.xexpose.y, e.xexpose.width, e.xexpose.height);
-         [[window delegate] platformWindow:window needsDisplayInRect:[window transformFrame:rect]];
+         if (e.xexpose.count==0) {
+            id window=[self windowForID:e.xexpose.window];
+            NSRect rect=NSMakeRect(e.xexpose.x, e.xexpose.y, e.xexpose.width, e.xexpose.height);
+            [[window delegate] platformWindow:window needsDisplayInRect:[window transformFrame:rect]];
+         }
          break;
       }
       case ButtonPress:
@@ -238,6 +244,7 @@
                                     window:[window delegate]
                                 clickCount:1];
          [self postEvent:ev atStart:NO];
+         [self discardEventsMatchingMask:NSLeftMouseDraggedMask beforeEvent:ev];
          break;
       }
       case ClientMessage:
@@ -279,31 +286,28 @@
    }
 }
 
+-(void)setupEventHandling {
+   [X11InputSource addInputSourceWithDisplay:self];
+   
+}
 
--(void)eventThread {
+
+-(void)processX11Event {
    XEvent e;
-   int s=DefaultScreen(_display);
-
-   while(1) {
-      id pool=[NSAutoreleasePool new];
+   
+   while(XPending(_display)) {
       XNextEvent(_display, &e);
-      [self performSelectorOnMainThread:@selector(handleEvent:)
-                             withObject:[NSData dataWithBytes:&e 
-                                                       length:sizeof(XEvent)]
-                          waitUntilDone:YES
-                                  modes:[NSArray arrayWithObjects:NSDefaultRunLoopMode, NSEventTrackingRunLoopMode, NSModalPanelRunLoopMode, nil]];
-      [pool drain];
+      [self handleEvent:[NSData dataWithBytes:&e 
+                                       length:sizeof(XEvent)]];
    }
 }
 
-
--(void)setupEventThread {
-   [NSThread detachNewThreadSelector:@selector(eventThread) toTarget:self withObject:nil];  
-}
 
 -(void)postEvent:(NSEvent *)event atStart:(BOOL)atStart {
    [super postEvent:event atStart:atStart];
    [[NSPlatform currentPlatform] cancelForRunloopMode:[[NSRunLoop currentRunLoop] currentMode]];
 }
+
+
 
 @end

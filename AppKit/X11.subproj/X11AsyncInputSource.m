@@ -6,20 +6,17 @@
  
  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
-#import <AppKit/KTFont.h>
+#import "X11AsyncInputSource.h"
+#import <AppKit/X11Display.h>
 
-#import <ft2build.h>
-
-#import FT_FREETYPE_H
-#import FT_RENDER_H
-
-@interface TTFFont : NSObject {
-   FT_Face _face; 
-   float _size;
-   id _name;
+@implementation X11AsyncInputSource
+-(BOOL)processInputImmediately {
+   if(XPending([_display display])) {
+      [_display processX11Event];
+      return YES;
+   }
+   return NO;
 }
--(CGPoint)positionOfGlyph:(CGGlyph)current precededByGlyph:(CGGlyph)previous isNominal:(BOOL *)isNominalp;
--(void)getAdvancements:(CGSize *)advancements forGlyphs:(const CGGlyph *)glyphs count:(unsigned)count;
--(float)pointSize;
--(FT_Face)face;
+
+
 @end

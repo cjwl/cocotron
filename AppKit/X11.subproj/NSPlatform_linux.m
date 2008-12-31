@@ -16,4 +16,8 @@
 	return @"X11Display";
 }
 
+-(id)asynchronousInputSourceSets {
+   return [NSArray arrayWithObject:[[X11AsyncInputSourceSet new] autorelease]];
+}
+
 @end

@@ -156,22 +156,22 @@
 
 -(void)synchronizeLineAttributes
 {
-
-   /*
+   KGGraphicsState *gState=[self currentState];
 	int i;
-	cairo_set_line_width(_context, _lineWidth);
-	cairo_set_line_cap(_context, _lineCap);
-	cairo_set_line_join(_context, _lineJoin);
-	cairo_set_miter_limit(_context, _miterLimit);
+   
+	cairo_set_line_width(_context, gState->_lineWidth);
+	cairo_set_line_cap(_context, gState->_lineCap);
+	cairo_set_line_join(_context, gState->_lineJoin);
+	cairo_set_miter_limit(_context, gState->_miterLimit);
 	
-	double dashLengths[_dashLengthsCount];
+	double dashLengths[gState->_dashLengthsCount];
 	double totalLength=0.0;
-	for(i=0; i<_dashLengthsCount; i++)
+	for(i=0; i<gState->_dashLengthsCount; i++)
 	{
-		dashLengths[i]=(double)_dashLengths[i];
-		totalLength=(double)_dashLengths[i];
+		dashLengths[i]=(double)gState->_dashLengths[i];
+		totalLength=(double)gState->_dashLengths[i];
 	}
-	cairo_set_dash (_context, dashLengths, _dashLengthsCount, _dashPhase/totalLength);*/
+	cairo_set_dash (_context, dashLengths, gState->_dashLengthsCount, gState->_dashPhase/totalLength);
 }
 
 
@@ -215,14 +215,13 @@
                            end.x,end.y);
 			}
 				break;
-				
+
 			case kCGPathElementAddQuadCurveToPoint:{
 				NSPoint cp1=points[pointIndex++];
-				NSPoint cp2=points[pointIndex++];
 				NSPoint end=points[pointIndex++];
 				
 				cairo_curve_to(_context,cp1.x,cp1.y,
-                           cp2.x,cp2.y,
+                           cp1.x,cp1.y,
                            end.x,end.y);
 			}
 				break;
@@ -245,7 +244,7 @@
 -(void)drawPath:(CGPathDrawingMode)mode
 {
 	[self setCurrentPath:(KGPath*)_path];
-   
+
 	switch(mode)
 	{
 		case kCGPathStroke:
@@ -285,6 +284,7 @@
 			cairo_stroke(_context);
 			break;
 	}
+   [_path reset];
 }
 
 -(NSSize)size {
@@ -376,8 +376,7 @@
       x+=pos.x;
    }
    
-   
-   cairo_font_face_t *face=(cairo_font_face_t *)cairo_ft_font_face_create_for_ft_face([font face], NULL);
+   cairo_font_face_t *face=(cairo_font_face_t *)cairo_ft_font_face_create_for_ft_face([[[self currentState] fontState] face], NULL);
    cairo_set_font_face(_context, face);
    cairo_set_font_size(_context, [fontState pointSize]);
    
@@ -425,7 +424,7 @@
 }
 
 -(void)establishFontStateInDevice {
-
+   
 }
 
 -(void)establishFontState {

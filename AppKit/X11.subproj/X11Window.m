@@ -27,7 +27,7 @@
                               0, 0, 0);
 
       XSelectInput(_dpy, _window, ExposureMask | KeyPressMask | StructureNotifyMask |
-      ButtonPressMask | ButtonReleaseMask | ButtonMotionMask);
+      ButtonPressMask | ButtonReleaseMask | ButtonMotionMask | VisibilityChangeMask | FocusChangeMask);
       
       XSetWindowAttributes xattr;
       unsigned long xattr_mask;
