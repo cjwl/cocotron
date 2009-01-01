@@ -32,18 +32,22 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [super dealloc];
 }
 
--awakeAfterUsingCoder:(NSCoder *)coder {   
+-awakeAfterUsingCoder:(NSCoder *)coder {
    Class class=NSClassFromString(_className);
+   id ret=nil;
 
    if(class==Nil)
     NSLog(@"NSCustomObject unknown class %@",_className);
-   [self release];
    
    if([_className isEqualToString:@"NSApplication"]) {
-      return [[NSApplication sharedApplication] retain];
-   }   
+      ret=[[NSApplication sharedApplication] retain];
+   }
+   else {
+      ret=[[class alloc] init];  
+   }
+   [self release];
           
-   return [[class alloc] init];
+   return ret;
 }
 
 
