@@ -921,6 +921,10 @@ CHANGE_DECLARATION(SEL)
 
 + (BOOL)automaticallyNotifiesObserversForKey:(NSString *)key;
 {
+   if([key isEqualToString:@"observationInfo"]) {
+      return NO;
+   }
+   
 	return YES;
 }
 @end

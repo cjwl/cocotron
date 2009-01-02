@@ -14,10 +14,13 @@
 #import <AppKit/X11Window.h>
 
 @interface CairoContext : KGContext {
+   NSRect _dirtyRect;
    cairo_surface_t *_surface;
    cairo_t *_context;
 }
 -(id)initWithWindow:(X11Window*)w;
 -(void)setSize:(NSSize)size;
 -(NSSize)size;
+-(NSRect)dirtyRect;
+-(void)resetDirtyRect;
 @end

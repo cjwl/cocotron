@@ -76,11 +76,11 @@ extern NSMethodSignature *NSMethodSignatureWithTypes(const char *types);
 
 
 +(IMP)methodForSelector:(SEL)selector {
-   return OBJCLookupAndCacheUniqueIdInClass(OBJCMetaClassFromClass(self),selector);
+   return class_getMethodImplementation(OBJCMetaClassFromClass(self),selector);
 }
 
 +(IMP)instanceMethodForSelector:(SEL)selector {
-   return OBJCLookupAndCacheUniqueIdInClass(self,selector);
+   return class_getMethodImplementation(self,selector);
 }
 
 +(NSMethodSignature *)instanceMethodSignatureForSelector:(SEL)selector {
@@ -172,7 +172,7 @@ extern NSMethodSignature *NSMethodSignatureWithTypes(const char *types);
 }
 
 -(IMP)methodForSelector:(SEL)selector {
-   return OBJCLookupAndCacheUniqueIdInClass(isa,selector);
+   return class_getMethodImplementation(isa,selector);
 }
 
 -(void)doesNotRecognizeSelector:(SEL)selector {

@@ -455,6 +455,13 @@ const char *class_getName(Class cls)
    return cls->name;
 }
 
+IMP class_getMethodImplementation(Class cls, SEL name) {
+   struct objc_method *ret=OBJCLookupUniqueIdInClass(cls, name);
+   if(ret)
+      return ret->method_imp;
+   return NULL;
+}
+
 void OBJCLogMsg(id object,SEL message){
 #if 1
    if(object==nil)

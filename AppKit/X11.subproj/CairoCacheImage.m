@@ -20,6 +20,11 @@
    return self;
 }
 
+-(void)dealloc {
+   cairo_surface_destroy(_surface);
+   [super dealloc];  
+}
+
 -(float)width
 {
    return _size.width;

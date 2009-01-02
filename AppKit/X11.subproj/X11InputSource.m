@@ -35,7 +35,7 @@
 }
 
 -(void)selectInputSource:(NSSelectInputSource *)inputSource selectEvent:(unsigned)selectEvent; {
-   if(XPending([_display display])) {
+   if(XEventsQueued([_display display], QueuedAfterReading)) {
       [_display processX11Event];
    }
 }

@@ -143,7 +143,7 @@ YES,YES,YES,YES,YES,YES,YES,YES,YES,YES,YES, NO, NO, NO, NO, NO,// 112
     id key=[allKeys objectAtIndex:i];
 
     [self encodeIndent:indent];
-    [self encodeString:key escape:YES];
+    [self encodeString:[key description] escape:YES];
     [_data appendBytes:" = " length:3];
     [self encodePropertyList:[dictionary objectForKey:key] indent:indent+1];
     [_data appendBytes:";\n" length:2];

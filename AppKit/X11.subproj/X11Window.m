@@ -51,6 +51,14 @@
    return self;
 }
 
+-(void)dealloc {
+   [self invalidate];
+   [_backingContext release];
+   [_cgContext release];
+   [_deviceDictionary release];   
+   [super dealloc];
+}
+
 -(void)removeDecoration
 {
    struct {
@@ -194,7 +202,8 @@
 
 
 -(void)flushBuffer {
-   [_cgContext drawContext:_backingContext]; 
+   [_cgContext copyFromBackingContext:_backingContext];
+   
 }
 
 

@@ -25,7 +25,7 @@ BOOL OSSpinLockTry( volatile OSSpinLock *__lock )
 
 void OSSpinLockLock( volatile OSSpinLock *__lock )
 {
-   while(__sync_bool_compare_and_swap(__lock, 0, 1))
+   while(!__sync_bool_compare_and_swap(__lock, 0, 1))
    {
 #ifdef WIN32
       Sleep(0);

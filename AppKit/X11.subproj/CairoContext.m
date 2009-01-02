@@ -69,6 +69,7 @@
       default:
          ;
    }
+   _dirtyRect=NSMakeRect(0, 0, size.width, size.height);
    _context = cairo_create(_surface);
 }
 
@@ -244,46 +245,55 @@
 -(void)drawPath:(CGPathDrawingMode)mode
 {
 	[self setCurrentPath:(KGPath*)_path];
+   
 
 	switch(mode)
 	{
 		case kCGPathStroke:
          [self setCurrentColor:[self strokeColor]];
 			[self synchronizeLineAttributes];
-			cairo_stroke(_context);
+			cairo_stroke_preserve(_context);
 			break;
 			
 		case kCGPathFill:	
          [self setCurrentColor:[self fillColor]];
 			cairo_set_fill_rule(_context, CAIRO_FILL_RULE_WINDING);
-			cairo_fill(_context);
+			cairo_fill_preserve(_context);
 			break;
 			
 		case kCGPathEOFill:
          [self setCurrentColor:[self fillColor]];
 			cairo_set_fill_rule(_context, CAIRO_FILL_RULE_EVEN_ODD);
-			cairo_fill(_context);
+			cairo_fill_preserve(_context);
 			break;
 			
 			
 		case kCGPathFillStroke:
          [self setCurrentColor:[self fillColor]];
 			cairo_set_fill_rule(_context, CAIRO_FILL_RULE_WINDING);
-			cairo_fill(_context);
+			cairo_fill_preserve(_context);
          [self setCurrentColor:[self strokeColor]];
 			[self synchronizeLineAttributes];
-			cairo_stroke(_context);
+			cairo_stroke_preserve(_context);
 			break;
 			
 		case kCGPathEOFillStroke:
          [self setCurrentColor:[self fillColor]];
 			cairo_set_fill_rule(_context, CAIRO_FILL_RULE_EVEN_ODD);
-			cairo_fill(_context);
+			cairo_fill_preserve(_context);
          [self setCurrentColor:[self strokeColor]];
 			[self synchronizeLineAttributes];
-			cairo_stroke(_context);
+			cairo_stroke_preserve(_context);
 			break;
 	}
+   
+   {
+      double x,y,x2,y2;
+      cairo_stroke_extents(_context, &x, &y, &x2, &y2);
+      _dirtyRect=NSUnionRect(_dirtyRect, NSMakeRect(x, y, x2-x, y2-y));
+   }
+      
+   cairo_new_path(_context);
    [_path reset];
 }
 
@@ -353,7 +363,13 @@
 
 	cairo_set_source_surface(_context, img, 0.0, 0.0);
 
-	cairo_paint(_context);   
+	cairo_paint(_context);
+   
+   {
+      double x,y,x2,y2;
+      cairo_clip_extents(_context, &x, &y, &x2, &y2);
+      _dirtyRect=NSUnionRect(_dirtyRect, NSMakeRect(x, y, x2-x, y2-y));
+   }
    
    if(shouldFreeImage)
       cairo_surface_destroy(img);
@@ -391,6 +407,17 @@
    
    cairo_show_glyphs(_context, cg, count);
    
+   {
+      /*double x,y,x2,y2;
+      CGAffineTransform ctm=[[self currentState] textMatrix];
+
+      cairo_glyph_path(_context, cg, count);
+      cairo_stroke_extents(_context, &x, &y, &x2, &y2);
+      NSRect rect=NSMakeRect(x, y, x2-x, y2-y);
+      rect=NSOffsetRect(rect, ctm.tx, ctm.ty);
+      _dirtyRect=NSUnionRect(_dirtyRect, rect);*/
+   }
+   
    cairo_font_face_destroy(face);
 }
 
@@ -415,12 +442,34 @@
    return _surface;
 }
 
--(void)drawContext:(CairoContext*)other
+-(NSRect)dirtyRect; {
+   return _dirtyRect;
+}
+
+-(void)resetDirtyRect; {
+   _dirtyRect=NSZeroRect;
+}
+
+-(void)copyFromBackingContext:(CairoContext*)other
 {
    cairo_identity_matrix(_context);
    cairo_reset_clip(_context);
+   
+   NSRect clip=[other dirtyRect];
+   
+   CGAffineTransform matrix={1, 0, 0, -1, 0, [self size].height};
+   clip.origin=CGAffineTransformTransformVector2(matrix, clip.origin);
+   clip.origin.y-=clip.size.height;
+   
+   
+   cairo_new_path(_context);
+   cairo_set_source_rgba(_context, 1.0, 0.0, 0.0, 0.5);
+   cairo_rectangle(_context, clip.origin.x, clip.origin.y, clip.size.width, clip.size.height);
+   cairo_clip(_context);
    cairo_set_source_surface (_context, [other _cairoSurface], 0, 0);
+   
 	cairo_paint(_context);
+   [other resetDirtyRect];
 }
 
 -(void)establishFontStateInDevice {

@@ -8,6 +8,7 @@
 
 #import "TTFFont.h"
 #import <AppKit/KTFont.h>
+#import <AppKit/KGFont.h>
 
 @implementation KTFont(TTFFont)
 +(id)allocWithZone:(NSZone*)zone
@@ -50,9 +51,22 @@ FT_Library library;
 }
 
 -initWithFont:(KGFont *)font size:(float)size {
+   NSString* key=[NSString stringWithFormat:@"%@@%f", [font fontName], size];
+   
+   static NSMutableDictionary *cache=nil;
+   if(!cache)
+      cache=[NSMutableDictionary new];
+   id ret=[cache objectForKey:key];
+
+   if(ret) {
+      [self release];
+      return [ret retain]; 
+   }
+   
+   [cache setObject:self forKey:key];
+   
    if(self=[super init])
    {
-
       FT_Error ret=FT_New_Face(library,
                   "/Library/Fonts/Tahoma.ttf",
                   0,
@@ -67,6 +81,12 @@ FT_Library library;
       
    }
    return self;
+}
+
+-(void)dealloc {
+   FT_Done_Face(_face);
+   [_name release];
+   [super dealloc];
 }
 
 -initWithUIFontType:(CTFontUIFontType)uiFontType size:(CGFloat)size language:(NSString *)language {
@@ -85,7 +105,7 @@ FT_Library library;
      NSUnimplementedMethod();
      return nil;
    }
-
+   
    self=[self initWithFont:font size:size];
    
    [font release];
@@ -123,8 +143,6 @@ FT_Library library;
    FT_Load_Glyph(_face, current, FT_LOAD_DEFAULT);
    return NSMakePoint(_face->glyph->advance.x/(float)(2<<5),
                       _face->glyph->advance.y/(float)(2<<5));
-   
-   
 }
 
 -(FT_Face)face

@@ -184,7 +184,7 @@
 -(void)handleEvent:(NSData*)data {
    XEvent e;
    [data getBytes:&e length:sizeof(XEvent)];
-   NSLog(@"event handler");
+
    switch(e.type) {
       case DestroyNotify:
       {
@@ -258,13 +258,13 @@
       case KeyPress:
       {
          id window=[self windowForID:e.xkey.window];
-         char buf[128]={0};
-         XLookupString(&e, buf, 128, NULL, NULL);
+         char buf[4]={0};
+         XLookupString(&e, buf, 4, NULL, NULL);
          id str=[[NSString alloc] initWithCString:buf encoding:NSISOLatin1StringEncoding];
          NSPoint pos=[window transformPoint:NSMakePoint(e.xbutton.x, e.xbutton.y)];
          
          e.xkey.state=0;
-         XLookupString(&e, buf, 128, NULL, NULL);
+         XLookupString(&e, buf, 4, NULL, NULL);
          id strIg=[[NSString alloc] initWithCString:buf encoding:NSISOLatin1StringEncoding];
          
          id ev=[NSEvent keyEventWithType:NSKeyDown 
@@ -294,11 +294,14 @@
 
 -(void)processX11Event {
    XEvent e;
-   
-   while(XPending(_display)) {
-      XNextEvent(_display, &e);
-      [self handleEvent:[NSData dataWithBytes:&e 
-                                       length:sizeof(XEvent)]];
+   int i;
+   int numEvents;
+   while(numEvents=XEventsQueued(_display, QueuedAfterReading)) {
+      for(i=0; i<numEvents; i++) {
+         XNextEvent(_display, &e);
+         [self handleEvent:[NSData dataWithBytes:&e 
+                                          length:sizeof(XEvent)]];
+      }
    }
 }
 

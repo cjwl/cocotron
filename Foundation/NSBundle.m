@@ -179,10 +179,11 @@ static NSMapTable *pathToObject=NULL;
    }
 
    _path=[path retain];
-   _resourcePath=[[_path stringByAppendingPathComponent:@"Resources"] retain];
+   _resourcePath=[_path stringByAppendingPathComponent:@"Resources"];
    if(![[NSFileManager defaultManager] fileExistsAtPath:_resourcePath])
-    _resourcePath=[[[_path stringByAppendingPathComponent:@"Contents"] stringByAppendingPathComponent:@"Resources"] retain];
-
+    _resourcePath=[[_path stringByAppendingPathComponent:@"Contents"] stringByAppendingPathComponent:@"Resources"];
+   [_resourcePath retain];
+   
    _infoDictionary=nil;
    _isLoaded=NO;
 
