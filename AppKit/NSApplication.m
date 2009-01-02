@@ -262,6 +262,12 @@ id NSApp=nil;
        selector:@selector(applicationDidBecomeActive:)
         name: NSApplicationDidBecomeActiveNotification object:self];
     }
+   if([_delegate respondsToSelector:@selector(applicationWillTerminate:)]){
+      [[NSNotificationCenter defaultCenter] addObserver:_delegate
+                                               selector:@selector(applicationWillTerminate:)
+                                                   name: NSApplicationWillTerminateNotification object:self];
+   }
+   
 }
 
 -(void)setDelegate:delegate {
@@ -810,6 +816,8 @@ id NSApp=nil;
     }
    }
 
+   [[NSNotificationCenter defaultCenter] postNotificationName:NSApplicationWillTerminateNotification object:self];
+   
    [NSClassFromString(@"Win32RunningCopyPipe") performSelector:@selector(invalidateRunningCopyPipe)];
 
    exit(0);
