@@ -17,6 +17,7 @@
    FT_Face _face; 
    float _size;
    id _name;
+   void *_platformFont;
 }
 -(CGPoint)positionOfGlyph:(CGGlyph)current precededByGlyph:(CGGlyph)previous isNominal:(BOOL *)isNominalp;
 -(void)getAdvancements:(CGSize *)advancements forGlyphs:(const CGGlyph *)glyphs count:(unsigned)count;

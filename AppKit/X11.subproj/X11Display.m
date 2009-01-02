@@ -86,9 +86,20 @@
    if([colorName isEqual:@"selectedControlColor"])
       return [NSColor blueColor];
 
+   if([colorName isEqual:@"textBackgroundColor"])
+      return [NSColor whiteColor];
+   if([colorName isEqual:@"textColor"])
+      return [NSColor blackColor];
+   if([colorName isEqual:@"menuItemTextColor"])
+      return [NSColor blackColor];
+   if([colorName isEqual:@"selectedMenuItemTextColor"])
+      return [NSColor whiteColor];
+   if([colorName isEqual:@"selectedMenuItemColor"])
+      return [NSColor blueColor];
+   if([colorName isEqual:@"selectedControlTextColor"])
+      return [NSColor blackColor];
    
-   
- //  NSLog(@"%@", colorName);
+   NSLog(@"%@", colorName);
    
    return [NSColor redColor];
    
@@ -99,7 +110,7 @@
 }
 
 -(NSTimeInterval)textCaretBlinkInterval {
-   return 1;
+   return 0.5;
 }
 
 -(void)hideCursor {
@@ -184,11 +195,11 @@
 -(void)handleEvent:(NSData*)data {
    XEvent e;
    [data getBytes:&e length:sizeof(XEvent)];
+   id window=[self windowForID:e.xany.window];
 
    switch(e.type) {
       case DestroyNotify:
       {
-         id window=[self windowForID:e.xdestroywindow.window];
          // we should never get this message before the WM_DELETE_WINDOW ClientNotify
          // so normally, window should be nil here.
          [window invalidate];
@@ -196,7 +207,6 @@
       }
       case ConfigureNotify:
       {
-         id window=[self windowForID:e.xconfigure.window];
          [window frameChanged];
          [[window delegate] platformWindow:window frameChanged:[window frame]];
          break;
@@ -204,7 +214,6 @@
       case Expose:
       {
          if (e.xexpose.count==0) {
-            id window=[self windowForID:e.xexpose.window];
             NSRect rect=NSMakeRect(e.xexpose.x, e.xexpose.y, e.xexpose.width, e.xexpose.height);
             [[window delegate] platformWindow:window needsDisplayInRect:[window transformFrame:rect]];
          }
@@ -212,7 +221,6 @@
       }
       case ButtonPress:
       {
-         id window=[self windowForID:e.xbutton.window];
          NSPoint pos=[window transformPoint:NSMakePoint(e.xbutton.x, e.xbutton.y)];
          id ev=[NSEvent mouseEventWithType:NSLeftMouseDown
                                   location:pos
@@ -224,7 +232,6 @@
       }
       case ButtonRelease:
       {
-         id window=[self windowForID:e.xbutton.window];
          NSPoint pos=[window transformPoint:NSMakePoint(e.xbutton.x, e.xbutton.y)];
          id ev=[NSEvent mouseEventWithType:NSLeftMouseUp
                                   location:pos
@@ -236,7 +243,6 @@
       }
       case MotionNotify:
       {
-         id window=[self windowForID:e.xmotion.window];
          NSPoint pos=[window transformPoint:NSMakePoint(e.xbutton.x, e.xbutton.y)];
          id ev=[NSEvent mouseEventWithType:NSLeftMouseDragged
                                   location:pos
@@ -245,11 +251,11 @@
                                 clickCount:1];
          [self postEvent:ev atStart:NO];
          [self discardEventsMatchingMask:NSLeftMouseDraggedMask beforeEvent:ev];
+         NSLog(@"drag");
          break;
       }
       case ClientMessage:
       {
-         id window=[self windowForID:e.xclient.window];
          if(e.xclient.format=32 &&
             e.xclient.data.l[0]==XInternAtom(_display, "WM_DELETE_WINDOW", False))
             [[window delegate] platformWindowWillClose:window];
@@ -257,7 +263,6 @@
       }
       case KeyPress:
       {
-         id window=[self windowForID:e.xkey.window];
          char buf[4]={0};
          XLookupString(&e, buf, 4, NULL, NULL);
          id str=[[NSString alloc] initWithCString:buf encoding:NSISOLatin1StringEncoding];
@@ -280,6 +285,14 @@
          [strIg release];
          break;
       }
+
+      case FocusIn:
+         [[window delegate] platformWindowActivated:window];
+         break;
+      case FocusOut:
+         [[window delegate] platformWindowDeactivated:window checkForAppDeactivation:NO];
+         break;
+         
       default:
          NSLog(@"type %i", e.type);
          break;

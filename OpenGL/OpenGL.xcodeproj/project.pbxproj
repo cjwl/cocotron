@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C8E0BE7F0F0E544700677729 /* OpenGL.h in Headers */ = {isa = PBXBuildFile; fileRef = FEF2EB220C878C88001FC5A8 /* OpenGL.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C8E0BE800F0E544700677729 /* gl.h in Headers */ = {isa = PBXBuildFile; fileRef = FEF2EB5D0C87B894001FC5A8 /* gl.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C8E0BE810F0E544700677729 /* glu.h in Headers */ = {isa = PBXBuildFile; fileRef = FEF2EB670C87B8BA001FC5A8 /* glu.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C8E0BE820F0E544700677729 /* glext.h in Headers */ = {isa = PBXBuildFile; fileRef = FE3B34A90D55939B009E0AA5 /* glext.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C8E0BE850F0E544700677729 /* OpenGL.m in Sources */ = {isa = PBXBuildFile; fileRef = FEF2EB8E0C87B987001FC5A8 /* OpenGL.m */; };
 		FE3B34AA0D55939B009E0AA5 /* glext.h in Headers */ = {isa = PBXBuildFile; fileRef = FE3B34A90D55939B009E0AA5 /* glext.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FEF2EB230C878C88001FC5A8 /* OpenGL.h in Headers */ = {isa = PBXBuildFile; fileRef = FEF2EB220C878C88001FC5A8 /* OpenGL.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FEF2EB5E0C87B894001FC5A8 /* gl.h in Headers */ = {isa = PBXBuildFile; fileRef = FEF2EB5D0C87B894001FC5A8 /* gl.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -15,6 +20,14 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
+		C8E0BE870F0E544700677729 /* PBXBuildRule */ = {
+			isa = PBXBuildRule;
+			compilerSpec = org.cocotron.1.0.windows.i386.gcc.default;
+			fileType = sourcecode.c;
+			isEditable = 1;
+			outputFiles = (
+			);
+		};
 		FEF2EB380C878DAA001FC5A8 /* PBXBuildRule */ = {
 			isa = PBXBuildRule;
 			compilerSpec = org.cocotron.1.0.windows.i386.gcc.default;
@@ -29,6 +42,7 @@
 		0867D69BFE84028FC02AAC07 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		8DC2EF5A0486A6940098B216 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		8DC2EF5B0486A6940098B216 /* OpenGL.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = OpenGL.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C8E0BE8A0F0E544700677729 /* OpenGL.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = OpenGL.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FE3B34A90D55939B009E0AA5 /* glext.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = glext.h; sourceTree = "<group>"; };
 		FEF2EB220C878C88001FC5A8 /* OpenGL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenGL.h; sourceTree = "<group>"; };
 		FEF2EB5D0C87B894001FC5A8 /* gl.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = gl.h; sourceTree = "<group>"; };
@@ -44,6 +58,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		C8E0BE860F0E544700677729 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -51,6 +72,7 @@
 			isa = PBXGroup;
 			children = (
 				8DC2EF5B0486A6940098B216 /* OpenGL.framework */,
+				C8E0BE8A0F0E544700677729 /* OpenGL.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -132,6 +154,17 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		C8E0BE7E0F0E544700677729 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C8E0BE7F0F0E544700677729 /* OpenGL.h in Headers */,
+				C8E0BE800F0E544700677729 /* gl.h in Headers */,
+				C8E0BE810F0E544700677729 /* glu.h in Headers */,
+				C8E0BE820F0E544700677729 /* glext.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
@@ -155,24 +188,54 @@
 			productReference = 8DC2EF5B0486A6940098B216 /* OpenGL.framework */;
 			productType = "com.apple.product-type.framework";
 		};
+		C8E0BE7D0F0E544700677729 /* OpenGL-Darwin-i386 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C8E0BE880F0E544700677729 /* Build configuration list for PBXNativeTarget "OpenGL-Darwin-i386" */;
+			buildPhases = (
+				C8E0BE7E0F0E544700677729 /* Headers */,
+				C8E0BE830F0E544700677729 /* Resources */,
+				C8E0BE840F0E544700677729 /* Sources */,
+				C8E0BE860F0E544700677729 /* Frameworks */,
+			);
+			buildRules = (
+				C8E0BE870F0E544700677729 /* PBXBuildRule */,
+			);
+			dependencies = (
+			);
+			name = "OpenGL-Darwin-i386";
+			productInstallPath = "$(HOME)/Library/Frameworks";
+			productName = OpenGL;
+			productReference = C8E0BE8A0F0E544700677729 /* OpenGL.framework */;
+			productType = "com.apple.product-type.framework";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
 		0867D690FE84028FC02AAC07 /* Project object */ = {
 			isa = PBXProject;
 			buildConfigurationList = 1DEB91B108733DA50010E9CD /* Build configuration list for PBXProject "OpenGL" */;
+			compatibilityVersion = "Xcode 2.4";
 			hasScannedForEncodings = 1;
 			mainGroup = 0867D691FE84028FC02AAC07 /* OpenGL */;
 			productRefGroup = 034768DFFF38A50411DB9C8B /* Products */;
 			projectDirPath = "";
+			projectRoot = "";
 			targets = (
 				8DC2EF4F0486A6940098B216 /* OpenGL-Windows-i386 */,
+				C8E0BE7D0F0E544700677729 /* OpenGL-Darwin-i386 */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		8DC2EF520486A6940098B216 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C8E0BE830F0E544700677729 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -187,6 +250,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				FEF2EB8F0C87B987001FC5A8 /* OpenGL.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C8E0BE840F0E544700677729 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C8E0BE850F0E544700677729 /* OpenGL.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -229,6 +300,24 @@
 			};
 			name = Release;
 		};
+		C8E0BE890F0E544700677729 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = i386;
+				DEPLOYMENT_LOCATION = YES;
+				DSTROOT = /;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = "";
+				INFOPLIST_FILE = Info.plist;
+				INSTALL_MODE_FLAG = "og-w,a+rX";
+				INSTALL_PATH = /Developer/Cocotron/1.0/Darwin/i386/Frameworks;
+				PREBINDING = NO;
+				PRODUCT_NAME = OpenGL;
+				SYMROOT = /Developer/Cocotron/1.0/build/OpenGL/Darwin/i386;
+				WRAPPER_EXTENSION = framework;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -244,6 +333,14 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				1DEB91B208733DA50010E9CD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C8E0BE880F0E544700677729 /* Build configuration list for PBXNativeTarget "OpenGL-Darwin-i386" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C8E0BE890F0E544700677729 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

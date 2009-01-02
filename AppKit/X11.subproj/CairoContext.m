@@ -18,6 +18,21 @@
 #import <AppKit/CairoCacheImage.h>
 #import <Foundation/NSException.h>
 
+@implementation TTFFont (CairoFont) 
+-(void)releasePlatformFont {
+   cairo_font_face_destroy(_platformFont);
+}
+
+-(cairo_font_face_t*)cairoFont {
+   if(!_platformFont) {
+      _platformFont=(void*)cairo_ft_font_face_create_for_ft_face([self face], NULL);
+   }
+   return (cairo_font_face_t *)_platformFont;
+}
+@end
+
+
+
 @implementation CairoContext
 -(id)initWithWindow:(X11Window*)w
 {
@@ -392,7 +407,7 @@
       x+=pos.x;
    }
    
-   cairo_font_face_t *face=(cairo_font_face_t *)cairo_ft_font_face_create_for_ft_face([[[self currentState] fontState] face], NULL);
+   cairo_font_face_t *face=[[[self currentState] fontState] cairoFont];
    cairo_set_font_face(_context, face);
    cairo_set_font_size(_context, [fontState pointSize]);
    
@@ -417,8 +432,6 @@
       rect=NSOffsetRect(rect, ctm.tx, ctm.ty);
       _dirtyRect=NSUnionRect(_dirtyRect, rect);*/
    }
-   
-   cairo_font_face_destroy(face);
 }
 
 -(void)showText:(const char *)text length:(unsigned)length {
@@ -452,10 +465,14 @@
 
 -(void)copyFromBackingContext:(CairoContext*)other
 {
+   NSRect clip=[other dirtyRect];
+   
+   if(NSIsEmptyRect(clip))
+      return;
+   
    cairo_identity_matrix(_context);
    cairo_reset_clip(_context);
    
-   NSRect clip=[other dirtyRect];
    
    CGAffineTransform matrix={1, 0, 0, -1, 0, [self size].height};
    clip.origin=CGAffineTransformTransformVector2(matrix, clip.origin);

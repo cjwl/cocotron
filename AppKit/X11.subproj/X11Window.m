@@ -45,7 +45,7 @@
       
       if(styleMask == NSBorderlessWindowMask)
       {
-         [self removeDecoration];
+         [isa removeDecorationForWindow:_window onDisplay:_dpy];
       }
    }
    return self;
@@ -59,7 +59,7 @@
    [super dealloc];
 }
 
--(void)removeDecoration
++(void)removeDecorationForWindow:(Window)w onDisplay:(Display*)dpy
 {
    struct {
       unsigned long flags;
@@ -70,9 +70,9 @@
    } hints = {
       2, 0, 0, 0, 0,
    };
-   XChangeProperty (_dpy, _window,
-                    XInternAtom (_dpy, "_MOTIF_WM_HINTS", False),
-                    XInternAtom (_dpy, "_MOTIF_WM_HINTS", False),
+   XChangeProperty (dpy, w,
+                    XInternAtom (dpy, "_MOTIF_WM_HINTS", False),
+                    XInternAtom (dpy, "_MOTIF_WM_HINTS", False),
                     32, PropModeReplace,
                     (const unsigned char *) &hints,
                     sizeof (hints) / sizeof (long));

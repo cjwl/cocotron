@@ -21,6 +21,8 @@
    NSRect _frame;
    BOOL _mapped;
 }
++(void)removeDecorationForWindow:(Window)w onDisplay:(Display*)dpy;
+
 -(NSRect)frame;
 -(Visual*)visual;
 -(Drawable)drawable;

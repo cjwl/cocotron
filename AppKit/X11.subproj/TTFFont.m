@@ -83,9 +83,14 @@ FT_Library library;
    return self;
 }
 
+-(void)releasePlatformFont {
+   
+}
+
 -(void)dealloc {
    FT_Done_Face(_face);
    [_name release];
+   [self releasePlatformFont];
    [super dealloc];
 }
 

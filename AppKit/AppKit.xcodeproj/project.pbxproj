@@ -1442,6 +1442,16 @@
 		C8C995DB0F0BB36700A0A091 /* X11AsyncInputSource.m in Sources */ = {isa = PBXBuildFile; fileRef = C8C995D90F0BB36700A0A091 /* X11AsyncInputSource.m */; };
 		C8C995DC0F0BB36700A0A091 /* X11AsyncInputSource.h in Headers */ = {isa = PBXBuildFile; fileRef = C8C995D80F0BB36700A0A091 /* X11AsyncInputSource.h */; };
 		C8C995DD0F0BB36700A0A091 /* X11AsyncInputSource.m in Sources */ = {isa = PBXBuildFile; fileRef = C8C995D90F0BB36700A0A091 /* X11AsyncInputSource.m */; };
+		C8E0BDF00F0E4F5200677729 /* NSOpenGLDrawable_X11.h in Headers */ = {isa = PBXBuildFile; fileRef = C8E0BDEE0F0E4F5200677729 /* NSOpenGLDrawable_X11.h */; };
+		C8E0BDF10F0E4F5200677729 /* NSOpenGLDrawable_X11.m in Sources */ = {isa = PBXBuildFile; fileRef = C8E0BDEF0F0E4F5200677729 /* NSOpenGLDrawable_X11.m */; };
+		C8E0BDF20F0E4F5200677729 /* NSOpenGLDrawable_X11.h in Headers */ = {isa = PBXBuildFile; fileRef = C8E0BDEE0F0E4F5200677729 /* NSOpenGLDrawable_X11.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		C8E0BDF30F0E4F5200677729 /* NSOpenGLDrawable_X11.m in Sources */ = {isa = PBXBuildFile; fileRef = C8E0BDEF0F0E4F5200677729 /* NSOpenGLDrawable_X11.m */; };
+		C8E0BE9A0F0E54B500677729 /* NSOpenGLContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B56B20976075400DA0954 /* NSOpenGLContext.m */; };
+		C8E0BE9B0F0E54B500677729 /* NSOpenGLPixelFormat.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B56B40976075400DA0954 /* NSOpenGLPixelFormat.m */; };
+		C8E0BE9C0F0E54B500677729 /* NSOpenGLView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B56B60976075400DA0954 /* NSOpenGLView.m */; };
+		C8E0BE9D0F0E54B500677729 /* NSOpenGLContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B56B20976075400DA0954 /* NSOpenGLContext.m */; };
+		C8E0BE9E0F0E54B500677729 /* NSOpenGLPixelFormat.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B56B40976075400DA0954 /* NSOpenGLPixelFormat.m */; };
+		C8E0BE9F0F0E54B500677729 /* NSOpenGLView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B56B60976075400DA0954 /* NSOpenGLView.m */; };
 		FE01A80B0C5D9BCB00AEA51A /* AppKitExport.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B53FA0976075200DA0954 /* AppKitExport.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
 		FE01A80C0C5D9BCB00AEA51A /* AppKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B53FC0976075200DA0954 /* AppKit.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
 		FE01A80D0C5D9BCB00AEA51A /* NSActionCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B53FE0976075200DA0954 /* NSActionCell.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
@@ -2252,6 +2262,13 @@
 			remoteGlobalIDString = FED7081C0C3B3D2C000CBE5B;
 			remoteInfo = "Foundation-Darwin-i386";
 		};
+		C8E0BD010F0E394000677729 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FECAF4C80DB710EE00BA2A8E /* ApplicationServices.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = C8A2E2900F07E9B70054397C;
+			remoteInfo = "ApplicationServices-Darwin-i386";
+		};
 		FE01AAC90C5D9BCC00AEA51A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 6E46FEBE0A2D2DCF004CD27E /* Foundation.xcodeproj */;
@@ -2784,6 +2801,8 @@
 		C8C995BC0F0BB2B100A0A091 /* X11AsyncInputSourceSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = X11AsyncInputSourceSet.m; sourceTree = "<group>"; };
 		C8C995D80F0BB36700A0A091 /* X11AsyncInputSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = X11AsyncInputSource.h; sourceTree = "<group>"; };
 		C8C995D90F0BB36700A0A091 /* X11AsyncInputSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = X11AsyncInputSource.m; sourceTree = "<group>"; };
+		C8E0BDEE0F0E4F5200677729 /* NSOpenGLDrawable_X11.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSOpenGLDrawable_X11.h; sourceTree = "<group>"; };
+		C8E0BDEF0F0E4F5200677729 /* NSOpenGLDrawable_X11.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSOpenGLDrawable_X11.m; sourceTree = "<group>"; };
 		C8E4F57F0BFF7A8A0076D5E6 /* NSAffineTransform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSAffineTransform.h; sourceTree = "<group>"; };
 		C8E4F5800BFF7A8A0076D5E6 /* NSAffineTransform.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSAffineTransform.m; sourceTree = "<group>"; };
 		FE01AAC10C5D9BCB00AEA51A /* AppKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AppKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -4016,6 +4035,8 @@
 				C8C995D90F0BB36700A0A091 /* X11AsyncInputSource.m */,
 				C8C995BB0F0BB2B100A0A091 /* X11AsyncInputSourceSet.h */,
 				C8C995BC0F0BB2B100A0A091 /* X11AsyncInputSourceSet.m */,
+				C8E0BDEE0F0E4F5200677729 /* NSOpenGLDrawable_X11.h */,
+				C8E0BDEF0F0E4F5200677729 /* NSOpenGLDrawable_X11.m */,
 			);
 			name = X11;
 			path = X11.subproj;
@@ -4150,6 +4171,7 @@
 			children = (
 				FECAF4D10DB710EE00BA2A8E /* ApplicationServices.framework */,
 				C889773D0EA0C0EB00D0A0A2 /* ApplicationServices.framework */,
+				C8E0BD020F0E394000677729 /* ApplicationServices.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -4541,6 +4563,7 @@
 				C8283E4D0F0AEE3B009E89C4 /* X11InputSource.h in Headers */,
 				C8C995BF0F0BB2B100A0A091 /* X11AsyncInputSourceSet.h in Headers */,
 				C8C995DC0F0BB36700A0A091 /* X11AsyncInputSource.h in Headers */,
+				C8E0BDF00F0E4F5200677729 /* NSOpenGLDrawable_X11.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4904,6 +4927,7 @@
 				C8283E4B0F0AEE3B009E89C4 /* X11InputSource.h in Headers */,
 				C8C995BD0F0BB2B100A0A091 /* X11AsyncInputSourceSet.h in Headers */,
 				C8C995DA0F0BB36700A0A091 /* X11AsyncInputSource.h in Headers */,
+				C8E0BDF20F0E4F5200677729 /* NSOpenGLDrawable_X11.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5383,6 +5407,13 @@
 			fileType = wrapper.framework;
 			path = ApplicationServices.framework;
 			remoteRef = C889773C0EA0C0EB00D0A0A2 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		C8E0BD020F0E394000677729 /* ApplicationServices.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = ApplicationServices.framework;
+			remoteRef = C8E0BD010F0E394000677729 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		FE01AACA0C5D9BCC00AEA51A /* Foundation.framework */ = {
@@ -5909,6 +5940,10 @@
 				C8283E4E0F0AEE3B009E89C4 /* X11InputSource.m in Sources */,
 				C8C995C00F0BB2B100A0A091 /* X11AsyncInputSourceSet.m in Sources */,
 				C8C995DD0F0BB36700A0A091 /* X11AsyncInputSource.m in Sources */,
+				C8E0BDF10F0E4F5200677729 /* NSOpenGLDrawable_X11.m in Sources */,
+				C8E0BE9D0F0E54B500677729 /* NSOpenGLContext.m in Sources */,
+				C8E0BE9E0F0E54B500677729 /* NSOpenGLPixelFormat.m in Sources */,
+				C8E0BE9F0F0E54B500677729 /* NSOpenGLView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6234,6 +6269,10 @@
 				C8283E4C0F0AEE3B009E89C4 /* X11InputSource.m in Sources */,
 				C8C995BE0F0BB2B100A0A091 /* X11AsyncInputSourceSet.m in Sources */,
 				C8C995DB0F0BB36700A0A091 /* X11AsyncInputSource.m in Sources */,
+				C8E0BDF30F0E4F5200677729 /* NSOpenGLDrawable_X11.m in Sources */,
+				C8E0BE9A0F0E54B500677729 /* NSOpenGLContext.m in Sources */,
+				C8E0BE9B0F0E54B500677729 /* NSOpenGLPixelFormat.m in Sources */,
+				C8E0BE9C0F0E54B500677729 /* NSOpenGLView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6825,9 +6864,9 @@
 				GCC_VERSION = 4.2;
 				HEADER_SEARCH_PATHS = (
 					/Developer/Cocotron/1.0/Darwin/i386/include,
-					/usr/X11/include,
-					/usr/X11/include/cairo,
-					/usr/X11/include/freetype2,
+					/Developer/Cocotron/1.0/Darwin/i386/include/X11,
+					/Developer/Cocotron/1.0/Darwin/i386/include/cairo,
+					/Developer/Cocotron/1.0/Darwin/i386/include/freetype2,
 				);
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_MODE_FLAG = "og-w,a+rX";
@@ -6850,6 +6889,7 @@
 					/Developer/Cocotron/1.0/Darwin/i386/lib/libXext.a,
 					/Developer/Cocotron/1.0/Darwin/i386/lib/libfontconfig.a,
 					/Developer/Cocotron/1.0/Darwin/i386/lib/libexpat.a,
+					/Developer/Cocotron/1.0/Darwin/i386/lib/libGL.a,
 				);
 				OTHER_LDFLAGS_QUOTED_FOR_TARGET_1 = "\"/Developer/Cocotron/1.0/Darwin/i386/lib/libpixman-1.a\"";
 				PREBINDING = NO;
@@ -6877,6 +6917,7 @@
 				GCC_UNROLL_LOOPS = NO;
 				HEADER_SEARCH_PATHS = (
 					/Developer/Cocotron/1.0/Darwin/i386/include,
+					/Developer/Cocotron/1.0/Darwin/i386/include/X11,
 					/Developer/Cocotron/1.0/Darwin/i386/include/cairo,
 					/Developer/Cocotron/1.0/Darwin/i386/include/freetype2,
 				);
@@ -6900,6 +6941,7 @@
 					/Developer/Cocotron/1.0/Darwin/i386/lib/libXext.a,
 					/Developer/Cocotron/1.0/Darwin/i386/lib/libfontconfig.a,
 					/Developer/Cocotron/1.0/Darwin/i386/lib/libexpat.a,
+					/Developer/Cocotron/1.0/Darwin/i386/lib/libGL.a,
 				);
 				OTHER_LDFLAGS_QUOTED_FOR_TARGET_1 = "\"/Developer/Cocotron/1.0/Darwin/i386/lib/libpixman-1.a\"";
 				PREBINDING = NO;
