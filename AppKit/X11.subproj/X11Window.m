@@ -287,4 +287,111 @@
    return NSMakePoint(pos.x, _frame.size.height-pos.y);
 }
 
+
+-(void)handleEvent:(XEvent*)ev fromDisplay:(X11Display*)display {
+   
+   switch(ev->type) {
+      case DestroyNotify:
+      {
+         // we should never get this message before the WM_DELETE_WINDOW ClientNotify
+         // so normally, window should be nil here.
+         [self invalidate];
+         break;
+      }
+      case ConfigureNotify:
+      {
+         [self frameChanged];
+         [_delegate platformWindow:self frameChanged:_frame];
+         break;
+      }
+      case Expose:
+      {
+         if (ev->xexpose.count==0) {
+            NSRect rect=NSMakeRect(ev->xexpose.x, ev->xexpose.y, ev->xexpose.width, ev->xexpose.height);
+            [_delegate platformWindow:self needsDisplayInRect:[self transformFrame:rect]];
+         }
+         break;
+      }
+      case ButtonPress:
+      {
+         NSPoint pos=[self transformPoint:NSMakePoint(ev->xbutton.x, ev->xbutton.y)];
+         id ev=[NSEvent mouseEventWithType:NSLeftMouseDown
+                                  location:pos
+                             modifierFlags:0
+                                    window:_delegate
+                                clickCount:1];
+         [display postEvent:ev atStart:NO];
+         break;
+      }
+      case ButtonRelease:
+      {
+         NSPoint pos=[self transformPoint:NSMakePoint(ev->xbutton.x, ev->xbutton.y)];
+         id ev=[NSEvent mouseEventWithType:NSLeftMouseUp
+                                  location:pos
+                             modifierFlags:0
+                                    window:_delegate
+                                clickCount:1];
+         [display postEvent:ev atStart:NO];
+         break;
+      }
+      case MotionNotify:
+      {
+         NSPoint pos=[self transformPoint:NSMakePoint(ev->xbutton.x, ev->xbutton.y)];
+         id ev=[NSEvent mouseEventWithType:NSLeftMouseDragged
+                                  location:pos
+                             modifierFlags:0
+                                    window:_delegate
+                                clickCount:1];
+         [display postEvent:ev atStart:NO];
+         [display discardEventsMatchingMask:NSLeftMouseDraggedMask beforeEvent:ev];
+         break;
+      }
+      case ClientMessage:
+      {
+         if(ev->xclient.format=32 &&
+            ev->xclient.data.l[0]==XInternAtom(_dpy, "WM_DELETE_WINDOW", False))
+            [_delegate platformWindowWillClose:self];
+         break;
+      }
+      case KeyRelease:
+      case KeyPress:
+      {
+         char buf[4]={0};
+         XLookupString((XKeyEvent*)ev, buf, 4, NULL, NULL);
+         id str=[[NSString alloc] initWithCString:buf encoding:NSISOLatin1StringEncoding];
+         NSPoint pos=[self transformPoint:NSMakePoint(ev->xbutton.x, ev->xbutton.y)];
+         
+         ev->xkey.state=0;
+         XLookupString((XKeyEvent*)ev, buf, 4, NULL, NULL);
+         id strIg=[[NSString alloc] initWithCString:buf encoding:NSISOLatin1StringEncoding];
+         
+         id event=[NSEvent keyEventWithType:ev->type == KeyPress ? NSKeyDown : NSKeyUp
+                                location:pos 
+                           modifierFlags:0 
+                                  window:_delegate 
+                              characters:str
+             charactersIgnoringModifiers:strIg
+                               isARepeat:NO keyCode:ev->xkey.keycode];
+         
+         [display postEvent:event atStart:NO];
+         
+         [str release];
+         [strIg release];
+         break;
+      }
+         
+      case FocusIn:
+         [_delegate platformWindowActivated:self];
+         break;
+      case FocusOut:
+         [_delegate platformWindowDeactivated:self checkForAppDeactivation:NO];
+         break;
+         
+      default:
+         NSLog(@"type %i", ev->type);
+         break;
+   }
+}
+
+
 @end

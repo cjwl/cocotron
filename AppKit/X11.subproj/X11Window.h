@@ -9,7 +9,7 @@
 #import <AppKit/CGWindow.h>
 #import <X11/Xlib.h>
 
-@class CairoContext;
+@class CairoContext, X11Display;
 
 @interface X11Window : CGWindow {
    id _delegate;
@@ -30,5 +30,5 @@
 -(NSRect)transformFrame:(NSRect)frame;
 -(void)sizeChanged;
 -(void)frameChanged;
--(void)removeDecoration;
+-(void)handleEvent:(XEvent*)ev fromDisplay:(X11Display*)display;
 @end

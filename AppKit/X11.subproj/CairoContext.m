@@ -8,7 +8,7 @@
 
 #import <AppKit/CairoContext.h>
 #import <AppKit/X11Display.h>
-#import <AppKit/KGPath.h>
+#import <AppKit/KGMutablePath.h>
 #import <AppKit/KGColor.h>
 #import <Foundation/NSException.h>
 #import <AppKit/KGGraphicsState.h>
@@ -456,7 +456,7 @@
    for(i=0;i<length;i++)
     unicode[i]=text[i];
     
-   [[[self currentState] fontState] getGlyphs:glyphs forCharacters:unicode length:length];
+   [(KTFont*)[[self currentState] fontState] getGlyphs:glyphs forCharacters:unicode length:length];
    [self showGlyphs:glyphs count:length];
 }
 

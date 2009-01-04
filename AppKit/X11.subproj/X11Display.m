@@ -192,114 +192,6 @@
    return [_windowsByID objectForKey:[NSNumber numberWithUnsignedLong:i]];
 }
 
--(void)handleEvent:(NSData*)data {
-   XEvent e;
-   [data getBytes:&e length:sizeof(XEvent)];
-   id window=[self windowForID:e.xany.window];
-
-   switch(e.type) {
-      case DestroyNotify:
-      {
-         // we should never get this message before the WM_DELETE_WINDOW ClientNotify
-         // so normally, window should be nil here.
-         [window invalidate];
-         break;
-      }
-      case ConfigureNotify:
-      {
-         [window frameChanged];
-         [[window delegate] platformWindow:window frameChanged:[window frame]];
-         break;
-      }
-      case Expose:
-      {
-         if (e.xexpose.count==0) {
-            NSRect rect=NSMakeRect(e.xexpose.x, e.xexpose.y, e.xexpose.width, e.xexpose.height);
-            [[window delegate] platformWindow:window needsDisplayInRect:[window transformFrame:rect]];
-         }
-         break;
-      }
-      case ButtonPress:
-      {
-         NSPoint pos=[window transformPoint:NSMakePoint(e.xbutton.x, e.xbutton.y)];
-         id ev=[NSEvent mouseEventWithType:NSLeftMouseDown
-                                  location:pos
-                             modifierFlags:0
-                                    window:[window delegate]
-                                clickCount:1];
-         [self postEvent:ev atStart:NO];
-         break;
-      }
-      case ButtonRelease:
-      {
-         NSPoint pos=[window transformPoint:NSMakePoint(e.xbutton.x, e.xbutton.y)];
-         id ev=[NSEvent mouseEventWithType:NSLeftMouseUp
-                                  location:pos
-                             modifierFlags:0
-                                    window:[window delegate]
-                                clickCount:1];
-         [self postEvent:ev atStart:NO];
-         break;
-      }
-      case MotionNotify:
-      {
-         NSPoint pos=[window transformPoint:NSMakePoint(e.xbutton.x, e.xbutton.y)];
-         id ev=[NSEvent mouseEventWithType:NSLeftMouseDragged
-                                  location:pos
-                             modifierFlags:0
-                                    window:[window delegate]
-                                clickCount:1];
-         [self postEvent:ev atStart:NO];
-         [self discardEventsMatchingMask:NSLeftMouseDraggedMask beforeEvent:ev];
-         break;
-      }
-      case ClientMessage:
-      {
-         if(e.xclient.format=32 &&
-            e.xclient.data.l[0]==XInternAtom(_display, "WM_DELETE_WINDOW", False))
-            [[window delegate] platformWindowWillClose:window];
-         break;
-      }
-      case KeyRelease:
-      case KeyPress:
-      {
-         char buf[4]={0};
-         XLookupString(&e, buf, 4, NULL, NULL);
-         id str=[[NSString alloc] initWithCString:buf encoding:NSISOLatin1StringEncoding];
-         NSPoint pos=[window transformPoint:NSMakePoint(e.xbutton.x, e.xbutton.y)];
-         
-         e.xkey.state=0;
-         XLookupString(&e, buf, 4, NULL, NULL);
-         id strIg=[[NSString alloc] initWithCString:buf encoding:NSISOLatin1StringEncoding];
-         
-         id ev=[NSEvent keyEventWithType:e.type == KeyPress ? NSKeyDown : NSKeyUp
-                                location:pos 
-                           modifierFlags:0 
-                                  window:[window delegate] 
-                              characters:str
-             charactersIgnoringModifiers:strIg
-                               isARepeat:NO keyCode:e.xkey.keycode];
-         
-         [self postEvent:ev atStart:NO];
-         
-         [str release];
-         [strIg release];
-         break;
-      }
-
-      case FocusIn:
-         [[window delegate] platformWindowActivated:window];
-         break;
-      case FocusOut:
-         [[window delegate] platformWindowDeactivated:window checkForAppDeactivation:NO];
-         break;
-         
-      default:
-         NSLog(@"type %i", e.type);
-         break;
-   }
-}
-
 -(void)setupEventHandling {
    [X11InputSource addInputSourceWithDisplay:self];
    
@@ -316,8 +208,8 @@
    while(numEvents=XEventsQueued(_display, QueuedAfterReading)) {
       for(i=0; i<numEvents; i++) {
          XNextEvent(_display, &e);
-         [self handleEvent:[NSData dataWithBytes:&e 
-                                          length:sizeof(XEvent)]];
+         id window=[self windowForID:e.xany.window];
+         [window handleEvent:&e fromDisplay:self];
       }
    }
 }

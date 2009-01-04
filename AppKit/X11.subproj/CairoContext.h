@@ -19,6 +19,7 @@
    cairo_t *_context;
 }
 -(id)initWithWindow:(X11Window*)w;
+-(id)initWithSize:(NSSize)s;
 -(void)setSize:(NSSize)size;
 -(NSSize)size;
 -(NSRect)dirtyRect;
