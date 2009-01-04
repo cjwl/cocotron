@@ -36,8 +36,12 @@ void CGLContextDelete(void *glContext)
    if(self = [super init]) {
       _format=[pixelFormat retain];
       _dpy=[(X11Display*)[NSDisplay currentDisplay] display];
-
-      GLint                   att[] = { GLX_RGBA, None };
+      
+      GLint                   att[] = {
+         GLX_RGBA,
+         GLX_DEPTH_SIZE, 15,
+         None
+      };
       _vi = glXChooseVisual(_dpy, 0, att);
       
       Colormap cmap = XCreateColormap(_dpy, DefaultRootWindow(_dpy), _vi->visual, AllocNone);

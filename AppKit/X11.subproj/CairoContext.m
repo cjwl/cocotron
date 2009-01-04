@@ -347,6 +347,7 @@
 -(void)drawImage:(id)image inRect:(CGRect)rect {
    BOOL shouldFreeImage=NO;
    cairo_surface_t *img=NULL;
+   KGRGBA8888 *data=NULL;
    
    if([image respondsToSelector:@selector(_cairoSurface)])
 	{
@@ -354,12 +355,22 @@
 	}
 	else
 	{
+      NSAssert([image isKindOfClass:[KGImage class]], nil);
+      KGImage *ki=image;
+      int w=[ki width], h=[ki height], i, j;
+      data=calloc(sizeof(KGRGBA8888), w*h);
+      
+      for(i=0; i<h; i++) {
+         ki->_read_lRGBA8888_PRE(ki, 0, i, &data[w*i], w);
+      }
+      
+      
       shouldFreeImage=YES;
-		img=cairo_image_surface_create_for_data((void*)[image directBytes],
+		img=cairo_image_surface_create_for_data((unsigned char*)data,
                                               CAIRO_FORMAT_ARGB32,
-                                              [image width],
-                                              [image height],
-                                              [image bytesPerRow]);
+                                              w,
+                                              h,
+                                              w*sizeof(KGRGBA8888));
 	}
    
    NSAssert(img, nil);
@@ -386,8 +397,10 @@
       _dirtyRect=NSUnionRect(_dirtyRect, NSMakeRect(x, y, x2-x, y2-y));
    }
    
-   if(shouldFreeImage)
+   if(shouldFreeImage) {
       cairo_surface_destroy(img);
+      free(data);
+   }
 }
 
 -(void)showGlyphs:(const CGGlyph *)glyphs count:(unsigned)count {
@@ -455,6 +468,37 @@
    return _surface;
 }
 
+
+cairo_status_t writeToData(void		  *closure,
+                           const unsigned char *data,
+                           unsigned int	   length) {
+   id obj=(id)closure;
+   [obj appendBytes:data length:length];
+   return CAIRO_STATUS_SUCCESS;
+}
+
+-(NSData *)captureBitmapInRect:(CGRect)rect {
+   id ret=[NSMutableData data];
+   
+   cairo_surface_t *surf=cairo_image_surface_create(CAIRO_FORMAT_ARGB32, rect.size.width, rect.size.height);
+   cairo_t *ctx=cairo_create(surf);
+   
+   cairo_identity_matrix(ctx);
+   cairo_reset_clip(ctx);
+
+   cairo_set_source_surface (ctx, _surface, -rect.origin.x, -rect.origin.y);
+   
+	cairo_paint(ctx);   
+   
+   cairo_destroy(ctx);
+   cairo_surface_write_to_png_stream(surf, writeToData, ret);
+   
+   cairo_surface_write_to_png(surf, "/tmp/out.png");
+   
+   cairo_surface_destroy(surf);
+   return ret;   
+}
+
 -(NSRect)dirtyRect; {
    return _dirtyRect;
 }
@@ -480,7 +524,6 @@
    
    
    cairo_new_path(_context);
-   cairo_set_source_rgba(_context, 1.0, 0.0, 0.0, 0.5);
    cairo_rectangle(_context, clip.origin.x, clip.origin.y, clip.size.width, clip.size.height);
    cairo_clip(_context);
    cairo_set_source_surface (_context, [other _cairoSurface], 0, 0);

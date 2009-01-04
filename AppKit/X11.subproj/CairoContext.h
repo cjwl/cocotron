@@ -23,4 +23,5 @@
 -(NSSize)size;
 -(NSRect)dirtyRect;
 -(void)resetDirtyRect;
+-(void)copyFromBackingContext:(CairoContext*)other;
 @end

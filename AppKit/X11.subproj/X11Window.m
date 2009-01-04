@@ -24,16 +24,26 @@
       _frame=[self transformFrame:frame];
       _window = XCreateSimpleWindow(_dpy, DefaultRootWindow(_dpy),
                               _frame.origin.x, _frame.origin.y, _frame.size.width, _frame.size.height, 
-                              0, 0, 0);
+                              1, 0, 0);
 
       XSelectInput(_dpy, _window, ExposureMask | KeyPressMask | KeyReleaseMask | StructureNotifyMask |
       ButtonPressMask | ButtonReleaseMask | ButtonMotionMask | VisibilityChangeMask | FocusChangeMask);
       
       XSetWindowAttributes xattr;
       unsigned long xattr_mask;
-      xattr.win_gravity=CenterGravity;
       xattr.override_redirect= styleMask == NSBorderlessWindowMask ? True : False;
-      xattr_mask = CWOverrideRedirect | CWWinGravity;
+      xattr_mask = CWOverrideRedirect;
+      
+      Screen *sc=DefaultScreenOfDisplay(_dpy);
+      if(DoesBackingStore(sc)) {
+         xattr_mask|=CWBackingStore;
+         xattr.backing_store = DoesBackingStore(sc);
+      } 
+      else {
+         xattr_mask|=CWSaveUnder;
+         xattr.save_under = DoesSaveUnders(sc);
+      }
+      
       XChangeWindowAttributes(_dpy, _window, xattr_mask, &xattr);
       XMoveWindow(_dpy, _window, _frame.origin.x, _frame.origin.y);
       
@@ -203,7 +213,6 @@
 
 -(void)flushBuffer {
    [_cgContext copyFromBackingContext:_backingContext];
-   
 }
 
 
@@ -224,9 +233,9 @@
 {
    Window root, parent;
    Window window=_window;
-   int x, y, w, h, d, b;
+   int x, y;
+   unsigned int w, h, d, b, nchild;
    Window* children;
-   int nchild;
    NSRect rect=NSZeroRect;
    // recursively get geometry to get absolute position
    while(window) {
@@ -234,7 +243,7 @@
       XQueryTree(_dpy, window, &root, &parent, &children, &nchild);
       if(children)
          XFree(children);
-      
+
       // first iteration: save our own w, h
       if(window==_window)
          rect=NSMakeRect(0, 0, w, h);
