@@ -18,7 +18,6 @@
 
 @interface NSOpenGLDrawable_X11 : NSOpenGLDrawable {
    NSOpenGLPixelFormat *_format;
-   NSView *_view;
    Display *_dpy;
    XVisualInfo *_vi;
    Window _window;

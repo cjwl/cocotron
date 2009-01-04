@@ -251,7 +251,6 @@
                                 clickCount:1];
          [self postEvent:ev atStart:NO];
          [self discardEventsMatchingMask:NSLeftMouseDraggedMask beforeEvent:ev];
-         NSLog(@"drag");
          break;
       }
       case ClientMessage:
@@ -261,6 +260,7 @@
             [[window delegate] platformWindowWillClose:window];
          break;
       }
+      case KeyRelease:
       case KeyPress:
       {
          char buf[4]={0};
@@ -272,13 +272,14 @@
          XLookupString(&e, buf, 4, NULL, NULL);
          id strIg=[[NSString alloc] initWithCString:buf encoding:NSISOLatin1StringEncoding];
          
-         id ev=[NSEvent keyEventWithType:NSKeyDown 
+         id ev=[NSEvent keyEventWithType:e.type == KeyPress ? NSKeyDown : NSKeyUp
                                 location:pos 
                            modifierFlags:0 
                                   window:[window delegate] 
                               characters:str
              charactersIgnoringModifiers:strIg
                                isARepeat:NO keyCode:e.xkey.keycode];
+         
          [self postEvent:ev atStart:NO];
          
          [str release];
@@ -304,6 +305,9 @@
    
 }
 
+-(void)doNothing {
+   
+}
 
 -(void)processX11Event {
    XEvent e;
@@ -317,13 +321,4 @@
       }
    }
 }
-
-
--(void)postEvent:(NSEvent *)event atStart:(BOOL)atStart {
-   [super postEvent:event atStart:atStart];
-   [[NSPlatform currentPlatform] cancelForRunloopMode:[[NSRunLoop currentRunLoop] currentMode]];
-}
-
-
-
 @end

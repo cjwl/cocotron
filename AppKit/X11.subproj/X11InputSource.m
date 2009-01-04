@@ -34,19 +34,11 @@
    }
 }
 
--(void)selectInputSource:(NSSelectInputSource *)inputSource selectEvent:(unsigned)selectEvent; {
-   if(XEventsQueued([_display display], QueuedAfterReading)) {
-      [_display processX11Event];
-   }
-}
-
-
 -(BOOL)processImmediateEvents:(unsigned)selectEvent; {
-   if(XPending([_display display])) {
+   if((selectEvent && XEventsQueued([_display display], QueuedAfterReading)) || 
+      XPending([_display display])) {
       [_display processX11Event];
       return YES;
    }
-   
-   return [super processImmediateEvents:selectEvent];
 }
 @end

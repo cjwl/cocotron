@@ -26,7 +26,7 @@
                               _frame.origin.x, _frame.origin.y, _frame.size.width, _frame.size.height, 
                               0, 0, 0);
 
-      XSelectInput(_dpy, _window, ExposureMask | KeyPressMask | StructureNotifyMask |
+      XSelectInput(_dpy, _window, ExposureMask | KeyPressMask | KeyReleaseMask | StructureNotifyMask |
       ButtonPressMask | ButtonReleaseMask | ButtonMotionMask | VisibilityChangeMask | FocusChangeMask);
       
       XSetWindowAttributes xattr;

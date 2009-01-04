@@ -102,6 +102,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
    _eventMask=mask;
 
+   if([_eventQueue count])
+      untilDate=[NSDate date];
+   
    [[NSRunLoop currentRunLoop] runMode:mode beforeDate:untilDate];
 
    if([_eventQueue count]==0)

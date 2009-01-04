@@ -35,7 +35,6 @@ void CGLContextDelete(void *glContext)
 -initWithPixelFormat:(NSOpenGLPixelFormat *)pixelFormat view:(NSView *)view {
    if(self = [super init]) {
       _format=[pixelFormat retain];
-      _view=view;
       _dpy=[(X11Display*)[NSDisplay currentDisplay] display];
 
       GLint                   att[] = { GLX_RGBA, None };
@@ -46,16 +45,10 @@ void CGLContextDelete(void *glContext)
       XSetWindowAttributes xattr;
       xattr.colormap=cmap;
       xattr.event_mask = ExposureMask | KeyPressMask;
-      _window = XCreateWindow(_dpy, DefaultRootWindow(_dpy), 0, 0, 600, 600, 0, _vi->depth, InputOutput, _vi->visual, CWColormap | CWEventMask, &xattr);
+      _window = XCreateWindow(_dpy, DefaultRootWindow(_dpy), 0, 0, 100, 100, 0, _vi->depth, InputOutput, _vi->visual, CWColormap | CWEventMask, &xattr);
       [X11Window removeDecorationForWindow:_window onDisplay:_dpy];
-
       
-      
-      NSRect frame=[_view frame];
-      frame=[view convertRect:frame toView:nil];
-      XMoveResizeWindow(_dpy, _window, frame.origin.x, frame.origin.y, frame.size.width, frame.size.height);
-      XReparentWindow(_dpy, _window, [[[view window] platformWindow] drawable], frame.origin.x, frame.origin.y);
-      
+      [self updateWithView:view];
       XMapWindow(_dpy, _window);
 
    }
@@ -72,8 +65,8 @@ void CGLContextDelete(void *glContext)
 
    if(!_vi)
       return NULL;
-   glc = glXCreateContext(_dpy, _vi, NULL, GL_FALSE);
-   glXMakeCurrent(_dpy, _window, glc);
+   glc = glXCreateContext(_dpy, _vi, NULL, GL_TRUE);
+  // glXMakeCurrent(_dpy, _window, glc);
    return glc;
 }
 
@@ -81,6 +74,16 @@ void CGLContextDelete(void *glContext)
 }
 
 -(void)updateWithView:(NSView *)view {
+   NSRect frame=[view frame];
+   frame=[[view superview] convertRect:frame toView:nil];
+   
+   X11Window *wnd=(X11Window*)[[view window] platformWindow];
+   NSRect wndFrame=[wnd frame];
+   
+   frame.origin.y=wndFrame.size.height-(frame.origin.y+frame.size.height);
+   
+   XMoveResizeWindow(_dpy, _window, frame.origin.x, frame.origin.y, frame.size.width, frame.size.height);
+   XReparentWindow(_dpy, _window, [(X11Window*)[[view window] platformWindow] drawable], frame.origin.x, frame.origin.y);
 }
 
 -(void)makeCurrentWithGLContext:(void *)glContext {
@@ -88,6 +91,7 @@ void CGLContextDelete(void *glContext)
 }
 
 -(void)swapBuffers {
+   glXSwapBuffers(_dpy, _window);
 }
 
 @end
