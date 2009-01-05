@@ -117,26 +117,89 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -initWithData:(NSData *)data {
    CGImageSourceRef imageSource=CGImageSourceCreateWithData(data,nil);
+   CGImageRef       cgImage=CGImageSourceCreateImageAtIndex(imageSource,0,nil);
    
-   _image=CGImageSourceCreateImageAtIndex(imageSource,0,nil);
-   if(_image==nil){
+   if(cgImage==nil){
     [self dealloc];
     return nil;
    }
-   
    NSDictionary *properties=CGImageSourceCopyPropertiesAtIndex(imageSource,0,nil);
    NSNumber *xres=[properties objectForKey:kCGImagePropertyDPIWidth];
    NSNumber *yres=[properties objectForKey:kCGImagePropertyDPIHeight];
       
-   _size.width=CGImageGetWidth(_image);
-   _size.height=CGImageGetHeight(_image);
+   _size.width=CGImageGetWidth(cgImage);
+   _size.height=CGImageGetHeight(cgImage);
 
    if(xres!=nil && [xres doubleValue]>0)
     _size.width*=72.0/[xres doubleValue];
     
    if(yres!=nil && [yres doubleValue]>0)
     _size.height*=72.0/[yres doubleValue];
-      
+
+   CGColorSpaceRef colorSpace=CGImageGetColorSpace(cgImage);
+   
+   // FIXME:
+   _colorSpaceName=NSDeviceRGBColorSpace;
+   _bitsPerSample=CGImageGetBitsPerComponent(cgImage);
+   _pixelsWide=CGImageGetWidth(cgImage);
+   _pixelsHigh=CGImageGetHeight(cgImage);
+   
+   switch(CGImageGetAlphaInfo(cgImage)){
+    case kCGImageAlphaPremultipliedLast:
+    case kCGImageAlphaPremultipliedFirst:
+    case kCGImageAlphaLast:
+    case kCGImageAlphaFirst:
+     _hasAlpha=YES;
+     break;
+    default:
+     _hasAlpha=NO;
+     break;
+   }
+   
+   _samplesPerPixel=CGColorSpaceGetNumberOfComponents(colorSpace);
+   if(_hasAlpha)
+    _samplesPerPixel++;
+   _isPlanar=NO;
+   _bitmapFormat=0;
+   if(CGImageGetBitmapInfo(cgImage)&kCGBitmapFloatComponents)
+    _bitmapFormat|=NSFloatingPointSamplesBitmapFormat;
+   switch(CGImageGetAlphaInfo(cgImage)){
+    case kCGImageAlphaNone:
+     break;
+    case kCGImageAlphaPremultipliedLast:
+     break;
+    case kCGImageAlphaPremultipliedFirst:
+     _bitmapFormat|=NSAlphaFirstBitmapFormat;
+     break;
+    case kCGImageAlphaLast:
+     _bitmapFormat|=NSAlphaNonpremultipliedBitmapFormat;
+     break;
+    case kCGImageAlphaFirst:
+     _bitmapFormat|=NSAlphaFirstBitmapFormat;
+     _bitmapFormat|=NSAlphaNonpremultipliedBitmapFormat;
+     break;
+    case kCGImageAlphaNoneSkipLast:
+    case kCGImageAlphaNoneSkipFirst:
+     break;
+   }
+    _bitmapFormat|=NSFloatingPointSamplesBitmapFormat;
+    
+   _bitsPerPixel=CGImageGetBitsPerPixel(cgImage);
+   _bytesPerRow=CGImageGetBytesPerRow(cgImage);
+   _freeWhenDone=YES;
+   _bitmapPlanes[0]=NSZoneCalloc(NULL,_bytesPerRow*_pixelsHigh,1);
+   
+   CGDataProviderRef    provider=CGImageGetDataProvider(cgImage);
+// FIXME: inefficient
+   NSData              *bitmapData=(NSData *)CGDataProviderCopyData(provider);
+   const unsigned char *bytes=[bitmapData bytes];
+   int                  i,length=_bytesPerRow*_pixelsHigh;
+   
+   for(i=0;i<length;i++)
+    _bitmapPlanes[0][i]=bytes[i];
+   
+   [bitmapData release];
+   
    [properties release];
    [imageSource release];
    return self;

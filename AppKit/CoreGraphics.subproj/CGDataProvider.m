@@ -24,3 +24,8 @@ CGDataProviderRef CGDataProviderCreateWithCFData(NSData *data) {
 COREGRAPHICS_EXPORT CGDataProviderRef CGDataProviderCreateWithData(void *info,const void *data,size_t size,CGDataProviderReleaseDataCallback releaseCallback) {
    return [[KGDataProvider alloc] initWithBytes:data length:size];
 }
+
+COREGRAPHICS_EXPORT NSData *CGDataProviderCopyData(CGDataProviderRef self) {
+   return [self copyData];
+}
+

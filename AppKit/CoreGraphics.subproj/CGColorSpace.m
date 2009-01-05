@@ -24,3 +24,7 @@ CGColorSpaceRef CGColorSpaceCreateDeviceGray() {
 CGColorSpaceRef CGColorSpaceCreateDeviceCMYK() {
    return [[KGColorSpace alloc] initWithDeviceCMYK];
 }
+
+size_t CGColorSpaceGetNumberOfComponents(CGColorSpaceRef self) {
+   return [self numberOfComponents];
+}
