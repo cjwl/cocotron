@@ -22,7 +22,7 @@
    BOOL _mapped;
 }
 +(void)removeDecorationForWindow:(Window)w onDisplay:(Display*)dpy;
-
+-initWithFrame:(NSRect)frame styleMask:(unsigned)styleMask isPanel:(BOOL)isPanel backingType:(NSUInteger)backingType;
 -(NSRect)frame;
 -(Visual*)visual;
 -(Drawable)drawable;

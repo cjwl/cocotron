@@ -13,6 +13,8 @@
 #import <AppKit/NSApplication.h>
 #import <Foundation/NSPlatform.h>
 #import <AppKit/X11InputSource.h>
+#import <AppKit/NSColor.h>
+#import <AppKit/NSImage.h>
 
 
 
@@ -80,11 +82,15 @@
    if([colorName isEqual:@"controlTextColor"])
       return [NSColor blackColor];
    if([colorName isEqual:@"menuBackgroundColor"])
-      return [NSColor whiteColor];
+      return [NSColor lightGrayColor];
    if([colorName isEqual:@"controlShadowColor"])
       return [NSColor darkGrayColor];
    if([colorName isEqual:@"selectedControlColor"])
       return [NSColor blueColor];
+   if([colorName isEqual:@"controlBackgroundColor"])
+      return [NSColor whiteColor];
+   if([colorName isEqual:@"controlLightHighlightColor"])
+      return [NSColor lightGrayColor];
 
    if([colorName isEqual:@"textBackgroundColor"])
       return [NSColor whiteColor];
@@ -132,7 +138,7 @@
 }
 
 -(void)beep {
-   NSUnimplementedMethod();
+   XBell(_display, 100);
 }
 
 -(NSSet *)allFontFamilyNames {
@@ -213,4 +219,16 @@
       }
    }
 }
+@end
+
+#import <AppKit/NSGraphicsStyle.h>
+
+@implementation NSGraphicsStyle (Overrides) 
+-(void)drawMenuBranchArrowAtPoint:(NSPoint)point selected:(BOOL)selected {
+   NSImage* arrow=[NSImage imageNamed:@"NSMenuArrow"];
+   point.y+=5;
+   point.x-=2;
+   [arrow compositeToPoint:point operation:NSCompositeSourceOver];
+}
+
 @end

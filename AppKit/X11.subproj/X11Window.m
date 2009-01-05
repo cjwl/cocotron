@@ -27,22 +27,12 @@
                               1, 0, 0);
 
       XSelectInput(_dpy, _window, ExposureMask | KeyPressMask | KeyReleaseMask | StructureNotifyMask |
-      ButtonPressMask | ButtonReleaseMask | ButtonMotionMask | VisibilityChangeMask | FocusChangeMask);
+      ButtonPressMask | ButtonReleaseMask | ButtonMotionMask | PointerMotionMask | VisibilityChangeMask | FocusChangeMask);
       
       XSetWindowAttributes xattr;
       unsigned long xattr_mask;
       xattr.override_redirect= styleMask == NSBorderlessWindowMask ? True : False;
       xattr_mask = CWOverrideRedirect;
-      
-      Screen *sc=DefaultScreenOfDisplay(_dpy);
-      if(DoesBackingStore(sc)) {
-         xattr_mask|=CWBackingStore;
-         xattr.backing_store = DoesBackingStore(sc);
-      } 
-      else {
-         xattr_mask|=CWSaveUnder;
-         xattr.save_under = DoesSaveUnders(sc);
-      }
       
       XChangeWindowAttributes(_dpy, _window, xattr_mask, &xattr);
       XMoveWindow(_dpy, _window, _frame.origin.x, _frame.origin.y);
@@ -71,6 +61,7 @@
 
 +(void)removeDecorationForWindow:(Window)w onDisplay:(Display*)dpy
 {
+   return;
    struct {
       unsigned long flags;
       unsigned long functions;
@@ -287,8 +278,21 @@
    return NSMakePoint(pos.x, _frame.size.height-pos.y);
 }
 
+-(unsigned int)modifierFlagsForState:(unsigned int)state {
+   unsigned int ret=0;
+   if(state & ShiftMask)
+      ret|=NSShiftKeyMask;
+   if(state & ControlMask)
+      ret|=NSControlKeyMask;
+   if(state & Mod2Mask)
+      ret|=NSCommandKeyMask;
+   // TODO: alt doesn't work; might want to track key presses/releases instead
+   return ret;
+}
+
 
 -(void)handleEvent:(XEvent*)ev fromDisplay:(X11Display*)display {
+   static id lastFocusedWindow=nil;
    
    switch(ev->type) {
       case DestroyNotify:
@@ -301,7 +305,7 @@
       case ConfigureNotify:
       {
          [self frameChanged];
-         [_delegate platformWindow:self frameChanged:_frame];
+         [_delegate platformWindow:self frameChanged:[self transformFrame:_frame]];
          break;
       }
       case Expose:
@@ -315,35 +319,48 @@
       case ButtonPress:
       {
          NSPoint pos=[self transformPoint:NSMakePoint(ev->xbutton.x, ev->xbutton.y)];
-         id ev=[NSEvent mouseEventWithType:NSLeftMouseDown
+         id event=[NSEvent mouseEventWithType:NSLeftMouseDown
                                   location:pos
-                             modifierFlags:0
+                             modifierFlags:[self modifierFlagsForState:ev->xbutton.state]
                                     window:_delegate
                                 clickCount:1];
-         [display postEvent:ev atStart:NO];
+         [display postEvent:event atStart:NO];
          break;
       }
       case ButtonRelease:
       {
          NSPoint pos=[self transformPoint:NSMakePoint(ev->xbutton.x, ev->xbutton.y)];
-         id ev=[NSEvent mouseEventWithType:NSLeftMouseUp
+         id event=[NSEvent mouseEventWithType:NSLeftMouseUp
                                   location:pos
-                             modifierFlags:0
+                             modifierFlags:[self modifierFlagsForState:ev->xbutton.state]
                                     window:_delegate
                                 clickCount:1];
-         [display postEvent:ev atStart:NO];
+         [display postEvent:event atStart:NO];
          break;
       }
       case MotionNotify:
       {
-         NSPoint pos=[self transformPoint:NSMakePoint(ev->xbutton.x, ev->xbutton.y)];
-         id ev=[NSEvent mouseEventWithType:NSLeftMouseDragged
+         NSPoint pos=[self transformPoint:NSMakePoint(ev->xmotion.x, ev->xmotion.y)];
+         NSEventType type=NSMouseMoved;
+         
+         if(ev->xmotion.state&Button1Mask) {
+            type=NSLeftMouseDragged;
+         }
+         else if (ev->xmotion.state&Button2Mask) {
+            type=NSRightMouseDragged;
+         }
+         
+         if(type==NSMouseMoved &&
+            ![_delegate acceptsMouseMovedEvents])
+            break;
+         
+         id event=[NSEvent mouseEventWithType:type
                                   location:pos
-                             modifierFlags:0
+                             modifierFlags:[self modifierFlagsForState:ev->xmotion.state]
                                     window:_delegate
                                 clickCount:1];
-         [display postEvent:ev atStart:NO];
-         [display discardEventsMatchingMask:NSLeftMouseDraggedMask beforeEvent:ev];
+         [display postEvent:event atStart:NO];
+         [display discardEventsMatchingMask:NSLeftMouseDraggedMask beforeEvent:event];
          break;
       }
       case ClientMessage:
@@ -356,22 +373,29 @@
       case KeyRelease:
       case KeyPress:
       {
+         unsigned int modifierFlags=[self modifierFlagsForState:ev->xkey.state];
          char buf[4]={0};
          XLookupString((XKeyEvent*)ev, buf, 4, NULL, NULL);
          id str=[[NSString alloc] initWithCString:buf encoding:NSISOLatin1StringEncoding];
-         NSPoint pos=[self transformPoint:NSMakePoint(ev->xbutton.x, ev->xbutton.y)];
+         NSPoint pos=[self transformPoint:NSMakePoint(ev->xkey.x, ev->xkey.y)];
          
-         ev->xkey.state=0;
-         XLookupString((XKeyEvent*)ev, buf, 4, NULL, NULL);
-         id strIg=[[NSString alloc] initWithCString:buf encoding:NSISOLatin1StringEncoding];
-         
+         id strIg=str;
+         if(ev->xkey.state) {
+            ev->xkey.state=0;
+            XLookupString((XKeyEvent*)ev, buf, 4, NULL, NULL);
+            strIg=[[NSString alloc] initWithCString:buf encoding:NSISOLatin1StringEncoding];
+         }
+      
          id event=[NSEvent keyEventWithType:ev->type == KeyPress ? NSKeyDown : NSKeyUp
-                                location:pos 
-                           modifierFlags:0 
-                                  window:_delegate 
-                              characters:str
-             charactersIgnoringModifiers:strIg
-                               isARepeat:NO keyCode:ev->xkey.keycode];
+                                   location:pos
+                              modifierFlags:modifierFlags
+                                  timestamp:0.0 
+                               windowNumber:(NSInteger)_delegate
+                                    context:nil
+                                 characters:str 
+                charactersIgnoringModifiers:strIg
+                                  isARepeat:NO
+                                    keyCode:ev->xkey.keycode];
          
          [display postEvent:event atStart:NO];
          
@@ -379,12 +403,18 @@
          [strIg release];
          break;
       }
-         
+
       case FocusIn:
+         if(lastFocusedWindow) {
+            [_delegate platformWindowDeactivated:self checkForAppDeactivation:NO];
+            lastFocusedWindow=nil;  
+         }
          [_delegate platformWindowActivated:self];
+         lastFocusedWindow=_delegate;
          break;
       case FocusOut:
          [_delegate platformWindowDeactivated:self checkForAppDeactivation:NO];
+         lastFocusedWindow=nil;
          break;
          
       default:

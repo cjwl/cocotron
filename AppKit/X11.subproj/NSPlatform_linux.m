@@ -8,7 +8,8 @@
 
 #import <Foundation/NSPlatform_linux.h>
 #import <Foundation/NSString.h>
-
+#import <AppKit/X11AsyncInputSourceSet.h>
+#import <Foundation/NSArray.h>
 
 @implementation NSPlatform_linux (GTKAppKit)
 
