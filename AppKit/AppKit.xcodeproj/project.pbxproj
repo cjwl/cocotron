@@ -2132,6 +2132,10 @@
 		FE572D900CA0809500FB3E79 /* KGImageSource_BMP.m in Sources */ = {isa = PBXBuildFile; fileRef = FE572D8C0CA0809500FB3E79 /* KGImageSource_BMP.m */; };
 		FE5C69A10D76039F00098551 /* KGDeviceContext_gdiDIBSection.h in Headers */ = {isa = PBXBuildFile; fileRef = FE5C699F0D76039F00098551 /* KGDeviceContext_gdiDIBSection.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE5C69A20D76039F00098551 /* KGDeviceContext_gdiDIBSection.m in Sources */ = {isa = PBXBuildFile; fileRef = FE5C69A00D76039F00098551 /* KGDeviceContext_gdiDIBSection.m */; };
+		FE669C920F12B1A600534F46 /* gif_lib.m in Sources */ = {isa = PBXBuildFile; fileRef = FE669C840F12B1A600534F46 /* gif_lib.m */; };
+		FE669C9A0F12B1A600534F46 /* gif_lib.h in Headers */ = {isa = PBXBuildFile; fileRef = FE669C8C0F12B1A600534F46 /* gif_lib.h */; };
+		FE669CA00F12B1A600534F46 /* gif_lib.m in Sources */ = {isa = PBXBuildFile; fileRef = FE669C840F12B1A600534F46 /* gif_lib.m */; };
+		FE669CA80F12B1A600534F46 /* gif_lib.h in Headers */ = {isa = PBXBuildFile; fileRef = FE669C8C0F12B1A600534F46 /* gif_lib.h */; };
 		FE66F0060E513AE8006C5796 /* CGImageProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = FE66F0050E513AE8006C5796 /* CGImageProperties.m */; };
 		FE6EDE340DB797D9005503A1 /* KGExceptions.h in Headers */ = {isa = PBXBuildFile; fileRef = FE6EDE330DB797D9005503A1 /* KGExceptions.h */; };
 		FE6EE27E0DB91EA8005503A1 /* VGmath.h in Headers */ = {isa = PBXBuildFile; fileRef = FE6EE27C0DB91EA8005503A1 /* VGmath.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -2173,6 +2177,10 @@
 		FEBF5A160DCD450700CE5A1C /* KGPaint_radialGradient.m in Sources */ = {isa = PBXBuildFile; fileRef = FEBF5A0A0DCD450700CE5A1C /* KGPaint_radialGradient.m */; };
 		FEBF5A170DCD450700CE5A1C /* KGPaint_ramp.h in Headers */ = {isa = PBXBuildFile; fileRef = FEBF5A0B0DCD450700CE5A1C /* KGPaint_ramp.h */; };
 		FEBF5A180DCD450700CE5A1C /* KGPaint_ramp.m in Sources */ = {isa = PBXBuildFile; fileRef = FEBF5A0C0DCD450700CE5A1C /* KGPaint_ramp.m */; };
+		FEC0C7810F146AF800903F6D /* KGImageSource_GIF.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC0C77F0F146AF800903F6D /* KGImageSource_GIF.h */; };
+		FEC0C7820F146AF800903F6D /* KGImageSource_GIF.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC0C7800F146AF800903F6D /* KGImageSource_GIF.m */; };
+		FEC0C7830F146AF800903F6D /* KGImageSource_GIF.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC0C77F0F146AF800903F6D /* KGImageSource_GIF.h */; };
+		FEC0C7840F146AF800903F6D /* KGImageSource_GIF.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC0C7800F146AF800903F6D /* KGImageSource_GIF.m */; };
 		FEDF951F0CAF43E7009DC96F /* KGPDFContext.h in Headers */ = {isa = PBXBuildFile; fileRef = FEDF951B0CAF43E7009DC96F /* KGPDFContext.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FEDF95200CAF43E7009DC96F /* KGPDFContext.m in Sources */ = {isa = PBXBuildFile; fileRef = FEDF951C0CAF43E7009DC96F /* KGPDFContext.m */; };
 		FEED247A0EC9E8F200A5B07E /* NSImageNameRefreshTemplate.pdf in Resources */ = {isa = PBXBuildFile; fileRef = FEED24790EC9E8F200A5B07E /* NSImageNameRefreshTemplate.pdf */; };
@@ -2982,6 +2990,8 @@
 		FE64B8DF0B81239D007EE513 /* KGShading.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = KGShading.h; sourceTree = "<group>"; };
 		FE64B8E00B81239D007EE513 /* KGShading.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = KGShading.m; sourceTree = "<group>"; };
 		FE64B9210B8123F1007EE513 /* CGImage.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = CGImage.m; sourceTree = "<group>"; };
+		FE669C840F12B1A600534F46 /* gif_lib.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = gif_lib.m; path = CoreGraphics.subproj/gif_lib.m; sourceTree = "<group>"; };
+		FE669C8C0F12B1A600534F46 /* gif_lib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = gif_lib.h; path = CoreGraphics.subproj/gif_lib.h; sourceTree = "<group>"; };
 		FE66F0050E513AE8006C5796 /* CGImageProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CGImageProperties.m; path = CoreGraphics.subproj/CGImageProperties.m; sourceTree = "<group>"; };
 		FE6DC16A0BA85BEC0082AC66 /* NSOpenGLPixelBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSOpenGLPixelBuffer.h; sourceTree = "<group>"; };
 		FE6DC16B0BA85BEC0082AC66 /* NSOpenGLPixelBuffer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSOpenGLPixelBuffer.m; sourceTree = "<group>"; };
@@ -3048,6 +3058,8 @@
 		FEBF5A0A0DCD450700CE5A1C /* KGPaint_radialGradient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGPaint_radialGradient.m; sourceTree = "<group>"; };
 		FEBF5A0B0DCD450700CE5A1C /* KGPaint_ramp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGPaint_ramp.h; sourceTree = "<group>"; };
 		FEBF5A0C0DCD450700CE5A1C /* KGPaint_ramp.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGPaint_ramp.m; sourceTree = "<group>"; };
+		FEC0C77F0F146AF800903F6D /* KGImageSource_GIF.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KGImageSource_GIF.h; path = CoreGraphics.subproj/KGImageSource_GIF.h; sourceTree = "<group>"; };
+		FEC0C7800F146AF800903F6D /* KGImageSource_GIF.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KGImageSource_GIF.m; path = CoreGraphics.subproj/KGImageSource_GIF.m; sourceTree = "<group>"; };
 		FECAF4C80DB710EE00BA2A8E /* ApplicationServices.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ApplicationServices.xcodeproj; path = ../ApplicationServices/ApplicationServices.xcodeproj; sourceTree = SOURCE_ROOT; };
 		FED166D40BE502AD00BF9889 /* NSSegmentItem.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSSegmentItem.h; sourceTree = "<group>"; };
 		FED166D50BE502AD00BF9889 /* NSSegmentItem.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSSegmentItem.m; sourceTree = "<group>"; };
@@ -4066,10 +4078,14 @@
 			isa = PBXGroup;
 			children = (
 				FE66F0050E513AE8006C5796 /* CGImageProperties.m */,
-				FE572D8B0CA0809500FB3E79 /* KGImageSource_BMP.h */,
-				FE572D8C0CA0809500FB3E79 /* KGImageSource_BMP.m */,
+				FE669C8C0F12B1A600534F46 /* gif_lib.h */,
+				FE669C840F12B1A600534F46 /* gif_lib.m */,
 				FE267E890B8BCC3C0000DDC0 /* KGImageSource.h */,
 				FE267E8A0B8BCC3C0000DDC0 /* KGImageSource.m */,
+				FE572D8B0CA0809500FB3E79 /* KGImageSource_BMP.h */,
+				FE572D8C0CA0809500FB3E79 /* KGImageSource_BMP.m */,
+				FEC0C77F0F146AF800903F6D /* KGImageSource_GIF.h */,
+				FEC0C7800F146AF800903F6D /* KGImageSource_GIF.m */,
 				FE267E830B8BCC3C0000DDC0 /* KGImageSource_JPEG.m */,
 				FE267E840B8BCC3C0000DDC0 /* KGImageSource_JPEG.m */,
 				FE267E850B8BCC3C0000DDC0 /* KGImageSource_PNG.h */,
@@ -4560,6 +4576,8 @@
 				FE25FF640EE58712009C91B1 /* KGFont.h in Headers */,
 				C85D91950EE6A806004EBAEA /* NSDictionaryController.h in Headers */,
 				FE54BECB0EEB086900B4559F /* NSOpenGLDrawable.h in Headers */,
+				FE669CA80F12B1A600534F46 /* gif_lib.h in Headers */,
+				FEC0C7830F146AF800903F6D /* KGImageSource_GIF.h in Headers */,
 				C8283E4D0F0AEE3B009E89C4 /* X11InputSource.h in Headers */,
 				C8C995BF0F0BB2B100A0A091 /* X11AsyncInputSourceSet.h in Headers */,
 				C8C995DC0F0BB36700A0A091 /* X11AsyncInputSource.h in Headers */,
@@ -5284,6 +5302,8 @@
 				C85D91970EE6A806004EBAEA /* NSDictionaryController.h in Headers */,
 				FE54BEC90EEB086900B4559F /* NSOpenGLDrawable.h in Headers */,
 				FEA25F980EECCE4D008750D0 /* NSSound_win32.h in Headers */,
+				FE669C9A0F12B1A600534F46 /* gif_lib.h in Headers */,
+				FEC0C7810F146AF800903F6D /* KGImageSource_GIF.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5937,6 +5957,8 @@
 				C85D91960EE6A806004EBAEA /* NSDictionaryController.m in Sources */,
 				FE337FCB0EE77A6C00D4A751 /* CTFont.m in Sources */,
 				FE54BECC0EEB086900B4559F /* NSOpenGLDrawable.m in Sources */,
+				FE669CA00F12B1A600534F46 /* gif_lib.m in Sources */,
+				FEC0C7840F146AF800903F6D /* KGImageSource_GIF.m in Sources */,
 				C8283E4E0F0AEE3B009E89C4 /* X11InputSource.m in Sources */,
 				C8C995C00F0BB2B100A0A091 /* X11AsyncInputSourceSet.m in Sources */,
 				C8C995DD0F0BB36700A0A091 /* X11AsyncInputSource.m in Sources */,
@@ -6634,6 +6656,8 @@
 				FE337FCA0EE77A6C00D4A751 /* CTFont.m in Sources */,
 				FE54BECA0EEB086900B4559F /* NSOpenGLDrawable.m in Sources */,
 				FEA25F990EECCE4D008750D0 /* NSSound_win32.m in Sources */,
+				FE669C920F12B1A600534F46 /* gif_lib.m in Sources */,
+				FEC0C7820F146AF800903F6D /* KGImageSource_GIF.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
