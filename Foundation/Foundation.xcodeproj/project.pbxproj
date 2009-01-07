@@ -1427,6 +1427,46 @@
 		FE01A7E50C5D9B6900AEA51A /* NSTimeZoneAbbreviations.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6E2806B209747EA400EC542B /* NSTimeZoneAbbreviations.plist */; };
 		FE01A7E60C5D9B6900AEA51A /* NSTimeZoneRegions.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6E2806B309747EA400EC542B /* NSTimeZoneRegions.plist */; };
 		FE01A7E70C5D9B6900AEA51A /* NSUserDefaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6E280B2B09747F4900EC542B /* NSUserDefaults.plist */; };
+		FE1365E00F154B3A000F2657 /* NSAtomicList.h in Headers */ = {isa = PBXBuildFile; fileRef = FE1365D80F154B3A000F2657 /* NSAtomicList.h */; };
+		FE1365E10F154B3A000F2657 /* NSAtomicList.m in Sources */ = {isa = PBXBuildFile; fileRef = FE1365D90F154B3A000F2657 /* NSAtomicList.m */; };
+		FE1365E20F154B3A000F2657 /* NSLatchTrigger.h in Headers */ = {isa = PBXBuildFile; fileRef = FE1365DA0F154B3A000F2657 /* NSLatchTrigger.h */; };
+		FE1365E30F154B3A000F2657 /* NSLatchTrigger.m in Sources */ = {isa = PBXBuildFile; fileRef = FE1365DB0F154B3A000F2657 /* NSLatchTrigger.m */; };
+		FE1365E40F154B3A000F2657 /* NSOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = FE1365DC0F154B3A000F2657 /* NSOperation.h */; };
+		FE1365E50F154B3A000F2657 /* NSOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = FE1365DD0F154B3A000F2657 /* NSOperation.m */; };
+		FE1365E60F154B3A000F2657 /* NSOperationQueue.h in Headers */ = {isa = PBXBuildFile; fileRef = FE1365DE0F154B3A000F2657 /* NSOperationQueue.h */; };
+		FE1365E70F154B3A000F2657 /* NSOperationQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = FE1365DF0F154B3A000F2657 /* NSOperationQueue.m */; };
+		FE1365E80F154B3A000F2657 /* NSAtomicList.h in Headers */ = {isa = PBXBuildFile; fileRef = FE1365D80F154B3A000F2657 /* NSAtomicList.h */; };
+		FE1365E90F154B3A000F2657 /* NSAtomicList.m in Sources */ = {isa = PBXBuildFile; fileRef = FE1365D90F154B3A000F2657 /* NSAtomicList.m */; };
+		FE1365EA0F154B3A000F2657 /* NSLatchTrigger.h in Headers */ = {isa = PBXBuildFile; fileRef = FE1365DA0F154B3A000F2657 /* NSLatchTrigger.h */; };
+		FE1365EB0F154B3A000F2657 /* NSLatchTrigger.m in Sources */ = {isa = PBXBuildFile; fileRef = FE1365DB0F154B3A000F2657 /* NSLatchTrigger.m */; };
+		FE1365EC0F154B3A000F2657 /* NSOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = FE1365DC0F154B3A000F2657 /* NSOperation.h */; };
+		FE1365ED0F154B3A000F2657 /* NSOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = FE1365DD0F154B3A000F2657 /* NSOperation.m */; };
+		FE1365EE0F154B3A000F2657 /* NSOperationQueue.h in Headers */ = {isa = PBXBuildFile; fileRef = FE1365DE0F154B3A000F2657 /* NSOperationQueue.h */; };
+		FE1365EF0F154B3A000F2657 /* NSOperationQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = FE1365DF0F154B3A000F2657 /* NSOperationQueue.m */; };
+		FE1365F00F154B3A000F2657 /* NSAtomicList.h in Headers */ = {isa = PBXBuildFile; fileRef = FE1365D80F154B3A000F2657 /* NSAtomicList.h */; };
+		FE1365F10F154B3A000F2657 /* NSAtomicList.m in Sources */ = {isa = PBXBuildFile; fileRef = FE1365D90F154B3A000F2657 /* NSAtomicList.m */; };
+		FE1365F20F154B3A000F2657 /* NSLatchTrigger.h in Headers */ = {isa = PBXBuildFile; fileRef = FE1365DA0F154B3A000F2657 /* NSLatchTrigger.h */; };
+		FE1365F30F154B3A000F2657 /* NSLatchTrigger.m in Sources */ = {isa = PBXBuildFile; fileRef = FE1365DB0F154B3A000F2657 /* NSLatchTrigger.m */; };
+		FE1365F40F154B3A000F2657 /* NSOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = FE1365DC0F154B3A000F2657 /* NSOperation.h */; };
+		FE1365F50F154B3A000F2657 /* NSOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = FE1365DD0F154B3A000F2657 /* NSOperation.m */; };
+		FE1365F60F154B3A000F2657 /* NSOperationQueue.h in Headers */ = {isa = PBXBuildFile; fileRef = FE1365DE0F154B3A000F2657 /* NSOperationQueue.h */; };
+		FE1365F70F154B3A000F2657 /* NSOperationQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = FE1365DF0F154B3A000F2657 /* NSOperationQueue.m */; };
+		FE1365F80F154B3A000F2657 /* NSAtomicList.h in Headers */ = {isa = PBXBuildFile; fileRef = FE1365D80F154B3A000F2657 /* NSAtomicList.h */; };
+		FE1365F90F154B3A000F2657 /* NSAtomicList.m in Sources */ = {isa = PBXBuildFile; fileRef = FE1365D90F154B3A000F2657 /* NSAtomicList.m */; };
+		FE1365FA0F154B3A000F2657 /* NSLatchTrigger.h in Headers */ = {isa = PBXBuildFile; fileRef = FE1365DA0F154B3A000F2657 /* NSLatchTrigger.h */; };
+		FE1365FB0F154B3A000F2657 /* NSLatchTrigger.m in Sources */ = {isa = PBXBuildFile; fileRef = FE1365DB0F154B3A000F2657 /* NSLatchTrigger.m */; };
+		FE1365FC0F154B3A000F2657 /* NSOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = FE1365DC0F154B3A000F2657 /* NSOperation.h */; };
+		FE1365FD0F154B3A000F2657 /* NSOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = FE1365DD0F154B3A000F2657 /* NSOperation.m */; };
+		FE1365FE0F154B3A000F2657 /* NSOperationQueue.h in Headers */ = {isa = PBXBuildFile; fileRef = FE1365DE0F154B3A000F2657 /* NSOperationQueue.h */; };
+		FE1365FF0F154B3A000F2657 /* NSOperationQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = FE1365DF0F154B3A000F2657 /* NSOperationQueue.m */; };
+		FE1366000F154B3A000F2657 /* NSAtomicList.h in Headers */ = {isa = PBXBuildFile; fileRef = FE1365D80F154B3A000F2657 /* NSAtomicList.h */; };
+		FE1366010F154B3A000F2657 /* NSAtomicList.m in Sources */ = {isa = PBXBuildFile; fileRef = FE1365D90F154B3A000F2657 /* NSAtomicList.m */; };
+		FE1366020F154B3A000F2657 /* NSLatchTrigger.h in Headers */ = {isa = PBXBuildFile; fileRef = FE1365DA0F154B3A000F2657 /* NSLatchTrigger.h */; };
+		FE1366030F154B3A000F2657 /* NSLatchTrigger.m in Sources */ = {isa = PBXBuildFile; fileRef = FE1365DB0F154B3A000F2657 /* NSLatchTrigger.m */; };
+		FE1366040F154B3A000F2657 /* NSOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = FE1365DC0F154B3A000F2657 /* NSOperation.h */; };
+		FE1366050F154B3A000F2657 /* NSOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = FE1365DD0F154B3A000F2657 /* NSOperation.m */; };
+		FE1366060F154B3A000F2657 /* NSOperationQueue.h in Headers */ = {isa = PBXBuildFile; fileRef = FE1365DE0F154B3A000F2657 /* NSOperationQueue.h */; };
+		FE1366070F154B3A000F2657 /* NSOperationQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = FE1365DF0F154B3A000F2657 /* NSOperationQueue.m */; };
 		FE1935170B5D449E00FB74CC /* NSAssertionHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = FE1935150B5D449E00FB74CC /* NSAssertionHandler.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE1935180B5D449E00FB74CC /* NSAssertionHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = FE1935160B5D449E00FB74CC /* NSAssertionHandler.m */; };
 		FE1935190B5D449E00FB74CC /* NSAssertionHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = FE1935150B5D449E00FB74CC /* NSAssertionHandler.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -3650,6 +3690,14 @@
 		C8C9700E0EBDBC63009CE9BC /* NSConditionLock_win32.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NSConditionLock_win32.h; path = platform_win32/NSConditionLock_win32.h; sourceTree = "<group>"; };
 		C8C9700F0EBDBC63009CE9BC /* NSConditionLock_win32.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NSConditionLock_win32.m; path = platform_win32/NSConditionLock_win32.m; sourceTree = "<group>"; };
 		FE01A7EC0C5D9B6900AEA51A /* Foundation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Foundation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		FE1365D80F154B3A000F2657 /* NSAtomicList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSAtomicList.h; sourceTree = "<group>"; };
+		FE1365D90F154B3A000F2657 /* NSAtomicList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSAtomicList.m; sourceTree = "<group>"; };
+		FE1365DA0F154B3A000F2657 /* NSLatchTrigger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSLatchTrigger.h; sourceTree = "<group>"; };
+		FE1365DB0F154B3A000F2657 /* NSLatchTrigger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSLatchTrigger.m; sourceTree = "<group>"; };
+		FE1365DC0F154B3A000F2657 /* NSOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSOperation.h; sourceTree = "<group>"; };
+		FE1365DD0F154B3A000F2657 /* NSOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSOperation.m; sourceTree = "<group>"; };
+		FE1365DE0F154B3A000F2657 /* NSOperationQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSOperationQueue.h; sourceTree = "<group>"; };
+		FE1365DF0F154B3A000F2657 /* NSOperationQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSOperationQueue.m; sourceTree = "<group>"; };
 		FE1935150B5D449E00FB74CC /* NSAssertionHandler.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSAssertionHandler.h; sourceTree = "<group>"; };
 		FE1935160B5D449E00FB74CC /* NSAssertionHandler.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSAssertionHandler.m; sourceTree = "<group>"; };
 		FE2705C50C5EF3D60004AB37 /* OBJCInitializeProcess_Darwin.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = OBJCInitializeProcess_Darwin.m; sourceTree = "<group>"; };
@@ -4009,6 +4057,7 @@
 				6E28061B09747D5800EC542B /* NSPipe.h */,
 				6E28061C09747D5800EC542B /* NSPipe.m */,
 				6E28061D09747D5800EC542B /* NSPlatform.h */,
+				FE1365D70F154B3A000F2657 /* NSOperation */,
 				6E28061E09747D5800EC542B /* NSPlatform.m */,
 				FEB9D6A90B443EA600C239BB /* NSPortNameServer */,
 				FEB9D47D0B4432C400C239BB /* NSPredicate */,
@@ -4805,6 +4854,21 @@
 			name = NSCharacterSet;
 			sourceTree = "<group>";
 		};
+		FE1365D70F154B3A000F2657 /* NSOperation */ = {
+			isa = PBXGroup;
+			children = (
+				FE1365D80F154B3A000F2657 /* NSAtomicList.h */,
+				FE1365D90F154B3A000F2657 /* NSAtomicList.m */,
+				FE1365DA0F154B3A000F2657 /* NSLatchTrigger.h */,
+				FE1365DB0F154B3A000F2657 /* NSLatchTrigger.m */,
+				FE1365DC0F154B3A000F2657 /* NSOperation.h */,
+				FE1365DD0F154B3A000F2657 /* NSOperation.m */,
+				FE1365DE0F154B3A000F2657 /* NSOperationQueue.h */,
+				FE1365DF0F154B3A000F2657 /* NSOperationQueue.m */,
+			);
+			path = NSOperation;
+			sourceTree = "<group>";
+		};
 		FE4BDD2A0BCD65EB00E19685 /* CoreFoundation */ = {
 			isa = PBXGroup;
 			children = (
@@ -5350,6 +5414,10 @@
 				C8C39E020EAB6646002568A3 /* NSConditionLock_posix.h in Headers */,
 				FEE7D30D0ED1D2DE0032DCE0 /* NSNetServices.h in Headers */,
 				FEE7D33D0ED1D4E10032DCE0 /* bonjour.h in Headers */,
+				FE1365F00F154B3A000F2657 /* NSAtomicList.h in Headers */,
+				FE1365F20F154B3A000F2657 /* NSLatchTrigger.h in Headers */,
+				FE1365F40F154B3A000F2657 /* NSOperation.h in Headers */,
+				FE1365F60F154B3A000F2657 /* NSOperationQueue.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5650,6 +5718,10 @@
 				C8C39E080EAB6646002568A3 /* NSConditionLock_posix.h in Headers */,
 				FEE7D30B0ED1D2DE0032DCE0 /* NSNetServices.h in Headers */,
 				FEE7D33C0ED1D4E10032DCE0 /* bonjour.h in Headers */,
+				FE1365E80F154B3A000F2657 /* NSAtomicList.h in Headers */,
+				FE1365EA0F154B3A000F2657 /* NSLatchTrigger.h in Headers */,
+				FE1365EC0F154B3A000F2657 /* NSOperation.h in Headers */,
+				FE1365EE0F154B3A000F2657 /* NSOperationQueue.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5954,6 +6026,10 @@
 				C8C970100EBDBC63009CE9BC /* NSConditionLock_win32.h in Headers */,
 				FEE7D3130ED1D2DE0032DCE0 /* NSNetServices.h in Headers */,
 				FEE7D3400ED1D4E10032DCE0 /* bonjour.h in Headers */,
+				FE1365E00F154B3A000F2657 /* NSAtomicList.h in Headers */,
+				FE1365E20F154B3A000F2657 /* NSLatchTrigger.h in Headers */,
+				FE1365E40F154B3A000F2657 /* NSOperation.h in Headers */,
+				FE1365E60F154B3A000F2657 /* NSOperationQueue.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6255,6 +6331,10 @@
 				FEE7D30F0ED1D2DE0032DCE0 /* NSNetServices.h in Headers */,
 				FEE7D33E0ED1D4E10032DCE0 /* bonjour.h in Headers */,
 				C816EBEF0F0A763500EDC3EB /* NSDarwinString.h in Headers */,
+				FE1365F80F154B3A000F2657 /* NSAtomicList.h in Headers */,
+				FE1365FA0F154B3A000F2657 /* NSLatchTrigger.h in Headers */,
+				FE1365FC0F154B3A000F2657 /* NSOperation.h in Headers */,
+				FE1365FE0F154B3A000F2657 /* NSOperationQueue.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6556,6 +6636,10 @@
 				FEE7D3110ED1D2DE0032DCE0 /* NSNetServices.h in Headers */,
 				FEE7D33F0ED1D4E10032DCE0 /* bonjour.h in Headers */,
 				C816EBF10F0A763500EDC3EB /* NSDarwinString.h in Headers */,
+				FE1366000F154B3A000F2657 /* NSAtomicList.h in Headers */,
+				FE1366020F154B3A000F2657 /* NSLatchTrigger.h in Headers */,
+				FE1366040F154B3A000F2657 /* NSOperation.h in Headers */,
+				FE1366060F154B3A000F2657 /* NSOperationQueue.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7123,6 +7207,10 @@
 				C8B53BDA0E6AC7C500E4467E /* objc_debugHelpers.m in Sources */,
 				C8C39E030EAB6646002568A3 /* NSConditionLock_posix.m in Sources */,
 				FEE7D30E0ED1D2DE0032DCE0 /* NSNetServices.m in Sources */,
+				FE1365F10F154B3A000F2657 /* NSAtomicList.m in Sources */,
+				FE1365F30F154B3A000F2657 /* NSLatchTrigger.m in Sources */,
+				FE1365F50F154B3A000F2657 /* NSOperation.m in Sources */,
+				FE1365F70F154B3A000F2657 /* NSOperationQueue.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7423,6 +7511,10 @@
 				C8B53BE00E6AC7C500E4467E /* objc_debugHelpers.m in Sources */,
 				C8C39E090EAB6646002568A3 /* NSConditionLock_posix.m in Sources */,
 				FEE7D30C0ED1D2DE0032DCE0 /* NSNetServices.m in Sources */,
+				FE1365E90F154B3A000F2657 /* NSAtomicList.m in Sources */,
+				FE1365EB0F154B3A000F2657 /* NSLatchTrigger.m in Sources */,
+				FE1365ED0F154B3A000F2657 /* NSOperation.m in Sources */,
+				FE1365EF0F154B3A000F2657 /* NSOperationQueue.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7728,6 +7820,10 @@
 				C8B53BDE0E6AC7C500E4467E /* objc_debugHelpers.m in Sources */,
 				C8C970110EBDBC63009CE9BC /* NSConditionLock_win32.m in Sources */,
 				FEE7D3140ED1D2DE0032DCE0 /* NSNetServices.m in Sources */,
+				FE1365E10F154B3A000F2657 /* NSAtomicList.m in Sources */,
+				FE1365E30F154B3A000F2657 /* NSLatchTrigger.m in Sources */,
+				FE1365E50F154B3A000F2657 /* NSOperation.m in Sources */,
+				FE1365E70F154B3A000F2657 /* NSOperationQueue.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8031,6 +8127,10 @@
 				C8C39E070EAB6646002568A3 /* NSConditionLock_posix.m in Sources */,
 				FEE7D3100ED1D2DE0032DCE0 /* NSNetServices.m in Sources */,
 				C816EBF00F0A763500EDC3EB /* NSDarwinString.m in Sources */,
+				FE1365F90F154B3A000F2657 /* NSAtomicList.m in Sources */,
+				FE1365FB0F154B3A000F2657 /* NSLatchTrigger.m in Sources */,
+				FE1365FD0F154B3A000F2657 /* NSOperation.m in Sources */,
+				FE1365FF0F154B3A000F2657 /* NSOperationQueue.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8334,6 +8434,10 @@
 				C8C39E050EAB6646002568A3 /* NSConditionLock_posix.m in Sources */,
 				FEE7D3120ED1D2DE0032DCE0 /* NSNetServices.m in Sources */,
 				C816EBF20F0A763500EDC3EB /* NSDarwinString.m in Sources */,
+				FE1366010F154B3A000F2657 /* NSAtomicList.m in Sources */,
+				FE1366030F154B3A000F2657 /* NSLatchTrigger.m in Sources */,
+				FE1366050F154B3A000F2657 /* NSOperation.m in Sources */,
+				FE1366070F154B3A000F2657 /* NSOperationQueue.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
