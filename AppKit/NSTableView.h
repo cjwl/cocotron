@@ -149,6 +149,7 @@ typedef enum {
 -(BOOL)isRowSelected:(int)row;
 -(NSEnumerator *)selectedRowEnumerator;
 -(NSEnumerator *)selectedColumnEnumerator;
+-(NSIndexSet *)selectedColumnIndexes;
 
 -(void)selectRow:(int)row byExtendingSelection:(BOOL)extend;
 -(void)selectColumn:(int)column byExtendingSelection:(BOOL)extend;
