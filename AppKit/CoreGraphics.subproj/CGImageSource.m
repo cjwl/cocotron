@@ -10,5 +10,5 @@ CGImageRef CGImageSourceCreateImageAtIndex(CGImageSourceRef self,size_t index,NS
 }
 
 NSDictionary *CGImageSourceCopyPropertiesAtIndex(CGImageSourceRef self, size_t index,NSDictionary *options) {
-   return [self propertiesAtIndex:index options:options];
+   return [self copyPropertiesAtIndex:index options:options];
 }

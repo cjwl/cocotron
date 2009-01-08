@@ -433,11 +433,11 @@ NSLog(@"name=%@,size=%f",[NSString stringWithCString:fontData. elfLogFont.lfFace
      return nil;
    }
 
-   self=[self initWithFont:font size:size];
+   id result=[self initWithFont:font size:size];
    
    [font release];
    
-   return self;
+   return result;
 }
 
 -(void)dealloc {

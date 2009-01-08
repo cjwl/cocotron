@@ -503,25 +503,25 @@ unsigned char *stbi_png_load_from_memory(const unsigned char *buffer, int len, i
 
 @implementation KGImageSource_PNG
 
-+(BOOL)isTypeOfData:(NSData *)data {
-   const unsigned char *bytes=[data bytes];
-   unsigned             length=[data length];
-   
-   static uint8 png_sig[8] = { 137,80,78,71,13,10,26,10 };
-   int i;
-   
-   if(length<8)
++(BOOL)isPresentInDataProvider:(KGDataProvider *)provider {
+   enum { signatureLength=8 };
+   unsigned char signature[signatureLength] = { 137,80,78,71,13,10,26,10 };
+   unsigned char check[signatureLength];
+   NSInteger     i,size=[provider getBytes:check range:NSMakeRange(0,signatureLength)];
+
+   if(size!=signatureLength)
     return NO;
     
-   for (i=0; i < 8; ++i)
-    if(png_sig[i]!=bytes[i])
+   for(i=0;i<signatureLength;i++)
+    if(signature[i]!=check[i])
      return NO;
      
    return YES;
 }
 
--initWithData:(NSData *)data options:(NSDictionary *)options {
-   _png=[data copy];
+-initWithDataProvider:(KGDataProvider *)provider options:(NSDictionary *)options {
+   [super initWithDataProvider:provider options:options];
+   _png=[provider copyData];
    return self;
 }
 

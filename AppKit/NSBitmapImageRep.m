@@ -126,7 +126,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    NSDictionary *properties=CGImageSourceCopyPropertiesAtIndex(imageSource,0,nil);
    NSNumber *xres=[properties objectForKey:kCGImagePropertyDPIWidth];
    NSNumber *yres=[properties objectForKey:kCGImagePropertyDPIHeight];
-      
+
    _size.width=CGImageGetWidth(cgImage);
    _size.height=CGImageGetHeight(cgImage);
 
@@ -143,7 +143,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    _bitsPerSample=CGImageGetBitsPerComponent(cgImage);
    _pixelsWide=CGImageGetWidth(cgImage);
    _pixelsHigh=CGImageGetHeight(cgImage);
-   
+
    switch(CGImageGetAlphaInfo(cgImage)){
     case kCGImageAlphaPremultipliedLast:
     case kCGImageAlphaPremultipliedFirst:
@@ -187,6 +187,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    _bitsPerPixel=CGImageGetBitsPerPixel(cgImage);
    _bytesPerRow=CGImageGetBytesPerRow(cgImage);
    _freeWhenDone=YES;
+   _bitmapPlanes=NSZoneCalloc(NULL,1,sizeof(unsigned char *));
    _bitmapPlanes[0]=NSZoneCalloc(NULL,_bytesPerRow*_pixelsHigh,1);
    
    CGDataProviderRef    provider=CGImageGetDataProvider(cgImage);

@@ -96,7 +96,4 @@ typedef struct
    char *failure_reason;
 }
 
--initWithData:(NSData *)data options:(NSDictionary *)options;
--initWithContentsOfFile:(NSString *)path;
-
 @end

@@ -15,40 +15,42 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @implementation KGImageSource_TIFF
 
-+(BOOL)isTypeOfData:(NSData *)data {
-   const unsigned char *bytes=[data bytes];
-   unsigned             length=[data length];
++(BOOL)isPresentInDataProvider:(KGDataProvider *)provider {
+   enum { signatureLength=4 };
+   unsigned char signature[2][signatureLength] = {
+    { 'M','M',00,42 },
+    { 'I','I',42,00 }
+   };
+   unsigned char check[signatureLength];
+   NSInteger     i,size=[provider getBytes:check range:NSMakeRange(0,signatureLength)];
    
-   static unsigned char tiff_big[4] = { 'M','M',00,42 };
-   static unsigned char tiff_little[4] = { 'I','I',42,00 };
-   int i;
-   
-   if(length<4)
+   if(size!=signatureLength)
     return NO;
-    
-   for (i=0; i < 4; ++i)
-    if(tiff_big[i]!=bytes[i])
-     break;
-     
-   if(i==4)
-    return YES;
-
-   for (i=0; i < 4; ++i)
-    if(tiff_little[i]!=bytes[i])
-     break;
-     
-   if(i==4)
-    return YES;
-
+   
+   int s;
+   for(s=0;s<2;s++){
+    for(i=0;i<signatureLength;i++)
+     if(signature[s][i]!=check[i])
+      break;
+      
+    if(i==signatureLength)
+     return YES;
+   }
    return NO;
 }
 
--initWithData:(NSData *)data options:(NSDictionary *)options {
-   if((_reader=[[NSTIFFReader alloc] initWithData:data])==nil){
+
+-initWithDataProvider:(KGDataProvider *)provider options:(NSDictionary *)options {
+   [super initWithDataProvider:provider options:options];
+   
+   NSData *data=[provider copyData];
+   _reader=[[NSTIFFReader alloc] initWithData:data];
+   [data release];
+   
+   if(_reader==nil){
     [self dealloc];
     return nil;
    }
-   
    return self;
 }
 
@@ -61,7 +63,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return [[_reader imageFileDirectory] count];
 }
 
--(NSDictionary *)propertiesAtIndex:(unsigned)index options:(NSDictionary *)options {
+-(NSDictionary *)copyPropertiesAtIndex:(unsigned)index options:(NSDictionary *)options {
    NSArray *entries=[_reader imageFileDirectory];
    
    if([entries count]<=index)
@@ -69,7 +71,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    
    NSTIFFImageFileDirectory *directory=[entries objectAtIndex:index];
    
-   return [directory properties];
+   return [[directory properties] copy];
 }
 
 

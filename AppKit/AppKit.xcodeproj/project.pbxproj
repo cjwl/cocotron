@@ -304,7 +304,6 @@
 		C88975320EA0BF3100D0A0A2 /* KGLayer.h in Headers */ = {isa = PBXBuildFile; fileRef = FE064AC10B8B805000853FBB /* KGLayer.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		C88975330EA0BF3100D0A0A2 /* KGPath.h in Headers */ = {isa = PBXBuildFile; fileRef = FE064AC30B8B805000853FBB /* KGPath.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		C88975340EA0BF3100D0A0A2 /* KGPattern.h in Headers */ = {isa = PBXBuildFile; fileRef = FE064AC50B8B805000853FBB /* KGPattern.h */; };
-		C88975350EA0BF3100D0A0A2 /* KGImageSource_JPEG.m in Headers */ = {isa = PBXBuildFile; fileRef = FE267E830B8BCC3C0000DDC0 /* KGImageSource_JPEG.m */; settings = {ATTRIBUTES = (Private, ); }; };
 		C88975360EA0BF3100D0A0A2 /* KGImageSource_PNG.h in Headers */ = {isa = PBXBuildFile; fileRef = FE267E850B8BCC3C0000DDC0 /* KGImageSource_PNG.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		C88975370EA0BF3100D0A0A2 /* KGImageSource_TIFF.h in Headers */ = {isa = PBXBuildFile; fileRef = FE267E870B8BCC3C0000DDC0 /* KGImageSource_TIFF.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		C88975380EA0BF3100D0A0A2 /* KGImageSource.h in Headers */ = {isa = PBXBuildFile; fileRef = FE267E890B8BCC3C0000DDC0 /* KGImageSource.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -997,7 +996,6 @@
 		C8A2E3B30F07EA1F0054397C /* KGLayer.h in Headers */ = {isa = PBXBuildFile; fileRef = FE064AC10B8B805000853FBB /* KGLayer.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		C8A2E3B40F07EA1F0054397C /* KGPath.h in Headers */ = {isa = PBXBuildFile; fileRef = FE064AC30B8B805000853FBB /* KGPath.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		C8A2E3B50F07EA1F0054397C /* KGPattern.h in Headers */ = {isa = PBXBuildFile; fileRef = FE064AC50B8B805000853FBB /* KGPattern.h */; };
-		C8A2E3B60F07EA1F0054397C /* KGImageSource_JPEG.m in Headers */ = {isa = PBXBuildFile; fileRef = FE267E830B8BCC3C0000DDC0 /* KGImageSource_JPEG.m */; settings = {ATTRIBUTES = (Private, ); }; };
 		C8A2E3B70F07EA1F0054397C /* KGImageSource_PNG.h in Headers */ = {isa = PBXBuildFile; fileRef = FE267E850B8BCC3C0000DDC0 /* KGImageSource_PNG.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		C8A2E3B80F07EA1F0054397C /* KGImageSource_TIFF.h in Headers */ = {isa = PBXBuildFile; fileRef = FE267E870B8BCC3C0000DDC0 /* KGImageSource_TIFF.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		C8A2E3B90F07EA1F0054397C /* KGImageSource.h in Headers */ = {isa = PBXBuildFile; fileRef = FE267E890B8BCC3C0000DDC0 /* KGImageSource.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -1725,7 +1723,6 @@
 		FE01A92D0C5D9BCB00AEA51A /* KGLayer.h in Headers */ = {isa = PBXBuildFile; fileRef = FE064AC10B8B805000853FBB /* KGLayer.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE01A92E0C5D9BCB00AEA51A /* KGPath.h in Headers */ = {isa = PBXBuildFile; fileRef = FE064AC30B8B805000853FBB /* KGPath.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE01A92F0C5D9BCB00AEA51A /* KGPattern.h in Headers */ = {isa = PBXBuildFile; fileRef = FE064AC50B8B805000853FBB /* KGPattern.h */; };
-		FE01A9300C5D9BCB00AEA51A /* KGImageSource_JPEG.m in Headers */ = {isa = PBXBuildFile; fileRef = FE267E830B8BCC3C0000DDC0 /* KGImageSource_JPEG.m */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE01A9310C5D9BCB00AEA51A /* KGImageSource_PNG.h in Headers */ = {isa = PBXBuildFile; fileRef = FE267E850B8BCC3C0000DDC0 /* KGImageSource_PNG.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE01A9320C5D9BCB00AEA51A /* KGImageSource_TIFF.h in Headers */ = {isa = PBXBuildFile; fileRef = FE267E870B8BCC3C0000DDC0 /* KGImageSource_TIFF.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE01A9330C5D9BCB00AEA51A /* KGImageSource.h in Headers */ = {isa = PBXBuildFile; fileRef = FE267E890B8BCC3C0000DDC0 /* KGImageSource.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -2838,7 +2835,6 @@
 		FE1E86C00BBCA62D0013B968 /* NSGraphicsStyle.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSGraphicsStyle.m; sourceTree = "<group>"; };
 		FE25FF600EE58712009C91B1 /* KGFont.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGFont.h; sourceTree = "<group>"; };
 		FE25FF610EE58712009C91B1 /* KGFont.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGFont.m; sourceTree = "<group>"; };
-		FE267E830B8BCC3C0000DDC0 /* KGImageSource_JPEG.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = KGImageSource_JPEG.m; path = CoreGraphics.subproj/KGImageSource_JPEG.m; sourceTree = "<group>"; };
 		FE267E840B8BCC3C0000DDC0 /* KGImageSource_JPEG.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = KGImageSource_JPEG.m; path = CoreGraphics.subproj/KGImageSource_JPEG.m; sourceTree = "<group>"; };
 		FE267E850B8BCC3C0000DDC0 /* KGImageSource_PNG.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = KGImageSource_PNG.h; path = CoreGraphics.subproj/KGImageSource_PNG.h; sourceTree = "<group>"; };
 		FE267E860B8BCC3C0000DDC0 /* KGImageSource_PNG.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = KGImageSource_PNG.m; path = CoreGraphics.subproj/KGImageSource_PNG.m; sourceTree = "<group>"; };
@@ -3043,7 +3039,7 @@
 		FEABD5E90CB9CEE40035F828 /* KGLayer_gdi.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = KGLayer_gdi.m; sourceTree = "<group>"; };
 		FEABD6030CB9D0C90035F828 /* KGContext_gdi.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = KGContext_gdi.h; sourceTree = "<group>"; };
 		FEABD6040CB9D0C90035F828 /* KGContext_gdi.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = KGContext_gdi.m; sourceTree = "<group>"; };
-		FEBF55E20DCA112900CE5A1C /* KGImageSource_JPEG.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGImageSource_JPEG.h; sourceTree = "<group>"; };
+		FEBF55E20DCA112900CE5A1C /* KGImageSource_JPEG.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KGImageSource_JPEG.h; path = CoreGraphics.subproj/KGImageSource_JPEG.h; sourceTree = "<group>"; };
 		FEBF55E30DCA112900CE5A1C /* KGPaint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGPaint.h; sourceTree = "<group>"; };
 		FEBF55E40DCA112900CE5A1C /* KGPaint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGPaint.m; sourceTree = "<group>"; };
 		FEBF5A010DCD450700CE5A1C /* KGPaint_axialGradient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGPaint_axialGradient.h; sourceTree = "<group>"; };
@@ -3633,7 +3629,6 @@
 				FEBF5A0A0DCD450700CE5A1C /* KGPaint_radialGradient.m */,
 				FEBF5A0B0DCD450700CE5A1C /* KGPaint_ramp.h */,
 				FEBF5A0C0DCD450700CE5A1C /* KGPaint_ramp.m */,
-				FEBF55E20DCA112900CE5A1C /* KGImageSource_JPEG.h */,
 				FEBF55E30DCA112900CE5A1C /* KGPaint.h */,
 				FEBF55E40DCA112900CE5A1C /* KGPaint.m */,
 				FE7ABEBD0DC2C9BA0060D15B /* CGPDFDocument.m */,
@@ -4086,7 +4081,7 @@
 				FE572D8C0CA0809500FB3E79 /* KGImageSource_BMP.m */,
 				FEC0C77F0F146AF800903F6D /* KGImageSource_GIF.h */,
 				FEC0C7800F146AF800903F6D /* KGImageSource_GIF.m */,
-				FE267E830B8BCC3C0000DDC0 /* KGImageSource_JPEG.m */,
+				FEBF55E20DCA112900CE5A1C /* KGImageSource_JPEG.h */,
 				FE267E840B8BCC3C0000DDC0 /* KGImageSource_JPEG.m */,
 				FE267E850B8BCC3C0000DDC0 /* KGImageSource_PNG.h */,
 				FE267E860B8BCC3C0000DDC0 /* KGImageSource_PNG.m */,
@@ -4496,7 +4491,6 @@
 				C88975320EA0BF3100D0A0A2 /* KGLayer.h in Headers */,
 				C88975330EA0BF3100D0A0A2 /* KGPath.h in Headers */,
 				C88975340EA0BF3100D0A0A2 /* KGPattern.h in Headers */,
-				C88975350EA0BF3100D0A0A2 /* KGImageSource_JPEG.m in Headers */,
 				C88975360EA0BF3100D0A0A2 /* KGImageSource_PNG.h in Headers */,
 				C88975370EA0BF3100D0A0A2 /* KGImageSource_TIFF.h in Headers */,
 				C88975380EA0BF3100D0A0A2 /* KGImageSource.h in Headers */,
@@ -4862,7 +4856,6 @@
 				C8A2E3B30F07EA1F0054397C /* KGLayer.h in Headers */,
 				C8A2E3B40F07EA1F0054397C /* KGPath.h in Headers */,
 				C8A2E3B50F07EA1F0054397C /* KGPattern.h in Headers */,
-				C8A2E3B60F07EA1F0054397C /* KGImageSource_JPEG.m in Headers */,
 				C8A2E3B70F07EA1F0054397C /* KGImageSource_PNG.h in Headers */,
 				C8A2E3B80F07EA1F0054397C /* KGImageSource_TIFF.h in Headers */,
 				C8A2E3B90F07EA1F0054397C /* KGImageSource.h in Headers */,
@@ -5226,7 +5219,6 @@
 				FE01A92D0C5D9BCB00AEA51A /* KGLayer.h in Headers */,
 				FE01A92E0C5D9BCB00AEA51A /* KGPath.h in Headers */,
 				FE01A92F0C5D9BCB00AEA51A /* KGPattern.h in Headers */,
-				FE01A9300C5D9BCB00AEA51A /* KGImageSource_JPEG.m in Headers */,
 				FE01A9310C5D9BCB00AEA51A /* KGImageSource_PNG.h in Headers */,
 				FE01A9320C5D9BCB00AEA51A /* KGImageSource_TIFF.h in Headers */,
 				FE01A9330C5D9BCB00AEA51A /* KGImageSource.h in Headers */,

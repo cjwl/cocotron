@@ -395,25 +395,25 @@ stbi_uc *stbi_bmp_load_from_memory (const stbi_uc *buffer, int len, int *x, int 
 
 @implementation KGImageSource_BMP
 
-+(BOOL)isTypeOfData:(NSData *)data {
-   const unsigned char *bytes=[data bytes];
-   unsigned             length=[data length];
++(BOOL)isPresentInDataProvider:(KGDataProvider *)provider {
+   enum { signatureLength=2 };
+   unsigned char signature[signatureLength] = { 'B','M' };
+   unsigned char check[signatureLength];
+   NSInteger     i,size=[provider getBytes:check range:NSMakeRange(0,signatureLength)];
    
-   static uint8 bmp_sig[2] = { 'B','M' };
-   int i;
-   
-   if(length<2)
+   if(size!=signatureLength)
     return NO;
     
-   for (i=0; i < 2; ++i)
-    if(bmp_sig[i]!=bytes[i])
+   for(i=0;i<signatureLength;i++)
+    if(signature[i]!=check[i])
      return NO;
      
    return YES;
 }
 
--initWithData:(NSData *)data options:(NSDictionary *)options {
-   _bmp=[data copy];
+-initWithDataProvider:(KGDataProvider *)provider options:(NSDictionary *)options {
+   [super initWithDataProvider:provider options:options];
+   _bmp=[provider copyData];
    return self;
 }
 

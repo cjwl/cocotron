@@ -8,16 +8,18 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import "KGImageSource.h"
 #import <Foundation/NSData.h>
+#import "KGDataProvider.h"
 #import "KGExceptions.h"
 
 @implementation KGImageSource
 
-+(KGImageSource *)newImageSourceWithData:(NSData *)data options:(NSDictionary *)options {
++(KGImageSource *)newImageSourceWithDataProvider:(KGDataProvider *)provider options:(NSDictionary *)options {
    static NSString *classes[]={
     @"KGImageSource_PNG",
     @"KGImageSource_TIFF",
     @"KGImageSource_JPEG",
     @"KGImageSource_BMP",
+    @"KGImageSource_GIF",
     nil
    };
    int i;
@@ -25,32 +27,35 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    for(i=0;classes[i]!=nil;i++){
     Class cls=NSClassFromString(classes[i]);
    
-    if([cls isTypeOfData:data])
-     return [[cls alloc] initWithData:data options:options];
+    if([cls isPresentInDataProvider:provider])
+     return [[cls alloc] initWithDataProvider:provider options:options];
    }
        
    return nil;
 }
 
-+(BOOL)isTypeOfData:(NSData *)data {
-   KGInvalidAbstractInvocation();
++(KGImageSource *)newImageSourceWithData:(NSData *)data options:(NSDictionary *)options {
+   KGDataProvider *provider=[[KGDataProvider alloc] initWithData:data];
+   KGImageSource  *result=[self newImageSourceWithDataProvider:provider options:options];
+   [provider release];
+   return result;
+}
+
++(KGImageSource *)newImageSourceWitURL:(NSURL *)url options:(NSDictionary *)options {
+   KGDataProvider *provider=[[KGDataProvider alloc] initWithURL:url];
+   KGImageSource  *result=[self newImageSourceWithDataProvider:provider options:options];
+   [provider release];
+   return result;
+}
+
++(BOOL)isPresentInDataProvider:(KGDataProvider *)provider {
    return NO;
 }
 
--initWithData:(NSData *)data options:(NSDictionary *)options {
-  KGInvalidAbstractInvocation();
-  return nil;
-}
-
--initWithURL:(NSURL *)url options:(NSDictionary *)options {
-   NSData *data=[NSData dataWithContentsOfURL:url];
-   
-   if(data==nil){
-    [self dealloc];
-    return nil;
-   }
-   
-   return [self initWithData:data options:options];
+-initWithDataProvider:(KGDataProvider *)provider options:(NSDictionary *)options {
+   _provider=[provider retain];
+   _options=[options retain];
+   return self;
 }
 
 -(unsigned)count {
@@ -58,7 +63,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return 0;
 }
 
--(NSDictionary *)propertiesAtIndex:(unsigned)index options:(NSDictionary *)options {
+-(NSDictionary *)copyPropertiesAtIndex:(unsigned)index options:(NSDictionary *)options {
    return nil;
 }
 

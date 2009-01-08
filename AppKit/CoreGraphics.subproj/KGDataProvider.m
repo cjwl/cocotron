@@ -10,11 +10,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSData.h>
 #import <Foundation/NSFileManager.h>
 #import <Foundation/NSStream.h>
+#import <Foundation/NSURL.h>
+#import <Foundation/NSValue.h>
 #import <string.h>
 
 @implementation KGDataProvider
 
 -initWithData:(NSData *)data {
+   _inputStream=[[NSInputStream inputStreamWithData:data] retain];
+   [_inputStream open];
    _data=[data retain];
    _isDirectAccess=YES;
    _bytes=[data bytes];
@@ -34,16 +38,34 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 // why doesn't CGDataProvider use CFString's, ugh
    NSUInteger len=strlen(pathCString);
    _path=[[[NSFileManager defaultManager] stringWithFileSystemRepresentation:pathCString length:len] copy];
-   
+   _inputStream=[[NSInputStream inputStreamWithFileAtPath:_path] retain];
+   [_inputStream open];
+   _data=nil;
    _isDirectAccess=NO;
-   _bytes=NULL;
+   _bytes=nil;
    _length=0;
    return self;
 }
 
+-initWithURL:(NSURL *)url {
+   NSData *data=[[NSData alloc] initWithContentsOfURL:url];
+   id      result=[self initWithData:data];
+   
+   [data release];
+   
+   return result;
+}
+
 -(void)dealloc {
+   [_inputStream close];
+   [_inputStream release];
    [_data release];
+   [_path release];
    [super dealloc];
+}
+
+-(NSString *)path {
+   return _path;
 }
 
 -(BOOL)isDirectAccess {
@@ -62,11 +84,23 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return _length;
 }
 
+-(NSInteger)getBytes:(void *)bytes range:(NSRange)range {
+   NSInteger check=-1;
+   NSNumber *number=[[NSNumber alloc] initWithInt:range.location];
+   
+   if([_inputStream setProperty:number forKey:NSStreamFileCurrentOffsetKey])
+    check=[_inputStream read:bytes maxLength:range.length];
+
+   [number release];
+   
+   return check;
+}
+
 -(NSData *)copyData {
    if(_data!=nil)
     return [_data copy];
    else
-    return [[NSData alloc] initWithContentsOfFile:_path]; 
+    return [[NSData alloc] initWithContentsOfMappedFile:_path]; 
 }
 
 @end

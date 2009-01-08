@@ -1044,34 +1044,26 @@ static unsigned char *stbi_jpeg_load_from_memory(jpeg *j,stbi_uc const *buffer, 
    return load_jpeg_image(j, x,y,comp,req_comp);
 }
 
-+(BOOL)isTypeOfData:(NSData *)data {
-   const unsigned char *bytes=[data bytes];
-   unsigned             i,length=[data length];
-   unsigned char        jpg[2]={0xFF,0xD8};
-
-   if(length<2)
++(BOOL)isPresentInDataProvider:(KGDataProvider *)provider {
+   enum { signatureLength=2 };
+   unsigned char signature[signatureLength] = {0xFF,0xD8};
+   unsigned char check[signatureLength];
+   NSInteger     i,size=[provider getBytes:check range:NSMakeRange(0,signatureLength)];
+   
+   if(size!=signatureLength)
     return NO;
-   
-   for(i=0;i<2;i++)
-    if(jpg[i]!=bytes[i])
+    
+   for(i=0;i<signatureLength;i++)
+    if(signature[i]!=check[i])
      return NO;
-   
+     
    return YES;
 }
 
--initWithData:(NSData *)data options:(NSDictionary *)options {
-   _jpg=[data copy];
+-initWithDataProvider:(KGDataProvider *)provider options:(NSDictionary *)options {
+   [super initWithDataProvider:provider options:options];
+   _jpg=[provider copyData];
    return self;
-}
-
--initWithContentsOfFile:(NSString *)path {
-   NSData *data=[NSData dataWithContentsOfFile:path];
-   if(data==nil){
-    [self dealloc];
-    return nil;
-   }
-   
-   return [self initWithData:data options:nil];
 }
 
 -(void)dealloc {

@@ -7,10 +7,12 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
 #import <Foundation/NSObject.h>
+#import <Foundation/NSRange.h>
 
-@class NSData,NSInputStream;
+@class NSData,NSInputStream,NSURL;
 
 @interface KGDataProvider : NSObject {
+   NSInputStream *_inputStream;
    NSData        *_data;
    NSString      *_path;
    BOOL           _isDirectAccess;
@@ -21,12 +23,17 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -initWithData:(NSData *)data;
 -initWithBytes:(const void *)bytes length:(size_t)length;
 -initWithFilename:(const char *)pathCString;
+-initWithURL:(NSURL *)url;
 
 -(BOOL)isDirectAccess;
+
+-(NSString *)path;
 
 -(NSData *)data;
 -(const void *)bytes;
 -(size_t)length;
+
+-(NSInteger)getBytes:(void *)bytes range:(NSRange)range;
 
 -(NSData *)copyData;
 

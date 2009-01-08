@@ -92,13 +92,6 @@ typedef struct GifImageDesc {
 /* func type to read gif data from arbitrary sources (TVT) */
 typedef struct GifFileType *GifFileTypeRef;
 
-typedef int (*InputFunc) ( GifFileTypeRef, GifByteType *, int);
-
-/* func type to write gif data ro arbitrary targets.
- * Returns count of bytes written. (MRB)
- */
-typedef int (*OutputFunc) (GifFileTypeRef, const GifByteType *, int);
-
 typedef struct GifFileType {
     GifWord SWidth, SHeight,        /* Screen dimensions. */
       SColorResolution,         /* How many colors can we generate? */

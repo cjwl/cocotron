@@ -171,6 +171,9 @@ NSString *NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
    [layout addTextContainer:container];
 
    self=[self initWithFrame:frame textContainer:container];
+   if(self==nil)
+    return nil;
+    
    [_textStorage retain];
    _ownsTextStorage=YES;
 
