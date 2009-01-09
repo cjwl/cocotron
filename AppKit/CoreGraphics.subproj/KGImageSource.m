@@ -27,8 +27,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    for(i=0;classes[i]!=nil;i++){
     Class cls=NSClassFromString(classes[i]);
    
-    if([cls isPresentInDataProvider:provider])
+    if([cls isPresentInDataProvider:provider]){
+     [provider rewind];
      return [[cls alloc] initWithDataProvider:provider options:options];
+    }
    }
        
    return nil;
@@ -67,7 +69,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return nil;
 }
 
--(KGImage *)imageAtIndex:(unsigned)index options:(NSDictionary *)options {
+-(KGImage *)createImageAtIndex:(unsigned)index options:(NSDictionary *)options {
   KGInvalidAbstractInvocation();
   return nil;
 }

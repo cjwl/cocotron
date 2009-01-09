@@ -78,7 +78,7 @@ GifFileType *DGifOpen(NSInputStream *stream) {
 
     GifFile = malloc(sizeof(GifFileType));
     if (GifFile == NULL) {
-        GifFile->GifError = D_GIF_ERR_NOT_ENOUGH_MEM;
+        //GifFile->GifError = D_GIF_ERR_NOT_ENOUGH_MEM; this will segfault
         return NULL;
     }
 

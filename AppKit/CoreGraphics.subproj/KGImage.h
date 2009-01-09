@@ -177,19 +177,32 @@ static inline void KGRGBPremultiplySpan(KGRGBAffff *span,int length){
 }
 
 typedef struct {
-#ifdef __LITTLE_ENDIAN__
+   uint8_t a;
+   uint8_t r;
+   uint8_t g;
+   uint8_t b;
+} KGARGB32Big;
+
+typedef struct {
+   uint8_t r;
+   uint8_t g;
+   uint8_t b;
+   uint8_t a;
+} KGRGBA32Big;
+
+typedef struct {
    uint8_t b;
    uint8_t g;
    uint8_t r;
    uint8_t a;
+} KGARGB32Little;
+
+#ifdef __LITTLE_ENDIAN__
+typedef KGARGB32Little KGRGBA8888;
 #endif
 #ifdef __BIG_ENDIAN__
-   uint8_t a;
-   uint8_t r;
-   uint8_t g;
-   uint8_t b;
+typedef KGARGB32Big KGRGBA8888;
 #endif
-} KGRGBA8888;
 
 static inline KGRGBA8888 KGRGBA8888Init(uint8_t r,uint8_t g,uint8_t b,uint8_t a){
    KGRGBA8888 result;

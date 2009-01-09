@@ -6,7 +6,7 @@ CGImageSourceRef CGImageSourceCreateWithData(id data,id options) {
 }
 
 CGImageRef CGImageSourceCreateImageAtIndex(CGImageSourceRef self,size_t index,NSDictionary *options) {
-   return [self imageAtIndex:index options:options];
+   return [self createImageAtIndex:index options:options];
 }
 
 NSDictionary *CGImageSourceCopyPropertiesAtIndex(CGImageSourceRef self, size_t index,NSDictionary *options) {

@@ -36,6 +36,16 @@ enum {
    kCGBitmapByteOrder32Little=0x2000,
    kCGBitmapByteOrder16Big=0x3000,
    kCGBitmapByteOrder32Big=0x4000,
+   
+#ifdef __BIG_ENDIAN__
+   kCGBitmapByteOrder16Host=kCGBitmapByteOrder16Big,
+   kCGBitmapByteOrder32Host=kCGBitmapByteOrder32Big,
+#endif
+
+#ifdef __LITTLE_ENDIAN__
+   kCGBitmapByteOrder16Host=kCGBitmapByteOrder16Little,
+   kCGBitmapByteOrder32Host=kCGBitmapByteOrder32Little,
+#endif
 };
 
 typedef unsigned CGBitmapInfo;

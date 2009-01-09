@@ -334,7 +334,7 @@ static void decode_R8_G8_B8_Afill(const unsigned char *stripBytes,unsigned byteC
 
 // specific checks for unimplemented features
 
-   if(_compression!=NSTIFFCompression_none && _compression!=NSTIFFCompression_LZW){
+   if(_compression!=NSTIFFCompression_none/* && _compression!=NSTIFFCompression_LZW*/){
     NSLog(@"TIFF unsupported, compression %d",_compression);
     return NO;
    }

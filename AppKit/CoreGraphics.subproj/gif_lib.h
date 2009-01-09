@@ -89,6 +89,23 @@ typedef struct GifImageDesc {
     ColorMapObject *ColorMap;       /* The local color map */
 } GifImageDesc;
 
+/* This is the in-core version of an extension record */
+typedef struct {
+    int ByteCount;
+    char *Bytes;    /* on malloc(3) heap */
+    int Function;   /* Holds the type of the Extension block. */
+} ExtensionBlock;
+
+
+/* This holds an image header, its unpacked raster bits, and extensions */
+typedef struct SavedImage {
+    GifImageDesc ImageDesc;
+    unsigned char *RasterBits;  /* on malloc(3) heap */
+   // int Function;   /* DEPRECATED: Use ExtensionBlocks[x].Function instead */
+    int ExtensionBlockCount;
+    ExtensionBlock *ExtensionBlocks;    /* on malloc(3) heap */
+} SavedImage;
+
 /* func type to read gif data from arbitrary sources (TVT) */
 typedef struct GifFileType *GifFileTypeRef;
 
@@ -210,21 +227,6 @@ extern ColorMapObject *MakeMapObject(int ColorCount,const GifColorType * ColorMa
 extern void FreeMapObject(ColorMapObject * Object);
 extern ColorMapObject *UnionColorMap(const ColorMapObject * ColorIn1,const ColorMapObject * ColorIn2,GifPixelType ColorTransIn2[]);
 
-/* This is the in-core version of an extension record */
-typedef struct {
-    int ByteCount;
-    char *Bytes;    /* on malloc(3) heap */
-    int Function;   /* Holds the type of the Extension block. */
-} ExtensionBlock;
-
-/* This holds an image header, its unpacked raster bits, and extensions */
-typedef struct SavedImage {
-    GifImageDesc ImageDesc;
-    unsigned char *RasterBits;  /* on malloc(3) heap */
-   // int Function;   /* DEPRECATED: Use ExtensionBlocks[x].Function instead */
-    int ExtensionBlockCount;
-    ExtensionBlock *ExtensionBlocks;    /* on malloc(3) heap */
-} SavedImage;
 
 extern void ApplyTranslation(SavedImage * Image, GifPixelType Translation[]);
 extern int AddExtensionBlock(SavedImage * New, int Len,unsigned char ExtData[],int Function);

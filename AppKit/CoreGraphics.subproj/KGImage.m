@@ -362,7 +362,7 @@ static BOOL initFunctionsForParameters(KGImage *self,size_t bitsPerComponent,siz
 
    _clampExternalPixels=NO; // only do this if premultiplied format
    if(!initFunctionsForParameters(self,bitsPerComponent,bitsPerPixel,colorSpace,bitmapInfo)){
-    NSLog(@"KGImage failed to init with bpc=%d, bpp=%d,colorSpace=%@,bitmapInfo=%0X",bitsPerComponent,bitsPerPixel,colorSpace,bitmapInfo);
+    NSLog(@"KGImage failed to init with bpc=%d, bpp=%d,colorSpace=%@,bitmapInfo=0x%0X",bitsPerComponent,bitsPerPixel,colorSpace,bitmapInfo);
     [self dealloc];
     return nil;
    }

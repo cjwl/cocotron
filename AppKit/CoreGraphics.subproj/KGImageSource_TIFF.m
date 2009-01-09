@@ -75,7 +75,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 
--(KGImage *)imageAtIndex:(unsigned)index options:(NSDictionary *)options {
+-(KGImage *)createImageAtIndex:(unsigned)index options:(NSDictionary *)options {
    NSArray *entries=[_reader imageFileDirectory];
    
    if([entries count]<=index)

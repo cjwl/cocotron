@@ -426,7 +426,7 @@ stbi_uc *stbi_bmp_load_from_memory (const stbi_uc *buffer, int len, int *x, int 
    return 1;
 }
 
--(KGImage *)imageAtIndex:(unsigned)index options:(NSDictionary *)options {
+-(KGImage *)createImageAtIndex:(unsigned)index options:(NSDictionary *)options {
    int            width,height;
    int            comp;
    unsigned char *pixels=stbi_bmp_load_from_memory([_bmp bytes],[_bmp length],&width,&height,&comp,STBI_rgb_alpha);

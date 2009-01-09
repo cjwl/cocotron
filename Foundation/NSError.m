@@ -12,6 +12,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 NSString *NSPOSIXErrorDomain=@"NSPOSIXErrorDomain";
 NSString *NSWINSOCKErrorDomain=@"NSWINSOCKErrorDomain";
+NSString *NSCocoaErrorDomain=@"NSCocoaErrorDomain";
+
 NSString *NSUnderlyingErrorKey=@"NSUnderlyingErrorKey";
 NSString *NSLocalizedDescriptionKey=@"NSLocalizedDescriptionKey";
 NSString *NSLocalizedFailureReasonErrorKey=@"NSLocalizedFailureReasonErrorKey";

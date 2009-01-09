@@ -14,7 +14,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @implementation NSBitmapImageRep
 
 +(NSArray *)imageUnfilteredFileTypes {
-   return [NSArray arrayWithObjects:@"tiff",@"tif",@"png",@"jpg",@"bmp",nil];
+   return [NSArray arrayWithObjects:@"tiff",@"tif",@"png",@"jpg",@"gif",@"bmp",nil];
 }
 
 +(NSArray *)imageRepsWithContentsOfFile:(NSString *)path {
@@ -161,8 +161,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     _samplesPerPixel++;
    _isPlanar=NO;
    _bitmapFormat=0;
-   if(CGImageGetBitmapInfo(cgImage)&kCGBitmapFloatComponents)
+   if(CGImageGetBitmapInfo(cgImage)&kCGBitmapFloatComponents){
     _bitmapFormat|=NSFloatingPointSamplesBitmapFormat;
+   }
    switch(CGImageGetAlphaInfo(cgImage)){
     case kCGImageAlphaNone:
      break;
@@ -182,7 +183,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     case kCGImageAlphaNoneSkipFirst:
      break;
    }
-    _bitmapFormat|=NSFloatingPointSamplesBitmapFormat;
     
    _bitsPerPixel=CGImageGetBitsPerPixel(cgImage);
    _bytesPerRow=CGImageGetBytesPerRow(cgImage);
@@ -450,7 +450,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    }
    if(_bitmapFormat&NSFloatingPointSamplesBitmapFormat)
     result|=kCGBitmapFloatComponents;
-   
+
    return result;
 }
 

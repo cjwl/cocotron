@@ -68,6 +68,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return _path;
 }
 
+-(NSInputStream *)inputStream {
+   return _inputStream;
+}
+
 -(BOOL)isDirectAccess {
    return _isDirectAccess;
 }
@@ -82,6 +86,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(size_t)length {
    return _length;
+}
+
+-(void)rewind {
+   NSNumber *number=[[NSNumber alloc] initWithInt:0];
+   
+   [_inputStream setProperty:number forKey:NSStreamFileCurrentOffsetKey];
+
+   [number release];
 }
 
 -(NSInteger)getBytes:(void *)bytes range:(NSRange)range {

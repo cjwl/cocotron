@@ -25,6 +25,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -initWithFilename:(const char *)pathCString;
 -initWithURL:(NSURL *)url;
 
+-(NSInputStream *)inputStream;
+
 -(BOOL)isDirectAccess;
 
 -(NSString *)path;
@@ -33,6 +35,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(const void *)bytes;
 -(size_t)length;
 
+-(void)rewind;
 -(NSInteger)getBytes:(void *)bytes range:(NSRange)range;
 
 -(NSData *)copyData;

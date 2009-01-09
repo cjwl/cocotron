@@ -1075,7 +1075,7 @@ static unsigned char *stbi_jpeg_load_from_memory(jpeg *j,stbi_uc const *buffer, 
    return 1;
 }
 
--(KGImage *)imageAtIndex:(unsigned)index options:(NSDictionary *)options {
+-(KGImage *)createImageAtIndex:(unsigned)index options:(NSDictionary *)options {
    int            width=0,height=0;
    int            comp;
 
