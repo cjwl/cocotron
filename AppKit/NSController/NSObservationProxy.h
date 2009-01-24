@@ -18,7 +18,7 @@
 -(id)initWithKeyPath:(id)keyPath observer:(id)observer object:(id)object;
 -(id)observer;
 -(id)keyPath;
--(void)setNotifiyObject:(BOOL)val;
+-(void)setNotifyObject:(BOOL)val;
 @end
 
 

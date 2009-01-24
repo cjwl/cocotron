@@ -44,7 +44,7 @@
    return _options;
 }
 
--(void)setNotifiyObject:(BOOL)val
+-(void)setNotifyObject:(BOOL)val
 {
    _notifyObject=val;
 }

@@ -31,7 +31,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)dealloc
 {
-   [_keys release];
+   [_cachedKeysForKVO release];
 	[_cachedValues release];
 	[_controller release];
    
@@ -111,9 +111,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)controllerWillChange
 {
-   [_keys autorelease];
-   _keys=[[_cachedValues allKeys] retain];
-   for(id key in _keys)
+   [_cachedKeysForKVO autorelease];
+   _cachedKeysForKVO=[[_cachedValues allKeys] retain];
+   for(id key in _cachedKeysForKVO)
    {
       [self willChangeValueForKey:key];
    }
@@ -123,12 +123,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)controllerDidChange
 {
    [_cachedValues removeAllObjects];
-   for(id key in _keys)
+   for(id key in _cachedKeysForKVO)
    {
       [self didChangeValueForKey:key];
    }
-   [_keys autorelease];
-   _keys=nil;
+   [_cachedKeysForKVO autorelease];
+   _cachedKeysForKVO=nil;
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath 
@@ -143,7 +143,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 - (void)addObserver:(NSObject *)observer forKeyPath:(NSString *)keyPath options:(NSKeyValueObservingOptions)options context:(void *)context
 {
    _NSObservationProxy *proxy=[[_NSObservationProxy alloc] initWithKeyPath:keyPath observer:observer object:self];
-   [proxy setNotifiyObject:YES];
+   [proxy setNotifyObject:YES];
    [_observationProxies addObject:proxy];
    
    [[_controller selectedObjects] addObserver:proxy forKeyPath:keyPath options:options context:context];
@@ -155,11 +155,17 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 {
    _NSObservationProxy *proxy=[[_NSObservationProxy alloc] initWithKeyPath:keyPath observer:observer object:self];
    int idx=[_observationProxies indexOfObject:proxy];
-   [proxy release];
+   if(idx==NSNotFound) {
+      NSLog(@"%@ not found in %@", proxy, _observationProxies);
+   }
 
-   [[_controller selectedObjects] removeObserver:[_observationProxies objectAtIndex:idx] forKeyPath:keyPath];
+   [proxy release];
    
-   [_observationProxies removeObjectAtIndex:idx];
+   if(idx!=NSNotFound) {
+      [[_controller selectedObjects] removeObserver:[_observationProxies objectAtIndex:idx] forKeyPath:keyPath];
+      [_observationProxies removeObjectAtIndex:idx];
+   }
+   
 }
 
 @end
