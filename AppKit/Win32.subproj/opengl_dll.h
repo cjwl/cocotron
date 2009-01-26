@@ -1,5 +1,5 @@
 #import <Foundation/NSObject.h>
-#import <gl/gl.h>
+#import <GL/gl.h>
 #import <windows.h>
 
 HGLRC opengl_wglCreateContext(HDC dc);
