@@ -31,4 +31,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(NSColor *)highlightColorInView:(NSView *)view;
 
+-(NSColor *)highlightColorWithFrame:(NSRect)frame inView:(NSView *)view;
+
 @end

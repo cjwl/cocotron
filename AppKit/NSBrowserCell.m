@@ -95,6 +95,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return NO;
 }
 
+-(NSColor *)highlightColorWithFrame:(NSRect)frame inView:(NSView *)view {
+   return [NSColor selectedControlColor];
+}
+
+
 -(void)drawInteriorWithFrame:(NSRect)frame inView:(NSView *)control {
    NSAttributedString *title=[self attributedStringValue];
    NSImage            *branchImage=[self branchImage];
@@ -127,7 +132,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
      [change addAttribute:NSForegroundColorAttributeName value:[NSColor selectedControlTextColor] range:NSMakeRange(0,[title length])];
      title=change;
     }
-    [[NSColor selectedControlColor] setFill];
+    NSColor *color=[self highlightColorWithFrame:frame inView:control];
+    [color setFill];
    }
    else{
     [[NSColor controlBackgroundColor] setFill];

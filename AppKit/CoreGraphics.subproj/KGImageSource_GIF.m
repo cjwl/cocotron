@@ -63,9 +63,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     return nil;
     
    SavedImage     *gifImage=_gif->SavedImages+index;
-   ColorMapObject *colorMap=gifImage->ImageDesc.ColorMap;
+   ColorMapObject *colorMap=_gif->SColorMap;
    if(colorMap==NULL)
-    colorMap=_gif->SColorMap;
+    colorMap=gifImage->ImageDesc.ColorMap;
+   int             bgColorIndex=(_gif->SColorMap==NULL)?-1:_gif->SBackGroundColor;
    int             colorCount=colorMap->ColorCount;
    GifColorType   *colorLUT=colorMap->Colors;
    unsigned char  *gifRaster=gifImage->RasterBits;
@@ -89,7 +90,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     for(c=0;c<width;c++,gifRaster){
      unsigned char colorIndex=*gifRaster;
      
-     if(colorIndex<colorCount){
+     if(colorIndex==bgColorIndex){
+      scanline->a=0;
+      scanline->r=0;
+      scanline->g=0;
+      scanline->b=0;
+     }
+     else if(colorIndex<colorCount){
       GifColorType *gifColor=colorLUT+colorIndex;
 
       scanline->a=255;
