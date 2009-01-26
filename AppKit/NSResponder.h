@@ -103,9 +103,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)moveForwardAndModifySelection:sender;
 -(void)moveBackwardAndModifySelection:sender;
+-(void)moveRightAndModifySelection:sender;
+-(void)moveLeftAndModifySelection:sender;
 
 -(void)moveWordForwardAndModifySelection:sender;
 -(void)moveWordBackwardAndModifySelection:sender;
+-(void)moveWordRightAndModifySelection:sender;
+-(void)moveWordLeftAndModifySelection:sender;
 
 -(void)moveUp:sender;
 -(void)moveDown:sender;
@@ -116,6 +120,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)moveWordForward:sender;
 -(void)moveWordBackward:sender;
+-(void)moveWordRight:sender;
+-(void)moveWordLeft:sender;
+
 
 -(void)moveToBeginningOfLine:sender;
 -(void)moveToEndOfLine:sender;

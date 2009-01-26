@@ -8,6 +8,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <AppKit/NSText.h>
 #import <AppKit/NSTextInput.h>
+#import <AppKit/NSDragging.h>
 
 @class NSTextStorage, NSLayoutManager, NSTextContainer, NSUndoManager;
 @class NSRulerView, NSRulerMarker;
@@ -156,6 +157,9 @@ APPKIT_EXPORT NSString *NSOldSelectedCharacterRange;
 
 -(void)pageUp:sender;
 -(void)pageDown:sender;
+
+-(NSDragOperation)dragOperationForDraggingInfo:(id <NSDraggingInfo>)info type:(NSString *)type;
+-(void)cleanUpAfterDragOperation;
 
 @end
 

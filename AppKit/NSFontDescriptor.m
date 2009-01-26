@@ -9,6 +9,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSString.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSNumber.h>
+#import <Foundation/NSRaise.h>
 
 NSString *NSFontNameAttribute=@"NSFontNameAttribute";
 NSString *NSFontFamilyAttribute=@"NSFontFamilyAttribute";
@@ -124,6 +125,16 @@ NSString *NSFontVisibleNameAttribute=@"NSFontVisibleNameAttribute";
    [copy setObject:[NSNumber numberWithUnsignedInt:traits] forKey:NSFontTraitsAttribute];
 
    return [isa fontDescriptorWithFontAttributes:copy];
+}
+
+-(NSArray *)matchingFontDescriptorsWithMandatoryKeys:(NSSet *)keys {
+   NSUnimplementedMethod();
+   return nil;
+}
+
+-(NSFontDescriptor *)matchingFontDescriptorWithMandatoryKeys:(NSSet *)keys {
+   NSUnimplementedMethod();
+   return nil;
 }
 
 @end

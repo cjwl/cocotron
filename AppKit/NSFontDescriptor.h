@@ -8,7 +8,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSObject.h>
 #import <AppKit/AppKitExport.h>
 
-@class NSDictionary,NSAffineTransform;
+@class NSDictionary,NSAffineTransform,NSArray,NSSet;
 
 APPKIT_EXPORT NSString *NSFontNameAttribute;
 APPKIT_EXPORT NSString *NSFontFamilyAttribute;
@@ -46,5 +46,8 @@ typedef unsigned NSFontSymbolicTraits;
 -(NSFontDescriptor *)fontDescriptorWithMatrix:(NSAffineTransform *)matrix;
 -(NSFontDescriptor *)fontDescriptorWithSize:(float)pointSize;
 -(NSFontDescriptor *)fontDescriptorWithSymbolicTraits:(NSFontSymbolicTraits)traits;
+
+-(NSArray *)matchingFontDescriptorsWithMandatoryKeys:(NSSet *)keys;
+-(NSFontDescriptor *)matchingFontDescriptorWithMandatoryKeys:(NSSet *)keys;
 
 @end

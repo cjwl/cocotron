@@ -2288,6 +2288,13 @@
 			remoteGlobalIDString = FE01A5970C5D9B6900AEA51A;
 			remoteInfo = "Foundation-Windows-i386";
 		};
+		FE07750C0F2D54470074EE75 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FECAF4C80DB710EE00BA2A8E /* ApplicationServices.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = C8A2E2710F07E9B70054397C;
+			remoteInfo = "ApplicationServices-Darwin-i386";
+		};
 		FE6EDEBC0DB7AF94005503A1 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FECAF4C80DB710EE00BA2A8E /* ApplicationServices.xcodeproj */;
@@ -5339,6 +5346,7 @@
 			);
 			dependencies = (
 				C8A2E5760F07EA440054397C /* PBXTargetDependency */,
+				FE07750D0F2D54470074EE75 /* PBXTargetDependency */,
 			);
 			name = "AppKit-Darwin-i386";
 			productInstallPath = /Library/Frameworks;
@@ -6675,6 +6683,11 @@
 			isa = PBXTargetDependency;
 			name = "Foundation-Windows-i386";
 			targetProxy = FE01AACB0C5D9BE700AEA51A /* PBXContainerItemProxy */;
+		};
+		FE07750D0F2D54470074EE75 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "ApplicationServices-Darwin-i386";
+			targetProxy = FE07750C0F2D54470074EE75 /* PBXContainerItemProxy */;
 		};
 		FE6EDEBD0DB7AF94005503A1 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;

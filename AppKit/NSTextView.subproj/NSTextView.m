@@ -2257,4 +2257,18 @@ NSString *NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
    return [self _viewRectForCharacterRange:range];
 }
 
+-(NSDragOperation)dragOperationForDraggingInfo:(id <NSDraggingInfo>)info type:(NSString *)type {
+   NSUnimplementedMethod();
+   return 0;
+}
+
+-(void)cleanUpAfterDragOperation {
+   NSUnimplementedMethod();
+}
+
+-(NSUInteger)characterIndexForPoint:(NSPoint)point {
+   NSUnimplementedMethod();
+   return 0;
+}
+
 @end
