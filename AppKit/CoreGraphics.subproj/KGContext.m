@@ -938,6 +938,11 @@ static inline KGGraphicsState *currentState(KGContext *self){
    return nil;
 }
 
+/*
+  Notes: OSX generates a clip mask at fill time using the current aliasing setting. Once the fill is complete the clip mask persists with the next clip/fill. This means you can turn off AA, create a clip path, fill, turn on AA, create another clip path, fill, and edges from the first path will be aliased, and ones from the second will not. PDF does not dictate aliasing behavior, so while this is not really expected behavior, it is not a bug. 
+    
+ */
+ 
 -(void)deviceClipReset {
    KGInvalidAbstractInvocation();
 }

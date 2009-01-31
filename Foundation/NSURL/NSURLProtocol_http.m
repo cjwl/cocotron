@@ -46,11 +46,14 @@ enum {
 }
 
 -(void)entityChunk:(NSData *)data {
-   NSLog(@"%@",[[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease]);
+  // NSLog(@"entity chunk %@",[[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease]);
+	[_client URLProtocol:self didLoadData:data];
 }
 
 -(void)entity:(NSData *)data {
-   NSLog(@"%@",[[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease]);
+  // NSLog(@"entity %@",[[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease]);
+	[_client URLProtocol:self didLoadData:data];
+	[_client URLProtocolDidFinishLoading:self];
 }
 
 -(void)_headerKey {
@@ -286,6 +289,7 @@ NSLog(@"transfer completed");
    NSString *hostName=[url host];
    NSNumber *portNumber=[url port];
 	NSLog(@"startloading");
+	sentrequest=FALSE;
    
    if(portNumber==nil)
     portNumber=[NSNumber numberWithInt:80];
@@ -295,8 +299,14 @@ NSLog(@"transfer completed");
    [NSStream getStreamsToHost:host port:[portNumber intValue] inputStream:&_inputStream outputStream:&_outputStream];
    [_inputStream setDelegate:self];
    [_outputStream setDelegate:self];
+	
    [_inputStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
    [_outputStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+	[_inputStream retain];
+	[_outputStream retain];
+	[_inputStream open];
+	[_outputStream open];
+	NSLog(@"input stream %@",_inputStream);
 
    _data=[NSMutableData new];
    _range=NSMakeRange(0,0);
@@ -308,17 +318,52 @@ NSLog(@"transfer completed");
    [_outputStream removeFromRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
 }
 
--(void)inputStream:(NSStream *)stream handleEvent:(NSStreamEvent)streamEvent {
+-(void)inputStream:(NSInputStream *)stream handleEvent:(NSStreamEvent)streamEvent 
+{
+	char buffer[1024];
+	int size=[stream read:buffer maxLength:sizeof(buffer)];
+	if (size)
+	{
+		[self appendData:[NSData dataWithBytes:buffer length:size]];
+		if ([self advanceIsEndOfReply])
+		{
+			//[_client URLProtocol:self didLoadData: ]
+		}
+		else
+		{
+			//[_client URLProtocol:didLoadData:];
+			[_client URLProtocolDidFinishLoading:self];
+		}
+	}
+	
+		
 }
 
--(void)outputStream:(NSStream *)stream handleEvent:(NSStreamEvent)streamEvent {
+-(void)outputStream:(NSOutputStream *)stream handleEvent:(NSStreamEvent)streamEvent 
+{
+	if(streamEvent==NSStreamEventHasSpaceAvailable && sentrequest==FALSE)
+	{
+		NSURL* url=[_request URL];
+		NSString* path=[url relativeString];
+		NSString* host=[url host];
+		NSMutableString* httprequest=[NSMutableString string];
+		[httprequest appendFormat:@"GET %@ HTTP/1.1\r\n",path];
+		[httprequest appendFormat:@"Host: %@\r\n",host];
+		[httprequest appendString:@"\r\n"];
+		NSLog(@"request %@ ",httprequest);
+		const char* crequest=[httprequest UTF8String];
+		[stream write:crequest maxLength:strlen(crequest)];
+		sentrequest=TRUE;
+		
+	}
+	
 }
 
 -(void)stream:(NSStream *)stream handleEvent:(NSStreamEvent)streamEvent {
    if(stream==_inputStream)
-    [self inputStream:stream handleEvent:streamEvent];
+    [self inputStream:(NSInputStream *)stream handleEvent:streamEvent];
    else if(stream==_outputStream)
-    [self outputStream:stream handleEvent:streamEvent];
+    [self outputStream:(NSOutputStream *)stream handleEvent:streamEvent];
 }
 
 +(BOOL)canInitWithRequest:(NSURLRequest *)request {

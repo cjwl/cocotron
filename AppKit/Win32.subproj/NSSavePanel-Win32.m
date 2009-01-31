@@ -64,7 +64,7 @@ static unsigned *saveFileHook(HWND hdlg,UINT uiMsg,WPARAM wParam,LPARAM lParam) 
 	@synchronized(self)
 	{
 		unichar filename[1025]=L"";
-		NSString *ext = (_requiredFileType && [_requiredFileType length] > 0) ? _requiredFileType : @"*";
+		NSString *ext = (_requiredFileType && [_requiredFileType length] > 0) ? _requiredFileType : (NSString *)@"*";
 		NSString *first = [[[NSString alloc] initWithFormat:@"Document (*.%@)", ext] autorelease];
 		NSString *second = [[[NSString alloc] initWithFormat:@"*.%@", ext] autorelease];
 		size_t firstLength = [first cStringLength];

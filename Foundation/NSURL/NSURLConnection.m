@@ -85,25 +85,25 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [_protocol stopLoading];
 }
 
-#if 0
+
 -(void)URLProtocol:(NSURLProtocol *)urlProtocol wasRedirectedToRequest:(NSURLRequest *)request redirectResponse:(NSURLResponse *)redirect {
    [_delegate connection:self willSendRequest:request redirectResponse:redirect];
 }
 
 -(void)URLProtocol:(NSURLProtocol *)urlProtocol didReceiveAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge {
-   [_delegate connection:self didReceiveAuthenticationChallenge];
+  // [_delegate connection:self didReceiveAuthenticationChallenge];
 }
 
 -(void)URLProtocol:(NSURLProtocol *)urlProtocol didCancelAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge {
-   [_delegate connection:self didCancelAuthenticationChallenge];
+  // [_delegate connection:self didCancelAuthenticationChallenge];
 }
 
 -(void)URLProtocol:(NSURLProtocol *)urlProtocol didReceiveResponse:(NSURLResponse *)response cacheStoragePolicy:(NSURLCacheStoragePolicy)policy {
-   [_delegate connection:self ];
+  // [_delegate connection:self ];
 }
 
 -(void)URLProtocol:(NSURLProtocol *)urlProtocol cachedResponseIsValid:(NSCachedURLResponse *)response {
-   [_delegate connection:self ];
+  // [_delegate connection:self ];
 }
 
 -(void)URLProtocol:(NSURLProtocol *)urlProtocol didLoadData:(NSData *)data {
@@ -115,8 +115,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)URLProtocolDidFinishLoading:(NSURLProtocol *)urlProtocol {
-   [_delegate connection:self ];
+	if([_delegate respondsToSelector:@selector(connectionDidFinishLoading:)])
+		[_delegate performSelector:@selector(connectionDidFinishLoading:) withObject:self];
 }
-#endif
+
 
 @end

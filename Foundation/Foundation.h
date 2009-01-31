@@ -105,6 +105,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSUnarchiver.h>
 #import <Foundation/NSUndoManager.h>
 #import <Foundation/NSURL.h>
+#import <Foundation/NSMutableURLRequest.h>
+#import <Foundation/NSURLConnection.h>
 #import <Foundation/NSUserDefaults.h>
 #import <Foundation/NSValue.h>
 #import <Foundation/NSValueTransformer.h>

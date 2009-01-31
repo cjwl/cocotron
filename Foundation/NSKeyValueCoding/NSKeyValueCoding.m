@@ -398,6 +398,15 @@ return [self _wrapReturnValueForSelector:sel]; \
 	}
 }
 
+- (void) takeValuesFromDictionary: (NSDictionary*)aDictionary
+{
+	for(id key in aDictionary)
+	{
+		[self setValue:[aDictionary objectForKey:key] forKey:key];
+	}
+	NSLog(@"Done");
+}
+
 -(id)mutableArrayValueForKey:(id)key
 {
 	return [[[NSKVCMutableArray alloc] initWithKey:key forProxyObject:self] autorelease];

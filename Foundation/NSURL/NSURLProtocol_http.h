@@ -26,6 +26,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    NSMutableDictionary *_headers;
 
    int _chunkSize;
+	BOOL sentrequest;
 }
 
 @end
