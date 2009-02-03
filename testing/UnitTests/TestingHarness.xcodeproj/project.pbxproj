@@ -56,7 +56,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/bash;
-			shellScript = "cd SenTestingKit-Projects\nls\nif [ ! -e OCUnitHome-v41.tgz ]; then\n\tcurl -O http://www.sente.ch/pub/software/OCUnit/OCUnitHome-v41.tgz\nfi\n\nif [ ! -d OCUnitHome ]; then\n\ttar -zxf OCUnitHome-v41.tgz\n\tcp -r otest.xcodeproj OCUnitHome/OCUnit/SourceCode/otest/\n\tcp -r SenTestingKit.xcodeproj OCUnitHome/OCUnit/SourceCode/SenTestingKit/\nfi\n\nxcodebuild -project OCUnitHome/OCUnit/SourceCode/SenTestingKit/SenTestingKit.xcodeproj\nxcodebuild -project OCUnitHome/OCUnit/SourceCode/otest/otest.xcodeproj\n\ncd ..";
+			shellScript = "cd SenTestingKit-Projects\n\nif [ ! -e OCUnitHome-v41.tgz ]; then\n\tcurl -O http://www.sente.ch/pub/software/OCUnit/OCUnitHome-v41.tgz\nfi\n\nif [ ! -d OCUnitHome ]; then\n\ttar -zxf OCUnitHome-v41.tgz\n\tcp -r otest.xcodeproj OCUnitHome/OCUnit/SourceCode/otest/\n\tcp -r SenTestingKit.xcodeproj OCUnitHome/OCUnit/SourceCode/SenTestingKit/\nfi\n\nxcodebuild -project OCUnitHome/OCUnit/SourceCode/SenTestingKit/SenTestingKit.xcodeproj\nxcodebuild -project OCUnitHome/OCUnit/SourceCode/otest/otest.xcodeproj\n\ncd ..";
 		};
 /* End PBXShellScriptBuildPhase section */
 

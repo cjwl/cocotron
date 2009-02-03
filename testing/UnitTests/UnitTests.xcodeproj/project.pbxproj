@@ -11,8 +11,28 @@
 		C80F9D180E59E45100ECD487 /* CrashCatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = C80F9D160E59E45100ECD487 /* CrashCatcher.m */; };
 		C80F9D190E59E45100ECD487 /* CrashCatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = C80F9D160E59E45100ECD487 /* CrashCatcher.m */; };
 		C8104F960ECCCC0600CEC3A3 /* PropertyListUnarchiving.m in Sources */ = {isa = PBXBuildFile; fileRef = C8A3931D0E48B72300A9C289 /* PropertyListUnarchiving.m */; };
+		C81371410F38FA0E001D4AFB /* TextFieldBindings.m in Sources */ = {isa = PBXBuildFile; fileRef = C8294FF50F2CC47700F0DAF2 /* TextFieldBindings.m */; };
+		C813714E0F38FA61001D4AFB /* KeyedArchiving.m in Sources */ = {isa = PBXBuildFile; fileRef = C813714C0F38FA61001D4AFB /* KeyedArchiving.m */; };
+		C813714F0F38FA61001D4AFB /* KeyedArchiving.m in Sources */ = {isa = PBXBuildFile; fileRef = C813714C0F38FA61001D4AFB /* KeyedArchiving.m */; };
+		C81371500F38FA61001D4AFB /* KeyedArchiving.m in Sources */ = {isa = PBXBuildFile; fileRef = C813714C0F38FA61001D4AFB /* KeyedArchiving.m */; };
+		C81371EB0F38FF93001D4AFB /* XML.plist in Resources */ = {isa = PBXBuildFile; fileRef = C8A392C90E48B20F00A9C289 /* XML.plist */; };
+		C81371EC0F38FF93001D4AFB /* Binary.plist in Resources */ = {isa = PBXBuildFile; fileRef = C8A392D70E48B26200A9C289 /* Binary.plist */; };
+		C81371ED0F38FF93001D4AFB /* TextFieldBindings.xib in Resources */ = {isa = PBXBuildFile; fileRef = C82950000F2CC4AA00F0DAF2 /* TextFieldBindings.xib */; };
+		C81371EE0F38FF9A001D4AFB /* CrashCatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = C80F9D160E59E45100ECD487 /* CrashCatcher.m */; };
+		C81371EF0F38FF9A001D4AFB /* FileHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 998CA8480E6C3741009B2664 /* FileHandle.m */; };
+		C81371F00F38FF9A001D4AFB /* KVC.m in Sources */ = {isa = PBXBuildFile; fileRef = C8C802800DB51FEF0089C0D7 /* KVC.m */; };
+		C81371F10F38FF9A001D4AFB /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C897902B0ECA1E5400C3E5EE /* main.m */; };
+		C81371F20F38FF9A001D4AFB /* TextFieldBindings.m in Sources */ = {isa = PBXBuildFile; fileRef = C8294FF50F2CC47700F0DAF2 /* TextFieldBindings.m */; };
+		C81371F30F38FF9A001D4AFB /* KeyedArchiving.m in Sources */ = {isa = PBXBuildFile; fileRef = C813714C0F38FA61001D4AFB /* KeyedArchiving.m */; };
+		C8294FE70F2CC3BC00F0DAF2 /* FileHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 998CA8480E6C3741009B2664 /* FileHandle.m */; };
+		C8294FE80F2CC3BC00F0DAF2 /* KVC.m in Sources */ = {isa = PBXBuildFile; fileRef = C8C802800DB51FEF0089C0D7 /* KVC.m */; };
+		C8294FF90F2CC47700F0DAF2 /* TextFieldBindings.m in Sources */ = {isa = PBXBuildFile; fileRef = C8294FF50F2CC47700F0DAF2 /* TextFieldBindings.m */; };
+		C82950010F2CC4AA00F0DAF2 /* TextFieldBindings.xib in Resources */ = {isa = PBXBuildFile; fileRef = C82950000F2CC4AA00F0DAF2 /* TextFieldBindings.xib */; };
+		C82950030F2CC4AA00F0DAF2 /* TextFieldBindings.xib in Resources */ = {isa = PBXBuildFile; fileRef = C82950000F2CC4AA00F0DAF2 /* TextFieldBindings.xib */; };
+		C82950040F2CC4AA00F0DAF2 /* TextFieldBindings.xib in Resources */ = {isa = PBXBuildFile; fileRef = C82950000F2CC4AA00F0DAF2 /* TextFieldBindings.xib */; };
 		C84DA1BE0DB8D896000CD913 /* README in Resources */ = {isa = PBXBuildFile; fileRef = C84DA1BD0DB8D896000CD913 /* README */; };
 		C84DA1BF0DB8D896000CD913 /* README in Resources */ = {isa = PBXBuildFile; fileRef = C84DA1BD0DB8D896000CD913 /* README */; };
+		C858DFFC0F1506CE00129AC1 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 089C167FFE841241C02AAC07 /* AppKit.framework */; };
 		C85D1F800DBBBAD7005A5FD6 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C167DFE841241C02AAC07 /* InfoPlist.strings */; };
 		C85D1F810DBBBAD7005A5FD6 /* README in Resources */ = {isa = PBXBuildFile; fileRef = C84DA1BD0DB8D896000CD913 /* README */; };
 		C85D1F8C0DBBBAD7005A5FD6 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C827EA560DB62A9200360D99 /* SenTestingKit.framework */; };
@@ -22,7 +42,6 @@
 		C8794B910EE4727C00539601 /* Properties.m in Sources */ = {isa = PBXBuildFile; fileRef = C827EB3A0DB63FFA00360D99 /* Properties.m */; };
 		C8794B920EE4727C00539601 /* ForEach.m in Sources */ = {isa = PBXBuildFile; fileRef = C88B859B0DB90282000A8500 /* ForEach.m */; };
 		C897902C0ECA1E5400C3E5EE /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C897902B0ECA1E5400C3E5EE /* main.m */; };
-		C897902D0ECA1E5400C3E5EE /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C897902B0ECA1E5400C3E5EE /* main.m */; };
 		C897902E0ECA1E5400C3E5EE /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C897902B0ECA1E5400C3E5EE /* main.m */; };
 		C89790710ECA202F00C3E5EE /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 089C1672FE841209C02AAC07 /* Foundation.framework */; };
 		C8A392CA0E48B20F00A9C289 /* XML.plist in Resources */ = {isa = PBXBuildFile; fileRef = C8A392C90E48B20F00A9C289 /* XML.plist */; };
@@ -90,12 +109,20 @@
 		C80F9AE50E58BD7E00ECD487 /* MessageBenchmark.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageBenchmark.m; sourceTree = "<group>"; };
 		C80F9B7A0E58C93800ECD487 /* MessageSend.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageSend.m; sourceTree = "<group>"; };
 		C80F9D160E59E45100ECD487 /* CrashCatcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CrashCatcher.m; sourceTree = "<group>"; };
+		C813714B0F38FA61001D4AFB /* KeyedArchiving.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeyedArchiving.h; sourceTree = "<group>"; };
+		C813714C0F38FA61001D4AFB /* KeyedArchiving.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KeyedArchiving.m; sourceTree = "<group>"; };
+		C81371E60F38FF82001D4AFB /* UnitTests-i386-Darwin.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "UnitTests-i386-Darwin.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		C81371E80F38FF82001D4AFB /* UnitTests-i386-Darwin-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "UnitTests-i386-Darwin-Info.plist"; sourceTree = "<group>"; };
 		C81F5A3E0DD22B94006F82C7 /* Runloop.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Runloop.h; sourceTree = "<group>"; };
 		C81F5A3F0DD22B94006F82C7 /* Runloop.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Runloop.m; sourceTree = "<group>"; };
 		C827EA560DB62A9200360D99 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = /System/Library/Frameworks/SenTestingKit.framework; sourceTree = "<absolute>"; };
 		C827EA6F0DB630BB00360D99 /* UnitTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UnitTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C827EB390DB63FFA00360D99 /* Properties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Properties.h; sourceTree = "<group>"; };
 		C827EB3A0DB63FFA00360D99 /* Properties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Properties.m; sourceTree = "<group>"; };
+		C8294FAD0F2CC2D400F0DAF2 /* Info copy.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Info copy.plist"; sourceTree = "<group>"; };
+		C8294FF40F2CC47700F0DAF2 /* TextFieldBindings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextFieldBindings.h; sourceTree = "<group>"; };
+		C8294FF50F2CC47700F0DAF2 /* TextFieldBindings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextFieldBindings.m; sourceTree = "<group>"; };
+		C82950000F2CC4AA00F0DAF2 /* TextFieldBindings.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TextFieldBindings.xib; sourceTree = "<group>"; };
 		C84D62830DB61BEB000E722B /* local_server_config.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = local_server_config.sh; sourceTree = "<group>"; };
 		C84DA1BD0DB8D896000CD913 /* README */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README; sourceTree = "<group>"; };
 		C84F02C10E1F8F17000C03D6 /* ObjCXXExceptions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ObjCXXExceptions.h; sourceTree = "<group>"; };
@@ -138,6 +165,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		C81371E40F38FF82001D4AFB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		C827EA6C0DB630BB00360D99 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -151,6 +185,7 @@
 			files = (
 				C89790710ECA202F00C3E5EE /* Foundation.framework in Frameworks */,
 				C85D1F8C0DBBBAD7005A5FD6 /* SenTestingKit.framework in Frameworks */,
+				C858DFFC0F1506CE00129AC1 /* AppKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -168,6 +203,8 @@
 				089C167DFE841241C02AAC07 /* InfoPlist.strings */,
 				089C1671FE841209C02AAC07 /* Frameworks and Libraries */,
 				19C28FB8FE9D52D311CA2CBB /* Products */,
+				C8294FAD0F2CC2D400F0DAF2 /* Info copy.plist */,
+				C81371E80F38FF82001D4AFB /* UnitTests-i386-Darwin-Info.plist */,
 			);
 			name = UnitTests;
 			sourceTree = "<group>";
@@ -220,12 +257,15 @@
 				C8CB8CAE0DD34DA6005C1BAC /* Array.m */,
 				C8A3931C0E48B72300A9C289 /* PropertyListUnarchiving.h */,
 				C8A3931D0E48B72300A9C289 /* PropertyListUnarchiving.m */,
+				C813714B0F38FA61001D4AFB /* KeyedArchiving.h */,
+				C813714C0F38FA61001D4AFB /* KeyedArchiving.m */,
 				C80F9AE40E58BD7E00ECD487 /* MessageBenchmark.h */,
 				C80F9AE50E58BD7E00ECD487 /* MessageBenchmark.m */,
 				C80F9B7A0E58C93800ECD487 /* MessageSend.m */,
 				C80F9D160E59E45100ECD487 /* CrashCatcher.m */,
 				C8EA0F850E85665B0051F4DF /* RetainRelease.h */,
 				C8EA0F860E85665B0051F4DF /* RetainRelease.m */,
+				C8294FFB0F2CC47D00F0DAF2 /* Bindings */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -253,6 +293,7 @@
 				8D5B49B6048680CD000E48DA /* UnitTests.octest */,
 				C827EA6F0DB630BB00360D99 /* UnitTests.octest */,
 				C85D1F910DBBBAD7005A5FD6 /* UnitTests.octest */,
+				C81371E60F38FF82001D4AFB /* UnitTests-i386-Darwin.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -265,6 +306,16 @@
 				32DBCF630370AF2F00C91783 /* UnitTests_Prefix.pch */,
 			);
 			name = "Other Sources";
+			sourceTree = "<group>";
+		};
+		C8294FFB0F2CC47D00F0DAF2 /* Bindings */ = {
+			isa = PBXGroup;
+			children = (
+				C8294FF40F2CC47700F0DAF2 /* TextFieldBindings.h */,
+				C8294FF50F2CC47700F0DAF2 /* TextFieldBindings.m */,
+				C82950000F2CC4AA00F0DAF2 /* TextFieldBindings.xib */,
+			);
+			path = Bindings;
 			sourceTree = "<group>";
 		};
 		C8A392540E48AD9000A9C289 /* Products */ = {
@@ -299,9 +350,26 @@
 			productReference = 8D5B49B6048680CD000E48DA /* UnitTests.octest */;
 			productType = "com.apple.product-type.bundle";
 		};
-		C827EA6E0DB630BB00360D99 /* UnitTests */ = {
+		C81371E50F38FF82001D4AFB /* UnitTests-i386-Darwin */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = C827EA720DB630BB00360D99 /* Build configuration list for PBXNativeTarget "UnitTests" */;
+			buildConfigurationList = C81371EA0F38FF83001D4AFB /* Build configuration list for PBXNativeTarget "UnitTests-i386-Darwin" */;
+			buildPhases = (
+				C81371E20F38FF82001D4AFB /* Resources */,
+				C81371E30F38FF82001D4AFB /* Sources */,
+				C81371E40F38FF82001D4AFB /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "UnitTests-i386-Darwin";
+			productName = "UnitTests-i386-Darwin";
+			productReference = C81371E60F38FF82001D4AFB /* UnitTests-i386-Darwin.app */;
+			productType = "com.apple.product-type.application";
+		};
+		C827EA6E0DB630BB00360D99 /* UnitTests-Apple */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C827EA720DB630BB00360D99 /* Build configuration list for PBXNativeTarget "UnitTests-Apple" */;
 			buildPhases = (
 				C827EA6A0DB630BB00360D99 /* Resources */,
 				C827EA6B0DB630BB00360D99 /* Sources */,
@@ -312,7 +380,7 @@
 			);
 			dependencies = (
 			);
-			name = UnitTests;
+			name = "UnitTests-Apple";
 			productName = UnitTests;
 			productReference = C827EA6F0DB630BB00360D99 /* UnitTests.octest */;
 			productType = "com.apple.product-type.bundle";
@@ -357,7 +425,8 @@
 			targets = (
 				8D5B49AC048680CD000E48DA /* UnitTests-i386-Windows */,
 				C85D1F7E0DBBBAD7005A5FD6 /* UnitTests-i386-Linux */,
-				C827EA6E0DB630BB00360D99 /* UnitTests */,
+				C827EA6E0DB630BB00360D99 /* UnitTests-Apple */,
+				C81371E50F38FF82001D4AFB /* UnitTests-i386-Darwin */,
 			);
 		};
 /* End PBXProject section */
@@ -371,6 +440,17 @@
 				C84DA1BF0DB8D896000CD913 /* README in Resources */,
 				C8A392CB0E48B20F00A9C289 /* XML.plist in Resources */,
 				C8EA126E0E89414E0051F4DF /* Binary.plist in Resources */,
+				C82950030F2CC4AA00F0DAF2 /* TextFieldBindings.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C81371E20F38FF82001D4AFB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C81371EB0F38FF93001D4AFB /* XML.plist in Resources */,
+				C81371EC0F38FF93001D4AFB /* Binary.plist in Resources */,
+				C81371ED0F38FF93001D4AFB /* TextFieldBindings.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -381,6 +461,7 @@
 				C84DA1BE0DB8D896000CD913 /* README in Resources */,
 				C8A392CC0E48B20F00A9C289 /* XML.plist in Resources */,
 				C8A392DA0E48B26200A9C289 /* Binary.plist in Resources */,
+				C82950040F2CC4AA00F0DAF2 /* TextFieldBindings.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -392,6 +473,7 @@
 				C85D1F810DBBBAD7005A5FD6 /* README in Resources */,
 				C8A392CA0E48B20F00A9C289 /* XML.plist in Resources */,
 				C8A392D80E48B26200A9C289 /* Binary.plist in Resources */,
+				C82950010F2CC4AA00F0DAF2 /* TextFieldBindings.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -450,6 +532,20 @@
 				C8711E600EE5DE5600EB06FD /* KVC.m in Sources */,
 				C8C0144B0EEB13DB0057F3FB /* NewStyleExceptions.m in Sources */,
 				C8C014DB0EEBF1920057F3FB /* KVO.m in Sources */,
+				C81371500F38FA61001D4AFB /* KeyedArchiving.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C81371E30F38FF82001D4AFB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C81371EE0F38FF9A001D4AFB /* CrashCatcher.m in Sources */,
+				C81371EF0F38FF9A001D4AFB /* FileHandle.m in Sources */,
+				C81371F00F38FF9A001D4AFB /* KVC.m in Sources */,
+				C81371F10F38FF9A001D4AFB /* main.m in Sources */,
+				C81371F20F38FF9A001D4AFB /* TextFieldBindings.m in Sources */,
+				C81371F30F38FF9A001D4AFB /* KeyedArchiving.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -458,7 +554,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				C80F9D180E59E45100ECD487 /* CrashCatcher.m in Sources */,
-				C897902D0ECA1E5400C3E5EE /* main.m in Sources */,
+				C8294FE70F2CC3BC00F0DAF2 /* FileHandle.m in Sources */,
+				C8294FE80F2CC3BC00F0DAF2 /* KVC.m in Sources */,
+				C8294FF90F2CC47700F0DAF2 /* TextFieldBindings.m in Sources */,
+				C813714E0F38FA61001D4AFB /* KeyedArchiving.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -473,6 +572,8 @@
 				C8794B900EE4727C00539601 /* KVC.m in Sources */,
 				C8794B910EE4727C00539601 /* Properties.m in Sources */,
 				C8794B920EE4727C00539601 /* ForEach.m in Sources */,
+				C81371410F38FA0E001D4AFB /* TextFieldBindings.m in Sources */,
+				C813714F0F38FA61001D4AFB /* KeyedArchiving.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -537,6 +638,30 @@
 			};
 			name = Release;
 		};
+		C81371E90F38FF83001D4AFB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				FRAMEWORK_SEARCH_PATHS = "$(DEVELOPER_DIR)/Cocotron/1.0/Darwin/i386/Frameworks";
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				INFOPLIST_FILE = "UnitTests-i386-Darwin-Info.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				OTHER_LDFLAGS = (
+					"-framework",
+					AppKit,
+					"-framework",
+					Foundation,
+					"-framework",
+					SenTestingKit,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = "UnitTests-i386-Darwin";
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
 		C827EA710DB630BB00360D99 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -544,10 +669,7 @@
 				ARCHS = "$(NATIVE_ARCH)";
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
-					"\"$(DEVELOPER_DIR)/Cocotron/1.0/Windows/i386/Frameworks\"",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(DEVELOPER_LIBRARY_DIR)/Frameworks";
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_MODEL_TUNING = G5;
@@ -610,7 +732,15 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		C827EA720DB630BB00360D99 /* Build configuration list for PBXNativeTarget "UnitTests" */ = {
+		C81371EA0F38FF83001D4AFB /* Build configuration list for PBXNativeTarget "UnitTests-i386-Darwin" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C81371E90F38FF83001D4AFB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C827EA720DB630BB00360D99 /* Build configuration list for PBXNativeTarget "UnitTests-Apple" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C827EA710DB630BB00360D99 /* Release */,
