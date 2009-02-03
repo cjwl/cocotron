@@ -36,6 +36,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)flagsChanged:(NSEvent *)event;
 
+-(NSError *)willPresentError:(NSError *)error;
+-(BOOL)presentError:(NSError *)error;
+-(void)presentError:(NSError *)error modalForWindow:(NSWindow *)window delegate:delegate didPresentSelector:(SEL)selector contextInfo:(void *)info;	
+
 -(void)keyUp:(NSEvent *)event;
 -(void)keyDown:(NSEvent *)event;
 

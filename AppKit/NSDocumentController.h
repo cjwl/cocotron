@@ -63,7 +63,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(NSError *)willPresentError:(NSError *)error;
 -(BOOL)presentError:(NSError *)error;
--(void)presentError:(NSError *)error modalForWindow:(NSWindow *)window delegate:delegate didPresentSelector:(SEL)selector info:(void *)info;
+-(void)presentError:(NSError *)error modalForWindow:(NSWindow *)window delegate:delegate didPresentSelector:(SEL)selector contextInfo:(void *)info;
 
 -(int)runModalOpenPanel:(NSOpenPanel *)openPanel forTypes:(NSArray *)extensions;
 -(NSArray *)fileNamesFromRunningOpenPanel;

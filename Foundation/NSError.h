@@ -48,3 +48,10 @@ FOUNDATION_EXPORT NSString *NSURLErrorKey;
 -recoveryAttempter;
 
 @end
+
+@interface NSObject(NSErrorRecoveryAttempting)
+
+-(void)attemptRecoveryFromError:(NSError *)error optionIndex:(NSUInteger)recoveryOptionIndex delegate:(id)delegate didRecoverSelector:(SEL)didRecoverSelector contextInfo:(void *)info;
+-(BOOL)attemptRecoveryFromError:(NSError *)error optionIndex:(NSUInteger)recoveryOptionIndex;
+
+@end

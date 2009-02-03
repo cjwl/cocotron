@@ -351,12 +351,11 @@ static NSDocumentController *shared=nil;
 }
 
 -(BOOL)presentError:(NSError *)error {
-   NSUnimplementedMethod();
-   return 0;
+	return [NSApp presentError:[self willPresentError:error]];
 }
 
--(void)presentError:(NSError *)error modalForWindow:(NSWindow *)window delegate:delegate didPresentSelector:(SEL)selector info:(void *)info {
-   NSUnimplementedMethod();
+-(void)presentError:(NSError *)error modalForWindow:(NSWindow *)window delegate:delegate didPresentSelector:(SEL)selector contextInfo:(void *)info {
+	[NSApp presentError:[self willPresentError:error] modalForWindow:window delegate:delegate didPresentSelector:selector contextInfo:info];
 }
 
 -(int)runModalOpenPanel:(NSOpenPanel *)openPanel forTypes:(NSArray *)extensions {

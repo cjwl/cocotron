@@ -439,12 +439,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(BOOL)presentError:(NSError *)error {
-   NSUnimplementedMethod();
-   return 0;
+	return [[NSDocumentController sharedDocumentController] presentError:[self willPresentError:error]];
 }
 
 -(void)presentError:(NSError *)error modalForWindow:(NSWindow *)window delegate:delegate didPresentSelector:(SEL)selector contextInfo:(void *)info {
-   NSUnimplementedMethod();
+	[[NSDocumentController sharedDocumentController] presentError:[self willPresentError:error] modalForWindow:window delegate:delegate didPresentSelector:selector contextInfo:info];
 }
 
 

@@ -8,6 +8,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 // Original - Christopher Lloyd <cjwl@objc.net>
 #import <AppKit/NSResponder.h>
+#import <AppKit/NSAlert.h>
 #import <AppKit/NSEvent.h>
 #import <AppKit/NSKeyBindingManager.h>
 #import <AppKit/NSKeyBinding.h>
@@ -135,6 +136,63 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(BOOL)resignFirstResponder {
    return YES;
+}
+
+-(NSError *)willPresentError:(NSError *)error {
+	// do nothing
+	return error;
+}
+
+-(BOOL)presentError:(NSError *)error {
+	BOOL result;
+	if (self == NSApp) {
+		result=NO;
+
+		NSError *newError; //error after being modified by delegate
+		id delegate = [NSApp delegate];
+		if ([delegate respondsToSelector:@selector(application:willPresentError:)])
+			newError = [delegate application:NSApp willPresentError:error];
+		else
+			newError = error;
+		
+		NSError *strippedError; //newError stripped of its recovery options if necessary
+		BOOL needToRemoveOptions=NO;
+		BOOL validRecoveryAttempter=NO;
+		id recoveryAttempter = [newError recoveryAttempter];
+		NSArray *recoveryOptions = [newError localizedRecoveryOptions];
+		if ([recoveryOptions count]) {
+			if (!recoveryAttempter) {
+				NSLog(@"There are recovery options but no recovery attempter to interpret the user's choice of one of them. Ignoring the recovery options and suggestion.");
+				needToRemoveOptions=YES;
+			}
+			else if (![recoveryAttempter respondsToSelector:@selector(attemptRecoveryFromError:optionIndex:)]) {
+				NSLog(@"The recovery attempter %@ doesn't respond to -attemptRecoveryFromError:optionIndex:. Ignoring the recovery attempter, options, and suggestion.",
+					  recoveryAttempter);
+				needToRemoveOptions=YES;
+			}
+			else
+				validRecoveryAttempter=YES;
+		}
+		if (needToRemoveOptions) {
+			NSMutableDictionary *newUserInfo = [NSMutableDictionary dictionaryWithDictionary:[newError userInfo]];
+			[newUserInfo removeObjectForKey:NSLocalizedRecoveryOptionsErrorKey];
+			strippedError = [NSError errorWithDomain:[newError domain] code:[newError code] userInfo:newUserInfo];
+		}
+		else 
+			strippedError = newError;
+		NSInteger alertButton=[[NSAlert alertWithError:strippedError] runModal];
+		if (validRecoveryAttempter)
+			result = [recoveryAttempter attemptRecoveryFromError:strippedError optionIndex:alertButton];
+	}
+	else {
+		//Forward message to nextResponder or to NSApp if there is no nextResponder
+		result = [_nextResponder ? _nextResponder : NSApp presentError:[self willPresentError:error]];
+	}
+	return result;
+}
+
+-(void)presentError:(NSError *)error modalForWindow:(NSWindow *)window delegate:delegate didPresentSelector:(SEL)selector contextInfo:(void *)info {
+	NSUnimplementedMethod();
 }
 
 -(void)flagsChanged:(NSEvent *)event {
