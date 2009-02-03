@@ -37,6 +37,22 @@ void class_addMethods(Class class,struct objc_method_list *methodList) {
 	}
 }
 
+BOOL class_addMethod(Class cls, SEL name, IMP imp, const char *types) {
+	struct objc_method *newMethod = calloc(sizeof(struct objc_method), 1);
+	struct objc_method_list *methodList = calloc(sizeof(struct objc_method_list)+sizeof(struct objc_method), 1);
+	
+	newMethod->method_name = name;
+	newMethod->method_types = types;
+	newMethod->method_imp = imp;
+
+	methodList->method_next = NULL;
+	methodList->method_count = 1;
+	memcpy(methodList->method_list, newMethod, sizeof(struct objc_method));
+	free(newMethod);
+	class_addMethods(cls, methodList);
+	return YES; // TODO: check if method exists
+}
+
 struct objc_method_list *class_nextMethodList(Class class,void **iterator) {
    struct objc_method_list *next=*iterator;
    
