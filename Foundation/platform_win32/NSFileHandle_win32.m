@@ -130,7 +130,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    LONG  highWord=0;
    DWORD lowWord=SetFilePointer(_handle,0,&highWord,FILE_END);
 
-   Win32Assert("SetFilePointer");
+   if(lowWord==INVALID_SET_FILE_POINTER)
+    Win32Assert("SetFilePointer");
 
    result= highWord;
    result<<=32;
