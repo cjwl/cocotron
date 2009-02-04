@@ -6,6 +6,12 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
+#if !defined(__STDC_VERSION__)
+  #define __STDC_VERSION__ 198900L
+#elif (__STDC_VERSION__ < 199400L)
+  #define __STDC_VERSION__ 199000L
+#endif
+
 #include <sys/types.h>
 #import <stdlib.h>
 #import <ctype.h>
@@ -18,6 +24,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <stdio.h>
 #import <string.h>
 #import <assert.h>
+#import <locale.h>
+#import <setjmp.h>
+#import <signal.h>
+#import <time.h>
+#if (__STDC_VERSION__ >= 199901L)
+  #import <stdbool.h>
+  #import <stdint.h>
+  #import <inttypes.h>
+#endif
 
 #import <Foundation/NSAffineTransform.h>
 #import <Foundation/NSArchiver.h>
