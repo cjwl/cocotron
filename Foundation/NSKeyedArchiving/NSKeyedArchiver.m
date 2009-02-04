@@ -6,12 +6,13 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 #import <Foundation/NSKeyedArchiver.h>
-#import <Foundation/NSString.h>
 #import <Foundation/NSArray.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSData.h>
+#import <Foundation/NSNull.h>
 #import <Foundation/NSNumber.h>
 #import <Foundation/NSPropertyList.h>
+#import <Foundation/NSString.h>
 
 
 @implementation NSKeyedArchiver
@@ -25,6 +26,13 @@ static NSMapTable *_globalNameToClass=NULL;
 }
 
 +(NSData *)archivedDataWithRootObject:rootObject {
+    NSMutableData *data = [NSMutableData data];
+    NSKeyedArchiver *archiver = [[[self class] alloc] initForWritingWithMutableData:data];
+    
+    [archiver encodeObject:rootObject forKey:@"$root"];
+    [archiver finishEncoding];
+    [archiver release];
+    return data;
 }
 
 +(BOOL)archiveRootObject:rootObject toFile:(NSString *)path {
@@ -51,7 +59,14 @@ static NSMapTable *_globalNameToClass=NULL;
    
    _nameToClass=NSCreateMapTable(NSNonRetainedObjectMapKeyCallBacks,NSObjectMapValueCallBacks,0);
    _pass=0;
-   _objectToUid=NSCreateMapTable(NSNonRetainedObjectMapKeyCallBacks,NSObjectMapValueCallBacks,0);
+   
+   NSMapTableKeyCallBacks objectToUidKeyCb = NSNonRetainedObjectMapKeyCallBacks;
+   objectToUidKeyCb.isEqual = NULL;
+   // setting the equality callback to NULL means that the maptable will use pointer comparison.
+   // this is necessary to properly archive classes like NSMutableString which encodes an internal immutable
+   // object that returns YES to -isEqual with the mutable parent (and thus wouldn't get encoded at all without this change)
+   
+   _objectToUid=NSCreateMapTable(objectToUidKeyCb,NSObjectMapValueCallBacks,0);
    return self;
 }
 
@@ -65,6 +80,10 @@ static NSMapTable *_globalNameToClass=NULL;
    NSFreeMapTable(_nameToClass);
    NSFreeMapTable(_objectToUid);
    [super dealloc];
+}
+
+-(BOOL)allowsKeyedCoding {
+   return YES;
 }
 
 +(NSString *)classNameForClass:(Class)class {
@@ -149,6 +168,39 @@ static NSMapTable *_globalNameToClass=NULL;
 }
 
 
+- (void)encodeArrayOfDoubles:(double *)array count:(unsigned)count forKey:(NSString *)key {
+   if(_pass == 0 || count < 1)
+    return;
+   
+    NSMutableString *str = [NSMutableString stringWithString:@"{"];
+    unsigned i;
+    for (i = 0; i < count; i++) {
+        [str appendFormat:@"%.12f%@", array[i], (i < count-1) ? @", " : @"}"];
+    }
+    
+    [self encodeObject:[NSString stringWithString:str] forKey:key];
+}
+
+-(void)encodePoint:(NSPoint)value forKey:(NSString *)key {
+    double array[2] = {value.x, value.y};
+
+    [self encodeArrayOfDoubles:array count:2 forKey:key];
+}
+
+-(void)encodeRect:(NSRect)value forKey:(NSString *)key {
+    double array[4] = {value.origin.x, value.origin.y, value.size.width, value.size.height};
+
+    [self encodeArrayOfDoubles:array count:4 forKey:key];
+}
+
+-(void)encodeSize:(NSSize)value forKey:(NSString *)key {
+    double array[2] = {value.width, value.height};
+
+    [self encodeArrayOfDoubles:array count:2 forKey:key];
+}
+
+
+
 -plistForObject:object {
    NSNumber *uid=NSMapGet(_objectToUid,object);
    
@@ -156,17 +208,24 @@ static NSMapTable *_globalNameToClass=NULL;
     uid=[NSNumber numberWithInt:[_objects count]];
     NSMapInsert(_objectToUid,object,uid);
     
-    if ([object isKindOfClass:[NSString class]]) {
-        [_objects addObject:[NSString stringWithString:object]];
+    NSString *archClass = NSStringFromClass([object classForArchiver]);
+    
+    //NSLog(@"uid %@: encoding class %@ as '%@'", uid, [object class], archClass);
+    
+    if ([archClass isEqualToString:@"NSString"]) {
+        [_objects addObject:[NSString stringWithString:[object description]]];
     }
-    else if ([object isKindOfClass:[NSNumber class]]) {
+    else if ([archClass isEqualToString:@"NSNumber"]) {
         [_objects addObject:object];
     }
-    else if ([object isKindOfClass:[NSData class]]) {
+    else if ([archClass isEqualToString:@"NSData"]) {
         [_objects addObject:object];
     }
-    else if ([object isKindOfClass:[NSDictionary class]]) {
+    else if ([archClass isEqualToString:@"NSDictionary"]) {
         [_objects addObject:object];
+    }
+    else if (object == nil || [object isKindOfClass:[NSNull class]]) {
+        [_objects addObject:@"$null"];
     }
     else {
         [_objects addObject:[NSMutableDictionary dictionary]];
@@ -174,15 +233,12 @@ static NSMapTable *_globalNameToClass=NULL;
         
         [object encodeWithCoder:self];
         
-        // encode class name
-        NSString *objClass = NSStringFromClass([object classForArchiver]);
-        
         // TODO: in addition to $classname, should also encode list of superclasses as $classes.
         // Cocotron's NSKeyedUnarchiver doesn't currently use $classes for anything, though --
         // not sure if Cocoa does?
                 
         NSDictionary *classMap = [NSDictionary dictionaryWithObjectsAndKeys:
-                                    objClass, @"$classname",
+                                    archClass, @"$classname",
                                     nil];
                                     
         [[_plistStack lastObject] setObject:[self plistForObject:classMap] forKey:@"$class"];
