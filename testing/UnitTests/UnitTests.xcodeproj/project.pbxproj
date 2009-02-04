@@ -11,7 +11,6 @@
 		C80F9D180E59E45100ECD487 /* CrashCatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = C80F9D160E59E45100ECD487 /* CrashCatcher.m */; };
 		C80F9D190E59E45100ECD487 /* CrashCatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = C80F9D160E59E45100ECD487 /* CrashCatcher.m */; };
 		C8104F960ECCCC0600CEC3A3 /* PropertyListUnarchiving.m in Sources */ = {isa = PBXBuildFile; fileRef = C8A3931D0E48B72300A9C289 /* PropertyListUnarchiving.m */; };
-		C81371410F38FA0E001D4AFB /* TextFieldBindings.m in Sources */ = {isa = PBXBuildFile; fileRef = C8294FF50F2CC47700F0DAF2 /* TextFieldBindings.m */; };
 		C813714E0F38FA61001D4AFB /* KeyedArchiving.m in Sources */ = {isa = PBXBuildFile; fileRef = C813714C0F38FA61001D4AFB /* KeyedArchiving.m */; };
 		C813714F0F38FA61001D4AFB /* KeyedArchiving.m in Sources */ = {isa = PBXBuildFile; fileRef = C813714C0F38FA61001D4AFB /* KeyedArchiving.m */; };
 		C81371500F38FA61001D4AFB /* KeyedArchiving.m in Sources */ = {isa = PBXBuildFile; fileRef = C813714C0F38FA61001D4AFB /* KeyedArchiving.m */; };
@@ -19,14 +18,19 @@
 		C81371EC0F38FF93001D4AFB /* Binary.plist in Resources */ = {isa = PBXBuildFile; fileRef = C8A392D70E48B26200A9C289 /* Binary.plist */; };
 		C81371ED0F38FF93001D4AFB /* TextFieldBindings.xib in Resources */ = {isa = PBXBuildFile; fileRef = C82950000F2CC4AA00F0DAF2 /* TextFieldBindings.xib */; };
 		C81371EE0F38FF9A001D4AFB /* CrashCatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = C80F9D160E59E45100ECD487 /* CrashCatcher.m */; };
-		C81371EF0F38FF9A001D4AFB /* FileHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 998CA8480E6C3741009B2664 /* FileHandle.m */; };
 		C81371F00F38FF9A001D4AFB /* KVC.m in Sources */ = {isa = PBXBuildFile; fileRef = C8C802800DB51FEF0089C0D7 /* KVC.m */; };
 		C81371F10F38FF9A001D4AFB /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C897902B0ECA1E5400C3E5EE /* main.m */; };
-		C81371F20F38FF9A001D4AFB /* TextFieldBindings.m in Sources */ = {isa = PBXBuildFile; fileRef = C8294FF50F2CC47700F0DAF2 /* TextFieldBindings.m */; };
 		C81371F30F38FF9A001D4AFB /* KeyedArchiving.m in Sources */ = {isa = PBXBuildFile; fileRef = C813714C0F38FA61001D4AFB /* KeyedArchiving.m */; };
+		C81373B60F3A15D2001D4AFB /* Apple.bplist.keyedArchive in Resources */ = {isa = PBXBuildFile; fileRef = C81373B50F3A15D2001D4AFB /* Apple.bplist.keyedArchive */; };
+		C81373B70F3A15D2001D4AFB /* Apple.bplist.keyedArchive in Resources */ = {isa = PBXBuildFile; fileRef = C81373B50F3A15D2001D4AFB /* Apple.bplist.keyedArchive */; };
+		C81373B80F3A15D2001D4AFB /* Apple.bplist.keyedArchive in Resources */ = {isa = PBXBuildFile; fileRef = C81373B50F3A15D2001D4AFB /* Apple.bplist.keyedArchive */; };
+		C81373B90F3A15D2001D4AFB /* Apple.bplist.keyedArchive in Resources */ = {isa = PBXBuildFile; fileRef = C81373B50F3A15D2001D4AFB /* Apple.bplist.keyedArchive */; };
+		C81373E00F3A165C001D4AFB /* Cocotron.keyedArchive in Resources */ = {isa = PBXBuildFile; fileRef = C81373DF0F3A165C001D4AFB /* Cocotron.keyedArchive */; };
+		C81373E10F3A165C001D4AFB /* Cocotron.keyedArchive in Resources */ = {isa = PBXBuildFile; fileRef = C81373DF0F3A165C001D4AFB /* Cocotron.keyedArchive */; };
+		C81373E20F3A165C001D4AFB /* Cocotron.keyedArchive in Resources */ = {isa = PBXBuildFile; fileRef = C81373DF0F3A165C001D4AFB /* Cocotron.keyedArchive */; };
+		C81373E30F3A165C001D4AFB /* Cocotron.keyedArchive in Resources */ = {isa = PBXBuildFile; fileRef = C81373DF0F3A165C001D4AFB /* Cocotron.keyedArchive */; };
 		C8294FE70F2CC3BC00F0DAF2 /* FileHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 998CA8480E6C3741009B2664 /* FileHandle.m */; };
 		C8294FE80F2CC3BC00F0DAF2 /* KVC.m in Sources */ = {isa = PBXBuildFile; fileRef = C8C802800DB51FEF0089C0D7 /* KVC.m */; };
-		C8294FF90F2CC47700F0DAF2 /* TextFieldBindings.m in Sources */ = {isa = PBXBuildFile; fileRef = C8294FF50F2CC47700F0DAF2 /* TextFieldBindings.m */; };
 		C82950010F2CC4AA00F0DAF2 /* TextFieldBindings.xib in Resources */ = {isa = PBXBuildFile; fileRef = C82950000F2CC4AA00F0DAF2 /* TextFieldBindings.xib */; };
 		C82950030F2CC4AA00F0DAF2 /* TextFieldBindings.xib in Resources */ = {isa = PBXBuildFile; fileRef = C82950000F2CC4AA00F0DAF2 /* TextFieldBindings.xib */; };
 		C82950040F2CC4AA00F0DAF2 /* TextFieldBindings.xib in Resources */ = {isa = PBXBuildFile; fileRef = C82950000F2CC4AA00F0DAF2 /* TextFieldBindings.xib */; };
@@ -113,6 +117,8 @@
 		C813714C0F38FA61001D4AFB /* KeyedArchiving.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KeyedArchiving.m; sourceTree = "<group>"; };
 		C81371E60F38FF82001D4AFB /* UnitTests-i386-Darwin.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "UnitTests-i386-Darwin.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C81371E80F38FF82001D4AFB /* UnitTests-i386-Darwin-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "UnitTests-i386-Darwin-Info.plist"; sourceTree = "<group>"; };
+		C81373B50F3A15D2001D4AFB /* Apple.bplist.keyedArchive */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = Apple.bplist.keyedArchive; sourceTree = "<group>"; };
+		C81373DF0F3A165C001D4AFB /* Cocotron.keyedArchive */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Cocotron.keyedArchive; sourceTree = "<group>"; };
 		C81F5A3E0DD22B94006F82C7 /* Runloop.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Runloop.h; sourceTree = "<group>"; };
 		C81F5A3F0DD22B94006F82C7 /* Runloop.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Runloop.m; sourceTree = "<group>"; };
 		C827EA560DB62A9200360D99 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = /System/Library/Frameworks/SenTestingKit.framework; sourceTree = "<absolute>"; };
@@ -257,8 +263,7 @@
 				C8CB8CAE0DD34DA6005C1BAC /* Array.m */,
 				C8A3931C0E48B72300A9C289 /* PropertyListUnarchiving.h */,
 				C8A3931D0E48B72300A9C289 /* PropertyListUnarchiving.m */,
-				C813714B0F38FA61001D4AFB /* KeyedArchiving.h */,
-				C813714C0F38FA61001D4AFB /* KeyedArchiving.m */,
+				C81373770F3A1152001D4AFB /* KeyedArchiving */,
 				C80F9AE40E58BD7E00ECD487 /* MessageBenchmark.h */,
 				C80F9AE50E58BD7E00ECD487 /* MessageBenchmark.m */,
 				C80F9B7A0E58C93800ECD487 /* MessageSend.m */,
@@ -306,6 +311,17 @@
 				32DBCF630370AF2F00C91783 /* UnitTests_Prefix.pch */,
 			);
 			name = "Other Sources";
+			sourceTree = "<group>";
+		};
+		C81373770F3A1152001D4AFB /* KeyedArchiving */ = {
+			isa = PBXGroup;
+			children = (
+				C81373DF0F3A165C001D4AFB /* Cocotron.keyedArchive */,
+				C81373B50F3A15D2001D4AFB /* Apple.bplist.keyedArchive */,
+				C813714B0F38FA61001D4AFB /* KeyedArchiving.h */,
+				C813714C0F38FA61001D4AFB /* KeyedArchiving.m */,
+			);
+			name = KeyedArchiving;
 			sourceTree = "<group>";
 		};
 		C8294FFB0F2CC47D00F0DAF2 /* Bindings */ = {
@@ -441,6 +457,8 @@
 				C8A392CB0E48B20F00A9C289 /* XML.plist in Resources */,
 				C8EA126E0E89414E0051F4DF /* Binary.plist in Resources */,
 				C82950030F2CC4AA00F0DAF2 /* TextFieldBindings.xib in Resources */,
+				C81373B80F3A15D2001D4AFB /* Apple.bplist.keyedArchive in Resources */,
+				C81373E20F3A165C001D4AFB /* Cocotron.keyedArchive in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -451,6 +469,8 @@
 				C81371EB0F38FF93001D4AFB /* XML.plist in Resources */,
 				C81371EC0F38FF93001D4AFB /* Binary.plist in Resources */,
 				C81371ED0F38FF93001D4AFB /* TextFieldBindings.xib in Resources */,
+				C81373B90F3A15D2001D4AFB /* Apple.bplist.keyedArchive in Resources */,
+				C81373E30F3A165C001D4AFB /* Cocotron.keyedArchive in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -462,6 +482,8 @@
 				C8A392CC0E48B20F00A9C289 /* XML.plist in Resources */,
 				C8A392DA0E48B26200A9C289 /* Binary.plist in Resources */,
 				C82950040F2CC4AA00F0DAF2 /* TextFieldBindings.xib in Resources */,
+				C81373B60F3A15D2001D4AFB /* Apple.bplist.keyedArchive in Resources */,
+				C81373E00F3A165C001D4AFB /* Cocotron.keyedArchive in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -474,6 +496,8 @@
 				C8A392CA0E48B20F00A9C289 /* XML.plist in Resources */,
 				C8A392D80E48B26200A9C289 /* Binary.plist in Resources */,
 				C82950010F2CC4AA00F0DAF2 /* TextFieldBindings.xib in Resources */,
+				C81373B70F3A15D2001D4AFB /* Apple.bplist.keyedArchive in Resources */,
+				C81373E10F3A165C001D4AFB /* Cocotron.keyedArchive in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -541,10 +565,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				C81371EE0F38FF9A001D4AFB /* CrashCatcher.m in Sources */,
-				C81371EF0F38FF9A001D4AFB /* FileHandle.m in Sources */,
 				C81371F00F38FF9A001D4AFB /* KVC.m in Sources */,
 				C81371F10F38FF9A001D4AFB /* main.m in Sources */,
-				C81371F20F38FF9A001D4AFB /* TextFieldBindings.m in Sources */,
 				C81371F30F38FF9A001D4AFB /* KeyedArchiving.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -556,7 +578,6 @@
 				C80F9D180E59E45100ECD487 /* CrashCatcher.m in Sources */,
 				C8294FE70F2CC3BC00F0DAF2 /* FileHandle.m in Sources */,
 				C8294FE80F2CC3BC00F0DAF2 /* KVC.m in Sources */,
-				C8294FF90F2CC47700F0DAF2 /* TextFieldBindings.m in Sources */,
 				C813714E0F38FA61001D4AFB /* KeyedArchiving.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -572,7 +593,6 @@
 				C8794B900EE4727C00539601 /* KVC.m in Sources */,
 				C8794B910EE4727C00539601 /* Properties.m in Sources */,
 				C8794B920EE4727C00539601 /* ForEach.m in Sources */,
-				C81371410F38FA0E001D4AFB /* TextFieldBindings.m in Sources */,
 				C813714F0F38FA61001D4AFB /* KeyedArchiving.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

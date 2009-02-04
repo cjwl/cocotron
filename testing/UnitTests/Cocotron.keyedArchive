@@ -1,0 +1,29 @@
+{
+ $archiver = NSKeyedArchiver;
+ $objects = (
+   $null,
+   {
+     $class = {
+       CF$UID = 4;
+     };
+     float = 17.5;
+     rect = {
+       CF$UID = 3;
+     };
+     string = {
+       CF$UID = 2;
+     };
+   },
+   string,
+   "{0.000000000000, 0.000000000000, 100.000000000000, 100.000000000000}",
+   {
+     $classname = ArchivableClass;
+   }
+ );
+ $top = {
+   $root = {
+     CF$UID = 1;
+   };
+ };
+ $version = 100000;
+}
