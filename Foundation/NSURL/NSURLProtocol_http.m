@@ -15,6 +15,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSData.h>
 #import <Foundation/NSURL.h>
 #import <Foundation/NSHost.h>
+#import <string.h>
 
 enum {
  STATE_waitingForStatusCR,
@@ -58,11 +59,11 @@ enum {
 
 -(void)_headerKey {
    [_currentKey autorelease];
-   _currentKey=[[NSString alloc] initWithCString:_bytes+_range.location length:_range.length];
+   _currentKey=[[NSString alloc] initWithCString:(char*)_bytes+_range.location length:_range.length];
 }
 
 -(void)_headerValue {
-   NSString *value=[NSString stringWithCString:_bytes+_range.location length:_range.length-1];
+   NSString *value=[NSString stringWithCString:(char*)_bytes+_range.location length:_range.length-1];
    NSString *oldValue;
 
    if((oldValue=[_headers objectForKey:_currentKey])!=nil)
@@ -72,7 +73,7 @@ enum {
 }
 
 -(void)_continuation {
-   NSString *value=[NSString stringWithCString:_bytes+_range.location length:_range.length-1];
+   NSString *value=[NSString stringWithCString:(char*)_bytes+_range.location length:_range.length-1];
    NSString *oldValue=[_headers objectForKey:_currentKey];
 
    value=[[oldValue stringByAppendingString:@" "] stringByAppendingString:value];
@@ -116,7 +117,7 @@ enum {
       if(code!='\012')
        _state=STATE_waitingForStatusCR;
       else {
-       [self status:[NSString stringWithCString:_bytes+_range.location length:_range.length-1]];
+       [self status:[NSString stringWithCString:(char*)_bytes+_range.location length:_range.length-1]];
        _state=STATE_waitingForHeader;
        rangeAction=advanceLocationToNext;
       }
@@ -289,7 +290,7 @@ NSLog(@"transfer completed");
    NSString *hostName=[url host];
    NSNumber *portNumber=[url port];
 	NSLog(@"startloading");
-	sentrequest=FALSE;
+	sentrequest=NO;
    
    if(portNumber==nil)
     portNumber=[NSNumber numberWithInt:80];
@@ -321,7 +322,7 @@ NSLog(@"transfer completed");
 -(void)inputStream:(NSInputStream *)stream handleEvent:(NSStreamEvent)streamEvent 
 {
 	char buffer[1024];
-	int size=[stream read:buffer maxLength:sizeof(buffer)];
+	int size=[stream read:(unsigned char*)buffer maxLength:sizeof(buffer)];
 	if (size)
 	{
 		[self appendData:[NSData dataWithBytes:buffer length:size]];
@@ -341,7 +342,7 @@ NSLog(@"transfer completed");
 
 -(void)outputStream:(NSOutputStream *)stream handleEvent:(NSStreamEvent)streamEvent 
 {
-	if(streamEvent==NSStreamEventHasSpaceAvailable && sentrequest==FALSE)
+	if(streamEvent==NSStreamEventHasSpaceAvailable && sentrequest==NO)
 	{
 		NSURL* url=[_request URL];
 		NSString* path=[url relativeString];
@@ -352,8 +353,8 @@ NSLog(@"transfer completed");
 		[httprequest appendString:@"\r\n"];
 		NSLog(@"request %@ ",httprequest);
 		const char* crequest=[httprequest UTF8String];
-		[stream write:crequest maxLength:strlen(crequest)];
-		sentrequest=TRUE;
+		[stream write:(unsigned char*)crequest maxLength:strlen(crequest)];
+		sentrequest=YES;
 		
 	}
 	
