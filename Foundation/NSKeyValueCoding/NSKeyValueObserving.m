@@ -1036,20 +1036,6 @@ BOOL CreateClassDefinition( const char * name,
     strcpy ((char*)new_class->name, name);
     meta_class->name = new_class->name;
 	
-    // Allocate empty method lists.
-    // We can add methods later.
-    //
-#if 1 // Cocotron
-    new_class->methodLists = calloc( 1, sizeof(struct objc_method_list  *) );
-    new_class->methodLists->method_count = -1;
-    meta_class->methodLists = calloc( 1, sizeof(struct objc_method_list  *) );
-    meta_class->methodLists->method_count = -1;
-#else // Apple
-    new_class->methodLists = calloc( 1, sizeof(struct objc_method_list  *) );
-    *new_class->methodLists = -1;
-    meta_class->methodLists = calloc( 1, sizeof(struct objc_method_list  *) );
-    *meta_class->methodLists = -1;
-#endif
     // Connect the class definition to the class hierarchy:
     // Connect the class to the superclass.
     // Connect the metaclass to the metaclass of the superclass.
