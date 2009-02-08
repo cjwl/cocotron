@@ -18,7 +18,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 int selectorCount=0;
 
-static SEL   nextSelector=(void *)sizeof(OBJCMethodCacheEntry);
 static OBJCHashTable *nameToNumber=NULL;
 
 
@@ -32,8 +31,7 @@ SEL OBJCRegisterSelectorName(const char *name){
 
    if(result==OBJCNilSelector){
     selectorCount++;
-    result=(SEL)OBJCHashInsertValueForKey(nameToNumber,name,(void *)nextSelector);
-    nextSelector+=sizeof(OBJCMethodCacheEntry);
+    result=(SEL)OBJCHashInsertValueForKey(nameToNumber,name, (char*)name);
    }
 
    return result;
@@ -68,20 +66,10 @@ SEL sel_registerName(const char *cString){
 }
 
 const char *sel_getName(SEL selector) {
-  OBJCHashEnumerator state=OBJCEnumerateHashTable(nameToNumber);
-  const char        *check;
-
   if(selector==NULL)
     return NULL;
   
-  while((check=OBJCNextHashEnumeratorKey(&state))!=NULL){
-   SEL value=(SEL)OBJCHashValueForKey(nameToNumber,check);
-
-   if(value==OBJCSelectorUniqueId(selector))
-    return check;
-  }
-
-  return NULL;
+   return (const char*)OBJCHashValueForKey(nameToNumber, selector);
 }
 
 BOOL sel_isMapped(SEL selector) {

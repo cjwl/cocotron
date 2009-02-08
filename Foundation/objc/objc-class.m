@@ -25,16 +25,31 @@ Ivar class_getInstanceVariable(Class class,const char *variableName) {
 }
 
 void class_addMethods(Class class,struct objc_method_list *methodList) {
-	
-	if(class->methodLists==NULL)
-		class->methodLists=methodList;
-	else {
-		struct objc_method_list *node;
-		
-		for(node=class->methodLists;node->method_next!=NULL;node=node->method_next)
-			;
-		node->method_next=methodList;
-	}
+   struct objc_method_list **methodLists=class->methodLists;
+   struct objc_method_list **newLists=NULL;
+   int i;
+
+   if(!methodLists) {
+      // no method list yet: create one
+      newLists=calloc(sizeof(struct objc_method_list*), 2);
+      newLists[0]=methodList;
+   } else {
+      // we have a method list: measure it out
+      for(i=0; methodLists[i]!=NULL; i++) {
+      }
+      // allocate new method list array
+      newLists=calloc(sizeof(struct objc_method_list*), i+2);
+      // copy over
+      newLists[0]=methodList;
+      for(i=0; methodLists[i]!=NULL; i++) {
+         newLists[i+1]=methodLists[i];
+      }
+   }
+   // set new lists
+   class->methodLists=newLists;
+   // free old ones (FIXME: thread safety)
+   if(methodLists)
+      free(methodLists);
 }
 
 BOOL class_addMethod(Class cls, SEL name, IMP imp, const char *types) {
@@ -42,10 +57,9 @@ BOOL class_addMethod(Class cls, SEL name, IMP imp, const char *types) {
 	struct objc_method_list *methodList = calloc(sizeof(struct objc_method_list)+sizeof(struct objc_method), 1);
 	
 	newMethod->method_name = name;
-	newMethod->method_types = types;
+	newMethod->method_types = (char*)types;
 	newMethod->method_imp = imp;
 
-	methodList->method_next = NULL;
 	methodList->method_count = 1;
 	memcpy(methodList->method_list, newMethod, sizeof(struct objc_method));
 	free(newMethod);
@@ -54,14 +68,13 @@ BOOL class_addMethod(Class cls, SEL name, IMP imp, const char *types) {
 }
 
 struct objc_method_list *class_nextMethodList(Class class,void **iterator) {
-   struct objc_method_list *next=*iterator;
+   int *it=(int*)iterator;
+   struct objc_method_list *ret=NULL;
+   if(!class->methodLists)
+      return NULL;
    
-   if(next==NULL)
-    next=class->methodLists;
-   else
-    next=next->method_next;
+   ret=class->methodLists[*it];
+   *it=*it+1;
    
-   *iterator=next;
-   
-   return next;
+   return ret;
 }

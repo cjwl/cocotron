@@ -102,10 +102,30 @@ static void OBJCRegisterSelectorsInMethodList(struct objc_method_list *list){
 }
 
 static void OBJCRegisterSelectorsInClass(Class class) {
-   struct objc_method_list *node;
+   struct objc_method_list *cur=NULL;
+   
+   if(class->info & CLASS_NO_METHOD_ARRAY) {
+      // we have been called by via OBJCSymbolTableRegisterClasses; the methodLists pointer really
+      // points to a single method list.
 
-   for(node=class->methodLists;node!=NULL;node=node->method_next)
-    OBJCRegisterSelectorsInMethodList(node);
+      // remember direct-style method lists
+      struct objc_method_list *methodLists=(struct objc_method_list *)class->methodLists;
+   
+      class->methodLists=NULL;
+      // just in case this is really an old-style method list setup with a linked list, walk it.
+      for(cur=methodLists; cur; cur=cur->obsolete) {
+         OBJCRegisterSelectorsInMethodList(cur);
+         class_addMethods(class, cur);
+      }
+      class->info&=~CLASS_NO_METHOD_ARRAY;
+   } else {
+      // this is a properly setup class; just walk through all method lists and register the selectors
+      void *iterator=0;
+      while((cur = class_nextMethodList(class, &iterator))) {
+         OBJCRegisterSelectorsInMethodList(cur);
+      }
+      
+   }
 }
 
 static void OBJCInitializeCacheEntry(OBJCMethodCacheEntry *entry){
@@ -192,10 +212,8 @@ void OBJCRegisterClass(Class class) {
 }
 
 static void OBJCAppendMethodListToClass(Class class, struct objc_method_list *methodList) {
-   methodList->method_next=class->methodLists;
-   class->methodLists=methodList;
-   
    OBJCRegisterSelectorsInMethodList(methodList);
+   class_addMethods(class, methodList);
 }
 
 void OBJCRegisterCategoryInClass(OBJCCategory *category,Class class) {
@@ -248,14 +266,16 @@ static inline struct objc_method *OBJCLookupUniqueIdInMethodList(struct objc_met
 }
 
 static inline struct objc_method *OBJCLookupUniqueIdInOnlyThisClass(Class class,SEL uniqueId){
-   struct objc_method     *result=NULL;
+   void *iterator=0;
    struct objc_method_list *check;
-
-   for(check=class->methodLists;check!=NULL;check=check->method_next)
-    if((result=OBJCLookupUniqueIdInMethodList(check,uniqueId))!=NULL)
-     break;
-
-   return result;
+   struct objc_method     *result=NULL;
+   
+   while((check = class_nextMethodList(class, &iterator))) {
+      if((result=OBJCLookupUniqueIdInMethodList(check,uniqueId))) {
+         return result;
+      }
+   }
+   return NULL;
 }
 
 inline struct objc_method *OBJCLookupUniqueIdInClass(Class class,SEL uniqueId) {
@@ -442,14 +462,6 @@ BOOL object_cxxDestruct(id self, Class class)
 	return YES;
 }
 
-int objc_getMethodReturnLength(Class class, SEL sel) {
-	const char *types=OBJCTypesForSelector(class,sel);
-	int ret=0;
-	if(types)
-		NSGetSizeAndAlignment(types, &ret, NULL);
-	return ret;
-}
-
 const char *class_getName(Class cls)
 {
    return cls->name;
@@ -457,8 +469,9 @@ const char *class_getName(Class cls)
 
 IMP class_getMethodImplementation(Class cls, SEL name) {
    struct objc_method *ret=OBJCLookupUniqueIdInClass(cls, name);
-   if(ret)
+   if(ret) {
       return ret->method_imp;
+   }
    return NULL;
 }
 

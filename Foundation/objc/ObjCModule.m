@@ -187,9 +187,13 @@ static void OBJCSymbolTableRegisterClasses(OBJCSymbolTable *symbolTable){
    unsigned i,count=symbolTable->classCount;
 
    for(i=0;i<count;i++){
-    OBJCClassTemplate *class=(OBJCClassTemplate *)symbolTable->definitions[i];
-
-    OBJCRegisterClass(class);
+      OBJCClassTemplate *class=(OBJCClassTemplate *)symbolTable->definitions[i];
+      
+      // mark class and metaclass as having a direct method list pointer
+      class->info|=CLASS_NO_METHOD_ARRAY;
+      class->isa->info|=CLASS_NO_METHOD_ARRAY;
+      
+      OBJCRegisterClass(class);
    }
 }
 

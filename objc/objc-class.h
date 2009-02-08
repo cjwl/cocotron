@@ -17,7 +17,8 @@ enum {
    CLASS_INFO_INITIALIZED=0x004,
    CLASS_INFO_POSING=0x008,
    CLASS_INFO_LINKED=0x100,
-   CLASS_HAS_CXX_STRUCTORS=0x2000
+   CLASS_HAS_CXX_STRUCTORS=0x2000,
+   CLASS_NO_METHOD_ARRAY=0x4000
 };
 
 enum {
@@ -78,7 +79,7 @@ typedef struct objc_method {
 } *Method;
 
 struct objc_method_list {
-   struct objc_method_list *method_next;
+   struct objc_method_list *obsolete;
    int                      method_count;
    struct objc_method       method_list[1]; 
 };
@@ -107,7 +108,7 @@ typedef struct objc_class {
    long                      info;
    long                      instance_size;
    struct objc_ivar_list    *ivars;
-   struct objc_method_list           *methodLists;
+   struct objc_method_list **methodLists;
    struct objc_cache        *cache;
    OBJCProtocolList         *protocols;
    void                     *privateData;
