@@ -36,8 +36,6 @@ NSString *const NSKeyValueChangeNotificationIsPriorKey=@"NSKeyValueChangeNotific
 NSString *const _KVO_DependentKeysTriggeringChangeNotification=@"_KVO_DependentKeysTriggeringChangeNotification";
 NSString *const _KVO_KeyPathsForValuesAffectingValueForKey=@"_KVO_KeyPathsForValuesAffectingValueForKey";
 
-static BOOL CreateClassDefinition( const char * name, const char * superclassName );
-
 #pragma mark -
 #pragma mark KVO implementation
 
@@ -734,11 +732,9 @@ CHANGE_DECLARATION(SEL)
 		return swizzledClass;
 	
 	// swizzled class doesn't exist; create	
-	const char *originalName=[[self className] cString];
-	if(!CreateClassDefinition(swizzledName, originalName))
+   swizzledClass = objc_allocateClassPair(isa, swizzledName, 0);
+	if(!swizzledClass)
 		[NSException raise:@"NSClassCreationException" format:@"couldn't swizzle class %@ for KVO", [self className]];
-
-	swizzledClass = objc_lookUpClass(swizzledName);
 
 	// add KVO-Observing methods
 	int maxMethods=20;
@@ -914,6 +910,8 @@ CHANGE_DECLARATION(SEL)
 	class_addMethods(swizzledClass, list);
 
 	free(newMethods);
+   
+   objc_registerClassPair(swizzledClass);
 
 	// done
 	return swizzledClass;
@@ -987,71 +985,3 @@ CHANGE_DECLARATION(SEL)
 }
 @end
 
-BOOL CreateClassDefinition( const char * name, 
-							const char * superclassName )
-{
-    struct objc_class * meta_class;
-    struct objc_class * super_class;
-    struct objc_class * new_class;
-    struct objc_class * root_class;
-	
-    // Ensure that the superclass exists and that someone
-    // hasn't already implemented a class with the same name
-    //
-    super_class = (struct objc_class *)objc_lookUpClass (superclassName);
-    if (super_class == nil)
-    {
-        return NO;
-    }
-	
-    if (objc_lookUpClass (name) != nil) 
-    {
-        return NO;
-    }
-	
-    // Find the root class
-    //
-    root_class = super_class;
-    while( root_class->super_class != nil )
-    {
-        root_class = root_class->super_class;
-    }
-	
-    // Allocate space for the class and its metaclass
-    //
-    new_class = calloc( 2, sizeof(struct objc_class) );
-    meta_class = &new_class[1];
-	
-    // setup class
-    new_class->isa      = meta_class;
-    new_class->info     = CLS_CLASS;
-    meta_class->info    = CLS_META;
-	
-    // Create a copy of the class name.
-    // For efficiency, we have the metaclass and the class itself 
-    // to share this copy of the name, but this is not a requirement
-    // imposed by the runtime.
-    //
-    new_class->name = malloc (strlen (name) + 1);
-    strcpy ((char*)new_class->name, name);
-    meta_class->name = new_class->name;
-	
-    // Connect the class definition to the class hierarchy:
-    // Connect the class to the superclass.
-    // Connect the metaclass to the metaclass of the superclass.
-    // Connect the metaclass of the metaclass to the metaclass of  the root class.
-    //
-    new_class->super_class  = super_class;
-    meta_class->super_class = super_class->isa;
-    meta_class->isa         = (void *)root_class->isa;
-	
-    // Set the sizes of the class and the metaclass.
-    //
-    new_class->instance_size = super_class->instance_size;
-    meta_class->instance_size = meta_class->super_class->instance_size;
-	
-    // Finally, register the class with the runtime.
-    //
-    objc_addClass( new_class ); 
-    return YES;
-}

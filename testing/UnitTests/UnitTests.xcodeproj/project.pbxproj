@@ -48,6 +48,12 @@
 		C897902C0ECA1E5400C3E5EE /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C897902B0ECA1E5400C3E5EE /* main.m */; };
 		C897902E0ECA1E5400C3E5EE /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C897902B0ECA1E5400C3E5EE /* main.m */; };
 		C89790710ECA202F00C3E5EE /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 089C1672FE841209C02AAC07 /* Foundation.framework */; };
+		C89C703C0F3F165300670992 /* MessageSendTorture.m in Sources */ = {isa = PBXBuildFile; fileRef = C8EA12250E893B1F0051F4DF /* MessageSendTorture.m */; };
+		C89C70750F3F18E400670992 /* SizeAndAlignment.m in Sources */ = {isa = PBXBuildFile; fileRef = C8C031A30DBB4F7D00558D7B /* SizeAndAlignment.m */; };
+		C89C70760F3F18EA00670992 /* ForEach.m in Sources */ = {isa = PBXBuildFile; fileRef = C88B859B0DB90282000A8500 /* ForEach.m */; };
+		C89C70770F3F18F100670992 /* Properties.m in Sources */ = {isa = PBXBuildFile; fileRef = C827EB3A0DB63FFA00360D99 /* Properties.m */; };
+		C89C70780F3F18F100670992 /* ObjCXXExceptions.mm in Sources */ = {isa = PBXBuildFile; fileRef = C84F02C20E1F8F17000C03D6 /* ObjCXXExceptions.mm */; };
+		C89C70790F3F18F100670992 /* Forwarding.m in Sources */ = {isa = PBXBuildFile; fileRef = C88B86D90DBA0305000A8500 /* Forwarding.m */; };
 		C8A392CA0E48B20F00A9C289 /* XML.plist in Resources */ = {isa = PBXBuildFile; fileRef = C8A392C90E48B20F00A9C289 /* XML.plist */; };
 		C8A392CB0E48B20F00A9C289 /* XML.plist in Resources */ = {isa = PBXBuildFile; fileRef = C8A392C90E48B20F00A9C289 /* XML.plist */; };
 		C8A392CC0E48B20F00A9C289 /* XML.plist in Resources */ = {isa = PBXBuildFile; fileRef = C8A392C90E48B20F00A9C289 /* XML.plist */; };
@@ -557,6 +563,12 @@
 				C8C0144B0EEB13DB0057F3FB /* NewStyleExceptions.m in Sources */,
 				C8C014DB0EEBF1920057F3FB /* KVO.m in Sources */,
 				C81371500F38FA61001D4AFB /* KeyedArchiving.m in Sources */,
+				C89C703C0F3F165300670992 /* MessageSendTorture.m in Sources */,
+				C89C70750F3F18E400670992 /* SizeAndAlignment.m in Sources */,
+				C89C70760F3F18EA00670992 /* ForEach.m in Sources */,
+				C89C70770F3F18F100670992 /* Properties.m in Sources */,
+				C89C70780F3F18F100670992 /* ObjCXXExceptions.mm in Sources */,
+				C89C70790F3F18F100670992 /* Forwarding.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

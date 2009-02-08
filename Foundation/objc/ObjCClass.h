@@ -19,6 +19,8 @@ typedef struct OBJCMethodDescriptionList {
 FOUNDATION_EXPORT Class OBJCClassFromString(const char *name);
 FOUNDATION_EXPORT id objc_getClass(const char *name);
 FOUNDATION_EXPORT id objc_getOrigClass(const char *name);
+FOUNDATION_EXPORT Class objc_allocateClassPair(Class super_class, const char *name, size_t extraBytes);
+FOUNDATION_EXPORT void objc_registerClassPair(Class new_class);
 
 FOUNDATION_EXPORT void OBJCRegisterClass(Class class);
 FOUNDATION_EXPORT void OBJCRegisterCategoryInClass(OBJCCategory *category,Class class);
@@ -31,3 +33,4 @@ FOUNDATION_EXPORT void OBJCLinkClassTable(void);
 
 BOOL object_cxxConstruct(id self, Class c);
 BOOL object_cxxDestruct(id self, Class c);
+

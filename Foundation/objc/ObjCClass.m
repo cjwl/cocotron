@@ -475,6 +475,76 @@ IMP class_getMethodImplementation(Class cls, SEL name) {
    return NULL;
 }
 
+Class objc_allocateClassPair(Class super_class, const char *name, size_t extraBytes)
+{
+   struct objc_class * meta_class;
+   struct objc_class * new_class;
+   struct objc_class * root_class;
+	
+   // Ensure that the superclass exists and that someone
+   // hasn't already implemented a class with the same name
+   //
+   if (super_class == Nil)
+   {
+      return Nil;
+   }
+	
+   if (objc_lookUpClass (name) != Nil) 
+   {
+      return Nil;
+   }
+	
+   // Find the root class
+   //
+   root_class = super_class;
+   while( root_class->super_class != nil )
+   {
+      root_class = root_class->super_class;
+   }
+	
+   // Allocate space for the class and its metaclass
+   //
+   new_class = calloc( 2, sizeof(struct objc_class) + extraBytes);
+   meta_class = &new_class[1];
+	
+   // setup class
+   new_class->isa      = meta_class;
+   new_class->info     = CLS_CLASS;
+   meta_class->info    = CLS_META;
+	
+   // Create a copy of the class name.
+   // For efficiency, we have the metaclass and the class itself 
+   // to share this copy of the name, but this is not a requirement
+   // imposed by the runtime.
+   //
+   new_class->name = malloc (strlen (name) + 1);
+   strcpy ((char*)new_class->name, name);
+   meta_class->name = new_class->name;
+	
+   // Connect the class definition to the class hierarchy:
+   // Connect the class to the superclass.
+   // Connect the metaclass to the metaclass of the superclass.
+   // Connect the metaclass of the metaclass to the metaclass of  the root class.
+   //
+   new_class->super_class  = super_class;
+   meta_class->super_class = super_class->isa;
+   meta_class->isa         = (void *)root_class->isa;
+	
+   // Set the sizes of the class and the metaclass.
+   //
+   new_class->instance_size = super_class->instance_size;
+   meta_class->instance_size = meta_class->super_class->instance_size;
+	
+   // Finally, register the class with the runtime.
+   //
+   return new_class;
+}
+
+void objc_registerClassPair(Class new_class)
+{
+   objc_addClass( new_class ); 
+}
+
 void OBJCLogMsg(id object,SEL message){
 #if 1
    if(object==nil)
