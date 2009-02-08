@@ -36,6 +36,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSAutoreleasePool.h>
 #import <limits.h>
 #import <objc/objc-class.h>
+#import <string.h>
 
 const unsigned NSMaximumStringLength=INT_MAX-1;
 
@@ -1019,10 +1020,12 @@ U+2029 (Unicode paragraph separator), \r\n, in that order (also known as CRLF)
    return 0;
 }
 -(NSString *)stringByReplacingOccurrencesOfString:(NSString *)original withString:(NSString *)substitute {
-   
-	NSMutableString* s=[self mutableCopy];
+	NSMutableString* s=[[self mutableCopy] autorelease];
 	[s replaceOccurrencesOfString:original withString:substitute options:0 range:NSMakeRange(0, [s length])];
-	return [s copy];
+   
+   NSMutableString *ret=[[s copy] autorelease];
+   [s release];
+	return ret;
 }
 -(NSString *)stringByReplacingOccurrencesOfString:(NSString *)original withString:(NSString *)substitute options:(NSStringCompareOptions)options range:(NSRange)range {
    NSUnimplementedMethod();
@@ -1222,7 +1225,7 @@ U+2029 (Unicode paragraph separator), \r\n, in that order (also known as CRLF)
         case NSASCIIStringEncoding: {
             NSGetCStringWithMaxLength(unicode,range.length,&range.location,cString,maxLength-1,NO);
             for (i = 0; i < maxLength-1; i++) {
-                if (cString[i] > 127) {  // invalid character for ASCII encoding
+                if ((unsigned char)cString[i] > 127) {  // invalid character for ASCII encoding
                     cString[i] = 0;
                     result = NO;
                     break;
