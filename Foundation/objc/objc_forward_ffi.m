@@ -16,7 +16,11 @@
 #import "objc_size_alignment.h"
 
 #import <objc/objc-class.h>
+#ifdef DARWIN
+#import <ffi/ffi.h>
+#else
 #import <ffi.h>
+#endif
 #import <Foundation/NSMethodSignature.h>
 #import <Foundation/ObjCHashTable.h>
 #import <Foundation/NSString.h>

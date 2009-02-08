@@ -67,6 +67,8 @@ static NSMapTable *_globalNameToClass=NULL;
    // object that returns YES to -isEqual with the mutable parent (and thus wouldn't get encoded at all without this change)
    
    _objectToUid=NSCreateMapTable(objectToUidKeyCb,NSObjectMapValueCallBacks,0);
+   
+   _outputFormat=NSPropertyListXMLFormat_v1_0;
    return self;
 }
 

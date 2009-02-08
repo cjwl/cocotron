@@ -44,6 +44,13 @@ static NSDocumentController *shared=nil;
    return self;
 }
 
+-(void)dealloc {
+   [_documents release];
+   [_fileTypes release];
+   [_lastOpenPanelDirectory release];
+   [super dealloc];
+}
+
 -initWithCoder:(NSCoder *)coder {
    NSUnimplementedMethod();
    return nil;

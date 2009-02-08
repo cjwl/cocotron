@@ -8704,8 +8704,10 @@
 					"-D__LITTLE_ENDIAN__",
 					"-fPIC",
 					"-march=i686",
+					"-DHAVE_LIBFFI",
+					"-DDARWIN",
 				);
-				OTHER_LDFLAGS = "";
+				OTHER_LDFLAGS = "-lffi";
 				PREBINDING = NO;
 				PRODUCT_NAME = Foundation;
 				SYMROOT = /Developer/Cocotron/1.0/build/Foundation/Darwin/i386;
@@ -8813,8 +8815,10 @@
 					"-D__LITTLE_ENDIAN__",
 					"-fPIC",
 					"-march=i686",
+					"-DHAVE_LIBFFI",
+					"-DDARWIN",
 				);
-				OTHER_LDFLAGS = "";
+				OTHER_LDFLAGS = "-lffi";
 				PREBINDING = NO;
 				PRODUCT_NAME = Foundation;
 				SYMROOT = /Developer/Cocotron/1.0/build/Foundation/Darwin/i386;

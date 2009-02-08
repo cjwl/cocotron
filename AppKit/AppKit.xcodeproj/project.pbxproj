@@ -6913,12 +6913,14 @@
 					/Developer/Cocotron/1.0/Darwin/i386/lib/libcairo.a,
 					/Developer/Cocotron/1.0/Darwin/i386/lib/libfreetype.a,
 					"$(OTHER_LDFLAGS_QUOTED_FOR_TARGET_1)",
+					/Developer/Cocotron/1.0/Darwin/i386/lib/libpng12.a,
 					/Developer/Cocotron/1.0/Darwin/i386/lib/libX11.a,
 					/Developer/Cocotron/1.0/Darwin/i386/lib/libXrender.a,
 					/Developer/Cocotron/1.0/Darwin/i386/lib/libXext.a,
 					/Developer/Cocotron/1.0/Darwin/i386/lib/libfontconfig.a,
 					/Developer/Cocotron/1.0/Darwin/i386/lib/libexpat.a,
 					/Developer/Cocotron/1.0/Darwin/i386/lib/libGL.a,
+					"-lz",
 				);
 				OTHER_LDFLAGS_QUOTED_FOR_TARGET_1 = "\"/Developer/Cocotron/1.0/Darwin/i386/lib/libpixman-1.a\"";
 				PREBINDING = NO;
@@ -6965,12 +6967,14 @@
 					/Developer/Cocotron/1.0/Darwin/i386/lib/libcairo.a,
 					/Developer/Cocotron/1.0/Darwin/i386/lib/libfreetype.a,
 					"$(OTHER_LDFLAGS_QUOTED_FOR_TARGET_1)",
+					/Developer/Cocotron/1.0/Darwin/i386/lib/libpng12.a,
 					/Developer/Cocotron/1.0/Darwin/i386/lib/libX11.a,
 					/Developer/Cocotron/1.0/Darwin/i386/lib/libXrender.a,
 					/Developer/Cocotron/1.0/Darwin/i386/lib/libXext.a,
 					/Developer/Cocotron/1.0/Darwin/i386/lib/libfontconfig.a,
 					/Developer/Cocotron/1.0/Darwin/i386/lib/libexpat.a,
 					/Developer/Cocotron/1.0/Darwin/i386/lib/libGL.a,
+					"-lz",
 				);
 				OTHER_LDFLAGS_QUOTED_FOR_TARGET_1 = "\"/Developer/Cocotron/1.0/Darwin/i386/lib/libpixman-1.a\"";
 				PREBINDING = NO;
