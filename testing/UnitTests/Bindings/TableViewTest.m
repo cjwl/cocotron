@@ -33,7 +33,7 @@
                      nil]];
    [table addObject:[NSMutableDictionary dictionaryWithObjectsAndKeys:@"Nothing", @"name",
                      [NSNumber numberWithInt:40], @"value",
-                     nil]];  
+                     nil]];
    [table addObject:[NSMutableDictionary dictionaryWithObjectsAndKeys:@"Abcdefg", @"name",
                      [NSNumber numberWithInt:50], @"value",
                      nil]];  

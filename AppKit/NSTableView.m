@@ -260,7 +260,7 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
    return _gridStyleMask;
 }
 
--(int)numberOfRows {
+-(NSInteger)numberOfRows {
 	int val;
     id binding=[self _binderForBinding:@"content"];
     if(binding && (val=[binding numberOfRows])>=0)
@@ -271,7 +271,7 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
     return [_dataSource numberOfRowsInTableView:self];
 }
 
--(int)numberOfColumns {
+-(NSUInteger)numberOfColumns {
     return [_tableColumns count];
 }
 
@@ -896,6 +896,22 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
                     [self drawHighlightedSelectionForColumn:column row:row inRect:[self frameOfCellAtColumn:column row:row]];
 }
 
+- (NSCell *)preparedCellAtColumn:(NSInteger)columnNumber row:(NSInteger)row {
+   NSTableColumn *column = [_tableColumns objectAtIndex:columnNumber];
+   NSCell *dataCell = [column dataCellForRow:row];
+   [dataCell setObjectValue:[self dataSourceObjectValueForTableColumn:column row:row]];
+   
+   if ([dataCell respondsToSelector:@selector(setTextColor:)]) {
+      if ([self isRowSelected:row] || [self isColumnSelected:columnNumber])
+         [(NSTextFieldCell *)dataCell setTextColor:[NSColor selectedTextColor]];
+      else 
+         [(NSTextFieldCell *)dataCell setTextColor:[NSColor textColor]];
+   }
+   
+   [column prepareCell:dataCell inRow:row];
+   
+   return dataCell;
+}
 
 -(void)drawRow:(int)row clipRect:(NSRect)clipRect {
     // draw only visible columns.
@@ -907,28 +923,18 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
                     format:@"invalid row in drawRow:clipRect:"];
 
     while (drawThisColumn < NSMaxRange(visibleColumns)) {
-        NSTableColumn *column = [_tableColumns objectAtIndex:drawThisColumn];
-        NSTextFieldCell *dataCell = (NSTextFieldCell *)[column dataCellForRow:row];
-        NSRect cellRect = NSInsetRect([self frameOfCellAtColumn:drawThisColumn row:row], _intercellSpacing.width/2, _intercellSpacing.height/2);
+       NSCell *dataCell=[self preparedCellAtColumn:drawThisColumn row:row];
+       NSTableColumn *column = [_tableColumns objectAtIndex:drawThisColumn];
+       NSRect cellRect = NSInsetRect([self frameOfCellAtColumn:drawThisColumn row:row], _intercellSpacing.width/2, _intercellSpacing.height/2);
 
-        if (!(row == _editedRow && drawThisColumn == _editedColumn)) {
-            [dataCell setObjectValue:[self dataSourceObjectValueForTableColumn:column row:row]];
-            
-            if ([dataCell respondsToSelector:@selector(setTextColor:)]) {
-                if ([self isRowSelected:row] || [self isColumnSelected:drawThisColumn])
-                    [dataCell setTextColor:[NSColor selectedTextColor]];
-                else 
-                    [dataCell setTextColor:[NSColor textColor]];
-            }
-			
-			[column prepareCell:dataCell inRow:row];
+       if (!(row == _editedRow && drawThisColumn == _editedColumn)) {
 
-            if ([_delegate respondsToSelector:@selector(tableView:willDisplayCell:forTableColumn:row:)])
-                [_delegate tableView:self willDisplayCell:dataCell forTableColumn:column row:row];
-
-            [dataCell drawWithFrame:cellRect inView:self];
-        }
-        drawThisColumn++;
+          if ([_delegate respondsToSelector:@selector(tableView:willDisplayCell:forTableColumn:row:)])
+             [_delegate tableView:self willDisplayCell:dataCell forTableColumn:column row:row];
+          
+          [dataCell drawWithFrame:cellRect inView:self];
+       }
+       drawThisColumn++;
     }
 }
 
@@ -1145,32 +1151,27 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
         if (_editingCell != nil && _editedColumn != -1 && _editedRow != -1)
             [_editingCell drawWithFrame:_editingFrame inView:self];
     }
-
-        if(_draggingRow >= 0) 
-        { 
-                NSRect rowRect; 
-                [[NSColor blackColor] setStroke]; 
-                if([self numberOfRows] == 0) 
-                        [NSBezierPath strokeLineFromPoint:NSMakePoint(0, 0) toPoint:NSMakePoint([self 
-bounds].size.width, 0)]; 
-                else 
-                { 
-                        if(_draggingRow == [self numberOfRows]) 
-                        { 
-                                rowRect = NSIntersectionRect([self rectOfRow: _draggingRow-1],[self 
-visibleRect]); 
-                                [NSBezierPath strokeLineFromPoint:NSMakePoint(0, rowRect.origin.y 
-+_rowHeight) toPoint:NSMakePoint(rowRect.size.width, rowRect.origin.y+_rowHeight)]; 
-                        } 
-                        else 
-                        { 
-                                rowRect = NSIntersectionRect([self rectOfRow: _draggingRow],[self 
-visibleRect]); 
-                                [NSBezierPath strokeLineFromPoint:NSMakePoint(0, rowRect.origin.y) 
-toPoint:NSMakePoint(rowRect.size.width, rowRect.origin.y)]; 
-                        } 
-                } 
-        } 
+   
+   if(_draggingRow >= 0) 
+   { 
+      NSRect rowRect; 
+      [[NSColor blackColor] setStroke]; 
+      if([self numberOfRows] == 0) 
+         [NSBezierPath strokeLineFromPoint:NSMakePoint(0, 0) toPoint:NSMakePoint([self bounds].size.width, 0)]; 
+      else 
+      { 
+         if(_draggingRow == [self numberOfRows]) 
+         { 
+            rowRect = NSIntersectionRect([self rectOfRow: _draggingRow-1],[self visibleRect]); 
+            [NSBezierPath strokeLineFromPoint:NSMakePoint(0, rowRect.origin.y+_rowHeight) toPoint:NSMakePoint(rowRect.size.width, rowRect.origin.y+_rowHeight)]; 
+         } 
+         else 
+         { 
+            rowRect = NSIntersectionRect([self rectOfRow: _draggingRow],[self visibleRect]); 
+            [NSBezierPath strokeLineFromPoint:NSMakePoint(0, rowRect.origin.y) toPoint:NSMakePoint(rowRect.size.width, rowRect.origin.y)]; 
+         } 
+      } 
+   } 
 }
 
 -(BOOL)delegateSelectionShouldChange

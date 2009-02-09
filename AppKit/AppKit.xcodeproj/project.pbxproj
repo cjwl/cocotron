@@ -1430,6 +1430,12 @@
 		C8A2E5900F07EB600054397C /* NSPlatform_darwin.m in Sources */ = {isa = PBXBuildFile; fileRef = C8A2E58F0F07EB600054397C /* NSPlatform_darwin.m */; };
 		C8A2E6080F07F4540054397C /* CairoContext.h in Headers */ = {isa = PBXBuildFile; fileRef = C81BEA0D0EA6038800478D50 /* CairoContext.h */; };
 		C8A2E60A0F07F4540054397C /* CairoCacheImage.h in Headers */ = {isa = PBXBuildFile; fileRef = C8720C770EA782DB00F02725 /* CairoCacheImage.h */; };
+		C8AB730A0F40C21A00D93B96 /* NSControllerMarker.h in Headers */ = {isa = PBXBuildFile; fileRef = C8AB73080F40C21A00D93B96 /* NSControllerMarker.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		C8AB730B0F40C21A00D93B96 /* NSControllerMarker.m in Sources */ = {isa = PBXBuildFile; fileRef = C8AB73090F40C21A00D93B96 /* NSControllerMarker.m */; };
+		C8AB730C0F40C21A00D93B96 /* NSControllerMarker.h in Headers */ = {isa = PBXBuildFile; fileRef = C8AB73080F40C21A00D93B96 /* NSControllerMarker.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		C8AB730D0F40C21A00D93B96 /* NSControllerMarker.m in Sources */ = {isa = PBXBuildFile; fileRef = C8AB73090F40C21A00D93B96 /* NSControllerMarker.m */; };
+		C8AB730E0F40C21A00D93B96 /* NSControllerMarker.h in Headers */ = {isa = PBXBuildFile; fileRef = C8AB73080F40C21A00D93B96 /* NSControllerMarker.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		C8AB730F0F40C21A00D93B96 /* NSControllerMarker.m in Sources */ = {isa = PBXBuildFile; fileRef = C8AB73090F40C21A00D93B96 /* NSControllerMarker.m */; };
 		C8C52C8F0E7ED1FF003F03B5 /* NSObservationProxy.h in Headers */ = {isa = PBXBuildFile; fileRef = C8C52C8D0E7ED1FF003F03B5 /* NSObservationProxy.h */; };
 		C8C52C900E7ED1FF003F03B5 /* NSObservationProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = C8C52C8E0E7ED1FF003F03B5 /* NSObservationProxy.m */; };
 		C8C995BD0F0BB2B100A0A091 /* X11AsyncInputSourceSet.h in Headers */ = {isa = PBXBuildFile; fileRef = C8C995BB0F0BB2B100A0A091 /* X11AsyncInputSourceSet.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -2806,6 +2812,8 @@
 		C889770C0EA0BF3100D0A0A2 /* AppKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AppKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C8A2E5730F07EA1F0054397C /* AppKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AppKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C8A2E58F0F07EB600054397C /* NSPlatform_darwin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSPlatform_darwin.m; sourceTree = "<group>"; };
+		C8AB73080F40C21A00D93B96 /* NSControllerMarker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSControllerMarker.h; sourceTree = "<group>"; };
+		C8AB73090F40C21A00D93B96 /* NSControllerMarker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSControllerMarker.m; sourceTree = "<group>"; };
 		C8B239A20BF8EEB500CA33AF /* defaultBindingOptions.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = defaultBindingOptions.plist; sourceTree = "<group>"; };
 		C8C52C8D0E7ED1FF003F03B5 /* NSObservationProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSObservationProxy.h; sourceTree = "<group>"; };
 		C8C52C8E0E7ED1FF003F03B5 /* NSObservationProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSObservationProxy.m; sourceTree = "<group>"; };
@@ -4123,6 +4131,8 @@
 				FE2A10710B4599BD006C03DE /* NSUserDefaultsController.m */,
 				C84909350E8D1FB900BA6D3A /* NSUserDefaultsControllerProxy.h */,
 				C84909360E8D1FB900BA6D3A /* NSUserDefaultsControllerProxy.m */,
+				C8AB73080F40C21A00D93B96 /* NSControllerMarker.h */,
+				C8AB73090F40C21A00D93B96 /* NSControllerMarker.m */,
 			);
 			path = NSController;
 			sourceTree = "<group>";
@@ -4583,6 +4593,7 @@
 				C8C995BF0F0BB2B100A0A091 /* X11AsyncInputSourceSet.h in Headers */,
 				C8C995DC0F0BB36700A0A091 /* X11AsyncInputSource.h in Headers */,
 				C8E0BDF00F0E4F5200677729 /* NSOpenGLDrawable_X11.h in Headers */,
+				C8AB730A0F40C21A00D93B96 /* NSControllerMarker.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4946,6 +4957,7 @@
 				C8C995BD0F0BB2B100A0A091 /* X11AsyncInputSourceSet.h in Headers */,
 				C8C995DA0F0BB36700A0A091 /* X11AsyncInputSource.h in Headers */,
 				C8E0BDF20F0E4F5200677729 /* NSOpenGLDrawable_X11.h in Headers */,
+				C8AB730C0F40C21A00D93B96 /* NSControllerMarker.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5303,6 +5315,7 @@
 				FEA25F980EECCE4D008750D0 /* NSSound_win32.h in Headers */,
 				FE669C9A0F12B1A600534F46 /* gif_lib.h in Headers */,
 				FEC0C7810F146AF800903F6D /* KGImageSource_GIF.h in Headers */,
+				C8AB730E0F40C21A00D93B96 /* NSControllerMarker.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5966,6 +5979,7 @@
 				C8E0BE9D0F0E54B500677729 /* NSOpenGLContext.m in Sources */,
 				C8E0BE9E0F0E54B500677729 /* NSOpenGLPixelFormat.m in Sources */,
 				C8E0BE9F0F0E54B500677729 /* NSOpenGLView.m in Sources */,
+				C8AB730B0F40C21A00D93B96 /* NSControllerMarker.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6295,6 +6309,7 @@
 				C8E0BE9A0F0E54B500677729 /* NSOpenGLContext.m in Sources */,
 				C8E0BE9B0F0E54B500677729 /* NSOpenGLPixelFormat.m in Sources */,
 				C8E0BE9C0F0E54B500677729 /* NSOpenGLView.m in Sources */,
+				C8AB730D0F40C21A00D93B96 /* NSControllerMarker.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6658,6 +6673,7 @@
 				FEA25F990EECCE4D008750D0 /* NSSound_win32.m in Sources */,
 				FE669C920F12B1A600534F46 /* gif_lib.m in Sources */,
 				FEC0C7820F146AF800903F6D /* KGImageSource_GIF.m in Sources */,
+				C8AB730F0F40C21A00D93B96 /* NSControllerMarker.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

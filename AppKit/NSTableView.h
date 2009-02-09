@@ -93,8 +93,8 @@ typedef enum {
 -(BOOL)usesAlternatingRowBackgroundColors;
 -(unsigned int)gridStyleMask;
 
--(int)numberOfRows;
--(int)numberOfColumns;
+-(NSInteger)numberOfRows;
+-(NSUInteger)numberOfColumns;
 -(NSArray *)tableColumns;
 -(NSTableColumn *)tableColumnWithIdentifier:identifier;
 
@@ -172,6 +172,7 @@ typedef enum {
 
 -(void)drawRow:(int)row clipRect:(NSRect)rect;
 -(void)drawGridInClipRect:(NSRect)rect;
+- (NSCell *)preparedCellAtColumn:(NSInteger)columnNumber row:(NSInteger)row;
 
 - (NSIndexSet *)selectedRowIndexes;
 - (void)selectRowIndexes:(NSIndexSet *)indexes byExtendingSelection:(BOOL)extend;

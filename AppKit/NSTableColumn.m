@@ -158,17 +158,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)_boundValuesChanged
 {
-	id binders=[self _allUsedBinders];
-	int count=[binders count];
-	int i;
-	for(i=0; i<count; i++)
-	{
-		id binder=[binders objectAtIndex:i];
-		if([binder isKindOfClass:[_NSMultipleValueBinder class]])
-		{
-			[binder updateRowValues];			
-		}
-	}	
+
 }
 
 -(void)prepareCell:(id)cell inRow:(int)row

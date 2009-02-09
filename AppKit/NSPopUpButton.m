@@ -123,6 +123,10 @@ static NSString *NSPopUpButtonBindingObservationContext=@"NSPopUpButtonBindingOb
    [self setNeedsDisplay:YES];
 }
 
+- (NSMenuItem *)lastItem {
+   return [_cell lastItem];
+}
+
 -(void)selectItemWithTitle:(NSString *)title {
    [_cell selectItemWithTitle:title];
    [self setNeedsDisplay:YES];

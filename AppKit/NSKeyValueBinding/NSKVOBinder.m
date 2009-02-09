@@ -15,20 +15,33 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSControl.h>
 #import "NSObject+BindingSupport.h"
 
+static void *NSKVOBinderChangeContext;
+
 @implementation _NSKVOBinder
 -(void)startObservingChanges
-{
-	//NSLog(@"binding between %@.%@ alias %@ and %@.%@ (%@)", [_source className], _binding, _bindingPath, [_destination className], _keyPath, self);
-   [super startObservingChanges];
-	[_destination addObserver:self 
-                  forKeyPath:_keyPath 
-                     options:0
-                     context:nil];
+{   
+   @try {
+      //NSLog(@"binding between %@.%@ alias %@ and %@.%@ (%@)", [_source className], _binding, _bindingPath, [_destination className], _keyPath, self);
+      [super startObservingChanges];
+      [_destination addObserver:self 
+                     forKeyPath:_keyPath 
+                        options:0
+                        context:&NSKVOBinderChangeContext];
+      _isObserving=YES;
+   } @catch(id ex) {
+      NSLog(@"%@", ex);
+   }
 }
 
 -(void)stopObservingChanges {
-   [super stopObservingChanges];
-   [_destination removeObserver:self forKeyPath:_keyPath];
+   @try {
+      [super stopObservingChanges];
+      if(_isObserving) {
+         [_destination removeObserver:self forKeyPath:_keyPath];
+      }
+   } @catch(id ex) {
+      NSLog(@"%@", ex);
+   }
 }
 
 -(id)destinationValue
@@ -96,63 +109,72 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	return [_destination valueForKeyPath:_keyPath];
 }
 
--(void)syncUp
-{
-	NS_DURING
-	if([self destinationValue])
-		[_source setValue:[self destinationValue] forKeyPath:_bindingPath];
-	NS_HANDLER
-		if([self raisesForNotApplicableKeys])
-			[localException raise];
-	NS_ENDHANDLER
+-(void)writeDestinationToSource {
+   id newValue=[self destinationValue];
+
+   BOOL editable=YES;
+   BOOL isPlaceholder=NO;
+   if(newValue==NSMultipleValuesMarker)
+   {
+      newValue=[self multipleValuesPlaceholder];
+      if(![self allowsEditingMultipleValues])
+         editable=NO;
+      isPlaceholder=YES;
+   }
+   else if(newValue==NSNoSelectionMarker)
+   {
+      newValue=[self noSelectionPlaceholder];
+      editable=NO;
+      isPlaceholder=YES;
+   }
+   else if(!newValue || newValue==[NSNull null])
+   {
+      newValue=[self nullPlaceholder];
+      isPlaceholder=YES;
+   }
+   
+   if([self conditionallySetsEditable])
+      [_source setEditable:editable];
+   if([self conditionallySetsEnabled])
+      [_source setEnabled:editable];
+   
+   [_source setValue:newValue
+          forKeyPath:_bindingPath];
+   
+   if(isPlaceholder && [_source respondsToSelector:@selector(_setCurrentValueIsPlaceholder:)])
+      [_source _setCurrentValueIsPlaceholder:YES];  
 }
 
+-(void)syncUp
+{
+	@try {
+      [self writeDestinationToSource];
+   }
+   @catch(id ex) {
+      if([self raisesForNotApplicableKeys])
+			[ex raise];
+   }
+}
 
 - (void)observeValueForKeyPath:(NSString *)kp ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
    //NSLog(@"observeValueForKeyPath %@, %@", kp, object);
-   if(object==_destination)
+   if(context==&NSKVOBinderChangeContext)
 	{
       [self stopObservingChanges];
+      //NSLog(@"bind event from %@.%@ to %@.%@ alias %@ (%@)", [_destination className], _keyPath, [_source className], _binding, _bindingPath, self);
 
-		//NSLog(@"bind event from %@.%@ to %@.%@ alias %@ (%@)", [_destination className], _keyPath, [_source className], _binding, _bindingPath, self);
-		id newValue=[self destinationValue];
-
-		//NSLog(@"new value %@", newValue);
-
-		BOOL editable=YES;
-		BOOL isPlaceholder=NO;
-		if(newValue==NSMultipleValuesMarker)
-		{
-			newValue=[self multipleValuesPlaceholder];
-			if(![self allowsEditingMultipleValues])
-				editable=NO;
-			isPlaceholder=YES;
-		}
-		else if(newValue==NSNoSelectionMarker)
-		{
-			newValue=[self noSelectionPlaceholder];
-			editable=NO;
-			isPlaceholder=YES;
-		}
-		else if(!newValue || newValue==[NSNull null])
-		{
-			newValue=[self nullPlaceholder];
-			isPlaceholder=YES;
-		}
-
-		if([self conditionallySetsEditable])
-			[_source setEditable:editable];
-		if([self conditionallySetsEnabled])
-			[_source setEnabled:editable];
-		
-		[_source setValue:newValue
-			  forKeyPath:_bindingPath];
-
-		if(isPlaceholder && [_source respondsToSelector:@selector(_setCurrentValueIsPlaceholder:)])
-			[_source _setCurrentValueIsPlaceholder:YES];
-
-      [self startObservingChanges];
+      //NSLog(@"new value %@", newValue);
+      @try {
+         [self writeDestinationToSource];
+      }
+      @catch(id ex) {
+         if([self raisesForNotApplicableKeys])
+            [ex raise];
+      }
+      @finally {
+         [self startObservingChanges];
+      }
 	}
 	else
       [super observeValueForKeyPath:kp ofObject:object change:change context:context];

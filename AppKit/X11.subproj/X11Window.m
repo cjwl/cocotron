@@ -293,6 +293,8 @@
 
 -(void)handleEvent:(XEvent*)ev fromDisplay:(X11Display*)display {
    static id lastFocusedWindow=nil;
+   static NSTimeInterval lastClickTimeStamp=0.0;
+   static int clickCount=0;
    
    switch(ev->type) {
       case DestroyNotify:
@@ -318,12 +320,21 @@
       }
       case ButtonPress:
       {
+         NSTimeInterval now=[[NSDate date] timeIntervalSinceReferenceDate];
+         if(now-lastClickTimeStamp<[display doubleClickInterval]) {
+            clickCount++;
+         }
+         else {
+            clickCount=1;  
+         }
+         lastClickTimeStamp=now;
+         
          NSPoint pos=[self transformPoint:NSMakePoint(ev->xbutton.x, ev->xbutton.y)];
          id event=[NSEvent mouseEventWithType:NSLeftMouseDown
                                   location:pos
                              modifierFlags:[self modifierFlagsForState:ev->xbutton.state]
                                     window:_delegate
-                                clickCount:1];
+                                clickCount:clickCount];
          [display postEvent:event atStart:NO];
          break;
       }
@@ -334,7 +345,7 @@
                                   location:pos
                              modifierFlags:[self modifierFlagsForState:ev->xbutton.state]
                                     window:_delegate
-                                clickCount:1];
+                                clickCount:clickCount];
          [display postEvent:event atStart:NO];
          break;
       }
@@ -379,7 +390,7 @@
          id str=[[NSString alloc] initWithCString:buf encoding:NSISOLatin1StringEncoding];
          NSPoint pos=[self transformPoint:NSMakePoint(ev->xkey.x, ev->xkey.y)];
          
-         id strIg=str;
+         id strIg=[str lowercaseString];
          if(ev->xkey.state) {
             ev->xkey.state=0;
             XLookupString((XKeyEvent*)ev, buf, 4, NULL, NULL);
@@ -400,7 +411,6 @@
          [display postEvent:event atStart:NO];
          
          [str release];
-         [strIg release];
          break;
       }
 

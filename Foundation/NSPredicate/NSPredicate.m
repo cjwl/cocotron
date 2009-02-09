@@ -1304,7 +1304,7 @@ static NSPredicate *nextComparisonPredicate(predicateScanner *scanner){
      skipToken(scanner);
      nextOperationOption(scanner,&options);
      right=nextExpression(scanner);  
-     result=[NSComparisonPredicate predicateWithLeftExpression:right rightExpression:left modifier:modifier type:NSInPredicateOperatorType options:options];
+     result=[NSComparisonPredicate predicateWithLeftExpression:left rightExpression:right modifier:modifier type:NSInPredicateOperatorType options:options];
      break;
 
     case predToken_BETWEEN:

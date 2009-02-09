@@ -152,9 +152,13 @@
 }
 
 -(float)scrollerWidth {
-   NSUnimplementedMethod();
-   return 0;
+   return 20.0;
 }
+
+-(float)doubleClickInterval {
+   return 1.0;
+}
+
 
 -(void)runModalPageLayoutWithPrintInfo:(NSPrintInfo *)printInfo {
    NSUnimplementedMethod();

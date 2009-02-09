@@ -17,6 +17,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSValueTransformer.h>
 #import <AppKit/NSController.h>
 
+static void* NSBinderChangeContext;
+
 #pragma mark -
 #pragma mark Binding Options
 
@@ -191,7 +193,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [_source addObserver:self
              forKeyPath:_bindingPath 
                 options:0
-                context:nil];   
+                context:&NSBinderChangeContext];
 }
 
 
@@ -201,7 +203,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 - (void)observeValueForKeyPath:(NSString *)kp ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
-   if(object==_source)
+   if(context==&NSBinderChangeContext)
    {
       [self stopObservingChanges];
 

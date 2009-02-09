@@ -510,7 +510,21 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
    if(representation==nil){
     representation=[self _cachedImageRepCreateIfNeeded];
-    _cacheIsValid=YES;
+      
+      [self lockFocusOnRepresentation:representation];
+      NSRect rect;
+      id uncached=[self _bestUncachedRepresentationForDevice:nil];
+      rect.origin.x=0;
+      rect.origin.y=0;
+      rect.size=[self size];
+      
+      if([self scalesWhenResized])
+         [uncached drawInRect:rect];
+      else
+         [uncached drawAtPoint:rect.origin];
+         
+      [self unlockFocus];
+      _cacheIsValid=YES;
    }
    
    if([representation isKindOfClass:[NSCachedImageRep class]])

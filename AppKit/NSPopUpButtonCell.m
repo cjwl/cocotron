@@ -87,6 +87,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return [_menu itemAtIndex:index];
 }
 
+- (NSMenuItem *)lastItem {
+   return [_menu itemAtIndex:[_menu numberOfItems]-1];
+}
+
 -(NSMenuItem *)itemWithTitle:(NSString *)title {
    return [_menu itemWithTitle:title];
 }

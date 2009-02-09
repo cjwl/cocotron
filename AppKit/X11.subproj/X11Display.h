@@ -16,4 +16,5 @@
 -(Display*)display;
 -(void)setWindow:(id)window forID:(XID)i;
 -(void)processX11Event;
+-(float)doubleClickInterval;
 @end

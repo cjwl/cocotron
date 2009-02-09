@@ -9,6 +9,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSString.h>
 #import <Foundation/NSKeyedUnarchiver.h>
 #import <Foundation/NSKeyValueObserving.h>
+#import <Foundation/NSCountedSet.h>
 #import "NSControllerSelectionProxy.h"
 #import "NSObservationProxy.h"
 
@@ -27,6 +28,9 @@ triggerChangeNotificationsForDependentKey:@"canAdd"];
 triggerChangeNotificationsForDependentKey:@"canInsert"];
 	[self setKeys:[NSArray arrayWithObjects:@"editable", @"selection", nil]
 triggerChangeNotificationsForDependentKey:@"canRemove"];
+   [self setKeys:[NSArray arrayWithObjects:@"content", nil]
+triggerChangeNotificationsForDependentKey:@"contentObject"];
+
 }
 
 -(id)initWithCoder:(NSCoder*)coder
@@ -37,6 +41,7 @@ triggerChangeNotificationsForDependentKey:@"canRemove"];
 		_editable = [coder decodeBoolForKey:@"NSEditable"];
 		_automaticallyPreparesContent = [coder decodeBoolForKey:@"NSAutomaticallyPreparesContent"];
       _observedKeys=[[NSCountedSet alloc] init];
+      _selection=[[NSControllerSelectionProxy alloc] initWithController:self];
 	}
 	return self;
 }
@@ -89,15 +94,12 @@ triggerChangeNotificationsForDependentKey:@"canRemove"];
 -(void)_selectionWillChange
 {
    [self willChangeValueForKey:@"selection"];
-   
-
+   [_selection controllerWillChange];
 }
 
 
 -(void)_selectionDidChange
 {
-   if(!_selection)
-      _selection=[[NSControllerSelectionProxy alloc] initWithController:self];
    [_selection controllerDidChange];
 	[self didChangeValueForKey:@"selection"];	
 }
@@ -155,5 +157,13 @@ triggerChangeNotificationsForDependentKey:@"canRemove"];
 -(id)_observedKeys
 {
    return _observedKeys;
+}
+
+-(id)_contentObject {
+   return [self content];
+}
+
+-(void)_setContentObject:(id)val {
+   [self setContent:val];
 }
 @end

@@ -17,6 +17,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSCell.h>
 #import <AppKit/NSObject+BindingSupport.h>
 
+static void* NSMultipleValueBinderChangeContext;
+static void* NSMultipleValueBinderWholeArrayChangeContext;
+
+
 @interface _NSMultipleValueWrapperArray : NSArray
 {
 	id object;
@@ -51,7 +55,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       [object setValue:[[_rowValues objectAtIndex:row] valueForKeyPath:_valueKeyPath] forKey:path];
    }
    @catch(id e) {
-    //  NSLog(@"exception %@ while setting value for key path %@ for row %i", e, _valueKeyPath, row);
+        NSLog(@"exception %@ while setting value for key path %@ for row %i", e, _valueKeyPath, row);
    }
 }
 
@@ -147,28 +151,34 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)startObservingChanges
 {
 	@try {
-	[_destination addObserver:self forKeyPath:_arrayKeyPath options:0 context:_destination];
-	if(![_valueKeyPath hasPrefix:@"@"])
-		[_rowValues addObserver:self
-			toObjectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, [_rowValues count])]
-					forKeyPath:_valueKeyPath 
-					   options:0
-					   context:nil];
+      [_destination addObserver:self 
+                     forKeyPath:_arrayKeyPath 
+                        options:0
+                        context:&NSMultipleValueBinderWholeArrayChangeContext];
+      if(![_valueKeyPath hasPrefix:@"@"])
+         [_rowValues addObserver:self
+              toObjectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, [_rowValues count])]
+                      forKeyPath:_valueKeyPath 
+                         options:0
+                         context:&NSMultipleValueBinderChangeContext];
 	}
-   @catch(id e) {
+   @catch(id ex) {
+      NSLog(@"%@", ex);
    }
 }
 
 -(void)stopObservingChanges
 {
-	NS_DURING
-	[_destination removeObserver:self forKeyPath:_arrayKeyPath];
-	if(![_valueKeyPath hasPrefix:@"@"])
-		[_rowValues removeObserver:self
-			 fromObjectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, [_rowValues count])]
-					   forKeyPath:_valueKeyPath];
-	NS_HANDLER
-	NS_ENDHANDLER
+	@try {
+      [_destination removeObserver:self forKeyPath:_arrayKeyPath];
+      if(![_valueKeyPath hasPrefix:@"@"])
+         [_rowValues removeObserver:self
+               fromObjectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, [_rowValues count])]
+                         forKeyPath:_valueKeyPath];
+   }
+   @catch(id ex) {
+      NSLog(@"%@", ex);
+   }
 }
 
 -(void)syncUp
@@ -178,33 +188,27 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 - (void)observeValueForKeyPath:(NSString *)kp ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
-	if(object==_source)
+	if(context==&NSMultipleValueBinderWholeArrayChangeContext)
 	{
-		//NSLog(@"bind event from %@.%@ alias %@ to %@.%@ (%@)", [_source className], _binding, _bindingPath, [_destination className], _keyPath, self);
+      [self stopObservingChanges];
+      //NSLog(@"bind event from %@.%@ to %@.%@ alias %@ (%@)", [_destination className], _keyPath, [_source className], _binding, _bindingPath, self);
+      
+      [self updateRowValues];
+      
+      if([_source respondsToSelector:@selector(_boundValuesChanged)])
+         [_source _boundValuesChanged];
+      
+      [self startObservingChanges];
 	}
-	else if(context==_destination)
-	{
-		[self stopObservingChanges];
-
-		//NSLog(@"bind event from %@.%@ to %@.%@ alias %@ (%@)", [_destination className], _keyPath, [_source className], _binding, _bindingPath, self);
-
-		[self updateRowValues];
-		
-		if([_source respondsToSelector:@selector(_boundValuesChanged)])
-			[_source _boundValuesChanged];
-
-		[self startObservingChanges];
-	}
-	else if(context==nil)
+	else if(context==&NSMultipleValueBinderChangeContext)
 	{
 		if([_source respondsToSelector:@selector(reloadData)])
 			[_source reloadData];
 		if([_source respondsToSelector:@selector(tableView)])
 			[[_source tableView] reloadData];
-		
+
 		if([_destination respondsToSelector:@selector(_selectionMayHaveChanged)])
 			[_destination performSelector:@selector(_selectionMayHaveChanged)];
-
 	}
 }
 
@@ -223,7 +227,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	if([self createsSortDescriptor] && [_binding isEqual:@"value"])
 	{
 		[_source setSortDescriptorPrototype:[[[NSSortDescriptor alloc] initWithKey:_valueKeyPath
-																		ascending:NO] autorelease]];
+																		ascending:YES] autorelease]];
 	}
 	if([_source respondsToSelector:@selector(_establishBindingsWithDestinationIfUnbound:)])
 	{
@@ -259,7 +263,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #pragma mark -
 #pragma mark Helper classes
 
-
+static void* NSTableViewContentBinderChangeContext;
 
 @class NSTableView;
 
@@ -270,15 +274,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	[_destination addObserver:self 
 				  forKeyPath:_keyPath 
 					 options:NSKeyValueObservingOptionNew
-					 context:nil];
+					 context:&NSTableViewContentBinderChangeContext];
 }
 
 -(void)stopObservingChanges
 {
-	NS_DURING
+	@try {
 		[_destination removeObserver:self forKeyPath:_keyPath];
-	NS_HANDLER
-	NS_ENDHANDLER
+   } @catch (id ex) {
+      NSLog(@"%@", ex);   
+   }
 }
 
 -(void)syncUp
@@ -293,7 +298,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 {
 	[self stopObservingChanges];
 
-	if(object==_destination)
+	if(context==&NSTableViewContentBinderChangeContext)
 	{
 		[_source _boundValuesChanged];
 	}
