@@ -64,6 +64,24 @@
 		C8C8030F0DB52A010089C0D7 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 089C167FFE841241C02AAC07 /* AppKit.framework */; };
 		C8C803100DB52A010089C0D7 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 089C1672FE841209C02AAC07 /* Foundation.framework */; };
 		C8D197020ECCD487005B24B1 /* Runloop.m in Sources */ = {isa = PBXBuildFile; fileRef = C81F5A3F0DD22B94006F82C7 /* Runloop.m */; };
+		C8DA2D100F4074E3006E73E9 /* TextFieldBindings.m in Sources */ = {isa = PBXBuildFile; fileRef = C8294FF50F2CC47700F0DAF2 /* TextFieldBindings.m */; };
+		C8DA2D110F4074E4006E73E9 /* TextFieldBindings.m in Sources */ = {isa = PBXBuildFile; fileRef = C8294FF50F2CC47700F0DAF2 /* TextFieldBindings.m */; };
+		C8DA2D220F407516006E73E9 /* TableViewTest.m in Sources */ = {isa = PBXBuildFile; fileRef = C8DA2D210F407516006E73E9 /* TableViewTest.m */; };
+		C8DA2D230F407516006E73E9 /* TableViewTest.m in Sources */ = {isa = PBXBuildFile; fileRef = C8DA2D210F407516006E73E9 /* TableViewTest.m */; };
+		C8DA2D240F407516006E73E9 /* TableViewTest.m in Sources */ = {isa = PBXBuildFile; fileRef = C8DA2D210F407516006E73E9 /* TableViewTest.m */; };
+		C8DA2D250F407516006E73E9 /* TableViewTest.m in Sources */ = {isa = PBXBuildFile; fileRef = C8DA2D210F407516006E73E9 /* TableViewTest.m */; };
+		C8DA2D2D0F40757F006E73E9 /* NibBasedTest.m in Sources */ = {isa = PBXBuildFile; fileRef = C8DA2D2C0F40757F006E73E9 /* NibBasedTest.m */; };
+		C8DA2D2E0F40757F006E73E9 /* NibBasedTest.m in Sources */ = {isa = PBXBuildFile; fileRef = C8DA2D2C0F40757F006E73E9 /* NibBasedTest.m */; };
+		C8DA2D2F0F40757F006E73E9 /* NibBasedTest.m in Sources */ = {isa = PBXBuildFile; fileRef = C8DA2D2C0F40757F006E73E9 /* NibBasedTest.m */; };
+		C8DA2D300F40757F006E73E9 /* NibBasedTest.m in Sources */ = {isa = PBXBuildFile; fileRef = C8DA2D2C0F40757F006E73E9 /* NibBasedTest.m */; };
+		C8DA2D530F40761B006E73E9 /* TableViewTest.xib in Resources */ = {isa = PBXBuildFile; fileRef = C8DA2D520F40761B006E73E9 /* TableViewTest.xib */; };
+		C8DA2D540F40761B006E73E9 /* TableViewTest.xib in Resources */ = {isa = PBXBuildFile; fileRef = C8DA2D520F40761B006E73E9 /* TableViewTest.xib */; };
+		C8DA2D550F40761B006E73E9 /* TableViewTest.xib in Resources */ = {isa = PBXBuildFile; fileRef = C8DA2D520F40761B006E73E9 /* TableViewTest.xib */; };
+		C8DA2D560F40761B006E73E9 /* TableViewTest.xib in Resources */ = {isa = PBXBuildFile; fileRef = C8DA2D520F40761B006E73E9 /* TableViewTest.xib */; };
+		C8DA2EC30F408EAB006E73E9 /* Predicate.m in Sources */ = {isa = PBXBuildFile; fileRef = C8DA2EC20F408EAB006E73E9 /* Predicate.m */; };
+		C8DA2EC40F408EAB006E73E9 /* Predicate.m in Sources */ = {isa = PBXBuildFile; fileRef = C8DA2EC20F408EAB006E73E9 /* Predicate.m */; };
+		C8DA2EC50F408EAB006E73E9 /* Predicate.m in Sources */ = {isa = PBXBuildFile; fileRef = C8DA2EC20F408EAB006E73E9 /* Predicate.m */; };
+		C8DA2EC60F408EAB006E73E9 /* Predicate.m in Sources */ = {isa = PBXBuildFile; fileRef = C8DA2EC20F408EAB006E73E9 /* Predicate.m */; };
 		C8EA126C0E8941490051F4DF /* CrashCatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = C80F9D160E59E45100ECD487 /* CrashCatcher.m */; };
 		C8EA126E0E89414E0051F4DF /* Binary.plist in Resources */ = {isa = PBXBuildFile; fileRef = C8A392D70E48B26200A9C289 /* Binary.plist */; };
 		C8EA126F0E8941580051F4DF /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C827EA560DB62A9200360D99 /* SenTestingKit.framework */; };
@@ -160,6 +178,13 @@
 		C8C802800DB51FEF0089C0D7 /* KVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KVC.m; sourceTree = "<group>"; };
 		C8CB8CAD0DD34DA6005C1BAC /* Array.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Array.h; sourceTree = "<group>"; };
 		C8CB8CAE0DD34DA6005C1BAC /* Array.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Array.m; sourceTree = "<group>"; };
+		C8DA2D200F407516006E73E9 /* TableViewTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TableViewTest.h; sourceTree = "<group>"; };
+		C8DA2D210F407516006E73E9 /* TableViewTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TableViewTest.m; sourceTree = "<group>"; };
+		C8DA2D2B0F40757F006E73E9 /* NibBasedTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NibBasedTest.h; sourceTree = "<group>"; };
+		C8DA2D2C0F40757F006E73E9 /* NibBasedTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NibBasedTest.m; sourceTree = "<group>"; };
+		C8DA2D520F40761B006E73E9 /* TableViewTest.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TableViewTest.xib; sourceTree = "<group>"; };
+		C8DA2EC10F408EAB006E73E9 /* Predicate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Predicate.h; sourceTree = "<group>"; };
+		C8DA2EC20F408EAB006E73E9 /* Predicate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Predicate.m; sourceTree = "<group>"; };
 		C8EA0F850E85665B0051F4DF /* RetainRelease.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RetainRelease.h; sourceTree = "<group>"; };
 		C8EA0F860E85665B0051F4DF /* RetainRelease.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RetainRelease.m; sourceTree = "<group>"; };
 		C8EA12240E893B1F0051F4DF /* MessageSendTorture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageSendTorture.h; sourceTree = "<group>"; };
@@ -276,6 +301,8 @@
 				C80F9D160E59E45100ECD487 /* CrashCatcher.m */,
 				C8EA0F850E85665B0051F4DF /* RetainRelease.h */,
 				C8EA0F860E85665B0051F4DF /* RetainRelease.m */,
+				C8DA2EC10F408EAB006E73E9 /* Predicate.h */,
+				C8DA2EC20F408EAB006E73E9 /* Predicate.m */,
 				C8294FFB0F2CC47D00F0DAF2 /* Bindings */,
 			);
 			name = Classes;
@@ -336,6 +363,11 @@
 				C8294FF40F2CC47700F0DAF2 /* TextFieldBindings.h */,
 				C8294FF50F2CC47700F0DAF2 /* TextFieldBindings.m */,
 				C82950000F2CC4AA00F0DAF2 /* TextFieldBindings.xib */,
+				C8DA2D200F407516006E73E9 /* TableViewTest.h */,
+				C8DA2D210F407516006E73E9 /* TableViewTest.m */,
+				C8DA2D520F40761B006E73E9 /* TableViewTest.xib */,
+				C8DA2D2B0F40757F006E73E9 /* NibBasedTest.h */,
+				C8DA2D2C0F40757F006E73E9 /* NibBasedTest.m */,
 			);
 			path = Bindings;
 			sourceTree = "<group>";
@@ -465,6 +497,7 @@
 				C82950030F2CC4AA00F0DAF2 /* TextFieldBindings.xib in Resources */,
 				C81373B80F3A15D2001D4AFB /* Apple.bplist.keyedArchive in Resources */,
 				C81373E20F3A165C001D4AFB /* Cocotron.keyedArchive in Resources */,
+				C8DA2D530F40761B006E73E9 /* TableViewTest.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -477,6 +510,7 @@
 				C81371ED0F38FF93001D4AFB /* TextFieldBindings.xib in Resources */,
 				C81373B90F3A15D2001D4AFB /* Apple.bplist.keyedArchive in Resources */,
 				C81373E30F3A165C001D4AFB /* Cocotron.keyedArchive in Resources */,
+				C8DA2D550F40761B006E73E9 /* TableViewTest.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -490,6 +524,7 @@
 				C82950040F2CC4AA00F0DAF2 /* TextFieldBindings.xib in Resources */,
 				C81373B60F3A15D2001D4AFB /* Apple.bplist.keyedArchive in Resources */,
 				C81373E00F3A165C001D4AFB /* Cocotron.keyedArchive in Resources */,
+				C8DA2D560F40761B006E73E9 /* TableViewTest.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -504,6 +539,7 @@
 				C82950010F2CC4AA00F0DAF2 /* TextFieldBindings.xib in Resources */,
 				C81373B70F3A15D2001D4AFB /* Apple.bplist.keyedArchive in Resources */,
 				C81373E10F3A165C001D4AFB /* Cocotron.keyedArchive in Resources */,
+				C8DA2D540F40761B006E73E9 /* TableViewTest.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -569,6 +605,9 @@
 				C89C70770F3F18F100670992 /* Properties.m in Sources */,
 				C89C70780F3F18F100670992 /* ObjCXXExceptions.mm in Sources */,
 				C89C70790F3F18F100670992 /* Forwarding.m in Sources */,
+				C8DA2D220F407516006E73E9 /* TableViewTest.m in Sources */,
+				C8DA2D2D0F40757F006E73E9 /* NibBasedTest.m in Sources */,
+				C8DA2EC30F408EAB006E73E9 /* Predicate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -580,6 +619,10 @@
 				C81371F00F38FF9A001D4AFB /* KVC.m in Sources */,
 				C81371F10F38FF9A001D4AFB /* main.m in Sources */,
 				C81371F30F38FF9A001D4AFB /* KeyedArchiving.m in Sources */,
+				C8DA2D110F4074E4006E73E9 /* TextFieldBindings.m in Sources */,
+				C8DA2D240F407516006E73E9 /* TableViewTest.m in Sources */,
+				C8DA2D2F0F40757F006E73E9 /* NibBasedTest.m in Sources */,
+				C8DA2EC50F408EAB006E73E9 /* Predicate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -591,6 +634,10 @@
 				C8294FE70F2CC3BC00F0DAF2 /* FileHandle.m in Sources */,
 				C8294FE80F2CC3BC00F0DAF2 /* KVC.m in Sources */,
 				C813714E0F38FA61001D4AFB /* KeyedArchiving.m in Sources */,
+				C8DA2D100F4074E3006E73E9 /* TextFieldBindings.m in Sources */,
+				C8DA2D250F407516006E73E9 /* TableViewTest.m in Sources */,
+				C8DA2D300F40757F006E73E9 /* NibBasedTest.m in Sources */,
+				C8DA2EC60F408EAB006E73E9 /* Predicate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -606,6 +653,9 @@
 				C8794B910EE4727C00539601 /* Properties.m in Sources */,
 				C8794B920EE4727C00539601 /* ForEach.m in Sources */,
 				C813714F0F38FA61001D4AFB /* KeyedArchiving.m in Sources */,
+				C8DA2D230F407516006E73E9 /* TableViewTest.m in Sources */,
+				C8DA2D2E0F40757F006E73E9 /* NibBasedTest.m in Sources */,
+				C8DA2EC40F408EAB006E73E9 /* Predicate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

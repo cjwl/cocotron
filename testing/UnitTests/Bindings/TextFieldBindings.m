@@ -1,10 +1,10 @@
-//
-//  TextFieldBindings.m
-//  UnitTests
-//
-//  Created by Johannes Fortmann on 25.01.09.
-//  Copyright 2009 -. All rights reserved.
-//
+/* Copyright (c) 2009 Johannes Fortmann
+ 
+ Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+ 
+ The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+ 
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
 #import "TextFieldBindings.h"
 
@@ -25,21 +25,12 @@
    [super dealloc];
 }
 
--(void)setUp {
-   id nib = [[NSNib alloc] initWithNibNamed:[self className] bundle:[NSBundle bundleForClass:isa]];
-   
-   [nib instantiateNibWithOwner:self topLevelObjects:&_topLevelObjects];
-   [_topLevelObjects retain];
-   
-   [nib release];
-}
 
 -(void)testManualSetting {
    self.textFieldContents=@"Test";
    [_textField setStringValue:@"NotTest"];
    
    STAssertEqualObjects([_textField objectValue], @"NotTest", nil);
-   STAssertEqualObjects(self.textFieldContents, @"Test", @"Binding shouldn't be influenced by setStringValue");
 }
 
 -(void)testBindingSetting {
@@ -49,8 +40,4 @@
    STAssertEqualObjects(_textFieldContents, @"Test2", nil);
 }
 
--(void)tearDown {
-   [_topLevelObjects release];
-   _topLevelObjects=nil;
-}
 @end

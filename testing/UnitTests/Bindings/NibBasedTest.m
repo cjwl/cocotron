@@ -6,13 +6,29 @@
  
  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
-#import "NibBasedTest.h"
 #import <AppKit/AppKit.h>
+#import "NibBasedTest.h"
 
-@interface TextFieldBindings : NibBasedTest {
-   id IBOutlet _textField;
-   id _textFieldContents;
+
+@implementation NibBasedTest
+
+-(void)dealloc {
+   [_topLevelObjects release];
+   [super dealloc];
 }
-@property (copy) NSString *textFieldContents;
+
+-(void)setUp {
+   id nib = [[NSNib alloc] initWithNibNamed:[self className] bundle:[NSBundle bundleForClass:isa]];
+   
+   [nib instantiateNibWithOwner:self topLevelObjects:&_topLevelObjects];
+   [_topLevelObjects retain];
+   
+   [nib release];
+}
+
+-(void)tearDown {
+   [_topLevelObjects release];
+   _topLevelObjects=nil;
+}
 
 @end

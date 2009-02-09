@@ -9,10 +9,11 @@
 #import "NibBasedTest.h"
 #import <AppKit/AppKit.h>
 
-@interface TextFieldBindings : NibBasedTest {
-   id IBOutlet _textField;
-   id _textFieldContents;
+@interface TableViewTest : NibBasedTest {
+   NSTableView* IBOutlet _tableView;
+   NSArrayController* IBOutlet _arrayController;
+   NSArray *_table;
 }
-@property (copy) NSString *textFieldContents;
+@property (copy) NSArray *table;
 
 @end
