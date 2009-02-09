@@ -25,6 +25,10 @@
    UPDATE_TIME;
    
    if(SignalObjectAndWait(_mutex, _semaphore, time, NO)) {
+      EnterCriticalSection(&_waitersNumber);
+      _numberOfWaiters--;
+      LeaveCriticalSection(&_waitersNumber);
+
       return NO;
    }
    
@@ -55,7 +59,7 @@
 -(void)_broadcastCondition {
    EnterCriticalSection(&_waitersNumber);
    _conditionWasBroadcast=_numberOfWaiters>0;
-   
+
    if(_conditionWasBroadcast) {
       ReleaseSemaphore(_semaphore, 1, 0);
       LeaveCriticalSection(&_waitersNumber);
@@ -91,14 +95,26 @@
    return YES;
 }
 
+-(BOOL)lockBeforeDate:(NSDate *)date {
+    NSUInteger time=0;
+    UPDATE_TIME;
+
+    HRESULT res;
+    if(res=WaitForSingleObject(_mutex, time)) {
+        return NO;
+    }
+
+    return YES;
+}
+
+-(void)lock {
+   [self lockBeforeDate:[NSDate distantFuture]];
+}
+
 -(void)unlockWithCondition:(NSInteger)condition {
    _value=condition;
    [self _broadcastCondition];
    ReleaseMutex(_mutex);
-}
-
--(void)lock {
-   [self lockWhenCondition:_value];
 }
 
 -(void)unlock {
@@ -125,7 +141,16 @@
    CloseHandle(_waitersDone);
    CloseHandle(_mutex);
    DeleteCriticalSection(&_waitersNumber);
+   [_name release];
    [super dealloc];
+}
+
+- (NSString *)name {
+   return _name; }
+    
+- (void)setName:(NSString *)name {
+   [_name release];
+   _name = [name copy];
 }
 
 @end
