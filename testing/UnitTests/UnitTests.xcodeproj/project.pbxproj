@@ -18,9 +18,7 @@
 		C81371EC0F38FF93001D4AFB /* Binary.plist in Resources */ = {isa = PBXBuildFile; fileRef = C8A392D70E48B26200A9C289 /* Binary.plist */; };
 		C81371ED0F38FF93001D4AFB /* TextFieldBindings.xib in Resources */ = {isa = PBXBuildFile; fileRef = C82950000F2CC4AA00F0DAF2 /* TextFieldBindings.xib */; };
 		C81371EE0F38FF9A001D4AFB /* CrashCatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = C80F9D160E59E45100ECD487 /* CrashCatcher.m */; };
-		C81371F00F38FF9A001D4AFB /* KVC.m in Sources */ = {isa = PBXBuildFile; fileRef = C8C802800DB51FEF0089C0D7 /* KVC.m */; };
 		C81371F10F38FF9A001D4AFB /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C897902B0ECA1E5400C3E5EE /* main.m */; };
-		C81371F30F38FF9A001D4AFB /* KeyedArchiving.m in Sources */ = {isa = PBXBuildFile; fileRef = C813714C0F38FA61001D4AFB /* KeyedArchiving.m */; };
 		C81373B60F3A15D2001D4AFB /* Apple.bplist.keyedArchive in Resources */ = {isa = PBXBuildFile; fileRef = C81373B50F3A15D2001D4AFB /* Apple.bplist.keyedArchive */; };
 		C81373B70F3A15D2001D4AFB /* Apple.bplist.keyedArchive in Resources */ = {isa = PBXBuildFile; fileRef = C81373B50F3A15D2001D4AFB /* Apple.bplist.keyedArchive */; };
 		C81373B80F3A15D2001D4AFB /* Apple.bplist.keyedArchive in Resources */ = {isa = PBXBuildFile; fileRef = C81373B50F3A15D2001D4AFB /* Apple.bplist.keyedArchive */; };
@@ -45,6 +43,11 @@
 		C8794B900EE4727C00539601 /* KVC.m in Sources */ = {isa = PBXBuildFile; fileRef = C8C802800DB51FEF0089C0D7 /* KVC.m */; };
 		C8794B910EE4727C00539601 /* Properties.m in Sources */ = {isa = PBXBuildFile; fileRef = C827EB3A0DB63FFA00360D99 /* Properties.m */; };
 		C8794B920EE4727C00539601 /* ForEach.m in Sources */ = {isa = PBXBuildFile; fileRef = C88B859B0DB90282000A8500 /* ForEach.m */; };
+		C88255850F419397002ED1DA /* ObservableArray.m in Sources */ = {isa = PBXBuildFile; fileRef = C88255840F419397002ED1DA /* ObservableArray.m */; };
+		C88255860F419397002ED1DA /* ObservableArray.m in Sources */ = {isa = PBXBuildFile; fileRef = C88255840F419397002ED1DA /* ObservableArray.m */; };
+		C88255870F419397002ED1DA /* ObservableArray.m in Sources */ = {isa = PBXBuildFile; fileRef = C88255840F419397002ED1DA /* ObservableArray.m */; };
+		C88255880F419397002ED1DA /* ObservableArray.m in Sources */ = {isa = PBXBuildFile; fileRef = C88255840F419397002ED1DA /* ObservableArray.m */; };
+		C88256C00F41A869002ED1DA /* KVO.m in Sources */ = {isa = PBXBuildFile; fileRef = C88470DA0DD3A9F600853747 /* KVO.m */; };
 		C897902C0ECA1E5400C3E5EE /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C897902B0ECA1E5400C3E5EE /* main.m */; };
 		C897902E0ECA1E5400C3E5EE /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C897902B0ECA1E5400C3E5EE /* main.m */; };
 		C89790710ECA202F00C3E5EE /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 089C1672FE841209C02AAC07 /* Foundation.framework */; };
@@ -65,14 +68,11 @@
 		C8C803100DB52A010089C0D7 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 089C1672FE841209C02AAC07 /* Foundation.framework */; };
 		C8D197020ECCD487005B24B1 /* Runloop.m in Sources */ = {isa = PBXBuildFile; fileRef = C81F5A3F0DD22B94006F82C7 /* Runloop.m */; };
 		C8DA2D100F4074E3006E73E9 /* TextFieldBindings.m in Sources */ = {isa = PBXBuildFile; fileRef = C8294FF50F2CC47700F0DAF2 /* TextFieldBindings.m */; };
-		C8DA2D110F4074E4006E73E9 /* TextFieldBindings.m in Sources */ = {isa = PBXBuildFile; fileRef = C8294FF50F2CC47700F0DAF2 /* TextFieldBindings.m */; };
 		C8DA2D220F407516006E73E9 /* TableViewTest.m in Sources */ = {isa = PBXBuildFile; fileRef = C8DA2D210F407516006E73E9 /* TableViewTest.m */; };
 		C8DA2D230F407516006E73E9 /* TableViewTest.m in Sources */ = {isa = PBXBuildFile; fileRef = C8DA2D210F407516006E73E9 /* TableViewTest.m */; };
-		C8DA2D240F407516006E73E9 /* TableViewTest.m in Sources */ = {isa = PBXBuildFile; fileRef = C8DA2D210F407516006E73E9 /* TableViewTest.m */; };
 		C8DA2D250F407516006E73E9 /* TableViewTest.m in Sources */ = {isa = PBXBuildFile; fileRef = C8DA2D210F407516006E73E9 /* TableViewTest.m */; };
 		C8DA2D2D0F40757F006E73E9 /* NibBasedTest.m in Sources */ = {isa = PBXBuildFile; fileRef = C8DA2D2C0F40757F006E73E9 /* NibBasedTest.m */; };
 		C8DA2D2E0F40757F006E73E9 /* NibBasedTest.m in Sources */ = {isa = PBXBuildFile; fileRef = C8DA2D2C0F40757F006E73E9 /* NibBasedTest.m */; };
-		C8DA2D2F0F40757F006E73E9 /* NibBasedTest.m in Sources */ = {isa = PBXBuildFile; fileRef = C8DA2D2C0F40757F006E73E9 /* NibBasedTest.m */; };
 		C8DA2D300F40757F006E73E9 /* NibBasedTest.m in Sources */ = {isa = PBXBuildFile; fileRef = C8DA2D2C0F40757F006E73E9 /* NibBasedTest.m */; };
 		C8DA2D530F40761B006E73E9 /* TableViewTest.xib in Resources */ = {isa = PBXBuildFile; fileRef = C8DA2D520F40761B006E73E9 /* TableViewTest.xib */; };
 		C8DA2D540F40761B006E73E9 /* TableViewTest.xib in Resources */ = {isa = PBXBuildFile; fileRef = C8DA2D520F40761B006E73E9 /* TableViewTest.xib */; };
@@ -80,7 +80,6 @@
 		C8DA2D560F40761B006E73E9 /* TableViewTest.xib in Resources */ = {isa = PBXBuildFile; fileRef = C8DA2D520F40761B006E73E9 /* TableViewTest.xib */; };
 		C8DA2EC30F408EAB006E73E9 /* Predicate.m in Sources */ = {isa = PBXBuildFile; fileRef = C8DA2EC20F408EAB006E73E9 /* Predicate.m */; };
 		C8DA2EC40F408EAB006E73E9 /* Predicate.m in Sources */ = {isa = PBXBuildFile; fileRef = C8DA2EC20F408EAB006E73E9 /* Predicate.m */; };
-		C8DA2EC50F408EAB006E73E9 /* Predicate.m in Sources */ = {isa = PBXBuildFile; fileRef = C8DA2EC20F408EAB006E73E9 /* Predicate.m */; };
 		C8DA2EC60F408EAB006E73E9 /* Predicate.m in Sources */ = {isa = PBXBuildFile; fileRef = C8DA2EC20F408EAB006E73E9 /* Predicate.m */; };
 		C8EA126C0E8941490051F4DF /* CrashCatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = C80F9D160E59E45100ECD487 /* CrashCatcher.m */; };
 		C8EA126E0E89414E0051F4DF /* Binary.plist in Resources */ = {isa = PBXBuildFile; fileRef = C8A392D70E48B26200A9C289 /* Binary.plist */; };
@@ -158,6 +157,8 @@
 		C84F02C10E1F8F17000C03D6 /* ObjCXXExceptions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ObjCXXExceptions.h; sourceTree = "<group>"; };
 		C84F02C20E1F8F17000C03D6 /* ObjCXXExceptions.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ObjCXXExceptions.mm; sourceTree = "<group>"; };
 		C85D1F910DBBBAD7005A5FD6 /* UnitTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UnitTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
+		C88255830F419397002ED1DA /* ObservableArray.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ObservableArray.h; sourceTree = "<group>"; };
+		C88255840F419397002ED1DA /* ObservableArray.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ObservableArray.m; sourceTree = "<group>"; };
 		C88470D90DD3A9F600853747 /* KVO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KVO.h; sourceTree = "<group>"; };
 		C88470DA0DD3A9F600853747 /* KVO.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KVO.m; sourceTree = "<group>"; };
 		C88B859A0DB90282000A8500 /* ForEach.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ForEach.h; sourceTree = "<group>"; };
@@ -368,6 +369,8 @@
 				C8DA2D520F40761B006E73E9 /* TableViewTest.xib */,
 				C8DA2D2B0F40757F006E73E9 /* NibBasedTest.h */,
 				C8DA2D2C0F40757F006E73E9 /* NibBasedTest.m */,
+				C88255830F419397002ED1DA /* ObservableArray.h */,
+				C88255840F419397002ED1DA /* ObservableArray.m */,
 			);
 			path = Bindings;
 			sourceTree = "<group>";
@@ -608,6 +611,7 @@
 				C8DA2D220F407516006E73E9 /* TableViewTest.m in Sources */,
 				C8DA2D2D0F40757F006E73E9 /* NibBasedTest.m in Sources */,
 				C8DA2EC30F408EAB006E73E9 /* Predicate.m in Sources */,
+				C88255870F419397002ED1DA /* ObservableArray.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -616,13 +620,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				C81371EE0F38FF9A001D4AFB /* CrashCatcher.m in Sources */,
-				C81371F00F38FF9A001D4AFB /* KVC.m in Sources */,
 				C81371F10F38FF9A001D4AFB /* main.m in Sources */,
-				C81371F30F38FF9A001D4AFB /* KeyedArchiving.m in Sources */,
-				C8DA2D110F4074E4006E73E9 /* TextFieldBindings.m in Sources */,
-				C8DA2D240F407516006E73E9 /* TableViewTest.m in Sources */,
-				C8DA2D2F0F40757F006E73E9 /* NibBasedTest.m in Sources */,
-				C8DA2EC50F408EAB006E73E9 /* Predicate.m in Sources */,
+				C88255860F419397002ED1DA /* ObservableArray.m in Sources */,
+				C88256C00F41A869002ED1DA /* KVO.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -638,6 +638,7 @@
 				C8DA2D250F407516006E73E9 /* TableViewTest.m in Sources */,
 				C8DA2D300F40757F006E73E9 /* NibBasedTest.m in Sources */,
 				C8DA2EC60F408EAB006E73E9 /* Predicate.m in Sources */,
+				C88255880F419397002ED1DA /* ObservableArray.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -656,6 +657,7 @@
 				C8DA2D230F407516006E73E9 /* TableViewTest.m in Sources */,
 				C8DA2D2E0F40757F006E73E9 /* NibBasedTest.m in Sources */,
 				C8DA2EC40F408EAB006E73E9 /* Predicate.m in Sources */,
+				C88255850F419397002ED1DA /* ObservableArray.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

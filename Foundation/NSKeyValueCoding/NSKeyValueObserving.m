@@ -83,6 +83,12 @@ static NSLock *kvoLock=nil;
 	NSString* key;
 	[keyPath _KVC_partBeforeDot:&key afterDot:&remainingKeyPath];
    
+   if([keyPath hasPrefix:@"@"]) {
+      // the key path is an operator: don't evaluate
+      key=keyPath;
+      remainingKeyPath=nil;
+   }
+   
    // get observation info dictionary
 	NSMutableDictionary* observationInfo=[self observationInfo];
 	// get all observers for current key
@@ -208,6 +214,12 @@ static NSLock *kvoLock=nil;
 {
 	NSString* key, *remainingKeyPath;
 	[keyPath _KVC_partBeforeDot:&key afterDot:&remainingKeyPath];
+   
+   if([keyPath hasPrefix:@"@"]) {
+      // the key path is an operator: don't evaluate
+      key=keyPath;
+      remainingKeyPath=nil;
+   }   
 
 	// now remove own observer
 	NSMutableDictionary* observationInfo=[self observationInfo];
@@ -229,7 +241,7 @@ static NSLock *kvoLock=nil;
             [observationInfo release];
 			}
 
-			if(remainingKeyPath)
+			if([remainingKeyPath length])
 				[[self valueForKey:key] removeObserver:info forKeyPath:remainingKeyPath];
 			
 			NSSet* keysPathsForKey=[isa keyPathsForValuesAffectingValueForKey:key];
@@ -336,6 +348,12 @@ static NSLock *kvoLock=nil;
 
 		NSString* firstPart, *rest;
 		[keyPath _KVC_partBeforeDot:&firstPart afterDot:&rest];
+      
+      if([keyPath hasPrefix:@"@"]) {
+         // the key path is an operator: don't evaluate
+         key=keyPath;
+         rest=nil;
+      }      
 
 		// remove deeper levels (those items will change)
 		if(rest)
@@ -382,6 +400,12 @@ static NSLock *kvoLock=nil;
 		// restore deeper observers if applicable
 		NSString* firstPart, *rest;
 		[keyPath _KVC_partBeforeDot:&firstPart afterDot:&rest];
+      
+      if([keyPath hasPrefix:@"@"]) {
+         // the key path is an operator: don't evaluate
+         key=keyPath;
+         rest=nil;
+      }      
 
 		if(rest)
 		{

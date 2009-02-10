@@ -1436,7 +1436,7 @@
 		C8AB730D0F40C21A00D93B96 /* NSControllerMarker.m in Sources */ = {isa = PBXBuildFile; fileRef = C8AB73090F40C21A00D93B96 /* NSControllerMarker.m */; };
 		C8AB730E0F40C21A00D93B96 /* NSControllerMarker.h in Headers */ = {isa = PBXBuildFile; fileRef = C8AB73080F40C21A00D93B96 /* NSControllerMarker.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		C8AB730F0F40C21A00D93B96 /* NSControllerMarker.m in Sources */ = {isa = PBXBuildFile; fileRef = C8AB73090F40C21A00D93B96 /* NSControllerMarker.m */; };
-		C8C52C8F0E7ED1FF003F03B5 /* NSObservationProxy.h in Headers */ = {isa = PBXBuildFile; fileRef = C8C52C8D0E7ED1FF003F03B5 /* NSObservationProxy.h */; };
+		C8C52C8F0E7ED1FF003F03B5 /* NSObservationProxy.h in Headers */ = {isa = PBXBuildFile; fileRef = C8C52C8D0E7ED1FF003F03B5 /* NSObservationProxy.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		C8C52C900E7ED1FF003F03B5 /* NSObservationProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = C8C52C8E0E7ED1FF003F03B5 /* NSObservationProxy.m */; };
 		C8C995BD0F0BB2B100A0A091 /* X11AsyncInputSourceSet.h in Headers */ = {isa = PBXBuildFile; fileRef = C8C995BB0F0BB2B100A0A091 /* X11AsyncInputSourceSet.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		C8C995BE0F0BB2B100A0A091 /* X11AsyncInputSourceSet.m in Sources */ = {isa = PBXBuildFile; fileRef = C8C995BC0F0BB2B100A0A091 /* X11AsyncInputSourceSet.m */; };

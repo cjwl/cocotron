@@ -2,6 +2,7 @@
 #import <Foundation/NSArray.h>
 #import <Foundation/NSMutableArray.h>
 #import <Foundation/NSKeyValueObserving.h>
+#import <Foundation/NSMutableIndexSet.h>
 
 @interface _NSObservationProxy : NSObject
 {
@@ -27,6 +28,7 @@
 {
 	NSMutableArray *_array;
 	NSMutableArray *_observationProxies;
+   NSMutableIndexSet *_roi;
 }
 @end
 
