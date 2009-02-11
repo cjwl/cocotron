@@ -31,7 +31,7 @@
       
       XSetWindowAttributes xattr;
       unsigned long xattr_mask;
-      xattr.override_redirect= styleMask == NSBorderlessWindowMask ? True : False;
+      xattr.override_redirect = styleMask == NSBorderlessWindowMask ? True : False;
       xattr_mask = CWOverrideRedirect;
       
       XChangeWindowAttributes(_dpy, _window, xattr_mask, &xattr);
@@ -39,6 +39,8 @@
       
       Atom atm=XInternAtom(_dpy, "WM_DELETE_WINDOW", False);
       XSetWMProtocols(_dpy, _window, &atm , 1);
+      
+      XSetWindowBackgroundPixmap(_dpy, _window, None);
       
       [(X11Display*)[NSDisplay currentDisplay] setWindow:self forID:_window];
       [self sizeChanged];

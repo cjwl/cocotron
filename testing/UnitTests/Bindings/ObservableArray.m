@@ -123,7 +123,17 @@ void* ObservableArrayTestContext;
       AssertLastKeyWas(nil);
    }
    
+   [_array addObserver:self forKeyPath:@"@max.value" options:0 context:&ObservableArrayTestContext];
    [_array removeObserver:self forKeyPath:@"value"];
+
+   indexes=[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, [_array count])];
+   for(int i=[irrelevant firstIndex]; i!=NSNotFound; i=[irrelevant indexGreaterThanIndex:i]) {
+      [[_array objectAtIndex:i] setValue:[NSNumber numberWithInt:0] forKey:@"value"];
+      AssertLastKeyWas(@"@max.value");
+   }
+
+   [_array removeObserver:self forKeyPath:@"@max.value"];
+
 }
 
 - (void) observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context

@@ -48,6 +48,8 @@
 		C88255870F419397002ED1DA /* ObservableArray.m in Sources */ = {isa = PBXBuildFile; fileRef = C88255840F419397002ED1DA /* ObservableArray.m */; };
 		C88255880F419397002ED1DA /* ObservableArray.m in Sources */ = {isa = PBXBuildFile; fileRef = C88255840F419397002ED1DA /* ObservableArray.m */; };
 		C88256C00F41A869002ED1DA /* KVO.m in Sources */ = {isa = PBXBuildFile; fileRef = C88470DA0DD3A9F600853747 /* KVO.m */; };
+		C882579D0F42CFF0002ED1DA /* TableViewTest.m in Sources */ = {isa = PBXBuildFile; fileRef = C8DA2D210F407516006E73E9 /* TableViewTest.m */; };
+		C88257A40F42D053002ED1DA /* NibBasedTest.m in Sources */ = {isa = PBXBuildFile; fileRef = C8DA2D2C0F40757F006E73E9 /* NibBasedTest.m */; };
 		C897902C0ECA1E5400C3E5EE /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C897902B0ECA1E5400C3E5EE /* main.m */; };
 		C897902E0ECA1E5400C3E5EE /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C897902B0ECA1E5400C3E5EE /* main.m */; };
 		C89790710ECA202F00C3E5EE /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 089C1672FE841209C02AAC07 /* Foundation.framework */; };
@@ -114,6 +116,27 @@
 /* End PBXBuildRule section */
 
 /* Begin PBXContainerItemProxy section */
+		C88257E90F42D7E7002ED1DA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C88257E30F42D7E7002ED1DA /* AppKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = FE01AAC10C5D9BCB00AEA51A;
+			remoteInfo = "AppKit-Windows-i386";
+		};
+		C88257EB0F42D7E7002ED1DA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C88257E30F42D7E7002ED1DA /* AppKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = C889770C0EA0BF3100D0A0A2;
+			remoteInfo = "AppKit-Linux-i386";
+		};
+		C88257ED0F42D7E7002ED1DA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C88257E30F42D7E7002ED1DA /* AppKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = C8A2E5730F07EA1F0054397C;
+			remoteInfo = "AppKit-Darwin-i386";
+		};
 		C8A3926C0E48AE3700A9C289 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = C8A392530E48AD9000A9C289 /* TestingHarness.xcodeproj */;
@@ -159,6 +182,7 @@
 		C85D1F910DBBBAD7005A5FD6 /* UnitTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UnitTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C88255830F419397002ED1DA /* ObservableArray.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ObservableArray.h; sourceTree = "<group>"; };
 		C88255840F419397002ED1DA /* ObservableArray.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ObservableArray.m; sourceTree = "<group>"; };
+		C88257E30F42D7E7002ED1DA /* AppKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AppKit.xcodeproj; path = ../../AppKit/AppKit.xcodeproj; sourceTree = SOURCE_ROOT; };
 		C88470D90DD3A9F600853747 /* KVO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KVO.h; sourceTree = "<group>"; };
 		C88470DA0DD3A9F600853747 /* KVO.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KVO.m; sourceTree = "<group>"; };
 		C88B859A0DB90282000A8500 /* ForEach.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ForEach.h; sourceTree = "<group>"; };
@@ -233,6 +257,7 @@
 		089C166AFE841209C02AAC07 /* UnitTests */ = {
 			isa = PBXGroup;
 			children = (
+				C88257E30F42D7E7002ED1DA /* AppKit.xcodeproj */,
 				C84DA1BD0DB8D896000CD913 /* README */,
 				08FB77AFFE84173DC02AAC07 /* Classes */,
 				32C88E010371C26100C91783 /* Other Sources */,
@@ -375,6 +400,16 @@
 			path = Bindings;
 			sourceTree = "<group>";
 		};
+		C88257E40F42D7E7002ED1DA /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				C88257EA0F42D7E7002ED1DA /* AppKit.framework */,
+				C88257EC0F42D7E7002ED1DA /* AppKit.framework */,
+				C88257EE0F42D7E7002ED1DA /* AppKit.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		C8A392540E48AD9000A9C289 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -474,6 +509,10 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
+					ProductGroup = C88257E40F42D7E7002ED1DA /* Products */;
+					ProjectRef = C88257E30F42D7E7002ED1DA /* AppKit.xcodeproj */;
+				},
+				{
 					ProductGroup = C8A392540E48AD9000A9C289 /* Products */;
 					ProjectRef = C8A392530E48AD9000A9C289 /* TestingHarness.xcodeproj */;
 				},
@@ -487,6 +526,30 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		C88257EA0F42D7E7002ED1DA /* AppKit.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = AppKit.framework;
+			remoteRef = C88257E90F42D7E7002ED1DA /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		C88257EC0F42D7E7002ED1DA /* AppKit.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = AppKit.framework;
+			remoteRef = C88257EB0F42D7E7002ED1DA /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		C88257EE0F42D7E7002ED1DA /* AppKit.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = AppKit.framework;
+			remoteRef = C88257ED0F42D7E7002ED1DA /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		8D5B49AF048680CD000E48DA /* Resources */ = {
@@ -623,6 +686,8 @@
 				C81371F10F38FF9A001D4AFB /* main.m in Sources */,
 				C88255860F419397002ED1DA /* ObservableArray.m in Sources */,
 				C88256C00F41A869002ED1DA /* KVO.m in Sources */,
+				C882579D0F42CFF0002ED1DA /* TableViewTest.m in Sources */,
+				C88257A40F42D053002ED1DA /* NibBasedTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

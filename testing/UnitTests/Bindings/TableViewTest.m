@@ -19,6 +19,7 @@
 
 -(void)setUp {
    [super setUp];
+   [_arrayController bind:@"contentObject" toObject:self withKeyPath:@"table" options:nil];
    
    id table=[NSMutableArray array];
    
@@ -37,8 +38,9 @@
    [table addObject:[NSMutableDictionary dictionaryWithObjectsAndKeys:@"Abcdefg", @"name",
                      [NSNumber numberWithInt:50], @"value",
                      nil]];  
-   
+
    self.table=table;
+   
 }
 
 -(void)testBindings {
