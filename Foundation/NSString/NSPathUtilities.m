@@ -147,11 +147,17 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
    [self getCharacters:buffer];
 
-   for(i=length;--i>=0;)
-    if(buffer[i]=='.')
-     return [NSString stringWithCharacters:buffer length:i];
+   if (length>1 && ISSLASH(buffer[length-1]))
+    length--;
 
-   return self;
+   for(i=length;--i>0;){
+    if(ISSLASH(buffer[i]) || ISSLASH(buffer[i-1]))
+     break;
+    else if(buffer[i]=='.')
+     return [NSString stringWithCharacters:buffer length:i];
+   }
+
+   return [NSString stringWithCharacters:buffer length:length];
 }
 
 -(NSString *)stringByExpandingTildeInPath {
