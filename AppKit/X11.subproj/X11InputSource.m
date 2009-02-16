@@ -15,12 +15,18 @@
 #import <AppKit/NSApplication.h>
 #import <AppKit/X11AsyncInputSource.h>
 #import <X11/Xlib.h>
+#import <fcntl.h>
 
 @implementation X11InputSource
 
 +(void)addInputSourceWithDisplay:(X11Display*)display {
+   int connectionNumber=ConnectionNumber([display display]);
+   int flags=fcntl(connectionNumber, F_GETFL);
+   flags&=~O_NONBLOCK;
+   fcntl(connectionNumber, F_SETFL, flags & ~O_NONBLOCK);
+
    X11InputSource* synchro = [X11InputSource socketInputSourceWithSocket:
-             [NSSocket_bsd socketWithDescriptor:ConnectionNumber([display display])]];
+             [NSSocket_bsd socketWithDescriptor:connectionNumber]];
    X11AsyncInputSource* async=[X11AsyncInputSource new];
    
    [synchro setDelegate:synchro];
@@ -35,10 +41,6 @@
 }
 
 -(BOOL)processImmediateEvents:(unsigned)selectEvent; {
-   if((selectEvent && XEventsQueued([_display display], QueuedAfterReading)) || 
-      XPending([_display display])) {
-      [_display processX11Event];
-      return YES;
-   }
+   return [_display processX11Event];
 }
 @end

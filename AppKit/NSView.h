@@ -219,6 +219,13 @@ APPKIT_EXPORT NSString *NSViewFocusDidChangeNotification;
 
 -(BOOL)dragFile:(NSString *)path fromRect:(NSRect)rect slideBack:(BOOL)slideBack event:(NSEvent *)event;
 
+-(NSPoint)convertPointFromBase:(NSPoint)aPoint;
+-(NSPoint)convertPointToBase:(NSPoint)aPoint;
+-(NSSize)convertSizeFromBase:(NSSize)aSize;
+-(NSSize)convertSizeToBase:(NSSize)aSize;
+-(NSRect)convertRectFromBase:(NSRect)aRect;
+-(NSRect)convertRectToBase:(NSRect)aRect;
+
 // private,move
 -(NSArray *)_draggedTypes;
 -(void)_setWindow:(NSWindow *)window;

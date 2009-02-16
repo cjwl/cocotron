@@ -15,7 +15,7 @@
 #import <AppKit/X11InputSource.h>
 #import <AppKit/NSColor.h>
 #import <AppKit/NSImage.h>
-
+#import <AppKit/TTFFont.h>
 
 
 @implementation X11Display
@@ -24,8 +24,10 @@
 {
    if(self=[super init])
    {
-      //XInitThreads();
       _display=XOpenDisplay(NULL);
+      if(!_display)
+         _display=XOpenDisplay(":0");
+      NSAssert(_display, nil);
       _windowsByID=[NSMutableDictionary new];
       [self performSelector:@selector(setupEventHandling) withObject:nil afterDelay:0.0];
    }
@@ -142,13 +144,11 @@
 }
 
 -(NSSet *)allFontFamilyNames {
-   NSUnimplementedMethod();
-   return nil;
+   return [TTFFont allFontFamilyNames];
 }
 
 -(NSArray *)fontTypefacesForFamilyName:(NSString *)name {
-   NSUnimplementedMethod();
-   return nil;
+   return [TTFFont fontTypefacesForFamilyName:name];
 }
 
 -(float)scrollerWidth {
@@ -204,24 +204,28 @@
 
 -(void)setupEventHandling {
    [X11InputSource addInputSourceWithDisplay:self];
-   
 }
 
--(void)doNothing {
-   
+-(NSEvent *)nextEventMatchingMask:(unsigned)mask untilDate:(NSDate *)untilDate inMode:(NSString *)mode dequeue:(BOOL)dequeue;
+{
+   [self processX11Event];
+   return [super nextEventMatchingMask:mask untilDate:untilDate inMode:mode dequeue:dequeue];
 }
 
--(void)processX11Event {
+-(BOOL)processX11Event {
    XEvent e;
    int i;
    int numEvents;
-   while(numEvents=XEventsQueued(_display, QueuedAfterReading)) {
+   BOOL ret=NO;
+   while(numEvents=XEventsQueued(_display, QueuedAfterFlush)) {
       for(i=0; i<numEvents; i++) {
          XNextEvent(_display, &e);
          id window=[self windowForID:e.xany.window];
          [window handleEvent:&e fromDisplay:self];
+         ret=YES;
       }
    }
+   return ret;
 }
 @end
 

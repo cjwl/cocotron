@@ -6912,6 +6912,7 @@
 					/Developer/Cocotron/1.0/Darwin/i386/include/X11,
 					/Developer/Cocotron/1.0/Darwin/i386/include/cairo,
 					/Developer/Cocotron/1.0/Darwin/i386/include/freetype2,
+					/Developer/Cocotron/1.0/Darwin/i386/include/X11/fontconfig,
 				);
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_MODE_FLAG = "og-w,a+rX";
@@ -6926,6 +6927,7 @@
 					"-Wreturn-type",
 				);
 				OTHER_LDFLAGS = (
+					/Developer/Cocotron/1.0/Darwin/i386/lib/libfontconfig.a,
 					/Developer/Cocotron/1.0/Darwin/i386/lib/libcairo.a,
 					/Developer/Cocotron/1.0/Darwin/i386/lib/libfreetype.a,
 					"$(OTHER_LDFLAGS_QUOTED_FOR_TARGET_1)",
@@ -6933,7 +6935,6 @@
 					/Developer/Cocotron/1.0/Darwin/i386/lib/libX11.a,
 					/Developer/Cocotron/1.0/Darwin/i386/lib/libXrender.a,
 					/Developer/Cocotron/1.0/Darwin/i386/lib/libXext.a,
-					/Developer/Cocotron/1.0/Darwin/i386/lib/libfontconfig.a,
 					/Developer/Cocotron/1.0/Darwin/i386/lib/libexpat.a,
 					/Developer/Cocotron/1.0/Darwin/i386/lib/libGL.a,
 					"-lz",
@@ -6967,6 +6968,7 @@
 					/Developer/Cocotron/1.0/Darwin/i386/include/X11,
 					/Developer/Cocotron/1.0/Darwin/i386/include/cairo,
 					/Developer/Cocotron/1.0/Darwin/i386/include/freetype2,
+					/Developer/Cocotron/1.0/Darwin/i386/include/X11/fontconfig,
 				);
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = /Developer/Cocotron/1.0/Darwin/i386/Frameworks;
@@ -6980,6 +6982,7 @@
 					"-Wreturn-type",
 				);
 				OTHER_LDFLAGS = (
+					/Developer/Cocotron/1.0/Darwin/i386/lib/libfontconfig.a,
 					/Developer/Cocotron/1.0/Darwin/i386/lib/libcairo.a,
 					/Developer/Cocotron/1.0/Darwin/i386/lib/libfreetype.a,
 					"$(OTHER_LDFLAGS_QUOTED_FOR_TARGET_1)",
@@ -6987,7 +6990,6 @@
 					/Developer/Cocotron/1.0/Darwin/i386/lib/libX11.a,
 					/Developer/Cocotron/1.0/Darwin/i386/lib/libXrender.a,
 					/Developer/Cocotron/1.0/Darwin/i386/lib/libXext.a,
-					/Developer/Cocotron/1.0/Darwin/i386/lib/libfontconfig.a,
 					/Developer/Cocotron/1.0/Darwin/i386/lib/libexpat.a,
 					/Developer/Cocotron/1.0/Darwin/i386/lib/libGL.a,
 					"-lz",

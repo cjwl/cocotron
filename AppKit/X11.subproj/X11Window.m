@@ -14,6 +14,35 @@
 
 @implementation X11Window
 
+
++(Visual*)visual {
+   static Visual* ret=NULL;
+   
+   if(!ret) {
+      int visuals_matched, i;
+      XVisualInfo match={0};
+      Display *dpy=[(X11Display*)[NSDisplay currentDisplay] display];
+   
+      XVisualInfo *info=XGetVisualInfo(dpy,
+                                          0, &match, &visuals_matched);
+      
+      for(i=0; i<visuals_matched; i++) {
+         if(info[i].depth == 32 &&
+            (info[i].red_mask   == 0xff0000 &&
+             info[i].green_mask == 0x00ff00 &&
+             info[i].blue_mask  == 0x0000ff)) {
+            ret=info[i].visual;
+         }
+      }
+      XFree(info);
+      if(!ret)
+         ret=DefaultVisual(dpy, DefaultScreen(dpy));
+   }
+   
+   return ret;
+}
+
+
 -initWithFrame:(NSRect)frame styleMask:(unsigned)styleMask isPanel:(BOOL)isPanel backingType:(NSUInteger)backingType;
 {
    if(self=[super init])
@@ -22,21 +51,21 @@
       _dpy=[(X11Display*)[NSDisplay currentDisplay] display];
       int s = DefaultScreen(_dpy);
       _frame=[self transformFrame:frame];
-      _window = XCreateSimpleWindow(_dpy, DefaultRootWindow(_dpy),
-                              _frame.origin.x, _frame.origin.y, _frame.size.width, _frame.size.height, 
-                              1, 0, 0);
-
-      XSelectInput(_dpy, _window, ExposureMask | KeyPressMask | KeyReleaseMask | StructureNotifyMask |
-      ButtonPressMask | ButtonReleaseMask | ButtonMotionMask | PointerMotionMask | VisibilityChangeMask | FocusChangeMask);
       
       XSetWindowAttributes xattr;
       unsigned long xattr_mask;
       xattr.override_redirect = styleMask == NSBorderlessWindowMask ? True : False;
       xattr_mask = CWOverrideRedirect;
       
-      XChangeWindowAttributes(_dpy, _window, xattr_mask, &xattr);
-      XMoveWindow(_dpy, _window, _frame.origin.x, _frame.origin.y);
-      
+      _window = XCreateWindow(_dpy, DefaultRootWindow(_dpy),
+                              _frame.origin.x, _frame.origin.y, _frame.size.width, _frame.size.height,
+                              0, CopyFromParent, InputOutput, 
+                              CopyFromParent,
+                              xattr_mask, &xattr);
+
+      XSelectInput(_dpy, _window, ExposureMask | KeyPressMask | KeyReleaseMask | StructureNotifyMask |
+      ButtonPressMask | ButtonReleaseMask | ButtonMotionMask | PointerMotionMask | VisibilityChangeMask | FocusChangeMask);
+
       Atom atm=XInternAtom(_dpy, "WM_DELETE_WINDOW", False);
       XSetWMProtocols(_dpy, _window, &atm , 1);
       

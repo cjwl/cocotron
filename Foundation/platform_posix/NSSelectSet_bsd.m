@@ -13,6 +13,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSEnumerator.h>
 #import <Foundation/NSDate.h>
 #import <Foundation/NSArray.h>
+#import <Foundation/NSDebug.h>
 
 #import <errno.h>
 #import <sys/select.h>
@@ -144,15 +145,14 @@ static void transferNativeToSetWithOriginals(native_set *sset,NSMutableSet *set,
    struct timeval timeval;
    NSTimeInterval interval=-1.0;
 
-   transferSetToNative(_readSet,activeRead);
-   transferSetToNative(_writeSet,activeWrite);
-   transferSetToNative(_exceptionSet,activeExcept);
-
-
     // See NSTask_linux.m
    int numFds=0;
    while(result==nil && numFds==0 && interval!=0.0)
    {
+      transferSetToNative(_readSet,activeRead);
+      transferSetToNative(_writeSet,activeWrite);
+      transferSetToNative(_exceptionSet,activeExcept);      
+      
       interval=[beforeDate timeIntervalSinceNow];
 
       if(interval>1000000)
@@ -168,6 +168,12 @@ static void transferNativeToSetWithOriginals(native_set *sset,NSMutableSet *set,
       {
          if(errno!=EINTR)
             result=[NSError errorWithDomain:NSPOSIXErrorDomain code:errno userInfo:nil];
+      }
+      
+      if(NSDebugEnabled) {
+         interval=[beforeDate timeIntervalSinceNow];
+         if(interval>0.0)
+            NSLog(@"in %@: select returned 0 before timeout ended. Did you wait on a non-blocking socket?");
       }
    }
 

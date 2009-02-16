@@ -9,6 +9,8 @@
 #import "TTFFont.h"
 #import <AppKit/KTFont.h>
 #import <AppKit/KGFont.h>
+#import <AppKit/NSFontTypeface.h>
+#import <fontconfig.h>
 
 @implementation KTFont(TTFFont)
 +(id)allocWithZone:(NSZone*)zone
@@ -19,10 +21,116 @@
 
 @implementation TTFFont
 FT_Library library;
+FcConfig *fontConfig;
+
++(NSSet*)allFontFamilyNames {
+   int i;
+   FcPattern *pat=FcPatternCreate();
+   FcObjectSet *props=FcObjectSetBuild(FC_FAMILY, 0);
+   
+   FcFontSet *set = FcFontList (fontConfig, pat, props);
+   NSMutableSet* ret=[NSMutableSet set];
+   
+   for(i = 0; i < set->nfont; i++)
+   {
+      FcChar8 *family;
+      if (FcPatternGetString (set->fonts[i], FC_FAMILY, 0, &family) == FcResultMatch) {
+         [ret addObject:[NSString stringWithUTF8String:(char*)family]];
+      }
+   }
+   
+   FcPatternDestroy(pat);
+   FcObjectSetDestroy(props);
+   FcFontSetDestroy(set);
+   return ret;
+}
+
++(NSArray *)fontTypefacesForFamilyName:(NSString *)familyName {
+   int i;
+   FcPattern *pat=FcPatternCreate();
+   FcPatternAddString(pat, FC_FAMILY, (unsigned char*)[familyName UTF8String]);
+   FcObjectSet *props=FcObjectSetBuild(FC_FAMILY, FC_STYLE, FC_SLANT, FC_WIDTH, FC_WEIGHT, 0);
+
+   FcFontSet *set = FcFontList (fontConfig, pat, props);
+   NSMutableArray* ret=[NSMutableArray array];
+   
+   for(i = 0; i < set->nfont; i++)
+   {
+      FcChar8 *typeface;
+      FcPattern *p=set->fonts[i];
+      if (FcPatternGetString (p, FC_STYLE, 0, &typeface) == FcResultMatch) {
+         NSString* traitName=[NSString stringWithUTF8String:(char*)typeface];
+         FcChar8* pattern=FcNameUnparse(p);
+         NSString* name=[NSString stringWithUTF8String:(char*)pattern];
+         FcStrFree(pattern);
+         
+         NSFontTraitMask traits=0;
+         int slant, width, weight;
+         
+         FcPatternGetInteger(p, FC_SLANT, FC_SLANT_ROMAN, &slant);
+         FcPatternGetInteger(p, FC_WIDTH, FC_WIDTH_NORMAL, &width);
+         FcPatternGetInteger(p, FC_WEIGHT, FC_WEIGHT_REGULAR, &weight);
+
+         switch(slant) {
+            case FC_SLANT_OBLIQUE:
+            case FC_SLANT_ITALIC:
+               traits|=NSItalicFontMask;
+               break;
+            default:
+               traits|=NSUnitalicFontMask;
+               break;
+         }
+         
+         if(weight<=FC_WEIGHT_LIGHT)
+            traits|=NSUnboldFontMask;
+         else if(weight>=FC_WEIGHT_SEMIBOLD)
+            traits|=NSBoldFontMask;
+         
+         if(width<=FC_WIDTH_SEMICONDENSED)
+            traits|=NSNarrowFontMask;
+         else if(width>=FC_WIDTH_SEMIEXPANDED)
+            traits|=NSExpandedFontMask;
+         
+         NSFontTypeface *face=[[NSFontTypeface alloc] initWithName:name traitName:traitName traits:traits];
+         [ret addObject:face];
+         [face release];
+      }
+   }
+   
+   FcPatternDestroy(pat);
+   FcObjectSetDestroy(props);
+   FcFontSetDestroy(set);
+   return ret;
+}
+
++(NSString*)filenameForPattern:(NSString *)pattern {
+   int i;
+   FcPattern *pat=FcNameParse((unsigned char*)[pattern UTF8String]);
+
+   FcObjectSet *props=FcObjectSetBuild(FC_FILE, 0);
+
+   FcFontSet *set = FcFontList (fontConfig, pat, props);
+   NSString* ret=NULL;
+   for(i = 0; i < set->nfont && !ret; i++) {
+      FcChar8 *filename;
+
+      if (FcPatternGetString (set->fonts[i], FC_FILE, 0, &filename) == FcResultMatch) {
+         ret=[NSString stringWithUTF8String:(char*)filename];
+      }
+   }
+
+   FcPatternDestroy(pat);
+   FcObjectSetDestroy(props);
+   FcFontSetDestroy(set);
+   
+   return ret;
+}
+
 
 +(void)initialize {
    int ret=FT_Init_FreeType(&library);
    NSAssert(ret==0, nil);
+   fontConfig=FcInitLoadConfigAndFonts();
 }
 
 -(float)pointSize
@@ -67,15 +175,22 @@ FT_Library library;
    
    if(self=[super init])
    {
+      id pattern=[font fontName];
+      
+      NSLog(@"%@",pattern);
+      id filename=[isa filenameForPattern:pattern];
+      if(!filename) {
+         filename=@"/Library/Fonts/Arial";
+      }
+      
       FT_Error ret=FT_New_Face(library,
-                  "/Library/Fonts/Tahoma.ttf",
+                  [filename fileSystemRepresentation],
                   0,
                   &_face);
             
       
       FT_Select_Charmap(_face, FT_ENCODING_UNICODE);
 
-     // NSAssert(ret==0, nil);
       _size=size;
       _name=@"FreeSans";
       
@@ -103,7 +218,7 @@ FT_Library library;
     case kCTFontMenuItemFontType:
      if(size==0)
       size=12;
-     font=[KGFont createWithFontName:@"Vera"];
+     font=[KGFont createWithFontName:@"Arial"];
      break;
  
     default:

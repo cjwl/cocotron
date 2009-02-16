@@ -250,8 +250,8 @@ triggerChangeNotificationsForDependentKey:@"selectionIndex"];
 {
 	id idxs=[self selectionIndexes];
 	if(idxs)
-		return [_NSObservableArray arrayWithArray:[[self arrangedObjects] objectsAtIndexes:idxs]];
-	return [_NSObservableArray array];
+		return [[self arrangedObjects] objectsAtIndexes:idxs];
+	return [NSArray array];
 }
 
 - (BOOL)setSelectedObjects:(NSArray *)objects

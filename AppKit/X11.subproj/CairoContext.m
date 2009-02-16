@@ -425,7 +425,7 @@
    cairo_set_font_size(_context, [fontState pointSize]);
    
    cairo_identity_matrix(_context);
-   cairo_reset_clip(_context);
+
    [self appendFlip];
 
    [self appendCTM];
@@ -435,16 +435,6 @@
    
    cairo_show_glyphs(_context, cg, count);
    
-   {
-      /*double x,y,x2,y2;
-      CGAffineTransform ctm=[[self currentState] textMatrix];
-
-      cairo_glyph_path(_context, cg, count);
-      cairo_stroke_extents(_context, &x, &y, &x2, &y2);
-      NSRect rect=NSMakeRect(x, y, x2-x, y2-y);
-      rect=NSOffsetRect(rect, ctm.tx, ctm.ty);
-      _dirtyRect=NSUnionRect(_dirtyRect, rect);*/
-   }
 }
 
 -(void)showText:(const char *)text length:(unsigned)length {
@@ -452,9 +442,8 @@
    CGGlyph glyphs[length];
    int     i;
    
-// FIX, encoding
-   for(i=0;i<length;i++)
-    unicode[i]=text[i];
+   id str=[NSString stringWithUTF8String:text];
+   [str getCharacters:unicode range:NSMakeRange(0, length)]; 
     
    [(KTFont*)[[self currentState] fontState] getGlyphs:glyphs forCharacters:unicode length:length];
    [self showGlyphs:glyphs count:length];
@@ -492,8 +481,6 @@ cairo_status_t writeToData(void		  *closure,
    
    cairo_destroy(ctx);
    cairo_surface_write_to_png_stream(surf, writeToData, ret);
-   
-   cairo_surface_write_to_png(surf, "/tmp/out.png");
    
    cairo_surface_destroy(surf);
    return ret;   

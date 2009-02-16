@@ -14,7 +14,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSKeyValueObserving.h>
 #import <Foundation/NSKeyValueCoding.h>
 #import <Foundation/NSString+KVCAdditions.h>
-#import "NSObservationProxy.h"
+#import <AppKit/NSObservationProxy.h>
 #import <Foundation/NSException.h>
 
 @implementation NSControllerSelectionProxy
@@ -29,11 +29,18 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	return self;
 }
 
+-(id)observableSelection {
+   if(!_observableSelection)
+      _observableSelection = [[_NSObservableArray alloc] initWithArray:[_controller selectedObjects]];
+   return _observableSelection;
+}
+
 -(void)dealloc
 {
    [_cachedKeysForKVO release];
 	[_cachedValues release];
 	[_controller release];
+   [_observableSelection release];
    
    if([_observationProxies count]>0)
 		[NSException raise:NSInvalidArgumentException
@@ -98,7 +105,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)setValue:(id)value forKey:(NSString *)key
 {
-	[[_controller selectedObjects] setValue:value forKey:key];
+	[[self observableSelection] setValue:value forKey:key];
 }
 
 -(NSString*)description
@@ -118,6 +125,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       [self willChangeValueForKey:key];
    }
    [_cachedValues removeAllObjects];
+   [_observableSelection release];
+   _observableSelection=nil;
 }
 
 -(void)controllerDidChange
@@ -146,7 +155,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [proxy setNotifyObject:YES];
    [_observationProxies addObject:proxy];
    
-   [[_controller selectedObjects] addObserver:proxy forKeyPath:keyPath options:options context:context];
+   [[self observableSelection] addObserver:proxy forKeyPath:keyPath options:options context:context];
 
    [proxy release];
 }
@@ -162,7 +171,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [proxy release];
    
    if(idx!=NSNotFound) {
-      [[_controller selectedObjects] removeObserver:[_observationProxies objectAtIndex:idx] forKeyPath:keyPath];
+      [[self observableSelection] removeObserver:[_observationProxies objectAtIndex:idx] forKeyPath:keyPath];
       [_observationProxies removeObjectAtIndex:idx];
    }
    

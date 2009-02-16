@@ -1,4 +1,4 @@
-/* Copyright (c) 2008 Johannes Fortmann
+/* Copyright (c) 2009 Johannes Fortmann
  
  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
  
@@ -6,23 +6,23 @@
  
  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
-#import <AppKit/KTFont.h>
+#import "ObjectController.h"
 
-#import <ft2build.h>
 
-#import FT_FREETYPE_H
-#import FT_RENDER_H
+@implementation ObjectController
 
-@interface TTFFont : NSObject {
-   FT_Face _face; 
-   float _size;
-   id _name;
-   void *_platformFont;
+
+-(void)testSetting {
+   [self setValue:[NSNumber numberWithFloat:20.0f] forKey:@"floatValue"];
+   STAssertEquals([_slider floatValue], 20.0f, nil);
+   STAssertEquals(_floatValue, 20.0f, nil);
 }
-+(NSSet*)allFontFamilyNames;
-+(NSArray *)fontTypefacesForFamilyName:(NSString *)name;
--(CGPoint)positionOfGlyph:(CGGlyph)current precededByGlyph:(CGGlyph)previous isNominal:(BOOL *)isNominalp;
--(void)getAdvancements:(CGSize *)advancements forGlyphs:(const CGGlyph *)glyphs count:(unsigned)count;
--(float)pointSize;
--(FT_Face)face;
+
+-(void)testGetting {
+   [_slider setFloatValue:40.0];
+   STAssertEquals([_slider floatValue], 40.0f, nil);
+   STAssertEquals(_floatValue, 40.0f, nil);
+}
+
+
 @end

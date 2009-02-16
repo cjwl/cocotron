@@ -1299,6 +1299,30 @@ static inline void buildTransformsIfNeeded(NSView *self) {
     return nil;
 }
 
+-(NSPoint)convertPointFromBase:(NSPoint)aPoint; {
+   return aPoint;
+}
+
+-(NSPoint)convertPointToBase:(NSPoint)aPoint; {
+   return aPoint;
+}
+
+-(NSSize)convertSizeFromBase:(NSSize)aSize {
+   return aSize;
+}
+
+-(NSSize)convertSizeToBase:(NSSize)aSize {
+   return aSize;
+}
+
+-(NSRect)convertRectFromBase:(NSRect)aRect {
+   return aRect;
+}
+
+-(NSRect)convertRectToBase:(NSRect)aRect {
+   return aRect;
+}
+
 -(NSString *)description {
     return [NSString stringWithFormat:@"<%@[0x%lx] frame: %@>", [self class], self, NSStringFromRect(_frame)];
 }

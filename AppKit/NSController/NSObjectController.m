@@ -73,7 +73,7 @@ triggerChangeNotificationsForDependentKey:@"contentObject"];
 
 -(NSArray *)selectedObjects
 {
-	return [_NSObservableArray arrayWithObject:_content];
+	return [NSArray arrayWithObject:_content];
 }
 
 -(id)selection

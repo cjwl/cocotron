@@ -11,11 +11,7 @@
 
 @implementation X11AsyncInputSource
 -(BOOL)processInputImmediately {
-   if(XPending([_display display])) {
-      [_display processX11Event];
-      return YES;
-   }
-   return NO;
+   return [_display processX11Event];
 }
 
 

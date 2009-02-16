@@ -19,7 +19,7 @@
 
 -(void)setUp {
    [super setUp];
-   [_arrayController bind:@"contentObject" toObject:self withKeyPath:@"table" options:nil];
+   [_arrayController bind:@"contentArray" toObject:self withKeyPath:@"table" options:nil];
    
    id table=[NSMutableArray array];
    

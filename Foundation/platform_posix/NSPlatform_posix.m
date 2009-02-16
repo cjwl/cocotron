@@ -195,7 +195,7 @@ static struct passwd *pwent = NULL;
 }
 
 -(void)logString:(NSString *)string {
-    fprintf(stderr, "%s\n", [string cString]);
+    fprintf(stderr, "%s\n", [string UTF8String]);
 }
 
 -(void *)contentsOfFile:(NSString *)path length:(unsigned *)lengthp {

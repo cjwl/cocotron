@@ -15,6 +15,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 {
 	id _controller;
 	NSMutableDictionary *_cachedValues;
+   id _observableSelection;
    NSMutableArray *_observationProxies;
    id _cachedKeysForKVO;
 }
