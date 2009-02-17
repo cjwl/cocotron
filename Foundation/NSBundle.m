@@ -246,7 +246,8 @@ static NSMapTable *pathToObject=NULL;
 }
 
 -(NSDictionary *)localizedInfoDictionary {
-   NSUnimplementedMethod();
+// FIXME: implement, dont uncomment NSUnimplementedMethod.
+  // NSUnimplementedMethod();
    return [self infoDictionary];
 }
 

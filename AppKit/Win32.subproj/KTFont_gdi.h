@@ -1,4 +1,5 @@
 #import <AppKit/KTFont.h>
+#import <windows.h>
 
 @class Win32Font;
 

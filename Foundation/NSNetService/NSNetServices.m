@@ -23,6 +23,11 @@
 #import <Foundation/NSSelectInputSource.h>
 #import <Foundation/NSSocket.h>
 
+#ifdef WIN32
+#import <winsock2.h> // for ntohs
+#endif
+#import <string.h>
+
 #import "bonjour.h"
 
 NSString *NSNetServicesErrorCode = @"NSNetServicesErrorCode";

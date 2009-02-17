@@ -99,8 +99,8 @@ BOOL KGPDFGetPageArrayForKey(KGPDFPage *page,const char *key,KGPDFArray **arrayp
    
    rect->origin.x=numbers[0];
    rect->origin.y=numbers[1];
-   rect->size.width=numbers[2];
-   rect->size.height=numbers[3];
+   rect->size.width=numbers[2]-numbers[0];
+   rect->size.height=numbers[3]-numbers[1];
    
    NSZoneFree(NULL,numbers);
    

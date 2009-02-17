@@ -8,12 +8,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/ObjCTypes.h>
 
-#ifdef WIN32
-#import <windows.h>
-typedef HANDLE NSModuleHandle;
-#else
 typedef void *NSModuleHandle;
-#endif
 
 FOUNDATION_EXPORT NSModuleHandle NSLoadModule(const char *path);
 FOUNDATION_EXPORT BOOL NSUnloadModule(NSModuleHandle handle);

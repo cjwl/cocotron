@@ -7,26 +7,29 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
 #import <AppKit/NSPanel.h>
+#import <AppKit/NSNibLoading.h>
 
 @class NSPopUpButton, NSButton, NSTextField, NSToolbar;
 @class NSToolbarCustomizationView;
 
-@interface NSToolbarCustomizationPalette : NSPanel 
-{
-    id _palette;
-    NSPopUpButton *_displayModePopUp;
-    NSButton *_smallSizeModeButton;
-    NSButton *_button;
-    NSTextField *_allowedItemsTextField;
-    NSToolbarCustomizationView *_allowedItemsView;
-    NSTextField *_defaultItemsTextField;
-    NSToolbarCustomizationView *_defaultItemsView;
+@interface NSToolbarCustomizationPalette : NSPanel  {
+    IBOutlet NSTextField *_allowedItemsTextField;
+    IBOutlet NSToolbarCustomizationView *_allowedItemsView;
+    IBOutlet NSTextField *_defaultItemsTextField;
+    IBOutlet NSToolbarCustomizationView *_defaultItemsView;
+    IBOutlet NSPopUpButton *_displayModePopUp;
+    IBOutlet NSButton *_smallSizeModeButton;
+    IBOutlet NSButton *_button;
 }
 
-- (id)initWithToolbar:(NSToolbar *)toolbar;
-- (NSToolbar *)toolbar;
++(NSToolbarCustomizationPalette *)toolbarCustomizationPalette;
 
-- (void)settingsChanged:(id)sender;
-- (void)customizationPaletteDidFinish:(id)sender;
+-(void)setToolbar:(NSToolbar *)toolbar;
+-(NSToolbar *)toolbar;
+
+-(void)displayModeChanged:sender;
+-(void)sizeModeChanged:sender;
+
+-(void)customizationPaletteDidFinish:sender;
 
 @end

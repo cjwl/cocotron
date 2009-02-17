@@ -10,27 +10,20 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @class NSToolbar;
 
-// Hm. A view to support drag and drop toolbar customization.
-
-// n.b.: arrange icons for dragging in a 4 x 4 grid. some icons seem to occupy two "slots", e.g.
-// Mail.app's "search" toolbar item--how is this determined? If minSize > threshold... etc.
-
 APPKIT_EXPORT NSString *NSToolbarItemIdentifierPboardType;
 
-@interface NSToolbarCustomizationView : NSView
-{
+@interface NSToolbarCustomizationView : NSView {
     NSToolbar *_toolbar;
     BOOL _isDefaultSetView;
 }
 
-- (id)initWithFrame:(NSRect)frame toolbar:(NSToolbar *)toolbar isDefaultSetView:(BOOL)isDefaultSetView;
+-(NSToolbar *)toolbar;
+-(void)setToolbar:(NSToolbar *)toolbar;
 
-- (NSToolbar *)toolbar;
+-(void)setDefaultSetView:(BOOL)flag;
+-(BOOL)isDefaultSetView;
 
-- (void)setDefaultSetView:(BOOL)flag;
-- (BOOL)isDefaultSetView;
-
-- (void)sizeToFit;
+-(NSSize)desiredSize;
 
 @end
 

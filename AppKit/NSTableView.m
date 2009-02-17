@@ -290,11 +290,11 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
     return nil;
 }
 
--(NSRect)rectOfRow:(int)row {
+-(NSRect)rectOfRow:(NSInteger)row {
     NSRect rect = _bounds;
-    int i = 0;
+    NSInteger i = 0;
 
-    if (row < 0 || row >= _numberOfRows) {
+    if (row < 0 || row >= [self numberOfRows]) {
         return NSZeroRect;
     }
 
@@ -308,9 +308,9 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
     return rect;
 }
 
--(NSRect)rectOfColumn:(int)column {
+-(NSRect)rectOfColumn:(NSInteger)column {
     NSRect rect = _bounds;
-    int i = 0;
+    NSInteger i = 0;
 
     if (column < 0 || column >= [_tableColumns count]) {
         [NSException raise:NSInternalInconsistencyException
@@ -321,24 +321,22 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
         rect.origin.x += [[_tableColumns objectAtIndex:i++] width] + _intercellSpacing.width;
 
     rect.size.width = [[_tableColumns objectAtIndex:column] width] + _intercellSpacing.width;
-    rect.size.height = MAX(_numberOfRows * (_rowHeight + _intercellSpacing.height), [[self superview] bounds].size.height); 
+    rect.size.height = MAX([self numberOfRows] * (_rowHeight + _intercellSpacing.height), [[self superview] bounds].size.height); 
 
     return rect;
 }
 
 -(NSRange)rowsInRect:(NSRect)rect {
     NSRange range = NSMakeRange(0, 0);
-
-    for (range.location = 0; range.location < _numberOfRows; ++range.location) {
+    NSInteger numberOfRows=[self numberOfRows];
+    
+    for (range.location = 0; range.location < numberOfRows; ++range.location) {
         if (NSIntersectsRect([self rectOfRow:range.location], rect)) {
-            while(NSMaxRange(range) < _numberOfRows && NSIntersectsRect([self rectOfRow:range.location+range.length], rect))
+            while(NSMaxRange(range) < numberOfRows && NSIntersectsRect([self rectOfRow:range.location+range.length], rect))
                 range.length++;
             break;
         }
     }
-
-    if (range.length == 0) // not found
-        range = NSMakeRange(NSNotFound, 0);
 
 #if 0 // semibroken
     range.location = [self rowAtPoint:rect.origin];	// first row...
@@ -349,13 +347,13 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
     if (range.location == NSNotFound)
         range.location = 0;
     if (range.length == 0)
-        range.length = _numberOfRows;
+        range.length = numberOfRows;
 
     NSLog(@"rowsInRect %@: %@", NSStringFromRect(rect), NSStringFromRange(range));
     NSLog(@"max point at %@", NSStringFromPoint(NSMakePoint(NSMaxX(rect), NSMaxY(rect))));
 #endif
     
-    return range;
+    return range; // returns 0,0 if not found, not NSNotFound
 }
 
 -(NSRange)columnsInRect:(NSRect)rect {
@@ -392,9 +390,9 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
 }
 
 -(int)rowAtPoint:(NSPoint)point {
-    int i;
+    NSInteger i,numberOfRows=[self numberOfRows];
 
-    for (i = 0; i < _numberOfRows; ++i)
+    for (i = 0; i < numberOfRows; ++i)
         if (NSMouseInRect(point, [self rectOfRow:i],[self isFlipped]))
             return i;
 
@@ -589,9 +587,10 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
 -(void)editColumn:(int)column row:(int)row withEvent:(NSEvent *)event select:(BOOL)select {
     NSCell        *editingCell;
     NSTableColumn *editingColumn = [_tableColumns objectAtIndex:column];
-
+    NSInteger      numberOfRows=[self numberOfRows];
+    
     // light sanity check; invalid columns caught above in objectAtIndex:
-    if (row < 0 || row >= _numberOfRows)
+    if (row < 0 || row >= numberOfRows)
         [NSException raise:NSInvalidArgumentException
                     format:@"invalid row in %@", NSStringFromSelector(_cmd)];
 
@@ -790,10 +789,10 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
 }
 
 -(void)selectAll:sender {
-    int i;
-
+    NSInteger i,numberOfRows=[self numberOfRows];
+    
     [self deselectAll:sender];
-    for (i = 0; i < _numberOfRows; ++i)
+    for (i = 0; i < numberOfRows; ++i)
         [self selectRow:i byExtendingSelection:YES];
     
     [self setNeedsDisplay:YES];
@@ -820,13 +819,13 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
     NSSize size = [self frame].size;
     NSSize headerSize = [_headerView frame].size;
 
-    _numberOfRows = [self numberOfRows];
+    NSInteger numberOfRows = [self numberOfRows];
 
     // if there's any editing going on, we'd better stop it.
     if (_editingCell != nil)
      [self abortEditing];
 
-    if (_numberOfRows > 0){
+    if (numberOfRows > 0){
         size.width = [self rectOfRow:0].size.width;
     }
     if ([_tableColumns count] > 0)
@@ -887,10 +886,11 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
 }
 
 -(void)highlightSelectionInClipRect:(NSRect)rect {
-    int row, column;
-
+    NSInteger row, column;
+    NSInteger numberOfRows=[self numberOfRows];
+    
     for (column = 0; column < [_tableColumns count]; ++column)
-        for (row = 0; row < _numberOfRows; ++row)
+        for (row = 0; row < numberOfRows; ++row)
             if ([self isColumnSelected:column] || [self isRowSelected:row])
                 if (!(row == _editedRow && column == _editedColumn))
                     [self drawHighlightedSelectionForColumn:column row:row inRect:[self frameOfCellAtColumn:column row:row]];
@@ -917,8 +917,9 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
     // draw only visible columns.
     NSRange visibleColumns = [self columnsInRect:clipRect];
     int drawThisColumn = visibleColumns.location;
+    NSInteger numberOfRows=[self numberOfRows];
 
-    if (row < 0 || row >= _numberOfRows)
+    if (row < 0 || row >= numberOfRows)
         [NSException raise:NSInvalidArgumentException
                     format:@"invalid row in drawRow:clipRect:"];
 
@@ -942,7 +943,8 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
     int i;
     float originX = _bounds.origin.x;
     float originY = _bounds.origin.y;
-
+    NSInteger numberOfRows=[self numberOfRows];
+    
     [_gridColor setFill];
 
     // vertical ruling
@@ -952,7 +954,7 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
     }
 
     // horizontal ruling
-    for (i = 0; i < _numberOfRows; ++i) {
+    for (i = 0; i < numberOfRows; ++i) {
         originY = NSMaxY([self rectOfRow:i]) - 1;
         NSRectFill(NSMakeRect(_bounds.origin.x, originY, _bounds.size.width, 1.0));
     }
@@ -1037,12 +1039,11 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
 -(void)textDidEndEditing:(NSNotification *)note {
     NSTableColumn *editedColumn = [_tableColumns objectAtIndex:_editedColumn];
     int textMovement = [[[note userInfo] objectForKey:@"NSTextMovement"] intValue];
-
+    NSInteger numberOfRows=[self numberOfRows];
+    
     [_editingCell endEditing:_currentEditor];
 
-    // avoid possible row synch issues
-    _numberOfRows = [self numberOfRows];
-    if (_editedRow >= 0 && _editedRow < _numberOfRows)
+    if (_editedRow >= 0 && _editedRow < numberOfRows)
 	{
 		if([self dataSourceCanSetObjectValue])
 		{
@@ -1063,7 +1064,7 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
     if (textMovement == NSReturnTextMovement) {
         int nextRow = _editedRow+1;
 
-        if (nextRow >= _numberOfRows)
+        if (nextRow >= numberOfRows)
             nextRow = 0;
 
         [self selectRow:nextRow byExtendingSelection:NO];
@@ -1078,7 +1079,7 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
          if(nextColumn>=[_tableColumns count]){
           nextColumn=0;
           nextRow++;
-          if(nextRow>=_numberOfRows)
+          if(nextRow>=numberOfRows)
            nextRow=0;
          }
 
@@ -1097,7 +1098,7 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
             prevColumn = [_tableColumns count] - 1;
             prevRow -= 1;
             if (prevRow < 0)
-                prevRow = _numberOfRows - 1;
+                prevRow = numberOfRows - 1;
         }
 
         [self selectRow:prevRow byExtendingSelection:NO];
@@ -1130,22 +1131,23 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
 
 -(void)drawRect:(NSRect)clipRect {
     NSRange visibleRows;
-    int drawThisRow;
-
+    NSInteger drawThisRow, numberOfRows=[self numberOfRows];
+    
     [_backgroundColor setFill];
     NSRectFill(_bounds);
 
-    _numberOfRows = [self numberOfRows];
-    if (_numberOfRows > 0) {
+    if (numberOfRows > 0) {
         [self highlightSelectionInClipRect:clipRect];
 
         if ([self drawsGrid])
             [self drawGridInClipRect:clipRect];
         
         visibleRows = [self rowsInRect:clipRect];
-        drawThisRow = visibleRows.location;
-        while (drawThisRow < NSMaxRange(visibleRows)) 
-            [self drawRow:drawThisRow++ clipRect:clipRect];
+        if(visibleRows.length>0){
+         drawThisRow = visibleRows.location;
+         while (drawThisRow < NSMaxRange(visibleRows) && drawThisRow<numberOfRows) 
+             [self drawRow:drawThisRow++ clipRect:clipRect];
+        }     
 //NSLog(@"%s %d",__FILE__,__LINE__);
 
         if (_editingCell != nil && _editedColumn != -1 && _editedRow != -1)
@@ -1207,7 +1209,8 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
 
 -(void)mouseDown:(NSEvent *)event {
     NSPoint location = [self convertPoint:[event locationInWindow] fromView:nil];
-
+    NSInteger numberOfRows=[self numberOfRows];
+    
     _clickedColumn = [self columnAtPoint:location];
     _clickedRow = [self rowAtPoint:location];
 
@@ -1326,7 +1329,7 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
                                                                 endRow = row; 
                                                         } 
 
-                                                        for (i = 0; i < _numberOfRows; i++) { 
+                                                        for (i = 0; i < numberOfRows; i++) { 
                                                                 if (i >= startRow && i <= endRow) 
                                                                         [self selectRow:i byExtendingSelection:YES]; 
                                                                 else 
@@ -1368,10 +1371,10 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
 }
 
 -(void)_tightenUpColumn:(NSTableColumn *)column {
-    int i;
+    NSInteger i,numberOfRows=[self numberOfRows];
     float minWidth = 0.0, width;
 
-    for (i = 0; i < _numberOfRows; ++i) {
+    for (i = 0; i < numberOfRows; ++i) {
         NSCell *dataCell = [column dataCellForRow:i];
         
         [dataCell setObjectValue:[self dataSourceObjectValueForTableColumn:column row:i]];
@@ -1478,7 +1481,7 @@ dropOperation:NSTableViewDropAbove];
 
 -(void)_moveUp:(BOOL)up extend:(BOOL)extend {
 	
-	int rowToSelect = -1;
+	NSInteger rowToSelect = -1;
 	
 	if ([_selectedRowIndexes count] == 0)
 		rowToSelect = 0;

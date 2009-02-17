@@ -289,9 +289,9 @@ static inline id childOfItemAtIndex(NSOutlineView *self,id item,int index){
 -(void)_tightenUpColumn:(NSTableColumn *)column forItem:(id)item {
    float minWidth=[column width],width;
    int   rootLevel=[self levelForItem:item];
-   int   i=[self rowForItem:item]+1;
+   NSInteger   i=[self rowForItem:item]+1,numberOfRows=[self numberOfRows];
 
-   for(;i<_numberOfRows;i++) {
+   for(;i<numberOfRows;i++) {
     NSCell *dataCell=[column dataCellForRow:i];
     id      item=[self itemAtRow:i];
     int     level=[self levelForItem:item];
@@ -658,9 +658,9 @@ static void loadItemIntoMapTables(NSOutlineView *self,id item,unsigned *rowCount
 
 -(void)drawRow:(int)row clipRect:(NSRect)rect {
     NSRange visibleColumns = [self columnsInRect:rect];
-    int drawThisColumn = visibleColumns.location;
+    NSInteger drawThisColumn = visibleColumns.location;
 
-    if (row < 0 || row >= _numberOfRows)
+    if (row < 0 || row >= [self numberOfRows])
         [NSException raise:NSInvalidArgumentException format:@"invalid row in drawRow:clipRect:"];
 
     while (drawThisColumn < NSMaxRange(visibleColumns)) {

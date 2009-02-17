@@ -19,8 +19,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 +(NSArray *)imageRepsWithContentsOfFile:(NSString *)path {
    NSMutableArray *result=[NSMutableArray array];
+   NSBitmapImageRep *rep=[[[NSBitmapImageRep alloc] initWithContentsOfFile:path] autorelease];
    
-   [result addObject:[[[NSBitmapImageRep alloc] initWithContentsOfFile:path] autorelease]];
+   if(rep==nil)
+    return nil;
+    
+   [result addObject:rep];
    
    return result;
 }

@@ -1,143 +1,197 @@
-/* Copyright (c) 2006-2007 Christopher J. W. Lloyd
+/* Copyright (c) 2006-2009 Christopher J. W. Lloyd
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
-
-// Original - David Young <daver@geeks.org>
-#import <AppKit/AppKitExport.h>
 #import <AppKit/NSToolbar.h>
 #import <AppKit/NSToolbarItem.h>
-#import <AppKit/NSStandardToolbarItems.h>
 #import <AppKit/NSToolbarView.h>
 #import <AppKit/NSToolbarCustomizationPalette.h>
 #import <AppKit/NSView.h>
 #import <AppKit/NSWindow-Private.h>
 #import <AppKit/NSWindowBackgroundView.h>
 #import <AppKit/NSApplication.h>
-#import <AppKit/NSToolbar-Private.h>
+#import <AppKit/NSParagraphStyle.h>
+#import <AppKit/NSAttributedString.h>
+#import <AppKit/NSFont.h>
 
 NSSize _NSToolbarSizeRegular = { 40, 40 };
 NSSize _NSToolbarSizeSmall = { 32, 32 };
 NSSize _NSToolbarIconSizeRegular = { 32, 32 };
 NSSize _NSToolbarIconSizeSmall = { 24, 24 };
 
-#define MIN_Y_MARGIN    2.0
-#define MIN_X_MARGIN    6.0
-
 NSString *NSToolbarWillAddItemNotification = @"NSToolbarWillAddItemNotification";
 NSString *NSToolbarDidRemoveItemNotification = @"NSToolbarDidRemoveItemNotification";
 
-NSString *NSToolbarDidChangeNotification = @"NSToolbarDidChangeNotification";
+// private inter-toolbar notification
+NSString *NSToolbarChangeAppearanceNotification = @"__NSToolbarChangeAppearanceNotification";
+
+@interface NSWindow(NSToolbarPrivate)
+-(void)_toolbarSizeDidChangeFromOldHeight:(CGFloat)oldHeight;
+@end
+
+@interface NSToolbarItem(private)
+-(void)_setToolbar:(NSToolbar *)toolbar;
+@end
 
 @implementation NSToolbar
 
-- initWithIdentifier:(NSString *)identifier
-{
-     _identifier = [identifier retain];
-        
-     _items = [[NSMutableArray alloc] init];
-
-     _view = [[NSToolbarView alloc] initWithFrame:[NSToolbarView viewFrameWithWindowContentSize:[[_window contentView] frame].size sizeMode:_sizeMode displayMode:_displayMode minYMargin:MIN_Y_MARGIN]];
-
-     _visible=YES;
-     _allowsUserCustomization = YES;
-     _isLoadingConfiguration = NO;
-        
-     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(toolbarDidChange:) name:NSToolbarDidChangeNotification object:self];
+-(NSDictionary *)_labelAttributesForSizeMode:(NSToolbarSizeMode)sizeMode {
+   NSMutableParagraphStyle *style = [[[NSParagraphStyle defaultParagraphStyle] mutableCopy] autorelease];
+    
+   [style setLineBreakMode:NSLineBreakByClipping];
+   [style setAlignment:NSCenterTextAlignment];
+ 
+   switch (sizeMode) {
+    case NSToolbarSizeModeSmall:
+     return [NSDictionary dictionaryWithObjectsAndKeys:
+                [NSFont systemFontOfSize:10.0], NSFontAttributeName,
+                style, NSParagraphStyleAttributeName,
+                nil];
             
-     [_view setAutoresizesSubviews:YES];
-     [_view setMinXMargin:MIN_X_MARGIN];
-     [_view setMinYMargin:MIN_Y_MARGIN];
-     [_view setToolbar:self];
-        
-     [_view setBorderType:NSGrooveBorder];
-    
-    return self;
+    case NSToolbarSizeModeRegular:
+    case NSToolbarSizeModeDefault:
+    default:
+     return [NSDictionary dictionaryWithObjectsAndKeys:
+                [NSFont systemFontOfSize:11.0], NSFontAttributeName,
+                style, NSParagraphStyleAttributeName,
+                nil];
+   }        
 }
 
-- (void)dealloc
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
+-(NSDictionary *)_labelAttributes {
+   return [self _labelAttributesForSizeMode:_sizeMode];
+}
+
+-initWithIdentifier:(NSString *)identifier {
+   _identifier=[identifier retain];
+   _delegate=nil;
+   _items=[[NSMutableArray alloc] init];
+   _selectedItemIdentifier=nil;
+   _allowedItems=nil;
+   _defaultItems=nil;
+   _selectableItems=nil;
+   _identifiedItems=[[NSMutableDictionary alloc] init];
+   _window=nil;   
+   _view=[[NSToolbarView alloc] init];
+   [_view setToolbar:self];
+   _palette=nil;
+   _sizeMode=NSToolbarSizeModeDefault;
+   _displayMode=NSToolbarDisplayModeDefault;
+   _autosavesConfiguration=NO;
+   _visible=YES;
+   _allowsUserCustomization=YES;
+   _isLoadingConfiguration=NO;
+   
+   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(toolbarChangedAppearance:) name:NSToolbarChangeAppearanceNotification object:nil];
+   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(toolbarWillAddItem:) name:NSToolbarWillAddItemNotification object:nil];
+   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(toolbarDidRemoveItem:) name:NSToolbarDidRemoveItemNotification object:nil];
+   
+   return self;
+}
+
+-(void)dealloc {
+   [[NSNotificationCenter defaultCenter] removeObserver:self];
     
-    [_identifier release];
-    [_items release];
-    [_view release];
+   [_identifier release];
+   [_items release];
    [_allowedItems release];
+   [_defaultItems release];
+   [_selectableItems release];
    [_identifiedItems release];
+   _window=nil;
+   [_view release];
+   _palette=nil;
 
-    [super dealloc];
+   [super dealloc];
 }
 
-- (NSToolbarView *)_view
-{
-    return _view;
+-(NSToolbarView *)_view {
+   return _view;
 }
 
-- (BOOL)loadConfiguration
-{
-    NSDictionary *dictionary = [[NSUserDefaults standardUserDefaults] objectForKey:[NSString stringWithFormat:@"NSToolbar Configuration %@", _identifier]];
+-(CGFloat)visibleHeight {
+   if(!_visible)
+    return 0;
+   
+   return [_view frame].size.height;
+}
+
+-(NSString *)_configurationKey {
+   return [NSString stringWithFormat:@"NSToolbar identifier=%@", _identifier];
+}
+
+-(BOOL)loadConfiguration {
+   NSDictionary *dictionary=[[NSUserDefaults standardUserDefaults] objectForKey:[self _configurationKey]];
     
-    if (dictionary != nil) {
-        _isLoadingConfiguration = YES;
-        [self setConfigurationFromDictionary:dictionary];        
-        _isLoadingConfiguration = NO;
-        
-        return YES;
-    }
+   if(dictionary!=nil){
+    _isLoadingConfiguration=YES;
+    [self setConfigurationFromDictionary:dictionary];        
+    _isLoadingConfiguration=NO;
+    return YES;
+   }
     
-    return NO;
+   return NO;
 }
 
-- (void)saveConfiguration
-{    
-    if (_isLoadingConfiguration == NO) {
-        [[NSUserDefaults standardUserDefaults] setObject:[self configurationDictionary] forKey:[NSString stringWithFormat:@"NSToolbar Configuration %@", _identifier]];
-        
-        [[NSUserDefaults standardUserDefaults] synchronize];
-    }
+-(void)saveConfiguration {    
+   if(_isLoadingConfiguration==NO){
+    [[NSUserDefaults standardUserDefaults] setObject:[self configurationDictionary] forKey:[self _configurationKey]];
+   }
 }
 
-- (NSString *)identifier
-{
-    return _identifier;
+-(NSString *)identifier {
+   return _identifier;
 }
 
-- delegate
-{
-    return _delegate;
+-delegate {
+   return _delegate;
 }
 
-- (BOOL)isVisible
-{
-    return _visible;
+-(BOOL)isVisible {
+   return _visible;
 }
 
-- (NSToolbarSizeMode)sizeMode
-{
-    return _sizeMode;
+-(NSToolbarSizeMode)sizeMode {
+   return _sizeMode;
 }
 
-- (NSToolbarDisplayMode)displayMode
-{
-    return _displayMode;
+-(NSToolbarDisplayMode)displayMode {
+   return _displayMode;
 }
 
-- (NSArray *)items
-{
-    return _items;
+-(BOOL)showsBaselineSeparator {
+   return _showsBaselineSeparator;
+}
+
+-(NSArray *)items {
+   return _items;
 } 
 
-- (NSArray *)visibleItems
-{
-    return [_view visibleItems];
+-(NSArray *)visibleItems {
+   return [_view visibleItems];
 }
 
-- (NSDictionary *)configurationDictionary
-{
-    NSMutableDictionary *dictionary = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+-(BOOL)autosavesConfiguration {
+   return _autosavesConfiguration;
+}
+
+-(BOOL)allowsUserCustomization {
+    return _allowsUserCustomization;
+}
+
+-(NSString *)selectedItemIdentifier {
+   return _selectedItemIdentifier;
+}
+
+-(NSArray *)itemIdentifiers {
+   return [_items valueForKey:@"itemIdentifier"];
+}
+
+-(NSDictionary *)configurationDictionary {
+    NSDictionary *dictionary = [NSDictionary dictionaryWithObjectsAndKeys:
         [NSNumber numberWithInt:_displayMode], @"displayMode",
         [NSNumber numberWithInt:_sizeMode], @"sizeMode",
         [NSNumber numberWithBool:_visible], @"isVisible",
@@ -148,377 +202,303 @@ NSString *NSToolbarDidChangeNotification = @"NSToolbarDidChangeNotification";
     return dictionary;
 }
 
-- (BOOL)autosavesConfiguration
-{
-    return _autosavesConfiguration;
-}
-
-- (BOOL)allowsUserCustomization
-{
-    return _allowsUserCustomization;
-}
-
--(NSString *)selectedItemIdentifier {
-   NSUnimplementedMethod();
-   return nil;
-}
-
-- (void)insertItemWithItemIdentifier:(NSString *)identifier atIndex:(int)index
-{
-   NSToolbarItem *item=[self _itemForItemIdentifier:identifier willBeInsertedIntoToolbar:YES];
-    
-    [[NSNotificationCenter defaultCenter] postNotificationName:NSToolbarWillAddItemNotification object:self userInfo:[NSDictionary dictionaryWithObjectsAndKeys:item, @"item", nil]];
+-(NSToolbarItem *)_itemForItemIdentifier:(NSString *)identifier willBeInsertedIntoToolbar:(BOOL)intoToolbar {
+   NSToolbarItem *item=[_identifiedItems objectForKey:identifier];
    
-    [_items insertObject:item atIndex:index];
-
-    _reloadOnNextDisplay = YES;
-    [_view setNeedsDisplay:YES];
+   if(item==nil){
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:NSToolbarDidChangeNotification object:self];
+    if(_delegate==nil)
+     item=[[[NSToolbarItem alloc] initWithItemIdentifier:identifier] autorelease];
+    else
+     item=[_delegate toolbar:self itemForItemIdentifier:identifier willBeInsertedIntoToolbar:intoToolbar];
     
-    if ([self autosavesConfiguration])
-        [self saveConfiguration];
-}
-
-- (void)removeItemAtIndex:(int)index
-{
-   NSToolbarItem *item=[_items objectAtIndex:index];
-    
-    [[NSNotificationCenter defaultCenter] postNotificationName:NSToolbarDidRemoveItemNotification object:self userInfo:[NSDictionary dictionaryWithObjectsAndKeys:item, @"item", nil]];
-
-    [_items removeObjectAtIndex:index];
-    
-    _reloadOnNextDisplay = YES;
-    [_view setNeedsDisplay:YES];
-    
-    [[NSNotificationCenter defaultCenter] postNotificationName:NSToolbarDidChangeNotification object:self];
-
-    if ([self autosavesConfiguration])
-        [self saveConfiguration];
-}
-
-- (void)setItemsWithIdentifiersFromArray:(NSArray *)identifiers
-{
-    [_items removeAllObjects];
-    [_items addObjectsFromArray:[self _itemsWithIdentifiers:identifiers]];
-
-    _reloadOnNextDisplay = YES;
-    [_view setNeedsDisplay:YES];
-    [[NSNotificationCenter defaultCenter] postNotificationName:NSToolbarDidChangeNotification object:self];
-
-    if ([self autosavesConfiguration])
-        [self saveConfiguration];
-}
-
-- (void)_reloadToolbar
-{
-    if ([_items count] == 0) {
-       [_items release];
-        _items = [[self _defaultToolbarItems] mutableCopy];
+    if(item!=nil){
+     [_identifiedItems setObject:item forKey:identifier];
+     [item _setToolbar:self];
     }
-   
-   [[_view subviews] makeObjectsPerformSelector:@selector(removeFromSuperview)];
-
-    for (NSToolbarItem *item in _items) {
-        // we're not actually adding the space/flexible space views to the toolbar; they're merely placeholders.
-        if ([item isSpaceToolbarItem] == NO && [item isFlexibleSpaceToolbarItem] == NO)
-            [_view addSubview:[item view]];
-    }
-    
-    [_view sizeToFit];
-}
-
-- (void)_reloadToolbarIfNeeded
-{
-    if (_reloadOnNextDisplay == YES) {
-        _reloadOnNextDisplay = NO;
-        [self _reloadToolbar];
-    }
-}
-
-- (void)toolbarDidChange:(NSNotification *)note
-{
-    NSToolbar *toolbar = [note object];
-    
-    if ([[toolbar identifier] isEqualToString:_identifier]) {
-        NSRect frame = [_view frame];
-        NSRect newFrame = [NSToolbarView viewFrameWithWindowContentSize:[[_window contentView] frame].size sizeMode:_sizeMode displayMode:_displayMode minYMargin:MIN_Y_MARGIN];
-        float deltaY = frame.size.height - newFrame.size.height;
-        
-        frame.size.height = newFrame.size.height;
-        
-        [_view setFrame:frame];
-        
-        if ([self isVisible] && deltaY != 0) {
-            frame = [_window frame];
-            frame.size.height -= deltaY;
-            
-            [_view setAutoresizingMask:NSViewWidthSizable|NSViewMaxYMargin];
-            _maskCache = [[_window contentView] autoresizingMask];
-            [[_window contentView] setAutoresizingMask:NSViewNotSizable];
-            
-            [_window setFrame:frame display:YES animate:YES];
-        }
-        
-        // do stuff..
-        [self _reloadToolbarIfNeeded];
-    }
-}
-
-- (void)setDelegate:delegate
-{
-    struct {
-        NSString *name;
-        SEL       selector;
-    } notes[] = {
-        { NSToolbarWillAddItemNotification, @selector(toolbarWillAddItem:) },
-        { NSToolbarDidRemoveItemNotification, @selector(toolbarDidRemoveItem:) },
-        { nil, NULL }
-    };
-    int i;
-    
-    if (_delegate != nil)
-        for (i = 0; notes[i].name != nil; i++)
-            [[NSNotificationCenter defaultCenter] removeObserver:_delegate name:notes[i].name object:self];
-    
-    _delegate = delegate;
-    
-    for (i = 0; notes[i].name != nil; i++)
-        if ([_delegate respondsToSelector:notes[i].selector])
-            [[NSNotificationCenter defaultCenter] addObserver:_delegate selector:notes[i].selector name:notes[i].name object:self];
-    
-    _reloadOnNextDisplay = YES;
-//    [[NSNotificationCenter defaultCenter] postNotificationName:NSToolbarDidChangeNotification object:self];
-}
-
--(void)_setVisible:(BOOL)flag { 
-
-    if (_window==[_view window]) {
-        NSRect frame = [_window frame];
-
-        [_view removeFromSuperview];
-        
-        frame.size.height -= [_view frame].size.height;
-        _maskCache = [[_window contentView] autoresizingMask];
-        [[_window contentView] setAutoresizingMask:NSViewNotSizable];
-        [_window setFrame:frame display:YES animate:YES];
-    }
-    else {
-        NSRect frame = [_view frame];
-
-        frame.size.width = [[_window contentView] frame].size.width;
-        frame.origin.y = [[_window contentView] frame].size.height;
-
-        [_view setAutoresizingMask:NSViewWidthSizable|NSViewMaxYMargin];
-        [_view setFrame:frame];
-        
-        [[_window _backgroundView] addSubview:_view];
-                
-        frame = [_window frame];
-        frame.size.height += [_view frame].size.height;
-        _maskCache = [[_window contentView] autoresizingMask];
-        [[_window contentView] setAutoresizingMask:NSViewNotSizable];
-        [_window setFrame:frame display:YES animate:YES];
-    }
-
-    _visible = flag;
-    if ([self autosavesConfiguration])
-        [self saveConfiguration];
-}
-
-- (void)setVisible:(BOOL)flag
-{
-    if (_visible == flag)
-        return;
-    [self _setVisible:flag];
-}
-
-- (void)setSizeMode:(NSToolbarSizeMode)mode
-{
-    _sizeMode = mode;
-    if ([self autosavesConfiguration])
-        [self saveConfiguration];
-
-    [[NSNotificationCenter defaultCenter] postNotificationName:NSToolbarDidChangeNotification object:self];
-}
-
-- (void)setDisplayMode:(NSToolbarDisplayMode)mode
-{
-    _displayMode = mode;
-    if ([self autosavesConfiguration])
-        [self saveConfiguration];
-
-    [[NSNotificationCenter defaultCenter] postNotificationName:NSToolbarDidChangeNotification object:self];    
-}
-
-- (void)setConfigurationFromDictionary:(NSDictionary *)dictionary
-{
-    int displayMode = [[dictionary objectForKey:@"displayMode"] intValue];
-    int sizeMode = [[dictionary objectForKey:@"sizeMode"] intValue];
-    BOOL visible = [[dictionary objectForKey:@"isVisible"] intValue];
-    BOOL autosavesConfiguration = [[dictionary objectForKey:@"autosavesConfiguration"] intValue];
-    NSArray *identifiers = [dictionary objectForKey:@"itemIdentifiers"];
-    
-    [self setDisplayMode:displayMode];
-    [self setSizeMode:sizeMode];
-   
-   _items=[[self _itemsWithIdentifiers:identifiers] mutableCopy];
-
-    [self setVisible:visible];
-    [self setAutosavesConfiguration:autosavesConfiguration];
-}
-
-- (void)setAutosavesConfiguration:(BOOL)flag
-{
-    _autosavesConfiguration = flag;
-}
-
-- (void)setAllowsUserCustomization:(BOOL)flag
-{
-    _allowsUserCustomization = flag;
-}
-
--(void)setSelectedItemIdentifier:(NSString *)identifier {
-   NSUnimplementedMethod();
-}
-
-- (void)validateVisibleItems
-{
-    int i, count = [[self visibleItems] count];
-    
-    for (i = 0; i < count; ++i)
-        [[[self visibleItems] objectAtIndex:i] validate];
-}
-
-- (BOOL)customizationPaletteIsRunning;
-{
-    return _palette != nil;
-}
-
-- (void)runCustomizationPalette:sender;
-{
-    if (_palette != nil || _allowsUserCustomization == NO || _visible == NO)
-        return;
-    
-    _palette = [[NSToolbarCustomizationPalette alloc] initWithToolbar:self];
-    
-    [NSApp beginSheet:_palette modalForWindow:_window modalDelegate:self didEndSelector:@selector(sheetDidEnd:returnCode:contextInfo:) contextInfo:NULL];
-}
-
-- (void)windowDidAnimate:(NSNotification *)note
-{
-    [_view setAutoresizingMask:NSViewWidthSizable|NSViewMinYMargin];
-    
-    [[_window contentView] setAutoresizingMask:_maskCache];
-}
-
-
-- (void)_setWindow:(NSWindow *)window
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:NSWindowDidAnimateNotification object:_window];
-    
-    _window = window;
-
-    if (_window != nil) 
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(windowDidAnimate:) name:NSWindowDidAnimateNotification object:_window];
-
-    // do this here since _window must be initialized for this to work...
-    if ([self loadConfiguration])
-        [self _reloadToolbar];
-
-    [self _setVisible:_visible];
-}
-
-- (NSArray *)itemIdentifiers
-{
-   return [_items valueForKey:@"itemIdentifier"];
-}
-
-- (void)sheetDidEnd:(NSWindow *)sheet returnCode:(int)returnCode contextInfo:(void *)contextInfo
-{
-    [_palette orderOut:nil];
-    [_palette release];
-    _palette = nil;
-}
-
--(id)_itemForItemIdentifier:(NSString*)identifier willBeInsertedIntoToolbar:(BOOL)toolbar
-{
-   id item=[_identifiedItems objectForKey:identifier];
-   if(!item)
-   {
-      item=[NSToolbarItem standardToolbarItemWithIdentifier:identifier];
-      if(_delegate && !item)
-         item = [_delegate toolbar:self itemForItemIdentifier:identifier willBeInsertedIntoToolbar:toolbar];
-      [_identifiedItems setObject:item forKey:identifier];
    }
    
    return item;
 }
 
--(id)_itemsWithIdentifiers:(NSArray*)identifiers
-{   
-   NSMutableArray *ret=[NSMutableArray array];
+-(NSArray *)_itemsWithIdentifiers:(NSArray*)identifiers {   
+   NSMutableArray *result=[NSMutableArray array];
+   
    for (NSString *identifier in identifiers) {
-      [ret addObject:[self _itemForItemIdentifier:identifier willBeInsertedIntoToolbar:NO]];
+    NSToolbarItem *item=[self _itemForItemIdentifier:identifier willBeInsertedIntoToolbar:NO];
+    
+    if(item!=nil)
+     [result addObject:item];
    }
-   return ret;
+   
+   return result;
 }
 
--(id)_allowedToolbarItems
-{
-   if(!_allowedItems)
-      if([_delegate respondsToSelector:@selector(toolbarAllowedItemIdentifiers:)])
-      {
-         _allowedItems = [[self _itemsWithIdentifiers:[_delegate toolbarAllowedItemIdentifiers:self]] retain];
-      }
-   return _allowedItems;
+-(void)_insertItem:(NSToolbarItem *)item atIndex:(NSInteger)index {
+   [[NSNotificationCenter defaultCenter] postNotificationName:NSToolbarWillAddItemNotification object:self userInfo:[NSDictionary dictionaryWithObjectsAndKeys:item, @"item", [NSNumber numberWithInteger:index],@"index",nil]];
+
+   [_items insertObject:item atIndex:index];
+   [_view _insertItem:item atIndex:index];
 }
 
--(id)_defaultToolbarItems
-{
-   if(!_defaultItems)
-      if([_delegate respondsToSelector:@selector(toolbarDefaultItemIdentifiers:)])
-      {
-         _defaultItems = [[self _itemsWithIdentifiers:[_delegate toolbarDefaultItemIdentifiers:self]] retain];
-      }
-   return _defaultItems;
+-(void)_removeItemAtIndex:(NSInteger)index {
+   NSToolbarItem *item=[[[_items objectAtIndex:index] retain] autorelease];
+
+   [_items removeObjectAtIndex:index];
+   [_view _removeItemAtIndex:index];
+
+   [[NSNotificationCenter defaultCenter] postNotificationName:NSToolbarDidRemoveItemNotification object:self userInfo:[NSDictionary dictionaryWithObjectsAndKeys:item, @"item", nil]];
 }
 
+-(void)toolbarWillAddItem:(NSNotification *)note {
+   NSToolbar *toolbar=[note object];
+   
+   if(toolbar==self)
+    return;
+   if(![[toolbar identifier] isEqualToString:_identifier])
+    return;
+    
+   NSToolbarItem *item=[[note userInfo] objectForKey:@"item"];
+   NSInteger      index=[[[note userInfo] objectForKey:@"index"] integerValue];
+   
+   [self _insertItem:item atIndex:index];
+}
 
+-(void)toolbarDidRemoveItem:(NSNotification *)note {
+   NSToolbar *toolbar=[note object];
+   
+   if(toolbar==self)
+    return;
+   if(![[toolbar identifier] isEqualToString:_identifier])
+    return;
+    
+   NSToolbarItem *item=[[note userInfo] objectForKey:@"item"];
+   NSInteger      index=[[[note userInfo] objectForKey:@"index"] integerValue];
 
--(id)initWithCoder:(id)coder
-{
+   [self _removeItemAtIndex:index];
+}
+
+-(void)insertItemWithItemIdentifier:(NSString *)identifier atIndex:(int)index {
+   NSToolbarItem *item=[self _itemForItemIdentifier:identifier willBeInsertedIntoToolbar:YES];
+    
+   [self _insertItem:item atIndex:index];
+   
+   if([self autosavesConfiguration])
+    [self saveConfiguration];
+}
+
+-(void)removeItemAtIndex:(int)index {
+   [self _removeItemAtIndex:index];
+
+   if([self autosavesConfiguration])
+    [self saveConfiguration];
+}
+
+// called from drag&drop
+-(void)_setItemsWithIdentifiersFromArray:(NSArray *)identifiers {
+   [_items removeAllObjects];
+   [_items addObjectsFromArray:[self _itemsWithIdentifiers:identifiers]];
+
+   if([self autosavesConfiguration])
+    [self saveConfiguration];
+}
+
+-(void)toolbarChangedAppearance:(NSNotification *)note {
+   NSToolbar *toolbar=[note object];
+
+   if(toolbar==self)
+    return;
+    
+   if(![[toolbar identifier] isEqualToString:_identifier])
+    return;
+   
+   _sizeMode=[toolbar sizeMode];
+   _displayMode=[toolbar displayMode];
+   [_window _toolbarSizeDidChangeFromOldHeight:[self visibleHeight]];
+}
+
+-(void)layoutFrameSizeWithWidth:(CGFloat)width {
+   [_view layoutViewsWithWidth:width setFrame:YES];
+}
+
+-(void)itemSizeDidChange {
+   [_window _toolbarSizeDidChangeFromOldHeight:[self visibleHeight]];
+}
+
+-(void)setDelegate:delegate {
+   struct {
+    NSString *name;
+    SEL       selector;
+   } notes[] = {
+    { NSToolbarWillAddItemNotification, @selector(toolbarWillAddItem:) },
+    { NSToolbarDidRemoveItemNotification, @selector(toolbarDidRemoveItem:) },
+    { nil, NULL }
+   };
+   NSInteger i;
+    
+   if(_delegate!=nil)
+    for (i = 0; notes[i].name != nil; i++)
+     [[NSNotificationCenter defaultCenter] removeObserver:_delegate name:notes[i].name object:self];
+    
+   _delegate = delegate;
+    
+   for (i = 0; notes[i].name != nil; i++)
+    if ([_delegate respondsToSelector:notes[i].selector])
+     [[NSNotificationCenter defaultCenter] addObserver:_delegate selector:notes[i].selector name:notes[i].name object:self];
+ }
+
+-(void)didChangeAppearanceGlobal:(BOOL)global {
+   if([self autosavesConfiguration])
+    [self saveConfiguration];
+
+   [_window _toolbarSizeDidChangeFromOldHeight:[self visibleHeight]];
+   if(global)
+    [[NSNotificationCenter defaultCenter] postNotificationName:NSToolbarChangeAppearanceNotification object:self];
+}
+
+-(void)setVisible:(BOOL)flag {
+   _visible=flag;
+   [self didChangeAppearanceGlobal:NO];
+}
+
+-(void)setSizeMode:(NSToolbarSizeMode)mode {
+   _sizeMode=mode;
+   [self didChangeAppearanceGlobal:YES];
+}
+
+-(void)setDisplayMode:(NSToolbarDisplayMode)mode {
+    _displayMode = mode;
+   [self didChangeAppearanceGlobal:YES];
+}
+
+-(void)setShowsBaselineSeparator:(BOOL)value {
+   _showsBaselineSeparator=value;
+   [self didChangeAppearanceGlobal:YES];
+}
+
+-(void)setConfigurationFromDictionary:(NSDictionary *)dictionary {
+   NSToolbarDisplayMode displayMode = [[dictionary objectForKey:@"displayMode"] intValue];
+   NSToolbarSizeMode    sizeMode = [[dictionary objectForKey:@"sizeMode"] intValue];
+   BOOL                 visible = [[dictionary objectForKey:@"isVisible"] boolValue];
+   BOOL                 autosavesConfiguration = [[dictionary objectForKey:@"autosavesConfiguration"] boolValue];
+   NSArray             *identifiers = [dictionary objectForKey:@"itemIdentifiers"];
+    
+
+   [self setDisplayMode:displayMode];
+   [self setSizeMode:sizeMode];
+   
+   _items=[[self _itemsWithIdentifiers:identifiers] mutableCopy];
+
+   [self setVisible:visible];
+   [self setAutosavesConfiguration:autosavesConfiguration];
+}
+
+-(void)setAutosavesConfiguration:(BOOL)flag {
+    _autosavesConfiguration=flag;
+}
+
+-(void)setAllowsUserCustomization:(BOOL)flag {
+   _allowsUserCustomization=flag;
+}
+
+-(void)setSelectedItemIdentifier:(NSString *)identifier {
+   identifier=[identifier copy];
+   [_selectedItemIdentifier release];
+   _selectedItemIdentifier=[identifier retain];
+}
+
+-(void)validateVisibleItems {
+   NSArray *visibleItems=[self visibleItems];
+   NSInteger i, count = [visibleItems count];
+    
+   for (i = 0; i < count;i++)
+    [[visibleItems objectAtIndex:i] validate];
+}
+
+-(BOOL)customizationPaletteIsRunning {
+   return _palette != nil;
+}
+ 
+-(void)sheetDidEnd:(NSWindow *)sheet returnCode:(int)returnCode contextInfo:(void *)contextInfo {
+    [_palette orderOut:nil];
+    [_palette release];
+    _palette = nil;
+}
+
+-(void)runCustomizationPalette:sender {
+   if (_palette != nil || _allowsUserCustomization == NO || _visible == NO)
+    return;
+    
+   _palette = [[NSToolbarCustomizationPalette toolbarCustomizationPalette] retain];
+   [_palette setToolbar:self];
+    
+   [NSApp beginSheet:_palette modalForWindow:_window modalDelegate:self didEndSelector:@selector(sheetDidEnd:returnCode:contextInfo:) contextInfo:NULL];
+}
+
+-(void)_setWindow:(NSWindow *)window {    
+   _window=window;
+}
+
+-(NSArray *)_allowedToolbarItems {
+   NSArray *result=nil;
+   
+   if([_delegate respondsToSelector:@selector(toolbarAllowedItemIdentifiers:)])
+    result=[self _itemsWithIdentifiers:[_delegate toolbarAllowedItemIdentifiers:self]];
+
+   if(result==nil)
+    result=_allowedItems;
+       
+   return result;
+}
+
+-(NSArray *)_defaultToolbarItems {
+   NSArray *result=nil;
+
+   if([_delegate respondsToSelector:@selector(toolbarDefaultItemIdentifiers:)])
+    result=[self _itemsWithIdentifiers:[_delegate toolbarDefaultItemIdentifiers:self]];
+
+   if(result==nil)
+    result=_defaultItems;
+    
+   return result;
+}
+
+-initWithCoder:(NSCoder *)coder {
    if(![coder allowsKeyedCoding])
       NSUnimplementedMethod();
    else {
       _identifier=[[coder decodeObjectForKey:@"NSToolbarIdentifier"] retain];
-      _view = [[NSToolbarView alloc] initWithFrame:[NSToolbarView viewFrameWithWindowContentSize:[[_window contentView] frame].size sizeMode:_sizeMode displayMode:_displayMode minYMargin:MIN_Y_MARGIN]];
-      [_view setAutoresizesSubviews:YES];
-      [_view setMinXMargin:MIN_X_MARGIN];
-      [_view setMinYMargin:MIN_Y_MARGIN];
-      [_view setToolbar:self];
-      
       [self setDelegate:[coder decodeObjectForKey:@"NSToolbarDelegate"]];
-      _allowsUserCustomization=[coder decodeBoolForKey:@"NSToolbarAllowsUserCustomization"];
-      _autosavesConfiguration=[coder decodeBoolForKey:@"NSToolbarAutosavesConfiguration"];
+      _items=[[coder decodeObjectForKey:@"NSToolbarIBDefaultItems"] mutableCopy];
+      _selectedItemIdentifier=nil;
+      _allowedItems=[[coder decodeObjectForKey:@"NSToolbarIBAllowedItems"] retain];
+      _defaultItems=[[coder decodeObjectForKey:@"NSToolbarIBDefaultItems"] retain];
+      _selectableItems=[[coder decodeObjectForKey:@"NSToolbarIBSelectableItems"] retain];
+      _identifiedItems=[[coder decodeObjectForKey:@"NSToolbarIBIdentifiedItems"] mutableCopy];
+      [[_identifiedItems allValues] makeObjectsPerformSelector:@selector(_setToolbar:) withObject:self];
+      _window=nil;
+      _view = [[NSToolbarView alloc] init];
+      [_view  setToolbar:self];
+      _palette=nil;
       _sizeMode=[coder decodeIntForKey:@"NSToolbarSizeMode"];
       _displayMode=[coder decodeIntForKey:@"NSToolbarDisplayMode"];
+      _autosavesConfiguration=[coder decodeBoolForKey:@"NSToolbarAutosavesConfiguration"];
       _visible=YES;
+      _allowsUserCustomization=[coder decodeBoolForKey:@"NSToolbarAllowsUserCustomization"];
+      _isLoadingConfiguration=NO;
 
-      _items=[[coder decodeObjectForKey:@"NSToolbarIBDefaultItems"] mutableCopy];
-      _identifiedItems=[[coder decodeObjectForKey:@"NSToolbarIBIdentifiedItems"] mutableCopy];
-      _defaultItems=[[coder decodeObjectForKey:@"NSToolbarIBDefaultItems"] retain];
-      _allowedItems=[[coder decodeObjectForKey:@"NSToolbarIBAllowedItems"] retain];
-      _selectableItems=[[coder decodeObjectForKey:@"NSToolbarIBSelectableItems"] retain];
-
-      [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(toolbarDidChange:) name:NSToolbarDidChangeNotification object:self];
-      [[NSNotificationCenter defaultCenter] postNotificationName:NSToolbarDidChangeNotification object:self];
+      [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(toolbarChangedAppearance:) name:NSToolbarChangeAppearanceNotification object:nil];
       /*
        NSToolbarPrefersToBeShown = 1;
        NSToolbarShowsBaselineSeparator = 1;
        */
-    }
+   }
    return self;
+}
+
+-(void)postAwakeFromNib {
+// this causes animation, display, frame changes, do post in initWithCoder:
+   [[NSNotificationCenter defaultCenter] postNotificationName:NSToolbarChangeAppearanceNotification object:self];
 }
 
 @end

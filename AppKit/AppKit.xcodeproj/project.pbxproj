@@ -11,7 +11,6 @@
 		365710650E81A10E008FE1BE /* NSGradient.h in Headers */ = {isa = PBXBuildFile; fileRef = 36570F980E818CD5008FE1BE /* NSGradient.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C81BEA0F0EA6038800478D50 /* CairoContext.h in Headers */ = {isa = PBXBuildFile; fileRef = C81BEA0D0EA6038800478D50 /* CairoContext.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		C81BEA100EA6038800478D50 /* CairoContext.m in Sources */ = {isa = PBXBuildFile; fileRef = C81BEA0E0EA6038800478D50 /* CairoContext.m */; };
-		C81D0ACA0E8E92C2003BE469 /* NSToolbar-Private.h in Headers */ = {isa = PBXBuildFile; fileRef = C81D0AC90E8E92C2003BE469 /* NSToolbar-Private.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		C8283E4B0F0AEE3B009E89C4 /* X11InputSource.h in Headers */ = {isa = PBXBuildFile; fileRef = C8283E490F0AEE3B009E89C4 /* X11InputSource.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		C8283E4C0F0AEE3B009E89C4 /* X11InputSource.m in Sources */ = {isa = PBXBuildFile; fileRef = C8283E4A0F0AEE3B009E89C4 /* X11InputSource.m */; };
 		C8283E4D0F0AEE3B009E89C4 /* X11InputSource.h in Headers */ = {isa = PBXBuildFile; fileRef = C8283E490F0AEE3B009E89C4 /* X11InputSource.h */; };
@@ -219,16 +218,11 @@
 		C88974DD0EA0BF3100D0A0A2 /* NSSubmenuView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B56EF0976075400DA0954 /* NSSubmenuView.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		C88974DE0EA0BF3100D0A0A2 /* NSKeyBindingManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B57030976075400DA0954 /* NSKeyBindingManager.h */; settings = {ATTRIBUTES = (Project, Private, ); }; };
 		C88974DF0EA0BF3100D0A0A2 /* NSKeyBinding.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B57050976075400DA0954 /* NSKeyBinding.h */; settings = {ATTRIBUTES = (Project, Private, ); }; };
-		C88974E00EA0BF3100D0A0A2 /* NSStandardToolbarItems.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B57250976075400DA0954 /* NSStandardToolbarItems.h */; settings = {ATTRIBUTES = (Project, Private, ); }; };
 		C88974E10EA0BF3100D0A0A2 /* NSToolbar.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B57270976075400DA0954 /* NSToolbar.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
-		C88974E20EA0BF3100D0A0A2 /* NSToolbarButton.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B57290976075400DA0954 /* NSToolbarButton.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		C88974E30EA0BF3100D0A0A2 /* NSToolbarItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B572B0976075400DA0954 /* NSToolbarItem.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
 		C88974E40EA0BF3100D0A0A2 /* NSToolbarView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B572D0976075500DA0954 /* NSToolbarView.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		C88974E50EA0BF3100D0A0A2 /* NSToolbarButtonCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B572F0976075500DA0954 /* NSToolbarButtonCell.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		C88974E60EA0BF3100D0A0A2 /* NSToolbarCustomizationPalette.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B57310976075500DA0954 /* NSToolbarCustomizationPalette.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		C88974E70EA0BF3100D0A0A2 /* NSToolbarCustomizationView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B57330976075500DA0954 /* NSToolbarCustomizationView.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		C88974E80EA0BF3100D0A0A2 /* NSToolbarSeparatorItemView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B57350976075500DA0954 /* NSToolbarSeparatorItemView.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		C88974E90EA0BF3100D0A0A2 /* NSToolbarSeparatorItemCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B57370976075500DA0954 /* NSToolbarSeparatorItemCell.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		C88974EA0EA0BF3100D0A0A2 /* NSDrawer.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B574D0976075500DA0954 /* NSDrawer.h */; settings = {ATTRIBUTES = (Project, Private, ); }; };
 		C88974EB0EA0BF3100D0A0A2 /* NSDrawerWindow.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B574F0976075500DA0954 /* NSDrawerWindow.h */; settings = {ATTRIBUTES = (Project, Private, ); }; };
 		C88974EC0EA0BF3100D0A0A2 /* NSTIFFImageFileDirectory.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E14EC6509A3C40F009C8693 /* NSTIFFImageFileDirectory.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -374,7 +368,6 @@
 		C88975790EA0BF3100D0A0A2 /* NSObservationProxy.h in Headers */ = {isa = PBXBuildFile; fileRef = C8C52C8D0E7ED1FF003F03B5 /* NSObservationProxy.h */; };
 		C889757A0EA0BF3100D0A0A2 /* NSGradient.h in Headers */ = {isa = PBXBuildFile; fileRef = 36570F980E818CD5008FE1BE /* NSGradient.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C889757B0EA0BF3100D0A0A2 /* NSUserDefaultsControllerProxy.h in Headers */ = {isa = PBXBuildFile; fileRef = C84909350E8D1FB900BA6D3A /* NSUserDefaultsControllerProxy.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		C889757C0EA0BF3100D0A0A2 /* NSToolbar-Private.h in Headers */ = {isa = PBXBuildFile; fileRef = C81D0AC90E8E92C2003BE469 /* NSToolbar-Private.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		C889757E0EA0BF3100D0A0A2 /* NSActionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B53250976075200DA0954 /* NSActionCell.m */; settings = {ATTRIBUTES = (); }; };
 		C889757F0EA0BF3100D0A0A2 /* NSAlertPanel.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B53290976075200DA0954 /* NSAlertPanel.m */; settings = {ATTRIBUTES = (); }; };
 		C88975800EA0BF3100D0A0A2 /* NSApplication.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B532B0976075200DA0954 /* NSApplication.m */; settings = {ATTRIBUTES = (); }; };
@@ -529,16 +522,11 @@
 		C88976360EA0BF3100D0A0A2 /* NSSubmenuView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B56E00976075400DA0954 /* NSSubmenuView.m */; settings = {ATTRIBUTES = (); }; };
 		C88976370EA0BF3100D0A0A2 /* NSKeyBindingManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B56FE0976075400DA0954 /* NSKeyBindingManager.m */; settings = {ATTRIBUTES = (); }; };
 		C88976380EA0BF3100D0A0A2 /* NSKeyBinding.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B57000976075400DA0954 /* NSKeyBinding.m */; settings = {ATTRIBUTES = (); }; };
-		C88976390EA0BF3100D0A0A2 /* NSStandardToolbarItems.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B57100976075400DA0954 /* NSStandardToolbarItems.m */; settings = {ATTRIBUTES = (); }; };
 		C889763A0EA0BF3100D0A0A2 /* NSToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B57120976075400DA0954 /* NSToolbar.m */; settings = {ATTRIBUTES = (); }; };
-		C889763B0EA0BF3100D0A0A2 /* NSToolbarButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B57140976075400DA0954 /* NSToolbarButton.m */; settings = {ATTRIBUTES = (); }; };
 		C889763C0EA0BF3100D0A0A2 /* NSToolbarItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B57160976075400DA0954 /* NSToolbarItem.m */; settings = {ATTRIBUTES = (); }; };
 		C889763D0EA0BF3100D0A0A2 /* NSToolbarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B57180976075400DA0954 /* NSToolbarView.m */; settings = {ATTRIBUTES = (); }; };
-		C889763E0EA0BF3100D0A0A2 /* NSToolbarButtonCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B571A0976075400DA0954 /* NSToolbarButtonCell.m */; settings = {ATTRIBUTES = (); }; };
 		C889763F0EA0BF3100D0A0A2 /* NSToolbarCustomizationPalette.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B571C0976075400DA0954 /* NSToolbarCustomizationPalette.m */; settings = {ATTRIBUTES = (); }; };
 		C88976400EA0BF3100D0A0A2 /* NSToolbarCustomizationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B571E0976075400DA0954 /* NSToolbarCustomizationView.m */; settings = {ATTRIBUTES = (); }; };
-		C88976410EA0BF3100D0A0A2 /* NSToolbarSeparatorItemView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B57200976075400DA0954 /* NSToolbarSeparatorItemView.m */; settings = {ATTRIBUTES = (); }; };
-		C88976420EA0BF3100D0A0A2 /* NSToolbarSeparatorItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B57220976075400DA0954 /* NSToolbarSeparatorItemCell.m */; settings = {ATTRIBUTES = (); }; };
 		C88976430EA0BF3100D0A0A2 /* NSDrawer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B57480976075500DA0954 /* NSDrawer.m */; settings = {ATTRIBUTES = (); }; };
 		C88976440EA0BF3100D0A0A2 /* NSDrawerWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B574A0976075500DA0954 /* NSDrawerWindow.m */; settings = {ATTRIBUTES = (); }; };
 		C88976450EA0BF3100D0A0A2 /* NSTIFFImageFileDirectory.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E14EC6609A3C40F009C8693 /* NSTIFFImageFileDirectory.m */; };
@@ -911,16 +899,11 @@
 		C8A2E35E0F07EA1F0054397C /* NSSubmenuView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B56EF0976075400DA0954 /* NSSubmenuView.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		C8A2E35F0F07EA1F0054397C /* NSKeyBindingManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B57030976075400DA0954 /* NSKeyBindingManager.h */; settings = {ATTRIBUTES = (Project, Private, ); }; };
 		C8A2E3600F07EA1F0054397C /* NSKeyBinding.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B57050976075400DA0954 /* NSKeyBinding.h */; settings = {ATTRIBUTES = (Project, Private, ); }; };
-		C8A2E3610F07EA1F0054397C /* NSStandardToolbarItems.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B57250976075400DA0954 /* NSStandardToolbarItems.h */; settings = {ATTRIBUTES = (Project, Private, ); }; };
 		C8A2E3620F07EA1F0054397C /* NSToolbar.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B57270976075400DA0954 /* NSToolbar.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
-		C8A2E3630F07EA1F0054397C /* NSToolbarButton.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B57290976075400DA0954 /* NSToolbarButton.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		C8A2E3640F07EA1F0054397C /* NSToolbarItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B572B0976075400DA0954 /* NSToolbarItem.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
 		C8A2E3650F07EA1F0054397C /* NSToolbarView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B572D0976075500DA0954 /* NSToolbarView.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		C8A2E3660F07EA1F0054397C /* NSToolbarButtonCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B572F0976075500DA0954 /* NSToolbarButtonCell.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		C8A2E3670F07EA1F0054397C /* NSToolbarCustomizationPalette.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B57310976075500DA0954 /* NSToolbarCustomizationPalette.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		C8A2E3680F07EA1F0054397C /* NSToolbarCustomizationView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B57330976075500DA0954 /* NSToolbarCustomizationView.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		C8A2E3690F07EA1F0054397C /* NSToolbarSeparatorItemView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B57350976075500DA0954 /* NSToolbarSeparatorItemView.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		C8A2E36A0F07EA1F0054397C /* NSToolbarSeparatorItemCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B57370976075500DA0954 /* NSToolbarSeparatorItemCell.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		C8A2E36B0F07EA1F0054397C /* NSDrawer.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B574D0976075500DA0954 /* NSDrawer.h */; settings = {ATTRIBUTES = (Project, Private, ); }; };
 		C8A2E36C0F07EA1F0054397C /* NSDrawerWindow.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B574F0976075500DA0954 /* NSDrawerWindow.h */; settings = {ATTRIBUTES = (Project, Private, ); }; };
 		C8A2E36D0F07EA1F0054397C /* NSTIFFImageFileDirectory.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E14EC6509A3C40F009C8693 /* NSTIFFImageFileDirectory.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -1066,7 +1049,6 @@
 		C8A2E3FA0F07EA1F0054397C /* NSObservationProxy.h in Headers */ = {isa = PBXBuildFile; fileRef = C8C52C8D0E7ED1FF003F03B5 /* NSObservationProxy.h */; };
 		C8A2E3FB0F07EA1F0054397C /* NSGradient.h in Headers */ = {isa = PBXBuildFile; fileRef = 36570F980E818CD5008FE1BE /* NSGradient.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C8A2E3FC0F07EA1F0054397C /* NSUserDefaultsControllerProxy.h in Headers */ = {isa = PBXBuildFile; fileRef = C84909350E8D1FB900BA6D3A /* NSUserDefaultsControllerProxy.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		C8A2E3FD0F07EA1F0054397C /* NSToolbar-Private.h in Headers */ = {isa = PBXBuildFile; fileRef = C81D0AC90E8E92C2003BE469 /* NSToolbar-Private.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		C8A2E3FE0F07EA1F0054397C /* X11Display.h in Headers */ = {isa = PBXBuildFile; fileRef = C8746B2C0EA379DE007A6BE2 /* X11Display.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		C8A2E3FF0F07EA1F0054397C /* X11Window.h in Headers */ = {isa = PBXBuildFile; fileRef = C8746B3F0EA396D0007A6BE2 /* X11Window.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		C8A2E4000F07EA1F0054397C /* TTFFont.h in Headers */ = {isa = PBXBuildFile; fileRef = C8746BAB0EA3EE11007A6BE2 /* TTFFont.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -1227,16 +1209,11 @@
 		C8A2E49E0F07EA1F0054397C /* NSSubmenuView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B56E00976075400DA0954 /* NSSubmenuView.m */; settings = {ATTRIBUTES = (); }; };
 		C8A2E49F0F07EA1F0054397C /* NSKeyBindingManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B56FE0976075400DA0954 /* NSKeyBindingManager.m */; settings = {ATTRIBUTES = (); }; };
 		C8A2E4A00F07EA1F0054397C /* NSKeyBinding.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B57000976075400DA0954 /* NSKeyBinding.m */; settings = {ATTRIBUTES = (); }; };
-		C8A2E4A10F07EA1F0054397C /* NSStandardToolbarItems.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B57100976075400DA0954 /* NSStandardToolbarItems.m */; settings = {ATTRIBUTES = (); }; };
 		C8A2E4A20F07EA1F0054397C /* NSToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B57120976075400DA0954 /* NSToolbar.m */; settings = {ATTRIBUTES = (); }; };
-		C8A2E4A30F07EA1F0054397C /* NSToolbarButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B57140976075400DA0954 /* NSToolbarButton.m */; settings = {ATTRIBUTES = (); }; };
 		C8A2E4A40F07EA1F0054397C /* NSToolbarItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B57160976075400DA0954 /* NSToolbarItem.m */; settings = {ATTRIBUTES = (); }; };
 		C8A2E4A50F07EA1F0054397C /* NSToolbarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B57180976075400DA0954 /* NSToolbarView.m */; settings = {ATTRIBUTES = (); }; };
-		C8A2E4A60F07EA1F0054397C /* NSToolbarButtonCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B571A0976075400DA0954 /* NSToolbarButtonCell.m */; settings = {ATTRIBUTES = (); }; };
 		C8A2E4A70F07EA1F0054397C /* NSToolbarCustomizationPalette.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B571C0976075400DA0954 /* NSToolbarCustomizationPalette.m */; settings = {ATTRIBUTES = (); }; };
 		C8A2E4A80F07EA1F0054397C /* NSToolbarCustomizationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B571E0976075400DA0954 /* NSToolbarCustomizationView.m */; settings = {ATTRIBUTES = (); }; };
-		C8A2E4A90F07EA1F0054397C /* NSToolbarSeparatorItemView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B57200976075400DA0954 /* NSToolbarSeparatorItemView.m */; settings = {ATTRIBUTES = (); }; };
-		C8A2E4AA0F07EA1F0054397C /* NSToolbarSeparatorItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B57220976075400DA0954 /* NSToolbarSeparatorItemCell.m */; settings = {ATTRIBUTES = (); }; };
 		C8A2E4AB0F07EA1F0054397C /* NSDrawer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B57480976075500DA0954 /* NSDrawer.m */; settings = {ATTRIBUTES = (); }; };
 		C8A2E4AC0F07EA1F0054397C /* NSDrawerWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B574A0976075500DA0954 /* NSDrawerWindow.m */; settings = {ATTRIBUTES = (); }; };
 		C8A2E4AD0F07EA1F0054397C /* NSTIFFImageFileDirectory.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E14EC6609A3C40F009C8693 /* NSTIFFImageFileDirectory.m */; };
@@ -1644,16 +1621,11 @@
 		FE01A8CF0C5D9BCB00AEA51A /* NSSubmenuView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B56EF0976075400DA0954 /* NSSubmenuView.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE01A8D00C5D9BCB00AEA51A /* NSKeyBindingManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B57030976075400DA0954 /* NSKeyBindingManager.h */; settings = {ATTRIBUTES = (Project, Private, ); }; };
 		FE01A8D10C5D9BCB00AEA51A /* NSKeyBinding.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B57050976075400DA0954 /* NSKeyBinding.h */; settings = {ATTRIBUTES = (Project, Private, ); }; };
-		FE01A8D20C5D9BCB00AEA51A /* NSStandardToolbarItems.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B57250976075400DA0954 /* NSStandardToolbarItems.h */; settings = {ATTRIBUTES = (Project, Private, ); }; };
 		FE01A8D30C5D9BCB00AEA51A /* NSToolbar.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B57270976075400DA0954 /* NSToolbar.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
-		FE01A8D40C5D9BCB00AEA51A /* NSToolbarButton.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B57290976075400DA0954 /* NSToolbarButton.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE01A8D50C5D9BCB00AEA51A /* NSToolbarItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B572B0976075400DA0954 /* NSToolbarItem.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
 		FE01A8D60C5D9BCB00AEA51A /* NSToolbarView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B572D0976075500DA0954 /* NSToolbarView.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		FE01A8D70C5D9BCB00AEA51A /* NSToolbarButtonCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B572F0976075500DA0954 /* NSToolbarButtonCell.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE01A8D80C5D9BCB00AEA51A /* NSToolbarCustomizationPalette.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B57310976075500DA0954 /* NSToolbarCustomizationPalette.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE01A8D90C5D9BCB00AEA51A /* NSToolbarCustomizationView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B57330976075500DA0954 /* NSToolbarCustomizationView.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		FE01A8DA0C5D9BCB00AEA51A /* NSToolbarSeparatorItemView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B57350976075500DA0954 /* NSToolbarSeparatorItemView.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		FE01A8DB0C5D9BCB00AEA51A /* NSToolbarSeparatorItemCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B57370976075500DA0954 /* NSToolbarSeparatorItemCell.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE01A8DC0C5D9BCB00AEA51A /* NSDrawer.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B574D0976075500DA0954 /* NSDrawer.h */; settings = {ATTRIBUTES = (Project, Private, ); }; };
 		FE01A8DD0C5D9BCB00AEA51A /* NSDrawerWindow.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B574F0976075500DA0954 /* NSDrawerWindow.h */; settings = {ATTRIBUTES = (Project, Private, ); }; };
 		FE01A8DE0C5D9BCB00AEA51A /* NSTIFFImageFileDirectory.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E14EC6509A3C40F009C8693 /* NSTIFFImageFileDirectory.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -1945,16 +1917,11 @@
 		FE01AA110C5D9BCB00AEA51A /* NSSubmenuView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B56E00976075400DA0954 /* NSSubmenuView.m */; settings = {ATTRIBUTES = (); }; };
 		FE01AA120C5D9BCB00AEA51A /* NSKeyBindingManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B56FE0976075400DA0954 /* NSKeyBindingManager.m */; settings = {ATTRIBUTES = (); }; };
 		FE01AA130C5D9BCB00AEA51A /* NSKeyBinding.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B57000976075400DA0954 /* NSKeyBinding.m */; settings = {ATTRIBUTES = (); }; };
-		FE01AA140C5D9BCB00AEA51A /* NSStandardToolbarItems.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B57100976075400DA0954 /* NSStandardToolbarItems.m */; settings = {ATTRIBUTES = (); }; };
 		FE01AA150C5D9BCB00AEA51A /* NSToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B57120976075400DA0954 /* NSToolbar.m */; settings = {ATTRIBUTES = (); }; };
-		FE01AA160C5D9BCB00AEA51A /* NSToolbarButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B57140976075400DA0954 /* NSToolbarButton.m */; settings = {ATTRIBUTES = (); }; };
 		FE01AA170C5D9BCB00AEA51A /* NSToolbarItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B57160976075400DA0954 /* NSToolbarItem.m */; settings = {ATTRIBUTES = (); }; };
 		FE01AA180C5D9BCB00AEA51A /* NSToolbarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B57180976075400DA0954 /* NSToolbarView.m */; settings = {ATTRIBUTES = (); }; };
-		FE01AA190C5D9BCB00AEA51A /* NSToolbarButtonCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B571A0976075400DA0954 /* NSToolbarButtonCell.m */; settings = {ATTRIBUTES = (); }; };
 		FE01AA1A0C5D9BCB00AEA51A /* NSToolbarCustomizationPalette.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B571C0976075400DA0954 /* NSToolbarCustomizationPalette.m */; settings = {ATTRIBUTES = (); }; };
 		FE01AA1B0C5D9BCB00AEA51A /* NSToolbarCustomizationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B571E0976075400DA0954 /* NSToolbarCustomizationView.m */; settings = {ATTRIBUTES = (); }; };
-		FE01AA1C0C5D9BCB00AEA51A /* NSToolbarSeparatorItemView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B57200976075400DA0954 /* NSToolbarSeparatorItemView.m */; settings = {ATTRIBUTES = (); }; };
-		FE01AA1D0C5D9BCB00AEA51A /* NSToolbarSeparatorItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B57220976075400DA0954 /* NSToolbarSeparatorItemCell.m */; settings = {ATTRIBUTES = (); }; };
 		FE01AA1E0C5D9BCB00AEA51A /* NSDrawer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B57480976075500DA0954 /* NSDrawer.m */; settings = {ATTRIBUTES = (); }; };
 		FE01AA1F0C5D9BCB00AEA51A /* NSDrawerWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B574A0976075500DA0954 /* NSDrawerWindow.m */; settings = {ATTRIBUTES = (); }; };
 		FE01AA200C5D9BCB00AEA51A /* NSTIFFImageFileDirectory.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E14EC6609A3C40F009C8693 /* NSTIFFImageFileDirectory.m */; };
@@ -2126,6 +2093,12 @@
 		FE33955A0DB930F4009AB3E0 /* KGContext_builtin.m in Sources */ = {isa = PBXBuildFile; fileRef = FE3395580DB930F4009AB3E0 /* KGContext_builtin.m */; };
 		FE34FBC80D6F24A5008D2C1A /* KGClipPhase.h in Headers */ = {isa = PBXBuildFile; fileRef = FE34FBC60D6F24A5008D2C1A /* KGClipPhase.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE34FBC90D6F24A5008D2C1A /* KGClipPhase.m in Sources */ = {isa = PBXBuildFile; fileRef = FE34FBC70D6F24A5008D2C1A /* KGClipPhase.m */; };
+		FE38749C0F4333D600EC9F00 /* NSToolbarItemView.h in Headers */ = {isa = PBXBuildFile; fileRef = FE38749A0F4333D600EC9F00 /* NSToolbarItemView.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE38749D0F4333D600EC9F00 /* NSToolbarItemView.m in Sources */ = {isa = PBXBuildFile; fileRef = FE38749B0F4333D600EC9F00 /* NSToolbarItemView.m */; };
+		FE38749E0F4333D600EC9F00 /* NSToolbarItemView.h in Headers */ = {isa = PBXBuildFile; fileRef = FE38749A0F4333D600EC9F00 /* NSToolbarItemView.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE38749F0F4333D600EC9F00 /* NSToolbarItemView.m in Sources */ = {isa = PBXBuildFile; fileRef = FE38749B0F4333D600EC9F00 /* NSToolbarItemView.m */; };
+		FE3874A00F4333D600EC9F00 /* NSToolbarItemView.h in Headers */ = {isa = PBXBuildFile; fileRef = FE38749A0F4333D600EC9F00 /* NSToolbarItemView.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE3874A10F4333D600EC9F00 /* NSToolbarItemView.m in Sources */ = {isa = PBXBuildFile; fileRef = FE38749B0F4333D600EC9F00 /* NSToolbarItemView.m */; };
 		FE45EDCC0DC2407E00F49290 /* CGImageSource.m in Sources */ = {isa = PBXBuildFile; fileRef = FE45EDCB0DC2407E00F49290 /* CGImageSource.m */; };
 		FE54BEC90EEB086900B4559F /* NSOpenGLDrawable.h in Headers */ = {isa = PBXBuildFile; fileRef = FE54BEC70EEB086900B4559F /* NSOpenGLDrawable.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE54BECA0EEB086900B4559F /* NSOpenGLDrawable.m in Sources */ = {isa = PBXBuildFile; fileRef = FE54BEC80EEB086900B4559F /* NSOpenGLDrawable.m */; };
@@ -2140,6 +2113,12 @@
 		FE669CA00F12B1A600534F46 /* gif_lib.m in Sources */ = {isa = PBXBuildFile; fileRef = FE669C840F12B1A600534F46 /* gif_lib.m */; };
 		FE669CA80F12B1A600534F46 /* gif_lib.h in Headers */ = {isa = PBXBuildFile; fileRef = FE669C8C0F12B1A600534F46 /* gif_lib.h */; };
 		FE66F0060E513AE8006C5796 /* CGImageProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = FE66F0050E513AE8006C5796 /* CGImageProperties.m */; };
+		FE6BE4460F446B92007D7F3F /* NSToolbarItemGroup.h in Headers */ = {isa = PBXBuildFile; fileRef = FE6BE4440F446B92007D7F3F /* NSToolbarItemGroup.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE6BE4470F446B92007D7F3F /* NSToolbarItemGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = FE6BE4450F446B92007D7F3F /* NSToolbarItemGroup.m */; };
+		FE6BE4480F446B92007D7F3F /* NSToolbarItemGroup.h in Headers */ = {isa = PBXBuildFile; fileRef = FE6BE4440F446B92007D7F3F /* NSToolbarItemGroup.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE6BE4490F446B92007D7F3F /* NSToolbarItemGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = FE6BE4450F446B92007D7F3F /* NSToolbarItemGroup.m */; };
+		FE6BE44A0F446B92007D7F3F /* NSToolbarItemGroup.h in Headers */ = {isa = PBXBuildFile; fileRef = FE6BE4440F446B92007D7F3F /* NSToolbarItemGroup.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE6BE44B0F446B92007D7F3F /* NSToolbarItemGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = FE6BE4450F446B92007D7F3F /* NSToolbarItemGroup.m */; };
 		FE6EDE340DB797D9005503A1 /* KGExceptions.h in Headers */ = {isa = PBXBuildFile; fileRef = FE6EDE330DB797D9005503A1 /* KGExceptions.h */; };
 		FE6EE27E0DB91EA8005503A1 /* VGmath.h in Headers */ = {isa = PBXBuildFile; fileRef = FE6EE27C0DB91EA8005503A1 /* VGmath.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE6EE28E0DB91FDF005503A1 /* KGSurface.h in Headers */ = {isa = PBXBuildFile; fileRef = FE6EE28C0DB91FDF005503A1 /* KGSurface.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -2186,6 +2165,9 @@
 		FEC0C7840F146AF800903F6D /* KGImageSource_GIF.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC0C7800F146AF800903F6D /* KGImageSource_GIF.m */; };
 		FEDF951F0CAF43E7009DC96F /* KGPDFContext.h in Headers */ = {isa = PBXBuildFile; fileRef = FEDF951B0CAF43E7009DC96F /* KGPDFContext.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FEDF95200CAF43E7009DC96F /* KGPDFContext.m in Sources */ = {isa = PBXBuildFile; fileRef = FEDF951C0CAF43E7009DC96F /* KGPDFContext.m */; };
+		FEE36B800F4B20C6005AEBBF /* NSToolbarOverflowArrow.pdf in Resources */ = {isa = PBXBuildFile; fileRef = FEE36B7F0F4B20C5005AEBBF /* NSToolbarOverflowArrow.pdf */; };
+		FEE36B810F4B20C6005AEBBF /* NSToolbarOverflowArrow.pdf in Resources */ = {isa = PBXBuildFile; fileRef = FEE36B7F0F4B20C5005AEBBF /* NSToolbarOverflowArrow.pdf */; };
+		FEE36B820F4B20C6005AEBBF /* NSToolbarOverflowArrow.pdf in Resources */ = {isa = PBXBuildFile; fileRef = FEE36B7F0F4B20C5005AEBBF /* NSToolbarOverflowArrow.pdf */; };
 		FEED247A0EC9E8F200A5B07E /* NSImageNameRefreshTemplate.pdf in Resources */ = {isa = PBXBuildFile; fileRef = FEED24790EC9E8F200A5B07E /* NSImageNameRefreshTemplate.pdf */; };
 		FEED247B0EC9E8F200A5B07E /* NSImageNameRefreshTemplate.pdf in Resources */ = {isa = PBXBuildFile; fileRef = FEED24790EC9E8F200A5B07E /* NSImageNameRefreshTemplate.pdf */; };
 		FEF2EC350C891E7C001FC5A8 /* NSOpenGLDrawable_gdiView.h in Headers */ = {isa = PBXBuildFile; fileRef = FEF2EC330C891E7C001FC5A8 /* NSOpenGLDrawable_gdiView.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -2743,26 +2725,16 @@
 		6E2B57030976075400DA0954 /* NSKeyBindingManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NSKeyBindingManager.h; sourceTree = "<group>"; };
 		6E2B57050976075400DA0954 /* NSKeyBinding.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NSKeyBinding.h; sourceTree = "<group>"; };
 		6E2B57080976075400DA0954 /* StandardKeyBindings.keybindings */ = {isa = PBXFileReference; lastKnownFileType = text; path = StandardKeyBindings.keybindings; sourceTree = "<group>"; };
-		6E2B57100976075400DA0954 /* NSStandardToolbarItems.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NSStandardToolbarItems.m; sourceTree = "<group>"; };
 		6E2B57120976075400DA0954 /* NSToolbar.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NSToolbar.m; sourceTree = "<group>"; };
-		6E2B57140976075400DA0954 /* NSToolbarButton.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NSToolbarButton.m; sourceTree = "<group>"; };
 		6E2B57160976075400DA0954 /* NSToolbarItem.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NSToolbarItem.m; sourceTree = "<group>"; };
 		6E2B57180976075400DA0954 /* NSToolbarView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NSToolbarView.m; sourceTree = "<group>"; };
-		6E2B571A0976075400DA0954 /* NSToolbarButtonCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NSToolbarButtonCell.m; sourceTree = "<group>"; };
 		6E2B571C0976075400DA0954 /* NSToolbarCustomizationPalette.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NSToolbarCustomizationPalette.m; sourceTree = "<group>"; };
 		6E2B571E0976075400DA0954 /* NSToolbarCustomizationView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NSToolbarCustomizationView.m; sourceTree = "<group>"; };
-		6E2B57200976075400DA0954 /* NSToolbarSeparatorItemView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NSToolbarSeparatorItemView.m; sourceTree = "<group>"; };
-		6E2B57220976075400DA0954 /* NSToolbarSeparatorItemCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NSToolbarSeparatorItemCell.m; sourceTree = "<group>"; };
-		6E2B57250976075400DA0954 /* NSStandardToolbarItems.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NSStandardToolbarItems.h; sourceTree = "<group>"; };
 		6E2B57270976075400DA0954 /* NSToolbar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NSToolbar.h; sourceTree = "<group>"; };
-		6E2B57290976075400DA0954 /* NSToolbarButton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NSToolbarButton.h; sourceTree = "<group>"; };
 		6E2B572B0976075400DA0954 /* NSToolbarItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NSToolbarItem.h; sourceTree = "<group>"; };
 		6E2B572D0976075500DA0954 /* NSToolbarView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NSToolbarView.h; sourceTree = "<group>"; };
-		6E2B572F0976075500DA0954 /* NSToolbarButtonCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NSToolbarButtonCell.h; sourceTree = "<group>"; };
 		6E2B57310976075500DA0954 /* NSToolbarCustomizationPalette.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NSToolbarCustomizationPalette.h; sourceTree = "<group>"; };
 		6E2B57330976075500DA0954 /* NSToolbarCustomizationView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NSToolbarCustomizationView.h; sourceTree = "<group>"; };
-		6E2B57350976075500DA0954 /* NSToolbarSeparatorItemView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NSToolbarSeparatorItemView.h; sourceTree = "<group>"; };
-		6E2B57370976075500DA0954 /* NSToolbarSeparatorItemCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NSToolbarSeparatorItemCell.h; sourceTree = "<group>"; };
 		6E2B573A0976075500DA0954 /* NSToolbarShowFontsItem.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = NSToolbarShowFontsItem.tiff; sourceTree = "<group>"; };
 		6E2B573C0976075500DA0954 /* NSToolbarCustomizeToolbarItem.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = NSToolbarCustomizeToolbarItem.tiff; sourceTree = "<group>"; };
 		6E2B573E0976075500DA0954 /* NSToolbarShowColorsItem.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = NSToolbarShowColorsItem.tiff; sourceTree = "<group>"; };
@@ -2793,7 +2765,6 @@
 		6ECABE320A40520700AD7F7B /* NSNibKeyedUnarchiver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSNibKeyedUnarchiver.m; sourceTree = "<group>"; };
 		C81BEA0D0EA6038800478D50 /* CairoContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CairoContext.h; sourceTree = "<group>"; };
 		C81BEA0E0EA6038800478D50 /* CairoContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CairoContext.m; sourceTree = "<group>"; };
-		C81D0AC90E8E92C2003BE469 /* NSToolbar-Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSToolbar-Private.h"; sourceTree = "<group>"; };
 		C8283E490F0AEE3B009E89C4 /* X11InputSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = X11InputSource.h; sourceTree = "<group>"; };
 		C8283E4A0F0AEE3B009E89C4 /* X11InputSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = X11InputSource.m; sourceTree = "<group>"; };
 		C84909350E8D1FB900BA6D3A /* NSUserDefaultsControllerProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSUserDefaultsControllerProxy.h; sourceTree = "<group>"; };
@@ -2923,6 +2894,8 @@
 		FE3395580DB930F4009AB3E0 /* KGContext_builtin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGContext_builtin.m; sourceTree = "<group>"; };
 		FE34FBC60D6F24A5008D2C1A /* KGClipPhase.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = KGClipPhase.h; sourceTree = "<group>"; };
 		FE34FBC70D6F24A5008D2C1A /* KGClipPhase.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = KGClipPhase.m; sourceTree = "<group>"; };
+		FE38749A0F4333D600EC9F00 /* NSToolbarItemView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSToolbarItemView.h; sourceTree = "<group>"; };
+		FE38749B0F4333D600EC9F00 /* NSToolbarItemView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSToolbarItemView.m; sourceTree = "<group>"; };
 		FE4434020BB9833B00411464 /* NSGraphicsStyle_uxtheme.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSGraphicsStyle_uxtheme.h; sourceTree = "<group>"; };
 		FE4434030BB9833B00411464 /* NSGraphicsStyle_uxtheme.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSGraphicsStyle_uxtheme.m; sourceTree = "<group>"; };
 		FE45EDCB0DC2407E00F49290 /* CGImageSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CGImageSource.m; sourceTree = "<group>"; };
@@ -3004,6 +2977,8 @@
 		FE669C840F12B1A600534F46 /* gif_lib.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = gif_lib.m; path = CoreGraphics.subproj/gif_lib.m; sourceTree = "<group>"; };
 		FE669C8C0F12B1A600534F46 /* gif_lib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = gif_lib.h; path = CoreGraphics.subproj/gif_lib.h; sourceTree = "<group>"; };
 		FE66F0050E513AE8006C5796 /* CGImageProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CGImageProperties.m; path = CoreGraphics.subproj/CGImageProperties.m; sourceTree = "<group>"; };
+		FE6BE4440F446B92007D7F3F /* NSToolbarItemGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSToolbarItemGroup.h; sourceTree = "<group>"; };
+		FE6BE4450F446B92007D7F3F /* NSToolbarItemGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSToolbarItemGroup.m; sourceTree = "<group>"; };
 		FE6DC16A0BA85BEC0082AC66 /* NSOpenGLPixelBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSOpenGLPixelBuffer.h; sourceTree = "<group>"; };
 		FE6DC16B0BA85BEC0082AC66 /* NSOpenGLPixelBuffer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSOpenGLPixelBuffer.m; sourceTree = "<group>"; };
 		FE6DC3DC0BA9A6EB0082AC66 /* NSDatePicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSDatePicker.h; sourceTree = "<group>"; };
@@ -3086,6 +3061,7 @@
 		FED310E00BCC027200552615 /* NSViewAnimation.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSViewAnimation.m; sourceTree = "<group>"; };
 		FEDF951B0CAF43E7009DC96F /* KGPDFContext.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = KGPDFContext.h; sourceTree = "<group>"; };
 		FEDF951C0CAF43E7009DC96F /* KGPDFContext.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = KGPDFContext.m; sourceTree = "<group>"; };
+		FEE36B7F0F4B20C5005AEBBF /* NSToolbarOverflowArrow.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = NSToolbarOverflowArrow.pdf; sourceTree = "<group>"; };
 		FEED24790EC9E8F200A5B07E /* NSImageNameRefreshTemplate.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = NSImageNameRefreshTemplate.pdf; sourceTree = "<group>"; };
 		FEEF00580B96441800069FD1 /* CGPDFPage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CGPDFPage.m; sourceTree = "<group>"; };
 		FEF2EC330C891E7C001FC5A8 /* NSOpenGLDrawable_gdiView.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSOpenGLDrawable_gdiView.h; sourceTree = "<group>"; };
@@ -3987,25 +3963,18 @@
 			isa = PBXGroup;
 			children = (
 				6E2B57390976075500DA0954 /* Images */,
-				6E2B57250976075400DA0954 /* NSStandardToolbarItems.h */,
-				6E2B57100976075400DA0954 /* NSStandardToolbarItems.m */,
-				C81D0AC90E8E92C2003BE469 /* NSToolbar-Private.h */,
 				6E2B57270976075400DA0954 /* NSToolbar.h */,
 				6E2B57120976075400DA0954 /* NSToolbar.m */,
-				6E2B57290976075400DA0954 /* NSToolbarButton.h */,
-				6E2B57140976075400DA0954 /* NSToolbarButton.m */,
-				6E2B572F0976075500DA0954 /* NSToolbarButtonCell.h */,
-				6E2B571A0976075400DA0954 /* NSToolbarButtonCell.m */,
 				6E2B57310976075500DA0954 /* NSToolbarCustomizationPalette.h */,
 				6E2B571C0976075400DA0954 /* NSToolbarCustomizationPalette.m */,
 				6E2B57330976075500DA0954 /* NSToolbarCustomizationView.h */,
 				6E2B571E0976075400DA0954 /* NSToolbarCustomizationView.m */,
 				6E2B572B0976075400DA0954 /* NSToolbarItem.h */,
 				6E2B57160976075400DA0954 /* NSToolbarItem.m */,
-				6E2B57370976075500DA0954 /* NSToolbarSeparatorItemCell.h */,
-				6E2B57220976075400DA0954 /* NSToolbarSeparatorItemCell.m */,
-				6E2B57350976075500DA0954 /* NSToolbarSeparatorItemView.h */,
-				6E2B57200976075400DA0954 /* NSToolbarSeparatorItemView.m */,
+				FE6BE4440F446B92007D7F3F /* NSToolbarItemGroup.h */,
+				FE6BE4450F446B92007D7F3F /* NSToolbarItemGroup.m */,
+				FE38749A0F4333D600EC9F00 /* NSToolbarItemView.h */,
+				FE38749B0F4333D600EC9F00 /* NSToolbarItemView.m */,
 				6E2B572D0976075500DA0954 /* NSToolbarView.h */,
 				6E2B57180976075400DA0954 /* NSToolbarView.m */,
 			);
@@ -4016,6 +3985,7 @@
 		6E2B57390976075500DA0954 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				FEE36B7F0F4B20C5005AEBBF /* NSToolbarOverflowArrow.pdf */,
 				6E2B573A0976075500DA0954 /* NSToolbarShowFontsItem.tiff */,
 				6E2B573C0976075500DA0954 /* NSToolbarCustomizeToolbarItem.tiff */,
 				6E2B573E0976075500DA0954 /* NSToolbarShowColorsItem.tiff */,
@@ -4423,16 +4393,11 @@
 				C88974DD0EA0BF3100D0A0A2 /* NSSubmenuView.h in Headers */,
 				C88974DE0EA0BF3100D0A0A2 /* NSKeyBindingManager.h in Headers */,
 				C88974DF0EA0BF3100D0A0A2 /* NSKeyBinding.h in Headers */,
-				C88974E00EA0BF3100D0A0A2 /* NSStandardToolbarItems.h in Headers */,
 				C88974E10EA0BF3100D0A0A2 /* NSToolbar.h in Headers */,
-				C88974E20EA0BF3100D0A0A2 /* NSToolbarButton.h in Headers */,
 				C88974E30EA0BF3100D0A0A2 /* NSToolbarItem.h in Headers */,
 				C88974E40EA0BF3100D0A0A2 /* NSToolbarView.h in Headers */,
-				C88974E50EA0BF3100D0A0A2 /* NSToolbarButtonCell.h in Headers */,
 				C88974E60EA0BF3100D0A0A2 /* NSToolbarCustomizationPalette.h in Headers */,
 				C88974E70EA0BF3100D0A0A2 /* NSToolbarCustomizationView.h in Headers */,
-				C88974E80EA0BF3100D0A0A2 /* NSToolbarSeparatorItemView.h in Headers */,
-				C88974E90EA0BF3100D0A0A2 /* NSToolbarSeparatorItemCell.h in Headers */,
 				C88974EA0EA0BF3100D0A0A2 /* NSDrawer.h in Headers */,
 				C88974EB0EA0BF3100D0A0A2 /* NSDrawerWindow.h in Headers */,
 				C88974EC0EA0BF3100D0A0A2 /* NSTIFFImageFileDirectory.h in Headers */,
@@ -4578,7 +4543,6 @@
 				C88975790EA0BF3100D0A0A2 /* NSObservationProxy.h in Headers */,
 				C889757A0EA0BF3100D0A0A2 /* NSGradient.h in Headers */,
 				C889757B0EA0BF3100D0A0A2 /* NSUserDefaultsControllerProxy.h in Headers */,
-				C889757C0EA0BF3100D0A0A2 /* NSToolbar-Private.h in Headers */,
 				C8746B2E0EA379DE007A6BE2 /* X11Display.h in Headers */,
 				C8746B410EA396D0007A6BE2 /* X11Window.h in Headers */,
 				C8746BAD0EA3EE11007A6BE2 /* TTFFont.h in Headers */,
@@ -4593,6 +4557,8 @@
 				C8C995BF0F0BB2B100A0A091 /* X11AsyncInputSourceSet.h in Headers */,
 				C8C995DC0F0BB36700A0A091 /* X11AsyncInputSource.h in Headers */,
 				C8E0BDF00F0E4F5200677729 /* NSOpenGLDrawable_X11.h in Headers */,
+				FE38749E0F4333D600EC9F00 /* NSToolbarItemView.h in Headers */,
+				FE6BE4480F446B92007D7F3F /* NSToolbarItemGroup.h in Headers */,
 				C8AB730A0F40C21A00D93B96 /* NSControllerMarker.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -4789,16 +4755,11 @@
 				C8A2E35E0F07EA1F0054397C /* NSSubmenuView.h in Headers */,
 				C8A2E35F0F07EA1F0054397C /* NSKeyBindingManager.h in Headers */,
 				C8A2E3600F07EA1F0054397C /* NSKeyBinding.h in Headers */,
-				C8A2E3610F07EA1F0054397C /* NSStandardToolbarItems.h in Headers */,
 				C8A2E3620F07EA1F0054397C /* NSToolbar.h in Headers */,
-				C8A2E3630F07EA1F0054397C /* NSToolbarButton.h in Headers */,
 				C8A2E3640F07EA1F0054397C /* NSToolbarItem.h in Headers */,
 				C8A2E3650F07EA1F0054397C /* NSToolbarView.h in Headers */,
-				C8A2E3660F07EA1F0054397C /* NSToolbarButtonCell.h in Headers */,
 				C8A2E3670F07EA1F0054397C /* NSToolbarCustomizationPalette.h in Headers */,
 				C8A2E3680F07EA1F0054397C /* NSToolbarCustomizationView.h in Headers */,
-				C8A2E3690F07EA1F0054397C /* NSToolbarSeparatorItemView.h in Headers */,
-				C8A2E36A0F07EA1F0054397C /* NSToolbarSeparatorItemCell.h in Headers */,
 				C8A2E36B0F07EA1F0054397C /* NSDrawer.h in Headers */,
 				C8A2E36C0F07EA1F0054397C /* NSDrawerWindow.h in Headers */,
 				C8A2E36D0F07EA1F0054397C /* NSTIFFImageFileDirectory.h in Headers */,
@@ -4944,7 +4905,6 @@
 				C8A2E3FA0F07EA1F0054397C /* NSObservationProxy.h in Headers */,
 				C8A2E3FB0F07EA1F0054397C /* NSGradient.h in Headers */,
 				C8A2E3FC0F07EA1F0054397C /* NSUserDefaultsControllerProxy.h in Headers */,
-				C8A2E3FD0F07EA1F0054397C /* NSToolbar-Private.h in Headers */,
 				C8A2E3FE0F07EA1F0054397C /* X11Display.h in Headers */,
 				C8A2E3FF0F07EA1F0054397C /* X11Window.h in Headers */,
 				C8A2E4000F07EA1F0054397C /* TTFFont.h in Headers */,
@@ -4957,6 +4917,8 @@
 				C8C995BD0F0BB2B100A0A091 /* X11AsyncInputSourceSet.h in Headers */,
 				C8C995DA0F0BB36700A0A091 /* X11AsyncInputSource.h in Headers */,
 				C8E0BDF20F0E4F5200677729 /* NSOpenGLDrawable_X11.h in Headers */,
+				FE3874A00F4333D600EC9F00 /* NSToolbarItemView.h in Headers */,
+				FE6BE44A0F446B92007D7F3F /* NSToolbarItemGroup.h in Headers */,
 				C8AB730C0F40C21A00D93B96 /* NSControllerMarker.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -5153,16 +5115,11 @@
 				FE01A8CF0C5D9BCB00AEA51A /* NSSubmenuView.h in Headers */,
 				FE01A8D00C5D9BCB00AEA51A /* NSKeyBindingManager.h in Headers */,
 				FE01A8D10C5D9BCB00AEA51A /* NSKeyBinding.h in Headers */,
-				FE01A8D20C5D9BCB00AEA51A /* NSStandardToolbarItems.h in Headers */,
 				FE01A8D30C5D9BCB00AEA51A /* NSToolbar.h in Headers */,
-				FE01A8D40C5D9BCB00AEA51A /* NSToolbarButton.h in Headers */,
 				FE01A8D50C5D9BCB00AEA51A /* NSToolbarItem.h in Headers */,
 				FE01A8D60C5D9BCB00AEA51A /* NSToolbarView.h in Headers */,
-				FE01A8D70C5D9BCB00AEA51A /* NSToolbarButtonCell.h in Headers */,
 				FE01A8D80C5D9BCB00AEA51A /* NSToolbarCustomizationPalette.h in Headers */,
 				FE01A8D90C5D9BCB00AEA51A /* NSToolbarCustomizationView.h in Headers */,
-				FE01A8DA0C5D9BCB00AEA51A /* NSToolbarSeparatorItemView.h in Headers */,
-				FE01A8DB0C5D9BCB00AEA51A /* NSToolbarSeparatorItemCell.h in Headers */,
 				FE01A8DC0C5D9BCB00AEA51A /* NSDrawer.h in Headers */,
 				FE01A8DD0C5D9BCB00AEA51A /* NSDrawerWindow.h in Headers */,
 				FE01A8DE0C5D9BCB00AEA51A /* NSTIFFImageFileDirectory.h in Headers */,
@@ -5308,13 +5265,14 @@
 				C8C52C8F0E7ED1FF003F03B5 /* NSObservationProxy.h in Headers */,
 				365710650E81A10E008FE1BE /* NSGradient.h in Headers */,
 				C84909370E8D1FB900BA6D3A /* NSUserDefaultsControllerProxy.h in Headers */,
-				C81D0ACA0E8E92C2003BE469 /* NSToolbar-Private.h in Headers */,
 				FE25FF620EE58712009C91B1 /* KGFont.h in Headers */,
 				C85D91970EE6A806004EBAEA /* NSDictionaryController.h in Headers */,
 				FE54BEC90EEB086900B4559F /* NSOpenGLDrawable.h in Headers */,
 				FEA25F980EECCE4D008750D0 /* NSSound_win32.h in Headers */,
 				FE669C9A0F12B1A600534F46 /* gif_lib.h in Headers */,
 				FEC0C7810F146AF800903F6D /* KGImageSource_GIF.h in Headers */,
+				FE38749C0F4333D600EC9F00 /* NSToolbarItemView.h in Headers */,
+				FE6BE4460F446B92007D7F3F /* NSToolbarItemGroup.h in Headers */,
 				C8AB730E0F40C21A00D93B96 /* NSControllerMarker.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -5525,6 +5483,7 @@
 				C88977030EA0BF3100D0A0A2 /* NSApplicationIcon.tiff in Resources */,
 				C88977040EA0BF3100D0A0A2 /* NSSystemInfoPanel.nib in Resources */,
 				FEED247B0EC9E8F200A5B07E /* NSImageNameRefreshTemplate.pdf in Resources */,
+				FEE36B810F4B20C6005AEBBF /* NSToolbarOverflowArrow.pdf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5573,6 +5532,7 @@
 				C8A2E5690F07EA1F0054397C /* NSApplicationIcon.tiff in Resources */,
 				C8A2E56A0F07EA1F0054397C /* NSSystemInfoPanel.nib in Resources */,
 				C8A2E56B0F07EA1F0054397C /* NSImageNameRefreshTemplate.pdf in Resources */,
+				FEE36B820F4B20C6005AEBBF /* NSToolbarOverflowArrow.pdf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5621,6 +5581,7 @@
 				FE82867F0D34727900F7489F /* NSApplicationIcon.tiff in Resources */,
 				FE8286820D34727900F7489F /* NSSystemInfoPanel.nib in Resources */,
 				FEED247A0EC9E8F200A5B07E /* NSImageNameRefreshTemplate.pdf in Resources */,
+				FEE36B800F4B20C6005AEBBF /* NSToolbarOverflowArrow.pdf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5809,16 +5770,11 @@
 				C88976360EA0BF3100D0A0A2 /* NSSubmenuView.m in Sources */,
 				C88976370EA0BF3100D0A0A2 /* NSKeyBindingManager.m in Sources */,
 				C88976380EA0BF3100D0A0A2 /* NSKeyBinding.m in Sources */,
-				C88976390EA0BF3100D0A0A2 /* NSStandardToolbarItems.m in Sources */,
 				C889763A0EA0BF3100D0A0A2 /* NSToolbar.m in Sources */,
-				C889763B0EA0BF3100D0A0A2 /* NSToolbarButton.m in Sources */,
 				C889763C0EA0BF3100D0A0A2 /* NSToolbarItem.m in Sources */,
 				C889763D0EA0BF3100D0A0A2 /* NSToolbarView.m in Sources */,
-				C889763E0EA0BF3100D0A0A2 /* NSToolbarButtonCell.m in Sources */,
 				C889763F0EA0BF3100D0A0A2 /* NSToolbarCustomizationPalette.m in Sources */,
 				C88976400EA0BF3100D0A0A2 /* NSToolbarCustomizationView.m in Sources */,
-				C88976410EA0BF3100D0A0A2 /* NSToolbarSeparatorItemView.m in Sources */,
-				C88976420EA0BF3100D0A0A2 /* NSToolbarSeparatorItemCell.m in Sources */,
 				C88976430EA0BF3100D0A0A2 /* NSDrawer.m in Sources */,
 				C88976440EA0BF3100D0A0A2 /* NSDrawerWindow.m in Sources */,
 				C88976450EA0BF3100D0A0A2 /* NSTIFFImageFileDirectory.m in Sources */,
@@ -5979,6 +5935,8 @@
 				C8E0BE9D0F0E54B500677729 /* NSOpenGLContext.m in Sources */,
 				C8E0BE9E0F0E54B500677729 /* NSOpenGLPixelFormat.m in Sources */,
 				C8E0BE9F0F0E54B500677729 /* NSOpenGLView.m in Sources */,
+				FE38749F0F4333D600EC9F00 /* NSToolbarItemView.m in Sources */,
+				FE6BE4490F446B92007D7F3F /* NSToolbarItemGroup.m in Sources */,
 				C8AB730B0F40C21A00D93B96 /* NSControllerMarker.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -6141,16 +6099,11 @@
 				C8A2E49E0F07EA1F0054397C /* NSSubmenuView.m in Sources */,
 				C8A2E49F0F07EA1F0054397C /* NSKeyBindingManager.m in Sources */,
 				C8A2E4A00F07EA1F0054397C /* NSKeyBinding.m in Sources */,
-				C8A2E4A10F07EA1F0054397C /* NSStandardToolbarItems.m in Sources */,
 				C8A2E4A20F07EA1F0054397C /* NSToolbar.m in Sources */,
-				C8A2E4A30F07EA1F0054397C /* NSToolbarButton.m in Sources */,
 				C8A2E4A40F07EA1F0054397C /* NSToolbarItem.m in Sources */,
 				C8A2E4A50F07EA1F0054397C /* NSToolbarView.m in Sources */,
-				C8A2E4A60F07EA1F0054397C /* NSToolbarButtonCell.m in Sources */,
 				C8A2E4A70F07EA1F0054397C /* NSToolbarCustomizationPalette.m in Sources */,
 				C8A2E4A80F07EA1F0054397C /* NSToolbarCustomizationView.m in Sources */,
-				C8A2E4A90F07EA1F0054397C /* NSToolbarSeparatorItemView.m in Sources */,
-				C8A2E4AA0F07EA1F0054397C /* NSToolbarSeparatorItemCell.m in Sources */,
 				C8A2E4AB0F07EA1F0054397C /* NSDrawer.m in Sources */,
 				C8A2E4AC0F07EA1F0054397C /* NSDrawerWindow.m in Sources */,
 				C8A2E4AD0F07EA1F0054397C /* NSTIFFImageFileDirectory.m in Sources */,
@@ -6309,6 +6262,8 @@
 				C8E0BE9A0F0E54B500677729 /* NSOpenGLContext.m in Sources */,
 				C8E0BE9B0F0E54B500677729 /* NSOpenGLPixelFormat.m in Sources */,
 				C8E0BE9C0F0E54B500677729 /* NSOpenGLView.m in Sources */,
+				FE3874A10F4333D600EC9F00 /* NSToolbarItemView.m in Sources */,
+				FE6BE44B0F446B92007D7F3F /* NSToolbarItemGroup.m in Sources */,
 				C8AB730D0F40C21A00D93B96 /* NSControllerMarker.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -6504,16 +6459,11 @@
 				FE01AA110C5D9BCB00AEA51A /* NSSubmenuView.m in Sources */,
 				FE01AA120C5D9BCB00AEA51A /* NSKeyBindingManager.m in Sources */,
 				FE01AA130C5D9BCB00AEA51A /* NSKeyBinding.m in Sources */,
-				FE01AA140C5D9BCB00AEA51A /* NSStandardToolbarItems.m in Sources */,
 				FE01AA150C5D9BCB00AEA51A /* NSToolbar.m in Sources */,
-				FE01AA160C5D9BCB00AEA51A /* NSToolbarButton.m in Sources */,
 				FE01AA170C5D9BCB00AEA51A /* NSToolbarItem.m in Sources */,
 				FE01AA180C5D9BCB00AEA51A /* NSToolbarView.m in Sources */,
-				FE01AA190C5D9BCB00AEA51A /* NSToolbarButtonCell.m in Sources */,
 				FE01AA1A0C5D9BCB00AEA51A /* NSToolbarCustomizationPalette.m in Sources */,
 				FE01AA1B0C5D9BCB00AEA51A /* NSToolbarCustomizationView.m in Sources */,
-				FE01AA1C0C5D9BCB00AEA51A /* NSToolbarSeparatorItemView.m in Sources */,
-				FE01AA1D0C5D9BCB00AEA51A /* NSToolbarSeparatorItemCell.m in Sources */,
 				FE01AA1E0C5D9BCB00AEA51A /* NSDrawer.m in Sources */,
 				FE01AA1F0C5D9BCB00AEA51A /* NSDrawerWindow.m in Sources */,
 				FE01AA200C5D9BCB00AEA51A /* NSTIFFImageFileDirectory.m in Sources */,
@@ -6673,6 +6623,8 @@
 				FEA25F990EECCE4D008750D0 /* NSSound_win32.m in Sources */,
 				FE669C920F12B1A600534F46 /* gif_lib.m in Sources */,
 				FEC0C7820F146AF800903F6D /* KGImageSource_GIF.m in Sources */,
+				FE38749D0F4333D600EC9F00 /* NSToolbarItemView.m in Sources */,
+				FE6BE4470F446B92007D7F3F /* NSToolbarItemGroup.m in Sources */,
 				C8AB730F0F40C21A00D93B96 /* NSControllerMarker.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

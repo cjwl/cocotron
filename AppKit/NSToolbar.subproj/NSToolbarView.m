@@ -1,18 +1,15 @@
-/* Copyright (c) 2006-2007 Christopher J. W. Lloyd
+/* Copyright (c) 2006-2009 Christopher J. W. Lloyd
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
-
-// Original - David Young <daver@geeks.org>
 #import <AppKit/AppKitExport.h>
 #import <AppKit/NSToolbarView.h>
 #import <AppKit/NSToolbar.h>
 #import <AppKit/NSToolbarItem.h>
 #import <AppKit/NSToolbarCustomizationView.h>
-#import <AppKit/NSStandardToolbarItems.h>
 #import <AppKit/NSColor.h>
 #import <AppKit/NSGraphics.h>
 #import <AppKit/NSParagraphStyle.h>
@@ -25,337 +22,253 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSMenu.h>
 #import <AppKit/NSMenuWindow.h>
 #import <AppKit/NSMenuView.h>
-#import <AppKit/NSToolbar-Private.h>
 
-extern NSSize _NSToolbarSizeRegular;
-extern NSSize _NSToolbarSizeSmall;
-extern NSSize _NSToolbarIconSizeRegular;
-extern NSSize _NSToolbarIconSizeSmall;
+@interface NSToolbar (Private)
+-(NSArray *)_itemsWithIdentifiers:(NSArray*)identifiers;
+-(NSArray *)_allowedToolbarItems;
+-(NSArray *)_defaultToolbarItems;
+-(NSToolbarItem *)_itemForItemIdentifier:(NSString*)identifier willBeInsertedIntoToolbar:(BOOL)toolbar;
+-(void)_setItemsWithIdentifiersFromArray:(NSArray *)identifiers;
+-(NSArray *)itemIdentifiers;
+@end
+
+@interface NSToolbarItem(private)
+-(NSSize)constrainedSize;
+-(CGFloat)_expandWidth:(CGFloat)try;
+-(NSView *)_enclosingView;
+-(void)drawInRect:(NSRect)rect;
+@end
 
 @implementation NSToolbarView
 
-+ (NSRect)viewFrameWithWindowContentSize:(NSSize)contentSize sizeMode:(NSToolbarSizeMode)sizeMode displayMode:(NSToolbarDisplayMode)displayMode minYMargin:(float)minYMargin
-{
-    NSSize size = NSMakeSize(0, 0);
-    NSRect frame = NSMakeRect(0, 0, contentSize.width, contentSize.height);
-        
-    frame = [NSToolbarView constrainedToolbarItemFrame:frame minSize:size maxSize:size sizeMode:sizeMode displayMode:displayMode];
+-initWithFrame:(NSRect)frame {
+   [super initWithFrame:frame];
+   [self setAutoresizesSubviews:YES];
+   [self setAutoresizingMask:NSViewWidthSizable|NSViewMinYMargin];
+   _toolbar=nil;
+   _minXMargin=6.0;
+   _minYMargin=2.0;
+   _visibleItems = [[NSMutableArray alloc] init];
+   _overflow=NO;
+               
+   [self registerForDraggedTypes:[NSArray arrayWithObject:NSToolbarItemIdentifierPboardType]];
     
-    frame.size.width = contentSize.width;
-    frame.size.height += minYMargin;
-    
-    return frame;
+   return self;
 }
 
-+ (NSDictionary *)attributesWithSizeMode:(NSToolbarSizeMode)sizeMode
-{
-    NSMutableParagraphStyle *style = [[[NSParagraphStyle defaultParagraphStyle] mutableCopy] autorelease];
+-(void)dealloc {
+   [[NSNotificationCenter defaultCenter] removeObserver:self];
+   _toolbar=nil;
+   [_visibleItems release];
+   [super dealloc];
+}
+
+-(NSToolbar *)toolbar {
+   return _toolbar;
+}
+
+-(void)setToolbar:(NSToolbar *)toolbar {
+   _toolbar = toolbar;
+}
+
+-(NSArray *)visibleItems {
+   return _visibleItems;
+}
+
+-(NSImage *)overflowImage  {
+   return [NSImage imageNamed:@"NSToolbarOverflowArrow"];
+}
+
+-(NSSize)overflowImageSizeWithMargins {
+   NSSize size=[[self overflowImage] size];
+   
+   size.width+=8;
+   size.height+=8;
+   
+   return size;
+}
+
+-(NSRect)overflowRect {
+   NSRect bounds=[self bounds];
+   NSRect result;
+   
+   result.size=[self overflowImageSizeWithMargins];
+
+   result.size.height=MAX(result.size.height,bounds.size.height);
+   
+   result.origin.y=bounds.origin.y;
+   result.origin.x=NSMaxX(bounds)-result.size.width;
+   return result;
+}
+
+-(void)layoutViewsWithWidth:(CGFloat)desiredWidth setFrame:(BOOL)setFrame {
+   NSArray  *items=[_toolbar items];
+   NSInteger i,count=[items count];
+   NSRect    frames[count];
+   BOOL      isFlexible[count];
+   BOOL      notSpace[count];
+   BOOL      visible[count];
+   NSSize    overflowSize=[self overflowImageSizeWithMargins];
+   CGFloat   consumedWidth=0,resultHeight=overflowSize.height;
+   NSInteger totalNonSpace=0,totalVisibleNonSpace=0;
+   NSInteger totalVisible=0;
+   
+   NSInteger priorities[4]={
+    NSToolbarItemVisibilityPriorityUser,
+    NSToolbarItemVisibilityPriorityHigh,
+    NSToolbarItemVisibilityPriorityStandard,
+    NSToolbarItemVisibilityPriorityLow,
+   };
+   int       p,priorityCount=4;
+   
+   [_visibleItems removeAllObjects];
+      
+   for(i=0;i<count;i++){
+    NSToolbarItem *item=[items objectAtIndex:i];
+    NSString      *identifier=[item itemIdentifier];
+    NSSize         size=[item constrainedSize];
     
-    [style setLineBreakMode:NSLineBreakByClipping];
-    [style setAlignment:NSCenterTextAlignment];
+    frames[i].origin=NSZeroPoint;
+    frames[i].size=size;
+    resultHeight=MAX(resultHeight,size.height);
+    visible[i]=NO;
+    isFlexible[i]=NO;
+    notSpace[i]=NO;
+    
+    if([identifier isEqualToString:NSToolbarFlexibleSpaceItemIdentifier])
+     isFlexible[i]=YES;
+    else if(![identifier isEqualToString:NSToolbarSeparatorItemIdentifier] &&
+            ![identifier isEqualToString:NSToolbarSpaceItemIdentifier]){
+     notSpace[i]=YES;
+     totalNonSpace++;
+    }
+   }
+   
+   // consume available space based on priority
+   for(p=0;p<priorityCount;p++){
+    NSInteger priority=priorities[p];
+    
+    for(i=0;i<count;i++){
+     NSToolbarItem *item=[items objectAtIndex:i];
+    
+     if([item visibilityPriority]==priority){
+      CGFloat availableWidth=desiredWidth-consumedWidth;
+            
+      // if there are still items which can go in the overflow menu
+      // we need to accomodate the menu
+      if(totalVisibleNonSpace+1<totalNonSpace)
+       availableWidth-=overflowSize.width;
  
-    switch (sizeMode) {
-        case NSToolbarSizeModeSmall:
-            return [NSDictionary dictionaryWithObjectsAndKeys:
-                [NSFont systemFontOfSize:10.0], NSFontAttributeName,
-                style, NSParagraphStyleAttributeName,
-                nil];
-            
-        case NSToolbarSizeModeRegular:
-        case NSToolbarSizeModeDefault:
-        default:
-            return [NSDictionary dictionaryWithObjectsAndKeys:
-                [NSFont systemFontOfSize:11.0], NSFontAttributeName,
-                style, NSParagraphStyleAttributeName,
-                nil];
-    }        
-}
-
-+ (NSRect)constrainedToolbarItemFrame:(NSRect)frame minSize:(NSSize)minSize maxSize:(NSSize)maxSize sizeMode:(NSToolbarSizeMode)sizeMode displayMode:(NSToolbarDisplayMode)displayMode
-{
-    NSString *string = @"Item";
-    
-    switch (sizeMode) {
-        case NSToolbarSizeModeSmall:
-            frame.size = _NSToolbarSizeSmall;
-            break;
-            
-        case NSToolbarSizeModeRegular:
-        case NSToolbarSizeModeDefault:
-        default:
-            frame.size = _NSToolbarSizeRegular;
-            break;
-    }        
-    
-    if (frame.size.width < minSize.width && minSize.width > 0)
-        frame.size.width = minSize.width;
-    if (frame.size.height < minSize.height && minSize.height > 0)
-        frame.size.height = minSize.height;
-    if (frame.size.width > maxSize.width && maxSize.width > 0)
-        frame.size.width = maxSize.width;
-    if (frame.size.height > maxSize.height && maxSize.height > 0)
-        frame.size.height = maxSize.height;
-    
-    switch (displayMode) {
-        case NSToolbarDisplayModeIconOnly:
-            break;
-            
-        case NSToolbarDisplayModeLabelOnly:
-            frame.size.height = [string sizeWithAttributes:[NSToolbarView attributesWithSizeMode:sizeMode]].height;
-            break;
-
-        case NSToolbarDisplayModeIconAndLabel: 
-        case NSToolbarDisplayModeDefault:
-        default:
-            frame.size.height += [string sizeWithAttributes:[NSToolbarView attributesWithSizeMode:sizeMode]].height;
-            break;
+      if(frames[i].size.width<availableWidth){
+       [_visibleItems addObject:item];
+       visible[i]=YES;
+       totalVisible++;
+       consumedWidth+=frames[i].size.width;
+       if(notSpace[i])
+        totalVisibleNonSpace++;
+      }
+     }
     }
-
-    return frame;
-}
-
-- (id)initWithFrame:(NSRect)frame
-{
-    [super initWithFrame:frame];
-    _overflowMenu = [[NSMenu alloc] initWithTitle:@"Overflow"];
-    _overflowItem = [[NSToolbarItem overflowToolbarItem] retain];
-    [_overflowItem setTarget:self];
-        
-    _visibleItems = [[NSMutableArray alloc] init];
-        
-    [self registerForDraggedTypes:[NSArray arrayWithObject:NSToolbarItemIdentifierPboardType]];
+   }
+   
+   if(totalVisibleNonSpace<totalNonSpace){
+    consumedWidth+=overflowSize.width;
+    _overflow=YES;
+   }
+   else {
+    _overflow=NO;
+   }
+   
+   // distribute leftover
+   NSInteger totalConsumers=totalVisible;
+   BOOL      useFlexible=NO;
+   
+   while(consumedWidth<desiredWidth && totalConsumers>0){
+    CGFloat availablePerItem=floor((desiredWidth-consumedWidth)/totalConsumers);
     
-    return self;
-}
-
-- (void)dealloc
-{
-    [_overflowMenu release];
-    [_overflowItem release];
-    [_visibleItems release];
+    if(availablePerItem<1)
+     break;
     
-    [super dealloc];
-}
-
-- (BOOL)isOpaque 
-{
-    return YES;
-}
-
-- (NSToolbar *)toolbar
-{
-    return _toolbar;
-}
-
-- (void)setToolbar:(NSToolbar *)toolbar
-{
-    _toolbar = toolbar;
-}
-
-- (NSBorderType)borderType
-{
-    return _borderType;
-}
-
-/* Funny story: Way back when I was first looking into NeXT computers (thanks to my friend Mark Miller, who was studying at Purdue at the time), I remember someone had given me an account on this vegetarian dude's computer called vegiwopr.cs.calpoly.edu (at the time vegetarianism wasn't so accepted)... I was browsing the APIs for NeXTSTEP 3.x, and I remember thinking that the ability to set the border types for views was just the coolest thing an API could have. Not long thereafter, I had a mono slab, then a TurboColor, then a Turbo Dimension Cube, then NS/Intel, and the rest, well... */
-- (void)setBorderType:(NSBorderType)borderType
-{
-    _borderType = borderType;
-    [self setNeedsDisplay:YES];
-}
-
-- (NSArray *)visibleItems
-{
-    return _visibleItems;
-}
-
-- (void)drawRect:(NSRect)rect
-{
-    [_toolbar _reloadToolbarIfNeeded];
-    
-    [[NSColor windowBackgroundColor] setFill];
-    NSRectFill(rect);
-    
-    [super drawRect:rect];
-    
-    switch(_borderType){
-        case NSNoBorder:
-            break;
-            
-        case NSLineBorder:
-            rect.size.height = 1;
-            [[NSColor blackColor] setStroke];
-            NSFrameRect(rect);
-            break;
-            
-        case NSBezelBorder:                 // looks like crap
-            rect.size.height = 2;
-            NSDrawGrayBezel(rect,rect);
-            break;
-            
-        case NSGrooveBorder:
-            rect.size.height = 2;
-            NSDrawGroove(rect,rect);
-            break;
+    totalConsumers=0;
+    for(i=0;i<count && consumedWidth<desiredWidth;i++){
+     if(visible[i] && (!isFlexible[i] || useFlexible)){
+      NSToolbarItem *item=[items objectAtIndex:i];
+      CGFloat        attempt=frames[i].size.width+availablePerItem;
+      CGFloat        final=[item _expandWidth:attempt];
+      CGFloat        consumed=final-frames[i].size.width;
+     
+      if(consumed>=1){
+       frames[i].size.width+=consumed;
+       consumedWidth+=consumed;
+       totalConsumers++;
+      }
+     }
     }
-}
-
-- (float)minXMargin 
-{
-    return _minXMargin;
-}
-
-- (void)setMinXMargin:(float)margin 
-{
-    _minXMargin = margin;
-    [self sizeToFit];
-}
-
-- (float)minYMargin
-{
-    return _minYMargin;
-}
-
-- (void)setMinYMargin:(float)margin
-{
-    NSRect frame = [self frame];
-    
-    frame.size.height += margin - _minYMargin;
-    _minYMargin = margin;
-    
-    [self setFrame:frame];
-    [self sizeToFit];
-}
-
-- (NSImage *)overflowImage 
-{
-    if ([[self window] isKeyWindow])
-        return [NSImage imageNamed:@"NSMenuViewDoubleRightArrow"];
-    else
-        return [NSImage imageNamed:@"NSMenuViewDoubleRightArrowGray"];
-}
-
-- (void)sizeToFit
-{
-    int i, count;
-    unsigned int resizingMask = NSViewMaxXMargin;
-    unsigned numberOfFlexibleSpaces = 0;
-    unsigned flexibleSpaceCount = 0;
-    NSRect frame = NSMakeRect(_minXMargin, _minYMargin, 0, 0);
-    float totalInflexiblePixels = 0.0;
-    float flexibleSpaceWidth = 0.0;
-    
-    count = [[_toolbar items] count];
-
-    [_visibleItems removeAllObjects];
-    [_overflowMenu removeAllItems];
-    
-    if ([[_overflowItem view] superview] != nil)
-        [[_overflowItem view] removeFromSuperview];
-    
-    // this might be inefficient, but i think i need to use two loops here
-    for (i = 0; i < count; ++i) {
-        NSToolbarItem *item = [[_toolbar items] objectAtIndex:i];
-
-        if ([item isFlexibleSpaceToolbarItem])
-            numberOfFlexibleSpaces++;
-        else
-            totalInflexiblePixels += [NSToolbarView constrainedToolbarItemFrame:frame minSize:[item minSize] maxSize:[item maxSize] sizeMode:[_toolbar sizeMode] displayMode:[_toolbar displayMode]].size.width;
+    if(totalConsumers==0 && !useFlexible){
+     useFlexible=YES;
+     totalConsumers=totalVisible;
     }
+   }
+   
+   if(setFrame){
+    NSRect frame=[self frame];
     
-    // now we know how wide these flexible space(s) should be.
-    flexibleSpaceWidth = [self frame].size.width - (totalInflexiblePixels + _minXMargin);
-    flexibleSpaceWidth /= numberOfFlexibleSpaces;
+    [self setFrame:NSMakeRect(frame.origin.x,frame.origin.y,desiredWidth,resultHeight)];
+   }
     
-    // items' autoresizing behavior will change depending on the number of flexible spaces (if any) in the toolbar...
-    for (i = 0; i < count; ++i) {
-        NSToolbarItem *item = [[_toolbar items] objectAtIndex:i];
-        
-        frame = [NSToolbarView constrainedToolbarItemFrame:frame minSize:[item minSize] maxSize:[item maxSize] sizeMode:[_toolbar sizeMode] displayMode:[_toolbar displayMode]];
-        
-        if ([item isFlexibleSpaceToolbarItem] && flexibleSpaceWidth > 0) {
-            [[item view] setAutoresizingMask:NSViewWidthSizable];
-            
-            flexibleSpaceCount++;
-            frame.size.width = flexibleSpaceWidth;
-
-            if (flexibleSpaceCount < numberOfFlexibleSpaces)
-                resizingMask = NSViewMinXMargin|NSViewMaxXMargin;
-            else
-                resizingMask = NSViewMinXMargin;
-        }
-        else
-            [[item view] setAutoresizingMask:resizingMask];
-
-        [[item view] removeFromSuperview];
-        [[item view] setFrame:frame];
-
-        // check for overflow.
-        if (flexibleSpaceWidth < 0 && NSMaxX(frame) > ([self frame].size.width - [_overflowItem minSize].width)) {            
-            if ([[_overflowItem view] superview] == nil) {
-                [_overflowItem setImage:[self overflowImage]];
-                
-                frame.size.width = [_overflowItem minSize].width;
-                frame.origin.x = [self frame].size.width - frame.size.width - 3.0;
-                
-                if ([_toolbar displayMode] == NSToolbarDisplayModeLabelOnly)
-                    [_overflowItem setLabel:@">>"];
-                else {
-                    [_overflowItem setLabel:@""];
-                }
-
-                [[_overflowItem view] setFrame:frame];
-                
-                [self addSubview:[_overflowItem view]];
-            }
-            
-            if ([item isSpaceToolbarItem] == NO && [item isSeparatorToolbarItem] == NO)             
-                [_overflowMenu addItem:[item menuFormRepresentation]];
-        }
-        else {
-            [self addSubview:[item view]];
-            [_visibleItems addObject:item];
-            frame.origin.x += frame.size.width;
-        }
+   CGFloat x=0;
+   for(i=0;i<count;i++){
+    NSToolbarItem *item=[items objectAtIndex:i];
+    if(!visible[i])
+     [[item _enclosingView] removeFromSuperview];
+    else {
+     
+     frames[i].origin.x=x;
+     [[item _enclosingView] setFrame:frames[i]];
+     if([item _enclosingView]!=self)
+      [self addSubview:[item _enclosingView]];
+     x+=frames[i].size.width;
     }
+   }
+   
+   [self setNeedsDisplay:YES];
+   
 }
 
-- (void)resizeWithOldSuperviewSize:(NSSize)oldSize 
-{
-    [super resizeWithOldSuperviewSize:oldSize];
+
+-(void)drawRect:(NSRect)rect {
+   if(_overflow){
+    NSSize imageSize=[[self overflowImage] size];
+    NSRect rect=[self overflowRect];
     
-    [self sizeToFit];
+    rect.origin.x+=(rect.size.width-imageSize.width)/2;
+    rect.origin.y+=(rect.size.height-imageSize.height)/2;
+    rect.size=imageSize;
+
+    [[self overflowImage] drawInRect:rect fromRect:NSZeroRect operation:NSCompositeSourceOver fraction:1.0];
+   }
+   
 }
 
-- (void)popUpOverflowMenu:(id)sender
-{
-    NSMenuWindow *window;
-    NSMenuItem *item;
-    NSRect menuFrame = [self frame];
-    int i;
-    
-    for (i = 0; i < [_overflowMenu numberOfItems]; ++i) {
-        NSToolbarItem *item = [[_overflowMenu itemAtIndex:i] representedObject];
-        
-        if ([[item label] sizeWithAttributes:nil].width > menuFrame.size.width)
-            menuFrame.size.width = [[item label] sizeWithAttributes:nil].width + 20.0;  // argh
-    }
-    
-    window=[[NSMenuWindow alloc] initWithMenu:_overflowMenu];
+-(void)layoutViews {
+   [self layoutViewsWithWidth:[self bounds].size.width setFrame:NO];
+}
 
-    menuFrame.origin.x = NSMaxX([self frame]);
-    menuFrame.origin.y = [self frame].origin.y + [self frame].size.height/2;
-    menuFrame.origin = [[self window] convertBaseToScreen:menuFrame.origin];
+-(void)_insertItem:(NSToolbarItem *)item atIndex:(NSInteger)index {
+   [self layoutViews];
+}
 
-    menuFrame.origin.y -= [[window menuView] frame].size.height;
+-(void)_removeItemAtIndex:(NSInteger)index {
+   [self layoutViews];
+}
 
-    [window setFrameOrigin:menuFrame.origin];
-    [window orderFront:nil];
-    item = [[window menuView] trackForEvent:[[self window] currentEvent]];
-    [window close];
+-(void)resizeWithOldSuperviewSize:(NSSize)oldSize  {
+   [super resizeWithOldSuperviewSize:oldSize];
     
-    if (item != nil)
-        [NSApp sendAction:[item action] to:[item target] from:[item representedObject]];
+   [self layoutViews];
+}
+
+-(void)popUpOverflowMenu:sender {
 }
 
 // NSView dragging destination settings.
@@ -398,7 +311,7 @@ extern NSSize _NSToolbarIconSizeSmall;
             id droppedObject = [NSUnarchiver unarchiveObjectWithData:[pasteboard dataForType:NSToolbarItemIdentifierPboardType]];
             
             if ([droppedObject isKindOfClass:[NSArray class]]) {
-                [_toolbar setItemsWithIdentifiersFromArray:droppedObject];
+                [_toolbar _setItemsWithIdentifiersFromArray:droppedObject];
             }
             else {
                 NSPoint location = [self convertPoint:[sender draggingLocation] fromView:nil];
@@ -442,12 +355,10 @@ extern NSSize _NSToolbarIconSizeSmall;
         NSRect frame = NSMakeRect(0, 0, [subview frame].size.width + 4, [subview frame].size.height + 4);
         NSImage *image = [[[NSImage alloc] initWithSize:frame.size] autorelease];
         NSData *data = [NSArchiver archivedDataWithRootObject:[item itemIdentifier]];
-        // FIX, shouldn't need cast
-        id cell = [(NSControl *)[item view] cell];
-                        
+                                
         [image setCachedSeparately:YES];
         [image lockFocus];
-        [cell drawWithFrame:NSInsetRect(frame, 1, 1) inView:nil];
+        [item drawInRect:[self bounds]];
         [[NSColor blackColor] setStroke];
         NSFrameRect(frame);
         [image unlockFocus];
@@ -468,8 +379,64 @@ extern NSSize _NSToolbarIconSizeSmall;
         [item release];
         return;
     }
-    else
-        [super mouseDown:event];
+
+   if(!_overflow)
+    return;
+     
+   if(!NSPointInRect([self convertPoint:[event locationInWindow] fromView:nil],[self overflowRect]))
+   return;
+     
+   NSArray      *items=[_toolbar items];
+   NSInteger     i,count=[items count];
+   NSMenu       *menu=[[NSMenu alloc] initWithTitle:@"Overflow"];
+   NSMenuWindow *window;
+   NSMenuItem   *item;
+   NSRect       menuFrame = [self frame];
+
+   for(i=0;i<count;i++){
+    NSToolbarItem *item=[items objectAtIndex:i];
+    NSString      *identifier=[item itemIdentifier];
+    
+    if([identifier isEqualToString:NSToolbarFlexibleSpaceItemIdentifier] ||
+       [identifier isEqualToString:NSToolbarSeparatorItemIdentifier] ||
+       [identifier isEqualToString:NSToolbarSpaceItemIdentifier])
+     continue;
+
+    if([[item _enclosingView] superview]==nil)
+     [menu addItem:[item menuFormRepresentation]];
+   }
+       
+   for (i = 0; i < [menu numberOfItems]; ++i) {
+    NSToolbarItem *item = [[menu itemAtIndex:i] representedObject];
+        
+    if ([[item label] sizeWithAttributes:nil].width > menuFrame.size.width)
+     menuFrame.size.width = [[item label] sizeWithAttributes:nil].width + 20.0;  // argh
+   }
+    
+   window=[[NSMenuWindow alloc] initWithMenu:menu];
+
+   menuFrame.origin.x = NSMaxX([self frame]);
+   menuFrame.origin.y = [self frame].origin.y + [self frame].size.height/2;
+   menuFrame.origin = [[self window] convertBaseToScreen:menuFrame.origin];
+
+   menuFrame.origin.y -= [[window menuView] frame].size.height;
+
+   [window setFrameOrigin:menuFrame.origin];
+   [window orderFront:nil];
+    
+   BOOL        didAccept=[window acceptsMouseMovedEvents];
+   NSMenuItem *menuItem;
+   
+   [window setAcceptsMouseMovedEvents:YES];
+   menuItem=[[window menuView] trackForEvent:event];
+   [window setAcceptsMouseMovedEvents:didAccept];
+
+   [window close];
+    
+   if(menuItem != nil)
+    [NSApp sendAction:[menuItem action] to:[menuItem target] from:[menuItem representedObject]];
+        
+   [menu release];
 }
 
 @end

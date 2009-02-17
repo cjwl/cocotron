@@ -6,7 +6,6 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
-// Original - David Young <daver@geeks.org>
 #import <AppKit/NSToolbarCustomizationPalette.h>
 #import <AppKit/NSToolbarCustomizationView.h>
 #import <AppKit/NSToolbar.h>
@@ -18,110 +17,87 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSPopUpButton.h>
 #import <AppKit/NSButton.h>
 
-#define VIEW_X_OFFSET   4.0
-#define VIEW_Y_OFFSET   7.0
-
 @implementation NSToolbarCustomizationPalette
 
-- (id)_initWithToolbar:(NSToolbar *)toolbar
-{
-    NSRect frame = NSMakeRect(0, 0, 0, 0);
-    int index = [_displayModePopUp indexOfItemWithTag:[toolbar displayMode]];
-    float maxWidth = 0;
+static NSToolbarCustomizationPalette *_nextPanel;
 
-    if (index == -1)
-        index = 0;
-    
-    [_displayModePopUp selectItemAtIndex:index];
-    [self _setStyleMask:NSDocModalWindowMask];    
-    _toolbar = [toolbar retain];
-    
-    switch ([_toolbar sizeMode]) {
-        case NSToolbarSizeModeSmall:
-            [_smallSizeModeButton setState:NSOnState];
-            break;
-            
-        case NSToolbarSizeModeRegular:
-        case NSToolbarSizeModeDefault:
-        default:
-            [_smallSizeModeButton setState:NSOffState];
-            break;
-    }
++(void)setPanel:(NSToolbarCustomizationPalette *)panel {
+   _nextPanel=panel;
+}
 
-    frame = [NSToolbarView constrainedToolbarItemFrame:[_defaultItemsTextField frame] minSize:NSMakeSize(0,0) maxSize:NSMakeSize(0,0) sizeMode:NSToolbarSizeModeDefault displayMode:NSToolbarDisplayModeDefault];
-    
-    _defaultItemsView = [[NSToolbarCustomizationView alloc] initWithFrame:frame toolbar:_toolbar isDefaultSetView:YES];
-    [_defaultItemsView setAutoresizingMask:NSViewNotSizable];
-    [_defaultItemsView sizeToFit];
++(NSToolbarCustomizationPalette *)toolbarCustomizationPalette {
+   NSToolbarCustomizationPalette *result;
+   
+   [NSBundle loadNibNamed:@"NSToolbarCustomizationPalette" owner:self];
+   result=_nextPanel;
+   _nextPanel=nil;
+   
+   return result;
+}
 
-    frame = [NSToolbarView constrainedToolbarItemFrame:[_allowedItemsTextField frame] minSize:NSMakeSize(0,0) maxSize:NSMakeSize(0,0) sizeMode:NSToolbarSizeModeDefault displayMode:NSToolbarDisplayModeDefault];
-    
-    _allowedItemsView = [[NSToolbarCustomizationView alloc] initWithFrame:frame toolbar:_toolbar isDefaultSetView:NO];
-    [_allowedItemsView setAutoresizingMask:NSViewNotSizable];
-    [_allowedItemsView sizeToFit];
-    
-    maxWidth = MAX([_defaultItemsView frame].size.width, [_allowedItemsView frame].size.width);
+-initWithContentRect:(NSRect)contentRect styleMask:(unsigned)styleMask backing:(unsigned)backing defer:(BOOL)defer {
+   return [super initWithContentRect:contentRect styleMask:NSDocModalWindowMask backing:backing defer:defer];
+}
 
-    frame = [_defaultItemsView frame];
-    frame.origin.x += VIEW_X_OFFSET;
-    frame.origin.y -= frame.size.height + VIEW_Y_OFFSET;
-    [_defaultItemsView setFrame:frame];
-    
-    frame = [_allowedItemsView frame];
-    frame.origin.x += VIEW_X_OFFSET;
-    frame.origin.y -= frame.size.height + VIEW_Y_OFFSET;
-    frame.size.width = maxWidth;
-    [_allowedItemsView setFrame:frame];
+-(void)dealloc {
+   [_toolbar release];
+   [super dealloc];
+}
 
-    [[self contentView] addSubview:_defaultItemsView];
-    [[self contentView] addSubview:_allowedItemsView];
+-(void)setToolbar:(NSToolbar *)toolbar {
+   _toolbar=[toolbar retain];
+
+   int index=[_displayModePopUp indexOfItemWithTag:[toolbar displayMode]];
     
-    // Hmmm.
-    frame = [self frame];
-    
-    frame.size.width = maxWidth + (([_defaultItemsView frame].origin.x + VIEW_X_OFFSET) * 2);
-    [self setFrame:frame display:NO];
-    
-    [self setDefaultButtonCell:[_button cell]];
-    
-    return self;
+   [_displayModePopUp selectItemAtIndex:(index == -1)?0:index];
+   [_smallSizeModeButton setState:([_toolbar sizeMode]==NSToolbarSizeModeSmall)?NSOnState:NSOffState];
+   [self setDefaultButtonCell:[_button cell]];
+
+   NSSize oldSize,newSize;
+   CGFloat deltaWidth=0,deltaHeight=0;
+   
+   oldSize=[_allowedItemsView frame].size;
+   [_allowedItemsView setToolbar:_toolbar];
+   [_allowedItemsView setDefaultSetView:NO];
+   newSize=[_allowedItemsView desiredSize];
+   
+   deltaWidth=newSize.width-oldSize.width;
+   deltaHeight=newSize.height-oldSize.height;
+   
+   oldSize=[_allowedItemsView frame].size;
+   [_defaultItemsView setToolbar:_toolbar];
+   [_defaultItemsView setDefaultSetView:YES];
+   newSize=[_defaultItemsView desiredSize];
+
+   deltaWidth=MAX(deltaWidth,newSize.width-oldSize.width);
+// FIXME: We're depending on autosizing to distribute the height change properly which isnt the case
+
+   deltaHeight+=newSize.height-oldSize.height; 
+   NSRect frame=[self frame];
+   frame.size.width+=deltaWidth;
+   frame.size.height+=deltaHeight;
+   
+   [self setFrame:frame display:NO];
 }    
 
-- (id)initWithToolbar:(NSToolbar *)toolbar
-{
-    [NSBundle loadNibNamed:@"NSToolbarCustomizationPalette" owner:self];
-    if (self = [_palette retain]) { 
-        [self _initWithToolbar:toolbar];
-    }
-    
-    return self;
+-(NSToolbar *)toolbar {
+   return _toolbar;
 }
 
-- (void)dealloc
-{
-    [_allowedItemsView release];
-    [_defaultItemsView release];
-    
-    [super dealloc];
+-(void)displayModeChanged:sender {
+   NSToolbarDisplayMode displayMode=[[_displayModePopUp selectedCell] tag];
+   
+   [_toolbar setDisplayMode:displayMode];
 }
 
-- (NSToolbar *)toolbar
-{
-    return _toolbar;
-}
-
-- (void)settingsChanged:(id)sender
-{
-    NSToolbarDisplayMode displayMode = [[_displayModePopUp selectedCell] tag];
-    NSToolbarSizeMode sizeMode = [_smallSizeModeButton state] ? NSToolbarSizeModeSmall : NSToolbarSizeModeRegular;
+-(void)sizeModeChanged:sender {
+    NSToolbarSizeMode sizeMode=[_smallSizeModeButton state] ? NSToolbarSizeModeSmall : NSToolbarSizeModeRegular;
     
-    [_toolbar setDisplayMode:displayMode];
     [_toolbar setSizeMode:sizeMode];
 }
 
-- (void)customizationPaletteDidFinish:(id)sender
-{
-    [NSApp endSheet:self returnCode:NSAlertDefaultReturn];
+-(void)customizationPaletteDidFinish:sender {
+   [NSApp endSheet:self returnCode:NSAlertDefaultReturn];
 }
 
 @end

@@ -22,10 +22,10 @@ THE SOFTWARE.
 */
 
 #import <stdlib.h>
-#import <stdio.h>
 #import <string.h>
 #import "gif_lib.h"
 #import <Foundation/NSStream.h>
+#import <Foundation/NSString.h>
 
 #define READ(_gif,_buf,_len)  [(_gif)->inputStream read:_buf maxLength:_len]
 #define WRITE(_gif,_buf,_len) [(_gif)->outputStream write:_buf maxLength:_len]
@@ -1853,9 +1853,9 @@ PrintGifError(GifFileType *GifFile) {
         break;
     }
     if (Err != NULL)
-        fprintf(stderr, "\nGIF-LIB error: %s.\n", Err);
+        NSLog(@"GIF-LIB error: %s.\n", Err);
     else
-        fprintf(stderr, "\nGIF-LIB undefined error %d.\n", GifFile->GifError);
+        NSLog( @"GIF-LIB undefined error %d.\n", GifFile->GifError);
 }
 
 
@@ -2455,8 +2455,7 @@ int QuantizeBuffer(unsigned int Width,unsigned int Height,int *ColorMapSize,GifB
             OutputColorMap[i].Green = (Green << (8 - BITS_PER_PRIM_COLOR)) / j;
             OutputColorMap[i].Blue = (Blue << (8 - BITS_PER_PRIM_COLOR)) / j;
         } else
-            fprintf(stderr,
-                    "\nGIF-LIB: Null entry in quantized color map - that's weird.\n");
+            NSLog(@"GIF-LIB: Null entry in quantized color map - that's weird.\n");
     }
 
     /* Finally scan the input buffer again and put the mapped index in the

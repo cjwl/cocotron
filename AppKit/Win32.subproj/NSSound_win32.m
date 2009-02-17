@@ -13,6 +13,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSEnumerator.h>
 #import <Foundation/NSArray.h>
 #import <Foundation/NSRaise.h>
+#import <windows.h>
 
 static unsigned int uniquenum = 0;
 
@@ -39,7 +40,7 @@ static unsigned int uniquenum = 0;
 	if ((self = [super initWithContentsOfFile:path byReference:byReference]))
 	{
 		_soundFilePath = [path copy];
-		_paused = FALSE;
+		_paused = NO;
 		_handle = uniquenum++;
 	}
 	return self;
@@ -64,7 +65,7 @@ static unsigned int uniquenum = 0;
 	{
 		NSString *pauseStr = [NSString stringWithFormat:@"pause %i", _handle];
 		mciSendString([pauseStr UTF8String], NULL, 0, 0);
-		_paused = TRUE;
+		_paused = YES;
 	}
 	return YES;
 }
@@ -76,7 +77,7 @@ static unsigned int uniquenum = 0;
 	{
 		NSString *pauseStr = [NSString stringWithFormat:@"resume %i", _handle];
 		mciSendString([pauseStr UTF8String], NULL, 0, 0);
-		_paused = FALSE;
+		_paused = NO;
 	}
 	return YES;
 }

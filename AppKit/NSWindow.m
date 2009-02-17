@@ -55,6 +55,8 @@ NSString *NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification";
 @interface NSToolbar (NSToolbar_privateForWindow)
 - (void)_setWindow:(NSWindow *)window;
 - (NSView *)_view;
+-(CGFloat)visibleHeight;
+-(void)layoutFrameSizeWithWidth:(CGFloat)width;
 @end
 
 @implementation NSWindow
@@ -828,11 +830,53 @@ NSString *NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification";
    NSUnimplementedMethod();
 }
 
+-(void)_toolbarSizeDidChangeFromOldHeight:(CGFloat)oldHeight {
+   CGFloat    newHeight,contentHeightDelta;
+   NSView    *toolbarView=[_toolbar _view];
+   NSUInteger mask=[[self contentView] autoresizingMask];
+   NSRect     frame=[self frame];
+   
+   [_toolbar layoutFrameSizeWithWidth:NSWidth([[self _backgroundView] bounds])];
+   newHeight=(_toolbar==nil)?0:[_toolbar visibleHeight];
+   contentHeightDelta=newHeight-oldHeight;
+
+   frame.size.height+=contentHeightDelta;
+   frame.origin.y-=contentHeightDelta;
+   
+   NSPoint toolbarOrigin;
+   NSRect backgroundBounds=[self _backgroundView].bounds;
+   toolbarOrigin.x=backgroundBounds.origin.x;
+   toolbarOrigin.y=NSMaxY([[self contentView] frame])-contentHeightDelta;
+   [toolbarView setFrameOrigin:toolbarOrigin];
+
+   [[self contentView] setAutoresizingMask:NSViewNotSizable];
+   [self setFrame:frame display:NO animate:NO];
+   
+   [[self contentView] setAutoresizingMask:mask];
+}
+
 -(void)setToolbar:(NSToolbar *)toolbar {
-    [_toolbar _setWindow:nil];
-    [_toolbar release];
-    _toolbar = [toolbar retain];
-    [_toolbar _setWindow:self];
+   if(toolbar!=_toolbar){
+    CGFloat oldHeight=0;
+   
+    toolbar=[toolbar retain];
+   
+    if(_toolbar!=nil){
+     oldHeight=[_toolbar visibleHeight];
+     [_toolbar _setWindow:nil];
+     [[_toolbar _view] removeFromSuperview];
+     [_toolbar release];
+    }
+   
+    _toolbar = toolbar;
+   
+    if(_toolbar!=nil){
+     [_toolbar _setWindow:self];
+     [[self _backgroundView] addSubview:[_toolbar _view]];
+    }
+   
+    [self _toolbarSizeDidChangeFromOldHeight:oldHeight];
+   }
 }
 
 - (void)setDefaultButtonCell:(NSButtonCell *)buttonCell {
@@ -980,7 +1024,7 @@ NSString *NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification";
 -(void)setFrameFromString:(NSString *)value {
    NSRect rect=NSRectFromString(value);
 
-   if(!NSIsEmptyRect(rect)){
+   if(!NSIsEmptyRect(rect)){   
     [self setFrame:rect display:YES];
    }
 }

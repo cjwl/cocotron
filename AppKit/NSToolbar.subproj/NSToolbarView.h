@@ -1,4 +1,4 @@
-/* Copyright (c) 2006-2007 Christopher J. W. Lloyd
+/* Copyright (c) 2006-2009 Christopher J. W. Lloyd
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
@@ -12,43 +12,23 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @class NSMutableArray;
 @class NSToolbar, NSToolbarItem;
 
-@interface NSToolbarView : NSView 
-{
+@interface NSToolbarView : NSView  {
     NSToolbar *_toolbar;
     float _minXMargin;
     float _minYMargin;
     NSMutableArray *_visibleItems;
-    NSMenu *_overflowMenu;
-    NSToolbarItem *_overflowItem;
-    NSBorderType _borderType;
+    BOOL _overflow;
 }
-
-+ (NSRect)viewFrameWithWindowContentSize:(NSSize)contentSize sizeMode:(NSToolbarSizeMode)sizeMode displayMode:(NSToolbarDisplayMode)displayMode minYMargin:(float)minYMargin;
-
-+ (NSDictionary *)attributesWithSizeMode:(NSToolbarSizeMode)sizeMode;
-
-+ (NSRect)constrainedToolbarItemFrame:(NSRect)frame minSize:(NSSize)minSize maxSize:(NSSize)maxSize sizeMode:(NSToolbarSizeMode)sizeMode displayMode:(NSToolbarDisplayMode)displayMode;
 
 - (NSToolbar *)toolbar;
 - (void)setToolbar:(NSToolbar *)toolbar;
 
-- (NSBorderType)borderType;
-- (void)setBorderType:(NSBorderType)borderType;
-
 - (NSArray *)visibleItems;
 
-- (float)minXMargin;
-- (void)setMinXMargin:(float)margin;
-- (float)minYMargin;
-- (void)setMinYMargin:(float)margin;
+-(void)_insertItem:(NSToolbarItem *)item atIndex:(NSInteger)index;
+-(void)_removeItemAtIndex:(NSInteger)index;
 
-- (void)sizeToFit;
-
-@end
-
-@interface NSToolbar (NSToolbar_viewPrivate)
-
-- (void)_reloadToolbarIfNeeded;
-- (NSToolbarView *)_view;
+-(void)layoutViewsWithWidth:(CGFloat)width setFrame:(BOOL)setFrame;
+-(void)layoutViews;
 
 @end

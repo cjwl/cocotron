@@ -142,6 +142,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSTokenFieldCell.h>
 #import <AppKit/NSToolbar.h>
 #import <AppKit/NSToolbarItem.h>
+#import <AppKit/NSToolbarItemGroup.h>
 #import <AppKit/NSTreeController.h>
 #import <AppKit/NSUserDefaultsController.h>
 #import <AppKit/NSView.h>

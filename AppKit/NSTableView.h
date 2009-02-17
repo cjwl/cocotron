@@ -55,7 +55,6 @@ typedef enum {
    unsigned int _gridStyleMask;
 
    // temp ivars
-   int _numberOfRows;
    NSMutableArray *_selectedColumns;
    NSIndexSet *_selectedRowIndexes;
    int _clickedColumn, _clickedRow;
@@ -98,8 +97,8 @@ typedef enum {
 -(NSArray *)tableColumns;
 -(NSTableColumn *)tableColumnWithIdentifier:identifier;
 
--(NSRect)rectOfRow:(int)row;
--(NSRect)rectOfColumn:(int)column;
+-(NSRect)rectOfRow:(NSInteger)row;
+-(NSRect)rectOfColumn:(NSInteger)column;
 -(NSRange)rowsInRect:(NSRect)rect;
 -(NSRange)columnsInRect:(NSRect)rect;
 -(int)rowAtPoint:(NSPoint)point;

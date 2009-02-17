@@ -102,15 +102,19 @@ NSString *NSNibTopLevelObjects=@"NSNibTopLevelObjects";
     else
         [topLevelObjects makeObjectsPerformSelector:@selector(retain)];
     
-    allObjects=[[unarchiver allObjects] arrayByAddingObjectsFromArray:[nameTable allValues]];
+    allObjects=[unarchiver allObjects];
+    // We do not need to add the objects from nameTable to allObjects as they get put into the uid->object table already
+    // Do we send awakeFromNib to objects in the nameTable *not* present in the nib ?
+
     count=[allObjects count];
 
     for(i=0;i<count;i++){
      id object=[allObjects objectAtIndex:i];
-
+     
      if([object respondsToSelector:@selector(awakeFromNib)])
       [object awakeFromNib];
     }
+
     for(i=0;i<count;i++){
      id object=[allObjects objectAtIndex:i];
 
