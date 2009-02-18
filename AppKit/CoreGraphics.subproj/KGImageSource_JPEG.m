@@ -9,6 +9,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 /*  JPEG decode is based on the public domain implementation by Sean Barrett  http://www.nothings.org/stb_image.c  V 1.14 */
 
 #import "KGImageSource_JPEG.h"
+#import "KGImageSource_TIFF.h"
 #import <Foundation/NSString.h>
 #import <Foundation/NSData.h>
 #import "KGDataProvider.h"
@@ -651,8 +652,23 @@ static int process_marker(jpeg *z, int m)
          return L==0;
    }
    // check for comment block or APP blocks
+
    if ((m >= 0xE0 && m <= 0xEF) || m == 0xFE) {
-      skip(&z->s, get16(&z->s)-2);
+     int size=get16(&z->s);
+
+// in progress
+// Exif is stored as an embedded TIFF file 
+      if(m==0xE1){
+#if 0
+       int i;
+       NSData *data=[NSData dataWithBytes:z->s.img_buffer+6 length:size-6];
+       
+       KGImageSource *tiffSource=[[KGImageSource_TIFF alloc] initWithData:data options:nil];
+       KGImage       *image=[tiffSource imageAtIndex:0 options:nil];
+#endif       
+       skip(&z->s, size-2);
+      }
+      skip(&z->s, size-2);
       return 1;
    }
    return 0;

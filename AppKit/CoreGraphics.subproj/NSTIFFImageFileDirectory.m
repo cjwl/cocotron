@@ -8,7 +8,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import "NSTIFFImageFileDirectory.h"
 #import "NSTIFFReader.h"
-#import "KGPDFFilter.h"
 #import <ApplicationServices/ApplicationServices.h>
 
 @implementation NSTIFFImageFileDirectory
@@ -204,6 +203,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       // ignore
       break;
 
+     case NSTIFFTagExifIFD:
+      break;
+      
+     case NSTIFFTagGPSIFD:
+      break;
+
      default:
       if([reader tracingEnabled])
        NSLog(@"TIFF trace: unknown tag=%d",tag);
@@ -376,8 +381,9 @@ static void decode_R8_G8_B8_Afill(const unsigned char *stripBytes,unsigned byteC
       return NO;
      }
      NSData *data=[NSData dataWithBytes:bytes+offset length:byteCount];
-     
-     data=[KGPDFFilter LZWDecode_data:data parameters:nil];
+   
+    //   LZWDecode_data not present anyway
+    // data=[KGPDFFilter LZWDecode_data:data parameters:nil];
      if(_samplesPerPixel==4)
       decode_R8_G8_B8_A8([data bytes],[data length],pixelBytes,bytesPerRow,&pixelBytesRow,_imageLength);
      else

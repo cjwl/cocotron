@@ -14,6 +14,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @class NSData,NSDictionary;
 
+#define STBI_NO_STDIO
+
 typedef unsigned char uint8;
 typedef unsigned short uint16;
 typedef   signed short  int16;

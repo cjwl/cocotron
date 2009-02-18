@@ -225,6 +225,7 @@ static KGPaint *paintFromColor(KGColor *color){
     }
    }
 
+   KGRasterizeSetPaint(self,nil);
    [vgPath release];
    KGRasterizerClear(self);
    [_path reset];
