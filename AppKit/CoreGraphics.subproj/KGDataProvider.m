@@ -97,15 +97,32 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(NSInteger)getBytes:(void *)bytes range:(NSRange)range {
-   NSInteger check=-1;
-   NSNumber *number=[[NSNumber alloc] initWithInt:range.location];
-   
+   if(_data!=nil){
+    NSUInteger length=[_data length];
+    
+    if(NSMaxRange(range)<=length){
+     [_data getBytes:bytes range:range];
+     return range.length;
+    }
+    else if(range.location<length){
+     range.length=length-range.location;
+     [_data getBytes:bytes range:range];
+     return range.length;
+    }
+    else
+     return -1;
+   }
+   else {
+    NSInteger check=-1;
+    NSNumber *number=[[NSNumber alloc] initWithInt:range.location];
+
    if([_inputStream setProperty:number forKey:NSStreamFileCurrentOffsetKey])
     check=[_inputStream read:bytes maxLength:range.length];
 
-   [number release];
-   
-   return check;
+    [number release];
+    
+    return check;
+   }
 }
 
 -(NSData *)copyData {

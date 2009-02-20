@@ -517,7 +517,7 @@
    [KGImageSource newImageSourceWithData:data options:opts]
 
 #define CGImageSourceCreateImageAtIndex(self,index,opts) \
-   [self imageAtIndex:index options:opts]
+   [self createImageAtIndex:index options:opts]
 
 
 // pdf document

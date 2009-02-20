@@ -83,6 +83,8 @@ static CGColorRef cgColorFromColor(NSColor *color){
    NSData   *data=[NSData dataWithContentsOfFile:path];
    CGImageSourceRef source=CGImageSourceCreateWithData((CFDataRef)data,nil);
    _resamplingImage=CGImageSourceCreateImageAtIndex(source,0,nil);
+   if(_resamplingImage==nil)
+    NSLog(@"no image! path=%@ %d",path,[data length]);
    [(id)source release];
    return self;
 }

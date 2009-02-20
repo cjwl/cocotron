@@ -47,16 +47,22 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -propertyForKey:(NSString *)key {
+#if 0
+// As of 10.5, data based streams do not implement NSStreamFileCurrentOffsetKey
    if([key isEqualToString:NSStreamFileCurrentOffsetKey])
     return [NSNumber numberWithLongLong:_position];
+#endif
    return nil;
 }
 
 -(BOOL)setProperty:property forKey:(NSString *)key {
+#if 0
+// As of 10.5, data based streams do not implement NSStreamFileCurrentOffsetKey
    if([key isEqualToString:NSStreamFileCurrentOffsetKey]){
     _position=[property longLongValue];
     return YES;
    }
+#endif
    return NO;
 }
 
