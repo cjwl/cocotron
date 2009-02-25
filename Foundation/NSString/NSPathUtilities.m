@@ -61,14 +61,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
    [self getCharacters:buffer];
 
-   if(length>0 && ISSLASH(buffer[length-1]))
+   if(length>1 && ISSLASH(buffer[length-1]))
     length--;
 
    for(i=length;--i>=0;)
     if(ISSLASH(buffer[i]) && i<length-1)
      return [NSString stringWithCharacters:buffer+i+1 length:(length-i)-1];
 
-   return self;
+   return [NSString stringWithCharacters:buffer length:length];
 }
 
 -(NSString *)pathExtension {
@@ -94,7 +94,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(NSString *)stringByAppendingPathComponent:(NSString *)other {
    unsigned selfLength=[self length];
    if(!selfLength)
-      return [[other copy] autorelease];
+    if(other)
+     return [NSString stringWithString:other];
+    else
+     return @"";
 
    unsigned otherLength=[other length];
    unsigned totalLength=selfLength+1+otherLength;
@@ -168,8 +171,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
    [self getCharacters:buffer];
 
-   if(length==0 || buffer[0]!='~')
-    return self;
+   if(length==0)
+    return @"";
+   else if(buffer[0]!='~')
+    return [NSString stringWithCharacters:buffer length:length];
 
    for(i=1;!ISSLASH(buffer[i]) && i<length;i++)
     ;
@@ -182,7 +187,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    }
 
    if(homedir==nil)
-    return self;
+    return [NSString stringWithCharacters:buffer length:length];
 
    rest=[NSString stringWithCharacters:buffer+i length:length-i];
 
@@ -195,18 +200,18 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    unichar   buffer[length],homebuffer[homelength];
    int       i;
 
-   if(homedir==nil)
-    return self;
-
    [self getCharacters:buffer];
+   if(homedir==nil)
+    return [NSString stringWithCharacters:buffer length:length];
+
    [homedir getCharacters:homebuffer];
 
    if(length<homelength || (length>homelength && !ISSLASH(buffer[homelength])))
-    return self;
+    return [NSString stringWithCharacters:buffer length:length];
 
    for(i=0;i<homelength;i++)
     if(buffer[i]!=homebuffer[i])
-     return self;
+     return [NSString stringWithCharacters:buffer length:length];
 
    rest=[NSString stringWithCharacters:buffer+homelength
                                 length:length-homelength];
@@ -217,7 +222,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(NSString *)stringByStandardizingPath {
     unsigned length = [self length];
     if (length < 1)
-        return self;
+        return @"";
     
     // expand tilde
     NSString *standardPath = self;
