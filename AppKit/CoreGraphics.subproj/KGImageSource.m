@@ -14,7 +14,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @implementation KGImageSource
 
 +(KGImageSource *)newImageSourceWithDataProvider:(KGDataProvider *)provider options:(NSDictionary *)options {
-   static NSString *classes[]={
+   NSString *classes[]={
     @"KGImageSource_PNG",
     @"KGImageSource_TIFF",
     @"KGImageSource_JPEG",

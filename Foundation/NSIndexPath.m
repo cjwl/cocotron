@@ -15,16 +15,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @implementation NSIndexPath
 
-#define PATH_CACHE_SIZE 512 // adjust, if not suitable in praxis
-
-static NSMutableSet* pathCache = nil;
-
-+ (void) initialize {
-	if (pathCache == nil) {
-		pathCache = [[NSMutableSet alloc] init];
-	}
-}
-
 + (NSIndexPath*) indexPathWithIndex: (unsigned int) index {
 	return [[[self alloc] initWithIndexes: &index length: 1] autorelease];
 }
@@ -49,26 +39,9 @@ static NSMutableSet* pathCache = nil;
 			_hash = _hash*2 + _indexes[i];
 		}
 		_hash = 2*_hash + _length;
-
-		id cachedInstance = [pathCache member: self];
-		_indexes = NULL; // make sure, free() is not called
-
-		if (cachedInstance) {
-			[self release];
-			return cachedInstance;
-		}
-		
-		// copy indexes only, if no cached instance exists:
-		_indexes = malloc(length*sizeof(unsigned int));
+   		_indexes = malloc(length*sizeof(unsigned int));
 		memcpy(_indexes, indexes, length*sizeof(unsigned int));
-		
-		// Make sure, pathCache does not grow larger than 1024 elements. Should be do that? 
-		if ([pathCache count] >= PATH_CACHE_SIZE) {
-			[pathCache removeObject: [pathCache anyObject]];
-		}
-		
-		[pathCache addObject: self];
-	}
+   	}
 	return self;
 }
 

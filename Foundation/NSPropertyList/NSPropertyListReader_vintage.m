@@ -15,20 +15,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSScanner.h>
 #import <Foundation/NSNumber.h>
 
-static Class NSStringClass=nil;
-static Class NSMutableDictionaryClass=nil;
-static Class NSMutableArrayClass=nil;
-
 @implementation NSPropertyListReader_vintage
-
-+(void)initialize {
-   if(self==[NSPropertyListReader_vintage class])
-   {
-      NSStringClass=[NSString class];
-      NSMutableDictionaryClass=[NSMutableDictionary class];
-      NSMutableArrayClass=[NSMutableArray class];
-   }
-}
 
 -initWithData:(NSData *)data {
    _data=[data retain];
@@ -46,6 +33,10 @@ static Class NSMutableArrayClass=nil;
    _index=0;
    _lineNumber=1;
 
+   _stringClass=[NSString class];
+   _dictionaryClass=[NSMutableDictionary class];
+   _arrayClass=[NSMutableArray class];
+   
    return self;
 }
 
@@ -128,7 +119,7 @@ static inline void appendCharacter(NSPropertyListReader_vintage *self,unsigned c
 
 -(id)convertValue:(id)value
 {
-   if(![value isKindOfClass:NSStringClass])
+   if(![value isKindOfClass:_stringClass])
       return value;
    
    id scanner=[NSScanner scannerWithString:value];
@@ -220,17 +211,17 @@ static inline void appendCharacter(NSPropertyListReader_vintage *self,unsigned c
 
        object=popObject(self);
        key=popObject(self);
-       if(![key isKindOfClass:NSStringClass]){
+       if(![key isKindOfClass:_stringClass]){
         [key release];
         [object release];
-        return [self internalError:NSStringClass];
+        return [self internalError:_stringClass];
        }
 
        dictionary=topObject(self);
-       if(![dictionary isKindOfClass:NSMutableDictionaryClass]){
+       if(![dictionary isKindOfClass:_dictionaryClass]){
         [key release];
         [object release];
-        return [self internalError:NSMutableDictionaryClass];
+        return [self internalError:_dictionaryClass];
        }
        [dictionary setObject:[self convertValue:object] forKey:key];
        [key release];
@@ -241,8 +232,8 @@ static inline void appendCharacter(NSPropertyListReader_vintage *self,unsigned c
        if(expect!=EXPECT_KEY)
         return [self parseError:expect:code info:info];
 
-       if(![topObject(self) isKindOfClass:NSMutableDictionaryClass])
-        return [self internalError:NSMutableDictionaryClass];
+       if(![topObject(self) isKindOfClass:_dictionaryClass])
+        return [self internalError:_dictionaryClass];
 
        expect=(_stackSize==1)?EXPECT_EOF:EXPECT_SEPARATOR;
       }
@@ -263,9 +254,9 @@ static inline void appendCharacter(NSPropertyListReader_vintage *self,unsigned c
        object=popObject(self);
 
        array=topObject(self);
-       if(![array isKindOfClass:NSMutableArrayClass]){
+       if(![array isKindOfClass:_arrayClass]){
         [object release];
-        return [self internalError:NSMutableArrayClass];
+        return [self internalError:_arrayClass];
        }
 
        [array addObject:[self convertValue:object]];
@@ -285,9 +276,9 @@ static inline void appendCharacter(NSPropertyListReader_vintage *self,unsigned c
         object=popObject(self);
 
        array=topObject(self);
-       if(![array isKindOfClass:NSMutableArrayClass]){
+       if(![array isKindOfClass:_arrayClass]){
         [object release];
-        return [self internalError:NSMutableArrayClass];
+        return [self internalError:_arrayClass];
        }
 
        if(object!=nil){

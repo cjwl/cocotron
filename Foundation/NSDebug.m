@@ -9,13 +9,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSDebug.h>
 #import <Foundation/NSString.h>
 
-#if 0
-#warning !!!!!!!!!!!!!!!!ZOMBIES ENABLED!!!!!!!!!!!!!!!!
-BOOL NSZombieEnabled=YES;
-#else
 BOOL NSZombieEnabled=NO;
-#endif
-
 BOOL NSDebugEnabled=NO;
 
 const char* _NSPrintForDebugger(id object) {

@@ -128,7 +128,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	   struct objc_method_list *newMethodList
 	       = malloc(sizeof(struct objc_method_list)
 			+ [newMethods count] * sizeof(struct objc_method));
-	   newMethodList->method_next = NULL;
 	   newMethodList->method_count = [newMethods count];
 	   NSInteger i = 0;
 	   for(NSValue *methodValue in newMethods) {

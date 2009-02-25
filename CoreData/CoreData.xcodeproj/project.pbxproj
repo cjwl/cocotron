@@ -95,6 +95,20 @@
 			remoteGlobalIDString = FED70FB70C3C09C7000CBE5B;
 			remoteInfo = "Foundation-Darwin-ppc";
 		};
+		FE6E110C0F4F8F6600C65544 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E2F48FA10DC80FAE00310CCE /* AppKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = C889770C0EA0BF3100D0A0A2 /* AppKit.framework */;
+			remoteInfo = "AppKit-Linux-i386";
+		};
+		FE6E110E0F4F8F6600C65544 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E2F48FA10DC80FAE00310CCE /* AppKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = C8A2E5730F07EA1F0054397C /* AppKit.framework */;
+			remoteInfo = "AppKit-Darwin-i386";
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -252,6 +266,8 @@
 			isa = PBXGroup;
 			children = (
 				E2F48FA60DC80FAE00310CCE /* AppKit.framework */,
+				FE6E110D0F4F8F6600C65544 /* AppKit.framework */,
+				FE6E110F0F4F8F6600C65544 /* AppKit.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -385,6 +401,20 @@
 			fileType = wrapper.framework;
 			path = Foundation.framework;
 			remoteRef = FE59F3170D54301D00D54A25 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FE6E110D0F4F8F6600C65544 /* AppKit.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = AppKit.framework;
+			remoteRef = FE6E110C0F4F8F6600C65544 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FE6E110F0F4F8F6600C65544 /* AppKit.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = AppKit.framework;
+			remoteRef = FE6E110E0F4F8F6600C65544 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */

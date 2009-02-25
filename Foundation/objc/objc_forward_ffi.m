@@ -290,7 +290,6 @@ invocation_closure(ffi_cif* cif, void* result, void** args, void* userdata)
 @implementation NSMethodSignature (FFIClosure)
 -(void)_deallocateClosure
 {
-	NSLog(@"deallocate closure");
 	if(((ffi_cif*)_closureInfo)->arg_types)
 		NSZoneFree(NULL, ((ffi_cif*)_closureInfo)->arg_types);
 	if(_closureInfo)

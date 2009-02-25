@@ -8,6 +8,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <ApplicationServices/CGGeometry.h>
 
-CGRect CGRectZero={{0,0},{0,0}};
-CGPoint CGPointZero={0,0};
-CGSize CGSizeZero={0,0};
+const CGRect CGRectZero={{0,0},{0,0}};
+const CGPoint CGPointZero={0,0};
+const CGSize CGSizeZero={0,0};

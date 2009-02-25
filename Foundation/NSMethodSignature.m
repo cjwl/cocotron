@@ -16,48 +16,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @implementation NSMethodSignature
 
-static unsigned stringHash(NSMapTable *table,const void *data){
-   const char *s=data;
-
-   if(s!=NULL)
-    return NSStringHashZeroTerminatedASCII(s);
-
-   return 0;
-}
-
-static BOOL stringIsEqual(NSMapTable *tabl,const void *data1,const void *data2){
-    if (data1 == data2)
-        return YES;
-
-    if (!data1)
-        return ! strlen ((char *) data2);
-
-    if (!data2)
-        return ! strlen ((char *) data1);
-
-    if (((char *) data1)[0] != ((char *) data2)[0])
-        return NO;
-
-    return (strcmp ((char *) data1, (char *) data2)) ? NO : YES;
-}
-
-static NSMapTableKeyCallBacks keyCallBacks = {
-  stringHash,stringIsEqual,NULL,NULL,NULL,NULL
-};
-
-static NSMapTable *_cache=NULL;
-
-+(void)initialize {
-   if(self==[NSMethodSignature class])
-    _cache=NSCreateMapTable(keyCallBacks,NSObjectMapValueCallBacks,0);
-}
-
 -initWithTypes:(const char *)types {
-   const char *next=types,*last=types;
+   const char *next,*last;
    unsigned    size,align;
    BOOL        first=YES;
 
-   _typesCString=types;
+    // not guaranteed that types is static
+   _typesCString=NSZoneMalloc(NULL,strlen(types)+1);
+   strcpy(_typesCString,types);
+   next=last=_typesCString;
    _returnType=nil;
    _types=[[NSMutableArray allocWithZone:NULL] init];
 
@@ -84,6 +51,7 @@ static NSMapTable *_cache=NULL;
 }
 
 -(void)dealloc {
+   NSZoneFree(NULL,_typesCString);
    [_returnType release];
    [_types release];
 	if([self respondsToSelector:@selector(_deallocateClosure)])
@@ -91,32 +59,8 @@ static NSMapTable *_cache=NULL;
    [super dealloc];
 }
 
-NSMethodSignature *NSMethodSignatureWithTypes(const char *types) {
-   NSMethodSignature *entry;
-   char              *typesCopy;
-      
-   if(_cache==NULL)
-    [NSMethodSignature class]; // initialize
-
-   entry=NSMapGet(_cache,types);
-
-   if(entry==nil){
-    entry=[[NSMethodSignature allocWithZone:NULL] initWithTypes:types];
-
-    // not guaranteed that types is static
-    typesCopy=NSZoneMalloc(NULL,strlen(types)+1);
-    strcpy(typesCopy,types);
-
-    NSMapInsert(_cache,typesCopy,entry);
-
-    [entry release];
-   }
-
-   return entry;
-}
-
 +(NSMethodSignature *)signatureWithObjCTypes:(const char *)types {
-   return NSMethodSignatureWithTypes(types);
+   return [[[NSMethodSignature allocWithZone:NULL] initWithTypes:types] autorelease];
 }
 
 -(NSString *)description {
@@ -124,7 +68,7 @@ NSMethodSignature *NSMethodSignatureWithTypes(const char *types) {
 }
 
 -(unsigned)hash {
-   return stringHash(NULL,_typesCString);
+   return NSStringHashZeroTerminatedASCII(_typesCString);
 }
 
 -(BOOL)isEqual:otherObject {

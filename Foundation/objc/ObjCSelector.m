@@ -16,10 +16,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #define INITIAL_SELECTOR_TABLE_SIZE 4096 // Big System has about 3700 selectors
 
-int selectorCount=0;
-
 static OBJCHashTable *nameToNumber=NULL;
-
 
 SEL OBJCRegisterSelectorName(const char *name){
   SEL result;
@@ -30,7 +27,6 @@ SEL OBJCRegisterSelectorName(const char *name){
    result=(SEL)OBJCHashValueForKey(nameToNumber,name);
 
    if(result==OBJCNilSelector){
-    selectorCount++;
     result=(SEL)OBJCHashInsertValueForKey(nameToNumber,name, (char*)name);
    }
 

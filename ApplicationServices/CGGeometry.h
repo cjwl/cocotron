@@ -15,9 +15,9 @@ typedef NSPoint CGPoint;
 typedef NSSize CGSize;
 typedef NSRect CGRect;
 
-COREGRAPHICS_EXPORT CGRect CGRectZero;
-COREGRAPHICS_EXPORT CGPoint CGPointZero;
-COREGRAPHICS_EXPORT CGSize CGSizeZero;
+COREGRAPHICS_EXPORT const CGRect CGRectZero;
+COREGRAPHICS_EXPORT const CGPoint CGPointZero;
+COREGRAPHICS_EXPORT const CGSize CGSizeZero;
 
 static inline CGRect CGRectMake(CGFloat x, CGFloat y, CGFloat width, CGFloat height) {
    return NSMakeRect(x,y,width,height);

@@ -10,12 +10,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <sys/unistd.h>
 
 NSUInteger NSPageSize(void) {
-   static size_t pageSize = 0;
-
-   if (pageSize == 0)
-       pageSize = getpagesize();
-
-   return pageSize;
+   return getpagesize();
 }
 
 NSUInteger NSRealMemoryAvailable(void) 

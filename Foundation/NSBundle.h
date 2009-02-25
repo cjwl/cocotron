@@ -18,6 +18,7 @@ FOUNDATION_EXPORT NSString *NSLoadedClasses;
    NSString     *_resourcePath;
    NSDictionary *_infoDictionary;
    NSString     *_executablePath;
+   NSArray      *_lookInDirectories;
    BOOL          _isLoaded;
 }
 

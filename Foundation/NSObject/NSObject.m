@@ -19,8 +19,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSRaise.h>
 #import <Foundation/ObjCClass.h>
 
-extern NSMethodSignature *NSMethodSignatureWithTypes(const char *types);
-
 @interface NSInvocation(private)
 +(NSInvocation *)invocationWithMethodSignature:(NSMethodSignature *)signature arguments:(void *)arguments;
 @end
@@ -86,7 +84,7 @@ extern NSMethodSignature *NSMethodSignatureWithTypes(const char *types);
 +(NSMethodSignature *)instanceMethodSignatureForSelector:(SEL)selector {
    const char *types=OBJCTypesForSelector(self,selector);
 
-   return (types==NULL)?(NSMethodSignature *)nil:NSMethodSignatureWithTypes(types);
+   return (types==NULL)?(NSMethodSignature *)nil:[NSMethodSignature signatureWithObjCTypes:types];
 }
 
 +(BOOL)resolveClassMethod:(SEL)selector {
@@ -184,7 +182,7 @@ extern NSMethodSignature *NSMethodSignatureWithTypes(const char *types);
 -(NSMethodSignature *)methodSignatureForSelector:(SEL)selector {
    const char *types=OBJCTypesForSelector(isa,selector);
 
-   return (types==NULL)?(NSMethodSignature *)nil:NSMethodSignatureWithTypes(types);
+   return (types==NULL)?(NSMethodSignature *)nil:[NSMethodSignature signatureWithObjCTypes:types];
 }
 
 -(void)forwardInvocation:(NSInvocation *)invocation {

@@ -19,8 +19,10 @@ static NSMutableDictionary* classDescriptionCache = nil;
 
 + (NSClassDescription*) classDescriptionForClass: (Class) class
 {
-       // @synchronized(self) { // should be in, but bus error in gcc
-               id result = [classDescriptionCache objectForKey:
+   id result;
+   
+        @synchronized(self) {
+               result = [classDescriptionCache objectForKey:
 NSStringFromClass(class)];
                if (!result) {
                        [[NSNotificationCenter defaultCenter] postNotificationName:
@@ -28,28 +30,28 @@ NSClassDescriptionNeededForClassNotification object: class];
                }
                result = [classDescriptionCache objectForKey:
 NSStringFromClass(class)];
-       //}
+       }
        return result;
 }
 
 + (void)invalidateClassDescriptionCache
 {
-       // @synchronized(self) { // should be in, but bus error in gcc
+        @synchronized(self) {
                [classDescriptionCache release];
                classDescriptionCache = nil;
-       //}
+       }
 }
 
 + (void) registerClassDescription: (NSClassDescription*)description
                                                 forClass: (Class) class
 {
-       // @synchronized(self) { // should be in, but bus error in gcc
+        @synchronized(self) {
                if (!classDescriptionCache) {
                        classDescriptionCache = [[NSMutableDictionary alloc] init];
                }
                [classDescriptionCache setObject: description forKey:
 NSStringFromClass(class)];
-       //}
+       }
 }
 
 -(NSArray *)attributeKeys {

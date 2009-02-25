@@ -52,7 +52,7 @@ typedef struct {
    RefCountBucket **buckets;
 } RefCountTable;
 
-OSSpinLock RefCountLock=0;
+static OSSpinLock RefCountLock=0;
 
 static inline RefCountTable *CreateRefCountTable() {
    RefCountTable *table;

@@ -5,8 +5,6 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
-
-// Original - David Young <daver@geeks.org>, Christopher Lloyd <cjwl@objc.net>
 #import <Foundation/ObjCClass.h>
 #import <Foundation/ObjCSelector.h>
 #import "Protocol.h"
@@ -128,23 +126,23 @@ static void OBJCRegisterSelectorsInClass(Class class) {
    }
 }
 
-static void OBJCInitializeCacheEntry(OBJCMethodCacheEntry *entry){
-   static struct objc_method empty={
-    0,NULL,NULL
-   };
-   
+static inline void OBJCInitializeCacheEntryOffset(OBJCMethodCacheEntry *entry){
    entry->offsetToNextEntry=-((long)entry);
-   entry->method=&empty;
 }
 
 static void OBJCCreateCacheForClass(Class class){
    if(class->cache==NULL){
+    static struct objc_method empty={
+     0,NULL,NULL
+    };
     int i;
     
     class->cache=NSZoneCalloc(NULL,1,sizeof(OBJCMethodCache));
     
     for(i=0;i<OBJCMethodCacheNumberOfEntries;i++){
-     OBJCInitializeCacheEntry(class->cache->table+i);
+     OBJCMethodCacheEntry *entry=class->cache->table+i;
+     OBJCInitializeCacheEntryOffset(entry);
+     entry->method=&empty;
     }
    }
 }
@@ -360,7 +358,7 @@ id OBJCMessageNil(id object,SEL message,...){
 static OBJCMethodCacheEntry *allocateCacheEntry(){
    OBJCMethodCacheEntry *result=NSZoneCalloc(NULL,1,sizeof(OBJCMethodCacheEntry));
    
-   OBJCInitializeCacheEntry(result);
+   OBJCInitializeCacheEntryOffset(result);
    
    return result;
 }

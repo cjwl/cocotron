@@ -26,6 +26,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
    unsigned _index;
    unsigned _lineNumber;
+   
+   Class _stringClass;
+   Class _dictionaryClass;
+   Class _arrayClass;
 }
 
 +(NSObject *)propertyListFromData:(NSData *)data;

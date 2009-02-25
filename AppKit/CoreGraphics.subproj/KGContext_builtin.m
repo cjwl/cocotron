@@ -39,7 +39,7 @@
 
 @implementation KGContext_builtin
 
-BOOL _isAvailable=NO;
+static BOOL _isAvailable=NO;
 
 +(void)initialize {
    _isAvailable=[[NSUserDefaults standardUserDefaults] boolForKey:@"CGEnableBuiltin"];

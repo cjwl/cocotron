@@ -26,7 +26,7 @@ typedef struct LockChain
 		struct LockChain *next;
 	} LockChain;
 
-LockChain *allLocks[NUM_CHAINS]={0};
+static LockChain *allLocks[NUM_CHAINS]={0};
 
 void _NSInitializeSynchronizedDirective()
 {

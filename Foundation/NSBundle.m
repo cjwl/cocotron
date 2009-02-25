@@ -389,18 +389,18 @@ static NSMapTable *pathToObject=NULL;
    return 0;
 }
 
-static NSArray *_sharedLookInDirectoriesArray = nil;
-
 -(NSArray *)lookInDirectories {
-   if (_sharedLookInDirectoriesArray == nil)
+   if (_lookInDirectories == nil)
    {
+    // FIXME: This should be based on language preference order, and tested for presence in bundle before adding
+    
       NSString *language = [[NSLocale currentLocale] objectForKey:NSLocaleLanguageCode];
       if ([language isEqualToString:@"English"])
-         _sharedLookInDirectoriesArray = [[NSArray arrayWithObjects:@"English.lproj", @"", nil] retain];
+         _lookInDirectories = [[NSArray arrayWithObjects:@"English.lproj", @"", nil] retain];
       else
-         _sharedLookInDirectoriesArray = [[NSArray arrayWithObjects:[language stringByAppendingPathExtension:@"lproj"], @"English.lproj", @"", nil] retain];
+         _lookInDirectories = [[NSArray arrayWithObjects:[language stringByAppendingPathExtension:@"lproj"], @"English.lproj", @"", nil] retain];
    }
-   return _sharedLookInDirectoriesArray;
+   return _lookInDirectories;
 }
 
 -(NSString *)pathForResourceFile:(NSString *)file inDirectory:(NSString *)directory {
