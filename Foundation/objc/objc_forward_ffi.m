@@ -290,7 +290,7 @@ invocation_closure(ffi_cif* cif, void* result, void** args, void* userdata)
 @implementation NSMethodSignature (FFIClosure)
 -(void)_deallocateClosure
 {
-	if(((ffi_cif*)_closureInfo)->arg_types)
+	if(_closureInfo && ((ffi_cif*)_closureInfo)->arg_types)
 		NSZoneFree(NULL, ((ffi_cif*)_closureInfo)->arg_types);
 	if(_closureInfo)
 		NSZoneFree(NULL, _closureInfo);
@@ -374,6 +374,7 @@ id _objc_throwDoesNotRecognizeException(id object, SEL selector)
                     object, 
                     selector,
                     @"Unrecognized selector sent to %p. Break on _objc_throwDoesNotRecognizeException to catch.", object);
+   return nil;
 }
 
 IMP objc_forward_ffi(id object, SEL selector)
