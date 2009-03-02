@@ -18,21 +18,38 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSSocket.h>
 #import <Foundation/NSSelectInputSource.h>
 #import <Foundation/NSPipe.h>
+#import <Foundation/NSRaise.h>
+
+@class NSCancelInputSource;
 
 @implementation NSRunLoopState
+
++(id)cancelSource {
+   // override in NSCancelInputSource_platform
+   NSRaiseException(NSInternalInconsistencyException, self, _cmd, @"No cancel source defined");
+   return nil;
+}
 
 -init {
    _inputSourceSet=[[[NSPlatform currentPlatform] synchronousInputSourceSet] retain];
    _asyncInputSourceSets=[[[NSPlatform currentPlatform] asynchronousInputSourceSets] retain];
    _timers=[NSMutableArray new];
+
+   _cancelSource=[[isa cancelSource] retain];
+   [self addInputSource:_cancelSource];
    return self;
 }
 
 -(void)dealloc {
+   [_cancelSource release];
    [_inputSourceSet release];
    [_asyncInputSourceSets release];
    [_timers release];
    [super dealloc];
+}
+
+-(id)cancelSource {
+   return _cancelSource;
 }
 
 -(void)addTimer:(NSTimer *)timer {
@@ -84,7 +101,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     else
      limit=[limit earlierDate:[timer fireDate]];
    }
-
+   
    if(limit==nil)
     limit=[_inputSourceSet limitDateForMode:mode];
 
@@ -148,7 +165,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     
     for(i=0;i<count;i++)
      [[_asyncInputSourceSets objectAtIndex:i] waitInBackgroundInMode:mode];
-
+      
     [_inputSourceSet waitForInputInMode:mode beforeDate:date];
    }
 }

@@ -53,6 +53,10 @@ static inline void byteZero(void *vsrc,int size){
    return self;
 }
 
+-initWithFileDescriptor:(int)fd {
+   return [self initWithDescriptor:fd];
+}
+
 +socketWithDescriptor:(int)descriptor {
    return [[[self alloc] initWithDescriptor:descriptor] autorelease];
 }
@@ -88,14 +92,20 @@ static inline void byteZero(void *vsrc,int size){
 }
 
 -initConnectedToSocket:(NSSocket **)otherX {
-   // socketpair when we need it
-   [self dealloc];
-   *otherX=nil;
-   return nil;
+   int pipes[2];
+   pipe(pipes);
+   
+   *otherX=[[[isa alloc] initWithDescriptor:pipes[0]] autorelease];
+
+   return [self initWithDescriptor:pipes[1]];
 }
 
 
 -(int)descriptor {
+   return _descriptor;
+}
+
+-(int)fileDescriptor {
    return _descriptor;
 }
 

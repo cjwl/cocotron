@@ -21,7 +21,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSData.h>
 
 extern NSString *NSPlatformClassName;
-static NSMutableDictionary *cancelEvents=nil;
 
 @implementation NSPlatform
 
@@ -190,39 +189,4 @@ static NSMutableDictionary *cancelEvents=nil;
      OBJCLog("NSZombieEnabled=YES");
    }
 }
-
-
-
--(void)addCancelEventToRunloopMode:(NSString*)mode {
-   @synchronized((id)&cancelEvents) {
-      if(!cancelEvents) {
-         cancelEvents=[NSMutableDictionary new];
-      }
-      
-      if([cancelEvents objectForKey:mode])
-         return;
-      
-      id cancelPipe=[NSPipe pipe];
-      [cancelEvents setObject:cancelPipe forKey:mode];
-      [[cancelPipe fileHandleForReading] readInBackgroundAndNotifyForModes:[NSArray arrayWithObject:mode]];
-      [[NSNotificationCenter defaultCenter] addObserver:self 
-                                               selector:@selector(_cancelPipeDidFinishReading:) 
-                                                   name:NSFileHandleReadCompletionNotification
-                                                 object:[cancelPipe fileHandleForReading]];
-   }
-}
-
--(void)_cancelPipeDidFinishReading:(id)notif {
-   id handle=[notif object];
-   id mode=[[NSRunLoop currentRunLoop] currentMode];
-   [handle readInBackgroundAndNotifyForModes:[NSArray arrayWithObject:mode]];
-}
-
--(void)cancelForRunloopMode:(NSString*)mode {
-   @synchronized((id)&cancelEvents) {
-      id pipe=[cancelEvents objectForKey:mode];
-      [[pipe fileHandleForWriting] writeData:[NSData dataWithBytes:[mode cString] length:[mode length]]]; 
-   }
-}
-
 @end

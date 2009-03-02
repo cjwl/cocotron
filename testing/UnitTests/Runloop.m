@@ -11,49 +11,87 @@
 #define NUM_ITERATIONS 1000
 
 @interface WorkerThread : NSThread
+{
+   int _loopCount;
+   NSConditionLock *_condition;
+}
+
 @end
 
 @implementation WorkerThread
+-(id)init {
+   if(self=[super init]) {
+      _condition = [[NSConditionLock alloc] initWithCondition:0];
+   }
+   return self;
+}
+
+-(void)dealloc {
+   [_condition release];
+   [super dealloc];
+}
+
 -(void)main
 {
 	id pool=[NSAutoreleasePool new];
 	NSRunLoop *runLoop=[NSRunLoop currentRunLoop];
+   [_condition lockWhenCondition:0];
+   [_condition unlockWithCondition:1];
 	while(![self isCancelled])
 	{
 		id pool2=[NSAutoreleasePool new];
-		[runLoop run];
+		[runLoop runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
+      __sync_add_and_fetch(&_loopCount, 1);
 		[pool2 drain];
 	}
 	[pool drain];
+   [_condition lockWhenCondition:1];
+   [_condition unlockWithCondition:0];
+}
+
+-(void)waitUntilRunning {
+   [_condition lockWhenCondition:1];
+   [_condition unlock];
+}
+
+-(void)waitUntilStopped {
+   [_condition lockWhenCondition:0];
+   [_condition unlock];
+}
+
+
+-(int)loopCount {
+   return _loopCount;
 }
 @end
 
 @implementation Runloop
 -(void)setUp
 {
-	workerThread=[WorkerThread new];
-	[workerThread start];
-	jobs=[NSMutableArray new];
-	[NSThread sleepUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.5]];
+	_workerThread=[WorkerThread new];
+	[_workerThread start];
+	_jobs=[NSMutableArray new];
+	[_workerThread waitUntilRunning];
 }
 
 -(void)tearDown
 {
-	[workerThread cancel];
-	[NSThread sleepUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.5]];
-	[workerThread release];
-	[jobs release];
-	jobs=nil;
+	[_workerThread cancel];
+   [self performSelector:@selector(self) onThread:_workerThread withObject:nil waitUntilDone:NO];
+	[_workerThread waitUntilStopped];
+	[_workerThread release];
+	[_jobs release];
+	_jobs=nil;
 }
 
 -(void)doJobOnThread:(id)job
 {
-	@synchronized(jobs)
+	@synchronized(_jobs)
 	{
-		[jobs removeObject:job];
+		[_jobs removeObject:job];
 	}
-	if([NSThread currentThread]!=workerThread)
-		wrongThread=YES;
+	if([NSThread currentThread]!=_workerThread)
+		_wrongThread=YES;
 }
 
 -(void)doNothing
@@ -63,21 +101,22 @@
 
 -(void)testPerformOnThread
 {
+   STAssertEquals([_workerThread loopCount], 0, nil);
 	for(int i=0; i<NUM_ITERATIONS; i++)
 	{
-		@synchronized(jobs)
+		@synchronized(_jobs)
 		{
-			[jobs addObject:[NSNumber numberWithInt:i]];
+			[_jobs addObject:[NSNumber numberWithInt:i]];
 		}
-		[self performSelector:@selector(doJobOnThread:) onThread:workerThread withObject:[NSNumber numberWithInt:i] waitUntilDone:NO];
+		[self performSelector:@selector(doJobOnThread:) onThread:_workerThread withObject:[NSNumber numberWithInt:i] waitUntilDone:NO];
 	}
 	
-	[self performSelector:@selector(doNothing) onThread:workerThread withObject:nil waitUntilDone:YES];
-
-	STAssertEquals(wrongThread, NO, nil);
-	@synchronized(jobs)
+	[self performSelector:@selector(doNothing) onThread:_workerThread withObject:nil waitUntilDone:YES];
+   
+	STAssertEquals(_wrongThread, NO, nil);
+	@synchronized(_jobs)
 	{
-		STAssertTrue([jobs count] == 0, nil);
+		STAssertTrue([_jobs count] == 0, nil);
 	}
 }
 
@@ -85,17 +124,25 @@
 {
 	for(int i=0; i<NUM_ITERATIONS; i++)
 	{
-		@synchronized(jobs)
+		@synchronized(_jobs)
 		{
-			[jobs addObject:[NSNumber numberWithInt:i]];
+			[_jobs addObject:[NSNumber numberWithInt:i]];
 		}
-		[self performSelector:@selector(doJobOnThread:) onThread:workerThread withObject:[NSNumber numberWithInt:i] waitUntilDone:YES];
-		STAssertTrue([jobs count] == 0, nil);
+		[self performSelector:@selector(doJobOnThread:) onThread:_workerThread withObject:[NSNumber numberWithInt:i] waitUntilDone:YES];
+		STAssertTrue([_jobs count] == 0, nil);
 	}
 	
-	[self performSelector:@selector(doNothing) onThread:workerThread withObject:nil waitUntilDone:YES];
-	STAssertEquals(wrongThread, NO, nil);
-	STAssertTrue([jobs count] == 0, nil);
+	[self performSelector:@selector(doNothing) onThread:_workerThread withObject:nil waitUntilDone:YES];
+	STAssertEquals(_wrongThread, NO, nil);
+	STAssertTrue([_jobs count] == 0, nil);
+}
+
+-(void)testRunloopSpinning {
+   int countBeforeWait=[_workerThread loopCount];
+   
+   [self performSelector:@selector(self) onThread:_workerThread withObject:nil waitUntilDone:YES];
+	[NSThread sleepUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.5]];
+   STAssertEqualsWithAccuracy([_workerThread loopCount], countBeforeWait, 5, nil);   
 }
 
 @end

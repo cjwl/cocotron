@@ -15,6 +15,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    NSInputSourceSet *_inputSourceSet;
    NSArray          *_asyncInputSourceSets;
    NSMutableArray   *_timers;
+   id                _cancelSource;
 }
 
 -(void)addTimer:(NSTimer *)timer;

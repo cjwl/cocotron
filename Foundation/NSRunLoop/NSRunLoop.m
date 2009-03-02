@@ -59,9 +59,8 @@ NSString *NSRunLoopCommonModes=@"NSRunLoopCommonModes";
    NSRunLoopState *state=NSMapGet(_modes,mode);
 
    if(state==nil){
-    state=[[NSRunLoopState new] autorelease];
-    NSMapInsert(_modes,mode,state);
-    [[NSPlatform currentPlatform] addCancelEventToRunloopMode:mode];
+      state=[[NSRunLoopState new] autorelease];
+      NSMapInsert(_modes,mode,state);
    }
 
    return state;
@@ -98,6 +97,10 @@ NSString *NSRunLoopCommonModes=@"NSRunLoopCommonModes";
    return _currentMode;
 }
 
+-(void)_cancelForMode:(id)mode {
+   [[[self stateForMode:mode] cancelSource] cancel];
+}
+
 -(NSDate *)limitDateForMode:(NSString *)mode {
    NSRunLoopState *state=[self stateForMode:mode];
    
@@ -108,9 +111,9 @@ NSString *NSRunLoopCommonModes=@"NSRunLoopCommonModes";
    }
    
    if([self _orderedPerforms])
-      [[NSPlatform currentPlatform] cancelForRunloopMode:mode];
+      [self _cancelForMode:mode];
    if([state fireTimers])
-      [[NSPlatform currentPlatform] cancelForRunloopMode:mode];
+      [self _cancelForMode:mode];
    [[NSNotificationQueue defaultQueue] asapProcessMode:mode];
 
    return [state limitDateForMode:mode];
@@ -208,7 +211,7 @@ NSString *NSRunLoopCommonModes=@"NSRunLoopCommonModes";
 	}
    for(id mode in modes)
    {
-      [[NSPlatform currentPlatform] cancelForRunloopMode:mode];
+      [self _cancelForMode:mode];
    }
 }
 

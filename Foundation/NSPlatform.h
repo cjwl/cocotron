@@ -62,9 +62,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(BOOL)writeContentsOfFile:(NSString *)path bytes:(const void *)bytes length:(unsigned)length atomically:(BOOL)atomically;
 
 -(void)checkEnvironmentKey:(NSString *)key value:(NSString *)value;
-
--(void)addCancelEventToRunloopMode:(NSString*)mode;
--(void)cancelForRunloopMode:(NSString*)mode;
 @end
 
 // These functions are implemented in the platform subproject
