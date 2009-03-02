@@ -8,14 +8,11 @@
 
 #import <Foundation/NSCancelInputSource_win32.h>
 #import <Foundation/NSRunLoopState.h>
-#import <Foundation/NSString.h>
 
 #import <windows.h>
 
 @implementation NSRunLoopState (NSCancelInputSourceOverrides)
 +(id)cancelSource {
-   NSLog(@"cancelSource");
-
    return [[NSCancelInputSource_win32 new] autorelease];
 }
 @end
@@ -29,12 +26,10 @@
 }
 
 -(void)handleMonitorIndicatesSignaled:(NSHandleMonitor_win32 *)monitor {
-   NSLog(@"reset");
    ResetEvent(_handle);
 }
 
 -(void)cancel {
-   NSLog(@"cancelled");
    SetEvent(_handle);
 }
 
