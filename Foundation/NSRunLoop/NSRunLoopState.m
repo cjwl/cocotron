@@ -22,6 +22,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @class NSCancelInputSource;
 
+@interface NSInputSource (Canceling)
+-(void)cancel;
+@end
+
 @implementation NSRunLoopState
 
 +(id)cancelSource {
@@ -48,8 +52,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [super dealloc];
 }
 
--(id)cancelSource {
-   return _cancelSource;
+-(void)wakeUp {
+   [_cancelSource cancel];
 }
 
 -(void)addTimer:(NSTimer *)timer {

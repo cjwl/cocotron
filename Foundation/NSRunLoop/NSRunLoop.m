@@ -97,8 +97,8 @@ NSString *NSRunLoopCommonModes=@"NSRunLoopCommonModes";
    return _currentMode;
 }
 
--(void)_cancelForMode:(id)mode {
-   [[[self stateForMode:mode] cancelSource] cancel];
+-(void)_wakeUp {
+   [[self stateForMode:_currentMode] wakeUp];
 }
 
 -(NSDate *)limitDateForMode:(NSString *)mode {
@@ -111,9 +111,9 @@ NSString *NSRunLoopCommonModes=@"NSRunLoopCommonModes";
    }
    
    if([self _orderedPerforms])
-      [self _cancelForMode:mode];
+      [self _wakeUp];
    if([state fireTimers])
-      [self _cancelForMode:mode];
+      [self _wakeUp];
    [[NSNotificationQueue defaultQueue] asapProcessMode:mode];
 
    return [state limitDateForMode:mode];
@@ -209,10 +209,7 @@ NSString *NSRunLoopCommonModes=@"NSRunLoopCommonModes";
 		}
 		[_orderedPerforms insertObject:perform atIndex:count+1];
 	}
-   for(id mode in modes)
-   {
-      [self _cancelForMode:mode];
-   }
+   [self _wakeUp];
 }
 
 -(void)cancelPerformSelector:(SEL)selector target:target argument:argument {
