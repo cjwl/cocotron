@@ -25,6 +25,11 @@
    return self;
 }
 
+-(void)dealloc {
+   CloseHandle(_handle);
+   [super dealloc];
+}
+
 -(void)handleMonitorIndicatesSignaled:(NSHandleMonitor_win32 *)monitor {
    ResetEvent(_handle);
 }
