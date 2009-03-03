@@ -18,10 +18,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)invalidate {
 }
 
--(NSDate *)limitDateForMode:(NSString *)mode {
-   return nil;
-}
-
 -(BOOL)processInputImmediately {
    return NO;
 }

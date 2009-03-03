@@ -37,13 +37,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return [source isKindOfClass:[NSSelectInputSource class]];
 }
 
--(NSDate *)limitDateForMode:(NSString *)mode {
-   if([[self validInputSources] count]>0)
-    return [NSDate distantFuture];
-
-   return [super limitDateForMode:mode];
-}
-
 -(void)changingIntoMode:(NSString *)mode {
    [_outputSources removeAllObjects];
    [_outputSet autorelease];

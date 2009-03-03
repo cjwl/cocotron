@@ -5,8 +5,6 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
-
-// Original - Christopher Lloyd <cjwl@objc.net>
 #import <Foundation/NSHandleMonitorSet_win32.h>
 #import <Foundation/NSHandleMonitor_win32.h>
 #import <Foundation/NSPlatform_win32.h>
@@ -33,20 +31,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)dealloc {
    [_eventInputSource release];
    [super dealloc];
-}
-
--(BOOL)willAcceptInputForMode:(NSString *)mode {
-   if(_eventInputSource!=nil)
-    return YES;
-
-   return ([_inputSources count]>0)?YES:NO;
-}
-
--(NSDate *)limitDateForMode:(NSString *)mode {
-   if([self willAcceptInputForMode:mode])
-    return [NSDate distantFuture];
-
-   return [super limitDateForMode:mode];
 }
 
 -(unsigned)count {
@@ -151,7 +135,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(BOOL)waitForInputInMode:(NSString *)mode beforeDate:(NSDate *)date {
-   if([self willAcceptInputForMode:mode]){
+   if([[self validInputSources] count]>0){
     NSHandleMonitor_win32 *monitor=[self waitForHandleActivityBeforeDate:date mode:mode];
 
     [monitor notifyDelegateOfCurrentActivity];

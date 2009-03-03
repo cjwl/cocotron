@@ -15,8 +15,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(BOOL)isValid;
 -(void)invalidate;
 
--(NSDate *)limitDateForMode:(NSString *)mode;
-
 -(BOOL)processInputImmediately;
 
 @end

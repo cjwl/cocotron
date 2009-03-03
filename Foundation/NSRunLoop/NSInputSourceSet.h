@@ -23,8 +23,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(NSSet *)validInputSources;
 
--(NSDate *)limitDateForMode:(NSString *)mode;
-
 -(BOOL)immediateInputInMode:(NSString *)mode;
 
 -(void)changingIntoMode:(NSString *)mode;
