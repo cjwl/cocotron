@@ -61,7 +61,7 @@
    _conditionWasBroadcast=_numberOfWaiters>0;
 
    if(_conditionWasBroadcast) {
-      ReleaseSemaphore(_semaphore, 1, 0);
+      ReleaseSemaphore(_semaphore, _numberOfWaiters, 0);
       LeaveCriticalSection(&_waitersNumber);
       WaitForSingleObject(_waitersDone, INFINITE);
       _conditionWasBroadcast=NO;
