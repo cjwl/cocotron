@@ -1649,6 +1649,16 @@
 		FEA9D0930D16C55E00123D51 /* NSPropertyListReader_binary1.m in Sources */ = {isa = PBXBuildFile; fileRef = FEA9D0890D16C55E00123D51 /* NSPropertyListReader_binary1.m */; };
 		FEA9D0940D16C55E00123D51 /* NSPropertyListReader_binary1.h in Headers */ = {isa = PBXBuildFile; fileRef = FEA9D0880D16C55E00123D51 /* NSPropertyListReader_binary1.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FEA9D0950D16C55E00123D51 /* NSPropertyListReader_binary1.m in Sources */ = {isa = PBXBuildFile; fileRef = FEA9D0890D16C55E00123D51 /* NSPropertyListReader_binary1.m */; };
+		FEA9D3070F5D9C2100772064 /* NSRunLoopState_windows.h in Headers */ = {isa = PBXBuildFile; fileRef = FEA9D3050F5D9C2100772064 /* NSRunLoopState_windows.h */; };
+		FEA9D3080F5D9C2100772064 /* NSRunLoopState_windows.m in Sources */ = {isa = PBXBuildFile; fileRef = FEA9D3060F5D9C2100772064 /* NSRunLoopState_windows.m */; };
+		FEA9D30B0F5D9C5A00772064 /* NSRunLoopState_posix.h in Headers */ = {isa = PBXBuildFile; fileRef = FEA9D3090F5D9C5A00772064 /* NSRunLoopState_posix.h */; };
+		FEA9D30C0F5D9C5A00772064 /* NSRunLoopState_posix.m in Sources */ = {isa = PBXBuildFile; fileRef = FEA9D30A0F5D9C5A00772064 /* NSRunLoopState_posix.m */; };
+		FEA9D30D0F5D9C5A00772064 /* NSRunLoopState_posix.h in Headers */ = {isa = PBXBuildFile; fileRef = FEA9D3090F5D9C5A00772064 /* NSRunLoopState_posix.h */; };
+		FEA9D30E0F5D9C5A00772064 /* NSRunLoopState_posix.m in Sources */ = {isa = PBXBuildFile; fileRef = FEA9D30A0F5D9C5A00772064 /* NSRunLoopState_posix.m */; };
+		FEA9D30F0F5D9C5A00772064 /* NSRunLoopState_posix.h in Headers */ = {isa = PBXBuildFile; fileRef = FEA9D3090F5D9C5A00772064 /* NSRunLoopState_posix.h */; };
+		FEA9D3100F5D9C5A00772064 /* NSRunLoopState_posix.m in Sources */ = {isa = PBXBuildFile; fileRef = FEA9D30A0F5D9C5A00772064 /* NSRunLoopState_posix.m */; };
+		FEA9D3110F5D9C5A00772064 /* NSRunLoopState_posix.h in Headers */ = {isa = PBXBuildFile; fileRef = FEA9D3090F5D9C5A00772064 /* NSRunLoopState_posix.h */; };
+		FEA9D3120F5D9C5A00772064 /* NSRunLoopState_posix.m in Sources */ = {isa = PBXBuildFile; fileRef = FEA9D30A0F5D9C5A00772064 /* NSRunLoopState_posix.m */; };
 		FEB6CBB20B4A139F004FADF2 /* NSKeyValueCoding.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB6CBAE0B4A139F004FADF2 /* NSKeyValueCoding.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FEB6CBB30B4A139F004FADF2 /* NSKeyValueCoding.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB6CBAF0B4A139F004FADF2 /* NSKeyValueCoding.m */; };
 		FEB6CBB40B4A139F004FADF2 /* NSKeyValueCoding.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB6CBAE0B4A139F004FADF2 /* NSKeyValueCoding.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -3797,6 +3807,10 @@
 		FEA36F250C24C57000025A9C /* objc_cache.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = objc_cache.h; sourceTree = "<group>"; };
 		FEA9D0880D16C55E00123D51 /* NSPropertyListReader_binary1.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSPropertyListReader_binary1.h; sourceTree = "<group>"; };
 		FEA9D0890D16C55E00123D51 /* NSPropertyListReader_binary1.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSPropertyListReader_binary1.m; sourceTree = "<group>"; };
+		FEA9D3050F5D9C2100772064 /* NSRunLoopState_windows.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NSRunLoopState_windows.h; path = platform_win32/NSRunLoopState_windows.h; sourceTree = "<group>"; };
+		FEA9D3060F5D9C2100772064 /* NSRunLoopState_windows.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NSRunLoopState_windows.m; path = platform_win32/NSRunLoopState_windows.m; sourceTree = "<group>"; };
+		FEA9D3090F5D9C5A00772064 /* NSRunLoopState_posix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NSRunLoopState_posix.h; path = platform_posix/NSRunLoopState_posix.h; sourceTree = "<group>"; };
+		FEA9D30A0F5D9C5A00772064 /* NSRunLoopState_posix.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NSRunLoopState_posix.m; path = platform_posix/NSRunLoopState_posix.m; sourceTree = "<group>"; };
 		FEB6CBAE0B4A139F004FADF2 /* NSKeyValueCoding.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSKeyValueCoding.h; sourceTree = "<group>"; };
 		FEB6CBAF0B4A139F004FADF2 /* NSKeyValueCoding.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSKeyValueCoding.m; sourceTree = "<group>"; };
 		FEB6CC0E0B4A169C004FADF2 /* objc-class.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "objc-class.m"; sourceTree = "<group>"; };
@@ -4665,6 +4679,8 @@
 		6E28034809747A5F00EC542B /* platform_posix */ = {
 			isa = PBXGroup;
 			children = (
+				FEA9D3090F5D9C5A00772064 /* NSRunLoopState_posix.h */,
+				FEA9D30A0F5D9C5A00772064 /* NSRunLoopState_posix.m */,
 				6E28057609747CEE00EC542B /* NSFileHandle_posix.h */,
 				6E28057709747CEE00EC542B /* NSFileHandle_posix.m */,
 				6E28057809747CEE00EC542B /* NSFileManager_posix.h */,
@@ -4707,6 +4723,8 @@
 		6E28034A09747A7700EC542B /* platform_win32 */ = {
 			isa = PBXGroup;
 			children = (
+				FEA9D3050F5D9C2100772064 /* NSRunLoopState_windows.h */,
+				FEA9D3060F5D9C2100772064 /* NSRunLoopState_windows.m */,
 				FE9E1A2F0D5C0676004AE7BA /* NSLocale+windows.h */,
 				FE9E1A300D5C0676004AE7BA /* NSLocale+windows.m */,
 				6E28059F09747D0400EC542B /* dllmain.m */,
@@ -5437,6 +5455,7 @@
 				FE1365F40F154B3A000F2657 /* NSOperation.h in Headers */,
 				FE1365F60F154B3A000F2657 /* NSOperationQueue.h in Headers */,
 				C89B47410F5C6AB50070120D /* NSCancelInputSource_posix.h in Headers */,
+				FEA9D30D0F5D9C5A00772064 /* NSRunLoopState_posix.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5742,6 +5761,7 @@
 				FE1365EC0F154B3A000F2657 /* NSOperation.h in Headers */,
 				FE1365EE0F154B3A000F2657 /* NSOperationQueue.h in Headers */,
 				C89B473F0F5C6AB50070120D /* NSCancelInputSource_posix.h in Headers */,
+				FEA9D30B0F5D9C5A00772064 /* NSRunLoopState_posix.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6051,6 +6071,7 @@
 				FE1365E40F154B3A000F2657 /* NSOperation.h in Headers */,
 				FE1365E60F154B3A000F2657 /* NSOperationQueue.h in Headers */,
 				C89B47370F5C6A4B0070120D /* NSCancelInputSource_win32.h in Headers */,
+				FEA9D3070F5D9C2100772064 /* NSRunLoopState_windows.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6357,6 +6378,7 @@
 				FE1365FC0F154B3A000F2657 /* NSOperation.h in Headers */,
 				FE1365FE0F154B3A000F2657 /* NSOperationQueue.h in Headers */,
 				C89B47430F5C6AB50070120D /* NSCancelInputSource_posix.h in Headers */,
+				FEA9D30F0F5D9C5A00772064 /* NSRunLoopState_posix.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6663,6 +6685,7 @@
 				FE1366040F154B3A000F2657 /* NSOperation.h in Headers */,
 				FE1366060F154B3A000F2657 /* NSOperationQueue.h in Headers */,
 				C89B47450F5C6AB50070120D /* NSCancelInputSource_posix.h in Headers */,
+				FEA9D3110F5D9C5A00772064 /* NSRunLoopState_posix.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7235,6 +7258,7 @@
 				FE1365F50F154B3A000F2657 /* NSOperation.m in Sources */,
 				FE1365F70F154B3A000F2657 /* NSOperationQueue.m in Sources */,
 				C89B47420F5C6AB50070120D /* NSCancelInputSource_posix.m in Sources */,
+				FEA9D30E0F5D9C5A00772064 /* NSRunLoopState_posix.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7540,6 +7564,7 @@
 				FE1365ED0F154B3A000F2657 /* NSOperation.m in Sources */,
 				FE1365EF0F154B3A000F2657 /* NSOperationQueue.m in Sources */,
 				C89B47400F5C6AB50070120D /* NSCancelInputSource_posix.m in Sources */,
+				FEA9D30C0F5D9C5A00772064 /* NSRunLoopState_posix.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7850,6 +7875,7 @@
 				FE1365E50F154B3A000F2657 /* NSOperation.m in Sources */,
 				FE1365E70F154B3A000F2657 /* NSOperationQueue.m in Sources */,
 				C89B47380F5C6A4B0070120D /* NSCancelInputSource_win32.m in Sources */,
+				FEA9D3080F5D9C2100772064 /* NSRunLoopState_windows.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8158,6 +8184,7 @@
 				FE1365FD0F154B3A000F2657 /* NSOperation.m in Sources */,
 				FE1365FF0F154B3A000F2657 /* NSOperationQueue.m in Sources */,
 				C89B47440F5C6AB50070120D /* NSCancelInputSource_posix.m in Sources */,
+				FEA9D3100F5D9C5A00772064 /* NSRunLoopState_posix.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8466,6 +8493,7 @@
 				FE1366050F154B3A000F2657 /* NSOperation.m in Sources */,
 				FE1366070F154B3A000F2657 /* NSOperationQueue.m in Sources */,
 				C89B47460F5C6AB50070120D /* NSCancelInputSource_posix.m in Sources */,
+				FEA9D3120F5D9C5A00772064 /* NSRunLoopState_posix.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

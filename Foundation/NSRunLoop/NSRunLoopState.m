@@ -26,20 +26,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @implementation NSRunLoopState
 
-+(id)cancelSource {
-   // override in NSCancelInputSource_platform
-   NSRaiseException(NSInternalInconsistencyException, self, _cmd, @"No cancel source defined");
-   return nil;
-}
-
 -init {
-   _inputSourceSet=[[[NSPlatform currentPlatform] synchronousInputSourceSet] retain];
-   _asyncInputSourceSets=[[[NSPlatform currentPlatform] asynchronousInputSourceSets] retain];
-   _timers=[NSMutableArray new];
-
-   _cancelSource=[[isa cancelSource] retain];
-   [self addInputSource:_cancelSource];
-   return self;
+   // This is implemented in the platform specific class
+   NSInvalidAbstractInvocation();
+   return nil;
 }
 
 -(void)dealloc {

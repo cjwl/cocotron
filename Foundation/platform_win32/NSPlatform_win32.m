@@ -88,14 +88,6 @@ NSString *NSPlatformClassName=@"NSPlatform_win32";
    return [_parentDeathMonitor handleMonitor];
 }
 
--(NSInputSourceSet *)synchronousInputSourceSet {
-   return [[[NSHandleMonitorSet_win32 alloc] init] autorelease];
-}
-
--(NSArray *)asynchronousInputSourceSets {
-   return [NSArray arrayWithObject:[[[NSSelectInputSourceSet alloc] init] autorelease]];
-}
-
 -(NSString *)fileManagerClassName {
    return @"NSFileManager_win32";
 }

@@ -34,10 +34,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @implementation NSPlatform_posix
 
--(NSInputSourceSet *)synchronousInputSourceSet {
-   return [[[NSSelectInputSourceSet alloc] init] autorelease];
-}
-
 -(NSString *)fileManagerClassName {
    return @"NSFileManager_posix";
 }

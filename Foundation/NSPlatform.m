@@ -32,15 +32,6 @@ extern NSString *NSPlatformClassName;
    return nil;
 }
 
--(NSInputSourceSet *)synchronousInputSourceSet {
-   NSInvalidAbstractInvocation();
-   return nil;
-}
-
--(NSArray *)asynchronousInputSourceSets {
-   return [NSArray array];
-}
-
 -(NSString *)fileManagerClassName {
    NSInvalidAbstractInvocation();
    return nil;
