@@ -8,9 +8,11 @@
 
 #import <AppKit/X11Window.h>
 #import <AppKit/NSWindow.h>
+#import <AppKit/NSPanel.h>
 #import <AppKit/X11Display.h>
 #import <X11/Xutil.h>
 #import <AppKit/CairoContext.h>
+#import <Foundation/NSException.h>
 
 @implementation X11Window
 
@@ -24,7 +26,7 @@
       Display *dpy=[(X11Display*)[NSDisplay currentDisplay] display];
    
       XVisualInfo *info=XGetVisualInfo(dpy,
-                                          0, &match, &visuals_matched);
+                                       0, &match, &visuals_matched);
       
       for(i=0; i<visuals_matched; i++) {
          if(info[i].depth == 32 &&
@@ -51,6 +53,8 @@
       _dpy=[(X11Display*)[NSDisplay currentDisplay] display];
       int s = DefaultScreen(_dpy);
       _frame=[self transformFrame:frame];
+      if(isPanel && styleMask&NSDocModalWindowMask)
+         styleMask=NSBorderlessWindowMask;
       
       XSetWindowAttributes xattr;
       unsigned long xattr_mask;
@@ -64,7 +68,7 @@
                               xattr_mask, &xattr);
 
       XSelectInput(_dpy, _window, ExposureMask | KeyPressMask | KeyReleaseMask | StructureNotifyMask |
-      ButtonPressMask | ButtonReleaseMask | ButtonMotionMask | PointerMotionMask | VisibilityChangeMask | FocusChangeMask);
+      ButtonPressMask | ButtonReleaseMask | ButtonMotionMask | VisibilityChangeMask | FocusChangeMask | SubstructureRedirectMask );
 
       Atom atm=XInternAtom(_dpy, "WM_DELETE_WINDOW", False);
       XSetWMProtocols(_dpy, _window, &atm , 1);
@@ -244,38 +248,53 @@
 }
 
 
-
-
 -(NSRect)frame
 {
    return [self transformFrame:_frame];
 }
 
+static int ignoreBadWindow(Display* display,
+                        XErrorEvent* errorEvent) {
+   if(errorEvent->error_code==BadWindow)
+      return 0;
+   char buf[512];
+   XGetErrorText(display, errorEvent->error_code, buf, 512);
+   [NSException raise:NSInternalInconsistencyException format:@"X11 error: %s", buf];
+   return 0;
+}
+
 -(void)frameChanged
 {
-   Window root, parent;
-   Window window=_window;
-   int x, y;
-   unsigned int w, h, d, b, nchild;
-   Window* children;
-   NSRect rect=NSZeroRect;
-   // recursively get geometry to get absolute position
-   while(window) {
-      XGetGeometry(_dpy, window, &root, &x, &y, &w, &h, &b, &d);
-      XQueryTree(_dpy, window, &root, &parent, &children, &nchild);
-      if(children)
-         XFree(children);
-
-      // first iteration: save our own w, h
-      if(window==_window)
-         rect=NSMakeRect(0, 0, w, h);
-      rect.origin.x+=x;
-      rect.origin.y+=y;
-      window=parent;
-   };
-
-   _frame=rect;
-   [self sizeChanged];
+   XErrorHandler previousHandler=XSetErrorHandler(ignoreBadWindow);
+   @try {
+      Window root, parent;
+      Window window=_window;
+      int x, y;
+      unsigned int w, h, d, b, nchild;
+      Window* children;
+      NSRect rect=NSZeroRect;
+      // recursively get geometry to get absolute position
+      BOOL success=YES;
+      while(window && success) {
+         XGetGeometry(_dpy, window, &root, &x, &y, &w, &h, &b, &d);
+         success = XQueryTree(_dpy, window, &root, &parent, &children, &nchild);
+         if(children)
+            XFree(children);
+         
+         // first iteration: save our own w, h
+         if(window==_window)
+            rect=NSMakeRect(0, 0, w, h);
+         rect.origin.x+=x;
+         rect.origin.y+=y;
+         window=parent;
+      };
+      
+      _frame=rect;
+      [self sizeChanged];
+   }
+   @finally {
+      XSetErrorHandler(previousHandler);
+   }
 }
 
 -(void)sizeChanged
@@ -301,7 +320,7 @@
 
 -(NSRect)transformFrame:(NSRect)frame
 {
-   return NSMakeRect(frame.origin.x, DisplayHeight(_dpy, DefaultScreen(_dpy)) - frame.origin.y - frame.size.height, frame.size.width, frame.size.height);
+   return NSMakeRect(frame.origin.x, DisplayHeight(_dpy, DefaultScreen(_dpy)) - frame.origin.y - frame.size.height, fmax(frame.size.width, 1.0), fmax(frame.size.height, 1.0));
 }
 
 -(NSPoint)transformPoint:(NSPoint)pos;
@@ -326,7 +345,7 @@
    static id lastFocusedWindow=nil;
    static NSTimeInterval lastClickTimeStamp=0.0;
    static int clickCount=0;
-   
+
    switch(ev->type) {
       case DestroyNotify:
       {
@@ -343,10 +362,12 @@
       }
       case Expose:
       {
-         if (ev->xexpose.count==0) {
-            NSRect rect=NSMakeRect(ev->xexpose.x, ev->xexpose.y, ev->xexpose.width, ev->xexpose.height);
-            [_delegate platformWindow:self needsDisplayInRect:[self transformFrame:rect]];
-         }
+         NSRect rect=NSMakeRect(ev->xexpose.x, ev->xexpose.y, ev->xexpose.width, ev->xexpose.height);
+         rect.origin.y=_frame.size.height-rect.origin.y-rect.size.height;
+        // rect=NSInsetRect(rect, -10, -10);
+         [_backingContext addToDirtyRect:rect];
+         if(ev->xexpose.count==0)
+            [self flushBuffer]; 
          break;
       }
       case ButtonPress:
@@ -444,10 +465,13 @@
          [str release];
          break;
       }
-
       case FocusIn:
+         if([_delegate attachedSheet]) {
+            [[_delegate attachedSheet] makeKeyAndOrderFront:_delegate];
+            break;
+         }
          if(lastFocusedWindow) {
-            [_delegate platformWindowDeactivated:self checkForAppDeactivation:NO];
+            [lastFocusedWindow platformWindowDeactivated:self checkForAppDeactivation:NO];
             lastFocusedWindow=nil;  
          }
          [_delegate platformWindowActivated:self];

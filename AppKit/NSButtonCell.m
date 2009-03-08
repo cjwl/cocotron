@@ -587,22 +587,22 @@ sizeOfButtonImage:image enabled:enabled mixed:mixed];
    }
 }
 
--(void)drawWithFrame:(NSRect)frame inView:(NSView *)control {
+-(void)drawBezelWithFrame:(NSRect)frame inView:(NSView*)control {
    BOOL defaulted;
    
    _controlView=control;
-
+   
    if([self isTransparent])
-    return;
-
+      return;
+   
    defaulted=([[control window] defaultButtonCell] == self);
    
-/*
- Aqua Push Buttons actually have a frame much larger than told by IB to make room for shadows and whatnot
- So we have to compensate for this when drawing simpler buttons.
- There is probably a way to streamline this, make NSPopUpButtonCell draw itself for starters
- NSGraphicsStyle should probably do this adjustment too
- */
+   /*
+    Aqua Push Buttons actually have a frame much larger than told by IB to make room for shadows and whatnot
+    So we have to compensate for this when drawing simpler buttons.
+    There is probably a way to streamline this, make NSPopUpButtonCell draw itself for starters
+    NSGraphicsStyle should probably do this adjustment too
+    */
    if ([self isKindOfClass:[NSComboBoxCell class]]) {
       switch (_controlSize)
       {
@@ -611,14 +611,14 @@ sizeOfButtonImage:image enabled:enabled mixed:mixed];
             frame.size.height -= 1;
             frame.origin.x    += 1;
             break;
-
+            
          case NSSmallControlSize:
             frame.size.width  -= 4;
             frame.size.height -= 8;
             frame.origin.x    += 2;
             frame.origin.y    += 6;
             break;
-
+            
          case NSMiniControlSize:
             frame.size.width  -= 6;
             frame.size.height -= 4;
@@ -627,7 +627,7 @@ sizeOfButtonImage:image enabled:enabled mixed:mixed];
             break;
       }
    }
-
+   
    else if ([self isKindOfClass:[NSPopUpButtonCell class]]) {
       switch (_controlSize)
       {
@@ -636,14 +636,14 @@ sizeOfButtonImage:image enabled:enabled mixed:mixed];
             frame.size.height -= 1;
             frame.origin.x    += 1;
             break;
-
+            
          case NSSmallControlSize:
             frame.size.width  -= 4;
             frame.size.height -= 3;
             frame.origin.x    += 2;
             frame.origin.y    += 3;
             break;
-
+            
          case NSMiniControlSize:
             frame.size.width  -= 6;
             frame.size.height -= 4;
@@ -652,7 +652,7 @@ sizeOfButtonImage:image enabled:enabled mixed:mixed];
             break;
       }
    }
-
+   
    else if((_bezelStyle==NSRoundedBezelStyle) && (_highlightsBy&NSPushInCellMask) && (_highlightsBy&NSChangeGrayCellMask) && (_showsStateBy==NSNoCellMask) || [self isKindOfClass:[NSPopUpButtonCell class]]) {
       frame.size.width  -= 10 - _controlSize*2;
       frame.size.height -= 10 - _controlSize*2;
@@ -661,23 +661,26 @@ sizeOfButtonImage:image enabled:enabled mixed:mixed];
    }
    
    if(_bezelStyle==NSDisclosureBezelStyle){
-// FIX The background isn't getting erased during pressing ? shouldn't the view be doing this during tracking ?
-    [[NSColor controlColor] setFill];
-    NSRectFill(frame);
+      // FIX The background isn't getting erased during pressing ? shouldn't the view be doing this during tracking ?
+      [[NSColor controlColor] setFill];
+      NSRectFill(frame);
    }
    else if(![self isBordered])
-    frame=[[_controlView graphicsStyle] drawUnborderedButtonInRect:frame defaulted:defaulted];
+      frame=[[_controlView graphicsStyle] drawUnborderedButtonInRect:frame defaulted:defaulted];
    else {
-    if(([self highlightsBy]&NSPushInCellMask) && [self isHighlighted])
-     [[_controlView graphicsStyle] drawPushButtonPressedInRect:frame];
-    else if([self isVisuallyHighlighted])
-     [[_controlView graphicsStyle] drawPushButtonHighlightedInRect:frame];
-    else
-     [[_controlView graphicsStyle] drawPushButtonNormalInRect:frame defaulted:defaulted];
-         
-    frame=NSInsetRect(frame,2,2);
-   }
+      if(([self highlightsBy]&NSPushInCellMask) && [self isHighlighted])
+         [[_controlView graphicsStyle] drawPushButtonPressedInRect:frame];
+      else if([self isVisuallyHighlighted])
+         [[_controlView graphicsStyle] drawPushButtonHighlightedInRect:frame];
+      else
+         [[_controlView graphicsStyle] drawPushButtonNormalInRect:frame defaulted:defaulted];
+      
+      frame=NSInsetRect(frame,2,2);
+   }  
+}
 
+-(void)drawWithFrame:(NSRect)frame inView:(NSView *)control {
+   [self drawBezelWithFrame:frame inView:control];
    [self drawInteriorWithFrame:frame inView:control];
 }
 

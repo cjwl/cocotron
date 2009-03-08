@@ -177,10 +177,16 @@ FcConfig *fontConfig;
    {
       id pattern=[font fontName];
       
-      NSLog(@"%@",pattern);
       id filename=[isa filenameForPattern:pattern];
       if(!filename) {
-         filename=@"/Library/Fonts/Arial";
+         filename=[isa filenameForPattern:@""];
+         if(!filename) {
+#ifdef LINUX
+            filename=@"/usr/share/fonts/truetype/freefont/FreeSans.ttf";
+#else
+            filename=@"/System/Library/Fonts/Geneva.dfont";
+#endif
+         }
       }
       
       FT_Error ret=FT_New_Face(library,
@@ -192,7 +198,7 @@ FcConfig *fontConfig;
       FT_Select_Charmap(_face, FT_ENCODING_UNICODE);
 
       _size=size;
-      _name=@"FreeSans";
+      _name=[pattern retain];
       
    }
    return self;

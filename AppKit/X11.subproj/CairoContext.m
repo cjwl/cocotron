@@ -344,6 +344,17 @@
    return ret;
 }
 
+-(void)drawShading:(KGShading *)shading {
+   if([shading isAxial]) {
+      cairo_pattern_t *pat;
+      pat = cairo_pattern_create_linear (0.0, 0.0,  0.0, 256.0);
+
+   
+      
+      cairo_pattern_destroy(pat);
+   }
+}
+
 -(void)drawImage:(id)image inRect:(CGRect)rect {
    BOOL shouldFreeImage=NO;
    cairo_surface_t *img=NULL;
@@ -484,6 +495,10 @@ cairo_status_t writeToData(void		  *closure,
    
    cairo_surface_destroy(surf);
    return ret;   
+}
+
+-(void)addToDirtyRect:(NSRect)rect {
+   _dirtyRect=NSUnionRect(_dirtyRect, rect);
 }
 
 -(NSRect)dirtyRect; {

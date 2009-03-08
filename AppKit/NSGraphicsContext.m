@@ -188,11 +188,11 @@ NSMutableArray *NSCurrentFocusStack() {
 }
 
 -(void)saveGraphicsState {
-   NSInvalidAbstractInvocation();
+   [isa saveGraphicsState];
 }
 
 -(void)restoreGraphicsState {
-   NSInvalidAbstractInvocation();
+   [isa restoreGraphicsState];
 }
 
 -(void)flushGraphics {

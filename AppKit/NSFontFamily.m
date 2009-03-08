@@ -12,14 +12,21 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSGraphicsContext.h>
 #import <AppKit/NSDisplay.h>
 
+@interface NSFontFamily () 
++(NSMutableArray *)fontFamilies;
++(void)buildFontFamilies;
+@end
+
 @implementation NSFontFamily
 
 +(NSMutableArray *)fontFamilies {
    static NSMutableArray *shared=nil;
-
-   if(shared==nil)
-    shared=[NSMutableArray new];
-
+   
+   if(shared==nil) {
+      shared=[NSMutableArray new];
+      [self buildFontFamilies];
+   }
+   
    return shared;
 }
 
@@ -58,12 +65,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     NSArray      *typefaces=[display fontTypefacesForFamilyName:[family name]];
 
     [family addTypefaces:typefaces];
-   }
-}
-
-+(void)initialize {
-   if(self==[NSFontFamily class]){
-    [self buildFontFamilies];
    }
 }
 

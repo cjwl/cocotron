@@ -21,6 +21,7 @@
    Display *_dpy;
    XVisualInfo *_vi;
    Window _window;
+   Window _lastParent;
 }
 
 @end

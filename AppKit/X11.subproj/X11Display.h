@@ -17,4 +17,5 @@
 -(void)setWindow:(id)window forID:(XID)i;
 -(BOOL)processX11Event;
 -(float)doubleClickInterval;
+-(int)handleError:(XErrorEvent*)errorEvent;
 @end

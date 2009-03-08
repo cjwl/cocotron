@@ -80,6 +80,15 @@ static NSLineJoinStyle _defaultLineJoinStyle=NSMiterLineJoinStyle;
    return result;
 }
 
+
++ (NSBezierPath *)bezierPathWithRoundedRect:(NSRect)rect xRadius:(CGFloat)xRadius yRadius:(CGFloat)yRadius {
+   NSBezierPath *result=[[[self alloc] init] autorelease];
+   
+   [result appendBezierPathWithRoundedRect:rect xRadius:xRadius yRadius:yRadius];
+   
+   return result;
+}
+
 +(NSBezierPath *)bezierPathWithRect:(NSRect)rect {
    NSBezierPath *result=[[[self alloc] init] autorelease];
    
@@ -341,7 +350,7 @@ static int numberOfPointsForOperator(int op){
 
 -(NSRect)bounds {
    NSUnimplementedMethod();
-   return NSMakeRect(0,0,0,0);
+   return [self controlPointBounds];
 }
 
 -(NSRect)controlPointBounds {
@@ -401,6 +410,25 @@ static int numberOfPointsForOperator(int op){
 -(void)appendBezierPathWithArcFromPoint:(NSPoint)point toPoint:(NSPoint)toPoint radius:(float)radius {
    CGPathAddArcToPoint(_path,NULL,point.x,point.y,toPoint.x,toPoint.y,radius);
 }
+
+- (void)appendBezierPathWithRoundedRect:(NSRect)rect xRadius:(CGFloat)radius yRadius:(CGFloat)yRadius {
+   CGPathMoveToPoint(_path, NULL, rect.origin.x, rect.origin.y + radius);
+   CGPathAddLineToPoint(_path, NULL, rect.origin.x, rect.origin.y + rect.size.height - radius);
+   CGPathAddArc(_path, NULL, rect.origin.x + radius, rect.origin.y + rect.size.height - radius, 
+                   radius, -M_PI, M_PI / 2, 1);
+   CGPathAddLineToPoint(_path, NULL, rect.origin.x + rect.size.width - radius, 
+                           rect.origin.y + rect.size.height);
+   CGPathAddArc(_path, NULL, rect.origin.x + rect.size.width - radius, 
+                   rect.origin.y + rect.size.height - radius, radius, M_PI / 2, 0.0f, 1);
+   CGPathAddLineToPoint(_path, NULL, rect.origin.x + rect.size.width, rect.origin.y + radius);
+   CGPathAddArc(_path, NULL, rect.origin.x + rect.size.width - radius, rect.origin.y + radius, 
+                   radius, 0.0f, -M_PI / 2, 1);
+   CGPathAddLineToPoint(_path, NULL, rect.origin.x + radius, rect.origin.y);
+   CGPathAddArc(_path, NULL, rect.origin.x + radius, rect.origin.y + radius, radius, 
+                   -M_PI / 2, M_PI, 1);
+   CGPathCloseSubpath(_path);
+}
+
 
 static inline CGFloat degreesToRadians(CGFloat degrees){
    return degrees*M_PI/180.0;

@@ -16,9 +16,14 @@
 #import <AppKit/NSColor.h>
 #import <AppKit/NSImage.h>
 #import <AppKit/TTFFont.h>
-
+#import <fcntl.h>
 
 @implementation X11Display
+
+static int errorHandler(Display* display,
+                        XErrorEvent* errorEvent) {
+   return [(X11Display*)[X11Display currentDisplay] handleError:errorEvent];
+}
 
 -(id)init
 {
@@ -27,7 +32,15 @@
       _display=XOpenDisplay(NULL);
       if(!_display)
          _display=XOpenDisplay(":0");
-      NSAssert(_display, nil);
+
+      if(!_display) {
+         [self release];
+         return nil;
+      }
+      
+      if(NSDebugEnabled)
+         XSynchronize(_display, True);
+      XSetErrorHandler(errorHandler);
       _windowsByID=[NSMutableDictionary new];
       [self performSelector:@selector(setupEventHandling) withObject:nil afterDelay:0.0];
    }
@@ -36,7 +49,8 @@
 
 -(void)dealloc
 {
-   XCloseDisplay(_display);
+   if(_display)
+      XCloseDisplay(_display);
    [_windowsByID release];
    [super dealloc];
 }
@@ -217,15 +231,30 @@
    int i;
    int numEvents;
    BOOL ret=NO;
+   int connectionNumber=ConnectionNumber(_display);
+   int flags=fcntl(connectionNumber, F_GETFL);
+   flags&=~O_NONBLOCK;
+   fcntl(connectionNumber, F_SETFL, flags | O_NONBLOCK);
+   
+   NSMutableSet *windowsUsed=[NSMutableSet set];
+   
    while(numEvents=XEventsQueued(_display, QueuedAfterFlush)) {
-      for(i=0; i<numEvents; i++) {
-         XNextEvent(_display, &e);
-         id window=[self windowForID:e.xany.window];
-         [window handleEvent:&e fromDisplay:self];
-         ret=YES;
-      }
+      XNextEvent(_display, &e);
+      id window=[self windowForID:e.xany.window];
+      [window handleEvent:&e fromDisplay:self];
+      [windowsUsed addObject:window];
+      ret=YES;
    }
+   
+   fcntl(connectionNumber, F_SETFL, flags & ~O_NONBLOCK);
+
+
    return ret;
+}
+
+-(int)handleError:(XErrorEvent*)errorEvent {
+   NSLog(@"************** ERROR");
+   return 0;
 }
 @end
 

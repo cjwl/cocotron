@@ -199,7 +199,13 @@ void _NSGradientInterpolator(void *info, float const *inData, float *outData)
 
 - (void)drawInBezierPath:(NSBezierPath *)path angle:(CGFloat)angle
 {
-	NSUnimplementedMethod();
+   NSRect rect=[path bounds];
+   [NSGraphicsContext saveGraphicsState];
+
+   [path addClip];
+   [self drawInRect:rect angle:angle];  
+
+   [NSGraphicsContext restoreGraphicsState];
 }
 
 #pragma mark Drawing Radial Gradients

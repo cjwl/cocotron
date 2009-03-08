@@ -44,12 +44,18 @@ void CGLContextDelete(void *glContext)
       };
       _vi = glXChooseVisual(_dpy, 0, att);
       
+      if(!_vi) {
+         [self release];
+         return nil;
+      }
+      
       Colormap cmap = XCreateColormap(_dpy, DefaultRootWindow(_dpy), _vi->visual, AllocNone);
 
       XSetWindowAttributes xattr;
       xattr.colormap=cmap;
       xattr.event_mask = ExposureMask | KeyPressMask;
       _window = XCreateWindow(_dpy, DefaultRootWindow(_dpy), 0, 0, 100, 100, 0, _vi->depth, InputOutput, _vi->visual, CWColormap | CWEventMask, &xattr);
+      XSetWindowBackgroundPixmap(_dpy, _window, None);
       [X11Window removeDecorationForWindow:_window onDisplay:_dpy];
       
       [self updateWithView:view];
@@ -60,7 +66,9 @@ void CGLContextDelete(void *glContext)
 }
 
 -(void)dealloc {
-   
+   if(_window)
+      XDestroyWindow(_dpy, _window);
+   [_format release];
    [super dealloc];
 }
 
@@ -70,7 +78,7 @@ void CGLContextDelete(void *glContext)
    if(!_vi)
       return NULL;
    glc = glXCreateContext(_dpy, _vi, NULL, GL_TRUE);
-  // glXMakeCurrent(_dpy, _window, glc);
+
    return glc;
 }
 
@@ -80,14 +88,18 @@ void CGLContextDelete(void *glContext)
 -(void)updateWithView:(NSView *)view {
    NSRect frame=[view frame];
    frame=[[view superview] convertRect:frame toView:nil];
-   
+
    X11Window *wnd=(X11Window*)[[view window] platformWindow];
    NSRect wndFrame=[wnd frame];
    
    frame.origin.y=wndFrame.size.height-(frame.origin.y+frame.size.height);
    
    XMoveResizeWindow(_dpy, _window, frame.origin.x, frame.origin.y, frame.size.width, frame.size.height);
-   XReparentWindow(_dpy, _window, [(X11Window*)[[view window] platformWindow] drawable], frame.origin.x, frame.origin.y);
+   Window viewWindow=[(X11Window*)[[view window] platformWindow] drawable];
+   if(_lastParent!=viewWindow) {
+      XReparentWindow(_dpy, _window, viewWindow, frame.origin.x, frame.origin.y);
+      _lastParent=viewWindow;
+   }
 }
 
 -(void)makeCurrentWithGLContext:(void *)glContext {
