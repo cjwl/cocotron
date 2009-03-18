@@ -76,6 +76,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    NSPoint point=[event locationInWindow];
    NSPoint firstPoint=point;
    NSMutableArray *viewStack=[NSMutableArray array];
+   BOOL oldAcceptsMouseMovedEvents = [[self window] acceptsMouseMovedEvents];
+   [[self window] setAcceptsMouseMovedEvents:YES];
 
    [[self menu] update];
 
@@ -162,6 +164,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [viewStack removeLastObject];
 
    _selectedItemIndex=NSNotFound;
+   [[self window] setAcceptsMouseMovedEvents:oldAcceptsMouseMovedEvents];
    [self display];
    [[self window] flushWindow];
 
