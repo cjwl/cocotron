@@ -32,9 +32,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     _identifier=[[keyed decodeObjectForKey:@"NSIdentifier"] retain];
     _headerCell=[[keyed decodeObjectForKey:@"NSHeaderCell"] retain];
     _dataCell=[[keyed decodeObjectForKey:@"NSDataCell"] retain];
-    _width=[keyed decodeIntForKey:@"NSWidth"];
-    _minWidth=[keyed decodeIntForKey:@"NSMinWidth"];
-    _maxWidth=[keyed decodeIntForKey:@"NSMaxWidth"];
+    _width=[keyed decodeFloatForKey:@"NSWidth"];
+    _minWidth=[keyed decodeFloatForKey:@"NSMinWidth"];
+    _maxWidth=[keyed decodeFloatForKey:@"NSMaxWidth"];
     _isResizable=[keyed decodeBoolForKey:@"NSIsResizeable"];
     _isEditable=[keyed decodeBoolForKey:@"NSIsEditable"];
    }
