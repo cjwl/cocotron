@@ -34,11 +34,11 @@ typedef struct {
 } native_set;
 
 native_set *native_set_new() {
-   native_set *native=NSZoneCalloc(NULL,sizeof(native_set));
+   native_set *native=NSZoneCalloc(NULL, 1, sizeof(native_set));
 
    native->max=FD_SETSIZE;
 
-   native->fdset=NSZoneCalloc(NULL,sizeof(fd_set));
+   native->fdset=NSZoneCalloc(NULL, 1, sizeof(fd_set));
 
    return native;
 }
