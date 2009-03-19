@@ -313,16 +313,16 @@ NSString *NSUserDefaultsDidChangeNotification=@"NSUserDefaultsDidChangeNotificat
 }
 
 -(int)integerForKey:(NSString *)defaultName {
-   NSString *string=[self objectForKey:defaultName];
+   NSNumber *number=[self objectForKey:defaultName];
 
-   return [string isKindOfClass:OBJCClassFromString("NSString")]?[string intValue]:0;
+   return [number isKindOfClass:OBJCClassFromString("NSNumber")]?[number intValue]:0;
 }
 
 
 -(float)floatForKey:(NSString *)defaultName {
-   NSString *string=[self objectForKey:defaultName];
+   NSNumber *number=[self objectForKey:defaultName];
 
-   return [string isKindOfClass:OBJCClassFromString("NSString")]?[string floatValue]:0.0;
+   return [number isKindOfClass:OBJCClassFromString("NSNumber")]?[number floatValue]:0.0;
 }
 
 -(void)setObject:value forKey:(NSString *)key {
@@ -338,11 +338,11 @@ NSString *NSUserDefaultsDidChangeNotification=@"NSUserDefaultsDidChangeNotificat
 }
 
 -(void)setInteger:(int)value forKey:(NSString *)defaultName {
-   [self setObject:[NSString stringWithFormat:@"%d",value] forKey:defaultName];
+   [self setObject:[NSNumber numberWithInt:value] forKey:defaultName];
 }
 
 -(void)setFloat:(float)value forKey:(NSString *)defaultName {
-   [self setObject:[NSString stringWithFormat:@"%f",value] forKey:defaultName];
+   [self setObject:[NSNumber numberWithFloat:value] forKey:defaultName];
 }
 
 -(void)removeObjectForKey:(NSString *)key {
