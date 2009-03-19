@@ -135,13 +135,16 @@ static inline void postNotification(NSNotificationCenter *self,NSNotification *n
    postNotification(self,note);
 }
 
--(void)postNotificationName:(NSString *)name object:object
-   userInfo:(NSDictionary *)userInfo {
-   postNotification(self,NSAutorelease(NSNotification_concreteNew(NULL,name,object,userInfo)));
+-(void)postNotificationName:(NSString *)name object:object userInfo:(NSDictionary *)userInfo {
+	NSNotification *note = NSNotification_concreteNew(NULL,name,object,userInfo);
+	postNotification(self,note);
+	[note release];
 }
 
 -(void)postNotificationName:(NSString *)name object:object {
-   postNotification(self,NSAutorelease(NSNotification_concreteNew(NULL,name,object,nil)));
+	NSNotification *note = NSNotification_concreteNew(NULL,name,object,nil);
+	postNotification(self,note);
+	[note release];
 }
 
 @end

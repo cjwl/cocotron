@@ -5,8 +5,6 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
-
-// Original - Christopher Lloyd <cjwl@objc.net>
 #import <Foundation/NSData.h>
 #import <Foundation/NSString.h>
 #import <Foundation/NSObjCRuntime.h>
@@ -24,18 +22,18 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return NSAllocateObject(self,0,zone);
 }
 
--initWithCapacity:(unsigned)capacity {
+-initWithCapacity:(NSUInteger)capacity {
    NSInvalidAbstractInvocation();
    return nil;
 }
 
--initWithLength:(unsigned)length {
+-initWithLength:(NSUInteger)length {
    self=[self initWithCapacity:length];
    [self setLength:length];
    return self;
 }
 
--initWithBytesNoCopy:(void *)bytes length:(unsigned)length freeWhenDone:(BOOL)freeWhenDone {
+-initWithBytesNoCopy:(void *)bytes length:(NSUInteger)length freeWhenDone:(BOOL)freeWhenDone {
    self=[self initWithCapacity:length];
 
    [self appendBytes:bytes length:length];
@@ -49,11 +47,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     NSUnimplementedMethod();
 }
 
-+dataWithCapacity:(unsigned)capacity {
++dataWithCapacity:(NSUInteger)capacity {
    return [[[self allocWithZone:NULL] initWithCapacity:capacity] autorelease];
 }
 
-+dataWithLength:(unsigned)length {
++dataWithLength:(NSUInteger)length {
    return [[[self allocWithZone:NULL] initWithLength:length] autorelease];
 }
 
@@ -70,16 +68,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return NULL;
 }
 
--(void)setLength:(unsigned)length {
+-(void)setLength:(NSUInteger)length {
    NSInvalidAbstractInvocation();
 }
 
--(void)increaseLengthBy:(unsigned)delta {
+-(void)increaseLengthBy:(NSUInteger)delta {
    [self setLength:[self length]+delta];
 }
 
--(void)appendBytes:(const void *)bytes length:(unsigned)length {
-   unsigned selfLength=[self length];
+-(void)appendBytes:(const void *)bytes length:(NSUInteger)length {
+   NSUInteger selfLength=[self length];
    NSRange  range=NSMakeRange(selfLength,length);
 
    [self setLength:selfLength+length];
@@ -106,33 +104,34 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     ((char *)mutableBytes)[range.location+i]=((char *)bytes)[i];
 }
 
--(void)replaceBytesInRange:(NSRange)range withBytes:(const void *)bytes length:(unsigned)bytesLength {
-   int   i,length=[self length];
-   char *mutableBytes;
+-(void)replaceBytesInRange:(NSRange)range withBytes:(const void *)bytes length:(NSUInteger)bytesLength {
+   NSUInteger i,delta,length=[self length];
+   char      *mutableBytes;
 
    if(range.location>length)
-    NSRaiseException(NSRangeException,self,_cmd,@"location %d beyond length %d",range.location,[self length]);
+    NSRaiseException(NSRangeException,self,_cmd,@"location %d beyond length %d",range.location,length);
 
    if(bytesLength>range.length){
-    int delta=bytesLength-range.length;
-    int pos=length;
+    delta=bytesLength-range.length;
     
-    [self setLength:length+delta];
-
+    length+=delta;
+    [self setLength:length];
+    
     mutableBytes=[self mutableBytes];
 
-    while(--pos>range.location+range.length)
-     mutableBytes[pos-delta]=mutableBytes[pos-delta-1];
+    for(i=0;i<length-(NSMaxRange(range)+delta);i++)
+     mutableBytes[length-1-i]=mutableBytes[length-1-i-delta];
    }
    else if(bytesLength<range.length){
-    int delta=range.length-bytesLength;
+    delta=range.length-bytesLength;
     
     mutableBytes=[self mutableBytes];
 
     for(i=range.location+bytesLength;i<length-delta;i++)
      mutableBytes[i]=mutableBytes[i+delta];
-     
-    [self setLength:length-delta];
+    
+    length-=delta;
+    [self setLength:length];
 
     mutableBytes=[self mutableBytes];
    }

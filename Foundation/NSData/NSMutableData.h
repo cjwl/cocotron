@@ -10,22 +10,22 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @interface NSMutableData : NSData
 
--initWithCapacity:(unsigned)capacity;
--initWithLength:(unsigned)length;
+-initWithCapacity:(NSUInteger)capacity;
+-initWithLength:(NSUInteger)length;
 
-+dataWithCapacity:(unsigned)capacity;
-+dataWithLength:(unsigned)length;
++dataWithCapacity:(NSUInteger)capacity;
++dataWithLength:(NSUInteger)length;
 
 -(void *)mutableBytes;
 
--(void)setLength:(unsigned)length;
--(void)increaseLengthBy:(unsigned)delta;
+-(void)setLength:(NSUInteger)length;
+-(void)increaseLengthBy:(NSUInteger)delta;
 
--(void)appendBytes:(const void *)bytes length:(unsigned)length;
+-(void)appendBytes:(const void *)bytes length:(NSUInteger)length;
 -(void)appendData:(NSData *)data;
 
 -(void)replaceBytesInRange:(NSRange)range withBytes:(const void *)bytes;
--(void)replaceBytesInRange:(NSRange)range withBytes:(const void *)bytes length:(unsigned)bytesLength;
+-(void)replaceBytesInRange:(NSRange)range withBytes:(const void *)bytes length:(NSUInteger)bytesLength;
 -(void)setData:(NSData *)data;
 
 -(void)resetBytesInRange:(NSRange)range;
