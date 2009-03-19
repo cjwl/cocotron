@@ -53,7 +53,7 @@ static NSSystemInfoPanel *_sharedInfoPanel = nil;
    NSString *resourceFileName = [[NSBundle mainBundle] pathForResource:@"Credits" ofType:@"rtf"];
    if (resourceFileName != nil)
    {
-      frame.size.height += 90;
+      frame.size.height += 170;
       [creditView readRTFDFromFile:resourceFileName];
    }
    else
