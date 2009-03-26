@@ -24,7 +24,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSImageView.h>
 #import <AppKit/NSSheetContext.h>
 #import <AppKit/NSWindowAnimationContext.h>
-#import <AppKit/NSSystemInfoPanel.h> 
+#import <AppKit/NSSystemInfoPanel.h>
+#import <AppKit/CGWindow.h>
 
 NSString *NSModalPanelRunLoopMode=@"NSModalPanelRunLoopMode";
 NSString *NSEventTrackingRunLoopMode=@"NSEventTrackingRunLoopMode";
@@ -781,15 +782,25 @@ id NSApp=nil;
 }
 
 -(void)hide:sender {
-   NSUnimplementedMethod();
+   for(NSWindow* window in _windows) {
+    [window orderOut:self];
+   }
+   _isHidden=YES;
 }
 
 -(void)hideOtherApplications:sender {
    NSUnimplementedMethod();
 }
 
--(void)unhide:sender {
-   NSUnimplementedMethod();
+-(void)unhide:sender 
+{
+	
+	for(NSWindow* window in _windows)
+	{
+		[[window platformWindow] showWindowWithoutActivation];
+	}
+	_isHidden=NO;
+	
 }
 
 -(void)unhideAllApplications:sender {
@@ -946,6 +957,16 @@ standardAboutPanel] retain];
    if(![self isActive]){
     [[NSNotificationCenter defaultCenter] postNotificationName:NSApplicationDidResignActiveNotification object:self];
    }
+}
+  //private method called when the application is reopened
+-(void)_reopen
+{
+	BOOL doReopen=YES;
+	if ([_delegate respondsToSelector:@selector(applicationShouldHandleReopen:hasVisibleWindows:)])
+	doReopen=	[_delegate applicationShouldHandleReopen:self hasVisibleWindows:!_isHidden];
+	if(!doReopen) return;
+	if(_isHidden) [self unhide:nil];
+	
 }
 
 @end

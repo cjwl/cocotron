@@ -79,6 +79,7 @@ typedef enum {
 
    BOOL            _isRunning;
    BOOL            _isActive;
+   BOOL	    _isHidden;
    BOOL            _windowsNeedUpdate;
    NSEvent        *_currentEvent;
 

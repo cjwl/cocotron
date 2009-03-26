@@ -5,11 +5,13 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
-
-// Original - Christopher Lloyd <cjwl@objc.net>
 #import <AppKit/Win32RunningCopyPipe.h>
 #import <Foundation/NSHandleMonitor_win32.h>
 #import <AppKit/NSApplication.h>
+
+@interface NSApplication(private)
+-(void)_reopen;
+@end
 
 @implementation Win32RunningCopyPipe
 
@@ -46,7 +48,9 @@ static Win32RunningCopyPipe *_runningCopyPipe=nil;
     if(!DisconnectNamedPipe(_pipe))
      NSLog(@"DisconnectNamedPipe failed");
     _state=STATE_CONNECTING;
-
+	   
+	   if([path isEqual:@"@reopen"]) [NSApp _reopen];
+		else
     if([[NSApp delegate] respondsToSelector:@selector(application:openFile:)]){
      [[NSApp delegate] application:NSApp openFile:path];
     }
@@ -111,8 +115,13 @@ static Win32RunningCopyPipe *_runningCopyPipe=nil;
     }
 
     path=[[NSUserDefaults standardUserDefaults] stringForKey:@"NSOpen"];
+	   
+	if([path length]==0) path=@"@reopen";
+	   
+	  
 
-    if([path length]>0){
+    //if([path length]>0)
+	{
      HANDLE pipe=CreateFile([[self pipeName] cString],GENERIC_WRITE,FILE_SHARE_WRITE,NULL,OPEN_EXISTING,0,NULL);
 
      if(pipe==INVALID_HANDLE_VALUE)

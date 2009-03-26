@@ -26,6 +26,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)hideWindowForAppDeactivation:(NSRect)frame;
 
 -(void)hideWindow;
+-(void)showWindowWithoutActivation;
 
 -(void)placeAboveWindow:(CGWindow *)other;
 -(void)placeBelowWindow:(CGWindow *)other;
