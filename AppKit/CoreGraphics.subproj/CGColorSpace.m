@@ -9,8 +9,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <ApplicationServices/CGColorSpace.h>
 #import "KGColorSpace.h"
 
+CGColorSpaceRef CGColorSpaceRetain(CGColorSpaceRef colorSpace) {
+   return [colorSpace retain];
+}
+
 void CGColorSpaceRelease(CGColorSpaceRef colorSpace) {
-   return [colorSpace release];
+   [colorSpace release];
 }
 
 CGColorSpaceRef CGColorSpaceCreateDeviceRGB() {

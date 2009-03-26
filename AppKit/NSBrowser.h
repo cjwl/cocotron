@@ -22,7 +22,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    NSMutableArray *_matrices;
    NSMutableArray *_scrollViews;
    NSScroller     *_horizontalScroller;
-
+   NSColor        *_backgroundColor;
+   
    Class           _matrixClass;
    Class           _cellClass;
    id              _cellPrototype;
@@ -44,6 +45,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -delegate;
+-(NSColor *)backgroundColor;
 -(SEL)doubleAction;
 -(Class)matrixClass;
 -(int)maxVisibleColumns;
@@ -58,30 +60,31 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(BOOL)sendsActionOnArrowKeys;
 -(BOOL)reusesColumns;
 
--(int)lastColumn;
--(int)lastVisibleColumn;
--(int)firstVisibleColumn;
+-(NSInteger)lastColumn;
+-(NSInteger)lastVisibleColumn;
+-(NSInteger)firstVisibleColumn;
 
--(NSMatrix *)matrixInColumn:(int)column;
--(int)columnOfMatrix:(NSMatrix *)matrix;
--(NSString *)titleOfColumn:(int)column;
+-(NSMatrix *)matrixInColumn:(NSInteger)column;
+-(NSInteger)columnOfMatrix:(NSMatrix *)matrix;
+-(NSString *)titleOfColumn:(NSInteger)column;
 
 -(NSArray *)selectedCells;
 -selectedCell;
--selectedCellInColumn:(int)column;
--(int)selectedColumn;
--(int)selectedRowInColumn:(int)column;
+-selectedCellInColumn:(NSInteger)column;
+-(NSInteger)selectedColumn;
+-(NSInteger)selectedRowInColumn:(NSInteger)column;
 
 -(float)titleHeight;
--(NSRect)titleFrameOfColumn:(int)column;
--(NSRect)frameOfColumn:(int)column;
--(NSRect)frameOfInsideOfColumn:(int)column;
+-(NSRect)titleFrameOfColumn:(NSInteger)column;
+-(NSRect)frameOfColumn:(NSInteger)column;
+-(NSRect)frameOfInsideOfColumn:(NSInteger)column;
 
 -(void)setDelegate:delegate;
+-(void)setBackgroundColor:(NSColor *)color;
 -(void)setDoubleAction:(SEL)action;
 -(void)setMatrixClass:(Class)aClass;
 -(void)setCellClass:(Class)aClass;
--(void)setMaxVisibleColumns:(int)count;
+-(void)setMaxVisibleColumns:(NSInteger)count;
 -(void)setHasHorizontalScroller:(BOOL)flag;
 -(void)setSeparatesColumns:(BOOL)flag;
 -(void)setTitled:(BOOL)flag;
@@ -93,9 +96,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)setSendsActionOnArrowKeys:(BOOL)flag;
 -(void)setReusesColumns:(BOOL)flag;
 
--(void)setTitle:(NSString *)title ofColumn:(int)column;
+-(void)setTitle:(NSString *)title ofColumn:(NSInteger)column;
 
--(void)selectRow:(int)row inColumn:(int)column;
+-(void)selectRow:(NSInteger)row inColumn:(NSInteger)column;
 -(void)setPath:(NSString *)path;
 
 -(BOOL)sendAction;
@@ -103,36 +106,38 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)doDoubleClick:sender;
 
 -(void)loadColumnZero;
--(void)reloadColumn:(int)column;
+-(void)reloadColumn:(NSInteger)column;
+-(void)addColumn;
+-(void)setLastColumn:(NSInteger)column;
 -(void)validateVisibleColumns;
 
--(void)scrollColumnsLeftBy:(int)delta;
--(void)scrollColumnsRightBy:(int)delta;
--(void)scrollColumnToVisible:(int)column;
+-(void)scrollColumnsLeftBy:(NSInteger)delta;
+-(void)scrollColumnsRightBy:(NSInteger)delta;
+-(void)scrollColumnToVisible:(NSInteger)column;
 -(void)scrollViaScroller:(NSScroller *)sender;
 -(void)updateScroller;
 
--(void)drawTitleOfColumn:(int)column inRect:(NSRect)rect;
+-(void)drawTitleOfColumn:(NSInteger)column inRect:(NSRect)rect;
 
 -(void)tile;
 
 @end
 
 @interface NSObject(NSBrowser_delegate)
--(BOOL)browser:(NSBrowser *)browser isColumnValid:(int)column;
+-(BOOL)browser:(NSBrowser *)browser isColumnValid:(NSInteger)column;
 
--(int)browser:(NSBrowser *)browser numberOfRowsInColumn:(int)column;
--(void)browser:(NSBrowser *)browser createRowsForColumn:(int)column inMatrix:(NSMatrix *)matrix;
+-(NSInteger)browser:(NSBrowser *)browser numberOfRowsInColumn:(NSInteger)column;
+-(void)browser:(NSBrowser *)browser createRowsForColumn:(NSInteger)column inMatrix:(NSMatrix *)matrix;
 
--(BOOL)browser:(NSBrowser *)browser selectRow:(int)row inColumn:(int)column;
--(BOOL)browser:(NSBrowser *)browser selectCellWithString:(NSString *)title inColumn:(int)column;
+-(BOOL)browser:(NSBrowser *)browser selectRow:(NSInteger)row inColumn:(NSInteger)column;
+-(BOOL)browser:(NSBrowser *)browser selectCellWithString:(NSString *)title inColumn:(NSInteger)column;
 
--(NSString *)browser:(NSBrowser *)browser titleOfColumn:(int)column;
+-(NSString *)browser:(NSBrowser *)browser titleOfColumn:(NSInteger)column;
 
 -(void)browserWillScroll:(NSBrowser *)browser;
 -(void)browserDidScroll:(NSBrowser *)browser;
 
--(void)browser:(NSBrowser *)browser willDisplayCell:cell atRow:(int)row column:(int)column;
+-(void)browser:(NSBrowser *)browser willDisplayCell:cell atRow:(NSInteger)row column:(NSInteger)column;
 
 @end
 

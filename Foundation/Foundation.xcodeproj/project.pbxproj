@@ -1825,6 +1825,11 @@
 		FEB9D7030B44414000C239BB /* NSSocketPortNameServer.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9D7010B44414000C239BB /* NSSocketPortNameServer.m */; };
 		FEB9D7060B44414000C239BB /* NSSocketPortNameServer.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB9D7000B44414000C239BB /* NSSocketPortNameServer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FEB9D7070B44414000C239BB /* NSSocketPortNameServer.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9D7010B44414000C239BB /* NSSocketPortNameServer.m */; };
+		FEC1CFE00F7AAB7900619DD5 /* FoundationErrors.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC1CFDF0F7AAB7900619DD5 /* FoundationErrors.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEC1CFE10F7AAB7900619DD5 /* FoundationErrors.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC1CFDF0F7AAB7900619DD5 /* FoundationErrors.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEC1CFE20F7AAB7900619DD5 /* FoundationErrors.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC1CFDF0F7AAB7900619DD5 /* FoundationErrors.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEC1CFE30F7AAB7900619DD5 /* FoundationErrors.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC1CFDF0F7AAB7900619DD5 /* FoundationErrors.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEC1CFE40F7AAB7900619DD5 /* FoundationErrors.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC1CFDF0F7AAB7900619DD5 /* FoundationErrors.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FEC9F6AE0E2F98EA0034932A /* NSURLProtocol_http.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC9F6AC0E2F98EA0034932A /* NSURLProtocol_http.h */; };
 		FEC9F6AF0E2F98EA0034932A /* NSURLProtocol_http.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC9F6AD0E2F98EA0034932A /* NSURLProtocol_http.m */; };
 		FEC9F6B00E2F98EA0034932A /* NSURLProtocol_http.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC9F6AC0E2F98EA0034932A /* NSURLProtocol_http.h */; };
@@ -3895,6 +3900,7 @@
 		FEB9D6E80B4440F200C239BB /* NSMessagePortNameServer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSMessagePortNameServer.m; sourceTree = "<group>"; };
 		FEB9D7000B44414000C239BB /* NSSocketPortNameServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSSocketPortNameServer.h; sourceTree = "<group>"; };
 		FEB9D7010B44414000C239BB /* NSSocketPortNameServer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSSocketPortNameServer.m; sourceTree = "<group>"; };
+		FEC1CFDF0F7AAB7900619DD5 /* FoundationErrors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FoundationErrors.h; sourceTree = "<group>"; };
 		FEC9F6AC0E2F98EA0034932A /* NSURLProtocol_http.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSURLProtocol_http.h; sourceTree = "<group>"; };
 		FEC9F6AD0E2F98EA0034932A /* NSURLProtocol_http.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSURLProtocol_http.m; sourceTree = "<group>"; };
 		FEC9F6BB0E2F9BEA0034932A /* NSURLConnectionState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSURLConnectionState.h; sourceTree = "<group>"; };
@@ -4006,6 +4012,7 @@
 				FE4BDD2A0BCD65EB00E19685 /* CoreFoundation */,
 				0867D69AFE84028FC02AAC07 /* External Frameworks and Libraries */,
 				6E280B2909747F1F00EC542B /* Foundation.h */,
+				FEC1CFDF0F7AAB7900619DD5 /* FoundationErrors.h */,
 				FE6DC2550BA902710082AC66 /* NSAffineTransform.h */,
 				FE6DC2560BA902710082AC66 /* NSAffineTransform.m */,
 				6E28030D0974787200EC542B /* NSArchiver.h */,
@@ -5456,6 +5463,7 @@
 				FE1365F60F154B3A000F2657 /* NSOperationQueue.h in Headers */,
 				C89B47410F5C6AB50070120D /* NSCancelInputSource_posix.h in Headers */,
 				FEA9D30D0F5D9C5A00772064 /* NSRunLoopState_posix.h in Headers */,
+				FEC1CFE10F7AAB7900619DD5 /* FoundationErrors.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5762,6 +5770,7 @@
 				FE1365EE0F154B3A000F2657 /* NSOperationQueue.h in Headers */,
 				C89B473F0F5C6AB50070120D /* NSCancelInputSource_posix.h in Headers */,
 				FEA9D30B0F5D9C5A00772064 /* NSRunLoopState_posix.h in Headers */,
+				FEC1CFE00F7AAB7900619DD5 /* FoundationErrors.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6072,6 +6081,7 @@
 				FE1365E60F154B3A000F2657 /* NSOperationQueue.h in Headers */,
 				C89B47370F5C6A4B0070120D /* NSCancelInputSource_win32.h in Headers */,
 				FEA9D3070F5D9C2100772064 /* NSRunLoopState_windows.h in Headers */,
+				FEC1CFE40F7AAB7900619DD5 /* FoundationErrors.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6379,6 +6389,7 @@
 				FE1365FE0F154B3A000F2657 /* NSOperationQueue.h in Headers */,
 				C89B47430F5C6AB50070120D /* NSCancelInputSource_posix.h in Headers */,
 				FEA9D30F0F5D9C5A00772064 /* NSRunLoopState_posix.h in Headers */,
+				FEC1CFE20F7AAB7900619DD5 /* FoundationErrors.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6686,6 +6697,7 @@
 				FE1366060F154B3A000F2657 /* NSOperationQueue.h in Headers */,
 				C89B47450F5C6AB50070120D /* NSCancelInputSource_posix.h in Headers */,
 				FEA9D3110F5D9C5A00772064 /* NSRunLoopState_posix.h in Headers */,
+				FEC1CFE30F7AAB7900619DD5 /* FoundationErrors.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

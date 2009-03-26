@@ -5,8 +5,6 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
-
-// Original - David Young <daver@geeks.org>, Christopher Lloyd <cjwl@objc.net>
 #import <AppKit/NSBrowser.h>
 #import <AppKit/NSBrowserCell.h>
 #import <AppKit/NSScrollView.h>
@@ -52,6 +50,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     _matrices=[NSMutableArray new];
     _scrollViews=[NSMutableArray new];
 
+    _backgroundColor=[[NSColor whiteColor] copy];
+    
     _matrixClass=[NSMatrix class];
     _cellClass=[[self class] cellClass];
     _cellPrototype=nil;
@@ -91,7 +91,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    _scrollViews=[NSMutableArray new];
 
    _horizontalScroller=nil;
-
+   _backgroundColor=[[NSColor whiteColor] copy];
    _matrixClass=[NSMatrix class];
    _cellClass=[[self class] cellClass];
    _cellPrototype=nil;
@@ -142,6 +142,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return _delegate;
 }
 
+-(NSColor *)backgroundColor {
+   return _backgroundColor;
+}
+
 -(SEL)doubleAction {
    return _doubleAction;
 }
@@ -150,7 +154,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return _matrixClass;
 }
 
--(int)maxVisibleColumns {
+-(NSInteger)maxVisibleColumns {
    return _maxVisibleColumns;
 }
 
@@ -194,30 +198,30 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return _reusesColumns;
 }
 
--(int)lastColumn {
+-(NSInteger)lastColumn {
    return [_matrices count]-1;
 }
 
--(int)lastVisibleColumn {
+-(NSInteger)lastVisibleColumn {
    return [self firstVisibleColumn]+(_numberOfVisibleColumns-1);
 }
 
--(int)firstVisibleColumn {
+-(NSInteger)firstVisibleColumn {
    return _firstVisibleColumn;
 }
 
--(NSMatrix *)matrixInColumn:(int)column {
+-(NSMatrix *)matrixInColumn:(NSInteger)column {
    if(column<[_matrices count])
     return [_matrices objectAtIndex:column];
 
    return nil;
 }
 
--(int)columnOfMatrix:(NSMatrix *)matrix {
+-(NSInteger)columnOfMatrix:(NSMatrix *)matrix {
    return [_matrices indexOfObjectIdenticalTo:matrix];
 }
 
--(NSString *)titleOfColumn:(int)column {
+-(NSString *)titleOfColumn:(NSInteger)column {
    id result;
 
    if(column>=[_titles count])
@@ -244,14 +248,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     return [self selectedCellInColumn:_selectedColumn];
 }
 
--selectedCellInColumn:(int)column {
+-selectedCellInColumn:(NSInteger)column {
     return [[self matrixInColumn:column] selectedCell];
 }
 
 // This needs to be computed, manipulating individual cell state bypasses _selectedColumn
 // We should get rid of _selectedColumn eventually
--(int)selectedColumn {
-   int i,count=[_matrices count];
+-(NSInteger)selectedColumn {
+   NSInteger i,count=[_matrices count];
 
    for(i=0;i<count;i++){
     NSMatrix *matrix=[_matrices objectAtIndex:i];
@@ -263,7 +267,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return i-1;
 }
 
--(int)selectedRowInColumn:(int)column {
+-(NSInteger)selectedRowInColumn:(NSInteger)column {
    return [[self matrixInColumn:column] selectedRow];
 }
 
@@ -275,7 +279,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return 20;
 }
 
--(NSRect)titleFrameOfColumn:(int)column {
+-(NSRect)titleFrameOfColumn:(NSInteger)column {
    NSRect result;
    float  columnGap=_separatesColumns?[self seperatorWidth]:0;
 
@@ -304,7 +308,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return NSInsetRect(result,2,2);
 }
 
--(NSRect)frameOfColumn:(int)column {
+-(NSRect)frameOfColumn:(NSInteger)column {
    NSRect result;
    NSRect titleFrame=[self titleFrameOfColumn:column];
 
@@ -324,7 +328,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return result;
 }
 
--(NSRect)frameOfInsideOfColumn:(int)column {
+-(NSRect)frameOfInsideOfColumn:(NSInteger)column {
    NSScrollView *scrollView=[_scrollViews objectAtIndex:0];
    NSSize        size=[scrollView contentSize];
 
@@ -342,6 +346,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     _delegate=delegate;
 }
 
+-(void)setBackgroundColor:(NSColor *)color {
+   color=[color retain];
+   [_backgroundColor release];
+   _backgroundColor=color;
+}
+
 -(void)setDoubleAction:(SEL)action {
    _doubleAction=action;
 }
@@ -354,7 +364,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    _cellClass=class;
 }
 
--(void)setMaxVisibleColumns:(int)count {
+-(void)setMaxVisibleColumns:(NSInteger)count {
    _maxVisibleColumns=count;
    _numberOfVisibleColumns=count;
    [self tile];
@@ -416,7 +426,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    _reusesColumns=flag;
 }
 
--(void)setTitle:(NSString *)title ofColumn:(int)column {
+-(void)setTitle:(NSString *)title ofColumn:(NSInteger)column {
    while([_explicitTitles count]<=column)
     [_explicitTitles addObject:@""];
 
@@ -424,7 +434,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [self setNeedsDisplay:YES];
 }
 
--(void)_unloadAfterColumn:(int)column {
+-(void)_unloadAfterColumn:(NSInteger)column {
     while([_matrices count]>column+1){
         NSMatrix *matrix=[_matrices lastObject];
 
@@ -437,7 +447,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     [self updateScroller];
 }
 
--(void)_reloadSelectionInColumn:(int)column {
+-(void)_reloadSelectionInColumn:(NSInteger)column {
    NSMatrix *matrix=[self matrixInColumn:column];
    NSArray  *selectedCells=[matrix selectedCells];
 
@@ -461,7 +471,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [self scrollColumnToVisible:_selectedColumn];
 }
 
--(void)selectRow:(int)row inColumn:(int)column {
+-(void)selectRow:(NSInteger)row inColumn:(NSInteger)column {
    _selectedColumn = column;
 
    if(column<[_matrices count]){
@@ -523,7 +533,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [self reloadColumn:0];
 }
 
--(NSMatrix *)createMatrixInColumn:(int)column {
+-(NSMatrix *)createMatrixInColumn:(NSInteger)column {
    while([_matrices count]<=column){
     NSRect    frame=[self frameOfInsideOfColumn:column];
     NSMatrix *matrix=[[[_matrixClass alloc] initWithFrame:frame] autorelease];
@@ -567,9 +577,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return [_matrices objectAtIndex:column];
 }
 
--(NSMatrix *)_reloadColumn:(int)column preserveSelection:(BOOL)preserveSelection {
+-(NSMatrix *)_reloadColumn:(NSInteger)column preserveSelection:(BOOL)preserveSelection {
    NSMatrix        *matrix=[self createMatrixInColumn:column];
-   int              selectedRow=[matrix selectedRow],selectedColumn=[matrix selectedColumn];
+   NSInteger              selectedRow=[matrix selectedRow],selectedColumn=[matrix selectedColumn];
    id               title=[NSNull null];
 
    [matrix renewRows:0 columns:1];
@@ -577,8 +587,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    if([_delegate respondsToSelector:@selector(browser:createRowsForColumn:inMatrix:)])
     [_delegate browser:self createRowsForColumn:column inMatrix:matrix];
    else {
-    int nrows=[_delegate browser:self numberOfRowsInColumn:column];
-    int i;
+    NSInteger nrows=[_delegate browser:self numberOfRowsInColumn:column];
+    NSInteger i;
 
     [matrix renewRows:nrows columns:1];
 
@@ -609,12 +619,20 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return matrix;
 }
 
--(void)reloadColumn:(int)column {
+-(void)reloadColumn:(NSInteger)column {
    [self _reloadColumn:column preserveSelection:NO];
 }
 
+-(void)addColumn {
+   NSUnimplementedMethod();
+}
+
+-(void)setLastColumn:(NSInteger)column {
+   NSUnimplementedMethod();
+}
+
 -(void)validateVisibleColumns {
-   int  i;
+   NSInteger  i;
 
    if([_delegate respondsToSelector:@selector(browser:isColumnValid:)]){
     for(i=[self firstVisibleColumn];i<=[self lastVisibleColumn];i++){
@@ -632,8 +650,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    }
 }
 
--(void)scrollColumnsLeftBy:(int)offset {
-    int i, scrollViewIndex = 0;
+-(void)scrollColumnsLeftBy:(NSInteger)offset {
+    NSInteger i, scrollViewIndex = 0;
     
     if (_firstVisibleColumn - offset < 0)
         offset = _firstVisibleColumn;
@@ -652,8 +670,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     [self updateScroller];
 }
 
--(void)scrollColumnsRightBy:(int)offset {
-    int i, scrollViewIndex = 0;
+-(void)scrollColumnsRightBy:(NSInteger)offset {
+    NSInteger i, scrollViewIndex = 0;
     
     if ([self lastVisibleColumn] + offset >= [_matrices count]) 
         offset = [_matrices count] - [self lastVisibleColumn] - 1;
@@ -673,7 +691,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     [self updateScroller];
 }
 
--(void)scrollColumnToVisible:(int)column {
+-(void)scrollColumnToVisible:(NSInteger)column {
     if (column >= [self firstVisibleColumn] && column <= [self lastVisibleColumn])
         return;	// already visible
 
@@ -726,7 +744,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     [_horizontalScroller setNeedsDisplay:YES];
 }
 
--(void)drawTitleOfColumn:(int)column inRect:(NSRect)rect {
+-(void)drawTitleOfColumn:(NSInteger)column inRect:(NSRect)rect {
    NSString *title=[self titleOfColumn:column];
    NSSize    titleSize=[title sizeWithAttributes:nil];
    NSRect    titleFrame=NSInsetRect(rect,2,0);
@@ -737,9 +755,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [[self titleOfColumn:column] _clipAndDrawInRect:titleFrame withAttributes:nil];
 }
 
--(NSScrollView *)createScrollViewAtIndex:(int)index {
+-(NSScrollView *)createScrollViewAtIndex:(NSInteger)index {
    while([_scrollViews count]<=index){
-    int           column=_firstVisibleColumn+[_scrollViews count];
+    NSInteger           column=_firstVisibleColumn+[_scrollViews count];
     NSRect        frame=[self frameOfColumn:column];
     NSScrollView *view=[[[NSScrollView alloc] initWithFrame:frame] autorelease];
 
@@ -756,10 +774,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)tile {
-   int i;
+   NSInteger i;
 
    for(i=0;i<_numberOfVisibleColumns;i++){
-    int     column=_firstVisibleColumn+i;
+    NSInteger     column=_firstVisibleColumn+i;
     NSRect  frame=[self frameOfColumn:column];
     NSView *scrollView=[self createScrollViewAtIndex:i];
 
@@ -775,7 +793,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)setEnabled:(BOOL)enabled {
-   int count=[_matrices count];
+   NSInteger count=[_matrices count];
 
    while(--count>=0){
     [[_matrices objectAtIndex:count] setEnabled:enabled];
@@ -788,9 +806,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)drawRect:(NSRect)rect {
-   int i;
+   NSInteger i;
 
-   [[NSColor controlColor] setFill];
+   [_backgroundColor setFill];
    NSRectFill(rect);
 
    if([self isTitled]){    
@@ -825,7 +843,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 //  up arrow
 -(void)moveBackward:sender {
-    int selectedRow = [self selectedRowInColumn:_selectedColumn];
+    NSInteger selectedRow = [self selectedRowInColumn:_selectedColumn];
 
     if (selectedRow > 0) {
         if (!([[[self window] currentEvent] modifierFlags] & NSShiftKeyMask))
@@ -837,7 +855,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)moveForward:sender {
-    int selectedRow = [self selectedRowInColumn:_selectedColumn];
+    NSInteger selectedRow = [self selectedRowInColumn:_selectedColumn];
     if (selectedRow < [[self matrixInColumn:_selectedColumn] numberOfRows] - 1) {
         if (!([[[self window] currentEvent] modifierFlags] & NSShiftKeyMask))
             [[self matrixInColumn:_selectedColumn] deselectAllCells];

@@ -39,6 +39,10 @@ NSString *NSFilePosixPermissions = @"NSFilePosixPermissions";
 NSString *NSFileHFSCreatorCode = @"NSFileHFSCreatorCode";
 NSString *NSFileHFSTypeCode = @"NSFileHFSTypeCode";
 
+NSString *NSFileSystemNumber=@"NSFileSystemNumber";
+NSString *NSFileSystemSize=@"NSFileSystemSize";
+NSString *NSFileSystemFreeSize=@"NSFileSystemFreeSize";
+
 @implementation NSFileManager
 
 +(NSFileManager *)defaultManager {

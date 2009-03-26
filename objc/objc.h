@@ -20,8 +20,8 @@ typedef char  BOOL;
 #define YES  ((BOOL)1)
 #define NO   ((BOOL)0)
 
-#define Nil  ((Class)0)
-#define nil  ((id)0)
+#define Nil  0
+#define nil  0
 
 #define SELNAME sel_getName
 

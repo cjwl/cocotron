@@ -128,8 +128,7 @@ void _NSGradientInterpolator(void *info, float const *inData, float *outData)
 	return self;
 }
 
-- (id)initWithColors:(NSArray *)colors atLocations:(NSArray *)locations colorSpace:(NSColorSpace *)colorSpace
-{
+-initWithColors:(NSArray *)colors atLocations:(const CGFloat *)locations colorSpace:(NSColorSpace *)colorSpace {
 	NSUnimplementedMethod();
 	return nil;
 }

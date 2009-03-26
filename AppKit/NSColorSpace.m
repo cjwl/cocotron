@@ -10,4 +10,27 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @implementation NSColorSpace
 
++(NSColorSpace *)deviceRGBColorSpace {
+   CGColorSpaceRef device=CGColorSpaceCreateDeviceRGB();
+   NSColorSpace   *result=[[[self alloc] initWithCGColorSpace:device] autorelease];
+   
+   CGColorSpaceRelease(device);
+   
+   return result;
+}
+
+-initWithCGColorSpace:(CGColorSpaceRef)cgColorSpace {
+   _cgColorSpace=CGColorSpaceRetain(cgColorSpace);
+   return self;
+}
+
+-(void)dealloc {
+   CGColorSpaceRelease(_cgColorSpace);
+   [super dealloc];
+}
+
+-(CGColorSpaceRef)CGColorSpace {
+   return _cgColorSpace;
+}
+
 @end

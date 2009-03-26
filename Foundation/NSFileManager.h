@@ -35,6 +35,10 @@ FOUNDATION_EXPORT NSString *NSFileReferenceCount;
 FOUNDATION_EXPORT NSString *NSFileIdentifier;
 FOUNDATION_EXPORT NSString *NSFileDeviceIdentifier;
 
+FOUNDATION_EXPORT NSString *NSFileSystemNumber;
+FOUNDATION_EXPORT NSString *NSFileSystemSize;
+FOUNDATION_EXPORT NSString *NSFileSystemFreeSize;
+
 @interface NSFileManager : NSObject
 
 +(NSFileManager *)defaultManager;

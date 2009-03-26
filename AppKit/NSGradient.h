@@ -25,10 +25,10 @@ typedef enum
 
 #pragma mark Initialization
 
-- (id)initWithStartingColor:(NSColor *)startingColor endingColor:(NSColor *)endingColor;
-- (id)initWithColors:(NSArray *)colors;
-- (id)initWithColorsAndLocations:(NSColor *)firstColor, ...;
-- (id)initWithColors:(NSArray *)colors atLocations:(NSArray *)locations colorSpace:(NSColorSpace *)colorSpace;
+-initWithStartingColor:(NSColor *)startingColor endingColor:(NSColor *)endingColor;
+-initWithColors:(NSArray *)colors;
+-initWithColorsAndLocations:(NSColor *)firstColor, ...;
+-initWithColors:(NSArray *)colors atLocations:(const CGFloat *)locations colorSpace:(NSColorSpace *)colorSpace;
 
 #pragma mark Primitive Drawing Methods
 

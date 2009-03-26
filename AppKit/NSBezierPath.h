@@ -120,6 +120,7 @@ typedef enum {
 -(void)appendBezierPathWithRect:(NSRect)rect;
 -(void)appendBezierPathWithOvalInRect:(NSRect)rect;
 -(void)appendBezierPathWithArcFromPoint:(NSPoint)point toPoint:(NSPoint)toPoint radius:(float)radius;
+-(void)appendBezierPathWithRoundedRect:(NSRect)rect xRadius:(CGFloat)radius yRadius:(CGFloat)yRadius;
 -(void)appendBezierPathWithArcWithCenter:(NSPoint)center radius:(float)radius startAngle:(float)startAngle endAngle:(float)endAngle;
 -(void)appendBezierPathWithArcWithCenter:(NSPoint)center radius:(float)radius startAngle:(float)startAngle endAngle:(float)endAngle clockwise:(BOOL)clockwise;
 -(void)appendBezierPathWithGlyph:(NSGlyph)glyph inFont:(NSFont *)font;

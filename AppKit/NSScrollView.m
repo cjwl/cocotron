@@ -5,9 +5,6 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
-
-// Ruler support - David Young <daver@geeks.org>
-// Original - Christopher Lloyd <cjwl@objc.net>
 #import <AppKit/NSScrollView.h>
 #import <AppKit/NSScroller.h>
 #import <AppKit/NSClipView.h>
@@ -109,6 +106,7 @@ static Class _rulerViewClass = nil;
     NSNibKeyedUnarchiver *keyed=(NSNibKeyedUnarchiver *)coder;
     unsigned           flags=[keyed decodeIntForKey:@"NSsFlags"];
     
+    _drawsBackground=YES; // FIXME: this is in the nib
     _hasVerticalScroller=(flags&0x10)?YES:NO;
     _hasHorizontalScroller=(flags&0x20)?YES:NO;
     _borderType=flags&0x03;
@@ -433,6 +431,10 @@ static Class _rulerViewClass = nil;
     return [_clipView documentVisibleRect];
 }
 
+-(BOOL)drawsBackground {
+   return _drawsBackground;
+}
+
 -(NSColor *)backgroundColor {
    return [_clipView backgroundColor];
 }
@@ -528,6 +530,12 @@ static Class _rulerViewClass = nil;
    [_clipView setAutoresizingMask:NSViewWidthSizable|NSViewHeightSizable];
    [_clipView setAutoresizesSubviews:YES];
    [self tile];
+}
+
+-(void)setDrawsBackground:(BOOL)value {
+   _drawsBackground=value;
+   if(!_drawsBackground)
+    [_clipView setCopiesOnScroll:NO];
 }
 
 -(void)setBackgroundColor:(NSColor *)color {

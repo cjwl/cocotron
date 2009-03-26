@@ -23,6 +23,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    float         _horizontalLineScroll;
    float         _horizontalPageScroll;
    int           _borderType;
+   BOOL          _drawsBackground;
    BOOL          _hasVerticalScroller;
    BOOL          _hasHorizontalScroller;
    BOOL          _hasHorizontalRuler;
@@ -44,6 +45,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(NSClipView *)contentView;
 -(NSRect)documentVisibleRect;
 
+-(BOOL)drawsBackground;
 -(NSColor *)backgroundColor;
 -(NSBorderType)borderType;
 -(NSScroller *)verticalScroller;
@@ -66,6 +68,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)setDocumentView:(NSView *)view;
 -(void)setContentView:(NSClipView *)clipView;
+-(void)setDrawsBackground:(BOOL)value;
 -(void)setBackgroundColor:(NSColor *)color;
 -(void)setBorderType:(NSBorderType)borderType;
 -(void)setVerticalScroller:(NSScroller *)scroller;
