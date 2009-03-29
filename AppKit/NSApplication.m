@@ -213,8 +213,7 @@ id NSApp=nil;
 }
 
 -(BOOL)isHidden {
-   NSUnimplementedMethod();
-   return NO;
+	return _isHidden;
 }
 
 -(BOOL)isRunning {
@@ -781,11 +780,15 @@ id NSApp=nil;
    NSUnimplementedMethod();
 }
 
--(void)hide:sender {
-   for(NSWindow* window in _windows) {
-    [window orderOut:self];
-   }
-   _isHidden=YES;
+-(void)hide:sender {//deactivates the application and hides all windows
+	if (!_isHidden)
+	{
+		[[NSNotificationCenter defaultCenter]postNotificationName:NSApplicationWillHideNotification object:self];
+		[_windows makeObjectsPerformSelector:@selector(_forcedHideForDeactivation)];//do no use orderOut here ist causes the application to quit if no window is visible
+		[[NSNotificationCenter defaultCenter]postNotificationName:NSApplicationDidHideNotification object:self];
+	}
+	_isHidden=YES;
+	
 }
 
 -(void)hideOtherApplications:sender {
@@ -795,11 +798,14 @@ id NSApp=nil;
 -(void)unhide:sender 
 {
 	
-	for(NSWindow* window in _windows)
+	if (_isHidden)
 	{
-		[[window platformWindow] showWindowWithoutActivation];
+		[[NSNotificationCenter defaultCenter]postNotificationName:NSApplicationWillUnhideNotification object:self];
+		[_windows makeObjectsPerformSelector:@selector(_showForActivation)];//only shows previously hidden windows
+		[[NSNotificationCenter defaultCenter]postNotificationName:NSApplicationDidUnhideNotification object:self];
 	}
 	_isHidden=NO;
+	//[self activateIgnoringOtherApps:NO]
 	
 }
 
@@ -808,7 +814,14 @@ id NSApp=nil;
 }
 
 -(void)unhideWithoutActivation {
-   NSUnimplementedMethod();
+	if (_isHidden)
+	{
+		
+		[[NSNotificationCenter defaultCenter]postNotificationName:NSApplicationWillUnhideNotification object:self];
+		[_windows makeObjectsPerformSelector:@selector(_showForActivation)];//only shows previously hidden windows
+		[[NSNotificationCenter defaultCenter]postNotificationName:NSApplicationDidUnhideNotification object:self];
+	}
+	_isHidden=NO;
 }
 
 -(void)stop:sender {

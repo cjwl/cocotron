@@ -1931,6 +1931,17 @@ NSString *NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification";
    }
 }
 
+-(void)_forcedHideForDeactivation {
+	if([self isVisible]){
+		_hiddenForDeactivate=YES;
+		//_hiddenKeyWindow=[self isKeyWindow];
+		[[self platformWindow] hideWindowForAppDeactivation:_frame];
+	}
+}
+
+
+
+
 -(BOOL)performKeyEquivalent:(NSEvent *)event {
    return [_backgroundView performKeyEquivalent:event];
 }
