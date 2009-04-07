@@ -10,7 +10,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <objc/objc-class.h>
 #import <mach-o/dyld.h>
 #import <mach-o/getsect.h>
-#import "ObjCSelector.h"
+#import "objc_sel.h"
 #import <string.h>
 #import <Foundation/NSDarwinString.h>
 

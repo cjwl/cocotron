@@ -15,7 +15,7 @@
 #import <Foundation/NSMutableArray.h>
 #import <Foundation/NSValue.h>
 #import <Foundation/NSString.h>
-#import <Foundation/ObjCClass.h>
+#import <Foundation/objc_class.h>
 
 static void *_objc_returnAddress(unsigned frame)
 {

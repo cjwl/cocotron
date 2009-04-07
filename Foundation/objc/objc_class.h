@@ -8,7 +8,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/ObjCHashTable.h>
 #import <objc/objc.h>
-#import <Foundation/ObjCSelector.h>
+#import <Foundation/objc_sel.h>
 #import <objc/runtime.h>
 
 enum {
