@@ -326,7 +326,6 @@
 		6E4D92CA0A2642BD003D335C /* ObjCHashTable.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28053009747C8900EC542B /* ObjCHashTable.m */; };
 		6E4D92CC0A2642BD003D335C /* ObjCModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28053409747C8900EC542B /* ObjCModule.m */; };
 		6E4D92CD0A2642BD003D335C /* objc_sel.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28053609747C8900EC542B /* objc_sel.m */; };
-		6E4D92D00A2642BD003D335C /* ObjectiveC.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28053D09747C8900EC542B /* ObjectiveC.m */; };
 		6E4D92D10A2642BD003D335C /* Protocol.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28053F09747C8900EC542B /* Protocol.m */; };
 		6E4D92D70A2642BD003D335C /* NSBundle.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2805F409747D5800EC542B /* NSBundle.m */; };
 		6E4D92D80A2642BD003D335C /* NSByteOrder.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2805F609747D5800EC542B /* NSByteOrder.m */; };
@@ -685,7 +684,6 @@
 		6EA04A0F09E57D5F0067589C /* ObjCHashTable.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28053009747C8900EC542B /* ObjCHashTable.m */; };
 		6EA04A1109E57D5F0067589C /* ObjCModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28053409747C8900EC542B /* ObjCModule.m */; };
 		6EA04A1209E57D5F0067589C /* objc_sel.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28053609747C8900EC542B /* objc_sel.m */; };
-		6EA04A1509E57D5F0067589C /* ObjectiveC.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28053D09747C8900EC542B /* ObjectiveC.m */; };
 		6EA04A1609E57D5F0067589C /* Protocol.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28053F09747C8900EC542B /* Protocol.m */; };
 		6EA04A1C09E57D5F0067589C /* NSBundle.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2805F409747D5800EC542B /* NSBundle.m */; };
 		6EA04A1D09E57D5F0067589C /* NSByteOrder.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2805F609747D5800EC542B /* NSByteOrder.m */; };
@@ -1247,7 +1245,6 @@
 		FE01A7300C5D9B6900AEA51A /* ObjCHashTable.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28053009747C8900EC542B /* ObjCHashTable.m */; };
 		FE01A7310C5D9B6900AEA51A /* ObjCModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28053409747C8900EC542B /* ObjCModule.m */; };
 		FE01A7320C5D9B6900AEA51A /* objc_sel.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28053609747C8900EC542B /* objc_sel.m */; };
-		FE01A7340C5D9B6900AEA51A /* ObjectiveC.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28053D09747C8900EC542B /* ObjectiveC.m */; };
 		FE01A7350C5D9B6900AEA51A /* Protocol.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28053F09747C8900EC542B /* Protocol.m */; };
 		FE01A7360C5D9B6900AEA51A /* NSBundle.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2805F409747D5800EC542B /* NSBundle.m */; };
 		FE01A7370C5D9B6900AEA51A /* NSByteOrder.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2805F609747D5800EC542B /* NSByteOrder.m */; };
@@ -1357,7 +1354,6 @@
 		FE01A79F0C5D9B6900AEA51A /* NSSocketPortNameServer.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9D7010B44414000C239BB /* NSSocketPortNameServer.m */; };
 		FE01A7A00C5D9B6900AEA51A /* NSHTTPURLResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = FE405A6B0B4450FD001B183D /* NSHTTPURLResponse.m */; };
 		FE01A7A10C5D9B6900AEA51A /* NSKeyValueCoding.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB6CBAF0B4A139F004FADF2 /* NSKeyValueCoding.m */; };
-		FE01A7A20C5D9B6900AEA51A /* objc-class.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB6CC0E0B4A169C004FADF2 /* objc-class.m */; };
 		FE01A7A30C5D9B6900AEA51A /* NSKVCMutableArray.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB6CC8A0B4A1D4D004FADF2 /* NSKVCMutableArray.m */; };
 		FE01A7A40C5D9B6900AEA51A /* objc.m in Sources */ = {isa = PBXBuildFile; fileRef = FE35CAEC0B4AB85800FE7AB3 /* objc.m */; };
 		FE01A7A50C5D9B6900AEA51A /* NSSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = FE35CBD80B4AD47400FE7AB3 /* NSSocket.m */; };
@@ -1660,8 +1656,6 @@
 		FEB6CBB30B4A139F004FADF2 /* NSKeyValueCoding.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB6CBAF0B4A139F004FADF2 /* NSKeyValueCoding.m */; };
 		FEB6CBB40B4A139F004FADF2 /* NSKeyValueCoding.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB6CBAE0B4A139F004FADF2 /* NSKeyValueCoding.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FEB6CBB50B4A139F004FADF2 /* NSKeyValueCoding.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB6CBAF0B4A139F004FADF2 /* NSKeyValueCoding.m */; };
-		FEB6CC100B4A169C004FADF2 /* objc-class.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB6CC0E0B4A169C004FADF2 /* objc-class.m */; };
-		FEB6CC110B4A169D004FADF2 /* objc-class.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB6CC0E0B4A169C004FADF2 /* objc-class.m */; };
 		FEB6CC8D0B4A1D4D004FADF2 /* NSKVCMutableArray.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB6CC890B4A1D4D004FADF2 /* NSKVCMutableArray.h */; };
 		FEB6CC8E0B4A1D4D004FADF2 /* NSKVCMutableArray.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB6CC8A0B4A1D4D004FADF2 /* NSKVCMutableArray.m */; };
 		FEB6CC8F0B4A1D4D004FADF2 /* NSKVCMutableArray.h in Headers */ = {isa = PBXBuildFile; fileRef = FEB6CC890B4A1D4D004FADF2 /* NSKVCMutableArray.h */; };
@@ -2271,7 +2265,6 @@
 		FED709B20C3B3D2C000CBE5B /* ObjCHashTable.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28053009747C8900EC542B /* ObjCHashTable.m */; };
 		FED709B30C3B3D2C000CBE5B /* ObjCModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28053409747C8900EC542B /* ObjCModule.m */; };
 		FED709B40C3B3D2C000CBE5B /* objc_sel.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28053609747C8900EC542B /* objc_sel.m */; };
-		FED709B60C3B3D2C000CBE5B /* ObjectiveC.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28053D09747C8900EC542B /* ObjectiveC.m */; };
 		FED709B70C3B3D2C000CBE5B /* Protocol.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28053F09747C8900EC542B /* Protocol.m */; };
 		FED709B80C3B3D2C000CBE5B /* NSBundle.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2805F409747D5800EC542B /* NSBundle.m */; };
 		FED709B90C3B3D2C000CBE5B /* NSByteOrder.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2805F609747D5800EC542B /* NSByteOrder.m */; };
@@ -2375,7 +2368,6 @@
 		FED70A1E0C3B3D2C000CBE5B /* NSSocketPortNameServer.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9D7010B44414000C239BB /* NSSocketPortNameServer.m */; };
 		FED70A1F0C3B3D2C000CBE5B /* NSHTTPURLResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = FE405A6B0B4450FD001B183D /* NSHTTPURLResponse.m */; };
 		FED70A200C3B3D2C000CBE5B /* NSKeyValueCoding.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB6CBAF0B4A139F004FADF2 /* NSKeyValueCoding.m */; };
-		FED70A210C3B3D2C000CBE5B /* objc-class.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB6CC0E0B4A169C004FADF2 /* objc-class.m */; };
 		FED70A220C3B3D2C000CBE5B /* NSKVCMutableArray.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB6CC8A0B4A1D4D004FADF2 /* NSKVCMutableArray.m */; };
 		FED70A230C3B3D2C000CBE5B /* objc.m in Sources */ = {isa = PBXBuildFile; fileRef = FE35CAEC0B4AB85800FE7AB3 /* objc.m */; };
 		FED70A240C3B3D2C000CBE5B /* NSSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = FE35CBD80B4AD47400FE7AB3 /* NSSocket.m */; };
@@ -2837,7 +2829,6 @@
 		FED70EFD0C3C09C7000CBE5B /* ObjCHashTable.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28053009747C8900EC542B /* ObjCHashTable.m */; };
 		FED70EFE0C3C09C7000CBE5B /* ObjCModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28053409747C8900EC542B /* ObjCModule.m */; };
 		FED70EFF0C3C09C7000CBE5B /* objc_sel.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28053609747C8900EC542B /* objc_sel.m */; };
-		FED70F010C3C09C7000CBE5B /* ObjectiveC.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28053D09747C8900EC542B /* ObjectiveC.m */; };
 		FED70F020C3C09C7000CBE5B /* Protocol.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28053F09747C8900EC542B /* Protocol.m */; };
 		FED70F030C3C09C7000CBE5B /* NSBundle.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2805F409747D5800EC542B /* NSBundle.m */; };
 		FED70F040C3C09C7000CBE5B /* NSByteOrder.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2805F609747D5800EC542B /* NSByteOrder.m */; };
@@ -2941,7 +2932,6 @@
 		FED70F660C3C09C7000CBE5B /* NSSocketPortNameServer.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB9D7010B44414000C239BB /* NSSocketPortNameServer.m */; };
 		FED70F670C3C09C7000CBE5B /* NSHTTPURLResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = FE405A6B0B4450FD001B183D /* NSHTTPURLResponse.m */; };
 		FED70F680C3C09C7000CBE5B /* NSKeyValueCoding.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB6CBAF0B4A139F004FADF2 /* NSKeyValueCoding.m */; };
-		FED70F690C3C09C7000CBE5B /* objc-class.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB6CC0E0B4A169C004FADF2 /* objc-class.m */; };
 		FED70F6A0C3C09C7000CBE5B /* NSKVCMutableArray.m in Sources */ = {isa = PBXBuildFile; fileRef = FEB6CC8A0B4A1D4D004FADF2 /* NSKVCMutableArray.m */; };
 		FED70F6B0C3C09C7000CBE5B /* objc.m in Sources */ = {isa = PBXBuildFile; fileRef = FE35CAEC0B4AB85800FE7AB3 /* objc.m */; };
 		FED70F6C0C3C09C7000CBE5B /* NSSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = FE35CBD80B4AD47400FE7AB3 /* NSSocket.m */; };
@@ -3518,7 +3508,6 @@
 		6E28053409747C8900EC542B /* ObjCModule.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = ObjCModule.m; sourceTree = "<group>"; };
 		6E28053509747C8900EC542B /* objc_sel.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = objc_sel.h; sourceTree = "<group>"; };
 		6E28053609747C8900EC542B /* objc_sel.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = objc_sel.m; sourceTree = "<group>"; };
-		6E28053D09747C8900EC542B /* ObjectiveC.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = ObjectiveC.m; sourceTree = "<group>"; };
 		6E28053F09747C8900EC542B /* Protocol.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = Protocol.m; sourceTree = "<group>"; };
 		6E28055D09747CC300EC542B /* objc_msg_sendv.s */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.asm; path = objc_msg_sendv.s; sourceTree = "<group>"; };
 		6E28055F09747CCA00EC542B /* objc_msg_sendv.m */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.objc; fileEncoding = 30; name = objc_msg_sendv.m; path = platform_solaris/objc_msg_sendv.m; sourceTree = "<group>"; };
@@ -3810,7 +3799,6 @@
 		FEA9D30A0F5D9C5A00772064 /* NSRunLoopState_posix.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NSRunLoopState_posix.m; path = platform_posix/NSRunLoopState_posix.m; sourceTree = "<group>"; };
 		FEB6CBAE0B4A139F004FADF2 /* NSKeyValueCoding.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSKeyValueCoding.h; sourceTree = "<group>"; };
 		FEB6CBAF0B4A139F004FADF2 /* NSKeyValueCoding.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSKeyValueCoding.m; sourceTree = "<group>"; };
-		FEB6CC0E0B4A169C004FADF2 /* objc-class.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "objc-class.m"; sourceTree = "<group>"; };
 		FEB6CC400B4A1922004FADF2 /* objc.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = objc.xcodeproj; path = ../objc/objc.xcodeproj; sourceTree = SOURCE_ROOT; };
 		FEB6CC890B4A1D4D004FADF2 /* NSKVCMutableArray.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSKVCMutableArray.h; sourceTree = "<group>"; };
 		FEB6CC8A0B4A1D4D004FADF2 /* NSKVCMutableArray.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSKVCMutableArray.m; sourceTree = "<group>"; };
@@ -4631,7 +4619,6 @@
 				FED70D610C3C0973000CBE5B /* objc_msgSend-darwin-ppc.s */,
 				FED70C8E0C3BFFBE000CBE5B /* objc_msgSend-darwin-i386.s */,
 				FEA36F250C24C57000025A9C /* objc_cache.h */,
-				FEB6CC0E0B4A169C004FADF2 /* objc-class.m */,
 				6E28052609747C8900EC542B /* objc_functions.m */,
 				6E8115B20A55CB99000DE3F1 /* objc_msg_lookup.m */,
 				6E28055F09747CCA00EC542B /* objc_msg_sendv.m */,
@@ -4651,7 +4638,6 @@
 				6E28053409747C8900EC542B /* ObjCModule.m */,
 				6E28053509747C8900EC542B /* objc_sel.h */,
 				6E28053609747C8900EC542B /* objc_sel.m */,
-				6E28053D09747C8900EC542B /* ObjectiveC.m */,
 				6E28055A09747C8F00EC542B /* platform_linux */,
 				6E28055B09747C9900EC542B /* platform_solaris */,
 				6E28055C09747CAC00EC542B /* platform_win32 */,
@@ -7062,7 +7048,6 @@
 				6E4D92CA0A2642BD003D335C /* ObjCHashTable.m in Sources */,
 				6E4D92CC0A2642BD003D335C /* ObjCModule.m in Sources */,
 				6E4D92CD0A2642BD003D335C /* objc_sel.m in Sources */,
-				6E4D92D00A2642BD003D335C /* ObjectiveC.m in Sources */,
 				6E4D92D10A2642BD003D335C /* Protocol.m in Sources */,
 				6E4D92D70A2642BD003D335C /* NSBundle.m in Sources */,
 				6E4D92D80A2642BD003D335C /* NSByteOrder.m in Sources */,
@@ -7168,7 +7153,6 @@
 				FEB9D7070B44414000C239BB /* NSSocketPortNameServer.m in Sources */,
 				FE405A6F0B4450FD001B183D /* NSHTTPURLResponse.m in Sources */,
 				FEB6CBB50B4A139F004FADF2 /* NSKeyValueCoding.m in Sources */,
-				FEB6CC100B4A169C004FADF2 /* objc-class.m in Sources */,
 				FEB6CC8E0B4A1D4D004FADF2 /* NSKVCMutableArray.m in Sources */,
 				FE35CAEF0B4AB85800FE7AB3 /* objc.m in Sources */,
 				FE35CBE40B4AD47400FE7AB3 /* NSSocket.m in Sources */,
@@ -7371,7 +7355,6 @@
 				6EA04A0F09E57D5F0067589C /* ObjCHashTable.m in Sources */,
 				6EA04A1109E57D5F0067589C /* ObjCModule.m in Sources */,
 				6EA04A1209E57D5F0067589C /* objc_sel.m in Sources */,
-				6EA04A1509E57D5F0067589C /* ObjectiveC.m in Sources */,
 				6EA04A1609E57D5F0067589C /* Protocol.m in Sources */,
 				6EA04A1C09E57D5F0067589C /* NSBundle.m in Sources */,
 				6EA04A1D09E57D5F0067589C /* NSByteOrder.m in Sources */,
@@ -7478,7 +7461,6 @@
 				FEB9D7030B44414000C239BB /* NSSocketPortNameServer.m in Sources */,
 				FE405A710B4450FD001B183D /* NSHTTPURLResponse.m in Sources */,
 				FEB6CBB30B4A139F004FADF2 /* NSKeyValueCoding.m in Sources */,
-				FEB6CC110B4A169D004FADF2 /* objc-class.m in Sources */,
 				FEB6CC900B4A1D4D004FADF2 /* NSKVCMutableArray.m in Sources */,
 				FE35CAED0B4AB85800FE7AB3 /* objc.m in Sources */,
 				FE35CBDC0B4AD47400FE7AB3 /* NSSocket.m in Sources */,
@@ -7680,7 +7662,6 @@
 				FE01A7300C5D9B6900AEA51A /* ObjCHashTable.m in Sources */,
 				FE01A7310C5D9B6900AEA51A /* ObjCModule.m in Sources */,
 				FE01A7320C5D9B6900AEA51A /* objc_sel.m in Sources */,
-				FE01A7340C5D9B6900AEA51A /* ObjectiveC.m in Sources */,
 				FE01A7350C5D9B6900AEA51A /* Protocol.m in Sources */,
 				FE01A7360C5D9B6900AEA51A /* NSBundle.m in Sources */,
 				FE01A7370C5D9B6900AEA51A /* NSByteOrder.m in Sources */,
@@ -7790,7 +7771,6 @@
 				FE01A79F0C5D9B6900AEA51A /* NSSocketPortNameServer.m in Sources */,
 				FE01A7A00C5D9B6900AEA51A /* NSHTTPURLResponse.m in Sources */,
 				FE01A7A10C5D9B6900AEA51A /* NSKeyValueCoding.m in Sources */,
-				FE01A7A20C5D9B6900AEA51A /* objc-class.m in Sources */,
 				FE01A7A30C5D9B6900AEA51A /* NSKVCMutableArray.m in Sources */,
 				FE01A7A40C5D9B6900AEA51A /* objc.m in Sources */,
 				FE01A7A50C5D9B6900AEA51A /* NSSocket.m in Sources */,
@@ -7994,7 +7974,6 @@
 				FED709B20C3B3D2C000CBE5B /* ObjCHashTable.m in Sources */,
 				FED709B30C3B3D2C000CBE5B /* ObjCModule.m in Sources */,
 				FED709B40C3B3D2C000CBE5B /* objc_sel.m in Sources */,
-				FED709B60C3B3D2C000CBE5B /* ObjectiveC.m in Sources */,
 				FED709B70C3B3D2C000CBE5B /* Protocol.m in Sources */,
 				FED709B80C3B3D2C000CBE5B /* NSBundle.m in Sources */,
 				FED709B90C3B3D2C000CBE5B /* NSByteOrder.m in Sources */,
@@ -8098,7 +8077,6 @@
 				FED70A1E0C3B3D2C000CBE5B /* NSSocketPortNameServer.m in Sources */,
 				FED70A1F0C3B3D2C000CBE5B /* NSHTTPURLResponse.m in Sources */,
 				FED70A200C3B3D2C000CBE5B /* NSKeyValueCoding.m in Sources */,
-				FED70A210C3B3D2C000CBE5B /* objc-class.m in Sources */,
 				FED70A220C3B3D2C000CBE5B /* NSKVCMutableArray.m in Sources */,
 				FED70A230C3B3D2C000CBE5B /* objc.m in Sources */,
 				FED70A240C3B3D2C000CBE5B /* NSSocket.m in Sources */,
@@ -8306,7 +8284,6 @@
 				FED70EFD0C3C09C7000CBE5B /* ObjCHashTable.m in Sources */,
 				FED70EFE0C3C09C7000CBE5B /* ObjCModule.m in Sources */,
 				FED70EFF0C3C09C7000CBE5B /* objc_sel.m in Sources */,
-				FED70F010C3C09C7000CBE5B /* ObjectiveC.m in Sources */,
 				FED70F020C3C09C7000CBE5B /* Protocol.m in Sources */,
 				FED70F030C3C09C7000CBE5B /* NSBundle.m in Sources */,
 				FED70F040C3C09C7000CBE5B /* NSByteOrder.m in Sources */,
@@ -8410,7 +8387,6 @@
 				FED70F660C3C09C7000CBE5B /* NSSocketPortNameServer.m in Sources */,
 				FED70F670C3C09C7000CBE5B /* NSHTTPURLResponse.m in Sources */,
 				FED70F680C3C09C7000CBE5B /* NSKeyValueCoding.m in Sources */,
-				FED70F690C3C09C7000CBE5B /* objc-class.m in Sources */,
 				FED70F6A0C3C09C7000CBE5B /* NSKVCMutableArray.m in Sources */,
 				FED70F6B0C3C09C7000CBE5B /* objc.m in Sources */,
 				FED70F6C0C3C09C7000CBE5B /* NSSocket.m in Sources */,

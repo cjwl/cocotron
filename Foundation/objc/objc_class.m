@@ -47,9 +47,33 @@ id objc_getClass(const char *name) {
    return OBJCHashValueForKey(OBJCClassTable(),name);
 }
 
+Class class_getSuperclass(Class class) {
+   struct objc_class *cls=class;
+   return cls->super_class;
+}
+
 id objc_getMetaClass(const char *name) {
    Class c=objc_getClass(name);
    return c->isa;
+}
+
+BOOL class_isMetaClass(Class class) {
+   return (class->info&CLASS_INFO_META)?YES:NO;
+}
+
+int class_getVersion(Class class) {
+   struct objc_class *cls=class;
+   return cls->version;
+}
+
+void class_setVersion(Class class,int version) {
+   struct objc_class *cls=class;
+   cls->version=version;
+}
+
+size_t class_getInstanceSize(Class class) {
+   struct objc_class *cls=class;
+   return cls->instance_size;
 }
 
 id objc_lookUpClass(const char *className) {
@@ -538,12 +562,94 @@ void objc_registerClassPair(Class new_class)
    objc_addClass( new_class ); 
 }
 
-void OBJCLogMsg(id object,SEL message){
-#if 1
-   if(object==nil)
-    fprintf(stderr,"-[*nil* %s]\n",(char *)message);
-   else
-    fprintf(stderr,"%c[%s %s]\n",(object->isa->info&CLASS_INFO_META)?'+':'-', object->isa->name,(char *)message);
-   fflush(stderr);
-#endif
+BOOL class_conformsToProtocol(Class class,Protocol *protocol) {
+
+   for(;;class=class->super_class){
+    struct objc_protocol_list *protoList=class->protocols;
+
+    for(;protoList!=NULL;protoList=protoList->next){
+     int i;
+
+     for(i=0;i<protoList->count;i++){
+      if([protoList->list[i] conformsTo:protocol])
+       return YES;
+     }
+    }
+
+    if(class->isa->isa==class)
+     break;
+   }
+
+   return NO;
+}
+
+Ivar class_getInstanceVariable(Class class,const char *variableName) {
+   for(;;class=class->super_class){
+    struct objc_ivar_list *ivarList=class->ivars;
+    int i;
+
+    for(i=0;ivarList!=NULL && i<ivarList->ivar_count;i++){
+     if(strcmp(ivarList->ivar_list[i].ivar_name,variableName)==0)
+      return &(ivarList->ivar_list[i]);
+    }
+    if(class->isa->isa==class)
+     break;
+   }
+
+   return NULL;
+}
+
+void class_addMethods(Class class,struct objc_method_list *methodList) {
+   struct objc_method_list **methodLists=class->methodLists;
+   struct objc_method_list **newLists=NULL;
+   int i;
+
+   if(!methodLists) {
+      // no method list yet: create one
+      newLists=calloc(sizeof(struct objc_method_list*), 2);
+      newLists[0]=methodList;
+   } else {
+      // we have a method list: measure it out
+      for(i=0; methodLists[i]!=NULL; i++) {
+      }
+      // allocate new method list array
+      newLists=calloc(sizeof(struct objc_method_list*), i+2);
+      // copy over
+      newLists[0]=methodList;
+      for(i=0; methodLists[i]!=NULL; i++) {
+         newLists[i+1]=methodLists[i];
+      }
+   }
+   // set new lists
+   class->methodLists=newLists;
+   // free old ones (FIXME: thread safety)
+   if(methodLists)
+      free(methodLists);
+}
+
+BOOL class_addMethod(Class cls, SEL name, IMP imp, const char *types) {
+	struct objc_method *newMethod = calloc(sizeof(struct objc_method), 1);
+	struct objc_method_list *methodList = calloc(sizeof(struct objc_method_list)+sizeof(struct objc_method), 1);
+	
+	newMethod->method_name = name;
+	newMethod->method_types = (char*)types;
+	newMethod->method_imp = imp;
+
+	methodList->method_count = 1;
+	memcpy(methodList->method_list, newMethod, sizeof(struct objc_method));
+	free(newMethod);
+	class_addMethods(cls, methodList);
+	return YES; // TODO: check if method exists
+}
+
+struct objc_method_list *class_nextMethodList(Class class,void **iterator) {
+   int *it=(int*)iterator;
+   struct objc_method_list *ret=NULL;
+   if(!class->methodLists)
+      return NULL;
+   
+   ret=class->methodLists[*it];
+   *it=*it+1;
+   
+   return ret;
 }
