@@ -16,8 +16,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @implementation NSMutableData
 
 +allocWithZone:(NSZone *)zone {
-   if(self==OBJCClassFromString("NSMutableData"))
-    return NSAllocateObject(OBJCClassFromString("NSMutableData_concrete"),0,zone);
+   if(self==objc_lookUpClass("NSMutableData"))
+    return NSAllocateObject(objc_lookUpClass("NSMutableData_concrete"),0,zone);
 
    return NSAllocateObject(self,0,zone);
 }

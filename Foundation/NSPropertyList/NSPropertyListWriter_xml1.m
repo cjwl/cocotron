@@ -229,15 +229,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 - (void)encodePropertyList:(id)plist indent:(int)indent
 {
-    if ([plist isKindOfClass:OBJCClassFromString("NSString")])
+    if ([plist isKindOfClass:objc_lookUpClass("NSString")])
         [self encodeString:plist indent:indent];
-    else if ([plist isKindOfClass:OBJCClassFromString("NSArray")])
+    else if ([plist isKindOfClass:objc_lookUpClass("NSArray")])
         [self encodeArray:plist indent:indent];
-    else if ([plist isKindOfClass:OBJCClassFromString("NSDictionary")])
+    else if ([plist isKindOfClass:objc_lookUpClass("NSDictionary")])
         [self encodeDictionary:plist indent:indent];
-    else if ([plist isKindOfClass:OBJCClassFromString("NSNumber")])
+    else if ([plist isKindOfClass:objc_lookUpClass("NSNumber")])
         [self encodeNumber:plist indent:indent];
-    else if ([plist isKindOfClass:OBJCClassFromString("NSData")])
+    else if ([plist isKindOfClass:objc_lookUpClass("NSData")])
         [self encodeData:plist indent:indent];
     else
         [self encodeString:[plist description] indent:indent];

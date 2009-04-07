@@ -138,14 +138,14 @@ NSString *NSMutableString_unicodePtrInitWithCapacity(NSMutableString_unicodePtr 
 
 NSString *NSMutableString_unicodePtrNewWithCString(NSZone *zone,
  const char *cString,unsigned length) {
-   NSMutableString_unicodePtr *self=NSAllocateObject(OBJCClassFromString("NSMutableString_unicodePtr"),0,zone);
+   NSMutableString_unicodePtr *self=NSAllocateObject(objc_lookUpClass("NSMutableString_unicodePtr"),0,zone);
 
    return NSMutableString_unicodePtrInitWithCString(self,cString,length,zone);
 }
 
 NSString *NSMutableString_unicodePtrNew(NSZone *zone,
  const unichar *unicode,unsigned length) {
-   NSMutableString_unicodePtr *self=NSAllocateObject(OBJCClassFromString("NSMutableString_unicodePtr"),0,zone);
+   NSMutableString_unicodePtr *self=NSAllocateObject(objc_lookUpClass("NSMutableString_unicodePtr"),0,zone);
 
    return NSMutableString_unicodePtrInit(self,unicode,length,zone);
 }
@@ -154,7 +154,7 @@ NSString *NSMutableString_unicodePtrNewNoCopy(NSZone *zone,
  unichar *unicode,unsigned length) {
    NSMutableString_unicodePtr *self;
 
-   self=NSAllocateObject(OBJCClassFromString("NSMutableString_unicodePtr"),0,zone);
+   self=NSAllocateObject(objc_lookUpClass("NSMutableString_unicodePtr"),0,zone);
 
    return NSMutableString_unicodePtrInitNoCopy(self,unicode,length,zone);
 }
@@ -163,7 +163,7 @@ NSString *NSMutableString_unicodePtrNewWithCapacity(NSZone *zone,
  unsigned capacity) {
    NSMutableString_unicodePtr *self;
 
-   self=NSAllocateObject(OBJCClassFromString("NSMutableString_unicodePtr"),0,zone);
+   self=NSAllocateObject(objc_lookUpClass("NSMutableString_unicodePtr"),0,zone);
 
    return NSMutableString_unicodePtrInitWithCapacity(self,capacity,zone);
 }

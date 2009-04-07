@@ -141,7 +141,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       break;
 
      default:
-      NSLog(@"-[%@ %s] unknown color space %d",isa,SELNAME(_cmd),colorSpace);
+      NSLog(@"-[%@ %s] unknown color space %d",isa,sel_getName(_cmd),colorSpace);
       result=[NSColor blackColor];
       break;
     }

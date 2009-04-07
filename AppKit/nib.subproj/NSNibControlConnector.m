@@ -23,20 +23,20 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
    if(selector==NULL)
     [NSException raise:NSInvalidArgumentException
-         format:@"-[%@ %s] selector %@ does not exist:",isa,SELNAME(_cmd),selectorName];
+         format:@"-[%@ %s] selector %@ does not exist:",isa,sel_getName(_cmd),selectorName];
 
    if([_source respondsToSelector:@selector(setAction:)])
     [_source performSelector:@selector(setAction:) withObject:(id)selector];
    else {
     [NSException raise:NSInvalidArgumentException
-         format:@"-[%@ %s] _source does not respond to setAction:",isa,SELNAME(_cmd)];
+         format:@"-[%@ %s] _source does not respond to setAction:",isa,sel_getName(_cmd)];
    }
 
    if([_source respondsToSelector:@selector(setTarget:)])
     [_source performSelector:@selector(setTarget:) withObject:_destination];
    else {
     [NSException raise:NSInvalidArgumentException
-         format:@"-[%@ %s] _source does not respond to setTarget:",isa,SELNAME(_cmd)];
+         format:@"-[%@ %s] _source does not respond to setTarget:",isa,sel_getName(_cmd)];
    }
 }
 

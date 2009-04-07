@@ -53,13 +53,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     return nil;
    
    if(![plist isKindOfClass:[NSDictionary class]])
-    [NSException raise:NSInvalidArgumentException format:@"-[%@ %s] expecting dictionary plist, got %@",isa,SELNAME(_cmd),[plist class]];
+    [NSException raise:NSInvalidArgumentException format:@"-[%@ %s] expecting dictionary plist, got %@",isa,sel_getName(_cmd),[plist class]];
    
    plist=[_objects objectAtIndex:[[plist objectForKey:@"CF$UID"] intValue]];
    plist=[plist objectForKey:@"NS.objects"];
    
    if(![plist isKindOfClass:[NSArray class]]){
-    [NSException raise:NSInvalidArgumentException format:@"-[%@ %s] expecting array plist, got %@",isa,SELNAME(_cmd),[plist class]];
+    [NSException raise:NSInvalidArgumentException format:@"-[%@ %s] expecting array plist, got %@",isa,sel_getName(_cmd),[plist class]];
     return nil;
    }
    count=[plist count];
@@ -68,12 +68,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     NSNumber     *uid;
     
     if(![check isKindOfClass:[NSDictionary class]])
-     [NSException raise:NSInvalidArgumentException format:@"-[%@ %s] expecting dictionary plist, got %@",isa,SELNAME(_cmd),[plist class]];
+     [NSException raise:NSInvalidArgumentException format:@"-[%@ %s] expecting dictionary plist, got %@",isa,sel_getName(_cmd),[plist class]];
     
     uid=[check objectForKey:@"CF$UID"];
     
     if(![uid isKindOfClass:[NSNumber class]])
-     [NSException raise:NSInvalidArgumentException format:@"-[%@ %s] expecting number, got %@",isa,SELNAME(_cmd),[plist class]];
+     [NSException raise:NSInvalidArgumentException format:@"-[%@ %s] expecting number, got %@",isa,sel_getName(_cmd),[plist class]];
     
     [result addObject:uid];
    }

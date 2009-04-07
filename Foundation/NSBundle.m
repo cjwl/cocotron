@@ -17,8 +17,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSFileManager.h>
 #import <Foundation/NSRaise.h>
 #import <Foundation/NSPlatform.h>
-#import <Foundation/ObjectiveC.h>
-#import <Foundation/ObjCException.h>
+#import <Foundation/ObjCDynamicModule.h>
+#import <objc/runtime.h>
 
 NSString *NSBundleDidLoadNotification=@"NSBundleDidLoadNotification";
 NSString *NSLoadedClasses=@"NSLoadedClasses";
@@ -118,7 +118,7 @@ static NSMapTable *pathToObject=NULL;
     NSString   *path=[NSString stringWithCString:module];
 
     if(module==NULL)
-     OBJCLog("+[NSBundle initialize]: module path for process is NULL");
+     NSCLog("+[NSBundle initialize]: module path for process is NULL");
     
     _allBundles=[NSMutableArray new];
     _allFrameworks=[NSMutableArray new];

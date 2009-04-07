@@ -38,6 +38,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <objc/objc-class.h>
 #import <string.h>
 
+extern BOOL NSObjectIsKindOfClass(id object,Class kindOf);
+
 const unsigned NSMaximumStringLength=INT_MAX-1;
 
 // only needed for Darwin ppc
@@ -48,8 +50,8 @@ int __CFConstantStringClassReference[1];
 @implementation NSString
 
 +allocWithZone:(NSZone *)zone {
-   if(self==OBJCClassFromString("NSString"))
-    return NSAllocateObject(OBJCClassFromString("NSString_placeholder"),0,NULL);
+   if(self==objc_lookUpClass("NSString"))
+    return NSAllocateObject(objc_lookUpClass("NSString_placeholder"),0,NULL);
 
    return NSAllocateObject(self,0,zone);
 }
@@ -168,28 +170,28 @@ int __CFConstantStringClassReference[1];
 
 
 +stringWithCharacters:(const unichar *)unicode length:(unsigned)length {
-   if(self==OBJCClassFromString("NSString"))
+   if(self==objc_lookUpClass("NSString"))
     return NSAutorelease(NSString_unicodeNew(NULL,unicode,length));
 
    return [[[self allocWithZone:NULL] initWithCharacters:unicode length:length] autorelease];
 }
 
 +string {
-   if(self==OBJCClassFromString("NSString"))
+   if(self==objc_lookUpClass("NSString"))
     return NSAutorelease(NSString_unicodeNew(NULL,NULL,0));
 
    return [[[self allocWithZone:NULL] init] autorelease];
 }
 
 +stringWithCString:(const char *)cString length:(unsigned)length {
-   if(self==OBJCClassFromString("NSString"))
+   if(self==objc_lookUpClass("NSString"))
     return NSAutorelease(NSString_cStringNewWithBytes(NULL,cString,length));
 
    return [[[self allocWithZone:NULL] initWithCString:cString length:length] autorelease];
 }
 
 +stringWithCString:(const char *)cString {
-   if(self==OBJCClassFromString("NSString"))
+   if(self==objc_lookUpClass("NSString"))
     return NSAutorelease(NSString_cStringNewWithBytesAndZero(NULL,cString));
 
    return [[[self allocWithZone:NULL] initWithCString:cString] autorelease];
@@ -204,14 +206,14 @@ int __CFConstantStringClassReference[1];
 
    va_start(arguments,format);
 
-   if(self==OBJCClassFromString("NSString"))
+   if(self==objc_lookUpClass("NSString"))
     return NSAutorelease(NSStringNewWithFormat(format,nil,arguments,NULL));
 
    return [[[self allocWithZone:NULL] initWithFormat:format arguments:arguments] autorelease];
 }
 
 +stringWithContentsOfFile:(NSString *)path {
-   if(self==OBJCClassFromString("NSString")){
+   if(self==objc_lookUpClass("NSString")){
     unsigned  length;
     unichar  *unicode;
 
@@ -279,7 +281,7 @@ int __CFConstantStringClassReference[1];
 
 
 -(Class)classForCoder {
-   return OBJCClassFromString("NSString");
+   return objc_lookUpClass("NSString");
 }
 
 -initWithCoder:(NSCoder *)coder {
@@ -451,7 +453,7 @@ static inline BOOL isEqualString(NSString *str1,NSString *str2){
    if(other==nil)
     return NO;
 
-   if(!OBJCIsKindOfClass(other,OBJCClassFromString("NSString")))
+   if(!NSObjectIsKindOfClass(other,objc_lookUpClass("NSString")))
     return NO;
 
    return isEqualString(self,other);
@@ -560,7 +562,7 @@ static inline void reverseString(unichar *buf, unsigned len) {
     return NSMakeRange(NSNotFound,0);
 
    if(range.location+range.length>[self length])
-    [NSException raise:NSRangeException format:@"-[%@ %s] range %d,%d beyond length %d",isa,SELNAME(_cmd),range.location,range.length,[self length]];
+    [NSException raise:NSRangeException format:@"-[%@ %s] range %d,%d beyond length %d",isa,sel_getName(_cmd),range.location,range.length,[self length]];
 
    [self getCharacters:buffer];
    [pattern getCharacters:patbuffer];
@@ -747,7 +749,7 @@ U+2029 (Unicode paragraph separator), \r\n, in that order (also known as CRLF)
    unichar *unicode;
 
    if(NSMaxRange(range)>[self length])
-    [NSException raise:NSRangeException format:@"-[%@ %s] range %d,%d beyond length %d",isa,SELNAME(_cmd),range.location,range.length,[self length]];
+    [NSException raise:NSRangeException format:@"-[%@ %s] range %d,%d beyond length %d",isa,sel_getName(_cmd),range.location,range.length,[self length]];
 
    if(range.length==0)
     return @"";
@@ -763,7 +765,7 @@ U+2029 (Unicode paragraph separator), \r\n, in that order (also known as CRLF)
    NSRange range={location,[self length]-location};
 
    if(location>[self length])
-    [NSException raise:NSRangeException format:@"-[%@ %s] index %d beyond length %d",isa,SELNAME(_cmd),location,[self length]];
+    [NSException raise:NSRangeException format:@"-[%@ %s] index %d beyond length %d",isa,sel_getName(_cmd),location,[self length]];
 
    return [self substringWithRange:range];
 }

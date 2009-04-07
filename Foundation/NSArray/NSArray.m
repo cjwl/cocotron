@@ -35,7 +35,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @implementation NSArray 
 
 +allocWithZone:(NSZone *)zone {
-   if(self==OBJCClassFromString("NSArray"))
+   if(self==objc_lookUpClass("NSArray"))
     return NSAllocateObject([NSArray_placeholder class],0,NULL);
 
    return NSAllocateObject(self,0,zone);
@@ -133,7 +133,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 
 -(Class)classForCoder {
-   return OBJCClassFromString("NSArray");
+   return objc_lookUpClass("NSArray");
 }
 
 -initWithCoder:(NSCoder *)coder {
@@ -175,7 +175,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 +array {
-   if(self==OBJCClassFromString("NSArray"))
+   if(self==objc_lookUpClass("NSArray"))
     return NSAutorelease(NSArray_concreteNew(NULL,NULL,0));
 
    return [[[self allocWithZone:NULL] init] autorelease];
@@ -191,7 +191,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 +arrayWithObject:object {
-   if(self==OBJCClassFromString("NSArray"))
+   if(self==objc_lookUpClass("NSArray"))
     return NSAutorelease(NSArray_concreteNew(NULL,&object,1));
 
    return [[[self allocWithZone:NULL]
@@ -218,7 +218,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     objects[i]=va_arg(arguments,id);
    va_end(arguments);
 
-   if(self==OBJCClassFromString("NSArray"))
+   if(self==objc_lookUpClass("NSArray"))
     return NSAutorelease(NSArray_concreteNew(NULL,objects,count));
 
    return [[[self allocWithZone:NULL]
@@ -282,7 +282,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    if(self==array)
     return YES;
 
-   if(![array isKindOfClass:OBJCClassFromString("NSArray")])
+   if(![array isKindOfClass:objc_lookUpClass("NSArray")])
     return NO;
 
    return [self isEqualToArray:array];

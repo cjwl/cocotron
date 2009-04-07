@@ -168,7 +168,7 @@ static inline void flushPreviousString(NSRichTextReader *self) {
    NSRange save=_range;
 
    _range=_letterRange;
-//NSLog(@"%s %@ %d",SELNAME(_cmd),self,argument);
+//NSLog(@"%s %@ %d",sel_getName(_cmd),self,argument);
 
    if([self isEqualToString:@"b"]){
     NSFont *font=[_currentAttributes objectForKey:NSFontAttributeName];

@@ -5,39 +5,30 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
-
-// Original - David Young <daver@geeks.org>, Christopher Lloyd <cjwl@objc.net>
-#import <Foundation/ObjectiveC.h>
+#import <objc/runtime.h>
 #import <Foundation/ObjCHashTable.h>
 #import <Foundation/ObjCClass.h>
-#import "Protocol.h"
 #import <Foundation/ObjCSelector.h>
 #import <Foundation/ObjCModule.h>
+#import <objc/Protocol.h>
 
-Class OBJCMetaClassFromClass(Class class) {
-   return class->isa;
+Class object_getClass(id object) {
+   return object->isa;
 }
 
-// Class OBJCClassFromString(const char *name) defined in ObjCClass
-
-const char *OBJCStringFromClass(Class class){
-   struct objc_class *cls=class;
-   return cls->name;
+const char *object_getClassName(id object) {
+   return class_getName(object->isa);
 }
 
-Class OBJCSuperclassFromClass(Class class) {
+Class class_getSuperclass(Class class) {
    struct objc_class *cls=class;
    return cls->super_class;
 }
 
-FOUNDATION_EXPORT Class OBJCSuperclassFromObject(id object) {
-   return OBJCSuperclassFromClass(object->isa);
-}
-
-BOOL OBJCClassConformsToProtocol(Class class,Protocol *protocol) {
+BOOL class_conformsToProtocol(Class class,Protocol *protocol) {
 
    for(;;class=class->super_class){
-    OBJCProtocolList *protoList=class->protocols;
+    struct objc_protocol_list *protoList=class->protocols;
 
     for(;protoList!=NULL;protoList=protoList->next){
      int i;
@@ -55,32 +46,26 @@ BOOL OBJCClassConformsToProtocol(Class class,Protocol *protocol) {
    return NO;
 }
 
-BOOL OBJCIsMetaClass(Class class) {
+BOOL class_isMetaClass(Class class) {
    return (class->info&CLASS_INFO_META)?YES:NO;
 }
 
-const char *OBJCTypesForSelector(Class class,SEL selector) {
-   struct objc_method *method=OBJCLookupUniqueIdInClass(class,OBJCSelectorUniqueId(selector));
-
-   return (method==NULL)?NULL:method->method_types;
-}
-
-int OBJCClassVersion(Class class) {
+int class_getVersion(Class class) {
    struct objc_class *cls=class;
    return cls->version;
 }
 
-void OBJCSetClassVersion(Class class,int version) {
+void class_setVersion(Class class,int version) {
    struct objc_class *cls=class;
    cls->version=version;
 }
 
-unsigned OBJCInstanceSize(Class class) {
+size_t class_getInstanceSize(Class class) {
    struct objc_class *cls=class;
    return cls->instance_size;
 }
 
-static OBJCInstanceVariable *instanceVariableWithName(OBJCClassTemplate *class,const char *name) {
+static Ivar instanceVariableWithName(struct objc_class *class,const char *name) {
    for(;;class=class->super_class){
     struct objc_ivar_list *ivarList=class->ivars;
     int i;
@@ -105,22 +90,13 @@ static void ivarCopy(void *vdst,unsigned offset,void *vsrc,unsigned length){
     dst[offset+i]=src[i];
 }
 
-void OBJCSetInstanceVariable(id object,const char *name,void *value) {
-   OBJCInstanceVariable *ivar=instanceVariableWithName(object->isa,name);
+// This only works for 'id' ivars
+Ivar object_setInstanceVariable(id object,const char *name,void *value) {
+   Ivar ivar=instanceVariableWithName(object->isa,name);
 
    if(ivar!=NULL)
     ivarCopy(object,ivar->ivar_offset,value,sizeof(id));
+   
+   return ivar;
 }
 
-BOOL OBJCIsKindOfClass(id object,Class kindOf) {
-   struct objc_class *class=object->isa;
-
-   for(;;class=class->super_class){
-    if(kindOf==class)
-     return YES;
-    if(class->isa->isa==class)
-     break;
-   }
-
-   return NO;
-}

@@ -49,7 +49,7 @@ NSString *NSNEXTSTEPCStringNewWithBytes(NSZone *zone,
    NSString_nextstepCString *string;
    int                i;
 
-   string=NSAllocateObject(OBJCClassFromString("NSString_nextstepCString"),length*sizeof(char),zone);
+   string=NSAllocateObject(objc_lookUpClass("NSString_nextstepCString"),length*sizeof(char),zone);
 
    string->_length=length;
    for(i=0;i<length;i++)
@@ -81,7 +81,7 @@ NSString *NSNEXTSTEPCStringNewWithCapacity(NSZone *zone,
   unsigned capacity,char **ptr) {
    NSString_nextstepCString *string;
 
-   string=NSAllocateObject(OBJCClassFromString("NSString_nextstepCString"),capacity*sizeof(char),zone);
+   string=NSAllocateObject(objc_lookUpClass("NSString_nextstepCString"),capacity*sizeof(char),zone);
 
    string->_length=capacity;
    *ptr=string->_bytes;

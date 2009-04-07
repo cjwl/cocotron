@@ -7,7 +7,8 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
 #import <Foundation/ObjCClass.h>
-#import <Foundation/ObjectiveC.h>
+#import <objc/runtime.h>
+#import <objc/message.h>
 #import "objc_cache.h"
 #import <Foundation/ObjCException.h>
 #import "objc_forward_ffi.h"
@@ -66,7 +67,7 @@ IMP objc_msg_lookup(id object,SEL selector) {
 
 IMP objc_msg_lookup_super(struct objc_super *super,SEL selector) {
     unsigned              index=(unsigned)selector&OBJCMethodCacheMask;
-    OBJCMethodCacheEntry *checkEntry=((void *)super->class->cache->table)+index; 
+    OBJCMethodCacheEntry *checkEntry=((void *)super->super_class->cache->table)+index; 
 
    do{
      struct objc_method *check=checkEntry->method;
@@ -77,7 +78,7 @@ IMP objc_msg_lookup_super(struct objc_super *super,SEL selector) {
      checkEntry=((void *)checkEntry)+checkEntry->offsetToNextEntry;
     }while(checkEntry!=NULL);
 
-   IMP ret = OBJCLookupAndCacheUniqueIdInClass(super->class,selector);
+   IMP ret = OBJCLookupAndCacheUniqueIdInClass(super->super_class,selector);
    if(!ret)
    {
 #ifdef HAVE_LIBFFI

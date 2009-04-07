@@ -5,9 +5,7 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
-
-// Original - Christopher Lloyd <cjwl@objc.net>
-#import "Protocol.h"
+#import <objc/Protocol.h>
 
 #import <Foundation/ObjCHashTable.h>
 #import <Foundation/ObjCClass.h>
@@ -25,8 +23,8 @@ static void OBJCRegisterMethodList(OBJCMethodDescriptionList *list){
 
 void OBJCRegisterProtocol(OBJCProtocolTemplate *template) {
    unsigned          i;
-   OBJCProtocolList *subprotos;
-   Class             class=OBJCClassFromString(PROTOCOL_CLASS);
+   struct objc_protocol_list *subprotos;
+   Class             class=objc_lookUpClass(PROTOCOL_CLASS);
 
    if(template->isa==class)
     return; // already registered
@@ -51,7 +49,7 @@ void OBJCRegisterProtocol(OBJCProtocolTemplate *template) {
 }
 
 -(OBJCMethodDescription *)descriptionForInstanceMethod:(SEL)selector {
-   OBJCProtocolList *list;
+   struct objc_protocol_list *list;
    unsigned          i;
 
    if(instanceMethods==NULL)
@@ -77,7 +75,7 @@ void OBJCRegisterProtocol(OBJCProtocolTemplate *template) {
 }
 
 -(OBJCMethodDescription *)descriptionForClassMethod:(SEL)selector {
-   OBJCProtocolList *list;
+   struct objc_protocol_list *list;
    unsigned          i;
 
    if(classMethods==NULL)

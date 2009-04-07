@@ -8,12 +8,28 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <stdlib.h>
 
+#ifdef __cplusplus
+
 #if defined(__WIN32__)
 #if defined(OBJC_INSIDE_BUILD)
-#define OBJC_EXPORT __declspec(dllexport)
+#define OBJC_EXPORT extern "C" __declspec(dllexport)
 #else
-#define OBJC_EXPORT __declspec(dllimport)
+#define OBJC_EXPORT extern "C" __declspec(dllimport) 
+#endif
+#else
+#define OBJC_EXPORT extern "C"
+#endif
+
+#else
+
+#if defined(__WIN32__)
+#if defined(OBJC_INSIDE_BUILD)
+#define OBJC_EXPORT __declspec(dllexport) extern
+#else
+#define OBJC_EXPORT __declspec(dllimport) extern
 #endif
 #else
 #define OBJC_EXPORT extern
+#endif
+
 #endif

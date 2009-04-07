@@ -5,8 +5,6 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
-
-// Original - Christopher Lloyd <cjwl@objc.net>
 #import <Foundation/NSObject.h>
 #import <Foundation/NSAutoreleasePool.h>
 #import <Foundation/NSException.h>
@@ -17,7 +15,20 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSAutoreleasePool-private.h>
 #import <Foundation/NSMethodSignature.h>
 #import <Foundation/NSRaise.h>
-#import <Foundation/ObjCClass.h>
+#import <objc/message.h>
+
+BOOL NSObjectIsKindOfClass(id object,Class kindOf) {
+   struct objc_class *class=object->isa;
+
+   for(;;class=class->super_class){
+    if(kindOf==class)
+     return YES;
+    if(class->isa->isa==class)
+     break;
+   }
+
+   return NO;
+}
 
 @interface NSInvocation(private)
 +(NSInvocation *)invocationWithMethodSignature:(NSMethodSignature *)signature arguments:(void *)arguments;
@@ -26,12 +37,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @implementation NSObject
 
 +(int)version {
-   return OBJCClassVersion(self);
+   return class_getVersion(self);
 }
 
 
 +(void)setVersion:(int)version {
-   OBJCSetClassVersion(self,version);
+   class_setVersion(self,version);
 }
 
 +(void)load {
@@ -42,7 +53,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 +(Class)superclass {
-   return OBJCSuperclassFromClass(self);
+   return class_getSuperclass(self);
 }
 
 
@@ -65,16 +76,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 +(BOOL)instancesRespondToSelector:(SEL)selector {
-   return OBJCLookupUniqueIdInClass(self,selector)!=NULL;
+   return class_respondsToSelector(self,selector);
 }
 
 +(BOOL)conformsToProtocol:(Protocol *)protocol {
-   return OBJCClassConformsToProtocol(self,protocol);
+   return class_conformsToProtocol(self,protocol);
 }
 
 
 +(IMP)methodForSelector:(SEL)selector {
-   return class_getMethodImplementation(OBJCMetaClassFromClass(self),selector);
+   return class_getMethodImplementation(object_getClass(self),selector);
 }
 
 +(IMP)instanceMethodForSelector:(SEL)selector {
@@ -82,7 +93,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 +(NSMethodSignature *)instanceMethodSignatureForSelector:(SEL)selector {
-   const char *types=OBJCTypesForSelector(self,selector);
+   Method      method=class_getInstanceMethod(self,selector);
+   const char *types=method_getTypeEncoding(method);
 
    return (types==NULL)?(NSMethodSignature *)nil:[NSMethodSignature signatureWithObjCTypes:types];
 }
@@ -175,12 +187,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)doesNotRecognizeSelector:(SEL)selector {
    [NSException raise:NSInvalidArgumentException
-     format:@"%c[%@ %@]: selector not recognized", OBJCIsMetaClass(isa)?'+':'-',
+     format:@"%c[%@ %@]: selector not recognized", class_isMetaClass(isa)?'+':'-',
       NSStringFromClass(isa),NSStringFromSelector(selector)];
 }
 
 -(NSMethodSignature *)methodSignatureForSelector:(SEL)selector {
-   const char *types=OBJCTypesForSelector(isa,selector);
+   Method      method=class_getInstanceMethod(isa,selector);
+   const char *types=method_getTypeEncoding(method);
 
    return (types==NULL)?(NSMethodSignature *)nil:[NSMethodSignature signatureWithObjCTypes:types];
 }
@@ -238,7 +251,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 
 -(Class)superclass {
-   return OBJCSuperclassFromClass(isa);
+   return class_getSuperclass(isa);
 }
 
 
@@ -271,7 +284,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 
 -(BOOL)isKindOfClass:(Class)class {
-   return OBJCIsKindOfClass(self,class);
+   return NSObjectIsKindOfClass(self,class);
 }
 
 
@@ -286,7 +299,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 
 -(BOOL)respondsToSelector:(SEL)selector {
-   return OBJCLookupUniqueIdInClass(isa,selector)!=NULL;
+   return class_respondsToSelector(isa,selector);
 }
 
 

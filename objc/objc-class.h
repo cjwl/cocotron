@@ -10,73 +10,58 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <objc/objc.h>
 
 enum {
-   CLASS_INFO_CLASS=0x001,
-   CLS_CLASS=CLASS_INFO_CLASS,
-   CLASS_INFO_META=0x002,
-   CLS_META=CLASS_INFO_META,
-   CLASS_INFO_INITIALIZED=0x004,
-   CLASS_INFO_POSING=0x008,
-   CLASS_INFO_LINKED=0x100,
-   CLASS_HAS_CXX_STRUCTORS=0x2000,
-   CLASS_NO_METHOD_ARRAY=0x4000
+   _C_ID='@',
+   _C_CHR='c',
+   _C_UCHR='C',
+   _C_INT='i',
+   _C_UINT='I',
+   _C_FLT='f',
+   _C_DBL='d',
+   _C_VOID='v',
+   _C_UNDEF='?',
+   _C_CLASS='#',
+   _C_SEL=':',
+   _C_CHARPTR='*',
+   _C_SHT='s',
+   _C_USHT='S',
+   _C_LNG='l',
+   _C_ULNG='L',
+   _C_LNGLNG='q',
+   _C_LNG_LNG=_C_LNGLNG,
+   _C_ULNGLNG='Q',
+   _C_ULNG_LNG=_C_ULNGLNG,
+   _C_BFLD='b',
+   _C_ARY_B='[',
+   _C_STRUCT_B='{',
+   _C_UNION_B='(',
+   _C_ARY_E=']',
+   _C_STRUCT_E='}',
+   _C_UNION_E=')',
+   _C_PTR='^',
+   _C_CONST='r',
+   _C_IN='n',
+   _C_INOUT='N',
+   _C_OUT='o',
+   _C_BYCOPY='R',
+   _C_ONEWAY='V',
 };
 
-enum {
-	_C_ID='@',
-	_C_CHR='c',
-	_C_UCHR='C',
-	_C_INT='i',
-	_C_UINT='I',
-	_C_FLT='f',
-	_C_DBL='d',
-	_C_VOID='v',
-	_C_UNDEF='?',
-	_C_CLASS='#',
-	_C_SEL=':',
-	_C_CHARPTR='*',
-	_C_SHT='s',
-	_C_USHT='S',
-	_C_LNG='l',
-	_C_ULNG='L',
-	_C_LNGLNG='q',
-	_C_LNG_LNG=_C_LNGLNG,
-	_C_ULNGLNG='Q',
-	_C_ULNG_LNG=_C_ULNGLNG,
-	_C_BFLD='b',
-	_C_ARY_B='[',
-	_C_STRUCT_B='{',
-	_C_UNION_B='(',
-	_C_ARY_E=']',
-	_C_STRUCT_E='}',
-	_C_UNION_E=')',
-	_C_PTR='^',
-	
-	
-_C_CONST='r',
-_C_IN='n',
-_C_INOUT='N',
-_C_OUT='o',
-_C_BYCOPY='R',
-_C_ONEWAY='V'
-	
-};
-
-typedef struct objc_ivar {
+struct objc_ivar {
    char *ivar_name;
    char *ivar_type;
    int   ivar_offset;
-} *Ivar, OBJCInstanceVariable;
+};
 
 struct objc_ivar_list {
    int              ivar_count;
    struct objc_ivar ivar_list[1];
 };
 
-typedef struct objc_method {
+struct objc_method {
    SEL   method_name;
    char *method_types;
    IMP   method_imp;
-} *Method;
+};
 
 struct objc_method_list {
    struct objc_method_list *obsolete;
@@ -86,21 +71,21 @@ struct objc_method_list {
 
 @class Protocol;
 
-typedef struct OBJCProtocolList {
-    struct OBJCProtocolList *next;
-    int                      count;
-    Protocol                *list[1];
-} OBJCProtocolList;
+struct objc_protocol_list {
+    struct objc_protocol_list *next;
+    int                        count;
+    Protocol                  *list[1];
+};
 
-typedef struct {
+struct objc_category {
    const char       *name;
    const char       *className;
    struct objc_method_list   *instanceMethods;
    struct objc_method_list   *classMethods;
-   OBJCProtocolList *protocols;
-} OBJCCategory;
+   struct objc_protocol_list *protocols;
+};
 
-typedef struct objc_class {			
+struct objc_class {			
    struct objc_class        *isa;	
    struct objc_class        *super_class;	
    const char               *name;		
@@ -110,15 +95,7 @@ typedef struct objc_class {
    struct objc_ivar_list    *ivars;
    struct objc_method_list **methodLists;
    struct objc_cache        *cache;
-   OBJCProtocolList         *protocols;
+   struct objc_protocol_list *protocols;
    void                     *privateData;
-} OBJCClassTemplate;
+};
 
-OBJC_EXPORT Ivar class_getInstanceVariable(Class class,const char *variableName);
-OBJC_EXPORT IMP class_getMethodImplementation(Class cls, SEL name);
-OBJC_EXPORT void class_addMethods(Class class,struct objc_method_list *methodList);
-OBJC_EXPORT BOOL class_addMethod(Class cls, SEL name, IMP imp, const char *types);
-OBJC_EXPORT Method class_getClassMethod(Class class, SEL sel);
-OBJC_EXPORT Method class_getInstanceMethod(Class class, SEL sel);
-
-OBJC_EXPORT struct objc_method_list *class_nextMethodList(Class class,void **iterator);

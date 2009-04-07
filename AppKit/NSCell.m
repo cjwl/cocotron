@@ -387,18 +387,18 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)setTarget:target {
    [NSException raise:NSInternalInconsistencyException
-               format:@"-[%@ %s] Unimplemented",isa,SELNAME(_cmd)];
+               format:@"-[%@ %s] Unimplemented",isa,sel_getName(_cmd)];
 }
 
 
 -(void)setAction:(SEL)action {
    [NSException raise:NSInternalInconsistencyException
-               format:@"-[%@ %s] Unimplemented",isa,SELNAME(_cmd)];
+               format:@"-[%@ %s] Unimplemented",isa,sel_getName(_cmd)];
 }
 
 -(void)setTag:(int)tag {
    [NSException raise:NSInternalInconsistencyException
-               format:@"-[%@ %s] Unimplemented",isa,SELNAME(_cmd)];
+               format:@"-[%@ %s] Unimplemented",isa,sel_getName(_cmd)];
 }
 
 -(void)setEntryType:(int)type {
@@ -520,7 +520,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)setStringValue:(NSString *)value {
    if(value==nil){
-    [NSException raise:NSInvalidArgumentException format:@"-[%@ %s] value==nil",isa,SELNAME(_cmd)];
+    [NSException raise:NSInvalidArgumentException format:@"-[%@ %s] value==nil",isa,sel_getName(_cmd)];
     return;
    }
 

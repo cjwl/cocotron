@@ -7,12 +7,13 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 #import <Foundation/ObjCClass.h>
 #import <Foundation/ObjCSelector.h>
-#import "Protocol.h"
+#import <objc/Protocol.h>
 #import <Foundation/NSZone.h>
 #import <Foundation/ObjCException.h>
 #import <Foundation/ObjCModule.h>
 #import <stdio.h>
 #import "objc_cache.h"
+#import <objc/deprecated.h>
 
 #ifdef WIN32
 #import <windows.h>
@@ -41,10 +42,6 @@ static inline OBJCHashTable *OBJCFutureClassTable(void) {
    return allClasses;
 }
 
-Class OBJCClassFromString(const char *name) {
-   return OBJCHashValueForKey(OBJCClassTable(),name);
-}
-
 id objc_getClass(const char *name) {
    // technically, this should call a class lookup callback if class not found (unlike objc_lookUpClass)
    return OBJCHashValueForKey(OBJCClassTable(),name);
@@ -55,7 +52,7 @@ id objc_getMetaClass(const char *name) {
    return c->isa;
 }
 
-Class objc_lookUpClass(const char *className) {
+id objc_lookUpClass(const char *className) {
    return OBJCHashValueForKey(OBJCClassTable(),className);
 }
 
@@ -65,12 +62,7 @@ void objc_addClass(Class class) {
 
 Method class_getClassMethod(Class class, SEL selector)
 {
-	return OBJCLookupUniqueIdInClass(class->isa, selector);
-}
-
-Method class_getInstanceMethod(Class class, SEL selector)
-{
-	return OBJCLookupUniqueIdInClass(class, selector);
+	return class_getInstanceMethod(class->isa, selector);
 }
 
 int objc_getClassList(Class *buffer, int bufferLen)
@@ -185,7 +177,7 @@ void OBJCRegisterClass(Class class) {
    OBJCRegisterSelectorsInClass(class->isa);
 
    {
-    OBJCProtocolList *protocols;
+    struct objc_protocol_list *protocols;
 
     for(protocols=class->protocols;protocols!=NULL;protocols=protocols->next){
      unsigned i;
@@ -214,8 +206,8 @@ static void OBJCAppendMethodListToClass(Class class, struct objc_method_list *me
    class_addMethods(class, methodList);
 }
 
-void OBJCRegisterCategoryInClass(OBJCCategory *category,Class class) {
-   OBJCProtocolList *protos;
+void OBJCRegisterCategoryInClass(Category category,Class class) {
+   struct objc_protocol_list *protos;
 
    if(category->instanceMethods!=NULL)
     OBJCAppendMethodListToClass(class,category->instanceMethods);
@@ -232,7 +224,7 @@ void OBJCRegisterCategoryInClass(OBJCCategory *category,Class class) {
 
 static void OBJCLinkClass(Class class) {
    if(!(class->info&CLASS_INFO_LINKED)){
-    Class superClass=OBJCClassFromString((const char *)class->super_class);
+    Class superClass=objc_lookUpClass((const char *)class->super_class);
 	
     if(superClass!=NULL){
      class->super_class=superClass;
@@ -276,7 +268,7 @@ static inline struct objc_method *OBJCLookupUniqueIdInOnlyThisClass(Class class,
    return NULL;
 }
 
-inline struct objc_method *OBJCLookupUniqueIdInClass(Class class,SEL uniqueId) {
+struct objc_method *class_getInstanceMethod(Class class,SEL uniqueId) {
    struct objc_method *result=NULL;
 
    for(;class!=NULL;class=class->super_class)
@@ -284,6 +276,10 @@ inline struct objc_method *OBJCLookupUniqueIdInClass(Class class,SEL uniqueId) {
      break;
 
    return result;
+}
+
+BOOL class_respondsToSelector(Class cls,SEL selector) {
+   return (class_getInstanceMethod(cls,selector)!=NULL)?YES:NO;
 }
 
 void OBJCInitializeClass(Class class) {
@@ -296,7 +292,7 @@ void OBJCInitializeClass(Class class) {
 		/* "If a particular class does not implement initialize, the initialize
 		 method of its superclass is invoked twice, once for the superclass and 
 		 once for the non-implementing subclass." */
-     struct objc_method *method=OBJCLookupUniqueIdInClass(class->isa,OBJCSelectorUniqueId(selector));
+     struct objc_method *method=class_getClassMethod(class,OBJCSelectorUniqueId(selector));
 
      class->info|=CLASS_INFO_INITIALIZED;
 
@@ -315,7 +311,7 @@ id objc_msgForward(id object,SEL message,...){
    unsigned    i,frameLength,limit;
    unsigned   *frame;
    
-   if((method=OBJCLookupUniqueIdInClass(class,OBJCSelectorUniqueId(@selector(_frameLengthForSelector:))))==NULL){
+   if((method=class_getInstanceMethod(class,OBJCSelectorUniqueId(@selector(_frameLengthForSelector:))))==NULL){
     OBJCRaiseException("OBJCDoesNotRecognizeSelector","%c[%s %s(%d)]", class->info & CLASS_INFO_META ? '+' : '-', class->name,sel_getName(message),message);
     return nil;
    }
@@ -328,7 +324,7 @@ id objc_msgForward(id object,SEL message,...){
    for(i=2;i<frameLength/sizeof(unsigned);i++)
     frame[i]=va_arg(arguments,unsigned);
    
-   if((method=OBJCLookupUniqueIdInClass(class,OBJCSelectorUniqueId(@selector(forwardSelector:arguments:))))!=NULL)
+   if((method=class_getInstanceMethod(class,OBJCSelectorUniqueId(@selector(forwardSelector:arguments:))))!=NULL)
     return method->method_imp(object,@selector(forwardSelector:arguments:),message,frame);
    else {
     OBJCRaiseException("OBJCDoesNotRecognizeSelector","%c[%s %s(%d)]", class->info & CLASS_INFO_META ? '+' : '-', class->name,sel_getName(message),message);
@@ -341,7 +337,7 @@ id objc_msgForward(id object,SEL message,...){
    struct objc_method *method;
    void       *arguments=&object;
 
-   if((method=OBJCLookupUniqueIdInClass(class,OBJCSelectorUniqueId(@selector(forwardSelector:arguments:))))!=NULL)
+   if((method=class_getInstanceMethod(class,OBJCSelectorUniqueId(@selector(forwardSelector:arguments:))))!=NULL)
     return method->method_imp(object,@selector(forwardSelector:arguments:),message,arguments);
    else {
     OBJCRaiseException("OBJCDoesNotRecognizeSelector","%c[%s %s(%d)]", class->info & CLASS_INFO_META ? '+' : '-', class->name,sel_getName(message),message);
@@ -390,7 +386,7 @@ static inline void OBJCCacheMethodInClass(Class class,struct objc_method *method
 IMP OBJCLookupAndCacheUniqueIdInClass(Class class,SEL uniqueId){
    struct objc_method *method;
 
-   if((method=OBJCLookupUniqueIdInClass(class,uniqueId))!=NULL){
+   if((method=class_getInstanceMethod(class,uniqueId))!=NULL){
     OBJCCacheMethodInClass(class,method);
     return method->method_imp;
    }
@@ -460,13 +456,12 @@ BOOL object_cxxDestruct(id self, Class class)
 	return YES;
 }
 
-const char *class_getName(Class cls)
-{
+const char *class_getName(Class cls) {
    return cls->name;
 }
 
 IMP class_getMethodImplementation(Class cls, SEL name) {
-   struct objc_method *ret=OBJCLookupUniqueIdInClass(cls, name);
+   struct objc_method *ret=class_getInstanceMethod(cls, name);
    if(ret) {
       return ret->method_imp;
    }
@@ -550,10 +545,5 @@ void OBJCLogMsg(id object,SEL message){
    else
     fprintf(stderr,"%c[%s %s]\n",(object->isa->info&CLASS_INFO_META)?'+':'-', object->isa->name,(char *)message);
    fflush(stderr);
-#endif
-}
-
-void OBJCReportStatistics() {
-#if 0
 #endif
 }

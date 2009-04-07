@@ -16,6 +16,7 @@
 #import "objc_size_alignment.h"
 
 #import <objc/objc-class.h>
+#import <objc/message.h>
 #ifdef DARWIN
 #import <ffi/ffi.h>
 #else

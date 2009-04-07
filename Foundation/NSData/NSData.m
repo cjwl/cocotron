@@ -21,7 +21,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @implementation NSData
 
 +allocWithZone:(NSZone *)zone {
-   if(self==OBJCClassFromString("NSData"))
+   if(self==objc_lookUpClass("NSData"))
     return NSAllocateObject([NSData_concrete class],0,zone);
 
    return NSAllocateObject(self,0,zone);
@@ -117,7 +117,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 +data {
-   if(self==OBJCClassFromString("NSData"))
+   if(self==objc_lookUpClass("NSData"))
     return NSAutorelease(NSData_concreteNew(NULL,NULL,0));
 
    return [[[self allocWithZone:NULL] init] autorelease];
@@ -128,21 +128,21 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 +dataWithBytesNoCopy:(void *)bytes length:(unsigned)length {
-   if(self==OBJCClassFromString("NSData"))
+   if(self==objc_lookUpClass("NSData"))
     return NSAutorelease(NSData_concreteNewNoCopy(NULL,bytes,length));
 
    return [[[self allocWithZone:NULL] initWithBytesNoCopy:bytes length:length] autorelease];
 }
 
 +dataWithBytes:(const void *)bytes length:(unsigned)length {
-   if(self==OBJCClassFromString("NSData"))
+   if(self==objc_lookUpClass("NSData"))
     return NSAutorelease(NSData_concreteNew(NULL,bytes,length));
 
    return [[[self allocWithZone:NULL] initWithBytes:bytes length:length] autorelease];
 }
 
 +dataWithData:(NSData *)data {
-   if(self==OBJCClassFromString("NSData"))
+   if(self==objc_lookUpClass("NSData"))
     return NSAutorelease(NSData_concreteNew(NULL,[data bytes],[data length]));
 
    return [[[self allocWithZone:NULL] initWithBytes:[data bytes] length:[data length]] autorelease];
@@ -186,7 +186,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    if(self==other)
     return YES;
 
-   if(![other isKindOfClass:OBJCClassFromString("NSData")])
+   if(![other isKindOfClass:objc_lookUpClass("NSData")])
     return NO;
 
    return [self isEqualToData:other];

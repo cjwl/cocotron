@@ -20,7 +20,7 @@ void NSRegisterZombie(NSObject *object) {
    }
 
    NSMapInsert(objectToClassName,object,((struct objc_object *)object)->isa);
-   ((struct objc_object *)object)->isa=OBJCClassFromString("NSZombieObject");
+   ((struct objc_object *)object)->isa=objc_lookUpClass("NSZombieObject");
 }
 
 @implementation NSZombieObject
@@ -28,17 +28,17 @@ void NSRegisterZombie(NSObject *object) {
 -(NSMethodSignature *)methodSignatureForSelector:(SEL)selector {
    Class cls=NSMapGet(objectToClassName,self);
    
-   NSLog(@"-[NSZombieObject %x methodSignatureForSelector:%s] %s",self,SELNAME(selector),OBJCStringFromClass((Class)NSMapGet(objectToClassName,self)));
+   NSLog(@"-[NSZombieObject %x methodSignatureForSelector:%s] %s",self,sel_getName(selector),class_getName((Class)NSMapGet(objectToClassName,self)));
    
    return [cls instanceMethodSignatureForSelector:selector];
 }
 
 -(void)forwardInvocation:(NSInvocation *)invocation {
-   NSLog(@"-[NSZombieObject %x forwardInvocation:%s] %s",self,SELNAME([invocation selector]),OBJCStringFromClass((Class)NSMapGet(objectToClassName,self)));
+   NSLog(@"-[NSZombieObject %x forwardInvocation:%s] %s",self,sel_getName([invocation selector]),class_getName((Class)NSMapGet(objectToClassName,self)));
 }
 
 -(id)forwardSelector:(SEL)selector arguments:(void *)arguments {
-   NSLog(@"-[NSZombieObject %x %s] %s",self,SELNAME(selector),OBJCStringFromClass((Class)NSMapGet(objectToClassName,self)));
+   NSLog(@"-[NSZombieObject %x %s] %s",self,sel_getName(selector),class_getName((Class)NSMapGet(objectToClassName,self)));
    return nil;
 }
 

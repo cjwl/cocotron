@@ -484,7 +484,7 @@ static BOOL scanURL(urlScanner *scanner,NSURL *url){
    urlScanner scannerStruct,*scanner=&scannerStruct;
 
    if(string==nil){
-    [NSException raise:NSInvalidArgumentException format:@"-[%@ %s] string == nil",isa,SELNAME(_cmd)];
+    [NSException raise:NSInvalidArgumentException format:@"-[%@ %s] string == nil",isa,sel_getName(_cmd)];
    }
    
    initScanner(scanner,string);

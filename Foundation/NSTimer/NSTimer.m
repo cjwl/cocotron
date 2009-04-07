@@ -17,7 +17,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @implementation NSTimer : NSObject
 
 +allocWithZone:(NSZone *)zone {
-   if(self==OBJCClassFromString("NSTimer"))
+   if(self==objc_lookUpClass("NSTimer"))
     return NSAllocateObject([NSTimer_targetAction class],0,NULL);
 
    return NSAllocateObject(self,0,zone);

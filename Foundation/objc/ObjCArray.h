@@ -6,7 +6,7 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
-#import <Foundation/ObjCTypes.h>
+#import <objc/objc.h>
 
 typedef struct {
     void   **data;
@@ -17,11 +17,11 @@ typedef struct {
 OBJCArray *OBJCArrayNew(void);
 void OBJCArrayDealloc(OBJCArray *array);
 
-FOUNDATION_EXPORT void OBJCArrayAdd(OBJCArray *vector, void *item);
-FOUNDATION_EXPORT unsigned OBJCArrayCount(OBJCArray *array); 
-FOUNDATION_EXPORT void *OBJCArrayItemAtIndex(OBJCArray *vector, unsigned index);
+OBJC_EXPORT void OBJCArrayAdd(OBJCArray *vector, void *item);
+OBJC_EXPORT unsigned OBJCArrayCount(OBJCArray *array); 
+OBJC_EXPORT void *OBJCArrayItemAtIndex(OBJCArray *vector, unsigned index);
 
-FOUNDATION_EXPORT void OBJCArrayRemoveItemAtIndex(OBJCArray *vector, unsigned index);
+OBJC_EXPORT void OBJCArrayRemoveItemAtIndex(OBJCArray *vector, unsigned index);
 
-FOUNDATION_EXPORT void *OBJCArrayEnumerate(OBJCArray *vector, unsigned *enumerator);
+OBJC_EXPORT void *OBJCArrayEnumerate(OBJCArray *vector, unsigned *enumerator);
 

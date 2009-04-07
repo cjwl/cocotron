@@ -172,7 +172,7 @@ static IEnumFORMATETCVtbl IEnumFORMATETCVTable={
    IID      temp;
    int      i;
 
-  // NSLog(@"-[%@ %s] %d",isa,SELNAME(_cmd),riid);
+  // NSLog(@"-[%@ %s] %d",isa,sel_getName(_cmd),riid);
 
    IIDFromString(OLESTR("{00000000-0000-0000-C000-000000000046}"),&temp);
    if(IsEqualIID(riid,&temp)){
@@ -207,14 +207,14 @@ static IEnumFORMATETCVtbl IEnumFORMATETCVTable={
 }
 
 -(ULONG)AddRef {
-  // NSLog(@"-[%@ %s]",isa,SELNAME(_cmd));
+  // NSLog(@"-[%@ %s]",isa,sel_getName(_cmd));
    [self retain];
    return [self retainCount];
 }
 
 -(ULONG)Release {
    ULONG result=[self retainCount]-1;
-  // NSLog(@"-[%@ %s]",isa,SELNAME(_cmd));
+  // NSLog(@"-[%@ %s]",isa,sel_getName(_cmd));
    [self release];
    return result;
 }

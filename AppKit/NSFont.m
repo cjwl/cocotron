@@ -252,7 +252,7 @@ static NSFont **_fontCache=NULL;
    NSFont *result;
 
    if(name==nil)
-    [NSException raise:NSInvalidArgumentException format:@"-[%@ %s] name==nil",self,SELNAME(_cmd)];
+    [NSException raise:NSInvalidArgumentException format:@"-[%@ %s] name==nil",self,sel_getName(_cmd)];
 
    result=[self cachedFontWithName:name size:size];
 

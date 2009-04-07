@@ -102,7 +102,7 @@ NSMutableArray *NSCurrentFocusStack() {
    NSGraphicsContext   *current=_currentContext();
 
    if(current==nil)
-    [NSException raise:NSInvalidArgumentException format:@"+[%@ %s] is *nil*",self,SELNAME(_cmd)];
+    [NSException raise:NSInvalidArgumentException format:@"+[%@ %s] is *nil*",self,sel_getName(_cmd)];
 
    return current;
 }

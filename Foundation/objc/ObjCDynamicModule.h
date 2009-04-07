@@ -6,11 +6,11 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
-#import <Foundation/ObjCTypes.h>
+#import <objc/objc.h>
 
 typedef void *NSModuleHandle;
 
-FOUNDATION_EXPORT NSModuleHandle NSLoadModule(const char *path);
-FOUNDATION_EXPORT BOOL NSUnloadModule(NSModuleHandle handle);
-FOUNDATION_EXPORT const char *NSLastModuleError(void);
-FOUNDATION_EXPORT void *NSSymbolInModule(NSModuleHandle handle, const char *symbol);
+OBJC_EXPORT NSModuleHandle NSLoadModule(const char *path);
+OBJC_EXPORT BOOL NSUnloadModule(NSModuleHandle handle);
+OBJC_EXPORT const char *NSLastModuleError(void);
+OBJC_EXPORT void *NSSymbolInModule(NSModuleHandle handle, const char *symbol);

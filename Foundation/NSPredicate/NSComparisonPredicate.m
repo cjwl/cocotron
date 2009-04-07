@@ -140,7 +140,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     
     // FIX, not right
     case NSCustomSelectorPredicateOperatorType:
-     operator=[NSString stringWithFormat:@"@selector(%s)",SELNAME(_customSelector)];
+     operator=[NSString stringWithFormat:@"@selector(%s)",sel_getName(_customSelector)];
      break;
      
    }

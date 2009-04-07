@@ -829,12 +829,12 @@ CHANGE_DECLARATION(SEL)
 				
             if(kvoSelector==0 && NSDebugEnabled)
 				{
-					NSLog(@"type %s not defined in %s:%i (selector %s on class %@)", cleanFirstParameterType, __FILE__, __LINE__, SELNAME(method->method_name), [self className]);
+					NSLog(@"type %s not defined in %s:%i (selector %s on class %@)", cleanFirstParameterType, __FILE__, __LINE__, sel_getName(method->method_name), [self className]);
 				}
 				if(returnType[0]!=_C_VOID)
 				{
 					if(NSDebugEnabled)
-						NSLog(@"selector %s on class %@ has return type %s and will not be modified for automatic KVO notification", SELNAME(method->method_name), [self className], returnType);
+						NSLog(@"selector %s on class %@ has return type %s and will not be modified for automatic KVO notification", sel_getName(method->method_name), [self className], returnType);
 					kvoSelector=0;
 				}
             

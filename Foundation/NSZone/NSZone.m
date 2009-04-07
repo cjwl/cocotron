@@ -12,7 +12,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSRaise.h>
 #import <Foundation/NSZombieObject.h>
 #import <Foundation/NSDebug.h>
-#import <Foundation/ObjCClass.h>
+#import <string.h>
 
 // NSZone functions implemented in platform subproject
 

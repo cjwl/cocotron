@@ -18,7 +18,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSThread-Private.h>
 #import <Foundation/NSPlatform.h>
 #import <Foundation/NSPersistantDomain.h>
-#import <Foundation/ObjCException.h>
 
 NSString *NSGlobalDomain=@"NSGlobalDomain";
 NSString *NSArgumentDomain=@"NSArgumentDomain";
@@ -71,7 +70,7 @@ NSString *NSUserDefaultsDidChangeNotification=@"NSUserDefaultsDidChangeNotificat
    NSDictionary *plist=[NSDictionary dictionaryWithContentsOfFile:path];
 
    if(plist==nil)
-    OBJCLog("internal error, unable to locate NSUserDefaults.plist, path=%s, bundle at %s",[path cString],[[[NSBundle bundleForClass:[self class]]  resourcePath] cString]);
+    NSCLog("internal error, unable to locate NSUserDefaults.plist, path=%s, bundle at %s",[path cString],[[[NSBundle bundleForClass:[self class]]  resourcePath] cString]);
    else
     [_domains setObject:plist forKey:@"Foundation"];
 }
@@ -262,38 +261,38 @@ NSString *NSUserDefaultsDidChangeNotification=@"NSUserDefaultsDidChangeNotificat
 -(NSData *)dataForKey:(NSString *)defaultName {
    NSData *data=[self objectForKey:defaultName];
 
-   return [data isKindOfClass:OBJCClassFromString("NSData")]?data:(NSData *)nil;
+   return [data isKindOfClass:objc_lookUpClass("NSData")]?data:(NSData *)nil;
 }
 
 -(NSString *)stringForKey:(NSString *)defaultName {
    NSString *string=[self objectForKey:defaultName];
 
-   return [string isKindOfClass:OBJCClassFromString("NSString")]?string:(NSString *)nil;
+   return [string isKindOfClass:objc_lookUpClass("NSString")]?string:(NSString *)nil;
 }
 
 -(NSArray *)arrayForKey:(NSString *)defaultName {
    NSArray *array=[self objectForKey:defaultName];
 
-   return [array isKindOfClass:OBJCClassFromString("NSArray")]?array:(NSArray *)nil;
+   return [array isKindOfClass:objc_lookUpClass("NSArray")]?array:(NSArray *)nil;
 }
 
 
 -(NSDictionary *)dictionaryForKey:(NSString *)defaultName {
    NSDictionary *dictionary=[self objectForKey:defaultName];
 
-   return [dictionary isKindOfClass:OBJCClassFromString("NSDictionary")]?dictionary:(NSDictionary *)nil;
+   return [dictionary isKindOfClass:objc_lookUpClass("NSDictionary")]?dictionary:(NSDictionary *)nil;
 }
 
 -(NSArray *)stringArrayForKey:(NSString *)defaultName {
    NSArray *array=[self objectForKey:defaultName];
    int      count;
 
-   if(![array isKindOfClass:OBJCClassFromString("NSArray")])
+   if(![array isKindOfClass:objc_lookUpClass("NSArray")])
     return nil;
 
    count=[array count];
    while(--count>=0)
-    if(![[array objectAtIndex:count] isKindOfClass:OBJCClassFromString("NSString")])
+    if(![[array objectAtIndex:count] isKindOfClass:objc_lookUpClass("NSString")])
      return nil;
 
    return array;
@@ -303,7 +302,7 @@ NSString *NSUserDefaultsDidChangeNotification=@"NSUserDefaultsDidChangeNotificat
 -(BOOL)boolForKey:(NSString *)defaultName {
    NSString *string=[self objectForKey:defaultName];
 
-   if(![string isKindOfClass:OBJCClassFromString("NSString")])
+   if(![string isKindOfClass:objc_lookUpClass("NSString")])
     return NO;
 
    if([string caseInsensitiveCompare:@"YES"]==NSOrderedSame)
@@ -315,14 +314,14 @@ NSString *NSUserDefaultsDidChangeNotification=@"NSUserDefaultsDidChangeNotificat
 -(int)integerForKey:(NSString *)defaultName {
    NSNumber *number=[self objectForKey:defaultName];
 
-   return [number isKindOfClass:OBJCClassFromString("NSNumber")]?[number intValue]:0;
+   return [number isKindOfClass:objc_lookUpClass("NSNumber")]?[number intValue]:0;
 }
 
 
 -(float)floatForKey:(NSString *)defaultName {
    NSNumber *number=[self objectForKey:defaultName];
 
-   return [number isKindOfClass:OBJCClassFromString("NSNumber")]?[number floatValue]:0.0;
+   return [number isKindOfClass:objc_lookUpClass("NSNumber")]?[number floatValue]:0.0;
 }
 
 -(void)setObject:value forKey:(NSString *)key {

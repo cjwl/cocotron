@@ -16,8 +16,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @implementation NSMutableString : NSString
 
 +allocWithZone:(NSZone *)zone {
-   if(self==OBJCClassFromString("NSMutableString"))
-    return NSAllocateObject(OBJCClassFromString("NSMutableString_unicodePtr"),0,zone);
+   if(self==objc_lookUpClass("NSMutableString"))
+    return NSAllocateObject(objc_lookUpClass("NSMutableString_unicodePtr"),0,zone);
 
    return NSAllocateObject(self,0,zone);
 }
@@ -36,7 +36,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(Class)classForCoder {
-   return OBJCClassFromString("NSMutableString");
+   return objc_lookUpClass("NSMutableString");
 }
 
 +string {

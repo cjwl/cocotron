@@ -9,14 +9,13 @@
 #import <signal.h>
 #import <setjmp.h>
 #import <objc/objc.h>
-#import <objc/objc-class.h>
+#import <objc/runtime.h>
 #import <string.h>
 
 #import <Foundation/NSMutableArray.h>
 #import <Foundation/NSValue.h>
 #import <Foundation/NSString.h>
-
-extern Class objc_lookUpClass(const char* name);
+#import <Foundation/ObjCClass.h>
 
 static void *_objc_returnAddress(unsigned frame)
 {

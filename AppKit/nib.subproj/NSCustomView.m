@@ -40,7 +40,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       }
    }
    else {
-      [NSException raise:NSInvalidArgumentException format:@"-[%@ %s] does not handle %@",isa,SELNAME(_cmd),[coder class]];
+      [NSException raise:NSInvalidArgumentException format:@"-[%@ %s] does not handle %@",isa,sel_getName(_cmd),[coder class]];
       return self;
    }
 }

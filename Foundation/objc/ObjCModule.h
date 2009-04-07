@@ -33,8 +33,8 @@ typedef struct {
    OBJCArray  *moduleArray;
 } OBJCObjectFile;
 
-FOUNDATION_EXPORT void OBJCQueueModule(OBJCModule *module);
-FOUNDATION_EXPORT void OBJCResetModuleQueue(void);
+OBJC_EXPORT void OBJCQueueModule(OBJCModule *module);
+OBJC_EXPORT void OBJCResetModuleQueue(void);
 
-FOUNDATION_EXPORT OBJCObjectFile *OBJCObjectFileFromClass(Class class);
-FOUNDATION_EXPORT void OBJCLinkQueuedModulesToObjectFileWithPath(const char *path);
+OBJC_EXPORT OBJCObjectFile *OBJCObjectFileFromClass(Class class);
+OBJC_EXPORT void OBJCLinkQueuedModulesToObjectFileWithPath(const char *path);

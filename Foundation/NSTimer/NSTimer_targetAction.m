@@ -63,7 +63,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(NSString *)description {
-   return [NSString stringWithFormat:@"<%@ 0x%x: %s>",isa,self,SELNAME(_selector)];
+   return [NSString stringWithFormat:@"<%@ 0x%x: %s>",isa,self,sel_getName(_selector)];
 }
 
 @end

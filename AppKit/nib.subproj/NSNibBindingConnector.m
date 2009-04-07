@@ -23,14 +23,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	{
 		int version=[coder decodeIntForKey:@"NSNibBindingConnectorVersion"];
 		if(version != 2)
-			[NSException raise:NSInvalidArgumentException format:@"-[%@ %s] unknown connector version %i",isa,SELNAME(_cmd), version];
+			[NSException raise:NSInvalidArgumentException format:@"-[%@ %s] unknown connector version %i",isa,sel_getName(_cmd), version];
 		
 		_binding=[[coder decodeObjectForKey:@"NSBinding"] retain];
 		_keyPath=[[coder decodeObjectForKey:@"NSKeyPath"] retain];
 		_options=[[coder decodeObjectForKey:@"NSOptions"] retain];
 	}
 	else {
-		[NSException raise:NSInvalidArgumentException format:@"-[%@ %s] is not implemented for coder %@",isa,SELNAME(_cmd),coder];
+		[NSException raise:NSInvalidArgumentException format:@"-[%@ %s] is not implemented for coder %@",isa,sel_getName(_cmd),coder];
 	}
 	return self;
 }

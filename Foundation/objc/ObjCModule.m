@@ -5,12 +5,10 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
-
-// Original - David Young <daver@geeks.org>, Christopher Lloyd <cjwl@objc.net>
 #import <Foundation/ObjCModule.h>
 #import <Foundation/ObjCClass.h>
 #import <Foundation/ObjCSelector.h>
-#import "Protocol.h"
+#import <objc/Protocol.h>
 #import <Foundation/ObjCException.h>
 #import <Foundation/NSZone.h>
  
@@ -187,7 +185,7 @@ static void OBJCSymbolTableRegisterClasses(OBJCSymbolTable *symbolTable){
    unsigned i,count=symbolTable->classCount;
 
    for(i=0;i<count;i++){
-      OBJCClassTemplate *class=(OBJCClassTemplate *)symbolTable->definitions[i];
+      struct objc_class *class=(struct objc_class *)symbolTable->definitions[i];
       
       // mark class and metaclass as having a direct method list pointer
       class->info|=CLASS_NO_METHOD_ARRAY;
@@ -207,8 +205,8 @@ static void OBJCSymbolTableRegisterCategories(OBJCSymbolTable *symbolTable){
     int count=unlinkedCategories->count;
    
     while(--count>=0){
-     OBJCCategory *category=OBJCArrayItemAtIndex(unlinkedCategories,count);
-     Class         class=OBJCClassFromString(category->className);
+     Category category=OBJCArrayItemAtIndex(unlinkedCategories,count);
+     Class         class=objc_lookUpClass(category->className);
 
      if(class!=Nil){
       OBJCRegisterCategoryInClass(category,class);
@@ -218,8 +216,8 @@ static void OBJCSymbolTableRegisterCategories(OBJCSymbolTable *symbolTable){
    }
 
    for(i=0;i<count;i++){
-    OBJCCategory *category=(OBJCCategory *)symbolTable->definitions[offset+i];
-    Class         class=OBJCClassFromString(category->className);
+    Category category=(Category)symbolTable->definitions[offset+i];
+    Class         class=objc_lookUpClass(category->className);
 
     if(class!=Nil)
      OBJCRegisterCategoryInClass(category,class);
@@ -244,7 +242,7 @@ static void OBJCSymbolTableRegisterStringsIfNeeded(OBJCSymbolTable *symbolTable)
    
     while(--count>=0){
      OBJCStaticInstanceList *staticInstances=OBJCArrayItemAtIndex(unlinkedObjects,count);
-     Class                   class=OBJCClassFromString(staticInstances->name);
+     Class                   class=objc_lookUpClass(staticInstances->name);
 
      if(class!=Nil){
 	  unsigned i;
@@ -260,7 +258,7 @@ static void OBJCSymbolTableRegisterStringsIfNeeded(OBJCSymbolTable *symbolTable)
    if(listOfLists!=NULL){
     for (;*listOfLists != NULL;listOfLists++) {
      OBJCStaticInstanceList *staticInstances=*listOfLists;
-     Class                   class=OBJCClassFromString(staticInstances->name);
+     Class                   class=objc_lookUpClass(staticInstances->name);
 	 unsigned                i;
 
      if(class!=Nil){

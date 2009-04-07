@@ -316,7 +316,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    if([self _isSelectorOverridden:@selector(loadDataRepresentation:ofType:)])
     return [self loadDataRepresentation:data ofType:type];
    else {
-    [NSException raise:NSInternalInconsistencyException format:@"-[%@ %s]",isa,SELNAME(_cmd)];
+    [NSException raise:NSInternalInconsistencyException format:@"-[%@ %s]",isa,sel_getName(_cmd)];
     return NO;
    }
 }
@@ -357,7 +357,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    if([self _isSelectorOverridden:@selector(dataRepresentationOfType:)])
     return [self dataRepresentationOfType:type];
     
-   [NSException raise:NSInternalInconsistencyException format:@"-[%@ %s]",isa,SELNAME(_cmd)];
+   [NSException raise:NSInternalInconsistencyException format:@"-[%@ %s]",isa,sel_getName(_cmd)];
    return nil;
 }
 
@@ -566,7 +566,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(NSPrintOperation *)printOperationWithSettings:(NSDictionary *)settings error:(NSError **)error {
-   NSLog(@"Implement %s in your subclass %@ of NSDocument to enable printing",SELNAME(_cmd),isa);
+   NSLog(@"Implement %s in your subclass %@ of NSDocument to enable printing",sel_getName(_cmd),isa);
    return nil;
 }
 
@@ -672,7 +672,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(NSData *)dataRepresentationOfType:(NSString *)type {
-   [NSException raise:NSInternalInconsistencyException format:@"-[%@ %s]",isa,SELNAME(_cmd)];
+   [NSException raise:NSInternalInconsistencyException format:@"-[%@ %s]",isa,sel_getName(_cmd)];
    return nil;
 }
 
@@ -735,7 +735,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(BOOL)loadDataRepresentation:(NSData *)data ofType:(NSString *)type {
-   [NSException raise:NSInternalInconsistencyException format:@"-[%@ %s]",isa,SELNAME(_cmd)];
+   [NSException raise:NSInternalInconsistencyException format:@"-[%@ %s]",isa,sel_getName(_cmd)];
    return NO;
 }
 

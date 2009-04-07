@@ -15,7 +15,7 @@ typedef struct objc_object {
 
 typedef void *SEL;    
 typedef id  (*IMP)(id,SEL,...); 
-typedef char  BOOL;
+typedef signed char  BOOL;
 
 #define YES  ((BOOL)1)
 #define NO   ((BOOL)0)
@@ -23,10 +23,5 @@ typedef char  BOOL;
 #define Nil  0
 #define nil  0
 
-#define SELNAME sel_getName
 
-OBJC_EXPORT SEL sel_getUid(const char *cString);
-OBJC_EXPORT SEL sel_registerName(const char *cString);
-OBJC_EXPORT const char *sel_getName(SEL selector);
-OBJC_EXPORT BOOL sel_isMapped(SEL selector);
 

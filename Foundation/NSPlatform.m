@@ -12,7 +12,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSRaise.h>
 #import <Foundation/NSDebug.h>
 #import <Foundation/NSArray.h>
-#import <Foundation/ObjCException.h>
 #import <Foundation/NSPipe.h>
 #import <Foundation/NSMutableDictionary.h>
 #import <Foundation/NSNotificationCenter.h>
@@ -177,7 +176,7 @@ extern NSString *NSPlatformClassName;
 -(void)checkEnvironmentKey:(NSString *)key value:(NSString *)value {
    if([key isEqualToString:@"NSZombieEnabled"]){   
     if((NSZombieEnabled=[value isEqual:@"YES"]))
-     OBJCLog("NSZombieEnabled=YES");
+     NSCLog("NSZombieEnabled=YES");
    }
 }
 @end

@@ -6,7 +6,8 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
-// for internal use
+// *** FOR INTERNAL COCOTRON USE ONLY
+
 #import <Foundation/NSException.h>
 #import <Foundation/NSString.h>
 
@@ -25,3 +26,7 @@ FOUNDATION_EXPORT void _NSUnimplementedFunction(const char *function,const char 
 
 
 FOUNDATION_EXPORT void NSRaiseException(NSString *name,id self,SEL cmd,NSString *fmt,...);
+
+// This is just a wrapper for fprintf, it doesn't handle %@
+// There are situations (such as localization inside NSLog) where you don't want to use NSLog
+FOUNDATION_EXPORT void NSCLog(const char *format,...);

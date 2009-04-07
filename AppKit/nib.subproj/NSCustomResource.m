@@ -22,7 +22,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     _resourceName=[[keyed decodeObjectForKey:@"NSResourceName"] retain];
    }
    else
-    [NSException raise:NSInvalidArgumentException format:@"-[%@ %s] can not decode from a %@",[self class],SELNAME(_cmd),[coder class]];
+    [NSException raise:NSInvalidArgumentException format:@"-[%@ %s] can not decode from a %@",[self class],sel_getName(_cmd),[coder class]];
     
    return self;
 }

@@ -33,7 +33,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSParentDeathMonitor_win32.h>
 #import <Foundation/NSSelectInputSourceSet.h>
 
-#import <Foundation/ObjectiveC.h>
+#import <objc/runtime.h>
 #import <Foundation/ObjCModule.h>
 
 NSString *NSPlatformClassName=@"NSPlatform_win32";

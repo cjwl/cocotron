@@ -96,7 +96,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     char      buffer[8192];
     DWORD     length=8192;
 
-//NSLog(@"-[%@ %s] %@ %@",isa,SELNAME(_cmd),_path,key);
+//NSLog(@"-[%@ %s] %@ %@",isa,sel_getName(_cmd),_path,key);
 
     error=RegQueryValueEx(_handle,[key cString],NULL,&type,(void *)buffer,&length);
     if(error!=ERROR_SUCCESS){

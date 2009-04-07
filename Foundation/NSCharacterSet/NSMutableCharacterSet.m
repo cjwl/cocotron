@@ -14,8 +14,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @implementation NSMutableCharacterSet
 
 +allocWithZone:(NSZone *)zone {
-   if(self==OBJCClassFromString("NSMutableCharacterSet"))
-    return NSAllocateObject(OBJCClassFromString("NSMutableCharacterSet_bitmap"),0,zone);
+   if(self==objc_lookUpClass("NSMutableCharacterSet"))
+    return NSAllocateObject(objc_lookUpClass("NSMutableCharacterSet_bitmap"),0,zone);
 
    return NSAllocateObject(self,0,zone);
 }

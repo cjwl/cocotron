@@ -8,22 +8,21 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/NSAutoreleasePool.h>
 #import <Foundation/NSException.h>
+#import <Foundation/NSRaise.h>
 #import <Foundation/NSString.h>
 #import <Foundation/NSThread-Private.h>
-#import <Foundation/ObjCException.h>
 
 @implementation NSAutoreleasePool
 
 #define PAGESIZE 1024
 
-void objc_noAutoreleasePool(id object)
-{
-   OBJCLog("autorelease pool is nil, leaking %@", object);
+void objc_noAutoreleasePool(id object) {
+   NSCLog("autorelease pool is nil, leaking %x %s",object,object_getClassName(object));
 }
 
 static inline void addObject(NSAutoreleasePool *self,id object){
    if(self==nil){
-      objc_noAutoreleasePool(object);
+    objc_noAutoreleasePool(object);
     return;
    }
    

@@ -154,11 +154,11 @@ YES,YES,YES,YES,YES,YES,YES,YES,YES,YES,YES, NO, NO, NO, NO, NO,// 112
 }
 
 -(void)encodePropertyList:plist escape:(BOOL)escape indent:(int)indent {
-   if([plist isKindOfClass:OBJCClassFromString("NSString")])
+   if([plist isKindOfClass:objc_lookUpClass("NSString")])
     [self encodeString:plist escape:escape];
-   else if([plist isKindOfClass:OBJCClassFromString("NSArray")])
+   else if([plist isKindOfClass:objc_lookUpClass("NSArray")])
     [self encodeArray:plist indent:indent];
-   else if([plist isKindOfClass:OBJCClassFromString("NSDictionary")])
+   else if([plist isKindOfClass:objc_lookUpClass("NSDictionary")])
     [self encodeDictionary:plist indent:indent];
    else
     [self encodeString:[plist description] escape:escape];

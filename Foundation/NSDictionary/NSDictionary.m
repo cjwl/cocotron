@@ -29,7 +29,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @implementation NSDictionary
 
 +allocWithZone:(NSZone *)zone {
-   if(self==OBJCClassFromString("NSDictionary"))
+   if(self==objc_lookUpClass("NSDictionary"))
     return NSAllocateObject([NSDictionary_mapTable class],0,zone);
 
    return NSAllocateObject(self,0,zone);
@@ -222,7 +222,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(Class)classForCoder {
-   return OBJCClassFromString("NSDictionary");
+   return objc_lookUpClass("NSDictionary");
 }
 
 -initWithCoder:(NSCoder *)coder {
@@ -314,7 +314,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    if(self==other)
     return YES;
 
-   if(![other isKindOfClass:OBJCClassFromString("NSDictionary")])
+   if(![other isKindOfClass:objc_lookUpClass("NSDictionary")])
     return NO;
 
    return [self isEqualToDictionary:other];

@@ -26,6 +26,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSWindowAnimationContext.h>
 #import <AppKit/NSSystemInfoPanel.h>
 #import <AppKit/CGWindow.h>
+#import <objc/message.h>
 
 NSString *NSModalPanelRunLoopMode=@"NSModalPanelRunLoopMode";
 NSString *NSEventTrackingRunLoopMode=@"NSEventTrackingRunLoopMode";
@@ -302,7 +303,7 @@ id NSApp=nil;
 }
 
 -(void)setWindowsMenu:(NSMenu *)menu {
-//NSLog(@"%s %@",SELNAME(_cmd),menu);
+//NSLog(@"%s %@",sel_getName(_cmd),menu);
    [_windowsMenu autorelease];
    _windowsMenu=[menu retain];
 }
@@ -469,8 +470,6 @@ id NSApp=nil;
        pool = [NSAutoreleasePool new];
        NSEvent           *event;
 
-    //OBJCReportStatistics();
-
     event=[self nextEventMatchingMask:NSAnyEventMask
      untilDate:[NSDate distantFuture] inMode:NSDefaultRunLoopMode dequeue:YES];
 
@@ -597,7 +596,7 @@ id NSApp=nil;
 
 -(BOOL)sendAction:(SEL)action to:target from:sender {
 
-//NSLog(@"%s %s %@ %@",SELNAME(_cmd),action,target,sender);
+//NSLog(@"%s %s %@ %@",sel_getName(_cmd),action,target,sender);
 
    if(target!=nil){
     if([target respondsToSelector:action]){
@@ -678,7 +677,7 @@ id NSApp=nil;
 -(void)stopModalWithCode:(int)code {
    if([_modalStack lastObject]==nil)
     [NSException raise:NSInvalidArgumentException
-                format:@"-[%@ %s] no modal session running",isa,SELNAME(_cmd)];
+                format:@"-[%@ %s] no modal session running",isa,sel_getName(_cmd)];
 
    [[_modalStack lastObject] stopModalWithCode:code];
 }

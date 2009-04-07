@@ -94,7 +94,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    DWORD       attribute=GetFileAttributesW(fsrep);
 
    if([path isEqualToString:@"."] || [path isEqualToString:@".."])
-    [NSException raise:NSInvalidArgumentException format:@"-[%@ %s] path should not be . or ..",isa,SELNAME(_cmd)];
+    [NSException raise:NSInvalidArgumentException format:@"-[%@ %s] path should not be . or ..",isa,sel_getName(_cmd)];
 
    if(attribute==0xFFFFFFFF)
     return NO;
@@ -269,7 +269,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    }
 
    if(converted){
-    //NSLog(@"%s %@",SELNAME(_cmd),path);
+    //NSLog(@"%s %@",sel_getName(_cmd),path);
     path=[NSString stringWithCharacters:buffer length:length];
    }
 
@@ -291,7 +291,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	}
 	
 	if(converted){
-		//NSLog(@"%s %@",SELNAME(_cmd),path);
+		//NSLog(@"%s %@",sel_getName(_cmd),path);
 		path=[NSString stringWithCString:buffer length:length];
 	}
 	//	NSLog(path);

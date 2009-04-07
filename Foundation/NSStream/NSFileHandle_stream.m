@@ -59,20 +59,20 @@ enum {
 }
 
 -(void)synchronizeFile {
-   [NSException raise:NSFileHandleOperationException format:@"-[%@ %s]: Operation not supported",isa,SELNAME(_cmd)];
+   [NSException raise:NSFileHandleOperationException format:@"-[%@ %s]: Operation not supported",isa,sel_getName(_cmd)];
 }
 
 -(unsigned long long)offsetInFile {
-   [NSException raise:NSFileHandleOperationException format:@"-[%@ %s]: Illegal seek",isa,SELNAME(_cmd)];
+   [NSException raise:NSFileHandleOperationException format:@"-[%@ %s]: Illegal seek",isa,sel_getName(_cmd)];
    return 0;
 }
 
 -(void)seekToFileOffset:(unsigned long long)offset {
-   [NSException raise:NSFileHandleOperationException format:@"-[%@ %s]: Illegal seek",isa,SELNAME(_cmd)];
+   [NSException raise:NSFileHandleOperationException format:@"-[%@ %s]: Illegal seek",isa,sel_getName(_cmd)];
 }
 
 -(unsigned long long)seekToEndOfFile {
-   [NSException raise:NSFileHandleOperationException format:@"-[%@ %s]: Illegal seek",isa,SELNAME(_cmd)];
+   [NSException raise:NSFileHandleOperationException format:@"-[%@ %s]: Illegal seek",isa,sel_getName(_cmd)];
    return 0;
 }
 

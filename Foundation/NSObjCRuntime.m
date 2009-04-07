@@ -15,7 +15,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSRaise.h>
 #import <Foundation/NSPlatform.h>
 
-#import <Foundation/ObjectiveC.h>
+#import <objc/runtime.h>
 #import "objc/objc_size_alignment.h"
 #import <objc/objc.h>
 #include <ctype.h>
@@ -104,13 +104,13 @@ Class NSClassFromString(NSString *className) {
 
    [className getCString:cString maxLength:length];
 
-   return OBJCClassFromString(cString);
+   return objc_lookUpClass(cString);
 }
 
 NSString *NSStringFromClass(Class class) {
    if(class==Nil)
     return nil;
 
-   return NSString_cStringWithBytesAndZero(NULL,OBJCStringFromClass(class));
+   return NSString_cStringWithBytesAndZero(NULL,class_getName(class));
 }
 

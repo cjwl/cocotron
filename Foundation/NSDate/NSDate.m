@@ -101,7 +101,7 @@ const NSTimeInterval NSTimeIntervalSince1970 = (NSTimeInterval)978307200.0;
 }
 
 -(Class)classForCoder {
-   return OBJCClassFromString("NSDate");
+   return objc_lookUpClass("NSDate");
 }
 
 -(void)encodeWithCoder:(NSCoder *)coder {
