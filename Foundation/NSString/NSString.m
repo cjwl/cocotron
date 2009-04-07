@@ -35,7 +35,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSScanner.h>
 #import <Foundation/NSAutoreleasePool.h>
 #import <limits.h>
-#import <objc/objc-class.h>
 #import <string.h>
 
 extern BOOL NSObjectIsKindOfClass(id object,Class kindOf);
