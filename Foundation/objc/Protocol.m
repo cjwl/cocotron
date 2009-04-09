@@ -14,6 +14,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #define PROTOCOL_CLASS "Protocol"
 
+static SEL OBJCRegisterMethodDescription(OBJCMethodDescription *method) {
+   return sel_registerNameNoCopy((const char *)method->name);
+}
+
 static void OBJCRegisterMethodList(OBJCMethodDescriptionList *list){
    unsigned i;
 
@@ -54,7 +58,7 @@ void OBJCRegisterProtocol(OBJCProtocolTemplate *template) {
 
    if(instanceMethods==NULL)
     for(i=0;i<instanceMethods->count;i++)
-     if(instanceMethods->list[i].name==OBJCSelectorUniqueId(selector))
+     if(instanceMethods->list[i].name==selector)
       return &instanceMethods->list[i];
     
    list=childProtocols;
@@ -65,7 +69,7 @@ void OBJCRegisterProtocol(OBJCProtocolTemplate *template) {
      unsigned k;
 
      for(k=0;k<list->list[j]->instanceMethods->count;k++)
-      if(list->list[j]->instanceMethods->list[k].name==OBJCSelectorUniqueId(selector))
+      if(list->list[j]->instanceMethods->list[k].name==selector)
        return &list->list[j]->instanceMethods->list[k];
     }
     list=list->next;
@@ -80,7 +84,7 @@ void OBJCRegisterProtocol(OBJCProtocolTemplate *template) {
 
    if(classMethods==NULL)
     for(i=0;i<classMethods->count;i++)
-     if(classMethods->list[i].name==OBJCSelectorUniqueId(selector))
+     if(classMethods->list[i].name==selector)
       return &classMethods->list[i];
 
    list=childProtocols;
@@ -91,7 +95,7 @@ void OBJCRegisterProtocol(OBJCProtocolTemplate *template) {
      unsigned k;
 
      for (k=0;k<list->list[j]->classMethods->count;k++)
-      if(list->list[j]->classMethods->list[k].name==OBJCSelectorUniqueId(selector))
+      if(list->list[j]->classMethods->list[k].name==selector)
        return &list->list[j]->classMethods->list[k];
     }
     list=list->next;

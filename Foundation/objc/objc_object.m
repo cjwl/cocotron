@@ -6,6 +6,7 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 #import <objc/runtime.h>
+#import "objc_class.h"
 
 Class object_getClass(id object) {
    return object->isa;
@@ -15,20 +16,34 @@ const char *object_getClassName(id object) {
    return class_getName(object->isa);
 }
 
-static Ivar instanceVariableWithName(struct objc_class *class,const char *name) {
-   for(;;class=class->super_class){
-    struct objc_ivar_list *ivarList=class->ivars;
-    int i;
+Ivar object_getInstanceVariable(id object,const char *name,void **ptrToValuep) {
+   Ivar result=class_getInstanceVariable(object->isa,name);
+   
+   *ptrToValuep=(char *)object+result->ivar_offset;
+   
+   return result;
+}
 
-    for(i=0;ivarList!=NULL && i<ivarList->ivar_count;i++){
-     if(strcmp(ivarList->ivar_list[i].ivar_name,name)==0)
-      return &(ivarList->ivar_list[i]);
-    }
-    if(class->isa->isa==class)
-     break;
-   }
+id object_getIvar(id object,Ivar ivar) {
+   if(object==nil)
+    return nil;
+   
+   return *(id *)((char *)object+ivar->ivar_offset);
+}
 
-   return NULL;
+void *object_getIndexedIvars(id object) {
+   return (char *)object+object->isa->instance_size;
+}
+
+Class object_setClass(id object,Class cls) {
+   if(object==nil)
+    return Nil;
+    
+   Class result=object->isa;
+   
+   object->isa=cls;
+   
+   return result;
 }
 
 static void ivarCopy(void *vdst,unsigned offset,void *vsrc,unsigned length){
@@ -40,12 +55,66 @@ static void ivarCopy(void *vdst,unsigned offset,void *vsrc,unsigned length){
     dst[offset+i]=src[i];
 }
 
-// This only works for 'id' ivars
+// FIXME: This only works for 'id' ivars
 Ivar object_setInstanceVariable(id object,const char *name,void *value) {
-   Ivar ivar=instanceVariableWithName(object->isa,name);
+   Ivar ivar=class_getInstanceVariable(object->isa,name);
 
    if(ivar!=NULL)
     ivarCopy(object,ivar->ivar_offset,value,sizeof(id));
    
    return ivar;
+}
+
+void object_setIvar(id object,Ivar ivar,id value) {
+   ivarCopy(object,ivar->ivar_offset,&value,sizeof(id));
+}
+
+static inline BOOL OBJCCallCXXSelector(id self, Class class, SEL selector)
+{
+	struct objc_method *result=NULL;
+	if(!class->super_class)
+		return YES;
+
+	if(!OBJCCallCXXSelector(self, class->super_class, selector))
+		return NO;
+	
+	if((result=OBJCLookupUniqueIdInOnlyThisClass(class,selector))!=NULL)
+	{
+		if(result->method_imp(self, selector))
+		{
+			return YES;
+		}
+		else
+		{
+			object_cxxDestruct(self, class->super_class);
+			return NO;
+		}
+	}
+	return YES;
+}
+
+BOOL object_cxxConstruct(id self, Class class)
+{
+	static SEL cxx_constructor=0;
+	if(!cxx_constructor)
+		cxx_constructor=sel_registerName(".cxx_construct");
+	
+	if(!self)
+		return YES;
+	if(class->info&CLASS_HAS_CXX_STRUCTORS)
+		return OBJCCallCXXSelector(self, class, cxx_constructor);
+	return YES;
+}
+
+BOOL object_cxxDestruct(id self, Class class)
+{
+	static SEL cxx_destructor=0;
+	if(!cxx_destructor)
+		cxx_destructor=sel_registerName(".cxx_destruct");
+
+	if(!self)
+		return YES;
+	if(class->info&CLASS_HAS_CXX_STRUCTORS)
+		return OBJCCallCXXSelector(self, class, cxx_destructor);
+	return YES;
 }

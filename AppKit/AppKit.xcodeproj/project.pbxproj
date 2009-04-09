@@ -6773,7 +6773,7 @@
 					/Developer/Cocotron/1.0/Linux/i386/include/fontconfig,
 					/Developer/Cocotron/1.0/Linux/i386/include,
 				);
-				INFOPLIST_FILE = /Users/jobi/Projekte/cocotron/AppKit/Info.plist;
+				INFOPLIST_FILE = Info.plist;
 				INSTALL_MODE_FLAG = "og-w,a+rX";
 				INSTALL_PATH = /Developer/Cocotron/1.0/Linux/i386/Frameworks;
 				LIBRARY_SEARCH_PATHS = /Developer/Cocotron/1.0/Linux/i386/lib;

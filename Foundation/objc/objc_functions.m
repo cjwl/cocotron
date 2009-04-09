@@ -25,7 +25,5 @@ id objc_get_meta_class(const char *name) {
 
 // __objc_execClass is called for each module loaded; this is where we tie into the runtime.
 void __objc_execClass(OBJCModule *module) {
-    //OBJCLog("MODULE=%s",module->name);
-
     OBJCQueueModule(module);
 }

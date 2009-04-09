@@ -43,7 +43,7 @@ void OBJCInitializeProcess_Darwin(void)
       int j;
       for(j=0; j<nmess; j++)
       {
-         sels[j] = OBJCRegisterSelectorName((const char *) sels[j]);;
+         sels[j] = sel_registerNameNoCopy((const char *) sels[j]);;
       }
    } //iterate mach_headers
 

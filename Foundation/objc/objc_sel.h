@@ -9,18 +9,5 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <objc/objc.h>
 #import <objc/objc-class.h>
 
-#define OBJCNilSelector (SEL)0
-
-typedef struct OBJCMethodDescription {
-   SEL   name;
-   char *types;
-} OBJCMethodDescription;
-
-static inline SEL OBJCSelectorUniqueId(const void *selector){
-   return (SEL)selector;
-}
-
-OBJC_EXPORT SEL OBJCRegisterSelectorName(const char *name);
-OBJC_EXPORT SEL OBJCRegisterMethodDescription(OBJCMethodDescription *method);
-OBJC_EXPORT SEL OBJCRegisterMethod(struct objc_method *method);
+OBJC_EXPORT SEL sel_registerNameNoCopy(const char *name);
 

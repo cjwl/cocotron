@@ -5,8 +5,6 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
-
-// Original - David Young <daver@geeks.org>, Christopher Lloyd <cjwl@objc.net>
 #import <Foundation/objc_sel.h>
 #import <Foundation/ObjCHashTable.h>
 #import <Foundation/ObjCException.h>
@@ -18,7 +16,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 static OBJCHashTable *nameToNumber=NULL;
 
-SEL OBJCRegisterSelectorName(const char *name){
+SEL sel_registerNameNoCopy(const char *name){
   SEL result;
 
    if(nameToNumber==NULL)
@@ -26,19 +24,19 @@ SEL OBJCRegisterSelectorName(const char *name){
 
    result=(SEL)OBJCHashValueForKey(nameToNumber,name);
 
-   if(result==OBJCNilSelector){
+   if(result==NULL){
     result=(SEL)OBJCHashInsertValueForKey(nameToNumber,name, (char*)name);
    }
 
    return result;
 }
 
-SEL OBJCRegisterMethodDescription(OBJCMethodDescription *method) {
-   return OBJCRegisterSelectorName((const char *)method->name);
-}
 
-SEL OBJCRegisterMethod(struct objc_method *method) {
-   return OBJCRegisterSelectorName((const char *)method->method_name);
+const char *sel_getName(SEL selector) {
+  if(selector==NULL)
+    return NULL;
+  
+   return (const char*)OBJCHashValueForKey(nameToNumber, selector);
 }
 
 SEL sel_getUid(const char *selectorName) {
@@ -48,6 +46,10 @@ SEL sel_getUid(const char *selectorName) {
    return (SEL)OBJCHashValueForKey(nameToNumber,selectorName);
 }
 
+BOOL sel_isEqual(SEL selector,SEL other) {
+   return (selector==other)?YES:NO;
+}
+
 SEL sel_registerName(const char *cString){
    SEL result=sel_getUid(cString);
 
@@ -55,17 +57,10 @@ SEL sel_registerName(const char *cString){
     char *copy=NSZoneMalloc(NULL,sizeof(char)*(strlen(cString)+1));
 
     strcpy(copy,cString);
-    result=(SEL)OBJCRegisterSelectorName(copy);
+    result=(SEL)sel_registerNameNoCopy(copy);
    }
 
    return result;
-}
-
-const char *sel_getName(SEL selector) {
-  if(selector==NULL)
-    return NULL;
-  
-   return (const char*)OBJCHashValueForKey(nameToNumber, selector);
 }
 
 BOOL sel_isMapped(SEL selector) {

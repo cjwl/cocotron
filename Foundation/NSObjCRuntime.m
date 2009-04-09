@@ -16,7 +16,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSPlatform.h>
 
 #import <objc/runtime.h>
-#import "objc/objc_size_alignment.h"
+#import <Foundation/objc_size_alignment.h>
 #import <objc/objc.h>
 #include <ctype.h>
 

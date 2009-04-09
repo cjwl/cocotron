@@ -23,16 +23,20 @@ enum {
    CLASS_NO_METHOD_ARRAY=0x4000
 };
 
+typedef struct OBJCMethodDescription {
+   SEL   name;
+   char *types;
+} OBJCMethodDescription;
+
 typedef struct OBJCMethodDescriptionList {
    int                    count;
    OBJCMethodDescription list[1];
 } OBJCMethodDescriptionList;
 
-OBJC_EXPORT id objc_getOrigClass(const char *name);
-
 OBJC_EXPORT void OBJCRegisterClass(Class class);
 OBJC_EXPORT void OBJCRegisterCategoryInClass(Category category,Class class);
 
+inline struct objc_method *OBJCLookupUniqueIdInOnlyThisClass(Class class,SEL uniqueId);
 OBJC_EXPORT IMP OBJCLookupAndCacheUniqueIdInClass(Class class,SEL uniqueId);
 OBJC_EXPORT IMP OBJCInitializeLookupAndCacheUniqueIdForObject(id object,SEL message);
 

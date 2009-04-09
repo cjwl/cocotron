@@ -6,14 +6,15 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
-#import <Foundation/objc_class.h>
+#import <Foundation/objc_forward_ffi.h>
 #import <objc/runtime.h>
 #import <objc/message.h>
 #import "objc_cache.h"
+#import "objc_class.h"
 #import <Foundation/ObjCException.h>
-#import "objc_forward_ffi.h"
 
-extern id objc_msgForward(id, SEL, ...);
+extern void *objc_forwardHandler;
+extern void *objc_forwardHandler_stret;
 
 static int msg_tracing=0;
 
@@ -59,7 +60,7 @@ IMP objc_msg_lookup(id object,SEL selector) {
 #ifdef HAVE_LIBFFI
 		ret=objc_forward_ffi(object, selector);
 #else
-      ret=objc_msgForward;
+      ret=objc_forwardHandler;
 #endif
    }
 	return ret;
@@ -84,7 +85,7 @@ IMP objc_msg_lookup_super(struct objc_super *super,SEL selector) {
 #ifdef HAVE_LIBFFI
 		ret=objc_forward_ffi(super->receiver, selector);
 #else
-      ret=objc_msgForward;
+      ret=objc_forwardHandler;
 #endif
    }
    return ret;
