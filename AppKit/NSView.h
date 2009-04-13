@@ -91,7 +91,10 @@ APPKIT_EXPORT NSString *NSViewFocusDidChangeNotification;
 -(NSRect)visibleRect;
 
 -(BOOL)isHidden;
+-(BOOL)isHiddenOrHasHiddenAncestor;
 -(void)setHidden:(BOOL)flag;
+
+-(BOOL)canBecomeKeyView;
 
 -(NSView *)nextKeyView;
 -(NSView *)nextValidKeyView;

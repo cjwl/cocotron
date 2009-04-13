@@ -71,8 +71,9 @@ NSString *NSViewFocusDidChangeNotification=@"NSViewFocusDidChangeNotification";
     _subviews=[NSMutableArray new];
     _postsNotificationOnFrameChange=YES;
     _postsNotificationOnBoundsChange=YES;
-    _autoresizesSubviews=YES;
     _autoresizingMask=vFlags&0x3F;
+    _autoresizesSubviews=(vFlags&0x100)?YES:NO;
+    _isHidden=(vFlags&0x80000000)?YES:NO;
     _tag=-1;
     if([keyed containsValueForKey:@"NSTag"])
      _tag=[keyed decodeIntForKey:@"NSTag"];
@@ -270,6 +271,9 @@ static inline void buildTransformsIfNeeded(NSView *self) {
 }
 
 -(NSRect)visibleRect {
+   if ([self isHiddenOrHasHiddenAncestor])
+    return NSZeroRect;
+   
    buildTransformsIfNeeded(self);
 
    return _visibleRect;
@@ -279,10 +283,34 @@ static inline void buildTransformsIfNeeded(NSView *self) {
    return _isHidden;
 }
 
--(void)setHidden:(BOOL)flag {
-   _isHidden=flag;
-   if(_isHidden)
-    NSUnimplementedMethod();
+-(BOOL)isHiddenOrHasHiddenAncestor {
+   return _isHidden || [_superview isHiddenOrHasHiddenAncestor];
+}
+
+-(void)setHidden:(BOOL)flag
+{
+   if (_isHidden != flag)
+   {
+      if ((_isHidden = flag))
+      {
+         id view=[_window firstResponder];
+         if ([view isKindOfClass:[NSView class]])
+            for (; view; view = [view superview])
+            {
+               if (self==view)
+               {
+                  [_window makeFirstResponder:[self nextValidKeyView]];
+                  break;
+               }
+            }
+      }
+
+      [self setNeedsDisplay:YES];
+   }
+}
+
+-(BOOL)canBecomeKeyView {
+   return [self acceptsFirstResponder] && ![self isHiddenOrHasHiddenAncestor];
 }
 
 -(NSView *)nextKeyView {
@@ -292,7 +320,7 @@ static inline void buildTransformsIfNeeded(NSView *self) {
 -(NSView *)nextValidKeyView {
    NSView *result=[self nextKeyView];
 
-   while(result!=nil && ![result acceptsFirstResponder])
+   while(result!=nil && ![result canBecomeKeyView])
     result=[result nextKeyView];
 
    return result;
@@ -305,7 +333,7 @@ static inline void buildTransformsIfNeeded(NSView *self) {
 -(NSView *)previousValidKeyView {
    NSView *result=[self previousKeyView];
 
-   while(result!=nil && ![result acceptsFirstResponder])
+   while(result!=nil && ![result canBecomeKeyView])
     result=[result previousKeyView];
 
    return result;
@@ -356,6 +384,9 @@ static inline void buildTransformsIfNeeded(NSView *self) {
 }
 
 -(NSView *)hitTest:(NSPoint)point {
+   if(_isHidden)
+    return nil;
+   
    point=[self convertPoint:point fromView:[self superview]];
 
    if(!NSMouseInRect(point,[self visibleRect],[self isFlipped]))
@@ -933,7 +964,7 @@ static inline void buildTransformsIfNeeded(NSView *self) {
 }
 
 -(BOOL)canDraw {
-   return (_window!=nil)?YES:NO;
+   return _window!=nil && ![self isHiddenOrHasHiddenAncestor];
 }
 
 -(void)lockFocus {

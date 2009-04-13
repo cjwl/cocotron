@@ -2265,7 +2265,7 @@ NSString *NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification";
       NSCursorRect *check=[_cursorRects objectAtIndex:i];
       NSRect        rect=[check rect];
 
-      if(NSMouseInRect(point,rect,isFlipped)){
+      if(![[check view] isHidden] && NSMouseInRect(point,rect,isFlipped)){
        [[check cursor] set];
        didSetCursor=YES;
        break;
@@ -2276,7 +2276,7 @@ NSString *NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification";
      for(i=0;i<count;i++){
       NSTrackingRect *check=[_trackingRects objectAtIndex:i];
 
-                if(NSMouseInRect(point,[check rect],isFlipped)){
+                if(![[check view] isHidden] && NSMouseInRect(point,[check rect],isFlipped)){
                     if([check isToolTip]) {
                         NSString *toolTip;
                         NSPoint locationOnScreen=NSMakePoint(NSMaxX([[check view] bounds]) + 5.0, NSMinY([[check view] bounds]) - 5.0);
