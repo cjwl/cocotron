@@ -28,7 +28,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    NSDictionary   *typeDict;
    NSString       *typeName, *typeRole;
    
-   NSLog(@"%@", NSClassFromString(nil));
    for (i = 0; i < [knownDocTypes count]; i++)
    {
       typeDict = [knownDocTypes objectAtIndex:i];
