@@ -1029,8 +1029,12 @@ U+2029 (Unicode paragraph separator), \r\n, in that order (also known as CRLF)
 	return ret;
 }
 -(NSString *)stringByReplacingOccurrencesOfString:(NSString *)original withString:(NSString *)substitute options:(NSStringCompareOptions)options range:(NSRange)range {
-   NSUnimplementedMethod();
-   return 0;
+	NSMutableString* s=[self mutableCopy];
+	[s replaceOccurrencesOfString:original withString:substitute options:options range:range];
+   
+   NSMutableString *ret=[[s copy] autorelease];
+   [s release];
+	return ret;
 }
 
 -(NSString *)stringByFoldingWithOptions:(NSStringCompareOptions)options locale:(NSLocale *)locale {
