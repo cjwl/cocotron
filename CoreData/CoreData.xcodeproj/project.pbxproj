@@ -99,14 +99,14 @@
 			isa = PBXContainerItemProxy;
 			containerPortal = E2F48FA10DC80FAE00310CCE /* AppKit.xcodeproj */;
 			proxyType = 2;
-			remoteGlobalIDString = C889770C0EA0BF3100D0A0A2 /* AppKit.framework */;
+			remoteGlobalIDString = C889770C0EA0BF3100D0A0A2;
 			remoteInfo = "AppKit-Linux-i386";
 		};
 		FE6E110E0F4F8F6600C65544 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = E2F48FA10DC80FAE00310CCE /* AppKit.xcodeproj */;
 			proxyType = 2;
-			remoteGlobalIDString = C8A2E5730F07EA1F0054397C /* AppKit.framework */;
+			remoteGlobalIDString = C8A2E5730F07EA1F0054397C;
 			remoteInfo = "AppKit-Darwin-i386";
 		};
 /* End PBXContainerItemProxy section */

@@ -14,7 +14,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "NSRelationshipDescription.h"
 #import "NSManagedObject.h"
 #import <AppKit/NSNibKeyedUnarchiver.h>
-#import <Foundation/ObjCSelector.h>
 #import <objc/objc-class.h>
 #import <ctype.h>
 #import <string.h>
@@ -154,7 +153,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 
 + (id) _selectorKey: (SEL) selector {
-    return [NSNumber numberWithInteger: (NSInteger) OBJCSelectorUniqueId(selector)];
+    return [NSNumber numberWithInteger: (NSInteger) selector];
 }
 
 
