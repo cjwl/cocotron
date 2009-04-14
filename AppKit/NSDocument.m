@@ -22,18 +22,66 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @implementation NSDocument
 
 +(NSArray *)readableTypes {
-   NSUnimplementedMethod();
-   return 0;
+   int             i;
+   NSArray        *knownDocTypes = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleDocumentTypes"];
+   NSMutableArray *readableTypes = [NSMutableArray array];
+   NSDictionary   *typeDict;
+   NSString       *typeName, *typeRole;
+   
+   NSLog(@"%@", NSClassFromString(nil));
+   for (i = 0; i < [knownDocTypes count]; i++)
+   {
+      typeDict = [knownDocTypes objectAtIndex:i];
+      typeRole = [typeDict objectForKey:@"CFBundleTypeRole"];
+      if (NSClassFromString((NSString *)[typeDict objectForKey:@"NSDocumentClass"]) == self &&
+          ([typeRole isEqualToString:@"Viewer"] || [typeRole isEqualToString:@"Editor"]))
+      {
+         typeName = [typeDict objectForKey:@"CFBundleTypeName"];
+         if (typeName)
+            [readableTypes addObject:typeName];
+      }
+   }
+   
+   return [NSArray arrayWithArray:readableTypes];
 }
 
 +(NSArray *)writableTypes {
-   NSUnimplementedMethod();
-   return 0;
+   int             i;
+   NSArray        *knownDocTypes = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleDocumentTypes"];
+   NSMutableArray *writableTypes = [NSMutableArray array];
+   NSDictionary   *typeDict;
+   NSString       *typeName;
+   
+   for (i = 0; i < [knownDocTypes count]; i++)
+   {
+      typeDict  = [knownDocTypes objectAtIndex:i];
+      if (NSClassFromString((NSString *)[typeDict objectForKey:@"NSDocumentClass"]) == self &&
+          [(NSString *)[typeDict objectForKey:@"CFBundleTypeRole"] isEqualToString:@"Editor"])
+      {
+         typeName = [typeDict objectForKey:@"CFBundleTypeName"];
+         if (typeName)
+            [writableTypes addObject:typeName];
+      }
+   }
+   
+   return [NSArray arrayWithArray:writableTypes];
 }
 
 +(BOOL)isNativeType:(NSString *)type {
-   NSUnimplementedMethod();
-   return 0;
+   BOOL          result = NO;
+   int           i;
+   NSArray      *knownDocTypes = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleDocumentTypes"];
+   NSDictionary *typeDict;
+   
+   for (i = 0; i < [knownDocTypes count]; i++)
+   {
+      typeDict = [knownDocTypes objectAtIndex:i];
+      result  |= NSClassFromString((NSString *)[typeDict objectForKey:@"NSDocumentClass"]) == self &&
+                 [(NSString *)[typeDict objectForKey:@"CFBundleTypeRole"] isEqualToString:@"Editor"] &&
+                 [(NSString *)[typeDict objectForKey:@"CFBundleTypeName"] isEqualToString:type];
+   }
+   
+   return result;
 }
 
 -(BOOL)_isSelectorOverridden:(SEL)selector {
@@ -798,7 +846,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)setFileName:(NSString *)path {
-   [self setFileURL:[NSURL fileURLWithPath:path]];
+   if (path!=nil)
+    [self setFileURL:[NSURL fileURLWithPath:path]];
+   else
+    [self setFileURL:nil];
 }
 
 -(void)saveToFile:(NSString *)path saveOperation:(NSSaveOperationType)operation delegate:delegate didSaveSelector:(SEL)selector contextInfo:(void *)context {
@@ -936,6 +987,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
      return; 
     }
    }
+}
+
+- (void)textDidChange:(NSNotification *)aNotification
+{
+   [self updateChangeCount:NSChangeDone];
 }
 
 @end
