@@ -99,12 +99,16 @@ NSString *NSStringFromSelector(SEL selector) {
 }
 
 Class NSClassFromString(NSString *className) {
-   unsigned length=[className length];
-   char     cString[length+1];
+   if (className != nil) {
+    unsigned length=[className length];
+    char     cString[length+1];
 
-   [className getCString:cString maxLength:length];
+    [className getCString:cString maxLength:length];
 
-   return objc_lookUpClass(cString);
+    return objc_lookUpClass(cString);
+   }
+   else
+    return nil;
 }
 
 NSString *NSStringFromClass(Class class) {
