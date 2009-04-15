@@ -35,44 +35,44 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
 
 -(id)_replacementKeyPathForBinding:(id)binding
 {
-	if([binding isEqual:@"selectionIndexes"])
-		return @"selectedRowIndexes";
+    if([binding isEqual:@"selectionIndexes"])
+        return @"selectedRowIndexes";
    return [super _replacementKeyPathForBinding:binding];
 }
 
 +(Class)_binderClassForBinding:(id)binding
 {
-	if([binding isEqual:@"content"])
-	   return [_NSTableViewContentBinder class];
-	return [_NSKVOBinder class];
+    if([binding isEqual:@"content"])
+       return [_NSTableViewContentBinder class];
+    return [_NSKVOBinder class];
 }
 
 -(void)_boundValuesChanged
 {
-	[_tableColumns makeObjectsPerformSelector:@selector(_boundValuesChanged)];
-	[self reloadData];
+    [_tableColumns makeObjectsPerformSelector:@selector(_boundValuesChanged)];
+    [self reloadData];
 }
 
 -(void)_establishBindingsWithDestinationIfUnbound:(id)destination
 {
-	// this method is called after table column bindings have been established.
-	// if the table view doesn't have any bindings at this point, it needs to have
-	// its content, sortDescriptors and selectedIndexes bindings established
-	if([[self _allUsedBinders] count]==0)
-	{
-		[self bind:@"content" 
-		  toObject:destination 
-	   withKeyPath:@"arrangedObjects"
-		   options:nil];
-		[self bind:@"sortDescriptors" 
-		  toObject:destination 
-	   withKeyPath:@"sortDescriptors"
-		   options:nil];
-		[self bind:@"selectionIndexes" 
-		  toObject:destination 
-	   withKeyPath:@"selectionIndexes"
-		   options:nil];
-	}
+    // this method is called after table column bindings have been established.
+    // if the table view doesn't have any bindings at this point, it needs to have
+    // its content, sortDescriptors and selectedIndexes bindings established
+    if([[self _allUsedBinders] count]==0)
+    {
+        [self bind:@"content" 
+          toObject:destination 
+       withKeyPath:@"arrangedObjects"
+           options:nil];
+        [self bind:@"sortDescriptors" 
+          toObject:destination 
+       withKeyPath:@"sortDescriptors"
+           options:nil];
+        [self bind:@"selectionIndexes" 
+          toObject:destination 
+       withKeyPath:@"selectionIndexes"
+           options:nil];
+    }
 }
 
 
@@ -261,13 +261,13 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
 }
 
 -(NSInteger)numberOfRows {
-	int val;
+    int val;
     id binding=[self _binderForBinding:@"content"];
     if(binding && (val=[binding numberOfRows])>=0)
-	{
-		return val;
-	}
-		
+    {
+        return val;
+    }
+        
     return [_dataSource numberOfRowsInTableView:self];
 }
 
@@ -339,8 +339,8 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
     }
 
 #if 0 // semibroken
-    range.location = [self rowAtPoint:rect.origin];	// first row...
-    range.length = [self rowAtPoint:NSMakePoint(NSMaxX(rect), NSMaxY(rect))];	// last row
+    range.location = [self rowAtPoint:rect.origin]; // first row...
+    range.length = [self rowAtPoint:NSMakePoint(NSMaxX(rect), NSMaxY(rect))];   // last row
     range.length -= range.location;
     range.length++;
 
@@ -372,8 +372,8 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
         range = NSMakeRange(NSNotFound, 0);
 
 #if 0 // semibroken
-    range.location = [self columnAtPoint:rect.origin];	// first column...
-    range.length = [self columnAtPoint:NSMakePoint(NSMaxX(rect), _bounds.origin.y)];	// last column
+    range.location = [self columnAtPoint:rect.origin];  // first column...
+    range.length = [self columnAtPoint:NSMakePoint(NSMaxX(rect), _bounds.origin.y)];    // last column
     range.length -= range.location;
     range.length++;
 
@@ -396,7 +396,7 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
         if (NSMouseInRect(point, [self rectOfRow:i],[self isFlipped]))
             return i;
 
-    return NSNotFound;
+    return -1;
 }
 
 -(int)columnAtPoint:(NSPoint)point {
@@ -407,7 +407,7 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
             return i;
     }
 
-    return NSNotFound;
+    return -1;
 }
 
 -(NSRect)frameOfCellAtColumn:(int)column row:(int)row {
@@ -430,15 +430,15 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
 
 -(void)setDataSource:dataSource {
     if (dataSource)
-	{
-		if(([dataSource respondsToSelector:@selector(numberOfRowsInTableView:)] == NO) ||
-		   ([dataSource respondsToSelector:@selector(tableView:objectValueForTableColumn:row:)] == NO)) {
-			// Apple AppKit only logs here, so we do the same
-			NSLog(@"data source %@ does not respond to numberOfRowsInTableView: or tableView:objectValueForTableColumn:row:", dataSource);
-			// data source is set no matter what in AppKit. Fall through.
-		}
-	}
-	_dataSource=dataSource;
+    {
+        if(([dataSource respondsToSelector:@selector(numberOfRowsInTableView:)] == NO) ||
+           ([dataSource respondsToSelector:@selector(tableView:objectValueForTableColumn:row:)] == NO)) {
+            // Apple AppKit only logs here, so we do the same
+            NSLog(@"data source %@ does not respond to numberOfRowsInTableView: or tableView:objectValueForTableColumn:row:", dataSource);
+            // data source is set no matter what in AppKit. Fall through.
+        }
+    }
+    _dataSource=dataSource;
 }
 
 -(void)setDelegate:delegate {
@@ -559,13 +559,13 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
 // also.. i wonder if remove should use an isEqual method in NSTableColumn, or removeObjectIdenticalTo...
 -(void)addTableColumn:(NSTableColumn *)column {
     [_tableColumns addObject:column];
-	[column setTableView:self];
+    [column setTableView:self];
     [self reloadData];
     [_headerView setNeedsDisplay:YES];
 }
 
 -(void)removeTableColumn:(NSTableColumn *)column {
-	[column setTableView:nil];
+    [column setTableView:nil];
     [_tableColumns removeObject:column];
     [self reloadData];
     [_headerView setNeedsDisplay:YES];
@@ -616,7 +616,7 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
        [_editingCell setBordered:YES];
        [(NSCell *)_editingCell setObjectValue:[self dataSourceObjectValueForTableColumn:editingColumn row:row]];
 
-	   [editingColumn prepareCell:_editingCell inRow:row];
+       [editingColumn prepareCell:_editingCell inRow:row];
 
        _currentEditor=[[self window] fieldEditor:YES forObject:self];
        _currentEditor=[_editingCell setUpFieldEditorAttributes:_currentEditor];
@@ -640,8 +640,8 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
 }
 
 - (NSArray *)sortDescriptors {
-	if(!_sortDescriptors)
-		_sortDescriptors=[NSArray new];
+    if(!_sortDescriptors)
+        _sortDescriptors=[NSArray new];
     return [[_sortDescriptors retain] autorelease];
 }
 
@@ -660,25 +660,24 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
     if (_selectedRowIndexes != value) {
         [_selectedRowIndexes release];
         _selectedRowIndexes = [value copy];
-		
-		[self setNeedsDisplay:YES];
+        
+        [self setNeedsDisplay:YES];
     }
 }
 
-- (void)selectRowIndexes:(NSIndexSet *)indexes byExtendingSelection:(BOOL)extend { 
-        unsigned index; 
+- (void)selectRowIndexes:(NSIndexSet *)indexes byExtendingSelection:(BOOL)extend {
+        unsigned index;
 
-        if((index = [indexes firstIndex]) != NSNotFound) { 
-                [self selectRow:index byExtendingSelection:extend]; 
+        if((index = [indexes firstIndex]) != NSNotFound) {
+                [self selectRow:index byExtendingSelection:extend];
 
-                index = [indexes indexGreaterThanIndex:index]; 
-                while(index != NSNotFound) { 
-                        [self selectRow:index byExtendingSelection:YES]; 
-                        index = [indexes indexGreaterThanIndex:index]; 
-                } 
-        } 
-
-} 
+                index = [indexes indexGreaterThanIndex:index];
+                while(index != NSNotFound) {
+                        [self selectRow:index byExtendingSelection:YES];
+                        index = [indexes indexGreaterThanIndex:index];
+                }
+        }
+}
 
 -(int)selectedRow {
     if([_selectedRowIndexes count]==0)
@@ -727,27 +726,28 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
 }
 
 -(NSEnumerator *)selectedRowEnumerator {
-	NSUnimplementedMethod();
+    NSUnimplementedMethod();
     return nil;
 }
 
 -(void)selectRow:(int)row byExtendingSelection:(BOOL)extend  {
-	// selecting a row deselects all columns
+    // selecting a row deselects all columns
     [_selectedColumns removeAllObjects];
-	
-	NSMutableIndexSet* selectedRowIndexes=[[[self selectedRowIndexes] mutableCopy] autorelease];
+    
+    NSMutableIndexSet* selectedRowIndexes=[[[self selectedRowIndexes] mutableCopy] autorelease];
 
     if (extend == NO)
-		[selectedRowIndexes removeAllIndexes];
-	
+        [selectedRowIndexes removeAllIndexes];
+    
 
     if (![selectedRowIndexes containsIndex:row]) {
         if ([self delegateShouldSelectRow:row])
             [selectedRowIndexes addIndex:row];
     }
-	
-	[self setSelectedRowIndexes:selectedRowIndexes];
+    
+    [self setSelectedRowIndexes:selectedRowIndexes];
 
+    [self noteSelectionDidChange];
     [_headerView setNeedsDisplay:YES];
 }
 
@@ -755,7 +755,7 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
     NSTableColumn *tableColumn = [_tableColumns objectAtIndex:column];
     
     // selecting a column deselects all rows
-	[self setSelectedRowIndexes:[NSIndexSet indexSet]];
+    [self setSelectedRowIndexes:[NSIndexSet indexSet]];
     
     if (extend == NO)
         [_selectedColumns removeAllObjects];
@@ -765,12 +765,13 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
             [_selectedColumns addObject:tableColumn];
     }
 
+    [self noteSelectionDidChange];
     [self setNeedsDisplay:YES];
     [_headerView setNeedsDisplay:YES];
 }
 
 -(void)deselectRow:(int)row {
-	NSIndexSet* selectedRowIndexes=[self selectedRowIndexes];
+    NSIndexSet* selectedRowIndexes=[self selectedRowIndexes];
 
     if ([selectedRowIndexes containsIndex:row]) {
      NSMutableIndexSet *newSelection=[[selectedRowIndexes mutableCopy] autorelease];
@@ -799,7 +800,7 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
 }
 
 -(void)deselectAll:sender  {
-	[self setSelectedRowIndexes:[NSIndexSet indexSet]];
+    [self setSelectedRowIndexes:[NSIndexSet indexSet]];
     [_selectedColumns removeAllObjects];
 
     [self setNeedsDisplay:YES];
@@ -1044,16 +1045,16 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
     [_editingCell endEditing:_currentEditor];
 
     if (_editedRow >= 0 && _editedRow < numberOfRows)
-	{
-		if([self dataSourceCanSetObjectValue])
-		{
-			[self dataSourceSetObjectValue:[_editingCell objectValue] forTableColumn:editedColumn row:_editedRow];
-		}
-		else
-		{
-			[[editedColumn _binderForBinding:@"value" create:NO] applyFromCell:_editingCell inRow:_editedRow];
-		}
-	}
+    {
+        if([self dataSourceCanSetObjectValue])
+        {
+            [self dataSourceSetObjectValue:[_editingCell objectValue] forTableColumn:editedColumn row:_editedRow];
+        }
+        else
+        {
+            [[editedColumn _binderForBinding:@"value" create:NO] applyFromCell:_editingCell inRow:_editedRow];
+        }
+    }
 
     [self abortEditing];
 
@@ -1229,16 +1230,16 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
     // NSLog(@"click in col %d row %d", _clickedColumn, _clickedRow);
     // single click behavior
     if ([event clickCount] < 2) {
-        if ([self delegateSelectionShouldChange] == NO)	// provide delegate opportunity
+        if ([self delegateSelectionShouldChange] == NO) // provide delegate opportunity
             return;
         
-        if ([event modifierFlags] & NSAlternateKeyMask) {		// extend/change selection
-            if ([self isRowSelected:_clickedRow]) {			// deselect previously selected?
+        if ([event modifierFlags] & NSAlternateKeyMask) {       // extend/change selection
+            if ([self isRowSelected:_clickedRow]) {         // deselect previously selected?
                 if ([self allowsEmptySelection] || [self numberOfSelectedColumns] > 1)
                     [self deselectRow:_clickedRow];
             }
             else if ([self allowsMultipleSelection]) {
-                [self selectRow:_clickedRow byExtendingSelection:YES];	// add to selection
+                [self selectRow:_clickedRow byExtendingSelection:YES];  // add to selection
             }
         }
         else if ([event modifierFlags] & NSShiftKeyMask) {
@@ -1254,12 +1255,12 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
 
             while (startRow <= endRow) {
                 [self selectRow:startRow byExtendingSelection:YES];
-                if (![self allowsMultipleSelection])			// if no multiple selection, break loop
+                if (![self allowsMultipleSelection])            // if no multiple selection, break loop
                     break;
                 startRow++;
             }
         }
-        else {								// normal selection, allow for dragging
+        else {                              // normal selection, allow for dragging
                         BOOL dragging = NO; 
                         if([_dataSource respondsToSelector:@selector(tableView:writeRowsWithIndexes:toPasteboard:)]) 
                         { 
@@ -1315,7 +1316,7 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
                                                 point=[self convertPoint:[event locationInWindow] fromView:nil]; 
 
                                                 row = [self rowAtPoint:point]; 
-                                                if (row != NSNotFound) { 
+                                                if (row != -1) { 
                                                         // we need to smooth out the selection granularity. on my slow system, the mouse moves 
                                                         // too quickly for the NSEvents to show up for each row.. 
                                                         int startRow, endRow, i; 
@@ -1356,7 +1357,7 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
        {
           if ([self dataSourceCanSetObjectValue] ||
               [binder allowsEditingForRow:_clickedRow]) {
-             if (_clickedColumn != NSNotFound && _clickedRow != NSNotFound) {
+             if (_clickedColumn != -1 && _clickedRow != -1) {
                 if([self delegateShouldEditTableColumn:[_tableColumns objectAtIndex:_clickedColumn]
                                                    row:_clickedRow]) {
                    interpretedAsEdit=YES;
@@ -1422,8 +1423,7 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
 - (unsigned)_validateDraggedRow:(id <NSDraggingInfo>)info { 
         BOOL result; 
         int proposedRow = [self _getDraggedRow:info]; 
-        if((result = [_dataSource tableView:self validateDrop:info proposedRow:proposedRow 
-proposedDropOperation:NSTableViewDropAbove])) 
+        if((result = [_dataSource tableView:self validateDrop:info proposedRow:proposedRow proposedDropOperation:NSTableViewDropAbove])) 
                 _draggingRow = proposedRow; 
         else 
                 _draggingRow = -1; 
@@ -1437,8 +1437,7 @@ proposedDropOperation:NSTableViewDropAbove]))
         int i; 
         for(i = 0; i < [[self _draggedTypes] count]; i++) 
         { 
-                if ([[[sender draggingPasteboard] types] containsObject:[[self _draggedTypes] 
-objectAtIndex: i]]) 
+                if ([[[sender draggingPasteboard] types] containsObject:[[self _draggedTypes] objectAtIndex: i]]) 
                         return [self _validateDraggedRow:sender]; 
         } 
         return NSDragOperationNone; 
@@ -1449,8 +1448,7 @@ objectAtIndex: i]])
         int i; 
         for(i = 0; i < [[self _draggedTypes] count]; i++) 
         { 
-                if ([[[sender draggingPasteboard] types] containsObject:[[self _draggedTypes] 
-objectAtIndex: i]]) 
+                if ([[[sender draggingPasteboard] types] containsObject:[[self _draggedTypes] objectAtIndex: i]]) 
                         return [self _validateDraggedRow:sender]; 
         } 
         return NSDragOperationNone; 
@@ -1470,8 +1468,7 @@ objectAtIndex: i]])
 } 
 
 - (BOOL)performDragOperation:(id <NSDraggingInfo>)sender { 
-        return [_dataSource tableView:self acceptDrop:sender row:[self _getDraggedRow:sender] 
-dropOperation:NSTableViewDropAbove]; 
+        return [_dataSource tableView:self acceptDrop:sender row:[self _getDraggedRow:sender] dropOperation:NSTableViewDropAbove]; 
 } 
 
 -(NSString *)description {
@@ -1480,33 +1477,33 @@ dropOperation:NSTableViewDropAbove];
 }
 
 -(void)_moveUp:(BOOL)up extend:(BOOL)extend {
-	
-	NSInteger rowToSelect = -1;
-	
-	if ([_selectedRowIndexes count] == 0)
-		rowToSelect = 0;
-	else if (up)
-	{
-		int first = [_selectedRowIndexes firstIndex];
-		if (first > 0)
-			rowToSelect = first-1;
-		else if (!extend)
-			rowToSelect = first;
-	}
-	else
-	{
-		int last = [_selectedRowIndexes lastIndex];
-		if (last < [self numberOfRows]-1)
-			rowToSelect = last+1;
-		else if (!extend)
-			rowToSelect = last;
-	}
-	
-	if (rowToSelect != -1)
-	{
-		[self selectRow:rowToSelect byExtendingSelection:extend];	
-		[self scrollRowToVisible:rowToSelect];
-	}
+    
+    NSInteger rowToSelect = -1;
+    
+    if ([_selectedRowIndexes count] == 0)
+        rowToSelect = 0;
+    else if (up)
+    {
+        int first = [_selectedRowIndexes firstIndex];
+        if (first > 0)
+            rowToSelect = first-1;
+        else if (!extend)
+            rowToSelect = first;
+    }
+    else
+    {
+        int last = [_selectedRowIndexes lastIndex];
+        if (last < [self numberOfRows]-1)
+            rowToSelect = last+1;
+        else if (!extend)
+            rowToSelect = last;
+    }
+    
+    if (rowToSelect != -1)
+    {
+        [self selectRow:rowToSelect byExtendingSelection:extend];   
+        [self scrollRowToVisible:rowToSelect];
+    }
 }
 
 -(void)moveUp:sender {
