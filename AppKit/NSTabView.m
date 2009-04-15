@@ -361,6 +361,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [self selectTabViewItem:([_items count]==0)?nil:[_items objectAtIndex:0]];
 }
 
+-(void)selectLastTabViewItem:sender {
+   [self selectTabViewItem:[_items lastObject]];
+}
+
 -(void)takeSelectedTabViewItemFromSender:sender {
     if ([sender respondsToSelector:@selector(indexOfSelectedItem)])
         [self selectTabViewItemAtIndex:[sender indexOfSelectedItem]];
