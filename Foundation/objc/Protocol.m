@@ -6,6 +6,7 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 #import <objc/Protocol.h>
+#import "objc_protocol.h"
 
 #import <Foundation/ObjCHashTable.h>
 #import <Foundation/objc_class.h>
@@ -14,7 +15,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #define PROTOCOL_CLASS "Protocol"
 
-static SEL OBJCRegisterMethodDescription(OBJCMethodDescription *method) {
+static SEL OBJCRegisterMethodDescription(struct objc_method_description *method) {
    return sel_registerNameNoCopy((const char *)method->name);
 }
 
@@ -52,7 +53,7 @@ void OBJCRegisterProtocol(OBJCProtocolTemplate *template) {
     return nameCString;
 }
 
--(OBJCMethodDescription *)descriptionForInstanceMethod:(SEL)selector {
+-(struct objc_method_description *)descriptionForInstanceMethod:(SEL)selector {
    struct objc_protocol_list *list;
    unsigned          i;
 
@@ -78,7 +79,7 @@ void OBJCRegisterProtocol(OBJCProtocolTemplate *template) {
    return NULL;
 }
 
--(OBJCMethodDescription *)descriptionForClassMethod:(SEL)selector {
+-(struct objc_method_description *)descriptionForClassMethod:(SEL)selector {
    struct objc_protocol_list *list;
    unsigned          i;
 

@@ -8,22 +8,28 @@ SEL method_getName(Method method){
    return method->method_name;
 }
 
-#if 0
 unsigned method_getNumberOfArguments(Method method){
+   // UNIMPLEMENTED
+   return 0;
 }
 
 void method_getReturnType(Method method,char *type,size_t typeCapacity){
+   // UNIMPLEMENTED
 }
 
 void method_getArgumentType(Method method,unsigned int index,char *type,size_t typeCapacity){
+   // UNIMPLEMENTED
 }
 
 char *method_copyReturnType(Method method){
+   // UNIMPLEMENTED
+   return NULL;
 }
 
 char *method_copyArgumentType(Method method,unsigned int index){
+   // UNIMPLEMENTED
+   return NULL;
 }
-#endif
 
 const char *method_getTypeEncoding(Method method) {
    return (method==NULL)?NULL:method->method_types;

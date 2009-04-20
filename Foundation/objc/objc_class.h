@@ -23,14 +23,9 @@ enum {
    CLASS_NO_METHOD_ARRAY=0x4000
 };
 
-typedef struct OBJCMethodDescription {
-   SEL   name;
-   char *types;
-} OBJCMethodDescription;
-
 typedef struct OBJCMethodDescriptionList {
    int                    count;
-   OBJCMethodDescription list[1];
+   struct objc_method_description list[1];
 } OBJCMethodDescriptionList;
 
 OBJC_EXPORT void OBJCRegisterClass(Class class);

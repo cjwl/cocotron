@@ -7,7 +7,7 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 #import <Foundation/objc_class.h>
 #import <Foundation/objc_sel.h>
-#import <objc/Protocol.h>
+#import "objc_protocol.h"
 #import <Foundation/NSZone.h>
 #import <Foundation/ObjCException.h>
 #import <Foundation/ObjCModule.h>
@@ -83,6 +83,25 @@ Class objc_getFutureClass(const char *name) {
 id objc_getMetaClass(const char *name) {
    Class c=objc_getClass(name);
    return c->isa;
+}
+
+id objc_getRequiredClass(const char *name) {
+   id result=objc_getClass(name);
+   
+   if(result==Nil)
+    exit(1);
+   
+   return result;
+}
+
+Protocol *objc_getProtocol(const char *name) {
+   // UNIMPLEMENTED
+   return NULL;
+}
+
+Protocol **objc_copyProtocolList(unsigned int *countp) {
+   // UNIMPLEMENTED
+   return NULL;
 }
 
 void objc_addClass(Class class) {
@@ -186,6 +205,12 @@ Method class_getClassMethod(Class class, SEL selector)
 	return class_getInstanceMethod(class->isa, selector);
 }
 
+Ivar class_getClassVariable(Class cls,const char *name) {
+   // UNIMPLEMENTED
+   return NULL;
+}
+
+
 static inline struct objc_method *OBJCLookupUniqueIdInMethodList(struct objc_method_list *list,SEL uniqueId){
    int i;
 
@@ -241,6 +266,11 @@ Ivar class_getInstanceVariable(Class class,const char *variableName) {
    return NULL;
 }
 
+const char *class_getIvarLayout(Class cls) {
+   // UNIMPLEMENTED
+   return NULL;
+}
+
 IMP class_getMethodImplementation(Class cls, SEL name) {
    struct objc_method *ret=class_getInstanceMethod(cls, name);
    if(ret) {
@@ -257,6 +287,36 @@ IMP class_getMethodImplementation_stret(Class cls, SEL name) {
    return NULL;
 }
 
+objc_property_t class_getProperty(Class cls,const char *name) {
+   // UNIMPLEMENTED
+   return NULL;
+}
+
+const char *class_getWeakIvarLayout(Class cls) {
+   // UNIMPLEMENTED
+   return NULL;
+}
+
+Ivar *class_copyIvarList(Class cls,unsigned int *countp) {
+   // UNIMPLEMENTED
+   return NULL;
+}
+
+Method *class_copyMethodList(Class cls,unsigned int *countp) {
+   // UNIMPLEMENTED
+   return NULL;
+}
+
+objc_property_t *class_copyPropertyList(Class cls,unsigned int *countp) {
+   // UNIMPLEMENTED
+   return NULL;
+}
+
+Protocol **class_copyProtocolList(Class cls,unsigned int *countp) {
+   // UNIMPLEMENTED
+   return NULL;
+}
+
 Class class_setSuperclass(Class cls,Class parent) {
    cls->super_class=parent;
 }
@@ -264,6 +324,19 @@ Class class_setSuperclass(Class cls,Class parent) {
 void class_setVersion(Class class,int version) {
    struct objc_class *cls=class;
    cls->version=version;
+}
+
+void class_setIvarLayout(Class cls,const char *layout) {
+   // UNIMPLEMENTED
+}
+
+void class_setWeakIvarLayout(Class cls,const char *layout) {
+   // UNIMPLEMENTED
+}
+
+BOOL class_addIvar(Class cls,const char *name,size_t size,uint8_t alignment,const char *type) {
+   // UNIMPLEMENTED
+   return NO;
 }
 
 void class_addMethods(Class class,struct objc_method_list *methodList) {
@@ -309,6 +382,11 @@ BOOL class_addMethod(Class cls, SEL name, IMP imp, const char *types) {
 	return YES; // TODO: check if method exists
 }
 
+BOOL class_addProtocol(Class cls,Protocol *protocol) {
+   // UNIMPLEMENTED
+   return NO;
+}
+
 BOOL class_conformsToProtocol(Class class,Protocol *protocol) {
 
    for(;;class=class->super_class){
@@ -328,6 +406,16 @@ BOOL class_conformsToProtocol(Class class,Protocol *protocol) {
    }
 
    return NO;
+}
+
+id class_createInstance(Class cls,size_t extraBytes) {
+   // UNIMPLEMENTED
+   return NULL;
+}
+
+IMP class_replaceMethod(Class cls,SEL selector,IMP imp,const char *types) {
+   // UNIMPLEMENTED
+   return NULL;
 }
 
 BOOL class_respondsToSelector(Class cls,SEL selector) {

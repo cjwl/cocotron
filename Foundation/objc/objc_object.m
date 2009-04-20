@@ -69,6 +69,16 @@ void object_setIvar(id object,Ivar ivar,id value) {
    ivarCopy(object,ivar->ivar_offset,&value,sizeof(id));
 }
 
+id object_copy(id object,size_t size) {
+   // UNIMPLEMENTED
+   return nil;
+}
+
+id object_dispose(id object) {
+   free(object);
+   return nil;
+}
+
 static inline BOOL OBJCCallCXXSelector(id self, Class class, SEL selector)
 {
 	struct objc_method *result=NULL;
