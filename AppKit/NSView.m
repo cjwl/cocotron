@@ -72,7 +72,11 @@ NSString *NSViewFocusDidChangeNotification=@"NSViewFocusDidChangeNotification";
     _postsNotificationOnFrameChange=YES;
     _postsNotificationOnBoundsChange=YES;
     _autoresizingMask=vFlags&0x3F;
-    _autoresizesSubviews=(vFlags&0x100)?YES:NO;
+    if([keyed containsValueForKey:@"NSvFlags"])
+     _autoresizesSubviews=YES;
+    else 
+     _autoresizesSubviews=(vFlags&0x100)?YES:NO;
+    
     _isHidden=(vFlags&0x80000000)?YES:NO;
     _tag=-1;
     if([keyed containsValueForKey:@"NSTag"])

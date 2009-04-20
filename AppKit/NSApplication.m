@@ -55,6 +55,10 @@ NSString *NSApplicationDidChangeScreenParametersNotification=@"NSApplicationDidC
 -(void)_updateRecentDocumentsMenu; 
 @end 
 
+@interface NSMenu(private)
+-(NSMenu *)_menuWithName:(NSString *)name;
+@end
+
 @implementation NSApplication
 
 id NSApp=nil;
