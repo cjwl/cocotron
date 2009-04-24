@@ -6,14 +6,15 @@ struct objc_super {
 };
 
 
-OBJC_EXPORT id objc_msgSend(id theReceiver, SEL theSelector, ...);
-id     objc_msgSendSuper(struct objc_super *super, SEL op,  ...);
-void   objc_msgSendSuper_stret(struct objc_super *super, SEL op, ...);
-double objc_msgSend_fpret(id self, SEL op, ...);
-void   objc_msgSend_stret(void * stretAddr, id theReceiver, SEL theSelector,  ...);
+OBJC_EXPORT id     objc_msgSend(id self,SEL selector,...);
+OBJC_EXPORT id     objc_msgSendSuper(struct objc_super *super,SEL selector,...);
+
+OBJC_EXPORT void   objc_msgSend_stret(id self, SEL selector,  ...);
+OBJC_EXPORT void   objc_msgSendSuper_stret(struct objc_super *super,SEL selector,...);
+
+OBJC_EXPORT double objc_msgSend_fpret(id self,SEL selector,...);
 
 // FIXME. TO BE CLEANED UP.
 
 OBJC_EXPORT IMP objc_msg_lookup(id self, SEL selector);
 OBJC_EXPORT IMP objc_msg_lookup_super(struct objc_super *super, SEL selector);
-OBJC_EXPORT id objc_msg_sendv(id self, SEL selector, unsigned arg_size, void *arg_frame);

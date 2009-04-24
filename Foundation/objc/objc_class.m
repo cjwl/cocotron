@@ -14,6 +14,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <stdio.h>
 #import "objc_cache.h"
 #import <objc/deprecated.h>
+#import <objc/message.h>
+#import <Foundation/objc_forward_ffi.h>
 
 #ifdef WIN32
 #import <windows.h>
@@ -241,7 +243,7 @@ struct objc_method *class_getInstanceMethod(Class class,SEL uniqueId) {
    for(;class!=NULL;class=class->super_class)
     if((result=OBJCLookupUniqueIdInOnlyThisClass(class,uniqueId))!=NULL)
      break;
-
+   
    return result;
 }
 
@@ -271,20 +273,60 @@ const char *class_getIvarLayout(Class cls) {
    return NULL;
 }
 
-IMP class_getMethodImplementation(Class cls, SEL name) {
-   struct objc_method *ret=class_getInstanceMethod(cls, name);
-   if(ret) {
-      return ret->method_imp;
+static inline void OBJCInitializeCacheEntryOffset(OBJCMethodCacheEntry *entry){
+   entry->offsetToNextEntry=-((long)entry);
+}
+
+// FIXME, better allocator
+static OBJCMethodCacheEntry *allocateCacheEntry(){
+   OBJCMethodCacheEntry *result=NSZoneCalloc(NULL,1,sizeof(OBJCMethodCacheEntry));
+   
+   OBJCInitializeCacheEntryOffset(result);
+   
+   return result;
+}
+
+static inline void OBJCCacheMethodInClass(Class class,struct objc_method *method) {
+   SEL          uniqueId=method->method_name;
+   unsigned              index=(unsigned)uniqueId&OBJCMethodCacheMask;
+   OBJCMethodCacheEntry *check=((void *)class->cache->table)+index;
+
+   if(check->method->method_name==NULL)
+    check->method=method;
+   else {
+    OBJCMethodCacheEntry *entry=allocateCacheEntry();
+    
+    entry->method=method;
+    
+      BOOL success=NO;
+      while(!success)
+      {
+         long offset=0;
+         while(offset=check->offsetToNextEntry, ((void *)check)+offset!=NULL)
+            check=((void *)check)+offset;
+
+         success=__sync_bool_compare_and_swap(&check->offsetToNextEntry, offset, ((void *)entry)-((void *)check));
+      }
    }
-   return NULL;
+}
+
+static inline IMP OBJCLookupAndCacheUniqueIdInClass(Class class,SEL uniqueId){
+   struct objc_method *method;
+
+   if((method=class_getInstanceMethod(class,uniqueId))!=NULL){
+    OBJCCacheMethodInClass(class,method);
+    return method->method_imp;
+   }
+
+	return NULL;
+}
+
+IMP class_getMethodImplementation(Class cls, SEL name) {
+   return OBJCLookupAndCacheUniqueIdInClass(cls,name);
 }
 
 IMP class_getMethodImplementation_stret(Class cls, SEL name) {
-   struct objc_method *ret=class_getInstanceMethod(cls, name);
-   if(ret) {
-      return ret->method_imp;
-   }
-   return NULL;
+   return OBJCLookupAndCacheUniqueIdInClass(cls,name);
 }
 
 objc_property_t class_getProperty(Class cls,const char *name) {
@@ -460,10 +502,6 @@ static void OBJCRegisterSelectorsInClass(Class class) {
    }
 }
 
-static inline void OBJCInitializeCacheEntryOffset(OBJCMethodCacheEntry *entry){
-   entry->offsetToNextEntry=-((long)entry);
-}
-
 static void OBJCCreateCacheForClass(Class class){
    if(class->cache==NULL){
     static struct objc_method empty={
@@ -578,6 +616,7 @@ void OBJCInitializeClass(Class class) {
      struct objc_method *method=class_getClassMethod(class,selector);
 
      class->info|=CLASS_INFO_INITIALIZED;
+     class->isa->info|=CLASS_INFO_INITIALIZED;
 
      if(method!=NULL)
       method->method_imp(class,selector);
@@ -595,63 +634,37 @@ void objc_setForwardHandler(void *handler, void *handler_stret){
    objc_forwardHandler_stret=handler_stret;
 }
 
-id OBJCMessageNil(id object,SEL message,...){
-   return nil;
-}
+IMP OBJCLookupAndCacheUniqueIdForSuper(struct objc_super *super,SEL selector){
+   IMP result = class_getMethodImplementation(super->super_class,selector);
 
-// FIXME, better allocator
-static OBJCMethodCacheEntry *allocateCacheEntry(){
-   OBJCMethodCacheEntry *result=NSZoneCalloc(NULL,1,sizeof(OBJCMethodCacheEntry));
-   
-   OBJCInitializeCacheEntryOffset(result);
-   
+   if(result==NULL){
+#ifdef HAVE_LIBFFI
+    result=objc_forward_ffi(super->receiver, selector);
+#else
+    result=objc_forwardHandler;
+#endif
+   }
    return result;
 }
 
-static inline void OBJCCacheMethodInClass(Class class,struct objc_method *method) {
-   SEL          uniqueId=method->method_name;
-   unsigned              index=(unsigned)uniqueId&OBJCMethodCacheMask;
-   OBJCMethodCacheEntry *check=((void *)class->cache->table)+index;
+IMP OBJCInitializeLookupAndCacheUniqueIdForObject(id object,SEL selector){
+   Class class=object->isa;
 
-   if(check->method->method_name==NULL)
-    check->method=method;
-   else {
-    OBJCMethodCacheEntry *entry=allocateCacheEntry();
-    
-    entry->method=method;
-    
-      BOOL success=NO;
-      while(!success)
-      {
-         long offset=0;
-         while(offset=check->offsetToNextEntry, ((void *)check)+offset!=NULL)
-            check=((void *)check)+offset;
-
-         success=__sync_bool_compare_and_swap(&check->offsetToNextEntry, offset, ((void *)entry)-((void *)check));
-      }
-   }
-}
-
-IMP OBJCLookupAndCacheUniqueIdInClass(Class class,SEL uniqueId){
-   struct objc_method *method;
-
-   if((method=class_getInstanceMethod(class,uniqueId))!=NULL){
-    OBJCCacheMethodInClass(class,method);
-    return method->method_imp;
-   }
-
-	return NULL;
-}
-
-
-IMP OBJCInitializeLookupAndCacheUniqueIdForObject(id object,SEL uniqueId){
-    Class class=object->isa;
+   if(!(class->info&CLASS_INFO_INITIALIZED)){
     Class checkInit=(class->info&CLASS_INFO_META)?(Class)object:class;
-
-   if(!(checkInit->info&CLASS_INFO_INITIALIZED))
-     OBJCInitializeClass(checkInit);
+    OBJCInitializeClass(checkInit);
+   }
    
-    return OBJCLookupAndCacheUniqueIdInClass(class,uniqueId);
+   IMP result=class_getMethodImplementation(class,selector);
+   
+   if(result==NULL){
+#ifdef HAVE_LIBFFI
+    result=objc_forward_ffi(object, selector);
+#else
+    result=objc_forwardHandler;
+#endif
+   }
+   return result;
 }
 
 struct objc_method_list *class_nextMethodList(Class class,void **iterator) {

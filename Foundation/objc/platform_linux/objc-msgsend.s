@@ -53,18 +53,6 @@ L9:
 	pushl	%esi
 	call	OBJCInitializeLookupAndCacheUniqueIdForObject
 	addl	$16, %esp
-	testl	%eax, %eax
-	jne	L10
-#ifdef HAVE_LIBFFI
-	pushl	%eax           # not found at all; get forwarder
-	pushl	%eax
-	pushl	%ebx
-	pushl	%esi
-	call	objc_forward_ffi
-	addl	$16, %esp
-#else
-   movl	$objc_msgForward, %eax  # non-libffi forwarder function
-#endif
 L10:
 	movl	%ebx, 12(%ebp)
 	movl	%esi, 8(%ebp)

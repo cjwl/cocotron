@@ -65,29 +65,11 @@ OBJCObjectFile *OBJCUniqueObjectFileWithPath(const char *path) {
    return result;
 }
 
-#ifdef WIN32
 OBJCObjectFile *OBJCObjectFileForPointer(void *ptr){
+#ifdef WIN32
 // GetModuleHandleEx would work here, but it is only available on XP and above
    return NULL;
-}
-
-OBJCObjectFile *OBJCCreateMainObjectFile(){
-   char path[MAX_PATH+1];
-
-   if(!GetModuleFileName(GetModuleHandle(NULL),path,MAX_PATH)){
-    OBJCRaiseWin32Failure("OBJCModuleFailed","OBJCInitializeModule, GetModuleFileName failed");
-	return NULL;
-   }
-   
-   return OBJCUniqueObjectFileWithPath(path);
-}
-
-void OBJCInitializeProcess(int argc,const char *argv[]) {
-   // do nothing, but we need it in unix land
-}
-
 #else
-OBJCObjectFile *OBJCObjectFileForPointer(void *ptr){
    Dl_info info;
 
    if(!dladdr(ptr,&info)){
@@ -96,40 +78,87 @@ OBJCObjectFile *OBJCObjectFileForPointer(void *ptr){
    }
    
    return OBJCUniqueObjectFileWithPath(info.dli_fname);
+#endif
 }
 
-static char pathOfExecutable[PATH_MAX+1]="\0";
+// FIXME: these implementations do not return the size needed
+#if defined(WIN32)
+
+#define MAXPATHLEN MAX_PATH
+
+int _NSGetExecutablePath(char *path,uint32_t *capacity) {
+// FIXME, this should use the unicode version and return a utf8 path
+   DWORD size=GetModuleFileName(GetModuleHandle(NULL),path,*capacity);
+   
+   if(size==*capacity)
+    return -1;
+    
+   *capacity=size;
+       
+   return 0;
+}
+
+#elif defined(LINUX)
+
+int _NSGetExecutablePath(char *path,uint32_t *capacity) {
+   if((*capacity=readlink("/proc/self/exe",path,*capacity))<0){
+    *capacity=0;
+    return -1;
+   }
+    
+   return 0;
+}
+
+#elif defined(__APPLE__)
+
+extern int _NSGetExecutablePath(char *path,uint32_t *capacity);
+
+#elif defined(BSD)
+
+int _NSGetExecutablePath(char *path,uint32_t *capacity) {
+   if((*capacity=readlink("/proc/curproc/file", path, *capacity))<0){
+    *capacity=0;
+    return -1;
+   }
+    
+   return 0;
+}
+
+#elif defined(SOLARIS)
+
+int _NSGetExecutablePath(char *path,uint32_t *capacity) {
+   char probe[PATH_MAX+1]; 
+   
+   sprintf(probe,"/proc/%ld/path/a.out",(long)getpid()); 
+   
+   if((*capacity=readlink(probe,path,*capacity))<0){
+    *capacity=0;
+    return -1;
+   }
+   
+   return 0;
+}
+#endif
+
 
 OBJCObjectFile *OBJCCreateMainObjectFile(){
-   return OBJCUniqueObjectFileWithPath(pathOfExecutable);
+   uint32_t length=MAXPATHLEN;
+   char     path[length+1];
+   
+   if((length=_NSGetExecutablePath(path,&length))<0)
+    path[0]='\0';
+   else
+    path[length]='\0';
+   
+   return OBJCUniqueObjectFileWithPath(path);
 }
 
-void OBJCInitializeProcess(int argc,const char *argv[]) {
-#ifdef LINUX
-   readlink("/proc/self/exe", pathOfExecutable, PATH_MAX);
-#else
-   // This does not work if the parent process sets argv[0] to something other than the executable path, which is possible but not likely
-   const char *argv0=argv[0];
-   
-   if(argv0[0]=='/')
-    strcpy(pathOfExecutable,argv0);
-   else {
-    if(getcwd(pathOfExecutable,PATH_MAX)!=NULL) {
-     strncat(pathOfExecutable, "/", PATH_MAX);
-     
-     if(strncmp(argv0,"./",2)==0)
-      strncat(pathOfExecutable, argv0+2, PATH_MAX);
-     else
-      strncat(pathOfExecutable, argv0, PATH_MAX);
-    }
-   }
-#endif
-   
+
+void OBJCInitializeProcess() {
 #ifdef __APPLE__
    OBJCInitializeProcess_Darwin();
 #endif
 }
-#endif
 
 OBJCObjectFile *OBJCMainObjectFile(){
    static OBJCObjectFile *mainObjectFile=NULL;

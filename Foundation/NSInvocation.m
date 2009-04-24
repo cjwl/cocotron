@@ -14,6 +14,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <string.h>
 #import <objc/message.h>
 
+id objc_msg_sendv(id self, SEL selector, unsigned arg_size, void *arg_frame);
+
 @interface NSInvocation (FFICalling)
 -(void)_ffiInvokeWithTarget:target;
 @end

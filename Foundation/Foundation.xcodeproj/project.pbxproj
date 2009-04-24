@@ -396,8 +396,8 @@
 		6E5796DF0A26438500D0D5AB /* NSPlatform_solaris.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E28059509747CF900EC542B /* NSPlatform_solaris.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		6E5796E20A26439600D0D5AB /* NSTask_solaris.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28059809747CF900EC542B /* NSTask_solaris.m */; };
 		6E5796E40A2643A000D0D5AB /* SolarisMemoryFunctions.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28059909747CF900EC542B /* SolarisMemoryFunctions.m */; };
-		6E5796E50A2643AE00D0D5AB /* objc_msg_sendv.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28055F09747CCA00EC542B /* objc_msg_sendv.m */; };
-		6E8113980A54BBAC000DE3F1 /* objc_msg_sendv.s in Sources */ = {isa = PBXBuildFile; fileRef = 6E8113970A54BBAC000DE3F1 /* objc_msg_sendv.s */; };
+		6E5796E50A2643AE00D0D5AB /* msgSendv-solaris.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28055F09747CCA00EC542B /* msgSendv-solaris.m */; };
+		6E8113980A54BBAC000DE3F1 /* msgSendv-linux.s in Sources */ = {isa = PBXBuildFile; fileRef = 6E8113970A54BBAC000DE3F1 /* msgSendv-linux.s */; };
 		6E8115B40A55CB99000DE3F1 /* objc_msg_lookup.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E8115B20A55CB99000DE3F1 /* objc_msg_lookup.m */; };
 		6E8115B80A55CB99000DE3F1 /* objc_msg_lookup.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E8115B20A55CB99000DE3F1 /* objc_msg_lookup.m */; };
 		6E903FFD0A07B67300938799 /* NSConstantString.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28057509747CEE00EC542B /* NSConstantString.m */; };
@@ -1309,7 +1309,7 @@
 		FE01A7720C5D9B6900AEA51A /* NSPropertyListReader_xml1.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E0084A30A19363F00F78605 /* NSPropertyListReader_xml1.m */; };
 		FE01A7730C5D9B6900AEA51A /* NSPropertyListReader.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E0084CE0A19371600F78605 /* NSPropertyListReader.m */; };
 		FE01A7740C5D9B6900AEA51A /* NSKeyedUnarchiver.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EC4AAE80A34D9B200E8D6CA /* NSKeyedUnarchiver.m */; };
-		FE01A7750C5D9B6900AEA51A /* objc_msg_sendv.s in Sources */ = {isa = PBXBuildFile; fileRef = 6E28055D09747CC300EC542B /* objc_msg_sendv.s */; };
+		FE01A7750C5D9B6900AEA51A /* msgSendv-windows.s in Sources */ = {isa = PBXBuildFile; fileRef = 6E28055D09747CC300EC542B /* msgSendv-windows.s */; };
 		FE01A7760C5D9B6900AEA51A /* objc_msg_lookup.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E8115B20A55CB99000DE3F1 /* objc_msg_lookup.m */; settings = {COMPILER_FLAGS = "-g0"; }; };
 		FE01A7770C5D9B6900AEA51A /* NSInputStream_socket.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EAD77300AAF1283004BCCC9 /* NSInputStream_socket.m */; };
 		FE01A7780C5D9B6900AEA51A /* NSOutputStream_socket.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EAD773A0AAF1293004BCCC9 /* NSOutputStream_socket.m */; };
@@ -2348,7 +2348,7 @@
 		FED709ED0C3B3D2C000CBE5B /* NSConstantString.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28057509747CEE00EC542B /* NSConstantString.m */; };
 		FED709EE0C3B3D2C000CBE5B /* NSPropertyListReader_xml1.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E0084A30A19363F00F78605 /* NSPropertyListReader_xml1.m */; };
 		FED709EF0C3B3D2C000CBE5B /* NSPropertyListReader.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E0084CE0A19371600F78605 /* NSPropertyListReader.m */; };
-		FED709F30C3B3D2C000CBE5B /* objc_msg_sendv.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28055F09747CCA00EC542B /* objc_msg_sendv.m */; };
+		FED709F30C3B3D2C000CBE5B /* msgSendv-solaris.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28055F09747CCA00EC542B /* msgSendv-solaris.m */; };
 		FED709F40C3B3D2C000CBE5B /* NSKeyedUnarchiver.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EC4AAE80A34D9B200E8D6CA /* NSKeyedUnarchiver.m */; };
 		FED709F50C3B3D2C000CBE5B /* objc_msg_lookup.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E8115B20A55CB99000DE3F1 /* objc_msg_lookup.m */; settings = {COMPILER_FLAGS = "-g0"; }; };
 		FED709F60C3B3D2C000CBE5B /* NSInputStream_socket.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EAD77300AAF1283004BCCC9 /* NSInputStream_socket.m */; };
@@ -2912,7 +2912,7 @@
 		FED70F380C3C09C7000CBE5B /* NSConstantString.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28057509747CEE00EC542B /* NSConstantString.m */; };
 		FED70F390C3C09C7000CBE5B /* NSPropertyListReader_xml1.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E0084A30A19363F00F78605 /* NSPropertyListReader_xml1.m */; };
 		FED70F3A0C3C09C7000CBE5B /* NSPropertyListReader.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E0084CE0A19371600F78605 /* NSPropertyListReader.m */; };
-		FED70F3B0C3C09C7000CBE5B /* objc_msg_sendv.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28055F09747CCA00EC542B /* objc_msg_sendv.m */; };
+		FED70F3B0C3C09C7000CBE5B /* msgSendv-solaris.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28055F09747CCA00EC542B /* msgSendv-solaris.m */; };
 		FED70F3C0C3C09C7000CBE5B /* NSKeyedUnarchiver.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EC4AAE80A34D9B200E8D6CA /* NSKeyedUnarchiver.m */; };
 		FED70F3D0C3C09C7000CBE5B /* objc_msg_lookup.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E8115B20A55CB99000DE3F1 /* objc_msg_lookup.m */; };
 		FED70F3E0C3C09C7000CBE5B /* NSInputStream_socket.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EAD77300AAF1283004BCCC9 /* NSInputStream_socket.m */; };
@@ -3535,8 +3535,8 @@
 		6E28053509747C8900EC542B /* objc_sel.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = objc_sel.h; sourceTree = "<group>"; };
 		6E28053609747C8900EC542B /* objc_sel.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = objc_sel.m; sourceTree = "<group>"; };
 		6E28053F09747C8900EC542B /* Protocol.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = Protocol.m; sourceTree = "<group>"; };
-		6E28055D09747CC300EC542B /* objc_msg_sendv.s */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.asm; path = objc_msg_sendv.s; sourceTree = "<group>"; };
-		6E28055F09747CCA00EC542B /* objc_msg_sendv.m */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.objc; fileEncoding = 30; name = objc_msg_sendv.m; path = platform_solaris/objc_msg_sendv.m; sourceTree = "<group>"; };
+		6E28055D09747CC300EC542B /* msgSendv-windows.s */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.asm; name = "msgSendv-windows.s"; path = "NSObject/msgSendv-windows.s"; sourceTree = "<group>"; };
+		6E28055F09747CCA00EC542B /* msgSendv-solaris.m */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.objc; fileEncoding = 30; name = "msgSendv-solaris.m"; path = "NSObject/msgSendv-solaris.m"; sourceTree = "<group>"; };
 		6E28056B09747CE100EC542B /* NSMemoryFunctions_linux.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = NSMemoryFunctions_linux.m; path = platform_linux/NSMemoryFunctions_linux.m; sourceTree = "<group>"; };
 		6E28056C09747CE100EC542B /* NSPlatform_linux.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = NSPlatform_linux.h; path = platform_linux/NSPlatform_linux.h; sourceTree = "<group>"; };
 		6E28056D09747CE100EC542B /* NSPlatform_linux.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = NSPlatform_linux.m; path = platform_linux/NSPlatform_linux.m; sourceTree = "<group>"; };
@@ -3690,7 +3690,7 @@
 		6E280B2909747F1F00EC542B /* Foundation.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = Foundation.h; sourceTree = "<group>"; };
 		6E280B2C09747F4900EC542B /* English */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.plist; name = English; path = English.lproj/NSUserDefaults.plist; sourceTree = "<group>"; };
 		6E4D932B0A2642BD003D335C /* Foundation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Foundation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		6E8113970A54BBAC000DE3F1 /* objc_msg_sendv.s */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.asm; path = objc_msg_sendv.s; sourceTree = "<group>"; };
+		6E8113970A54BBAC000DE3F1 /* msgSendv-linux.s */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.asm; name = "msgSendv-linux.s"; path = "NSObject/msgSendv-linux.s"; sourceTree = "<group>"; };
 		6E8115B20A55CB99000DE3F1 /* objc_msg_lookup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = objc_msg_lookup.m; sourceTree = "<group>"; };
 		6EA04A7709E57D5F0067589C /* Foundation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Foundation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6EAD772F0AAF1283004BCCC9 /* NSInputStream_socket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSInputStream_socket.h; sourceTree = "<group>"; };
@@ -4380,6 +4380,9 @@
 		6E2803380974795100EC542B /* NSObject */ = {
 			isa = PBXGroup;
 			children = (
+				6E8113970A54BBAC000DE3F1 /* msgSendv-linux.s */,
+				6E28055D09747CC300EC542B /* msgSendv-windows.s */,
+				6E28055F09747CCA00EC542B /* msgSendv-solaris.m */,
 				C851D8780E40E428001DAB69 /* objc_forward_ffi.h */,
 				C851D8790E40E428001DAB69 /* objc_forward_ffi.m */,
 				FE1A0D1F0F8BADBA00FC4CC7 /* forwarding.h */,
@@ -4657,7 +4660,6 @@
 				FE88A4940F8A7E050081CFC1 /* objc_ivar.m */,
 				FE88A49E0F8A7E9A0081CFC1 /* objc_method.m */,
 				6E8115B20A55CB99000DE3F1 /* objc_msg_lookup.m */,
-				6E28055F09747CCA00EC542B /* objc_msg_sendv.m */,
 				FEDB762F0F8AD40700AC545D /* objc_object.h */,
 				FEDB76300F8AD40700AC545D /* objc_object.m */,
 				FEBF545A0F93AE8A005DC684 /* objc_property.m */,
@@ -4811,7 +4813,6 @@
 			isa = PBXGroup;
 			children = (
 				FED216020FA14BAA00B74EFE /* objc-msgsend.s */,
-				6E8113970A54BBAC000DE3F1 /* objc_msg_sendv.s */,
 			);
 			path = platform_linux;
 			sourceTree = "<group>";
@@ -4827,7 +4828,6 @@
 			isa = PBXGroup;
 			children = (
 				C80F9AE00E58BD5400ECD487 /* objc-msgsend.s */,
-				6E28055D09747CC300EC542B /* objc_msg_sendv.s */,
 			);
 			path = platform_win32;
 			sourceTree = "<group>";
@@ -7163,7 +7163,7 @@
 				6E4D93140A2642BD003D335C /* NSPropertyListReader.m in Sources */,
 				6E5796E20A26439600D0D5AB /* NSTask_solaris.m in Sources */,
 				6E5796E40A2643A000D0D5AB /* SolarisMemoryFunctions.m in Sources */,
-				6E5796E50A2643AE00D0D5AB /* objc_msg_sendv.m in Sources */,
+				6E5796E50A2643AE00D0D5AB /* msgSendv-solaris.m in Sources */,
 				6EC4AAEE0A34D9B200E8D6CA /* NSKeyedUnarchiver.m in Sources */,
 				6E8115B40A55CB99000DE3F1 /* objc_msg_lookup.m in Sources */,
 				6EAD77340AAF1283004BCCC9 /* NSInputStream_socket.m in Sources */,
@@ -7475,7 +7475,7 @@
 				6E0084A70A19363F00F78605 /* NSPropertyListReader_xml1.m in Sources */,
 				6E0084D20A19371600F78605 /* NSPropertyListReader.m in Sources */,
 				6EC4AAEA0A34D9B200E8D6CA /* NSKeyedUnarchiver.m in Sources */,
-				6E8113980A54BBAC000DE3F1 /* objc_msg_sendv.s in Sources */,
+				6E8113980A54BBAC000DE3F1 /* msgSendv-linux.s in Sources */,
 				6E8115B80A55CB99000DE3F1 /* objc_msg_lookup.m in Sources */,
 				6EAD77360AAF1283004BCCC9 /* NSInputStream_socket.m in Sources */,
 				6EAD77400AAF1293004BCCC9 /* NSOutputStream_socket.m in Sources */,
@@ -7789,7 +7789,7 @@
 				FE01A7720C5D9B6900AEA51A /* NSPropertyListReader_xml1.m in Sources */,
 				FE01A7730C5D9B6900AEA51A /* NSPropertyListReader.m in Sources */,
 				FE01A7740C5D9B6900AEA51A /* NSKeyedUnarchiver.m in Sources */,
-				FE01A7750C5D9B6900AEA51A /* objc_msg_sendv.s in Sources */,
+				FE01A7750C5D9B6900AEA51A /* msgSendv-windows.s in Sources */,
 				FE01A7760C5D9B6900AEA51A /* objc_msg_lookup.m in Sources */,
 				FE01A7770C5D9B6900AEA51A /* NSInputStream_socket.m in Sources */,
 				FE01A7780C5D9B6900AEA51A /* NSOutputStream_socket.m in Sources */,
@@ -8097,7 +8097,7 @@
 				FED709ED0C3B3D2C000CBE5B /* NSConstantString.m in Sources */,
 				FED709EE0C3B3D2C000CBE5B /* NSPropertyListReader_xml1.m in Sources */,
 				FED709EF0C3B3D2C000CBE5B /* NSPropertyListReader.m in Sources */,
-				FED709F30C3B3D2C000CBE5B /* objc_msg_sendv.m in Sources */,
+				FED709F30C3B3D2C000CBE5B /* msgSendv-solaris.m in Sources */,
 				FED709F40C3B3D2C000CBE5B /* NSKeyedUnarchiver.m in Sources */,
 				FED709F50C3B3D2C000CBE5B /* objc_msg_lookup.m in Sources */,
 				FED709F60C3B3D2C000CBE5B /* NSInputStream_socket.m in Sources */,
@@ -8410,7 +8410,7 @@
 				FED70F380C3C09C7000CBE5B /* NSConstantString.m in Sources */,
 				FED70F390C3C09C7000CBE5B /* NSPropertyListReader_xml1.m in Sources */,
 				FED70F3A0C3C09C7000CBE5B /* NSPropertyListReader.m in Sources */,
-				FED70F3B0C3C09C7000CBE5B /* objc_msg_sendv.m in Sources */,
+				FED70F3B0C3C09C7000CBE5B /* msgSendv-solaris.m in Sources */,
 				FED70F3C0C3C09C7000CBE5B /* NSKeyedUnarchiver.m in Sources */,
 				FED70F3D0C3C09C7000CBE5B /* objc_msg_lookup.m in Sources */,
 				FED70F3E0C3C09C7000CBE5B /* NSInputStream_socket.m in Sources */,
@@ -8656,6 +8656,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = Foundation;
 				SYMROOT = /Developer/Cocotron/1.0/build/Foundation/Solaris/sparc;
+				VALID_ARCHS = sparc;
 			};
 			name = Release;
 		};
@@ -8787,6 +8788,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = Foundation;
 				SYMROOT = /Developer/Cocotron/1.0/build/Foundation/Solaris/sparc;
+				VALID_ARCHS = sparc;
 			};
 			name = Debug;
 		};
