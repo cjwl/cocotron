@@ -124,33 +124,33 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
 
 -initWithFrame:(NSRect)frame {
     [super initWithFrame:frame];
-        // Returns the height of each row in the receiver. The default row height is 16.0.
-        _rowHeight = 16.0;
-        _intercellSpacing = NSMakeSize(3.0,2.0);
-        _selectedRowIndexes = [[NSIndexSet alloc] init];
-        _selectedColumns = [[NSMutableArray alloc] init];
-        _editedColumn = -1;
-        _editedRow = -1;
+    // Returns the height of each row in the receiver. The default row height is 16.0.
+    _rowHeight = 16.0;
+    _intercellSpacing = NSMakeSize(3.0,2.0);
+    _selectedRowIndexes = [[NSIndexSet alloc] init];
+    _selectedColumns = [[NSMutableArray alloc] init];
+    _editedColumn = -1;
+    _editedRow = -1;
 
-        _allowsColumnReordering = YES;
-        _allowsColumnResizing = YES;
-        _autoresizesAllColumnsToFit = NO; // the default isn't actually given in the spec, but this seems more like default behavior
-        _allowsMultipleSelection = NO;
-        _allowsEmptySelection = YES;
-        _allowsColumnSelection = YES;
+    _allowsColumnReordering = YES;
+    _allowsColumnResizing = YES;
+    _autoresizesAllColumnsToFit = NO; // the default isn't actually given in the spec, but this seems more like default behavior
+    _allowsMultipleSelection = NO;
+    _allowsEmptySelection = YES;
+    _allowsColumnSelection = YES;
 
-        _headerView = [[NSTableHeaderView alloc] initWithFrame:NSMakeRect(0,0,[self bounds].size.width,_rowHeight+_intercellSpacing.height)];
-        [_headerView setTableView:self];
+    _headerView = [[NSTableHeaderView alloc] initWithFrame:NSMakeRect(0,0,[self bounds].size.width,_rowHeight+_intercellSpacing.height)];
+    [_headerView setTableView:self];
 
-        _cornerView = [[NSTableCornerView alloc] initWithFrame:NSMakeRect(0,0,_rowHeight,_rowHeight)];
+    _cornerView = [[NSTableCornerView alloc] initWithFrame:NSMakeRect(0,0,_rowHeight,_rowHeight)];
 
-        _tableColumns = [[NSMutableArray alloc] init];
-        _backgroundColor = [[NSColor controlBackgroundColor] retain];
-        _gridColor = [[NSColor gridColor] retain];
+    _tableColumns = [[NSMutableArray alloc] init];
+    _backgroundColor = [[NSColor controlBackgroundColor] retain];
+    _gridColor = [[NSColor gridColor] retain];
 
-        // row background and grid attributes for OS X >= 10.3
-        _alternatingRowBackground = NO;
-        _gridStyleMask = 0;
+    // row background and grid attributes for OS X >= 10.3
+    _alternatingRowBackground = NO;
+    _gridStyleMask = 0;
 
     return self;
 }
@@ -584,51 +584,60 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
     return [_dataSource tableView:self objectValueForTableColumn:tableColumn row:row];
 }
 
+- (NSRect)_adjustedDataCellFrame:(NSRect)frame
+{
+   frame.origin.x    += _intercellSpacing.width  - 1;
+   frame.origin.y    += _intercellSpacing.height + 1;
+   frame.size.width  -= _intercellSpacing.width;
+   frame.size.height -= _intercellSpacing.height + 1;
+   return frame;
+}
+
 -(void)editColumn:(int)column row:(int)row withEvent:(NSEvent *)event select:(BOOL)select {
-    NSCell        *editingCell;
-    NSTableColumn *editingColumn = [_tableColumns objectAtIndex:column];
-    NSInteger      numberOfRows=[self numberOfRows];
-    
-    // light sanity check; invalid columns caught above in objectAtIndex:
-    if (row < 0 || row >= numberOfRows)
-        [NSException raise:NSInvalidArgumentException
-                    format:@"invalid row in %@", NSStringFromSelector(_cmd)];
-
-    if (![editingColumn isEditable])
-        return;
-
-    if ([self delegateShouldEditTableColumn:editingColumn row:row] == NO)
-        return;
-
-    if ([self dataSourceCanSetObjectValue] == NO && [[editingColumn _binderForBinding:@"value" create:NO] allowsEditingForRow:row] == NO)
-        [NSException raise:NSInternalInconsistencyException
-                    format:@"data source does not respond to tableView:setObjectValue:forTableColumn:row: and binding is read-only"];
-
-    _editedColumn = column;
-    _editedRow = row;
-    _editingFrame = [self frameOfCellAtColumn:column row:row];
-    if ([(editingCell = [[editingColumn dataCellForRow:row] copy]) isKindOfClass:[NSTextFieldCell class]])
-    {
-       _editingCell = editingCell;
-       [_editingCell setDrawsBackground:YES];
-       [_editingCell setBackgroundColor:_backgroundColor];
-       [_editingCell setBezeled:NO];
-       [_editingCell setBordered:YES];
-       [(NSCell *)_editingCell setObjectValue:[self dataSourceObjectValueForTableColumn:editingColumn row:row]];
-
-       [editingColumn prepareCell:_editingCell inRow:row];
-
-       _currentEditor=[[self window] fieldEditor:YES forObject:self];
-       _currentEditor=[_editingCell setUpFieldEditorAttributes:_currentEditor];
-       [_currentEditor retain];
-
-       if (select == YES)
-           [_editingCell selectWithFrame:_editingFrame inView:self editor:_currentEditor delegate:self start:0 length:[[_editingCell stringValue] length]];
-       else
-           [_editingCell editWithFrame:_editingFrame inView:self editor:_currentEditor delegate:self event:event];
-       
-       [self setNeedsDisplay:YES];
-    }
+   NSCell        *editingCell;
+   NSTableColumn *editingColumn = [_tableColumns objectAtIndex:column];
+   NSInteger      numberOfRows=[self numberOfRows];
+   
+   // light sanity check; invalid columns caught above in objectAtIndex:
+   if (row < 0 || row >= numberOfRows)
+      [NSException raise:NSInvalidArgumentException
+                  format:@"invalid row in %@", NSStringFromSelector(_cmd)];
+   
+   if (![editingColumn isEditable])
+      return;
+   
+   if ([self delegateShouldEditTableColumn:editingColumn row:row] == NO)
+      return;
+   
+   if ([self dataSourceCanSetObjectValue] == NO && [[editingColumn _binderForBinding:@"value" create:NO] allowsEditingForRow:row] == NO)
+      [NSException raise:NSInternalInconsistencyException
+                  format:@"data source does not respond to tableView:setObjectValue:forTableColumn:row: and binding is read-only"];
+   
+   _editedColumn = column;
+   _editedRow = row;
+   _editingFrame  = [self frameOfCellAtColumn:column row:row];
+   _editingBorder = _editingFrame; _editingBorder.size.width++; _editingBorder.size.height++; 
+   _editingFrame  = [self _adjustedDataCellFrame:_editingFrame];
+   if ([(editingCell = [[editingColumn dataCellForRow:row] copy]) isKindOfClass:[NSTextFieldCell class]])
+   {
+      _editingCell = editingCell;
+      [_editingCell setDrawsBackground:YES];
+      [_editingCell setBackgroundColor:_backgroundColor];
+      [(NSCell *)_editingCell setObjectValue:[self dataSourceObjectValueForTableColumn:editingColumn row:row]];
+      
+      [editingColumn prepareCell:_editingCell inRow:row];
+      
+      _currentEditor=[[self window] fieldEditor:YES forObject:self];
+      _currentEditor=[_editingCell setUpFieldEditorAttributes:_currentEditor];
+      [_currentEditor retain];
+      
+      if (select == YES)
+         [_editingCell selectWithFrame:_editingFrame inView:self editor:_currentEditor delegate:self start:0 length:[[_editingCell stringValue] length]];
+      else
+         [_editingCell editWithFrame:_editingFrame inView:self editor:_currentEditor delegate:self event:event];
+      
+      [self setNeedsDisplay:YES];
+   }
 }
 
 -(int)clickedRow {
@@ -739,7 +748,6 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
     if (extend == NO)
         [selectedRowIndexes removeAllIndexes];
     
-
     if (![selectedRowIndexes containsIndex:row]) {
         if ([self delegateShouldSelectRow:row])
             [selectedRowIndexes addIndex:row];
@@ -893,8 +901,8 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
     for (column = 0; column < [_tableColumns count]; ++column)
         for (row = 0; row < numberOfRows; ++row)
             if ([self isColumnSelected:column] || [self isRowSelected:row])
-                if (!(row == _editedRow && column == _editedColumn))
-                    [self drawHighlightedSelectionForColumn:column row:row inRect:[self frameOfCellAtColumn:column row:row]];
+               if (!(row == _editedRow && column == _editedColumn))
+                  [self drawHighlightedSelectionForColumn:column row:row inRect:[self frameOfCellAtColumn:column row:row]];
 }
 
 - (NSCell *)preparedCellAtColumn:(NSInteger)columnNumber row:(NSInteger)row {
@@ -914,7 +922,7 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
    return dataCell;
 }
 
--(void)drawRow:(int)row clipRect:(NSRect)clipRect {
+- (void)drawRow:(int)row clipRect:(NSRect)clipRect {
     // draw only visible columns.
     NSRange visibleColumns = [self columnsInRect:clipRect];
     int drawThisColumn = visibleColumns.location;
@@ -925,12 +933,10 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
                     format:@"invalid row in drawRow:clipRect:"];
 
     while (drawThisColumn < NSMaxRange(visibleColumns)) {
-       NSCell *dataCell=[self preparedCellAtColumn:drawThisColumn row:row];
-       NSTableColumn *column = [_tableColumns objectAtIndex:drawThisColumn];
-       NSRect cellRect = NSInsetRect([self frameOfCellAtColumn:drawThisColumn row:row], _intercellSpacing.width/2, _intercellSpacing.height/2);
-
        if (!(row == _editedRow && drawThisColumn == _editedColumn)) {
-
+          NSCell *dataCell=[self preparedCellAtColumn:drawThisColumn row:row];
+          NSTableColumn *column = [_tableColumns objectAtIndex:drawThisColumn];
+          NSRect cellRect = [self _adjustedDataCellFrame:[self frameOfCellAtColumn:drawThisColumn row:row]];
           if ([_delegate respondsToSelector:@selector(tableView:willDisplayCell:forTableColumn:row:)])
              [_delegate tableView:self willDisplayCell:dataCell forTableColumn:column row:row];
           
@@ -940,25 +946,88 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
     }
 }
 
--(void)drawGridInClipRect:(NSRect)rect {
-    int i;
-    float originX = _bounds.origin.x;
-    float originY = _bounds.origin.y;
-    NSInteger numberOfRows=[self numberOfRows];
-    
-    [_gridColor setFill];
+- (void)drawBackgroundInClipRect:(NSRect)clipRect
+{
+   NSArray *rowColors   = [NSColor controlAlternatingRowBackgroundColors];
+   int      colorCount  = [rowColors count];
+   if (colorCount == 0 || !_alternatingRowBackground)
+   {
+      [_backgroundColor setFill];
+      NSRectFill(clipRect);
+   }
+   
+   else if (colorCount == 1)
+   {
+      [(NSColor *)[rowColors objectAtIndex:0] setFill];
+      NSRectFill(clipRect);
+   }
+   
+   else
+   {
+      float  y            = _bounds.origin.y;
+      float  rowHeight    = _rowHeight + _intercellSpacing.height;
+      NSRect rect         = clipRect; rect.size.height = rowHeight;
+      int i, numberOfRows = ceilf((y + clipRect.origin.y + clipRect.size.height)/rowHeight);
+      
+      for (i = 0; i < numberOfRows; i++)
+      {
+         if (clipRect.origin.y < y + rowHeight && y < clipRect.origin.y + clipRect.size.height)
+         {
+            rect.origin.y = y;
+            [(NSColor *)[rowColors objectAtIndex:i%colorCount] setFill];
+            NSRectFill(rect);
+         }
+         y += rowHeight;
+      }
+   }
+}
 
-    // vertical ruling
-    for (i = 0; i < [_tableColumns count]; ++i) {
-        originX = NSMaxX([self rectOfColumn:i]);
-        NSRectFill(NSMakeRect(originX-1, _bounds.origin.y, 2.0, _bounds.size.height));
-    }
-
-    // horizontal ruling
-    for (i = 0; i < numberOfRows; ++i) {
-        originY = NSMaxY([self rectOfRow:i]) - 1;
-        NSRectFill(NSMakeRect(_bounds.origin.x, originY, _bounds.size.width, 1.0));
-    }
+- (void)drawGridInClipRect:(NSRect)clipRect
+{
+   float  x            = _bounds.origin.x;
+   float  y            = _bounds.origin.y;
+   float  rowHeight    = _rowHeight + _intercellSpacing.height;
+   int i, numberOfRows = ceilf((y + clipRect.origin.y + clipRect.size.height)/rowHeight);
+   
+   NSPoint pt0, pt1;
+   NSBezierPath *line = [NSBezierPath bezierPath];
+   [_gridColor set];
+   
+   if (_gridStyleMask & NSTableViewSolidVerticalGridLineMask == NSTableViewSolidVerticalGridLineMask)
+   {
+      // vertical ruling
+      pt0.y = clipRect.origin.y;
+      pt1.y = clipRect.origin.y + clipRect.size.height;
+      for (i = 0; i < [_tableColumns count]; i++)
+      {
+         x += [[_tableColumns objectAtIndex:i] width] + _intercellSpacing.width;
+         if (clipRect.origin.x < x && x <= clipRect.origin.x + clipRect.size.width)
+         {
+            pt0.x = pt1.x = x;
+            [line moveToPoint:pt0];
+            [line lineToPoint:pt1];
+         }
+      }
+   }
+   
+   if (_gridStyleMask & NSTableViewSolidHorizontalGridLineMask == NSTableViewSolidHorizontalGridLineMask)
+   {
+      // horizontal ruling
+      pt0.x = clipRect.origin.x;
+      pt1.x = clipRect.origin.x +  + clipRect.size.width;
+      for (i = 0; i < numberOfRows; i++)
+      {
+         y += rowHeight;
+         if (clipRect.origin.y < y && y <= clipRect.origin.y + clipRect.size.height)
+         {
+            pt0.y = pt1.y = y;
+            [line moveToPoint:pt0];
+            [line lineToPoint:pt1];
+         }
+      }
+   }
+   
+   [line stroke];
 }
 
 // can't use rectOfRow because empty tableviews will explode!
@@ -1028,13 +1097,13 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
 }
 
 -(BOOL)abortEditing {
-   [super abortEditing];
+    [super abortEditing];
     [_editingCell release];
     _editingCell = nil;
     _editingFrame = NSMakeRect(-1,-1,-1,-1);
-   _editedRow=-1;
-   _editedColumn=-1;
-   return NO;
+    _editedRow=-1;
+    _editedColumn=-1;
+    return NO;
 }
 
 -(void)textDidEndEditing:(NSNotification *)note {
@@ -1131,50 +1200,54 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
 
 
 -(void)drawRect:(NSRect)clipRect {
-    NSRange visibleRows;
-    NSInteger drawThisRow, numberOfRows=[self numberOfRows];
-    
-    [_backgroundColor setFill];
-    NSRectFill(_bounds);
-
-    if (numberOfRows > 0) {
-        [self highlightSelectionInClipRect:clipRect];
-
-        if ([self drawsGrid])
-            [self drawGridInClipRect:clipRect];
-        
-        visibleRows = [self rowsInRect:clipRect];
-        if(visibleRows.length>0){
-         drawThisRow = visibleRows.location;
-         while (drawThisRow < NSMaxRange(visibleRows) && drawThisRow<numberOfRows) 
-             [self drawRow:drawThisRow++ clipRect:clipRect];
-        }     
-//NSLog(@"%s %d",__FILE__,__LINE__);
-
-        if (_editingCell != nil && _editedColumn != -1 && _editedRow != -1)
-            [_editingCell drawWithFrame:_editingFrame inView:self];
-    }
+   NSRange visibleRows;
+   NSInteger drawThisRow, numberOfRows=[self numberOfRows];
    
-   if(_draggingRow >= 0) 
-   { 
-      NSRect rowRect; 
-      [[NSColor blackColor] setStroke]; 
-      if([self numberOfRows] == 0) 
-         [NSBezierPath strokeLineFromPoint:NSMakePoint(0, 0) toPoint:NSMakePoint([self bounds].size.width, 0)]; 
-      else 
-      { 
-         if(_draggingRow == [self numberOfRows]) 
-         { 
-            rowRect = NSIntersectionRect([self rectOfRow: _draggingRow-1],[self visibleRect]); 
-            [NSBezierPath strokeLineFromPoint:NSMakePoint(0, rowRect.origin.y+_rowHeight) toPoint:NSMakePoint(rowRect.size.width, rowRect.origin.y+_rowHeight)]; 
-         } 
-         else 
-         { 
-            rowRect = NSIntersectionRect([self rectOfRow: _draggingRow],[self visibleRect]); 
-            [NSBezierPath strokeLineFromPoint:NSMakePoint(0, rowRect.origin.y) toPoint:NSMakePoint(rowRect.size.width, rowRect.origin.y)]; 
-         } 
-      } 
-   } 
+   [self drawBackgroundInClipRect:clipRect];
+   
+   if (numberOfRows > 0) {
+      [self highlightSelectionInClipRect:clipRect];
+      
+      visibleRows = [self rowsInRect:clipRect];
+      if(visibleRows.length>0){
+         drawThisRow = visibleRows.location;
+         while (drawThisRow < NSMaxRange(visibleRows) && drawThisRow<numberOfRows)
+            [self drawRow:drawThisRow++ clipRect:clipRect];
+      }     
+   }
+   
+   if ([self drawsGrid])
+      [self drawGridInClipRect:clipRect];
+   
+   if (_editingCell != nil && _editedColumn != -1 && _editedRow != -1)
+   {
+      [_backgroundColor set];
+      NSRectFill(_editingBorder);
+      [_editingCell drawWithFrame:_editingFrame inView:self];
+      [[NSColor keyboardFocusIndicatorColor] set];
+      NSFrameRectWithWidth(_editingBorder, 2.0);
+   }
+   
+   if(_draggingRow >= 0)
+   {
+      NSRect rowRect;
+      [[NSColor blackColor] setStroke];
+      if([self numberOfRows] == 0)
+         [NSBezierPath strokeLineFromPoint:NSMakePoint(0, 0) toPoint:NSMakePoint([self bounds].size.width, 0)];
+      else
+      {
+         if(_draggingRow == [self numberOfRows])
+         {
+            rowRect = NSIntersectionRect([self rectOfRow: _draggingRow-1],[self visibleRect]);
+            [NSBezierPath strokeLineFromPoint:NSMakePoint(0, rowRect.origin.y+_rowHeight) toPoint:NSMakePoint(rowRect.size.width, rowRect.origin.y+_rowHeight)];
+         }
+         else
+         {
+            rowRect = NSIntersectionRect([self rectOfRow: _draggingRow],[self visibleRect]);
+            [NSBezierPath strokeLineFromPoint:NSMakePoint(0, rowRect.origin.y) toPoint:NSMakePoint(rowRect.size.width, rowRect.origin.y)];
+         }
+      }
+   }
 }
 
 -(BOOL)delegateSelectionShouldChange

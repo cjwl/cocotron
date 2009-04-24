@@ -60,7 +60,7 @@ typedef enum {
    int _clickedColumn, _clickedRow;
    int _editedColumn, _editedRow;
    id _editingCell;
-   NSRect _editingFrame;
+   NSRect _editingFrame, _editingBorder;
    NSArray* _sortDescriptors;
 
    int _draggingRow; 
@@ -169,8 +169,9 @@ typedef enum {
 
 -(void)highlightSelectionInClipRect:(NSRect)rect;
 
--(void)drawRow:(int)row clipRect:(NSRect)rect;
--(void)drawGridInClipRect:(NSRect)rect;
+- (void)drawRow:(int)row clipRect:(NSRect)rect;
+- (void)drawBackgroundInClipRect:(NSRect)rect;
+- (void)drawGridInClipRect:(NSRect)rect;
 - (NSCell *)preparedCellAtColumn:(NSInteger)columnNumber row:(NSInteger)row;
 
 - (NSIndexSet *)selectedRowIndexes;

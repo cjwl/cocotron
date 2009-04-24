@@ -213,13 +213,13 @@ BOOL CALLBACK monitorEnumerator(HMONITOR hMonitor,HDC hdcMonitor,LPRECT rect,LPA
     { @"shadowColor", COLOR_3DDKSHADOW },
     { @"textBackgroundColor", COLOR_WINDOW },
     { @"textColor", COLOR_WINDOWTEXT },
-    { @"gridColor", COLOR_3DLIGHT },		// what should this be?
+    { @"gridColor", COLOR_INACTIVEBORDER },		// what should this be?
     { @"headerColor", COLOR_3DFACE },		// these do not appear in the user-space System color list,
     { @"headerTextColor", COLOR_BTNTEXT },	// probably because Apple builds that off System.clr
    { @"alternateSelectedControlColor", COLOR_WINDOW }, // FIXME:
    { @"alternateSelectedControlTextColor", COLOR_WINDOWTEXT }, // FIXME:
    { @"secondarySelectedControlColor", COLOR_HIGHLIGHT }, // FIXME:
-   { @"keyboardFocusIndicatorColor", COLOR_HIGHLIGHT }, // FIXME:
+   { @"keyboardFocusIndicatorColor", COLOR_ACTIVEBORDER }, // FIXME:
    { @"windowFrameColor", COLOR_WINDOWFRAME }, // FIXME:
    { @"selectedMenuItemColor", COLOR_HIGHLIGHT }, // FIXME:
    { @"selectedMenuItemTextColor", COLOR_HIGHLIGHTTEXT }, // FIXME:

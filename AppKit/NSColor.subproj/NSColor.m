@@ -228,10 +228,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return [NSColor colorWithCatalogName:@"System" colorName:@"controlShadowColor"];
 }
 
+// overwrite this, if you need a different set of alternating background colors
+// NOTE: the list may contain more then two colors
 +(NSArray *)controlAlternatingRowBackgroundColors {
    return [NSArray arrayWithObjects:
-    [NSColor controlBackgroundColor],
-    [NSColor controlHighlightColor], // FIXME:
+    [NSColor whiteColor],
+    [NSColor colorWithCalibratedRed:0.90 green:0.95 blue:1.0 alpha:1.0],
     nil];
 }
 
