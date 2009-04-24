@@ -63,6 +63,11 @@ struct objc_method {
    IMP   method_imp;
 };
 
+struct objc_method_description {
+   SEL   name;
+   char *types;
+};
+
 struct objc_method_list {
    struct objc_method_list *obsolete;
    int                      method_count;

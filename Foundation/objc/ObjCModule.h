@@ -36,5 +36,4 @@ typedef struct {
 OBJC_EXPORT void OBJCQueueModule(OBJCModule *module);
 OBJC_EXPORT void OBJCResetModuleQueue(void);
 
-OBJC_EXPORT OBJCObjectFile *OBJCObjectFileFromClass(Class class);
 OBJC_EXPORT void OBJCLinkQueuedModulesToObjectFileWithPath(const char *path);

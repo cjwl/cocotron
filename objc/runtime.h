@@ -7,18 +7,20 @@ typedef struct objc_ivar     *Ivar;
 typedef struct objc_category *Category;
 typedef struct objc_property *objc_property_t;
 
-OBJC_EXPORT id         objc_lookUpClass(const char *name);
-OBJC_EXPORT id         objc_getClass(const char *name);
-OBJC_EXPORT int        objc_getClassList(Class *list,int listCapacity);
-OBJC_EXPORT Class      objc_getFutureClass(const char *name);
-OBJC_EXPORT id         objc_getMetaClass(const char *name);
-OBJC_EXPORT id         objc_getRequiredClass(const char *name);
-OBJC_EXPORT Protocol  *objc_getProtocol(const char *name);
-OBJC_EXPORT Protocol **objc_copyProtocolList(unsigned int *countp);
-OBJC_EXPORT void       objc_addClass(Class cls);
-OBJC_EXPORT void       objc_registerClassPair(Class cls);
-OBJC_EXPORT void       objc_setFutureClass(Class cls,const char *name);
-OBJC_EXPORT Class      objc_allocateClassPair(Class parent,const char *name,size_t extraBytes);
+OBJC_EXPORT id           objc_lookUpClass(const char *name);
+OBJC_EXPORT id           objc_getClass(const char *name);
+OBJC_EXPORT int          objc_getClassList(Class *list,int listCapacity);
+OBJC_EXPORT Class        objc_getFutureClass(const char *name);
+OBJC_EXPORT id           objc_getMetaClass(const char *name);
+OBJC_EXPORT id           objc_getRequiredClass(const char *name);
+OBJC_EXPORT Protocol    *objc_getProtocol(const char *name);
+OBJC_EXPORT Protocol   **objc_copyProtocolList(unsigned int *countp);
+OBJC_EXPORT void         objc_addClass(Class cls);
+OBJC_EXPORT void         objc_registerClassPair(Class cls);
+OBJC_EXPORT void         objc_setFutureClass(Class cls,const char *name);
+OBJC_EXPORT Class        objc_allocateClassPair(Class parent,const char *name,size_t extraBytes);
+OBJC_EXPORT void         objc_setForwardHandler(void *handler, void *handler_stret);
+OBJC_EXPORT const char **objc_copyImageNames(unsigned *count); // free the ptr but not the strings
 
 OBJC_EXPORT const char      *class_getName(Class cls);
 OBJC_EXPORT BOOL             class_isMetaClass(Class cls);
@@ -51,6 +53,7 @@ OBJC_EXPORT BOOL             class_conformsToProtocol(Class cls,Protocol *protoc
 OBJC_EXPORT id               class_createInstance(Class cls,size_t extraBytes);
 OBJC_EXPORT IMP              class_replaceMethod(Class cls,SEL selector,IMP imp,const char *types);
 OBJC_EXPORT BOOL             class_respondsToSelector(Class cls,SEL selector);
+OBJC_EXPORT const char      *class_getImageName(Class cls);
 
 OBJC_EXPORT const char                     *protocol_getName(Protocol *protocol);
 OBJC_EXPORT objc_property_t                 protocol_getProperty(Protocol *protocol,const char *name,BOOL isRequired,BOOL isInstance);
@@ -97,11 +100,9 @@ OBJC_EXPORT id          object_copy(id object,size_t size);
 OBJC_EXPORT id          object_dispose(id object);
 
 
-// FIXME. TO BE CLEANED UP.
+// FIXME. Non-compliant API. TO BE CLEANED UP.
 
-OBJC_EXPORT const char *OBJCModulePathFromClass(Class aClass);
 OBJC_EXPORT const char *OBJCModulePathForProcess();
-OBJC_EXPORT const char **OBJCAllModulePaths(); // free the ptr but not the strings
 
 OBJC_EXPORT void OBJCSetDispatchTracing(BOOL yesOrNo);
 OBJC_EXPORT void OBJCEnableMsgTracing();

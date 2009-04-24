@@ -100,16 +100,16 @@ static NSMapTable *pathToObject=NULL;
 }
 
 +(void)registerFrameworks {
-   const char **array=OBJCAllModulePaths();
-   int          i;
+   unsigned       i,count;
+   const char   **array=objc_copyImageNames(&count);
 
-   for(i=0;array[i]!=NULL;i++){
+   for(i=0;i<count;i++){
     NSString *path=[NSString stringWithCString:array[i]];
     NSBundle *bundle=[NSBundle bundleWithModulePath:path];
 
     [_allFrameworks addObject:bundle];
    }
-   NSZoneFree(NULL,array);
+   free(array);
 }
 
 +(void)initialize {
@@ -150,7 +150,7 @@ static NSMapTable *pathToObject=NULL;
    NSBundle *bundle=NSMapGet(nameToBundle,NSStringFromClass(class));
 
    if(bundle==nil){
-    const char *module=OBJCModulePathFromClass(class);
+    const char *module=class_getImageName(class);
 
     if(module==NULL)
      return [self mainBundle]; // this is correct behaviour for Nil class

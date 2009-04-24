@@ -344,8 +344,8 @@ OBJCObjectFile *OBJCObjectFileFromClass(Class class) {
    return NULL;
 }
 
-const char *OBJCModulePathFromClass(Class class) {
-   OBJCObjectFile *file = OBJCObjectFileFromClass(class);
+const char *class_getImageName(Class cls) {
+   OBJCObjectFile *file = OBJCObjectFileFromClass(cls);
 
    if (file)
       return file->path;
@@ -362,15 +362,17 @@ const char *OBJCModulePathForProcess(){
    return NULL;
 }
 
-const char **OBJCAllModulePaths() {
+const char **objc_copyImageNames(unsigned *countp) {
    OBJCArray      *array=OBJCObjectFileImageArray();
-   const char    **result=NSZoneCalloc(NULL,OBJCArrayCount(array)+1,sizeof(char *));
+   unsigned        arrayIndex=0,count=OBJCArrayCount(array);
+   const char    **result=malloc(count*sizeof(char *));
    OBJCObjectFile *objectFile;
-   unsigned        arrayIndex = 0;
 
    while((objectFile=OBJCArrayEnumerate(array,&arrayIndex))!=NULL)
     result[arrayIndex-1]=objectFile->path;
 
+   *countp=count;
+   
    return result;
 }
 

@@ -46,7 +46,7 @@ NSString *NSPlatformClassName=@"NSPlatform_win32";
 
 -init {
    NSString   *entry;
-   const char *module=OBJCModulePathFromClass(isa);
+   const char *module=class_getImageName(isa);
    HKEY        handle;
    DWORD       disposition,allowed;
    int         i;
