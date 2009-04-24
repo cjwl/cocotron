@@ -1898,6 +1898,7 @@
 		FED163830BE4093700BF9889 /* NSExpression_self.m in Sources */ = {isa = PBXBuildFile; fileRef = FED163650BE4093700BF9889 /* NSExpression_self.m */; };
 		FED163840BE4093700BF9889 /* NSExpression_variable.h in Headers */ = {isa = PBXBuildFile; fileRef = FED163660BE4093700BF9889 /* NSExpression_variable.h */; };
 		FED163850BE4093700BF9889 /* NSExpression_variable.m in Sources */ = {isa = PBXBuildFile; fileRef = FED163670BE4093700BF9889 /* NSExpression_variable.m */; };
+		FED216030FA14BAA00B74EFE /* objc-msgsend.s in Sources */ = {isa = PBXBuildFile; fileRef = FED216020FA14BAA00B74EFE /* objc-msgsend.s */; };
 		FED311CE0BCC0E1D00552615 /* NSConditionLock.h in Headers */ = {isa = PBXBuildFile; fileRef = FED311CA0BCC0E1D00552615 /* NSConditionLock.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FED311CF0BCC0E1D00552615 /* NSConditionLock.m in Sources */ = {isa = PBXBuildFile; fileRef = FED311CB0BCC0E1D00552615 /* NSConditionLock.m */; };
 		FED311D00BCC0E1D00552615 /* NSConditionLock.h in Headers */ = {isa = PBXBuildFile; fileRef = FED311CA0BCC0E1D00552615 /* NSConditionLock.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -3931,6 +3932,7 @@
 		FED163650BE4093700BF9889 /* NSExpression_self.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSExpression_self.m; sourceTree = "<group>"; };
 		FED163660BE4093700BF9889 /* NSExpression_variable.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSExpression_variable.h; sourceTree = "<group>"; };
 		FED163670BE4093700BF9889 /* NSExpression_variable.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSExpression_variable.m; sourceTree = "<group>"; };
+		FED216020FA14BAA00B74EFE /* objc-msgsend.s */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.asm; path = "objc-msgsend.s"; sourceTree = "<group>"; };
 		FED311CA0BCC0E1D00552615 /* NSConditionLock.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSConditionLock.h; sourceTree = "<group>"; };
 		FED311CB0BCC0E1D00552615 /* NSConditionLock.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSConditionLock.m; sourceTree = "<group>"; };
 		FED70A6B0C3B3D2C000CBE5B /* Foundation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Foundation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -4808,6 +4810,7 @@
 		6E28055A09747C8F00EC542B /* platform_linux */ = {
 			isa = PBXGroup;
 			children = (
+				FED216020FA14BAA00B74EFE /* objc-msgsend.s */,
 				6E8113970A54BBAC000DE3F1 /* objc_msg_sendv.s */,
 			);
 			path = platform_linux;
@@ -7597,6 +7600,7 @@
 				FE1A0D220F8BADBA00FC4CC7 /* forwarding.m in Sources */,
 				FEBF535C0F925FA3005DC684 /* objc_protocol.m in Sources */,
 				FEBF545B0F93AE8A005DC684 /* objc_property.m in Sources */,
+				FED216030FA14BAA00B74EFE /* objc-msgsend.s in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

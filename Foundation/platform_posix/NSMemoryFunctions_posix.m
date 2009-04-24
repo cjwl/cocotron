@@ -111,7 +111,7 @@ NSThread *NSPlatformCurrentThread() {
 int NSPlatformDetachThread(unsigned (*func)(void *arg), void *arg) {
 	pthread_t thread;
 	pthread_create(&thread, NULL, func, arg);
-	return thread;
+	return (int)thread;
 }
 
 /* This will fail with W^X. See win32 implementation for how to get this running. */

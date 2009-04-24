@@ -8,6 +8,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/NSLock.h>
 
+#include <pthread.h>
+
 @interface NSLock_posix : NSLock {
     pthread_mutex_t _mutex;
 }

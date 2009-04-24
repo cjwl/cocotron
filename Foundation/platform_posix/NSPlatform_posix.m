@@ -26,11 +26,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #include <sys/stat.h>
 #include <sys/time.h>
 #include <sys/param.h>
+#include <netinet/in.h>
 #include <fcntl.h>
 #include <netdb.h>
 #include <time.h>
 #include <stdio.h>
 #include <poll.h>
+#include <pthread.h>
 
 @implementation NSPlatform_posix
 
@@ -153,7 +155,7 @@ static struct passwd *pwent = NULL;
 }
 
 -(unsigned)threadID {
-    return pthread_self();
+    return (unsigned)pthread_self();
 }
 
 -(NSArray *)addressesForDNSHostName:(NSString *)name {

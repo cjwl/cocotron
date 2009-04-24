@@ -9,6 +9,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSMethodSignature.h>
 #import <Foundation/NSCoder.h>
 #import <Foundation/NSRaise.h>
+
+#import <sys/param.h>
 #import <string.h>
 #import <objc/message.h>
 
@@ -433,8 +435,8 @@ static void byteCopy(void *src,void *dst,unsigned length){
        } (*function)()=(struct structReturn (*)())msgSendv; // should be msgSend_stret
        struct structReturn value;
 
-// FIX internal compiler error on windows
-#ifndef WIN32
+// FIX internal compiler error on windows/linux/bsd
+#if !defined(WIN32) && !defined(BSD) && !defined(LINUX)
        value=function(target,[self selector],_argumentFrameSize,_argumentFrame);
 #endif
 
