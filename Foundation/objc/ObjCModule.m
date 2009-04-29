@@ -89,7 +89,7 @@ OBJCObjectFile *OBJCObjectFileForPointer(void *ptr){
 int _NSGetExecutablePath(char *path,uint32_t *capacity) {
 // FIXME, this should use the unicode version and return a utf8 path
    DWORD size=GetModuleFileName(GetModuleHandle(NULL),path,*capacity);
-   
+      
    if(size==*capacity)
     return -1;
     
@@ -144,12 +144,12 @@ int _NSGetExecutablePath(char *path,uint32_t *capacity) {
 OBJCObjectFile *OBJCCreateMainObjectFile(){
    uint32_t length=MAXPATHLEN;
    char     path[length+1];
-   
-   if((length=_NSGetExecutablePath(path,&length))<0)
+
+   if(_NSGetExecutablePath(path,&length)<0)
     path[0]='\0';
    else
     path[length]='\0';
-   
+
    return OBJCUniqueObjectFileWithPath(path);
 }
 
