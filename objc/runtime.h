@@ -108,5 +108,5 @@ OBJC_EXPORT void OBJCSetDispatchTracing(BOOL yesOrNo);
 OBJC_EXPORT void OBJCEnableMsgTracing();
 OBJC_EXPORT void OBJCDisableMsgTracing();
 
-OBJC_EXPORT void OBJCInitializeProcess(int argc,const char *argv[]);
+OBJC_EXPORT void OBJCInitializeProcess();
 

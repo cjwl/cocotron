@@ -41,6 +41,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSFontTypeface.h>
 #import <AppKit/NSFontMetric.h>
 
+@implementation NSDisplay(windows)
+
++allocWithZone:(NSZone *)zone {
+   return NSAllocateObject([Win32Display class],0,NULL);
+}
+
+@end
+
 @implementation Win32Display
 
 //#define WAITCURSOR

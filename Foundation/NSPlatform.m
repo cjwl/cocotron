@@ -31,11 +31,6 @@ extern NSString *NSPlatformClassName;
    return nil;
 }
 
--(NSString *)fileManagerClassName {
-   NSInvalidAbstractInvocation();
-   return nil;
-}
-
 -(Class)taskClass {
    NSInvalidAbstractInvocation();
    return Nil;
@@ -81,26 +76,6 @@ extern NSString *NSPlatformClassName;
    return nil;
 }
 
--(NSString *)executableDirectory {
-   NSInvalidAbstractInvocation();
-   return nil;
-}
-
--(NSString *)resourceNameSuffix {
-   NSInvalidAbstractInvocation();
-   return nil;
-}
-
--(NSString *)loadableObjectFileExtension {
-   NSInvalidAbstractInvocation();
-   return nil;
-}
-
--(NSString *)loadableObjectFilePrefix {
-   NSInvalidAbstractInvocation();
-   return nil;
-}
-
 -(NSArray *)arguments {
    NSInvalidAbstractInvocation();
    return nil;
@@ -111,24 +86,9 @@ extern NSString *NSPlatformClassName;
    return nil;
 }
 
--(NSTimeInterval)timeIntervalSinceReferenceDate {
-   NSInvalidAbstractInvocation();
-   return 0;
-}
-
 -(NSTimeZone *)systemTimeZone {
    NSInvalidAbstractInvocation();
    return nil;
-}
-
--(unsigned)processID {
-   NSInvalidAbstractInvocation();
-   return 0;
-}
-
--(unsigned)threadID {
-   NSInvalidAbstractInvocation();
-   return 0;
 }
 
 -(NSString *)hostName {
@@ -144,14 +104,6 @@ extern NSString *NSPlatformClassName;
 -(NSArray *)addressesForDNSHostName:(NSString *)name {
    NSInvalidAbstractInvocation();
    return nil;
-}
-
--(void)sleepThreadForTimeInterval:(NSTimeInterval)interval {
-   NSInvalidAbstractInvocation();
-}
-
--(void)logString:(NSString *)string {
-   NSInvalidAbstractInvocation();
 }
 
 -(void *)contentsOfFile:(NSString *)path length:(unsigned *)length {

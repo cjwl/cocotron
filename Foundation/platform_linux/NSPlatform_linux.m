@@ -58,7 +58,7 @@ extern long int __timezone;
  the prototype used by glibc 2.2.2.  Only the EINVAL  error
  return is documented by SUSv2.
  */
--(void)sleepThreadForTimeInterval:(NSTimeInterval)interval {
+void NSPlatformSleepThreadForTimeInterval(NSTimeInterval interval) {
     if (interval <= 0.0)
         return;
 
@@ -85,21 +85,11 @@ extern long int __timezone;
     return [self hostName];
 }
 
--(NSString *)executableDirectory {
-   return @"Linux";
-}
+NSString *NSPlatformExecutableDirectory=@"Linux";
+NSString *NSPlatformResourceNameSuffix=@"linux";
 
--(NSString *)resourceNameSuffix {
-   return @"linux";
-}
-
--(NSString *)loadableObjectFileExtension {
-   return @"so";
-}
-
--(NSString *)loadableObjectFilePrefix {
-   return @"lib";
-}
+NSString *NSPlatformLoadableObjectFileExtension=@"so";
+NSString *NSPlatformLoadableObjectFilePrefix=@"lib";
 
 -(Class)taskClass {
    return [NSTask_linux class];

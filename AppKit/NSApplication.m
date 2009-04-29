@@ -18,7 +18,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSColorPanel.h>
 #import <AppKit/NSDisplay.h>
 #import <AppKit/NSPageLayout.h>
-#import <AppKit/NSPlatform.h>
 #import <AppKit/NSDocumentController.h>
 #import <AppKit/NSImage.h>
 #import <AppKit/NSImageView.h>

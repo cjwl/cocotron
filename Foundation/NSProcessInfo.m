@@ -109,7 +109,7 @@ const char * const *NSProcessInfoArgv=NULL;
 }
 
 -(int)processIdentifier {
-   return [[NSPlatform currentPlatform] processID];
+   return NSPlatformProcessID();
 }
 
 -(NSArray *)arguments {
@@ -129,7 +129,7 @@ const char * const *NSProcessInfoArgv=NULL;
 
 -(NSString *)globallyUniqueString {
    return NSStringWithFormat(@"%@_%d_%d_%d_%d",[self hostName],
-     [[NSPlatform currentPlatform] processID],0,0,[self incrementCounter]);
+     [self processIdentifier],0,0,[self incrementCounter]);
 }
 
 @end

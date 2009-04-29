@@ -28,7 +28,7 @@ static void NSLogFormat(NSString *format,...){
 
    string=NSStringNewWithFormat(format,nil,arguments,NULL);
 
-   [[NSPlatform currentPlatform] logString:string];
+   NSPlatformLogString(string);
 
    [string release];
 }
@@ -39,8 +39,7 @@ static inline void NSLogMessageString(NSString *string){
                             timeZone:nil locale:nil];
    NSString *process=[[NSProcessInfo processInfo] processName];
 
-   NSPlatform *p = [NSPlatform currentPlatform];
-   NSLogFormat(@"%@ %@[%d:%x] %@",date,process,[p processID],[p threadID],string);
+   NSLogFormat(@"%@ %@[%d:%x] %@",date,process,NSPlatformProcessID(),NSPlatformThreadID(),string);
 }
 
 void NSLogv(NSString *format,va_list arguments) {

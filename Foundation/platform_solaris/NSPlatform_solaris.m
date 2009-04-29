@@ -60,7 +60,7 @@ NSString *NSPlatformClassName=@"NSPlatform_solaris";
  the prototype used by glibc 2.2.2.  Only the EINVAL  error
  return is documented by SUSv2.
  */
--(void)sleepThreadForTimeInterval:(NSTimeInterval)interval {
+void NSPlatformSleepThreadForTimeInterval(NSTimeInterval interval) {
     if (interval <= 0.0)
         return;
 
@@ -89,21 +89,10 @@ NSString *NSPlatformClassName=@"NSPlatform_solaris";
     return [self hostName];
 }
 
--(NSString *)executableDirectory {
-   return @"Solaris";
-}
-
--(NSString *)resourceNameSuffix {
-   return @"solaris";
-}
-
--(NSString *)loadableObjectFileExtension {
-   return @"so";
-}
-
--(NSString *)loadableObjectFilePrefix {
-   return @"lib";
-}
+NSString *NSPlatformExecutableDirectory=@"Solaris";
+NSString *NSPlatformResourceNameSuffix=@"solaris";
+NSString *NSPlatformLoadableObjectFileExtension=@"so";
+NSString *NSPlatformLoadableObjectFilePrefix=@"lib";
 
 -(Class)taskClass {
    return [NSTask_solaris class];

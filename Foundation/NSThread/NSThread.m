@@ -110,11 +110,11 @@ static int  nsThreadStartThread(void* t)
 +(void)sleepUntilDate:(NSDate *)date {
    NSTimeInterval interval=[date timeIntervalSinceNow];
 
-   [[NSPlatform currentPlatform] sleepThreadForTimeInterval:interval];
+   NSPlatformSleepThreadForTimeInterval(interval);
 }
 
 +(void)sleepForTimeInterval:(NSTimeInterval)value {
-   [[NSPlatform currentPlatform] sleepThreadForTimeInterval:value];
+   NSPlatformSleepThreadForTimeInterval(value);
 }
 
 +(void)exit {

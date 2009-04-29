@@ -44,6 +44,10 @@ NSString *NSPlatformClassName=@"NSPlatform_win32";
 
 @implementation NSPlatform_win32
 
+static NSString *processName(){
+   return [[[NSString stringWithCString:OBJCModulePathForProcess()] lastPathComponent] stringByDeletingPathExtension];
+}
+
 -init {
    NSString   *entry;
    const char *module=class_getImageName(isa);
@@ -53,8 +57,7 @@ NSString *NSPlatformClassName=@"NSPlatform_win32";
    
    [NSSocket_windows class]; // initialize winsock
 
-   _processName=[[[[NSString stringWithCString:OBJCModulePathForProcess()] lastPathComponent] stringByDeletingPathExtension] copy];
-   entry=[@"SYSTEM\\CurrentControlSet\\Services\\Eventlog\\Application\\" stringByAppendingString:_processName];
+   entry=[@"SYSTEM\\CurrentControlSet\\Services\\Eventlog\\Application\\" stringByAppendingString:processName()];
 
    if(RegCreateKeyEx(HKEY_LOCAL_MACHINE,[entry cString],0,NULL,
      REG_OPTION_NON_VOLATILE,KEY_ALL_ACCESS,NULL,&handle,&disposition))
@@ -71,8 +74,6 @@ NSString *NSPlatformClassName=@"NSPlatform_win32";
 
    RegCloseKey(handle);
 
-   _eventLog=RegisterEventSource(NULL,[_processName cString]);
-
    _parentDeathMonitor=[[NSParentDeathMonitor_win32 alloc] init];
    
    for(i=1;i<__argc;i++)
@@ -86,10 +87,6 @@ NSString *NSPlatformClassName=@"NSPlatform_win32";
 
 -(NSInputSource *)parentDeathInputSource {
    return [_parentDeathMonitor handleMonitor];
-}
-
--(NSString *)fileManagerClassName {
-   return @"NSFileManager_win32";
 }
 
 -(Class)taskClass {
@@ -158,21 +155,11 @@ NSString *NSPlatformClassName=@"NSPlatform_win32";
    return result;
 }
 
--(NSString *)executableDirectory {
-   return @"Windows";
-}
+NSString *NSPlatformExecutableDirectory=@"Windows";
+NSString *NSPlatformResourceNameSuffix=@"windows";
 
--(NSString *)resourceNameSuffix {
-   return @"windows";
-}
-
--(NSString *)loadableObjectFileExtension {
-   return @"dll";
-}
-
--(NSString *)loadableObjectFilePrefix {
-   return @"";
-}
+NSString *NSPlatformLoadableObjectFileExtension=@"dll";
+NSString *NSPlatformLoadableObjectFilePrefix=@"";
 
 -(NSArray *)arguments {
    NSMutableArray *result=[NSMutableArray array];
@@ -234,7 +221,7 @@ NSString *NSPlatformClassName=@"NSPlatform_win32";
      count:count];
 }
 
--(NSTimeInterval)timeIntervalSinceReferenceDate {
+NSTimeInterval NSPlatformTimeIntervalSinceReferenceDate() {
    SYSTEMTIME      systemTime;
    FILETIME        fileTime;
 
@@ -269,11 +256,11 @@ NSString *NSPlatformClassName=@"NSPlatform_win32";
     return [NSTimeZone timeZoneForSecondsFromGMT:secondsFromGMT];
 }
 
--(unsigned)processID {
+unsigned NSPlatformProcessID() {
    return GetCurrentProcessId();
 }
 
--(unsigned)threadID {
+unsigned NSPlatformThreadID() {
    return GetCurrentThreadId();
 }
 
@@ -336,11 +323,11 @@ NSString *NSPlatformClassName=@"NSPlatform_win32";
    }
 }
 
--(void)sleepThreadForTimeInterval:(NSTimeInterval)interval {
+void NSPlatformSleepThreadForTimeInterval(NSTimeInterval interval) {
    Win32ThreadSleepForTimeInterval(interval);
 }
 
--(void)logString:(NSString *)string {
+void NSPlatformLogString(NSString *string) {
    NSData     *data=[NSPropertyListWriter_vintage nullTerminatedASCIIDataWithString:string];
    const char *cString=[data bytes];
    unsigned    length=[data length]-1; // skip 0
@@ -352,8 +339,14 @@ NSString *NSPlatformClassName=@"NSPlatform_win32";
    if(length==0 || cString[length-1]!='\n')
     WriteFile(handle,"\n",1,&ignore,NULL);
 
- //  handle=OpenEventLog(NULL,[[[NSProcessInfo processInfo] processName] cString]);
-   ReportEvent(_eventLog,EVENTLOG_ERROR_TYPE,1,1,NULL,1,0,&cString,NULL);
+ //  handle=OpenEventLog(NULL,[processName() cString]);
+   static HANDLE eventLog=NULL;
+   
+   if(eventLog==NULL){
+    eventLog=RegisterEventSource(NULL,[processName() cString]);
+   }
+   
+   ReportEvent(eventLog,EVENTLOG_ERROR_TYPE,1,1,NULL,1,0,&cString,NULL);
  //  CloseEventLog(handle);
 }
 

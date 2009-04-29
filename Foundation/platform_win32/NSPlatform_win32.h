@@ -13,8 +13,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @class NSParentDeathMonitor_win32;
 
 @interface NSPlatform_win32 : NSPlatform {
-   NSString *_processName;
-   HANDLE    _eventLog;
    NSParentDeathMonitor_win32 *_parentDeathMonitor;
 }
 

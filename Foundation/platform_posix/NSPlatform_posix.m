@@ -36,10 +36,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @implementation NSPlatform_posix
 
--(NSString *)fileManagerClassName {
-   return @"NSFileManager_posix";
-}
-
 -(Class)taskClass {
    return [NSTask_posix class];
 }
@@ -139,7 +135,7 @@ static struct passwd *pwent = NULL;
 }
 
 // silly me, we need microsecond granularity!
--(NSTimeInterval)timeIntervalSinceReferenceDate {
+NSTimeInterval NSPlatformTimeIntervalSinceReferenceDate() {
     NSTimeInterval result;
     struct timeval tp;
 
@@ -150,11 +146,11 @@ static struct passwd *pwent = NULL;
     return result;
 }
 
--(unsigned)processID {
+unsigned NSPlatformProcessID() {
     return getpid();
 }
 
--(unsigned)threadID {
+unsigned NSPlatformThreadID() {
     return (unsigned)pthread_self();
 }
 
@@ -187,7 +183,7 @@ static struct passwd *pwent = NULL;
     }
 }
 
--(void)logString:(NSString *)string {
+void NSPlatformLogString(NSString *string) {
     fprintf(stderr, "%s\n", [string UTF8String]);
 }
 

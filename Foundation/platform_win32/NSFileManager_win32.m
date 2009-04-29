@@ -23,6 +23,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <windows.h>
 
+@implementation NSFileManager(windows)
+
++allocWithZone:(NSZone *)zone {
+   return NSAllocateObject([NSFileManager_win32 class],0,NULL);
+}
+
+@end
+
 @implementation NSFileManager_win32
 
 -(BOOL)createFileAtPath:(NSString *)path contents:(NSData *)data 

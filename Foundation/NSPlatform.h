@@ -11,13 +11,17 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @class NSTimeZone, NSThread, NSInputSource,NSInputSourceSet;
 
+FOUNDATION_EXPORT NSString *NSPlatformLoadableObjectFileExtension;
+FOUNDATION_EXPORT NSString *NSPlatformLoadableObjectFilePrefix;
+FOUNDATION_EXPORT NSString *NSPlatformExecutableDirectory;
+FOUNDATION_EXPORT NSString *NSPlatformResourceNameSuffix;
+
 @interface NSPlatform : NSObject
 
 +currentPlatform;
 
 -(NSInputSource *)parentDeathInputSource;
 
--(NSString *)fileManagerClassName;
 -(Class)taskClass;
 -(Class)pipeClass;
 -(Class)lockClass;
@@ -28,29 +32,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(NSString *)fullUserName;
 -(NSString *)homeDirectory;
 -(NSString *)temporaryDirectory;
--(NSString *)executableDirectory;
--(NSString *)resourceNameSuffix;
--(NSString *)loadableObjectFileExtension;
--(NSString *)loadableObjectFilePrefix;
 
 -(NSArray *)arguments;
 -(NSDictionary *)environment;
 
--(NSTimeInterval)timeIntervalSinceReferenceDate;
-
 -(NSTimeZone *)systemTimeZone;
-
--(unsigned)processID;
--(unsigned)threadID;
 
 -(NSString *)hostName;
 
 -(NSString *)DNSHostName;
 -(NSArray *)addressesForDNSHostName:(NSString *)name;
-
--(void)sleepThreadForTimeInterval:(NSTimeInterval)interval;
-
--(void)logString:(NSString *)string;
 
 -(void *)contentsOfFile:(NSString *)path length:(unsigned *)length;
 -(void *)mapContentsOfFile:(NSString *)path length:(unsigned *)length;
@@ -60,6 +51,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)checkEnvironmentKey:(NSString *)key value:(NSString *)value;
 @end
+
+FOUNDATION_EXPORT unsigned NSPlatformProcessID();
+FOUNDATION_EXPORT unsigned NSPlatformThreadID();
+FOUNDATION_EXPORT NSTimeInterval NSPlatformTimeIntervalSinceReferenceDate();
+FOUNDATION_EXPORT void NSPlatformLogString(NSString *string);
+FOUNDATION_EXPORT void NSPlatformSleepThreadForTimeInterval(NSTimeInterval interval);
 
 // These functions are implemented in the platform subproject
 

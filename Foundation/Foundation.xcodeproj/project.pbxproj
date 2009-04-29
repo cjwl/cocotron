@@ -3780,6 +3780,11 @@
 		FE53BE520BA9ED490050277F /* NSXMLNode.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSXMLNode.m; sourceTree = "<group>"; };
 		FE53BE550BA9ED490050277F /* NSXMLParser.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSXMLParser.h; sourceTree = "<group>"; };
 		FE53BE560BA9ED490050277F /* NSXMLParser.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSXMLParser.m; sourceTree = "<group>"; };
+		FE5EA8010FA3896500536850 /* NSMemoryFunctions_bsd.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSMemoryFunctions_bsd.m; sourceTree = "<group>"; };
+		FE5EA8020FA3896500536850 /* NSPlatform_bsd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSPlatform_bsd.h; sourceTree = "<group>"; };
+		FE5EA8030FA3896500536850 /* NSPlatform_bsd.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSPlatform_bsd.m; sourceTree = "<group>"; };
+		FE5EA8040FA3896500536850 /* NSTask_bsd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSTask_bsd.h; sourceTree = "<group>"; };
+		FE5EA8050FA3896500536850 /* NSTask_bsd.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSTask_bsd.m; sourceTree = "<group>"; };
 		FE6DC2550BA902710082AC66 /* NSAffineTransform.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSAffineTransform.h; sourceTree = "<group>"; };
 		FE6DC2560BA902710082AC66 /* NSAffineTransform.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSAffineTransform.m; sourceTree = "<group>"; };
 		FE74776D0BAC4E9000829F4F /* NSDecimal.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSDecimal.h; sourceTree = "<group>"; };
@@ -4140,6 +4145,7 @@
 				6E28034509747A1A00EC542B /* NSZone */,
 				6E28034609747A2500EC542B /* objc */,
 				FEB6CC400B4A1922004FADF2 /* objc.xcodeproj */,
+				FE5EA8000FA3896500536850 /* platform_bsd */,
 				FED70AF80C3B41F7000CBE5B /* platform_darwin */,
 				6E28034709747A4900EC542B /* platform_linux */,
 				6E28034809747A5F00EC542B /* platform_posix */,
@@ -4953,6 +4959,18 @@
 				6EC4AAE80A34D9B200E8D6CA /* NSKeyedUnarchiver.m */,
 			);
 			path = NSKeyedArchiving;
+			sourceTree = "<group>";
+		};
+		FE5EA8000FA3896500536850 /* platform_bsd */ = {
+			isa = PBXGroup;
+			children = (
+				FE5EA8010FA3896500536850 /* NSMemoryFunctions_bsd.m */,
+				FE5EA8020FA3896500536850 /* NSPlatform_bsd.h */,
+				FE5EA8030FA3896500536850 /* NSPlatform_bsd.m */,
+				FE5EA8040FA3896500536850 /* NSTask_bsd.h */,
+				FE5EA8050FA3896500536850 /* NSTask_bsd.m */,
+			);
+			path = platform_bsd;
 			sourceTree = "<group>";
 		};
 		FE74776A0BAC4E0D00829F4F /* NSDecimal */ = {

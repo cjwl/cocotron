@@ -11,12 +11,19 @@
 #import "X11Window.h"
 #import <AppKit/NSScreen.h>
 #import <AppKit/NSApplication.h>
-#import <Foundation/NSPlatform.h>
 #import <AppKit/X11InputSource.h>
 #import <AppKit/NSColor.h>
 #import <AppKit/NSImage.h>
 #import <AppKit/TTFFont.h>
 #import <fcntl.h>
+
+@implementation NSDisplay(X11)
+
++allocWithZone:(NSZone *)zone {
+   return NSAllocateObject([X11Display class],0,NULL);
+}
+
+@end
 
 @implementation X11Display
 

@@ -27,7 +27,7 @@ const NSTimeInterval NSTimeIntervalSince1970 = (NSTimeInterval)978307200.0;
 }
 
 +(NSTimeInterval)timeIntervalSinceReferenceDate {
-   return [[NSPlatform currentPlatform] timeIntervalSinceReferenceDate];
+   return NSPlatformTimeIntervalSinceReferenceDate();
 }
 
 +distantPast {
@@ -48,7 +48,7 @@ const NSTimeInterval NSTimeIntervalSince1970 = (NSTimeInterval)978307200.0;
 
 -init {
    return [self initWithTimeIntervalSinceReferenceDate:
-     [[NSPlatform currentPlatform] timeIntervalSinceReferenceDate]];
+     NSPlatformTimeIntervalSinceReferenceDate()];
 }
 
 
@@ -64,7 +64,7 @@ const NSTimeInterval NSTimeIntervalSince1970 = (NSTimeInterval)978307200.0;
 
 -initWithTimeIntervalSinceNow:(NSTimeInterval)seconds {
    return [self initWithTimeIntervalSinceReferenceDate:
-     [[NSPlatform currentPlatform] timeIntervalSinceReferenceDate]+seconds];
+     NSPlatformTimeIntervalSinceReferenceDate()+seconds];
 }
 
 -initWithTimeInterval:(NSTimeInterval)seconds sinceDate:(NSDate *)other {
@@ -74,7 +74,7 @@ const NSTimeInterval NSTimeIntervalSince1970 = (NSTimeInterval)978307200.0;
 
 +date {
    return [[[self allocWithZone:NULL] initWithTimeIntervalSinceReferenceDate:
-     [[NSPlatform currentPlatform] timeIntervalSinceReferenceDate]] autorelease];
+     NSPlatformTimeIntervalSinceReferenceDate()] autorelease];
 }
     
 +dateWithString:(NSString *)string {

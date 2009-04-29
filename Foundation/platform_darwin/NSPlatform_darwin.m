@@ -86,7 +86,7 @@ NSString *NSPlatformClassName=@"NSPlatform_darwin";
 // nanosleep() is IEEE Std 1003.1b-1993, POSIX.1
 // This can probably move down to NSPlatform_posix
 
--(void)sleepThreadForTimeInterval:(NSTimeInterval)interval {
+void NSPlatformSleepThreadForTimeInterval(NSTimeInterval interval) {
   double intervalIntegralPart, intervalFractionalPart;
   struct timespec intervalTimeSpec;
   
@@ -114,21 +114,11 @@ NSString *NSPlatformClassName=@"NSPlatform_darwin";
     return [self hostName];
 }
 
--(NSString *)executableDirectory {
-   return @"Darwin";
-}
+NSString *NSPlatformExecutableDirectory=@"Darwin";
+NSString *NSPlatformResourceNameSuffix=@"darwin";
 
--(NSString *)resourceNameSuffix {
-   return @"darwin";
-}
-
--(NSString *)loadableObjectFileExtension {
-   return @"";
-}
-
--(NSString *)loadableObjectFilePrefix {
-   return @"";
-}
+NSString *NSPlatformLoadableObjectFileExtension=@"";
+NSString *NSPlatformLoadableObjectFilePrefix=@"";
 
 -(Class)taskClass {
    return [NSTask_darwin class];

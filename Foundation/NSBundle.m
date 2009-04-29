@@ -48,14 +48,13 @@ static NSMapTable *pathToObject=NULL;
    NSString *result=nil;
    NSString *directory=[path stringByDeletingLastPathComponent];
    NSString *extension=[[path pathExtension] lowercaseString];
-   NSString *loadableExtension=[[NSPlatform currentPlatform] loadableObjectFileExtension];
    NSString *name=[[path lastPathComponent] stringByDeletingPathExtension];
    NSRange   version=[name rangeOfString:@"."];
 
    if(version.location!=NSNotFound)
     name=[name substringToIndex:version.location];
 
-   if(![extension isEqualToString:loadableExtension]){
+   if(![extension isEqualToString:NSPlatformLoadableObjectFileExtension]){
     NSString *check=[[directory stringByAppendingPathComponent:name] stringByAppendingPathExtension:@"app"];
 		
     if([[NSFileManager defaultManager] fileExistsAtPath:check])
@@ -64,7 +63,7 @@ static NSMapTable *pathToObject=NULL;
      result=[[directory stringByDeletingLastPathComponent] stringByDeletingLastPathComponent];
    }
    else {
-    NSString *loadablePrefix=[[NSPlatform currentPlatform] loadableObjectFilePrefix];
+    NSString *loadablePrefix=NSPlatformLoadableObjectFilePrefix;
     NSString *check;
 	
     if([loadablePrefix length]>0 && [name hasPrefix:loadablePrefix])
@@ -329,8 +328,6 @@ static NSMapTable *pathToObject=NULL;
  */
  
 -(NSString *)_findExecutable {
-   NSString *loadableObjectFileExtension=[[NSPlatform currentPlatform] loadableObjectFileExtension];
-   NSString *executableDirectory=[[NSPlatform currentPlatform] executableDirectory];
    NSString *type=[_path pathExtension];
    NSString *name=[[self infoDictionary] objectForKey:@"CFBundleExecutable"];
    NSString *checkDir;
@@ -343,7 +340,7 @@ static NSMapTable *pathToObject=NULL;
    if([type isEqualToString:@"framework"])
     checkDir=[[[_path stringByDeletingLastPathComponent] stringByDeletingLastPathComponent] stringByAppendingPathComponent:@"Executables"];
    else
-    checkDir=[[_path stringByAppendingPathComponent:@"Contents"] stringByAppendingPathComponent:executableDirectory];
+    checkDir=[[_path stringByAppendingPathComponent:@"Contents"] stringByAppendingPathComponent:NSPlatformExecutableDirectory];
 	
    contents=[[NSFileManager defaultManager] directoryContentsAtPath:checkDir];
    count=[contents count];
@@ -355,12 +352,12 @@ static NSMapTable *pathToObject=NULL;
     if([check hasPrefix:name]){
      NSString *ext=[check pathExtension];
 
-     if([ext isEqualToString:loadableObjectFileExtension])
+     if([ext isEqualToString:NSPlatformLoadableObjectFileExtension])
       return [checkDir stringByAppendingPathComponent:check];
     }
    }
 
-   return [[_path stringByAppendingPathComponent:name] stringByAppendingPathExtension:loadableObjectFileExtension];
+   return [[_path stringByAppendingPathComponent:name] stringByAppendingPathExtension:NSPlatformLoadableObjectFileExtension];
 }
 
 -(NSString *)executablePath {
@@ -420,7 +417,7 @@ static NSMapTable *pathToObject=NULL;
 -(NSString *)pathForResource:(NSString *)name ofType:(NSString *)type inDirectory:(NSString *)directory {
    NSString *file,*path;
 
-   file=[[name stringByAppendingFormat:@"-%@",[[NSPlatform currentPlatform] resourceNameSuffix]] stringByAppendingPathExtension:type];
+   file=[[name stringByAppendingFormat:@"-%@",NSPlatformResourceNameSuffix] stringByAppendingPathExtension:type];
    if((path=[self pathForResourceFile:file inDirectory:directory])!=nil)
     return path;
 

@@ -90,7 +90,6 @@
 		C889745D0EA0BF3100D0A0A2 /* NSPageLayout.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54700976075200DA0954 /* NSPageLayout.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		C889745E0EA0BF3100D0A0A2 /* NSPanel.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54720976075200DA0954 /* NSPanel.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
 		C889745F0EA0BF3100D0A0A2 /* NSPasteboard.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54740976075200DA0954 /* NSPasteboard.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
-		C88974600EA0BF3100D0A0A2 /* NSPlatform.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54760976075200DA0954 /* NSPlatform.h */; settings = {ATTRIBUTES = (Project, Private, ); }; };
 		C88974610EA0BF3100D0A0A2 /* NSPopUpButton.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54780976075200DA0954 /* NSPopUpButton.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
 		C88974620EA0BF3100D0A0A2 /* NSPopUpButtonCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B547A0976075200DA0954 /* NSPopUpButtonCell.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
 		C88974630EA0BF3100D0A0A2 /* NSPopUpView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B547C0976075200DA0954 /* NSPopUpView.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -771,7 +770,6 @@
 		C8A2E2DE0F07EA1F0054397C /* NSPageLayout.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54700976075200DA0954 /* NSPageLayout.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		C8A2E2DF0F07EA1F0054397C /* NSPanel.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54720976075200DA0954 /* NSPanel.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
 		C8A2E2E00F07EA1F0054397C /* NSPasteboard.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54740976075200DA0954 /* NSPasteboard.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
-		C8A2E2E10F07EA1F0054397C /* NSPlatform.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54760976075200DA0954 /* NSPlatform.h */; settings = {ATTRIBUTES = (Project, Private, ); }; };
 		C8A2E2E20F07EA1F0054397C /* NSPopUpButton.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54780976075200DA0954 /* NSPopUpButton.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
 		C8A2E2E30F07EA1F0054397C /* NSPopUpButtonCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B547A0976075200DA0954 /* NSPopUpButtonCell.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
 		C8A2E2E40F07EA1F0054397C /* NSPopUpView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B547C0976075200DA0954 /* NSPopUpView.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -1493,7 +1491,6 @@
 		FE01A8440C5D9BCB00AEA51A /* NSPageLayout.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54700976075200DA0954 /* NSPageLayout.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE01A8450C5D9BCB00AEA51A /* NSPanel.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54720976075200DA0954 /* NSPanel.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
 		FE01A8460C5D9BCB00AEA51A /* NSPasteboard.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54740976075200DA0954 /* NSPasteboard.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
-		FE01A8470C5D9BCB00AEA51A /* NSPlatform.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54760976075200DA0954 /* NSPlatform.h */; settings = {ATTRIBUTES = (Project, Private, ); }; };
 		FE01A8480C5D9BCB00AEA51A /* NSPopUpButton.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54780976075200DA0954 /* NSPopUpButton.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
 		FE01A8490C5D9BCB00AEA51A /* NSPopUpButtonCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B547A0976075200DA0954 /* NSPopUpButtonCell.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
 		FE01A84A0C5D9BCB00AEA51A /* NSPopUpView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B547C0976075200DA0954 /* NSPopUpView.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -1885,7 +1882,6 @@
 		FE01A9F10C5D9BCB00AEA51A /* Win32Workspace.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B562C0976075400DA0954 /* Win32Workspace.m */; settings = {ATTRIBUTES = (); }; };
 		FE01A9F20C5D9BCB00AEA51A /* NSSavePanel-Win32.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B562E0976075400DA0954 /* NSSavePanel-Win32.m */; settings = {ATTRIBUTES = (); }; };
 		FE01A9F30C5D9BCB00AEA51A /* NSOpenPanel-Win32.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B56300976075400DA0954 /* NSOpenPanel-Win32.m */; settings = {ATTRIBUTES = (); }; };
-		FE01A9F40C5D9BCB00AEA51A /* NSPlatform-Win32.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B56320976075400DA0954 /* NSPlatform-Win32.m */; settings = {ATTRIBUTES = (); }; };
 		FE01A9F50C5D9BCB00AEA51A /* dllmain.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B56620976075400DA0954 /* dllmain.m */; settings = {ATTRIBUTES = (); }; };
 		FE01A9F60C5D9BCB00AEA51A /* Win32DraggingManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B566B0976075400DA0954 /* Win32DraggingManager.m */; settings = {ATTRIBUTES = (); }; };
 		FE01A9F70C5D9BCB00AEA51A /* Win32DragSession.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B566D0976075400DA0954 /* Win32DragSession.m */; settings = {ATTRIBUTES = (); }; };
@@ -2484,7 +2480,6 @@
 		6E2B54700976075200DA0954 /* NSPageLayout.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NSPageLayout.h; sourceTree = "<group>"; };
 		6E2B54720976075200DA0954 /* NSPanel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NSPanel.h; sourceTree = "<group>"; };
 		6E2B54740976075200DA0954 /* NSPasteboard.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NSPasteboard.h; sourceTree = "<group>"; };
-		6E2B54760976075200DA0954 /* NSPlatform.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NSPlatform.h; sourceTree = "<group>"; };
 		6E2B54780976075200DA0954 /* NSPopUpButton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NSPopUpButton.h; sourceTree = "<group>"; };
 		6E2B547A0976075200DA0954 /* NSPopUpButtonCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NSPopUpButtonCell.h; sourceTree = "<group>"; };
 		6E2B547C0976075200DA0954 /* NSPopUpView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NSPopUpView.h; sourceTree = "<group>"; };
@@ -2646,7 +2641,6 @@
 		6E2B562C0976075400DA0954 /* Win32Workspace.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Win32Workspace.m; sourceTree = "<group>"; };
 		6E2B562E0976075400DA0954 /* NSSavePanel-Win32.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSSavePanel-Win32.m"; sourceTree = "<group>"; };
 		6E2B56300976075400DA0954 /* NSOpenPanel-Win32.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSOpenPanel-Win32.m"; sourceTree = "<group>"; };
-		6E2B56320976075400DA0954 /* NSPlatform-Win32.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSPlatform-Win32.m"; sourceTree = "<group>"; };
 		6E2B56370976075400DA0954 /* Win32Cursor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Win32Cursor.h; sourceTree = "<group>"; };
 		6E2B563B0976075400DA0954 /* KGDeviceContext_gdi_ddb.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KGDeviceContext_gdi_ddb.h; sourceTree = "<group>"; };
 		6E2B563D0976075400DA0954 /* Win32DeviceContextPrinter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Win32DeviceContextPrinter.h; sourceTree = "<group>"; };
@@ -3303,7 +3297,6 @@
 				6E2B53990976075200DA0954 /* NSPasteboard.m */,
 				FE2A10EF0B45BC4F006C03DE /* NSPDFImageRep.h */,
 				FE2A10F00B45BC4F006C03DE /* NSPDFImageRep.m */,
-				6E2B54760976075200DA0954 /* NSPlatform.h */,
 				6E2B54780976075200DA0954 /* NSPopUpButton.h */,
 				6E2B539B0976075200DA0954 /* NSPopUpButton.m */,
 				6E2B547A0976075200DA0954 /* NSPopUpButtonCell.h */,
@@ -3806,7 +3799,6 @@
 				FE4434030BB9833B00411464 /* NSGraphicsStyle_uxtheme.m */,
 				6E2B565D0976075400DA0954 /* NSOpenPanel-Win32.h */,
 				6E2B56300976075400DA0954 /* NSOpenPanel-Win32.m */,
-				6E2B56320976075400DA0954 /* NSPlatform-Win32.m */,
 				6E2B565B0976075400DA0954 /* NSSavePanel-Win32.h */,
 				6E2B562E0976075400DA0954 /* NSSavePanel-Win32.m */,
 				6E2B56370976075400DA0954 /* Win32Cursor.h */,
@@ -4265,7 +4257,6 @@
 				C889745D0EA0BF3100D0A0A2 /* NSPageLayout.h in Headers */,
 				C889745E0EA0BF3100D0A0A2 /* NSPanel.h in Headers */,
 				C889745F0EA0BF3100D0A0A2 /* NSPasteboard.h in Headers */,
-				C88974600EA0BF3100D0A0A2 /* NSPlatform.h in Headers */,
 				C88974610EA0BF3100D0A0A2 /* NSPopUpButton.h in Headers */,
 				C88974620EA0BF3100D0A0A2 /* NSPopUpButtonCell.h in Headers */,
 				C88974630EA0BF3100D0A0A2 /* NSPopUpView.h in Headers */,
@@ -4627,7 +4618,6 @@
 				C8A2E2DE0F07EA1F0054397C /* NSPageLayout.h in Headers */,
 				C8A2E2DF0F07EA1F0054397C /* NSPanel.h in Headers */,
 				C8A2E2E00F07EA1F0054397C /* NSPasteboard.h in Headers */,
-				C8A2E2E10F07EA1F0054397C /* NSPlatform.h in Headers */,
 				C8A2E2E20F07EA1F0054397C /* NSPopUpButton.h in Headers */,
 				C8A2E2E30F07EA1F0054397C /* NSPopUpButtonCell.h in Headers */,
 				C8A2E2E40F07EA1F0054397C /* NSPopUpView.h in Headers */,
@@ -4987,7 +4977,6 @@
 				FE01A8440C5D9BCB00AEA51A /* NSPageLayout.h in Headers */,
 				FE01A8450C5D9BCB00AEA51A /* NSPanel.h in Headers */,
 				FE01A8460C5D9BCB00AEA51A /* NSPasteboard.h in Headers */,
-				FE01A8470C5D9BCB00AEA51A /* NSPlatform.h in Headers */,
 				FE01A8480C5D9BCB00AEA51A /* NSPopUpButton.h in Headers */,
 				FE01A8490C5D9BCB00AEA51A /* NSPopUpButtonCell.h in Headers */,
 				FE01A84A0C5D9BCB00AEA51A /* NSPopUpView.h in Headers */,
@@ -6427,7 +6416,6 @@
 				FE01A9F10C5D9BCB00AEA51A /* Win32Workspace.m in Sources */,
 				FE01A9F20C5D9BCB00AEA51A /* NSSavePanel-Win32.m in Sources */,
 				FE01A9F30C5D9BCB00AEA51A /* NSOpenPanel-Win32.m in Sources */,
-				FE01A9F40C5D9BCB00AEA51A /* NSPlatform-Win32.m in Sources */,
 				FE01A9F50C5D9BCB00AEA51A /* dllmain.m in Sources */,
 				FE01A9F60C5D9BCB00AEA51A /* Win32DraggingManager.m in Sources */,
 				FE01A9F70C5D9BCB00AEA51A /* Win32DragSession.m in Sources */,

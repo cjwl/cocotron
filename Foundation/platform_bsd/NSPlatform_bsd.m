@@ -52,8 +52,7 @@ NSString	*NSPlatformClassName = @"NSPlatform_bsd";
 	return [NSTimeZone timeZoneForSecondsFromGMT:(int)tmz.tm_gmtoff];
 }
 
-- (void)sleepThreadForTimeInterval:(NSTimeInterval)interval
-{
+void NSPlatformSleepThreadForTimeInterval(NSTimeInterval interval) {
 	 if (interval <= 0.0)
 		  return;
 
@@ -76,25 +75,11 @@ NSString	*NSPlatformClassName = @"NSPlatform_bsd";
 	 return [self hostName];
 }
 
-- (NSString *)executableDirectory
-{
-	return @"BSD";
-}
+NSString *NSPlatformExecutableDirectory=@"BSD";
+NSString *NSPlatformResourceNameSuffix=@"bsd";
 
-- (NSString *)resourceNameSuffix
-{
-	return @"bsd";
-}
-
-- (NSString *)loadableObjectFileExtension
-{
-	return @"so";
-}
-
-- (NSString *)loadableObjectFilePrefix
-{
-	return @"lib";
-}
+NSString *NSPlatformLoadableObjectFileExtension=@"so";
+NSString *NSPlatformLoadableObjectFilePrefix=@"lib";
 
 - (Class)taskClass
 {

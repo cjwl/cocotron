@@ -11,7 +11,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSTimer.h>
 #import <Foundation/NSDelayedPerform.h>
 #import <Foundation/NSInputSourceSet.h>
-#import <Foundation/NSPlatform.h>
 #import <Foundation/NSString.h>
 #import <Foundation/NSSocket.h>
 #import <Foundation/NSSelectInputSource.h>

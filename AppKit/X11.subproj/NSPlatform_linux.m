@@ -13,10 +13,6 @@
 
 @implementation NSPlatform_linux (GTKAppKit)
 
--(NSString *)displayClassName {
-	return @"X11Display";
-}
-
 -(id)asynchronousInputSourceSets {
    return [NSArray arrayWithObject:[[X11AsyncInputSourceSet new] autorelease]];
 }
