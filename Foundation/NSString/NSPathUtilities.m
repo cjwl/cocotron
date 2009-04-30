@@ -104,10 +104,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    unichar  characters[totalLength];
 
    [self getCharacters:characters];
-   characters[selfLength]=SLASH;
-   [other getCharacters:characters+selfLength+1];
+   unsigned p=selfLength;
+   while(--p>=0 && ISSLASH(characters[p]));
+   characters[++p]=SLASH;
+   unsigned q=0;
+   while(q<otherLength && ISSLASH([other characterAtIndex:q])) q++;
+   [other getCharacters:characters+p+1 range:NSMakeRange(q, otherLength-q)];
 
-   return [NSString stringWithCharacters:characters length:totalLength];
+   return [NSString stringWithCharacters:characters length:p+1-q+otherLength];
 }
 
 -(NSString *)stringByAppendingPathExtension:(NSString *)other {

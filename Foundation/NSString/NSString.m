@@ -580,13 +580,11 @@ static inline void reverseString(unichar *buf, unsigned len) {
     range.location = length - (range.location + range.length);
    }
 
-   if(options & NSAnchoredSearch) {
-    NSUnimplementedMethod();
-   }
-
    computeNext(next,patbuffer,patlength);
    
    NSRange foundRange = rangeOfPatternNext(buffer,patbuffer,next,patlength,range);
+   if(options & NSAnchoredSearch && foundRange.location != 0)
+    return NSMakeRange(NSNotFound,0);
    
    if((options & NSBackwardsSearch) && foundRange.location != NSNotFound) {
     foundRange.location = length - foundRange.location - foundRange.length;
