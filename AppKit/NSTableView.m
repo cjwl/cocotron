@@ -584,12 +584,17 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
     return [_dataSource tableView:self objectValueForTableColumn:tableColumn row:row];
 }
 
-- (NSRect)_adjustedDataCellFrame:(NSRect)frame
+- (NSRect)_adjustedFrame:(NSRect)frame forCell:(NSCell *)dataCell
 {
    frame.origin.x    += _intercellSpacing.width  - 1;
-   frame.origin.y    += _intercellSpacing.height + 1;
+   frame.origin.y    += _intercellSpacing.height;
    frame.size.width  -= _intercellSpacing.width;
-   frame.size.height -= _intercellSpacing.height + 1;
+   frame.size.height -= _intercellSpacing.height;
+   if ([dataCell isKindOfClass:[NSTextFieldCell class]])
+   {
+      frame.origin.y++;
+      frame.size.height--;
+   }
    return frame;
 }
 
@@ -613,12 +618,13 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
       [NSException raise:NSInternalInconsistencyException
                   format:@"data source does not respond to tableView:setObjectValue:forTableColumn:row: and binding is read-only"];
    
+   editingCell = [[editingColumn dataCellForRow:row] copy];
    _editedColumn = column;
    _editedRow = row;
    _editingFrame  = [self frameOfCellAtColumn:column row:row];
    _editingBorder = _editingFrame; _editingBorder.size.width++; _editingBorder.size.height++; 
-   _editingFrame  = [self _adjustedDataCellFrame:_editingFrame];
-   if ([(editingCell = [[editingColumn dataCellForRow:row] copy]) isKindOfClass:[NSTextFieldCell class]])
+   _editingFrame  = [self _adjustedFrame:_editingFrame forCell:editingCell];
+   if ([editingCell isKindOfClass:[NSTextFieldCell class]])
    {
       _editingCell = editingCell;
       [_editingCell setDrawsBackground:YES];
@@ -936,7 +942,7 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
        if (!(row == _editedRow && drawThisColumn == _editedColumn)) {
           NSCell *dataCell=[self preparedCellAtColumn:drawThisColumn row:row];
           NSTableColumn *column = [_tableColumns objectAtIndex:drawThisColumn];
-          NSRect cellRect = [self _adjustedDataCellFrame:[self frameOfCellAtColumn:drawThisColumn row:row]];
+          NSRect cellRect = [self _adjustedFrame:[self frameOfCellAtColumn:drawThisColumn row:row] forCell:dataCell];
           if ([_delegate respondsToSelector:@selector(tableView:willDisplayCell:forTableColumn:row:)])
              [_delegate tableView:self willDisplayCell:dataCell forTableColumn:column row:row];
           
@@ -991,7 +997,7 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
    
    NSPoint pt0, pt1;
    NSBezierPath *line = [NSBezierPath bezierPath];
-   [_gridColor set];
+   [_gridColor setStroke];
    
    if (_gridStyleMask & NSTableViewSolidVerticalGridLineMask == NSTableViewSolidVerticalGridLineMask)
    {
@@ -1221,10 +1227,10 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
    
    if (_editingCell != nil && _editedColumn != -1 && _editedRow != -1)
    {
-      [_backgroundColor set];
+      [_backgroundColor setFill];
       NSRectFill(_editingBorder);
       [_editingCell drawWithFrame:_editingFrame inView:self];
-      [[NSColor keyboardFocusIndicatorColor] set];
+      [[NSColor keyboardFocusIndicatorColor] setStroke];
       NSFrameRectWithWidth(_editingBorder, 2.0);
    }
    
