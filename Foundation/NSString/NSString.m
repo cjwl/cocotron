@@ -349,8 +349,28 @@ int __CFConstantStringClassReference[1];
    [self getCharacters:unicode range:range];
 }
 
-static inline NSComparisonResult compareWithOptions(NSString *self,NSString *other,unsigned options,NSRange range){
-   unsigned i,otherLength=[other length];
+static inline BOOL isNumChar(unichar c)
+{
+   return ('0' <= c && c <= '9');
+}
+
+static inline unsigned uctoi(unichar *c, int *len)
+{
+   unsigned  i = 0;
+   unsigned  n = *len;
+   char      num[n+1];
+   
+   while (i < n && isNumChar(c[i]))
+      num[i] = c[i++];
+   num[i] = '\0';
+   *len = i;
+   return atoi(num);
+}
+
+static NSComparisonResult compareWithOptions(NSString *self,NSString *other,unsigned options,NSRange range){
+   unsigned i,j,il,jl;
+   unsigned otherLength=[other length];
+   int      numResult;
    unichar  selfBuf[range.length],otherBuf[otherLength];
 
    [self getCharacters:selfBuf range:range];
@@ -361,12 +381,33 @@ static inline NSComparisonResult compareWithOptions(NSString *self,NSString *oth
     NSUnicodeToUppercase(otherBuf,otherLength);
    }
 
+   if(options&NSNumericSearch) {
+    for(i=0,j=0;i<range.length && j<otherLength;i++,j++) {
+     if(isNumChar(selfBuf[i]) && isNumChar(otherBuf[j])) {
+      il=range.length;
+      jl=otherLength; 
+      numResult=uctoi(&selfBuf[i],&il)-uctoi(&otherBuf[j],&jl);
+      if(numResult<0)
+       return NSOrderedAscending;
+      else if(numResult>0)
+       return NSOrderedDescending;
+      i+=il;
+      j+=jl;
+     }
+     if(selfBuf[i]<otherBuf[j])
+      return NSOrderedAscending;
+     else if(selfBuf[i]>otherBuf[j])
+      return NSOrderedDescending;
+    }
+   }
+   else {
    for(i=0;i<range.length && i<otherLength;i++)
     if(selfBuf[i]<otherBuf[i])
      return NSOrderedAscending;
     else if(selfBuf[i]>otherBuf[i])
      return NSOrderedDescending;
-
+   }
+   
    if(range.length==otherLength)
     return NSOrderedSame;
 
