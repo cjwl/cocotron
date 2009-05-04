@@ -49,7 +49,7 @@ void KGPaintRadialGradient(KGPaint_radialGradient *self,CGFloat *g, CGFloat *rho
 
 	CGFloat D = -1.0f / (Vector2Dot(fp,fp) - r*r);
 	CGPoint p=CGPointMake(x, y);
-	p = Vector2Subtract(CGAffineTransformTransformVector2(self->m_surfaceToPaintMatrix, p), c);
+	p = Vector2Subtract(CGPointApplyAffineTransform(p,self->m_surfaceToPaintMatrix), c);
 	CGPoint d = Vector2Subtract(p,fp);
 	CGFloat s = (CGFloat)sqrt(r*r*Vector2Dot(d,d) - RI_SQR(p.x*fp.y - p.y*fp.x));
 	*g = (Vector2Dot(fp,d) + s) * D;

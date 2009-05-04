@@ -1253,7 +1253,7 @@ void KGImageEWAOnMipmaps_lRGBAffff_PRE(KGImage *self,int x, int y,KGRGBAffff *sp
    KGImageMakeMipMaps(self);
    
    CGPoint uv=CGPointMake(0,0);
-   uv=CGAffineTransformTransformVector2(surfaceToImage ,uv);
+   uv=CGPointApplyAffineTransform(uv,surfaceToImage);
 
    
 		CGFloat Ux = (surfaceToImage.a ) * m_pixelFilterRadius;
@@ -1331,7 +1331,7 @@ void KGImageEWAOnMipmaps_lRGBAffff_PRE(KGImage *self,int x, int y,KGRGBAffff *sp
 
    for(i=0;i<length;i++,x++){
     uv=CGPointMake(x+0.5f,y+0.5f);
-    uv=CGAffineTransformTransformVector2(surfaceToImage ,uv);
+    uv=CGPointApplyAffineTransform(uv,surfaceToImage);
    
 		CGFloat U0 = uv.x;
 		CGFloat V0 = uv.y;

@@ -55,6 +55,7 @@ typedef struct Edge {
    CGFloat      bmaxx;
    int          minx;
    int          maxx;
+   CGFloat     *samples;
 } Edge;
 
 typedef void (*KGBlendSpan_RGBA8888)(KGRGBA8888 *src,KGRGBA8888 *dst,int length);

@@ -42,7 +42,6 @@ static inline int RI_ISNAN(float a) {
 static inline CGFloat	RI_MAX(CGFloat a, CGFloat b)				{ return (a > b) ? a : b; }
 static inline CGFloat	RI_MIN(CGFloat a, CGFloat b)				{ return (a < b) ? a : b; }
 static inline CGFloat	RI_CLAMP(CGFloat a, CGFloat l, CGFloat h)	{ if(RI_ISNAN(a)) return l; RI_ASSERT(l <= h); return (a < l) ? l : (a > h) ? h : a; }
-static inline CGFloat	RI_ABS(CGFloat a)							{ return (a < 0.0f) ? -a : a; }
 static inline CGFloat	RI_SQR(CGFloat a)							{ return a * a; }
 static inline CGFloat	RI_MOD(CGFloat a, CGFloat b){
    if(RI_ISNAN(a) || RI_ISNAN(b))
@@ -79,11 +78,5 @@ static inline CGPoint Vector2Subtract(CGPoint v1,CGPoint v2){
 
 static inline CGFloat Vector2Dot(CGPoint v1,CGPoint v2){
    return v1.x*v2.x+v1.y*v2.y;
-}
-
-//matrix * column vector. 
-
-static inline CGPoint CGAffineTransformTransformVector2(CGAffineTransform m,CGPoint v){
-   return CGPointMake(v.x * m.a + v.y * m.c + m.tx, v.x * m.b + v.y * m.d + m.ty);
 }
 

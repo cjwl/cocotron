@@ -291,10 +291,11 @@ static void KGBlendSpanColorDodge_ffff(KGRGBAffff *src,KGRGBAffff *dst,int lengt
     KGRGBAffff s=src[i];
     KGRGBAffff d=dst[i];
     KGRGBAffff r;
-    
-    r.r=(s.r==1)?1:RI_MIN(1,d.r/(1.0-s.r));
-    r.g=(s.g==1)?1:RI_MIN(1,d.g/(1.0-s.g));
-    r.b=(s.b==1)?1:RI_MIN(1,d.b/(1.0-s.b));
+
+    r.r=(s.r==1.0f)?1.0f:RI_MIN(1.0f,d.r/(1.0f-s.r));
+    r.g=(s.g==1.0f)?1.0f:RI_MIN(1.0f,d.g/(1.0f-s.g));
+    r.b=(s.b==1.0f)?1.0f:RI_MIN(1.0f,d.b/(1.0f-s.b));
+
     r.a = s.a + d.a * (1.0f - s.a);
     src[i]=r;
    }
@@ -311,7 +312,7 @@ static void KGBlendSpanColorBurn_ffff(KGRGBAffff *src,KGRGBAffff *dst,int length
     r.r=(s.r==0)?0:1.0-RI_MIN(1.0,(1.0-d.r)/s.r);
     r.g=(s.g==0)?0:1.0-RI_MIN(1.0,(1.0-d.g)/s.g);
     r.b=(s.b==0)?0:1.0-RI_MIN(1.0,(1.0-d.b)/s.b);
-    r.a=(s.a==0)?0:1.0-RI_MIN(1.0,(1.0-d.a)/s.a);
+    r.a = s.a + d.a * (1.0f - s.a);
     src[i]=r;
    }
 }
@@ -320,10 +321,39 @@ static void KGBlendSpanHardLight_ffff(KGRGBAffff *src,KGRGBAffff *dst,int length
    int i;
    
    for(i=0;i<length;i++){
-    //KGRGBAffff s=src[i];
+    KGRGBAffff s=src[i];
     KGRGBAffff d=dst[i];
     KGRGBAffff r=d;
     
+
+    if(s.r<=0.5){
+     s.r*=2;
+     r.r = s.r * (1.0f - d.a + d.r) + d.r * (1.0f - s.a);
+    }
+    else {
+     s.r=2*s.r-1;
+     r.r = s.r + d.r - s.r*d.r;
+    }
+    
+    if(s.g<=0.5){
+     s.g*=2;
+     r.g = s.g * (1.0f - d.a + d.g) + d.g * (1.0f - s.a);
+    }
+    else {
+     s.g=2*s.g-1;
+     r.g = s.g + d.g - s.g*d.g;
+    }
+    
+    if(s.b<=0.5){
+     s.b*=2;
+     r.b = s.b * (1.0f - d.a + d.b) + d.b * (1.0f - s.a);
+    }
+    else {
+     s.b=2*s.b-1;
+     r.b = s.b + d.b - s.b*d.b;
+    }
+    
+    r.a = s.a + d.a * (1.0f - s.a);
     src[i]=r;
    }
 }
@@ -356,7 +386,7 @@ static void KGBlendSpanDifference_ffff(KGRGBAffff *src,KGRGBAffff *dst,int lengt
    }
 }
 static void KGBlendSpanExclusion_ffff(KGRGBAffff *src,KGRGBAffff *dst,int length){
-// broken
+// Passes Visual Test
    int i;
    
    for(i=0;i<length;i++){
@@ -365,8 +395,8 @@ static void KGBlendSpanExclusion_ffff(KGRGBAffff *src,KGRGBAffff *dst,int length
     KGRGBAffff r;
     
     r.r = (s.r * d.a + d.r * s.a - 2 * s.r * d.r) + s.r * (1 - d.a) + d.r * (1 - s.a);
-    r.g = (s.g * d.a + d.g * s.a - 2 * s.g * d.r) + s.g * (1 - d.a) + d.g * (1 - s.a);
-    r.b = (s.b * d.a + d.b * s.a - 2 * s.b * d.r) + s.b * (1 - d.a) + d.b * (1 - s.a);
+    r.g = (s.g * d.a + d.g * s.a - 2 * s.g * d.g) + s.g * (1 - d.a) + d.g * (1 - s.a);
+    r.b = (s.b * d.a + d.b * s.a - 2 * s.b * d.b) + s.b * (1 - d.a) + d.b * (1 - s.a);
     r.a = s.a + d.a * (1.0f - s.a);
     src[i]=r;
    }
@@ -657,18 +687,12 @@ static void KGBlendSpanPlusDarker_ffff(KGRGBAffff *src,KGRGBAffff *dst,int lengt
     KGRGBAffff d=dst[i];
     KGRGBAffff r;
     
-#if 0
+#if 1
 // Doc.s say:  R = MAX(0, (1 - D) + (1 - S)). No workie.
-    r.r=RI_MAX(0,(1-d.r)+(1-s.r));
-    r.g=RI_MAX(0,(1-d.g)+(1-s.g));
-    r.b=RI_MAX(0,(1-d.b)+(1-s.b));
-    r.a=RI_MAX(0,(1-d.a)+(1-s.a));
-#else
-    r.r=RI_MIN(1.0,(1-d.r)+(1-s.r));
-    r.g=RI_MIN(1.0,(1-d.g)+(1-s.g));
-    r.b=RI_MIN(1.0,(1-d.b)+(1-s.b));
-    r.a = s.a ;
-//        r.a=RI_MIN(1.0,(1-d.a)+(1-s.a));
+    r.r = RI_MAX(0,(1-d.r)+(1-s.r));
+    r.g = RI_MAX(0,(1-d.g)+(1-s.g));
+    r.b = RI_MAX(0,(1-d.b)+(1-s.b));
+    r.a = RI_MAX(0,(1-d.a)+(1-s.a));
 #endif
     src[i]=r;
    }
