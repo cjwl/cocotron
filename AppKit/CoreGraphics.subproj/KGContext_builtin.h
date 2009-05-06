@@ -56,6 +56,8 @@ typedef struct Edge {
    int          minx;
    int          maxx;
    CGFloat     *samples;
+   CGFloat      minSample;
+   CGFloat      maxSample;
 } Edge;
 
 typedef void (*KGBlendSpan_RGBA8888)(KGRGBA8888 *src,KGRGBA8888 *dst,int length);
@@ -93,6 +95,7 @@ typedef void (*KGWriteCoverage_RGBA8888)(KGSurface *surface,KGSurface *mask,KGPa
     CGFloat *samplesX;
     CGFloat  samplesInitialY;
     CGFloat  samplesDeltaY;
+    int alias;
 }
 
 -(void)setWidth:(size_t)width height:(size_t)height reallocateOnlyIfRequired:(BOOL)roir;
