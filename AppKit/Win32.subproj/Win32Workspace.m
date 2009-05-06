@@ -32,19 +32,33 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return ((int)ShellExecuteW(GetDesktopWindow(),L"open",[path fileSystemRepresentationW],NULL,NULL,SW_SHOWNORMAL)<=32)?NO:YES;
 }
 
+static BOOL openFileWithHelpViewer(const char *helpFilePath)
+{
+   char buf[1024];
+   snprintf(buf, sizeof(buf), "hh.exe %s", helpFilePath);
+   return ((int)WinExec(buf, SW_SHOWNORMAL)<=32)?NO:YES;
+}
+
 -(BOOL)openFile:(NSString *)path withApplication:(NSString *)appName {
 #if 1
-   NSBundle *bundle=[NSBundle bundleForClass:isa];
-   NSString *bundlePath=[bundle bundlePath];
-   NSString *app=[[[[[[[bundlePath stringByDeletingLastPathComponent] stringByDeletingLastPathComponent] stringByAppendingPathComponent:@"Applications"] stringByAppendingPathComponent:appName] stringByAppendingPathExtension:@"app"] stringByAppendingPathComponent:appName] stringByAppendingPathExtension:@"exe"];
-   NSMutableData *args=[NSMutableData data];
+   if(!strcmp([appName UTF8String], "Help Viewer"))
+   {
+		return openFileWithHelpViewer([path fileSystemRepresentation]);
+   }
+   else
+   {
+    NSBundle *bundle=[NSBundle bundleForClass:isa];
+    NSString *bundlePath=[bundle bundlePath];
+    NSString *app=[[[[[[[bundlePath stringByDeletingLastPathComponent] stringByDeletingLastPathComponent] stringByAppendingPathComponent:@"Applications"] stringByAppendingPathComponent:appName] stringByAppendingPathExtension:@"app"] stringByAppendingPathComponent:appName] stringByAppendingPathExtension:@"exe"];
+    NSMutableData *args=[NSMutableData data];
 
-   [args appendData:NSTaskArgumentDataFromStringW(@"-NSOpen")];
-   [args appendBytes:L" " length:2];
-   [args appendData:NSTaskArgumentDataFromStringW(path)];
-   [args appendBytes:L"\0" length:2];
+    [args appendData:NSTaskArgumentDataFromStringW(@"-NSOpen")];
+    [args appendBytes:L" " length:2];
+    [args appendData:NSTaskArgumentDataFromStringW(path)];
+    [args appendBytes:L"\0" length:2];
 
-   return ((int)ShellExecuteW(GetDesktopWindow(),L"open",[app fileSystemRepresentationW],[args bytes],NULL,SW_SHOWNORMAL)<=32)?NO:YES;
+    return ((int)ShellExecuteW(GetDesktopWindow(),L"open",[app fileSystemRepresentationW],[args bytes],NULL,SW_SHOWNORMAL)<=32)?NO:YES;
+   }
 #else
    return ((int)ShellExecuteW(GetDesktopWindow(),L"open",[path fileSystemRepresentationW],NULL,NULL,SW_SHOWNORMAL)<=32)?NO:YES;
 #endif

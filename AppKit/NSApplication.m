@@ -24,6 +24,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSSheetContext.h>
 #import <AppKit/NSWindowAnimationContext.h>
 #import <AppKit/NSSystemInfoPanel.h>
+#import <AppKit/NSAlert.h>
+#import <AppKit/NSWorkspace.h>
 #import <AppKit/CGWindow.h>
 #import <objc/message.h>
 
@@ -720,9 +722,6 @@ id NSApp=nil;
     if ([sheet styleMask] != NSDocModalWindowMask)
         [sheet _setStyleMask:NSDocModalWindowMask];
 
-//    if ([sheet styleMask] != NSBorderlessWindowMask)
-//        [sheet _setStyleMask:NSBorderlessWindowMask];
-   
    [window _attachSheetContextOrderFrontAndAnimate:context];
    while([[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]])
     if([[sheet _animationContext] stepCount]<=0)
@@ -936,7 +935,35 @@ standardAboutPanel] retain];
 }
 
 -(void)showHelp:sender {
-   NSUnimplementedMethod();
+   NSString *helpBookFolder = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleHelpBookFolder"];
+   if(helpBookFolder != nil) {
+    BOOL isDir;
+    NSString *folder = [[NSBundle mainBundle] pathForResource:helpBookFolder ofType:nil];
+    if(folder != nil && [[NSFileManager defaultManager] fileExistsAtPath:folder isDirectory:&isDir] && isDir) {
+     NSString *helpBookName = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleHelpBookName"];
+     if(helpBookName != nil) {
+      NSString *filePath = [folder stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.html", helpBookName]];
+      if([[NSFileManager defaultManager] fileExistsAtPath:filePath]) {
+       if([[NSWorkspace sharedWorkspace] openFile:filePath withApplication:@"Help Viewer"]==YES) {
+        return;
+       }
+      }
+     }
+     NSString *filePath = [folder stringByAppendingPathComponent:@"index.html"];
+     if([[NSFileManager defaultManager] fileExistsAtPath:filePath]) {
+      if([[NSWorkspace sharedWorkspace] openFile:filePath withApplication:@"Help Viewer"]==YES) {
+       return;
+      }
+     }
+    }
+   }
+
+   NSString *processName = [[NSProcessInfo processInfo] processName];
+   NSAlert *alert = [[NSAlert alloc] init];
+   [alert setMessageText:@"Help"];
+   [alert setInformativeText:[NSString stringWithFormat:@"Help isn't available for %@.", processName]];
+   [alert runModal];
+   [alert release];
 }
 
 - (void)doCommandBySelector:(SEL)selector {
