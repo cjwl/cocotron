@@ -47,6 +47,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     _delegate=self;
 }
 
+-(void)open {
+   if(_status==NSStreamStatusNotOpen){
+    _status=NSStreamStatusOpening;
+   }
+}
+
 -(NSError *)streamError {
    return _error;
 }

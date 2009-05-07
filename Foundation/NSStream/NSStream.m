@@ -29,10 +29,9 @@ NSString *NSStreamFileCurrentOffsetKey=@"NSStreamFileCurrentOffsetKey";
     *outputStreamp=nil;
     return;
    }
-   status=immediate?NSStreamStatusOpen:NSStreamStatusOpening;
    
-   *inputStreamp=input=[[[NSInputStream_socket alloc] initWithSocket:socket streamStatus:status] autorelease];
-   *outputStreamp=output=[[[NSOutputStream_socket alloc] initWithSocket:socket streamStatus:status] autorelease];
+   *inputStreamp=input=[[[NSInputStream_socket alloc] initWithSocket:socket streamStatus:NSStreamStatusNotOpen] autorelease];
+   *outputStreamp=output=[[[NSOutputStream_socket alloc] initWithSocket:socket streamStatus:NSStreamStatusNotOpen] autorelease];
 }
 
 -delegate {
