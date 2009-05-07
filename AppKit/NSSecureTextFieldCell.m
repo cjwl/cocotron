@@ -54,7 +54,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    unichar                   *buffer=NSZoneMalloc(NULL,length*sizeof(unichar));
    
    for(i=0;i<length;i++)
-    buffer[i]=0x2022; // unicode bullet
+    buffer[i]=_echosBullets?0x2022:' '; // unicode bullet
     
    NSString *string=[[NSString alloc] initWithCharactersNoCopy:buffer length:length freeWhenDone:YES];
    [astring replaceCharactersInRange:NSMakeRange(0,length) withString:string]; 
