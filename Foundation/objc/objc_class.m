@@ -310,23 +310,51 @@ static inline void OBJCCacheMethodInClass(Class class,struct objc_method *method
    }
 }
 
-static inline IMP OBJCLookupAndCacheUniqueIdInClass(Class class,SEL uniqueId){
+static int msg_tracing=0;
+
+void OBJCEnableMsgTracing(){
+   msg_tracing=1;
+   OBJCLog("OBJC msg tracing ENABLED");
+}
+void OBJCDisableMsgTracing(){
+   msg_tracing=0;
+   OBJCLog("OBJC msg tracing DISABLED");
+}
+
+void objc_logMsgSend(id object,SEL selector){
+   OBJCPartialLog("objc_msgSend %x %s",selector,sel_getName(selector));
+   OBJCFinishLog(" isa %x name %s",(object!=nil)?object->isa:Nil,(object!=nil)?object->isa->name:"");
+}
+
+void objc_logMsgSendSuper(struct objc_super *super,SEL selector){
+   OBJCPartialLog("objc_msgSendSuper %x %s",selector,sel_getName(selector));
+   id object=super->receiver;
+   OBJCFinishLog(" isa %x name %s",(object!=nil)?object->isa:Nil,(object!=nil)?object->isa->name:"");
+}
+
+static inline IMP OBJCLookupAndCacheUniqueIdInClass(Class class,SEL selector){
    struct objc_method *method;
 
-   if((method=class_getInstanceMethod(class,uniqueId))!=NULL){
-    OBJCCacheMethodInClass(class,method);
+   if((method=class_getInstanceMethod(class,selector))!=NULL){
+
+    // When msg_tracing is on we don't cache the result so there is always a cache miss
+    // and we always get the chance to log the msg
+
+    if(!msg_tracing)
+     OBJCCacheMethodInClass(class,method);
+    
     return method->method_imp;
    }
 
-	return NULL;
+   return NULL;
 }
 
-IMP class_getMethodImplementation(Class cls, SEL name) {
-   return OBJCLookupAndCacheUniqueIdInClass(cls,name);
+IMP class_getMethodImplementation(Class cls, SEL selector) {
+   return OBJCLookupAndCacheUniqueIdInClass(cls,selector);
 }
 
-IMP class_getMethodImplementation_stret(Class cls, SEL name) {
-   return OBJCLookupAndCacheUniqueIdInClass(cls,name);
+IMP class_getMethodImplementation_stret(Class cls, SEL selector) {
+   return OBJCLookupAndCacheUniqueIdInClass(cls,selector);
 }
 
 objc_property_t class_getProperty(Class cls,const char *name) {
@@ -635,6 +663,9 @@ void objc_setForwardHandler(void *handler, void *handler_stret){
 }
 
 IMP OBJCLookupAndCacheUniqueIdForSuper(struct objc_super *super,SEL selector){
+   if(msg_tracing)
+    objc_logMsgSendSuper(super,selector);
+
    IMP result = class_getMethodImplementation(super->super_class,selector);
 
    if(result==NULL){
@@ -648,6 +679,9 @@ IMP OBJCLookupAndCacheUniqueIdForSuper(struct objc_super *super,SEL selector){
 }
 
 IMP OBJCInitializeLookupAndCacheUniqueIdForObject(id object,SEL selector){
+   if(msg_tracing)
+    objc_logMsgSend(object,selector);
+
    Class class=object->isa;
 
    if(!(class->info&CLASS_INFO_INITIALIZED)){

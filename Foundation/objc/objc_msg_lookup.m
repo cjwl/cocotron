@@ -12,30 +12,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "objc_class.h"
 #import <Foundation/ObjCException.h>
 
-static int msg_tracing=0;
-
-void OBJCEnableMsgTracing(){
-  msg_tracing=1;
-  OBJCLog("OBJC msg tracing ENABLED");
-}
-void OBJCDisableMsgTracing(){
-  msg_tracing=0;
-  OBJCLog("OBJC msg tracing DISABLED");
-}
-
 static id nil_message(id object,SEL message,...){
    return nil;
 }
 
 IMP objc_msg_lookup(id object,SEL selector) {
    if(object==nil)
-      return nil_message;
-   
-   if(msg_tracing){
-    OBJCPartialLog("objc_msg_lookup %x %s",selector,sel_getName(selector));
-    OBJCFinishLog(" isa %x name %s",(object!=nil)?object->isa:Nil,(object!=nil)?object->isa->name:"");
-   }
-   {
+    return nil_message;
+   else {
     OBJCMethodCache      *cache=object->isa->cache;
     unsigned              index=(unsigned)selector&OBJCMethodCacheMask;
     OBJCMethodCacheEntry *checkEntry=((void *)cache->table)+index; 
