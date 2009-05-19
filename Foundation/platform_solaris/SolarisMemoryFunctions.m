@@ -10,11 +10,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <sys/sysinfo.h>
 #import <sys/unistd.h>
 
-unsigned NSPageSize(void) {
+NSUInteger NSPageSize(void) {
    return getpagesize();
 }
 
-unsigned NSRealMemoryAvailable(void) 
+NSUInteger NSRealMemoryAvailable(void) 
 {
    // is this accurate?
    return sysconf(_SC_AVPHYS_PAGES)*getpagesize();

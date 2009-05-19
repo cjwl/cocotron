@@ -14,7 +14,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @implementation NSDictionary_mapTable
 
--(unsigned)count {
+-(NSUInteger)count {
    return NSCountMapTable(_table);
 }
 
@@ -26,7 +26,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return NSAutorelease(NSEnumerator_dictionaryKeysNew(_table));
 }
 
--initWithObjects:(id *)objects forKeys:(id *)keys count:(unsigned)count {
+-initWithObjects:(id *)objects forKeys:(id *)keys count:(NSUInteger)count {
    int i;
 
    _table=NSCreateMapTableWithZone(NSObjectMapKeyCallBacks,

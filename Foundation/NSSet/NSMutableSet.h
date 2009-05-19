@@ -9,9 +9,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSSet.h>
 
 @interface NSMutableSet : NSSet
--initWithCapacity:(unsigned)capacity;
+-initWithCapacity:(NSUInteger)capacity;
 
-+setWithCapacity:(unsigned)capacity;
++setWithCapacity:(NSUInteger)capacity;
 
 -(void)addObject:object;
 -(void)addObjectsFromArray:(NSArray *)array;

@@ -189,7 +189,7 @@ struct tzhead {
     return nil;
 }
 
--(int)secondsFromGMTForDate:(NSDate *)date {
+-(NSInteger)secondsFromGMTForDate:(NSDate *)date {
     return [[self timeZoneTypeForDate:date] secondsFromGMT];
 }
 

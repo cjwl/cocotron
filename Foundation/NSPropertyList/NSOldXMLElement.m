@@ -50,7 +50,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(NSOldXMLAttribute *)attributeWithName:(NSString *)name {
-   int i,count=[_attributes count];
+   NSInteger i,count=[_attributes count];
 
    for(i=0;i<count;i++){
     NSOldXMLAttribute *check=[_attributes objectAtIndex:i];
@@ -70,7 +70,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(NSString *)stringValue {
-   int i,count=[_contents count];
+   NSInteger i,count=[_contents count];
 
    if(count==0)
     return @"";
@@ -101,11 +101,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(NSRect)rectValue {
    NSRect     result=NSZeroRect;
    NSScanner *scanner=[NSScanner scannerWithString:[self stringValue]];
-
-   [scanner scanFloat:&result.origin.x];
-   [scanner scanFloat:&result.origin.y];
-   [scanner scanFloat:&result.size.width];
-   [scanner scanFloat:&result.size.height];
+   double     value;
+   
+   [scanner scanDouble:&value];
+   result.origin.x=value;
+   [scanner scanDouble:&value];
+   result.origin.y=value;
+   [scanner scanDouble:&value];
+   result.size.width=value;
+   [scanner scanDouble:&value];
+   result.size.height=value;
 
    return result;
 }
@@ -113,9 +118,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(NSSize)sizeValue {
    NSSize     result=NSZeroSize;
    NSScanner *scanner=[NSScanner scannerWithString:[self stringValue]];
-
-   [scanner scanFloat:&result.width];
-   [scanner scanFloat:&result.height];
+   double     value;
+   
+   [scanner scanDouble:&value];
+   result.width=value;
+   [scanner scanDouble:&value];
+   result.height=value;
 
    return result;
 }

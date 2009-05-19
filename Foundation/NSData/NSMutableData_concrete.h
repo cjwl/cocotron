@@ -9,8 +9,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSData.h>
 
 @interface NSMutableData_concrete : NSMutableData {
-   unsigned _length;
-   unsigned _capacity;
+   NSUInteger _length;
+   NSUInteger _capacity;
    void    *_bytes;
 }
 

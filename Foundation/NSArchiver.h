@@ -14,7 +14,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @interface NSArchiver : NSCoder {
    NSMutableData *_data;
    unsigned char *_bytes;
-   unsigned       _position;
+   NSUInteger     _position;
 
    unsigned       _pass;
    NSHashTable   *_conditionals;

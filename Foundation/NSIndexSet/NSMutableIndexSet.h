@@ -8,18 +8,18 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSIndexSet.h>
 
 @interface NSMutableIndexSet : NSIndexSet {
-   unsigned _capacity;
+   NSUInteger _capacity;
 }
 
 -(void)addIndexesInRange:(NSRange)range;
 -(void)addIndexes:(NSIndexSet *)other;
--(void)addIndex:(unsigned)index;
+-(void)addIndex:(NSUInteger)index;
 
 -(void)removeAllIndexes;
 -(void)removeIndexesInRange:(NSRange)range;
 -(void)removeIndexes:(NSIndexSet *)other;
--(void)removeIndex:(unsigned)index;
+-(void)removeIndex:(NSUInteger)index;
 
--(void)shiftIndexesStartingAtIndex:(unsigned)index by:(int)delta;
+-(void)shiftIndexesStartingAtIndex:(NSUInteger)index by:(NSInteger)delta;
 
 @end

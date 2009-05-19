@@ -21,14 +21,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 +(NSMethodSignature *)signatureWithObjCTypes:(const char *)types;
 
 -(BOOL)isOneway;
--(unsigned)frameLength;
--(unsigned)methodReturnLength;
+-(NSUInteger)frameLength;
+-(NSUInteger)methodReturnLength;
 
 -(const char *)methodReturnType;
 
--(unsigned)numberOfArguments;
+-(NSUInteger)numberOfArguments;
 
--(const char *)getArgumentTypeAtIndex:(unsigned)index;
+-(const char *)getArgumentTypeAtIndex:(NSUInteger)index;
 
 
 @end

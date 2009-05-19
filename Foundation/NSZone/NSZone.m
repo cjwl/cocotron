@@ -73,8 +73,8 @@ static inline void FreeBucketFromTable(RefCountTable *table,RefCountBucket *buck
    NSZoneFree(NULL,bucket);
 }
 
-static inline unsigned hashObject(id ptr){
-   return (unsigned)ptr>>4;
+static inline NSUInteger hashObject(id ptr){
+   return (NSUInteger)ptr>>4;
 }
 
 static inline RefCountBucket *XXHashGet(RefCountTable *table,id object) {
@@ -192,7 +192,7 @@ BOOL NSShouldRetainWithZone(id object,NSZone *zone) {
    return (zone==NULL || zone==NSDefaultMallocZone() || zone==[object zone])?YES:NO;
 }
 
-id NSAllocateObject(Class class,unsigned extraBytes,NSZone *zone) {
+id NSAllocateObject(Class class,NSUInteger extraBytes,NSZone *zone) {
    id result;
    
    if(zone==NULL)
@@ -225,7 +225,7 @@ void NSDeallocateObject(id object) {
    }
 }
 
-id NSCopyObject(id object,unsigned extraBytes,NSZone *zone) {
+id NSCopyObject(id object,NSUInteger extraBytes,NSZone *zone) {
    if (object==nil)
       return nil;
 

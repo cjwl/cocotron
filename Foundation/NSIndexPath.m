@@ -15,19 +15,19 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @implementation NSIndexPath
 
-+ (NSIndexPath*) indexPathWithIndex: (unsigned int) index {
++ (NSIndexPath*) indexPathWithIndex: (NSUInteger) index {
 	return [[[self alloc] initWithIndexes: &index length: 1] autorelease];
 }
 
-+ (NSIndexPath*) indexPathWithIndexes: (unsigned int*) indexes length: (unsigned int) length {
++ (NSIndexPath*) indexPathWithIndexes: (NSUInteger*) indexes length: (NSUInteger) length {
 	return [[[self alloc] initWithIndexes: indexes length: length] autorelease];
 }
 
-- (id) initWithIndex: (unsigned int) index {
+- (id) initWithIndex: (NSUInteger) index {
 	return [self initWithIndexes: &index length: 1];
 }
 
-- (id) initWithIndexes: (unsigned int*) indexes length: (unsigned int) length {
+- (id) initWithIndexes: (NSUInteger*) indexes length: (NSUInteger) length {
 	if ((self = [self init])) {
 		int i;
 		
@@ -39,8 +39,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 			_hash = _hash*2 + _indexes[i];
 		}
 		_hash = 2*_hash + _length;
-   		_indexes = malloc(length*sizeof(unsigned int));
-		memcpy(_indexes, indexes, length*sizeof(unsigned int));
+   		_indexes = malloc(length*sizeof(NSUInteger));
+		memcpy(_indexes, indexes, length*sizeof(NSUInteger));
    	}
 	return self;
 }
@@ -58,9 +58,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	[super dealloc];
 }
 
-- (NSIndexPath*) indexPathByAddingIndex: (unsigned int) index {
+- (NSIndexPath*) indexPathByAddingIndex: (NSUInteger) index {
 	// Use lazy copying, if possible:
-	unsigned int* indexesCopy = realloc(_indexes, (_length+1)*sizeof(unsigned int));
+	NSUInteger* indexesCopy = realloc(_indexes, (_length+1)*sizeof(NSUInteger));
 	// Add the index:
 	indexesCopy[_length] = index;
 	// Make sure to use the designated initializer:
@@ -79,17 +79,17 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	return [[[NSIndexPath alloc] initWithIndexes: _indexes length: _length-1] autorelease];
 }
 
-- (unsigned int) indexAtPosition: (unsigned int) position {
+- (NSUInteger) indexAtPosition: (NSUInteger) position {
 	NSParameterAssert(position < _length);
 	return _indexes[position];
 }
 
-- (unsigned int) length {
+- (NSUInteger) length {
 	return _length;
 }
 
-- (void) getIndexes: (unsigned int*) indexes {
-	memcpy(indexes, _indexes, _length * sizeof(unsigned int));
+- (void) getIndexes: (NSUInteger*) indexes {
+	memcpy(indexes, _indexes, _length * sizeof(NSUInteger));
 }
 
 /** Note: Sorting an array of indexPaths using this comparison method results in an array representing nodes in depth-first traversal order. */
@@ -114,7 +114,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	return [self retain];
 }
 
-- (unsigned) hash {
+- (NSUInteger) hash {
 	return _hash;
 }
 

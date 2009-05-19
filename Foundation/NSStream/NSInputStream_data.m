@@ -76,7 +76,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    _status=NSStreamStatusClosed;
 }
 
--(BOOL)getBuffer:(unsigned char **)buffer length:(unsigned *)length {
+-(BOOL)getBuffer:(uint8_t **)buffer length:(NSUInteger *)length {
    return NO;
 }
 
@@ -84,12 +84,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return _position<[_data length];
 }
 
--(int)read:(unsigned char *)buffer maxLength:(unsigned)maxLength {
+-(NSInteger)read:(uint8_t *)buffer maxLength:(NSUInteger)maxLength {
    if(_status!=NSStreamStatusOpen)
     return -1;
    else {
     const unsigned char *bytes=[_data bytes];
-    unsigned i,length=[_data length];
+    NSUInteger i,length=[_data length];
    
     for(i=0;i<maxLength && _position<length;i++,_position++)
      buffer[i]=bytes[_position];

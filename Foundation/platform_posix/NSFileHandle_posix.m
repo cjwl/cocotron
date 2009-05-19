@@ -69,12 +69,12 @@ static int descriptorForPath(NSString *path,int modes){
         if ((fd = socket(AF_UNIX, SOCK_STREAM, 0)) == -1)
          return -1;
         else {
-            int len;
+            socklen_t len;
             struct sockaddr_un remote;
 
             remote.sun_family = AF_UNIX;
             strcpy(remote.sun_path, [path fileSystemRepresentation]);
-            len = strlen(remote.sun_path) + sizeof(remote.sun_family);
+            len =(socklen_t)(strlen(remote.sun_path) + sizeof(remote.sun_family));
             if (connect(fd, (struct sockaddr *)&remote, len) == -1) {
                 close(fd);
                 return -1;
@@ -199,7 +199,7 @@ CONFORMING TO
     fcntl(_fileDescriptor, F_SETFL, flags);
 }
 
-- (NSData *)readDataOfLength:(unsigned)length {
+- (NSData *)readDataOfLength:(NSUInteger)length {
     NSMutableData *mutableData = [NSMutableData dataWithLength:length];
     ssize_t count, total = 0;
 
@@ -248,7 +248,8 @@ CONFORMING TO
 
 - (NSData *)availableData {
     NSMutableData *mutableData = [NSMutableData dataWithLength:4096];
-    int count, err;
+    size_t count;
+    int err;
     
     [self setNonBlocking:YES];
     count = read(_fileDescriptor, [mutableData mutableBytes], 4096);
@@ -290,7 +291,7 @@ CONFORMING TO
 
 
 -(void)cancelBackgroundMonitoring {
-   int i, count = [_backgroundModes count];
+   NSInteger i, count = [_backgroundModes count];
 
    for (i = 0; i < count; ++i)
     [[NSRunLoop currentRunLoop] removeInputSource:_inputSource forMode:[_backgroundModes objectAtIndex:i]];
@@ -302,7 +303,7 @@ CONFORMING TO
 }
 
 -(void)readInBackgroundAndNotifyForModes:(NSArray *)modes {
-   int i, count = [modes count];
+   NSInteger i, count = [modes count];
     
    if (_inputSource != nil)
     [NSException raise:NSInternalInconsistencyException format:@"%@ already has background activity", [self description]];

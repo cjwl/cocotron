@@ -9,11 +9,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSString.h>
 
 @interface NSString_unicodePtr : NSString {
-   unsigned       _length;
+   NSUInteger       _length;
    const unichar *_unicode;
 }
 
 @end
 
 NSString *NSString_unicodePtrNewNoCopy(NSZone *zone,
- const unichar *unicode,unsigned length);
+ const unichar *unicode,NSUInteger length);

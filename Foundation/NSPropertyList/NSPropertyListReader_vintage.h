@@ -13,19 +13,19 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @interface NSPropertyListReader_vintage : NSObject {
    NSData               *_data;
-   unsigned              _length;
+   NSUInteger              _length;
    const unsigned char  *_bytes;
 
-   unsigned _stackCapacity;
-   int      _stackSize;
+   NSUInteger _stackCapacity;
+   NSInteger      _stackSize;
    id      *_stack;
 
-   unsigned  _bufferCapacity;
-   unsigned  _bufferSize;
+   NSUInteger  _bufferCapacity;
+   NSUInteger  _bufferSize;
    unichar  *_buffer;
 
-   unsigned _index;
-   unsigned _lineNumber;
+   NSUInteger _index;
+   NSUInteger _lineNumber;
    
    Class _stringClass;
    Class _dictionaryClass;

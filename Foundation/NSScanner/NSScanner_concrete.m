@@ -67,11 +67,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     return _location == [_string length];
 }
 
--(unsigned)scanLocation {
+-(NSUInteger)scanLocation {
     return _location;
 }
 
--(void)setScanLocation:(unsigned)pos {
+-(void)setScanLocation:(NSUInteger)pos {
    _location=pos;
 }
 
@@ -198,8 +198,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       seperatorString = [[NSLocale systemLocale] objectForKey:NSLocaleDecimalSeparator];
    decimalSeperator = ([seperatorString length] > 0 ) ? [seperatorString characterAtIndex:0] : '.';
 
-   int     i;
-   int     len = [_string length] - _location;
+   NSInteger     i;
+   NSInteger     len = [_string length] - _location;
    char    p[len + 1], *q;
    unichar c;
 
@@ -410,7 +410,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 
 -(BOOL)scanString:(NSString *)string intoString:(NSString **)stringp {
-    int length=[_string length];
+    NSInteger length=[_string length];
 
     for(;_location<length;_location++) {
         unichar unicode=[_string characterAtIndex:_location];
@@ -430,7 +430,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(BOOL)scanUpToString:(NSString *)string intoString:(NSString **)stringp {
-    int length=[_string length];
+    NSInteger length=[_string length];
     unichar result[length];
     int resultLength = 0;
     BOOL scanStarted = NO;
@@ -463,7 +463,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(BOOL)scanCharactersFromSet:(NSCharacterSet *)charset intoString:(NSString **)stringp
 {
-    int length=[_string length];
+    NSInteger length=[_string length];
     unichar result[length];
     int resultLength = 0;
     BOOL scanStarted = NO;
@@ -501,7 +501,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(BOOL)scanUpToCharactersFromSet:(NSCharacterSet *)charset intoString:(NSString **)stringp {
-    int length=[_string length];
+    NSInteger length=[_string length];
     unichar result[length];
     int resultLength = 0;
     BOOL scanStarted = NO;

@@ -5,8 +5,6 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
-
-// Original - David Young <daver@geeks.org>
 #import <Foundation/NSTimeZone_absolute.h>
 #import <Foundation/NSTimeZone.h>
 #import <Foundation/NSString.h>
@@ -19,7 +17,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @implementation NSTimeZone_absolute
 
--initWithSecondsFromGMT:(int)seconds {
+-initWithSecondsFromGMT:(NSInteger)seconds {
     [super init];
     _secondsFromGMT = seconds;
     _name = [[NSString allocWithZone:NULL] initWithFormat:@"GMT %@%02d%02d",
@@ -42,13 +40,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)encodeWithCoder:(NSCoder *)coder {
-    [coder encodeValueOfObjCType:@encode(int) at:&_secondsFromGMT];
+    int value=(int)_secondsFromGMT;
+    [coder encodeValueOfObjCType:@encode(int) at:&value];
     [coder encodeObject:_name];
     [coder encodeObject:_abbreviation];
 }
 
 -initWithCoder:(NSCoder *)coder {
-    [coder decodeValueOfObjCType:@encode(int) at:&_secondsFromGMT];
+    int value=0;
+    [coder decodeValueOfObjCType:@encode(int) at:&value];
+    _secondsFromGMT=value;
     _name = [[coder decodeObject] retain];
     _abbreviation = [[coder decodeObject] retain];
 
@@ -67,7 +68,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     return nil;
 }
 
--(int)secondsFromGMTForDate:(NSDate *)date {
+-(NSInteger)secondsFromGMTForDate:(NSDate *)date {
     return _secondsFromGMT;
 }
 

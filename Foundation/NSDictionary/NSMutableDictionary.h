@@ -10,9 +10,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @interface NSMutableDictionary : NSDictionary
 
--initWithCapacity:(unsigned)capacity;
+-initWithCapacity:(NSUInteger)capacity;
 
-+dictionaryWithCapacity:(unsigned)capacity;
++dictionaryWithCapacity:(NSUInteger)capacity;
 
 -(void)setObject:object forKey:key;
 -(void)addEntriesFromDictionary:(NSDictionary *)dictionary;

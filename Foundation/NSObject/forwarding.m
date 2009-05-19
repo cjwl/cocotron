@@ -1,5 +1,55 @@
 #import <objc/runtime.h>
 
+#if 0
+@interface NSObject(fastforwarding)
+-forwardingTargetForSelector:(SEL)selector;
+@end
+
+id NSObjCGetFastForwardTarget(id object,SEL selector){
+   id check=nil;
+   
+   if([object respondsToSelector:@selector(forwardingTargetForSelector:)])
+    if((check=[object forwardingTargetForSelector:selector])==object)
+     check=nil;
+   
+   return check;
+}
+
+void NSObjCForward(id object,SEL selector,...){
+   id check=NSObjCGetFastForwardFunction(object,selector);
+   
+   if(check!=nil){
+    object=check;
+    ;// jmp objc_msgSend
+   }
+   
+   va_list arguments;
+   
+   va_start(arguments,selector);
+   
+   NSObjCForwardInvocation(object,selector,arguments);
+   
+   va_end(arguments);
+}
+
+void NSObjCForward_stret(void *value,id object,SEL selector,...){
+   id check=NSObjCGetFastForwardFunction(object,selector);
+   
+   if(check!=nil){
+    object=check;
+    ;// jmp objc_msgSend_stret
+   }
+   
+   va_list arguments;
+   
+   va_start(arguments,selector);
+   
+   NSObjCForwardInvocation(object,selector,arguments);
+   
+   va_end(arguments);
+}
+#endif
+
 // both of these suck, we should be using NSMethodSignature types to extract the frame and create the NSInvocation here
 #ifdef SOLARIS
 id objc_msgForward(id object,SEL message,...){

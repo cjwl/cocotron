@@ -6,7 +6,6 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
-// Original - Christopher Lloyd <cjwl@objc.net>
 #import <Foundation/NSString_nextstepCString.h>
 #import <Foundation/NSRaise.h>
 #import <stdio.h>
@@ -21,13 +20,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return _bytes;
 }
 
--(unsigned)cStringLength {
+-(NSUInteger)cStringLength {
    return _length;
 }
 
--(void)getCString:(char *)buffer maxLength:(unsigned)maxLength 
+-(void)getCString:(char *)buffer maxLength:(NSUInteger)maxLength 
     range:(NSRange)range remainingRange:(NSRange *)leftoverRange {
-   int i,rloc;
+   NSInteger i,rloc;
 
    if(NSMaxRange(range)>_length){
     NSRaiseException(NSRangeException,self,_cmd,@"range %@ beyond length %d",
@@ -45,9 +44,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 NSString *NSNEXTSTEPCStringNewWithBytes(NSZone *zone,
- const char *bytes,unsigned length) {
+ const char *bytes,NSUInteger length) {
    NSString_nextstepCString *string;
-   int                i;
+   NSInteger                i;
 
    string=NSAllocateObject(objc_lookUpClass("NSString_nextstepCString"),length*sizeof(char),zone);
 
@@ -60,9 +59,9 @@ NSString *NSNEXTSTEPCStringNewWithBytes(NSZone *zone,
 }
 
 NSString *NSNEXTSTEPCStringNewWithCharacters(NSZone *zone,
- const unichar *characters,unsigned length,BOOL lossy) {
+ const unichar *characters,NSUInteger length,BOOL lossy) {
    NSString *string;
-   unsigned  bytesLength;
+   NSUInteger  bytesLength;
    char     *bytes;
 
    bytes=NSUnicodeToNEXTSTEP(characters,length,lossy,&bytesLength,zone);
@@ -78,7 +77,7 @@ NSString *NSNEXTSTEPCStringNewWithCharacters(NSZone *zone,
 }
 
 NSString *NSNEXTSTEPCStringNewWithCapacity(NSZone *zone,
-  unsigned capacity,char **ptr) {
+  NSUInteger capacity,char **ptr) {
    NSString_nextstepCString *string;
 
    string=NSAllocateObject(objc_lookUpClass("NSString_nextstepCString"),capacity*sizeof(char),zone);

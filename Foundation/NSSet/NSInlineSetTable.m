@@ -5,16 +5,14 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
-
-// Original - Christopher Lloyd <cjwl@objc.net>
 #import <Foundation/NSInlineSetTable.h>
 #import <Foundation/NSString.h>
 
-unsigned NSSetTableRoundCount(unsigned count) {
+NSUInteger NSSetTableRoundCount(NSUInteger count) {
    return (count<4)?4:count;
 }
 
-void NSSetTableInit(NSSetTable *table,unsigned capacity,NSZone *zone) {
+void NSSetTableInit(NSSetTable *table,NSUInteger capacity,NSZone *zone) {
    table->count=0;
    table->numBuckets=NSSetTableRoundCount(capacity);
    table->buckets=NSZoneCalloc(zone,table->numBuckets,sizeof(NSSetBucket *));
@@ -53,7 +51,7 @@ NSSetBucket *NSSetBucketAddObject(NSSetBucket *bucket,id object){
 }
 
 void NSSetTableAddObjectNoGrow(NSSetTable *table,id object){
-   unsigned     index=[object hash]%table->numBuckets;
+   NSUInteger     index=[object hash]%table->numBuckets;
    NSSetBucket *bucket;
 
    if((bucket=NSSetBucketAddObject(table->buckets[index],object))!=NULL){
@@ -64,7 +62,7 @@ void NSSetTableAddObjectNoGrow(NSSetTable *table,id object){
 
 // add growing
 void NSSetTableAddObject(NSSetTable *table,id object){
-   unsigned     index=[object hash]%table->numBuckets;
+   NSUInteger     index=[object hash]%table->numBuckets;
    NSSetBucket *bucket;
 
    if((bucket=NSSetBucketAddObject(table->buckets[index],object))!=NULL){
@@ -75,7 +73,7 @@ void NSSetTableAddObject(NSSetTable *table,id object){
 
 
 id NSSetTableMember(NSSetTable *table,id object) {
-   unsigned     index=[object hash]%table->numBuckets;
+   NSUInteger     index=[object hash]%table->numBuckets;
    NSSetBucket *current,*bucket=table->buckets[index];
 
    for(current=bucket;current!=NULL;current=current->next)
@@ -87,7 +85,7 @@ id NSSetTableMember(NSSetTable *table,id object) {
 
 // add shrinking
 void NSSetTableRemoveObject(NSSetTable *table,id object){
-   unsigned     index=[object hash]%table->numBuckets;
+   NSUInteger     index=[object hash]%table->numBuckets;
    NSSetBucket *current,*last,*bucket=table->buckets[index];
 
    for(current=last=bucket;current!=NULL;last=current,current=current->next)
@@ -104,8 +102,8 @@ void NSSetTableRemoveObject(NSSetTable *table,id object){
     }
 }
 
-unsigned NSSetTableObjectCount(NSSetTable *table,id object) {
-   unsigned     index=[object hash]%table->numBuckets;
+NSUInteger NSSetTableObjectCount(NSSetTable *table,id object) {
+   NSUInteger     index=[object hash]%table->numBuckets;
    NSCountBucket *current,*bucket=(NSCountBucket *)table->buckets[index];
 
    for(current=bucket;current!=NULL;current=current->next)
@@ -133,7 +131,7 @@ NSCountBucket *NSSetBucketAddObjectCount(NSCountBucket *bucket,id object){
 }
 
 void NSSetTableAddObjectCount(NSSetTable *table,id object) {
-   unsigned       index=[object hash]%table->numBuckets;
+   NSUInteger       index=[object hash]%table->numBuckets;
    NSCountBucket *bucket=(NSCountBucket *)table->buckets[index];
 
    if((bucket=NSSetBucketAddObjectCount(bucket,object))!=NULL){
@@ -144,7 +142,7 @@ void NSSetTableAddObjectCount(NSSetTable *table,id object) {
 }
 
 void NSSetTableRemoveObjectCount(NSSetTable *table,id object){
-   unsigned     index=[object hash]%table->numBuckets;
+   NSUInteger     index=[object hash]%table->numBuckets;
    NSCountBucket *current,*last,*bucket=(NSCountBucket *)table->buckets[index];
 
    for(current=last=bucket;current!=NULL;last=current,current=current->next)

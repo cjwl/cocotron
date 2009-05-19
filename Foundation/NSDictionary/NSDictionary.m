@@ -40,13 +40,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return [self initWithObjects:NULL forKeys:NULL count:0];
 }
 
--initWithObjects:(id *)objects forKeys:(id *)keys count:(unsigned)count {
+-initWithObjects:(id *)objects forKeys:(id *)keys count:(NSUInteger)count {
    NSInvalidAbstractInvocation();
    return nil;
 }
 
 -initWithObjects:(NSArray *)objectArray forKeys:(NSArray *)keyArray {
-   unsigned count=[objectArray count];
+   NSUInteger count=[objectArray count];
    id       objects[count],keys[count];
 
    [objectArray getObjects:objects];
@@ -56,7 +56,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -initWithDictionary:(NSDictionary *)dictionary {
-   unsigned      i,count=[dictionary count];
+   NSUInteger      i,count=[dictionary count];
    NSEnumerator *state=[dictionary keyEnumerator];
    id            key,object,keys[count],objects[count];
 
@@ -69,7 +69,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -initWithDictionary:(NSDictionary *)dictionary copyItems:(BOOL)copyItems {
-   unsigned      i,count=[dictionary count];
+   NSUInteger      i,count=[dictionary count];
    NSEnumerator *state=[dictionary keyEnumerator];
    id            key,object,keys[count],objects[count];
 
@@ -154,7 +154,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 
-+dictionaryWithObjects:(id *)objects forKeys:(id *)keys count:(unsigned)count {
++dictionaryWithObjects:(id *)objects forKeys:(id *)keys count:(NSUInteger)count {
    return [[[self allocWithZone:NULL] initWithObjects:objects forKeys:keys count:count] autorelease];
 }
 
@@ -259,7 +259,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
   }
   else {
    NSEnumerator *state=[self keyEnumerator];
-   unsigned      count=[self count];
+   NSUInteger      count=[self count];
    id            key;
 
    [coder encodeValueOfObjCType:@encode(int) at:&count];
@@ -278,7 +278,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return nil;
 }
 
--(unsigned)count {
+-(NSUInteger)count {
    NSInvalidAbstractInvocation();
    return 0;
 }
@@ -306,7 +306,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    }
 }
 
--(unsigned)hash {
+-(NSUInteger)hash {
    return [self count];
 }
 
@@ -350,7 +350,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(NSArray *)allKeys {
-   int i,count=[self count];
+   NSInteger i,count=[self count];
    id keys[count],obj;
    NSEnumerator *state=[self keyEnumerator];
 
@@ -393,7 +393,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         } 
 
 -(NSArray *)allValues {
-   int i,count=[self count];
+   NSInteger i,count=[self count];
    id values[count],obj;
    NSEnumerator *state=[self keyEnumerator];
 
@@ -405,7 +405,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(NSArray *)objectsForKeys:(NSArray *)keys notFoundMarker:marker {
    NSMutableArray *result=[NSMutableArray arrayWithCapacity:[keys count]];
-   int             i,count=[keys count];
+   NSInteger             i,count=[keys count];
 
    for(i=0;i<count;i++){
     id object=[self objectForKey:[keys objectAtIndex:i]];
@@ -443,7 +443,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return [self descriptionWithLocale:locale indent:0];
 }
 
--(NSString *)descriptionWithLocale:locale indent:(unsigned)indent {
+-(NSString *)descriptionWithLocale:locale indent:(NSUInteger)indent {
    NSUnimplementedMethod();
    return [self description];
 }

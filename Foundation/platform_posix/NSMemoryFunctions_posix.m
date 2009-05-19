@@ -20,15 +20,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 // - this uses POSIX thread local storage functions
 // - there is no zone support
 
-void *NSAllocateMemoryPages(unsigned byteCount) {
+void *NSAllocateMemoryPages(NSUInteger byteCount) {
    return malloc(byteCount);
 }
 
-void NSDeallocateMemoryPages(void *pointer,unsigned byteCount) {
+void NSDeallocateMemoryPages(void *pointer,NSUInteger byteCount) {
    free(pointer);
 }
 
-void NSCopyMemoryPages(const void *src,void *dst,unsigned byteCount) {
+void NSCopyMemoryPages(const void *src,void *dst,NSUInteger byteCount) {
    const unsigned char *srcb=src;
    unsigned char       *dstb=dst;
    int                  i;
@@ -37,7 +37,7 @@ void NSCopyMemoryPages(const void *src,void *dst,unsigned byteCount) {
     dstb[i]=srcb[i];
 }
 
-NSZone *NSCreateZone(unsigned startSize,unsigned granularity,BOOL canFree){
+NSZone *NSCreateZone(NSUInteger startSize,NSUInteger granularity,BOOL canFree){
    return NULL;
 }
 
@@ -60,7 +60,7 @@ NSZone *NSZoneFromPointer(void *pointer){
    return NULL;
 }
 
-void *NSZoneCalloc(NSZone *zone,unsigned numElems,unsigned numBytes){
+void *NSZoneCalloc(NSZone *zone,NSUInteger numElems,NSUInteger numBytes){
    return calloc(numElems,numBytes);
 }
 
@@ -68,11 +68,11 @@ void NSZoneFree(NSZone *zone,void *pointer){
    free(pointer);
 }
 
-void *NSZoneMalloc(NSZone *zone,unsigned size){
+void *NSZoneMalloc(NSZone *zone,NSUInteger size){
    return malloc(size);
 }
 
-void *NSZoneRealloc(NSZone *zone,void *pointer,unsigned size){
+void *NSZoneRealloc(NSZone *zone,void *pointer,NSUInteger size){
    return realloc(pointer, size);
 }
 
@@ -108,10 +108,10 @@ NSThread *NSPlatformCurrentThread() {
 	return thread;
 }
 
-int NSPlatformDetachThread(unsigned (*func)(void *arg), void *arg) {
+NSUInteger NSPlatformDetachThread(void *(*func)(void *arg), void *arg) {
 	pthread_t thread;
 	pthread_create(&thread, NULL, func, arg);
-	return (int)thread;
+	return (NSUInteger)thread;
 }
 
 /* This will fail with W^X. See win32 implementation for how to get this running. */

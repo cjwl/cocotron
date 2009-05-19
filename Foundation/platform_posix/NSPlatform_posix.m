@@ -27,6 +27,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #include <sys/time.h>
 #include <sys/param.h>
 #include <netinet/in.h>
+#include <arpa/inet.h>
 #include <fcntl.h>
 #include <netdb.h>
 #include <time.h>
@@ -103,7 +104,7 @@ static struct passwd *pwent = NULL;
 
    char **env;
    char  *keyValue;
-   int    i,len,max;
+   NSInteger    i,len,max;
 
    env = NSPlatform_environ();
 
@@ -146,12 +147,12 @@ NSTimeInterval NSPlatformTimeIntervalSinceReferenceDate() {
     return result;
 }
 
-unsigned NSPlatformProcessID() {
+int NSPlatformProcessID() {
     return getpid();
 }
 
-unsigned NSPlatformThreadID() {
-    return (unsigned)pthread_self();
+NSUInteger NSPlatformThreadID() {
+    return (NSUInteger)pthread_self();
 }
 
 -(NSArray *)addressesForDNSHostName:(NSString *)name {
@@ -165,7 +166,7 @@ unsigned NSPlatformThreadID() {
         return nil;
     }
     else {
-        unsigned long **addr_list=(unsigned long **)hp->h_addr_list;
+        uint32_t **addr_list=(uint32_t **)hp->h_addr_list;
         int             i;
 
         for(i=0;addr_list[i]!=NULL;i++){
@@ -174,7 +175,7 @@ unsigned NSPlatformThreadID() {
 
             addr.s_addr=*addr_list[i];
 
-            string=[NSString stringWithCString:(char *)inet_ntoa(addr)];
+            string=[NSString stringWithCString:inet_ntoa(addr)];
 
             [result addObject:string];
         }
@@ -187,7 +188,7 @@ void NSPlatformLogString(NSString *string) {
     fprintf(stderr, "%s\n", [string UTF8String]);
 }
 
--(void *)contentsOfFile:(NSString *)path length:(unsigned *)lengthp {
+-(void *)contentsOfFile:(NSString *)path length:(NSUInteger *)lengthp {
     int fd = open([path fileSystemRepresentation], O_RDONLY);
     char *buf;
     off_t pos, total = 0;
@@ -229,7 +230,7 @@ void NSPlatformLogString(NSString *string) {
         SVr4, POSIX.1b (formerly POSIX.4), 4.4BSD.  Svr4 documents
        additional error codes ENXIO and ENODEV.
  */
--(void *)mapContentsOfFile:(NSString *)path length:(unsigned *)lengthp {
+-(void *)mapContentsOfFile:(NSString *)path length:(NSUInteger *)lengthp {
     int fd = open([path fileSystemRepresentation], O_RDONLY);
     void *result;
 
@@ -249,17 +250,17 @@ void NSPlatformLogString(NSString *string) {
     return result;
 }
 
--(void)unmapAddress:(void *)ptr length:(unsigned)length {
+-(void)unmapAddress:(void *)ptr length:(NSUInteger)length {
     if(length>0){
         if (munmap(ptr, length) == -1)
             NSRaiseException(NSInvalidArgumentException, self, _cmd, @"munmap() returned -1");
     }
 }
 
--(BOOL)writeContentsOfFile:(NSString *)path bytes:(const void *)bytes length:(unsigned)length atomically:(BOOL)atomically {
+-(BOOL)writeContentsOfFile:(NSString *)path bytes:(const void *)bytes length:(NSUInteger)length atomically:(BOOL)atomically {
     NSString *atomic = nil;
     int fd;
-    unsigned total = 0;
+    size_t total = 0;
 
     if (atomically) {
         do {
@@ -277,7 +278,7 @@ void NSPlatformLogString(NSString *string) {
     }
 
     do {
-        int written = write(fd, bytes+total, length);
+        size_t written = write(fd, bytes+total, length);
 
         if (written == -1) {
             close(fd);

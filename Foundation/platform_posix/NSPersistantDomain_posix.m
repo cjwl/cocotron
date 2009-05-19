@@ -68,7 +68,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)createUserDefaultsDirectoryIfNeeded {
    BOOL      isDirectory;
    NSArray  *components=[_path pathComponents];
-   int       i,count=[components count];
+   NSInteger       i,count=[components count];
    NSString *check=@"";
    
    for(i=0;i<count;i++){

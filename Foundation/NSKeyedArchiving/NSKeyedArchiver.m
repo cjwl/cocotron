@@ -207,7 +207,7 @@ static NSMapTable *_globalNameToClass=NULL;
    NSNumber *uid=NSMapGet(_objectToUid,object);
    
    if(uid==nil){
-    uid=[NSNumber numberWithInt:[_objects count]];
+    uid=[NSNumber numberWithUnsignedInteger:[_objects count]];
     NSMapInsert(_objectToUid,object,uid);
     
     NSString *archClass = NSStringFromClass([object classForArchiver]);
@@ -278,7 +278,7 @@ static NSMapTable *_globalNameToClass=NULL;
     if(_pass==0)
      return;
     
-    int count = [array count];
+    NSInteger count = [array count];
     NSMutableArray *plistArr = [NSMutableArray arrayWithCapacity:count];
     int i;
     for (i = 0; i < count; i++) {

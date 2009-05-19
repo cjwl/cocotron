@@ -30,8 +30,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return [[NSIndexSet allocWithZone:zone] initWithIndexSet:self];
 }
 
-static unsigned positionOfRangeLessThanOrEqualToLocation(NSRange *ranges,unsigned length,unsigned location){
-   int i=length;
+static NSUInteger positionOfRangeLessThanOrEqualToLocation(NSRange *ranges,NSUInteger length,NSUInteger location){
+   NSInteger i=length;
    
    while(--i>=0)
     if(ranges[i].location<=location)
@@ -40,15 +40,15 @@ static unsigned positionOfRangeLessThanOrEqualToLocation(NSRange *ranges,unsigne
    return NSNotFound;
 }
 
-static void removeRangeAtPosition(NSRange *ranges,unsigned length,unsigned position){
-   unsigned i;
+static void removeRangeAtPosition(NSRange *ranges,NSUInteger length,NSUInteger position){
+   NSUInteger i;
    
     for(i=position;i+1<length;i++)
      ranges[i]=ranges[i+1];
 }
 
--(void)_insertRange:(NSRange)range position:(unsigned)position {
-   int i;
+-(void)_insertRange:(NSRange)range position:(NSUInteger)position {
+   NSInteger i;
     
    _length++;
    if(_capacity<_length){
@@ -62,7 +62,7 @@ static void removeRangeAtPosition(NSRange *ranges,unsigned length,unsigned posit
 }
 
 -(void)addIndexesInRange:(NSRange)range {
-   unsigned pos=positionOfRangeLessThanOrEqualToLocation(_ranges,_length,range.location);
+   NSUInteger pos=positionOfRangeLessThanOrEqualToLocation(_ranges,_length,range.location);
    BOOL     insert=NO;
        
    if(pos==NSNotFound){
@@ -85,8 +85,8 @@ static void removeRangeAtPosition(NSRange *ranges,unsigned length,unsigned posit
     [self _insertRange:range position:pos];
 
    while(pos+1<_length){
-    unsigned max=NSMaxRange(_ranges[pos]);
-    unsigned nextMax;
+    NSUInteger max=NSMaxRange(_ranges[pos]);
+    NSUInteger nextMax;
     
     if(max<_ranges[pos+1].location)
      break;
@@ -101,13 +101,13 @@ static void removeRangeAtPosition(NSRange *ranges,unsigned length,unsigned posit
 }
 
 -(void)addIndexes:(NSIndexSet *)other {
-   int i;
+   NSInteger i;
    
    for(i=0;i<((NSMutableIndexSet *)other)->_length;i++)
     [self addIndexesInRange:((NSMutableIndexSet *)other)->_ranges[i]];
 }
 
--(void)addIndex:(unsigned)index {
+-(void)addIndex:(NSUInteger)index {
    [self addIndexesInRange:NSMakeRange(index,1)];
 }
 
@@ -116,7 +116,7 @@ static void removeRangeAtPosition(NSRange *ranges,unsigned length,unsigned posit
 }
 
 -(void)removeIndexesInRange:(NSRange)range {
-   unsigned pos=positionOfRangeLessThanOrEqualToLocation(_ranges,_length,range.location);
+   NSUInteger pos=positionOfRangeLessThanOrEqualToLocation(_ranges,_length,range.location);
 
    if(pos==NSNotFound)
     pos=0;
@@ -140,7 +140,7 @@ static void removeRangeAtPosition(NSRange *ranges,unsigned length,unsigned posit
     if(NSMaxRange(_ranges[pos])>NSMaxRange(range)){
    
      if(_ranges[pos].location==range.location){
-      unsigned max=NSMaxRange(_ranges[pos]);
+      NSUInteger max=NSMaxRange(_ranges[pos]);
      
       _ranges[pos].location=NSMaxRange(range);
       _ranges[pos].length=max-_ranges[pos].location;
@@ -161,7 +161,7 @@ static void removeRangeAtPosition(NSRange *ranges,unsigned length,unsigned posit
     if(range.location>=NSMaxRange(_ranges[pos]))
      pos++;
     else {
-     unsigned max=NSMaxRange(range);
+     NSUInteger max=NSMaxRange(range);
      NSRange  temp=_ranges[pos];
     
      if(_ranges[pos].location>=range.location){
@@ -179,17 +179,17 @@ static void removeRangeAtPosition(NSRange *ranges,unsigned length,unsigned posit
 }
 
 -(void)removeIndexes:(NSIndexSet *)other {
-   int i;
+   NSInteger i;
    
    for(i=0;i<((NSMutableIndexSet *)other)->_length;i++)
     [self removeIndexesInRange:((NSMutableIndexSet *)other)->_ranges[i]];
 }
 
--(void)removeIndex:(unsigned)index {
+-(void)removeIndex:(NSUInteger)index {
    [self removeIndexesInRange:NSMakeRange(index,1)];
 }
 
--(void)shiftIndexesStartingAtIndex:(unsigned)index by:(int)delta {
+-(void)shiftIndexesStartingAtIndex:(NSUInteger)index by:(NSInteger)delta {
    NSUnimplementedMethod();
 }
 

@@ -70,7 +70,7 @@ NSString *NSRunLoopCommonModes=@"NSRunLoopCommonModes";
 	{
 		performs=[_orderedPerforms copy];
 	}
-   int count=[performs count];
+   NSInteger count=[performs count];
 
    while(--count>=0){
     NSOrderedPerform *check=[performs objectAtIndex:count];
@@ -195,7 +195,7 @@ NSString *NSRunLoopCommonModes=@"NSRunLoopCommonModes";
    NSOrderedPerform *perform=[NSOrderedPerform orderedPerformWithSelector:selector target:target argument:argument order:order modes:modes];
 	@synchronized(_orderedPerforms)
 	{
-		int count=[_orderedPerforms count];
+		NSInteger count=[_orderedPerforms count];
 
 		while(--count>=0){
 			NSOrderedPerform *check=[_orderedPerforms objectAtIndex:count];
@@ -212,7 +212,7 @@ NSString *NSRunLoopCommonModes=@"NSRunLoopCommonModes";
 -(void)cancelPerformSelector:(SEL)selector target:target argument:argument {
 	@synchronized(_orderedPerforms)
 	{
-		int count=[_orderedPerforms count];
+		NSInteger count=[_orderedPerforms count];
 
 		while(--count>=0){
 			NSOrderedPerform *check=[_orderedPerforms objectAtIndex:count];

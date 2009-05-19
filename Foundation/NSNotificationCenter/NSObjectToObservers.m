@@ -48,7 +48,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
    if(object!=nil){
     NSMutableArray *observers=NSMapGet(_objectToObservers,object);
-    int             count=[observers count];
+    NSInteger             count=[observers count];
 
     while(--count>=0)
      if(anObserver==[[observers objectAtIndex:count] observer])
@@ -63,7 +63,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     NSMutableArray *observers;
 
     while(NSNextMapEnumeratorPair(&state,(void **)&key,(void **)&observers)){
-     int count=[observers count];
+     NSInteger count=[observers count];
 
      while(--count>=0)
       if(anObserver==[[observers objectAtIndex:count] observer])
@@ -112,7 +112,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    }
 }
 
--(unsigned)count {
+-(NSUInteger)count {
    return NSCountMapTable(_objectToObservers);
 }
 

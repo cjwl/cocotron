@@ -5,8 +5,6 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
-
-// Original - Christopher Lloyd <cjwl@objc.net>
 #import <Foundation/NSMutableDictionary_mapTable.h>
 #import <Foundation/NSRaise.h>
 #import <Foundation/NSArray.h>
@@ -19,12 +17,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return NSAllocateObject([NSMutableDictionary_mapTable class],0,zone);
 }
 
--initWithCapacity:(unsigned)capacity {
+-initWithCapacity:(NSUInteger)capacity {
    NSInvalidAbstractInvocation();
    return nil;
 }
 
--initWithObjects:(id *)objects forKeys:(id *)keys count:(unsigned)count {
+-initWithObjects:(id *)objects forKeys:(id *)keys count:(NSUInteger)count {
    int i;
 
    self=[self initWithCapacity:count];
@@ -47,7 +45,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return objc_lookUpClass("NSMutableDictionary");
 }
 
-+dictionaryWithCapacity:(unsigned)capacity {
++dictionaryWithCapacity:(NSUInteger)capacity {
    return [[[self allocWithZone:NULL] initWithCapacity:capacity] autorelease];
 }
 
@@ -75,14 +73,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)removeAllObjects {
    NSArray *allKeys=[self allKeys];
-   int      count=[allKeys count];
+   NSInteger      count=[allKeys count];
 
    while(--count>=0)
     [self removeObjectForKey:[allKeys objectAtIndex:count]];
 }
 
 -(void)removeObjectsForKeys:(NSArray *)keys {
-   int count=[keys count];
+   NSInteger count=[keys count];
 
    while(--count>=0)
     [self removeObjectForKey:[keys objectAtIndex:count]];

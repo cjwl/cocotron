@@ -11,16 +11,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @class NSString;
 
 @interface NSTimeZoneType : NSObject <NSCopying,NSCoding> {
-    int _secondsFromGMT;
+    NSInteger _secondsFromGMT;
     BOOL _isDaylightSavingTime;
     NSString *_abbreviation;
 }
 
-+(NSTimeZoneType *)timeZoneTypeWithSecondsFromGMT:(int)seconds isDaylightSavingTime:(BOOL)isDST abbreviation:(NSString *)abbreviation;
++(NSTimeZoneType *)timeZoneTypeWithSecondsFromGMT:(NSInteger)seconds isDaylightSavingTime:(BOOL)isDST abbreviation:(NSString *)abbreviation;
 
--initWithSecondsFromGMT:(int)seconds isDaylightSavingTime:(BOOL)isDST abbreviation:(NSString *)abbreviation;
+-initWithSecondsFromGMT:(NSInteger)seconds isDaylightSavingTime:(BOOL)isDST abbreviation:(NSString *)abbreviation;
 
--(int)secondsFromGMT;
+-(NSInteger)secondsFromGMT;
 -(BOOL)isDaylightSavingTime;
 -(NSString *)abbreviation;
 

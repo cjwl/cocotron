@@ -5,8 +5,6 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
-
-// Original - Christopher Lloyd <cjwl@objc.net>
 #import <Foundation/NSMutableSet_concrete.h>
 #import <Foundation/NSArray.h>
 #import <Foundation/NSEnumerator_set.h>
@@ -14,7 +12,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @implementation NSMutableSet_concrete
 
-NSSet *NSMutableSet_concreteNew(NSZone *zone,unsigned capacity) {
+NSSet *NSMutableSet_concreteNew(NSZone *zone,NSUInteger capacity) {
    NSMutableSet_concrete *self=NSAllocateObject([NSMutableSet_concrete class],0,zone);
 
    NSSetTableInit(&(self->_table),capacity,zone);
@@ -23,9 +21,9 @@ NSSet *NSMutableSet_concreteNew(NSZone *zone,unsigned capacity) {
 }
 
 NSSet *NSMutableSet_concreteNewWithObjects(NSZone *zone,id *objects,
-  unsigned count) {
+  NSUInteger count) {
    NSMutableSet_concrete *self=NSAllocateObject([NSMutableSet_concrete class],0,zone);
-   unsigned i;
+   NSUInteger i;
 
    NSSetTableInit(&(self->_table),count,zone);
    for(i=0;i<count;i++)
@@ -35,7 +33,7 @@ NSSet *NSMutableSet_concreteNewWithObjects(NSZone *zone,id *objects,
 }
 
 NSSet *NSMutableSet_concreteNewWithArray(NSZone *zone,NSArray *array) {
-   unsigned count=[array count];
+   NSUInteger count=[array count];
    id       objects[count];
 
    [array getObjects:objects];
@@ -43,7 +41,7 @@ NSSet *NSMutableSet_concreteNewWithArray(NSZone *zone,NSArray *array) {
    return NSMutableSet_concreteNewWithObjects(zone,objects,count);
 }
 
--initWithCapacity:(unsigned)capacity {
+-initWithCapacity:(NSUInteger)capacity {
    NSSetTableInit(&_table,capacity,[self zone]);
    return self;
 }
@@ -56,7 +54,7 @@ NSSet *NSMutableSet_concreteNewWithArray(NSZone *zone,NSArray *array) {
    [super dealloc];
 }
 
--(unsigned)count {
+-(NSUInteger)count {
    return _table.count;
 }
 

@@ -17,9 +17,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return self;
 }
 
--(unsigned)hash 
+-(NSUInteger)hash 
 { 
-        return (unsigned)[self pointerValue]; 
+        return (NSUInteger)[self pointerValue]; 
 } 
 
 -(BOOL)isEqual:(id)other 

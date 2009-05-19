@@ -5,8 +5,6 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
-
-// Original - Christopher Lloyd <cjwl@objc.net>
 #import <Foundation/NSMutableString_unicodePtr.h>
 #import <Foundation/NSRaise.h>
 #import <Foundation/NSStringHashing.h>
@@ -17,11 +15,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @implementation NSMutableString_unicodePtr
 
--(unsigned)length {
+-(NSUInteger)length {
    return _length;
 }
 
--(unichar)characterAtIndex:(unsigned)location {
+-(unichar)characterAtIndex:(NSUInteger)location {
    if(location>=_length){
     NSRaiseException(NSRangeException,self,_cmd,@"index %d beyond length %d",
      location,[self length]);
@@ -38,7 +36,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)getCharacters:(unichar *)buffer range:(NSRange)range {
-   int i,loc=range.location;
+   NSInteger i,loc=range.location;
 
    if(NSMaxRange(range)>_length){
     NSRaiseException(NSRangeException,self,_cmd,@"range %@ beyond length %d",
@@ -50,8 +48,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)replaceCharactersInRange:(NSRange)range withString:(NSString *)string {
-   unsigned otherlength=[string length];
-   unsigned i,loc=range.location;
+   NSUInteger otherlength=[string length];
+   NSUInteger i,loc=range.location;
 
    if(NSMaxRange(range)>_length){
     NSRaiseException(NSRangeException,self,_cmd,@"range %@ beyond length %d",
@@ -59,7 +57,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    }
 
    if(range.length<otherlength){ // make room
-    unsigned delta=otherlength-range.length;
+    NSUInteger delta=otherlength-range.length;
 
     _length+=delta;
 
@@ -74,7 +72,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
      _unicode[i]=_unicode[i-delta];
    }
    else if(range.length>otherlength){ // delete some
-    unsigned delta=range.length-otherlength;
+    NSUInteger delta=range.length-otherlength;
 
     _length-=delta;
 
@@ -85,16 +83,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [string getCharacters:_unicode+loc range:NSMakeRange(0,otherlength)];
 }
 
--(unsigned)hash {
+-(NSUInteger)hash {
    return NSStringHashUnicode(_unicode,MIN(_length,NSHashStringLength));
 }
 
-static inline unsigned roundCapacityUp(unsigned capacity){
+static inline NSUInteger roundCapacityUp(NSUInteger capacity){
    return (capacity<4)?4:capacity;
 }
 
 NSString *NSMutableString_unicodePtrInitWithCString(NSMutableString_unicodePtr *self,
- const char *cString,unsigned length,NSZone *zone){
+ const char *cString,NSUInteger length,NSZone *zone){
 
    self->_unicode=NSCharactersFromCString(cString,length,
           &(self->_length),zone);
@@ -104,7 +102,7 @@ NSString *NSMutableString_unicodePtrInitWithCString(NSMutableString_unicodePtr *
 }
 
 NSString *NSMutableString_unicodePtrInit(NSMutableString_unicodePtr *self,
- const unichar *unicode,unsigned length,NSZone *zone){
+ const unichar *unicode,NSUInteger length,NSZone *zone){
    int i;
 
    self->_length=length;
@@ -117,7 +115,7 @@ NSString *NSMutableString_unicodePtrInit(NSMutableString_unicodePtr *self,
 }
 
 NSString *NSMutableString_unicodePtrInitNoCopy(NSMutableString_unicodePtr *self,
- unichar *unicode,unsigned length,NSZone *zone){
+ unichar *unicode,NSUInteger length,NSZone *zone){
 
    self->_length=length;
    self->_capacity=length;
@@ -127,7 +125,7 @@ NSString *NSMutableString_unicodePtrInitNoCopy(NSMutableString_unicodePtr *self,
 }
 
 NSString *NSMutableString_unicodePtrInitWithCapacity(NSMutableString_unicodePtr *self,
- unsigned capacity,NSZone *zone) {
+ NSUInteger capacity,NSZone *zone) {
 
    self->_length=0;
    self->_capacity=roundCapacityUp(capacity);
@@ -137,21 +135,21 @@ NSString *NSMutableString_unicodePtrInitWithCapacity(NSMutableString_unicodePtr 
 }
 
 NSString *NSMutableString_unicodePtrNewWithCString(NSZone *zone,
- const char *cString,unsigned length) {
+ const char *cString,NSUInteger length) {
    NSMutableString_unicodePtr *self=NSAllocateObject(objc_lookUpClass("NSMutableString_unicodePtr"),0,zone);
 
    return NSMutableString_unicodePtrInitWithCString(self,cString,length,zone);
 }
 
 NSString *NSMutableString_unicodePtrNew(NSZone *zone,
- const unichar *unicode,unsigned length) {
+ const unichar *unicode,NSUInteger length) {
    NSMutableString_unicodePtr *self=NSAllocateObject(objc_lookUpClass("NSMutableString_unicodePtr"),0,zone);
 
    return NSMutableString_unicodePtrInit(self,unicode,length,zone);
 }
 
 NSString *NSMutableString_unicodePtrNewNoCopy(NSZone *zone,
- unichar *unicode,unsigned length) {
+ unichar *unicode,NSUInteger length) {
    NSMutableString_unicodePtr *self;
 
    self=NSAllocateObject(objc_lookUpClass("NSMutableString_unicodePtr"),0,zone);
@@ -160,7 +158,7 @@ NSString *NSMutableString_unicodePtrNewNoCopy(NSZone *zone,
 }
 
 NSString *NSMutableString_unicodePtrNewWithCapacity(NSZone *zone,
- unsigned capacity) {
+ NSUInteger capacity) {
    NSMutableString_unicodePtr *self;
 
    self=NSAllocateObject(objc_lookUpClass("NSMutableString_unicodePtr"),0,zone);
@@ -180,7 +178,7 @@ NSString *NSMutableString_unicodePtrNewWithCapacity(NSZone *zone,
      NSZoneFromPointer(self));
 }
 
--initWithCharactersNoCopy:(unichar *)characters length:(unsigned)length
+-initWithCharactersNoCopy:(unichar *)characters length:(NSUInteger)length
              freeWhenDone:(BOOL)freeWhenDone {
    NSString *string=NSMutableString_unicodePtrInit(self,characters,length,
      NSZoneFromPointer(self));
@@ -191,12 +189,12 @@ NSString *NSMutableString_unicodePtrNewWithCapacity(NSZone *zone,
    return string;
 }
 
--initWithCharacters:(const unichar *)characters length:(unsigned)length {
+-initWithCharacters:(const unichar *)characters length:(NSUInteger)length {
    return NSMutableString_unicodePtrInit(self,characters,length,
      NSZoneFromPointer(self));
 }
 
--initWithCStringNoCopy:(char *)bytes length:(unsigned)length
+-initWithCStringNoCopy:(char *)bytes length:(NSUInteger)length
           freeWhenDone:(BOOL)freeWhenDone {
    NSString *string=NSMutableString_unicodePtrInitWithCString(self,bytes,length,
      NSZoneFromPointer(self));
@@ -207,20 +205,20 @@ NSString *NSMutableString_unicodePtrNewWithCapacity(NSZone *zone,
    return string;
 }
 
--initWithCString:(const char *)bytes length:(unsigned)length {
+-initWithCString:(const char *)bytes length:(NSUInteger)length {
    return NSMutableString_unicodePtrInitWithCString(self,bytes,length,
      NSZoneFromPointer(self));
 }
 
 -initWithCString:(const char *)bytes {
-   unsigned length=strlen(bytes);
+   NSUInteger length=strlen(bytes);
 
    return NSMutableString_unicodePtrInitWithCString(self,bytes,length,
      NSZoneFromPointer(self));
 }
 
 -initWithString:(NSString *)string {
-   unsigned length=[string length];
+   NSUInteger length=[string length];
    unichar  unicode[length];
 
    [string getCharacters:unicode];
@@ -230,7 +228,7 @@ NSString *NSMutableString_unicodePtrNewWithCapacity(NSZone *zone,
 
 -initWithFormat:(NSString *)format,... {
    va_list   arguments;
-   unsigned  length;
+   NSUInteger  length;
    unichar  *unicode;
 
    va_start(arguments,format);
@@ -243,7 +241,7 @@ NSString *NSMutableString_unicodePtrNewWithCapacity(NSZone *zone,
 }
 
 -initWithFormat:(NSString *)format arguments:(va_list)arguments {
-   unsigned  length;
+   NSUInteger  length;
    unichar  *unicode;
 
    unicode=NSCharactersNewWithFormat(format,nil,arguments,&length,
@@ -255,7 +253,7 @@ NSString *NSMutableString_unicodePtrNewWithCapacity(NSZone *zone,
 
 -initWithFormat:(NSString *)format locale:(NSDictionary *)locale,... {
    va_list   arguments;
-   unsigned  length;
+   NSUInteger  length;
    unichar  *unicode;
 
    va_start(arguments,locale);
@@ -269,7 +267,7 @@ NSString *NSMutableString_unicodePtrNewWithCapacity(NSZone *zone,
 
 -initWithFormat:(NSString *)format
              locale:(NSDictionary *)locale arguments:(va_list)arguments {
-   unsigned  length;
+   NSUInteger  length;
    unichar  *unicode;
 
    unicode=NSCharactersNewWithFormat(format,locale,arguments,&length,
@@ -308,7 +306,7 @@ NSString *NSMutableString_unicodePtrNewWithCapacity(NSZone *zone,
 }
 
 -initWithContentsOfFile:(NSString *)path {
-   unsigned  length;
+   NSUInteger  length;
    unichar  *unicode;
 
    if((unicode=NSCharactersWithContentsOfFile(path,&length,NSZoneFromPointer(self)))==NULL){
@@ -320,7 +318,7 @@ NSString *NSMutableString_unicodePtrNewWithCapacity(NSZone *zone,
      NSZoneFromPointer(self));
 }
 
--initWithCapacity:(unsigned)capacity {
+-initWithCapacity:(NSUInteger)capacity {
    return NSMutableString_unicodePtrInitWithCapacity(self,capacity,
      NSZoneFromPointer(self));
 }

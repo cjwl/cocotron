@@ -163,7 +163,7 @@ static void transferNativeToSetWithOriginals(native_set *sset,NSMutableSet *set,
 
       timeval.tv_sec=interval;
       interval-=timeval.tv_sec;
-      timeval.tv_usec=interval*1000;
+      timeval.tv_usec=(int)(interval*1000);
       
       if((numFds=select(maxDescriptor+1,activeRead->fdset,activeWrite->fdset,activeExcept->fdset,&timeval))<0)
       {

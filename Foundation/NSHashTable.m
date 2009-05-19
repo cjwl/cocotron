@@ -5,8 +5,6 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
-
-// Original - Christopher Lloyd <cjwl@objc.net>
 #import <Foundation/NSHashTable.h>
 #import <Foundation/NSArray.h>
 #import <Foundation/NSString.h>
@@ -18,20 +16,20 @@ typedef struct NSHashBucket {
 
 struct NSHashTable {
    NSHashTableCallBacks *callBacks;
-   unsigned       count;
-   unsigned       nBuckets;
+   NSUInteger       count;
+   NSUInteger       nBuckets;
    NSHashBucket **buckets;
 };
 
 NSHashTableCallBacks _NSHashTableFixCallbacks(NSHashTableCallBacks callBacks);
 
 NSHashTable *NSCreateHashTable(NSHashTableCallBacks callBacks,
- unsigned capacity) {
+ NSUInteger capacity) {
    return NSCreateHashTableWithZone(callBacks,capacity,NULL);
 }
 
 NSHashTable *NSCreateHashTableWithZone(NSHashTableCallBacks callBacks,
- unsigned capacity,NSZone *zone) {
+ NSUInteger capacity,NSZone *zone) {
    NSHashTable *table;
 
    if(zone==NULL)
@@ -63,7 +61,7 @@ NSHashTable *NSCopyHashTableWithZone(NSHashTable *table,NSZone *zone) {
 
 void NSFreeHashTable(NSHashTable *table) {
    NSZone *zone=NSZoneFromPointer(table);
-   unsigned i;
+   NSUInteger i;
    NSHashBucket *j,*next;
 
    for(i=0;i<table->nBuckets;i++){
@@ -80,7 +78,7 @@ void NSFreeHashTable(NSHashTable *table) {
 
 void NSResetHashTable(NSHashTable *table) {
    NSZone *zone=NSZoneFromPointer(table);
-   unsigned i;
+   NSUInteger i;
    NSHashBucket *j,*next;
 
    for(i=0;i<table->nBuckets;i++){
@@ -95,7 +93,7 @@ void NSResetHashTable(NSHashTable *table) {
 }
 
 BOOL NSCompareHashTables(NSHashTable *table1,NSHashTable *table2) {
-   unsigned i;
+   NSUInteger i;
    NSHashBucket *j;
 
    if(table1->count!=table2->count)
@@ -109,12 +107,12 @@ BOOL NSCompareHashTables(NSHashTable *table1,NSHashTable *table2) {
    return YES;
 }
 
-unsigned NSCountHashTable(NSHashTable *table) {
+NSUInteger NSCountHashTable(NSHashTable *table) {
    return table->count;
 }
 
 void *NSHashGet(NSHashTable *table,const void *pointer) {
-   unsigned i=table->callBacks->hash(table,pointer)%table->nBuckets;
+   NSUInteger i=table->callBacks->hash(table,pointer)%table->nBuckets;
    NSHashBucket *j;
 
    for(j=table->buckets[i];j!=NULL;j=j->next)
@@ -126,7 +124,7 @@ void *NSHashGet(NSHashTable *table,const void *pointer) {
 
 NSArray *NSAllHashTableObjects(NSHashTable *table) {
    NSMutableArray *array;
-   unsigned i;
+   NSUInteger i;
    NSHashBucket *j;
 
    array=[[[NSMutableArray allocWithZone:NULL] initWithCapacity:table->count] autorelease];
@@ -172,8 +170,8 @@ void *NSNextHashEnumeratorItem(NSHashEnumerator *state) {
 
 void NSHashInsert(NSHashTable *table,const void *pointer) {
    NSZone *zone;
-   unsigned hash=table->callBacks->hash(table,pointer);
-   unsigned i=hash%table->nBuckets;
+   NSUInteger hash=table->callBacks->hash(table,pointer);
+   NSUInteger i=hash%table->nBuckets;
    NSHashBucket *j;
 
    for(j=table->buckets[i];j!=NULL;j=j->next)
@@ -188,14 +186,14 @@ void NSHashInsert(NSHashTable *table,const void *pointer) {
    zone=NSZoneFromPointer(table);
 
    if(table->count>=table->nBuckets){
-    unsigned nBuckets=table->nBuckets;
+    NSUInteger nBuckets=table->nBuckets;
     NSHashBucket **buckets=table->buckets,*next;
 
     table->nBuckets=nBuckets*2;
     table->buckets=NSZoneCalloc(zone,table->nBuckets,sizeof(NSHashBucket *));
     for(i=0;i<nBuckets;i++)
      for(j=buckets[i];j!=NULL;j=next){
-      unsigned newi=table->callBacks->hash(table,j->key)%table->nBuckets;
+      NSUInteger newi=table->callBacks->hash(table,j->key)%table->nBuckets;
       next=j->next;
       j->next=table->buckets[newi];
       table->buckets[newi]=j;
@@ -231,7 +229,7 @@ void *NSHashInsertIfAbsent(NSHashTable *table,const void *pointer) {
 }
 
 void NSHashRemove(NSHashTable *table,const void *pointer) {
-   unsigned i=table->callBacks->hash(table,pointer)%table->nBuckets;
+   NSUInteger i=table->callBacks->hash(table,pointer)%table->nBuckets;
    NSHashBucket *j=table->buckets[i],*prev=j;
 
    for(;j!=NULL;j=j->next){
@@ -252,7 +250,7 @@ void NSHashRemove(NSHashTable *table,const void *pointer) {
 NSString *NSStringFromHashTable(NSHashTable *table) {
    NSMutableString *string=[NSMutableString string];
    NSString *fmt=@"%p";
-   unsigned i;
+   NSUInteger i;
    NSHashBucket *j;
 
    for(i=0;i<table->nBuckets;i++){
@@ -269,11 +267,11 @@ NSString *NSStringFromHashTable(NSHashTable *table) {
    return string;
 }
 
-static unsigned _NSHashPointerHash(NSHashTable *table,const void *object){
-   return (unsigned)object>>5;
+static NSUInteger _NSHashPointerHash(NSHashTable *table,const void *object){
+   return (NSUInteger)object>>5;
 }
 
-static unsigned _NSHashObjectHash(NSHashTable *table,const void *object){
+static NSUInteger _NSHashObjectHash(NSHashTable *table,const void *object){
    return [(id)object hash];
 }
 
@@ -313,14 +311,14 @@ static NSString *_NSHashObjectDescribe(NSHashTable *table,const void *object){
    return [(id)object description];
 }
 
-static unsigned _NSHashPointerToStructHash(NSHashTable *table,const void *object){
-   const struct { int i; } *ptr=object;
-   return (unsigned)ptr->i;
+static NSUInteger _NSHashPointerToStructHash(NSHashTable *table,const void *object){
+   const struct { NSInteger i; } *ptr=object;
+   return (NSUInteger)ptr->i;
 }
 
 static BOOL _NSHashPointerToStructIsEqual(NSHashTable *table,const void *object1,
   const void *object2){
-   const struct { int i; } *ptr1=object1,*ptr2=object2;
+   const struct { NSInteger i; } *ptr1=object1,*ptr2=object2;
    return (ptr1->i==ptr2->i)?YES:NO;
 }
 

@@ -12,7 +12,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 // djb2
 
-static inline unsigned NSStringHashUnicode(const unichar *buffer,unsigned length){
+static inline unsigned NSStringHashUnicode(const unichar *buffer,NSUInteger length){
    unsigned i,result=5381;
 
    for(i=0;i<length;i++)

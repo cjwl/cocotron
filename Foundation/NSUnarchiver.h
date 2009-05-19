@@ -14,7 +14,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @interface NSUnarchiver : NSCoder {
    NSData              *_data;
    const unsigned char *_bytes;
-   unsigned             _position,_length;
+   NSUInteger             _position,_length;
    NSZone              *_objectZone;
    
    unsigned    _version;
@@ -33,7 +33,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)decodeValueOfObjCType:(const char *)type at:(void *)data;
 -(NSData *)decodeDataObject;
--(unsigned)versionForClassName:(NSString *)className;
+-(NSInteger)versionForClassName:(NSString *)className;
 
 -initForReadingWithData:(NSData *)data;
 

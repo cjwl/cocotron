@@ -53,7 +53,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)setAttributes:(NSArray *)attributes {
-   int i,count=[attributes count];
+   NSInteger i,count=[attributes count];
    
    for(i=0;i<count;i++){
     NSXMLNode *add=[attributes objectAtIndex:i];
@@ -91,7 +91,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)insertChildren:(NSArray *)children atIndex:(unsigned)index {
-   int i,count=[children count];
+   NSInteger i,count=[children count];
    
    for(i=0;i<count;i++)
     [_children insertObject:[children objectAtIndex:i] atIndex:index+i];

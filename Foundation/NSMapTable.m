@@ -5,8 +5,6 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
-
-// Original - Christopher Lloyd <cjwl@objc.net>
 #import <Foundation/NSMapTable.h>
 #import <Foundation/NSArray.h>
 #import <Foundation/NSString.h>
@@ -20,19 +18,19 @@ typedef struct _NSMapNode {
 struct NSMapTable {
    NSMapTableKeyCallBacks   *keyCallBacks;
    NSMapTableValueCallBacks *valueCallBacks;
-   unsigned             count;
-   unsigned             nBuckets;
+   NSUInteger             count;
+   NSUInteger             nBuckets;
    NSMapNode  **buckets;
 };
 
 const void *NSNotAnIntMapKey=(const void *)0x80000000;
 const void *NSNotAPointerMapKey=(const void *)0xffffffff;
 
-static unsigned _NSMapPointerHash(NSMapTable *table,const void *object){
-   return (unsigned)object>>5;
+static NSUInteger _NSMapPointerHash(NSMapTable *table,const void *object){
+   return (NSUInteger)object>>5;
 }
 
-static unsigned _NSMapObjectHash(NSMapTable *table,const void *object){
+static NSUInteger _NSMapObjectHash(NSMapTable *table,const void *object){
    return [(id)object hash];
 }
 
@@ -127,12 +125,12 @@ const NSMapTableValueCallBacks NSOwnedPointerMapValueCallBacks={
 };
 
 NSMapTable *NSCreateMapTable(NSMapTableKeyCallBacks keyCallBacks,
-   NSMapTableValueCallBacks valueCallBacks,unsigned capacity) {
+   NSMapTableValueCallBacks valueCallBacks,NSUInteger capacity) {
    return NSCreateMapTableWithZone(keyCallBacks,valueCallBacks,capacity,NULL);
 }
 
 NSMapTable *NSCreateMapTableWithZone(NSMapTableKeyCallBacks keyCallBacks,
-   NSMapTableValueCallBacks valueCallBacks,unsigned capacity,NSZone *zone) {
+   NSMapTableValueCallBacks valueCallBacks,NSUInteger capacity,NSZone *zone) {
    NSMapTable *table;
 
    table=NSZoneMalloc(zone,sizeof(NSMapTable));
@@ -178,7 +176,7 @@ NSMapTable *NSCopyMapTableWithZone(NSMapTable *table,NSZone *zone){
 
 void NSFreeMapTable(NSMapTable *table){
    NSZone *zone=NSZoneFromPointer(table);
-   unsigned i;
+   NSUInteger i;
    NSMapNode *j,*next;
 
    for(i=0;i<table->nBuckets;i++){
@@ -197,7 +195,7 @@ void NSFreeMapTable(NSMapTable *table){
 
 void NSResetMapTable(NSMapTable *table){
    NSZone *zone=NSZoneFromPointer(table);
-   unsigned i;
+   NSUInteger i;
    NSMapNode *j,*next;
 
    for(i=0;i<table->nBuckets;i++){
@@ -213,7 +211,7 @@ void NSResetMapTable(NSMapTable *table){
 }
 
 BOOL NSCompareMapTables(NSMapTable *table1,NSMapTable *table2){
-   unsigned i;
+   NSUInteger i;
    NSMapNode *j;
 
    if(table1->count!=table2->count)
@@ -227,13 +225,13 @@ BOOL NSCompareMapTables(NSMapTable *table1,NSMapTable *table2){
    return YES;
 }
 
-unsigned NSCountMapTable(NSMapTable *table){
+NSUInteger NSCountMapTable(NSMapTable *table){
    return table->count;
 }
 
 BOOL NSMapMember(NSMapTable *table,const void *key,void **originalKey,
    void **value){
-   unsigned i=table->keyCallBacks->hash(table,key)%table->nBuckets;
+   NSUInteger i=table->keyCallBacks->hash(table,key)%table->nBuckets;
    NSMapNode *j;
 
    for(j=table->buckets[i];j!=NULL;j=j->next)
@@ -247,7 +245,7 @@ BOOL NSMapMember(NSMapTable *table,const void *key,void **originalKey,
 }
 
 void *NSMapGet(NSMapTable *table,const void *key){
-   unsigned i=table->keyCallBacks->hash(table,key)%table->nBuckets;
+   NSUInteger i=table->keyCallBacks->hash(table,key)%table->nBuckets;
    NSMapNode *j;
 
    for(j=table->buckets[i];j!=NULL;j=j->next)
@@ -292,7 +290,7 @@ BOOL NSNextMapEnumeratorPair(NSMapEnumerator *state,void **key,
 
 NSArray *NSAllMapTableKeys(NSMapTable *table){
    NSMutableArray *array;
-   unsigned i;
+   NSUInteger i;
    NSMapNode *j;
 
    array=[[[NSMutableArray allocWithZone:NULL] initWithCapacity:table->count] autorelease];
@@ -306,7 +304,7 @@ NSArray *NSAllMapTableKeys(NSMapTable *table){
 
 NSArray *NSAllMapTableValues(NSMapTable *table){
    NSMutableArray *array;
-   unsigned i;
+   NSUInteger i;
    NSMapNode *j;
 
    array=[[[NSMutableArray allocWithZone:NULL] initWithCapacity:table->count] autorelease];
@@ -320,8 +318,8 @@ NSArray *NSAllMapTableValues(NSMapTable *table){
 
 void NSMapInsert(NSMapTable *table,const void *key,const void *value){
    NSZone    *zone;
-   unsigned   hash=table->keyCallBacks->hash(table,key);
-   unsigned        i=hash%table->nBuckets;
+   NSUInteger   hash=table->keyCallBacks->hash(table,key);
+   NSUInteger        i=hash%table->nBuckets;
    NSMapNode *j;
 
    for(j=table->buckets[i];j!=NULL;j=j->next)
@@ -342,7 +340,7 @@ void NSMapInsert(NSMapTable *table,const void *key,const void *value){
    zone=NSZoneFromPointer(table);
 
    if(table->count>=table->nBuckets){
-    unsigned         nBuckets=table->nBuckets;
+    NSUInteger         nBuckets=table->nBuckets;
     NSMapNode **buckets=table->buckets,*next;
 
     table->nBuckets=nBuckets*2;
@@ -350,7 +348,7 @@ void NSMapInsert(NSMapTable *table,const void *key,const void *value){
 
     for(i=0;i<nBuckets;i++)
      for(j=buckets[i];j!=NULL;j=next){
-      unsigned newi=table->keyCallBacks->hash(table,j->key)%table->nBuckets;
+      NSUInteger newi=table->keyCallBacks->hash(table,j->key)%table->nBuckets;
 
       next=j->next;
       j->next=table->buckets[newi];
@@ -390,7 +388,7 @@ void NSMapInsertKnownAbsent(NSMapTable *table,const void *key,
 }
 
 void NSMapRemove(NSMapTable *table,const void *key){
-   unsigned i=table->keyCallBacks->hash(table,key)%table->nBuckets;
+   NSUInteger i=table->keyCallBacks->hash(table,key)%table->nBuckets;
    NSMapNode *j=table->buckets[i],*prev=j;
 
    for(;j!=NULL;j=j->next){
@@ -412,7 +410,7 @@ void NSMapRemove(NSMapTable *table,const void *key){
 NSString *NSStringFromMapTable(NSMapTable *table){
    NSMutableString *string=[NSMutableString string];
    NSString *fmt=@"%p",*eq=@" = ",*nl=@";\n";
-   unsigned i;
+   NSUInteger i;
    NSMapNode *j;
 
    for(i=0;i<table->nBuckets;i++){

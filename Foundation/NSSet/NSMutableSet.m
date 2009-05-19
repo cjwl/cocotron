@@ -5,8 +5,6 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
-
-// Original - Christopher Lloyd <cjwl@objc.net>
 #import <Foundation/NSMutableSet.h>
 #import <Foundation/NSArray.h>
 #import <Foundation/NSEnumerator.h>
@@ -23,13 +21,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return NSAllocateObject(self,0,zone);
 }
 
--initWithCapacity:(unsigned)capacity {
+-initWithCapacity:(NSUInteger)capacity {
    NSInvalidAbstractInvocation();
    return nil;
 }
 
--initWithObjects:(id *)objects count:(unsigned)count {
-   unsigned i;
+-initWithObjects:(id *)objects count:(NSUInteger)count {
+   NSUInteger i;
 
    self=[self initWithCapacity:count];
    for(i=0;i<count;i++)
@@ -69,7 +67,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 +setWithObjects:first,... {
    va_list  arguments;
-   unsigned i,count;
+   NSUInteger i,count;
    id      *objects;
 
    va_start(arguments,first);
@@ -95,11 +93,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return [[[self allocWithZone:NULL] initWithObjects:objects count:count] autorelease];
 }
 
-+setWithObjects:(id *)objects count:(unsigned)count {
++setWithObjects:(id *)objects count:(NSUInteger)count {
    return [[[self allocWithZone:NULL] initWithObjects:objects count:count] autorelease];
 }
 
-+setWithCapacity:(unsigned)capacity {
++setWithCapacity:(NSUInteger)capacity {
    if(self==[NSMutableSet class])
     return NSAutorelease(NSMutableSet_concreteNew(NULL,capacity));
 
@@ -111,7 +109,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)addObjectsFromArray:(NSArray *)array {
-   unsigned i,count=[array count];
+   NSUInteger i,count=[array count];
 
    for(i=0;i<count;i++)
     [self addObject:[array objectAtIndex:i]];
@@ -144,7 +142,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)removeAllObjects {
    NSArray *allObjects=[self allObjects];
-   int      i,count=[allObjects count];
+   NSInteger      i,count=[allObjects count];
 
    for(i=0;i<count;i++)
     [self removeObject:[allObjects objectAtIndex:i]];
@@ -160,7 +158,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)intersectSet:(NSSet *)other {
    NSArray *allObjects=[self allObjects];
-   int      i,count=[allObjects count];
+   NSInteger      i,count=[allObjects count];
 
    for(i=0;i<count;i++){
     id object=[allObjects objectAtIndex:i];

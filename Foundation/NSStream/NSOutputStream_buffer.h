@@ -13,8 +13,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    NSError        *_error;
    NSStreamStatus _status;
    unsigned char  *_buffer;
-   unsigned        _capacity;
-   unsigned        _position;
+   NSUInteger        _capacity;
+   NSUInteger        _position;
 }
 
 @end

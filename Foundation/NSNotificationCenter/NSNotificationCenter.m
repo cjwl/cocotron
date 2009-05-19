@@ -63,7 +63,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    NSEnumerator            *keyEnumerator=[_nameToRegistry keyEnumerator];
    NSString                *key;
    NSObjectToObservers *registry;
-   int                      count;
+   NSInteger                count;
 
    while((key=[keyEnumerator nextObject])!=nil){
     registry=[_nameToRegistry objectForKey:key];
@@ -82,7 +82,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)removeObserver:anObserver name:(NSString *)name object:object {
    NSMutableArray          *removeRegistries=[NSMutableArray array];
    NSObjectToObservers *registry;
-    int                     count;
+   NSInteger               count;
 
    if(name!=nil){
     registry=[_nameToRegistry objectForKey:name];

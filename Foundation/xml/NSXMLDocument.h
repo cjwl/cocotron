@@ -28,9 +28,9 @@ typedef int NSXMLDocumentContentKind;
 +(Class)replacementClassForClass:(Class)aClass;
 
 -initWithRootElement:(NSXMLElement *)element;
--initWithXMLString:(NSString *)string options:(unsigned)options error:(NSError **)error;
--initWithData:(NSData *)data options:(unsigned)options error:(NSError **)error;
--initWithContentsOfURL:(NSURL *)url options:(unsigned)options error:(NSError **)error;
+-initWithXMLString:(NSString *)string options:(NSUInteger)options error:(NSError **)error;
+-initWithData:(NSData *)data options:(NSUInteger)options error:(NSError **)error;
+-initWithContentsOfURL:(NSURL *)url options:(NSUInteger)options error:(NSError **)error;
 
 -(NSXMLDocumentContentKind)documentContentKind;
 -(NSString *)version;
@@ -52,15 +52,15 @@ typedef int NSXMLDocumentContentKind;
 
 -(void)setChildren:(NSArray *)children;
 -(void)addChild:(NSXMLNode *)child;
--(void)insertChild:(NSXMLNode *)child atIndex:(unsigned)index;
--(void)insertChildren:(NSArray *)children atIndex:(unsigned)index;
--(void)removeChildAtIndex:(unsigned)index;
--(void)replaceChildAtIndex:(unsigned)index withNode:(NSXMLNode *)node;
+-(void)insertChild:(NSXMLNode *)child atIndex:(NSUInteger)index;
+-(void)insertChildren:(NSArray *)children atIndex:(NSUInteger)index;
+-(void)removeChildAtIndex:(NSUInteger)index;
+-(void)replaceChildAtIndex:(NSUInteger)index withNode:(NSXMLNode *)node;
 
 -(BOOL)validateAndReturnError:(NSError **)error;
 
 -(NSData *)XMLData;
--(NSData *)XMLDataWithOptions:(unsigned)options;
+-(NSData *)XMLDataWithOptions:(NSUInteger)options;
 
 -objectByApplyingXSLT:(NSData *)xslt arguments:(NSDictionary *)arguments error:(NSError *)error;
 -objectByApplyingXSLTAtURL:(NSURL *)url arguments:(NSDictionary *)arguments error:(NSError *)error;

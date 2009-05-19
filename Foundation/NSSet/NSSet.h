@@ -13,7 +13,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @interface NSSet : NSObject <NSCoding,NSCopying,NSMutableCopying,NSFastEnumeration>
 
--initWithObjects:(id *)objects count:(unsigned)count;
+-initWithObjects:(id *)objects count:(NSUInteger)count;
 -initWithArray:(NSArray *)array;
 -initWithSet:(NSSet *)set;
 -initWithSet:(NSSet *)set copyItems:(BOOL)copyItems;
@@ -24,10 +24,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 +setWithSet:(NSSet *)set;
 +setWithObject:object;
 +setWithObjects:first,...;
-+setWithObjects:(id *)objects count:(unsigned)count;
++setWithObjects:(id *)objects count:(NSUInteger)count;
 
 -member:object;
--(unsigned)count;
+-(NSUInteger)count;
 -(NSEnumerator *)objectEnumerator;
 
 -(BOOL)isEqualToSet:(NSSet *)set;

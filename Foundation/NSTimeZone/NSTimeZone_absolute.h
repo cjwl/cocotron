@@ -11,9 +11,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @interface NSTimeZone_absolute : NSTimeZone <NSCopying, NSCoding> {
     NSString *_name;
     NSString *_abbreviation;
-    int _secondsFromGMT;
+    NSInteger _secondsFromGMT;
 }
 
--initWithSecondsFromGMT:(int)seconds;
+-initWithSecondsFromGMT:(NSInteger)seconds;
 
 @end

@@ -10,17 +10,17 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @interface NSMutableString : NSString
 
--initWithCapacity:(unsigned)capacity;
+-initWithCapacity:(NSUInteger)capacity;
 
 +string;
-+stringWithCapacity:(unsigned)capacity;
++stringWithCapacity:(NSUInteger)capacity;
 
 -(void)appendString:(NSString *)string;
 -(void)appendFormat:(NSString *)format,...;
 
 -(void)deleteCharactersInRange:(NSRange)range;
 
--(void)insertString:(NSString *)string atIndex:(unsigned)index;
+-(void)insertString:(NSString *)string atIndex:(NSUInteger)index;
 
 -(void)replaceCharactersInRange:(NSRange)range withString:(NSString *)string;
 -(void)setString:(NSString *)string;

@@ -27,16 +27,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return NSAllocateObject(self,0,zone);
 }
 
--initWithBytesNoCopy:(void *)bytes length:(unsigned)length freeWhenDone:(BOOL)freeWhenDone {
+-initWithBytesNoCopy:(void *)bytes length:(NSUInteger)length freeWhenDone:(BOOL)freeWhenDone {
    NSInvalidAbstractInvocation();
    return nil;
 }
 
--initWithBytesNoCopy:(void *)bytes length:(unsigned)length {
+-initWithBytesNoCopy:(void *)bytes length:(NSUInteger)length {
    return [self initWithBytesNoCopy:bytes length:length freeWhenDone:YES];
 }
 
--initWithBytes:(const void *)bytes length:(unsigned)length {
+-initWithBytes:(const void *)bytes length:(NSUInteger)length {
    return [self initWithBytesNoCopy:NSBytesReplicate(bytes,length,
     NSZoneFromPointer(self)) length:length];
 }
@@ -46,7 +46,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -initWithContentsOfFile:(NSString *)path {
-   unsigned length;
+   NSUInteger length;
    void    *bytes=[[NSPlatform currentPlatform] contentsOfFile:path length:&length];
 
    if(bytes==NULL){
@@ -58,7 +58,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -initWithContentsOfMappedFile:(NSString *)path {
-   unsigned length;
+   NSUInteger length;
    void    *bytes=[[NSPlatform currentPlatform] contentsOfFile:path length:&length];
 
    if(bytes==NULL){
@@ -123,18 +123,18 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return [[[self allocWithZone:NULL] init] autorelease];
 }
 
-+dataWithBytesNoCopy:(void *)bytes length:(unsigned)length freeWhenDone:(BOOL)freeWhenDone{
++dataWithBytesNoCopy:(void *)bytes length:(NSUInteger)length freeWhenDone:(BOOL)freeWhenDone{
    return [[[self allocWithZone:NULL] initWithBytesNoCopy:bytes length:length freeWhenDone:freeWhenDone] autorelease];
 }
 
-+dataWithBytesNoCopy:(void *)bytes length:(unsigned)length {
++dataWithBytesNoCopy:(void *)bytes length:(NSUInteger)length {
    if(self==objc_lookUpClass("NSData"))
     return NSAutorelease(NSData_concreteNewNoCopy(NULL,bytes,length));
 
    return [[[self allocWithZone:NULL] initWithBytesNoCopy:bytes length:length] autorelease];
 }
 
-+dataWithBytes:(const void *)bytes length:(unsigned)length {
++dataWithBytes:(const void *)bytes length:(NSUInteger)length {
    if(self==objc_lookUpClass("NSData"))
     return NSAutorelease(NSData_concreteNew(NULL,bytes,length));
 
@@ -173,7 +173,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return NULL;
 }
 
--(unsigned)length {
+-(NSUInteger)length {
    NSInvalidAbstractInvocation();
    return 0;
 }
@@ -193,7 +193,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(BOOL)isEqualToData:(NSData *)other {
-   unsigned length;
+   NSUInteger length;
 
    if(self==other)
     return YES;
@@ -223,7 +223,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [self getBytes:result range:range];
 }
 
--(void)getBytes:(void *)result length:(unsigned)length {
+-(void)getBytes:(void *)result length:(NSUInteger)length {
    NSRange range={0,length};
    [self getBytes:result range:range];
 }
@@ -267,7 +267,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(NSString *)description {
    const char *hex="0123456789ABCDEF";
    const char *bytes=[self bytes];
-   unsigned    length=[self length];
+   NSUInteger    length=[self length];
    unsigned    pos=0,i;
    char       *cString;
    NSString   *string=NSAutorelease(NSString_cStringNewWithCapacity(NULL,

@@ -6,19 +6,17 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
-// Original - Christopher Lloyd <cjwl@objc.net>
 #import <Foundation/NSMutableArray_concrete.h>
 #import <Foundation/NSRaise.h>
 #import <Foundation/NSCoder.h>
 
 @implementation NSMutableArray_concrete
 
-static inline unsigned roundCapacityUp(unsigned capacity){
+static inline NSUInteger roundCapacityUp(NSUInteger capacity){
    return (capacity<4)?4:capacity;
 }
 
-NSArray *NSMutableArray_concreteInit(NSMutableArray_concrete *self,
-  id *objects,unsigned count,NSZone *zone) {
+NSArray *NSMutableArray_concreteInit(NSMutableArray_concrete *self,id *objects,NSUInteger count,NSZone *zone) {
    unsigned i;
 
    self->_count=count;
@@ -30,8 +28,7 @@ NSArray *NSMutableArray_concreteInit(NSMutableArray_concrete *self,
    return self;
 }
 
-NSArray *NSMutableArray_concreteInitWithCapacity(NSMutableArray_concrete *self,
-  unsigned capacity,NSZone *zone) {
+NSArray *NSMutableArray_concreteInitWithCapacity(NSMutableArray_concrete *self,NSUInteger capacity,NSZone *zone) {
    self->_count=0;
    self->_capacity=roundCapacityUp(capacity);
    self->_objects=NSZoneMalloc(zone,sizeof(id)*self->_capacity);
@@ -39,14 +36,13 @@ NSArray *NSMutableArray_concreteInitWithCapacity(NSMutableArray_concrete *self,
    return self;
 }
 
-NSArray *NSMutableArray_concreteNew(NSZone *zone,id *objects,unsigned count) {
+NSArray *NSMutableArray_concreteNew(NSZone *zone,id *objects,NSUInteger count) {
    NSMutableArray_concrete *self=NSAllocateObject([NSMutableArray_concrete class],0,zone);
 
    return NSMutableArray_concreteInit(self,objects,count,zone);
 }
 
-NSArray *NSMutableArray_concreteNewWithCapacity(NSZone *zone,
-  unsigned capacity) {
+NSArray *NSMutableArray_concreteNewWithCapacity(NSZone *zone,NSUInteger capacity) {
    NSMutableArray_concrete *self=NSAllocateObject([NSMutableArray_concrete class],0,zone);
 
    return NSMutableArray_concreteInitWithCapacity(self,capacity,zone);
@@ -58,7 +54,7 @@ NSArray *NSMutableArray_concreteNewWithCapacity(NSZone *zone,
 }
 
 -initWithArray:(NSArray *)array {
-   unsigned i,count=[array count];
+   NSUInteger i,count=[array count];
 
    NSMutableArray_concreteInitWithCapacity(self,count,NSZoneFromPointer(self));
    self->_count=count;
@@ -74,7 +70,7 @@ NSArray *NSMutableArray_concreteNewWithCapacity(NSZone *zone,
    return self;
 }
 
--initWithObjects:(id *)objects count:(unsigned)count {
+-initWithObjects:(id *)objects count:(NSUInteger)count {
    return NSMutableArray_concreteInit(self,objects,count,
      NSZoneFromPointer(self));
 }
@@ -101,13 +97,13 @@ NSArray *NSMutableArray_concreteNewWithCapacity(NSZone *zone,
    return NSMutableArray_concreteInit(self,objects,count,NSZoneFromPointer(self));
 }
 
--initWithCapacity:(unsigned)capacity {
+-initWithCapacity:(NSUInteger)capacity {
    return NSMutableArray_concreteInitWithCapacity(self,capacity,
      NSZoneFromPointer(self));
 }
 
 -(void)dealloc {
-   int count=_count;
+   NSInteger count=_count;
 
    while(--count>=0)
     [_objects[count] release];
@@ -118,9 +114,9 @@ NSArray *NSMutableArray_concreteNewWithCapacity(NSZone *zone,
    [super dealloc];
 }
 
--(unsigned)count { return _count; }
+-(NSUInteger)count { return _count; }
 
--objectAtIndex:(unsigned)index {
+-objectAtIndex:(NSUInteger)index {
    if(index>=_count){
     NSRaiseException(NSRangeException,self,_cmd,@"index %d beyond count %d",
      index,[self count]);
@@ -144,7 +140,7 @@ NSArray *NSMutableArray_concreteNewWithCapacity(NSZone *zone,
    _objects[_count-1]=object;
 }
 
--(void)replaceObjectAtIndex:(unsigned)index withObject:object {
+-(void)replaceObjectAtIndex:(NSUInteger)index withObject:object {
    if(object==nil)
     NSRaiseException(NSInvalidArgumentException,self,_cmd,@"nil object");
 
@@ -174,8 +170,8 @@ NSArray *NSMutableArray_concreteNewWithCapacity(NSZone *zone,
    [self removeObjectAtIndex:_count-1];
 }
 
--(void)insertObject:object atIndex:(unsigned)index {
-   int c;
+-(void)insertObject:object atIndex:(NSUInteger)index {
+   NSInteger c;
 
    if(object==nil)
     NSRaiseException(NSInvalidArgumentException,self,_cmd,@"nil object");
@@ -199,8 +195,8 @@ NSArray *NSMutableArray_concreteNewWithCapacity(NSZone *zone,
    _objects[index]=[object retain];
 }
 
--(void)removeObjectAtIndex:(unsigned)index {
-   unsigned i;
+-(void)removeObjectAtIndex:(NSUInteger)index {
+   NSUInteger i;
    id object;
 
    if(index>=_count){
@@ -229,7 +225,7 @@ NSArray *NSMutableArray_concreteNewWithCapacity(NSZone *zone,
     objects[i]=_objects[i];
 }
 
-static inline unsigned indexOfObject(NSMutableArray_concrete *self,id object){
+static inline NSUInteger indexOfObject(NSMutableArray_concrete *self,id object){
    unsigned i;
 
    for(i=0;i<self->_count;i++)
@@ -239,7 +235,7 @@ static inline unsigned indexOfObject(NSMutableArray_concrete *self,id object){
    return NSNotFound;
 }
 
--(unsigned)indexOfObject:object {
+-(NSUInteger)indexOfObject:object {
    return indexOfObject(self,object);
 }
 
@@ -248,7 +244,7 @@ static inline unsigned indexOfObject(NSMutableArray_concrete *self,id object){
 }
 
 -(void)makeObjectsPerformSelector:(SEL)selector {
-	int i, count = [self count];
+	NSInteger i, count = [self count];
 	
 	for (i = 0; i < count; i++)
 		[_objects[i] performSelector:selector];
@@ -256,7 +252,7 @@ static inline unsigned indexOfObject(NSMutableArray_concrete *self,id object){
 
 // iterative mergesort based on http://www.inf.fh-flensburg.de/lang/algorithmen/sortieren/merge/mergiter.htm
 -(void)sortUsingFunction:(int (*)(id, id, void *))compare context:(void *)context {
-  int h, i, j, k, l, m, n = _count;
+  NSInteger h, i, j, k, l, m, n = _count;
   id  A, *B = malloc((n/2 + 1) * sizeof(id));
 
   for (h = 1; h < n; h += h)
@@ -292,7 +288,7 @@ static inline unsigned indexOfObject(NSMutableArray_concrete *self,id object){
 
 -(NSUInteger)countByEnumeratingWithState:(NSFastEnumerationState *)state objects:(id *)stackbuf count:(NSUInteger)length;
 {
-	int numObjects=MIN([self count] - state->extra[0], length);
+	NSInteger numObjects=MIN([self count] - state->extra[0], length);
 	state->mutationsPtr=(unsigned long*)&_objects;
 	state->itemsPtr=&_objects[state->extra[0]];
 	state->extra[0]+=numObjects;

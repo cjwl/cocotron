@@ -72,7 +72,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return NO;
 }
 
--(unsigned)length {
+-(NSUInteger)length {
    return [[self string] length];
 }
 
@@ -81,32 +81,30 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return nil;
 }
 
--(NSDictionary *)attributesAtIndex:(unsigned)location effectiveRange:(NSRange *)range {
+-(NSDictionary *)attributesAtIndex:(NSUInteger)location effectiveRange:(NSRange *)range {
    NSInvalidAbstractInvocation();
    return nil;
 }
 
--(NSDictionary *)attributesAtIndex:(unsigned)location
+-(NSDictionary *)attributesAtIndex:(NSUInteger)location
    longestEffectiveRange:(NSRange *)range inRange:(NSRange)inRange {
    NSUnimplementedMethod();
    return nil;
 }
 
--attribute:(NSString *)name atIndex:(unsigned)location
-   effectiveRange:(NSRange *)range {
+-attribute:(NSString *)name atIndex:(NSUInteger)location effectiveRange:(NSRange *)range {
    return [[self attributesAtIndex:location effectiveRange:range] objectForKey:name];
 }
 
--attribute:(NSString *)name atIndex:(unsigned)location
-   longestEffectiveRange:(NSRange *)range inRange:(NSRange)inRange {
+-attribute:(NSString *)name atIndex:(NSUInteger)location longestEffectiveRange:(NSRange *)range inRange:(NSRange)inRange {
    NSUnimplementedMethod();
    return nil;
 }
 
 -(NSAttributedString *)attributedSubstringFromRange:(NSRange)range {
    NSMutableAttributedString *result=[[[NSMutableAttributedString alloc] init] autorelease];
-   unsigned  location=range.location;
-   unsigned  limit=NSMaxRange(range);
+   NSUInteger  location=range.location;
+   NSUInteger  limit=NSMaxRange(range);
 
    while(location<limit){
     NSRange         effectiveRange,appendedRange;

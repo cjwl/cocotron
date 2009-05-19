@@ -13,6 +13,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "NSOperationQueue.h"
 #import "NSOperation.h"
 #import <Foundation/NSThread.h>
+#import <Foundation/NSAutoreleasePool.h>
 
 #import "NSAtomicList.h"
 #import "NSLatchTrigger.h"

@@ -29,8 +29,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)setLocale:(NSDictionary *)locale;
 
 -(BOOL)isAtEnd;
--(unsigned)scanLocation;
--(void)setScanLocation:(unsigned)location;
+-(NSUInteger)scanLocation;
+-(void)setScanLocation:(NSUInteger)location;
 
 -(BOOL)scanInt:(int *)value;
 -(BOOL)scanLongLong:(long long *)value;

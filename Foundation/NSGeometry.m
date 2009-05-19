@@ -5,8 +5,6 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
-
-// Original - Christopher Lloyd <cjwl@objc.net>
 #import <Foundation/NSGeometry.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSStringFormatter.h>
@@ -67,7 +65,7 @@ BOOL NSIsEmptyRect(NSRect rect) {
 }
 
 
-NSRect NSInsetRect(NSRect rect,float dx,float dy) {
+NSRect NSInsetRect(NSRect rect,CGFloat dx,CGFloat dy) {
    rect.origin.x+=dx;
    rect.origin.y+=dy;
    rect.size.width-=dx*2;
@@ -75,7 +73,7 @@ NSRect NSInsetRect(NSRect rect,float dx,float dy) {
    return rect;
 }
 
-NSRect NSOffsetRect(NSRect rect,float dx,float dy) {
+NSRect NSOffsetRect(NSRect rect,CGFloat dx,CGFloat dy) {
    rect.origin.x+=dx; 
    rect.origin.y+=dy; 
    return rect; 
@@ -84,10 +82,10 @@ NSRect NSOffsetRect(NSRect rect,float dx,float dy) {
 
 NSRect NSIntegralRect(NSRect rect) {
    if (!NSIsEmptyRect(rect)) { 
-      rect.origin.x = floorf(rect.origin.x); 
-      rect.origin.y = floorf(rect.origin.y); 
-      rect.size.width = ceilf(rect.size.width); 
-      rect.size.height = ceilf(rect.size.height); 
+      rect.origin.x = floor(rect.origin.x); 
+      rect.origin.y = floor(rect.origin.y); 
+      rect.size.width = ceil(rect.size.width); 
+      rect.size.height = ceil(rect.size.height); 
    } 
    return rect; 
 
@@ -130,10 +128,10 @@ NSRect NSIntersectionRect(NSRect rect0,NSRect rect1) {
 }
 
 
-void NSDivideRect(NSRect rect,NSRect *slice,NSRect *remainder,float amount,NSRectEdge edge) {
+void NSDivideRect(NSRect rect,NSRect *slice,NSRect *remainder,CGFloat amount,NSRectEdge edge) {
     *slice = rect;
     *remainder = rect;
-    float temp;
+    CGFloat temp;
 
     switch(edge) {
     case NSMinXEdge:

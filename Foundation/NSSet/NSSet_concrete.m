@@ -5,16 +5,14 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
-
-// Original - Christopher Lloyd <cjwl@objc.net>
 #import <Foundation/NSSet_concrete.h>
 #import <Foundation/NSEnumerator_set.h>
 #import <Foundation/NSAutoreleasePool-private.h>
 
 @implementation NSSet_concrete
 
-NSSet *NSSet_concreteNew(NSZone *zone,id *objects,unsigned count) {
-   unsigned       i,capacity=NSSetTableRoundCount(count);
+NSSet *NSSet_concreteNew(NSZone *zone,id *objects,NSUInteger count) {
+   NSUInteger       i,capacity=NSSetTableRoundCount(count);
    NSSet_concrete *self=NSAllocateObject([NSSet_concrete class],
      sizeof(NSSetBucket *)*capacity,zone);
 
@@ -35,7 +33,7 @@ NSSet *NSSet_concreteNew(NSZone *zone,id *objects,unsigned count) {
    [super dealloc];
 }
 
--(unsigned)count {
+-(NSUInteger)count {
    return _table.count;
 }
 

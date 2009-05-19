@@ -6,7 +6,6 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
-// Original - Christopher Lloyd <cjwl@objc.net>
 #import <Foundation/NSNumber_double.h>
 #import <Foundation/NSStringFormatter.h>
 
@@ -43,11 +42,11 @@ NSNumber *NSNumber_doubleNew(NSZone *zone,double value) {
 }
 
 -(int)intValue {
-   return _value;
+   return (int)_value;
 }
 
 -(unsigned int)unsignedIntValue {
-   return _value;
+   return (unsigned int)_value;
 }
 
 -(long)longValue {
@@ -67,7 +66,7 @@ NSNumber *NSNumber_doubleNew(NSZone *zone,double value) {
 }
 
 -(float)floatValue {
-   return _value;
+   return (float)_value;
 }
 
 -(double)doubleValue {
@@ -76,6 +75,14 @@ NSNumber *NSNumber_doubleNew(NSZone *zone,double value) {
 
 -(BOOL)boolValue {
    return _value?YES:NO;
+}
+
+-(NSInteger)integerValue {
+   return (NSInteger)_value;
+}
+
+-(NSUInteger)unsignedIntegerValue {
+   return (NSUInteger)_value;
 }
 
 -(NSString *)descriptionWithLocale:(NSDictionary *)locale {

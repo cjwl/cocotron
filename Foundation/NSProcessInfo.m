@@ -22,7 +22,7 @@ int                 NSProcessInfoArgc=0;
 const char * const *NSProcessInfoArgv=NULL;
 
 -(NSInteger)incrementCounter {
-   int result;
+   NSInteger result;
 
    [_counterLock lock];
    _counter++;

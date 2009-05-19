@@ -5,14 +5,12 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
-
-// Original - Christopher Lloyd <cjwl@objc.net>
 #import <Foundation/NSData_concrete.h>
 #import <Foundation/NSData_mapped.h>
 
 @implementation NSData_concrete
 
-void *NSBytesReplicate(const void *src,unsigned count,NSZone *zone) {
+void *NSBytesReplicate(const void *src,NSUInteger count,NSZone *zone) {
    void    *dst=NSZoneMalloc(zone,count);
 
    NSByteCopy(src,dst,count);
@@ -20,7 +18,7 @@ void *NSBytesReplicate(const void *src,unsigned count,NSZone *zone) {
    return dst;
 }
 
-NSData *NSData_concreteNew(NSZone *zone,const char *bytes,unsigned length) {
+NSData *NSData_concreteNew(NSZone *zone,const char *bytes,NSUInteger length) {
    NSData_concrete *self=NSAllocateObject([NSData_concrete class],0,zone);
 
    self->_length=length;
@@ -30,7 +28,7 @@ NSData *NSData_concreteNew(NSZone *zone,const char *bytes,unsigned length) {
    return self;
 }
 
-NSData *NSData_concreteNewNoCopy(NSZone *zone,void *bytes,unsigned length) {
+NSData *NSData_concreteNewNoCopy(NSZone *zone,void *bytes,NSUInteger length) {
    NSData_concrete *self=NSAllocateObject([NSData_concrete class],0,zone);
 
    self->_length=length;
@@ -47,21 +45,21 @@ NSData *NSData_concreteNewNoCopy(NSZone *zone,void *bytes,unsigned length) {
    return self;
 }
 
--initWithBytes:(const void *)bytes length:(unsigned)length {
+-initWithBytes:(const void *)bytes length:(NSUInteger)length {
    _length=length;
    _bytes=NSBytesReplicate(bytes,length,NSZoneFromPointer(self));
    _freeWhenDone=YES;
    return self;
 }
 
--initWithBytesNoCopy:(void *)bytes length:(unsigned)length {
+-initWithBytesNoCopy:(void *)bytes length:(NSUInteger)length {
    _length=length;
    _bytes=bytes;
    _freeWhenDone=YES;
    return self;
 }
 
--initWithBytesNoCopy:(void *)bytes length:(unsigned)length freeWhenDone:(BOOL)freeWhenDone {
+-initWithBytesNoCopy:(void *)bytes length:(NSUInteger)length freeWhenDone:(BOOL)freeWhenDone {
    _length=length;
    _bytes=bytes;
    _freeWhenDone=freeWhenDone;
@@ -81,7 +79,7 @@ NSData *NSData_concreteNewNoCopy(NSZone *zone,void *bytes,unsigned length) {
    [super dealloc];
 }
 
--(unsigned)length { return _length; }
+-(NSUInteger)length { return _length; }
 -(const void *)bytes { return _bytes; }
 
 @end

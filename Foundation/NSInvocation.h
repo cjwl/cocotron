@@ -13,12 +13,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @interface NSInvocation : NSObject <NSCoding> {
     NSMethodSignature *_signature;
 
-    unsigned       _returnSize;
+    NSUInteger       _returnSize;
     unsigned char *_returnValue;
 
-    unsigned       _argumentFrameSize;
-    unsigned      *_argumentSizes;
-    unsigned      *_argumentOffsets;
+    NSUInteger       _argumentFrameSize;
+    NSUInteger      *_argumentSizes;
+    NSUInteger      *_argumentOffsets;
     unsigned char *_argumentFrame;
 
     unsigned       _retainArguments:1;
@@ -31,8 +31,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)getReturnValue:(void *)pointerToValue;
 -(void)setReturnValue:(void *)pointerToValue;
 
--(void)getArgument:(void *)pointerToValue atIndex:(int)index;
--(void)setArgument:(void *)pointerToValue atIndex:(int)index;
+-(void)getArgument:(void *)pointerToValue atIndex:(NSInteger)index;
+-(void)setArgument:(void *)pointerToValue atIndex:(NSInteger)index;
 
 -(void)retainArguments;
 -(BOOL)argumentsRetained;

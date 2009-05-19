@@ -22,9 +22,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -autorelease;
 -(oneway void)release;
 -retain;
--(unsigned)retainCount;
+-(NSUInteger)retainCount;
 
--(unsigned)hash;
+-(NSUInteger)hash;
 -(BOOL)isEqual:object;
 
 -(BOOL)isKindOfClass:(Class)aClass;

@@ -6,7 +6,6 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
-// Original - Christopher Lloyd <cjwl@objc.net>
 #import <Foundation/NSUnicodeCaseMapping.h>
 #import <Foundation/NSData.h>
 #import <Foundation/NSException.h>
@@ -698,8 +697,8 @@ static unichar _toUpperCase(unichar character){
 }
 
 // FIX
-void NSUnicodeToUppercase(unichar *characters,unsigned length) {
-   unsigned i;
+void NSUnicodeToUppercase(unichar *characters,NSUInteger length) {
+   NSUInteger i;
 
    for(i=0;i<length;i++)
     characters[i]=_toUpperCase(characters[i]);
@@ -712,16 +711,16 @@ static unichar _toLowerCase(unichar character){
 }
 
 // FIX
-void NSUnicodeToLowercase(unichar *characters,unsigned length) {
-   unsigned i;
+void NSUnicodeToLowercase(unichar *characters,NSUInteger length) {
+   NSUInteger i;
 
    for(i=0;i<length;i++)
     characters[i]=_toLowerCase(characters[i]);
 }
 
 
-void NSUnicodeToCapitalized(unichar *characters,unsigned length) {
-   unsigned i;
+void NSUnicodeToCapitalized(unichar *characters,NSUInteger length) {
+   NSUInteger i;
    unichar  prev=' ';
 
    for(i=0;i<length;i++){
@@ -734,9 +733,9 @@ void NSUnicodeToCapitalized(unichar *characters,unsigned length) {
    }
 }
 
-unichar *NSUnicodeFromData(NSData *data,unsigned *resultLengthp) {
+unichar *NSUnicodeFromData(NSData *data,NSUInteger *resultLengthp) {
    const unsigned char *bytes=[data bytes];
-   unsigned             i,length=[data length],resultLength,resultIndex=0;
+   NSUInteger             i,length=[data length],resultLength,resultIndex=0;
    BOOL                 swap=NO;
    unichar             *result;
 
@@ -780,9 +779,9 @@ unichar *NSUnicodeFromData(NSData *data,unsigned *resultLengthp) {
    return result;
 }
 
-unichar *NSUnicodeFromDataUTF16BigEndian(NSData *data,unsigned *resultLengthp) {
+unichar *NSUnicodeFromDataUTF16BigEndian(NSData *data,NSUInteger *resultLengthp) {
    const unsigned char *bytes=[data bytes];
-   unsigned             i,length=[data length],resultLength,resultIndex=0;
+   NSUInteger             i,length=[data length],resultLength,resultIndex=0;
    unichar             *result;
 
    if(length%2!=0)

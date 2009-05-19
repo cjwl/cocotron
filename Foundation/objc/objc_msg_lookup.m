@@ -21,7 +21,7 @@ IMP objc_msg_lookup(id object,SEL selector) {
     return nil_message;
    else {
     OBJCMethodCache      *cache=object->isa->cache;
-    unsigned              index=(unsigned)selector&OBJCMethodCacheMask;
+    unsigned long              index=(unsigned long)selector&OBJCMethodCacheMask;
     OBJCMethodCacheEntry *checkEntry=((void *)cache->table)+index; 
 
     do{
@@ -38,7 +38,7 @@ IMP objc_msg_lookup(id object,SEL selector) {
 }
 
 IMP objc_msg_lookup_super(struct objc_super *super,SEL selector) {
-    unsigned              index=(unsigned)selector&OBJCMethodCacheMask;
+    unsigned long              index=(unsigned long)selector&OBJCMethodCacheMask;
     OBJCMethodCacheEntry *checkEntry=((void *)super->super_class->cache->table)+index; 
 
    do{

@@ -122,13 +122,13 @@ BOOL _objc_checkObject(volatile id object)
    if(object<(id)0x2000)
       return NO;
    // objects begin at even addresses
-   if((int)object%4!=0)
+   if((long)object%4!=0)
       return NO;
    volatile Class isa=object->isa;
    
    if(isa<(Class)0x2000)
       return NO;
-   if((int)isa%4!=0)
+   if((long)isa%4!=0)
       return NO;
    
    // check if name is all-ascii. We can't assume that name points to a nul-terminated string,

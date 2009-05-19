@@ -12,7 +12,6 @@
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 		FE0997430D87095000033630 /* overlay.png in Resources */ = {isa = PBXBuildFile; fileRef = FE0997420D87095000033630 /* overlay.png */; };
-		FE11A3C70DFA3DB900356918 /* libSaturn.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = FE11A3C60DFA3DB900356918 /* libSaturn.dylib */; };
 		FE14EC4B0DBD9BF00070928C /* DemoCGContext.m in Sources */ = {isa = PBXBuildFile; fileRef = FE14EC490DBD9BF00070928C /* DemoCGContext.m */; };
 		FE14EC4C0DBD9BF00070928C /* DemoKGContext.m in Sources */ = {isa = PBXBuildFile; fileRef = FE14EC4A0DBD9BF00070928C /* DemoKGContext.m */; };
 		FE14EC960DBDA5420070928C /* DemoContext.m in Sources */ = {isa = PBXBuildFile; fileRef = FE14EC950DBDA5420070928C /* DemoContext.m */; };
@@ -106,7 +105,6 @@
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* SWRender.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SWRender.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FE0997420D87095000033630 /* overlay.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = overlay.png; sourceTree = "<group>"; };
-		FE11A3C60DFA3DB900356918 /* libSaturn.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libSaturn.dylib; path = /usr/lib/libSaturn.dylib; sourceTree = "<absolute>"; };
 		FE1474D20DB44967001B5634 /* KGBlending.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KGBlending.h; path = ../../AppKit/CoreGraphics.subproj/KGBlending.h; sourceTree = "<group>"; };
 		FE14EC480DBD9BF00070928C /* DemoContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DemoContext.h; sourceTree = "<group>"; };
 		FE14EC490DBD9BF00070928C /* DemoCGContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DemoCGContext.m; sourceTree = "<group>"; };
@@ -255,7 +253,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
-				FE11A3C70DFA3DB900356918 /* libSaturn.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -290,7 +287,6 @@
 		29B97314FDCFA39411CA2CEA /* SWRender */ = {
 			isa = PBXGroup;
 			children = (
-				FE11A3C60DFA3DB900356918 /* libSaturn.dylib */,
 				FE21384A0DC2303100CEDC65 /* ImageIO */,
 				FE14EC950DBDA5420070928C /* DemoContext.m */,
 				FE14EC480DBD9BF00070928C /* DemoContext.h */,
@@ -643,14 +639,17 @@
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_AUTO_VECTORIZATION = YES;
+				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_ENABLE_CPP_EXCEPTIONS = NO;
 				GCC_ENABLE_CPP_RTTI = NO;
 				GCC_ENABLE_SSE3_EXTENSIONS = YES;
-				GCC_ENABLE_SUPPLEMENTAL_SSE3_INSTRUCTIONS = YES;
+				GCC_ENABLE_SUPPLEMENTAL_SSE3_INSTRUCTIONS = NO;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
 				GCC_INSTRUMENT_PROGRAM_FLOW_ARCS = NO;
+				GCC_MODEL_PPC64 = NO;
 				GCC_MODEL_TUNING = "";
 				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_STRICT_ALIASING = YES;
 				GCC_UNROLL_LOOPS = NO;
 				GCC_VERSION = 4.2;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = NO;

@@ -5,13 +5,11 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
-
-// Original - Christopher Lloyd <cjwl@objc.net>
 #import <Foundation/NSString_isoLatin1.h>
 #import <Foundation/NSRaise.h>
 
-unichar *NSISOLatin1ToUnicode(const char *cString,unsigned length,
-  unsigned *resultLength,NSZone *zone) {
+unichar *NSISOLatin1ToUnicode(const char *cString,NSUInteger length,
+  NSUInteger *resultLength,NSZone *zone) {
    unichar *characters=NSZoneMalloc(zone,sizeof(unichar)*length);
    int      i;
 
@@ -22,8 +20,8 @@ unichar *NSISOLatin1ToUnicode(const char *cString,unsigned length,
    return characters;
 }
 
-char *NSUnicodeToISOLatin1(const unichar *characters,unsigned length,
-  BOOL lossy,unsigned *resultLength,NSZone *zone) {
+char *NSUnicodeToISOLatin1(const unichar *characters,NSUInteger length,
+  BOOL lossy,NSUInteger *resultLength,NSZone *zone) {
    char *isolatin1=NSZoneMalloc(zone,sizeof(char)*(length+1));
    int   i;
 
@@ -48,7 +46,7 @@ char *NSUnicodeToISOLatin1(const unichar *characters,unsigned length,
 @implementation NSString_isoLatin1
 
 NSString *NSString_isoLatin1NewWithBytes(NSZone *zone,
- const char *bytes,unsigned length) {
+ const char *bytes,NSUInteger length) {
    NSString_isoLatin1 *string;
    int                i;
 
@@ -62,11 +60,11 @@ NSString *NSString_isoLatin1NewWithBytes(NSZone *zone,
    return string;
 }
 
--(unsigned)length {
+-(NSUInteger)length {
    return _length;
 }
 
--(unichar)characterAtIndex:(unsigned)location {
+-(unichar)characterAtIndex:(NSUInteger)location {
    if(location>=_length){
     NSRaiseException(NSRangeException,self,_cmd,@"index %d beyond length %d",
      location,[self length]);
@@ -83,7 +81,7 @@ NSString *NSString_isoLatin1NewWithBytes(NSZone *zone,
 }
 
 -(void)getCharacters:(unichar *)buffer range:(NSRange)range {
-   int i,loc=range.location,len=range.length;
+   NSInteger i,loc=range.location,len=range.length;
 
    if(NSMaxRange(range)>_length){
     NSRaiseException(NSRangeException,self,_cmd,@"range %@ beyond length %d",

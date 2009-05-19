@@ -67,9 +67,9 @@ static NSThread* mainThread = nil;
 }
 
 #ifdef WINDOWS
-static unsigned __stdcall nsThreadStartThread(void* t)
+static  unsigned __stdcall nsThreadStartThread(void* t)
 #else
-static int  nsThreadStartThread(void* t)
+static void *nsThreadStartThread(void* t)
 #endif
 {
     NSThread    *thread = t;

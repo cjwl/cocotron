@@ -285,7 +285,7 @@ objc_alignof_type (const char *type)
 			
       case _C_UNION_B:
 		{
-			int maxalign = 0;
+			size_t maxalign = 0;
 			type++;
          while (*type != _C_UNION_E && *type++ != '=')
             ; /* skip "<name>=" */
@@ -294,7 +294,7 @@ objc_alignof_type (const char *type)
 					type = strchr(type+1, '"');
 					if (type) type++;
 				}            
-				int item_align = objc_alignof_type(type);
+				size_t item_align = objc_alignof_type(type);
 				if (item_align == -1) return -1;
 				maxalign = MAX (maxalign, item_align);
 				type = objc_skip_type_specifier (type);
@@ -450,7 +450,7 @@ objc_sizeof_type (const char *type)
 			
 		case _C_BFLD:
 		{
-			int i = strtol(type+1, NULL, 10);
+			long i = strtol(type+1, NULL, 10);
 			return (i+7)/8;
 		}
 			break;

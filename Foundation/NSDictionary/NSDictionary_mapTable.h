@@ -14,7 +14,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    NSMapTable *_table;
 }
 
--(unsigned)count;
+-(NSUInteger)count;
 -objectForKey:aKey;
 -(NSEnumerator *)keyEnumerator;
 

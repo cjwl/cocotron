@@ -94,9 +94,9 @@ enum {
 typedef struct {
    NSString *original;
    unichar *unicode;
-   int      length;
-   int      position;
-   int      nextArgument;
+   NSInteger      length;
+   NSInteger      position;
+   NSInteger      nextArgument;
    union {
     va_list  arguments;
     NSArray *argumentArray;
@@ -185,9 +185,9 @@ static BOOL codeIsHex(unichar code,unichar *hexChar) {
 
 static int scanToken(predicateScanner *scanner,id *token){
    int   currentSign=1,currentInt=0;
-   float currentReal=0,currentFraction=0,exponentSign=1,currentExponent=0;
+   double currentReal=0,currentFraction=0,exponentSign=1,currentExponent=0;
    BOOL  identifyReservedWords=YES;
-   int   tokenLocation=0;
+   NSInteger   tokenLocation=0;
    NSMutableString *buffer=nil;
    unichar hexChar=0;
    auto enum {
@@ -426,7 +426,7 @@ static int scanToken(predicateScanner *scanner,id *token){
        state=STATE_EXPONENT;
       }
       else {
-       *token=[NSNumber numberWithFloat:currentSign*currentReal];
+       *token=[NSNumber numberWithDouble:currentSign*currentReal];
        return predTokenNumeric;
       }
       break;
@@ -439,7 +439,7 @@ static int scanToken(predicateScanner *scanner,id *token){
       else if(code>='0' && code<='9')
        currentExponent=currentExponent*10+(code-'0');
       else {
-       *token=[NSNumber numberWithFloat:currentSign*currentReal*pow(10,exponentSign*currentExponent)];
+       *token=[NSNumber numberWithDouble:currentSign*currentReal*pow(10,exponentSign*currentExponent)];
        return predTokenNumeric;
       }
       break;
@@ -635,7 +635,7 @@ static int scanToken(predicateScanner *scanner,id *token){
 }
 
 static int peekTokenType(predicateScanner *scanner){
-   int save=scanner->position;
+   NSInteger save=scanner->position;
    id  token;
    int tokenType;
    
@@ -768,7 +768,7 @@ static id unsignedLongLongArgument(predicateScanner *scanner){
 
 static id floatArgument(predicateScanner *scanner){
    if(scanner->nextArgument<0)
-    return [NSNumber numberWithFloat:va_arg(scanner->arguments,double)];
+    return [NSNumber numberWithDouble:va_arg(scanner->arguments,double)];
    else
     return nextArgumentFromArray(scanner);
 }
@@ -1455,7 +1455,7 @@ static NSPredicate *nextTopLevelPredicate(predicateScanner *scanner){
 
 +(NSPredicate *)predicateWithFormat:(NSString *)format arguments:(va_list)arguments {
    predicateScanner scanner;
-   unsigned         length=[format length];
+   NSUInteger         length=[format length];
    unichar          buffer[length];
    
    [format getCharacters:buffer];
@@ -1465,9 +1465,11 @@ static NSPredicate *nextTopLevelPredicate(predicateScanner *scanner){
    scanner.length=length;
    scanner.position=0;
    scanner.nextArgument=-1;
-   scanner.arguments=arguments;
+   va_copy(scanner.arguments,arguments);
 
-   return nextTopLevelPredicate(&scanner);
+   NSPredicate *result=nextTopLevelPredicate(&scanner);
+   
+   va_end(scanner.arguments);
 }
 
 +(NSPredicate *)predicateWithFormat:(NSString *)format,... {
@@ -1480,7 +1482,7 @@ static NSPredicate *nextTopLevelPredicate(predicateScanner *scanner){
 
 +(NSPredicate *)predicateWithFormat:(NSString *)format argumentArray:(NSArray *)arguments {
    predicateScanner scanner;
-   unsigned         length=[format length];
+   NSUInteger         length=[format length];
    unichar          buffer[length];
    
    [format getCharacters:buffer];

@@ -8,7 +8,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 
 typedef struct {
-   unsigned length;
+   NSUInteger length;
    unichar *characters;
 } unibuffer;
 

@@ -18,7 +18,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -initWithTypes:(const char *)types {
    const char *next,*last;
-   unsigned    size,align;
+   NSUInteger    size,align;
    BOOL        first=YES;
 
     // not guaranteed that types is static
@@ -67,7 +67,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return [NSString stringWithFormat:@"<NSMethodSignature: -(%@)%@>",_returnType,_types];
 }
 
--(unsigned)hash {
+-(NSUInteger)hash {
    return NSStringHashZeroTerminatedASCII(_typesCString);
 }
 
@@ -88,14 +88,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return [_returnType hasPrefix:@"V"];
 }
 
--(unsigned)frameLength {
-   unsigned result=0;
-   int      i,count=[self numberOfArguments];
+-(NSUInteger)frameLength {
+   NSUInteger result=0;
+   NSInteger      i,count=[self numberOfArguments];
 
    for(i=0;i<count;i++){
-    unsigned align;
-    unsigned naturalSize;
-    unsigned promotedSize;
+    NSUInteger align;
+    NSUInteger naturalSize;
+    NSUInteger promotedSize;
 
     NSGetSizeAndAlignment([self getArgumentTypeAtIndex:i],&naturalSize,&align);
     promotedSize=((naturalSize+sizeof(int)-1)/sizeof(int))*sizeof(int);
@@ -105,8 +105,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return result;
 }
 
--(unsigned)methodReturnLength {
-   unsigned size,align;
+-(NSUInteger)methodReturnLength {
+   NSUInteger size,align;
 
    NSGetSizeAndAlignment([_returnType cString],&size,&align);
 
@@ -117,11 +117,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return [_returnType cString];
 }
 
--(unsigned)numberOfArguments {
+-(NSUInteger)numberOfArguments {
    return [_types count];
 }
 
--(const char *)getArgumentTypeAtIndex:(unsigned)index {
+-(const char *)getArgumentTypeAtIndex:(NSUInteger)index {
    return [[_types objectAtIndex:index] cString];
 }
 

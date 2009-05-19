@@ -5,8 +5,6 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
-
-// Original - Christopher Lloyd <cjwl@objc.net>
 #import <Foundation/NSStringsFileParser.h>
 #import <Foundation/NSArray.h>
 #import <Foundation/NSData.h>
@@ -16,8 +14,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSString_cString.h>
 
 static inline unsigned short SwapWord(unsigned short w){
- __asm__("xchgb %b0, %h0" : "+q" (w));
- return w;
+   unsigned short hi=w>>8;
+   unsigned short lo=w&0xFF;
+   
+   return (lo<<8)|hi;
 }
 
 static inline unsigned short PickWord(unsigned short w){
@@ -71,7 +71,7 @@ static NSArray *error(NSArray *array,char *strBuf,NSString *fmt,...) {
    return nil;
 }
 
-static NSArray *stringListFromBytes(const unichar unicode[],int length){
+static NSArray *stringListFromBytes(const unichar unicode[],NSInteger length){
    NSMutableArray *array=[[NSMutableArray allocWithZone:NULL] initWithCapacity:1024];
    unsigned index,c,strSize=0,strMax=2048;
    char *strBuf=NSZoneMalloc(NSDefaultMallocZone(),strMax);
@@ -270,7 +270,7 @@ NSDictionary *NSDictionaryFromStringsFormatData(NSData *data) {
    NSArray      *array=stringListFromBytes((unichar *)[data bytes],[data length]);
    NSDictionary *dictionary;
    id           *keys,*values;
-   int           i,count;
+   NSInteger           i,count;
 
    if(array==nil)
     return nil;

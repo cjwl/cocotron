@@ -5,8 +5,6 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
-
-// Original - Christopher Lloyd <cjwl@objc.net>
 #import <Foundation/NSOutputStream.h>
 #import <Foundation/NSOutputStream_buffer.h>
 #import <Foundation/NSOutputStream_data.h>
@@ -15,7 +13,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @implementation NSOutputStream
 
--initToBuffer:(unsigned char *)buffer capacity:(unsigned)capacity {
+-initToBuffer:(unsigned char *)buffer capacity:(NSUInteger)capacity {
    [self dealloc];
    return [[NSOutputStream_buffer alloc] initToBuffer:buffer capacity:capacity];
 }
@@ -30,7 +28,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return [[NSOutputStream_data alloc] initToMemory];
 }
 
-+outputStreamToBuffer:(unsigned char *)buffer capacity:(unsigned)capacity {
++outputStreamToBuffer:(unsigned char *)buffer capacity:(NSUInteger)capacity {
    return [[[self alloc] initToBuffer:buffer capacity:capacity] autorelease];
 }
 
@@ -47,7 +45,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return NO;
 }
 
--(int)write:(const unsigned char *)buffer maxLength:(unsigned)length {
+-(NSInteger)write:(const unsigned char *)buffer maxLength:(NSUInteger)length {
    NSInvalidAbstractInvocation();
    return 0;
 }

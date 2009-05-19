@@ -53,7 +53,7 @@ NSDate* NSDateFromPlistString(NSString* string)
 +(NSDictionary *)dictionaryFromElement:(NSOldXMLElement *)element {
    NSMutableDictionary *result=[NSMutableDictionary dictionary];
    NSArray             *contents=[element contents];
-   int                  i,count=[contents count];
+   NSInteger            i,count=[contents count];
    id                   currentKey=nil;
    
    for(i=0;i<count;i++){
@@ -73,7 +73,7 @@ NSDate* NSDateFromPlistString(NSString* string)
 +(NSArray *)arrayFromElement:(NSOldXMLElement *)element {
    NSMutableArray *result=[NSMutableArray array];
    NSArray        *contents=[element contents];
-   int             i,count=[contents count];
+   NSInteger       i,count=[contents count];
    
    for(i=0;i<count;i++){
     id check=[contents objectAtIndex:i];
@@ -86,7 +86,7 @@ NSDate* NSDateFromPlistString(NSString* string)
 }
 
 +(NSData *)dataFromBase64String:(NSString *)string {
-   unsigned      i,length=[string length],resultLength=0;
+   NSUInteger      i,length=[string length],resultLength=0;
    unichar       buffer[length];
    unsigned char result[length];
    unsigned char partial=0;
@@ -150,7 +150,7 @@ NSDate* NSDateFromPlistString(NSString* string)
 +(NSData *)dataFromElement:(NSOldXMLElement *)element {
    NSMutableData *result=[NSMutableData data];
    NSArray       *strings=[element contents];
-   int            i,count=[strings count];
+   NSInteger            i,count=[strings count];
    
    for(i=0;i<count;i++)
     [result appendData:[self dataFromBase64String:[strings objectAtIndex:i]]];
@@ -192,7 +192,7 @@ NSDate* NSDateFromPlistString(NSString* string)
 +(NSObject *)propertyListFromContentsOfElement:(NSOldXMLElement *)element {
    id       result=nil;
    NSArray *contents=[element contents];
-   int      i,count=[contents count];
+   NSInteger      i,count=[contents count];
    
    for(i=0;i<count;i++){
     id check=[contents objectAtIndex:i];

@@ -36,7 +36,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    BOOL hasNotes=NO;
 
    do{
-    int i,count=[_asapQueue count];
+    NSInteger i,count=[_asapQueue count];
 
     hasNotes=NO;
 
@@ -59,7 +59,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(BOOL)hasIdleNotificationsInMode:(NSString *)mode {
-   int count=[_idleQueue count];
+   NSInteger count=[_idleQueue count];
 
    while(--count>=0){
     NSNotificationAndModes *check=[_idleQueue objectAtIndex:count];
@@ -74,7 +74,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)idleProcessMode:(NSString *)mode {
    NSMutableArray *idle=[NSMutableArray array];
-   int             count=[_idleQueue count];
+   NSInteger             count=[_idleQueue count];
 
    while(--count>=0){
     NSNotificationAndModes *check=[_idleQueue objectAtIndex:count];
@@ -96,7 +96,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)coalesceNotification:(NSNotification *)note inQueue:(NSMutableArray *)queue coalesceMask:(unsigned)mask {
    if(mask!=NSNotificationNoCoalescing){
-    int count=[queue count];
+    NSInteger count=[queue count];
 
     while(--count>=0){
      NSNotification *check=[[queue objectAtIndex:count] notification];
@@ -119,7 +119,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(BOOL)canPlaceNotification:(NSNotification *)note
   inQueue:(NSArray *)queue coalesceMask:(unsigned)mask {
    if(mask!=NSNotificationNoCoalescing) {
-    int i,count=[queue count];
+    NSInteger i,count=[queue count];
 
     for(i=0;i<count;i++){
      NSNotification *check=[[queue objectAtIndex:i] notification];

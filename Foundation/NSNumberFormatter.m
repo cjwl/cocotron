@@ -725,7 +725,7 @@ Aug 10 14:40:35 formatters[12645] 0.11111: $
 // this section works, but it's pretty lame...
 // it doesn't round, it truncates; integers in the format specifier are ignored... 
 -(NSString *)_separatedStringIfNeededWithString:(NSString *)string {
-   unsigned thousandSepCounter, i, j = 0;
+   NSUInteger thousandSepCounter, i, j = 0;
    unichar buffer[256];
 
    if (!_hasThousandSeparators)
@@ -755,7 +755,7 @@ Aug 10 14:40:35 formatters[12645] 0.11111: $
    unsigned i, indexRight = 0;
    BOOL formatNoDecPoint = ([format rangeOfString:@"."].location == NSNotFound);
    BOOL havePassedDecPoint = NO;
-   int lastPlaceholder = 0;
+   NSInteger lastPlaceholder = 0;
 
    // remove negative sign if present
    if ([stringValue hasPrefix:@"-"])

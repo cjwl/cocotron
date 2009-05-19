@@ -5,8 +5,6 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
-
-// Original - David Young <daver@geeks.org>
 #import <Foundation/NSDateFormatter.h>
 #import <Foundation/NSArray.h>
 #import <Foundation/NSDictionary.h>
@@ -123,7 +121,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)__appendCharacter:(unichar)character;
 
 -(void)__appendLocale:(NSDictionary *)locale key:(NSString *)key
-              index:(int)index;
+              index:(NSInteger)index;
 
 @end
 
@@ -135,7 +133,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)__appendLocale:(NSDictionary *)locale key:(NSString *)key
-              index:(int)index {
+              index:(NSInteger)index {
     NSArray *array=[locale objectForKey:key];
 
     if(array!=nil)
@@ -153,7 +151,7 @@ NSTimeInterval NSAdjustTimeIntervalWithTimeZone(NSTimeInterval interval,
 
 // thirty days hath september, april, june, and november.
 // all the rest have thirty-one, except February, which is borked.
-static inline int numberOfDaysInMonthOfYear(int month, int year) {
+static inline NSInteger numberOfDaysInMonthOfYear(NSInteger month, NSInteger year) {
     switch (month) {
         case 2:
             if (((year % 4) == 0 && (year % 100) != 0) || (year % 400) == 0)
@@ -170,8 +168,8 @@ static inline int numberOfDaysInMonthOfYear(int month, int year) {
     }
 }
 
-static inline int numberOfDaysInCommonEraOfDayMonthAndYear(int day, int month, int year) {
-    int result = 0;
+static inline NSInteger numberOfDaysInCommonEraOfDayMonthAndYear(NSInteger day, NSInteger month, NSInteger year) {
+    NSInteger result = 0;
 
     for (month--; month > 0; month--)
         result += numberOfDaysInMonthOfYear(month, year);
@@ -187,8 +185,8 @@ static inline int numberOfDaysInCommonEraOfDayMonthAndYear(int day, int month, i
     return result;
 }
 
-NSTimeInterval NSTimeIntervalWithComponents(int year, int month, int day, int hour, int minute, int second, int milliseconds) {
-    int daysOfCommonEra;
+NSTimeInterval NSTimeIntervalWithComponents(NSInteger year, NSInteger month, NSInteger day, NSInteger hour, NSInteger minute, NSInteger second, NSInteger milliseconds) {
+    NSInteger daysOfCommonEra;
     NSTimeInterval interval;
 
     daysOfCommonEra = numberOfDaysInCommonEraOfDayMonthAndYear(day, month, year);
@@ -200,13 +198,13 @@ NSTimeInterval NSTimeIntervalWithComponents(int year, int month, int day, int ho
     return interval;
 }
 
-int NSDayOfCommonEraFromTimeInterval(NSTimeInterval interval) {
+NSInteger NSDayOfCommonEraFromTimeInterval(NSTimeInterval interval) {
     return (interval/86400.0) + NSDaysOfCommonEraOfReferenceDate;
 }
 
-int NSYearFromTimeInterval(NSTimeInterval interval) {
-    int days = NSDayOfCommonEraFromTimeInterval(interval);
-    int year = days/366;
+NSInteger NSYearFromTimeInterval(NSTimeInterval interval) {
+    NSInteger days = NSDayOfCommonEraFromTimeInterval(interval);
+    NSInteger year = days/366;
 
     while (days > numberOfDaysInCommonEraOfDayMonthAndYear(1, 1, year+1)) 
         year++;
@@ -214,16 +212,16 @@ int NSYearFromTimeInterval(NSTimeInterval interval) {
     return year;
 }
 
-int NSDayOfYearFromTimeInterval(NSTimeInterval interval){ // 0-366
-    int year = NSYearFromTimeInterval(interval);
+NSInteger NSDayOfYearFromTimeInterval(NSTimeInterval interval){ // 0-366
+    NSInteger year = NSYearFromTimeInterval(interval);
 
     return numberOfDaysInCommonEraOfDayMonthAndYear(31, 12, year) - NSDayOfCommonEraFromTimeInterval(interval);
 }
 
-int NSMonthFromTimeInterval(NSTimeInterval interval){ // 0-11
-    int year = NSYearFromTimeInterval(interval);
-    int days = NSDayOfCommonEraFromTimeInterval(interval);
-    int month = 1;
+NSInteger NSMonthFromTimeInterval(NSTimeInterval interval){ // 0-11
+    NSInteger year = NSYearFromTimeInterval(interval);
+    NSInteger days = NSDayOfCommonEraFromTimeInterval(interval);
+    NSInteger month = 1;
 
     while (days > numberOfDaysInCommonEraOfDayMonthAndYear(numberOfDaysInMonthOfYear(month, year), month, year)+1)
         month++;
@@ -231,18 +229,18 @@ int NSMonthFromTimeInterval(NSTimeInterval interval){ // 0-11
     return month-1;
 }
 
-int NSDayOfMonthFromTimeInterval(NSTimeInterval interval){ // 0-31
-    int dayOfCommonEra = NSDayOfCommonEraFromTimeInterval(interval);
-    int year = NSYearFromTimeInterval(interval);
-    int month = NSMonthFromTimeInterval(interval)+1;
+NSInteger NSDayOfMonthFromTimeInterval(NSTimeInterval interval){ // 0-31
+    NSInteger dayOfCommonEra = NSDayOfCommonEraFromTimeInterval(interval);
+    NSInteger year = NSYearFromTimeInterval(interval);
+    NSInteger month = NSMonthFromTimeInterval(interval)+1;
 
     dayOfCommonEra -= numberOfDaysInCommonEraOfDayMonthAndYear(1, month, year);
 
     return dayOfCommonEra;
 }
 
-int NSWeekdayFromTimeInterval(NSTimeInterval interval){ // 0-7
-    int weekday = NSDayOfCommonEraFromTimeInterval(interval);
+NSInteger NSWeekdayFromTimeInterval(NSTimeInterval interval){ // 0-7
+    NSInteger weekday = NSDayOfCommonEraFromTimeInterval(interval);
 
     weekday = weekday % 7;
     if (weekday < 0)
@@ -251,7 +249,7 @@ int NSWeekdayFromTimeInterval(NSTimeInterval interval){ // 0-7
     return weekday;
 }
 
-int NS24HourFromTimeInterval(NSTimeInterval interval){ // 0-23
+NSInteger NS24HourFromTimeInterval(NSTimeInterval interval){ // 0-23
     NSTimeInterval hour = NSDayOfCommonEraFromTimeInterval(interval);
 
     hour -= NSDaysOfCommonEraOfReferenceDate;
@@ -266,42 +264,42 @@ int NS24HourFromTimeInterval(NSTimeInterval interval){ // 0-23
     return hour;
 }
 
-int NS12HourFromTimeInterval(NSTimeInterval interval){ // 1-12
-    int hour = NS24HourFromTimeInterval(interval)%12;
+NSInteger NS12HourFromTimeInterval(NSTimeInterval interval){ // 1-12
+    NSInteger hour = NS24HourFromTimeInterval(interval)%12;
     if (hour == 0)
         hour = 12;
     return hour;
 }
 
-int NSAMPMFromTimeInterval(NSTimeInterval interval){ // 0-1
-    int hour=NS24HourFromTimeInterval(interval);
+NSInteger NSAMPMFromTimeInterval(NSTimeInterval interval){ // 0-1
+    NSInteger hour=NS24HourFromTimeInterval(interval);
 
     return (hour < 11) ? 0 : 1;
 }
 
-int NSMinuteFromTimeInterval(NSTimeInterval interval){ // 0-59
+NSInteger NSMinuteFromTimeInterval(NSTimeInterval interval){ // 0-59
     NSTimeInterval startOfHour = NSTimeIntervalWithComponents(NSYearFromTimeInterval(interval),
                                                               NSMonthFromTimeInterval(interval)+1,
                                                               NSDayOfMonthFromTimeInterval(interval),
                                                               NS24HourFromTimeInterval(interval), 0, 0, 0);
 
-    return (int)(interval - startOfHour)/60;
+    return (NSInteger)(interval - startOfHour)/60;
 }
 
-int NSSecondFromTimeInterval(NSTimeInterval interval){ // 0-59
-    int seconds = fmod(interval,60);
+NSInteger NSSecondFromTimeInterval(NSTimeInterval interval){ // 0-59
+    NSInteger seconds = fmod(interval,60);
     if (seconds < 0)
         seconds = (60 + seconds);
 
     return seconds;
 }
 
-int NSMillisecondsFromTimeInterval(NSTimeInterval interval){ // 0-999
+NSInteger NSMillisecondsFromTimeInterval(NSTimeInterval interval){ // 0-999
     return fabs(fmod(interval*1000,1000));
 }
 
 NSString *NSStringWithDateFormatLocale(NSTimeInterval interval,NSString *format,NSDictionary *locale,NSTimeZone *timeZone) {
-    unsigned         pos,fmtLength=[format length];
+    NSUInteger         pos,fmtLength=[format length];
     unichar          fmtBuffer[fmtLength],unicode;
     NSMutableString *result=[NSMutableString stringWithCapacity:fmtLength];
 
@@ -497,10 +495,10 @@ NSString *NSStringWithDateFormatLocale(NSTimeInterval interval,NSString *format,
 // weekday information is useless.
 NSCalendarDate *NSCalendarDateWithStringDateFormatLocale(NSString *string, NSString *format, NSDictionary *locale) {
     NSScanner       *scanner = [NSScanner scannerWithString:string];
-    unsigned         pos,fmtLength=[format length];
+    NSUInteger         pos,fmtLength=[format length];
     unichar          fmtBuffer[fmtLength],unicode;
-    int		     years = -1, months = -1, days = -1, hours = -1, minutes = -1, seconds = -1, milliseconds = -1;
-    int		     AMPMMultiplier = 0;
+    NSInteger		     years = -1, months = -1, days = -1, hours = -1, minutes = -1, seconds = -1, milliseconds = -1;
+    NSInteger		     AMPMMultiplier = 0;
     NSTimeInterval   adjustment = 0;
     NSArray	    *monthNames, *shortMonthNames, *AMPMDesignations;
     NSTimeZone      *timeZone = nil;
@@ -602,42 +600,42 @@ NSCalendarDate *NSCalendarDateWithStringDateFormatLocale(NSString *string, NSStr
                         return NSCalendarDateWithStringDateFormatLocale(string, [locale objectForKey:NSTimeDateFormatString], locale);
 
                     case 'd':
-                        if (![scanner scanInt:&days])
+                        if (![scanner scanInteger:&days])
                             return nil;
                         break;
 
                     case 'F':
-                        if (![scanner scanInt:&milliseconds])
+                        if (![scanner scanInteger:&milliseconds])
                             return nil;
                         break;
 
                     case 'H':
-                        if (![scanner scanInt:&hours])
+                        if (![scanner scanInteger:&hours])
                             return nil;
                         break;
 
                     case 'I':
-                        if (![scanner scanInt:&hours])
+                        if (![scanner scanInteger:&hours])
                             return nil;
                         AMPMMultiplier = 1;
                         break;
 
                     // grr
                     case 'j': {
-                        int numberOfDays = 0;
-                        if (![scanner scanInt:&numberOfDays])
+                        NSInteger numberOfDays = 0;
+                        if (![scanner scanInteger:&numberOfDays])
                             return nil;
                         adjustment += numberOfDays * 86400.0;
                     }
                         break;
 
                     case 'm':
-                        if (![scanner scanInt:&months])
+                        if (![scanner scanInteger:&months])
                             return nil;
                         break;
 
                     case 'M':
-                        if (![scanner scanInt:&minutes])
+                        if (![scanner scanInteger:&minutes])
                             return nil;
                         break;
 
@@ -654,14 +652,14 @@ NSCalendarDate *NSCalendarDateWithStringDateFormatLocale(NSString *string, NSStr
                     }
 
                     case 'S':
-                        if (![scanner scanInt:&seconds])
+                        if (![scanner scanInteger:&seconds])
                             return nil;
                         break;
 
                     // again, weekdays are useless
                     case 'w': {
-                        int nothing;
-                        if (![scanner scanInt:&nothing])
+                        NSInteger nothing;
+                        if (![scanner scanInteger:&nothing])
                             return nil;
                         break;
                     }
@@ -673,7 +671,7 @@ NSCalendarDate *NSCalendarDateWithStringDateFormatLocale(NSString *string, NSStr
                         return NSCalendarDateWithStringDateFormatLocale(string,[locale objectForKey:NSTimeFormatString],locale);
 
                     case 'y':
-                        if (![scanner scanInt:&years])
+                        if (![scanner scanInteger:&years])
                             return nil;
 // FIX QUESTIONABLE
 // 1900 or 2000??, YB does 2000, for some? all?
@@ -681,7 +679,7 @@ NSCalendarDate *NSCalendarDateWithStringDateFormatLocale(NSString *string, NSStr
                         break;
 
                     case 'Y':
-                        if (![scanner scanInt:&years])
+                        if (![scanner scanInteger:&years])
                             return nil;
                         break;
 
@@ -695,8 +693,8 @@ NSCalendarDate *NSCalendarDateWithStringDateFormatLocale(NSString *string, NSStr
                     }
 
                     case 'z': {
-                        int hoursMinutes, hours, minutes;
-                        if (![scanner scanInt:&hoursMinutes])
+                        NSInteger hoursMinutes, hours, minutes;
+                        if (![scanner scanInteger:&hoursMinutes])
                             return nil;
                         hours = hoursMinutes / 100;
                         minutes = hoursMinutes % 100;

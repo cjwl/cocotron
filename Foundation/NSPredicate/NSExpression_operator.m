@@ -28,7 +28,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(NSString *)description {
    NSMutableString *result=[NSMutableString string];
    NSMutableArray  *args=[NSMutableArray array];
-   int              i,count=[_arguments count];
+   NSInteger        i,count=[_arguments count];
    
    for(i=0;i<count;i++){
     NSExpression *check=[_arguments objectAtIndex:i];
@@ -96,7 +96,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(NSExpression *)_expressionWithSubstitutionVariables:(NSDictionary *)variables {
    NSMutableArray *array=[NSMutableArray array];
-   int             i,count=[_arguments count];
+   NSInteger       i,count=[_arguments count];
       
    for(i=0;i<count;i++)
     [array addObject:[[_arguments objectAtIndex:i] _expressionWithSubstitutionVariables:variables]];

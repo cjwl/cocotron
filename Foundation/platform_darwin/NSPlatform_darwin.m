@@ -60,7 +60,7 @@ NSString *NSPlatformClassName=@"NSPlatform_darwin";
 -(NSTimeZone *)systemTimeZone {
    NSTimeZone *systemTimeZone;
     NSString *timeZoneName;
-    int secondsFromGMT;
+    NSInteger secondsFromGMT;
 
 #if 0		// time zone method 1. not great.
    tzset();

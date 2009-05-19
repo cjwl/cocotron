@@ -9,18 +9,18 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSString.h>
 
 @interface NSString_isoLatin1 : NSString {
-   unsigned int  _length;
+   NSUInteger  _length;
    unsigned char _bytes[1];
 }
 
 @end
 
-unichar *NSISOLatin1ToUnicode(const char *cString,unsigned length,
-  unsigned *resultLength,NSZone *zone);
+unichar *NSISOLatin1ToUnicode(const char *cString,NSUInteger length,
+  NSUInteger *resultLength,NSZone *zone);
 
-char *NSUnicodeToISOLatin1(const unichar *characters,unsigned length,
-  BOOL lossy,unsigned *resultLength,NSZone *zone);
+char *NSUnicodeToISOLatin1(const unichar *characters,NSUInteger length,
+  BOOL lossy,NSUInteger *resultLength,NSZone *zone);
 
 void      NSString_isoLatin1Initialize(void);
 NSString *NSString_isoLatin1NewWithBytes(NSZone *zone,
- const char *bytes,unsigned length);
+ const char *bytes,NSUInteger length);

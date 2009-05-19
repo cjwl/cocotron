@@ -143,8 +143,8 @@ static inline void byteZero(void *vsrc,int size){
    _handle=handle;
 }
 
--(unsigned)hash {
-   return (unsigned)_handle;
+-(NSUInteger)hash {
+   return (NSUInteger)_handle;
 }
 
 -(BOOL)isEqual:other {
@@ -168,7 +168,7 @@ static inline void byteZero(void *vsrc,int size){
    return (WSAGetLastError()==WSAEWOULDBLOCK);
 }
 
--(NSError *)connectToHost:(NSHost *)host port:(int)portNumber immediate:(BOOL *)immediate {
+-(NSError *)connectToHost:(NSHost *)host port:(NSInteger)portNumber immediate:(BOOL *)immediate {
    BOOL     block=NO;
    NSArray *addresses=[host addresses];
    int      i,count=[addresses count];
@@ -230,11 +230,11 @@ static inline void byteZero(void *vsrc,int size){
    return (recv(_handle,buf,1,MSG_PEEK)==1)?YES:NO;
 }
 
--(int)read:(unsigned char *)buffer maxLength:(unsigned)length {
+-(NSInteger)read:(unsigned char *)buffer maxLength:(NSUInteger)length {
    return recv(_handle,(void *)buffer,length,0);
 }
 
--(int)write:(const unsigned char *)buffer maxLength:(unsigned)length {
+-(NSInteger)write:(const unsigned char *)buffer maxLength:(NSUInteger)length {
    return send(_handle,(void *)buffer,length,0);
 }
 

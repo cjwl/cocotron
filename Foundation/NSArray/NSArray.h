@@ -18,7 +18,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -initWithArray:(NSArray *)array copyItems:(BOOL)copyItems;
 -initWithContentsOfFile:(NSString *)path;
 -initWithContentsOfURL:(NSURL *)url;
--initWithObjects:(id *)objects count:(unsigned)count;
+-initWithObjects:(id *)objects count:(NSUInteger)count;
 -initWithObjects:object,...;
 
 +array;
@@ -28,10 +28,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 +arrayWithObjects:object,...;
 
 +arrayWithArray:(NSArray *)array;
-+arrayWithObjects:(id *)objects count:(unsigned)count;
++arrayWithObjects:(id *)objects count:(NSUInteger)count;
 
--(unsigned)count;
--objectAtIndex:(unsigned)index;
+-(NSUInteger)count;
+-objectAtIndex:(NSUInteger)index;
 
 -(void)getObjects:(id *)objects;
 -(void)getObjects:(id *)objects range:(NSRange)range;
@@ -42,11 +42,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(BOOL)isEqualToArray:(NSArray *)array;
 
--(unsigned)indexOfObject:object;
--(unsigned)indexOfObject:object inRange:(NSRange)range;
+-(NSUInteger)indexOfObject:object;
+-(NSUInteger)indexOfObject:object inRange:(NSRange)range;
 
--(unsigned)indexOfObjectIdenticalTo:object;
--(unsigned)indexOfObjectIdenticalTo:object inRange:(NSRange)range;
+-(NSUInteger)indexOfObjectIdenticalTo:object;
+-(NSUInteger)indexOfObjectIdenticalTo:object inRange:(NSRange)range;
 
 -(NSEnumerator *)objectEnumerator;
 -(NSEnumerator *)reverseObjectEnumerator;
@@ -71,7 +71,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)makeObjectsPerformSelector:(SEL)selector withObject:object;
 
 -(NSString *)descriptionWithLocale:(NSDictionary *)locale;
--(NSString *)descriptionWithLocale:(NSDictionary *)locale indent:(unsigned)indent;
+-(NSString *)descriptionWithLocale:(NSDictionary *)locale indent:(NSUInteger)indent;
 
 -(NSArray *)sortedArrayUsingDescriptors:(NSArray *)descriptors;
 -(NSArray *)filteredArrayUsingPredicate:(NSPredicate *)predicate;

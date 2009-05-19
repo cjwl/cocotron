@@ -31,7 +31,7 @@ static inline void prepForUse(NSStringBuffer *buffer,NSZone *zone){
    buffer->characters=NSZoneMalloc(buffer->zone,sizeof(unichar)*buffer->max);
 }
 
-static inline void makeRoomForNcharacters(NSStringBuffer *buffer,unsigned n){
+static inline void makeRoomForNcharacters(NSStringBuffer *buffer,NSUInteger n){
    if(buffer->length+n>buffer->max){
     while(buffer->length+n>buffer->max)
      buffer->max*=2;
@@ -47,8 +47,8 @@ static inline void appendCharacter(NSStringBuffer *buffer,unichar unicode){
    buffer->characters[buffer->length++]=unicode;
 }
 
-static inline void appendCharacters(NSStringBuffer *buffer,unichar *characters,unsigned length,unichar fillChar,BOOL leftAdj,int fieldWidth){
-   unsigned i;
+static inline void appendCharacters(NSStringBuffer *buffer,unichar *characters,NSUInteger length,unichar fillChar,BOOL leftAdj,int fieldWidth){
+   NSUInteger i;
 
    makeRoomForNcharacters(buffer,(fieldWidth>length)?fieldWidth:length);
 
@@ -161,7 +161,7 @@ static inline void appendUnsigned(NSStringBuffer *buffer,unsigned long long valu
 
 static inline void appendCString(NSStringBuffer *buffer,const char *cString,
   unichar fillChar,BOOL leftAdj,int fieldWidth){
-   unsigned length;
+   NSUInteger length;
    unichar *characters;
 
    if(cString==NULL)
@@ -300,7 +300,7 @@ static inline void appendObject(NSStringBuffer *buffer,id object,
    }
 }
 
-static inline unichar *prepForReturn(NSStringBuffer *buffer,unsigned *lengthp){
+static inline unichar *prepForReturn(NSStringBuffer *buffer,NSUInteger *lengthp){
 
    *lengthp=buffer->max=buffer->length;
    buffer->characters=NSZoneRealloc(buffer->zone,buffer->characters,
@@ -309,9 +309,8 @@ static inline unichar *prepForReturn(NSStringBuffer *buffer,unsigned *lengthp){
    return buffer->characters;
 }
 
-unichar *NSCharactersNewWithFormat(NSString *format,NSDictionary *locale,
-     va_list arguments,unsigned *lengthp,NSZone *zone){
-   unsigned  pos,fmtLength=[format length];
+unichar *NSCharactersNewWithFormat(NSString *format,NSDictionary *locale,va_list arguments,NSUInteger *lengthp,NSZone *zone){
+   NSUInteger  pos,fmtLength=[format length];
    unichar   fmtBuffer[fmtLength],unicode;
    NSStringBuffer result;
 
@@ -629,7 +628,7 @@ unichar *NSCharactersNewWithFormat(NSString *format,NSDictionary *locale,
 
 NSString *NSStringNewWithFormat(NSString *format,NSDictionary *locale,
   va_list arguments,NSZone *zone) {
-   unsigned  length;
+   NSUInteger  length;
    unichar  *unicode;
 
    unicode=NSCharactersNewWithFormat(format,locale,arguments,&length,NULL);

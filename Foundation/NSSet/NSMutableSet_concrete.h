@@ -14,6 +14,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 @end
 
-NSSet *NSMutableSet_concreteNew(NSZone *zone,unsigned capacity);
-NSSet *NSMutableSet_concreteNewWithObjects(NSZone *zone,id *objects,unsigned count);
+NSSet *NSMutableSet_concreteNew(NSZone *zone,NSUInteger capacity);
+NSSet *NSMutableSet_concreteNewWithObjects(NSZone *zone,id *objects,NSUInteger count);
 NSSet *NSMutableSet_concreteNewWithArray(NSZone *zone,NSArray *array);

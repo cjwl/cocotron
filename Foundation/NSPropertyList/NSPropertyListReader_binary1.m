@@ -20,7 +20,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @interface NSPropertyListReader_binary1 (Private)
 
-- (id)_readInlineObjectAtOffset: (unsigned *)offset;
+- (id)_readInlineObjectAtOffset: (NSUInteger *)offset;
 
 @end
 
@@ -48,7 +48,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 {
         if( (self = [self init]) )
         {
-                unsigned magiclen = strlen( MAGIC FORMAT );
+                size_t magiclen = strlen( MAGIC FORMAT );
                 
                 BOOL good = YES;
                 if( good && [data length] < magiclen + TRAILER_SIZE )
@@ -75,11 +75,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         [super dealloc];
 }
 
-- (uint64_t)_readIntOfSize: (unsigned)size atOffset: (unsigned *)offsetPtr
+- (uint64_t)_readIntOfSize: (size_t)size atOffset: (NSUInteger *)offsetPtr
 {
         uint64_t ret = 0;
         const uint8_t *ptr = [_data bytes] + *offsetPtr;
-        unsigned i;
+        size_t i;
         for( i = 0; i < size; i++ )
         {
                 ret <<= 8;
@@ -92,13 +92,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         return ret;
 }
 
-- (double)_readFloatOfSize: (unsigned)size atOffset: (unsigned *)offsetPtr
+- (double)_readFloatOfSize: (size_t)size atOffset: (NSUInteger *)offsetPtr
 {
         uint64_t val = [self _readIntOfSize: size atOffset: offsetPtr];
         
         if( size == 4 )
         {
-                uint32_t val32 = val;
+                uint32_t val32 = (uint32_t)val;
                 return *(float *)&val32;
         }
         if( size == 8 )
@@ -112,7 +112,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 - (void)_readHeader
 {
-        unsigned trailerStart = [_data length] - TRAILER_SIZE;
+        NSUInteger trailerStart = [_data length] - TRAILER_SIZE;
         
         _trailerOffsetIntSize           = [self _readIntOfSize: sizeof( _trailerOffsetIntSize )
                                                                                    atOffset: &trailerStart];
@@ -129,7 +129,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 static uint64_t ReadSizedInt(NSPropertyListReader_binary1 *bplist, uint64_t offset, uint8_t size)
 {
         const uint8_t   *ptr = [bplist->_data bytes];
-        unsigned        length=[bplist->_data length];
+        NSUInteger        length=[bplist->_data length];
         
         assert(ptr != NULL && size >= 1 && size <= 8 && offset + size <= length);
         
@@ -147,7 +147,7 @@ static uint64_t ReadSizedInt(NSPropertyListReader_binary1 *bplist, uint64_t offs
 static BOOL ReadSelfSizedInt(NSPropertyListReader_binary1 *bplist, uint64_t offset, uint64_t *outValue, size_t *outSize)
 {
         const uint8_t   *ptr = [bplist->_data bytes];
-        unsigned        length=[bplist->_data length];
+        NSUInteger        length=[bplist->_data length];
         
         uint32_t                        size;
         int64_t                                value;
@@ -198,7 +198,7 @@ static id ExtractUID(NSPropertyListReader_binary1 *bplist, uint64_t offset)
         return [NSDictionary dictionaryWithObject:[NSNumber numberWithUnsignedLongLong:value] forKey:@"CF$UID"];
 }
 
-- (id)_readObjectAtOffset: (unsigned *)offset
+- (id)_readObjectAtOffset: (NSUInteger *)offset
 {
         const uint8_t *ptr = [_data bytes];
         uint8_t marker = ptr[*offset];
@@ -225,7 +225,7 @@ static id ExtractUID(NSPropertyListReader_binary1 *bplist, uint64_t offset)
 			
 			if( size == 4 )
 			{
-				uint32_t val32 = val;
+				uint32_t val32 = (uint32_t)val;
 				return [NSNumber numberWithFloat: *(float*)&val32];
 			}
 			if( size == 8 )
@@ -297,10 +297,10 @@ static id ExtractUID(NSPropertyListReader_binary1 *bplist, uint64_t offset)
         return nil;
 }
 
-- (id)_readInlineObjectAtOffset: (unsigned *)offset
+- (id)_readInlineObjectAtOffset: (NSUInteger *)offset
 {
         // first read the offset table index out of the file
-        unsigned objOffset = [self _readIntOfSize: _trailerOffsetRefSize
+        NSUInteger objOffset = [self _readIntOfSize: _trailerOffsetRefSize
                                                                          atOffset: offset];
         
         // then transform the index into an offset in the file which points to
@@ -324,7 +324,7 @@ static id ExtractUID(NSPropertyListReader_binary1 *bplist, uint64_t offset)
         {
                 [self _readHeader];
 
-                unsigned offset = _trailerTopObject + strlen( MAGIC FORMAT );
+                NSUInteger offset = _trailerTopObject + strlen( MAGIC FORMAT );
                  result= [self _readObjectAtOffset: &offset];
         }
         NS_HANDLER

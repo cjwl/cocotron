@@ -207,7 +207,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         unsigned char *outBuf = dstBuf;
         int x;
         for (x = 0; x < rowSrcLen; x += 3) {
-            const int blockLen = (x + 3 < rowSrcLen) ? 3 : (rowSrcLen - x);
+            const NSInteger blockLen = (x + 3 < rowSrcLen) ? 3 : (rowSrcLen - x);
             
             // base64 encode
             outBuf[0] = b64[ inBuf[0] >> 2 ];

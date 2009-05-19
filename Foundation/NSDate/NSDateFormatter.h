@@ -34,28 +34,28 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 NSTimeInterval NSAdjustTimeIntervalWithTimeZone(NSTimeInterval interval, NSTimeZone *timeZone);
 
 // interval is not time zone adjusteed
-NSTimeInterval NSTimeIntervalWithComponents(int year, int month, int day, int hour, int minute, int second, int milliseconds);
+NSTimeInterval NSTimeIntervalWithComponents(NSInteger year, NSInteger month, NSInteger day, NSInteger hour, NSInteger minute, NSInteger second, NSInteger milliseconds);
 
 // interval has already been time zone adjusted
-int NSDayOfCommonEraFromTimeInterval(NSTimeInterval interval);
+NSInteger NSDayOfCommonEraFromTimeInterval(NSTimeInterval interval);
 
-int NSYearFromTimeInterval(NSTimeInterval interval);
-int NSDayOfYearFromTimeInterval(NSTimeInterval interval); // 0-366
+NSInteger NSYearFromTimeInterval(NSTimeInterval interval);
+NSInteger NSDayOfYearFromTimeInterval(NSTimeInterval interval); // 0-366
 
-int NSMonthFromTimeInterval(NSTimeInterval interval); // 0-11
-int NSDayOfMonthFromTimeInterval(NSTimeInterval interval); // 0-31
+NSInteger NSMonthFromTimeInterval(NSTimeInterval interval); // 0-11
+NSInteger NSDayOfMonthFromTimeInterval(NSTimeInterval interval); // 0-31
 
-int NSWeekdayFromTimeInterval(NSTimeInterval interval); // 0-7
+NSInteger NSWeekdayFromTimeInterval(NSTimeInterval interval); // 0-7
 
-int NS24HourFromTimeInterval(NSTimeInterval interval); // 0-23
-int NS12HourFromTimeInterval(NSTimeInterval interval); // 1-12
-int NSAMPMFromTimeInterval(NSTimeInterval interval); // 0-1
+NSInteger NS24HourFromTimeInterval(NSTimeInterval interval); // 0-23
+NSInteger NS12HourFromTimeInterval(NSTimeInterval interval); // 1-12
+NSInteger NSAMPMFromTimeInterval(NSTimeInterval interval); // 0-1
 
-int NSMinuteFromTimeInterval(NSTimeInterval interval); // 0-59
+NSInteger NSMinuteFromTimeInterval(NSTimeInterval interval); // 0-59
 
-int NSSecondFromTimeInterval(NSTimeInterval interval); // 0-59
+NSInteger NSSecondFromTimeInterval(NSTimeInterval interval); // 0-59
 
-int NSMillisecondsFromTimeInterval(NSTimeInterval interval); // 0-999
+NSInteger NSMillisecondsFromTimeInterval(NSTimeInterval interval); // 0-999
 
 // interval will be time-zone adjusted
 NSString *NSStringWithDateFormatLocale(NSTimeInterval interval,NSString *format,NSDictionary *locale,NSTimeZone *timeZone);

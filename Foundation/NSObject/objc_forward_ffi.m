@@ -270,7 +270,7 @@ invocation_closure(ffi_cif* cif, void* result, void** args, void* userdata)
 {
 	NSMethodSignature *sig=(id)userdata;
 	NSInvocation *inv=[NSInvocation invocationWithMethodSignature:sig];
-	int i, numArgs=[sig numberOfArguments];
+	NSInteger i, numArgs=[sig numberOfArguments];
 	for(i=0; i<numArgs; i++)
 	{
 		[inv setArgument:args[i] atIndex:i];
@@ -305,7 +305,7 @@ invocation_closure(ffi_cif* cif, void* result, void** args, void* userdata)
 	{
 		if(!_closureInfo)
 		{
-			int i, numArgs=[self numberOfArguments];
+			NSInteger i, numArgs=[self numberOfArguments];
 			ffi_type** arg_type=NSZoneCalloc(NULL, sizeof(ffi_type*),numArgs);
 
 			ffi_type* ret_type=signature_to_ffi_return_type([self methodReturnType]);
@@ -316,8 +316,7 @@ invocation_closure(ffi_cif* cif, void* result, void** args, void* userdata)
          }
 
 			_closureInfo=NSZoneCalloc(NULL, sizeof(ffi_cif), 1);
-			ffi_prep_cif((ffi_cif*)_closureInfo, FFI_DEFAULT_ABI,
-						 numArgs, ret_type, arg_type);
+			ffi_prep_cif((ffi_cif*)_closureInfo, FFI_DEFAULT_ABI,(unsigned)numArgs, ret_type, arg_type);
 		}
 	}
 	NSAssert(_closureInfo, nil);
@@ -350,7 +349,7 @@ invocation_closure(ffi_cif* cif, void* result, void** args, void* userdata)
 
 -(void)_ffiInvokeWithTarget:target
 {
-	int i, numArgs=[_signature numberOfArguments];
+	NSInteger i, numArgs=[_signature numberOfArguments];
 	void* arguments[numArgs+8];
 	ffi_cif* cif=[_signature _callingInfo];
 	NSAssert(numArgs>=2, @"invocation must have target and selector");

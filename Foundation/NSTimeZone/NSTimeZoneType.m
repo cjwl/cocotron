@@ -5,19 +5,17 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
-
-// Original - David Young <daver@geeks.org>
 #import <Foundation/NSTimeZoneType.h>
 #import <Foundation/NSString.h>
 #import <Foundation/NSCoder.h>
 
 @implementation NSTimeZoneType
 
-+(NSTimeZoneType *)timeZoneTypeWithSecondsFromGMT:(int)seconds isDaylightSavingTime:(BOOL)isDST abbreviation:(NSString *)abbreviation {
++(NSTimeZoneType *)timeZoneTypeWithSecondsFromGMT:(NSInteger)seconds isDaylightSavingTime:(BOOL)isDST abbreviation:(NSString *)abbreviation {
     return [[[self allocWithZone:NULL] initWithSecondsFromGMT:seconds isDaylightSavingTime:isDST abbreviation:abbreviation] autorelease];
 }
 
--initWithSecondsFromGMT:(int)seconds isDaylightSavingTime:(BOOL)isDST abbreviation:(NSString *)abbreviation {
+-initWithSecondsFromGMT:(NSInteger)seconds isDaylightSavingTime:(BOOL)isDST abbreviation:(NSString *)abbreviation {
     _secondsFromGMT = seconds;
     _isDaylightSavingTime = isDST;
     _abbreviation = [abbreviation retain];
@@ -31,7 +29,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     [super dealloc];
 }
 
--(int)secondsFromGMT {
+-(NSInteger)secondsFromGMT {
     return _secondsFromGMT;
 }
 
@@ -54,13 +52,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)encodeWithCoder:(NSCoder *)coder {
-    [coder encodeValueOfObjCType:@encode(int) at:&_secondsFromGMT];
+    int value=(int)_secondsFromGMT;
+    [coder encodeValueOfObjCType:@encode(int) at:&value];
     [coder encodeValueOfObjCType:@encode(BOOL) at:&_isDaylightSavingTime];
     [coder encodeObject:_abbreviation];
 }
 
 -initWithCoder:(NSCoder *)coder {
-    [coder decodeValueOfObjCType:@encode(int) at:&_secondsFromGMT];
+    int value=0;
+    [coder decodeValueOfObjCType:@encode(int) at:&value];
+    _secondsFromGMT=value;
     [coder decodeValueOfObjCType:@encode(BOOL) at:&_isDaylightSavingTime];
     _abbreviation = [[coder decodeObject] retain];
 

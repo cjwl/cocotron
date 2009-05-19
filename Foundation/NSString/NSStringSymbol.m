@@ -44,8 +44,8 @@ static const unichar SymbolToUnicode[256]={
  0xFFFD,0xFFFD,0xFFFD,0xFFFD,0xFFFD,0xFFFD,0xFFFD,0xFFFD,
 };
 
-unichar *NSSymbolToUnicode(const char *symbols,unsigned length,
-  unsigned *resultLength,NSZone *zone) {
+unichar *NSSymbolToUnicode(const char *symbols,NSUInteger length,
+  NSUInteger *resultLength,NSZone *zone) {
    unichar *characters=NSZoneMalloc(zone,sizeof(unichar)*length);
    int      i;
 
@@ -56,8 +56,8 @@ unichar *NSSymbolToUnicode(const char *symbols,unsigned length,
    return characters;
 }
 
-char    *NSUnicodeToSymbol(const unichar *characters,unsigned length,
-  BOOL lossy,unsigned *resultLength,NSZone *zone){
+char    *NSUnicodeToSymbol(const unichar *characters,NSUInteger length,
+  BOOL lossy,NSUInteger *resultLength,NSZone *zone){
    char *symbols=NSZoneMalloc(zone,sizeof(char)*length);
    int   i,j;
 

@@ -22,12 +22,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(NSError *)close;
 
--(NSError *)connectToHost:(NSHost *)host port:(int)port immediate:(BOOL *)immediate;
+-(NSError *)connectToHost:(NSHost *)host port:(NSInteger)port immediate:(BOOL *)immediate;
 
 -(BOOL)hasBytesAvailable;
 
--(int)read:(unsigned char *)buffer maxLength:(unsigned)length;
--(int)write:(const unsigned char *)buffer maxLength:(unsigned)length;
+-(NSInteger)read:(unsigned char *)buffer maxLength:(NSUInteger)length;
+-(NSInteger)write:(const unsigned char *)buffer maxLength:(NSUInteger)length;
 
 -(NSSocket *)acceptWithError:(NSError **)errorp;
 

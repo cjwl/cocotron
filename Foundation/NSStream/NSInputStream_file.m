@@ -64,7 +64,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return nil;
 }
 
--(BOOL)getBuffer:(unsigned char **)buffer length:(unsigned *)length {
+-(BOOL)getBuffer:(uint8_t **)buffer length:(NSUInteger *)length {
    return NO;
 }
 
@@ -72,7 +72,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     return NO;
 }
 
--(int)read:(unsigned char *)buffer maxLength:(unsigned)length {
+-(NSInteger)read:(uint8_t *)buffer maxLength:(NSUInteger)length {
     return -1;
 }
 

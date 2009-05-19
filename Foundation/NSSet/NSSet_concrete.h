@@ -15,4 +15,4 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 @end
 
-NSSet *NSSet_concreteNew(NSZone *zone,id *objects,unsigned count);
+NSSet *NSSet_concreteNew(NSZone *zone,id *objects,NSUInteger count);

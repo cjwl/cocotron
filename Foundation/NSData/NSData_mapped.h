@@ -9,7 +9,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSData.h>
 
 @interface NSData_mapped : NSData {
-   unsigned _length;
+   NSUInteger _length;
    char    *_bytes;
 }
 

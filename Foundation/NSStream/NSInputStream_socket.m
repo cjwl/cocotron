@@ -83,7 +83,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [_socket close];
 }
 
--(BOOL)getBuffer:(unsigned char **)buffer length:(unsigned *)length {
+-(BOOL)getBuffer:(uint8_t **)buffer length:(NSUInteger *)length {
    *buffer=NULL;
    *length=0;
    return NO;
@@ -96,8 +96,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return NO;
 }
 
--(int)read:(unsigned char *)buffer maxLength:(unsigned)maxLength {
-   int result;
+-(NSInteger)read:(uint8_t *)buffer maxLength:(NSUInteger)maxLength {
+   NSInteger result;
    
    if(_status==NSStreamStatusAtEnd)
     return 0;

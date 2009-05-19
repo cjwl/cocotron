@@ -89,7 +89,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)replaceBytesInRange:(NSRange)range withBytes:(const void *)bytes {
-   int   i,length=[self length];
+   NSInteger   i,length=[self length];
    void *mutableBytes;
 
    if(range.location>length)

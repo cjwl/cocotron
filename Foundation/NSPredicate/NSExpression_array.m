@@ -22,7 +22,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(NSString *)description {
    NSMutableString *result=[NSMutableString string];
-   int              i,count=[_array count];
+   NSInteger        i,count=[_array count];
    
    [result appendString:@"{"];
    for(i=0;i<count;i++)
@@ -33,7 +33,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(NSExpression *)_expressionWithSubstitutionVariables:(NSDictionary *)variables {
    NSMutableArray *array=[NSMutableArray array];
-   int             i,count=[_array count];
+   NSInteger       i,count=[_array count];
       
    for(i=0;i<count;i++)
     [array addObject:[[_array objectAtIndex:i] _expressionWithSubstitutionVariables:variables]];

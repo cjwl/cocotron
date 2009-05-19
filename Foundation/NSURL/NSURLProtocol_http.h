@@ -18,14 +18,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 // parsing state
    NSMutableData *_data;
    const unsigned char *_bytes;
-   unsigned  _length;
+   NSUInteger  _length;
    int       _state;
    NSRange   _range;
 
    NSString            *_currentKey;
    NSMutableDictionary *_headers;
 
-   int _chunkSize;
+   NSInteger _chunkSize;
 	BOOL sentrequest;
 }
 

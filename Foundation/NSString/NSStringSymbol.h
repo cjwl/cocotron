@@ -8,8 +8,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/NSString.h>
 
-unichar *NSSymbolToUnicode(const char *symbols,unsigned length,
-  unsigned *resultLength,NSZone *zone);
+unichar *NSSymbolToUnicode(const char *symbols,NSUInteger length,
+  NSUInteger *resultLength,NSZone *zone);
 
-FOUNDATION_EXPORT char    *NSUnicodeToSymbol(const unichar *characters,unsigned length,
-  BOOL lossy,unsigned *resultLength,NSZone *zone);
+FOUNDATION_EXPORT char    *NSUnicodeToSymbol(const unichar *characters,NSUInteger length,
+  BOOL lossy,NSUInteger *resultLength,NSZone *zone);

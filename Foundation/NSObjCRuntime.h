@@ -82,8 +82,7 @@ typedef enum {
 FOUNDATION_EXPORT void NSLog(NSString *format,...);
 FOUNDATION_EXPORT void NSLogv(NSString *format,va_list args);
 
-FOUNDATION_EXPORT const char *NSGetSizeAndAlignment(const char *type,unsigned *size,
-  unsigned *alignment);
+FOUNDATION_EXPORT const char *NSGetSizeAndAlignment(const char *type,NSUInteger *size,NSUInteger *alignment);
 
 FOUNDATION_EXPORT SEL NSSelectorFromString(NSString *selectorName);
 FOUNDATION_EXPORT NSString *NSStringFromSelector(SEL selector);

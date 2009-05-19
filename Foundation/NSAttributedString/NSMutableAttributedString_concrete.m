@@ -35,7 +35,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return _string;
 }
 
--(NSDictionary *)attributesAtIndex:(unsigned)location
+-(NSDictionary *)attributesAtIndex:(NSUInteger)location
    effectiveRange:(NSRange *)effectiveRangep {
    NSDictionary *result;
 
@@ -52,7 +52,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)replaceCharactersInRange:(NSRange)range withString:(NSString *)string {
-   int delta=[string length]-range.length;
+   NSInteger delta=[string length]-range.length;
 
    [_string replaceCharactersInRange:range withString:string];
    NSRangeEntriesExpandAndWipe(_rangeToAttributes,range,delta);

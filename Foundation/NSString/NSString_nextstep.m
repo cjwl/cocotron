@@ -46,8 +46,8 @@ static const unichar NEXTSTEPToUnicode[256]={
  0x0142,0x00f8,0x0153,0x00df,0x00fe,0x00ff,0xfffd,0xfffd
 };
 
-unichar *NSNEXTSTEPToUnicode(const char *cString,unsigned length,
-  unsigned *resultLength,NSZone *zone) {
+unichar *NSNEXTSTEPToUnicode(const char *cString,NSUInteger length,
+  NSUInteger *resultLength,NSZone *zone) {
    unichar *characters=NSZoneMalloc(zone,sizeof(unichar)*length);
    int      i;
 
@@ -58,8 +58,8 @@ unichar *NSNEXTSTEPToUnicode(const char *cString,unsigned length,
    return characters;
 }
 
-char *NSUnicodeToNEXTSTEP(const unichar *characters,unsigned length,
-  BOOL lossy,unsigned *resultLength,NSZone *zone) {
+char *NSUnicodeToNEXTSTEP(const unichar *characters,NSUInteger length,
+  BOOL lossy,NSUInteger *resultLength,NSZone *zone) {
    char *nextstep=NSZoneMalloc(zone,sizeof(char)*(length+1));
    int   i,j;
 
@@ -90,7 +90,7 @@ char *NSUnicodeToNEXTSTEP(const unichar *characters,unsigned length,
    return nextstep;
 }
 
-unsigned NSGetNEXTSTEPStringWithMaxLength(const unichar *characters,unsigned length,unsigned *location,char *cString,unsigned maxLength,BOOL lossy) {
+NSUInteger NSGetNEXTSTEPStringWithMaxLength(const unichar *characters,NSUInteger length,NSUInteger *location,char *cString,NSUInteger maxLength,BOOL lossy) {
    unsigned i,result=0;
 
    for(i=0;i<length && result<maxLength;i++){
@@ -125,9 +125,9 @@ unsigned NSGetNEXTSTEPStringWithMaxLength(const unichar *characters,unsigned len
 @implementation NSString_nextstep
 
 NSString *NSNEXTSTEPStringNewWithBytes(NSZone *zone,
- const char *bytes,unsigned length) {
+ const char *bytes,NSUInteger length) {
    NSString_nextstep *string;
-   int               i;
+   NSInteger               i;
 
    string=NSAllocateObject([NSString_nextstep class],length*sizeof(char),zone);
 
@@ -139,11 +139,11 @@ NSString *NSNEXTSTEPStringNewWithBytes(NSZone *zone,
    return string;
 }
 
--(unsigned)length {
+-(NSUInteger)length {
    return _length;
 }
 
--(unichar)characterAtIndex:(unsigned)location {
+-(unichar)characterAtIndex:(NSUInteger)location {
    if(location>=_length){
     NSRaiseException(NSRangeException,self,_cmd,@"index %d beyond length %d",
      location,[self length]);
@@ -160,7 +160,7 @@ NSString *NSNEXTSTEPStringNewWithBytes(NSZone *zone,
 }
 
 -(void)getCharacters:(unichar *)buffer range:(NSRange)range {
-   int i,loc=range.location,len=range.length;
+   NSInteger i,loc=range.location,len=range.length;
 
    if(NSMaxRange(range)>_length){
     NSRaiseException(NSRangeException,self,_cmd,@"range %@ beyond length %d",

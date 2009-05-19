@@ -16,8 +16,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 +calendarDate;
 
--initWithYear:(int)year month:(unsigned)month day:(unsigned)day
-  hour:(unsigned)hour minute:(unsigned)minute second:(unsigned)second
+-initWithYear:(NSInteger)year month:(NSUInteger)month day:(NSUInteger)day
+  hour:(NSUInteger)hour minute:(NSUInteger)minute second:(NSUInteger)second
   timeZone:(NSTimeZone *)timeZone;
     
 -initWithString:(NSString *)string calendarFormat:(NSString *)format
@@ -25,8 +25,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -initWithString:(NSString *)string calendarFormat:(NSString *)format;
 -initWithString:(NSString *)string;
 
-+dateWithYear:(int)year month:(unsigned)month day:(unsigned)day
-  hour:(unsigned)hour minute:(unsigned)minute second:(unsigned)second
++dateWithYear:(NSInteger)year month:(NSUInteger)month day:(NSUInteger)day
+  hour:(NSUInteger)hour minute:(NSUInteger)minute second:(NSUInteger)second
   timeZone:(NSTimeZone *)timeZone;
 
 +dateWithString:(NSString *)string calendarFormat:(NSString *)format
@@ -40,22 +40,22 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)setCalendarFormat:(NSString *)format;
 -(void)setTimeZone:(NSTimeZone *)timeZone;
 
--(int)secondOfMinute;		// 0-59
--(int)minuteOfHour;		// 0-59
--(int)hourOfDay;		// 0-23
--(int)dayOfWeek;		// 0 through 6. how consistent
--(int)dayOfMonth;		// 1 through 31
--(int)dayOfYear;		// 1 through 366. also consistent
--(int)monthOfYear;		// 1 through 12 says spec
--(int)yearOfCommonEra;		// 1 through armageddon
--(int)dayOfCommonEra;
+-(NSInteger)secondOfMinute;		// 0-59
+-(NSInteger)minuteOfHour;		// 0-59
+-(NSInteger)hourOfDay;		// 0-23
+-(NSInteger)dayOfWeek;		// 0 through 6. how consistent
+-(NSInteger)dayOfMonth;		// 1 through 31
+-(NSInteger)dayOfYear;		// 1 through 366. also consistent
+-(NSInteger)monthOfYear;		// 1 through 12 says spec
+-(NSInteger)yearOfCommonEra;		// 1 through armageddon
+-(NSInteger)dayOfCommonEra;
 
--(void)years:(int *)yearsp months:(int *)monthsp days:(int *)daysp
-  hours:(int *)hoursp minutes:(int *)minutesp seconds:(int *)secondsp
+-(void)years:(NSInteger *)yearsp months:(NSInteger *)monthsp days:(NSInteger *)daysp
+  hours:(NSInteger *)hoursp minutes:(NSInteger *)minutesp seconds:(NSInteger *)secondsp
   sinceDate:(NSCalendarDate *)date;
 
--(NSCalendarDate *)dateByAddingYears:(int)years months:(int)months
-  days:(int)days hours:(int)hours minutes:(int)minutes seconds:(int)seconds;
+-(NSCalendarDate *)dateByAddingYears:(NSInteger)years months:(NSInteger)months
+  days:(NSInteger)days hours:(NSInteger)hours minutes:(NSInteger)minutes seconds:(NSInteger)seconds;
 
 -(NSString *)descriptionWithCalendarFormat:(NSString *)format
   locale:(NSDictionary *)locale;

@@ -10,13 +10,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSData.h>
 
 @interface NSData_concrete : NSData {
-   unsigned _length;
+   NSUInteger _length;
    char    *_bytes;
    BOOL     _freeWhenDone;
 }
 @end
 
-static inline void NSByteCopy(const void *src,void *dst,unsigned count){
+static inline void NSByteCopy(const void *src,void *dst,NSUInteger count){
    const char *srcBytes=src;
    char       *dstBytes=dst;
    unsigned    i;
@@ -41,9 +41,9 @@ static inline void NSByteZeroRange(void *bytes,NSRange range){
     zeroBytes[i+range.location]=0;
 }
 
-static inline BOOL NSBytesEqual(const void *src1,const void *src2,unsigned count) {
+static inline BOOL NSBytesEqual(const void *src1,const void *src2,NSUInteger count) {
    const char *bytes1=src1,*bytes2=src2;
-   unsigned i;
+   NSUInteger i;
 
    for(i=0;i<count;i++)
     if(bytes1[i]!=bytes2[i])
@@ -53,7 +53,7 @@ static inline BOOL NSBytesEqual(const void *src1,const void *src2,unsigned count
 }
 
 
-void *NSBytesReplicate(const void *src,unsigned count,NSZone *zone);
+void *NSBytesReplicate(const void *src,NSUInteger count,NSZone *zone);
 
-NSData *NSData_concreteNew(NSZone *zone,const char *bytes,unsigned length);
-NSData *NSData_concreteNewNoCopy(NSZone *zone,void *bytes,unsigned length);
+NSData *NSData_concreteNew(NSZone *zone,const char *bytes,NSUInteger length);
+NSData *NSData_concreteNewNoCopy(NSZone *zone,void *bytes,NSUInteger length);

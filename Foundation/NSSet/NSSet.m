@@ -37,13 +37,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return [self initWithObjects:NULL count:0];
 }
 
--initWithObjects:(id *)objects count:(unsigned)count {
+-initWithObjects:(id *)objects count:(NSUInteger)count {
    NSInvalidAbstractInvocation();
    return nil;
 }
 
 -initWithArray:(NSArray *)array {
-   unsigned count=[array count];
+   NSUInteger count=[array count];
    id       objects[count];
 
    [array getObjects:objects];
@@ -53,7 +53,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -initWithSet:(NSSet *)set {
    NSEnumerator *state=[set objectEnumerator];
-   unsigned      i,count=[set count];
+   NSUInteger      i,count=[set count];
    id            objects[count],object;
 
    for(i=0;(object=[state nextObject])!=nil;i++)
@@ -64,7 +64,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -initWithSet:(NSSet *)set copyItems:(BOOL)copyItems {
    NSEnumerator *state=[set objectEnumerator];
-   unsigned      i,count=[set count];
+   NSUInteger      i,count=[set count];
    id            objects[count],object;
 
    for(i=0;(object=[state nextObject])!=nil;i++)
@@ -87,7 +87,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -initWithObjects:first,... {
    va_list  arguments;
-   unsigned i,count;
+   NSUInteger i,count;
    id      *objects;
 
    va_start(arguments,first);
@@ -112,7 +112,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 +setWithArray:(NSArray *)array {
-   unsigned count=[array count];
+   NSUInteger count=[array count];
    id       objects[count];
 
    [array getObjects:objects];
@@ -130,7 +130,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 +setWithObjects:first,... {
    va_list  arguments;
-   unsigned i,count;
+   NSUInteger i,count;
    id      *objects;
 
    va_start(arguments,first);
@@ -151,7 +151,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return NSAutorelease(NSSet_concreteNew(NULL,objects,count));
 }
 
-+setWithObjects:(id *)objects count:(unsigned)count {
++setWithObjects:(id *)objects count:(NSUInteger)count {
    return NSAutorelease(NSSet_concreteNew(NULL,objects,count));
 }
 
@@ -196,7 +196,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
      [keyed encodeArray:[self allObjects] forKey:@"NS.objects"];
    }
    else {
-    unsigned      count=[self count];
+    // FIXME: 64-bit
+    unsigned      count=(unsigned)[self count];
     NSEnumerator *state=[self objectEnumerator];
     id            object;
 
@@ -220,7 +221,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return nil;
 }
 
--(unsigned)count {
+-(NSUInteger)count {
    NSInvalidAbstractInvocation();
    return 0;
 }
@@ -230,7 +231,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return nil;
 }
 
--(unsigned)hash {
+-(NSUInteger)hash {
 	return [self count];
 }
 
@@ -316,7 +317,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    NSMutableString *result=[NSMutableString string];
    id objects=[self objectEnumerator];
    id next;
-   int i,count=[self count];
+   NSInteger i,count=[self count];
 
    [result appendFormat:@"<%@: 0x%x> (",isa,self];
    for(i=0;(next=[objects nextObject])!=nil;i++){

@@ -16,7 +16,7 @@ NSString *NSStreamFileCurrentOffsetKey=@"NSStreamFileCurrentOffsetKey";
 
 @implementation NSStream
 
-+(void)getStreamsToHost:(NSHost *)host port:(int)port inputStream:(NSInputStream **)inputStreamp outputStream:(NSOutputStream **)outputStreamp {
++(void)getStreamsToHost:(NSHost *)host port:(NSInteger)port inputStream:(NSInputStream **)inputStreamp outputStream:(NSOutputStream **)outputStreamp {
    NSSocket              *socket=[[[NSSocket alloc] initTCPStream] autorelease];
    NSError               *error;
    BOOL                   immediate;

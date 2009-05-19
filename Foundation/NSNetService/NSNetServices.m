@@ -437,7 +437,8 @@ static void QueryCallback(bonjour_DNSServiceRef sdRef,bonjour_DNSServiceFlags fl
    for(i=0 ; i < count; i++ ){
     id key=[keys objectAtIndex:i];
     id value=[txtDictionary objectForKey:key];
-    int length = 0, used = 0;
+    NSInteger length = 0;
+    size_t used = 0;
     bonjour_DNSServiceErrorType err = kDNSServiceErr_Unknown;
         
     if( ! [key isKindOfClass: [NSString class]] ){
@@ -500,7 +501,7 @@ static void QueryCallback(bonjour_DNSServiceRef sdRef,bonjour_DNSServiceFlags fl
 {
   NSMutableDictionary
     *result = nil;
-  int
+  NSInteger
     len = 0;
   const void
     *txt = 0;

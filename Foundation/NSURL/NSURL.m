@@ -22,12 +22,12 @@ NSString *NSURLFileScheme=@"file";
 
 typedef struct {
    NSString *original;
-   int       length;
+   NSInteger length;
    unichar  *unicode;
-   int       position;
+   NSInteger position;
    unichar  *part;
-   int       partLength;
-   int       partPosition;
+   NSInteger partLength;
+   NSInteger partPosition;
 } urlScanner;
 
 static void initScanner(urlScanner *scanner,NSString *string){
@@ -329,7 +329,7 @@ static void scan_net_loc(urlScanner *scanner,NSURL *url){
    }
 
 // split into user:pw@host:port
-   int hostEnd=scanner->partLength;
+   NSInteger hostEnd=scanner->partLength;
    int host=0;
    int login;
    
@@ -351,7 +351,7 @@ static void scan_net_loc(urlScanner *scanner,NSURL *url){
      url->_password=[[NSString alloc] initWithCharacters:scanner->part+user+1 length:login-(user+1)];
    }
 
-   int portEnd=scanner->partLength;   
+   NSInteger portEnd=scanner->partLength;   
    int port;
    
    for(port=host;port<scanner->partLength;port++)

@@ -35,7 +35,7 @@ FOUNDATION_EXPORT NSString *NSStreamFileCurrentOffsetKey;
 
 @interface NSStream : NSObject
 
-+(void)getStreamsToHost:(NSHost *)host port:(int)port inputStream:(NSInputStream **)inputStream outputStream:(NSOutputStream **)outputStream;
++(void)getStreamsToHost:(NSHost *)host port:(NSInteger)port inputStream:(NSInputStream **)inputStream outputStream:(NSOutputStream **)outputStream;
 
 -delegate;
 -(void)setDelegate:delegate;

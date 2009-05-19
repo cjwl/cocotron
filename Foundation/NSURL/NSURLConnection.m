@@ -23,8 +23,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @implementation NSURLConnection
 
 +(Class)_URLProtocolClassForRequest:(NSURLRequest *)request {
-   NSArray *classes=[NSURLProtocol _registeredClasses];
-   int      count=[classes count];
+   NSArray  *classes=[NSURLProtocol _registeredClasses];
+   NSInteger count=[classes count];
    
    while(--count>=0){
     Class check=[classes objectAtIndex:count];

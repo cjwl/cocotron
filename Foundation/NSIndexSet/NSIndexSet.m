@@ -15,7 +15,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return [[[self allocWithZone:NULL] initWithIndexesInRange:range] autorelease];
 }
 
-+indexSetWithIndex:(unsigned)index {
++indexSetWithIndex:(NSUInteger)index {
    return [[[self allocWithZone:NULL] initWithIndex:index] autorelease];
 }
 
@@ -41,7 +41,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return self;
 }
 
--initWithIndex:(unsigned)index {
+-initWithIndex:(NSUInteger)index {
    return [self initWithIndexesInRange:NSMakeRange(index,1)];
 }
 
@@ -75,8 +75,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return YES;
 }
 
--(unsigned)count {
-   unsigned result=0;
+-(NSUInteger)count {
+   NSUInteger result=0;
    int i;
    
    for(i=0;i<_length;i++)
@@ -85,14 +85,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return result;
 }
 
--(unsigned)firstIndex {
+-(NSUInteger)firstIndex {
    if(_length>0)
     return _ranges[0].location;
     
    return NSNotFound; 
 }
 
--(unsigned)lastIndex {
+-(NSUInteger)lastIndex {
    if(_length>0)
     return NSMaxRange(_ranges[_length-1])-1;
     
@@ -100,8 +100,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 // these two functions are the lynchpin of performance, should be improved for large sets
-static unsigned positionOfRangeGreaterThanOrEqualToLocation(NSRange *ranges,unsigned length,unsigned location){
-   unsigned i;
+static NSUInteger positionOfRangeGreaterThanOrEqualToLocation(NSRange *ranges,NSUInteger length,NSUInteger location){
+   NSUInteger i;
    
    for(i=0;i<length;i++)
     if(location<NSMaxRange(ranges[i]))
@@ -110,8 +110,8 @@ static unsigned positionOfRangeGreaterThanOrEqualToLocation(NSRange *ranges,unsi
    return NSNotFound;
 }
 
-static unsigned positionOfRangeLessThanOrEqualToLocation(NSRange *ranges,unsigned length,unsigned location){
-   int i=length;
+static NSUInteger positionOfRangeLessThanOrEqualToLocation(NSRange *ranges,NSUInteger length,NSUInteger location){
+   NSInteger i=length;
    
    while(--i>=0)
     if(ranges[i].location<=location)
@@ -120,11 +120,11 @@ static unsigned positionOfRangeLessThanOrEqualToLocation(NSRange *ranges,unsigne
    return NSNotFound;
 }
 
--(unsigned)getIndexes:(unsigned *)buffer maxCount:(unsigned)capacity inIndexRange:(NSRange *)rangePtr {
+-(NSUInteger)getIndexes:(NSUInteger *)buffer maxCount:(NSUInteger)capacity inIndexRange:(NSRange *)rangePtr {
    NSRange  range;
-   unsigned first;
-   unsigned result=0;
-   unsigned location=0;
+   NSUInteger first;
+   NSUInteger result=0;
+   NSUInteger location=0;
    
    if(rangePtr!=NULL)
     range=*rangePtr;
@@ -136,14 +136,14 @@ static unsigned positionOfRangeLessThanOrEqualToLocation(NSRange *ranges,unsigne
    first=positionOfRangeGreaterThanOrEqualToLocation(_ranges,_length,range.location);
 
    for(;first<_length && result<capacity;first++){
-    unsigned max=NSMaxRange(_ranges[first]);
+    NSUInteger max=NSMaxRange(_ranges[first]);
     
     for(location=_ranges[first].location;location<max && result<capacity;location++)
      buffer[result++]=location;
    }
    
    if(rangePtr!=NULL){
-    unsigned max=NSMaxRange(*rangePtr);
+    NSUInteger max=NSMaxRange(*rangePtr);
     
     rangePtr->location=location;
     rangePtr->length=max-rangePtr->location;
@@ -153,7 +153,7 @@ static unsigned positionOfRangeLessThanOrEqualToLocation(NSRange *ranges,unsigne
 }
 
 -(BOOL)containsIndexesInRange:(NSRange)range {
-   int first=positionOfRangeLessThanOrEqualToLocation(_ranges,_length,range.location);
+   NSInteger first=positionOfRangeLessThanOrEqualToLocation(_ranges,_length,range.location);
 
    if(first==NSNotFound)
     return NO;
@@ -175,12 +175,12 @@ static unsigned positionOfRangeLessThanOrEqualToLocation(NSRange *ranges,unsigne
    return YES;
 }
 
--(BOOL)containsIndex:(unsigned)index {
+-(BOOL)containsIndex:(NSUInteger)index {
    return [self containsIndexesInRange:NSMakeRange(index,1)];
 }
 
--(unsigned)indexGreaterThanIndex:(unsigned)index {
-   unsigned first=positionOfRangeGreaterThanOrEqualToLocation(_ranges,_length,index);
+-(NSUInteger)indexGreaterThanIndex:(NSUInteger)index {
+   NSUInteger first=positionOfRangeGreaterThanOrEqualToLocation(_ranges,_length,index);
 
    if(first==NSNotFound)
     return NSNotFound;
@@ -198,8 +198,8 @@ static unsigned positionOfRangeLessThanOrEqualToLocation(NSRange *ranges,unsigne
    return NSNotFound;
 }
 
--(unsigned)indexGreaterThanOrEqualToIndex:(unsigned)index {
-   unsigned first=positionOfRangeGreaterThanOrEqualToLocation(_ranges,_length,index);
+-(NSUInteger)indexGreaterThanOrEqualToIndex:(NSUInteger)index {
+   NSUInteger first=positionOfRangeGreaterThanOrEqualToLocation(_ranges,_length,index);
    
    if(first==NSNotFound)
     return NSNotFound;
@@ -217,8 +217,8 @@ static unsigned positionOfRangeLessThanOrEqualToLocation(NSRange *ranges,unsigne
    return NSNotFound;
 }
 
--(unsigned)indexLessThanIndex:(unsigned)index {
-   int first=positionOfRangeLessThanOrEqualToLocation(_ranges,_length,index);
+-(NSUInteger)indexLessThanIndex:(NSUInteger)index {
+   NSInteger first=positionOfRangeLessThanOrEqualToLocation(_ranges,_length,index);
    
    if(index==0)
     return NSNotFound;
@@ -238,8 +238,8 @@ static unsigned positionOfRangeLessThanOrEqualToLocation(NSRange *ranges,unsigne
    return NSNotFound;
 }
 
--(unsigned)indexLessThanOrEqualToIndex:(unsigned)index {
-   int first=positionOfRangeLessThanOrEqualToLocation(_ranges,_length,index);
+-(NSUInteger)indexLessThanOrEqualToIndex:(NSUInteger)index {
+   NSInteger first=positionOfRangeLessThanOrEqualToLocation(_ranges,_length,index);
        
    if(first==NSNotFound)
     return NSNotFound;
@@ -251,7 +251,7 @@ static unsigned positionOfRangeLessThanOrEqualToLocation(NSRange *ranges,unsigne
 }
 
 -(BOOL)intersectsIndexesInRange:(NSRange)range {
-   unsigned first=positionOfRangeGreaterThanOrEqualToLocation(_ranges,_length,range.location);
+   NSUInteger first=positionOfRangeGreaterThanOrEqualToLocation(_ranges,_length,range.location);
    
    if(first==NSNotFound)
     return NO;

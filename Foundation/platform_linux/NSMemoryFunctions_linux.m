@@ -10,11 +10,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <sys/unistd.h>
 
 // on Linux, page size is a compiled constant in the kernel
-unsigned NSPageSize(void) {
+NSUInteger NSPageSize(void) {
    return getpagesize();
 }
 
-unsigned NSRealMemoryAvailable(void) 
+NSUInteger NSRealMemoryAvailable(void) 
 {
    struct sysinfo sysInfo;
 

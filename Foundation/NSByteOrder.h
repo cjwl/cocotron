@@ -15,11 +15,11 @@ typedef enum {
 } NSByteOrder;
 
 typedef struct {
-   unsigned long floatWord;
+   uint32_t floatWord;
 } NSSwappedFloat;
 
 typedef struct {
-   unsigned long long doubleWord;
+   uint64_t doubleWord;
 } NSSwappedDouble;
 
 FOUNDATION_EXPORT NSByteOrder        NSHostByteOrder(void);

@@ -33,7 +33,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(NSArray *)pathComponents {
    NSMutableArray *array=[NSMutableArray array];
-   unsigned length=[self length];
+   NSUInteger length=[self length];
    unichar  unicode[length];
    NSString *string;
    int b,e;
@@ -55,9 +55,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(NSString *)lastPathComponent {
-   unsigned length=[self length];
+   NSUInteger length=[self length];
    unichar  buffer[length];
-   int      i;
+   NSInteger      i;
 
    [self getCharacters:buffer];
 
@@ -72,9 +72,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(NSString *)pathExtension {
-   unsigned length=[self length];
+   NSUInteger length=[self length];
    unichar  buffer[length];
-   int      i;
+   NSInteger      i;
 
    [self getCharacters:buffer];
 
@@ -92,22 +92,22 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(NSString *)stringByAppendingPathComponent:(NSString *)other {
-   unsigned selfLength=[self length];
+   NSUInteger selfLength=[self length];
    if(!selfLength)
     if(other)
      return [NSString stringWithString:other];
     else
      return @"";
 
-   unsigned otherLength=[other length];
-   unsigned totalLength=selfLength+1+otherLength;
+   NSUInteger otherLength=[other length];
+   NSUInteger totalLength=selfLength+1+otherLength;
    unichar  characters[totalLength];
 
    [self getCharacters:characters];
-   unsigned p=selfLength;
+   NSUInteger p=selfLength;
    while(--p>=0 && ISSLASH(characters[p]));
    characters[++p]=SLASH;
-   unsigned q=0;
+   NSUInteger q=0;
    while(q<otherLength && ISSLASH([other characterAtIndex:q])) q++;
    [other getCharacters:characters+p+1 range:NSMakeRange(q, otherLength-q)];
 
@@ -115,11 +115,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(NSString *)stringByAppendingPathExtension:(NSString *)other {
-   unsigned selfLength=[self length];
+   NSUInteger selfLength=[self length];
 	if(selfLength && [self characterAtIndex:selfLength-1]==SLASH)
 		selfLength--;
-   unsigned otherLength=[other length];
-   unsigned totalLength=selfLength+1+otherLength;
+   NSUInteger otherLength=[other length];
+   NSUInteger totalLength=selfLength+1+otherLength;
    unichar  characters[totalLength];
 
    [self getCharacters:characters];
@@ -130,9 +130,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(NSString *)stringByDeletingLastPathComponent {
-   unsigned length=[self length];
+   NSUInteger length=[self length];
    unichar  buffer[length];
-   int      i;
+   NSInteger      i;
 
    [self getCharacters:buffer];
 
@@ -148,9 +148,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(NSString *)stringByDeletingPathExtension {
-   unsigned length=[self length];
+   NSUInteger length=[self length];
    unichar  buffer[length];
-   int      i;
+   NSInteger      i;
 
    [self getCharacters:buffer];
 
@@ -169,7 +169,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(NSString *)stringByExpandingTildeInPath {
    NSString *user,*homedir,*rest;
-   unsigned  length=[self length];
+   NSUInteger  length=[self length];
    unichar   buffer[length];
    int       i;
 
@@ -200,7 +200,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(NSString *)stringByAbbreviatingWithTildeInPath {
    NSString *homedir=NSHomeDirectory(),*rest;
-   unsigned  length=[self length],homelength=[homedir length];
+   NSUInteger  length=[self length],homelength=[homedir length];
    unichar   buffer[length],homebuffer[homelength];
    int       i;
 
@@ -224,7 +224,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(NSString *)stringByStandardizingPath {
-    unsigned length = [self length];
+    NSUInteger length = [self length];
     if (length < 1)
         return @"";
     

@@ -9,7 +9,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSString.h>
 
 @interface NSString_unicode : NSString {
-   unsigned _length;
+   NSUInteger _length;
    unichar  _unicode[0];
 }
 
@@ -17,4 +17,4 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 void      NSString_unicodeInitialize(void);
 NSString *NSString_unicodeNew(NSZone *zone,
- const unichar *unicode,unsigned length);
+ const unichar *unicode,NSUInteger length);

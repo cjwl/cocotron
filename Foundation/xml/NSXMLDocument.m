@@ -23,17 +23,17 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return nil;
 }
 
--initWithXMLString:(NSString *)string options:(unsigned)options error:(NSError **)error {
+-initWithXMLString:(NSString *)string options:(NSUInteger)options error:(NSError **)error {
    NSUnimplementedMethod();
    return nil;
 }
 
--initWithData:(NSData *)data options:(unsigned)options error:(NSError **)error {
+-initWithData:(NSData *)data options:(NSUInteger)options error:(NSError **)error {
    NSUnimplementedMethod();
    return nil;
 }
 
--initWithContentsOfURL:(NSURL *)url options:(unsigned)options error:(NSError **)error {
+-initWithContentsOfURL:(NSURL *)url options:(NSUInteger)options error:(NSError **)error {
    NSUnimplementedMethod();
    return nil;
 }
@@ -122,22 +122,22 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [_children addObject:node];
 }
 
--(void)insertChild:(NSXMLNode *)child atIndex:(unsigned)index {
+-(void)insertChild:(NSXMLNode *)child atIndex:(NSUInteger)index {
    [_children insertObject:child atIndex:index];
 }
 
--(void)insertChildren:(NSArray *)children atIndex:(unsigned)index {
-   int i,count=[children count];
+-(void)insertChildren:(NSArray *)children atIndex:(NSUInteger)index {
+   NSInteger i,count=[children count];
    
    for(i=0;i<count;i++)
     [_children insertObject:[children objectAtIndex:i] atIndex:index+i];
 }
 
--(void)removeChildAtIndex:(unsigned)index {
+-(void)removeChildAtIndex:(NSUInteger)index {
    [_children removeObjectAtIndex:index];
 }
 
--(void)replaceChildAtIndex:(unsigned)index withNode:(NSXMLNode *)node {
+-(void)replaceChildAtIndex:(NSUInteger)index withNode:(NSXMLNode *)node {
    [_children replaceObjectAtIndex:index withObject:node];
 }
 
@@ -150,7 +150,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return [self XMLDataWithOptions:NSXMLNodeOptionsNone];
 }
 
--(NSData *)XMLDataWithOptions:(unsigned)options {
+-(NSData *)XMLDataWithOptions:(NSUInteger)options {
    NSUnimplementedMethod();
    return nil;
 }

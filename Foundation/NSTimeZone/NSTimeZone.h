@@ -35,7 +35,7 @@ FOUNDATION_EXPORT NSString *NSSystemTimeZoneDidChangeNotification;
 +(NSTimeZone *)timeZoneWithName:(NSString *)name data:(NSData *)data;
 +(NSTimeZone *)timeZoneWithName:(NSString *)name;
 
-+(NSTimeZone *)timeZoneForSecondsFromGMT:(int)seconds;
++(NSTimeZone *)timeZoneForSecondsFromGMT:(NSInteger)seconds;
 +(NSTimeZone *)timeZoneWithAbbreviation:(NSString *)abbreviation;
 
 -(NSString *)name;
@@ -43,13 +43,13 @@ FOUNDATION_EXPORT NSString *NSSystemTimeZoneDidChangeNotification;
 
 -(BOOL)isEqualToTimeZone:(NSTimeZone *)timeZone;
 
--(int)secondsFromGMT;
+-(NSInteger)secondsFromGMT;
 -(NSString *)abbreviation;
 -(BOOL)isDaylightSavingTime;
 -(NSTimeInterval)daylightSavingTimeOffset;
 -(NSDate *)nextDaylightSavingTimeTransition;
 
--(int)secondsFromGMTForDate:(NSDate *)date;
+-(NSInteger)secondsFromGMTForDate:(NSDate *)date;
 -(NSString *)abbreviationForDate:(NSDate *)date;
 -(BOOL)isDaylightSavingTimeForDate:(NSDate *)date;
 -(NSTimeInterval)daylightSavingTimeOffsetForDate:(NSDate *)date;

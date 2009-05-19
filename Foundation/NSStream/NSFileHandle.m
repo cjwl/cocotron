@@ -106,7 +106,7 @@ NSString *NSFileHandleOperationException = @"NSFileHandleOperationException";
    return 0;
 }
 
--(NSData *)readDataOfLength:(unsigned)length {
+-(NSData *)readDataOfLength:(NSUInteger)length {
    NSInvalidAbstractInvocation();
    return nil;
 }

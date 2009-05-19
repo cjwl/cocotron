@@ -6,7 +6,7 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
-// Original - Christopher Lloyd <cjwl@objc.net>
+
 #import <Foundation/NSArray.h>
 #import <Foundation/NSObjCRuntime.h>
 #import <Foundation/NSRaise.h>
@@ -27,8 +27,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return NSAllocateObject(self,0,zone);
 }
 
--initWithObjects:(id *)objects count:(unsigned)count {
-   unsigned i;
+-initWithObjects:(id *)objects count:(NSUInteger)count {
+   NSUInteger i;
 
    if((self=[self initWithCapacity:count])==nil)
     return nil;
@@ -40,7 +40,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 
--initWithCapacity:(unsigned)capacity {
+-initWithCapacity:(NSUInteger)capacity {
    NSInvalidAbstractInvocation();
    return nil;
 }
@@ -80,7 +80,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 
-+arrayWithCapacity:(unsigned)capacity {
++arrayWithCapacity:(NSUInteger)capacity {
    if(self==[NSMutableArray class])
     return NSAutorelease(NSMutableArray_concreteNewWithCapacity(NULL,capacity));
 
@@ -90,7 +90,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 +arrayWithObjects:first,... {
    va_list  arguments;
-   unsigned i,count;
+   NSUInteger i,count;
    id      *objects;
 
    va_start(arguments,first);
@@ -121,18 +121,18 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)addObjectsFromArray:(NSArray *)other {
-   unsigned i,count=[other count];
+   NSUInteger i,count=[other count];
 
    for(i=0;i<count;i++)
     [self addObject:[other objectAtIndex:i]];
 }
 
--(void)removeObjectAtIndex:(unsigned)index {
+-(void)removeObjectAtIndex:(NSUInteger)index {
    NSInvalidAbstractInvocation();
 }
 
 -(void)removeAllObjects {
-   int count=[self count];
+   NSInteger count=[self count];
 
    while(--count>=0)
     [self removeObjectAtIndex:count];
@@ -143,7 +143,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)removeObject:object {
-   int count=[self count];
+   NSInteger count=[self count];
 
    while(--count>=0){
     id check=[self objectAtIndex:count];
@@ -154,7 +154,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)removeObject:object inRange:(NSRange)range {
-   int pos=NSMaxRange(range);
+   NSInteger pos=NSMaxRange(range);
 
    if(pos>[self count])
     NSRaiseException(NSRangeException,self,_cmd,@"range %@ beyond count %d",
@@ -169,7 +169,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)removeObjectIdenticalTo:object {
-   int count=[self count];
+   NSInteger count=[self count];
 
    while(--count>=0){
     id check=[self objectAtIndex:count];
@@ -180,7 +180,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)removeObjectIdenticalTo:object inRange:(NSRange)range {
-   int pos=NSMaxRange(range);
+   NSInteger pos=NSMaxRange(range);
 
    if(pos>[self count])
     NSRaiseException(NSRangeException,self,_cmd,@"range %@ beyond count %d",
@@ -196,7 +196,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)removeObjectsInRange:(NSRange)range {
-   int pos=NSMaxRange(range);
+   NSInteger pos=NSMaxRange(range);
 
    if(range.length==0)
     return;
@@ -232,7 +232,7 @@ static inline void memswp(void* a, void* b, size_t width)
 static int mergesortL(void *base, size_t nel, size_t width, int (*compar)(const  
 void *, const void *))
 {
-	int h, i, j, k, l, m, n = nel;
+	NSInteger h, i, j, k, l, m, n = nel;
 	void* A; // points to an element
 	void* B = malloc((n/2 + 1) * width); // points to a temp array
 	
@@ -273,18 +273,18 @@ static int _nsmutablearraycompareindices(const void* v1, const void* v2)
         return result; 
 } 
 
--(void) removeObjectsFromIndices: (unsigned*) indices 
-                                         numIndices: (unsigned) count 
+-(void) removeObjectsFromIndices: (NSUInteger*) indices 
+                                         numIndices: (NSUInteger) count 
 { 
         if (count) { 
-                unsigned lastIndex = NSNotFound; 
-                unsigned sortedIndices[count]; 
-                int i; 
-                memcpy(sortedIndices, indices, sizeof(unsigned)*count); 
-                mergesortL(sortedIndices, sizeof(unsigned), count,   
+                NSUInteger lastIndex = NSNotFound; 
+                NSUInteger sortedIndices[count]; 
+                NSInteger i; 
+                memcpy(sortedIndices, indices, sizeof(NSUInteger)*count); 
+                mergesortL(sortedIndices, sizeof(NSUInteger), count,   
 &_nsmutablearraycompareindices); 
                 for(i=count-1;i>=0;i--) { 
-                        unsigned index = sortedIndices[i]; 
+                        NSUInteger index = sortedIndices[i]; 
                         if (index!=lastIndex) { 
                                 [self removeObjectAtIndex: index]; 
                         } 
@@ -294,7 +294,7 @@ static int _nsmutablearraycompareindices(const void* v1, const void* v2)
 } 
 
 -(void)removeObjectsInArray:(NSArray *)other {
-   int count=[other count];
+   NSInteger count=[other count];
 
    while(--count>=0){
     id object=[other objectAtIndex:count];
@@ -303,7 +303,7 @@ static int _nsmutablearraycompareindices(const void* v1, const void* v2)
 }
 
 -(void)removeObjectsAtIndexes:(NSIndexSet *)indexes { 
-        unsigned int index = [indexes lastIndex]; 
+        NSUInteger index = [indexes lastIndex]; 
 
         while(index != NSNotFound) 
         { 
@@ -313,13 +313,13 @@ static int _nsmutablearraycompareindices(const void* v1, const void* v2)
 
 } 
 
--(void)insertObject:object atIndex:(unsigned)index {
+-(void)insertObject:object atIndex:(NSUInteger)index {
    NSInvalidAbstractInvocation();
 }
 
 -(void)insertObjects:(NSArray *)objects atIndexes:(NSIndexSet *)indexes { 
-        int i; 
-        int index = [indexes firstIndex]; 
+        NSInteger i; 
+        NSInteger index = [indexes firstIndex]; 
         for(i = 0; i < [objects count]; i++) 
         { 
                 [self insertObject:[objects objectAtIndex:i] atIndex:index]; 
@@ -332,7 +332,7 @@ static int _nsmutablearraycompareindices(const void* v1, const void* v2)
    [self addObjectsFromArray:other];
 }
 
--(void)replaceObjectAtIndex:(unsigned)index withObject:object {
+-(void)replaceObjectAtIndex:(NSUInteger)index withObject:object {
    NSInvalidAbstractInvocation();
 }
 
@@ -344,7 +344,7 @@ static int _nsmutablearraycompareindices(const void* v1, const void* v2)
 
 -(void)replaceObjectsInRange:(NSRange)range
         withObjectsFromArray:(NSArray *)array range:(NSRange)arrayRange {
-   int i;
+   NSInteger i;
    
    for(i=0;i<range.length && i<arrayRange.length;i++)
     [self replaceObjectAtIndex:range.location+i withObject:[array objectAtIndex:arrayRange.location+i]];
@@ -358,7 +358,7 @@ static int _nsmutablearraycompareindices(const void* v1, const void* v2)
    }
 }
 
--(void)exchangeObjectAtIndex:(unsigned)index withObjectAtIndex:(unsigned)other {
+-(void)exchangeobjectAtIndex:(NSUInteger)index withobjectAtIndex:(NSUInteger)other {
    id object=[[self objectAtIndex:index] retain];
    id otherObject=[self objectAtIndex:other];
    
@@ -384,7 +384,7 @@ static int selectorCompare(id object1,id object2,void *userData){
 // ... using a comparison function
 -(void)sortUsingFunction:(int (*)(id, id, void *))compare context:(void *)context
 {
-   int h, i, j, k, l, m, n = [self count];
+   NSInteger h, i, j, k, l, m, n = [self count];
    id  A, *B = malloc((n/2 + 1) * sizeof(id));
 
 // to prevent retain counts from temporarily hitting zero.  
@@ -430,7 +430,7 @@ static int selectorCompare(id object1,id object2,void *userData){
 static NSComparisonResult compareObjectsUsingDescriptors(id A, id B, void *descriptors) { 
    NSComparisonResult result;
 
-   int n = [(NSArray *)descriptors count];
+   NSInteger n = [(NSArray *)descriptors count];
    int i = 0;
    do
       result = [(NSSortDescriptor *)[(NSArray *)descriptors objectAtIndex:i++] compareObject:A toObject:B];
@@ -471,7 +471,7 @@ static NSComparisonResult compareObjectsUsingDescriptors(id A, id B, void *descr
 
 
 -(void)filterUsingPredicate:(NSPredicate *)predicate {
-   int count=[self count];
+   NSInteger count=[self count];
    
    while(--count>=0){
     id check=[self objectAtIndex:count];

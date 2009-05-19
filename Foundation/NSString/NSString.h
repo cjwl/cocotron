@@ -39,7 +39,7 @@ enum {
 typedef NSUInteger NSStringCompareOptions;
 typedef NSUInteger NSStringEncodingConversionOptions;
 
-FOUNDATION_EXPORT const unsigned NSMaximumStringLength;
+FOUNDATION_EXPORT const NSUInteger NSMaximumStringLength;
 
 @interface NSString : NSObject <NSCopying,NSMutableCopying,NSCoding>
 
@@ -48,7 +48,7 @@ FOUNDATION_EXPORT const unsigned NSMaximumStringLength;
 
 +stringWithCharacters:(const unichar *)unicode length:(NSUInteger)length;
 +string;
-+stringWithCString:(const char *)cString length:(unsigned)length;
++stringWithCString:(const char *)cString length:(NSUInteger)length;
 +stringWithCString:(const char *)cString;
 +stringWithString:(NSString *)string;
 +stringWithFormat:(NSString *)format,...;
@@ -62,13 +62,13 @@ FOUNDATION_EXPORT const unsigned NSMaximumStringLength;
 
 +localizedStringWithFormat:(NSString *)format,...;
 
--initWithCharactersNoCopy:(unichar *)unicode length:(unsigned)length freeWhenDone:(BOOL)freeWhenDone;
--initWithCharacters:(const unichar *)unicode length:(unsigned)length;
+-initWithCharactersNoCopy:(unichar *)unicode length:(NSUInteger)length freeWhenDone:(BOOL)freeWhenDone;
+-initWithCharacters:(const unichar *)unicode length:(NSUInteger)length;
 -init;
 
--initWithCStringNoCopy:(char *)cString length:(unsigned)length
+-initWithCStringNoCopy:(char *)cString length:(NSUInteger)length
           freeWhenDone:(BOOL)freeWhenDone;
--initWithCString:(const char *)cString length:(unsigned)length;
+-initWithCString:(const char *)cString length:(NSUInteger)length;
 -initWithCString:(const char *)cString;
 -initWithCString:(const char *)cString encoding:(NSStringEncoding)encoding;
 
@@ -92,14 +92,14 @@ FOUNDATION_EXPORT const unsigned NSMaximumStringLength;
 -initWithContentsOfURL:(NSURL *)url usedEncoding:(NSStringEncoding *)encoding error:(NSError **)error;
 
 -(unichar)characterAtIndex:(NSUInteger)location;
--(unsigned)length;
+-(NSUInteger)length;
 
 -(void)getCharacters:(unichar *)buffer range:(NSRange)range;
 -(void)getCharacters:(unichar *)buffer;
 
--(NSComparisonResult)compare:(NSString *)other options:(unsigned)options range:(NSRange)range locale:(NSLocale *)locale;
--(NSComparisonResult)compare:(NSString *)other options:(unsigned)options range:(NSRange)range;
--(NSComparisonResult)compare:(NSString *)other options:(unsigned)options;
+-(NSComparisonResult)compare:(NSString *)other options:(NSStringCompareOptions)options range:(NSRange)range locale:(NSLocale *)locale;
+-(NSComparisonResult)compare:(NSString *)other options:(NSStringCompareOptions)options range:(NSRange)range;
+-(NSComparisonResult)compare:(NSString *)other options:(NSStringCompareOptions)options;
 -(NSComparisonResult)compare:(NSString *)other;
 -(NSComparisonResult)caseInsensitiveCompare:(NSString *)other;
 -(NSComparisonResult)localizedCompare:(NSString *)other;
@@ -109,24 +109,24 @@ FOUNDATION_EXPORT const unsigned NSMaximumStringLength;
 
 -(BOOL)hasPrefix:(NSString *)string;
 -(BOOL)hasSuffix:(NSString *)string;
--(NSRange)rangeOfString:(NSString *)string options:(unsigned)options range:(NSRange)range locale:(NSLocale *)locale;
--(NSRange)rangeOfString:(NSString *)string options:(unsigned)options range:(NSRange)range;
--(NSRange)rangeOfString:(NSString *)string options:(unsigned)options;
+-(NSRange)rangeOfString:(NSString *)string options:(NSStringCompareOptions)options range:(NSRange)range locale:(NSLocale *)locale;
+-(NSRange)rangeOfString:(NSString *)string options:(NSStringCompareOptions)options range:(NSRange)range;
+-(NSRange)rangeOfString:(NSString *)string options:(NSStringCompareOptions)options;
 -(NSRange)rangeOfString:(NSString *)string;
 
--(NSRange)rangeOfCharacterFromSet:(NSCharacterSet *)set options:(unsigned)options range:(NSRange)range;
--(NSRange)rangeOfCharacterFromSet:(NSCharacterSet *)set options:(unsigned)options;
+-(NSRange)rangeOfCharacterFromSet:(NSCharacterSet *)set options:(NSStringCompareOptions)options range:(NSRange)range;
+-(NSRange)rangeOfCharacterFromSet:(NSCharacterSet *)set options:(NSStringCompareOptions)options;
 -(NSRange)rangeOfCharacterFromSet:(NSCharacterSet *)set;
 
--(void)getLineStart:(unsigned *)startp end:(unsigned *)endp contentsEnd:(unsigned *)contentsEndp forRange:(NSRange)range;
+-(void)getLineStart:(NSUInteger *)startp end:(NSUInteger *)endp contentsEnd:(NSUInteger *)contentsEndp forRange:(NSRange)range;
 -(NSRange)lineRangeForRange:(NSRange)range;
 
 -(void)getParagraphStart:(NSUInteger *)startp end:(NSUInteger *)endp contentsEnd:(NSUInteger *)contentsEndp forRange:(NSRange)range;
 -(NSRange)paragraphRangeForRange:(NSRange)range;
 
 -(NSString *)substringWithRange:(NSRange)range;
--(NSString *)substringFromIndex:(unsigned)location;
--(NSString *)substringToIndex:(unsigned)location;
+-(NSString *)substringFromIndex:(NSUInteger)location;
+-(NSString *)substringToIndex:(NSUInteger)location;
 
 -(BOOL)boolValue;
 -(int)intValue;
@@ -195,12 +195,12 @@ FOUNDATION_EXPORT const unsigned NSMaximumStringLength;
 
 +(NSStringEncoding)defaultCStringEncoding;
 
--(void)getCString:(char *)buffer maxLength:(unsigned)maxLength
+-(void)getCString:(char *)buffer maxLength:(NSUInteger)maxLength
             range:(NSRange)range remainingRange:(NSRange *)remainingRange;
--(void)getCString:(char *)buffer maxLength:(unsigned)maxLength;
+-(void)getCString:(char *)buffer maxLength:(NSUInteger)maxLength;
 -(void)getCString:(char *)buffer;
 
--(unsigned)cStringLength;
+-(NSUInteger)cStringLength;
 -(const char *)cString;
 -(const char *)lossyCString;
 

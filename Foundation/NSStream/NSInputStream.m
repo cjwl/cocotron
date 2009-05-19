@@ -5,8 +5,6 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
-
-// Original - Christopher Lloyd <cjwl@objc.net>
 #import <Foundation/NSInputStream.h>
 #import <Foundation/NSRaise.h>
 #import <Foundation/NSInputStream_data.h>
@@ -34,7 +32,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return [[[self alloc] initWithFileAtPath:path] autorelease];
 }
 
--(BOOL)getBuffer:(unsigned char **)buffer length:(unsigned *)length {
+-(BOOL)getBuffer:(uint8_t **)buffer length:(NSUInteger *)length {
    NSInvalidAbstractInvocation();
    return NO;
 }
@@ -44,7 +42,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return NO;
 }
 
--(int)read:(unsigned char *)buffer maxLength:(unsigned)length {
+-(NSInteger)read:(uint8_t *)buffer maxLength:(NSUInteger)length {
    NSInvalidAbstractInvocation();
    return 0;
 }

@@ -76,9 +76,9 @@ enum {
    return 0;
 }
 
--(NSData *)readDataOfLength:(unsigned)length {
+-(NSData *)readDataOfLength:(NSUInteger)length {
    void   *bytes=NSZoneMalloc(NULL,length);
-   int     bytesRead=[_inputStream read:bytes maxLength:length];
+   NSInteger bytesRead=[_inputStream read:bytes maxLength:length];
    
 // FIX, should raise exception
    if(bytesRead==-1) 
@@ -102,7 +102,7 @@ enum {
 }
 
 -(void)writeData:(NSData *)data {
-   int check=[_outputStream write:[data bytes] maxLength:[data length]];
+   NSInteger check=[_outputStream write:[data bytes] maxLength:[data length]];
    
 // FIX, should raise exception
    if(check!=[data length])
@@ -114,7 +114,7 @@ enum {
 }
 
 -(void)_setAsyncState:(int)state forModes:(NSArray *)modes {
-   int i,count;
+   NSInteger i,count;
    
 // NSFileHandle will retain itself if asked to do an async activity
    if(_asyncState==NSFileHandleStateNone && state!=NSFileHandleStateNone)

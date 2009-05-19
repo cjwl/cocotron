@@ -6,7 +6,6 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
-// Original - Christopher Lloyd <cjwl@objc.net>
 #import <Foundation/NSSet_placeholder.h>
 #import <Foundation/NSSet_concrete.h>
 #import <Foundation/NSArray.h>
@@ -21,7 +20,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -initWithArray:(NSArray *)array {
-   unsigned count=[array count];
+   NSUInteger count=[array count];
    id      *objects=__builtin_alloca(sizeof(id)*count);
 
    [array getObjects:objects];
@@ -31,7 +30,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return NSSet_concreteNew(NULL,objects,count);
 }
 
--initWithObjects:(id *)objects count:(unsigned)count {
+-initWithObjects:(id *)objects count:(NSUInteger)count {
    [self dealloc];
 
    return NSSet_concreteNew(NULL,objects,count);
@@ -39,7 +38,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -initWithObjects:first,... {
    va_list  arguments;
-   unsigned i,count=0;
+   NSUInteger i,count=0;
    id      *objects;
 
    va_start(arguments,first);

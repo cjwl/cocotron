@@ -18,14 +18,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(BOOL)isEqualToAttributedString:(NSAttributedString *)other;
 
--(unsigned)length;
+-(NSUInteger)length;
 -(NSString *)string;
 
--(NSDictionary *)attributesAtIndex:(unsigned)location effectiveRange:(NSRange *)range;
--(NSDictionary *)attributesAtIndex:(unsigned)location longestEffectiveRange:(NSRange *)range inRange:(NSRange)inRange;
+-(NSDictionary *)attributesAtIndex:(NSUInteger)location effectiveRange:(NSRange *)range;
+-(NSDictionary *)attributesAtIndex:(NSUInteger)location longestEffectiveRange:(NSRange *)range inRange:(NSRange)inRange;
 
--attribute:(NSString *)name atIndex:(unsigned)location effectiveRange:(NSRange *)range;
--attribute:(NSString *)name atIndex:(unsigned)location longestEffectiveRange:(NSRange *)range inRange:(NSRange)inRange;
+-attribute:(NSString *)name atIndex:(NSUInteger)location effectiveRange:(NSRange *)range;
+-attribute:(NSString *)name atIndex:(NSUInteger)location longestEffectiveRange:(NSRange *)range inRange:(NSRange)inRange;
 
 -(NSAttributedString *)attributedSubstringFromRange:(NSRange)range;
 

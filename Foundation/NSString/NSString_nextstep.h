@@ -9,18 +9,18 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSString.h>
 
 @interface NSString_nextstep : NSString {
-   unsigned _length;
+   NSUInteger _length;
    char     _bytes[1];
 }
 @end
 
-unichar *NSNEXTSTEPToUnicode(const char *cString,unsigned length,
-  unsigned *resultLength,NSZone *zone);
+unichar *NSNEXTSTEPToUnicode(const char *cString,NSUInteger length,
+  NSUInteger *resultLength,NSZone *zone);
 
-char *NSUnicodeToNEXTSTEP(const unichar *characters,unsigned length,
-  BOOL lossy,unsigned *resultLength,NSZone *zone);
+char *NSUnicodeToNEXTSTEP(const unichar *characters,NSUInteger length,
+  BOOL lossy,NSUInteger *resultLength,NSZone *zone);
 
 NSString *NSNEXTSTEPStringNewWithBytes(NSZone *zone,
- const char *bytes,unsigned length);
+ const char *bytes,NSUInteger length);
 
-unsigned NSGetNEXTSTEPStringWithMaxLength(const unichar *characters,unsigned length,unsigned *location,char *cString,unsigned maxLength,BOOL lossy);
+NSUInteger NSGetNEXTSTEPStringWithMaxLength(const unichar *characters,NSUInteger length,NSUInteger *location,char *cString,NSUInteger maxLength,BOOL lossy);

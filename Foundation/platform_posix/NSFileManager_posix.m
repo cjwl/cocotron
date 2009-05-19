@@ -131,7 +131,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     }
     else{
         NSArray *contents=[self directoryContentsAtPath:path];
-        int      i,count=[contents count];
+        NSInteger i,count=[contents count];
 
         for(i=0;i<count;i++){
             NSString *name = [contents objectAtIndex:i];
@@ -218,7 +218,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     }
     else {
         NSArray *files;
-        int      i,count;
+        NSInteger      i,count;
 
         if (mkdir([dest fileSystemRepresentation], FOUNDATION_DIR_MODE) != 0)
             return [self _errorHandler:handler src:src dest:dest operation:@"copyPath: mkdir(subdir)"];
@@ -261,10 +261,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(NSString *)pathContentOfSymbolicLinkAtPath:(NSString *)path {
     char linkbuf[MAXPATHLEN+1];
-    int length;
+    size_t length;
 
     length = readlink([path fileSystemRepresentation], linkbuf, MAXPATHLEN);
-    if (length < 0)
+    if (length ==-1)
         return nil;
 
     linkbuf[length] = 0;

@@ -11,23 +11,23 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 FOUNDATION_EXPORT NSStringEncoding NSString_cStringEncoding;
 
-unichar *NSCharactersFromCString(const char *cString,unsigned length,
-  unsigned *resultLength,NSZone *zone);
+unichar *NSCharactersFromCString(const char *cString,NSUInteger length,
+  NSUInteger *resultLength,NSZone *zone);
 
-char    *NSString_cStringFromCharacters(const unichar *characters,unsigned length,
-  BOOL lossy,unsigned *resultLength,NSZone *zone);
+char    *NSString_cStringFromCharacters(const unichar *characters,NSUInteger length,
+  BOOL lossy,NSUInteger *resultLength,NSZone *zone);
 
-unsigned NSGetCStringWithMaxLength(const unichar *characters,unsigned length,unsigned *location,char *cString,unsigned maxLength,BOOL lossy);
+NSUInteger NSGetCStringWithMaxLength(const unichar *characters,NSUInteger length,NSUInteger *location,char *cString,NSUInteger maxLength,BOOL lossy);
 
 NSString *NSString_cStringNewWithBytesAndZero(NSZone *zone,const char *bytes);
 
 NSString *NSString_cStringNewWithBytes(NSZone *zone,
- const char *bytes,unsigned length);
+ const char *bytes,NSUInteger length);
 
 NSString *NSString_cStringNewWithCharacters(NSZone *zone,
- const unichar *characters,unsigned length,BOOL lossy);
+ const unichar *characters,NSUInteger length,BOOL lossy);
 
-NSString *NSString_cStringNewWithCapacity(NSZone *zone,unsigned capacity,char **ptr);
+NSString *NSString_cStringNewWithCapacity(NSZone *zone,NSUInteger capacity,char **ptr);
 
 
 NSString *NSString_cStringWithBytesAndZero(NSZone *zone,const char *bytes);

@@ -35,9 +35,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)setChildren:(NSArray *)children;
 
 -(void)addChild:(NSXMLNode *)node;
--(void)insertChild:(NSXMLNode *)child atIndex:(unsigned)index;
--(void)insertChildren:(NSArray *)children atIndex:(unsigned)index;
--(void)removeChildAtIndex:(unsigned)index;
--(void)replaceChildAtIndex:(unsigned)index withNode:(NSXMLNode *)node;
+-(void)insertChild:(NSXMLNode *)child atIndex:(NSUInteger)index;
+-(void)insertChildren:(NSArray *)children atIndex:(NSUInteger)index;
+-(void)removeChildAtIndex:(NSUInteger)index;
+-(void)replaceChildAtIndex:(NSUInteger)index withNode:(NSXMLNode *)node;
 
 @end

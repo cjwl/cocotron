@@ -98,7 +98,7 @@ static NSTimeZone *_localTimeZone=nil;
     return [[[self allocWithZone:NULL] initWithName:name] autorelease];
 }
 
-+(NSTimeZone *)timeZoneForSecondsFromGMT:(int)seconds {
++(NSTimeZone *)timeZoneForSecondsFromGMT:(NSInteger)seconds {
     return [[[NSTimeZone_absolute allocWithZone:NULL] initWithSecondsFromGMT:seconds] autorelease];
 }
 
@@ -155,7 +155,7 @@ static NSTimeZone *_localTimeZone=nil;
     return NO;
 }
 
--(int)secondsFromGMT {
+-(NSInteger)secondsFromGMT {
     return [self secondsFromGMTForDate:[NSDate date]];
 }
 
@@ -175,7 +175,7 @@ static NSTimeZone *_localTimeZone=nil;
     return [self nextDaylightSavingTimeTransitionAfterDate:[NSDate date]];
 }
 
--(int)secondsFromGMTForDate:(NSDate *)date {
+-(NSInteger)secondsFromGMTForDate:(NSDate *)date {
     NSInvalidAbstractInvocation();
     return -1;
 }

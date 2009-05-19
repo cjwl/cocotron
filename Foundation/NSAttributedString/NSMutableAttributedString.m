@@ -47,8 +47,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)addAttributes:(NSDictionary *)attributes range:(NSRange)range {
-   unsigned location=range.location;
-   unsigned limit=NSMaxRange(range);
+   NSUInteger location=range.location;
+   NSUInteger limit=NSMaxRange(range);
 
    while(location<limit){
     NSRange       effectiveRange;
@@ -76,8 +76,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)removeAttribute:(NSString *)name range:(NSRange)range {
-   unsigned location=range.location;
-   unsigned limit=NSMaxRange(range);
+   NSUInteger location=range.location;
+   NSUInteger limit=NSMaxRange(range);
 
    while(location<limit){
     NSRange       effectiveRange;
@@ -106,8 +106,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)replaceCharactersInRange:(NSRange)replaced withAttributedString:(NSAttributedString *)other {
    NSString *string=[other string];
-   unsigned location=0;
-   unsigned limit=[string length];
+   NSUInteger location=0;
+   NSUInteger limit=[string length];
 
    [self replaceCharactersInRange:replaced withString:string];
 

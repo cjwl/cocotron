@@ -39,7 +39,7 @@ static inline void NSLogMessageString(NSString *string){
                             timeZone:nil locale:nil];
    NSString *process=[[NSProcessInfo processInfo] processName];
 
-   NSLogFormat(@"%@ %@[%d:%x] %@",date,process,NSPlatformProcessID(),NSPlatformThreadID(),string);
+   NSLogFormat(@"%@ %@[%d:%lx] %@",date,process,NSPlatformProcessID(),NSPlatformThreadID(),string);
 }
 
 void NSLogv(NSString *format,va_list arguments) {
@@ -58,11 +58,10 @@ void NSLog(NSString *format,...) {
    NSLogv(format,arguments);
 }
 
-const char *NSGetSizeAndAlignment(const char *type,unsigned *size,
-  unsigned *alignment) {
+const char *NSGetSizeAndAlignment(const char *type,NSUInteger *size,NSUInteger *alignment) {
    BOOL quit=NO;
 	
-	unsigned ignore=0;
+	NSUInteger ignore=0;
 	if(!size)
 		size=&ignore;
 	if(!alignment)
@@ -79,7 +78,7 @@ const char *NSGetSizeAndAlignment(const char *type,unsigned *size,
 SEL NSSelectorFromString(NSString *selectorName) {
    SEL      result;
    
-   unsigned length=[selectorName length];
+   NSUInteger length=[selectorName length];
    char     cString[length+1];
 
    [selectorName getCString:cString maxLength:length];
@@ -99,7 +98,7 @@ NSString *NSStringFromSelector(SEL selector) {
 
 Class NSClassFromString(NSString *className) {
    if (className != nil) {
-    unsigned length=[className length];
+    NSUInteger length=[className length];
     char     cString[length+1];
 
     [className getCString:cString maxLength:length];

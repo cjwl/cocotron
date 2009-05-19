@@ -38,7 +38,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(NSString *)predicateFormat {
    NSMutableString *result=[NSMutableString string];
    NSMutableArray  *args=[NSMutableArray array];
-   int              i,count=[_predicates count];
+   NSInteger              i,count=[_predicates count];
    
    for(i=0;i<count;i++){
     NSPredicate *check=[_predicates objectAtIndex:i];
@@ -78,7 +78,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(BOOL)evaluateWithObject:object {
    BOOL result=NO;
-   int  i,count=[_predicates count];
+   NSInteger  i,count=[_predicates count];
    
    for(i=0;i<count;i++){
     NSPredicate *predicate=[_predicates objectAtIndex:i];

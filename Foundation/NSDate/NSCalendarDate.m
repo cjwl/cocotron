@@ -38,8 +38,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return [self retain];
 }
 
--initWithYear:(int)year month:(unsigned)month day:(unsigned)day
-         hour:(unsigned)hour minute:(unsigned)minute second:(unsigned)second
+-initWithYear:(NSInteger)year month:(NSUInteger)month day:(NSUInteger)day
+         hour:(NSUInteger)hour minute:(NSUInteger)minute second:(NSUInteger)second
      timeZone:(NSTimeZone *)timeZone {
     [super init];
     _timeInterval = NSTimeIntervalWithComponents(year, month, day, hour, minute, second, 0);
@@ -82,8 +82,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     [super dealloc];
 }
 
-+dateWithYear:(int)year month:(unsigned)month day:(unsigned)day
-         hour:(unsigned)hour minute:(unsigned)minute second:(unsigned)second
++dateWithYear:(NSInteger)year month:(NSUInteger)month day:(NSUInteger)day
+         hour:(NSUInteger)hour minute:(NSUInteger)minute second:(NSUInteger)second
      timeZone:(NSTimeZone *)timeZone {
     return [[[self allocWithZone:NULL] initWithYear:year month:month day:day hour:hour minute:minute second:second timeZone:timeZone] autorelease];;
 }
@@ -140,45 +140,45 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return NSAdjustTimeIntervalWithTimeZone(_timeInterval,_timeZone);
 }
 
--(int)secondOfMinute {
+-(NSInteger)secondOfMinute {
    return NSSecondFromTimeInterval([self timeZoneAdjustedInterval]);
 }
 
--(int)minuteOfHour {
+-(NSInteger)minuteOfHour {
    return NSMinuteFromTimeInterval([self timeZoneAdjustedInterval]);
 }
 
--(int)hourOfDay {
+-(NSInteger)hourOfDay {
    return NS24HourFromTimeInterval([self timeZoneAdjustedInterval]);
 }
 
--(int)dayOfWeek {
+-(NSInteger)dayOfWeek {
    return NSWeekdayFromTimeInterval([self timeZoneAdjustedInterval]);
 }
 
--(int)dayOfMonth {
+-(NSInteger)dayOfMonth {
    return NSDayOfMonthFromTimeInterval([self timeZoneAdjustedInterval]);
 }
 
--(int)dayOfYear {
+-(NSInteger)dayOfYear {
    return NSDayOfYearFromTimeInterval([self timeZoneAdjustedInterval]);
 }
 
--(int)monthOfYear {
+-(NSInteger)monthOfYear {
    return NSMonthFromTimeInterval([self timeZoneAdjustedInterval]);
 }
 
--(int)yearOfCommonEra {
+-(NSInteger)yearOfCommonEra {
    return NSYearFromTimeInterval([self timeZoneAdjustedInterval]);
 }
 
--(int)dayOfCommonEra {
+-(NSInteger)dayOfCommonEra {
     return NSDayOfCommonEraFromTimeInterval([self timeZoneAdjustedInterval]);
 }
 
 // Needs to be verified, lame implementation
--(void)years:(int *)yearsp months:(int *)monthsp days:(int *)daysp
-  hours:(int *)hoursp minutes:(int *)minutesp seconds:(int *)secondsp
+-(void)years:(NSInteger *)yearsp months:(NSInteger *)monthsp days:(NSInteger *)daysp
+  hours:(NSInteger *)hoursp minutes:(NSInteger *)minutesp seconds:(NSInteger *)secondsp
   sinceDate:(NSCalendarDate *)since {
    NSTimeInterval delta=[self timeIntervalSinceReferenceDate]-[since timeIntervalSinceReferenceDate];
 
@@ -199,15 +199,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 // Might be a little off with daylight savings, etc., needs to be verified
--(NSCalendarDate *)dateByAddingYears:(int)yearDelta months:(int)monthDelta
-  days:(int)dayDelta hours:(int)hourDelta minutes:(int)minuteDelta seconds:(int)secondDelta {
+-(NSCalendarDate *)dateByAddingYears:(NSInteger)yearDelta months:(NSInteger)monthDelta
+  days:(NSInteger)dayDelta hours:(NSInteger)hourDelta minutes:(NSInteger)minuteDelta seconds:(NSInteger)secondDelta {
    NSTimeInterval result;
-   int            years=NSYearFromTimeInterval(_timeInterval);
-   int            months=NSMonthFromTimeInterval(_timeInterval);
-   int            days=NSDayOfMonthFromTimeInterval(_timeInterval);
-   int            hours=NS24HourFromTimeInterval(_timeInterval);
-   int            minutes=NSMinuteFromTimeInterval(_timeInterval);
-   int            seconds=NSSecondFromTimeInterval(_timeInterval);
+   NSInteger            years=NSYearFromTimeInterval(_timeInterval);
+   NSInteger            months=NSMonthFromTimeInterval(_timeInterval);
+   NSInteger            days=NSDayOfMonthFromTimeInterval(_timeInterval);
+   NSInteger            hours=NS24HourFromTimeInterval(_timeInterval);
+   NSInteger            minutes=NSMinuteFromTimeInterval(_timeInterval);
+   NSInteger            seconds=NSSecondFromTimeInterval(_timeInterval);
 
    years+=yearDelta;
    years+=monthDelta/12;

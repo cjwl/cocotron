@@ -18,8 +18,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 +inputStreamWithData:(NSData *)data;
 +inputStreamWithFileAtPath:(NSString *)path;
 
--(BOOL)getBuffer:(unsigned char **)buffer length:(unsigned *)length;
+-(BOOL)getBuffer:(uint8_t **)buffer length:(NSUInteger *)length;
 -(BOOL)hasBytesAvailable;
--(int)read:(unsigned char *)buffer maxLength:(unsigned)length;
+-(NSInteger)read:(uint8_t *)buffer maxLength:(NSUInteger)length;
 
 @end

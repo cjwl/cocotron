@@ -57,7 +57,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)decodeValueOfObjCType:(const char *)type at:(void *)ptr;
 -(NSData *)decodeDataObject;
--(unsigned)versionForClassName:(NSString *)className;
+-(NSInteger)versionForClassName:(NSString *)className;
 
 -decodeObject;
 -decodePropertyList;

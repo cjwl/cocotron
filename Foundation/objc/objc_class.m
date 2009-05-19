@@ -199,7 +199,7 @@ Class class_getSuperclass(Class class) {
 
 int class_getVersion(Class class) {
    struct objc_class *cls=class;
-   return cls->version;
+   return (int)(cls->version); // FIXME: ? API is int, object format is long. am I missing something?
 }
 
 Method class_getClassMethod(Class class, SEL selector)
@@ -288,7 +288,7 @@ static OBJCMethodCacheEntry *allocateCacheEntry(){
 
 static inline void OBJCCacheMethodInClass(Class class,struct objc_method *method) {
    SEL          uniqueId=method->method_name;
-   unsigned              index=(unsigned)uniqueId&OBJCMethodCacheMask;
+   unsigned long             index=(unsigned long)uniqueId&OBJCMethodCacheMask;
    OBJCMethodCacheEntry *check=((void *)class->cache->table)+index;
 
    if(check->method->method_name==NULL)

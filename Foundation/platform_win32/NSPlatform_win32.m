@@ -256,11 +256,11 @@ NSTimeInterval NSPlatformTimeIntervalSinceReferenceDate() {
     return [NSTimeZone timeZoneForSecondsFromGMT:secondsFromGMT];
 }
 
-unsigned NSPlatformProcessID() {
+int NSPlatformProcessID() {
    return GetCurrentProcessId();
 }
 
-unsigned NSPlatformThreadID() {
+NSUInteger NSPlatformThreadID() {
    return GetCurrentThreadId();
 }
 
@@ -350,7 +350,7 @@ void NSPlatformLogString(NSString *string) {
  //  CloseEventLog(handle);
 }
 
--(void *)contentsOfFile:(NSString *)path length:(unsigned *)lengthp {
+-(void *)contentsOfFile:(NSString *)path length:(NSUInteger *)lengthp {
    HANDLE file=CreateFileW([path fileSystemRepresentationW],GENERIC_READ,FILE_SHARE_READ,NULL,
       OPEN_EXISTING,FILE_ATTRIBUTE_NORMAL,NULL);
    DWORD  length,readLength;
@@ -384,7 +384,7 @@ void NSPlatformLogString(NSString *string) {
    return result;
 }
 
--(void *)mapContentsOfFile:(NSString *)path length:(unsigned *)lengthp {
+-(void *)mapContentsOfFile:(NSString *)path length:(NSUInteger *)lengthp {
    void    *result;
    HANDLE   file=CreateFileW([path fileSystemRepresentationW],GENERIC_READ,0,NULL,
       OPEN_EXISTING,FILE_ATTRIBUTE_NORMAL,NULL);
@@ -414,14 +414,14 @@ void NSPlatformLogString(NSString *string) {
    return result;
 }
 
--(void)unmapAddress:(void *)ptr length:(unsigned)length {
+-(void)unmapAddress:(void *)ptr length:(NSUInteger)length {
    if(length>0){
     if(!UnmapViewOfFile(ptr))
      Win32Assert("UnmapViewOfFile()");
    }
 }
 
--(BOOL)writeContentsOfFile:(NSString *)path bytes:(const void *)bytes length:(unsigned)length atomically:(BOOL)atomically {
+-(BOOL)writeContentsOfFile:(NSString *)path bytes:(const void *)bytes length:(NSUInteger)length atomically:(BOOL)atomically {
    HANDLE   file;
    DWORD    wrote;
 

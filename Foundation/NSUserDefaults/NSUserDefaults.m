@@ -40,7 +40,7 @@ NSString *NSUserDefaultsDidChangeNotification=@"NSUserDefaultsDidChangeNotificat
 -(void)registerArgumentDefaults {
    NSMutableDictionary *reg=[NSMutableDictionary dictionary];
    NSArray             *args=[[NSProcessInfo processInfo] arguments];
-   int                  i,count=[args count];
+   NSInteger                  i,count=[args count];
 
    for(i=1;i<count-1;i+=2){
     NSString *key=[args objectAtIndex:i];
@@ -156,7 +156,7 @@ NSString *NSUserDefaultsDidChangeNotification=@"NSUserDefaultsDidChangeNotificat
 
 -(NSDictionary *)_buildDictionaryRep {
    NSMutableDictionary *result=[NSMutableDictionary dictionary];
-   int                  i,count=[_searchList count];
+   NSInteger                  i,count=[_searchList count];
 
    for(i=0;i<count;i++){
     NSDictionary *domain=[_domains objectForKey:[_searchList objectAtIndex:i]];
@@ -206,7 +206,7 @@ NSString *NSUserDefaultsDidChangeNotification=@"NSUserDefaultsDidChangeNotificat
    NSMutableDictionary   *result=[NSMutableDictionary dictionary];
    NSPersistantDomain    *domain=[[[NSPlatform currentPlatform] persistantDomainClass] persistantDomainWithName:name];
    NSArray               *allKeys=[domain allKeys];
-   int                    i,count=[allKeys count];
+   NSInteger                    i,count=[allKeys count];
 
    for(i=0;i<count;i++){
     NSString *key=[allKeys objectAtIndex:i];
@@ -245,7 +245,7 @@ NSString *NSUserDefaultsDidChangeNotification=@"NSUserDefaultsDidChangeNotificat
 }
 
 -objectForKey:(NSString *)defaultName {
-   int i,count=[_searchList count];
+   NSInteger i,count=[_searchList count];
 
    for(i=0;i<count;i++){
     NSDictionary *domain=[_domains objectForKey:[_searchList objectAtIndex:i]];
@@ -285,7 +285,7 @@ NSString *NSUserDefaultsDidChangeNotification=@"NSUserDefaultsDidChangeNotificat
 
 -(NSArray *)stringArrayForKey:(NSString *)defaultName {
    NSArray *array=[self objectForKey:defaultName];
-   int      count;
+   NSInteger      count;
 
    if(![array isKindOfClass:objc_lookUpClass("NSArray")])
     return nil;
@@ -321,7 +321,7 @@ NSString *NSUserDefaultsDidChangeNotification=@"NSUserDefaultsDidChangeNotificat
 -(float)floatForKey:(NSString *)defaultName {
    NSNumber *number=[self objectForKey:defaultName];
 
-   return [number isKindOfClass:objc_lookUpClass("NSNumber")]?[number floatValue]:0.0;
+   return [number isKindOfClass:objc_lookUpClass("NSNumber")]?[number floatValue]:0.0f;
 }
 
 -(void)setObject:value forKey:(NSString *)key {

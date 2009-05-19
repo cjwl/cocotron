@@ -16,7 +16,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <windows.h>
 #import <process.h>
 
-unsigned NSPageSize(void) {
+NSUInteger NSPageSize(void) {
    SYSTEM_INFO info;
 
    GetSystemInfo(&info);
@@ -24,15 +24,15 @@ unsigned NSPageSize(void) {
    return info.dwPageSize;
 }
 
-void *NSAllocateMemoryPages(unsigned byteCount) {
+void *NSAllocateMemoryPages(NSUInteger byteCount) {
    return VirtualAlloc(NULL,byteCount,MEM_RESERVE|MEM_COMMIT,PAGE_READWRITE);
 }
 
-void NSDeallocateMemoryPages(void *pointer,unsigned byteCount) {
+void NSDeallocateMemoryPages(void *pointer,NSUInteger byteCount) {
    VirtualFree(pointer,byteCount,MEM_RELEASE|MEM_DECOMMIT);
 }
 
-void NSCopyMemoryPages(const void *src,void *dst,unsigned byteCount) {
+void NSCopyMemoryPages(const void *src,void *dst,NSUInteger byteCount) {
    const unsigned char *srcb=src;
    unsigned char       *dstb=dst;
    int                  i;
@@ -41,7 +41,7 @@ void NSCopyMemoryPages(const void *src,void *dst,unsigned byteCount) {
     dstb[i]=srcb[i];
 }
 
-unsigned NSRealMemoryAvailable(void) {
+NSUInteger NSRealMemoryAvailable(void) {
    MEMORYSTATUS status;
 
    status.dwLength=sizeof(status);
@@ -86,7 +86,7 @@ NSZone *NSZoneFromPointer(void *pointer){
    return NULL;
 }
 
-void *NSZoneCalloc(NSZone *zone,unsigned numElems,unsigned numBytes){
+void *NSZoneCalloc(NSZone *zone,NSUInteger numElems,NSUInteger numBytes){
    return calloc(numElems,numBytes);
 }
 
@@ -98,7 +98,7 @@ void *NSZoneMalloc(NSZone *zone,unsigned size){
    return malloc(size);
 }
 
-void *NSZoneRealloc(NSZone *zone,void *pointer,unsigned size){
+void *NSZoneRealloc(NSZone *zone,void *pointer,NSUInteger size){
    if(pointer==NULL)
     return malloc(size);
    else
@@ -127,8 +127,8 @@ NSThread *NSPlatformCurrentThread() {
 }
 
 /* Create a new thread of execution. */
-unsigned NSPlatformDetachThread(unsigned (*__stdcall func)(void *arg), void *arg) {
-	unsigned	threadId = 0;
+NSUInteger NSPlatformDetachThread(unsigned (*__stdcall func)(void *arg), void *arg) {
+	uint32_t	threadId = 0;
 	HANDLE win32Handle = (HANDLE)_beginthreadex(NULL, 0, func, arg, 0, &threadId);
 	
 	if (!win32Handle) {
@@ -146,7 +146,7 @@ const long maxSize=64*1024;
 
 /* This must be protected by some kind of lock.
  It is only called from _closure in objc_forward_ffi.m */
-void *_NSClosureAlloc(unsigned size)
+void *_NSClosureAlloc(NSUInteger size)
 {
    if(!allocation ||
       used+size>maxSize)
@@ -165,7 +165,7 @@ void *_NSClosureAlloc(unsigned size)
    return ret;
 }
 
-void _NSClosureProtect(void* closure, unsigned size)
+void _NSClosureProtect(void* closure, NSUInteger size)
 {
    VirtualProtect(allocation, maxSize, PAGE_EXECUTE_READ, NULL);
 }

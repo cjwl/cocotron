@@ -37,11 +37,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [super dealloc];
 }
 
--(unsigned)length {
+-(NSUInteger)length {
    return _length;
 }
 
--(unichar)characterAtIndex:(unsigned)location {
+-(unichar)characterAtIndex:(NSUInteger)location {
    if(location>=_length){
     NSRaiseException(NSRangeException,self,_cmd,@"index %d beyond length %d",
      location,[self length]);
@@ -58,7 +58,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)getCharacters:(unichar *)buffer range:(NSRange)range {
-   int i,loc=range.location,len=range.length;
+   NSInteger i,loc=range.location,len=range.length;
 
    if(NSMaxRange(range)>_length){
     NSRaiseException(NSRangeException,self,_cmd,@"range %@ beyond length %d",
@@ -69,7 +69,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     buffer[i]=_bytes[loc+i];
 }
 
--(unsigned)hash {
+-(NSUInteger)hash {
    return NSStringHashASCII(_bytes,MIN(_length,NSHashStringLength));
 }
 

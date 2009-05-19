@@ -24,13 +24,13 @@
 
 #include <unistd.h>
 
-unsigned NSPageSize(void)
+NSUInteger NSPageSize(void)
 {
-	return (unsigned)sysconf(_SC_PAGESIZE);
+	return (NSUInteger)sysconf(_SC_PAGESIZE);
 }
 
-unsigned NSRealMemoryAvailable(void) 
+NSUInteger NSRealMemoryAvailable(void) 
 {
-	return (unsigned)sysconf(_SC_AVPHYS_PAGES)
-		* (unsigned)sysconf(_SC_PAGESIZE);
+	return (NSUInteger)sysconf(_SC_AVPHYS_PAGES)
+		* (NSUInteger)sysconf(_SC_PAGESIZE);
 }

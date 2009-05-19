@@ -5,8 +5,6 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
-
-// Original - Christopher Lloyd <cjwl@objc.net>
 #include <math.h>
 
 #import <Foundation/NSKeyedUnarchiver.h>
@@ -72,7 +70,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -decodeObjectForUID:(NSNumber *)uid {
-   int uidIntValue=[uid intValue];
+   NSInteger uidIntValue=[uid integerValue];
    id result=NSMapGet(_uidToObject,(void *)uidIntValue);
             
    if(result==nil){
@@ -146,7 +144,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return ([[_plistStack lastObject] objectForKey:key]!=nil)?YES:NO;
 }
 
--(const void *)decodeBytesForKey:(NSString *)key returnedLength:(unsigned *)lengthp {
+-(const void *)decodeBytesForKey:(NSString *)key returnedLength:(NSUInteger *)lengthp {
    NSData *data=[[_plistStack lastObject] objectForKey:key];
 
    *lengthp=[data length];
@@ -219,11 +217,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 // not a lot of validation
--(unsigned)decodeArrayOfFloats:(float *)result forKey:(NSString *)key {
+-(NSUInteger)decodeArrayOfFloats:(float *)result forKey:(NSString *)key {
    NSString *string=[self decodeObjectForKey:key];
-   unsigned i,length=[string length],resultLength=0;
+   NSUInteger i,length=[string length],resultLength=0;
    unichar  buffer[length];
-   double   multiplier=0.10,sign=1,exponent=0,expsign=1;
+   float   multiplier=0.10f,sign=1,exponent=0,expsign=1;
    enum {
     expectingBraceOrSpace,
     expectingBraceSpaceOrInteger,
@@ -268,7 +266,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       else if(code>='0' && code<='9')
        result[resultLength]=result[resultLength]*10+(code-'0');
       else if(code=='.'){
-       multiplier=0.10;
+       multiplier=0.10f;
        state=expectingFraction;
       }
       else if(code=='e' || code=='E'){
@@ -325,13 +323,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       else if(code>='0' && code<='9')
        exponent=exponent*10+(code-'0');
       else if(code==','){
-       result[resultLength++]*=sign*pow(10,expsign*exponent);
+       result[resultLength++]*=sign*powf(10.0f,expsign*exponent);
        sign=expsign=1;
        exponent=0;
        state=expectingSpaceOrInteger;
       }
       else if(code=='}'){
-       result[resultLength++]*=sign*pow(10,expsign*exponent);
+       result[resultLength++]*=sign*powf(10.0f,expsign*exponent);
        sign=expsign=1;
        exponent=0;
        state=expectingBraceSpaceOrInteger;
@@ -361,21 +359,21 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(NSPoint)decodePointForKey:(NSString *)key {
    float    array[4]={ 0,0,0,0 };
-   unsigned length=[self decodeArrayOfFloats:array forKey:key];
+   NSUInteger length=[self decodeArrayOfFloats:array forKey:key];
    
    return NSMakePoint(array[0],array[1]);
 }
 
 -(NSSize)decodeSizeForKey:(NSString *)key {
    float     array[4]={ 0,0,0,0 };
-   unsigned length=[self decodeArrayOfFloats:array forKey:key];
+   NSUInteger length=[self decodeArrayOfFloats:array forKey:key];
    
    return NSMakeSize(array[0],array[1]);
 }
 
 -(NSRect)decodeRectForKey:(NSString *)key {
    float    array[4]={ 0,0,0,0 };
-   unsigned length=[self decodeArrayOfFloats:array forKey:key];
+   NSUInteger length=[self decodeArrayOfFloats:array forKey:key];
    
    return NSMakeRect(array[0],array[1],array[2],array[3]);
 }
@@ -391,7 +389,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    }
    else if([plist isKindOfClass:[NSArray class]]){
     NSMutableArray *result=[NSMutableArray array];
-    int             i,count=[plist count];
+    NSInteger       i,count=[plist count];
     
     for(i=0;i<count;i++){
      id sibling=[plist objectAtIndex:i];

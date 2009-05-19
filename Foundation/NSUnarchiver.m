@@ -5,8 +5,6 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
-
-// Original - Christopher Lloyd <cjwl@objc.net>
 #import <Foundation/NSUnarchiver.h>
 #import <Foundation/NSRaise.h>
 #import <Foundation/NSData.h>
@@ -113,8 +111,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return result;
 }
 
+-(NSUInteger)_extractReference {
+   return (NSUInteger)[self _extractWordFour];
+}
+
 -(NSString *)_extractCStringString {
-   unsigned  ref=[self _extractWordFour];
+   NSUInteger  ref=[self _extractReference];
    NSString *result=NSMapGet(_cStrings,(void *)ref);
 
    if(result==nil){
@@ -130,7 +132,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(Class)_extractClass {
-   unsigned ref=[self _extractWordFour];
+   NSUInteger ref=[self _extractReference];
    Class    result;
 
    if(ref==0)
@@ -139,7 +141,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     return result;
    else {
     NSString *className=[self _extractCStringString];
-    unsigned  version=[self _extractWordFour];
+    NSUInteger  version=[self _extractWordFour];
 
     result=NSClassFromString(className);
 
@@ -153,7 +155,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(id)_extractObject {
-   unsigned  ref=[self _extractWordFour];
+   NSUInteger  ref=[self _extractReference];
    id        result;
 
    if(ref==0)
@@ -346,7 +348,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 }
 
--(void *)decodeBytesWithReturnedLength:(unsigned *)lengthp {
+-(void *)decodeBytesWithReturnedLength:(NSUInteger *)lengthp {
    void    *result;
    unsigned length=[self _extractWordFour];
 
@@ -365,13 +367,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return nil;
 }
 
--(unsigned)versionForClassName:(NSString *)className {
+-(NSInteger)versionForClassName:(NSString *)className {
    void *oKey,*oVal;
 
    if(!NSMapMember(_classVersions,className,&oKey,&oVal))
     ;//NSLog(@"no version for %@",className);
 
-   return (unsigned)NSMapGet(_classVersions,className);
+   return (NSInteger)NSMapGet(_classVersions,className);
 }
 
 -(BOOL)invalidHeader {

@@ -10,13 +10,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @interface NSMutableArray : NSArray
 
--initWithCapacity:(unsigned)capacity;
-+arrayWithCapacity:(unsigned)capacity;
+-initWithCapacity:(NSUInteger)capacity;
++arrayWithCapacity:(NSUInteger)capacity;
 
 -(void)addObject:object;
 -(void)addObjectsFromArray:(NSArray *)array;
 
--(void)removeObjectAtIndex:(unsigned)index;
+-(void)removeObjectAtIndex:(NSUInteger)index;
 -(void)removeAllObjects;
 -(void)removeLastObject;
 -(void)removeObject:object;
@@ -24,18 +24,18 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)removeObjectIdenticalTo:object;
 -(void)removeObjectIdenticalTo:object inRange:(NSRange)range;
 -(void)removeObjectsInRange:(NSRange)range;
--(void)removeObjectsFromIndices:(unsigned *)indices numIndices:(unsigned)count;
+-(void)removeObjectsFromIndices:(NSUInteger *)indices numIndices:(NSUInteger)count;
 -(void)removeObjectsInArray:(NSArray *)array;
 -(void)removeObjectsAtIndexes:(NSIndexSet *)indexes; 
 
--(void)insertObject:object atIndex:(unsigned)index;
+-(void)insertObject:object atIndex:(NSUInteger)index;
 -(void)insertObjects:(NSArray *)objects atIndexes:(NSIndexSet *)indexes; 
 
 -(void)setArray:(NSArray *)array;
--(void)replaceObjectAtIndex:(unsigned)index withObject:object;
+-(void)replaceObjectAtIndex:(NSUInteger)index withObject:object;
 -(void)replaceObjectsInRange:(NSRange)range withObjectsFromArray:(NSArray *)array;
 -(void)replaceObjectsInRange:(NSRange)range withObjectsFromArray:(NSArray *)array range:(NSRange)otherRange;
--(void)exchangeObjectAtIndex:(unsigned)index withObjectAtIndex:(unsigned)other;
+-(void)exchangeobjectAtIndex:(NSUInteger)index withobjectAtIndex:(NSUInteger)other;
 
 -(void)sortUsingSelector:(SEL)selector;
 -(void)sortUsingFunction:(int (*)(id, id, void *))compare context:(void *)context;

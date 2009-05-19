@@ -105,8 +105,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(id)_kvo_operator_avg:(NSString*)parameter
 {
 	NSArray* objects=[self valueForKeyPath:parameter];
-	int count=[objects count];
-	int i;
+	NSInteger count=[objects count];
+	NSInteger i;
 	double average=0;
 	for(i=0; i<count; i++)
 	{
@@ -118,8 +118,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(id)_kvo_operator_max:(NSString*)parameter
 {
 	NSArray* objects=[self valueForKeyPath:parameter];
-	int count=[objects count];
-	int i;
+	NSInteger count=[objects count];
+	NSInteger i;
 
 	id currentMaximum=[objects lastObject];
 	for(i=0; i<count; i++)
@@ -134,8 +134,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(id)_kvo_operator_min:(NSString*)parameter
 {
 	NSArray* objects=[self valueForKeyPath:parameter];
-	int count=[objects count];
-	int i;
+	NSInteger count=[objects count];
+	NSInteger i;
 	
 	id currentMinimum=[objects lastObject];
 	for(i=0; i<count; i++)
@@ -149,7 +149,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(id)_kvo_operator_count
 {
-	return [NSNumber numberWithInt:[self count]];
+	return [NSNumber numberWithUnsignedInteger:[self count]];
 }
 
 -(id)_kvo_operator_count:(NSString*)parameter
@@ -163,8 +163,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(id)_kvo_operator_sum:(NSString*)parameter
 {
 	NSArray* objects=[self valueForKeyPath:parameter];
-	int count=[objects count];
-	int i;
+	NSInteger count=[objects count];
+	NSInteger i;
 	
 	double sum=0.0;
 	for(i=0; i<count; i++)
@@ -202,7 +202,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 - (void)addObserver:(NSObject *)observer toObjectsAtIndexes:(NSIndexSet *)indexes forKeyPath:(NSString *)keyPath options:(NSKeyValueObservingOptions)options context:(void *)context
 {
-	unsigned idx=[indexes firstIndex];
+	NSUInteger idx=[indexes firstIndex];
 	while(idx!=NSNotFound)
 	{
 		[[self objectAtIndex:idx] addObserver:observer
@@ -215,7 +215,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 - (void)removeObserver:(NSObject *)observer fromObjectsAtIndexes:(NSIndexSet *)indexes forKeyPath:(NSString *)keyPath
 {
-	unsigned idx=[indexes firstIndex];
+	NSUInteger idx=[indexes firstIndex];
 	while(idx!=NSNotFound)
 	{
 		[[self objectAtIndex:idx] removeObserver:observer

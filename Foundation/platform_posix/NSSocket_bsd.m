@@ -5,8 +5,6 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
-
-// Original - Christopher Lloyd <cjwl@objc.net>
 #import "NSSocket_bsd.h"
 #import <Foundation/NSError.h>
 #import <Foundation/NSHost.h>
@@ -34,9 +32,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @implementation NSSocket_bsd
 
-static inline void byteZero(void *vsrc,int size){
+static inline void byteZero(void *vsrc,size_t size){
    unsigned char *src=vsrc;
-   int i;
+   size_t i;
 
    for(i=0;i<size;i++)
     src[i]=0;
@@ -113,8 +111,8 @@ static inline void byteZero(void *vsrc,int size){
    _descriptor=descriptor;
 }
 
--(unsigned)hash {
-   return (unsigned)_descriptor;
+-(NSUInteger)hash {
+   return (NSUInteger)_descriptor;
 }
 
 -(BOOL)isEqual:other {
@@ -138,10 +136,10 @@ static inline void byteZero(void *vsrc,int size){
    return (errno==EINPROGRESS);
 }
 
--(NSError *)connectToHost:(NSHost *)host port:(int)portNumber immediate:(BOOL *)immediate {
+-(NSError *)connectToHost:(NSHost *)host port:(NSInteger)portNumber immediate:(BOOL *)immediate {
    BOOL     block=NO;
    NSArray *addresses=[host addresses];
-   int      i,count=[addresses count];
+   NSInteger      i,count=[addresses count];
    NSError *error=nil;
    
    *immediate=NO;
@@ -155,7 +153,7 @@ static inline void byteZero(void *vsrc,int size){
     struct sockaddr_in try;
     NSString     *stringAddress=[addresses objectAtIndex:i];
     char          cString[[stringAddress cStringLength]+1];
-    unsigned long address;
+    in_addr_t     address;
     
     [stringAddress getCString:cString];
     if((address=inet_addr(cString))==-1){
@@ -167,7 +165,7 @@ static inline void byteZero(void *vsrc,int size){
     try.sin_family=AF_INET;
     try.sin_port=portNumber;
 
-    if(connect(_descriptor,(struct sockaddr *)&try,sizeof(try))==0){
+    if(connect(_descriptor,(struct sockaddr *)&try,(socklen_t)sizeof(try))==0){
      if(!block){
       if((error=[self setOperationWouldBlock:YES])!=nil)
        return error;
@@ -199,17 +197,17 @@ static inline void byteZero(void *vsrc,int size){
    return (recv(_descriptor,buf,1,MSG_PEEK)==1)?YES:NO;
 }
 
--(int)read:(unsigned char *)buffer maxLength:(unsigned)length {
+-(NSInteger)read:(unsigned char *)buffer maxLength:(NSUInteger)length {
    return recv(_descriptor,(void *)buffer,length,0);
 }
 
--(int)write:(const unsigned char *)buffer maxLength:(unsigned)length {
+-(NSInteger)write:(const unsigned char *)buffer maxLength:(NSUInteger)length {
    return send(_descriptor,(void *)buffer,length,0);
 }
 
 -(NSSocket *)acceptWithError:(NSError **)errorp {
    struct sockaddr addr;
-   socklen_t       addrlen=sizeof(struct sockaddr);
+   socklen_t       addrlen=(socklen_t)sizeof(struct sockaddr);
    int             newSocket; 
    NSError        *error;
    

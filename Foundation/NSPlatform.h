@@ -43,17 +43,17 @@ FOUNDATION_EXPORT NSString *NSPlatformResourceNameSuffix;
 -(NSString *)DNSHostName;
 -(NSArray *)addressesForDNSHostName:(NSString *)name;
 
--(void *)contentsOfFile:(NSString *)path length:(unsigned *)length;
--(void *)mapContentsOfFile:(NSString *)path length:(unsigned *)length;
--(void)unmapAddress:(void *)ptr length:(unsigned)length;
+-(void *)contentsOfFile:(NSString *)path length:(NSUInteger *)length;
+-(void *)mapContentsOfFile:(NSString *)path length:(NSUInteger *)length;
+-(void)unmapAddress:(void *)ptr length:(NSUInteger)length;
 
--(BOOL)writeContentsOfFile:(NSString *)path bytes:(const void *)bytes length:(unsigned)length atomically:(BOOL)atomically;
+-(BOOL)writeContentsOfFile:(NSString *)path bytes:(const void *)bytes length:(NSUInteger)length atomically:(BOOL)atomically;
 
 -(void)checkEnvironmentKey:(NSString *)key value:(NSString *)value;
 @end
 
-FOUNDATION_EXPORT unsigned NSPlatformProcessID();
-FOUNDATION_EXPORT unsigned NSPlatformThreadID();
+FOUNDATION_EXPORT int NSPlatformProcessID();
+FOUNDATION_EXPORT NSUInteger NSPlatformThreadID();
 FOUNDATION_EXPORT NSTimeInterval NSPlatformTimeIntervalSinceReferenceDate();
 FOUNDATION_EXPORT void NSPlatformLogString(NSString *string);
 FOUNDATION_EXPORT void NSPlatformSleepThreadForTimeInterval(NSTimeInterval interval);
@@ -63,7 +63,7 @@ FOUNDATION_EXPORT void NSPlatformSleepThreadForTimeInterval(NSTimeInterval inter
 NSThread *NSPlatformCurrentThread();
 void NSPlatformSetCurrentThread(NSThread *thread);
 #ifdef WINDOWS
-unsigned NSPlatformDetachThread(unsigned (*__stdcall func)(void *arg), void *arg);
+NSUInteger NSPlatformDetachThread(unsigned (*__stdcall func)(void *arg), void *arg);
 #else
-int NSPlatformDetachThread(unsigned (* func)(void *arg), void *arg);
+NSUInteger NSPlatformDetachThread(void *(* func)(void *arg), void *arg);
 #endif

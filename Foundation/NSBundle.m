@@ -332,7 +332,7 @@ static NSMapTable *pathToObject=NULL;
    NSString *name=[[self infoDictionary] objectForKey:@"CFBundleExecutable"];
    NSString *checkDir;
    NSArray  *contents;
-   int       i,count;
+   NSInteger       i,count;
 
    if(name==nil) 
     name=[[_path lastPathComponent] stringByDeletingPathExtension];
@@ -402,7 +402,7 @@ static NSMapTable *pathToObject=NULL;
 
 -(NSString *)pathForResourceFile:(NSString *)file inDirectory:(NSString *)directory {
    NSArray  *lookIn=[self lookInDirectories];
-   int       i,count=[lookIn count];
+   NSInteger       i,count=[lookIn count];
 
    for(i=0;i<count;i++){
     NSString *path=[[directory stringByAppendingPathComponent:[lookIn objectAtIndex:i]] stringByAppendingPathComponent:file];

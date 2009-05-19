@@ -5,8 +5,6 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
-
-// Original - Christopher Lloyd <cjwl@objc.net>
 #import <Foundation/NSString_placeholder.h>
 #import <Foundation/NSString_cString.h>
 #import <Foundation/NSString_unicode.h>
@@ -31,7 +29,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return @"";
 }
 
--initWithCharactersNoCopy:(unichar *)characters length:(unsigned)length
+-initWithCharactersNoCopy:(unichar *)characters length:(NSUInteger)length
              freeWhenDone:(BOOL)freeWhenDone {
    NSDeallocateObject(self);
 
@@ -41,12 +39,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     return NSString_unicodeNew(NULL,characters,length);
 }
 
--initWithCharacters:(const unichar *)characters length:(unsigned)length {
+-initWithCharacters:(const unichar *)characters length:(NSUInteger)length {
    NSDeallocateObject(self);
    return NSString_unicodeNew(NULL,characters,length);
 }
 
--initWithCStringNoCopy:(char *)bytes length:(unsigned)length
+-initWithCStringNoCopy:(char *)bytes length:(NSUInteger)length
           freeWhenDone:(BOOL)freeWhenDone {
    NSString *string=NSString_cStringNewWithBytes(NULL,bytes,length);
 
@@ -58,7 +56,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return string;
 }
 
--initWithCString:(const char *)bytes length:(unsigned)length {
+-initWithCString:(const char *)bytes length:(NSUInteger)length {
    NSDeallocateObject(self);
 
    return NSString_cStringNewWithBytes(NULL,bytes,length);
@@ -71,7 +69,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -initWithString:(NSString *)string {
-   unsigned length=[string length];
+   NSUInteger length=[string length];
    unichar *unicode=NSZoneMalloc(NULL,sizeof(unichar)*length);
 
    [string getCharacters:unicode];
@@ -123,7 +121,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    switch(encoding){
 
     case NSUnicodeStringEncoding:{
-      unsigned length;
+      NSUInteger length;
       unichar *characters=NSUnicodeFromData(data,&length);
 
       return NSString_unicodePtrNewNoCopy(NULL,characters,length);
@@ -140,7 +138,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
      return NSString_isoLatin1NewWithBytes(NULL,[data bytes],[data length]);
 
     case NSSymbolStringEncoding:{
-      unsigned length;
+      NSUInteger length;
       unichar *characters=NSSymbolToUnicode([data bytes],[data length],&length,NULL);
 
       return NSString_unicodePtrNewNoCopy(NULL,characters,length);
@@ -148,7 +146,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
      break;
 
     case NSUTF8StringEncoding:{
-      unsigned length;
+      NSUInteger length;
       unichar *characters;
 
       characters=NSUTF8ToUnicode([data bytes],[data length],&length,NULL);
@@ -158,7 +156,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
      break;
 
     case NSUTF16BigEndianStringEncoding:{
-      unsigned length;
+      NSUInteger length;
       unichar *characters=NSUnicodeFromDataUTF16BigEndian(data,&length);
 
       return NSString_unicodePtrNewNoCopy(NULL,characters,length);
@@ -175,7 +173,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -initWithUTF8String:(const char *)utf8 {
-   unsigned length;
+   NSUInteger length;
    unichar *characters;
 
    characters=NSUTF8ToUnicode(utf8,strlen(utf8),&length,NULL);
@@ -184,7 +182,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -initWithContentsOfFile:(NSString *)path {
-   unsigned  length;
+   NSUInteger  length;
    unichar  *unicode;
 
    NSDeallocateObject(self);

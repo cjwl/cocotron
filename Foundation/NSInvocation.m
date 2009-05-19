@@ -23,8 +23,8 @@ id objc_msg_sendv(id self, SEL selector, unsigned arg_size, void *arg_frame);
 @implementation NSInvocation
 
 -(void)buildFrame {
-   int      i,count=[_signature numberOfArguments];
-   unsigned align;
+   NSInteger      i,count=[_signature numberOfArguments];
+   NSUInteger align;
 
    NSGetSizeAndAlignment([_signature methodReturnType],&_returnSize,&align);
    _returnValue=NSZoneCalloc([self zone],MAX(_returnSize, sizeof(long)),1);
@@ -34,8 +34,8 @@ id objc_msg_sendv(id self, SEL selector, unsigned arg_size, void *arg_frame);
    _argumentOffsets=NSZoneCalloc([self zone],count,sizeof(unsigned));
 
    for(i=0;i<count;i++){
-    unsigned naturalSize;
-    unsigned promotedSize;
+    NSUInteger naturalSize;
+    NSUInteger promotedSize;
 
     _argumentOffsets[i]=_argumentFrameSize;
 
@@ -78,7 +78,7 @@ id objc_msg_sendv(id self, SEL selector, unsigned arg_size, void *arg_frame);
 
 -(void)dealloc {
     if (_retainArguments == YES) {
-        int i, count = [_signature numberOfArguments];
+        NSInteger i, count = [_signature numberOfArguments];
 
         for (i = 0; i < count; ++i) {
             const char *type = [_signature getArgumentTypeAtIndex:i];
@@ -117,7 +117,7 @@ id objc_msg_sendv(id self, SEL selector, unsigned arg_size, void *arg_frame);
 }
 
 static void *bufferForType(void *buffer,const char *type){
-   unsigned size,align;
+   NSUInteger size,align;
 
    NSGetSizeAndAlignment(type,&size,&align);
    if(buffer!=NULL)
@@ -128,7 +128,7 @@ static void *bufferForType(void *buffer,const char *type){
 
 -initWithCoder:(NSCoder *)coder {
    const char *type;
-   int         i,count;
+   NSInteger         i,count;
    void       *buffer=NULL;
 
    _signature=[[coder decodeObject] retain];
@@ -158,7 +158,7 @@ static void *bufferForType(void *buffer,const char *type){
 
 -(void)encodeWithCoder:(NSCoder *)coder {
    const char *type;
-   int         i,count;
+   NSInteger         i,count;
    void       *buffer=NULL;
 
    [coder encodeObject:_signature];
@@ -192,8 +192,8 @@ static void *bufferForType(void *buffer,const char *type){
    return _signature;
 }
 
-static void byteCopy(void *src,void *dst,unsigned length){
-   int i;
+static void byteCopy(void *src,void *dst,NSUInteger length){
+   NSInteger i;
 
    for(i=0;i<length;i++)
     ((char *)dst)[i]=((char *)src)[i];
@@ -207,9 +207,9 @@ static void byteCopy(void *src,void *dst,unsigned length){
    byteCopy(pointerToValue,_returnValue,_returnSize);
 }
 
--(void)getArgument:(void *)pointerToValue atIndex:(int)index {
-   unsigned naturalSize=_argumentSizes[index];
-   unsigned promotedSize=((naturalSize+sizeof(int)-1)/sizeof(int))*sizeof(int);
+-(void)getArgument:(void *)pointerToValue atIndex:(NSInteger)index {
+   NSUInteger naturalSize=_argumentSizes[index];
+   NSUInteger promotedSize=((naturalSize+sizeof(int)-1)/sizeof(int))*sizeof(int);
    
    if(naturalSize==promotedSize)
     byteCopy(_argumentFrame+_argumentOffsets[index],pointerToValue,naturalSize);
@@ -230,9 +230,9 @@ static void byteCopy(void *src,void *dst,unsigned length){
     
 }
 
--(void)setArgument:(void *)pointerToValue atIndex:(int)index {
-   unsigned naturalSize=_argumentSizes[index];
-   unsigned promotedSize=((naturalSize+sizeof(int)-1)/sizeof(int))*sizeof(int);
+-(void)setArgument:(void *)pointerToValue atIndex:(NSInteger)index {
+   NSUInteger naturalSize=_argumentSizes[index];
+   NSUInteger promotedSize=((naturalSize+sizeof(int)-1)/sizeof(int))*sizeof(int);
 
    if(naturalSize==promotedSize)
     byteCopy(pointerToValue,_argumentFrame+_argumentOffsets[index],naturalSize);
@@ -255,7 +255,7 @@ static void byteCopy(void *src,void *dst,unsigned length){
 
 -(void)retainArguments {
     if (_retainArguments == NO) {
-        int i, count = [_signature numberOfArguments];
+        NSInteger i, count = [_signature numberOfArguments];
         
         _retainArguments=YES;
         for (i = 0; i < count; ++i) {
@@ -416,7 +416,7 @@ static void byteCopy(void *src,void *dst,unsigned length){
      break;
 
     default: {
-     unsigned size,alignment;
+     NSUInteger size,alignment;
 
       NSGetSizeAndAlignment(returnType,&size,&alignment);
       if(size<=sizeof(int)){

@@ -148,7 +148,7 @@ NSString *const NSUndefinedKeyException = @"NSUnknownKeyException";
 		[inv setTarget:self];
 		[inv invoke];
 		
-		int returnLength=[sig methodReturnLength];
+		NSUInteger returnLength=[sig methodReturnLength];
 		void *returnValue=__builtin_alloca(returnLength);
 		[inv getReturnValue:returnValue];
 		
@@ -168,7 +168,7 @@ NSString *const NSUndefinedKeyException = @"NSUnknownKeyException";
 			// value is nil and accessor doesn't take object type
 			return [self setNilValueForKey:key];
 		}
-		unsigned int size, align;
+		NSUInteger size, align;
 		NSInvocation* inv=[NSInvocation invocationWithMethodSignature:sig];
 		[inv setSelector:sel];
 		[inv setTarget:self];
@@ -433,7 +433,7 @@ void objc_setProperty (id self, SEL _cmd, size_t offset, id value, BOOL isAtomic
 	}
 	
 	const char* origName = sel_getName(_cmd);
-	int selLen=strlen(origName);
+	NSInteger selLen=strlen(origName);
 	char *sel=__builtin_alloca(selLen+1);
 	strcpy(sel, origName);
 	sel[selLen-1]='\0';

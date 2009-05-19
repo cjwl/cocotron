@@ -87,12 +87,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     return NO;
 }
 
--(unsigned)scanLocation {
+-(NSUInteger)scanLocation {
     NSInvalidAbstractInvocation();
     return -1;
 }
 
--(void)setScanLocation:(unsigned)location {
+-(void)setScanLocation:(NSUInteger)location {
     NSInvalidAbstractInvocation();
 }
 

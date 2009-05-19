@@ -74,7 +74,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    va_start(arguments,types);
 
    for(;*types!='\0';types=restTypes){
-    unsigned tmp;
+    NSUInteger tmp;
     void    *ptr;
 
     restTypes=NSGetSizeAndAlignment(types,&tmp,&tmp);
@@ -90,7 +90,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 
 -(void)encodeArrayOfObjCType:(const char *)itemType
-                       count:(unsigned)count at:(const void *)ptr {
+                       count:(NSUInteger)count at:(const void *)ptr {
    char typeBuf[1+sizeof(unsigned)*3+strlen(itemType)+2];
 
    sprintf(typeBuf,"[%u%s]",count,itemType);
@@ -98,7 +98,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 
--(void)encodeBytes:(const void *)byteaddr length:(unsigned)length {
+-(void)encodeBytes:(const void *)byteaddr length:(NSUInteger)length {
    char typeBuf[1+sizeof(unsigned)*3+1+1+1];
 
    sprintf(typeBuf,"[%uc]",length);
@@ -181,7 +181,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return nil;
 }
 
--(unsigned)versionForClassName:(NSString *)className {
+-(NSInteger)versionForClassName:(NSString *)className {
    NSInvalidAbstractInvocation();
    return 0;
 }
@@ -208,7 +208,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    va_start(arguments,types);
 
    for(;*types!='\0';types=restTypes){
-    unsigned tmp;
+    NSUInteger tmp;
     void    *ptr;
 
     restTypes=NSGetSizeAndAlignment(types,&tmp,&tmp);
@@ -224,7 +224,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 
 -(void)decodeArrayOfObjCType:(const char *)itemType
-                       count:(unsigned)count at:(void *)ptr {
+                       count:(NSUInteger)count at:(void *)ptr {
    char typeBuf[1+sizeof(unsigned)*3+strlen(itemType)+1+1];
 
    sprintf(typeBuf,"[%u%s]",count,itemType);
@@ -232,7 +232,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 
--(void *)decodeBytesWithReturnedLength:(unsigned *)lengthp {
+-(void *)decodeBytesWithReturnedLength:(NSUInteger *)lengthp {
    char  typeBuf[1+sizeof(unsigned)*3+3];
    void *byteaddr;
 
@@ -267,7 +267,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return NO;
 }
 
--(void *)decodeBytesForKey:(NSString *)key returnedLength:(unsigned *)lengthp {
+-(void *)decodeBytesForKey:(NSString *)key returnedLength:(NSUInteger *)lengthp {
    *lengthp=0;
    return NULL;
 }

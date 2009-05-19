@@ -8,9 +8,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/NSString.h>
 
-void NSUnicodeToUppercase(unichar *characters,unsigned length);
-void NSUnicodeToLowercase(unichar *characters,unsigned length);
-void NSUnicodeToCapitalized(unichar *characters,unsigned length);
+void NSUnicodeToUppercase(unichar *characters,NSUInteger length);
+void NSUnicodeToLowercase(unichar *characters,NSUInteger length);
+void NSUnicodeToCapitalized(unichar *characters,NSUInteger length);
 
-unichar *NSUnicodeFromData(NSData *data,unsigned *resultLengthp);
-unichar *NSUnicodeFromDataUTF16BigEndian(NSData *data,unsigned *resultLengthp);
+unichar *NSUnicodeFromData(NSData *data,NSUInteger *resultLengthp);
+unichar *NSUnicodeFromDataUTF16BigEndian(NSData *data,NSUInteger *resultLengthp);

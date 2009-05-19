@@ -10,12 +10,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @interface NSString_placeholder : NSString
 
--initWithCString:(const char *)byteString length:(unsigned)length;
--initWithCStringNoCopy:(char *)byteString length:(unsigned)length
+-initWithCString:(const char *)byteString length:(NSUInteger)length;
+-initWithCStringNoCopy:(char *)byteString length:(NSUInteger)length
           freeWhenDone:(BOOL)freeWhenDone;
 
--initWithCharacters:(const unichar *)characters length:(unsigned)length;
--initWithCharactersNoCopy:(unichar *)characters length:(unsigned)length
+-initWithCharacters:(const unichar *)characters length:(NSUInteger)length;
+-initWithCharactersNoCopy:(unichar *)characters length:(NSUInteger)length
              freeWhenDone:(BOOL)freeWhenDone;
 
 @end

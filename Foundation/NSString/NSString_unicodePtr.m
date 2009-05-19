@@ -5,8 +5,6 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
-
-// Original - Christopher Lloyd <cjwl@objc.net>
 #import <Foundation/NSString_unicodePtr.h>
 #import <Foundation/NSRaise.h>
 #import <Foundation/NSStringHashing.h>
@@ -14,7 +12,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @implementation NSString_unicodePtr
 
 NSString *NSString_unicodePtrNewNoCopy(NSZone *zone,
- const unichar *unicode,unsigned length) {
+ const unichar *unicode,NSUInteger length) {
    NSString_unicodePtr *string;
 
    string=NSAllocateObject([NSString_unicodePtr class],0,zone);
@@ -32,11 +30,11 @@ NSString *NSString_unicodePtrNewNoCopy(NSZone *zone,
    [super dealloc];
 }
 
--(unsigned)length {
+-(NSUInteger)length {
    return _length;
 }
 
--(unichar)characterAtIndex:(unsigned)location {
+-(unichar)characterAtIndex:(NSUInteger)location {
    if(location>=_length){
     NSRaiseException(NSRangeException,self,_cmd,@"index %d beyond length %d",
      location,[self length]);
@@ -53,7 +51,7 @@ NSString *NSString_unicodePtrNewNoCopy(NSZone *zone,
 }
 
 -(void)getCharacters:(unichar *)buffer range:(NSRange)range {
-   int i,len=range.length,loc=range.location;
+   NSInteger i,len=range.length,loc=range.location;
 
    if(NSMaxRange(range)>_length){
     NSRaiseException(NSRangeException,self,_cmd,@"range %@ beyond length %d",
@@ -64,7 +62,7 @@ NSString *NSString_unicodePtrNewNoCopy(NSZone *zone,
     buffer[i]=_unicode[loc+i];
 }
 
--(unsigned)hash {
+-(NSUInteger)hash {
    return NSStringHashUnicode(_unicode,MIN(_length,NSHashStringLength));
 }
 

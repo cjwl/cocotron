@@ -49,7 +49,7 @@ NSString	*NSPlatformClassName = @"NSPlatform_bsd";
 	curtime = time(NULL);
 	localtime_r(&curtime, &tmz);
 	mktime(&tmz);
-	return [NSTimeZone timeZoneForSecondsFromGMT:(int)tmz.tm_gmtoff];
+	return [NSTimeZone timeZoneForSecondsFromGMT:(NSInteger)tmz.tm_gmtoff];
 }
 
 void NSPlatformSleepThreadForTimeInterval(NSTimeInterval interval) {

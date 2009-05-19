@@ -42,7 +42,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -initWithArray:(NSArray *)array {
-   unsigned count=[array count];
+   NSUInteger count=[array count];
    id      *objects=__builtin_alloca(sizeof(id)*count);
 
    [array getObjects:objects];
@@ -55,7 +55,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       return [self initWithArray:array];
    }
 
-   const unsigned count=[array count];
+   const NSUInteger count=[array count];
    id *oldObjects = __builtin_alloca(sizeof(id)*count);
    id *newObjects = __builtin_alloca(sizeof(id)*count);
 
@@ -94,7 +94,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return [self initWithContentsOfFile:[url path]];
 }
 
--initWithObjects:(id *)objects count:(unsigned)count {
+-initWithObjects:(id *)objects count:(NSUInteger)count {
    NSInvalidAbstractInvocation();
    return nil;
 }
@@ -166,7 +166,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     [keyed encodeArray:self forKey:@"NS.objects"];
   }
   else {
-    unsigned i,count=[self count];
+    NSUInteger i,count=[self count];
 
     [coder encodeValueOfObjCType:@encode(int) at:&count];
     for(i=0;i<count;i++)
@@ -231,24 +231,24 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 
-+arrayWithObjects:(id *)objects count:(unsigned)count {
++arrayWithObjects:(id *)objects count:(NSUInteger)count {
    return [[[self allocWithZone:NULL] initWithObjects:objects count:count] autorelease];
 }
 
 
--(unsigned)count {
+-(NSUInteger)count {
    NSInvalidAbstractInvocation();
    return 0;
 }
 
 
--objectAtIndex:(unsigned)index {
+-objectAtIndex:(NSUInteger)index {
    NSInvalidAbstractInvocation();
    return nil;
 }
 
 -(void)getObjects:(id *)objects {
-   unsigned i,count=[self count];
+   NSUInteger i,count=[self count];
 
    for(i=0;i<count;i++)
     objects[i]=[self objectAtIndex:i];
@@ -256,7 +256,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 
 -(void)getObjects:(id *)objects range:(NSRange)range {
-   unsigned i,count=[self count],loc=range.location;
+   NSUInteger i,count=[self count],loc=range.location;
 
    if(NSMaxRange(range)>count)
     NSRaiseException(NSRangeException,self,_cmd,@"range %@ beyond count %d",
@@ -290,7 +290,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 
 -(BOOL)isEqualToArray:(NSArray *)array {
-   int i,count;
+   NSInteger i,count;
 
    if(self==array)
     return YES;
@@ -306,8 +306,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return YES;
 }
 
--(unsigned)indexOfObject:object {
-   int i,count=[self count];
+-(NSUInteger)indexOfObject:object {
+   NSInteger i,count=[self count];
 
    for(i=0;i<count;i++)
     if([[self objectAtIndex:i] isEqual:object])
@@ -317,8 +317,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 
--(unsigned)indexOfObject:object inRange:(NSRange)range {
-   int i,count=[self count],loc=range.location;
+-(NSUInteger)indexOfObject:object inRange:(NSRange)range {
+   NSInteger i,count=[self count],loc=range.location;
 
    if(NSMaxRange(range)>count)
     NSRaiseException(NSRangeException,self,_cmd,@"range %@ beyond count %d",
@@ -332,8 +332,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 
--(unsigned)indexOfObjectIdenticalTo:object {
-   int i,count=[self count];
+-(NSUInteger)indexOfObjectIdenticalTo:object {
+   NSInteger i,count=[self count];
 
    for(i=0;i<count;i++)
     if([self objectAtIndex:i]==object)
@@ -343,8 +343,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 
--(unsigned)indexOfObjectIdenticalTo:object inRange:(NSRange)range {
-   int i,count=[self count],loc=range.location;
+-(NSUInteger)indexOfObjectIdenticalTo:object inRange:(NSRange)range {
+   NSInteger i,count=[self count],loc=range.location;
 
    if(NSMaxRange(range)>count)
     NSRaiseException(NSRangeException,self,_cmd,@"range %@ beyond count %d",
@@ -378,7 +378,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(NSString *)componentsJoinedByString:(NSString *)separator {
    NSMutableString *string=[NSMutableString stringWithCapacity:256];
-   int i,count=[self count];
+   NSInteger i,count=[self count];
 
    for(i=0;i<count;i++){
     [string appendString:[[self objectAtIndex:i] description]];
@@ -395,7 +395,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 
 -firstObjectCommonWithArray:(NSArray *)array {
-   int i,count=[self count];
+   NSInteger i,count=[self count];
 
    for(i=0;i<count;i++){
     id object=[self objectAtIndex:i];
@@ -410,7 +410,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 
 -lastObject {
-   int count=[self count];
+   NSInteger count=[self count];
 
    if(count==0)
     return nil;
@@ -441,7 +441,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 
 -(void)makeObjectsPerformSelector:(SEL)selector {
-	int i, count = [self count];
+	NSInteger i, count = [self count];
 	
 	for (i = 0; i < count; i++)
 		[[self objectAtIndex:i] performSelector:selector];
@@ -449,7 +449,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 
 -(void)makeObjectsPerformSelector:(SEL)selector withObject:object {
-	int i, count = [self count];
+	NSInteger i, count = [self count];
 	
 	for (i = 0; i < count; i++)
 		[[self objectAtIndex:i] performSelector:selector withObject:object];
@@ -464,13 +464,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return nil;
 }
 
--(NSString *)descriptionWithLocale:(NSDictionary *)locale indent:(unsigned)indent {
+-(NSString *)descriptionWithLocale:(NSDictionary *)locale indent:(NSUInteger)indent {
    NSUnimplementedMethod();
    return nil;
 }
 
 -(NSArray *)filteredArrayUsingPredicate:(NSPredicate *)predicate {
-   int             i,count=[self count];
+   NSInteger             i,count=[self count];
    NSMutableArray *result=[NSMutableArray arrayWithCapacity:count];
    
    for(i=0;i<count;i++){
@@ -509,7 +509,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(NSArray *)objectsAtIndexes:(NSIndexSet*)indexes
 {
-	unsigned idx=[indexes firstIndex];
+	NSUInteger idx=[indexes firstIndex];
 	id ret=[NSMutableArray array];
 	while(idx!=NSNotFound)
 	{
@@ -521,8 +521,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(NSUInteger)countByEnumeratingWithState:(NSFastEnumerationState *)state objects:(id *)stackbuf count:(NSUInteger)length;
 {
-	int numObjects=MIN([self count] - state->extra[0], length);
-	int i=state->extra[0];
+	NSInteger numObjects=MIN([self count] - state->extra[0], length);
+	NSInteger i=state->extra[0];
 	int j=0;
 	state->itemsPtr=stackbuf;
 

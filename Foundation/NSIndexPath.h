@@ -10,25 +10,24 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 
 @interface NSIndexPath : NSObject <NSCopying, NSCoding> {
-	unsigned int *_indexes;
-	unsigned int _hash;
-	unsigned int _length;
-	void *_reserved;
+	NSUInteger *_indexes;
+	NSUInteger _hash;
+	NSUInteger _length;
 }
 
-+ (NSIndexPath *)indexPathWithIndex:(unsigned int)index;
-+ (NSIndexPath *)indexPathWithIndexes:(unsigned int *)indexes length:(unsigned int)length;   
++ (NSIndexPath *)indexPathWithIndex:(NSUInteger)index;
++ (NSIndexPath *)indexPathWithIndexes:(NSUInteger *)indexes length:(NSUInteger)length;   
 
-- (id)initWithIndex:(unsigned int)index;
-- (id)initWithIndexes:(unsigned int *)indexes length:(unsigned int)length;    // designated initializer
+- (id)initWithIndex:(NSUInteger)index;
+- (id)initWithIndexes:(NSUInteger *)indexes length:(NSUInteger)length;    // designated initializer
 
-- (NSIndexPath *)indexPathByAddingIndex:(unsigned int)index;
+- (NSIndexPath *)indexPathByAddingIndex:(NSUInteger)index;
 - (NSIndexPath *)indexPathByRemovingLastIndex;
 
-- (unsigned int)indexAtPosition:(unsigned int)position;
-- (unsigned int)length;
+- (NSUInteger)indexAtPosition:(NSUInteger)position;
+- (NSUInteger)length;
 
-- (void)getIndexes:(unsigned int *)indexes;
+- (void)getIndexes:(NSUInteger *)indexes;
 
 	// comparison support
 - (NSComparisonResult)compare:(NSIndexPath *)otherObject; // sorting an array of indexPaths using this comparison results in an array representing nodes in depth-first traversal order

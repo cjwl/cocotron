@@ -46,10 +46,10 @@ Class object_setClass(id object,Class cls) {
    return result;
 }
 
-static void ivarCopy(void *vdst,unsigned offset,void *vsrc,unsigned length){
+static void ivarCopy(void *vdst,unsigned offset,void *vsrc,size_t length){
    unsigned char *dst=vdst;
    unsigned char *src=vsrc;
-   unsigned       i;
+   size_t       i;
 
    for(i=0;i<length;i++)
     dst[offset+i]=src[i];

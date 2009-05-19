@@ -22,7 +22,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return NSAllocateObject(self,0,zone);
 }
 
--initWithCapacity:(unsigned)capacity {
+-initWithCapacity:(NSUInteger)capacity {
    NSInvalidAbstractInvocation();
    return nil;
 }
@@ -43,11 +43,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return NSAutorelease(NSMutableString_unicodePtrNew(NULL,NULL,0));
 }
 
-+stringWithCharacters:(const unichar *)unicode length:(unsigned)length {
++stringWithCharacters:(const unichar *)unicode length:(NSUInteger)length {
    return NSAutorelease(NSMutableString_unicodePtrNew(NULL,unicode,length));
 }
 
-+stringWithCString:(const char *)bytes length:(unsigned)length {
++stringWithCString:(const char *)bytes length:(NSUInteger)length {
    return NSAutorelease(
      NSMutableString_unicodePtrNewWithCString(NULL,bytes,length));
 }
@@ -59,7 +59,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 +stringWithFormat:(NSString *)format,... {
    va_list   arguments;
-   unsigned  length;
+   NSUInteger  length;
    unichar  *unicode;
 
    va_start(arguments,format);
@@ -71,7 +71,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 +stringWithContentsOfFile:(NSString *)path {
-   unsigned  length;
+   NSUInteger  length;
    unichar  *unicode;
 
    if((unicode=NSCharactersWithContentsOfFile(path,&length,NULL))==NULL)
@@ -83,7 +83,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 +localizedStringWithFormat:(NSString *)format,... {
    va_list   arguments;
-   unsigned  length;
+   NSUInteger  length;
    unichar  *unicode;
 
    va_start(arguments,format);
@@ -94,7 +94,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
      NSMutableString_unicodePtrNewNoCopy(NULL,unicode,length));
 }
 
-+stringWithCapacity:(unsigned)capacity {
++stringWithCapacity:(NSUInteger)capacity {
    return NSAutorelease(
      NSMutableString_unicodePtrNewWithCapacity(NULL,capacity));
 }
@@ -126,7 +126,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [self replaceCharactersInRange:range withString:@""];
 }
 
--(void)insertString:(NSString *)string atIndex:(unsigned)index {
+-(void)insertString:(NSString *)string atIndex:(NSUInteger)index {
    NSRange range={index,0};
 
    if(index>[self length]){

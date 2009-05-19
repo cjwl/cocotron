@@ -5,8 +5,6 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
-
-// Original - Christopher Lloyd <cjwl@objc.net>
 #import <Foundation/NSAffineTransform.h>
 #import <Foundation/NSRaise.h>
 #import <math.h>
@@ -28,7 +26,7 @@ static inline NSAffineTransformStruct multiplyStruct(NSAffineTransformStruct sta
 
 static inline NSAffineTransformStruct invertStruct(NSAffineTransformStruct matrix){
    NSAffineTransformStruct result;
-   float determinant;
+   CGFloat determinant;
 
    determinant=matrix.m11*matrix.m22-matrix.m21*matrix.m12;
    if(determinant == 0.)
@@ -99,7 +97,7 @@ static inline NSAffineTransformStruct invertStruct(NSAffineTransformStruct matri
    _matrix=multiplyStruct([other transformStruct],_matrix);
 }
 
--(void)translateXBy:(float)xby yBy:(float)yby {
+-(void)translateXBy:(CGFloat)xby yBy:(CGFloat)yby {
    NSAffineTransformStruct translate={1,0,0,1,xby,yby};
    _matrix=multiplyStruct(_matrix,translate);
 }
@@ -122,23 +120,23 @@ static inline NSAffineTransformStruct invertStruct(NSAffineTransformStruct matri
     return result;
 }
 
--(void)rotateByDegrees:(float)angle
+-(void)rotateByDegrees:(CGFloat)angle
 {
 	[self rotateByRadians:M_PI*angle/180.0];
 }
 
--(void)rotateByRadians:(float)radians
+-(void)rotateByRadians:(CGFloat)radians
 {
 	NSAffineTransformStruct rotate={cos(radians),sin(radians),-sin(radians),cos(radians),0,0};
 	_matrix=multiplyStruct(_matrix,rotate);
 }
 
--(void)scaleBy:(float)value {
+-(void)scaleBy:(CGFloat)value {
 	NSAffineTransformStruct rotate={value,0,0,value,0,0};
 	_matrix=multiplyStruct(_matrix,rotate);
 }
 
--(void)scaleXBy:(float)xvalue yBy:(float)yvalue {
+-(void)scaleXBy:(CGFloat)xvalue yBy:(CGFloat)yvalue {
 	NSAffineTransformStruct rotate={xvalue,0,0,yvalue,0,0};
 	_matrix=multiplyStruct(_matrix,rotate);
 }

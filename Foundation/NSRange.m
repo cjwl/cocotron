@@ -5,14 +5,12 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
-
-// Original - Christopher Lloyd <cjwl@objc.net>
 #import <Foundation/NSRange.h>
 #import <Foundation/NSStringFormatter.h>
 #import <Foundation/NSScanner.h>
 #import <Foundation/NSCharacterSet.h>
 
-NSRange NSMakeRange(unsigned location,unsigned length) {
+NSRange NSMakeRange(NSUInteger location,NSUInteger length) {
    NSRange range={location,length};
    return range;
 }
@@ -21,7 +19,7 @@ BOOL NSEqualRanges(NSRange range, NSRange otherRange) {
    return (range.location==otherRange.location && range.length==otherRange.length);
 }
 
-unsigned NSMaxRange(NSRange range){
+NSUInteger NSMaxRange(NSRange range){
    return range.location+range.length;
 }
 
@@ -51,12 +49,12 @@ nil];
 
 } 
 
-BOOL NSLocationInRange(unsigned location,NSRange range){
+BOOL NSLocationInRange(NSUInteger location,NSRange range){
    return (location>=range.location && location<NSMaxRange(range))?YES:NO;
 }
 
 NSRange NSIntersectionRange(NSRange range,NSRange otherRange){
-   unsigned min,loc,max1=NSMaxRange(range),max2=NSMaxRange(otherRange);
+   NSUInteger min,loc,max1=NSMaxRange(range),max2=NSMaxRange(otherRange);
    NSRange result;
 
    min=(max1<max2)?max1:max2;
@@ -73,7 +71,7 @@ NSRange NSIntersectionRange(NSRange range,NSRange otherRange){
 }
 
 NSRange NSUnionRange(NSRange range,NSRange otherRange){
-   unsigned max,loc,max1=NSMaxRange(range),max2=NSMaxRange(otherRange);
+   NSUInteger max,loc,max1=NSMaxRange(range),max2=NSMaxRange(otherRange);
    NSRange result;
 
    max=(max1>max2)?max1:max2;

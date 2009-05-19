@@ -5,14 +5,12 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
-
-// Original - Christopher Lloyd <cjwl@objc.net>
 #import <Foundation/NSCharacterSet_string.h>
 
 @implementation NSCharacterSet_string
 
--initWithCharacters:(unichar *)characters length:(unsigned)length inverted:(BOOL)inverted {
-   unsigned i;
+-initWithCharacters:(unichar *)characters length:(NSUInteger)length inverted:(BOOL)inverted {
+   NSUInteger i;
 
    _length=length;
    _buffer=NSZoneMalloc([self zone],_length*sizeof(unichar));
@@ -37,7 +35,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(BOOL)characterIsMember:(unichar)character {
    BOOL     result=_inverted?NO:YES;
-   unsigned i;
+   NSUInteger i;
 
    for(i=0;i<_length;i++)
     if(_buffer[i]==character)

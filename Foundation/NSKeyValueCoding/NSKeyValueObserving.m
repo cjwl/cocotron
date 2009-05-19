@@ -504,7 +504,7 @@ static NSLock *kvoLock=nil;
 #define CHANGE_DECLARATION(type) CHANGE_DEFINE(type) \
 { \
 	const char* origName = sel_getName(_cmd); \
-	int selLen=strlen(origName); \
+	size_t selLen=strlen(origName); \
 	char *sel=__builtin_alloca(selLen+1); \
 	strcpy(sel, origName); \
 	sel[selLen-1]='\0'; \
@@ -574,7 +574,7 @@ CHANGE_DECLARATION(SEL)
 { 
 	const char* origName = sel_getName(_cmd); 
 
-	int selLen=strlen(origName); 
+	size_t selLen=strlen(origName); 
 	char *sel=__builtin_alloca(selLen+1); 
 	strcpy(sel, origName); 
 	sel[selLen-1]='\0';
@@ -585,7 +585,7 @@ CHANGE_DECLARATION(SEL)
 
 	NSString *key=[[NSString alloc] initWithCString:sel]; 
 	[self willChange:NSKeyValueChangeInsertion valuesAtIndexes:[NSIndexSet indexSetWithIndex:index] forKey:key];
-	typedef id (*sender)(id obj, SEL selector, id value, int index); 
+	typedef id (*sender)(id obj, SEL selector, id value, NSInteger index); 
 	sender implementation=(sender)[[self superclass] instanceMethodForSelector:_cmd]; 
 	(void)*implementation(self, _cmd, object, index); 
 	[self didChange:NSKeyValueChangeInsertion valuesAtIndexes:[NSIndexSet indexSetWithIndex:index] forKey:key];
@@ -596,7 +596,7 @@ CHANGE_DECLARATION(SEL)
 { 
 	const char* origName = sel_getName(_cmd); 
    
-	int selLen=strlen(origName); 
+	size_t selLen=strlen(origName); 
 	char *sel=__builtin_alloca(selLen+1); 
 	strcpy(sel, origName); 
 	sel[selLen-1]='\0';
@@ -607,7 +607,7 @@ CHANGE_DECLARATION(SEL)
    strcpy(countSelName, "countOf");
    strcat(countSelName, sel);
 
-   NSUInteger idx=[self performSelector:sel_getUid(countSelName)];
+   NSUInteger idx=(NSUInteger)[self performSelector:sel_getUid(countSelName)];
    
 	sel[0]=tolower(sel[0]);
    
@@ -624,7 +624,7 @@ CHANGE_DECLARATION(SEL)
 { 
 	const char* origName = sel_getName(_cmd); 
    
-	int selLen=strlen(origName); 
+	size_t selLen=strlen(origName); 
 	char *sel=__builtin_alloca(selLen+1); 
 	strcpy(sel, origName); 
 	sel[selLen-1]='\0';
@@ -635,7 +635,7 @@ CHANGE_DECLARATION(SEL)
    strcpy(countSelName, "countOf");
    strcat(countSelName, sel);
    
-   NSUInteger idx=[self performSelector:sel_getUid(countSelName)];
+   NSUInteger idx=(NSUInteger)[self performSelector:sel_getUid(countSelName)];
    
 	sel[0]=tolower(sel[0]);
    
@@ -651,7 +651,7 @@ CHANGE_DECLARATION(SEL)
 -(void)KVO_notifying_change_removeObjectFromKeyAtIndex:(int)index
 { 
 	const char* origName = sel_getName(_cmd); 
-	int selLen=strlen(origName); 
+	size_t selLen=strlen(origName); 
 	char *sel=__builtin_alloca(selLen+1); 
 	strcpy(sel, origName); 
 	sel[selLen-1]='\0';
@@ -671,7 +671,7 @@ CHANGE_DECLARATION(SEL)
 -(void)KVO_notifying_change_replaceObjectInKeyAtIndex:(int)index withObject:(id)object
 { 
 	const char* origName = sel_getName(_cmd); 
-	int selLen=strlen(origName); 
+	size_t selLen=strlen(origName); 
 	char *sel=__builtin_alloca(selLen+1); 
 	strcpy(sel, origName); 
 	sel[selLen-1]='\0';

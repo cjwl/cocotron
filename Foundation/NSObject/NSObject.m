@@ -202,7 +202,7 @@ BOOL NSObjectIsKindOfClass(id object,Class kindOf) {
    [self doesNotRecognizeSelector:[invocation selector]];
 }
 
--(unsigned)_frameLengthForSelector:(SEL)selector {
+-(NSUInteger)_frameLengthForSelector:(SEL)selector {
    NSMethodSignature *signature=[self methodSignatureForSelector:selector];
    
    return [signature frameLength];
@@ -230,8 +230,8 @@ BOOL NSObjectIsKindOfClass(id object,Class kindOf) {
 
 
 
--(unsigned)hash {
-   return (unsigned)self>>4;
+-(NSUInteger)hash {
+   return (NSUInteger)self>>4;
 }
 
 
@@ -334,7 +334,7 @@ BOOL NSObjectIsKindOfClass(id object,Class kindOf) {
 }
 
 
--(unsigned)retainCount {
+-(NSUInteger)retainCount {
    return NSExtraRefCount(self);
 }
 

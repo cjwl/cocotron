@@ -11,7 +11,7 @@
 #import <Foundation/NSValue.h>
 
 #define NUM_CHAINS 16
-#define ID_HASH(a) (((int)a >> 5) & (NUM_CHAINS - 1))
+#define ID_HASH(a) (((long)a >> 5) & (NUM_CHAINS - 1))
 
 // lock to serialize accesses to the lock chain; also serves as a marker if we 
 // are currently locking (locking is disabled as long as there's no multithreading)

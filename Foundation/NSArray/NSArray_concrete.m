@@ -5,19 +5,16 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
-
-// Original - Christopher Lloyd <cjwl@objc.net>
 #import "NSArray_concrete.h"
 #import <Foundation/NSRaise.h>
 
 @implementation NSArray_concrete
 
-static inline NSArray_concrete *newWithCount(NSZone *zone,unsigned count){
+static inline NSArray_concrete *newWithCount(NSZone *zone,NSUInteger count){
    return NSAllocateObject([NSArray_concrete class],sizeof(id)*count,zone);
 }
 
-NSArray *NSArray_concreteNewWithCount(NSZone *zone,id **objects,
-  unsigned count){
+NSArray *NSArray_concreteNewWithCount(NSZone *zone,id **objects,NSUInteger count){
    NSArray_concrete *self=newWithCount(zone,count);
 
    self->_count=count;
@@ -26,7 +23,7 @@ NSArray *NSArray_concreteNewWithCount(NSZone *zone,id **objects,
    return self;
 }
 
-NSArray *NSArray_concreteNew(NSZone *zone,id *objects,unsigned count) {
+NSArray *NSArray_concreteNew(NSZone *zone,id *objects,NSUInteger count) {
    NSArray_concrete *self=newWithCount(zone,count);
    unsigned         i;
 
@@ -38,7 +35,7 @@ NSArray *NSArray_concreteNew(NSZone *zone,id *objects,unsigned count) {
 }
 
 NSArray *NSArray_concreteWithArrayAndObject(NSArray *array,id object) {
-   unsigned         i,count=[array count];
+   NSUInteger         i,count=[array count];
    NSArray_concrete *self=newWithCount(NULL,count+1);
 
    self->_count=count+1;
@@ -53,7 +50,7 @@ NSArray *NSArray_concreteWithArrayAndObject(NSArray *array,id object) {
 }
 
 NSArray *NSArray_concreteWithArrayAndArray(NSArray *array1,NSArray *array2) {
-   unsigned         i,count1=[array1 count],total=count1+[array2 count];
+   NSUInteger         i,count1=[array1 count],total=count1+[array2 count];
    NSArray_concrete *self=newWithCount(NULL,total);
 
    self->_count=total;
@@ -68,7 +65,7 @@ NSArray *NSArray_concreteWithArrayAndArray(NSArray *array1,NSArray *array2) {
 
 NSArray *NSArray_concreteWithArrayRange(NSArray *array,NSRange range) {
    NSArray_concrete *self=newWithCount(NULL,range.length);
-   unsigned         i;
+   NSUInteger         i;
 
    self->_count=range.length;
 
@@ -81,7 +78,7 @@ NSArray *NSArray_concreteWithArrayRange(NSArray *array,NSRange range) {
 }
 
 -(void)dealloc {
-   int count=_count;
+   NSInteger count=_count;
 
    while(--count>=0)
     [_objects[count] release];
@@ -91,9 +88,9 @@ NSArray *NSArray_concreteWithArrayRange(NSArray *array,NSRange range) {
    [super dealloc];
 }
 
--(unsigned)count { return _count; }
+-(NSUInteger)count { return _count; }
 
--objectAtIndex:(unsigned)index {
+-objectAtIndex:(NSUInteger)index {
    if(index>=_count)
     NSRaiseException(NSRangeException,self,_cmd,@"index %d beyond count %d",
      index,_count);
@@ -103,7 +100,7 @@ NSArray *NSArray_concreteWithArrayRange(NSArray *array,NSRange range) {
 
 -(NSUInteger)countByEnumeratingWithState:(NSFastEnumerationState *)state objects:(id *)stackbuf count:(NSUInteger)length;
 {
-	int numObjects=MIN([self count] - state->extra[0], length);
+	NSInteger numObjects=MIN([self count] - state->extra[0], length);
 	state->mutationsPtr=(unsigned long*)&_objects;
 	state->itemsPtr=&_objects[state->extra[0]];
 	state->extra[0]+=numObjects;

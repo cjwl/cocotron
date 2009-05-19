@@ -45,7 +45,7 @@ YES,YES,YES,YES,YES,YES,YES,YES,YES,YES,YES, NO, NO, NO, NO, NO,// 112
 }
 
 -(void)encodeString:(NSString *)string escape:(BOOL)escape {
-   unsigned length=[string length];
+   NSUInteger length=[string length];
    unichar  buffer[length];
    int      i;
 
@@ -118,7 +118,7 @@ YES,YES,YES,YES,YES,YES,YES,YES,YES,YES,YES, NO, NO, NO, NO, NO,// 112
 }
 
 -(void)encodeArray:(NSArray *)array indent:(int)indent {
-   int i,count=[array count];
+   NSInteger i,count=[array count];
 
    [_data appendBytes:"(\n" length:2];
    for(i=0;i<count;i++){
@@ -136,7 +136,7 @@ YES,YES,YES,YES,YES,YES,YES,YES,YES,YES,YES, NO, NO, NO, NO, NO,// 112
 -(void)encodeDictionary:(NSDictionary *)dictionary indent:(int)indent {
    NSArray *allKeys=[[dictionary allKeys]
     sortedArrayUsingSelector:@selector(compare:)];
-   int      i,count=[allKeys count];
+   NSInteger      i,count=[allKeys count];
 
    [_data appendBytes:"{\n" length:2];
    for(i=0;i<count;i++){

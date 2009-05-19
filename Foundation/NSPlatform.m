@@ -106,21 +106,21 @@ extern NSString *NSPlatformClassName;
    return nil;
 }
 
--(void *)contentsOfFile:(NSString *)path length:(unsigned *)length {
+-(void *)contentsOfFile:(NSString *)path length:(NSUInteger *)length {
    NSInvalidAbstractInvocation();
    return NULL;
 }
 
--(void *)mapContentsOfFile:(NSString *)path length:(unsigned *)length {
+-(void *)mapContentsOfFile:(NSString *)path length:(NSUInteger *)length {
    NSInvalidAbstractInvocation();
    return NULL;
 }
 
--(void)unmapAddress:(void *)ptr length:(unsigned)length {
+-(void)unmapAddress:(void *)ptr length:(NSUInteger)length {
    NSInvalidAbstractInvocation();
 }
 
--(BOOL)writeContentsOfFile:(NSString *)path bytes:(const void *)bytes length:(unsigned)length atomically:(BOOL)atomically {
+-(BOOL)writeContentsOfFile:(NSString *)path bytes:(const void *)bytes length:(NSUInteger)length atomically:(BOOL)atomically {
    NSInvalidAbstractInvocation();
    return NO;
 }

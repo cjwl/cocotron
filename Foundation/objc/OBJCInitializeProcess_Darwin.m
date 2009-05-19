@@ -26,16 +26,21 @@ void OBJCInitializeProcess_Darwin(void)
    //Fix up sel references
   
    for (i = 0; i < count; i++) {
+#ifdef __LP64__
+      const struct mach_header_64 *head = (struct mach_header_64 *) _dyld_get_image_header(i);
+
+      uint64_t size;
+      char *section = getsectdatafromheader_64(head,"__OBJC", "__message_refs", &size);
+#else
       const struct mach_header *head = _dyld_get_image_header(i);
 
       uint32_t size;
-      char *section = getsectdatafromheader(head,
-				  "__OBJC", "__message_refs", &size);
-      
+      char *section = getsectdatafromheader(head,"__OBJC", "__message_refs", &size);
+#endif
       if(head->filetype == MH_DYLIB)
          section += _dyld_get_image_vmaddr_slide(i);
       
-      int nmess = size / sizeof(SEL);
+      long nmess = size / sizeof(SEL);
       
       SEL *sels = (SEL*)section;
       
@@ -51,19 +56,22 @@ void OBJCInitializeProcess_Darwin(void)
    // queue each module.
    
    for (i = 0; i < count; i++) {
-      const struct mach_header *head = _dyld_get_image_header(i);
-      
-      
-      uint32_t size = 0;
-      int nmodules = 0;
+      long nmodules = 0;
       
       OBJCModule *mods = 0;
       char *section = 0;
 
-      section = getsectdatafromheader(head,"__OBJC",
-                                         "__module_info",
-                                         &size);
+#ifdef __LP64__
+      const struct mach_header_64 *head = (struct mach_header_64 *)_dyld_get_image_header(i);
       
+      uint64_t size=0;
+      section = getsectdatafromheader_64(head,"__OBJC","__module_info",&size);
+#else
+      const struct mach_header *head = _dyld_get_image_header(i);
+
+      uint32_t size=0;
+      section = getsectdatafromheader(head,"__OBJC","__module_info",&size);
+#endif
       if(head->filetype == MH_DYLIB)
          section += _dyld_get_image_vmaddr_slide(i);
       
@@ -71,7 +79,7 @@ void OBJCInitializeProcess_Darwin(void)
       
       nmodules = size / sizeof(OBJCModule);
       
-      int j;
+      long j;
       for(j=0; j<nmodules; j++)
       {
          OBJCModule *m = &mods[j];
@@ -86,18 +94,24 @@ void OBJCInitializeProcess_Darwin(void)
    */
    
    for (i = 0; i < count; i++) {
+#ifdef __LP64__
+      const struct mach_header_64 *head = (struct mach_header_64 *)_dyld_get_image_header(i);
+
+      uint64_t size = 0;
+      char *section  = getsectdatafromheader_64(head,"__OBJC", "__cls_refs", &size);
+#else
       const struct mach_header *head = _dyld_get_image_header(i);
 
       uint32_t size = 0;
-      char *section  = getsectdatafromheader (head,
-				 "__OBJC", "__cls_refs", &size);
-      int nrefs = size / sizeof(struct objc_class *);
+      char *section  = getsectdatafromheader (head,"__OBJC", "__cls_refs", &size);
+#endif
+      typeof(size) nrefs = size / sizeof(struct objc_class *);
       
       if(head->filetype == MH_DYLIB)
          section += _dyld_get_image_vmaddr_slide(i);
 
       Class *refs = (Class*)section;
-      int j;
+      long j;
       for(j=0; j<nrefs; j++)
       {
           const char *aref = (const char*)refs[j]; // yes these are strings !

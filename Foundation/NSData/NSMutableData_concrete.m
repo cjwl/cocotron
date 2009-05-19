@@ -17,7 +17,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return _bytes;
 }
 
--(unsigned)length {
+-(NSUInteger)length {
    return _length;
 }
 
@@ -25,7 +25,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return _bytes;
 }
 
-static inline void setLength(NSMutableData_concrete *self,unsigned length){
+static inline void setLength(NSMutableData_concrete *self,NSUInteger length){
    if(length>self->_length){
     if(length>self->_capacity){
      self->_capacity=length*2;
@@ -39,7 +39,7 @@ static inline void setLength(NSMutableData_concrete *self,unsigned length){
 }
 
 static inline void replaceBytesInRange(NSMutableData_concrete *self,NSRange range,const void *bytes){
-   int   i,loc=range.location,len=range.length;
+   NSInteger   i,loc=range.location,len=range.length;
 
    if(loc>self->_length)
     NSRaiseException(NSRangeException,self,@selector(replaceBytesInRange:withBytes:),@"location %d beyond length %d",loc,self->_length);
@@ -51,7 +51,7 @@ static inline void replaceBytesInRange(NSMutableData_concrete *self,NSRange rang
     ((char *)self->_bytes)[i+loc]=((char *)bytes)[i];
 }
 
--(void)setLength:(unsigned)length {
+-(void)setLength:(NSUInteger)length {
    setLength(self,length);
 }
 
@@ -59,7 +59,7 @@ static inline void replaceBytesInRange(NSMutableData_concrete *self,NSRange rang
    return [self initWithCapacity:0];
 }
 
--initWithCapacity:(unsigned)capacity {
+-initWithCapacity:(NSUInteger)capacity {
    _length=0;
    _capacity=(capacity<4)?4:capacity;
    _bytes=NSZoneMalloc(NSZoneFromPointer(self),_capacity);
@@ -73,7 +73,7 @@ static inline void replaceBytesInRange(NSMutableData_concrete *self,NSRange rang
    [super dealloc];
 }
 
--(void)appendBytes:(const void *)bytes length:(unsigned)length {
+-(void)appendBytes:(const void *)bytes length:(NSUInteger)length {
    NSRange  range=NSMakeRange(_length,length);
 
    setLength(self,_length+length);

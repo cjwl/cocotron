@@ -9,12 +9,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSGeometry.h>
 
 typedef struct {
-   float m11;
-   float m12;
-   float m21;
-   float m22;
-   float tX;
-   float tY;
+   CGFloat m11;
+   CGFloat m12;
+   CGFloat m21;
+   CGFloat m22;
+   CGFloat tX;
+   CGFloat tY;
 } NSAffineTransformStruct;
 
 @interface NSAffineTransform : NSObject <NSCopying,NSCoding> {
@@ -33,15 +33,15 @@ typedef struct {
 -(void)appendTransform:(NSAffineTransform *)other;
 -(void)prependTransform:(NSAffineTransform *)other;
 
--(void)translateXBy:(float)xby yBy:(float)yby;
+-(void)translateXBy:(CGFloat)xby yBy:(CGFloat)yby;
 
 -(NSPoint)transformPoint:(NSPoint)point;
 -(NSSize)transformSize:(NSSize)value;
 
--(void)rotateByDegrees:(float)angle;
--(void)rotateByRadians:(float)radians;
+-(void)rotateByDegrees:(CGFloat)angle;
+-(void)rotateByRadians:(CGFloat)radians;
 
--(void)scaleBy:(float)value;
--(void)scaleXBy:(float)xvalue yBy:(float)yvalue;
+-(void)scaleBy:(CGFloat)value;
+-(void)scaleXBy:(CGFloat)xvalue yBy:(CGFloat)yvalue;
 
 @end

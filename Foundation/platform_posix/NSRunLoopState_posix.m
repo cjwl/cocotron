@@ -1,5 +1,6 @@
 #import "NSRunLoopState_posix.h"
 #import <Foundation/NSSelectInputSourceSet.h>
+#import <Foundation/NSArray.h>
 #import"NSCancelInputSource_posix.h"
 
 @implementation NSRunLoopState(posix)

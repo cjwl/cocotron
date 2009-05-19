@@ -71,7 +71,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)addCharactersInString:(NSString *)string {
-   unsigned i,length=[string length];
+   NSUInteger i,length=[string length];
    unichar  unicode[length];
 
    [string getCharacters:unicode];
@@ -81,7 +81,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)addCharactersInRange:(NSRange)range {
-   unsigned i,limit=NSMaxRange(range);
+   NSUInteger i,limit=NSMaxRange(range);
 
    if(limit>0xFFFF)
     limit=0xFFFF+1;
@@ -100,7 +100,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)removeCharactersInString:(NSString *)string {
-   unsigned i,length=[string length];
+   NSUInteger i,length=[string length];
    unichar  unicode[length];
 
    [string getCharacters:unicode];
@@ -110,7 +110,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)removeCharactersInRange:(NSRange)range {
-   unsigned i,limit=NSMaxRange(range);
+   NSUInteger i,limit=NSMaxRange(range);
 
    if(limit>0xFFFF)
     limit=0xFFFF+1;

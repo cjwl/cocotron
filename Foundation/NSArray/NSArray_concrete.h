@@ -9,13 +9,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSArray.h>
 
 @interface NSArray_concrete : NSArray {
-   unsigned _count;
+   NSUInteger _count;
    id       _objects[0];
 }
 @end
 
-NSArray *NSArray_concreteNew(NSZone *zone,id *objects,unsigned count);
-NSArray *NSArray_concreteNewWithCount(NSZone *zone,id **objects,unsigned count);
+NSArray *NSArray_concreteNew(NSZone *zone,id *objects,NSUInteger count);
+NSArray *NSArray_concreteNewWithCount(NSZone *zone,id **objects,NSUInteger count);
 NSArray *NSArray_concreteWithArrayAndObject(NSArray *array,id object);
 NSArray *NSArray_concreteWithArrayAndArray(NSArray *array1,NSArray *array2);
 NSArray *NSArray_concreteWithArrayRange(NSArray *array1,NSRange range);

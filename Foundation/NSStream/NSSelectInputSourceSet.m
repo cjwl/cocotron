@@ -46,7 +46,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(BOOL)immediateInputInMode:(NSString *)mode {
    NSArray *sources=[_outputSources allObjects];
    NSSet   *validInputSources=[self validInputSources];
-   int      i,count=[sources count];
+   NSInteger      i,count=[sources count];
 
    for(i=0;i<count;i++){   
     NSSelectInputSource *check=[sources objectAtIndex:i];

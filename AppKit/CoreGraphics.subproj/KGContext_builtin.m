@@ -829,8 +829,8 @@ void KGRasterizerFill(KGRasterizer *self,int fillRuleMask) {
     
     int     scany;
 
-   int *winding=self->_winding;
-   int *increase=self->_increase;
+   int * winding=self->_winding;
+   int * increase=self->_increase;
    int  numberOfSamples=self->numSamples;
    int  shiftNumberOfSamples=self->sampleSizeShift;
    
@@ -857,8 +857,8 @@ void KGRasterizerFill(KGRasterizer *self,int fillRuleMask) {
        maxx=MAX(maxx,xlimit);
       }
       else {
-       CGFloat *pre=edge->samples;
-       CGFloat *preEnd=pre+numberOfSamples;
+       CGFloat * pre=edge->samples;
+       CGFloat * preEnd=pre+numberOfSamples;
        CGFloat  sampleY=self->samplesInitialY;
        CGFloat  sampleDeltaY=self->samplesDeltaY;
        CGFloat  v0y=edge->v0.y-scany;
@@ -885,10 +885,6 @@ void KGRasterizerFill(KGRasterizer *self,int fillRuleMask) {
        preEnd-=aboveY;
       
        int direction=edge->direction;
-       int i,dirArray[4];
-
-       for(i=0;i<4;i++)
-        dirArray[i]=direction;
        
         if(belowY+aboveY<numberOfSamples){
          int scanx=MAX(0,edge->minx);

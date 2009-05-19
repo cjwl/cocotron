@@ -80,7 +80,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(BOOL)isEqualToValue:(NSValue *)other {
    const char *type=[self objCType];
-   unsigned    size,alignment;
+   NSUInteger    size,alignment;
    void       *selfData,*otherData;
 
    if(self==other)
@@ -127,7 +127,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -nonretainedObjectValue {
    const char *type=[self objCType];
-   unsigned    size,alignment;
+   NSUInteger    size,alignment;
    id          value;
 
    NSGetSizeAndAlignment(type,&size,&alignment);
@@ -140,7 +140,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void *)pointerValue {
    const char *type=[self objCType];
-   unsigned    size,alignment;
+   NSUInteger    size,alignment;
    void       *value;
 
    NSGetSizeAndAlignment(type,&size,&alignment);

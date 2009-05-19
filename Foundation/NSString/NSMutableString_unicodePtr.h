@@ -9,19 +9,19 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSString.h>
 
 @interface NSMutableString_unicodePtr : NSMutableString {
-   unsigned _length,_capacity;
+   NSUInteger _length,_capacity;
    unichar *_unicode;
 }
 @end
 
 NSString *NSMutableString_unicodePtrNewWithCString(NSZone *zone,
- const char *bytes,unsigned length);
+ const char *bytes,NSUInteger length);
 
 NSString *NSMutableString_unicodePtrNew(NSZone *zone,
- const unichar *unicode,unsigned length);
+ const unichar *unicode,NSUInteger length);
 
 NSString *NSMutableString_unicodePtrNewNoCopy(NSZone *zone,
- unichar *unicode,unsigned length);
+ unichar *unicode,NSUInteger length);
 
 NSString *NSMutableString_unicodePtrNewWithCapacity(NSZone *zone,
- unsigned capacity);
+ NSUInteger capacity);

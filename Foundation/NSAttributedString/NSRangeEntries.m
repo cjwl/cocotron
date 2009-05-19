@@ -6,7 +6,6 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
-// Original - Christopher Lloyd <cjwl@objc.net>
 #import <Foundation/NSRangeEntries.h>
 #import <Foundation/NSString.h>
 
@@ -18,13 +17,13 @@ typedef struct NSRangeEntry {
 } NSRangeEntry;
 
 struct NSRangeEntries {
-   unsigned             capacity;
-   unsigned             count;
+   NSUInteger             capacity;
+   NSUInteger             count;
    struct NSRangeEntry *entries;
    BOOL                 objects;
 };
 
- NSRangeEntries *NSCreateRangeToOwnedPointerEntries(unsigned capacity) {
+ NSRangeEntries *NSCreateRangeToOwnedPointerEntries(NSUInteger capacity) {
    NSRangeEntries *result=NSZoneMalloc(NULL,sizeof(NSRangeEntries));
 
    result->capacity=(capacity<4)?4:capacity;
@@ -35,7 +34,7 @@ struct NSRangeEntries {
    return result;
 }
 
-  NSRangeEntries *NSCreateRangeToCopiedObjectEntries(unsigned capacity) {
+  NSRangeEntries *NSCreateRangeToCopiedObjectEntries(NSUInteger capacity) {
    NSRangeEntries *result=NSCreateRangeToOwnedPointerEntries(capacity);
 
    result->objects=YES;
@@ -61,12 +60,12 @@ struct NSRangeEntries {
    self->count=0;
 }
 
- unsigned NSCountRangeEntries(NSRangeEntries *self) {
+ NSUInteger NSCountRangeEntries(NSRangeEntries *self) {
    return self->count;
 }
 
-static inline void insertEntryAtIndex(NSRangeEntries *self,unsigned index,NSRange range,void *value){
-   int i;
+static inline void insertEntryAtIndex(NSRangeEntries *self,NSUInteger index,NSRange range,void *value){
+   NSInteger i;
 
    self->count++;
    if(self->count>self->capacity){
@@ -85,17 +84,17 @@ static inline void insertEntryAtIndex(NSRangeEntries *self,unsigned index,NSRang
 }
 
  void NSRangeEntryInsert(NSRangeEntries *self,NSRange range,void *value) {
-   int count=self->count;
-   int bottom=0,top=count;
-   int insertAt=0;
+   NSInteger count=self->count;
+   NSInteger bottom=0,top=count;
+   NSInteger insertAt=0;
 
    if(count>0){
     while(top>=bottom){
-     int     mid=(bottom+top)/2;
+     NSInteger     mid=(bottom+top)/2;
      NSRange check=self->entries[mid].range;
 
      if(range.location>=NSMaxRange(check)){
-      int next=mid+1;
+      NSInteger next=mid+1;
 
       if(next>=count || NSMaxRange(range)<=self->entries[next].range.location){
        insertAt=next;
@@ -104,7 +103,7 @@ static inline void insertEntryAtIndex(NSRangeEntries *self,unsigned index,NSRang
       bottom=mid+1;
      }
      else {
-      int prev=mid-1;
+      NSInteger prev=mid-1;
 
       if(prev<0 || range.location>=NSMaxRange(self->entries[prev].range)){
        insertAt=mid;
@@ -133,9 +132,9 @@ static inline void insertEntryAtIndex(NSRangeEntries *self,unsigned index,NSRang
    insertEntryAtIndex(self,insertAt,range,value);
 }
 
- void *NSRangeEntryAtIndex(NSRangeEntries *self,unsigned location,NSRange *effectiveRangep) {
-   int     count=self->count;
-   int     bottom=0,top=count;
+ void *NSRangeEntryAtIndex(NSRangeEntries *self,NSUInteger location,NSRange *effectiveRangep) {
+   NSInteger     count=self->count;
+   NSInteger     bottom=0,top=count;
 
    if(top==0){
     if(effectiveRangep!=NULL)
@@ -144,7 +143,7 @@ static inline void insertEntryAtIndex(NSRangeEntries *self,unsigned index,NSRang
    }
 
    while(top>=bottom){
-    int     mid=(bottom+top)/2;
+    NSInteger     mid=(bottom+top)/2;
     NSRange check=self->entries[mid].range;
 
     if(NSLocationInRange(location,check)){
@@ -153,7 +152,7 @@ static inline void insertEntryAtIndex(NSRangeEntries *self,unsigned index,NSRang
      return self->entries[mid].value;
     }
     else if(location>=NSMaxRange(check)){
-     int next=mid+1;
+     NSInteger next=mid+1;
 
      if(next>=count){
       if(effectiveRangep!=NULL){
@@ -172,7 +171,7 @@ static inline void insertEntryAtIndex(NSRangeEntries *self,unsigned index,NSRang
      bottom=mid+1;
     }
     else {
-     int prev=mid-1;
+     NSInteger prev=mid-1;
 
      if(prev<0){
       if(effectiveRangep!=NULL){
@@ -197,11 +196,11 @@ static inline void insertEntryAtIndex(NSRangeEntries *self,unsigned index,NSRang
 }
 
  void *NSRangeEntryAtRange(NSRangeEntries *self,NSRange range) {
-   int bottom=0,top=self->count;
+   NSInteger bottom=0,top=self->count;
 
    if(top>0){
     while(top>=bottom){
-     int     mid=(bottom+top)/2;
+     NSInteger     mid=(bottom+top)/2;
      NSRange check=self->entries[mid].range;
 
      if(NSEqualRanges(range,check))
@@ -238,7 +237,7 @@ static inline void insertEntryAtIndex(NSRangeEntries *self,unsigned index,NSRang
    return YES;
 }
 
-static inline void removeEntryAtIndex(NSRangeEntries *self,unsigned index){
+static inline void removeEntryAtIndex(NSRangeEntries *self,NSUInteger index){
    if(self->objects)
     [(id)self->entries[index].value release];
    else
@@ -249,9 +248,9 @@ static inline void removeEntryAtIndex(NSRangeEntries *self,unsigned index){
     self->entries[index]=self->entries[index+1];
 }
 
- void NSRangeEntriesExpandAndWipe(NSRangeEntries *self,NSRange range,int delta) {
-   int      count=self->count;
-   unsigned max=NSMaxRange(range);
+ void NSRangeEntriesExpandAndWipe(NSRangeEntries *self,NSRange range,NSInteger delta) {
+   NSInteger  count=self->count;
+   NSUInteger max=NSMaxRange(range);
    enum { useBefore, useFirst, useAfter, useNone } useAttributes;
 
 //NSLog(@"expand wipe %d %d by %d",range.location,range.length,delta);
@@ -302,14 +301,14 @@ static inline void removeEntryAtIndex(NSRangeEntries *self,unsigned index){
 }
 
  void NSRangeEntriesDivideAndConquer(NSRangeEntries *self,NSRange range) {
-   int      count=self->count;
-   unsigned max=NSMaxRange(range);
+   NSInteger  count=self->count;
+   NSUInteger max=NSMaxRange(range);
 
    while(--count>=0){
     NSRange check=self->entries[count].range;
 
     if(check.location<max){
-     unsigned maxCheck=NSMaxRange(check);
+     NSUInteger maxCheck=NSMaxRange(check);
 
      if(check.location>=range.location){
       if(maxCheck<=max)
@@ -345,7 +344,7 @@ NSLog(@"DUMP END");
 *(char *)0=0;
 }
 
- void NSRangeEntriesVerify(NSRangeEntries *self,unsigned length) {
+ void NSRangeEntriesVerify(NSRangeEntries *self,NSUInteger length) {
 #if 0
    unsigned last=0;
    int      i;

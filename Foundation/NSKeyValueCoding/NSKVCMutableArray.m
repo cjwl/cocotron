@@ -68,14 +68,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	[super dealloc];
 }
 
-- (unsigned)count;
+- (NSUInteger)count;
 {
 	if(count)
-		return (int)count(proxyObject, countSel);
+		return (NSUInteger)count(proxyObject, countSel);
 	return [[self _representedObject] count];
 }
 
-- (id)objectAtIndex:(unsigned)index;
+- (id)objectAtIndex:(NSUInteger)index;
 {
 	if(objectAtIndex)
 		return objectAtIndex(proxyObject, objectAtIndexSel, index);
@@ -95,7 +95,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	}
 }
 
-- (void)insertObject:(id)anObject atIndex:(unsigned)index;
+- (void)insertObject:(id)anObject atIndex:(NSUInteger)index;
 {
 	if(insert)
 	{
@@ -123,7 +123,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	}
 }
 
-- (void)removeObjectAtIndex:(unsigned)index;
+- (void)removeObjectAtIndex:(NSUInteger)index;
 {
 	if(remove)
 		remove(proxyObject, removeSel, index); 
@@ -136,7 +136,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	}
 }
 
-- (void)replaceObjectAtIndex:(unsigned)index withObject:(id)anObject;
+- (void)replaceObjectAtIndex:(NSUInteger)index withObject:(id)anObject;
 {
 	if(replace)
 		replace(proxyObject, replaceSel, index, anObject);

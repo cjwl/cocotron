@@ -17,7 +17,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return _string;
 }
 
--(NSDictionary *)attributesAtIndex:(unsigned)location effectiveRange:(NSRange *)effectiveRangep {
+-(NSDictionary *)attributesAtIndex:(NSUInteger)location effectiveRange:(NSRange *)effectiveRangep {
    if(location>=[self length])
     NSRaiseException(NSRangeException,self,_cmd,@"index %d beyond length %d",location,[self length]);
 

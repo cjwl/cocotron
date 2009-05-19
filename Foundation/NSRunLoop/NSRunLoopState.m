@@ -48,7 +48,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)changingIntoMode:(NSString *)mode {
-   int i,count=[_asyncInputSourceSets count];
+   NSInteger i,count=[_asyncInputSourceSets count];
 
    [_inputSourceSet changingIntoMode:mode];
 
@@ -59,7 +59,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(BOOL)fireTimers {
    NSMutableArray *fire=[NSMutableArray array];
    NSDate         *now=[NSDate date];
-   int             count=[_timers count];
+   NSInteger             count=[_timers count];
    BOOL            didFireTimer=NO;
    
    while(--count>=0){
@@ -79,7 +79,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(NSDate *)limitDateForMode:(NSString *)mode {
    NSDate *limit=nil;
-   int     count;
+   NSInteger     count;
 
    count=[_timers count];
    while(--count>=0){
@@ -105,7 +105,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    if([_inputSourceSet recognizesInputSource:source])
     return _inputSourceSet;
    else {
-    int i,count=[_asyncInputSourceSets count];
+    NSInteger i,count=[_asyncInputSourceSets count];
     
     for(i=0;i<count;i++){
      NSInputSourceSet *check=[_asyncInputSourceSets objectAtIndex:i];
@@ -126,7 +126,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)invalidateTimerWithDelayedPerform:(NSDelayedPerform *)delayed {
-   int count=[_timers count];
+   NSInteger count=[_timers count];
 
    while(--count>=0){
     NSTimer          *timer=[_timers objectAtIndex:count];
@@ -142,7 +142,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    if([_inputSourceSet immediateInputInMode:mode])
     return YES;
    else {
-    int i,count=[_asyncInputSourceSets count];
+    NSInteger i,count=[_asyncInputSourceSets count];
     
     for(i=0;i<count;i++)
      if([[_asyncInputSourceSets objectAtIndex:i] immediateInputInMode:mode])
@@ -154,7 +154,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)acceptInputForMode:(NSString *)mode beforeDate:(NSDate *)date {
    if(![self immediateInputInMode:mode]){
-    int i,count=[_asyncInputSourceSets count];
+    NSInteger i,count=[_asyncInputSourceSets count];
     
     for(i=0;i<count;i++)
      [[_asyncInputSourceSets objectAtIndex:i] waitInBackgroundInMode:mode];

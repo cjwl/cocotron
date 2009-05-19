@@ -9,4 +9,4 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSString.h>
 
 unichar *NSCharactersWithContentsOfFile(NSString *path,
-  unsigned *length,NSZone *zone);
+  NSUInteger *length,NSZone *zone);

@@ -9,34 +9,34 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSRange.h>
 
 @interface NSIndexSet : NSObject <NSCopying,NSMutableCopying> {
-   unsigned _length;
+   NSUInteger _length;
    NSRange *_ranges; 
 }
 
 +indexSetWithIndexesInRange:(NSRange)range;
-+indexSetWithIndex:(unsigned)index;
++indexSetWithIndex:(NSUInteger)index;
 +indexSet;
 
 -initWithIndexSet:(NSIndexSet *)other;
 -initWithIndexesInRange:(NSRange)range;
--initWithIndex:(unsigned)index;
+-initWithIndex:(NSUInteger)index;
 -init;
 
 -(BOOL)isEqualToIndexSet:(NSIndexSet *)other;
 
--(unsigned)count;
--(unsigned)firstIndex;
--(unsigned)lastIndex;
--(unsigned)getIndexes:(unsigned *)buffer maxCount:(unsigned)capacity inIndexRange:(NSRange *)range;
+-(NSUInteger)count;
+-(NSUInteger)firstIndex;
+-(NSUInteger)lastIndex;
+-(NSUInteger)getIndexes:(NSUInteger *)buffer maxCount:(NSUInteger)capacity inIndexRange:(NSRange *)range;
 
 -(BOOL)containsIndexesInRange:(NSRange)range;
 -(BOOL)containsIndexes:(NSIndexSet *)other;
--(BOOL)containsIndex:(unsigned)index;
+-(BOOL)containsIndex:(NSUInteger)index;
 
--(unsigned)indexGreaterThanIndex:(unsigned)index;
--(unsigned)indexGreaterThanOrEqualToIndex:(unsigned)index;
--(unsigned)indexLessThanIndex:(unsigned)index;
--(unsigned)indexLessThanOrEqualToIndex:(unsigned)index;
+-(NSUInteger)indexGreaterThanIndex:(NSUInteger)index;
+-(NSUInteger)indexGreaterThanOrEqualToIndex:(NSUInteger)index;
+-(NSUInteger)indexLessThanIndex:(NSUInteger)index;
+-(NSUInteger)indexLessThanOrEqualToIndex:(NSUInteger)index;
 
 -(BOOL)intersectsIndexesInRange:(NSRange)range;
 

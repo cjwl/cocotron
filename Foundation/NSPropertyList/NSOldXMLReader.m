@@ -5,8 +5,6 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
-
-// Original - Christopher Lloyd <cjwl@objc.net>
 #import "NSOldXMLReader.h"
 #import "NSOldXMLElement.h"
 #import "NSOldXMLAttribute.h"
@@ -86,11 +84,11 @@ enum {
    return _rootElement;
 }
 
--(unsigned)length {
+-(NSUInteger)length {
    return _range.length;
 }
 
--(unichar)characterAtIndex:(unsigned)location {
+-(unichar)characterAtIndex:(NSUInteger)location {
    return _bytes[_range.location+location];
 }
 
@@ -102,8 +100,8 @@ enum {
 }
 
 -(void)getCharacters:(unichar *)buffer range:(NSRange)range {
-   unsigned location=range.location,max=NSMaxRange(range);
-   unsigned i;
+   NSUInteger location=range.location,max=NSMaxRange(range);
+   NSUInteger i;
 
    for(i=0;location<max;i++,location++)
     buffer[i]=_bytes[_range.location+location];
@@ -166,7 +164,7 @@ enum {
    if(NSUTF8IsASCII((const char *)(_bytes+_range.location),_range.length))
     return self;
    else {
-    unsigned  length;
+    NSUInteger  length;
     unichar  *buffer=NSUTF8ToUnicode((const char *)(_bytes+_range.location),_range.length,&length,NULL);
     NSString *result=[[NSString alloc] initWithCharacters:buffer length:length];
     
@@ -218,7 +216,7 @@ static inline BOOL codeIsNameContinue(unsigned char code){
 }
 
 -(void)unexpectedIn:(NSString *)state {
-   unsigned      position=NSMaxRange(_range)-1;
+   NSUInteger      position=NSMaxRange(_range)-1;
    unsigned char code=_bytes[position];
 
    [NSException raise:@"" format:@"Unexpected character %c in %@, position=%d",code,state,position];

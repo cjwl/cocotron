@@ -16,18 +16,18 @@ typedef struct NSSetBucket {
 typedef struct NSCountBucket {
    struct NSCountBucket *next;
    id                       key;
-   unsigned                 count;
+   NSUInteger                 count;
 } NSCountBucket;
 
 typedef struct {
-   unsigned      count;
-   unsigned      numBuckets;
+   NSUInteger      count;
+   NSUInteger      numBuckets;
    NSSetBucket **buckets;
 } NSSetTable;
 
-unsigned NSSetTableRoundCount(unsigned count);
+NSUInteger NSSetTableRoundCount(NSUInteger count);
 
-void NSSetTableInit(NSSetTable *table,unsigned capacity,NSZone *zone);
+void NSSetTableInit(NSSetTable *table,NSUInteger capacity,NSZone *zone);
 void NSSetTableFreeObjects(NSSetTable *table);
 void NSSetTableFreeBuckets(NSSetTable *table);
 
@@ -38,6 +38,6 @@ id   NSSetTableMember(NSSetTable *table,id object);
 void NSSetTableRemoveObject(NSSetTable *table,id object);
 
 
-unsigned NSSetTableObjectCount(NSSetTable *table,id object);
+NSUInteger NSSetTableObjectCount(NSSetTable *table,id object);
 void NSSetTableAddObjectCount(NSSetTable *table,id object);
 void NSSetTableRemoveObjectCount(NSSetTable *table,id object);

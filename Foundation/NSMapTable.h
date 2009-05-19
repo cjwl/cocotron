@@ -15,12 +15,12 @@ typedef struct NSMapTable NSMapTable;
 
 typedef struct {
    NSMapTable        *table;
-   int                i;
+   NSInteger                i;
    struct _NSMapNode *j;
 } NSMapEnumerator;
 
 typedef struct {
-   unsigned (*hash)(NSMapTable *table,const void *);
+   NSUInteger (*hash)(NSMapTable *table,const void *);
    BOOL (*isEqual)(NSMapTable *table,const void *,const void *);
    void (*retain)(NSMapTable *table,const void *);
    void (*release)(NSMapTable *table,void *);
@@ -54,14 +54,14 @@ FOUNDATION_EXPORT const NSMapTableValueCallBacks NSOwnedPointerMapValueCallBacks
 
 
 FOUNDATION_EXPORT NSMapTable *NSCreateMapTable(NSMapTableKeyCallBacks keyCallBacks,
-   NSMapTableValueCallBacks valueCallBacks,unsigned capacity);
+   NSMapTableValueCallBacks valueCallBacks,NSUInteger capacity);
 FOUNDATION_EXPORT NSMapTable *NSCreateMapTableWithZone(NSMapTableKeyCallBacks keyCallBacks,
-   NSMapTableValueCallBacks valueCallBacks,unsigned capacity,NSZone *zone);
+   NSMapTableValueCallBacks valueCallBacks,NSUInteger capacity,NSZone *zone);
 FOUNDATION_EXPORT NSMapTable *NSCopyMapTableWithZone(NSMapTable *table,NSZone *zone);
 FOUNDATION_EXPORT void NSFreeMapTable(NSMapTable *table);
 FOUNDATION_EXPORT void NSResetMapTable(NSMapTable *table);
 FOUNDATION_EXPORT BOOL NSCompareMapTables(NSMapTable *table1,NSMapTable *table2);
-FOUNDATION_EXPORT unsigned NSCountMapTable(NSMapTable *table);
+FOUNDATION_EXPORT NSUInteger NSCountMapTable(NSMapTable *table);
 FOUNDATION_EXPORT BOOL NSMapMember(NSMapTable *table,const void *key,void **originalKey,
    void **value);
 FOUNDATION_EXPORT void *NSMapGet(NSMapTable *table,const void *key);

@@ -322,8 +322,8 @@ NSLog(@"transfer completed");
 -(void)inputStream:(NSInputStream *)stream handleEvent:(NSStreamEvent)streamEvent 
 {
 	char buffer[1024];
-	int size=[stream read:(unsigned char*)buffer maxLength:sizeof(buffer)];
-	if (size)
+	NSInteger size=[stream read:(unsigned char*)buffer maxLength:sizeof(buffer)];
+	if (size>0)
 	{
 		[self appendData:[NSData dataWithBytes:buffer length:size]];
 		if ([self advanceIsEndOfReply])

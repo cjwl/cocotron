@@ -57,8 +57,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    NSInvalidAbstractInvocation();
 }
 
--(unsigned)hash {
-   return (unsigned)self>>4;
+-(NSUInteger)hash {
+   return (NSUInteger)self>>4;
 }
 
 -(BOOL)isEqual:object {
@@ -177,7 +177,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 
--(unsigned)retainCount {
+-(NSUInteger)retainCount {
    return NSExtraRefCount(self);
 }
 
