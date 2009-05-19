@@ -26,14 +26,14 @@ static NSUInteger convertUTF16toUTF8(const unichar *utf16,NSUInteger utf16Length
 	}
 	else if(code32<0x10000) {
 	 tmp[tmpLength++]=0x80|(code32&0x3F);
-	 tmp[tmpLength++]=0x80|(code32>>6);
-	 tmp[tmpLength++]=0xE0|(code32>>12);
+	 tmp[tmpLength++]=0x80|((code32>>6) & 0x3F);
+	 tmp[tmpLength++]=0xE0|((code32>>12) & 0x0F);
 	}
 	else {
 	 tmp[tmpLength++]=0x80|(code32&0x3F);
-	 tmp[tmpLength++]=0x80|(code32>>6);
-	 tmp[tmpLength++]=0x80|(code32>>12);
-	 tmp[tmpLength++]=0xF0|(code32>>18);
+	 tmp[tmpLength++]=0x80|((code32>>6) & 0x3F);
+	 tmp[tmpLength++]=0x80|((code32>>12) & 0x3F);
+	 tmp[tmpLength++]=0xF0|((code32>>18) & 0x07);
 	}
 	
 	if(utf8==NULL)
