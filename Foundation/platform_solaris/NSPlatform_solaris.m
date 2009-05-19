@@ -91,6 +91,8 @@ void NSPlatformSleepThreadForTimeInterval(NSTimeInterval interval) {
 
 NSString *NSPlatformExecutableDirectory=@"Solaris";
 NSString *NSPlatformResourceNameSuffix=@"solaris";
+
+NSString *NSPlatformExecutableFileExtension=@"";
 NSString *NSPlatformLoadableObjectFileExtension=@"so";
 NSString *NSPlatformLoadableObjectFilePrefix=@"lib";
 

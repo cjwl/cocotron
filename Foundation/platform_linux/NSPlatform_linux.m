@@ -88,6 +88,7 @@ void NSPlatformSleepThreadForTimeInterval(NSTimeInterval interval) {
 NSString *NSPlatformExecutableDirectory=@"Linux";
 NSString *NSPlatformResourceNameSuffix=@"linux";
 
+NSString *NSPlatformExecutableFileExtension=@"";
 NSString *NSPlatformLoadableObjectFileExtension=@"so";
 NSString *NSPlatformLoadableObjectFilePrefix=@"lib";
 

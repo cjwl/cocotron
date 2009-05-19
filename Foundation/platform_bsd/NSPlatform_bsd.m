@@ -78,6 +78,7 @@ void NSPlatformSleepThreadForTimeInterval(NSTimeInterval interval) {
 NSString *NSPlatformExecutableDirectory=@"BSD";
 NSString *NSPlatformResourceNameSuffix=@"bsd";
 
+NSString *NSPlatformExecutableFileExtension=@"";
 NSString *NSPlatformLoadableObjectFileExtension=@"so";
 NSString *NSPlatformLoadableObjectFilePrefix=@"lib";
 

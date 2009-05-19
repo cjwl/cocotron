@@ -117,6 +117,7 @@ void NSPlatformSleepThreadForTimeInterval(NSTimeInterval interval) {
 NSString *NSPlatformExecutableDirectory=@"Darwin";
 NSString *NSPlatformResourceNameSuffix=@"darwin";
 
+NSString *NSPlatformExecutableFileExtension=@"";
 NSString *NSPlatformLoadableObjectFileExtension=@"";
 NSString *NSPlatformLoadableObjectFilePrefix=@"";
 

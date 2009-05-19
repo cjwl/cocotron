@@ -1,4 +1,5 @@
 /* Copyright (c) 2006-2007 Christopher J. W. Lloyd
+                 2009 Markus Hitter (mah@jump-ing.de)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
@@ -289,8 +290,22 @@ static NSMapTable *pathToObject=NULL;
 }
 
 -(NSString *)pathForAuxiliaryExecutable:(NSString *)executable {
-   NSUnimplementedMethod();
-   return 0;
+   NSFileManager *fm=[NSFileManager defaultManager];
+   NSString *path=[[self executablePath] stringByDeletingLastPathComponent];
+   NSString *pathexe;
+
+   path=[path stringByAppendingPathComponent:executable];
+   if ([fm isExecutableFileAtPath:path])
+      return path;
+
+   // Try to enhance compatibility with Unix-ish code.
+   if (![NSPlatformExecutableFileExtension isEqualToString:@""]) {
+      path=[path stringByAppendingPathExtension:NSPlatformExecutableFileExtension];
+      if ([fm isExecutableFileAtPath:path])
+         return path;
+   }
+
+   return nil;
 }
 
 -(Class)principalClass {
@@ -352,7 +367,8 @@ static NSMapTable *pathToObject=NULL;
     if([check hasPrefix:name]){
      NSString *ext=[check pathExtension];
 
-     if([ext isEqualToString:NSPlatformLoadableObjectFileExtension])
+     if([ext isEqualToString:NSPlatformLoadableObjectFileExtension] ||
+        [ext isEqualToString:NSPlatformExecutableFileExtension])
       return [checkDir stringByAppendingPathComponent:check];
     }
    }

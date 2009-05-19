@@ -11,6 +11,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @class NSTimeZone, NSThread, NSInputSource,NSInputSourceSet;
 
+FOUNDATION_EXPORT NSString *NSPlatformExecutableFileExtension;
 FOUNDATION_EXPORT NSString *NSPlatformLoadableObjectFileExtension;
 FOUNDATION_EXPORT NSString *NSPlatformLoadableObjectFilePrefix;
 FOUNDATION_EXPORT NSString *NSPlatformExecutableDirectory;

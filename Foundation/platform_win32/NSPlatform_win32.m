@@ -158,6 +158,7 @@ static NSString *processName(){
 NSString *NSPlatformExecutableDirectory=@"Windows";
 NSString *NSPlatformResourceNameSuffix=@"windows";
 
+NSString *NSPlatformExecutableFileExtension=@"exe";
 NSString *NSPlatformLoadableObjectFileExtension=@"dll";
 NSString *NSPlatformLoadableObjectFilePrefix=@"";
 
