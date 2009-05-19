@@ -1178,7 +1178,7 @@ U+2029 (Unicode paragraph separator), \r\n, in that order (also known as CRLF)
    else if(encoding==NSUTF8StringEncoding)
     bytes=NSUnicodeToUTF8(unicode,length,lossy,&byteLength,zone,NO);
    else if(encoding==NSUnicodeStringEncoding){
-    buffer[0]=0xFFFE;
+    buffer[0]=0xFEFF;
     return [NSData dataWithBytes:buffer length:(1+length)*sizeof(unichar)];
    }
    else {
