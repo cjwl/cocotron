@@ -239,7 +239,8 @@ static RECT NSRectToRECT(NSRect rect) {
    KGColor *fillColor=state->_fillColor;
    KGColor *strokeColor=state->_strokeColor;
    XFORM current;
-   XFORM userToDevice={deviceTransform.a,deviceTransform.b,deviceTransform.c,deviceTransform.d,deviceTransform.tx,deviceTransform.ty};
+   XFORM userToDevice={deviceTransform.a,deviceTransform.b,deviceTransform.c,deviceTransform.d,deviceTransform.tx,
+                       (deviceTransform.d<0.0)?deviceTransform.ty-1.0:deviceTransform.ty};
    
    if(!GetWorldTransform(_dc,&current))
     NSLog(@"GetWorldTransform failed");
@@ -336,7 +337,7 @@ static RECT NSRectToRECT(NSRect rect) {
    NSPoint           point=CGPointApplyAffineTransform(NSMakePoint(0,0),Trm);
    
    SetTextColor(_dc,COLORREFFromColor([self fillColor]));
-   ExtTextOutW(_dc,point.x,point.y,ETO_GLYPH_INDEX,NULL,(void *)glyphs,count,NULL);
+   ExtTextOutW(_dc,lroundf(point.x),lroundf(point.y),ETO_GLYPH_INDEX,NULL,(void *)glyphs,count,NULL);
    
    KTFont_gdi *ktFont=[[self currentState] fontState];
    NSSize advancement=[ktFont advancementForNominalGlyphs:glyphs count:count];
