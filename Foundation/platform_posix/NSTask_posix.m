@@ -129,10 +129,6 @@ void childSignalHandler(int sig) {
     [NSException raise:NSInvalidArgumentException
                 format:@"NSTask launchPath is nil"];
 
-   if(_arguments==nil)
-    [NSException raise:NSInvalidArgumentException
-                format:@"NSTask arguments is nil"];
-
    _processID = fork(); 
    if (_processID == 0) {  // child process
        NSMutableArray *array = [[_arguments mutableCopy] autorelease];

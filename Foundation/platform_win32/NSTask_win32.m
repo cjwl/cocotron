@@ -115,10 +115,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     [NSException raise:NSInvalidArgumentException
                 format:@"NSTask launchPath is nil"];
 
-   if(_arguments==nil)
-    [NSException raise:NSInvalidArgumentException
-                format:@"NSTask arguments is nil"];
-
    ZeroMemory(&startupInfo,sizeof(startupInfo));
    startupInfo.cb=sizeof(startupInfo);
    startupInfo.dwFlags=STARTF_USESTDHANDLES;
