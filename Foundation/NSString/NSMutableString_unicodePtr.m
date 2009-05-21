@@ -235,7 +235,8 @@ NSString *NSMutableString_unicodePtrNewWithCapacity(NSZone *zone,
 
    unicode=NSCharactersNewWithFormat(format,nil,arguments,&length,
      NSZoneFromPointer(self));
-
+   va_end(arguments);
+   
    return NSMutableString_unicodePtrInitNoCopy(self,unicode,length,
      NSZoneFromPointer(self));
 }
@@ -260,7 +261,8 @@ NSString *NSMutableString_unicodePtrNewWithCapacity(NSZone *zone,
 
    unicode=NSCharactersNewWithFormat(format,locale,arguments,&length,
      NSZoneFromPointer(self));
-
+   va_end(arguments);
+   
    return NSMutableString_unicodePtrInitNoCopy(self,unicode,length,
      NSZoneFromPointer(self));
 }

@@ -14,7 +14,7 @@ typedef struct NSRangeEntries NSRangeEntries;
 
 typedef struct {
    NSRangeEntries *self;
-   unsigned        index;
+   NSUInteger      index;
 } NSRangeEnumerator;
 
 FOUNDATION_EXPORT NSRangeEntries *NSCreateRangeToOwnedPointerEntries(NSUInteger capacity);

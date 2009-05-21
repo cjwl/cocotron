@@ -34,13 +34,13 @@ typedef enum {
 
 -(void)enqueueNotification:(NSNotification *)note
               postingStyle:(NSPostingStyle)style
-              coalesceMask:(unsigned)mask
+              coalesceMask:(NSUInteger)mask
                   forModes:(NSArray *)modes;
 
 -(void)enqueueNotification:(NSNotification *)note
               postingStyle:(NSPostingStyle)style;
 
 -(void)dequeueNotificationsMatching:(NSNotification *)note
-                       coalesceMask:(unsigned)mask;
+                       coalesceMask:(NSUInteger)mask;
 
 @end

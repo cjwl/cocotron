@@ -10,9 +10,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @interface NSAutoreleasePool : NSObject {
    NSAutoreleasePool *_parent;
-   unsigned           _pageCount;
+   NSUInteger         _pageCount;
    id               **_pages;
-   unsigned           _nextSlot;
+   NSUInteger         _nextSlot;
    NSAutoreleasePool *_childPool;
 }
 

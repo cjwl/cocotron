@@ -94,7 +94,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    }
 }
 
--(void)coalesceNotification:(NSNotification *)note inQueue:(NSMutableArray *)queue coalesceMask:(unsigned)mask {
+-(void)coalesceNotification:(NSNotification *)note inQueue:(NSMutableArray *)queue coalesceMask:(NSUInteger)mask {
    if(mask!=NSNotificationNoCoalescing){
     NSInteger count=[queue count];
 
@@ -117,7 +117,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(BOOL)canPlaceNotification:(NSNotification *)note
-  inQueue:(NSArray *)queue coalesceMask:(unsigned)mask {
+  inQueue:(NSArray *)queue coalesceMask:(NSUInteger)mask {
    if(mask!=NSNotificationNoCoalescing) {
     NSInteger i,count=[queue count];
 
@@ -138,7 +138,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)enqueueNotification:(NSNotification *)note
               postingStyle:(NSPostingStyle)style
-              coalesceMask:(unsigned)mask
+              coalesceMask:(NSUInteger)mask
                   forModes:(NSArray *)modes {
 /*
   Figure out what modes==nil means, does it mean the current mode?
@@ -171,7 +171,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)dequeueNotificationsMatching:(NSNotification *)note
-                       coalesceMask:(unsigned)mask {
+                       coalesceMask:(NSUInteger)mask {
    NSUnimplementedMethod();
 
    if(mask==(NSNotificationCoalescingOnName|NSNotificationCoalescingOnSender)){

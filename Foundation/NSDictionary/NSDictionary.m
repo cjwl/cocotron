@@ -99,7 +99,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -initWithObjectsAndKeys:first,... {
    va_list  arguments;
-   unsigned i,count;
+   NSUInteger i,count;
    id      *objects,*keys;
 
    va_start(arguments,first);
@@ -165,7 +165,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 +dictionaryWithObjectsAndKeys:first,... {
    va_list  arguments;
-   unsigned i,count;
+   NSUInteger i,count;
    id      *objects,*keys;
 
    va_start(arguments,first);

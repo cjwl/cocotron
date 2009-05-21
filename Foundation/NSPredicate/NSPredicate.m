@@ -110,6 +110,7 @@ static void raiseError(predicateScanner *scanner,NSString *format,...){
    va_start(arguments,format);
    
    reason=[[[NSString alloc] initWithFormat:format arguments:arguments] autorelease];
+   va_end(arguments);
    
    [NSException raise:NSInvalidArgumentException format:@"Unable to parse the format string \"%@\", reason = %@",scanner->original,reason];
 }
@@ -1477,7 +1478,8 @@ static NSPredicate *nextTopLevelPredicate(predicateScanner *scanner){
 
    va_start(arguments,format);
 
-   return [self predicateWithFormat:format arguments:arguments];
+   NSPredicate *result=[self predicateWithFormat:format arguments:arguments];
+   va_end(arguments);
 }
 
 +(NSPredicate *)predicateWithFormat:(NSString *)format argumentArray:(NSArray *)arguments {

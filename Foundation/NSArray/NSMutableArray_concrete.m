@@ -17,7 +17,7 @@ static inline NSUInteger roundCapacityUp(NSUInteger capacity){
 }
 
 NSArray *NSMutableArray_concreteInit(NSMutableArray_concrete *self,id *objects,NSUInteger count,NSZone *zone) {
-   unsigned i;
+   NSUInteger i;
 
    self->_count=count;
    self->_capacity=roundCapacityUp(count);
@@ -77,7 +77,7 @@ NSArray *NSMutableArray_concreteNewWithCapacity(NSZone *zone,NSUInteger capacity
 
 -initWithObjects:object,... {
    va_list  arguments;
-   unsigned i,count;
+   NSUInteger i,count;
    id      *objects;
 
    va_start(arguments,object);
@@ -219,14 +219,14 @@ NSArray *NSMutableArray_concreteNewWithCapacity(NSZone *zone,NSUInteger capacity
 }
 
 -(void)getObjects:(id *)objects {
-   unsigned i;
+   NSUInteger i;
 
    for(i=0;i<_count;i++)
     objects[i]=_objects[i];
 }
 
 static inline NSUInteger indexOfObject(NSMutableArray_concrete *self,id object){
-   unsigned i;
+   NSUInteger i;
 
    for(i=0;i<self->_count;i++)
     if([self->_objects[i] isEqual:object])

@@ -23,7 +23,7 @@ enum {
 	NSKeyValueObservingOptionInitial = 0x04,
 	NSKeyValueObservingOptionPrior = 0x08
 };
-typedef unsigned int NSKeyValueObservingOptions;
+typedef NSUInteger NSKeyValueObservingOptions;
 
 enum {
 	NSKeyValueChangeSetting,
@@ -31,7 +31,7 @@ enum {
 	NSKeyValueChangeRemoval,
 	NSKeyValueChangeReplacement	
 };
-typedef unsigned int NSKeyValueChange;
+typedef NSUInteger NSKeyValueChange;
 
 @interface NSObject (NSKeyValueObserving)
 + (BOOL)automaticallyNotifiesObserversForKey:(NSString *)key;

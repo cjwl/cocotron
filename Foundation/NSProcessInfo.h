@@ -32,7 +32,7 @@ enum {
 -(NSUInteger)activeProcessorCount;
 -(unsigned long long)physicalMemory;
 
--(unsigned)operatingSystem;
+-(NSUInteger)operatingSystem;
 -(NSString *)operatingSystemName;
 -(NSString *)operatingSystemVersionString;
 

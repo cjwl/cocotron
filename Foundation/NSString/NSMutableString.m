@@ -65,7 +65,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    va_start(arguments,format);
 
    unicode=NSCharactersNewWithFormat(format,nil,arguments,&length,NULL);
-
+   va_end(arguments);
+   
    return NSAutorelease(
      NSMutableString_unicodePtrNewNoCopy(NULL,unicode,length));
 }
@@ -89,7 +90,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    va_start(arguments,format);
 
    unicode=NSCharactersNewWithFormat(format,nil,arguments,&length,NULL);
-
+   va_end(arguments);
+   
    return NSAutorelease(
      NSMutableString_unicodePtrNewNoCopy(NULL,unicode,length));
 }
@@ -113,7 +115,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    va_start(arguments,format);
 
    string=NSAutorelease(NSStringNewWithFormat(format,nil,arguments,NULL));
-
+   va_end(arguments);
+   
    [self replaceCharactersInRange:range withString:string];
 }
 

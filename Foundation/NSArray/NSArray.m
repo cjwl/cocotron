@@ -61,7 +61,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
    [array getObjects:oldObjects];
 
-   unsigned i;
+   NSUInteger i;
    for (i = 0; i < count; i++) {
       newObjects[i] = [oldObjects[i] copyWithZone:NULL];
    }
@@ -102,7 +102,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -initWithObjects:object,... {
    va_list  arguments;
-   unsigned i,count;
+   NSUInteger i,count;
    id      *objects;
 
    va_start(arguments,object);
@@ -201,7 +201,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 +arrayWithObjects:object,... {
    va_list  arguments;
-   unsigned i,count; 
+   NSUInteger i,count; 
    id      *objects;
 
    va_start(arguments,object);
@@ -494,8 +494,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #if 0
 // untested
 -(NSArray *)objectsAtIndexes:(NSIndexSet *)indexes {
-   unsigned i,count=[indexes count];
-   unsigned buffer[count];
+   NSUInteger i,count=[indexes count];
+   NSUInteger buffer[count];
    id       objects[count];
 
    count=[indexes getIndexes:buffer maxCount:count inIndexRange:NULL];

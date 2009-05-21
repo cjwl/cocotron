@@ -6,7 +6,6 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
-// Original - Christopher Lloyd <cjwl@objc.net>
 #import <Foundation/NSMutableCharacterSet_bitmap.h>
 #import <Foundation/NSData.h>
 #import <Foundation/NSException.h>
@@ -14,7 +13,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @implementation NSMutableCharacterSet_bitmap
 
 -init {
-   unsigned i;
+   NSUInteger i;
 
    for(i=0;i<NSBitmapCharacterSetSize;i++)
     _bitmap[i]=0x00;
@@ -23,7 +22,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -initWithCharacterSet:(NSCharacterSet *)set {
-   unsigned i;
+   NSUInteger i;
 
    for(i=0;i<NSBitmapCharacterSetSize;i++)
     _bitmap[i]=0x00;
@@ -37,7 +36,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -initWithData:(NSData *)data {
    const unsigned char *bytes=[data bytes];
-   unsigned i;
+   NSUInteger i;
 
    if([data length]!=NSBitmapCharacterSetSize)
     [NSException raise:@"NSCharacterSetFailedException"

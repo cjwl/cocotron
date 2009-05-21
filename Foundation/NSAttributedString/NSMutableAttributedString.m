@@ -96,7 +96,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    }
 }
 
--(void)insertAttributedString:(NSAttributedString *)attributedString atIndex:(unsigned)index {
+-(void)insertAttributedString:(NSAttributedString *)attributedString atIndex:(NSUInteger)index {
    [self replaceCharactersInRange:NSMakeRange(index,0) withAttributedString:attributedString];
 }
 

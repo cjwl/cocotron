@@ -61,7 +61,7 @@ const char * const *NSProcessInfoArgv=NULL;
    return 0;
 }
 
--(unsigned)operatingSystem {
+-(NSUInteger)operatingSystem {
    NSUnimplementedMethod();
    return 0;
 }

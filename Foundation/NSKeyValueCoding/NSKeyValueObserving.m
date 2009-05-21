@@ -275,7 +275,7 @@ static NSLock *kvoLock=nil;
 - (void)willChange:(NSKeyValueChange)change valuesAtIndexes:(NSIndexSet *)indexes forKey:(NSString *)key
 {
 	NSMutableDictionary *dict=[NSMutableDictionary new];
-	[dict setObject:[NSNumber numberWithInt:change]
+	[dict setObject:[NSNumber numberWithUnsignedInteger:change]
 			 forKey:NSKeyValueChangeKindKey];
 	[dict setObject:indexes
 			 forKey:NSKeyValueChangeIndexesKey];

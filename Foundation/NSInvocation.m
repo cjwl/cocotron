@@ -30,8 +30,8 @@ id objc_msg_sendv(id self, SEL selector, unsigned arg_size, void *arg_frame);
    _returnValue=NSZoneCalloc([self zone],MAX(_returnSize, sizeof(long)),1);
 
    _argumentFrameSize=0;
-   _argumentSizes=NSZoneCalloc([self zone],count,sizeof(unsigned));
-   _argumentOffsets=NSZoneCalloc([self zone],count,sizeof(unsigned));
+   _argumentSizes=NSZoneCalloc([self zone],count,sizeof(NSUInteger));
+   _argumentOffsets=NSZoneCalloc([self zone],count,sizeof(NSUInteger));
 
    for(i=0;i<count;i++){
     NSUInteger naturalSize;

@@ -162,7 +162,7 @@ static NSMapTable *_globalNameToClass=NULL;
    [[_plistStack lastObject] setObject:[NSNumber numberWithDouble:value] forKey:key];
 }
 
--(void)encodeBytes:(const void *)ptr length:(unsigned)length forKey:(NSString *)key {
+-(void)encodeBytes:(const void *)ptr length:(NSUInteger)length forKey:(NSString *)key {
    if(_pass==0)
     return;
    
@@ -170,12 +170,12 @@ static NSMapTable *_globalNameToClass=NULL;
 }
 
 
-- (void)encodeArrayOfDoubles:(double *)array count:(unsigned)count forKey:(NSString *)key {
+- (void)encodeArrayOfDoubles:(double *)array count:(NSUInteger)count forKey:(NSString *)key {
    if(_pass == 0 || count < 1)
     return;
    
     NSMutableString *str = [NSMutableString stringWithString:@"{"];
-    unsigned i;
+    NSUInteger i;
     for (i = 0; i < count; i++) {
         [str appendFormat:@"%.12f%@", array[i], (i < count-1) ? @", " : @"}"];
     }

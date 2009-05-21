@@ -31,7 +31,7 @@ void childSignalHandler(int sig);
 void childSignalHandler(int sig) {
     if (sig == SIGCHLD) {
 // FIX, this probably isnt safe to do from a signal handler
-       int quad = 32;
+       uint32_t quad = 32;
        NSData *data = [NSData dataWithBytes:&quad length:sizeof(int)];
        NSFileHandle *handle = [_taskPipe fileHandleForWriting];
 

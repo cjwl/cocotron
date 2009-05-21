@@ -86,7 +86,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
    NSDeallocateObject(self);
 
-   return NSStringNewWithFormat(format,nil,arguments,NULL);
+   id result=NSStringNewWithFormat(format,nil,arguments,NULL);
+   va_end(arguments);
+   return result;
 }
 
 -initWithFormat:(NSString *)format arguments:(va_list)arguments {
@@ -102,7 +104,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
    NSDeallocateObject(self);
 
-   return NSStringNewWithFormat(format,locale,arguments,NULL);
+   id result=NSStringNewWithFormat(format,locale,arguments,NULL);
+   va_end(arguments);
+   return result;
 }
 
 -initWithFormat:(NSString *)format

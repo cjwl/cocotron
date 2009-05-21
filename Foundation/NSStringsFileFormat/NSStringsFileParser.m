@@ -67,7 +67,8 @@ static NSArray *error(NSArray *array,char *strBuf,NSString *fmt,...) {
     NSZoneFree(NSZoneFromPointer(strBuf),strBuf);
 
    NSLogv(fmt,list);
-
+   va_end(list);
+   
    return nil;
 }
 

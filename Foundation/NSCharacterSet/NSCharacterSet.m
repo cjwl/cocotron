@@ -177,7 +177,7 @@ static NSCharacterSet *sharedSetWithName(Class cls,NSString *name){
 
 -(NSCharacterSet *)invertedSet {
    unsigned char *bitmap=bitmapBytes(self);
-   unsigned       i;
+   NSUInteger       i;
 
    for(i=0;i<NSBitmapCharacterSetSize;i++)
     bitmap[i]=~bitmap[i];
@@ -193,7 +193,7 @@ static NSCharacterSet *sharedSetWithName(Class cls,NSString *name){
 
 // yea this is terrible
 -(BOOL)isSupersetOfSet:(NSCharacterSet *)other {
-   unsigned i;
+   NSUInteger i;
    
    for(i=0;i<=0xFFFF;i++){
     if([other characterIsMember:i] && ![self characterIsMember:i])

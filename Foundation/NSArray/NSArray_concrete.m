@@ -25,7 +25,7 @@ NSArray *NSArray_concreteNewWithCount(NSZone *zone,id **objects,NSUInteger count
 
 NSArray *NSArray_concreteNew(NSZone *zone,id *objects,NSUInteger count) {
    NSArray_concrete *self=newWithCount(zone,count);
-   unsigned         i;
+   NSUInteger         i;
 
    self->_count=count;
    for(i=0;i<count;i++)

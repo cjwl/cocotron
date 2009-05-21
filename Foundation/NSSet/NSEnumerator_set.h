@@ -12,7 +12,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @interface NSEnumerator_set : NSEnumerator {
    id           _set;
    NSSetTable  *_table;
-   unsigned     _index;
+   NSUInteger   _index;
    NSSetBucket *_bucket;
 }
 

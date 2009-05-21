@@ -207,7 +207,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)getBytes:(void *)result range:(NSRange)range {
    const char *bytes=[self bytes];
-   unsigned    i;
+   NSUInteger    i;
 
    if(NSMaxRange(range)>[self length]){
     NSRaiseException(NSRangeException,self,_cmd,@"range %@ beyond length %d",
@@ -268,7 +268,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    const char *hex="0123456789ABCDEF";
    const char *bytes=[self bytes];
    NSUInteger    length=[self length];
-   unsigned    pos=0,i;
+   NSUInteger    pos=0,i;
    char       *cString;
    NSString   *string=NSAutorelease(NSString_cStringNewWithCapacity(NULL,
      1+length*2+(length/4)+1,&cString));

@@ -13,12 +13,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    NSPort  *_sendPort;
    NSPort  *_receivePort;
    NSMutableArray *_components;
-   unsigned _msgid;
+   uint32_t _msgid;
 }
 
 -initWithSendPort:(NSPort *)sendPort receivePort:(NSPort *)receivePort components:(NSArray *)components;
 
--(unsigned)msgid;
+-(uint32_t)msgid;
 -(NSArray *)components;
 -(NSPort *)sendPort;
 -(NSPort *)receivePort;

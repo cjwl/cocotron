@@ -641,7 +641,9 @@ NSString *NSStringWithFormat(NSString *format,...) {
 
    va_start(arguments,format);
 
-   return NSAutorelease(NSStringNewWithFormat(format,nil,arguments,NULL));
+   NSString *result=NSAutorelease(NSStringNewWithFormat(format,nil,arguments,NULL));
+   va_end(arguments);
+   return result;
 }
 
 NSString *NSStringWithFormatArguments(NSString *format,va_list arguments) {
@@ -653,6 +655,10 @@ NSString *NSStringWithFormatAndLocale(NSString *format,NSDictionary *locale,...)
 
    va_start(arguments,locale);
 
-   return NSAutorelease(NSStringNewWithFormat(format,locale,arguments,NULL));
+   NSString *result=NSAutorelease(NSStringNewWithFormat(format,locale,arguments,NULL));
+   
+   va_end(arguments);
+   
+   return result;
 }
 

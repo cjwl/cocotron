@@ -19,6 +19,7 @@ void OBJCLog(const char *format,...) {
    vfprintf(stderr,format,arguments);
    fprintf(stderr,"\n");
    fflush(stderr);
+   va_end(arguments);
 }
 
 void OBJCPartialLog(const char *format,...) {
@@ -29,6 +30,7 @@ void OBJCPartialLog(const char *format,...) {
    fprintf(stderr,"ObjC:");
    vfprintf(stderr,format,arguments);
    fflush(stderr);
+   va_end(arguments);
 }
 
 void OBJCFinishLog(const char *format,...) {
@@ -39,6 +41,7 @@ void OBJCFinishLog(const char *format,...) {
    vfprintf(stderr,format,arguments);
    fprintf(stderr,"\n");
    fflush(stderr);
+   va_end(arguments);
 }
 
 void OBJCRaiseException(const char *name,const char *format,...) {
@@ -50,6 +53,7 @@ void OBJCRaiseException(const char *name,const char *format,...) {
    vfprintf(stderr,format,arguments);
    fprintf(stderr,"\n");
    fflush(stderr);
+   va_end(arguments);
 }
 
 #ifdef WIN32
@@ -85,6 +89,7 @@ void OBJCRaiseWin32Failure(const char *name,const char *format,...) {
 
    fprintf(stderr,"ObjC:Win32: ... %s\n",lastErrorString(lastError));
    fflush(stderr);
+   va_end(arguments);
 }
 
 #endif

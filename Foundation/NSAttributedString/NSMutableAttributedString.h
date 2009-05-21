@@ -22,7 +22,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)removeAttribute:(NSString *)name range:(NSRange)range;
 
--(void)insertAttributedString:(NSAttributedString *)attributedString atIndex:(unsigned)index;
+-(void)insertAttributedString:(NSAttributedString *)attributedString atIndex:(NSUInteger)index;
 
 -(void)replaceCharactersInRange:(NSRange)range withString:(NSString *)string;
 -(void)replaceCharactersInRange:(NSRange)range withAttributedString:(NSAttributedString *)attributedString;

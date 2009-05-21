@@ -204,11 +204,16 @@ int __CFConstantStringClassReference[1];
    va_list arguments;
 
    va_start(arguments,format);
-
+   id result;
+   
    if(self==objc_lookUpClass("NSString"))
-    return NSAutorelease(NSStringNewWithFormat(format,nil,arguments,NULL));
-
-   return [[[self allocWithZone:NULL] initWithFormat:format arguments:arguments] autorelease];
+    result=NSAutorelease(NSStringNewWithFormat(format,nil,arguments,NULL));
+   else
+    result=[[[self allocWithZone:NULL] initWithFormat:format arguments:arguments] autorelease];
+    
+   va_end(arguments);
+   
+   return result;
 }
 
 +stringWithContentsOfFile:(NSString *)path {
@@ -259,7 +264,11 @@ int __CFConstantStringClassReference[1];
 
    va_start(arguments,format);
 
-   return NSAutorelease(NSStringNewWithFormat(format,[NSLocale currentLocale],arguments,NULL));
+   id result=NSAutorelease(NSStringNewWithFormat(format,[NSLocale currentLocale],arguments,NULL));
+   
+   va_end(arguments);
+   
+   return result;
 }
 
 -copy {
@@ -954,7 +963,8 @@ U+2029 (Unicode paragraph separator), \r\n, in that order (also known as CRLF)
    append=[[NSString allocWithZone:NULL] initWithFormat:format arguments:list];
    result=[self stringByAppendingString:append];
    [append release];
-
+   va_end(list);
+   
    return result;
 }
 

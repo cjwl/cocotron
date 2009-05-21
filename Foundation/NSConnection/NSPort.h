@@ -28,11 +28,11 @@ FOUNDATION_EXPORT NSString *NSPortDidBecomeInvalidNotification;
 -(void)addConnection:(NSConnection *)connection toRunLoop:(NSRunLoop *)runLoop forMode:(NSString *)mode;
 -(void)removeConnection:(NSConnection *)connection fromRunLoop:(NSRunLoop *)runLoop forMode:(NSString *)mode;
 
--(unsigned)reservedSpaceLength;
+-(NSUInteger)reservedSpaceLength;
 
--(BOOL)sendBeforeDate:(NSDate *)beforeDate components:(NSMutableArray *)components from:(NSPort *)fromPort reserved:(unsigned)reservedSpace;
+-(BOOL)sendBeforeDate:(NSDate *)beforeDate components:(NSMutableArray *)components from:(NSPort *)fromPort reserved:(NSUInteger)reservedSpace;
 
--(BOOL)sendBeforeDate:(NSDate *)beforeData msgid:(unsigned)msgid components:(NSMutableArray *)components from:(NSPort *)fromPort reserved:(unsigned)reservedSpace;
+-(BOOL)sendBeforeDate:(NSDate *)beforeData msgid:(unsigned)msgid components:(NSMutableArray *)components from:(NSPort *)fromPort reserved:(NSUInteger)reservedSpace;
 
 @end
 

@@ -19,15 +19,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 static inline void NSByteCopy(const void *src,void *dst,NSUInteger count){
    const char *srcBytes=src;
    char       *dstBytes=dst;
-   unsigned    i;
+   NSUInteger  i;
 
    for(i=0;i<count;i++)
     dstBytes[i]=srcBytes[i];
 }
 
-static inline void NSByteZero(void *bytes,unsigned count){
+static inline void NSByteZero(void *bytes,NSUInteger count){
    char    *zeroBytes=bytes;
-   unsigned i;
+   NSUInteger i;
 
    for(i=0;i<count;i++)
     zeroBytes[i]=0;
@@ -35,7 +35,7 @@ static inline void NSByteZero(void *bytes,unsigned count){
 
 static inline void NSByteZeroRange(void *bytes,NSRange range){
    char    *zeroBytes=bytes;
-   unsigned i;
+   NSUInteger i;
 
    for(i=0;i<range.length;i++)
     zeroBytes[i+range.location]=0;

@@ -59,18 +59,18 @@ NSString *NSPortDidBecomeInvalidNotification=@"NSPortDidBecomeInvalidNotificatio
    NSInvalidAbstractInvocation();
 }
 
--(unsigned)reservedSpaceLength  {
+-(NSUInteger)reservedSpaceLength  {
    NSInvalidAbstractInvocation();
    return 0;
 }
 
--(BOOL)sendBeforeDate:(NSDate *)beforeDate components:(NSMutableArray *)components from:(NSPort *)fromPort reserved:(unsigned)reservedSpace  {
+-(BOOL)sendBeforeDate:(NSDate *)beforeDate components:(NSMutableArray *)components from:(NSPort *)fromPort reserved:(NSUInteger)reservedSpace  {
    NSInvalidAbstractInvocation();
    return NO;
 }
 
 
--(BOOL)sendBeforeDate:(NSDate *)beforeData msgid:(unsigned)msgid components:(NSMutableArray *)components from:(NSPort *)fromPort reserved:(unsigned)reservedSpace  {
+-(BOOL)sendBeforeDate:(NSDate *)beforeData msgid:(unsigned)msgid components:(NSMutableArray *)components from:(NSPort *)fromPort reserved:(NSUInteger)reservedSpace  {
    NSInvalidAbstractInvocation();
    return NO;
 }
