@@ -757,7 +757,7 @@ unichar *NSUnicodeFromData(NSData *data,NSUInteger *resultLengthp) {
    resultLength=(length-i)/2;
    result=NSZoneMalloc(NULL,sizeof(unichar)*resultLength);
 
-   if(swap){
+   if(!swap){
     for(;i<length;i+=2){
      unichar high=bytes[i];
      unichar low=bytes[i+1];
