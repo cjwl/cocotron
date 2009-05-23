@@ -22,9 +22,9 @@ unichar *NSCharactersWithContentsOfFile(NSString *path,
 
    // guess encoding
    const unsigned char * bytes = [data bytes];
-   NSUInteger length=[data length];
+   NSUInteger dataLength=[data length];
    
-   if((bytes[0]==0xFE && bytes[1]==0xFF) || (bytes[0]==0xFF && bytes[1]==0xFE))
+   if((dataLength>=2) && ((bytes[0]==0xFE && bytes[1]==0xFF) || (bytes[0]==0xFF && bytes[1]==0xFE)))
     // UTF16 BOM
     return NSUnicodeFromData(data, length);
    else
