@@ -244,24 +244,26 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(BOOL)writeToFile:(NSString *)path atomically:(BOOL)atomically {
-   return [[NSPlatform currentPlatform] writeContentsOfFile:path bytes:[self bytes] length:[self length] atomically:atomically];
+   NSUInteger options=0;
+   if (atomically) options=NSAtomicWrite;
+   return [self writeToFile:path options:options error:(NSError **)0];
 }
 
 -(BOOL)writeToURL:(NSURL *)url atomically:(BOOL)atomically {
-   if(![url isFileURL])
-    return NO;
-    
-   return [self writeToFile:[url path] atomically:atomically];
+   NSUInteger options=0;
+   if (atomically) options=NSAtomicWrite;
+   return [self writeToURL:url options:options error:(NSError **)0];
 }
 
 -(BOOL)writeToFile:(NSString *)path options:(NSUInteger)options error:(NSError **)errorp {
-   NSUnimplementedMethod();
-   return 0;
+   BOOL atomically=(options&NSAtomicWrite);
+   NSAssert(!errorp,  @"-[%@ %@]: NSError not (yet) supported.", NSStringFromClass([self class]), _cmd);
+   return [[NSPlatform currentPlatform] writeContentsOfFile:path bytes:[self bytes] length:[self length] atomically:atomically];
 }
 
 -(BOOL)writeToURL:(NSURL *)url options:(NSUInteger)options error:(NSError **)errorp {
-   NSUnimplementedMethod();
-   return 0;
+  NSAssert([url isFileURL], @"-[%@ %@]: Only file: URLs are supported so far.", NSStringFromClass([self class]), _cmd);
+  return [self writeToFile:[url path] options:options error:errorp];
 }
 
 -(NSString *)description {

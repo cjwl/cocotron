@@ -1136,12 +1136,17 @@ U+2029 (Unicode paragraph separator), \r\n, in that order (also known as CRLF)
 }
 
 -(BOOL)writeToFile:(NSString *)path atomically:(BOOL)atomically encoding:(NSStringEncoding)encoding error:(NSError **)error {
-   NSUnimplementedMethod();
-   return 0;
+   NSData *data=[self dataUsingEncoding:encoding];
+   NSUInteger options=0;
+   if (atomically) options=NSAtomicWrite;
+   return [data writeToFile:path options:options error:error];
 }
+
 -(BOOL)writeToURL:(NSURL *)url atomically:(BOOL)atomically encoding:(NSStringEncoding)encoding error:(NSError **)error {
-   NSUnimplementedMethod();
-   return 0;
+   NSData *data=[self dataUsingEncoding:encoding];
+   NSUInteger options=0;
+   if (atomically) options=NSAtomicWrite;
+   return [data writeToURL:url options:options error:error];
 }
 
 -(NSStringEncoding)fastestEncoding {
