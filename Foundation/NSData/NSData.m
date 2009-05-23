@@ -5,8 +5,6 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
-
-// Original - Christopher Lloyd <cjwl@objc.net>
 #import <Foundation/NSData.h>
 #import <Foundation/NSString_cString.h>
 #import <Foundation/NSData_concrete.h>
@@ -257,12 +255,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(BOOL)writeToFile:(NSString *)path options:(NSUInteger)options error:(NSError **)errorp {
    BOOL atomically=(options&NSAtomicWrite);
-   NSAssert(!errorp,  @"-[%@ %@]: NSError not (yet) supported.", NSStringFromClass([self class]), _cmd);
+   NSAssert(!errorp,  @"-[%@ %s]: NSError not (yet) supported.", [self class], _cmd);
    return [[NSPlatform currentPlatform] writeContentsOfFile:path bytes:[self bytes] length:[self length] atomically:atomically];
 }
 
 -(BOOL)writeToURL:(NSURL *)url options:(NSUInteger)options error:(NSError **)errorp {
-  NSAssert([url isFileURL], @"-[%@ %@]: Only file: URLs are supported so far.", NSStringFromClass([self class]), _cmd);
+  NSAssert([url isFileURL], @"-[%@ %s]: Only file: URLs are supported so far.", [self class], _cmd);
   return [self writeToFile:[url path] options:options error:errorp];
 }
 
