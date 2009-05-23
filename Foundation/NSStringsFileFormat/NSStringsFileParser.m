@@ -41,16 +41,16 @@ static int UnicodeToUTF8(unsigned utf32, unsigned char *utf8)
 	}
 	else if (utf32 < 0x10000)
    {
-      *utf8++ = 0xE0 | (utf32 >> 12);
-      *utf8++ = 0x80 | (utf32 >> 6);
+      *utf8++ = 0xE0 | ((utf32 >> 12) & 0x0F);
+      *utf8++ = 0x80 | ((utf32 >> 6) & 0x3F);
       *utf8   = 0x80 | (utf32 & 0x3F);
       return 3;
 	}
 	else if (utf32 < 0x110000)
    {
-      *utf8++ = 0xF0 | (utf32 >> 18);
-      *utf8++ = 0x80 | (utf32 >> 12);
-      *utf8++ = 0x80 | (utf32 >> 6);
+      *utf8++ = 0xF0 | ((utf32 >> 18) & 0x07);
+      *utf8++ = 0x80 | ((utf32 >> 12) & 0x3F);
+      *utf8++ = 0x80 | ((utf32 >> 6) & 0x3F);
       *utf8   = 0x80 | (utf32 & 0x3F);
       return 4;
 	}
@@ -96,11 +96,18 @@ static NSArray *stringListFromBytes(const unichar unicode[],NSInteger length){
    } expect=EXPECT_KEY;
 
    unichar (*mapUC)(unichar);
-   if (unicode[0]==0xFEFE){
+   if (unicode[0]==0xFFFE){
+    // reverse endianness
     mapUC=SwapWord;
     index=1;
    }
+   else if (unicode[0]==0xFEFF){
+    // native endianness
+    mapUC=PickWord;
+    index=1;
+   }
    else{
+    // no BOM, assume native endianness
     mapUC=PickWord;
     index=0;
    }
@@ -117,7 +124,7 @@ static NSArray *stringListFromBytes(const unichar unicode[],NSInteger length){
        if(expect==EXPECT_EQUAL_SEMI)
         expect=EXPECT_VAL;
        else
-        return error(array,strBuf,@"unexpected character %02X '%c'",c,c);
+        return error(array,strBuf,@"unexpected character %02X '%c' at %d",c,c,index);
       }
       else if(c==';'){
        if(expect==EXPECT_SEMI)
@@ -127,18 +134,18 @@ static NSArray *stringListFromBytes(const unichar unicode[],NSInteger length){
         [array addObject:[array lastObject]];
        }
        else
-        return error(array,strBuf,@"unexpected character %02X '%c'",c,c);
+        return error(array,strBuf,@"unexpected character %02X '%c' at %d",c,c,index);
       }
       else if(c=='\"'){
        if(expect!=EXPECT_KEY && expect!=EXPECT_VAL)
-        return error(array,strBuf,@"unexpected character %02X '%c'",c,c);
+        return error(array,strBuf,@"unexpected character %02X '%c' at %d",c,c,index);
 
        strSize=0;
        state=STATE_STRING;
       }
       else if(c>' '){
        if(expect!=EXPECT_KEY)
-        return error(array,strBuf,@"unexpected character %02X '%c'",c,c);
+        return error(array,strBuf,@"unexpected character %02X '%c' at %d",c,c,index);
 
        strBuf[0]=c;
        strSize=1;
@@ -168,7 +175,7 @@ static NSArray *stringListFromBytes(const unichar unicode[],NSInteger length){
      case STATE_STRING_KEY:
       switch(c){
        case '\"':
-        return error(array,strBuf,@"unexpected character %02X '%c'",c,c);
+        return error(array,strBuf,@"unexpected character %02X '%c' at %d",c,c,index);
        case '=':
          index-=2;
        case ' ':
@@ -295,7 +302,7 @@ NSDictionary *NSDictionaryFromStringsFormatData(NSData *data) {
 }
 
 NSDictionary *NSDictionaryFromStringsFormatString(NSString *string) {
-   NSData *data=[string dataUsingEncoding:NSNEXTSTEPStringEncoding];
+   NSData *data=[string dataUsingEncoding:NSUnicodeStringEncoding];
    return NSDictionaryFromStringsFormatData(data);
 }
 

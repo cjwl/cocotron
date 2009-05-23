@@ -27,6 +27,7 @@ typedef enum {
    NSUTF8StringEncoding,
    NSMacOSRomanStringEncoding,
    NSUTF16BigEndianStringEncoding,
+   NSUTF16LittleEndianStringEncoding
 } NSStringEncoding;
 
 enum {

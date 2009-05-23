@@ -9,6 +9,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSStringFileIO.h>
 #import <Foundation/NSRaise.h>
 #import <Foundation/NSString_nextstep.h>
+#import <Foundation/NSUnicodeCaseMapping.h>
 #import <Foundation/NSData.h>
 
 // FIX, inefficient
@@ -19,5 +20,15 @@ unichar *NSCharactersWithContentsOfFile(NSString *path,
    if(data==nil)
     return NULL;
 
-   return NSNEXTSTEPToUnicode([data bytes],[data length],length,zone);
+   // guess encoding
+   const unsigned char * bytes = [data bytes];
+   NSUInteger length=[data length];
+   
+   if((bytes[0]==0xFE && bytes[1]==0xFF) || (bytes[0]==0xFF && bytes[1]==0xFE))
+    // UTF16 BOM
+    return NSUnicodeFromData(data, length);
+   else
+    // No BOM, (probably wrongly) assume NEXTSTEP encoding
+    // TODO: check for UTF8, or assume UTF8 but use another one if it fails
+    return NSNEXTSTEPToUnicode([data bytes],[data length],length,zone);
 }
