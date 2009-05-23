@@ -29,7 +29,7 @@ static NSMapTable *_globalNameToClass=NULL;
     NSMutableData *data = [NSMutableData data];
     NSKeyedArchiver *archiver = [[[self class] alloc] initForWritingWithMutableData:data];
     
-    [archiver encodeObject:rootObject forKey:@"$root"];
+    [archiver encodeObject:rootObject forKey:@"root"];
     [archiver finishEncoding];
     [archiver release];
     return data;
@@ -203,7 +203,7 @@ static NSMapTable *_globalNameToClass=NULL;
 
 
 
--plistForObject:object {
+-plistForObject:object flag:(BOOL)flag {
    NSNumber *uid=NSMapGet(_objectToUid,object);
    
    if(uid==nil){
@@ -223,7 +223,7 @@ static NSMapTable *_globalNameToClass=NULL;
     else if ([archClass isEqualToString:@"NSData"]) {
         [_objects addObject:object];
     }
-    else if ([archClass isEqualToString:@"NSDictionary"]) {
+    else if ([archClass isEqualToString:@"NSDictionary"] && flag) {
         [_objects addObject:object];
     }
     else if (object == nil || [object isKindOfClass:[NSNull class]]) {
@@ -234,16 +234,24 @@ static NSMapTable *_globalNameToClass=NULL;
         [_plistStack addObject:[_objects lastObject]];
         
         [object encodeWithCoder:self];
-        
-        // TODO: in addition to $classname, should also encode list of superclasses as $classes.
-        // Cocotron's NSKeyedUnarchiver doesn't currently use $classes for anything, though --
-        // not sure if Cocoa does?
-                
-        NSDictionary *classMap = [NSDictionary dictionaryWithObjectsAndKeys:
+		
+	NSMutableArray *supers = [[NSMutableArray alloc] init];
+	[supers addObject:archClass];
+	Class sup = class_getSuperclass([object classForArchiver]);
+	while( sup != nil )
+	{
+		[supers addObject:NSStringFromClass(sup)];
+		sup = class_getSuperclass(sup);
+	}
+		
+	NSDictionary *classMap = [NSDictionary dictionaryWithObjectsAndKeys:
+				    supers, @"$classes",
                                     archClass, @"$classname",
                                     nil];
+		
+	[supers release];
                                     
-        [[_plistStack lastObject] setObject:[self plistForObject:classMap] forKey:@"$class"];
+        [[_plistStack lastObject] setObject:[self plistForObject:classMap flag:YES] forKey:@"$class"];
         [_plistStack removeLastObject];
     }
    }
@@ -257,7 +265,7 @@ static NSMapTable *_globalNameToClass=NULL;
     }
 
     _pass++;
-   [[_plistStack lastObject] setObject:[self plistForObject:object] forKey:key];
+   [[_plistStack lastObject] setObject:[self plistForObject:object flag:NO] forKey:key];
    _pass--;
    
     if (_pass == 0) {
@@ -283,7 +291,7 @@ static NSMapTable *_globalNameToClass=NULL;
     int i;
     for (i = 0; i < count; i++) {
         id obj = [array objectAtIndex:i];
-        id plist = [self plistForObject:obj];
+        id plist = [self plistForObject:obj flag:NO];
         [plistArr addObject:plist];
     }
     
