@@ -335,58 +335,34 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 
 +(NSNumber *)numberWithBool:(BOOL)value {
-   if(self==objc_lookUpClass("NSNumber"))
-    return NSAutorelease(NSNumber_BOOLNew(NULL,value));
-
    return [[[self allocWithZone:NULL] initWithBool:value] autorelease];
 }
 
 +(NSNumber *)numberWithChar:(char)value {
-   if(self==objc_lookUpClass("NSNumber"))
-    return NSAutorelease(NSNumber_charNew(NULL,value));
-
    return [[[self allocWithZone:NULL] initWithChar:value] autorelease];
 }
 
 +(NSNumber *)numberWithShort:(short)value {
-   if(self==objc_lookUpClass("NSNumber"))
-    return NSAutorelease(NSNumber_shortNew(NULL,value));
-
    return [[[self allocWithZone:NULL] initWithShort:value] autorelease];
 }
 
 +(NSNumber *)numberWithInt:(int)value {
-   if(self==objc_lookUpClass("NSNumber"))
-    return NSAutorelease(NSNumber_intNew(NULL,value));
-
    return [[[self allocWithZone:NULL] initWithInt:value] autorelease];
 }
 
 +(NSNumber *)numberWithLong:(long)value {
-   if(self==objc_lookUpClass("NSNumber"))
-    return NSAutorelease(NSNumber_longNew(NULL,value));
-
    return [[[self allocWithZone:NULL] initWithLong:value] autorelease];
 }
 
 +(NSNumber *)numberWithLongLong:(long long)value {
-   if(self==objc_lookUpClass("NSNumber"))
-    return NSAutorelease(NSNumber_longLongNew(NULL,value));
-
    return [[[self allocWithZone:NULL] initWithLongLong:value] autorelease];
 }
 
 +(NSNumber *)numberWithFloat:(float)value {
-   if(self==objc_lookUpClass("NSNumber"))
-    return NSAutorelease(NSNumber_floatNew(NULL,value));
-
    return [[[self allocWithZone:NULL] initWithFloat:value] autorelease];
 }
 
 +(NSNumber *)numberWithDouble:(double)value {
-   if(self==objc_lookUpClass("NSNumber"))
-    return NSAutorelease(NSNumber_doubleNew(NULL,value));
-
    return [[[self allocWithZone:NULL] initWithDouble:value] autorelease];
 }
 
@@ -399,37 +375,22 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 +(NSNumber *)numberWithUnsignedChar:(unsigned char)value {
-   if(self==objc_lookUpClass("NSNumber"))
-    return NSAutorelease(NSNumber_unsignedCharNew(NULL,value));
-
    return [[[self allocWithZone:NULL] initWithUnsignedChar:value] autorelease];
 }
 
 +(NSNumber *)numberWithUnsignedShort:(unsigned short)value {
-   if(self==objc_lookUpClass("NSNumber"))
-    return NSAutorelease(NSNumber_unsignedShortNew(NULL,value));
-
    return [[[self allocWithZone:NULL] initWithUnsignedShort:value] autorelease];
 }
 
 +(NSNumber *)numberWithUnsignedInt:(unsigned int)value {
-   if(self==objc_lookUpClass("NSNumber"))
-    return NSAutorelease(NSNumber_unsignedIntNew(NULL,value));
-
    return [[[self allocWithZone:NULL] initWithUnsignedInt:value] autorelease];
 }
 
 +(NSNumber *)numberWithUnsignedLong:(unsigned long)value {
-   if(self==objc_lookUpClass("NSNumber"))
-    return NSAutorelease(NSNumber_unsignedLongNew(NULL,value));
-
    return [[[self allocWithZone:NULL] initWithUnsignedLong:value] autorelease];
 }
 
 +(NSNumber *)numberWithUnsignedLongLong:(unsigned long long)value {
-   if(self==objc_lookUpClass("NSNumber"))
-    return NSAutorelease(NSNumber_unsignedLongLongNew(NULL,value));
-
    return [[[self allocWithZone:NULL] initWithUnsignedLongLong:value] autorelease];
 }
 

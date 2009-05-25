@@ -1,4 +1,4 @@
-/* Copyright (c) 2006-2007 Christopher J. W. Lloyd
+/* Copyright (c) 2006-2007 Christopher J. W. Lloyd <cjwl@objc.net>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
@@ -169,30 +169,18 @@ int __CFConstantStringClassReference[1];
 
 
 +stringWithCharacters:(const unichar *)unicode length:(NSUInteger)length {
-   if(self==objc_lookUpClass("NSString"))
-    return NSAutorelease(NSString_unicodeNew(NULL,unicode,length));
-
    return [[[self allocWithZone:NULL] initWithCharacters:unicode length:length] autorelease];
 }
 
 +string {
-   if(self==objc_lookUpClass("NSString"))
-    return NSAutorelease(NSString_unicodeNew(NULL,NULL,0));
-
    return [[[self allocWithZone:NULL] init] autorelease];
 }
 
 +stringWithCString:(const char *)cString length:(NSUInteger)length {
-   if(self==objc_lookUpClass("NSString"))
-    return NSAutorelease(NSString_cStringNewWithBytes(NULL,cString,length));
-
    return [[[self allocWithZone:NULL] initWithCString:cString length:length] autorelease];
 }
 
 +stringWithCString:(const char *)cString {
-   if(self==objc_lookUpClass("NSString"))
-    return NSAutorelease(NSString_cStringNewWithBytesAndZero(NULL,cString));
-
    return [[[self allocWithZone:NULL] initWithCString:cString] autorelease];
 }
 
@@ -206,10 +194,7 @@ int __CFConstantStringClassReference[1];
    va_start(arguments,format);
    id result;
    
-   if(self==objc_lookUpClass("NSString"))
-    result=NSAutorelease(NSStringNewWithFormat(format,nil,arguments,NULL));
-   else
-    result=[[[self allocWithZone:NULL] initWithFormat:format arguments:arguments] autorelease];
+   result=[[[self allocWithZone:NULL] initWithFormat:format arguments:arguments] autorelease];
     
    va_end(arguments);
    
@@ -217,16 +202,6 @@ int __CFConstantStringClassReference[1];
 }
 
 +stringWithContentsOfFile:(NSString *)path {
-   if(self==objc_lookUpClass("NSString")){
-    NSUInteger  length;
-    unichar  *unicode;
-
-    if((unicode=NSCharactersWithContentsOfFile(path,&length,NULL))==NULL)
-     return nil;
-
-    return NSAutorelease(NSString_unicodePtrNewNoCopy(NULL,unicode,length));
-   }
-
    return [[[self allocWithZone:NULL] initWithContentsOfFile:path] autorelease];
 }
 

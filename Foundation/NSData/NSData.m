@@ -115,9 +115,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 +data {
-   if(self==objc_lookUpClass("NSData"))
-    return NSAutorelease(NSData_concreteNew(NULL,NULL,0));
-
    return [[[self allocWithZone:NULL] init] autorelease];
 }
 
@@ -126,23 +123,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 +dataWithBytesNoCopy:(void *)bytes length:(NSUInteger)length {
-   if(self==objc_lookUpClass("NSData"))
-    return NSAutorelease(NSData_concreteNewNoCopy(NULL,bytes,length));
-
    return [[[self allocWithZone:NULL] initWithBytesNoCopy:bytes length:length] autorelease];
 }
 
 +dataWithBytes:(const void *)bytes length:(NSUInteger)length {
-   if(self==objc_lookUpClass("NSData"))
-    return NSAutorelease(NSData_concreteNew(NULL,bytes,length));
-
    return [[[self allocWithZone:NULL] initWithBytes:bytes length:length] autorelease];
 }
 
 +dataWithData:(NSData *)data {
-   if(self==objc_lookUpClass("NSData"))
-    return NSAutorelease(NSData_concreteNew(NULL,[data bytes],[data length]));
-
    return [[[self allocWithZone:NULL] initWithBytes:[data bytes] length:[data length]] autorelease];
 }
 
