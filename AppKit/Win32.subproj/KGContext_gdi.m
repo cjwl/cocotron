@@ -240,7 +240,7 @@ static RECT NSRectToRECT(NSRect rect) {
    KGColor *strokeColor=state->_strokeColor;
    XFORM current;
    XFORM userToDevice={deviceTransform.a,deviceTransform.b,deviceTransform.c,deviceTransform.d,deviceTransform.tx,
-                       (deviceTransform.d<0.0)?deviceTransform.ty-1.0:deviceTransform.ty};
+                       (deviceTransform.d<0.0)?deviceTransform.ty/*-1.0*/:deviceTransform.ty};
    
    if(!GetWorldTransform(_dc,&current))
     NSLog(@"GetWorldTransform failed");
