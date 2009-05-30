@@ -65,8 +65,7 @@ static BOOL _isAvailable=NO;
    size_t width=KGImageGetWidth(_surface);
    
     free(self->_winding);
-    // +1 is so we can modify the the next winding value without a bounds check
-    self->_winding=calloc((width*MAX_SAMPLES)+1,sizeof(int));
+    self->_winding=calloc((width*MAX_SAMPLES),sizeof(int));
     free(self->_increase);
     self->_increase=malloc(width*sizeof(int));
     int i;
@@ -763,6 +762,7 @@ static inline void initEdgeForAET(KGRasterizer *self,Edge *edge,int scany){
    edge->maxx = maxx;
    edge->samples=NSZoneMalloc(NULL,sizeof(CGFloat)*self->numSamples);
    
+   
        CGFloat *pre=edge->samples;
        int      i,numberOfSamples=self->numSamples;
        CGFloat  sampleY=self->samplesInitialY;
@@ -799,8 +799,8 @@ static inline void incrementEdgeForAET(Edge *edge){
    CGFloat minx=RI_MIN(autosx,autoex);
    CGFloat maxx=RI_MAX(autosx,autoex);
    
-//   minx-=0.5f+0.5f;
-//0.01 is a safety region to prevent too aggressive optimization due to numerical inaccuracy
+   minx-=0.5f+0.5f;
+   //0.01 is a safety region to prevent too aggressive optimization due to numerical inaccuracy
    maxx+=0.5f+0.5f+0.01f;
    
    edge->minx = minx;
@@ -827,6 +827,7 @@ void KGRasterizerFill(KGRasterizer *self,int fillRuleMask) {
     int     scany;
 
    int * winding=self->_winding;
+   int * increase=self->_increase;
    int  numberOfSamples=self->numSamples;
    int  shiftNumberOfSamples=self->sampleSizeShift;
    
@@ -846,7 +847,6 @@ void KGRasterizerFill(KGRasterizer *self,int fillRuleMask) {
      }
 
      int minx=xlimit,maxx=0;
-     int *increase;
      
      for(edge=activeRoot;edge!=NULL;edge=edge->next){
       if(edge->minx>=xlimit){
@@ -890,57 +890,47 @@ void KGRasterizerFill(KGRasterizer *self,int fillRuleMask) {
          CGFloat pcxnormal=scanx*normalX-scany*normalY;
         
          int *windptr=winding+(scanx<<shiftNumberOfSamples);
+
+         windptr+=belowY;
          
-         increase=self->_increase+scanx;
+         for(;scanx<xlimit;scanx++,pcxnormal+=normalX){
+          int *windend=windptr+numberOfSamples-(belowY+aboveY);
 
-         for(;scanx<xlimit;scanx++,pcxnormal+=normalX,increase++){
-          int *windend=windptr+numberOfSamples-aboveY;
-          
-          windptr+=belowY;
-          
-          if(pcxnormal>edge->maxSample)
+          pre=edge->samples+belowY;
+          if(pcxnormal>edge->maxSample){
+           if(scanx>edge->maxx)
+            break;
            windptr=windend;
+          }
           else if(pcxnormal<=edge->minSample){
-           if(*increase==INT_MAX)
-            *increase=0;
 
-           *windptr+=direction;
-           windptr=windend;
-           if(aboveY!=0)
-            *windptr-=direction;
+           while(windptr<windend)
+            *windptr+++=direction;
 
-           if(belowY+aboveY==0){
-            *increase+=direction;
+           if(increase[scanx]==INT_MAX)
+            increase[scanx]=0;
+
+           if(belowY+aboveY==0){      
+            increase[scanx]+=direction;
             break;
            }
           }
-          else {
-                  
-           if(*increase==INT_MAX)
-            *increase=0;
-           
-           pre=edge->samples+belowY;
+          else {           
 
            while(windptr<windend){
-            windptr++;
-
-            if(pcxnormal<=*pre){
-             *(windptr-1)+=direction;
-             *windptr-=direction;
-            }
-
-            pre++;
-           }
-           
-           if(aboveY==0){
-            // if we overwrote past the last value, undo it, this is cheaper than not writing it
-            pre--;
             if(pcxnormal<=*pre)
              *windptr+=direction;
+             
+            pre++;
+            windptr++;
            }
+
+           if(increase[scanx]==INT_MAX)
+            increase[scanx]=0;
+           
           }
 
-          windptr+=aboveY;
+          windptr+=aboveY+belowY;
          }
         
          maxx=MAX(maxx,scanx);
@@ -962,40 +952,45 @@ void KGRasterizerFill(KGRasterizer *self,int fillRuleMask) {
      }        
     minx=MAX(self->_vpx,minx);
     maxx=MIN(xlimit,maxx+1);
-        
-    increase=self->_increase;
-    int *maxAdvance=increase+maxx;
-
-    increase+=minx;
-    for(;increase<maxAdvance;increase++)               
-     if(*increase!=INT_MAX){
+    
+    int scanx;
+    
+    for(scanx=minx;scanx<maxx;scanx++)               
+     if(increase[scanx]!=INT_MAX){
       break;
      }
          
     int weight=self->samplesWeight;
     
- 	int accum=0;
-    unsigned coverage=0;
+ 	int accum=0,coverage=0;
+    int *maxAdvance=increase+maxx;
 
-    int *windptr=winding+((increase-self->_increase)<<shiftNumberOfSamples);
-    int *windend=windptr+numberOfSamples;
-
-    for(;increase<maxAdvance;){
-     int total=accum;
-
-     do{       
-      total+=*windptr;
-       
-      if(total&fillRuleMask)
-       coverage++;
-
-      *windptr++=0;
-     }while(windptr<windend);
-      
-     accum+=*increase;
-     *increase=INT_MAX;
+    for(;scanx<maxx;){
+     int * windptr=winding+(scanx<<shiftNumberOfSamples);
+     int * windend=windptr+numberOfSamples;
      
-     int *advance=increase+1;
+     if(fillRuleMask==VG_EVEN_ODD){
+      for(;windptr<windend;) {
+       if((*windptr+accum)&VG_EVEN_ODD)
+        coverage++;
+       
+       *windptr++=0;
+      }
+     }
+     else {
+
+      for(;windptr<windend;) {
+       if(*windptr+accum)
+        coverage++;
+       *windptr++=0;
+      }
+      
+     }
+      
+     accum+=increase[scanx];
+     increase[scanx]=INT_MAX;
+     
+     int *advance=increase+scanx+1;
      for(;advance<maxAdvance;advance++)
       if(*advance!=INT_MAX){
        break;
@@ -1006,19 +1001,13 @@ void KGRasterizerFill(KGRasterizer *self,int fillRuleMask) {
        coverage=256;
       else
        coverage*=weight;
-      
-      int scanx=increase-self->_increase;
-      
-      self->_writeCoverageFunction(self->_surface,self->m_mask,self->m_paint,scanx,scany,coverage,(advance-increase),self->_blendFunction);
+       
+      self->_writeCoverageFunction(self->_surface,self->m_mask,self->m_paint,scanx,scany,coverage,(advance-(increase+scanx)),self->_blendFunction);
       coverage=0;
      }
      
-     windend+=(advance-increase)<<shiftNumberOfSamples;
-     windptr=windend-(1<<shiftNumberOfSamples);
-
-     increase=advance;
+     scanx=advance-increase;
     }
-
    }
    
    for(;activeRoot!=NULL;activeRoot=activeRoot->next)
