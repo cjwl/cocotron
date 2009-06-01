@@ -37,6 +37,8 @@
 
 #define MAX_SAMPLES     COVERAGE_MULTIPLIER
 
+void O2DContextClipAndFillEdges(KGRasterizer *self,int fillRuleMask);
+
 @implementation KGContext_builtin
 
 static BOOL _isAvailable=NO;
@@ -78,8 +80,8 @@ static BOOL _isAvailable=NO;
 -initWithSurface:(KGSurface *)surface flipped:(BOOL)flipped {
    [super initWithSurface:surface flipped:flipped];
         
-   m_mask=NULL;
-   m_paint=[[KGPaint_color alloc] initWithGray:0 alpha:1];
+   _clipContext=nil;
+   _paint=[[KGPaint_color alloc] initWithGray:0 alpha:1];
 
    KGRasterizeSetBlendMode(self,kCGBlendModeNormal);
 
@@ -113,8 +115,8 @@ static BOOL _isAvailable=NO;
 }
 
 -(void)dealloc {
-   [m_mask release];
-   [m_paint release];
+   [_clipContext release];
+   [_paint release];
    
    int i;
    for(i=0;i<_edgeCount;i++)
@@ -177,7 +179,6 @@ static KGPaint *paintFromColor(KGColor *color){
 -(void)drawPath:(CGPathDrawingMode)drawingMode {
    KGGraphicsState *gState=[self currentState];
    
-//		KGRasterizeSetMask(context->m_masking ? context->getMask() : NULL);
    		KGRasterizeSetBlendMode(self,gState->_blendMode);
 //		KGRasterizeSetTileFillColor(context->m_tileFillColor);
 
@@ -192,7 +193,7 @@ static KGPaint *paintFromColor(KGColor *color){
 
    if(drawingMode!=kCGPathStroke){
     KGPaint *paint=paintFromColor(gState->_fillColor);
-    KGRasterizeSetPaint(self,paint);
+    O2DContextSetPaint(self,paint);
     [paint release];
     
     CGAffineTransform surfaceToPaintMatrix =userToSurfaceMatrix;//context->m_pathUserToSurface * context->m_fillPaintToUser;
@@ -204,13 +205,13 @@ static KGPaint *paintFromColor(KGColor *color){
                 
      VGFillRuleMask fillRule=(drawingMode==kCGPathFill || drawingMode==kCGPathFillStroke)?VG_NON_ZERO:VG_EVEN_ODD;
                 
-     KGRasterizerFill(self,fillRule);
+     O2DContextClipAndFillEdges(self,fillRule);
    }
 
    if(drawingMode>=kCGPathStroke){
     if(gState->_lineWidth > 0.0f){
      KGPaint *paint=paintFromColor(gState->_strokeColor);
-     KGRasterizeSetPaint(self,paint);
+     O2DContextSetPaint(self,paint);
      [paint release];
      
      CGAffineTransform surfaceToPaintMatrix=userToSurfaceMatrix;// = context->m_pathUserToSurface * context->m_strokePaintToUser;
@@ -222,11 +223,11 @@ static KGPaint *paintFromColor(KGColor *color){
                                  
       VGPathStroke(vgPath,userToSurfaceMatrix, self, gState->_dashLengths,gState->_dashLengthsCount, gState->_dashPhase, YES /* context->m_strokeDashPhaseReset ? YES : NO*/,
         gState->_lineWidth, gState->_lineCap,  gState->_lineJoin, RI_MAX(gState->_miterLimit, 1.0f));
-      KGRasterizerFill(self,VG_NON_ZERO);
+      O2DContextClipAndFillEdges(self,VG_NON_ZERO);
     }
    }
 
-   KGRasterizeSetPaint(self,nil);
+   O2DContextSetPaint(self,nil);
    [vgPath release];
    KGRasterizerClear(self);
    [_path reset];
@@ -251,17 +252,17 @@ static KGPaint *paintFromColor(KGColor *color){
    }
   
 
-   KGRasterizeSetPaint(self,paint);
+   O2DContextSetPaint(self,paint);
    [paint release];
 
 /* FIXME: If either extend is off we need to generate the bounding shape and clip to it, the paint classes generate alpha=0 for out of extend which
    is a problem for some blending ops, copy in particular.
  */
  
-   KGRasterizerAddEdge(self,CGPointMake(0,0), CGPointMake(0,KGImageGetHeight(_surface)));
-   KGRasterizerAddEdge(self,CGPointMake(KGImageGetWidth(_surface),0), CGPointMake(KGImageGetWidth(_surface),KGImageGetHeight(_surface)));
+   O2DContextAddEdge(self,CGPointMake(0,0), CGPointMake(0,KGImageGetHeight(_surface)));
+   O2DContextAddEdge(self,CGPointMake(KGImageGetWidth(_surface),0), CGPointMake(KGImageGetWidth(_surface),KGImageGetHeight(_surface)));
 
-   KGRasterizerFill(self,VG_NON_ZERO);
+   O2DContextClipAndFillEdges(self,VG_NON_ZERO);
    KGRasterizerClear(self);
 }
 
@@ -305,12 +306,10 @@ xform=CGAffineTransformConcat(i2u,xform);
 
         KGPaint *imagePaint=[[KGPaint_image alloc] initWithImage:image mode:VG_DRAW_IMAGE_NORMAL paint:paint interpolationQuality:iq];
         
-        KGRasterizeSetPaint(self,imagePaint);
+        O2DContextSetPaint(self,imagePaint);
 
         
 		KGRasterizeSetBlendMode(self,gState->_blendMode);
-
-//		KGRasterizeSetMask(context->m_masking ? context->getMask() : NULL);
 
 		CGAffineTransform surfaceToImageMatrix = imageUserToSurface;
 		CGAffineTransform surfaceToPaintMatrix = CGAffineTransformConcat(imageUserToSurface,fillPaintToUser);
@@ -320,13 +319,13 @@ xform=CGAffineTransformConcat(i2u,xform);
 			KGPaintSetSurfaceToPaintMatrix(paint,surfaceToPaintMatrix);
 			KGPaintSetSurfaceToPaintMatrix(imagePaint,surfaceToImageMatrix);
 
-			KGRasterizerAddEdge(self,p0, p1);
-			KGRasterizerAddEdge(self,p1, p2);
-			KGRasterizerAddEdge(self,p2, p3);
-			KGRasterizerAddEdge(self,p3, p0);
-			KGRasterizerFill(self,VG_EVEN_ODD);
+			O2DContextAddEdge(self,p0, p1);
+			O2DContextAddEdge(self,p1, p2);
+			O2DContextAddEdge(self,p2, p3);
+			O2DContextAddEdge(self,p3, p0);
+			O2DContextClipAndFillEdges(self,VG_EVEN_ODD);
 
-        KGRasterizeSetPaint(self,nil);
+        O2DContextSetPaint(self,nil);
         [paint release];
         [imagePaint release];
 
@@ -363,7 +362,7 @@ void KGRasterizerClear(KGRasterizer *self) {
    self->_edgeCount=0;   
 }
 
-void KGRasterizerAddEdge(KGRasterizer *self,const CGPoint v0, const CGPoint v1) {
+void O2DContextAddEdge(KGRasterizer *self,const CGPoint v0, const CGPoint v1) {
 
 	if(v0.y == v1.y)
 		return;	//skip horizontal edges (they don't affect rasterization since we scan horizontally)
@@ -442,7 +441,7 @@ void KGRasterizerSetShouldAntialias(KGRasterizer *self,BOOL antialias,int qualit
    {
     int shift;
     int numberOfSamples=1;
-    
+        
     for(shift=0;numberOfSamples<quality;shift++)
      numberOfSamples<<=1;
 
@@ -755,7 +754,7 @@ static inline void initEdgeForAET(KGRasterizer *self,Edge *edge,int scany){
    CGFloat minx=RI_MIN(autosx,autoex);
    CGFloat maxx=RI_MAX(autosx,autoex);
    
-   minx-=0.5f+0.5f;
+//   minx-=0.5f+0.5f;
    //0.01 is a safety region to prevent too aggressive optimization due to numerical inaccuracy
    maxx+=0.5f+0.5f+0.01f;
    
@@ -811,7 +810,7 @@ static inline void removeEdgeFromAET(Edge *edge){
    NSZoneFree(NULL,edge->samples);
 }
 
-void KGRasterizerFill(KGRasterizer *self,int fillRuleMask) {    
+void O2DContextFillEdgesOnSurface(KGRasterizer *self,KGSurface *surface,KGImage *mask,KGPaint *paint,int fillRuleMask) {
     int    edgeCount=self->_edgeCount;
     Edge **edges=self->_edges;
 
@@ -887,62 +886,68 @@ void KGRasterizerFill(KGRasterizer *self,int fillRuleMask) {
          int scanx=MAX(0,edge->minx);
          minx=MIN(minx,edge->minx);
 
-         CGFloat pcxnormal=scanx*normalX-scany*normalY;
+         CGFloat pcxnormal=(scanx*normalX-scany*normalY);
         
          int *windptr=winding+(scanx<<shiftNumberOfSamples);
          
          increase=self->_increase+scanx;
 
          for(;scanx<xlimit;scanx++,pcxnormal+=normalX,increase++){
-          int *windend=windptr+numberOfSamples-aboveY;
-          
-          windptr+=belowY;
-          
           if(pcxnormal>edge->maxSample)
-           windptr=windend;
-          else if(pcxnormal<=edge->minSample){
-           if(*increase==INT_MAX)
-            *increase=0;
-
-           *windptr+=direction;
-           windptr=windend;
-           if(aboveY!=0)
-            *windptr-=direction;
-
-           if(belowY+aboveY==0){
-            *increase+=direction;
-            break;
-           }
-          }
+           windptr+=numberOfSamples;
           else {
-                  
+           int *windend=windptr+numberOfSamples;
+           
            if(*increase==INT_MAX)
             *increase=0;
-           
-           pre=edge->samples+belowY;
 
-           while(windptr<windend){
-            windptr++;
+           if(pcxnormal<=edge->minSample){
+            windptr+=belowY;
+            
+            *windptr+=direction;
+                       
+            if(aboveY!=0){
+             windptr=windend;
 
-            if(pcxnormal<=*pre){
-             *(windptr-1)+=direction;
-             *windptr-=direction;
+             *(windptr-aboveY)-=direction;
+            }
+            else {
+             if(belowY+aboveY==0){
+              *increase+=direction;
+              break;
+             }
+
+             windptr=windend;
+            }
+           }
+           else {
+            windptr+=belowY;
+            windend-=aboveY;
+            
+            pre=edge->samples+belowY;
+            while(windptr<windend){
+
+             if(pcxnormal<=*pre){
+              *windptr+=direction;
+              *(windptr+1)-=direction;
+             }
+
+             pre++;
+             windptr++;
             }
 
-            pre++;
-           }
-           
-           if(aboveY==0){
-            // if we overwrote past the last value, undo it, this is cheaper than not writing it
-            pre--;
-            if(pcxnormal<=*pre)
-             *windptr+=direction;
+            if(aboveY==0){
+             // if we overwrote past the last value, undo it, this is cheaper than not writing it
+             pre--;
+             if(pcxnormal<=*pre)
+              *windptr+=direction;
+            }
+            windptr+=aboveY;
            }
           }
 
-          windptr+=aboveY;
          }
-        
+
          maxx=MAX(maxx,scanx);
         }
        }
@@ -973,25 +978,15 @@ void KGRasterizerFill(KGRasterizer *self,int fillRuleMask) {
      }
          
     int weight=self->samplesWeight;
-    
  	int accum=0;
-    unsigned coverage=0;
+    int coverage=0;
 
-    int *windptr=winding+((increase-self->_increase)<<shiftNumberOfSamples);
-    int *windend=windptr+numberOfSamples;
+    int *  windptr=winding+((increase-self->_increase)<<shiftNumberOfSamples);
+    int *  windend=windptr+numberOfSamples;
 
     for(;increase<maxAdvance;){
      int total=accum;
 
-     do{       
-      total+=*windptr;
-       
-      if(total&fillRuleMask)
-       coverage++;
-
-      *windptr++=0;
-     }while(windptr<windend);
-      
      accum+=*increase;
      *increase=INT_MAX;
      
@@ -1001,6 +996,27 @@ void KGRasterizerFill(KGRasterizer *self,int fillRuleMask) {
        break;
       }
 
+     if(fillRuleMask==1){
+      do{       
+       total+=*windptr;
+       *windptr++=0;
+       
+       if(total&0x01)
+        coverage++;
+
+      }while(windptr<windend);
+     }
+     else {
+      do{       
+       total+=*windptr;
+       *windptr++=0;
+       
+       if(total)
+        coverage++;
+
+      }while(windptr<windend);
+     }
+     
 	 if(coverage>0){
       if(self->alias)
        coverage=256;
@@ -1009,7 +1025,7 @@ void KGRasterizerFill(KGRasterizer *self,int fillRuleMask) {
       
       int scanx=increase-self->_increase;
       
-      self->_writeCoverageFunction(self->_surface,self->m_mask,self->m_paint,scanx,scany,coverage,(advance-increase),self->_blendFunction);
+      self->_writeCoverageFunction(surface,mask,paint,scanx,scany,coverage,(advance-increase),self->_blendFunction);
       coverage=0;
      }
      
@@ -1023,6 +1039,12 @@ void KGRasterizerFill(KGRasterizer *self,int fillRuleMask) {
    
    for(;activeRoot!=NULL;activeRoot=activeRoot->next)
     removeEdgeFromAET(activeRoot);
+}
+
+void O2DContextClipAndFillEdges(KGRasterizer *self,int fillRuleMask){
+   KGImage *mask=(self->_clipContext!=nil)?self->_clipContext->_surface:nil;
+   
+   O2DContextFillEdgesOnSurface(self,self->_surface,mask,self->_paint,fillRuleMask);
 }
 
 void KGRasterizeSetBlendMode(KGRasterizer *self,CGBlendMode blendMode) {
@@ -1170,14 +1192,10 @@ void KGRasterizeSetBlendMode(KGRasterizer *self,CGBlendMode blendMode) {
    }
 }
 
-void KGRasterizeSetMask(KGRasterizer *self,KGSurface* mask) {
-	self->m_mask = mask;
-}
-
-void KGRasterizeSetPaint(KGRasterizer *self, KGPaint* paint) {
+void O2DContextSetPaint(KGRasterizer *self, KGPaint* paint) {
    paint=[paint retain];
-   [self->m_paint release];
-   self->m_paint=paint;
+   [self->_paint release];
+   self->_paint=paint;
    
 }
 

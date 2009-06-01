@@ -608,7 +608,7 @@ float bytesLittleToFloat(const unsigned char *scanline){
 }
 
 KGRGBAffff *KGImageRead_RGBAffffLittle_to_RGBAffff(KGImage *self,int x,int y,KGRGBAffff *span,int length){
-   const RIuint8 *scanline = scanlineAtY(self,y);
+   const uint8_t *scanline = scanlineAtY(self,y);
    int i;
    
    if(scanline==NULL)
@@ -654,7 +654,7 @@ float bytesBigToFloat(const unsigned char *scanline){
 }
 
 KGRGBAffff *KGImageRead_RGBAffffBig_to_RGBAffff(KGImage *self,int x,int y,KGRGBAffff *span,int length){
-   const RIuint8 *scanline = scanlineAtY(self,y);
+   const uint8_t *scanline = scanlineAtY(self,y);
    int i;
    
    if(scanline==NULL)
@@ -679,7 +679,7 @@ KGRGBAffff *KGImageRead_RGBAffffBig_to_RGBAffff(KGImage *self,int x,int y,KGRGBA
 }
 
 uint8_t *KGImageRead_G8_to_A8(KGImage *self,int x,int y,uint8_t *alpha,int length) {
-   const RIuint8 *scanline = scanlineAtY(self,y);
+   const uint8_t *scanline = scanlineAtY(self,y);
    int i;
    
    if(scanline==NULL)
@@ -718,7 +718,7 @@ CGFloat *KGImageRead_ANY_to_A8_to_Af(KGImage *self,int x,int y,CGFloat *alpha,in
 }
 
 KGRGBA8888 *KGImageRead_G8_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span,int length){
-   const RIuint8 *scanline = scanlineAtY(self,y);
+   const uint8_t *scanline = scanlineAtY(self,y);
    int i;
 
    if(scanline==NULL)
@@ -739,7 +739,7 @@ KGRGBA8888 *KGImageRead_G8_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *spa
 }
 
 KGRGBA8888 *KGImageRead_GA88_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span,int length){
-   const RIuint8 *scanline = scanlineAtY(self,y);
+   const uint8_t *scanline = scanlineAtY(self,y);
    int i;
 
    if(scanline==NULL)
@@ -759,7 +759,7 @@ KGRGBA8888 *KGImageRead_GA88_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *s
 }
 
 KGRGBA8888 *KGImageRead_RGBA8888_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span,int length){
-   const RIuint8 *scanline = scanlineAtY(self,y);
+   const uint8_t *scanline = scanlineAtY(self,y);
    int i;
    
    if(scanline==NULL)
@@ -779,7 +779,7 @@ KGRGBA8888 *KGImageRead_RGBA8888_to_RGBA8888(KGImage *self,int x,int y,KGRGBA888
 }
 
 KGRGBA8888 *KGImageRead_ABGR8888_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span,int length){
-   const RIuint8 *scanline = scanlineAtY(self,y);
+   const uint8_t *scanline = scanlineAtY(self,y);
    int i;
    
    if(scanline==NULL)
@@ -799,7 +799,7 @@ KGRGBA8888 *KGImageRead_ABGR8888_to_RGBA8888(KGImage *self,int x,int y,KGRGBA888
 }
 
 KGRGBA8888 *KGImageRead_BGRA8888_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span,int length) {
-   const RIuint8 *scanline = scanlineAtY(self,y);
+   const uint8_t *scanline = scanlineAtY(self,y);
    int i;
    
    if(scanline==NULL)
@@ -823,7 +823,7 @@ KGRGBA8888 *KGImageRead_BGRA8888_to_RGBA8888(KGImage *self,int x,int y,KGRGBA888
 }
 
 KGRGBA8888 *KGImageRead_RGB888_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span,int length) {
-   const RIuint8 *scanline = scanlineAtY(self,y);
+   const uint8_t *scanline = scanlineAtY(self,y);
    int i;
    
    if(scanline==NULL)
@@ -844,7 +844,7 @@ KGRGBA8888 *KGImageRead_RGB888_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 
 }
 
 KGRGBA8888 *KGImageRead_BGRX8888_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span,int length) {
-   const RIuint8 *scanline = scanlineAtY(self,y);
+   const uint8_t *scanline = scanlineAtY(self,y);
    int i;
    
    if(scanline==NULL)
@@ -865,7 +865,7 @@ KGRGBA8888 *KGImageRead_BGRX8888_to_RGBA8888(KGImage *self,int x,int y,KGRGBA888
 }
 
 KGRGBA8888 *KGImageRead_XRGB8888_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span,int length) {
-   const RIuint8 *scanline = scanlineAtY(self,y);
+   const uint8_t *scanline = scanlineAtY(self,y);
    int i;
    
    if(scanline==NULL)
@@ -887,7 +887,7 @@ KGRGBA8888 *KGImageRead_XRGB8888_to_RGBA8888(KGImage *self,int x,int y,KGRGBA888
 
 // kCGBitmapByteOrder16Little|kCGImageAlphaNoneSkipFirst
 KGRGBA8888 *KGImageRead_G3B5X1R5G2_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span,int length){
-   const RIuint8 *scanline = scanlineAtY(self,y);
+   const uint8_t *scanline = scanlineAtY(self,y);
    int i;
    
    if(scanline==NULL)
@@ -911,7 +911,7 @@ KGRGBA8888 *KGImageRead_G3B5X1R5G2_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8
 }
 
 KGRGBA8888 *KGImageRead_RGBA4444_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span,int length){
-   const RIuint8 *scanline = scanlineAtY(self,y);
+   const uint8_t *scanline = scanlineAtY(self,y);
    int i;
    
    if(scanline==NULL)
@@ -933,7 +933,7 @@ KGRGBA8888 *KGImageRead_RGBA4444_to_RGBA8888(KGImage *self,int x,int y,KGRGBA888
 }
 
 KGRGBA8888 *KGImageRead_BARG4444_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span,int length){
-   const RIuint8 *scanline = scanlineAtY(self,y);
+   const uint8_t *scanline = scanlineAtY(self,y);
    int i;
    
    if(scanline==NULL)
@@ -955,7 +955,7 @@ KGRGBA8888 *KGImageRead_BARG4444_to_RGBA8888(KGImage *self,int x,int y,KGRGBA888
 }
 
 KGRGBA8888 *KGImageRead_RGBA2222_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span,int length){
-   const RIuint8 *scanline = scanlineAtY(self,y);
+   const uint8_t *scanline = scanlineAtY(self,y);
    int i;
    
    if(scanline==NULL)
@@ -977,7 +977,7 @@ KGRGBA8888 *KGImageRead_RGBA2222_to_RGBA8888(KGImage *self,int x,int y,KGRGBA888
 
 KGRGBA8888 *KGImageRead_CMYK8888_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span,int length){
 // poor results
-   const RIuint8 *scanline = scanlineAtY(self,y);
+   const uint8_t *scanline = scanlineAtY(self,y);
    int i;
    
    if(scanline==NULL)
@@ -1006,7 +1006,7 @@ KGRGBA8888 *KGImageRead_I8_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *spa
    unsigned hival=[indexed hival];
    const unsigned char *palette=[indexed paletteBytes];
 
-   const RIuint8 *scanline = scanlineAtY(self,y);
+   const uint8_t *scanline = scanlineAtY(self,y);
    int i;
    
    if(scanline==NULL)

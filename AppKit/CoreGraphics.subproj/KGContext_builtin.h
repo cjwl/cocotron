@@ -70,8 +70,8 @@ typedef void (*KGWriteCoverage_RGBA8888)(KGSurface *surface,KGSurface *mask,KGPa
 
 @interface KGContext_builtin : KGBitmapContext {
 
-   KGSurface  *m_mask;
-   KGPaint    *m_paint;
+   KGPaint           *_paint;
+   KGContext_builtin *_clipContext;
    
    KGBlendSpan_RGBA8888     _blend_lRGBA8888_PRE;
    KGBlendSpan_RGBAffff     _blend_lRGBAffff_PRE;
@@ -103,13 +103,13 @@ typedef void (*KGWriteCoverage_RGBA8888)(KGSurface *surface,KGSurface *mask,KGPa
 void KGRasterizerDealloc(KGRasterizer *self);
 void KGRasterizerSetViewport(KGRasterizer *self,int x,int y,int vpwidth,int vpheight);
 void KGRasterizerClear(KGRasterizer *self);
-void KGRasterizerAddEdge(KGRasterizer *self,const CGPoint v0, const CGPoint v1);
+void O2DContextAddEdge(KGRasterizer *self,const CGPoint v0, const CGPoint v1);
 void KGRasterizerSetShouldAntialias(KGRasterizer *self,BOOL antialias,int quality);
 void KGRasterizerFill(KGRasterizer *self,int fillRule);
 
 void KGRasterizeSetBlendMode(KGRasterizer *self,CGBlendMode blendMode);
 void KGRasterizeSetMask(KGRasterizer *self,KGSurface* mask);
-void KGRasterizeSetPaint(KGRasterizer *self,KGPaint* paint);
+void O2DContextSetPaint(KGRasterizer *self,KGPaint* paint);
 
 void KGBlendSpanNormal_8888_coverage(KGRGBA8888 *src,KGRGBA8888 *dst,int coverage,int length);
 

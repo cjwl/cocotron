@@ -51,10 +51,10 @@ void VGPathFill(VGPath *self,CGAffineTransform pathToSurface, KGRasterizer *rast
 void VGPathStroke(VGPath *self,CGAffineTransform pathToSurface, KGRasterizer *rasterizer, const CGFloat* dashPattern,int dashPatternSize, CGFloat dashPhase, BOOL dashPhaseReset, CGFloat strokeWidth, CGLineCap capStyle, CGLineJoin joinStyle, CGFloat miterLimit);	
 
 void VGPathGetPointAlong(VGPath *self,int startIndex, int numSegments, CGFloat distance, CGPoint *p, CGPoint *t);	
-CGFloat getPathLength(VGPath *self,int startIndex, int numSegments);	
+CGFloat VGPathGetLength(VGPath *self,int startIndex, int numSegments);	
 void VGPathGetPathBounds(VGPath *self,CGFloat *minx, CGFloat *miny, CGFloat *maxx, CGFloat *maxy);	
 void VGPathGetPathTransformedBounds(VGPath *self,CGAffineTransform pathToSurface, CGFloat *minx, CGFloat *miny, CGFloat *maxx, CGFloat *maxy);
 
-void VGPathTessellate(VGPath *self);	
+void VGPathTessellateIfNeeded(VGPath *self);	
 
 @end

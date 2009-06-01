@@ -30,8 +30,6 @@
 #import <ApplicationServices/ApplicationServices.h>
 #import <Foundation/Foundation.h>
 
-typedef unsigned char	RIuint8;
-
 //#define RI_ASSERT(_) NSCParameterAssert(_)
 #define RI_ASSERT(_) 
 

@@ -134,7 +134,7 @@ VGColor VGColorConvert(VGColor result,VGColorInternalFormat outputFormat){
     return result;
 }
 
-static void colorToBytesLittle(CGFloat color,RIuint8 *scanline){
+static void colorToBytesLittle(CGFloat color,uint8_t *scanline){
    union {
     unsigned char bytes[4];
     float         f;
@@ -156,7 +156,7 @@ static void colorToBytesLittle(CGFloat color,RIuint8 *scanline){
 }
 
 static void KGSurfaceWrite_RGBAffff_to_RGBAffffLittle(KGSurface *self,int x,int y,KGRGBAffff *span,int length){
-   RIuint8* scanline = self->_pixelBytes + y * self->_bytesPerRow;
+   uint8_t* scanline = self->_pixelBytes + y * self->_bytesPerRow;
    int i;
    
    scanline+=x*16;
@@ -174,7 +174,7 @@ static void KGSurfaceWrite_RGBAffff_to_RGBAffffLittle(KGSurface *self,int x,int 
    }
 }
 
-static void colorToBytesBig(CGFloat color,RIuint8 *scanline){
+static void colorToBytesBig(CGFloat color,uint8_t *scanline){
    union {
     unsigned char bytes[4];
     float         f;
@@ -196,7 +196,7 @@ static void colorToBytesBig(CGFloat color,RIuint8 *scanline){
 }
 
 static void KGSurfaceWrite_RGBAffff_to_RGBAffffBig(KGSurface *self,int x,int y,KGRGBAffff *span,int length){
-   RIuint8* scanline = self->_pixelBytes + y * self->_bytesPerRow;
+   uint8_t* scanline = self->_pixelBytes + y * self->_bytesPerRow;
    int i;
    
    scanline+=x*16;
@@ -219,7 +219,7 @@ static unsigned char colorToNibble(CGFloat c){
 }
 
 static void KGSurfaceWrite_RGBAffff_to_GA88(KGSurface *self,int x,int y,KGRGBAffff *span,int length){
-   RIuint8* scanline = self->_pixelBytes + y * self->_bytesPerRow;
+   uint8_t* scanline = self->_pixelBytes + y * self->_bytesPerRow;
    int i;
    
    scanline+=x*2;
@@ -232,7 +232,7 @@ static void KGSurfaceWrite_RGBAffff_to_GA88(KGSurface *self,int x,int y,KGRGBAff
 }
 
 static void KGSurfaceWrite_RGBAffff_to_G8(KGSurface *self,int x,int y,KGRGBAffff *span,int length){
-   RIuint8* scanline = self->_pixelBytes + y * self->_bytesPerRow;
+   uint8_t* scanline = self->_pixelBytes + y * self->_bytesPerRow;
    int i;
    
    scanline+=x;
@@ -245,7 +245,7 @@ static void KGSurfaceWrite_RGBAffff_to_G8(KGSurface *self,int x,int y,KGRGBAffff
 
 
 static void KGSurfaceWrite_RGBAffff_to_RGBA8888(KGSurface *self,int x,int y,KGRGBAffff *span,int length){
-   RIuint8* scanline = self->_pixelBytes + y * self->_bytesPerRow;
+   uint8_t* scanline = self->_pixelBytes + y * self->_bytesPerRow;
    int i;
    
    scanline+=x*4;
@@ -260,7 +260,7 @@ static void KGSurfaceWrite_RGBAffff_to_RGBA8888(KGSurface *self,int x,int y,KGRG
 }
 
 static void KGSurfaceWrite_RGBA8888_to_RGBA8888(KGSurface *self,int x,int y,KGRGBA8888 *span,int length){
-   RIuint8* scanline = self->_pixelBytes + y * self->_bytesPerRow;
+   uint8_t* scanline = self->_pixelBytes + y * self->_bytesPerRow;
    int i;
    
    scanline+=x*4;
@@ -275,7 +275,7 @@ static void KGSurfaceWrite_RGBA8888_to_RGBA8888(KGSurface *self,int x,int y,KGRG
 }
 
 static void KGSurfaceWrite_RGBAffff_to_ABGR8888(KGSurface *self,int x,int y,KGRGBAffff *span,int length){
-   RIuint8* scanline = self->_pixelBytes + y * self->_bytesPerRow;
+   uint8_t* scanline = self->_pixelBytes + y * self->_bytesPerRow;
    int i;
    
    scanline+=x*4;
@@ -290,7 +290,7 @@ static void KGSurfaceWrite_RGBAffff_to_ABGR8888(KGSurface *self,int x,int y,KGRG
 }
 
 static void KGSurfaceWrite_RGBA8888_to_ABGR8888(KGSurface *self,int x,int y,KGRGBA8888 *span,int length){
-   RIuint8* scanline = self->_pixelBytes + y * self->_bytesPerRow;
+   uint8_t* scanline = self->_pixelBytes + y * self->_bytesPerRow;
    int i;
    
    scanline+=x*4;
@@ -305,7 +305,7 @@ static void KGSurfaceWrite_RGBA8888_to_ABGR8888(KGSurface *self,int x,int y,KGRG
 }
 
 static void KGSurfaceWrite_RGBA8888_to_BGRA8888(KGSurface *self,int x,int y,KGRGBA8888 *span,int length){
-   RIuint8* scanline = self->_pixelBytes + y * self->_bytesPerRow;
+   uint8_t* scanline = self->_pixelBytes + y * self->_bytesPerRow;
    int i;
    
    scanline+=x*4;
@@ -320,7 +320,7 @@ static void KGSurfaceWrite_RGBA8888_to_BGRA8888(KGSurface *self,int x,int y,KGRG
 }
 
 static void KGSurfaceWrite_RGBAffff_to_RGBA4444(KGSurface *self,int x,int y,KGRGBAffff *span,int length){
-   RIuint8* scanline = self->_pixelBytes + y * self->_bytesPerRow;
+   uint8_t* scanline = self->_pixelBytes + y * self->_bytesPerRow;
    int i;
    
    scanline+=x*2;
@@ -333,7 +333,7 @@ static void KGSurfaceWrite_RGBAffff_to_RGBA4444(KGSurface *self,int x,int y,KGRG
 }
 
 static void KGSurfaceWrite_RGBAffff_to_BARG4444(KGSurface *self,int x,int y,KGRGBAffff *span,int length){
-   RIuint8* scanline = self->_pixelBytes + y * self->_bytesPerRow;
+   uint8_t* scanline = self->_pixelBytes + y * self->_bytesPerRow;
    int i;
    
    scanline+=x*2;
@@ -346,7 +346,7 @@ static void KGSurfaceWrite_RGBAffff_to_BARG4444(KGSurface *self,int x,int y,KGRG
 }
 
 static void KGSurfaceWrite_RGBAffff_to_RGBA2222(KGSurface *self,int x,int y,KGRGBAffff *span,int length){
-   RIuint8* scanline = self->_pixelBytes + y * self->_bytesPerRow;
+   uint8_t* scanline = self->_pixelBytes + y * self->_bytesPerRow;
    int i;
    
    scanline+=x;
@@ -358,7 +358,7 @@ static void KGSurfaceWrite_RGBAffff_to_RGBA2222(KGSurface *self,int x,int y,KGRG
 }
 
 static void KGSurfaceWrite_RGBAffff_to_CMYK8888(KGSurface *self,int x,int y,KGRGBAffff *span,int length){
-   RIuint8* scanline = self->_pixelBytes + y * self->_bytesPerRow;
+   uint8_t* scanline = self->_pixelBytes + y * self->_bytesPerRow;
    int i;
    
    scanline+=x*4;
@@ -549,7 +549,7 @@ static BOOL initFunctionsForParameters(KGSurface *self,size_t bitsPerComponent,s
     if(bytesPerRow==0)
      bytesPerRow=(width*bitsPerPixel)/8;
      
-    NSMutableData *data=[NSMutableData dataWithLength:bytesPerRow*height*sizeof(RIuint8)]; // this will also zero the bytes
+    NSMutableData *data=[NSMutableData dataWithLength:bytesPerRow*height*sizeof(uint8_t)]; // this will also zero the bytes
     provider=[[[KGDataProvider alloc] initWithData:data] autorelease];
   	m_ownsData=YES;
    }
@@ -606,7 +606,7 @@ static BOOL initFunctionsForParameters(KGSurface *self,size_t bitsPerComponent,s
    _height=height;
    _bytesPerRow=width*_bitsPerPixel/8;
    
-   NSUInteger size=_bytesPerRow*height*sizeof(RIuint8);
+   NSUInteger size=_bytesPerRow*height*sizeof(uint8_t);
    NSUInteger allocateSize=[[_provider data] length];
    
    if((size>allocateSize) || (!roir && size!=allocateSize)){
@@ -1009,8 +1009,8 @@ void KGSurfaceWriteMaskPixel(KGSurface *self,int x, int y, CGFloat m)	//can writ
 	RI_ASSERT(y >= 0 && y < self->_height);
 	RI_ASSERT(self->m_desc.alphaBits == 8 && self->m_desc.redBits == 0 && self->m_desc.greenBits == 0 && self->m_desc.blueBits == 0 && self->m_desc.luminanceBits == 0 && self->_bitsPerPixel == 8);
 
-	RIuint8* s = ((RIuint8*)(self->_pixelBytes + y * self->_bytesPerRow)) + x;
-	*s = (RIuint8)CGByteFromFloat(m);
+	uint8_t* s = ((uint8_t*)(self->_pixelBytes + y * self->_bytesPerRow)) + x;
+	*s = (uint8_t)CGByteFromFloat(m);
 	self->m_mipmapsValid = NO;
 }
 
@@ -1500,7 +1500,7 @@ static VGColorInternalFormat getLUTFormat(BOOL outputLinear, BOOL outputPremulti
 * \note		
 *//*-------------------------------------------------------------------*/
 
-void KGSurfaceLookup(KGSurface *self,KGSurface * src, const RIuint8 * redLUT, const RIuint8 * greenLUT, const RIuint8 * blueLUT, const RIuint8 * alphaLUT, BOOL outputLinear, BOOL outputPremultiplied, BOOL filterFormatLinear, BOOL filterFormatPremultiplied, VGbitfield channelMask){
+void KGSurfaceLookup(KGSurface *self,KGSurface * src, const uint8_t * redLUT, const uint8_t * greenLUT, const uint8_t * blueLUT, const uint8_t * alphaLUT, BOOL outputLinear, BOOL outputPremultiplied, BOOL filterFormatLinear, BOOL filterFormatPremultiplied, VGbitfield channelMask){
 	RI_ASSERT(src->_pixelBytes);	//source exists
 	RI_ASSERT(self->_pixelBytes);	//destination exists
 	RI_ASSERT(redLUT && greenLUT && blueLUT && alphaLUT);

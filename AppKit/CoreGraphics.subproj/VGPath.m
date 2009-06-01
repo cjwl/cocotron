@@ -82,15 +82,14 @@ static inline CGPoint Vector2Perpendicular(CGPoint v, BOOL cw){
 }
 
 
-	enum VertexFlags
-	{
-		START_SUBPATH			= (1<<0),
-		END_SUBPATH				= (1<<1),
-		START_SEGMENT			= (1<<2),
-		END_SEGMENT				= (1<<3),
-		CLOSE_SUBPATH			= (1<<4),
-		IMPLICIT_CLOSE_SUBPATH	= (1<<5)
-	};
+enum VertexFlags {
+   START_SUBPATH			= (1<<0),
+   END_SUBPATH				= (1<<1),
+   START_SEGMENT			= (1<<2),
+   END_SEGMENT				= (1<<3),
+   CLOSE_SUBPATH			= (1<<4),
+   IMPLICIT_CLOSE_SUBPATH	= (1<<5)
+};
 
 typedef struct Vertex {
    CGPoint			userPosition;
@@ -142,25 +141,25 @@ static inline StrokeVertex StrokeVertexInit(){
 * \note		
 *//*-------------------------------------------------------------------*/
 
-static CGPoint unitAverageWithDirection(CGPoint u0, CGPoint u1, BOOL cw)
-{
-	CGPoint u =Vector2MultiplyByFloat(Vector2Add(u0 , u1), 0.5f);
-	CGPoint n0 = Vector2PerpendicularCCW(u0);
+static CGPoint unitAverageWithDirection(CGPoint u0, CGPoint u1, BOOL cw) {
+   CGPoint u =Vector2MultiplyByFloat(Vector2Add(u0 , u1), 0.5f);
+   CGPoint n0 = Vector2PerpendicularCCW(u0);
 
-	if( Vector2Dot(u, u) > 0.25f )
-	{	//the average is long enough and thus reliable
-		if( Vector2Dot(n0, u1) < 0.0f )
-			u = Vector2Negate(u);	//choose the larger angle
-	}
-	else
-	{	// the average is too short, use the average of the normals to the vectors instead
-		CGPoint n1 = Vector2PerpendicularCW(u1);
-		u = Vector2MultiplyByFloat(Vector2Add(n0 , n1), 0.5f);
-	}
-	if( cw )
-		u = Vector2Negate(u);
+   if( Vector2Dot(u, u) > 0.25f ){
+    //the average is long enough and thus reliable
+    if( Vector2Dot(n0, u1) < 0.0f )
+     u = Vector2Negate(u);	//choose the larger angle
+   }
+   else {
+    // the average is too short, use the average of the normals to the vectors instead
+    CGPoint n1 = Vector2PerpendicularCW(u1);
+    u = Vector2MultiplyByFloat(Vector2Add(n0 , n1), 0.5f);
+   }
+   
+   if( cw )
+    u = Vector2Negate(u);
 
-	return Vector2Normalize(u);
+   return Vector2Normalize(u);
 }
 
 /*-------------------------------------------------------------------*//*!
@@ -172,82 +171,65 @@ static CGPoint unitAverageWithDirection(CGPoint u0, CGPoint u1, BOOL cw)
 * \note		
 *//*-------------------------------------------------------------------*/
 
-static CGPoint unitAverage(CGPoint u0, CGPoint u1)
-{
-	CGPoint u =Vector2MultiplyByFloat(Vector2Add(u0 , u1), 0.5f);
+static CGPoint unitAverage(CGPoint u0, CGPoint u1){
+   CGPoint u =Vector2MultiplyByFloat(Vector2Add(u0 , u1), 0.5f);
 
-	if( Vector2Dot(u, u) < 0.25f )
-	{	// the average is unreliable, use the average of the normals to the vectors instead
-		CGPoint n0 = Vector2PerpendicularCCW(u0);
-		CGPoint n1 = Vector2PerpendicularCW(u1);
-		u = Vector2MultiplyByFloat(Vector2Add(n0 , n1) , 0.5f);
-		if( Vector2Dot(n1, u0) < 0.0f )
-			u = Vector2Negate(u);
-	}
+   if( Vector2Dot(u, u) < 0.25f ){
+   	// the average is unreliable, use the average of the normals to the vectors instead
+    CGPoint n0 = Vector2PerpendicularCCW(u0);
+    CGPoint n1 = Vector2PerpendicularCW(u1);
+    u = Vector2MultiplyByFloat(Vector2Add(n0 , n1) , 0.5f);
+    if( Vector2Dot(n1, u0) < 0.0f )
+     u = Vector2Negate(u);
+   }
 
-	return Vector2Normalize(u);
+   return Vector2Normalize(u);
 }
 
-/*-------------------------------------------------------------------*//*!
-* \brief	Interpolate the given unit tangent vectors to the given
-*			direction on a unit circle.
-* \param	
-* \return	
-* \note		
-*//*-------------------------------------------------------------------*/
+// Interpolate the given unit tangent vectors to the given direction on a unit circle.
 
-static CGPoint circularLerpWithDirection(CGPoint t0, CGPoint t1, CGFloat ratio, BOOL cw)
-{
-	CGPoint u0 = t0, u1 = t1;
-	CGFloat l0 = 0.0f, l1 = 1.0f;
-    int i;
-	for(i=0;i<8;i++)
-	{
-		CGPoint n = unitAverageWithDirection(u0, u1, cw);
-		CGFloat l = 0.5f * (l0 + l1);
-		if( ratio < l )
-		{
-			u1 = n;
-			l1 = l;
-		}
-		else
-		{
-			u0 = n;
-			l0 = l;
-		}
-	}
-	return u0;
+static CGPoint circularLerpWithDirection(CGPoint t0, CGPoint t1, CGFloat ratio, BOOL cw) {
+   CGPoint u0 = t0, u1 = t1;
+   CGFloat l0 = 0.0f, l1 = 1.0f;
+   int i;
+    
+   for(i=0;i<8;i++) {
+    CGPoint n = unitAverageWithDirection(u0, u1, cw);
+    CGFloat l = 0.5f * (l0 + l1);
+    if( ratio < l ){
+     u1 = n;
+     l1 = l;
+    }
+    else {
+     u0 = n;
+     l0 = l;
+    }
+   }
+    
+   return u0;
 }
 
-/*-------------------------------------------------------------------*//*!
-* \brief	Interpolate the given unit tangent vectors on a unit circle.
-*			Smaller angle between the vectors is used.
-* \param	
-* \return	
-* \note		
-*//*-------------------------------------------------------------------*/
+// Interpolate the given unit tangent vectors on a unit circle. Smaller angle between the vectors is used.
 
-static CGPoint circularLerp(CGPoint t0, CGPoint t1, CGFloat ratio)
-{
-	CGPoint u0 = t0, u1 = t1;
-	CGFloat l0 = 0.0f, l1 = 1.0f;
-    int i;
-	for(i=0;i<8;i++)
-	{
-		CGPoint n = unitAverage(u0, u1);
-		CGFloat l = 0.5f * (l0 + l1);
-		if( ratio < l )
-		{
-			u1 = n;
-			l1 = l;
-		}
-		else
-		{
-			u0 = n;
-			l0 = l;
-		}
-	}
-	return u0;
+static CGPoint circularLerp(CGPoint t0, CGPoint t1, CGFloat ratio){
+   CGPoint u0 = t0, u1 = t1;
+   CGFloat l0 = 0.0f, l1 = 1.0f;
+   int i;
+   
+   for(i=0;i<8;i++) {
+    CGPoint n = unitAverage(u0, u1);
+    CGFloat l = 0.5f * (l0 + l1);
+    if( ratio < l ){
+     u1 = n;
+     l1 = l;
+    }
+    else {
+     u0 = n;
+     l0 = l;
+    }
+   }
+   
+   return u0;
 }
 
 @implementation VGPath
@@ -272,81 +254,57 @@ static CGPoint circularLerp(CGPoint t0, CGPoint t1, CGFloat ratio)
    [super dealloc];
 }
 
-/*-------------------------------------------------------------------*//*!
-* \brief	Given a path segment type, returns the number of coordinates
-*			it uses.
-* \param	
-* \return	
-* \note		
-*//*-------------------------------------------------------------------*/
+/// Given a path segment type, returns the number of coordinates it uses.
 
 int CGPathElementTypeToNumCoordinates(CGPathElementType segment){
 	RI_ASSERT(((int)segment) >= 0 && ((int)segment) <= 4);
-	static const int coords[13] = {1,1,2,3,0};
+	static const int coords[5] = {1,1,2,3,0};
 	return coords[(int)segment];
 }
 
-/*-------------------------------------------------------------------*//*!
-* \brief	Computes the number of coordinates a segment sequence uses.
-* \param	
-* \return	
-* \note		
-*//*-------------------------------------------------------------------*/
+// Computes the number of coordinates a segment sequence uses.
 
-int VGPathCountNumCoordinates(const RIuint8* segments, int numSegments)
-{
-	RI_ASSERT(segments);
-	RI_ASSERT(numSegments >= 0);
+int VGPathCountNumCoordinates(const uint8_t* segments, int numSegments){
+   RI_ASSERT(segments);
+   RI_ASSERT(numSegments >= 0);
 
-	int coordinates = 0;
-    int i;
-	for(i=0;i<numSegments;i++)
-		coordinates += CGPathElementTypeToNumCoordinates((CGPathElementType)segments[i]);
-	return coordinates;
+   int coordinates = 0;
+   int i;
+   for(i=0;i<numSegments;i++)
+    coordinates += CGPathElementTypeToNumCoordinates((CGPathElementType)segments[i]);
+    
+   return coordinates;
 }
 
-/*-------------------------------------------------------------------*//*!
-* \brief	Tessellates a path for filling and appends resulting edges
-*			to a rasterizer.
-* \param	
-* \return	
-* \note		if runs out of memory, throws bad_alloc and leaves the path as it was
-*//*-------------------------------------------------------------------*/
+// Tessellates a path for filling and appends resulting edges to a rasterizer.
 
 void VGPathFill(VGPath *self,CGAffineTransform pathToSurface, KGRasterizer *rasterizer){
 
-	VGPathTessellate(self);
+   VGPathTessellateIfNeeded(self);
 
-	{
-		CGPoint p0=CGPointMake(0,0), p1=CGPointMake(0,0);
-        int     i;
-		for(i=0;i<self->_vertexCount;i++)
-		{
-			p1 = CGPointApplyAffineTransform(self->_vertices[i].userPosition,pathToSurface );
+   CGPoint p0=CGPointMake(0,0);
+   int     i;
+   
+   for(i=0;i<self->_vertexCount;i++){
+    CGPoint p1 = CGPointApplyAffineTransform(self->_vertices[i].userPosition,pathToSurface );
 
-			if(!(self->_vertices[i].flags & START_SEGMENT))
-			{	//in the middle of a segment
-				KGRasterizerAddEdge(rasterizer,p0, p1);
-			}
+    if(!(self->_vertices[i].flags & START_SEGMENT)){
+    	//in the middle of a segment
+     O2DContextAddEdge(rasterizer,p0, p1);
+    }
 
-			p0 = p1;
-		}
-	}
+    p0 = p1;
+   }
 }
 
-/*-------------------------------------------------------------------*//*!
-* \brief	Smoothly interpolates between two StrokeVertices. Positions
-*			are interpolated linearly, while tangents are interpolated
-*			on a unit circle. Stroking is implemented so that overlapping
-*			geometry doesnt cancel itself when filled with nonzero rule.
-*			The resulting polygons are closed.
-* \param	
-* \return	
-* \note		
-*//*-------------------------------------------------------------------*/
+/* Smoothly interpolates between two StrokeVertices. Positions
+   are interpolated linearly, while tangents are interpolated
+   on a unit circle. Stroking is implemented so that overlapping
+   geometry doesnt cancel itself when filled with nonzero rule.
+   The resulting polygons are closed. */
 
-void VGPathInterpolateStroke(CGAffineTransform pathToSurface, KGRasterizer *rasterizer,StrokeVertex v0,StrokeVertex v1, CGFloat strokeWidth)
-{
+
+void VGPathInterpolateStroke(CGAffineTransform pathToSurface, KGRasterizer *rasterizer,StrokeVertex v0,StrokeVertex v1, CGFloat strokeWidth){
 	CGPoint ppccw = CGPointApplyAffineTransform(v0.ccw,pathToSurface);
 	CGPoint ppcw = CGPointApplyAffineTransform(v0.cw,pathToSurface);
 	CGPoint endccw = CGPointApplyAffineTransform(v1.ccw,pathToSurface);
@@ -362,8 +320,8 @@ void VGPathInterpolateStroke(CGAffineTransform pathToSurface, KGRasterizer *rast
 	CGPoint pnccw = ppccw;
 	CGPoint pncw = ppcw;
     int     j;
-	for(j=0;j<samples;j++)
-	{
+    
+	for(j=0;j<samples;j++){
 		CGFloat t = (CGFloat)(j+1) / (CGFloat)samples;
 		position = Vector2Add(Vector2MultiplyByFloat(v0.p , (1.0f - t)) , Vector2MultiplyByFloat(v1.p ,t));
 		CGPoint tangent = circularLerp(v0.t, v1.t, t);
@@ -377,24 +335,22 @@ void VGPathInterpolateStroke(CGAffineTransform pathToSurface, KGRasterizer *rast
 		CGPoint nnccw = CGPointApplyAffineTransform(Vector2Add(position,n),pathToSurface);
 		CGPoint nncw = CGPointApplyAffineTransform(Vector2Subtract(position , n),pathToSurface);
 
-		KGRasterizerAddEdge(rasterizer,npccw, nnccw);
-		KGRasterizerAddEdge(rasterizer,nnccw, nncw);
-		KGRasterizerAddEdge(rasterizer,nncw, npcw);	
-		KGRasterizerAddEdge(rasterizer,npcw, npccw);
+		O2DContextAddEdge(rasterizer,npccw, nnccw);
+		O2DContextAddEdge(rasterizer,nnccw, nncw);
+		O2DContextAddEdge(rasterizer,nncw, npcw);	
+		O2DContextAddEdge(rasterizer,npcw, npccw);
 
-		if(Vector2Dot(n,prevt) <= 0.0f)
-		{
-			KGRasterizerAddEdge(rasterizer,pnccw, npcw);
-			KGRasterizerAddEdge(rasterizer,npcw, pncw);	
-			KGRasterizerAddEdge(rasterizer,pncw, npccw);
-			KGRasterizerAddEdge(rasterizer,npccw, pnccw);
+		if(Vector2Dot(n,prevt) <= 0.0f){
+			O2DContextAddEdge(rasterizer,pnccw, npcw);
+			O2DContextAddEdge(rasterizer,npcw, pncw);	
+			O2DContextAddEdge(rasterizer,pncw, npccw);
+			O2DContextAddEdge(rasterizer,npccw, pnccw);
 		}
-		else
-		{
-			KGRasterizerAddEdge(rasterizer,pnccw, npccw);
-			KGRasterizerAddEdge(rasterizer,npccw, pncw);
-			KGRasterizerAddEdge(rasterizer,pncw, npcw);	
-			KGRasterizerAddEdge(rasterizer,npcw, pnccw);
+		else {
+			O2DContextAddEdge(rasterizer,pnccw, npccw);
+			O2DContextAddEdge(rasterizer,npccw, pncw);
+			O2DContextAddEdge(rasterizer,pncw, npcw);	
+			O2DContextAddEdge(rasterizer,npcw, pnccw);
 		}
 
 		ppccw = npccw;
@@ -407,40 +363,33 @@ void VGPathInterpolateStroke(CGAffineTransform pathToSurface, KGRasterizer *rast
 
 	//connect the last segment to the end coordinates
 	CGPoint n = Vector2PerpendicularCCW(v1.t);
-	if(Vector2Dot(n,prevt) <= 0.0f)
-	{
-		KGRasterizerAddEdge(rasterizer,pnccw, endcw);
-		KGRasterizerAddEdge(rasterizer,endcw, pncw);
-		KGRasterizerAddEdge(rasterizer,pncw, endccw);
-		KGRasterizerAddEdge(rasterizer,endccw, pnccw);
-	}
-	else
-	{
-		KGRasterizerAddEdge(rasterizer,pnccw, endccw);
-		KGRasterizerAddEdge(rasterizer,endccw, pncw);
-		KGRasterizerAddEdge(rasterizer,pncw, endcw);
-		KGRasterizerAddEdge(rasterizer,endcw, pnccw);
-	}
+    
+   if(Vector2Dot(n,prevt) <= 0.0f){
+    O2DContextAddEdge(rasterizer,pnccw, endcw);
+    O2DContextAddEdge(rasterizer,endcw, pncw);
+    O2DContextAddEdge(rasterizer,pncw, endccw);
+    O2DContextAddEdge(rasterizer,endccw, pnccw);
+   }
+   else {
+    O2DContextAddEdge(rasterizer,pnccw, endccw);
+    O2DContextAddEdge(rasterizer,endccw, pncw);
+    O2DContextAddEdge(rasterizer,pncw, endcw);
+    O2DContextAddEdge(rasterizer,endcw, pnccw);
+   }
 }
 
-/*-------------------------------------------------------------------*//*!
-* \brief	Generate edges for stroke caps. Resulting polygons are closed.
-* \param	
-* \return	
-* \note		
-*//*-------------------------------------------------------------------*/
+// Generate edges for stroke caps. Resulting polygons are closed.
 
 void VGPathDoCap(CGAffineTransform pathToSurface, KGRasterizer *rasterizer,StrokeVertex v, CGFloat strokeWidth, CGLineCap capStyle){
 	CGPoint ccwt = CGPointApplyAffineTransform(v.ccw,pathToSurface);
 	CGPoint cwt = CGPointApplyAffineTransform(v.cw,pathToSurface);
 
-	switch(capStyle)
-	{
+	switch(capStyle){
+    
 	case kCGLineCapButt:
 		break;
 
-	case kCGLineCapRound:
-	{
+	case kCGLineCapRound: {
 		const CGFloat tessellationAngle = 5.0f;
 
 		CGFloat angle = 180.0f / tessellationAngle;
@@ -451,43 +400,36 @@ void VGPathDoCap(CGAffineTransform pathToSurface, KGRasterizer *rasterizer,Strok
 		CGPoint u0 = Vector2Normalize(Vector2Subtract(v.ccw,v.p));
 		CGPoint u1 = Vector2Normalize(Vector2Subtract(v.cw,v.p));
 		CGPoint prev = ccwt;
-		KGRasterizerAddEdge(rasterizer,cwt, ccwt);
+		O2DContextAddEdge(rasterizer,cwt, ccwt);
         int j;
-		for(j=1;j<samples;j++)
-		{
+        
+		for(j=1;j<samples;j++){
 			CGPoint next = Vector2Add(v.p , Vector2MultiplyByFloat(circularLerpWithDirection(u0, u1, t, YES) , strokeWidth * 0.5f));
 			next = CGPointApplyAffineTransform(next,pathToSurface);
 
-			KGRasterizerAddEdge(rasterizer,prev, next);
+			O2DContextAddEdge(rasterizer,prev, next);
 			prev = next;
 			t += step;
 		}
-		KGRasterizerAddEdge(rasterizer,prev, cwt);
+		O2DContextAddEdge(rasterizer,prev, cwt);
 		break;
 	}
 
-	default:
-	{
-		RI_ASSERT(capStyle == kCGLineCapSquare);
+	case kCGLineCapSquare: {
 		CGPoint t = v.t;
 		t=Vector2Normalize(t);
 		CGPoint ccws = CGPointApplyAffineTransform(Vector2Add(v.ccw , Vector2MultiplyByFloat(t , strokeWidth * 0.5f)),pathToSurface );
 		CGPoint cws = CGPointApplyAffineTransform(Vector2Add(v.cw , Vector2MultiplyByFloat(t , strokeWidth * 0.5f)),pathToSurface );
-		KGRasterizerAddEdge(rasterizer,cwt, ccwt);
-		KGRasterizerAddEdge(rasterizer,ccwt, ccws);
-		KGRasterizerAddEdge(rasterizer,ccws, cws);
-		KGRasterizerAddEdge(rasterizer,cws, cwt);
+		O2DContextAddEdge(rasterizer,cwt, ccwt);
+		O2DContextAddEdge(rasterizer,ccwt, ccws);
+		O2DContextAddEdge(rasterizer,ccws, cws);
+		O2DContextAddEdge(rasterizer,cws, cwt);
 		break;
 	}
 	}
 }
 
-/*-------------------------------------------------------------------*//*!
-* \brief	Generate edges for stroke joins. Resulting polygons are closed.
-* \param	
-* \return	
-* \note		
-*//*-------------------------------------------------------------------*/
+// Generate edges for stroke joins. Resulting polygons are closed.
 
 void VGPathDoJoin(CGAffineTransform pathToSurface, KGRasterizer *rasterizer, StrokeVertex v0, StrokeVertex v1, CGFloat strokeWidth, CGLineJoin joinStyle, CGFloat miterLimit){
 	CGPoint ccw0t = CGPointApplyAffineTransform(v0.ccw,pathToSurface);
@@ -509,9 +451,9 @@ void VGPathDoJoin(CGAffineTransform pathToSurface, KGRasterizer *rasterizer, Str
 		et = v1.t;
 		m = v0.ccw;
 		cw = NO;
-		KGRasterizerAddEdge(rasterizer,m0t, ccw0t);
-		KGRasterizerAddEdge(rasterizer,ccw1t, m1t);
-		KGRasterizerAddEdge(rasterizer,m1t, m0t);
+		O2DContextAddEdge(rasterizer,m0t, ccw0t);
+		O2DContextAddEdge(rasterizer,ccw1t, m1t);
+		O2DContextAddEdge(rasterizer,m1t, m0t);
 	}
 	else
 	{	//draw cw miter (draw from point 1 to 0)
@@ -521,9 +463,9 @@ void VGPathDoJoin(CGAffineTransform pathToSurface, KGRasterizer *rasterizer, Str
 		et = v0.t;
 		m = v0.cw;
 		cw = YES;
-		KGRasterizerAddEdge(rasterizer,cw0t, m0t);
-		KGRasterizerAddEdge(rasterizer,m1t, cw1t);
-		KGRasterizerAddEdge(rasterizer,m0t, m1t);
+		O2DContextAddEdge(rasterizer,cw0t, m0t);
+		O2DContextAddEdge(rasterizer,m1t, cw1t);
+		O2DContextAddEdge(rasterizer,m0t, m1t);
 	}
 
 	switch(joinStyle)
@@ -538,12 +480,12 @@ void VGPathDoJoin(CGAffineTransform pathToSurface, KGRasterizer *rasterizer, Str
 			l = RI_MIN(l, RI_FLOAT_MAX);	//force finite
 			CGPoint c = Vector2Add(m , Vector2MultiplyByFloat(v0.t, l));
 			c = CGPointApplyAffineTransform(c,pathToSurface);
-			KGRasterizerAddEdge(rasterizer,s, c);
-			KGRasterizerAddEdge(rasterizer,c, e);
+			O2DContextAddEdge(rasterizer,s, c);
+			O2DContextAddEdge(rasterizer,c, e);
 		}
 		else
 		{	//bevel
-			KGRasterizerAddEdge(rasterizer,s, e);
+			O2DContextAddEdge(rasterizer,s, e);
 		}
 		break;
 	}
@@ -568,38 +510,31 @@ void VGPathDoJoin(CGAffineTransform pathToSurface, KGRasterizer *rasterizer, Str
 				CGPoint next = Vector2Add(position , Vector2MultiplyByFloat(Vector2Normalize(Vector2Perpendicular(tangent, cw)) , strokeWidth * 0.5f));
 				next = CGPointApplyAffineTransform(next,pathToSurface);
 
-				KGRasterizerAddEdge(rasterizer,prev, next);
+				O2DContextAddEdge(rasterizer,prev, next);
 				prev = next;
 				t += step;
 			}
 		}
-		KGRasterizerAddEdge(rasterizer,prev, e);
+		O2DContextAddEdge(rasterizer,prev, e);
 		break;
 	}
 
-	default:
-		RI_ASSERT(joinStyle == kCGLineJoinBevel);
+	case kCGLineJoinBevel:
 		if(!cw)
-			KGRasterizerAddEdge(rasterizer,ccw0t, ccw1t);
+			O2DContextAddEdge(rasterizer,ccw0t, ccw1t);
 		else
-			KGRasterizerAddEdge(rasterizer,cw1t, cw0t);	
+			O2DContextAddEdge(rasterizer,cw1t, cw0t);	
 		break;
 	}
 }
 
-/*-------------------------------------------------------------------*//*!
-* \brief	Tessellate a path, apply stroking, dashing, caps and joins, and
-*			append resulting edges to a rasterizer.
-* \param	
-* \return	
-* \note		if runs out of memory, throws bad_alloc and leaves the path as it was
-*//*-------------------------------------------------------------------*/
+// Tessellate a path, apply stroking, dashing, caps and joins, and append resulting edges to a rasterizer.
 
 void VGPathStroke(VGPath *self,CGAffineTransform pathToSurface, KGRasterizer *rasterizer, const CGFloat* dashPattern,int dashPatternSize, CGFloat dashPhase, BOOL dashPhaseReset, CGFloat strokeWidth, CGLineCap capStyle, CGLineJoin joinStyle, CGFloat miterLimit){
 	RI_ASSERT(strokeWidth >= 0.0f);
 	RI_ASSERT(miterLimit >= 1.0f);
 
-	VGPathTessellate(self);
+	VGPathTessellateIfNeeded(self);
 
 	if(!self->_vertexCount)
 		return;
@@ -802,18 +737,12 @@ void VGPathStroke(VGPath *self,CGAffineTransform pathToSurface, KGRasterizer *ra
 
 }
 
-/*-------------------------------------------------------------------*//*!
-* \brief	Tessellates a path, and returns a position and a tangent on the path
-*			given a distance along the path.
-* \param	
-* \return	
-* \note		if runs out of memory, throws bad_alloc and leaves the path as it was
-*//*-------------------------------------------------------------------*/
+// Tessellates a path, and returns a position and a tangent on the path given a distance along the path.
 
 void VGPathGetPointAlong(VGPath *self,int startIndex, int numSegments, CGFloat distance, CGPoint *p, CGPoint *t){
 	RI_ASSERT(startIndex >= 0 && startIndex + numSegments <= self->_numberOfElements && numSegments > 0);
 
-	VGPathTessellate(self);
+	VGPathTessellateIfNeeded(self);
 
 	RI_ASSERT(startIndex >= 0 && startIndex < self->_numberOfElements);
 	RI_ASSERT(startIndex + numSegments >= 0 && startIndex + numSegments <= self->_numberOfElements);
@@ -885,17 +814,12 @@ void VGPathGetPointAlong(VGPath *self,int startIndex, int numSegments, CGFloat d
 	RI_ASSERT(0);	//point not found (should never get here)
 }
 
-/*-------------------------------------------------------------------*//*!
-* \brief	Tessellates a path, and computes its length.
-* \param	
-* \return	
-* \note		if runs out of memory, throws bad_alloc and leaves the path as it was
-*//*-------------------------------------------------------------------*/
+// Tessellates a path, and computes its length.
 
-CGFloat getPathLength(VGPath *self,int startIndex, int numSegments){
+CGFloat VGPathGetLength(VGPath *self,int startIndex, int numSegments){
 	RI_ASSERT(startIndex >= 0 && startIndex + numSegments <= self->_numberOfElements && numSegments > 0);
 
-	VGPathTessellate(self);
+	VGPathTessellateIfNeeded(self);
 
 	RI_ASSERT(startIndex >= 0 && startIndex < self->_numberOfElements);
 	RI_ASSERT(startIndex + numSegments >= 0 && startIndex + numSegments <= self->_numberOfElements);
@@ -922,15 +846,10 @@ CGFloat getPathLength(VGPath *self,int startIndex, int numSegments){
 	return endPathLength - startPathLength;
 }
 
-/*-------------------------------------------------------------------*//*!
-* \brief	Tessellates a path, and computes its bounding box in user space.
-* \param	
-* \return	
-* \note		if runs out of memory, throws bad_alloc and leaves the path as it was
-*//*-------------------------------------------------------------------*/
+// Tessellates a path, and computes its bounding box in user space.
 
 void VGPathGetPathBounds(VGPath *self,CGFloat *minx, CGFloat *miny, CGFloat *maxx, CGFloat *maxy){
-	VGPathTessellate(self);
+	VGPathTessellateIfNeeded(self);
 
 	if(self->_vertexCount)
 	{
@@ -946,19 +865,17 @@ void VGPathGetPathBounds(VGPath *self,CGFloat *minx, CGFloat *miny, CGFloat *max
 	}
 }
 
-/*-------------------------------------------------------------------*//*!
-* \brief	Tessellates a path, and computes its bounding box in surface space.
-* \param	
-* \return	
-* \note		if runs out of memory, throws bad_alloc and leaves the path as it was
-*//*-------------------------------------------------------------------*/
+// Tessellates a path, and computes its bounding box in surface space.
 
 void VGPathGetPathTransformedBounds(VGPath *self,CGAffineTransform pathToSurface, CGFloat *minx, CGFloat *miny, CGFloat *maxx, CGFloat *maxy){
 
-	VGPathTessellate(self);
+	VGPathTessellateIfNeeded(self);
 
-	if(self->_vertexCount)
-	{
+	if(self->_vertexCount==0) {
+		*minx = *miny = 0;
+		*maxx = *maxy = -1;
+	}
+    else {
 		CGPoint p0=CGPointMake(self->m_userMinx, self->m_userMiny);
 		CGPoint p1=CGPointMake(self->m_userMinx, self->m_userMaxy);
 		CGPoint p2=CGPointMake(self->m_userMaxx, self->m_userMaxy);
@@ -973,19 +890,9 @@ void VGPathGetPathTransformedBounds(VGPath *self,CGAffineTransform pathToSurface
 		*maxx = RI_MAX(RI_MAX(RI_MAX(p0.x, p1.x), p2.x), p3.x);
 		*maxy = RI_MAX(RI_MAX(RI_MAX(p0.y, p1.y), p2.y), p3.y);
 	}
-	else
-	{
-		*minx = *miny = 0;
-		*maxx = *maxy = -1;
-	}
 }
 
-/*-------------------------------------------------------------------*//*!
-* \brief	Adds a vertex to a tessellated path.
-* \param	
-* \return	
-* \note		
-*//*-------------------------------------------------------------------*/
+// Adds a vertex to a tessellated path.
 
 void VGPathAddVertex(VGPath *self,CGPoint p, CGPoint t, CGFloat pathLength, unsigned int flags){
 	RI_ASSERT(!Vector2IsZero(t));
@@ -1008,12 +915,7 @@ void VGPathAddVertex(VGPath *self,CGPoint p, CGPoint t, CGFloat pathLength, unsi
 	self->m_userMaxy = RI_MAX(self->m_userMaxy, v.userPosition.y);
 }
 
-/*-------------------------------------------------------------------*//*!
-* \brief	Adds an edge to a tessellated path.
-* \param	
-* \return	
-* \note		
-*//*-------------------------------------------------------------------*/
+// Adds an edge to a tessellated path.
 
 void VGPathAddEdge(VGPath *self,CGPoint p0, CGPoint p1, CGPoint t0, CGPoint t1, unsigned int startFlags, unsigned int endFlags){
 	CGFloat pathLength = 0.0f;
@@ -1041,12 +943,7 @@ void VGPathAddEdge(VGPath *self,CGPoint p0, CGPoint p1, CGPoint t0, CGPoint t1, 
 	VGPathAddVertex(self,p1, t1, pathLength, endFlags);
 }
 
-/*-------------------------------------------------------------------*//*!
-* \brief	Tessellates a close-path segment.
-* \param	
-* \return	
-* \note		
-*//*-------------------------------------------------------------------*/
+// Tessellates a close-path segment.
 
 void VGPathAddEndPath(VGPath *self,CGPoint p0, CGPoint p1, BOOL subpathHasGeometry, unsigned int flags){
 	if(!subpathHasGeometry)
@@ -1070,12 +967,7 @@ void VGPathAddEndPath(VGPath *self,CGPoint p0, CGPoint p1, BOOL subpathHasGeomet
 	VGPathAddEdge(self,p0, p1, t, t, flags | START_SEGMENT, flags | END_SEGMENT);
 }
 
-/*-------------------------------------------------------------------*//*!
-* \brief	Tessellates a line-to segment.
-* \param	
-* \return	
-* \note		
-*//*-------------------------------------------------------------------*/
+// Tessellates a line-to segment.
 
 BOOL VGPathAddLineTo(VGPath *self,CGPoint p0, CGPoint p1, BOOL subpathHasGeometry){
 	if(Vector2IsEqual(p0 ,p1))
@@ -1092,12 +984,7 @@ BOOL VGPathAddLineTo(VGPath *self,CGPoint p0, CGPoint p1, BOOL subpathHasGeometr
 	return YES;
 }
 
-/*-------------------------------------------------------------------*//*!
-* \brief	Tessellates a quad-to segment.
-* \param	
-* \return	
-* \note		
-*//*-------------------------------------------------------------------*/
+// Tessellates a quad-to segment.
 
 /*
  Given a quadratic Bézier curve with control points (x0, y0), (x1, y1), and (x2, y2), an identical cubic Bézier curve may be formed using the control points (x0, y0), (x0 + 2*x1, y0 + 2*y1)/3, (x2 + 2*x1, y2 + 2*y1)/3, (x2, y2)
@@ -1149,12 +1036,7 @@ BOOL VGPathAddQuadTo(VGPath *self,CGPoint p0, CGPoint p1, CGPoint p2, BOOL subpa
 	return YES;
 }
 
-/*-------------------------------------------------------------------*//*!
-* \brief	Tessellates a cubic-to segment.
-* \param	
-* \return	
-* \note		
-*//*-------------------------------------------------------------------*/
+// Tessellates a cubic-to segment.
 
 // Bezier to lines from: Windows Graphics Programming by Feng Yuan
 static void bezier(VGPath *self,double x1,double y1,double x2, double y2,double x3,double y3,double x4,double y4,unsigned *prevFlags,CGPoint *pp,CGPoint *tp){
@@ -1256,19 +1138,16 @@ BOOL VGPathAddCubicTo(VGPath *self,CGPoint p0, CGPoint p1, CGPoint p2, CGPoint p
 	return YES;
 }
 
-/*-------------------------------------------------------------------*//*!
-* \brief	Tessellates a path.
-* \param	
-* \return	
-* \note		tessellation output format: A list of vertices describing the
-*			path tessellated into line segments and relevant aspects of the
-*			input data. Each path segment has a start vertex, a number of
-*			internal vertices (possibly zero), and an end vertex. The start
-*			and end of segments and subpaths have been flagged, as well as
-*			implicit and explicit close subpath segments.
-*//*-------------------------------------------------------------------*/
+// Tessellates a path.
 
-void VGPathTessellate(VGPath *self){
+/*		tessellation output format: A list of vertices describing the
+		path tessellated into line segments and relevant aspects of the
+		input data. Each path segment has a start vertex, a number of
+		internal vertices (possibly zero), and an end vertex. The start
+		and end of segments and subpaths have been flagged, as well as
+  		implicit and explicit close subpath segments. */
+
+void VGPathTessellateIfNeeded(VGPath *self){
 	if( self->_vertexCount > 0 )
 		return;	//already tessellated
 
@@ -1277,7 +1156,6 @@ void VGPathTessellate(VGPath *self){
 	self->m_userMaxx = -RI_FLOAT_MAX;
 	self->m_userMaxy = -RI_FLOAT_MAX;
 
-//	try
 	{
         unsigned numberOfElements=[self->_path numberOfElements];
         if(self->_segmentToVertexCapacity<numberOfElements){
@@ -1395,7 +1273,7 @@ void VGPathTessellate(VGPath *self){
 		BOOL segmentStarted = NO;
 		for(int i=0;i<self->_vertexCount;i++)
 		{
-			Vertex& v = self->_vertices[i];
+			Vertex  v = self->_vertices[i];
 
 			if(v.flags & START_SUBPATH)
 			{
@@ -1467,13 +1345,7 @@ void VGPathTessellate(VGPath *self){
 		}
 #endif	//RI_DEBUG
 	}
-#if 0
-	catch(std::bad_alloc)
-	{
-		self->_vertexCount=0;
-		throw;
-	}
-#endif
+
 }
 
 @end
