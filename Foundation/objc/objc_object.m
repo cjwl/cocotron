@@ -47,8 +47,8 @@ Class object_setClass(id object,Class cls) {
 }
 
 static void ivarCopy(void *vdst,unsigned offset,void *vsrc,size_t length){
-   unsigned char *dst=vdst;
-   unsigned char *src=vsrc;
+   uint8_t *dst=vdst;
+   uint8_t *src=vsrc;
    size_t       i;
 
    for(i=0;i<length;i++)

@@ -232,7 +232,6 @@ static void QueryCallback(bonjour_DNSServiceRef sdRef,bonjour_DNSServiceFlags fl
           interface: (uint32_t) interfaceIndex
 {  
     NSMutableArray      *addresses = [_info objectForKey: @"Addresses"];
-    const unsigned char *rd = rdata;
     NSData              *data = nil;
         
     if( nil == addresses ){
@@ -242,12 +241,12 @@ static void QueryCallback(bonjour_DNSServiceRef sdRef,bonjour_DNSServiceFlags fl
     switch( rrtype ){
     
       case kDNSServiceType_A:		// AF_INET
-        data=NSSocketAddressDataForNetworkOrderAddressBytesAndPort(rd,4,_port);
+        data=NSSocketAddressDataForNetworkOrderAddressBytesAndPort(rdata,4,_port);
         break;
       
       case kDNSServiceType_AAAA:	// AF_INET6
       case kDNSServiceType_A6:		// deprecates AAAA
-        data=NSSocketAddressDataForNetworkOrderAddressBytesAndPort(rd,16,_port);
+        data=NSSocketAddressDataForNetworkOrderAddressBytesAndPort(rdata,16,_port);
         break;
       
       default:
@@ -404,7 +403,7 @@ static void QueryCallback(bonjour_DNSServiceRef sdRef,bonjour_DNSServiceFlags fl
    [self _didPublish];
 }
 
--(void)selectInputSource:(NSSelectInputSource *)inputSource selectEvent:(unsigned)selectEvent {
+-(void)selectInputSource:(NSSelectInputSource *)inputSource selectEvent:(NSUInteger)selectEvent {
 	
    if(selectEvent&NSSelectReadEvent){
     
@@ -1149,7 +1148,7 @@ static void BrowserCallback(bonjour_DNSServiceRef sdRef,bonjour_DNSServiceFlags 
    }  
 }
 
--(void)selectInputSource:(NSSelectInputSource *)inputSource selectEvent:(unsigned)selectEvent {
+-(void)selectInputSource:(NSSelectInputSource *)inputSource selectEvent:(NSUInteger)selectEvent {
 	
    if(selectEvent&NSSelectReadEvent){
     bonjour_DNSServiceErrorType err = bonjour_DNSServiceProcessResult(_netServiceBrowser);

@@ -37,7 +37,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)download:(NSURLDownload *)download didReceiveAuthenticationChallenge:(NSURLAuthenticationChallenge *)authChallenge;
 -(void)download:(NSURLDownload *)download didCancelAuthenticationChallenge:(NSURLAuthenticationChallenge *)authChallenge;
 -(void)download:(NSURLDownload *)download didReceiveResponse:(NSURLResponse *)response;
--(void)download:(NSURLDownload *)download didReceiveDataOfLength:(unsigned)length;
+-(void)download:(NSURLDownload *)download didReceiveDataOfLength:(NSUInteger)length;
 
 -(void)download:(NSURLDownload *)download didFailWithError:(NSError *)error;
 -(void)downloadDidFinish:(NSURLDownload *)download;

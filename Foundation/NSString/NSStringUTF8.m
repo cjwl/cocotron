@@ -9,13 +9,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSStringSymbol.h>
 #import <Foundation/NSRaise.h>
 
-static NSUInteger convertUTF16toUTF8(const unichar *utf16,NSUInteger utf16Length,unsigned char *utf8){
+static NSUInteger convertUTF16toUTF8(const unichar *utf16,NSUInteger utf16Length,uint8_t *utf8){
    NSUInteger utf8Length=0;
    NSUInteger i;
    
    for(i=0;i<utf16Length;i++){
-    unsigned      code32=utf16[i];
-    unsigned char tmp[4];
+    uint32_t      code32=utf16[i];
+    uint8_t       tmp[4];
 	int           tmpLength=0;
 	
 	if(code32<0x80)

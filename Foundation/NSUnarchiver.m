@@ -19,19 +19,19 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
                format:@"NSUnarchiver cannot decode type=%s",type];
 }
 
--(void)_ensureLength:(unsigned)length {
+-(void)_ensureLength:(NSUInteger)length {
    if(_position+length>_length)
     [NSException raise:@"NSUnarchiverBadArchiveException"
                 format:@"NSUnarchiver attempt to read beyond length"];
 }
 
--(unsigned char)_extractWordOne {
+-(uint8_t)_extractWordOne {
    [self _ensureLength:1];
    return _bytes[_position++];
 }
 
--(unsigned short)_extractWordTwo {
-   unsigned short result;
+-(uint16_t)_extractWordTwo {
+   uint16_t result;
 
    [self _ensureLength:2];
 
@@ -100,7 +100,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(NSString *)_extractCStringBytes {
    NSString *result;
-   unsigned  length=0;
+   NSUInteger  length=0;
 
    while((_position+length)<_length && (_bytes[_position+length]!='\0'))
     length++;
@@ -178,7 +178,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return result;
 }
 
--(void)_extractArrayOfObjCType:(const char *)type length:(unsigned)length
+-(void)_extractArrayOfObjCType:(const char *)type length:(NSUInteger)length
   at:(void *)addr {
 
    switch(*type){
@@ -293,7 +293,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
     case '[':{
       const char *tmp=type;
-      unsigned    length=0;
+      NSUInteger    length=0;
 
       tmp++; // skip [
       for(;*tmp>='0' && *tmp<='9';tmp++)
@@ -457,11 +457,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)setObjectZone:(NSZone *)zone {
    _objectZone=zone;
-}
-
--(unsigned)systemVersion {
-   NSUnimplementedMethod();
-   return 0;
 }
 
 -(void)decodeClassName:(NSString *)archiveName asClassName:(NSString *)runtimeName {

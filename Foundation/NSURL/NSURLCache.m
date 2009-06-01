@@ -19,25 +19,25 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    NSUnimplementedMethod();
 }
 
--initWithMemoryCapacity:(unsigned)memoryCapacity diskCapacity:(unsigned)diskCapacity diskPath:(NSString *)diskPath {
+-initWithMemoryCapacity:(NSUInteger)memoryCapacity diskCapacity:(NSUInteger)diskCapacity diskPath:(NSString *)diskPath {
    NSUnimplementedMethod();
    return nil;
 }
 
--(unsigned)memoryCapacity {
+-(NSUInteger)memoryCapacity {
    return _memoryCapacity;
 }
 
--(unsigned)diskCapacity {
+-(NSUInteger)diskCapacity {
    return _diskCapacity;
 }
 
--(unsigned)currentDiskUsage {
+-(NSUInteger)currentDiskUsage {
    NSUnimplementedMethod();
    return 0;
 }
 
--(unsigned)currentMemoryUsage {
+-(NSUInteger)currentMemoryUsage {
    NSUnimplementedMethod();
    return 0;
 }
@@ -47,11 +47,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return nil;
 }
 
--(void)setMemoryCapacity:(unsigned)memoryCapacity {
+-(void)setMemoryCapacity:(NSUInteger)memoryCapacity {
    NSUnimplementedMethod();
 }
 
--(void)setDiskCapacity:(unsigned)diskCapacity {
+-(void)setDiskCapacity:(NSUInteger)diskCapacity {
    NSUnimplementedMethod();
 }
 

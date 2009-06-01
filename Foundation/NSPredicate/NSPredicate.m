@@ -1297,7 +1297,7 @@ static NSPredicate *nextComparisonPredicate(predicateScanner *scanner){
    NSExpression *right;
    NSPredicate  *result;
    NSPredicateOperatorType type;
-   auto unsigned options;
+   unsigned options;
     
    switch(peekTokenType(scanner)){
    

@@ -49,7 +49,7 @@ struct NSRangeEntries {
 }
 
  void NSResetRangeEntries(NSRangeEntries *self) {
-   int i;
+   NSInteger i;
 
    for(i=0;i<self->count;i++)
     if(self->objects)
@@ -331,7 +331,7 @@ static inline void removeEntryAtIndex(NSRangeEntries *self,NSUInteger index){
 }
 
  void NSRangeEntriesDump(NSRangeEntries *self) {
-   int i;
+   NSInteger i;
 
 NSLog(@"DUMP BEGIN");
    for(i=0;i<self->count;i++)
@@ -346,8 +346,8 @@ NSLog(@"DUMP END");
 
  void NSRangeEntriesVerify(NSRangeEntries *self,NSUInteger length) {
 #if 0
-   unsigned last=0;
-   int      i;
+   NSUInteger last=0;
+   NSInteger     i;
 
    for(i=0;i<self->count;i++){
     NSRange range=self->entries[i].range;

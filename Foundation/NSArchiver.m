@@ -77,7 +77,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    _position=[_data length];
 }
 
--(void)_appendWordOne:(unsigned char)value {
+-(void)_appendWordOne:(uint8_t)value {
    if(_pass==0)
     return;
 
@@ -85,7 +85,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    _bytes[_position++]=value;
 }
 
--(void)_appendWordTwo:(unsigned short)value {
+-(void)_appendWordTwo:(uint16_t)value {
    if(_pass==0)
     return;
 
@@ -94,7 +94,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    _bytes[_position++]=value&0xFF;
 }
 
--(void)_appendWordFour:(unsigned)value {
+-(void)_appendWordFour:(uint32_t)value {
    if(_pass==0)
     return;
 
@@ -109,7 +109,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [self _appendWordFour:NSConvertHostFloatToSwapped(value).floatWord];
 }
 
--(void)_appendWordEight:(unsigned long long)value {
+-(void)_appendWordEight:(uint64_t)value {
    if(_pass==0)
     return;
 
@@ -124,7 +124,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    _bytes[_position++]=value&0xFF;
 }
 
--(void)_appendBytes:(const char *)bytes length:(NSUInteger)length {
+-(void)_appendBytes:(const uint8_t *)bytes length:(NSUInteger)length {
    int i;
 
    if(_pass==0)
@@ -216,7 +216,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    }
 }
 
--(void)_appendArrayOfObjCType:(const char *)type length:(unsigned)length
+-(void)_appendArrayOfObjCType:(const char *)type length:(NSUInteger)length
   at:(const void *)addr {
 
    if(_pass==0)
@@ -226,7 +226,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     case 'c':
     case 'C':{
       const unsigned char *values=addr;
-      int i;
+      NSInteger i;
 
       for(i=0;i<length;i++)
        [self _appendWordOne:values[i]];
@@ -236,7 +236,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     case 's':
     case 'S':{
       const unsigned short *values=addr;
-      int i;
+      NSInteger i;
 
       for(i=0;i<length;i++)
        [self _appendWordTwo:values[i]];

@@ -22,7 +22,7 @@ NSString *NSDecimalNumberExactnessException=@"NSDecimalNumberExactnessException"
    return nil;
 }
 
--initWithMantissa:(unsigned long long)mantissa exponent:(short)exponent isNegative:(BOOL)flag {
+-initWithMantissa:(uint64_t)mantissa exponent:(int16_t)exponent isNegative:(BOOL)flag {
    NSUnimplementedMethod();
    return nil;
 }
@@ -42,7 +42,7 @@ NSString *NSDecimalNumberExactnessException=@"NSDecimalNumberExactnessException"
    return nil;
 }
 
-+(NSDecimalNumber *)decimalNumberWithMantissa:(unsigned long long)mantissa exponent:(short)exponent isNegative:(BOOL)negative {
++(NSDecimalNumber *)decimalNumberWithMantissa:(uint64_t)mantissa exponent:(int16_t)exponent isNegative:(BOOL)negative {
    NSUnimplementedMethod();
    return nil;
 }
@@ -150,12 +150,12 @@ NSString *NSDecimalNumberExactnessException=@"NSDecimalNumberExactnessException"
    return nil;
 }
 
--(NSDecimalNumber *)decimalNumberByMultiplyingByPowerOf10:(short)power {
+-(NSDecimalNumber *)decimalNumberByMultiplyingByPowerOf10:(int16_t)power {
    NSUnimplementedMethod();
    return nil;
 }
 
--(NSDecimalNumber *)decimalNumberByMultiplyingByPowerOf10:(short)power withBehavior:(id <NSDecimalNumberBehaviors>)behavior {
+-(NSDecimalNumber *)decimalNumberByMultiplyingByPowerOf10:(int16_t)power withBehavior:(id <NSDecimalNumberBehaviors>)behavior {
    NSUnimplementedMethod();
    return nil;
 }

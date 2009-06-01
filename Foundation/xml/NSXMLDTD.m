@@ -17,12 +17,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return nil;
 }
 
--initWithData:(NSData *)data options:(unsigned)options error:(NSError **)error {
+-initWithData:(NSData *)data options:(NSUInteger)options error:(NSError **)error {
    NSUnimplementedMethod();
    return nil;
 }
 
--initWithContentsOfURL:(NSURL *)url options:(unsigned)options error:(NSError **)error {
+-initWithContentsOfURL:(NSURL *)url options:(NSUInteger)options error:(NSError **)error {
    NSUnimplementedMethod();
    return nil;
 }

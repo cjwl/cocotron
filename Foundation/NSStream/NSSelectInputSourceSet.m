@@ -83,7 +83,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    
    while((check=[state nextObject])!=nil){
     NSSocket *socket=[check socket];
-    unsigned  mask=[check selectEventMask];
+    NSUInteger  mask=[check selectEventMask];
     
     if(mask&NSSelectReadEvent)
      [result addObjectForRead:socket];

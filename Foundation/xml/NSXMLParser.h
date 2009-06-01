@@ -19,8 +19,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    NSError  *_parserError;
    NSString *_systemID;
    NSString *_publicID;
-   int       _columnNumber;
-   int       _lineNumber;
+   NSInteger       _columnNumber;
+   NSInteger       _lineNumber;
 }
 
 -initWithData:(NSData *)data;
@@ -42,7 +42,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(NSString *)systemID;
 -(NSString *)publicID;
--(int)columnNumber;
--(int)lineNumber;
+-(NSInteger)columnNumber;
+-(NSInteger)lineNumber;
 
 @end

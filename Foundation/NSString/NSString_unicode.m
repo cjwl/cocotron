@@ -40,7 +40,7 @@ NSString *NSString_unicodeNew(NSZone *zone,
 }
 
 -(void)getCharacters:(unichar *)buffer {
-   int i;
+   NSInteger i;
 
    for(i=0;i<_length;i++)
     buffer[i]=_unicode[i];

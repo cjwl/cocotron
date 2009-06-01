@@ -191,7 +191,7 @@ NSString *NSRunLoopCommonModes=@"NSRunLoopCommonModes";
    [[self stateForMode:mode] addTimer:timer];
 }
 
--(void)performSelector:(SEL)selector target:target argument:argument order:(unsigned)order modes:(NSArray *)modes {
+-(void)performSelector:(SEL)selector target:target argument:argument order:(NSUInteger)order modes:(NSArray *)modes {
    NSOrderedPerform *perform=[NSOrderedPerform orderedPerformWithSelector:selector target:target argument:argument order:order modes:modes];
 	@synchronized(_orderedPerforms)
 	{
@@ -199,7 +199,7 @@ NSString *NSRunLoopCommonModes=@"NSRunLoopCommonModes";
 
 		while(--count>=0){
 			NSOrderedPerform *check=[_orderedPerforms objectAtIndex:count];
-			unsigned          checkOrder=[check order];
+			NSUInteger          checkOrder=[check order];
 
 			if(checkOrder>order)
 				break;

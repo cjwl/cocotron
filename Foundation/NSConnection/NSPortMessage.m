@@ -43,7 +43,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return _receivePort;
 }
 
--(void)setMsgid:(unsigned)msgid {
+-(void)setMsgid:(uint32_t)msgid {
    _msgid=msgid;
 }
 

@@ -164,7 +164,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     [keyed encodeArray:self forKey:@"NS.objects"];
   }
   else {
-    NSUInteger i,count=[self count];
+    int i,count=[self count];
 
     [coder encodeValueOfObjCType:@encode(int) at:&count];
     for(i=0;i<count;i++)
@@ -512,7 +512,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 {
 	NSInteger numObjects=MIN([self count] - state->extra[0], length);
 	NSInteger i=state->extra[0];
-	int j=0;
+	NSInteger j=0;
 	state->itemsPtr=stackbuf;
 
 	for(j=0; j<numObjects; j++, i++)

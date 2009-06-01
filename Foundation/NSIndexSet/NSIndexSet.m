@@ -24,7 +24,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -initWithIndexSet:(NSIndexSet *)other {
-   int i;
+   NSInteger i;
    
    _length=other->_length;
    _ranges=NSZoneMalloc([self zone],sizeof(NSRange)*((_length==0)?1:_length));
@@ -63,7 +63,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(BOOL)isEqualToIndexSet:(NSIndexSet *)other {
-   int i;
+   NSInteger i;
    
    if(_length!=other->_length)
     return NO;
@@ -77,7 +77,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(NSUInteger)count {
    NSUInteger result=0;
-   int i;
+   NSInteger i;
    
    for(i=0;i<_length;i++)
     result+=_ranges[i].length;
@@ -166,7 +166,7 @@ static NSUInteger positionOfRangeLessThanOrEqualToLocation(NSRange *ranges,NSUIn
 }
 
 -(BOOL)containsIndexes:(NSIndexSet *)other {
-   int i;
+   NSInteger i;
    
    for(i=0;i<other->_length;i++)
     if(![self containsIndexesInRange:other->_ranges[i]])
@@ -261,7 +261,7 @@ static NSUInteger positionOfRangeLessThanOrEqualToLocation(NSRange *ranges,NSUIn
 
 -(NSString *)description {
    NSMutableString *result=[NSMutableString string];
-   int i;
+   NSInteger i;
    
    [result appendString:[super description]];
    [result appendFormat:@"[number of indexes: %d (in %d ranges), indexes: (",[self count],_length];

@@ -10,7 +10,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @implementation NSHTTPURLResponse
 
-+(NSString *)localizedStringForStatusCode:(int)statusCode {
++(NSString *)localizedStringForStatusCode:(NSInteger)statusCode {
    NSUnimplementedMethod();
    return nil;
 }
@@ -20,7 +20,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return nil;
 }
 
--(int)statusCode {
+-(NSInteger)statusCode {
    NSUnimplementedMethod();
    return 0;
 }

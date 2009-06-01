@@ -13,7 +13,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @implementation NSOutputStream
 
--initToBuffer:(unsigned char *)buffer capacity:(NSUInteger)capacity {
+-initToBuffer:(uint8_t *)buffer capacity:(NSUInteger)capacity {
    [self dealloc];
    return [[NSOutputStream_buffer alloc] initToBuffer:buffer capacity:capacity];
 }
@@ -28,7 +28,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return [[NSOutputStream_data alloc] initToMemory];
 }
 
-+outputStreamToBuffer:(unsigned char *)buffer capacity:(NSUInteger)capacity {
++outputStreamToBuffer:(uint8_t *)buffer capacity:(NSUInteger)capacity {
    return [[[self alloc] initToBuffer:buffer capacity:capacity] autorelease];
 }
 
@@ -45,7 +45,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return NO;
 }
 
--(NSInteger)write:(const unsigned char *)buffer maxLength:(NSUInteger)length {
+-(NSInteger)write:(const uint8_t *)buffer maxLength:(NSUInteger)length {
    NSInvalidAbstractInvocation();
    return 0;
 }

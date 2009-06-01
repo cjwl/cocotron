@@ -14,16 +14,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 +sharedInstance;
 
--(unsigned short)defaultNameServerPortNumber;
+-(uint16_t)defaultNameServerPortNumber;
 
--(void)setDefaultNameServerPortNumber:(unsigned short)number;
+-(void)setDefaultNameServerPortNumber:(uint16_t)number;
 
--(NSPort *)portForName:(NSString *)name host:(NSString *)host nameServerPortNumber:(unsigned short)number;
+-(NSPort *)portForName:(NSString *)name host:(NSString *)host nameServerPortNumber:(uint16_t)number;
 -(NSPort *)portForName:(NSString *)name host:(NSString *)host;
 -(NSPort *)portForName:(NSString *)name;
 
 -(BOOL)registerPort:(NSPort *)port name:(NSString *)name;
--(BOOL)registerPort:(NSPort *)port name:(NSString *)name nameServerPortNumber:(unsigned short)number;
+-(BOOL)registerPort:(NSPort *)port name:(NSString *)name nameServerPortNumber:(uint16_t)number;
 
 -(BOOL)removePortForName:(NSString *)name;
 

@@ -68,7 +68,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return (_status==NSStreamStatusOpen)?YES:NO;
 }
 
--(NSInteger)write:(const unsigned char *)buffer maxLength:(NSUInteger)maxLength {
+-(NSInteger)write:(const uint8_t *)buffer maxLength:(NSUInteger)maxLength {
    if(_status!=NSStreamStatusOpen)
     return -1;
     

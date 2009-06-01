@@ -11,7 +11,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 
 @interface NSCharacterSet_bitmap : NSCharacterSet {
-   unsigned char _bitmap[NSBitmapCharacterSetSize];
+   uint8_t _bitmap[NSBitmapCharacterSetSize];
 }
 
 @end

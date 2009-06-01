@@ -40,7 +40,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return NO;
 }
 
--(unsigned)waitForEventsAndMultipleObjects:(HANDLE *)objects count:(unsigned)count milliseconds:(DWORD)milliseconds {
+-(NSUInteger)waitForEventsAndMultipleObjects:(HANDLE *)objects count:(NSUInteger)count milliseconds:(DWORD)milliseconds {
    if(count==0){
     UINT timer=SetTimer(NULL,0,milliseconds,NULL);
 

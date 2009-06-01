@@ -35,10 +35,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)setNamespaces:(NSArray *)namespaces;
 
 -(void)addChild:(NSXMLNode *)child;
--(void)insertChild:(NSXMLNode *)child atIndex:(unsigned)index;
--(void)insertChildren:(NSArray *)children atIndex:(unsigned)index;
--(void)removeChildAtIndex:(unsigned)index;
--(void)replaceChildAtIndex:(unsigned)index withNode:(NSXMLNode *)node;
+-(void)insertChild:(NSXMLNode *)child atIndex:(NSUInteger)index;
+-(void)insertChildren:(NSArray *)children atIndex:(NSUInteger)index;
+-(void)removeChildAtIndex:(NSUInteger)index;
+-(void)replaceChildAtIndex:(NSUInteger)index withNode:(NSXMLNode *)node;
 
 -(void)addAttribute:(NSXMLNode *)attribute;
 -(void)removeAttributeForName:(NSString *)name;

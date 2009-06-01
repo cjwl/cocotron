@@ -5,8 +5,6 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
-
-// Original - Christopher Lloyd <cjwl@objc.net>
 #import <Foundation/NSReadInBackground_win32.h>
 #import <Foundation/NSFileHandle_win32.h>
 #import <Foundation/NSHandleMonitor_win32.h>
@@ -31,7 +29,7 @@ static DWORD WINAPI readInBackground(LPVOID arg){
 }
 
 -initWithFileHandle:(NSFileHandle *)fileHandle modes:(NSArray *)modes {
-   int    i,count=[modes count];
+   NSInteger    i,count=[modes count];
    DWORD  threadID;
 
    _fileHandle=fileHandle;
@@ -73,7 +71,7 @@ static DWORD WINAPI readInBackground(LPVOID arg){
 }
 
 -(void)_removeFromModes {
-   int i,count=[_modes count];
+   NSInteger i,count=[_modes count];
 
    for(i=0;i<count;i++)
     [[NSRunLoop currentRunLoop] removeInputSource:_threadMonitor forMode:[_modes objectAtIndex:i]];

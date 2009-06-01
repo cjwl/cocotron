@@ -14,7 +14,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @interface NSPropertyListReader_vintage : NSObject {
    NSData               *_data;
    NSUInteger              _length;
-   const unsigned char  *_bytes;
+   const uint8_t  *_bytes;
 
    NSUInteger _stackCapacity;
    NSInteger      _stackSize;

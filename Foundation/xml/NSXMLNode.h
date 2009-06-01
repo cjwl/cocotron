@@ -49,9 +49,9 @@ enum {
 
 @interface NSXMLNode : NSObject <NSCopying> {
    NSXMLNode    *_parent;
-   unsigned      _index;
+   NSUInteger      _index;
    NSXMLNodeKind _kind;
-   unsigned      _options;
+   NSUInteger      _options;
    NSString     *_name;
    id            _value;
 }
@@ -77,11 +77,11 @@ enum {
 +(NSString *)localNameForName:(NSString *)name;
 
 -initWithKind:(NSXMLNodeKind)kind;
--initWithKind:(NSXMLNodeKind)kind options:(unsigned)options;
+-initWithKind:(NSXMLNodeKind)kind options:(NSUInteger)options;
 
--(unsigned)index;
+-(NSUInteger)index;
 -(NSXMLNodeKind)kind;
--(unsigned)level;
+-(NSUInteger)level;
 -(NSString *)localName;
 -(NSString *)name;
 -(NSXMLNode *)nextNode;
@@ -95,9 +95,9 @@ enum {
 -(NSXMLNode *)previousSibling;
 -(NSXMLDocument *)rootDocument;
 
--(unsigned)childCount;
+-(NSUInteger)childCount;
 -(NSArray *)children;
--(NSXMLNode *)childAtIndex:(unsigned)index;
+-(NSXMLNode *)childAtIndex:(NSUInteger)index;
 
 -(void)setName:(NSString *)name;
 -(void)setObjectValue:object;
@@ -109,7 +109,7 @@ enum {
 -(NSArray *)objectsForXQuery:(NSString *)xquery constants:(NSDictionary *)constants error:(NSError **)error;
 -(NSArray *)objectsForXQuery:(NSString *)xquery error:(NSError **)error;
 -(NSString *)XMLString;
--(NSString *)XMLStringWithOptions:(unsigned)options;
+-(NSString *)XMLStringWithOptions:(NSUInteger)options;
 -(NSString *)XPath;
 -(NSString *)canonicalXMLStringPreservingComments:(BOOL)comments;
 

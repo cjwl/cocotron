@@ -138,7 +138,7 @@ BOOL _objc_checkObject(volatile id object)
    saneName[255]='\0';
    char* cur;
    for(cur=saneName; *cur!='\0'; cur++) {
-      if(((unsigned char)*cur<=32 || (unsigned char)*cur>128))
+      if(((uint8_t)*cur<=32 || (uint8_t)*cur>128))
       {
          return NO;
       }

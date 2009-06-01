@@ -18,8 +18,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 +(NSXMLDTDNode *)predefinedEntityDeclarationForName:(NSString *)name;
 
--initWithData:(NSData *)data options:(unsigned)options error:(NSError **)error;
--initWithContentsOfURL:(NSURL *)url options:(unsigned)options error:(NSError **)error;
+-initWithData:(NSData *)data options:(NSUInteger)options error:(NSError **)error;
+-initWithContentsOfURL:(NSURL *)url options:(NSUInteger)options error:(NSError **)error;
 
 -(NSString *)publicID;
 -(NSString *)systemID;

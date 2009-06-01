@@ -21,7 +21,7 @@ FOUNDATION_EXPORT NSString *NSInvalidArchiveOperationException;
    id                   _delegate;
    NSPropertyListFormat _outputFormat;
    NSMapTable          *_nameToClass;
-   unsigned             _pass;
+   NSUInteger             _pass;
    NSMapTable          *_objectToUid;
 }
 

@@ -176,7 +176,7 @@ static NSCharacterSet *sharedSetWithName(Class cls,NSString *name){
 }
 
 -(NSCharacterSet *)invertedSet {
-   unsigned char *bitmap=bitmapBytes(self);
+   uint8_t *bitmap=bitmapBytes(self);
    NSUInteger       i;
 
    for(i=0;i<NSBitmapCharacterSetSize;i++)

@@ -59,8 +59,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    Class isa;
 }
 
-+(int)version;
-+(void)setVersion:(int)version;
++(NSInteger)version;
++(void)setVersion:(NSInteger)version;
 
 +(void)load;
 

@@ -16,7 +16,7 @@ enum {
 @interface NSHandleMonitor_win32 : NSInputSource {
    void    *_handle;
    id       _delegate;
-   unsigned _currentActivity;
+   NSUInteger _currentActivity;
 }
 
 +(NSHandleMonitor_win32 *)handleMonitorWithHandle:(void *)handle;
@@ -27,7 +27,7 @@ enum {
 
 -(void)setDelegate:delegate;
 
--(void)setCurrentActivity:(unsigned)activity;
+-(void)setCurrentActivity:(NSUInteger)activity;
 
 -(void)notifyDelegateOfCurrentActivity;
 

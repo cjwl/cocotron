@@ -91,7 +91,7 @@ char *NSUnicodeToNEXTSTEP(const unichar *characters,NSUInteger length,
 }
 
 NSUInteger NSGetNEXTSTEPStringWithMaxLength(const unichar *characters,NSUInteger length,NSUInteger *location,char *cString,NSUInteger maxLength,BOOL lossy) {
-   unsigned i,result=0;
+   NSUInteger i,result=0;
 
    for(i=0;i<length && result<maxLength;i++){
     unichar code=characters[i];

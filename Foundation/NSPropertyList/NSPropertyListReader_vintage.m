@@ -109,7 +109,7 @@ static inline id topObject(NSPropertyListReader_vintage *self){
    return self->_stack[self->_stackSize-1];
 }
 
-static inline void appendCharacter(NSPropertyListReader_vintage *self,unsigned char c){
+static inline void appendCharacter(NSPropertyListReader_vintage *self,uint8_t c){
    if(self->_bufferSize>=self->_bufferCapacity){
     self->_bufferCapacity*=2;
     self->_buffer=NSZoneRealloc(NULL,self->_buffer,self->_bufferCapacity*sizeof(unichar));
@@ -165,7 +165,7 @@ static inline void appendCharacter(NSPropertyListReader_vintage *self,unsigned c
    } expect=EXPECT_VAL;
 
    for(_index=0;_index<_length;){
-    unsigned char code=_bytes[_index++];
+    uint8_t code=_bytes[_index++];
 
     switch(state){
 

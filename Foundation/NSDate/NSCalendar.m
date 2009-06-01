@@ -33,11 +33,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return _identifier;
 }
 
--(unsigned)firstWeekday {
+-(NSUInteger)firstWeekday {
    return _firstWeekday;
 }
 
--(unsigned)minimumDaysInFirstWeek {
+-(NSUInteger)minimumDaysInFirstWeek {
    return _minimumDaysInFirstWeek;
 }
 
@@ -49,11 +49,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return _locale;
 }
 
--(void)setFirstWeekday:(unsigned)weekday {
+-(void)setFirstWeekday:(NSUInteger)weekday {
    _firstWeekday=weekday;
 }
 
--(void)setMinimumDaysInFirstWeek:(unsigned)days {
+-(void)setMinimumDaysInFirstWeek:(NSUInteger)days {
    _minimumDaysInFirstWeek=days;
 }
 
@@ -84,22 +84,22 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return NSMakeRange(0,0);
 }
 
--(unsigned)ordinalityOfUnit:(NSCalendarUnit)unit inUnit:(NSCalendarUnit)inUnit forDate:(NSDate *)date {
+-(NSUInteger)ordinalityOfUnit:(NSCalendarUnit)unit inUnit:(NSCalendarUnit)inUnit forDate:(NSDate *)date {
    NSUnimplementedMethod();
    return 0;
 }
 
--(NSDateComponents *)components:(unsigned)flags fromDate:(NSDate *)date {
+-(NSDateComponents *)components:(NSUInteger)flags fromDate:(NSDate *)date {
    NSUnimplementedMethod();
    return nil;
 }
 
--(NSDateComponents *)components:(unsigned)flags fromDate:(NSDate *)fromDate toDate:(NSDate *)toDate options:(unsigned)options {
+-(NSDateComponents *)components:(NSUInteger)flags fromDate:(NSDate *)fromDate toDate:(NSDate *)toDate options:(NSUInteger)options {
    NSUnimplementedMethod();
    return nil;
 }
 
--(NSDate *)dateByAddingComponents:(NSDateComponents *)components toDate:(NSDate *)date options:(unsigned)options {
+-(NSDate *)dateByAddingComponents:(NSDateComponents *)components toDate:(NSDate *)date options:(NSUInteger)options {
    NSUnimplementedMethod();
    return nil;
 }

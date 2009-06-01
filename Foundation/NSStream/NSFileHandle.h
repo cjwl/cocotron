@@ -41,9 +41,9 @@ FOUNDATION_EXPORT NSString *NSFileHandleOperationException;
 -(void)closeFile;
 -(void)synchronizeFile;
 
--(unsigned long long)offsetInFile;
--(void)seekToFileOffset:(unsigned long long)offset;
--(unsigned long long)seekToEndOfFile;
+-(uint64_t)offsetInFile;
+-(void)seekToFileOffset:(uint64_t)offset;
+-(uint64_t)seekToEndOfFile;
 
 -(NSData *)readDataOfLength:(NSUInteger)length;
 -(NSData *)readDataToEndOfFile;
@@ -51,7 +51,7 @@ FOUNDATION_EXPORT NSString *NSFileHandleOperationException;
 
 -(void)writeData:(NSData *)data;
 
--(void)truncateFileAtOffset:(unsigned long long)offset;
+-(void)truncateFileAtOffset:(uint64_t)offset;
 
 -(void)readInBackgroundAndNotifyForModes:(NSArray *)modes;
 -(void)readInBackgroundAndNotify;

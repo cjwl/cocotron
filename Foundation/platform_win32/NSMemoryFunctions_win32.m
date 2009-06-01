@@ -33,9 +33,9 @@ void NSDeallocateMemoryPages(void *pointer,NSUInteger byteCount) {
 }
 
 void NSCopyMemoryPages(const void *src,void *dst,NSUInteger byteCount) {
-   const unsigned char *srcb=src;
-   unsigned char       *dstb=dst;
-   int                  i;
+   const uint8_t *srcb=src;
+   uint8_t       *dstb=dst;
+   NSUInteger     i;
 
    for(i=0;i<byteCount;i++)
     dstb[i]=srcb[i];
@@ -63,7 +63,7 @@ static DWORD Win32ThreadStorageIndex() {
    return tlsIndex;
 }
 
-NSZone *NSCreateZone(unsigned startSize,unsigned granularity,BOOL canFree){
+NSZone *NSCreateZone(NSUInteger startSize,NSUInteger granularity,BOOL canFree){
    return NULL;
 }
 
@@ -94,7 +94,7 @@ void NSZoneFree(NSZone *zone,void *pointer){
    free(pointer);
 }
 
-void *NSZoneMalloc(NSZone *zone,unsigned size){
+void *NSZoneMalloc(NSZone *zone,NSUInteger size){
    return malloc(size);
 }
 

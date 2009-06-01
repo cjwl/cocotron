@@ -13,11 +13,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @interface NSUnarchiver : NSCoder {
    NSData              *_data;
-   const unsigned char *_bytes;
+   const uint8_t *_bytes;
    NSUInteger             _position,_length;
    NSZone              *_objectZone;
    
-   unsigned    _version;
+   uint32_t    _version;
    NSMapTable *_objects;
    NSMapTable *_classes;
    NSMapTable *_cStrings;
@@ -40,7 +40,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(BOOL)isAtEnd;
 -(NSZone *)objectZone;
 -(void)setObjectZone:(NSZone *)zone;
--(unsigned)systemVersion;
 
 -(void)decodeClassName:(NSString *)archiveName asClassName:(NSString *)runtimeName;
 -(NSString *)classNameDecodedForArchiveClassName:(NSString *)className;

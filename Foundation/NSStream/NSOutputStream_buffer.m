@@ -10,7 +10,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @implementation NSOutputStream_buffer
 
--initToBuffer:(unsigned char *)buffer capacity:(NSUInteger)capacity {
+-initToBuffer:(uint8_t *)buffer capacity:(NSUInteger)capacity {
    _delegate=self;
    _error=nil;
    _status=NSStreamStatusNotOpen;
@@ -59,7 +59,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return (_position<_capacity)?YES:NO;
 }
 
--(NSInteger)write:(const unsigned char *)buffer maxLength:(NSUInteger)maxLength {
+-(NSInteger)write:(const uint8_t *)buffer maxLength:(NSUInteger)maxLength {
    if(_status!=NSStreamStatusOpen)
     return -1;
    else {

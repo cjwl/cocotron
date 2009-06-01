@@ -14,7 +14,7 @@ unichar *NSISOLatin1ToUnicode(const char *cString,NSUInteger length,
    int      i;
 
    for(i=0;i<length;i++)
-    characters[i]=((unsigned char *)cString)[i];
+    characters[i]=((uint8_t *)cString)[i];
 
    *resultLength=i;
    return characters;
@@ -54,7 +54,7 @@ NSString *NSString_isoLatin1NewWithBytes(NSZone *zone,
 
    string->_length=length;
    for(i=0;i<length;i++)
-    string->_bytes[i]=((unsigned char *)bytes)[i];
+    string->_bytes[i]=((uint8_t *)bytes)[i];
    string->_bytes[i]='\0';
 
    return string;

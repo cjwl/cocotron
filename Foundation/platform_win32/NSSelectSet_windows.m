@@ -320,7 +320,7 @@ static void transferNativeToSetWithOriginals(native_set *native,NSMutableSet *se
    LeaveCriticalSection(_async->lock);
 
    if(pingElseThread){
-    unsigned char one[1]={ 42 };
+    uint8_t one[1]={ 42 };
    
     [_async->pingWrite write:one maxLength:1];
    }

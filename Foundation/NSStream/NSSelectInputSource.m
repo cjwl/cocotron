@@ -50,15 +50,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    _delegate=object;
 }
 
--(unsigned)selectEventMask {
+-(NSUInteger)selectEventMask {
    return _eventMask;
 }
 
--(void)setSelectEventMask:(unsigned)eventMask {
+-(void)setSelectEventMask:(NSUInteger)eventMask {
    _eventMask=eventMask;
 }
 
--(BOOL)processImmediateEvents:(unsigned)selectEvent {
+-(BOOL)processImmediateEvents:(NSUInteger)selectEvent {
    if((selectEvent&=_eventMask)==0)
     return NO;
 

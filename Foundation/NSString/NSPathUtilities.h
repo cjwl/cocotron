@@ -34,22 +34,22 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(BOOL)isAbsolutePath;
 
 -(const char *)fileSystemRepresentation;
--(const unsigned short *)fileSystemRepresentationW;
+-(const uint16_t *)fileSystemRepresentationW;
 -(BOOL)getFileSystemRepresentation:(char *)bytes maxLength:(NSUInteger)maxLength;
 
 -(NSUInteger)completePathIntoString:(NSString **)string caseSensitive:(BOOL)caseSensitive matchesIntoArray:(NSArray **)array filterTypes:(NSArray *)types;
 
 @end
 
-enum {
+typedef enum {
  NSLibraryDirectory,
-};
+} NSSearchPathDirectory;
 
-enum {
+typedef enum {
  NSSystemDomainMask
-};
+} NSSearchPathDomainMask;
 
-FOUNDATION_EXPORT NSArray  *NSSearchPathForDirectoriesInDomains(int d,unsigned mask,BOOL expand);
+FOUNDATION_EXPORT NSArray  *NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory d,NSSearchPathDomainMask mask,BOOL expand);
 
 FOUNDATION_EXPORT NSString *NSHomeDirectory(void);
 

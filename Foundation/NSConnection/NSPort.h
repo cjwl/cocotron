@@ -32,7 +32,7 @@ FOUNDATION_EXPORT NSString *NSPortDidBecomeInvalidNotification;
 
 -(BOOL)sendBeforeDate:(NSDate *)beforeDate components:(NSMutableArray *)components from:(NSPort *)fromPort reserved:(NSUInteger)reservedSpace;
 
--(BOOL)sendBeforeDate:(NSDate *)beforeData msgid:(unsigned)msgid components:(NSMutableArray *)components from:(NSPort *)fromPort reserved:(NSUInteger)reservedSpace;
+-(BOOL)sendBeforeDate:(NSDate *)beforeData msgid:(NSUInteger)msgid components:(NSMutableArray *)components from:(NSPort *)fromPort reserved:(NSUInteger)reservedSpace;
 
 @end
 

@@ -29,7 +29,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)getCharacters:(unichar *)buffer {
-   int i;
+   NSInteger i;
 
    for(i=0;i<_length;i++)
     buffer[i]=_unicode[i];
@@ -103,7 +103,7 @@ NSString *NSMutableString_unicodePtrInitWithCString(NSMutableString_unicodePtr *
 
 NSString *NSMutableString_unicodePtrInit(NSMutableString_unicodePtr *self,
  const unichar *unicode,NSUInteger length,NSZone *zone){
-   int i;
+   NSInteger i;
 
    self->_length=length;
    self->_capacity=roundCapacityUp(length);

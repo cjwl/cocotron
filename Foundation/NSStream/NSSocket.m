@@ -46,12 +46,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return NO;
 }
 
--(NSInteger)read:(unsigned char *)buffer maxLength:(NSUInteger)length {
+-(NSInteger)read:(uint8_t *)buffer maxLength:(NSUInteger)length {
    NSInvalidAbstractInvocation();
    return -1;
 }
 
--(NSInteger)write:(const unsigned char *)buffer maxLength:(NSUInteger)length {
+-(NSInteger)write:(const uint8_t *)buffer maxLength:(NSUInteger)length {
    NSInvalidAbstractInvocation();
    return -1;
 }

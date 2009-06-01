@@ -100,7 +100,7 @@ static struct passwd *pwent = NULL;
 
 -(NSDictionary *)environment {
    id      *objects,*keys;
-   unsigned count;
+   NSUInteger count;
 
    char **env;
    char  *keyValue;
@@ -131,8 +131,7 @@ static struct passwd *pwent = NULL;
     [self checkEnvironmentKey:keys[count] value:objects[count]];
    }
 
-   return [[NSDictionary allocWithZone:NULL] initWithObjects:objects forKeys:keys
-     count:count];
+   return [[NSDictionary allocWithZone:NULL] initWithObjects:objects forKeys:keys count:count];
 }
 
 // silly me, we need microsecond granularity!

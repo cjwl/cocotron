@@ -734,7 +734,7 @@ void NSUnicodeToCapitalized(unichar *characters,NSUInteger length) {
 }
 
 unichar *NSUnicodeFromData(NSData *data,NSUInteger *resultLengthp) {
-   const unsigned char *bytes=[data bytes];
+   const uint8_t *bytes=[data bytes];
    NSUInteger             i,length=[data length],resultLength,resultIndex=0;
    BOOL                 swap=NO;
    unichar             *result;
@@ -780,7 +780,7 @@ unichar *NSUnicodeFromData(NSData *data,NSUInteger *resultLengthp) {
 }
 
 unichar *NSUnicodeFromDataUTF16BigEndian(NSData *data,NSUInteger *resultLengthp) {
-   const unsigned char *bytes=[data bytes];
+   const uint8_t *bytes=[data bytes];
    NSUInteger             i,length=[data length],resultLength,resultIndex=0;
    unichar             *result;
 

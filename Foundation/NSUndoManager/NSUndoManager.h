@@ -10,7 +10,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @class NSArray,NSMutableArray,NSInvocation;
 
-FOUNDATION_EXPORT const unsigned NSUndoCloseGroupingRunLoopOrdering;
+enum {
+ NSUndoCloseGroupingRunLoopOrdering=350000,
+};
 
 FOUNDATION_EXPORT NSString *NSUndoManagerCheckpointNotification;
 
@@ -30,7 +32,7 @@ FOUNDATION_EXPORT NSString *NSUndoManagerDidRedoChangeNotification;
     BOOL _groupsByEvent;
     NSArray *_modes;
     int _disableCount;
-    int _levelsOfUndo;
+    NSInteger _levelsOfUndo;
     id _currentGroup;
     int _state;
     NSString *_actionName;
@@ -39,11 +41,11 @@ FOUNDATION_EXPORT NSString *NSUndoManagerDidRedoChangeNotification;
 }
 
 -(NSArray *)runLoopModes;
--(unsigned)levelsOfUndo;
+-(NSUInteger)levelsOfUndo;
 -(BOOL)groupsByEvent;
 
 -(void)setRunLoopModes:(NSArray *)modes;
--(void)setLevelsOfUndo:(unsigned)levels;
+-(void)setLevelsOfUndo:(NSUInteger)levels;
 -(void)setGroupsByEvent:(BOOL)flag;
 
 -(BOOL)isUndoRegistrationEnabled;
@@ -53,7 +55,7 @@ FOUNDATION_EXPORT NSString *NSUndoManagerDidRedoChangeNotification;
 -(void)beginUndoGrouping;
 -(void)endUndoGrouping;
 
--(int)groupingLevel;
+-(NSInteger)groupingLevel;
 
 -(BOOL)canUndo;
 -(void)undo;

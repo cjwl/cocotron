@@ -40,7 +40,7 @@ id objc_msg_sendv(id self, SEL selector, unsigned arg_size, void *arg_frame);
     _argumentOffsets[i]=_argumentFrameSize;
 
     NSGetSizeAndAlignment([_signature getArgumentTypeAtIndex:i],&naturalSize,&align);
-    promotedSize=((naturalSize+sizeof(int)-1)/sizeof(int))*sizeof(int);
+    promotedSize=((naturalSize+sizeof(long)-1)/sizeof(long))*sizeof(long);
 
     _argumentSizes[i]=naturalSize;
     _argumentFrameSize+=promotedSize;
@@ -66,7 +66,7 @@ id objc_msg_sendv(id self, SEL selector, unsigned arg_size, void *arg_frame);
 -initWithMethodSignature:(NSMethodSignature *)signature
    arguments:(void *)arguments {
    unsigned       i;
-   unsigned char *stackFrame=arguments;
+   uint8_t *stackFrame=arguments;
 
    [self initWithMethodSignature:signature];
 
@@ -77,7 +77,7 @@ id objc_msg_sendv(id self, SEL selector, unsigned arg_size, void *arg_frame);
 }
 
 -(void)dealloc {
-    if (_retainArguments == YES) {
+    if (_retainArguments) {
         NSInteger i, count = [_signature numberOfArguments];
 
         for (i = 0; i < count; ++i) {
@@ -209,12 +209,12 @@ static void byteCopy(void *src,void *dst,NSUInteger length){
 
 -(void)getArgument:(void *)pointerToValue atIndex:(NSInteger)index {
    NSUInteger naturalSize=_argumentSizes[index];
-   NSUInteger promotedSize=((naturalSize+sizeof(int)-1)/sizeof(int))*sizeof(int);
+   NSUInteger promotedSize=((naturalSize+sizeof(long)-1)/sizeof(long))*sizeof(long);
    
    if(naturalSize==promotedSize)
     byteCopy(_argumentFrame+_argumentOffsets[index],pointerToValue,naturalSize);
    else if(promotedSize==4){
-    unsigned char promoted[promotedSize];
+    uint8_t promoted[promotedSize];
     
     byteCopy(_argumentFrame+_argumentOffsets[index],promoted,promotedSize);
     if(naturalSize==1)
@@ -232,12 +232,12 @@ static void byteCopy(void *src,void *dst,NSUInteger length){
 
 -(void)setArgument:(void *)pointerToValue atIndex:(NSInteger)index {
    NSUInteger naturalSize=_argumentSizes[index];
-   NSUInteger promotedSize=((naturalSize+sizeof(int)-1)/sizeof(int))*sizeof(int);
+   NSUInteger promotedSize=((naturalSize+sizeof(long)-1)/sizeof(long))*sizeof(long);
 
    if(naturalSize==promotedSize)
     byteCopy(pointerToValue,_argumentFrame+_argumentOffsets[index],naturalSize);
    else if(promotedSize==4){
-    unsigned char promoted[promotedSize];
+    uint8_t promoted[promotedSize];
     
     if(naturalSize==1)
      *((int *)promoted)=*((char *)pointerToValue);
@@ -254,7 +254,7 @@ static void byteCopy(void *src,void *dst,NSUInteger length){
 }
 
 -(void)retainArguments {
-    if (_retainArguments == NO) {
+    if (!_retainArguments) {
         NSInteger i, count = [_signature numberOfArguments];
         
         _retainArguments=YES;

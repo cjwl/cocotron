@@ -23,7 +23,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(NSPort *)sendPort;
 -(NSPort *)receivePort;
 
--(void)setMsgid:(unsigned)msgid;
+-(void)setMsgid:(uint32_t)msgid;
 
 -(BOOL)sendBeforeDate:(NSDate *)date;
  

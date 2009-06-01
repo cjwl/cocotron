@@ -5,8 +5,6 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
-
-// Original - David Young <daver@geeks.org>
 #import <Foundation/NSUndoManager.h>
 #import <Foundation/NSUndoGroup.h>
 #import <Foundation/NSString.h>
@@ -22,8 +20,6 @@ enum _NSUndoManagerState {
     NSUndoManagerUndoing,
     NSUndoManagerRedoing
 };
-
-const unsigned NSUndoCloseGroupingRunLoopOrdering=350000;
 
 NSString *NSUndoManagerCheckpointNotification=@"NSUndoManagerCheckpointNotification";
 NSString *NSUndoManagerDidOpenUndoGroupNotification=@"NSUndoManagerDidOpenUndoGroupNotification";
@@ -82,7 +78,7 @@ NSString *NSUndoManagerDidRedoChangeNotification=@"NSUndoManagerDidRedoChangeNot
     return _modes;
 }
 
-- (unsigned)levelsOfUndo
+- (NSUInteger)levelsOfUndo
 {
     return _levelsOfUndo;
 }
@@ -101,7 +97,7 @@ NSString *NSUndoManagerDidRedoChangeNotification=@"NSUndoManagerDidRedoChangeNot
     [self _registerPerform];
 }
 
-- (void)setLevelsOfUndo:(unsigned)levels
+- (void)setLevelsOfUndo:(NSUInteger)levels
 {
     _levelsOfUndo = levels;
     while ([_undoStack count] > _levelsOfUndo)
@@ -192,7 +188,7 @@ NSString *NSUndoManagerDidRedoChangeNotification=@"NSUndoManagerDidRedoChangeNot
     _currentGroup = parentGroup;
 }
 
-- (int)groupingLevel
+- (NSInteger)groupingLevel
 {
     NSUndoGroup *temp = _currentGroup;
     int level = (_currentGroup != nil);

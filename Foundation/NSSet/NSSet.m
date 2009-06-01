@@ -337,7 +337,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(NSUInteger)countByEnumeratingWithState:(NSFastEnumerationState *)state objects:(id *)stackbuf count:(NSUInteger)length;
 {
-	int i;
+	NSInteger i;
 	state->itemsPtr=stackbuf;
 	
 	state->mutationsPtr=(unsigned long*)self;

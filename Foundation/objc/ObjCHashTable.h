@@ -11,8 +11,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <string.h>
 
 typedef struct {
-    unsigned count;
-    unsigned nBuckets;
+    unsigned long count;
+    unsigned long nBuckets;
     struct OBJCHashBucket **buckets;
 } OBJCHashTable;
 
@@ -24,7 +24,7 @@ typedef struct OBJCHashBucket {
 
 typedef struct {
    OBJCHashTable         *table;
-   int                    i;
+   long                   i;
    struct OBJCHashBucket *j;
 } OBJCHashEnumerator;
 

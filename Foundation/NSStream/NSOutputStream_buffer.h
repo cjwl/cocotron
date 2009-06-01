@@ -12,7 +12,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    id              _delegate;
    NSError        *_error;
    NSStreamStatus _status;
-   unsigned char  *_buffer;
+   uint8_t  *_buffer;
    NSUInteger        _capacity;
    NSUInteger        _position;
 }

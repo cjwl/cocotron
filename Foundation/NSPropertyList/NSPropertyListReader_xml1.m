@@ -88,8 +88,8 @@ NSDate* NSDateFromPlistString(NSString* string)
 +(NSData *)dataFromBase64String:(NSString *)string {
    NSUInteger      i,length=[string length],resultLength=0;
    unichar       buffer[length];
-   unsigned char result[length];
-   unsigned char partial=0;
+   uint8_t result[length];
+   uint8_t partial=0;
    enum { load6High, load2Low, load4Low, load6Low } state=load6High;
    
    [string getCharacters:buffer];

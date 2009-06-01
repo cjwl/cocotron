@@ -28,9 +28,9 @@
    [super dealloc];
 }
 
--(BOOL)processImmediateEvents:(unsigned)selectEvent {
+-(BOOL)processImmediateEvents:(NSUInteger)selectEvent {
    if(selectEvent & NSSelectReadEvent) {
-      unsigned char buf[256];
+      uint8_t buf[256];
       [_cancelRead read:buf maxLength:256];
       _hasCanceled=NO;
       return YES;
@@ -40,7 +40,7 @@
 
 -(void)cancel {
    if(!_hasCanceled) {
-      unsigned char buf[]="x";
+      uint8_t buf[]="x";
       _hasCanceled=YES;
       [_cancelWrite write:buf maxLength:1];
    }

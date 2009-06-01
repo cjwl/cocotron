@@ -144,8 +144,8 @@ CONFORMING TO
                          @"fsync(%d): %s", _fileDescriptor, strerror(errno));
 }
 
-- (unsigned long long)offsetInFile {
-    unsigned long long result = lseek(_fileDescriptor, 0, SEEK_CUR);
+- (uint64_t)offsetInFile {
+    uint64_t result = lseek(_fileDescriptor, 0, SEEK_CUR);
     
     if (result == -1) {
         NSRaiseException(NSFileHandleOperationException, self, _cmd,
@@ -156,14 +156,14 @@ CONFORMING TO
     return result;
 }
 
-- (void)seekToFileOffset:(unsigned long long)offset {
+- (void)seekToFileOffset:(uint64_t)offset {
     if (lseek(_fileDescriptor, offset, SEEK_SET) == -1)
         NSRaiseException(NSFileHandleOperationException, self, _cmd,
                          @"lseek(%d): %s", _fileDescriptor, strerror(errno));
 }
 
-- (unsigned long long)seekToEndOfFile {
-    unsigned long long result = lseek(_fileDescriptor, 0, SEEK_END);
+- (uint64_t)seekToEndOfFile {
+    uint64_t result = lseek(_fileDescriptor, 0, SEEK_END);
     if (result == -1) {
         NSRaiseException(NSFileHandleOperationException, self, _cmd,
                          @"lseek(%d): %s", _fileDescriptor, strerror(errno));
@@ -272,8 +272,8 @@ CONFORMING TO
 
 - (void)writeData:(NSData *)data {
     const void *bytes = [data bytes];
-    unsigned long length = [data length];
-    ssize_t count, total = 0;
+    NSUInteger length = [data length],total=0;
+    size_t count;
 
     do {
         count = write(_fileDescriptor, bytes+total, length-total);
@@ -285,7 +285,7 @@ CONFORMING TO
     } while (total < length);
 }
 
-- (void)truncateFileAtOffset:(unsigned long long)offset {
+- (void)truncateFileAtOffset:(uint64_t)offset {
    ftruncate(_fileDescriptor,offset);
 }
 
@@ -317,7 +317,7 @@ CONFORMING TO
     [[NSRunLoop currentRunLoop] addInputSource:_inputSource forMode:[modes objectAtIndex:i]];
 }
 
--(void)selectInputSource:(NSSelectInputSource *)inputSource selectEvent:(unsigned)selectEvent {
+-(void)selectInputSource:(NSSelectInputSource *)inputSource selectEvent:(NSUInteger)selectEvent {
     NSData *availableData = [self availableData];
     NSDictionary   *userInfo;
     NSNotification *note;

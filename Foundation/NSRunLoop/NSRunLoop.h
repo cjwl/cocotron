@@ -39,7 +39,7 @@ FOUNDATION_EXPORT NSString *NSRunLoopCommonModes;
 
 -(void)addTimer:(NSTimer *)timer forMode:(NSString *)mode;
 
--(void)performSelector:(SEL)selector target:target argument:argument order:(unsigned)order modes:(NSArray *)modes;
+-(void)performSelector:(SEL)selector target:target argument:argument order:(NSUInteger)order modes:(NSArray *)modes;
 
 -(void)cancelPerformSelector:(SEL)selector target:target argument:argument;
 

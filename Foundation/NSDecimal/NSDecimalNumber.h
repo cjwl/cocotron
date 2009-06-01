@@ -21,12 +21,12 @@ FOUNDATION_EXPORT NSString *NSDecimalNumberExactnessException;
 }
 
 -initWithDecimal:(NSDecimal)decimal;
--initWithMantissa:(unsigned long long)mantissa exponent:(short)exponent isNegative:(BOOL)flag;
+-initWithMantissa:(uint64_t)mantissa exponent:(int16_t)exponent isNegative:(BOOL)flag;
 -initWithString:(NSString *)string;
 -initWithString:(NSString *)string locale:(NSDictionary *)locale;
 
 +(NSDecimalNumber *)decimalNumberWithDecimal:(NSDecimal)decimal;
-+(NSDecimalNumber *)decimalNumberWithMantissa:(unsigned long long)mantissa exponent:(short)exponent isNegative:(BOOL)negative;
++(NSDecimalNumber *)decimalNumberWithMantissa:(uint64_t)mantissa exponent:(int16_t)exponent isNegative:(BOOL)negative;
 +(NSDecimalNumber *)decimalNumberWithString:(NSString *)string;
 +(NSDecimalNumber *)decimalNumberWithString:(NSString *)string locale:(NSDictionary *)locale;
 
@@ -56,11 +56,11 @@ FOUNDATION_EXPORT NSString *NSDecimalNumberExactnessException;
 -(NSDecimalNumber *)decimalNumberByDividingBy:(NSDecimalNumber *)other;
 -(NSDecimalNumber *)decimalNumberByDividingBy:(NSDecimalNumber *)other withBehavior:(id <NSDecimalNumberBehaviors>)behavior;
 
--(NSDecimalNumber *)decimalNumberByMultiplyingByPowerOf10:(short)power;
--(NSDecimalNumber *)decimalNumberByMultiplyingByPowerOf10:(short)power withBehavior:(id <NSDecimalNumberBehaviors>)behavior;
+-(NSDecimalNumber *)decimalNumberByMultiplyingByPowerOf10:(int16_t)power;
+-(NSDecimalNumber *)decimalNumberByMultiplyingByPowerOf10:(int16_t)power withBehavior:(id <NSDecimalNumberBehaviors>)behavior;
 
--(NSDecimalNumber *)decimalNumberByRaisingToPower:(unsigned)power;
--(NSDecimalNumber *)decimalNumberByRaisingToPower:(unsigned)power withBehavior:(id <NSDecimalNumberBehaviors>)behavior;
+-(NSDecimalNumber *)decimalNumberByRaisingToPower:(NSUInteger)power;
+-(NSDecimalNumber *)decimalNumberByRaisingToPower:(NSUInteger)power withBehavior:(id <NSDecimalNumberBehaviors>)behavior;
 
 -(NSString *)descriptionWithLocale:(NSDictionary *)locale;
 

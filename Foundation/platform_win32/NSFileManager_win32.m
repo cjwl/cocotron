@@ -120,7 +120,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    }
    else {
     NSArray *contents=[self directoryContentsAtPath:path];
-    int      i,count=[contents count];
+    NSInteger      i,count=[contents count];
 
     for(i=0;i<count;i++){
      NSString *fullPath=[path stringByAppendingPathComponent:[contents objectAtIndex:i]];
@@ -150,7 +150,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    }
    else {
     NSArray *files=[self directoryContentsAtPath:src];
-    int      i,count=[files count];
+    NSInteger      i,count=[files count];
 
     if(!CreateDirectoryW([dest fileSystemRepresentationW],NULL))
      return NO;
@@ -191,8 +191,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [result setObject:@"GROUP" forKey:NSFileGroupOwnerAccountName];
    [result setObject:[NSNumber numberWithUnsignedLong:0666]
               forKey:NSFilePosixPermissions];
-	unsigned long long sizeOfFile = fileData.nFileSizeLow;
-	unsigned long long sizeHigh = fileData.nFileSizeHigh;
+	uint64_t sizeOfFile = fileData.nFileSizeLow;
+	uint64_t sizeHigh = fileData.nFileSizeHigh;
 	sizeOfFile |= sizeHigh << 32;
 	
 	[result setObject:[NSNumber numberWithUnsignedLongLong:sizeOfFile]
@@ -273,7 +273,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 
 -(const unichar*)fileSystemRepresentationWithPathW:(NSString *)path {
-   unsigned i,length=[path length];
+   NSUInteger i,length=[path length];
    unichar  buffer[length];
    BOOL     converted=NO;
 
@@ -295,7 +295,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(const char*)fileSystemRepresentationWithPath:(NSString *)path {
-	unsigned i,length=[path length];
+	NSUInteger i,length=[path length];
 	char  buffer[length];
 	BOOL     converted=NO;
 	

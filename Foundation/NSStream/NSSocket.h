@@ -26,11 +26,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(BOOL)hasBytesAvailable;
 
--(NSInteger)read:(unsigned char *)buffer maxLength:(NSUInteger)length;
--(NSInteger)write:(const unsigned char *)buffer maxLength:(NSUInteger)length;
+-(NSInteger)read:(uint8_t *)buffer maxLength:(NSUInteger)length;
+-(NSInteger)write:(const uint8_t *)buffer maxLength:(NSUInteger)length;
 
 -(NSSocket *)acceptWithError:(NSError **)errorp;
 
 @end
 
-NSData *NSSocketAddressDataForNetworkOrderAddressBytesAndPort(const void *address,unsigned length,int port);
+NSData *NSSocketAddressDataForNetworkOrderAddressBytesAndPort(const void *address,NSUInteger length,int port);

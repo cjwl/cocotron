@@ -51,7 +51,7 @@ static OBJCObjectFile *OBJCObjectFileWithPath(const char *path) {
 OBJCObjectFile *OBJCUniqueObjectFileWithPath(const char *path) {
    OBJCObjectFile *result;
    OBJCArray      *array=OBJCObjectFileImageArray();
-   unsigned        arrayIndex=0;
+   unsigned long   arrayIndex=0;
 
    while((result=OBJCArrayEnumerate(array,&arrayIndex))!=NULL){
      if (strcmp(result->path, path) == 0)
@@ -263,7 +263,7 @@ static void OBJCSymbolTableRegisterCategories(OBJCSymbolTable *symbolTable){
 static void OBJCSymbolTableRegisterStringsIfNeeded(OBJCSymbolTable *symbolTable){
    static OBJCArray        *unlinkedObjects=NULL;
 
-   unsigned                 offset=symbolTable->classCount+symbolTable->categoryCount;
+   unsigned long            offset=symbolTable->classCount+symbolTable->categoryCount;
    OBJCStaticInstanceList **listOfLists=symbolTable->definitions[offset];
 
    if(unlinkedObjects!=NULL){
@@ -342,7 +342,7 @@ void OBJCLinkQueuedModulesToObjectFileWithPath(const char *path){
    OBJCObjectFile *objectFile=OBJCUniqueObjectFileWithPath(path);
    OBJCArray      *queue=OBJCModuleQueueWithReset(YES);
    OBJCModule     *module;
-   unsigned        state=0;
+   unsigned long   state=0;
 
    while((module=OBJCArrayEnumerate(queue,&state))!=NULL)
     OBJCArrayAdd(objectFile->moduleArray,module);
@@ -357,7 +357,7 @@ OBJCObjectFile *OBJCObjectFileFromClass(Class class) {
    while(--count>=0){
     OBJCObjectFile *objectFile=OBJCArrayItemAtIndex(array,count);
     OBJCModule     *module;
-    unsigned        moduleIndex = 0;
+    unsigned long   moduleIndex = 0;
 	
     while((module=OBJCArrayEnumerate(objectFile->moduleArray,&moduleIndex))!=NULL) {
      unsigned classIndex;
@@ -393,7 +393,7 @@ const char *OBJCModulePathForProcess(){
 
 const char **objc_copyImageNames(unsigned *countp) {
    OBJCArray      *array=OBJCObjectFileImageArray();
-   unsigned        arrayIndex=0,count=OBJCArrayCount(array);
+   unsigned long   arrayIndex=0,count=OBJCArrayCount(array);
    const char    **result=malloc(count*sizeof(char *));
    OBJCObjectFile *objectFile;
 

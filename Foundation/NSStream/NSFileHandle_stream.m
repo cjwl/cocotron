@@ -62,16 +62,16 @@ enum {
    [NSException raise:NSFileHandleOperationException format:@"-[%@ %s]: Operation not supported",isa,sel_getName(_cmd)];
 }
 
--(unsigned long long)offsetInFile {
+-(uint64_t)offsetInFile {
    [NSException raise:NSFileHandleOperationException format:@"-[%@ %s]: Illegal seek",isa,sel_getName(_cmd)];
    return 0;
 }
 
--(void)seekToFileOffset:(unsigned long long)offset {
+-(void)seekToFileOffset:(uint64_t)offset {
    [NSException raise:NSFileHandleOperationException format:@"-[%@ %s]: Illegal seek",isa,sel_getName(_cmd)];
 }
 
--(unsigned long long)seekToEndOfFile {
+-(uint64_t)seekToEndOfFile {
    [NSException raise:NSFileHandleOperationException format:@"-[%@ %s]: Illegal seek",isa,sel_getName(_cmd)];
    return 0;
 }
@@ -109,7 +109,7 @@ enum {
      ;
 }
 
--(void)truncateFileAtOffset:(unsigned long long)offset {
+-(void)truncateFileAtOffset:(uint64_t)offset {
    [self doesNotRecognizeSelector:_cmd];
 }
 

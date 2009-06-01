@@ -22,7 +22,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
   return nil;
 }
 
--initRemoteWithTCPPort:(unsigned short)port host:(NSString *)hostName {
+-initRemoteWithTCPPort:(uint16_t)port host:(NSString *)hostName {
   NSUnimplementedMethod();
   return nil;
 }

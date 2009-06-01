@@ -14,14 +14,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     NSMethodSignature *_signature;
 
     NSUInteger       _returnSize;
-    unsigned char *_returnValue;
+    uint8_t *_returnValue;
 
     NSUInteger       _argumentFrameSize;
     NSUInteger      *_argumentSizes;
     NSUInteger      *_argumentOffsets;
-    unsigned char *_argumentFrame;
+    uint8_t       *_argumentFrame;
 
-    unsigned       _retainArguments:1;
+    BOOL       _retainArguments;
 }
 
 +(NSInvocation *)invocationWithMethodSignature:(NSMethodSignature *)signature;

@@ -11,10 +11,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @implementation NSURLResponse
 
--initWithURL:(NSURL *)url MIMEType:(NSString *)mimeType expectedContentLength:(int)expectedLength textEncodingName:(NSString *)encoding {
+-initWithURL:(NSURL *)url MIMEType:(NSString *)mimeType expectedContentLength:(NSInteger)expectedLength textEncodingName:(NSString *)encoding {
    _url=[url retain];
    _mimeType=[mimeType retain];
-   _expecteContentLength=expectedLength;
+   _expectedContentLength=expectedLength;
    _encoding=[encoding retain];
    return self;
 }
@@ -48,7 +48,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(long long)expectedContentLength {
-   return _expecteContentLength;
+   return _expectedContentLength;
 }
 
 -(NSString *)textEncodingName {

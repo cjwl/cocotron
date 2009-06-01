@@ -263,7 +263,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
    cString[pos++]='<';
    for(i=0;i<length;){
-    unsigned char byte=bytes[i];
+    uint8_t byte=bytes[i];
 
     cString[pos++]=hex[byte>>4];
     cString[pos++]=hex[byte&0x0F];

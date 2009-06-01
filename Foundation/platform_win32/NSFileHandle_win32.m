@@ -102,7 +102,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     Win32Assert("FlushFileBuffers");
 }
 
--(unsigned long long)offsetInFile {
+-(uint64_t)offsetInFile {
    LARGE_INTEGER li;
    
    li.QuadPart=0;
@@ -115,7 +115,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return li.QuadPart;
 }
 
--(void)seekToFileOffset:(unsigned long long)offset {
+-(void)seekToFileOffset:(uint64_t)offset {
    LONG  highWord=offset>>32;
 
    SetFilePointer(_handle,offset&0xFFFFFFFF,&highWord,FILE_BEGIN);
@@ -123,8 +123,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 //   Win32Assert("SetFilePointer");
 }
 
--(unsigned long long)seekToEndOfFile {
-   unsigned long long result=0;
+-(uint64_t)seekToEndOfFile {
+   uint64_t result=0;
    LONG  highWord=0;
    DWORD lowWord=SetFilePointer(_handle,0,&highWord,FILE_END);
 
@@ -138,7 +138,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return result;
 }
 
--(NSData *)readDataOfLength:(unsigned)length {
+-(NSData *)readDataOfLength:(NSUInteger)length {
    NSMutableData *result=[NSMutableData dataWithLength:length];
    DWORD          readLength;
 
@@ -236,7 +236,7 @@ while(GetLastError()!=ERROR_BROKEN_PIPE &&
     Win32Assert("WriteFile");
 }
 
--(void)truncateFileAtOffset:(unsigned long long)offset {
+-(void)truncateFileAtOffset:(uint64_t)offset {
    LONG  highWord=offset>>32;
 
    SetFilePointer(_handle,offset&0xFFFFFFFF,&highWord,FILE_BEGIN);

@@ -41,14 +41,14 @@ enum {
    
    NSComparisonPredicateModifier _modifier;
    NSPredicateOperatorType       _type;
-   unsigned                      _options;
+   NSUInteger                    _options;
    SEL                           _customSelector;
 }
 
--initWithLeftExpression:(NSExpression *)left rightExpression:(NSExpression *)right modifier:(NSComparisonPredicateModifier)modifier type:(NSPredicateOperatorType)type options:(unsigned)options;
+-initWithLeftExpression:(NSExpression *)left rightExpression:(NSExpression *)right modifier:(NSComparisonPredicateModifier)modifier type:(NSPredicateOperatorType)type options:(NSUInteger)options;
 -initWithLeftExpression:(NSExpression *)left rightExpression:(NSExpression *)right customSelector:(SEL)selector;
 
-+(NSPredicate *)predicateWithLeftExpression:(NSExpression *)left rightExpression:(NSExpression *)right modifier:(NSComparisonPredicateModifier)modifier type:(NSPredicateOperatorType)type options:(unsigned)options;
++(NSPredicate *)predicateWithLeftExpression:(NSExpression *)left rightExpression:(NSExpression *)right modifier:(NSComparisonPredicateModifier)modifier type:(NSPredicateOperatorType)type options:(NSUInteger)options;
 +(NSPredicate *)predicateWithLeftExpression:(NSExpression *)left rightExpression:(NSExpression *)right customSelector:(SEL)selector;
 
 -(NSExpression *)leftExpression;
@@ -56,7 +56,7 @@ enum {
 -(NSPredicateOperatorType)predicateOperatorType;
 
 -(NSComparisonPredicateModifier)comparisonPredicateModifier;
--(unsigned)options;
+-(NSUInteger)options;
 
 -(SEL)customSelector;
 

@@ -86,22 +86,22 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [_children addObject:node];
 }
 
--(void)insertChild:(NSXMLNode *)child atIndex:(unsigned)index {
+-(void)insertChild:(NSXMLNode *)child atIndex:(NSUInteger)index {
    [_children insertObject:child atIndex:index];
 }
 
--(void)insertChildren:(NSArray *)children atIndex:(unsigned)index {
+-(void)insertChildren:(NSArray *)children atIndex:(NSUInteger)index {
    NSInteger i,count=[children count];
    
    for(i=0;i<count;i++)
     [_children insertObject:[children objectAtIndex:i] atIndex:index+i];
 }
 
--(void)removeChildAtIndex:(unsigned)index {
+-(void)removeChildAtIndex:(NSUInteger)index {
    [_children removeObjectAtIndex:index];
 }
 
--(void)replaceChildAtIndex:(unsigned)index withNode:(NSXMLNode *)node {
+-(void)replaceChildAtIndex:(NSUInteger)index withNode:(NSXMLNode *)node {
    [_children replaceObjectAtIndex:index withObject:node];
 }
 

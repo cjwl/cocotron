@@ -36,12 +36,12 @@ BOOL NSObjectIsKindOfClass(id object,Class kindOf) {
 
 @implementation NSObject
 
-+(int)version {
++(NSInteger)version {
    return class_getVersion(self);
 }
 
 
-+(void)setVersion:(int)version {
++(void)setVersion:(NSInteger)version {
    class_setVersion(self,version);
 }
 

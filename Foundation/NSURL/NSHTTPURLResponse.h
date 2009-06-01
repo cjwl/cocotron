@@ -13,9 +13,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 }
 
-+(NSString *)localizedStringForStatusCode:(int)statusCode;
++(NSString *)localizedStringForStatusCode:(NSInteger)statusCode;
 
 -(NSDictionary *)allHeaderFields;
--(int)statusCode;
+-(NSInteger)statusCode;
 
 @end

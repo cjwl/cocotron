@@ -244,7 +244,7 @@ unsigned long NSSwapLong(unsigned long value){
 unsigned long long NSSwapLongLong(unsigned long long valueX){
    union {
     unsigned long long word;
-    unsigned char      bytes[8];
+    uint8_t      bytes[8];
    } value,result;
 
    value.word=valueX;

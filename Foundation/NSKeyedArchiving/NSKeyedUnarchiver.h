@@ -32,8 +32,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(double)decodeDoubleForKey:(NSString *)key;
 -(float)decodeFloatForKey:(NSString *)key;
 -(int)decodeIntForKey:(NSString *)key;
--(int)decodeInt32ForKey:(NSString *)key;
--(int)decodeInt64ForKey:(NSString *)key;
+-(int32_t)decodeInt32ForKey:(NSString *)key;
+-(int64_t)decodeInt64ForKey:(NSString *)key;
 -decodeObjectForKey:(NSString *)key;
 
 -(void)finishDecoding;

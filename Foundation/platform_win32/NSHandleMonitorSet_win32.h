@@ -18,7 +18,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -init;
 
--(unsigned)count;
+-(NSUInteger)count;
 
 -(NSHandleMonitor_win32 *)waitForHandleActivityBeforeDate:(NSDate *)date mode:(NSString *)mode;
 

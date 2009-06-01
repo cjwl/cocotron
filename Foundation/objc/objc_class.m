@@ -199,7 +199,7 @@ Class class_getSuperclass(Class class) {
 
 int class_getVersion(Class class) {
    struct objc_class *cls=class;
-   return (int)(cls->version); // FIXME: ? API is int, object format is long. am I missing something?
+   return (int)(cls->version); // FIXME: NSObject uses NSInteger (long), object format uses log, API is int. wtf. am I missing something?
 }
 
 Method class_getClassMethod(Class class, SEL selector)
@@ -274,7 +274,7 @@ const char *class_getIvarLayout(Class cls) {
 }
 
 static inline void OBJCInitializeCacheEntryOffset(OBJCMethodCacheEntry *entry){
-   entry->offsetToNextEntry=-((long)entry);
+   entry->offsetToNextEntry=-((intptr_t)entry);
 }
 
 // FIXME, better allocator
@@ -288,7 +288,7 @@ static OBJCMethodCacheEntry *allocateCacheEntry(){
 
 static inline void OBJCCacheMethodInClass(Class class,struct objc_method *method) {
    SEL          uniqueId=method->method_name;
-   unsigned long             index=(unsigned long)uniqueId&OBJCMethodCacheMask;
+   uintptr_t             index=(uintptr_t)uniqueId&OBJCMethodCacheMask;
    OBJCMethodCacheEntry *check=((void *)class->cache->table)+index;
 
    if(check->method->method_name==NULL)
@@ -301,7 +301,7 @@ static inline void OBJCCacheMethodInClass(Class class,struct objc_method *method
       BOOL success=NO;
       while(!success)
       {
-         long offset=0;
+         intptr_t offset=0;
          while(offset=check->offsetToNextEntry, ((void *)check)+offset!=NULL)
             check=((void *)check)+offset;
 

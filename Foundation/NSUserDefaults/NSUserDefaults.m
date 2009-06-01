@@ -311,7 +311,7 @@ NSString *NSUserDefaultsDidChangeNotification=@"NSUserDefaultsDidChangeNotificat
    return [string intValue];
 }
 
--(int)integerForKey:(NSString *)defaultName {
+-(NSInteger)integerForKey:(NSString *)defaultName {
    NSNumber *number=[self objectForKey:defaultName];
 
    return [number isKindOfClass:objc_lookUpClass("NSNumber")]?[number intValue]:0;
@@ -336,8 +336,8 @@ NSString *NSUserDefaultsDidChangeNotification=@"NSUserDefaultsDidChangeNotificat
    [self setObject:value?@"YES":@"NO" forKey:defaultName];
 }
 
--(void)setInteger:(int)value forKey:(NSString *)defaultName {
-   [self setObject:[NSNumber numberWithInt:value] forKey:defaultName];
+-(void)setInteger:(NSInteger)value forKey:(NSString *)defaultName {
+   [self setObject:[NSNumber numberWithInteger:value] forKey:defaultName];
 }
 
 -(void)setFloat:(float)value forKey:(NSString *)defaultName {

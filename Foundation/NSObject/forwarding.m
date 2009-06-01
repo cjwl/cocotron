@@ -1,8 +1,18 @@
 #import <objc/runtime.h>
+#import <Foundation/NSObject.h>
+#import <Foundation/NSInvocation.h>
 
-#if 0
+#define NSABISizeofRegisterReturn 8
+#define NSABIasm_jmp_objc_msgSend __asm__("jmp _objc_msgSend")
+#define NSABIasm_jmp_objc_msgSend_stret __asm__("jmp _objc_msgSend_stret")
+
+#if 1
 @interface NSObject(fastforwarding)
 -forwardingTargetForSelector:(SEL)selector;
+@end
+
+@interface NSInvocation(private)
++(NSInvocation *)invocationWithMethodSignature:(NSMethodSignature *)signature arguments:(void *)arguments;
 @end
 
 id NSObjCGetFastForwardTarget(id object,SEL selector){
@@ -15,36 +25,51 @@ id NSObjCGetFastForwardTarget(id object,SEL selector){
    return check;
 }
 
+void NSObjCForwardInvocation(void *returnValue,id object,SEL selector,va_list arguments){
+   NSMethodSignature *signature=[object methodSignatureForSelector:selector];
+
+   if(signature==nil)
+    [object doesNotRecognizeSelector:selector];
+   else {
+    NSInvocation *invocation=[NSInvocation invocationWithMethodSignature:signature arguments:arguments];
+
+    [object forwardInvocation:invocation];
+    [invocation getReturnValue:returnValue];
+   }
+}
+
 void NSObjCForward(id object,SEL selector,...){
-   id check=NSObjCGetFastForwardFunction(object,selector);
+   id check=NSObjCGetFastForwardTarget(object,selector);
    
    if(check!=nil){
     object=check;
-    ;// jmp objc_msgSend
+    NSABIasm_jmp_objc_msgSend;
    }
+   
+   uint8_t returnValue[NSABISizeofRegisterReturn];
    
    va_list arguments;
    
    va_start(arguments,selector);
    
-   NSObjCForwardInvocation(object,selector,arguments);
+   NSObjCForwardInvocation(returnValue,object,selector,arguments);
    
    va_end(arguments);
 }
 
-void NSObjCForward_stret(void *value,id object,SEL selector,...){
-   id check=NSObjCGetFastForwardFunction(object,selector);
+void NSObjCForward_stret(void *returnValue,id object,SEL selector,...){
+   id check=NSObjCGetFastForwardTarget(object,selector);
    
    if(check!=nil){
     object=check;
-    ;// jmp objc_msgSend_stret
+    NSABIasm_jmp_objc_msgSend_stret;
    }
    
    va_list arguments;
    
    va_start(arguments,selector);
    
-   NSObjCForwardInvocation(object,selector,arguments);
+   NSObjCForwardInvocation(returnValue,object,selector,arguments);
    
    va_end(arguments);
 }

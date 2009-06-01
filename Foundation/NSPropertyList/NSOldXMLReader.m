@@ -93,7 +93,7 @@ enum {
 }
 
 -(void)getCharacters:(unichar *)buffer {
-   unsigned i;
+   NSUInteger i;
 
    for(i=0;i<_range.length;i++)
     buffer[i]=_bytes[_range.location+i];
@@ -189,13 +189,13 @@ enum {
    return result;
 }
 
-static inline BOOL codeIsWhitespace(unsigned char code){
+static inline BOOL codeIsWhitespace(uint8_t code){
    if(code==0x20 || code==0x0A || code==0x0D || code==0x09)
     return YES;
    return NO;
 }
 
-static inline BOOL codeIsNameStart(unsigned char code){
+static inline BOOL codeIsNameStart(uint8_t code){
    if((code>='A' && code<='Z') ||
       (code>='a' && code<='z') || 
        code==':' || code=='_')
@@ -204,7 +204,7 @@ static inline BOOL codeIsNameStart(unsigned char code){
    return NO;
 }
 
-static inline BOOL codeIsNameContinue(unsigned char code){
+static inline BOOL codeIsNameContinue(uint8_t code){
    if((code>='A' && code<='Z') ||
       (code>='a' && code<='z') ||
        code==':' || code=='_' ||
@@ -217,7 +217,7 @@ static inline BOOL codeIsNameContinue(unsigned char code){
 
 -(void)unexpectedIn:(NSString *)state {
    NSUInteger      position=NSMaxRange(_range)-1;
-   unsigned char code=_bytes[position];
+   uint8_t code=_bytes[position];
 
    [NSException raise:@"" format:@"Unexpected character %c in %@, position=%d",code,state,position];
 }
@@ -225,7 +225,7 @@ static inline BOOL codeIsNameContinue(unsigned char code){
 -(void)tokenize {
 
    while(NSMaxRange(_range)<_length){
-    unsigned char code=_bytes[NSMaxRange(_range)];
+    uint8_t code=_bytes[NSMaxRange(_range)];
     enum  {
      extendLength,
      advanceLocationToNext,

@@ -220,7 +220,7 @@ static id ExtractUID(NSPropertyListReader_binary1 *bplist, uint64_t offset)
                                                                                                                  atOffset: offset]];
         if( topNibble == 0x2 )
 		{
-			unsigned size = 1 << botNibble;
+			size_t size = 1 << botNibble;
 			uint64_t val = [self _readIntOfSize: size atOffset: offset];
 			
 			if( size == 4 )

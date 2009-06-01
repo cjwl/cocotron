@@ -35,7 +35,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -initWithData:(NSData *)data {
-   const unsigned char *bytes=[data bytes];
+   const uint8_t *bytes=[data bytes];
    NSUInteger i;
 
    if([data length]!=NSBitmapCharacterSetSize)
@@ -91,7 +91,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)formUnionWithCharacterSet:(NSCharacterSet *)other {
    BOOL (*method)()=(void *)[other methodForSelector:@selector(characterIsMember:)];
-   unsigned code;
+   NSUInteger code;
 
    for(code=0;code<=0xFFFF;code++)
     if(method(other,@selector(characterIsMember:),(unichar)code))
@@ -120,7 +120,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)formIntersectionWithCharacterSet:(NSCharacterSet *)other {
    BOOL (*method)()=(void *)[other methodForSelector:@selector(characterIsMember:)];
-   unsigned code;
+   NSUInteger code;
 
    for(code=0;code<=0xFFFF;code++)
     if(!method(other,@selector(characterIsMember:),(unichar)code))

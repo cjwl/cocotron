@@ -141,7 +141,7 @@ const NSTimeInterval NSTimeIntervalSince1970 = (NSTimeInterval)978307200.0;
 }
 
 -(NSUInteger)hash {
-	return (int)[self timeIntervalSinceReferenceDate];
+	return (NSUInteger)[self timeIntervalSinceReferenceDate];
 }
 
 -(BOOL)isEqual:other {

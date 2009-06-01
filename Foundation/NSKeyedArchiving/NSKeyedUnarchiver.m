@@ -198,7 +198,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return [number intValue];
 }
 
--(int)decodeInt32ForKey:(NSString *)key {
+-(int32_t)decodeInt32ForKey:(NSString *)key {
    NSNumber *number=[self _numberForKey:key];
    
    if(number==nil)
@@ -207,7 +207,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return [number intValue];
 }
 
--(int)decodeInt64ForKey:(NSString *)key {
+-(int64_t)decodeInt64ForKey:(NSString *)key {
    NSNumber *number=[self _numberForKey:key];
    
    if(number==nil)

@@ -174,7 +174,7 @@ NSString *NSPlatformLoadableObjectFilePrefix=@"";
 
 -(NSDictionary *)environment {
    id      *objects,*keys;
-   unsigned count;
+   NSUInteger count;
 
    char  *envString=GetEnvironmentStrings();
    char **env;
@@ -331,7 +331,7 @@ void NSPlatformSleepThreadForTimeInterval(NSTimeInterval interval) {
 void NSPlatformLogString(NSString *string) {
    NSData     *data=[NSPropertyListWriter_vintage nullTerminatedASCIIDataWithString:string];
    const char *cString=[data bytes];
-   unsigned    length=[data length]-1; // skip 0
+   NSUInteger    length=[data length]-1; // skip 0
    DWORD       ignore;
    HANDLE      handle;
 

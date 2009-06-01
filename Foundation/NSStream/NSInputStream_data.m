@@ -88,7 +88,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    if(_status!=NSStreamStatusOpen)
     return -1;
    else {
-    const unsigned char *bytes=[_data bytes];
+    const uint8_t *bytes=[_data bytes];
     NSUInteger i,length=[_data length];
    
     for(i=0;i<maxLength && _position<length;i++,_position++)

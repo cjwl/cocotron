@@ -81,11 +81,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return _publicID;
 }
 
--(int)columnNumber {
+-(NSInteger)columnNumber {
    return _columnNumber;
 }
 
--(int)lineNumber {
+-(NSInteger)lineNumber {
    return _lineNumber;
 }
 

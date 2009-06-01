@@ -23,7 +23,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 // These should work on FreeBSD as well, though the sysctl names might be different.
 
 static int int32SysctlByName(const char *sysctlName) {
-  int sysctlInt32Value = 0; size_t len = sizeof(int);
+  int32_t sysctlInt32Value = 0; size_t len = sizeof(int32_t);
   sysctlbyname(sysctlName, &sysctlInt32Value, &len, NULL, 0);
   return(sysctlInt32Value);
 }
@@ -135,11 +135,11 @@ NSString *NSPlatformLoadableObjectFilePrefix=@"";
   return((NSUInteger)int32SysctlByName("hw.activecpu"));
 }
 
--(unsigned long long)physicalMemory {
-  return((unsigned long long)int64SysctlByName("hw.memsize"));
+-(uint64_t)physicalMemory {
+  return((uint64_t)int64SysctlByName("hw.memsize"));
 }
 
--(unsigned int)operatingSystem {
+-(NSUInteger)operatingSystem {
   return(NSMACHOperatingSystem);
 }
 

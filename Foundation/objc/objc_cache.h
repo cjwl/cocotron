@@ -2,7 +2,7 @@
 
 // the cache entry size must be a power of 2
 typedef struct {
-   long        offsetToNextEntry;
+   intptr_t            offsetToNextEntry;
    struct objc_method *method;
 } OBJCMethodCacheEntry;
 

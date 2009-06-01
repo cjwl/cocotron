@@ -278,7 +278,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
                        fileSystemRepresentationWithPath:self];
 }
 
--(const unsigned short *)fileSystemRepresentationW {
+-(const uint16_t *)fileSystemRepresentationW {
    return [[NSFileManager defaultManager]
                        fileSystemRepresentationWithPathW:self];
 }

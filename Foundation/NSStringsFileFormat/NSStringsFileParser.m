@@ -26,7 +26,7 @@ static inline unsigned short PickWord(unsigned short w){
 
 // this routine is applicable for conversion of utf32 to utf8 
 // as well as of utf16 to utf8 in the BMP range U+0000 through U+FFFF
-static int UnicodeToUTF8(unsigned utf32, unsigned char *utf8)
+static int UnicodeToUTF8(unsigned utf32, uint8_t *utf8)
 {
 	if (utf32 < 0x80)
    {

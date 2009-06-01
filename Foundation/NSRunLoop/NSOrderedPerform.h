@@ -14,16 +14,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    SEL      _selector;
    id       _target;
    id       _argument;
-   unsigned _order;
+   NSUInteger _order;
    NSArray *_modes;
 }
 
-+(NSOrderedPerform *)orderedPerformWithSelector:(SEL)selector target:target argument:argument order:(unsigned)order modes:(NSArray *)modes;
++(NSOrderedPerform *)orderedPerformWithSelector:(SEL)selector target:target argument:argument order:(NSUInteger)order modes:(NSArray *)modes;
 
 -(SEL)selector;
 -(id)target;
 -(id)argument;
--(unsigned)order;
+-(NSUInteger)order;
 
 -(BOOL)fireInMode:(NSString *)mode;
 

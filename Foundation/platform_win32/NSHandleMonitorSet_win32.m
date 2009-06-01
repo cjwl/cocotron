@@ -17,7 +17,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <windows.h>
 
 @interface NSInputSource(Win32EventInputSource)
--(unsigned)waitForEventsAndMultipleObjects:(HANDLE *)objects count:(unsigned)count milliseconds:(DWORD)milliseconds;
+-(NSUInteger)waitForEventsAndMultipleObjects:(HANDLE *)objects count:(NSUInteger)count milliseconds:(DWORD)milliseconds;
 @end
 
 @implementation NSHandleMonitorSet_win32
@@ -33,7 +33,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [super dealloc];
 }
 
--(unsigned)count {
+-(NSUInteger)count {
    return [_inputSources count];
 }
 
@@ -116,7 +116,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     return nil;
 
    if(waitResult>=WAIT_OBJECT_0 && (waitResult<WAIT_OBJECT_0+objectCount)){
-    unsigned index=waitResult-WAIT_OBJECT_0;
+    DWORD index=waitResult-WAIT_OBJECT_0;
     NSHandleMonitor_win32 *result=[self monitorWithHandle:objectList[index]];
 
     [result setCurrentActivity:Win32HandleSignaled];
@@ -124,7 +124,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    }
 
    if(waitResult>=WAIT_ABANDONED_0 && waitResult<(WAIT_ABANDONED_0+objectCount)){
-    unsigned index=waitResult-WAIT_ABANDONED_0;
+    DWORD index=waitResult-WAIT_ABANDONED_0;
     NSHandleMonitor_win32 *result=[self monitorWithHandle:objectList[index]];
 
     [result setCurrentActivity:Win32HandleAbandoned];

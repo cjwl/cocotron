@@ -113,7 +113,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return self;
 }
 
--initWithKind:(NSXMLNodeKind)kind options:(unsigned)options {
+-initWithKind:(NSXMLNodeKind)kind options:(NSUInteger)options {
    _parent=nil;
    _index=0;
    _kind=kind;
@@ -139,7 +139,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return copy;
 }
 
--(unsigned)index {
+-(NSUInteger)index {
    return _index;
 }
 
@@ -147,7 +147,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return _kind;
 }
 
--(unsigned)level {
+-(NSUInteger)level {
    NSUnimplementedMethod();
    return 0;
 }
@@ -208,7 +208,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return nil;
 }
 
--(unsigned)childCount {
+-(NSUInteger)childCount {
    return 0;
 }
 
@@ -216,7 +216,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return nil;
 }
 
--(NSXMLNode *)childAtIndex:(unsigned)index {
+-(NSXMLNode *)childAtIndex:(NSUInteger)index {
    return nil;
 }
 
@@ -267,7 +267,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return nil;
 }
 
--(NSString *)XMLStringWithOptions:(unsigned)options {
+-(NSString *)XMLStringWithOptions:(NSUInteger)options {
    NSUnimplementedMethod();
    return nil;
 }

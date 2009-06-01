@@ -12,7 +12,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @class NSArray,NSData,NSDictionary,NSCharacterSet,NSError,NSLocale,NSURL;
 
-typedef unsigned short unichar;
+typedef uint16_t unichar;
 
 typedef enum {
    NSUnicodeStringEncoding,

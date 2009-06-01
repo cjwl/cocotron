@@ -56,7 +56,7 @@ const char * const *NSProcessInfoArgv=NULL;
    return 0;
 }
 
--(unsigned long long)physicalMemory {
+-(uint64_t)physicalMemory {
    NSUnimplementedMethod();
    return 0;
 }

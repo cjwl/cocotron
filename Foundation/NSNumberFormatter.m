@@ -652,9 +652,9 @@ Aug 10 14:40:35 formatters[12645] 0.11111: $
    unichar *outputBuffer = NSAllocateMemoryPages([format length]+64);
    BOOL isNegative = [stringValue hasPrefix:@"-"];
    BOOL done = NO;
-   unsigned formatIndex, valueIndex = 0, outputIndex = 0;
-   unsigned prePoint, postPoint;
-   int thousandSepCounter;
+   NSUInteger formatIndex, valueIndex = 0, outputIndex = 0;
+   NSUInteger prePoint, postPoint;
+   NSInteger thousandSepCounter;
 
    // remove -
    if (isNegative)
@@ -752,7 +752,7 @@ Aug 10 14:40:35 formatters[12645] 0.11111: $
    NSString *rightSide = nil, *leftSide = nil;
    NSMutableString *result = [NSMutableString string];
    NSRange r;
-   unsigned i, indexRight = 0;
+   NSUInteger i, indexRight = 0;
    BOOL formatNoDecPoint = ([format rangeOfString:@"."].location == NSNotFound);
    BOOL havePassedDecPoint = NO;
    NSInteger lastPlaceholder = 0;
@@ -872,7 +872,7 @@ Aug 10 14:40:35 formatters[12645] 0.11111: $
    NSMutableCharacterSet *digitsAndSeparators = [[[NSCharacterSet decimalDigitCharacterSet] mutableCopy] autorelease];
    NSMutableString *mutableString = [[string mutableCopy] autorelease];
    unichar thousandSeparator = [_thousandSeparator characterAtIndex:0];
-   unsigned i;
+   NSUInteger i;
 
    [digitsAndSeparators addCharactersInString:_decimalSeparator];
    [digitsAndSeparators addCharactersInString:_thousandSeparator];

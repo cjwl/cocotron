@@ -19,7 +19,7 @@ enum {
 @interface NSSelectInputSource : NSInputSource {
    NSSocket *_socket;
    id        _delegate;
-   unsigned  _eventMask;
+   NSUInteger  _eventMask;
    BOOL      _isValid;
 }
 
@@ -32,13 +32,13 @@ enum {
 
 -(void)setDelegate:object;
 
--(unsigned)selectEventMask;
--(void)setSelectEventMask:(unsigned)mask;
+-(NSUInteger)selectEventMask;
+-(void)setSelectEventMask:(NSUInteger)mask;
 
--(BOOL)processImmediateEvents:(unsigned)selectEvent;
+-(BOOL)processImmediateEvents:(NSUInteger)selectEvent;
 
 @end
 
 @interface NSObject(NSSelectInputSourceDelegate)
--(void)selectInputSource:(NSSelectInputSource *)inputSource selectEvent:(unsigned)selectEvent;
+-(void)selectInputSource:(NSSelectInputSource *)inputSource selectEvent:(NSUInteger)selectEvent;
 @end

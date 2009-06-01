@@ -27,7 +27,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -initWithObjects:(id *)objects forKeys:(id *)keys count:(NSUInteger)count {
-   int i;
+   NSInteger i;
 
    _table=NSCreateMapTableWithZone(NSObjectMapKeyCallBacks,
      NSObjectMapValueCallBacks,count,NULL);

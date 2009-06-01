@@ -47,28 +47,28 @@
 			isa = PBXContainerItemProxy;
 			containerPortal = FE7135460B36427F006C9493 /* AppKit.xcodeproj */;
 			proxyType = 2;
-			remoteGlobalIDString = C8A2E5730F07EA1F0054397C /* AppKit.framework */;
+			remoteGlobalIDString = C8A2E5730F07EA1F0054397C;
 			remoteInfo = "AppKit-Darwin-i386";
 		};
 		C8E0BF960F0E6AF300677729 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FE3217D10BB41D16004F000A /* ApplicationServices.xcodeproj */;
 			proxyType = 2;
-			remoteGlobalIDString = C8A2E2900F07E9B70054397C /* ApplicationServices.framework */;
+			remoteGlobalIDString = C8A2E2900F07E9B70054397C;
 			remoteInfo = "ApplicationServices-Darwin-i386";
 		};
 		C8E0BFAF0F0E6B6600677729 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FE7135460B36427F006C9493 /* AppKit.xcodeproj */;
 			proxyType = 1;
-			remoteGlobalIDString = C8A2E29F0F07EA1F0054397C /* AppKit-Darwin-i386 */;
+			remoteGlobalIDString = C8A2E29F0F07EA1F0054397C;
 			remoteInfo = "AppKit-Darwin-i386";
 		};
 		C8E0BFB10F0E6B6C00677729 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FE3217D10BB41D16004F000A /* ApplicationServices.xcodeproj */;
 			proxyType = 1;
-			remoteGlobalIDString = C8A2E2710F07E9B70054397C /* ApplicationServices-Darwin-i386 */;
+			remoteGlobalIDString = C8A2E2710F07E9B70054397C;
 			remoteInfo = "ApplicationServices-Darwin-i386";
 		};
 		FE01AB240C5D9C3500AEA51A /* PBXContainerItemProxy */ = {

@@ -70,7 +70,7 @@ NSString *NSPortDidBecomeInvalidNotification=@"NSPortDidBecomeInvalidNotificatio
 }
 
 
--(BOOL)sendBeforeDate:(NSDate *)beforeData msgid:(unsigned)msgid components:(NSMutableArray *)components from:(NSPort *)fromPort reserved:(NSUInteger)reservedSpace  {
+-(BOOL)sendBeforeDate:(NSDate *)beforeData msgid:(NSUInteger)msgid components:(NSMutableArray *)components from:(NSPort *)fromPort reserved:(NSUInteger)reservedSpace  {
    NSInvalidAbstractInvocation();
    return NO;
 }

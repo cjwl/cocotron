@@ -382,7 +382,7 @@ static int selectorCompare(id object1,id object2,void *userData){
 // http://www.inf.fh-flensburg.de/lang/algorithmen/sortieren/merge/mergiter.htm ...
 
 // ... using a comparison function
--(void)sortUsingFunction:(int (*)(id, id, void *))compare context:(void *)context
+-(void)sortUsingFunction:(NSInteger (*)(id, id, void *))compare context:(void *)context
 {
    NSInteger h, i, j, k, l, m, n = [self count];
    id  A, *B = malloc((n/2 + 1) * sizeof(id));

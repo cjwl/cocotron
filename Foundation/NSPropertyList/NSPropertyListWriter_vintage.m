@@ -36,7 +36,7 @@ YES,YES,YES,YES,YES,YES,YES,YES,YES,YES,YES, NO, NO, NO, NO, NO,// 112
    [super dealloc];
 }
 
--(void)encodeIndent:(int)indent {
+-(void)encodeIndent:(NSInteger)indent {
    int i;
 
    [_data appendBytes:" " length:1];
@@ -117,7 +117,7 @@ YES,YES,YES,YES,YES,YES,YES,YES,YES,YES,YES, NO, NO, NO, NO, NO,// 112
    }
 }
 
--(void)encodeArray:(NSArray *)array indent:(int)indent {
+-(void)encodeArray:(NSArray *)array indent:(NSInteger)indent {
    NSInteger i,count=[array count];
 
    [_data appendBytes:"(\n" length:2];
@@ -133,7 +133,7 @@ YES,YES,YES,YES,YES,YES,YES,YES,YES,YES,YES, NO, NO, NO, NO, NO,// 112
    [_data appendBytes:")" length:1];
 }
 
--(void)encodeDictionary:(NSDictionary *)dictionary indent:(int)indent {
+-(void)encodeDictionary:(NSDictionary *)dictionary indent:(NSInteger)indent {
    NSArray *allKeys=[[dictionary allKeys]
     sortedArrayUsingSelector:@selector(compare:)];
    NSInteger      i,count=[allKeys count];
@@ -153,7 +153,7 @@ YES,YES,YES,YES,YES,YES,YES,YES,YES,YES,YES, NO, NO, NO, NO, NO,// 112
    [_data appendBytes:"}" length:1];
 }
 
--(void)encodePropertyList:plist escape:(BOOL)escape indent:(int)indent {
+-(void)encodePropertyList:plist escape:(BOOL)escape indent:(NSInteger)indent {
    if([plist isKindOfClass:objc_lookUpClass("NSString")])
     [self encodeString:plist escape:escape];
    else if([plist isKindOfClass:objc_lookUpClass("NSArray")])
@@ -164,7 +164,7 @@ YES,YES,YES,YES,YES,YES,YES,YES,YES,YES,YES, NO, NO, NO, NO, NO,// 112
     [self encodeString:[plist description] escape:escape];
 }
 
--(void)encodePropertyList:plist indent:(int)indent {
+-(void)encodePropertyList:plist indent:(NSInteger)indent {
    [self encodePropertyList:plist escape:YES indent:indent];
 }
 

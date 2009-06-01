@@ -92,14 +92,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return NO;
 }
 
--(NSInteger)write:(const unsigned char *)buffer maxLength:(NSUInteger)length {
+-(NSInteger)write:(const uint8_t *)buffer maxLength:(NSUInteger)length {
    if(_status!=NSStreamStatusOpen && _status!=NSStreamStatusOpening)
     return -1;
 
    return [_socket write:buffer maxLength:length];
 }
 
--(void)selectInputSource:(NSSelectInputSource *)inputSource selectEvent:(unsigned)selectEvent {
+-(void)selectInputSource:(NSSelectInputSource *)inputSource selectEvent:(NSUInteger)selectEvent {
    NSStreamEvent event;
 
    switch(_status){

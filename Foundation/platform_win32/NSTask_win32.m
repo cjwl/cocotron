@@ -91,7 +91,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(NSData *)_argumentsData {
    NSMutableData *data=[NSMutableData data];
-   int            i,count=[_arguments count];
+   NSInteger            i,count=[_arguments count];
 
    [data appendData:NSTaskArgumentDataFromString(_launchPath)];
    [data appendBytes:" " length:1];

@@ -16,7 +16,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -init;
 
--(void)encodePropertyList:object indent:(int)indent;
+-(void)encodePropertyList:object indent:(NSInteger)indent;
 
 -(NSData *)dataForRootObject:object;
 

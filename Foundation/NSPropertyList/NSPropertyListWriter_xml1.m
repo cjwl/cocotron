@@ -28,7 +28,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [super dealloc];
 }
 
--(void)_encodeIndent:(int)indent
+-(void)_encodeIndent:(NSInteger)indent
 {
     int i;
     for(i = 0; i < indent; i++)
@@ -57,7 +57,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     }
 }
 
--(void)encodeString:(NSString *)string indent:(int)indent
+-(void)encodeString:(NSString *)string indent:(NSInteger)indent
 {
     [self _encodeIndent:indent];
     
@@ -66,7 +66,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     [_data appendBytes:"</string>\n" length:10];
 }
 
--(void)encodeKey:(NSString *)key indent:(int)indent
+-(void)encodeKey:(NSString *)key indent:(NSInteger)indent
 {
     [self _encodeIndent:indent];
     
@@ -109,7 +109,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     }
 }
 
-- (void)encodeNumber:(NSNumber *)number indent:(int)indent
+- (void)encodeNumber:(NSNumber *)number indent:(NSInteger)indent
 {
     [self _encodeIndent:indent];
     
@@ -135,7 +135,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     }    
 }
 
-- (void)encodeArray:(NSArray *)array indent:(int)indent
+- (void)encodeArray:(NSArray *)array indent:(NSInteger)indent
 {
     NSUInteger i, count = [array count];
     
@@ -153,7 +153,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     [_data appendBytes:"</array>\n" length:9];
 }
 
-- (void)encodeDictionary:(NSDictionary *)dictionary indent:(int)indent
+- (void)encodeDictionary:(NSDictionary *)dictionary indent:(NSInteger)indent
 {
     NSArray *allKeys = [[dictionary allKeys] sortedArrayUsingSelector:@selector(compare:)];
     
@@ -175,21 +175,21 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     [_data appendBytes:"</dict>\n" length:8];
 }
 
-- (void)encodeData:(NSData *)data indent:(int)indent
+- (void)encodeData:(NSData *)data indent:(NSInteger)indent
 {
     static const char b64[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 
     NSUInteger y, n;
     const NSUInteger len = [data length];
-    unsigned const char *bytes = [data bytes];
+    const uint8_t *bytes = [data bytes];
 
     [self _encodeIndent:indent];
     [_data appendBytes:"<data>\n" length:7];    
     indent++;
     
     const NSUInteger numRows = 1 + len / 45;   // 60 chars per output row -> 45 input bytes per row
-    unsigned char srcBuf[48];
-    unsigned char dstBuf[64];
+    uint8_t srcBuf[48];
+    uint8_t dstBuf[64];
     
     n = 0;
     for (y = 0; y < numRows; y++) {
@@ -227,7 +227,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     [_data appendBytes:"</data>\n" length:8];
 }
 
-- (void)encodePropertyList:(id)plist indent:(int)indent
+- (void)encodePropertyList:(id)plist indent:(NSInteger)indent
 {
     if ([plist isKindOfClass:objc_lookUpClass("NSString")])
         [self encodeString:plist indent:indent];

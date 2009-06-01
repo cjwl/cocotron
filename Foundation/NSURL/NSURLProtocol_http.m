@@ -99,7 +99,7 @@ enum {
 
 -(BOOL)advanceIsEndOfReply {
    while(NSMaxRange(_range)<_length){
-    unsigned char code=_bytes[NSMaxRange(_range)];
+    uint8_t code=_bytes[NSMaxRange(_range)];
     enum  {
      extendLength,
      advanceLocationToNext,
@@ -321,8 +321,8 @@ NSLog(@"transfer completed");
 
 -(void)inputStream:(NSInputStream *)stream handleEvent:(NSStreamEvent)streamEvent 
 {
-	char buffer[1024];
-	NSInteger size=[stream read:(unsigned char*)buffer maxLength:sizeof(buffer)];
+	uint8_t buffer[1024];
+	NSInteger size=[stream read:buffer maxLength:sizeof(buffer)];
 	if (size>0)
 	{
 		[self appendData:[NSData dataWithBytes:buffer length:size]];
@@ -353,7 +353,7 @@ NSLog(@"transfer completed");
 		[httprequest appendString:@"\r\n"];
 		NSLog(@"request %@ ",httprequest);
 		const char* crequest=[httprequest UTF8String];
-		[stream write:(unsigned char*)crequest maxLength:strlen(crequest)];
+		[stream write:(uint8_t *)crequest maxLength:strlen(crequest)];
 		sentrequest=YES;
 		
 	}

@@ -16,16 +16,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return 0;
 }
 
--(unsigned short)defaultNameServerPortNumber {
+-(uint16_t)defaultNameServerPortNumber {
    NSUnimplementedMethod();
    return 0;
 }
 
--(void)setDefaultNameServerPortNumber:(unsigned short)number {
+-(void)setDefaultNameServerPortNumber:(uint16_t)number {
    NSUnimplementedMethod();
 }
 
--(NSPort *)portForName:(NSString *)name host:(NSString *)host nameServerPortNumber:(unsigned short)number {
+-(NSPort *)portForName:(NSString *)name host:(NSString *)host nameServerPortNumber:(uint16_t)number {
    NSUnimplementedMethod();
    return 0;
 }
@@ -45,7 +45,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return 0;
 }
 
--(BOOL)registerPort:(NSPort *)port name:(NSString *)name nameServerPortNumber:(unsigned short)number {
+-(BOOL)registerPort:(NSPort *)port name:(NSString *)name nameServerPortNumber:(uint16_t)number {
    NSUnimplementedMethod();
    return 0;
 }

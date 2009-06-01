@@ -305,6 +305,12 @@ static void addSliceToPath(CGMutablePathRef path,float innerRadius,float outerRa
 
     CGMutablePathRef  path=CGPathCreateMutable();
 
+#if 0
+   CGPathMoveToPoint(path,NULL,-width,0);
+   CGPathAddLineToPoint(path,NULL,width,0);
+   CGPathMoveToPoint(path,NULL,0,-height);
+   CGPathAddLineToPoint(path,NULL,0,height);
+#else
    for(i=0;i<400;i+=4){
     
    CGPathMoveToPoint(path,NULL,i,0);
@@ -316,10 +322,13 @@ static void addSliceToPath(CGMutablePathRef path,float innerRadius,float outerRa
    CGPathAddLineToPoint(path,NULL,width,i);
    }
    
+#endif
+
    CGContextSaveGState(_context);
    CGContextClearRect(_context,CGRectMake(0,0,400,400));
    CGContextConcatCTM(_context,xform);
    [self establishContextState];
+
    CGContextBeginPath(_context);
    CGContextAddPath(_context,path);
    

@@ -10,25 +10,25 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @class NSCachedURLResponse,NSURLRequest;
 
 @interface NSURLCache : NSObject {
-   unsigned _memoryCapacity;
-   unsigned _diskCapacity;
+   NSUInteger _memoryCapacity;
+   NSUInteger _diskCapacity;
 }
 
 +(NSURLCache *)sharedURLCache;
 +(void)setSharedURLCache:(NSURLCache *)cache;
 
--initWithMemoryCapacity:(unsigned)memoryCapacity diskCapacity:(unsigned)diskCapacity diskPath:(NSString *)diskPath;
+-initWithMemoryCapacity:(NSUInteger)memoryCapacity diskCapacity:(NSUInteger)diskCapacity diskPath:(NSString *)diskPath;
 
--(unsigned)memoryCapacity;
--(unsigned)diskCapacity;
+-(NSUInteger)memoryCapacity;
+-(NSUInteger)diskCapacity;
 
--(unsigned)currentDiskUsage;
--(unsigned)currentMemoryUsage;
+-(NSUInteger)currentDiskUsage;
+-(NSUInteger)currentMemoryUsage;
 
 -(NSCachedURLResponse *)cachedResponseForRequest:(NSURLRequest *)request;
 
--(void)setMemoryCapacity:(unsigned)memoryCapacity;
--(void)setDiskCapacity:(unsigned)diskCapacity;
+-(void)setMemoryCapacity:(NSUInteger)memoryCapacity;
+-(void)setDiskCapacity:(NSUInteger)diskCapacity;
 
 -(void)storeCachedResponse:(NSCachedURLResponse *)response forRequest:(NSURLRequest *)request;
 

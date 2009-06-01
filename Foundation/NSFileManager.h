@@ -107,7 +107,7 @@ FOUNDATION_EXPORT NSString *NSFileSystemFreeSize;
 -(BOOL)changeFileAttributes:(NSDictionary *)attributes atPath:(NSString *)path;
 
 -(const char *)fileSystemRepresentationWithPath:(NSString *)path;
--(const unsigned short *)fileSystemRepresentationWithPathW:(NSString *)path;
+-(const uint16_t *)fileSystemRepresentationWithPathW:(NSString *)path;
 
 @end
 
@@ -131,10 +131,10 @@ FOUNDATION_EXPORT NSString *NSFileSystemFreeSize;
 
 @interface NSDictionary(NSFileManager_fileAttributes)
 -(NSDate *)fileModificationDate;
--(unsigned long)filePosixPermissions;
+-(NSUInteger)filePosixPermissions;
 -(NSString *)fileOwnerAccountName;
 -(NSString *)fileGroupOwnerAccountName;
 -(NSString *)fileType;
--(unsigned long long)fileSize;
+-(uint64_t)fileSize;
 @end
 

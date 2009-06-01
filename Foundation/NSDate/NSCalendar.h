@@ -15,8 +15,8 @@ typedef int NSCalendarUnit;
 
 @interface NSCalendar : NSObject <NSCopying> {
    NSString   *_identifier;
-   unsigned    _firstWeekday;
-   unsigned    _minimumDaysInFirstWeek;
+   NSUInteger    _firstWeekday;
+   NSUInteger    _minimumDaysInFirstWeek;
    NSTimeZone *_timeZone;
    NSLocale   *_locale;
 }
@@ -26,25 +26,25 @@ typedef int NSCalendarUnit;
 -initWithCalendarIdentifier:(NSString *)identifier;
 
 -(NSString *)calendarIdentifier;
--(unsigned)firstWeekday;
--(unsigned)minimumDaysInFirstWeek;
+-(NSUInteger)firstWeekday;
+-(NSUInteger)minimumDaysInFirstWeek;
 -(NSTimeZone *)timeZone;
 -(NSLocale *)locale;
 
--(void)setFirstWeekday:(unsigned)weekday;
--(void)setMinimumDaysInFirstWeek:(unsigned)days;
+-(void)setFirstWeekday:(NSUInteger)weekday;
+-(void)setMinimumDaysInFirstWeek:(NSUInteger)days;
 -(void)setTimeZone:(NSTimeZone *)timeZone;
 -(void)setLocale:(NSLocale *)locale;
 
 -(NSRange)minimumRangeOfUnit:(NSCalendarUnit)unit;
 -(NSRange)maximumRangeOfUnit:(NSCalendarUnit)unit;
 -(NSRange)rangeOfUnit:(NSCalendarUnit)unit inUnit:(NSCalendarUnit)inUnit forDate:(NSDate *)date;
--(unsigned)ordinalityOfUnit:(NSCalendarUnit)unit inUnit:(NSCalendarUnit)inUnit forDate:(NSDate *)date;
+-(NSUInteger)ordinalityOfUnit:(NSCalendarUnit)unit inUnit:(NSCalendarUnit)inUnit forDate:(NSDate *)date;
 
--(NSDateComponents *)components:(unsigned)flags fromDate:(NSDate *)date;
--(NSDateComponents *)components:(unsigned)flags fromDate:(NSDate *)fromDate toDate:(NSDate *)toDate options:(unsigned)options;
+-(NSDateComponents *)components:(NSUInteger)flags fromDate:(NSDate *)date;
+-(NSDateComponents *)components:(NSUInteger)flags fromDate:(NSDate *)fromDate toDate:(NSDate *)toDate options:(NSUInteger)options;
 
--(NSDate *)dateByAddingComponents:(NSDateComponents *)components toDate:(NSDate *)date options:(unsigned)options;
+-(NSDate *)dateByAddingComponents:(NSDateComponents *)components toDate:(NSDate *)date options:(NSUInteger)options;
 -(NSDate *)dateFromComponents:(NSDateComponents *)components;
  
 @end

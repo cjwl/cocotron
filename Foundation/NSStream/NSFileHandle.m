@@ -92,16 +92,16 @@ NSString *NSFileHandleOperationException = @"NSFileHandleOperationException";
    NSInvalidAbstractInvocation();
 }
 
--(unsigned long long)offsetInFile {
+-(uint64_t)offsetInFile {
    NSInvalidAbstractInvocation();
    return 0;
 }
 
--(void)seekToFileOffset:(unsigned long long)offset {
+-(void)seekToFileOffset:(uint64_t)offset {
    NSInvalidAbstractInvocation();
 }
 
--(unsigned long long)seekToEndOfFile {
+-(uint64_t)seekToEndOfFile {
    NSInvalidAbstractInvocation();
    return 0;
 }
@@ -125,7 +125,7 @@ NSString *NSFileHandleOperationException = @"NSFileHandleOperationException";
    NSInvalidAbstractInvocation();
 }
 
--(void)truncateFileAtOffset:(unsigned long long)offset {
+-(void)truncateFileAtOffset:(uint64_t)offset {
    NSInvalidAbstractInvocation();
 }
 

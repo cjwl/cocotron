@@ -134,14 +134,14 @@ static NSMapTable *_globalNameToClass=NULL;
    [[_plistStack lastObject] setObject:[NSNumber numberWithInt:value] forKey:key];
 }
 
--(void)encodeInt32:(int)value forKey:(NSString *)key {
+-(void)encodeInt32:(int32_t)value forKey:(NSString *)key {
    if(_pass==0)
     return;
 
    [[_plistStack lastObject] setObject:[NSNumber numberWithInt:value] forKey:key];
 }
 
--(void)encodeInt64:(long long)value forKey:(NSString *)key {
+-(void)encodeInt64:(int64_t)value forKey:(NSString *)key {
    if(_pass==0)
     return;
 

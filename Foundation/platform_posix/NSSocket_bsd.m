@@ -33,7 +33,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @implementation NSSocket_bsd
 
 static inline void byteZero(void *vsrc,size_t size){
-   unsigned char *src=vsrc;
+   uint8_t *src=vsrc;
    size_t i;
 
    for(i=0;i<size;i++)
@@ -192,16 +192,16 @@ static inline void byteZero(void *vsrc,size_t size){
 }
 
 -(BOOL)hasBytesAvailable {
-   unsigned char buf[1];
+   uint8_t buf[1];
 
    return (recv(_descriptor,buf,1,MSG_PEEK)==1)?YES:NO;
 }
 
--(NSInteger)read:(unsigned char *)buffer maxLength:(NSUInteger)length {
+-(NSInteger)read:(uint8_t *)buffer maxLength:(NSUInteger)length {
    return recv(_descriptor,(void *)buffer,length,0);
 }
 
--(NSInteger)write:(const unsigned char *)buffer maxLength:(NSUInteger)length {
+-(NSInteger)write:(const uint8_t *)buffer maxLength:(NSUInteger)length {
    return send(_descriptor,(void *)buffer,length,0);
 }
 
@@ -221,6 +221,6 @@ static inline void byteZero(void *vsrc,size_t size){
 @end
 
 
-NSData *NSSocketAddressDataForNetworkOrderAddressBytesAndPort(const void *address,unsigned length,int port) {   
+NSData *NSSocketAddressDataForNetworkOrderAddressBytesAndPort(const void *address,NSUInteger length,int port) {   
    return nil;
 }

@@ -8,8 +8,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSObject.h>
 
 // how lame but this is all I need, sparc passes arguments in registers
-id objc_msg_sendv(id self, SEL selector, unsigned arg_size, void *arg_frame) {
-  unsigned *argWords=arg_frame;
+id objc_msg_sendv(id self, SEL selector, uint32_t arg_size, void *arg_frame) {
+  uint32_t *argWords=arg_frame;
   IMP       method=objc_msg_lookup(self,selector);
 
   arg_size/=sizeof(int);

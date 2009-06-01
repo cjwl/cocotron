@@ -14,8 +14,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @interface NSReadInBackground_win32 : NSObject {
    NSFileHandle *_fileHandle;
    HANDLE        _readHandle;
-   unsigned      _bufferCapacity;
-   unsigned      _bufferSize;
+   NSUInteger      _bufferCapacity;
+   NSUInteger      _bufferSize;
    void         *_buffer;
 
    NSArray            *_modes;

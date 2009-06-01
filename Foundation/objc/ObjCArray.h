@@ -9,19 +9,19 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <objc/objc.h>
 
 typedef struct {
-    void   **data;
-    unsigned size;
-    unsigned count;
+    void        **data;
+    unsigned long size;
+    unsigned long count;
 } OBJCArray;
 
 OBJCArray *OBJCArrayNew(void);
 void OBJCArrayDealloc(OBJCArray *array);
 
 OBJC_EXPORT void OBJCArrayAdd(OBJCArray *vector, void *item);
-OBJC_EXPORT unsigned OBJCArrayCount(OBJCArray *array); 
-OBJC_EXPORT void *OBJCArrayItemAtIndex(OBJCArray *vector, unsigned index);
+OBJC_EXPORT unsigned long OBJCArrayCount(OBJCArray *array); 
+OBJC_EXPORT void *OBJCArrayItemAtIndex(OBJCArray *vector, unsigned long index);
 
-OBJC_EXPORT void OBJCArrayRemoveItemAtIndex(OBJCArray *vector, unsigned index);
+OBJC_EXPORT void OBJCArrayRemoveItemAtIndex(OBJCArray *vector, unsigned long index);
 
-OBJC_EXPORT void *OBJCArrayEnumerate(OBJCArray *vector, unsigned *enumerator);
+OBJC_EXPORT void *OBJCArrayEnumerate(OBJCArray *vector, unsigned long *enumerator);
 

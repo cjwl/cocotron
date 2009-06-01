@@ -277,7 +277,7 @@ stringByAppendingPathComponent:[files objectAtIndex:x]] paths:paths];
    return NULL;
 }
 
--(const unsigned short *)fileSystemRepresentationWithPathW:(NSString *)path {
+-(const uint16_t *)fileSystemRepresentationWithPathW:(NSString *)path {
    NSInvalidAbstractInvocation();
    return NULL;
 }
@@ -291,8 +291,8 @@ stringByAppendingPathComponent:[files objectAtIndex:x]] paths:paths];
    return [self objectForKey:NSFileModificationDate];
 }
 
--(unsigned long)filePosixPermissions {
-   return [[self objectForKey:NSFilePosixPermissions] unsignedLongValue];
+-(NSUInteger)filePosixPermissions {
+   return [[self objectForKey:NSFilePosixPermissions] unsignedIntegerValue];
 }
 
 -(NSString *)fileOwnerAccountName {
@@ -307,7 +307,7 @@ stringByAppendingPathComponent:[files objectAtIndex:x]] paths:paths];
    return [self objectForKey:NSFileType];
 }
 
--(unsigned long long)fileSize {
+-(uint64_t)fileSize {
    return [[self objectForKey:NSFileSize] unsignedLongLongValue];
 }
 
