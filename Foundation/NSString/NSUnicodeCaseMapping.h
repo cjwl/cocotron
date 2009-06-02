@@ -12,5 +12,5 @@ void NSUnicodeToUppercase(unichar *characters,NSUInteger length);
 void NSUnicodeToLowercase(unichar *characters,NSUInteger length);
 void NSUnicodeToCapitalized(unichar *characters,NSUInteger length);
 
-unichar *NSUnicodeFromData(NSData *data,NSUInteger *resultLengthp);
-unichar *NSUnicodeFromDataUTF16BigEndian(NSData *data,NSUInteger *resultLengthp);
+unichar *NSUnicodeFromBytes(const unsigned char *bytes,NSUInteger length,NSUInteger *resultLengthp);
+unichar *NSUnicodeFromBytesUTF16BigEndian(const unsigned char *bytes,NSUInteger length,NSUInteger *resultLengthp);

@@ -1,10 +1,12 @@
 /* Copyright (c) 2006-2007 Christopher J. W. Lloyd
+                 2009 Markus Hitter <mah@jump-ing.de>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
+
 #import <Foundation/NSString_placeholder.h>
 #import <Foundation/NSString_cString.h>
 #import <Foundation/NSString_unicode.h>
@@ -39,74 +41,49 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     return NSString_unicodeNew(NULL,characters,length);
 }
 
--initWithCharacters:(const unichar *)characters length:(NSUInteger)length {
-   NSDeallocateObject(self);
-   return NSString_unicodeNew(NULL,characters,length);
-}
-
--initWithCStringNoCopy:(char *)bytes length:(NSUInteger)length
-          freeWhenDone:(BOOL)freeWhenDone {
-   NSString *string=NSString_cStringNewWithBytes(NULL,bytes,length);
-
+// Copied from former -initWithData:(NSData *)data encoding:(NSStringEncoding)encoding;
+-initWithBytes:(const void *)bytes length:(NSUInteger)length encoding:(NSStringEncoding)encoding {
    NSDeallocateObject(self);
 
-   if(freeWhenDone)
-    NSZoneFree(NSZoneFromPointer(bytes),bytes);
+   if(encoding==NSString_cStringEncoding)
+    return NSString_cStringNewWithBytes(NULL,bytes,length);
 
-   return string;
-}
+   switch(encoding){
+    NSUInteger resultLength;
+    unichar *characters;
 
--initWithCString:(const char *)bytes length:(NSUInteger)length {
-   NSDeallocateObject(self);
+    case NSUnicodeStringEncoding:
+     characters=NSUnicodeFromBytes(bytes,length,&resultLength);
+     return NSString_unicodePtrNewNoCopy(NULL,characters,resultLength);
 
-   return NSString_cStringNewWithBytes(NULL,bytes,length);
-}
+    case NSNEXTSTEPStringEncoding:
+     return NSNEXTSTEPStringNewWithBytes(NULL,bytes,length);
 
--initWithCString:(const char *)bytes {
-   NSDeallocateObject(self);
+// FIX, not nextstep
+    case NSASCIIStringEncoding:
+     return NSNEXTSTEPStringNewWithBytes(NULL,bytes,length);
 
-   return NSString_cStringNewWithBytes(NULL,bytes,strlen(bytes));
-}
+    case NSISOLatin1StringEncoding:
+     return NSString_isoLatin1NewWithBytes(NULL,bytes,length);
 
--initWithString:(NSString *)string {
-   NSUInteger length=[string length];
-   unichar *unicode=NSZoneMalloc(NULL,sizeof(unichar)*length);
+    case NSSymbolStringEncoding:
+     characters=NSSymbolToUnicode(bytes,length,&resultLength,NULL);
+     return NSString_unicodePtrNewNoCopy(NULL,characters,resultLength);
 
-   [string getCharacters:unicode];
+    case NSUTF8StringEncoding:
+     characters=NSUTF8ToUnicode(bytes,length,&resultLength,NULL);
+     return NSString_unicodePtrNewNoCopy(NULL,characters,resultLength);
 
-   NSDeallocateObject(self);
+    case NSUTF16BigEndianStringEncoding:
+     characters=NSUnicodeFromBytesUTF16BigEndian(bytes,length,&resultLength);
+     return NSString_unicodePtrNewNoCopy(NULL,characters,resultLength);
 
-   return NSString_unicodePtrNewNoCopy(NULL,unicode,length);
-}
+    default:
+     NSRaiseException(NSInvalidArgumentException,self,_cmd,@"encoding %d not (yet) implemented",encoding); 
+    break;
+  }
 
--initWithFormat:(NSString *)format,... {
-   va_list arguments;
-
-   va_start(arguments,format);
-
-   NSDeallocateObject(self);
-
-   id result=NSStringNewWithFormat(format,nil,arguments,NULL);
-   va_end(arguments);
-   return result;
-}
-
--initWithFormat:(NSString *)format arguments:(va_list)arguments {
-   NSDeallocateObject(self);
-
-   return NSStringNewWithFormat(format,nil,arguments,NULL);
-}
-
--initWithFormat:(NSString *)format locale:(NSDictionary *)locale,... {
-   va_list arguments;
-
-   va_start(arguments,locale);
-
-   NSDeallocateObject(self);
-
-   id result=NSStringNewWithFormat(format,locale,arguments,NULL);
-   va_end(arguments);
-   return result;
+  return nil;
 }
 
 -initWithFormat:(NSString *)format
@@ -114,87 +91,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    NSDeallocateObject(self);
 
    return NSStringNewWithFormat(format,locale,arguments,NULL);
-}
-
--initWithData:(NSData *)data encoding:(NSStringEncoding)encoding {
-   NSDeallocateObject(self);
-
-   if(encoding==NSString_cStringEncoding)
-    return NSString_cStringNewWithBytes(NULL,[data bytes],[data length]);
-
-   switch(encoding){
-
-    case NSUnicodeStringEncoding:{
-      NSUInteger length;
-      unichar *characters=NSUnicodeFromData(data,&length);
-
-      return NSString_unicodePtrNewNoCopy(NULL,characters,length);
-     }
-
-    case NSNEXTSTEPStringEncoding:
-     return NSNEXTSTEPStringNewWithBytes(NULL,[data bytes],[data length]);
-
-// FIX, not nextstep
-    case NSASCIIStringEncoding:
-     return NSNEXTSTEPStringNewWithBytes(NULL,[data bytes],[data length]);
-
-    case NSISOLatin1StringEncoding:
-     return NSString_isoLatin1NewWithBytes(NULL,[data bytes],[data length]);
-
-    case NSSymbolStringEncoding:{
-      NSUInteger length;
-      unichar *characters=NSSymbolToUnicode([data bytes],[data length],&length,NULL);
-
-      return NSString_unicodePtrNewNoCopy(NULL,characters,length);
-     }
-     break;
-
-    case NSUTF8StringEncoding:{
-      NSUInteger length;
-      unichar *characters;
-
-      characters=NSUTF8ToUnicode([data bytes],[data length],&length,NULL);
-
-      return NSString_unicodePtrNewNoCopy(NULL,characters,length);
-     }
-     break;
-
-    case NSUTF16BigEndianStringEncoding:{
-      NSUInteger length;
-      unichar *characters=NSUnicodeFromDataUTF16BigEndian(data,&length);
-
-      return NSString_unicodePtrNewNoCopy(NULL,characters,length);
-     }
-     break;
-     
-    default:
- 
-     break;
-   }
-
-   NSInvalidAbstractInvocation();
-   return nil;
-}
-
--initWithUTF8String:(const char *)utf8 {
-   NSUInteger length;
-   unichar *characters;
-
-   characters=NSUTF8ToUnicode(utf8,strlen(utf8),&length,NULL);
-
-   return NSString_unicodePtrNewNoCopy(NULL,characters,length);
-}
-
--initWithContentsOfFile:(NSString *)path {
-   NSUInteger  length;
-   unichar  *unicode;
-
-   NSDeallocateObject(self);
-
-   if((unicode=NSCharactersWithContentsOfFile(path,&length,NULL))==NULL)
-    return nil;
-
-   return NSString_unicodePtrNewNoCopy(NULL,unicode,length);
 }
 
 @end

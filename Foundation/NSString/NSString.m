@@ -1,10 +1,26 @@
 /* Copyright (c) 2006-2007 Christopher J. W. Lloyd <cjwl@objc.net>
+                 2009 Markus Hitter <mah@jump-ing.de>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
+
+/* For maximum subclassing compatibility with Mac OS X, this class should depend on the following NSString methods only:
+
+-initWithCharactersNoCopy:(unichar *)characters length:(NSUInteger)length
+freeWhenDone:(BOOL)freeWhenDone;
+
+-initWithBytes:(const void *)bytes length:(NSUInteger)length encoding:(NSStringEncoding)encoding;
+
+-initWithFormat:(NSString *)format locale:(NSDictionary *)locale arguments:(va_list)arguments;
+
+-(unichar)characterAtIndex:(NSUInteger)location;
+
+-(NSUInteger)length;
+
+ All other methods should use at most the above methods, at least as a fallback. */
 
 #import <Foundation/NSString.h>
 #import <Foundation/NSCoder.h>
@@ -62,8 +78,8 @@ int __CFConstantStringClassReference[1];
 }
 
 -initWithCharacters:(const unichar *)characters length:(NSUInteger)length {
-   NSInvalidAbstractInvocation();
-   return nil;
+   // Casting to (unicode *) isn't pretty, but safe with freeWhenDone:NO.
+   return [self initWithCharactersNoCopy:(unichar *)characters length:length freeWhenDone:NO];
 }
 
 -init {
@@ -72,27 +88,33 @@ int __CFConstantStringClassReference[1];
 
 -initWithCStringNoCopy:(char *)cString length:(NSUInteger)length
           freeWhenDone:(BOOL)freeWhenDone {
-   NSInvalidAbstractInvocation();
-   return nil;
+   NSString *string=[self initWithBytes:cString length:length encoding:NSString_cStringEncoding];
+
+   if(freeWhenDone)
+    NSZoneFree(NSZoneFromPointer(cString),cString);
+
+   return string;
 }
 
 -initWithCString:(const char *)cString length:(NSUInteger)length{
-   NSInvalidAbstractInvocation();
-   return nil;
+   return [self initWithBytes:cString length:length encoding:NSString_cStringEncoding];
 }
 
 -initWithCString:(const char *)cString {
-   NSInvalidAbstractInvocation();
-   return nil;
+   return [self initWithBytes:cString length:strlen(cString) encoding:NSString_cStringEncoding];
 }
 
 -initWithCString:(const char *)cString encoding:(NSStringEncoding)encoding {
-   return [self initWithData:[NSData dataWithBytes:cString length:strlen(cString)] encoding:encoding];
+   return [self initWithBytes:cString length:strlen(cString) encoding:encoding];
 }
 
 -initWithString:(NSString *)string {
-   NSInvalidAbstractInvocation();
-   return nil;
+   NSUInteger length=[string length];
+   unichar *unicode=NSZoneMalloc(NULL,sizeof(unichar)*length);
+
+   [string getCharacters:unicode];
+
+   return [self initWithCharactersNoCopy:unicode length:length freeWhenDone:YES];
 }
 
 -initWithFormat:(NSString *)format locale:(NSDictionary *)locale
@@ -102,59 +124,132 @@ int __CFConstantStringClassReference[1];
 }
 
 -initWithFormat:(NSString *)format locale:(NSDictionary *)locale,... {
-   NSInvalidAbstractInvocation();
-   return nil;
+   va_list arguments;
+
+   va_start(arguments,locale);
+   id result=[self initWithFormat:format locale:locale arguments:arguments];
+   va_end(arguments);
+
+   return result;
 }
 
 -initWithFormat:(NSString *)format arguments:(va_list)arguments {
-   NSInvalidAbstractInvocation();
-   return nil;
+   return [self initWithFormat:format locale:nil arguments:arguments];
 }
 
 -initWithFormat:(NSString *)format,... {
-   NSInvalidAbstractInvocation();
-   return nil;
+   va_list arguments;
+
+   va_start(arguments,format);
+   id result=[self initWithFormat:format locale:nil arguments:arguments];
+   va_end(arguments);
+
+   return result;
 }
 
 -initWithData:(NSData *)data encoding:(NSStringEncoding)encoding {
-   NSInvalidAbstractInvocation();
-   return nil;
+   return [self initWithBytes:[data bytes] length:[data length] encoding:encoding];
+}
+
+-initWithFileData:(NSData *)data encoding:(NSStringEncoding)encoding error:(NSError **)error {
+   NSString *string=[self initWithBytes:[data bytes] length:[data length] encoding:encoding];
+   if (string==nil){
+    //TODO: Should fill the NSError here with something about "encoding failed".
+   }
+
+   return string;
+}
+
+-initWithFileData:(NSData *)data usedEncoding:(NSStringEncoding *)encodingp error:(NSError **)error {
+   NSStringEncoding encoding=NSNEXTSTEPStringEncoding;
+   NSString *string;
+
+   const unsigned char *bytes=[data bytes];
+   NSUInteger length=[data length];
+
+   // guess encoding
+   if((length>=2) && ((bytes[0]==0xFE && bytes[1]==0xFF) || (bytes[0]==0xFF && bytes[1]==0xFE)))
+    // UTF16 BOM
+    encoding=NSUnicodeStringEncoding;
+
+   // No BOM, (probably wrongly) assume NEXTSTEP encoding
+   // TODO: check for UTF8, or assume UTF8 but use another one if it fails
+
+   string=[self initWithBytes:bytes length:length encoding:encoding];
+   if (string==nil){
+    //TODO: Should fill the NSError here with something about "no encoding found".
+   }
+
+   if (encodingp!=NULL)
+    *encodingp=encoding;
+
+   return string;
 }
 
 -initWithUTF8String:(const char *)utf8 {
-   NSInvalidAbstractInvocation();
-   return nil;
+   return [self initWithBytes:utf8 length:strlen(utf8) encoding:NSUTF8StringEncoding];
 }
 
 -initWithBytes:(const void *)bytes length:(NSUInteger)length encoding:(NSStringEncoding)encoding {
-   NSUnimplementedMethod();
+   NSInvalidAbstractInvocation();
    return 0;
 }
+
 -initWithBytesNoCopy:(void *)bytes length:(NSUInteger)length encoding:(NSStringEncoding)encoding freeWhenDone:(BOOL)freeWhenDone {
-   NSUnimplementedMethod();
-   return 0;
+   NSString *string=[self initWithBytes:bytes length:length encoding:encoding];
+
+   if(freeWhenDone)
+    NSZoneFree(NSZoneFromPointer(bytes),bytes);
+
+   return string;
 }
 
 -initWithContentsOfFile:(NSString *)path {
-   NSInvalidAbstractInvocation();
-   return nil;
+   return [self initWithContentsOfFile:path usedEncoding:NULL error:nil];
 }
 
 -initWithContentsOfFile:(NSString *)path encoding:(NSStringEncoding)encoding error:(NSError **)error {
-   NSUnimplementedMethod();
-   return 0;
+   NSData *data=[NSData dataWithContentsOfFile:path options:0 error:error];
+
+   if(data==nil){
+    [self dealloc];
+    return nil; // error should contain the reason already.
+   }
+
+   return [self initWithFileData:data encoding:encoding error:error];
 }
+
 -initWithContentsOfFile:(NSString *)path usedEncoding:(NSStringEncoding *)encoding error:(NSError **)error {
-   NSUnimplementedMethod();
-   return 0;
+   NSData *data=[NSData dataWithContentsOfFile:path options:0 error:error];
+
+   if(data==nil){
+    [self dealloc];
+    return nil;
+   }
+
+   return [self initWithFileData:data usedEncoding:encoding error:error];
 }
+
 -initWithContentsOfURL:(NSURL *)url encoding:(NSStringEncoding)encoding error:(NSError **)error {
-   NSUnimplementedMethod();
-   return 0;
+   NSData *data=[NSData dataWithContentsOfURL:url options:0 error:error];
+
+   if(data==nil){
+    [self dealloc];
+    return nil;
+   }
+
+   return [self initWithFileData:data encoding:encoding error:error];
 }
+
 -initWithContentsOfURL:(NSURL *)url usedEncoding:(NSStringEncoding *)encoding error:(NSError **)error {
-   NSUnimplementedMethod();
-   return 0;
+   NSData *data=[NSData dataWithContentsOfURL:url options:0 error:error];
+
+   if(data==nil){
+    [self dealloc];
+    return nil;
+   }
+
+   return [self initWithFileData:data usedEncoding:encoding error:error];
 }
 
 +(const NSStringEncoding *)availableStringEncodings {
@@ -167,25 +262,28 @@ int __CFConstantStringClassReference[1];
    return 0;
 }
 
-
 +stringWithCharacters:(const unichar *)unicode length:(NSUInteger)length {
-   return [[[self allocWithZone:NULL] initWithCharacters:unicode length:length] autorelease];
+   return [[[self alloc] initWithCharacters:unicode length:length] autorelease];
 }
 
 +string {
-   return [[[self allocWithZone:NULL] init] autorelease];
+   return [[[self alloc] init] autorelease];
 }
 
 +stringWithCString:(const char *)cString length:(NSUInteger)length {
-   return [[[self allocWithZone:NULL] initWithCString:cString length:length] autorelease];
+   return [[[self alloc] initWithCString:cString length:length] autorelease];
+}
+
++stringWithCString:(const char *)cString encoding:(NSStringEncoding)encoding {
+   return [[[self alloc] initWithCString:cString encoding:encoding] autorelease];
 }
 
 +stringWithCString:(const char *)cString {
-   return [[[self allocWithZone:NULL] initWithCString:cString] autorelease];
+   return [[[self alloc] initWithCString:cString] autorelease];
 }
 
 +stringWithString:(NSString *)string {
-   return [[[self allocWithZone:NULL] initWithString:string] autorelease];
+   return [[[self alloc] initWithString:string] autorelease];
 }
 
 +stringWithFormat:(NSString *)format,... {
@@ -194,7 +292,7 @@ int __CFConstantStringClassReference[1];
    va_start(arguments,format);
    id result;
    
-   result=[[[self allocWithZone:NULL] initWithFormat:format arguments:arguments] autorelease];
+   result=[[[self alloc] initWithFormat:format arguments:arguments] autorelease];
     
    va_end(arguments);
    
@@ -202,32 +300,23 @@ int __CFConstantStringClassReference[1];
 }
 
 +stringWithContentsOfFile:(NSString *)path {
-   return [[[self allocWithZone:NULL] initWithContentsOfFile:path] autorelease];
+   return [[[self alloc] initWithContentsOfFile:path] autorelease];
 }
 
 +stringWithContentsOfFile:(NSString *)path encoding:(NSStringEncoding)encoding error:(NSError **)error {
-   NSUnimplementedMethod();
-   return 0;
+   return [[[self alloc] initWithContentsOfFile:path encoding:encoding error:error] autorelease];
 }
 
 +stringWithContentsOfFile:(NSString *)path usedEncoding:(NSStringEncoding *)encoding error:(NSError **)error {
-   NSUnimplementedMethod();
-   return 0;
+   return [[[self alloc] initWithContentsOfFile:path usedEncoding:encoding error:error] autorelease];
 }
 
 +stringWithContentsOfURL:(NSURL *)url encoding:(NSStringEncoding)encoding error:(NSError **)error {
-   NSUnimplementedMethod();
-   return 0;
+   return [[[self alloc] initWithContentsOfURL:url encoding:encoding error:error] autorelease];
 }
 
 +stringWithContentsOfURL:(NSURL *)url usedEncoding:(NSStringEncoding *)encoding error:(NSError **)error {
-   NSUnimplementedMethod();
-   return 0;
-}
-
-+stringWithCString:(const char *)cString encoding:(NSStringEncoding)encoding {
-   NSUnimplementedMethod();
-   return 0;
+   return [[[self alloc] initWithContentsOfURL:url usedEncoding:encoding error:error] autorelease];
 }
 
 +stringWithUTF8String:(const char *)utf8 {
@@ -255,13 +344,12 @@ int __CFConstantStringClassReference[1];
 }
 
 -mutableCopy {
-   return [[NSMutableString allocWithZone:NULL] initWithString:self];
+   return [[NSMutableString alloc] initWithString:self];
 }
 
 -mutableCopyWithZone:(NSZone *)zone {
    return [[NSMutableString allocWithZone:zone] initWithString:self];
 }
-
 
 -(Class)classForCoder {
    return objc_lookUpClass("NSString");
@@ -747,7 +835,6 @@ U+2029 (Unicode paragraph separator), \r\n, in that order (also known as CRLF)
     *contentsEndp=contentsEnd;
 }
 
-
 -(NSRange)lineRangeForRange:(NSRange)range {
    NSRange  result;
    NSUInteger start,end;
@@ -762,6 +849,7 @@ U+2029 (Unicode paragraph separator), \r\n, in that order (also known as CRLF)
 -(void)getParagraphStart:(NSUInteger *)startp end:(NSUInteger *)endp contentsEnd:(NSUInteger *)contentsEndp forRange:(NSRange)range {
    NSUnimplementedMethod();
 }
+
 -(NSRange)paragraphRangeForRange:(NSRange)range {
    NSUnimplementedMethod();
    return NSMakeRange(0,0);
@@ -794,6 +882,10 @@ U+2029 (Unicode paragraph separator), \r\n, in that order (also known as CRLF)
 
 -(NSString *)substringToIndex:(NSUInteger)location {
    NSRange range={0,location};
+
+   if(location>[self length])
+    [NSException raise:NSRangeException format:@"-[%@ %s] index %d beyond length %d",isa,sel_getName(_cmd),location,[self length]];
+
    return [self substringWithRange:range];
 }
 
@@ -840,6 +932,7 @@ U+2029 (Unicode paragraph separator), \r\n, in that order (also known as CRLF)
    NSUnimplementedMethod();
    return 0;
 }
+
 -(long long)longLongValue {
    NSUnimplementedMethod();
    return 0;
@@ -943,7 +1036,6 @@ U+2029 (Unicode paragraph separator), \r\n, in that order (also known as CRLF)
    return result;
 }
 
-
 -(NSString *)stringByAppendingString:(NSString *)other {
    NSUInteger selfLength=[self length];
    NSUInteger otherLength=[other length];
@@ -1036,14 +1128,17 @@ U+2029 (Unicode paragraph separator), \r\n, in that order (also known as CRLF)
    NSUnimplementedMethod();
    return 0;
 }
+
 -(NSString *)stringByPaddingToLength:(NSUInteger)length withString:(NSString *)padding startingAtIndex:(NSUInteger)index {
    NSUnimplementedMethod();
    return 0;
 }
+
 -(NSString *)stringByReplacingCharactersInRange:(NSRange)range withString:(NSString *)substitute {
    NSUnimplementedMethod();
    return 0;
 }
+
 -(NSString *)stringByReplacingOccurrencesOfString:(NSString *)original withString:(NSString *)substitute {
 	NSMutableString* s=[self mutableCopy];
 	[s replaceOccurrencesOfString:original withString:substitute options:0 range:NSMakeRange(0, [s length])];
@@ -1052,6 +1147,7 @@ U+2029 (Unicode paragraph separator), \r\n, in that order (also known as CRLF)
    [s release];
 	return ret;
 }
+
 -(NSString *)stringByReplacingOccurrencesOfString:(NSString *)original withString:(NSString *)substitute options:(NSStringCompareOptions)options range:(NSRange)range {
 	NSMutableString* s=[self mutableCopy];
 	[s replaceOccurrencesOfString:original withString:substitute options:options range:range];
@@ -1070,6 +1166,7 @@ U+2029 (Unicode paragraph separator), \r\n, in that order (also known as CRLF)
    NSUnimplementedMethod();
    return NSMakeRange(0,0);
 }
+
 -(NSRange)rangeOfComposedCharacterSequencesForRange:(NSRange)range {
    NSUnimplementedMethod();
    return NSMakeRange(0,0);
@@ -1079,14 +1176,17 @@ U+2029 (Unicode paragraph separator), \r\n, in that order (also known as CRLF)
    NSUnimplementedMethod();
    return 0;
 }
+
 -(NSString *)decomposedStringWithCanonicalMapping {
    NSUnimplementedMethod();
    return 0;
 }
+
 -(NSString *)precomposedStringWithCompatibilityMapping {
    NSUnimplementedMethod();
    return 0;
 }
+
 -(NSString *)decomposedStringWithCompatibilityMapping {
    NSUnimplementedMethod();
    return 0;
@@ -1099,7 +1199,6 @@ U+2029 (Unicode paragraph separator), \r\n, in that order (also known as CRLF)
 -propertyList {
    return [NSPropertyListReader propertyListFromString:self];
 }
-
 
 -(NSDictionary *)propertyListFromStringsFileFormat {
    return NSDictionaryFromStringsFormatString(self);

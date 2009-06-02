@@ -1,10 +1,12 @@
 /* Copyright (c) 2006-2007 Christopher J. W. Lloyd
+                 2009 Markus Hitter <mah@jump-ing.de>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
+
 #import <Foundation/NSData.h>
 #import <Foundation/NSString_cString.h>
 #import <Foundation/NSData_concrete.h>
@@ -44,22 +46,34 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -initWithContentsOfFile:(NSString *)path {
-   NSUInteger length;
-   void    *bytes=[[NSPlatform currentPlatform] contentsOfFile:path length:&length];
-
-   if(bytes==NULL){
-    [self dealloc];
-    return nil;
-   }
-
-   return [self initWithBytesNoCopy:bytes length:length];
+   return [self initWithContentsOfFile:path options:0 error:nil];
 }
 
 -initWithContentsOfMappedFile:(NSString *)path {
-   NSUInteger length;
-   void    *bytes=[[NSPlatform currentPlatform] contentsOfFile:path length:&length];
+   return [self initWithContentsOfFile:path options:NSMappedRead error:nil];
+}
 
+-initWithContentsOfURL:(NSURL *)url {
+   return [self initWithContentsOfURL:url options:0 error:nil];
+}
+
+-initWithContentsOfFile:(NSString *)path options:(NSUInteger)options error:(NSError **)errorp {
+   NSUInteger length;
+   void *bytes=NULL;
+
+   if(errorp)
+    NSLog(@"-[%@ %s]: NSError not (yet) supported.",[self class],_cmd);
+
+   if (options&NSUncachedRead)
+    NSLog(@"-[%@ %s] option NSUncachedRead currently ignored.",[self class],_cmd);
+
+   if (options&NSMappedRead)
+    bytes=[[NSPlatform currentPlatform] mapContentsOfFile:path length:&length];
+   else
+    bytes=[[NSPlatform currentPlatform] contentsOfFile:path length:&length];
+  
    if(bytes==NULL){
+    // TODO: Should fill NSError here.
     [self dealloc];
     return nil;
    }
@@ -67,22 +81,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return [self initWithBytesNoCopy:bytes length:length];
 }
 
--initWithContentsOfURL:(NSURL *)url {
+-initWithContentsOfURL:(NSURL *)url options:(NSUInteger)options error:(NSError **)errorp {
+
    if(![url isFileURL]){
     [self dealloc];
+    [NSException raise:NSRangeException format:@"-[NSData initWithContentsOfURL:options:error:] currently, only file:// urls are supported"];
     return nil;
    }
-   return [self initWithContentsOfFile:[url path]];
-}
 
--initWithContentsOfFile:(NSString *)path options:(NSUInteger)options error:(NSError **)errorp {
-   NSUnimplementedMethod();
-   return nil;
-}
-
--initWithContentsOfURL:(NSURL *)url options:(NSUInteger)options error:(NSError **)errorp {
-   NSUnimplementedMethod();
-   return nil;
+   return [self initWithContentsOfFile:[url path] options:0 error:nil];
 }
 
 -copyWithZone:(NSZone *)zone {
@@ -243,12 +250,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(BOOL)writeToFile:(NSString *)path options:(NSUInteger)options error:(NSError **)errorp {
    BOOL atomically=(options&NSAtomicWrite);
-   NSAssert(!errorp,  @"-[%@ %s]: NSError not (yet) supported.", [self class], _cmd);
+   if(errorp)
+     NSLog(@"-[%@ %s]: NSError not (yet) supported.",[self class],_cmd);
    return [[NSPlatform currentPlatform] writeContentsOfFile:path bytes:[self bytes] length:[self length] atomically:atomically];
 }
 
 -(BOOL)writeToURL:(NSURL *)url options:(NSUInteger)options error:(NSError **)errorp {
-  NSAssert([url isFileURL], @"-[%@ %s]: Only file: URLs are supported so far.", [self class], _cmd);
+  NSAssert([url isFileURL], @"-[%@ %s]: Only file: URLs are supported so far.",[self class],_cmd);
   return [self writeToFile:[url path] options:options error:errorp];
 }
 

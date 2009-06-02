@@ -10,12 +10,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @interface NSString_placeholder : NSString
 
--initWithCString:(const char *)byteString length:(NSUInteger)length;
--initWithCStringNoCopy:(char *)byteString length:(NSUInteger)length
-          freeWhenDone:(BOOL)freeWhenDone;
-
--initWithCharacters:(const unichar *)characters length:(NSUInteger)length;
+// For maximum compatibility with Mac OS X, this is the minimum set:
+-initWithBytes:(const void *)bytes length:(NSUInteger)length encoding:(NSStringEncoding)encoding;
 -initWithCharactersNoCopy:(unichar *)characters length:(NSUInteger)length
              freeWhenDone:(BOOL)freeWhenDone;
+-initWithFormat:(NSString *)format locale:(NSDictionary *)locale arguments:(va_list)arguments;
 
 @end

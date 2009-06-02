@@ -26,7 +26,7 @@ unichar *NSCharactersWithContentsOfFile(NSString *path,
    
    if((dataLength>=2) && ((bytes[0]==0xFE && bytes[1]==0xFF) || (bytes[0]==0xFF && bytes[1]==0xFE)))
     // UTF16 BOM
-    return NSUnicodeFromData(data, length);
+    return NSUnicodeFromBytes(bytes,dataLength,length);
    else
     // No BOM, (probably wrongly) assume NEXTSTEP encoding
     // TODO: check for UTF8, or assume UTF8 but use another one if it fails
