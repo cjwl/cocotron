@@ -12,7 +12,17 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 FOUNDATION_EXPORT NSString *NSTaskDidTerminateNotification;
 
-@interface NSTask : NSObject
+@interface NSTask : NSObject {
+  NSString *launchPath;
+  NSArray  *arguments;
+  NSString *currentDirectoryPath;
+
+  id standardInput;
+  id standardOutput;
+  id standardError;
+
+  BOOL isRunning;
+}  
 
 +(NSTask *)launchedTaskWithLaunchPath:(NSString *)path arguments:(NSArray *)arguments;
 
@@ -23,18 +33,18 @@ FOUNDATION_EXPORT NSString *NSTaskDidTerminateNotification;
 -(NSArray *)arguments;
 -(NSDictionary *)environment;
 
--standardError;
--standardInput;
--standardOutput;
+-(id)standardError;
+-(id)standardInput;
+-(id)standardOutput;
 
 -(void)setCurrentDirectoryPath:(NSString *)path;
 -(void)setLaunchPath:(NSString *)path;
 -(void)setArguments:(NSArray *)arguments;
 -(void)setEnvironment:(NSDictionary *)values;
 
--(void)setStandardInput:input;
--(void)setStandardOutput:output;
--(void)setStandardError:error;
+-(void)setStandardInput:(id)input;
+-(void)setStandardOutput:(id)output;
+-(void)setStandardError:(id)error;
 
 -(void)launch;
 -(BOOL)isRunning;

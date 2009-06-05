@@ -1,4 +1,5 @@
 /* Copyright (c) 2006-2007 Christopher J. W. Lloyd
+                 2009 Markus Hitter <mah@jump-ing.de>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
@@ -11,6 +12,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSPlatform.h>
 #import <Foundation/NSRaise.h>
 #import <Foundation/NSRunLoop.h>
+#import <Foundation/NSFileManager.h>
 
 NSString *NSTaskDidTerminateNotification=@"NSTaskDidTerminateNotification";
 
@@ -24,31 +26,47 @@ NSString *NSTaskDidTerminateNotification=@"NSTaskDidTerminateNotification";
 }
 
 +(NSTask *)launchedTaskWithLaunchPath:(NSString *)path arguments:(NSArray *)arguments {
-	NSTask *task=[[NSTask new] autorelease];
-	[task setLaunchPath:path];
-	[task setArguments:arguments];
-	[task launch];
+   NSTask *task=[[NSTask new] autorelease];
+   [task setLaunchPath:path];
+   [task setArguments:arguments];
+   [task launch];
    return task;
 }
 
 -init {
-   NSInvalidAbstractInvocation();
+   self=[super init];
+   if(self!=nil){
+    launchPath=nil;
+    arguments=nil;
+    currentDirectoryPath=[[[NSFileManager defaultManager] currentDirectoryPath] copy];
+    standardInput=nil;
+    standardOutput=nil;
+    standardError=nil;
+    isRunning=NO;
+   } 
    return self;
 }
 
+-(void)dealloc {
+  [launchPath release];
+  [arguments release];
+  [currentDirectoryPath release];
+  [standardInput release];
+  [standardOutput release];
+  [standardError release];
+  [super dealloc];
+}
+
 -(NSString *)currentDirectoryPath {
-   NSInvalidAbstractInvocation();
-   return nil;
+   return currentDirectoryPath;
 }
 
 -(NSString *)launchPath {
-   NSInvalidAbstractInvocation();
-   return nil;
+   return launchPath;
 }
 
 -(NSArray *)arguments {
-   NSInvalidAbstractInvocation();
-   return nil;
+   return arguments;
 }
 
 -(NSDictionary *)environment {
@@ -56,47 +74,50 @@ NSString *NSTaskDidTerminateNotification=@"NSTaskDidTerminateNotification";
    return nil;
 }
 
--standardError {
-   NSInvalidAbstractInvocation();
-   return nil;
+-(id)standardError {
+   return standardError;
 }
 
--standardInput {
-   NSInvalidAbstractInvocation();
-   return nil;
+-(id)standardInput {
+   return standardInput;
 }
 
--standardOutput {
-   NSInvalidAbstractInvocation();
-   return nil;
+-(id)standardOutput {
+   return standardOutput;
 }
 
 -(void)setCurrentDirectoryPath:(NSString *)path {
-   NSInvalidAbstractInvocation();
+   [currentDirectoryPath autorelease];
+   currentDirectoryPath=[path copy];
 }
 
 -(void)setLaunchPath:(NSString *)path {
-   NSInvalidAbstractInvocation();
+   [launchPath autorelease];
+   launchPath=[path copy];
 }
 
--(void)setArguments:(NSArray *)arguments {
-   NSInvalidAbstractInvocation();
+-(void)setArguments:(NSArray *)args {
+   [arguments autorelease];
+   arguments=[args copy];
 }
 
 -(void)setEnvironment:(NSDictionary *)values {
    NSInvalidAbstractInvocation();
 }
 
--(void)setStandardInput:input {
-   NSInvalidAbstractInvocation();
+-(void)setStandardInput:(id)input {
+   [standardInput autorelease];
+   standardInput=[input retain];
 }
 
--(void)setStandardOutput:output {
-   NSInvalidAbstractInvocation();
+-(void)setStandardOutput:(id)output {
+   [standardOutput autorelease];
+   standardOutput=[output retain];
 }
 
--(void)setStandardError:error {
-   NSInvalidAbstractInvocation();
+-(void)setStandardError:(id)error {
+   [standardError autorelease];
+   standardError=[error retain];
 }
 
 -(void)launch {
@@ -104,8 +125,7 @@ NSString *NSTaskDidTerminateNotification=@"NSTaskDidTerminateNotification";
 }
 
 -(BOOL)isRunning {
-   NSInvalidAbstractInvocation();
-   return NO;
+   return isRunning;
 }
 
 -(void)interrupt {
@@ -132,7 +152,7 @@ NSString *NSTaskDidTerminateNotification=@"NSTaskDidTerminateNotification";
 }
 
 -(void)waitUntilExit {
-   while([self isRunning])
+   while(isRunning)
      [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode 
                               beforeDate:[NSDate dateWithTimeIntervalSinceNow:0.25]];
 }

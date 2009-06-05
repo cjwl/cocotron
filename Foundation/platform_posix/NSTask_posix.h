@@ -12,31 +12,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 extern void childSignalHandler(int sig);
 
 @interface NSTask_posix : NSTask {
-    NSString *_launchPath;
-    NSArray  *_arguments;
-    NSString *_currentDirectoryPath;
-    BOOL      _isRunning;
-    int       _processID;
-
-    id        _stdin, _stdout, _stderr;
-    int       _terminationStatus;
+   int _processID;
+   int _terminationStatus;
 }
 
 +(void)signalPipeReadNotification:(NSNotification *)note;
 
--init;
-
--(void)setLaunchPath:(NSString *)path;
--(void)setArguments:(NSArray *)arguments;
--(void)setCurrentDirectoryPath:(NSString *)path;
-
--(NSString *)launchPath;
--(NSArray *)arguments;
--(NSString *)currentDirectoryPath;
-
--(BOOL)isRunning;
 -(void)launch;
-
 -(void)terminate;
 
 -(void)setTerminationStatus:(int)terminationStatus;

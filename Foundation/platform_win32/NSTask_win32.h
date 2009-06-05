@@ -12,33 +12,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @class NSHandleMonitor_win32;
 
 @interface NSTask_win32 : NSTask {
-   NSString *_launchPath;
-   NSArray  *_arguments;
-   NSString *_currentDirectoryPath;
-   BOOL      _isRunning;
-   DWORD     _exitCode;
-
-   id _standardInput;
-   id _standardOutput;
-   id _standardError;
+   DWORD _exitCode;
 
    NSHandleMonitor_win32 *_monitor;
    PROCESS_INFORMATION _processInfo;
 }
 
--init;
-
--(void)setLaunchPath:(NSString *)path;
--(void)setArguments:(NSArray *)arguments;
--(void)setCurrentDirectoryPath:(NSString *)path;
-
--(NSString *)launchPath;
--(NSArray *)arguments;
--(NSString *)currentDirectoryPath;
-
--(BOOL)isRunning;
 -(void)launch;
-
 -(void)terminate;
+-(int)processIdentifier;
 
 @end

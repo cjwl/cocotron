@@ -5,6 +5,7 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
+
 #import <Foundation/NSTask_win32.h>
 #import <Foundation/NSFileHandle_win32.h>
 #import <Foundation/NSHandleMonitor_win32.h>
@@ -13,7 +14,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSPlatform_win32.h>
 #import <windows.h>
 #import <Foundation/NSPropertyListWriter_vintage.h>
-#import <Foundation/NSFileManager.h>
 #import <Foundation/NSArray.h>
 #import <Foundation/NSData.h>
 #import <Foundation/NSException.h>
@@ -25,82 +25,23 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @implementation NSTask_win32
 
--init {
-   _launchPath=nil;
-   _arguments=nil;
-   _currentDirectoryPath=[[[NSFileManager defaultManager] currentDirectoryPath] copy];
-   _isRunning=NO;
-   return self;
-}
-
--(void)dealloc {
-   [_launchPath release];
-   [_arguments release];
-   [_currentDirectoryPath release];
-   [_standardInput release];
-   [_standardOutput release];
-   [_standardError release];
-   [super dealloc];
-}
-
--(void)setLaunchPath:(NSString *)path {
-   [_launchPath autorelease];
-   _launchPath=[path copy];
-}
-
--(void)setArguments:(NSArray *)arguments {
-   [_arguments autorelease];
-   _arguments=[arguments copy];
-}
-
--(void)setCurrentDirectoryPath:(NSString *)path {
-   [_currentDirectoryPath autorelease];
-   _currentDirectoryPath=[path copy];
-}
-
--(NSString *)launchPath {
-   return _launchPath;
-}
-
--(NSArray *)arguments {
-   return _arguments;
-}
-
--(NSString *)currentDirectoryPath {
-   return _currentDirectoryPath;
-}
-
--(void)setStandardInput:input {
-   [_standardInput autorelease];
-   _standardInput=[input retain];
-}
-
--(void)setStandardOutput:output {
-   [_standardOutput autorelease];
-   _standardOutput=[output retain];
-}
-
--(void)setStandardError:error {
-   [_standardError autorelease];
-   _standardError=[error retain];
-}
-
--(BOOL)isRunning {
-   return _isRunning;
-}
-
 -(NSData *)_argumentsData {
    NSMutableData *data=[NSMutableData data];
-   NSInteger            i,count=[_arguments count];
+   NSInteger            i,count=[arguments count];
 
-   [data appendData:NSTaskArgumentDataFromString(_launchPath)];
+   [data appendData:NSTaskArgumentDataFromString(launchPath)];
    [data appendBytes:" " length:1];
 
    for(i=0;i<count;i++){
-    NSString *argument=[_arguments objectAtIndex:i];
+    NSString *argument=[arguments objectAtIndex:i];
 
     [data appendData:NSTaskArgumentDataFromString(argument)];
     [data appendBytes:" " length:1];
+    
+    if ([data length] > 32767){
+     [NSException raise:NSInvalidArgumentException format:@"More than 32768 bytes needed for argument list of task %@.", launchPath];
+     return nil;
+    }
    }
 
    [data appendBytes:"\0" length:1];
@@ -111,7 +52,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)launch {
    STARTUPINFO   startupInfo;
 
-   if(_launchPath==nil)
+   if(launchPath==nil)
     [NSException raise:NSInvalidArgumentException
                 format:@"NSTask launchPath is nil"];
 
@@ -119,47 +60,47 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    startupInfo.cb=sizeof(startupInfo);
    startupInfo.dwFlags=STARTF_USESTDHANDLES;
 
-   if(_standardInput==nil)
+   if(standardInput==nil)
     startupInfo.hStdInput=GetStdHandle(STD_INPUT_HANDLE);
-   else if([_standardInput isKindOfClass:[NSPipe class]])
-    startupInfo.hStdInput=[(NSFileHandle_win32 *)[_standardInput fileHandleForReading] fileHandle];
+   else if([standardInput isKindOfClass:[NSPipe class]])
+    startupInfo.hStdInput=[(NSFileHandle_win32 *)[standardInput fileHandleForReading] fileHandle];
    else
-    startupInfo.hStdInput=[_standardInput fileHandle];
+    startupInfo.hStdInput=[standardInput fileHandle];
 
-   if(_standardOutput==nil)
+   if(standardOutput==nil)
     startupInfo.hStdOutput=GetStdHandle(STD_OUTPUT_HANDLE);
-   else if([_standardOutput isKindOfClass:[NSPipe class]])
-    startupInfo.hStdOutput=[(NSFileHandle_win32 *)[_standardOutput fileHandleForWriting] fileHandle];
+   else if([standardOutput isKindOfClass:[NSPipe class]])
+    startupInfo.hStdOutput=[(NSFileHandle_win32 *)[standardOutput fileHandleForWriting] fileHandle];
    else
-    startupInfo.hStdOutput=[_standardOutput fileHandle];
+    startupInfo.hStdOutput=[standardOutput fileHandle];
 
-   if(_standardError==nil)
-    startupInfo.hStdError=GetStdHandle(STD_ERROR_HANDLE);
-   else if([_standardError isKindOfClass:[NSPipe class]])
-    startupInfo.hStdError=[(NSFileHandle_win32 *)[_standardError fileHandleForWriting] fileHandle];
+   if(standardError==nil)
+     startupInfo.hStdError=GetStdHandle(STD_ERROR_HANDLE);
+   else if([standardError isKindOfClass:[NSPipe class]])
+    startupInfo.hStdError=[(NSFileHandle_win32 *)[standardError fileHandleForWriting] fileHandle];
    else
-    startupInfo.hStdError=[_standardError fileHandle];
+    startupInfo.hStdError=[standardError fileHandle];
 
    ZeroMemory(& _processInfo,sizeof(_processInfo));
 
-   if(!CreateProcess([_launchPath fileSystemRepresentation],
+   if(!CreateProcess([[self launchPath] fileSystemRepresentation],
     (char *)[[self _argumentsData] bytes],
     NULL,NULL,TRUE,CREATE_NO_WINDOW,NULL,
-    [_currentDirectoryPath fileSystemRepresentation],
+    [currentDirectoryPath fileSystemRepresentation],
     &startupInfo,&_processInfo)){
     [NSException raise:NSInvalidArgumentException
-                format:@"CreateProcess(%@,%@,%@) failed", _launchPath,[_arguments componentsJoinedByString:@" "], _currentDirectoryPath];
+                format:@"CreateProcess(%@,%@,%@) failed", launchPath,[arguments componentsJoinedByString:@" "], currentDirectoryPath];
     return;
    }
 
-   if([_standardInput isKindOfClass:[NSPipe class]])
-    [[_standardInput fileHandleForReading] closeFile];
-   if([_standardOutput isKindOfClass:[NSPipe class]])
-    [[_standardOutput fileHandleForWriting] closeFile];
-   if([_standardError isKindOfClass:[NSPipe class]])
-    [[_standardError fileHandleForWriting] closeFile];
+   if([standardInput isKindOfClass:[NSPipe class]])
+    [[standardInput fileHandleForReading] closeFile];
+   if([standardOutput isKindOfClass:[NSPipe class]])
+    [[standardOutput fileHandleForWriting] closeFile];
+   if([standardError isKindOfClass:[NSPipe class]])
+    [[standardError fileHandleForWriting] closeFile];
 
-   _isRunning=YES;
+   isRunning=YES;
    _monitor=[[NSHandleMonitor_win32 allocWithZone:NULL] initWithHandle:_processInfo.hProcess];
    [_monitor setDelegate:self];
    [[NSRunLoop currentRunLoop] addInputSource:_monitor forMode: NSDefaultRunLoopMode];
@@ -176,7 +117,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    if(_exitCode!=STILL_ACTIVE){
     NSNotification *note=[NSNotification notificationWithName: NSTaskDidTerminateNotification object:self];
 
-    _isRunning=NO;
+    isRunning=NO;
 
     [[NSRunLoop currentRunLoop] removeInputSource:_monitor forMode: NSDefaultRunLoopMode];
     [_monitor setDelegate:nil];
