@@ -10,7 +10,7 @@
 #import <AppKit/NSUserDefaultsController.h>
 #import <Foundation/NSString.h>
 #import <Foundation/NSDictionary.h>
-#import <Foundation/NSNotificationCenter.h>
+#import <Foundation/NSNotification.h>
 #import <Foundation/NSUserDefaults.h>
 #import <Foundation/NSArray.h>
 #import <Foundation/NSKeyValueObserving.h>

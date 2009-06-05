@@ -26,7 +26,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSNibKeyedUnarchiver.h>
 #import <AppKit/NSPasteboard.h>
 #import <AppKit/NSObject+BindingSupport.h>
-#import <Foundation/NSRaise.h>
+#import <AppKit/NSRaise.h>
 
 NSString *NSViewFrameDidChangeNotification=@"NSViewFrameDidChangeNotification";
 NSString *NSViewBoundsDidChangeNotification=@"NSViewBoundsDidChangeNotification";

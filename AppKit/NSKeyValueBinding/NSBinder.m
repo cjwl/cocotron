@@ -9,8 +9,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "NSObject+BindingSupport.h"
 #import <Foundation/NSString.h>
 #import <Foundation/NSDictionary.h>
-#import <Foundation/NSNumber.h>
-#import <Foundation/NSMutableArray.h>
+#import <Foundation/NSValue.h>
+#import <Foundation/NSArray.h>
 #import <Foundation/NSKeyValueCoding.h>
 #import <Foundation/NSKeyValueObserving.h>
 #import <Foundation/NSEnumerator.h>
@@ -268,7 +268,7 @@ static void* NSBinderChangeContext;
 
 -(NSString*)description
 {
-	return [NSString stringWithFormat:@"%@: %@, %@ -> %@", [self className], _binding, _source, _destination];
+	return [NSString stringWithFormat:@"%@: %@, %@ -> %@", [self class], _binding, _source, _destination];
 }
 @end
 

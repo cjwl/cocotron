@@ -8,9 +8,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 // Original - Christopher Lloyd <cjwl@objc.net>
 #import <Foundation/NSAttributedString_placeholder.h>
-#import <Foundation/NSAttributedString_nilAttributes.h>
-#import <Foundation/NSAttributedString_oneAttribute.h>
-#import <Foundation/NSAttributedString_manyAttributes.h>
+#import "NSAttributedString_nilAttributes.h"
+#import "NSAttributedString_oneAttribute.h"
+#import "NSAttributedString_manyAttributes.h"
 
 @implementation NSAttributedString_placeholder
 

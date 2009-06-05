@@ -8,10 +8,10 @@
 
 #import <AppKit/NSDictionaryController.h>
 #import <Foundation/NSString.h>
-#import <Foundation/NSMutableArray.h>
-#import <Foundation/NSMutableDictionary.h>
+#import <Foundation/NSArray.h>
+#import <Foundation/NSDictionary.h>
 #import <Foundation/NSException.h>
-#import <Foundation/NSKeyedUnarchiver.h>
+#import <Foundation/NSKeyedArchiver.h>
 
 @interface NSDictionaryControllerProxy : NSObject
 {

@@ -48,7 +48,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     [[NSColorPanel sharedColorPanel] setColor:[_pickedColorList colorWithKey:[[sender selectedCell] stringValue]]];
 }
 
-- (int)browser:(NSBrowser *)sender numberOfRowsInColumn:(int)column
+- (NSInteger)browser:(NSBrowser *)sender numberOfRowsInColumn:(NSInteger)column
 {
     return [[_pickedColorList allKeys] count];
 }
@@ -58,7 +58,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     return [NSImage imageNamed:@"NSColorPickerColorList"];
 }
 
-- (void)browser:(NSBrowser *)sender willDisplayCell:(id)cell atRow:(int)row column:(int)column
+- (void)browser:(NSBrowser *)sender willDisplayCell:(id)cell atRow:(NSInteger)row column:(NSInteger)column
 {
     [cell setStringValue:[[_pickedColorList allKeys] objectAtIndex:row]];
     [cell setLeaf:YES];

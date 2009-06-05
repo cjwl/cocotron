@@ -50,6 +50,7 @@ freeWhenDone:(BOOL)freeWhenDone;
 #import <Foundation/NSStringHashing.h>
 #import <Foundation/NSScanner.h>
 #import <Foundation/NSAutoreleasePool.h>
+#import <Foundation/NSRaiseException.h>
 #import <limits.h>
 #import <string.h>
 

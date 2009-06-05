@@ -10,6 +10,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSString.h>
 #import <Foundation/NSRaise.h>
 #import <Foundation/NSStringHashing.h>
+#import <Foundation/NSRaiseException.h>
 
 @implementation NSConstantString(Impl)
 

@@ -46,7 +46,7 @@ NSString *NSConditionallySetsEditableBindingOption=@"NSConditionallySetsEditable
 																	 ofType:@"plist"]];
 		[defaultBindingOptions retain];
 	}
-	id defaults=[defaultBindingOptions objectForKey:[self className]];
+	id defaults=[defaultBindingOptions objectForKey:NSStringFromClass(self)];
 	if(self==[NSObject class])
 	{
 		if(defaults)

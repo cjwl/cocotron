@@ -9,7 +9,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 // Original - Christopher Lloyd <cjwl@objc.net>
 #import <AppKit/NSEPSImageRep.h>
 #import <Foundation/NSData.h>
-#import <Foundation/NSRaise.h>
+#import <AppKit/NSRaise.h>
 
 @implementation NSEPSImageRep
 

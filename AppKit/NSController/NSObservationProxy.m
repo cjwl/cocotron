@@ -87,12 +87,12 @@
 
 @implementation _NSObservableArray 
 
--(id)objectAtIndex:(unsigned)idx
+-(id)objectAtIndex:(NSUInteger)idx
 {
 	return [_array objectAtIndex:idx];
 }
 
--(unsigned)count
+-(NSUInteger)count
 {
 	return [_array count];
 }
@@ -101,7 +101,7 @@
    return [self initWithObjects:NULL count:0];
 }
 
--initWithObjects:(id *)objects count:(unsigned)count;
+-initWithObjects:(id *)objects count:(NSUInteger)count;
 {
 	if((self=[super init]))
 	{

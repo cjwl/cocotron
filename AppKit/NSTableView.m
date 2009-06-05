@@ -10,6 +10,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSNibKeyedUnarchiver.h>
 #import "NSKeyValueBinding/NSMultipleValueBinder.h"
 #import "NSKeyValueBinding/NSKVOBinder.h"
+#import <AppKit/NSRaise.h>
 
 NSString *NSTableViewSelectionIsChangingNotification=@"NSTableViewSelectionIsChangingNotification";
 NSString *NSTableViewSelectionDidChangeNotification=@"NSTableViewSelectionDidChangeNotification";

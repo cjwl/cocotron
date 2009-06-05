@@ -9,6 +9,7 @@
 
 #import <Foundation/NSException.h>
 #import <Foundation/NSStringHashing.h>
+#import <Foundation/NSRaiseException.h>
 
 @implementation NSDarwinString
 

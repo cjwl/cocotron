@@ -11,9 +11,19 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSException.h>
 #import <Foundation/NSString.h>
 
-FOUNDATION_EXPORT void _NSInvalidAbstractInvocation(SEL selector,id object,const char *file,int line);
-FOUNDATION_EXPORT void _NSUnimplementedMethod(SEL selector,id object,const char *file,int line);
-FOUNDATION_EXPORT void _NSUnimplementedFunction(const char *function,const char *file,int line);
+static inline void _NSInvalidAbstractInvocation(SEL selector,id object,const char *file,int line) {
+   [NSException raise:NSInvalidArgumentException
+     format:@"-%s only defined for abstract class. Define -[%@ %s] in %s:%d!",
+       sel_getName (selector),[object class], sel_getName (selector),file,line];
+}
+
+static inline void _NSUnimplementedMethod(SEL selector,id object,const char *file,int line) {
+   NSLog(@"-[%@ %s] unimplemented in %s at %d",[object class],sel_getName(selector),file,line);
+}
+
+static inline void _NSUnimplementedFunction(const char *function,const char *file,int line) {
+   NSLog(@"%s() unimplemented in %s at %d",function,file,line);
+}
 
 #define NSInvalidAbstractInvocation() \
   _NSInvalidAbstractInvocation(_cmd,self,__FILE__,__LINE__)
@@ -24,9 +34,3 @@ FOUNDATION_EXPORT void _NSUnimplementedFunction(const char *function,const char 
 #define NSUnimplementedFunction() \
  _NSUnimplementedFunction(__PRETTY_FUNCTION__,__FILE__,__LINE__)
 
-
-FOUNDATION_EXPORT void NSRaiseException(NSString *name,id self,SEL cmd,NSString *fmt,...);
-
-// This is just a wrapper for fprintf, it doesn't handle %@
-// There are situations (such as localization inside NSLog) where you don't want to use NSLog
-FOUNDATION_EXPORT void NSCLog(const char *format,...);

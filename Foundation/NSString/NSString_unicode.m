@@ -9,6 +9,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSRaise.h>
 #import <Foundation/NSString_cString.h>
 #import <Foundation/NSStringHashing.h>
+#import <Foundation/NSRaiseException.h>
 
 @implementation NSString_unicode
 

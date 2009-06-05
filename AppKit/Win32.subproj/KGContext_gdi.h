@@ -20,8 +20,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -initWithGraphicsState:(KGGraphicsState *)state deviceContext:(KGDeviceContext_gdi *)deviceContext;
 -initWithHWND:(HWND)handle;
--initWithPrinterDC:(HDC)printer;
--initWithSize:(NSSize)size context:(KGContext *)otherX useDIB:(BOOL)useDIB;
+-initWithPrinterDC:(HDC)printer auxiliaryInfo:(NSDictionary *)auxiliaryInfo;
 
 -(NSSize)pointSize;
 

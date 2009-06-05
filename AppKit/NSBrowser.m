@@ -18,7 +18,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSStringDrawer.h>
 #import <AppKit/NSWindow.h>
 #import <AppKit/NSNibKeyedUnarchiver.h>
-#import <Foundation/NSRaise.h>
+#import <AppKit/NSRaise.h>
 
 @interface NSBrowser(Private)
 -(NSRect)frameOfScroller;

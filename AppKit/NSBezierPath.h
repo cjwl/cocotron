@@ -35,7 +35,13 @@ typedef enum {
 } NSWindingRule;
 
 @interface NSBezierPath : NSObject <NSCopying> {
-   CGMutablePathRef _path;
+   NSUInteger      _capacityOfElements;
+   NSUInteger      _numberOfElements;
+   NSUInteger      _capacityOfPoints;
+   NSUInteger      _numberOfPoints;
+   uint8_t        *_elements;
+   CGPoint        *_points;
+
    float           _lineWidth;
    float           _miterLimit;
    float           _flatness;

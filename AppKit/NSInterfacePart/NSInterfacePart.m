@@ -8,7 +8,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 // Original - Christopher Lloyd <cjwl@objc.net>
 #import <AppKit/NSInterfacePart.h>
-#import <Foundation/NSRaise.h>
+#import <AppKit/NSRaise.h>
 
 @implementation NSInterfacePart
 

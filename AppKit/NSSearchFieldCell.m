@@ -9,7 +9,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSSearchFieldCell.h>
 #import <AppKit/NSButtonCell.h>
 #import <AppKit/NSMenu.h>
-#import <Foundation/NSRaise.h>
+#import <AppKit/NSRaise.h>
 
 @implementation NSSearchFieldCell
 

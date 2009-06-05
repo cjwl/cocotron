@@ -13,8 +13,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSPanel.h>
 #import <AppKit/NSDisplay.h>
 #import <AppKit/NSGraphicsContext.h>
-#import <AppKit/KGContext.h>
-#import <AppKit/KGPDFContext.h>
 
 enum {
    NSPrintOperationPDFInRect,
@@ -199,8 +197,10 @@ static NSPrintOperation *_currentOperation=nil;
      int           panelResult;
      
      [[_printInfo dictionary] setObject:_view forKey:@"_NSView"];
+     [[_printInfo dictionary] setObject:[[_view window] title] forKey:@"_title"];
      panelResult=[printPanel runModal];
      [[_printInfo dictionary] removeObjectForKey:@"_NSView"];
+     [[_printInfo dictionary] removeObjectForKey:@"_title"];
    
      if(panelResult!=NSOKButton)
       return NO;
@@ -214,7 +214,14 @@ static NSPrintOperation *_currentOperation=nil;
      return nil;
    }
    else if(_type==NSPrintOperationPDFInRect){
-    context=[[[KGPDFContext alloc] initWithMutableData:_mutableData] autorelease];
+    NSDictionary *auxiliaryInfo=[NSDictionary dictionaryWithObject:[[_view window] title] forKey:kCGPDFContextTitle];
+    
+    CGDataConsumerRef consumer=CGDataConsumerCreateWithCFData(_mutableData);
+    
+    context=CGPDFContextCreate(consumer,&_insideRect,auxiliaryInfo);
+    [context autorelease];
+    
+    CGDataConsumerRelease(consumer);
    }
    else
     return nil;
@@ -234,7 +241,7 @@ static NSPrintOperation *_currentOperation=nil;
    NSRange            pageRange=NSMakeRange(NSNotFound,NSNotFound);
    BOOL               knowsPageRange;
    NSGraphicsContext *graphicsContext;
-   KGContext         *context;
+   CGContextRef      context;
    
    _currentOperation=self;
    
@@ -256,7 +263,6 @@ static NSPrintOperation *_currentOperation=nil;
 
    [NSGraphicsContext saveGraphicsState];
    [NSGraphicsContext setCurrentContext:graphicsContext];
-   [context beginPrintingWithDocumentName:[[_view window] title]];
    [_view beginDocument];
 
    if(_type==NSPrintOperationPDFInRect){     
@@ -272,7 +278,7 @@ static NSPrintOperation *_currentOperation=nil;
    }
     
    [_view endDocument];
-   [context endPrinting];
+   CGPDFContextClose(context);
    [NSGraphicsContext restoreGraphicsState];
    
    [self destroyContext];

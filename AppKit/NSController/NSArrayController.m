@@ -15,8 +15,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSPredicate.h>
 #import <Foundation/NSKeyValueObserving.h>
 #import <Foundation/NSKeyValueCoding.h>
+#import <Foundation/NSSortDescriptor.h>
 #import <Foundation/NSString+KVCAdditions.h>
-#import <Foundation/NSRaise.h>
+#import <AppKit/NSRaise.h>
 #import "NSObservationProxy.h"
 
 @interface NSObjectController(private)

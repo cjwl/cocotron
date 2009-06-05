@@ -10,6 +10,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSAttributedString_nilAttributes.h>
 #import <Foundation/NSRaise.h>
 #import <Foundation/NSDictionary.h>
+#import <Foundation/NSRaiseException.h>
 
 @implementation NSAttributedString_nilAttributes
 

@@ -10,20 +10,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <objc/runtime.h>
 #import <stdio.h>
 
-void _NSInvalidAbstractInvocation(SEL selector,id object,const char *file,int line) {
-   [NSException raise:NSInvalidArgumentException
-     format:@"-%s only defined for abstract class. Define -[%@ %s] in %s:%d!",
-       sel_getName (selector),[object class], sel_getName (selector),file,line];
-}
-
-void _NSUnimplementedMethod(SEL selector,id object,const char *file,int line) {
-   NSLog(@"-[%@ %s] unimplemented in %s at %d",[object class],sel_getName(selector),file,line);
-}
-
-void _NSUnimplementedFunction(const char *function,const char *file,int line) {
-   NSLog(@"%s() unimplemented in %s at %d",function,file,line);
-}
-
+// DO NOT USE IN NEW CODE AND REPLACE USAGE. Use NSAssert().
 void NSRaiseException(NSString *name,id self,SEL cmd,NSString *fmt,...) {
    NSString *where=[NSString stringWithFormat:@"-[%@ %s]",[self class],sel_getName(cmd)];
    NSString *why;

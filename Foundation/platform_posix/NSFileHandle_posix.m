@@ -18,6 +18,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSRaise.h>
 #import <Foundation/NSFileManager.h>
 #import <Foundation/NSPlatform_posix.h>
+#import <Foundation/NSRaiseException.h>
 #import "NSSocket_bsd.h"
 
 #import <stdio.h>

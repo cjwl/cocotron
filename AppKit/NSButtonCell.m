@@ -26,6 +26,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSComboBoxCell.h>
 #import <AppKit/NSPopUpButtonCell.h>
 #import <AppKit/NSSound.h>
+#import <AppKit/NSRaise.h>
 
 @implementation NSButtonCell
 

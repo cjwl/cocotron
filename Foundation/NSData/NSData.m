@@ -17,6 +17,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSPlatform.h>
 #import <Foundation/NSCoder.h>
 #import <Foundation/NSURL.h>
+#import <Foundation/NSRaiseException.h>
 
 @implementation NSData
 

@@ -7,14 +7,10 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
 #import <AppKit/NSBezierPath.h>
-#import <AppKit/KGMutablePath.h>
-#import <ApplicationServices/CGContext.h>
-#import <ApplicationServices/CGPath.h>
+#import <ApplicationServices/ApplicationServices.h>
 #import <AppKit/NSGraphicsContext.h>
 #import <Foundation/NSAffineTransform.h>
-#import <Foundation/NSRaise.h>
-
-#import "CoreGraphics.subproj/VGmath.h"
+#import <AppKit/NSRaise.h>
 
 @implementation NSBezierPath
 
@@ -26,7 +22,14 @@ static NSLineCapStyle  _defaultLineCapStyle=NSButtLineCapStyle;
 static NSLineJoinStyle _defaultLineJoinStyle=NSMiterLineJoinStyle;
 
 -init {
-   _path=CGPathCreateMutable();
+   _capacityOfElements=16;
+   _numberOfElements=0;
+   _elements=NSZoneMalloc(NULL,_capacityOfElements*sizeof(uint8_t));
+   
+   _capacityOfPoints=16;
+   _numberOfPoints=0;
+   _points=NSZoneMalloc(NULL,_capacityOfPoints*sizeof(CGPoint));
+
    _lineWidth=_defaultLineWidth;
    _miterLimit=_defaultMiterLimit;
    _flatness=_defaultFlatness;
@@ -47,7 +50,9 @@ static NSLineJoinStyle _defaultLineJoinStyle=NSMiterLineJoinStyle;
 }
 
 -(void)dealloc {
-   CGPathRelease(_path);
+   NSZoneFree(NULL,_elements);
+   NSZoneFree(NULL,_points);
+
    if(_dashes!=NULL)
     NSZoneFree(NULL,_dashes);
    [super dealloc];
@@ -55,8 +60,16 @@ static NSLineJoinStyle _defaultLineJoinStyle=NSMiterLineJoinStyle;
 
 -copyWithZone:(NSZone *)zone {
    NSBezierPath *copy=NSCopyObject(self,0,zone);
+   NSInteger i;
    
-   copy->_path=CGPathCreateMutableCopy(_path);
+   copy->_elements=NSZoneMalloc(NULL,_capacityOfElements*sizeof(uint8_t));
+   for(i=0;i<_numberOfElements;i++)
+    copy->_elements[i]=_elements[i];
+    
+   copy->_points=NSZoneMalloc(NULL,_capacityOfPoints*sizeof(CGPoint));
+   for(i=0;i<_numberOfPoints;i++)
+    copy->_points[i]=_points[i];
+
    if(_dashCount>0){
     int i;
     
@@ -253,14 +266,14 @@ static NSLineJoinStyle _defaultLineJoinStyle=NSMiterLineJoinStyle;
 }
 
 -(int)elementCount {
-   return [_path numberOfElements];
+   return _numberOfElements;
 }
 
 -(NSBezierPathElement)elementAtIndex:(int)index {
-   if(index>=[_path numberOfElements])
-    [NSException raise:NSInvalidArgumentException format:@"index (%d) >= numberOfElements (%d)",index,[_path numberOfElements]];
+   if(index>=_numberOfElements)
+    [NSException raise:NSInvalidArgumentException format:@"index (%d) >= numberOfElements (%d)",index,_numberOfElements];
 
-   return [_path elements][index];
+   return _elements[index];
 }
 
 static int numberOfPointsForOperator(int op){
@@ -275,21 +288,19 @@ static int numberOfPointsForOperator(int op){
 }
 
 -(NSBezierPathElement)elementAtIndex:(int)index associatedPoints:(NSPoint *)associated {
-   const unsigned char *elements=[_path elements];
-   const CGPoint       *points=[_path points];
-   int                  i,pi=0,pcount;
+   int i,pi=0,pcount;
    
-   if(index>=[_path numberOfElements])
-    [NSException raise:NSInvalidArgumentException format:@"index (%d) >= numberOfElements (%d)",index,[_path numberOfElements]];
+   if(index>=_numberOfElements)
+    [NSException raise:NSInvalidArgumentException format:@"index (%d) >= numberOfElements (%d)",index,_numberOfElements];
     
    for(i=0;i<index;i++)
-    pi+=numberOfPointsForOperator(elements[i]);
+    pi+=numberOfPointsForOperator(_elements[i]);
     
-   pcount=numberOfPointsForOperator(elements[i]);
+   pcount=numberOfPointsForOperator(_elements[i]);
    for(i=0;i<pcount;i++,pi++)
-    associated[i]=points[pi];
+    associated[i]=_points[pi];
     
-   return elements[index];
+   return _elements[index];
 }
 
 -(void)setLineWidth:(float)width {
@@ -345,7 +356,7 @@ static int numberOfPointsForOperator(int op){
 }
 
 -(BOOL)isEmpty {
-   return CGPathIsEmpty(_path);
+   return (_numberOfElements==0)?YES:NO;
 }
 
 -(NSRect)bounds {
@@ -354,79 +365,194 @@ static int numberOfPointsForOperator(int op){
 }
 
 -(NSRect)controlPointBounds {
-   return CGPathGetBoundingBox(_path);
+   CGRect result;
+   int i;
+   
+   if(_numberOfPoints==0)
+    return CGRectZero;
+   
+   result.origin=_points[0];
+   result.size=CGSizeMake(0,0);
+   for(i=1;i<_numberOfPoints;i++){
+    CGPoint point=_points[i];
+    
+    if(point.x>CGRectGetMaxX(result))
+     result.size.width=point.x-CGRectGetMinX(result);
+    else if(point.x<result.origin.x){
+     result.size.width=CGRectGetMaxX(result)-point.x;
+     result.origin.x=point.x;
+    }
+    
+    if(point.y>CGRectGetMaxY(result))
+     result.size.height=point.y-CGRectGetMinY(result);
+    else if(point.y<result.origin.y){
+     result.size.height=CGRectGetMaxY(result)-point.y;
+     result.origin.y=point.y;
+    }
+   }   
+
+   return result;
 }
 
--(BOOL)containsPoint:(NSPoint)point {
-   BOOL evenOdd=([self windingRule]==NSEvenOddWindingRule)?YES:NO;
-   
-   return CGPathContainsPoint(_path,NULL,point,evenOdd);
+-(BOOL)containsPoint:(NSPoint)point {   
+   NSUnimplementedMethod();
+   return NO;
 }
 
 -(NSPoint)currentPoint {
-   return CGPathGetCurrentPoint(_path);
+// FIXME: this is wrong w/ closepath last
+   return (_numberOfPoints==0)?CGPointZero:_points[_numberOfPoints-1];
+}
+
+static inline void expandOperatorCapacity(NSBezierPath *self,unsigned delta){
+   if(self->_numberOfElements+delta>self->_capacityOfElements){
+    self->_capacityOfElements=self->_numberOfElements+delta;
+    self->_capacityOfElements=(self->_capacityOfElements/32+1)*32;
+    self->_elements=NSZoneRealloc(NULL,self->_elements,self->_capacityOfElements);
+   }
+}
+
+static inline void expandPointCapacity(NSBezierPath *self,unsigned delta){
+   if(self->_numberOfPoints+delta>self->_capacityOfPoints){
+    self->_capacityOfPoints=self->_numberOfPoints+delta;
+    self->_capacityOfPoints=(self->_capacityOfPoints/64+1)*64;
+    self->_points=NSZoneRealloc(NULL,self->_points,self->_capacityOfPoints*sizeof(CGPoint));
+   }
 }
 
 -(void)moveToPoint:(NSPoint)point {
-   CGPathMoveToPoint(_path,NULL,point.x,point.y);
+   expandOperatorCapacity(self,1);
+   expandPointCapacity(self,1);
+   _elements[_numberOfElements++]=NSMoveToBezierPathElement;
+   _points[_numberOfPoints++]=point;
 }
 
 -(void)lineToPoint:(NSPoint)point {
-   CGPathAddLineToPoint(_path,NULL,point.x,point.y);
+   expandOperatorCapacity(self,1);
+   expandPointCapacity(self,1);
+   _elements[_numberOfElements++]=NSLineToBezierPathElement;
+   _points[_numberOfPoints++]=point;
 }
 
 -(void)curveToPoint:(NSPoint)point controlPoint1:(NSPoint)cp1 controlPoint2:(NSPoint)cp2 {
-   [_path addCurveToControlPoint:cp1 controlPoint:cp2 endPoint:point withTransform:NULL];
+   expandOperatorCapacity(self,1);
+   expandPointCapacity(self,3);
+   _elements[_numberOfElements++]=NSCurveToBezierPathElement;   
+   _points[_numberOfPoints++]=cp1;
+   _points[_numberOfPoints++]=cp2;
+   _points[_numberOfPoints++]=point;
 }
 
 -(void)closePath {
-   CGPathCloseSubpath(_path);
+   expandOperatorCapacity(self,1);
+   _elements[_numberOfElements++]=NSClosePathBezierPathElement;   
 }
 
 -(void)relativeMoveToPoint:(NSPoint)point {
-   [_path relativeMoveToPoint:point withTransform:NULL];
+   CGPoint current=[self currentPoint];
+   
+   point.x+=current.x;
+   point.y+=current.y;
+   
+   [self moveToPoint:point];
 }
 
 -(void)relativeLineToPoint:(NSPoint)point {
-   [_path addRelativeLineToPoint:point withTransform:NULL];
+   CGPoint current=[self currentPoint];
+
+   point.x+=current.x;
+   point.y+=current.y;
+   
+   [self lineToPoint:point];
 }
 
 -(void)relativeCurveToPoint:(NSPoint)point controlPoint1:(NSPoint)cp1 controlPoint2:(NSPoint)cp2 {
-   [_path addRelativeCurveToControlPoint:point controlPoint:cp1 endPoint:cp2 withTransform:NULL];
+   CGPoint current=[self currentPoint];
+
+   cp1.x+=current.x;
+   cp1.y+=current.y;
+   cp2.x+=current.x;
+   cp2.y+=current.y;
+   point.x+=current.x;
+   point.y+=current.y;
+   
+   [self curveToPoint:point controlPoint1:cp1 controlPoint2:cp2];
 }
 
 -(void)appendBezierPathWithPoints:(NSPoint *)points count:(unsigned)count {
-   CGPathAddLines(_path,NULL,points,count);
+   int i;
+   
+   if(count==0)
+    return;
+    
+   [self moveToPoint:points[0] ];
+   for(i=1;i<count;i++)
+    [self lineToPoint:points[i] ];
 }
 
 -(void)appendBezierPathWithRect:(NSRect)rect {
-   CGPathAddRect(_path,NULL,rect);
+// The line order is correct per documentation, do not change.
+   [self moveToPoint:CGPointMake(CGRectGetMinX(rect),CGRectGetMinY(rect))];
+   [self lineToPoint:CGPointMake(CGRectGetMaxX(rect),CGRectGetMinY(rect))];
+   [self lineToPoint:CGPointMake(CGRectGetMaxX(rect),CGRectGetMaxY(rect))];
+   [self lineToPoint:CGPointMake(CGRectGetMinX(rect),CGRectGetMaxY(rect))];
+   [self closePath];
+}
+
+static void cgApplier(void *info,const CGPathElement *element) {
+   NSBezierPath *self=(NSBezierPath *)info;
+   
+   switch(element->type){
+
+    case kCGPathElementMoveToPoint:
+     [self moveToPoint:element->points[0]];
+     break;
+     
+    case kCGPathElementAddLineToPoint:
+     [self lineToPoint:element->points[0]];
+     break;
+     
+    case kCGPathElementAddQuadCurveToPoint:
+     break;
+     
+    case kCGPathElementAddCurveToPoint:
+     [self curveToPoint:element->points[2] controlPoint1:element->points[0] controlPoint2:element->points[1]];
+     break;
+     
+    case kCGPathElementCloseSubpath:
+     [self closePath];
+     break;
+   }
+   
 }
 
 -(void)appendBezierPathWithOvalInRect:(NSRect)rect {
-   CGPathAddEllipseInRect(_path,NULL,rect);
+   CGMutablePathRef path=CGPathCreateMutable();
+   
+   CGPathAddEllipseInRect(path,NULL,rect);
+   CGPathApply(path,self,cgApplier);
+   CGPathRelease(path);
 }
 
 -(void)appendBezierPathWithArcFromPoint:(NSPoint)point toPoint:(NSPoint)toPoint radius:(float)radius {
-   CGPathAddArcToPoint(_path,NULL,point.x,point.y,toPoint.x,toPoint.y,radius);
+   CGMutablePathRef path=CGPathCreateMutable();
+   
+   CGPathAddArcToPoint(path,NULL,point.x,point.y,toPoint.x,toPoint.y,radius);
+   CGPathApply(path,self,cgApplier);
+   CGPathRelease(path);
 }
 
 - (void)appendBezierPathWithRoundedRect:(NSRect)rect xRadius:(CGFloat)radius yRadius:(CGFloat)yRadius {
-   CGPathMoveToPoint(_path, NULL, rect.origin.x, rect.origin.y + radius);
-   CGPathAddLineToPoint(_path, NULL, rect.origin.x, rect.origin.y + rect.size.height - radius);
-   CGPathAddArc(_path, NULL, rect.origin.x + radius, rect.origin.y + rect.size.height - radius, 
-                   radius, -M_PI, M_PI / 2, 1);
-   CGPathAddLineToPoint(_path, NULL, rect.origin.x + rect.size.width - radius, 
-                           rect.origin.y + rect.size.height);
-   CGPathAddArc(_path, NULL, rect.origin.x + rect.size.width - radius, 
-                   rect.origin.y + rect.size.height - radius, radius, M_PI / 2, 0.0f, 1);
-   CGPathAddLineToPoint(_path, NULL, rect.origin.x + rect.size.width, rect.origin.y + radius);
-   CGPathAddArc(_path, NULL, rect.origin.x + rect.size.width - radius, rect.origin.y + radius, 
-                   radius, 0.0f, -M_PI / 2, 1);
-   CGPathAddLineToPoint(_path, NULL, rect.origin.x + radius, rect.origin.y);
-   CGPathAddArc(_path, NULL, rect.origin.x + radius, rect.origin.y + radius, radius, 
-                   -M_PI / 2, M_PI, 1);
-   CGPathCloseSubpath(_path);
+   [self moveToPoint:NSMakePoint(rect.origin.x, rect.origin.y + radius)];
+   [self lineToPoint:NSMakePoint(rect.origin.x, rect.origin.y + rect.size.height - radius)];
+   [self appendBezierPathWithArcWithCenter:NSMakePoint(rect.origin.x + radius, rect.origin.y + rect.size.height - radius) radius:radius startAngle: 180 endAngle: 90 ];
+   [self lineToPoint:NSMakePoint(rect.origin.x + rect.size.width - radius, rect.origin.y + rect.size.height)];
+   [self appendBezierPathWithArcWithCenter:NSMakePoint(rect.origin.x + rect.size.width - radius, rect.origin.y + rect.size.height - radius) radius: radius startAngle: 90 endAngle: 0.0f ];
+   [self lineToPoint:NSMakePoint(rect.origin.x + rect.size.width, rect.origin.y + radius)];
+   [self appendBezierPathWithArcWithCenter:NSMakePoint(rect.origin.x + rect.size.width - radius, rect.origin.y + radius) radius: radius  startAngle:0.0f endAngle: 270] ;
+   [self lineToPoint:NSMakePoint(rect.origin.x + radius, rect.origin.y)];
+   [self appendBezierPathWithArcWithCenter:NSMakePoint(rect.origin.x + radius, rect.origin.y + radius) radius:radius startAngle:270 endAngle: 180 ];
+   [self closePath];
 }
 
 
@@ -435,11 +561,14 @@ static inline CGFloat degreesToRadians(CGFloat degrees){
 }
 
 -(void)appendBezierPathWithArcWithCenter:(NSPoint)center radius:(float)radius startAngle:(float)startAngle endAngle:(float)endAngle {
-   CGPathAddArc(_path,NULL,center.x,center.y,radius,degreesToRadians(startAngle),degreesToRadians(endAngle),YES);
+   [self appendBezierPathWithArcWithCenter:center radius:radius startAngle:startAngle endAngle:endAngle clockwise:YES];
 }
 
 -(void)appendBezierPathWithArcWithCenter:(NSPoint)center radius:(float)radius startAngle:(float)startAngle endAngle:(float)endAngle clockwise:(BOOL)clockwise {
-   CGPathAddArc(_path,NULL,center.x,center.y,radius,degreesToRadians(startAngle),degreesToRadians(endAngle),clockwise);
+   CGMutablePathRef path=CGPathCreateMutable();
+   CGPathAddArc(path,NULL,center.x,center.y,radius,degreesToRadians(startAngle),degreesToRadians(endAngle),clockwise);
+   CGPathApply(path,self,cgApplier);
+   CGPathRelease(path);
 }
 
 -(void)appendBezierPathWithGlyph:(NSGlyph)glyph inFont:(NSFont *)font {
@@ -461,7 +590,20 @@ static inline CGFloat degreesToRadians(CGFloat degrees){
 }
 
 -(void)appendBezierPath:(NSBezierPath *)other {
-   CGPathAddPath(_path,NULL,other->_path);
+   unsigned             opsCount=other->_numberOfElements;
+   const unsigned char *ops=other->_elements;
+   unsigned             pointCount=other->_numberOfPoints;
+   const CGPoint       *points=other->_points;
+   unsigned             i;
+   
+   expandOperatorCapacity(self,opsCount);
+   expandPointCapacity(self,pointCount);
+   
+   for(i=0;i<opsCount;i++)
+    _elements[_numberOfElements++]=ops[i];
+    
+   for(i=0;i<pointCount;i++)
+    _points[_numberOfPoints++]=points[i];
 }
 
 -(void)transformUsingAffineTransform:(NSAffineTransform *)matrix {
@@ -475,26 +617,30 @@ static inline CGFloat degreesToRadians(CGFloat degrees){
    cgMatrix.tx=atStruct.tX;
    cgMatrix.ty=atStruct.tY;
    
-   [_path applyTransform:cgMatrix];
+   NSInteger i;
+   
+   for(i=0;i<_numberOfPoints;i++)
+    _points[i]=CGPointApplyAffineTransform(_points[i],cgMatrix);
 }
 
 -(void)removeAllPoints {
-   [_path reset];
+   _numberOfElements=0;
+   _numberOfPoints=0;
 }
 
 -(void)setAssociatedPoints:(NSPoint *)points atIndex:(int)index {
-   const unsigned char *elements=[_path elements];
-   int                  i,pi=0,pcount;
+   int i,pi=0,pcount;
    
-   if(index>=[_path numberOfElements])
-    [NSException raise:NSInvalidArgumentException format:@"index (%d) >= numberOfElements (%d)",index,[_path numberOfElements]];
+   if(index>=_numberOfElements)
+    [NSException raise:NSInvalidArgumentException format:@"index (%d) >= numberOfElements (%d)",index,_numberOfElements];
     
    for(i=0;i<index;i++)
-    pi+=numberOfPointsForOperator(elements[i]);
+    pi+=numberOfPointsForOperator(_elements[i]);
     
-   pcount=numberOfPointsForOperator(elements[i]);
-   
-   [_path setPoints:points count:pcount atIndex:pi];
+   pcount=numberOfPointsForOperator(_elements[i]);
+      
+   for(i=0;i<pcount;i++)
+    _points[pi+i]=points[i];
 }
 
 -(NSBezierPath *)bezierPathByFlatteningPath {
@@ -505,6 +651,41 @@ static inline CGFloat degreesToRadians(CGFloat degrees){
 -(NSBezierPath *)bezierPathByReversingPath {
    NSUnimplementedMethod();
    return nil;
+}
+
+-(void)_addPathToContext:(CGContextRef)context {
+   int i;
+   CGPoint *points=_points;
+   
+   for(i=0;i<_numberOfElements;i++){
+    switch(_elements[i]){
+    
+     case NSMoveToBezierPathElement:{
+       CGPoint p=*points++;
+       
+       CGContextMoveToPoint(context,p.x,p.y);
+      }
+      break;
+      
+     case NSLineToBezierPathElement:{
+       CGPoint p=*points++;
+       CGContextAddLineToPoint(context,p.x,p.y);
+      }
+      break;
+      
+     case NSCurveToBezierPathElement:{
+      CGPoint cp1=*points++;
+      CGPoint cp2=*points++;
+      CGPoint end=*points++;
+      
+      CGContextAddCurveToPoint(context,cp1.x,cp1.y,cp2.x,cp2.y,end.x,end.y);
+      }
+      break;
+     case NSClosePathBezierPathElement:
+      CGContextClosePath(context);
+      break;
+    }
+   }
 }
 
 -(void)stroke {
@@ -518,7 +699,7 @@ static inline CGFloat degreesToRadians(CGFloat degrees){
    CGContextSetLineJoin(context,[self lineJoinStyle]);
    CGContextSetLineDash(context,_dashPhase,_dashes,_dashCount);
    CGContextBeginPath(context);
-   CGContextAddPath(context,_path);
+   [self _addPathToContext:context];
    CGContextStrokePath(context);
    CGContextRestoreGState(context);
 }
@@ -527,7 +708,7 @@ static inline CGFloat degreesToRadians(CGFloat degrees){
    CGContextRef context=[[NSGraphicsContext currentContext] graphicsPort];
    
    CGContextBeginPath(context);
-   CGContextAddPath(context,_path);
+   [self _addPathToContext:context];
    if([self windingRule]==NSNonZeroWindingRule)
     CGContextFillPath(context);
    else
@@ -539,7 +720,7 @@ static inline CGFloat degreesToRadians(CGFloat degrees){
 
    if(CGContextIsPathEmpty(context))
     CGContextBeginPath(context);
-   CGContextAddPath(context,_path);
+   [self _addPathToContext:context];
    CGContextClip(context);
 }
 
@@ -547,7 +728,7 @@ static inline CGFloat degreesToRadians(CGFloat degrees){
    CGContextRef context=[[NSGraphicsContext currentContext] graphicsPort];
 
    CGContextBeginPath(context);
-   CGContextAddPath(context,_path);
+   [self _addPathToContext:context];
    CGContextClip(context);
 }
 

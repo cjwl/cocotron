@@ -9,7 +9,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSTextBlock.h>
 #import <AppKit/NSColor.h>
 #import <Foundation/NSArray.h>
-#import <Foundation/NSRaise.h>
+#import <AppKit/NSRaise.h>
 
 @implementation NSTextBlock
 

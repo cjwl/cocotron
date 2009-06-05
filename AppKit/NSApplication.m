@@ -27,6 +27,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSAlert.h>
 #import <AppKit/NSWorkspace.h>
 #import <AppKit/CGWindow.h>
+#import <AppKit/NSRaise.h>
 #import <objc/message.h>
 
 NSString *NSModalPanelRunLoopMode=@"NSModalPanelRunLoopMode";

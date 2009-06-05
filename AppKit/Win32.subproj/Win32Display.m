@@ -915,7 +915,8 @@ static int CALLBACK buildTypeface(const LOGFONTA *lofFont_old,
    if(check==0)
     return NSCancelButton;
    else {
-    KGContext_gdi *context=[[[KGContext_gdi alloc] initWithPrinterDC:printProperties.hDC] autorelease];
+    NSDictionary *auxiliaryInfo=[NSDictionary dictionaryWithObject:[attributes objectForKey:@"_title"] forKey:kCGPDFContextTitle];
+    KGContext_gdi *context=[[[KGContext_gdi alloc] initWithPrinterDC:printProperties.hDC auxiliaryInfo:auxiliaryInfo] autorelease];
         
     [attributes setObject:context forKey:@"_KGContext"];
     

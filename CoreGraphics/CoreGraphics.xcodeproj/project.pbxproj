@@ -1,0 +1,2068 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 42;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		FE6F7AFA0FD554A800C3244F /* CGAffineTransform.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A380FD4B4D600082282 /* CGAffineTransform.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE6F7AFB0FD554A800C3244F /* CGBitmapContext.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A3A0FD4B4D600082282 /* CGBitmapContext.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE6F7AFC0FD554A800C3244F /* CGColor.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A3C0FD4B4D600082282 /* CGColor.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE6F7AFD0FD554A800C3244F /* CGColorSpace.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A3E0FD4B4D600082282 /* CGColorSpace.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE6F7AFE0FD554A800C3244F /* CGContext.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A400FD4B4D600082282 /* CGContext.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE6F7AFF0FD554A800C3244F /* CGDataProvider.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A420FD4B4D600082282 /* CGDataProvider.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE6F7B000FD554A800C3244F /* CGEvent.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A440FD4B4D600082282 /* CGEvent.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE6F7B010FD554A800C3244F /* CGFont.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A460FD4B4D600082282 /* CGFont.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE6F7B020FD554A800C3244F /* CGFunction.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A480FD4B4D600082282 /* CGFunction.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE6F7B030FD554A800C3244F /* CGGeometry.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A4A0FD4B4D600082282 /* CGGeometry.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE6F7B040FD554A800C3244F /* CGImage.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A4C0FD4B4D600082282 /* CGImage.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE6F7B050FD554A800C3244F /* CGImageProperties.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A4E0FD4B4D600082282 /* CGImageProperties.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE6F7B060FD554A800C3244F /* CGImageSource.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A500FD4B4D600082282 /* CGImageSource.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE6F7B070FD554A800C3244F /* CGLayer.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A520FD4B4D600082282 /* CGLayer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE6F7B080FD554A800C3244F /* CGPath.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A540FD4B4D600082282 /* CGPath.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE6F7B090FD554A800C3244F /* CGPattern.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A560FD4B4D600082282 /* CGPattern.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE6F7B0A0FD554A800C3244F /* CGPDFDocument.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A580FD4B4D600082282 /* CGPDFDocument.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE6F7B0B0FD554A800C3244F /* CGPDFPage.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A5A0FD4B4D600082282 /* CGPDFPage.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE6F7B0C0FD554A800C3244F /* CGShading.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A5C0FD4B4D600082282 /* CGShading.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE6F7B0D0FD554A800C3244F /* CGWindow.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A5E0FD4B4D600082282 /* CGWindow.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE6F7B0E0FD554A800C3244F /* CoreGraphics.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A600FD4B4D600082282 /* CoreGraphics.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE6F7B0F0FD554A800C3244F /* CoreGraphicsExport.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A610FD4B4D600082282 /* CoreGraphicsExport.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE6F7B100FD554A800C3244F /* gif_lib.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A630FD4B4D600082282 /* gif_lib.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7B110FD554A800C3244F /* KGBitmapContext.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A650FD4B4D600082282 /* KGBitmapContext.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7B120FD554A800C3244F /* KGBlending.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A670FD4B4D600082282 /* KGBlending.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7B130FD554A800C3244F /* KGClipPhase.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A680FD4B4D600082282 /* KGClipPhase.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7B140FD554A800C3244F /* KGColor.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A6A0FD4B4D600082282 /* KGColor.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7B150FD554A800C3244F /* KGColorSpace+PDF.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A6C0FD4B4D600082282 /* KGColorSpace+PDF.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7B160FD554A800C3244F /* KGColorSpace.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A6E0FD4B4D600082282 /* KGColorSpace.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7B170FD554A800C3244F /* KGContext.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A700FD4B4D600082282 /* KGContext.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7B180FD554A800C3244F /* KGContext_builtin.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A720FD4B4D600082282 /* KGContext_builtin.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7B190FD554A800C3244F /* KGDataProvider.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A740FD4B4D600082282 /* KGDataProvider.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7B1A0FD554A800C3244F /* KGExceptions.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A760FD4B4D600082282 /* KGExceptions.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7B1B0FD554A800C3244F /* KGFont.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A770FD4B4D600082282 /* KGFont.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7B1C0FD554A800C3244F /* KGFunction+PDF.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A790FD4B4D600082282 /* KGFunction+PDF.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7B1D0FD554A800C3244F /* KGFunction.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A7B0FD4B4D600082282 /* KGFunction.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7B1E0FD554A800C3244F /* KGGraphicsState.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A7D0FD4B4D600082282 /* KGGraphicsState.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7B1F0FD554A800C3244F /* KGImage+PDF.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A7F0FD4B4D600082282 /* KGImage+PDF.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7B200FD554A800C3244F /* KGImage.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A810FD4B4D600082282 /* KGImage.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7B210FD554A800C3244F /* KGImageSource.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A830FD4B4D600082282 /* KGImageSource.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7B220FD554A800C3244F /* KGImageSource_BMP.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A850FD4B4D600082282 /* KGImageSource_BMP.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7B230FD554A800C3244F /* KGImageSource_GIF.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A870FD4B4D600082282 /* KGImageSource_GIF.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7B240FD554A800C3244F /* KGImageSource_JPEG.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A890FD4B4D600082282 /* KGImageSource_JPEG.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7B250FD554A800C3244F /* KGImageSource_PNG.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A8B0FD4B4D600082282 /* KGImageSource_PNG.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7B260FD554A800C3244F /* KGImageSource_TIFF.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A8D0FD4B4D600082282 /* KGImageSource_TIFF.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7B270FD554A800C3244F /* KGLayer.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A8F0FD4B4D600082282 /* KGLayer.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7B280FD554A800C3244F /* KGMutablePath.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A910FD4B4D600082282 /* KGMutablePath.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7B290FD554A800C3244F /* KGPaint.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A930FD4B4D600082282 /* KGPaint.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7B2A0FD554A800C3244F /* KGPaint_axialGradient.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A950FD4B4D600082282 /* KGPaint_axialGradient.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7B2B0FD554A800C3244F /* KGPaint_color.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A970FD4B4D600082282 /* KGPaint_color.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7B2C0FD554A800C3244F /* KGPaint_image.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A990FD4B4D600082282 /* KGPaint_image.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7B2D0FD554A800C3244F /* KGPaint_pattern.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A9B0FD4B4D600082282 /* KGPaint_pattern.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7B2E0FD554A800C3244F /* KGPaint_radialGradient.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A9D0FD4B4D600082282 /* KGPaint_radialGradient.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7B2F0FD554A800C3244F /* KGPaint_ramp.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A9F0FD4B4D600082282 /* KGPaint_ramp.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7B300FD554A800C3244F /* KGPath.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AA10FD4B4D600082282 /* KGPath.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7B310FD554A800C3244F /* KGPattern.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AA30FD4B4D600082282 /* KGPattern.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7B320FD554A800C3244F /* KGPDFArray.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AA50FD4B4D600082282 /* KGPDFArray.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7B330FD554A800C3244F /* KGPDFContentStream.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AA70FD4B4D600082282 /* KGPDFContentStream.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7B340FD554A800C3244F /* KGPDFContext.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AA90FD4B4D600082282 /* KGPDFContext.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7B350FD554A800C3244F /* KGPDFDictionary.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AAB0FD4B4D600082282 /* KGPDFDictionary.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7B360FD554A800C3244F /* KGPDFDocument.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AAD0FD4B4D600082282 /* KGPDFDocument.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7B370FD554A800C3244F /* KGPDFFilter.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AAF0FD4B4D600082282 /* KGPDFFilter.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7B380FD554A800C3244F /* KGPDFFunction_Type2.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AB10FD4B4D600082282 /* KGPDFFunction_Type2.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7B390FD554A800C3244F /* KGPDFFunction_Type3.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AB30FD4B4D600082282 /* KGPDFFunction_Type3.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7B3A0FD554A800C3244F /* KGPDFObject.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AB50FD4B4D600082282 /* KGPDFObject.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7B3B0FD554A800C3244F /* KGPDFObject_Boolean.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AB70FD4B4D600082282 /* KGPDFObject_Boolean.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7B3C0FD554A800C3244F /* KGPDFObject_const.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AB90FD4B4D600082282 /* KGPDFObject_const.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7B3D0FD554A800C3244F /* KGPDFObject_identifier.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11ABB0FD4B4D600082282 /* KGPDFObject_identifier.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7B3E0FD554A800C3244F /* KGPDFObject_Integer.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11ABD0FD4B4D600082282 /* KGPDFObject_Integer.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7B3F0FD554A800C3244F /* KGPDFObject_Name.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11ABF0FD4B4D600082282 /* KGPDFObject_Name.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7B400FD554A800C3244F /* KGPDFObject_R.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AC10FD4B4D600082282 /* KGPDFObject_R.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7B410FD554A800C3244F /* KGPDFObject_Real.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AC30FD4B4D600082282 /* KGPDFObject_Real.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7B420FD554A800C3244F /* KGPDFOperators.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AC50FD4B4D600082282 /* KGPDFOperators.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7B430FD554A800C3244F /* KGPDFOperatorTable.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AC70FD4B4D600082282 /* KGPDFOperatorTable.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7B440FD554A800C3244F /* KGPDFPage.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AC90FD4B4D600082282 /* KGPDFPage.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7B450FD554A800C3244F /* KGPDFScanner.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11ACB0FD4B4D600082282 /* KGPDFScanner.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7B460FD554A800C3244F /* KGPDFStream.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11ACD0FD4B4D600082282 /* KGPDFStream.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7B470FD554A800C3244F /* KGPDFString.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11ACF0FD4B4D600082282 /* KGPDFString.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7B480FD554A800C3244F /* KGPDFxref.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AD10FD4B4D600082282 /* KGPDFxref.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7B490FD554A800C3244F /* KGPDFxrefEntry.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AD30FD4B4D600082282 /* KGPDFxrefEntry.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7B4A0FD554A800C3244F /* KGShading+PDF.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AD50FD4B4D600082282 /* KGShading+PDF.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7B4B0FD554A800C3244F /* KGShading.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AD70FD4B4D600082282 /* KGShading.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7B4C0FD554A800C3244F /* KGSurface.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AD90FD4B4D600082282 /* KGSurface.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7B4D0FD554A800C3244F /* KGzlib.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11ADB0FD4B4D600082282 /* KGzlib.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7B4E0FD554A800C3244F /* KTFont+PDF.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11ADD0FD4B4D600082282 /* KTFont+PDF.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7B4F0FD554A800C3244F /* KTFont.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11ADF0FD4B4D600082282 /* KTFont.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7B500FD554A800C3244F /* NSTIFFImageFileDirectory.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AE10FD4B4D600082282 /* NSTIFFImageFileDirectory.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7B510FD554A800C3244F /* NSTIFFReader.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AE30FD4B4D600082282 /* NSTIFFReader.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7B520FD554A800C3244F /* VGmath.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AE50FD4B4D600082282 /* VGmath.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7B530FD554A800C3244F /* VGPath.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AE60FD4B4D600082282 /* VGPath.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7B540FD554A800C3244F /* CoreText.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11C030FD4C2BB00082282 /* CoreText.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE6F7B550FD554A800C3244F /* CTFont.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11C040FD4C2BB00082282 /* CTFont.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE6F7B580FD554A800C3244F /* CGAffineTransform.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A390FD4B4D600082282 /* CGAffineTransform.m */; };
+		FE6F7B590FD554A800C3244F /* CGBitmapContext.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A3B0FD4B4D600082282 /* CGBitmapContext.m */; };
+		FE6F7B5A0FD554A800C3244F /* CGColor.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A3D0FD4B4D600082282 /* CGColor.m */; };
+		FE6F7B5B0FD554A800C3244F /* CGColorSpace.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A3F0FD4B4D600082282 /* CGColorSpace.m */; };
+		FE6F7B5C0FD554A800C3244F /* CGContext.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A410FD4B4D600082282 /* CGContext.m */; };
+		FE6F7B5D0FD554A800C3244F /* CGDataProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A430FD4B4D600082282 /* CGDataProvider.m */; };
+		FE6F7B5E0FD554A800C3244F /* CGEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A450FD4B4D600082282 /* CGEvent.m */; };
+		FE6F7B5F0FD554A800C3244F /* CGFont.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A470FD4B4D600082282 /* CGFont.m */; };
+		FE6F7B600FD554A800C3244F /* CGFunction.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A490FD4B4D600082282 /* CGFunction.m */; };
+		FE6F7B610FD554A800C3244F /* CGGeometry.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A4B0FD4B4D600082282 /* CGGeometry.m */; };
+		FE6F7B620FD554A800C3244F /* CGImage.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A4D0FD4B4D600082282 /* CGImage.m */; };
+		FE6F7B630FD554A800C3244F /* CGImageProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A4F0FD4B4D600082282 /* CGImageProperties.m */; };
+		FE6F7B640FD554A800C3244F /* CGImageSource.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A510FD4B4D600082282 /* CGImageSource.m */; };
+		FE6F7B650FD554A800C3244F /* CGLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A530FD4B4D600082282 /* CGLayer.m */; };
+		FE6F7B660FD554A800C3244F /* CGPath.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A550FD4B4D600082282 /* CGPath.m */; };
+		FE6F7B670FD554A800C3244F /* CGPattern.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A570FD4B4D600082282 /* CGPattern.m */; };
+		FE6F7B680FD554A800C3244F /* CGPDFDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A590FD4B4D600082282 /* CGPDFDocument.m */; };
+		FE6F7B690FD554A800C3244F /* CGPDFPage.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A5B0FD4B4D600082282 /* CGPDFPage.m */; };
+		FE6F7B6A0FD554A800C3244F /* CGShading.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A5D0FD4B4D600082282 /* CGShading.m */; };
+		FE6F7B6B0FD554A800C3244F /* CGWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A5F0FD4B4D600082282 /* CGWindow.m */; };
+		FE6F7B6C0FD554A800C3244F /* CTFont.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A620FD4B4D600082282 /* CTFont.m */; };
+		FE6F7B6D0FD554A800C3244F /* gif_lib.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A640FD4B4D600082282 /* gif_lib.m */; };
+		FE6F7B6E0FD554A800C3244F /* KGBitmapContext.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A660FD4B4D600082282 /* KGBitmapContext.m */; };
+		FE6F7B6F0FD554A800C3244F /* KGClipPhase.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A690FD4B4D600082282 /* KGClipPhase.m */; };
+		FE6F7B700FD554A800C3244F /* KGColor.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A6B0FD4B4D600082282 /* KGColor.m */; };
+		FE6F7B710FD554A800C3244F /* KGColorSpace+PDF.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A6D0FD4B4D600082282 /* KGColorSpace+PDF.m */; };
+		FE6F7B720FD554A800C3244F /* KGColorSpace.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A6F0FD4B4D600082282 /* KGColorSpace.m */; };
+		FE6F7B730FD554A800C3244F /* KGContext.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A710FD4B4D600082282 /* KGContext.m */; };
+		FE6F7B740FD554A800C3244F /* KGContext_builtin.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A730FD4B4D600082282 /* KGContext_builtin.m */; };
+		FE6F7B750FD554A800C3244F /* KGDataProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A750FD4B4D600082282 /* KGDataProvider.m */; };
+		FE6F7B760FD554A800C3244F /* KGFont.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A780FD4B4D600082282 /* KGFont.m */; };
+		FE6F7B770FD554A800C3244F /* KGFunction+PDF.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A7A0FD4B4D600082282 /* KGFunction+PDF.m */; };
+		FE6F7B780FD554A800C3244F /* KGFunction.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A7C0FD4B4D600082282 /* KGFunction.m */; };
+		FE6F7B790FD554A800C3244F /* KGGraphicsState.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A7E0FD4B4D600082282 /* KGGraphicsState.m */; };
+		FE6F7B7A0FD554A800C3244F /* KGImage+PDF.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A800FD4B4D600082282 /* KGImage+PDF.m */; };
+		FE6F7B7B0FD554A800C3244F /* KGImage.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A820FD4B4D600082282 /* KGImage.m */; };
+		FE6F7B7C0FD554A800C3244F /* KGImageSource.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A840FD4B4D600082282 /* KGImageSource.m */; };
+		FE6F7B7D0FD554A800C3244F /* KGImageSource_BMP.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A860FD4B4D600082282 /* KGImageSource_BMP.m */; };
+		FE6F7B7E0FD554A800C3244F /* KGImageSource_GIF.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A880FD4B4D600082282 /* KGImageSource_GIF.m */; };
+		FE6F7B7F0FD554A800C3244F /* KGImageSource_JPEG.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A8A0FD4B4D600082282 /* KGImageSource_JPEG.m */; };
+		FE6F7B800FD554A800C3244F /* KGImageSource_PNG.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A8C0FD4B4D600082282 /* KGImageSource_PNG.m */; };
+		FE6F7B810FD554A800C3244F /* KGImageSource_TIFF.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A8E0FD4B4D600082282 /* KGImageSource_TIFF.m */; };
+		FE6F7B820FD554A800C3244F /* KGLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A900FD4B4D600082282 /* KGLayer.m */; };
+		FE6F7B830FD554A800C3244F /* KGMutablePath.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A920FD4B4D600082282 /* KGMutablePath.m */; };
+		FE6F7B840FD554A800C3244F /* KGPaint.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A940FD4B4D600082282 /* KGPaint.m */; };
+		FE6F7B850FD554A800C3244F /* KGPaint_axialGradient.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A960FD4B4D600082282 /* KGPaint_axialGradient.m */; };
+		FE6F7B860FD554A800C3244F /* KGPaint_color.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A980FD4B4D600082282 /* KGPaint_color.m */; };
+		FE6F7B870FD554A800C3244F /* KGPaint_image.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A9A0FD4B4D600082282 /* KGPaint_image.m */; };
+		FE6F7B880FD554A800C3244F /* KGPaint_pattern.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A9C0FD4B4D600082282 /* KGPaint_pattern.m */; };
+		FE6F7B890FD554A800C3244F /* KGPaint_radialGradient.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A9E0FD4B4D600082282 /* KGPaint_radialGradient.m */; };
+		FE6F7B8A0FD554A800C3244F /* KGPaint_ramp.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AA00FD4B4D600082282 /* KGPaint_ramp.m */; };
+		FE6F7B8B0FD554A800C3244F /* KGPath.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AA20FD4B4D600082282 /* KGPath.m */; };
+		FE6F7B8C0FD554A800C3244F /* KGPattern.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AA40FD4B4D600082282 /* KGPattern.m */; };
+		FE6F7B8D0FD554A800C3244F /* KGPDFArray.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AA60FD4B4D600082282 /* KGPDFArray.m */; };
+		FE6F7B8E0FD554A800C3244F /* KGPDFContentStream.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AA80FD4B4D600082282 /* KGPDFContentStream.m */; };
+		FE6F7B8F0FD554A800C3244F /* KGPDFContext.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AAA0FD4B4D600082282 /* KGPDFContext.m */; };
+		FE6F7B900FD554A800C3244F /* KGPDFDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AAC0FD4B4D600082282 /* KGPDFDictionary.m */; };
+		FE6F7B910FD554A800C3244F /* KGPDFDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AAE0FD4B4D600082282 /* KGPDFDocument.m */; };
+		FE6F7B920FD554A800C3244F /* KGPDFFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AB00FD4B4D600082282 /* KGPDFFilter.m */; };
+		FE6F7B930FD554A800C3244F /* KGPDFFunction_Type2.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AB20FD4B4D600082282 /* KGPDFFunction_Type2.m */; };
+		FE6F7B940FD554A800C3244F /* KGPDFFunction_Type3.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AB40FD4B4D600082282 /* KGPDFFunction_Type3.m */; };
+		FE6F7B950FD554A800C3244F /* KGPDFObject.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AB60FD4B4D600082282 /* KGPDFObject.m */; };
+		FE6F7B960FD554A800C3244F /* KGPDFObject_Boolean.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AB80FD4B4D600082282 /* KGPDFObject_Boolean.m */; };
+		FE6F7B970FD554A800C3244F /* KGPDFObject_const.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11ABA0FD4B4D600082282 /* KGPDFObject_const.m */; };
+		FE6F7B980FD554A800C3244F /* KGPDFObject_identifier.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11ABC0FD4B4D600082282 /* KGPDFObject_identifier.m */; };
+		FE6F7B990FD554A800C3244F /* KGPDFObject_Integer.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11ABE0FD4B4D600082282 /* KGPDFObject_Integer.m */; };
+		FE6F7B9A0FD554A800C3244F /* KGPDFObject_Name.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AC00FD4B4D600082282 /* KGPDFObject_Name.m */; };
+		FE6F7B9B0FD554A800C3244F /* KGPDFObject_R.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AC20FD4B4D600082282 /* KGPDFObject_R.m */; };
+		FE6F7B9C0FD554A800C3244F /* KGPDFObject_Real.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AC40FD4B4D600082282 /* KGPDFObject_Real.m */; };
+		FE6F7B9D0FD554A800C3244F /* KGPDFOperators.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AC60FD4B4D600082282 /* KGPDFOperators.m */; };
+		FE6F7B9E0FD554A800C3244F /* KGPDFOperatorTable.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AC80FD4B4D600082282 /* KGPDFOperatorTable.m */; };
+		FE6F7B9F0FD554A800C3244F /* KGPDFPage.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11ACA0FD4B4D600082282 /* KGPDFPage.m */; };
+		FE6F7BA00FD554A800C3244F /* KGPDFScanner.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11ACC0FD4B4D600082282 /* KGPDFScanner.m */; };
+		FE6F7BA10FD554A800C3244F /* KGPDFStream.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11ACE0FD4B4D600082282 /* KGPDFStream.m */; };
+		FE6F7BA20FD554A800C3244F /* KGPDFString.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AD00FD4B4D600082282 /* KGPDFString.m */; };
+		FE6F7BA30FD554A800C3244F /* KGPDFxref.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AD20FD4B4D600082282 /* KGPDFxref.m */; };
+		FE6F7BA40FD554A800C3244F /* KGPDFxrefEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AD40FD4B4D600082282 /* KGPDFxrefEntry.m */; };
+		FE6F7BA50FD554A800C3244F /* KGShading+PDF.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AD60FD4B4D600082282 /* KGShading+PDF.m */; };
+		FE6F7BA60FD554A800C3244F /* KGShading.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AD80FD4B4D600082282 /* KGShading.m */; };
+		FE6F7BA70FD554A800C3244F /* KGSurface.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11ADA0FD4B4D600082282 /* KGSurface.m */; };
+		FE6F7BA80FD554A800C3244F /* KGzlib.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11ADC0FD4B4D600082282 /* KGzlib.m */; };
+		FE6F7BA90FD554A800C3244F /* KTFont+PDF.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11ADE0FD4B4D600082282 /* KTFont+PDF.m */; };
+		FE6F7BAA0FD554A800C3244F /* KTFont.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AE00FD4B4D600082282 /* KTFont.m */; };
+		FE6F7BAB0FD554A800C3244F /* NSTIFFImageFileDirectory.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AE20FD4B4D600082282 /* NSTIFFImageFileDirectory.m */; };
+		FE6F7BAC0FD554A800C3244F /* NSTIFFReader.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AE40FD4B4D600082282 /* NSTIFFReader.m */; };
+		FE6F7BAD0FD554A800C3244F /* VGPath.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AE70FD4B4D600082282 /* VGPath.m */; };
+		FE6F7BAF0FD554A800C3244F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0867D69BFE84028FC02AAC07 /* Foundation.framework */; };
+		FE6F7BDF0FD55FA300C3244F /* CGAffineTransform.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A380FD4B4D600082282 /* CGAffineTransform.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE6F7BE00FD55FA300C3244F /* CGBitmapContext.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A3A0FD4B4D600082282 /* CGBitmapContext.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE6F7BE10FD55FA300C3244F /* CGColor.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A3C0FD4B4D600082282 /* CGColor.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE6F7BE20FD55FA300C3244F /* CGColorSpace.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A3E0FD4B4D600082282 /* CGColorSpace.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE6F7BE30FD55FA300C3244F /* CGContext.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A400FD4B4D600082282 /* CGContext.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE6F7BE40FD55FA300C3244F /* CGDataProvider.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A420FD4B4D600082282 /* CGDataProvider.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE6F7BE50FD55FA300C3244F /* CGEvent.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A440FD4B4D600082282 /* CGEvent.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE6F7BE60FD55FA300C3244F /* CGFont.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A460FD4B4D600082282 /* CGFont.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE6F7BE70FD55FA300C3244F /* CGFunction.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A480FD4B4D600082282 /* CGFunction.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE6F7BE80FD55FA300C3244F /* CGGeometry.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A4A0FD4B4D600082282 /* CGGeometry.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE6F7BE90FD55FA300C3244F /* CGImage.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A4C0FD4B4D600082282 /* CGImage.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE6F7BEA0FD55FA300C3244F /* CGImageProperties.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A4E0FD4B4D600082282 /* CGImageProperties.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE6F7BEB0FD55FA300C3244F /* CGImageSource.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A500FD4B4D600082282 /* CGImageSource.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE6F7BEC0FD55FA300C3244F /* CGLayer.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A520FD4B4D600082282 /* CGLayer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE6F7BED0FD55FA300C3244F /* CGPath.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A540FD4B4D600082282 /* CGPath.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE6F7BEE0FD55FA300C3244F /* CGPattern.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A560FD4B4D600082282 /* CGPattern.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE6F7BEF0FD55FA300C3244F /* CGPDFDocument.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A580FD4B4D600082282 /* CGPDFDocument.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE6F7BF00FD55FA300C3244F /* CGPDFPage.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A5A0FD4B4D600082282 /* CGPDFPage.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE6F7BF10FD55FA300C3244F /* CGShading.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A5C0FD4B4D600082282 /* CGShading.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE6F7BF20FD55FA300C3244F /* CGWindow.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A5E0FD4B4D600082282 /* CGWindow.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE6F7BF30FD55FA300C3244F /* CoreGraphics.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A600FD4B4D600082282 /* CoreGraphics.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE6F7BF40FD55FA300C3244F /* CoreGraphicsExport.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A610FD4B4D600082282 /* CoreGraphicsExport.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE6F7BF50FD55FA300C3244F /* gif_lib.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A630FD4B4D600082282 /* gif_lib.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7BF60FD55FA300C3244F /* KGBitmapContext.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A650FD4B4D600082282 /* KGBitmapContext.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7BF70FD55FA300C3244F /* KGBlending.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A670FD4B4D600082282 /* KGBlending.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7BF80FD55FA300C3244F /* KGClipPhase.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A680FD4B4D600082282 /* KGClipPhase.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7BF90FD55FA300C3244F /* KGColor.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A6A0FD4B4D600082282 /* KGColor.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7BFA0FD55FA300C3244F /* KGColorSpace+PDF.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A6C0FD4B4D600082282 /* KGColorSpace+PDF.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7BFB0FD55FA300C3244F /* KGColorSpace.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A6E0FD4B4D600082282 /* KGColorSpace.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7BFC0FD55FA300C3244F /* KGContext.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A700FD4B4D600082282 /* KGContext.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7BFD0FD55FA300C3244F /* KGContext_builtin.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A720FD4B4D600082282 /* KGContext_builtin.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7BFE0FD55FA300C3244F /* KGDataProvider.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A740FD4B4D600082282 /* KGDataProvider.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7BFF0FD55FA300C3244F /* KGExceptions.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A760FD4B4D600082282 /* KGExceptions.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7C000FD55FA300C3244F /* KGFont.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A770FD4B4D600082282 /* KGFont.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7C010FD55FA300C3244F /* KGFunction+PDF.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A790FD4B4D600082282 /* KGFunction+PDF.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7C020FD55FA300C3244F /* KGFunction.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A7B0FD4B4D600082282 /* KGFunction.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7C030FD55FA300C3244F /* KGGraphicsState.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A7D0FD4B4D600082282 /* KGGraphicsState.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7C040FD55FA300C3244F /* KGImage+PDF.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A7F0FD4B4D600082282 /* KGImage+PDF.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7C050FD55FA300C3244F /* KGImage.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A810FD4B4D600082282 /* KGImage.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7C060FD55FA300C3244F /* KGImageSource.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A830FD4B4D600082282 /* KGImageSource.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7C070FD55FA300C3244F /* KGImageSource_BMP.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A850FD4B4D600082282 /* KGImageSource_BMP.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7C080FD55FA300C3244F /* KGImageSource_GIF.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A870FD4B4D600082282 /* KGImageSource_GIF.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7C090FD55FA300C3244F /* KGImageSource_JPEG.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A890FD4B4D600082282 /* KGImageSource_JPEG.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7C0A0FD55FA300C3244F /* KGImageSource_PNG.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A8B0FD4B4D600082282 /* KGImageSource_PNG.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7C0B0FD55FA300C3244F /* KGImageSource_TIFF.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A8D0FD4B4D600082282 /* KGImageSource_TIFF.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7C0C0FD55FA300C3244F /* KGLayer.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A8F0FD4B4D600082282 /* KGLayer.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7C0D0FD55FA300C3244F /* KGMutablePath.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A910FD4B4D600082282 /* KGMutablePath.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7C0E0FD55FA300C3244F /* KGPaint.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A930FD4B4D600082282 /* KGPaint.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7C0F0FD55FA300C3244F /* KGPaint_axialGradient.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A950FD4B4D600082282 /* KGPaint_axialGradient.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7C100FD55FA300C3244F /* KGPaint_color.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A970FD4B4D600082282 /* KGPaint_color.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7C110FD55FA300C3244F /* KGPaint_image.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A990FD4B4D600082282 /* KGPaint_image.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7C120FD55FA300C3244F /* KGPaint_pattern.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A9B0FD4B4D600082282 /* KGPaint_pattern.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7C130FD55FA300C3244F /* KGPaint_radialGradient.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A9D0FD4B4D600082282 /* KGPaint_radialGradient.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7C140FD55FA300C3244F /* KGPaint_ramp.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A9F0FD4B4D600082282 /* KGPaint_ramp.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7C150FD55FA300C3244F /* KGPath.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AA10FD4B4D600082282 /* KGPath.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7C160FD55FA300C3244F /* KGPattern.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AA30FD4B4D600082282 /* KGPattern.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7C170FD55FA300C3244F /* KGPDFArray.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AA50FD4B4D600082282 /* KGPDFArray.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7C180FD55FA300C3244F /* KGPDFContentStream.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AA70FD4B4D600082282 /* KGPDFContentStream.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7C190FD55FA300C3244F /* KGPDFContext.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AA90FD4B4D600082282 /* KGPDFContext.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7C1A0FD55FA300C3244F /* KGPDFDictionary.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AAB0FD4B4D600082282 /* KGPDFDictionary.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7C1B0FD55FA300C3244F /* KGPDFDocument.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AAD0FD4B4D600082282 /* KGPDFDocument.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7C1C0FD55FA300C3244F /* KGPDFFilter.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AAF0FD4B4D600082282 /* KGPDFFilter.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7C1D0FD55FA300C3244F /* KGPDFFunction_Type2.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AB10FD4B4D600082282 /* KGPDFFunction_Type2.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7C1E0FD55FA300C3244F /* KGPDFFunction_Type3.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AB30FD4B4D600082282 /* KGPDFFunction_Type3.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7C1F0FD55FA300C3244F /* KGPDFObject.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AB50FD4B4D600082282 /* KGPDFObject.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7C200FD55FA300C3244F /* KGPDFObject_Boolean.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AB70FD4B4D600082282 /* KGPDFObject_Boolean.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7C210FD55FA300C3244F /* KGPDFObject_const.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AB90FD4B4D600082282 /* KGPDFObject_const.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7C220FD55FA300C3244F /* KGPDFObject_identifier.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11ABB0FD4B4D600082282 /* KGPDFObject_identifier.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7C230FD55FA300C3244F /* KGPDFObject_Integer.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11ABD0FD4B4D600082282 /* KGPDFObject_Integer.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7C240FD55FA300C3244F /* KGPDFObject_Name.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11ABF0FD4B4D600082282 /* KGPDFObject_Name.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7C250FD55FA300C3244F /* KGPDFObject_R.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AC10FD4B4D600082282 /* KGPDFObject_R.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7C260FD55FA300C3244F /* KGPDFObject_Real.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AC30FD4B4D600082282 /* KGPDFObject_Real.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7C270FD55FA300C3244F /* KGPDFOperators.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AC50FD4B4D600082282 /* KGPDFOperators.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7C280FD55FA300C3244F /* KGPDFOperatorTable.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AC70FD4B4D600082282 /* KGPDFOperatorTable.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7C290FD55FA300C3244F /* KGPDFPage.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AC90FD4B4D600082282 /* KGPDFPage.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7C2A0FD55FA300C3244F /* KGPDFScanner.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11ACB0FD4B4D600082282 /* KGPDFScanner.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7C2B0FD55FA300C3244F /* KGPDFStream.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11ACD0FD4B4D600082282 /* KGPDFStream.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7C2C0FD55FA300C3244F /* KGPDFString.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11ACF0FD4B4D600082282 /* KGPDFString.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7C2D0FD55FA300C3244F /* KGPDFxref.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AD10FD4B4D600082282 /* KGPDFxref.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7C2E0FD55FA300C3244F /* KGPDFxrefEntry.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AD30FD4B4D600082282 /* KGPDFxrefEntry.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7C2F0FD55FA300C3244F /* KGShading+PDF.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AD50FD4B4D600082282 /* KGShading+PDF.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7C300FD55FA300C3244F /* KGShading.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AD70FD4B4D600082282 /* KGShading.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7C310FD55FA300C3244F /* KGSurface.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AD90FD4B4D600082282 /* KGSurface.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7C320FD55FA300C3244F /* KGzlib.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11ADB0FD4B4D600082282 /* KGzlib.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7C330FD55FA300C3244F /* KTFont+PDF.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11ADD0FD4B4D600082282 /* KTFont+PDF.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7C340FD55FA300C3244F /* KTFont.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11ADF0FD4B4D600082282 /* KTFont.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7C350FD55FA300C3244F /* NSTIFFImageFileDirectory.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AE10FD4B4D600082282 /* NSTIFFImageFileDirectory.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7C360FD55FA300C3244F /* NSTIFFReader.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AE30FD4B4D600082282 /* NSTIFFReader.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7C370FD55FA300C3244F /* VGmath.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AE50FD4B4D600082282 /* VGmath.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7C380FD55FA300C3244F /* VGPath.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AE60FD4B4D600082282 /* VGPath.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7C390FD55FA300C3244F /* CoreText.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11C030FD4C2BB00082282 /* CoreText.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE6F7C3A0FD55FA300C3244F /* CTFont.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11C040FD4C2BB00082282 /* CTFont.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE6F7C3D0FD55FA300C3244F /* CGAffineTransform.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A390FD4B4D600082282 /* CGAffineTransform.m */; };
+		FE6F7C3E0FD55FA300C3244F /* CGBitmapContext.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A3B0FD4B4D600082282 /* CGBitmapContext.m */; };
+		FE6F7C3F0FD55FA300C3244F /* CGColor.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A3D0FD4B4D600082282 /* CGColor.m */; };
+		FE6F7C400FD55FA300C3244F /* CGColorSpace.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A3F0FD4B4D600082282 /* CGColorSpace.m */; };
+		FE6F7C410FD55FA300C3244F /* CGContext.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A410FD4B4D600082282 /* CGContext.m */; };
+		FE6F7C420FD55FA300C3244F /* CGDataProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A430FD4B4D600082282 /* CGDataProvider.m */; };
+		FE6F7C430FD55FA300C3244F /* CGEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A450FD4B4D600082282 /* CGEvent.m */; };
+		FE6F7C440FD55FA300C3244F /* CGFont.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A470FD4B4D600082282 /* CGFont.m */; };
+		FE6F7C450FD55FA300C3244F /* CGFunction.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A490FD4B4D600082282 /* CGFunction.m */; };
+		FE6F7C460FD55FA300C3244F /* CGGeometry.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A4B0FD4B4D600082282 /* CGGeometry.m */; };
+		FE6F7C470FD55FA300C3244F /* CGImage.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A4D0FD4B4D600082282 /* CGImage.m */; };
+		FE6F7C480FD55FA300C3244F /* CGImageProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A4F0FD4B4D600082282 /* CGImageProperties.m */; };
+		FE6F7C490FD55FA300C3244F /* CGImageSource.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A510FD4B4D600082282 /* CGImageSource.m */; };
+		FE6F7C4A0FD55FA300C3244F /* CGLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A530FD4B4D600082282 /* CGLayer.m */; };
+		FE6F7C4B0FD55FA300C3244F /* CGPath.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A550FD4B4D600082282 /* CGPath.m */; };
+		FE6F7C4C0FD55FA300C3244F /* CGPattern.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A570FD4B4D600082282 /* CGPattern.m */; };
+		FE6F7C4D0FD55FA300C3244F /* CGPDFDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A590FD4B4D600082282 /* CGPDFDocument.m */; };
+		FE6F7C4E0FD55FA300C3244F /* CGPDFPage.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A5B0FD4B4D600082282 /* CGPDFPage.m */; };
+		FE6F7C4F0FD55FA300C3244F /* CGShading.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A5D0FD4B4D600082282 /* CGShading.m */; };
+		FE6F7C500FD55FA300C3244F /* CGWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A5F0FD4B4D600082282 /* CGWindow.m */; };
+		FE6F7C510FD55FA300C3244F /* CTFont.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A620FD4B4D600082282 /* CTFont.m */; };
+		FE6F7C520FD55FA300C3244F /* gif_lib.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A640FD4B4D600082282 /* gif_lib.m */; };
+		FE6F7C530FD55FA300C3244F /* KGBitmapContext.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A660FD4B4D600082282 /* KGBitmapContext.m */; };
+		FE6F7C540FD55FA300C3244F /* KGClipPhase.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A690FD4B4D600082282 /* KGClipPhase.m */; };
+		FE6F7C550FD55FA300C3244F /* KGColor.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A6B0FD4B4D600082282 /* KGColor.m */; };
+		FE6F7C560FD55FA300C3244F /* KGColorSpace+PDF.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A6D0FD4B4D600082282 /* KGColorSpace+PDF.m */; };
+		FE6F7C570FD55FA300C3244F /* KGColorSpace.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A6F0FD4B4D600082282 /* KGColorSpace.m */; };
+		FE6F7C580FD55FA300C3244F /* KGContext.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A710FD4B4D600082282 /* KGContext.m */; };
+		FE6F7C590FD55FA300C3244F /* KGContext_builtin.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A730FD4B4D600082282 /* KGContext_builtin.m */; };
+		FE6F7C5A0FD55FA300C3244F /* KGDataProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A750FD4B4D600082282 /* KGDataProvider.m */; };
+		FE6F7C5B0FD55FA300C3244F /* KGFont.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A780FD4B4D600082282 /* KGFont.m */; };
+		FE6F7C5C0FD55FA300C3244F /* KGFunction+PDF.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A7A0FD4B4D600082282 /* KGFunction+PDF.m */; };
+		FE6F7C5D0FD55FA300C3244F /* KGFunction.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A7C0FD4B4D600082282 /* KGFunction.m */; };
+		FE6F7C5E0FD55FA300C3244F /* KGGraphicsState.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A7E0FD4B4D600082282 /* KGGraphicsState.m */; };
+		FE6F7C5F0FD55FA300C3244F /* KGImage+PDF.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A800FD4B4D600082282 /* KGImage+PDF.m */; };
+		FE6F7C600FD55FA300C3244F /* KGImage.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A820FD4B4D600082282 /* KGImage.m */; };
+		FE6F7C610FD55FA300C3244F /* KGImageSource.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A840FD4B4D600082282 /* KGImageSource.m */; };
+		FE6F7C620FD55FA300C3244F /* KGImageSource_BMP.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A860FD4B4D600082282 /* KGImageSource_BMP.m */; };
+		FE6F7C630FD55FA300C3244F /* KGImageSource_GIF.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A880FD4B4D600082282 /* KGImageSource_GIF.m */; };
+		FE6F7C640FD55FA300C3244F /* KGImageSource_JPEG.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A8A0FD4B4D600082282 /* KGImageSource_JPEG.m */; };
+		FE6F7C650FD55FA300C3244F /* KGImageSource_PNG.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A8C0FD4B4D600082282 /* KGImageSource_PNG.m */; };
+		FE6F7C660FD55FA300C3244F /* KGImageSource_TIFF.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A8E0FD4B4D600082282 /* KGImageSource_TIFF.m */; };
+		FE6F7C670FD55FA300C3244F /* KGLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A900FD4B4D600082282 /* KGLayer.m */; };
+		FE6F7C680FD55FA300C3244F /* KGMutablePath.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A920FD4B4D600082282 /* KGMutablePath.m */; };
+		FE6F7C690FD55FA300C3244F /* KGPaint.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A940FD4B4D600082282 /* KGPaint.m */; };
+		FE6F7C6A0FD55FA300C3244F /* KGPaint_axialGradient.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A960FD4B4D600082282 /* KGPaint_axialGradient.m */; };
+		FE6F7C6B0FD55FA300C3244F /* KGPaint_color.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A980FD4B4D600082282 /* KGPaint_color.m */; };
+		FE6F7C6C0FD55FA300C3244F /* KGPaint_image.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A9A0FD4B4D600082282 /* KGPaint_image.m */; };
+		FE6F7C6D0FD55FA300C3244F /* KGPaint_pattern.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A9C0FD4B4D600082282 /* KGPaint_pattern.m */; };
+		FE6F7C6E0FD55FA300C3244F /* KGPaint_radialGradient.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A9E0FD4B4D600082282 /* KGPaint_radialGradient.m */; };
+		FE6F7C6F0FD55FA300C3244F /* KGPaint_ramp.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AA00FD4B4D600082282 /* KGPaint_ramp.m */; };
+		FE6F7C700FD55FA300C3244F /* KGPath.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AA20FD4B4D600082282 /* KGPath.m */; };
+		FE6F7C710FD55FA300C3244F /* KGPattern.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AA40FD4B4D600082282 /* KGPattern.m */; };
+		FE6F7C720FD55FA300C3244F /* KGPDFArray.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AA60FD4B4D600082282 /* KGPDFArray.m */; };
+		FE6F7C730FD55FA300C3244F /* KGPDFContentStream.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AA80FD4B4D600082282 /* KGPDFContentStream.m */; };
+		FE6F7C740FD55FA300C3244F /* KGPDFContext.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AAA0FD4B4D600082282 /* KGPDFContext.m */; };
+		FE6F7C750FD55FA300C3244F /* KGPDFDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AAC0FD4B4D600082282 /* KGPDFDictionary.m */; };
+		FE6F7C760FD55FA300C3244F /* KGPDFDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AAE0FD4B4D600082282 /* KGPDFDocument.m */; };
+		FE6F7C770FD55FA300C3244F /* KGPDFFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AB00FD4B4D600082282 /* KGPDFFilter.m */; };
+		FE6F7C780FD55FA300C3244F /* KGPDFFunction_Type2.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AB20FD4B4D600082282 /* KGPDFFunction_Type2.m */; };
+		FE6F7C790FD55FA300C3244F /* KGPDFFunction_Type3.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AB40FD4B4D600082282 /* KGPDFFunction_Type3.m */; };
+		FE6F7C7A0FD55FA300C3244F /* KGPDFObject.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AB60FD4B4D600082282 /* KGPDFObject.m */; };
+		FE6F7C7B0FD55FA300C3244F /* KGPDFObject_Boolean.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AB80FD4B4D600082282 /* KGPDFObject_Boolean.m */; };
+		FE6F7C7C0FD55FA300C3244F /* KGPDFObject_const.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11ABA0FD4B4D600082282 /* KGPDFObject_const.m */; };
+		FE6F7C7D0FD55FA300C3244F /* KGPDFObject_identifier.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11ABC0FD4B4D600082282 /* KGPDFObject_identifier.m */; };
+		FE6F7C7E0FD55FA300C3244F /* KGPDFObject_Integer.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11ABE0FD4B4D600082282 /* KGPDFObject_Integer.m */; };
+		FE6F7C7F0FD55FA300C3244F /* KGPDFObject_Name.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AC00FD4B4D600082282 /* KGPDFObject_Name.m */; };
+		FE6F7C800FD55FA300C3244F /* KGPDFObject_R.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AC20FD4B4D600082282 /* KGPDFObject_R.m */; };
+		FE6F7C810FD55FA300C3244F /* KGPDFObject_Real.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AC40FD4B4D600082282 /* KGPDFObject_Real.m */; };
+		FE6F7C820FD55FA300C3244F /* KGPDFOperators.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AC60FD4B4D600082282 /* KGPDFOperators.m */; };
+		FE6F7C830FD55FA300C3244F /* KGPDFOperatorTable.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AC80FD4B4D600082282 /* KGPDFOperatorTable.m */; };
+		FE6F7C840FD55FA300C3244F /* KGPDFPage.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11ACA0FD4B4D600082282 /* KGPDFPage.m */; };
+		FE6F7C850FD55FA300C3244F /* KGPDFScanner.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11ACC0FD4B4D600082282 /* KGPDFScanner.m */; };
+		FE6F7C860FD55FA300C3244F /* KGPDFStream.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11ACE0FD4B4D600082282 /* KGPDFStream.m */; };
+		FE6F7C870FD55FA300C3244F /* KGPDFString.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AD00FD4B4D600082282 /* KGPDFString.m */; };
+		FE6F7C880FD55FA300C3244F /* KGPDFxref.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AD20FD4B4D600082282 /* KGPDFxref.m */; };
+		FE6F7C890FD55FA300C3244F /* KGPDFxrefEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AD40FD4B4D600082282 /* KGPDFxrefEntry.m */; };
+		FE6F7C8A0FD55FA300C3244F /* KGShading+PDF.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AD60FD4B4D600082282 /* KGShading+PDF.m */; };
+		FE6F7C8B0FD55FA300C3244F /* KGShading.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AD80FD4B4D600082282 /* KGShading.m */; };
+		FE6F7C8C0FD55FA300C3244F /* KGSurface.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11ADA0FD4B4D600082282 /* KGSurface.m */; };
+		FE6F7C8D0FD55FA300C3244F /* KGzlib.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11ADC0FD4B4D600082282 /* KGzlib.m */; };
+		FE6F7C8E0FD55FA300C3244F /* KTFont+PDF.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11ADE0FD4B4D600082282 /* KTFont+PDF.m */; };
+		FE6F7C8F0FD55FA300C3244F /* KTFont.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AE00FD4B4D600082282 /* KTFont.m */; };
+		FE6F7C900FD55FA300C3244F /* NSTIFFImageFileDirectory.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AE20FD4B4D600082282 /* NSTIFFImageFileDirectory.m */; };
+		FE6F7C910FD55FA300C3244F /* NSTIFFReader.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AE40FD4B4D600082282 /* NSTIFFReader.m */; };
+		FE6F7C920FD55FA300C3244F /* VGPath.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AE70FD4B4D600082282 /* VGPath.m */; };
+		FE6F7C940FD55FA300C3244F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0867D69BFE84028FC02AAC07 /* Foundation.framework */; };
+		FE9DB4610FD6C38300A1CE17 /* CGDataConsumer.h in Headers */ = {isa = PBXBuildFile; fileRef = FE9DB45F0FD6C38300A1CE17 /* CGDataConsumer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE9DB4620FD6C38300A1CE17 /* CGDataConsumer.m in Sources */ = {isa = PBXBuildFile; fileRef = FE9DB4600FD6C38300A1CE17 /* CGDataConsumer.m */; };
+		FE9DB4630FD6C38300A1CE17 /* CGDataConsumer.h in Headers */ = {isa = PBXBuildFile; fileRef = FE9DB45F0FD6C38300A1CE17 /* CGDataConsumer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE9DB4640FD6C38300A1CE17 /* CGDataConsumer.m in Sources */ = {isa = PBXBuildFile; fileRef = FE9DB4600FD6C38300A1CE17 /* CGDataConsumer.m */; };
+		FE9DB4650FD6C38300A1CE17 /* CGDataConsumer.h in Headers */ = {isa = PBXBuildFile; fileRef = FE9DB45F0FD6C38300A1CE17 /* CGDataConsumer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE9DB4660FD6C38300A1CE17 /* CGDataConsumer.m in Sources */ = {isa = PBXBuildFile; fileRef = FE9DB4600FD6C38300A1CE17 /* CGDataConsumer.m */; };
+		FEAED7100FD6C40E0043F915 /* KGDataConsumer.h in Headers */ = {isa = PBXBuildFile; fileRef = FEAED70E0FD6C40E0043F915 /* KGDataConsumer.h */; };
+		FEAED7110FD6C40E0043F915 /* KGDataConsumer.m in Sources */ = {isa = PBXBuildFile; fileRef = FEAED70F0FD6C40E0043F915 /* KGDataConsumer.m */; };
+		FEAED7120FD6C40E0043F915 /* KGDataConsumer.h in Headers */ = {isa = PBXBuildFile; fileRef = FEAED70E0FD6C40E0043F915 /* KGDataConsumer.h */; };
+		FEAED7130FD6C40E0043F915 /* KGDataConsumer.m in Sources */ = {isa = PBXBuildFile; fileRef = FEAED70F0FD6C40E0043F915 /* KGDataConsumer.m */; };
+		FEAED7140FD6C40E0043F915 /* KGDataConsumer.h in Headers */ = {isa = PBXBuildFile; fileRef = FEAED70E0FD6C40E0043F915 /* KGDataConsumer.h */; };
+		FEAED7150FD6C40E0043F915 /* KGDataConsumer.m in Sources */ = {isa = PBXBuildFile; fileRef = FEAED70F0FD6C40E0043F915 /* KGDataConsumer.m */; };
+		FEAED71C0FD6C4460043F915 /* CGPDFContext.h in Headers */ = {isa = PBXBuildFile; fileRef = FEAED71A0FD6C4460043F915 /* CGPDFContext.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEAED71D0FD6C4460043F915 /* CGPDFContext.m in Sources */ = {isa = PBXBuildFile; fileRef = FEAED71B0FD6C4460043F915 /* CGPDFContext.m */; };
+		FEAED71E0FD6C4460043F915 /* CGPDFContext.h in Headers */ = {isa = PBXBuildFile; fileRef = FEAED71A0FD6C4460043F915 /* CGPDFContext.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEAED71F0FD6C4460043F915 /* CGPDFContext.m in Sources */ = {isa = PBXBuildFile; fileRef = FEAED71B0FD6C4460043F915 /* CGPDFContext.m */; };
+		FEAED7200FD6C4460043F915 /* CGPDFContext.h in Headers */ = {isa = PBXBuildFile; fileRef = FEAED71A0FD6C4460043F915 /* CGPDFContext.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEAED7210FD6C4460043F915 /* CGPDFContext.m in Sources */ = {isa = PBXBuildFile; fileRef = FEAED71B0FD6C4460043F915 /* CGPDFContext.m */; };
+		FEC11AE80FD4B4D600082282 /* CGAffineTransform.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A380FD4B4D600082282 /* CGAffineTransform.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEC11AE90FD4B4D600082282 /* CGAffineTransform.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A390FD4B4D600082282 /* CGAffineTransform.m */; };
+		FEC11AEA0FD4B4D600082282 /* CGBitmapContext.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A3A0FD4B4D600082282 /* CGBitmapContext.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEC11AEB0FD4B4D600082282 /* CGBitmapContext.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A3B0FD4B4D600082282 /* CGBitmapContext.m */; };
+		FEC11AEC0FD4B4D600082282 /* CGColor.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A3C0FD4B4D600082282 /* CGColor.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEC11AED0FD4B4D600082282 /* CGColor.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A3D0FD4B4D600082282 /* CGColor.m */; };
+		FEC11AEE0FD4B4D600082282 /* CGColorSpace.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A3E0FD4B4D600082282 /* CGColorSpace.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEC11AEF0FD4B4D600082282 /* CGColorSpace.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A3F0FD4B4D600082282 /* CGColorSpace.m */; };
+		FEC11AF00FD4B4D600082282 /* CGContext.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A400FD4B4D600082282 /* CGContext.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEC11AF10FD4B4D600082282 /* CGContext.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A410FD4B4D600082282 /* CGContext.m */; };
+		FEC11AF20FD4B4D600082282 /* CGDataProvider.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A420FD4B4D600082282 /* CGDataProvider.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEC11AF30FD4B4D600082282 /* CGDataProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A430FD4B4D600082282 /* CGDataProvider.m */; };
+		FEC11AF40FD4B4D600082282 /* CGEvent.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A440FD4B4D600082282 /* CGEvent.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEC11AF50FD4B4D600082282 /* CGEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A450FD4B4D600082282 /* CGEvent.m */; };
+		FEC11AF60FD4B4D600082282 /* CGFont.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A460FD4B4D600082282 /* CGFont.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEC11AF70FD4B4D600082282 /* CGFont.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A470FD4B4D600082282 /* CGFont.m */; };
+		FEC11AF80FD4B4D600082282 /* CGFunction.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A480FD4B4D600082282 /* CGFunction.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEC11AF90FD4B4D600082282 /* CGFunction.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A490FD4B4D600082282 /* CGFunction.m */; };
+		FEC11AFA0FD4B4D600082282 /* CGGeometry.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A4A0FD4B4D600082282 /* CGGeometry.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEC11AFB0FD4B4D600082282 /* CGGeometry.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A4B0FD4B4D600082282 /* CGGeometry.m */; };
+		FEC11AFC0FD4B4D600082282 /* CGImage.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A4C0FD4B4D600082282 /* CGImage.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEC11AFD0FD4B4D600082282 /* CGImage.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A4D0FD4B4D600082282 /* CGImage.m */; };
+		FEC11AFE0FD4B4D600082282 /* CGImageProperties.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A4E0FD4B4D600082282 /* CGImageProperties.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEC11AFF0FD4B4D600082282 /* CGImageProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A4F0FD4B4D600082282 /* CGImageProperties.m */; };
+		FEC11B000FD4B4D600082282 /* CGImageSource.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A500FD4B4D600082282 /* CGImageSource.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEC11B010FD4B4D600082282 /* CGImageSource.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A510FD4B4D600082282 /* CGImageSource.m */; };
+		FEC11B020FD4B4D600082282 /* CGLayer.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A520FD4B4D600082282 /* CGLayer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEC11B030FD4B4D600082282 /* CGLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A530FD4B4D600082282 /* CGLayer.m */; };
+		FEC11B040FD4B4D600082282 /* CGPath.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A540FD4B4D600082282 /* CGPath.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEC11B050FD4B4D600082282 /* CGPath.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A550FD4B4D600082282 /* CGPath.m */; };
+		FEC11B060FD4B4D600082282 /* CGPattern.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A560FD4B4D600082282 /* CGPattern.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEC11B070FD4B4D600082282 /* CGPattern.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A570FD4B4D600082282 /* CGPattern.m */; };
+		FEC11B080FD4B4D600082282 /* CGPDFDocument.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A580FD4B4D600082282 /* CGPDFDocument.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEC11B090FD4B4D600082282 /* CGPDFDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A590FD4B4D600082282 /* CGPDFDocument.m */; };
+		FEC11B0A0FD4B4D600082282 /* CGPDFPage.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A5A0FD4B4D600082282 /* CGPDFPage.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEC11B0B0FD4B4D600082282 /* CGPDFPage.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A5B0FD4B4D600082282 /* CGPDFPage.m */; };
+		FEC11B0C0FD4B4D600082282 /* CGShading.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A5C0FD4B4D600082282 /* CGShading.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEC11B0D0FD4B4D600082282 /* CGShading.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A5D0FD4B4D600082282 /* CGShading.m */; };
+		FEC11B0E0FD4B4D600082282 /* CGWindow.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A5E0FD4B4D600082282 /* CGWindow.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEC11B0F0FD4B4D600082282 /* CGWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A5F0FD4B4D600082282 /* CGWindow.m */; };
+		FEC11B100FD4B4D600082282 /* CoreGraphics.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A600FD4B4D600082282 /* CoreGraphics.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEC11B110FD4B4D600082282 /* CoreGraphicsExport.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A610FD4B4D600082282 /* CoreGraphicsExport.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEC11B120FD4B4D600082282 /* CTFont.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A620FD4B4D600082282 /* CTFont.m */; };
+		FEC11B130FD4B4D600082282 /* gif_lib.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A630FD4B4D600082282 /* gif_lib.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FEC11B140FD4B4D600082282 /* gif_lib.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A640FD4B4D600082282 /* gif_lib.m */; };
+		FEC11B150FD4B4D600082282 /* KGBitmapContext.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A650FD4B4D600082282 /* KGBitmapContext.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FEC11B160FD4B4D600082282 /* KGBitmapContext.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A660FD4B4D600082282 /* KGBitmapContext.m */; };
+		FEC11B170FD4B4D600082282 /* KGBlending.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A670FD4B4D600082282 /* KGBlending.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FEC11B180FD4B4D600082282 /* KGClipPhase.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A680FD4B4D600082282 /* KGClipPhase.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FEC11B190FD4B4D600082282 /* KGClipPhase.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A690FD4B4D600082282 /* KGClipPhase.m */; };
+		FEC11B1A0FD4B4D600082282 /* KGColor.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A6A0FD4B4D600082282 /* KGColor.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FEC11B1B0FD4B4D600082282 /* KGColor.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A6B0FD4B4D600082282 /* KGColor.m */; };
+		FEC11B1C0FD4B4D600082282 /* KGColorSpace+PDF.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A6C0FD4B4D600082282 /* KGColorSpace+PDF.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FEC11B1D0FD4B4D600082282 /* KGColorSpace+PDF.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A6D0FD4B4D600082282 /* KGColorSpace+PDF.m */; };
+		FEC11B1E0FD4B4D600082282 /* KGColorSpace.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A6E0FD4B4D600082282 /* KGColorSpace.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FEC11B1F0FD4B4D600082282 /* KGColorSpace.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A6F0FD4B4D600082282 /* KGColorSpace.m */; };
+		FEC11B200FD4B4D600082282 /* KGContext.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A700FD4B4D600082282 /* KGContext.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FEC11B210FD4B4D600082282 /* KGContext.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A710FD4B4D600082282 /* KGContext.m */; };
+		FEC11B220FD4B4D600082282 /* KGContext_builtin.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A720FD4B4D600082282 /* KGContext_builtin.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FEC11B230FD4B4D600082282 /* KGContext_builtin.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A730FD4B4D600082282 /* KGContext_builtin.m */; };
+		FEC11B240FD4B4D600082282 /* KGDataProvider.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A740FD4B4D600082282 /* KGDataProvider.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FEC11B250FD4B4D600082282 /* KGDataProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A750FD4B4D600082282 /* KGDataProvider.m */; };
+		FEC11B260FD4B4D600082282 /* KGExceptions.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A760FD4B4D600082282 /* KGExceptions.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FEC11B270FD4B4D600082282 /* KGFont.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A770FD4B4D600082282 /* KGFont.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FEC11B280FD4B4D600082282 /* KGFont.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A780FD4B4D600082282 /* KGFont.m */; };
+		FEC11B290FD4B4D600082282 /* KGFunction+PDF.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A790FD4B4D600082282 /* KGFunction+PDF.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FEC11B2A0FD4B4D600082282 /* KGFunction+PDF.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A7A0FD4B4D600082282 /* KGFunction+PDF.m */; };
+		FEC11B2B0FD4B4D600082282 /* KGFunction.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A7B0FD4B4D600082282 /* KGFunction.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FEC11B2C0FD4B4D600082282 /* KGFunction.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A7C0FD4B4D600082282 /* KGFunction.m */; };
+		FEC11B2D0FD4B4D600082282 /* KGGraphicsState.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A7D0FD4B4D600082282 /* KGGraphicsState.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FEC11B2E0FD4B4D600082282 /* KGGraphicsState.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A7E0FD4B4D600082282 /* KGGraphicsState.m */; };
+		FEC11B2F0FD4B4D600082282 /* KGImage+PDF.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A7F0FD4B4D600082282 /* KGImage+PDF.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FEC11B300FD4B4D600082282 /* KGImage+PDF.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A800FD4B4D600082282 /* KGImage+PDF.m */; };
+		FEC11B310FD4B4D600082282 /* KGImage.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A810FD4B4D600082282 /* KGImage.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FEC11B320FD4B4D600082282 /* KGImage.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A820FD4B4D600082282 /* KGImage.m */; };
+		FEC11B330FD4B4D600082282 /* KGImageSource.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A830FD4B4D600082282 /* KGImageSource.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FEC11B340FD4B4D600082282 /* KGImageSource.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A840FD4B4D600082282 /* KGImageSource.m */; };
+		FEC11B350FD4B4D600082282 /* KGImageSource_BMP.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A850FD4B4D600082282 /* KGImageSource_BMP.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FEC11B360FD4B4D600082282 /* KGImageSource_BMP.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A860FD4B4D600082282 /* KGImageSource_BMP.m */; };
+		FEC11B370FD4B4D600082282 /* KGImageSource_GIF.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A870FD4B4D600082282 /* KGImageSource_GIF.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FEC11B380FD4B4D600082282 /* KGImageSource_GIF.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A880FD4B4D600082282 /* KGImageSource_GIF.m */; };
+		FEC11B390FD4B4D600082282 /* KGImageSource_JPEG.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A890FD4B4D600082282 /* KGImageSource_JPEG.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FEC11B3A0FD4B4D600082282 /* KGImageSource_JPEG.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A8A0FD4B4D600082282 /* KGImageSource_JPEG.m */; };
+		FEC11B3B0FD4B4D600082282 /* KGImageSource_PNG.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A8B0FD4B4D600082282 /* KGImageSource_PNG.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FEC11B3C0FD4B4D600082282 /* KGImageSource_PNG.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A8C0FD4B4D600082282 /* KGImageSource_PNG.m */; };
+		FEC11B3D0FD4B4D600082282 /* KGImageSource_TIFF.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A8D0FD4B4D600082282 /* KGImageSource_TIFF.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FEC11B3E0FD4B4D600082282 /* KGImageSource_TIFF.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A8E0FD4B4D600082282 /* KGImageSource_TIFF.m */; };
+		FEC11B3F0FD4B4D600082282 /* KGLayer.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A8F0FD4B4D600082282 /* KGLayer.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FEC11B400FD4B4D600082282 /* KGLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A900FD4B4D600082282 /* KGLayer.m */; };
+		FEC11B410FD4B4D600082282 /* KGMutablePath.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A910FD4B4D600082282 /* KGMutablePath.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FEC11B420FD4B4D600082282 /* KGMutablePath.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A920FD4B4D600082282 /* KGMutablePath.m */; };
+		FEC11B430FD4B4D600082282 /* KGPaint.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A930FD4B4D600082282 /* KGPaint.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FEC11B440FD4B4D600082282 /* KGPaint.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A940FD4B4D600082282 /* KGPaint.m */; };
+		FEC11B450FD4B4D600082282 /* KGPaint_axialGradient.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A950FD4B4D600082282 /* KGPaint_axialGradient.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FEC11B460FD4B4D600082282 /* KGPaint_axialGradient.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A960FD4B4D600082282 /* KGPaint_axialGradient.m */; };
+		FEC11B470FD4B4D600082282 /* KGPaint_color.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A970FD4B4D600082282 /* KGPaint_color.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FEC11B480FD4B4D600082282 /* KGPaint_color.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A980FD4B4D600082282 /* KGPaint_color.m */; };
+		FEC11B490FD4B4D600082282 /* KGPaint_image.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A990FD4B4D600082282 /* KGPaint_image.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FEC11B4A0FD4B4D600082282 /* KGPaint_image.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A9A0FD4B4D600082282 /* KGPaint_image.m */; };
+		FEC11B4B0FD4B4D600082282 /* KGPaint_pattern.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A9B0FD4B4D600082282 /* KGPaint_pattern.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FEC11B4C0FD4B4D600082282 /* KGPaint_pattern.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A9C0FD4B4D600082282 /* KGPaint_pattern.m */; };
+		FEC11B4D0FD4B4D600082282 /* KGPaint_radialGradient.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A9D0FD4B4D600082282 /* KGPaint_radialGradient.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FEC11B4E0FD4B4D600082282 /* KGPaint_radialGradient.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A9E0FD4B4D600082282 /* KGPaint_radialGradient.m */; };
+		FEC11B4F0FD4B4D600082282 /* KGPaint_ramp.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A9F0FD4B4D600082282 /* KGPaint_ramp.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FEC11B500FD4B4D600082282 /* KGPaint_ramp.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AA00FD4B4D600082282 /* KGPaint_ramp.m */; };
+		FEC11B510FD4B4D600082282 /* KGPath.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AA10FD4B4D600082282 /* KGPath.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FEC11B520FD4B4D600082282 /* KGPath.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AA20FD4B4D600082282 /* KGPath.m */; };
+		FEC11B530FD4B4D600082282 /* KGPattern.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AA30FD4B4D600082282 /* KGPattern.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FEC11B540FD4B4D600082282 /* KGPattern.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AA40FD4B4D600082282 /* KGPattern.m */; };
+		FEC11B550FD4B4D600082282 /* KGPDFArray.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AA50FD4B4D600082282 /* KGPDFArray.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FEC11B560FD4B4D600082282 /* KGPDFArray.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AA60FD4B4D600082282 /* KGPDFArray.m */; };
+		FEC11B570FD4B4D600082282 /* KGPDFContentStream.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AA70FD4B4D600082282 /* KGPDFContentStream.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FEC11B580FD4B4D600082282 /* KGPDFContentStream.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AA80FD4B4D600082282 /* KGPDFContentStream.m */; };
+		FEC11B590FD4B4D600082282 /* KGPDFContext.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AA90FD4B4D600082282 /* KGPDFContext.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FEC11B5A0FD4B4D600082282 /* KGPDFContext.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AAA0FD4B4D600082282 /* KGPDFContext.m */; };
+		FEC11B5B0FD4B4D600082282 /* KGPDFDictionary.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AAB0FD4B4D600082282 /* KGPDFDictionary.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FEC11B5C0FD4B4D600082282 /* KGPDFDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AAC0FD4B4D600082282 /* KGPDFDictionary.m */; };
+		FEC11B5D0FD4B4D600082282 /* KGPDFDocument.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AAD0FD4B4D600082282 /* KGPDFDocument.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FEC11B5E0FD4B4D600082282 /* KGPDFDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AAE0FD4B4D600082282 /* KGPDFDocument.m */; };
+		FEC11B5F0FD4B4D600082282 /* KGPDFFilter.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AAF0FD4B4D600082282 /* KGPDFFilter.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FEC11B600FD4B4D600082282 /* KGPDFFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AB00FD4B4D600082282 /* KGPDFFilter.m */; };
+		FEC11B610FD4B4D600082282 /* KGPDFFunction_Type2.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AB10FD4B4D600082282 /* KGPDFFunction_Type2.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FEC11B620FD4B4D600082282 /* KGPDFFunction_Type2.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AB20FD4B4D600082282 /* KGPDFFunction_Type2.m */; };
+		FEC11B630FD4B4D600082282 /* KGPDFFunction_Type3.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AB30FD4B4D600082282 /* KGPDFFunction_Type3.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FEC11B640FD4B4D600082282 /* KGPDFFunction_Type3.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AB40FD4B4D600082282 /* KGPDFFunction_Type3.m */; };
+		FEC11B650FD4B4D600082282 /* KGPDFObject.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AB50FD4B4D600082282 /* KGPDFObject.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FEC11B660FD4B4D600082282 /* KGPDFObject.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AB60FD4B4D600082282 /* KGPDFObject.m */; };
+		FEC11B670FD4B4D600082282 /* KGPDFObject_Boolean.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AB70FD4B4D600082282 /* KGPDFObject_Boolean.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FEC11B680FD4B4D600082282 /* KGPDFObject_Boolean.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AB80FD4B4D600082282 /* KGPDFObject_Boolean.m */; };
+		FEC11B690FD4B4D600082282 /* KGPDFObject_const.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AB90FD4B4D600082282 /* KGPDFObject_const.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FEC11B6A0FD4B4D600082282 /* KGPDFObject_const.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11ABA0FD4B4D600082282 /* KGPDFObject_const.m */; };
+		FEC11B6B0FD4B4D600082282 /* KGPDFObject_identifier.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11ABB0FD4B4D600082282 /* KGPDFObject_identifier.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FEC11B6C0FD4B4D600082282 /* KGPDFObject_identifier.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11ABC0FD4B4D600082282 /* KGPDFObject_identifier.m */; };
+		FEC11B6D0FD4B4D600082282 /* KGPDFObject_Integer.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11ABD0FD4B4D600082282 /* KGPDFObject_Integer.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FEC11B6E0FD4B4D600082282 /* KGPDFObject_Integer.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11ABE0FD4B4D600082282 /* KGPDFObject_Integer.m */; };
+		FEC11B6F0FD4B4D600082282 /* KGPDFObject_Name.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11ABF0FD4B4D600082282 /* KGPDFObject_Name.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FEC11B700FD4B4D600082282 /* KGPDFObject_Name.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AC00FD4B4D600082282 /* KGPDFObject_Name.m */; };
+		FEC11B710FD4B4D600082282 /* KGPDFObject_R.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AC10FD4B4D600082282 /* KGPDFObject_R.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FEC11B720FD4B4D600082282 /* KGPDFObject_R.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AC20FD4B4D600082282 /* KGPDFObject_R.m */; };
+		FEC11B730FD4B4D600082282 /* KGPDFObject_Real.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AC30FD4B4D600082282 /* KGPDFObject_Real.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FEC11B740FD4B4D600082282 /* KGPDFObject_Real.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AC40FD4B4D600082282 /* KGPDFObject_Real.m */; };
+		FEC11B750FD4B4D600082282 /* KGPDFOperators.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AC50FD4B4D600082282 /* KGPDFOperators.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FEC11B760FD4B4D600082282 /* KGPDFOperators.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AC60FD4B4D600082282 /* KGPDFOperators.m */; };
+		FEC11B770FD4B4D600082282 /* KGPDFOperatorTable.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AC70FD4B4D600082282 /* KGPDFOperatorTable.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FEC11B780FD4B4D600082282 /* KGPDFOperatorTable.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AC80FD4B4D600082282 /* KGPDFOperatorTable.m */; };
+		FEC11B790FD4B4D600082282 /* KGPDFPage.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AC90FD4B4D600082282 /* KGPDFPage.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FEC11B7A0FD4B4D600082282 /* KGPDFPage.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11ACA0FD4B4D600082282 /* KGPDFPage.m */; };
+		FEC11B7B0FD4B4D600082282 /* KGPDFScanner.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11ACB0FD4B4D600082282 /* KGPDFScanner.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FEC11B7C0FD4B4D600082282 /* KGPDFScanner.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11ACC0FD4B4D600082282 /* KGPDFScanner.m */; };
+		FEC11B7D0FD4B4D600082282 /* KGPDFStream.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11ACD0FD4B4D600082282 /* KGPDFStream.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FEC11B7E0FD4B4D600082282 /* KGPDFStream.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11ACE0FD4B4D600082282 /* KGPDFStream.m */; };
+		FEC11B7F0FD4B4D600082282 /* KGPDFString.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11ACF0FD4B4D600082282 /* KGPDFString.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FEC11B800FD4B4D600082282 /* KGPDFString.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AD00FD4B4D600082282 /* KGPDFString.m */; };
+		FEC11B810FD4B4D600082282 /* KGPDFxref.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AD10FD4B4D600082282 /* KGPDFxref.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FEC11B820FD4B4D600082282 /* KGPDFxref.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AD20FD4B4D600082282 /* KGPDFxref.m */; };
+		FEC11B830FD4B4D600082282 /* KGPDFxrefEntry.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AD30FD4B4D600082282 /* KGPDFxrefEntry.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FEC11B840FD4B4D600082282 /* KGPDFxrefEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AD40FD4B4D600082282 /* KGPDFxrefEntry.m */; };
+		FEC11B850FD4B4D600082282 /* KGShading+PDF.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AD50FD4B4D600082282 /* KGShading+PDF.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FEC11B860FD4B4D600082282 /* KGShading+PDF.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AD60FD4B4D600082282 /* KGShading+PDF.m */; };
+		FEC11B870FD4B4D600082282 /* KGShading.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AD70FD4B4D600082282 /* KGShading.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FEC11B880FD4B4D600082282 /* KGShading.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AD80FD4B4D600082282 /* KGShading.m */; };
+		FEC11B890FD4B4D600082282 /* KGSurface.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AD90FD4B4D600082282 /* KGSurface.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FEC11B8A0FD4B4D600082282 /* KGSurface.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11ADA0FD4B4D600082282 /* KGSurface.m */; };
+		FEC11B8B0FD4B4D600082282 /* KGzlib.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11ADB0FD4B4D600082282 /* KGzlib.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FEC11B8C0FD4B4D600082282 /* KGzlib.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11ADC0FD4B4D600082282 /* KGzlib.m */; };
+		FEC11B8D0FD4B4D600082282 /* KTFont+PDF.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11ADD0FD4B4D600082282 /* KTFont+PDF.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FEC11B8E0FD4B4D600082282 /* KTFont+PDF.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11ADE0FD4B4D600082282 /* KTFont+PDF.m */; };
+		FEC11B8F0FD4B4D600082282 /* KTFont.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11ADF0FD4B4D600082282 /* KTFont.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FEC11B900FD4B4D600082282 /* KTFont.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AE00FD4B4D600082282 /* KTFont.m */; };
+		FEC11B910FD4B4D600082282 /* NSTIFFImageFileDirectory.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AE10FD4B4D600082282 /* NSTIFFImageFileDirectory.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FEC11B920FD4B4D600082282 /* NSTIFFImageFileDirectory.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AE20FD4B4D600082282 /* NSTIFFImageFileDirectory.m */; };
+		FEC11B930FD4B4D600082282 /* NSTIFFReader.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AE30FD4B4D600082282 /* NSTIFFReader.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FEC11B940FD4B4D600082282 /* NSTIFFReader.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AE40FD4B4D600082282 /* NSTIFFReader.m */; };
+		FEC11B950FD4B4D600082282 /* VGmath.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AE50FD4B4D600082282 /* VGmath.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FEC11B960FD4B4D600082282 /* VGPath.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AE60FD4B4D600082282 /* VGPath.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FEC11B970FD4B4D600082282 /* VGPath.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AE70FD4B4D600082282 /* VGPath.m */; };
+		FEC11BA50FD4B83E00082282 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0867D69BFE84028FC02AAC07 /* Foundation.framework */; };
+		FEC11C050FD4C2BB00082282 /* CoreText.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11C030FD4C2BB00082282 /* CoreText.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FEC11C060FD4C2BB00082282 /* CTFont.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11C040FD4C2BB00082282 /* CTFont.h */; settings = {ATTRIBUTES = (Public, ); }; };
+/* End PBXBuildFile section */
+
+/* Begin PBXBuildRule section */
+		FE6F7BB00FD554A800C3244F /* PBXBuildRule */ = {
+			isa = PBXBuildRule;
+			compilerSpec = org.cocotron.1.0.linux.i386.gcc.default;
+			fileType = sourcecode.c;
+			isEditable = 1;
+			outputFiles = (
+			);
+		};
+		FE6F7C950FD55FA300C3244F /* PBXBuildRule */ = {
+			isa = PBXBuildRule;
+			compilerSpec = com.apple.compilers.gcc.4_2;
+			fileType = sourcecode.c;
+			isEditable = 1;
+			outputFiles = (
+			);
+		};
+		FEC11B9C0FD4B74C00082282 /* PBXBuildRule */ = {
+			isa = PBXBuildRule;
+			compilerSpec = org.cocotron.1.0.windows.i386.gcc.default;
+			fileType = sourcecode.c;
+			isEditable = 1;
+			outputFiles = (
+			);
+		};
+/* End PBXBuildRule section */
+
+/* Begin PBXContainerItemProxy section */
+		FE6F7BCA0FD5572F00C3244F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FE6F7BC00FD5572F00C3244F /* Foundation.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = FE01A7EC0C5D9B6900AEA51A;
+			remoteInfo = "Foundation-Windows-i386";
+		};
+		FE6F7BCC0FD5572F00C3244F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FE6F7BC00FD5572F00C3244F /* Foundation.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 6EA04A7709E57D5F0067589C;
+			remoteInfo = "Foundation-Linux-i386";
+		};
+		FE6F7BCE0FD5572F00C3244F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FE6F7BC00FD5572F00C3244F /* Foundation.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 6E4D932B0A2642BD003D335C;
+			remoteInfo = "Foundation-Solaris-sparc";
+		};
+		FE6F7BD00FD5572F00C3244F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FE6F7BC00FD5572F00C3244F /* Foundation.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = FED70A6B0C3B3D2C000CBE5B;
+			remoteInfo = "Foundation-Darwin-i386";
+		};
+		FE6F7BD20FD5572F00C3244F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FE6F7BC00FD5572F00C3244F /* Foundation.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = FED70FB70C3C09C7000CBE5B;
+			remoteInfo = "Foundation-Darwin-ppc";
+		};
+		FE6F7BD40FD5572F00C3244F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FE6F7BC00FD5572F00C3244F /* Foundation.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = FE651A870FBC844C00464BFD;
+			remoteInfo = "Foundation-Darwin-x86_64";
+		};
+		FE6F7BD60FD5573B00C3244F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FE6F7BC00FD5572F00C3244F /* Foundation.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = FE01A5970C5D9B6900AEA51A;
+			remoteInfo = "Foundation-Windows-i386";
+		};
+		FE6F7BD80FD5574600C3244F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FE6F7BC00FD5572F00C3244F /* Foundation.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 6EA048CA09E57D5F0067589C;
+			remoteInfo = "Foundation-Linux-i386";
+		};
+		FE6F7C9A0FD55FB600C3244F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FE6F7BC00FD5572F00C3244F /* Foundation.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = FED7081C0C3B3D2C000CBE5B;
+			remoteInfo = "Foundation-Darwin-i386";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		0867D69BFE84028FC02AAC07 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
+		8DC2EF5A0486A6940098B216 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8DC2EF5B0486A6940098B216 /* CoreGraphics.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CoreGraphics.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		FE6F7BB30FD554A800C3244F /* CoreGraphics.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CoreGraphics.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		FE6F7BC00FD5572F00C3244F /* Foundation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Foundation.xcodeproj; path = ../Foundation/Foundation.xcodeproj; sourceTree = SOURCE_ROOT; };
+		FE6F7C980FD55FA300C3244F /* CoreGraphics.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CoreGraphics.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		FE9DB45F0FD6C38300A1CE17 /* CGDataConsumer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGDataConsumer.h; sourceTree = "<group>"; };
+		FE9DB4600FD6C38300A1CE17 /* CGDataConsumer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CGDataConsumer.m; sourceTree = "<group>"; };
+		FEA313490FD5642000F480D4 /* Foundation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Foundation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		FEAED70E0FD6C40E0043F915 /* KGDataConsumer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGDataConsumer.h; sourceTree = "<group>"; };
+		FEAED70F0FD6C40E0043F915 /* KGDataConsumer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGDataConsumer.m; sourceTree = "<group>"; };
+		FEAED71A0FD6C4460043F915 /* CGPDFContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGPDFContext.h; sourceTree = "<group>"; };
+		FEAED71B0FD6C4460043F915 /* CGPDFContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CGPDFContext.m; sourceTree = "<group>"; };
+		FEC11A380FD4B4D600082282 /* CGAffineTransform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGAffineTransform.h; sourceTree = "<group>"; };
+		FEC11A390FD4B4D600082282 /* CGAffineTransform.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CGAffineTransform.m; sourceTree = "<group>"; };
+		FEC11A3A0FD4B4D600082282 /* CGBitmapContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGBitmapContext.h; sourceTree = "<group>"; };
+		FEC11A3B0FD4B4D600082282 /* CGBitmapContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CGBitmapContext.m; sourceTree = "<group>"; };
+		FEC11A3C0FD4B4D600082282 /* CGColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGColor.h; sourceTree = "<group>"; };
+		FEC11A3D0FD4B4D600082282 /* CGColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CGColor.m; sourceTree = "<group>"; };
+		FEC11A3E0FD4B4D600082282 /* CGColorSpace.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGColorSpace.h; sourceTree = "<group>"; };
+		FEC11A3F0FD4B4D600082282 /* CGColorSpace.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CGColorSpace.m; sourceTree = "<group>"; };
+		FEC11A400FD4B4D600082282 /* CGContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGContext.h; sourceTree = "<group>"; };
+		FEC11A410FD4B4D600082282 /* CGContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CGContext.m; sourceTree = "<group>"; };
+		FEC11A420FD4B4D600082282 /* CGDataProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGDataProvider.h; sourceTree = "<group>"; };
+		FEC11A430FD4B4D600082282 /* CGDataProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CGDataProvider.m; sourceTree = "<group>"; };
+		FEC11A440FD4B4D600082282 /* CGEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGEvent.h; sourceTree = "<group>"; };
+		FEC11A450FD4B4D600082282 /* CGEvent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CGEvent.m; sourceTree = "<group>"; };
+		FEC11A460FD4B4D600082282 /* CGFont.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGFont.h; sourceTree = "<group>"; };
+		FEC11A470FD4B4D600082282 /* CGFont.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CGFont.m; sourceTree = "<group>"; };
+		FEC11A480FD4B4D600082282 /* CGFunction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGFunction.h; sourceTree = "<group>"; };
+		FEC11A490FD4B4D600082282 /* CGFunction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CGFunction.m; sourceTree = "<group>"; };
+		FEC11A4A0FD4B4D600082282 /* CGGeometry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGGeometry.h; sourceTree = "<group>"; };
+		FEC11A4B0FD4B4D600082282 /* CGGeometry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CGGeometry.m; sourceTree = "<group>"; };
+		FEC11A4C0FD4B4D600082282 /* CGImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGImage.h; sourceTree = "<group>"; };
+		FEC11A4D0FD4B4D600082282 /* CGImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CGImage.m; sourceTree = "<group>"; };
+		FEC11A4E0FD4B4D600082282 /* CGImageProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGImageProperties.h; sourceTree = "<group>"; };
+		FEC11A4F0FD4B4D600082282 /* CGImageProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CGImageProperties.m; sourceTree = "<group>"; };
+		FEC11A500FD4B4D600082282 /* CGImageSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGImageSource.h; sourceTree = "<group>"; };
+		FEC11A510FD4B4D600082282 /* CGImageSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CGImageSource.m; sourceTree = "<group>"; };
+		FEC11A520FD4B4D600082282 /* CGLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGLayer.h; sourceTree = "<group>"; };
+		FEC11A530FD4B4D600082282 /* CGLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CGLayer.m; sourceTree = "<group>"; };
+		FEC11A540FD4B4D600082282 /* CGPath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGPath.h; sourceTree = "<group>"; };
+		FEC11A550FD4B4D600082282 /* CGPath.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CGPath.m; sourceTree = "<group>"; };
+		FEC11A560FD4B4D600082282 /* CGPattern.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGPattern.h; sourceTree = "<group>"; };
+		FEC11A570FD4B4D600082282 /* CGPattern.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CGPattern.m; sourceTree = "<group>"; };
+		FEC11A580FD4B4D600082282 /* CGPDFDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGPDFDocument.h; sourceTree = "<group>"; };
+		FEC11A590FD4B4D600082282 /* CGPDFDocument.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CGPDFDocument.m; sourceTree = "<group>"; };
+		FEC11A5A0FD4B4D600082282 /* CGPDFPage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGPDFPage.h; sourceTree = "<group>"; };
+		FEC11A5B0FD4B4D600082282 /* CGPDFPage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CGPDFPage.m; sourceTree = "<group>"; };
+		FEC11A5C0FD4B4D600082282 /* CGShading.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGShading.h; sourceTree = "<group>"; };
+		FEC11A5D0FD4B4D600082282 /* CGShading.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CGShading.m; sourceTree = "<group>"; };
+		FEC11A5E0FD4B4D600082282 /* CGWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGWindow.h; sourceTree = "<group>"; };
+		FEC11A5F0FD4B4D600082282 /* CGWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CGWindow.m; sourceTree = "<group>"; };
+		FEC11A600FD4B4D600082282 /* CoreGraphics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreGraphics.h; sourceTree = "<group>"; };
+		FEC11A610FD4B4D600082282 /* CoreGraphicsExport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreGraphicsExport.h; sourceTree = "<group>"; };
+		FEC11A620FD4B4D600082282 /* CTFont.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CTFont.m; sourceTree = "<group>"; };
+		FEC11A630FD4B4D600082282 /* gif_lib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gif_lib.h; sourceTree = "<group>"; };
+		FEC11A640FD4B4D600082282 /* gif_lib.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = gif_lib.m; sourceTree = "<group>"; };
+		FEC11A650FD4B4D600082282 /* KGBitmapContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGBitmapContext.h; sourceTree = "<group>"; };
+		FEC11A660FD4B4D600082282 /* KGBitmapContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGBitmapContext.m; sourceTree = "<group>"; };
+		FEC11A670FD4B4D600082282 /* KGBlending.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGBlending.h; sourceTree = "<group>"; };
+		FEC11A680FD4B4D600082282 /* KGClipPhase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGClipPhase.h; sourceTree = "<group>"; };
+		FEC11A690FD4B4D600082282 /* KGClipPhase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGClipPhase.m; sourceTree = "<group>"; };
+		FEC11A6A0FD4B4D600082282 /* KGColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGColor.h; sourceTree = "<group>"; };
+		FEC11A6B0FD4B4D600082282 /* KGColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGColor.m; sourceTree = "<group>"; };
+		FEC11A6C0FD4B4D600082282 /* KGColorSpace+PDF.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "KGColorSpace+PDF.h"; sourceTree = "<group>"; };
+		FEC11A6D0FD4B4D600082282 /* KGColorSpace+PDF.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "KGColorSpace+PDF.m"; sourceTree = "<group>"; };
+		FEC11A6E0FD4B4D600082282 /* KGColorSpace.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGColorSpace.h; sourceTree = "<group>"; };
+		FEC11A6F0FD4B4D600082282 /* KGColorSpace.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGColorSpace.m; sourceTree = "<group>"; };
+		FEC11A700FD4B4D600082282 /* KGContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGContext.h; sourceTree = "<group>"; };
+		FEC11A710FD4B4D600082282 /* KGContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGContext.m; sourceTree = "<group>"; };
+		FEC11A720FD4B4D600082282 /* KGContext_builtin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGContext_builtin.h; sourceTree = "<group>"; };
+		FEC11A730FD4B4D600082282 /* KGContext_builtin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGContext_builtin.m; sourceTree = "<group>"; };
+		FEC11A740FD4B4D600082282 /* KGDataProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGDataProvider.h; sourceTree = "<group>"; };
+		FEC11A750FD4B4D600082282 /* KGDataProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGDataProvider.m; sourceTree = "<group>"; };
+		FEC11A760FD4B4D600082282 /* KGExceptions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGExceptions.h; sourceTree = "<group>"; };
+		FEC11A770FD4B4D600082282 /* KGFont.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGFont.h; sourceTree = "<group>"; };
+		FEC11A780FD4B4D600082282 /* KGFont.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGFont.m; sourceTree = "<group>"; };
+		FEC11A790FD4B4D600082282 /* KGFunction+PDF.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "KGFunction+PDF.h"; sourceTree = "<group>"; };
+		FEC11A7A0FD4B4D600082282 /* KGFunction+PDF.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "KGFunction+PDF.m"; sourceTree = "<group>"; };
+		FEC11A7B0FD4B4D600082282 /* KGFunction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGFunction.h; sourceTree = "<group>"; };
+		FEC11A7C0FD4B4D600082282 /* KGFunction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGFunction.m; sourceTree = "<group>"; };
+		FEC11A7D0FD4B4D600082282 /* KGGraphicsState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGGraphicsState.h; sourceTree = "<group>"; };
+		FEC11A7E0FD4B4D600082282 /* KGGraphicsState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGGraphicsState.m; sourceTree = "<group>"; };
+		FEC11A7F0FD4B4D600082282 /* KGImage+PDF.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "KGImage+PDF.h"; sourceTree = "<group>"; };
+		FEC11A800FD4B4D600082282 /* KGImage+PDF.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "KGImage+PDF.m"; sourceTree = "<group>"; };
+		FEC11A810FD4B4D600082282 /* KGImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGImage.h; sourceTree = "<group>"; };
+		FEC11A820FD4B4D600082282 /* KGImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGImage.m; sourceTree = "<group>"; };
+		FEC11A830FD4B4D600082282 /* KGImageSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGImageSource.h; sourceTree = "<group>"; };
+		FEC11A840FD4B4D600082282 /* KGImageSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGImageSource.m; sourceTree = "<group>"; };
+		FEC11A850FD4B4D600082282 /* KGImageSource_BMP.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGImageSource_BMP.h; sourceTree = "<group>"; };
+		FEC11A860FD4B4D600082282 /* KGImageSource_BMP.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGImageSource_BMP.m; sourceTree = "<group>"; };
+		FEC11A870FD4B4D600082282 /* KGImageSource_GIF.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGImageSource_GIF.h; sourceTree = "<group>"; };
+		FEC11A880FD4B4D600082282 /* KGImageSource_GIF.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGImageSource_GIF.m; sourceTree = "<group>"; };
+		FEC11A890FD4B4D600082282 /* KGImageSource_JPEG.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGImageSource_JPEG.h; sourceTree = "<group>"; };
+		FEC11A8A0FD4B4D600082282 /* KGImageSource_JPEG.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGImageSource_JPEG.m; sourceTree = "<group>"; };
+		FEC11A8B0FD4B4D600082282 /* KGImageSource_PNG.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGImageSource_PNG.h; sourceTree = "<group>"; };
+		FEC11A8C0FD4B4D600082282 /* KGImageSource_PNG.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGImageSource_PNG.m; sourceTree = "<group>"; };
+		FEC11A8D0FD4B4D600082282 /* KGImageSource_TIFF.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGImageSource_TIFF.h; sourceTree = "<group>"; };
+		FEC11A8E0FD4B4D600082282 /* KGImageSource_TIFF.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGImageSource_TIFF.m; sourceTree = "<group>"; };
+		FEC11A8F0FD4B4D600082282 /* KGLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGLayer.h; sourceTree = "<group>"; };
+		FEC11A900FD4B4D600082282 /* KGLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGLayer.m; sourceTree = "<group>"; };
+		FEC11A910FD4B4D600082282 /* KGMutablePath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGMutablePath.h; sourceTree = "<group>"; };
+		FEC11A920FD4B4D600082282 /* KGMutablePath.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGMutablePath.m; sourceTree = "<group>"; };
+		FEC11A930FD4B4D600082282 /* KGPaint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGPaint.h; sourceTree = "<group>"; };
+		FEC11A940FD4B4D600082282 /* KGPaint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGPaint.m; sourceTree = "<group>"; };
+		FEC11A950FD4B4D600082282 /* KGPaint_axialGradient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGPaint_axialGradient.h; sourceTree = "<group>"; };
+		FEC11A960FD4B4D600082282 /* KGPaint_axialGradient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGPaint_axialGradient.m; sourceTree = "<group>"; };
+		FEC11A970FD4B4D600082282 /* KGPaint_color.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGPaint_color.h; sourceTree = "<group>"; };
+		FEC11A980FD4B4D600082282 /* KGPaint_color.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGPaint_color.m; sourceTree = "<group>"; };
+		FEC11A990FD4B4D600082282 /* KGPaint_image.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGPaint_image.h; sourceTree = "<group>"; };
+		FEC11A9A0FD4B4D600082282 /* KGPaint_image.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGPaint_image.m; sourceTree = "<group>"; };
+		FEC11A9B0FD4B4D600082282 /* KGPaint_pattern.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGPaint_pattern.h; sourceTree = "<group>"; };
+		FEC11A9C0FD4B4D600082282 /* KGPaint_pattern.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGPaint_pattern.m; sourceTree = "<group>"; };
+		FEC11A9D0FD4B4D600082282 /* KGPaint_radialGradient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGPaint_radialGradient.h; sourceTree = "<group>"; };
+		FEC11A9E0FD4B4D600082282 /* KGPaint_radialGradient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGPaint_radialGradient.m; sourceTree = "<group>"; };
+		FEC11A9F0FD4B4D600082282 /* KGPaint_ramp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGPaint_ramp.h; sourceTree = "<group>"; };
+		FEC11AA00FD4B4D600082282 /* KGPaint_ramp.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGPaint_ramp.m; sourceTree = "<group>"; };
+		FEC11AA10FD4B4D600082282 /* KGPath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGPath.h; sourceTree = "<group>"; };
+		FEC11AA20FD4B4D600082282 /* KGPath.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGPath.m; sourceTree = "<group>"; };
+		FEC11AA30FD4B4D600082282 /* KGPattern.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGPattern.h; sourceTree = "<group>"; };
+		FEC11AA40FD4B4D600082282 /* KGPattern.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGPattern.m; sourceTree = "<group>"; };
+		FEC11AA50FD4B4D600082282 /* KGPDFArray.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGPDFArray.h; sourceTree = "<group>"; };
+		FEC11AA60FD4B4D600082282 /* KGPDFArray.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGPDFArray.m; sourceTree = "<group>"; };
+		FEC11AA70FD4B4D600082282 /* KGPDFContentStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGPDFContentStream.h; sourceTree = "<group>"; };
+		FEC11AA80FD4B4D600082282 /* KGPDFContentStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGPDFContentStream.m; sourceTree = "<group>"; };
+		FEC11AA90FD4B4D600082282 /* KGPDFContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGPDFContext.h; sourceTree = "<group>"; };
+		FEC11AAA0FD4B4D600082282 /* KGPDFContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGPDFContext.m; sourceTree = "<group>"; };
+		FEC11AAB0FD4B4D600082282 /* KGPDFDictionary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGPDFDictionary.h; sourceTree = "<group>"; };
+		FEC11AAC0FD4B4D600082282 /* KGPDFDictionary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGPDFDictionary.m; sourceTree = "<group>"; };
+		FEC11AAD0FD4B4D600082282 /* KGPDFDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGPDFDocument.h; sourceTree = "<group>"; };
+		FEC11AAE0FD4B4D600082282 /* KGPDFDocument.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGPDFDocument.m; sourceTree = "<group>"; };
+		FEC11AAF0FD4B4D600082282 /* KGPDFFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGPDFFilter.h; sourceTree = "<group>"; };
+		FEC11AB00FD4B4D600082282 /* KGPDFFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGPDFFilter.m; sourceTree = "<group>"; };
+		FEC11AB10FD4B4D600082282 /* KGPDFFunction_Type2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGPDFFunction_Type2.h; sourceTree = "<group>"; };
+		FEC11AB20FD4B4D600082282 /* KGPDFFunction_Type2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGPDFFunction_Type2.m; sourceTree = "<group>"; };
+		FEC11AB30FD4B4D600082282 /* KGPDFFunction_Type3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGPDFFunction_Type3.h; sourceTree = "<group>"; };
+		FEC11AB40FD4B4D600082282 /* KGPDFFunction_Type3.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGPDFFunction_Type3.m; sourceTree = "<group>"; };
+		FEC11AB50FD4B4D600082282 /* KGPDFObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGPDFObject.h; sourceTree = "<group>"; };
+		FEC11AB60FD4B4D600082282 /* KGPDFObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGPDFObject.m; sourceTree = "<group>"; };
+		FEC11AB70FD4B4D600082282 /* KGPDFObject_Boolean.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGPDFObject_Boolean.h; sourceTree = "<group>"; };
+		FEC11AB80FD4B4D600082282 /* KGPDFObject_Boolean.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGPDFObject_Boolean.m; sourceTree = "<group>"; };
+		FEC11AB90FD4B4D600082282 /* KGPDFObject_const.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGPDFObject_const.h; sourceTree = "<group>"; };
+		FEC11ABA0FD4B4D600082282 /* KGPDFObject_const.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGPDFObject_const.m; sourceTree = "<group>"; };
+		FEC11ABB0FD4B4D600082282 /* KGPDFObject_identifier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGPDFObject_identifier.h; sourceTree = "<group>"; };
+		FEC11ABC0FD4B4D600082282 /* KGPDFObject_identifier.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGPDFObject_identifier.m; sourceTree = "<group>"; };
+		FEC11ABD0FD4B4D600082282 /* KGPDFObject_Integer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGPDFObject_Integer.h; sourceTree = "<group>"; };
+		FEC11ABE0FD4B4D600082282 /* KGPDFObject_Integer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGPDFObject_Integer.m; sourceTree = "<group>"; };
+		FEC11ABF0FD4B4D600082282 /* KGPDFObject_Name.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGPDFObject_Name.h; sourceTree = "<group>"; };
+		FEC11AC00FD4B4D600082282 /* KGPDFObject_Name.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGPDFObject_Name.m; sourceTree = "<group>"; };
+		FEC11AC10FD4B4D600082282 /* KGPDFObject_R.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGPDFObject_R.h; sourceTree = "<group>"; };
+		FEC11AC20FD4B4D600082282 /* KGPDFObject_R.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGPDFObject_R.m; sourceTree = "<group>"; };
+		FEC11AC30FD4B4D600082282 /* KGPDFObject_Real.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGPDFObject_Real.h; sourceTree = "<group>"; };
+		FEC11AC40FD4B4D600082282 /* KGPDFObject_Real.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGPDFObject_Real.m; sourceTree = "<group>"; };
+		FEC11AC50FD4B4D600082282 /* KGPDFOperators.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGPDFOperators.h; sourceTree = "<group>"; };
+		FEC11AC60FD4B4D600082282 /* KGPDFOperators.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGPDFOperators.m; sourceTree = "<group>"; };
+		FEC11AC70FD4B4D600082282 /* KGPDFOperatorTable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGPDFOperatorTable.h; sourceTree = "<group>"; };
+		FEC11AC80FD4B4D600082282 /* KGPDFOperatorTable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGPDFOperatorTable.m; sourceTree = "<group>"; };
+		FEC11AC90FD4B4D600082282 /* KGPDFPage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGPDFPage.h; sourceTree = "<group>"; };
+		FEC11ACA0FD4B4D600082282 /* KGPDFPage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGPDFPage.m; sourceTree = "<group>"; };
+		FEC11ACB0FD4B4D600082282 /* KGPDFScanner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGPDFScanner.h; sourceTree = "<group>"; };
+		FEC11ACC0FD4B4D600082282 /* KGPDFScanner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGPDFScanner.m; sourceTree = "<group>"; };
+		FEC11ACD0FD4B4D600082282 /* KGPDFStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGPDFStream.h; sourceTree = "<group>"; };
+		FEC11ACE0FD4B4D600082282 /* KGPDFStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGPDFStream.m; sourceTree = "<group>"; };
+		FEC11ACF0FD4B4D600082282 /* KGPDFString.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGPDFString.h; sourceTree = "<group>"; };
+		FEC11AD00FD4B4D600082282 /* KGPDFString.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGPDFString.m; sourceTree = "<group>"; };
+		FEC11AD10FD4B4D600082282 /* KGPDFxref.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGPDFxref.h; sourceTree = "<group>"; };
+		FEC11AD20FD4B4D600082282 /* KGPDFxref.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGPDFxref.m; sourceTree = "<group>"; };
+		FEC11AD30FD4B4D600082282 /* KGPDFxrefEntry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGPDFxrefEntry.h; sourceTree = "<group>"; };
+		FEC11AD40FD4B4D600082282 /* KGPDFxrefEntry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGPDFxrefEntry.m; sourceTree = "<group>"; };
+		FEC11AD50FD4B4D600082282 /* KGShading+PDF.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "KGShading+PDF.h"; sourceTree = "<group>"; };
+		FEC11AD60FD4B4D600082282 /* KGShading+PDF.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "KGShading+PDF.m"; sourceTree = "<group>"; };
+		FEC11AD70FD4B4D600082282 /* KGShading.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGShading.h; sourceTree = "<group>"; };
+		FEC11AD80FD4B4D600082282 /* KGShading.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGShading.m; sourceTree = "<group>"; };
+		FEC11AD90FD4B4D600082282 /* KGSurface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGSurface.h; sourceTree = "<group>"; };
+		FEC11ADA0FD4B4D600082282 /* KGSurface.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGSurface.m; sourceTree = "<group>"; };
+		FEC11ADB0FD4B4D600082282 /* KGzlib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGzlib.h; sourceTree = "<group>"; };
+		FEC11ADC0FD4B4D600082282 /* KGzlib.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGzlib.m; sourceTree = "<group>"; };
+		FEC11ADD0FD4B4D600082282 /* KTFont+PDF.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "KTFont+PDF.h"; sourceTree = "<group>"; };
+		FEC11ADE0FD4B4D600082282 /* KTFont+PDF.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "KTFont+PDF.m"; sourceTree = "<group>"; };
+		FEC11ADF0FD4B4D600082282 /* KTFont.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KTFont.h; sourceTree = "<group>"; };
+		FEC11AE00FD4B4D600082282 /* KTFont.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KTFont.m; sourceTree = "<group>"; };
+		FEC11AE10FD4B4D600082282 /* NSTIFFImageFileDirectory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSTIFFImageFileDirectory.h; sourceTree = "<group>"; };
+		FEC11AE20FD4B4D600082282 /* NSTIFFImageFileDirectory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSTIFFImageFileDirectory.m; sourceTree = "<group>"; };
+		FEC11AE30FD4B4D600082282 /* NSTIFFReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSTIFFReader.h; sourceTree = "<group>"; };
+		FEC11AE40FD4B4D600082282 /* NSTIFFReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSTIFFReader.m; sourceTree = "<group>"; };
+		FEC11AE50FD4B4D600082282 /* VGmath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VGmath.h; sourceTree = "<group>"; };
+		FEC11AE60FD4B4D600082282 /* VGPath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VGPath.h; sourceTree = "<group>"; };
+		FEC11AE70FD4B4D600082282 /* VGPath.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VGPath.m; sourceTree = "<group>"; };
+		FEC11C030FD4C2BB00082282 /* CoreText.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreText.h; sourceTree = "<group>"; };
+		FEC11C040FD4C2BB00082282 /* CTFont.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CTFont.h; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		8DC2EF560486A6940098B216 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FEC11BA50FD4B83E00082282 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FE6F7BAE0FD554A800C3244F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FE6F7BAF0FD554A800C3244F /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FE6F7C930FD55FA300C3244F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FE6F7C940FD55FA300C3244F /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		034768DFFF38A50411DB9C8B /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8DC2EF5B0486A6940098B216 /* CoreGraphics.framework */,
+				FE6F7BB30FD554A800C3244F /* CoreGraphics.framework */,
+				FE6F7C980FD55FA300C3244F /* CoreGraphics.framework */,
+				FEA313490FD5642000F480D4 /* Foundation.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		0867D691FE84028FC02AAC07 /* CoreGraphics */ = {
+			isa = PBXGroup;
+			children = (
+				FEAED71A0FD6C4460043F915 /* CGPDFContext.h */,
+				FEAED71B0FD6C4460043F915 /* CGPDFContext.m */,
+				FEC11A380FD4B4D600082282 /* CGAffineTransform.h */,
+				FEC11A390FD4B4D600082282 /* CGAffineTransform.m */,
+				FEC11A3A0FD4B4D600082282 /* CGBitmapContext.h */,
+				FEC11A3B0FD4B4D600082282 /* CGBitmapContext.m */,
+				FEC11A3C0FD4B4D600082282 /* CGColor.h */,
+				FEC11A3D0FD4B4D600082282 /* CGColor.m */,
+				FEC11A3E0FD4B4D600082282 /* CGColorSpace.h */,
+				FEC11A3F0FD4B4D600082282 /* CGColorSpace.m */,
+				FEC11A400FD4B4D600082282 /* CGContext.h */,
+				FEC11A410FD4B4D600082282 /* CGContext.m */,
+				FE9DB45F0FD6C38300A1CE17 /* CGDataConsumer.h */,
+				FE9DB4600FD6C38300A1CE17 /* CGDataConsumer.m */,
+				FEC11A420FD4B4D600082282 /* CGDataProvider.h */,
+				FEC11A430FD4B4D600082282 /* CGDataProvider.m */,
+				FEC11A440FD4B4D600082282 /* CGEvent.h */,
+				FEC11A450FD4B4D600082282 /* CGEvent.m */,
+				FEC11A460FD4B4D600082282 /* CGFont.h */,
+				FEC11A470FD4B4D600082282 /* CGFont.m */,
+				FEC11A480FD4B4D600082282 /* CGFunction.h */,
+				FEC11A490FD4B4D600082282 /* CGFunction.m */,
+				FEC11A4A0FD4B4D600082282 /* CGGeometry.h */,
+				FEC11A4B0FD4B4D600082282 /* CGGeometry.m */,
+				FEC11A4C0FD4B4D600082282 /* CGImage.h */,
+				FEC11A4D0FD4B4D600082282 /* CGImage.m */,
+				FEC11A4E0FD4B4D600082282 /* CGImageProperties.h */,
+				FEC11A4F0FD4B4D600082282 /* CGImageProperties.m */,
+				FEC11A500FD4B4D600082282 /* CGImageSource.h */,
+				FEC11A510FD4B4D600082282 /* CGImageSource.m */,
+				FEC11A520FD4B4D600082282 /* CGLayer.h */,
+				FEC11A530FD4B4D600082282 /* CGLayer.m */,
+				FEC11A540FD4B4D600082282 /* CGPath.h */,
+				FEC11A550FD4B4D600082282 /* CGPath.m */,
+				FEC11A560FD4B4D600082282 /* CGPattern.h */,
+				FEC11A570FD4B4D600082282 /* CGPattern.m */,
+				FEC11A580FD4B4D600082282 /* CGPDFDocument.h */,
+				FEC11A590FD4B4D600082282 /* CGPDFDocument.m */,
+				FEC11A5A0FD4B4D600082282 /* CGPDFPage.h */,
+				FEC11A5B0FD4B4D600082282 /* CGPDFPage.m */,
+				FEC11A5C0FD4B4D600082282 /* CGShading.h */,
+				FEC11A5D0FD4B4D600082282 /* CGShading.m */,
+				FEC11A5E0FD4B4D600082282 /* CGWindow.h */,
+				FEC11A5F0FD4B4D600082282 /* CGWindow.m */,
+				FEC11A600FD4B4D600082282 /* CoreGraphics.h */,
+				FEC11A610FD4B4D600082282 /* CoreGraphicsExport.h */,
+				FEC11C030FD4C2BB00082282 /* CoreText.h */,
+				FEC11C040FD4C2BB00082282 /* CTFont.h */,
+				FEC11A620FD4B4D600082282 /* CTFont.m */,
+				0867D69AFE84028FC02AAC07 /* External Frameworks and Libraries */,
+				FE6F7BC00FD5572F00C3244F /* Foundation.xcodeproj */,
+				FEC11A630FD4B4D600082282 /* gif_lib.h */,
+				FEC11A640FD4B4D600082282 /* gif_lib.m */,
+				FEC11A650FD4B4D600082282 /* KGBitmapContext.h */,
+				FEC11A660FD4B4D600082282 /* KGBitmapContext.m */,
+				FEC11A670FD4B4D600082282 /* KGBlending.h */,
+				FEC11A680FD4B4D600082282 /* KGClipPhase.h */,
+				FEC11A690FD4B4D600082282 /* KGClipPhase.m */,
+				FEC11A6A0FD4B4D600082282 /* KGColor.h */,
+				FEC11A6B0FD4B4D600082282 /* KGColor.m */,
+				FEC11A6C0FD4B4D600082282 /* KGColorSpace+PDF.h */,
+				FEC11A6D0FD4B4D600082282 /* KGColorSpace+PDF.m */,
+				FEC11A6E0FD4B4D600082282 /* KGColorSpace.h */,
+				FEC11A6F0FD4B4D600082282 /* KGColorSpace.m */,
+				FEC11A700FD4B4D600082282 /* KGContext.h */,
+				FEC11A710FD4B4D600082282 /* KGContext.m */,
+				FEC11A720FD4B4D600082282 /* KGContext_builtin.h */,
+				FEC11A730FD4B4D600082282 /* KGContext_builtin.m */,
+				FEAED70E0FD6C40E0043F915 /* KGDataConsumer.h */,
+				FEAED70F0FD6C40E0043F915 /* KGDataConsumer.m */,
+				FEC11A740FD4B4D600082282 /* KGDataProvider.h */,
+				FEC11A750FD4B4D600082282 /* KGDataProvider.m */,
+				FEC11A760FD4B4D600082282 /* KGExceptions.h */,
+				FEC11A770FD4B4D600082282 /* KGFont.h */,
+				FEC11A780FD4B4D600082282 /* KGFont.m */,
+				FEC11A790FD4B4D600082282 /* KGFunction+PDF.h */,
+				FEC11A7A0FD4B4D600082282 /* KGFunction+PDF.m */,
+				FEC11A7B0FD4B4D600082282 /* KGFunction.h */,
+				FEC11A7C0FD4B4D600082282 /* KGFunction.m */,
+				FEC11A7D0FD4B4D600082282 /* KGGraphicsState.h */,
+				FEC11A7E0FD4B4D600082282 /* KGGraphicsState.m */,
+				FEC11A7F0FD4B4D600082282 /* KGImage+PDF.h */,
+				FEC11A800FD4B4D600082282 /* KGImage+PDF.m */,
+				FEC11A810FD4B4D600082282 /* KGImage.h */,
+				FEC11A820FD4B4D600082282 /* KGImage.m */,
+				FEC11A830FD4B4D600082282 /* KGImageSource.h */,
+				FEC11A840FD4B4D600082282 /* KGImageSource.m */,
+				FEC11A850FD4B4D600082282 /* KGImageSource_BMP.h */,
+				FEC11A860FD4B4D600082282 /* KGImageSource_BMP.m */,
+				FEC11A870FD4B4D600082282 /* KGImageSource_GIF.h */,
+				FEC11A880FD4B4D600082282 /* KGImageSource_GIF.m */,
+				FEC11A890FD4B4D600082282 /* KGImageSource_JPEG.h */,
+				FEC11A8A0FD4B4D600082282 /* KGImageSource_JPEG.m */,
+				FEC11A8B0FD4B4D600082282 /* KGImageSource_PNG.h */,
+				FEC11A8C0FD4B4D600082282 /* KGImageSource_PNG.m */,
+				FEC11A8D0FD4B4D600082282 /* KGImageSource_TIFF.h */,
+				FEC11A8E0FD4B4D600082282 /* KGImageSource_TIFF.m */,
+				FEC11A8F0FD4B4D600082282 /* KGLayer.h */,
+				FEC11A900FD4B4D600082282 /* KGLayer.m */,
+				FEC11A910FD4B4D600082282 /* KGMutablePath.h */,
+				FEC11A920FD4B4D600082282 /* KGMutablePath.m */,
+				FEC11A930FD4B4D600082282 /* KGPaint.h */,
+				FEC11A940FD4B4D600082282 /* KGPaint.m */,
+				FEC11A950FD4B4D600082282 /* KGPaint_axialGradient.h */,
+				FEC11A960FD4B4D600082282 /* KGPaint_axialGradient.m */,
+				FEC11A970FD4B4D600082282 /* KGPaint_color.h */,
+				FEC11A980FD4B4D600082282 /* KGPaint_color.m */,
+				FEC11A990FD4B4D600082282 /* KGPaint_image.h */,
+				FEC11A9A0FD4B4D600082282 /* KGPaint_image.m */,
+				FEC11A9B0FD4B4D600082282 /* KGPaint_pattern.h */,
+				FEC11A9C0FD4B4D600082282 /* KGPaint_pattern.m */,
+				FEC11A9D0FD4B4D600082282 /* KGPaint_radialGradient.h */,
+				FEC11A9E0FD4B4D600082282 /* KGPaint_radialGradient.m */,
+				FEC11A9F0FD4B4D600082282 /* KGPaint_ramp.h */,
+				FEC11AA00FD4B4D600082282 /* KGPaint_ramp.m */,
+				FEC11AA10FD4B4D600082282 /* KGPath.h */,
+				FEC11AA20FD4B4D600082282 /* KGPath.m */,
+				FEC11AA30FD4B4D600082282 /* KGPattern.h */,
+				FEC11AA40FD4B4D600082282 /* KGPattern.m */,
+				FEC11AA50FD4B4D600082282 /* KGPDFArray.h */,
+				FEC11AA60FD4B4D600082282 /* KGPDFArray.m */,
+				FEC11AA70FD4B4D600082282 /* KGPDFContentStream.h */,
+				FEC11AA80FD4B4D600082282 /* KGPDFContentStream.m */,
+				FEC11AA90FD4B4D600082282 /* KGPDFContext.h */,
+				FEC11AAA0FD4B4D600082282 /* KGPDFContext.m */,
+				FEC11AAB0FD4B4D600082282 /* KGPDFDictionary.h */,
+				FEC11AAC0FD4B4D600082282 /* KGPDFDictionary.m */,
+				FEC11AAD0FD4B4D600082282 /* KGPDFDocument.h */,
+				FEC11AAE0FD4B4D600082282 /* KGPDFDocument.m */,
+				FEC11AAF0FD4B4D600082282 /* KGPDFFilter.h */,
+				FEC11AB00FD4B4D600082282 /* KGPDFFilter.m */,
+				FEC11AB10FD4B4D600082282 /* KGPDFFunction_Type2.h */,
+				FEC11AB20FD4B4D600082282 /* KGPDFFunction_Type2.m */,
+				FEC11AB30FD4B4D600082282 /* KGPDFFunction_Type3.h */,
+				FEC11AB40FD4B4D600082282 /* KGPDFFunction_Type3.m */,
+				FEC11AB50FD4B4D600082282 /* KGPDFObject.h */,
+				FEC11AB60FD4B4D600082282 /* KGPDFObject.m */,
+				FEC11AB70FD4B4D600082282 /* KGPDFObject_Boolean.h */,
+				FEC11AB80FD4B4D600082282 /* KGPDFObject_Boolean.m */,
+				FEC11AB90FD4B4D600082282 /* KGPDFObject_const.h */,
+				FEC11ABA0FD4B4D600082282 /* KGPDFObject_const.m */,
+				FEC11ABB0FD4B4D600082282 /* KGPDFObject_identifier.h */,
+				FEC11ABC0FD4B4D600082282 /* KGPDFObject_identifier.m */,
+				FEC11ABD0FD4B4D600082282 /* KGPDFObject_Integer.h */,
+				FEC11ABE0FD4B4D600082282 /* KGPDFObject_Integer.m */,
+				FEC11ABF0FD4B4D600082282 /* KGPDFObject_Name.h */,
+				FEC11AC00FD4B4D600082282 /* KGPDFObject_Name.m */,
+				FEC11AC10FD4B4D600082282 /* KGPDFObject_R.h */,
+				FEC11AC20FD4B4D600082282 /* KGPDFObject_R.m */,
+				FEC11AC30FD4B4D600082282 /* KGPDFObject_Real.h */,
+				FEC11AC40FD4B4D600082282 /* KGPDFObject_Real.m */,
+				FEC11AC50FD4B4D600082282 /* KGPDFOperators.h */,
+				FEC11AC60FD4B4D600082282 /* KGPDFOperators.m */,
+				FEC11AC70FD4B4D600082282 /* KGPDFOperatorTable.h */,
+				FEC11AC80FD4B4D600082282 /* KGPDFOperatorTable.m */,
+				FEC11AC90FD4B4D600082282 /* KGPDFPage.h */,
+				FEC11ACA0FD4B4D600082282 /* KGPDFPage.m */,
+				FEC11ACB0FD4B4D600082282 /* KGPDFScanner.h */,
+				FEC11ACC0FD4B4D600082282 /* KGPDFScanner.m */,
+				FEC11ACD0FD4B4D600082282 /* KGPDFStream.h */,
+				FEC11ACE0FD4B4D600082282 /* KGPDFStream.m */,
+				FEC11ACF0FD4B4D600082282 /* KGPDFString.h */,
+				FEC11AD00FD4B4D600082282 /* KGPDFString.m */,
+				FEC11AD10FD4B4D600082282 /* KGPDFxref.h */,
+				FEC11AD20FD4B4D600082282 /* KGPDFxref.m */,
+				FEC11AD30FD4B4D600082282 /* KGPDFxrefEntry.h */,
+				FEC11AD40FD4B4D600082282 /* KGPDFxrefEntry.m */,
+				FEC11AD50FD4B4D600082282 /* KGShading+PDF.h */,
+				FEC11AD60FD4B4D600082282 /* KGShading+PDF.m */,
+				FEC11AD70FD4B4D600082282 /* KGShading.h */,
+				FEC11AD80FD4B4D600082282 /* KGShading.m */,
+				FEC11AD90FD4B4D600082282 /* KGSurface.h */,
+				FEC11ADA0FD4B4D600082282 /* KGSurface.m */,
+				FEC11ADB0FD4B4D600082282 /* KGzlib.h */,
+				FEC11ADC0FD4B4D600082282 /* KGzlib.m */,
+				FEC11ADD0FD4B4D600082282 /* KTFont+PDF.h */,
+				FEC11ADE0FD4B4D600082282 /* KTFont+PDF.m */,
+				FEC11ADF0FD4B4D600082282 /* KTFont.h */,
+				FEC11AE00FD4B4D600082282 /* KTFont.m */,
+				FEC11AE10FD4B4D600082282 /* NSTIFFImageFileDirectory.h */,
+				FEC11AE20FD4B4D600082282 /* NSTIFFImageFileDirectory.m */,
+				FEC11AE30FD4B4D600082282 /* NSTIFFReader.h */,
+				FEC11AE40FD4B4D600082282 /* NSTIFFReader.m */,
+				034768DFFF38A50411DB9C8B /* Products */,
+				089C1665FE841158C02AAC07 /* Resources */,
+				FEC11AE50FD4B4D600082282 /* VGmath.h */,
+				FEC11AE60FD4B4D600082282 /* VGPath.h */,
+				FEC11AE70FD4B4D600082282 /* VGPath.m */,
+			);
+			name = CoreGraphics;
+			sourceTree = "<group>";
+		};
+		0867D69AFE84028FC02AAC07 /* External Frameworks and Libraries */ = {
+			isa = PBXGroup;
+			children = (
+				1058C7B0FEA5585E11CA2CBB /* Linked Frameworks */,
+				1058C7B2FEA5585E11CA2CBB /* Other Frameworks */,
+			);
+			name = "External Frameworks and Libraries";
+			sourceTree = "<group>";
+		};
+		089C1665FE841158C02AAC07 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				8DC2EF5A0486A6940098B216 /* Info.plist */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		1058C7B0FEA5585E11CA2CBB /* Linked Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "Linked Frameworks";
+			sourceTree = "<group>";
+		};
+		1058C7B2FEA5585E11CA2CBB /* Other Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				0867D69BFE84028FC02AAC07 /* Foundation.framework */,
+			);
+			name = "Other Frameworks";
+			sourceTree = "<group>";
+		};
+		FE6F7BC10FD5572F00C3244F /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				FE6F7BCB0FD5572F00C3244F /* Foundation.framework */,
+				FE6F7BCD0FD5572F00C3244F /* Foundation.framework */,
+				FE6F7BCF0FD5572F00C3244F /* Foundation.framework */,
+				FE6F7BD10FD5572F00C3244F /* Foundation.framework */,
+				FE6F7BD30FD5572F00C3244F /* Foundation.framework */,
+				FE6F7BD50FD5572F00C3244F /* Foundation.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		8DC2EF500486A6940098B216 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FEC11AE80FD4B4D600082282 /* CGAffineTransform.h in Headers */,
+				FEC11AEA0FD4B4D600082282 /* CGBitmapContext.h in Headers */,
+				FEC11AEC0FD4B4D600082282 /* CGColor.h in Headers */,
+				FEC11AEE0FD4B4D600082282 /* CGColorSpace.h in Headers */,
+				FEC11AF00FD4B4D600082282 /* CGContext.h in Headers */,
+				FEC11AF20FD4B4D600082282 /* CGDataProvider.h in Headers */,
+				FEC11AF40FD4B4D600082282 /* CGEvent.h in Headers */,
+				FEC11AF60FD4B4D600082282 /* CGFont.h in Headers */,
+				FEC11AF80FD4B4D600082282 /* CGFunction.h in Headers */,
+				FEC11AFA0FD4B4D600082282 /* CGGeometry.h in Headers */,
+				FEC11AFC0FD4B4D600082282 /* CGImage.h in Headers */,
+				FEC11AFE0FD4B4D600082282 /* CGImageProperties.h in Headers */,
+				FEC11B000FD4B4D600082282 /* CGImageSource.h in Headers */,
+				FEC11B020FD4B4D600082282 /* CGLayer.h in Headers */,
+				FEC11B040FD4B4D600082282 /* CGPath.h in Headers */,
+				FEC11B060FD4B4D600082282 /* CGPattern.h in Headers */,
+				FEC11B080FD4B4D600082282 /* CGPDFDocument.h in Headers */,
+				FEC11B0A0FD4B4D600082282 /* CGPDFPage.h in Headers */,
+				FEC11B0C0FD4B4D600082282 /* CGShading.h in Headers */,
+				FEC11B0E0FD4B4D600082282 /* CGWindow.h in Headers */,
+				FEC11B100FD4B4D600082282 /* CoreGraphics.h in Headers */,
+				FEC11B110FD4B4D600082282 /* CoreGraphicsExport.h in Headers */,
+				FEC11B130FD4B4D600082282 /* gif_lib.h in Headers */,
+				FEC11B150FD4B4D600082282 /* KGBitmapContext.h in Headers */,
+				FEC11B170FD4B4D600082282 /* KGBlending.h in Headers */,
+				FEC11B180FD4B4D600082282 /* KGClipPhase.h in Headers */,
+				FEC11B1A0FD4B4D600082282 /* KGColor.h in Headers */,
+				FEC11B1C0FD4B4D600082282 /* KGColorSpace+PDF.h in Headers */,
+				FEC11B1E0FD4B4D600082282 /* KGColorSpace.h in Headers */,
+				FEC11B200FD4B4D600082282 /* KGContext.h in Headers */,
+				FEC11B220FD4B4D600082282 /* KGContext_builtin.h in Headers */,
+				FEC11B240FD4B4D600082282 /* KGDataProvider.h in Headers */,
+				FEC11B260FD4B4D600082282 /* KGExceptions.h in Headers */,
+				FEC11B270FD4B4D600082282 /* KGFont.h in Headers */,
+				FEC11B290FD4B4D600082282 /* KGFunction+PDF.h in Headers */,
+				FEC11B2B0FD4B4D600082282 /* KGFunction.h in Headers */,
+				FEC11B2D0FD4B4D600082282 /* KGGraphicsState.h in Headers */,
+				FEC11B2F0FD4B4D600082282 /* KGImage+PDF.h in Headers */,
+				FEC11B310FD4B4D600082282 /* KGImage.h in Headers */,
+				FEC11B330FD4B4D600082282 /* KGImageSource.h in Headers */,
+				FEC11B350FD4B4D600082282 /* KGImageSource_BMP.h in Headers */,
+				FEC11B370FD4B4D600082282 /* KGImageSource_GIF.h in Headers */,
+				FEC11B390FD4B4D600082282 /* KGImageSource_JPEG.h in Headers */,
+				FEC11B3B0FD4B4D600082282 /* KGImageSource_PNG.h in Headers */,
+				FEC11B3D0FD4B4D600082282 /* KGImageSource_TIFF.h in Headers */,
+				FEC11B3F0FD4B4D600082282 /* KGLayer.h in Headers */,
+				FEC11B410FD4B4D600082282 /* KGMutablePath.h in Headers */,
+				FEC11B430FD4B4D600082282 /* KGPaint.h in Headers */,
+				FEC11B450FD4B4D600082282 /* KGPaint_axialGradient.h in Headers */,
+				FEC11B470FD4B4D600082282 /* KGPaint_color.h in Headers */,
+				FEC11B490FD4B4D600082282 /* KGPaint_image.h in Headers */,
+				FEC11B4B0FD4B4D600082282 /* KGPaint_pattern.h in Headers */,
+				FEC11B4D0FD4B4D600082282 /* KGPaint_radialGradient.h in Headers */,
+				FEC11B4F0FD4B4D600082282 /* KGPaint_ramp.h in Headers */,
+				FEC11B510FD4B4D600082282 /* KGPath.h in Headers */,
+				FEC11B530FD4B4D600082282 /* KGPattern.h in Headers */,
+				FEC11B550FD4B4D600082282 /* KGPDFArray.h in Headers */,
+				FEC11B570FD4B4D600082282 /* KGPDFContentStream.h in Headers */,
+				FEC11B590FD4B4D600082282 /* KGPDFContext.h in Headers */,
+				FEC11B5B0FD4B4D600082282 /* KGPDFDictionary.h in Headers */,
+				FEC11B5D0FD4B4D600082282 /* KGPDFDocument.h in Headers */,
+				FEC11B5F0FD4B4D600082282 /* KGPDFFilter.h in Headers */,
+				FEC11B610FD4B4D600082282 /* KGPDFFunction_Type2.h in Headers */,
+				FEC11B630FD4B4D600082282 /* KGPDFFunction_Type3.h in Headers */,
+				FEC11B650FD4B4D600082282 /* KGPDFObject.h in Headers */,
+				FEC11B670FD4B4D600082282 /* KGPDFObject_Boolean.h in Headers */,
+				FEC11B690FD4B4D600082282 /* KGPDFObject_const.h in Headers */,
+				FEC11B6B0FD4B4D600082282 /* KGPDFObject_identifier.h in Headers */,
+				FEC11B6D0FD4B4D600082282 /* KGPDFObject_Integer.h in Headers */,
+				FEC11B6F0FD4B4D600082282 /* KGPDFObject_Name.h in Headers */,
+				FEC11B710FD4B4D600082282 /* KGPDFObject_R.h in Headers */,
+				FEC11B730FD4B4D600082282 /* KGPDFObject_Real.h in Headers */,
+				FEC11B750FD4B4D600082282 /* KGPDFOperators.h in Headers */,
+				FEC11B770FD4B4D600082282 /* KGPDFOperatorTable.h in Headers */,
+				FEC11B790FD4B4D600082282 /* KGPDFPage.h in Headers */,
+				FEC11B7B0FD4B4D600082282 /* KGPDFScanner.h in Headers */,
+				FEC11B7D0FD4B4D600082282 /* KGPDFStream.h in Headers */,
+				FEC11B7F0FD4B4D600082282 /* KGPDFString.h in Headers */,
+				FEC11B810FD4B4D600082282 /* KGPDFxref.h in Headers */,
+				FEC11B830FD4B4D600082282 /* KGPDFxrefEntry.h in Headers */,
+				FEC11B850FD4B4D600082282 /* KGShading+PDF.h in Headers */,
+				FEC11B870FD4B4D600082282 /* KGShading.h in Headers */,
+				FEC11B890FD4B4D600082282 /* KGSurface.h in Headers */,
+				FEC11B8B0FD4B4D600082282 /* KGzlib.h in Headers */,
+				FEC11B8D0FD4B4D600082282 /* KTFont+PDF.h in Headers */,
+				FEC11B8F0FD4B4D600082282 /* KTFont.h in Headers */,
+				FEC11B910FD4B4D600082282 /* NSTIFFImageFileDirectory.h in Headers */,
+				FEC11B930FD4B4D600082282 /* NSTIFFReader.h in Headers */,
+				FEC11B950FD4B4D600082282 /* VGmath.h in Headers */,
+				FEC11B960FD4B4D600082282 /* VGPath.h in Headers */,
+				FEC11C050FD4C2BB00082282 /* CoreText.h in Headers */,
+				FEC11C060FD4C2BB00082282 /* CTFont.h in Headers */,
+				FE9DB4610FD6C38300A1CE17 /* CGDataConsumer.h in Headers */,
+				FEAED7100FD6C40E0043F915 /* KGDataConsumer.h in Headers */,
+				FEAED71C0FD6C4460043F915 /* CGPDFContext.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FE6F7AF90FD554A800C3244F /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FE6F7AFA0FD554A800C3244F /* CGAffineTransform.h in Headers */,
+				FE6F7AFB0FD554A800C3244F /* CGBitmapContext.h in Headers */,
+				FE6F7AFC0FD554A800C3244F /* CGColor.h in Headers */,
+				FE6F7AFD0FD554A800C3244F /* CGColorSpace.h in Headers */,
+				FE6F7AFE0FD554A800C3244F /* CGContext.h in Headers */,
+				FE6F7AFF0FD554A800C3244F /* CGDataProvider.h in Headers */,
+				FE6F7B000FD554A800C3244F /* CGEvent.h in Headers */,
+				FE6F7B010FD554A800C3244F /* CGFont.h in Headers */,
+				FE6F7B020FD554A800C3244F /* CGFunction.h in Headers */,
+				FE6F7B030FD554A800C3244F /* CGGeometry.h in Headers */,
+				FE6F7B040FD554A800C3244F /* CGImage.h in Headers */,
+				FE6F7B050FD554A800C3244F /* CGImageProperties.h in Headers */,
+				FE6F7B060FD554A800C3244F /* CGImageSource.h in Headers */,
+				FE6F7B070FD554A800C3244F /* CGLayer.h in Headers */,
+				FE6F7B080FD554A800C3244F /* CGPath.h in Headers */,
+				FE6F7B090FD554A800C3244F /* CGPattern.h in Headers */,
+				FE6F7B0A0FD554A800C3244F /* CGPDFDocument.h in Headers */,
+				FE6F7B0B0FD554A800C3244F /* CGPDFPage.h in Headers */,
+				FE6F7B0C0FD554A800C3244F /* CGShading.h in Headers */,
+				FE6F7B0D0FD554A800C3244F /* CGWindow.h in Headers */,
+				FE6F7B0E0FD554A800C3244F /* CoreGraphics.h in Headers */,
+				FE6F7B0F0FD554A800C3244F /* CoreGraphicsExport.h in Headers */,
+				FE6F7B100FD554A800C3244F /* gif_lib.h in Headers */,
+				FE6F7B110FD554A800C3244F /* KGBitmapContext.h in Headers */,
+				FE6F7B120FD554A800C3244F /* KGBlending.h in Headers */,
+				FE6F7B130FD554A800C3244F /* KGClipPhase.h in Headers */,
+				FE6F7B140FD554A800C3244F /* KGColor.h in Headers */,
+				FE6F7B150FD554A800C3244F /* KGColorSpace+PDF.h in Headers */,
+				FE6F7B160FD554A800C3244F /* KGColorSpace.h in Headers */,
+				FE6F7B170FD554A800C3244F /* KGContext.h in Headers */,
+				FE6F7B180FD554A800C3244F /* KGContext_builtin.h in Headers */,
+				FE6F7B190FD554A800C3244F /* KGDataProvider.h in Headers */,
+				FE6F7B1A0FD554A800C3244F /* KGExceptions.h in Headers */,
+				FE6F7B1B0FD554A800C3244F /* KGFont.h in Headers */,
+				FE6F7B1C0FD554A800C3244F /* KGFunction+PDF.h in Headers */,
+				FE6F7B1D0FD554A800C3244F /* KGFunction.h in Headers */,
+				FE6F7B1E0FD554A800C3244F /* KGGraphicsState.h in Headers */,
+				FE6F7B1F0FD554A800C3244F /* KGImage+PDF.h in Headers */,
+				FE6F7B200FD554A800C3244F /* KGImage.h in Headers */,
+				FE6F7B210FD554A800C3244F /* KGImageSource.h in Headers */,
+				FE6F7B220FD554A800C3244F /* KGImageSource_BMP.h in Headers */,
+				FE6F7B230FD554A800C3244F /* KGImageSource_GIF.h in Headers */,
+				FE6F7B240FD554A800C3244F /* KGImageSource_JPEG.h in Headers */,
+				FE6F7B250FD554A800C3244F /* KGImageSource_PNG.h in Headers */,
+				FE6F7B260FD554A800C3244F /* KGImageSource_TIFF.h in Headers */,
+				FE6F7B270FD554A800C3244F /* KGLayer.h in Headers */,
+				FE6F7B280FD554A800C3244F /* KGMutablePath.h in Headers */,
+				FE6F7B290FD554A800C3244F /* KGPaint.h in Headers */,
+				FE6F7B2A0FD554A800C3244F /* KGPaint_axialGradient.h in Headers */,
+				FE6F7B2B0FD554A800C3244F /* KGPaint_color.h in Headers */,
+				FE6F7B2C0FD554A800C3244F /* KGPaint_image.h in Headers */,
+				FE6F7B2D0FD554A800C3244F /* KGPaint_pattern.h in Headers */,
+				FE6F7B2E0FD554A800C3244F /* KGPaint_radialGradient.h in Headers */,
+				FE6F7B2F0FD554A800C3244F /* KGPaint_ramp.h in Headers */,
+				FE6F7B300FD554A800C3244F /* KGPath.h in Headers */,
+				FE6F7B310FD554A800C3244F /* KGPattern.h in Headers */,
+				FE6F7B320FD554A800C3244F /* KGPDFArray.h in Headers */,
+				FE6F7B330FD554A800C3244F /* KGPDFContentStream.h in Headers */,
+				FE6F7B340FD554A800C3244F /* KGPDFContext.h in Headers */,
+				FE6F7B350FD554A800C3244F /* KGPDFDictionary.h in Headers */,
+				FE6F7B360FD554A800C3244F /* KGPDFDocument.h in Headers */,
+				FE6F7B370FD554A800C3244F /* KGPDFFilter.h in Headers */,
+				FE6F7B380FD554A800C3244F /* KGPDFFunction_Type2.h in Headers */,
+				FE6F7B390FD554A800C3244F /* KGPDFFunction_Type3.h in Headers */,
+				FE6F7B3A0FD554A800C3244F /* KGPDFObject.h in Headers */,
+				FE6F7B3B0FD554A800C3244F /* KGPDFObject_Boolean.h in Headers */,
+				FE6F7B3C0FD554A800C3244F /* KGPDFObject_const.h in Headers */,
+				FE6F7B3D0FD554A800C3244F /* KGPDFObject_identifier.h in Headers */,
+				FE6F7B3E0FD554A800C3244F /* KGPDFObject_Integer.h in Headers */,
+				FE6F7B3F0FD554A800C3244F /* KGPDFObject_Name.h in Headers */,
+				FE6F7B400FD554A800C3244F /* KGPDFObject_R.h in Headers */,
+				FE6F7B410FD554A800C3244F /* KGPDFObject_Real.h in Headers */,
+				FE6F7B420FD554A800C3244F /* KGPDFOperators.h in Headers */,
+				FE6F7B430FD554A800C3244F /* KGPDFOperatorTable.h in Headers */,
+				FE6F7B440FD554A800C3244F /* KGPDFPage.h in Headers */,
+				FE6F7B450FD554A800C3244F /* KGPDFScanner.h in Headers */,
+				FE6F7B460FD554A800C3244F /* KGPDFStream.h in Headers */,
+				FE6F7B470FD554A800C3244F /* KGPDFString.h in Headers */,
+				FE6F7B480FD554A800C3244F /* KGPDFxref.h in Headers */,
+				FE6F7B490FD554A800C3244F /* KGPDFxrefEntry.h in Headers */,
+				FE6F7B4A0FD554A800C3244F /* KGShading+PDF.h in Headers */,
+				FE6F7B4B0FD554A800C3244F /* KGShading.h in Headers */,
+				FE6F7B4C0FD554A800C3244F /* KGSurface.h in Headers */,
+				FE6F7B4D0FD554A800C3244F /* KGzlib.h in Headers */,
+				FE6F7B4E0FD554A800C3244F /* KTFont+PDF.h in Headers */,
+				FE6F7B4F0FD554A800C3244F /* KTFont.h in Headers */,
+				FE6F7B500FD554A800C3244F /* NSTIFFImageFileDirectory.h in Headers */,
+				FE6F7B510FD554A800C3244F /* NSTIFFReader.h in Headers */,
+				FE6F7B520FD554A800C3244F /* VGmath.h in Headers */,
+				FE6F7B530FD554A800C3244F /* VGPath.h in Headers */,
+				FE6F7B540FD554A800C3244F /* CoreText.h in Headers */,
+				FE6F7B550FD554A800C3244F /* CTFont.h in Headers */,
+				FE9DB4630FD6C38300A1CE17 /* CGDataConsumer.h in Headers */,
+				FEAED7120FD6C40E0043F915 /* KGDataConsumer.h in Headers */,
+				FEAED71E0FD6C4460043F915 /* CGPDFContext.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FE6F7BDE0FD55FA300C3244F /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FE6F7BDF0FD55FA300C3244F /* CGAffineTransform.h in Headers */,
+				FE6F7BE00FD55FA300C3244F /* CGBitmapContext.h in Headers */,
+				FE6F7BE10FD55FA300C3244F /* CGColor.h in Headers */,
+				FE6F7BE20FD55FA300C3244F /* CGColorSpace.h in Headers */,
+				FE6F7BE30FD55FA300C3244F /* CGContext.h in Headers */,
+				FE6F7BE40FD55FA300C3244F /* CGDataProvider.h in Headers */,
+				FE6F7BE50FD55FA300C3244F /* CGEvent.h in Headers */,
+				FE6F7BE60FD55FA300C3244F /* CGFont.h in Headers */,
+				FE6F7BE70FD55FA300C3244F /* CGFunction.h in Headers */,
+				FE6F7BE80FD55FA300C3244F /* CGGeometry.h in Headers */,
+				FE6F7BE90FD55FA300C3244F /* CGImage.h in Headers */,
+				FE6F7BEA0FD55FA300C3244F /* CGImageProperties.h in Headers */,
+				FE6F7BEB0FD55FA300C3244F /* CGImageSource.h in Headers */,
+				FE6F7BEC0FD55FA300C3244F /* CGLayer.h in Headers */,
+				FE6F7BED0FD55FA300C3244F /* CGPath.h in Headers */,
+				FE6F7BEE0FD55FA300C3244F /* CGPattern.h in Headers */,
+				FE6F7BEF0FD55FA300C3244F /* CGPDFDocument.h in Headers */,
+				FE6F7BF00FD55FA300C3244F /* CGPDFPage.h in Headers */,
+				FE6F7BF10FD55FA300C3244F /* CGShading.h in Headers */,
+				FE6F7BF20FD55FA300C3244F /* CGWindow.h in Headers */,
+				FE6F7BF30FD55FA300C3244F /* CoreGraphics.h in Headers */,
+				FE6F7BF40FD55FA300C3244F /* CoreGraphicsExport.h in Headers */,
+				FE6F7BF50FD55FA300C3244F /* gif_lib.h in Headers */,
+				FE6F7BF60FD55FA300C3244F /* KGBitmapContext.h in Headers */,
+				FE6F7BF70FD55FA300C3244F /* KGBlending.h in Headers */,
+				FE6F7BF80FD55FA300C3244F /* KGClipPhase.h in Headers */,
+				FE6F7BF90FD55FA300C3244F /* KGColor.h in Headers */,
+				FE6F7BFA0FD55FA300C3244F /* KGColorSpace+PDF.h in Headers */,
+				FE6F7BFB0FD55FA300C3244F /* KGColorSpace.h in Headers */,
+				FE6F7BFC0FD55FA300C3244F /* KGContext.h in Headers */,
+				FE6F7BFD0FD55FA300C3244F /* KGContext_builtin.h in Headers */,
+				FE6F7BFE0FD55FA300C3244F /* KGDataProvider.h in Headers */,
+				FE6F7BFF0FD55FA300C3244F /* KGExceptions.h in Headers */,
+				FE6F7C000FD55FA300C3244F /* KGFont.h in Headers */,
+				FE6F7C010FD55FA300C3244F /* KGFunction+PDF.h in Headers */,
+				FE6F7C020FD55FA300C3244F /* KGFunction.h in Headers */,
+				FE6F7C030FD55FA300C3244F /* KGGraphicsState.h in Headers */,
+				FE6F7C040FD55FA300C3244F /* KGImage+PDF.h in Headers */,
+				FE6F7C050FD55FA300C3244F /* KGImage.h in Headers */,
+				FE6F7C060FD55FA300C3244F /* KGImageSource.h in Headers */,
+				FE6F7C070FD55FA300C3244F /* KGImageSource_BMP.h in Headers */,
+				FE6F7C080FD55FA300C3244F /* KGImageSource_GIF.h in Headers */,
+				FE6F7C090FD55FA300C3244F /* KGImageSource_JPEG.h in Headers */,
+				FE6F7C0A0FD55FA300C3244F /* KGImageSource_PNG.h in Headers */,
+				FE6F7C0B0FD55FA300C3244F /* KGImageSource_TIFF.h in Headers */,
+				FE6F7C0C0FD55FA300C3244F /* KGLayer.h in Headers */,
+				FE6F7C0D0FD55FA300C3244F /* KGMutablePath.h in Headers */,
+				FE6F7C0E0FD55FA300C3244F /* KGPaint.h in Headers */,
+				FE6F7C0F0FD55FA300C3244F /* KGPaint_axialGradient.h in Headers */,
+				FE6F7C100FD55FA300C3244F /* KGPaint_color.h in Headers */,
+				FE6F7C110FD55FA300C3244F /* KGPaint_image.h in Headers */,
+				FE6F7C120FD55FA300C3244F /* KGPaint_pattern.h in Headers */,
+				FE6F7C130FD55FA300C3244F /* KGPaint_radialGradient.h in Headers */,
+				FE6F7C140FD55FA300C3244F /* KGPaint_ramp.h in Headers */,
+				FE6F7C150FD55FA300C3244F /* KGPath.h in Headers */,
+				FE6F7C160FD55FA300C3244F /* KGPattern.h in Headers */,
+				FE6F7C170FD55FA300C3244F /* KGPDFArray.h in Headers */,
+				FE6F7C180FD55FA300C3244F /* KGPDFContentStream.h in Headers */,
+				FE6F7C190FD55FA300C3244F /* KGPDFContext.h in Headers */,
+				FE6F7C1A0FD55FA300C3244F /* KGPDFDictionary.h in Headers */,
+				FE6F7C1B0FD55FA300C3244F /* KGPDFDocument.h in Headers */,
+				FE6F7C1C0FD55FA300C3244F /* KGPDFFilter.h in Headers */,
+				FE6F7C1D0FD55FA300C3244F /* KGPDFFunction_Type2.h in Headers */,
+				FE6F7C1E0FD55FA300C3244F /* KGPDFFunction_Type3.h in Headers */,
+				FE6F7C1F0FD55FA300C3244F /* KGPDFObject.h in Headers */,
+				FE6F7C200FD55FA300C3244F /* KGPDFObject_Boolean.h in Headers */,
+				FE6F7C210FD55FA300C3244F /* KGPDFObject_const.h in Headers */,
+				FE6F7C220FD55FA300C3244F /* KGPDFObject_identifier.h in Headers */,
+				FE6F7C230FD55FA300C3244F /* KGPDFObject_Integer.h in Headers */,
+				FE6F7C240FD55FA300C3244F /* KGPDFObject_Name.h in Headers */,
+				FE6F7C250FD55FA300C3244F /* KGPDFObject_R.h in Headers */,
+				FE6F7C260FD55FA300C3244F /* KGPDFObject_Real.h in Headers */,
+				FE6F7C270FD55FA300C3244F /* KGPDFOperators.h in Headers */,
+				FE6F7C280FD55FA300C3244F /* KGPDFOperatorTable.h in Headers */,
+				FE6F7C290FD55FA300C3244F /* KGPDFPage.h in Headers */,
+				FE6F7C2A0FD55FA300C3244F /* KGPDFScanner.h in Headers */,
+				FE6F7C2B0FD55FA300C3244F /* KGPDFStream.h in Headers */,
+				FE6F7C2C0FD55FA300C3244F /* KGPDFString.h in Headers */,
+				FE6F7C2D0FD55FA300C3244F /* KGPDFxref.h in Headers */,
+				FE6F7C2E0FD55FA300C3244F /* KGPDFxrefEntry.h in Headers */,
+				FE6F7C2F0FD55FA300C3244F /* KGShading+PDF.h in Headers */,
+				FE6F7C300FD55FA300C3244F /* KGShading.h in Headers */,
+				FE6F7C310FD55FA300C3244F /* KGSurface.h in Headers */,
+				FE6F7C320FD55FA300C3244F /* KGzlib.h in Headers */,
+				FE6F7C330FD55FA300C3244F /* KTFont+PDF.h in Headers */,
+				FE6F7C340FD55FA300C3244F /* KTFont.h in Headers */,
+				FE6F7C350FD55FA300C3244F /* NSTIFFImageFileDirectory.h in Headers */,
+				FE6F7C360FD55FA300C3244F /* NSTIFFReader.h in Headers */,
+				FE6F7C370FD55FA300C3244F /* VGmath.h in Headers */,
+				FE6F7C380FD55FA300C3244F /* VGPath.h in Headers */,
+				FE6F7C390FD55FA300C3244F /* CoreText.h in Headers */,
+				FE6F7C3A0FD55FA300C3244F /* CTFont.h in Headers */,
+				FE9DB4650FD6C38300A1CE17 /* CGDataConsumer.h in Headers */,
+				FEAED7140FD6C40E0043F915 /* KGDataConsumer.h in Headers */,
+				FEAED7200FD6C4460043F915 /* CGPDFContext.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		8DC2EF4F0486A6940098B216 /* CoreGraphics-Windows-i386 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1DEB91AD08733DA50010E9CD /* Build configuration list for PBXNativeTarget "CoreGraphics-Windows-i386" */;
+			buildPhases = (
+				8DC2EF500486A6940098B216 /* Headers */,
+				8DC2EF520486A6940098B216 /* Resources */,
+				8DC2EF540486A6940098B216 /* Sources */,
+				8DC2EF560486A6940098B216 /* Frameworks */,
+			);
+			buildRules = (
+				FEC11B9C0FD4B74C00082282 /* PBXBuildRule */,
+			);
+			dependencies = (
+				FE6F7BD70FD5573B00C3244F /* PBXTargetDependency */,
+			);
+			name = "CoreGraphics-Windows-i386";
+			productInstallPath = "$(HOME)/Library/Frameworks";
+			productName = CoreGraphics;
+			productReference = 8DC2EF5B0486A6940098B216 /* CoreGraphics.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		FE6F7AF80FD554A800C3244F /* CoreGraphics-Linux-i386 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FE6F7BB10FD554A800C3244F /* Build configuration list for PBXNativeTarget "CoreGraphics-Linux-i386" */;
+			buildPhases = (
+				FE6F7AF90FD554A800C3244F /* Headers */,
+				FE6F7B560FD554A800C3244F /* Resources */,
+				FE6F7B570FD554A800C3244F /* Sources */,
+				FE6F7BAE0FD554A800C3244F /* Frameworks */,
+			);
+			buildRules = (
+				FE6F7BB00FD554A800C3244F /* PBXBuildRule */,
+			);
+			dependencies = (
+				FE6F7BD90FD5574600C3244F /* PBXTargetDependency */,
+			);
+			name = "CoreGraphics-Linux-i386";
+			productInstallPath = "$(HOME)/Library/Frameworks";
+			productName = CoreGraphics;
+			productReference = FE6F7BB30FD554A800C3244F /* CoreGraphics.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		FE6F7BDB0FD55FA300C3244F /* CoreGraphics-Darwin-i386 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FE6F7C960FD55FA300C3244F /* Build configuration list for PBXNativeTarget "CoreGraphics-Darwin-i386" */;
+			buildPhases = (
+				FE6F7BDE0FD55FA300C3244F /* Headers */,
+				FE6F7C3B0FD55FA300C3244F /* Resources */,
+				FE6F7C3C0FD55FA300C3244F /* Sources */,
+				FE6F7C930FD55FA300C3244F /* Frameworks */,
+			);
+			buildRules = (
+				FE6F7C950FD55FA300C3244F /* PBXBuildRule */,
+			);
+			dependencies = (
+				FE6F7C9B0FD55FB600C3244F /* PBXTargetDependency */,
+			);
+			name = "CoreGraphics-Darwin-i386";
+			productInstallPath = "$(HOME)/Library/Frameworks";
+			productName = CoreGraphics;
+			productReference = FE6F7C980FD55FA300C3244F /* CoreGraphics.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		0867D690FE84028FC02AAC07 /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = 1DEB91B108733DA50010E9CD /* Build configuration list for PBXProject "CoreGraphics" */;
+			compatibilityVersion = "Xcode 2.4";
+			hasScannedForEncodings = 1;
+			mainGroup = 0867D691FE84028FC02AAC07 /* CoreGraphics */;
+			productRefGroup = 034768DFFF38A50411DB9C8B /* Products */;
+			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = FE6F7BC10FD5572F00C3244F /* Products */;
+					ProjectRef = FE6F7BC00FD5572F00C3244F /* Foundation.xcodeproj */;
+				},
+			);
+			projectRoot = "";
+			targets = (
+				8DC2EF4F0486A6940098B216 /* CoreGraphics-Windows-i386 */,
+				FE6F7AF80FD554A800C3244F /* CoreGraphics-Linux-i386 */,
+				FE6F7BDB0FD55FA300C3244F /* CoreGraphics-Darwin-i386 */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		FE6F7BCB0FD5572F00C3244F /* Foundation.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Foundation.framework;
+			remoteRef = FE6F7BCA0FD5572F00C3244F /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FE6F7BCD0FD5572F00C3244F /* Foundation.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Foundation.framework;
+			remoteRef = FE6F7BCC0FD5572F00C3244F /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FE6F7BCF0FD5572F00C3244F /* Foundation.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Foundation.framework;
+			remoteRef = FE6F7BCE0FD5572F00C3244F /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FE6F7BD10FD5572F00C3244F /* Foundation.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Foundation.framework;
+			remoteRef = FE6F7BD00FD5572F00C3244F /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FE6F7BD30FD5572F00C3244F /* Foundation.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Foundation.framework;
+			remoteRef = FE6F7BD20FD5572F00C3244F /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FE6F7BD50FD5572F00C3244F /* Foundation.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Foundation.framework;
+			remoteRef = FE6F7BD40FD5572F00C3244F /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
+
+/* Begin PBXResourcesBuildPhase section */
+		8DC2EF520486A6940098B216 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FE6F7B560FD554A800C3244F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FE6F7C3B0FD55FA300C3244F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		8DC2EF540486A6940098B216 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FEC11AE90FD4B4D600082282 /* CGAffineTransform.m in Sources */,
+				FEC11AEB0FD4B4D600082282 /* CGBitmapContext.m in Sources */,
+				FEC11AED0FD4B4D600082282 /* CGColor.m in Sources */,
+				FEC11AEF0FD4B4D600082282 /* CGColorSpace.m in Sources */,
+				FEC11AF10FD4B4D600082282 /* CGContext.m in Sources */,
+				FEC11AF30FD4B4D600082282 /* CGDataProvider.m in Sources */,
+				FEC11AF50FD4B4D600082282 /* CGEvent.m in Sources */,
+				FEC11AF70FD4B4D600082282 /* CGFont.m in Sources */,
+				FEC11AF90FD4B4D600082282 /* CGFunction.m in Sources */,
+				FEC11AFB0FD4B4D600082282 /* CGGeometry.m in Sources */,
+				FEC11AFD0FD4B4D600082282 /* CGImage.m in Sources */,
+				FEC11AFF0FD4B4D600082282 /* CGImageProperties.m in Sources */,
+				FEC11B010FD4B4D600082282 /* CGImageSource.m in Sources */,
+				FEC11B030FD4B4D600082282 /* CGLayer.m in Sources */,
+				FEC11B050FD4B4D600082282 /* CGPath.m in Sources */,
+				FEC11B070FD4B4D600082282 /* CGPattern.m in Sources */,
+				FEC11B090FD4B4D600082282 /* CGPDFDocument.m in Sources */,
+				FEC11B0B0FD4B4D600082282 /* CGPDFPage.m in Sources */,
+				FEC11B0D0FD4B4D600082282 /* CGShading.m in Sources */,
+				FEC11B0F0FD4B4D600082282 /* CGWindow.m in Sources */,
+				FEC11B120FD4B4D600082282 /* CTFont.m in Sources */,
+				FEC11B140FD4B4D600082282 /* gif_lib.m in Sources */,
+				FEC11B160FD4B4D600082282 /* KGBitmapContext.m in Sources */,
+				FEC11B190FD4B4D600082282 /* KGClipPhase.m in Sources */,
+				FEC11B1B0FD4B4D600082282 /* KGColor.m in Sources */,
+				FEC11B1D0FD4B4D600082282 /* KGColorSpace+PDF.m in Sources */,
+				FEC11B1F0FD4B4D600082282 /* KGColorSpace.m in Sources */,
+				FEC11B210FD4B4D600082282 /* KGContext.m in Sources */,
+				FEC11B230FD4B4D600082282 /* KGContext_builtin.m in Sources */,
+				FEC11B250FD4B4D600082282 /* KGDataProvider.m in Sources */,
+				FEC11B280FD4B4D600082282 /* KGFont.m in Sources */,
+				FEC11B2A0FD4B4D600082282 /* KGFunction+PDF.m in Sources */,
+				FEC11B2C0FD4B4D600082282 /* KGFunction.m in Sources */,
+				FEC11B2E0FD4B4D600082282 /* KGGraphicsState.m in Sources */,
+				FEC11B300FD4B4D600082282 /* KGImage+PDF.m in Sources */,
+				FEC11B320FD4B4D600082282 /* KGImage.m in Sources */,
+				FEC11B340FD4B4D600082282 /* KGImageSource.m in Sources */,
+				FEC11B360FD4B4D600082282 /* KGImageSource_BMP.m in Sources */,
+				FEC11B380FD4B4D600082282 /* KGImageSource_GIF.m in Sources */,
+				FEC11B3A0FD4B4D600082282 /* KGImageSource_JPEG.m in Sources */,
+				FEC11B3C0FD4B4D600082282 /* KGImageSource_PNG.m in Sources */,
+				FEC11B3E0FD4B4D600082282 /* KGImageSource_TIFF.m in Sources */,
+				FEC11B400FD4B4D600082282 /* KGLayer.m in Sources */,
+				FEC11B420FD4B4D600082282 /* KGMutablePath.m in Sources */,
+				FEC11B440FD4B4D600082282 /* KGPaint.m in Sources */,
+				FEC11B460FD4B4D600082282 /* KGPaint_axialGradient.m in Sources */,
+				FEC11B480FD4B4D600082282 /* KGPaint_color.m in Sources */,
+				FEC11B4A0FD4B4D600082282 /* KGPaint_image.m in Sources */,
+				FEC11B4C0FD4B4D600082282 /* KGPaint_pattern.m in Sources */,
+				FEC11B4E0FD4B4D600082282 /* KGPaint_radialGradient.m in Sources */,
+				FEC11B500FD4B4D600082282 /* KGPaint_ramp.m in Sources */,
+				FEC11B520FD4B4D600082282 /* KGPath.m in Sources */,
+				FEC11B540FD4B4D600082282 /* KGPattern.m in Sources */,
+				FEC11B560FD4B4D600082282 /* KGPDFArray.m in Sources */,
+				FEC11B580FD4B4D600082282 /* KGPDFContentStream.m in Sources */,
+				FEC11B5A0FD4B4D600082282 /* KGPDFContext.m in Sources */,
+				FEC11B5C0FD4B4D600082282 /* KGPDFDictionary.m in Sources */,
+				FEC11B5E0FD4B4D600082282 /* KGPDFDocument.m in Sources */,
+				FEC11B600FD4B4D600082282 /* KGPDFFilter.m in Sources */,
+				FEC11B620FD4B4D600082282 /* KGPDFFunction_Type2.m in Sources */,
+				FEC11B640FD4B4D600082282 /* KGPDFFunction_Type3.m in Sources */,
+				FEC11B660FD4B4D600082282 /* KGPDFObject.m in Sources */,
+				FEC11B680FD4B4D600082282 /* KGPDFObject_Boolean.m in Sources */,
+				FEC11B6A0FD4B4D600082282 /* KGPDFObject_const.m in Sources */,
+				FEC11B6C0FD4B4D600082282 /* KGPDFObject_identifier.m in Sources */,
+				FEC11B6E0FD4B4D600082282 /* KGPDFObject_Integer.m in Sources */,
+				FEC11B700FD4B4D600082282 /* KGPDFObject_Name.m in Sources */,
+				FEC11B720FD4B4D600082282 /* KGPDFObject_R.m in Sources */,
+				FEC11B740FD4B4D600082282 /* KGPDFObject_Real.m in Sources */,
+				FEC11B760FD4B4D600082282 /* KGPDFOperators.m in Sources */,
+				FEC11B780FD4B4D600082282 /* KGPDFOperatorTable.m in Sources */,
+				FEC11B7A0FD4B4D600082282 /* KGPDFPage.m in Sources */,
+				FEC11B7C0FD4B4D600082282 /* KGPDFScanner.m in Sources */,
+				FEC11B7E0FD4B4D600082282 /* KGPDFStream.m in Sources */,
+				FEC11B800FD4B4D600082282 /* KGPDFString.m in Sources */,
+				FEC11B820FD4B4D600082282 /* KGPDFxref.m in Sources */,
+				FEC11B840FD4B4D600082282 /* KGPDFxrefEntry.m in Sources */,
+				FEC11B860FD4B4D600082282 /* KGShading+PDF.m in Sources */,
+				FEC11B880FD4B4D600082282 /* KGShading.m in Sources */,
+				FEC11B8A0FD4B4D600082282 /* KGSurface.m in Sources */,
+				FEC11B8C0FD4B4D600082282 /* KGzlib.m in Sources */,
+				FEC11B8E0FD4B4D600082282 /* KTFont+PDF.m in Sources */,
+				FEC11B900FD4B4D600082282 /* KTFont.m in Sources */,
+				FEC11B920FD4B4D600082282 /* NSTIFFImageFileDirectory.m in Sources */,
+				FEC11B940FD4B4D600082282 /* NSTIFFReader.m in Sources */,
+				FEC11B970FD4B4D600082282 /* VGPath.m in Sources */,
+				FE9DB4620FD6C38300A1CE17 /* CGDataConsumer.m in Sources */,
+				FEAED7110FD6C40E0043F915 /* KGDataConsumer.m in Sources */,
+				FEAED71D0FD6C4460043F915 /* CGPDFContext.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FE6F7B570FD554A800C3244F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FE6F7B580FD554A800C3244F /* CGAffineTransform.m in Sources */,
+				FE6F7B590FD554A800C3244F /* CGBitmapContext.m in Sources */,
+				FE6F7B5A0FD554A800C3244F /* CGColor.m in Sources */,
+				FE6F7B5B0FD554A800C3244F /* CGColorSpace.m in Sources */,
+				FE6F7B5C0FD554A800C3244F /* CGContext.m in Sources */,
+				FE6F7B5D0FD554A800C3244F /* CGDataProvider.m in Sources */,
+				FE6F7B5E0FD554A800C3244F /* CGEvent.m in Sources */,
+				FE6F7B5F0FD554A800C3244F /* CGFont.m in Sources */,
+				FE6F7B600FD554A800C3244F /* CGFunction.m in Sources */,
+				FE6F7B610FD554A800C3244F /* CGGeometry.m in Sources */,
+				FE6F7B620FD554A800C3244F /* CGImage.m in Sources */,
+				FE6F7B630FD554A800C3244F /* CGImageProperties.m in Sources */,
+				FE6F7B640FD554A800C3244F /* CGImageSource.m in Sources */,
+				FE6F7B650FD554A800C3244F /* CGLayer.m in Sources */,
+				FE6F7B660FD554A800C3244F /* CGPath.m in Sources */,
+				FE6F7B670FD554A800C3244F /* CGPattern.m in Sources */,
+				FE6F7B680FD554A800C3244F /* CGPDFDocument.m in Sources */,
+				FE6F7B690FD554A800C3244F /* CGPDFPage.m in Sources */,
+				FE6F7B6A0FD554A800C3244F /* CGShading.m in Sources */,
+				FE6F7B6B0FD554A800C3244F /* CGWindow.m in Sources */,
+				FE6F7B6C0FD554A800C3244F /* CTFont.m in Sources */,
+				FE6F7B6D0FD554A800C3244F /* gif_lib.m in Sources */,
+				FE6F7B6E0FD554A800C3244F /* KGBitmapContext.m in Sources */,
+				FE6F7B6F0FD554A800C3244F /* KGClipPhase.m in Sources */,
+				FE6F7B700FD554A800C3244F /* KGColor.m in Sources */,
+				FE6F7B710FD554A800C3244F /* KGColorSpace+PDF.m in Sources */,
+				FE6F7B720FD554A800C3244F /* KGColorSpace.m in Sources */,
+				FE6F7B730FD554A800C3244F /* KGContext.m in Sources */,
+				FE6F7B740FD554A800C3244F /* KGContext_builtin.m in Sources */,
+				FE6F7B750FD554A800C3244F /* KGDataProvider.m in Sources */,
+				FE6F7B760FD554A800C3244F /* KGFont.m in Sources */,
+				FE6F7B770FD554A800C3244F /* KGFunction+PDF.m in Sources */,
+				FE6F7B780FD554A800C3244F /* KGFunction.m in Sources */,
+				FE6F7B790FD554A800C3244F /* KGGraphicsState.m in Sources */,
+				FE6F7B7A0FD554A800C3244F /* KGImage+PDF.m in Sources */,
+				FE6F7B7B0FD554A800C3244F /* KGImage.m in Sources */,
+				FE6F7B7C0FD554A800C3244F /* KGImageSource.m in Sources */,
+				FE6F7B7D0FD554A800C3244F /* KGImageSource_BMP.m in Sources */,
+				FE6F7B7E0FD554A800C3244F /* KGImageSource_GIF.m in Sources */,
+				FE6F7B7F0FD554A800C3244F /* KGImageSource_JPEG.m in Sources */,
+				FE6F7B800FD554A800C3244F /* KGImageSource_PNG.m in Sources */,
+				FE6F7B810FD554A800C3244F /* KGImageSource_TIFF.m in Sources */,
+				FE6F7B820FD554A800C3244F /* KGLayer.m in Sources */,
+				FE6F7B830FD554A800C3244F /* KGMutablePath.m in Sources */,
+				FE6F7B840FD554A800C3244F /* KGPaint.m in Sources */,
+				FE6F7B850FD554A800C3244F /* KGPaint_axialGradient.m in Sources */,
+				FE6F7B860FD554A800C3244F /* KGPaint_color.m in Sources */,
+				FE6F7B870FD554A800C3244F /* KGPaint_image.m in Sources */,
+				FE6F7B880FD554A800C3244F /* KGPaint_pattern.m in Sources */,
+				FE6F7B890FD554A800C3244F /* KGPaint_radialGradient.m in Sources */,
+				FE6F7B8A0FD554A800C3244F /* KGPaint_ramp.m in Sources */,
+				FE6F7B8B0FD554A800C3244F /* KGPath.m in Sources */,
+				FE6F7B8C0FD554A800C3244F /* KGPattern.m in Sources */,
+				FE6F7B8D0FD554A800C3244F /* KGPDFArray.m in Sources */,
+				FE6F7B8E0FD554A800C3244F /* KGPDFContentStream.m in Sources */,
+				FE6F7B8F0FD554A800C3244F /* KGPDFContext.m in Sources */,
+				FE6F7B900FD554A800C3244F /* KGPDFDictionary.m in Sources */,
+				FE6F7B910FD554A800C3244F /* KGPDFDocument.m in Sources */,
+				FE6F7B920FD554A800C3244F /* KGPDFFilter.m in Sources */,
+				FE6F7B930FD554A800C3244F /* KGPDFFunction_Type2.m in Sources */,
+				FE6F7B940FD554A800C3244F /* KGPDFFunction_Type3.m in Sources */,
+				FE6F7B950FD554A800C3244F /* KGPDFObject.m in Sources */,
+				FE6F7B960FD554A800C3244F /* KGPDFObject_Boolean.m in Sources */,
+				FE6F7B970FD554A800C3244F /* KGPDFObject_const.m in Sources */,
+				FE6F7B980FD554A800C3244F /* KGPDFObject_identifier.m in Sources */,
+				FE6F7B990FD554A800C3244F /* KGPDFObject_Integer.m in Sources */,
+				FE6F7B9A0FD554A800C3244F /* KGPDFObject_Name.m in Sources */,
+				FE6F7B9B0FD554A800C3244F /* KGPDFObject_R.m in Sources */,
+				FE6F7B9C0FD554A800C3244F /* KGPDFObject_Real.m in Sources */,
+				FE6F7B9D0FD554A800C3244F /* KGPDFOperators.m in Sources */,
+				FE6F7B9E0FD554A800C3244F /* KGPDFOperatorTable.m in Sources */,
+				FE6F7B9F0FD554A800C3244F /* KGPDFPage.m in Sources */,
+				FE6F7BA00FD554A800C3244F /* KGPDFScanner.m in Sources */,
+				FE6F7BA10FD554A800C3244F /* KGPDFStream.m in Sources */,
+				FE6F7BA20FD554A800C3244F /* KGPDFString.m in Sources */,
+				FE6F7BA30FD554A800C3244F /* KGPDFxref.m in Sources */,
+				FE6F7BA40FD554A800C3244F /* KGPDFxrefEntry.m in Sources */,
+				FE6F7BA50FD554A800C3244F /* KGShading+PDF.m in Sources */,
+				FE6F7BA60FD554A800C3244F /* KGShading.m in Sources */,
+				FE6F7BA70FD554A800C3244F /* KGSurface.m in Sources */,
+				FE6F7BA80FD554A800C3244F /* KGzlib.m in Sources */,
+				FE6F7BA90FD554A800C3244F /* KTFont+PDF.m in Sources */,
+				FE6F7BAA0FD554A800C3244F /* KTFont.m in Sources */,
+				FE6F7BAB0FD554A800C3244F /* NSTIFFImageFileDirectory.m in Sources */,
+				FE6F7BAC0FD554A800C3244F /* NSTIFFReader.m in Sources */,
+				FE6F7BAD0FD554A800C3244F /* VGPath.m in Sources */,
+				FE9DB4640FD6C38300A1CE17 /* CGDataConsumer.m in Sources */,
+				FEAED7130FD6C40E0043F915 /* KGDataConsumer.m in Sources */,
+				FEAED71F0FD6C4460043F915 /* CGPDFContext.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FE6F7C3C0FD55FA300C3244F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FE6F7C3D0FD55FA300C3244F /* CGAffineTransform.m in Sources */,
+				FE6F7C3E0FD55FA300C3244F /* CGBitmapContext.m in Sources */,
+				FE6F7C3F0FD55FA300C3244F /* CGColor.m in Sources */,
+				FE6F7C400FD55FA300C3244F /* CGColorSpace.m in Sources */,
+				FE6F7C410FD55FA300C3244F /* CGContext.m in Sources */,
+				FE6F7C420FD55FA300C3244F /* CGDataProvider.m in Sources */,
+				FE6F7C430FD55FA300C3244F /* CGEvent.m in Sources */,
+				FE6F7C440FD55FA300C3244F /* CGFont.m in Sources */,
+				FE6F7C450FD55FA300C3244F /* CGFunction.m in Sources */,
+				FE6F7C460FD55FA300C3244F /* CGGeometry.m in Sources */,
+				FE6F7C470FD55FA300C3244F /* CGImage.m in Sources */,
+				FE6F7C480FD55FA300C3244F /* CGImageProperties.m in Sources */,
+				FE6F7C490FD55FA300C3244F /* CGImageSource.m in Sources */,
+				FE6F7C4A0FD55FA300C3244F /* CGLayer.m in Sources */,
+				FE6F7C4B0FD55FA300C3244F /* CGPath.m in Sources */,
+				FE6F7C4C0FD55FA300C3244F /* CGPattern.m in Sources */,
+				FE6F7C4D0FD55FA300C3244F /* CGPDFDocument.m in Sources */,
+				FE6F7C4E0FD55FA300C3244F /* CGPDFPage.m in Sources */,
+				FE6F7C4F0FD55FA300C3244F /* CGShading.m in Sources */,
+				FE6F7C500FD55FA300C3244F /* CGWindow.m in Sources */,
+				FE6F7C510FD55FA300C3244F /* CTFont.m in Sources */,
+				FE6F7C520FD55FA300C3244F /* gif_lib.m in Sources */,
+				FE6F7C530FD55FA300C3244F /* KGBitmapContext.m in Sources */,
+				FE6F7C540FD55FA300C3244F /* KGClipPhase.m in Sources */,
+				FE6F7C550FD55FA300C3244F /* KGColor.m in Sources */,
+				FE6F7C560FD55FA300C3244F /* KGColorSpace+PDF.m in Sources */,
+				FE6F7C570FD55FA300C3244F /* KGColorSpace.m in Sources */,
+				FE6F7C580FD55FA300C3244F /* KGContext.m in Sources */,
+				FE6F7C590FD55FA300C3244F /* KGContext_builtin.m in Sources */,
+				FE6F7C5A0FD55FA300C3244F /* KGDataProvider.m in Sources */,
+				FE6F7C5B0FD55FA300C3244F /* KGFont.m in Sources */,
+				FE6F7C5C0FD55FA300C3244F /* KGFunction+PDF.m in Sources */,
+				FE6F7C5D0FD55FA300C3244F /* KGFunction.m in Sources */,
+				FE6F7C5E0FD55FA300C3244F /* KGGraphicsState.m in Sources */,
+				FE6F7C5F0FD55FA300C3244F /* KGImage+PDF.m in Sources */,
+				FE6F7C600FD55FA300C3244F /* KGImage.m in Sources */,
+				FE6F7C610FD55FA300C3244F /* KGImageSource.m in Sources */,
+				FE6F7C620FD55FA300C3244F /* KGImageSource_BMP.m in Sources */,
+				FE6F7C630FD55FA300C3244F /* KGImageSource_GIF.m in Sources */,
+				FE6F7C640FD55FA300C3244F /* KGImageSource_JPEG.m in Sources */,
+				FE6F7C650FD55FA300C3244F /* KGImageSource_PNG.m in Sources */,
+				FE6F7C660FD55FA300C3244F /* KGImageSource_TIFF.m in Sources */,
+				FE6F7C670FD55FA300C3244F /* KGLayer.m in Sources */,
+				FE6F7C680FD55FA300C3244F /* KGMutablePath.m in Sources */,
+				FE6F7C690FD55FA300C3244F /* KGPaint.m in Sources */,
+				FE6F7C6A0FD55FA300C3244F /* KGPaint_axialGradient.m in Sources */,
+				FE6F7C6B0FD55FA300C3244F /* KGPaint_color.m in Sources */,
+				FE6F7C6C0FD55FA300C3244F /* KGPaint_image.m in Sources */,
+				FE6F7C6D0FD55FA300C3244F /* KGPaint_pattern.m in Sources */,
+				FE6F7C6E0FD55FA300C3244F /* KGPaint_radialGradient.m in Sources */,
+				FE6F7C6F0FD55FA300C3244F /* KGPaint_ramp.m in Sources */,
+				FE6F7C700FD55FA300C3244F /* KGPath.m in Sources */,
+				FE6F7C710FD55FA300C3244F /* KGPattern.m in Sources */,
+				FE6F7C720FD55FA300C3244F /* KGPDFArray.m in Sources */,
+				FE6F7C730FD55FA300C3244F /* KGPDFContentStream.m in Sources */,
+				FE6F7C740FD55FA300C3244F /* KGPDFContext.m in Sources */,
+				FE6F7C750FD55FA300C3244F /* KGPDFDictionary.m in Sources */,
+				FE6F7C760FD55FA300C3244F /* KGPDFDocument.m in Sources */,
+				FE6F7C770FD55FA300C3244F /* KGPDFFilter.m in Sources */,
+				FE6F7C780FD55FA300C3244F /* KGPDFFunction_Type2.m in Sources */,
+				FE6F7C790FD55FA300C3244F /* KGPDFFunction_Type3.m in Sources */,
+				FE6F7C7A0FD55FA300C3244F /* KGPDFObject.m in Sources */,
+				FE6F7C7B0FD55FA300C3244F /* KGPDFObject_Boolean.m in Sources */,
+				FE6F7C7C0FD55FA300C3244F /* KGPDFObject_const.m in Sources */,
+				FE6F7C7D0FD55FA300C3244F /* KGPDFObject_identifier.m in Sources */,
+				FE6F7C7E0FD55FA300C3244F /* KGPDFObject_Integer.m in Sources */,
+				FE6F7C7F0FD55FA300C3244F /* KGPDFObject_Name.m in Sources */,
+				FE6F7C800FD55FA300C3244F /* KGPDFObject_R.m in Sources */,
+				FE6F7C810FD55FA300C3244F /* KGPDFObject_Real.m in Sources */,
+				FE6F7C820FD55FA300C3244F /* KGPDFOperators.m in Sources */,
+				FE6F7C830FD55FA300C3244F /* KGPDFOperatorTable.m in Sources */,
+				FE6F7C840FD55FA300C3244F /* KGPDFPage.m in Sources */,
+				FE6F7C850FD55FA300C3244F /* KGPDFScanner.m in Sources */,
+				FE6F7C860FD55FA300C3244F /* KGPDFStream.m in Sources */,
+				FE6F7C870FD55FA300C3244F /* KGPDFString.m in Sources */,
+				FE6F7C880FD55FA300C3244F /* KGPDFxref.m in Sources */,
+				FE6F7C890FD55FA300C3244F /* KGPDFxrefEntry.m in Sources */,
+				FE6F7C8A0FD55FA300C3244F /* KGShading+PDF.m in Sources */,
+				FE6F7C8B0FD55FA300C3244F /* KGShading.m in Sources */,
+				FE6F7C8C0FD55FA300C3244F /* KGSurface.m in Sources */,
+				FE6F7C8D0FD55FA300C3244F /* KGzlib.m in Sources */,
+				FE6F7C8E0FD55FA300C3244F /* KTFont+PDF.m in Sources */,
+				FE6F7C8F0FD55FA300C3244F /* KTFont.m in Sources */,
+				FE6F7C900FD55FA300C3244F /* NSTIFFImageFileDirectory.m in Sources */,
+				FE6F7C910FD55FA300C3244F /* NSTIFFReader.m in Sources */,
+				FE6F7C920FD55FA300C3244F /* VGPath.m in Sources */,
+				FE9DB4660FD6C38300A1CE17 /* CGDataConsumer.m in Sources */,
+				FEAED7150FD6C40E0043F915 /* KGDataConsumer.m in Sources */,
+				FEAED7210FD6C4460043F915 /* CGPDFContext.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		FE6F7BD70FD5573B00C3244F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "Foundation-Windows-i386";
+			targetProxy = FE6F7BD60FD5573B00C3244F /* PBXContainerItemProxy */;
+		};
+		FE6F7BD90FD5574600C3244F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "Foundation-Linux-i386";
+			targetProxy = FE6F7BD80FD5574600C3244F /* PBXContainerItemProxy */;
+		};
+		FE6F7C9B0FD55FB600C3244F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "Foundation-Darwin-i386";
+			targetProxy = FE6F7C9A0FD55FB600C3244F /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		1DEB91AF08733DA50010E9CD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = i386;
+				DEPLOYMENT_LOCATION = YES;
+				DEPLOYMENT_POSTPROCESSING = YES;
+				DSTROOT = /;
+				EXECUTABLE_SUFFIX = .1.0.dll;
+				FRAMEWORK_SEARCH_PATHS = /Developer/Cocotron/1.0/Windows/i386/Frameworks;
+				GCC_ENABLE_CPP_EXCEPTIONS = NO;
+				GCC_ENABLE_CPP_RTTI = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_OPTIMIZATION_LEVEL = s;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = "";
+				INFOPLIST_FILE = Info.plist;
+				INSTALL_MODE_FLAG = "og-w,a+rX";
+				INSTALL_PATH = /Developer/Cocotron/1.0/Windows/i386/Frameworks;
+				OTHER_CFLAGS = (
+					"-DCOREGRAPHICS_INSIDE_BUILD",
+					"-D__LITTLE_ENDIAN__",
+					"-Wreturn-type",
+				);
+				OTHER_LDFLAGS = (
+					"-shared",
+					"-lgdi32",
+					"-Wl,--enable-auto-import",
+					"-Wl,--export-all-symbols",
+					"-Wl,--image-base=0x20000000",
+					"-Wl,--out-implib,$TARGET_BUILD_DIR/CoreGraphics.framework/libCoreGraphics.a",
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = CoreGraphics;
+				STRIP_INSTALLED_PRODUCT = YES;
+				SYMROOT = /Developer/Cocotron/1.0/build/CoreGraphics/Windows;
+			};
+			name = Release;
+		};
+		1DEB91B308733DA50010E9CD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Release;
+		};
+		FE6F7BB20FD554A800C3244F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = i386;
+				DEPLOYMENT_LOCATION = YES;
+				DEPLOYMENT_POSTPROCESSING = YES;
+				DSTROOT = /;
+				EXECUTABLE_PREFIX = lib;
+				EXECUTABLE_SUFFIX = .so;
+				FRAMEWORK_SEARCH_PATHS = /Developer/Cocotron/1.0/Linux/i386/Frameworks;
+				GCC_ENABLE_CPP_EXCEPTIONS = NO;
+				GCC_ENABLE_CPP_RTTI = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_OPTIMIZATION_LEVEL = s;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = "";
+				INFOPLIST_FILE = Info.plist;
+				INSTALL_MODE_FLAG = "og-w,a+rX";
+				INSTALL_PATH = /Developer/Cocotron/1.0/Linux/i386/Frameworks;
+				OTHER_CFLAGS = (
+					"-DCOREGRAPHICS_INSIDE_BUILD",
+					"-D__LITTLE_ENDIAN__",
+					"-Wreturn-type",
+				);
+				OTHER_LDFLAGS = (
+					"-shared",
+					"-lm",
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = CoreGraphics;
+				STRIP_INSTALLED_PRODUCT = YES;
+				SYMROOT = /Developer/Cocotron/1.0/build/CoreGraphics/Linux;
+			};
+			name = Release;
+		};
+		FE6F7C970FD55FA300C3244F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = i386;
+				DEPLOYMENT_LOCATION = YES;
+				DEPLOYMENT_POSTPROCESSING = YES;
+				DSTROOT = /;
+				EXECUTABLE_PREFIX = lib;
+				EXECUTABLE_SUFFIX = .so;
+				FRAMEWORK_SEARCH_PATHS = /Developer/Cocotron/1.0/Darwin/i386/Frameworks;
+				GCC_ENABLE_CPP_EXCEPTIONS = NO;
+				GCC_ENABLE_CPP_RTTI = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_OPTIMIZATION_LEVEL = s;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = "";
+				INFOPLIST_FILE = Info.plist;
+				INSTALL_MODE_FLAG = "og-w,a+rX";
+				INSTALL_PATH = /Developer/Cocotron/1.0/Darwin/i386/Frameworks;
+				OTHER_CFLAGS = (
+					"-DCOREGRAPHICS_INSIDE_BUILD",
+					"-D__LITTLE_ENDIAN__",
+					"-Wreturn-type",
+				);
+				OTHER_LDFLAGS = (
+					"-shared",
+					"-lm",
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = CoreGraphics;
+				STRIP_INSTALLED_PRODUCT = YES;
+				SYMROOT = /Developer/Cocotron/1.0/build/CoreGraphics/Darwin;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		1DEB91AD08733DA50010E9CD /* Build configuration list for PBXNativeTarget "CoreGraphics-Windows-i386" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1DEB91AF08733DA50010E9CD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1DEB91B108733DA50010E9CD /* Build configuration list for PBXProject "CoreGraphics" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1DEB91B308733DA50010E9CD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		FE6F7BB10FD554A800C3244F /* Build configuration list for PBXNativeTarget "CoreGraphics-Linux-i386" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FE6F7BB20FD554A800C3244F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		FE6F7C960FD55FA300C3244F /* Build configuration list for PBXNativeTarget "CoreGraphics-Darwin-i386" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FE6F7C970FD55FA300C3244F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 0867D690FE84028FC02AAC07 /* Project object */;
+}

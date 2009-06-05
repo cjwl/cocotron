@@ -1,8 +1,7 @@
 #import <Foundation/NSObject.h>
 #import <Foundation/NSArray.h>
-#import <Foundation/NSMutableArray.h>
 #import <Foundation/NSKeyValueObserving.h>
-#import <Foundation/NSMutableIndexSet.h>
+#import <Foundation/NSIndexSet.h>
 
 @interface _NSObservationProxy : NSObject
 {

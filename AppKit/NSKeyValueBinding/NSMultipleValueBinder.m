@@ -339,12 +339,12 @@ static void* NSTableViewContentBinderChangeContext;
 	[super dealloc];
 }
 
--(unsigned)count
+-(NSUInteger)count
 {
 	return 1;
 }
 
--(id)objectAtIndex:(unsigned)idx
+-(id)objectAtIndex:(NSUInteger)idx
 {
 	return object;
 }

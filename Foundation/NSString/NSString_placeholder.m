@@ -19,6 +19,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSRaise.h>
 #import <Foundation/NSStringUTF8.h>
 #import <Foundation/NSStringSymbol.h>
+#import <Foundation/NSRaiseException.h>
 
 #import <Foundation/NSData.h>
 #import <Foundation/NSCoder.h>

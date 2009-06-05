@@ -10,6 +10,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSGraphicsContextFunctions.h>
 #import <AppKit/NSView.h>
 #import <AppKit/NSColor.h>
+#import <AppKit/NSRaise.h>
 
 @implementation NSBitmapImageRep
 
@@ -206,7 +207,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [bitmapData release];
    
    [properties release];
-   [imageSource release];
+   CGImageSourceRelease(imageSource);
    return self;
 }
 
@@ -222,7 +223,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)dealloc {
-   [_image release];
+   CGImageRelease(_image);
    [super dealloc];
 }
 
@@ -412,7 +413,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(BOOL)draw {
    CGContextRef context=NSCurrentGraphicsPort();
    NSSize size=[self size];
-   CGImageRef image=[_image retain];
+   CGImageRef image=CGImageRetain(_image);
    
    if(image==nil)
     image=[self createCGImage];

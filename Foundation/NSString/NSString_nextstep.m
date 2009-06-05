@@ -9,6 +9,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 // Original - Christopher Lloyd <cjwl@objc.net>
 #import <Foundation/NSString_nextstep.h>
 #import <Foundation/NSRaise.h>
+#import <Foundation/NSRaiseException.h>
 
 static const unichar NEXTSTEPToUnicode[256]={
  0x0000,0x0001,0x0002,0x0003,0x0004,0x0005,0x0006,0x0007,

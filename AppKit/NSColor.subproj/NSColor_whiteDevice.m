@@ -77,7 +77,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(CGColorRef)createCGColorRef {
    CGColorSpaceRef colorSpace=CGColorSpaceCreateDeviceGray();
    float         components[2]={_white,_alpha};
-   KGColor      *color=CGColorCreate(colorSpace,components);
+   CGColorRef color=CGColorCreate(colorSpace,components);
    
    CGColorSpaceRelease(colorSpace);
    return color;

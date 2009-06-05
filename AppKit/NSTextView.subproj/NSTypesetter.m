@@ -2,7 +2,7 @@
 #import <AppKit/NSTextTab.h>
 #import <AppKit/NSParagraphStyle.h>
 #import "NSTypesetter_concrete.h"
-#import <Foundation/NSRaise.h>
+#import <AppKit/NSRaise.h>
 
 @implementation NSTypesetter
 

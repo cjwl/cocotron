@@ -27,6 +27,7 @@
 #import <Foundation/NSString.h>
 #import <Foundation/NSException.h>
 #import <Foundation/NSInvocation.h>
+#import <Foundation/NSRaiseException.h>
 
 extern void* _NSClosureAlloc(size_t);
 extern void _NSClosureProtect(void*, size_t);

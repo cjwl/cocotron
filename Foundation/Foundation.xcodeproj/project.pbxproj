@@ -2211,6 +2211,9 @@
 		FE7478750BAC5EB600829F4F /* NSValueTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = FE7478710BAC5EB600829F4F /* NSValueTransformer.m */; };
 		FE7478760BAC5EB600829F4F /* NSValueTransformer.h in Headers */ = {isa = PBXBuildFile; fileRef = FE7478700BAC5EB600829F4F /* NSValueTransformer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE7478770BAC5EB600829F4F /* NSValueTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = FE7478710BAC5EB600829F4F /* NSValueTransformer.m */; };
+		FE7691660FD46C0200F61898 /* msgSendv-solaris.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28055F09747CCA00EC542B /* msgSendv-solaris.m */; };
+		FE7691670FD46C0200F61898 /* msgSendv-solaris.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28055F09747CCA00EC542B /* msgSendv-solaris.m */; };
+		FE7691680FD46C0400F61898 /* msgSendv-solaris.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E28055F09747CCA00EC542B /* msgSendv-solaris.m */; };
 		FE7FE5C10D7CF08B006CCA28 /* NSFileHandle_stream.h in Headers */ = {isa = PBXBuildFile; fileRef = FE7FE5BF0D7CF08B006CCA28 /* NSFileHandle_stream.h */; };
 		FE7FE5C20D7CF08B006CCA28 /* NSFileHandle_stream.m in Sources */ = {isa = PBXBuildFile; fileRef = FE7FE5C00D7CF08B006CCA28 /* NSFileHandle_stream.m */; };
 		FE7FE5C30D7CF08B006CCA28 /* NSFileHandle_stream.h in Headers */ = {isa = PBXBuildFile; fileRef = FE7FE5BF0D7CF08B006CCA28 /* NSFileHandle_stream.h */; };
@@ -2254,6 +2257,12 @@
 		FE9D95530C0387D5006DB214 /* NSValueTransformer_UnarchiveFromData.m in Sources */ = {isa = PBXBuildFile; fileRef = FE9D953B0C0387D5006DB214 /* NSValueTransformer_UnarchiveFromData.m */; };
 		FE9E1A310D5C0676004AE7BA /* NSLocale+windows.h in Headers */ = {isa = PBXBuildFile; fileRef = FE9E1A2F0D5C0676004AE7BA /* NSLocale+windows.h */; };
 		FE9E1A320D5C0676004AE7BA /* NSLocale+windows.m in Sources */ = {isa = PBXBuildFile; fileRef = FE9E1A300D5C0676004AE7BA /* NSLocale+windows.m */; };
+		FEA317860FD5843900F480D4 /* NSRaiseException.h in Headers */ = {isa = PBXBuildFile; fileRef = FEA317850FD5843900F480D4 /* NSRaiseException.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FEA317870FD5843900F480D4 /* NSRaiseException.h in Headers */ = {isa = PBXBuildFile; fileRef = FEA317850FD5843900F480D4 /* NSRaiseException.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FEA317880FD5843900F480D4 /* NSRaiseException.h in Headers */ = {isa = PBXBuildFile; fileRef = FEA317850FD5843900F480D4 /* NSRaiseException.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FEA317890FD5843900F480D4 /* NSRaiseException.h in Headers */ = {isa = PBXBuildFile; fileRef = FEA317850FD5843900F480D4 /* NSRaiseException.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FEA3178A0FD5843900F480D4 /* NSRaiseException.h in Headers */ = {isa = PBXBuildFile; fileRef = FEA317850FD5843900F480D4 /* NSRaiseException.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FEA3178B0FD5843900F480D4 /* NSRaiseException.h in Headers */ = {isa = PBXBuildFile; fileRef = FEA317850FD5843900F480D4 /* NSRaiseException.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FEA36F270C24C57000025A9C /* objc_cache.h in Headers */ = {isa = PBXBuildFile; fileRef = FEA36F250C24C57000025A9C /* objc_cache.h */; };
 		FEA36F280C24C57000025A9C /* objc_cache.h in Headers */ = {isa = PBXBuildFile; fileRef = FEA36F250C24C57000025A9C /* objc_cache.h */; };
 		FEA9D08A0D16C55E00123D51 /* NSPropertyListReader_binary1.h in Headers */ = {isa = PBXBuildFile; fileRef = FEA9D0880D16C55E00123D51 /* NSPropertyListReader_binary1.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -4450,6 +4459,7 @@
 		FE9D953B0C0387D5006DB214 /* NSValueTransformer_UnarchiveFromData.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSValueTransformer_UnarchiveFromData.m; sourceTree = "<group>"; };
 		FE9E1A2F0D5C0676004AE7BA /* NSLocale+windows.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = "NSLocale+windows.h"; path = "platform_win32/NSLocale+windows.h"; sourceTree = "<group>"; };
 		FE9E1A300D5C0676004AE7BA /* NSLocale+windows.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = "NSLocale+windows.m"; path = "platform_win32/NSLocale+windows.m"; sourceTree = "<group>"; };
+		FEA317850FD5843900F480D4 /* NSRaiseException.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSRaiseException.h; sourceTree = "<group>"; };
 		FEA36F250C24C57000025A9C /* objc_cache.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = objc_cache.h; sourceTree = "<group>"; };
 		FEA9D0880D16C55E00123D51 /* NSPropertyListReader_binary1.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSPropertyListReader_binary1.h; sourceTree = "<group>"; };
 		FEA9D0890D16C55E00123D51 /* NSPropertyListReader_binary1.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSPropertyListReader_binary1.m; sourceTree = "<group>"; };
@@ -4923,6 +4933,7 @@
 		6E2803310974790A00EC542B /* NSException */ = {
 			isa = PBXGroup;
 			children = (
+				FEA317850FD5843900F480D4 /* NSRaiseException.h */,
 				6E2803BA09747B6200EC542B /* NSException.h */,
 				6E2803BB09747B6200EC542B /* NSException.m */,
 				6E2803BE09747B6200EC542B /* NSRaise.h */,
@@ -6142,6 +6153,7 @@
 				FEDB76330F8AD40700AC545D /* objc_object.h in Headers */,
 				FE1A0D230F8BADBA00FC4CC7 /* forwarding.h in Headers */,
 				FEBF53690F926025005DC684 /* objc_protocol.h in Headers */,
+				FEA317890FD5843900F480D4 /* NSRaiseException.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6447,6 +6459,7 @@
 				FEDB76310F8AD40700AC545D /* objc_object.h in Headers */,
 				FE1A0D210F8BADBA00FC4CC7 /* forwarding.h in Headers */,
 				FEBF53680F926025005DC684 /* objc_protocol.h in Headers */,
+				FEA3178A0FD5843900F480D4 /* NSRaiseException.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6756,6 +6769,7 @@
 				FEDB76390F8AD40700AC545D /* objc_object.h in Headers */,
 				FE1A0D290F8BADBA00FC4CC7 /* forwarding.h in Headers */,
 				FEBF536C0F926025005DC684 /* objc_protocol.h in Headers */,
+				FEA3178B0FD5843900F480D4 /* NSRaiseException.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7062,6 +7076,7 @@
 				FE6519420FBC844C00464BFD /* objc_object.h in Headers */,
 				FE6519430FBC844C00464BFD /* forwarding.h in Headers */,
 				FE6519440FBC844C00464BFD /* objc_protocol.h in Headers */,
+				FEA317870FD5843900F480D4 /* NSRaiseException.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7368,6 +7383,7 @@
 				FEDB76350F8AD40700AC545D /* objc_object.h in Headers */,
 				FE1A0D250F8BADBA00FC4CC7 /* forwarding.h in Headers */,
 				FEBF536A0F926025005DC684 /* objc_protocol.h in Headers */,
+				FEA317860FD5843900F480D4 /* NSRaiseException.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7674,6 +7690,7 @@
 				FEDB76370F8AD40700AC545D /* objc_object.h in Headers */,
 				FE1A0D270F8BADBA00FC4CC7 /* forwarding.h in Headers */,
 				FEBF536B0F926025005DC684 /* objc_protocol.h in Headers */,
+				FEA317880FD5843900F480D4 /* NSRaiseException.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -9233,6 +9250,7 @@
 				FE651A750FBC844C00464BFD /* forwarding.m in Sources */,
 				FE651A760FBC844C00464BFD /* objc_protocol.m in Sources */,
 				FE651A770FBC844C00464BFD /* objc_property.m in Sources */,
+				FE7691680FD46C0400F61898 /* msgSendv-solaris.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -9545,6 +9563,7 @@
 				FEBF535E0F925FA3005DC684 /* objc_protocol.m in Sources */,
 				FEBF545D0F93AE8A005DC684 /* objc_property.m in Sources */,
 				FE651BB00FBC92F700464BFD /* objc_msgSend-darwin-i386.s in Sources */,
+				FE7691660FD46C0200F61898 /* msgSendv-solaris.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -9857,6 +9876,7 @@
 				FE1A0D280F8BADBA00FC4CC7 /* forwarding.m in Sources */,
 				FEBF535F0F925FA3005DC684 /* objc_protocol.m in Sources */,
 				FEBF545E0F93AE8A005DC684 /* objc_property.m in Sources */,
+				FE7691670FD46C0200F61898 /* msgSendv-solaris.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

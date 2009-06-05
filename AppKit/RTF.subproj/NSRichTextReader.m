@@ -91,11 +91,11 @@ enum {
    return result;
 }
 
--(unsigned)length {
+-(NSUInteger)length {
    return _range.length;
 }
 
--(unichar)characterAtIndex:(unsigned)index {
+-(unichar)characterAtIndex:(NSUInteger)index {
    return _bytes[_range.location+index];
 }
 

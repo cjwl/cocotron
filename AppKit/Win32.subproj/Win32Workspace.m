@@ -13,6 +13,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSImage.h>
 #import <windows.h>
 #import <shellapi.h>
+#import <AppKit/NSRaise.h>
 
 @implementation NSWorkspace(windows)
 

@@ -1,6 +1,6 @@
 #import <AppKit/NSAffineTransform.h>
 #import <AppKit/NSBezierPath.h>
-#import <ApplicationServices/CGContext.h>
+#import <ApplicationServices/ApplicationServices.h>
 #import <AppKit/NSGraphicsContext.h>
 
 @implementation NSAffineTransform(AppKit)

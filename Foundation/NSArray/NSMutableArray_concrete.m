@@ -9,6 +9,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSMutableArray_concrete.h>
 #import <Foundation/NSRaise.h>
 #import <Foundation/NSCoder.h>
+#import <Foundation/NSRaiseException.h>
 
 @implementation NSMutableArray_concrete
 

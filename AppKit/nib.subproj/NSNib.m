@@ -8,7 +8,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <AppKit/NSNib.h>
 #import <Foundation/NSURL.h>
-#import <Foundation/NSRaise.h>
+#import <AppKit/NSRaise.h>
 #import "NSNibKeyedUnarchiver.h"
 #import <AppKit/NSNibLoading.h>
 #import <AppKit/NSMenu.h>

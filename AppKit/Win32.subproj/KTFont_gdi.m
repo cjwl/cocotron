@@ -4,6 +4,7 @@
 #import "Win32Display.h"
 #import "Win32Font.h"
 #import <AppKit/KGMutablePath.h>
+#import <AppKit/NSRaise.h>
 
 #define MAXUNICHAR 0xFFFF
 

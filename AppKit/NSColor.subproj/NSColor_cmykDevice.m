@@ -100,7 +100,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(CGColorRef)createCGColorRef {
    CGColorSpaceRef colorSpace=CGColorSpaceCreateDeviceCMYK();
    float         components[5]={_cyan,_magenta,_yellow,_black,_alpha};
-   KGColor      *color=CGColorCreate(colorSpace,components);
+   CGColorRef color=CGColorCreate(colorSpace,components);
    
    CGColorSpaceRelease(colorSpace);
    

@@ -8,7 +8,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <AppKit/NSAlert.h>
 #import <AppKit/NSImage.h>
-#import <Foundation/NSRaise.h>
+#import <AppKit/NSRaise.h>
 #import <Foundation/NSDictionary.h>
 #import <AppKit/NSStringDrawer.h>
 #import <AppKit/NSButton.h>

@@ -13,7 +13,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSEnumerator.h>
 #import <Foundation/NSKeyValueObserving.h>
 #import <Foundation/NSKeyValueCoding.h>
-#import <Foundation/NSString+KVCAdditions.h>
 #import <AppKit/NSObservationProxy.h>
 #import <Foundation/NSException.h>
 
@@ -112,7 +111,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 {
 	return [NSString stringWithFormat:
 		@"%@ <0x%x>",
-		[self className],
+		[self class],
 		self];
 }
 

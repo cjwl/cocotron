@@ -10,6 +10,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "Win32Window.h"
 #import "Win32DeviceContextPrinter.h"
 #import "KGDeviceContext_gdi_ddb.h"
+#import "KGDeviceContext_gdiDIBSection.h"
 #import "KGSurface_DIBSection.h"
 #import "Win32DeviceContextWindow.h"
 #import <AppKit/KGGraphicsState.h>
@@ -20,9 +21,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/KGShading.h>
 #import <AppKit/KGFunction.h>
 #import "KTFont_gdi.h"
-#import "../CoreGraphics.subproj/KGImage.h"
+#import "../../CoreGraphics/KGImage.h"
 #import <AppKit/KGClipPhase.h>
 #import <AppKit/Win32Font.h>
+#import <AppKit/NSRaise.h>
 
 static inline int float2int(float coord){
    return floorf(coord);
@@ -117,7 +119,7 @@ static RECT NSRectToRECT(NSRect rect) {
    return [self initWithGraphicsState:initialState deviceContext:deviceContext];
 }
 
--initWithPrinterDC:(HDC)printer {
+-initWithPrinterDC:(HDC)printer auxiliaryInfo:(NSDictionary *)auxiliaryInfo {
    KGDeviceContext_gdi    *deviceContext=[[[Win32DeviceContextPrinter alloc] initWithDC:printer] autorelease];
    NSSize                  pointSize=[deviceContext pointSize];
    NSSize                  pixelsPerInch=[deviceContext pixelsPerInch];
@@ -125,7 +127,17 @@ static RECT NSRectToRECT(NSRect rect) {
    CGAffineTransform       scale=CGAffineTransformConcat(flip,CGAffineTransformMakeScale(pixelsPerInch.width/72.0,pixelsPerInch.height/72.0));
    KGGraphicsState        *initialState=[[[KGGraphicsState alloc] initWithDeviceTransform:scale] autorelease];
       
-   return [self initWithGraphicsState:initialState deviceContext:deviceContext];
+   if([self initWithGraphicsState:initialState deviceContext:deviceContext]==nil)
+    return nil;
+   
+   NSString *title=[auxiliaryInfo objectForKey:kCGPDFContextTitle];
+   
+   if(title==nil)
+    title=@"Untitled";
+
+   [[self deviceContext] beginPrintingWithDocumentName:title];
+   
+   return self;
 }
 
 -initWithSize:(NSSize)size window:(CGWindow *)window {
@@ -137,17 +149,14 @@ static RECT NSRectToRECT(NSRect rect) {
    return [self initWithGraphicsState:initialState deviceContext:deviceContext];
 }
 
--initWithSize:(NSSize)size context:(KGContext *)otherX useDIB:(BOOL)useDIB {
+-initWithSize:(NSSize)size context:(KGContext *)otherX {
    KGContext_gdi          *other=(KGContext_gdi *)otherX;
    KGDeviceContext_gdi    *deviceContext=[[[KGDeviceContext_gdi_ddb alloc] initWithSize:size deviceContext:[other deviceContext]] autorelease];
+ //  KGDeviceContext_gdi    *deviceContext=[[[KGDeviceContext_gdiDIBSection alloc] initWithWidth:size.width height:size.height deviceContext:[other deviceContext]] autorelease];
    CGAffineTransform       flip={1,0,0,-1,0,size.height};
    KGGraphicsState        *initialState=[[[KGGraphicsState alloc] initWithDeviceTransform:flip] autorelease];
 
    return [self initWithGraphicsState:initialState deviceContext:deviceContext];
-}
-
--initWithSize:(NSSize)size context:(KGContext *)otherX {
-   return [self initWithSize:size context:otherX useDIB:NO];
 }
 
 -(void)dealloc {
@@ -1102,11 +1111,7 @@ static void zeroBytes(void *bytes,int size){
    return [[[KGLayer_gdi alloc] initRelativeToContext:self size:size unused:unused] autorelease];
 }
 
--(void)beginPrintingWithDocumentName:(NSString *)documentName {
-   [[self deviceContext] beginPrintingWithDocumentName:documentName];
-}
-
--(void)endPrinting {
+-(void)close {
    [[self deviceContext] endPrinting];
 }
 

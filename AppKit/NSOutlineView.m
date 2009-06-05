@@ -1,4 +1,4 @@
-/* Copyright (c) 2006-2007 Christopher J. W. Lloyd
+/* Copyright (c) 2006-2007 Christopher J. W. Lloyd <cjwl@objc.net>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
@@ -6,7 +6,6 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
-// Original - David Young <daver@geeks.org>
 #import <AppKit/NSOutlineView.h>
 #import <AppKit/NSOutlineMarkerCell.h>
 #import <AppKit/NSInterfaceStyle.h>
@@ -19,6 +18,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSStringDrawing.h>
 #import <AppKit/NSGraphicsContextFunctions.h>
 #import <AppKit/NSNibKeyedUnarchiver.h>
+#import <AppKit/NSRaise.h>
 
 NSString *NSOutlineViewItemWillExpandNotification=@"NSOutlineViewItemWillExpandNotification";
 NSString *NSOutlineViewItemDidExpandNotification=@"NSOutlineViewItemDidExpandNotification";
@@ -104,11 +104,11 @@ static inline id childOfItemAtIndex(NSOutlineView *self,id item,int index){
    if([coder isKindOfClass:[NSNibKeyedUnarchiver class]]){
     NSNibKeyedUnarchiver *keyed=(NSNibKeyedUnarchiver *)coder;
 
-    _rowToItem=NSCreateMapTable(NSIntMapKeyCallBacks, NSNonOwnedPointerMapValueCallBacks, 0);
-    _itemToRow = NSCreateMapTable(NSNonOwnedPointerOrNullMapKeyCallBacks, NSIntMapValueCallBacks, 0);
-    _itemToLevel = NSCreateMapTable(NSNonOwnedPointerOrNullMapKeyCallBacks, NSIntMapValueCallBacks, 0);
-    _itemToExpansionState = NSCreateMapTable(NSNonOwnedPointerOrNullMapKeyCallBacks, NSIntMapValueCallBacks, 0);
-    _itemToNumberOfChildren = NSCreateMapTable(NSNonOwnedPointerOrNullMapKeyCallBacks, NSIntMapValueCallBacks, 0);
+    _rowToItem=NSCreateMapTable(NSIntegerMapKeyCallBacks, NSNonOwnedPointerMapValueCallBacks, 0);
+    _itemToRow = NSCreateMapTable(NSNonOwnedPointerOrNullMapKeyCallBacks, NSIntegerMapValueCallBacks, 0);
+    _itemToLevel = NSCreateMapTable(NSNonOwnedPointerOrNullMapKeyCallBacks, NSIntegerMapValueCallBacks, 0);
+    _itemToExpansionState = NSCreateMapTable(NSNonOwnedPointerOrNullMapKeyCallBacks, NSIntegerMapValueCallBacks, 0);
+    _itemToNumberOfChildren = NSCreateMapTable(NSNonOwnedPointerOrNullMapKeyCallBacks, NSIntegerMapValueCallBacks, 0);
 
     _markerCell = [[[self _outlineMarkerCellClass] alloc] initImageCell:nil];
         
@@ -133,11 +133,11 @@ static inline id childOfItemAtIndex(NSOutlineView *self,id item,int index){
 
 -(id)initWithFrame:(NSRect)frame {
    [super initWithFrame:frame];
-    _rowToItem = NSCreateMapTable(NSIntMapKeyCallBacks, NSNonOwnedPointerMapValueCallBacks, 0);
-    _itemToRow = NSCreateMapTable(NSNonOwnedPointerOrNullMapKeyCallBacks, NSIntMapValueCallBacks, 0);
-    _itemToLevel = NSCreateMapTable(NSNonOwnedPointerOrNullMapKeyCallBacks, NSIntMapValueCallBacks, 0);
-    _itemToExpansionState = NSCreateMapTable(NSNonOwnedPointerOrNullMapKeyCallBacks, NSIntMapValueCallBacks, 0);
-    _itemToNumberOfChildren = NSCreateMapTable(NSNonOwnedPointerOrNullMapKeyCallBacks, NSIntMapValueCallBacks, 0);
+    _rowToItem = NSCreateMapTable(NSIntegerMapKeyCallBacks, NSNonOwnedPointerMapValueCallBacks, 0);
+    _itemToRow = NSCreateMapTable(NSNonOwnedPointerOrNullMapKeyCallBacks, NSIntegerMapValueCallBacks, 0);
+    _itemToLevel = NSCreateMapTable(NSNonOwnedPointerOrNullMapKeyCallBacks, NSIntegerMapValueCallBacks, 0);
+    _itemToExpansionState = NSCreateMapTable(NSNonOwnedPointerOrNullMapKeyCallBacks, NSIntegerMapValueCallBacks, 0);
+    _itemToNumberOfChildren = NSCreateMapTable(NSNonOwnedPointerOrNullMapKeyCallBacks, NSIntegerMapValueCallBacks, 0);
 
     _markerCell = [[[self _outlineMarkerCellClass] alloc] initImageCell:nil];
         
@@ -510,7 +510,7 @@ static void loadItemIntoMapTables(NSOutlineView *self,id item,unsigned *rowCount
    }
 }
 
--(int)numberOfRows {
+-(NSInteger)numberOfRows {
    if (_numberOfCachedRows == 0) {
     [self loadRootItem];
     return _numberOfCachedRows;
