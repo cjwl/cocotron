@@ -1,4 +1,5 @@
 /* Copyright (c) 2006-2007 Christopher J. W. Lloyd
+                 2009 Markus Hitter <mah@jump-ing.de>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
@@ -7,6 +8,7 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
 // Original - David Young <daver@geeks.org>
+
 #import <Foundation/NSScanner_concrete.h>
 #import <Foundation/NSString.h>
 #import <Foundation/NSDictionary.h>
@@ -17,11 +19,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @implementation NSScanner_concrete
 
 -initWithString:(NSString *)string {
-   _string=[string copy];
 
-   [self setScanLocation:0];
-   [self setCharactersToBeSkipped:[NSCharacterSet whitespaceCharacterSet]];
-   [self setCaseSensitive:YES];
+   self=[self init];
+   if(self!=nil){
+    _string=[string copy];
+    _location=0;
+    _skipSet=[[NSCharacterSet whitespaceCharacterSet] retain];
+    _isCaseSensitive=YES;
+    _locale=nil;
+   }
 
    return self;
 }
@@ -50,7 +56,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)setCharactersToBeSkipped:(NSCharacterSet *)set {
-    [_skipSet release];
+    [_skipSet autorelease];
     _skipSet = [set retain];
 }
 
@@ -59,7 +65,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)setLocale:(NSDictionary *)locale {
-    [_locale release];
+    [_locale autorelease];
     _locale = [locale retain];
 }
 
@@ -76,107 +82,84 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(BOOL)scanInt:(int *)valuep {
-    enum {
-        STATE_SPACE,
-        STATE_DIGITS_ONLY
-    } state=STATE_SPACE;
-    int sign=1;
-    int value=0;
-    BOOL hasValue=NO;
+   long long scanValue=0;
 
-    for(;_location<[_string length];_location++){
-        unichar unicode=[_string characterAtIndex:_location];
+   // This assumes sizeof(long long) >= sizeof(int).
+   if(![self scanLongLong:&scanValue])
+    return NO;
+   else if(scanValue>INT_MAX)
+    *valuep=INT_MAX;
+   else if(scanValue<INT_MIN)
+    *valuep=INT_MIN;
+   else
+    *valuep=(int)scanValue;
 
-        switch(state){
-            case STATE_SPACE:
-                if([_skipSet characterIsMember:unicode])
-                    state=STATE_SPACE;
-                else if(unicode=='-'){
-                    sign=-1;
-                    state=STATE_DIGITS_ONLY;
-                }
-                    else if(unicode>='0' && unicode<='9'){
-                        value=(value*10)+unicode-'0';
-                        state=STATE_DIGITS_ONLY;
-                        hasValue=YES;
-                    }
-                    else
-                        return NO;
-                break;
+   return YES;
+}
 
-            case STATE_DIGITS_ONLY:
-                if(unicode>='0' && unicode<='9'){
-                    value=(value*10)+unicode-'0';
-                    hasValue=YES;
-                }
-                else if(!hasValue)
-                    return NO;
-                else {
-                    *valuep=sign*value;
-                    return YES;
-                }
-                    break;
-        }
-    }
+-(BOOL)scanInteger:(NSInteger *)valuep{
+   long long scanValue=0;
 
-    if(!hasValue)
-        return NO;
-    else {
-        *valuep=sign*value;
-        return YES;
-    }
+   // This assumes sizeof(long long) >= sizeof(NSInteger).
+   if(![self scanLongLong:&scanValue])
+    return NO;
+   else if(scanValue>NSIntegerMax)
+    *valuep=NSIntegerMax;
+   else if(scanValue<NSIntegerMin)
+    *valuep=NSIntegerMin;
+   else
+    *valuep=(NSInteger)scanValue;
+
+   return YES;
 }
 
 -(BOOL)scanLongLong:(long long *)valuep {
-    enum {
-        STATE_SPACE,
-        STATE_DIGITS_ONLY
-    } state=STATE_SPACE;
-    int sign=1;
-    long long value=0;
-    BOOL hasValue=NO;
+   NSUInteger length;
+   int sign=1;
+   BOOL hasSign=NO;
+   long long value=0;
+   BOOL hasValue=NO;
+   BOOL hasOverflow=NO;
 
-    for(;_location<[_string length];_location++){
-        unichar unicode=[_string characterAtIndex:_location];
+   for(length=[_string length];_location<length;_location++){
+    unichar unicode=[_string characterAtIndex:_location];
 
-        switch(state){
-            case STATE_SPACE:
-                if([_skipSet characterIsMember:unicode])
-                    state=STATE_SPACE;
-                else if(unicode=='-'){
-                    sign=-1;
-                    state=STATE_DIGITS_ONLY;
-                }
-                else if(unicode>='0' && unicode<='9'){
-                    value=(value*10)+unicode-'0';
-                    state=STATE_DIGITS_ONLY;
-                    hasValue=YES;
-                }
-                else
-                    return NO;
-                break;
-
-            case STATE_DIGITS_ONLY:
-                if(unicode>='0' && unicode<='9'){
-                    value=(value*10)+unicode-'0';
-                    hasValue=YES;
-                }
-                else if(!hasValue)
-                    return NO;
-                else {
-                    *valuep=sign*value;
-                    return YES;
-                }
-                break;
-        }
+    if(!hasValue && [_skipSet characterIsMember:unicode])
+     continue;
+    else if(!hasSign && unicode=='-'){
+     sign=-1;
+     hasSign=YES;
     }
+    else if(unicode>='0' && unicode<='9'){
+     if(!hasOverflow){
+      int c=unicode-'0';
 
-    if(!hasValue)
-        return NO;
-    else {
-        *valuep=sign*value;
-        return YES;
+      // Inspired by http://www.math.utoledo.edu/~dbastos/overflow.html 
+      if ((LONG_LONG_MAX-c)/10<value)
+       hasOverflow=YES;
+      else
+       value=(value*10)+c;
+      hasSign=YES;
+      hasValue=YES;
+     }
     }
+    else
+     break;
+   }
+
+   if(hasOverflow){
+    if(sign>0)
+     *valuep=LONG_LONG_MAX;
+    else
+     *valuep=LONG_LONG_MIN;
+    return YES;
+   }
+   else if(hasValue){
+    *valuep=sign*value;
+    return YES;
+   }
+
+   return NO;
 }
 
 -(BOOL)scanFloat:(float *)valuep {
@@ -297,11 +280,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(BOOL)scanDecimal:(NSDecimal *)valuep {
-    NSUnimplementedMethod();
-    return NO;
-}
-
--(BOOL)scanInteger:(NSInteger *)valuep {
     NSUnimplementedMethod();
     return NO;
 }

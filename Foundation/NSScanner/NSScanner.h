@@ -32,13 +32,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(NSUInteger)scanLocation;
 -(void)setScanLocation:(NSUInteger)location;
 
--(BOOL)scanInt:(int *)value;
--(BOOL)scanLongLong:(long long *)value;
--(BOOL)scanFloat:(float *)value;
--(BOOL)scanDouble:(double *)value;
--(BOOL)scanDecimal:(NSDecimal *)valuep;
+-(BOOL)scanInt:(int *)valuep;
 -(BOOL)scanInteger:(NSInteger *)valuep;
--(BOOL)scanHexInt:(unsigned *)value;
+-(BOOL)scanLongLong:(long long *)valuep;
+-(BOOL)scanFloat:(float *)valuep;
+-(BOOL)scanDouble:(double *)valuep;
+-(BOOL)scanDecimal:(NSDecimal *)valuep;
+-(BOOL)scanHexInt:(unsigned *)valuep;
 
 -(BOOL)scanString:(NSString *)string intoString:(NSString **)stringp;
 -(BOOL)scanUpToString:(NSString *)string intoString:(NSString **)stringp;

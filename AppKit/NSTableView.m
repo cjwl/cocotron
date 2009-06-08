@@ -1,10 +1,12 @@
 /* Copyright (c) 2006-2007 Christopher J. W. Lloyd
+                 2009 Markus Hitter <mah@jump-ing.de>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
+
 #import <AppKit/AppKit.h>
 #import <AppKit/NSTableCornerView.h>
 #import <AppKit/NSNibKeyedUnarchiver.h>
@@ -108,6 +110,7 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
     _selectedColumns = [[NSMutableArray alloc] init];
     _editedColumn = -1;
     _editedRow = -1;
+    _numberOfRows = -1;
 
     // row background and grid attributes for OS X >= 10.3
     _alternatingRowBackground=(flags&0x00800000)?YES:NO;
@@ -132,6 +135,7 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
     _selectedColumns = [[NSMutableArray alloc] init];
     _editedColumn = -1;
     _editedRow = -1;
+    _numberOfRows = -1;
 
     _allowsColumnReordering = YES;
     _allowsColumnResizing = YES;
@@ -262,14 +266,18 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
 }
 
 -(NSInteger)numberOfRows {
-    int val;
+
+   if (_numberOfRows < 0) {
     id binding=[self _binderForBinding:@"content"];
-    if(binding && (val=[binding numberOfRows])>=0)
-    {
-        return val;
-    }
-        
-    return [_dataSource numberOfRowsInTableView:self];
+
+    if(binding)
+     _numberOfRows=[binding numberOfRows];
+
+    if (_numberOfRows < 0)
+     _numberOfRows = [_dataSource numberOfRowsInTableView:self];
+   }
+   
+   return _numberOfRows;
 }
 
 -(NSUInteger)numberOfColumns {
@@ -672,34 +680,72 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
     return [[_selectedRowIndexes retain] autorelease];
 }
 
-- (void)setSelectedRowIndexes:(NSIndexSet *)value {
-    if (_selectedRowIndexes != value) {
-        [_selectedRowIndexes release];
-        _selectedRowIndexes = [value copy];
-        
-        [self setNeedsDisplay:YES];
-    }
-}
-
+// That's the setter for _selectedRowIndexes.
 - (void)selectRowIndexes:(NSIndexSet *)indexes byExtendingSelection:(BOOL)extend {
         unsigned index;
+   NSIndexSet * newIndexes;
+   NSInteger i, last, try;
+   BOOL changed = NO;
+   
+   // Mac OS X doesn't raise an exception if one of the indices
+   // is out of range. Instead, the selection is left untouched.
+   if ([indexes firstIndex] < 0 || [indexes lastIndex] >= [self numberOfRows])
+    return;
 
-        if((index = [indexes firstIndex]) != NSNotFound) {
-                [self selectRow:index byExtendingSelection:extend];
+   // Selecting a row deselects all columns.
+   if ([_selectedColumns count]) {
+    [_selectedColumns removeAllObjects];
+    [_headerView setNeedsDisplay:YES];
+    changed = YES;
+   }
 
-                index = [indexes indexGreaterThanIndex:index];
-                while(index != NSNotFound) {
-                        [self selectRow:index byExtendingSelection:YES];
-                        index = [indexes indexGreaterThanIndex:index];
-                }
-        }
+   if (extend) {
+    NSMutableIndexSet * mutableIndexes = [[NSMutableIndexSet alloc] initWithIndexSet:_selectedRowIndexes];
+    [mutableIndexes addIndexes:indexes];
+    newIndexes = [[NSIndexSet alloc] initWithIndexSet:mutableIndexes];
+    [mutableIndexes release];     
+   } else
+    newIndexes = [indexes retain];
+
+   // Find the changed rows and mark them for redraw.
+   i = [_selectedRowIndexes firstIndex];
+   if (i == NSNotFound)
+    i = [newIndexes firstIndex];
+   else {
+    try = [newIndexes firstIndex];
+    if (try != NSNotFound && try < i)
+     i = try;
+   }
+   last = [_selectedRowIndexes lastIndex];
+   if (last == NSNotFound)
+    last = [newIndexes lastIndex];
+   else {
+    try = [newIndexes lastIndex];
+   if (try != NSNotFound && try > last)
+    last = try;
+   }
+   if (i != NSNotFound) // If i is valid, last is valid as well.
+    for ( ; i <= last; i++)
+     if ([_selectedRowIndexes containsIndex:i] != [newIndexes containsIndex:i]) {
+      [self setNeedsDisplayInRect:[self rectOfRow:i]];
+      changed = YES;
+      // NSLog(@"NSTableView row %d for redraw.", i);
+     }
+
+   [_selectedRowIndexes autorelease];
+   _selectedRowIndexes = newIndexes;
+
+   if (changed)
+    [self noteSelectionDidChange];
 }
 
 -(int)selectedRow {
-    if([_selectedRowIndexes count]==0)
-     return -1;
+   NSInteger row = [_selectedRowIndexes firstIndex];
 
-    return [_selectedRowIndexes firstIndex];
+   if (row == NSNotFound)
+    return -1;
+
+   return row;
 }
 
 -(int)selectedColumn {
@@ -746,31 +792,20 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
     return nil;
 }
 
+// Deprecated since Mac OS X 10.3.
 -(void)selectRow:(int)row byExtendingSelection:(BOOL)extend  {
-    // selecting a row deselects all columns
-    [_selectedColumns removeAllObjects];
-    
-    NSMutableIndexSet* selectedRowIndexes=[[[self selectedRowIndexes] mutableCopy] autorelease];
 
-    if (extend == NO)
-        [selectedRowIndexes removeAllIndexes];
-    
-    if (![selectedRowIndexes containsIndex:row]) {
-        if ([self delegateShouldSelectRow:row])
-            [selectedRowIndexes addIndex:row];
-    }
-    
-    [self setSelectedRowIndexes:selectedRowIndexes];
-
-    [self noteSelectionDidChange];
-    [_headerView setNeedsDisplay:YES];
+   if (extend)
+    [self selectRowIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange([self selectedRow], row)] byExtendingSelection:NO];
+   else
+    [self selectRowIndexes:[NSIndexSet indexSetWithIndex:row] byExtendingSelection:NO];
 }
 
 -(void)selectColumn:(int)column byExtendingSelection:(BOOL)extend {
     NSTableColumn *tableColumn = [_tableColumns objectAtIndex:column];
     
     // selecting a column deselects all rows
-    [self setSelectedRowIndexes:[NSIndexSet indexSet]];
+    [self selectRowIndexes:[NSIndexSet indexSet] byExtendingSelection:NO];
     
     if (extend == NO)
         [_selectedColumns removeAllObjects];
@@ -792,34 +827,25 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
      NSMutableIndexSet *newSelection=[[selectedRowIndexes mutableCopy] autorelease];
      
      [newSelection removeIndex:row];
-     [self setSelectedRowIndexes:newSelection];
+     [self selectRowIndexes:newSelection byExtendingSelection:NO];
     }
 }
 
 -(void)deselectColumn:(int)column  {
     if ([_selectedColumns containsObject:[_tableColumns objectAtIndex:column]]) {
         [_selectedColumns removeObject:[_tableColumns objectAtIndex:column]];
-        [self setNeedsDisplay:YES];
+        [self setNeedsDisplayInRect:[self rectOfColumn:column]];
         [_headerView setNeedsDisplay:YES];
     }
 }
 
 -(void)selectAll:sender {
-    NSInteger i,numberOfRows=[self numberOfRows];
-    
-    [self deselectAll:sender];
-    for (i = 0; i < numberOfRows; ++i)
-        [self selectRow:i byExtendingSelection:YES];
-    
-    [self setNeedsDisplay:YES];
+    [self selectRowIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, [self numberOfRows])] byExtendingSelection:NO];
 }
 
 -(void)deselectAll:sender  {
-    [self setSelectedRowIndexes:[NSIndexSet indexSet]];
+    [self selectRowIndexes:[NSIndexSet indexSet] byExtendingSelection:NO];
     [_selectedColumns removeAllObjects];
-
-    [self setNeedsDisplay:YES];
-    [_headerView setNeedsDisplay:YES];
 }
 
 
@@ -835,6 +861,7 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
     NSSize size = [self frame].size;
     NSSize headerSize = [_headerView frame].size;
 
+    _numberOfRows = -1;
     NSInteger numberOfRows = [self numberOfRows];
 
     // if there's any editing going on, we'd better stop it.
@@ -1107,6 +1134,7 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
     [super abortEditing];
     [_editingCell release];
     _editingCell = nil;
+    [self setNeedsDisplayInRect:_editingFrame];
     _editingFrame = NSMakeRect(-1,-1,-1,-1);
     _editedRow=-1;
     _editedColumn=-1;
@@ -1185,8 +1213,6 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
         _editedColumn = -1;
         _editedRow = -1;
     }
-
-    [self setNeedsDisplay:YES];
 }
 
 - (BOOL)delegateShouldEditTableColumn:(NSTableColumn *)tableColumn row:(int)row
@@ -1294,6 +1320,12 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
     
     _clickedColumn = [self columnAtPoint:location];
     _clickedRow = [self rowAtPoint:location];
+    
+    if (_clickedRow < 0) { // click beyond the end of the table
+        [self selectRowIndexes:[NSIndexSet indexSet] byExtendingSelection:NO];
+        [_selectedColumns removeAllObjects];
+        return;
+    }
 
     NSTableColumn *clickedColumnObject = [_tableColumns objectAtIndex:_clickedColumn];
     NSCell *clickedCell = [clickedColumnObject dataCellForRow:_clickedRow];
@@ -1319,26 +1351,23 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
                     [self deselectRow:_clickedRow];
             }
             else if ([self allowsMultipleSelection]) {
-                [self selectRow:_clickedRow byExtendingSelection:YES];  // add to selection
+                [self selectRowIndexes:[NSIndexSet indexSetWithIndex:_clickedRow] byExtendingSelection:YES];  // add to selection
             }
         }
         else if ([event modifierFlags] & NSShiftKeyMask) {
-            int startRow = [self selectedRow];
-            int endRow = _clickedRow;
+            if ([self allowsMultipleSelection] && [self selectedRow] != -1) {
+                NSInteger startRow = [self selectedRow];
+                NSInteger endRow = _clickedRow;
 
-            if (startRow == -1)
-                startRow = 0;
-            if (_clickedRow < startRow) {
-                endRow = startRow;
-                startRow = _clickedRow;
-            }
+                if (_clickedRow < startRow) {
+                    endRow = startRow;
+                    startRow = _clickedRow;
+                }
 
-            while (startRow <= endRow) {
-                [self selectRow:startRow byExtendingSelection:YES];
-                if (![self allowsMultipleSelection])            // if no multiple selection, break loop
-                    break;
-                startRow++;
+                [self selectRowIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(startRow, endRow)] byExtendingSelection:NO];
             }
+            else
+                [self selectRowIndexes:[NSIndexSet indexSetWithIndex:_clickedRow] byExtendingSelection:NO];
         }
         else {                              // normal selection, allow for dragging
                         BOOL dragging = NO; 
@@ -1386,7 +1415,7 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
                                 // normal selection, allow for dragging 
                                 int firstClickedRow = _clickedRow; 
 
-                                [self selectRow:_clickedRow byExtendingSelection:NO]; 
+                                [self selectRowIndexes:[NSIndexSet indexSetWithIndex:_clickedRow] byExtendingSelection:NO];
                                 if ([self allowsMultipleSelection] == YES) { 
                                         do { 
                                                 NSPoint point; 
@@ -1412,7 +1441,7 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
 
                                                         for (i = 0; i < numberOfRows; i++) { 
                                                                 if (i >= startRow && i <= endRow) 
-                                                                        [self selectRow:i byExtendingSelection:YES]; 
+                                                                        [self selectRowIndexes:[NSIndexSet indexSetWithIndex:i] byExtendingSelection:YES];
                                                                 else 
                                                                         [self deselectRow:i]; 
                                                         } 
@@ -1423,8 +1452,6 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
                                 } 
                         } 
         }                 
-
-        [self noteSelectionDidChange];
 
         [self sendAction:[self action] to:[self target]];
     }

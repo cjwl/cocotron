@@ -59,6 +59,7 @@ typedef enum {
    NSIndexSet *_selectedRowIndexes;
    int _clickedColumn, _clickedRow;
    int _editedColumn, _editedRow;
+   NSInteger _numberOfRows;
    id _editingCell;
    NSRect _editingFrame, _editingBorder;
    NSArray* _sortDescriptors;
