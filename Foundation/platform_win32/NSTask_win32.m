@@ -25,6 +25,27 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @implementation NSTask_win32
 
+// private
+-(void)finalizeProcess{
+
+   isRunning=NO;
+
+   if(_monitor!=nil){
+    [[NSRunLoop currentRunLoop] removeInputSource:_monitor forMode: NSDefaultRunLoopMode];
+    [_monitor setDelegate:nil];
+    [_monitor autorelease];
+    _monitor=nil;
+
+    CloseHandle(_processInfo.hProcess);
+    CloseHandle(_processInfo.hThread);
+   }
+}
+
+-(void)dealloc{
+   [self finalizeProcess];
+   [super dealloc];
+}
+
 -(NSData *)_argumentsData {
    NSMutableData *data=[NSMutableData data];
    NSInteger            i,count=[arguments count];
@@ -112,27 +133,21 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)handleMonitorIndicatesSignaled:(NSHandleMonitor_win32 *)monitor {
+
    GetExitCodeProcess(_processInfo.hProcess,&_exitCode);
 
    if(_exitCode!=STILL_ACTIVE){
-    NSNotification *note=[NSNotification notificationWithName: NSTaskDidTerminateNotification object:self];
-
-    isRunning=NO;
-
-    [[NSRunLoop currentRunLoop] removeInputSource:_monitor forMode: NSDefaultRunLoopMode];
-    [_monitor setDelegate:nil];
-    [_monitor autorelease];
-    _monitor=nil;
-
-    CloseHandle(_processInfo.hProcess);
-    CloseHandle(_processInfo.hThread);
-
-    [[NSNotificationCenter defaultCenter] postNotification:note];
+    [self finalizeProcess];
+    [[NSNotificationCenter defaultCenter] postNotificationName:NSTaskDidTerminateNotification object:self];
    }
 }
 
 -(void)handleMonitorIndicatesAbandoned:(NSHandleMonitor_win32 *)monitor {
+
    NSLog(@"process abandoned ?");
+
+   [self finalizeProcess];
+   [[NSNotificationCenter defaultCenter] postNotificationName:NSTaskDidTerminateNotification object:self];
 }
 
 -(int)processIdentifier {

@@ -5,8 +5,6 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
-
-// Original - Christopher Lloyd <cjwl@objc.net>
 #import <AppKit/Win32Display.h>
 #import <AppKit/Win32Event.h>
 #import <AppKit/Win32Window.h>
@@ -92,26 +90,23 @@ static DWORD WINAPI runWaitCursor(LPVOID arg){
    return (Win32Display *)[super currentDisplay];
 }
 
--init {
-   [super init];
+-(id)init {
+   self=[super init];
+   if (self!=nil){
+    _eventInputSource=[Win32EventInputSource new];
 
-   _eventInputSource=[Win32EventInputSource new];
-   [[NSRunLoop currentRunLoop] addInputSource:_eventInputSource forMode:NSDefaultRunLoopMode];
-   [[NSRunLoop currentRunLoop] addInputSource:_eventInputSource forMode:NSModalPanelRunLoopMode];
-   [[NSRunLoop currentRunLoop] addInputSource:_eventInputSource forMode:NSEventTrackingRunLoopMode];
+    _generalPasteboard=nil;
+    _pasteboards=[NSMutableDictionary new];
 
-   _generalPasteboard=nil;
-   _pasteboards=[NSMutableDictionary new];
+    _nameToColor=[NSMutableDictionary new];
 
-   _nameToColor=[NSMutableDictionary new];
-
-   _cursorDisplayCount=1;
-   _cursorCache=[NSMutableDictionary new];
-
+    _cursorDisplayCount=1;
+    _cursorCache=[NSMutableDictionary new];
+   }
    return self;
 }
 
-BOOL CALLBACK monitorEnumerator(HMONITOR hMonitor,HDC hdcMonitor,LPRECT rect,LPARAM dwData) {
+static BOOL CALLBACK monitorEnumerator(HMONITOR hMonitor,HDC hdcMonitor,LPRECT rect,LPARAM dwData) {
    HANDLE          library=LoadLibrary("USER32");
    FARPROC         getMonitorInfo=GetProcAddress(library,"GetMonitorInfoA");
    NSMutableArray *array=(id)dwData;
@@ -340,9 +335,11 @@ BOOL CALLBACK monitorEnumerator(HMONITOR hMonitor,HDC hdcMonitor,LPRECT rect,LPA
 -(NSEvent *)nextEventMatchingMask:(unsigned)mask untilDate:(NSDate *)untilDate inMode:(NSString *)mode dequeue:(BOOL)dequeue {
    NSEvent *result;
 
+   [[NSRunLoop currentRunLoop] addInputSource:_eventInputSource forMode:mode];
    [self stopWaitCursor];
    result=[super nextEventMatchingMask:mask untilDate:untilDate inMode:mode dequeue:dequeue];
    [self startWaitCursor];
+   [[NSRunLoop currentRunLoop] removeInputSource:_eventInputSource forMode:mode];
 
    return result;
 }
