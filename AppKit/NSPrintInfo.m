@@ -12,7 +12,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSValue.h>
 #import <Foundation/NSThread.h>
 #import <ApplicationServices/ApplicationServices.h>
-#import <CoreGraphics/KGContext.h>
 
 NSString *NSPrintPrinter=@"NSPrintPrinter";	
 NSString *NSPrintPrinterName=@"NSPrintPrinterName"; 
@@ -133,9 +132,11 @@ NSString *NSPrintVerticallyCentered=@"NSPrintVerticallyCentered";
 
 -(NSRect)imageablePageBounds {
    NSRect       result;
-   CGContextRef context=[_attributes objectForKey:@"_KGContext"];
+   NSValue     *imageable=[_attributes objectForKey:@"_imageableRect"];
    
-   if(![context getImageableRect:&result]){
+   if(imageable!=nil)
+    result=[imageable rectValue];
+   else {
     result.origin.x=0;
     result.origin.y=0;
     result.size=[self paperSize];

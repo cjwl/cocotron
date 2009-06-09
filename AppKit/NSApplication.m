@@ -745,7 +745,7 @@ id NSApp=nil;
       if([[sheet _animationContext] stepCount]<=0)
        break;
 
-     function=objc_msg_lookup([context modalDelegate],[context didEndSelector]);
+     function=[[context modalDelegate] methodForSelector:[context didEndSelector]];
      function([context modalDelegate],[context didEndSelector],sheet,returnCode,[context contextInfo]);
 
      return;

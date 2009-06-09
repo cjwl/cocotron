@@ -18,13 +18,20 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSFontManager.h>
 #import <AppKit/NSNib.h>
 
+@interface NSKeyedUnarchiver(private)
+-(void)replaceObject:object withObject:replacement;
+@end
+
+@interface NSNib(private)
+-(NSDictionary *)externalNameTable;
+@end
+
 @implementation NSIBObjectData
 
 -initWithCoder:(NSCoder *)coder {
    if([coder isKindOfClass:[NSNibKeyedUnarchiver class]]){
     NSNibKeyedUnarchiver *keyed=(NSNibKeyedUnarchiver *)coder;
-    NSMutableDictionary  *nameTable=[NSMutableDictionary dictionaryWithDictionary:[keyed externalNameTable]];
-    NSArray              *uids=[keyed decodeArrayOfUidsForKey:@"NSNamesKeys"];
+    NSMutableDictionary  *nameTable=[NSMutableDictionary dictionaryWithDictionary:[[keyed delegate] externalNameTable]];
     int                   i,count;
     id                    owner;
 
@@ -35,15 +42,27 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     
     _namesValues=[[keyed decodeObjectForKey:@"NSNamesValues"] retain];
     count=[_namesValues count];
+    NSMutableArray *namedObjects=[[keyed decodeObjectForKey:@"NSNamesKeys"] mutableCopy];
+
     for(i=0;i<count;i++){
      NSString *check=[_namesValues objectAtIndex:i];
      id        external=[nameTable objectForKey:check];
-          
-     if(external!=nil)
-      [keyed replaceObject:external atUid:[[uids objectAtIndex:i] intValue]];
+     id        nibObject=[namedObjects objectAtIndex:i];
+     
+     if(external!=nil){
+      [keyed replaceObject:nibObject withObject:external];
+      [namedObjects replaceObjectAtIndex:i withObject:external];
+     }
+     else if([nibObject isKindOfClass:[NSCustomObject class]]){
+      id replacement=[nibObject createCustomInstance];
+      
+      [keyed replaceObject:nibObject withObject:replacement];
+      [namedObjects replaceObjectAtIndex:i withObject:replacement];
+      [replacement release];
+     }
     }
+    _namesKeys=namedObjects;
     
-    _namesKeys=[[keyed decodeObjectForKey:@"NSNamesKeys"] retain];
     _accessibilityConnectors=[[keyed decodeObjectForKey:@"NSAccessibilityConnectors"] retain];
     _accessibilityOidsKeys=[[keyed decodeObjectForKey:@"NSAccessibilityOidsKeys"] retain];
     _accessibilityOidsValues=[[keyed decodeObjectForKey:@"NSAccessibilityOidsValues"] retain];

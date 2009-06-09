@@ -2,7 +2,7 @@
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSString.h>
 #import <Foundation/NSException.h>
-#import <Foundation/NSString+KVCAdditions.h>
+#import "NSStringKVCFunctions.h"
 #import <Foundation/NSKeyValueObserving.h>
 #import <Foundation/NSIndexSet.h>
 
@@ -142,7 +142,7 @@
 	if([keyPath hasPrefix:@"@"])
 	{
 		NSString* firstPart, *rest;
-		[keyPath _KVC_partBeforeDot:&firstPart afterDot:&rest];
+		NSStringKVCSplitOnDot(keyPath,&firstPart,&rest);
       
       // observe ourselves
       [super addObserver:observer
@@ -183,7 +183,7 @@
 	if([keyPath hasPrefix:@"@"])
 	{
 		NSString* firstPart, *rest;
-		[keyPath _KVC_partBeforeDot:&firstPart afterDot:&rest];
+		NSStringKVCSplitOnDot(keyPath,&firstPart,&rest);
 
       [super removeObserver:observer
               forKeyPath:keyPath];      
@@ -210,7 +210,7 @@
          [self willChangeValueForKey:keyPath];
          
          NSString* firstPart, *rest;
-         [keyPath _KVC_partBeforeDot:&firstPart afterDot:&rest];
+		 NSStringKVCSplitOnDot(keyPath,&firstPart,&rest);
          
          // if dependencies: observe these in any case
          if(rest)
@@ -252,7 +252,7 @@
       if([keyPath hasPrefix:@"@"]) {
          [self willChangeValueForKey:keyPath];
          NSString* firstPart, *rest;
-         [keyPath _KVC_partBeforeDot:&firstPart afterDot:&rest];
+		 NSStringKVCSplitOnDot(keyPath,&firstPart,&rest);
          
          if(rest)
             [obj removeObserver:proxy
@@ -299,7 +299,7 @@
       if([keyPath hasPrefix:@"@"]) {
          [self willChangeValueForKey:keyPath];
          NSString* firstPart, *rest;
-         [keyPath _KVC_partBeforeDot:&firstPart afterDot:&rest];
+		 NSStringKVCSplitOnDot(keyPath,&firstPart,&rest);
          
          if(rest) {
             [old removeObserver:proxy

@@ -10254,7 +10254,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_VERSION = 4.2;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				INFOPLIST_FILE = /Users/cjwl/Cocotron/1.0/rForwarding/Foundation/Info.plist;
+				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = /Developer/Cocotron/1.0/Darwin/x86_64/Frameworks;
 				OTHER_CFLAGS = (
 					"-DFOUNDATION_INSIDE_BUILD",
@@ -10281,7 +10281,7 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_VERSION = 4.2;
-				INFOPLIST_FILE = "/Users/cjwl/Cocotron/1.0/rForwarding/Foundation/Info copy.plist";
+				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = /Developer/Cocotron/1.0/Darwin/i386/Frameworks;
 				OTHER_CFLAGS = (
 					"-DFOUNDATION_INSIDE_BUILD",

@@ -267,7 +267,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return NO;
 }
 
--(void *)decodeBytesForKey:(NSString *)key returnedLength:(NSUInteger *)lengthp {
+-(const uint8_t *)decodeBytesForKey:(NSString *)key returnedLength:(NSUInteger *)lengthp {
    *lengthp=0;
    return NULL;
 }

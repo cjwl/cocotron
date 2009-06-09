@@ -16,6 +16,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSTableCornerView.h>
 #import "NSIBObjectData.h"
 #import "NSNibHelpConnector.h"
+#import "NSCustomObject.h"
 
 NSString *NSNibOwner=@"NSOwner";
 NSString *NSNibTopLevelObjects=@"NSNibTopLevelObjects";
@@ -38,6 +39,8 @@ NSString *NSNibTopLevelObjects=@"NSNibTopLevelObjects";
     return nil;
    }
 
+   _allObjects=[NSMutableArray new];
+   
    return self;
 }
 
@@ -64,16 +67,34 @@ NSString *NSNibTopLevelObjects=@"NSNibTopLevelObjects";
 
 -(void)dealloc {
    [_data release];
+   [_allObjects release];
    [super dealloc];
 }
 
+-unarchiver:(NSKeyedUnarchiver *)unarchiver didDecodeObject:object {
+   [_allObjects addObject:object];
+   return object;
+}
+
+-(void)unarchiver:(NSKeyedUnarchiver *)unarchiver willReplaceObject:object withObject:replacement {
+   NSUInteger index=[_allObjects indexOfObjectIdenticalTo:object];
+   [_allObjects replaceObjectAtIndex:index withObject:replacement];
+}
+
+-(NSDictionary *)externalNameTable {
+   return _nameTable;
+}
+
 -(BOOL)instantiateNibWithExternalNameTable:(NSDictionary *)nameTable {
-    NSNibKeyedUnarchiver *unarchiver=[[[NSNibKeyedUnarchiver alloc] initForReadingWithData:_data externalNameTable:nameTable] autorelease];
+   _nameTable=[nameTable retain];
+    NSNibKeyedUnarchiver *unarchiver=[[[NSNibKeyedUnarchiver alloc] initForReadingWithData:_data] autorelease];
     NSIBObjectData    *objectData;
     NSArray           *allObjects;
     int                i,count;
     NSMenu            *menu;
     NSArray           *topLevelObjects;
+    
+    [unarchiver setDelegate:self];
     
     /*
     TO DO:
@@ -84,7 +105,7 @@ NSString *NSNibTopLevelObjects=@"NSNibTopLevelObjects";
     [unarchiver setClass:[NSNibHelpConnector class] forClassName:@"NSIBHelpConnector"];
     
     objectData=[unarchiver decodeObjectForKey:@"IB.objectdata"];
-    
+        
     [objectData buildConnectionsWithNameTable:nameTable];
     if((menu=[objectData mainMenu])!=nil)
      [NSApp setMainMenu:menu];
@@ -102,21 +123,20 @@ NSString *NSNibTopLevelObjects=@"NSNibTopLevelObjects";
     else
         [topLevelObjects makeObjectsPerformSelector:@selector(retain)];
     
-    allObjects=[unarchiver allObjects];
     // We do not need to add the objects from nameTable to allObjects as they get put into the uid->object table already
     // Do we send awakeFromNib to objects in the nameTable *not* present in the nib ?
 
-    count=[allObjects count];
+    count=[_allObjects count];
 
     for(i=0;i<count;i++){
-     id object=[allObjects objectAtIndex:i];
+     id object=[_allObjects objectAtIndex:i];
      
      if([object respondsToSelector:@selector(awakeFromNib)])
       [object awakeFromNib];
     }
 
     for(i=0;i<count;i++){
-     id object=[allObjects objectAtIndex:i];
+     id object=[_allObjects objectAtIndex:i];
 
      if([object respondsToSelector:@selector(postAwakeFromNib)])
       [object performSelector:@selector(postAwakeFromNib)];
@@ -124,6 +144,9 @@ NSString *NSNibTopLevelObjects=@"NSNibTopLevelObjects";
 
     [[objectData visibleWindows] makeObjectsPerformSelector:@selector(makeKeyAndOrderFront:) withObject:nil];
     
+    [_nameTable release];
+    _nameTable=nil;
+
     return (objectData!=nil);
 }
 

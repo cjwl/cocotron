@@ -94,6 +94,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
      NSMapInsert(_uidToObject,(void *)uidIntValue,result);
      result=[result awakeAfterUsingCoder:self];
      [result autorelease];
+     if([_delegate respondsToSelector:@selector(unarchiver:didDecodeObject:)])
+      result=[_delegate unarchiver:self didDecodeObject:result];
      NSMapInsert(_uidToObject,(void *)uidIntValue,result);
      [_plistStack removeLastObject];
     }
@@ -144,7 +146,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return ([[_plistStack lastObject] objectForKey:key]!=nil)?YES:NO;
 }
 
--(const void *)decodeBytesForKey:(NSString *)key returnedLength:(NSUInteger *)lengthp {
+-(const uint8_t *)decodeBytesForKey:(NSString *)key returnedLength:(NSUInteger *)lengthp {
    NSData *data=[[_plistStack lastObject] objectForKey:key];
 
    *lengthp=[data length];
@@ -415,6 +417,22 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     result=[self _decodeObjectWithPropertyList:plist];
 
    return result;
+}
+
+-(void)replaceObject:object withObject:replacement {
+   NSMapEnumerator state=NSEnumerateMapTable(_uidToObject);
+   void           *key,*value;
+   
+   while(NSNextMapEnumeratorPair(&state,&key,&value)){
+    if(value==object){
+    
+     if([_delegate respondsToSelector:@selector(unarchiver:willReplaceObject:withObject:)])
+      [_delegate unarchiver:self willReplaceObject:value withObject:replacement];
+      
+     NSMapInsert(_uidToObject,key,replacement);
+     return;
+    }
+   }
 }
 
 -(void)finishDecoding {

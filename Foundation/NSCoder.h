@@ -71,7 +71,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(BOOL)containsValueForKey:(NSString *)key;
 
--(void *)decodeBytesForKey:(NSString *)key returnedLength:(NSUInteger *)lengthp;
+-(const uint8_t *)decodeBytesForKey:(NSString *)key returnedLength:(NSUInteger *)lengthp;
 -(NSPoint)decodePointForKey:(NSString *)key;
 -(NSRect)decodeRectForKey:(NSString *)key;
 -(NSSize)decodeSizeForKey:(NSString *)key;

@@ -9,13 +9,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSObject.h>
 #import <AppKit/AppKitExport.h>
 
-@class NSURL,NSBundle,NSDictionary,NSArray,NSData;
+@class NSURL,NSBundle,NSDictionary,NSArray,NSData,NSMutableArray;
 
 APPKIT_EXPORT NSString *NSNibOwner;
 APPKIT_EXPORT NSString *NSNibTopLevelObjects;
 
 @interface NSNib : NSObject {
    NSData *_data;
+   NSMutableArray *_allObjects;
+   NSDictionary *_nameTable;
 }
 
 -initWithContentsOfURL:(NSURL *)url;

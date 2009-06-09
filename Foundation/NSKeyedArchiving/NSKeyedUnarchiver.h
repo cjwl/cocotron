@@ -27,7 +27,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(BOOL)containsValueForKey:(NSString *)key;
 
--(const void *)decodeBytesForKey:(NSString *)key returnedLength:(NSUInteger *)lengthp;
+-(const uint8_t *)decodeBytesForKey:(NSString *)key returnedLength:(NSUInteger *)lengthp;
 -(BOOL)decodeBoolForKey:(NSString *)key;
 -(double)decodeDoubleForKey:(NSString *)key;
 -(float)decodeFloatForKey:(NSString *)key;
@@ -48,3 +48,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(Class)classForClassName:(NSString *)className;
 
 @end
+
+@interface NSObject(NSKeyedUnarchiverDelegate)
+-unarchiver:(NSKeyedUnarchiver *)unarchiver didDecodeObject:object;
+-(void)unarchiver:(NSKeyedUnarchiver *)unarchiver willReplaceObject:object withObject:replacement;
+-(Class)unarchiver:(NSKeyedUnarchiver *)unarchiver cannotDecodeObjectOfClassName:(NSString *)className originalClasses:(NSArray *)classHierarchy;
+@end
+

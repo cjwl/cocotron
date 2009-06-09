@@ -2080,6 +2080,10 @@
 		FE25FF630EE58712009C91B1 /* KGFont.m in Sources */ = {isa = PBXBuildFile; fileRef = FE25FF610EE58712009C91B1 /* KGFont.m */; };
 		FE25FF640EE58712009C91B1 /* KGFont.h in Headers */ = {isa = PBXBuildFile; fileRef = FE25FF600EE58712009C91B1 /* KGFont.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE25FF650EE58712009C91B1 /* KGFont.m in Sources */ = {isa = PBXBuildFile; fileRef = FE25FF610EE58712009C91B1 /* KGFont.m */; };
+		FE2C7F550FDC4C8E00D5DFB5 /* NSStringKVCFunctions.h in Headers */ = {isa = PBXBuildFile; fileRef = FE2C7F540FDC4C8E00D5DFB5 /* NSStringKVCFunctions.h */; };
+		FE2C7F560FDC4C8E00D5DFB5 /* NSStringKVCFunctions.h in Headers */ = {isa = PBXBuildFile; fileRef = FE2C7F540FDC4C8E00D5DFB5 /* NSStringKVCFunctions.h */; };
+		FE2C7F570FDC4C8E00D5DFB5 /* NSStringKVCFunctions.h in Headers */ = {isa = PBXBuildFile; fileRef = FE2C7F540FDC4C8E00D5DFB5 /* NSStringKVCFunctions.h */; };
+		FE2C7F580FDC4C8E00D5DFB5 /* NSStringKVCFunctions.h in Headers */ = {isa = PBXBuildFile; fileRef = FE2C7F540FDC4C8E00D5DFB5 /* NSStringKVCFunctions.h */; };
 		FE311FA80CCC430200EBD696 /* KTFont_gdi.h in Headers */ = {isa = PBXBuildFile; fileRef = FE311FA40CCC430200EBD696 /* KTFont_gdi.h */; };
 		FE311FA90CCC430200EBD696 /* KTFont_gdi.m in Sources */ = {isa = PBXBuildFile; fileRef = FE311FA50CCC430200EBD696 /* KTFont_gdi.m */; };
 		FE337FCA0EE77A6C00D4A751 /* CTFont.m in Sources */ = {isa = PBXBuildFile; fileRef = FE337FC90EE77A6C00D4A751 /* CTFont.m */; };
@@ -3452,6 +3456,7 @@
 		FE2A11530B45C65E006C03DE /* NSTokenField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSTokenField.m; sourceTree = "<group>"; };
 		FE2A115A0B45C66A006C03DE /* NSTokenFieldCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSTokenFieldCell.h; sourceTree = "<group>"; };
 		FE2A115B0B45C66A006C03DE /* NSTokenFieldCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSTokenFieldCell.m; sourceTree = "<group>"; };
+		FE2C7F540FDC4C8E00D5DFB5 /* NSStringKVCFunctions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSStringKVCFunctions.h; sourceTree = "<group>"; };
 		FE311FA40CCC430200EBD696 /* KTFont_gdi.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = KTFont_gdi.h; sourceTree = "<group>"; };
 		FE311FA50CCC430200EBD696 /* KTFont_gdi.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = KTFont_gdi.m; sourceTree = "<group>"; };
 		FE337FC90EE77A6C00D4A751 /* CTFont.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CTFont.m; sourceTree = "<group>"; };
@@ -4673,6 +4678,7 @@
 		FE2A10250B44A239006C03DE /* NSController */ = {
 			isa = PBXGroup;
 			children = (
+				FE2C7F540FDC4C8E00D5DFB5 /* NSStringKVCFunctions.h */,
 				C85D91930EE6A806004EBAEA /* NSDictionaryController.h */,
 				C85D91940EE6A806004EBAEA /* NSDictionaryController.m */,
 				C8C52C8D0E7ED1FF003F03B5 /* NSObservationProxy.h */,
@@ -5152,6 +5158,7 @@
 				FEA317C30FD5893300F480D4 /* NSRaise.h in Headers */,
 				FE9DB3D60FD6BD5A00A1CE17 /* NSRangeEntries.h in Headers */,
 				FEAED7A00FD6C96E0043F915 /* KGDataConsumer.h in Headers */,
+				FE2C7F560FDC4C8E00D5DFB5 /* NSStringKVCFunctions.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5514,6 +5521,7 @@
 				FEA317C40FD5893300F480D4 /* NSRaise.h in Headers */,
 				FE9DB3D70FD6BD5B00A1CE17 /* NSRangeEntries.h in Headers */,
 				FEAED79E0FD6C96E0043F915 /* KGDataConsumer.h in Headers */,
+				FE2C7F550FDC4C8E00D5DFB5 /* NSStringKVCFunctions.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5870,6 +5878,7 @@
 				FEA317C20FD5893300F480D4 /* NSRaise.h in Headers */,
 				FE9DB3D50FD6BD5A00A1CE17 /* NSRangeEntries.h in Headers */,
 				FEAED7A20FD6C96E0043F915 /* KGDataConsumer.h in Headers */,
+				FE2C7F570FDC4C8E00D5DFB5 /* NSStringKVCFunctions.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6154,6 +6163,7 @@
 				FEA314D90FD5667D00F480D4 /* NSControllerMarker.h in Headers */,
 				FEA317C50FD5893300F480D4 /* NSRaise.h in Headers */,
 				FEA3182B0FD5961100F480D4 /* NSRangeEntries.h in Headers */,
+				FE2C7F580FDC4C8E00D5DFB5 /* NSStringKVCFunctions.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

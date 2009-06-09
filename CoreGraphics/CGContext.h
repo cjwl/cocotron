@@ -240,7 +240,6 @@ COREGRAPHICS_EXPORT void CGContextShowTextAtPoint(CGContextRef context,float x,f
 
 COREGRAPHICS_EXPORT void CGContextDrawShading(CGContextRef context,CGShadingRef shading);
 COREGRAPHICS_EXPORT void CGContextDrawImage(CGContextRef context,CGRect rect,CGImageRef image);
-COREGRAPHICS_EXPORT NSData *CGContextCaptureBitmap(CGContextRef context,CGRect rect);
 COREGRAPHICS_EXPORT void CGContextDrawLayerAtPoint(CGContextRef context,CGPoint point,CGLayerRef layer);
 COREGRAPHICS_EXPORT void CGContextDrawLayerInRect(CGContextRef context,CGRect rect,CGLayerRef layer);
 COREGRAPHICS_EXPORT void CGContextDrawPDFPage(CGContextRef context,CGPDFPageRef page);
@@ -253,11 +252,12 @@ COREGRAPHICS_EXPORT void CGContextSynchronize(CGContextRef context);
 COREGRAPHICS_EXPORT void CGContextBeginPage(CGContextRef context,const CGRect *mediaBox);
 COREGRAPHICS_EXPORT void CGContextEndPage(CGContextRef context);
 
-// private for NSAffineTransform
+// **PRIVATE** These are private in Apple's implementation as well as ours.
+
 COREGRAPHICS_EXPORT void CGContextSetCTM(CGContextRef context,CGAffineTransform matrix);
+COREGRAPHICS_EXPORT void CGContextResetClip(CGContextRef context);
 
 // Temporary hacks
 
-COREGRAPHICS_EXPORT void CGContextResetClip(CGContextRef context);
-
+COREGRAPHICS_EXPORT NSData *CGContextCaptureBitmap(CGContextRef context,CGRect rect);
 COREGRAPHICS_EXPORT void CGContextCopyBits(CGContextRef context,CGRect rect,CGPoint point,int gState);

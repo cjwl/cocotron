@@ -914,7 +914,11 @@ static int CALLBACK buildTypeface(const LOGFONTA *lofFont_old,
    else {
     NSDictionary *auxiliaryInfo=[NSDictionary dictionaryWithObject:[attributes objectForKey:@"_title"] forKey:kCGPDFContextTitle];
     KGContext_gdi *context=[[[KGContext_gdi alloc] initWithPrinterDC:printProperties.hDC auxiliaryInfo:auxiliaryInfo] autorelease];
-        
+    NSRect imageable;
+    
+    if([context getImageableRect:&imageable])
+     [attributes setObject:[NSValue valueWithRect:imageable] forKey:@"_imageableRect"];
+     
     [attributes setObject:context forKey:@"_KGContext"];
     
     [attributes setObject:[NSValue valueWithSize:[context pointSize]] forKey:NSPrintPaperSize];

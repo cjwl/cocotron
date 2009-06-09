@@ -32,6 +32,24 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [super dealloc];
 }
 
+-(id)createCustomInstance {
+   Class class=NSClassFromString(_className);
+   id ret=nil;
+
+   if(class==Nil)
+    NSLog(@"NSCustomObject unknown class %@",_className);
+   
+   if([_className isEqualToString:@"NSApplication"]) {
+      ret=[[NSApplication sharedApplication] retain];
+   }
+   else {
+      ret=[[class alloc] init];  
+   }
+          
+   return ret;
+}
+
+#if 0
 -awakeAfterUsingCoder:(NSCoder *)coder {
    Class class=NSClassFromString(_className);
    id ret=nil;
@@ -49,6 +67,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
           
    return ret;
 }
-
+#endif
 
 @end
