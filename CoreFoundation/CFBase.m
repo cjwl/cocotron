@@ -75,7 +75,7 @@ CFHashCode CFHash(CFTypeRef self){
 }
 
 Boolean CFEqual(CFTypeRef self,CFTypeRef other){
-	return [(id) self idEqual:other];
+	return [(id) self isEqual:(id)other];
 }
 
 CFStringRef CFCopyTypeIDDescription(CFTypeID typeID){

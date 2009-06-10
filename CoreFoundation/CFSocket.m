@@ -6,6 +6,98 @@
 
 #define NSSocketCast(_) ((NSSocket *)_)
 
+@implementation NSSocket(CFSocket)
+
++(CFTypeID)typeID {
+   NSInvalidAbstractInvocation();
+   return 0;
+}
+
++(CFSocketRef)createWithAllocator:(CFAllocatorRef)allocator protocolFamily:(CFInteger)protocolFamily type:(CFInteger)socketType protocol:(CFInteger)protocol options:(CFOptionFlags)flags callback:(CFSocketCallBack)callback context:(const CFSocketContext *)context {
+   NSInvalidAbstractInvocation();
+   return 0;
+}
+
++(CFSocketRef)createConnectedWithAllocator:(CFAllocatorRef)allocator signature:(const CFSocketSignature *)signature options:(CFOptionFlags)flags callback:(CFSocketCallBack)callback context:(const CFSocketContext *)context timeout:(CFTimeInterval)timeout {
+   NSInvalidAbstractInvocation();
+   return 0;
+}
+
++(CFSocketRef)createWithAllocator:(CFAllocatorRef)allocator native:(CFSocketNativeHandle)native options:(CFOptionFlags)flag callback:(CFSocketCallBack)callback context:(const CFSocketContext *)context {
+   NSInvalidAbstractInvocation();
+   return 0;
+}
+
++(CFSocketRef)createWithAllocator:(CFAllocatorRef)allocator signature:(const CFSocketSignature *)signature options:(CFOptionFlags)flags callback:(CFSocketCallBack)callback context:(const CFSocketContext *)context {
+   NSInvalidAbstractInvocation();
+   return 0;
+}
+
+-(CFSocketError)connectToAddress:(CFDataRef)address timeout:(CFTimeInterval)timeout {
+   NSInvalidAbstractInvocation();
+   return 0;
+}
+
+-(CFDataRef)copyAddress {
+   NSInvalidAbstractInvocation();
+   return 0;
+}
+
+-(CFDataRef)copyPeerAddress {
+   NSInvalidAbstractInvocation();
+   return 0;
+}
+
+-(CFRunLoopSourceRef)createRunLoopSourceWithAllocator:(CFAllocatorRef)allocator order:(CFIndex)order {
+   NSInvalidAbstractInvocation();
+   return 0;
+}
+
+-(void)disableCallBacks:(CFOptionFlags)mask {
+   NSInvalidAbstractInvocation();
+}
+
+-(void)enableCallBacks:(CFOptionFlags)mask {
+   NSInvalidAbstractInvocation();
+}
+
+-(void)getContext:(CFSocketContext *)context {
+   NSInvalidAbstractInvocation();
+}
+
+-(CFSocketNativeHandle)native {
+   NSInvalidAbstractInvocation();
+   return 0;
+}
+
+-(CFOptionFlags)socketFlags {
+   NSInvalidAbstractInvocation();
+   return 0;
+}
+
+-(void)invalidate {
+   NSInvalidAbstractInvocation();
+}
+
+-(Boolean)isValid {
+   NSInvalidAbstractInvocation();
+   return 0;
+}
+
+-(CFSocketError)sendToAddress:(CFDataRef)address data:(CFDataRef)data timeout:(CFTimeInterval)timeout {
+   NSInvalidAbstractInvocation();
+   return 0;
+}
+
+-(CFSocketError)setAddress:(CFDataRef)address {
+   NSInvalidAbstractInvocation();
+   return 0;
+}
+
+-(void)setSocketFlags:(CFOptionFlags)flags {
+   NSInvalidAbstractInvocation();
+}
+
 CFTypeID CFSocketGetTypeID() {
    return [NSSocket typeID];
 }
@@ -81,5 +173,7 @@ CFSocketError CFSocketSetAddress(CFSocketRef self,CFDataRef address) {
 void CFSocketSetSocketFlags(CFSocketRef self,CFOptionFlags flags) {
    [NSSocketCast(self) setSocketFlags:flags];
 }
+
+@end
 
 #endif

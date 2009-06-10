@@ -359,7 +359,7 @@ static int _nsmutablearraycompareindices(const void* v1, const void* v2)
    }
 }
 
--(void)exchangeobjectAtIndex:(NSUInteger)index withobjectAtIndex:(NSUInteger)other {
+-(void)exchangeObjectAtIndex:(NSUInteger)index withObjectAtIndex:(NSUInteger)other {
    id object=[[self objectAtIndex:index] retain];
    id otherObject=[self objectAtIndex:other];
    
