@@ -1,0 +1,49 @@
+/* Copyright (c) 2008-2009 Christopher J. W. Lloyd
+
+Permission is hereby granted,free of charge,to any person obtaining a copy of this software and associated documentation files (the "Software"),to deal in the Software without restriction,including without limitation the rights to use,copy,modify,merge,publish,distribute,sublicense,and/or sell copies of the Software,and to permit persons to whom the Software is furnished to do so,subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS",WITHOUT WARRANTY OF ANY KIND,EXPRESS OR IMPLIED,INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,DAMAGES OR OTHER LIABILITY,WHETHER IN AN ACTION OF CONTRACT,TORT OR OTHERWISE,ARISING FROM,OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
+#import <CoreFoundation/CFBase.h>
+
+typedef enum  {
+   CFByteOrderUnknown,
+   CFByteOrderLittleEndian,
+   CFByteOrderBigEndian
+} CFByteOrder;
+
+typedef struct  {
+   uint32_t v;
+} CFSwappedFloat32;
+
+typedef struct {
+   uint64_t v;
+} CFSwappedFloat64;
+
+CFByteOrder      CFByteOrderGetCurrent(void);
+CFSwappedFloat64 CFConvertDoubleHostToSwapped(double value);
+double           CFConvertDoubleSwappedToHost(CFSwappedFloat64 value);
+CFSwappedFloat32 CFConvertFloat32HostToSwapped(Float32 value);
+Float32          CFConvertFloat32SwappedToHost(CFSwappedFloat32 value);
+CFSwappedFloat64 CFConvertFloat64HostToSwapped(Float64 value);
+Float64          CFConvertFloat64SwappedToHost(CFSwappedFloat64 value);
+CFSwappedFloat32 CFConvertFloatHostToSwapped(float value);
+float            CFConvertFloatSwappedToHost(CFSwappedFloat32 value);
+
+uint16_t CFSwapInt16(uint16_t value);
+uint16_t CFSwapInt16BigToHost(uint16_t value);
+uint16_t CFSwapInt16HostToBig(uint16_t value);
+uint16_t CFSwapInt16HostToLittle(uint16_t value);
+uint16_t CFSwapInt16LittleToHost(uint16_t value);
+uint32_t CFSwapInt32(uint32_t value);
+uint32_t CFSwapInt32BigToHost(uint32_t value);
+uint32_t CFSwapInt32HostToBig(uint32_t value);
+uint32_t CFSwapInt32HostToLittle(uint32_t value);
+uint32_t CFSwapInt32LittleToHost(uint32_t value);
+uint64_t CFSwapInt64(uint64_t value);
+uint64_t CFSwapInt64BigToHost(uint64_t value);
+uint64_t CFSwapInt64HostToBig(uint64_t value);
+uint64_t CFSwapInt64HostToLittle(uint64_t value);
+uint64_t CFSwapInt64LittleToHost(uint64_t value);
+
