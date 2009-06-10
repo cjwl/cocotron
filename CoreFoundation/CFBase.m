@@ -1,3 +1,5 @@
+#ifdef CF_ENABLED
+#define COREFOUNDATION_INSIDE_BUILD 1
 #import <CoreFoundation/CFBase.h>
 #import <Foundation/NSRaise.h>
 
@@ -89,3 +91,4 @@ CFTypeRef CFMakeCollectable(CFTypeRef self){
    //does nothing on cocotron
    return 0;
 }
+#endif

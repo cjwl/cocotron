@@ -1,3 +1,5 @@
+#ifdef CF_ENABLED
+#define COREFOUNDATION_INSIDE_BUILD 1
 #import <CoreFoundation/CFNotificationCenter.h>
 #import <Foundation/NSRaise.h>
 
@@ -35,3 +37,4 @@ void CFNotificationCenterRemoveEveryObserver(CFNotificationCenterRef self,const 
 void CFNotificationCenterRemoveObserver(CFNotificationCenterRef self,const void *observer,CFStringRef name,const void *object){
    NSUnimplementedFunction();
 }
+#endif

@@ -1,3 +1,5 @@
+#ifdef CF_ENABLED
+#define COREFOUNDATION_INSIDE_BUILD 1
 #import <CoreFoundation/CFLocale.h>
 #import <Foundation/NSString.h>
 
@@ -27,3 +29,4 @@ const CFStringRef kCFIslamicCivilCalendar=(CFStringRef)@"kCFIslamicCivilCalendar
 const CFStringRef kCFJapaneseCalendar=(CFStringRef)@"kCFJapaneseCalendar";
 
 const CFStringRef kCFLocaleCurrentLocaleDidChangeNotification=(CFStringRef)@"kCFLocaleCurrentLocaleDidChangeNotification";
+#endif

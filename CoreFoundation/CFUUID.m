@@ -1,3 +1,5 @@
+#ifdef CF_ENABLED
+#define COREFOUNDATION_INSIDE_BUILD 1
 #import <CoreFoundation/CFUUID.h>
 #import <Foundation/NSRaise.h>
 
@@ -42,3 +44,4 @@ CFStringRef CFUUIDCreateString(CFAllocatorRef allocator,CFUUIDRef self){
    NSUnimplementedFunction();
    return 0;
 }
+#endif

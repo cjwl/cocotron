@@ -1,3 +1,5 @@
+#ifdef CF_ENABLED
+#define COREFOUNDATION_INSIDE_BUILD 1
 #import <CoreFoundation/CFBag.h>
 #import <Foundation/NSRaise.h>
 
@@ -85,3 +87,4 @@ void CFBagReplaceValue(CFMutableBagRef self,const void *value){
 void CFBagSetValue(CFMutableBagRef self,const void *value){
    NSUnimplementedFunction();
 }
+#endif

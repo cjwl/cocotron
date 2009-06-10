@@ -1,3 +1,5 @@
+#ifdef CF_ENABLED
+#define COREFOUNDATION_INSIDE_BUILD 1
 #import <CoreFoundation/CFCharacterSet.h>
 #import <Foundation/NSRaise.h>
 
@@ -107,5 +109,6 @@ void CFCharacterSetUnion(CFMutableCharacterSetRef self,CFCharacterSetRef other){
 void CFCharacterSetInvert(CFMutableCharacterSetRef self){
    NSUnimplementedFunction();
 }
+#endif
 
 

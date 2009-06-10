@@ -1,3 +1,5 @@
+#ifdef CF_ENABLED
+#define COREFOUNDATION_INSIDE_BUILD 1
 #import <CoreFoundation/CFData.h>
 #import <Foundation/NSRaise.h>
 
@@ -71,3 +73,4 @@ void CFDataIncreaseLength(CFMutableDataRef self,CFIndex delta){
 void CFDataReplaceBytes(CFMutableDataRef self,CFRange range,const uint8_t *bytes,CFIndex length){
    NSUnimplementedFunction();
 }
+#endif

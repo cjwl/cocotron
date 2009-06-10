@@ -1,3 +1,5 @@
+#ifdef CF_ENABLED
+#define COREFOUNDATION_INSIDE_BUILD 1
 #import <CoreFoundation/CFAttributedString.h>
 #import <Foundation/NSRaise.h>
 
@@ -88,3 +90,4 @@ void CFAttributedStringBeginEditing(CFMutableAttributedStringRef self){
 void CFAttributedStringEndEditing(CFMutableAttributedStringRef self){
    NSUnimplementedFunction();
 }
+#endif

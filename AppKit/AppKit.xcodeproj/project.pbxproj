@@ -8247,7 +8247,10 @@
 					"-Wreturn-type",
 					"-DNS_BUILD_32_LIKE_64",
 				);
-				OTHER_LDFLAGS = "";
+				OTHER_LDFLAGS = (
+					"-framework",
+					ApplicationServices,
+				);
 				PREBINDING = NO;
 				PRODUCT_NAME = AppKit;
 				STRIP_INSTALLED_PRODUCT = YES;

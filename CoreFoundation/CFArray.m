@@ -1,3 +1,5 @@
+#ifdef CF_ENABLED
+#define COREFOUNDATION_INSIDE_BUILD 1
 #import <CoreFoundation/CFArray.h>
 #import <Foundation/NSRaise.h>
 #import <Foundation/NSArray.h>
@@ -137,6 +139,7 @@ void CFArrayExchangeValuesAtIndices(CFMutableArrayRef self,CFIndex index,CFIndex
 void CFArraySortValues(CFMutableArrayRef self,CFRange range,CFComparatorFunction function,void *context) {
    NSUnimplementedFunction();
 }
+#endif
 
 
 
