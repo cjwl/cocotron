@@ -11864,7 +11864,7 @@
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
-				INFOPLIST_FILE = /Developer/Cocotron/cocotron/Foundation/Info.plist;
+				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = /Developer/Cocotron/1.0/Linux/ppc/Frameworks;
 				OTHER_CFLAGS = (
 					"-DFOUNDATION_INSIDE_BUILD",
@@ -11894,7 +11894,7 @@
 				EXECUTABLE_PREFIX = lib;
 				EXECUTABLE_SUFFIX = .so;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
-				INFOPLIST_FILE = /Developer/Cocotron/cocotron/Foundation/Info.plist;
+				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = /Developer/Cocotron/1.0/Linux/ppc/Frameworks;
 				OTHER_CFLAGS = (
 					"-DFOUNDATION_INSIDE_BUILD",

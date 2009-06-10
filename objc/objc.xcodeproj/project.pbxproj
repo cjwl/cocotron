@@ -603,7 +603,7 @@
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = "";
-				INFOPLIST_FILE = /Developer/Cocotron/cocotron/objc/Info.plist;
+				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = /Developer/Cocotron/1.0/Linux/ppc/Frameworks;
 				OTHER_CFLAGS = (
 					"-DOBJC_INSIDE_BUILD",
@@ -627,7 +627,7 @@
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = "";
-				INFOPLIST_FILE = /Developer/Cocotron/cocotron/objc/Info.plist;
+				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = /Developer/Cocotron/1.0/Linux/ppc/Frameworks;
 				OTHER_CFLAGS = (
 					"-DOBJC_INSIDE_BUILD",
