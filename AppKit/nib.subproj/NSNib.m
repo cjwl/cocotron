@@ -72,13 +72,16 @@ NSString *NSNibTopLevelObjects=@"NSNibTopLevelObjects";
 }
 
 -unarchiver:(NSKeyedUnarchiver *)unarchiver didDecodeObject:object {
-   [_allObjects addObject:object];
+   if(object!=nil)
+    [_allObjects addObject:object];
    return object;
 }
 
 -(void)unarchiver:(NSKeyedUnarchiver *)unarchiver willReplaceObject:object withObject:replacement {
-   NSUInteger index=[_allObjects indexOfObjectIdenticalTo:object];
-   [_allObjects replaceObjectAtIndex:index withObject:replacement];
+   if(object!=nil && replacement!=nil){
+    NSUInteger index=[_allObjects indexOfObjectIdenticalTo:object];
+    [_allObjects replaceObjectAtIndex:index withObject:replacement];
+   }
 }
 
 -(NSDictionary *)externalNameTable {
