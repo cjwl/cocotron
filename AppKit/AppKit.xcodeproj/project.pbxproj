@@ -2869,6 +2869,13 @@
 			remoteGlobalIDString = FE01AAED0C5D9BF900AEA51A;
 			remoteInfo = "ApplicationServices-Windows-i386";
 		};
+		FED5359B0FE061B200F02667 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6E46FEBE0A2D2DCF004CD27E /* Foundation.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 28D487A90FE04E7100DC03EF /* Foundation.framework */;
+			remoteInfo = "Foundation-Linux-ppc";
+		};
 		FED70AC90C3B3FD9000CBE5B /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 6E46FEBE0A2D2DCF004CD27E /* Foundation.xcodeproj */;
@@ -4644,6 +4651,7 @@
 				FED70ACA0C3B3FD9000CBE5B /* Foundation.framework */,
 				FEE66D7A0C3D6F8A00FBED82 /* Foundation.framework */,
 				FE65206F0FBE3D3D00464BFD /* Foundation.framework */,
+				FED5359C0FE061B200F02667 /* Foundation.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -6337,6 +6345,13 @@
 			fileType = wrapper.framework;
 			path = ApplicationServices.framework;
 			remoteRef = FECAF4D00DB710EE00BA2A8E /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FED5359C0FE061B200F02667 /* Foundation.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Foundation.framework;
+			remoteRef = FED5359B0FE061B200F02667 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		FED70ACA0C3B3FD9000CBE5B /* Foundation.framework */ = {
