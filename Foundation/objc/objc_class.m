@@ -224,7 +224,7 @@ static inline struct objc_method *OBJCLookupUniqueIdInMethodList(struct objc_met
    return NULL;
 }
 
-inline struct objc_method *OBJCLookupUniqueIdInOnlyThisClass(Class class,SEL uniqueId){
+struct objc_method *OBJCLookupUniqueIdInOnlyThisClass(Class class,SEL uniqueId){
    void *iterator=0;
    struct objc_method_list *check;
    struct objc_method     *result=NULL;

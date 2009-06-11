@@ -17,6 +17,7 @@
 
 #import <objc/objc-class.h>
 #import <objc/message.h>
+#import <ctype.h>
 #ifdef DARWIN
 #import <ffi/ffi.h>
 #else

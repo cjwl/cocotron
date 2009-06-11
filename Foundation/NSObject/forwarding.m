@@ -1,6 +1,7 @@
 #import <objc/runtime.h>
 #import <Foundation/NSObject.h>
 #import <Foundation/NSInvocation.h>
+#import <Foundation/ObjCException.h>
 
 #define NSABISizeofRegisterReturn 8
 #define NSABIasm_jmp_objc_msgSend __asm__("jmp _objc_msgSend")

@@ -31,7 +31,7 @@ typedef struct OBJCMethodDescriptionList {
 OBJC_EXPORT void OBJCRegisterClass(Class class);
 OBJC_EXPORT void OBJCRegisterCategoryInClass(Category category,Class class);
 
-inline struct objc_method *OBJCLookupUniqueIdInOnlyThisClass(Class class,SEL uniqueId);
+struct objc_method *OBJCLookupUniqueIdInOnlyThisClass(Class class,SEL uniqueId);
 OBJC_EXPORT IMP OBJCInitializeLookupAndCacheUniqueIdForObject(id object,SEL message);
 OBJC_EXPORT IMP OBJCLookupAndCacheUniqueIdForSuper(struct objc_super *super,SEL selector);
 

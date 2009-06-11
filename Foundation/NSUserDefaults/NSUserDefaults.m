@@ -18,6 +18,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSThread-Private.h>
 #import <Foundation/NSPlatform.h>
 #import <Foundation/NSPersistantDomain.h>
+#import <Foundation/NSRaiseException.h>
 
 NSString *NSGlobalDomain=@"NSGlobalDomain";
 NSString *NSArgumentDomain=@"NSArgumentDomain";

@@ -20,6 +20,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSPlatform.h>
 #import <Foundation/ObjCDynamicModule.h>
 #import <objc/runtime.h>
+#import <Foundation/NSRaiseException.h>
 
 NSString *NSBundleDidLoadNotification=@"NSBundleDidLoadNotification";
 NSString *NSLoadedClasses=@"NSLoadedClasses";

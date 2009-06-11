@@ -1,4 +1,4 @@
-/* Copyright (c) 2006-2007 Christopher J. W. Lloyd
+/* Copyright (c) 2006-2007 Christopher J. W. Lloyd <cjwl@objc.net>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
@@ -6,13 +6,13 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
-// Original - Christopher Lloyd <cjwl@objc.net>
 #import <Foundation/NSLocale.h>
 #import <Foundation/NSStringFormatter.h>
 #import <Foundation/NSString_unicodePtr.h>
 #import <Foundation/NSString_cString.h> //appendCString
 #import <Foundation/NSAutoreleasePool-private.h>
 #import "unibuffer.h"
+#import <Foundation/NSRaiseException.h>
 
 #import <stdio.h>
 #import <string.h>
@@ -221,7 +221,7 @@ static inline void appendFloat(NSStringBuffer *buffer,double value,
          power=pow(10.0,precision);
        else 
          power=pow(10.0,precision-1-floor(log10(value)));
-       value=(1.0 + 1.0e-15)*roundd(value*power)/power;
+       value=(1.0 + 1.0e-15)*round(value*power)/power;
     }
 
     fractional=modf(value,&integral);

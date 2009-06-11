@@ -14,10 +14,10 @@
 			);
 			dependencies = (
 				6E3877340A0A78F800643D29 /* PBXTargetDependency */,
-				FEFC42410B0A5D050041512F /* PBXTargetDependency */,
 				FEE66CCE0C3D614F00FBED82 /* PBXTargetDependency */,
 				FEE66CD00C3D615200FBED82 /* PBXTargetDependency */,
 				FE50C5DA0D85891000CD1896 /* PBXTargetDependency */,
+				FECB39600FE143E9000562E8 /* PBXTargetDependency */,
 			);
 			name = Foundation;
 			productName = Foundation;
@@ -4772,6 +4772,13 @@
 			remoteGlobalIDString = FE4034840B42E94D00CEC41A;
 			remoteInfo = "objc-Solaris-sparc";
 		};
+		FECB395F0FE143E9000562E8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = FE6518160FBC844C00464BFD /* Foundation-Darwin-x86_64 */;
+			remoteInfo = "Foundation-Darwin-x86_64";
+		};
 		FED70AAB0C3B3F5E000CBE5B /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FEB6CC400B4A1922004FADF2 /* objc.xcodeproj */;
@@ -4813,13 +4820,6 @@
 			proxyType = 1;
 			remoteGlobalIDString = FED70D670C3C09C7000CBE5B;
 			remoteInfo = "Foundation-Darwin-ppc";
-		};
-		FEFC42400B0A5D050041512F /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 6E4D91880A2642BD003D335C;
-			remoteInfo = "Foundation-Solaris-sparc";
 		};
 /* End PBXContainerItemProxy section */
 
@@ -11814,6 +11814,11 @@
 			name = "objc-Solaris-sparc";
 			targetProxy = FEB6CC520B4A1952004FADF2 /* PBXContainerItemProxy */;
 		};
+		FECB39600FE143E9000562E8 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = FE6518160FBC844C00464BFD /* Foundation-Darwin-x86_64 */;
+			targetProxy = FECB395F0FE143E9000562E8 /* PBXContainerItemProxy */;
+		};
 		FED70AB60C3B3FAC000CBE5B /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = "objc-Darwin";
@@ -11833,11 +11838,6 @@
 			isa = PBXTargetDependency;
 			target = FED70D670C3C09C7000CBE5B /* Foundation-Darwin-ppc */;
 			targetProxy = FEE66CCF0C3D615200FBED82 /* PBXContainerItemProxy */;
-		};
-		FEFC42410B0A5D050041512F /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 6E4D91880A2642BD003D335C /* Foundation-Solaris-sparc */;
-			targetProxy = FEFC42400B0A5D050041512F /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -11861,6 +11861,7 @@
 				DSTROOT = /;
 				EXECUTABLE_PREFIX = lib;
 				EXECUTABLE_SUFFIX = .so;
+				GCC_C_LANGUAGE_STANDARD = gnu89;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
@@ -11893,6 +11894,7 @@
 				DSTROOT = /;
 				EXECUTABLE_PREFIX = lib;
 				EXECUTABLE_SUFFIX = .so;
+				GCC_C_LANGUAGE_STANDARD = gnu89;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = /Developer/Cocotron/1.0/Linux/ppc/Frameworks;
@@ -11942,6 +11944,7 @@
 				DSTROOT = /;
 				EXECUTABLE_PREFIX = lib;
 				EXECUTABLE_SUFFIX = .so;
+				GCC_C_LANGUAGE_STANDARD = gnu89;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				INFOPLIST_FILE = Info.plist;
@@ -11974,6 +11977,7 @@
 				DSTROOT = /;
 				EXECUTABLE_PREFIX = lib;
 				EXECUTABLE_SUFFIX = .so;
+				GCC_C_LANGUAGE_STANDARD = gnu89;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
@@ -12007,6 +12011,7 @@
 				DEPLOYMENT_LOCATION = YES;
 				DSTROOT = /;
 				EXECUTABLE_SUFFIX = .1.0.dll;
+				GCC_C_LANGUAGE_STANDARD = gnu89;
 				GCC_ENABLE_CPP_EXCEPTIONS = NO;
 				GCC_ENABLE_CPP_RTTI = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -12046,6 +12051,7 @@
 				DSTROOT = /;
 				EXECUTABLE_PREFIX = lib;
 				EXECUTABLE_SUFFIX = .so;
+				GCC_C_LANGUAGE_STANDARD = gnu89;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = /Developer/Cocotron/1.0/Linux/i386/Frameworks;
@@ -12078,6 +12084,7 @@
 				DSTROOT = /;
 				EXECUTABLE_PREFIX = lib;
 				EXECUTABLE_SUFFIX = .so;
+				GCC_C_LANGUAGE_STANDARD = gnu89;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				INFOPLIST_FILE = Info.plist;
@@ -12109,6 +12116,7 @@
 				DEPLOYMENT_LOCATION = YES;
 				DSTROOT = /;
 				FRAMEWORK_SEARCH_PATHS = /Developer/Cocotron/1.0/Darwin/i386/Frameworks;
+				GCC_C_LANGUAGE_STANDARD = gnu89;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_VERSION = 4.2;
@@ -12138,6 +12146,7 @@
 				DEPLOYMENT_LOCATION = YES;
 				DSTROOT = /;
 				FRAMEWORK_SEARCH_PATHS = /Developer/Cocotron/1.0/Darwin/ppc/Frameworks;
+				GCC_C_LANGUAGE_STANDARD = gnu89;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				INFOPLIST_FILE = Info.plist;
@@ -12182,6 +12191,7 @@
 				DEPLOYMENT_POSTPROCESSING = YES;
 				DSTROOT = /;
 				EXECUTABLE_SUFFIX = .1.0.dll;
+				GCC_C_LANGUAGE_STANDARD = gnu89;
 				GCC_ENABLE_CPP_EXCEPTIONS = NO;
 				GCC_ENABLE_CPP_RTTI = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
@@ -12224,6 +12234,7 @@
 				DEPLOYMENT_LOCATION = YES;
 				DSTROOT = /;
 				FRAMEWORK_SEARCH_PATHS = /Developer/Cocotron/1.0/Darwin/x86_64/Frameworks;
+				GCC_C_LANGUAGE_STANDARD = gnu89;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_VERSION = 4.2;
@@ -12253,6 +12264,7 @@
 				DEPLOYMENT_LOCATION = YES;
 				DSTROOT = /;
 				FRAMEWORK_SEARCH_PATHS = /Developer/Cocotron/1.0/Darwin/i386/Frameworks;
+				GCC_C_LANGUAGE_STANDARD = gnu89;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_VERSION = 4.2;
@@ -12282,6 +12294,7 @@
 				DEPLOYMENT_LOCATION = YES;
 				DSTROOT = /;
 				FRAMEWORK_SEARCH_PATHS = /Developer/Cocotron/1.0/Darwin/i386/Frameworks;
+				GCC_C_LANGUAGE_STANDARD = gnu89;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_VERSION = 4.2;
@@ -12311,6 +12324,7 @@
 				DEPLOYMENT_LOCATION = YES;
 				DSTROOT = /;
 				FRAMEWORK_SEARCH_PATHS = /Developer/Cocotron/1.0/Darwin/ppc/Frameworks;
+				GCC_C_LANGUAGE_STANDARD = gnu89;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				INFOPLIST_FILE = Info.plist;

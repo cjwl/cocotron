@@ -7,14 +7,13 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
-// Original - David Young <daver@geeks.org>
-
 #import <Foundation/NSScanner_concrete.h>
 #import <Foundation/NSString.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSCharacterSet.h>
 #import <Foundation/NSRaise.h>
 #import <Foundation/NSLocale.h>
+#import <limits.h>
 
 @implementation NSScanner_concrete
 
@@ -114,6 +113,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(BOOL)scanLongLong:(long long *)valuep {
+// FIXME: this should use C99 LLONG_*, but switching has some link problems for Linux
+#define long_long_MAX 0x7fffffffffffffffLL
+#define long_long_MIN (-0x7fffffffffffffffLL-1)
+
    NSUInteger length;
    int sign=1;
    BOOL hasSign=NO;
@@ -135,7 +138,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       int c=unicode-'0';
 
       // Inspired by http://www.math.utoledo.edu/~dbastos/overflow.html 
-      if ((LONG_LONG_MAX-c)/10<value)
+      if ((long_long_MAX-c)/10<value)
        hasOverflow=YES;
       else
        value=(value*10)+c;
@@ -149,9 +152,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
    if(hasOverflow){
     if(sign>0)
-     *valuep=LONG_LONG_MAX;
+     *valuep=long_long_MAX;
     else
-     *valuep=LONG_LONG_MIN;
+     *valuep=long_long_MIN;
     return YES;
    }
    else if(hasValue){
