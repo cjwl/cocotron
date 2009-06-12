@@ -151,8 +151,8 @@ static RECT NSRectToRECT(NSRect rect) {
 
 -initWithSize:(NSSize)size context:(KGContext *)otherX {
    KGContext_gdi          *other=(KGContext_gdi *)otherX;
-   KGDeviceContext_gdi    *deviceContext=[[[KGDeviceContext_gdi_ddb alloc] initWithSize:size deviceContext:[other deviceContext]] autorelease];
- //  KGDeviceContext_gdi    *deviceContext=[[[KGDeviceContext_gdiDIBSection alloc] initWithWidth:size.width height:size.height deviceContext:[other deviceContext]] autorelease];
+ //  KGDeviceContext_gdi    *deviceContext=[[[KGDeviceContext_gdi_ddb alloc] initWithSize:size deviceContext:[other deviceContext]] autorelease];
+   KGDeviceContext_gdi    *deviceContext=[[[KGDeviceContext_gdiDIBSection alloc] initWithWidth:size.width height:size.height deviceContext:[other deviceContext]] autorelease];
    CGAffineTransform       flip={1,0,0,-1,0,size.height};
    KGGraphicsState        *initialState=[[[KGGraphicsState alloc] initWithDeviceTransform:flip] autorelease];
 

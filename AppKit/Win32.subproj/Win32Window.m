@@ -5,12 +5,15 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
+#undef _WIN32_WINNT
+#define _WIN32_WINNT 0x0501
 
 #import <AppKit/Win32Window.h>
 #import <AppKit/Win32Event.h>
 #import <AppKit/Win32Display.h>
 #import <Foundation/NSString_win32.h>
 #import <AppKit/KGContext.h>
+#import <AppKit/KGContext_gdi.h>
 
 #import <AppKit/NSWindow.h>
 #import <AppKit/NSPanel.h>
@@ -44,10 +47,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    if(_isPanel)
     result|=WS_EX_NOACTIVATE;
     
-#if 0
-#define CS_DROPSHADOW  0x00020000
-   result|=CS_DROPSHADOW|WS_EX_LAYERED;
-#endif
+   if(_isLayered)
+    result|=/*CS_DROPSHADOW|*/WS_EX_LAYERED;
 
    return result/*|0x80000*/ ;
 }
@@ -146,6 +147,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -initWithFrame:(NSRect)frame styleMask:(unsigned)styleMask isPanel:(BOOL)isPanel backingType:(Win32BackingStoreType)backingType {
    _styleMask=styleMask;
    _isPanel=isPanel;
+   _isLayered=NO;
 
    {
     DWORD  style=[self win32Style];
@@ -157,10 +159,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       win32Frame.origin.x, win32Frame.origin.y,
       win32Frame.size.width, win32Frame.size.height,
       NULL,NULL, GetModuleHandle (NULL),NULL);
-#if 0
-#define LWA_ALPHA 0x00000002
-    GetProcAddress(LoadLibrary("USER32"),"SetLayeredWindowAttributes")(_handle,RGB(255,255,255),0xFF,LWA_ALPHA);
-#endif
    }
 
    SetProp(_handle,"self",self);
@@ -282,15 +280,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)hideWindow {
-#if 0
-// doesn't work, window must be layered
-   HANDLE  library=LoadLibrary("USER32");
-   FARPROC animateWindow=GetProcAddress(library,"AnimateWindow");
-
-   if(animateWindow!=NULL)
-    animateWindow([self windowHandle],200,0x10000); // AW_HIDE
-#endif
-
+   if(_isLayered)
+    AnimateWindow([self windowHandle],200,0x10000); // AW_HIDE
+   
    ShowWindow([self windowHandle],SW_HIDE);
 }
 
@@ -350,16 +342,29 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)flushBuffer {
-   switch(_backingType){
+   if(_isLayered){
+    BLENDFUNCTION blend = {0,0,0,0};
+    blend.BlendOp = AC_SRC_OVER;
+    blend.SourceConstantAlpha = 255;
+    blend.AlphaFormat = AC_SRC_ALPHA;
+    
+    SIZE sizeWnd = {_size.width, _size.height};
+    POINT ptSrc = {0, 0};
 
-    case Win32BackingStoreRetained:
-    case Win32BackingStoreNonretained:
-     break;
+    UpdateLayeredWindow([self windowHandle], NULL, NULL, &sizeWnd, [(KGContext_gdi *)_backingContext dc], &ptSrc, 0, &blend, ULW_ALPHA);
+   }
+   else {
+    switch(_backingType){
 
-    case Win32BackingStoreBuffered:
-     if(_backingContext!=nil)
-      [_cgContext drawBackingContext:_backingContext size:_size];
-     break;
+     case Win32BackingStoreRetained:
+     case Win32BackingStoreNonretained:
+      break;
+ 
+     case Win32BackingStoreBuffered:
+      if(_backingContext!=nil)
+       [_cgContext drawBackingContext:_backingContext size:_size];
+      break;
+    }
    }
 }
 
@@ -685,12 +690,6 @@ static void initializeWindowClass(WNDCLASS *class){
 
     initializeWindowClass(&_popupWindowClass);
     _popupWindowClass.style|=CS_SAVEBITS;
-
-#ifdef CS_DROPSHADOW
-#warning CS_DROPSHADOW is defined, can get rid of it here
-#else
-#define CS_DROPSHADOW 0x20000
-#endif
 
     osVersion.dwOSVersionInfoSize=sizeof(osVersion);
     GetVersionEx((OSVERSIONINFO *)&osVersion);

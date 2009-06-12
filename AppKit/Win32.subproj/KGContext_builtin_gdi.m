@@ -32,6 +32,10 @@ static inline BOOL transformIsFlipped(CGAffineTransform matrix){
    [super dealloc];
 }
 
+-(HDC)dc {
+   return _dc;
+}
+
 -(KGDeviceContext_gdi *)deviceContext {
    return [(KGSurface_DIBSection *)[self surface] deviceContext];
 }

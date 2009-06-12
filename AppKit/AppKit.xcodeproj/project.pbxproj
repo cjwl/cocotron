@@ -2873,7 +2873,7 @@
 			isa = PBXContainerItemProxy;
 			containerPortal = 6E46FEBE0A2D2DCF004CD27E /* Foundation.xcodeproj */;
 			proxyType = 2;
-			remoteGlobalIDString = 28D487A90FE04E7100DC03EF /* Foundation.framework */;
+			remoteGlobalIDString = 28D487A90FE04E7100DC03EF;
 			remoteInfo = "Foundation-Linux-ppc";
 		};
 		FED70AC90C3B3FD9000CBE5B /* PBXContainerItemProxy */ = {

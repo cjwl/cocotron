@@ -136,7 +136,11 @@
    [proxy release];
    
    // get the relevant indexes
-   id idxs=_roi ? _roi : [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, [_array count])];
+   id idxs;
+   if(_roi)
+    idxs=_roi;
+   else
+    idxs=[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, [_array count])];
    
    // is this an operator?
 	if([keyPath hasPrefix:@"@"])
@@ -177,7 +181,12 @@
    [_observationProxies removeObjectAtIndex:idx];
    
    // get the relevant indexes
-   id idxs=_roi ? _roi : [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, [_array count])];
+   id idxs;
+   
+   if(_roi)
+    idxs=_roi;
+   else
+    idxs=[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, [_array count])];
    
    // operator?
 	if([keyPath hasPrefix:@"@"])

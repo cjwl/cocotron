@@ -27,6 +27,7 @@ typedef enum {
    Win32BackingStoreType  _backingType;
    KGContext             *_backingContext;
 
+   BOOL                  _isLayered;
    BOOL                  _ignoreMinMaxMessage;
    BOOL                  _sentBeginSizing;
 
