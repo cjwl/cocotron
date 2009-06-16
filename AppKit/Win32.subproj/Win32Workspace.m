@@ -93,6 +93,104 @@ static BOOL openFileWithHelpViewer(const char *helpFilePath)
    NSUnimplementedMethod();
 }
 
+static void FixBitmapAlpha(HBITMAP bitmap)
+{
+  BITMAP bmp;
+
+  GetObject(bitmap, sizeof(bmp), &bmp);
+  if (bmp.bmBitsPixel == 32)
+  {
+    DWORD length = bmp.bmWidth * bmp.bmHeight * (bmp.bmBitsPixel / 8);
+    BYTE *buf = (BYTE *) calloc(1, length);
+
+    if (buf)
+    {
+      int x, y;
+
+      GetBitmapBits(bitmap, length, buf);
+
+      for (y = 0; y < bmp.bmHeight; ++y)
+      {
+        BYTE *pixel = buf + bmp.bmWidth * 4 * y;
+        for (x = 0; x < bmp.bmWidth; ++x)
+        {
+          if (pixel[3])
+          {
+            // Already has alpha, don't need to do anything.
+            free(buf);
+            return;
+          }
+          if (pixel[0] || pixel[1] || pixel[2])
+            pixel[3] = 255;
+          pixel += 4;
+        }
+      }
+
+      SetBitmapBits(bitmap, length, buf);
+      free(buf);
+    }
+  }
+}
+
+static HBITMAP ConvertBitmap(HBITMAP bitmap)
+{
+  HBITMAP convertedBitmap;
+  BITMAP bmp;
+  DWORD length;
+  BYTE *buf;
+
+  GetObject(bitmap, sizeof(bmp), &bmp);
+
+  length = bmp.bmWidth * bmp.bmHeight * 4;
+  buf = (BYTE *) calloc(1, length);
+  if (buf)
+  {
+    BITMAPINFO bi;
+    BYTE * pixels;
+
+    memset(&bi, 0, sizeof(BITMAPINFO));
+    bi.bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
+    bi.bmiHeader.biWidth = bmp.bmWidth;
+    bi.bmiHeader.biHeight = bmp.bmHeight;
+    bi.bmiHeader.biBitCount = 32;
+    bi.bmiHeader.biPlanes = 1;
+
+    convertedBitmap = CreateDIBSection(NULL, &bi, DIB_RGB_COLORS, (void **) &pixels, NULL, 0);
+    if (convertedBitmap)
+    {
+      if (bmp.bmBitsPixel != 32)
+      {
+        HDC from, to;
+        HBITMAP oldFrom, oldTo;
+
+        from = CreateCompatibleDC(NULL);
+        oldFrom = (HBITMAP) SelectObject(from, bitmap);
+
+        to = CreateCompatibleDC(NULL);
+        oldTo = (HBITMAP) SelectObject(to, convertedBitmap);
+
+        BitBlt(to, 0, 0, bmp.bmWidth, bmp.bmHeight, from, 0, 0, SRCCOPY);
+
+        SelectObject(to, oldTo);
+        DeleteObject(to);
+        SelectObject(from, oldFrom);
+        DeleteObject(from);
+
+        FixBitmapAlpha(convertedBitmap);
+      }
+      else
+      {
+        GetBitmapBits(bitmap, length, buf);
+        SetBitmapBits(convertedBitmap, length, buf);
+      }
+    }
+
+    free(buf);
+  }
+
+  return convertedBitmap;
+}
+
 static NSImageRep *imageRepForIcon(SHFILEINFOW * fileInfo) {
    NSBitmapImageRep *bitmap;
    ICONINFO iconInfo;
@@ -109,33 +207,21 @@ static NSImageRep *imageRepForIcon(SHFILEINFOW * fileInfo) {
    masklen = bmp.bmWidth * bmp.bmHeight * bmp.bmBitsPixel / 8;
    mask = malloc(masklen);
    GetBitmapBits(iconInfo.hbmMask, masklen, mask);
-
    GetObject(iconInfo.hbmColor, sizeof(BITMAP), (void *) &bmp);
+   if (bmp.bmBitsPixel != 32)
+   {
+    HBITMAP hbmColor32 = ConvertBitmap(iconInfo.hbmColor);
+    if (hbmColor32)
+    {
+      DeleteObject(iconInfo.hbmColor);
+      iconInfo.hbmColor = hbmColor32;
+      GetObject(iconInfo.hbmColor, sizeof(BITMAP), (void *) &bmp);
+    }
+   }
+   FixBitmapAlpha(iconInfo.hbmColor);
    pixelslen = bmp.bmWidth * bmp.bmHeight * bmp.bmBitsPixel / 8;
    pixels = malloc(pixelslen);
    GetBitmapBits(iconInfo.hbmColor, pixelslen, pixels);
-
-   hasAlpha = 0;
-   for (i = 0; i < pixelslen; i+=4) {
-    if (pixels[i+3]) {
-     hasAlpha = 1;
-     break;
-    }
-   }
-
-#define BIT_SET(x,y) (((x) >> (7-(y))) & 1)
-
-   if (!hasAlpha) {
-    for (i = 0; i < masklen; i++) {
-     for (bit = 0; bit < 8; bit++) {
-      if (BIT_SET(mask[i], bit)) {
-       pixels[(i*8+bit)*4+3] = 0;
-      } else {
-       pixels[(i*8+bit)*4+3] = 255;
-      }
-     }
-    }
-   }
 
    bitmap = [[[NSBitmapImageRep alloc] initWithBitmapDataPlanes:NULL
     pixelsWide:bmp.bmWidth
@@ -156,6 +242,7 @@ static NSImageRep *imageRepForIcon(SHFILEINFOW * fileInfo) {
      float g = (float) pixels[4*(y*bmp.bmWidth + x)+1] / 255.0f;
      float r = (float) pixels[4*(y*bmp.bmWidth + x)+2] / 255.0f;
      float a = (float) pixels[4*(y*bmp.bmWidth + x)+3] / 255.0f;
+
      NSColor *color = [NSColor colorWithCalibratedRed:r green:g blue:b alpha:a];
      [bitmap setColor:color atX:x y:y];
     }
