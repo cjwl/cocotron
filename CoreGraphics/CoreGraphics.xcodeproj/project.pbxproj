@@ -655,6 +655,13 @@
 			remoteGlobalIDString = FED7081C0C3B3D2C000CBE5B;
 			remoteInfo = "Foundation-Darwin-i386";
 		};
+		FE8F93BC0FE344D6003F38A6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FE6F7BC00FD5572F00C3244F /* Foundation.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 28D487A90FE04E7100DC03EF;
+			remoteInfo = "Foundation-Linux-ppc";
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -1126,6 +1133,7 @@
 				FE6F7BD10FD5572F00C3244F /* Foundation.framework */,
 				FE6F7BD30FD5572F00C3244F /* Foundation.framework */,
 				FE6F7BD50FD5572F00C3244F /* Foundation.framework */,
+				FE8F93BD0FE344D6003F38A6 /* Foundation.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1572,6 +1580,13 @@
 			fileType = wrapper.framework;
 			path = Foundation.framework;
 			remoteRef = FE6F7BD40FD5572F00C3244F /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FE8F93BD0FE344D6003F38A6 /* Foundation.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Foundation.framework;
+			remoteRef = FE8F93BC0FE344D6003F38A6 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */

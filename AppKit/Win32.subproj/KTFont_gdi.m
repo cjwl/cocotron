@@ -1,9 +1,9 @@
 #import "KTFont_gdi.h"
-#import <AppKit/KGFont.h>
+#import <CoreGraphics/KGFont.h>
 #import "KGContext_gdi.h"
 #import "Win32Display.h"
 #import "Win32Font.h"
-#import <AppKit/KGMutablePath.h>
+#import <CoreGraphics/KGMutablePath.h>
 #import <AppKit/NSRaise.h>
 
 #define MAXUNICHAR 0xFFFF

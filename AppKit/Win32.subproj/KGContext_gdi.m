@@ -13,16 +13,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "KGDeviceContext_gdiDIBSection.h"
 #import "KGSurface_DIBSection.h"
 #import "Win32DeviceContextWindow.h"
-#import <AppKit/KGGraphicsState.h>
+#import <CoreGraphics/KGGraphicsState.h>
 #import <AppKit/KGDeviceContext_gdi.h>
-#import <AppKit/KGMutablePath.h>
-#import <AppKit/KGColor.h>
-#import <AppKit/KGColorSpace.h>
-#import <AppKit/KGShading.h>
-#import <AppKit/KGFunction.h>
+#import <CoreGraphics/KGMutablePath.h>
+#import <CoreGraphics/KGColor.h>
+#import <CoreGraphics/KGColorSpace.h>
+#import <CoreGraphics/KGShading.h>
+#import <CoreGraphics/KGFunction.h>
 #import "KTFont_gdi.h"
 #import "../../CoreGraphics/KGImage.h"
-#import <AppKit/KGClipPhase.h>
+#import <CoreGraphics/KGClipPhase.h>
 #import <AppKit/Win32Font.h>
 #import <AppKit/NSRaise.h>
 

@@ -526,6 +526,18 @@ static void cgApplier(void *info,const CGPathElement *element) {
    
 }
 
+static void cgArcApply(void *info,const CGPathElement *element) {
+   NSBezierPath *self=(NSBezierPath *)info;
+   
+   switch(element->type){
+     
+    case kCGPathElementAddCurveToPoint:
+     [self curveToPoint:element->points[2] controlPoint1:element->points[0] controlPoint2:element->points[1]];
+     break;
+   }
+   
+}
+
 -(void)appendBezierPathWithOvalInRect:(NSRect)rect {
    CGMutablePathRef path=CGPathCreateMutable();
    
@@ -545,29 +557,28 @@ static void cgApplier(void *info,const CGPathElement *element) {
 - (void)appendBezierPathWithRoundedRect:(NSRect)rect xRadius:(CGFloat)radius yRadius:(CGFloat)yRadius {
    [self moveToPoint:NSMakePoint(rect.origin.x, rect.origin.y + radius)];
    [self lineToPoint:NSMakePoint(rect.origin.x, rect.origin.y + rect.size.height - radius)];
-   [self appendBezierPathWithArcWithCenter:NSMakePoint(rect.origin.x + radius, rect.origin.y + rect.size.height - radius) radius:radius startAngle: 180 endAngle: 90 ];
+   [self appendBezierPathWithArcWithCenter:NSMakePoint(rect.origin.x + radius, rect.origin.y + rect.size.height - radius) radius:radius startAngle: 180 endAngle: 90 clockwise:YES];
    [self lineToPoint:NSMakePoint(rect.origin.x + rect.size.width - radius, rect.origin.y + rect.size.height)];
-   [self appendBezierPathWithArcWithCenter:NSMakePoint(rect.origin.x + rect.size.width - radius, rect.origin.y + rect.size.height - radius) radius: radius startAngle: 90 endAngle: 0.0f ];
+   [self appendBezierPathWithArcWithCenter:NSMakePoint(rect.origin.x + rect.size.width - radius, rect.origin.y + rect.size.height - radius) radius: radius startAngle: 90 endAngle: 0.0f clockwise:YES];
    [self lineToPoint:NSMakePoint(rect.origin.x + rect.size.width, rect.origin.y + radius)];
-   [self appendBezierPathWithArcWithCenter:NSMakePoint(rect.origin.x + rect.size.width - radius, rect.origin.y + radius) radius: radius  startAngle:0.0f endAngle: 270] ;
+   [self appendBezierPathWithArcWithCenter:NSMakePoint(rect.origin.x + rect.size.width - radius, rect.origin.y + radius) radius: radius  startAngle:360.0f endAngle: 270 clockwise:YES] ;
    [self lineToPoint:NSMakePoint(rect.origin.x + radius, rect.origin.y)];
-   [self appendBezierPathWithArcWithCenter:NSMakePoint(rect.origin.x + radius, rect.origin.y + radius) radius:radius startAngle:270 endAngle: 180 ];
+   [self appendBezierPathWithArcWithCenter:NSMakePoint(rect.origin.x + radius, rect.origin.y + radius) radius:radius startAngle:270 endAngle: 180 clockwise:YES];
    [self closePath];
 }
-
 
 static inline CGFloat degreesToRadians(CGFloat degrees){
    return degrees*M_PI/180.0;
 }
 
 -(void)appendBezierPathWithArcWithCenter:(NSPoint)center radius:(float)radius startAngle:(float)startAngle endAngle:(float)endAngle {
-   [self appendBezierPathWithArcWithCenter:center radius:radius startAngle:startAngle endAngle:endAngle clockwise:YES];
+   [self appendBezierPathWithArcWithCenter:center radius:radius startAngle:startAngle endAngle:endAngle clockwise:NO];
 }
 
 -(void)appendBezierPathWithArcWithCenter:(NSPoint)center radius:(float)radius startAngle:(float)startAngle endAngle:(float)endAngle clockwise:(BOOL)clockwise {
    CGMutablePathRef path=CGPathCreateMutable();
    CGPathAddArc(path,NULL,center.x,center.y,radius,degreesToRadians(startAngle),degreesToRadians(endAngle),clockwise);
-   CGPathApply(path,self,cgApplier);
+   CGPathApply(path,self,cgArcApply);
    CGPathRelease(path);
 }
 

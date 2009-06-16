@@ -8,13 +8,13 @@
 
 #import <AppKit/CairoContext.h>
 #import <AppKit/X11Display.h>
-#import <AppKit/KGMutablePath.h>
-#import <AppKit/KGColor.h>
+#import <CoreGraphics/KGMutablePath.h>
+#import <CoreGraphics/KGColor.h>
 #import <Foundation/NSException.h>
-#import <AppKit/KGGraphicsState.h>
+#import <CoreGraphics/KGGraphicsState.h>
 #import <AppKit/TTFFont.h>
-#import <AppKit/KGColorSpace.h>
-#import <AppKit/KGSurface.h>
+#import <CoreGraphics/KGColorSpace.h>
+#import <CoreGraphics/KGSurface.h>
 #import <AppKit/CairoCacheImage.h>
 #import <Foundation/NSException.h>
 

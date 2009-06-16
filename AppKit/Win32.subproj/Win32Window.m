@@ -12,7 +12,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/Win32Event.h>
 #import <AppKit/Win32Display.h>
 #import <Foundation/NSString_win32.h>
-#import <AppKit/KGContext.h>
+#import <CoreGraphics/KGContext.h>
 #import <AppKit/KGContext_gdi.h>
 
 #import <AppKit/NSWindow.h>

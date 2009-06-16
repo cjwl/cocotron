@@ -1,4 +1,4 @@
-#import <AppKit/KGLayer.h>
+#import <CoreGraphics/KGLayer.h>
 
 @interface KGLayer_gdi : KGLayer {
    KGContext *_context;

@@ -85,6 +85,13 @@
 			remoteGlobalIDString = FE01AAED0C5D9BF900AEA51A;
 			remoteInfo = "ApplicationServices-Windows-i386";
 		};
+		FE1362630FE7167F00DE15FA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FE7135460B36427F006C9493 /* AppKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = FEA3164C0FD5667D00F480D4 /* AppKit.framework */;
+			remoteInfo = "AppKit-MacOS-i386";
+		};
 		FEF80ABD0C5D9F3000FF7CA5 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FE7135460B36427F006C9493 /* AppKit.xcodeproj */;
@@ -223,6 +230,7 @@
 				FE01AB250C5D9C3500AEA51A /* AppKit.framework */,
 				C8724AC00EC706C200DBDDAD /* AppKit.framework */,
 				C8E0BF930F0E6AF300677729 /* AppKit.framework */,
+				FE1362640FE7167F00DE15FA /* AppKit.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -362,6 +370,13 @@
 			fileType = wrapper.framework;
 			path = ApplicationServices.framework;
 			remoteRef = FE01AB270C5D9C3500AEA51A /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FE1362640FE7167F00DE15FA /* AppKit.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = AppKit.framework;
+			remoteRef = FE1362630FE7167F00DE15FA /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */

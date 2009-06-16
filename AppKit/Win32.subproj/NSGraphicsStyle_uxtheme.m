@@ -1,6 +1,6 @@
 #import "NSGraphicsStyle_uxtheme.h"
 #import <AppKit/NSGraphicsContext.h>
-#import <AppKit/KGContext.h>
+#import <CoreGraphics/KGContext.h>
 #import <AppKit/NSImage.h>
 #import <AppKit/NSColor.h>
 #import "Win32DeviceContextWindow.h"

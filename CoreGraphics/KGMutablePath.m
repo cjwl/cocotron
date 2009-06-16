@@ -224,25 +224,23 @@ static inline void expandPointCapacity(KGMutablePath *self,unsigned delta){
 }
 
 -(void)addArcAtPoint:(CGPoint)point radius:(float)radius startAngle:(float)startRadian endAngle:(float)endRadian clockwise:(BOOL)clockwise withTransform:(const CGAffineTransform *)matrix {
-// This is not complete, doesn't handle clockwise and probably doesn't manipulate the current
-// point properly
-   if (endRadian < startRadian) {
-      if (endRadian < 0) {
-         endRadian = 2*M_PI + endRadian;
-      }
-      if ((endRadian < startRadian) && (startRadian > (float)M_PI)) {
-         startRadian = -(2*M_PI - startRadian);
-      }
+
+   if(clockwise){
+    float tmp=startRadian;
+    startRadian=endRadian;
+    endRadian=tmp;
    }
+
    float   radiusx=radius,radiusy=radius;
    double  remainder=endRadian-startRadian;
    double  delta=M_PI_2; // 90 degrees
    int     i;
-
+   CGPoint points[4*((int)ceil(remainder/delta)+1)];
+   int     pointsIndex=0;
+   
    for(;remainder>0;startRadian+=delta,remainder-=delta){
     double  sweepangle=(remainder>delta)?delta:remainder;
     double  XY[8];
-    CGPoint points[4];
     double  B=sin(sweepangle/2);
     double  C=cos(sweepangle/2);
     double  A=1-C;
@@ -261,16 +259,34 @@ static inline void expandPointCapacity(KGMutablePath *self,unsigned delta){
     XY[7]= B;
 
     for(i=0;i<4;i++){
-     points[i].x=point.x+(XY[i*2]*c-XY[i*2+1]*s)*radiusx;
-     points[i].y=point.y+(XY[i*2]*s+XY[i*2+1]*c)*radiusy;
+     points[pointsIndex].x=point.x+(XY[i*2]*c-XY[i*2+1]*s)*radiusx;
+     points[pointsIndex].y=point.y+(XY[i*2]*s+XY[i*2+1]*c)*radiusy;
+     pointsIndex++;
     }
-
-    if([self isEmpty]) {
-       [self moveToPoint:points[0] withTransform:matrix];
-    } else {
-       [self addLineToPoint:points[0] withTransform:matrix];
+   }
+   
+   if(clockwise){
+    // just reverse points
+    for(i=0;i<pointsIndex/2;i++){
+     CGPoint tmp;
+     
+     tmp=points[i];
+     points[i]=points[(pointsIndex-1)-i];
+     points[(pointsIndex-1)-i]=tmp;
+    }     
+   }
+   
+   BOOL first=YES;
+   for(i=0;i<pointsIndex;i+=4){
+    if(first){
+     if([self isEmpty]) {
+       [self moveToPoint:points[i] withTransform:matrix];
+     } else {
+       [self addLineToPoint:points[i] withTransform:matrix];
+     }
+    first=NO;
     }
-    [self addCurveToControlPoint:points[1] controlPoint:points[2] endPoint:points[3] withTransform:matrix];
+    [self addCurveToControlPoint:points[i+1] controlPoint:points[i+2] endPoint:points[i+3] withTransform:matrix];
    }
 }
 
