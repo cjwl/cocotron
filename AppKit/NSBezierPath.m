@@ -530,6 +530,13 @@ static void cgArcApply(void *info,const CGPathElement *element) {
    NSBezierPath *self=(NSBezierPath *)info;
    
    switch(element->type){
+   
+    case kCGPathElementMoveToPoint:
+     if([self isEmpty])
+      [self moveToPoint:element->points[0]];
+     else
+      [self lineToPoint:element->points[0]];
+     break;
      
     case kCGPathElementAddCurveToPoint:
      [self curveToPoint:element->points[2] controlPoint1:element->points[0] controlPoint2:element->points[1]];
