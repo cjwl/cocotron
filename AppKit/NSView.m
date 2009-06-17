@@ -573,27 +573,27 @@ static inline void buildTransformsIfNeeded(NSView *self) {
 -(void)_insertSubview:(NSView *)view atIndex:(unsigned)index {
 
    [view retain];
-    if([view superview]==self)
-     [_subviews removeObjectIdenticalTo:view];
-    else{
-     [view removeFromSuperview];
+   if([view superview]==self)
+    [_subviews removeObjectIdenticalTo:view];
+   else{
+    [view removeFromSuperview];
 
-     [view _setWindow:_window];
+    [view _setWindow:_window];
 
-     [view viewWillMoveToSuperview:self];
-     [view _setSuperview:self];
-    }
+    [view viewWillMoveToSuperview:self];
+    [view _setSuperview:self];
+   }
 
-    if(index==NSNotFound)
-     [_subviews addObject:view];
-    else
-     [_subviews insertObject:view atIndex:index];
+   if(index==NSNotFound)
+    [_subviews addObject:view];
+   else
+    [_subviews insertObject:view atIndex:index];
    [view release];
 
    [self invalidateTransform]; // subview may affect transform (e.g. clipview)
 
    [view _setupToolTipRectIfNeeded];
-   [self setNeedsDisplay:YES];
+   [self setNeedsDisplayInRect:[view frame]];
 }
 
 -(void)addSubview:(NSView *)view {
@@ -705,12 +705,6 @@ static inline void buildTransformsIfNeeded(NSView *self) {
    _draggedTypes=nil;
 }
 
--(void)removeView:(NSView *)view  {
-   [_subviews removeObjectIdenticalTo:view];
-
-   [self setNeedsDisplay:YES];
-}
-
 -(void)_deepResignFirstResponder {
    if([_window firstResponder]==self)
     [_window makeFirstResponder:nil];
@@ -721,17 +715,11 @@ static inline void buildTransformsIfNeeded(NSView *self) {
 -(void)removeFromSuperview {
    NSView *removeFrom=_superview;
 
-   [self discardCursorRects];
-   [[self window] _discardTrackingRectsForView:self toolTipsOnly:YES];
-
-   [self _deepResignFirstResponder];
-   [self _setSuperview:nil];
-   [self _setWindow:nil];
-
-   [removeFrom removeView:self];
+   [self removeFromSuperviewWithoutNeedingDisplay];
+   [removeFrom setNeedsDisplayInRect:[self frame]];
 }
 
--(void)removeViewWithoutDisplay:(NSView *)view  {
+-(void)_removeViewWithoutDisplay:(NSView *)view  {
    [_subviews removeObjectIdenticalTo:view];
 }
 
@@ -745,11 +733,10 @@ static inline void buildTransformsIfNeeded(NSView *self) {
    [self _setSuperview:nil];
    [self _setWindow:nil];
 
-   [removeFrom removeViewWithoutDisplay:self];
+   [removeFrom _removeViewWithoutDisplay:self];
 }
 
 -(void)viewWillMoveToWindow:(NSWindow *)window {
-
 }
 
 -(void)viewWillMoveToSuperview:(NSView *)view {
@@ -841,13 +828,11 @@ static inline void buildTransformsIfNeeded(NSView *self) {
 
 -(void)viewWillStartLiveResize {
    _inLiveResize=YES;
-   [self setNeedsDisplay:YES];
    [_subviews makeObjectsPerformSelector:_cmd];
 }
 
 -(void)viewDidEndLiveResize {
    _inLiveResize=NO;
-   [self setNeedsDisplay:YES];
    [_subviews makeObjectsPerformSelector:_cmd];
 }
 
@@ -973,19 +958,22 @@ static inline void buildTransformsIfNeeded(NSView *self) {
 
 -(void)lockFocus {
    NSGraphicsContext *context=[[self window] graphicsContext];
-   CGContextRef       graphicsPort=[context graphicsPort];
 
-   [NSGraphicsContext saveGraphicsState];
-   [NSGraphicsContext setCurrentContext:context];
+   if(context!=nil){
+    CGContextRef graphicsPort=[context graphicsPort];
+
+    [NSGraphicsContext saveGraphicsState];
+    [NSGraphicsContext setCurrentContext:context];
    
-   [NSCurrentFocusStack() addObject:self];
+    [NSCurrentFocusStack() addObject:self];
 
-   CGContextSaveGState(graphicsPort);
-   CGContextResetClip(graphicsPort);
-   CGContextSetCTM(graphicsPort,[self transformToWindow]);
-   CGContextClipToRect(graphicsPort,[self visibleRect]);
+    CGContextSaveGState(graphicsPort);
+    CGContextResetClip(graphicsPort);
+    CGContextSetCTM(graphicsPort,[self transformToWindow]);
+    CGContextClipToRect(graphicsPort,[self visibleRect]);
 
-   [self setUpGState];
+    [self setUpGState];
+   }
 }
 
 -(BOOL)lockFocusIfCanDraw {
@@ -998,11 +986,14 @@ static inline void buildTransformsIfNeeded(NSView *self) {
 
 -(void)unlockFocus {
    NSGraphicsContext *context=[[self window] graphicsContext];
-   CGContextRef       graphicsPort=[context graphicsPort];
 
-   CGContextRestoreGState(graphicsPort);
-   [NSCurrentFocusStack() removeLastObject];
-   [NSGraphicsContext restoreGraphicsState];
+   if(context!=nil){
+    CGContextRef graphicsPort=[context graphicsPort];
+
+    CGContextRestoreGState(graphicsPort);
+    [NSCurrentFocusStack() removeLastObject];
+    [NSGraphicsContext restoreGraphicsState];
+   }
 }
 
 -(NSView *)opaqueAncestor {
@@ -1017,57 +1008,55 @@ static inline void buildTransformsIfNeeded(NSView *self) {
 }
 
 -(void)displayIfNeeded {
+   int i,count=[_subviews count];
+  
    if([self needsDisplay])
-    [self display];
-   else {
-    int i,count=[_subviews count];
+     [self displayRect:_invalidRect];
 
-    for(i=0;i<count;i++) // back to front
-     [[_subviews objectAtIndex:i] displayIfNeeded];
-   }
+   for(i=0;i<count;i++) // back to front
+    [[_subviews objectAtIndex:i] displayIfNeeded];
 }
 
 -(void)displayIfNeededInRect:(NSRect)rect {
+   int i,count=[_subviews count];
+   rect=NSIntersectionRect(_invalidRect, rect);
+
    if([self needsDisplay])
     [self displayRect:rect];
-   else {
-    int i,count=[_subviews count];
 
-    for(i=0;i<count;i++){ // back to front
-     NSView *child=[_subviews objectAtIndex:i];
-     NSRect  converted=NSIntersectionRect([self convertRect:rect toView:child],[child bounds]);
+   for(i=0;i<count;i++){ // back to front
+    NSView *child=[_subviews objectAtIndex:i];
+    NSRect converted=NSIntersectionRect([self convertRect:rect toView:child],[child bounds]);
    
-     if(!NSIsEmptyRect(converted))
-      [child displayIfNeededInRect:converted];
-    }
+    if(!NSIsEmptyRect(converted))
+     [child displayIfNeededInRect:converted];
    }
 }
 
 -(void)displayIfNeededInRectIgnoringOpacity:(NSRect)rect {
+   int i,count=[_subviews count];
+   rect=NSIntersectionRect(_invalidRect, rect);
+
    if([self needsDisplay])
     [self displayRectIgnoringOpacity:rect];
-   else {
-    int i,count=[_subviews count];
 
-    for(i=0;i<count;i++){ // back to front
-     NSView *child=[_subviews objectAtIndex:i];
-     NSRect  converted=NSIntersectionRect([self convertRect:rect toView:child],[child bounds]);
+   for(i=0;i<count;i++){ // back to front
+    NSView *child=[_subviews objectAtIndex:i];
+    NSRect  converted=NSIntersectionRect([self convertRect:rect toView:child],[child bounds]);
    
-     if(!NSIsEmptyRect(converted))
-      [child displayIfNeededInRectIgnoringOpacity:converted];
-    }
+    if(!NSIsEmptyRect(converted))
+     [child displayIfNeededInRectIgnoringOpacity:converted];
    }
 }
 
 -(void)displayIfNeededIgnoringOpacity {
-   if([self needsDisplay])
-    [self displayRectIgnoringOpacity:[self bounds]];
-   else {
-    int i,count=[_subviews count];
+   int i,count=[_subviews count];
 
-    for(i=0;i<count;i++) // back to front
-     [[_subviews objectAtIndex:i] displayIfNeededIgnoringOpacity];
-   }
+   if([self needsDisplay])
+    [self displayRectIgnoringOpacity:_invalidRect];
+
+   for(i=0;i<count;i++) // back to front
+    [[_subviews objectAtIndex:i] displayIfNeededIgnoringOpacity];
 }
 
 -(void)displayRect:(NSRect)rect {
@@ -1112,7 +1101,7 @@ static inline void buildTransformsIfNeeded(NSView *self) {
     [self unlockFocus];
    }
 
-/*  We do the flushWindow here. If any of the display* methods are being used, you want it to update on screen immediately. If the view heirarchy is being displayed as needed at the end of an event, flushing will be disabled and this will just mark the window as needing flushing which will happen when all the views have finished being displayed */
+/*  We do the flushWindow here. If any of the display* methods are being used, you want it to update on screen immediately. If the view hierarchy is being displayed as needed at the end of an event, flushing will be disabled and this will just mark the window as needing flushing which will happen when all the views have finished being displayed */
  
    [[self window] flushWindow];
 }
