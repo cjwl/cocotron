@@ -63,6 +63,8 @@ typedef enum {
 +(NSBezierPath *)bezierPath;
 +(NSBezierPath *)bezierPathWithOvalInRect:(NSRect)rect;
 +(NSBezierPath *)bezierPathWithRect:(NSRect)rect;
++(NSBezierPath *)bezierPathWithRoundedRect:(NSRect)rect xRadius:(CGFloat)xRadius yRadius:(CGFloat)yRadius;
+
 
 +(float)defaultLineWidth;
 +(float)defaultMiterLimit;

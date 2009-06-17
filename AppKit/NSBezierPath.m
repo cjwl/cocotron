@@ -94,7 +94,7 @@ static NSLineJoinStyle _defaultLineJoinStyle=NSMiterLineJoinStyle;
 }
 
 
-+ (NSBezierPath *)bezierPathWithRoundedRect:(NSRect)rect xRadius:(CGFloat)xRadius yRadius:(CGFloat)yRadius {
++(NSBezierPath *)bezierPathWithRoundedRect:(NSRect)rect xRadius:(CGFloat)xRadius yRadius:(CGFloat)yRadius {
    NSBezierPath *result=[[[self alloc] init] autorelease];
    
    [result appendBezierPathWithRoundedRect:rect xRadius:xRadius yRadius:yRadius];
