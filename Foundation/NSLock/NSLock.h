@@ -26,3 +26,4 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @end
 
 #import <Foundation/NSConditionLock.h>
+#import <Foundation/NSRecursiveLock.h>
