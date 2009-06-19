@@ -14,7 +14,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSFont.h>
 #import <AppKit/NSColor.h>
 #import <AppKit/NSStringDrawer.h>
-#import <Foundation/NSKeyedUnarchiver.h>
+#import <Foundation/NSKeyedArchiver.h>
 #import <AppKit/NSRaise.h>
 
 // not perfect; needs real ellipsis character, will fail to produce a small enough string if

@@ -12,7 +12,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSString.h>
 #import <Foundation/NSSet.h>
 #import <Foundation/NSDebug.h>
-#import <Foundation/NSKeyedUnarchiver.h>
+#import <Foundation/NSKeyedArchiver.h>
 #import "NSCustomObject.h"
 #import <AppKit/NSNibConnector.h>
 #import <AppKit/NSFontManager.h>

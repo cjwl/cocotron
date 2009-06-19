@@ -10,7 +10,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "NSCustomObject.h"
 #import <Foundation/NSString.h>
 #import <Foundation/NSException.h>
-#import <Foundation/NSKeyedUnarchiver.h>
+#import <Foundation/NSKeyedArchiver.h>
 #import <AppKit/NSApplication.h>
 
 @implementation NSCustomObject

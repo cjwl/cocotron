@@ -9,7 +9,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <AppKit/AppKit.h>
 #import <AppKit/NSTableCornerView.h>
-#import <Foundation/NSKeyedUnarchiver.h>
+#import <Foundation/NSKeyedArchiver.h>
 #import "NSKeyValueBinding/NSMultipleValueBinder.h"
 #import "NSKeyValueBinding/NSKVOBinder.h"
 #import <AppKit/NSRaise.h>

@@ -12,7 +12,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSGraphicsContextFunctions.h>
 #import <ApplicationServices/ApplicationServices.h>
 #import <AppKit/NSDisplay.h>
-#import <Foundation/NSKeyedUnarchiver.h>
+#import <Foundation/NSKeyedArchiver.h>
 #import <AppKit/NSRaise.h>
 
 FOUNDATION_EXPORT char *NSUnicodeToSymbol(const unichar *characters,unsigned length,
