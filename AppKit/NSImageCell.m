@@ -11,7 +11,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSGraphics.h>
 #import <ApplicationServices/ApplicationServices.h>
 #import <AppKit/NSGraphicsContext.h>
-#import <AppKit/NSNibKeyedUnarchiver.h> 
+#import <Foundation/NSKeyedUnarchiver.h> 
 
 @implementation NSImageCell
 
@@ -28,9 +28,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(id)initWithCoder:(NSCoder *)coder 
 { 
    [super initWithCoder:coder]; 
-   if([coder isKindOfClass:[NSNibKeyedUnarchiver class]]) 
+   if([coder allowsKeyedCoding]) 
    { 
-      NSNibKeyedUnarchiver *keyed=(NSNibKeyedUnarchiver *)coder; 
+      NSKeyedUnarchiver *keyed=(NSKeyedUnarchiver *)coder; 
       _animates       = [keyed decodeBoolForKey:@"NSAnimates"]; 
       _imageAlignment = [keyed decodeIntForKey:@"NSAlign"]; 
       _imageScaling   = [keyed decodeIntForKey:@"NSScale"]; 

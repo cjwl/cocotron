@@ -16,7 +16,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSPasteboard.h>
 #import <AppKit/NSColor.h>
 #import <AppKit/NSGraphicsContextFunctions.h>
-#import <AppKit/NSNibKeyedUnarchiver.h>
+#import <Foundation/NSKeyedUnarchiver.h>
 #import <AppKit/NSRaise.h>
 
 @implementation NSImage
@@ -101,8 +101,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -initWithCoder:(NSCoder *)coder {
-   if([coder isKindOfClass:[NSNibKeyedUnarchiver class]]){
-    NSNibKeyedUnarchiver *keyed=(NSNibKeyedUnarchiver *)coder;
+   if([coder allowsKeyedCoding]){
+    NSKeyedUnarchiver *keyed=(NSKeyedUnarchiver *)coder;
     NSUInteger            length;
     const unsigned char  *tiff=[keyed decodeBytesForKey:@"NSTIFFRepresentation" returnedLength:&length];
     NSBitmapImageRep     *rep;

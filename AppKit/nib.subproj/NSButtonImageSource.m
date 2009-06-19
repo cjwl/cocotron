@@ -9,14 +9,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 // Original - Christopher Lloyd <cjwl@objc.net>
 #import <AppKit/NSButtonImageSource.h>
 #import <Foundation/NSString.h>
-#import <AppKit/NSNibKeyedUnarchiver.h>
+#import <Foundation/NSKeyedUnarchiver.h>
 #import <AppKit/NSImage.h>
 
 @implementation NSButtonImageSource
 
 -initWithCoder:(NSCoder *)coder {
-   if([coder isKindOfClass:[NSNibKeyedUnarchiver class]]){
-    NSNibKeyedUnarchiver *keyed=(NSNibKeyedUnarchiver *)coder;
+   if([coder allowsKeyedCoding]){
+    NSKeyedUnarchiver *keyed=(NSKeyedUnarchiver *)coder;
     
     _imageName=[[keyed decodeObjectForKey:@"NSImageName"] retain];
    }

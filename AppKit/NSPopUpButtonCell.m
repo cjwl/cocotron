@@ -12,7 +12,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSGraphics.h>
 #import <AppKit/NSImage.h>
 #import <AppKit/NSPopUpWindow.h>
-#import <AppKit/NSNibKeyedUnarchiver.h>
+#import <Foundation/NSKeyedUnarchiver.h>
 #import <AppKit/NSRaise.h>
 
 @implementation NSPopUpButtonCell
@@ -24,7 +24,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -initWithCoder:(NSCoder *)coder {
    [super initWithCoder:coder];
 
-   if([coder isKindOfClass:[NSNibKeyedUnarchiver class]]){ 
+   if([coder allowsKeyedCoding]){ 
     _pullsDown=[coder decodeBoolForKey:@"NSPullDown"];
     _menu=[[coder decodeObjectForKey:@"NSMenu"] retain];
     _selectedIndex=[[_menu itemArray] indexOfObjectIdenticalTo:[coder decodeObjectForKey:@"NSMenuItem"]];

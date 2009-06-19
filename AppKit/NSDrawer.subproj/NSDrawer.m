@@ -12,7 +12,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSWindow-Private.h>
 #import <AppKit/NSScreen.h>
 #import <AppKit/NSDrawerWindow.h>
-#import <AppKit/NSNibKeyedUnarchiver.h>
+#import <Foundation/NSKeyedUnarchiver.h>
 
 NSString *NSDrawerWillOpenNotification = @"NSDrawerWillOpenNotification";
 NSString *NSDrawerDidOpenNotification = @"NSDrawerDidOpenNotification";
@@ -118,9 +118,9 @@ NSString *NSDrawerDidCloseNotification = @"NSDrawerDidCloseNotification";
 {
    self = [super initWithCoder:coder];
 
-   if (self && [coder isKindOfClass:[NSNibKeyedUnarchiver class]])
+   if (self && [coder allowsKeyedCoding])
    {
-      NSNibKeyedUnarchiver *keyed = (NSNibKeyedUnarchiver *)coder;
+      NSKeyedUnarchiver *keyed = (NSKeyedUnarchiver *)coder;
 
       if([keyed containsValueForKey:@"NSContentSize"])
          _contentSize = [keyed decodeSizeForKey:@"NSContentSize"];

@@ -9,7 +9,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 // Original - Christopher Lloyd <cjwl@objc.net>
 #import <AppKit/NSParagraphStyle.h>
 #import <AppKit/NSTextTab.h>
-#import <AppKit/NSNibKeyedUnarchiver.h>
+#import <Foundation/NSKeyedUnarchiver.h>
 
 @implementation NSParagraphStyle
 
@@ -61,7 +61,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -initWithCoder:(NSCoder *)coder {
-   if([coder isKindOfClass:[NSNibKeyedUnarchiver class]]){
+   if([coder allowsKeyedCoding]){
     [self _initWithDefaults];
    }
    else {

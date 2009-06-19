@@ -24,7 +24,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSGraphics.h>
 #import <ApplicationServices/ApplicationServices.h>
 #import "../../Foundation/NSAttributedString/NSRangeEntries.h"
-#import <AppKit/NSNibKeyedUnarchiver.h>
+#import <Foundation/NSKeyedUnarchiver.h>
 
 typedef struct {
    NSRect  rect;
@@ -58,8 +58,8 @@ static inline NSGlyphFragment *fragmentAtGlyphIndex(NSLayoutManager *self,unsign
 }
 
 -initWithCoder:(NSCoder *)coder {
-   if([coder isKindOfClass:[NSNibKeyedUnarchiver class]]){
-    NSNibKeyedUnarchiver *keyed=(NSNibKeyedUnarchiver *)coder;
+   if([coder allowsKeyedCoding]){
+    NSKeyedUnarchiver *keyed=(NSKeyedUnarchiver *)coder;
 
    _textStorage=[keyed decodeObjectForKey:@"NSTextStorage"];
    _typesetter=[NSTypesetter new];

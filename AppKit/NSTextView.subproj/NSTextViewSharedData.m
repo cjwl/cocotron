@@ -12,13 +12,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSDictionary.h>
 #import <AppKit/NSColor.h>
 #import <AppKit/NSParagraphStyle.h>
-#import <AppKit/NSNibKeyedUnarchiver.h>
+#import <Foundation/NSKeyedUnarchiver.h>
 
 @implementation NSTextViewSharedData
 
 -initWithCoder:(NSCoder *)coder {
-   if([coder isKindOfClass:[NSNibKeyedUnarchiver class]]){
-    NSNibKeyedUnarchiver *keyed=(NSNibKeyedUnarchiver *)coder;
+   if([coder allowsKeyedCoding]){
+    NSKeyedUnarchiver *keyed=(NSKeyedUnarchiver *)coder;
     
     _backgroundColor=[[keyed decodeObjectForKey:@"NSBackgroundColor"] retain];
     _defaultParagraphStyle=[[keyed decodeObjectForKey:@"NSDefaultParagraphStyle"] retain];

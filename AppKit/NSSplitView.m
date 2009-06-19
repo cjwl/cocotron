@@ -14,7 +14,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSGraphicsContext.h>
 #import <AppKit/NSImage.h>
 #import <AppKit/NSCursor.h>
-#import <AppKit/NSNibKeyedUnarchiver.h>
+#import <Foundation/NSKeyedUnarchiver.h>
 #import <AppKit/NSRaise.h>
 
 NSString *NSSplitViewDidResizeSubviewsNotification = @"NSSplitViewDidResizeSubviewsNotification";
@@ -29,8 +29,8 @@ NSString *NSSplitViewWillResizeSubviewsNotification = @"NSSplitViewWillResizeSub
 -initWithCoder:(NSCoder *)coder {
    [super initWithCoder:coder];
 
-   if([coder isKindOfClass:[NSNibKeyedUnarchiver class]]){
-    NSNibKeyedUnarchiver *keyed=(NSNibKeyedUnarchiver *)coder;
+   if([coder allowsKeyedCoding]){
+    NSKeyedUnarchiver *keyed=(NSKeyedUnarchiver *)coder;
     
     _isVertical=[keyed decodeBoolForKey:@"NSIsVertical"];
 // The divider thickness in the nib may not be the same as ours

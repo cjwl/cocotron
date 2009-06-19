@@ -17,7 +17,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSColor.h>
 #import <AppKit/NSParagraphStyle.h>
 #import <AppKit/NSStringDrawer.h>
-#import <AppKit/NSNibKeyedUnarchiver.h>
+#import <Foundation/NSKeyedUnarchiver.h>
 #import <AppKit/NSObject+BindingSupport.h>
 #import <AppKit/NSRaise.h>
 
@@ -30,8 +30,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -initWithCoder:(NSCoder *)coder {
    [super initWithCoder:coder];
 
-   if([coder isKindOfClass:[NSNibKeyedUnarchiver class]]){
-    NSNibKeyedUnarchiver *keyed=(NSNibKeyedUnarchiver *)coder;
+   if([coder allowsKeyedCoding]){
+    NSKeyedUnarchiver *keyed=(NSKeyedUnarchiver *)coder;
     
     _drawsBackground=[keyed decodeBoolForKey:@"NSDrawsBackground"];
     _backgroundColor=[[keyed decodeObjectForKey:@"NSBackgroundColor"] retain];

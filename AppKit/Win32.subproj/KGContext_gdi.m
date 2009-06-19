@@ -956,9 +956,9 @@ void CGGraphicsSourceOver_bgra32_onto_bgrx32(unsigned char *sourceBGRA,unsigned 
    combineBGRX=bits;
    SelectObject(combineDC,bitmap);
 
-   BitBlt(combineDC,0,0,combineWidth,combineHeight,sourceDC,point.x,point.y,SRCCOPY);
+   StretchBlt(combineDC,0,0,combineWidth,combineHeight,sourceDC,point.x,point.y,rect.size.width,rect.size.height,SRCCOPY);
    GdiFlush();
-   
+
 #if 1
    if((CGImageGetAlphaInfo(image)==kCGImageAlphaPremultipliedFirst) && ([image bitmapInfo]&kCGBitmapByteOrderMask)==kCGBitmapByteOrder32Little)
     CGGraphicsSourceOver_bgra32_onto_bgrx32(imageRGBA,(unsigned char *)combineBGRX,width,height,fraction);
@@ -968,7 +968,8 @@ void CGGraphicsSourceOver_bgra32_onto_bgrx32(unsigned char *sourceBGRA,unsigned 
    sourceOverImage(image,combineBGRX,width,height,fraction);
 #endif
 
-   BitBlt(sourceDC,point.x,point.y,combineWidth,combineHeight,combineDC,0,0,SRCCOPY);
+   StretchBlt(sourceDC,point.x,point.y,rect.size.width,rect.size.height,combineDC,0,0,combineWidth,combineHeight,SRCCOPY);
+
    DeleteObject(bitmap);
    DeleteDC(combineDC);
 }

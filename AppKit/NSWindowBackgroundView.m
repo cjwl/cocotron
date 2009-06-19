@@ -35,7 +35,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)drawRect:(NSRect)rect {
     NSRect bounds=[self bounds];
     float cheatSheet = 0;
-    
+
     switch(_borderType){
         case NSNoBorder:
             break;
@@ -84,7 +84,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 {
     _cachesImageForAnimation = flag;
 }
-
 
 // BROKEN
 - (void)displayRectIgnoringOpacity:(NSRect)rect 

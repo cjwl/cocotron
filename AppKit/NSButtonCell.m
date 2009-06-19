@@ -21,7 +21,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSStringDrawer.h>
 #import <AppKit/NSControl.h>
 #import <AppKit/NSMatrix.h>
-#import <AppKit/NSNibKeyedUnarchiver.h>
+#import <Foundation/NSKeyedUnarchiver.h>
 #import <AppKit/NSButtonImageSource.h>
 #import <AppKit/NSComboBoxCell.h>
 #import <AppKit/NSPopUpButtonCell.h>
@@ -47,8 +47,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -initWithCoder:(NSCoder *)coder {
    [super initWithCoder:coder];
 
-   if([coder isKindOfClass:[NSNibKeyedUnarchiver class]]){
-    NSNibKeyedUnarchiver *keyed=(NSNibKeyedUnarchiver *)coder;
+   if([coder allowsKeyedCoding]){
+    NSKeyedUnarchiver *keyed=(NSKeyedUnarchiver *)coder;
     unsigned           flags=[keyed decodeIntForKey:@"NSButtonFlags"];
     unsigned           flags2=[keyed decodeIntForKey:@"NSButtonFlags2"];
     id                 check;

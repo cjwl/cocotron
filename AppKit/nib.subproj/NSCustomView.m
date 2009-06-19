@@ -7,20 +7,20 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 #import "NSCustomView.h"
 #import <Foundation/NSString.h>
-#import <AppKit/NSNibKeyedUnarchiver.h>
+#import <Foundation/NSKeyedUnarchiver.h>
 
 @implementation NSCustomView
 
 - (id)initWithCoder:(NSCoder *)coder {
-   if ([coder isKindOfClass:[NSNibKeyedUnarchiver class]]) {
-      NSString *className = [(NSNibKeyedUnarchiver *)coder decodeObjectForKey:@"NSClassName"];
+   if ([coder allowsKeyedCoding]) {
+      NSString *className = [(NSKeyedUnarchiver *)coder decodeObjectForKey:@"NSClassName"];
       Class     class = NSClassFromString(className);
       if (class == nil) {
          NSLog(@"NSCustomView unknown class %@", className);
          return self;
       }
       else {
-         NSNibKeyedUnarchiver *keyed=(NSNibKeyedUnarchiver *)coder;
+         NSKeyedUnarchiver *keyed=(NSKeyedUnarchiver *)coder;
          NSRect frame=NSZeroRect;
          if([keyed containsValueForKey:@"NSFrame"])
             frame=[keyed decodeRectForKey:@"NSFrame"];

@@ -15,7 +15,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSWindow.h>
 #import <AppKit/NSScrollView.h>
 #import <AppKit/NSClipView.h>
-#import <AppKit/NSNibKeyedUnarchiver.h>
+#import <Foundation/NSKeyedUnarchiver.h>
 #import <AppKit/NSRaise.h>
 
 @interface NSTableView(NSTableView_private)
@@ -27,8 +27,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -initWithCoder:(NSCoder *)coder {
    [super initWithCoder:coder];
    
-   if([coder isKindOfClass:[NSNibKeyedUnarchiver class]]){
-    // NSNibKeyedUnarchiver *keyed=(NSNibKeyedUnarchiver *)coder;
+   if([coder allowsKeyedCoding]){
+    // NSKeyedUnarchiver *keyed=(NSKeyedUnarchiver *)coder;
     // nothing
    }
    return self;

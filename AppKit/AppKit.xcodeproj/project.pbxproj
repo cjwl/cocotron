@@ -233,7 +233,6 @@
 		C88974F20EA0BF3100D0A0A2 /* NSClassSwapper.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E81CA740A3883660089C666 /* NSClassSwapper.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		C88974F30EA0BF3100D0A0A2 /* NSCustomResource.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E81CCCE0A39CBE00089C666 /* NSCustomResource.h */; };
 		C88974F40EA0BF3100D0A0A2 /* NSCustomView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6ECABDF70A3FA2B700AD7F7B /* NSCustomView.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		C88974F50EA0BF3100D0A0A2 /* NSNibKeyedUnarchiver.h in Headers */ = {isa = PBXBuildFile; fileRef = 6ECABE310A40520700AD7F7B /* NSNibKeyedUnarchiver.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		C88974F60EA0BF3100D0A0A2 /* NSTextViewSharedData.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E404FE50A52FEA900FA9AE5 /* NSTextViewSharedData.h */; };
 		C88974F70EA0BF3100D0A0A2 /* NSMutableAttributedString.h in Headers */ = {isa = PBXBuildFile; fileRef = FE56BA020B1221330046B7D9 /* NSMutableAttributedString.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C88974F80EA0BF3100D0A0A2 /* NSMutableParagraphStyle.h in Headers */ = {isa = PBXBuildFile; fileRef = FE6466E10B2C611D00B302B0 /* NSMutableParagraphStyle.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -537,7 +536,6 @@
 		C889764B0EA0BF3100D0A0A2 /* NSClassSwapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E81CA750A3883660089C666 /* NSClassSwapper.m */; };
 		C889764C0EA0BF3100D0A0A2 /* NSCustomResource.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E81CCCF0A39CBE00089C666 /* NSCustomResource.m */; };
 		C889764D0EA0BF3100D0A0A2 /* NSCustomView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6ECABDF80A3FA2B700AD7F7B /* NSCustomView.m */; };
-		C889764E0EA0BF3100D0A0A2 /* NSNibKeyedUnarchiver.m in Sources */ = {isa = PBXBuildFile; fileRef = 6ECABE320A40520700AD7F7B /* NSNibKeyedUnarchiver.m */; };
 		C889764F0EA0BF3100D0A0A2 /* NSTextViewSharedData.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E404FE60A52FEA900FA9AE5 /* NSTextViewSharedData.m */; };
 		C88976500EA0BF3100D0A0A2 /* NSMutableAttributedString.m in Sources */ = {isa = PBXBuildFile; fileRef = FE56BA030B1221330046B7D9 /* NSMutableAttributedString.m */; };
 		C88976510EA0BF3100D0A0A2 /* NSMutableParagraphStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = FE6466E20B2C611D00B302B0 /* NSMutableParagraphStyle.m */; };
@@ -913,7 +911,6 @@
 		C8A2E3730F07EA1F0054397C /* NSClassSwapper.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E81CA740A3883660089C666 /* NSClassSwapper.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		C8A2E3740F07EA1F0054397C /* NSCustomResource.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E81CCCE0A39CBE00089C666 /* NSCustomResource.h */; };
 		C8A2E3750F07EA1F0054397C /* NSCustomView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6ECABDF70A3FA2B700AD7F7B /* NSCustomView.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		C8A2E3760F07EA1F0054397C /* NSNibKeyedUnarchiver.h in Headers */ = {isa = PBXBuildFile; fileRef = 6ECABE310A40520700AD7F7B /* NSNibKeyedUnarchiver.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		C8A2E3770F07EA1F0054397C /* NSTextViewSharedData.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E404FE50A52FEA900FA9AE5 /* NSTextViewSharedData.h */; };
 		C8A2E3780F07EA1F0054397C /* NSMutableAttributedString.h in Headers */ = {isa = PBXBuildFile; fileRef = FE56BA020B1221330046B7D9 /* NSMutableAttributedString.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C8A2E3790F07EA1F0054397C /* NSMutableParagraphStyle.h in Headers */ = {isa = PBXBuildFile; fileRef = FE6466E10B2C611D00B302B0 /* NSMutableParagraphStyle.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -1223,7 +1220,6 @@
 		C8A2E4B30F07EA1F0054397C /* NSClassSwapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E81CA750A3883660089C666 /* NSClassSwapper.m */; };
 		C8A2E4B40F07EA1F0054397C /* NSCustomResource.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E81CCCF0A39CBE00089C666 /* NSCustomResource.m */; };
 		C8A2E4B50F07EA1F0054397C /* NSCustomView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6ECABDF80A3FA2B700AD7F7B /* NSCustomView.m */; };
-		C8A2E4B60F07EA1F0054397C /* NSNibKeyedUnarchiver.m in Sources */ = {isa = PBXBuildFile; fileRef = 6ECABE320A40520700AD7F7B /* NSNibKeyedUnarchiver.m */; };
 		C8A2E4B70F07EA1F0054397C /* NSTextViewSharedData.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E404FE60A52FEA900FA9AE5 /* NSTextViewSharedData.m */; };
 		C8A2E4B80F07EA1F0054397C /* NSMutableAttributedString.m in Sources */ = {isa = PBXBuildFile; fileRef = FE56BA030B1221330046B7D9 /* NSMutableAttributedString.m */; };
 		C8A2E4B90F07EA1F0054397C /* NSMutableParagraphStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = FE6466E20B2C611D00B302B0 /* NSMutableParagraphStyle.m */; };
@@ -1634,7 +1630,6 @@
 		FE01A8E40C5D9BCB00AEA51A /* NSClassSwapper.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E81CA740A3883660089C666 /* NSClassSwapper.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE01A8E50C5D9BCB00AEA51A /* NSCustomResource.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E81CCCE0A39CBE00089C666 /* NSCustomResource.h */; };
 		FE01A8E60C5D9BCB00AEA51A /* NSCustomView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6ECABDF70A3FA2B700AD7F7B /* NSCustomView.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		FE01A8E70C5D9BCB00AEA51A /* NSNibKeyedUnarchiver.h in Headers */ = {isa = PBXBuildFile; fileRef = 6ECABE310A40520700AD7F7B /* NSNibKeyedUnarchiver.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE01A8E80C5D9BCB00AEA51A /* NSTextViewSharedData.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E404FE50A52FEA900FA9AE5 /* NSTextViewSharedData.h */; };
 		FE01A8E90C5D9BCB00AEA51A /* NSMutableAttributedString.h in Headers */ = {isa = PBXBuildFile; fileRef = FE56BA020B1221330046B7D9 /* NSMutableAttributedString.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE01A8EA0C5D9BCB00AEA51A /* NSMutableParagraphStyle.h in Headers */ = {isa = PBXBuildFile; fileRef = FE6466E10B2C611D00B302B0 /* NSMutableParagraphStyle.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -1929,7 +1924,6 @@
 		FE01AA260C5D9BCB00AEA51A /* NSClassSwapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E81CA750A3883660089C666 /* NSClassSwapper.m */; };
 		FE01AA270C5D9BCB00AEA51A /* NSCustomResource.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E81CCCF0A39CBE00089C666 /* NSCustomResource.m */; };
 		FE01AA280C5D9BCB00AEA51A /* NSCustomView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6ECABDF80A3FA2B700AD7F7B /* NSCustomView.m */; };
-		FE01AA290C5D9BCB00AEA51A /* NSNibKeyedUnarchiver.m in Sources */ = {isa = PBXBuildFile; fileRef = 6ECABE320A40520700AD7F7B /* NSNibKeyedUnarchiver.m */; };
 		FE01AA2A0C5D9BCB00AEA51A /* NSTextViewSharedData.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E404FE60A52FEA900FA9AE5 /* NSTextViewSharedData.m */; };
 		FE01AA2B0C5D9BCB00AEA51A /* NSMutableAttributedString.m in Sources */ = {isa = PBXBuildFile; fileRef = FE56BA030B1221330046B7D9 /* NSMutableAttributedString.m */; };
 		FE01AA2C0C5D9BCB00AEA51A /* NSMutableParagraphStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = FE6466E20B2C611D00B302B0 /* NSMutableParagraphStyle.m */; };
@@ -2339,7 +2333,6 @@
 		FEA314420FD5667D00F480D4 /* NSClassSwapper.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E81CA740A3883660089C666 /* NSClassSwapper.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FEA314430FD5667D00F480D4 /* NSCustomResource.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E81CCCE0A39CBE00089C666 /* NSCustomResource.h */; };
 		FEA314440FD5667D00F480D4 /* NSCustomView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6ECABDF70A3FA2B700AD7F7B /* NSCustomView.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		FEA314450FD5667D00F480D4 /* NSNibKeyedUnarchiver.h in Headers */ = {isa = PBXBuildFile; fileRef = 6ECABE310A40520700AD7F7B /* NSNibKeyedUnarchiver.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FEA314460FD5667D00F480D4 /* NSTextViewSharedData.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E404FE50A52FEA900FA9AE5 /* NSTextViewSharedData.h */; };
 		FEA314470FD5667D00F480D4 /* NSMutableAttributedString.h in Headers */ = {isa = PBXBuildFile; fileRef = FE56BA020B1221330046B7D9 /* NSMutableAttributedString.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FEA314480FD5667D00F480D4 /* NSMutableParagraphStyle.h in Headers */ = {isa = PBXBuildFile; fileRef = FE6466E10B2C611D00B302B0 /* NSMutableParagraphStyle.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -2577,7 +2570,6 @@
 		FEA315820FD5667D00F480D4 /* NSClassSwapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E81CA750A3883660089C666 /* NSClassSwapper.m */; };
 		FEA315830FD5667D00F480D4 /* NSCustomResource.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E81CCCF0A39CBE00089C666 /* NSCustomResource.m */; };
 		FEA315840FD5667D00F480D4 /* NSCustomView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6ECABDF80A3FA2B700AD7F7B /* NSCustomView.m */; };
-		FEA315850FD5667D00F480D4 /* NSNibKeyedUnarchiver.m in Sources */ = {isa = PBXBuildFile; fileRef = 6ECABE320A40520700AD7F7B /* NSNibKeyedUnarchiver.m */; };
 		FEA315860FD5667D00F480D4 /* NSTextViewSharedData.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E404FE60A52FEA900FA9AE5 /* NSTextViewSharedData.m */; };
 		FEA315870FD5667D00F480D4 /* NSMutableAttributedString.m in Sources */ = {isa = PBXBuildFile; fileRef = FE56BA030B1221330046B7D9 /* NSMutableAttributedString.m */; };
 		FEA315880FD5667D00F480D4 /* NSMutableParagraphStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = FE6466E20B2C611D00B302B0 /* NSMutableParagraphStyle.m */; };
@@ -3338,8 +3330,6 @@
 		6EC4ADE50A37294300E8D6CA /* NSButtonImageSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSButtonImageSource.m; sourceTree = "<group>"; };
 		6ECABDF70A3FA2B700AD7F7B /* NSCustomView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSCustomView.h; sourceTree = "<group>"; };
 		6ECABDF80A3FA2B700AD7F7B /* NSCustomView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSCustomView.m; sourceTree = "<group>"; };
-		6ECABE310A40520700AD7F7B /* NSNibKeyedUnarchiver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSNibKeyedUnarchiver.h; sourceTree = "<group>"; };
-		6ECABE320A40520700AD7F7B /* NSNibKeyedUnarchiver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSNibKeyedUnarchiver.m; sourceTree = "<group>"; };
 		C81BEA0D0EA6038800478D50 /* CairoContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CairoContext.h; sourceTree = "<group>"; };
 		C81BEA0E0EA6038800478D50 /* CairoContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CairoContext.m; sourceTree = "<group>"; };
 		C8283E490F0AEE3B009E89C4 /* X11InputSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = X11InputSource.h; sourceTree = "<group>"; };
@@ -4077,8 +4067,6 @@
 			children = (
 				FE8BAEC50BC9EA8D0007FACA /* NSNibBindingConnector.h */,
 				FE8BAEC60BC9EA8D0007FACA /* NSNibBindingConnector.m */,
-				6ECABE310A40520700AD7F7B /* NSNibKeyedUnarchiver.h */,
-				6ECABE320A40520700AD7F7B /* NSNibKeyedUnarchiver.m */,
 				6EC4AC670A35D47800E8D6CA /* NSCustomObject.h */,
 				6EC4AC680A35D47800E8D6CA /* NSCustomObject.m */,
 				6EC4ACFB0A36613800E8D6CA /* NSWindowTemplate.h */,
@@ -5012,7 +5000,6 @@
 				C88974F20EA0BF3100D0A0A2 /* NSClassSwapper.h in Headers */,
 				C88974F30EA0BF3100D0A0A2 /* NSCustomResource.h in Headers */,
 				C88974F40EA0BF3100D0A0A2 /* NSCustomView.h in Headers */,
-				C88974F50EA0BF3100D0A0A2 /* NSNibKeyedUnarchiver.h in Headers */,
 				C88974F60EA0BF3100D0A0A2 /* NSTextViewSharedData.h in Headers */,
 				C88974F70EA0BF3100D0A0A2 /* NSMutableAttributedString.h in Headers */,
 				C88974F80EA0BF3100D0A0A2 /* NSMutableParagraphStyle.h in Headers */,
@@ -5377,7 +5364,6 @@
 				C8A2E3730F07EA1F0054397C /* NSClassSwapper.h in Headers */,
 				C8A2E3740F07EA1F0054397C /* NSCustomResource.h in Headers */,
 				C8A2E3750F07EA1F0054397C /* NSCustomView.h in Headers */,
-				C8A2E3760F07EA1F0054397C /* NSNibKeyedUnarchiver.h in Headers */,
 				C8A2E3770F07EA1F0054397C /* NSTextViewSharedData.h in Headers */,
 				C8A2E3780F07EA1F0054397C /* NSMutableAttributedString.h in Headers */,
 				C8A2E3790F07EA1F0054397C /* NSMutableParagraphStyle.h in Headers */,
@@ -5740,7 +5726,6 @@
 				FE01A8E40C5D9BCB00AEA51A /* NSClassSwapper.h in Headers */,
 				FE01A8E50C5D9BCB00AEA51A /* NSCustomResource.h in Headers */,
 				FE01A8E60C5D9BCB00AEA51A /* NSCustomView.h in Headers */,
-				FE01A8E70C5D9BCB00AEA51A /* NSNibKeyedUnarchiver.h in Headers */,
 				FE01A8E80C5D9BCB00AEA51A /* NSTextViewSharedData.h in Headers */,
 				FE01A8E90C5D9BCB00AEA51A /* NSMutableAttributedString.h in Headers */,
 				FE01A8EA0C5D9BCB00AEA51A /* NSMutableParagraphStyle.h in Headers */,
@@ -6092,7 +6077,6 @@
 				FEA314420FD5667D00F480D4 /* NSClassSwapper.h in Headers */,
 				FEA314430FD5667D00F480D4 /* NSCustomResource.h in Headers */,
 				FEA314440FD5667D00F480D4 /* NSCustomView.h in Headers */,
-				FEA314450FD5667D00F480D4 /* NSNibKeyedUnarchiver.h in Headers */,
 				FEA314460FD5667D00F480D4 /* NSTextViewSharedData.h in Headers */,
 				FEA314470FD5667D00F480D4 /* NSMutableAttributedString.h in Headers */,
 				FEA314480FD5667D00F480D4 /* NSMutableParagraphStyle.h in Headers */,
@@ -6775,7 +6759,6 @@
 				C889764B0EA0BF3100D0A0A2 /* NSClassSwapper.m in Sources */,
 				C889764C0EA0BF3100D0A0A2 /* NSCustomResource.m in Sources */,
 				C889764D0EA0BF3100D0A0A2 /* NSCustomView.m in Sources */,
-				C889764E0EA0BF3100D0A0A2 /* NSNibKeyedUnarchiver.m in Sources */,
 				C889764F0EA0BF3100D0A0A2 /* NSTextViewSharedData.m in Sources */,
 				C88976500EA0BF3100D0A0A2 /* NSMutableAttributedString.m in Sources */,
 				C88976510EA0BF3100D0A0A2 /* NSMutableParagraphStyle.m in Sources */,
@@ -7107,7 +7090,6 @@
 				C8A2E4B30F07EA1F0054397C /* NSClassSwapper.m in Sources */,
 				C8A2E4B40F07EA1F0054397C /* NSCustomResource.m in Sources */,
 				C8A2E4B50F07EA1F0054397C /* NSCustomView.m in Sources */,
-				C8A2E4B60F07EA1F0054397C /* NSNibKeyedUnarchiver.m in Sources */,
 				C8A2E4B70F07EA1F0054397C /* NSTextViewSharedData.m in Sources */,
 				C8A2E4B80F07EA1F0054397C /* NSMutableAttributedString.m in Sources */,
 				C8A2E4B90F07EA1F0054397C /* NSMutableParagraphStyle.m in Sources */,
@@ -7469,7 +7451,6 @@
 				FE01AA260C5D9BCB00AEA51A /* NSClassSwapper.m in Sources */,
 				FE01AA270C5D9BCB00AEA51A /* NSCustomResource.m in Sources */,
 				FE01AA280C5D9BCB00AEA51A /* NSCustomView.m in Sources */,
-				FE01AA290C5D9BCB00AEA51A /* NSNibKeyedUnarchiver.m in Sources */,
 				FE01AA2A0C5D9BCB00AEA51A /* NSTextViewSharedData.m in Sources */,
 				FE01AA2B0C5D9BCB00AEA51A /* NSMutableAttributedString.m in Sources */,
 				FE01AA2C0C5D9BCB00AEA51A /* NSMutableParagraphStyle.m in Sources */,
@@ -7791,7 +7772,6 @@
 				FEA315820FD5667D00F480D4 /* NSClassSwapper.m in Sources */,
 				FEA315830FD5667D00F480D4 /* NSCustomResource.m in Sources */,
 				FEA315840FD5667D00F480D4 /* NSCustomView.m in Sources */,
-				FEA315850FD5667D00F480D4 /* NSNibKeyedUnarchiver.m in Sources */,
 				FEA315860FD5667D00F480D4 /* NSTextViewSharedData.m in Sources */,
 				FEA315870FD5667D00F480D4 /* NSMutableAttributedString.m in Sources */,
 				FEA315880FD5667D00F480D4 /* NSMutableParagraphStyle.m in Sources */,

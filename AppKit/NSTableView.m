@@ -9,7 +9,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <AppKit/AppKit.h>
 #import <AppKit/NSTableCornerView.h>
-#import <AppKit/NSNibKeyedUnarchiver.h>
+#import <Foundation/NSKeyedUnarchiver.h>
 #import "NSKeyValueBinding/NSMultipleValueBinder.h"
 #import "NSKeyValueBinding/NSKVOBinder.h"
 #import <AppKit/NSRaise.h>
@@ -86,8 +86,8 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
 -initWithCoder:(NSCoder *)coder {
    [super initWithCoder:coder];
 
-   if([coder isKindOfClass:[NSNibKeyedUnarchiver class]]){
-    NSNibKeyedUnarchiver *keyed=(NSNibKeyedUnarchiver *)coder;
+   if([coder allowsKeyedCoding]){
+    NSKeyedUnarchiver *keyed=(NSKeyedUnarchiver *)coder;
     unsigned              flags=[keyed decodeIntForKey:@"NSTvFlags"];
     
     _headerView=[[keyed decodeObjectForKey:@"NSHeaderView"] retain];

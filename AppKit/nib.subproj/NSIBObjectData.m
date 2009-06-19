@@ -12,7 +12,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSString.h>
 #import <Foundation/NSSet.h>
 #import <Foundation/NSDebug.h>
-#import "NSNibKeyedUnarchiver.h"
+#import <Foundation/NSKeyedUnarchiver.h>
 #import "NSCustomObject.h"
 #import <AppKit/NSNibConnector.h>
 #import <AppKit/NSFontManager.h>
@@ -29,8 +29,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @implementation NSIBObjectData
 
 -initWithCoder:(NSCoder *)coder {
-   if([coder isKindOfClass:[NSNibKeyedUnarchiver class]]){
-    NSNibKeyedUnarchiver *keyed=(NSNibKeyedUnarchiver *)coder;
+   if([coder allowsKeyedCoding]){
+    NSKeyedUnarchiver *keyed=(NSKeyedUnarchiver *)coder;
     NSMutableDictionary  *nameTable=[NSMutableDictionary dictionaryWithDictionary:[[keyed delegate] externalNameTable]];
     int                   i,count;
     id                    owner;

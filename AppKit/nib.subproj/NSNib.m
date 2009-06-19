@@ -9,7 +9,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSNib.h>
 #import <Foundation/NSURL.h>
 #import <AppKit/NSRaise.h>
-#import "NSNibKeyedUnarchiver.h"
+#import <Foundation/NSKeyedUnarchiver.h>
 #import <AppKit/NSNibLoading.h>
 #import <AppKit/NSMenu.h>
 #import <AppKit/NSApplication.h>
@@ -90,7 +90,7 @@ NSString *NSNibTopLevelObjects=@"NSNibTopLevelObjects";
 
 -(BOOL)instantiateNibWithExternalNameTable:(NSDictionary *)nameTable {
    _nameTable=[nameTable retain];
-    NSNibKeyedUnarchiver *unarchiver=[[[NSNibKeyedUnarchiver alloc] initForReadingWithData:_data] autorelease];
+    NSKeyedUnarchiver *unarchiver=[[[NSKeyedUnarchiver alloc] initForReadingWithData:_data] autorelease];
     NSIBObjectData    *objectData;
     NSArray           *allObjects;
     int                i,count;

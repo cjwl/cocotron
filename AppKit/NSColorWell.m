@@ -14,7 +14,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSPasteboard.h>
 #import <AppKit/NSImage.h>
 #import <AppKit/NSDragging.h>
-#import <AppKit/NSNibKeyedUnarchiver.h>
+#import <Foundation/NSKeyedUnarchiver.h>
 #import <AppKit/NSGraphicsStyle.h>
 #import <AppKit/NSController.h>
 #import <AppKit/NSObject+BindingSupport.h>
@@ -46,8 +46,8 @@ NSString *_NSColorWellDidBecomeExclusiveNotification=@"_NSColorWellDidBecomeExcl
 -initWithCoder:(NSCoder *)coder {
    [super initWithCoder:coder];
 
-   if([coder isKindOfClass:[NSNibKeyedUnarchiver class]]){
-    NSNibKeyedUnarchiver *keyed=(NSNibKeyedUnarchiver *)coder;
+   if([coder allowsKeyedCoding]){
+    NSKeyedUnarchiver *keyed=(NSKeyedUnarchiver *)coder;
     
     _isEnabled=[keyed decodeBoolForKey:@"NSEnabled"];
     _isContinuous=![keyed decodeBoolForKey:@"NSIsNotContinuous"];
