@@ -740,7 +740,7 @@ static inline void _appendRectToCache(NSLayoutManager *self,NSRect rect){
     NSRange          characterRange=[self characterRangeForGlyphRange:glyphRange actualGlyphRange:NULL];
     unsigned         location=characterRange.location;
     unsigned         limit=NSMaxRange(characterRange);
-    BOOL             isFlipped=[[NSView focusView] isFlipped];
+    BOOL             isFlipped=[[NSGraphicsContext currentContext] isFlipped];
     float            usedHeight=[self usedRectForTextContainer:container].size.height;
     
     while(location<limit){
@@ -781,7 +781,7 @@ static inline void _appendRectToCache(NSLayoutManager *self,NSRect rect){
    NSColor    *selectedColor=[[textView selectedTextAttributes] objectForKey:NSForegroundColorAttributeName];
    
    NSTextContainer *container=[self textContainerForGlyphAtIndex:glyphRange.location effectiveRange:&glyphRange];
-   BOOL             isFlipped=[[NSView focusView] isFlipped];
+   BOOL             isFlipped=[[NSGraphicsContext currentContext] isFlipped];
    float            usedHeight=[self usedRectForTextContainer:container].size.height;
 
    if(selectedColor==nil)

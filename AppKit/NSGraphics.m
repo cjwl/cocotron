@@ -154,7 +154,7 @@ void NSDrawButton(NSRect rect,NSRect clipRect) {
    for(i=0;i<7;i++)
     rects[i]=rect;
 
-   if([[NSView focusView] isFlipped]){
+   if([[NSGraphicsContext currentContext] isFlipped]){
     colors[0]=[NSColor blackColor];
     rects[0].origin.y+=rect.size.height-1;
     rects[0].size.height=1;
@@ -237,7 +237,7 @@ void NSDrawGrayBezel(NSRect rect, NSRect clipRect) {
     for(i=0; i<4; i++)
         rects[i]=rect;
 
-    if ([[NSView focusView] isFlipped]) {
+    if ([[NSGraphicsContext currentContext] isFlipped]) {
         colors[0]=[NSColor whiteColor];
         colors[1]=[NSColor controlShadowColor];
         rects[1].size.width-=1;
@@ -283,7 +283,7 @@ void NSDrawWhiteBezel(NSRect rect, NSRect clipRect) {
     for(i=0; i<7; i++)
         rects[i]=rect;
 
-    if ([[NSView focusView] isFlipped]) {
+    if ([[NSGraphicsContext currentContext] isFlipped]) {
         colors[0]=[NSColor whiteColor];
         colors[1]=[NSColor controlShadowColor];
         rects[1].size.height=1;
@@ -361,7 +361,7 @@ void NSDrawGroove(NSRect rect, NSRect clipRect) {
     for(i=0; i<4; i++)
         rects[i]=rect;
 
-    if ([[NSView focusView] isFlipped]) {
+    if ([[NSGraphicsContext currentContext] isFlipped]) {
         colors[0]=[NSColor controlShadowColor];
         colors[1]=[NSColor whiteColor];
         rects[1].origin.x+=1;

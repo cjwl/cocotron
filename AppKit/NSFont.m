@@ -478,7 +478,7 @@ arrayWithArray:[_name componentsSeparatedByString:blank]];
    CGContextSetFontSize(cgContext,_pointSize);
 
 // FIX, should check the focusView in the context instead of NSView's
-   if([[NSView focusView] isFlipped]){
+   if([[NSGraphicsContext currentContext] isFlipped]){
     CGAffineTransform flip={1,0,0,-1,0,0};
     
     CGContextSetTextMatrix(cgContext,flip);
