@@ -64,6 +64,7 @@ static NSSystemInfoPanel *_sharedInfoPanel = nil;
    frame.origin.y = [[NSScreen mainScreen] frame].size.height - 150 - frame.size.height;
    frame.origin.x = ([[NSScreen mainScreen] frame].size.width - frame.size.width)/2.0;
    [infoPanel setFrame:frame display:NO];
+   [[infoPanel contentView] setNeedsDisplay:YES];
 }
 
 

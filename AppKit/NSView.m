@@ -1,4 +1,5 @@
 /* Copyright (c) 2006-2007 Christopher J. W. Lloyd
+                 2009 Markus Hitter <mah@jump-ing.de>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
@@ -57,13 +58,13 @@ NSString *NSViewFocusDidChangeNotification=@"NSViewFocusDidChangeNotification";
    if([coder allowsKeyedCoding]){
     NSKeyedUnarchiver *keyed=(NSKeyedUnarchiver *)coder;
     unsigned           vFlags=[keyed decodeIntForKey:@"NSvFlags"];
-    
+
     _frame=NSZeroRect;
     if([keyed containsValueForKey:@"NSFrame"])
      _frame=[keyed decodeRectForKey:@"NSFrame"];
     else if([keyed containsValueForKey:@"NSFrameSize"])
      _frame.size=[keyed decodeSizeForKey:@"NSFrameSize"];
-    
+
     _bounds.origin=NSMakePoint(0,0);
     _bounds.size=_frame.size;
     _window=nil;
@@ -73,10 +74,10 @@ NSString *NSViewFocusDidChangeNotification=@"NSViewFocusDidChangeNotification";
     _postsNotificationOnBoundsChange=YES;
     _autoresizingMask=vFlags&0x3F;
     if([keyed containsValueForKey:@"NSvFlags"])
-     _autoresizesSubviews=YES;
-    else 
      _autoresizesSubviews=(vFlags&0x100)?YES:NO;
-    
+    else
+     _autoresizesSubviews=YES;
+
     _isHidden=(vFlags&0x80000000)?YES:NO;
     _tag=-1;
     if([keyed containsValueForKey:@"NSTag"])
@@ -614,8 +615,10 @@ static inline void buildTransformsIfNeeded(NSView *self) {
 -(void)replaceSubview:(NSView *)oldView with:(NSView *)newView {
    unsigned index=[_subviews indexOfObjectIdenticalTo:oldView];
 
+   [oldView retain];
    [oldView removeFromSuperview];
    [self _insertSubview:newView atIndex:index];
+   [oldView release];
 }
 
 -(void)setAutoresizesSubviews:(BOOL)flag {
@@ -715,8 +718,8 @@ static inline void buildTransformsIfNeeded(NSView *self) {
 -(void)removeFromSuperview {
    NSView *removeFrom=_superview;
 
-   [self removeFromSuperviewWithoutNeedingDisplay];
    [removeFrom setNeedsDisplayInRect:[self frame]];
+   [self removeFromSuperviewWithoutNeedingDisplay];
 }
 
 -(void)_removeViewWithoutDisplay:(NSView *)view  {
@@ -727,7 +730,7 @@ static inline void buildTransformsIfNeeded(NSView *self) {
    NSView *removeFrom=_superview;
 
    [self discardCursorRects];
-   [[self window] _discardTrackingRectsForView:self toolTipsOnly:YES];
+   [[self window] _discardTrackingRectsForView:self toolTipsOnly:NO];
 
    [self _deepResignFirstResponder];
    [self _setSuperview:nil];

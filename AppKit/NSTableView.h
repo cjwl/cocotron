@@ -69,8 +69,8 @@ typedef enum {
 
 -(SEL)doubleAction;
 
--dataSource;
--delegate;
+-(id)dataSource;
+-(id)delegate;
 
 -(NSView *)headerView;
 -(NSView *)cornerView;
@@ -184,7 +184,7 @@ typedef enum {
 
 @interface NSObject(NSTableView_dataSource)
 -(int)numberOfRowsInTableView:(NSTableView *)tableView;
--tableView:(NSTableView *)tableView objectValueForTableColumn:(NSTableColumn *)tableColumn row:(int)row;
+-(id)tableView:(NSTableView *)tableView objectValueForTableColumn:(NSTableColumn *)tableColumn row:(int)row;
 -(void)tableView:(NSTableView *)tableView setObjectValue:object forTableColumn:(NSTableColumn *)tableColumn row:(int)row;
 -(BOOL)tableView:(NSTableView *)tableView writeRowsWithIndexes:(NSIndexSet *)indexes toPasteboard:(NSPasteboard *)pasteboard;
 -(NSDragOperation)tableView:(NSTableView *)tableView validateDrop:(id <NSDraggingInfo>)draggingInfo proposedRow:(int)proposedRow proposedDropOperation:(NSTableViewDropOperation)dropOperation;

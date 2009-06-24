@@ -274,7 +274,16 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
      _numberOfRows=[binding numberOfRows];
 
     if (_numberOfRows < 0)
-     _numberOfRows = [_dataSource numberOfRowsInTableView:self];
+     if (_dataSource!=nil)
+      if ([_dataSource respondsToSelector:@selector(numberOfRowsInTableView:)]==YES)
+       _numberOfRows=[_dataSource numberOfRowsInTableView:self];
+      else {
+       // Apple AppKit only logs here, so we do the same
+       NSLog(@"data source %@ does not respond to numberOfRowsInTableView:", _dataSource);
+       _numberOfRows=0;
+      }
+     else
+      _numberOfRows=0;
    }
    
    return _numberOfRows;
@@ -438,16 +447,7 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
 }
 
 -(void)setDataSource:dataSource {
-    if (dataSource)
-    {
-        if(([dataSource respondsToSelector:@selector(numberOfRowsInTableView:)] == NO) ||
-           ([dataSource respondsToSelector:@selector(tableView:objectValueForTableColumn:row:)] == NO)) {
-            // Apple AppKit only logs here, so we do the same
-            NSLog(@"data source %@ does not respond to numberOfRowsInTableView: or tableView:objectValueForTableColumn:row:", dataSource);
-            // data source is set no matter what in AppKit. Fall through.
-        }
-    }
-    _dataSource=dataSource;
+   _dataSource=dataSource;
 }
 
 -(void)setDelegate:delegate {
@@ -588,9 +588,15 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
     return _editedColumn;
 }
 
--dataSourceObjectValueForTableColumn:(NSTableColumn *)tableColumn row:(int)row
-{
+-(id)dataSourceObjectValueForTableColumn:(NSTableColumn *)tableColumn row:(int)row {
+
+   if (_dataSource!=nil &&
+       [_dataSource respondsToSelector:@selector(tableView:objectValueForTableColumn:row:)]==YES)
     return [_dataSource tableView:self objectValueForTableColumn:tableColumn row:row];
+  
+   // Apple AppKit only logs here, so we do the same.
+   NSLog(@"data source %@ does not respond to tableView:objectValueForTableColumn:row:", _dataSource);
+   return nil;
 }
 
 - (NSRect)_adjustedFrame:(NSRect)frame forCell:(NSCell *)dataCell
@@ -686,10 +692,11 @@ NSString *NSTableViewColumnDidResizeNotification=@"NSTableViewColumnDidResizeNot
    NSIndexSet * newIndexes;
    NSInteger i, last, try;
    BOOL changed = NO;
-   
+
    // Mac OS X doesn't raise an exception if one of the indices
    // is out of range. Instead, the selection is left untouched.
-   if ([indexes firstIndex] < 0 || [indexes lastIndex] >= [self numberOfRows])
+   if ([indexes firstIndex] != NSNotFound &&
+       ([indexes firstIndex] < 0 || [indexes lastIndex] >= [self numberOfRows]))
     return;
 
    // Selecting a row deselects all columns.
