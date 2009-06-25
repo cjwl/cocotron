@@ -4939,10 +4939,10 @@
 		6E28041709747BB300EC542B /* NSNumber_unsignedShort.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = NSNumber_unsignedShort.m; path = NSNumber/NSNumber_unsignedShort.m; sourceTree = "<group>"; };
 		6E28041809747BB300EC542B /* NSNumber.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = NSNumber.h; path = NSNumber/NSNumber.h; sourceTree = "<group>"; };
 		6E28041909747BB300EC542B /* NSNumber.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = NSNumber.m; path = NSNumber/NSNumber.m; sourceTree = "<group>"; };
-		6E28043809747BBE00EC542B /* NSObject.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = NSObject.h; path = NSObject/NSObject.h; sourceTree = "<group>"; };
-		6E28043909747BBE00EC542B /* NSObject.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = NSObject.m; path = NSObject/NSObject.m; sourceTree = "<group>"; };
-		6E28043B09747BBE00EC542B /* NSZombieObject.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = NSZombieObject.h; path = NSObject/NSZombieObject.h; sourceTree = "<group>"; };
-		6E28043C09747BBE00EC542B /* NSZombieObject.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = NSZombieObject.m; path = NSObject/NSZombieObject.m; sourceTree = "<group>"; };
+		6E28043809747BBE00EC542B /* NSObject.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSObject.h; sourceTree = "<group>"; };
+		6E28043909747BBE00EC542B /* NSObject.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSObject.m; sourceTree = "<group>"; };
+		6E28043B09747BBE00EC542B /* NSZombieObject.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSZombieObject.h; sourceTree = "<group>"; };
+		6E28043C09747BBE00EC542B /* NSZombieObject.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSZombieObject.m; sourceTree = "<group>"; };
 		6E28044209747BCB00EC542B /* NSPropertyListReader_vintage.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSPropertyListReader_vintage.h; sourceTree = "<group>"; };
 		6E28044309747BCB00EC542B /* NSPropertyListReader_vintage.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSPropertyListReader_vintage.m; sourceTree = "<group>"; };
 		6E28044409747BCB00EC542B /* NSPropertyListWriter_vintage.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSPropertyListWriter_vintage.h; sourceTree = "<group>"; };
@@ -5068,8 +5068,8 @@
 		6E28053509747C8900EC542B /* objc_sel.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = objc_sel.h; sourceTree = "<group>"; };
 		6E28053609747C8900EC542B /* objc_sel.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = objc_sel.m; sourceTree = "<group>"; };
 		6E28053F09747C8900EC542B /* Protocol.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = Protocol.m; sourceTree = "<group>"; };
-		6E28055D09747CC300EC542B /* msgSendv-windows.s */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.asm; name = "msgSendv-windows.s"; path = "NSObject/msgSendv-windows.s"; sourceTree = "<group>"; };
-		6E28055F09747CCA00EC542B /* msgSendv-solaris.m */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.objc; fileEncoding = 30; name = "msgSendv-solaris.m"; path = "NSObject/msgSendv-solaris.m"; sourceTree = "<group>"; };
+		6E28055D09747CC300EC542B /* msgSendv-windows.s */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.asm; path = "msgSendv-windows.s"; sourceTree = "<group>"; };
+		6E28055F09747CCA00EC542B /* msgSendv-solaris.m */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.objc; fileEncoding = 30; path = "msgSendv-solaris.m"; sourceTree = "<group>"; };
 		6E28056B09747CE100EC542B /* NSMemoryFunctions_linux.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = NSMemoryFunctions_linux.m; path = platform_linux/NSMemoryFunctions_linux.m; sourceTree = "<group>"; };
 		6E28056C09747CE100EC542B /* NSPlatform_linux.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = NSPlatform_linux.h; path = platform_linux/NSPlatform_linux.h; sourceTree = "<group>"; };
 		6E28056D09747CE100EC542B /* NSPlatform_linux.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = NSPlatform_linux.m; path = platform_linux/NSPlatform_linux.m; sourceTree = "<group>"; };
@@ -5223,7 +5223,7 @@
 		6E280B2909747F1F00EC542B /* Foundation.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = Foundation.h; sourceTree = "<group>"; };
 		6E280B2C09747F4900EC542B /* English */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.plist; name = English; path = English.lproj/NSUserDefaults.plist; sourceTree = "<group>"; };
 		6E4D932B0A2642BD003D335C /* Foundation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Foundation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		6E8113970A54BBAC000DE3F1 /* msgSendv-linux.s */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.asm; name = "msgSendv-linux.s"; path = "NSObject/msgSendv-linux.s"; sourceTree = "<group>"; };
+		6E8113970A54BBAC000DE3F1 /* msgSendv-linux.s */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.asm; path = "msgSendv-linux.s"; sourceTree = "<group>"; };
 		6E8115B20A55CB99000DE3F1 /* objc_msg_lookup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = objc_msg_lookup.m; sourceTree = "<group>"; };
 		6EA04A7709E57D5F0067589C /* Foundation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Foundation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6EAD772F0AAF1283004BCCC9 /* NSInputStream_socket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSInputStream_socket.h; sourceTree = "<group>"; };
@@ -5242,16 +5242,16 @@
 		C844CFCF0DA7F21400A8F3A2 /* NSSynchronization.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSSynchronization.m; sourceTree = "<group>"; };
 		C851D86B0E40E0D3001DAB69 /* NSPropertyListWriter_xml1.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSPropertyListWriter_xml1.m; sourceTree = "<group>"; };
 		C851D86C0E40E0D3001DAB69 /* NSPropertyListWriter_xml1.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSPropertyListWriter_xml1.h; sourceTree = "<group>"; };
-		C851D8780E40E428001DAB69 /* objc_forward_ffi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = objc_forward_ffi.h; path = NSObject/objc_forward_ffi.h; sourceTree = "<group>"; };
-		C851D8790E40E428001DAB69 /* objc_forward_ffi.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = objc_forward_ffi.m; path = NSObject/objc_forward_ffi.m; sourceTree = "<group>"; };
+		C851D8780E40E428001DAB69 /* objc_forward_ffi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = objc_forward_ffi.h; sourceTree = "<group>"; };
+		C851D8790E40E428001DAB69 /* objc_forward_ffi.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = objc_forward_ffi.m; sourceTree = "<group>"; };
 		C89B47350F5C6A4B0070120D /* NSCancelInputSource_win32.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NSCancelInputSource_win32.h; path = platform_win32/NSCancelInputSource_win32.h; sourceTree = "<group>"; };
 		C89B47360F5C6A4B0070120D /* NSCancelInputSource_win32.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NSCancelInputSource_win32.m; path = platform_win32/NSCancelInputSource_win32.m; sourceTree = "<group>"; };
 		C89B473D0F5C6AB50070120D /* NSCancelInputSource_posix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NSCancelInputSource_posix.h; path = platform_posix/NSCancelInputSource_posix.h; sourceTree = "<group>"; };
 		C89B473E0F5C6AB50070120D /* NSCancelInputSource_posix.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NSCancelInputSource_posix.m; path = platform_posix/NSCancelInputSource_posix.m; sourceTree = "<group>"; };
 		C8B53BD50E6AC7C500E4467E /* objc_debugHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = objc_debugHelpers.h; sourceTree = "<group>"; };
 		C8B53BD60E6AC7C500E4467E /* objc_debugHelpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = objc_debugHelpers.m; sourceTree = "<group>"; };
-		C8BAA5710DDEFC6C005C4769 /* objc_size_alignment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = objc_size_alignment.h; path = NSObject/objc_size_alignment.h; sourceTree = "<group>"; };
-		C8BAA5720DDEFC6C005C4769 /* objc_size_alignment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = objc_size_alignment.m; path = NSObject/objc_size_alignment.m; sourceTree = "<group>"; };
+		C8BAA5710DDEFC6C005C4769 /* objc_size_alignment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = objc_size_alignment.h; sourceTree = "<group>"; };
+		C8BAA5720DDEFC6C005C4769 /* objc_size_alignment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = objc_size_alignment.m; sourceTree = "<group>"; };
 		C8C39E000EAB6646002568A3 /* NSConditionLock_posix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NSConditionLock_posix.h; path = platform_posix/NSConditionLock_posix.h; sourceTree = "<group>"; };
 		C8C39E010EAB6646002568A3 /* NSConditionLock_posix.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NSConditionLock_posix.m; path = platform_posix/NSConditionLock_posix.m; sourceTree = "<group>"; };
 		C8C9700E0EBDBC63009CE9BC /* NSConditionLock_win32.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NSConditionLock_win32.h; path = platform_win32/NSConditionLock_win32.h; sourceTree = "<group>"; };
@@ -5267,8 +5267,8 @@
 		FE1365DF0F154B3A000F2657 /* NSOperationQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSOperationQueue.m; sourceTree = "<group>"; };
 		FE1935150B5D449E00FB74CC /* NSAssertionHandler.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSAssertionHandler.h; sourceTree = "<group>"; };
 		FE1935160B5D449E00FB74CC /* NSAssertionHandler.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSAssertionHandler.m; sourceTree = "<group>"; };
-		FE1A0D1F0F8BADBA00FC4CC7 /* forwarding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = forwarding.h; path = NSObject/forwarding.h; sourceTree = "<group>"; };
-		FE1A0D200F8BADBA00FC4CC7 /* forwarding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = forwarding.m; path = NSObject/forwarding.m; sourceTree = "<group>"; };
+		FE1A0D1F0F8BADBA00FC4CC7 /* forwarding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = forwarding.h; sourceTree = "<group>"; };
+		FE1A0D200F8BADBA00FC4CC7 /* forwarding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = forwarding.m; sourceTree = "<group>"; };
 		FE2705C50C5EF3D60004AB37 /* OBJCInitializeProcess_Darwin.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = OBJCInitializeProcess_Darwin.m; sourceTree = "<group>"; };
 		FE35CAEC0B4AB85800FE7AB3 /* objc.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = objc.m; sourceTree = "<group>"; };
 		FE35CBD70B4AD47400FE7AB3 /* NSSocket.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSSocket.h; sourceTree = "<group>"; };
@@ -5976,9 +5976,9 @@
 		6E2803380974795100EC542B /* NSObject */ = {
 			isa = PBXGroup;
 			children = (
-				6E8113970A54BBAC000DE3F1 /* msgSendv-linux.s */,
-				6E28055D09747CC300EC542B /* msgSendv-windows.s */,
-				6E28055F09747CCA00EC542B /* msgSendv-solaris.m */,
+				FE3B5D390FF3A6E6005E7605 /* platform_linux */,
+				FE3B5D380FF3A6DA005E7605 /* platform_windows */,
+				FE3B5D350FF3A6CF005E7605 /* platform_solaris */,
 				C851D8780E40E428001DAB69 /* objc_forward_ffi.h */,
 				C851D8790E40E428001DAB69 /* objc_forward_ffi.m */,
 				FE1A0D1F0F8BADBA00FC4CC7 /* forwarding.h */,
@@ -5990,7 +5990,7 @@
 				C8BAA5710DDEFC6C005C4769 /* objc_size_alignment.h */,
 				C8BAA5720DDEFC6C005C4769 /* objc_size_alignment.m */,
 			);
-			name = NSObject;
+			path = NSObject;
 			sourceTree = "<group>";
 		};
 		6E2803390974795700EC542B /* NSPropertyList */ = {
@@ -6271,7 +6271,6 @@
 				6E28052E09747C8900EC542B /* ObjCException.m */,
 				6E28052F09747C8900EC542B /* ObjCHashTable.h */,
 				6E28053009747C8900EC542B /* ObjCHashTable.m */,
-				FE2705C50C5EF3D60004AB37 /* OBJCInitializeProcess_Darwin.m */,
 				6E28053309747C8900EC542B /* ObjCModule.h */,
 				6E28053409747C8900EC542B /* ObjCModule.m */,
 				FE88A4D50F8A9DE00081CFC1 /* Object.m */,
@@ -6527,10 +6526,35 @@
 		FE1A0E360F8D508500FC4CC7 /* platform_darwin */ = {
 			isa = PBXGroup;
 			children = (
+				FE2705C50C5EF3D60004AB37 /* OBJCInitializeProcess_Darwin.m */,
 				FED70C8E0C3BFFBE000CBE5B /* objc_msgSend-darwin-i386.s */,
 				FED70D610C3C0973000CBE5B /* objc_msgSend-darwin-ppc.s */,
 			);
-			name = platform_darwin;
+			path = platform_darwin;
+			sourceTree = "<group>";
+		};
+		FE3B5D350FF3A6CF005E7605 /* platform_solaris */ = {
+			isa = PBXGroup;
+			children = (
+				6E28055F09747CCA00EC542B /* msgSendv-solaris.m */,
+			);
+			path = platform_solaris;
+			sourceTree = "<group>";
+		};
+		FE3B5D380FF3A6DA005E7605 /* platform_windows */ = {
+			isa = PBXGroup;
+			children = (
+				6E28055D09747CC300EC542B /* msgSendv-windows.s */,
+			);
+			path = platform_windows;
+			sourceTree = "<group>";
+		};
+		FE3B5D390FF3A6E6005E7605 /* platform_linux */ = {
+			isa = PBXGroup;
+			children = (
+				6E8113970A54BBAC000DE3F1 /* msgSendv-linux.s */,
+			);
+			path = platform_linux;
 			sourceTree = "<group>";
 		};
 		FE4BDD2A0BCD65EB00E19685 /* CoreFoundation */ = {
