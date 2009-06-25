@@ -845,6 +845,9 @@ static inline void _appendRectToCache(NSLayoutManager *self,NSRect rect){
          unsigned length=0;
          BOOL     showGlyphs=NO;
 
+         if(glyph==NSControlGlyph)
+          glyph=NSNullGlyph;
+          
          if(location==intersectRange.location && location>range.location){
           [color set];
 
