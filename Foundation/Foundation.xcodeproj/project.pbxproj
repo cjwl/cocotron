@@ -5075,7 +5075,7 @@
 		6E28056D09747CE100EC542B /* NSPlatform_linux.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = NSPlatform_linux.m; path = platform_linux/NSPlatform_linux.m; sourceTree = "<group>"; };
 		6E28056E09747CE100EC542B /* NSTask_linux.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = NSTask_linux.h; path = platform_linux/NSTask_linux.h; sourceTree = "<group>"; };
 		6E28056F09747CE100EC542B /* NSTask_linux.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = NSTask_linux.m; path = platform_linux/NSTask_linux.m; sourceTree = "<group>"; };
-		6E28057509747CEE00EC542B /* NSConstantString.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = NSConstantString.m; path = platform_posix/NSConstantString.m; sourceTree = "<group>"; };
+		6E28057509747CEE00EC542B /* NSConstantString.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = NSConstantString.m; path = ../platform_posix/NSConstantString.m; sourceTree = "<group>"; };
 		6E28057609747CEE00EC542B /* NSFileHandle_posix.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = NSFileHandle_posix.h; path = platform_posix/NSFileHandle_posix.h; sourceTree = "<group>"; };
 		6E28057709747CEE00EC542B /* NSFileHandle_posix.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = NSFileHandle_posix.m; path = platform_posix/NSFileHandle_posix.m; sourceTree = "<group>"; };
 		6E28057809747CEE00EC542B /* NSFileManager_posix.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = NSFileManager_posix.h; path = platform_posix/NSFileManager_posix.h; sourceTree = "<group>"; };
@@ -5096,32 +5096,32 @@
 		6E28059709747CF900EC542B /* NSTask_solaris.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = NSTask_solaris.h; path = platform_solaris/NSTask_solaris.h; sourceTree = "<group>"; };
 		6E28059809747CF900EC542B /* NSTask_solaris.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = NSTask_solaris.m; path = platform_solaris/NSTask_solaris.m; sourceTree = "<group>"; };
 		6E28059909747CF900EC542B /* SolarisMemoryFunctions.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = SolarisMemoryFunctions.m; path = platform_solaris/SolarisMemoryFunctions.m; sourceTree = "<group>"; };
-		6E28059F09747D0400EC542B /* dllmain.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = dllmain.m; path = platform_win32/dllmain.m; sourceTree = "<group>"; };
-		6E2805A309747D0400EC542B /* NSFileHandle_win32.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = NSFileHandle_win32.h; path = platform_win32/NSFileHandle_win32.h; sourceTree = "<group>"; };
-		6E2805A409747D0400EC542B /* NSFileHandle_win32.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = NSFileHandle_win32.m; path = platform_win32/NSFileHandle_win32.m; sourceTree = "<group>"; };
-		6E2805A509747D0400EC542B /* NSFileManager_win32.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = NSFileManager_win32.h; path = platform_win32/NSFileManager_win32.h; sourceTree = "<group>"; };
-		6E2805A609747D0400EC542B /* NSFileManager_win32.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = NSFileManager_win32.m; path = platform_win32/NSFileManager_win32.m; sourceTree = "<group>"; };
-		6E2805A709747D0400EC542B /* NSHandleMonitor_win32.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = NSHandleMonitor_win32.h; path = platform_win32/NSHandleMonitor_win32.h; sourceTree = "<group>"; };
-		6E2805A809747D0400EC542B /* NSHandleMonitor_win32.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = NSHandleMonitor_win32.m; path = platform_win32/NSHandleMonitor_win32.m; sourceTree = "<group>"; };
-		6E2805A909747D0400EC542B /* NSHandleMonitorSet_win32.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = NSHandleMonitorSet_win32.h; path = platform_win32/NSHandleMonitorSet_win32.h; sourceTree = "<group>"; };
-		6E2805AA09747D0400EC542B /* NSHandleMonitorSet_win32.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = NSHandleMonitorSet_win32.m; path = platform_win32/NSHandleMonitorSet_win32.m; sourceTree = "<group>"; };
-		6E2805AB09747D0400EC542B /* NSLock_win32.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = NSLock_win32.h; path = platform_win32/NSLock_win32.h; sourceTree = "<group>"; };
-		6E2805AC09747D0400EC542B /* NSLock_win32.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = NSLock_win32.m; path = platform_win32/NSLock_win32.m; sourceTree = "<group>"; };
-		6E2805AE09747D0400EC542B /* NSMemoryFunctions_win32.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = NSMemoryFunctions_win32.m; path = platform_win32/NSMemoryFunctions_win32.m; sourceTree = "<group>"; };
-		6E2805AF09747D0400EC542B /* NSParentDeathMonitor_win32.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = NSParentDeathMonitor_win32.h; path = platform_win32/NSParentDeathMonitor_win32.h; sourceTree = "<group>"; };
-		6E2805B009747D0400EC542B /* NSParentDeathMonitor_win32.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = NSParentDeathMonitor_win32.m; path = platform_win32/NSParentDeathMonitor_win32.m; sourceTree = "<group>"; };
-		6E2805B109747D0400EC542B /* NSPersistantDomain_win32.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = NSPersistantDomain_win32.h; path = platform_win32/NSPersistantDomain_win32.h; sourceTree = "<group>"; };
-		6E2805B209747D0400EC542B /* NSPersistantDomain_win32.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = NSPersistantDomain_win32.m; path = platform_win32/NSPersistantDomain_win32.m; sourceTree = "<group>"; };
-		6E2805B309747D0400EC542B /* NSPipe_win32.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = NSPipe_win32.h; path = platform_win32/NSPipe_win32.h; sourceTree = "<group>"; };
-		6E2805B409747D0400EC542B /* NSPipe_win32.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = NSPipe_win32.m; path = platform_win32/NSPipe_win32.m; sourceTree = "<group>"; };
-		6E2805B509747D0400EC542B /* NSPlatform_win32.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = NSPlatform_win32.h; path = platform_win32/NSPlatform_win32.h; sourceTree = "<group>"; };
-		6E2805B609747D0400EC542B /* NSPlatform_win32.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = NSPlatform_win32.m; path = platform_win32/NSPlatform_win32.m; sourceTree = "<group>"; };
-		6E2805B709747D0400EC542B /* NSReadInBackground_win32.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = NSReadInBackground_win32.h; path = platform_win32/NSReadInBackground_win32.h; sourceTree = "<group>"; };
-		6E2805B809747D0400EC542B /* NSReadInBackground_win32.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = NSReadInBackground_win32.m; path = platform_win32/NSReadInBackground_win32.m; sourceTree = "<group>"; };
-		6E2805BB09747D0400EC542B /* NSString_win32.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = NSString_win32.h; path = platform_win32/NSString_win32.h; sourceTree = "<group>"; };
-		6E2805BC09747D0400EC542B /* NSString_win32.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = NSString_win32.m; path = platform_win32/NSString_win32.m; sourceTree = "<group>"; };
-		6E2805BD09747D0400EC542B /* NSTask_win32.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = NSTask_win32.h; path = platform_win32/NSTask_win32.h; sourceTree = "<group>"; };
-		6E2805BE09747D0400EC542B /* NSTask_win32.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = NSTask_win32.m; path = platform_win32/NSTask_win32.m; sourceTree = "<group>"; };
+		6E28059F09747D0400EC542B /* dllmain.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = dllmain.m; sourceTree = "<group>"; };
+		6E2805A309747D0400EC542B /* NSFileHandle_win32.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSFileHandle_win32.h; sourceTree = "<group>"; };
+		6E2805A409747D0400EC542B /* NSFileHandle_win32.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSFileHandle_win32.m; sourceTree = "<group>"; };
+		6E2805A509747D0400EC542B /* NSFileManager_win32.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSFileManager_win32.h; sourceTree = "<group>"; };
+		6E2805A609747D0400EC542B /* NSFileManager_win32.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSFileManager_win32.m; sourceTree = "<group>"; };
+		6E2805A709747D0400EC542B /* NSHandleMonitor_win32.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSHandleMonitor_win32.h; sourceTree = "<group>"; };
+		6E2805A809747D0400EC542B /* NSHandleMonitor_win32.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSHandleMonitor_win32.m; sourceTree = "<group>"; };
+		6E2805A909747D0400EC542B /* NSHandleMonitorSet_win32.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSHandleMonitorSet_win32.h; sourceTree = "<group>"; };
+		6E2805AA09747D0400EC542B /* NSHandleMonitorSet_win32.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSHandleMonitorSet_win32.m; sourceTree = "<group>"; };
+		6E2805AB09747D0400EC542B /* NSLock_win32.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSLock_win32.h; sourceTree = "<group>"; };
+		6E2805AC09747D0400EC542B /* NSLock_win32.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSLock_win32.m; sourceTree = "<group>"; };
+		6E2805AE09747D0400EC542B /* NSMemoryFunctions_win32.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSMemoryFunctions_win32.m; sourceTree = "<group>"; };
+		6E2805AF09747D0400EC542B /* NSParentDeathMonitor_win32.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSParentDeathMonitor_win32.h; sourceTree = "<group>"; };
+		6E2805B009747D0400EC542B /* NSParentDeathMonitor_win32.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSParentDeathMonitor_win32.m; sourceTree = "<group>"; };
+		6E2805B109747D0400EC542B /* NSPersistantDomain_win32.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSPersistantDomain_win32.h; sourceTree = "<group>"; };
+		6E2805B209747D0400EC542B /* NSPersistantDomain_win32.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSPersistantDomain_win32.m; sourceTree = "<group>"; };
+		6E2805B309747D0400EC542B /* NSPipe_win32.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSPipe_win32.h; sourceTree = "<group>"; };
+		6E2805B409747D0400EC542B /* NSPipe_win32.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSPipe_win32.m; sourceTree = "<group>"; };
+		6E2805B509747D0400EC542B /* NSPlatform_win32.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSPlatform_win32.h; sourceTree = "<group>"; };
+		6E2805B609747D0400EC542B /* NSPlatform_win32.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSPlatform_win32.m; sourceTree = "<group>"; };
+		6E2805B709747D0400EC542B /* NSReadInBackground_win32.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSReadInBackground_win32.h; sourceTree = "<group>"; };
+		6E2805B809747D0400EC542B /* NSReadInBackground_win32.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSReadInBackground_win32.m; sourceTree = "<group>"; };
+		6E2805BB09747D0400EC542B /* NSString_win32.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSString_win32.h; sourceTree = "<group>"; };
+		6E2805BC09747D0400EC542B /* NSString_win32.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSString_win32.m; sourceTree = "<group>"; };
+		6E2805BD09747D0400EC542B /* NSTask_win32.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSTask_win32.h; sourceTree = "<group>"; };
+		6E2805BE09747D0400EC542B /* NSTask_win32.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSTask_win32.m; sourceTree = "<group>"; };
 		6E2805F309747D5800EC542B /* NSBundle.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSBundle.h; sourceTree = "<group>"; };
 		6E2805F409747D5800EC542B /* NSBundle.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSBundle.m; sourceTree = "<group>"; };
 		6E2805F509747D5800EC542B /* NSByteOrder.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSByteOrder.h; sourceTree = "<group>"; };
@@ -5244,8 +5244,8 @@
 		C851D86C0E40E0D3001DAB69 /* NSPropertyListWriter_xml1.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSPropertyListWriter_xml1.h; sourceTree = "<group>"; };
 		C851D8780E40E428001DAB69 /* objc_forward_ffi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = objc_forward_ffi.h; sourceTree = "<group>"; };
 		C851D8790E40E428001DAB69 /* objc_forward_ffi.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = objc_forward_ffi.m; sourceTree = "<group>"; };
-		C89B47350F5C6A4B0070120D /* NSCancelInputSource_win32.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NSCancelInputSource_win32.h; path = platform_win32/NSCancelInputSource_win32.h; sourceTree = "<group>"; };
-		C89B47360F5C6A4B0070120D /* NSCancelInputSource_win32.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NSCancelInputSource_win32.m; path = platform_win32/NSCancelInputSource_win32.m; sourceTree = "<group>"; };
+		C89B47350F5C6A4B0070120D /* NSCancelInputSource_win32.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSCancelInputSource_win32.h; sourceTree = "<group>"; };
+		C89B47360F5C6A4B0070120D /* NSCancelInputSource_win32.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSCancelInputSource_win32.m; sourceTree = "<group>"; };
 		C89B473D0F5C6AB50070120D /* NSCancelInputSource_posix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NSCancelInputSource_posix.h; path = platform_posix/NSCancelInputSource_posix.h; sourceTree = "<group>"; };
 		C89B473E0F5C6AB50070120D /* NSCancelInputSource_posix.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NSCancelInputSource_posix.m; path = platform_posix/NSCancelInputSource_posix.m; sourceTree = "<group>"; };
 		C8B53BD50E6AC7C500E4467E /* objc_debugHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = objc_debugHelpers.h; sourceTree = "<group>"; };
@@ -5254,8 +5254,8 @@
 		C8BAA5720DDEFC6C005C4769 /* objc_size_alignment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = objc_size_alignment.m; sourceTree = "<group>"; };
 		C8C39E000EAB6646002568A3 /* NSConditionLock_posix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NSConditionLock_posix.h; path = platform_posix/NSConditionLock_posix.h; sourceTree = "<group>"; };
 		C8C39E010EAB6646002568A3 /* NSConditionLock_posix.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NSConditionLock_posix.m; path = platform_posix/NSConditionLock_posix.m; sourceTree = "<group>"; };
-		C8C9700E0EBDBC63009CE9BC /* NSConditionLock_win32.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NSConditionLock_win32.h; path = platform_win32/NSConditionLock_win32.h; sourceTree = "<group>"; };
-		C8C9700F0EBDBC63009CE9BC /* NSConditionLock_win32.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NSConditionLock_win32.m; path = platform_win32/NSConditionLock_win32.m; sourceTree = "<group>"; };
+		C8C9700E0EBDBC63009CE9BC /* NSConditionLock_win32.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSConditionLock_win32.h; sourceTree = "<group>"; };
+		C8C9700F0EBDBC63009CE9BC /* NSConditionLock_win32.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSConditionLock_win32.m; sourceTree = "<group>"; };
 		FE01A7EC0C5D9B6900AEA51A /* Foundation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Foundation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FE1365D80F154B3A000F2657 /* NSAtomicList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSAtomicList.h; sourceTree = "<group>"; };
 		FE1365D90F154B3A000F2657 /* NSAtomicList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSAtomicList.m; sourceTree = "<group>"; };
@@ -5275,12 +5275,12 @@
 		FE35CBD80B4AD47400FE7AB3 /* NSSocket.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSSocket.m; sourceTree = "<group>"; };
 		FE35CBD90B4AD47400FE7AB3 /* NSSelectInputSource.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSSelectInputSource.h; sourceTree = "<group>"; };
 		FE35CBDA0B4AD47400FE7AB3 /* NSSelectInputSource.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSSelectInputSource.m; sourceTree = "<group>"; };
-		FE35CC0F0B4AD8A400FE7AB3 /* NSSocket_windows.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = NSSocket_windows.h; path = platform_win32/NSSocket_windows.h; sourceTree = "<group>"; };
-		FE35CC100B4AD8A400FE7AB3 /* NSSocket_windows.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = NSSocket_windows.m; path = platform_win32/NSSocket_windows.m; sourceTree = "<group>"; };
+		FE35CC0F0B4AD8A400FE7AB3 /* NSSocket_windows.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSSocket_windows.h; sourceTree = "<group>"; };
+		FE35CC100B4AD8A400FE7AB3 /* NSSocket_windows.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSSocket_windows.m; sourceTree = "<group>"; };
 		FE35D2D90B4ECDBD00FE7AB3 /* NSSelectSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSSelectSet.h; sourceTree = "<group>"; };
 		FE35D2DA0B4ECDBD00FE7AB3 /* NSSelectSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSSelectSet.m; sourceTree = "<group>"; };
-		FE35D34F0B4EEDBB00FE7AB3 /* NSSelectSet_windows.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NSSelectSet_windows.h; path = platform_win32/NSSelectSet_windows.h; sourceTree = "<group>"; };
-		FE35D3500B4EEDBB00FE7AB3 /* NSSelectSet_windows.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NSSelectSet_windows.m; path = platform_win32/NSSelectSet_windows.m; sourceTree = "<group>"; };
+		FE35D34F0B4EEDBB00FE7AB3 /* NSSelectSet_windows.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSSelectSet_windows.h; sourceTree = "<group>"; };
+		FE35D3500B4EEDBB00FE7AB3 /* NSSelectSet_windows.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSSelectSet_windows.m; sourceTree = "<group>"; };
 		FE35D3AA0B4F369C00FE7AB3 /* NSSelectInputSourceSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSSelectInputSourceSet.h; sourceTree = "<group>"; };
 		FE35D3AB0B4F369C00FE7AB3 /* NSSelectInputSourceSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSSelectInputSourceSet.m; sourceTree = "<group>"; };
 		FE35D6470B52A3E400FE7AB3 /* NSSelectSet_bsd.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = NSSelectSet_bsd.h; path = platform_posix/NSSelectSet_bsd.h; sourceTree = "<group>"; };
@@ -5392,14 +5392,14 @@
 		FE9D95390C0387D5006DB214 /* NSValueTransformer_NegateBoolean.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSValueTransformer_NegateBoolean.m; sourceTree = "<group>"; };
 		FE9D953A0C0387D5006DB214 /* NSValueTransformer_UnarchiveFromData.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSValueTransformer_UnarchiveFromData.h; sourceTree = "<group>"; };
 		FE9D953B0C0387D5006DB214 /* NSValueTransformer_UnarchiveFromData.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSValueTransformer_UnarchiveFromData.m; sourceTree = "<group>"; };
-		FE9E1A2F0D5C0676004AE7BA /* NSLocale+windows.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = "NSLocale+windows.h"; path = "platform_win32/NSLocale+windows.h"; sourceTree = "<group>"; };
-		FE9E1A300D5C0676004AE7BA /* NSLocale+windows.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = "NSLocale+windows.m"; path = "platform_win32/NSLocale+windows.m"; sourceTree = "<group>"; };
+		FE9E1A2F0D5C0676004AE7BA /* NSLocale+windows.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = "NSLocale+windows.h"; sourceTree = "<group>"; };
+		FE9E1A300D5C0676004AE7BA /* NSLocale+windows.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = "NSLocale+windows.m"; sourceTree = "<group>"; };
 		FEA317850FD5843900F480D4 /* NSRaiseException.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSRaiseException.h; sourceTree = "<group>"; };
 		FEA36F250C24C57000025A9C /* objc_cache.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = objc_cache.h; sourceTree = "<group>"; };
 		FEA9D0880D16C55E00123D51 /* NSPropertyListReader_binary1.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSPropertyListReader_binary1.h; sourceTree = "<group>"; };
 		FEA9D0890D16C55E00123D51 /* NSPropertyListReader_binary1.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSPropertyListReader_binary1.m; sourceTree = "<group>"; };
-		FEA9D3050F5D9C2100772064 /* NSRunLoopState_windows.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NSRunLoopState_windows.h; path = platform_win32/NSRunLoopState_windows.h; sourceTree = "<group>"; };
-		FEA9D3060F5D9C2100772064 /* NSRunLoopState_windows.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NSRunLoopState_windows.m; path = platform_win32/NSRunLoopState_windows.m; sourceTree = "<group>"; };
+		FEA9D3050F5D9C2100772064 /* NSRunLoopState_windows.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSRunLoopState_windows.h; sourceTree = "<group>"; };
+		FEA9D3060F5D9C2100772064 /* NSRunLoopState_windows.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSRunLoopState_windows.m; sourceTree = "<group>"; };
 		FEA9D3090F5D9C5A00772064 /* NSRunLoopState_posix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NSRunLoopState_posix.h; path = platform_posix/NSRunLoopState_posix.h; sourceTree = "<group>"; };
 		FEA9D30A0F5D9C5A00772064 /* NSRunLoopState_posix.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NSRunLoopState_posix.m; path = platform_posix/NSRunLoopState_posix.m; sourceTree = "<group>"; };
 		FEB6CBAE0B4A139F004FADF2 /* NSKeyValueCoding.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSKeyValueCoding.h; sourceTree = "<group>"; };
@@ -5738,7 +5738,7 @@
 				6E28034709747A4900EC542B /* platform_linux */,
 				6E28034809747A5F00EC542B /* platform_posix */,
 				6E28034909747A6B00EC542B /* platform_solaris */,
-				6E28034A09747A7700EC542B /* platform_win32 */,
+				6E28034A09747A7700EC542B /* platform_windows */,
 				034768DFFF38A50411DB9C8B /* Products */,
 				089C1665FE841158C02AAC07 /* Resources */,
 				6E28034B09747A8200EC542B /* xml */,
@@ -6277,7 +6277,7 @@
 				FE1A0E360F8D508500FC4CC7 /* platform_darwin */,
 				6E28055A09747C8F00EC542B /* platform_linux */,
 				6E28055B09747C9900EC542B /* platform_solaris */,
-				6E28055C09747CAC00EC542B /* platform_win32 */,
+				6E28055C09747CAC00EC542B /* platform_windows */,
 				6E28053F09747C8900EC542B /* Protocol.m */,
 			);
 			path = objc;
@@ -6339,7 +6339,7 @@
 			name = platform_solaris;
 			sourceTree = "<group>";
 		};
-		6E28034A09747A7700EC542B /* platform_win32 */ = {
+		6E28034A09747A7700EC542B /* platform_windows */ = {
 			isa = PBXGroup;
 			children = (
 				6E28059F09747D0400EC542B /* dllmain.m */,
@@ -6382,7 +6382,7 @@
 				6E2805BD09747D0400EC542B /* NSTask_win32.h */,
 				6E2805BE09747D0400EC542B /* NSTask_win32.m */,
 			);
-			name = platform_win32;
+			path = platform_windows;
 			sourceTree = "<group>";
 		};
 		6E28034B09747A8200EC542B /* xml */ = {
@@ -6419,12 +6419,12 @@
 			name = platform_solaris;
 			sourceTree = "<group>";
 		};
-		6E28055C09747CAC00EC542B /* platform_win32 */ = {
+		6E28055C09747CAC00EC542B /* platform_windows */ = {
 			isa = PBXGroup;
 			children = (
 				C80F9AE00E58BD5400ECD487 /* objc-msgsend.s */,
 			);
-			path = platform_win32;
+			path = platform_windows;
 			sourceTree = "<group>";
 		};
 		6E28066309747DE300EC542B /* NSCharacterSet */ = {
