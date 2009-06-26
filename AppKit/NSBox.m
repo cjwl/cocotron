@@ -147,10 +147,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #define TEXTGAP 4
 
 -(NSRect)titleRect {
-   NSAttributedString *title=[self _attributedTitle];
-   NSSize              size=[title size];
-   NSRect              bounds=[self bounds];
-   NSRect              result=NSZeroRect;
+   // Obtain the size the title cell prefers
+   NSSize size = [_titleCell cellSize];
+   NSRect bounds=[self bounds];
+   NSRect result=NSZeroRect;
    
    result.origin.x=10+TEXTGAP;
    result.size.height=ceil(size.height);
@@ -212,7 +212,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 
 -(void)drawRect:(NSRect)rect {
-   NSAttributedString *title=[self _attributedTitle];
    NSRect              grooveRect=_bounds;
    NSRect              titleRect=[self titleRect];
    BOOL                drawTitle=YES;
@@ -276,7 +275,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     titleRect.origin.x+=TEXTGAP;
     titleRect.size.width-=TEXTGAP*2;
 
-    [title _clipAndDrawInRect:titleRect];
+	// Ask the cell to draw itself now
+	// TODO: Should we be doing some sort of clipping setup here?
+    [_titleCell drawWithFrame: titleRect inView: self];
    }
 }
 

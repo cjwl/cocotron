@@ -153,6 +153,27 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    }
 }
 
+-(NSSize)cellSize 
+{
+	NSSize size = [[self attributedStringValue] size];
+	
+	if([self isBezeled])
+	{
+		size.width += 6;
+		size.height += 6;
+	}
+	else if([self isBordered])
+	{
+		size.width += 4;
+		size.height += 4;
+	}
+	else
+	{
+		size.width += 4;
+	}
+	return size;
+}
+
 -(void)drawInteriorWithFrame:(NSRect)frame inView:(NSView *)control {
    [[self attributedStringValue] _clipAndDrawInRect:frame];
 }

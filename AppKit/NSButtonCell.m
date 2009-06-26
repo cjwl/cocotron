@@ -162,22 +162,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return result;
 }
 
--(NSSize)cellSize 
-{
-	NSImage            *image=[self image];
-	BOOL                enabled=[self isEnabled]?YES:![self imageDimsWhenDisabled];
-	BOOL                mixed=([self state]==NSMixedState)?YES:NO;
-	NSSize              imageSize;
-	
-	if (_controlView)
-		imageSize =(image==nil)?NSMakeSize(0,0):[[_controlView graphicsStyle] 
-sizeOfButtonImage:image enabled:enabled mixed:mixed];
-	else
-		imageSize = (image==nil)?NSMakeSize(0,0):[image size];
-			  
-	return imageSize;
-}
-
 -(BOOL)isTransparent {
    return _isTransparent;
 }
@@ -363,7 +347,8 @@ sizeOfButtonImage:image enabled:enabled mixed:mixed];
    [_objectValue release];
    _objectValue = [[NSNumber numberWithInt:[super state]] retain];
 
-   [(NSControl *)[self controlView] updateCell:self];
+   if( [ [self controlView] respondsToSelector:@selector(updateCell:)] )
+	[(NSControl *)[self controlView] updateCell:self];
 }
 
 -(void)setBezelStyle:(NSBezelStyle)bezelStyle {
@@ -588,6 +573,116 @@ sizeOfButtonImage:image enabled:enabled mixed:mixed];
    }
 }
 
+-(NSRect)getControlSizeAdjustment: (BOOL)flipped
+{
+	/*
+	Aqua Push Buttons actually have a frame much larger than told by IB to make room for shadows and whatnot
+	So we have to compensate for this when drawing simpler buttons.
+	There is probably a way to streamline this, make NSPopUpButtonCell draw itself for starters
+	NSGraphicsStyle should probably do this adjustment too
+	*/
+	NSRect frame = { { 0, 0 }, { 0, 0 } };
+	
+	if ([self isKindOfClass:[NSComboBoxCell class]]) 
+	{
+		switch (_controlSize)
+		{
+			case NSRegularControlSize:
+				frame.size.width  = 2;
+				frame.size.height = 1;
+				frame.origin.x    = 1;
+				break;
+
+			case NSSmallControlSize:
+				frame.size.width  = 4;
+				frame.size.height = 8;
+				frame.origin.x    = 2;
+				frame.origin.y    = 6;
+				break;
+
+			case NSMiniControlSize:
+				frame.size.width  = 6;
+				frame.size.height = 4;
+				frame.origin.x    = 3;
+				frame.origin.y    = 4;
+				break;
+		}
+	}
+	else if ([self isKindOfClass:[NSPopUpButtonCell class]]) 
+	{
+		switch (_controlSize)
+		{
+			case NSRegularControlSize:
+				frame.size.width  = 2;
+				frame.size.height = 1;
+				frame.origin.x    = 1;
+				break;
+
+			case NSSmallControlSize:
+				frame.size.width  = 4;
+				frame.size.height = 3;
+				frame.origin.x    = 2;
+				frame.origin.y    = 3;
+				break;
+
+			case NSMiniControlSize:
+				frame.size.width  = 6;
+				frame.size.height = 4;
+				frame.origin.x    = 3;
+				frame.origin.y    = 4;
+				break;
+		}
+	}
+
+	else if((_bezelStyle==NSRoundedBezelStyle) && (_highlightsBy&NSPushInCellMask) && (_highlightsBy&NSChangeGrayCellMask) && (_showsStateBy==NSNoCellMask) || [self isKindOfClass:[NSPopUpButtonCell class]]) 
+	{
+		frame.size.width  = 10 - _controlSize*2;
+		frame.size.height = 10 - _controlSize*2;
+		frame.origin.x    =  5 - _controlSize;
+		frame.origin.y    = flipped ? _controlSize*2 - 3 : 7 - _controlSize*2;
+	}   
+	
+	return frame;
+}
+
+-(NSSize)cellSize 
+{
+	NSImage            *image=[self image];
+	BOOL                enabled=[self isEnabled]?YES:![self imageDimsWhenDisabled];
+	BOOL                mixed=([self state]==NSMixedState)?YES:NO;
+	NSSize              imageSize;
+	
+	if (_controlView)
+		imageSize =(image==nil)?NSMakeSize(0,0):[[_controlView graphicsStyle] 
+sizeOfButtonImage:image enabled:enabled mixed:mixed];
+	else
+		imageSize = (image==nil)?NSMakeSize(0,0):[image size];
+	
+	NSCellImagePosition imagePos = [self imagePosition];
+	if( imagePos != NSNoImage )
+	{
+		NSSize titleSize = [[self attributedTitle] size];
+		
+		imageSize.width += titleSize.width;
+		imageSize.height += titleSize.height;
+	}
+
+	if( imagePos == NSImageLeft || imagePos == NSImageRight )
+		imageSize.width += 4;
+	
+	if( [self isBordered] || [self isBezeled] )
+	{
+		imageSize.width += 4;
+		imageSize.height += 4;
+	}
+	
+	NSRect adjustment = [self getControlSizeAdjustment:NO];
+	imageSize.width += adjustment.size.width;
+	imageSize.height += adjustment.size.height;
+	
+	return imageSize;
+}
+
 -(void)drawWithFrame:(NSRect)frame inView:(NSView *)control {
    BOOL defaulted;
    
@@ -598,68 +693,11 @@ sizeOfButtonImage:image enabled:enabled mixed:mixed];
 
    defaulted=([[control window] defaultButtonCell] == self);
    
-/*
- Aqua Push Buttons actually have a frame much larger than told by IB to make room for shadows and whatnot
- So we have to compensate for this when drawing simpler buttons.
- There is probably a way to streamline this, make NSPopUpButtonCell draw itself for starters
- NSGraphicsStyle should probably do this adjustment too
- */
-   if ([self isKindOfClass:[NSComboBoxCell class]]) {
-      switch (_controlSize)
-      {
-         case NSRegularControlSize:
-            frame.size.width  -= 2;
-            frame.size.height -= 1;
-            frame.origin.x    += 1;
-            break;
-
-         case NSSmallControlSize:
-            frame.size.width  -= 4;
-            frame.size.height -= 8;
-            frame.origin.x    += 2;
-            frame.origin.y    += 6;
-            break;
-
-         case NSMiniControlSize:
-            frame.size.width  -= 6;
-            frame.size.height -= 4;
-            frame.origin.x    += 3;
-            frame.origin.y    += 4;
-            break;
-      }
-   }
-
-   else if ([self isKindOfClass:[NSPopUpButtonCell class]]) {
-      switch (_controlSize)
-      {
-         case NSRegularControlSize:
-            frame.size.width  -= 2;
-            frame.size.height -= 1;
-            frame.origin.x    += 1;
-            break;
-
-         case NSSmallControlSize:
-            frame.size.width  -= 4;
-            frame.size.height -= 3;
-            frame.origin.x    += 2;
-            frame.origin.y    += 3;
-            break;
-
-         case NSMiniControlSize:
-            frame.size.width  -= 6;
-            frame.size.height -= 4;
-            frame.origin.x    += 3;
-            frame.origin.y    += 4;
-            break;
-      }
-   }
-
-   else if((_bezelStyle==NSRoundedBezelStyle) && (_highlightsBy&NSPushInCellMask) && (_highlightsBy&NSChangeGrayCellMask) && (_showsStateBy==NSNoCellMask) || [self isKindOfClass:[NSPopUpButtonCell class]]) {
-      frame.size.width  -= 10 - _controlSize*2;
-      frame.size.height -= 10 - _controlSize*2;
-      frame.origin.x    +=  5 - _controlSize;
-      frame.origin.y    += [control isFlipped] ? _controlSize*2 - 3 : 7 - _controlSize*2;
-   }
+   NSRect adjustment = [self getControlSizeAdjustment:[control isFlipped] ];
+   frame.size.width -= adjustment.size.width;
+   frame.size.height -= adjustment.size.height;
+   frame.origin.x += adjustment.origin.x;
+   frame.origin.y += adjustment.origin.y;
    
    if(_bezelStyle==NSDisclosureBezelStyle){
 // FIX The background isn't getting erased during pressing ? shouldn't the view be doing this during tracking ?
