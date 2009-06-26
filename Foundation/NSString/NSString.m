@@ -1344,6 +1344,7 @@ U+2029 (Unicode paragraph separator), \r\n, in that order (also known as CRLF)
 
     case NSUTF8StringEncoding:{
       NSUInteger resultLength=0;
+      [self getCharacters:buffer];
       char *utf8=NSUnicodeToUTF8(buffer,length,NO,&resultLength,NULL,YES);
       NSData *data=[NSData dataWithBytesNoCopy:utf8 length:resultLength+1 freeWhenDone:YES];
       return utf8;
