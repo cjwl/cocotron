@@ -469,6 +469,9 @@ NSString *NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
 }
 
 -(BOOL)shouldDrawInsertionPoint {
+   if(![self isEditable])
+    return NO;
+
    if([[self window] isKeyWindow]){
     if([[self window] firstResponder]==self)
      return YES;
@@ -1997,8 +2000,10 @@ NSString *NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
    NSNotification *note;
    NSDictionary   *userInfo=nil;
 
-   [self _displayInsertionPointWithState:NO];
-   [_insertionPointTimer invalidate];
+   if([self shouldDrawInsertionPoint]){
+    [self _displayInsertionPointWithState:NO];
+    [_insertionPointTimer invalidate];
+   }
 
    if(_textMovement!=NSIllegalTextMovement){
     userInfo=[NSDictionary dictionaryWithObject:[NSNumber numberWithInt:_textMovement] forKey:@"NSTextMovement"];
@@ -2013,13 +2018,17 @@ NSString *NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
 }
 
 -(void)becomeKeyWindow {
-   [self updateInsertionPointStateAndRestartTimer:YES];
-   [self _displayInsertionPointWithState:YES];
+   if([self shouldDrawInsertionPoint]){
+    [self updateInsertionPointStateAndRestartTimer:YES];
+    [self _displayInsertionPointWithState:YES];
+   }
 }
 
 -(void)resignKeyWindow {
-   [self _displayInsertionPointWithState:NO];
-   [_insertionPointTimer invalidate];
+   if([self shouldDrawInsertionPoint]){
+    [self _displayInsertionPointWithState:NO];
+    [_insertionPointTimer invalidate];
+   }
 }
 
 -(void)resizeWithOldSuperviewSize:(NSSize)oldSize {
@@ -2060,7 +2069,7 @@ NSString *NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
 
 -(void)keyDown:(NSEvent *)event {
 #if 1
-    if([event type]==NSKeyDown)
+    if([event type]==NSKeyDown && [self isEditable])
      [self interpretKeyEvents:[NSArray arrayWithObject:event]];
 #else
 // would be nice to get event coalescing working
@@ -2114,8 +2123,10 @@ NSString *NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
 
    [layoutManager drawBackgroundForGlyphRange:gRange atPoint:origin];
    [layoutManager drawGlyphsForGlyphRange:gRange atPoint:origin];
-   [self updateInsertionPointStateAndRestartTimer:NO];
-   [self drawInsertionPointInRect:_insertionPointRect color:_insertionPointColor turnedOn:_insertionPointOn];
+   if([self shouldDrawInsertionPoint]){
+    [self updateInsertionPointStateAndRestartTimer:NO];
+    [self drawInsertionPointInRect:_insertionPointRect color:_insertionPointColor turnedOn:_insertionPointOn];
+   }
 }
 
 -(void)mouseDown:(NSEvent *)event {

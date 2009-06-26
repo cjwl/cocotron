@@ -314,6 +314,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    frame.size.width+=TEXT_MARGIN*2;
    textField=[[[NSTextField alloc] initWithFrame:frame] autorelease];
    [textField setAttributedStringValue:[[[NSAttributedString alloc] initWithString:_messageText attributes:messageAttributes] autorelease]];
+   [textField setEditable:NO];
    [textField setSelectable:YES];
    [textField setBordered:NO];
    [[_window contentView] addSubview:textField];
@@ -328,6 +329,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    frame.size=informativeSize;
    textField=[[[NSTextField alloc] initWithFrame:frame] autorelease];
    [textField setStringValue:[[[NSAttributedString alloc] initWithString:_informativeText attributes:informativeAttributes] autorelease]];
+   [textField setEditable:NO];
    [textField setSelectable:YES];
    [textField setBordered:NO];
    [[_window contentView] addSubview:textField];
@@ -390,19 +392,24 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    alertDidEnd endFunction=(alertDidEnd)[_sheetDelegate methodForSelector:_sheetDidEnd];
 
    endFunction(_sheetDelegate,_sheetDidEnd,self,returnCode,contextInfo);
+   [self release];
 }
 
 -(void)beginSheetModalForWindow:(NSWindow *)window modalDelegate:delegate didEndSelector:(SEL)selector contextInfo:(void *)info {
    [_window _setStyleMask:NSDocModalWindowMask];
    [self layoutIfNeeded];
+   [_window setDefaultButtonCell:[[_buttons objectAtIndex:0] cell]];
    _sheetDelegate=delegate;
    _sheetDidEnd=selector;
+
+   [self retain];
    [NSApp beginSheet:_window modalForWindow:window modalDelegate:self didEndSelector:@selector(sheetDidEnd:returnCode:contextInfo:) contextInfo:info];
 }
 
 -(NSInteger)runModal {
    [_window _setStyleMask:NSTitledWindowMask];
    [self layoutIfNeeded];
+   [_window setDefaultButtonCell:[[_buttons objectAtIndex:0] cell]];
    return [NSApp runModalForWindow:_window];
 }
 

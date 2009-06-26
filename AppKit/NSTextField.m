@@ -193,4 +193,33 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return YES;
 }
 
+-(void)setEditable:(BOOL)flag {
+  [super setEditable:flag];
+  [_currentEditor setEditable:[self isEditable]];
+}
+
+-(void)setSelectable:(BOOL)flag {
+  [super setSelectable:flag];
+  [_currentEditor setSelectable:[self isSelectable]];
+}
+
+-(void)setStringValue:(NSString *)value {
+  [super setStringValue:value];
+  [_currentEditor setString:[self stringValue]];
+}
+
+-(void)setFont:(NSFont *)font {
+  [super setFont:font];
+  [_currentEditor setFont:[self font]];
+}
+
+-(void)setAlignment:(NSTextAlignment)alignment {
+  [super setAlignment:alignment];
+  [_currentEditor setAlignment:[self alignment]];
+}
+
+-(void)setRefusesFirstResponder:(BOOL)flag {
+   [_cell setRefusesFirstResponder:flag];
+}
+
 @end
