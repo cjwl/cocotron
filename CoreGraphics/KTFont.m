@@ -29,7 +29,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(NSString *)name {
-   return [_font fontName];
+   return [O2FontCopyFullName(_font) autorelease];
 }
 
 -(CGFloat)pointSize {
