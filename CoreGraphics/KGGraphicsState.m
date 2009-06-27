@@ -250,7 +250,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)selectFontWithName:(const char *)name size:(float)size encoding:(int)encoding {
-   KGFont *font=[KGFont createWithFontName:[NSString stringWithCString:name]];
+   KGFont *font=O2FontCreateWithFontName([NSString stringWithCString:name]);
    
    if(font!=nil){
     [_font release];
