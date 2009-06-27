@@ -61,7 +61,7 @@ static inline CGGlyphMetrics *glyphInfoForGlyph(KTFont_gdi *self,CGGlyph glyph){
 
 -(Win32Font *)createGDIFontSelectedInDC:(HDC)dc {
    int        height=([self pointSize]*GetDeviceCaps(dc,LOGPIXELSY))/72.0;
-   Win32Font *result=[[Win32Font alloc] initWithName:[self name] size:NSMakeSize(0,height) antialias:NO];
+   Win32Font *result=[[Win32Font alloc] initWithName:[self name] height:height antialias:NO];
    
    SelectObject(dc,[result fontHandle]);
    return result;

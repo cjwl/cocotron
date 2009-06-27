@@ -90,7 +90,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)setCharacterSpacing:(float)spacing;
 -(void)setTextDrawingMode:(int)textMode;
 -(KGFont *)font;
--(NSString *)fontName;
 -(CGFloat)pointSize;
 -(id)fontState;
 -(void)setFontState:(id)fontState;

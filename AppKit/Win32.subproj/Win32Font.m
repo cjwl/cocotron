@@ -10,8 +10,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @implementation Win32Font
 
--initWithName:(NSString *)name size:(NSSize)size antialias:(BOOL)antialias {
-   _handle=CreateFont(size.height,size.width,0,0,FW_NORMAL,
+-initWithName:(NSString *)name height:(int)height antialias:(BOOL)antialias {
+   _handle=CreateFont(height,0,0,0,FW_NORMAL,
      FALSE,FALSE,FALSE,
      DEFAULT_CHARSET,OUT_DEFAULT_PRECIS,CLIP_DEFAULT_PRECIS,
      antialias?ANTIALIASED_QUALITY:DEFAULT_QUALITY,DEFAULT_PITCH|FF_DONTCARE,[name cString]);

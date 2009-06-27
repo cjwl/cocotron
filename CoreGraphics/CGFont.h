@@ -8,6 +8,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/Foundation.h>
 #import <CoreGraphics/CoreGraphicsExport.h>
+#import <CoreGraphics/CGGeometry.h>
 
 @class KGFont;
 
@@ -20,5 +21,24 @@ typedef unsigned short CGGlyph;
 #endif
 
 COREGRAPHICS_EXPORT CGFontRef CGFontCreateWithFontName(NSString *name);
+COREGRAPHICS_EXPORT CGFontRef CGFontRetain(CGFontRef self);
+COREGRAPHICS_EXPORT void      CGFontRelease(CGFontRef self);
 
-COREGRAPHICS_EXPORT void CGFontRelease(CGFontRef self);
+COREGRAPHICS_EXPORT NSString *CGFontCopyFullName(CGFontRef self);
+COREGRAPHICS_EXPORT int       CGFontGetUnitsPerEm(CGFontRef self);
+COREGRAPHICS_EXPORT int       CGFontGetAscent(CGFontRef self);
+COREGRAPHICS_EXPORT int       CGFontGetDescent(CGFontRef self);
+COREGRAPHICS_EXPORT int       CGFontGetLeading(CGFontRef self);
+COREGRAPHICS_EXPORT int       CGFontGetCapHeight(CGFontRef self);
+COREGRAPHICS_EXPORT int       CGFontGetXHeight(CGFontRef self);
+COREGRAPHICS_EXPORT CGFloat   CGFontGetItalicAngle(CGFontRef self);
+COREGRAPHICS_EXPORT CGFloat   CGFontGetStemV(CGFontRef self);
+COREGRAPHICS_EXPORT CGRect    CGFontGetFontBBox(CGFontRef self);
+
+COREGRAPHICS_EXPORT size_t    CGFontGetNumberOfGlyphs(CGFontRef self);
+COREGRAPHICS_EXPORT BOOL      CGFontGetGlyphAdvances(CGFontRef self,const CGGlyph *glyphs,size_t count,int *advances);
+
+COREGRAPHICS_EXPORT CGGlyph   CGFontGetGlyphWithGlyphName(CGFontRef self,NSString *name);
+COREGRAPHICS_EXPORT NSString *CGFontCopyGlyphNameForGlyph(CGFontRef self,CGGlyph glyph);
+
+COREGRAPHICS_EXPORT NSData   *CGFontCopyTableForTag(CGFontRef self,uint32_t tag);

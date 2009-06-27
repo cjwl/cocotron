@@ -225,10 +225,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return _font;
 }
 
--(NSString *)fontName {
-   return [_font fontName];
-}
-
 -(CGFloat)pointSize {
    return _pointSize;
 }
