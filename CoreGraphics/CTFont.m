@@ -8,7 +8,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <CoreGraphics/CTFont.h>
 #import "KTFont.h"
-#import "KGMutablePath.h"
 
 CTFontRef CTFontCreateWithGraphicsFont(CGFontRef cgFont,CGFloat size,CGAffineTransform *xform,id attributes) {
    return [[KTFont alloc] initWithFont:cgFont size:size];

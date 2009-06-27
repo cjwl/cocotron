@@ -68,8 +68,8 @@
    [result setIntegerForKey:"Ascent" value:[self ascender]];
    [result setIntegerForKey:"Descent" value:[self descender]];
    [result setIntegerForKey:"CapHeight" value:[self capHeight]];
-   [result setIntegerForKey:"StemV" value:[self stemV]];
-   [result setIntegerForKey:"StemH" value:[self stemH]];
+   [result setIntegerForKey:"StemV" value:0];
+   [result setIntegerForKey:"StemH" value:0];
    
    return result;
 }

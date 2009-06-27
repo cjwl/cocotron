@@ -8,12 +8,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "KTFont.h"
 #import "KGExceptions.h"
 #import <Foundation/NSArray.h>
-#import "KGFont.h"
 
 @implementation KTFont
 
--initWithFont:(KGFont *)font size:(CGFloat)size {
-   _font=[font retain];
+-initWithFont:(CGFontRef)font size:(CGFloat)size {
+   _font=CGFontRetain(font);
+   _unitsPerEm=CGFontGetUnitsPerEm(_font);
    _size=size;
    return self;
 }
@@ -24,12 +24,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)dealloc {
-   [_font release];
+   CGFontRelease(_font);
    [super dealloc];
 }
 
 -(NSString *)name {
-   return [O2FontCopyFullName(_font) autorelease];
+   return [CGFontCopyFullName(_font) autorelease];
 }
 
 -(CGFloat)pointSize {
@@ -42,28 +42,21 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(CGFloat)ascender {
-   KGInvalidAbstractInvocation();
-   return 0;
+   CGFloat ascent=CGFontGetAscent(_font);
+   
+   return (ascent/_unitsPerEm)*_size;
 }
 
 -(CGFloat)descender {
-   KGInvalidAbstractInvocation();
-   return 0;
+   CGFloat descent=CGFontGetDescent(_font);
+
+   return (descent/_unitsPerEm)*_size;
 }
 
 -(CGFloat)leading {
-   KGInvalidAbstractInvocation();
-   return 0;
-}
-
--(CGFloat)stemV {
-   KGInvalidAbstractInvocation();
-   return 0;
-}
-
--(CGFloat)stemH {
-   KGInvalidAbstractInvocation();
-   return 0;
+   CGFloat leading=CGFontGetLeading(_font);
+   
+   return (leading/_unitsPerEm)*_size;
 }
 
 -(CGFloat)underlineThickness {
@@ -77,32 +70,50 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(CGFloat)italicAngle {
-   KGInvalidAbstractInvocation();
-   return 0;
+   return CGFontGetItalicAngle(_font);
 }
 
 -(CGFloat)xHeight {
-   KGInvalidAbstractInvocation();
-   return 0;
+   CGFloat xHeight=CGFontGetXHeight(_font);
+
+   return (xHeight/_unitsPerEm)*_size;
 }
 
 -(CGFloat)capHeight {
-   KGInvalidAbstractInvocation();
-   return 0;
+   CGFloat capHeight=CGFontGetCapHeight(_font);
+   
+   return (capHeight/_unitsPerEm)*_size;
 }
 
 -(unsigned)numberOfGlyphs {
-   KGInvalidAbstractInvocation();
-   return 0;
+   return CGFontGetNumberOfGlyphs(_font);
 }
 
 -(CGPoint)positionOfGlyph:(CGGlyph)current precededByGlyph:(CGGlyph)previous isNominal:(BOOL *)isNominalp {
-   KGInvalidAbstractInvocation();
-   return CGPointZero;
+   int advancement;
+   
+   if(previous==0)
+    return CGPointMake(0,0);
+
+   *isNominalp=YES;
+   CGFontGetGlyphAdvances(_font,&previous,1,&advancement);
+
+   return CGPointMake(((CGFloat)advancement/_unitsPerEm)*_size,0);
 }
 
 -(void)getGlyphs:(CGGlyph *)glyphs forCharacters:(const unichar *)characters length:(unsigned)length {
-   KGInvalidAbstractInvocation();
+   int i;
+   
+   for(i=0;i<length;i++){
+    uint16_t code=characters[i];
+    uint8_t  group=code>>8;
+    uint8_t  index=code&0xFF;
+    
+    if(_twoLevel[group]==NULL)
+     glyphs[i]=0;
+    else
+     glyphs[i]=_twoLevel[group][index];
+   }
 }
 
 -(void)getCharacters:(unichar *)characters forGlyphs:(const CGGlyph *)glyphs length:(unsigned)length {
@@ -110,10 +121,17 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)getAdvancements:(CGSize *)advancements forGlyphs:(const CGGlyph *)glyphs count:(unsigned)count {
-   KGInvalidAbstractInvocation();
+   unsigned i;
+   int advances[count];
+   
+   CGFontGetGlyphAdvances(_font,glyphs,count,advances);
+   for(i=0;i<count;i++){
+    advancements[i].width=((CGFloat)advances[i]/(CGFloat)_unitsPerEm)*_size;
+    advancements[i].height=0;
+   }
 }
 
--(KGPath *)createPathForGlyph:(CGGlyph)glyph transform:(CGAffineTransform *)xform {
+-(CGPathRef)createPathForGlyph:(CGGlyph)glyph transform:(CGAffineTransform *)xform {
    KGInvalidAbstractInvocation();
    return nil;
 }

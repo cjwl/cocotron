@@ -13,18 +13,18 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <CoreGraphics/CTFont.h>
 #endif
 
-@class KGPath,KGFont;
-
 enum {
    CGNullGlyph=0x0
 };
 
 @interface KTFont : NSObject {
-   KGFont *_font;
-   CGFloat _size;
+   CGFontRef _font;
+   CGFloat   _size;
+   CGFloat   _unitsPerEm;
+   CGGlyph **_twoLevel;
 }
 
--initWithFont:(KGFont *)font size:(CGFloat)size;
+-initWithFont:(CGFontRef)font size:(CGFloat)size;
 -initWithUIFontType:(CTFontUIFontType)uiFontType size:(CGFloat)size language:(NSString *)language;
 
 -(NSString *)name;
@@ -34,8 +34,6 @@ enum {
 -(CGFloat)ascender;
 -(CGFloat)descender;
 -(CGFloat)leading;
--(CGFloat)stemV;
--(CGFloat)stemH;
 -(CGFloat)underlineThickness;
 -(CGFloat)underlinePosition;
 -(CGFloat)italicAngle;
@@ -52,6 +50,6 @@ enum {
 
 -(void)getAdvancements:(CGSize *)advancements forGlyphs:(const CGGlyph *)glyphs count:(unsigned)count;
 
--(KGPath *)createPathForGlyph:(CGGlyph)glyph transform:(CGAffineTransform *)xform;
+-(CGPathRef)createPathForGlyph:(CGGlyph)glyph transform:(CGAffineTransform *)xform;
 
 @end
