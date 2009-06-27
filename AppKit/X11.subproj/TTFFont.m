@@ -159,7 +159,9 @@ FcConfig *fontConfig;
 }
 
 -initWithFont:(KGFont *)font size:(float)size {
-   NSString* key=[NSString stringWithFormat:@"%@@%f", [font fontName], size];
+   NSString *fontName=O2FontCopyFullName(font);
+   NSString* key=[NSString stringWithFormat:@"%@@%f", fontName, size];
+   [fontName release];
    
    static NSMutableDictionary *cache=nil;
    if(!cache)

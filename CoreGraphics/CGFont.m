@@ -10,11 +10,73 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "KGFont.h"
 
 CGFontRef CGFontCreateWithFontName(NSString *name) {
-   return [KGFont createWithFontName:name];
+   return O2FontCreateWithFontName(name);
 }
 
-void CGFontRelease(CGFontRef self){
-   [self release];
+CGFontRef CGFontRetain(CGFontRef self) {
+   return O2FontRetain(self);
 }
 
+void      CGFontRelease(CGFontRef self) {
+   O2FontRelease(self);
+}
 
+NSString *CGFontCopyFullName(CGFontRef self) {
+   return O2FontCopyFullName(self);
+}
+
+int       CGFontGetUnitsPerEm(CGFontRef self) {
+   return O2FontGetUnitsPerEm(self);
+}
+
+int       CGFontGetAscent(CGFontRef self) {
+   return O2FontGetAscent(self);
+}
+
+int       CGFontGetDescent(CGFontRef self) {
+   return O2FontGetDescent(self);
+}
+
+int       CGFontGetLeading(CGFontRef self) {
+   return O2FontGetLeading(self);
+}
+
+int       CGFontGetCapHeight(CGFontRef self) {
+   return O2FontGetCapHeight(self);
+}
+
+int       CGFontGetXHeight(CGFontRef self) {
+   return O2FontGetXHeight(self);
+}
+
+CGFloat   CGFontGetItalicAngle(CGFontRef self) {
+   return O2FontGetItalicAngle(self);
+}
+
+CGFloat   CGFontGetStemV(CGFontRef self) {
+   return O2FontGetStemV(self);
+}
+
+CGRect    CGFontGetFontBBox(CGFontRef self) {
+   return O2FontGetFontBBox(self);
+}
+
+size_t    CGFontGetNumberOfGlyphs(CGFontRef self) {
+   return O2FontGetNumberOfGlyphs(self);
+}
+
+BOOL      CGFontGetGlyphAdvances(CGFontRef self,const CGGlyph *glyphs,size_t count,int *advances) {
+   return O2FontGetGlyphAdvances(self,glyphs,count,advances);
+}
+
+CGGlyph   CGFontGetGlyphWithGlyphName(CGFontRef self,NSString *name) {
+   return O2FontGetGlyphWithGlyphName(self,name);
+}
+
+NSString *CGFontCopyGlyphNameForGlyph(CGFontRef self,CGGlyph glyph) {
+   return O2FontCopyGlyphNameForGlyph(self,glyph);
+}
+
+NSData   *CGFontCopyTableForTag(CGFontRef self,uint32_t tag) {
+   return O2FontCopyTableForTag(self,tag);
+}
