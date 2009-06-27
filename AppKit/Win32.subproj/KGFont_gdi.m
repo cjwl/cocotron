@@ -86,17 +86,14 @@
 }
 
 -(CGGlyph)glyphWithGlyphName:(NSString *)name {
-#warning implement
    return 0;
 }
 
 -(NSString *)copyGlyphNameForGlyph:(CGGlyph)glyph {
-#warning implement
    return nil;
 }
 
 -(NSData *)copyTableForTag:(uint32_t)tag {
-#warning implement
    return nil;
 }
 

@@ -2683,6 +2683,8 @@
 		FEA317C50FD5893300F480D4 /* NSRaise.h in Headers */ = {isa = PBXBuildFile; fileRef = FEA317C10FD5893300F480D4 /* NSRaise.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FEA3182B0FD5961100F480D4 /* NSRangeEntries.h in Headers */ = {isa = PBXBuildFile; fileRef = FEA318290FD5961100F480D4 /* NSRangeEntries.h */; };
 		FEA3182C0FD5961100F480D4 /* NSRangeEntries.m in Sources */ = {isa = PBXBuildFile; fileRef = FEA3182A0FD5961100F480D4 /* NSRangeEntries.m */; };
+		FEA661230FF5C6F200E2C03B /* KGFont_gdi.h in Headers */ = {isa = PBXBuildFile; fileRef = FEA661210FF5C6F200E2C03B /* KGFont_gdi.h */; };
+		FEA661240FF5C6F300E2C03B /* KGFont_gdi.m in Sources */ = {isa = PBXBuildFile; fileRef = FEA661220FF5C6F200E2C03B /* KGFont_gdi.m */; };
 		FEA8A98D0CD2CBC000E1E936 /* NSUserInterfaceValidation.h in Headers */ = {isa = PBXBuildFile; fileRef = FEA8A98B0CD2CBC000E1E936 /* NSUserInterfaceValidation.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FEA965B40E7EA97500413F40 /* NSBitmapImageRep-Private.h in Headers */ = {isa = PBXBuildFile; fileRef = FEA965B30E7EA97500413F40 /* NSBitmapImageRep-Private.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FEABD5EC0CB9CEE40035F828 /* KGLayer_gdi.h in Headers */ = {isa = PBXBuildFile; fileRef = FEABD5E80CB9CEE40035F828 /* KGLayer_gdi.h */; };
@@ -3595,6 +3597,8 @@
 		FEA317C10FD5893300F480D4 /* NSRaise.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NSRaise.h; path = ../Foundation/NSException/NSRaise.h; sourceTree = SOURCE_ROOT; };
 		FEA318290FD5961100F480D4 /* NSRangeEntries.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NSRangeEntries.h; path = ../../Foundation/NSAttributedString/NSRangeEntries.h; sourceTree = "<group>"; };
 		FEA3182A0FD5961100F480D4 /* NSRangeEntries.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NSRangeEntries.m; path = ../Foundation/NSAttributedString/NSRangeEntries.m; sourceTree = SOURCE_ROOT; };
+		FEA661210FF5C6F200E2C03B /* KGFont_gdi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGFont_gdi.h; sourceTree = "<group>"; };
+		FEA661220FF5C6F200E2C03B /* KGFont_gdi.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGFont_gdi.m; sourceTree = "<group>"; };
 		FEA8A98B0CD2CBC000E1E936 /* NSUserInterfaceValidation.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSUserInterfaceValidation.h; sourceTree = "<group>"; };
 		FEA965B30E7EA97500413F40 /* NSBitmapImageRep-Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSBitmapImageRep-Private.h"; sourceTree = "<group>"; };
 		FEABD5E80CB9CEE40035F828 /* KGLayer_gdi.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = KGLayer_gdi.h; sourceTree = "<group>"; };
@@ -4368,6 +4372,8 @@
 		6E2B56060976075300DA0954 /* Win32 */ = {
 			isa = PBXGroup;
 			children = (
+				FEA661210FF5C6F200E2C03B /* KGFont_gdi.h */,
+				FEA661220FF5C6F200E2C03B /* KGFont_gdi.m */,
 				FEA25F960EECCE4D008750D0 /* NSSound_win32.h */,
 				FEA25F970EECCE4D008750D0 /* NSSound_win32.m */,
 				FE1CEA6B0C8F12F800184630 /* opengl_dll.h */,
@@ -5872,6 +5878,7 @@
 				FE9DB3D50FD6BD5A00A1CE17 /* NSRangeEntries.h in Headers */,
 				FEAED7A20FD6C96E0043F915 /* KGDataConsumer.h in Headers */,
 				FE2C7F570FDC4C8E00D5DFB5 /* NSStringKVCFunctions.h in Headers */,
+				FEA661230FF5C6F200E2C03B /* KGFont_gdi.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7604,6 +7611,7 @@
 				FEAED79B0FD6C95D0043F915 /* CGDataConsumer.m in Sources */,
 				FEAED7A30FD6C96E0043F915 /* KGDataConsumer.m in Sources */,
 				FEAED7A70FD6C9820043F915 /* CGPDFContext.m in Sources */,
+				FEA661240FF5C6F300E2C03B /* KGFont_gdi.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
