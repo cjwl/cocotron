@@ -91,7 +91,6 @@
 		FE6F7B4B0FD554A800C3244F /* KGShading.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AD70FD4B4D600082282 /* KGShading.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE6F7B4C0FD554A800C3244F /* KGSurface.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AD90FD4B4D600082282 /* KGSurface.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE6F7B4D0FD554A800C3244F /* KGzlib.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11ADB0FD4B4D600082282 /* KGzlib.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		FE6F7B4E0FD554A800C3244F /* KTFont+PDF.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11ADD0FD4B4D600082282 /* KTFont+PDF.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE6F7B4F0FD554A800C3244F /* KTFont.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11ADF0FD4B4D600082282 /* KTFont.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE6F7B500FD554A800C3244F /* NSTIFFImageFileDirectory.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AE10FD4B4D600082282 /* NSTIFFImageFileDirectory.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE6F7B510FD554A800C3244F /* NSTIFFReader.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AE30FD4B4D600082282 /* NSTIFFReader.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -180,7 +179,6 @@
 		FE6F7BA60FD554A800C3244F /* KGShading.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AD80FD4B4D600082282 /* KGShading.m */; };
 		FE6F7BA70FD554A800C3244F /* KGSurface.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11ADA0FD4B4D600082282 /* KGSurface.m */; };
 		FE6F7BA80FD554A800C3244F /* KGzlib.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11ADC0FD4B4D600082282 /* KGzlib.m */; };
-		FE6F7BA90FD554A800C3244F /* KTFont+PDF.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11ADE0FD4B4D600082282 /* KTFont+PDF.m */; };
 		FE6F7BAA0FD554A800C3244F /* KTFont.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AE00FD4B4D600082282 /* KTFont.m */; };
 		FE6F7BAB0FD554A800C3244F /* NSTIFFImageFileDirectory.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AE20FD4B4D600082282 /* NSTIFFImageFileDirectory.m */; };
 		FE6F7BAC0FD554A800C3244F /* NSTIFFReader.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AE40FD4B4D600082282 /* NSTIFFReader.m */; };
@@ -270,7 +268,6 @@
 		FE6F7C300FD55FA300C3244F /* KGShading.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AD70FD4B4D600082282 /* KGShading.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE6F7C310FD55FA300C3244F /* KGSurface.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AD90FD4B4D600082282 /* KGSurface.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE6F7C320FD55FA300C3244F /* KGzlib.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11ADB0FD4B4D600082282 /* KGzlib.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		FE6F7C330FD55FA300C3244F /* KTFont+PDF.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11ADD0FD4B4D600082282 /* KTFont+PDF.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE6F7C340FD55FA300C3244F /* KTFont.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11ADF0FD4B4D600082282 /* KTFont.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE6F7C350FD55FA300C3244F /* NSTIFFImageFileDirectory.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AE10FD4B4D600082282 /* NSTIFFImageFileDirectory.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE6F7C360FD55FA300C3244F /* NSTIFFReader.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AE30FD4B4D600082282 /* NSTIFFReader.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -359,7 +356,6 @@
 		FE6F7C8B0FD55FA300C3244F /* KGShading.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AD80FD4B4D600082282 /* KGShading.m */; };
 		FE6F7C8C0FD55FA300C3244F /* KGSurface.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11ADA0FD4B4D600082282 /* KGSurface.m */; };
 		FE6F7C8D0FD55FA300C3244F /* KGzlib.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11ADC0FD4B4D600082282 /* KGzlib.m */; };
-		FE6F7C8E0FD55FA300C3244F /* KTFont+PDF.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11ADE0FD4B4D600082282 /* KTFont+PDF.m */; };
 		FE6F7C8F0FD55FA300C3244F /* KTFont.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AE00FD4B4D600082282 /* KTFont.m */; };
 		FE6F7C900FD55FA300C3244F /* NSTIFFImageFileDirectory.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AE20FD4B4D600082282 /* NSTIFFImageFileDirectory.m */; };
 		FE6F7C910FD55FA300C3244F /* NSTIFFReader.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AE40FD4B4D600082282 /* NSTIFFReader.m */; };
@@ -548,8 +544,6 @@
 		FEC11B8A0FD4B4D600082282 /* KGSurface.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11ADA0FD4B4D600082282 /* KGSurface.m */; };
 		FEC11B8B0FD4B4D600082282 /* KGzlib.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11ADB0FD4B4D600082282 /* KGzlib.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FEC11B8C0FD4B4D600082282 /* KGzlib.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11ADC0FD4B4D600082282 /* KGzlib.m */; };
-		FEC11B8D0FD4B4D600082282 /* KTFont+PDF.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11ADD0FD4B4D600082282 /* KTFont+PDF.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		FEC11B8E0FD4B4D600082282 /* KTFont+PDF.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11ADE0FD4B4D600082282 /* KTFont+PDF.m */; };
 		FEC11B8F0FD4B4D600082282 /* KTFont.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11ADF0FD4B4D600082282 /* KTFont.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FEC11B900FD4B4D600082282 /* KTFont.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AE00FD4B4D600082282 /* KTFont.m */; };
 		FEC11B910FD4B4D600082282 /* NSTIFFImageFileDirectory.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AE10FD4B4D600082282 /* NSTIFFImageFileDirectory.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -843,8 +837,6 @@
 		FEC11ADA0FD4B4D600082282 /* KGSurface.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGSurface.m; sourceTree = "<group>"; };
 		FEC11ADB0FD4B4D600082282 /* KGzlib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGzlib.h; sourceTree = "<group>"; };
 		FEC11ADC0FD4B4D600082282 /* KGzlib.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGzlib.m; sourceTree = "<group>"; };
-		FEC11ADD0FD4B4D600082282 /* KTFont+PDF.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "KTFont+PDF.h"; sourceTree = "<group>"; };
-		FEC11ADE0FD4B4D600082282 /* KTFont+PDF.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "KTFont+PDF.m"; sourceTree = "<group>"; };
 		FEC11ADF0FD4B4D600082282 /* KTFont.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KTFont.h; sourceTree = "<group>"; };
 		FEC11AE00FD4B4D600082282 /* KTFont.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KTFont.m; sourceTree = "<group>"; };
 		FEC11AE10FD4B4D600082282 /* NSTIFFImageFileDirectory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSTIFFImageFileDirectory.h; sourceTree = "<group>"; };
@@ -1075,8 +1067,6 @@
 				FEC11ADA0FD4B4D600082282 /* KGSurface.m */,
 				FEC11ADB0FD4B4D600082282 /* KGzlib.h */,
 				FEC11ADC0FD4B4D600082282 /* KGzlib.m */,
-				FEC11ADD0FD4B4D600082282 /* KTFont+PDF.h */,
-				FEC11ADE0FD4B4D600082282 /* KTFont+PDF.m */,
 				FEC11ADF0FD4B4D600082282 /* KTFont.h */,
 				FEC11AE00FD4B4D600082282 /* KTFont.m */,
 				FEC11AE10FD4B4D600082282 /* NSTIFFImageFileDirectory.h */,
@@ -1229,7 +1219,6 @@
 				FEC11B870FD4B4D600082282 /* KGShading.h in Headers */,
 				FEC11B890FD4B4D600082282 /* KGSurface.h in Headers */,
 				FEC11B8B0FD4B4D600082282 /* KGzlib.h in Headers */,
-				FEC11B8D0FD4B4D600082282 /* KTFont+PDF.h in Headers */,
 				FEC11B8F0FD4B4D600082282 /* KTFont.h in Headers */,
 				FEC11B910FD4B4D600082282 /* NSTIFFImageFileDirectory.h in Headers */,
 				FEC11B930FD4B4D600082282 /* NSTIFFReader.h in Headers */,
@@ -1331,7 +1320,6 @@
 				FE6F7B4B0FD554A800C3244F /* KGShading.h in Headers */,
 				FE6F7B4C0FD554A800C3244F /* KGSurface.h in Headers */,
 				FE6F7B4D0FD554A800C3244F /* KGzlib.h in Headers */,
-				FE6F7B4E0FD554A800C3244F /* KTFont+PDF.h in Headers */,
 				FE6F7B4F0FD554A800C3244F /* KTFont.h in Headers */,
 				FE6F7B500FD554A800C3244F /* NSTIFFImageFileDirectory.h in Headers */,
 				FE6F7B510FD554A800C3244F /* NSTIFFReader.h in Headers */,
@@ -1433,7 +1421,6 @@
 				FE6F7C300FD55FA300C3244F /* KGShading.h in Headers */,
 				FE6F7C310FD55FA300C3244F /* KGSurface.h in Headers */,
 				FE6F7C320FD55FA300C3244F /* KGzlib.h in Headers */,
-				FE6F7C330FD55FA300C3244F /* KTFont+PDF.h in Headers */,
 				FE6F7C340FD55FA300C3244F /* KTFont.h in Headers */,
 				FE6F7C350FD55FA300C3244F /* NSTIFFImageFileDirectory.h in Headers */,
 				FE6F7C360FD55FA300C3244F /* NSTIFFReader.h in Headers */,
@@ -1701,7 +1688,6 @@
 				FEC11B880FD4B4D600082282 /* KGShading.m in Sources */,
 				FEC11B8A0FD4B4D600082282 /* KGSurface.m in Sources */,
 				FEC11B8C0FD4B4D600082282 /* KGzlib.m in Sources */,
-				FEC11B8E0FD4B4D600082282 /* KTFont+PDF.m in Sources */,
 				FEC11B900FD4B4D600082282 /* KTFont.m in Sources */,
 				FEC11B920FD4B4D600082282 /* NSTIFFImageFileDirectory.m in Sources */,
 				FEC11B940FD4B4D600082282 /* NSTIFFReader.m in Sources */,
@@ -1797,7 +1783,6 @@
 				FE6F7BA60FD554A800C3244F /* KGShading.m in Sources */,
 				FE6F7BA70FD554A800C3244F /* KGSurface.m in Sources */,
 				FE6F7BA80FD554A800C3244F /* KGzlib.m in Sources */,
-				FE6F7BA90FD554A800C3244F /* KTFont+PDF.m in Sources */,
 				FE6F7BAA0FD554A800C3244F /* KTFont.m in Sources */,
 				FE6F7BAB0FD554A800C3244F /* NSTIFFImageFileDirectory.m in Sources */,
 				FE6F7BAC0FD554A800C3244F /* NSTIFFReader.m in Sources */,
@@ -1893,7 +1878,6 @@
 				FE6F7C8B0FD55FA300C3244F /* KGShading.m in Sources */,
 				FE6F7C8C0FD55FA300C3244F /* KGSurface.m in Sources */,
 				FE6F7C8D0FD55FA300C3244F /* KGzlib.m in Sources */,
-				FE6F7C8E0FD55FA300C3244F /* KTFont+PDF.m in Sources */,
 				FE6F7C8F0FD55FA300C3244F /* KTFont.m in Sources */,
 				FE6F7C900FD55FA300C3244F /* NSTIFFImageFileDirectory.m in Sources */,
 				FE6F7C910FD55FA300C3244F /* NSTIFFReader.m in Sources */,

@@ -34,6 +34,8 @@ typedef KGFont *O2FontRef;
 -(CGGlyph)glyphWithGlyphName:(NSString *)name;
 -(NSString *)copyGlyphNameForGlyph:(CGGlyph)glyph;
 
+-(void)fetchAdvances;
+
 O2FontRef O2FontCreateWithFontName(NSString *name);
 O2FontRef O2FontRetain(O2FontRef self);
 void      O2FontRelease(O2FontRef self);

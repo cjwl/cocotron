@@ -15,19 +15,29 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 typedef uint16_t unichar;
 
 typedef enum {
-   NSUnicodeStringEncoding,
-   NSASCIIStringEncoding,
-   NSNEXTSTEPStringEncoding,
-   NSEUCStringEncoding,
-   NSUTFStringEncoding,
-   NSISOLatin1StringEncoding,
-   NSSymbolStringEncoding,
-   NSNonLossyASCIIStringEncoding,
-   NSShiftJISStringEncoding,
-   NSUTF8StringEncoding,
-   NSMacOSRomanStringEncoding,
-   NSUTF16BigEndianStringEncoding,
-   NSUTF16LittleEndianStringEncoding
+   NSASCIIStringEncoding=1,
+   NSNEXTSTEPStringEncoding=2,
+   NSJapaneseEUCStringEncoding=3,
+   NSUTF8StringEncoding=4,
+   NSISOLatin1StringEncoding=5,
+   NSSymbolStringEncoding=6,
+   NSNonLossyASCIIStringEncoding=7,
+   NSShiftJISStringEncoding=8,
+   NSISOLatin2StringEncoding=9,
+   NSUnicodeStringEncoding=10,
+   NSWindowsCP1251StringEncoding=11,
+   NSWindowsCP1252StringEncoding=12,
+   NSWindowsCP1253StringEncoding=13,
+   NSWindowsCP1254StringEncoding=14,
+   NSWindowsCP1250StringEncoding=15,
+   NSISO2022JPStringEncoding=21,
+   NSMacOSRomanStringEncoding=30,
+   NSProprietaryStringEncoding=0x00010000,
+   NSUTF16BigEndianStringEncoding=0x90000100,
+   NSUTF16LittleEndianStringEncoding=0x94000100,
+   NSUTF32StringEncoding=0x8c000100,
+   NSUTF32BigEndianStringEncoding=0x98000100,
+   NSUTF32LittleEndianStringEncoding=0x9c000100,
 } NSStringEncoding;
 
 enum {
@@ -35,7 +45,7 @@ enum {
    NSLiteralSearch=0x02,
    NSBackwardsSearch=0x04,
    NSAnchoredSearch=0x08,
-   NSNumericSearch = 0x40,
+   NSNumericSearch= 0x40,
 };
 typedef NSUInteger NSStringCompareOptions;
 typedef NSUInteger NSStringEncodingConversionOptions;

@@ -257,7 +257,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 
 -(void)setTitle:(NSString *)title {
-   SetWindowTextW(_handle,NSNullTerminatedUnicodeFromString(title));
+   SetWindowTextW(_handle,(const unichar *)[title cStringUsingEncoding:NSUnicodeStringEncoding]);
 }
 
 -(void)setFrame:(NSRect)frame {

@@ -13,8 +13,6 @@ typedef struct CGFontMetrics {
    float  italicAngle;
    float  capHeight;
    float  xHeight;
-   float  stemV;
-   float  stemH;
    float  underlineThickness;
    float  underlinePosition;
 } CGFontMetrics;

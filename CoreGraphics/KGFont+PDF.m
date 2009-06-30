@@ -293,10 +293,11 @@ KGPDFArray *O2FontCreatePDFWidthsWithEncoding(O2FontRef self,CGGlyph encoding[25
     [result addNumber:width];
    }
    
-   return result;
+    return result;
 }
 
--(void)getBytes:(unsigned char *)bytes forGlyphs:(const CGGlyph *)glyphs length:(unsigned)length {
+// this is overriden for GDI
+-(void)getMacRomanBytes:(unsigned char *)bytes forGlyphs:(const CGGlyph *)glyphs length:(unsigned)length {
    int i;
    
    for(i=0;i<length;i++){
@@ -342,6 +343,14 @@ KGPDFArray *O2FontCreatePDFWidthsWithEncoding(O2FontRef self,CGGlyph encoding[25
    return result;
 }
 
+// this is overriden for GDI
+-(void)getMacRomanEncoding:(CGGlyph[256])encoding {
+   int i;
+   
+   for(i=0;i<256;i++)
+    encoding[i]=O2FontGetGlyphWithGlyphName(self,MacRomanEncoding[i]);
+}
+
 -(KGPDFObject *)encodeReferenceWithContext:(KGPDFContext *)context size:(CGFloat)size {
    KGPDFObject *reference=[context referenceForFontWithName:self->_name size:size];
    
@@ -350,8 +359,8 @@ KGPDFArray *O2FontCreatePDFWidthsWithEncoding(O2FontRef self,CGGlyph encoding[25
     CGGlyph          encoding[256];
     int              i;
     
-    for(i=32;i<256;i++)
-     encoding[i]=O2FontGetGlyphWithGlyphName(self,MacRomanEncoding[i]);
+    [self getMacRomanEncoding:encoding];
+    
      
     [result setNameForKey:"Type" value:"Font"];
     [result setNameForKey:"Subtype" value:"TrueType"];

@@ -297,8 +297,6 @@ static inline CGGlyphMetrics *fetchGlyphAdvancementIfNeeded(KTFont_gdi *self,CGG
    _metrics.capHeight=0;
    _metrics.leading=0;
    _metrics.xHeight=0;
-   _metrics.stemV=0;
-   _metrics.stemH=0;
    _metrics.underlineThickness=_size/24.0;
    if(_metrics.underlineThickness<0)
     _metrics.underlineThickness=1;
@@ -472,6 +470,7 @@ NSLog(@"name=%@,size=%f",[NSString stringWithCString:fontData. elfLogFont.lfFace
    return result;
 }
 
+#if 1
 -(float)ascender {
    return _metrics.ascender/_metrics.emsquare*_metrics.scale;
 }
@@ -483,14 +482,7 @@ NSLog(@"name=%@,size=%f",[NSString stringWithCString:fontData. elfLogFont.lfFace
 -(float)leading {
    return _metrics.leading/_metrics.emsquare*_metrics.scale;
 }
-
--(float)stemV {
-   return _metrics.stemV;
-}
-
--(float)stemH {
-   return _metrics.stemH;
-}
+#endif
 
 -(float)underlineThickness {
    return _metrics.underlineThickness/_metrics.emsquare*_metrics.scale;
@@ -498,18 +490,6 @@ NSLog(@"name=%@,size=%f",[NSString stringWithCString:fontData. elfLogFont.lfFace
 
 -(float)underlinePosition {
    return _metrics.underlinePosition/_metrics.emsquare*_metrics.scale;
-}
-
--(float)italicAngle {
-   return _metrics.italicAngle;
-}
-
--(float)xHeight {
-   return _metrics.xHeight/_metrics.emsquare*_metrics.scale;
-}
-
--(float)capHeight {
-   return _metrics.capHeight/_metrics.emsquare*_metrics.scale;
 }
 
 -(unsigned)numberOfGlyphs {

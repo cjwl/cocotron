@@ -291,7 +291,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     path=[NSString stringWithCharacters:buffer length:length];
    }
 
-   return NSNullTerminatedUnicodeFromString(path);
+   return (const unichar *)[path cStringUsingEncoding:NSUnicodeStringEncoding];
 }
 
 -(const char*)fileSystemRepresentationWithPath:(NSString *)path {

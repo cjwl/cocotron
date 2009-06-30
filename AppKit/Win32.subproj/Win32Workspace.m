@@ -26,7 +26,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @implementation Win32Workspace
 
 -(BOOL)openURL:(NSURL *)url {
-   return ((int)ShellExecuteW(GetDesktopWindow(),L"open",NSNullTerminatedUnicodeFromString([url absoluteString]),NULL,NULL,SW_SHOWNORMAL)<=32)?NO:YES;
+   return ((int)ShellExecuteW(GetDesktopWindow(),L"open",(const unichar *)[[url absoluteString] cStringUsingEncoding:NSUnicodeStringEncoding],NULL,NULL,SW_SHOWNORMAL)<=32)?NO:YES;
 }
 
 -(BOOL)openFile:(NSString *)path {

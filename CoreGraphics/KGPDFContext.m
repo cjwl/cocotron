@@ -19,7 +19,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "KGPDFString.h"
 #import "KGShading+PDF.h"
 #import "KGImage+PDF.h"
-#import "KTFont+PDF.h"
+#import "KGFont+PDF.h"
 #import "KGMutablePath.h"
 #import "KGColor.h"
 #import "KGColorSpace+PDF.h"
@@ -641,13 +641,17 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)showGlyphs:(const CGGlyph *)glyphs count:(unsigned)count {
-   unsigned char bytes[count];
-   
+    unsigned char bytes[count];
+
+   [[[self currentState] font] getMacRomanBytes:bytes forGlyphs:glyphs length:count];
+   [self showText:bytes length:count];
+}
+
+-(void)showText:(const char *)text length:(unsigned)length {
    [self contentWithString:@"BT "];
    
    KGGraphicsState *state=[self currentState];
-   KTFont *fontState=[[KTFont alloc] initWithFont:[state font] size:[state pointSize]];
-   KGPDFObject *pdfObject=[fontState encodeReferenceWithContext:self];
+   KGPDFObject *pdfObject=[[state font] encodeReferenceWithContext:self size:[state pointSize]];
    KGPDFObject *name=[self nameForResource:pdfObject inCategory:"Font"];
 
    [self contentWithFormat:@"%@ %g Tf ",name,[[self currentState] pointSize]];
@@ -655,28 +659,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    CGAffineTransform matrix=[self textMatrix];
    [self contentWithFormat:@"%g %g %g %g %g %g Tm ",matrix.a,matrix.b,matrix.c,matrix.d,matrix.tx,matrix.ty];
    
-   [fontState getBytes:bytes forGlyphs:glyphs length:count];
-   [self contentPDFStringWithBytes:bytes length:count];
+   [self contentPDFStringWithBytes:text length:length];
    [self contentWithString:@" Tj "];
    
    [self contentWithString:@"ET "];
-   [fontState release];
-}
-
--(void)showText:(const char *)text length:(unsigned)length {
-   KGGraphicsState *state=[self currentState];
-   KTFont     *fontState=[[KTFont alloc] initWithFont:[state font] size:[state pointSize]];
-   unichar unicode[length];
-   CGGlyph glyphs[length];
-   int     i;
-   
-// FIX, encoding
-   for(i=0;i<length;i++)
-    unicode[i]=text[i];
-    
-   [fontState getGlyphs:glyphs forCharacters:unicode length:length];
-   [self showGlyphs:glyphs count:length];
-   [fontState release];
 }
 
 -(void)drawShading:(KGShading *)shading {

@@ -9,7 +9,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSString.h>
 
 FOUNDATION_EXPORT NSString *NSStringFromNullTerminatedUnicode(const unichar *characters);
-FOUNDATION_EXPORT const unichar *NSNullTerminatedUnicodeFromString(NSString *string);
 
 FOUNDATION_EXPORT NSData *NSTaskArgumentDataFromString(NSString *string);
 FOUNDATION_EXPORT NSData *NSTaskArgumentDataFromStringW(NSString *string);

@@ -17,16 +17,6 @@ NSString *NSStringFromNullTerminatedUnicode(const unichar *characters) {
    return [NSString stringWithCharacters:characters length:length];
 }
 
-const unichar *NSNullTerminatedUnicodeFromString(NSString *string) {
-   NSUInteger length=[string length];
-   unichar  buffer[length+1];
-
-   [string getCharacters:buffer];
-   buffer[length]=0x0000;
-
-   return [[NSData dataWithBytes:buffer length:(length+1)*sizeof(unichar)] bytes];
-}
-
 NSData *NSTaskArgumentDataFromString(NSString *string) {
    NSUInteger       i,length=[string length],resultLength=0;
    unichar        buffer[length];

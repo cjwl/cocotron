@@ -45,7 +45,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       browseInfo.hwndOwner=[(Win32Window *)[[NSApp keyWindow] platformWindow] windowHandle];
       browseInfo.pidlRoot=NULL;
       browseInfo.pszDisplayName=displayName;
-      browseInfo.lpszTitle=NSNullTerminatedUnicodeFromString(_dialogTitle);
+      browseInfo.lpszTitle=(const unichar *)[_dialogTitle cStringUsingEncoding:NSUnicodeStringEncoding];
       browseInfo.ulFlags=0;
       browseInfo.lpfn=NULL;
       browseInfo.lParam=0;
@@ -204,7 +204,7 @@ static unsigned *openFileHook(HWND hdlg,UINT uiMsg,WPARAM wParam,LPARAM lParam) 
       openFileName.lpstrFileTitle=NULL;
       openFileName.nMaxFileTitle=0;
       openFileName.lpstrInitialDir=[_directory fileSystemRepresentationW];
-      openFileName.lpstrTitle= NSNullTerminatedUnicodeFromString(_dialogTitle);
+      openFileName.lpstrTitle= (const unichar *)[_dialogTitle cStringUsingEncoding:NSUnicodeStringEncoding];
       openFileName.Flags=
       (_allowsMultipleSelection?OFN_ALLOWMULTISELECT:0)|
       OFN_NOTESTFILECREATE|

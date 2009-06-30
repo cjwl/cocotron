@@ -39,6 +39,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return nil;
 }
 
+-(void)fetchAdvances {
+   KGInvalidAbstractInvocation();
+}
+
 O2FontRef O2FontCreateWithFontName(NSString *name) {
    return [[KGFont alloc] initWithFontName:name];
 }
@@ -99,6 +103,9 @@ size_t    O2FontGetNumberOfGlyphs(O2FontRef self) {
 BOOL O2FontGetGlyphAdvances(O2FontRef self,const CGGlyph *glyphs,size_t count,int *advances) {
    size_t i;
    
+   if(self->_advances==NULL)
+    [self fetchAdvances];
+    
    for(i=0;i<count;i++){
     CGGlyph glyph=glyphs[i];
     

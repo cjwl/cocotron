@@ -1338,7 +1338,7 @@ U+2029 (Unicode paragraph separator), \r\n, in that order (also known as CRLF)
 
 -(const char *)cStringUsingEncoding:(NSStringEncoding)encoding {
    NSUInteger length=[self length];
-   unichar buffer[length];
+   unichar buffer[length+1];
    
    switch(encoding){
 
@@ -1350,6 +1350,12 @@ U+2029 (Unicode paragraph separator), \r\n, in that order (also known as CRLF)
       return utf8;
      }
      break;
+
+    case NSUnicodeStringEncoding:
+     [self getCharacters:buffer];
+     buffer[length]=0x0000;
+
+     return [[NSData dataWithBytes:buffer length:(length+1)*sizeof(unichar)] bytes];
      
     default:
      NSUnimplementedMethod();

@@ -91,7 +91,7 @@ static unsigned *saveFileHook(HWND hdlg,UINT uiMsg,WPARAM wParam,LPARAM lParam) 
 		openFileName.lpstrFileTitle=NULL;
 		openFileName.nMaxFileTitle=0;
 		openFileName.lpstrInitialDir=[_directory fileSystemRepresentationW];
-		openFileName.lpstrTitle=NSNullTerminatedUnicodeFromString(_dialogTitle);
+		openFileName.lpstrTitle=(const unichar *)[_dialogTitle cStringUsingEncoding:NSUnicodeStringEncoding];
 		openFileName.Flags=
 		OFN_CREATEPROMPT|
 		OFN_NOTESTFILECREATE|
