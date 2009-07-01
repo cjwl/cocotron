@@ -169,10 +169,13 @@ id NSApp=nil;
 }
 
 -(NSMenu *)windowsMenu {
-   if(_windowsMenu==nil)
+   if(_windowsMenu==nil) {
     _windowsMenu=[[NSApp mainMenu] _menuWithName:@"_NSWindowsMenu"];
- 
-    return _windowsMenu;
+    if (_windowsMenu && ![[[_windowsMenu itemArray] lastObject] isSeparatorItem])
+     [_windowsMenu addItem:[NSMenuItem separatorItem]];
+   }
+
+   return _windowsMenu;
 }
 
 -(NSWindow *)mainWindow {
@@ -314,14 +317,12 @@ id NSApp=nil;
    _windowsMenu=[menu retain];
 }
 
+
 -(void)addWindowsItem:(NSWindow *)window title:(NSString *)title filename:(BOOL)isFilename {
     NSMenuItem *item;
     
     if ([[self windowsMenu] indexOfItemWithTarget:window andAction:@selector(makeKeyAndOrderFront:)] != -1)
         return;
-
-    if (![[[[self windowsMenu] itemArray] lastObject] isSeparatorItem])
-        [[self windowsMenu] addItem:[NSMenuItem separatorItem]];
 
     if (isFilename)
         title = [NSString stringWithFormat:@"%@  --  %@", [title lastPathComponent],[title stringByDeletingLastPathComponent]];
