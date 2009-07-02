@@ -27,7 +27,8 @@ typedef KGContext *CGContextRef;
 @class NSDictionary;
 
 typedef enum {
-   kCGEncodingFontSpecific
+   kCGEncodingFontSpecific,
+   kCGEncodingMacRoman,
 } CGTextEncoding;
 
 typedef enum {

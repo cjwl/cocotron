@@ -633,7 +633,7 @@ static inline KGGraphicsState *currentState(KGContext *self){
    [currentState(self) setFontSize:size];
 }
 
--(void)selectFontWithName:(const char *)name size:(float)size encoding:(int)encoding {
+-(void)selectFontWithName:(const char *)name size:(float)size encoding:(CGTextEncoding)encoding {
    [currentState(self) selectFontWithName:name size:size encoding:encoding];
 }
 

@@ -9,9 +9,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <CoreGraphics/KGGraphicsState.h>
 #import "KGSurface_DIBSection.h"
 #import "KGDeviceContext_gdi.h"
-#import "KTFont_gdi.h"
-#import "../../CoreGraphics/KGColorSpace.h"
-#import "../../CoreGraphics/KGColor.h"
+#import "KGFont_gdi.h"
+#import <CoreGraphics/KGColorSpace.h>
+#import <CoreGraphics/KGColor.h>
 #import <AppKit/Win32Font.h>
 
 @implementation KGContext_builtin_gdi
@@ -61,45 +61,49 @@ static inline BOOL transformIsFlipped(CGAffineTransform matrix){
 
 -(void)showGlyphs:(const CGGlyph *)glyphs count:(unsigned)count {
    CGAffineTransform transformToDevice=[self userSpaceToDeviceSpaceTransform];
-   CGAffineTransform Trm=CGAffineTransformConcat([self currentState]->_textTransform,transformToDevice);
+   KGGraphicsState  *gState=[self currentState];
+   CGAffineTransform Trm=CGAffineTransformConcat(gState->_textTransform,transformToDevice);
    NSPoint           point=CGPointApplyAffineTransform(NSMakePoint(0,0),Trm);
    
    SetTextColor(_dc,COLORREFFromColor([self fillColor]));
-   ExtTextOutW(_dc,point.x,point.y,ETO_GLYPH_INDEX,NULL,(void *)glyphs,count,NULL);
+
+   ExtTextOutW(_dc,lroundf(point.x),lroundf(point.y),ETO_GLYPH_INDEX,NULL,(void *)glyphs,count,NULL);
+
+   KGFont *font=[gState font];
+   int     i,advances[count];
+   CGFloat unitsPerEm=CGFontGetUnitsPerEm(font);
    
-   KTFont_gdi *ktFont=[[self currentState] fontState];
-   NSSize advancement=[ktFont advancementForNominalGlyphs:glyphs count:count];
+   O2FontGetGlyphAdvances(font,glyphs,count,advances);
    
-   [self currentState]->_textTransform.tx+=advancement.width;
-   [self currentState]->_textTransform.ty+=advancement.height;
+   CGFloat total=0;
+   
+   for(i=0;i<count;i++)
+    total+=advances[i];
+    
+   total=(total/CGFontGetUnitsPerEm(font))*gState->_pointSize;
+      
+   [self currentState]->_textTransform.tx+=total;
+   [self currentState]->_textTransform.ty+=0;
 }
 
 -(void)showText:(const char *)text length:(unsigned)length {
-   unichar unicode[length];
-   CGGlyph glyphs[length];
-   int     i;
+   CGGlyph *encoding=[[self currentState] glyphTableForTextEncoding];
+   CGGlyph  glyphs[length];
+   int      i;
    
-// FIX, encoding
    for(i=0;i<length;i++)
-    unicode[i]=text[i];
+    glyphs[i]=encoding[(uint8_t)text[i]];
     
-   [[[self currentState] fontState] getGlyphs:glyphs forCharacters:unicode length:length];
    [self showGlyphs:glyphs count:length];
 }
 
-
 -(void)establishFontStateInDevice {
-   KTFont *font=[[self currentState] fontState];
+   KGGraphicsState *gState=[self currentState];
    [_gdiFont release];
-   _gdiFont=[[[self currentState] fontState] createGDIFontSelectedInDC:_dc];
+   _gdiFont=[(KGFont_gdi *)[gState font] createGDIFontSelectedInDC:_dc pointSize:[gState pointSize]];
 }
 
 -(void)establishFontState {
-   KGGraphicsState *state=[self currentState];
-   KTFont *fontState=[[KTFont_gdi alloc] initWithFont:[state font] size:[state pointSize]];
-
-   [state setFontState:fontState];
-   [fontState release];
    [self establishFontStateInDevice];
 }
 

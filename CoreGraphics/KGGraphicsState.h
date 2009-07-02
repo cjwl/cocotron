@@ -22,6 +22,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    KGColor            *_fillColor;
    KGFont             *_font;
    CGFloat             _pointSize;
+   CGTextEncoding      _textEncoding;
    id                  _fontState;
    CGSize              _patternPhase;   
    float               _characterSpacing;
@@ -91,11 +92,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)setTextDrawingMode:(int)textMode;
 -(KGFont *)font;
 -(CGFloat)pointSize;
+-(CGTextEncoding)textEncoding;
+-(CGGlyph *)glyphTableForTextEncoding;
 -(id)fontState;
 -(void)setFontState:(id)fontState;
 -(void)setFont:(KGFont *)font;
 -(void)setFontSize:(float)size;
--(void)selectFontWithName:(const char *)name size:(float)size encoding:(int)encoding;
+-(void)selectFontWithName:(const char *)name size:(float)size encoding:(CGTextEncoding)encoding;
 -(void)setShouldSmoothFonts:(BOOL)yesOrNo;
 
 -(void)setLineWidth:(float)width;

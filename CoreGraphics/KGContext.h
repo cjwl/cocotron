@@ -131,7 +131,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)setFont:(KGFont *)font;
 -(void)setFontSize:(float)size;
--(void)selectFontWithName:(const char *)name size:(float)size encoding:(int)encoding;
+-(void)selectFontWithName:(const char *)name size:(float)size encoding:(CGTextEncoding)encoding;
 -(void)setShouldSmoothFonts:(BOOL)yesOrNo;
 
 -(void)setLineWidth:(float)width;

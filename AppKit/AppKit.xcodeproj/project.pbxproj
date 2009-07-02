@@ -3727,6 +3727,7 @@
 		6E2B53240976075200DA0954 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				FEB0822A0FFB1F2800C27509 /* CoreText */,
 				FEA317C10FD5893300F480D4 /* NSRaise.h */,
 				6E2B53FC0976075200DA0954 /* AppKit.h */,
 				6E2B53FA0976075200DA0954 /* AppKitExport.h */,
@@ -4186,7 +4187,6 @@
 				FEAED79C0FD6C96E0043F915 /* KGDataConsumer.h */,
 				FEAED79D0FD6C96E0043F915 /* KGDataConsumer.m */,
 				FEAED7980FD6C95D0043F915 /* CGDataConsumer.m */,
-				FE337FC90EE77A6C00D4A751 /* CTFont.m */,
 				FE25FF600EE58712009C91B1 /* KGFont.h */,
 				FE25FF610EE58712009C91B1 /* KGFont.m */,
 				FEF9CB780E13EB8E003502ED /* KGColorSpace+PDF.h */,
@@ -4253,8 +4253,6 @@
 				FE64B8AA0B81239D007EE513 /* KGContext.m */,
 				FE64B8AB0B81239D007EE513 /* KGDataProvider.h */,
 				FE64B8AC0B81239D007EE513 /* KGDataProvider.m */,
-				FE89AF470C33679100CD21FB /* KTFont.h */,
-				FE89AF480C33679100CD21FB /* KTFont.m */,
 				FE64B8AD0B81239D007EE513 /* KGFunction.h */,
 				FE64B8AE0B81239D007EE513 /* KGFunction.m */,
 				6E2B55D10976075300DA0954 /* KGGraphicsState.h */,
@@ -4756,6 +4754,17 @@
 				FE8BAF220BC9EC680007FACA /* NSObject+BindingSupport.m */,
 			);
 			path = NSKeyValueBinding;
+			sourceTree = "<group>";
+		};
+		FEB0822A0FFB1F2800C27509 /* CoreText */ = {
+			isa = PBXGroup;
+			children = (
+				FE89AF470C33679100CD21FB /* KTFont.h */,
+				FE89AF480C33679100CD21FB /* KTFont.m */,
+				FE337FC90EE77A6C00D4A751 /* CTFont.m */,
+			);
+			name = CoreText;
+			path = ../CoreText;
 			sourceTree = "<group>";
 		};
 		FECAF4C90DB710EE00BA2A8E /* Products */ = {
@@ -7931,6 +7940,7 @@
 				LIBRARY_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/CoreGraphics.subproj\"";
 				OTHER_CFLAGS = (
 					"-DAPPKIT_INSIDE_BUILD",
+					"-DCORETEXT_INSIDE_BUILD",
 					"-DCOREGRAPHICS_INSIDE_BUILD",
 					"-D__LITTLE_ENDIAN__",
 					"-Wreturn-type",
@@ -7993,6 +8003,7 @@
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/CoreGraphics.subproj\"";
 				OTHER_CFLAGS = (
 					"-DAPPKIT_INSIDE_BUILD",
+					"-DCORETEXT_INSIDE_BUILD",
 					"-DCOREGRAPHICS_INSIDE_BUILD",
 					"-D__LITTLE_ENDIAN__",
 					"-DLINUX",
@@ -8044,6 +8055,7 @@
 				LIBRARY_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/CoreGraphics.subproj\"";
 				OTHER_CFLAGS = (
 					"-DAPPKIT_INSIDE_BUILD",
+					"-DCORETEXT_INSIDE_BUILD",
 					"-DCOREGRAPHICS_INSIDE_BUILD",
 					"-D__LITTLE_ENDIAN__",
 					"-DLINUX",
@@ -8092,6 +8104,7 @@
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/CoreGraphics.subproj\"";
 				OTHER_CFLAGS = (
 					"-DAPPKIT_INSIDE_BUILD",
+					"-DCORETEXT_INSIDE_BUILD",
 					"-DCOREGRAPHICS_INSIDE_BUILD",
 					"-D__LITTLE_ENDIAN__",
 					"-DDARWIN",
@@ -8147,6 +8160,7 @@
 				LIBRARY_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/CoreGraphics.subproj\"";
 				OTHER_CFLAGS = (
 					"-DAPPKIT_INSIDE_BUILD",
+					"-DCORETEXT_INSIDE_BUILD",
 					"-DCOREGRAPHICS_INSIDE_BUILD",
 					"-D__LITTLE_ENDIAN__",
 					"-DDARWIN",
@@ -8193,6 +8207,7 @@
 				INSTALL_PATH = /Developer/Cocotron/1.0/Windows/i386/Frameworks;
 				OTHER_CFLAGS = (
 					"-DAPPKIT_INSIDE_BUILD",
+					"-DCORETEXT_INSIDE_BUILD",
 					"-DCOREGRAPHICS_INSIDE_BUILD",
 					"-D__LITTLE_ENDIAN__",
 					"-Wreturn-type",

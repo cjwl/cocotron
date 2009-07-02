@@ -29,6 +29,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    _fillColor=[[KGColor alloc] init];
    _font=nil;
    _pointSize=12.0;
+   _textEncoding=kCGEncodingFontSpecific;
    _fontState=nil;
    _patternPhase=CGSizeMake(0,0);
    _lineWidth=1.0;
@@ -229,6 +230,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return _pointSize;
 }
 
+-(CGTextEncoding)textEncoding {
+   return _textEncoding;
+}
+
+-(CGGlyph *)glyphTableForTextEncoding {
+   return [_font glyphTableForEncoding:_textEncoding];
+}
+
 -(id)fontState {
    return _fontState;
 }
@@ -249,7 +258,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    _pointSize=size;
 }
 
--(void)selectFontWithName:(const char *)name size:(float)size encoding:(int)encoding {
+-(void)selectFontWithName:(const char *)name size:(float)size encoding:(CGTextEncoding)encoding {
    KGFont *font=O2FontCreateWithFontName([NSString stringWithCString:name]);
    
    if(font!=nil){
@@ -258,6 +267,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    }
    
    _pointSize=size;
+   _textEncoding=encoding;
 }
 
 -(void)setShouldSmoothFonts:(BOOL)yesOrNo {

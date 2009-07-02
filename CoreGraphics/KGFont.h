@@ -24,6 +24,7 @@ typedef KGFont *O2FontRef;
    CGRect    _bbox;
    int       _numberOfGlyphs;
    int      *_advances;
+   CGGlyph  *_MacRomanEncoding;
 }
 
 +(KGFont *)createWithFontName:(NSString *)name;
@@ -35,6 +36,9 @@ typedef KGFont *O2FontRef;
 -(NSString *)copyGlyphNameForGlyph:(CGGlyph)glyph;
 
 -(void)fetchAdvances;
+
+-(CGGlyph *)MacRomanEncoding;
+-(CGGlyph *)glyphTableForEncoding:(CGTextEncoding)encoding;
 
 O2FontRef O2FontCreateWithFontName(NSString *name);
 O2FontRef O2FontRetain(O2FontRef self);

@@ -3,6 +3,7 @@
 #import "KGContext_gdi.h"
 #import "Win32Display.h"
 #import "Win32Font.h"
+#import "KGFont_gdi.h"
 #import <CoreGraphics/KGMutablePath.h>
 #import <AppKit/NSRaise.h>
 
@@ -93,7 +94,7 @@ static inline CGGlyphMetrics *glyphInfoForGlyph(KTFont_gdi *self,CGGlyph glyph){
     return;
 
    HDC                dc=GetDC(NULL);
-   Win32Font         *gdiFont=[self createGDIFontSelectedInDC:dc];
+   Win32Font         *gdiFont=[(KGFont_gdi *)_font createGDIFontSelectedInDC:dc pointSize:_size];
    NSRange            range=NSMakeRange(0,MAXUNICHAR);
    unichar            characters[range.length];
    unsigned short     glyphs[range.length];
@@ -158,7 +159,7 @@ static inline CGGlyphMetrics *glyphInfoForGlyph(KTFont_gdi *self,CGGlyph glyph){
 
 -(void)fetchGlyphKerning {
    HDC         dc=GetDC(NULL);
-   Win32Font  *gdiFont=[self createGDIFontSelectedInDC:dc];
+   Win32Font  *gdiFont=[(KGFont_gdi *)_font createGDIFontSelectedInDC:dc pointSize:_size];
    int         i,numberOfPairs=GetKerningPairs(dc,0,NULL);
    KERNINGPAIR pairs[numberOfPairs];
 
@@ -221,7 +222,7 @@ static inline CGGlyphMetrics *fetchGlyphInfoIfNeeded(KTFont_gdi *self,CGGlyph gl
 
 -(void)fetchAdvancementsForGlyph:(CGGlyph)glyph {
    HDC        dc=GetDC(NULL);
-   Win32Font *gdiFont=[self createGDIFontSelectedInDC:dc];
+   Win32Font *gdiFont=[(KGFont_gdi *)_font createGDIFontSelectedInDC:dc pointSize:_size];
    ABCFLOAT *abc;
    int       i,max;
 
@@ -280,7 +281,7 @@ static inline CGGlyphMetrics *fetchGlyphAdvancementIfNeeded(KTFont_gdi *self,CGG
 
 -(void)fetchMetrics {
    HDC           dc=GetDC(NULL);
-   Win32Font    *gdiFont=[self createGDIFontSelectedInDC:dc];
+   Win32Font    *gdiFont=[(KGFont_gdi *)_font createGDIFontSelectedInDC:dc pointSize:_size];
    TEXTMETRIC    gdiMetrics;
 
    GetTextMetrics(dc,&gdiMetrics);
@@ -589,7 +590,7 @@ NSLog(@"name=%@,size=%f",[NSString stringWithCString:fontData. elfLogFont.lfFace
 -(KGPath *)createPathForGlyph:(CGGlyph)glyph transform:(CGAffineTransform *)xform {
    KGMutablePath *result=[[KGMutablePath alloc] init];
    HDC        dc=GetDC(NULL);
-   Win32Font *gdiFont=[self createGDIFontSelectedInDC:dc];
+   Win32Font *gdiFont=[(KGFont_gdi *)_font createGDIFontSelectedInDC:dc pointSize:_size];
    int        size=GetOutlineTextMetricsA(dc,0,NULL);
     
    if(size<=0){

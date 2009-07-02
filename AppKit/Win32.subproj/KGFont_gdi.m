@@ -3,6 +3,7 @@
 #define _WIN32_WINNT 0x0501
 #import <windows.h>
 #import <Foundation/NSString_win32.h>
+#import "Win32Font.h"
 
 @implementation KGFont(GDI)
 
@@ -94,11 +95,13 @@ static HFONT Win32FontHandleWithName(NSString *name,int unitsPerEm){
       _unitsPerEm=ttMetrics->otmEMSquare;
       
       if([name isEqualToString:@"Marlett"]){
+       _useMacMetrics=NO;
        _ascent=ttMetrics->otmAscent;
        _descent=ttMetrics->otmDescent;
        _leading=ttMetrics->otmLineGap;
       }
       else {
+       _useMacMetrics=YES;
        _ascent=ttMetrics->otmMacAscent;
        _descent=ttMetrics->otmMacDescent;
        _leading=ttMetrics->otmMacLineGap;
@@ -169,7 +172,6 @@ static HFONT Win32FontHandleWithName(NSString *name,int unitsPerEm){
     for(i=max;--i>=0;){
      CGGlyph glyph=glyphs[i];
      
-     
      if(glyph<_numberOfGlyphs)
       _advances[glyph]=abc[i].abcfA+abc[i].abcfB+abc[i].abcfC;
     }
@@ -177,6 +179,23 @@ static HFONT Win32FontHandleWithName(NSString *name,int unitsPerEm){
    
    DeleteObject(font);
    ReleaseDC(NULL,dc);
+}
+
+-(Win32Font *)createGDIFontSelectedInDC:(HDC)dc pointSize:(CGFloat)pointSize {
+   if(_useMacMetrics){
+    if (pointSize <= 10.0)
+       pointSize=pointSize;
+    else if (pointSize < 20.0)
+       pointSize=pointSize/(1.0 + 0.2*sqrtf(0.0390625*(pointSize - 10.0)));
+    else
+       pointSize=pointSize/1.125;
+   }
+   int        height=(pointSize*GetDeviceCaps(dc,LOGPIXELSY))/72.0;
+   Win32Font *result=[[Win32Font alloc] initWithName:_name height:height antialias:NO];
+   
+   SelectObject(dc,[result fontHandle]);
+   
+   return result;
 }
 
 // These are only used for PDF generation until we get PS glyph names working
@@ -230,21 +249,25 @@ static HFONT Win32FontHandleWithName(NSString *name,int unitsPerEm){
    }
 }
 
--(void)getMacRomanEncoding:(CGGlyph[256])encoding {
-   HDC      dc=GetDC(NULL);
-   unichar  characters[256];
-   HANDLE   library=LoadLibrary("GDI32");
-   FARPROC  getGlyphIndices=GetProcAddress(library,"GetGlyphIndicesW");
-   int      i;
+-(CGGlyph *)MacRomanEncoding {
+   if(_MacRomanEncoding==NULL){
+    HDC      dc=GetDC(NULL);
+    unichar  characters[256];
+    HANDLE   library=LoadLibrary("GDI32");
+    FARPROC  getGlyphIndices=GetProcAddress(library,"GetGlyphIndicesW");
+    int      i;
    
-   for(i=0;i<256;i++)
-    characters[i]=i;
+    _MacRomanEncoding=NSZoneMalloc(NULL,sizeof(CGGlyph)*256);
+    for(i=0;i<256;i++)
+     characters[i]=i;
     
-   HFONT font=Win32FontHandleWithName(_name,_unitsPerEm);
-   SelectObject(dc,font);
-   getGlyphIndices(dc,characters,256,encoding,0);
-   DeleteObject(font);
-   ReleaseDC(NULL,dc);
+    HFONT font=Win32FontHandleWithName(_name,_unitsPerEm);
+    SelectObject(dc,font);
+    getGlyphIndices(dc,characters,256,_MacRomanEncoding,0);
+    DeleteObject(font);
+    ReleaseDC(NULL,dc);
+   }
+   return _MacRomanEncoding;
 }
 
 @end

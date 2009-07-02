@@ -91,13 +91,10 @@
 		FE6F7B4B0FD554A800C3244F /* KGShading.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AD70FD4B4D600082282 /* KGShading.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE6F7B4C0FD554A800C3244F /* KGSurface.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AD90FD4B4D600082282 /* KGSurface.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE6F7B4D0FD554A800C3244F /* KGzlib.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11ADB0FD4B4D600082282 /* KGzlib.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		FE6F7B4F0FD554A800C3244F /* KTFont.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11ADF0FD4B4D600082282 /* KTFont.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE6F7B500FD554A800C3244F /* NSTIFFImageFileDirectory.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AE10FD4B4D600082282 /* NSTIFFImageFileDirectory.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE6F7B510FD554A800C3244F /* NSTIFFReader.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AE30FD4B4D600082282 /* NSTIFFReader.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE6F7B520FD554A800C3244F /* VGmath.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AE50FD4B4D600082282 /* VGmath.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE6F7B530FD554A800C3244F /* VGPath.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AE60FD4B4D600082282 /* VGPath.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		FE6F7B540FD554A800C3244F /* CoreText.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11C030FD4C2BB00082282 /* CoreText.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		FE6F7B550FD554A800C3244F /* CTFont.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11C040FD4C2BB00082282 /* CTFont.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE6F7B580FD554A800C3244F /* CGAffineTransform.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A390FD4B4D600082282 /* CGAffineTransform.m */; };
 		FE6F7B590FD554A800C3244F /* CGBitmapContext.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A3B0FD4B4D600082282 /* CGBitmapContext.m */; };
 		FE6F7B5A0FD554A800C3244F /* CGColor.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A3D0FD4B4D600082282 /* CGColor.m */; };
@@ -118,7 +115,6 @@
 		FE6F7B690FD554A800C3244F /* CGPDFPage.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A5B0FD4B4D600082282 /* CGPDFPage.m */; };
 		FE6F7B6A0FD554A800C3244F /* CGShading.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A5D0FD4B4D600082282 /* CGShading.m */; };
 		FE6F7B6B0FD554A800C3244F /* CGWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A5F0FD4B4D600082282 /* CGWindow.m */; };
-		FE6F7B6C0FD554A800C3244F /* CTFont.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A620FD4B4D600082282 /* CTFont.m */; };
 		FE6F7B6D0FD554A800C3244F /* gif_lib.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A640FD4B4D600082282 /* gif_lib.m */; };
 		FE6F7B6E0FD554A800C3244F /* KGBitmapContext.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A660FD4B4D600082282 /* KGBitmapContext.m */; };
 		FE6F7B6F0FD554A800C3244F /* KGClipPhase.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A690FD4B4D600082282 /* KGClipPhase.m */; };
@@ -179,7 +175,6 @@
 		FE6F7BA60FD554A800C3244F /* KGShading.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AD80FD4B4D600082282 /* KGShading.m */; };
 		FE6F7BA70FD554A800C3244F /* KGSurface.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11ADA0FD4B4D600082282 /* KGSurface.m */; };
 		FE6F7BA80FD554A800C3244F /* KGzlib.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11ADC0FD4B4D600082282 /* KGzlib.m */; };
-		FE6F7BAA0FD554A800C3244F /* KTFont.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AE00FD4B4D600082282 /* KTFont.m */; };
 		FE6F7BAB0FD554A800C3244F /* NSTIFFImageFileDirectory.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AE20FD4B4D600082282 /* NSTIFFImageFileDirectory.m */; };
 		FE6F7BAC0FD554A800C3244F /* NSTIFFReader.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AE40FD4B4D600082282 /* NSTIFFReader.m */; };
 		FE6F7BAD0FD554A800C3244F /* VGPath.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AE70FD4B4D600082282 /* VGPath.m */; };
@@ -268,13 +263,10 @@
 		FE6F7C300FD55FA300C3244F /* KGShading.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AD70FD4B4D600082282 /* KGShading.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE6F7C310FD55FA300C3244F /* KGSurface.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AD90FD4B4D600082282 /* KGSurface.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE6F7C320FD55FA300C3244F /* KGzlib.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11ADB0FD4B4D600082282 /* KGzlib.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		FE6F7C340FD55FA300C3244F /* KTFont.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11ADF0FD4B4D600082282 /* KTFont.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE6F7C350FD55FA300C3244F /* NSTIFFImageFileDirectory.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AE10FD4B4D600082282 /* NSTIFFImageFileDirectory.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE6F7C360FD55FA300C3244F /* NSTIFFReader.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AE30FD4B4D600082282 /* NSTIFFReader.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE6F7C370FD55FA300C3244F /* VGmath.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AE50FD4B4D600082282 /* VGmath.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE6F7C380FD55FA300C3244F /* VGPath.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AE60FD4B4D600082282 /* VGPath.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		FE6F7C390FD55FA300C3244F /* CoreText.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11C030FD4C2BB00082282 /* CoreText.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		FE6F7C3A0FD55FA300C3244F /* CTFont.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11C040FD4C2BB00082282 /* CTFont.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE6F7C3D0FD55FA300C3244F /* CGAffineTransform.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A390FD4B4D600082282 /* CGAffineTransform.m */; };
 		FE6F7C3E0FD55FA300C3244F /* CGBitmapContext.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A3B0FD4B4D600082282 /* CGBitmapContext.m */; };
 		FE6F7C3F0FD55FA300C3244F /* CGColor.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A3D0FD4B4D600082282 /* CGColor.m */; };
@@ -295,7 +287,6 @@
 		FE6F7C4E0FD55FA300C3244F /* CGPDFPage.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A5B0FD4B4D600082282 /* CGPDFPage.m */; };
 		FE6F7C4F0FD55FA300C3244F /* CGShading.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A5D0FD4B4D600082282 /* CGShading.m */; };
 		FE6F7C500FD55FA300C3244F /* CGWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A5F0FD4B4D600082282 /* CGWindow.m */; };
-		FE6F7C510FD55FA300C3244F /* CTFont.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A620FD4B4D600082282 /* CTFont.m */; };
 		FE6F7C520FD55FA300C3244F /* gif_lib.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A640FD4B4D600082282 /* gif_lib.m */; };
 		FE6F7C530FD55FA300C3244F /* KGBitmapContext.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A660FD4B4D600082282 /* KGBitmapContext.m */; };
 		FE6F7C540FD55FA300C3244F /* KGClipPhase.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A690FD4B4D600082282 /* KGClipPhase.m */; };
@@ -356,7 +347,6 @@
 		FE6F7C8B0FD55FA300C3244F /* KGShading.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AD80FD4B4D600082282 /* KGShading.m */; };
 		FE6F7C8C0FD55FA300C3244F /* KGSurface.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11ADA0FD4B4D600082282 /* KGSurface.m */; };
 		FE6F7C8D0FD55FA300C3244F /* KGzlib.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11ADC0FD4B4D600082282 /* KGzlib.m */; };
-		FE6F7C8F0FD55FA300C3244F /* KTFont.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AE00FD4B4D600082282 /* KTFont.m */; };
 		FE6F7C900FD55FA300C3244F /* NSTIFFImageFileDirectory.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AE20FD4B4D600082282 /* NSTIFFImageFileDirectory.m */; };
 		FE6F7C910FD55FA300C3244F /* NSTIFFReader.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AE40FD4B4D600082282 /* NSTIFFReader.m */; };
 		FE6F7C920FD55FA300C3244F /* VGPath.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AE70FD4B4D600082282 /* VGPath.m */; };
@@ -421,7 +411,6 @@
 		FEC11B0F0FD4B4D600082282 /* CGWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A5F0FD4B4D600082282 /* CGWindow.m */; };
 		FEC11B100FD4B4D600082282 /* CoreGraphics.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A600FD4B4D600082282 /* CoreGraphics.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FEC11B110FD4B4D600082282 /* CoreGraphicsExport.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A610FD4B4D600082282 /* CoreGraphicsExport.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		FEC11B120FD4B4D600082282 /* CTFont.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A620FD4B4D600082282 /* CTFont.m */; };
 		FEC11B130FD4B4D600082282 /* gif_lib.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A630FD4B4D600082282 /* gif_lib.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FEC11B140FD4B4D600082282 /* gif_lib.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A640FD4B4D600082282 /* gif_lib.m */; };
 		FEC11B150FD4B4D600082282 /* KGBitmapContext.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A650FD4B4D600082282 /* KGBitmapContext.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -544,8 +533,6 @@
 		FEC11B8A0FD4B4D600082282 /* KGSurface.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11ADA0FD4B4D600082282 /* KGSurface.m */; };
 		FEC11B8B0FD4B4D600082282 /* KGzlib.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11ADB0FD4B4D600082282 /* KGzlib.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FEC11B8C0FD4B4D600082282 /* KGzlib.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11ADC0FD4B4D600082282 /* KGzlib.m */; };
-		FEC11B8F0FD4B4D600082282 /* KTFont.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11ADF0FD4B4D600082282 /* KTFont.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		FEC11B900FD4B4D600082282 /* KTFont.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AE00FD4B4D600082282 /* KTFont.m */; };
 		FEC11B910FD4B4D600082282 /* NSTIFFImageFileDirectory.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AE10FD4B4D600082282 /* NSTIFFImageFileDirectory.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FEC11B920FD4B4D600082282 /* NSTIFFImageFileDirectory.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AE20FD4B4D600082282 /* NSTIFFImageFileDirectory.m */; };
 		FEC11B930FD4B4D600082282 /* NSTIFFReader.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AE30FD4B4D600082282 /* NSTIFFReader.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -554,8 +541,6 @@
 		FEC11B960FD4B4D600082282 /* VGPath.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AE60FD4B4D600082282 /* VGPath.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FEC11B970FD4B4D600082282 /* VGPath.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AE70FD4B4D600082282 /* VGPath.m */; };
 		FEC11BA50FD4B83E00082282 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0867D69BFE84028FC02AAC07 /* Foundation.framework */; };
-		FEC11C050FD4C2BB00082282 /* CoreText.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11C030FD4C2BB00082282 /* CoreText.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		FEC11C060FD4C2BB00082282 /* CTFont.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11C040FD4C2BB00082282 /* CTFont.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXBuildRule section */
@@ -714,7 +699,6 @@
 		FEC11A5F0FD4B4D600082282 /* CGWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CGWindow.m; sourceTree = "<group>"; };
 		FEC11A600FD4B4D600082282 /* CoreGraphics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreGraphics.h; sourceTree = "<group>"; };
 		FEC11A610FD4B4D600082282 /* CoreGraphicsExport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreGraphicsExport.h; sourceTree = "<group>"; };
-		FEC11A620FD4B4D600082282 /* CTFont.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CTFont.m; sourceTree = "<group>"; };
 		FEC11A630FD4B4D600082282 /* gif_lib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gif_lib.h; sourceTree = "<group>"; };
 		FEC11A640FD4B4D600082282 /* gif_lib.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = gif_lib.m; sourceTree = "<group>"; };
 		FEC11A650FD4B4D600082282 /* KGBitmapContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGBitmapContext.h; sourceTree = "<group>"; };
@@ -837,8 +821,6 @@
 		FEC11ADA0FD4B4D600082282 /* KGSurface.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGSurface.m; sourceTree = "<group>"; };
 		FEC11ADB0FD4B4D600082282 /* KGzlib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGzlib.h; sourceTree = "<group>"; };
 		FEC11ADC0FD4B4D600082282 /* KGzlib.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGzlib.m; sourceTree = "<group>"; };
-		FEC11ADF0FD4B4D600082282 /* KTFont.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KTFont.h; sourceTree = "<group>"; };
-		FEC11AE00FD4B4D600082282 /* KTFont.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KTFont.m; sourceTree = "<group>"; };
 		FEC11AE10FD4B4D600082282 /* NSTIFFImageFileDirectory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSTIFFImageFileDirectory.h; sourceTree = "<group>"; };
 		FEC11AE20FD4B4D600082282 /* NSTIFFImageFileDirectory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSTIFFImageFileDirectory.m; sourceTree = "<group>"; };
 		FEC11AE30FD4B4D600082282 /* NSTIFFReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSTIFFReader.h; sourceTree = "<group>"; };
@@ -846,8 +828,6 @@
 		FEC11AE50FD4B4D600082282 /* VGmath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VGmath.h; sourceTree = "<group>"; };
 		FEC11AE60FD4B4D600082282 /* VGPath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VGPath.h; sourceTree = "<group>"; };
 		FEC11AE70FD4B4D600082282 /* VGPath.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VGPath.m; sourceTree = "<group>"; };
-		FEC11C030FD4C2BB00082282 /* CoreText.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreText.h; sourceTree = "<group>"; };
-		FEC11C040FD4C2BB00082282 /* CTFont.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CTFont.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -938,9 +918,6 @@
 				FEC11A5F0FD4B4D600082282 /* CGWindow.m */,
 				FEC11A600FD4B4D600082282 /* CoreGraphics.h */,
 				FEC11A610FD4B4D600082282 /* CoreGraphicsExport.h */,
-				FEC11C030FD4C2BB00082282 /* CoreText.h */,
-				FEC11C040FD4C2BB00082282 /* CTFont.h */,
-				FEC11A620FD4B4D600082282 /* CTFont.m */,
 				0867D69AFE84028FC02AAC07 /* External Frameworks and Libraries */,
 				FE6F7BC00FD5572F00C3244F /* Foundation.xcodeproj */,
 				FEC11A630FD4B4D600082282 /* gif_lib.h */,
@@ -1067,8 +1044,6 @@
 				FEC11ADA0FD4B4D600082282 /* KGSurface.m */,
 				FEC11ADB0FD4B4D600082282 /* KGzlib.h */,
 				FEC11ADC0FD4B4D600082282 /* KGzlib.m */,
-				FEC11ADF0FD4B4D600082282 /* KTFont.h */,
-				FEC11AE00FD4B4D600082282 /* KTFont.m */,
 				FEC11AE10FD4B4D600082282 /* NSTIFFImageFileDirectory.h */,
 				FEC11AE20FD4B4D600082282 /* NSTIFFImageFileDirectory.m */,
 				FEC11AE30FD4B4D600082282 /* NSTIFFReader.h */,
@@ -1219,13 +1194,10 @@
 				FEC11B870FD4B4D600082282 /* KGShading.h in Headers */,
 				FEC11B890FD4B4D600082282 /* KGSurface.h in Headers */,
 				FEC11B8B0FD4B4D600082282 /* KGzlib.h in Headers */,
-				FEC11B8F0FD4B4D600082282 /* KTFont.h in Headers */,
 				FEC11B910FD4B4D600082282 /* NSTIFFImageFileDirectory.h in Headers */,
 				FEC11B930FD4B4D600082282 /* NSTIFFReader.h in Headers */,
 				FEC11B950FD4B4D600082282 /* VGmath.h in Headers */,
 				FEC11B960FD4B4D600082282 /* VGPath.h in Headers */,
-				FEC11C050FD4C2BB00082282 /* CoreText.h in Headers */,
-				FEC11C060FD4C2BB00082282 /* CTFont.h in Headers */,
 				FE9DB4610FD6C38300A1CE17 /* CGDataConsumer.h in Headers */,
 				FEAED7100FD6C40E0043F915 /* KGDataConsumer.h in Headers */,
 				FEAED71C0FD6C4460043F915 /* CGPDFContext.h in Headers */,
@@ -1320,13 +1292,10 @@
 				FE6F7B4B0FD554A800C3244F /* KGShading.h in Headers */,
 				FE6F7B4C0FD554A800C3244F /* KGSurface.h in Headers */,
 				FE6F7B4D0FD554A800C3244F /* KGzlib.h in Headers */,
-				FE6F7B4F0FD554A800C3244F /* KTFont.h in Headers */,
 				FE6F7B500FD554A800C3244F /* NSTIFFImageFileDirectory.h in Headers */,
 				FE6F7B510FD554A800C3244F /* NSTIFFReader.h in Headers */,
 				FE6F7B520FD554A800C3244F /* VGmath.h in Headers */,
 				FE6F7B530FD554A800C3244F /* VGPath.h in Headers */,
-				FE6F7B540FD554A800C3244F /* CoreText.h in Headers */,
-				FE6F7B550FD554A800C3244F /* CTFont.h in Headers */,
 				FE9DB4630FD6C38300A1CE17 /* CGDataConsumer.h in Headers */,
 				FEAED7120FD6C40E0043F915 /* KGDataConsumer.h in Headers */,
 				FEAED71E0FD6C4460043F915 /* CGPDFContext.h in Headers */,
@@ -1421,13 +1390,10 @@
 				FE6F7C300FD55FA300C3244F /* KGShading.h in Headers */,
 				FE6F7C310FD55FA300C3244F /* KGSurface.h in Headers */,
 				FE6F7C320FD55FA300C3244F /* KGzlib.h in Headers */,
-				FE6F7C340FD55FA300C3244F /* KTFont.h in Headers */,
 				FE6F7C350FD55FA300C3244F /* NSTIFFImageFileDirectory.h in Headers */,
 				FE6F7C360FD55FA300C3244F /* NSTIFFReader.h in Headers */,
 				FE6F7C370FD55FA300C3244F /* VGmath.h in Headers */,
 				FE6F7C380FD55FA300C3244F /* VGPath.h in Headers */,
-				FE6F7C390FD55FA300C3244F /* CoreText.h in Headers */,
-				FE6F7C3A0FD55FA300C3244F /* CTFont.h in Headers */,
 				FE9DB4650FD6C38300A1CE17 /* CGDataConsumer.h in Headers */,
 				FEAED7140FD6C40E0043F915 /* KGDataConsumer.h in Headers */,
 				FEAED7200FD6C4460043F915 /* CGPDFContext.h in Headers */,
@@ -1627,7 +1593,6 @@
 				FEC11B0B0FD4B4D600082282 /* CGPDFPage.m in Sources */,
 				FEC11B0D0FD4B4D600082282 /* CGShading.m in Sources */,
 				FEC11B0F0FD4B4D600082282 /* CGWindow.m in Sources */,
-				FEC11B120FD4B4D600082282 /* CTFont.m in Sources */,
 				FEC11B140FD4B4D600082282 /* gif_lib.m in Sources */,
 				FEC11B160FD4B4D600082282 /* KGBitmapContext.m in Sources */,
 				FEC11B190FD4B4D600082282 /* KGClipPhase.m in Sources */,
@@ -1688,7 +1653,6 @@
 				FEC11B880FD4B4D600082282 /* KGShading.m in Sources */,
 				FEC11B8A0FD4B4D600082282 /* KGSurface.m in Sources */,
 				FEC11B8C0FD4B4D600082282 /* KGzlib.m in Sources */,
-				FEC11B900FD4B4D600082282 /* KTFont.m in Sources */,
 				FEC11B920FD4B4D600082282 /* NSTIFFImageFileDirectory.m in Sources */,
 				FEC11B940FD4B4D600082282 /* NSTIFFReader.m in Sources */,
 				FEC11B970FD4B4D600082282 /* VGPath.m in Sources */,
@@ -1722,7 +1686,6 @@
 				FE6F7B690FD554A800C3244F /* CGPDFPage.m in Sources */,
 				FE6F7B6A0FD554A800C3244F /* CGShading.m in Sources */,
 				FE6F7B6B0FD554A800C3244F /* CGWindow.m in Sources */,
-				FE6F7B6C0FD554A800C3244F /* CTFont.m in Sources */,
 				FE6F7B6D0FD554A800C3244F /* gif_lib.m in Sources */,
 				FE6F7B6E0FD554A800C3244F /* KGBitmapContext.m in Sources */,
 				FE6F7B6F0FD554A800C3244F /* KGClipPhase.m in Sources */,
@@ -1783,7 +1746,6 @@
 				FE6F7BA60FD554A800C3244F /* KGShading.m in Sources */,
 				FE6F7BA70FD554A800C3244F /* KGSurface.m in Sources */,
 				FE6F7BA80FD554A800C3244F /* KGzlib.m in Sources */,
-				FE6F7BAA0FD554A800C3244F /* KTFont.m in Sources */,
 				FE6F7BAB0FD554A800C3244F /* NSTIFFImageFileDirectory.m in Sources */,
 				FE6F7BAC0FD554A800C3244F /* NSTIFFReader.m in Sources */,
 				FE6F7BAD0FD554A800C3244F /* VGPath.m in Sources */,
@@ -1817,7 +1779,6 @@
 				FE6F7C4E0FD55FA300C3244F /* CGPDFPage.m in Sources */,
 				FE6F7C4F0FD55FA300C3244F /* CGShading.m in Sources */,
 				FE6F7C500FD55FA300C3244F /* CGWindow.m in Sources */,
-				FE6F7C510FD55FA300C3244F /* CTFont.m in Sources */,
 				FE6F7C520FD55FA300C3244F /* gif_lib.m in Sources */,
 				FE6F7C530FD55FA300C3244F /* KGBitmapContext.m in Sources */,
 				FE6F7C540FD55FA300C3244F /* KGClipPhase.m in Sources */,
@@ -1878,7 +1839,6 @@
 				FE6F7C8B0FD55FA300C3244F /* KGShading.m in Sources */,
 				FE6F7C8C0FD55FA300C3244F /* KGSurface.m in Sources */,
 				FE6F7C8D0FD55FA300C3244F /* KGzlib.m in Sources */,
-				FE6F7C8F0FD55FA300C3244F /* KTFont.m in Sources */,
 				FE6F7C900FD55FA300C3244F /* NSTIFFImageFileDirectory.m in Sources */,
 				FE6F7C910FD55FA300C3244F /* NSTIFFReader.m in Sources */,
 				FE6F7C920FD55FA300C3244F /* VGPath.m in Sources */,
