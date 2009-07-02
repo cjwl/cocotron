@@ -63,6 +63,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     _length+=delta;
 
     if(_length>_capacity){
+     if(_capacity==0)
+      _capacity=1;
+      
      while(_length>_capacity)
       _capacity*=2;
 
@@ -95,8 +98,7 @@ static inline NSUInteger roundCapacityUp(NSUInteger capacity){
 NSString *NSMutableString_unicodePtrInitWithCString(NSMutableString_unicodePtr *self,
  const char *cString,NSUInteger length,NSZone *zone){
 
-   self->_unicode=NSCharactersFromCString(cString,length,
-          &(self->_length),zone);
+   self->_unicode=NSCharactersFromCString(cString,length,&(self->_length),zone);
    self->_capacity=self->_length;
 
    return self;

@@ -3103,6 +3103,20 @@
 		FE88A4D80F8A9DE00081CFC1 /* Object.m in Sources */ = {isa = PBXBuildFile; fileRef = FE88A4D50F8A9DE00081CFC1 /* Object.m */; };
 		FE88A4D90F8A9DE00081CFC1 /* Object.m in Sources */ = {isa = PBXBuildFile; fileRef = FE88A4D50F8A9DE00081CFC1 /* Object.m */; };
 		FE88A4DA0F8A9DE00081CFC1 /* Object.m in Sources */ = {isa = PBXBuildFile; fileRef = FE88A4D50F8A9DE00081CFC1 /* Object.m */; };
+		FE8C91400FFD1E430027C889 /* NSString_win1252.h in Headers */ = {isa = PBXBuildFile; fileRef = FE8C913E0FFD1E430027C889 /* NSString_win1252.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE8C91410FFD1E430027C889 /* NSString_win1252.m in Sources */ = {isa = PBXBuildFile; fileRef = FE8C913F0FFD1E430027C889 /* NSString_win1252.m */; };
+		FE8C91420FFD1E430027C889 /* NSString_win1252.h in Headers */ = {isa = PBXBuildFile; fileRef = FE8C913E0FFD1E430027C889 /* NSString_win1252.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE8C91430FFD1E430027C889 /* NSString_win1252.m in Sources */ = {isa = PBXBuildFile; fileRef = FE8C913F0FFD1E430027C889 /* NSString_win1252.m */; };
+		FE8C91440FFD1E430027C889 /* NSString_win1252.h in Headers */ = {isa = PBXBuildFile; fileRef = FE8C913E0FFD1E430027C889 /* NSString_win1252.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE8C91450FFD1E430027C889 /* NSString_win1252.m in Sources */ = {isa = PBXBuildFile; fileRef = FE8C913F0FFD1E430027C889 /* NSString_win1252.m */; };
+		FE8C91460FFD1E430027C889 /* NSString_win1252.h in Headers */ = {isa = PBXBuildFile; fileRef = FE8C913E0FFD1E430027C889 /* NSString_win1252.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE8C91470FFD1E430027C889 /* NSString_win1252.m in Sources */ = {isa = PBXBuildFile; fileRef = FE8C913F0FFD1E430027C889 /* NSString_win1252.m */; };
+		FE8C91480FFD1E430027C889 /* NSString_win1252.h in Headers */ = {isa = PBXBuildFile; fileRef = FE8C913E0FFD1E430027C889 /* NSString_win1252.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE8C91490FFD1E430027C889 /* NSString_win1252.m in Sources */ = {isa = PBXBuildFile; fileRef = FE8C913F0FFD1E430027C889 /* NSString_win1252.m */; };
+		FE8C914A0FFD1E430027C889 /* NSString_win1252.h in Headers */ = {isa = PBXBuildFile; fileRef = FE8C913E0FFD1E430027C889 /* NSString_win1252.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE8C914B0FFD1E430027C889 /* NSString_win1252.m in Sources */ = {isa = PBXBuildFile; fileRef = FE8C913F0FFD1E430027C889 /* NSString_win1252.m */; };
+		FE8C914C0FFD1E430027C889 /* NSString_win1252.h in Headers */ = {isa = PBXBuildFile; fileRef = FE8C913E0FFD1E430027C889 /* NSString_win1252.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE8C914D0FFD1E430027C889 /* NSString_win1252.m in Sources */ = {isa = PBXBuildFile; fileRef = FE8C913F0FFD1E430027C889 /* NSString_win1252.m */; };
 		FE9D95440C0387D5006DB214 /* NSValueTransformer_IsNil.h in Headers */ = {isa = PBXBuildFile; fileRef = FE9D95340C0387D5006DB214 /* NSValueTransformer_IsNil.h */; };
 		FE9D95450C0387D5006DB214 /* NSValueTransformer_IsNil.m in Sources */ = {isa = PBXBuildFile; fileRef = FE9D95350C0387D5006DB214 /* NSValueTransformer_IsNil.m */; };
 		FE9D95460C0387D5006DB214 /* NSValueTransformer_IsNotNil.h in Headers */ = {isa = PBXBuildFile; fileRef = FE9D95360C0387D5006DB214 /* NSValueTransformer_IsNotNil.h */; };
@@ -5384,6 +5398,8 @@
 		FE88A4940F8A7E050081CFC1 /* objc_ivar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = objc_ivar.m; sourceTree = "<group>"; };
 		FE88A49E0F8A7E9A0081CFC1 /* objc_method.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = objc_method.m; sourceTree = "<group>"; };
 		FE88A4D50F8A9DE00081CFC1 /* Object.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Object.m; sourceTree = "<group>"; };
+		FE8C913E0FFD1E430027C889 /* NSString_win1252.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSString_win1252.h; sourceTree = "<group>"; };
+		FE8C913F0FFD1E430027C889 /* NSString_win1252.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSString_win1252.m; sourceTree = "<group>"; };
 		FE9D95340C0387D5006DB214 /* NSValueTransformer_IsNil.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSValueTransformer_IsNil.h; sourceTree = "<group>"; };
 		FE9D95350C0387D5006DB214 /* NSValueTransformer_IsNil.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSValueTransformer_IsNil.m; sourceTree = "<group>"; };
 		FE9D95360C0387D5006DB214 /* NSValueTransformer_IsNotNil.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSValueTransformer_IsNotNil.h; sourceTree = "<group>"; };
@@ -6118,6 +6134,8 @@
 		6E28033E0974799000EC542B /* NSString */ = {
 			isa = PBXGroup;
 			children = (
+				FE8C913E0FFD1E430027C889 /* NSString_win1252.h */,
+				FE8C913F0FFD1E430027C889 /* NSString_win1252.m */,
 				6E28049209747BF800EC542B /* NSConstantString-Impl.m */,
 				6E28049309747BF800EC542B /* NSString_cString.h */,
 				6E28049409747BF800EC542B /* NSString_cString.m */,
@@ -7159,6 +7177,7 @@
 				28D486400FE04E7100DC03EF /* forwarding.h in Headers */,
 				28D486410FE04E7100DC03EF /* objc_protocol.h in Headers */,
 				28D486420FE04E7100DC03EF /* NSRaiseException.h in Headers */,
+				FE8C914C0FFD1E430027C889 /* NSString_win1252.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7465,6 +7484,7 @@
 				FE1A0D230F8BADBA00FC4CC7 /* forwarding.h in Headers */,
 				FEBF53690F926025005DC684 /* objc_protocol.h in Headers */,
 				FEA317890FD5843900F480D4 /* NSRaiseException.h in Headers */,
+				FE8C91440FFD1E430027C889 /* NSString_win1252.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7771,6 +7791,7 @@
 				FE1A0D210F8BADBA00FC4CC7 /* forwarding.h in Headers */,
 				FEBF53680F926025005DC684 /* objc_protocol.h in Headers */,
 				FEA3178A0FD5843900F480D4 /* NSRaiseException.h in Headers */,
+				FE8C91420FFD1E430027C889 /* NSString_win1252.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8081,6 +8102,7 @@
 				FE1A0D290F8BADBA00FC4CC7 /* forwarding.h in Headers */,
 				FEBF536C0F926025005DC684 /* objc_protocol.h in Headers */,
 				FEA3178B0FD5843900F480D4 /* NSRaiseException.h in Headers */,
+				FE8C91400FFD1E430027C889 /* NSString_win1252.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8388,6 +8410,7 @@
 				FE6519430FBC844C00464BFD /* forwarding.h in Headers */,
 				FE6519440FBC844C00464BFD /* objc_protocol.h in Headers */,
 				FEA317870FD5843900F480D4 /* NSRaiseException.h in Headers */,
+				FE8C914A0FFD1E430027C889 /* NSString_win1252.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8695,6 +8718,7 @@
 				FE1A0D250F8BADBA00FC4CC7 /* forwarding.h in Headers */,
 				FEBF536A0F926025005DC684 /* objc_protocol.h in Headers */,
 				FEA317860FD5843900F480D4 /* NSRaiseException.h in Headers */,
+				FE8C91460FFD1E430027C889 /* NSString_win1252.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -9002,6 +9026,7 @@
 				FE1A0D270F8BADBA00FC4CC7 /* forwarding.h in Headers */,
 				FEBF536B0F926025005DC684 /* objc_protocol.h in Headers */,
 				FEA317880FD5843900F480D4 /* NSRaiseException.h in Headers */,
+				FE8C91480FFD1E430027C889 /* NSString_win1252.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -9707,6 +9732,7 @@
 				28D487960FE04E7100DC03EF /* CFXMLNode.m in Sources */,
 				28D487970FE04E7100DC03EF /* CFXMLParser.m in Sources */,
 				28D487D20FE0508900DC03EF /* msgSendv-solaris.m in Sources */,
+				FE8C914D0FFD1E430027C889 /* NSString_win1252.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -10053,6 +10079,7 @@
 				FE8694830FE0108E00F89733 /* CFUUID.m in Sources */,
 				FE8694840FE0108E00F89733 /* CFXMLNode.m in Sources */,
 				FE8694850FE0108E00F89733 /* CFXMLParser.m in Sources */,
+				FE8C91450FFD1E430027C889 /* NSString_win1252.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -10400,6 +10427,7 @@
 				FE8694A70FE0108E00F89733 /* CFUUID.m in Sources */,
 				FE8694A80FE0108E00F89733 /* CFXMLNode.m in Sources */,
 				FE8694A90FE0108E00F89733 /* CFXMLParser.m in Sources */,
+				FE8C91430FFD1E430027C889 /* NSString_win1252.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -10751,6 +10779,7 @@
 				FE8694CB0FE0108E00F89733 /* CFUUID.m in Sources */,
 				FE8694CC0FE0108E00F89733 /* CFXMLNode.m in Sources */,
 				FE8694CD0FE0108E00F89733 /* CFXMLParser.m in Sources */,
+				FE8C91410FFD1E430027C889 /* NSString_win1252.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -11099,6 +11128,7 @@
 				FE86943B0FE0108E00F89733 /* CFUUID.m in Sources */,
 				FE86943C0FE0108E00F89733 /* CFXMLNode.m in Sources */,
 				FE86943D0FE0108E00F89733 /* CFXMLParser.m in Sources */,
+				FE8C914B0FFD1E430027C889 /* NSString_win1252.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -11448,6 +11478,7 @@
 				FE8694170FE0108E00F89733 /* CFUUID.m in Sources */,
 				FE8694180FE0108E00F89733 /* CFXMLNode.m in Sources */,
 				FE8694190FE0108E00F89733 /* CFXMLParser.m in Sources */,
+				FE8C91470FFD1E430027C889 /* NSString_win1252.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -11797,6 +11828,7 @@
 				FE86945F0FE0108E00F89733 /* CFUUID.m in Sources */,
 				FE8694600FE0108E00F89733 /* CFXMLNode.m in Sources */,
 				FE8694610FE0108E00F89733 /* CFXMLParser.m in Sources */,
+				FE8C91490FFD1E430027C889 /* NSString_win1252.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

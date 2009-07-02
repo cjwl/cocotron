@@ -22,7 +22,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
     _mask = mask;
     _colorPanel = [colorPanel retain];
-        
     return self;
 }
 

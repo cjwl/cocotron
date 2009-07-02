@@ -406,7 +406,11 @@
 				<string>id</string>
 				<key>moveLeft</key>
 				<string>id</string>
+				<key>moveLeftAndModifySelection</key>
+				<string>id</string>
 				<key>moveRight</key>
+				<string>id</string>
+				<key>moveRightAndModifySelection</key>
 				<string>id</string>
 				<key>moveToBeginningOfDocument</key>
 				<string>id</string>
@@ -435,6 +439,14 @@
 				<key>moveWordForward</key>
 				<string>id</string>
 				<key>moveWordForwardAndModifySelection</key>
+				<string>id</string>
+				<key>moveWordLeft</key>
+				<string>id</string>
+				<key>moveWordLeftAndModifySelection</key>
+				<string>id</string>
+				<key>moveWordRight</key>
+				<string>id</string>
+				<key>moveWordRightAndModifySelection</key>
 				<string>id</string>
 				<key>noop</key>
 				<string>id</string>

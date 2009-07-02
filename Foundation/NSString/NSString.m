@@ -27,6 +27,7 @@ freeWhenDone:(BOOL)freeWhenDone;
 #import <Foundation/NSString_cString.h>
 #import <Foundation/NSString_nextstep.h>
 #import <Foundation/NSString_isoLatin1.h>
+#import <Foundation/NSString_win1252.h>
 #import <Foundation/NSStringSymbol.h>
 #import <Foundation/NSStringUTF8.h>
 #import <Foundation/NSUnicodeCaseMapping.h>
@@ -1271,6 +1272,8 @@ U+2029 (Unicode paragraph separator), \r\n, in that order (also known as CRLF)
     buffer[0]=0xFEFF;
     return [NSData dataWithBytes:buffer length:(1+length)*sizeof(unichar)];
    }
+   else if(encoding==NSWindowsCP1252StringEncoding)
+	bytes=NSUnicodeToWin1252(unicode,length,lossy,&byteLength,zone);
    else {
     NSRaiseException(NSInvalidArgumentException, self, 
                      @selector(dataUsingEncoding:allowLossyConversion:),

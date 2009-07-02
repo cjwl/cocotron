@@ -14,6 +14,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSUnicodeCaseMapping.h>
 #import <Foundation/NSString_nextstep.h>
 #import <Foundation/NSString_isoLatin1.h>
+#import <Foundation/NSString_win1252.h>
 #import <Foundation/NSStringFormatter.h>
 #import <Foundation/NSStringFileIO.h>
 #import <Foundation/NSRaise.h>
@@ -74,6 +75,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     case NSUTF8StringEncoding:
      characters=NSUTF8ToUnicode(bytes,length,&resultLength,NULL);
      return NSString_unicodePtrNewNoCopy(NULL,characters,resultLength);
+
+	case NSWindowsCP1252StringEncoding:
+     return NSString_win1252NewWithBytes(NULL,bytes,length);
 
     case NSUTF16BigEndianStringEncoding:
      characters=NSUnicodeFromBytesUTF16BigEndian(bytes,length,&resultLength);

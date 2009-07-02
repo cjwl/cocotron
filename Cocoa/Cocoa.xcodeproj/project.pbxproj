@@ -89,7 +89,7 @@
 			isa = PBXContainerItemProxy;
 			containerPortal = FE7135460B36427F006C9493 /* AppKit.xcodeproj */;
 			proxyType = 2;
-			remoteGlobalIDString = FEA3164C0FD5667D00F480D4 /* AppKit.framework */;
+			remoteGlobalIDString = FEA3164C0FD5667D00F480D4;
 			remoteInfo = "AppKit-MacOS-i386";
 		};
 		FEF80ABD0C5D9F3000FF7CA5 /* PBXContainerItemProxy */ = {
