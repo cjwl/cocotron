@@ -78,10 +78,10 @@ static NSLock *kvoLock=nil;
 
 -(void)addObserver:(id)observer forKeyPath:(NSString*)keyPath options:(NSKeyValueObservingOptions)options context:(void*)context;
 {
-	[self _KVO_swizzle];
-	NSString* remainingKeyPath;
-	NSString* key;
-	[keyPath _KVC_partBeforeDot:&key afterDot:&remainingKeyPath];
+   [self _KVO_swizzle];
+   NSString* remainingKeyPath;
+   NSString* key;
+   [keyPath _KVC_partBeforeDot:&key afterDot:&remainingKeyPath];
    
    if([keyPath hasPrefix:@"@"]) {
       // the key path is an operator: don't evaluate
@@ -90,20 +90,21 @@ static NSLock *kvoLock=nil;
    }
    
    // get observation info dictionary
-	NSMutableDictionary* observationInfo=[self observationInfo];
-	// get all observers for current key
-	NSMutableArray *observers=[observationInfo objectForKey:key];
+   NSMutableDictionary* observationInfo=[self observationInfo];
+   // get all observers for current key
+   NSMutableArray *observers=[observationInfo objectForKey:key];
    
-	// find if already observing
+   // find if already observing
    _NSObservationInfo *oldInfo=nil;
    for(_NSObservationInfo *current in observers) {
-		if(current->observer==observer) {
-			oldInfo=current;
+      if(current->observer==observer &&
+         [[current keyPath] isEqualToString:keyPath]) {
+         oldInfo=current;
          break;
       }
    }
-	
-	// create new info
+   
+   // create new info
    _NSObservationInfo *info=nil;
    if(oldInfo)
       info=oldInfo;
@@ -176,86 +177,87 @@ static NSLock *kvoLock=nil;
    
    // create observation info dictionary if it's not there
    // (we have to re-check: it may have been created while observing our dependents
-	if(!observationInfo && !(observationInfo = [self observationInfo]))
-	{
-		[self setObservationInfo:[NSMutableDictionary new]];
-		observationInfo=[self observationInfo];
+   if(!observationInfo && !(observationInfo = [self observationInfo]))
+   {
+      [self setObservationInfo:[NSMutableDictionary new]];
+      observationInfo=[self observationInfo];
       observers = [observationInfo objectForKey:key];
-	}
+   }
    
-	// get all observers for current key
-	if(!observers)
-	{
-		observers = [NSMutableArray array];
-		[observationInfo setObject:observers forKey:key];
-	}
+   // get all observers for current key
+   if(!observers)
+   {
+      observers = [NSMutableArray array];
+      [observationInfo setObject:observers forKey:key];
+   }
    
-	// set info options
-	info->observer=observer;
-	info->options=options;
-	info->context=context;
-	info->object=self;
-	[info setKeyPath:keyPath];
+   // set info options
+   info->observer=observer;
+   info->options=options;
+   info->context=context;
+   info->object=self;
+   [info setKeyPath:keyPath];
    
    if(!oldInfo) {
       [observers addObject:info];
    }
    
-	
-	if(options & NSKeyValueObservingOptionInitial)
-	{
-		[self willChangeValueForKey:keyPath];
-		[self didChangeValueForKey:keyPath];
-	}
+   
+   if(options & NSKeyValueObservingOptionInitial)
+   {
+      [self willChangeValueForKey:keyPath];
+      [self didChangeValueForKey:keyPath];
+   }
 }
 
 
 -(void)removeObserver:(id)observer forKeyPath:(NSString*)keyPath;
 {
-	NSString* key, *remainingKeyPath;
-	[keyPath _KVC_partBeforeDot:&key afterDot:&remainingKeyPath];
+   NSString* key, *remainingKeyPath;
+   [keyPath _KVC_partBeforeDot:&key afterDot:&remainingKeyPath];
    
    if([keyPath hasPrefix:@"@"]) {
       // the key path is an operator: don't evaluate
       key=keyPath;
       remainingKeyPath=nil;
    }   
-
-	// now remove own observer
-	NSMutableDictionary* observationInfo=[self observationInfo];
-	NSMutableArray *observers=[observationInfo objectForKey:key];
-
-	for(_NSObservationInfo *info in [[observers copy] autorelease])
-	{
-		if(info->observer==observer)
-		{
-			[[info retain] autorelease];
-			[observers removeObject:info];
-			if(![observers count])
-			{
-				[observationInfo removeObjectForKey:key];
-			}
-			if(![observationInfo count])
-			{
-				[self setObservationInfo:nil];
+   
+   // now remove own observer
+   NSMutableDictionary* observationInfo=[self observationInfo];
+   NSMutableArray *observers=[observationInfo objectForKey:key];
+   
+   for(_NSObservationInfo *info in [[observers copy] autorelease])
+   {
+      if(info->observer==observer &&
+         [[info keyPath] isEqualToString:keyPath])
+      {
+         [[info retain] autorelease];
+         [observers removeObject:info];
+         if(![observers count])
+         {
+            [observationInfo removeObjectForKey:key];
+         }
+         if(![observationInfo count])
+         {
+            [self setObservationInfo:nil];
             [observationInfo release];
-			}
-
-			if([remainingKeyPath length])
-				[[self valueForKey:key] removeObserver:info forKeyPath:remainingKeyPath];
-			
-			NSSet* keysPathsForKey=[isa keyPathsForValuesAffectingValueForKey:key];
-			for(NSString *path in keysPathsForKey)
-			{
-				[self removeObserver:info
-					   forKeyPath:path];
-			}
-			
-			return;
-		}
-	}
-	// 10.4 Apple implementation will crash at this point...
-	[NSException raise:@"NSKVOException" format:@"trying to remove observer %@ for unobserved key path %@", observer, keyPath];
+         }
+         
+         if([remainingKeyPath length])
+            [[self valueForKey:key] removeObserver:info forKeyPath:remainingKeyPath];
+         
+         NSSet* keysPathsForKey=[isa keyPathsForValuesAffectingValueForKey:key];
+         for(NSString *path in keysPathsForKey)
+         {
+            [self removeObserver:info
+                      forKeyPath:path];
+         }
+         
+         return;
+      }
+   }
+   // 10.4 Apple implementation will crash at this point...
+   [NSException raise:@"NSKVOException" format:@"trying to remove observer %@ for unobserved key path %@", observer, keyPath];
 }
 
 -(void)willChangeValueForKey:(NSString*)key
