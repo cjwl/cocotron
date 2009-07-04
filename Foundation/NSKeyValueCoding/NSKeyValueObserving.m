@@ -696,6 +696,17 @@ CHANGE_DECLARATION(SEL)
 	return [NSString stringWithCString:isa->name+strlen("KVONotifying_")];
 }
 
+-(Class)_KVO_class
+{
+   return isa->super_class;
+}
+
+-(Class)_KVO_classForCoder
+{
+   return isa->super_class;
+}
+
+
 +(void)_KVO_buildDependencyUnion
 {
 	/*
@@ -768,15 +779,23 @@ CHANGE_DECLARATION(SEL)
 	int currentMethod=0;
 
 	{
-		// override className so it returns the original class name
-		struct objc_method *newMethod=&newMethods[currentMethod];
-      
+		// override className so it returns the original class name      
       Method className=class_getInstanceMethod([self class], @selector(_KVO_className));
-		
-		newMethod->method_name=@selector(className);
-		newMethod->method_types=strdup(className->method_types);
-		newMethod->method_imp=className->method_imp;
-		
+		newMethods[currentMethod].method_name=@selector(className);
+		newMethods[currentMethod].method_types=strdup(className->method_types);
+		newMethods[currentMethod].method_imp=className->method_imp;
+		currentMethod++;
+      
+      className=class_getInstanceMethod([self class], @selector(_KVO_class));
+		newMethods[currentMethod].method_name=@selector(class);
+		newMethods[currentMethod].method_types=strdup(className->method_types);
+		newMethods[currentMethod].method_imp=className->method_imp;
+		currentMethod++;
+
+      className=class_getInstanceMethod([self class], @selector(_KVO_classForCoder));
+		newMethods[currentMethod].method_name=@selector(classForCoder);
+		newMethods[currentMethod].method_types=strdup(className->method_types);
+		newMethods[currentMethod].method_imp=className->method_imp;
 		currentMethod++;
 	}
 	

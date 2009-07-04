@@ -170,6 +170,17 @@
 
 	[self removeObserver:self forKeyPath:@"newStyleDerived"];
    STAssertTrue([self observationInfo]==nil, nil);
+}
+
+-(void)testNameAndClass {
+   [self addObserver:self forKeyPath:@"someKey" options:0 context:nil];
+   
+   STAssertEqualObjects([self className], @"KVO", nil);
+
+   STAssertEqualObjects([self class], [KVO class], nil);
+   STAssertEqualObjects([self classForCoder], [KVO class], nil);
+                         
+   [self removeObserver:self forKeyPath:@"someKey"];
 
 }
 
