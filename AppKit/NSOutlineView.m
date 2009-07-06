@@ -112,7 +112,7 @@ static inline id childOfItemAtIndex(NSOutlineView *self,id item,int index){
 
     _markerCell = [[[self _outlineMarkerCellClass] alloc] initImageCell:nil];
         
-    [self setIndentationPerLevel:_rowHeight];	// square it off
+    [self setIndentationPerLevel:_standardRowHeight];	// square it off
         
     [self setIndentationMarkerFollowsCell:YES];
     [self setAutoresizesOutlineColumn:YES];
@@ -123,7 +123,6 @@ static inline id childOfItemAtIndex(NSOutlineView *self,id item,int index){
     [self invalidateRowCache];
 
     _outlineTableColumn=[[[self tableColumns] objectAtIndex:0] retain];
-    [self setDrawsGrid:YES];
    }
     else {
         [NSException raise:NSInvalidArgumentException format:@"-[%@ %s] is not implemented for coder %@",isa,sel_getName(_cmd),coder];
@@ -141,7 +140,7 @@ static inline id childOfItemAtIndex(NSOutlineView *self,id item,int index){
 
     _markerCell = [[[self _outlineMarkerCellClass] alloc] initImageCell:nil];
         
-    [self setIndentationPerLevel:_rowHeight];	// square it off
+    [self setIndentationPerLevel:_standardRowHeight];	// square it off
         
     [self setIndentationMarkerFollowsCell:YES];
     [self setAutoresizesOutlineColumn:YES];
@@ -418,6 +417,7 @@ static inline id childOfItemAtIndex(NSOutlineView *self,id item,int index){
 
 
 // override for new outline-related selectors.
+// FIX: Cocoa checks for selectors as they are needed, see -[NSTableView setDataSource].
 -(void)setDataSource:dataSource {
     SEL requiredSelectors[] = {
         @selector(outlineView:child:ofItem:),
@@ -513,7 +513,6 @@ static void loadItemIntoMapTables(NSOutlineView *self,id item,unsigned *rowCount
 -(NSInteger)numberOfRows {
    if (_numberOfCachedRows == 0) {
     [self loadRootItem];
-    return _numberOfCachedRows;
    }
 
    return _numberOfCachedRows;
@@ -543,11 +542,11 @@ static void loadItemIntoMapTables(NSOutlineView *self,id item,unsigned *rowCount
         float indentPixels = [self levelForRow:row] * _indentationPerLevel;
         float cellWidth;
         
-        cellRect.origin.x += (indentPixels + _rowHeight) + _intercellSpacing.width;
+        cellRect.origin.x += (indentPixels + _standardRowHeight) + _intercellSpacing.width;
 
 #if 0
         // this is more NSTableView-ish behavior.
-        cellRect.size.width -= (indentPixels + _rowHeight);
+        cellRect.size.width -= (indentPixels + _standardRowHeight);
 #endif
         
         // instead, give the delegate an opportunity to provide the cell width. (i was keying on attributed
@@ -568,7 +567,7 @@ static void loadItemIntoMapTables(NSOutlineView *self,id item,unsigned *rowCount
         if (column == _editedColumn && row == _editedRow)
             cellWidth += _editingCellPadding;
 
-        cellRect.size.width = MIN(cellWidth, cellRect.size.width - (indentPixels + _rowHeight));        
+        cellRect.size.width = MIN(cellWidth, cellRect.size.width - (indentPixels + _standardRowHeight));        
     }
 
     return cellRect;
@@ -642,7 +641,7 @@ static void loadItemIntoMapTables(NSOutlineView *self,id item,unsigned *rowCount
    }
 }
 
--(void)drawGridInClipRect:(NSRect)aRect {
+-(void)drawGridInClipRect:(NSRect)clipRect {
     // this doesn't look right at all when the indentation marker isn't set to follow the cell
     NSGraphicsStyle *style=[self graphicsStyle];
     BOOL temp = _indentationMarkerFollowsCell;
@@ -654,6 +653,8 @@ static void loadItemIntoMapTables(NSOutlineView *self,id item,unsigned *rowCount
     for(i=0;i<count;i++)
      [self _drawGridForItem:childOfItemAtIndex(self,nil,i) style:style level:0];
     [self setIndentationMarkerFollowsCell:temp];
+
+    [super drawGridInClipRect:clipRect];
 }
 
 -(void)drawRow:(int)row clipRect:(NSRect)rect {
@@ -717,7 +718,8 @@ static void loadItemIntoMapTables(NSOutlineView *self,id item,unsigned *rowCount
     _clickedRow = [self rowAtPoint:location];
     _clickedItem = [self itemAtRow:_clickedRow];
 
-    if ([_tableColumns objectAtIndex:_clickedColumn] == _outlineTableColumn) {
+    if (_clickedColumn >= 0 && _clickedRow >= 0 &&
+        [_tableColumns objectAtIndex:_clickedColumn] == _outlineTableColumn) {
         if (NSPointInRect(location, [self frameOfMarkerCellAtColumn:_clickedColumn row:_clickedRow level:[self levelForRow:_clickedRow]]) &&
             [self isExpandable:_clickedItem]) {
             if (isItemExpanded(self,_clickedItem) == NO)

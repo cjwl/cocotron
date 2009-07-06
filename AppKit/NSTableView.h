@@ -1,10 +1,36 @@
 /* Copyright (c) 2006-2007 Christopher J. W. Lloyd
+                 2009 Markus Hitter <mah@jump-ing.de>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
+
+/*
+ * Subclassing notes:
+ *
+ * NSTableView maintains a cache for the height of each of the rows,
+ * even if this array is set to all equal values by sending -setRowHeight.
+ * To make sure your subclass does not invalidate this cache you have three choices:
+ *
+ * 1. Don't override -noteNumberOfRowsChanged or -noteHeightOfRowsWithIndexesChanged:
+ *    and send them to self where appropriate (and let the cache do it's work).
+ *
+ * 2. Override -noteNumberOfRowsChanged, but send something like
+ *      [super noteHeightOfRowsWithIndexesChanged:[NSIndexSet
+ *          indexSetWithIndexesInRange:NSMakeRange(0, <rowCount>)]];
+ *    each time the number of rows has changed. Or, send it to
+ *    super before doing any size calculations.
+ *
+ *    If overriding -noteHeightOfRowsWithIndexesChanged:, send
+ *    that to super before doing any display size calculations.
+ *
+ * 3. Override -noteNumberOfRowsChanged, but also override -rectOfRow:,
+ *    -rectOfColumn:, -rowInRect:, -columnsInRect:, -setRowHeight:,
+ *    -frameOfCellAtColumn:row: and -noteHeightOfRowsWithIndexesChanged:,
+ *    i.e. replace everything using the cache.
+ */
 
 #import <AppKit/NSControl.h>
 #import <AppKit/NSDragging.h>
@@ -39,10 +65,10 @@ typedef enum {
    NSView 	         *_cornerView;
    NSMutableArray    *_tableColumns;
 
-   float _rowHeight;
+   float *_rowHeights;
+   float _standardRowHeight;
    NSColor *_backgroundColor;
    NSColor *_gridColor;
-   BOOL _drawsGrid;
    BOOL _allowsColumnReordering;
    BOOL _allowsColumnResizing;
    BOOL _autoresizesAllColumnsToFit;
@@ -163,6 +189,7 @@ typedef enum {
 -(void)scrollColumnToVisible:(int)index;
 
 -(void)noteNumberOfRowsChanged;
+-(void)noteHeightOfRowsWithIndexesChanged:(NSIndexSet *)indexSet;
 -(void)reloadData;
 -(void)tile;
 
@@ -194,6 +221,7 @@ typedef enum {
 @interface NSObject(NSTableView_delegate)
 -(BOOL)tableView:(NSTableView *)tableView shouldEditTableColumn:(NSTableColumn *)tableColumn row:(int)row;
 -(BOOL)selectionShouldChangeInTableView:(NSTableView *)tableView;
+-(float)tableView:(NSTableView *)tableView heightOfRow:(int)row;
 -(BOOL)tableView:(NSTableView *)tableView shouldSelectRow:(int)row;
 -(BOOL)tableView:(NSTableView *)tableView shouldSelectTableColumn:(NSTableColumn *)tableColumn;
 -(void)tableView:(NSTableView *)tableView mouseDownInHeaderOfTableColumn:(NSTableColumn *)tableColumn;
@@ -206,4 +234,3 @@ typedef enum {
 -(void)tableViewColumnDidMove:(NSNotification *)note;
 -(void)tableViewColumnDidResize:(NSNotification *)note;
 @end
-
