@@ -64,6 +64,7 @@ typedef NSUInteger NSControlTint;
    id        _titleOrAttributedTitle;
    id        _representedObject;
    NSControlSize _controlSize;
+   NSFocusRingType _focusRingType;
 
    BOOL      _isEnabled;
    BOOL      _isEditable;
@@ -78,6 +79,8 @@ typedef NSUInteger NSControlTint;
    BOOL      _allowsMixedState;
    BOOL      _sendsActionOnEndEditing;
 }
+
++(NSFocusRingType)defaultFocusRingType;
 
 -initTextCell:(NSString *)string;
 -initImageCell:(NSImage *)image;
@@ -116,6 +119,7 @@ typedef NSUInteger NSControlTint;
 -(NSAttributedString *)attributedStringValue;
 -(id)representedObject;
 -(NSControlSize)controlSize;
+-(NSFocusRingType)focusRingType;
 
 -(void)setType:(NSCellType)type;
 
@@ -157,6 +161,7 @@ typedef NSUInteger NSControlTint;
 -(void)setAttributedStringValue:(NSAttributedString *)value;
 -(void)setRepresentedObject:(id)object;
 -(void)setControlSize:(NSControlSize)size;
+-(void)setFocusRingType:(NSFocusRingType)focusRingType;
 
 -(void)takeObjectValueFrom:sender;
 -(void)takeStringValueFrom:sender;
