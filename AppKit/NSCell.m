@@ -25,6 +25,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @implementation NSCell
 
++(NSFocusRingType)defaultFocusRingType {
+   return NSFocusRingTypeExterior;
+}
+
 -(void)encodeWithCoder:(NSCoder *)coder {
    NSUnimplementedMethod();
 }
@@ -36,6 +40,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     int                flags2=[keyed decodeIntForKey:@"NSCellFlags2"];
     id                 check;
     
+    _focusRingType=(flags&0x03);
     _state=(flags&0x80000000)?NSOnState:NSOffState;
     _isHighlighted=(flags&0x40000000)?YES:NO;
     _isEnabled=(flags&0x20000000)?NO:YES;
@@ -79,6 +84,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -initTextCell:(NSString *)string {
 
+   _focusRingType=[isa defaultFocusRingType];
    _state=NSOffState;
    _font=[[NSFont userFontOfSize:0] retain];
    _objectValue=[string copy];
@@ -98,6 +104,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -initImageCell:(NSImage *)image {
 
+   _focusRingType=[isa defaultFocusRingType];
    _state=NSOffState;
    _font=nil;
    _objectValue=nil;
@@ -335,8 +342,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     return _representedObject;
 }
 
-- (NSControlSize)controlSize {
+-(NSControlSize)controlSize {
     return _controlSize;
+}
+
+-(NSFocusRingType)focusRingType {
+    return _focusRingType;
 }
 
 -(void)setType:(NSCellType)type {
@@ -561,11 +572,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     _representedObject = object;
 }
 
-- (void)setControlSize:(NSControlSize)size {
+-(void)setControlSize:(NSControlSize)size {
    _controlSize = size;
    [_font release];
    _font = [[NSFont userFontOfSize:13 - _controlSize*2] retain];
    [(NSControl *)[self controlView] updateCell:self];
+}
+
+-(void)setFocusRingType:(NSFocusRingType)focusRingType {
+   _focusRingType = focusRingType;
 }
 
 -(void)takeObjectValueFrom:sender {
