@@ -155,6 +155,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
    if(movement==NSTabTextMovement)
     [[self window] selectKeyViewFollowingView:self];
+    
+   if (movement == NSBacktabTextMovement)
+    [[self window] selectKeyViewPrecedingView:self];
 }
 
 // FIX do we need this? selectText: seems to do the job for us

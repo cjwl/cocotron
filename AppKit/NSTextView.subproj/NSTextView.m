@@ -679,6 +679,13 @@ NSString *NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
     [self insertText:@"\t"];
 }
 
+- (void)insertBacktab:sender {
+    if (_isFieldEditor) {
+        _textMovement = NSBacktabTextMovement;
+        [[self window] makeFirstResponder:[self window]];
+    }
+}
+
 // kind of hackish, not necessary if we don't want space bar as an NSButton performClick
 -(void)performClick:sender {
    [self insertText:@" "];
