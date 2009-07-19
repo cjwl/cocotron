@@ -9,6 +9,22 @@
 /* Begin PBXBuildFile section */
 		36570F9B0E818CD5008FE1BE /* NSGradient.m in Sources */ = {isa = PBXBuildFile; fileRef = 36570F990E818CD5008FE1BE /* NSGradient.m */; };
 		365710650E81A10E008FE1BE /* NSGradient.h in Headers */ = {isa = PBXBuildFile; fileRef = 36570F980E818CD5008FE1BE /* NSGradient.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		A1CC7019100534AB00DB9974 /* NSCachingBinder.h in Headers */ = {isa = PBXBuildFile; fileRef = A1CC7017100534AB00DB9974 /* NSCachingBinder.h */; };
+		A1CC701A100534AB00DB9974 /* NSCachingBinder.m in Sources */ = {isa = PBXBuildFile; fileRef = A1CC7018100534AB00DB9974 /* NSCachingBinder.m */; };
+		A1CC701B100534AB00DB9974 /* NSCachingBinder.h in Headers */ = {isa = PBXBuildFile; fileRef = A1CC7017100534AB00DB9974 /* NSCachingBinder.h */; };
+		A1CC701C100534AB00DB9974 /* NSCachingBinder.m in Sources */ = {isa = PBXBuildFile; fileRef = A1CC7018100534AB00DB9974 /* NSCachingBinder.m */; };
+		A1CC701D100534AB00DB9974 /* NSCachingBinder.h in Headers */ = {isa = PBXBuildFile; fileRef = A1CC7017100534AB00DB9974 /* NSCachingBinder.h */; };
+		A1CC701E100534AB00DB9974 /* NSCachingBinder.m in Sources */ = {isa = PBXBuildFile; fileRef = A1CC7018100534AB00DB9974 /* NSCachingBinder.m */; };
+		A1CC701F100534AB00DB9974 /* NSCachingBinder.h in Headers */ = {isa = PBXBuildFile; fileRef = A1CC7017100534AB00DB9974 /* NSCachingBinder.h */; };
+		A1CC7020100534AB00DB9974 /* NSCachingBinder.m in Sources */ = {isa = PBXBuildFile; fileRef = A1CC7018100534AB00DB9974 /* NSCachingBinder.m */; };
+		A1CC70421005371100DB9974 /* NSTextBinder.h in Headers */ = {isa = PBXBuildFile; fileRef = A1CC70401005371100DB9974 /* NSTextBinder.h */; };
+		A1CC70431005371100DB9974 /* NSTextBinder.m in Sources */ = {isa = PBXBuildFile; fileRef = A1CC70411005371100DB9974 /* NSTextBinder.m */; };
+		A1CC70441005371100DB9974 /* NSTextBinder.h in Headers */ = {isa = PBXBuildFile; fileRef = A1CC70401005371100DB9974 /* NSTextBinder.h */; };
+		A1CC70451005371100DB9974 /* NSTextBinder.m in Sources */ = {isa = PBXBuildFile; fileRef = A1CC70411005371100DB9974 /* NSTextBinder.m */; };
+		A1CC70461005371100DB9974 /* NSTextBinder.h in Headers */ = {isa = PBXBuildFile; fileRef = A1CC70401005371100DB9974 /* NSTextBinder.h */; };
+		A1CC70471005371100DB9974 /* NSTextBinder.m in Sources */ = {isa = PBXBuildFile; fileRef = A1CC70411005371100DB9974 /* NSTextBinder.m */; };
+		A1CC70481005371100DB9974 /* NSTextBinder.h in Headers */ = {isa = PBXBuildFile; fileRef = A1CC70401005371100DB9974 /* NSTextBinder.h */; };
+		A1CC70491005371100DB9974 /* NSTextBinder.m in Sources */ = {isa = PBXBuildFile; fileRef = A1CC70411005371100DB9974 /* NSTextBinder.m */; };
 		C81BEA0F0EA6038800478D50 /* CairoContext.h in Headers */ = {isa = PBXBuildFile; fileRef = C81BEA0D0EA6038800478D50 /* CairoContext.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		C81BEA100EA6038800478D50 /* CairoContext.m in Sources */ = {isa = PBXBuildFile; fileRef = C81BEA0E0EA6038800478D50 /* CairoContext.m */; };
 		C8283E4B0F0AEE3B009E89C4 /* X11InputSource.h in Headers */ = {isa = PBXBuildFile; fileRef = C8283E490F0AEE3B009E89C4 /* X11InputSource.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -3330,6 +3346,10 @@
 		6EC4ADE50A37294300E8D6CA /* NSButtonImageSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSButtonImageSource.m; sourceTree = "<group>"; };
 		6ECABDF70A3FA2B700AD7F7B /* NSCustomView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSCustomView.h; sourceTree = "<group>"; };
 		6ECABDF80A3FA2B700AD7F7B /* NSCustomView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSCustomView.m; sourceTree = "<group>"; };
+		A1CC7017100534AB00DB9974 /* NSCachingBinder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSCachingBinder.h; sourceTree = "<group>"; };
+		A1CC7018100534AB00DB9974 /* NSCachingBinder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSCachingBinder.m; sourceTree = "<group>"; };
+		A1CC70401005371100DB9974 /* NSTextBinder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSTextBinder.h; sourceTree = "<group>"; };
+		A1CC70411005371100DB9974 /* NSTextBinder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSTextBinder.m; sourceTree = "<group>"; };
 		C81BEA0D0EA6038800478D50 /* CairoContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CairoContext.h; sourceTree = "<group>"; };
 		C81BEA0E0EA6038800478D50 /* CairoContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CairoContext.m; sourceTree = "<group>"; };
 		C8283E490F0AEE3B009E89C4 /* X11InputSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = X11InputSource.h; sourceTree = "<group>"; };
@@ -4743,6 +4763,10 @@
 		FE8BAF1A0BC9EC0B0007FACA /* NSKeyValueBinding */ = {
 			isa = PBXGroup;
 			children = (
+				A1CC70401005371100DB9974 /* NSTextBinder.h */,
+				A1CC70411005371100DB9974 /* NSTextBinder.m */,
+				A1CC7017100534AB00DB9974 /* NSCachingBinder.h */,
+				A1CC7018100534AB00DB9974 /* NSCachingBinder.m */,
 				FE8D951E0CE4057300AFB060 /* NSMultipleValueBinder.h */,
 				FE8D951F0CE4057300AFB060 /* NSMultipleValueBinder.m */,
 				C8B239A20BF8EEB500CA33AF /* defaultBindingOptions.plist */,
@@ -5164,6 +5188,8 @@
 				FE9DB3D60FD6BD5A00A1CE17 /* NSRangeEntries.h in Headers */,
 				FEAED7A00FD6C96E0043F915 /* KGDataConsumer.h in Headers */,
 				FE2C7F560FDC4C8E00D5DFB5 /* NSStringKVCFunctions.h in Headers */,
+				A1CC701D100534AB00DB9974 /* NSCachingBinder.h in Headers */,
+				A1CC70441005371100DB9974 /* NSTextBinder.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5525,6 +5551,8 @@
 				FE9DB3D70FD6BD5B00A1CE17 /* NSRangeEntries.h in Headers */,
 				FEAED79E0FD6C96E0043F915 /* KGDataConsumer.h in Headers */,
 				FE2C7F550FDC4C8E00D5DFB5 /* NSStringKVCFunctions.h in Headers */,
+				A1CC701F100534AB00DB9974 /* NSCachingBinder.h in Headers */,
+				A1CC70421005371100DB9974 /* NSTextBinder.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5881,6 +5909,8 @@
 				FEAED7A20FD6C96E0043F915 /* KGDataConsumer.h in Headers */,
 				FE2C7F570FDC4C8E00D5DFB5 /* NSStringKVCFunctions.h in Headers */,
 				FEA661230FF5C6F200E2C03B /* KGFont_gdi.h in Headers */,
+				A1CC7019100534AB00DB9974 /* NSCachingBinder.h in Headers */,
+				A1CC70481005371100DB9974 /* NSTextBinder.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6165,6 +6195,8 @@
 				FEA317C50FD5893300F480D4 /* NSRaise.h in Headers */,
 				FEA3182B0FD5961100F480D4 /* NSRangeEntries.h in Headers */,
 				FE2C7F580FDC4C8E00D5DFB5 /* NSStringKVCFunctions.h in Headers */,
+				A1CC701B100534AB00DB9974 /* NSCachingBinder.h in Headers */,
+				A1CC70461005371100DB9974 /* NSTextBinder.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6922,6 +6954,8 @@
 				FEAED7A10FD6C96E0043F915 /* KGDataConsumer.m in Sources */,
 				FEAED7A60FD6C9820043F915 /* CGPDFContext.m in Sources */,
 				FEB07FA10FF9B37C00C27509 /* KGFont+PDF.m in Sources */,
+				A1CC701E100534AB00DB9974 /* NSCachingBinder.m in Sources */,
+				A1CC70451005371100DB9974 /* NSTextBinder.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7251,6 +7285,8 @@
 				FEAED79F0FD6C96E0043F915 /* KGDataConsumer.m in Sources */,
 				FEAED7A50FD6C9820043F915 /* CGPDFContext.m in Sources */,
 				FEB07FA20FF9B37C00C27509 /* KGFont+PDF.m in Sources */,
+				A1CC7020100534AB00DB9974 /* NSCachingBinder.m in Sources */,
+				A1CC70431005371100DB9974 /* NSTextBinder.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7614,6 +7650,8 @@
 				FEAED7A70FD6C9820043F915 /* CGPDFContext.m in Sources */,
 				FEA661240FF5C6F300E2C03B /* KGFont_gdi.m in Sources */,
 				FEB07FA00FF9B37C00C27509 /* KGFont+PDF.m in Sources */,
+				A1CC701A100534AB00DB9974 /* NSCachingBinder.m in Sources */,
+				A1CC70491005371100DB9974 /* NSTextBinder.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7848,6 +7886,8 @@
 				FEA3161A0FD5667D00F480D4 /* NSControllerMarker.m in Sources */,
 				FEA3182C0FD5961100F480D4 /* NSRangeEntries.m in Sources */,
 				FEB07FA30FF9B37C00C27509 /* KGFont+PDF.m in Sources */,
+				A1CC701C100534AB00DB9974 /* NSCachingBinder.m in Sources */,
+				A1CC70471005371100DB9974 /* NSTextBinder.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

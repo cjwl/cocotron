@@ -12,11 +12,21 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSCursor.h>
 #import <AppKit/NSPasteboard.h>
 #import <AppKit/NSDragging.h>
+#import "NSKeyValueBinding/NSTextBinder.h"
+#import "NSKeyValueBinding/NSObject+BindingSupport.h"
 
 @implementation NSTextField
 
 +(Class)cellClass {
    return [NSTextFieldCell class];
+}
+
++(Class)_binderClassForBinding:(id)binding
+{
+  if ([binding isEqual:@"value"])
+    return [_NSTextBinder class];
+  else
+    return [super _binderClassForBinding:binding];
 }
 
 -initWithCoder:(NSCoder *)coder {

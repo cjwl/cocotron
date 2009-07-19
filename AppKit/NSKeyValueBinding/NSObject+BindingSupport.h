@@ -72,4 +72,5 @@ APPKIT_EXPORT NSString *NSValueTransformerNameBindingOption;
 APPKIT_EXPORT NSString *NSValueTransformerBindingOption;
 APPKIT_EXPORT NSString *NSConditionallySetsEnabledBindingOption;
 APPKIT_EXPORT NSString *NSConditionallySetsEditableBindingOption;
+APPKIT_EXPORT NSString *NSContinuouslyUpdatesValueBindingOption;
 

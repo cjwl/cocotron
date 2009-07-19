@@ -31,10 +31,8 @@ static void* NSBinderChangeContext;
 
 -(BOOL)conditionallySetsEnabled
 {
-	// FIX: needs to read from options
-	if([_source respondsToSelector:@selector(setEnabled:)])
-		return YES;
-	return NO;
+	return [[_options objectForKey:NSConditionallySetsEnabledBindingOption] boolValue] && 
+    [_source respondsToSelector:@selector(setEnabled:)];
 }
 
 -(BOOL)allowsEditingMultipleValues
@@ -51,6 +49,11 @@ static void* NSBinderChangeContext;
 -(BOOL)raisesForNotApplicableKeys
 {
 	return [[_options objectForKey:NSRaisesForNotApplicableKeysBindingOption] boolValue];
+}
+
+-(BOOL)continuouslyUpdatesValue
+{
+  return [[_options objectForKey:NSContinuouslyUpdatesValueBindingOption] boolValue];
 }
 
 -(id)multipleValuesPlaceholder

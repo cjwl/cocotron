@@ -34,6 +34,7 @@ NSString *NSValueTransformerNameBindingOption=@"NSValueTransformerName";
 NSString *NSValueTransformerBindingOption=@"NSValueTransformerBinding";
 NSString *NSConditionallySetsEnabledBindingOption=@"NSConditionallySetsEnabled";
 NSString *NSConditionallySetsEditableBindingOption=@"NSConditionallySetsEditable";
+NSString *NSContinuouslyUpdatesValueBindingOption=@"NSContinuouslyUpdatesValue";
 
 @implementation NSObject (BindingSupport)
 
