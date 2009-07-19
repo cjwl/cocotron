@@ -6,6 +6,14 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
+/*****************************************************************************************
+ * Note to programmers modifying or subclassing NSTextView:                              *
+ *                                                                                       *
+ * NSTextView uses undo coalescing to join adjacent keystrokes into one undo operation.  *
+ * So you need to call breakUndoCoalescing before registering any other undo operations. *
+ *****************************************************************************************/
+
+
 #import <AppKit/NSText.h>
 #import <AppKit/NSTextInput.h>
 #import <AppKit/NSDragging.h>
@@ -84,6 +92,11 @@ APPKIT_EXPORT NSString *NSOldSelectedCharacterRange;
    NSString              *_userCompletionHint;		// original "hint" text which started completion
    NSArray               *_userCompletions;             // current list of completions. shouldn't change while modal
    int                    _userCompletionSelectedItem;	// index within completion array
+  
+   NSUndoManager         *_fieldEditorUndoManager;
+   NSString              *_undoString; // The text that is being replaced by the current typing operation
+   NSRange                _undoRange; // The range of text that was entered in the current typing operation
+   BOOL                   _processingKeyEvent;
 }
 
 -initWithFrame:(NSRect)frame textContainer:(NSTextContainer *)container;
@@ -161,6 +174,8 @@ APPKIT_EXPORT NSString *NSOldSelectedCharacterRange;
 -(NSDragOperation)dragOperationForDraggingInfo:(id <NSDraggingInfo>)info type:(NSString *)type;
 -(void)cleanUpAfterDragOperation;
 
+-(void)_setFieldEditorUndoManager:(NSUndoManager *)undoManager;
+-(void)breakUndoCoalescing;
 @end
 
 @interface NSObject(NSTextView_undoManager)

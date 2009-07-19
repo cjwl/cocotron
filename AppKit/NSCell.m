@@ -22,6 +22,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/NSLocale.h>
 #import <Foundation/NSNumberFormatter.h>
+#import "NSCellUndoManager.h"
+#import <AppKit/NSTextView.h>
 
 @implementation NSCell
 
@@ -749,6 +751,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    }
    [[view window] makeFirstResponder:editor];
    [editor setDelegate:delegate];
+  
+   if ([editor isKindOfClass:[NSTextView class]]) {
+    NSCellUndoManager * undoManager = [[NSCellUndoManager alloc] init];
+    [undoManager setNextUndoManager:[[view window] undoManager]];
+    [(NSTextView *)editor _setFieldEditorUndoManager:undoManager];
+    [undoManager release];
+    [(NSTextView *)editor setAllowsUndo:YES];
+   }
 }
 
 -(void)editWithFrame:(NSRect)frame inView:(NSView *)view editor:(NSText *)editor delegate:(id)delegate event:(NSEvent *)event {

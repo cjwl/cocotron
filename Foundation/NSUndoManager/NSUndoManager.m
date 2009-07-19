@@ -450,5 +450,11 @@ NSString *NSUndoManagerDidRedoChangeNotification=@"NSUndoManagerDidRedoChangeNot
     return name;
 }
 
+- (void)clearRedoStackIfStateIsNormal
+{
+  if (_state == NSUndoManagerNormal)
+      [_redoStack removeAllObjects];
+}
+
 @end
 

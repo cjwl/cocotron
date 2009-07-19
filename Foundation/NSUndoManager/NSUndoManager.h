@@ -83,5 +83,6 @@ FOUNDATION_EXPORT NSString *NSUndoManagerDidRedoChangeNotification;
 -(NSString *)redoMenuItemTitle;
 -(NSString *)redoMenuTitleForUndoActionName:(NSString *)name;
 
+- (void)clearRedoStackIfStateIsNormal;
 @end
 

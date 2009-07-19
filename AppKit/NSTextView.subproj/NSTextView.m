@@ -197,6 +197,8 @@ NSString *NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
    [_insertionPointTimer invalidate];
    [_insertionPointTimer release];
    [_selectedTextAttributes release];
+   [_fieldEditorUndoManager release];
+   [_undoString release];
    [super dealloc];
 }
 
@@ -610,12 +612,15 @@ NSString *NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
 }
 
 -(void)undo:sender {
-    if (_allowsUndo == YES)
+    if (_allowsUndo == YES) {
+        [self breakUndoCoalescing];
         [[self undoManager] undo];
+    }
 }
 
 -(void)redo:sender {
     if (_allowsUndo == YES) {
+        [self breakUndoCoalescing];
         [[self undoManager] redo];
         [self didChangeText];
     }
@@ -1763,18 +1768,64 @@ NSString *NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
    return result;
 }
 
--(void)replaceCharactersInRange:(NSRange)range withString:(NSString *)string {
-    if (_allowsUndo && [[self undoManager] groupingLevel]>0) {
-        NSRange undoRange=range;
-
-        undoRange.length = [string length];
-
-        [[[self undoManager] prepareWithInvocationTarget:self] replaceCharactersInRange:undoRange withString:[[_textStorage string] substringWithRange:range]];
+-(void)replaceCharactersInRange:(NSRange)range withString:(NSString *)string 
+{
+  NSUndoManager * undoManager = [self undoManager];
+  
+  if (_allowsUndo && [undoManager groupingLevel]>0) 
+    {
+      if (_processingKeyEvent && ![undoManager isUndoing] && ![undoManager isRedoing]) 
+        {
+          // Coalesce the undo registrations from adjacent key events.
+          
+          if (_undoString != nil 
+              && range.location == _undoRange.location + _undoRange.length 
+              && range.length == 0) // Typed characters at the end of the current range.
+            {
+              _undoRange.length += [string length];
+            } 
+          else if (_undoString != nil 
+                   && range.location + range.length == _undoRange.location + _undoRange.length 
+                   && [string length] == 0) // Deleted characters at the end of the current range.
+            {
+              if (range.length <= _undoRange.length)
+                {
+                  _undoRange.length -= range.length;
+                }
+              else // Deleted past the beginning of the current range; add deleted characters to start of text being replaced.
+                {
+                  NSRange rangeToPrepend = range;
+                  rangeToPrepend.length -= _undoRange.length;
+                  [_undoString autorelease];
+                  NSString * stringToPrepend = [[_textStorage string] substringWithRange:rangeToPrepend];
+                  _undoString = [stringToPrepend stringByAppendingString:_undoString];
+                  [_undoString retain];
+                  _undoRange.location -= rangeToPrepend.length;
+                  _undoRange.length = 0;
+                }
+            }
+          else 
+            {
+              // Start a new range for coalescing.
+              [self breakUndoCoalescing];
+              _undoRange = range;
+              _undoRange.length = [string length];
+              _undoString = [[[_textStorage string] substringWithRange:range] copy];
+            }
+        } 
+      else 
+        {
+          [self breakUndoCoalescing];
+          NSRange undoRange=range;
+          undoRange.length = [string length];
+          [[undoManager prepareWithInvocationTarget:self] replaceCharactersInRange:undoRange 
+                                                                        withString:[[_textStorage string] substringWithRange:range]];
+        }
     }
-
-    [_textStorage replaceCharactersInRange:range withString:string];
-    [_textStorage setAttributes:[self _stringAttributes] range:NSMakeRange(range.location,[string length])];
-    [self setSelectedRange:NSMakeRange(range.location+[string length],0)];
+  
+  [_textStorage replaceCharactersInRange:range withString:string];
+  [_textStorage setAttributes:[self _stringAttributes] range:NSMakeRange(range.location,[string length])];
+  [self setSelectedRange:NSMakeRange(range.location+[string length],0)];
 }
 
 -(BOOL)readRTFDFromFile:(NSString *)path {
@@ -2075,26 +2126,11 @@ NSString *NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
 }
 
 -(void)keyDown:(NSEvent *)event {
-#if 1
-    if([event type]==NSKeyDown && [self isEditable])
-     [self interpretKeyEvents:[NSArray arrayWithObject:event]];
-#else
-// would be nice to get event coalescing working
-   while(YES) {
-    if([event type]==NSKeyDown)
-     [self interpretKeyEvents:[NSArray arrayWithObject:event]];
-
-    event=[[self window] nextEventMatchingMask:NSAnyEventMask
-        untilDate:[NSDate distantFuture] inMode:NSDefaultRunLoopMode dequeue:NO];
-    if([event type]!=NSKeyDown &&
-       [event type]!=NSFlagsChanged &&
-       [event type]!=NSKeyUp)
-     break;
-
-    event=[[self window] nextEventMatchingMask:NSAnyEventMask
-        untilDate:[NSDate distantFuture] inMode:NSDefaultRunLoopMode dequeue:YES];
-   }
-#endif
+    if([event type]==NSKeyDown && [self isEditable]) {
+        _processingKeyEvent = YES;
+        [self interpretKeyEvents:[NSArray arrayWithObject:event]];
+        _processingKeyEvent = NO;
+    }
 }
 
 -(void)doCommandBySelector:(SEL)selector {
@@ -2210,15 +2246,18 @@ NSString *NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
 -(NSUndoManager *)undoManager {
     if ([_delegate respondsToSelector:@selector(undoManagerForTextView:)])
         return [_delegate undoManagerForTextView:self];
+    
+    if (_fieldEditorUndoManager)
+        return _fieldEditorUndoManager;
 
     return [super undoManager];
 }
 
 -(BOOL)validateMenuItem:(NSMenuItem *)item {
     if ([item action] == @selector(undo:))
-        return _allowsUndo ? [[self undoManager] canUndo] : NO;
+        return _allowsUndo ? [[self undoManager] canUndo] || (_undoString != nil) : NO;
     if ([item action] == @selector(redo:))
-        return _allowsUndo ? [[self undoManager] canRedo] : NO;
+        return _allowsUndo ? [[self undoManager] canRedo] && (_undoString == nil) : NO;
 
     return YES;
 }
@@ -2288,6 +2327,29 @@ NSString *NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
 -(NSUInteger)characterIndexForPoint:(NSPoint)point {
    NSUnimplementedMethod();
    return 0;
+}
+
+-(void)_setFieldEditorUndoManager:(NSUndoManager *)undoManager
+{
+    [_fieldEditorUndoManager autorelease];
+    _fieldEditorUndoManager = [undoManager retain];
+    [_undoString release];
+    _undoString = nil;
+}
+
+-(void)breakUndoCoalescing
+{
+  if (_undoString)
+    {
+      NSUndoManager * undoManager = [self undoManager];
+      [[undoManager prepareWithInvocationTarget:self] replaceCharactersInRange:_undoRange 
+                                                                    withString:_undoString];
+      [_undoString release];
+      _undoString = nil;
+      
+      [undoManager endUndoGrouping];
+      [undoManager beginUndoGrouping];
+    }
 }
 
 @end
