@@ -47,6 +47,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(id)_setCurrentValueIsPlaceholder:(BOOL)isPlaceholder;
 @end
 
+@interface NSObject (NSEditor)
+-(BOOL)commitEditing;
+-(void)discardEditing;
+@end
+
+@interface NSObject (NSEditorRegistration)
+-(void)objectDidBeginEditing:editor;
+-(void)objectDidEndEditing:editor;
+@end
+
 APPKIT_EXPORT NSString* NSObservedObjectKey;
 APPKIT_EXPORT NSString* NSObservedKeyPathKey;
 APPKIT_EXPORT NSString* NSOptionsKey;

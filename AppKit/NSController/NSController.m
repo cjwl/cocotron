@@ -32,6 +32,20 @@ BOOL NSIsControllerMarker(id object)
    }
 }
 
+-init {
+  self = [super init];
+  if (self)
+    {
+      _editors = [[NSMutableArray alloc] init];
+    }
+  return self;
+}
+
+-(void)dealloc {
+  [_editors release];
+  [super dealloc];
+}
+
 -initWithCoder:(NSCoder *)coder {
    NSUnimplementedMethod();
    return self;
@@ -42,25 +56,35 @@ BOOL NSIsControllerMarker(id object)
 }
 
 -(BOOL)commitEditing {
-   NSUnimplementedMethod();
-   return NO;
+  if ([_editors count] == 0)
+    return YES;
+  
+  NSEnumerator * e = [_editors objectEnumerator];
+  id editor;
+  while ((editor = [e nextObject]))
+    if ([editor commitEditing] == NO)
+      return NO;
+  
+  return YES;
 }
 
 -(void)discardEditing {
-   NSUnimplementedMethod();
+  NSEnumerator * e = [_editors objectEnumerator];
+  id editor;
+  while ((editor = [e nextObject]))
+    [editor discardEditing];
 }
 
 -(BOOL)isEditing {
-   NSUnimplementedMethod();
-   return NO;
+  return [_editors count] > 0;
 }
 
 -(void)objectDidBeginEditing:editor {
-   NSUnimplementedMethod();
+  [_editors addObject:editor];
 }
 
 -(void)objectDidEndEditing:editor {
-   NSUnimplementedMethod();
+  [_editors removeObject:editor];
 }
 
 @end

@@ -15,6 +15,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSClipView.h>
 #import <Foundation/NSKeyedArchiver.h>
 #import <AppKit/NSRaise.h>
+#import <AppKit/NSObject+BindingSupport.h>
 
 NSString *NSControlTextDidBeginEditingNotification=@"NSControlTextDidBeginEditingNotification";
 NSString *NSControlTextDidChangeNotification=@"NSControlTextDidChangeNotification";
@@ -366,6 +367,15 @@ static NSMutableDictionary *cellClassDictionary = nil;
 
    [[NSNotificationCenter defaultCenter] postNotificationName:NSControlTextDidBeginEditingNotification
      object:self userInfo:[NSDictionary dictionaryWithObject:[note object] forKey:@"NSFieldEditor"]];
+  
+   // If this control's value is bound to an object that conforms to NSEditorRegistration, register as an editor.
+   NSDictionary * bindingInfo = [self infoForBinding:@"value"];
+   if (bindingInfo)
+     {
+       id observedObject = [bindingInfo objectForKey:NSObservedObjectKey];
+       if ([observedObject respondsToSelector:@selector(objectDidBeginEditing:)])
+         [observedObject objectDidBeginEditing:self];
+     }
 }
 
 -(void)textDidChange:(NSNotification *)note {
@@ -390,6 +400,15 @@ static NSMutableDictionary *cellClassDictionary = nil;
    [[NSNotificationCenter defaultCenter] postNotificationName:NSControlTextDidEndEditingNotification
      object:self userInfo:[NSDictionary dictionaryWithObject:[note object] forKey:@"NSFieldEditor"]];
 
+   // If this control's value is bound to an object that conforms to NSEditorRegistration, unregister as an editor.
+   NSDictionary * bindingInfo = [self infoForBinding:@"value"];
+   if (bindingInfo)
+     {
+       id observedObject = [bindingInfo objectForKey:NSObservedObjectKey];
+       if ([observedObject respondsToSelector:@selector(objectDidEndEditing:)])
+         [observedObject objectDidEndEditing:self];
+     }
+  
    [self setNeedsDisplay:YES];
 }
 
@@ -436,6 +455,17 @@ static NSMutableDictionary *cellClassDictionary = nil;
     [self unlockFocus];
     [self setNeedsDisplay:YES];
    }
+}
+
+// NSEditor methods
+
+-(BOOL)commitEditing {
+  [self validateEditing];
+  return YES;
+}
+
+- (void)discardEditing {
+  [self abortEditing];
 }
 
 @end
