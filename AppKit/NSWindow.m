@@ -1707,23 +1707,42 @@ NSString *NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification";
 }
 
 -(NSPoint)cascadeTopLeftFromPoint:(NSPoint)topLeftPoint {
+   BOOL    reposition = NO;
    NSSize  screenSize = [[self screen] frame].size;
    NSRect  frame = [self frame];
-
-   if (topLeftPoint.x + topLeftPoint.y == 0.0 || topLeftPoint.x > 0.5*screenSize.width || topLeftPoint.y < 0.5*screenSize.height)
+   
+   if (frame.origin.x < 0.0 || screenSize.width  <= frame.origin.x + frame.size.width)
    {
-      topLeftPoint.x = frame.origin.x;
-      topLeftPoint.y = frame.origin.y + frame.size.height;
+      frame.origin.x = 2.0;
+      reposition = YES;
    }
    
-   else
+   if (frame.origin.y < 0.0 || screenSize.height <= frame.origin.y + frame.size.height)
    {
-      topLeftPoint.x += 18;
-      topLeftPoint.y -= 21;
-      frame.origin.x=topLeftPoint.x;
-      frame.origin.y=topLeftPoint.y - frame.size.height;
-      [self setFrame:frame display:YES];
+      frame.origin.y = 2.0;
+      reposition = YES;
    }
+   
+   if (topLeftPoint.x != 0.0 && topLeftPoint.x + frame.size.width + 20.0 < screenSize.width)
+   {
+      topLeftPoint.x += 18.0;
+      frame.origin.x = topLeftPoint.x;
+      reposition = YES;
+   }
+   else
+      topLeftPoint.x = frame.origin.x;
+   
+   if (topLeftPoint.y != 0.0 && topLeftPoint.y - frame.size.height - 23.0 >= 0.0)
+   {
+      topLeftPoint.y -= 21.0;
+      frame.origin.y = topLeftPoint.y - frame.size.height;
+      reposition = YES;
+   }
+   else
+      topLeftPoint.y = frame.origin.y + frame.size.height;
+   
+   if (reposition)
+      [self setFrame:frame display:YES];
    
    return topLeftPoint;
 }
