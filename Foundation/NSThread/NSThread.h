@@ -77,6 +77,8 @@ FOUNDATION_EXPORT NSString *NSThreadWillExitNotification;
 @end
 
 @interface NSObject(NSThread)
+-(void)performSelector:(SEL)selector onThread:(NSThread *)thread withObject:(id)object waitUntilDone:(BOOL)waitUntilDone modes:(NSArray *)modes;
+-(void)performSelector:(SEL)selector onThread:(NSThread *)thread withObject:(id)object waitUntilDone:(BOOL)waitUntilDone;
 -(void)performSelectorOnMainThread:(SEL)selector withObject:object waitUntilDone:(BOOL)waitUntilDone modes:(NSArray *)modes;
 -(void)performSelectorOnMainThread:(SEL)selector withObject:object waitUntilDone:(BOOL)waitUntilDone;
 -(void)performSelectorInBackground:(SEL)selector withObject:object;
