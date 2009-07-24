@@ -464,8 +464,7 @@ static inline void appendCharacter(NSPropertyListReader_vintage *self,uint8_t c)
    }
 
    // FIX, make sure _stackSize is 1?
-
-   return [popObject(self) autorelease];
+   return [self convertValue:[popObject(self) autorelease]];
 }
 
 +(NSObject *)propertyListFromData:(NSData *)data {
