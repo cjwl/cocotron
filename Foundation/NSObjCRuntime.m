@@ -75,18 +75,13 @@ const char *NSGetSizeAndAlignment(const char *type,NSUInteger *size,NSUInteger *
 	return objc_skip_type_specifier(type);
 }
 
-SEL NSSelectorFromString(NSString *selectorName) {
-   SEL      result;
-   
+SEL NSSelectorFromString(NSString *selectorName) {   
    NSUInteger length=[selectorName length];
    char     cString[length+1];
 
    [selectorName getCString:cString maxLength:length];
 
-   if((result=sel_getUid(cString))==NULL)
-    result=sel_registerName(cString);
-   
-   return result;
+   return sel_getUid(cString);
 }
 
 NSString *NSStringFromSelector(SEL selector) {

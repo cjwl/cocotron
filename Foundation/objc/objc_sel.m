@@ -36,14 +36,28 @@ const char *sel_getName(SEL selector) {
   if(selector==NULL)
     return NULL;
   
-   return (const char*)OBJCHashValueForKey(nameToNumber, selector);
+  if(nameToNumber==NULL)
+   return NULL;
+   
+  return (const char*)OBJCHashValueForKey(nameToNumber, selector);
 }
 
 SEL sel_getUid(const char *selectorName) {
-   if(nameToNumber==NULL)
-    return NULL;
+   SEL result;
 
-   return (SEL)OBJCHashValueForKey(nameToNumber,selectorName);
+   if(nameToNumber==NULL)
+    result=NULL;
+   else
+    result=(SEL)OBJCHashValueForKey(nameToNumber,selectorName);
+
+   if(result==NULL){
+    char *copy=NSZoneMalloc(NULL,sizeof(char)*(strlen(selectorName)+1));
+
+    strcpy(copy,selectorName);
+    result=(SEL)sel_registerNameNoCopy(copy);
+   }
+
+   return result;
 }
 
 BOOL sel_isEqual(SEL selector,SEL other) {
@@ -51,16 +65,7 @@ BOOL sel_isEqual(SEL selector,SEL other) {
 }
 
 SEL sel_registerName(const char *cString){
-   SEL result=sel_getUid(cString);
-
-   if(result==NULL){
-    char *copy=NSZoneMalloc(NULL,sizeof(char)*(strlen(cString)+1));
-
-    strcpy(copy,cString);
-    result=(SEL)sel_registerNameNoCopy(copy);
-   }
-
-   return result;
+   return sel_getUid(cString);
 }
 
 BOOL sel_isMapped(SEL selector) {
