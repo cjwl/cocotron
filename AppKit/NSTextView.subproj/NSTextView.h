@@ -188,4 +188,13 @@ APPKIT_EXPORT NSString *NSOldSelectedCharacterRange;
 -(NSArray *)textView:(NSTextView *)textView completions:(NSArray *)words forPartialWordRange:(NSRange)range indexOfSelectedItem:(int *)index;
 
 -(void)textViewDidChangeSelection:(NSNotification *)note;
+
+- (NSRange)                  textView: (NSTextView *) textView
+willChangeSelectionFromCharacterRange: (NSRange)      oldSelectedCharRange    
+                     toCharacterRange: (NSRange)      newSelectedCharRange;
+
+- (BOOL)       textView: (NSTextView *) textView
+shouldChangeTextInRange: (NSRange)      affectedCharRange
+      replacementString: (NSString *)   replacementString;
+
 @end
