@@ -2343,6 +2343,12 @@ NSString *NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification";
     if ([_delegate respondsToSelector:@selector(windowWillReturnUndoManager:)])
         return [_delegate windowWillReturnUndoManager:self];
     
+    // If this window is associated with a document, return the document's undo manager.
+    // Apple's documentation says this is the delegate's responsibility, but that's not how it works in real life.
+    if (_undoManager == nil) {
+        _undoManager = [[[[self windowController] document] undoManager] retain];
+    }
+
     //  If the delegate does not implement this method, the NSWindow creates an NSUndoManager for the window and all its views. -- seems like some duplication vs. NSDocument, but oh well..
     if (_undoManager == nil){
         _undoManager = [[NSUndoManager alloc] init];
@@ -2350,6 +2356,23 @@ NSString *NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification";
     }
 
     return _undoManager;
+}
+
+-(void)undo:sender {
+    [[self undoManager] undo];
+}
+
+-(void)redo:sender {
+    [[self undoManager] redo];
+}
+
+-(BOOL)validateMenuItem:(NSMenuItem *)item {
+    if ([item action] == @selector(undo:))
+        return [[self undoManager] canUndo];
+    if ([item action] == @selector(redo:))
+        return [[self undoManager] canRedo];
+    
+    return YES;
 }
 
 -(void)_attachDrawer:(NSDrawer *)drawer {
