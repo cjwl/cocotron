@@ -192,9 +192,15 @@ static inline void byteZero(void *vsrc,size_t size){
 }
 
 -(BOOL)hasBytesAvailable {
-   uint8_t buf[1];
+    struct timeval t;
+    t.tv_sec = 0;
+    t.tv_usec = 0;
 
-   return (recv(_descriptor,buf,1,MSG_PEEK)==1)?YES:NO;
+    fd_set s;
+    FD_ZERO(&s);
+    FD_SET(_descriptor, &s);
+
+    return (select(0, &s, NULL, NULL, &t) == 1) ? YES : NO;
 }
 
 -(NSInteger)read:(uint8_t *)buffer maxLength:(NSUInteger)length {
