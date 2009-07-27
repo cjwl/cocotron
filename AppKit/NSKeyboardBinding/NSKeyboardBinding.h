@@ -10,13 +10,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @class NSArray, NSString;
 
-@interface NSKeyBinding : NSObject {
+@interface NSKeyboardBinding : NSObject {
     NSString *_string;
     int _modifierMask;
     NSArray *_selectorNames;
 }
 
-+ (NSKeyBinding *)keyBindingWithString:(NSString *)string modifierMask:(int)mask selectorNames:(NSArray *)selNames;
++ (NSKeyboardBinding *)keyBindingWithString:(NSString *)string modifierMask:(int)mask selectorNames:(NSArray *)selNames;
 
 - (id)initWithString:(NSString *)string modifierMask:(unsigned)mask selectorNames:(NSArray *)selNames;
 

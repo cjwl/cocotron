@@ -8,27 +8,27 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/NSObject.h>
 
-@class NSArray, NSDictionary, NSKeyBinding;
+@class NSArray, NSDictionary, NSKeyboardBinding;
 
-@interface NSKeyBindingManager : NSObject {
+@interface NSKeyboardBindingManager : NSObject {
     NSDictionary *_dictionary;
     NSArray *_keyBindings;
-    NSKeyBindingManager *_nextKeyBindingManager;
+    NSKeyboardBindingManager *_nextKeyBindingManager;
 }
 
 // creates a key binding manager chain in the following order:
 // +[NSBundle mainBundle] KeyBindings.keybindings
-// +[NSBundle bundleForClass:NSKeyBindingManager] StandardKeyBindings.keybindings
-+ (NSKeyBindingManager *)defaultKeyBindingManager;
+// +[NSBundle bundleForClass:NSKeyboardBindingManager] StandardKeyBindings.keybindings
++ (NSKeyboardBindingManager *)defaultKeyBindingManager;
 
 // designated initializer; override for alternate dictionary formats
 - (id)initWithDictionary:(NSDictionary *)dictionary;
 
 - (NSArray *)keyBindings;
 
-- (void)setNextKeyBindingManager:(NSKeyBindingManager *)manager;
-- (NSKeyBindingManager *)nextKeyBindingManager;
+- (void)setNextKeyBindingManager:(NSKeyboardBindingManager *)manager;
+- (NSKeyboardBindingManager *)nextKeyBindingManager;
 
-- (NSKeyBinding *)keyBindingWithString:(NSString *)string modifierFlags:(unsigned)flags;
+- (NSKeyboardBinding *)keyBindingWithString:(NSString *)string modifierFlags:(unsigned)flags;
 
 @end

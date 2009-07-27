@@ -7,25 +7,25 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
 // Original - David Young <daver@geeks.org>
-#import <AppKit/NSKeyBindingManager.h>
-#import <AppKit/NSKeyBinding.h>
+#import <AppKit/NSKeyboardBindingManager.h>
+#import <AppKit/NSKeyboardBinding.h>
 #import <AppKit/NSEvent.h>
 #import <Foundation/NSString.h>
 #import <Foundation/NSArray.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSScanner.h>
 
-@implementation NSKeyBindingManager
+@implementation NSKeyboardBindingManager
 
 + (NSArray *)keyBindingPaths {
     return [NSArray arrayWithObjects:
-        [[NSBundle bundleForClass:[NSKeyBindingManager class]] pathForResource:@"StandardKeyBindings" ofType:@"keyBindings"],
+        [[NSBundle bundleForClass:[NSKeyboardBindingManager class]] pathForResource:@"StandardKeyBindings" ofType:@"keyBindings"],
         [[NSBundle mainBundle] pathForResource:@"KeyBindings" ofType:@"keyBindings"],
         nil];
 }
 
-+ (NSKeyBindingManager *)defaultKeyBindingManager {
-    static NSKeyBindingManager *firstKeyBindingManager = nil;
++ (NSKeyboardBindingManager *)defaultKeyBindingManager {
+    static NSKeyboardBindingManager *firstKeyBindingManager = nil;
 
     if (firstKeyBindingManager == nil) {
         NSArray *paths = [self keyBindingPaths];
@@ -36,7 +36,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
             NSDictionary *keyBindingDictionary = [NSDictionary dictionaryWithContentsOfFile:path];
 
             if (keyBindingDictionary != nil) {
-                NSKeyBindingManager *manager = [[self alloc] initWithDictionary:keyBindingDictionary];
+                NSKeyboardBindingManager *manager = [[self alloc] initWithDictionary:keyBindingDictionary];
 
                 [manager setNextKeyBindingManager:firstKeyBindingManager];
                 firstKeyBindingManager = manager;
@@ -82,7 +82,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     int i, count = [allKeys count];
 
     for (i = 0; i < count; ++i) {
-        NSKeyBinding *keyBinding;
+        NSKeyboardBinding *keyBinding;
         NSString *key = [allKeys objectAtIndex:i];
         id value = [dict objectForKey:key];
         NSMutableArray *keyComponents = [[[key componentsSeparatedByString:@","] mutableCopy] autorelease];
@@ -101,7 +101,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
             value = [NSArray arrayWithObject:value];
 
         // we can change this later to support multi-character unicode
-        keyBinding = [NSKeyBinding keyBindingWithString:[NSString stringWithCharacters:&hexCode length:1]
+        keyBinding = [NSKeyboardBinding keyBindingWithString:[NSString stringWithCharacters:&hexCode length:1]
                                            modifierMask:modifierMask selectorNames:value];
 
         [keyBindings addObject:keyBinding];
@@ -114,7 +114,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     [super init];
 
     _dictionary = [dictionary retain];
-    _keyBindings = [[NSKeyBindingManager keyBindingsFromDictionary:_dictionary] retain];
+    _keyBindings = [[NSKeyboardBindingManager keyBindingsFromDictionary:_dictionary] retain];
 
     return self;
 }
@@ -131,23 +131,23 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     return _keyBindings;
 }
 
-- (void)setNextKeyBindingManager:(NSKeyBindingManager *)manager {
+- (void)setNextKeyBindingManager:(NSKeyboardBindingManager *)manager {
     [_nextKeyBindingManager autorelease];
     _nextKeyBindingManager = [manager retain];
 }
 
-- (NSKeyBindingManager *)nextKeyBindingManager {
+- (NSKeyboardBindingManager *)nextKeyBindingManager {
     return _nextKeyBindingManager;
 }
 
-- (NSKeyBinding *)keyBindingWithString:(NSString *)string modifierFlags:(unsigned)flags {
+- (NSKeyboardBinding *)keyBindingWithString:(NSString *)string modifierFlags:(unsigned)flags {
     int i, count = [_keyBindings count];
 
     flags&=~ NSNumericPadKeyMask;
     flags&=~ NSAlphaShiftKeyMask;
 
     for (i = 0; i < count; ++i) {
-        NSKeyBinding *keyBinding = [_keyBindings objectAtIndex:i];
+        NSKeyboardBinding *keyBinding = [_keyBindings objectAtIndex:i];
 
         if ([[keyBinding string] isEqualToString:string] && (flags==([keyBinding modifierMask]&~ NSNumericPadKeyMask)))
             return keyBinding;

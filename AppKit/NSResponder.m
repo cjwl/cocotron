@@ -9,8 +9,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSResponder.h>
 #import <AppKit/NSAlert.h>
 #import <AppKit/NSEvent.h>
-#import <AppKit/NSKeyBindingManager.h>
-#import <AppKit/NSKeyBinding.h>
+#import <AppKit/NSKeyboardBindingManager.h>
+#import <AppKit/NSKeyboardBinding.h>
 #import <AppKit/NSApplication.h>
 #import <Foundation/NSKeyedArchiver.h>
 #import <AppKit/NSGraphics.h>
@@ -71,7 +71,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    for(i=0;i<count;i++){
     NSEvent      *event=[events objectAtIndex:i];
     NSString     *string=[event charactersIgnoringModifiers];
-    NSKeyBinding *keyBinding=[[NSKeyBindingManager defaultKeyBindingManager] keyBindingWithString:string modifierFlags:[event modifierFlags]];
+    NSKeyboardBinding *keyBinding=[[NSKeyboardBindingManager defaultKeyBindingManager] keyBindingWithString:string modifierFlags:[event modifierFlags]];
     NSArray      *selectorNames=[keyBinding selectorNames];
 
     if(selectorNames!=nil){

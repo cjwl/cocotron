@@ -231,8 +231,8 @@
 		C88974DB0EA0BF3100D0A0A2 /* NSMenuWindow.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B56EB0976075400DA0954 /* NSMenuWindow.h */; settings = {ATTRIBUTES = (Project, Private, ); }; };
 		C88974DC0EA0BF3100D0A0A2 /* NSOverflowMenuView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B56ED0976075400DA0954 /* NSOverflowMenuView.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		C88974DD0EA0BF3100D0A0A2 /* NSSubmenuView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B56EF0976075400DA0954 /* NSSubmenuView.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		C88974DE0EA0BF3100D0A0A2 /* NSKeyBindingManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B57030976075400DA0954 /* NSKeyBindingManager.h */; settings = {ATTRIBUTES = (Project, Private, ); }; };
-		C88974DF0EA0BF3100D0A0A2 /* NSKeyBinding.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B57050976075400DA0954 /* NSKeyBinding.h */; settings = {ATTRIBUTES = (Project, Private, ); }; };
+		C88974DE0EA0BF3100D0A0A2 /* NSKeyboardBindingManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B57030976075400DA0954 /* NSKeyboardBindingManager.h */; settings = {ATTRIBUTES = (Project, Private, ); }; };
+		C88974DF0EA0BF3100D0A0A2 /* NSKeyboardBinding.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B57050976075400DA0954 /* NSKeyboardBinding.h */; settings = {ATTRIBUTES = (Project, Private, ); }; };
 		C88974E10EA0BF3100D0A0A2 /* NSToolbar.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B57270976075400DA0954 /* NSToolbar.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
 		C88974E30EA0BF3100D0A0A2 /* NSToolbarItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B572B0976075400DA0954 /* NSToolbarItem.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
 		C88974E40EA0BF3100D0A0A2 /* NSToolbarView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B572D0976075500DA0954 /* NSToolbarView.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -533,8 +533,8 @@
 		C88976340EA0BF3100D0A0A2 /* NSMenuWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B56DC0976075400DA0954 /* NSMenuWindow.m */; settings = {ATTRIBUTES = (); }; };
 		C88976350EA0BF3100D0A0A2 /* NSOverflowMenuView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B56DE0976075400DA0954 /* NSOverflowMenuView.m */; settings = {ATTRIBUTES = (); }; };
 		C88976360EA0BF3100D0A0A2 /* NSSubmenuView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B56E00976075400DA0954 /* NSSubmenuView.m */; settings = {ATTRIBUTES = (); }; };
-		C88976370EA0BF3100D0A0A2 /* NSKeyBindingManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B56FE0976075400DA0954 /* NSKeyBindingManager.m */; settings = {ATTRIBUTES = (); }; };
-		C88976380EA0BF3100D0A0A2 /* NSKeyBinding.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B57000976075400DA0954 /* NSKeyBinding.m */; settings = {ATTRIBUTES = (); }; };
+		C88976370EA0BF3100D0A0A2 /* NSKeyboardBindingManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B56FE0976075400DA0954 /* NSKeyboardBindingManager.m */; settings = {ATTRIBUTES = (); }; };
+		C88976380EA0BF3100D0A0A2 /* NSKeyboardBinding.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B57000976075400DA0954 /* NSKeyboardBinding.m */; settings = {ATTRIBUTES = (); }; };
 		C889763A0EA0BF3100D0A0A2 /* NSToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B57120976075400DA0954 /* NSToolbar.m */; settings = {ATTRIBUTES = (); }; };
 		C889763C0EA0BF3100D0A0A2 /* NSToolbarItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B57160976075400DA0954 /* NSToolbarItem.m */; settings = {ATTRIBUTES = (); }; };
 		C889763D0EA0BF3100D0A0A2 /* NSToolbarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B57180976075400DA0954 /* NSToolbarView.m */; settings = {ATTRIBUTES = (); }; };
@@ -907,8 +907,8 @@
 		C8A2E35C0F07EA1F0054397C /* NSMenuWindow.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B56EB0976075400DA0954 /* NSMenuWindow.h */; settings = {ATTRIBUTES = (Project, Private, ); }; };
 		C8A2E35D0F07EA1F0054397C /* NSOverflowMenuView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B56ED0976075400DA0954 /* NSOverflowMenuView.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		C8A2E35E0F07EA1F0054397C /* NSSubmenuView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B56EF0976075400DA0954 /* NSSubmenuView.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		C8A2E35F0F07EA1F0054397C /* NSKeyBindingManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B57030976075400DA0954 /* NSKeyBindingManager.h */; settings = {ATTRIBUTES = (Project, Private, ); }; };
-		C8A2E3600F07EA1F0054397C /* NSKeyBinding.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B57050976075400DA0954 /* NSKeyBinding.h */; settings = {ATTRIBUTES = (Project, Private, ); }; };
+		C8A2E35F0F07EA1F0054397C /* NSKeyboardBindingManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B57030976075400DA0954 /* NSKeyboardBindingManager.h */; settings = {ATTRIBUTES = (Project, Private, ); }; };
+		C8A2E3600F07EA1F0054397C /* NSKeyboardBinding.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B57050976075400DA0954 /* NSKeyboardBinding.h */; settings = {ATTRIBUTES = (Project, Private, ); }; };
 		C8A2E3620F07EA1F0054397C /* NSToolbar.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B57270976075400DA0954 /* NSToolbar.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
 		C8A2E3640F07EA1F0054397C /* NSToolbarItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B572B0976075400DA0954 /* NSToolbarItem.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
 		C8A2E3650F07EA1F0054397C /* NSToolbarView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B572D0976075500DA0954 /* NSToolbarView.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -1215,8 +1215,8 @@
 		C8A2E49C0F07EA1F0054397C /* NSMenuWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B56DC0976075400DA0954 /* NSMenuWindow.m */; settings = {ATTRIBUTES = (); }; };
 		C8A2E49D0F07EA1F0054397C /* NSOverflowMenuView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B56DE0976075400DA0954 /* NSOverflowMenuView.m */; settings = {ATTRIBUTES = (); }; };
 		C8A2E49E0F07EA1F0054397C /* NSSubmenuView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B56E00976075400DA0954 /* NSSubmenuView.m */; settings = {ATTRIBUTES = (); }; };
-		C8A2E49F0F07EA1F0054397C /* NSKeyBindingManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B56FE0976075400DA0954 /* NSKeyBindingManager.m */; settings = {ATTRIBUTES = (); }; };
-		C8A2E4A00F07EA1F0054397C /* NSKeyBinding.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B57000976075400DA0954 /* NSKeyBinding.m */; settings = {ATTRIBUTES = (); }; };
+		C8A2E49F0F07EA1F0054397C /* NSKeyboardBindingManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B56FE0976075400DA0954 /* NSKeyboardBindingManager.m */; settings = {ATTRIBUTES = (); }; };
+		C8A2E4A00F07EA1F0054397C /* NSKeyboardBinding.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B57000976075400DA0954 /* NSKeyboardBinding.m */; settings = {ATTRIBUTES = (); }; };
 		C8A2E4A20F07EA1F0054397C /* NSToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B57120976075400DA0954 /* NSToolbar.m */; settings = {ATTRIBUTES = (); }; };
 		C8A2E4A40F07EA1F0054397C /* NSToolbarItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B57160976075400DA0954 /* NSToolbarItem.m */; settings = {ATTRIBUTES = (); }; };
 		C8A2E4A50F07EA1F0054397C /* NSToolbarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B57180976075400DA0954 /* NSToolbarView.m */; settings = {ATTRIBUTES = (); }; };
@@ -1624,8 +1624,8 @@
 		FE01A8CD0C5D9BCB00AEA51A /* NSMenuWindow.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B56EB0976075400DA0954 /* NSMenuWindow.h */; settings = {ATTRIBUTES = (Project, Private, ); }; };
 		FE01A8CE0C5D9BCB00AEA51A /* NSOverflowMenuView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B56ED0976075400DA0954 /* NSOverflowMenuView.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE01A8CF0C5D9BCB00AEA51A /* NSSubmenuView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B56EF0976075400DA0954 /* NSSubmenuView.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		FE01A8D00C5D9BCB00AEA51A /* NSKeyBindingManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B57030976075400DA0954 /* NSKeyBindingManager.h */; settings = {ATTRIBUTES = (Project, Private, ); }; };
-		FE01A8D10C5D9BCB00AEA51A /* NSKeyBinding.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B57050976075400DA0954 /* NSKeyBinding.h */; settings = {ATTRIBUTES = (Project, Private, ); }; };
+		FE01A8D00C5D9BCB00AEA51A /* NSKeyboardBindingManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B57030976075400DA0954 /* NSKeyboardBindingManager.h */; settings = {ATTRIBUTES = (Project, Private, ); }; };
+		FE01A8D10C5D9BCB00AEA51A /* NSKeyboardBinding.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B57050976075400DA0954 /* NSKeyboardBinding.h */; settings = {ATTRIBUTES = (Project, Private, ); }; };
 		FE01A8D30C5D9BCB00AEA51A /* NSToolbar.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B57270976075400DA0954 /* NSToolbar.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
 		FE01A8D50C5D9BCB00AEA51A /* NSToolbarItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B572B0976075400DA0954 /* NSToolbarItem.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
 		FE01A8D60C5D9BCB00AEA51A /* NSToolbarView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B572D0976075500DA0954 /* NSToolbarView.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -1918,8 +1918,8 @@
 		FE01AA0F0C5D9BCB00AEA51A /* NSMenuWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B56DC0976075400DA0954 /* NSMenuWindow.m */; settings = {ATTRIBUTES = (); }; };
 		FE01AA100C5D9BCB00AEA51A /* NSOverflowMenuView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B56DE0976075400DA0954 /* NSOverflowMenuView.m */; settings = {ATTRIBUTES = (); }; };
 		FE01AA110C5D9BCB00AEA51A /* NSSubmenuView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B56E00976075400DA0954 /* NSSubmenuView.m */; settings = {ATTRIBUTES = (); }; };
-		FE01AA120C5D9BCB00AEA51A /* NSKeyBindingManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B56FE0976075400DA0954 /* NSKeyBindingManager.m */; settings = {ATTRIBUTES = (); }; };
-		FE01AA130C5D9BCB00AEA51A /* NSKeyBinding.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B57000976075400DA0954 /* NSKeyBinding.m */; settings = {ATTRIBUTES = (); }; };
+		FE01AA120C5D9BCB00AEA51A /* NSKeyboardBindingManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B56FE0976075400DA0954 /* NSKeyboardBindingManager.m */; settings = {ATTRIBUTES = (); }; };
+		FE01AA130C5D9BCB00AEA51A /* NSKeyboardBinding.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B57000976075400DA0954 /* NSKeyboardBinding.m */; settings = {ATTRIBUTES = (); }; };
 		FE01AA150C5D9BCB00AEA51A /* NSToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B57120976075400DA0954 /* NSToolbar.m */; settings = {ATTRIBUTES = (); }; };
 		FE01AA170C5D9BCB00AEA51A /* NSToolbarItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B57160976075400DA0954 /* NSToolbarItem.m */; settings = {ATTRIBUTES = (); }; };
 		FE01AA180C5D9BCB00AEA51A /* NSToolbarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B57180976075400DA0954 /* NSToolbarView.m */; settings = {ATTRIBUTES = (); }; };
@@ -2337,8 +2337,8 @@
 		FEA314300FD5667D00F480D4 /* NSMenuWindow.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B56EB0976075400DA0954 /* NSMenuWindow.h */; settings = {ATTRIBUTES = (Project, Private, ); }; };
 		FEA314310FD5667D00F480D4 /* NSOverflowMenuView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B56ED0976075400DA0954 /* NSOverflowMenuView.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FEA314320FD5667D00F480D4 /* NSSubmenuView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B56EF0976075400DA0954 /* NSSubmenuView.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		FEA314330FD5667D00F480D4 /* NSKeyBindingManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B57030976075400DA0954 /* NSKeyBindingManager.h */; settings = {ATTRIBUTES = (Project, Private, ); }; };
-		FEA314340FD5667D00F480D4 /* NSKeyBinding.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B57050976075400DA0954 /* NSKeyBinding.h */; settings = {ATTRIBUTES = (Project, Private, ); }; };
+		FEA314330FD5667D00F480D4 /* NSKeyboardBindingManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B57030976075400DA0954 /* NSKeyboardBindingManager.h */; settings = {ATTRIBUTES = (Project, Private, ); }; };
+		FEA314340FD5667D00F480D4 /* NSKeyboardBinding.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B57050976075400DA0954 /* NSKeyboardBinding.h */; settings = {ATTRIBUTES = (Project, Private, ); }; };
 		FEA314350FD5667D00F480D4 /* NSToolbar.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B57270976075400DA0954 /* NSToolbar.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
 		FEA314360FD5667D00F480D4 /* NSToolbarItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B572B0976075400DA0954 /* NSToolbarItem.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
 		FEA314370FD5667D00F480D4 /* NSToolbarView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B572D0976075500DA0954 /* NSToolbarView.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -2574,8 +2574,8 @@
 		FEA315700FD5667D00F480D4 /* NSMenuWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B56DC0976075400DA0954 /* NSMenuWindow.m */; settings = {ATTRIBUTES = (); }; };
 		FEA315710FD5667D00F480D4 /* NSOverflowMenuView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B56DE0976075400DA0954 /* NSOverflowMenuView.m */; settings = {ATTRIBUTES = (); }; };
 		FEA315720FD5667D00F480D4 /* NSSubmenuView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B56E00976075400DA0954 /* NSSubmenuView.m */; settings = {ATTRIBUTES = (); }; };
-		FEA315730FD5667D00F480D4 /* NSKeyBindingManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B56FE0976075400DA0954 /* NSKeyBindingManager.m */; settings = {ATTRIBUTES = (); }; };
-		FEA315740FD5667D00F480D4 /* NSKeyBinding.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B57000976075400DA0954 /* NSKeyBinding.m */; settings = {ATTRIBUTES = (); }; };
+		FEA315730FD5667D00F480D4 /* NSKeyboardBindingManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B56FE0976075400DA0954 /* NSKeyboardBindingManager.m */; settings = {ATTRIBUTES = (); }; };
+		FEA315740FD5667D00F480D4 /* NSKeyboardBinding.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B57000976075400DA0954 /* NSKeyboardBinding.m */; settings = {ATTRIBUTES = (); }; };
 		FEA315750FD5667D00F480D4 /* NSToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B57120976075400DA0954 /* NSToolbar.m */; settings = {ATTRIBUTES = (); }; };
 		FEA315760FD5667D00F480D4 /* NSToolbarItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B57160976075400DA0954 /* NSToolbarItem.m */; settings = {ATTRIBUTES = (); }; };
 		FEA315770FD5667D00F480D4 /* NSToolbarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2B57180976075400DA0954 /* NSToolbarView.m */; settings = {ATTRIBUTES = (); }; };
@@ -3313,10 +3313,10 @@
 		6E2B56F20976075400DA0954 /* NSMenuArrow.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = NSMenuArrow.tiff; sourceTree = "<group>"; };
 		6E2B56F40976075400DA0954 /* NSMenuViewDoubleRightArrow.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = NSMenuViewDoubleRightArrow.tiff; sourceTree = "<group>"; };
 		6E2B56F60976075400DA0954 /* NSMenuViewDoubleRightArrowGray.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = NSMenuViewDoubleRightArrowGray.tiff; sourceTree = "<group>"; };
-		6E2B56FE0976075400DA0954 /* NSKeyBindingManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NSKeyBindingManager.m; sourceTree = "<group>"; };
-		6E2B57000976075400DA0954 /* NSKeyBinding.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NSKeyBinding.m; sourceTree = "<group>"; };
-		6E2B57030976075400DA0954 /* NSKeyBindingManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NSKeyBindingManager.h; sourceTree = "<group>"; };
-		6E2B57050976075400DA0954 /* NSKeyBinding.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NSKeyBinding.h; sourceTree = "<group>"; };
+		6E2B56FE0976075400DA0954 /* NSKeyboardBindingManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NSKeyboardBindingManager.m; sourceTree = "<group>"; };
+		6E2B57000976075400DA0954 /* NSKeyboardBinding.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NSKeyboardBinding.m; sourceTree = "<group>"; };
+		6E2B57030976075400DA0954 /* NSKeyboardBindingManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NSKeyboardBindingManager.h; sourceTree = "<group>"; };
+		6E2B57050976075400DA0954 /* NSKeyboardBinding.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NSKeyboardBinding.h; sourceTree = "<group>"; };
 		6E2B57080976075400DA0954 /* StandardKeyBindings.keybindings */ = {isa = PBXFileReference; lastKnownFileType = text; path = StandardKeyBindings.keybindings; sourceTree = "<group>"; };
 		6E2B57120976075400DA0954 /* NSToolbar.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NSToolbar.m; sourceTree = "<group>"; };
 		6E2B57160976075400DA0954 /* NSToolbarItem.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NSToolbarItem.m; sourceTree = "<group>"; };
@@ -3890,7 +3890,7 @@
 				FE44327B0BB95F4300411464 /* NSInterfacePart */,
 				6E2B54680976075200DA0954 /* NSInterfaceStyle.h */,
 				6E2B538B0976075200DA0954 /* NSInterfaceStyle.m */,
-				6E2B56FC0976075400DA0954 /* NSKeyBinding */,
+				6E2B56FC0976075400DA0954 /* NSKeyboardBinding */,
 				FE8BAF1A0BC9EC0B0007FACA /* NSKeyValueBinding */,
 				FE2A10D90B45BB28006C03DE /* NSLevelIndicator.h */,
 				FE2A10DA0B45BB28006C03DE /* NSLevelIndicator.m */,
@@ -4558,17 +4558,16 @@
 			name = Images;
 			sourceTree = "<group>";
 		};
-		6E2B56FC0976075400DA0954 /* NSKeyBinding */ = {
+		6E2B56FC0976075400DA0954 /* NSKeyboardBinding */ = {
 			isa = PBXGroup;
 			children = (
-				6E2B57050976075400DA0954 /* NSKeyBinding.h */,
-				6E2B57000976075400DA0954 /* NSKeyBinding.m */,
-				6E2B57030976075400DA0954 /* NSKeyBindingManager.h */,
-				6E2B56FE0976075400DA0954 /* NSKeyBindingManager.m */,
+				6E2B57050976075400DA0954 /* NSKeyboardBinding.h */,
+				6E2B57000976075400DA0954 /* NSKeyboardBinding.m */,
+				6E2B57030976075400DA0954 /* NSKeyboardBindingManager.h */,
+				6E2B56FE0976075400DA0954 /* NSKeyboardBindingManager.m */,
 				6E2B57070976075400DA0954 /* Resources */,
 			);
-			name = NSKeyBinding;
-			path = NSKeyBinding.subproj;
+			path = NSKeyboardBinding;
 			sourceTree = "<group>";
 		};
 		6E2B57070976075400DA0954 /* Resources */ = {
@@ -5029,8 +5028,8 @@
 				C88974DB0EA0BF3100D0A0A2 /* NSMenuWindow.h in Headers */,
 				C88974DC0EA0BF3100D0A0A2 /* NSOverflowMenuView.h in Headers */,
 				C88974DD0EA0BF3100D0A0A2 /* NSSubmenuView.h in Headers */,
-				C88974DE0EA0BF3100D0A0A2 /* NSKeyBindingManager.h in Headers */,
-				C88974DF0EA0BF3100D0A0A2 /* NSKeyBinding.h in Headers */,
+				C88974DE0EA0BF3100D0A0A2 /* NSKeyboardBindingManager.h in Headers */,
+				C88974DF0EA0BF3100D0A0A2 /* NSKeyboardBinding.h in Headers */,
 				C88974E10EA0BF3100D0A0A2 /* NSToolbar.h in Headers */,
 				C88974E30EA0BF3100D0A0A2 /* NSToolbarItem.h in Headers */,
 				C88974E40EA0BF3100D0A0A2 /* NSToolbarView.h in Headers */,
@@ -5395,8 +5394,8 @@
 				C8A2E35C0F07EA1F0054397C /* NSMenuWindow.h in Headers */,
 				C8A2E35D0F07EA1F0054397C /* NSOverflowMenuView.h in Headers */,
 				C8A2E35E0F07EA1F0054397C /* NSSubmenuView.h in Headers */,
-				C8A2E35F0F07EA1F0054397C /* NSKeyBindingManager.h in Headers */,
-				C8A2E3600F07EA1F0054397C /* NSKeyBinding.h in Headers */,
+				C8A2E35F0F07EA1F0054397C /* NSKeyboardBindingManager.h in Headers */,
+				C8A2E3600F07EA1F0054397C /* NSKeyboardBinding.h in Headers */,
 				C8A2E3620F07EA1F0054397C /* NSToolbar.h in Headers */,
 				C8A2E3640F07EA1F0054397C /* NSToolbarItem.h in Headers */,
 				C8A2E3650F07EA1F0054397C /* NSToolbarView.h in Headers */,
@@ -5759,8 +5758,8 @@
 				FE01A8CD0C5D9BCB00AEA51A /* NSMenuWindow.h in Headers */,
 				FE01A8CE0C5D9BCB00AEA51A /* NSOverflowMenuView.h in Headers */,
 				FE01A8CF0C5D9BCB00AEA51A /* NSSubmenuView.h in Headers */,
-				FE01A8D00C5D9BCB00AEA51A /* NSKeyBindingManager.h in Headers */,
-				FE01A8D10C5D9BCB00AEA51A /* NSKeyBinding.h in Headers */,
+				FE01A8D00C5D9BCB00AEA51A /* NSKeyboardBindingManager.h in Headers */,
+				FE01A8D10C5D9BCB00AEA51A /* NSKeyboardBinding.h in Headers */,
 				FE01A8D30C5D9BCB00AEA51A /* NSToolbar.h in Headers */,
 				FE01A8D50C5D9BCB00AEA51A /* NSToolbarItem.h in Headers */,
 				FE01A8D60C5D9BCB00AEA51A /* NSToolbarView.h in Headers */,
@@ -6115,8 +6114,8 @@
 				FEA314300FD5667D00F480D4 /* NSMenuWindow.h in Headers */,
 				FEA314310FD5667D00F480D4 /* NSOverflowMenuView.h in Headers */,
 				FEA314320FD5667D00F480D4 /* NSSubmenuView.h in Headers */,
-				FEA314330FD5667D00F480D4 /* NSKeyBindingManager.h in Headers */,
-				FEA314340FD5667D00F480D4 /* NSKeyBinding.h in Headers */,
+				FEA314330FD5667D00F480D4 /* NSKeyboardBindingManager.h in Headers */,
+				FEA314340FD5667D00F480D4 /* NSKeyboardBinding.h in Headers */,
 				FEA314350FD5667D00F480D4 /* NSToolbar.h in Headers */,
 				FEA314360FD5667D00F480D4 /* NSToolbarItem.h in Headers */,
 				FEA314370FD5667D00F480D4 /* NSToolbarView.h in Headers */,
@@ -6798,8 +6797,8 @@
 				C88976340EA0BF3100D0A0A2 /* NSMenuWindow.m in Sources */,
 				C88976350EA0BF3100D0A0A2 /* NSOverflowMenuView.m in Sources */,
 				C88976360EA0BF3100D0A0A2 /* NSSubmenuView.m in Sources */,
-				C88976370EA0BF3100D0A0A2 /* NSKeyBindingManager.m in Sources */,
-				C88976380EA0BF3100D0A0A2 /* NSKeyBinding.m in Sources */,
+				C88976370EA0BF3100D0A0A2 /* NSKeyboardBindingManager.m in Sources */,
+				C88976380EA0BF3100D0A0A2 /* NSKeyboardBinding.m in Sources */,
 				C889763A0EA0BF3100D0A0A2 /* NSToolbar.m in Sources */,
 				C889763C0EA0BF3100D0A0A2 /* NSToolbarItem.m in Sources */,
 				C889763D0EA0BF3100D0A0A2 /* NSToolbarView.m in Sources */,
@@ -7132,8 +7131,8 @@
 				C8A2E49C0F07EA1F0054397C /* NSMenuWindow.m in Sources */,
 				C8A2E49D0F07EA1F0054397C /* NSOverflowMenuView.m in Sources */,
 				C8A2E49E0F07EA1F0054397C /* NSSubmenuView.m in Sources */,
-				C8A2E49F0F07EA1F0054397C /* NSKeyBindingManager.m in Sources */,
-				C8A2E4A00F07EA1F0054397C /* NSKeyBinding.m in Sources */,
+				C8A2E49F0F07EA1F0054397C /* NSKeyboardBindingManager.m in Sources */,
+				C8A2E4A00F07EA1F0054397C /* NSKeyboardBinding.m in Sources */,
 				C8A2E4A20F07EA1F0054397C /* NSToolbar.m in Sources */,
 				C8A2E4A40F07EA1F0054397C /* NSToolbarItem.m in Sources */,
 				C8A2E4A50F07EA1F0054397C /* NSToolbarView.m in Sources */,
@@ -7496,8 +7495,8 @@
 				FE01AA0F0C5D9BCB00AEA51A /* NSMenuWindow.m in Sources */,
 				FE01AA100C5D9BCB00AEA51A /* NSOverflowMenuView.m in Sources */,
 				FE01AA110C5D9BCB00AEA51A /* NSSubmenuView.m in Sources */,
-				FE01AA120C5D9BCB00AEA51A /* NSKeyBindingManager.m in Sources */,
-				FE01AA130C5D9BCB00AEA51A /* NSKeyBinding.m in Sources */,
+				FE01AA120C5D9BCB00AEA51A /* NSKeyboardBindingManager.m in Sources */,
+				FE01AA130C5D9BCB00AEA51A /* NSKeyboardBinding.m in Sources */,
 				FE01AA150C5D9BCB00AEA51A /* NSToolbar.m in Sources */,
 				FE01AA170C5D9BCB00AEA51A /* NSToolbarItem.m in Sources */,
 				FE01AA180C5D9BCB00AEA51A /* NSToolbarView.m in Sources */,
@@ -7823,8 +7822,8 @@
 				FEA315700FD5667D00F480D4 /* NSMenuWindow.m in Sources */,
 				FEA315710FD5667D00F480D4 /* NSOverflowMenuView.m in Sources */,
 				FEA315720FD5667D00F480D4 /* NSSubmenuView.m in Sources */,
-				FEA315730FD5667D00F480D4 /* NSKeyBindingManager.m in Sources */,
-				FEA315740FD5667D00F480D4 /* NSKeyBinding.m in Sources */,
+				FEA315730FD5667D00F480D4 /* NSKeyboardBindingManager.m in Sources */,
+				FEA315740FD5667D00F480D4 /* NSKeyboardBinding.m in Sources */,
 				FEA315750FD5667D00F480D4 /* NSToolbar.m in Sources */,
 				FEA315760FD5667D00F480D4 /* NSToolbarItem.m in Sources */,
 				FEA315770FD5667D00F480D4 /* NSToolbarView.m in Sources */,
