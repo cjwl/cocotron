@@ -28,7 +28,8 @@ typedef enum {
    NSCursorUpdate,
    NSPlatformSpecific,
    NSAppKitSystem,
-   NSScrollWheel
+   NSScrollWheel,
+   NSApplicationDefined
 } NSEventType;
 
 enum {
@@ -47,6 +48,7 @@ enum {
    NSPeriodicMask=1<<NSPeriodic,
    NSCursorUpdateMask=1<<NSCursorUpdate,
    NSScrollWheelMask=1<<NSScrollWheel,
+   NSApplicationDefinedMask=1<<NSApplicationDefined,
    NSAnyEventMask=0xffffffff
 };
 
@@ -58,7 +60,8 @@ enum {
    NSCommandKeyMask=1<<20,
    NSNumericPadKeyMask=1<<21,
    NSHelpKeyMask=1<<22,
-   NSFunctionKeyMask=1<<23
+   NSFunctionKeyMask=1<<23,
+   NSDeviceIndependentModifierFlagsMask    = 0xffff0000UL
 };
 
 enum {
