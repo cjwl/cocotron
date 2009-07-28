@@ -319,7 +319,6 @@ NSData *LZWDecode(NSData *data,unsigned stripLength){
    NSMutableData *result=[NSMutableData dataWithLength:stripLength];
    LZWFileType lzwStream;
 
-// FIXME: look into crash because not open stream, stream bug?
    lzwStream.inputStream=[NSInputStream inputStreamWithData:data];
    [lzwStream.inputStream open];
    lzwStream.PixelCount=stripLength;

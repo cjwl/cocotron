@@ -493,11 +493,12 @@ NSString *NSStringWithDateFormatLocale(NSTimeInterval interval,NSString *format,
 // might as well use the same code since they're the exact same formatting specifiers
 // ok. we need at minimum the year. everything else is optional.
 // weekday information is useless.
-NSCalendarDate *NSCalendarDateWithStringDateFormatLocale(NSString *string, NSString *format, NSDictionary *locale) {
+NSCalendarDate *NSCalendarDateWithStringDateFormatLocale(NSString *string, NSString *format, 
+NSDictionary *locale) {
     NSScanner       *scanner = [NSScanner scannerWithString:string];
     NSUInteger         pos,fmtLength=[format length];
     unichar          fmtBuffer[fmtLength],unicode;
-    NSInteger		     years = -1, months = -1, days = -1, hours = -1, minutes = -1, seconds = -1, milliseconds = -1;
+    NSInteger		     years = NSNotFound, months = NSNotFound, days = NSNotFound, hours = NSNotFound, minutes = NSNotFound, seconds = NSNotFound, milliseconds = NSNotFound;
     NSInteger		     AMPMMultiplier = 0;
     NSTimeInterval   adjustment = 0;
     NSArray	    *monthNames, *shortMonthNames, *AMPMDesignations;
@@ -579,7 +580,7 @@ NSCalendarDate *NSCalendarDateWithStringDateFormatLocale(NSString *string, NSStr
                             return nil;
 
                         months = [shortMonthNames indexOfObject:temp];
-                        if (months == -1) // unknown month name
+                        if (months == NSNotFound) // unknown month name
                             return nil;
                     }
                         break;
@@ -591,7 +592,7 @@ NSCalendarDate *NSCalendarDateWithStringDateFormatLocale(NSString *string, NSStr
                             return nil;
 
                         months = [monthNames indexOfObject:temp];
-                        if (months == -1) // unknown month name
+                        if (months == NSNotFound) // unknown month name
                             return nil;
                     }
                         break;
@@ -645,7 +646,7 @@ NSCalendarDate *NSCalendarDateWithStringDateFormatLocale(NSString *string, NSStr
                         if (![scanner scanCharactersFromSet:[NSCharacterSet letterCharacterSet] intoString:&temp])
                             return nil;
                         AMPMMultiplier = [AMPMDesignations indexOfObject:temp];
-                        if (AMPMMultiplier == -1)
+                        if (AMPMMultiplier == NSNotFound)
                             return nil;
                         AMPMMultiplier++;		// e.g. 0 = 1, 1 = 2...
                         break;
@@ -709,26 +710,26 @@ NSCalendarDate *NSCalendarDateWithStringDateFormatLocale(NSString *string, NSStr
 
    // now that we've got whatever information we can get from the string,
    // try to make an NSCalendarDate of it.
-    if (AMPMMultiplier != 0 && hours != -1)
+    if (AMPMMultiplier != 0 && hours != NSNotFound)
         hours *= AMPMMultiplier;
 
     // maybe we've been given the number of days in the year but not the month/day
-    if (months == -1 && days == -1) {
+    if (months == NSNotFound && days == NSNotFound) {
         months = 1;
         days = 1;
     }
 
     // if no year, then this year
-    if (years == -1)
+    if (years == NSNotFound)
         years = [[NSCalendarDate date] yearOfCommonEra];
 
-    if (hours == -1)
+    if (hours == NSNotFound)
         hours = 0;
-    if (minutes == -1)
+    if (minutes == NSNotFound)
         minutes = 0;
-    if (seconds == -1)
+    if (seconds == NSNotFound)
         seconds = 0;
-    if (milliseconds == -1)
+    if (milliseconds == NSNotFound)
         milliseconds = 0;
 
     if (timeZone == nil)
@@ -741,7 +742,8 @@ NSCalendarDate *NSCalendarDateWithStringDateFormatLocale(NSString *string, NSStr
     timeInterval = NSAdjustTimeIntervalWithTimeZone(timeInterval, timeZone);
     timeInterval = NSAdjustTimeIntervalWithTimeZone(timeInterval, timeZone);
 
-    calendarDate = [[[NSCalendarDate allocWithZone:NULL] initWithTimeIntervalSinceReferenceDate:timeInterval] autorelease];
+    calendarDate = [[[NSCalendarDate allocWithZone:NULL] 
+initWithTimeIntervalSinceReferenceDate:timeInterval] autorelease];
     [calendarDate setTimeZone:timeZone];
 
     return calendarDate;

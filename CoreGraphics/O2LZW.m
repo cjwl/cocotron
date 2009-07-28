@@ -179,7 +179,7 @@ int DLZWDecompressLine(LZWFileType * LZWFile,LZWPixelType * Line,int LineLen) {
              * decoding as soon as we got all the pixel, or EOF code will
              * not be read at all, and DLZWGetLine/Pixel clean everything.  */
             if (i != LineLen - 1 || LZWFile->PixelCount != 0) {
-         NSLog(@"error at %s %d",__FILE__,__LINE__);
+                NSLog(@"error at %s %d",__FILE__,__LINE__);
                 LZWFile->LZWError = D_GIF_ERR_EOF_TOO_SOON;
                 return GIF_ERROR;
             }
@@ -218,7 +218,7 @@ int DLZWDecompressLine(LZWFileType * LZWFile,LZWPixelType * Line,int LineLen) {
                                                                  ClearCode);
                     } else {
                        LZWFile->LZWError = D_GIF_ERR_IMAGE_DEFECT;
-         NSLog(@"error at %s %d",__FILE__,__LINE__);
+                       NSLog(@"error at %s %d",__FILE__,__LINE__);
                         return GIF_ERROR;
                     }
                 } else
@@ -236,7 +236,7 @@ int DLZWDecompressLine(LZWFileType * LZWFile,LZWPixelType * Line,int LineLen) {
                 }
                 if (j >= LZ_MAX_CODE || CrntPrefix > LZ_MAX_CODE) {
                     LZWFile->LZWError = D_GIF_ERR_IMAGE_DEFECT;
-         NSLog(@"error at %s %d",__FILE__,__LINE__);
+                    NSLog(@"error at %s %d",__FILE__,__LINE__);
                     return GIF_ERROR;
                 }
                 /* Push the last character on stack: */
