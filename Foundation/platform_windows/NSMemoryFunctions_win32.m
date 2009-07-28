@@ -118,6 +118,17 @@ NSThread *NSPlatformCurrentThread() {
 		// maybe NSThread is not +initialize'd
 		[NSThread class];
 		thread=TlsGetValue(Win32ThreadStorageIndex());
+                if(!thread) {
+                  thread = [NSThread alloc];
+                  if(thread) {
+                    NSPlatformSetCurrentThread(thread);
+                    {
+                      NSAutoreleasePool *pool = [NSAutoreleasePool new];
+                      [thread init];
+                      [pool release];
+                    }
+                  }
+                }
 		if(!thread)	{
 			[NSException raise:NSInternalInconsistencyException format:@"No current thread"];
 		}
@@ -168,4 +179,16 @@ void *_NSClosureAlloc(NSUInteger size)
 void _NSClosureProtect(void* closure, NSUInteger size)
 {
    VirtualProtect(allocation, maxSize, PAGE_EXECUTE_READ, NULL);
+}
+
+void FoundationThreadCleanup()
+{
+  NSThread *thread = TlsGetValue(Win32ThreadStorageIndex());
+
+  if(thread){
+    [thread setExecuting:NO];
+    [thread setFinished:YES];
+    [thread release];
+    NSPlatformSetCurrentThread(nil);
+  }
 }
