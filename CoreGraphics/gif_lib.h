@@ -69,12 +69,11 @@ typedef struct GifHashTableType {
 #define IS_WRITEABLE(Private)   (GifFile->FileState & FILE_STATE_WRITE)
 
 typedef unsigned char GifPixelType;
-typedef unsigned char GifByteType;
 typedef unsigned int GifPrefixType;
 typedef int GifWord;
 
 typedef struct GifColorType {
-    GifByteType Red, Green, Blue;
+    uint8_t Red, Green, Blue;
 } GifColorType;
 
 typedef struct ColorMapObject {
@@ -135,9 +134,9 @@ typedef struct GifFileType {
     unsigned long PixelCount;   /* Number of pixels in image. */
     NSInputStream *inputStream;
     NSOutputStream *outputStream;
-    GifByteType Buf[256];   /* Compressed input is buffered here. */
-    GifByteType Stack[LZ_MAX_CODE]; /* Decoded pixels are stacked here. */
-    GifByteType Suffix[LZ_MAX_CODE + 1];    /* So we can trace the codes. */
+    uint8_t Buf[256];   /* Compressed input is buffered here. */
+    uint8_t Stack[LZ_MAX_CODE]; /* Decoded pixels are stacked here. */
+    uint8_t Suffix[LZ_MAX_CODE + 1];    /* So we can trace the codes. */
     GifPrefixType Prefix[LZ_MAX_CODE + 1];
     GifHashTableType *HashTable;
 } GifFileType;
@@ -173,8 +172,8 @@ int EGifPutExtensionFirst(GifFileType * GifFile, int GifExtCode,int GifExtLen, c
 int EGifPutExtensionNext(GifFileType * GifFile, int GifExtCode,int GifExtLen, const void * GifExtension);
 int EGifPutExtensionLast(GifFileType * GifFile, int GifExtCode,int GifExtLen, const void * GifExtension);
 int EGifPutExtension(GifFileType * GifFile, int GifExtCode, int GifExtLen,const void * GifExtension);
-int EGifPutCode(GifFileType * GifFile, int GifCodeSize,const GifByteType * GifCodeBlock);
-int EGifPutCodeNext(GifFileType * GifFile,const GifByteType * GifCodeBlock);
+int EGifPutCode(GifFileType * GifFile, int GifCodeSize,const uint8_t * GifCodeBlock);
+int EGifPutCodeNext(GifFileType * GifFile,const uint8_t * GifCodeBlock);
 int EGifCloseFile(GifFileType * GifFile);
 
 #define E_GIF_ERR_OPEN_FAILED    1
@@ -199,10 +198,10 @@ int DGifGetRecordType(GifFileType * GifFile, GifRecordType * GifType);
 int DGifGetImageDesc(GifFileType * GifFile);
 int DGifGetLine(GifFileType * GifFile, GifPixelType * GifLine, int GifLineLen);
 int DGifGetComment(GifFileType * GifFile, char *GifComment);
-int DGifGetExtension(GifFileType * GifFile, int *GifExtCode,GifByteType ** GifExtension);
-int DGifGetExtensionNext(GifFileType * GifFile, GifByteType ** GifExtension);
-int DGifGetCode(GifFileType * GifFile, int *GifCodeSize,GifByteType ** GifCodeBlock);
-int DGifGetCodeNext(GifFileType * GifFile, GifByteType ** GifCodeBlock);
+int DGifGetExtension(GifFileType * GifFile, int *GifExtCode,uint8_t ** GifExtension);
+int DGifGetExtensionNext(GifFileType * GifFile, uint8_t ** GifExtension);
+int DGifGetCode(GifFileType * GifFile, int *GifCodeSize,uint8_t ** GifCodeBlock);
+int DGifGetCodeNext(GifFileType * GifFile, uint8_t ** GifCodeBlock);
 int DGifCloseFile(GifFileType * GifFile);
 
 #define D_GIF_ERR_OPEN_FAILED    101
@@ -219,7 +218,7 @@ int DGifCloseFile(GifFileType * GifFile);
 #define D_GIF_ERR_IMAGE_DEFECT   112
 #define D_GIF_ERR_EOF_TOO_SOON   113
 
-int QuantizeBuffer(unsigned int Width, unsigned int Height,int *ColorMapSize, GifByteType * RedInput,GifByteType * GreenInput, GifByteType * BlueInput,GifByteType * OutputBuffer,GifColorType * OutputColorMap);
+int QuantizeBuffer(unsigned int Width, unsigned int Height,int *ColorMapSize, uint8_t * RedInput,uint8_t * GreenInput, uint8_t * BlueInput,uint8_t * OutputBuffer,GifColorType * OutputColorMap);
 
 extern int GifLastError(GifFileType  *);
 

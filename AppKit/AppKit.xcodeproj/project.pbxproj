@@ -2742,6 +2742,14 @@
 		FEBF5A160DCD450700CE5A1C /* KGPaint_radialGradient.m in Sources */ = {isa = PBXBuildFile; fileRef = FEBF5A0A0DCD450700CE5A1C /* KGPaint_radialGradient.m */; };
 		FEBF5A170DCD450700CE5A1C /* KGPaint_ramp.h in Headers */ = {isa = PBXBuildFile; fileRef = FEBF5A0B0DCD450700CE5A1C /* KGPaint_ramp.h */; };
 		FEBF5A180DCD450700CE5A1C /* KGPaint_ramp.m in Sources */ = {isa = PBXBuildFile; fileRef = FEBF5A0C0DCD450700CE5A1C /* KGPaint_ramp.m */; };
+		FEBF5B77100D851500F64C71 /* O2LZW.h in Headers */ = {isa = PBXBuildFile; fileRef = FEBF5B75100D851500F64C71 /* O2LZW.h */; };
+		FEBF5B78100D851500F64C71 /* O2LZW.m in Sources */ = {isa = PBXBuildFile; fileRef = FEBF5B76100D851500F64C71 /* O2LZW.m */; };
+		FEBF5B79100D851500F64C71 /* O2LZW.h in Headers */ = {isa = PBXBuildFile; fileRef = FEBF5B75100D851500F64C71 /* O2LZW.h */; };
+		FEBF5B7A100D851500F64C71 /* O2LZW.m in Sources */ = {isa = PBXBuildFile; fileRef = FEBF5B76100D851500F64C71 /* O2LZW.m */; };
+		FEBF5B7B100D851500F64C71 /* O2LZW.h in Headers */ = {isa = PBXBuildFile; fileRef = FEBF5B75100D851500F64C71 /* O2LZW.h */; };
+		FEBF5B7C100D851500F64C71 /* O2LZW.m in Sources */ = {isa = PBXBuildFile; fileRef = FEBF5B76100D851500F64C71 /* O2LZW.m */; };
+		FEBF5B7D100D851500F64C71 /* O2LZW.h in Headers */ = {isa = PBXBuildFile; fileRef = FEBF5B75100D851500F64C71 /* O2LZW.h */; };
+		FEBF5B7E100D851500F64C71 /* O2LZW.m in Sources */ = {isa = PBXBuildFile; fileRef = FEBF5B76100D851500F64C71 /* O2LZW.m */; };
 		FEC0C7810F146AF800903F6D /* KGImageSource_GIF.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC0C77F0F146AF800903F6D /* KGImageSource_GIF.h */; };
 		FEC0C7820F146AF800903F6D /* KGImageSource_GIF.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC0C7800F146AF800903F6D /* KGImageSource_GIF.m */; };
 		FEC0C7830F146AF800903F6D /* KGImageSource_GIF.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC0C77F0F146AF800903F6D /* KGImageSource_GIF.h */; };
@@ -3653,6 +3661,8 @@
 		FEBF5A0A0DCD450700CE5A1C /* KGPaint_radialGradient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGPaint_radialGradient.m; sourceTree = "<group>"; };
 		FEBF5A0B0DCD450700CE5A1C /* KGPaint_ramp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGPaint_ramp.h; sourceTree = "<group>"; };
 		FEBF5A0C0DCD450700CE5A1C /* KGPaint_ramp.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGPaint_ramp.m; sourceTree = "<group>"; };
+		FEBF5B75100D851500F64C71 /* O2LZW.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O2LZW.h; sourceTree = "<group>"; };
+		FEBF5B76100D851500F64C71 /* O2LZW.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = O2LZW.m; sourceTree = "<group>"; };
 		FEC0C77F0F146AF800903F6D /* KGImageSource_GIF.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGImageSource_GIF.h; sourceTree = "<group>"; };
 		FEC0C7800F146AF800903F6D /* KGImageSource_GIF.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGImageSource_GIF.m; sourceTree = "<group>"; };
 		FECAF4C80DB710EE00BA2A8E /* ApplicationServices.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ApplicationServices.xcodeproj; path = ../ApplicationServices/ApplicationServices.xcodeproj; sourceTree = SOURCE_ROOT; };
@@ -4678,6 +4688,8 @@
 		FE267E7F0B8BCB660000DDC0 /* ImageIO */ = {
 			isa = PBXGroup;
 			children = (
+				FEBF5B75100D851500F64C71 /* O2LZW.h */,
+				FEBF5B76100D851500F64C71 /* O2LZW.m */,
 				FE66F0050E513AE8006C5796 /* CGImageProperties.m */,
 				FE669C8C0F12B1A600534F46 /* gif_lib.h */,
 				FE669C840F12B1A600534F46 /* gif_lib.m */,
@@ -5199,6 +5211,7 @@
 				FE9DB3D60FD6BD5A00A1CE17 /* NSRangeEntries.h in Headers */,
 				FEAED7A00FD6C96E0043F915 /* KGDataConsumer.h in Headers */,
 				FE2C7F560FDC4C8E00D5DFB5 /* NSStringKVCFunctions.h in Headers */,
+				FEBF5B79100D851500F64C71 /* O2LZW.h in Headers */,
 				A1CC701D100534AB00DB9974 /* NSCachingBinder.h in Headers */,
 				A1CC70441005371100DB9974 /* NSTextBinder.h in Headers */,
 				FE6D918E101381F600BA6BAD /* NSCellUndoManager.h in Headers */,
@@ -5563,6 +5576,7 @@
 				FE9DB3D70FD6BD5B00A1CE17 /* NSRangeEntries.h in Headers */,
 				FEAED79E0FD6C96E0043F915 /* KGDataConsumer.h in Headers */,
 				FE2C7F550FDC4C8E00D5DFB5 /* NSStringKVCFunctions.h in Headers */,
+				FEBF5B7B100D851500F64C71 /* O2LZW.h in Headers */,
 				A1CC701F100534AB00DB9974 /* NSCachingBinder.h in Headers */,
 				A1CC70421005371100DB9974 /* NSTextBinder.h in Headers */,
 				FE6D9190101381F600BA6BAD /* NSCellUndoManager.h in Headers */,
@@ -5922,6 +5936,7 @@
 				FEAED7A20FD6C96E0043F915 /* KGDataConsumer.h in Headers */,
 				FE2C7F570FDC4C8E00D5DFB5 /* NSStringKVCFunctions.h in Headers */,
 				FEA661230FF5C6F200E2C03B /* KGFont_gdi.h in Headers */,
+				FEBF5B77100D851500F64C71 /* O2LZW.h in Headers */,
 				A1CC7019100534AB00DB9974 /* NSCachingBinder.h in Headers */,
 				A1CC70481005371100DB9974 /* NSTextBinder.h in Headers */,
 				FE6D918C101381F600BA6BAD /* NSCellUndoManager.h in Headers */,
@@ -6209,6 +6224,7 @@
 				FEA317C50FD5893300F480D4 /* NSRaise.h in Headers */,
 				FEA3182B0FD5961100F480D4 /* NSRangeEntries.h in Headers */,
 				FE2C7F580FDC4C8E00D5DFB5 /* NSStringKVCFunctions.h in Headers */,
+				FEBF5B7D100D851500F64C71 /* O2LZW.h in Headers */,
 				A1CC701B100534AB00DB9974 /* NSCachingBinder.h in Headers */,
 				A1CC70461005371100DB9974 /* NSTextBinder.h in Headers */,
 				FE6D9192101381F600BA6BAD /* NSCellUndoManager.h in Headers */,
@@ -6969,6 +6985,7 @@
 				FEAED7A10FD6C96E0043F915 /* KGDataConsumer.m in Sources */,
 				FEAED7A60FD6C9820043F915 /* CGPDFContext.m in Sources */,
 				FEB07FA10FF9B37C00C27509 /* KGFont+PDF.m in Sources */,
+				FEBF5B7A100D851500F64C71 /* O2LZW.m in Sources */,
 				A1CC701E100534AB00DB9974 /* NSCachingBinder.m in Sources */,
 				A1CC70451005371100DB9974 /* NSTextBinder.m in Sources */,
 				FE6D918F101381F600BA6BAD /* NSCellUndoManager.m in Sources */,
@@ -7301,6 +7318,7 @@
 				FEAED79F0FD6C96E0043F915 /* KGDataConsumer.m in Sources */,
 				FEAED7A50FD6C9820043F915 /* CGPDFContext.m in Sources */,
 				FEB07FA20FF9B37C00C27509 /* KGFont+PDF.m in Sources */,
+				FEBF5B7C100D851500F64C71 /* O2LZW.m in Sources */,
 				A1CC7020100534AB00DB9974 /* NSCachingBinder.m in Sources */,
 				A1CC70431005371100DB9974 /* NSTextBinder.m in Sources */,
 				FE6D9191101381F600BA6BAD /* NSCellUndoManager.m in Sources */,
@@ -7667,6 +7685,7 @@
 				FEAED7A70FD6C9820043F915 /* CGPDFContext.m in Sources */,
 				FEA661240FF5C6F300E2C03B /* KGFont_gdi.m in Sources */,
 				FEB07FA00FF9B37C00C27509 /* KGFont+PDF.m in Sources */,
+				FEBF5B78100D851500F64C71 /* O2LZW.m in Sources */,
 				A1CC701A100534AB00DB9974 /* NSCachingBinder.m in Sources */,
 				A1CC70491005371100DB9974 /* NSTextBinder.m in Sources */,
 				FE6D918D101381F600BA6BAD /* NSCellUndoManager.m in Sources */,
@@ -7904,6 +7923,7 @@
 				FEA3161A0FD5667D00F480D4 /* NSControllerMarker.m in Sources */,
 				FEA3182C0FD5961100F480D4 /* NSRangeEntries.m in Sources */,
 				FEB07FA30FF9B37C00C27509 /* KGFont+PDF.m in Sources */,
+				FEBF5B7E100D851500F64C71 /* O2LZW.m in Sources */,
 				A1CC701C100534AB00DB9974 /* NSCachingBinder.m in Sources */,
 				A1CC70471005371100DB9974 /* NSTextBinder.m in Sources */,
 				FE6D9193101381F600BA6BAD /* NSCellUndoManager.m in Sources */,

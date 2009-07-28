@@ -369,6 +369,12 @@
 		FEAED71F0FD6C4460043F915 /* CGPDFContext.m in Sources */ = {isa = PBXBuildFile; fileRef = FEAED71B0FD6C4460043F915 /* CGPDFContext.m */; };
 		FEAED7200FD6C4460043F915 /* CGPDFContext.h in Headers */ = {isa = PBXBuildFile; fileRef = FEAED71A0FD6C4460043F915 /* CGPDFContext.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FEAED7210FD6C4460043F915 /* CGPDFContext.m in Sources */ = {isa = PBXBuildFile; fileRef = FEAED71B0FD6C4460043F915 /* CGPDFContext.m */; };
+		FEBF5BCF100D8B2C00F64C71 /* O2LZW.h in Headers */ = {isa = PBXBuildFile; fileRef = FEBF5BCD100D8B2C00F64C71 /* O2LZW.h */; };
+		FEBF5BD0100D8B2C00F64C71 /* O2LZW.m in Sources */ = {isa = PBXBuildFile; fileRef = FEBF5BCE100D8B2C00F64C71 /* O2LZW.m */; };
+		FEBF5BD1100D8B2C00F64C71 /* O2LZW.h in Headers */ = {isa = PBXBuildFile; fileRef = FEBF5BCD100D8B2C00F64C71 /* O2LZW.h */; };
+		FEBF5BD2100D8B2C00F64C71 /* O2LZW.m in Sources */ = {isa = PBXBuildFile; fileRef = FEBF5BCE100D8B2C00F64C71 /* O2LZW.m */; };
+		FEBF5BD3100D8B2C00F64C71 /* O2LZW.h in Headers */ = {isa = PBXBuildFile; fileRef = FEBF5BCD100D8B2C00F64C71 /* O2LZW.h */; };
+		FEBF5BD4100D8B2C00F64C71 /* O2LZW.m in Sources */ = {isa = PBXBuildFile; fileRef = FEBF5BCE100D8B2C00F64C71 /* O2LZW.m */; };
 		FEC11AE80FD4B4D600082282 /* CGAffineTransform.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A380FD4B4D600082282 /* CGAffineTransform.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FEC11AE90FD4B4D600082282 /* CGAffineTransform.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A390FD4B4D600082282 /* CGAffineTransform.m */; };
 		FEC11AEA0FD4B4D600082282 /* CGBitmapContext.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A3A0FD4B4D600082282 /* CGBitmapContext.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -657,6 +663,8 @@
 		FEAED70F0FD6C40E0043F915 /* KGDataConsumer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGDataConsumer.m; sourceTree = "<group>"; };
 		FEAED71A0FD6C4460043F915 /* CGPDFContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGPDFContext.h; sourceTree = "<group>"; };
 		FEAED71B0FD6C4460043F915 /* CGPDFContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CGPDFContext.m; sourceTree = "<group>"; };
+		FEBF5BCD100D8B2C00F64C71 /* O2LZW.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O2LZW.h; sourceTree = "<group>"; };
+		FEBF5BCE100D8B2C00F64C71 /* O2LZW.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = O2LZW.m; sourceTree = "<group>"; };
 		FEC11A380FD4B4D600082282 /* CGAffineTransform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGAffineTransform.h; sourceTree = "<group>"; };
 		FEC11A390FD4B4D600082282 /* CGAffineTransform.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CGAffineTransform.m; sourceTree = "<group>"; };
 		FEC11A3A0FD4B4D600082282 /* CGBitmapContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGBitmapContext.h; sourceTree = "<group>"; };
@@ -872,6 +880,8 @@
 		0867D691FE84028FC02AAC07 /* CoreGraphics */ = {
 			isa = PBXGroup;
 			children = (
+				FEBF5BCD100D8B2C00F64C71 /* O2LZW.h */,
+				FEBF5BCE100D8B2C00F64C71 /* O2LZW.m */,
 				FEAED71A0FD6C4460043F915 /* CGPDFContext.h */,
 				FEAED71B0FD6C4460043F915 /* CGPDFContext.m */,
 				FEC11A380FD4B4D600082282 /* CGAffineTransform.h */,
@@ -1201,6 +1211,7 @@
 				FE9DB4610FD6C38300A1CE17 /* CGDataConsumer.h in Headers */,
 				FEAED7100FD6C40E0043F915 /* KGDataConsumer.h in Headers */,
 				FEAED71C0FD6C4460043F915 /* CGPDFContext.h in Headers */,
+				FEBF5BCF100D8B2C00F64C71 /* O2LZW.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1299,6 +1310,7 @@
 				FE9DB4630FD6C38300A1CE17 /* CGDataConsumer.h in Headers */,
 				FEAED7120FD6C40E0043F915 /* KGDataConsumer.h in Headers */,
 				FEAED71E0FD6C4460043F915 /* CGPDFContext.h in Headers */,
+				FEBF5BD1100D8B2C00F64C71 /* O2LZW.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1397,6 +1409,7 @@
 				FE9DB4650FD6C38300A1CE17 /* CGDataConsumer.h in Headers */,
 				FEAED7140FD6C40E0043F915 /* KGDataConsumer.h in Headers */,
 				FEAED7200FD6C4460043F915 /* CGPDFContext.h in Headers */,
+				FEBF5BD3100D8B2C00F64C71 /* O2LZW.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1659,6 +1672,7 @@
 				FE9DB4620FD6C38300A1CE17 /* CGDataConsumer.m in Sources */,
 				FEAED7110FD6C40E0043F915 /* KGDataConsumer.m in Sources */,
 				FEAED71D0FD6C4460043F915 /* CGPDFContext.m in Sources */,
+				FEBF5BD0100D8B2C00F64C71 /* O2LZW.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1752,6 +1766,7 @@
 				FE9DB4640FD6C38300A1CE17 /* CGDataConsumer.m in Sources */,
 				FEAED7130FD6C40E0043F915 /* KGDataConsumer.m in Sources */,
 				FEAED71F0FD6C4460043F915 /* CGPDFContext.m in Sources */,
+				FEBF5BD2100D8B2C00F64C71 /* O2LZW.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1845,6 +1860,7 @@
 				FE9DB4660FD6C38300A1CE17 /* CGDataConsumer.m in Sources */,
 				FEAED7150FD6C40E0043F915 /* KGDataConsumer.m in Sources */,
 				FEAED7210FD6C4460043F915 /* CGPDFContext.m in Sources */,
+				FEBF5BD4100D8B2C00F64C71 /* O2LZW.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

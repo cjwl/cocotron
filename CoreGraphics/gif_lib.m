@@ -34,14 +34,14 @@ static int EGifPutWord(int Word, GifFileType * GifFile);
 static int EGifSetupCompress(GifFileType * GifFile);
 static int EGifCompressLine(GifFileType * GifFile, GifPixelType * Line,int LineLen);
 static int EGifCompressOutput(GifFileType * GifFile, int Code);
-static int EGifBufferedOutput(GifFileType * GifFile, GifByteType * Buf,int c);
+static int EGifBufferedOutput(GifFileType * GifFile, uint8_t * Buf,int c);
 
 static int DGifGetWord(GifFileType *GifFile, GifWord *Word);
 static int DGifSetupDecompress(GifFileType *GifFile);
 static int DGifDecompressLine(GifFileType *GifFile, GifPixelType *Line,int LineLen);
 static int DGifGetPrefixChar(GifPrefixType *Prefix, int Code, int ClearCode);
 static int DGifDecompressInput(GifFileType *GifFile, int *Code);
-static int DGifBufferedInput(GifFileType *GifFile, GifByteType *Buf,GifByteType *NextByte);
+static int DGifBufferedInput(GifFileType *GifFile, uint8_t *Buf,uint8_t *NextByte);
 
 /* The colors are stripped to 5 bits per primary color if non MSDOS system
  * or to 4 (not enough memory...) if MSDOS as first step.
@@ -51,14 +51,14 @@ static int DGifBufferedInput(GifFileType *GifFile, GifByteType *Buf,GifByteType 
 #define MAX_PRIM_COLOR      0x1f
 
 typedef struct QuantizedColorType {
-   GifByteType RGB[3];
-   GifByteType NewColorIndex;
+   uint8_t RGB[3];
+   uint8_t NewColorIndex;
    long Count;
    struct QuantizedColorType *Pnext;
 } QuantizedColorType;
 
 typedef struct NewColorMapType {
-   GifByteType RGBMin[3], RGBWidth[3];
+   uint8_t RGBMin[3], RGBWidth[3];
    unsigned int NumEntries; /* # of QuantizedColorType in linked list below */
    unsigned long Count; /* Total number of pixels in all the entries */
    QuantizedColorType *QuantizedColors;
@@ -121,7 +121,7 @@ GifFileType *DGifOpen(NSInputStream *stream) {
 int DGifGetScreenDesc(GifFileType * GifFile) {
 
     int i, BitsPerPixel;
-    GifByteType Buf[3];
+    uint8_t Buf[3];
 
     if (!IS_READABLE(GifFile)) {
         /* This file was NOT open for reading: */
@@ -173,7 +173,7 @@ int DGifGetScreenDesc(GifFileType * GifFile) {
  *****************************************************************************/
 int DGifGetRecordType(GifFileType * GifFile,GifRecordType * Type) {
 
-    GifByteType Buf;
+    uint8_t Buf;
 
     if (!IS_READABLE(GifFile)) {
         /* This file was NOT open for reading: */
@@ -212,7 +212,7 @@ int DGifGetRecordType(GifFileType * GifFile,GifRecordType * Type) {
 int DGifGetImageDesc(GifFileType * GifFile) {
 
     int i, BitsPerPixel;
-    GifByteType Buf[3];
+    uint8_t Buf[3];
     SavedImage *sp;
 
     if (!IS_READABLE(GifFile)) {
@@ -306,7 +306,7 @@ int DGifGetImageDesc(GifFileType * GifFile) {
  *****************************************************************************/
 int DGifGetLine(GifFileType * GifFile,GifPixelType * Line,int LineLen) {
 
-    GifByteType *Dummy;
+    uint8_t *Dummy;
 
     if (!IS_READABLE(GifFile)) {
         /* This file was NOT open for reading: */
@@ -345,9 +345,9 @@ int DGifGetLine(GifFileType * GifFile,GifPixelType * Line,int LineLen) {
  * The Extension should NOT be freed by the user (not dynamically allocated).
  * Note it is assumed the Extension desc. header ('!') has been read.
  *****************************************************************************/
-int DGifGetExtension(GifFileType * GifFile,int *ExtCode,GifByteType ** Extension) {
+int DGifGetExtension(GifFileType * GifFile,int *ExtCode,uint8_t ** Extension) {
 
-    GifByteType Buf;
+    uint8_t Buf;
 
     if (!IS_READABLE(GifFile)) {
         /* This file was NOT open for reading: */
@@ -369,9 +369,9 @@ int DGifGetExtension(GifFileType * GifFile,int *ExtCode,GifByteType ** Extension
  * routine should be called until NULL Extension is returned.
  * The Extension should NOT be freed by the user (not dynamically allocated).
  *****************************************************************************/
-int DGifGetExtensionNext(GifFileType * GifFile,GifByteType ** Extension) {
+int DGifGetExtensionNext(GifFileType * GifFile,uint8_t ** Extension) {
     
-    GifByteType Buf;
+    uint8_t Buf;
 
     if (READ(GifFile, &Buf, 1) != 1) {
         GifFile->GifError = D_GIF_ERR_READ_FAILED;
@@ -448,7 +448,7 @@ static int DGifGetWord(GifFileType * GifFile,GifWord *Word) {
  * to DGifGetCodeNext, until NULL block is returned.
  * The block should NOT be freed by the user (not dynamically allocated).
  *****************************************************************************/
-int DGifGetCode(GifFileType * GifFile,int *CodeSize,GifByteType ** CodeBlock) {
+int DGifGetCode(GifFileType * GifFile,int *CodeSize,uint8_t ** CodeBlock) {
 
     if (!IS_READABLE(GifFile)) {
         /* This file was NOT open for reading: */
@@ -467,9 +467,9 @@ int DGifGetCode(GifFileType * GifFile,int *CodeSize,GifByteType ** CodeBlock) {
  * The block should NOT be freed by the user (not dynamically allocated).
  *****************************************************************************/
 int DGifGetCodeNext(GifFileType * GifFile,
-                GifByteType ** CodeBlock) {
+                uint8_t ** CodeBlock) {
 
-    GifByteType Buf;
+    uint8_t Buf;
 
     if (READ(GifFile, &Buf, 1) != 1) {
         GifFile->GifError = D_GIF_ERR_READ_FAILED;
@@ -498,7 +498,7 @@ int DGifGetCodeNext(GifFileType * GifFile,
 static int DGifSetupDecompress(GifFileType * GifFile) {
 
     int i, BitsPerPixel;
-    GifByteType CodeSize;
+    uint8_t CodeSize;
     GifPrefixType *Prefix;
 
     READ(GifFile, &CodeSize, 1);    /* Read Code size from file. */
@@ -535,7 +535,7 @@ static int DGifDecompressLine(GifFileType * GifFile,
 
     int i = 0;
     int j, CrntCode, EOFCode, ClearCode, CrntPrefix, LastCode, StackPtr;
-    GifByteType *Stack, *Suffix;
+    uint8_t *Stack, *Suffix;
     GifPrefixType *Prefix;
 
     StackPtr = GifFile->StackPtr;
@@ -681,7 +681,7 @@ static int DGifGetPrefixChar(GifPrefixType *Prefix,int Code,int ClearCode) {
  *****************************************************************************/
 static int DGifDecompressInput(GifFileType * GifFile,int *Code) {
 
-    GifByteType NextByte;
+    uint8_t NextByte;
     static unsigned short CodeMasks[] = {
         0x0000, 0x0001, 0x0003, 0x0007,
         0x000f, 0x001f, 0x003f, 0x007f,
@@ -729,8 +729,8 @@ static int DGifDecompressInput(GifFileType * GifFile,int *Code) {
  * block in if buffer empty) and returns GIF_OK if succesful.
  *****************************************************************************/
 static int DGifBufferedInput(GifFileType * GifFile,
-                  GifByteType * Buf,
-                  GifByteType * NextByte) {
+                  uint8_t * Buf,
+                  uint8_t * NextByte) {
 
     if (Buf[0] == 0) {
         /* Needs to read the next buffer - this one is empty: */
@@ -771,7 +771,7 @@ int DGifSlurp(GifFileType * GifFile) {
     int ImageSize;
     GifRecordType RecordType;
     SavedImage *sp;
-    GifByteType *ExtData;
+    uint8_t *ExtData;
     SavedImage temp_save;
     int Function=0;
 
@@ -961,7 +961,7 @@ int EGifPutScreenDesc(GifFileType * GifFile,
                   const ColorMapObject * ColorMap) {
 
     int i;
-    GifByteType Buf[3];
+    uint8_t Buf[3];
 
     if (GifFile->FileState & FILE_STATE_SCREEN) {
         /* If already has screen descriptor - something is wrong! */
@@ -1046,7 +1046,7 @@ int EGifPutImageDesc(GifFileType * GifFile,
                  const ColorMapObject * ColorMap) {
 
     int i;
-    GifByteType Buf[3];
+    uint8_t Buf[3];
 
     if (GifFile->FileState & FILE_STATE_IMAGE &&
         GifFile->PixelCount > 0xffff0000UL) {
@@ -1226,7 +1226,7 @@ int EGifPutExtensionFirst(GifFileType * GifFile,
                       int ExtLen,
                       const void * Extension) {
 
-    GifByteType Buf[3];
+    uint8_t Buf[3];
 
     if (!IS_WRITEABLE(GifFile)) {
         /* This file was NOT open for writing: */
@@ -1235,7 +1235,7 @@ int EGifPutExtensionFirst(GifFileType * GifFile,
     }
 
     if (ExtCode == 0) {
-        WRITE(GifFile, (GifByteType *)&ExtLen, 1);
+        WRITE(GifFile, (uint8_t *)&ExtLen, 1);
     } else {
         Buf[0] = '!';
         Buf[1] = ExtCode;
@@ -1256,7 +1256,7 @@ int EGifPutExtensionNext(GifFileType * GifFile,
                      int ExtLen,
                      const void * Extension) {
 
-    GifByteType Buf;
+    uint8_t Buf;
 
     if (!IS_WRITEABLE(GifFile)) {
         /* This file was NOT open for writing: */
@@ -1279,7 +1279,7 @@ int EGifPutExtensionLast(GifFileType * GifFile,
                      int ExtLen,
                      const void * Extension) {
 
-    GifByteType Buf;
+    uint8_t Buf;
 
     if (!IS_WRITEABLE(GifFile)) {
         /* This file was NOT open for writing: */
@@ -1312,7 +1312,7 @@ int EGifPutExtension(GifFileType * GifFile,
                  int ExtLen,
                  const void * Extension) {
 
-    GifByteType Buf[3];
+    uint8_t Buf[3];
 
     if (!IS_WRITEABLE(GifFile)) {
         /* This file was NOT open for writing: */
@@ -1321,7 +1321,7 @@ int EGifPutExtension(GifFileType * GifFile,
     }
 
     if (ExtCode == 0)
-        WRITE(GifFile, (GifByteType *)&ExtLen, 1);
+        WRITE(GifFile, (uint8_t *)&ExtLen, 1);
     else {
         Buf[0] = '!';       /* Extension Introducer 0x21 */
         Buf[1] = ExtCode;   /* Extension Label */
@@ -1344,7 +1344,7 @@ int EGifPutExtension(GifFileType * GifFile,
  *****************************************************************************/
 int EGifPutCode(GifFileType * GifFile,
             int CodeSize,
-            const GifByteType * CodeBlock) {
+            const uint8_t * CodeBlock) {
 
     if (!IS_WRITEABLE(GifFile)) {
         /* This file was NOT open for writing: */
@@ -1370,9 +1370,9 @@ int EGifPutCode(GifFileType * GifFile,
  * given buffer pointer is NULL, empty block is written to mark end of code.
  *****************************************************************************/
 int EGifPutCodeNext(GifFileType * GifFile,
-                const GifByteType * CodeBlock) {
+                const uint8_t * CodeBlock) {
 
-    GifByteType Buf;
+    uint8_t Buf;
 
     if (CodeBlock != NULL) {
         if (WRITE(GifFile, CodeBlock, CodeBlock[0] + 1)
@@ -1397,7 +1397,7 @@ int EGifPutCodeNext(GifFileType * GifFile,
  *****************************************************************************/
 int EGifCloseFile(GifFileType * GifFile) {
 
-    GifByteType Buf;
+    uint8_t Buf;
 
     if (GifFile == NULL)
         return GIF_ERROR;
@@ -1449,7 +1449,7 @@ static int EGifPutWord(int Word,
 static int EGifSetupCompress(GifFileType * GifFile) {
 
     int BitsPerPixel;
-    GifByteType Buf;
+    uint8_t Buf;
 
     /* Test and see what color map to use, and from it # bits per pixel: */
     if (GifFile->Image.ColorMap)
@@ -1625,7 +1625,7 @@ static int EGifCompressOutput(GifFileType * GifFile,
  * Returns GIF_OK if written succesfully.
  *****************************************************************************/
 static int EGifBufferedOutput(GifFileType * GifFile,
-                   GifByteType * Buf,
+                   uint8_t * Buf,
                    int c) {
 
     if (c == FLUSH_OUTPUT) {
@@ -2366,7 +2366,7 @@ static int SubdivColorMap(NewColorMapType * NewColorSubdiv,unsigned int ColorMap
  *   Also non of the parameter are allocated by this routine.
  *   This function returns GIF_OK if succesfull, GIF_ERROR otherwise.
  ******************************************************************************/
-int QuantizeBuffer(unsigned int Width,unsigned int Height,int *ColorMapSize,GifByteType * RedInput,GifByteType * GreenInput,GifByteType * BlueInput,GifByteType * OutputBuffer,GifColorType * OutputColorMap) {
+int QuantizeBuffer(unsigned int Width,unsigned int Height,int *ColorMapSize,uint8_t * RedInput,uint8_t * GreenInput,uint8_t * BlueInput,uint8_t * OutputBuffer,GifColorType * OutputColorMap) {
 
     unsigned int Index, NumOfEntries;
     int i, j, MaxRGBError[3];

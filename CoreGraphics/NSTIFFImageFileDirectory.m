@@ -9,6 +9,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "NSTIFFImageFileDirectory.h"
 #import "NSTIFFReader.h"
 #import <CoreGraphics/CoreGraphics.h>
+#import "O2LZW.h"
 
 @implementation NSTIFFImageFileDirectory
 
@@ -198,6 +199,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       _yResolution=[reader expectRational];
       break;
 
+     case NSTIFFTagPredictor:
+      _predictor=[reader expectUnsigned16];
+      break;
+      
      case NSTIFFTagPhotoshopPrivate1:
      case NSTIFFTagPhotoshopPrivate2:
       // ignore
@@ -310,11 +315,49 @@ static void decode_R8_G8_B8_Afill(const unsigned char *stripBytes,unsigned byteC
    *pixelBytesRowp=pixelBytesRow;
 }
 
+NSData *LZWDecode(NSData *data,unsigned stripLength){
+   NSMutableData *result=[NSMutableData dataWithLength:stripLength];
+   LZWFileType lzwStream;
+
+// FIXME: look into crash because not open stream, stream bug?
+   lzwStream.inputStream=[NSInputStream inputStreamWithData:data];
+   [lzwStream.inputStream open];
+   lzwStream.PixelCount=stripLength;
+   
+   DLZWSetupDecompress(&lzwStream);
+   int error;
+   
+   if((error=DLZWDecompressLine(&lzwStream,[result mutableBytes],stripLength))==0)
+    NSLog(@"error=%d",error);
+   
+   return result;
+}
+
+void depredict_R8G8B8A8(uint8_t *pixelBytes,unsigned bytesPerRow,unsigned height){
+   int y;
+
+   for(y=0;y<height;y++){
+    int i;
+    
+    for(i=4;i<bytesPerRow;){
+     pixelBytes[i]+=pixelBytes[i-4];
+     i++;
+     pixelBytes[i]+=pixelBytes[i-4];
+     i++;
+     pixelBytes[i]+=pixelBytes[i-4];
+     i++;
+     pixelBytes[i]+=pixelBytes[i-4];
+     i++;
+    }
+    pixelBytes+=bytesPerRow;
+   }
+}
+
 -(BOOL)getRGBAImageBytes:(unsigned char *)pixelBytes data:(NSData *)data {
    const unsigned char *bytes=[data bytes];
    unsigned             length=[data length];
    unsigned             strip,i;
-   int                  bitsPerPixel,bytesPerRow,pixelBytesRow,pixelBytesCol;
+   int                  bitsPerPixel,bytesPerRow,pixelBytesRow;
 
 // general checks
    if(_imageLength==0){
@@ -339,7 +382,7 @@ static void decode_R8_G8_B8_Afill(const unsigned char *stripBytes,unsigned byteC
 
 // specific checks for unimplemented features
 
-   if(_compression!=NSTIFFCompression_none/* && _compression!=NSTIFFCompression_LZW*/){
+   if(_compression!=NSTIFFCompression_none && _compression!=NSTIFFCompression_LZW){
     NSLog(@"TIFF unsupported, compression %d",_compression);
     return NO;
    }
@@ -365,10 +408,8 @@ static void decode_R8_G8_B8_Afill(const unsigned char *stripBytes,unsigned byteC
      return NO;
     }
    }
-   
-   bytesPerRow=_imageWidth*4;
+   bytesPerRow=_imageWidth*(bitsPerPixel/8);
    pixelBytesRow=0;
-   pixelBytesCol=0;
 
    if(_compression==NSTIFFCompression_LZW){
     
@@ -382,12 +423,19 @@ static void decode_R8_G8_B8_Afill(const unsigned char *stripBytes,unsigned byteC
      }
      NSData *data=[NSData dataWithBytes:bytes+offset length:byteCount];
    
-    //   LZWDecode_data not present anyway
-    // data=[KGPDFFilter LZWDecode_data:data parameters:nil];
+     int stripLength=_rowsPerStrip;
+
+     if(pixelBytesRow+stripLength>_imageLength)
+      stripLength=_imageLength-pixelBytesRow;
+      
+     stripLength*=bytesPerRow;
+
+     data=LZWDecode(data,stripLength);
+
      if(_samplesPerPixel==4)
-      decode_R8_G8_B8_A8([data bytes],[data length],pixelBytes,bytesPerRow,&pixelBytesRow,_imageLength);
+      decode_R8_G8_B8_A8([data bytes],stripLength,pixelBytes,_imageWidth*4,&pixelBytesRow,_imageLength);
      else
-      decode_R8_G8_B8_Afill([data bytes],[data length],pixelBytes,bytesPerRow,&pixelBytesRow,_imageLength);
+      decode_R8_G8_B8_Afill([data bytes],stripLength,pixelBytes,_imageWidth*4,&pixelBytesRow,_imageLength);
     }
       
    }
@@ -401,10 +449,26 @@ static void decode_R8_G8_B8_Afill(const unsigned char *stripBytes,unsigned byteC
       return NO;
      }
      if(_samplesPerPixel==4)
-      decode_R8_G8_B8_A8(bytes+offset,byteCount,pixelBytes,bytesPerRow,&pixelBytesRow,_imageLength);
+      decode_R8_G8_B8_A8(bytes+offset,byteCount,pixelBytes,_imageWidth*4,&pixelBytesRow,_imageLength);
      else
-      decode_R8_G8_B8_Afill(bytes+offset,byteCount,pixelBytes,bytesPerRow,&pixelBytesRow,_imageLength);
+      decode_R8_G8_B8_Afill(bytes+offset,byteCount,pixelBytes,_imageWidth*4,&pixelBytesRow,_imageLength);
     }
+   }
+   
+   switch(_predictor){
+    case NSTIFFTagPredictor_none:
+     break;
+
+    case NSTIFFTagPredictor_horizontal:
+     if(_samplesPerPixel==4)
+      depredict_R8G8B8A8(pixelBytes,bytesPerRow,_imageLength);
+     else
+      NSLog(@"TIFF predictor error, horizontal unsupported for samples per pixel=%d");
+     break;
+
+    case NSTIFFTagPredictor_floatingPoint:
+     NSLog(@"TIFF predictor error, floating point unsupported");
+     break;
    }
    
    return YES;

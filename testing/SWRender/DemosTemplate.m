@@ -80,9 +80,14 @@ static CGColorRef cgColorFromColor(NSColor *color){
    _dashLengths=NSZoneMalloc([self zone],sizeof(float)*4);
    
    NSString *path=[[NSBundle bundleForClass:[self class]] pathForResource:@"overlay" ofType:@"png"];
+ //  NSString *path=[[NSBundle bundleForClass:[self class]] pathForResource:@"redLZWSquare" ofType:@"tif"];
    NSData   *data=[NSData dataWithContentsOfFile:path];
    CGImageSourceRef source=CGImageSourceCreateWithData((CFDataRef)data,nil);
    _resamplingImage=CGImageSourceCreateImageAtIndex(source,0,nil);
+#if 0
+   if(![_resamplingImage isKindOfClass:NSClassFromString(@"KGImage")])
+    NSLog(@"IMAGE data=%@",CGDataProviderCopyData(CGImageGetDataProvider(_resamplingImage)));
+#endif
    if(_resamplingImage==nil)
     NSLog(@"no image! path=%@ %d",path,[data length]);
    [(id)source release];

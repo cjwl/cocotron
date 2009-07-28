@@ -12,13 +12,14 @@
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 		FE0997430D87095000033630 /* overlay.png in Resources */ = {isa = PBXBuildFile; fileRef = FE0997420D87095000033630 /* overlay.png */; };
-		FE1364030FE80F4900DE15FA /* KTFont.m in Sources */ = {isa = PBXBuildFile; fileRef = FEA084D40EF5FDE6001E8260 /* KTFont.m */; };
 		FE1364050FE80F4F00DE15FA /* KTFont+PDF.m in Sources */ = {isa = PBXBuildFile; fileRef = FEA084D20EF5FDE6001E8260 /* KTFont+PDF.m */; };
 		FE14EC4B0DBD9BF00070928C /* DemoCGContext.m in Sources */ = {isa = PBXBuildFile; fileRef = FE14EC490DBD9BF00070928C /* DemoCGContext.m */; };
 		FE14EC4C0DBD9BF00070928C /* DemoKGContext.m in Sources */ = {isa = PBXBuildFile; fileRef = FE14EC4A0DBD9BF00070928C /* DemoKGContext.m */; };
 		FE14EC960DBDA5420070928C /* DemoContext.m in Sources */ = {isa = PBXBuildFile; fileRef = FE14EC950DBDA5420070928C /* DemoContext.m */; };
 		FE1F93630D7EF19900969491 /* KGImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = FE1F93620D7EF19900969491 /* KGImageView.m */; };
 		FE1F937A0D7EF1F800969491 /* KGRenderController.m in Sources */ = {isa = PBXBuildFile; fileRef = FE1F93790D7EF1F800969491 /* KGRenderController.m */; };
+		FE452BCE101F412D00585DFE /* KGImageSource_GIF.m in Sources */ = {isa = PBXBuildFile; fileRef = FE452BCD101F412D00585DFE /* KGImageSource_GIF.m */; };
+		FE452BD1101F414700585DFE /* gif_lib.m in Sources */ = {isa = PBXBuildFile; fileRef = FE452BD0101F414700585DFE /* gif_lib.m */; };
 		FE45ED3D0DC2374E00F49290 /* KGImageSource.m in Sources */ = {isa = PBXBuildFile; fileRef = FE45ED340DC2374E00F49290 /* KGImageSource.m */; };
 		FE45ED3E0DC2374E00F49290 /* KGImageSource_BMP.m in Sources */ = {isa = PBXBuildFile; fileRef = FE45ED360DC2374E00F49290 /* KGImageSource_BMP.m */; };
 		FE45ED3F0DC2374E00F49290 /* KGImageSource_JPEG.m in Sources */ = {isa = PBXBuildFile; fileRef = FE45ED380DC2374E00F49290 /* KGImageSource_JPEG.m */; };
@@ -72,8 +73,10 @@
 		FE6EDD400DB78EA1005503A1 /* KGPDFxrefEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = FE6EDD260DB78EA1005503A1 /* KGPDFxrefEntry.m */; };
 		FE6EDD410DB78EA1005503A1 /* KGzlib.m in Sources */ = {isa = PBXBuildFile; fileRef = FE6EDD280DB78EA1005503A1 /* KGzlib.m */; };
 		FE6EE00B0DB7CE0B005503A1 /* KGContext_builtin.m in Sources */ = {isa = PBXBuildFile; fileRef = FE6EE00A0DB7CE0B005503A1 /* KGContext_builtin.m */; };
+		FE8CA8ED10181DD500F78535 /* O2LZW.m in Sources */ = {isa = PBXBuildFile; fileRef = FE8CA8EC10181DD500F78535 /* O2LZW.m */; };
 		FE9552810D77CA67009B765B /* KGSurface.m in Sources */ = {isa = PBXBuildFile; fileRef = FE9552780D77CA67009B765B /* KGSurface.m */; };
 		FE9552830D77CA67009B765B /* VGPath.m in Sources */ = {isa = PBXBuildFile; fileRef = FE95527C0D77CA67009B765B /* VGPath.m */; };
+		FEA47EC2101E44CD005820F3 /* redLZWSquare.tif in Resources */ = {isa = PBXBuildFile; fileRef = FEA47EC1101E44CD005820F3 /* redLZWSquare.tif */; };
 		FEBF55B90DCA0DE500CE5A1C /* KGPaint.m in Sources */ = {isa = PBXBuildFile; fileRef = FEBF55B80DCA0DE500CE5A1C /* KGPaint.m */; };
 		FEBF575B0DCA60CD00CE5A1C /* KGPaint_image.m in Sources */ = {isa = PBXBuildFile; fileRef = FEBF575A0DCA60CD00CE5A1C /* KGPaint_image.m */; };
 		FEBF59190DCC063400CE5A1C /* KGPaint_pattern.m in Sources */ = {isa = PBXBuildFile; fileRef = FEBF59050DCC063400CE5A1C /* KGPaint_pattern.m */; };
@@ -116,6 +119,10 @@
 		FE1F93790D7EF1F800969491 /* KGRenderController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGRenderController.m; sourceTree = "<group>"; };
 		FE3396000DBA8CF7009AB3E0 /* CoreGraphics_KG.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreGraphics_KG.h; sourceTree = "<group>"; };
 		FE33964B0DBAE733009AB3E0 /* DemosTemplate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DemosTemplate.m; sourceTree = "<group>"; };
+		FE452BCC101F412D00585DFE /* KGImageSource_GIF.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGImageSource_GIF.h; sourceTree = "<group>"; };
+		FE452BCD101F412D00585DFE /* KGImageSource_GIF.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGImageSource_GIF.m; sourceTree = "<group>"; };
+		FE452BCF101F414700585DFE /* gif_lib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gif_lib.h; sourceTree = "<group>"; };
+		FE452BD0101F414700585DFE /* gif_lib.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = gif_lib.m; sourceTree = "<group>"; };
 		FE45ED330DC2374E00F49290 /* KGImageSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGImageSource.h; sourceTree = "<group>"; };
 		FE45ED340DC2374E00F49290 /* KGImageSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGImageSource.m; sourceTree = "<group>"; };
 		FE45ED350DC2374E00F49290 /* KGImageSource_BMP.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGImageSource_BMP.h; sourceTree = "<group>"; };
@@ -222,6 +229,8 @@
 		FE6EDE380DB797FA005503A1 /* KGExceptions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGExceptions.h; sourceTree = "<group>"; };
 		FE6EE0090DB7CE0B005503A1 /* KGContext_builtin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGContext_builtin.h; sourceTree = "<group>"; };
 		FE6EE00A0DB7CE0B005503A1 /* KGContext_builtin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGContext_builtin.m; sourceTree = "<group>"; };
+		FE8CA8EB10181DD500F78535 /* O2LZW.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O2LZW.h; sourceTree = "<group>"; };
+		FE8CA8EC10181DD500F78535 /* O2LZW.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = O2LZW.m; sourceTree = "<group>"; };
 		FE9552770D77CA67009B765B /* KGSurface.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = KGSurface.h; sourceTree = "<group>"; };
 		FE9552780D77CA67009B765B /* KGSurface.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = KGSurface.m; sourceTree = "<group>"; };
 		FE9552790D77CA67009B765B /* VGmath.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = VGmath.h; sourceTree = "<group>"; };
@@ -229,8 +238,7 @@
 		FE95527C0D77CA67009B765B /* VGPath.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = VGPath.m; sourceTree = "<group>"; };
 		FEA084D10EF5FDE6001E8260 /* KTFont+PDF.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "KTFont+PDF.h"; sourceTree = "<group>"; };
 		FEA084D20EF5FDE6001E8260 /* KTFont+PDF.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "KTFont+PDF.m"; sourceTree = "<group>"; };
-		FEA084D30EF5FDE6001E8260 /* KTFont.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KTFont.h; sourceTree = "<group>"; };
-		FEA084D40EF5FDE6001E8260 /* KTFont.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KTFont.m; sourceTree = "<group>"; };
+		FEA47EC1101E44CD005820F3 /* redLZWSquare.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = redLZWSquare.tif; sourceTree = "<group>"; };
 		FEBF55B70DCA0DE500CE5A1C /* KGPaint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGPaint.h; sourceTree = "<group>"; };
 		FEBF55B80DCA0DE500CE5A1C /* KGPaint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGPaint.m; sourceTree = "<group>"; };
 		FEBF57590DCA60CD00CE5A1C /* KGPaint_image.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGPaint_image.h; sourceTree = "<group>"; };
@@ -319,6 +327,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				FEA47EC1101E44CD005820F3 /* redLZWSquare.tif */,
 				FE45EE640DC254C700F49290 /* overlay.jpg */,
 				FE0997420D87095000033630 /* overlay.png */,
 				8D1107310486CEB800E47090 /* Info.plist */,
@@ -340,6 +349,12 @@
 		FE21384A0DC2303100CEDC65 /* CoreGraphics */ = {
 			isa = PBXGroup;
 			children = (
+				FE452BCF101F414700585DFE /* gif_lib.h */,
+				FE452BD0101F414700585DFE /* gif_lib.m */,
+				FE452BCC101F412D00585DFE /* KGImageSource_GIF.h */,
+				FE452BCD101F412D00585DFE /* KGImageSource_GIF.m */,
+				FE8CA8EB10181DD500F78535 /* O2LZW.h */,
+				FE8CA8EC10181DD500F78535 /* O2LZW.m */,
 				FE45ED420DC2376700F49290 /* NSTIFFImageFileDirectory.h */,
 				FE45ED430DC2376700F49290 /* NSTIFFImageFileDirectory.m */,
 				FE45ED440DC2376700F49290 /* NSTIFFReader.h */,
@@ -364,8 +379,6 @@
 			children = (
 				FEA084D10EF5FDE6001E8260 /* KTFont+PDF.h */,
 				FEA084D20EF5FDE6001E8260 /* KTFont+PDF.m */,
-				FEA084D30EF5FDE6001E8260 /* KTFont.h */,
-				FEA084D40EF5FDE6001E8260 /* KTFont.m */,
 				FE4F4CB70E10397000A5A5F8 /* KGColorSpace+PDF.h */,
 				FE4F4CB80E10397000A5A5F8 /* KGColorSpace+PDF.m */,
 				FE4F4CBB0E10397000A5A5F8 /* KGFunction+PDF.h */,
@@ -530,6 +543,7 @@
 				8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */,
 				FE0997430D87095000033630 /* overlay.png in Resources */,
 				FE45EE650DC254C700F49290 /* overlay.jpg in Resources */,
+				FEA47EC2101E44CD005820F3 /* redLZWSquare.tif in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -607,8 +621,10 @@
 				FE4F4CC30E10397000A5A5F8 /* KGFunction+PDF.m in Sources */,
 				FE4F4CC40E10397000A5A5F8 /* KGImage+PDF.m in Sources */,
 				FE4F4CC50E10397000A5A5F8 /* KGShading+PDF.m in Sources */,
-				FE1364030FE80F4900DE15FA /* KTFont.m in Sources */,
 				FE1364050FE80F4F00DE15FA /* KTFont+PDF.m in Sources */,
+				FE8CA8ED10181DD500F78535 /* O2LZW.m in Sources */,
+				FE452BCE101F412D00585DFE /* KGImageSource_GIF.m in Sources */,
+				FE452BD1101F414700585DFE /* gif_lib.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

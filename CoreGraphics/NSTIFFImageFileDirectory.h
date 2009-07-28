@@ -66,6 +66,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
   double               _xResolution;
   double               _yPosition;
   double               _yResolution;
+  unsigned             _predictor;
 }
 
 -initWithTIFFReader:(NSTIFFReader *)reader;

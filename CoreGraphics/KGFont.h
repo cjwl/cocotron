@@ -11,6 +11,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @class KGFont;
 typedef KGFont *O2FontRef;
 
+@class NSData;
+
 @interface KGFont : NSObject {
    NSString *_name;
    int       _unitsPerEm;

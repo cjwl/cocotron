@@ -61,7 +61,8 @@ enum {
  NSTIFFTagXResolution=282,
  NSTIFFTagYPosition=287,
  NSTIFFTagYResolution=283,
-
+ NSTIFFTagPredictor=317,
+ 
  NSTIFFTagPhotoshopPrivate1=34377,
  NSTIFFTagPhotoshopPrivate2=37724,
  NSTIFFTagExifIFD=34665,
@@ -88,6 +89,10 @@ enum {
  NSTIFFSampleFormat_VOID=4,
  NSTIFFSampleFormat_COMPLEXINT=5,
  NSTIFFSampleFormat_COMPLEXIEEEFP=6,
+
+ NSTIFFTagPredictor_none=1,
+ NSTIFFTagPredictor_horizontal=2,
+ NSTIFFTagPredictor_floatingPoint=3,
 };
 
 @interface NSTIFFReader : NSObject {
