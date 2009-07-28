@@ -10,6 +10,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSMenu.h>
 #import <AppKit/NSEvent.h>
 #import <AppKit/NSGraphics.h>
+#import <AppKit/NSGraphicsStyle.h>
 #import <AppKit/NSImage.h>
 #import <AppKit/NSPopUpWindow.h>
 #import <Foundation/NSKeyedArchiver.h>
@@ -31,6 +32,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     
     if(_selectedIndex<0 && [_menu itemArray]>0)
      _selectedIndex=0;
+	 
+	 _arrowPosition = [coder decodeIntForKey: @"NSArrowPosition"];
+	 _preferredEdge = [coder decodeIntForKey: @"NSPreferredEdge"];
    }
    else {
     [NSException raise:NSInvalidArgumentException format:@"%@ can not initWithCoder:%@",isa,[coder class]];
@@ -74,6 +78,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(NSMenu *)menu
 {
     return _menu;
+}
+
+-(NSRectEdge)preferredEdge
+{
+	return _preferredEdge;
+}
+
+-(void)setPreferredEdge:(NSRectEdge)edge
+{
+	edge = _preferredEdge;
 }
 
 -(NSArray *)itemArray {
@@ -151,11 +165,35 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [_menu insertItemWithTitle:title action:NULL keyEquivalent:nil atIndex:index];
 }
 
--(NSImage *)image {
+-(NSImage *)arrowImage {
    if(_pullsDown)
     return [NSImage imageNamed:@"NSPopUpButtonCellPullDown"];
    else
     return [NSImage imageNamed:@"NSPopUpButtonCellPopUp"];
+}
+
+-(void)drawInteriorWithFrame:(NSRect)frame inView:(NSView *)controlView {
+	NSRect fakeFrame = frame;
+	NSImage * arrowImage = ( _arrowPosition != NSPopUpNoArrow ) ? [self arrowImage] : NULL;
+	
+	if( _arrowPosition == NSPopUpArrowAtBottom )
+	{
+		// For ONLY this arrow position, we adjust the frame to exclude the arrow we're going to draw afterwards
+		fakeFrame.size.width -= [arrowImage size].width + 4;		
+	}
+	
+	[super drawInteriorWithFrame: fakeFrame inView: controlView];
+	
+	// Now draw the arrow
+    if( _arrowPosition != NSPopUpNoArrow )
+	{
+		NSRect otherFrame = frame;
+		NSSize arrowSize = [arrowImage size];
+		otherFrame.origin.x += otherFrame.size.width - ( arrowSize.width + 2 );
+		otherFrame.origin.y += ( otherFrame.size.height - arrowSize.height ) / 2;
+		otherFrame.size =  arrowSize;
+		[[controlView graphicsStyle] drawButtonImage:arrowImage inRect:otherFrame enabled:YES mixed:YES];
+	}
 }
 
 -(void)selectItemAtIndex:(int)index {
@@ -191,7 +229,26 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(BOOL)trackMouse:(NSEvent *)event inRect:(NSRect)cellFrame ofView:(NSView *)controlView untilMouseUp:(BOOL)flag {
    NSPopUpWindow *window;
    NSPoint        origin=[controlView bounds].origin;
-
+   
+#if 0
+   // Note: the min options don't mean much unless we don't have room for the menu, so either way we just pop
+   // up over the button itself. However, maxX and maxY *do* have special meanings
+   switch( _preferredEdge )
+   {
+      case NSMinXEdge:
+      case NSMinYEdge:
+	     break;
+	  case NSMaxXEdge:
+		 origin.x += [controlView bounds].size.width;
+	     break;
+	  case NSMaxYEdge: 
+         // Remember, our Y axis is flipped in Cocoa. Also, not sure why we need the -4 offset here, 
+		 // can't figure out where the offset comes from, but it works			
+		 origin.y -= [controlView bounds].size.height - 4;
+	     break;
+   }
+#endif
+  
    origin=[controlView convertPoint:origin toView:nil];
    origin=[[controlView window] convertBaseToScreen:origin];
 
@@ -206,7 +263,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    else
     [window selectItemAtIndex:_selectedIndex];
 
-	[self selectItemAtIndex:[window runTrackingWithEvent:event]];
+   int itemIndex=[window runTrackingWithEvent:event];
+   if(itemIndex!=NSNotFound)
+	[self selectItemAtIndex:itemIndex];
+
    [window close]; // release when closed=YES
 
    return YES;

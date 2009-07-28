@@ -22,6 +22,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    NSMenu   *_submenu;
    int       _tag;
    BOOL      _enabled;
+   BOOL		 _hidden;
    int	     _state;
    id        _representedObject;
    NSImage  *_image;
@@ -57,6 +58,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(BOOL)isSeparatorItem;
 -(BOOL)isEnabled;
+-(BOOL)isHidden;
 
 -(void)setTitle:(NSString *)title;
 -(void)setAttributedTitle:(NSAttributedString *)title;
@@ -75,6 +77,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)setRepresentedObject:object;
 -(void)setSubmenu:(NSMenu *)submenu;
 -(void)setEnabled:(BOOL)flag;
+-(void)setHidden:(BOOL)flag;
 
 -(NSString *)_keyEquivalentDescription;
 

@@ -37,6 +37,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     [self setKeyEquivalentModifierMask:[keyed decodeIntForKey:@"NSKeyEquivModMask"]];
     [self setSubmenu:[keyed decodeObjectForKey:@"NSSubmenu"]];
     _tag=[keyed decodeIntForKey:@"NSTag"];
+	_hidden = [keyed decodeBoolForKey:@"NSIsHidden"];
      
     if([keyed decodeBoolForKey:@"NSIsSeparator"]){
      [_atitle release];
@@ -61,6 +62,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    _submenu=nil;
    _tag=-1;
    _enabled=YES;
+   _hidden=NO;
 
    return self;
 }
@@ -161,6 +163,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return _enabled;
 }
 
+-(BOOL)isHidden {
+	return _hidden;
+}
+
 -(void)setTitle:(NSString *)title {
     [_atitle release];
     _atitle=[[NSAttributedString alloc] initWithString:title];
@@ -241,6 +247,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)setEnabled:(BOOL)flag {
    _enabled=flag;
+}
+
+-(void)setHidden:(BOOL)flag {
+   _hidden=flag;
 }
 
 +(NSDictionary *)keyNames {

@@ -10,13 +10,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @interface NSMenuView : NSView {
    unsigned _selectedItemIndex;
+   NSMutableArray * _visibleArray;
 }
 
 -(unsigned)itemIndexAtPoint:(NSPoint)point;
 -(unsigned)selectedItemIndex;
 -(void)setSelectedItemIndex:(unsigned)itemIndex;
 
--(NSArray *)itemArray;
+-(NSArray *)visibleItemArray;
 -(NSMenuItem *)itemAtSelectedIndex;
 
 -(NSMenuView *)viewAtSelectedIndexPositionOnScreen:(NSScreen *)screen;

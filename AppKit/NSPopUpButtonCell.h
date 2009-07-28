@@ -10,10 +10,18 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @class NSMenuItem;
 
+typedef enum {
+	NSPopUpNoArrow       = 0,
+	NSPopUpArrowAtCenter = 1,
+	NSPopUpArrowAtBottom = 2
+} NSPopUpArrowPosition;
+
 @interface NSPopUpButtonCell : NSButtonCell {
-   NSMenu *_menu;
-   int     _selectedIndex;
-   BOOL    _pullsDown;
+   NSMenu *             _menu;
+   int                  _selectedIndex;
+   BOOL                 _pullsDown;
+   NSPopUpArrowPosition _arrowPosition;
+   NSRectEdge           _preferredEdge;
 }
 
 -initTextCell:(NSString *)string pullsDown:(BOOL)pullDown;
@@ -22,9 +30,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(NSMenu *)menu;
 -(NSArray *)itemArray;
 -(int)numberOfItems;
+-(NSRectEdge)preferredEdge;
 
 -(void)setPullsDown:(BOOL)flag;
 -(void)setMenu:(NSMenu *)menu;
+-(void)setPreferredEdge:(NSRectEdge)edge;
 
 -(int)indexOfItemWithTitle:(NSString *)title;
 -(int)indexOfItemWithTag:(int)tag;

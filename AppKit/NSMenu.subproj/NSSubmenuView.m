@@ -145,7 +145,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
      [NSColor disabledControlTextColor],NSForegroundColorAttributeName,
      nil] retain];
 
-   frame.size=[self sizeForMenuItems:[self itemArray]];
+   frame.size=[self sizeForMenuItems:[self visibleItemArray]];
    [self setFrame:frame];
 
    return self;
@@ -188,7 +188,7 @@ static NSRect boundsToTitleAreaRect(NSRect rect){
 
 -(void)drawRect:(NSRect)rect {
    NSRect   itemArea=[self drawSubmenuBackground];
-   NSArray *items=[self itemArray];
+   NSArray *items=[self visibleItemArray];
    unsigned i,count=[items count];
    NSSize   titleAreaSize=[self titleAreaSizeWithMenuItems:items];
    NSPoint  origin=itemArea.origin;
@@ -335,7 +335,7 @@ static NSRect boundsToTitleAreaRect(NSRect rect){
 }
 
 -(NSMenuView *)viewAtSelectedIndexPositionOnScreen:(NSScreen *)screen {
-   NSArray *items=[self itemArray];
+   NSArray *items=[self visibleItemArray];
 
    if(_selectedItemIndex<[items count]){
     NSMenuItem *item=[items objectAtIndex:_selectedItemIndex];

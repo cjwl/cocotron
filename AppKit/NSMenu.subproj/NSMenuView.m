@@ -12,6 +12,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @implementation NSMenuView
 
+-(void)dealloc
+{
+   [_visibleArray release];
+   [super dealloc];
+}
+
 -(unsigned)itemIndexAtPoint:(NSPoint)point {
    NSInvalidAbstractInvocation();
    return NSNotFound;
@@ -31,8 +37,29 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return [[self menu] itemArray];
 }
 
+-(NSArray *)visibleItemArray
+{
+   NSArray * items = [[self menu] itemArray];
+   
+   // Construct a new array of just the visible items
+   if( _visibleArray == NULL )
+      _visibleArray = [[NSMutableArray init] alloc];
+	
+   [_visibleArray removeAllObjects];
+   
+   int i;
+   for( i = 0; i < [items count]; i++ )
+   {
+      NSMenuItem *item = [items objectAtIndex: i];
+	  if( ![item isHidden] )
+	     [_visibleArray addObject: item];
+   }
+   
+   return _visibleArray;
+}
+
 -(NSMenuItem *)itemAtSelectedIndex {
-   NSArray *items=[self itemArray];
+   NSArray *items=[self visibleItemArray];
 
    if(_selectedItemIndex<[items count])
     return [items objectAtIndex:_selectedItemIndex];

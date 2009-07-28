@@ -18,7 +18,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(NSArray *)itemArray {
-   NSArray *items=[super itemArray];
+   NSArray *items=[super visibleItemArray];
    NSRange  range=NSMakeRange(_overflowIndex,[items count]-_overflowIndex);
 
    return [items subarrayWithRange:range];

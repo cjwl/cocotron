@@ -351,7 +351,7 @@ static void drawSunkenBorder(NSRect rect){
 }
 
 -(NSMenuView *)viewAtSelectedIndexPositionOnScreen:(NSScreen *)screen {
-   NSArray *items=[self itemArray];
+   NSArray *items=[self visibleItemArray];
 
    if(_selectedItemIndex==[items count]){
     NSMenuWindow *branch=[[NSMenuWindow alloc] initWithMenu:[self menu] overflowAtIndex:[self overflowIndex]];
