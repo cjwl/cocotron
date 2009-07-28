@@ -178,7 +178,7 @@ Class objc_allocateClassPair(Class super_class, const char *name, size_t extraBy
    //
    new_class->instance_size = super_class->instance_size;
    meta_class->instance_size = meta_class->super_class->instance_size;
-	
+
    // Finally, register the class with the runtime.
    //
    return new_class;
@@ -405,8 +405,74 @@ void class_setWeakIvarLayout(Class cls,const char *layout) {
 }
 
 BOOL class_addIvar(Class cls,const char *name,size_t size,uint8_t alignment,const char *type) {
-   // UNIMPLEMENTED
-   return NO;
+   struct objc_ivar_list *ivars;
+   struct objc_ivar *ivar;
+   Class class;
+   int i, mask;
+   char *namecopy, *typecopy;
+
+   if(cls->info&CLS_META) {
+     return NO;
+   }
+   if(objc_lookUpClass(cls->name) != Nil) {
+     return NO;
+   }
+   for(class=cls;(class->isa->isa==class);class=class->super_class){
+     ivars=class->ivars;
+     if(ivars){
+       for(i=0;i<ivars->ivar_count;i++){
+         if(strcmp(ivars->ivar_list[i].ivar_name,name)==0){
+           return NO;           // name exists
+         }
+       }
+     }
+     if(class->isa->isa==class){
+       break;
+     }
+   }
+    
+   namecopy=malloc(strlen(name)+1);
+   if(namecopy==NULL) {
+     return NO;
+   }
+   strcpy(namecopy,name);
+   typecopy=malloc(strlen(type)+1);
+   if (typecopy==NULL){
+     free(namecopy);
+     return NO;
+   }
+   ivars=cls->ivars;
+
+   if(ivars==NULL){
+     ivars=(struct objc_ivar_list *)malloc(sizeof(struct objc_ivar_list));
+     if(ivars==NULL){
+       free(namecopy);
+       free(typecopy);
+       return NO;
+     }
+     ivars->ivar_count=1;
+     ivar=&(ivars->ivar_list[0]);
+   } else {
+     i = ivars->ivar_count;
+     ivars=(struct objc_ivar_list *)realloc(ivars,sizeof(struct objc_ivar_list)
+                                            +(i*sizeof(struct objc_ivar)));
+     if(ivars==NULL) {
+       free(namecopy);
+       free(typecopy);
+       return NO;
+     }
+     ivars->ivar_count=i+1;
+     ivar=&(ivars->ivar_list[i]);
+   }
+   ivar->ivar_name=namecopy;
+   ivar->ivar_type=typecopy;
+   mask=(1<<alignment)-1;
+   i=(cls->instance_size+mask)&~mask;
+   ivar->ivar_offset=i;
+   cls->instance_size=i+size;
+   cls->ivars=ivars;
+
+   return YES;
 }
 
 void class_addMethods(Class class,struct objc_method_list *methodList) {
@@ -440,9 +506,11 @@ void class_addMethods(Class class,struct objc_method_list *methodList) {
 BOOL class_addMethod(Class cls, SEL name, IMP imp, const char *types) {
 	struct objc_method *newMethod = calloc(sizeof(struct objc_method), 1);
 	struct objc_method_list *methodList = calloc(sizeof(struct objc_method_list)+sizeof(struct objc_method), 1);
+        char *typescopy = (char *)malloc(strlen(types)+1);
 	
 	newMethod->method_name = name;
-	newMethod->method_types = (char*)types;
+        strcpy(typescopy,(char *)types);
+	newMethod->method_types = typescopy;
 	newMethod->method_imp = imp;
 
 	methodList->method_count = 1;
