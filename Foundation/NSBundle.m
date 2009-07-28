@@ -115,7 +115,8 @@ static NSMapTable *pathToObject=NULL;
 
 +(void)initialize {
    if(self==[NSBundle class]){
-    const char *module=OBJCModulePathForProcess();
+    const char *override=getenv("CFProcessPath");
+    const char *module=override ? override : OBJCModulePathForProcess();
     NSString   *path=[NSString stringWithCString:module];
 
     if(module==NULL)

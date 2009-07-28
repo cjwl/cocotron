@@ -11,7 +11,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSZombieObject.h>
 #import <Foundation/NSPlatform_win32.h>
 #import <Foundation/NSString.h>
-#import <Foundation/NSThread.h>
+#import <Foundation/NSThread-Private.h>
 
 #import <windows.h>
 #import <process.h>
