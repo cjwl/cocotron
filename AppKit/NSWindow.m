@@ -1,4 +1,5 @@
 /* Copyright (c) 2006-2007 Christopher J. W. Lloyd <cjwl@objc.net>
+                 2009 Markus Hitter <mah@jump-ing.de>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
@@ -2274,18 +2275,22 @@ NSString *NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification";
    if([self areCursorRectsEnabled]){
     NSPoint point=[self mouseLocationOutsideOfEventStream];
     BOOL    isFlipped=[_backgroundView isFlipped];
-    BOOL    didTrackRect=NO;
 
     point=[_backgroundView convertPoint:point fromView:nil];
 
     if(NSMouseInRect(point,[_backgroundView frame],isFlipped)){
-     int i,count=[_cursorRects count];
+     int i,count;
+     NSToolTipWindow *toolTipWindow=[NSToolTipWindow sharedToolTipWindow];
+     NSInteger toolTipWindowVisible=0;
+     BOOL toolTipWindowChange=NO;
 
+     count=[_cursorRects count];
      for(i=0;i<count;i++){
       NSCursorRect *check=[_cursorRects objectAtIndex:i];
-      NSRect        rect=[check rect];
+      NSView *checkView=[check view];
+      NSRect localRect=[_backgroundView convertRect:[check rect] fromView:checkView];
 
-      if(![[check view] isHidden] && NSMouseInRect(point,rect,isFlipped)){
+      if(![checkView isHidden] && NSMouseInRect(point,localRect,isFlipped)){
        [[check cursor] set];
        didSetCursor=YES;
        break;
@@ -2293,48 +2298,61 @@ NSString *NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification";
      }
 
      count=[_trackingRects count];
+     if([toolTipWindow isVisible]==YES)
+      toolTipWindowVisible=1;
      for(i=0;i<count;i++){
       NSTrackingRect *check=[_trackingRects objectAtIndex:i];
+      NSView *checkView=[check view];
+      NSRect localRect=[_backgroundView convertRect:[check rect] fromView:checkView];
 
-                if(![[check view] isHidden] && NSMouseInRect(point,[check rect],isFlipped)){
-                    if([check isToolTip]) {
-                        NSString *toolTip;
-                        NSPoint locationOnScreen=NSMakePoint(NSMaxX([[check view] bounds]) + 5.0, NSMinY([[check view] bounds]) - 5.0);
-                        
-                        locationOnScreen=[[check view] convertPoint:locationOnScreen toView:nil];
-                        locationOnScreen=[[[check view] window] convertBaseToScreen:locationOnScreen];
-                        
-                        if ([[check owner] respondsToSelector:@selector(view:stringForToolTip:point:userData:)])
-                            toolTip = [[check owner] view:[check view] stringForToolTip:[check tag] point:point userData:[check userData]];
-                        else
-                            toolTip = [[check owner] description];
-                        
-                        if ([[[NSToolTipWindow sharedToolTipWindow] toolTip] isEqualToString:toolTip] == NO) {
-                            [[NSToolTipWindow sharedToolTipWindow] setToolTip:toolTip];
-                            [[NSToolTipWindow sharedToolTipWindow] setLocationOnScreen:locationOnScreen];
-                            
-                            [[NSToolTipWindow sharedToolTipWindow] performSelector:@selector(orderFront:) withObject:nil afterDelay:0.5];
-                        }
-                    }
-                    else
-                        [[check owner] mouseEntered:[NSEvent mouseEventWithType:NSMouseEntered location:point modifierFlags:0 window:self clickCount:0]];
-                    
-                    [_trackedRect release];
-                    _trackedRect = [check retain];
-                    
-                    didTrackRect = YES;
-                }
+      if([check mouseInside] &&
+         ([checkView isHidden] || !NSMouseInRect(point,localRect,isFlipped))){
+       // mouseExited
+       if([check isToolTip]){
+        toolTipWindowVisible--;
+        toolTipWindowChange=YES;
+       }
+       else
+        [[check owner] mouseExited:[NSEvent mouseEventWithType:NSMouseExited location:point modifierFlags:0 window:self clickCount:0]];
+
+       [check setMouseInside:NO];
+      }
+      else if(![check mouseInside] && ![checkView isHidden] &&
+              NSMouseInRect(point,localRect,isFlipped)){
+       // mouseEntered
+       if([check isToolTip]){
+        NSString *toolTip;
+
+        NSPoint locationOnScreen=NSMakePoint(NSMaxX([checkView bounds]) + 5.0, NSMinY([checkView bounds]) - 5.0);
+        locationOnScreen=[checkView convertPoint:locationOnScreen toView:nil];
+        locationOnScreen=[[checkView window] convertBaseToScreen:locationOnScreen];
+
+        if ([[check owner] respondsToSelector:@selector(view:stringForToolTip:point:userData:)])
+         toolTip = [[check owner] view:checkView stringForToolTip:[check tag] point:point userData:[check userData]];
+        else
+         toolTip = [[check owner] description];
+
+        [toolTipWindow setToolTip:toolTip];
+        [toolTipWindow setLocationOnScreen:locationOnScreen];
+        toolTipWindowVisible++;
+        toolTipWindowChange=YES;
+       }
+       else
+        [[check owner] mouseEntered:[NSEvent mouseEventWithType:NSMouseEntered location:point modifierFlags:0 window:self clickCount:0]];
+
+       [check setMouseInside:YES];
+      }
+     }
+
+     if(toolTipWindowChange){
+      if(toolTipWindowVisible>=0 && ![toolTipWindow isVisible])
+       [toolTipWindow performSelector:@selector(orderFront:) withObject:nil afterDelay:0.5];
+      else if(toolTipWindowVisible<=0){
+       [NSObject cancelPreviousPerformRequestsWithTarget:toolTipWindow selector:@selector(orderFront:) object:nil];
+       [toolTipWindow orderOut:nil];
+      }
      }
     }
-        if (didTrackRect == NO && _trackedRect != nil) {
-            if ([_trackedRect isToolTip])
-                [[NSToolTipWindow sharedToolTipWindow] orderOut:nil];
-            else
-                [[_trackedRect owner] mouseExited:[NSEvent mouseEventWithType:NSMouseExited location:point modifierFlags:0 window:self clickCount:0]];
-            
-            [_trackedRect release];
-            _trackedRect = nil;
-        }        
    }
    return didSetCursor;
 }

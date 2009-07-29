@@ -17,7 +17,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    BOOL    _isToolTip;
    id      _owner;
    void   *_userData;
-   BOOL    _assumeInside;
+   BOOL    _mouseInside;
    int     _tag;
 }
 
@@ -36,6 +36,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -owner;
 -(void *)userData;
--(BOOL)assumeInside;
+-(BOOL)mouseInside;
+-(void)setMouseInside:(BOOL)inside;
 
 @end

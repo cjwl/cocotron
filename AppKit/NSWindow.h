@@ -147,7 +147,6 @@ APPKIT_EXPORT NSString *NSWindowWillCloseNotification;
    NSMutableArray *_drawers;
    NSToolbar *_toolbar;
    NSWindowAnimationContext *_animationContext;
-   NSTrackingRect *_trackedRect;
 }
 
 +(NSWindowDepth)defaultDepthLimit;
