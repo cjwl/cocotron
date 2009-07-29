@@ -2155,6 +2155,20 @@
 		FE405A6F0B4450FD001B183D /* NSHTTPURLResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = FE405A6B0B4450FD001B183D /* NSHTTPURLResponse.m */; };
 		FE405A700B4450FD001B183D /* NSHTTPURLResponse.h in Headers */ = {isa = PBXBuildFile; fileRef = FE405A6A0B4450FD001B183D /* NSHTTPURLResponse.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE405A710B4450FD001B183D /* NSHTTPURLResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = FE405A6B0B4450FD001B183D /* NSHTTPURLResponse.m */; };
+		FE452E82102097EF00585DFE /* NSString_macOSRoman.h in Headers */ = {isa = PBXBuildFile; fileRef = FE452E80102097EF00585DFE /* NSString_macOSRoman.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE452E83102097EF00585DFE /* NSString_macOSRoman.m in Sources */ = {isa = PBXBuildFile; fileRef = FE452E81102097EF00585DFE /* NSString_macOSRoman.m */; };
+		FE452E84102097EF00585DFE /* NSString_macOSRoman.h in Headers */ = {isa = PBXBuildFile; fileRef = FE452E80102097EF00585DFE /* NSString_macOSRoman.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE452E85102097EF00585DFE /* NSString_macOSRoman.m in Sources */ = {isa = PBXBuildFile; fileRef = FE452E81102097EF00585DFE /* NSString_macOSRoman.m */; };
+		FE452E86102097EF00585DFE /* NSString_macOSRoman.h in Headers */ = {isa = PBXBuildFile; fileRef = FE452E80102097EF00585DFE /* NSString_macOSRoman.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE452E87102097EF00585DFE /* NSString_macOSRoman.m in Sources */ = {isa = PBXBuildFile; fileRef = FE452E81102097EF00585DFE /* NSString_macOSRoman.m */; };
+		FE452E88102097EF00585DFE /* NSString_macOSRoman.h in Headers */ = {isa = PBXBuildFile; fileRef = FE452E80102097EF00585DFE /* NSString_macOSRoman.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE452E89102097EF00585DFE /* NSString_macOSRoman.m in Sources */ = {isa = PBXBuildFile; fileRef = FE452E81102097EF00585DFE /* NSString_macOSRoman.m */; };
+		FE452E8A102097EF00585DFE /* NSString_macOSRoman.h in Headers */ = {isa = PBXBuildFile; fileRef = FE452E80102097EF00585DFE /* NSString_macOSRoman.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE452E8B102097EF00585DFE /* NSString_macOSRoman.m in Sources */ = {isa = PBXBuildFile; fileRef = FE452E81102097EF00585DFE /* NSString_macOSRoman.m */; };
+		FE452E8C102097EF00585DFE /* NSString_macOSRoman.h in Headers */ = {isa = PBXBuildFile; fileRef = FE452E80102097EF00585DFE /* NSString_macOSRoman.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE452E8D102097EF00585DFE /* NSString_macOSRoman.m in Sources */ = {isa = PBXBuildFile; fileRef = FE452E81102097EF00585DFE /* NSString_macOSRoman.m */; };
+		FE452E8E102097EF00585DFE /* NSString_macOSRoman.h in Headers */ = {isa = PBXBuildFile; fileRef = FE452E80102097EF00585DFE /* NSString_macOSRoman.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE452E8F102097EF00585DFE /* NSString_macOSRoman.m in Sources */ = {isa = PBXBuildFile; fileRef = FE452E81102097EF00585DFE /* NSString_macOSRoman.m */; };
 		FE4EC6900BD9B47B0015F9E9 /* NSKeyedArchiver.h in Headers */ = {isa = PBXBuildFile; fileRef = FE4EC68C0BD9B47B0015F9E9 /* NSKeyedArchiver.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE4EC6910BD9B47B0015F9E9 /* NSKeyedArchiver.m in Sources */ = {isa = PBXBuildFile; fileRef = FE4EC68D0BD9B47B0015F9E9 /* NSKeyedArchiver.m */; };
 		FE4EC6920BD9B47B0015F9E9 /* NSKeyedArchiver.h in Headers */ = {isa = PBXBuildFile; fileRef = FE4EC68C0BD9B47B0015F9E9 /* NSKeyedArchiver.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -5305,6 +5319,8 @@
 		FE3F7D990BE63BBD007E9363 /* NSDateComponents.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = NSDateComponents.m; path = NSDate/NSDateComponents.m; sourceTree = "<group>"; };
 		FE405A6A0B4450FD001B183D /* NSHTTPURLResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSHTTPURLResponse.h; sourceTree = "<group>"; };
 		FE405A6B0B4450FD001B183D /* NSHTTPURLResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSHTTPURLResponse.m; sourceTree = "<group>"; };
+		FE452E80102097EF00585DFE /* NSString_macOSRoman.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSString_macOSRoman.h; sourceTree = "<group>"; };
+		FE452E81102097EF00585DFE /* NSString_macOSRoman.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSString_macOSRoman.m; sourceTree = "<group>"; };
 		FE4EC68C0BD9B47B0015F9E9 /* NSKeyedArchiver.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSKeyedArchiver.h; sourceTree = "<group>"; };
 		FE4EC68D0BD9B47B0015F9E9 /* NSKeyedArchiver.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSKeyedArchiver.m; sourceTree = "<group>"; };
 		FE53BE170BA9EBBE0050277F /* NSOldXMLAttribute.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSOldXMLAttribute.h; sourceTree = "<group>"; };
@@ -6134,6 +6150,8 @@
 		6E28033E0974799000EC542B /* NSString */ = {
 			isa = PBXGroup;
 			children = (
+				FE452E80102097EF00585DFE /* NSString_macOSRoman.h */,
+				FE452E81102097EF00585DFE /* NSString_macOSRoman.m */,
 				FE8C913E0FFD1E430027C889 /* NSString_win1252.h */,
 				FE8C913F0FFD1E430027C889 /* NSString_win1252.m */,
 				6E28049209747BF800EC542B /* NSConstantString-Impl.m */,
@@ -7178,6 +7196,7 @@
 				28D486410FE04E7100DC03EF /* objc_protocol.h in Headers */,
 				28D486420FE04E7100DC03EF /* NSRaiseException.h in Headers */,
 				FE8C914C0FFD1E430027C889 /* NSString_win1252.h in Headers */,
+				FE452E8E102097EF00585DFE /* NSString_macOSRoman.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7485,6 +7504,7 @@
 				FEBF53690F926025005DC684 /* objc_protocol.h in Headers */,
 				FEA317890FD5843900F480D4 /* NSRaiseException.h in Headers */,
 				FE8C91440FFD1E430027C889 /* NSString_win1252.h in Headers */,
+				FE452E86102097EF00585DFE /* NSString_macOSRoman.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7792,6 +7812,7 @@
 				FEBF53680F926025005DC684 /* objc_protocol.h in Headers */,
 				FEA3178A0FD5843900F480D4 /* NSRaiseException.h in Headers */,
 				FE8C91420FFD1E430027C889 /* NSString_win1252.h in Headers */,
+				FE452E84102097EF00585DFE /* NSString_macOSRoman.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8103,6 +8124,7 @@
 				FEBF536C0F926025005DC684 /* objc_protocol.h in Headers */,
 				FEA3178B0FD5843900F480D4 /* NSRaiseException.h in Headers */,
 				FE8C91400FFD1E430027C889 /* NSString_win1252.h in Headers */,
+				FE452E82102097EF00585DFE /* NSString_macOSRoman.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8411,6 +8433,7 @@
 				FE6519440FBC844C00464BFD /* objc_protocol.h in Headers */,
 				FEA317870FD5843900F480D4 /* NSRaiseException.h in Headers */,
 				FE8C914A0FFD1E430027C889 /* NSString_win1252.h in Headers */,
+				FE452E8C102097EF00585DFE /* NSString_macOSRoman.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8719,6 +8742,7 @@
 				FEBF536A0F926025005DC684 /* objc_protocol.h in Headers */,
 				FEA317860FD5843900F480D4 /* NSRaiseException.h in Headers */,
 				FE8C91460FFD1E430027C889 /* NSString_win1252.h in Headers */,
+				FE452E88102097EF00585DFE /* NSString_macOSRoman.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -9027,6 +9051,7 @@
 				FEBF536B0F926025005DC684 /* objc_protocol.h in Headers */,
 				FEA317880FD5843900F480D4 /* NSRaiseException.h in Headers */,
 				FE8C91480FFD1E430027C889 /* NSString_win1252.h in Headers */,
+				FE452E8A102097EF00585DFE /* NSString_macOSRoman.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -9733,6 +9758,7 @@
 				28D487970FE04E7100DC03EF /* CFXMLParser.m in Sources */,
 				28D487D20FE0508900DC03EF /* msgSendv-solaris.m in Sources */,
 				FE8C914D0FFD1E430027C889 /* NSString_win1252.m in Sources */,
+				FE452E8F102097EF00585DFE /* NSString_macOSRoman.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -10080,6 +10106,7 @@
 				FE8694840FE0108E00F89733 /* CFXMLNode.m in Sources */,
 				FE8694850FE0108E00F89733 /* CFXMLParser.m in Sources */,
 				FE8C91450FFD1E430027C889 /* NSString_win1252.m in Sources */,
+				FE452E87102097EF00585DFE /* NSString_macOSRoman.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -10428,6 +10455,7 @@
 				FE8694A80FE0108E00F89733 /* CFXMLNode.m in Sources */,
 				FE8694A90FE0108E00F89733 /* CFXMLParser.m in Sources */,
 				FE8C91430FFD1E430027C889 /* NSString_win1252.m in Sources */,
+				FE452E85102097EF00585DFE /* NSString_macOSRoman.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -10780,6 +10808,7 @@
 				FE8694CC0FE0108E00F89733 /* CFXMLNode.m in Sources */,
 				FE8694CD0FE0108E00F89733 /* CFXMLParser.m in Sources */,
 				FE8C91410FFD1E430027C889 /* NSString_win1252.m in Sources */,
+				FE452E83102097EF00585DFE /* NSString_macOSRoman.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -11129,6 +11158,7 @@
 				FE86943C0FE0108E00F89733 /* CFXMLNode.m in Sources */,
 				FE86943D0FE0108E00F89733 /* CFXMLParser.m in Sources */,
 				FE8C914B0FFD1E430027C889 /* NSString_win1252.m in Sources */,
+				FE452E8D102097EF00585DFE /* NSString_macOSRoman.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -11479,6 +11509,7 @@
 				FE8694180FE0108E00F89733 /* CFXMLNode.m in Sources */,
 				FE8694190FE0108E00F89733 /* CFXMLParser.m in Sources */,
 				FE8C91470FFD1E430027C889 /* NSString_win1252.m in Sources */,
+				FE452E89102097EF00585DFE /* NSString_macOSRoman.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -11829,6 +11860,7 @@
 				FE8694600FE0108E00F89733 /* CFXMLNode.m in Sources */,
 				FE8694610FE0108E00F89733 /* CFXMLParser.m in Sources */,
 				FE8C91490FFD1E430027C889 /* NSString_win1252.m in Sources */,
+				FE452E8B102097EF00585DFE /* NSString_macOSRoman.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
