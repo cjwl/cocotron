@@ -9,10 +9,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 // Original - Christopher Lloyd <cjwl@objc.net>
 
-#import <AppKit/NSTrackingRect.h>
+#import <AppKit/NSTrackingArea.h>
 #import <AppKit/NSView.h>
 
-@implementation NSTrackingRect
+@implementation NSTrackingArea
 
 -initWithRect:(NSRect)rect view:(NSView *)view flipped:(BOOL)flipped owner:owner userData:(void *)userData
    assumeInside:(BOOL)assumeInside isToolTip:(BOOL)isToolTip {

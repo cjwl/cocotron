@@ -29,7 +29,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSCursor.h>
 #import <AppKit/NSTextView.h>
 #import <AppKit/NSCursorRect.h>
-#import <AppKit/NSTrackingRect.h>
+#import <AppKit/NSTrackingArea.h>
 #import <AppKit/NSToolbar.h>
 #import <AppKit/NSWindowAnimationContext.h>
 #import <AppKit/NSToolTipWindow.h>
@@ -1899,7 +1899,7 @@ NSString *NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification";
 }
 
 -(NSTrackingRectTag)_addTrackingRect:(NSRect)rect view:(NSView *)view flipped:(BOOL)flipped owner:owner userData:(void *)userData assumeInside:(BOOL)assumeInside isToolTip:(BOOL)isToolTip {
-   NSTrackingRect *tracking=[[[NSTrackingRect alloc] initWithRect:rect view:view flipped:flipped owner:owner userData:userData assumeInside:assumeInside isToolTip:isToolTip] autorelease];
+   NSTrackingArea *tracking=[[[NSTrackingArea alloc] initWithRect:rect view:view flipped:flipped owner:owner userData:userData assumeInside:assumeInside isToolTip:isToolTip] autorelease];
 
    [tracking setTag:_nextTrackingRectTag++];
    [_trackingRects addObject:tracking];
@@ -1920,7 +1920,7 @@ NSString *NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification";
     int count=[_trackingRects count];
     
     while(--count>=0) {
-        NSTrackingRect *trackingRect = [_trackingRects objectAtIndex:count];
+        NSTrackingArea *trackingRect = [_trackingRects objectAtIndex:count];
         
         if (toolTipsOnly == YES && [trackingRect isToolTip] == NO)
             continue;
@@ -2301,7 +2301,7 @@ NSString *NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification";
      if([toolTipWindow isVisible]==YES)
       toolTipWindowVisible=1;
      for(i=0;i<count;i++){
-      NSTrackingRect *check=[_trackingRects objectAtIndex:i];
+      NSTrackingArea *check=[_trackingRects objectAtIndex:i];
       NSView *checkView=[check view];
       NSRect localRect=[_backgroundView convertRect:[check rect] fromView:checkView];
 

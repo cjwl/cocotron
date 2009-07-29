@@ -12,7 +12,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSEvent.h>
 #import <AppKit/NSWindow-Private.h>
 #import <AppKit/NSCursor.h>
-#import <AppKit/NSTrackingRect.h>
+#import <AppKit/NSTrackingArea.h>
 #import <AppKit/NSCursorRect.h>
 #import <AppKit/NSMenu.h>
 #import <AppKit/NSScrollView.h>

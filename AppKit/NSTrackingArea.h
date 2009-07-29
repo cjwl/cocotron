@@ -10,7 +10,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @class NSView;
 
-@interface NSTrackingRect : NSObject {
+@interface NSTrackingArea : NSObject {
    NSRect  _rect;
    NSView *_view;
    BOOL    _isFlipped;

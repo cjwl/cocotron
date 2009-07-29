@@ -10,7 +10,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/AppKitExport.h>
 #import <AppKit/NSView.h>
 
-@class NSView, NSEvent, NSColor, NSCursor, NSImage, NSScreen, NSText, NSTextView, CGWindow, NSPasteboard, NSSheetContext, NSUndoManager, NSButton,NSButtonCell, NSDrawer, NSToolbar, NSWindowAnimationContext, NSTrackingRect, NSWindowBackgroundView,NSWindowController;
+@class NSView, NSEvent, NSColor, NSCursor, NSImage, NSScreen, NSText, NSTextView, CGWindow, NSPasteboard, NSSheetContext, NSUndoManager, NSButton,NSButtonCell, NSDrawer, NSToolbar, NSWindowAnimationContext, NSTrackingArea, NSWindowBackgroundView,NSWindowController;
 
 enum {
    NSBorderlessWindowMask=0x00,
