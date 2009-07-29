@@ -655,7 +655,6 @@ static inline void buildTransformsIfNeeded(NSView *self) {
     if ([self window] == nil)
         [NSException raise:NSInvalidArgumentException format:@"%@ cannot add tool tip rect before view is added to view hierarchy", NSStringFromSelector(_cmd)];
     
-    rect=[self convertRect:rect toView:nil];
     return [[self window] _addTrackingRect:rect view:self flipped:[self isFlipped] owner:object userData:userData assumeInside:NO isToolTip:YES];
 }
 
@@ -670,12 +669,10 @@ static inline void buildTransformsIfNeeded(NSView *self) {
 }
 
 -(void)addCursorRect:(NSRect)rect cursor:(NSCursor *)cursor {
-   rect=[self convertRect:rect toView:nil];
    [[self window] _addCursorRect:rect cursor:cursor view:self];
 }
 
 -(void)removeCursorRect:(NSRect)rect cursor:(NSCursor *)cursor {
-   rect=[self convertRect:rect toView:nil];
    [[self window] _removeCursorRect:rect cursor:cursor view:self];
 }
 
