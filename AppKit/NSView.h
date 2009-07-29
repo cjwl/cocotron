@@ -56,7 +56,7 @@ APPKIT_EXPORT NSString *NSViewFocusDidChangeNotification;
    NSArray        *_draggedTypes;
    NSToolTipTag    _defaultToolTipTag;
    NSString       *_toolTip;
-
+   NSMutableArray *_trackingAreas;
    NSRect          _invalidRect;
 
    BOOL              _validTransforms;
@@ -146,6 +146,11 @@ APPKIT_EXPORT NSString *NSViewFocusDidChangeNotification;
 -(void)removeCursorRect:(NSRect)rect cursor:(NSCursor *)cursor;
 -(void)discardCursorRects;
 -(void)resetCursorRects;
+
+-(NSArray *)trackingAreas;
+-(void)addTrackingArea:(NSTrackingArea *)trackingArea;
+-(void)removeTrackingArea:(NSTrackingArea *)trackingArea;
+-(void)updateTrackingAreas;
 
 -(NSTrackingRectTag)addTrackingRect:(NSRect)rect owner:object userData:(void *)userData assumeInside:(BOOL)assumeInside;
 -(void)removeTrackingRect:(NSTrackingRectTag)tag;

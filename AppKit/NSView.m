@@ -86,6 +86,7 @@ NSString *NSViewFocusDidChangeNotification=@"NSViewFocusDidChangeNotification";
     [_subviews makeObjectsPerformSelector:@selector(_setSuperview:) withObject:self];
     _invalidRect=_bounds;
     _defaultToolTipTag=-1;
+    _trackingAreas=[NSMutableArray new];
    }
    else {
     [NSException raise:NSInvalidArgumentException format:@"%@ can not initWithCoder:%@",isa,[coder class]];
@@ -113,7 +114,8 @@ NSString *NSViewFocusDidChangeNotification=@"NSViewFocusDidChangeNotification";
    _tag=-1;
    _invalidRect=_bounds;
    _defaultToolTipTag=-1;
-
+   _trackingAreas=[NSMutableArray new];
+   
    _validTransforms=NO;
    _transformFromWindow=CGAffineTransformIdentity;
    _transformToWindow=CGAffineTransformIdentity;
@@ -130,7 +132,8 @@ NSString *NSViewFocusDidChangeNotification=@"NSViewFocusDidChangeNotification";
 
    [_subviews release];
    [_draggedTypes release];
-	[self _unbindAllBindings];
+   [_trackingAreas release];
+   [self _unbindAllBindings];
 
    [super dealloc];
 }
@@ -684,6 +687,21 @@ static inline void buildTransformsIfNeeded(NSView *self) {
 
 -(void)resetCursorRects {
    // do nothing
+}
+
+-(NSArray *)trackingAreas {
+   return _trackingAreas;
+}
+
+-(void)addTrackingArea:(NSTrackingArea *)trackingArea {
+   [_trackingAreas addObject:trackingArea];
+}
+
+-(void)removeTrackingArea:(NSTrackingArea *)trackingArea {
+   [_trackingAreas removeObjectIdenticalTo:trackingArea];
+}
+
+-(void)updateTrackingAreas {
 }
 
 -(NSTrackingRectTag)addTrackingRect:(NSRect)rect owner:owner userData:(void *)userData assumeInside:(BOOL)assumeInside {

@@ -10,6 +10,22 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @class NSView;
 
+enum {
+   NSTrackingMouseEnteredAndExited   =(1<<0),
+   NSTrackingMouseMoved              =(1<<1),
+   NSTrackingCursorUpdate            =(1<<2),
+   
+   NSTrackingActiveWhenFirstResponder=(1<<4),
+   NSTrackingActiveInKeyWindow       =(1<<5),
+   NSTrackingActiveInActiveApp       =(1<<6),
+   NSTrackingActiveAlways            =(1<<7),
+   
+   NSTrackingAssumeInside            =(1<<8),
+   NSTrackingInVisibleRect           =(1<<9),
+   NSTrackingEnabledDuringMouseDrag  =(1<<10),
+};
+
+
 @interface NSTrackingArea : NSObject {
    NSRect  _rect;
    NSView *_view;
