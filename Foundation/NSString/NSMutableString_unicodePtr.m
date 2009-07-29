@@ -11,6 +11,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSStringFormatter.h>
 #import <Foundation/NSStringFileIO.h>
 #import <Foundation/NSString_cString.h>
+#import <Foundation/NSString_nextstep.h>
+#import <Foundation/NSString_isoLatin1.h>
+#import <Foundation/NSString_win1252.h>
+#import <Foundation/NSStringSymbol.h>
+#import <Foundation/NSStringUTF8.h>
+#import <Foundation/NSUnicodeCaseMapping.h>
 #import <Foundation/NSRaiseException.h>
 #import <string.h>
 
@@ -268,6 +274,54 @@ NSString *NSMutableString_unicodePtrNewWithCapacity(NSZone *zone,
    
    return NSMutableString_unicodePtrInitNoCopy(self,unicode,length,
      NSZoneFromPointer(self));
+}
+
+-initWithBytes:(const void *)bytes length:(NSUInteger)length encoding:(NSStringEncoding)encoding {
+   NSUInteger resultLength;
+   unichar   *characters;
+   
+   switch(encoding){
+
+    case NSUnicodeStringEncoding:
+     characters=NSUnicodeFromBytes(bytes,length,&resultLength);
+     return NSMutableString_unicodePtrNewNoCopy(NULL,characters,resultLength);
+
+    case NSNEXTSTEPStringEncoding:
+     characters=NSNEXTSTEPToUnicode(bytes,length,&resultLength,NULL);
+     return NSMutableString_unicodePtrNewNoCopy(NULL,characters,resultLength);
+
+// FIX, not nextstep
+    case NSASCIIStringEncoding:
+     characters=NSNEXTSTEPToUnicode(bytes,length,&resultLength,NULL);
+     return NSMutableString_unicodePtrNewNoCopy(NULL,characters,resultLength);
+
+    case NSISOLatin1StringEncoding:
+     characters=NSISOLatin1ToUnicode(bytes,length,&resultLength,NULL);
+     return NSMutableString_unicodePtrNewNoCopy(NULL,characters,resultLength);
+
+    case NSSymbolStringEncoding:
+     characters=NSSymbolToUnicode(bytes,length,&resultLength,NULL);
+     return NSMutableString_unicodePtrNewNoCopy(NULL,characters,resultLength);
+
+    case NSUTF8StringEncoding:
+     characters=NSUTF8ToUnicode(bytes,length,&resultLength,NULL);
+     return NSMutableString_unicodePtrNewNoCopy(NULL,characters,resultLength);
+
+	case NSWindowsCP1252StringEncoding:
+     characters=NSWin1252ToUnicode(bytes,length,&resultLength,NULL);
+     return NSMutableString_unicodePtrNewNoCopy(NULL,characters,resultLength);
+
+    case NSUTF16BigEndianStringEncoding:
+     characters=NSUnicodeFromBytesUTF16BigEndian(bytes,length,&resultLength);
+     return NSMutableString_unicodePtrNewNoCopy(NULL,characters,resultLength);
+
+    default:
+     NSRaiseException(NSInvalidArgumentException,self,_cmd,@"encoding %d not (yet) implemented",encoding); 
+     break;
+   }
+   
+   NSDeallocateObject(self);
+   return nil;
 }
 
 -initWithFormat:(NSString *)format
