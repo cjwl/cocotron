@@ -2119,6 +2119,13 @@
 		FE1A0D280F8BADBA00FC4CC7 /* forwarding.m in Sources */ = {isa = PBXBuildFile; fileRef = FE1A0D200F8BADBA00FC4CC7 /* forwarding.m */; };
 		FE1A0D290F8BADBA00FC4CC7 /* forwarding.h in Headers */ = {isa = PBXBuildFile; fileRef = FE1A0D1F0F8BADBA00FC4CC7 /* forwarding.h */; };
 		FE1A0D2A0F8BADBA00FC4CC7 /* forwarding.m in Sources */ = {isa = PBXBuildFile; fileRef = FE1A0D200F8BADBA00FC4CC7 /* forwarding.m */; };
+		FE1CF95710233D94001414D4 /* illegalCharacterSet.bitmap in Resources */ = {isa = PBXBuildFile; fileRef = FE1CF95610233D94001414D4 /* illegalCharacterSet.bitmap */; };
+		FE1CF95810233D94001414D4 /* illegalCharacterSet.bitmap in Resources */ = {isa = PBXBuildFile; fileRef = FE1CF95610233D94001414D4 /* illegalCharacterSet.bitmap */; };
+		FE1CF95910233D94001414D4 /* illegalCharacterSet.bitmap in Resources */ = {isa = PBXBuildFile; fileRef = FE1CF95610233D94001414D4 /* illegalCharacterSet.bitmap */; };
+		FE1CF95A10233D94001414D4 /* illegalCharacterSet.bitmap in Resources */ = {isa = PBXBuildFile; fileRef = FE1CF95610233D94001414D4 /* illegalCharacterSet.bitmap */; };
+		FE1CF95B10233D94001414D4 /* illegalCharacterSet.bitmap in Resources */ = {isa = PBXBuildFile; fileRef = FE1CF95610233D94001414D4 /* illegalCharacterSet.bitmap */; };
+		FE1CF95C10233D94001414D4 /* illegalCharacterSet.bitmap in Resources */ = {isa = PBXBuildFile; fileRef = FE1CF95610233D94001414D4 /* illegalCharacterSet.bitmap */; };
+		FE1CF95D10233D94001414D4 /* illegalCharacterSet.bitmap in Resources */ = {isa = PBXBuildFile; fileRef = FE1CF95610233D94001414D4 /* illegalCharacterSet.bitmap */; };
 		FE2705C60C5EF3D60004AB37 /* OBJCInitializeProcess_Darwin.m in Sources */ = {isa = PBXBuildFile; fileRef = FE2705C50C5EF3D60004AB37 /* OBJCInitializeProcess_Darwin.m */; };
 		FE2705C70C5EF3D60004AB37 /* OBJCInitializeProcess_Darwin.m in Sources */ = {isa = PBXBuildFile; fileRef = FE2705C50C5EF3D60004AB37 /* OBJCInitializeProcess_Darwin.m */; };
 		FE35CAED0B4AB85800FE7AB3 /* objc.m in Sources */ = {isa = PBXBuildFile; fileRef = FE35CAEC0B4AB85800FE7AB3 /* objc.m */; };
@@ -5297,6 +5304,7 @@
 		FE1935160B5D449E00FB74CC /* NSAssertionHandler.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSAssertionHandler.m; sourceTree = "<group>"; };
 		FE1A0D1F0F8BADBA00FC4CC7 /* forwarding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = forwarding.h; sourceTree = "<group>"; };
 		FE1A0D200F8BADBA00FC4CC7 /* forwarding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = forwarding.m; sourceTree = "<group>"; };
+		FE1CF95610233D94001414D4 /* illegalCharacterSet.bitmap */ = {isa = PBXFileReference; lastKnownFileType = file; name = illegalCharacterSet.bitmap; path = NSCharacterSet/illegalCharacterSet.bitmap; sourceTree = "<group>"; };
 		FE2705C50C5EF3D60004AB37 /* OBJCInitializeProcess_Darwin.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = OBJCInitializeProcess_Darwin.m; sourceTree = "<group>"; };
 		FE35CAEC0B4AB85800FE7AB3 /* objc.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = objc.m; sourceTree = "<group>"; };
 		FE35CBD70B4AD47400FE7AB3 /* NSSocket.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSSocket.h; sourceTree = "<group>"; };
@@ -5349,7 +5357,6 @@
 		FE5EA8040FA3896500536850 /* NSTask_bsd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSTask_bsd.h; sourceTree = "<group>"; };
 		FE5EA8050FA3896500536850 /* NSTask_bsd.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSTask_bsd.m; sourceTree = "<group>"; };
 		FE651A870FBC844C00464BFD /* Foundation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Foundation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		FE651A880FBC844C00464BFD /* Info copy.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Info copy.plist"; sourceTree = "<group>"; };
 		FE6DC2550BA902710082AC66 /* NSAffineTransform.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSAffineTransform.h; sourceTree = "<group>"; };
 		FE6DC2560BA902710082AC66 /* NSAffineTransform.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSAffineTransform.m; sourceTree = "<group>"; };
 		FE74776D0BAC4E9000829F4F /* NSDecimal.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSDecimal.h; sourceTree = "<group>"; };
@@ -5790,11 +5797,11 @@
 		089C1665FE841158C02AAC07 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				FE1CF95610233D94001414D4 /* illegalCharacterSet.bitmap */,
 				6E280B2809747EF500EC542B /* NSCharacterSet */,
 				6E280B2709747EC800EC542B /* NSTimeZone */,
 				8DC2EF5A0486A6940098B216 /* Info.plist */,
 				6E280B2B09747F4900EC542B /* NSUserDefaults.plist */,
-				FE651A880FBC844C00464BFD /* Info copy.plist */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -9306,6 +9313,7 @@
 				28D487A10FE04E7100DC03EF /* NSTimeZoneAbbreviations.plist in Resources */,
 				28D487A20FE04E7100DC03EF /* NSTimeZoneRegions.plist in Resources */,
 				28D487A30FE04E7100DC03EF /* NSUserDefaults.plist in Resources */,
+				FE1CF95D10233D94001414D4 /* illegalCharacterSet.bitmap in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -9323,6 +9331,7 @@
 				6E4D93210A2642BD003D335C /* NSTimeZoneAbbreviations.plist in Resources */,
 				6E4D93220A2642BD003D335C /* NSTimeZoneRegions.plist in Resources */,
 				6E4D93230A2642BD003D335C /* NSUserDefaults.plist in Resources */,
+				FE1CF95910233D94001414D4 /* illegalCharacterSet.bitmap in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -9340,6 +9349,7 @@
 				6EA04A6C09E57D5F0067589C /* NSTimeZoneAbbreviations.plist in Resources */,
 				6EA04A6D09E57D5F0067589C /* NSTimeZoneRegions.plist in Resources */,
 				6EA04A6E09E57D5F0067589C /* NSUserDefaults.plist in Resources */,
+				FE1CF95810233D94001414D4 /* illegalCharacterSet.bitmap in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -9357,6 +9367,7 @@
 				FE01A7E50C5D9B6900AEA51A /* NSTimeZoneAbbreviations.plist in Resources */,
 				FE01A7E60C5D9B6900AEA51A /* NSTimeZoneRegions.plist in Resources */,
 				FE01A7E70C5D9B6900AEA51A /* NSUserDefaults.plist in Resources */,
+				FE1CF95710233D94001414D4 /* illegalCharacterSet.bitmap in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -9374,6 +9385,7 @@
 				FE651A810FBC844C00464BFD /* NSTimeZoneAbbreviations.plist in Resources */,
 				FE651A820FBC844C00464BFD /* NSTimeZoneRegions.plist in Resources */,
 				FE651A830FBC844C00464BFD /* NSUserDefaults.plist in Resources */,
+				FE1CF95C10233D94001414D4 /* illegalCharacterSet.bitmap in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -9391,6 +9403,7 @@
 				FED70A640C3B3D2C000CBE5B /* NSTimeZoneAbbreviations.plist in Resources */,
 				FED70A650C3B3D2C000CBE5B /* NSTimeZoneRegions.plist in Resources */,
 				FED70A660C3B3D2C000CBE5B /* NSUserDefaults.plist in Resources */,
+				FE1CF95A10233D94001414D4 /* illegalCharacterSet.bitmap in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -9408,6 +9421,7 @@
 				FED70FB00C3C09C7000CBE5B /* NSTimeZoneAbbreviations.plist in Resources */,
 				FED70FB10C3C09C7000CBE5B /* NSTimeZoneRegions.plist in Resources */,
 				FED70FB20C3C09C7000CBE5B /* NSUserDefaults.plist in Resources */,
+				FE1CF95B10233D94001414D4 /* illegalCharacterSet.bitmap in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
