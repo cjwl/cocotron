@@ -11,7 +11,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/AppKitExport.h>
 #import <ApplicationServices/ApplicationServices.h>
 
-@class NSWindow, NSMenu, NSCursor, NSPasteboard, NSImage, NSScrollView;
+@class NSWindow, NSMenu, NSCursor, NSPasteboard, NSImage, NSScrollView, NSTrackingArea;
 
 typedef int NSTrackingRectTag;
 typedef int NSToolTipTag;
