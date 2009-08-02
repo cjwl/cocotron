@@ -80,6 +80,7 @@ APPKIT_EXPORT NSString *NSTextDidChangeNotification;
 -(BOOL)isHorizontallyResizable;
 -(BOOL)isVerticallyResizable;
 -(NSSize)maxSize;
+-(NSSize)minSize;
 
 -(NSRange)selectedRange;
 
@@ -112,6 +113,7 @@ APPKIT_EXPORT NSString *NSTextDidChangeNotification;
 -(void)setHorizontallyResizable:(BOOL)flag;
 -(void)setVerticallyResizable:(BOOL)flag;
 -(void)setMaxSize:(NSSize)size;
+-(void)setMinSize:(NSSize)size;
 
 -(void)setSelectedRange:(NSRange)range;
 

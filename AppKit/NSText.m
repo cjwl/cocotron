@@ -105,6 +105,17 @@ NSString *NSTextDidChangeNotification=@"NSTextDidChangeNotification";
    return NSMakeSize(0,0);
 }
 
+-(NSSize)minSize {
+   NSInvalidAbstractInvocation();
+   return NSMakeSize(0,0);
+}
+-(void)setMinSize:(NSSize)size {
+   NSInvalidAbstractInvocation();
+}
+
+
+
+
 -(NSRange)selectedRange {
    NSInvalidAbstractInvocation();
    return NSMakeRange(0,0);

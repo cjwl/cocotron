@@ -72,6 +72,7 @@ APPKIT_EXPORT NSString *NSOldSelectedCharacterRange;
 
    BOOL             _isFieldEditor;
    NSSize           _maxSize;
+   NSSize           _minSize;
    BOOL             _isHorizontallyResizable;
    BOOL             _isVerticallyResizable;
    BOOL             _usesRuler;

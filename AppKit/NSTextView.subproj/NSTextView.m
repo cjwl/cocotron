@@ -117,6 +117,7 @@ NSString *NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
 
     _isFieldEditor=NO;
     _maxSize=[self bounds].size;
+    _minSize=NSMakeSize(0,0);
     _isHorizontallyResizable=NO;
     _isVerticallyResizable=YES;
     _selectedRange=NSMakeRange(0,0);
@@ -1796,6 +1797,10 @@ NSString *NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
    return _maxSize;
 }
 
+-(NSSize)minSize {
+   return _minSize;
+}
+
 -(NSRange)selectedRange {
    return _selectedRange;
 }
@@ -2023,6 +2028,11 @@ NSString *NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
 -(void)setMaxSize:(NSSize)size {
    _maxSize=size;
 }
+
+-(void)setMinSize:(NSSize)size {
+   _minSize=size;
+}
+
 
 -(void)setSelectedRange:(NSRange)range {
    [self setSelectedRange:range affinity:_selectionAffinity stillSelecting:NO];
