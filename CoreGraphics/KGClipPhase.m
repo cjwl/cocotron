@@ -2,13 +2,13 @@
 
 @implementation KGClipPhase
 
--initWithNonZeroPath:(KGPath *)path {
+-initWithNonZeroPath:(O2Path *)path {
    _type=KGClipPhaseNonZeroPath;
    _object=[path copy];
    return self;
 }
 
--initWithEOPath:(KGPath *)path {
+-initWithEOPath:(O2Path *)path {
    _type=KGClipPhaseEOPath;
    _object=[path copy];
    return self;

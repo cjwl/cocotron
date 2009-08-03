@@ -11,7 +11,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <CoreGraphics/CGGeometry.h>
 #import <CoreGraphics/CGAffineTransform.h>
 
-@class KGPath,KGMutablePath;
+@class O2Path,O2MutablePath;
 
 typedef enum {
    kCGPathElementMoveToPoint,
@@ -28,9 +28,8 @@ typedef struct {
 
 typedef void(*CGPathApplierFunction)(void *info,const CGPathElement *element);
 
-typedef KGMutablePath *CGPathRef;
-
-typedef KGMutablePath *CGMutablePathRef;
+typedef O2MutablePath *CGPathRef;
+typedef O2MutablePath *CGMutablePathRef;
 
 COREGRAPHICS_EXPORT void      CGPathRelease(CGPathRef self);
 COREGRAPHICS_EXPORT CGPathRef CGPathRetain(CGPathRef self);

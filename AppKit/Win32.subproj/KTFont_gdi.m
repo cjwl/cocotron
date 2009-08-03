@@ -4,7 +4,7 @@
 #import "Win32Display.h"
 #import "Win32Font.h"
 #import "KGFont_gdi.h"
-#import <CoreGraphics/KGMutablePath.h>
+#import <CoreGraphics/O2MutablePath.h>
 #import <AppKit/NSRaise.h>
 
 #define MAXUNICHAR 0xFFFF
@@ -587,8 +587,8 @@ NSLog(@"name=%@,size=%f",[NSString stringWithCString:fontData. elfLogFont.lfFace
 
 
 // not complete
--(KGPath *)createPathForGlyph:(CGGlyph)glyph transform:(CGAffineTransform *)xform {
-   KGMutablePath *result=[[KGMutablePath alloc] init];
+-(O2Path *)createPathForGlyph:(CGGlyph)glyph transform:(CGAffineTransform *)xform {
+   O2MutablePath *result=[[O2MutablePath alloc] init];
    HDC        dc=GetDC(NULL);
    Win32Font *gdiFont=[(KGFont_gdi *)_font createGDIFontSelectedInDC:dc pointSize:_size];
    int        size=GetOutlineTextMetricsA(dc,0,NULL);

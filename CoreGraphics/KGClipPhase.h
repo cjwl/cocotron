@@ -1,7 +1,7 @@
 #import <Foundation/NSObject.h>
 #import <CoreGraphics/CoreGraphics.h>
 
-@class KGPath,KGImage;
+@class O2Path,KGImage;
 
 typedef enum {
  KGClipPhaseNonZeroPath,
@@ -16,8 +16,8 @@ typedef enum {
    CGAffineTransform _transform;
 }
 
--initWithNonZeroPath:(KGPath *)path;
--initWithEOPath:(KGPath *)path;
+-initWithNonZeroPath:(O2Path *)path;
+-initWithEOPath:(O2Path *)path;
 -initWithMask:(KGImage *)mask rect:(CGRect)rect transform:(CGAffineTransform)transform;
 
 -(KGClipPhaseType)phaseType;

@@ -20,7 +20,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "KGShading+PDF.h"
 #import "KGImage+PDF.h"
 #import "KGFont+PDF.h"
-#import "KGMutablePath.h"
+#import "O2MutablePath.h"
 #import "KGColor.h"
 #import "KGColorSpace+PDF.h"
 #import "KGGraphicsState.h"
@@ -289,7 +289,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)beginPath {
-   if(![_path isEmpty])
+   if(!O2PathIsEmpty(_path))
     [self contentWithString:@"n "];
    [super beginPath];
 }
@@ -409,7 +409,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [self _pathContentFromOperator:start];
 }
 
--(void)addPath:(KGPath *)path {
+-(void)addPath:(O2Path *)path {
    int start=[_path numberOfElements];
    [super addPath:path];
    [self _pathContentFromOperator:start];
@@ -637,7 +637,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
      break;
          
    }
-   [_path reset];
+   O2PathReset(_path);
 }
 
 -(void)showGlyphs:(const CGGlyph *)glyphs count:(unsigned)count {

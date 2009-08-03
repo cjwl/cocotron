@@ -9,13 +9,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSObject.h>
 #import <CoreGraphics/CoreGraphics.h>
 
-@class KGColor,KGColorSpace,KGShading,KGImage,KGGraphicsState,KGMutablePath,KGPath,KGPattern,KGLayer,KGPDFPage,NSMutableArray,CGWindow,KGSurface,NSDictionary,NSData,KGFont;
+@class KGColor,KGColorSpace,KGShading,KGImage,KGGraphicsState,O2MutablePath,O2Path,KGPattern,KGLayer,KGPDFPage,NSMutableArray,CGWindow,KGSurface,NSDictionary,NSData,KGFont;
 
 @interface KGContext : NSObject {
    CGAffineTransform _userToDeviceTransform;
    NSMutableArray   *_layerStack;
    NSMutableArray   *_stateStack;
-   KGMutablePath    *_path;
+   O2MutablePath    *_path;
    BOOL              _allowsAntialiasing;
 }
 
@@ -58,7 +58,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)addArc:(float)x:(float)y:(float)radius:(float)startRadian:(float)endRadian:(int)clockwise;
 -(void)addArcToPoint:(float)x1:(float)y1:(float)x2:(float)y2:(float)radius;
 -(void)addEllipseInRect:(CGRect)rect;
--(void)addPath:(KGPath *)path;
+-(void)addPath:(O2Path *)path;
 -(void)replacePathWithStrokedPath;
 
 -(KGGraphicsState *)currentState;
@@ -223,8 +223,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(NSData *)captureBitmapInRect:(CGRect)rect;
 
 -(void)deviceClipReset;
--(void)deviceClipToNonZeroPath:(KGPath *)path;
--(void)deviceClipToEvenOddPath:(KGPath *)path;
+-(void)deviceClipToNonZeroPath:(O2Path *)path;
+-(void)deviceClipToEvenOddPath:(O2Path *)path;
 -(void)deviceClipToMask:(KGImage *)mask inRect:(CGRect)rect;
 
 @end

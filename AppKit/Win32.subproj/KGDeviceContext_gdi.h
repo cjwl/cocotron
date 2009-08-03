@@ -11,7 +11,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <ApplicationServices/ApplicationServices.h>
 #import <windows.h>
 
-@class Win32DeviceContextWindow,KGPath;
+@class Win32DeviceContextWindow,O2Path;
 
 @interface KGDeviceContext_gdi : NSObject {
    HDC _dc;
@@ -23,10 +23,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(Win32DeviceContextWindow *)windowDeviceContext;
 
--(void)establishDeviceSpacePath:(KGPath *)path withTransform:(CGAffineTransform)xform;
+-(void)establishDeviceSpacePath:(O2Path *)path withTransform:(CGAffineTransform)xform;
 -(void)clipReset;
--(void)clipToNonZeroPath:(KGPath *)path withTransform:(CGAffineTransform)xform deviceTransform:(CGAffineTransform)deviceXFORM;
--(void)clipToEvenOddPath:(KGPath *)path withTransform:(CGAffineTransform)xform deviceTransform:(CGAffineTransform)deviceXFORM;
+-(void)clipToNonZeroPath:(O2Path *)path withTransform:(CGAffineTransform)xform deviceTransform:(CGAffineTransform)deviceXFORM;
+-(void)clipToEvenOddPath:(O2Path *)path withTransform:(CGAffineTransform)xform deviceTransform:(CGAffineTransform)deviceXFORM;
 
 -(void)beginPrintingWithDocumentName:(NSString *)name;
 -(void)endPrinting;

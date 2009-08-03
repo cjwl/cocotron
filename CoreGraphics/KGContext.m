@@ -11,7 +11,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "KGGraphicsState.h"
 #import "KGColor.h"
 #import "KGColorSpace.h"
-#import "KGMutablePath.h"
+#import "O2MutablePath.h"
 #import "KGLayer.h"
 #import "KGPDFPage.h"
 #import "KGClipPhase.h"
@@ -140,7 +140,7 @@ static NSMutableArray *possibleContextClasses=nil;
    _layerStack=[NSMutableArray new];
    _stateStack=[NSMutableArray new];
    [_stateStack addObject:state];
-   _path=[[KGMutablePath alloc] init];
+   _path=[[O2MutablePath alloc] init];
    _allowsAntialiasing=YES;
    return self;
 }
@@ -181,30 +181,30 @@ static inline KGGraphicsState *currentState(KGContext *self){
 }
 
 -(BOOL)pathIsEmpty {
-   return (_path==nil)?YES:[_path isEmpty];
+   return (_path==nil)?YES:O2PathIsEmpty(_path);
 }
 
 -(CGPoint)pathCurrentPoint {
-   return (_path==nil)?CGPointZero:[_path currentPoint];
+   return (_path==nil)?CGPointZero:O2PathGetCurrentPoint(_path);
 }
 
 -(CGRect)pathBoundingBox {
-   return (_path==nil)?CGRectZero:[_path boundingBox];
+   return (_path==nil)?CGRectZero:O2PathGetBoundingBox(_path);
 }
 
 -(BOOL)pathContainsPoint:(CGPoint)point drawingMode:(int)pathMode {
    CGAffineTransform ctm=[currentState(self) userSpaceToDeviceSpaceTransform];
 
 // FIX  evenOdd
-   return [_path containsPoint:point evenOdd:NO withTransform:&ctm];
+   return O2PathContainsPoint(_path,&ctm,point,NO);
 }
 
 -(void)beginPath {
-   [_path reset];
+   O2PathReset(_path);
 }
 
 -(void)closePath {
-   [_path closeSubpath];
+   O2PathCloseSubpath(_path);
 }
 
 /* Path building is affected by the CTM, we transform them here into base coordinates (first quadrant, no transformation)
@@ -215,65 +215,67 @@ static inline KGGraphicsState *currentState(KGContext *self){
 -(void)moveToPoint:(float)x:(float)y {      
    CGAffineTransform ctm=[currentState(self) userSpaceTransform];
 
-   [_path moveToPoint:CGPointMake(x,y) withTransform:&ctm];
+   O2PathMoveToPoint(_path,&ctm,x,y);
 }
 
 -(void)addLineToPoint:(float)x:(float)y {
    CGAffineTransform ctm=[currentState(self) userSpaceTransform];
 
-   [_path addLineToPoint:CGPointMake(x,y) withTransform:&ctm];
+   O2PathAddLineToPoint(_path,&ctm,x,y);
 }
 
 -(void)addCurveToPoint:(float)cx1:(float)cy1:(float)cx2:(float)cy2:(float)x:(float)y {
    CGAffineTransform ctm=[currentState(self) userSpaceTransform];
 
-   [_path addCurveToControlPoint:CGPointMake(cx1,cy1) controlPoint:CGPointMake(cx2,cy2) endPoint:CGPointMake(x,y) withTransform:&ctm];
+   O2PathAddCurveToPoint(_path,&ctm,cx1,cy1,cx2,cy2,x,y);
 }
 
 -(void)addQuadCurveToPoint:(float)cx1:(float)cy1:(float)x:(float)y {
    CGAffineTransform ctm=[currentState(self) userSpaceTransform];
 
-   [_path addQuadCurveToControlPoint:CGPointMake(cx1,cy1) endPoint:CGPointMake(x,y) withTransform:&ctm];
+   O2PathAddQuadCurveToPoint(_path,&ctm,cx1,cy1,x,y);
 }
 
 -(void)addLinesWithPoints:(CGPoint *)points count:(unsigned)count {   
    CGAffineTransform ctm=[currentState(self) userSpaceTransform];
 
-   [_path addLinesWithPoints:points count:count withTransform:&ctm];
+   O2PathAddLines(_path,&ctm,points,count);
 }
 
 -(void)addRect:(CGRect)rect {
-   [self addRects:&rect count:1];
-}
-
--(void)addRects:(const CGRect *)rect count:(unsigned)count {   
    CGAffineTransform ctm=[currentState(self) userSpaceTransform];
 
-   [_path addRects:rect count:count withTransform:&ctm];
+   O2PathAddRect(_path,&ctm,rect);
+}
+
+-(void)addRects:(const CGRect *)rects count:(unsigned)count {   
+   CGAffineTransform ctm=[currentState(self) userSpaceTransform];
+
+   O2PathAddRects(_path,&ctm,rects,count);
 }
 
 -(void)addArc:(float)x:(float)y:(float)radius:(float)startRadian:(float)endRadian:(int)clockwise {
    CGAffineTransform ctm=[currentState(self) userSpaceTransform];
 
-   [_path addArcAtPoint:CGPointMake(x,y) radius:radius startAngle:startRadian endAngle:endRadian clockwise:clockwise withTransform:&ctm];
+   O2PathAddArc(_path,&ctm,x,y,radius,startRadian,endRadian,clockwise);
 }
 
 -(void)addArcToPoint:(float)x1:(float)y1:(float)x2:(float)y2:(float)radius {
    CGAffineTransform ctm=[currentState(self) userSpaceTransform];
 
-   [_path addArcToPoint:CGPointMake(x1,y1) point:CGPointMake(x2,y2) radius:radius withTransform:&ctm];
+   O2PathAddArcToPoint(_path,&ctm,x1,y1,x2,y2,radius);
 }
 
 -(void)addEllipseInRect:(CGRect)rect {
    CGAffineTransform ctm=[currentState(self) userSpaceTransform];
 
-   [_path addEllipseInRect:rect withTransform:&ctm];
+   O2PathAddEllipseInRect(_path,&ctm,rect);
 }
 
--(void)addPath:(KGPath *)path {
+-(void)addPath:(O2Path *)path {
    CGAffineTransform ctm=[currentState(self) userSpaceTransform];
 
-   [_path addPath:path withTransform:&ctm];
+   O2PathAddPath(_path,&ctm,path);
 }
 
 -(void)replacePathWithStrokedPath {
@@ -306,13 +308,13 @@ static inline KGGraphicsState *currentState(KGContext *self){
     switch([phase phaseType]){
     
      case KGClipPhaseNonZeroPath:{
-       KGPath *path=[phase object];
+       O2Path *path=[phase object];
        [self deviceClipToNonZeroPath:path];
       }
       break;
       
      case KGClipPhaseEOPath:{
-       KGPath *path=[phase object];
+       O2Path *path=[phase object];
        [self deviceClipToEvenOddPath:path];
       }
       break;
@@ -404,7 +406,7 @@ static inline KGGraphicsState *currentState(KGContext *self){
    
    [currentState(self) addClipToPath:_path];
    [self deviceClipToNonZeroPath:_path];
-   [_path reset];
+   O2PathReset(_path);
 }
 
 -(void)evenOddClipToPath {
@@ -413,7 +415,7 @@ static inline KGGraphicsState *currentState(KGContext *self){
 
    [currentState(self) addEvenOddClipToPath:_path];
    [self deviceClipToEvenOddPath:_path];
-   [_path reset];
+   O2PathReset(_path);
 }
 
 -(void)clipToMask:(KGImage *)image inRect:(CGRect)rect {
@@ -428,8 +430,8 @@ static inline KGGraphicsState *currentState(KGContext *self){
 -(void)clipToRects:(const CGRect *)rects count:(unsigned)count {   
    CGAffineTransform ctm=[currentState(self) userSpaceTransform];
 
-   [_path reset];
-   [_path addRects:rects count:count withTransform:&ctm];
+   O2PathReset(_path);
+   O2PathAddRects(_path,&ctm,rects,count);
    [self clipToPath];
 }
 
@@ -943,11 +945,11 @@ static inline KGGraphicsState *currentState(KGContext *self){
    KGInvalidAbstractInvocation();
 }
 
--(void)deviceClipToNonZeroPath:(KGPath *)path {
+-(void)deviceClipToNonZeroPath:(O2Path *)path {
    KGInvalidAbstractInvocation();
 }
 
--(void)deviceClipToEvenOddPath:(KGPath *)path {
+-(void)deviceClipToEvenOddPath:(O2Path *)path {
    KGInvalidAbstractInvocation();
 }
 

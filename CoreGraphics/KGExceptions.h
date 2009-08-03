@@ -11,8 +11,15 @@ static inline void _KGUnimplementedMethod(SEL selector,id object,const char *fil
    NSLog(@"-[%@ %s] unimplemented in %s at %d",[object class],sel_getName(selector),file,line);
 }
 
+static inline void _KGUnimplementedFunction(const char *fname,const char *file,int line) {
+   NSLog(@"%s() unimplemented in %s at %d",fname,file,line);
+}
+
 #define KGInvalidAbstractInvocation() \
   _KGInvalidAbstractInvocation(_cmd,self,__FILE__,__LINE__)
 
 #define KGUnimplementedMethod() \
  _KGUnimplementedMethod(_cmd,self,__FILE__,__LINE__)
+ 
+#define KGUnimplementedFunction() \
+ _KGUnimplementedFunction(__PRETTY_FUNCTION__,__FILE__,__LINE__)

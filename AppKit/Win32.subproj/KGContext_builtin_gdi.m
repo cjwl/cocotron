@@ -45,14 +45,14 @@ static inline BOOL transformIsFlipped(CGAffineTransform matrix){
    [[self deviceContext] clipReset];
 }
 
--(void)deviceClipToNonZeroPath:(KGPath *)path {
+-(void)deviceClipToNonZeroPath:(O2Path *)path {
    [super deviceClipToNonZeroPath:path];
 
    KGGraphicsState *state=[self currentState];
    [[self deviceContext] clipToNonZeroPath:path withTransform:CGAffineTransformInvert(state->_userSpaceTransform) deviceTransform:state->_deviceSpaceTransform];
 }
 
--(void)deviceClipToEvenOddPath:(KGPath *)path {
+-(void)deviceClipToEvenOddPath:(O2Path *)path {
    [super deviceClipToEvenOddPath:path];
 
    KGGraphicsState *state=[self currentState];

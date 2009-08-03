@@ -53,7 +53,7 @@
 		FE6F7B250FD554A800C3244F /* KGImageSource_PNG.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A8B0FD4B4D600082282 /* KGImageSource_PNG.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE6F7B260FD554A800C3244F /* KGImageSource_TIFF.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A8D0FD4B4D600082282 /* KGImageSource_TIFF.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE6F7B270FD554A800C3244F /* KGLayer.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A8F0FD4B4D600082282 /* KGLayer.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		FE6F7B280FD554A800C3244F /* KGMutablePath.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A910FD4B4D600082282 /* KGMutablePath.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7B280FD554A800C3244F /* O2MutablePath.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A910FD4B4D600082282 /* O2MutablePath.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE6F7B290FD554A800C3244F /* KGPaint.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A930FD4B4D600082282 /* KGPaint.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE6F7B2A0FD554A800C3244F /* KGPaint_axialGradient.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A950FD4B4D600082282 /* KGPaint_axialGradient.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE6F7B2B0FD554A800C3244F /* KGPaint_color.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A970FD4B4D600082282 /* KGPaint_color.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -61,7 +61,7 @@
 		FE6F7B2D0FD554A800C3244F /* KGPaint_pattern.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A9B0FD4B4D600082282 /* KGPaint_pattern.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE6F7B2E0FD554A800C3244F /* KGPaint_radialGradient.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A9D0FD4B4D600082282 /* KGPaint_radialGradient.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE6F7B2F0FD554A800C3244F /* KGPaint_ramp.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A9F0FD4B4D600082282 /* KGPaint_ramp.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		FE6F7B300FD554A800C3244F /* KGPath.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AA10FD4B4D600082282 /* KGPath.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7B300FD554A800C3244F /* O2Path.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AA10FD4B4D600082282 /* O2Path.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE6F7B310FD554A800C3244F /* KGPattern.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AA30FD4B4D600082282 /* KGPattern.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE6F7B320FD554A800C3244F /* KGPDFArray.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AA50FD4B4D600082282 /* KGPDFArray.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE6F7B330FD554A800C3244F /* KGPDFContentStream.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AA70FD4B4D600082282 /* KGPDFContentStream.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -137,7 +137,7 @@
 		FE6F7B800FD554A800C3244F /* KGImageSource_PNG.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A8C0FD4B4D600082282 /* KGImageSource_PNG.m */; };
 		FE6F7B810FD554A800C3244F /* KGImageSource_TIFF.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A8E0FD4B4D600082282 /* KGImageSource_TIFF.m */; };
 		FE6F7B820FD554A800C3244F /* KGLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A900FD4B4D600082282 /* KGLayer.m */; };
-		FE6F7B830FD554A800C3244F /* KGMutablePath.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A920FD4B4D600082282 /* KGMutablePath.m */; };
+		FE6F7B830FD554A800C3244F /* O2MutablePath.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A920FD4B4D600082282 /* O2MutablePath.m */; };
 		FE6F7B840FD554A800C3244F /* KGPaint.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A940FD4B4D600082282 /* KGPaint.m */; };
 		FE6F7B850FD554A800C3244F /* KGPaint_axialGradient.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A960FD4B4D600082282 /* KGPaint_axialGradient.m */; };
 		FE6F7B860FD554A800C3244F /* KGPaint_color.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A980FD4B4D600082282 /* KGPaint_color.m */; };
@@ -145,7 +145,7 @@
 		FE6F7B880FD554A800C3244F /* KGPaint_pattern.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A9C0FD4B4D600082282 /* KGPaint_pattern.m */; };
 		FE6F7B890FD554A800C3244F /* KGPaint_radialGradient.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A9E0FD4B4D600082282 /* KGPaint_radialGradient.m */; };
 		FE6F7B8A0FD554A800C3244F /* KGPaint_ramp.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AA00FD4B4D600082282 /* KGPaint_ramp.m */; };
-		FE6F7B8B0FD554A800C3244F /* KGPath.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AA20FD4B4D600082282 /* KGPath.m */; };
+		FE6F7B8B0FD554A800C3244F /* O2Path.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AA20FD4B4D600082282 /* O2Path.m */; };
 		FE6F7B8C0FD554A800C3244F /* KGPattern.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AA40FD4B4D600082282 /* KGPattern.m */; };
 		FE6F7B8D0FD554A800C3244F /* KGPDFArray.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AA60FD4B4D600082282 /* KGPDFArray.m */; };
 		FE6F7B8E0FD554A800C3244F /* KGPDFContentStream.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AA80FD4B4D600082282 /* KGPDFContentStream.m */; };
@@ -225,7 +225,7 @@
 		FE6F7C0A0FD55FA300C3244F /* KGImageSource_PNG.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A8B0FD4B4D600082282 /* KGImageSource_PNG.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE6F7C0B0FD55FA300C3244F /* KGImageSource_TIFF.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A8D0FD4B4D600082282 /* KGImageSource_TIFF.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE6F7C0C0FD55FA300C3244F /* KGLayer.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A8F0FD4B4D600082282 /* KGLayer.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		FE6F7C0D0FD55FA300C3244F /* KGMutablePath.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A910FD4B4D600082282 /* KGMutablePath.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7C0D0FD55FA300C3244F /* O2MutablePath.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A910FD4B4D600082282 /* O2MutablePath.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE6F7C0E0FD55FA300C3244F /* KGPaint.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A930FD4B4D600082282 /* KGPaint.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE6F7C0F0FD55FA300C3244F /* KGPaint_axialGradient.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A950FD4B4D600082282 /* KGPaint_axialGradient.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE6F7C100FD55FA300C3244F /* KGPaint_color.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A970FD4B4D600082282 /* KGPaint_color.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -233,7 +233,7 @@
 		FE6F7C120FD55FA300C3244F /* KGPaint_pattern.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A9B0FD4B4D600082282 /* KGPaint_pattern.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE6F7C130FD55FA300C3244F /* KGPaint_radialGradient.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A9D0FD4B4D600082282 /* KGPaint_radialGradient.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE6F7C140FD55FA300C3244F /* KGPaint_ramp.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A9F0FD4B4D600082282 /* KGPaint_ramp.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		FE6F7C150FD55FA300C3244F /* KGPath.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AA10FD4B4D600082282 /* KGPath.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE6F7C150FD55FA300C3244F /* O2Path.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AA10FD4B4D600082282 /* O2Path.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE6F7C160FD55FA300C3244F /* KGPattern.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AA30FD4B4D600082282 /* KGPattern.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE6F7C170FD55FA300C3244F /* KGPDFArray.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AA50FD4B4D600082282 /* KGPDFArray.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE6F7C180FD55FA300C3244F /* KGPDFContentStream.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AA70FD4B4D600082282 /* KGPDFContentStream.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -309,7 +309,7 @@
 		FE6F7C650FD55FA300C3244F /* KGImageSource_PNG.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A8C0FD4B4D600082282 /* KGImageSource_PNG.m */; };
 		FE6F7C660FD55FA300C3244F /* KGImageSource_TIFF.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A8E0FD4B4D600082282 /* KGImageSource_TIFF.m */; };
 		FE6F7C670FD55FA300C3244F /* KGLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A900FD4B4D600082282 /* KGLayer.m */; };
-		FE6F7C680FD55FA300C3244F /* KGMutablePath.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A920FD4B4D600082282 /* KGMutablePath.m */; };
+		FE6F7C680FD55FA300C3244F /* O2MutablePath.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A920FD4B4D600082282 /* O2MutablePath.m */; };
 		FE6F7C690FD55FA300C3244F /* KGPaint.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A940FD4B4D600082282 /* KGPaint.m */; };
 		FE6F7C6A0FD55FA300C3244F /* KGPaint_axialGradient.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A960FD4B4D600082282 /* KGPaint_axialGradient.m */; };
 		FE6F7C6B0FD55FA300C3244F /* KGPaint_color.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A980FD4B4D600082282 /* KGPaint_color.m */; };
@@ -317,7 +317,7 @@
 		FE6F7C6D0FD55FA300C3244F /* KGPaint_pattern.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A9C0FD4B4D600082282 /* KGPaint_pattern.m */; };
 		FE6F7C6E0FD55FA300C3244F /* KGPaint_radialGradient.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A9E0FD4B4D600082282 /* KGPaint_radialGradient.m */; };
 		FE6F7C6F0FD55FA300C3244F /* KGPaint_ramp.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AA00FD4B4D600082282 /* KGPaint_ramp.m */; };
-		FE6F7C700FD55FA300C3244F /* KGPath.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AA20FD4B4D600082282 /* KGPath.m */; };
+		FE6F7C700FD55FA300C3244F /* O2Path.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AA20FD4B4D600082282 /* O2Path.m */; };
 		FE6F7C710FD55FA300C3244F /* KGPattern.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AA40FD4B4D600082282 /* KGPattern.m */; };
 		FE6F7C720FD55FA300C3244F /* KGPDFArray.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AA60FD4B4D600082282 /* KGPDFArray.m */; };
 		FE6F7C730FD55FA300C3244F /* KGPDFContentStream.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AA80FD4B4D600082282 /* KGPDFContentStream.m */; };
@@ -463,8 +463,8 @@
 		FEC11B3E0FD4B4D600082282 /* KGImageSource_TIFF.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A8E0FD4B4D600082282 /* KGImageSource_TIFF.m */; };
 		FEC11B3F0FD4B4D600082282 /* KGLayer.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A8F0FD4B4D600082282 /* KGLayer.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FEC11B400FD4B4D600082282 /* KGLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A900FD4B4D600082282 /* KGLayer.m */; };
-		FEC11B410FD4B4D600082282 /* KGMutablePath.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A910FD4B4D600082282 /* KGMutablePath.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		FEC11B420FD4B4D600082282 /* KGMutablePath.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A920FD4B4D600082282 /* KGMutablePath.m */; };
+		FEC11B410FD4B4D600082282 /* O2MutablePath.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A910FD4B4D600082282 /* O2MutablePath.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FEC11B420FD4B4D600082282 /* O2MutablePath.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A920FD4B4D600082282 /* O2MutablePath.m */; };
 		FEC11B430FD4B4D600082282 /* KGPaint.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A930FD4B4D600082282 /* KGPaint.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FEC11B440FD4B4D600082282 /* KGPaint.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A940FD4B4D600082282 /* KGPaint.m */; };
 		FEC11B450FD4B4D600082282 /* KGPaint_axialGradient.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A950FD4B4D600082282 /* KGPaint_axialGradient.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -479,8 +479,8 @@
 		FEC11B4E0FD4B4D600082282 /* KGPaint_radialGradient.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11A9E0FD4B4D600082282 /* KGPaint_radialGradient.m */; };
 		FEC11B4F0FD4B4D600082282 /* KGPaint_ramp.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11A9F0FD4B4D600082282 /* KGPaint_ramp.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FEC11B500FD4B4D600082282 /* KGPaint_ramp.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AA00FD4B4D600082282 /* KGPaint_ramp.m */; };
-		FEC11B510FD4B4D600082282 /* KGPath.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AA10FD4B4D600082282 /* KGPath.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		FEC11B520FD4B4D600082282 /* KGPath.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AA20FD4B4D600082282 /* KGPath.m */; };
+		FEC11B510FD4B4D600082282 /* O2Path.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AA10FD4B4D600082282 /* O2Path.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FEC11B520FD4B4D600082282 /* O2Path.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AA20FD4B4D600082282 /* O2Path.m */; };
 		FEC11B530FD4B4D600082282 /* KGPattern.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AA30FD4B4D600082282 /* KGPattern.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FEC11B540FD4B4D600082282 /* KGPattern.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC11AA40FD4B4D600082282 /* KGPattern.m */; };
 		FEC11B550FD4B4D600082282 /* KGPDFArray.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC11AA50FD4B4D600082282 /* KGPDFArray.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -753,8 +753,8 @@
 		FEC11A8E0FD4B4D600082282 /* KGImageSource_TIFF.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGImageSource_TIFF.m; sourceTree = "<group>"; };
 		FEC11A8F0FD4B4D600082282 /* KGLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGLayer.h; sourceTree = "<group>"; };
 		FEC11A900FD4B4D600082282 /* KGLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGLayer.m; sourceTree = "<group>"; };
-		FEC11A910FD4B4D600082282 /* KGMutablePath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGMutablePath.h; sourceTree = "<group>"; };
-		FEC11A920FD4B4D600082282 /* KGMutablePath.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGMutablePath.m; sourceTree = "<group>"; };
+		FEC11A910FD4B4D600082282 /* O2MutablePath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O2MutablePath.h; sourceTree = "<group>"; };
+		FEC11A920FD4B4D600082282 /* O2MutablePath.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = O2MutablePath.m; sourceTree = "<group>"; };
 		FEC11A930FD4B4D600082282 /* KGPaint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGPaint.h; sourceTree = "<group>"; };
 		FEC11A940FD4B4D600082282 /* KGPaint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGPaint.m; sourceTree = "<group>"; };
 		FEC11A950FD4B4D600082282 /* KGPaint_axialGradient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGPaint_axialGradient.h; sourceTree = "<group>"; };
@@ -769,8 +769,8 @@
 		FEC11A9E0FD4B4D600082282 /* KGPaint_radialGradient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGPaint_radialGradient.m; sourceTree = "<group>"; };
 		FEC11A9F0FD4B4D600082282 /* KGPaint_ramp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGPaint_ramp.h; sourceTree = "<group>"; };
 		FEC11AA00FD4B4D600082282 /* KGPaint_ramp.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGPaint_ramp.m; sourceTree = "<group>"; };
-		FEC11AA10FD4B4D600082282 /* KGPath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGPath.h; sourceTree = "<group>"; };
-		FEC11AA20FD4B4D600082282 /* KGPath.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGPath.m; sourceTree = "<group>"; };
+		FEC11AA10FD4B4D600082282 /* O2Path.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O2Path.h; sourceTree = "<group>"; };
+		FEC11AA20FD4B4D600082282 /* O2Path.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = O2Path.m; sourceTree = "<group>"; };
 		FEC11AA30FD4B4D600082282 /* KGPattern.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGPattern.h; sourceTree = "<group>"; };
 		FEC11AA40FD4B4D600082282 /* KGPattern.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGPattern.m; sourceTree = "<group>"; };
 		FEC11AA50FD4B4D600082282 /* KGPDFArray.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGPDFArray.h; sourceTree = "<group>"; };
@@ -978,8 +978,8 @@
 				FEC11A8E0FD4B4D600082282 /* KGImageSource_TIFF.m */,
 				FEC11A8F0FD4B4D600082282 /* KGLayer.h */,
 				FEC11A900FD4B4D600082282 /* KGLayer.m */,
-				FEC11A910FD4B4D600082282 /* KGMutablePath.h */,
-				FEC11A920FD4B4D600082282 /* KGMutablePath.m */,
+				FEC11A910FD4B4D600082282 /* O2MutablePath.h */,
+				FEC11A920FD4B4D600082282 /* O2MutablePath.m */,
 				FEC11A930FD4B4D600082282 /* KGPaint.h */,
 				FEC11A940FD4B4D600082282 /* KGPaint.m */,
 				FEC11A950FD4B4D600082282 /* KGPaint_axialGradient.h */,
@@ -994,8 +994,8 @@
 				FEC11A9E0FD4B4D600082282 /* KGPaint_radialGradient.m */,
 				FEC11A9F0FD4B4D600082282 /* KGPaint_ramp.h */,
 				FEC11AA00FD4B4D600082282 /* KGPaint_ramp.m */,
-				FEC11AA10FD4B4D600082282 /* KGPath.h */,
-				FEC11AA20FD4B4D600082282 /* KGPath.m */,
+				FEC11AA10FD4B4D600082282 /* O2Path.h */,
+				FEC11AA20FD4B4D600082282 /* O2Path.m */,
 				FEC11AA30FD4B4D600082282 /* KGPattern.h */,
 				FEC11AA40FD4B4D600082282 /* KGPattern.m */,
 				FEC11AA50FD4B4D600082282 /* KGPDFArray.h */,
@@ -1166,7 +1166,7 @@
 				FEC11B3B0FD4B4D600082282 /* KGImageSource_PNG.h in Headers */,
 				FEC11B3D0FD4B4D600082282 /* KGImageSource_TIFF.h in Headers */,
 				FEC11B3F0FD4B4D600082282 /* KGLayer.h in Headers */,
-				FEC11B410FD4B4D600082282 /* KGMutablePath.h in Headers */,
+				FEC11B410FD4B4D600082282 /* O2MutablePath.h in Headers */,
 				FEC11B430FD4B4D600082282 /* KGPaint.h in Headers */,
 				FEC11B450FD4B4D600082282 /* KGPaint_axialGradient.h in Headers */,
 				FEC11B470FD4B4D600082282 /* KGPaint_color.h in Headers */,
@@ -1174,7 +1174,7 @@
 				FEC11B4B0FD4B4D600082282 /* KGPaint_pattern.h in Headers */,
 				FEC11B4D0FD4B4D600082282 /* KGPaint_radialGradient.h in Headers */,
 				FEC11B4F0FD4B4D600082282 /* KGPaint_ramp.h in Headers */,
-				FEC11B510FD4B4D600082282 /* KGPath.h in Headers */,
+				FEC11B510FD4B4D600082282 /* O2Path.h in Headers */,
 				FEC11B530FD4B4D600082282 /* KGPattern.h in Headers */,
 				FEC11B550FD4B4D600082282 /* KGPDFArray.h in Headers */,
 				FEC11B570FD4B4D600082282 /* KGPDFContentStream.h in Headers */,
@@ -1265,7 +1265,7 @@
 				FE6F7B250FD554A800C3244F /* KGImageSource_PNG.h in Headers */,
 				FE6F7B260FD554A800C3244F /* KGImageSource_TIFF.h in Headers */,
 				FE6F7B270FD554A800C3244F /* KGLayer.h in Headers */,
-				FE6F7B280FD554A800C3244F /* KGMutablePath.h in Headers */,
+				FE6F7B280FD554A800C3244F /* O2MutablePath.h in Headers */,
 				FE6F7B290FD554A800C3244F /* KGPaint.h in Headers */,
 				FE6F7B2A0FD554A800C3244F /* KGPaint_axialGradient.h in Headers */,
 				FE6F7B2B0FD554A800C3244F /* KGPaint_color.h in Headers */,
@@ -1273,7 +1273,7 @@
 				FE6F7B2D0FD554A800C3244F /* KGPaint_pattern.h in Headers */,
 				FE6F7B2E0FD554A800C3244F /* KGPaint_radialGradient.h in Headers */,
 				FE6F7B2F0FD554A800C3244F /* KGPaint_ramp.h in Headers */,
-				FE6F7B300FD554A800C3244F /* KGPath.h in Headers */,
+				FE6F7B300FD554A800C3244F /* O2Path.h in Headers */,
 				FE6F7B310FD554A800C3244F /* KGPattern.h in Headers */,
 				FE6F7B320FD554A800C3244F /* KGPDFArray.h in Headers */,
 				FE6F7B330FD554A800C3244F /* KGPDFContentStream.h in Headers */,
@@ -1364,7 +1364,7 @@
 				FE6F7C0A0FD55FA300C3244F /* KGImageSource_PNG.h in Headers */,
 				FE6F7C0B0FD55FA300C3244F /* KGImageSource_TIFF.h in Headers */,
 				FE6F7C0C0FD55FA300C3244F /* KGLayer.h in Headers */,
-				FE6F7C0D0FD55FA300C3244F /* KGMutablePath.h in Headers */,
+				FE6F7C0D0FD55FA300C3244F /* O2MutablePath.h in Headers */,
 				FE6F7C0E0FD55FA300C3244F /* KGPaint.h in Headers */,
 				FE6F7C0F0FD55FA300C3244F /* KGPaint_axialGradient.h in Headers */,
 				FE6F7C100FD55FA300C3244F /* KGPaint_color.h in Headers */,
@@ -1372,7 +1372,7 @@
 				FE6F7C120FD55FA300C3244F /* KGPaint_pattern.h in Headers */,
 				FE6F7C130FD55FA300C3244F /* KGPaint_radialGradient.h in Headers */,
 				FE6F7C140FD55FA300C3244F /* KGPaint_ramp.h in Headers */,
-				FE6F7C150FD55FA300C3244F /* KGPath.h in Headers */,
+				FE6F7C150FD55FA300C3244F /* O2Path.h in Headers */,
 				FE6F7C160FD55FA300C3244F /* KGPattern.h in Headers */,
 				FE6F7C170FD55FA300C3244F /* KGPDFArray.h in Headers */,
 				FE6F7C180FD55FA300C3244F /* KGPDFContentStream.h in Headers */,
@@ -1628,7 +1628,7 @@
 				FEC11B3C0FD4B4D600082282 /* KGImageSource_PNG.m in Sources */,
 				FEC11B3E0FD4B4D600082282 /* KGImageSource_TIFF.m in Sources */,
 				FEC11B400FD4B4D600082282 /* KGLayer.m in Sources */,
-				FEC11B420FD4B4D600082282 /* KGMutablePath.m in Sources */,
+				FEC11B420FD4B4D600082282 /* O2MutablePath.m in Sources */,
 				FEC11B440FD4B4D600082282 /* KGPaint.m in Sources */,
 				FEC11B460FD4B4D600082282 /* KGPaint_axialGradient.m in Sources */,
 				FEC11B480FD4B4D600082282 /* KGPaint_color.m in Sources */,
@@ -1636,7 +1636,7 @@
 				FEC11B4C0FD4B4D600082282 /* KGPaint_pattern.m in Sources */,
 				FEC11B4E0FD4B4D600082282 /* KGPaint_radialGradient.m in Sources */,
 				FEC11B500FD4B4D600082282 /* KGPaint_ramp.m in Sources */,
-				FEC11B520FD4B4D600082282 /* KGPath.m in Sources */,
+				FEC11B520FD4B4D600082282 /* O2Path.m in Sources */,
 				FEC11B540FD4B4D600082282 /* KGPattern.m in Sources */,
 				FEC11B560FD4B4D600082282 /* KGPDFArray.m in Sources */,
 				FEC11B580FD4B4D600082282 /* KGPDFContentStream.m in Sources */,
@@ -1722,7 +1722,7 @@
 				FE6F7B800FD554A800C3244F /* KGImageSource_PNG.m in Sources */,
 				FE6F7B810FD554A800C3244F /* KGImageSource_TIFF.m in Sources */,
 				FE6F7B820FD554A800C3244F /* KGLayer.m in Sources */,
-				FE6F7B830FD554A800C3244F /* KGMutablePath.m in Sources */,
+				FE6F7B830FD554A800C3244F /* O2MutablePath.m in Sources */,
 				FE6F7B840FD554A800C3244F /* KGPaint.m in Sources */,
 				FE6F7B850FD554A800C3244F /* KGPaint_axialGradient.m in Sources */,
 				FE6F7B860FD554A800C3244F /* KGPaint_color.m in Sources */,
@@ -1730,7 +1730,7 @@
 				FE6F7B880FD554A800C3244F /* KGPaint_pattern.m in Sources */,
 				FE6F7B890FD554A800C3244F /* KGPaint_radialGradient.m in Sources */,
 				FE6F7B8A0FD554A800C3244F /* KGPaint_ramp.m in Sources */,
-				FE6F7B8B0FD554A800C3244F /* KGPath.m in Sources */,
+				FE6F7B8B0FD554A800C3244F /* O2Path.m in Sources */,
 				FE6F7B8C0FD554A800C3244F /* KGPattern.m in Sources */,
 				FE6F7B8D0FD554A800C3244F /* KGPDFArray.m in Sources */,
 				FE6F7B8E0FD554A800C3244F /* KGPDFContentStream.m in Sources */,
@@ -1816,7 +1816,7 @@
 				FE6F7C650FD55FA300C3244F /* KGImageSource_PNG.m in Sources */,
 				FE6F7C660FD55FA300C3244F /* KGImageSource_TIFF.m in Sources */,
 				FE6F7C670FD55FA300C3244F /* KGLayer.m in Sources */,
-				FE6F7C680FD55FA300C3244F /* KGMutablePath.m in Sources */,
+				FE6F7C680FD55FA300C3244F /* O2MutablePath.m in Sources */,
 				FE6F7C690FD55FA300C3244F /* KGPaint.m in Sources */,
 				FE6F7C6A0FD55FA300C3244F /* KGPaint_axialGradient.m in Sources */,
 				FE6F7C6B0FD55FA300C3244F /* KGPaint_color.m in Sources */,
@@ -1824,7 +1824,7 @@
 				FE6F7C6D0FD55FA300C3244F /* KGPaint_pattern.m in Sources */,
 				FE6F7C6E0FD55FA300C3244F /* KGPaint_radialGradient.m in Sources */,
 				FE6F7C6F0FD55FA300C3244F /* KGPaint_ramp.m in Sources */,
-				FE6F7C700FD55FA300C3244F /* KGPath.m in Sources */,
+				FE6F7C700FD55FA300C3244F /* O2Path.m in Sources */,
 				FE6F7C710FD55FA300C3244F /* KGPattern.m in Sources */,
 				FE6F7C720FD55FA300C3244F /* KGPDFArray.m in Sources */,
 				FE6F7C730FD55FA300C3244F /* KGPDFContentStream.m in Sources */,

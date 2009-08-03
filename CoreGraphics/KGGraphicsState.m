@@ -11,7 +11,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <CoreGraphics/CoreGraphics.h>
 #import "KGColor.h"
 #import "KGColorSpace.h"
-#import "KGMutablePath.h"
+#import "O2MutablePath.h"
 #import "KGFont.h"
 #import "KGClipPhase.h"
 #import <Foundation/NSArray.h>
@@ -154,14 +154,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [_clipPhases removeAllObjects];
 }
 
--(void)addClipToPath:(KGPath *)path {
+-(void)addClipToPath:(O2Path *)path {
    KGClipPhase *phase=[[KGClipPhase alloc] initWithNonZeroPath:path];
    
    [_clipPhases addObject:phase];
    [phase release];
 }
 
--(void)addEvenOddClipToPath:(KGPath *)path {
+-(void)addEvenOddClipToPath:(O2Path *)path {
    KGClipPhase *phase=[[KGClipPhase alloc] initWithEOPath:path];
    
    [_clipPhases addObject:phase];

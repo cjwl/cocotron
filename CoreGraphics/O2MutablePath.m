@@ -6,13 +6,13 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
-#import "KGMutablePath.h"
-#import "KGPath.h"
+#import "O2MutablePath.h"
+#import "O2Path.h"
 #import "KGExceptions.h"
 #import <math.h>
 
 // ellipse to 4 spline bezier, http://www.tinaja.com/glib/ellipse4.pdf
-void KGMutablePathEllipseToBezier(CGPoint *cp,float x,float y,float xrad,float yrad){
+void O2MutablePathEllipseToBezier(CGPoint *cp,float x,float y,float xrad,float yrad){
    float magic=0.551784;
    float xmag=xrad*magic;
    float ymag=yrad*magic;
@@ -42,7 +42,11 @@ void KGMutablePathEllipseToBezier(CGPoint *cp,float x,float y,float xrad,float y
    }
 }
 
-@implementation KGMutablePath
+@implementation O2MutablePath
+
+O2MutablePathRef O2PathCreateMutable(void) {
+   return [[O2MutablePath alloc] init];
+}
 
 // Bezier and arc to bezier algorithms from: Windows Graphics Programming by Feng Yuan
 #if 0
@@ -88,15 +92,15 @@ static void bezier(KGGraphicsState *self,double x1,double y1,double x2, double y
 }
 
 -copyWithZone:(NSZone *)zone {
-   return [[KGPath allocWithZone:zone] initWithOperators:_elements numberOfElements:_numberOfElements points:_points numberOfPoints:_numberOfPoints];
+   return [[O2Path allocWithZone:zone] initWithOperators:_elements numberOfElements:_numberOfElements points:_points numberOfPoints:_numberOfPoints];
 }
 
--(void)reset {
-   _numberOfElements=0;
-   _numberOfPoints=0;
+void O2PathReset(O2MutablePathRef self) {
+   self->_numberOfElements=0;
+   self->_numberOfPoints=0;
 }
 
-static inline void expandOperatorCapacity(KGMutablePath *self,unsigned delta){
+static inline void expandOperatorCapacity(O2MutablePath *self,unsigned delta){
    if(self->_numberOfElements+delta>self->_capacityOfElements){
     self->_capacityOfElements=self->_numberOfElements+delta;
     self->_capacityOfElements=(self->_capacityOfElements/32+1)*32;
@@ -104,7 +108,7 @@ static inline void expandOperatorCapacity(KGMutablePath *self,unsigned delta){
    }
 }
 
-static inline void expandPointCapacity(KGMutablePath *self,unsigned delta){
+static inline void expandPointCapacity(O2MutablePath *self,unsigned delta){
    if(self->_numberOfPoints+delta>self->_capacityOfPoints){
     self->_capacityOfPoints=self->_numberOfPoints+delta;
     self->_capacityOfPoints=(self->_capacityOfPoints/64+1)*64;
@@ -112,27 +116,35 @@ static inline void expandPointCapacity(KGMutablePath *self,unsigned delta){
    }
 }
 
--(void)moveToPoint:(CGPoint)point withTransform:(const CGAffineTransform *)matrix {
+void O2PathMoveToPoint(O2MutablePathRef self,const CGAffineTransform *matrix,CGFloat x,CGFloat y) {
+   CGPoint point=CGPointMake(x,y);
+   
    if(matrix!=NULL)
     point=CGPointApplyAffineTransform(point,*matrix);
 
    expandOperatorCapacity(self,1);
    expandPointCapacity(self,1);
-   _elements[_numberOfElements++]=kCGPathElementMoveToPoint;
-   _points[_numberOfPoints++]=point;
+   self->_elements[self->_numberOfElements++]=kCGPathElementMoveToPoint;
+   self->_points[self->_numberOfPoints++]=point;
 }
 
--(void)addLineToPoint:(CGPoint)point withTransform:(const CGAffineTransform *)matrix {
+void O2PathAddLineToPoint(O2MutablePathRef self,const CGAffineTransform *matrix,CGFloat x,CGFloat y) {
+   CGPoint point=CGPointMake(x,y);
+
    if(matrix!=NULL)
     point=CGPointApplyAffineTransform(point,*matrix);
 
    expandOperatorCapacity(self,1);
    expandPointCapacity(self,1);
-   _elements[_numberOfElements++]=kCGPathElementAddLineToPoint;
-   _points[_numberOfPoints++]=point;
+   self->_elements[self->_numberOfElements++]=kCGPathElementAddLineToPoint;
+   self->_points[self->_numberOfPoints++]=point;
 }
 
--(void)addCurveToControlPoint:(CGPoint)cp1 controlPoint:(CGPoint)cp2 endPoint:(CGPoint)endPoint withTransform:(const CGAffineTransform *)matrix {
+void O2PathAddCurveToPoint(O2MutablePathRef self,const CGAffineTransform *matrix,CGFloat cp1x,CGFloat cp1y,CGFloat cp2x,CGFloat cp2y,CGFloat x,CGFloat y) {
+   CGPoint cp1=CGPointMake(cp1x,cp1y);
+   CGPoint cp2=CGPointMake(cp2x,cp2y);
+   CGPoint endPoint=CGPointMake(x,y);
+   
    if(matrix!=NULL){
     cp1=CGPointApplyAffineTransform(cp1,*matrix);
     cp2=CGPointApplyAffineTransform(cp2,*matrix);
@@ -141,13 +153,16 @@ static inline void expandPointCapacity(KGMutablePath *self,unsigned delta){
 
    expandOperatorCapacity(self,1);
    expandPointCapacity(self,3);
-   _elements[_numberOfElements++]=kCGPathElementAddCurveToPoint;   
-   _points[_numberOfPoints++]=cp1;
-   _points[_numberOfPoints++]=cp2;
-   _points[_numberOfPoints++]=endPoint;
+   self->_elements[self->_numberOfElements++]=kCGPathElementAddCurveToPoint;   
+   self->_points[self->_numberOfPoints++]=cp1;
+   self->_points[self->_numberOfPoints++]=cp2;
+   self->_points[self->_numberOfPoints++]=endPoint;
 }
 
--(void)addQuadCurveToControlPoint:(CGPoint)cp1 endPoint:(CGPoint)endPoint withTransform:(const CGAffineTransform *)matrix {
+void O2PathAddQuadCurveToPoint(O2MutablePathRef self,const CGAffineTransform *matrix,CGFloat cpx,CGFloat cpy,CGFloat x,CGFloat y) {
+   CGPoint cp1=CGPointMake(cpx,cpy);
+   CGPoint endPoint=CGPointMake(x,y);
+
    if(matrix!=NULL){
     cp1=CGPointApplyAffineTransform(cp1,*matrix);
     endPoint=CGPointApplyAffineTransform(endPoint,*matrix);
@@ -155,75 +170,44 @@ static inline void expandPointCapacity(KGMutablePath *self,unsigned delta){
 
    expandOperatorCapacity(self,1);
    expandPointCapacity(self,2);
-   _elements[_numberOfElements++]=kCGPathElementAddQuadCurveToPoint;   
-   _points[_numberOfPoints++]=cp1;
-   _points[_numberOfPoints++]=endPoint;
+   self->_elements[self->_numberOfElements++]=kCGPathElementAddQuadCurveToPoint;   
+   self->_points[self->_numberOfPoints++]=cp1;
+   self->_points[self->_numberOfPoints++]=endPoint;
 }
 
--(void)closeSubpath {
+void O2PathCloseSubpath(O2MutablePathRef self) {
    expandOperatorCapacity(self,1);
-   _elements[_numberOfElements++]=kCGPathElementCloseSubpath;   
+   self->_elements[self->_numberOfElements++]=kCGPathElementCloseSubpath;   
 }
 
--(void)relativeMoveToPoint:(CGPoint)point withTransform:(const CGAffineTransform *)matrix {
-   CGPoint current=[self currentPoint];
-   
-   point.x+=current.x;
-   point.y+=current.y;
-   
-   [self moveToPoint:point withTransform:matrix];
-}
-
--(void)addRelativeLineToPoint:(CGPoint)point withTransform:(const CGAffineTransform *)matrix {
-   CGPoint current=[self currentPoint];
-
-   point.x+=current.x;
-   point.y+=current.y;
-   
-   [self addLineToPoint:point withTransform:matrix];
-}
-
--(void)addRelativeCurveToControlPoint:(CGPoint)cp1 controlPoint:(CGPoint)cp2 endPoint:(CGPoint)endPoint withTransform:(const CGAffineTransform *)matrix {
-   CGPoint current=[self currentPoint];
-
-   cp1.x+=current.x;
-   cp1.y+=current.y;
-   cp2.x+=current.x;
-   cp2.y+=current.y;
-   endPoint.x+=current.x;
-   endPoint.y+=current.y;
-   
-   [self addCurveToControlPoint:cp1 controlPoint:cp2 endPoint:endPoint withTransform:matrix];
-}
-
--(void)addLinesWithPoints:(const CGPoint *)points count:(unsigned)count withTransform:(const CGAffineTransform *)matrix {
+void O2PathAddLines(O2MutablePathRef self,const CGAffineTransform *matrix,const CGPoint *points,size_t count) {
    int i;
    
    if(count==0)
     return;
     
-   [self moveToPoint:points[0] withTransform:matrix];
+   O2PathMoveToPoint(self,matrix,points[0].x,points[0].y);
    for(i=1;i<count;i++)
-    [self addLineToPoint:points[i] withTransform:matrix];
+    O2PathAddLineToPoint(self,matrix,points[i].x,points[i].y);
 }
 
--(void)addRect:(CGRect)rect withTransform:(const CGAffineTransform *)matrix {
+void O2PathAddRect(O2MutablePathRef self,const CGAffineTransform *matrix,CGRect rect) {
 // The line order is correct per documentation, do not change.
-   [self moveToPoint:CGPointMake(CGRectGetMinX(rect),CGRectGetMinY(rect)) withTransform:matrix];
-   [self addLineToPoint:CGPointMake(CGRectGetMaxX(rect),CGRectGetMinY(rect)) withTransform:matrix];
-   [self addLineToPoint:CGPointMake(CGRectGetMaxX(rect),CGRectGetMaxY(rect)) withTransform:matrix];
-   [self addLineToPoint:CGPointMake(CGRectGetMinX(rect),CGRectGetMaxY(rect)) withTransform:matrix];
-   [self closeSubpath];
+   O2PathMoveToPoint(self,matrix,CGRectGetMinX(rect),CGRectGetMinY(rect));
+   O2PathAddLineToPoint(self,matrix,CGRectGetMaxX(rect),CGRectGetMinY(rect));
+   O2PathAddLineToPoint(self,matrix,CGRectGetMaxX(rect),CGRectGetMaxY(rect));
+   O2PathAddLineToPoint(self,matrix,CGRectGetMinX(rect),CGRectGetMaxY(rect));
+   O2PathCloseSubpath(self);
 }
 
--(void)addRects:(const CGRect *)rects count:(unsigned)count withTransform:(const CGAffineTransform *)matrix {
+void O2PathAddRects(O2MutablePathRef self,const CGAffineTransform *matrix,const CGRect *rects,size_t count) {
    int i;
    
    for(i=0;i<count;i++)
-    [self addRect:rects[i] withTransform:matrix];
+    O2PathAddRect(self,matrix,rects[i]);
 }
 
--(void)addArcAtPoint:(CGPoint)point radius:(float)radius startAngle:(float)startRadian endAngle:(float)endRadian clockwise:(BOOL)clockwise withTransform:(const CGAffineTransform *)matrix {
+void O2PathAddArc(O2MutablePathRef self,const CGAffineTransform *matrix,CGFloat x,CGFloat y,CGFloat radius,CGFloat startRadian,CGFloat endRadian,BOOL clockwise) {
 
    if(clockwise){
     float tmp=startRadian;
@@ -259,8 +243,8 @@ static inline void expandPointCapacity(KGMutablePath *self,unsigned delta){
     XY[7]= B;
 
     for(i=0;i<4;i++){
-     points[pointsIndex].x=point.x+(XY[i*2]*c-XY[i*2+1]*s)*radiusx;
-     points[pointsIndex].y=point.y+(XY[i*2]*s+XY[i*2+1]*c)*radiusy;
+     points[pointsIndex].x=x+(XY[i*2]*c-XY[i*2+1]*s)*radiusx;
+     points[pointsIndex].y=y+(XY[i*2]*s+XY[i*2+1]*c)*radiusy;
      pointsIndex++;
     }
    }
@@ -279,37 +263,37 @@ static inline void expandPointCapacity(KGMutablePath *self,unsigned delta){
    BOOL first=YES;
    for(i=0;i<pointsIndex;i+=4){
     if(first){
-     if([self isEmpty]) {
-       [self moveToPoint:points[i] withTransform:matrix];
+     if(O2PathIsEmpty(self)) {
+      O2PathMoveToPoint(self,matrix,points[i].x,points[i].y);
      } else {
-       [self addLineToPoint:points[i] withTransform:matrix];
+      O2PathAddLineToPoint(self,matrix,points[i].x,points[i].y);
      }
     first=NO;
     }
-    [self addCurveToControlPoint:points[i+1] controlPoint:points[i+2] endPoint:points[i+3] withTransform:matrix];
+    O2PathAddCurveToPoint(self,matrix,points[i+1].x,points[i+1].y,points[i+2].x,points[i+2].y,points[i+3].x,points[i+3].y);
    }
 }
 
--(void)addArcToPoint:(CGPoint)point1 point:(CGPoint)point2 radius:(float)radius withTransform:(const CGAffineTransform *)matrix {
-	KGUnimplementedMethod();
+void O2PathAddArcToPoint(O2MutablePathRef self,const CGAffineTransform *matrix,CGFloat tx1,CGFloat ty1,CGFloat tx2,CGFloat ty2,CGFloat radius) {
+	KGUnimplementedFunction();
 }
 
--(void)addEllipseInRect:(CGRect)rect withTransform:(const CGAffineTransform *)matrix {
-    float             xradius=rect.size.width/2;
-    float             yradius=rect.size.height/2;
-    float             x=rect.origin.x+xradius;
-    float             y=rect.origin.y+yradius;
-    CGPoint           cp[13];
-    int               i;
+void O2PathAddEllipseInRect(O2MutablePathRef self,const CGAffineTransform *matrix,CGRect rect) {
+   float             xradius=rect.size.width/2;
+   float             yradius=rect.size.height/2;
+   float             x=rect.origin.x+xradius;
+   float             y=rect.origin.y+yradius;
+   CGPoint           cp[13];
+   int               i;
     
-    KGMutablePathEllipseToBezier(cp,x,y,xradius,yradius);
+   O2MutablePathEllipseToBezier(cp,x,y,xradius,yradius);
     
-    [self moveToPoint:cp[0] withTransform:matrix];
-    for(i=1;i<13;i+=3)
-     [self addCurveToControlPoint:cp[i] controlPoint:cp[i+1] endPoint:cp[i+2] withTransform:matrix];
+   O2PathMoveToPoint(self,matrix,cp[0].x,cp[0].y);
+   for(i=1;i<13;i+=3)
+    O2PathAddCurveToPoint(self,matrix,cp[i].x,cp[i].y,cp[i+1].x,cp[i+1].y,cp[i+2].x,cp[i+2].y);
 }
 
--(void)addPath:(KGPath *)path withTransform:(const CGAffineTransform *)matrix {
+void O2PathAddPath(O2MutablePathRef self,const CGAffineTransform *matrix,O2PathRef path) {
    unsigned             opsCount=[path numberOfElements];
    const unsigned char *ops=[path elements];
    unsigned             pointCount=[path numberOfPoints];
@@ -320,30 +304,23 @@ static inline void expandPointCapacity(KGMutablePath *self,unsigned delta){
    expandPointCapacity(self,pointCount);
    
    for(i=0;i<opsCount;i++)
-    _elements[_numberOfElements++]=ops[i];
+    self->_elements[self->_numberOfElements++]=ops[i];
     
    if(matrix==NULL){
     for(i=0;i<pointCount;i++)
-     _points[_numberOfPoints++]=points[i];
+     self->_points[self->_numberOfPoints++]=points[i];
    }
    else {    
     for(i=0;i<pointCount;i++)
-     _points[_numberOfPoints++]=CGPointApplyAffineTransform(points[i],*matrix);
+     self->_points[self->_numberOfPoints++]=CGPointApplyAffineTransform(points[i],*matrix);
    }
 }
 
--(void)applyTransform:(CGAffineTransform)matrix {
+void O2PathApplyTransform(O2MutablePathRef self,const CGAffineTransform matrix) {
    int i;
    
-   for(i=0;i<_numberOfPoints;i++)
-    _points[i]=CGPointApplyAffineTransform(_points[i],matrix);
-}
-
--(void)setPoints:(CGPoint *)points count:(unsigned)count atIndex:(unsigned)index {
-   int i;
-   
-   for(i=0;i<count;i++)
-    _points[index+i]=points[i];
+   for(i=0;i<self->_numberOfPoints;i++)
+    self->_points[i]=CGPointApplyAffineTransform(self->_points[i],matrix);
 }
 
 @end

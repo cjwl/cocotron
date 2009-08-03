@@ -27,11 +27,11 @@
  *-------------------------------------------------------------------*/
 
 #import "VGmath.h"
-#import "KGPath.h"
+#import "O2Path.h"
 #import "KGContext_builtin.h"
 
 @interface VGPath : NSObject {
-   KGPath *_path;
+   O2Path *_path;
     int     _vertexCount;
     int     _vertexCapacity;
     struct Vertex *_vertices;
@@ -45,7 +45,7 @@
 	CGFloat				m_userMaxy;
 }
 
--initWithKGPath:(KGPath *)path;
+-initWithKGPath:(O2Path *)path;
 
 void VGPathFill(VGPath *self,CGAffineTransform pathToSurface, KGRasterizer *rasterizer);	
 void VGPathStroke(VGPath *self,CGAffineTransform pathToSurface, KGRasterizer *rasterizer, const CGFloat* dashPattern,int dashPatternSize, CGFloat dashPhase, BOOL dashPhaseReset, CGFloat strokeWidth, CGLineCap capStyle, CGLineJoin joinStyle, CGFloat miterLimit);	

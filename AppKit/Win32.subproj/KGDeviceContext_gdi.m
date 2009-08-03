@@ -7,7 +7,7 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
 #import <AppKit/KGDeviceContext_gdi.h>
-#import <CoreGraphics/KGPath.h>
+#import <CoreGraphics/O2Path.h>
 #import <CoreGraphics/KGColor.h>
 #import <CoreGraphics/KGColorSpace.h>
 
@@ -99,7 +99,7 @@ static inline int float2int(float coord){
    return floorf(coord);
 }
 
--(void)establishDeviceSpacePath:(KGPath *)path withTransform:(CGAffineTransform)xform {
+-(void)establishDeviceSpacePath:(O2Path *)path withTransform:(CGAffineTransform)xform {
    unsigned             opCount=[path numberOfElements];
    const unsigned char *elements=[path elements];
    unsigned             pointCount=[path numberOfPoints];
@@ -169,7 +169,7 @@ static inline int float2int(float coord){
    DeleteObject(_clipRegion);
 }
 
--(void)clipToPath:(KGPath *)path withTransform:(CGAffineTransform)xform deviceTransform:(CGAffineTransform)deviceXFORM evenOdd:(BOOL)evenOdd {
+-(void)clipToPath:(O2Path *)path withTransform:(CGAffineTransform)xform deviceTransform:(CGAffineTransform)deviceXFORM evenOdd:(BOOL)evenOdd {
    XFORM current;
    XFORM userToDevice={deviceXFORM.a,deviceXFORM.b,deviceXFORM.c,deviceXFORM.d,deviceXFORM.tx,deviceXFORM.ty};
 
@@ -188,12 +188,12 @@ static inline int float2int(float coord){
     NSLog(@"SetWorldTransform failed");
 }
 
--(void)clipToNonZeroPath:(KGPath *)path withTransform:(CGAffineTransform)xform deviceTransform:(CGAffineTransform)deviceXFORM {
-   [self clipToPath:(KGPath *)path withTransform:(CGAffineTransform)xform deviceTransform:(CGAffineTransform)deviceXFORM evenOdd:NO];
+-(void)clipToNonZeroPath:(O2Path *)path withTransform:(CGAffineTransform)xform deviceTransform:(CGAffineTransform)deviceXFORM {
+   [self clipToPath:(O2Path *)path withTransform:(CGAffineTransform)xform deviceTransform:(CGAffineTransform)deviceXFORM evenOdd:NO];
 }
 
--(void)clipToEvenOddPath:(KGPath *)path withTransform:(CGAffineTransform)xform deviceTransform:(CGAffineTransform)deviceXFORM {
-   [self clipToPath:(KGPath *)path withTransform:(CGAffineTransform)xform deviceTransform:(CGAffineTransform)deviceXFORM evenOdd:YES];
+-(void)clipToEvenOddPath:(O2Path *)path withTransform:(CGAffineTransform)xform deviceTransform:(CGAffineTransform)deviceXFORM {
+   [self clipToPath:(O2Path *)path withTransform:(CGAffineTransform)xform deviceTransform:(CGAffineTransform)deviceXFORM evenOdd:YES];
 }
 
 -(void)beginPrintingWithDocumentName:(NSString *)name {

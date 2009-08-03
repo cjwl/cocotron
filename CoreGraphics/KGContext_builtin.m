@@ -21,7 +21,7 @@
  * THE USE OR OTHER DEALINGS IN THE MATERIALS.
  */
 #import "KGContext_builtin.h"
-#import "KGMutablePath.h"
+#import "O2MutablePath.h"
 #import "KGImage.h"
 #import "KGColor.h"
 #import "KGSurface.h"
@@ -149,12 +149,12 @@ static BOOL _isAvailable=NO;
    KGRasterizerSetViewport(self,0,0,KGImageGetWidth(_surface),KGImageGetHeight(_surface));
 }
 
--(void)deviceClipToNonZeroPath:(KGPath *)path {
-   KGMutablePath *copy=[path mutableCopy];
+-(void)deviceClipToNonZeroPath:(O2Path *)path {
+   O2MutablePath *copy=[path mutableCopy];
     
-   [copy applyTransform:CGAffineTransformInvert([self currentState]->_userSpaceTransform)];
-   [copy applyTransform:[self currentState]->_deviceSpaceTransform];
-   CGRect rect=[copy boundingBox];
+   O2PathApplyTransform(copy,CGAffineTransformInvert([self currentState]->_userSpaceTransform));
+   O2PathApplyTransform(copy,[self currentState]->_deviceSpaceTransform);
+   CGRect rect=O2PathGetBoundingBox(copy);
    
    [copy release];
    
@@ -188,7 +188,7 @@ static KGPaint *paintFromColor(KGColor *color){
  
    CGAffineTransform userToSurfaceMatrix=gState->_deviceSpaceTransform;
 
-   [_path applyTransform:CGAffineTransformInvert(gState->_userSpaceTransform)];
+   O2PathApplyTransform(_path,CGAffineTransformInvert(gState->_userSpaceTransform));
    VGPath *vgPath=[[VGPath alloc] initWithKGPath:_path];
 
    if(drawingMode!=kCGPathStroke){
@@ -230,7 +230,7 @@ static KGPaint *paintFromColor(KGColor *color){
    O2DContextSetPaint(self,nil);
    [vgPath release];
    KGRasterizerClear(self);
-   [_path reset];
+   O2PathReset(_path);
 }
 
 -(void)showGlyphs:(const CGGlyph *)glyphs count:(unsigned)count {
@@ -338,7 +338,7 @@ xform=CGAffineTransformConcat(i2u,xform);
 
 
 
--(void)deviceClipToEvenOddPath:(KGPath *)path {
+-(void)deviceClipToEvenOddPath:(O2Path *)path {
 //   KGInvalidAbstractInvocation();
 }
 

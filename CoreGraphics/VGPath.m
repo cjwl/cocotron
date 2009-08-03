@@ -234,7 +234,7 @@ static CGPoint circularLerp(CGPoint t0, CGPoint t1, CGFloat ratio){
 
 @implementation VGPath
 
--initWithKGPath:(KGPath *)path {
+-initWithKGPath:(O2Path *)path {
    _path=[path retain];
 	self->m_userMinx=0.0f;
 	self->m_userMiny=0.0f;

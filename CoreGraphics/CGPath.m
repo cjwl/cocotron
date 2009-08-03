@@ -7,101 +7,101 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
 #import <CoreGraphics/CGPath.h>
-#import "KGPath.h"
-#import "KGMutablePath.h"
+#import "O2Path.h"
+#import "O2MutablePath.h"
 
 void CGPathRelease(CGPathRef self) {
-   [self release];
+   O2PathRelease(self);
 }
 
 CGPathRef CGPathRetain(CGPathRef self) {
-   return [self retain];
+   return (CGPathRef)O2PathRetain(self);
 }
 
 BOOL CGPathEqualToPath(CGPathRef self,CGPathRef other) {
-   return [self isEqualToPath:other];
+   return O2PathEqualToPath(self,other);
 }
 
 CGRect CGPathGetBoundingBox(CGPathRef self) {
-   return [self boundingBox];
+   return O2PathGetBoundingBox(self);
 }
 
 CGPoint CGPathGetCurrentPoint(CGPathRef self) {
-   return [self currentPoint];
+   return O2PathGetCurrentPoint(self);
 }
 
 BOOL CGPathIsEmpty(CGPathRef self) {
-   return [self isEmpty];
+   return O2PathIsEmpty(self);
 }
 
 BOOL CGPathIsRect(CGPathRef self,CGRect *rect) {
-   return [self isRect:rect];
+   return O2PathIsRect(self,rect);
 }
 
 void CGPathApply(CGPathRef self,void *info,CGPathApplierFunction function) {
-   return [self applyWithInfo:info function:function];
+   return O2PathApply(self,info,function);
 }
 
 CGMutablePathRef CGPathCreateMutableCopy(CGPathRef self) {
-   return [self mutableCopy];
+   return O2PathCreateMutableCopy(self);
 }
 
 CGPathRef CGPathCreateCopy(CGPathRef self) {
-   return [self copy];
+   return (CGPathRef)O2PathCreateCopy(self);
 }
 
 BOOL CGPathContainsPoint(CGPathRef self,const CGAffineTransform *xform,CGPoint point,BOOL evenOdd) {
-   return [self containsPoint:point evenOdd:evenOdd withTransform:xform];
+   return O2PathContainsPoint(self,xform,point,evenOdd);
 }
 
 CGMutablePathRef CGPathCreateMutable(void) {
-   return [[KGMutablePath alloc] init];
+   return O2PathCreateMutable();
 }
 
 void CGPathMoveToPoint(CGMutablePathRef self,const CGAffineTransform *xform,CGFloat x,CGFloat y) {
-   [self moveToPoint:CGPointMake(x,y) withTransform:xform];
+   O2PathMoveToPoint(self,xform,x,y);
 }
 
 void CGPathAddLineToPoint(CGMutablePathRef self,const CGAffineTransform *xform,CGFloat x,CGFloat y) {
-   [self addLineToPoint:CGPointMake(x,y) withTransform:xform];
+   O2PathAddLineToPoint(self,xform,x,y);
 }
 
 void CGPathAddCurveToPoint(CGMutablePathRef self,const CGAffineTransform *xform,CGFloat cp1x,CGFloat cp1y,CGFloat cp2x,CGFloat cp2y,CGFloat x,CGFloat y) {
-   [self addCurveToControlPoint:CGPointMake(cp1x,cp1y) controlPoint:CGPointMake(cp2x,cp2y) endPoint:CGPointMake(x,y) withTransform:xform];
+   O2PathAddCurveToPoint(self,xform,cp1x,cp1y,cp2x,cp2y,x,y);
 }
 
 void CGPathAddQuadCurveToPoint(CGMutablePathRef self,const CGAffineTransform *xform,CGFloat cpx,CGFloat cpy,CGFloat x,CGFloat y) {
-   [self addQuadCurveToControlPoint:CGPointMake(cpx,cpy) endPoint:CGPointMake(x,y) withTransform:xform];
+   O2PathAddQuadCurveToPoint(self,xform,cpx,cpy,x,y);
 }
 
 void CGPathCloseSubpath(CGMutablePathRef self) {
-   [self closeSubpath];
+   O2PathCloseSubpath(self);
 }
 
 void CGPathAddLines(CGMutablePathRef self,const CGAffineTransform *xform,const CGPoint *points,size_t count) {
-   [self addLinesWithPoints:points count:count withTransform:xform];
+   O2PathAddLines(self,xform,points,count);
 }
 
 void CGPathAddRect(CGMutablePathRef self,const CGAffineTransform *xform,CGRect rect) {
-   [self addRect:rect withTransform:xform];
+   O2PathAddRect(self,xform,rect);
 }
 
 void CGPathAddRects(CGMutablePathRef self,const CGAffineTransform *xform,const CGRect *rects,size_t count) {
-   [self addRects:rects count:count withTransform:xform];
+   O2PathAddRects(self,xform,rects,count);
 }
 
 void CGPathAddArc(CGMutablePathRef self,const CGAffineTransform *xform,CGFloat x,CGFloat y,CGFloat radius,CGFloat startRadian,CGFloat endRadian,BOOL clockwise) {
-   [self addArcAtPoint:CGPointMake(x,y) radius:radius startAngle:startRadian endAngle:endRadian clockwise:clockwise withTransform:xform];
+   O2PathAddArc(self,xform,x,y,radius,startRadian,endRadian,clockwise);
 }
 
 void CGPathAddArcToPoint(CGMutablePathRef self,const CGAffineTransform *xform,CGFloat tx1,CGFloat ty1,CGFloat tx2,CGFloat ty2,CGFloat radius) {
-   [self addArcToPoint:CGPointMake(tx1,ty1) point:CGPointMake(tx2,ty2) radius:radius withTransform:xform];
+   O2PathAddArcToPoint(self,xform,tx1,ty1,tx2,ty2,radius);
 }
 
 void CGPathAddEllipseInRect(CGMutablePathRef self,const CGAffineTransform *xform,CGRect rect) {
-   [self addEllipseInRect:rect withTransform:xform];
+   O2PathAddEllipseInRect(self,xform,rect);
 }
 
 void CGPathAddPath(CGMutablePathRef self,const CGAffineTransform *xform,CGPathRef other) {
-   [self addPath:other withTransform:xform];
+   O2PathAddPath(self,xform,other);
 }

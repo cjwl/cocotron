@@ -9,7 +9,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSObject.h>
 #import <CoreGraphics/CoreGraphics.h>
 
-@class KGImage,KGColorSpace,KGColor,KGPattern,KGMutablePath,KGPath,NSArray,NSMutableArray,KGFont;
+@class KGImage,KGColorSpace,KGColor,KGPattern,O2MutablePath,O2Path,NSArray,NSMutableArray,KGFont;
 
 @interface KGGraphicsState : NSObject <NSCopying> {
 @public
@@ -72,8 +72,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(NSArray *)clipPhases;
 -(void)removeAllClipPhases;
--(void)addClipToPath:(KGPath *)path;
--(void)addEvenOddClipToPath:(KGPath *)path;
+-(void)addClipToPath:(O2Path *)path;
+-(void)addEvenOddClipToPath:(O2Path *)path;
 -(void)addClipToMask:(KGImage *)image inRect:(CGRect)rect;
 
 -(KGColor *)strokeColor;

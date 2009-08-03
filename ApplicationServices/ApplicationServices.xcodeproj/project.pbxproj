@@ -121,35 +121,35 @@
 			isa = PBXContainerItemProxy;
 			containerPortal = FECF921A0FFB222D007AECF1 /* CoreText.xcodeproj */;
 			proxyType = 2;
-			remoteGlobalIDString = 8DC2EF5B0486A6940098B216 /* CoreText.framework */;
+			remoteGlobalIDString = 8DC2EF5B0486A6940098B216;
 			remoteInfo = CoreText;
 		};
 		FECF92530FFB2A2B007AECF1 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FECF921A0FFB222D007AECF1 /* CoreText.xcodeproj */;
 			proxyType = 2;
-			remoteGlobalIDString = FECF923F0FFB29FF007AECF1 /* CoreGraphics.framework */;
+			remoteGlobalIDString = FECF923F0FFB29FF007AECF1;
 			remoteInfo = "CoreText-Linux-i386";
 		};
 		FECF92550FFB2A2B007AECF1 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FECF921A0FFB222D007AECF1 /* CoreText.xcodeproj */;
 			proxyType = 2;
-			remoteGlobalIDString = FECF924F0FFB2A0D007AECF1 /* CoreGraphics.framework */;
+			remoteGlobalIDString = FECF924F0FFB2A0D007AECF1;
 			remoteInfo = "CoreText-Darwin-i386";
 		};
 		FECF92930FFB2D44007AECF1 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FECF921A0FFB222D007AECF1 /* CoreText.xcodeproj */;
 			proxyType = 1;
-			remoteGlobalIDString = 8DC2EF4F0486A6940098B216 /* CoreText-Windows-i386 */;
+			remoteGlobalIDString = 8DC2EF4F0486A6940098B216;
 			remoteInfo = "CoreText-Windows-i386";
 		};
 		FECF92950FFB2D4B007AECF1 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FECF921A0FFB222D007AECF1 /* CoreText.xcodeproj */;
 			proxyType = 1;
-			remoteGlobalIDString = FECF92310FFB29FF007AECF1 /* CoreText-Linux-i386 */;
+			remoteGlobalIDString = FECF92310FFB29FF007AECF1;
 			remoteInfo = "CoreText-Linux-i386";
 		};
 /* End PBXContainerItemProxy section */
@@ -499,14 +499,14 @@
 		FECF92540FFB2A2B007AECF1 /* CoreGraphics.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
-			path = CoreGraphics.framework;
+			path = CoreText.framework;
 			remoteRef = FECF92530FFB2A2B007AECF1 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		FECF92560FFB2A2B007AECF1 /* CoreGraphics.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
-			path = CoreGraphics.framework;
+			path = CoreText.framework;
 			remoteRef = FECF92550FFB2A2B007AECF1 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};

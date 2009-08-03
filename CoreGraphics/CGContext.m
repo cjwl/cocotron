@@ -8,7 +8,7 @@ THE SOFTWARE IS PROVIDED "AS IS",WITHOUT WARRANTY OF ANY KIND,EXPRESS OR IMPLIED
 
 #import <CoreGraphics/CGContext.h>
 #import "KGContext.h"
-#import "KGMutablePath.h"
+#import "O2MutablePath.h"
 
 CGContextRef CGContextRetain(CGContextRef context) {
    return [context retain];

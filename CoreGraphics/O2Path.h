@@ -9,7 +9,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSObject.h>
 #import <CoreGraphics/CoreGraphics.h>
 
-@interface KGPath : NSObject <NSCopying,NSMutableCopying> {
+@class O2Path,O2MutablePath;
+
+typedef O2Path *O2PathRef;
+typedef O2MutablePath *O2MutablePathRef;
+
+@interface O2Path : NSObject <NSCopying,NSMutableCopying> {
    unsigned       _numberOfElements;
    unsigned char *_elements;
    unsigned       _numberOfPoints;
@@ -24,17 +29,17 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(unsigned)numberOfPoints;
 -(const CGPoint *)points;
 
--(CGPoint)currentPoint;
+void      O2PathRelease(O2PathRef self);
+O2PathRef O2PathRetain(O2PathRef self);
 
--(BOOL)isEqualToPath:(KGPath *)other;
-
--(BOOL)isEmpty;
--(BOOL)isRect:(CGRect *)rect;
-
--(BOOL)containsPoint:(CGPoint)point evenOdd:(BOOL)evenOdd withTransform:(const CGAffineTransform *)matrix;
-
--(CGRect)boundingBox;
-
--(void)applyWithInfo:(void *)info function:(CGPathApplierFunction)function;
+BOOL    O2PathEqualToPath(O2PathRef self,O2PathRef other);
+CGRect  O2PathGetBoundingBox(O2PathRef self);
+CGPoint O2PathGetCurrentPoint(O2PathRef self);
+BOOL    O2PathIsEmpty(O2PathRef self);
+BOOL    O2PathIsRect(O2PathRef self,CGRect *rect);
+void    O2PathApply(O2PathRef self,void *info,CGPathApplierFunction function);
+O2MutablePathRef O2PathCreateMutableCopy(O2PathRef self);
+O2PathRef        O2PathCreateCopy(O2PathRef self);
+BOOL             O2PathContainsPoint(O2PathRef self,const CGAffineTransform *xform,CGPoint point,BOOL evenOdd);
 
 @end

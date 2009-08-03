@@ -15,7 +15,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "Win32DeviceContextWindow.h"
 #import <CoreGraphics/KGGraphicsState.h>
 #import <AppKit/KGDeviceContext_gdi.h>
-#import <CoreGraphics/KGMutablePath.h>
+#import <CoreGraphics/O2MutablePath.h>
 #import <CoreGraphics/KGColor.h>
 #import <CoreGraphics/KGColorSpace.h>
 #import <CoreGraphics/KGShading.h>
@@ -224,12 +224,12 @@ static RECT NSRectToRECT(NSRect rect) {
    [_deviceContext clipReset];
 }
 
--(void)deviceClipToNonZeroPath:(KGPath *)path {
+-(void)deviceClipToNonZeroPath:(O2Path *)path {
    KGGraphicsState *state=[self currentState];
    [_deviceContext clipToNonZeroPath:path withTransform:CGAffineTransformInvert(state->_userSpaceTransform) deviceTransform:state->_deviceSpaceTransform];
 }
 
--(void)deviceClipToEvenOddPath:(KGPath *)path {
+-(void)deviceClipToEvenOddPath:(O2Path *)path {
    KGGraphicsState *state=[self currentState];
    [_deviceContext clipToEvenOddPath:path withTransform:CGAffineTransformInvert(state->_userSpaceTransform) deviceTransform:state->_deviceSpaceTransform];
 }
@@ -238,7 +238,7 @@ static RECT NSRectToRECT(NSRect rect) {
    NSUnimplementedMethod();
 }
 
--(void)drawPathInDeviceSpace:(KGPath *)path drawingMode:(int)mode state:(KGGraphicsState *)state {
+-(void)drawPathInDeviceSpace:(O2Path *)path drawingMode:(int)mode state:(KGGraphicsState *)state {
    CGAffineTransform deviceTransform=state->_deviceSpaceTransform;
    KGColor *fillColor=state->_fillColor;
    KGColor *strokeColor=state->_strokeColor;
@@ -332,7 +332,7 @@ static RECT NSRectToRECT(NSRect rect) {
 
    [self drawPathInDeviceSpace:_path drawingMode:pathMode state:[self currentState] ];
    
-   [_path reset];
+   O2PathReset(_path);
 }
 
 -(void)showGlyphs:(const CGGlyph *)glyphs count:(unsigned)count {
@@ -571,7 +571,7 @@ static inline float axialBandIntervalFromMagnitude(KGFunction *function,float ma
 static int appendCircle(NSPoint *cp,int position,float x,float y,float radius,CGAffineTransform matrix){
    int i;
    
-   KGMutablePathEllipseToBezier(cp+position,x,y,radius,radius);
+   O2MutablePathEllipseToBezier(cp+position,x,y,radius,radius);
    for(i=0;i<13;i++)
     cp[position+i]=CGPointApplyAffineTransform(cp[position+i],matrix);
     

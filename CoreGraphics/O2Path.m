@@ -6,11 +6,11 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
-#import "KGPath.h"
-#import "KGMutablePath.h"
+#import "O2Path.h"
+#import "O2MutablePath.h"
 #import "KGExceptions.h"
 
-@implementation KGPath
+@implementation O2Path
 
 -initWithOperators:(unsigned char *)elements numberOfElements:(unsigned)numberOfElements points:(CGPoint *)points numberOfPoints:(unsigned)numberOfPoints {
    int i;
@@ -38,12 +38,28 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [super dealloc];
 }
 
+void O2PathRelease(O2PathRef self) {
+   [self release];
+}
+
+O2PathRef O2PathRetain(O2PathRef self) {
+   return [self retain];
+}
+
 -copyWithZone:(NSZone *)zone {
    return [self retain];
 }
 
+O2PathRef O2PathCreateCopy(O2PathRef self) {
+   return [self copyWithZone:NULL];
+}
+
 -mutableCopyWithZone:(NSZone *)zone {
-   return [[KGMutablePath allocWithZone:zone] initWithOperators:_elements numberOfElements:_numberOfElements points:_points numberOfPoints:_numberOfPoints];
+   return [[O2MutablePath allocWithZone:zone] initWithOperators:_elements numberOfElements:_numberOfElements points:_points numberOfPoints:_numberOfPoints];
+}
+
+O2MutablePathRef O2PathCreateMutableCopy(O2PathRef self) {
+   return [self mutableCopyWithZone:NULL];
 }
 
 -(unsigned)numberOfElements {
@@ -62,29 +78,29 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return _points;
 }
 
--(CGPoint)currentPoint {
+CGPoint O2PathGetCurrentPoint(O2PathRef self) {
 // this is wrong w/ closepath last
-   return (_numberOfPoints==0)?CGPointZero:_points[_numberOfPoints-1];
+   return (self->_numberOfPoints==0)?CGPointZero:self->_points[self->_numberOfPoints-1];
 }
 
--(BOOL)isEqualToPath:(KGPath *)other {
+BOOL    O2PathEqualToPath(O2PathRef self,O2PathRef other){
    unsigned otherNumberOfOperators=[other numberOfElements];
    
-   if(_numberOfElements==otherNumberOfOperators){
+   if(self->_numberOfElements==otherNumberOfOperators){
     unsigned otherNumberOfPoints=[other numberOfPoints];
     
-    if(_numberOfPoints==otherNumberOfPoints){
+    if(self->_numberOfPoints==otherNumberOfPoints){
      const unsigned char *otherOperators=[other elements];
      const CGPoint       *otherPoints;
      int i;
      
-     for(i=0;i<_numberOfElements;i++)
-      if(_elements[i]!=otherOperators[i])
+     for(i=0;i<self->_numberOfElements;i++)
+      if(self->_elements[i]!=otherOperators[i])
        return NO;
        
      otherPoints=[other points];
-     for(i=0;i<_numberOfPoints;i++)
-      if(!CGPointEqualToPoint(_points[i],otherPoints[i]))
+     for(i=0;i<self->_numberOfPoints;i++)
+      if(!CGPointEqualToPoint(self->_points[i],otherPoints[i]))
        return NO;
        
      return YES;
@@ -94,55 +110,55 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return NO;
 }
 
--(BOOL)isEmpty {
-   return _numberOfElements==0;
+BOOL O2PathIsEmpty(O2PathRef self) {
+   return self->_numberOfElements==0;
 }
 
--(BOOL)isRect:(CGRect *)rect {   
-   if(_numberOfElements!=5)
+BOOL O2PathIsRect(O2PathRef self,CGRect *rect) {
+   if(self->_numberOfElements!=5)
     return NO;
-   if(_elements[0]!=kCGPathElementMoveToPoint)
+   if(self->_elements[0]!=kCGPathElementMoveToPoint)
     return NO;
-   if(_elements[1]!=kCGPathElementAddLineToPoint)
+   if(self->_elements[1]!=kCGPathElementAddLineToPoint)
     return NO;
-   if(_elements[2]!=kCGPathElementAddLineToPoint)
+   if(self->_elements[2]!=kCGPathElementAddLineToPoint)
     return NO;
-   if(_elements[3]!=kCGPathElementAddLineToPoint)
+   if(self->_elements[3]!=kCGPathElementAddLineToPoint)
     return NO;
-   if(_elements[4]!=kCGPathElementCloseSubpath)
-    return NO;
-   
-   if(_points[0].x!=_points[1].x)
-    return NO;
-   if(_points[1].y!=_points[2].y)
-    return NO;
-   if(_points[2].x!=_points[3].x)
-    return NO;
-   if(_points[3].y!=_points[0].y)
+   if(self->_elements[4]!=kCGPathElementCloseSubpath)
     return NO;
    
-   rect->origin=_points[0];
-   rect->size=CGSizeMake(_points[2].x-_points[0].x,_points[2].y-_points[0].y);
+   if(self->_points[0].x!=self->_points[1].x)
+    return NO;
+   if(self->_points[1].y!=self->_points[2].y)
+    return NO;
+   if(self->_points[2].x!=self->_points[3].x)
+    return NO;
+   if(self->_points[3].y!=self->_points[0].y)
+    return NO;
+   
+   rect->origin=self->_points[0];
+   rect->size=CGSizeMake(self->_points[2].x-self->_points[0].x,self->_points[2].y-self->_points[0].y);
    
    return YES;
 }
 
--(BOOL)containsPoint:(CGPoint)point evenOdd:(BOOL)evenOdd withTransform:(const CGAffineTransform *)matrix {
-   KGUnimplementedMethod();
+BOOL O2PathContainsPoint(O2PathRef self,const CGAffineTransform *xform,CGPoint point,BOOL evenOdd) {
+   KGUnimplementedFunction();
    return NO;
 }
 
--(CGRect)boundingBox {
+CGRect O2PathGetBoundingBox(O2PathRef self) {
    CGRect result;
    int i;
    
-   if(_numberOfPoints==0)
+   if(self->_numberOfPoints==0)
     return CGRectZero;
    
-   result.origin=_points[0];
+   result.origin=self->_points[0];
    result.size=CGSizeMake(0,0);
-   for(i=1;i<_numberOfPoints;i++){
-    CGPoint point=_points[i];
+   for(i=1;i<self->_numberOfPoints;i++){
+    CGPoint point=self->_points[i];
     
     if(point.x>CGRectGetMaxX(result))
      result.size.width=point.x-CGRectGetMinX(result);
@@ -162,13 +178,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return result;
 }
 
--(void)applyWithInfo:(void *)info function:(CGPathApplierFunction)function {
+void O2PathApply(O2PathRef self,void *info,CGPathApplierFunction function) {
    int           i,pointIndex=0;
    CGPathElement element;
    
-   for(i=0;i<_numberOfElements;i++){
-    element.type=_elements[i];
-    element.points=_points+pointIndex;
+   for(i=0;i<self->_numberOfElements;i++){
+    element.type=self->_elements[i];
+    element.points=self->_points+pointIndex;
 
     switch(element.type){
     

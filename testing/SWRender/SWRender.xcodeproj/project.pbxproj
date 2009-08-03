@@ -12,7 +12,6 @@
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 		FE0997430D87095000033630 /* overlay.png in Resources */ = {isa = PBXBuildFile; fileRef = FE0997420D87095000033630 /* overlay.png */; };
-		FE1364050FE80F4F00DE15FA /* KTFont+PDF.m in Sources */ = {isa = PBXBuildFile; fileRef = FEA084D20EF5FDE6001E8260 /* KTFont+PDF.m */; };
 		FE14EC4B0DBD9BF00070928C /* DemoCGContext.m in Sources */ = {isa = PBXBuildFile; fileRef = FE14EC490DBD9BF00070928C /* DemoCGContext.m */; };
 		FE14EC4C0DBD9BF00070928C /* DemoKGContext.m in Sources */ = {isa = PBXBuildFile; fileRef = FE14EC4A0DBD9BF00070928C /* DemoKGContext.m */; };
 		FE14EC960DBDA5420070928C /* DemoContext.m in Sources */ = {isa = PBXBuildFile; fileRef = FE14EC950DBDA5420070928C /* DemoContext.m */; };
@@ -43,8 +42,8 @@
 		FE6EDCEE0DB78E7C005503A1 /* KGGraphicsState.m in Sources */ = {isa = PBXBuildFile; fileRef = FE6EDCDB0DB78E7C005503A1 /* KGGraphicsState.m */; };
 		FE6EDCEF0DB78E7C005503A1 /* KGImage.m in Sources */ = {isa = PBXBuildFile; fileRef = FE6EDCDD0DB78E7C005503A1 /* KGImage.m */; };
 		FE6EDCF00DB78E7C005503A1 /* KGLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = FE6EDCDF0DB78E7C005503A1 /* KGLayer.m */; };
-		FE6EDCF10DB78E7C005503A1 /* KGMutablePath.m in Sources */ = {isa = PBXBuildFile; fileRef = FE6EDCE10DB78E7C005503A1 /* KGMutablePath.m */; };
-		FE6EDCF20DB78E7C005503A1 /* KGPath.m in Sources */ = {isa = PBXBuildFile; fileRef = FE6EDCE30DB78E7C005503A1 /* KGPath.m */; };
+		FE6EDCF10DB78E7C005503A1 /* O2MutablePath.m in Sources */ = {isa = PBXBuildFile; fileRef = FE6EDCE10DB78E7C005503A1 /* O2MutablePath.m */; };
+		FE6EDCF20DB78E7C005503A1 /* O2Path.m in Sources */ = {isa = PBXBuildFile; fileRef = FE6EDCE30DB78E7C005503A1 /* O2Path.m */; };
 		FE6EDCF30DB78E7C005503A1 /* KGPattern.m in Sources */ = {isa = PBXBuildFile; fileRef = FE6EDCE50DB78E7C005503A1 /* KGPattern.m */; };
 		FE6EDCF60DB78E8D005503A1 /* KGShading.m in Sources */ = {isa = PBXBuildFile; fileRef = FE6EDCF50DB78E8D005503A1 /* KGShading.m */; };
 		FE6EDD290DB78EA1005503A1 /* KGPDFArray.m in Sources */ = {isa = PBXBuildFile; fileRef = FE6EDCF80DB78EA1005503A1 /* KGPDFArray.m */; };
@@ -168,10 +167,10 @@
 		FE6EDCDD0DB78E7C005503A1 /* KGImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGImage.m; sourceTree = "<group>"; };
 		FE6EDCDE0DB78E7C005503A1 /* KGLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGLayer.h; sourceTree = "<group>"; };
 		FE6EDCDF0DB78E7C005503A1 /* KGLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGLayer.m; sourceTree = "<group>"; };
-		FE6EDCE00DB78E7C005503A1 /* KGMutablePath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGMutablePath.h; sourceTree = "<group>"; };
-		FE6EDCE10DB78E7C005503A1 /* KGMutablePath.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGMutablePath.m; sourceTree = "<group>"; };
-		FE6EDCE20DB78E7C005503A1 /* KGPath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGPath.h; sourceTree = "<group>"; };
-		FE6EDCE30DB78E7C005503A1 /* KGPath.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGPath.m; sourceTree = "<group>"; };
+		FE6EDCE00DB78E7C005503A1 /* O2MutablePath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O2MutablePath.h; sourceTree = "<group>"; };
+		FE6EDCE10DB78E7C005503A1 /* O2MutablePath.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = O2MutablePath.m; sourceTree = "<group>"; };
+		FE6EDCE20DB78E7C005503A1 /* O2Path.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O2Path.h; sourceTree = "<group>"; };
+		FE6EDCE30DB78E7C005503A1 /* O2Path.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = O2Path.m; sourceTree = "<group>"; };
 		FE6EDCE40DB78E7C005503A1 /* KGPattern.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGPattern.h; sourceTree = "<group>"; };
 		FE6EDCE50DB78E7C005503A1 /* KGPattern.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGPattern.m; sourceTree = "<group>"; };
 		FE6EDCF40DB78E8D005503A1 /* KGShading.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGShading.h; sourceTree = "<group>"; };
@@ -236,8 +235,6 @@
 		FE9552790D77CA67009B765B /* VGmath.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = VGmath.h; sourceTree = "<group>"; };
 		FE95527B0D77CA67009B765B /* VGPath.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = VGPath.h; sourceTree = "<group>"; };
 		FE95527C0D77CA67009B765B /* VGPath.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = VGPath.m; sourceTree = "<group>"; };
-		FEA084D10EF5FDE6001E8260 /* KTFont+PDF.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "KTFont+PDF.h"; sourceTree = "<group>"; };
-		FEA084D20EF5FDE6001E8260 /* KTFont+PDF.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "KTFont+PDF.m"; sourceTree = "<group>"; };
 		FEA47EC1101E44CD005820F3 /* redLZWSquare.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = redLZWSquare.tif; sourceTree = "<group>"; };
 		FEBF55B70DCA0DE500CE5A1C /* KGPaint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGPaint.h; sourceTree = "<group>"; };
 		FEBF55B80DCA0DE500CE5A1C /* KGPaint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGPaint.m; sourceTree = "<group>"; };
@@ -377,8 +374,6 @@
 		FE6EDCC70DB78E3C005503A1 /* CoreGraphics */ = {
 			isa = PBXGroup;
 			children = (
-				FEA084D10EF5FDE6001E8260 /* KTFont+PDF.h */,
-				FEA084D20EF5FDE6001E8260 /* KTFont+PDF.m */,
 				FE4F4CB70E10397000A5A5F8 /* KGColorSpace+PDF.h */,
 				FE4F4CB80E10397000A5A5F8 /* KGColorSpace+PDF.m */,
 				FE4F4CBB0E10397000A5A5F8 /* KGFunction+PDF.h */,
@@ -484,10 +479,10 @@
 				FE6EDCDD0DB78E7C005503A1 /* KGImage.m */,
 				FE6EDCDE0DB78E7C005503A1 /* KGLayer.h */,
 				FE6EDCDF0DB78E7C005503A1 /* KGLayer.m */,
-				FE6EDCE00DB78E7C005503A1 /* KGMutablePath.h */,
-				FE6EDCE10DB78E7C005503A1 /* KGMutablePath.m */,
-				FE6EDCE20DB78E7C005503A1 /* KGPath.h */,
-				FE6EDCE30DB78E7C005503A1 /* KGPath.m */,
+				FE6EDCE00DB78E7C005503A1 /* O2MutablePath.h */,
+				FE6EDCE10DB78E7C005503A1 /* O2MutablePath.m */,
+				FE6EDCE20DB78E7C005503A1 /* O2Path.h */,
+				FE6EDCE30DB78E7C005503A1 /* O2Path.m */,
 				FE6EDCE40DB78E7C005503A1 /* KGPattern.h */,
 				FE6EDCE50DB78E7C005503A1 /* KGPattern.m */,
 			);
@@ -570,8 +565,8 @@
 				FE6EDCEE0DB78E7C005503A1 /* KGGraphicsState.m in Sources */,
 				FE6EDCEF0DB78E7C005503A1 /* KGImage.m in Sources */,
 				FE6EDCF00DB78E7C005503A1 /* KGLayer.m in Sources */,
-				FE6EDCF10DB78E7C005503A1 /* KGMutablePath.m in Sources */,
-				FE6EDCF20DB78E7C005503A1 /* KGPath.m in Sources */,
+				FE6EDCF10DB78E7C005503A1 /* O2MutablePath.m in Sources */,
+				FE6EDCF20DB78E7C005503A1 /* O2Path.m in Sources */,
 				FE6EDCF30DB78E7C005503A1 /* KGPattern.m in Sources */,
 				FE6EDCF60DB78E8D005503A1 /* KGShading.m in Sources */,
 				FE6EDD290DB78EA1005503A1 /* KGPDFArray.m in Sources */,
@@ -621,7 +616,6 @@
 				FE4F4CC30E10397000A5A5F8 /* KGFunction+PDF.m in Sources */,
 				FE4F4CC40E10397000A5A5F8 /* KGImage+PDF.m in Sources */,
 				FE4F4CC50E10397000A5A5F8 /* KGShading+PDF.m in Sources */,
-				FE1364050FE80F4F00DE15FA /* KTFont+PDF.m in Sources */,
 				FE8CA8ED10181DD500F78535 /* O2LZW.m in Sources */,
 				FE452BCE101F412D00585DFE /* KGImageSource_GIF.m in Sources */,
 				FE452BD1101F414700585DFE /* gif_lib.m in Sources */,
