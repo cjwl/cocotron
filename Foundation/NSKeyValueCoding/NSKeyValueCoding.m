@@ -89,7 +89,7 @@ NSString *const NSUndefinedKeyException = @"NSUnknownKeyException";
 	}
 }
 
--(BOOL)_setValue:(id)value toBuffer:(void*)buffer ofType:(const char*)type
+-(BOOL)_setValue:(id)value toBuffer:(void*)buffer ofType:(const char*)type shouldRetain:(BOOL)shouldRetain
 {
 	char* cleanType=__builtin_alloca(strlen(type)+1);
 	[self _demangleTypeEncoding:type to:cleanType];
@@ -108,7 +108,16 @@ NSString *const NSUndefinedKeyException = @"NSUnknownKeyException";
 	switch(cleanType[0])
 	{
 		case '@':
-			*(id*)buffer = value;
+         if(shouldRetain) {
+            if((*(id*)buffer)!=value) {
+               [(*(id*)buffer) release];
+               *(id*)buffer = [value retain];
+            }
+         }
+         else {
+            *(id*)buffer = value;
+         }
+         
 			return YES;
 		case 'i':
 			*(int*)buffer = [value intValue];
@@ -174,8 +183,9 @@ NSString *const NSUndefinedKeyException = @"NSUnknownKeyException";
 		[inv setTarget:self];
 		
 		NSGetSizeAndAlignment(type, &size, &align);
-		void *buffer=__builtin_alloca(size);		
-		[self _setValue:value toBuffer:buffer ofType:type];
+		void *buffer=__builtin_alloca(size);
+      memset(buffer, 0, size);
+		[self _setValue:value toBuffer:buffer ofType:type shouldRetain:NO];
 		
 		[inv setArgument:buffer atIndex:2];
 
@@ -276,7 +286,7 @@ return [self _wrapReturnValueForSelector:sel]; \
 			if(!value && ivar->ivar_type[0]!='@')
 				return [self setNilValueForKey:key];
 
-			[self _setValue:value toBuffer:(void*)self+ivar->ivar_offset ofType:ivar->ivar_type];
+			[self _setValue:value toBuffer:(void*)self+ivar->ivar_offset ofType:ivar->ivar_type shouldRetain:YES];
          if(shouldNotify)
             [self didChangeValueForKey:key];
 			return;

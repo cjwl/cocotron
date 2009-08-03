@@ -11,7 +11,8 @@
 
 
 @interface KVC : SenTestCase {
-
+   id _objectInstanceVariable;
+   BOOL _inDirectTest;
 }
 
 @end

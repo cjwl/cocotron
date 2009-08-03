@@ -8,7 +8,71 @@
 
 #import "KVC.h"
 
+@interface RetainLogger : NSObject
+{
+   int _loggedRetainCount;
+   BOOL _logsRetains;
+}
+@property int loggedRetainCount;
+@end
+
+@implementation RetainLogger 
+
+@synthesize loggedRetainCount=_loggedRetainCount;
+
+-(id)retain {
+   _loggedRetainCount++;
+   return [super retain];
+}
+
+-(void)release {
+   _loggedRetainCount--;
+   [super release];
+}
+@end
+
+
 @implementation KVC
+
+-(BOOL)accessInstanceVariablesDirectly {
+   return _inDirectTest;
+}
+
+-(void)cleanUp {
+   _inDirectTest=NO;  
+}
+
+-(void)testDirectSetting {
+   RetainLogger* logger=[[[RetainLogger alloc] init] autorelease];
+   _inDirectTest=YES;
+
+   logger.loggedRetainCount=0;
+   id pool=[NSAutoreleasePool new];
+   
+   [self setValue:logger forKey:@"objectInstanceVariable"];
+   
+   [pool drain];
+   
+   STAssertEquals(logger.loggedRetainCount, 1, @"Direct setting retains object value");
+   STAssertEqualObjects(_objectInstanceVariable, logger, @"Direct setting sets object value");
+   
+   RetainLogger* logger2=[[RetainLogger alloc] init];
+   
+   
+   pool=[NSAutoreleasePool new];
+   
+   [self setValue:logger2 forKey:@"objectInstanceVariable"];
+   
+   [pool drain];
+   
+   STAssertEquals(logger.loggedRetainCount, 0, @"Direct setting releases old object value");
+
+   [logger2 release];
+   [logger2 release];
+
+}
+
+
 -(void)testKVC
 {
 	NSMutableDictionary *dict=[NSMutableDictionary dictionary];
