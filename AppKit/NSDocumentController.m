@@ -50,7 +50,6 @@ static NSDocumentController *shared=nil;
 -(void)dealloc {
    [_documents release];
    [_fileTypes release];
-   [_lastOpenPanelDirectory release];
    [super dealloc];
 }
 
@@ -194,8 +193,9 @@ static NSDocumentController *shared=nil;
       return check;
    }
    
-   if(_lastOpenPanelDirectory!=nil)
-    return _lastOpenPanelDirectory;
+   NSString * lastOpenPanelDirectory = [[NSUserDefaults standardUserDefaults] stringForKey:@"NSNavLastRootDirectory"];
+   if(lastOpenPanelDirectory!=nil)
+    return lastOpenPanelDirectory;
     
    return NSHomeDirectory();
 }
@@ -347,8 +347,46 @@ static NSDocumentController *shared=nil;
    return 0;
 }
 
--(void)closeAllDocumentsWithDelegate:delegate didCloseAllSelector:(SEL)selector info:(void *)info {
-   NSUnimplementedMethod();
+-(void)_closeDocumentsStartingWith:(NSDocument *)document 
+                       shouldClose:(BOOL)shouldClose 
+                   closeAllContext:(NSDictionary *)context
+{
+  // This is a recursive callback method. Start it by passing in a document of nil.
+  void (*delegateMethod)(id, SEL, id, BOOL, void *);
+  
+  if (shouldClose)
+    {
+      [document close];
+      if ([_documents count] > 0)
+        {
+          [[_documents lastObject] canCloseDocumentWithDelegate:self 
+                                            shouldCloseSelector:@selector(_closeDocumentsStartingWith:shouldClose:closeAllContext:)
+                                                    contextInfo:context];
+          return;
+        }
+    }
+  
+  // Inform our closeAllDocuments delegate of the results.
+  id delegate = [context objectForKey:@"delegate"];
+  SEL selector = NSSelectorFromString([context objectForKey:@"selector"]);
+  void * info = [[context objectForKey:@"contextInfo"] pointerValue];
+  [context release];
+  if ([delegate respondsToSelector:selector])
+    {
+      void (*delegateMethod)(id, SEL, id, BOOL, void *);
+      delegateMethod = (void (*)(id, SEL, id, BOOL, void *))[delegate methodForSelector:selector];
+      delegateMethod(delegate, selector, self, ([_documents count] == 0), info);
+    }
+}
+
+-(void)closeAllDocumentsWithDelegate:delegate didCloseAllSelector:(SEL)selector contextInfo:(void *)info 
+{
+  NSDictionary * closeAllContext = [[NSDictionary alloc] initWithObjectsAndKeys:
+                                    delegate, @"delegate",
+                                    NSStringFromSelector(selector), @"selector",
+                                    [NSValue valueWithPointer:info], @"contextInfo",
+                                    nil];
+  [self _closeDocumentsStartingWith:nil shouldClose:YES closeAllContext:closeAllContext];
 }
 
 -(void)reviewUnsavedDocumentsWithAlertTitle:(NSString *)title cancellable:(BOOL)cancellable delegate:delegate didReviewAllSelector:(SEL)selector info:(void *)info {
@@ -369,7 +407,11 @@ static NSDocumentController *shared=nil;
 }
 
 -(int)runModalOpenPanel:(NSOpenPanel *)openPanel forTypes:(NSArray *)extensions {
-   return [openPanel runModalForTypes:extensions];
+  int result = [openPanel runModalForDirectory:[self currentDirectory] file:nil types:extensions];
+  if (result)
+    [[NSUserDefaults standardUserDefaults] setObject:[openPanel directory] 
+                                              forKey:@"NSNavLastRootDirectory"];
+  return result;
 }
 
 -(NSOpenPanel *)_runOpenPanel {
@@ -378,8 +420,6 @@ static NSDocumentController *shared=nil;
    [openPanel setAllowsMultipleSelection:YES];
 
    if([self runModalOpenPanel:openPanel forTypes:[self _allFileExtensions]]){
-    [_lastOpenPanelDirectory autorelease];
-    _lastOpenPanelDirectory=[[openPanel directory] copy];
     return openPanel;
    }
     

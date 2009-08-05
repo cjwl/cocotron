@@ -1804,12 +1804,40 @@ NSString *NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification";
    [self orderWindow:NSWindowOut relativeTo:0];
 }
 
--(void)performClose:sender {
-   if([_delegate respondsToSelector:@selector(windowShouldClose:)])
-    if(![_delegate windowShouldClose:self])
-     return;
+-(void)performClose:sender 
+{
+  if([_delegate respondsToSelector:@selector(windowShouldClose:)])
+    {
+      if(![_delegate windowShouldClose:self])
+        return;
+    }
+  else if ([self respondsToSelector:@selector(windowShouldClose:)])
+    {
+      if (![self windowShouldClose:self])
+        return;
+    }
+  
+  NSDocument * document = [_windowController document];
+  if (document)
+    {
+      [document shouldCloseWindowController:_windowController 
+                                   delegate:self 
+                        shouldCloseSelector:@selector(_document:shouldClose:contextInfo:)
+                                contextInfo:NULL];
+    }
+  else
+    {
+      [self close];
+    }
+}
 
-   [self close];
+-(void)_document:(NSDocument *)document shouldClose:(BOOL)shouldClose contextInfo:(void *)context
+{
+  // Callback used by performClose:
+  if (shouldClose)
+    {
+      [self close];
+    }
 }
 
 -(void)performMiniaturize:sender {

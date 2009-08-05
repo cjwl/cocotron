@@ -17,6 +17,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSPageLayout.h>
 #import <AppKit/NSPrintInfo.h>
 #import <AppKit/NSRaise.h>
+#import "NSKeyValueBinding/NSObject+BindingSupport.h"
 
 @implementation NSDocument
 
@@ -90,20 +91,32 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -init {
-   _windowControllers=[NSMutableArray new];
-   _fileURL=nil;
-   _fileType=nil;
-   _changeCount=0;
-   _untitledNumber=0;
-   _hasUndoManager=YES;
-
-   return self;
+  self = [super init];
+  if (self)
+    {
+      _windowControllers=[NSMutableArray new];
+      _fileURL=nil;
+      _fileType=nil;
+      _changeCount=0;
+      _untitledNumber=0;
+      _hasUndoManager=YES;
+      _activeEditors=[NSMutableArray new];
+    }
+  return self;
 }
 
 -initWithType:(NSString *)type error:(NSError **)error {
    [self init];
    [self setFileType:type];
    return self;
+}
+
+-(void)_updateFileModificationDate
+{
+  NSFileManager * fileManager = [NSFileManager defaultManager];
+  NSString * path = [_fileURL path];
+  NSDictionary * attributes = [fileManager fileAttributesAtPath:path traverseLink:YES];
+  [self setFileModificationDate:[attributes objectForKey:NSFileModificationDate]];
 }
 
 -initWithContentsOfURL:(NSURL *)url ofType:(NSString *)type error:(NSError **)error {
@@ -120,7 +133,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     [self setFileURL:url];
     [self setFileType:type];
    }
-   [self setFileModificationDate:[NSDate date]];
+   [self _updateFileModificationDate];
    return self;
 }
 
@@ -134,10 +147,24 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    }
    [self setFileURL:url];
    [self setFileType:type];
-   [self setFileModificationDate:[NSDate date]];
+   [self _updateFileModificationDate];
    return self;
 }
 
+-(void)dealloc
+{
+  [_windowControllers release];
+  [_fileURL release];
+  [_fileType release];
+  [_fileModificationDate release];
+  [_lastComponentOfFileName release];
+  [_autosavedContentsFileURL release];
+  [_printInfo release];
+  [_undoManager release];
+  [_activeEditors release];
+  
+  [super dealloc];
+}
 
 -(NSURL *)autosavedContentsFileURL {
    return _autosavedContentsFileURL;
@@ -305,21 +332,27 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     [controller setDocument:self];
 }
 
--(void)removeWindowController:(NSWindowController *)controller {
-   [_windowControllers removeObjectIdenticalTo:controller];
+-(void)removeWindowController:(NSWindowController *)controller 
+{
+  BOOL shouldCloseDocument = [controller shouldCloseDocument];
+  [_windowControllers removeObjectIdenticalTo:controller];
+  if (shouldCloseDocument || [_windowControllers count] == 0)
+     [self close];
 }
 
--(NSString *)displayName {
-   if(_fileURL==nil) {
-    NSString *bundlePath = [[NSBundle mainBundle] bundlePath];
-    NSString *appName = [[NSFileManager defaultManager] displayNameAtPath:bundlePath]; 
-    if(_untitledNumber > 1)
-     return [NSString stringWithFormat:@"Untitled %d - %@",_untitledNumber,appName];
-    else
-     return [NSString stringWithFormat:@"Untitled - %@",appName];
-   } else {
-    return [[_fileURL path] lastPathComponent];
-   }
+-(NSString *)displayName 
+{
+  if(_fileURL==nil) 
+    {
+      if(_untitledNumber > 1)
+        return [NSString stringWithFormat:@"Untitled %d", _untitledNumber];
+      else
+        return @"Untitled";
+    } 
+  else 
+    {
+      return [[NSFileManager defaultManager] displayNameAtPath:[_fileURL path]];
+    }
 }
 
 -(NSWindow *)windowForSheet {
@@ -334,7 +367,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(BOOL)isDocumentEdited {
-   return (_changeCount>0)?YES:NO;
+   return _changeCount != 0 || [_activeEditors count] > 0;
 }
 
 -(void)updateChangeCount:(NSDocumentChangeType)changeType {
@@ -351,11 +384,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
     case NSChangeCleared:
      _changeCount=0;
+     [self _updateFileModificationDate]; // Since file was just saved or reverted
      break;
    }
-
+  
+   BOOL edited = [self isDocumentEdited];
    while(--count>=0)
-    [[_windowControllers objectAtIndex:count] setDocumentEdited:(_changeCount!=0)?YES:NO];
+    [[_windowControllers objectAtIndex:count] setDocumentEdited:edited];
 }
 
 -(BOOL)readFromData:(NSData *)data ofType:(NSString *)type error:(NSError **)error {
@@ -393,7 +428,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    if(![self readFromURL:url ofType:type error:error])
     return NO;
 
-   [self setFileModificationDate:[NSDate date]];
    [self updateChangeCount:NSChangeCleared];
    return YES;
 }
@@ -530,36 +564,108 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return nil;
 }
 
--(void)runModalSavePanelForSaveOperation:(NSSaveOperationType)operation delegate:delegate didSaveSelector:(SEL)selector contextInfo:(void *)context {
-   NSString    *path=[_fileURL path];
-   NSString    *directory=[path stringByDeletingLastPathComponent];
-   NSString    *file=[path lastPathComponent];
-   NSString    *extension=[file pathExtension];
-   NSSavePanel *savePanel=[NSSavePanel savePanel];
-   int          saveResult;
+-(void)runModalSavePanelForSaveOperation:(NSSaveOperationType)operation 
+                                delegate:delegate 
+                         didSaveSelector:(SEL)selector 
+                             contextInfo:(void *)context 
+{
+  for (id editor in [_activeEditors copy])
+    [editor commitEditing];
 
-   if([extension length]==0)
+  NSString * path = [_fileURL path];
+  NSString * extension = [path pathExtension];
+  if([extension length] == 0)
     extension=[[[NSDocumentController sharedDocumentController] fileExtensionsFromType:[self fileType]] objectAtIndex:0];
-
-   [savePanel setRequiredFileType:extension];
-
-   if(![self prepareSavePanel:savePanel])
+  
+  NSSavePanel * savePanel = [NSSavePanel savePanel];
+  [savePanel setRequiredFileType:extension];
+  
+  if(![self prepareSavePanel:savePanel])
     return;
 
-   if(directory==nil)
-    saveResult=[savePanel runModal];
-   else
-    saveResult=[savePanel runModalForDirectory:directory file:file];
-
-   if(saveResult){
-    NSString *savePath=[savePanel filename];
-
-    [self saveToFile:savePath saveOperation:operation delegate:delegate didSaveSelector:selector contextInfo:context];
-   }
+  int saveResult;
+  if (_fileURL)
+    saveResult = [savePanel runModalForDirectory:[path stringByDeletingLastPathComponent]
+                                            file:[path lastPathComponent]];
+  else
+    saveResult = [savePanel runModalForDirectory:[[NSDocumentController sharedDocumentController] currentDirectory]
+                                            file:[self displayName]];
+  
+  if(saveResult)
+    {
+      NSString *savePath=[savePanel filename];
+      [[NSUserDefaults standardUserDefaults] setObject:[savePath stringByDeletingLastPathComponent] 
+                                                forKey:@"NSNavLastRootDirectory"];
+      
+      [self saveToFile:savePath saveOperation:operation delegate:delegate didSaveSelector:selector contextInfo:context];
+    } 
+  else 
+    {
+      if ([delegate respondsToSelector:selector])
+        {
+          // Tell delegate that file couldn't be saved.
+          void (*delegateMethod)(id, SEL, id, BOOL, void *);
+          delegateMethod = (void (*)(id, SEL, id, BOOL, void *))[delegate methodForSelector:selector];
+          delegateMethod(delegate, selector, self, NO, context);
+        }     
+    }
 }
 
--(void)saveDocumentWithDelegate:delegate didSaveSelector:(SEL)selector contextInfo:(void *)info {
-   NSUnimplementedMethod();
+-(void)saveDocumentWithDelegate:delegate didSaveSelector:(SEL)selector contextInfo:(void *)info 
+{
+  if (_fileURL != nil)
+    {
+      for (id editor in [_activeEditors copy])
+        [editor commitEditing];
+      
+      // Check if file has been changed by another process
+      NSFileManager * fileManager = [NSFileManager defaultManager];
+      NSString * path = [_fileURL path];
+      NSDictionary * attributes = [fileManager fileAttributesAtPath:path traverseLink:YES];
+      NSDate * dateModified = [attributes objectForKey:NSFileModificationDate];
+      if (attributes != nil && ![dateModified isEqualToDate:_fileModificationDate])
+        {
+          int result = NSRunAlertPanel([self displayName],
+                                       @"Another user or process has changed this document's file on disk.\n\nIf you save now, those changes will be lost. Save anyway?",
+                                       @"Don't Save", @"Save", nil);
+          if (result == NSAlertDefaultReturn)
+            {
+              // The user canceled the save operation.
+              if ([delegate respondsToSelector:selector])
+                {
+                  void (*delegateMethod)(id, SEL, id, BOOL, void *);
+                  delegateMethod = (void (*)(id, SEL, id, BOOL, void *))[delegate methodForSelector:selector];
+                  delegateMethod(delegate, selector, self, NO, info);
+                }
+              return;
+            }
+        }
+
+      if([self _isSelectorOverridden:@selector(saveToFile:saveOperation:delegate:didSaveSelector:contextInfo:)])
+        {
+          [self saveToFile:[_fileURL path] 
+             saveOperation:NSSaveOperation 
+                  delegate:delegate 
+           didSaveSelector:selector
+               contextInfo:info];
+        }
+      else 
+        {
+          [self saveToURL:_fileURL 
+                   ofType:[self fileType] 
+         forSaveOperation:NSSaveOperation 
+                 delegate:delegate 
+          didSaveSelector:selector 
+              contextInfo:info];
+        }
+    }
+  else 
+    {
+      [self runModalSavePanelForSaveOperation:NSSaveOperation 
+                                     delegate:delegate
+                              didSaveSelector:selector
+                                  contextInfo:info];
+    }
 }
 
 -(BOOL)saveToURL:(NSURL *)url ofType:(NSString *)type forSaveOperation:(NSSaveOperationType)operation error:(NSError **)error {
@@ -571,25 +677,34 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     if(success){
      if(operation!=NSSaveToOperation)
       [self setFileURL:url];
+     [self updateChangeCount:NSChangeCleared];
     }
 
-    // send delegate message with success
-
-    [self updateChangeCount:NSChangeCleared];
-    return YES;
+    return success;
    }
 }
 
--(void)saveToURL:(NSURL *)url ofType:(NSString *)type forSaveOperation:(NSSaveOperationType)operation delegate:delegate didSaveSelector:(SEL)selector contextInfo:(void *)info {
-   NSError *error=nil;
-   BOOL     success;
-   
-   if(!(success=[self saveToURL:url ofType:type forSaveOperation:operation error:&error])){
-    [self presentError:error];
-   }
-   if([delegate respondsToSelector:selector]){
-    NSUnimplementedMethod();
-   }
+-(void)saveToURL:(NSURL *)url 
+          ofType:(NSString *)type 
+forSaveOperation:(NSSaveOperationType)operation 
+        delegate:delegate
+ didSaveSelector:(SEL)selector 
+     contextInfo:(void *)info 
+{
+  NSError * error = nil;
+  BOOL success = [self saveToURL:url ofType:type forSaveOperation:operation error:&error];
+  
+  if (!success)
+    {
+      [self presentError:error];
+    }
+  
+  if ([delegate respondsToSelector:selector])
+    {
+      void (*delegateMethod)(id, SEL, id, BOOL, void *);
+      delegateMethod = (void (*)(id, SEL, id, BOOL, void *))[delegate methodForSelector:selector];
+      delegateMethod(delegate, selector, self, success, info);
+    }
 }
 
 
@@ -643,12 +758,67 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [[NSDocumentController sharedDocumentController] removeDocument:self];
 }
 
--(void)canCloseDocumentWithDelegate:delegate shouldCloseSelector:(SEL)selector contextInfo:(void *)info {
-   NSUnimplementedMethod();
+-(void)canCloseDocumentWithDelegate:delegate shouldCloseSelector:(SEL)selector contextInfo:(void *)info 
+{
+  BOOL OKToClose;
+  if ([self isDocumentEdited])
+    {
+      NSString * fileName = [self fileName];
+      if (fileName == nil)
+        fileName = [self displayName];
+      int result = NSRunAlertPanel([[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleName"], 
+                                   @"The %@ file has changed. \n\nDo you want to save the changes?", 
+                                   @"Yes", @"No", @"Cancel",
+                                   fileName);
+      if (result == NSAlertDefaultReturn)
+        {
+          [self saveDocumentWithDelegate:delegate
+                         didSaveSelector:selector 
+                             contextInfo:info];
+          return;
+        }
+      else if (result == NSAlertAlternateReturn)
+        {
+          // Don't save
+          OKToClose = YES;
+        }
+      else
+        {
+          // Canceled
+          OKToClose = NO;
+        }
+    }
+  else
+    {
+      // No unsaved changes
+      OKToClose = YES;
+    }
+
+  if ([delegate respondsToSelector:selector])
+    {
+      void (*delegateMethod)(id, SEL, id, BOOL, void *);
+      delegateMethod = (void (*)(id, SEL, id, BOOL, void *))[delegate methodForSelector:selector];
+      delegateMethod(delegate, selector, self, OKToClose, info);
+    }
 }
 
--(void)shouldCloseWindowController:(NSWindowController *)controller delegate:delegate shouldCloseSelector:(SEL)selector contextInfo:(void *)info {
-   NSUnimplementedMethod();
+-(void)shouldCloseWindowController:(NSWindowController *)controller 
+                          delegate:delegate 
+               shouldCloseSelector:(SEL)selector 
+                       contextInfo:(void *)info 
+{
+  if ([controller shouldCloseDocument] || [_windowControllers count] <= 1)
+    {
+      [self canCloseDocumentWithDelegate:delegate
+                     shouldCloseSelector:selector 
+                             contextInfo:info];
+    }
+  else if ([delegate respondsToSelector:selector])
+    {
+      void (*delegateMethod)(id, SEL, id, BOOL, void *);
+      delegateMethod = (void (*)(id, SEL, id, BOOL, void *))[delegate methodForSelector:selector];
+      delegateMethod(delegate, selector, self, YES, info);
+    }
 }
 
 
@@ -657,21 +827,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     @"Revert",@"Cancel",nil,[self displayName]);
 
    if(result==NSAlertDefaultReturn)
-    [self revertToSavedFromFile:[self fileName] ofType:[self fileType]];
+     {
+       for (id editor in [_activeEditors copy])
+         [editor discardEditing];
+       [self revertToSavedFromFile:[self fileName] ofType:[self fileType]];
+     }
 }
 
--(void)saveDocument:sender {
-   if(_fileURL!=nil){
-    if([self _isSelectorOverridden:@selector(saveToFile:saveOperation:delegate:didSaveSelector:contextInfo:)]){
-     [self saveToFile:[_fileURL path] saveOperation:NSSaveOperation delegate:nil didSaveSelector:NULL contextInfo:NULL];
-    }
-    else {
-     [self saveToURL:_fileURL ofType:[self fileType] forSaveOperation:NSSaveOperation delegate:nil didSaveSelector:NULL contextInfo:NULL];
-    }
-   }
-   else {
-    [self runModalSavePanelForSaveOperation:NSSaveOperation delegate:nil didSaveSelector:NULL contextInfo:NULL];
-   }
+-(void)saveDocument:sender 
+{
+  [self saveDocumentWithDelegate:nil didSaveSelector:NULL contextInfo:NULL];
 }
 
 -(void)saveDocumentAs:sender {
@@ -700,6 +865,24 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     return YES; 
 
    return NO;
+}
+
+-(void)objectDidBeginEditing:editor 
+{
+  [_activeEditors addObject:editor];
+  
+  BOOL edited = [self isDocumentEdited];
+  for (NSWindowController * wc in _windowControllers)
+    [wc setDocumentEdited:edited];
+}
+
+-(void)objectDidEndEditing:editor 
+{
+  [_activeEditors removeObject:editor];
+  
+  BOOL edited = [self isDocumentEdited];
+  for (NSWindowController * wc in _windowControllers)
+    [wc setDocumentEdited:edited];
 }
 
 -(BOOL)validateMenuItem:(NSMenuItem *)item {
@@ -758,6 +941,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    }
    [self setFileName:path];
    [self setFileType:type];
+   [self _updateFileModificationDate];
 
    return self;
 }
@@ -776,6 +960,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    }
    [self setFileURL:url];
    [self setFileType:type];
+   [self _updateFileModificationDate];
 
    return self;
 }
@@ -857,11 +1042,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     if(success){
      if(operation!=NSSaveToOperation)
       [self setFileName:path];
+      [self updateChangeCount:NSChangeCleared];
     }
 
-    // send delegate message with success
-
-    [self updateChangeCount:NSChangeCleared];
+    if ([delegate respondsToSelector:selector])
+      {
+        void (*delegateMethod)(id, SEL, id, BOOL, void *);
+        delegateMethod = (void (*)(id, SEL, id, BOOL, void *))[delegate methodForSelector:selector];
+        delegateMethod(delegate, selector, self, success, context);
+      }
    }
 }
 

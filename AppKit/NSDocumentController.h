@@ -15,7 +15,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    NSMutableArray *_documents;
    NSArray        *_fileTypes;
    NSTimeInterval  _autosavingDelay;
-   NSString       *_lastOpenPanelDirectory;
 }
 
 +sharedDocumentController;
@@ -57,7 +56,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(BOOL)reopenDocumentForURL:(NSURL *)url withContentsOfURL:(NSURL *)contentsUL error:(NSError **)error;
 
--(void)closeAllDocumentsWithDelegate:delegate didCloseAllSelector:(SEL)selector info:(void *)info;
+-(void)closeAllDocumentsWithDelegate:delegate didCloseAllSelector:(SEL)selector contextInfo:(void *)info;
 
 -(void)reviewUnsavedDocumentsWithAlertTitle:(NSString *)title cancellable:(BOOL)cancellable delegate:delegate didReviewAllSelector:(SEL)selector info:(void *)info;
 

@@ -554,74 +554,107 @@ id NSApp=nil;
    [_display postEvent:event atStart:atStart];
 }
 
+-_sameWindowTargetForAction:(SEL)action to:target {
+  // Search just one window's responder chain.
+  
+  if ([target respondsToSelector:action])
+    return target;
+  
+  if ([target respondsToSelector:@selector(nextResponder)]) 
+    {
+      target = [target nextResponder];
+      while (target != nil) 
+        {
+          if ([target respondsToSelector:action])
+            return target;
+          
+          if ([target isKindOfClass:[NSWindow class]]) 
+            {
+              if ([[target delegate] respondsToSelector:action])
+                return [target delegate];
+              if ([[target windowController] respondsToSelector:action])
+                return [target windowController];
+            }
+          
+          target = [target nextResponder];
+        }
+    }
+  
+  return nil;
+}
+
 -targetForAction:(SEL)action {
-   NSWindow    *window;
-   NSResponder *check;
-
-   window=[self keyWindow];
-
-   for(check=[window firstResponder];check!=nil;check=[check nextResponder]){
-    if([check respondsToSelector:action])
-     return check;
-   }
-
-   if([window respondsToSelector:action])
-    return window;
-
-   if([[window delegate] respondsToSelector:action])
-    return [window delegate];
-
-   window=[self mainWindow];
-
-   for(check=[window firstResponder];check!=nil;check=[check nextResponder]){
-    if([check respondsToSelector:action])
-     return check;
-   }
-
-   if([window respondsToSelector:action])
-    return window;
-
-   if([[window delegate] respondsToSelector:action])
-    return [window delegate];
-
-   if([self respondsToSelector:action])
-    return self;
-
-   if([[self delegate] respondsToSelector:action])
-    return [self delegate];
-
-   if([[NSDocumentController sharedDocumentController] respondsToSelector:action])
-    return [NSDocumentController sharedDocumentController];
-    
-   return nil;
+  return [self targetForAction:action to:nil from:nil];
 }
 
 -targetForAction:(SEL)action to:target from:sender {
-   NSUnimplementedMethod();
-   return nil;
+  if (target == nil) 
+    {
+      target = [self _sameWindowTargetForAction:action to:[[self keyWindow] firstResponder]];
+      if (target)
+        return target;
+      
+      if ([self mainWindow] != [self keyWindow]) 
+        {
+          target = [self _sameWindowTargetForAction:action to:[[self mainWindow] firstResponder]];
+          if (target)
+            return target;
+        }
+    }
+  else 
+    {
+      target = [self _sameWindowTargetForAction:action to:target];
+      if (target)
+        return target;
+    }
+  
+  NSDocumentController *documentController = [NSDocumentController sharedDocumentController];
+  if ([[documentController currentDocument] respondsToSelector:action])
+    return [documentController currentDocument];
+  
+  if([self respondsToSelector:action])
+    return self;
+  
+  if([[self delegate] respondsToSelector:action])
+    return [self delegate];
+  
+  if([documentController respondsToSelector:action])
+    return documentController;
+  
+  return nil; 
 }
 
 -(BOOL)sendAction:(SEL)action to:target from:sender {
-
-//NSLog(@"%s %s %@ %@",sel_getName(_cmd),action,target,sender);
-
-   if(target!=nil){
-    if([target respondsToSelector:action]){
-     [target performSelector:action withObject:sender];
-     return YES;
+  if([target respondsToSelector:action])
+    {
+      [target performSelector:action withObject:sender];
+      return YES;
     }
-   }
-   else if((target=[self targetForAction:action])!=nil){
-    [target performSelector:action withObject:sender];
-    return YES;
-   }
-
-   return NO;
+  
+  target=[self targetForAction:action to:target from:sender];
+  if (target != nil) 
+    {
+      [target performSelector:action withObject:sender];
+      return YES;
+    }
+  
+  return NO;
 }
 
 -(BOOL)tryToPerform:(SEL)selector with:object {
-   NSUnimplementedMethod();
-   return NO;
+  if ([self respondsToSelector:selector]) 
+    {
+      [self performSelector:selector withObject:object];
+      return YES;
+    }
+  
+  if ([[self delegate] respondsToSelector:selector]) 
+    {
+      [[self delegate] performSelector:selector withObject:object];
+      return YES;
+    }
+  
+  return NO;
 }
 
 -(void)setWindowsNeedUpdate:(BOOL)value {
@@ -836,22 +869,35 @@ id NSApp=nil;
    _isRunning=NO;
 }
 
--(void)terminate:sender {
-   if([_delegate respondsToSelector:@selector(applicationShouldTerminate:)]){
-    if(![_delegate applicationShouldTerminate:self]){
-     return;
-    }
-   }
-
-   [[NSNotificationCenter defaultCenter] postNotificationName:NSApplicationWillTerminateNotification object:self];
-   
-   [NSClassFromString(@"Win32RunningCopyPipe") performSelector:@selector(invalidateRunningCopyPipe)];
-
-   exit(0);
+-(void)terminate:sender 
+{
+  [[NSDocumentController sharedDocumentController] closeAllDocumentsWithDelegate:self 
+                                                             didCloseAllSelector:@selector(_documentController:didCloseAll:contextInfo:)
+                                                                     contextInfo:NULL];
 }
 
--(void)replyToApplicationShouldTerminate:(BOOL)terminate {
-   NSUnimplementedMethod();
+-(void)_documentController:(NSDocumentController *)docController didCloseAll:(BOOL)didCloseAll contextInfo:(void *)info
+{
+  // callback method for terminate:
+  if (didCloseAll)
+    {
+      if ([_delegate respondsToSelector:@selector(applicationShouldTerminate:)])
+        [self replyToApplicationShouldTerminate:[_delegate applicationShouldTerminate:self]];
+      else
+        [self replyToApplicationShouldTerminate:YES];
+    }
+}
+
+-(void)replyToApplicationShouldTerminate:(BOOL)terminate 
+{
+  if (terminate == NSTerminateNow)
+    {
+      [[NSNotificationCenter defaultCenter] postNotificationName:NSApplicationWillTerminateNotification object:self];
+      
+      [NSClassFromString(@"Win32RunningCopyPipe") performSelector:@selector(invalidateRunningCopyPipe)];
+      
+      exit(0);
+    }
 }
 
 -(void)replyToOpenOrPrint:(NSApplicationDelegateReply)reply {

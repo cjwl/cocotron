@@ -38,6 +38,7 @@ typedef enum {
    unsigned        _untitledNumber;
    NSUndoManager  *_undoManager;
    BOOL            _hasUndoManager;
+   NSMutableArray *_activeEditors; // registered via NSEditorRegistration
 }
 
 +(NSArray *)readableTypes;
@@ -138,6 +139,9 @@ typedef enum {
 -(void)runPageLayout:sender;
 
 -(BOOL)validateUserInterfaceItem:(id <NSValidatedUserInterfaceItem>)item;
+
+-(void)objectDidBeginEditing:editor;
+-(void)objectDidEndEditing:editor;
 
 // deprecated
 

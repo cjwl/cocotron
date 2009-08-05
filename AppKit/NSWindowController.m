@@ -22,7 +22,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    _owner=nil;
    _document=nil;
    _nibPathIsName=NO;
-   _shouldCloseDocument=YES;
+   _shouldCloseDocument=NO;
    _shouldCascadeWindows=YES;
    _windowFrameAutosaveName=nil;
    return self;
@@ -49,6 +49,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)dealloc {
+   [[NSNotificationCenter defaultCenter] removeObserver:self];
    [_window setWindowController:nil];
    [_window release];
    [_nibPath release];
@@ -72,11 +73,23 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)setWindow:(NSWindow *)window {
+   NSNotificationCenter * nc = [NSNotificationCenter defaultCenter];
    [_window setWindowController:nil];
+   if (_window)
+      [nc removeObserver:self name:NSWindowWillCloseNotification object:_window];
    window=[window retain];
    [_window release];
    _window=window;
    [_window setWindowController:self];
+   if (_window)
+      [nc addObserver:self selector:@selector(_windowWillClose:) name:NSWindowWillCloseNotification object:_window];
+}
+
+-(void)_windowWillClose:(NSNotification *)note
+{
+  // Callback for NSWindowWillCloseNotification
+  if (_document)
+    [_document removeWindowController:self];
 }
 
 -(BOOL)isWindowLoaded {
@@ -185,15 +198,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     NSString *title=[self windowTitleForDocumentDisplayName:displayName];
     NSString *path=[_document fileName];
 
-    if(path==nil)
-     [_window setTitle:title];
-    else
-     [_window setTitle:[NSString stringWithFormat:@"%@ -- %@",displayName,[path stringByDeletingLastPathComponent]]];
+    [_window setTitle:title];
    }
 }
 
 -(NSString *)windowTitleForDocumentDisplayName:(NSString *)displayName {
-   return displayName;
+  NSString *appName = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleName"]; 
+  if (appName)
+    return [NSString stringWithFormat:@"%@ - %@", displayName, appName];
+  else
+    return displayName;
 }
 
 @end
