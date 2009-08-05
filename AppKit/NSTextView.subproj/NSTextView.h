@@ -98,6 +98,7 @@ APPKIT_EXPORT NSString *NSOldSelectedCharacterRange;
    NSString              *_undoString; // The text that is being replaced by the current typing operation
    NSRange                _undoRange; // The range of text that was entered in the current typing operation
    BOOL                   _processingKeyEvent;
+   BOOL                   _firstResponderButNotEditingYet;
 }
 
 -initWithFrame:(NSRect)frame textContainer:(NSTextContainer *)container;

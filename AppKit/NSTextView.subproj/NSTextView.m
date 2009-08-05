@@ -1859,6 +1859,13 @@ NSString *NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
 -(void)_replaceCharactersInRange:(NSRange)range withString:(NSString *)string {
   NSUndoManager * undoManager = [self undoManager];
   
+  if (_firstResponderButNotEditingYet)
+    {
+      [[NSNotificationCenter defaultCenter] postNotificationName:NSTextDidBeginEditingNotification 
+                                                          object:self];
+      _firstResponderButNotEditingYet = NO;
+    }
+  
   if (_allowsUndo && [undoManager groupingLevel]>0) 
     {
       if (_processingKeyEvent && ![undoManager isUndoing] && ![undoManager isRedoing]) 
@@ -2145,6 +2152,7 @@ NSString *NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
    [self updateInsertionPointStateAndRestartTimer:YES];
    if([self shouldDrawInsertionPoint])
     [self _displayInsertionPointWithState:[[self window] isKeyWindow]];
+   _firstResponderButNotEditingYet = YES;
 
    return YES;
 }
