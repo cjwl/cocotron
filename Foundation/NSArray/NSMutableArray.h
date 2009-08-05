@@ -35,6 +35,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)replaceObjectAtIndex:(NSUInteger)index withObject:object;
 -(void)replaceObjectsInRange:(NSRange)range withObjectsFromArray:(NSArray *)array;
 -(void)replaceObjectsInRange:(NSRange)range withObjectsFromArray:(NSArray *)array range:(NSRange)otherRange;
+-(void)replaceObjectsAtIndexes:(NSIndexSet *)indexes withObjects:(NSArray *)objects;
 -(void)exchangeObjectAtIndex:(NSUInteger)index withObjectAtIndex:(NSUInteger)other;
 
 -(void)sortUsingSelector:(SEL)selector;

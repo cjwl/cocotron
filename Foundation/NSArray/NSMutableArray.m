@@ -359,6 +359,16 @@ static int _nsmutablearraycompareindices(const void* v1, const void* v2)
    }
 }
 
+-(void)replaceObjectsAtIndexes:(NSIndexSet *)indexes withObjects:(NSArray *)objects
+{
+  NSUInteger index = [indexes firstIndex];
+  for (id object in objects)
+    {
+      [self replaceObjectAtIndex:index withObject:object];
+      index = [indexes indexGreaterThanIndex:index];
+    }
+}
+
 -(void)exchangeObjectAtIndex:(NSUInteger)index withObjectAtIndex:(NSUInteger)other {
    id object=[[self objectAtIndex:index] retain];
    id otherObject=[self objectAtIndex:other];
