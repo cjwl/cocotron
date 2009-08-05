@@ -284,6 +284,7 @@ NSString *NSUndoManagerDidRedoChangeNotification=@"NSUndoManagerDidRedoChangeNot
     [[NSNotificationCenter defaultCenter] postNotificationName:NSUndoManagerWillRedoChangeNotification
                                                         object:self];
 
+    [self endUndoGrouping];
     _state = NSUndoManagerRedoing;
     undoGroup = [[_redoStack lastObject] retain];
     [_redoStack removeLastObject];
@@ -292,6 +293,7 @@ NSString *NSUndoManagerDidRedoChangeNotification=@"NSUndoManagerDidRedoChangeNot
     [self endUndoGrouping];
     [undoGroup release];
     _state = NSUndoManagerNormal;
+    [self beginUndoGrouping];
 
     [[NSNotificationCenter defaultCenter] postNotificationName:NSUndoManagerDidRedoChangeNotification
                                                         object:self];
