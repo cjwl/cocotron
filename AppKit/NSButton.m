@@ -193,7 +193,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    if(![self isEnabled])
     return NO;
 
-   if((modifiers&(NSCommandKeyMask|NSAlternateKeyMask))==[self keyEquivalentModifierMask]){
+   if((modifiers&(NSCommandKeyMask|NSAlternateKeyMask))==[self keyEquivalentModifierMask]&(NSCommandKeyMask|NSAlternateKeyMask)){
     NSString *key=[self keyEquivalent];
 
     if([key isEqualToString:characters]){
