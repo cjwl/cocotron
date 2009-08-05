@@ -16,6 +16,7 @@
 {
   id _cachedValue;
   BOOL _bound;
+  BOOL _currentlyTransferring;
 }
 
 - (id)cachedValue;

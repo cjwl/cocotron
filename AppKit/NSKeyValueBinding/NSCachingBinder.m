@@ -55,8 +55,9 @@ static void * NSCachingBinderChangeContext = (void *)@"NSCachingBinderChangeCont
 
 - (void)showValue:(id)newValue
 {
-  if (![_cachedValue isEqual:newValue])
+  if (![_cachedValue isEqual:newValue] && !_currentlyTransferring)
     {
+      _currentlyTransferring = YES;
       [self setCachedValue:newValue];
       
       BOOL editable=YES;
@@ -90,15 +91,19 @@ static void * NSCachingBinderChangeContext = (void *)@"NSCachingBinderChangeCont
       
       if(isPlaceholder && [_source respondsToSelector:@selector(_setCurrentValueIsPlaceholder:)])
         [_source _setCurrentValueIsPlaceholder:YES];  
+      
+      _currentlyTransferring = NO;
     }
 }
 
 - (void)applyValue:(id)newValue
 {
-  if (![_cachedValue isEqual:newValue])
+  if (![_cachedValue isEqual:newValue] && !_currentlyTransferring)
     {
+      _currentlyTransferring = YES;
       [self setCachedValue:newValue];
       [_destination setValue:newValue forKeyPath:_keyPath];
+      _currentlyTransferring = NO;
     }
 }
 
