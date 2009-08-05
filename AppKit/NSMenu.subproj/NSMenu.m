@@ -309,11 +309,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
    for(i=0;i<count;i++){
     NSMenuItem *item=[_itemArray objectAtIndex:i];
-    unsigned    itemModifiers=[item keyEquivalentModifierMask];
-
-    if((modifiers&(NSCommandKeyMask|NSAlternateKeyMask))==itemModifiers){
+    unsigned    itemModifiers=[item keyEquivalentModifierMask]&(NSCommandKeyMask|NSAlternateKeyMask);
      NSString *key=[item keyEquivalent];
-
+     
+    if((modifiers&(NSCommandKeyMask|NSAlternateKeyMask))==itemModifiers){
+      
      if([key isEqualToString:characters]){
       if ([item isEnabled])
        [NSApp sendAction:[item action] to:[item target] from:item];
