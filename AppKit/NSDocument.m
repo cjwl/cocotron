@@ -1159,6 +1159,7 @@ forSaveOperation:(NSSaveOperationType)operation
    }
 }
 
+#if 0
 -(void)windowWillClose:(NSNotification *)note {
    NSWindow *window=[note object];
    int       count=[_windowControllers count];
@@ -1175,6 +1176,7 @@ forSaveOperation:(NSSaveOperationType)operation
     }
    }
 }
+#endif
 
 - (void)textDidChange:(NSNotification *)aNotification
 {
