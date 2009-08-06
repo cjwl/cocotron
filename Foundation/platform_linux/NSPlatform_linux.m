@@ -13,8 +13,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSTask_linux.h>
 
 #import <rpc/types.h>		// for MAXHOSTNAMELEN, why is that there?
-#import <time.h>
 #import <unistd.h>
+#import <time.h>
+
+#ifdef LINUX
+// messy
+extern void tzset (void) __THROW;
+#endif
 
 NSString *NSPlatformClassName=@"NSPlatform_linux";
 

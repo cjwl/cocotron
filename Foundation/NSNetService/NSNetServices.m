@@ -25,6 +25,8 @@
 
 #ifdef WIN32
 #import <winsock2.h> // for ntohs
+#else
+#include <arpa/inet.h>
 #endif
 #import <string.h>
 

@@ -156,6 +156,8 @@ OBJCObjectFile *OBJCCreateMainObjectFile(){
 
 void OBJCInitializeProcess() {
 #ifdef __APPLE__
+extern void OBJCInitializeProcess_Darwin(void);
+
    OBJCInitializeProcess_Darwin();
 #endif
 }

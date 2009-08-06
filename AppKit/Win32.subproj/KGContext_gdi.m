@@ -20,6 +20,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <CoreGraphics/KGColorSpace.h>
 #import <CoreGraphics/KGShading.h>
 #import <CoreGraphics/KGFunction.h>
+#import <CoreGraphics/KGContext_builtin.h>
 #import "KGFont_gdi.h"
 #import <CoreGraphics/KGImage.h>
 #import <CoreGraphics/KGClipPhase.h>

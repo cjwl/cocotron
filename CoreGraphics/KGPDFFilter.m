@@ -1,4 +1,4 @@
-/* Copyright (c) 2007 Christopher J. W. Lloyd
+/* Copyright (c) 2007 Christopher J. W. Lloyd <cjwl@objc.net>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
@@ -8,7 +8,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 /*  zlib decode is based on the public domain zlib decode v0.2 by Sean Barrett 2006-11-18  http://www.nothings.org/stb_image.c  V 0.57 */
 
-// First revision - Christopher Lloyd <cjwl@objc.net>
 #import "KGPDFFilter.h"
 #import "KGPDFObject.h"
 #import "KGPDFDictionary.h"
@@ -16,7 +15,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSException.h>
 #import <Foundation/NSString.h>
 #import "KGzlib.h"
-
+#import <string.h>
 
 NSData *KGPDFFilterWithName(const char *name,NSData *data,KGPDFDictionary *parameters) {
    return [KGPDFFilter decodeWithName:name data:data parameters:parameters];

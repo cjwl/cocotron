@@ -13,6 +13,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "objc_sel.h"
 #import <string.h>
 #import <Foundation/NSDarwinString.h>
+#import <Foundation/ObjCException.h>
 
 /*
  * Fetches all Objective-C-Modules via the mach-o/dyld.h interface and initializes them.

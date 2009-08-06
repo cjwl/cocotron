@@ -16,6 +16,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <sys/socket.h>
 #import <netinet/in.h>
 #import <sys/ioctl.h>
+#import <unistd.h>
+#import <arpa/inet.h>
 
 #ifdef __svr4__ // Solaris
 #import <sys/filio.h>

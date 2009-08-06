@@ -203,6 +203,7 @@ int DGifGetExtensionNext(GifFileType * GifFile, uint8_t ** GifExtension);
 int DGifGetCode(GifFileType * GifFile, int *GifCodeSize,uint8_t ** GifCodeBlock);
 int DGifGetCodeNext(GifFileType * GifFile, uint8_t ** GifCodeBlock);
 int DGifCloseFile(GifFileType * GifFile);
+int DGifSlurp(GifFileType * GifFile);
 
 #define D_GIF_ERR_OPEN_FAILED    101
 #define D_GIF_ERR_READ_FAILED    102

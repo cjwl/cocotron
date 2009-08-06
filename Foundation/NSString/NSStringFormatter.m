@@ -198,6 +198,10 @@ static inline void appendFloat_generic(NSStringBuffer *buffer, double value, cha
       buffer->characters[buffer->length++] = (s[i] != '.') ? s[i] : decimalSeperator;
 }
 
+double roundDouble(double value) {
+   return (value < 0.0 )? ceil(value-0.5) : floor(value+0.5);
+}
+
 static inline void appendFloat(NSStringBuffer *buffer,double value,
   unichar fillChar,BOOL leftAdj,BOOL plusSign,BOOL spaceSign,
   int fieldWidth,int precision,BOOL gFormat,BOOL altForm,NSDictionary *locale){
@@ -221,7 +225,7 @@ static inline void appendFloat(NSStringBuffer *buffer,double value,
          power=pow(10.0,precision);
        else 
          power=pow(10.0,precision-1-floor(log10(value)));
-       value=(1.0 + 1.0e-15)*round(value*power)/power;
+       value=(1.0 + 1.0e-15)*roundDouble(value*power)/power;
     }
 
     fractional=modf(value,&integral);
