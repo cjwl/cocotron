@@ -308,7 +308,7 @@
 		C889752E0EA0BF3100D0A0A2 /* KGPDFxref.h in Headers */ = {isa = PBXBuildFile; fileRef = FE64B8DB0B81239D007EE513 /* KGPDFxref.h */; };
 		C889752F0EA0BF3100D0A0A2 /* KGPDFxrefEntry.h in Headers */ = {isa = PBXBuildFile; fileRef = FE64B8DD0B81239D007EE513 /* KGPDFxrefEntry.h */; };
 		C88975300EA0BF3100D0A0A2 /* KGShading.h in Headers */ = {isa = PBXBuildFile; fileRef = FE64B8DF0B81239D007EE513 /* KGShading.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		C88975310EA0BF3100D0A0A2 /* KGColor.h in Headers */ = {isa = PBXBuildFile; fileRef = FE064ABB0B8B805000853FBB /* KGColor.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		C88975310EA0BF3100D0A0A2 /* O2Color.h in Headers */ = {isa = PBXBuildFile; fileRef = FE064ABB0B8B805000853FBB /* O2Color.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		C88975320EA0BF3100D0A0A2 /* KGLayer.h in Headers */ = {isa = PBXBuildFile; fileRef = FE064AC10B8B805000853FBB /* KGLayer.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		C88975330EA0BF3100D0A0A2 /* O2Path.h in Headers */ = {isa = PBXBuildFile; fileRef = FE064AC30B8B805000853FBB /* O2Path.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		C88975340EA0BF3100D0A0A2 /* KGPattern.h in Headers */ = {isa = PBXBuildFile; fileRef = FE064AC50B8B805000853FBB /* KGPattern.h */; };
@@ -618,7 +618,7 @@
 		C88976900EA0BF3100D0A0A2 /* CGPath.m in Sources */ = {isa = PBXBuildFile; fileRef = FE064AB60B8B805000853FBB /* CGPath.m */; };
 		C88976910EA0BF3100D0A0A2 /* CGPattern.m in Sources */ = {isa = PBXBuildFile; fileRef = FE064AB80B8B805000853FBB /* CGPattern.m */; };
 		C88976920EA0BF3100D0A0A2 /* CGShading.m in Sources */ = {isa = PBXBuildFile; fileRef = FE064ABA0B8B805000853FBB /* CGShading.m */; };
-		C88976930EA0BF3100D0A0A2 /* KGColor.m in Sources */ = {isa = PBXBuildFile; fileRef = FE064ABC0B8B805000853FBB /* KGColor.m */; };
+		C88976930EA0BF3100D0A0A2 /* O2Color.m in Sources */ = {isa = PBXBuildFile; fileRef = FE064ABC0B8B805000853FBB /* O2Color.m */; };
 		C88976940EA0BF3100D0A0A2 /* KGLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = FE064AC20B8B805000853FBB /* KGLayer.m */; };
 		C88976950EA0BF3100D0A0A2 /* O2Path.m in Sources */ = {isa = PBXBuildFile; fileRef = FE064AC40B8B805000853FBB /* O2Path.m */; };
 		C88976960EA0BF3100D0A0A2 /* KGPattern.m in Sources */ = {isa = PBXBuildFile; fileRef = FE064AC60B8B805000853FBB /* KGPattern.m */; };
@@ -984,7 +984,7 @@
 		C8A2E3AF0F07EA1F0054397C /* KGPDFxref.h in Headers */ = {isa = PBXBuildFile; fileRef = FE64B8DB0B81239D007EE513 /* KGPDFxref.h */; };
 		C8A2E3B00F07EA1F0054397C /* KGPDFxrefEntry.h in Headers */ = {isa = PBXBuildFile; fileRef = FE64B8DD0B81239D007EE513 /* KGPDFxrefEntry.h */; };
 		C8A2E3B10F07EA1F0054397C /* KGShading.h in Headers */ = {isa = PBXBuildFile; fileRef = FE64B8DF0B81239D007EE513 /* KGShading.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		C8A2E3B20F07EA1F0054397C /* KGColor.h in Headers */ = {isa = PBXBuildFile; fileRef = FE064ABB0B8B805000853FBB /* KGColor.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		C8A2E3B20F07EA1F0054397C /* O2Color.h in Headers */ = {isa = PBXBuildFile; fileRef = FE064ABB0B8B805000853FBB /* O2Color.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		C8A2E3B30F07EA1F0054397C /* KGLayer.h in Headers */ = {isa = PBXBuildFile; fileRef = FE064AC10B8B805000853FBB /* KGLayer.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		C8A2E3B40F07EA1F0054397C /* O2Path.h in Headers */ = {isa = PBXBuildFile; fileRef = FE064AC30B8B805000853FBB /* O2Path.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		C8A2E3B50F07EA1F0054397C /* KGPattern.h in Headers */ = {isa = PBXBuildFile; fileRef = FE064AC50B8B805000853FBB /* KGPattern.h */; };
@@ -1300,7 +1300,7 @@
 		C8A2E4F70F07EA1F0054397C /* CGPath.m in Sources */ = {isa = PBXBuildFile; fileRef = FE064AB60B8B805000853FBB /* CGPath.m */; };
 		C8A2E4F80F07EA1F0054397C /* CGPattern.m in Sources */ = {isa = PBXBuildFile; fileRef = FE064AB80B8B805000853FBB /* CGPattern.m */; };
 		C8A2E4F90F07EA1F0054397C /* CGShading.m in Sources */ = {isa = PBXBuildFile; fileRef = FE064ABA0B8B805000853FBB /* CGShading.m */; };
-		C8A2E4FA0F07EA1F0054397C /* KGColor.m in Sources */ = {isa = PBXBuildFile; fileRef = FE064ABC0B8B805000853FBB /* KGColor.m */; };
+		C8A2E4FA0F07EA1F0054397C /* O2Color.m in Sources */ = {isa = PBXBuildFile; fileRef = FE064ABC0B8B805000853FBB /* O2Color.m */; };
 		C8A2E4FB0F07EA1F0054397C /* KGLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = FE064AC20B8B805000853FBB /* KGLayer.m */; };
 		C8A2E4FC0F07EA1F0054397C /* O2Path.m in Sources */ = {isa = PBXBuildFile; fileRef = FE064AC40B8B805000853FBB /* O2Path.m */; };
 		C8A2E4FD0F07EA1F0054397C /* KGPattern.m in Sources */ = {isa = PBXBuildFile; fileRef = FE064AC60B8B805000853FBB /* KGPattern.m */; };
@@ -1701,7 +1701,7 @@
 		FE01A9200C5D9BCB00AEA51A /* KGPDFxref.h in Headers */ = {isa = PBXBuildFile; fileRef = FE64B8DB0B81239D007EE513 /* KGPDFxref.h */; };
 		FE01A9210C5D9BCB00AEA51A /* KGPDFxrefEntry.h in Headers */ = {isa = PBXBuildFile; fileRef = FE64B8DD0B81239D007EE513 /* KGPDFxrefEntry.h */; };
 		FE01A9220C5D9BCB00AEA51A /* KGShading.h in Headers */ = {isa = PBXBuildFile; fileRef = FE64B8DF0B81239D007EE513 /* KGShading.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		FE01A92C0C5D9BCB00AEA51A /* KGColor.h in Headers */ = {isa = PBXBuildFile; fileRef = FE064ABB0B8B805000853FBB /* KGColor.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE01A92C0C5D9BCB00AEA51A /* O2Color.h in Headers */ = {isa = PBXBuildFile; fileRef = FE064ABB0B8B805000853FBB /* O2Color.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE01A92D0C5D9BCB00AEA51A /* KGLayer.h in Headers */ = {isa = PBXBuildFile; fileRef = FE064AC10B8B805000853FBB /* KGLayer.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE01A92E0C5D9BCB00AEA51A /* O2Path.h in Headers */ = {isa = PBXBuildFile; fileRef = FE064AC30B8B805000853FBB /* O2Path.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE01A92F0C5D9BCB00AEA51A /* KGPattern.h in Headers */ = {isa = PBXBuildFile; fileRef = FE064AC50B8B805000853FBB /* KGPattern.h */; };
@@ -2004,7 +2004,7 @@
 		FE01AA6B0C5D9BCB00AEA51A /* CGPath.m in Sources */ = {isa = PBXBuildFile; fileRef = FE064AB60B8B805000853FBB /* CGPath.m */; };
 		FE01AA6C0C5D9BCB00AEA51A /* CGPattern.m in Sources */ = {isa = PBXBuildFile; fileRef = FE064AB80B8B805000853FBB /* CGPattern.m */; };
 		FE01AA6D0C5D9BCB00AEA51A /* CGShading.m in Sources */ = {isa = PBXBuildFile; fileRef = FE064ABA0B8B805000853FBB /* CGShading.m */; };
-		FE01AA6E0C5D9BCB00AEA51A /* KGColor.m in Sources */ = {isa = PBXBuildFile; fileRef = FE064ABC0B8B805000853FBB /* KGColor.m */; };
+		FE01AA6E0C5D9BCB00AEA51A /* O2Color.m in Sources */ = {isa = PBXBuildFile; fileRef = FE064ABC0B8B805000853FBB /* O2Color.m */; };
 		FE01AA6F0C5D9BCB00AEA51A /* KGLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = FE064AC20B8B805000853FBB /* KGLayer.m */; };
 		FE01AA700C5D9BCB00AEA51A /* O2Path.m in Sources */ = {isa = PBXBuildFile; fileRef = FE064AC40B8B805000853FBB /* O2Path.m */; };
 		FE01AA710C5D9BCB00AEA51A /* KGPattern.m in Sources */ = {isa = PBXBuildFile; fileRef = FE064AC60B8B805000853FBB /* KGPattern.m */; };
@@ -3410,8 +3410,8 @@
 		FE064AB60B8B805000853FBB /* CGPath.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = CGPath.m; sourceTree = "<group>"; };
 		FE064AB80B8B805000853FBB /* CGPattern.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = CGPattern.m; sourceTree = "<group>"; };
 		FE064ABA0B8B805000853FBB /* CGShading.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = CGShading.m; sourceTree = "<group>"; };
-		FE064ABB0B8B805000853FBB /* KGColor.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = KGColor.h; sourceTree = "<group>"; };
-		FE064ABC0B8B805000853FBB /* KGColor.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = KGColor.m; sourceTree = "<group>"; };
+		FE064ABB0B8B805000853FBB /* O2Color.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = O2Color.h; sourceTree = "<group>"; };
+		FE064ABC0B8B805000853FBB /* O2Color.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = O2Color.m; sourceTree = "<group>"; };
 		FE064AC10B8B805000853FBB /* KGLayer.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = KGLayer.h; sourceTree = "<group>"; };
 		FE064AC20B8B805000853FBB /* KGLayer.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = KGLayer.m; sourceTree = "<group>"; };
 		FE064AC30B8B805000853FBB /* O2Path.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = O2Path.h; sourceTree = "<group>"; };
@@ -4291,8 +4291,8 @@
 				6E2B55C20976075300DA0954 /* CGWindow.m */,
 				FE267EB50B8BD2690000DDC0 /* KGBitmapContext.h */,
 				FE267EB60B8BD2690000DDC0 /* KGBitmapContext.m */,
-				FE064ABB0B8B805000853FBB /* KGColor.h */,
-				FE064ABC0B8B805000853FBB /* KGColor.m */,
+				FE064ABB0B8B805000853FBB /* O2Color.h */,
+				FE064ABC0B8B805000853FBB /* O2Color.m */,
 				FE64B8A70B81239D007EE513 /* KGColorSpace.h */,
 				FE64B8A80B81239D007EE513 /* KGColorSpace.m */,
 				FE64B8A90B81239D007EE513 /* KGContext.h */,
@@ -5121,7 +5121,7 @@
 				C889752E0EA0BF3100D0A0A2 /* KGPDFxref.h in Headers */,
 				C889752F0EA0BF3100D0A0A2 /* KGPDFxrefEntry.h in Headers */,
 				C88975300EA0BF3100D0A0A2 /* KGShading.h in Headers */,
-				C88975310EA0BF3100D0A0A2 /* KGColor.h in Headers */,
+				C88975310EA0BF3100D0A0A2 /* O2Color.h in Headers */,
 				C88975320EA0BF3100D0A0A2 /* KGLayer.h in Headers */,
 				C88975330EA0BF3100D0A0A2 /* O2Path.h in Headers */,
 				C88975340EA0BF3100D0A0A2 /* KGPattern.h in Headers */,
@@ -5488,7 +5488,7 @@
 				C8A2E3AF0F07EA1F0054397C /* KGPDFxref.h in Headers */,
 				C8A2E3B00F07EA1F0054397C /* KGPDFxrefEntry.h in Headers */,
 				C8A2E3B10F07EA1F0054397C /* KGShading.h in Headers */,
-				C8A2E3B20F07EA1F0054397C /* KGColor.h in Headers */,
+				C8A2E3B20F07EA1F0054397C /* O2Color.h in Headers */,
 				C8A2E3B30F07EA1F0054397C /* KGLayer.h in Headers */,
 				C8A2E3B40F07EA1F0054397C /* O2Path.h in Headers */,
 				C8A2E3B50F07EA1F0054397C /* KGPattern.h in Headers */,
@@ -5853,7 +5853,7 @@
 				FE01A9200C5D9BCB00AEA51A /* KGPDFxref.h in Headers */,
 				FE01A9210C5D9BCB00AEA51A /* KGPDFxrefEntry.h in Headers */,
 				FE01A9220C5D9BCB00AEA51A /* KGShading.h in Headers */,
-				FE01A92C0C5D9BCB00AEA51A /* KGColor.h in Headers */,
+				FE01A92C0C5D9BCB00AEA51A /* O2Color.h in Headers */,
 				FE01A92D0C5D9BCB00AEA51A /* KGLayer.h in Headers */,
 				FE01A92E0C5D9BCB00AEA51A /* O2Path.h in Headers */,
 				FE01A92F0C5D9BCB00AEA51A /* KGPattern.h in Headers */,
@@ -6902,7 +6902,7 @@
 				C88976900EA0BF3100D0A0A2 /* CGPath.m in Sources */,
 				C88976910EA0BF3100D0A0A2 /* CGPattern.m in Sources */,
 				C88976920EA0BF3100D0A0A2 /* CGShading.m in Sources */,
-				C88976930EA0BF3100D0A0A2 /* KGColor.m in Sources */,
+				C88976930EA0BF3100D0A0A2 /* O2Color.m in Sources */,
 				C88976940EA0BF3100D0A0A2 /* KGLayer.m in Sources */,
 				C88976950EA0BF3100D0A0A2 /* O2Path.m in Sources */,
 				C88976960EA0BF3100D0A0A2 /* KGPattern.m in Sources */,
@@ -7237,7 +7237,7 @@
 				C8A2E4F70F07EA1F0054397C /* CGPath.m in Sources */,
 				C8A2E4F80F07EA1F0054397C /* CGPattern.m in Sources */,
 				C8A2E4F90F07EA1F0054397C /* CGShading.m in Sources */,
-				C8A2E4FA0F07EA1F0054397C /* KGColor.m in Sources */,
+				C8A2E4FA0F07EA1F0054397C /* O2Color.m in Sources */,
 				C8A2E4FB0F07EA1F0054397C /* KGLayer.m in Sources */,
 				C8A2E4FC0F07EA1F0054397C /* O2Path.m in Sources */,
 				C8A2E4FD0F07EA1F0054397C /* KGPattern.m in Sources */,
@@ -7603,7 +7603,7 @@
 				FE01AA6B0C5D9BCB00AEA51A /* CGPath.m in Sources */,
 				FE01AA6C0C5D9BCB00AEA51A /* CGPattern.m in Sources */,
 				FE01AA6D0C5D9BCB00AEA51A /* CGShading.m in Sources */,
-				FE01AA6E0C5D9BCB00AEA51A /* KGColor.m in Sources */,
+				FE01AA6E0C5D9BCB00AEA51A /* O2Color.m in Sources */,
 				FE01AA6F0C5D9BCB00AEA51A /* KGLayer.m in Sources */,
 				FE01AA700C5D9BCB00AEA51A /* O2Path.m in Sources */,
 				FE01AA710C5D9BCB00AEA51A /* KGPattern.m in Sources */,

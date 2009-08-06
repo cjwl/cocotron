@@ -11,7 +11,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @class KGColorSpace,KGPattern;
 
-@interface KGColor : NSObject <NSCopying> {
+@interface O2Color : NSObject <NSCopying> {
   KGColorSpace *_colorSpace;
   unsigned      _numberOfComponents;
   CGFloat        *_components;
@@ -34,8 +34,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(CGFloat)alpha;
 -(KGPattern *)pattern;
 
--(BOOL)isEqualToColor:(KGColor *)other;
+-(BOOL)isEqualToColor:(O2Color *)other;
 
--(KGColor *)convertToColorSpace:(KGColorSpace *)otherSpace;
+-(O2Color *)convertToColorSpace:(KGColorSpace *)otherSpace;
 
 @end

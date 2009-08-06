@@ -9,7 +9,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "KGGraphicsState.h"
 
 #import <CoreGraphics/CoreGraphics.h>
-#import "KGColor.h"
+#import "O2Color.h"
 #import "KGColorSpace.h"
 #import "O2MutablePath.h"
 #import "KGFont.h"
@@ -25,8 +25,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    _userSpaceTransform=CGAffineTransformIdentity;
    _textTransform=CGAffineTransformIdentity;
    _clipPhases=[NSMutableArray new];
-   _strokeColor=[[KGColor alloc] init];
-   _fillColor=[[KGColor alloc] init];
+   _strokeColor=[[O2Color alloc] init];
+   _fillColor=[[O2Color alloc] init];
    _font=nil;
    _pointSize=12.0;
    _textEncoding=kCGEncodingFontSpecific;
@@ -175,21 +175,21 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [phase release];
 }
 
--(KGColor *)strokeColor {
+-(O2Color *)strokeColor {
    return _strokeColor;
 }
 
--(KGColor *)fillColor {
+-(O2Color *)fillColor {
    return _fillColor;
 }
 
--(void)setStrokeColor:(KGColor *)color {
+-(void)setStrokeColor:(O2Color *)color {
    [color retain];
    [_strokeColor release];
    _strokeColor=color;
 }
 
--(void)setFillColor:(KGColor *)color {
+-(void)setFillColor:(O2Color *)color {
    [color retain];
    [_fillColor release];
    _fillColor=color;
@@ -324,7 +324,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    _interpolationQuality=quality;
 }
 
--(void)setShadowOffset:(CGSize)offset blur:(float)blur color:(KGColor *)color {
+-(void)setShadowOffset:(CGSize)offset blur:(float)blur color:(O2Color *)color {
    _shadowOffset=offset;
    _shadowBlur=blur;
    [color retain];
@@ -337,7 +337,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)setShadowOffset:(CGSize)offset blur:(float)blur {
    KGColorSpace *colorSpace=[[KGColorSpace alloc] initWithDeviceRGB];
    float         components[4]={0,0,0,1.0/3.0};
-   KGColor      *color=[[KGColor alloc] initWithColorSpace:colorSpace components:components];
+   O2Color      *color=[[O2Color alloc] initWithColorSpace:colorSpace components:components];
 
    [self setShadowOffset:offset blur:blur color:color];
    [color release];

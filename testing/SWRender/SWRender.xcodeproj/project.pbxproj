@@ -33,7 +33,7 @@
 		FE4F4CC50E10397000A5A5F8 /* KGShading+PDF.m in Sources */ = {isa = PBXBuildFile; fileRef = FE4F4CC00E10397000A5A5F8 /* KGShading+PDF.m */; };
 		FE6EDCE60DB78E7C005503A1 /* KGBitmapContext.m in Sources */ = {isa = PBXBuildFile; fileRef = FE6EDCCB0DB78E7C005503A1 /* KGBitmapContext.m */; };
 		FE6EDCE70DB78E7C005503A1 /* KGClipPhase.m in Sources */ = {isa = PBXBuildFile; fileRef = FE6EDCCD0DB78E7C005503A1 /* KGClipPhase.m */; };
-		FE6EDCE80DB78E7C005503A1 /* KGColor.m in Sources */ = {isa = PBXBuildFile; fileRef = FE6EDCCF0DB78E7C005503A1 /* KGColor.m */; };
+		FE6EDCE80DB78E7C005503A1 /* O2Color.m in Sources */ = {isa = PBXBuildFile; fileRef = FE6EDCCF0DB78E7C005503A1 /* O2Color.m */; };
 		FE6EDCE90DB78E7C005503A1 /* KGColorSpace.m in Sources */ = {isa = PBXBuildFile; fileRef = FE6EDCD10DB78E7C005503A1 /* KGColorSpace.m */; };
 		FE6EDCEA0DB78E7C005503A1 /* KGContext.m in Sources */ = {isa = PBXBuildFile; fileRef = FE6EDCD30DB78E7C005503A1 /* KGContext.m */; };
 		FE6EDCEB0DB78E7C005503A1 /* KGDataProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = FE6EDCD50DB78E7C005503A1 /* KGDataProvider.m */; };
@@ -149,8 +149,8 @@
 		FE6EDCCB0DB78E7C005503A1 /* KGBitmapContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGBitmapContext.m; sourceTree = "<group>"; };
 		FE6EDCCC0DB78E7C005503A1 /* KGClipPhase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGClipPhase.h; sourceTree = "<group>"; };
 		FE6EDCCD0DB78E7C005503A1 /* KGClipPhase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGClipPhase.m; sourceTree = "<group>"; };
-		FE6EDCCE0DB78E7C005503A1 /* KGColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGColor.h; sourceTree = "<group>"; };
-		FE6EDCCF0DB78E7C005503A1 /* KGColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGColor.m; sourceTree = "<group>"; };
+		FE6EDCCE0DB78E7C005503A1 /* O2Color.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O2Color.h; sourceTree = "<group>"; };
+		FE6EDCCF0DB78E7C005503A1 /* O2Color.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = O2Color.m; sourceTree = "<group>"; };
 		FE6EDCD00DB78E7C005503A1 /* KGColorSpace.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGColorSpace.h; sourceTree = "<group>"; };
 		FE6EDCD10DB78E7C005503A1 /* KGColorSpace.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGColorSpace.m; sourceTree = "<group>"; };
 		FE6EDCD20DB78E7C005503A1 /* KGContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGContext.h; sourceTree = "<group>"; };
@@ -461,8 +461,8 @@
 				FE6EDCCB0DB78E7C005503A1 /* KGBitmapContext.m */,
 				FE6EDCCC0DB78E7C005503A1 /* KGClipPhase.h */,
 				FE6EDCCD0DB78E7C005503A1 /* KGClipPhase.m */,
-				FE6EDCCE0DB78E7C005503A1 /* KGColor.h */,
-				FE6EDCCF0DB78E7C005503A1 /* KGColor.m */,
+				FE6EDCCE0DB78E7C005503A1 /* O2Color.h */,
+				FE6EDCCF0DB78E7C005503A1 /* O2Color.m */,
 				FE6EDCD00DB78E7C005503A1 /* KGColorSpace.h */,
 				FE6EDCD10DB78E7C005503A1 /* KGColorSpace.m */,
 				FE6EDCD20DB78E7C005503A1 /* KGContext.h */,
@@ -556,7 +556,7 @@
 				FE1F937A0D7EF1F800969491 /* KGRenderController.m in Sources */,
 				FE6EDCE60DB78E7C005503A1 /* KGBitmapContext.m in Sources */,
 				FE6EDCE70DB78E7C005503A1 /* KGClipPhase.m in Sources */,
-				FE6EDCE80DB78E7C005503A1 /* KGColor.m in Sources */,
+				FE6EDCE80DB78E7C005503A1 /* O2Color.m in Sources */,
 				FE6EDCE90DB78E7C005503A1 /* KGColorSpace.m in Sources */,
 				FE6EDCEA0DB78E7C005503A1 /* KGContext.m in Sources */,
 				FE6EDCEB0DB78E7C005503A1 /* KGDataProvider.m in Sources */,
@@ -655,11 +655,11 @@
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_ENABLE_CPP_EXCEPTIONS = NO;
 				GCC_ENABLE_CPP_RTTI = NO;
-				GCC_ENABLE_SSE3_EXTENSIONS = YES;
+				GCC_ENABLE_SSE3_EXTENSIONS = NO;
 				GCC_ENABLE_SUPPLEMENTAL_SSE3_INSTRUCTIONS = NO;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
 				GCC_INSTRUMENT_PROGRAM_FLOW_ARCS = NO;
-				GCC_MODEL_PPC64 = YES;
+				GCC_MODEL_PPC64 = NO;
 				GCC_MODEL_TUNING = "";
 				GCC_OPTIMIZATION_LEVEL = 3;
 				GCC_STRICT_ALIASING = YES;
@@ -678,6 +678,7 @@
 				OTHER_LDFLAGS = "-lgcov";
 				PRODUCT_NAME = SWRender;
 				SDKROOT = "";
+				VALID_ARCHS = "i386 ppc ppc64 ppc7400 ppc970 x86_64";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

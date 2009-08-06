@@ -9,7 +9,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSObject.h>
 #import <CoreGraphics/CoreGraphics.h>
 
-@class KGColor,KGColorSpace,KGShading,KGImage,KGGraphicsState,O2MutablePath,O2Path,KGPattern,KGLayer,KGPDFPage,NSMutableArray,CGWindow,KGSurface,NSDictionary,NSData,KGFont;
+@class O2Color,KGColorSpace,KGShading,KGImage,KGGraphicsState,O2MutablePath,O2Path,KGPattern,KGLayer,KGPDFPage,NSMutableArray,CGWindow,KGSurface,NSDictionary,NSData,KGFont;
 
 @interface KGContext : NSObject {
    CGAffineTransform _userToDeviceTransform;
@@ -90,20 +90,20 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)clipToRect:(CGRect)rect;
 -(void)clipToRects:(const CGRect *)rects count:(unsigned)count;
 
--(KGColor *)strokeColor;
--(KGColor *)fillColor;
+-(O2Color *)strokeColor;
+-(O2Color *)fillColor;
 
 -(void)setStrokeColorSpace:(KGColorSpace *)colorSpace;
 -(void)setFillColorSpace:(KGColorSpace *)colorSpace;
 
 -(void)setStrokeColorWithComponents:(const float *)components;
--(void)setStrokeColor:(KGColor *)color;
+-(void)setStrokeColor:(O2Color *)color;
 -(void)setGrayStrokeColor:(float)gray:(float)alpha;
 -(void)setRGBStrokeColor:(float)r:(float)g:(float)b:(float)alpha;
 -(void)setCMYKStrokeColor:(float)c:(float)m:(float)y:(float)k:(float)alpha;
 
 -(void)setFillColorWithComponents:(const float *)components;
--(void)setFillColor:(KGColor *)color;
+-(void)setFillColor:(O2Color *)color;
 -(void)setGrayFillColor:(float)gray:(float)alpha;
 -(void)setRGBFillColor:(float)r:(float)g:(float)b:(float)alpha;
 -(void)setCMYKFillColor:(float)c:(float)m:(float)y:(float)k:(float)alpha;
@@ -146,7 +146,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)setFlatness:(float)flatness;
 -(void)setInterpolationQuality:(CGInterpolationQuality)quality;
    
--(void)setShadowOffset:(CGSize)offset blur:(float)blur color:(KGColor *)color;
+-(void)setShadowOffset:(CGSize)offset blur:(float)blur color:(O2Color *)color;
 -(void)setShadowOffset:(CGSize)offset blur:(float)blur;
 
 -(void)setShouldAntialias:(BOOL)yesOrNo;

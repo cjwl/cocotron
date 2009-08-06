@@ -9,7 +9,7 @@
 #import <AppKit/CairoContext.h>
 #import <AppKit/X11Display.h>
 #import <CoreGraphics/O2MutablePath.h>
-#import <CoreGraphics/KGColor.h>
+#import <CoreGraphics/O2Color.h>
 #import <Foundation/NSException.h>
 #import <CoreGraphics/KGGraphicsState.h>
 #import <AppKit/TTFFont.h>
@@ -93,7 +93,7 @@
    cairo_reset_clip(_context);  
 }
 
--(void)setCurrentColor:(KGColor*)color
+-(void)setCurrentColor:(O2Color*)color
 {
    float *c=[color components];
    int count=[color numberOfComponents];

@@ -8,7 +8,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <AppKit/KGDeviceContext_gdi.h>
 #import <CoreGraphics/O2Path.h>
-#import <CoreGraphics/KGColor.h>
+#import <CoreGraphics/O2Color.h>
 #import <CoreGraphics/KGColorSpace.h>
 
 static inline void CMYKAToRGBA(float *input,float *output){
@@ -41,7 +41,7 @@ static COLORREF gammaAdjustedRGBFromComponents(float r,float g,float b){
    return RGB(r*255,g*255,b*255);
 }
 
-COLORREF COLORREFFromColor(KGColor *color){
+COLORREF COLORREFFromColor(O2Color *color){
    KGColorSpace *colorSpace=[color colorSpace];
    float        *components=[color components];
    

@@ -21,7 +21,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "KGImage+PDF.h"
 #import "KGFont+PDF.h"
 #import "O2MutablePath.h"
-#import "KGColor.h"
+#import "O2Color.h"
 #import "KGColorSpace+PDF.h"
 #import "KGGraphicsState.h"
 #import <Foundation/NSProcessInfo.h>
@@ -463,7 +463,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [self clipToPath];
 }
 
--(void)setStrokeColor:(KGColor *)color {
+-(void)setStrokeColor:(O2Color *)color {
    const float *components=[color components];
    
    switch([[color colorSpace] type]){
@@ -483,7 +483,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    }
 }
 
--(void)setFillColor:(KGColor *)color {
+-(void)setFillColor:(O2Color *)color {
    const float *components=[color components];
    
    switch([[color colorSpace] type]){
@@ -598,7 +598,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [super setInterpolationQuality:quality];
 }
 
--(void)setShadowOffset:(CGSize)offset blur:(float)blur color:(KGColor *)color {
+-(void)setShadowOffset:(CGSize)offset blur:(float)blur color:(O2Color *)color {
    [super setShadowOffset:offset blur:blur color:color];
    
 }

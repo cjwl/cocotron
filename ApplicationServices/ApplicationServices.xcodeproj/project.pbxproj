@@ -285,8 +285,8 @@
 			isa = PBXGroup;
 			children = (
 				FECF921F0FFB222D007AECF1 /* CoreText.framework */,
-				FECF92540FFB2A2B007AECF1 /* CoreGraphics.framework */,
-				FECF92560FFB2A2B007AECF1 /* CoreGraphics.framework */,
+				FECF92540FFB2A2B007AECF1 /* CoreText.framework */,
+				FECF92560FFB2A2B007AECF1 /* CoreText.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -496,14 +496,14 @@
 			remoteRef = FECF921E0FFB222D007AECF1 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		FECF92540FFB2A2B007AECF1 /* CoreGraphics.framework */ = {
+		FECF92540FFB2A2B007AECF1 /* CoreText.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
 			path = CoreText.framework;
 			remoteRef = FECF92530FFB2A2B007AECF1 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		FECF92560FFB2A2B007AECF1 /* CoreGraphics.framework */ = {
+		FECF92560FFB2A2B007AECF1 /* CoreText.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
 			path = CoreText.framework;

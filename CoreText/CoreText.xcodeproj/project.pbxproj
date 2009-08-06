@@ -57,42 +57,42 @@
 			isa = PBXContainerItemProxy;
 			containerPortal = FECF926B0FFB2BA7007AECF1 /* CoreGraphics.xcodeproj */;
 			proxyType = 2;
-			remoteGlobalIDString = 8DC2EF5B0486A6940098B216 /* CoreGraphics.framework */;
+			remoteGlobalIDString = 8DC2EF5B0486A6940098B216;
 			remoteInfo = "CoreGraphics-Windows-i386";
 		};
 		FECF92730FFB2BA7007AECF1 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FECF926B0FFB2BA7007AECF1 /* CoreGraphics.xcodeproj */;
 			proxyType = 2;
-			remoteGlobalIDString = FE6F7BB30FD554A800C3244F /* CoreGraphics.framework */;
+			remoteGlobalIDString = FE6F7BB30FD554A800C3244F;
 			remoteInfo = "CoreGraphics-Linux-i386";
 		};
 		FECF92750FFB2BA7007AECF1 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FECF926B0FFB2BA7007AECF1 /* CoreGraphics.xcodeproj */;
 			proxyType = 2;
-			remoteGlobalIDString = FE6F7C980FD55FA300C3244F /* CoreGraphics.framework */;
+			remoteGlobalIDString = FE6F7C980FD55FA300C3244F;
 			remoteInfo = "CoreGraphics-Darwin-i386";
 		};
 		FECF92770FFB2BB0007AECF1 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FECF926B0FFB2BA7007AECF1 /* CoreGraphics.xcodeproj */;
 			proxyType = 1;
-			remoteGlobalIDString = 8DC2EF4F0486A6940098B216 /* CoreGraphics-Windows-i386 */;
+			remoteGlobalIDString = 8DC2EF4F0486A6940098B216;
 			remoteInfo = "CoreGraphics-Windows-i386";
 		};
 		FECF92790FFB2BB8007AECF1 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FECF926B0FFB2BA7007AECF1 /* CoreGraphics.xcodeproj */;
 			proxyType = 1;
-			remoteGlobalIDString = FE6F7AF80FD554A800C3244F /* CoreGraphics-Linux-i386 */;
+			remoteGlobalIDString = FE6F7AF80FD554A800C3244F;
 			remoteInfo = "CoreGraphics-Linux-i386";
 		};
 		FECF927B0FFB2BBF007AECF1 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FECF926B0FFB2BA7007AECF1 /* CoreGraphics.xcodeproj */;
 			proxyType = 1;
-			remoteGlobalIDString = FE6F7BDB0FD55FA300C3244F /* CoreGraphics-Darwin-i386 */;
+			remoteGlobalIDString = FE6F7BDB0FD55FA300C3244F;
 			remoteInfo = "CoreGraphics-Darwin-i386";
 		};
 /* End PBXContainerItemProxy section */

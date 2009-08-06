@@ -7,7 +7,7 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
 #import <CoreGraphics/CGColor.h>
-#import "KGColor.h"
+#import "O2Color.h"
 #import "KGColorSpace.h"
 
 CGColorRef CGColorRetain(CGColorRef self) {
@@ -19,23 +19,23 @@ void       CGColorRelease(CGColorRef self) {
 }
 
 CGColorRef CGColorCreate(CGColorSpaceRef colorSpace,const CGFloat *components) {
-   return [[KGColor alloc] initWithColorSpace:colorSpace components:components];
+   return [[O2Color alloc] initWithColorSpace:colorSpace components:components];
 }
 
 CGColorRef CGColorCreateGenericGray(CGFloat gray,CGFloat a) {
-   return [[KGColor alloc] initWithDeviceGray:gray alpha:a];
+   return [[O2Color alloc] initWithDeviceGray:gray alpha:a];
 }
 
 CGColorRef CGColorCreateGenericRGB(CGFloat r,CGFloat g,CGFloat b,CGFloat a) {
-   return [[KGColor alloc] initWithDeviceRed:r green:g blue:b alpha:a];
+   return [[O2Color alloc] initWithDeviceRed:r green:g blue:b alpha:a];
 }
 
 CGColorRef CGColorCreateGenericCMYK(CGFloat c,CGFloat m,CGFloat y,CGFloat k,CGFloat a) {
-   return [[KGColor alloc] initWithDeviceCyan:c magenta:m yellow:y black:k alpha:a];
+   return [[O2Color alloc] initWithDeviceCyan:c magenta:m yellow:y black:k alpha:a];
 }
 
 CGColorRef CGColorCreateWithPattern(CGColorSpaceRef colorSpace,CGPatternRef pattern,const CGFloat *components) {
-   return [[KGColor alloc] initWithColorSpace:colorSpace pattern:pattern components:components];
+   return [[O2Color alloc] initWithColorSpace:colorSpace pattern:pattern components:components];
 }
 
 CGColorRef CGColorCreateCopy(CGColorRef self) {

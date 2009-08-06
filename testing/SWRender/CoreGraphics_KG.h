@@ -1,7 +1,7 @@
 #import "KGContext.h"
 #import "O2Path.h"
 #import "O2MutablePath.h"
-#import "KGColor.h"
+#import "O2Color.h"
 #import "KGColorSpace.h"
 #import "KGImage.h"
 #import "KGImageSource.h"
@@ -10,7 +10,7 @@
 #import "KGPDFPage.h"
 
 #define CGContextRef KGContext *
-#define CGColorRef KGColor *
+#define CGColorRef O2Color *
 #define CGColorSpaceRef KGColorSpace *
 #define CGPathRef O2Path *
 #define CGMutablePathRef O2MutablePath *
@@ -309,19 +309,19 @@
    [self release]
 
 #define CGColorCreate(colorSpace,ccomponents) \
-   [[KGColor alloc] initWithColorSpace:colorSpace components:ccomponents]
+   [[O2Color alloc] initWithColorSpace:colorSpace components:ccomponents]
 
 #define CGColorCreateGenericGray(gray,a) \
-   [[KGColor alloc] initWithDeviceGray:gray alpha:a]
+   [[O2Color alloc] initWithDeviceGray:gray alpha:a]
 
 #define CGColorCreateGenericRGB(r,g,b,a) \
-   [[KGColor alloc] initWithDeviceRed:r green:g blue:b alpha:a]
+   [[O2Color alloc] initWithDeviceRed:r green:g blue:b alpha:a]
 
 #define CGColorCreateGenericCMYK(c,m,y,k,a) \
-   [[KGColor alloc] initWithDeviceCyan:c magenta:m yellow:y black:k alpha:a]
+   [[O2Color alloc] initWithDeviceCyan:c magenta:m yellow:y black:k alpha:a]
 
 #define CGColorCreateWithPattern(colorSpace,pattern,ccomponents) \
-   [[KGColor alloc] initWithColorSpace:colorSpace pattern:pattern components:ccomponents]
+   [[O2Color alloc] initWithColorSpace:colorSpace pattern:pattern components:ccomponents]
 
 #define CGColorCreateCopy(self) \
    [self copy]

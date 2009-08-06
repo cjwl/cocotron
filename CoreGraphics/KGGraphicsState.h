@@ -9,7 +9,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSObject.h>
 #import <CoreGraphics/CoreGraphics.h>
 
-@class KGImage,KGColorSpace,KGColor,KGPattern,O2MutablePath,O2Path,NSArray,NSMutableArray,KGFont;
+@class KGImage,KGColorSpace,O2Color,KGPattern,O2MutablePath,O2Path,NSArray,NSMutableArray,KGFont;
 
 @interface KGGraphicsState : NSObject <NSCopying> {
 @public
@@ -18,8 +18,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    CGAffineTransform   _textTransform;
    
    NSMutableArray     *_clipPhases;
-   KGColor            *_strokeColor;
-   KGColor            *_fillColor;
+   O2Color            *_strokeColor;
+   O2Color            *_fillColor;
    KGFont             *_font;
    CGFloat             _pointSize;
    CGTextEncoding      _textEncoding;
@@ -41,7 +41,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    CGInterpolationQuality _interpolationQuality;
    CGSize              _shadowOffset;
    float               _shadowBlur;
-   KGColor            *_shadowColor;
+   O2Color            *_shadowColor;
    void               *_shadowKernel;
    BOOL                _shouldAntialias;
    
@@ -76,11 +76,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)addEvenOddClipToPath:(O2Path *)path;
 -(void)addClipToMask:(KGImage *)image inRect:(CGRect)rect;
 
--(KGColor *)strokeColor;
--(KGColor *)fillColor;
+-(O2Color *)strokeColor;
+-(O2Color *)fillColor;
 
--(void)setStrokeColor:(KGColor *)color;
--(void)setFillColor:(KGColor *)color;
+-(void)setStrokeColor:(O2Color *)color;
+-(void)setFillColor:(O2Color *)color;
 
 -(void)setPatternPhase:(CGSize)phase;
 -(void)setStrokePattern:(KGPattern *)pattern components:(const float *)components;
@@ -113,7 +113,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)setFlatness:(float)flatness;
 -(void)setInterpolationQuality:(CGInterpolationQuality)quality;
 
--(void)setShadowOffset:(CGSize)offset blur:(float)blur color:(KGColor *)color;
+-(void)setShadowOffset:(CGSize)offset blur:(float)blur color:(O2Color *)color;
 -(void)setShadowOffset:(CGSize)offset blur:(float)blur;
 
 -(void)setShouldAntialias:(BOOL)flag;

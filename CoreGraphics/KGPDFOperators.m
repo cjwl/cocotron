@@ -20,7 +20,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "KGPDFFunction_Type3.h"
 
 #import "KGContext.h"
-#import "KGColor.h"
+#import "O2Color.h"
 #import "KGColorSpace+PDF.h"
 #import "KGImage+PDF.h"
 #import "KGFunction+PDF.h"
@@ -692,7 +692,7 @@ void KGPDF_render_S(KGPDFScanner *scanner,void *info) {
 // setcolor, Set color for stroking operations
 void KGPDF_render_SC(KGPDFScanner *scanner,void *info) {
    KGContext    *context=kgContextFromInfo(info);
-   KGColor      *color=[context strokeColor];
+   O2Color      *color=[context strokeColor];
    KGColorSpace *colorSpace=[color colorSpace];
    unsigned      numberOfComponents=[colorSpace numberOfComponents];
    int           count=numberOfComponents;
@@ -711,7 +711,7 @@ void KGPDF_render_SC(KGPDFScanner *scanner,void *info) {
 // setcolor, Set color for nonstroking operations
 void KGPDF_render_sc(KGPDFScanner *scanner,void *info) {
    KGContext    *context=kgContextFromInfo(info);
-   KGColor      *color=[context fillColor];
+   O2Color      *color=[context fillColor];
    KGColorSpace *colorSpace=[color colorSpace];
    unsigned      numberOfComponents=[colorSpace numberOfComponents];
    int           count=numberOfComponents;
@@ -730,7 +730,7 @@ void KGPDF_render_sc(KGPDFScanner *scanner,void *info) {
 // setcolor, Set color for stroking operations, ICCBased and special color spaces
 void KGPDF_render_SCN(KGPDFScanner *scanner,void *info) {
    KGContext    *context=kgContextFromInfo(info);
-   KGColor      *color=[context strokeColor];
+   O2Color      *color=[context strokeColor];
    KGColorSpace *colorSpace=[color colorSpace];
    unsigned      numberOfComponents=[colorSpace numberOfComponents];
    int           count=numberOfComponents;
@@ -749,7 +749,7 @@ void KGPDF_render_SCN(KGPDFScanner *scanner,void *info) {
 // setcolor, Set color for nonstroking operations, ICCBased and special color spaces
 void KGPDF_render_scn(KGPDFScanner *scanner,void *info) {
    KGContext    *context=kgContextFromInfo(info);
-   KGColor      *color=[context fillColor];
+   O2Color      *color=[context fillColor];
    KGColorSpace *colorSpace=[color colorSpace];
    unsigned      numberOfComponents=[colorSpace numberOfComponents];
    int           count=numberOfComponents;

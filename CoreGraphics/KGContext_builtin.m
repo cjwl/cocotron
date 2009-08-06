@@ -23,7 +23,7 @@
 #import "KGContext_builtin.h"
 #import "O2MutablePath.h"
 #import "KGImage.h"
-#import "KGColor.h"
+#import "O2Color.h"
 #import "KGSurface.h"
 #import "KGExceptions.h"
 #import "KGGraphicsState.h"
@@ -164,7 +164,7 @@ static BOOL _isAvailable=NO;
    _vpheight=MIN(KGImageGetHeight(_surface),CGRectGetMaxY(rect))-_vpy;
 }
 
-static KGPaint *paintFromColor(KGColor *color){
+static KGPaint *paintFromColor(O2Color *color){
    int    count=[color numberOfComponents];
    const float *components=[color components];
 
@@ -179,10 +179,9 @@ static KGPaint *paintFromColor(KGColor *color){
 -(void)drawPath:(CGPathDrawingMode)drawingMode {
    KGGraphicsState *gState=[self currentState];
    
-   		KGRasterizeSetBlendMode(self,gState->_blendMode);
-//		KGRasterizeSetTileFillColor(context->m_tileFillColor);
+   KGRasterizeSetBlendMode(self,gState->_blendMode);
 
-       KGRasterizerSetShouldAntialias(self,gState->_shouldAntialias,gState->_antialiasingQuality);
+   KGRasterizerSetShouldAntialias(self,gState->_shouldAntialias,gState->_antialiasingQuality);
 
 /* Path construction is affected by the CTM, and the stroke pen is affected by the CTM , this means path points and the stroke can be affected by different transforms as the CTM can change during path construction and before stroking. For example, creation of transformed shapes which are drawn using an untransformed pen. The current tesselator expects everything to be in user coordinates and it tesselates from there into device space, but the path points are already in base coordinates. So, path points are brought from base coordinates into the active coordinate space using an inverted transform and then everything is tesselated using the CTM into device space.  */
  
@@ -296,7 +295,6 @@ xform=CGAffineTransformConcat(i2u,xform);
 
        KGRasterizerSetShouldAntialias(self,gState->_shouldAntialias,gState->_antialiasingQuality);
 
-		// KGRasterizeSetTileFillColor(context->m_tileFillColor);
         KGPaint *paint=paintFromColor(gState->_fillColor);
         CGInterpolationQuality iq;
         if(gState->_interpolationQuality==kCGInterpolationDefault)
@@ -367,12 +365,12 @@ void O2DContextAddEdge(KGRasterizer *self,const CGPoint v0, const CGPoint v1) {
 	if(v0.y == v1.y)
 		return;	//skip horizontal edges (they don't affect rasterization since we scan horizontally)
 
-    if((v0.y+0.5f)<self->_vpy && (v1.y+0.5f)<self->_vpy)  // ignore below miny
+    if(v0.y<self->_vpy && v1.y<self->_vpy)  // ignore below miny
      return;
     
     int MaxY=self->_vpy+self->_vpheight;
     
-    if((v0.y-0.5f)>=MaxY && (v1.y-0.5f)>=MaxY) // ignore above maxy
+    if(v0.y>=MaxY && v1.y>=MaxY) // ignore above maxy
      return;
          
 	Edge *edge=NSZoneMalloc(NULL,sizeof(Edge));
@@ -394,11 +392,7 @@ void O2DContextAddEdge(KGRasterizer *self,const CGPoint v0, const CGPoint v1) {
         edge->v1 = v0;
         edge->direction = -1;
     }
-    edge->normal=CGPointMake(edge->v0.y-edge->v1.y , edge->v0.x-edge->v1.x);	//edge normal
 
-    edge->cnst = Vector2Dot(edge->v0, CGPointMake(edge->normal.x,-edge->normal.y));	//distance of v0 from the origin along the edge normal
-    edge->minscany=RI_FLOOR_TO_INT(edge->v0.y-0.5f);
-    edge->maxscany=ceil(edge->v1.y+0.5f);
     edge->next=NULL;
 }
 
@@ -450,7 +444,7 @@ void KGRasterizerSetShouldAntialias(KGRasterizer *self,BOOL antialias,int qualit
         int i;
 
 		 self->samplesInitialY = ((CGFloat)(0.5f)) / (CGFloat)numberOfSamples;
-		 self->samplesDeltaY = ((CGFloat)(1)) / (CGFloat)numberOfSamples;
+		 self->samplesDeltaY = ((CGFloat)(1.0f)) / (CGFloat)numberOfSamples;
         for(i=0;i<numberOfSamples;i++){
 	     self->samplesX[i] = (CGFloat)radicalInverseBase2(i);
          self->samplesWeight=MAX_SAMPLES/numberOfSamples;
@@ -722,7 +716,7 @@ static inline void sortEdgesByMinY(Edge **edges,int count,Edge **B){
         for (i = 0, k = l; k < j && j <= m + h; k++)
         {
            A = edges[j];
-           if (A->minscany>B[i]->minscany)
+           if (A->v0.y>B[i]->v0.y)
               edges[k] = B[i++];
            else
            {
@@ -744,227 +738,274 @@ static inline void initEdgeForAET(KGRasterizer *self,Edge *edge,int scany){
    CGFloat wl = 1.0f /vd.y;
    edge->vdxwl=vd.x*wl;
 
-   edge->bminx = RI_MIN(edge->v0.x, edge->v1.x);
-   edge->bmaxx = RI_MAX(edge->v0.x, edge->v1.x);
+   if(edge->v0.x<edge->v1.x){
+    edge->isVertical=0;
+    edge->bminx=edge->v0.x;
+    edge->bmaxx=edge->v1.x;
+   }
+   else {
+    edge->isVertical=(edge->v0.x==edge->v1.x)?1:0;
+    edge->bminx=edge->v1.x;
+    edge->bmaxx=edge->v0.x;
+   }
+       
+   edge->sxPre = edge->v0.x-(edge->v0.y*edge->vdxwl);
+   edge->exPre=edge->sxPre;
+   edge->sxPre+=(scany-1)*edge->vdxwl;
+   edge->exPre+=(scany+1)*edge->vdxwl;
 
-   edge->sxPre = (edge->v0.x  - edge->v0.y* edge->vdxwl)+ edge->vdxwl*(scany-1);
-   edge->exPre = (edge->v0.x  - edge->v0.y* edge->vdxwl)+ edge->vdxwl*(scany+1);
    CGFloat autosx = RI_CLAMP(edge->sxPre, edge->bminx, edge->bmaxx);
    CGFloat autoex  = RI_CLAMP(edge->exPre, edge->bminx, edge->bmaxx); 
    CGFloat minx=RI_MIN(autosx,autoex);
-   CGFloat maxx=RI_MAX(autosx,autoex);
-   
-//   minx-=0.5f+0.5f;
-   //0.01 is a safety region to prevent too aggressive optimization due to numerical inaccuracy
-   maxx+=0.5f+0.5f+0.01f;
-   
-   edge->minx = minx;
-   edge->maxx = maxx;
+      
+   edge->minx = MAX(self->_vpx,minx);
    edge->samples=NSZoneMalloc(NULL,sizeof(CGFloat)*self->numSamples);
    
-       CGFloat *pre=edge->samples;
-       int      i,numberOfSamples=self->numSamples;
-       CGFloat  sampleY=self->samplesInitialY;
-       CGFloat  sampleDeltaY=self->samplesDeltaY;
-       CGFloat *samplesX=self->samplesX;
+   CGFloat *pre=edge->samples;
+   int      i,numberOfSamples=self->numSamples;
+   CGFloat  sampleY=self->samplesInitialY;
+   CGFloat  deltaY=self->samplesDeltaY;
+   CGFloat *samplesX=self->samplesX;
        
-       CGFloat  normalX=edge->v0.y-edge->v1.y;
-       CGFloat  normalY=edge->v0.x-edge->v1.x;
-       CGFloat cnst=edge->v0.x*normalX-edge->v0.y*normalY;
-       CGFloat min=0,max=0;
+   CGFloat  normalX=edge->v0.y-edge->v1.y;
+   CGFloat  normalY=edge->v0.x-edge->v1.x;
+   CGFloat min=0,max=0;
        
-       for(i=0;i<numberOfSamples;sampleY+=sampleDeltaY,samplesX++,i++){
-        CGFloat value=sampleY*normalY-*samplesX*normalX+cnst;
+   for(i=0;i<numberOfSamples;sampleY+=deltaY,samplesX++,i++){
+    CGFloat value=sampleY*normalY-*samplesX*normalX;
         
-        *pre++ = value;
+    *pre++ = value;
         
-        if(i==0)
-         min=max=value;
-        else {
-         min=MIN(min,value);
-         max=MAX(max,value);
-        }
-       }
-       edge->minSample=min;
-       edge->maxSample=max;
+    if(i==0)
+     min=max=value;
+    else {
+     min=MIN(min,value);
+     max=MAX(max,value);
+    }
+   }
+   edge->minSample=min;
+   edge->maxSample=max;
 }
 
-static inline void incrementEdgeForAET(Edge *edge){
+static inline void incrementEdgeForAET(Edge *edge,int vpx){
    edge->sxPre+= edge->vdxwl;
    edge->exPre+= edge->vdxwl;
    
-   CGFloat autosx = RI_CLAMP(edge->sxPre, edge->bminx, edge->bmaxx);
-   CGFloat autoex  = RI_CLAMP(edge->exPre, edge->bminx, edge->bmaxx); 
+   CGFloat autosx=RI_CLAMP(edge->sxPre, edge->bminx, edge->bmaxx);
+   CGFloat autoex=RI_CLAMP(edge->exPre, edge->bminx, edge->bmaxx); 
    CGFloat minx=RI_MIN(autosx,autoex);
-   CGFloat maxx=RI_MAX(autosx,autoex);
-   
-//   minx-=0.5f+0.5f;
-//0.01 is a safety region to prevent too aggressive optimization due to numerical inaccuracy
-   maxx+=0.5f+0.5f+0.01f;
-   
-   edge->minx = minx;
-   edge->maxx = maxx;
+      
+   edge->minx = MAX(vpx,minx);
 }
 
 static inline void removeEdgeFromAET(Edge *edge){
    NSZoneFree(NULL,edge->samples);
 }
 
+typedef struct CoverageNode {
+   struct CoverageNode *next;
+   int scanx;
+   int coverage;
+   int length;
+} CoverageNode;
+
 void O2DContextFillEdgesOnSurface(KGRasterizer *self,KGSurface *surface,KGImage *mask,KGPaint *paint,int fillRuleMask) {
-    int    edgeCount=self->_edgeCount;
-    Edge **edges=self->_edges;
+   int    edgeCount=self->_edgeCount;
+   Edge **edges=self->_edges;
+      
+   CoverageNode *freeCoverage=NULL;
+   CoverageNode *currentCoverage=NULL;
+   
+   sortEdgesByMinY(edges,edgeCount,self->_sortCache);
 
-    int ylimit=self->_vpy+self->_vpheight;
-    int xlimit=self->_vpx+self->_vpwidth;
-    
-    int nextAvailableEdge=0;
-         
-    sortEdgesByMinY(edges,edgeCount,self->_sortCache);
-        
-    Edge   *activeRoot=NULL;
-    
-    int     scany;
+   int ylimit=self->_vpy+self->_vpheight;
+   int xlimit=self->_vpx+self->_vpwidth;
 
-   int * winding=self->_winding;
+   Edge *activeRoot=NULL;
+   int nextAvailableEdge=0;
+
+   int scany;
+
+   int *winding=self->_winding;
    int  numberOfSamples=self->numSamples;
    int  shiftNumberOfSamples=self->sampleSizeShift;
+   int  totalActiveEdges=0;
+   int  totalActiveVerticalEdgesFullCoverage=0;
    
    for(scany=self->_vpy;scany<ylimit;scany++){
-     Edge *edge,*previous=NULL;
+    Edge *edge,*previous=NULL;
+    int   unchangedActiveEdges=1;
+    
+    // increment and remove edges out of range
+    for(edge=activeRoot;edge!=NULL;edge=edge->next){
+     if(edge->v1.y>scany){
+      incrementEdgeForAET(edge,self->_vpx);
+      previous=edge;
+      
+      if(edge->isVertical){
+       if(edge->v0.y<scany && edge->v1.y>=(scany+1)){
+        if(!edge->isFullCoverage){
+         edge->isFullCoverage=1;
+         unchangedActiveEdges=0;
+         totalActiveVerticalEdgesFullCoverage++;
+        }
+       }
+       else {
+        if(edge->isFullCoverage){
+         edge->isFullCoverage=0;
+         unchangedActiveEdges=0;
+         totalActiveVerticalEdgesFullCoverage--;
+        }
+       }
+      }
+     }
+     else {
+      unchangedActiveEdges=0;
+      
+      totalActiveEdges--;
+      if(edge->isVertical && edge->isFullCoverage)
+       totalActiveVerticalEdgesFullCoverage--;
+      
+      removeEdgeFromAET(edge);
+      if(previous==NULL)
+       activeRoot=edge->next;
+      else
+       previous->next=edge->next;
+     }
+    }
 
      // load more available edges
-     for(;nextAvailableEdge<edgeCount;nextAvailableEdge++){
-      edge=edges[nextAvailableEdge];
+    for(;nextAvailableEdge<edgeCount;nextAvailableEdge++){
+     edge=edges[nextAvailableEdge];
         
-      if(edge->minscany>scany)
-       break;
-      
-      edge->next=activeRoot;
-      activeRoot=edge;
-      initEdgeForAET(self,edge,scany);
-     }
-
-     int minx=xlimit,maxx=0;
-     int *increase;
+     if(edge->v0.y>=(scany+1))
+      break;
      
-     for(edge=activeRoot;edge!=NULL;edge=edge->next){
-      if(edge->minx>=xlimit){
-       minx=MIN(minx,edge->minx);
-       maxx=MAX(maxx,xlimit);
+     unchangedActiveEdges=0;
+     edge->next=activeRoot;
+     activeRoot=edge;
+     initEdgeForAET(self,edge,scany);
+     totalActiveEdges++;
+     
+     if(edge->isVertical){
+      if(edge->v0.y<scany && edge->v1.y>=(scany+1)){
+       edge->isFullCoverage=1;
+       totalActiveVerticalEdgesFullCoverage++;
       }
       else {
-       CGFloat * pre=edge->samples;
-       CGFloat * preEnd=pre+numberOfSamples;
-       CGFloat  sampleY=self->samplesInitialY;
-       CGFloat  sampleDeltaY=self->samplesDeltaY;
-       CGFloat  v0y=edge->v0.y-scany;
-       CGFloat  v1y=edge->v1.y-scany;
-       
-       CGFloat  normalX=edge->v0.y-edge->v1.y;
-       CGFloat  normalY=edge->v0.x-edge->v1.x;
+       edge->isFullCoverage=0;
+      }
+     }
+    }
 
-       int      belowY=0;
-       int      aboveY;
-       
-       for(;sampleY<v0y && pre<preEnd;sampleY+=sampleDeltaY){
-        pre++;
-        belowY++;
-       }
-       if(sampleY+sampleDeltaY*(preEnd-pre)<v1y)
-        pre=preEnd;
-       else
-        for(;sampleY<v1y && pre<preEnd;sampleY+=sampleDeltaY)
-         pre++;
-        
-       aboveY=preEnd-pre;
-
-       preEnd-=aboveY;
+    if(unchangedActiveEdges){
+     if(activeRoot==NULL && nextAvailableEdge==edgeCount)
+      break;
       
-       int direction=edge->direction;
+     if(totalActiveVerticalEdgesFullCoverage==totalActiveEdges){
+      CoverageNode *node;
+      
+      for(node=currentCoverage;node!=NULL;node=node->next)
+       self->_writeCoverageFunction(surface,mask,paint,node->scanx,scany,node->coverage,node->length,self->_blendFunction);
        
-        if(belowY+aboveY<numberOfSamples){
-         int scanx=MAX(0,edge->minx);
-         minx=MIN(minx,edge->minx);
+      continue;
+     }
+    }
+    
+    int minx=xlimit,maxx=0;
+    int *increase;
 
-         CGFloat pcxnormal=(scanx*normalX-scany*normalY);
+    for(edge=activeRoot;edge!=NULL;edge=edge->next){
+     if(edge->minx>=xlimit){
+      maxx=MAX(maxx,xlimit);
+      continue;
+     }
+
+     CGFloat  deltaY=self->samplesDeltaY;
+     CGFloat  scanFloatY=scany+self->samplesInitialY;
+     CGFloat  v0y=edge->v0.y;
+     CGFloat  v1y=edge->v1.y;
+
+     int      belowY=0;
+     int      aboveY;
+       
+     for(;scanFloatY<v0y && belowY<numberOfSamples;scanFloatY+=deltaY)
+      belowY++;
+
+     if(scany+1<v1y)
+      aboveY=numberOfSamples;
+     else {
+      aboveY=belowY;
+      for(;scanFloatY<v1y && aboveY<numberOfSamples;scanFloatY+=deltaY)
+       aboveY++;
+     }
+      
+      // it is possible for the edge to be inside the scanline a tiny bit and below/above first/last sample, skip it
+     if(aboveY-belowY==0)
+      continue;
+
+     int direction=edge->direction;
+     int scanx=edge->minx;
+       
+     minx=MIN(minx,scanx);
+
+     CGFloat normalX=edge->v0.y-edge->v1.y;
+     CGFloat normalY=edge->v0.x-edge->v1.x;
+     CGFloat pcxnormal=(scanx-edge->v0.x)*normalX-(scany-edge->v0.y)*normalY;
         
-         int *windptr=winding+(scanx<<shiftNumberOfSamples);
-         
-         increase=self->_increase+scanx;
-
-         for(;scanx<xlimit;scanx++,pcxnormal+=normalX,increase++){
-          if(pcxnormal>edge->maxSample)
-           windptr+=numberOfSamples;
-          else {
-           int *windend=windptr+numberOfSamples;
-           
-           if(*increase==INT_MAX)
-            *increase=0;
-
-           if(pcxnormal<=edge->minSample){
-            windptr+=belowY;
+     int *windptr=winding+(scanx<<shiftNumberOfSamples);
+     increase=self->_increase;
             
-            *windptr+=direction;
+     CGFloat *pre=edge->samples;
+            
+     for(;;pcxnormal+=normalX,windptr+=numberOfSamples){
+      /*
+        Some edges do have pcxnormal>edge->maxSample when the normalX is less than zero
+        we should be able to eliminate that condition prior to the loop to avoid an iteration.
+        
+        For now they just end up in the general loop
+       */
+       
+      if(increase[scanx]==INT_MAX)
+       increase[scanx]=0;
                        
-            if(aboveY!=0){
-             windptr=windend;
+      if(pcxnormal<=edge->minSample){
+        windptr[belowY]+=direction;
+                                   
+        if(aboveY!=numberOfSamples)
+         windptr[aboveY]-=direction;
+        else if(belowY==0){
+         increase[scanx]+=direction;
+         break;
+        }
+       }
+       else {
+        int idx=belowY;
 
-             *(windptr-aboveY)-=direction;
-            }
-            else {
-             if(belowY+aboveY==0){
-              *increase+=direction;
-              break;
-             }
-
-             windptr=windend;
-            }
-           }
-           else {
-            windptr+=belowY;
-            windend-=aboveY;
-            
-            pre=edge->samples+belowY;
-            while(windptr<windend){
-
-             if(pcxnormal<=*pre){
-              *windptr+=direction;
-              *(windptr+1)-=direction;
-             }
-
-             pre++;
-             windptr++;
-            }
-
-            if(aboveY==0){
-             // if we overwrote past the last value, undo it, this is cheaper than not writing it
-             pre--;
-             if(pcxnormal<=*pre)
-              *windptr+=direction;
-            }
-            windptr+=aboveY;
-           }
+         while(idx<aboveY){
+          if(pcxnormal<=pre[idx]){
+           windptr[idx]+=direction;
+           windptr[idx+1]-=direction;
           }
-
+                         
+          idx++;
          }
-
-         maxx=MAX(maxx,scanx);
+          
+        if(aboveY==numberOfSamples){
+         // if we overwrote past the last value, undo it, this is cheaper than not writing it
+         if(pcxnormal<=pre[idx-1])
+          windptr[idx]+=direction;
         }
        }
 
-// increment and remove edges out of range
-      if(edge->maxscany>=scany){
-       incrementEdgeForAET(edge);
-       previous=edge;
-      }
-      else {
-       removeEdgeFromAET(edge);
-       if(previous==NULL)
-        activeRoot=edge->next;
-       else
-        previous->next=edge->next;
-      }
-     }        
+      scanx++;
+      if(scanx==xlimit)
+       break;
+     }
+
+     maxx=MAX(maxx,scanx);
+
+    }        
     minx=MAX(self->_vpx,minx);
     maxx=MIN(xlimit,maxx+1);
         
@@ -977,68 +1018,94 @@ void O2DContextFillEdgesOnSurface(KGRasterizer *self,KGSurface *surface,KGImage 
       break;
      }
          
-    int weight=self->samplesWeight;
  	int accum=0;
-    int coverage=0;
 
-    int *  windptr=winding+((increase-self->_increase)<<shiftNumberOfSamples);
-    int *  windend=windptr+numberOfSamples;
+    int *windptr=winding+((increase-self->_increase)<<shiftNumberOfSamples);
+    int *windend=windptr+numberOfSamples;
+    
+    CoverageNode *node;
+    for(node=currentCoverage;node!=NULL;){
+     CoverageNode *next=node->next;
+     node->next=freeCoverage;
+     freeCoverage=node;
+     node=next;
+    }
+    currentCoverage=NULL;    
 
     for(;increase<maxAdvance;){
      int total=accum;
+     int coverage=0;
 
-     accum+=*increase;
-     *increase=INT_MAX;
-     
+     if(fillRuleMask==1){
+      do{       
+       total+=*windptr;
+       
+       coverage+=(total&0x01);
+
+       *windptr++=0;
+      }while(windptr<windend);
+     }
+     else {
+      do{
+       total+=*windptr;
+       
+       coverage+=total?1:0;
+
+       *windptr++=0;
+      }while(windptr<windend);
+     }
+
      int *advance=increase+1;
      for(;advance<maxAdvance;advance++)
       if(*advance!=INT_MAX){
        break;
       }
 
-     if(fillRuleMask==1){
-      do{       
-       total+=*windptr;
-       *windptr++=0;
-       
-       if(total&0x01)
-        coverage++;
-
-      }while(windptr<windend);
-     }
-     else {
-      do{       
-       total+=*windptr;
-       *windptr++=0;
-       
-       if(total)
-        coverage++;
-
-      }while(windptr<windend);
-     }
-     
 	 if(coverage>0){
+
       if(self->alias)
        coverage=256;
       else
-       coverage*=weight;
+       coverage*=self->samplesWeight;
       
       int scanx=increase-self->_increase;
       
-      self->_writeCoverageFunction(surface,mask,paint,scanx,scany,coverage,(advance-increase),self->_blendFunction);
-      coverage=0;
+      CoverageNode *node;
+      
+      if(freeCoverage==NULL)
+       node=NSZoneMalloc(NULL,sizeof(CoverageNode));
+      else {
+       node=freeCoverage;
+       freeCoverage=freeCoverage->next;
+      }
+      node->next=currentCoverage;
+      currentCoverage=node;
+      node->scanx=scanx;
+      node->coverage=coverage;
+      node->length=(advance-increase);
      }
      
      windend+=(advance-increase)<<shiftNumberOfSamples;
-     windptr=windend-(1<<shiftNumberOfSamples);
+     windptr=windend-numberOfSamples;
 
+     accum+=*increase;
+     *increase=INT_MAX;
      increase=advance;
     }
+    
+    for(node=currentCoverage;node!=NULL;node=node->next)
+     self->_writeCoverageFunction(surface,mask,paint,node->scanx,scany,node->coverage,node->length,self->_blendFunction);
 
    }
-   
+      
    for(;activeRoot!=NULL;activeRoot=activeRoot->next)
     removeEdgeFromAET(activeRoot);
+    
+   CoverageNode *node;
+   for(node=freeCoverage;node!=NULL;node=node->next)
+    NSZoneFree(NULL,node);
+   for(node=currentCoverage;node!=NULL;node=node->next)
+    NSZoneFree(NULL,node);
 }
 
 void O2DContextClipAndFillEdges(KGRasterizer *self,int fillRuleMask){

@@ -16,7 +16,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <CoreGraphics/KGGraphicsState.h>
 #import <AppKit/KGDeviceContext_gdi.h>
 #import <CoreGraphics/O2MutablePath.h>
-#import <CoreGraphics/KGColor.h>
+#import <CoreGraphics/O2Color.h>
 #import <CoreGraphics/KGColorSpace.h>
 #import <CoreGraphics/KGShading.h>
 #import <CoreGraphics/KGFunction.h>
@@ -241,8 +241,8 @@ static RECT NSRectToRECT(NSRect rect) {
 
 -(void)drawPathInDeviceSpace:(O2Path *)path drawingMode:(int)mode state:(KGGraphicsState *)state {
    CGAffineTransform deviceTransform=state->_deviceSpaceTransform;
-   KGColor *fillColor=state->_fillColor;
-   KGColor *strokeColor=state->_strokeColor;
+   O2Color *fillColor=state->_fillColor;
+   O2Color *strokeColor=state->_strokeColor;
    XFORM current;
    XFORM userToDevice={deviceTransform.a,deviceTransform.b,deviceTransform.c,deviceTransform.d,deviceTransform.tx,
                        (deviceTransform.d<0.0)?deviceTransform.ty/*-1.0*/:deviceTransform.ty};

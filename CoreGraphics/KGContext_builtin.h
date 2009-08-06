@@ -39,22 +39,19 @@ typedef enum {
 } VGFillRuleMask;
 
 typedef struct Edge {
-   CGPoint		v0;
-   CGPoint		v1;
-   int         direction;
-   CGPoint     normal;
-   CGFloat     cnst;
-   int         minscany;
-   int         maxscany;
+   CGPoint v0;
+   CGPoint v1;
+   int     direction;
 // These are init/modified during AET processing, should be broken out to save memory
    struct Edge *next;
+   int          isVertical;
+   int          isFullCoverage;
    CGFloat      vdxwl;
    CGFloat      sxPre;
    CGFloat      exPre;
    CGFloat      bminx;
    CGFloat      bmaxx;
    int          minx;
-   int          maxx;
    CGFloat     *samples;
    CGFloat      minSample;
    CGFloat      maxSample;

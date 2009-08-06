@@ -9,7 +9,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "KGContext.h"
 #import "KGBitmapContext.h"
 #import "KGGraphicsState.h"
-#import "KGColor.h"
+#import "O2Color.h"
 #import "KGColorSpace.h"
 #import "O2MutablePath.h"
 #import "KGLayer.h"
@@ -435,16 +435,16 @@ static inline KGGraphicsState *currentState(KGContext *self){
    [self clipToPath];
 }
 
--(KGColor *)strokeColor {
+-(O2Color *)strokeColor {
    return [currentState(self) strokeColor];
 }
 
--(KGColor *)fillColor {
+-(O2Color *)fillColor {
    return [currentState(self) fillColor];
 }
 
 -(void)setStrokeColorSpace:(KGColorSpace *)colorSpace {
-   KGColor *color=[[KGColor alloc] initWithColorSpace:colorSpace];
+   O2Color *color=[[O2Color alloc] initWithColorSpace:colorSpace];
    
    [self setStrokeColor:color];
    
@@ -452,7 +452,7 @@ static inline KGGraphicsState *currentState(KGContext *self){
 }
 
 -(void)setFillColorSpace:(KGColorSpace *)colorSpace {
-   KGColor *color=[[KGColor alloc] initWithColorSpace:colorSpace];
+   O2Color *color=[[O2Color alloc] initWithColorSpace:colorSpace];
 
    [self setFillColor:color];
    
@@ -461,21 +461,21 @@ static inline KGGraphicsState *currentState(KGContext *self){
 
 -(void)setStrokeColorWithComponents:(const float *)components {
    KGColorSpace *colorSpace=[[self strokeColor] colorSpace];
-   KGColor      *color=[[KGColor alloc] initWithColorSpace:colorSpace components:components];
+   O2Color      *color=[[O2Color alloc] initWithColorSpace:colorSpace components:components];
    
    [self setStrokeColor:color];
    
    [color release];
 }
 
--(void)setStrokeColor:(KGColor *)color {
+-(void)setStrokeColor:(O2Color *)color {
    [currentState(self) setStrokeColor:color];
 }
 
 -(void)setGrayStrokeColor:(float)gray:(float)alpha {
    KGColorSpace *colorSpace=[[KGColorSpace alloc] initWithDeviceGray];
    float         components[2]={gray,alpha};
-   KGColor      *color=[[KGColor alloc] initWithColorSpace:colorSpace components:components];
+   O2Color      *color=[[O2Color alloc] initWithColorSpace:colorSpace components:components];
    
    [self setStrokeColor:color];
    
@@ -486,7 +486,7 @@ static inline KGGraphicsState *currentState(KGContext *self){
 -(void)setRGBStrokeColor:(float)r:(float)g:(float)b:(float)alpha {
    KGColorSpace *colorSpace=[[KGColorSpace alloc] initWithDeviceRGB];
    float         components[4]={r,g,b,alpha};
-   KGColor      *color=[[KGColor alloc] initWithColorSpace:colorSpace components:components];
+   O2Color      *color=[[O2Color alloc] initWithColorSpace:colorSpace components:components];
    
    [self setStrokeColor:color];
    
@@ -497,7 +497,7 @@ static inline KGGraphicsState *currentState(KGContext *self){
 -(void)setCMYKStrokeColor:(float)c:(float)m:(float)y:(float)k:(float)alpha {
    KGColorSpace *colorSpace=[[KGColorSpace alloc] initWithDeviceCMYK];
    float         components[5]={c,m,y,k,alpha};
-   KGColor      *color=[[KGColor alloc] initWithColorSpace:colorSpace components:components];
+   O2Color      *color=[[O2Color alloc] initWithColorSpace:colorSpace components:components];
    
    [self setStrokeColor:color];
    
@@ -507,21 +507,21 @@ static inline KGGraphicsState *currentState(KGContext *self){
 
 -(void)setFillColorWithComponents:(const float *)components {
    KGColorSpace *colorSpace=[[self fillColor] colorSpace];
-   KGColor      *color=[[KGColor alloc] initWithColorSpace:colorSpace components:components];
+   O2Color      *color=[[O2Color alloc] initWithColorSpace:colorSpace components:components];
    
    [self setFillColor:color];
    
    [color release];
 }
 
--(void)setFillColor:(KGColor *)color {
+-(void)setFillColor:(O2Color *)color {
    [currentState(self) setFillColor:color];
 }
 
 -(void)setGrayFillColor:(float)gray:(float)alpha {
    KGColorSpace *colorSpace=[[KGColorSpace alloc] initWithDeviceGray];
    float         components[2]={gray,alpha};
-   KGColor      *color=[[KGColor alloc] initWithColorSpace:colorSpace components:components];
+   O2Color      *color=[[O2Color alloc] initWithColorSpace:colorSpace components:components];
    
    [self setFillColor:color];
    
@@ -532,7 +532,7 @@ static inline KGGraphicsState *currentState(KGContext *self){
 -(void)setRGBFillColor:(float)r:(float)g:(float)b:(float)alpha {
    KGColorSpace *colorSpace=[[KGColorSpace alloc] initWithDeviceRGB];
    float         components[4]={r,g,b,alpha};
-   KGColor      *color=[[KGColor alloc] initWithColorSpace:colorSpace components:components];
+   O2Color      *color=[[O2Color alloc] initWithColorSpace:colorSpace components:components];
    
    [self setFillColor:color];
    
@@ -543,7 +543,7 @@ static inline KGGraphicsState *currentState(KGContext *self){
 -(void)setCMYKFillColor:(float)c:(float)m:(float)y:(float)k:(float)alpha {
    KGColorSpace *colorSpace=[[KGColorSpace alloc] initWithDeviceCMYK];
    float         components[5]={c,m,y,k,alpha};
-   KGColor      *color=[[KGColor alloc] initWithColorSpace:colorSpace components:components];
+   O2Color      *color=[[O2Color alloc] initWithColorSpace:colorSpace components:components];
    
    [self setFillColor:color];
    
@@ -557,7 +557,7 @@ static inline KGGraphicsState *currentState(KGContext *self){
 }
 
 -(void)setStrokeAlpha:(float)alpha {
-   KGColor *color=[[self strokeColor] copyWithAlpha:alpha];
+   O2Color *color=[[self strokeColor] copyWithAlpha:alpha];
    [self setStrokeColor:color];
    [color release];
 }
@@ -579,7 +579,7 @@ static inline KGGraphicsState *currentState(KGContext *self){
 }
 
 -(void)setFillAlpha:(float)alpha {
-   KGColor *color=[[self fillColor] copyWithAlpha:alpha];
+   O2Color *color=[[self fillColor] copyWithAlpha:alpha];
    [self setFillColor:color];
    [color release];
 }
@@ -679,7 +679,7 @@ static inline KGGraphicsState *currentState(KGContext *self){
    [currentState(self) setInterpolationQuality:quality];
 }
 
--(void)setShadowOffset:(CGSize)offset blur:(float)blur color:(KGColor *)color {
+-(void)setShadowOffset:(CGSize)offset blur:(float)blur color:(O2Color *)color {
    [currentState(self) setShadowOffset:offset blur:blur color:color];
 }
 

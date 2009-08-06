@@ -6,10 +6,10 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
-#import "KGColor.h"
+#import "O2Color.h"
 #import "KGColorSpace.h"
 
-@implementation KGColor
+@implementation O2Color
 
 -initWithColorSpace:(KGColorSpace *)colorSpace pattern:(KGPattern *)pattern components:(const CGFloat *)components {
    int i;
@@ -123,7 +123,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return _pattern;
 }
 
--(BOOL)isEqualToColor:(KGColor *)other {
+-(BOOL)isEqualToColor:(O2Color *)other {
    if(![_colorSpace isEqualToColorSpace:other->_colorSpace])
     return NO;
 
@@ -135,7 +135,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return YES;
 }
 
--(KGColor *)convertToColorSpace:(KGColorSpace *)otherSpace {
+-(O2Color *)convertToColorSpace:(KGColorSpace *)otherSpace {
    return nil;
 }
 
