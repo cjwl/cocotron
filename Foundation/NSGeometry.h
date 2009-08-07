@@ -14,7 +14,7 @@ typedef double CGFloat;
 typedef float CGFloat;
 #endif
 
-typedef struct {
+typedef struct _CGPoint {
    CGFloat x;
    CGFloat y;
 } NSPoint;
@@ -22,7 +22,7 @@ typedef struct {
 typedef NSPoint *NSPointArray;
 typedef NSPoint *NSPointPointer;
 
-typedef struct {
+typedef struct _CGSize {
    CGFloat width;
    CGFloat height;
 } NSSize;
@@ -30,7 +30,7 @@ typedef struct {
 typedef NSSize *NSSizeArray;
 typedef NSSize *NSSizePointer;
 
-typedef struct {
+typedef struct _CGRect {
    NSPoint origin;
    NSSize  size;
 } NSRect;
