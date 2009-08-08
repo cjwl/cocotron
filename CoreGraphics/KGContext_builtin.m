@@ -1100,12 +1100,16 @@ void O2DContextFillEdgesOnSurface(KGRasterizer *self,KGSurface *surface,KGImage 
       
    for(;activeRoot!=NULL;activeRoot=activeRoot->next)
     removeEdgeFromAET(activeRoot);
-    
-   CoverageNode *node;
-   for(node=freeCoverage;node!=NULL;node=node->next)
+
+   CoverageNode *node,*next;
+   for(node=freeCoverage;node!=NULL;node=next){
+    next=node->next;
     NSZoneFree(NULL,node);
-   for(node=currentCoverage;node!=NULL;node=node->next)
-    NSZoneFree(NULL,node);
+   }
+   for(node=currentCoverage;node!=NULL;node=next){
+    next=node->next;
+    NSZoneFree(NULL,node);    
+   }
 }
 
 void O2DContextClipAndFillEdges(KGRasterizer *self,int fillRuleMask){
