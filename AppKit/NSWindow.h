@@ -410,10 +410,6 @@ APPKIT_EXPORT NSString *NSWindowWillCloseNotification;
 -(void)toggleToolbarShown:sender;
 -(void)runToolbarCustomizationPalette:sender;
 
--(void)undo:sender;
--(void)redo:sender;
--(BOOL)validateMenuItem:(NSMenuItem *)item;
-
 @end
 
 @interface NSObject(NSWindow_delegate)

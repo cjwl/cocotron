@@ -103,7 +103,7 @@
 		C889745A0EA0BF3100D0A0A2 /* NSMatrix.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B546A0976075200DA0954 /* NSMatrix.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
 		C889745B0EA0BF3100D0A0A2 /* NSModalSessionX.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B546C0976075200DA0954 /* NSModalSessionX.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		C889745C0EA0BF3100D0A0A2 /* NSOpenPanel.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B546E0976075200DA0954 /* NSOpenPanel.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
-		C889745D0EA0BF3100D0A0A2 /* NSPageLayout.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54700976075200DA0954 /* NSPageLayout.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		C889745D0EA0BF3100D0A0A2 /* NSPageLayout.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54700976075200DA0954 /* NSPageLayout.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C889745E0EA0BF3100D0A0A2 /* NSPanel.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54720976075200DA0954 /* NSPanel.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
 		C889745F0EA0BF3100D0A0A2 /* NSPasteboard.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54740976075200DA0954 /* NSPasteboard.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
 		C88974610EA0BF3100D0A0A2 /* NSPopUpButton.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54780976075200DA0954 /* NSPopUpButton.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
@@ -779,7 +779,7 @@
 		C8A2E2DB0F07EA1F0054397C /* NSMatrix.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B546A0976075200DA0954 /* NSMatrix.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
 		C8A2E2DC0F07EA1F0054397C /* NSModalSessionX.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B546C0976075200DA0954 /* NSModalSessionX.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		C8A2E2DD0F07EA1F0054397C /* NSOpenPanel.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B546E0976075200DA0954 /* NSOpenPanel.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
-		C8A2E2DE0F07EA1F0054397C /* NSPageLayout.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54700976075200DA0954 /* NSPageLayout.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		C8A2E2DE0F07EA1F0054397C /* NSPageLayout.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54700976075200DA0954 /* NSPageLayout.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C8A2E2DF0F07EA1F0054397C /* NSPanel.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54720976075200DA0954 /* NSPanel.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
 		C8A2E2E00F07EA1F0054397C /* NSPasteboard.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54740976075200DA0954 /* NSPasteboard.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
 		C8A2E2E20F07EA1F0054397C /* NSPopUpButton.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54780976075200DA0954 /* NSPopUpButton.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
@@ -1496,7 +1496,7 @@
 		FE01A8410C5D9BCB00AEA51A /* NSMatrix.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B546A0976075200DA0954 /* NSMatrix.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
 		FE01A8420C5D9BCB00AEA51A /* NSModalSessionX.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B546C0976075200DA0954 /* NSModalSessionX.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE01A8430C5D9BCB00AEA51A /* NSOpenPanel.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B546E0976075200DA0954 /* NSOpenPanel.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
-		FE01A8440C5D9BCB00AEA51A /* NSPageLayout.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54700976075200DA0954 /* NSPageLayout.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FE01A8440C5D9BCB00AEA51A /* NSPageLayout.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54700976075200DA0954 /* NSPageLayout.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE01A8450C5D9BCB00AEA51A /* NSPanel.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54720976075200DA0954 /* NSPanel.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
 		FE01A8460C5D9BCB00AEA51A /* NSPasteboard.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54740976075200DA0954 /* NSPasteboard.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
 		FE01A8480C5D9BCB00AEA51A /* NSPopUpButton.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54780976075200DA0954 /* NSPopUpButton.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
@@ -2106,6 +2106,94 @@
 		FE3874A00F4333D600EC9F00 /* NSToolbarItemView.h in Headers */ = {isa = PBXBuildFile; fileRef = FE38749A0F4333D600EC9F00 /* NSToolbarItemView.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE3874A10F4333D600EC9F00 /* NSToolbarItemView.m in Sources */ = {isa = PBXBuildFile; fileRef = FE38749B0F4333D600EC9F00 /* NSToolbarItemView.m */; };
 		FE45EDCC0DC2407E00F49290 /* CGImageSource.m in Sources */ = {isa = PBXBuildFile; fileRef = FE45EDCB0DC2407E00F49290 /* CGImageSource.m */; };
+		FE463D65102CAE3500B265D6 /* NSAnimationContext.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463D63102CAE3500B265D6 /* NSAnimationContext.h */; };
+		FE463D66102CAE3500B265D6 /* NSAnimationContext.m in Sources */ = {isa = PBXBuildFile; fileRef = FE463D64102CAE3500B265D6 /* NSAnimationContext.m */; };
+		FE463D67102CAE3500B265D6 /* NSAnimationContext.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463D63102CAE3500B265D6 /* NSAnimationContext.h */; };
+		FE463D68102CAE3500B265D6 /* NSAnimationContext.m in Sources */ = {isa = PBXBuildFile; fileRef = FE463D64102CAE3500B265D6 /* NSAnimationContext.m */; };
+		FE463D69102CAE3500B265D6 /* NSAnimationContext.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463D63102CAE3500B265D6 /* NSAnimationContext.h */; };
+		FE463D6A102CAE3500B265D6 /* NSAnimationContext.m in Sources */ = {isa = PBXBuildFile; fileRef = FE463D64102CAE3500B265D6 /* NSAnimationContext.m */; };
+		FE463D6B102CAE3500B265D6 /* NSAnimationContext.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463D63102CAE3500B265D6 /* NSAnimationContext.h */; };
+		FE463D6C102CAE3500B265D6 /* NSAnimationContext.m in Sources */ = {isa = PBXBuildFile; fileRef = FE463D64102CAE3500B265D6 /* NSAnimationContext.m */; };
+		FE463D6F102CAEF500B265D6 /* NSCollectionView.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463D6D102CAEF500B265D6 /* NSCollectionView.h */; };
+		FE463D70102CAEF500B265D6 /* NSCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = FE463D6E102CAEF500B265D6 /* NSCollectionView.m */; };
+		FE463D71102CAEF500B265D6 /* NSCollectionView.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463D6D102CAEF500B265D6 /* NSCollectionView.h */; };
+		FE463D72102CAEF500B265D6 /* NSCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = FE463D6E102CAEF500B265D6 /* NSCollectionView.m */; };
+		FE463D73102CAEF500B265D6 /* NSCollectionView.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463D6D102CAEF500B265D6 /* NSCollectionView.h */; };
+		FE463D74102CAEF500B265D6 /* NSCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = FE463D6E102CAEF500B265D6 /* NSCollectionView.m */; };
+		FE463D75102CAEF500B265D6 /* NSCollectionView.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463D6D102CAEF500B265D6 /* NSCollectionView.h */; };
+		FE463D76102CAEF500B265D6 /* NSCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = FE463D6E102CAEF500B265D6 /* NSCollectionView.m */; };
+		FE463D85102CAF4A00B265D6 /* NSDockTile.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463D83102CAF4A00B265D6 /* NSDockTile.h */; };
+		FE463D86102CAF4A00B265D6 /* NSDockTile.m in Sources */ = {isa = PBXBuildFile; fileRef = FE463D84102CAF4A00B265D6 /* NSDockTile.m */; };
+		FE463D87102CAF4A00B265D6 /* NSDockTile.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463D83102CAF4A00B265D6 /* NSDockTile.h */; };
+		FE463D88102CAF4A00B265D6 /* NSDockTile.m in Sources */ = {isa = PBXBuildFile; fileRef = FE463D84102CAF4A00B265D6 /* NSDockTile.m */; };
+		FE463D89102CAF4A00B265D6 /* NSDockTile.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463D83102CAF4A00B265D6 /* NSDockTile.h */; };
+		FE463D8A102CAF4A00B265D6 /* NSDockTile.m in Sources */ = {isa = PBXBuildFile; fileRef = FE463D84102CAF4A00B265D6 /* NSDockTile.m */; };
+		FE463D8B102CAF4A00B265D6 /* NSDockTile.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463D83102CAF4A00B265D6 /* NSDockTile.h */; };
+		FE463D8C102CAF4A00B265D6 /* NSDockTile.m in Sources */ = {isa = PBXBuildFile; fileRef = FE463D84102CAF4A00B265D6 /* NSDockTile.m */; };
+		FE463ED4102D0F9D00B265D6 /* NSPathCell.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463EC4102D0F9C00B265D6 /* NSPathCell.h */; };
+		FE463ED5102D0F9D00B265D6 /* NSPathCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FE463EC5102D0F9C00B265D6 /* NSPathCell.m */; };
+		FE463ED6102D0F9D00B265D6 /* NSPathComponentCell.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463EC6102D0F9C00B265D6 /* NSPathComponentCell.h */; };
+		FE463ED7102D0F9D00B265D6 /* NSPathComponentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FE463EC7102D0F9C00B265D6 /* NSPathComponentCell.m */; };
+		FE463ED8102D0F9D00B265D6 /* NSPathControl.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463EC8102D0F9C00B265D6 /* NSPathControl.h */; };
+		FE463ED9102D0F9D00B265D6 /* NSPathControl.m in Sources */ = {isa = PBXBuildFile; fileRef = FE463EC9102D0F9D00B265D6 /* NSPathControl.m */; };
+		FE463EDA102D0F9D00B265D6 /* NSPredicateEditor.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463ECA102D0F9D00B265D6 /* NSPredicateEditor.h */; };
+		FE463EDB102D0F9D00B265D6 /* NSPredicateEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = FE463ECB102D0F9D00B265D6 /* NSPredicateEditor.m */; };
+		FE463EDC102D0F9D00B265D6 /* NSPredicateEditorRowTemplate.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463ECC102D0F9D00B265D6 /* NSPredicateEditorRowTemplate.h */; };
+		FE463EDD102D0F9D00B265D6 /* NSPredicateEditorRowTemplate.m in Sources */ = {isa = PBXBuildFile; fileRef = FE463ECD102D0F9D00B265D6 /* NSPredicateEditorRowTemplate.m */; };
+		FE463EDE102D0F9D00B265D6 /* NSRuleEditor.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463ECE102D0F9D00B265D6 /* NSRuleEditor.h */; };
+		FE463EDF102D0F9D00B265D6 /* NSRuleEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = FE463ECF102D0F9D00B265D6 /* NSRuleEditor.m */; };
+		FE463EE0102D0F9D00B265D6 /* NSTreeNode.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463ED0102D0F9D00B265D6 /* NSTreeNode.h */; };
+		FE463EE1102D0F9D00B265D6 /* NSTreeNode.m in Sources */ = {isa = PBXBuildFile; fileRef = FE463ED1102D0F9D00B265D6 /* NSTreeNode.m */; };
+		FE463EE2102D0F9D00B265D6 /* NSViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463ED2102D0F9D00B265D6 /* NSViewController.h */; };
+		FE463EE3102D0F9D00B265D6 /* NSViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FE463ED3102D0F9D00B265D6 /* NSViewController.m */; };
+		FE463EE4102D0F9D00B265D6 /* NSPathCell.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463EC4102D0F9C00B265D6 /* NSPathCell.h */; };
+		FE463EE5102D0F9D00B265D6 /* NSPathCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FE463EC5102D0F9C00B265D6 /* NSPathCell.m */; };
+		FE463EE6102D0F9D00B265D6 /* NSPathComponentCell.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463EC6102D0F9C00B265D6 /* NSPathComponentCell.h */; };
+		FE463EE7102D0F9D00B265D6 /* NSPathComponentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FE463EC7102D0F9C00B265D6 /* NSPathComponentCell.m */; };
+		FE463EE8102D0F9D00B265D6 /* NSPathControl.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463EC8102D0F9C00B265D6 /* NSPathControl.h */; };
+		FE463EE9102D0F9D00B265D6 /* NSPathControl.m in Sources */ = {isa = PBXBuildFile; fileRef = FE463EC9102D0F9D00B265D6 /* NSPathControl.m */; };
+		FE463EEA102D0F9D00B265D6 /* NSPredicateEditor.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463ECA102D0F9D00B265D6 /* NSPredicateEditor.h */; };
+		FE463EEB102D0F9D00B265D6 /* NSPredicateEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = FE463ECB102D0F9D00B265D6 /* NSPredicateEditor.m */; };
+		FE463EEC102D0F9D00B265D6 /* NSPredicateEditorRowTemplate.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463ECC102D0F9D00B265D6 /* NSPredicateEditorRowTemplate.h */; };
+		FE463EED102D0F9D00B265D6 /* NSPredicateEditorRowTemplate.m in Sources */ = {isa = PBXBuildFile; fileRef = FE463ECD102D0F9D00B265D6 /* NSPredicateEditorRowTemplate.m */; };
+		FE463EEE102D0F9D00B265D6 /* NSRuleEditor.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463ECE102D0F9D00B265D6 /* NSRuleEditor.h */; };
+		FE463EEF102D0F9D00B265D6 /* NSRuleEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = FE463ECF102D0F9D00B265D6 /* NSRuleEditor.m */; };
+		FE463EF0102D0F9D00B265D6 /* NSTreeNode.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463ED0102D0F9D00B265D6 /* NSTreeNode.h */; };
+		FE463EF1102D0F9D00B265D6 /* NSTreeNode.m in Sources */ = {isa = PBXBuildFile; fileRef = FE463ED1102D0F9D00B265D6 /* NSTreeNode.m */; };
+		FE463EF2102D0F9D00B265D6 /* NSViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463ED2102D0F9D00B265D6 /* NSViewController.h */; };
+		FE463EF3102D0F9D00B265D6 /* NSViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FE463ED3102D0F9D00B265D6 /* NSViewController.m */; };
+		FE463EF4102D0F9D00B265D6 /* NSPathCell.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463EC4102D0F9C00B265D6 /* NSPathCell.h */; };
+		FE463EF5102D0F9D00B265D6 /* NSPathCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FE463EC5102D0F9C00B265D6 /* NSPathCell.m */; };
+		FE463EF6102D0F9D00B265D6 /* NSPathComponentCell.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463EC6102D0F9C00B265D6 /* NSPathComponentCell.h */; };
+		FE463EF7102D0F9D00B265D6 /* NSPathComponentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FE463EC7102D0F9C00B265D6 /* NSPathComponentCell.m */; };
+		FE463EF8102D0F9D00B265D6 /* NSPathControl.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463EC8102D0F9C00B265D6 /* NSPathControl.h */; };
+		FE463EF9102D0F9D00B265D6 /* NSPathControl.m in Sources */ = {isa = PBXBuildFile; fileRef = FE463EC9102D0F9D00B265D6 /* NSPathControl.m */; };
+		FE463EFA102D0F9D00B265D6 /* NSPredicateEditor.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463ECA102D0F9D00B265D6 /* NSPredicateEditor.h */; };
+		FE463EFB102D0F9D00B265D6 /* NSPredicateEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = FE463ECB102D0F9D00B265D6 /* NSPredicateEditor.m */; };
+		FE463EFC102D0F9D00B265D6 /* NSPredicateEditorRowTemplate.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463ECC102D0F9D00B265D6 /* NSPredicateEditorRowTemplate.h */; };
+		FE463EFD102D0F9D00B265D6 /* NSPredicateEditorRowTemplate.m in Sources */ = {isa = PBXBuildFile; fileRef = FE463ECD102D0F9D00B265D6 /* NSPredicateEditorRowTemplate.m */; };
+		FE463EFE102D0F9D00B265D6 /* NSRuleEditor.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463ECE102D0F9D00B265D6 /* NSRuleEditor.h */; };
+		FE463EFF102D0F9D00B265D6 /* NSRuleEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = FE463ECF102D0F9D00B265D6 /* NSRuleEditor.m */; };
+		FE463F00102D0F9D00B265D6 /* NSTreeNode.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463ED0102D0F9D00B265D6 /* NSTreeNode.h */; };
+		FE463F01102D0F9D00B265D6 /* NSTreeNode.m in Sources */ = {isa = PBXBuildFile; fileRef = FE463ED1102D0F9D00B265D6 /* NSTreeNode.m */; };
+		FE463F02102D0F9D00B265D6 /* NSViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463ED2102D0F9D00B265D6 /* NSViewController.h */; };
+		FE463F03102D0F9D00B265D6 /* NSViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FE463ED3102D0F9D00B265D6 /* NSViewController.m */; };
+		FE463F04102D0F9D00B265D6 /* NSPathCell.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463EC4102D0F9C00B265D6 /* NSPathCell.h */; };
+		FE463F05102D0F9D00B265D6 /* NSPathCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FE463EC5102D0F9C00B265D6 /* NSPathCell.m */; };
+		FE463F06102D0F9D00B265D6 /* NSPathComponentCell.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463EC6102D0F9C00B265D6 /* NSPathComponentCell.h */; };
+		FE463F07102D0F9D00B265D6 /* NSPathComponentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FE463EC7102D0F9C00B265D6 /* NSPathComponentCell.m */; };
+		FE463F08102D0F9D00B265D6 /* NSPathControl.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463EC8102D0F9C00B265D6 /* NSPathControl.h */; };
+		FE463F09102D0F9D00B265D6 /* NSPathControl.m in Sources */ = {isa = PBXBuildFile; fileRef = FE463EC9102D0F9D00B265D6 /* NSPathControl.m */; };
+		FE463F0A102D0F9D00B265D6 /* NSPredicateEditor.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463ECA102D0F9D00B265D6 /* NSPredicateEditor.h */; };
+		FE463F0B102D0F9D00B265D6 /* NSPredicateEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = FE463ECB102D0F9D00B265D6 /* NSPredicateEditor.m */; };
+		FE463F0C102D0F9D00B265D6 /* NSPredicateEditorRowTemplate.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463ECC102D0F9D00B265D6 /* NSPredicateEditorRowTemplate.h */; };
+		FE463F0D102D0F9D00B265D6 /* NSPredicateEditorRowTemplate.m in Sources */ = {isa = PBXBuildFile; fileRef = FE463ECD102D0F9D00B265D6 /* NSPredicateEditorRowTemplate.m */; };
+		FE463F0E102D0F9D00B265D6 /* NSRuleEditor.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463ECE102D0F9D00B265D6 /* NSRuleEditor.h */; };
+		FE463F0F102D0F9D00B265D6 /* NSRuleEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = FE463ECF102D0F9D00B265D6 /* NSRuleEditor.m */; };
+		FE463F10102D0F9D00B265D6 /* NSTreeNode.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463ED0102D0F9D00B265D6 /* NSTreeNode.h */; };
+		FE463F11102D0F9D00B265D6 /* NSTreeNode.m in Sources */ = {isa = PBXBuildFile; fileRef = FE463ED1102D0F9D00B265D6 /* NSTreeNode.m */; };
+		FE463F12102D0F9D00B265D6 /* NSViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463ED2102D0F9D00B265D6 /* NSViewController.h */; };
+		FE463F13102D0F9D00B265D6 /* NSViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FE463ED3102D0F9D00B265D6 /* NSViewController.m */; };
 		FE54BEC90EEB086900B4559F /* NSOpenGLDrawable.h in Headers */ = {isa = PBXBuildFile; fileRef = FE54BEC70EEB086900B4559F /* NSOpenGLDrawable.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE54BECA0EEB086900B4559F /* NSOpenGLDrawable.m in Sources */ = {isa = PBXBuildFile; fileRef = FE54BEC80EEB086900B4559F /* NSOpenGLDrawable.m */; };
 		FE54BECB0EEB086900B4559F /* NSOpenGLDrawable.h in Headers */ = {isa = PBXBuildFile; fileRef = FE54BEC70EEB086900B4559F /* NSOpenGLDrawable.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -2212,7 +2300,7 @@
 		FEA313B00FD5667D00F480D4 /* NSMatrix.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B546A0976075200DA0954 /* NSMatrix.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
 		FEA313B10FD5667D00F480D4 /* NSModalSessionX.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B546C0976075200DA0954 /* NSModalSessionX.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FEA313B20FD5667D00F480D4 /* NSOpenPanel.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B546E0976075200DA0954 /* NSOpenPanel.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
-		FEA313B30FD5667D00F480D4 /* NSPageLayout.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54700976075200DA0954 /* NSPageLayout.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		FEA313B30FD5667D00F480D4 /* NSPageLayout.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54700976075200DA0954 /* NSPageLayout.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FEA313B40FD5667D00F480D4 /* NSPanel.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54720976075200DA0954 /* NSPanel.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
 		FEA313B50FD5667D00F480D4 /* NSPasteboard.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54740976075200DA0954 /* NSPasteboard.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
 		FEA313B60FD5667D00F480D4 /* NSPopUpButton.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E2B54780976075200DA0954 /* NSPopUpButton.h */; settings = {ATTRIBUTES = (Public, Project, ); }; };
@@ -3505,6 +3593,28 @@
 		FE4434020BB9833B00411464 /* NSGraphicsStyle_uxtheme.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSGraphicsStyle_uxtheme.h; sourceTree = "<group>"; };
 		FE4434030BB9833B00411464 /* NSGraphicsStyle_uxtheme.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSGraphicsStyle_uxtheme.m; sourceTree = "<group>"; };
 		FE45EDCB0DC2407E00F49290 /* CGImageSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CGImageSource.m; sourceTree = "<group>"; };
+		FE463D63102CAE3500B265D6 /* NSAnimationContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSAnimationContext.h; sourceTree = "<group>"; };
+		FE463D64102CAE3500B265D6 /* NSAnimationContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSAnimationContext.m; sourceTree = "<group>"; };
+		FE463D6D102CAEF500B265D6 /* NSCollectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSCollectionView.h; sourceTree = "<group>"; };
+		FE463D6E102CAEF500B265D6 /* NSCollectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSCollectionView.m; sourceTree = "<group>"; };
+		FE463D83102CAF4A00B265D6 /* NSDockTile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSDockTile.h; sourceTree = "<group>"; };
+		FE463D84102CAF4A00B265D6 /* NSDockTile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSDockTile.m; sourceTree = "<group>"; };
+		FE463EC4102D0F9C00B265D6 /* NSPathCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSPathCell.h; sourceTree = "<group>"; };
+		FE463EC5102D0F9C00B265D6 /* NSPathCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSPathCell.m; sourceTree = "<group>"; };
+		FE463EC6102D0F9C00B265D6 /* NSPathComponentCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSPathComponentCell.h; sourceTree = "<group>"; };
+		FE463EC7102D0F9C00B265D6 /* NSPathComponentCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSPathComponentCell.m; sourceTree = "<group>"; };
+		FE463EC8102D0F9C00B265D6 /* NSPathControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSPathControl.h; sourceTree = "<group>"; };
+		FE463EC9102D0F9D00B265D6 /* NSPathControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSPathControl.m; sourceTree = "<group>"; };
+		FE463ECA102D0F9D00B265D6 /* NSPredicateEditor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSPredicateEditor.h; sourceTree = "<group>"; };
+		FE463ECB102D0F9D00B265D6 /* NSPredicateEditor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSPredicateEditor.m; sourceTree = "<group>"; };
+		FE463ECC102D0F9D00B265D6 /* NSPredicateEditorRowTemplate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSPredicateEditorRowTemplate.h; sourceTree = "<group>"; };
+		FE463ECD102D0F9D00B265D6 /* NSPredicateEditorRowTemplate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSPredicateEditorRowTemplate.m; sourceTree = "<group>"; };
+		FE463ECE102D0F9D00B265D6 /* NSRuleEditor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSRuleEditor.h; sourceTree = "<group>"; };
+		FE463ECF102D0F9D00B265D6 /* NSRuleEditor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSRuleEditor.m; sourceTree = "<group>"; };
+		FE463ED0102D0F9D00B265D6 /* NSTreeNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSTreeNode.h; sourceTree = "<group>"; };
+		FE463ED1102D0F9D00B265D6 /* NSTreeNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSTreeNode.m; sourceTree = "<group>"; };
+		FE463ED2102D0F9D00B265D6 /* NSViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSViewController.h; sourceTree = "<group>"; };
+		FE463ED3102D0F9D00B265D6 /* NSViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSViewController.m; sourceTree = "<group>"; };
 		FE4BDC090BCD40C600E19685 /* NSFontDescriptor.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSFontDescriptor.h; sourceTree = "<group>"; };
 		FE4BDC0A0BCD40C600E19685 /* NSFontDescriptor.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSFontDescriptor.m; sourceTree = "<group>"; };
 		FE54BEC70EEB086900B4559F /* NSOpenGLDrawable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSOpenGLDrawable.h; sourceTree = "<group>"; };
@@ -3769,6 +3879,22 @@
 		6E2B53240976075200DA0954 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				FE463EC4102D0F9C00B265D6 /* NSPathCell.h */,
+				FE463EC5102D0F9C00B265D6 /* NSPathCell.m */,
+				FE463EC6102D0F9C00B265D6 /* NSPathComponentCell.h */,
+				FE463EC7102D0F9C00B265D6 /* NSPathComponentCell.m */,
+				FE463EC8102D0F9C00B265D6 /* NSPathControl.h */,
+				FE463EC9102D0F9D00B265D6 /* NSPathControl.m */,
+				FE463ECA102D0F9D00B265D6 /* NSPredicateEditor.h */,
+				FE463ECB102D0F9D00B265D6 /* NSPredicateEditor.m */,
+				FE463ECC102D0F9D00B265D6 /* NSPredicateEditorRowTemplate.h */,
+				FE463ECD102D0F9D00B265D6 /* NSPredicateEditorRowTemplate.m */,
+				FE463ECE102D0F9D00B265D6 /* NSRuleEditor.h */,
+				FE463ECF102D0F9D00B265D6 /* NSRuleEditor.m */,
+				FE463ED0102D0F9D00B265D6 /* NSTreeNode.h */,
+				FE463ED1102D0F9D00B265D6 /* NSTreeNode.m */,
+				FE463ED2102D0F9D00B265D6 /* NSViewController.h */,
+				FE463ED3102D0F9D00B265D6 /* NSViewController.m */,
 				FEB0822A0FFB1F2800C27509 /* CoreText */,
 				FEA317C10FD5893300F480D4 /* NSRaise.h */,
 				6E2B53FC0976075200DA0954 /* AppKit.h */,
@@ -3812,6 +3938,8 @@
 				FE6D918B101381F600BA6BAD /* NSCellUndoManager.m */,
 				6E2B54180976075200DA0954 /* NSClipView.h */,
 				6E2B533F0976075200DA0954 /* NSClipView.m */,
+				FE463D6D102CAEF500B265D6 /* NSCollectionView.h */,
+				FE463D6E102CAEF500B265D6 /* NSCollectionView.m */,
 				6E2B55430976075300DA0954 /* NSColor */,
 				6E2B541A0976075200DA0954 /* NSColorList.h */,
 				6E2B53410976075200DA0954 /* NSColorList.m */,
@@ -3845,6 +3973,8 @@
 				FE6DC3EF0BA9A7100082AC66 /* NSDatePickerCell.m */,
 				6E2B54320976075200DA0954 /* NSDisplay.h */,
 				6E2B53590976075200DA0954 /* NSDisplay.m */,
+				FE463D83102CAF4A00B265D6 /* NSDockTile.h */,
+				FE463D84102CAF4A00B265D6 /* NSDockTile.m */,
 				6E2B54340976075200DA0954 /* NSDocument.h */,
 				6E2B535B0976075200DA0954 /* NSDocument.m */,
 				6E2B54360976075200DA0954 /* NSDocumentController.h */,
@@ -4844,6 +4974,8 @@
 		FED310D70BCC022300552615 /* NSAnimation */ = {
 			isa = PBXGroup;
 			children = (
+				FE463D63102CAE3500B265D6 /* NSAnimationContext.h */,
+				FE463D64102CAE3500B265D6 /* NSAnimationContext.m */,
 				FED310DD0BCC027200552615 /* NSAnimation.h */,
 				FED310DE0BCC027200552615 /* NSAnimation.m */,
 				FED310DF0BCC027200552615 /* NSViewAnimation.h */,
@@ -5219,6 +5351,17 @@
 				A1CC701D100534AB00DB9974 /* NSCachingBinder.h in Headers */,
 				A1CC70441005371100DB9974 /* NSTextFieldBinder.h in Headers */,
 				FE6D918E101381F600BA6BAD /* NSCellUndoManager.h in Headers */,
+				FE463D67102CAE3500B265D6 /* NSAnimationContext.h in Headers */,
+				FE463D71102CAEF500B265D6 /* NSCollectionView.h in Headers */,
+				FE463D87102CAF4A00B265D6 /* NSDockTile.h in Headers */,
+				FE463EE4102D0F9D00B265D6 /* NSPathCell.h in Headers */,
+				FE463EE6102D0F9D00B265D6 /* NSPathComponentCell.h in Headers */,
+				FE463EE8102D0F9D00B265D6 /* NSPathControl.h in Headers */,
+				FE463EEA102D0F9D00B265D6 /* NSPredicateEditor.h in Headers */,
+				FE463EEC102D0F9D00B265D6 /* NSPredicateEditorRowTemplate.h in Headers */,
+				FE463EEE102D0F9D00B265D6 /* NSRuleEditor.h in Headers */,
+				FE463EF0102D0F9D00B265D6 /* NSTreeNode.h in Headers */,
+				FE463EF2102D0F9D00B265D6 /* NSViewController.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5584,6 +5727,17 @@
 				A1CC701F100534AB00DB9974 /* NSCachingBinder.h in Headers */,
 				A1CC70421005371100DB9974 /* NSTextFieldBinder.h in Headers */,
 				FE6D9190101381F600BA6BAD /* NSCellUndoManager.h in Headers */,
+				FE463D69102CAE3500B265D6 /* NSAnimationContext.h in Headers */,
+				FE463D73102CAEF500B265D6 /* NSCollectionView.h in Headers */,
+				FE463D89102CAF4A00B265D6 /* NSDockTile.h in Headers */,
+				FE463EF4102D0F9D00B265D6 /* NSPathCell.h in Headers */,
+				FE463EF6102D0F9D00B265D6 /* NSPathComponentCell.h in Headers */,
+				FE463EF8102D0F9D00B265D6 /* NSPathControl.h in Headers */,
+				FE463EFA102D0F9D00B265D6 /* NSPredicateEditor.h in Headers */,
+				FE463EFC102D0F9D00B265D6 /* NSPredicateEditorRowTemplate.h in Headers */,
+				FE463EFE102D0F9D00B265D6 /* NSRuleEditor.h in Headers */,
+				FE463F00102D0F9D00B265D6 /* NSTreeNode.h in Headers */,
+				FE463F02102D0F9D00B265D6 /* NSViewController.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5944,6 +6098,17 @@
 				A1CC7019100534AB00DB9974 /* NSCachingBinder.h in Headers */,
 				A1CC70481005371100DB9974 /* NSTextFieldBinder.h in Headers */,
 				FE6D918C101381F600BA6BAD /* NSCellUndoManager.h in Headers */,
+				FE463D65102CAE3500B265D6 /* NSAnimationContext.h in Headers */,
+				FE463D6F102CAEF500B265D6 /* NSCollectionView.h in Headers */,
+				FE463D85102CAF4A00B265D6 /* NSDockTile.h in Headers */,
+				FE463ED4102D0F9D00B265D6 /* NSPathCell.h in Headers */,
+				FE463ED6102D0F9D00B265D6 /* NSPathComponentCell.h in Headers */,
+				FE463ED8102D0F9D00B265D6 /* NSPathControl.h in Headers */,
+				FE463EDA102D0F9D00B265D6 /* NSPredicateEditor.h in Headers */,
+				FE463EDC102D0F9D00B265D6 /* NSPredicateEditorRowTemplate.h in Headers */,
+				FE463EDE102D0F9D00B265D6 /* NSRuleEditor.h in Headers */,
+				FE463EE0102D0F9D00B265D6 /* NSTreeNode.h in Headers */,
+				FE463EE2102D0F9D00B265D6 /* NSViewController.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6232,6 +6397,17 @@
 				A1CC701B100534AB00DB9974 /* NSCachingBinder.h in Headers */,
 				A1CC70461005371100DB9974 /* NSTextFieldBinder.h in Headers */,
 				FE6D9192101381F600BA6BAD /* NSCellUndoManager.h in Headers */,
+				FE463D6B102CAE3500B265D6 /* NSAnimationContext.h in Headers */,
+				FE463D75102CAEF500B265D6 /* NSCollectionView.h in Headers */,
+				FE463D8B102CAF4A00B265D6 /* NSDockTile.h in Headers */,
+				FE463F04102D0F9D00B265D6 /* NSPathCell.h in Headers */,
+				FE463F06102D0F9D00B265D6 /* NSPathComponentCell.h in Headers */,
+				FE463F08102D0F9D00B265D6 /* NSPathControl.h in Headers */,
+				FE463F0A102D0F9D00B265D6 /* NSPredicateEditor.h in Headers */,
+				FE463F0C102D0F9D00B265D6 /* NSPredicateEditorRowTemplate.h in Headers */,
+				FE463F0E102D0F9D00B265D6 /* NSRuleEditor.h in Headers */,
+				FE463F10102D0F9D00B265D6 /* NSTreeNode.h in Headers */,
+				FE463F12102D0F9D00B265D6 /* NSViewController.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6993,6 +7169,17 @@
 				A1CC701E100534AB00DB9974 /* NSCachingBinder.m in Sources */,
 				A1CC70451005371100DB9974 /* NSTextFieldBinder.m in Sources */,
 				FE6D918F101381F600BA6BAD /* NSCellUndoManager.m in Sources */,
+				FE463D68102CAE3500B265D6 /* NSAnimationContext.m in Sources */,
+				FE463D72102CAEF500B265D6 /* NSCollectionView.m in Sources */,
+				FE463D88102CAF4A00B265D6 /* NSDockTile.m in Sources */,
+				FE463EE5102D0F9D00B265D6 /* NSPathCell.m in Sources */,
+				FE463EE7102D0F9D00B265D6 /* NSPathComponentCell.m in Sources */,
+				FE463EE9102D0F9D00B265D6 /* NSPathControl.m in Sources */,
+				FE463EEB102D0F9D00B265D6 /* NSPredicateEditor.m in Sources */,
+				FE463EED102D0F9D00B265D6 /* NSPredicateEditorRowTemplate.m in Sources */,
+				FE463EEF102D0F9D00B265D6 /* NSRuleEditor.m in Sources */,
+				FE463EF1102D0F9D00B265D6 /* NSTreeNode.m in Sources */,
+				FE463EF3102D0F9D00B265D6 /* NSViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7326,6 +7513,17 @@
 				A1CC7020100534AB00DB9974 /* NSCachingBinder.m in Sources */,
 				A1CC70431005371100DB9974 /* NSTextFieldBinder.m in Sources */,
 				FE6D9191101381F600BA6BAD /* NSCellUndoManager.m in Sources */,
+				FE463D6A102CAE3500B265D6 /* NSAnimationContext.m in Sources */,
+				FE463D74102CAEF500B265D6 /* NSCollectionView.m in Sources */,
+				FE463D8A102CAF4A00B265D6 /* NSDockTile.m in Sources */,
+				FE463EF5102D0F9D00B265D6 /* NSPathCell.m in Sources */,
+				FE463EF7102D0F9D00B265D6 /* NSPathComponentCell.m in Sources */,
+				FE463EF9102D0F9D00B265D6 /* NSPathControl.m in Sources */,
+				FE463EFB102D0F9D00B265D6 /* NSPredicateEditor.m in Sources */,
+				FE463EFD102D0F9D00B265D6 /* NSPredicateEditorRowTemplate.m in Sources */,
+				FE463EFF102D0F9D00B265D6 /* NSRuleEditor.m in Sources */,
+				FE463F01102D0F9D00B265D6 /* NSTreeNode.m in Sources */,
+				FE463F03102D0F9D00B265D6 /* NSViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7693,6 +7891,17 @@
 				A1CC701A100534AB00DB9974 /* NSCachingBinder.m in Sources */,
 				A1CC70491005371100DB9974 /* NSTextFieldBinder.m in Sources */,
 				FE6D918D101381F600BA6BAD /* NSCellUndoManager.m in Sources */,
+				FE463D66102CAE3500B265D6 /* NSAnimationContext.m in Sources */,
+				FE463D70102CAEF500B265D6 /* NSCollectionView.m in Sources */,
+				FE463D86102CAF4A00B265D6 /* NSDockTile.m in Sources */,
+				FE463ED5102D0F9D00B265D6 /* NSPathCell.m in Sources */,
+				FE463ED7102D0F9D00B265D6 /* NSPathComponentCell.m in Sources */,
+				FE463ED9102D0F9D00B265D6 /* NSPathControl.m in Sources */,
+				FE463EDB102D0F9D00B265D6 /* NSPredicateEditor.m in Sources */,
+				FE463EDD102D0F9D00B265D6 /* NSPredicateEditorRowTemplate.m in Sources */,
+				FE463EDF102D0F9D00B265D6 /* NSRuleEditor.m in Sources */,
+				FE463EE1102D0F9D00B265D6 /* NSTreeNode.m in Sources */,
+				FE463EE3102D0F9D00B265D6 /* NSViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7931,6 +8140,17 @@
 				A1CC701C100534AB00DB9974 /* NSCachingBinder.m in Sources */,
 				A1CC70471005371100DB9974 /* NSTextFieldBinder.m in Sources */,
 				FE6D9193101381F600BA6BAD /* NSCellUndoManager.m in Sources */,
+				FE463D6C102CAE3500B265D6 /* NSAnimationContext.m in Sources */,
+				FE463D76102CAEF500B265D6 /* NSCollectionView.m in Sources */,
+				FE463D8C102CAF4A00B265D6 /* NSDockTile.m in Sources */,
+				FE463F05102D0F9D00B265D6 /* NSPathCell.m in Sources */,
+				FE463F07102D0F9D00B265D6 /* NSPathComponentCell.m in Sources */,
+				FE463F09102D0F9D00B265D6 /* NSPathControl.m in Sources */,
+				FE463F0B102D0F9D00B265D6 /* NSPredicateEditor.m in Sources */,
+				FE463F0D102D0F9D00B265D6 /* NSPredicateEditorRowTemplate.m in Sources */,
+				FE463F0F102D0F9D00B265D6 /* NSRuleEditor.m in Sources */,
+				FE463F11102D0F9D00B265D6 /* NSTreeNode.m in Sources */,
+				FE463F13102D0F9D00B265D6 /* NSViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
