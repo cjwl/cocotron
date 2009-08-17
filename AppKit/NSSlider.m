@@ -6,10 +6,14 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
-// Original - David Young <daver@geeks.org>
 #import <AppKit/NSSlider.h>
+#import <AppKit/NSSliderCell.h>
 
 @implementation NSSlider
+
++(Class)cellClass {
+   return [NSSliderCell class];
+}
 
 -(double)minValue {
    return [[self selectedCell] minValue];
@@ -19,6 +23,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return [[self selectedCell] maxValue];
 }
 
+-(int)numberOfTickMarks {
+    return [[self selectedCell] numberOfTickMarks];
+    [self setNeedsDisplay:YES];
+}
+
 -(void)setMinValue:(double)value {
    [[self selectedCell] setMinValue:value];
    [self setNeedsDisplay:YES];
@@ -26,6 +35,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)setMaxValue:(double)value {
     [[self selectedCell] setMaxValue:value];
+    [self setNeedsDisplay:YES];
+}
+
+-(void)setNumberOfTickMarks:(int)value {
+    [[self selectedCell] setNumberOfTickMarks:value];
     [self setNeedsDisplay:YES];
 }
 
