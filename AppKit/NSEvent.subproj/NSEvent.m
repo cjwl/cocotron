@@ -10,10 +10,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSEvent_mouse.h>
 #import <AppKit/NSEvent_keyboard.h>
 #import <AppKit/NSEvent_periodic.h>
+#import <AppKit/NSEvent_other.h>
 #import <AppKit/NSApplication.h>
 #import <AppKit/NSWindow.h>
 #import <AppKit/NSDisplay.h>
 #import <Foundation/NSDate.h>
+#import <Foundation/NSException.h>
 
 @implementation NSEvent
 
@@ -50,6 +52,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 +(NSEvent *)keyEventWithType:(NSEventType)type location:(NSPoint)location modifierFlags:(unsigned int)modifierFlags timestamp:(NSTimeInterval)timestamp windowNumber:(int)windowNumber context:(NSGraphicsContext *)context characters:(NSString *)characters charactersIgnoringModifiers:(NSString *)charactersIgnoringModifiers isARepeat:(BOOL)isARepeat keyCode:(unsigned short)keyCode {
    return [[[NSEvent_keyboard alloc] initWithType:type location:location modifierFlags:modifierFlags window:(id)windowNumber characters:characters charactersIgnoringModifiers:charactersIgnoringModifiers isARepeat:isARepeat keyCode:keyCode] autorelease];
 }
+
++(NSEvent *)otherEventWithType:(NSEventType)type location:(NSPoint)location modifierFlags:(NSUInteger)flags timestamp:(NSTimeInterval)time windowNumber:(NSInteger)windowNum context:(NSGraphicsContext *)context subtype:(short)subtype data1:(NSInteger)data1 data2:(NSInteger)data2 {
+   return [[NSEvent_other alloc] initWithType: type subtype: subtype data1: data1 data2: data2];
+}
+
 
 -(NSEventType)type {
    return _type;
@@ -110,6 +117,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     return [NSString stringWithFormat:@"<%@[0x%lx] type: %d>", [self class], self, _type];
 }
 
+
 static NSTimer *_periodicTimer=nil;
 
 +(void)_periodicDelay:(NSTimer *)timer {
@@ -151,6 +159,23 @@ static NSTimer *_periodicTimer=nil;
    [_periodicTimer release];
    _periodicTimer=nil;
 }
+
+-(short)subtype {
+   [NSException raise:NSInternalInconsistencyException format:@"No event subtype in %@",[self class]];
+   return 0;
+}
+
+-(NSInteger)data1 {
+   [NSException raise:NSInternalInconsistencyException format:@"No event data1 in %@",[self class]];
+   return 0;
+}
+
+-(NSInteger)data2 {
+   [NSException raise:NSInternalInconsistencyException format:@"No event data2 in %@",[self class]];
+   return 0;
+}
+
+
 
 @end
 

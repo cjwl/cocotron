@@ -2238,6 +2238,14 @@
 		FE8D95210CE4057300AFB060 /* NSMultipleValueBinder.m in Sources */ = {isa = PBXBuildFile; fileRef = FE8D951F0CE4057300AFB060 /* NSMultipleValueBinder.m */; };
 		FE8F9F2A0C9C5D0000270AEE /* KGzlib.h in Headers */ = {isa = PBXBuildFile; fileRef = FE8F9F260C9C5D0000270AEE /* KGzlib.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE8F9F2B0C9C5D0000270AEE /* KGzlib.m in Sources */ = {isa = PBXBuildFile; fileRef = FE8F9F270C9C5D0000270AEE /* KGzlib.m */; };
+		FE953DDA103B0EA0008A71F0 /* NSEvent_other.h in Headers */ = {isa = PBXBuildFile; fileRef = FE953DD8103B0EA0008A71F0 /* NSEvent_other.h */; };
+		FE953DDB103B0EA0008A71F0 /* NSEvent_other.m in Sources */ = {isa = PBXBuildFile; fileRef = FE953DD9103B0EA0008A71F0 /* NSEvent_other.m */; };
+		FE953DDC103B0EA0008A71F0 /* NSEvent_other.h in Headers */ = {isa = PBXBuildFile; fileRef = FE953DD8103B0EA0008A71F0 /* NSEvent_other.h */; };
+		FE953DDD103B0EA0008A71F0 /* NSEvent_other.m in Sources */ = {isa = PBXBuildFile; fileRef = FE953DD9103B0EA0008A71F0 /* NSEvent_other.m */; };
+		FE953DDE103B0EA0008A71F0 /* NSEvent_other.h in Headers */ = {isa = PBXBuildFile; fileRef = FE953DD8103B0EA0008A71F0 /* NSEvent_other.h */; };
+		FE953DDF103B0EA0008A71F0 /* NSEvent_other.m in Sources */ = {isa = PBXBuildFile; fileRef = FE953DD9103B0EA0008A71F0 /* NSEvent_other.m */; };
+		FE953DE0103B0EA0008A71F0 /* NSEvent_other.h in Headers */ = {isa = PBXBuildFile; fileRef = FE953DD8103B0EA0008A71F0 /* NSEvent_other.h */; };
+		FE953DE1103B0EA0008A71F0 /* NSEvent_other.m in Sources */ = {isa = PBXBuildFile; fileRef = FE953DD9103B0EA0008A71F0 /* NSEvent_other.m */; };
 		FE9DB3D50FD6BD5A00A1CE17 /* NSRangeEntries.h in Headers */ = {isa = PBXBuildFile; fileRef = FEA318290FD5961100F480D4 /* NSRangeEntries.h */; };
 		FE9DB3D60FD6BD5A00A1CE17 /* NSRangeEntries.h in Headers */ = {isa = PBXBuildFile; fileRef = FEA318290FD5961100F480D4 /* NSRangeEntries.h */; };
 		FE9DB3D70FD6BD5B00A1CE17 /* NSRangeEntries.h in Headers */ = {isa = PBXBuildFile; fileRef = FEA318290FD5961100F480D4 /* NSRangeEntries.h */; };
@@ -3739,6 +3747,8 @@
 		FE8D951F0CE4057300AFB060 /* NSMultipleValueBinder.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSMultipleValueBinder.m; sourceTree = "<group>"; };
 		FE8F9F260C9C5D0000270AEE /* KGzlib.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = KGzlib.h; sourceTree = "<group>"; };
 		FE8F9F270C9C5D0000270AEE /* KGzlib.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = KGzlib.m; sourceTree = "<group>"; };
+		FE953DD8103B0EA0008A71F0 /* NSEvent_other.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSEvent_other.h; sourceTree = "<group>"; };
+		FE953DD9103B0EA0008A71F0 /* NSEvent_other.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSEvent_other.m; sourceTree = "<group>"; };
 		FEA25F960EECCE4D008750D0 /* NSSound_win32.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSSound_win32.h; sourceTree = "<group>"; };
 		FEA25F970EECCE4D008750D0 /* NSSound_win32.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSSound_win32.m; sourceTree = "<group>"; };
 		FEA3164C0FD5667D00F480D4 /* AppKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AppKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -4340,6 +4350,8 @@
 		6E2B55970976075300DA0954 /* NSEvent */ = {
 			isa = PBXGroup;
 			children = (
+				FE953DD8103B0EA0008A71F0 /* NSEvent_other.h */,
+				FE953DD9103B0EA0008A71F0 /* NSEvent_other.m */,
 				6E2B55AA0976075300DA0954 /* NSEvent.h */,
 				6E2B559F0976075300DA0954 /* NSEvent.m */,
 				6E2B55AC0976075300DA0954 /* NSEvent_CoreGraphics.h */,
@@ -5362,6 +5374,7 @@
 				FE463EEE102D0F9D00B265D6 /* NSRuleEditor.h in Headers */,
 				FE463EF0102D0F9D00B265D6 /* NSTreeNode.h in Headers */,
 				FE463EF2102D0F9D00B265D6 /* NSViewController.h in Headers */,
+				FE953DDC103B0EA0008A71F0 /* NSEvent_other.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5738,6 +5751,7 @@
 				FE463EFE102D0F9D00B265D6 /* NSRuleEditor.h in Headers */,
 				FE463F00102D0F9D00B265D6 /* NSTreeNode.h in Headers */,
 				FE463F02102D0F9D00B265D6 /* NSViewController.h in Headers */,
+				FE953DDE103B0EA0008A71F0 /* NSEvent_other.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6109,6 +6123,7 @@
 				FE463EDE102D0F9D00B265D6 /* NSRuleEditor.h in Headers */,
 				FE463EE0102D0F9D00B265D6 /* NSTreeNode.h in Headers */,
 				FE463EE2102D0F9D00B265D6 /* NSViewController.h in Headers */,
+				FE953DDA103B0EA0008A71F0 /* NSEvent_other.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6408,6 +6423,7 @@
 				FE463F0E102D0F9D00B265D6 /* NSRuleEditor.h in Headers */,
 				FE463F10102D0F9D00B265D6 /* NSTreeNode.h in Headers */,
 				FE463F12102D0F9D00B265D6 /* NSViewController.h in Headers */,
+				FE953DE0103B0EA0008A71F0 /* NSEvent_other.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7180,6 +7196,7 @@
 				FE463EEF102D0F9D00B265D6 /* NSRuleEditor.m in Sources */,
 				FE463EF1102D0F9D00B265D6 /* NSTreeNode.m in Sources */,
 				FE463EF3102D0F9D00B265D6 /* NSViewController.m in Sources */,
+				FE953DDD103B0EA0008A71F0 /* NSEvent_other.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7524,6 +7541,7 @@
 				FE463EFF102D0F9D00B265D6 /* NSRuleEditor.m in Sources */,
 				FE463F01102D0F9D00B265D6 /* NSTreeNode.m in Sources */,
 				FE463F03102D0F9D00B265D6 /* NSViewController.m in Sources */,
+				FE953DDF103B0EA0008A71F0 /* NSEvent_other.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7902,6 +7920,7 @@
 				FE463EDF102D0F9D00B265D6 /* NSRuleEditor.m in Sources */,
 				FE463EE1102D0F9D00B265D6 /* NSTreeNode.m in Sources */,
 				FE463EE3102D0F9D00B265D6 /* NSViewController.m in Sources */,
+				FE953DDB103B0EA0008A71F0 /* NSEvent_other.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8151,6 +8170,7 @@
 				FE463F0F102D0F9D00B265D6 /* NSRuleEditor.m in Sources */,
 				FE463F11102D0F9D00B265D6 /* NSTreeNode.m in Sources */,
 				FE463F13102D0F9D00B265D6 /* NSViewController.m in Sources */,
+				FE953DE1103B0EA0008A71F0 /* NSEvent_other.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

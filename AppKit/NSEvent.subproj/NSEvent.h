@@ -157,6 +157,9 @@ enum {
 
 +(NSEvent *)keyEventWithType:(NSEventType)type location:(NSPoint)location modifierFlags:(unsigned int)modifierFlags timestamp:(NSTimeInterval)timestamp windowNumber:(int)windowNumber context:(NSGraphicsContext *)context characters:(NSString *)characters charactersIgnoringModifiers:(NSString *)charactersIgnoringModifiers isARepeat:(BOOL)isARepeat keyCode:(unsigned short)keyCode;
 
++(NSEvent *)otherEventWithType:(NSEventType)type location:(NSPoint)location modifierFlags:(NSUInteger)flags timestamp:(NSTimeInterval)time windowNumber:(NSInteger)windowNum context:(NSGraphicsContext *)context subtype:(short)subtype data1:(NSInteger)data1 data2:(NSInteger)data2;
+
+
 -(NSEventType)type;
 -(NSTimeInterval)timestamp;
 -(NSPoint)locationInWindow;
@@ -174,6 +177,10 @@ enum {
 
 +(void)startPeriodicEventsAfterDelay:(NSTimeInterval)delay withPeriod:(NSTimeInterval)period;
 +(void)stopPeriodicEvents;
+
+-(short)subtype;
+-(NSInteger)data1;
+-(NSInteger)data2;
 
 @end
 
