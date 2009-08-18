@@ -50,7 +50,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(NSDictionary *)attributesAtIndex:(NSUInteger)location effectiveRange:(NSRangePointer)effectiveRangep {
    NSDictionary *result;
 
-   NSAssert2(location<[self length],@"index %d beyond length %d",location,[self length]);
+   NSAssert2(location<=[self length],@"index %d beyond length %d",location,[self length]);
 
    if((result=NSRangeEntryAtIndex(_rangeToAttributes,location,effectiveRangep))==nil)
     result=[NSDictionary dictionary];
