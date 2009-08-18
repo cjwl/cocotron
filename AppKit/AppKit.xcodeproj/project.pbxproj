@@ -2238,13 +2238,13 @@
 		FE8D95210CE4057300AFB060 /* NSMultipleValueBinder.m in Sources */ = {isa = PBXBuildFile; fileRef = FE8D951F0CE4057300AFB060 /* NSMultipleValueBinder.m */; };
 		FE8F9F2A0C9C5D0000270AEE /* KGzlib.h in Headers */ = {isa = PBXBuildFile; fileRef = FE8F9F260C9C5D0000270AEE /* KGzlib.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE8F9F2B0C9C5D0000270AEE /* KGzlib.m in Sources */ = {isa = PBXBuildFile; fileRef = FE8F9F270C9C5D0000270AEE /* KGzlib.m */; };
-		FE953DDA103B0EA0008A71F0 /* NSEvent_other.h in Headers */ = {isa = PBXBuildFile; fileRef = FE953DD8103B0EA0008A71F0 /* NSEvent_other.h */; };
+		FE953DDA103B0EA0008A71F0 /* NSEvent_other.h in Headers */ = {isa = PBXBuildFile; fileRef = FE953DD8103B0EA0008A71F0 /* NSEvent_other.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE953DDB103B0EA0008A71F0 /* NSEvent_other.m in Sources */ = {isa = PBXBuildFile; fileRef = FE953DD9103B0EA0008A71F0 /* NSEvent_other.m */; };
-		FE953DDC103B0EA0008A71F0 /* NSEvent_other.h in Headers */ = {isa = PBXBuildFile; fileRef = FE953DD8103B0EA0008A71F0 /* NSEvent_other.h */; };
+		FE953DDC103B0EA0008A71F0 /* NSEvent_other.h in Headers */ = {isa = PBXBuildFile; fileRef = FE953DD8103B0EA0008A71F0 /* NSEvent_other.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE953DDD103B0EA0008A71F0 /* NSEvent_other.m in Sources */ = {isa = PBXBuildFile; fileRef = FE953DD9103B0EA0008A71F0 /* NSEvent_other.m */; };
-		FE953DDE103B0EA0008A71F0 /* NSEvent_other.h in Headers */ = {isa = PBXBuildFile; fileRef = FE953DD8103B0EA0008A71F0 /* NSEvent_other.h */; };
+		FE953DDE103B0EA0008A71F0 /* NSEvent_other.h in Headers */ = {isa = PBXBuildFile; fileRef = FE953DD8103B0EA0008A71F0 /* NSEvent_other.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE953DDF103B0EA0008A71F0 /* NSEvent_other.m in Sources */ = {isa = PBXBuildFile; fileRef = FE953DD9103B0EA0008A71F0 /* NSEvent_other.m */; };
-		FE953DE0103B0EA0008A71F0 /* NSEvent_other.h in Headers */ = {isa = PBXBuildFile; fileRef = FE953DD8103B0EA0008A71F0 /* NSEvent_other.h */; };
+		FE953DE0103B0EA0008A71F0 /* NSEvent_other.h in Headers */ = {isa = PBXBuildFile; fileRef = FE953DD8103B0EA0008A71F0 /* NSEvent_other.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE953DE1103B0EA0008A71F0 /* NSEvent_other.m in Sources */ = {isa = PBXBuildFile; fileRef = FE953DD9103B0EA0008A71F0 /* NSEvent_other.m */; };
 		FE9DB3D50FD6BD5A00A1CE17 /* NSRangeEntries.h in Headers */ = {isa = PBXBuildFile; fileRef = FEA318290FD5961100F480D4 /* NSRangeEntries.h */; };
 		FE9DB3D60FD6BD5A00A1CE17 /* NSRangeEntries.h in Headers */ = {isa = PBXBuildFile; fileRef = FEA318290FD5961100F480D4 /* NSRangeEntries.h */; };
