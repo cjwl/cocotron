@@ -49,6 +49,17 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return self;
 }
 
+-initWithFrame:(NSRect) frame {
+  NSView *contentview;
+
+  [super initWithFrame: frame];
+  [contentview initWithFrame:NSMakeRect(0,0,NSWidth(frame),NSHeight(frame))];
+  [contentview  setAutoresizingMask: NSViewWidthSizable| NSViewHeightSizable];
+  [self addSubview: contentview];
+  [self setAutoresizesSubviews:YES];
+  return self;
+}
+  
 -(void)dealloc {
    [_titleCell release];
    [super dealloc];
