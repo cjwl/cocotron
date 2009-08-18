@@ -84,6 +84,8 @@ typedef enum {
    NSEvent        *_currentEvent;
 
    NSMutableArray *_modalStack;
+   NSMutableArray *_orderedDocuments;
+   NSMutableArray *_orderedWindows;
 }
 
 +(NSApplication *)sharedApplication;
@@ -200,6 +202,9 @@ typedef enum {
 -(void)_windowDidBecomeActive:(NSWindow *)window;
 -(void)_windowWillBecomeDeactive:(NSWindow *)window;
 -(void)_windowDidBecomeDeactive:(NSWindow *)window;
+-(void)_windowOrderingChange:(NSWindowOrderingMode)place forWindow:(NSWindow *)window relativeTo:(NSWindow *)relativeWindow;
+-(void)_updateOrderedDocuments;
+
 @end
 
 @interface NSObject(NSApplication_serviceRequest)

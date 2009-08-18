@@ -125,6 +125,8 @@ id NSApp=nil;
    _display=[[NSDisplay currentDisplay] retain];
 
    _windows=[NSMutableArray new];
+   _orderedWindows=[NSMutableArray new];
+   _orderedDocuments=[NSMutableArray new];
    _mainMenu=nil;
       
    _modalStack=[NSMutableArray new];
@@ -243,13 +245,11 @@ id NSApp=nil;
 }
 
 -(NSArray *)orderedDocuments {
-   NSUnimplementedMethod();
-   return nil;
+  return _orderedDocuments;
 }
 
 -(NSArray *)orderedWindows {
-   NSUnimplementedMethod();
-   return nil;
+  return _orderedWindows;
 }
 
 -(void)preventWindowOrdering {
@@ -1024,6 +1024,68 @@ standardAboutPanel] retain];
 -(void)_addWindow:(NSWindow *)window {
    [_windows addObject:window];
 }
+
+-(void)_windowOrderingChange:(NSWindowOrderingMode)place forWindow:(NSWindow *)window relativeTo:(NSWindow *)relativeWindow {
+  NSUInteger index, count;
+
+  NSWindowController *controller = [window windowController];
+  NSDocument *document = [controller document];
+
+  [_orderedWindows removeObject: window];
+  
+  switch (place) {
+  case NSWindowAbove:
+    if (relativeWindow == nil) {
+      index = 0;
+    } else {
+      index = [_orderedWindows indexOfObject: relativeWindow];
+      if (index == NSNotFound) {
+        index = 0;
+      }
+    }
+    [_orderedWindows insertObject: window atIndex: index];
+    break;
+
+  case NSWindowBelow:
+    if (relativeWindow == nil) {
+      [_orderedWindows addObject: window];
+    } else {
+      index = [_orderedWindows indexOfObject: relativeWindow];
+      if (index == NSNotFound) {
+        [_orderedWindows addObject: window];
+      } else {
+        [_orderedWindows insertObject: window atIndex: index+1];
+      }
+    }
+    break;
+
+  default:
+    break;
+  }
+  if (document) {
+    [self _updateOrderedDocuments];
+  }
+}
+
+-(void)_updateOrderedDocuments {
+  NSUInteger i, count = [_orderedWindows count];
+  NSWindowController *controller;
+  NSDocument *document;
+  NSWindow *window;
+
+  [_orderedDocuments removeAllObjects];
+  for (i = 0; i < count; i++) {
+    window = [_orderedWindows objectAtIndex: i];
+    controller = [window windowController];
+    document = [controller document];
+    if (document) {
+      [_orderedDocuments addObject: document];
+    }
+  }
+}
+
+  
+
 
 -(void)_windowWillBecomeActive:(NSWindow *)window {
    if(![self isActive]){

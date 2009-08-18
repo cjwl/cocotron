@@ -1503,6 +1503,7 @@ NSString *NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification";
 -(void)orderWindow:(NSWindowOrderingMode)place relativeTo:(int)relativeTo {
 // The move notifications are sent under unknown conditions around orderFront: in the Apple AppKit, we do them all the time here until it's figured out. I suspect it is a side effect of off-screen windows being at off-screen coordinates (as opposed to just being hidden)
 
+
    [self postNotificationName:NSWindowWillMoveNotification];
 
    switch(place){
@@ -1518,8 +1519,10 @@ NSString *NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification";
  */
      [self displayIfNeeded];
      // this is here since it would seem that doing this any earlier will not work.
-     if(![self isKindOfClass:[NSPanel class]] && ![self isExcludedFromWindowsMenu])
+     if(![self isKindOfClass:[NSPanel class]] && ![self isExcludedFromWindowsMenu]) {
          [NSApp changeWindowsItem:self title:_title filename:NO];
+         [NSApp _windowOrderingChange: NSWindowAbove forWindow: self relativeTo: (NSWindow *)relativeTo];
+     }
      break;
 
     case NSWindowBelow:
@@ -1534,15 +1537,19 @@ NSString *NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification";
  */
      [self displayIfNeeded];
      // this is here since it would seem that doing this any earlier will not work.
-     if(![self isKindOfClass:[NSPanel class]] && ![self isExcludedFromWindowsMenu])
-         [NSApp changeWindowsItem:self title:_title filename:NO];
+     if(![self isKindOfClass:[NSPanel class]] && ![self isExcludedFromWindowsMenu]) {
+       [NSApp changeWindowsItem:self title:_title failename:NO];
+       [NSApp _windowOrderingChange: NSWindowBelow forWindow: self relativeTo: (NSWindow*)relativeTo];
+     }
      break;
 
     case NSWindowOut:   
      _isVisible=NO;
      [[self platformWindow] hideWindow];
-     if (![self isKindOfClass:[NSPanel class]])
-      [NSApp removeWindowsItem:self];
+     if (![self isKindOfClass:[NSPanel class]]) {
+       [NSApp removeWindowsItem:self];
+       [NSApp _windowOrderingChange: NSWindowOut forWindow: self relativeTo: nil];
+     }
      break;
    }
 
