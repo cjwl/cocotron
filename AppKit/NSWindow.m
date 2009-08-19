@@ -1538,7 +1538,7 @@ NSString *NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification";
      [self displayIfNeeded];
      // this is here since it would seem that doing this any earlier will not work.
      if(![self isKindOfClass:[NSPanel class]] && ![self isExcludedFromWindowsMenu]) {
-       [NSApp changeWindowsItem:self title:_title failename:NO];
+       [NSApp changeWindowsItem:self title:_title filename:NO];
        [NSApp _windowOrderingChange: NSWindowBelow forWindow: self relativeTo: (NSWindow*)relativeTo];
      }
      break;
