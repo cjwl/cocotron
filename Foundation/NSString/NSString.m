@@ -849,12 +849,19 @@ U+2029 (Unicode paragraph separator), \r\n, in that order (also known as CRLF)
 }
 
 -(void)getParagraphStart:(NSUInteger *)startp end:(NSUInteger *)endp contentsEnd:(NSUInteger *)contentsEndp forRange:(NSRange)range {
-   NSUnimplementedMethod();
+// FIXME: what is the difference between getParagraphStart and getLineStart ? doc.s only say they are "similar"
+   [self getLineStart:startp end:endp contentsEnd:contentsEndp forRange:range];
 }
 
 -(NSRange)paragraphRangeForRange:(NSRange)range {
-   NSUnimplementedMethod();
-   return NSMakeRange(0,0);
+   NSRange  result;
+   NSUInteger start,end;
+
+   [self getParagraphStart:&start end:&end contentsEnd:NULL forRange:range];
+   result.location=start;
+   result.length=end-start;
+
+   return result;
 }
 
 -(NSString *)substringWithRange:(NSRange)range {

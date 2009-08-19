@@ -1983,6 +1983,16 @@ NSString *NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
    [[self textStorage] addAttribute:NSFontAttributeName value:font range:range];
 }
 
+-(NSRange)_rangeForSelectedParagraph {
+   if(!_isRichText)
+    return NSMakeRange(0, [[self textStorage] length]);
+   else {
+    NSRange range=[self selectedRange];
+    
+    return [[[self textStorage] string] paragraphRangeForRange:range];
+   }
+}
+
 -(void)_setAlignment:(NSTextAlignment)alignment range:(NSRange)range {
     NSMutableParagraphStyle *style=nil;
 
@@ -2117,23 +2127,20 @@ NSString *NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
 // making changes to textstorage attributes seems to wipe out the selection in this codebase,
 // the setSelectedRange calls shouldn't be neccessary
 - (void)alignCenter:sender {
-    NSRange range = _isRichText ? [self selectedRange] : NSMakeRange(0, [[self textStorage] length]);
-
-    [self _setAlignment:NSCenterTextAlignment range:range];
+    NSRange range=[self selectedRange];
+    [self _setAlignment:NSCenterTextAlignment range:[self _rangeForSelectedParagraph]];
     [self setSelectedRange:range];
 }
 
 - (void)alignLeft:sender {
-    NSRange range = _isRichText ? [self selectedRange] : NSMakeRange(0, [[self textStorage] length]);
-
-    [self _setAlignment:NSLeftTextAlignment range:range];    
+    NSRange range=[self selectedRange];
+    [self _setAlignment:NSLeftTextAlignment range:[self _rangeForSelectedParagraph]];    
     [self setSelectedRange:range];
 }
 
 - (void)alignRight:sender {
-    NSRange range = _isRichText ? [self selectedRange] : NSMakeRange(0, [[self textStorage] length]);
-
-    [self _setAlignment:NSRightTextAlignment range:range];    
+    NSRange range=[self selectedRange];
+    [self _setAlignment:NSRightTextAlignment range:[self _rangeForSelectedParagraph]];    
     [self setSelectedRange:range];
 }
 
