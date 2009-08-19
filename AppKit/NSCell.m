@@ -93,11 +93,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    _image=nil;
    _cellType=NSTextCellType;
    _isEnabled=YES;
-   _isEditable=YES;
-   _isSelectable=YES;
+   _isEditable=NO;
+   _isSelectable=NO;
    _wraps=NO;
    _isBordered=NO;
-   _isBezeled=YES;
+   _isBezeled=NO;
    _isHighlighted=NO;
    _refusesFirstResponder=NO;
 
