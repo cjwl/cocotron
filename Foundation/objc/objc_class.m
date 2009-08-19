@@ -53,16 +53,21 @@ id objc_getClass(const char *name) {
    return OBJCHashValueForKey(OBJCClassTable(),name);
 }
 
-int objc_getClassList(Class *buffer, int bufferLen)
-{
-	OBJCHashEnumerator classes=OBJCEnumerateHashTable(OBJCClassTable());
-	int i;
-	for(i=0; i<bufferLen; i++)
-		buffer[i]=(Class)OBJCNextHashEnumeratorValue(&classes);
-	for(;OBJCNextHashEnumeratorValue(&classes)!=0; i++)
-		;
-	i--;
-	return i;
+int objc_getClassList(Class *buffer,int bufferLen) {
+   OBJCHashEnumerator classes=OBJCEnumerateHashTable(OBJCClassTable());
+   int i=0;
+    
+   if(buffer!=NULL){
+    Class entry;
+    
+    for(;i<bufferLen && (entry=(Class)OBJCNextHashEnumeratorValue(&classes))!=Nil;i++)
+     buffer[i]=entry;
+   }
+   
+   for(;OBJCNextHashEnumeratorValue(&classes)!=0; i++)
+    ;
+   
+   return i;
 }
 
 Class objc_getFutureClass(const char *name) {
@@ -310,10 +315,32 @@ static inline void OBJCCacheMethodInClass(Class class,struct objc_method *method
    }
 }
 
+static struct objc_method empty_method={
+ 0,NULL,NULL
+};
+
 static int msg_tracing=0;
 
 void OBJCEnableMsgTracing(){
    msg_tracing=1;
+   
+   int   i,capacity=objc_getClassList(NULL,0);
+   Class list[capacity];
+   
+   objc_getClassList(list,capacity);
+   
+   for(i=0;i<capacity;i++){
+    OBJCMethodCache *cache=list[i]->cache;
+    int              j;
+    
+    // FIXME: this leaks because it does not free entries in the linked list
+    
+    for(j=0;j<OBJCMethodCacheNumberOfEntries;j++){
+     OBJCInitializeCacheEntryOffset(cache->table+j);
+     cache->table[j].method=&empty_method;
+    }
+   }
+   
    OBJCLog("OBJC msg tracing ENABLED");
 }
 void OBJCDisableMsgTracing(){
@@ -600,9 +627,6 @@ static void OBJCRegisterSelectorsInClass(Class class) {
 
 static void OBJCCreateCacheForClass(Class class){
    if(class->cache==NULL){
-    static struct objc_method empty={
-     0,NULL,NULL
-    };
     int i;
     
     class->cache=NSZoneCalloc(NULL,1,sizeof(OBJCMethodCache));
@@ -610,7 +634,7 @@ static void OBJCCreateCacheForClass(Class class){
     for(i=0;i<OBJCMethodCacheNumberOfEntries;i++){
      OBJCMethodCacheEntry *entry=class->cache->table+i;
      OBJCInitializeCacheEntryOffset(entry);
-     entry->method=&empty;
+     entry->method=&empty_method;
     }
    }
 }
