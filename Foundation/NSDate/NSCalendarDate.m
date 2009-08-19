@@ -14,7 +14,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSCoder.h>
 
 // given in spec. is this a default someplace?
-#define DEFAULT_CALENDAR_FORMAT                @"%Y-%m-%d %H:%M:%S%z"
+static NSString *DEFAULT_CALENDAR_FORMAT = @"%Y-%m-%d %H:%M:%S %z";
 
 @implementation NSCalendarDate
 
@@ -43,7 +43,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
      timeZone:(NSTimeZone *)timeZone {
     [super init];
     _timeInterval = NSTimeIntervalWithComponents(year, month, day, hour, minute, second, 0);
-    _timeZone = [timeZone retain];
+    if(timeZone == nil) {
+        _timeZone =[[NSTimeZone localTimeZone] retain];
+        _timeInterval = _timeInterval - [_timeZone secondsFromGMT];
+    }
+    else
+        _timeZone = [timeZone retain];
     _format = DEFAULT_CALENDAR_FORMAT;
     
     return self;
@@ -213,23 +218,27 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    years+=monthDelta/12;
    monthDelta%=12;
    months+=monthDelta;
-   if(months>11){
+   if(months>12){
     years++;
-    months-=11;
+    months-=12;
    }
    else if(months<0){
     years--;
-    months+=11;
+    months+=12;
    }
 
-   result=NSTimeIntervalWithComponents(years,months+1,days,hours,minutes,seconds,0);
+   result=NSTimeIntervalWithComponents(years,months,days,hours,minutes,seconds,0);
 
    result+=dayDelta*86400.0;
    result+=hourDelta*3600.0;
    result+=minuteDelta*60.0;
    result+=secondDelta;
 
-   return [NSCalendarDate dateWithTimeIntervalSinceReferenceDate:result];
+   NSCalendarDate   *resultDate = [NSCalendarDate dateWithTimeIntervalSinceReferenceDate:result];
+    
+    [resultDate setTimeZone:_timeZone];
+    
+    return resultDate;
 }
 
 -(NSString *)descriptionWithCalendarFormat:(NSString *)format locale:(NSDictionary *)locale {

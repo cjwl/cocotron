@@ -40,12 +40,12 @@ NSTimeInterval NSTimeIntervalWithComponents(NSInteger year, NSInteger month, NSI
 NSInteger NSDayOfCommonEraFromTimeInterval(NSTimeInterval interval);
 
 NSInteger NSYearFromTimeInterval(NSTimeInterval interval);
-NSInteger NSDayOfYearFromTimeInterval(NSTimeInterval interval); // 0-366
+NSInteger NSDayOfYearFromTimeInterval(NSTimeInterval interval); // 1-366
 
-NSInteger NSMonthFromTimeInterval(NSTimeInterval interval); // 0-11
+NSInteger NSMonthFromTimeInterval(NSTimeInterval interval); // 1-12
 NSInteger NSDayOfMonthFromTimeInterval(NSTimeInterval interval); // 0-31
 
-NSInteger NSWeekdayFromTimeInterval(NSTimeInterval interval); // 0-7
+NSInteger NSWeekdayFromTimeInterval(NSTimeInterval interval); // 1-7
 
 NSInteger NS24HourFromTimeInterval(NSTimeInterval interval); // 0-23
 NSInteger NS12HourFromTimeInterval(NSTimeInterval interval); // 1-12

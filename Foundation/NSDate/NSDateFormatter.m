@@ -191,7 +191,7 @@ NSTimeInterval NSTimeIntervalWithComponents(NSInteger year, NSInteger month, NSI
 
     daysOfCommonEra = numberOfDaysInCommonEraOfDayMonthAndYear(day, month, year);
     daysOfCommonEra -= NSDaysOfCommonEraOfReferenceDate;
-    daysOfCommonEra++;
+    daysOfCommonEra;
 
     interval = (daysOfCommonEra * 86400.0) + (hour * 3600) + (minute * 60) + second + (milliseconds/1000);
 
@@ -212,34 +212,34 @@ NSInteger NSYearFromTimeInterval(NSTimeInterval interval) {
     return year;
 }
 
-NSInteger NSDayOfYearFromTimeInterval(NSTimeInterval interval){ // 0-366
+NSInteger NSDayOfYearFromTimeInterval(NSTimeInterval interval){ // 1-366
     NSInteger year = NSYearFromTimeInterval(interval);
 
     return numberOfDaysInCommonEraOfDayMonthAndYear(31, 12, year) - NSDayOfCommonEraFromTimeInterval(interval);
 }
 
-NSInteger NSMonthFromTimeInterval(NSTimeInterval interval){ // 0-11
+NSInteger NSMonthFromTimeInterval(NSTimeInterval interval){ // 1-12
     NSInteger year = NSYearFromTimeInterval(interval);
     NSInteger days = NSDayOfCommonEraFromTimeInterval(interval);
     NSInteger month = 1;
 
-    while (days > numberOfDaysInCommonEraOfDayMonthAndYear(numberOfDaysInMonthOfYear(month, year), month, year)+1)
+    while (days > numberOfDaysInCommonEraOfDayMonthAndYear(numberOfDaysInMonthOfYear(month, year), month, year))
         month++;
 
-    return month-1;
+    return month;
 }
 
-NSInteger NSDayOfMonthFromTimeInterval(NSTimeInterval interval){ // 0-31
+NSInteger NSDayOfMonthFromTimeInterval(NSTimeInterval interval){ // 1-31
     NSInteger dayOfCommonEra = NSDayOfCommonEraFromTimeInterval(interval);
     NSInteger year = NSYearFromTimeInterval(interval);
-    NSInteger month = NSMonthFromTimeInterval(interval)+1;
+    NSInteger month = NSMonthFromTimeInterval(interval);
 
-    dayOfCommonEra -= numberOfDaysInCommonEraOfDayMonthAndYear(1, month, year);
+    dayOfCommonEra -= numberOfDaysInCommonEraOfDayMonthAndYear(1, month, year) - 1;
 
     return dayOfCommonEra;
 }
 
-NSInteger NSWeekdayFromTimeInterval(NSTimeInterval interval){ // 0-7
+NSInteger NSWeekdayFromTimeInterval(NSTimeInterval interval){ // 1-7
     NSInteger weekday = NSDayOfCommonEraFromTimeInterval(interval);
 
     weekday = weekday % 7;
@@ -279,7 +279,7 @@ NSInteger NSAMPMFromTimeInterval(NSTimeInterval interval){ // 0-1
 
 NSInteger NSMinuteFromTimeInterval(NSTimeInterval interval){ // 0-59
     NSTimeInterval startOfHour = NSTimeIntervalWithComponents(NSYearFromTimeInterval(interval),
-                                                              NSMonthFromTimeInterval(interval)+1,
+                                                              NSMonthFromTimeInterval(interval),
                                                               NSDayOfMonthFromTimeInterval(interval),
                                                               NS24HourFromTimeInterval(interval), 0, 0, 0);
 
@@ -365,12 +365,12 @@ NSString *NSStringWithDateFormatLocale(NSTimeInterval interval,NSString *format,
 
                     case 'b':
                         [result __appendLocale:locale key:NSShortMonthNameArray
-                                       index:NSMonthFromTimeInterval(interval)];
+                                       index:NSMonthFromTimeInterval(interval)-1];
                         break;
 
                     case 'B':
                         [result __appendLocale:locale key:NSMonthNameArray
-                                       index:NSMonthFromTimeInterval(interval)];
+                                       index:NSMonthFromTimeInterval(interval)-1];
                         break;
 
                     case 'c':
@@ -380,13 +380,13 @@ NSString *NSStringWithDateFormatLocale(NSTimeInterval interval,NSString *format,
                     case 'd':{
                         id fmt=(suppressZero)?@"%d":((fillChar==' ')?@"%2d":@"%02d");
 
-                        [result appendFormat:fmt,NSDayOfMonthFromTimeInterval(interval)+1];
+                        [result appendFormat:fmt,NSDayOfMonthFromTimeInterval(interval)];
                     }
                         break;
 
                     case 'e':{ 
                         id fmt=@"%d"; 
-                        [result appendFormat:fmt,NSDayOfMonthFromTimeInterval(interval)+1]; 
+                        [result appendFormat:fmt,NSDayOfMonthFromTimeInterval(interval)]; 
                     } 
                         break; 
 
@@ -421,7 +421,7 @@ NSString *NSStringWithDateFormatLocale(NSTimeInterval interval,NSString *format,
                     case 'm':{
                         id fmt=(suppressZero)?@"%d":((fillChar==' ')?@"%2d":@"%02d");
 
-                        [result appendFormat:fmt,NSMonthFromTimeInterval(interval)+1];
+                        [result appendFormat:fmt,NSMonthFromTimeInterval(interval)];
                     }
                         break;
 
