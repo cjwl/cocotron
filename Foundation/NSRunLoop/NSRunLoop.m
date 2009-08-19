@@ -65,30 +65,47 @@ NSString *NSRunLoopCommonModes=@"NSRunLoopCommonModes";
 }
 
 -(BOOL)_orderedPerforms {
-   BOOL didPerform=NO;
-	id performs=nil;
-	@synchronized(_orderedPerforms)
-	{
-		performs=[_orderedPerforms copy];
-	}
-   NSInteger count=[performs count];
+  BOOL didPerform=NO;
+  id performs=nil;
+  @synchronized(_orderedPerforms)
+  {
+    performs=[_orderedPerforms copy];
+  }
+  int count=[performs count];
 
-   while(--count>=0){
+  while(--count>=0){
+    BOOL tryPerform=NO;
     NSOrderedPerform *check=[performs objectAtIndex:count];
 
-   // be careful the lock on _orderedPerforms is not held while we fire the perform
-   // TODO: right now, all modes are common modes
-   if([check fireInMode:_currentMode] || [check fireInMode:NSRunLoopCommonModes])
-	{
-      didPerform=YES;
-		@synchronized(_orderedPerforms)
-		{
-			[_orderedPerforms removeObjectIdenticalTo:check];
-		}
-	}
-   }
-	[performs release];
-   return didPerform;
+    // if this object is still in _orderedPerforms, set tryPerform and remove it,
+    // otherwise it was performed or removed already, and there's nothing to do
+    @synchronized(_orderedPerforms)
+    {
+      int prevCount = [_orderedPerforms count];
+      [_orderedPerforms removeObjectIdenticalTo:check];
+      if([_orderedPerforms count] < prevCount){
+        tryPerform=YES; // it was removed
+      }
+    }
+
+    if(tryPerform){
+      // be careful the lock on _orderedPerforms is not held while we fire the perform
+      // TODO: right now, all modes are common modes
+
+      if([check fireInMode:_currentMode] || [check fireInMode:NSRunLoopCommonModes]){
+        didPerform=YES;
+      }
+      else{
+        // re-add it, so it can be executed another time
+        @synchronized(_orderedPerforms)
+        {
+          [_orderedPerforms insertObject:check atIndex:[_orderedPerforms count]];
+        }
+      }
+    }
+  }
+  [performs release];
+  return didPerform;
 }
 
 -(NSString *)currentMode {

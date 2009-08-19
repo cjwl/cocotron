@@ -389,9 +389,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)sheetDidEnd:(NSWindow *)sheet returnCode:(int)returnCode contextInfo:(void *)contextInfo {
    typedef void (*alertDidEnd)(id,SEL,NSAlert *,int,void *);
-   alertDidEnd endFunction=(alertDidEnd)[_sheetDelegate methodForSelector:_sheetDidEnd];
+   if (_sheetDidEnd) {
+    alertDidEnd endFunction=(alertDidEnd)[_sheetDelegate methodForSelector:_sheetDidEnd];
 
-   endFunction(_sheetDelegate,_sheetDidEnd,self,returnCode,contextInfo);
+    endFunction(_sheetDelegate,_sheetDidEnd,self,returnCode,contextInfo);
+   }
    [self release];
 }
 
