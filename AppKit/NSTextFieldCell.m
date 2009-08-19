@@ -44,6 +44,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return self;
 }
 
+-initTextCell:(NSString *)string {
+  [super initTextCell:string];
+
+  _isEditable=YES;
+  _isSelectable=YES;
+  _isBezeled=YES;
+
+  return self;
+}
+
 -(void)dealloc {
    [_backgroundColor release];
    [_textColor release];
