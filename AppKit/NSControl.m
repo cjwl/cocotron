@@ -216,10 +216,12 @@ static NSMutableDictionary *cellClassDictionary = nil;
 
 -(void)setBordered:(BOOL)flag {
    [_cell setBordered:flag];
+   [self setNeedsDisplay:YES];
 }
 
 -(void)setBezeled:(BOOL)flag {
    [_cell setBezeled:flag];
+   [self setNeedsDisplay:YES];
 }
 
 -(void)setContinuous:(BOOL)flag {

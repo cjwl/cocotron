@@ -485,6 +485,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)setBordered:(BOOL)flag {
    _isBordered=flag;
+   _isBezeled=NO;
 }
 
 -(void)setBezeled:(BOOL)flag {
