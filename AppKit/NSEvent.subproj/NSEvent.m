@@ -54,7 +54,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 +(NSEvent *)otherEventWithType:(NSEventType)type location:(NSPoint)location modifierFlags:(NSUInteger)flags timestamp:(NSTimeInterval)time windowNumber:(NSInteger)windowNum context:(NSGraphicsContext *)context subtype:(short)subtype data1:(NSInteger)data1 data2:(NSInteger)data2 {
-   return [[NSEvent_other alloc] initWithType: type subtype: subtype data1: data1 data2: data2];
+   return [[NSEvent_other alloc] initWithType:type location:location modifierFlags:flags timestamp:time windowNumber:windowNum context:context subtype:subtype data1:data1 data2:data2];
 }
 
 
