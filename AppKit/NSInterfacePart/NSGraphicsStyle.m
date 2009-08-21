@@ -304,6 +304,10 @@ pointSize:10 color:color] autorelease];
    [self drawScrollerTrackInRect:rect vertical:vertical upOrLeft:NO];
 }
 
+-(CGFloat)sliderKnobThickness {
+   return 8;
+}
+
 -(void)drawSliderKnobInRect:(NSRect)rect vertical:(BOOL)vertical highlighted:(BOOL)highlighted {
    NSDrawButton(rect,rect);
 

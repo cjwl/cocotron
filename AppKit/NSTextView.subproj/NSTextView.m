@@ -2090,11 +2090,17 @@ NSString *NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
 
    if(![self isHorizontallyResizable])
     size.width=[self frame].size.width;
+   else
+    size.width=MAX([self frame].size.width,size.width);
+    
    if(![self isVerticallyResizable])
     size.height=[self frame].size.height;
    else {
-    NSClipView *clipView=[self superview];
 
+    size.height=MAX([self frame].size.height,size.height);
+    
+    NSClipView *clipView=[self superview];
+    
     if([clipView isKindOfClass:[NSClipView class]]){
      if(size.height<[clipView bounds].size.height)
       size.height=[clipView bounds].size.height;

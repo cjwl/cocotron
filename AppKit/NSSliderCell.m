@@ -33,7 +33,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     
     _minValue=[keyed decodeDoubleForKey:@"NSMinValue"];
     _maxValue=[keyed decodeDoubleForKey:@"NSMaxValue"];
-    _knobThickness=8.0;
     _numberOfTickMarks=[keyed decodeIntForKey:@"NSNumberOfTickMarks"];
     _tickMarkPosition=[keyed decodeIntForKey:@"NSTickMarkPosition"];
     _allowsTickMarkValuesOnly=[keyed decodeBoolForKey:@"NSAllowsTickMarkValuesOnly"];
@@ -45,12 +44,52 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return self;
 }
 
+-initTextCell:(NSString *)string {
+   [super initTextCell:string];
+   _type=NSLinearSlider;
+   _minValue=0;
+   _maxValue=0;
+   _altIncrementValue=0;
+   _isVertical=-1;
+   _lastRect=NSZeroRect;
+   _numberOfTickMarks=0;
+   _tickMarkPosition=NSTickMarkBelow;
+   _allowsTickMarkValuesOnly=NO;
+   return self;
+}
+
+-initImageCell:(NSImage *)image {
+   [super initImageCell:image];
+   _type=NSLinearSlider;
+   _minValue=0;
+   _maxValue=0;
+   _altIncrementValue=0;
+   _isVertical=-1;
+   _lastRect=NSZeroRect;
+   _numberOfTickMarks=0;
+   _tickMarkPosition=NSTickMarkBelow;
+   _allowsTickMarkValuesOnly=NO;
+   return self;
+}
+
++(BOOL)prefersTrackingUntilMouseUp {
+   return YES;
+}
+
+-(NSSliderType)sliderType {
+   return _type;
+}
+
 -(double)minValue {
    return _minValue;
 }
 
 -(double)maxValue {
    return _maxValue;
+}
+
+-(double)altIncrementValue {
+   return _altIncrementValue;
 }
 
 -(int)numberOfTickMarks {
@@ -65,7 +104,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return _allowsTickMarkValuesOnly;
 }
 
-- (float)knobThickness { return _knobThickness; }
+-(float)knobThickness {
+   return 0;
+}
+
+-(void)setSliderType:(NSSliderType)value {
+   _type=value;
+}
 
 -(void)setMinValue:(double)minValue {
    _minValue = minValue;
@@ -73,6 +118,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)setMaxValue:(double)maxValue {
    _maxValue = maxValue;
+}
+
+-(void)setAltIncrementValue:(double)value {
+   _altIncrementValue=value;
 }
 
 -(void)setNumberOfTickMarks:(int)number {
@@ -87,9 +136,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    _allowsTickMarkValuesOnly=valuesOnly;
 }
 
-- (void)setKnobThickness:(float)thickness { _knobThickness = thickness; }
+-(void)setKnobThickness:(float)thickness {
+// deprecated, do nothing
+}
 
-- (int)isVertical { return _isVertical; }
+-(NSInteger)isVertical {
+   return _isVertical;
+}
 
 -(int)indexOfTickMarkAtPoint:(NSPoint)point {
    int i;
@@ -115,6 +168,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(double)closestTickMarkValueToValue:(double)value {
    NSUnimplementedMethod();
    return 0;
+}
+
+-(NSRect)trackRect {
+   NSUnimplementedMethod();
+   return NSZeroRect;
 }
 
 -(NSRect)rectOfTickMarkAtIndex:(int)index {
@@ -172,17 +230,18 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    double percent=(value-_minValue)/(_maxValue-_minValue);
    NSRect sliderRect=[self _sliderRect];
    NSRect knobRect;
-
+   CGFloat knobThickness=[[_controlView graphicsStyle] sliderKnobThickness];
+   
    if ([self isVertical]) {
-    knobRect.size.height=_knobThickness;
+    knobRect.size.height=knobThickness;
     knobRect.size.width=KNOBHEIGHT;
     knobRect.origin.x=floor(sliderRect.origin.x+(sliderRect.size.width-KNOBHEIGHT)/2);
-    knobRect.origin.y=floor(sliderRect.origin.y+PIXELINSET+percent*(sliderRect.size.height-(PIXELINSET*2))-_knobThickness/2);
+    knobRect.origin.y=floor(sliderRect.origin.y+PIXELINSET+percent*(sliderRect.size.height-(PIXELINSET*2))-knobThickness/2);
    }
    else {
-    knobRect.size.width=_knobThickness;
+    knobRect.size.width=knobThickness;
     knobRect.size.height=KNOBHEIGHT;
-    knobRect.origin.x=floor(sliderRect.origin.x+PIXELINSET+percent*(sliderRect.size.width-(PIXELINSET*2))-_knobThickness/2);
+    knobRect.origin.x=floor(sliderRect.origin.x+PIXELINSET+percent*(sliderRect.size.width-(PIXELINSET*2))-knobThickness/2);
     knobRect.origin.y=floor(sliderRect.origin.y+(sliderRect.size.height-KNOBHEIGHT)/2);
    }
 
@@ -212,14 +271,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     _controlView=controlView;
     _lastRect = frame;
     
-    if (frame.size.height>frame.size.width)
-        _isVertical = YES;
+    _isVertical = (frame.size.height>frame.size.width)?1:0;
 
-    [[NSColor controlColor] setFill];
-    NSRectFill(frame);
     [self drawBarInside:[self _sliderRect] flipped:[controlView isFlipped]];
-    [self drawKnob];
     [self drawTickMarks];
+    [self drawKnob];
 
     // would be nice to put this code in some superclass
     if([[controlView window] firstResponder]==controlView){

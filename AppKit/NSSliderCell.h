@@ -9,17 +9,23 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSActionCell.h>
 
 typedef enum {
-   NSTickMarkBelow,
-   NSTickMarkAbove,
-   NSTickMarkLeft=NSTickMarkAbove,
-   NSTickMarkRight=NSTickMarkBelow
+   NSTickMarkBelow=0,
+   NSTickMarkAbove=1,
+   NSTickMarkLeft =NSTickMarkAbove,
+   NSTickMarkRight=NSTickMarkBelow,
 } NSTickMarkPosition;
 
+typedef enum {
+   NSLinearSlider  =0,
+   NSCircularSlider=1,
+} NSSliderType;
+
 @interface NSSliderCell : NSActionCell {
+    NSSliderType _type;
     double _minValue;
     double _maxValue;
-    float  _knobThickness;
-    BOOL   _isVertical;
+    double _altIncrementValue;
+    NSInteger _isVertical;
     NSRect _lastRect;
 
     int _numberOfTickMarks;
@@ -27,32 +33,43 @@ typedef enum {
     BOOL _allowsTickMarkValuesOnly;
 }
 
++(BOOL)prefersTrackingUntilMouseUp;
+
+-(NSSliderType)sliderType;
+
 -(double)minValue;
 -(double)maxValue;
+-(double)altIncrementValue;
 
 -(int)numberOfTickMarks;
 -(NSTickMarkPosition)tickMarkPosition;
 -(BOOL)allowsTickMarkValuesOnly;
 -(float)knobThickness;
 
+-(void)setSliderType:(NSSliderType)value;
+
 -(void)setMinValue:(double)minValue;
 -(void)setMaxValue:(double)maxValue;
+-(void)setAltIncrementValue:(double)value;
 
 -(void)setNumberOfTickMarks:(int)number;
 -(void)setTickMarkPosition:(NSTickMarkPosition)position;
 -(void)setAllowsTickMarkValuesOnly:(BOOL)valuesOnly;
 -(void)setKnobThickness:(float)thickness;
 
--(int)isVertical;
+-(NSInteger)isVertical;
 
 -(int)indexOfTickMarkAtPoint:(NSPoint)point;
 
 -(double)tickMarkValueAtIndex:(int)index;
 -(double)closestTickMarkValueToValue:(double)value;
 
+-(NSRect)trackRect;
+
 -(NSRect)rectOfTickMarkAtIndex:(int)index;
 
 -(void)drawBarInside:(NSRect)frame flipped:(BOOL)isFlipped;
+-(NSRect)knobRectFlipped:(BOOL)flipped;
 -(void)drawKnob;
 -(void)drawKnob:(NSRect)rect;
 
