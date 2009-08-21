@@ -2105,6 +2105,10 @@
 		FE38749F0F4333D600EC9F00 /* NSToolbarItemView.m in Sources */ = {isa = PBXBuildFile; fileRef = FE38749B0F4333D600EC9F00 /* NSToolbarItemView.m */; };
 		FE3874A00F4333D600EC9F00 /* NSToolbarItemView.h in Headers */ = {isa = PBXBuildFile; fileRef = FE38749A0F4333D600EC9F00 /* NSToolbarItemView.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE3874A10F4333D600EC9F00 /* NSToolbarItemView.m in Sources */ = {isa = PBXBuildFile; fileRef = FE38749B0F4333D600EC9F00 /* NSToolbarItemView.m */; };
+		FE4478081039F64E00ECD6A6 /* NSOpenGL.h in Headers */ = {isa = PBXBuildFile; fileRef = FE4478071039F64E00ECD6A6 /* NSOpenGL.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE4478091039F64E00ECD6A6 /* NSOpenGL.h in Headers */ = {isa = PBXBuildFile; fileRef = FE4478071039F64E00ECD6A6 /* NSOpenGL.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE44780A1039F64E00ECD6A6 /* NSOpenGL.h in Headers */ = {isa = PBXBuildFile; fileRef = FE4478071039F64E00ECD6A6 /* NSOpenGL.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE44780B1039F64E00ECD6A6 /* NSOpenGL.h in Headers */ = {isa = PBXBuildFile; fileRef = FE4478071039F64E00ECD6A6 /* NSOpenGL.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE45EDCC0DC2407E00F49290 /* CGImageSource.m in Sources */ = {isa = PBXBuildFile; fileRef = FE45EDCB0DC2407E00F49290 /* CGImageSource.m */; };
 		FE463D65102CAE3500B265D6 /* NSAnimationContext.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463D63102CAE3500B265D6 /* NSAnimationContext.h */; };
 		FE463D66102CAE3500B265D6 /* NSAnimationContext.m in Sources */ = {isa = PBXBuildFile; fileRef = FE463D64102CAE3500B265D6 /* NSAnimationContext.m */; };
@@ -2114,13 +2118,13 @@
 		FE463D6A102CAE3500B265D6 /* NSAnimationContext.m in Sources */ = {isa = PBXBuildFile; fileRef = FE463D64102CAE3500B265D6 /* NSAnimationContext.m */; };
 		FE463D6B102CAE3500B265D6 /* NSAnimationContext.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463D63102CAE3500B265D6 /* NSAnimationContext.h */; };
 		FE463D6C102CAE3500B265D6 /* NSAnimationContext.m in Sources */ = {isa = PBXBuildFile; fileRef = FE463D64102CAE3500B265D6 /* NSAnimationContext.m */; };
-		FE463D6F102CAEF500B265D6 /* NSCollectionView.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463D6D102CAEF500B265D6 /* NSCollectionView.h */; };
+		FE463D6F102CAEF500B265D6 /* NSCollectionView.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463D6D102CAEF500B265D6 /* NSCollectionView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE463D70102CAEF500B265D6 /* NSCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = FE463D6E102CAEF500B265D6 /* NSCollectionView.m */; };
-		FE463D71102CAEF500B265D6 /* NSCollectionView.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463D6D102CAEF500B265D6 /* NSCollectionView.h */; };
+		FE463D71102CAEF500B265D6 /* NSCollectionView.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463D6D102CAEF500B265D6 /* NSCollectionView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE463D72102CAEF500B265D6 /* NSCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = FE463D6E102CAEF500B265D6 /* NSCollectionView.m */; };
-		FE463D73102CAEF500B265D6 /* NSCollectionView.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463D6D102CAEF500B265D6 /* NSCollectionView.h */; };
+		FE463D73102CAEF500B265D6 /* NSCollectionView.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463D6D102CAEF500B265D6 /* NSCollectionView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE463D74102CAEF500B265D6 /* NSCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = FE463D6E102CAEF500B265D6 /* NSCollectionView.m */; };
-		FE463D75102CAEF500B265D6 /* NSCollectionView.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463D6D102CAEF500B265D6 /* NSCollectionView.h */; };
+		FE463D75102CAEF500B265D6 /* NSCollectionView.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463D6D102CAEF500B265D6 /* NSCollectionView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE463D76102CAEF500B265D6 /* NSCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = FE463D6E102CAEF500B265D6 /* NSCollectionView.m */; };
 		FE463D85102CAF4A00B265D6 /* NSDockTile.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463D83102CAF4A00B265D6 /* NSDockTile.h */; };
 		FE463D86102CAF4A00B265D6 /* NSDockTile.m in Sources */ = {isa = PBXBuildFile; fileRef = FE463D84102CAF4A00B265D6 /* NSDockTile.m */; };
@@ -2194,6 +2198,14 @@
 		FE463F11102D0F9D00B265D6 /* NSTreeNode.m in Sources */ = {isa = PBXBuildFile; fileRef = FE463ED1102D0F9D00B265D6 /* NSTreeNode.m */; };
 		FE463F12102D0F9D00B265D6 /* NSViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = FE463ED2102D0F9D00B265D6 /* NSViewController.h */; };
 		FE463F13102D0F9D00B265D6 /* NSViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FE463ED3102D0F9D00B265D6 /* NSViewController.m */; };
+		FE49B9A71030C49300ADCC6C /* NSCollectionViewItem.h in Headers */ = {isa = PBXBuildFile; fileRef = FE49B9A51030C49300ADCC6C /* NSCollectionViewItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE49B9A81030C49300ADCC6C /* NSCollectionViewItem.m in Sources */ = {isa = PBXBuildFile; fileRef = FE49B9A61030C49300ADCC6C /* NSCollectionViewItem.m */; };
+		FE49B9A91030C49300ADCC6C /* NSCollectionViewItem.h in Headers */ = {isa = PBXBuildFile; fileRef = FE49B9A51030C49300ADCC6C /* NSCollectionViewItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE49B9AA1030C49300ADCC6C /* NSCollectionViewItem.m in Sources */ = {isa = PBXBuildFile; fileRef = FE49B9A61030C49300ADCC6C /* NSCollectionViewItem.m */; };
+		FE49B9AB1030C49300ADCC6C /* NSCollectionViewItem.h in Headers */ = {isa = PBXBuildFile; fileRef = FE49B9A51030C49300ADCC6C /* NSCollectionViewItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE49B9AC1030C49300ADCC6C /* NSCollectionViewItem.m in Sources */ = {isa = PBXBuildFile; fileRef = FE49B9A61030C49300ADCC6C /* NSCollectionViewItem.m */; };
+		FE49B9AD1030C49300ADCC6C /* NSCollectionViewItem.h in Headers */ = {isa = PBXBuildFile; fileRef = FE49B9A51030C49300ADCC6C /* NSCollectionViewItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE49B9AE1030C49300ADCC6C /* NSCollectionViewItem.m in Sources */ = {isa = PBXBuildFile; fileRef = FE49B9A61030C49300ADCC6C /* NSCollectionViewItem.m */; };
 		FE54BEC90EEB086900B4559F /* NSOpenGLDrawable.h in Headers */ = {isa = PBXBuildFile; fileRef = FE54BEC70EEB086900B4559F /* NSOpenGLDrawable.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FE54BECA0EEB086900B4559F /* NSOpenGLDrawable.m in Sources */ = {isa = PBXBuildFile; fileRef = FE54BEC80EEB086900B4559F /* NSOpenGLDrawable.m */; };
 		FE54BECB0EEB086900B4559F /* NSOpenGLDrawable.h in Headers */ = {isa = PBXBuildFile; fileRef = FE54BEC70EEB086900B4559F /* NSOpenGLDrawable.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -3600,11 +3612,12 @@
 		FE38749B0F4333D600EC9F00 /* NSToolbarItemView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSToolbarItemView.m; sourceTree = "<group>"; };
 		FE4434020BB9833B00411464 /* NSGraphicsStyle_uxtheme.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSGraphicsStyle_uxtheme.h; sourceTree = "<group>"; };
 		FE4434030BB9833B00411464 /* NSGraphicsStyle_uxtheme.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSGraphicsStyle_uxtheme.m; sourceTree = "<group>"; };
+		FE4478071039F64E00ECD6A6 /* NSOpenGL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSOpenGL.h; sourceTree = "<group>"; };
 		FE45EDCB0DC2407E00F49290 /* CGImageSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CGImageSource.m; sourceTree = "<group>"; };
 		FE463D63102CAE3500B265D6 /* NSAnimationContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSAnimationContext.h; sourceTree = "<group>"; };
 		FE463D64102CAE3500B265D6 /* NSAnimationContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSAnimationContext.m; sourceTree = "<group>"; };
-		FE463D6D102CAEF500B265D6 /* NSCollectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSCollectionView.h; sourceTree = "<group>"; };
-		FE463D6E102CAEF500B265D6 /* NSCollectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSCollectionView.m; sourceTree = "<group>"; };
+		FE463D6D102CAEF500B265D6 /* NSCollectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NSCollectionView.h; path = NSCollectionView/NSCollectionView.h; sourceTree = "<group>"; };
+		FE463D6E102CAEF500B265D6 /* NSCollectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NSCollectionView.m; path = NSCollectionView/NSCollectionView.m; sourceTree = "<group>"; };
 		FE463D83102CAF4A00B265D6 /* NSDockTile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSDockTile.h; sourceTree = "<group>"; };
 		FE463D84102CAF4A00B265D6 /* NSDockTile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSDockTile.m; sourceTree = "<group>"; };
 		FE463EC4102D0F9C00B265D6 /* NSPathCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSPathCell.h; sourceTree = "<group>"; };
@@ -3623,6 +3636,8 @@
 		FE463ED1102D0F9D00B265D6 /* NSTreeNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSTreeNode.m; sourceTree = "<group>"; };
 		FE463ED2102D0F9D00B265D6 /* NSViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSViewController.h; sourceTree = "<group>"; };
 		FE463ED3102D0F9D00B265D6 /* NSViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSViewController.m; sourceTree = "<group>"; };
+		FE49B9A51030C49300ADCC6C /* NSCollectionViewItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NSCollectionViewItem.h; path = NSCollectionView/NSCollectionViewItem.h; sourceTree = "<group>"; };
+		FE49B9A61030C49300ADCC6C /* NSCollectionViewItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NSCollectionViewItem.m; path = NSCollectionView/NSCollectionViewItem.m; sourceTree = "<group>"; };
 		FE4BDC090BCD40C600E19685 /* NSFontDescriptor.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSFontDescriptor.h; sourceTree = "<group>"; };
 		FE4BDC0A0BCD40C600E19685 /* NSFontDescriptor.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSFontDescriptor.m; sourceTree = "<group>"; };
 		FE54BEC70EEB086900B4559F /* NSOpenGLDrawable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSOpenGLDrawable.h; sourceTree = "<group>"; };
@@ -3946,10 +3961,9 @@
 				6E2B533D0976075200DA0954 /* NSCell.m */,
 				FE6D918A101381F600BA6BAD /* NSCellUndoManager.h */,
 				FE6D918B101381F600BA6BAD /* NSCellUndoManager.m */,
+				FE49B9A41030C46700ADCC6C /* NSCollectionView */,
 				6E2B54180976075200DA0954 /* NSClipView.h */,
 				6E2B533F0976075200DA0954 /* NSClipView.m */,
-				FE463D6D102CAEF500B265D6 /* NSCollectionView.h */,
-				FE463D6E102CAEF500B265D6 /* NSCollectionView.m */,
 				6E2B55430976075300DA0954 /* NSColor */,
 				6E2B541A0976075200DA0954 /* NSColorList.h */,
 				6E2B53410976075200DA0954 /* NSColorList.m */,
@@ -4654,6 +4668,7 @@
 		6E2B56B00976075400DA0954 /* OpenGL */ = {
 			isa = PBXGroup;
 			children = (
+				FE4478071039F64E00ECD6A6 /* NSOpenGL.h */,
 				FE54BEC70EEB086900B4559F /* NSOpenGLDrawable.h */,
 				FE54BEC80EEB086900B4559F /* NSOpenGLDrawable.m */,
 				6E2B56B90976075400DA0954 /* NSOpenGLContext.h */,
@@ -4916,6 +4931,17 @@
 				6E2B53890976075200DA0954 /* NSInterfacePartDisabledAttributedString.m */,
 			);
 			path = NSInterfacePart;
+			sourceTree = "<group>";
+		};
+		FE49B9A41030C46700ADCC6C /* NSCollectionView */ = {
+			isa = PBXGroup;
+			children = (
+				FE49B9A51030C49300ADCC6C /* NSCollectionViewItem.h */,
+				FE49B9A61030C49300ADCC6C /* NSCollectionViewItem.m */,
+				FE463D6D102CAEF500B265D6 /* NSCollectionView.h */,
+				FE463D6E102CAEF500B265D6 /* NSCollectionView.m */,
+			);
+			name = NSCollectionView;
 			sourceTree = "<group>";
 		};
 		FE8286760D34725900F7489F /* NSSystemInfoPanel */ = {
@@ -5374,6 +5400,8 @@
 				FE463EEE102D0F9D00B265D6 /* NSRuleEditor.h in Headers */,
 				FE463EF0102D0F9D00B265D6 /* NSTreeNode.h in Headers */,
 				FE463EF2102D0F9D00B265D6 /* NSViewController.h in Headers */,
+				FE49B9A91030C49300ADCC6C /* NSCollectionViewItem.h in Headers */,
+				FE4478091039F64E00ECD6A6 /* NSOpenGL.h in Headers */,
 				FE953DDC103B0EA0008A71F0 /* NSEvent_other.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -5751,6 +5779,8 @@
 				FE463EFE102D0F9D00B265D6 /* NSRuleEditor.h in Headers */,
 				FE463F00102D0F9D00B265D6 /* NSTreeNode.h in Headers */,
 				FE463F02102D0F9D00B265D6 /* NSViewController.h in Headers */,
+				FE49B9AB1030C49300ADCC6C /* NSCollectionViewItem.h in Headers */,
+				FE44780A1039F64E00ECD6A6 /* NSOpenGL.h in Headers */,
 				FE953DDE103B0EA0008A71F0 /* NSEvent_other.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -6123,6 +6153,8 @@
 				FE463EDE102D0F9D00B265D6 /* NSRuleEditor.h in Headers */,
 				FE463EE0102D0F9D00B265D6 /* NSTreeNode.h in Headers */,
 				FE463EE2102D0F9D00B265D6 /* NSViewController.h in Headers */,
+				FE49B9A71030C49300ADCC6C /* NSCollectionViewItem.h in Headers */,
+				FE4478081039F64E00ECD6A6 /* NSOpenGL.h in Headers */,
 				FE953DDA103B0EA0008A71F0 /* NSEvent_other.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -6423,6 +6455,8 @@
 				FE463F0E102D0F9D00B265D6 /* NSRuleEditor.h in Headers */,
 				FE463F10102D0F9D00B265D6 /* NSTreeNode.h in Headers */,
 				FE463F12102D0F9D00B265D6 /* NSViewController.h in Headers */,
+				FE49B9AD1030C49300ADCC6C /* NSCollectionViewItem.h in Headers */,
+				FE44780B1039F64E00ECD6A6 /* NSOpenGL.h in Headers */,
 				FE953DE0103B0EA0008A71F0 /* NSEvent_other.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -7196,6 +7230,7 @@
 				FE463EEF102D0F9D00B265D6 /* NSRuleEditor.m in Sources */,
 				FE463EF1102D0F9D00B265D6 /* NSTreeNode.m in Sources */,
 				FE463EF3102D0F9D00B265D6 /* NSViewController.m in Sources */,
+				FE49B9AA1030C49300ADCC6C /* NSCollectionViewItem.m in Sources */,
 				FE953DDD103B0EA0008A71F0 /* NSEvent_other.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -7541,6 +7576,7 @@
 				FE463EFF102D0F9D00B265D6 /* NSRuleEditor.m in Sources */,
 				FE463F01102D0F9D00B265D6 /* NSTreeNode.m in Sources */,
 				FE463F03102D0F9D00B265D6 /* NSViewController.m in Sources */,
+				FE49B9AC1030C49300ADCC6C /* NSCollectionViewItem.m in Sources */,
 				FE953DDF103B0EA0008A71F0 /* NSEvent_other.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -7920,6 +7956,7 @@
 				FE463EDF102D0F9D00B265D6 /* NSRuleEditor.m in Sources */,
 				FE463EE1102D0F9D00B265D6 /* NSTreeNode.m in Sources */,
 				FE463EE3102D0F9D00B265D6 /* NSViewController.m in Sources */,
+				FE49B9A81030C49300ADCC6C /* NSCollectionViewItem.m in Sources */,
 				FE953DDB103B0EA0008A71F0 /* NSEvent_other.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -8170,6 +8207,7 @@
 				FE463F0F102D0F9D00B265D6 /* NSRuleEditor.m in Sources */,
 				FE463F11102D0F9D00B265D6 /* NSTreeNode.m in Sources */,
 				FE463F13102D0F9D00B265D6 /* NSViewController.m in Sources */,
+				FE49B9AE1030C49300ADCC6C /* NSCollectionViewItem.m in Sources */,
 				FE953DE1103B0EA0008A71F0 /* NSEvent_other.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
