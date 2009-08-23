@@ -7,7 +7,6 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
 #import <AppKit/NSSlider.h>
-#import <AppKit/NSSliderCell.h>
 
 @implementation NSSlider
 
@@ -23,9 +22,24 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return [[self selectedCell] maxValue];
 }
 
--(int)numberOfTickMarks {
+-(double)altIncrementValue {
+   return [[self selectedCell] altIncrementValue];
+}
+
+-(NSInteger)numberOfTickMarks {
     return [[self selectedCell] numberOfTickMarks];
-    [self setNeedsDisplay:YES];
+}
+
+-(NSTickMarkPosition)tickMarkPosition {
+   return [[self selectedCell] tickMarkPosition];
+}
+
+-(BOOL)allowsTickMarkValuesOnly {
+   return [[self selectedCell] allowsTickMarkValuesOnly];
+}
+
+-(CGFloat)knobThickness {
+   return [[self selectedCell] knobThickness];
 }
 
 -(void)setMinValue:(double)value {
@@ -34,13 +48,55 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)setMaxValue:(double)value {
-    [[self selectedCell] setMaxValue:value];
-    [self setNeedsDisplay:YES];
+   [[self selectedCell] setMaxValue:value];
+   [self setNeedsDisplay:YES];
 }
 
--(void)setNumberOfTickMarks:(int)value {
-    [[self selectedCell] setNumberOfTickMarks:value];
-    [self setNeedsDisplay:YES];
+-(void)setAltIncrementValue:(double)value {
+   [[self selectedCell] setAltIncrementValue:value];
+}
+
+-(void)setNumberOfTickMarks:(NSInteger)value {
+   [[self selectedCell] setNumberOfTickMarks:value];
+   [self setNeedsDisplay:YES];
+}
+
+-(void)setTickMarkPosition:(NSTickMarkPosition)position {
+   [[self selectedCell] setTickMarkPosition:position];
+   [self setNeedsDisplay:YES];
+}
+
+-(void)setAllowsTickMarkValuesOnly:(BOOL)valuesOnly {
+   [[self selectedCell] setAllowsTickMarkValuesOnly:valuesOnly];
+}
+
+-(void)setKnobThickness:(CGFloat)thickness {
+   [[self selectedCell] setKnobThickness:thickness];
+   [self setNeedsDisplay:YES];
+}
+
+-(NSInteger)isVertical {
+   return [[self selectedCell] isVertical];
+}
+
+-(NSInteger)indexOfTickMarkAtPoint:(NSPoint)point {
+   return [[self selectedCell] indexOfTickMarkAtPoint:point];
+}
+
+-(double)tickMarkValueAtIndex:(NSInteger)index {
+   return [[self selectedCell] tickMarkValueAtIndex:index];
+}
+
+-(double)closestTickMarkValueToValue:(double)value {
+   return [[self selectedCell] closestTickMarkValueToValue:value];
+}
+
+-(NSRect)rectOfTickMarkAtIndex:(NSInteger)index {
+   return [[self selectedCell] rectOfTickMarkAtIndex:index];
+}
+
+-(BOOL)acceptsFirstMouse:(NSEvent *)event {
+   return YES;
 }
 
 - (void)keyDown:(NSEvent *)event {

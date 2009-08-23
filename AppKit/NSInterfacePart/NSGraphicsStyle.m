@@ -304,11 +304,11 @@ pointSize:10 color:color] autorelease];
    [self drawScrollerTrackInRect:rect vertical:vertical upOrLeft:NO];
 }
 
--(CGFloat)sliderKnobThickness {
-   return 8;
+-(NSSize)sliderKnobSize {
+   return NSMakeSize(12,19); // this is Windows specific, uxtheme part size request was failing, hardcoded, sigh
 }
 
--(void)drawSliderKnobInRect:(NSRect)rect vertical:(BOOL)vertical highlighted:(BOOL)highlighted {
+-(void)drawSliderKnobInRect:(NSRect)rect vertical:(BOOL)vertical highlighted:(BOOL)highlighted hasTickMarks:(BOOL)hasTickMarks tickMarkPosition:(NSTickMarkPosition)tickMarkPosition {
    NSDrawButton(rect,rect);
 
    if(highlighted) {
@@ -317,7 +317,7 @@ pointSize:10 color:color] autorelease];
    }
 }
 
--(void)drawSliderTrackInRect:(NSRect)rect vertical:(BOOL)vertical {
+-(void)drawSliderTrackInRect:(NSRect)rect vertical:(BOOL)vertical hasTickMarks:(BOOL)hasTickMarks {
    NSRect groove=rect;
 
    if(vertical){

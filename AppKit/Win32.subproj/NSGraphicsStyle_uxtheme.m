@@ -365,14 +365,46 @@ static inline RECT transformToRECT(CGAffineTransform matrix,NSRect rect) {
     [super drawComboBoxButtonInRect:rect enabled:(BOOL)enabled bordered:bordered pressed:pressed];
 }
 
--(void)drawSliderKnobInRect:(NSRect)rect vertical:(BOOL)vertical highlighted:(BOOL)highlighted {
-   if(![self drawPartId:vertical?TKP_THUMBVERT:TKP_THUMB stateId:highlighted?TUS_PRESSED:TUS_NORMAL classList:L"TRACKBAR" inRect:rect])
-    [super drawSliderKnobInRect:rect vertical:vertical highlighted:highlighted];
+-(void)drawSliderKnobInRect:(NSRect)rect vertical:(BOOL)vertical highlighted:(BOOL)highlighted hasTickMarks:(BOOL)hasTickMarks tickMarkPosition:(NSTickMarkPosition)tickMarkPosition {
+   int partId;
+   
+   if(vertical){
+    if(!hasTickMarks)
+     partId=TKP_THUMBVERT;
+    else if(tickMarkPosition==NSTickMarkLeft)
+     partId=TKP_THUMBLEFT;
+    else
+     partId=TKP_THUMBRIGHT;
+   }
+   else {
+    if(!hasTickMarks)
+     partId=TKP_THUMB;
+    else if(tickMarkPosition==NSTickMarkAbove)
+     partId=TKP_THUMBTOP;
+    else
+     partId=TKP_THUMBBOTTOM;
+   }
+      
+   if(![self drawPartId:partId stateId:highlighted?TUS_PRESSED:TUS_NORMAL classList:L"TRACKBAR" inRect:rect])
+    [super drawSliderKnobInRect:rect vertical:vertical highlighted:highlighted hasTickMarks:hasTickMarks tickMarkPosition:tickMarkPosition];
 }
 
--(void)drawSliderTrackInRect:(NSRect)rect vertical:(BOOL)vertical {
-   if(![self drawPartId:vertical?TKP_TRACKVERT:TKP_TRACK stateId:TRS_NORMAL classList:L"TRACKBAR" inRect:rect])
-    [super drawSliderTrackInRect:rect vertical:vertical];
+-(void)drawSliderTrackInRect:(NSRect)rect vertical:(BOOL)vertical hasTickMarks:(BOOL)hasTickMarks {
+   NSRect thin=rect;
+   
+   if(hasTickMarks){
+    if(vertical){
+     thin.origin.x+=(thin.size.width-4)/2;
+     thin.size.width=4;
+    }
+    else {
+     thin.origin.y+=(thin.size.height-4)/2;
+     thin.size.height=4;
+    }
+   }
+   
+   if(![self drawPartId:vertical?TKP_TRACKVERT:TKP_TRACK stateId:TRS_NORMAL classList:L"TRACKBAR" inRect:thin])
+    [super drawSliderTrackInRect:rect vertical:vertical hasTickMarks:hasTickMarks];
 }
 
 -(void)drawStepperButtonInRect:(NSRect)rect clipRect:(NSRect)clipRect enabled:(BOOL)enabled highlighted:(BOOL)highlighted upNotDown:(BOOL)upNotDown {

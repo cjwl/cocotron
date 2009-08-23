@@ -41,10 +41,10 @@ typedef enum {
 -(double)maxValue;
 -(double)altIncrementValue;
 
--(int)numberOfTickMarks;
+-(NSInteger)numberOfTickMarks;
 -(NSTickMarkPosition)tickMarkPosition;
 -(BOOL)allowsTickMarkValuesOnly;
--(float)knobThickness;
+-(CGFloat)knobThickness;
 
 -(void)setSliderType:(NSSliderType)value;
 
@@ -52,21 +52,21 @@ typedef enum {
 -(void)setMaxValue:(double)maxValue;
 -(void)setAltIncrementValue:(double)value;
 
--(void)setNumberOfTickMarks:(int)number;
+-(void)setNumberOfTickMarks:(NSInteger)number;
 -(void)setTickMarkPosition:(NSTickMarkPosition)position;
 -(void)setAllowsTickMarkValuesOnly:(BOOL)valuesOnly;
--(void)setKnobThickness:(float)thickness;
+-(void)setKnobThickness:(CGFloat)thickness;
 
 -(NSInteger)isVertical;
 
--(int)indexOfTickMarkAtPoint:(NSPoint)point;
+-(NSInteger)indexOfTickMarkAtPoint:(NSPoint)point;
 
--(double)tickMarkValueAtIndex:(int)index;
+-(double)tickMarkValueAtIndex:(NSInteger)index;
 -(double)closestTickMarkValueToValue:(double)value;
 
 -(NSRect)trackRect;
 
--(NSRect)rectOfTickMarkAtIndex:(int)index;
+-(NSRect)rectOfTickMarkAtIndex:(NSInteger)index;
 
 -(void)drawBarInside:(NSRect)frame flipped:(BOOL)isFlipped;
 -(NSRect)knobRectFlipped:(BOOL)flipped;

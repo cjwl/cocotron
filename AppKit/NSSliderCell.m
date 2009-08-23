@@ -16,7 +16,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSRaise.h>
 
 #define PIXELINSET	8
-#define KNOBHEIGHT      15
 #define TICKHEIGHT      8
 
 @implementation NSSliderCell
@@ -92,7 +91,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return _altIncrementValue;
 }
 
--(int)numberOfTickMarks {
+-(NSInteger)numberOfTickMarks {
    return _numberOfTickMarks;
 }
 
@@ -104,7 +103,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return _allowsTickMarkValuesOnly;
 }
 
--(float)knobThickness {
+-(CGFloat)knobThickness {
    return 0;
 }
 
@@ -124,7 +123,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    _altIncrementValue=value;
 }
 
--(void)setNumberOfTickMarks:(int)number {
+-(void)setNumberOfTickMarks:(NSInteger)number {
    _numberOfTickMarks=number;
 }
 
@@ -136,7 +135,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    _allowsTickMarkValuesOnly=valuesOnly;
 }
 
--(void)setKnobThickness:(float)thickness {
+-(void)setKnobThickness:(CGFloat)thickness {
 // deprecated, do nothing
 }
 
@@ -144,7 +143,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return _isVertical;
 }
 
--(int)indexOfTickMarkAtPoint:(NSPoint)point {
+-(NSInteger)indexOfTickMarkAtPoint:(NSPoint)point {
    int i;
    
    for(i=0;i<_numberOfTickMarks;i++){
@@ -159,7 +158,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return NSNotFound;
 }
 
--(double)tickMarkValueAtIndex:(int)index {
+-(double)tickMarkValueAtIndex:(NSInteger)index {
    double  length=(_isVertical?_lastRect.size.height:_lastRect.size.width)-2*PIXELINSET;
 
    return (_numberOfTickMarks==1)?length/2:index*(length/(_numberOfTickMarks-1));
@@ -175,14 +174,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return NSZeroRect;
 }
 
--(NSRect)rectOfTickMarkAtIndex:(int)index {
+-(NSRect)rectOfTickMarkAtIndex:(NSInteger)index {
    NSRect result;
-   float  length=(_isVertical?_lastRect.size.height:_lastRect.size.width)-2*PIXELINSET;
-   float  position=floor((_numberOfTickMarks==1)?length/2:index*(length/(_numberOfTickMarks-1)));
+   CGFloat  length=(_isVertical?_lastRect.size.height:_lastRect.size.width)-2*PIXELINSET;
+   CGFloat  position=floor((_numberOfTickMarks==1)?length/2:index*(length/(_numberOfTickMarks-1)));
 
    if(_isVertical){
     result.origin.x=_lastRect.origin.x;
-    if(_tickMarkPosition==NSTickMarkAbove)
+    if(_tickMarkPosition==NSTickMarkBelow)
      result.origin.x+=_lastRect.size.width-TICKHEIGHT;
     result.origin.y=floor(_lastRect.origin.y+PIXELINSET+position);
     result.size.width=TICKHEIGHT;
@@ -202,7 +201,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 
 -(void)drawBarInside:(NSRect)frame flipped:(BOOL)isFlipped {
-   [[_controlView graphicsStyle] drawSliderTrackInRect:frame vertical:[self isVertical]];
+   [[_controlView graphicsStyle] drawSliderTrackInRect:frame vertical:[self isVertical] hasTickMarks:(_numberOfTickMarks>0)?YES:NO];
 }
 
 
@@ -230,19 +229,19 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    double percent=(value-_minValue)/(_maxValue-_minValue);
    NSRect sliderRect=[self _sliderRect];
    NSRect knobRect;
-   CGFloat knobThickness=[[_controlView graphicsStyle] sliderKnobThickness];
+   NSSize knobSize=[[_controlView graphicsStyle] sliderKnobSize];
    
    if ([self isVertical]) {
-    knobRect.size.height=knobThickness;
-    knobRect.size.width=KNOBHEIGHT;
-    knobRect.origin.x=floor(sliderRect.origin.x+(sliderRect.size.width-KNOBHEIGHT)/2);
-    knobRect.origin.y=floor(sliderRect.origin.y+PIXELINSET+percent*(sliderRect.size.height-(PIXELINSET*2))-knobThickness/2);
+    knobRect.size.height=knobSize.width;
+    knobRect.size.width=knobSize.height;
+    knobRect.origin.x=floor(sliderRect.origin.x+(sliderRect.size.width-knobSize.height)/2);
+    knobRect.origin.y=floor(sliderRect.origin.y+PIXELINSET+percent*(sliderRect.size.height-(PIXELINSET*2))-knobSize.width/2);
    }
    else {
-    knobRect.size.width=knobThickness;
-    knobRect.size.height=KNOBHEIGHT;
-    knobRect.origin.x=floor(sliderRect.origin.x+PIXELINSET+percent*(sliderRect.size.width-(PIXELINSET*2))-knobThickness/2);
-    knobRect.origin.y=floor(sliderRect.origin.y+(sliderRect.size.height-KNOBHEIGHT)/2);
+    knobRect.size.width=knobSize.width;
+    knobRect.size.height=knobSize.height;
+    knobRect.origin.x=floor(sliderRect.origin.x+PIXELINSET+percent*(sliderRect.size.width-(PIXELINSET*2))-knobSize.width/2);
+    knobRect.origin.y=floor(sliderRect.origin.y+(sliderRect.size.height-knobSize.height)/2);
    }
 
    return knobRect;
@@ -253,7 +252,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)drawKnob:(NSRect)rect {
-   [[_controlView graphicsStyle] drawSliderKnobInRect:rect vertical:[self isVertical] highlighted:[self isHighlighted]];
+   [[_controlView graphicsStyle] drawSliderKnobInRect:rect vertical:[self isVertical] highlighted:[self isHighlighted] hasTickMarks:(_numberOfTickMarks>0)?YES:NO tickMarkPosition:_tickMarkPosition];
 }
 
 -(void)drawTickMarks {
@@ -296,7 +295,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 // just a guess, but we'll try moving it 10% of its total range of values...
-- (void)_incrementByPercentageAndConstrain:(float)percentage decrement:(BOOL)decrement {
+- (void)_incrementByPercentageAndConstrain:(CGFloat)percentage decrement:(BOOL)decrement {
     double originalValue = [self doubleValue];
 
     if (decrement)

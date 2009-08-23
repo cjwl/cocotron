@@ -8,6 +8,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSObject.h>
 #import <Foundation/NSGeometry.h>
 #import <AppKit/NSView.h>
+#import <AppKit/NSSliderCell.h>
 
 @class NSImage,NSColor;
 
@@ -47,9 +48,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)drawScrollerKnobInRect:(NSRect)rect vertical:(BOOL)vertical highlight:(BOOL)highlight;
 -(void)drawScrollerTrackInRect:(NSRect)rect vertical:(BOOL)vertical upOrLeft:(BOOL)upOrLeft;
 -(void)drawScrollerTrackInRect:(NSRect)rect vertical:(BOOL)vertical;
--(CGFloat)sliderKnobThickness;
--(void)drawSliderKnobInRect:(NSRect)rect vertical:(BOOL)vertical highlighted:(BOOL)highlighted;
--(void)drawSliderTrackInRect:(NSRect)rect vertical:(BOOL)vertical;
+-(NSSize)sliderKnobSize;
+-(void)drawSliderKnobInRect:(NSRect)rect vertical:(BOOL)vertical highlighted:(BOOL)highlighted hasTickMarks:(BOOL)hasTickMarks tickMarkPosition:(NSTickMarkPosition)tickMarkPosition;
+-(void)drawSliderTrackInRect:(NSRect)rect vertical:(BOOL)vertical hasTickMarks:(BOOL)hasTickMarks;
 -(void)drawSliderTickInRect:(NSRect)rect;
 -(void)drawStepperButtonInRect:(NSRect)rect clipRect:(NSRect)clipRect enabled:(BOOL)enabled highlighted:(BOOL)highlighted upNotDown:(BOOL)upNotDown;
 -(void)drawTableViewHeaderInRect:(NSRect)rect highlighted:(BOOL)highlighted;
