@@ -12,6 +12,7 @@
 #import <Foundation/NSThread.h>
 #import <time.h>
 #import <math.h>
+#import <errno.h>
 
 @implementation NSConditionLock_posix
 -(id)init {
@@ -38,8 +39,11 @@
 }
 
 -(void)lock {
-   pthread_mutex_lock(&_mutex);
-   _lockingThread=NSCurrentThread();
+    int rc;
+    if((rc = pthread_mutex_lock(&_mutex)) != 0) {
+        [NSException raise:NSInvalidArgumentException format:@"failed to lock %@ (errno: %d)", self, rc];
+    }
+    _lockingThread=NSCurrentThread();
 }
 
 -(void)unlock {
@@ -71,12 +75,27 @@
 }
 
 -(void)lockWhenCondition:(NSInteger)condition {
-   pthread_mutex_lock(&_mutex);
    
-   while(_value!=condition) {
-      pthread_cond_wait(&_cond, &_mutex);
-   }
-   _lockingThread=NSCurrentThread();
+    int rc;
+    
+    if((rc = pthread_mutex_lock(&_mutex)) != 0) {
+        [NSException raise:NSInvalidArgumentException format:@"failed to lock %@ (errno: %d)", self, rc];
+    }
+    
+    while(_value!=condition) {
+        switch ((rc = pthread_cond_wait(&_cond, &_mutex))) {
+            case 0:
+                break;
+            default:
+                if((rc = pthread_mutex_unlock(&_mutex)) != 0) {
+                    [NSException raise:NSInvalidArgumentException format:@"failed to unlock %@ (errno: %d)", self, rc];
+                }
+                [NSException raise:NSInvalidArgumentException format:@"failed to lock %@ (errno: %d)", self, rc];
+        }
+        
+    }
+    
+    _lockingThread=NSCurrentThread();
 }
 
 -(void)unlockWithCondition:(NSInteger)condition {
@@ -84,39 +103,77 @@
       [NSException raise:NSInvalidArgumentException format:@"trying to unlock %@ from thread %@, was locked from %@", self, NSCurrentThread(), _lockingThread];
    }
 
-   _lockingThread=nil;
-   _value=condition;
-   pthread_cond_broadcast(&_cond);
-   pthread_mutex_unlock(&_mutex);
+    _lockingThread=nil;
+    _value=condition;
+    int rc;
+    if((rc = pthread_cond_broadcast(&_cond)) != 0) {
+        [NSException raise:NSInvalidArgumentException format:@"failed to broadcast %@ (errno: %d)", self, rc];
+    }
+    if((rc = pthread_mutex_unlock(&_mutex)) != 0) {
+        [NSException raise:NSInvalidArgumentException format:@"failed to unlock %@ (errno: %d)", self, rc];
+    }
 }
 
--(BOOL)lockBeforeDate:(NSDate *)date; {
-   pthread_mutex_lock(&_mutex);
-   struct timespec t={0};
-   NSTimeInterval d=[date timeIntervalSinceReferenceDate];
-   t.tv_sec=(unsigned int)d;
-   t.tv_nsec=fmod(d, 1.0)*1000000.0;
-   
-   if(pthread_cond_timedwait(&_cond, &_mutex, &t)<0) {
-      return NO;
-   }
-   _lockingThread=NSCurrentThread();
-   return YES;
+-(BOOL)lockBeforeDate:(NSDate *)date {
+    int rc;
+    struct timespec t={0};
+    NSTimeInterval d=[date timeIntervalSinceNow];
+    t.tv_sec=(unsigned int)d;
+    t.tv_nsec=fmod(d, 1.0)*1000000.0;
+    
+    if((rc = pthread_mutex_lock(&_mutex)) != 0) {
+        [NSException raise:NSInvalidArgumentException format:@"failed to lock %@ (errno: %d)", self, rc];
+    }
+    
+    switch ((rc = pthread_cond_timedwait(&_cond, &_mutex, &t))) {
+        case 0:
+            _lockingThread=NSCurrentThread();
+            return YES;
+        case ETIMEDOUT:
+            if((rc = pthread_mutex_unlock(&_mutex)) != 0) {
+                [NSException raise:NSInvalidArgumentException format:@"failed to unlock %@ (errno: %d)", self, rc];
+            }
+            return NO;
+        default:
+            if((rc = pthread_mutex_unlock(&_mutex)) != 0) {
+                [NSException raise:NSInvalidArgumentException format:@"failed to unlock %@ (errno: %d)", self, rc];
+            }
+            [NSException raise:NSInvalidArgumentException format:@"failed to lock %@ before date %@ (errno: %d)", self, date, rc];
+            return NO;
+    }
 }
 
--(BOOL)lockWhenCondition:(NSInteger)condition beforeDate:(NSDate *)date; {
-   pthread_mutex_lock(&_mutex);
-   struct timespec t={0};
-   NSTimeInterval d=[date timeIntervalSinceReferenceDate];
-   t.tv_sec=(unsigned int)d;
-   t.tv_nsec=fmod(d, 1.0)*1000000.0;
-   
-   while(_value!=condition) {
-      if(pthread_cond_timedwait(&_cond, &_mutex, &t)<0)
-         return NO;
-   }
-   _lockingThread=NSCurrentThread();
-   return YES;
+-(BOOL)lockWhenCondition:(NSInteger)condition beforeDate:(NSDate *)date {
+    struct timespec t={0};
+    int rc;
+    NSTimeInterval d=[date timeIntervalSinceNow];
+    t.tv_sec=(unsigned int)d;
+    t.tv_nsec=fmod(d, 1.0)*1000000.0;
+
+    if((rc = pthread_mutex_lock(&_mutex)) != 0) {
+        [NSException raise:NSInvalidArgumentException format:@"failed to lock %@ (errno: %d)", self, rc];
+    }
+    
+    while(_value!=condition) {
+        switch ((rc = pthread_cond_timedwait(&_cond, &_mutex, &t))) {
+            case 0:
+                break;
+            case ETIMEDOUT:
+                if((rc = pthread_mutex_unlock(&_mutex)) != 0) {
+                    [NSException raise:NSInvalidArgumentException format:@"failed to unlock %@ (errno: %d)", self, rc];
+                }
+                return NO;
+            default:
+                if((rc = pthread_mutex_unlock(&_mutex)) != 0) {
+                    [NSException raise:NSInvalidArgumentException format:@"failed to unlock %@ (errno: %d)", self, rc];
+                }
+                [NSException raise:NSInvalidArgumentException format:@"failed to lock %@ before date %@ (errno: %d)", self, date, rc];
+                return NO;
+        }
+    }
+    
+    _lockingThread=NSCurrentThread();
+    return YES;
 }
 
 @end
