@@ -45,6 +45,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -initTextCell:(NSString *)string {
    [super initTextCell:string];
+   _isContinuous=YES; // NSCell defaults to NO, NSSliderCell defaults to YES
    _type=NSLinearSlider;
    _minValue=0;
    _maxValue=0;
@@ -59,6 +60,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -initImageCell:(NSImage *)image {
    [super initImageCell:image];
+   _isContinuous=YES; // NSCell defaults to NO, NSSliderCell defaults to YES
    _type=NSLinearSlider;
    _minValue=0;
    _maxValue=0;
