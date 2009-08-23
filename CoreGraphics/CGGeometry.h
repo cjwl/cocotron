@@ -47,7 +47,7 @@ static inline CGFloat CGRectGetMaxY(CGRect rect){
 }
 
 static inline BOOL CGRectContainsPoint(CGRect rect,CGPoint point) {
-  return ((CGRectGetMinX(rect0) < CGRectGetMinX(rect1)) && (CGRectGetMinY(rect0) < CGRectGetMinY(rect1)) && (CGRectGetMaxX(rect0) > CGRectGetMaxX(rect1)) && (CGRectGetMaxY(rect0) > CGRectGetMaxY(rect1)))?YES:NO;
+   return (point.x>=NSMinX(rect) && point.x<=NSMaxX(rect)) && (point.y>=NSMinY(rect) && point.y<=NSMaxY(rect));
 }
 
 static inline BOOL CGPointEqualToPoint(CGPoint a,CGPoint b){
