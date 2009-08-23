@@ -2980,6 +2980,27 @@
 			remoteGlobalIDString = C8A2E2710F07E9B70054397C;
 			remoteInfo = "ApplicationServices-Darwin-i386";
 		};
+		FE0C4EC01041CF2100D8C100 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FE0C4EB81041CF2100D8C100 /* OpenGL.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 8DC2EF5B0486A6940098B216 /* OpenGL.framework */;
+			remoteInfo = "OpenGL-Windows-i386";
+		};
+		FE0C4EC21041CF2100D8C100 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FE0C4EB81041CF2100D8C100 /* OpenGL.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = C8E0BE8A0F0E544700677729 /* OpenGL.framework */;
+			remoteInfo = "OpenGL-Darwin-i386";
+		};
+		FE0C4EC41041CF3200D8C100 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FE0C4EB81041CF2100D8C100 /* OpenGL.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 8DC2EF4F0486A6940098B216 /* OpenGL-Windows-i386 */;
+			remoteInfo = "OpenGL-Windows-i386";
+		};
 		FE65206E0FBE3D3D00464BFD /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 6E46FEBE0A2D2DCF004CD27E /* Foundation.xcodeproj */;
@@ -3528,6 +3549,7 @@
 		FE064AC60B8B805000853FBB /* KGPattern.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = KGPattern.m; sourceTree = "<group>"; };
 		FE08C3210DDF299800B3169A /* NSColor_CGColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSColor_CGColor.h; sourceTree = "<group>"; };
 		FE08C3220DDF299800B3169A /* NSColor_CGColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSColor_CGColor.m; sourceTree = "<group>"; };
+		FE0C4EB81041CF2100D8C100 /* OpenGL.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = OpenGL.xcodeproj; path = ../OpenGL/OpenGL.xcodeproj; sourceTree = SOURCE_ROOT; };
 		FE1CEA6B0C8F12F800184630 /* opengl_dll.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = opengl_dll.h; sourceTree = "<group>"; };
 		FE1CEA6C0C8F12F800184630 /* opengl_dll.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = opengl_dll.m; sourceTree = "<group>"; };
 		FE1E86BF0BBCA62D0013B968 /* NSGraphicsStyle.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSGraphicsStyle.h; sourceTree = "<group>"; };
@@ -3878,6 +3900,7 @@
 		6E2B531A0976074C00DA0954 /* AppKit */ = {
 			isa = PBXGroup;
 			children = (
+				FE0C4EB81041CF2100D8C100 /* OpenGL.xcodeproj */,
 				6E46FEBE0A2D2DCF004CD27E /* Foundation.xcodeproj */,
 				FECAF4C80DB710EE00BA2A8E /* ApplicationServices.xcodeproj */,
 				6E2B53240976075200DA0954 /* Classes */,
@@ -4842,6 +4865,15 @@
 				FEE66D7A0C3D6F8A00FBED82 /* Foundation.framework */,
 				FE65206F0FBE3D3D00464BFD /* Foundation.framework */,
 				FED5359C0FE061B200F02667 /* Foundation.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		FE0C4EB91041CF2100D8C100 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				FE0C4EC11041CF2100D8C100 /* OpenGL.framework */,
+				FE0C4EC31041CF2100D8C100 /* OpenGL.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -6525,6 +6557,7 @@
 			dependencies = (
 				FE01AACC0C5D9BE700AEA51A /* PBXTargetDependency */,
 				FE6EDEBD0DB7AF94005503A1 /* PBXTargetDependency */,
+				FE0C4EC51041CF3200D8C100 /* PBXTargetDependency */,
 			);
 			name = "AppKit-Windows-i386";
 			productInstallPath = /Library/Frameworks;
@@ -6572,6 +6605,10 @@
 					ProductGroup = 6E46FEBF0A2D2DCF004CD27E /* Products */;
 					ProjectRef = 6E46FEBE0A2D2DCF004CD27E /* Foundation.xcodeproj */;
 				},
+				{
+					ProductGroup = FE0C4EB91041CF2100D8C100 /* Products */;
+					ProjectRef = FE0C4EB81041CF2100D8C100 /* OpenGL.xcodeproj */;
+				},
 			);
 			projectRoot = "";
 			targets = (
@@ -6617,6 +6654,20 @@
 			fileType = wrapper.framework;
 			path = Foundation.framework;
 			remoteRef = FE01AAC90C5D9BCC00AEA51A /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FE0C4EC11041CF2100D8C100 /* OpenGL.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = OpenGL.framework;
+			remoteRef = FE0C4EC01041CF2100D8C100 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FE0C4EC31041CF2100D8C100 /* OpenGL.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = OpenGL.framework;
+			remoteRef = FE0C4EC21041CF2100D8C100 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		FE65206F0FBE3D3D00464BFD /* Foundation.framework */ = {
@@ -8239,6 +8290,11 @@
 			isa = PBXTargetDependency;
 			name = "ApplicationServices-Darwin-i386";
 			targetProxy = FE07750C0F2D54470074EE75 /* PBXContainerItemProxy */;
+		};
+		FE0C4EC51041CF3200D8C100 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "OpenGL-Windows-i386";
+			targetProxy = FE0C4EC41041CF3200D8C100 /* PBXContainerItemProxy */;
 		};
 		FE6EDEBD0DB7AF94005503A1 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
