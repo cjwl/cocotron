@@ -7,6 +7,7 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
 #import <AppKit/NSActionCell.h>
+#import <AppKit/NSImageCell.h>
 
 @class NSSound;
 
@@ -19,32 +20,40 @@ enum {
 };
 
 typedef enum {
-   NSMomentaryLightButton,
-   NSPushOnPushOffButton,
-   NSToggleButton,
-   NSSwitchButton,
-   NSRadioButton,
-   NSMomentaryChangeButton,
-   NSOnOffButton,
-   NSMomentaryPushInButton,
+   NSMomentaryLightButton=0,
+   NSPushOnPushOffButton=1,
+   NSToggleButton=2,
+   NSSwitchButton=3,
+   NSRadioButton=4,
+   NSMomentaryChangeButton=5,
+   NSOnOffButton=6,
+   NSMomentaryPushInButton=7,
 } NSButtonType;
 
 typedef enum {
    NSRoundedBezelStyle=1,
-   NSRegularSquareBezelStyle,
-   NSThickSquareBezelStyle,
-   NSThickerSquareBezelStyle,
-   NSDisclosureBezelStyle,
-   NSShadowlessSquareBezelStyle,
-   NSCircularBezelStyle,
-   NSTexturedSquareBezelStyle,
-   NSHelpButtonBezelStyle,
-   NSSmallSquareBezelStyle,
-   NSTexturedRoundedBezelStyle,
-   NSRoundRectBezelStyle,
-   NSRecessedBezelStyle,
-   NSRoundedDisclosureBezelStyle,    
+   NSRegularSquareBezelStyle=2,
+   NSThickSquareBezelStyle=3,
+   NSThickerSquareBezelStyle=4,
+   NSDisclosureBezelStyle=5,
+   NSShadowlessSquareBezelStyle=6,
+   NSCircularBezelStyle=7,
+   NSTexturedSquareBezelStyle=8,
+   NSHelpButtonBezelStyle=9,
+   NSSmallSquareBezelStyle=10,
+   NSTexturedRoundedBezelStyle=11,
+   NSRoundRectBezelStyle=12,
+   NSRecessedBezelStyle=13,
+   NSRoundedDisclosureBezelStyle=14,    
 } NSBezelStyle;
+
+typedef enum {
+   NSGradientNone         =0,
+   NSGradientConcaveWeak  =1,
+   NSGradientConcaveStrong=2,
+   NSGradientConvexWeak   =3,
+   NSGradientConvexStrong =4,
+} NSGradientType;
 
 @interface NSButtonCell : NSActionCell {
    NSString *_alternateTitle;
@@ -59,6 +68,11 @@ typedef enum {
    unsigned  _keyEquivalentModifierMask;
    BOOL      _showsBorderOnlyWhileMouseInside;
    NSSound  *_sound;
+   NSGradientType _gradientType;
+   NSImageScaling _imageScaling;
+   NSFont        *_keyEquivalentFont;
+   NSColor       *_backgroundColor;
+   float          _periodicDelay,_periodicInterval;
 }
 
 -(BOOL)isTransparent;
@@ -76,6 +90,12 @@ typedef enum {
 -(NSBezelStyle)bezelStyle;
 -(BOOL)showsBorderOnlyWhileMouseInside;
 -(NSSound *)sound;
+-(NSGradientType)gradientType;
+-(NSImageScaling)imageScaling;
+-(BOOL)isOpaque;
+-(NSFont *)keyEquivalentFont;
+-(NSColor *)backgroundColor;
+-(void)getPeriodicDelay:(float *)delay interval:(float *)interval;
 
 -(void)setTransparent:(BOOL)flag;
 -(void)setKeyEquivalent:(NSString *)keyEquivalent;
@@ -93,8 +113,20 @@ typedef enum {
 -(void)setButtonType:(NSButtonType)buttonType;
 -(void)setShowsBorderOnlyWhileMouseInside:(BOOL)show;
 -(void)setSound:(NSSound *)sound;
+-(void)setGradientType:(NSGradientType)value;
+-(void)setBackgroundColor:(NSColor *)value;
+-(void)setImageScaling:(NSImageScaling)value;
+-(void)setKeyEquivalentFont:(NSFont *)value;
+-(void)setKeyEquivalentFont:(NSString *)value size:(CGFloat)size;
+-(void)setPeriodicDelay:(float)delay interval:(float)interval;
 
 -(void)performClick:sender;
+
+-(void)drawBezelWithFrame:(NSRect)rect inView:(NSView *)view;
+-(void)drawImage:(NSImage *)image withFrame:(NSRect)rect inView:(NSView *)view;
+
+-(void)mouseEntered:(NSEvent *)event;
+-(void)mouseExited:(NSEvent *)event;
 
 @end
 

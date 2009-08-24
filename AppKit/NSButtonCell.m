@@ -149,6 +149,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [_alternateTitle release];
    [_alternateImage release];
    [_keyEquivalent release];
+   [_sound release];
+   [_keyEquivalentFont release];
+   [_backgroundColor release];
    [super dealloc];
 }
 
@@ -158,7 +161,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    result->_alternateTitle =[_alternateTitle copy];
    result->_alternateImage=[_alternateImage retain];
    result->_keyEquivalent=[_keyEquivalent copy];
-
+   result->_sound=[_sound retain];
+   result->_keyEquivalentFont=[_keyEquivalentFont retain];
+   result->_backgroundColor=[_backgroundColor retain];
+   
    return result;
 }
 
@@ -266,6 +272,31 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(NSSound *)sound {
    return _sound;
+}
+
+-(NSGradientType)gradientType {
+   return _gradientType;
+}
+
+-(NSImageScaling)imageScaling {
+   return _imageScaling;
+}
+
+-(BOOL)isOpaque {
+   return ![self isTransparent] && [self isBordered];
+}
+
+-(NSFont *)keyEquivalentFont {
+   return _keyEquivalentFont;
+}
+
+-(NSColor *)backgroundColor {
+   return _backgroundColor;
+}
+
+-(void)getPeriodicDelay:(float *)delay interval:(float *)interval {
+   *delay=_periodicDelay;
+   *interval=_periodicInterval;
 }
 
 -(int)state {
@@ -432,6 +463,36 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    _sound=sound;
 }
 
+-(void)setGradientType:(NSGradientType)value {
+   _gradientType=value;
+}
+
+-(void)setBackgroundColor:(NSColor *)value {
+   value=[value copy];
+   [_backgroundColor release];
+   _backgroundColor=value;
+}
+
+-(void)setImageScaling:(NSImageScaling)value {
+   _imageScaling=value;
+}
+
+-(void)setKeyEquivalentFont:(NSFont *)value {
+   value=[value retain];
+   [_keyEquivalentFont release];
+   _keyEquivalentFont=value;
+}
+
+-(void)setKeyEquivalentFont:(NSString *)value size:(CGFloat)size {
+   NSFont *font=[NSFont fontWithName:value size:size];
+   [self setKeyEquivalentFont:font];
+}
+
+-(void)setPeriodicDelay:(float)delay interval:(float)interval {
+   _periodicDelay=delay;
+   _periodicInterval=interval;
+}
+
 -(NSAttributedString *)titleForHighlight {
    if((([self highlightsBy]&NSContentsCellMask) && [self isHighlighted]) ||
       (([self showsStateBy]&NSContentsCellMask) && [self state])){
@@ -468,6 +529,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(BOOL)isVisuallyHighlighted {
    return ((([self highlightsBy]&NSChangeGrayCellMask) && [self isHighlighted]) ||
            (([self showsStateBy]&NSChangeGrayCellMask) && [self state]));
+}
+
+-(void)drawBezelWithFrame:(NSRect)rect inView:(NSView *)view {
+   NSUnimplementedMethod();
+}
+
+-(void)drawImage:(NSImage *)image withFrame:(NSRect)rect inView:(NSView *)view {
+   NSUnimplementedMethod();
 }
 
 -(void)drawInteriorWithFrame:(NSRect)frame inView:(NSView *)controlView {
@@ -723,6 +792,14 @@ sizeOfButtonImage:image enabled:enabled mixed:mixed];
 -(void)performClick:sender {
    if([_controlView respondsToSelector:@selector(performClick:)])
     [_controlView performSelector:@selector(performClick:) withObject:sender];
+}
+
+-(void)mouseEntered:(NSEvent *)event {
+   NSUnimplementedMethod();
+}
+
+-(void)mouseExited:(NSEvent *)event {
+   NSUnimplementedMethod();
 }
 
 @end
