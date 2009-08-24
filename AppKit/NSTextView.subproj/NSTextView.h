@@ -155,6 +155,8 @@ APPKIT_EXPORT NSString *NSOldSelectedCharacterRange;
 
 -(void)updateRuler;
 
+-(void)alignJustified:sender;
+
 -(void)cut:sender;
 -(void)copy:sender;
 -(void)paste:sender;

@@ -2150,6 +2150,12 @@ NSString *NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
     [self setSelectedRange:range];
 }
 
+- (void)alignJustified:sender {
+    NSRange range=[self selectedRange];
+    [self _setAlignment:NSJustifiedTextAlignment range:[self _rangeForSelectedParagraph]];    
+    [self setSelectedRange:range];
+}
+
 - (void)underline:sender {
     NSRange range = [self selectedRange];
     
