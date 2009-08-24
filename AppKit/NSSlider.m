@@ -105,21 +105,25 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 - (void)moveUp:(id)sender {
     [[self selectedCell] moveUp:sender];
+    [self sendAction:[self action] to:[self target]];
     [self setNeedsDisplay:YES];
 }
 
 - (void)moveDown:(id)sender {
     [[self selectedCell] moveDown:sender];
+    [self sendAction:[self action] to:[self target]];
     [self setNeedsDisplay:YES];
 }
 
 - (void)moveLeft:(id)sender {
     [[self selectedCell] moveLeft:sender];
+    [self sendAction:[self action] to:[self target]];
     [self setNeedsDisplay:YES];
 }
 
 - (void)moveRight:(id)sender {
     [[self selectedCell] moveRight:sender];
+    [self sendAction:[self action] to:[self target]];
     [self setNeedsDisplay:YES];
 }
 

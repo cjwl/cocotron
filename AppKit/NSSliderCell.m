@@ -315,12 +315,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 - (void)moveUp:(id)sender {
     if ([self isVertical])
-        [self _incrementByPercentageAndConstrain:0.10 decrement:YES];
+        [self _incrementByPercentageAndConstrain:0.10 decrement:NO];
 }
 
 - (void)moveDown:(id)sender {
     if ([self isVertical])
-        [self _incrementByPercentageAndConstrain:0.10 decrement:NO];
+        [self _incrementByPercentageAndConstrain:0.10 decrement:YES];
 }
 
 - (void)moveLeft:(id)sender {
