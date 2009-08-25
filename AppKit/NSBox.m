@@ -56,6 +56,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
   contentview = [[NSView alloc] initWithFrame:NSMakeRect(0,0,NSWidth(frame),NSHeight(frame))];
   [contentview  setAutoresizingMask: NSViewWidthSizable| NSViewHeightSizable];
   [self addSubview: contentview];
+  [contentview release];
   [self setAutoresizesSubviews:YES];
   return self;
 }
