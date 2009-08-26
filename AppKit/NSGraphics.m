@@ -36,6 +36,30 @@ NSString *NSDeviceResolution=@"NSDeviceResolution";
 NSString *NSDeviceColorSpaceName=@"NSDeviceColorSpaceName";
 NSString *NSDeviceBitsPerSample=@"NSDeviceBitsPerSample";
 
+static inline CGBlendMode blendModeForCompositeOp(NSCompositingOperation op){
+   static CGBlendMode table[]={
+    kCGBlendModeClear,
+    kCGBlendModeCopy,
+    kCGBlendModeNormal,
+    kCGBlendModeSourceIn,
+    kCGBlendModeSourceOut,
+    kCGBlendModeSourceAtop,
+    kCGBlendModeDestinationOver,
+    kCGBlendModeDestinationIn,
+    kCGBlendModeDestinationOut,
+    kCGBlendModeDestinationAtop,
+    kCGBlendModeXOR,
+    kCGBlendModePlusDarker,
+    kCGBlendModeNormal, // FIXME: highlight
+    kCGBlendModePlusLighter,
+   };
+
+   if(op<NSCompositeClear || op>NSCompositePlusLighter)
+    return NSCompositeCopy;
+   
+   return table[op];
+}
+
 void NSRectClipList(const NSRect *rects, int count) {
    CGContextRef graphicsPort=NSCurrentGraphicsPort();
 
@@ -50,8 +74,11 @@ void NSRectClip(NSRect rect) {
 
 
 void NSRectFillListWithColors(const NSRect *rects,NSColor **colors,int count) {
+   CGContextRef context=NSCurrentGraphicsPort();
    int i;
 
+   CGContextSaveGState(context);
+   CGContextSetBlendMode(context,kCGBlendModeCopy);
    for(i=0;i<count;i++){
     [colors[i] setFill];
 // FIXME: the groove/button rect generating code can generate negative size rects which draw incorrectly
@@ -59,33 +86,47 @@ void NSRectFillListWithColors(const NSRect *rects,NSColor **colors,int count) {
     if(rects[i].size.width>0 && rects[i].size.height>0)
      NSRectFill(rects[i]);
    }
+   CGContextRestoreGState(context);
 }
 
 void NSRectFillListWithGrays(const NSRect *rects,const float *grays,int count) {
-   CGContextRef graphicsPort=NSCurrentGraphicsPort();
+   CGContextRef context=NSCurrentGraphicsPort();
    int        i;
 
+   CGContextSaveGState(context);
+   CGContextSetBlendMode(context,kCGBlendModeCopy);
    for(i=0;i<count;i++){
-    CGContextSetGrayFillColor(graphicsPort,grays[i],1.0);
+    CGContextSetGrayFillColor(context,grays[i],1.0);
 // FIXME: the groove/button rect generating code can generate negative size rects which draw incorrectly
 // this either needs to be fixed in the drawing or the rect generation
     if(rects[i].size.width>0 && rects[i].size.height>0)
-     CGContextFillRect(graphicsPort,rects[i]);
+     CGContextFillRect(context,rects[i]);
    }
+   CGContextRestoreGState(context);
 }
 
 void NSRectFillList(const NSRect *rects, int count) {
+   CGContextRef context=NSCurrentGraphicsPort();
+   CGContextSaveGState(context);
+   CGContextSetBlendMode(context,kCGBlendModeCopy);
    CGContextFillRects(NSCurrentGraphicsPort(),rects,count);
+   CGContextRestoreGState(context);
 }
 
 void NSRectFill(NSRect rect) {
+   CGContextRef context=NSCurrentGraphicsPort();
+   CGContextSaveGState(context);
+   CGContextSetBlendMode(context,kCGBlendModeCopy);
    CGContextFillRect(NSCurrentGraphicsPort(),rect);
+   CGContextRestoreGState(context);
 }
 
 void NSRectFillUsingOperation(NSRect rect,NSCompositingOperation op) {
-// FIXME: wrong
-    NSUnimplementedFunction();
+   CGContextRef context=NSCurrentGraphicsPort();
+   CGContextSaveGState(context);
+   CGContextSetBlendMode(context,blendModeForCompositeOp(op));
    CGContextFillRect(NSCurrentGraphicsPort(),rect);
+   CGContextRestoreGState(context);
 }
 
 void NSFrameRectWithWidth(NSRect rect,float width) {

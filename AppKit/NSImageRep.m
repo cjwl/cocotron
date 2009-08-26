@@ -130,27 +130,91 @@ static NSMutableArray *_registeredClasses=nil;
 }
 
 +(NSArray *)imageRepsWithContentsOfURL:(NSURL *)url {
-   NSUnimplementedMethod();
-   return nil;
+   Class   class=self;
+   NSData *data=[NSData dataWithContentsOfURL:url];
+   
+   if(data==nil)
+    return nil;
+
+   if((self==[NSImageRep class])){    
+    if((class=[self imageRepClassForData:data])==nil)
+     return nil;
+   }
+   
+   return [class imageRepsWithData:data];
 }
 
 +(NSArray *)imageRepsWithPasteboard:(NSPasteboard *)pasteboard {
-   NSUnimplementedMethod();
+   NSArray *imageTypes=[self imagePasteboardTypes];
+   NSArray *pbTypes=[pasteboard types];
+   
+   for(NSString *check in pbTypes){
+    if([imageTypes containsObject:check]){
+     NSData *data=[pasteboard dataForType:check];
+     Class   class;
+     
+     if((class=[self imageRepClassForData:data])!=nil){
+      NSArray *result;
+     
+      if((result=[class imageRepsWithData:data])!=nil)
+       return result;
+     }
+    }
+   }
+   
    return nil;
 }
 
 +imageRepWithContentsOfFile:(NSString *)path {
-   NSUnimplementedMethod();
-   return nil;
+   Class   class=self;
+   NSData *data=[NSData dataWithContentsOfFile:path];
+   
+   if(data==nil)
+    return nil;
+    
+   if((self==[NSImageRep class])){
+    NSString *type=[path pathExtension];
+    
+    if((class=[self imageRepClassForFileType:type])==nil)
+     return nil;
+   }
+   
+   return [class imageRepWithData:data];
 }
 
 +imageRepWithContentsOfURL:(NSURL *)url {
-   NSUnimplementedMethod();
-   return nil;
+   Class   class=self;
+   NSData *data=[NSData dataWithContentsOfURL:url];
+   
+   if(data==nil)
+    return nil;
+
+   if((self==[NSImageRep class])){    
+    if((class=[self imageRepClassForData:data])==nil)
+     return nil;
+   }
+   
+   return [class imageRepWithData:data];
 }
 
 +imageRepWithPasteboard:(NSPasteboard *)pasteboard {
-   NSUnimplementedMethod();
+   NSArray *imageTypes=[self imagePasteboardTypes];
+   NSArray *pbTypes=[pasteboard types];
+   
+   for(NSString *check in pbTypes){
+    if([imageTypes containsObject:check]){
+     NSData *data=[pasteboard dataForType:check];
+     Class   class;
+     
+     if((class=[self imageRepClassForData:data])!=nil){
+      NSArray *result;
+     
+      if((result=[class imageRepWithData:data])!=nil)
+       return result;
+     }
+    }
+   }
+   
    return nil;
 }
 

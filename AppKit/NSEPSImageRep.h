@@ -12,6 +12,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    NSData *_data;
 }
 
++(NSArray *)imageRepsWithData:(NSData *)data;
 +imageRepWithData:(NSData *)data;
 
 -initWithData:(NSData *)data;

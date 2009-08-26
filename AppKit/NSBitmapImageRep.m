@@ -54,6 +54,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return nil;
 }
 
++(NSArray *)imageRepsWithData:(NSData *)data {
+   id result=[self imageRepWithData:data];
+   
+   if(result==nil)
+    return nil;
+  
+   return [NSArray arrayWithObject:result];
+}
+
 +imageRepWithData:(NSData *)data {
    return [[[self alloc] initWithData:data] autorelease];
 }
