@@ -27,11 +27,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -initWithBytes:(const void *)bytes length:(size_t)length {
-   _data=nil;
-   _isDirectAccess=YES;
-   _bytes=bytes;
-   _length=length;
-   return self;
+   NSData *data=[NSData dataWithBytesNoCopy:(void *)bytes length:length freeWhenDone:NO];
+   return [self initWithData:data];
 }
 
 -initWithFilename:(const char *)pathCString {

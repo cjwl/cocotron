@@ -18,6 +18,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <CoreGraphics/O2MutablePath.h>
 #import <CoreGraphics/O2Color.h>
 #import <CoreGraphics/KGColorSpace.h>
+#import <CoreGraphics/KGDataProvider.h>
 #import <CoreGraphics/KGShading.h>
 #import <CoreGraphics/KGFunction.h>
 #import <CoreGraphics/KGContext_builtin.h>
@@ -236,7 +237,7 @@ static RECT NSRectToRECT(NSRect rect) {
 }
 
 -(void)deviceClipToMask:(KGImage *)mask inRect:(NSRect)rect {
-   NSUnimplementedMethod();
+// do nothing, see image drawing for how clip masks are used (1x1 alpha mask)
 }
 
 -(void)drawPathInDeviceSpace:(O2Path *)path drawingMode:(int)mode state:(KGGraphicsState *)state {
@@ -1077,8 +1078,27 @@ static void zeroBytes(void *bytes,int size){
 
 -(void)drawImage:(KGImage *)image inRect:(NSRect)rect {
    CGAffineTransform transformToDevice=[self userSpaceToDeviceSpaceTransform];
-  
-   [self drawBitmapImage:image inRect:rect ctm:transformToDevice fraction:[[self fillColor] alpha]];
+   KGGraphicsState *gState=[self currentState];
+   KGClipPhase     *phase=[[gState clipPhases] lastObject];
+   
+/* The NSImage drawing methods which take a fraction use a 1x1 alpha mask to set the fraction.
+   We don't do alpha masks yet but the rough fraction code already existed so we check for this
+   special case and generate a fraction from the 1x1 mask. Any other case is ignored.
+ */
+   float fraction=1.0;
+
+   if(phase!=nil && [phase phaseType]==KGClipPhaseMask){
+    KGImage *mask=[phase object];
+    
+    if([mask width]==1 && [mask height]==1){
+     uint8_t byte=255;
+     
+     if([[mask dataProvider] getBytes:&byte range:NSMakeRange(0,1)]==1)
+      fraction=(float)byte/255.0f;
+    }
+   }
+   
+   [self drawBitmapImage:image inRect:rect ctm:transformToDevice fraction:fraction];
 }
 
 -(void)drawDeviceContext:(KGDeviceContext_gdi *)deviceContext inRect:(NSRect)rect ctm:(CGAffineTransform)ctm {

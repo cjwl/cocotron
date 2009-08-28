@@ -355,7 +355,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)addRepresentation:(NSImageRep *)representation {
-   [_representations addObject:representation];
+   if(representation!=nil)
+    [_representations addObject:representation];
 }
 
 -(void)addRepresentations:(NSArray *)array {
@@ -566,7 +567,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    CGContextRef context=NSCurrentGraphicsPort();
    
    CGContextSaveGState(context);
-   CGContextSetAlpha(context,fraction);
+// fraction is accomplished with a 1x1 alpha mask
+   uint8_t           bytes[1]={ MIN(MAX(0,fraction*255),255) };
+   CGDataProviderRef provider=CGDataProviderCreateWithData(NULL,bytes,1,NULL);
+   CGImageRef        mask=CGImageMaskCreate(1,1,8,8,1,provider,NULL,NO);
+   
+   CGContextClipToMask(context,rect,mask);
+   CGImageRelease(mask);
+   CGDataProviderRelease(provider);
+   
    [[self bestRepresentationForDevice:nil] drawAtPoint:point];
    CGContextRestoreGState(context);
 }
@@ -608,7 +617,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    CGContextRef context=NSCurrentGraphicsPort();
 	
    CGContextSaveGState(context);
-   CGContextSetAlpha(context,fraction);
+// fraction is accomplished with a 1x1 alpha mask
+   uint8_t           bytes[1]={ MIN(MAX(0,fraction*255),255) };
+   CGDataProviderRef provider=CGDataProviderCreateWithData(NULL,bytes,1,NULL);
+   CGImageRef        mask=CGImageMaskCreate(1,1,8,8,1,provider,NULL,NO);
+   
+   CGContextClipToMask(context,rect,mask);
+   CGImageRelease(mask);
+   CGDataProviderRelease(provider);
 
    [cached drawAtPoint:rect.origin];
    
