@@ -153,4 +153,8 @@
    _name = [name copy];
 }
 
+-(NSInteger)condition {
+    return _value;
+}
+
 @end
