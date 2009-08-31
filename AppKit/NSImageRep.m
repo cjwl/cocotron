@@ -101,8 +101,9 @@ static NSMutableArray *_registeredClasses=nil;
     Class    checkClass=[_registeredClasses objectAtIndex:count];
     NSArray *types=[checkClass imageUnfilteredFileTypes];
     
-    if([types containsObject:type])
-     return checkClass;
+    for(NSString *checkType in types)
+     if([checkType caseInsensitiveCompare:type]==NSOrderedSame)
+      return checkClass;
    }
    
    return nil;
@@ -174,11 +175,11 @@ static NSMutableArray *_registeredClasses=nil;
     
    if((self==[NSImageRep class])){
     NSString *type=[path pathExtension];
-    
+
     if((class=[self imageRepClassForFileType:type])==nil)
      return nil;
    }
-   
+
    return [class imageRepWithData:data];
 }
 

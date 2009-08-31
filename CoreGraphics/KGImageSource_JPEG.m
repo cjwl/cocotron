@@ -666,7 +666,7 @@ static int process_marker(jpeg *z, int m)
        KGImageSource *tiffSource=[[KGImageSource_TIFF alloc] initWithData:data options:nil];
        KGImage       *image=[tiffSource imageAtIndex:0 options:nil];
 #endif       
-       skip(&z->s, size-2);
+      // skip(&z->s, size-2);
       }
       skip(&z->s, size-2);
       return 1;
@@ -1072,7 +1072,7 @@ static unsigned char *stbi_jpeg_load_from_memory(jpeg *j,stbi_uc const *buffer, 
    for(i=0;i<signatureLength;i++)
     if(signature[i]!=check[i])
      return NO;
-     
+
    return YES;
 }
 
