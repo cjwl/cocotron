@@ -21,7 +21,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)drawMenuSeparatorInRect:(NSRect)rect;
 -(void)drawMenuCheckmarkAtPoint:(NSPoint)point selected:(BOOL)selected;
 
--(NSRect)drawUnborderedButtonInRect:(NSRect)rect defaulted:(BOOL)defaulted;
+-(void)drawUnborderedButtonInRect:(NSRect)rect defaulted:(BOOL)defaulted;
 
 -(void)drawPushButtonNormalInRect:(NSRect)rect defaulted:(BOOL)defaulted;
 -(void)drawPushButtonPressedInRect:(NSRect)rect;

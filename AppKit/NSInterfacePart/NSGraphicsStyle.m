@@ -51,13 +51,11 @@ pointSize:10 color:color] autorelease];
 	[arrow drawAtPoint:point];
 }
 
--(NSRect)drawUnborderedButtonInRect:(NSRect)rect defaulted:(BOOL)defaulted {
+-(void)drawUnborderedButtonInRect:(NSRect)rect defaulted:(BOOL)defaulted {
    if(defaulted){
     [[NSColor blackColor] setFill];
     NSRectFill(rect);
-    rect = NSInsetRect(rect,1,1);
    }
-   return rect;
 }
 
 -(void)drawPushButtonNormalInRect:(NSRect)rect defaulted:(BOOL)defaulted {
