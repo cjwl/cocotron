@@ -35,7 +35,6 @@ typedef int NSOpenGLContextParameter;
 -(void)setView:(NSView *)view;
 
 -(void)makeCurrentContext;
--(void)_clearCurrentContext;
 
 -(int)currentVirtualScreen;
 -(void)setCurrentVirtualScreen:(int)screen;

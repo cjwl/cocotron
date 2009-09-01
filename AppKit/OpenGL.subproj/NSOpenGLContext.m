@@ -10,6 +10,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSOpenGLDrawable.h>
 #import <AppKit/NSRaise.h>
 
+@interface NSOpenGLContext(private)
+-(void)_clearCurrentContext;
+@end
+
 static NSOpenGLContext *currentContext=nil;
 
 // Platform must define this function
