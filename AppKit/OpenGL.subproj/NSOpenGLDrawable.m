@@ -19,6 +19,9 @@
 -(void)makeCurrentWithGLContext:(void *)glContext {
 }
 
+-(void)clearCurrentWithGLContext:(void *)glContext {
+}
+
 -(void)swapBuffers {
 }
 

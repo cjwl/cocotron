@@ -226,6 +226,10 @@ static void pfdFromPixelFormat(PIXELFORMATDESCRIPTOR *pfd,NSOpenGLPixelFormat *p
     NSLog(@"wglMakeCurrent failed");
 }
 
+-(void)clearCurrentWithGLContext:(HGLRC)glContext {   
+   opengl_wglMakeCurrent(NULL,NULL);
+}
+
 -(void)swapBuffers {
    SwapBuffers(_dc);
 }

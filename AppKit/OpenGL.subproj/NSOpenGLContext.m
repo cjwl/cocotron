@@ -22,6 +22,9 @@ void CGLContextDelete(void *glContext);
 }
 
 +(void)clearCurrentContext {
+   if(currentContext!=nil) {
+      [currentContext _clearCurrentContext];
+   }
    currentContext=nil;
 }
 
@@ -87,6 +90,11 @@ void CGLContextDelete(void *glContext);
    }
    [_drawable makeCurrentWithGLContext:_glContext];
    currentContext=self;
+}
+
+-(void)_clearCurrentContext {
+  if (_drawable!=nil)
+    [_drawable clearCurrentWithGLContext:_glContext];
 }
 
 -(int)currentVirtualScreen {

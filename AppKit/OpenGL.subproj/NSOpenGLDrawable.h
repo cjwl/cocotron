@@ -11,6 +11,7 @@
 -(void)invalidate;
 -(void)updateWithView:(NSView *)view;
 -(void)makeCurrentWithGLContext:(void *)glContext;
+-(void)clearCurrentWithGLContext:(void *)glContext;
 -(void)swapBuffers;
 
 @end
