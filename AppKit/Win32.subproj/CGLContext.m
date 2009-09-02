@@ -30,7 +30,10 @@ CGL_EXPORT CGLContextObj CGLGetCurrentContext(void) {
 
 CGL_EXPORT CGLError CGLSetCurrentContext(CGLContextObj context) {
    TlsSetValue(cglThreadStorageIndex(),context);
-   opengl_wglMakeCurrent(context->dc,context->glrc);
+   if(context==NULL)
+    opengl_wglMakeCurrent(NULL,NULL);
+   else
+    opengl_wglMakeCurrent(context->dc,context->glrc);
    return kCGLNoError;
 }
 
