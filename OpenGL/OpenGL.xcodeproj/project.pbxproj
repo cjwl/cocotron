@@ -13,6 +13,8 @@
 		C8E0BE820F0E544700677729 /* glext.h in Headers */ = {isa = PBXBuildFile; fileRef = FE3B34A90D55939B009E0AA5 /* glext.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C8E0BE850F0E544700677729 /* OpenGL.m in Sources */ = {isa = PBXBuildFile; fileRef = FEF2EB8E0C87B987001FC5A8 /* OpenGL.m */; };
 		FE3B34AA0D55939B009E0AA5 /* glext.h in Headers */ = {isa = PBXBuildFile; fileRef = FE3B34A90D55939B009E0AA5 /* glext.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FED35B67104DF7F80038ED7C /* CGLCurrent.h in Headers */ = {isa = PBXBuildFile; fileRef = FED35B65104DF7F80038ED7C /* CGLCurrent.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FED35B68104DF7F80038ED7C /* CGLTypes.h in Headers */ = {isa = PBXBuildFile; fileRef = FED35B66104DF7F80038ED7C /* CGLTypes.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FEF2EB230C878C88001FC5A8 /* OpenGL.h in Headers */ = {isa = PBXBuildFile; fileRef = FEF2EB220C878C88001FC5A8 /* OpenGL.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FEF2EB5E0C87B894001FC5A8 /* gl.h in Headers */ = {isa = PBXBuildFile; fileRef = FEF2EB5D0C87B894001FC5A8 /* gl.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FEF2EB680C87B8BA001FC5A8 /* glu.h in Headers */ = {isa = PBXBuildFile; fileRef = FEF2EB670C87B8BA001FC5A8 /* glu.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -44,6 +46,8 @@
 		8DC2EF5B0486A6940098B216 /* OpenGL.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = OpenGL.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C8E0BE8A0F0E544700677729 /* OpenGL.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = OpenGL.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FE3B34A90D55939B009E0AA5 /* glext.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = glext.h; sourceTree = "<group>"; };
+		FED35B65104DF7F80038ED7C /* CGLCurrent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGLCurrent.h; sourceTree = "<group>"; };
+		FED35B66104DF7F80038ED7C /* CGLTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGLTypes.h; sourceTree = "<group>"; };
 		FEF2EB220C878C88001FC5A8 /* OpenGL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenGL.h; sourceTree = "<group>"; };
 		FEF2EB5D0C87B894001FC5A8 /* gl.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = gl.h; sourceTree = "<group>"; };
 		FEF2EB670C87B8BA001FC5A8 /* glu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = glu.h; sourceTree = "<group>"; };
@@ -80,6 +84,8 @@
 		0867D691FE84028FC02AAC07 /* OpenGL */ = {
 			isa = PBXGroup;
 			children = (
+				FED35B65104DF7F80038ED7C /* CGLCurrent.h */,
+				FED35B66104DF7F80038ED7C /* CGLTypes.h */,
 				FE3B34A90D55939B009E0AA5 /* glext.h */,
 				08FB77AEFE84172EC02AAC07 /* Classes */,
 				32C88DFF0371C24200C91783 /* Other Sources */,
@@ -151,6 +157,8 @@
 				FEF2EB5E0C87B894001FC5A8 /* gl.h in Headers */,
 				FEF2EB680C87B8BA001FC5A8 /* glu.h in Headers */,
 				FE3B34AA0D55939B009E0AA5 /* glext.h in Headers */,
+				FED35B67104DF7F80038ED7C /* CGLCurrent.h in Headers */,
+				FED35B68104DF7F80038ED7C /* CGLTypes.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

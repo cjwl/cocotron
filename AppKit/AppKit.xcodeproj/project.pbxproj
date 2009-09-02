@@ -2862,6 +2862,7 @@
 		FEC0C7820F146AF800903F6D /* KGImageSource_GIF.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC0C7800F146AF800903F6D /* KGImageSource_GIF.m */; };
 		FEC0C7830F146AF800903F6D /* KGImageSource_GIF.h in Headers */ = {isa = PBXBuildFile; fileRef = FEC0C77F0F146AF800903F6D /* KGImageSource_GIF.h */; };
 		FEC0C7840F146AF800903F6D /* KGImageSource_GIF.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC0C7800F146AF800903F6D /* KGImageSource_GIF.m */; };
+		FED35B6F104DF8C10038ED7C /* CGLContext.m in Sources */ = {isa = PBXBuildFile; fileRef = FED35B6E104DF8C10038ED7C /* CGLContext.m */; };
 		FEDF951F0CAF43E7009DC96F /* KGPDFContext.h in Headers */ = {isa = PBXBuildFile; fileRef = FEDF951B0CAF43E7009DC96F /* KGPDFContext.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		FEDF95200CAF43E7009DC96F /* KGPDFContext.m in Sources */ = {isa = PBXBuildFile; fileRef = FEDF951C0CAF43E7009DC96F /* KGPDFContext.m */; };
 		FEE36B800F4B20C6005AEBBF /* NSToolbarOverflowArrow.pdf in Resources */ = {isa = PBXBuildFile; fileRef = FEE36B7F0F4B20C5005AEBBF /* NSToolbarOverflowArrow.pdf */; };
@@ -3837,6 +3838,7 @@
 		FED310DE0BCC027200552615 /* NSAnimation.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSAnimation.m; sourceTree = "<group>"; };
 		FED310DF0BCC027200552615 /* NSViewAnimation.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSViewAnimation.h; sourceTree = "<group>"; };
 		FED310E00BCC027200552615 /* NSViewAnimation.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSViewAnimation.m; sourceTree = "<group>"; };
+		FED35B6E104DF8C10038ED7C /* CGLContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CGLContext.m; sourceTree = "<group>"; };
 		FEDF951B0CAF43E7009DC96F /* KGPDFContext.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = KGPDFContext.h; sourceTree = "<group>"; };
 		FEDF951C0CAF43E7009DC96F /* KGPDFContext.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = KGPDFContext.m; sourceTree = "<group>"; };
 		FEE36B7F0F4B20C5005AEBBF /* NSToolbarOverflowArrow.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = NSToolbarOverflowArrow.pdf; sourceTree = "<group>"; };
@@ -4591,6 +4593,7 @@
 		6E2B56060976075300DA0954 /* Win32 */ = {
 			isa = PBXGroup;
 			children = (
+				FED35B6E104DF8C10038ED7C /* CGLContext.m */,
 				FEA661210FF5C6F200E2C03B /* KGFont_gdi.h */,
 				FEA661220FF5C6F200E2C03B /* KGFont_gdi.m */,
 				FEA25F960EECCE4D008750D0 /* NSSound_win32.h */,
@@ -8009,6 +8012,7 @@
 				FE463EE3102D0F9D00B265D6 /* NSViewController.m in Sources */,
 				FE49B9A81030C49300ADCC6C /* NSCollectionViewItem.m in Sources */,
 				FE953DDB103B0EA0008A71F0 /* NSEvent_other.m in Sources */,
+				FED35B6F104DF8C10038ED7C /* CGLContext.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8359,6 +8363,7 @@
 					"-DAPPKIT_INSIDE_BUILD",
 					"-DCORETEXT_INSIDE_BUILD",
 					"-DCOREGRAPHICS_INSIDE_BUILD",
+					"-DCGL_INSIDE_BUILD",
 					"-D__LITTLE_ENDIAN__",
 					"-Wreturn-type",
 				);
@@ -8423,6 +8428,7 @@
 					"-DAPPKIT_INSIDE_BUILD",
 					"-DCORETEXT_INSIDE_BUILD",
 					"-DCOREGRAPHICS_INSIDE_BUILD",
+					"-DCGL_INSIDE_BUILD",
 					"-D__LITTLE_ENDIAN__",
 					"-DLINUX",
 					"-Wreturn-type",
@@ -8475,6 +8481,7 @@
 					"-DAPPKIT_INSIDE_BUILD",
 					"-DCORETEXT_INSIDE_BUILD",
 					"-DCOREGRAPHICS_INSIDE_BUILD",
+					"-DCGL_INSIDE_BUILD",
 					"-D__LITTLE_ENDIAN__",
 					"-DLINUX",
 					"-Wreturn-type",
@@ -8525,6 +8532,7 @@
 					"-DAPPKIT_INSIDE_BUILD",
 					"-DCORETEXT_INSIDE_BUILD",
 					"-DCOREGRAPHICS_INSIDE_BUILD",
+					"-DCGL_INSIDE_BUILD",
 					"-D__LITTLE_ENDIAN__",
 					"-DDARWIN",
 					"-Wreturn-type",
@@ -8581,6 +8589,7 @@
 					"-DAPPKIT_INSIDE_BUILD",
 					"-DCORETEXT_INSIDE_BUILD",
 					"-DCOREGRAPHICS_INSIDE_BUILD",
+					"-DCGL_INSIDE_BUILD",
 					"-D__LITTLE_ENDIAN__",
 					"-DDARWIN",
 					"-Wreturn-type",
@@ -8629,6 +8638,7 @@
 					"-DAPPKIT_INSIDE_BUILD",
 					"-DCORETEXT_INSIDE_BUILD",
 					"-DCOREGRAPHICS_INSIDE_BUILD",
+					"-DCGL_INSIDE_BUILD",
 					"-D__LITTLE_ENDIAN__",
 					"-Wreturn-type",
 				);

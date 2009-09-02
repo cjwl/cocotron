@@ -9,27 +9,34 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSOpenGLPixelFormat.h>
 #import <AppKit/NSOpenGLDrawable.h>
 #import <AppKit/NSRaise.h>
+#import <OpenGL/OpenGL.h>
+#import <Foundation/NSThread-Private.h>
 
 @interface NSOpenGLContext(private)
 -(void)_clearCurrentContext;
 @end
 
-static NSOpenGLContext *currentContext=nil;
-
-// Platform must define this function
-void CGLContextDelete(void *glContext);
-
 @implementation NSOpenGLContext
 
+static inline NSOpenGLContext *_currentContext(){
+   return (NSOpenGLContext *)NSThreadSharedInstanceDoNotCreate(@"NSOpenGLContext");
+}
+
+static void _setCurrentContext(NSOpenGLContext *context){
+   [NSCurrentThread() setSharedObject:context forClassName:@"NSOpenGLContext"];
+}
+
+static inline void _clearCurrentContext(){
+   [_currentContext() _clearCurrentContext];
+   _setCurrentContext(nil);
+}
+
 +(NSOpenGLContext *)currentContext {
-   return currentContext;
+   return _currentContext();
 }
 
 +(void)clearCurrentContext {
-   if(currentContext!=nil) {
-      [currentContext _clearCurrentContext];
-   }
-   currentContext=nil;
+   _clearCurrentContext();
 }
 
 -initWithFormat:(NSOpenGLPixelFormat *)pixelFormat shareContext:(NSOpenGLContext *)shareContext {
@@ -38,13 +45,14 @@ void CGLContextDelete(void *glContext);
 }
 
 -(void)dealloc {
-   if(currentContext==self)
-      currentContext=nil;
+// FIXME: this doesn't actually work because if we are the current context we're retained by the thread shared object dict
+   if(_currentContext()==self)
+      _clearCurrentContext();
    [_pixelFormat release];
    _view=nil;
    [_drawable invalidate];
    [_drawable release];
-   CGLContextDelete(_glContext);
+   CGLDestroyContext(_glContext);
    [super dealloc];
 }
 
@@ -93,7 +101,7 @@ void CGLContextDelete(void *glContext);
     }
    }
    [_drawable makeCurrentWithGLContext:_glContext];
-   currentContext=self;
+   _setCurrentContext(self);
 }
 
 -(void)_clearCurrentContext {

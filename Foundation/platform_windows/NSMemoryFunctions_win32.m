@@ -52,12 +52,12 @@ NSUInteger NSRealMemoryAvailable(void) {
 }
 
 static DWORD Win32ThreadStorageIndex() {
-   static DWORD tlsIndex=0xFFFFFFFF;
+   static DWORD tlsIndex=TLS_OUT_OF_INDEXES;
 
-   if(tlsIndex==0xFFFFFFFF)
+   if(tlsIndex==TLS_OUT_OF_INDEXES)
     tlsIndex=TlsAlloc();
 
-   if(tlsIndex==0xFFFFFFFF)
+   if(tlsIndex==TLS_OUT_OF_INDEXES)
     Win32Assert("TlsAlloc");
 
    return tlsIndex;

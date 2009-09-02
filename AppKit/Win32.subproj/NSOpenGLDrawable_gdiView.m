@@ -2,15 +2,7 @@
 #import <AppKit/NSOpenGLPixelFormat.h>
 #import <AppKit/NSWindow-Private.h>
 #import <AppKit/Win32Window.h>
-#import "opengl_dll.h"
-
-void CGLContextDelete(void *glContext) {
-   if(glContext!=NULL){
-    if(opengl_wglGetCurrentContext()==glContext)
-     opengl_wglMakeCurrent(NULL,NULL);
-    opengl_wglDeleteContext(glContext);
-   }
-}
+#import <OpenGL/OpenGL.h>
 
 
 @interface NSOpenGLDrawable(GDI)
@@ -196,7 +188,11 @@ static void pfdFromPixelFormat(PIXELFORMATDESCRIPTOR *pfd,NSOpenGLPixelFormat *p
 }
 
 -(void *)createGLContext {
-   return opengl_wglCreateContext([self dc]);
+   CGLContextObj result=NULL;
+   
+   CGLCreateContext(NULL,(void *)[self dc],&result);
+   
+   return result;
 }
 
 -(void)invalidate {
@@ -221,13 +217,13 @@ static void pfdFromPixelFormat(PIXELFORMATDESCRIPTOR *pfd,NSOpenGLPixelFormat *p
    MoveWindow(_windowHandle, frame.origin.x, parentHeight-(frame.origin.y+frame.size.height),frame.size.width, frame.size.height,YES);
 }
 
--(void)makeCurrentWithGLContext:(HGLRC)glContext {   
-   if(!opengl_wglMakeCurrent(_dc,glContext))
+-(void)makeCurrentWithGLContext:(CGLContextObj)glContext {   
+   if(!CGLSetCurrentContext(glContext))
     NSLog(@"wglMakeCurrent failed");
 }
 
--(void)clearCurrentWithGLContext:(HGLRC)glContext {   
-   opengl_wglMakeCurrent(NULL,NULL);
+-(void)clearCurrentWithGLContext:(CGLContextObj)glContext {   
+   CGLSetCurrentContext(NULL);
 }
 
 -(void)swapBuffers {

@@ -17,7 +17,7 @@
 #include <GL/glx.h>
 #include <GL/glu.h>
 
-void CGLContextDelete(void *glContext)
+void CGLDestroyContext(void *glContext)
 {
    glXDestroyContext([(X11Display*)[NSDisplay currentDisplay] display], glContext);
 }
