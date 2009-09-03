@@ -75,7 +75,19 @@ static inline void _clearCurrentContext(){
    return 0;
 }
 
+-(void)_createContextIfNeeded {
+   if(_drawable==nil){
+    _drawable=[[NSOpenGLDrawable alloc] initWithPixelFormat:_pixelFormat view:_view];
+      
+    if((_glContext=[_drawable createGLContext])==NULL){
+     NSLog(@"unable to create _glContext");
+     return;
+    }
+   }
+}
+
 -(void *)CGLContextObj {
+   [self _createContextIfNeeded];
    return _glContext;
 }
 
@@ -92,14 +104,7 @@ static inline void _clearCurrentContext(){
 }
 
 -(void)makeCurrentContext {
-   if(_drawable==nil){
-    _drawable=[[NSOpenGLDrawable alloc] initWithPixelFormat:_pixelFormat view:_view];
-      
-    if((_glContext=[_drawable createGLContext])==NULL){
-     NSLog(@"unable to create _glContext");
-     return;
-    }
-   }
+   [self _createContextIfNeeded];
    [_drawable makeCurrentWithGLContext:_glContext];
    _setCurrentContext(self);
 }

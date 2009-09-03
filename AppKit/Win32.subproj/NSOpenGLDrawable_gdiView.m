@@ -217,13 +217,18 @@ static void pfdFromPixelFormat(PIXELFORMATDESCRIPTOR *pfd,NSOpenGLPixelFormat *p
    MoveWindow(_windowHandle, frame.origin.x, parentHeight-(frame.origin.y+frame.size.height),frame.size.width, frame.size.height,YES);
 }
 
--(void)makeCurrentWithGLContext:(CGLContextObj)glContext {   
-   if(!CGLSetCurrentContext(glContext))
-    NSLog(@"wglMakeCurrent failed");
+-(void)makeCurrentWithGLContext:(CGLContextObj)glContext {
+   CGLError error;
+   
+   if((error=CGLSetCurrentContext(glContext))!=kCGLNoError)
+    NSLog(@"CGLSetCurrentContext failed with %d in %s %d",error,__FILE__,__LINE__);
 }
 
 -(void)clearCurrentWithGLContext:(CGLContextObj)glContext {   
-   CGLSetCurrentContext(NULL);
+   CGLError error;
+   
+   if((error=CGLSetCurrentContext(NULL))!=kCGLNoError)
+    NSLog(@"CGLSetCurrentContext failed with %d in %s %d",error,__FILE__,__LINE__);
 }
 
 -(void)swapBuffers {
