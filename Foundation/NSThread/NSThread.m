@@ -263,7 +263,10 @@ FOUNDATION_EXPORT id NSThreadSharedInstanceDoNotCreate(NSString *className) {
 
 -(void)setSharedObject:object forClassName:(NSString *)className {
    [_sharedObjectLock lock];
-   [_sharedObjects setObject:object forKey:className];
+   if(object==nil)
+    [_sharedObjects removeObjectForKey:className];
+   else
+    [_sharedObjects setObject:object forKey:className];
    [_sharedObjectLock unlock];
 }
 
