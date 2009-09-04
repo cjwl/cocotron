@@ -11,7 +11,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSImageCell.h>
 
 @interface NSImageView : NSControl {
-
+   id  _target;
+   SEL _action;
 }
 
 -(BOOL)allowsCutCopyPaste;

@@ -41,8 +41,6 @@ typedef enum {
    NSImageFrameStyle _frameStyle;
 }
 
-// Currently, only alignment is supported (dwy 1/29/03)
-
 -(NSImageAlignment)imageAlignment;
 -(NSImageFrameStyle)imageFrameStyle;
 -(NSImageScaling)imageScaling;

@@ -17,6 +17,22 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return [NSImageCell class];
 }
 
+-target {
+   return _target;
+}
+
+-(SEL)action {
+   return _action;
+}
+
+-(void)setTarget:target {
+   _target=target;
+}
+
+-(void)setAction:(SEL)action {
+   _action=action;
+}
+
 -(BOOL)allowsCutCopyPaste {
    // Because cut, copy, paste isn't implemented yet ...
    return NO;
