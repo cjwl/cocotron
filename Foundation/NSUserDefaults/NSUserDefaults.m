@@ -313,16 +313,19 @@ NSString *NSUserDefaultsDidChangeNotification=@"NSUserDefaultsDidChangeNotificat
 }
 
 -(NSInteger)integerForKey:(NSString *)defaultName {
-   NSNumber *number=[self objectForKey:defaultName];
+   id number=[self objectForKey:defaultName];
 
-   return [number isKindOfClass:objc_lookUpClass("NSNumber")]?[number intValue]:0;
+   return [number isKindOfClass:objc_lookUpClass("NSString")]?[(NSString *)number intValue]:
+     ([number isKindOfClass:objc_lookUpClass("NSNumber")]?[(NSNumber *)number intValue]:0);
 }
 
 
 -(float)floatForKey:(NSString *)defaultName {
-   NSNumber *number=[self objectForKey:defaultName];
+   id number=[self objectForKey:defaultName];
 
-   return [number isKindOfClass:objc_lookUpClass("NSNumber")]?[number floatValue]:0.0f;
+   return [number isKindOfClass:objc_lookUpClass("NSString")]?[(NSString *)number floatValue]:
+     ([number isKindOfClass:objc_lookUpClass("NSNumber")]?[(NSNumber *)number floatValue]:0.0);
+
 }
 
 -(void)setObject:value forKey:(NSString *)key {
