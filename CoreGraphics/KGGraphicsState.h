@@ -9,7 +9,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSObject.h>
 #import <CoreGraphics/CoreGraphics.h>
 
-@class KGImage,KGColorSpace,O2Color,KGPattern,O2MutablePath,O2Path,NSArray,NSMutableArray,KGFont;
+@class KGImage,O2ColorSpace,O2Color,KGPattern,O2MutablePath,O2Path,NSArray,NSMutableArray,KGFont;
 
 @interface KGGraphicsState : NSObject <NSCopying> {
 @public

@@ -3,7 +3,7 @@
 #import "KGPDFArray.h"
 #import "KGPDFContext.h"
 #import "KGFunction+PDF.h"
-#import "KGColorSpace+PDF.h"
+#import "O2ColorSpace+PDF.h"
 
 @implementation KGShading(PDF)
 
@@ -47,7 +47,7 @@
    return [context encodeIndirectPDFObject:result];
 }
 
-KGShading *axialShading(KGPDFDictionary *dictionary,KGColorSpace *colorSpace){
+KGShading *axialShading(KGPDFDictionary *dictionary,O2ColorSpaceRef colorSpace){
    KGPDFArray *coordsArray;
    KGPDFArray *domainArray;
    float       domain[2]={0,1};
@@ -118,7 +118,7 @@ KGShading *axialShading(KGPDFDictionary *dictionary,KGColorSpace *colorSpace){
    return [[KGShading alloc] initWithColorSpace:colorSpace startPoint:start endPoint:end function:function extendStart:extendStart extendEnd:extendEnd domain:domain];    
 }
 
-KGShading *radialShading(KGPDFDictionary *dictionary,KGColorSpace *colorSpace){
+KGShading *radialShading(KGPDFDictionary *dictionary,O2ColorSpaceRef colorSpace){
    KGPDFArray *coordsArray;
    KGPDFArray *domainArray;
    float       domain[2]={0,1};
@@ -203,7 +203,7 @@ KGShading *radialShading(KGPDFDictionary *dictionary,KGColorSpace *colorSpace){
    KGPDFDictionary *dictionary;
    KGShading       *result=nil;
    KGPDFObject     *colorSpaceObject;
-   KGColorSpace    *colorSpace;
+   O2ColorSpace    *colorSpace;
    KGPDFInteger     shadingType;
    
    if(![object checkForType:kKGPDFObjectTypeDictionary value:&dictionary])
@@ -218,7 +218,7 @@ KGShading *radialShading(KGPDFDictionary *dictionary,KGColorSpace *colorSpace){
     NSLog(@"required ColorSpace missing");
     return nil;
    }
-   if((colorSpace=[KGColorSpace colorSpaceFromPDFObject:colorSpaceObject])==nil)
+   if((colorSpace=[O2ColorSpace colorSpaceFromPDFObject:colorSpaceObject])==nil)
     return nil;
     
    switch(shadingType){

@@ -8,34 +8,39 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/NSObject.h>
 #import <CoreGraphics/CoreGraphics.h>
+#import "O2ColorSpace.h"
 
-@class KGColorSpace,KGPattern;
+@class KGPattern;
+@class O2Color;
 
-@interface O2Color : NSObject <NSCopying> {
-  KGColorSpace *_colorSpace;
+typedef O2Color *O2ColorRef;
+
+@interface O2Color : NSObject {
+  O2ColorSpaceRef _colorSpace;
   unsigned      _numberOfComponents;
-  CGFloat        *_components;
+  CGFloat      *_components;
   KGPattern    *_pattern;
 }
 
--initWithColorSpace:(KGColorSpace *)colorSpace pattern:(KGPattern *)pattern components:(const CGFloat *)components;
--initWithColorSpace:(KGColorSpace *)colorSpace components:(const CGFloat *)components;
--initWithColorSpace:(KGColorSpace *)colorSpace;
+O2ColorRef O2ColorRetain(O2ColorRef self);
+void       O2ColorRelease(O2ColorRef self);
 
--initWithDeviceGray:(CGFloat)gray alpha:(CGFloat)alpha;
--initWithDeviceRed:(CGFloat)red green:(CGFloat)green blue:(CGFloat)blue alpha:(CGFloat)alpha;
--initWithDeviceCyan:(CGFloat)cyan magenta:(CGFloat)magenta yellow:(CGFloat)yellow black:(CGFloat)black alpha:(CGFloat)alpha;
+O2ColorRef O2ColorCreate(O2ColorSpaceRef colorSpace,const CGFloat *components);
+O2ColorRef O2ColorCreateGenericGray(CGFloat gray,CGFloat a);
+O2ColorRef O2ColorCreateGenericRGB(CGFloat r,CGFloat g,CGFloat b,CGFloat a);
+O2ColorRef O2ColorCreateGenericCMYK(CGFloat c,CGFloat m,CGFloat y,CGFloat k,CGFloat a);
+O2ColorRef O2ColorCreateWithPattern(O2ColorSpaceRef colorSpace,CGPatternRef pattern,const CGFloat *components);
 
--copyWithAlpha:(CGFloat)alpha;
+O2ColorRef O2ColorCreateCopy(O2ColorRef self);
+O2ColorRef O2ColorCreateCopyWithAlpha(O2ColorRef self,CGFloat a);
 
--(KGColorSpace *)colorSpace;
--(unsigned)numberOfComponents;
--(CGFloat *)components;
--(CGFloat)alpha;
--(KGPattern *)pattern;
+BOOL       O2ColorEqualToColor(O2ColorRef self,O2ColorRef other);
 
--(BOOL)isEqualToColor:(O2Color *)other;
+O2ColorSpaceRef O2ColorGetColorSpace(O2ColorRef self);
+size_t          O2ColorGetNumberOfComponents(O2ColorRef self);
+const CGFloat  *O2ColorGetComponents(O2ColorRef self);
+CGFloat         O2ColorGetAlpha(O2ColorRef self);
 
--(O2Color *)convertToColorSpace:(KGColorSpace *)otherSpace;
+CGPatternRef    O2ColorGetPattern(O2ColorRef self);
 
 @end

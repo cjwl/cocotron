@@ -21,7 +21,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import "KGContext.h"
 #import "O2Color.h"
-#import "KGColorSpace+PDF.h"
+#import "O2ColorSpace+PDF.h"
 #import "KGImage+PDF.h"
 #import "KGFunction+PDF.h"
 #import "KGShading+PDF.h"
@@ -136,15 +136,15 @@ void KGPDF_render_cm(KGPDFScanner *scanner,void *info) {
 }
 
 
-KGColorSpace *colorSpaceFromScannerInfo(KGPDFScanner *scanner,void *info,const char *name) {
-   KGColorSpace *result=NULL;
+O2ColorSpaceRef colorSpaceFromScannerInfo(KGPDFScanner *scanner,void *info,const char *name) {
+   O2ColorSpaceRef result=NULL;
    
    if(strcmp(name,"DeviceGray")==0)
-    result=[[KGColorSpace alloc] initWithDeviceGray];
+    result=[[O2ColorSpace alloc] initWithDeviceGray];
    else if(strcmp(name,"DeviceRGB")==0)
-    result=[[KGColorSpace alloc] initWithDeviceRGB];
+    result=[[O2ColorSpace alloc] initWithDeviceRGB];
    else if(strcmp(name,"DeviceCMYK")==0)
-    result=[[KGColorSpace alloc] initWithDeviceCMYK];
+    result=[[O2ColorSpace alloc] initWithDeviceCMYK];
    else {
     KGPDFContentStream *content=[scanner contentStream];
     KGPDFObject        *object=[content resourceForCategory:"ColorSpace" name:name];
@@ -154,7 +154,7 @@ KGColorSpace *colorSpaceFromScannerInfo(KGPDFScanner *scanner,void *info,const c
      return NULL;
     }
    
-    return [KGColorSpace colorSpaceFromPDFObject:object];
+    return [O2ColorSpace colorSpaceFromPDFObject:object];
    }
    
    return result;
@@ -164,7 +164,7 @@ KGColorSpace *colorSpaceFromScannerInfo(KGPDFScanner *scanner,void *info,const c
 void KGPDF_render_CS(KGPDFScanner *scanner,void *info) {
    KGContext *context=kgContextFromInfo(info);
    const char     *name;
-   KGColorSpace *colorSpace;
+   O2ColorSpaceRef colorSpace;
    
    if(![scanner popName:&name])
     return;
@@ -181,7 +181,7 @@ void KGPDF_render_CS(KGPDFScanner *scanner,void *info) {
 void KGPDF_render_cs(KGPDFScanner *scanner,void *info) {
    KGContext *context=kgContextFromInfo(info);
    const char     *name;
-   KGColorSpace *colorSpace;
+   O2ColorSpaceRef colorSpace;
    
    if(![scanner popName:&name])
     return;
@@ -693,12 +693,12 @@ void KGPDF_render_S(KGPDFScanner *scanner,void *info) {
 void KGPDF_render_SC(KGPDFScanner *scanner,void *info) {
    KGContext    *context=kgContextFromInfo(info);
    O2Color      *color=[context strokeColor];
-   KGColorSpace *colorSpace=[color colorSpace];
+   O2ColorSpaceRef colorSpace=O2ColorGetColorSpace(color);
    unsigned      numberOfComponents=[colorSpace numberOfComponents];
    int           count=numberOfComponents;
    float         components[count+1];
    
-   components[count]=[color alpha];
+   components[count]=O2ColorGetAlpha(color);
    while(--count>=0)
     if(![scanner popNumber:components+count]){
      NSLog(@"underflow in SC, numberOfComponents=%d,count=%d",numberOfComponents,count);
@@ -712,12 +712,12 @@ void KGPDF_render_SC(KGPDFScanner *scanner,void *info) {
 void KGPDF_render_sc(KGPDFScanner *scanner,void *info) {
    KGContext    *context=kgContextFromInfo(info);
    O2Color      *color=[context fillColor];
-   KGColorSpace *colorSpace=[color colorSpace];
+   O2ColorSpaceRef colorSpace=O2ColorGetColorSpace(color);
    unsigned      numberOfComponents=[colorSpace numberOfComponents];
    int           count=numberOfComponents;
    float         components[count+1];
    
-   components[count]=[color alpha];
+   components[count]=O2ColorGetAlpha(color);
    while(--count>=0)
     if(![scanner popNumber:components+count]){
      NSLog(@"underflow in sc, numberOfComponents=%d,count=%d",numberOfComponents,count);
@@ -731,12 +731,12 @@ void KGPDF_render_sc(KGPDFScanner *scanner,void *info) {
 void KGPDF_render_SCN(KGPDFScanner *scanner,void *info) {
    KGContext    *context=kgContextFromInfo(info);
    O2Color      *color=[context strokeColor];
-   KGColorSpace *colorSpace=[color colorSpace];
+   O2ColorSpaceRef colorSpace=O2ColorGetColorSpace(color);
    unsigned      numberOfComponents=[colorSpace numberOfComponents];
    int           count=numberOfComponents;
    float         components[count+1];
    
-   components[count]=[color alpha];
+   components[count]=O2ColorGetAlpha(color);
    while(--count>=0)
     if(![scanner popNumber:components+count]){
      NSLog(@"underflow in SCN, numberOfComponents=%d,count=%d",numberOfComponents,count);
@@ -750,12 +750,12 @@ void KGPDF_render_SCN(KGPDFScanner *scanner,void *info) {
 void KGPDF_render_scn(KGPDFScanner *scanner,void *info) {
    KGContext    *context=kgContextFromInfo(info);
    O2Color      *color=[context fillColor];
-   KGColorSpace *colorSpace=[color colorSpace];
+   O2ColorSpaceRef colorSpace=O2ColorGetColorSpace(color);
    unsigned      numberOfComponents=[colorSpace numberOfComponents];
    int           count=numberOfComponents;
    KGPDFReal     components[count+1];
    
-   components[count]=[color alpha];
+   components[count]=O2ColorGetAlpha(color);
    while(--count>=0)
     if(![scanner popNumber:&components[count]]){
      NSLog(@"underflow in scn, numberOfComponents=%d,count=%d",numberOfComponents,count);

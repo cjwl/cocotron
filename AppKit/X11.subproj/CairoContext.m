@@ -13,7 +13,7 @@
 #import <Foundation/NSException.h>
 #import <CoreGraphics/KGGraphicsState.h>
 #import <AppKit/TTFFont.h>
-#import <CoreGraphics/KGColorSpace.h>
+#import <CoreGraphics/O2ColorSpace.h>
 #import <CoreGraphics/KGSurface.h>
 #import <AppKit/CairoCacheImage.h>
 #import <Foundation/NSException.h>

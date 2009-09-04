@@ -16,7 +16,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -initWithSurface:(KGSurface *)surface flipped:(BOOL)flipped;
 
--initWithBytes:(void *)bytes width:(size_t)width height:(size_t)height bitsPerComponent:(size_t)bitsPerComponent bytesPerRow:(size_t)bytesPerRow colorSpace:(KGColorSpace *)colorSpace bitmapInfo:(CGBitmapInfo)bitmapInfo flipped:(BOOL)flipped;
+-initWithBytes:(void *)bytes width:(size_t)width height:(size_t)height bitsPerComponent:(size_t)bitsPerComponent bytesPerRow:(size_t)bytesPerRow colorSpace:(O2ColorSpaceRef)colorSpace bitmapInfo:(CGBitmapInfo)bitmapInfo flipped:(BOOL)flipped;
 
 -(NSData *)pixelData;
 -(void *)pixelBytes;
@@ -24,7 +24,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(size_t)height;
 -(size_t)bitsPerComponent;
 -(size_t)bytesPerRow;
--(KGColorSpace *)colorSpace;
+-(O2ColorSpaceRef)colorSpace;
 -(CGBitmapInfo)bitmapInfo;
 
 -(size_t)bitsPerPixel;

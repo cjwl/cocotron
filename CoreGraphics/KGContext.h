@@ -8,8 +8,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/NSObject.h>
 #import <CoreGraphics/CoreGraphics.h>
+#import "O2ColorSpace.h"
 
-@class O2Color,KGColorSpace,KGShading,KGImage,KGGraphicsState,O2MutablePath,O2Path,KGPattern,KGLayer,KGPDFPage,NSMutableArray,CGWindow,KGSurface,NSDictionary,NSData,KGFont;
+@class O2Color,KGShading,KGImage,KGGraphicsState,O2MutablePath,O2Path,KGPattern,KGLayer,KGPDFPage,NSMutableArray,CGWindow,KGSurface,NSDictionary,NSData,KGFont;
 
 @interface KGContext : NSObject {
    CGAffineTransform _userToDeviceTransform;
@@ -21,7 +22,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 +(KGContext *)createContextWithSize:(CGSize)size window:(CGWindow *)window;
 +(KGContext *)createBackingContextWithSize:(CGSize)size context:(KGContext *)context deviceDictionary:(NSDictionary *)deviceDictionary;
-+(KGContext *)createWithBytes:(void *)bytes width:(size_t)width height:(size_t)height bitsPerComponent:(size_t)bitsPerComponent bytesPerRow:(size_t)bytesPerRow colorSpace:(KGColorSpace *)colorSpace bitmapInfo:(CGBitmapInfo)bitmapInfo;
++(KGContext *)createWithBytes:(void *)bytes width:(size_t)width height:(size_t)height bitsPerComponent:(size_t)bitsPerComponent bytesPerRow:(size_t)bytesPerRow colorSpace:(O2ColorSpaceRef)colorSpace bitmapInfo:(CGBitmapInfo)bitmapInfo;
 
 +(BOOL)canInitWithWindow:(CGWindow *)window;
 +(BOOL)canInitBackingWithContext:(KGContext *)context deviceDictionary:(NSDictionary *)deviceDictionary;
@@ -93,8 +94,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(O2Color *)strokeColor;
 -(O2Color *)fillColor;
 
--(void)setStrokeColorSpace:(KGColorSpace *)colorSpace;
--(void)setFillColorSpace:(KGColorSpace *)colorSpace;
+-(void)setStrokeColorSpace:(O2ColorSpaceRef)colorSpace;
+-(void)setFillColorSpace:(O2ColorSpaceRef)colorSpace;
 
 -(void)setStrokeColorWithComponents:(const float *)components;
 -(void)setStrokeColor:(O2Color *)color;
@@ -201,7 +202,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(size_t)height;
 -(size_t)bitsPerComponent;
 -(size_t)bytesPerRow;
--(KGColorSpace *)colorSpace;
+-(O2ColorSpaceRef)colorSpace;
 -(CGBitmapInfo)bitmapInfo;
 
 -(size_t)bitsPerPixel;

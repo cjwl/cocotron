@@ -165,8 +165,8 @@ static BOOL _isAvailable=NO;
 }
 
 static KGPaint *paintFromColor(O2Color *color){
-   int    count=[color numberOfComponents];
-   const float *components=[color components];
+   size_t    count=O2ColorGetNumberOfComponents(color);
+   const float *components=O2ColorGetComponents(color);
 
    if(count==2)
     return [[KGPaint_color alloc] initWithGray:components[0]  alpha:components[1]];

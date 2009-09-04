@@ -262,6 +262,10 @@ static inline void buildTransformsIfNeeded(NSView *self) {
    return _autoresizingMask;
 }
 
+-(NSFocusRingType)focusRingType {
+   return _focusRingType;
+}
+
 -(int)tag {
    return _tag;
 }
@@ -630,6 +634,11 @@ static inline void buildTransformsIfNeeded(NSView *self) {
 
 -(void)setAutoresizingMask:(unsigned int)mask {
    _autoresizingMask=mask;
+}
+
+-(void)setFocusRingType:(NSFocusRingType)value {
+   _focusRingType=value;
+   [self setNeedsDisplay:YES];
 }
 
 -(void)setTag:(int)tag {

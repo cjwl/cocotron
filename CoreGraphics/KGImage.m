@@ -29,7 +29,7 @@
 
 #import "KGImage.h"
 #import "KGSurface.h"
-#import "KGColorSpace.h"
+#import "O2ColorSpace.h"
 #import "KGDataProvider.h"
 #import "KGExceptions.h"
 #import <Foundation/NSData.h>
@@ -307,10 +307,10 @@ static BOOL initFunctionsForCMYKColorSpace(KGImage *self,size_t bitsPerComponent
    return NO;
 }
 
-static BOOL initFunctionsForIndexedColorSpace(KGImage *self,size_t bitsPerComponent,size_t bitsPerPixel,KGColorSpace *colorSpace,CGBitmapInfo bitmapInfo){
+static BOOL initFunctionsForIndexedColorSpace(KGImage *self,size_t bitsPerComponent,size_t bitsPerPixel,O2ColorSpaceRef colorSpace,CGBitmapInfo bitmapInfo){
 
-   switch([[(KGColorSpace_indexed *)colorSpace baseColorSpace] type]){
-    case KGColorSpaceDeviceRGB:
+   switch([[(O2ColorSpace_indexed *)colorSpace baseColorSpace] type]){
+    case O2ColorSpaceDeviceRGB:
      self->_read_lRGBA8888_PRE=KGImageRead_I8_to_RGBA8888;
      return YES;
    }
@@ -318,7 +318,7 @@ static BOOL initFunctionsForIndexedColorSpace(KGImage *self,size_t bitsPerCompon
    return NO;
 }
 
-static BOOL initFunctionsForParameters(KGImage *self,size_t bitsPerComponent,size_t bitsPerPixel,KGColorSpace *colorSpace,CGBitmapInfo bitmapInfo){
+static BOOL initFunctionsForParameters(KGImage *self,size_t bitsPerComponent,size_t bitsPerPixel,O2ColorSpaceRef colorSpace,CGBitmapInfo bitmapInfo){
 
    self->_readA8=KGImageRead_ANY_to_RGBA8888_to_A8;
    self->_readAf=KGImageRead_ANY_to_A8_to_Af;
@@ -328,13 +328,13 @@ static BOOL initFunctionsForParameters(KGImage *self,size_t bitsPerComponent,siz
     bitmapInfo|=kCGBitmapByteOrder32Big;
    
    switch([colorSpace type]){
-    case KGColorSpaceDeviceGray:
+    case O2ColorSpaceDeviceGray:
      break;
-    case KGColorSpaceDeviceRGB:
+    case O2ColorSpaceDeviceRGB:
      return initFunctionsForRGBColorSpace(self,bitsPerComponent,bitsPerPixel,bitmapInfo);
-    case KGColorSpaceDeviceCMYK:
+    case O2ColorSpaceDeviceCMYK:
      return initFunctionsForCMYKColorSpace(self,bitsPerComponent,bitsPerPixel,bitmapInfo);
-    case KGColorSpaceIndexed:
+    case O2ColorSpaceIndexed:
      return initFunctionsForIndexedColorSpace(self,bitsPerComponent,bitsPerPixel,colorSpace,bitmapInfo);
    }
    
@@ -342,7 +342,7 @@ static BOOL initFunctionsForParameters(KGImage *self,size_t bitsPerComponent,siz
       
 }
 
--initWithWidth:(size_t)width height:(size_t)height bitsPerComponent:(size_t)bitsPerComponent bitsPerPixel:(size_t)bitsPerPixel bytesPerRow:(size_t)bytesPerRow colorSpace:(KGColorSpace *)colorSpace bitmapInfo:(unsigned)bitmapInfo provider:(KGDataProvider *)provider decode:(const CGFloat *)decode interpolate:(BOOL)interpolate renderingIntent:(CGColorRenderingIntent)renderingIntent {
+-initWithWidth:(size_t)width height:(size_t)height bitsPerComponent:(size_t)bitsPerComponent bitsPerPixel:(size_t)bitsPerPixel bytesPerRow:(size_t)bytesPerRow colorSpace:(O2ColorSpaceRef)colorSpace bitmapInfo:(unsigned)bitmapInfo provider:(KGDataProvider *)provider decode:(const CGFloat *)decode interpolate:(BOOL)interpolate renderingIntent:(CGColorRenderingIntent)renderingIntent {
    _width=width;
    _height=height;
    _bitsPerComponent=bitsPerComponent;
@@ -435,7 +435,7 @@ static BOOL initFunctionsForParameters(KGImage *self,size_t bitsPerComponent,siz
    return [self retain];
 }
 
--(KGImage *)copyWithColorSpace:(KGColorSpace *)colorSpace {
+-(KGImage *)copyWithColorSpace:(O2ColorSpaceRef)colorSpace {
    KGUnimplementedMethod();
    return nil;
 }
@@ -481,7 +481,7 @@ static BOOL initFunctionsForParameters(KGImage *self,size_t bitsPerComponent,siz
    return _bytesPerRow;
 }
 
--(KGColorSpace *)colorSpace {
+-(O2ColorSpaceRef)colorSpace {
    return _colorSpace;
 }
 
@@ -1002,7 +1002,7 @@ KGRGBA8888 *KGImageRead_CMYK8888_to_RGBA8888(KGImage *self,int x,int y,KGRGBA888
 }
 
 KGRGBA8888 *KGImageRead_I8_to_RGBA8888(KGImage *self,int x,int y,KGRGBA8888 *span,int length) {
-   KGColorSpace_indexed *indexed=(KGColorSpace_indexed *)self->_colorSpace;
+   O2ColorSpace_indexed *indexed=(O2ColorSpace_indexed *)self->_colorSpace;
    unsigned hival=[indexed hival];
    const unsigned char *palette=[indexed paletteBytes];
 

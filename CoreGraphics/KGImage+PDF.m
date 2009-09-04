@@ -1,5 +1,5 @@
 #import "KGImage+PDF.h"
-#import "KGColorSpace+PDF.h"
+#import "O2ColorSpace+PDF.h"
 #import "KGDataProvider.h"
 #import "KGPDFArray.h"
 #import "KGPDFDictionary.h"
@@ -83,7 +83,7 @@ const char *KGImageNameWithIntent(CGColorRenderingIntent intent){
    const char  *intent;
    KGPDFBoolean isImageMask;
    KGPDFObject *imageMaskObject=NULL;
-   KGColorSpace *colorSpace=NULL;
+   O2ColorSpaceRef colorSpace=NULL;
     int               componentsPerPixel;
    KGPDFArray     *decodeArray;
    float            *decode=NULL;
@@ -106,7 +106,7 @@ const char *KGImageNameWithIntent(CGColorRenderingIntent intent){
     NSLog(@"Image has no ColorSpace");
     return NULL;
    }
-   if((colorSpace=[KGColorSpace colorSpaceFromPDFObject:colorSpaceObject])==NULL)
+   if((colorSpace=[O2ColorSpace colorSpaceFromPDFObject:colorSpaceObject])==NULL)
     return NULL;
           
    componentsPerPixel=[colorSpace numberOfComponents];

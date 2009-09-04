@@ -8,64 +8,64 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <CoreGraphics/CGColor.h>
 #import "O2Color.h"
-#import "KGColorSpace.h"
+#import "O2ColorSpace.h"
 
 CGColorRef CGColorRetain(CGColorRef self) {
-   return [self retain];
+   return O2ColorRetain(self);
 }
 
-void       CGColorRelease(CGColorRef self) {
-   [self release];
+void CGColorRelease(CGColorRef self) {
+   O2ColorRelease(self);
 }
 
 CGColorRef CGColorCreate(CGColorSpaceRef colorSpace,const CGFloat *components) {
-   return [[O2Color alloc] initWithColorSpace:colorSpace components:components];
+   return O2ColorCreate(colorSpace,components);
 }
 
 CGColorRef CGColorCreateGenericGray(CGFloat gray,CGFloat a) {
-   return [[O2Color alloc] initWithDeviceGray:gray alpha:a];
+   return O2ColorCreateGenericGray(gray,a);
 }
 
 CGColorRef CGColorCreateGenericRGB(CGFloat r,CGFloat g,CGFloat b,CGFloat a) {
-   return [[O2Color alloc] initWithDeviceRed:r green:g blue:b alpha:a];
+    return O2ColorCreateGenericRGB(r,g,b,a);
 }
 
 CGColorRef CGColorCreateGenericCMYK(CGFloat c,CGFloat m,CGFloat y,CGFloat k,CGFloat a) {
-   return [[O2Color alloc] initWithDeviceCyan:c magenta:m yellow:y black:k alpha:a];
+   return O2ColorCreateGenericCMYK(c,m,y,k,a);
 }
 
 CGColorRef CGColorCreateWithPattern(CGColorSpaceRef colorSpace,CGPatternRef pattern,const CGFloat *components) {
-   return [[O2Color alloc] initWithColorSpace:colorSpace pattern:pattern components:components];
+   return O2ColorCreateWithPattern(colorSpace,pattern,components);
 }
 
 CGColorRef CGColorCreateCopy(CGColorRef self) {
-   return [self copy];
+   return O2ColorCreateCopy(self);
 }
 
 CGColorRef CGColorCreateCopyWithAlpha(CGColorRef self,CGFloat a) {
-   return [self copyWithAlpha:a];
+   return O2ColorCreateCopyWithAlpha(self,a);
 }
 
 BOOL CGColorEqualToColor(CGColorRef self,CGColorRef other) {
-   return [self isEqualToColor:other];
+   return O2ColorEqualToColor(self,other);
 }
 
 CGColorSpaceRef CGColorGetColorSpace(CGColorRef self) {
-   return [self colorSpace];
+   return O2ColorGetColorSpace(self);
 }
 
 size_t CGColorGetNumberOfComponents(CGColorRef self) {
-   return [self numberOfComponents];
+   return O2ColorGetNumberOfComponents(self);
 }
 
 const CGFloat *CGColorGetComponents(CGColorRef self) {
-   return [self components];
+   return O2ColorGetComponents(self);
 }
 
 CGFloat CGColorGetAlpha(CGColorRef self) {
-   return [self alpha];
+   return O2ColorGetAlpha(self);
 }
 
 CGPatternRef CGColorGetPattern(CGColorRef self) {
-   return [self pattern];
+   return O2ColorGetPattern(self);
 }

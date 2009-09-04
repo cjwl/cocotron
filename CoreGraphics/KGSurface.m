@@ -27,7 +27,7 @@
  *-------------------------------------------------------------------*/
 
 #import "KGSurface.h"
-#import "KGColorSpace.h"
+#import "O2ColorSpace.h"
 #import "KGDataProvider.h"
 
 @implementation KGSurface
@@ -387,7 +387,7 @@ static void KGSurfaceWrite_RGBAffff_to_RGBA8888_to_ANY(KGSurface *self,int x,int
    self->_writeRGBA8888(self,x,y,span8888,length);
 }
 
-static BOOL initFunctionsForParameters(KGSurface *self,size_t bitsPerComponent,size_t bitsPerPixel,KGColorSpace *colorSpace,CGBitmapInfo bitmapInfo){
+static BOOL initFunctionsForParameters(KGSurface *self,size_t bitsPerComponent,size_t bitsPerPixel,O2ColorSpaceRef colorSpace,CGBitmapInfo bitmapInfo){
    self->_writeRGBAffff=KGSurfaceWrite_RGBAffff_to_RGBA8888_to_ANY;// default
    
    switch(bitsPerComponent){
@@ -427,7 +427,7 @@ static BOOL initFunctionsForParameters(KGSurface *self,size_t bitsPerComponent,s
        break;
        
       case 32:
-       if([colorSpace type]==KGColorSpaceDeviceRGB){
+       if([colorSpace type]==O2ColorSpaceDeviceRGB){
 
         switch(bitmapInfo&kCGBitmapAlphaInfoMask){
          case kCGImageAlphaNone:
@@ -472,7 +472,7 @@ static BOOL initFunctionsForParameters(KGSurface *self,size_t bitsPerComponent,s
           break;
         }
        }
-       else if([colorSpace type]==KGColorSpaceDeviceCMYK){
+       else if([colorSpace type]==O2ColorSpaceDeviceCMYK){
         switch(bitmapInfo&kCGBitmapByteOrderMask){
          case kCGBitmapByteOrderDefault:
          case kCGBitmapByteOrder16Little:
@@ -537,7 +537,7 @@ static BOOL initFunctionsForParameters(KGSurface *self,size_t bitsPerComponent,s
    return NO;   
 }
 
--initWithBytes:(void *)bytes width:(size_t)width height:(size_t)height bitsPerComponent:(size_t)bitsPerComponent bytesPerRow:(size_t)bytesPerRow colorSpace:(KGColorSpace *)colorSpace bitmapInfo:(CGBitmapInfo)bitmapInfo {
+-initWithBytes:(void *)bytes width:(size_t)width height:(size_t)height bitsPerComponent:(size_t)bitsPerComponent bytesPerRow:(size_t)bytesPerRow colorSpace:(O2ColorSpaceRef)colorSpace bitmapInfo:(CGBitmapInfo)bitmapInfo {
    KGDataProvider *provider;
    int bitsPerPixel=32;
    

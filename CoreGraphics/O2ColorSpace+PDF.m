@@ -1,4 +1,4 @@
-#import "KGColorSpace+PDF.h"
+#import "O2ColorSpace+PDF.h"
 #import "KGPDFObject_Name.h"
 #import "KGPDFObject_Integer.h"
 #import "KGPDFContext.h"
@@ -7,23 +7,23 @@
 #import "KGPDFString.h"
 #import "KGPDFDictionary.h"
 
-@implementation KGColorSpace(PDF)
+@implementation O2ColorSpace(PDF)
 
 -(KGPDFObject *)encodeReferenceWithContext:(KGPDFContext *)context {
    KGPDFObject *name;
    
    switch(_type){
    
-    case KGColorSpaceDeviceGray:
+    case O2ColorSpaceDeviceGray:
      name=[KGPDFObject_Name pdfObjectWithCString:"DeviceGray"];
      break;
      
-    case KGColorSpaceDeviceRGB:
-    case KGColorSpacePlatformRGB:  // wrong
+    case O2ColorSpaceDeviceRGB:
+    case O2ColorSpacePlatformRGB:  // wrong
      name=[KGPDFObject_Name pdfObjectWithCString:"DeviceRGB"];
      break;
 
-    case KGColorSpaceDeviceCMYK:
+    case O2ColorSpaceDeviceCMYK:
      name=[KGPDFObject_Name pdfObjectWithCString:"DeviceCMYK"];
      break;
 
@@ -34,17 +34,17 @@
    return [context encodeIndirectPDFObject:name];
 }
 
-+(KGColorSpace *)colorSpaceFromPDFObject:(KGPDFObject *)object {
++(O2ColorSpaceRef)colorSpaceFromPDFObject:(KGPDFObject *)object {
    const char  *colorSpaceName;
    KGPDFArray  *colorSpaceArray;
 
    if([object checkForType:kKGPDFObjectTypeName value:&colorSpaceName]){
     if(strcmp(colorSpaceName,"DeviceGray")==0)
-     return [[KGColorSpace alloc] initWithDeviceGray];
+     return [[O2ColorSpace alloc] initWithDeviceGray];
     else if(strcmp(colorSpaceName,"DeviceRGB")==0)
-     return [[KGColorSpace alloc] initWithDeviceRGB];
+     return [[O2ColorSpace alloc] initWithDeviceRGB];
     else if(strcmp(colorSpaceName,"DeviceCMYK")==0)
-     return [[KGColorSpace alloc] initWithDeviceCMYK];
+     return [[O2ColorSpace alloc] initWithDeviceCMYK];
     else {
      NSLog(@"does not handle color space named %s",colorSpaceName);
     }
@@ -59,7 +59,7 @@
     
     if(strcmp(name,"Indexed")==0){
      KGPDFObject    *baseObject;
-     KGColorSpace *baseColorSpace;
+     O2ColorSpaceRef baseColorSpace;
      KGPDFString    *tableString;
      KGPDFStream    *tableStream;
      int             baseNumberOfComponents;
@@ -70,7 +70,7 @@
       return nil;
      }
 
-     if((baseColorSpace=[KGColorSpace colorSpaceFromPDFObject:baseObject])==NULL){
+     if((baseColorSpace=[O2ColorSpace colorSpaceFromPDFObject:baseObject])==NULL){
       NSLog(@"Indexed color space invalid base %@",baseObject);
       return nil;
      }
@@ -92,7 +92,7 @@
        NSLog(@"lookup invalid size,string length=%d,tableSize=%d",[tableString length],tableSize);
        return nil;
       }
-      return [[KGColorSpace_indexed alloc] initWithColorSpace:baseColorSpace hival:hival bytes:(const unsigned char *)[tableString bytes]];
+      return [[O2ColorSpace_indexed alloc] initWithColorSpace:baseColorSpace hival:hival bytes:(const unsigned char *)[tableString bytes]];
      }
      else if([colorSpaceArray getStreamAtIndex:3 value:&tableStream]){
       NSData *data=[tableStream data];
@@ -101,7 +101,7 @@
        NSLog(@"lookup invalid size,data length=%d,tableSize=%d",[data length],tableSize);
        return nil;
       }
-      return [[KGColorSpace_indexed alloc] initWithColorSpace:baseColorSpace hival:hival bytes:(const unsigned char *)[data bytes]];
+      return [[O2ColorSpace_indexed alloc] initWithColorSpace:baseColorSpace hival:hival bytes:(const unsigned char *)[data bytes]];
      }
      else {
       NSLog(@"indexed color space table invalid");
@@ -124,13 +124,13 @@
      switch(numberOfComponents){
 
       case 1:
-       return [[KGColorSpace alloc] initWithDeviceGray];
+       return [[O2ColorSpace alloc] initWithDeviceGray];
        
       case 3:
-       return [[KGColorSpace alloc] initWithDeviceRGB];
+       return [[O2ColorSpace alloc] initWithDeviceRGB];
        
       case 4:
-       return [[KGColorSpace alloc] initWithDeviceCMYK];
+       return [[O2ColorSpace alloc] initWithDeviceCMYK];
        
       default:
        NSLog(@"Invalid N in ICCBased stream");
@@ -152,7 +152,7 @@
 
 @end
 
-@implementation KGColorSpace_indexed(PDF)
+@implementation O2ColorSpace_indexed(PDF)
 -(KGPDFObject *)encodeReferenceWithContext:(KGPDFContext *)context {   
    KGPDFArray *result=[KGPDFArray pdfArray];
    int         max=[_base numberOfComponents]*(_hival+1);

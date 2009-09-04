@@ -8,19 +8,23 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/NSObject.h>
 
-typedef enum {
-   KGColorSpaceDeviceGray,
-   KGColorSpaceDeviceRGB,
-   KGColorSpaceDeviceCMYK,
-   KGColorSpacePlatformRGB, // The platform color space, e.g. System colors
-   KGColorSpaceIndexed
-} KGColorSpaceType;
+@class O2ColorSpace;
 
-@interface KGColorSpace : NSObject <NSCopying> {
-   KGColorSpaceType _type;
+typedef O2ColorSpace *O2ColorSpaceRef;
+
+typedef enum {
+   O2ColorSpaceDeviceGray,
+   O2ColorSpaceDeviceRGB,
+   O2ColorSpaceDeviceCMYK,
+   O2ColorSpacePlatformRGB, // The platform color space, e.g. System colors
+   O2ColorSpaceIndexed
+} O2ColorSpaceType;
+
+@interface O2ColorSpace : NSObject <NSCopying> {
+   O2ColorSpaceType _type;
 }
 
--(KGColorSpaceType)type;
+-(O2ColorSpaceType)type;
 
 -initWithDeviceGray;
 -initWithDeviceRGB;
@@ -29,18 +33,18 @@ typedef enum {
 
 -(unsigned)numberOfComponents;
 
--(BOOL)isEqualToColorSpace:(KGColorSpace *)other;
+-(BOOL)isEqualToColorSpace:(O2ColorSpaceRef)other;
 
 @end
 
-@interface KGColorSpace_indexed : KGColorSpace {
-   KGColorSpace  *_base;
+@interface O2ColorSpace_indexed : O2ColorSpace {
+   O2ColorSpace  *_base;
    unsigned       _hival;
    unsigned char *_bytes;
 }
 
--initWithColorSpace:(KGColorSpace *)baseColorSpace hival:(unsigned)hival bytes:(const unsigned char *)bytes;
--(KGColorSpace *)baseColorSpace;
+-initWithColorSpace:(O2ColorSpaceRef)baseColorSpace hival:(unsigned)hival bytes:(const unsigned char *)bytes;
+-(O2ColorSpaceRef)baseColorSpace;
 -(unsigned)hival;
 -(const unsigned char *)paletteBytes;
 

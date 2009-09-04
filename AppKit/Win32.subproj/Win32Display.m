@@ -26,7 +26,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSMenu.h>
 #import <AppKit/NSCursor.h>
 #import <AppKit/NSColor_CGColor.h>
-#import <CoreGraphics/KGColorSpace.h>
+#import <CoreGraphics/O2ColorSpace.h>
 #import <AppKit/NSPrintInfo.h>
 #import <AppKit/NSSavePanel-Win32.h>
 #import <AppKit/NSOpenPanel-Win32.h>
@@ -233,7 +233,7 @@ static BOOL CALLBACK monitorEnumerator(HMONITOR hMonitor,HDC hdcMonitor,LPRECT r
     { nil, 0 }
    };
    int i;
-   CGColorSpaceRef colorSpace=[[KGColorSpace alloc] initWithPlatformRGB];
+   CGColorSpaceRef colorSpace=[[O2ColorSpace alloc] initWithPlatformRGB];
 
    for(i=0;table[i].name!=nil;i++){
     LOGBRUSH   contents;

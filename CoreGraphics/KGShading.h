@@ -8,11 +8,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/NSObject.h>
 #import <CoreGraphics/CoreGraphics.h>
+#import "O2ColorSpace.h"
 
-@class KGColorSpace,KGFunction;
+@class O2ColorSpace,KGFunction;
 
 @interface KGShading : NSObject {
-   KGColorSpace *_colorSpace;
+   O2ColorSpaceRef _colorSpace;
    CGPoint       _startPoint;
    CGPoint       _endPoint;
    KGFunction   *_function;
@@ -24,11 +25,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    float         _domain[2];
 }
 
--initWithColorSpace:(KGColorSpace *)colorSpace startPoint:(CGPoint)startPoint endPoint:(CGPoint)endPoint function:(KGFunction *)function extendStart:(BOOL)extendStart extendEnd:(BOOL)extendEnd domain:(float[2])domain;
+-initWithColorSpace:(O2ColorSpaceRef)colorSpace startPoint:(CGPoint)startPoint endPoint:(CGPoint)endPoint function:(KGFunction *)function extendStart:(BOOL)extendStart extendEnd:(BOOL)extendEnd domain:(float[2])domain;
 
--initWithColorSpace:(KGColorSpace *)colorSpace startPoint:(CGPoint)startPoint startRadius:(float)startRadius endPoint:(CGPoint)endPoint endRadius:(float)endRadius function:(KGFunction *)function extendStart:(BOOL)extendStart extendEnd:(BOOL)extendEnd domain:(float[2])domain;
+-initWithColorSpace:(O2ColorSpaceRef)colorSpace startPoint:(CGPoint)startPoint startRadius:(float)startRadius endPoint:(CGPoint)endPoint endRadius:(float)endRadius function:(KGFunction *)function extendStart:(BOOL)extendStart extendEnd:(BOOL)extendEnd domain:(float[2])domain;
 
--(KGColorSpace *)colorSpace;
+-(O2ColorSpaceRef)colorSpace;
 
 -(CGPoint)startPoint;
 -(CGPoint)endPoint;

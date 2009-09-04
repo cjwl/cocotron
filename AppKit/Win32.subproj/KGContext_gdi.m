@@ -17,7 +17,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/KGDeviceContext_gdi.h>
 #import <CoreGraphics/O2MutablePath.h>
 #import <CoreGraphics/O2Color.h>
-#import <CoreGraphics/KGColorSpace.h>
+#import <CoreGraphics/O2ColorSpace.h>
 #import <CoreGraphics/KGDataProvider.h>
 #import <CoreGraphics/KGShading.h>
 #import <CoreGraphics/KGFunction.h>
@@ -403,8 +403,8 @@ static inline float axialBandIntervalFromMagnitude(KGFunction *function,float ma
 #endif
 
 -(void)drawInUserSpace:(CGAffineTransform)matrix axialShading:(KGShading *)shading {
-   KGColorSpace *colorSpace=[shading colorSpace];
-   KGColorSpaceType colorSpaceType=[colorSpace type];
+   O2ColorSpaceRef colorSpace=[shading colorSpace];
+   O2ColorSpaceType colorSpaceType=[colorSpace type];
    KGFunction   *function=[shading function];
    const float  *domain=[function domain];
    const float  *range=[function range];
@@ -442,16 +442,16 @@ static inline float axialBandIntervalFromMagnitude(KGFunction *function,float ma
 
    switch(colorSpaceType){
 
-    case KGColorSpaceDeviceGray:
+    case O2ColorSpaceDeviceGray:
      outputToRGBA=GrayAToRGBA;
      break;
      
-    case KGColorSpaceDeviceRGB:
-    case KGColorSpacePlatformRGB:
+    case O2ColorSpaceDeviceRGB:
+    case O2ColorSpacePlatformRGB:
      outputToRGBA=RGBAToRGBA;
      break;
      
-    case KGColorSpaceDeviceCMYK:
+    case O2ColorSpaceDeviceCMYK:
      outputToRGBA=CMYKAToRGBA;
      break;
      
@@ -731,8 +731,8 @@ static void extend(HDC dc,int i,int direction,float bandInterval,NSPoint startPo
     - does not factor resolution/scaling can cause banding
     - does not factor color sampling rate, generates multiple bands for same color
  */
-   KGColorSpace *colorSpace=[shading colorSpace];
-   KGColorSpaceType colorSpaceType=[colorSpace type];
+   O2ColorSpaceRef colorSpace=[shading colorSpace];
+   O2ColorSpaceType colorSpaceType=[colorSpace type];
    KGFunction   *function=[shading function];
    const float  *domain=[function domain];
    const float  *range=[function range];
@@ -751,16 +751,16 @@ static void extend(HDC dc,int i,int direction,float bandInterval,NSPoint startPo
 
    switch(colorSpaceType){
 
-    case KGColorSpaceDeviceGray:
+    case O2ColorSpaceDeviceGray:
      outputToRGBA=GrayAToRGBA;
      break;
      
-    case KGColorSpaceDeviceRGB:
-    case KGColorSpacePlatformRGB:
+    case O2ColorSpaceDeviceRGB:
+    case O2ColorSpacePlatformRGB:
      outputToRGBA=RGBAToRGBA;
      break;
      
-    case KGColorSpaceDeviceCMYK:
+    case O2ColorSpaceDeviceCMYK:
      outputToRGBA=CMYKAToRGBA;
      break;
      

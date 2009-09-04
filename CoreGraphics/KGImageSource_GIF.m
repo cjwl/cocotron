@@ -8,7 +8,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import "KGImageSource_GIF.h"
 #import "KGDataProvider.h"
-#import "KGColorSpace.h"
+#import "O2ColorSpace.h"
 #import "KGImage.h"
 
 @implementation KGImageSource_GIF
@@ -70,7 +70,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    int             colorCount=colorMap->ColorCount;
    GifColorType   *colorLUT=colorMap->Colors;
    unsigned char  *gifRaster=gifImage->RasterBits;
-   KGColorSpace *colorSpace=[[KGColorSpace alloc] initWithDeviceRGB];
+   O2ColorSpaceRef colorSpace=[[O2ColorSpace alloc] initWithDeviceRGB];
    size_t         width=gifImage->ImageDesc.Width;
    size_t         height=gifImage->ImageDesc.Height;
    size_t         bytesPerRow=width*sizeof(KGRGBA32Big);

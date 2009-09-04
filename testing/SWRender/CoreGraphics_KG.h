@@ -2,7 +2,7 @@
 #import "O2Path.h"
 #import "O2MutablePath.h"
 #import "O2Color.h"
-#import "KGColorSpace.h"
+#import "O2ColorSpace.h"
 #import "KGImage.h"
 #import "KGImageSource.h"
 #import "KGDataProvider.h"
@@ -10,10 +10,10 @@
 #import "KGPDFPage.h"
 
 #define CGContextRef KGContext *
-#define CGColorRef O2Color *
-#define CGColorSpaceRef KGColorSpace *
-#define CGPathRef O2Path *
-#define CGMutablePathRef O2MutablePath *
+#define CGColorRef O2ColorRef
+#define CGColorSpaceRef O2ColorSpaceRef
+#define CGPathRef O2PathRef
+#define CGMutablePathRef O2MutablePathRef
 #define CGDataProviderRef KGDataProvider *
 #define CGImageRef KGImage *
 #define CGImageSourceRef KGImageSource *
@@ -302,61 +302,32 @@
 
 // CGColor
 
-#define CGColorRetain(self) \
-   [self retain]
-
-#define CGColorRelease(self) \
-   [self release]
-
-#define CGColorCreate(colorSpace,ccomponents) \
-   [[O2Color alloc] initWithColorSpace:colorSpace components:ccomponents]
-
-#define CGColorCreateGenericGray(gray,a) \
-   [[O2Color alloc] initWithDeviceGray:gray alpha:a]
-
-#define CGColorCreateGenericRGB(r,g,b,a) \
-   [[O2Color alloc] initWithDeviceRed:r green:g blue:b alpha:a]
-
-#define CGColorCreateGenericCMYK(c,m,y,k,a) \
-   [[O2Color alloc] initWithDeviceCyan:c magenta:m yellow:y black:k alpha:a]
-
-#define CGColorCreateWithPattern(colorSpace,pattern,ccomponents) \
-   [[O2Color alloc] initWithColorSpace:colorSpace pattern:pattern components:ccomponents]
-
-#define CGColorCreateCopy(self) \
-   [self copy]
-
-#define CGColorCreateCopyWithAlpha(self,a) \
-   [self copyWithAlpha:a]
-
-#define CGColorEqualToColor(self,other) \
-   [self isEqualToColor:other]
-
-#define CGColorGetColorSpace(self) \
-   [self colorSpace]
-
-#define CGColorGetNumberOfComponents(self) \
-   [self numberOfComponents]
-
-#define CGColorGetComponents(self) \
-   [self components]
-
-#define CGColorGetAlpha(self) \
-   [self alpha]
-
-#define CGColorGetPattern(self) \
-   [self pattern]
+#define CGColorRetain O2ColorRetain
+#define CGColorRelease O2ColorRelease
+#define CGColorCreate O2ColorCreate
+#define CGColorCreateGenericGray O2ColorCreateGenericGray
+#define CGColorCreateGenericRGB O2ColorCreateGenericRGB
+#define CGColorCreateGenericCMYK O2ColorCreateGenericCMYK
+#define CGColorCreateWithPattern O2ColorCreateWithPattern
+#define CGColorCreateCopy O2ColorCreateCopy
+#define CGColorCreateCopyWithAlpha O2ColorCreateCopyWithAlpha
+#define CGColorEqualToColor O2ColorEqualToColor
+#define CGColorGetColorSpace O2ColorGetColorSpace
+#define CGColorGetNumberOfComponents O2ColorGetNumberOfComponents
+#define CGColorGetComponents O2ColorGetComponents
+#define CGColorGetAlpha O2ColorGetAlpha
+#define CGColorGetPattern O2ColorGetPattern
 
 // CGColorSpace
 
 #define CGColorSpaceCreateDeviceRGB() \
-    [[KGColorSpace alloc] initWithDeviceRGB]
+    [[O2ColorSpace alloc] initWithDeviceRGB]
 
 #define CGColorSpaceCreateDeviceGray() \
-    [[KGColorSpace alloc] initWithDeviceGray]
+    [[O2ColorSpace alloc] initWithDeviceGray]
 
 #define CGColorSpaceCreateDeviceCMYK() \
-    [[KGColorSpace alloc] initWithDeviceCMYK]
+    [[O2ColorSpace alloc] initWithDeviceCMYK]
 
 // CGImage
 

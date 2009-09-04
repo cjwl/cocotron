@@ -10,9 +10,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSObject.h>
 #import <CoreGraphics/CoreGraphicsExport.h>
 
-@class KGColorSpace;
+@class O2ColorSpace;
 
-typedef KGColorSpace *CGColorSpaceRef;
+typedef O2ColorSpace *CGColorSpaceRef;
 
 typedef enum {
    kCGRenderingIntentDefault,

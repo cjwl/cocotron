@@ -6,28 +6,28 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
-#import "KGColorSpace.h"
+#import "O2ColorSpace.h"
 #import <Foundation/NSString.h>
 
-@implementation KGColorSpace
+@implementation O2ColorSpace
 
 -initWithDeviceGray {
-   _type=KGColorSpaceDeviceGray;
+   _type=O2ColorSpaceDeviceGray;
    return self;
 }
 
 -initWithDeviceRGB {
-   _type=KGColorSpaceDeviceRGB;
+   _type=O2ColorSpaceDeviceRGB;
    return self;
 }
 
 -initWithDeviceCMYK {
-   _type=KGColorSpaceDeviceCMYK;
+   _type=O2ColorSpaceDeviceCMYK;
    return self;
 }
 
 -initWithPlatformRGB {
-   _type=KGColorSpacePlatformRGB;
+   _type=O2ColorSpacePlatformRGB;
    return self;
 }
 
@@ -35,24 +35,24 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return [self retain];
 }
 
--(KGColorSpaceType)type {
+-(O2ColorSpaceType)type {
    return _type;
 }
 
 -(unsigned)numberOfComponents {
    switch(_type){
-    case KGColorSpaceDeviceGray:
+    case O2ColorSpaceDeviceGray:
      return 1;
-    case KGColorSpaceDeviceRGB: 
-    case KGColorSpacePlatformRGB:
+    case O2ColorSpaceDeviceRGB: 
+    case O2ColorSpacePlatformRGB:
      return 3;
-    case KGColorSpaceDeviceCMYK: return 4;
-    case KGColorSpaceIndexed: return 1;
+    case O2ColorSpaceDeviceCMYK: return 4;
+    case O2ColorSpaceIndexed: return 1;
     default: return 0;
    }
 }
 
--(BOOL)isEqualToColorSpace:(KGColorSpace *)other {
+-(BOOL)isEqualToColorSpace:(O2ColorSpaceRef)other {
    if(self->_type!=other->_type)
     return NO;
    return YES;
@@ -64,12 +64,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @end
 
-@implementation KGColorSpace_indexed
+@implementation O2ColorSpace_indexed
 
--initWithColorSpace:(KGColorSpace *)baseColorSpace hival:(unsigned)hival bytes:(const unsigned char *)bytes  {
+-initWithColorSpace:(O2ColorSpaceRef)baseColorSpace hival:(unsigned)hival bytes:(const unsigned char *)bytes  {
    int i,max=[baseColorSpace numberOfComponents]*(hival+1);
   
-   _type=KGColorSpaceIndexed;
+   _type=O2ColorSpaceIndexed;
    _base=[baseColorSpace retain];
    _hival=hival;
    _bytes=NSZoneMalloc(NSDefaultMallocZone(),max);
@@ -84,8 +84,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [super dealloc];
 }
 
--(BOOL)isEqualToColorSpace:(KGColorSpace *)otherX {
-   KGColorSpace_indexed *other=(KGColorSpace_indexed *)other;
+-(BOOL)isEqualToColorSpace:(O2ColorSpaceRef)otherX {
+   O2ColorSpace_indexed *other=(O2ColorSpace_indexed *)other;
    if(self->_type!=other->_type)
     return NO;
     
@@ -102,7 +102,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return YES;
 }
 
--(KGColorSpace *)baseColorSpace {
+-(O2ColorSpaceRef)baseColorSpace {
    return _base;
 }
 

@@ -63,6 +63,7 @@ APPKIT_EXPORT NSString *NSViewFocusDidChangeNotification;
    CGAffineTransform _transformFromWindow;
    CGAffineTransform _transformToWindow;
    NSRect            _visibleRect;
+   NSFocusRingType   _focusRingType;
 }
 
 +(NSView *)focusView;
@@ -83,6 +84,7 @@ APPKIT_EXPORT NSString *NSViewFocusDidChangeNotification;
 -(NSArray *)subviews;
 -(BOOL)autoresizesSubviews;
 -(unsigned)autoresizingMask;
+-(NSFocusRingType)focusRingType;
 
 -(int)tag;
 -(BOOL)isFlipped;
@@ -132,6 +134,7 @@ APPKIT_EXPORT NSString *NSViewFocusDidChangeNotification;
 -(void)replaceSubview:(NSView *)oldView with:(NSView *)newView;
 -(void)setAutoresizesSubviews:(BOOL)flag;
 -(void)setAutoresizingMask:(unsigned int)mask;
+-(void)setFocusRingType:(NSFocusRingType)value;
 
 -(void)setTag:(int)tag;
 

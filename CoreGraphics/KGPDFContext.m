@@ -22,7 +22,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "KGFont+PDF.h"
 #import "O2MutablePath.h"
 #import "O2Color.h"
-#import "KGColorSpace+PDF.h"
+#import "O2ColorSpace+PDF.h"
 #import "KGGraphicsState.h"
 #import <Foundation/NSProcessInfo.h>
 #import <Foundation/NSDictionary.h>
@@ -464,40 +464,40 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)setStrokeColor:(O2Color *)color {
-   const float *components=[color components];
+   const float *components=O2ColorGetComponents(color);
    
-   switch([[color colorSpace] type]){
+   switch([O2ColorGetColorSpace(color) type]){
    
-    case KGColorSpaceDeviceGray:
+    case O2ColorSpaceDeviceGray:
      [self contentWithFormat:@"%f G ",components[0]];
      break;
      
-    case KGColorSpaceDeviceRGB:
-    case KGColorSpacePlatformRGB:
+    case O2ColorSpaceDeviceRGB:
+    case O2ColorSpacePlatformRGB:
      [self contentWithFormat:@"%f %f %f RG ",components[0],components[1],components[2]];
      break;
      
-    case KGColorSpaceDeviceCMYK:
+    case O2ColorSpaceDeviceCMYK:
      [self contentWithFormat:@"%f %f %f %f K ",components[0],components[1],components[2],components[3]];
      break;
    }
 }
 
 -(void)setFillColor:(O2Color *)color {
-   const float *components=[color components];
+   const float *components=O2ColorGetComponents(color);
    
-   switch([[color colorSpace] type]){
+   switch([O2ColorGetColorSpace(color) type]){
    
-    case KGColorSpaceDeviceGray:
+    case O2ColorSpaceDeviceGray:
      [self contentWithFormat:@"%f g ",components[0]];
      break;
      
-    case KGColorSpaceDeviceRGB:
-    case KGColorSpacePlatformRGB:
+    case O2ColorSpaceDeviceRGB:
+    case O2ColorSpacePlatformRGB:
      [self contentWithFormat:@"%f %f %f rg ",components[0],components[1],components[2]];
      break;
      
-    case KGColorSpaceDeviceCMYK:
+    case O2ColorSpaceDeviceCMYK:
      [self contentWithFormat:@"%f %f %f %f k ",components[0],components[1],components[2],components[3]];
      break;
    }

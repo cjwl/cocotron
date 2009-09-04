@@ -10,7 +10,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "KGBitmapContext.h"
 #import "KGGraphicsState.h"
 #import "O2Color.h"
-#import "KGColorSpace.h"
+#import "O2ColorSpace.h"
 #import "O2MutablePath.h"
 #import "KGLayer.h"
 #import "KGPDFPage.h"
@@ -95,7 +95,7 @@ static NSMutableArray *possibleContextClasses=nil;
    return nil;
 }
 
-+(KGContext *)createWithBytes:(void *)bytes width:(size_t)width height:(size_t)height bitsPerComponent:(size_t)bitsPerComponent bytesPerRow:(size_t)bytesPerRow colorSpace:(KGColorSpace *)colorSpace bitmapInfo:(CGBitmapInfo)bitmapInfo {
++(KGContext *)createWithBytes:(void *)bytes width:(size_t)width height:(size_t)height bitsPerComponent:(size_t)bitsPerComponent bytesPerRow:(size_t)bytesPerRow colorSpace:(O2ColorSpaceRef)colorSpace bitmapInfo:(CGBitmapInfo)bitmapInfo {
    NSArray *array=[self allContextClasses];
    int      count=[array count];
    
@@ -443,16 +443,30 @@ static inline KGGraphicsState *currentState(KGContext *self){
    return [currentState(self) fillColor];
 }
 
--(void)setStrokeColorSpace:(KGColorSpace *)colorSpace {
-   O2Color *color=[[O2Color alloc] initWithColorSpace:colorSpace];
+-(void)setStrokeColorSpace:(O2ColorSpaceRef)colorSpace {
+   int   i,length=[colorSpace numberOfComponents];
+   CGFloat components[length+1];
+   
+   for(i=0;i<length;i++)
+    components[i]=0;
+   components[i]=1;
+
+   O2Color *color=O2ColorCreate(colorSpace,components);
    
    [self setStrokeColor:color];
    
    [color release];
 }
 
--(void)setFillColorSpace:(KGColorSpace *)colorSpace {
-   O2Color *color=[[O2Color alloc] initWithColorSpace:colorSpace];
+-(void)setFillColorSpace:(O2ColorSpaceRef)colorSpace {
+   int   i,length=[colorSpace numberOfComponents];
+   CGFloat components[length+1];
+   
+   for(i=0;i<length;i++)
+    components[i]=0;
+   components[i]=1;
+
+   O2Color *color=O2ColorCreate(colorSpace,components);
 
    [self setFillColor:color];
    
@@ -460,8 +474,8 @@ static inline KGGraphicsState *currentState(KGContext *self){
 }
 
 -(void)setStrokeColorWithComponents:(const float *)components {
-   KGColorSpace *colorSpace=[[self strokeColor] colorSpace];
-   O2Color      *color=[[O2Color alloc] initWithColorSpace:colorSpace components:components];
+   O2ColorSpaceRef colorSpace=O2ColorGetColorSpace([self strokeColor]);
+   O2Color      *color=O2ColorCreate(colorSpace,components);
    
    [self setStrokeColor:color];
    
@@ -473,9 +487,9 @@ static inline KGGraphicsState *currentState(KGContext *self){
 }
 
 -(void)setGrayStrokeColor:(float)gray:(float)alpha {
-   KGColorSpace *colorSpace=[[KGColorSpace alloc] initWithDeviceGray];
+   O2ColorSpaceRef colorSpace=[[O2ColorSpace alloc] initWithDeviceGray];
    float         components[2]={gray,alpha};
-   O2Color      *color=[[O2Color alloc] initWithColorSpace:colorSpace components:components];
+   O2Color      *color=O2ColorCreate(colorSpace,components);
    
    [self setStrokeColor:color];
    
@@ -484,9 +498,9 @@ static inline KGGraphicsState *currentState(KGContext *self){
 }
 
 -(void)setRGBStrokeColor:(float)r:(float)g:(float)b:(float)alpha {
-   KGColorSpace *colorSpace=[[KGColorSpace alloc] initWithDeviceRGB];
+   O2ColorSpaceRef colorSpace=[[O2ColorSpace alloc] initWithDeviceRGB];
    float         components[4]={r,g,b,alpha};
-   O2Color      *color=[[O2Color alloc] initWithColorSpace:colorSpace components:components];
+   O2Color      *color=O2ColorCreate(colorSpace,components);
    
    [self setStrokeColor:color];
    
@@ -495,9 +509,9 @@ static inline KGGraphicsState *currentState(KGContext *self){
 }
 
 -(void)setCMYKStrokeColor:(float)c:(float)m:(float)y:(float)k:(float)alpha {
-   KGColorSpace *colorSpace=[[KGColorSpace alloc] initWithDeviceCMYK];
+   O2ColorSpaceRef colorSpace=[[O2ColorSpace alloc] initWithDeviceCMYK];
    float         components[5]={c,m,y,k,alpha};
-   O2Color      *color=[[O2Color alloc] initWithColorSpace:colorSpace components:components];
+   O2Color      *color=O2ColorCreate(colorSpace,components);
    
    [self setStrokeColor:color];
    
@@ -506,8 +520,8 @@ static inline KGGraphicsState *currentState(KGContext *self){
 }
 
 -(void)setFillColorWithComponents:(const float *)components {
-   KGColorSpace *colorSpace=[[self fillColor] colorSpace];
-   O2Color      *color=[[O2Color alloc] initWithColorSpace:colorSpace components:components];
+   O2ColorSpaceRef colorSpace=O2ColorGetColorSpace([self fillColor]);
+   O2Color      *color=O2ColorCreate(colorSpace,components);
    
    [self setFillColor:color];
    
@@ -519,9 +533,9 @@ static inline KGGraphicsState *currentState(KGContext *self){
 }
 
 -(void)setGrayFillColor:(float)gray:(float)alpha {
-   KGColorSpace *colorSpace=[[KGColorSpace alloc] initWithDeviceGray];
+   O2ColorSpaceRef colorSpace=[[O2ColorSpace alloc] initWithDeviceGray];
    float         components[2]={gray,alpha};
-   O2Color      *color=[[O2Color alloc] initWithColorSpace:colorSpace components:components];
+   O2Color      *color=O2ColorCreate(colorSpace,components);
    
    [self setFillColor:color];
    
@@ -530,9 +544,9 @@ static inline KGGraphicsState *currentState(KGContext *self){
 }
 
 -(void)setRGBFillColor:(float)r:(float)g:(float)b:(float)alpha {
-   KGColorSpace *colorSpace=[[KGColorSpace alloc] initWithDeviceRGB];
+   O2ColorSpaceRef colorSpace=[[O2ColorSpace alloc] initWithDeviceRGB];
    float         components[4]={r,g,b,alpha};
-   O2Color      *color=[[O2Color alloc] initWithColorSpace:colorSpace components:components];
+   O2Color      *color=O2ColorCreate(colorSpace,components);
    
    [self setFillColor:color];
    
@@ -541,9 +555,9 @@ static inline KGGraphicsState *currentState(KGContext *self){
 }
 
 -(void)setCMYKFillColor:(float)c:(float)m:(float)y:(float)k:(float)alpha {
-   KGColorSpace *colorSpace=[[KGColorSpace alloc] initWithDeviceCMYK];
+   O2ColorSpaceRef colorSpace=[[O2ColorSpace alloc] initWithDeviceCMYK];
    float         components[5]={c,m,y,k,alpha};
-   O2Color      *color=[[O2Color alloc] initWithColorSpace:colorSpace components:components];
+   O2Color      *color=O2ColorCreate(colorSpace,components);
    
    [self setFillColor:color];
    
@@ -557,45 +571,45 @@ static inline KGGraphicsState *currentState(KGContext *self){
 }
 
 -(void)setStrokeAlpha:(float)alpha {
-   O2Color *color=[[self strokeColor] copyWithAlpha:alpha];
+   O2Color *color=O2ColorCreateCopyWithAlpha([self strokeColor],alpha);
    [self setStrokeColor:color];
    [color release];
 }
 
 -(void)setGrayStrokeColor:(float)gray {
-   float alpha=[[self strokeColor] alpha];
+   float alpha=O2ColorGetAlpha([self strokeColor]);
    
    [self setGrayStrokeColor:gray:alpha];
 }
 
 -(void)setRGBStrokeColor:(float)r:(float)g:(float)b {
-   float alpha=[[self strokeColor] alpha];
+   float alpha=O2ColorGetAlpha([self strokeColor]);
    [self setRGBStrokeColor:r:g:b:alpha];
 }
 
 -(void)setCMYKStrokeColor:(float)c:(float)m:(float)y:(float)k {
-   float alpha=[[self strokeColor] alpha];
+   float alpha=O2ColorGetAlpha([self strokeColor]);
    [self setCMYKStrokeColor:c:m:y:k:alpha];
 }
 
 -(void)setFillAlpha:(float)alpha {
-   O2Color *color=[[self fillColor] copyWithAlpha:alpha];
+   O2Color *color=O2ColorCreateCopyWithAlpha([self fillColor],alpha);
    [self setFillColor:color];
    [color release];
 }
 
 -(void)setGrayFillColor:(float)gray {
-   float alpha=[[self fillColor] alpha];
+   float alpha=O2ColorGetAlpha([self fillColor]);
    [self setGrayFillColor:gray:alpha];
 }
 
 -(void)setRGBFillColor:(float)r:(float)g:(float)b {
-   float alpha=[[self fillColor] alpha];
+   float alpha=O2ColorGetAlpha([self fillColor]);
    [self setRGBFillColor:r:g:b:alpha];
 }
 
 -(void)setCMYKFillColor:(float)c:(float)m:(float)y:(float)k {
-   float alpha=[[self fillColor] alpha];
+   float alpha=O2ColorGetAlpha([self fillColor]);
    [self setCMYKFillColor:c:m:y:k:alpha];
 }
 
@@ -884,7 +898,7 @@ static inline KGGraphicsState *currentState(KGContext *self){
    return 0;
 }
 
--(KGColorSpace *)colorSpace {
+-(O2ColorSpaceRef)colorSpace {
    return nil;
 }
 

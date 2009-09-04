@@ -10,7 +10,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "NSTIFFReader.h"
 #import "NSTIFFImageFileDirectory.h"
 #import "KGDataProvider.h"
-#import "KGColorSpace.h"
+#import "O2ColorSpace.h"
 #import "KGImage.h"
 
 @implementation KGImageSource_TIFF
@@ -108,7 +108,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    bitmap=[[NSData alloc] initWithBytesNoCopy:bytes length:bytesPerRow*height];
 
    KGDataProvider *provider=[[KGDataProvider alloc] initWithData:bitmap];
-   KGColorSpace *colorSpace=[[KGColorSpace alloc] initWithDeviceRGB];
+   O2ColorSpaceRef colorSpace=[[O2ColorSpace alloc] initWithDeviceRGB];
    KGImage *image=[[KGImage alloc] initWithWidth:width height:height bitsPerComponent:8 bitsPerPixel:bitsPerPixel bytesPerRow:bytesPerRow
       colorSpace:colorSpace bitmapInfo:kCGBitmapByteOrder32Big|kCGImageAlphaPremultipliedLast provider:provider decode:NULL interpolate:NO renderingIntent:kCGRenderingIntentDefault];
       

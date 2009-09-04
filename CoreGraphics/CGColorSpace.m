@@ -7,7 +7,7 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
 #import <CoreGraphics/CGColorSpace.h>
-#import "KGColorSpace.h"
+#import "O2ColorSpace.h"
 
 CGColorSpaceRef CGColorSpaceRetain(CGColorSpaceRef colorSpace) {
    return [colorSpace retain];
@@ -18,15 +18,15 @@ void CGColorSpaceRelease(CGColorSpaceRef colorSpace) {
 }
 
 CGColorSpaceRef CGColorSpaceCreateDeviceRGB() {
-   return [[KGColorSpace alloc] initWithDeviceRGB];
+   return [[O2ColorSpace alloc] initWithDeviceRGB];
 }
 
 CGColorSpaceRef CGColorSpaceCreateDeviceGray() {
-   return [[KGColorSpace alloc] initWithDeviceGray];
+   return [[O2ColorSpace alloc] initWithDeviceGray];
 }
 
 CGColorSpaceRef CGColorSpaceCreateDeviceCMYK() {
-   return [[KGColorSpace alloc] initWithDeviceCMYK];
+   return [[O2ColorSpace alloc] initWithDeviceCMYK];
 }
 
 size_t CGColorSpaceGetNumberOfComponents(CGColorSpaceRef self) {

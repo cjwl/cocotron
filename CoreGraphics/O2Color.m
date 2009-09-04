@@ -7,11 +7,11 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
 #import "O2Color.h"
-#import "KGColorSpace.h"
+#import "O2ColorSpace.h"
 
 @implementation O2Color
 
--initWithColorSpace:(KGColorSpace *)colorSpace pattern:(KGPattern *)pattern components:(const CGFloat *)components {
+-initWithColorSpace:(O2ColorSpaceRef)colorSpace pattern:(KGPattern *)pattern components:(const CGFloat *)components {
    int i;
    
    _colorSpace=[colorSpace retain];
@@ -24,7 +24,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return self;
 }
 
--initWithColorSpace:(KGColorSpace *)colorSpace components:(const CGFloat *)components {
+-initWithColorSpace:(O2ColorSpaceRef)colorSpace components:(const CGFloat *)components {
    int i;
    
    _colorSpace=[colorSpace retain];
@@ -37,20 +37,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return self;
 }
 
--initWithColorSpace:(KGColorSpace *)colorSpace {
-   int   i,length=[_colorSpace numberOfComponents];
-   CGFloat components[length+1];
-   
-   for(i=0;i<length;i++)
-    components[i]=0;
-   components[i]=1;
-   
-   return [self initWithColorSpace:colorSpace components:components];
-}
-
 -initWithDeviceGray:(CGFloat)gray alpha:(CGFloat)alpha {
    CGFloat components[2]={gray,alpha};
-   KGColorSpace *colorSpace=[[KGColorSpace alloc] initWithDeviceGray];
+   O2ColorSpaceRef colorSpace=[[O2ColorSpace alloc] initWithDeviceGray];
    [self initWithColorSpace:colorSpace components:components];
    [colorSpace release];
    return self;
@@ -58,7 +47,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -initWithDeviceRed:(CGFloat)red green:(CGFloat)green blue:(CGFloat)blue alpha:(CGFloat)alpha {
    CGFloat components[4]={red,green,blue,alpha};
-   KGColorSpace *colorSpace=[[KGColorSpace alloc] initWithDeviceRGB];
+   O2ColorSpaceRef colorSpace=[[O2ColorSpace alloc] initWithDeviceRGB];
    [self initWithColorSpace:colorSpace components:components];
    [colorSpace release];
    return self;
@@ -66,14 +55,34 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -initWithDeviceCyan:(CGFloat)cyan magenta:(CGFloat)magenta yellow:(CGFloat)yellow black:(CGFloat)black alpha:(CGFloat)alpha {
    CGFloat components[5]={cyan,magenta,yellow,black,alpha};
-   KGColorSpace *colorSpace=[[KGColorSpace alloc] initWithDeviceCMYK];
+   O2ColorSpaceRef colorSpace=[[O2ColorSpace alloc] initWithDeviceCMYK];
    [self initWithColorSpace:colorSpace components:components];
    [colorSpace release];
    return self;
 }
 
+O2ColorRef O2ColorCreate(O2ColorSpaceRef colorSpace,const CGFloat *components) {
+   return [[O2Color alloc] initWithColorSpace:colorSpace components:components];
+}
+
+O2ColorRef O2ColorCreateGenericGray(CGFloat gray,CGFloat a) {
+   return [[O2Color alloc] initWithDeviceGray:gray alpha:a];
+}
+
+O2ColorRef O2ColorCreateGenericRGB(CGFloat r,CGFloat g,CGFloat b,CGFloat a) {
+   return [[O2Color alloc] initWithDeviceRed:r green:g blue:b alpha:a];
+}
+
+O2ColorRef O2ColorCreateGenericCMYK(CGFloat c,CGFloat m,CGFloat y,CGFloat k,CGFloat a) {
+   return [[O2Color alloc] initWithDeviceCyan:c magenta:m yellow:y black:k alpha:a];
+}
+
+O2ColorRef O2ColorCreateWithPattern(O2ColorSpaceRef colorSpace,CGPatternRef pattern,const CGFloat *components) {
+   return [[O2Color alloc] initWithColorSpace:colorSpace pattern:pattern components:components];
+}
+
 -init {
-   KGColorSpace *gray=[[KGColorSpace alloc] initWithDeviceGray];
+   O2ColorSpaceRef gray=[[O2ColorSpace alloc] initWithDeviceGray];
    CGFloat       components[2]={0,1};
    
    [self initWithColorSpace:gray components:components];
@@ -88,55 +97,59 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [super dealloc];
 }
 
--copyWithZone:(NSZone *)zone {
+O2ColorRef O2ColorCreateCopy(O2ColorRef self) {
    return [self retain];
 }
 
--copyWithAlpha:(CGFloat)alpha {
+O2ColorRef O2ColorCreateCopyWithAlpha(O2ColorRef self,CGFloat alpha) {
    int   i;
-   CGFloat components[_numberOfComponents];
+   CGFloat components[self->_numberOfComponents];
 
-   for(i=0;i<_numberOfComponents-1;i++)
-    components[i]=_components[i];
+   for(i=0;i<self->_numberOfComponents-1;i++)
+    components[i]=self->_components[i];
    components[i]=alpha;
       
-   return [[isa alloc] initWithColorSpace:_colorSpace components:components];
+   return [[self->isa alloc] initWithColorSpace:self->_colorSpace components:components];
 }
 
--(KGColorSpace *)colorSpace {
-   return _colorSpace;
+O2ColorRef O2ColorRetain(O2ColorRef self) {
+   return [self retain];
 }
 
--(unsigned)numberOfComponents {
-   return _numberOfComponents;
+void O2ColorRelease(O2ColorRef self) {
+   [self release];
 }
 
--(CGFloat *)components {
-   return _components;
+O2ColorSpaceRef O2ColorGetColorSpace(O2ColorRef self) {
+   return self->_colorSpace;
 }
 
--(CGFloat)alpha {
-   return _components[_numberOfComponents-1];
+size_t O2ColorGetNumberOfComponents(O2ColorRef self) {
+   return self->_numberOfComponents;
 }
 
--(KGPattern *)pattern {
-   return _pattern;
+const CGFloat *O2ColorGetComponents(O2ColorRef self) {
+   return self->_components;
 }
 
--(BOOL)isEqualToColor:(O2Color *)other {
-   if(![_colorSpace isEqualToColorSpace:other->_colorSpace])
+CGFloat O2ColorGetAlpha(O2ColorRef self) {
+   return self->_components[self->_numberOfComponents-1];
+}
+
+CGPatternRef O2ColorGetPattern(O2ColorRef self) {
+   return self->_pattern;
+}
+
+BOOL O2ColorEqualToColor(O2ColorRef self,O2ColorRef other) {
+   if(![self->_colorSpace isEqualToColorSpace:other->_colorSpace])
     return NO;
 
    int i;
-   for(i=0;i<_numberOfComponents;i++)
-    if(_components[i]!=other->_components[i])
+   for(i=0;i<self->_numberOfComponents;i++)
+    if(self->_components[i]!=other->_components[i])
      return NO;
 
    return YES;
-}
-
--(O2Color *)convertToColorSpace:(KGColorSpace *)otherSpace {
-   return nil;
 }
 
 @end

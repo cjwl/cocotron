@@ -10,7 +10,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <CoreGraphics/CoreGraphics.h>
 #import "O2Color.h"
-#import "KGColorSpace.h"
+#import "O2ColorSpace.h"
 #import "O2MutablePath.h"
 #import "KGFont.h"
 #import "KGClipPhase.h"
@@ -62,8 +62,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    KGGraphicsState *copy=NSCopyObject(self,0,zone);
 
    copy->_clipPhases=[[NSMutableArray alloc] initWithArray:_clipPhases];
-   copy->_strokeColor=[_strokeColor copyWithZone:zone];
-   copy->_fillColor=[_fillColor copyWithZone:zone];
+   copy->_strokeColor=O2ColorCreateCopy(_strokeColor);
+   copy->_fillColor=O2ColorCreateCopy(_fillColor);
    copy->_font=[_font retain];
    copy->_fontState=[_fontState retain];
    if(_dashLengths!=NULL){
@@ -74,7 +74,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
      copy->_dashLengths[i]=_dashLengths[i];
    }
     
-   copy->_shadowColor=[_shadowColor copyWithZone:zone];
+   copy->_shadowColor=O2ColorCreateCopy(_shadowColor);
    
    copy->_shadowKernel=KGGaussianKernelRetain(_shadowKernel);
    
@@ -335,9 +335,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)setShadowOffset:(CGSize)offset blur:(float)blur {
-   KGColorSpace *colorSpace=[[KGColorSpace alloc] initWithDeviceRGB];
+   O2ColorSpaceRef colorSpace=[[O2ColorSpace alloc] initWithDeviceRGB];
    float         components[4]={0,0,0,1.0/3.0};
-   O2Color      *color=[[O2Color alloc] initWithColorSpace:colorSpace components:components];
+   O2Color      *color=O2ColorCreate(colorSpace,components);
 
    [self setShadowOffset:offset blur:blur color:color];
    [color release];

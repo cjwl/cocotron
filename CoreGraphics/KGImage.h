@@ -29,9 +29,10 @@
 
 #import <Foundation/NSObject.h>
 #import <CoreGraphics/CoreGraphics.h>
+#import "O2ColorSpace.h"
 #import "VGmath.h"
 
-@class KGColorSpace,KGDataProvider;
+@class O2ColorSpace,KGDataProvider;
 
 typedef enum {
   /* RGB{A,X} channel ordering */
@@ -294,7 +295,7 @@ typedef CGFloat    *(*KGImageReadSpan_Af)(KGImage *self,int x,int y,CGFloat *spa
    size_t _bitsPerPixel;
    size_t _bytesPerRow;
    
-   KGColorSpace          *_colorSpace;
+   O2ColorSpaceRef        _colorSpace;
    CGBitmapInfo           _bitmapInfo;
    KGDataProvider        *_provider;
    float                 *_decode;
@@ -322,14 +323,14 @@ typedef CGFloat    *(*KGImageReadSpan_Af)(KGImage *self,int x,int y,CGFloat *spa
    KGImageReadSpan_Af _readAf;
 }
 
--initWithWidth:(size_t)width height:(size_t)height bitsPerComponent:(size_t)bitsPerComponent bitsPerPixel:(size_t)bitsPerPixel bytesPerRow:(size_t)bytesPerRow colorSpace:(KGColorSpace *)colorSpace bitmapInfo:(CGBitmapInfo)bitmapInfo provider:(KGDataProvider *)provider decode:(const CGFloat *)decode interpolate:(BOOL)interpolate renderingIntent:(CGColorRenderingIntent)renderingIntent;
+-initWithWidth:(size_t)width height:(size_t)height bitsPerComponent:(size_t)bitsPerComponent bitsPerPixel:(size_t)bitsPerPixel bytesPerRow:(size_t)bytesPerRow colorSpace:(O2ColorSpaceRef)colorSpace bitmapInfo:(CGBitmapInfo)bitmapInfo provider:(KGDataProvider *)provider decode:(const CGFloat *)decode interpolate:(BOOL)interpolate renderingIntent:(CGColorRenderingIntent)renderingIntent;
 
 -initMaskWithWidth:(size_t)width height:(size_t)height bitsPerComponent:(size_t)bitsPerComponent bitsPerPixel:(size_t)bitsPerPixel bytesPerRow:(size_t)bytesPerRow provider:(KGDataProvider *)provider decode:(const float *)decode interpolate:(BOOL)interpolate ;
 
 -initWithJPEGDataProvider:(KGDataProvider *)jpegProvider decode:(const CGFloat *)decode interpolate:(BOOL)interpolate renderingIntent:(CGColorRenderingIntent)renderingIntent;
 -initWithPNGDataProvider:(KGDataProvider *)jpegProvider decode:(const CGFloat *)decode interpolate:(BOOL)interpolate renderingIntent:(CGColorRenderingIntent)renderingIntent;
 
--(KGImage *)copyWithColorSpace:(KGColorSpace *)colorSpace;
+-(KGImage *)copyWithColorSpace:(O2ColorSpaceRef)colorSpace;
 -(KGImage *)childImageInRect:(CGRect)rect;
 
 -(void)addMask:(KGImage *)mask;
@@ -341,7 +342,7 @@ typedef CGFloat    *(*KGImageReadSpan_Af)(KGImage *self,int x,int y,CGFloat *spa
 -(size_t)bitsPerComponent;
 -(size_t)bitsPerPixel;
 -(size_t)bytesPerRow;
--(KGColorSpace *)colorSpace;
+-(O2ColorSpaceRef)colorSpace;
 -(CGBitmapInfo)bitmapInfo;
 -(KGDataProvider *)dataProvider;
 -(const CGFloat *)decode;

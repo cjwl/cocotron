@@ -1,6 +1,6 @@
 #import "KGImage.h"
 
-@class KGColorSpace,KGDataProvider,KGPDFObject,KGPDFContext;
+@class O2ColorSpace,KGDataProvider,KGPDFObject,KGPDFContext;
 
 @interface KGImage(PDF)
 

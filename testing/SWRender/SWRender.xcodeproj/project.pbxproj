@@ -27,14 +27,14 @@
 		FE45ED460DC2376700F49290 /* NSTIFFImageFileDirectory.m in Sources */ = {isa = PBXBuildFile; fileRef = FE45ED430DC2376700F49290 /* NSTIFFImageFileDirectory.m */; };
 		FE45ED470DC2376700F49290 /* NSTIFFReader.m in Sources */ = {isa = PBXBuildFile; fileRef = FE45ED450DC2376700F49290 /* NSTIFFReader.m */; };
 		FE45EE650DC254C700F49290 /* overlay.jpg in Resources */ = {isa = PBXBuildFile; fileRef = FE45EE640DC254C700F49290 /* overlay.jpg */; };
-		FE4F4CC10E10397000A5A5F8 /* KGColorSpace+PDF.m in Sources */ = {isa = PBXBuildFile; fileRef = FE4F4CB80E10397000A5A5F8 /* KGColorSpace+PDF.m */; };
+		FE4F4CC10E10397000A5A5F8 /* O2ColorSpace+PDF.m in Sources */ = {isa = PBXBuildFile; fileRef = FE4F4CB80E10397000A5A5F8 /* O2ColorSpace+PDF.m */; };
 		FE4F4CC30E10397000A5A5F8 /* KGFunction+PDF.m in Sources */ = {isa = PBXBuildFile; fileRef = FE4F4CBC0E10397000A5A5F8 /* KGFunction+PDF.m */; };
 		FE4F4CC40E10397000A5A5F8 /* KGImage+PDF.m in Sources */ = {isa = PBXBuildFile; fileRef = FE4F4CBE0E10397000A5A5F8 /* KGImage+PDF.m */; };
 		FE4F4CC50E10397000A5A5F8 /* KGShading+PDF.m in Sources */ = {isa = PBXBuildFile; fileRef = FE4F4CC00E10397000A5A5F8 /* KGShading+PDF.m */; };
 		FE6EDCE60DB78E7C005503A1 /* KGBitmapContext.m in Sources */ = {isa = PBXBuildFile; fileRef = FE6EDCCB0DB78E7C005503A1 /* KGBitmapContext.m */; };
 		FE6EDCE70DB78E7C005503A1 /* KGClipPhase.m in Sources */ = {isa = PBXBuildFile; fileRef = FE6EDCCD0DB78E7C005503A1 /* KGClipPhase.m */; };
 		FE6EDCE80DB78E7C005503A1 /* O2Color.m in Sources */ = {isa = PBXBuildFile; fileRef = FE6EDCCF0DB78E7C005503A1 /* O2Color.m */; };
-		FE6EDCE90DB78E7C005503A1 /* KGColorSpace.m in Sources */ = {isa = PBXBuildFile; fileRef = FE6EDCD10DB78E7C005503A1 /* KGColorSpace.m */; };
+		FE6EDCE90DB78E7C005503A1 /* O2ColorSpace.m in Sources */ = {isa = PBXBuildFile; fileRef = FE6EDCD10DB78E7C005503A1 /* O2ColorSpace.m */; };
 		FE6EDCEA0DB78E7C005503A1 /* KGContext.m in Sources */ = {isa = PBXBuildFile; fileRef = FE6EDCD30DB78E7C005503A1 /* KGContext.m */; };
 		FE6EDCEB0DB78E7C005503A1 /* KGDataProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = FE6EDCD50DB78E7C005503A1 /* KGDataProvider.m */; };
 		FE6EDCEC0DB78E7C005503A1 /* KGFont.m in Sources */ = {isa = PBXBuildFile; fileRef = FE6EDCD70DB78E7C005503A1 /* KGFont.m */; };
@@ -137,8 +137,8 @@
 		FE45ED440DC2376700F49290 /* NSTIFFReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSTIFFReader.h; sourceTree = "<group>"; };
 		FE45ED450DC2376700F49290 /* NSTIFFReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSTIFFReader.m; sourceTree = "<group>"; };
 		FE45EE640DC254C700F49290 /* overlay.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = overlay.jpg; sourceTree = "<group>"; };
-		FE4F4CB70E10397000A5A5F8 /* KGColorSpace+PDF.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "KGColorSpace+PDF.h"; sourceTree = "<group>"; };
-		FE4F4CB80E10397000A5A5F8 /* KGColorSpace+PDF.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "KGColorSpace+PDF.m"; sourceTree = "<group>"; };
+		FE4F4CB70E10397000A5A5F8 /* O2ColorSpace+PDF.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "O2ColorSpace+PDF.h"; sourceTree = "<group>"; };
+		FE4F4CB80E10397000A5A5F8 /* O2ColorSpace+PDF.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "O2ColorSpace+PDF.m"; sourceTree = "<group>"; };
 		FE4F4CBB0E10397000A5A5F8 /* KGFunction+PDF.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "KGFunction+PDF.h"; sourceTree = "<group>"; };
 		FE4F4CBC0E10397000A5A5F8 /* KGFunction+PDF.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "KGFunction+PDF.m"; sourceTree = "<group>"; };
 		FE4F4CBD0E10397000A5A5F8 /* KGImage+PDF.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "KGImage+PDF.h"; sourceTree = "<group>"; };
@@ -151,8 +151,8 @@
 		FE6EDCCD0DB78E7C005503A1 /* KGClipPhase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGClipPhase.m; sourceTree = "<group>"; };
 		FE6EDCCE0DB78E7C005503A1 /* O2Color.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O2Color.h; sourceTree = "<group>"; };
 		FE6EDCCF0DB78E7C005503A1 /* O2Color.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = O2Color.m; sourceTree = "<group>"; };
-		FE6EDCD00DB78E7C005503A1 /* KGColorSpace.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGColorSpace.h; sourceTree = "<group>"; };
-		FE6EDCD10DB78E7C005503A1 /* KGColorSpace.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGColorSpace.m; sourceTree = "<group>"; };
+		FE6EDCD00DB78E7C005503A1 /* O2ColorSpace.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O2ColorSpace.h; sourceTree = "<group>"; };
+		FE6EDCD10DB78E7C005503A1 /* O2ColorSpace.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = O2ColorSpace.m; sourceTree = "<group>"; };
 		FE6EDCD20DB78E7C005503A1 /* KGContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGContext.h; sourceTree = "<group>"; };
 		FE6EDCD30DB78E7C005503A1 /* KGContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGContext.m; sourceTree = "<group>"; };
 		FE6EDCD40DB78E7C005503A1 /* KGDataProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGDataProvider.h; sourceTree = "<group>"; };
@@ -374,8 +374,8 @@
 		FE6EDCC70DB78E3C005503A1 /* CoreGraphics */ = {
 			isa = PBXGroup;
 			children = (
-				FE4F4CB70E10397000A5A5F8 /* KGColorSpace+PDF.h */,
-				FE4F4CB80E10397000A5A5F8 /* KGColorSpace+PDF.m */,
+				FE4F4CB70E10397000A5A5F8 /* O2ColorSpace+PDF.h */,
+				FE4F4CB80E10397000A5A5F8 /* O2ColorSpace+PDF.m */,
 				FE4F4CBB0E10397000A5A5F8 /* KGFunction+PDF.h */,
 				FE4F4CBC0E10397000A5A5F8 /* KGFunction+PDF.m */,
 				FE4F4CBD0E10397000A5A5F8 /* KGImage+PDF.h */,
@@ -463,8 +463,8 @@
 				FE6EDCCD0DB78E7C005503A1 /* KGClipPhase.m */,
 				FE6EDCCE0DB78E7C005503A1 /* O2Color.h */,
 				FE6EDCCF0DB78E7C005503A1 /* O2Color.m */,
-				FE6EDCD00DB78E7C005503A1 /* KGColorSpace.h */,
-				FE6EDCD10DB78E7C005503A1 /* KGColorSpace.m */,
+				FE6EDCD00DB78E7C005503A1 /* O2ColorSpace.h */,
+				FE6EDCD10DB78E7C005503A1 /* O2ColorSpace.m */,
 				FE6EDCD20DB78E7C005503A1 /* KGContext.h */,
 				FE6EDCD30DB78E7C005503A1 /* KGContext.m */,
 				FE6EDCD40DB78E7C005503A1 /* KGDataProvider.h */,
@@ -557,7 +557,7 @@
 				FE6EDCE60DB78E7C005503A1 /* KGBitmapContext.m in Sources */,
 				FE6EDCE70DB78E7C005503A1 /* KGClipPhase.m in Sources */,
 				FE6EDCE80DB78E7C005503A1 /* O2Color.m in Sources */,
-				FE6EDCE90DB78E7C005503A1 /* KGColorSpace.m in Sources */,
+				FE6EDCE90DB78E7C005503A1 /* O2ColorSpace.m in Sources */,
 				FE6EDCEA0DB78E7C005503A1 /* KGContext.m in Sources */,
 				FE6EDCEB0DB78E7C005503A1 /* KGDataProvider.m in Sources */,
 				FE6EDCEC0DB78E7C005503A1 /* KGFont.m in Sources */,
@@ -612,7 +612,7 @@
 				FEBF596B0DCC1B5C00CE5A1C /* KGPaint_axialGradient.m in Sources */,
 				FEBF596C0DCC1B5C00CE5A1C /* KGPaint_radialGradient.m in Sources */,
 				FEBF596D0DCC1B5C00CE5A1C /* KGPaint_ramp.m in Sources */,
-				FE4F4CC10E10397000A5A5F8 /* KGColorSpace+PDF.m in Sources */,
+				FE4F4CC10E10397000A5A5F8 /* O2ColorSpace+PDF.m in Sources */,
 				FE4F4CC30E10397000A5A5F8 /* KGFunction+PDF.m in Sources */,
 				FE4F4CC40E10397000A5A5F8 /* KGImage+PDF.m in Sources */,
 				FE4F4CC50E10397000A5A5F8 /* KGShading+PDF.m in Sources */,

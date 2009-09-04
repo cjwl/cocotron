@@ -27,7 +27,7 @@
  *-------------------------------------------------------------------*/
 #import "KGPaint_ramp.h"
 #import "KGShading.h"
-#import "KGColorSpace.h"
+#import "O2ColorSpace.h"
 #import "KGFunction.h"
 
 @implementation KGPaint_ramp
@@ -66,24 +66,24 @@ static inline void CMYKAToRGBA(float *input,float *output){
    _extendEnd=[shading extendEnd];
    
    KGFunction      *function=[shading function];
-   KGColorSpace    *colorSpace=[shading colorSpace];
-   KGColorSpaceType colorSpaceType=[colorSpace type];
+   O2ColorSpace    *colorSpace=[shading colorSpace];
+   O2ColorSpaceType colorSpaceType=[colorSpace type];
    float            output[[colorSpace numberOfComponents]+1];
    void           (*outputToRGBA)(float *,float *);
    float            rgba[4];
 
    switch(colorSpaceType){
 
-    case KGColorSpaceDeviceGray:
+    case O2ColorSpaceDeviceGray:
      outputToRGBA=GrayAToRGBA;
      break;
      
-    case KGColorSpaceDeviceRGB:
-    case KGColorSpacePlatformRGB:
+    case O2ColorSpaceDeviceRGB:
+    case O2ColorSpacePlatformRGB:
      outputToRGBA=RGBAToRGBA;
      break;
      
-    case KGColorSpaceDeviceCMYK:
+    case O2ColorSpaceDeviceCMYK:
      outputToRGBA=CMYKAToRGBA;
      break;
      

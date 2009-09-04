@@ -13,7 +13,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSString.h>
 #import <Foundation/NSData.h>
 #import "KGDataProvider.h"
-#import "KGColorSpace.h"
+#import "O2ColorSpace.h"
 #import "KGImage.h"
 
 #import <assert.h>
@@ -1103,7 +1103,7 @@ static unsigned char *stbi_jpeg_load_from_memory(jpeg *j,stbi_uc const *buffer, 
    bitmap=[[NSData alloc] initWithBytesNoCopy:_bitmap length:bytesPerRow*height];
 
    KGDataProvider *provider=[[KGDataProvider alloc] initWithData:bitmap];
-   KGColorSpace   *colorSpace=[[KGColorSpace alloc] initWithDeviceRGB];
+   O2ColorSpace   *colorSpace=[[O2ColorSpace alloc] initWithDeviceRGB];
    KGImage        *image=[[KGImage alloc] initWithWidth:width height:height bitsPerComponent:8 bitsPerPixel:bitsPerPixel bytesPerRow:bytesPerRow
       colorSpace:colorSpace bitmapInfo:kCGBitmapByteOrder32Big|kCGImageAlphaPremultipliedLast provider:provider decode:NULL interpolate:NO renderingIntent:kCGRenderingIntentDefault];
       

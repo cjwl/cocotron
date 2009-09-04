@@ -9,9 +9,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/KGDeviceContext_gdi.h>
 #import <CoreGraphics/O2Path.h>
 #import <CoreGraphics/O2Color.h>
-#import <CoreGraphics/KGColorSpace.h>
+#import <CoreGraphics/O2ColorSpace.h>
 
-static inline void CMYKAToRGBA(float *input,float *output){
+static inline void CMYKAToRGBA(const float *input,float *output){
    float white=1-input[3];
    
    output[0]=(input[0]>white)?0:white-input[0];
@@ -42,18 +42,18 @@ static COLORREF gammaAdjustedRGBFromComponents(float r,float g,float b){
 }
 
 COLORREF COLORREFFromColor(O2Color *color){
-   KGColorSpace *colorSpace=[color colorSpace];
-   float        *components=[color components];
+   O2ColorSpaceRef colorSpace=O2ColorGetColorSpace(color);
+   const float    *components=O2ColorGetComponents(color);
    
    switch([colorSpace type]){
 
-    case KGColorSpaceDeviceGray:
+    case O2ColorSpaceDeviceGray:
      return gammaAdjustedRGBFromComponents(components[0],components[0],components[0]);
      
-    case KGColorSpaceDeviceRGB:
+    case O2ColorSpaceDeviceRGB:
      return gammaAdjustedRGBFromComponents(components[0],components[1],components[2]);
      
-    case KGColorSpaceDeviceCMYK:{
+    case O2ColorSpaceDeviceCMYK:{
       float rgba[4];
       
       CMYKAToRGBA(components,rgba);
@@ -61,7 +61,7 @@ COLORREF COLORREFFromColor(O2Color *color){
      }
      break;
      
-     case KGColorSpacePlatformRGB:
+     case O2ColorSpacePlatformRGB:
      return RGB(components[0]*255,components[1]*255,components[2]*255);
           
     default:
