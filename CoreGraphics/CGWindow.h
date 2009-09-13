@@ -49,7 +49,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @interface NSObject(CGWindow_delegate)
 
--(void)platformWindow:(CGWindow *)window frameChanged:(NSRect)frame;
+-(void)platformWindow:(CGWindow *)window frameChanged:(NSRect)frame didSize:(BOOL)didSize;
 -(NSSize)platformWindow:(CGWindow *)window frameSizeWillChange:(NSSize)size;
 -(void)platformWindowWillBeginSizing:(CGWindow *)window;
 -(void)platformWindowDidEndSizing:(CGWindow *)window;

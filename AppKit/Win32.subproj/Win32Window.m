@@ -406,7 +406,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [_deviceDictionary addEntriesFromDictionary:entries];
 }
 
--(void)_GetWindowRect {
+-(void)_GetWindowRectDidSize:(BOOL)didSize {
    RECT   windowRect;
    RECT   clientRect;
    NSRect frame;
@@ -421,7 +421,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    frame=[self flipOnWin32Screen:NSRectFromRECT(windowRect)];
 
    if(frame.size.width>0 && frame.size.height>0)
-    [_delegate platformWindow:self frameChanged:frame];
+    [_delegate platformWindow:self frameChanged:frame didSize:didSize];
 }
 
 -(int)WM_SIZE_wParam:(WPARAM)wParam lParam:(LPARAM)lParam {
@@ -431,7 +431,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    if(contentSize.width>0 && contentSize.height>0){
     [self invalidateContextsWithNewSize:contentSize];
 
-    [self _GetWindowRect];
+    [self _GetWindowRectDidSize:YES];
 
 //    if(equalSizes)
 //     return 0;
@@ -453,7 +453,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(int)WM_MOVE_wParam:(WPARAM)wParam lParam:(LPARAM)lParam {
    [_delegate platformWindowWillMove:self];
-   [self _GetWindowRect];
+   [self _GetWindowRectDidSize:NO];
    [_delegate platformWindowDidMove:self];
    return 0;
 }

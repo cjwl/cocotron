@@ -48,6 +48,8 @@ NSString *NSWindowDidResizeNotification=@"NSWindowDidResizeNotification";
 NSString *NSWindowDidUpdateNotification=@"NSWindowDidUpdateNotification";
 NSString *NSWindowWillCloseNotification=@"NSWindowWillCloseNotification";
 NSString *NSWindowWillMoveNotification=@"NSWindowWillMoveNotification";
+NSString *NSWindowWillStartLiveResizeNotification=@"NSWindowWillStartLiveResizeNotification";
+NSString *NSWindowDidEndLiveResizeNotification=@"NSWindowDidEndLiveResizeNotification";
 
 NSString *NSWindowWillAnimateNotification=@"NSWindowWillAnimateNotification";
 NSString *NSWindowAnimatingNotification=@"NSWindowAnimatingNotification";
@@ -2232,7 +2234,7 @@ NSString *NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification";
    [NSApp updateWindows];
 }
 
--(void)platformWindow:(CGWindow *)window frameChanged:(NSRect)frame {
+-(void)platformWindow:(CGWindow *)window frameChanged:(NSRect)frame didSize:(BOOL)didSize {
    _frame=frame;
    _makeSureIsOnAScreen=YES;
 
@@ -2245,6 +2247,11 @@ NSString *NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification";
 
    [self saveFrameUsingName:_autosaveFrameName];
    [self resetCursorRects];
+   
+   if(didSize)
+    [self postNotificationName:NSWindowDidResizeNotification];
+   else
+    [self postNotificationName:NSWindowDidMoveNotification];
 }
 
 -(void)platformWindowExitMove:(CGWindow *)window {
@@ -2261,11 +2268,13 @@ NSString *NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification";
 }
 
 -(void)platformWindowWillBeginSizing:(CGWindow *)window {
+   [self postNotificationName:NSWindowWillStartLiveResizeNotification];
    [_backgroundView viewWillStartLiveResize];
 }
 
 -(void)platformWindowDidEndSizing:(CGWindow *)window {
    [_backgroundView viewDidEndLiveResize];
+   [self postNotificationName:NSWindowDidEndLiveResizeNotification];
 }
 
 -(void)platformWindow:(CGWindow *)window needsDisplayInRect:(NSRect)rect {

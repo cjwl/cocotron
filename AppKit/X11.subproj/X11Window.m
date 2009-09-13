@@ -357,7 +357,7 @@ static int ignoreBadWindow(Display* display,
       case ConfigureNotify:
       {
          [self frameChanged];
-         [_delegate platformWindow:self frameChanged:[self transformFrame:_frame]];
+         [_delegate platformWindow:self frameChanged:[self transformFrame:_frame] didSize:YES];
          break;
       }
       case Expose:

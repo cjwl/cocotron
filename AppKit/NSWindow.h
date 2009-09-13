@@ -49,6 +49,8 @@ APPKIT_EXPORT NSString *NSWindowDidMoveNotification;
 APPKIT_EXPORT NSString *NSWindowDidResizeNotification;
 APPKIT_EXPORT NSString *NSWindowDidUpdateNotification;
 APPKIT_EXPORT NSString *NSWindowWillCloseNotification;
+APPKIT_EXPORT NSString *NSWindowWillStartLiveResizeNotification;
+APPKIT_EXPORT NSString *NSWindowDidEndLiveResizeNotification;
 
 @interface NSWindow : NSResponder {
    NSRect             _frame;

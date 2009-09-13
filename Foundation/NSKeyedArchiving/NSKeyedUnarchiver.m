@@ -249,7 +249,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       if(code=='{')
        state=expectingBraceSpaceOrInteger;
       else if(code>' ')
-       [NSException raise:NSInvalidArgumentException format:@"Unable to parse geometry %@, state=%d",string,state];
+       [NSException raise:NSInvalidArgumentException format:@"Unable to parse geometry %@, state=%d, pos=%d, code=%C",string,state,i,code];
       break;
       
      case expectingBraceSpaceOrInteger:
@@ -291,7 +291,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
        state=expectingCommaBraceOrSpace;
       }
       else
-       [NSException raise:NSInvalidArgumentException format:@"Unable to parse geometry %@, state=%d",string,state];
+       [NSException raise:NSInvalidArgumentException format:@"Unable to parse geometry %@, state=%d, pos=%d, code=%C",string,state,i,code];
       break;
        
      case expectingFraction:
@@ -311,10 +311,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       else if(code=='}'){
        result[resultLength++]*=sign;
        sign=1;
-       state=expectingBraceSpaceOrInteger;
+       state=expectingCommaBraceOrSpace;
       }
       else
-       [NSException raise:NSInvalidArgumentException format:@"Unable to parse geometry %@, state=%d",string,state];
+       [NSException raise:NSInvalidArgumentException format:@"Unable to parse geometry %@, state=%d, pos=%d, code=%C",string,state,i,code];
       break;
      
      case expectingExponent:
@@ -334,10 +334,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
        result[resultLength++]*=sign*powf(10.0f,expsign*exponent);
        sign=expsign=1;
        exponent=0;
-       state=expectingBraceSpaceOrInteger;
+       state=expectingCommaBraceOrSpace;
       }
       else
-       [NSException raise:NSInvalidArgumentException format:@"Unable to parse geometry %@, state=%d",string,state];
+       [NSException raise:NSInvalidArgumentException format:@"Unable to parse geometry %@, state=%d, pos=%d, code=%C",string,state,i,code];
       break;
      
      case expectingCommaBraceOrSpace:
@@ -346,12 +346,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
       else if(code=='}')
        state=expectingSpace;
       else if(code>=' ')
-       [NSException raise:NSInvalidArgumentException format:@"Unable to parse geometry %@, state=%d",string,state];
+       [NSException raise:NSInvalidArgumentException format:@"Unable to parse geometry %@, state=%d, pos=%d, code=%C",string,state,i,code];
       break;
       
      case expectingSpace:
       if(code>=' ')
-       [NSException raise:NSInvalidArgumentException format:@"Unable to parse geometry %@, state=%d",string,state];
+       [NSException raise:NSInvalidArgumentException format:@"Unable to parse geometry %@, state=%d, pos=%d, code=%C",string,state,i,code];
       break;
     }
    }
