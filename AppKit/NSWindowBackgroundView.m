@@ -12,6 +12,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSGraphics.h>
 #import <AppKit/NSColor.h>
 #import <AppKit/NSImage.h>
+#import <AppKit/NSMenuView.h>
 
 // FIX, the border stuff should probably be moved into a sheet background view or somesuch
 
@@ -137,6 +138,27 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 {
     [_animationCache release];
     _animationCache = nil;
+}
+
+-(void)resizeSubviewsWithOldSize:(NSSize)oldSize {
+   NSView *menuView=nil;
+   NSView *contentView=nil;
+   
+// tile the subviews, when/if we add titlebars and such do it here
+   for(NSView *view in _subviews){
+    if([view isKindOfClass:[NSMenuView class]])
+     menuView=view;
+    else
+     contentView=view;
+   }
+   
+   [menuView resizeWithOldSuperviewSize:oldSize];
+
+   NSRect contentFrame=[self bounds];
+   if(menuView!=nil)
+    contentFrame.size.height=[menuView frame].origin.y-contentFrame.origin.y;
+    
+   [contentView setFrame:contentFrame];
 }
 
 @end
