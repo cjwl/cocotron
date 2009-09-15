@@ -12,6 +12,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import "NSAtomicList.h"
 
+#import <Foundation/NSAtomicCompareAndSwap.h>
+
 static int OSAtomicCompareAndSwapPtrBarrier(void* oldValue, void* newValue, void* volatile *theValue) {
    return __sync_bool_compare_and_swap(theValue,oldValue,newValue);
 }

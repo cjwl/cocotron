@@ -7,7 +7,7 @@
 #define NSABIasm_jmp_objc_msgSend __asm__("jmp _objc_msgSend")
 #define NSABIasm_jmp_objc_msgSend_stret __asm__("jmp _objc_msgSend_stret")
 
-#if 1
+#if !COCOTRON_DISALLOW_FORWARDING
 @interface NSObject(fastforwarding)
 -forwardingTargetForSelector:(SEL)selector;
 @end

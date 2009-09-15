@@ -23,6 +23,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 typedef unsigned int OSSpinLock;
 
+#import <Foundation/NSAtomicCompareAndSwap.h>
+
 BOOL OSSpinLockTry( volatile OSSpinLock *__lock )
 {
    return __sync_bool_compare_and_swap(__lock, 0, 1);

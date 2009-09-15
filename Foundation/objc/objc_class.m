@@ -24,6 +24,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <stdarg.h>
 #endif
 
+#import <Foundation/NSAtomicCompareAndSwap.h>
+
 #define INITIAL_CLASS_HASHTABLE_SIZE	256
 
 static inline OBJCHashTable *OBJCClassTable(void) {
