@@ -24,8 +24,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)encodeWithCoder:(NSCoder *)coder {
-   [coder encodeObject:[self colorSpaceName]];
-   [coder encodeValuesOfObjCTypes:"ffff",&_red,&_green,&_blue,&_alpha];
+   if([coder allowsKeyedCoding])
+    [super encodeWithCoder:coder];
+   else {
+    [coder encodeObject:[self colorSpaceName]];
+    [coder encodeValuesOfObjCTypes:"ffff",&_red,&_green,&_blue,&_alpha];
+   }
 }
 
 -(BOOL)isEqual:otherObject {

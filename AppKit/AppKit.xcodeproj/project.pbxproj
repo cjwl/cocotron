@@ -3002,6 +3002,13 @@
 			remoteGlobalIDString = 8DC2EF4F0486A6940098B216;
 			remoteInfo = "OpenGL-Windows-i386";
 		};
+		FE4404B6106034C700A2AEFE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6E46FEBE0A2D2DCF004CD27E /* Foundation.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 15D921C0105E918000171406 /* Foundation.framework */;
+			remoteInfo = "Foundation-Linux-arm";
+		};
 		FE65206E0FBE3D3D00464BFD /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 6E46FEBE0A2D2DCF004CD27E /* Foundation.xcodeproj */;
@@ -4868,6 +4875,7 @@
 				FEE66D7A0C3D6F8A00FBED82 /* Foundation.framework */,
 				FE65206F0FBE3D3D00464BFD /* Foundation.framework */,
 				FED5359C0FE061B200F02667 /* Foundation.framework */,
+				FE4404B7106034C700A2AEFE /* Foundation.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -6671,6 +6679,13 @@
 			fileType = wrapper.framework;
 			path = OpenGL.framework;
 			remoteRef = FE0C4EC21041CF2100D8C100 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FE4404B7106034C700A2AEFE /* Foundation.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Foundation.framework;
+			remoteRef = FE4404B6106034C700A2AEFE /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		FE65206F0FBE3D3D00464BFD /* Foundation.framework */ = {

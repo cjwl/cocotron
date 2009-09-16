@@ -171,8 +171,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [attributes setObject:[NSColor whiteColor]
                   forKey:NSBackgroundColorAttributeName];
 
-   if(![self wraps])
-    [paraStyle setLineBreakMode:NSLineBreakByClipping];
+   [paraStyle setLineBreakMode:_lineBreakMode];
    [paraStyle setAlignment:_textAlignment];
    [attributes setObject:paraStyle forKey:NSParagraphStyleAttributeName];
 

@@ -9,6 +9,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSImageCell.h>
 #import <AppKit/NSImage.h>
 #import <AppKit/NSGraphics.h>
+#import <AppKit/NSColor.h>
 #import <ApplicationServices/ApplicationServices.h>
 #import <AppKit/NSGraphicsContext.h>
 #import <Foundation/NSKeyedArchiver.h> 
@@ -160,7 +161,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 		CGContextSaveGState(ctx);
 		CGContextClipToRect(ctx,frame);
 
-        frame=[self _scaledAndAlignedImageFrame:frame];
+        frame=[self _scaledAndAlignedImageFrame:frame];        
         [[self _imageValue] drawInRect:frame fromRect:NSZeroRect operation:NSCompositeSourceOver fraction:1.0];
         
 		CGContextRestoreGState(ctx);
@@ -168,11 +169,42 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)drawWithFrame:(NSRect)frame inView:(NSView *)control {
-   if([self isBordered]){
-    NSDrawButton(frame,frame);
-    frame=NSInsetRect(frame,2,2);
+ 
+   switch(_frameStyle){
+   
+    case NSImageFrameNone:
+     break;
+     
+    case NSImageFramePhoto:;
+     NSRect shadow=frame;
+     shadow.size.height--;
+     shadow.size.width--;
+     shadow.origin.x++;
+     [[NSColor darkGrayColor] set];
+     NSRectFillUsingOperation(shadow,NSCompositeSourceOver);
+     shadow.origin.x--;
+     shadow.origin.y++;
+     [[NSColor whiteColor] set];
+     NSRectFillUsingOperation(shadow,NSCompositeCopy);
+     frame=NSInsetRect(frame,2,2);
+     break;
+     
+    case NSImageFrameGrayBezel:
+     NSDrawGrayBezel(frame,frame);
+     frame=NSInsetRect(frame,2,2);
+     break;
+     
+    case NSImageFrameGroove:
+     NSDrawGroove(frame,frame);
+     frame=NSInsetRect(frame,2,2);
+     break;
+     
+    case NSImageFrameButton:
+     NSDrawButton(frame,frame);
+     frame=NSInsetRect(frame,2,2);
+     break;
    }
-
+   
    [self drawInteriorWithFrame:frame inView:control];
 }
 

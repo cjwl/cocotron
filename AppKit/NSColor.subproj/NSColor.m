@@ -27,10 +27,75 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void) _addSystemColor: (NSColor *) color forName: (NSString *) name;
 @end
 
+@interface NSColor(private)
+-(NSString *)catalogName;
+-(NSString *)colorName;
+@end
+
 @implementation NSColor
 
 -(void)encodeWithCoder:(NSCoder *)coder {
-   NSUnimplementedMethod();
+
+   if([coder allowsKeyedCoding]){
+    NSString *spaceName=[self colorSpaceName];
+
+    if([spaceName isEqualToString:NSCalibratedRGBColorSpace]){
+     CGFloat r,g,b,a;
+     
+     [self getRed:&r green:&g blue:&b alpha:&a];
+     [coder encodeInt:1 forKey:@"NSColorSpace"];
+     NSString *string=[NSString stringWithFormat:@"%f %f %f %f",r,g,b,a];
+     NSData   *data=[string dataUsingEncoding:NSASCIIStringEncoding];
+     [coder encodeBytes:[data bytes] length:[data length] forKey:@"NSRGB"];
+    }
+    else if([spaceName isEqualToString:NSDeviceRGBColorSpace]){
+     CGFloat r,g,b,a;
+     
+     [self getRed:&r green:&g blue:&b alpha:&a];
+     [coder encodeInt:2 forKey:@"NSColorSpace"];
+     NSString *string=[NSString stringWithFormat:@"%f %f %f %f",r,g,b,a];
+     NSData   *data=[string dataUsingEncoding:NSASCIIStringEncoding];
+     [coder encodeBytes:[data bytes] length:[data length] forKey:@"NSRGB"];
+    }
+    else if([spaceName isEqualToString:NSCalibratedWhiteColorSpace]){
+     CGFloat g,a;
+     
+     [self getWhite:&g alpha:&a];
+     [coder encodeInt:3 forKey:@"NSColorSpace"];
+     NSString *string=[NSString stringWithFormat:@"%f %f",g,a];
+     NSData   *data=[string dataUsingEncoding:NSASCIIStringEncoding];
+     [coder encodeBytes:[data bytes] length:[data length] forKey:@"NSWhite"];
+    }
+    else if([spaceName isEqualToString:NSDeviceWhiteColorSpace]){
+     CGFloat g,a;
+     
+     [self getWhite:&g alpha:&a];
+     [coder encodeInt:4 forKey:@"NSColorSpace"];
+     NSString *string=[NSString stringWithFormat:@"%f %f",g,a];
+     NSData   *data=[string dataUsingEncoding:NSASCIIStringEncoding];
+     [coder encodeBytes:[data bytes] length:[data length] forKey:@"NSWhite"];
+    }
+    else if([spaceName isEqualToString:NSDeviceCMYKColorSpace]){
+     CGFloat c,m,y,k,a;
+     
+     [self getCyan:&c magenta:&m yellow:&y black:&k alpha:&a];
+     [coder encodeInt:5 forKey:@"NSColorSpace"];
+     NSString *string=[NSString stringWithFormat:@"%f %f %f %f %f",c,m,y,k,a];
+     NSData   *data=[string dataUsingEncoding:NSASCIIStringEncoding];
+     [coder encodeBytes:[data bytes] length:[data length] forKey:@"NSCMYK"];
+    }
+    else if([spaceName isEqualToString:NSNamedColorSpace]){
+     [coder encodeInt:6 forKey:@"NSColorSpace"];
+     [coder encodeObject:[self catalogName] forKey:@"NSCatalogName"];
+     [coder encodeObject:[self colorName] forKey:@"NSColorName"];
+// FIXME: encode @"NSColor"
+    }
+
+
+   }
+   else {
+    [NSException raise:NSInvalidArgumentException format:@"%@ can not encodeWithCoder:%@",isa,[coder class]];
+   }
 }
 
 -initWithCoder:(NSCoder *)coder {
@@ -393,7 +458,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 +(NSColor *)colorFromPasteboard:(NSPasteboard *)pasteboard {
    NSData *data=[pasteboard dataForType:NSColorPboardType];
 
-   return [NSUnarchiver unarchiveObjectWithData:data];
+   return [NSKeyedUnarchiver unarchiveObjectWithData:data];
 }
 
 +(NSColor *)colorWithPatternImage:(NSImage *)image
@@ -587,7 +652,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)writeToPasteboard:(NSPasteboard *)pasteboard {
-   NSData *data=[NSArchiver archivedDataWithRootObject:self];
+   NSData *data=[NSKeyedArchiver archivedDataWithRootObject:self];
 
    [pasteboard setData:data forType:NSColorPboardType];
 }

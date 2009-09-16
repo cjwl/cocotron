@@ -60,6 +60,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return NSNamedColorSpace;
 }
 
+-(NSString *)catalogName {
+   return _catalogName;
+}
+
+-(NSString *)colorName {
+   return _colorName;
+}
+
 -(NSColor *)colorUsingColorSpaceName:(NSString *)colorSpace device:(NSDictionary *)device {
  NSColor *result;
 

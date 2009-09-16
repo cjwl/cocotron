@@ -154,8 +154,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     }
 #endif
 
-    if(![self wraps])
-     [paraStyle setLineBreakMode:NSLineBreakByClipping];
+    [paraStyle setLineBreakMode:_lineBreakMode];
     [paraStyle setAlignment:_textAlignment];
     [attributes setObject:paraStyle forKey:NSParagraphStyleAttributeName];
 

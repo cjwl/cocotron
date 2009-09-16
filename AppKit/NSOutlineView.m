@@ -558,7 +558,7 @@ static void loadItemIntoMapTables(NSOutlineView *self,id item,unsigned *rowCount
         else {
          [dataCell setObjectValue:objectValue];
 
-         cellWidth=[[dataCell attributedStringValue] size].width + _intercellSpacing.width;
+         cellWidth=[dataCell cellSize].width + _intercellSpacing.width;
         }
 
         // since we shrink the cell frame to fit the title, when editing occurs, we need to pad
@@ -701,7 +701,7 @@ static void loadItemIntoMapTables(NSOutlineView *self,id item,unsigned *rowCount
             if ([_delegate respondsToSelector:@selector(outlineView:willDisplayCell:forTableColumn:item:)])
                 [_delegate outlineView:self willDisplayCell:dataCell forTableColumn:column item:item];
 
-            [dataCell drawWithFrame:NSInsetRect([self _adjustedFrameOfCellAtColumn:drawThisColumn row:row objectValue:objectValue], _intercellSpacing.width/2, _intercellSpacing.height/2)
+            [dataCell drawWithFrame:NSInsetRect([self _adjustedFrameOfCellAtColumn:drawThisColumn row:row objectValue:objectValue],ceil(_intercellSpacing.width/2),ceil( _intercellSpacing.height/2))
                              inView:self];
         }
         

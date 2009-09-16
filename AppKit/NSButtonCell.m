@@ -206,8 +206,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     if(font!=nil)
      [attributes setObject:font forKey:NSFontAttributeName];
 
-    if(![self wraps])
-     [paraStyle setLineBreakMode:NSLineBreakByClipping];
+    [paraStyle setLineBreakMode:_lineBreakMode];
     [paraStyle setAlignment:_textAlignment];
     [attributes setObject:paraStyle forKey:NSParagraphStyleAttributeName];
 
@@ -230,8 +229,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    if(font!=nil)
     [attributes setObject:font forKey:NSFontAttributeName];
 
-   if(![self wraps])
-    [paraStyle setLineBreakMode:NSLineBreakByClipping];
+   [paraStyle setLineBreakMode:_lineBreakMode];
    [paraStyle setAlignment:_textAlignment];
    [attributes setObject:paraStyle forKey:NSParagraphStyleAttributeName];
 
@@ -641,7 +639,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    BOOL enabled=[self isEnabled]?YES:![self imageDimsWhenDisabled];
    BOOL mixed=([self state]==NSMixedState)?YES:NO;
    
-   [[controlView graphicsStyle] drawButtonImage:image inRect:rect enabled:enabled mixed:mixed];
+   CGContextRef ctx=[[NSGraphicsContext currentContext] graphicsPort];
+   CGContextSaveGState(ctx);
+   CGContextTranslateCTM(ctx,rect.origin.x,rect.origin.y);
+   if([controlView isFlipped]){
+    CGContextTranslateCTM(ctx,0,rect.size.height);
+    CGContextScaleCTM(ctx,1,-1);
+   }
+   [[controlView graphicsStyle] drawButtonImage:image inRect:NSMakeRect(0,0,rect.size.width,rect.size.height) enabled:enabled mixed:mixed];
+   CGContextRestoreGState(ctx);
 }
 
 -(void)drawInteriorWithFrame:(NSRect)frame inView:(NSView *)controlView {
@@ -805,7 +811,7 @@ sizeOfButtonImage:image enabled:enabled mixed:mixed];
 	return imageSize;
 }
 
--(void)drawWithFrame:(NSRect)frame inView:(NSView *)control {   
+-(void)drawWithFrame:(NSRect)frame inView:(NSView *)control {
    _controlView=control;
 
    if([self isTransparent])

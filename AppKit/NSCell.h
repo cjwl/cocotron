@@ -8,6 +8,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <AppKit/NSText.h>
 #import <AppKit/NSGraphics.h>
+#import <AppKit/NSParagraphStyle.h>
 
 @class NSFont,NSImage,NSView;
 
@@ -65,12 +66,12 @@ typedef NSUInteger NSControlTint;
    id        _representedObject;
    NSControlSize _controlSize;
    NSFocusRingType _focusRingType;
-
+   NSLineBreakMode _lineBreakMode;
+   
    BOOL      _isEnabled;
    BOOL      _isEditable;
    BOOL      _isSelectable;
    BOOL      _isScrollable;
-   BOOL      _wraps;
    BOOL      _isBordered;
    BOOL      _isBezeled;
    BOOL      _isHighlighted;

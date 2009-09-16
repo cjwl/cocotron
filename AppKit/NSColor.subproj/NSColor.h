@@ -13,7 +13,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @class NSImage;
 @class NSPasteboard;
 
-@interface NSColor : NSObject <NSCopying> 
+@interface NSColor : NSObject <NSCopying,NSCoding> 
 
 +(NSColor *)highlightColor;
 +(NSColor *)shadowColor;
