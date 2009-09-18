@@ -7,23 +7,50 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
 // Original - Christopher Lloyd <cjwl@objc.net>
+
 #import <AppKit/Win32DeviceContextWindow.h>
 
 @implementation Win32DeviceContextWindow
 
+// defined in NSGraphicsStyle_uxtheme.m
+HANDLE openThemeData(HWND window,LPCWSTR classList);
+void closeThemeData(HANDLE theme);
+
 -initWithWindowHandle:(HWND)handle {
    [super initWithDC:GetDC(handle)];
-   _handle=handle;
+   if (handle)
+   {
+      _handle=handle;
+      _theme[uxthBUTTON]   =openThemeData(handle, L"BUTTON");
+      _theme[uxthCOMBOBOX] =openThemeData(handle, L"COMBOBOX");
+      _theme[uxthEDIT]     =openThemeData(handle, L"EDIT");
+      _theme[uxthHEADER]   =openThemeData(handle, L"HEADER");
+      _theme[uxthMENU]     =openThemeData(handle, L"MENU");
+      _theme[uxthPROGRESS] =openThemeData(handle, L"PROGRESS");
+      _theme[uxthSCROLLBAR]=openThemeData(handle, L"SCROLLBAR");
+      _theme[uxthSPIN]     =openThemeData(handle, L"SPIN");
+      _theme[uxthTAB]      =openThemeData(handle, L"TAB");
+      _theme[uxthTRACKBAR] =openThemeData(handle, L"TRACKBAR");
+      _theme[uxthTREEVIEW] =openThemeData(handle, L"TREEVIEW");
+   }
    return self;
 }
 
 -(void)dealloc {
+   int i;
+   for (i=0;i<uxthNumClasses;i++)
+      if (_theme[i])
+         closeThemeData(_theme[i]);
    ReleaseDC(_handle,_dc);
    [super dealloc];
 }
 
 -(HWND)windowHandle {
    return _handle;
+}
+
+-(HANDLE)theme:(int)uxthClassId {
+   return _theme[uxthClassId];
 }
 
 -(Win32DeviceContextWindow *)windowDeviceContext {

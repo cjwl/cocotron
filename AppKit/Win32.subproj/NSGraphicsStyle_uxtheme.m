@@ -50,7 +50,7 @@ static BOOL isThemeActive(){
    return function();
 }
 
-static HANDLE openThemeData(HWND window,LPCWSTR classList){
+HANDLE openThemeData(HWND window,LPCWSTR classList){
    WINAPI HANDLE (*function)(HWND,LPCWSTR)=functionWithName("OpenThemeData");
    
    if(function==NULL)
@@ -59,7 +59,7 @@ static HANDLE openThemeData(HWND window,LPCWSTR classList){
    return function(window,classList);
 }
 
-static void closeThemeData(HANDLE theme){
+void closeThemeData(HANDLE theme){
    WINAPI HRESULT (*function)(HANDLE)=functionWithName("CloseThemeData");
    
    if(function==NULL)
@@ -156,14 +156,14 @@ static inline RECT transformToRECT(CGAffineTransform matrix,NSRect rect) {
    return nil;
 }
 
--(BOOL)sizeOfPartId:(int)partId stateId:(int)stateId classList:(LPCWSTR)classList size:(NSSize *)result {
+-(BOOL)sizeOfPartId:(int)partId stateId:(int)stateId uxthClassId:(int)uxthClassId size:(NSSize *)result {
    KGDeviceContext_gdi *deviceContext=[self deviceContext];
    HANDLE               theme;
 
    if(deviceContext==nil)
     return NO;
     
-   if((theme=[self themeForClassList:classList deviceContext:deviceContext])!=NULL){
+   if((theme=[[deviceContext windowDeviceContext] theme:uxthClassId])!=NULL){
     SIZE size;
      
     if(getThemePartSize(theme,[deviceContext dc],partId,stateId,NULL,TS_DRAW,&size)){
@@ -171,20 +171,19 @@ static inline RECT transformToRECT(CGAffineTransform matrix,NSRect rect) {
      result->height=size.cy;
      // should invert translate here
     }    
-    closeThemeData(theme);
     return YES;
    }
    return NO;
 }
 
--(BOOL)drawPartId:(int)partId stateId:(int)stateId classList:(LPCWSTR)classList inRect:(NSRect)rect {
+-(BOOL)drawPartId:(int)partId stateId:(int)stateId uxthClassId:(int)uxthClassId inRect:(NSRect)rect {
    KGDeviceContext_gdi *deviceContext=[self deviceContext];
-   HANDLE                  theme;
+   HANDLE               theme;
    
    if(deviceContext==nil)
     return NO;
        
-   if((theme=[self themeForClassList:classList deviceContext:deviceContext])!=NULL){
+   if((theme=[[deviceContext windowDeviceContext] theme:uxthClassId])!=NULL){
     CGAffineTransform matrix;
     RECT tlbr;
 
@@ -192,15 +191,13 @@ static inline RECT transformToRECT(CGAffineTransform matrix,NSRect rect) {
     tlbr=transformToRECT(matrix,rect);
 
     drawThemeBackground(theme,[deviceContext dc],partId,stateId,&tlbr,NULL);
-       
-    closeThemeData(theme);
     return YES;
    }
    return NO;
 }
 
 -(BOOL)drawButtonPartId:(int)partId stateId:(int)stateId inRect:(NSRect)rect {
-   return [self drawPartId:partId stateId:stateId classList:L"BUTTON" inRect:rect];
+   return [self drawPartId:partId stateId:stateId uxthClassId:uxthBUTTON inRect:rect];
 }
 
 -(void)drawPushButtonNormalInRect:(NSRect)rect defaulted:(BOOL)defaulted {
@@ -245,7 +242,7 @@ static inline RECT transformToRECT(CGAffineTransform matrix,NSRect rect) {
    if([self getPartId:&partId stateId:&stateId forButtonImage:image enabled:enabled mixed:mixed]){
     NSSize result;
     
-    if([self sizeOfPartId:partId stateId:stateId classList:L"BUTTON" size:&result])
+    if([self sizeOfPartId:partId stateId:stateId uxthClassId:uxthBUTTON size:&result])
      return result;
    }
    
@@ -264,7 +261,7 @@ static inline RECT transformToRECT(CGAffineTransform matrix,NSRect rect) {
 
 // these menu ones don't appear to work
 -(void)drawMenuSeparatorInRect:(NSRect)rect {
-   if(![self drawPartId:MP_SEPARATOR stateId:MS_NORMAL classList:L"MENU" inRect:rect])
+   if(![self drawPartId:MP_SEPARATOR stateId:MS_NORMAL uxthClassId:uxthMENU inRect:rect])
     [super drawMenuSeparatorInRect:rect];
 }
 
@@ -272,7 +269,7 @@ static inline RECT transformToRECT(CGAffineTransform matrix,NSRect rect) {
    NSSize size=[self sizeOfMenuBranchArrow];
    NSRect rect=NSMakeRect(point.x,point.y,size.width,size.height);
    
-   if(![self drawPartId:MP_CHEVRON stateId:selected?MS_SELECTED:MS_NORMAL classList:L"MENU" inRect:rect])
+   if(![self drawPartId:MP_CHEVRON stateId:selected?MS_SELECTED:MS_NORMAL uxthClassId:uxthMENU inRect:rect])
     [super drawMenuBranchArrowAtPoint:point selected:selected];
 }
 
@@ -288,7 +285,7 @@ static inline RECT transformToRECT(CGAffineTransform matrix,NSRect rect) {
 
 -(void)drawPopUpButtonWindowBackgroundInRect:(NSRect)rect {
 #if 0
-   if(![self drawPartId:MENU_POPUPBORDERS stateId:0 classList:L"MENU" inRect:rect])
+   if(![self drawPartId:MENU_POPUPBORDERS stateId:0 uxthClassId:uxthMENU inRect:rect])
     [super drawPopUpButtonWindowBackgroundInRect:rect];
 #else
    [[NSColor menuBackgroundColor] setFill];
@@ -299,13 +296,13 @@ static inline RECT transformToRECT(CGAffineTransform matrix,NSRect rect) {
 }
 
 -(void)drawOutlineViewBranchInRect:(NSRect)rect expanded:(BOOL)expanded {
-   if(![self drawPartId:TVP_GLYPH stateId:expanded?GLPS_OPENED:GLPS_CLOSED classList:L"TREEVIEW" inRect:rect])
+   if(![self drawPartId:TVP_GLYPH stateId:expanded?GLPS_OPENED:GLPS_CLOSED uxthClassId:uxthTREEVIEW inRect:rect])
     [super drawOutlineViewBranchInRect:rect expanded:expanded];
 }
 
 -(NSRect)drawProgressIndicatorBackground:(NSRect)rect clipRect:(NSRect)clipRect bezeled:(BOOL)bezeled {
    if(bezeled){
-    if([self drawPartId:PP_BAR stateId:0 classList:L"PROGRESS" inRect:rect])
+    if([self drawPartId:PP_BAR stateId:0 uxthClassId:uxthPROGRESS inRect:rect])
      return NSInsetRect(rect,3,3);
    }
 
@@ -313,7 +310,7 @@ static inline RECT transformToRECT(CGAffineTransform matrix,NSRect rect) {
 }
 
 -(void)drawProgressIndicatorChunk:(NSRect)rect {
-   [self drawPartId:PP_CHUNK stateId:0 classList:L"PROGRESS" inRect:rect];
+   [self drawPartId:PP_CHUNK stateId:0 uxthClassId:uxthPROGRESS inRect:rect];
 }
 
 -(void)drawScrollerButtonInRect:(NSRect)rect enabled:(BOOL)enabled pressed:(BOOL)pressed vertical:(BOOL)vertical upOrLeft:(BOOL)upOrLeft {
@@ -332,36 +329,36 @@ static inline RECT transformToRECT(CGAffineTransform matrix,NSRect rect) {
      stateId=enabled?(pressed?ABS_RIGHTPRESSED:ABS_RIGHTNORMAL):ABS_RIGHTDISABLED;
    }
    
-   if(![self drawPartId:SBP_ARROWBTN stateId:stateId classList:L"SCROLLBAR" inRect:rect])
+   if(![self drawPartId:SBP_ARROWBTN stateId:stateId uxthClassId:uxthSCROLLBAR inRect:rect])
     [super drawScrollerButtonInRect:rect enabled:enabled pressed:pressed vertical:vertical upOrLeft:upOrLeft];
 }
 
 -(void)drawScrollerKnobInRect:(NSRect)rect vertical:(BOOL)vertical highlight:(BOOL)highlight {
-   if(![self drawPartId:vertical?SBP_THUMBBTNVERT:SBP_THUMBBTNHORZ stateId:highlight?SCRBS_PRESSED:SCRBS_NORMAL classList:L"SCROLLBAR" inRect:rect])
+   if(![self drawPartId:vertical?SBP_THUMBBTNVERT:SBP_THUMBBTNHORZ stateId:highlight?SCRBS_PRESSED:SCRBS_NORMAL uxthClassId:uxthSCROLLBAR inRect:rect])
     [super drawScrollerKnobInRect:rect vertical:vertical highlight:highlight];
 
-   [self drawPartId:vertical?SBP_GRIPPERVERT:SBP_GRIPPERHORZ stateId:0 classList:L"SCROLLBAR" inRect:rect];
+   [self drawPartId:vertical?SBP_GRIPPERVERT:SBP_GRIPPERHORZ stateId:0 uxthClassId:uxthSCROLLBAR inRect:rect];
 }
 
 -(void)drawScrollerTrackInRect:(NSRect)rect vertical:(BOOL)vertical upOrLeft:(BOOL)upOrLeft {
    int partId=vertical?(upOrLeft?SBP_UPPERTRACKVERT:SBP_LOWERTRACKVERT):(upOrLeft?SBP_UPPERTRACKHORZ:SBP_LOWERTRACKHORZ);
    
-   if(![self drawPartId:partId stateId:SCRBS_NORMAL classList:L"SCROLLBAR" inRect:rect])
+   if(![self drawPartId:partId stateId:SCRBS_NORMAL uxthClassId:uxthSCROLLBAR inRect:rect])
     [super drawScrollerTrackInRect:rect vertical:vertical upOrLeft:upOrLeft];
 }
 
 -(void)drawTableViewHeaderInRect:(NSRect)rect highlighted:(BOOL)highlighted {
-   if(![self drawPartId:HP_HEADERITEM stateId:highlighted?HIS_PRESSED:HIS_NORMAL classList:L"HEADER" inRect:rect])
+   if(![self drawPartId:HP_HEADERITEM stateId:highlighted?HIS_PRESSED:HIS_NORMAL uxthClassId:uxthHEADER inRect:rect])
     [super drawTableViewHeaderInRect:rect highlighted:highlighted];
 }
 
 -(void)drawTableViewCornerInRect:(NSRect)rect {
-   if(![self drawPartId:HP_HEADERITEM stateId:HIS_NORMAL classList:L"HEADER" inRect:rect])
+   if(![self drawPartId:HP_HEADERITEM stateId:HIS_NORMAL uxthClassId:uxthHEADER inRect:rect])
     [super drawTableViewCornerInRect:rect];
 }
 
 -(void)drawComboBoxButtonInRect:(NSRect)rect enabled:(BOOL)enabled bordered:(BOOL)bordered pressed:(BOOL)pressed {
-   if(![self drawPartId:CP_DROPDOWNBUTTON stateId:enabled?(pressed?CBXS_PRESSED:CBXS_NORMAL):CBXS_DISABLED classList:L"COMBOBOX" inRect:rect])
+   if(![self drawPartId:CP_DROPDOWNBUTTON stateId:enabled?(pressed?CBXS_PRESSED:CBXS_NORMAL):CBXS_DISABLED uxthClassId:uxthCOMBOBOX inRect:rect])
     [super drawComboBoxButtonInRect:rect enabled:(BOOL)enabled bordered:bordered pressed:pressed];
 }
 
@@ -385,7 +382,7 @@ static inline RECT transformToRECT(CGAffineTransform matrix,NSRect rect) {
      partId=TKP_THUMBBOTTOM;
    }
       
-   if(![self drawPartId:partId stateId:highlighted?TUS_PRESSED:TUS_NORMAL classList:L"TRACKBAR" inRect:rect])
+   if(![self drawPartId:partId stateId:highlighted?TUS_PRESSED:TUS_NORMAL uxthClassId:uxthTRACKBAR inRect:rect])
     [super drawSliderKnobInRect:rect vertical:vertical highlighted:highlighted hasTickMarks:hasTickMarks tickMarkPosition:tickMarkPosition];
 }
 
@@ -403,12 +400,12 @@ static inline RECT transformToRECT(CGAffineTransform matrix,NSRect rect) {
     }
    }
    
-   if(![self drawPartId:vertical?TKP_TRACKVERT:TKP_TRACK stateId:TRS_NORMAL classList:L"TRACKBAR" inRect:thin])
+   if(![self drawPartId:vertical?TKP_TRACKVERT:TKP_TRACK stateId:TRS_NORMAL uxthClassId:uxthTRACKBAR inRect:thin])
     [super drawSliderTrackInRect:rect vertical:vertical hasTickMarks:hasTickMarks];
 }
 
 -(void)drawStepperButtonInRect:(NSRect)rect clipRect:(NSRect)clipRect enabled:(BOOL)enabled highlighted:(BOOL)highlighted upNotDown:(BOOL)upNotDown {
-   if(![self drawPartId:upNotDown?SPNP_UP:SPNP_DOWN stateId:enabled?DNS_NORMAL:DNS_DISABLED classList:L"SPIN" inRect:rect])
+   if(![self drawPartId:upNotDown?SPNP_UP:SPNP_DOWN stateId:enabled?DNS_NORMAL:DNS_DISABLED uxthClassId:uxthSPIN inRect:rect])
     [super drawStepperButtonInRect:rect clipRect:(NSRect)clipRect enabled:enabled highlighted:highlighted upNotDown:upNotDown];
 }
 
@@ -418,32 +415,32 @@ static inline RECT transformToRECT(CGAffineTransform matrix,NSRect rect) {
    if(!selected)
     rect.origin.y-=2;
     
-   if(![self drawPartId:TABP_TABITEM stateId:selected?TIS_SELECTED:TIS_NORMAL classList:L"TAB" inRect:rect])
+   if(![self drawPartId:TABP_TABITEM stateId:selected?TIS_SELECTED:TIS_NORMAL uxthClassId:uxthTAB inRect:rect])
     [super drawTabInRect:rect clipRect:clipRect color:color selected:selected];
 }
 
 -(void)drawTabPaneInRect:(NSRect)rect {
-   if(![self drawPartId:TABP_PANE stateId:TIS_NORMAL classList:L"TAB" inRect:rect])
+   if(![self drawPartId:TABP_PANE stateId:TIS_NORMAL uxthClassId:uxthTAB inRect:rect])
     [super drawTabPaneInRect:rect];
 }
 
 -(void)drawTabViewBackgroundInRect:(NSRect)rect {
-   if(![self drawPartId:TABP_BODY stateId:TIS_NORMAL classList:L"TAB" inRect:rect])
+   if(![self drawPartId:TABP_BODY stateId:TIS_NORMAL uxthClassId:uxthTAB inRect:rect])
     [super drawTabPaneInRect:rect];
 }
 
 -(void)drawTextFieldBorderInRect:(NSRect)rect bezeledNotLine:(BOOL)bezeledNotLine {
-   if(![self drawPartId:EP_EDITTEXT stateId:ETS_NORMAL classList:L"EDIT" inRect:rect])
+   if(![self drawPartId:EP_EDITTEXT stateId:ETS_NORMAL uxthClassId:uxthEDIT inRect:rect])
     [super drawTextFieldBorderInRect:rect bezeledNotLine:bezeledNotLine];
 }
 
 -(void)drawBoxWithBezelInRect:(NSRect)rect clipRect:(NSRect)clipRect {
-   if(![self drawPartId:BP_GROUPBOX stateId:GBS_NORMAL classList:L"BUTTON" inRect:rect])
+   if(![self drawPartId:BP_GROUPBOX stateId:GBS_NORMAL uxthClassId:uxthBUTTON inRect:rect])
     [super drawBoxWithBezelInRect:rect clipRect:clipRect];
 }
 
 -(void)drawBoxWithGrooveInRect:(NSRect)rect clipRect:(NSRect)clipRect {
-   if(![self drawPartId:BP_GROUPBOX stateId:GBS_NORMAL classList:L"BUTTON" inRect:rect])
+   if(![self drawPartId:BP_GROUPBOX stateId:GBS_NORMAL uxthClassId:uxthBUTTON inRect:rect])
     [super drawBoxWithGrooveInRect:rect clipRect:clipRect];
 }
 
