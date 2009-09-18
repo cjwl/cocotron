@@ -47,6 +47,13 @@
 			remoteGlobalIDString = 28D487A90FE04E7100DC03EF;
 			remoteInfo = "Foundation-Linux-ppc";
 		};
+		FE5C3A8010633B9300710AEF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FECAF5010DB7119B00BA2A8E /* Foundation.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 15D921C0105E918000171406 /* Foundation.framework */;
+			remoteInfo = "Foundation-Linux-arm";
+		};
 		FE65207B0FBE3D6300464BFD /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FECAF5010DB7119B00BA2A8E /* Foundation.xcodeproj */;
@@ -277,6 +284,7 @@
 				FECAF5130DB7119B00BA2A8E /* Foundation.framework */,
 				FE65207C0FBE3D6300464BFD /* Foundation.framework */,
 				FE13630F0FE72ECD00DE15FA /* Foundation.framework */,
+				FE5C3A8110633B9300710AEF /* Foundation.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -424,6 +432,13 @@
 			fileType = wrapper.framework;
 			path = Foundation.framework;
 			remoteRef = FE13630E0FE72ECD00DE15FA /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FE5C3A8110633B9300710AEF /* Foundation.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Foundation.framework;
+			remoteRef = FE5C3A8010633B9300710AEF /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		FE65207C0FBE3D6300464BFD /* Foundation.framework */ = {
@@ -585,7 +600,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				PREBINDING = NO;
-				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
+				SDKROOT = "";
 			};
 			name = Release;
 		};
