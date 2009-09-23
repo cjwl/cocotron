@@ -142,20 +142,27 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)resizeSubviewsWithOldSize:(NSSize)oldSize {
    NSView *menuView=nil;
+   NSView *toolbarView=nil;
    NSView *contentView=nil;
    
 // tile the subviews, when/if we add titlebars and such do it here
    for(NSView *view in _subviews){
     if([view isKindOfClass:[NSMenuView class]])
      menuView=view;
+    else if([view isKindOfClass:[NSToolbarView class]])
+     toolbarView=view;
     else
      contentView=view;
    }
    
    [menuView resizeWithOldSuperviewSize:oldSize];
+   [toolbarView resizeWithOldSuperviewSize:oldSize];
 
    NSRect contentFrame=[self bounds];
-   if(menuView!=nil)
+   
+   if(toolbarView!=nil)
+    contentFrame.size.height=[toolbarView frame].origin.y-contentFrame.origin.y;
+   else if(menuView!=nil)
     contentFrame.size.height=[menuView frame].origin.y-contentFrame.origin.y;
     
    [contentView setFrame:contentFrame];
