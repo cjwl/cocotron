@@ -25,6 +25,19 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @implementation Win32Workspace
 
+-(NSArray *)mountedLocalVolumePaths {
+   NSMutableArray *result=[NSMutableArray array];
+   DWORD           driveMask=GetLogicalDrives();
+   unichar         drive='A';
+   
+   for(;driveMask!=0;driveMask>>=1,drive++){
+    if(driveMask&0x1)
+     [result addObject:[NSString stringWithFormat:@"%C:",drive]];
+   }
+   
+   return result;
+}
+
 -(BOOL)openURL:(NSURL *)url {
    return ((int)ShellExecuteW(GetDesktopWindow(),L"open",(const unichar *)[[url absoluteString] cStringUsingEncoding:NSUnicodeStringEncoding],NULL,NULL,SW_SHOWNORMAL)<=32)?NO:YES;
 }

@@ -628,7 +628,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)setLastColumn:(NSInteger)column {
-   NSUnimplementedMethod();
+   [self _reloadColumn:column preserveSelection:YES];
+   
+   while([_matrices count]>column+1)
+    [_matrices removeLastObject];
+    
+   [self tile];
 }
 
 -(void)validateVisibleColumns {

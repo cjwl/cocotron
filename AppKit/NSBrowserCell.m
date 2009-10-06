@@ -78,8 +78,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(NSColor *)highlightColorInView:(NSView *)view {
-   NSUnimplementedMethod();
-   return nil;
+   return [NSColor highlightColor];
 }
 
 -(NSImage *)branchImage {

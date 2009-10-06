@@ -65,6 +65,7 @@ typedef enum {
    NSView 	         *_cornerView;
    NSMutableArray    *_tableColumns;
 
+   NSInteger _rowHeightsCount;
    float *_rowHeights;
    float _standardRowHeight;
    NSColor *_backgroundColor;

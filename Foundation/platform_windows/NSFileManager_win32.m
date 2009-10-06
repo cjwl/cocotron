@@ -34,6 +34,68 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @implementation NSFileManager_win32
 
+-(NSDictionary *)attributesOfFileSystemForPath:(NSString *)path error:(NSError **)errorp {
+   DWORD serialNumber;
+   
+   if(![path hasSuffix:@"\\"])
+    path=[path stringByAppendingString:@"\\"];
+    
+   if(GetVolumeInformationW([path fileSystemRepresentationW], NULL , 0, &serialNumber, NULL, NULL, NULL, 0 ))
+    return [NSDictionary dictionaryWithObject:[NSNumber numberWithInt:serialNumber] forKey:NSFileSystemNumber];
+
+   return nil;
+}
+
+-(NSDictionary *)attributesOfItemAtPath:(NSString *)path error:(NSError **)error {
+   NSMutableDictionary       *result=[NSMutableDictionary dictionary];
+   WIN32_FILE_ATTRIBUTE_DATA  fileData;
+   NSDate                    *date;
+
+   if(!GetFileAttributesExW([path fileSystemRepresentationW],GetFileExInfoStandard,&fileData))
+    return nil;
+
+   date=[NSDate dateWithTimeIntervalSinceReferenceDate:Win32TimeIntervalFromFileTime(fileData.ftLastWriteTime)];
+   [result setObject:date forKey:NSFileModificationDate];
+
+   // dth
+   NSString* fileType = NSFileTypeRegular;
+   if (fileData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
+          fileType = NSFileTypeDirectory;
+   // FIX: Support for links and other attributes needed!
+
+   [result setObject:fileType forKey:NSFileType];
+   [result setObject:@"USER" forKey:NSFileOwnerAccountName];
+   [result setObject:@"GROUP" forKey:NSFileGroupOwnerAccountName];
+   [result setObject:[NSNumber numberWithUnsignedLong:0666]
+              forKey:NSFilePosixPermissions];
+	uint64_t sizeOfFile = fileData.nFileSizeLow;
+	uint64_t sizeHigh = fileData.nFileSizeHigh;
+	sizeOfFile |= sizeHigh << 32;
+	
+	[result setObject:[NSNumber numberWithUnsignedLongLong:sizeOfFile]
+			   forKey:NSFileSize];	
+
+   return result;
+}
+
+-(NSArray *)contentsOfDirectoryAtPath:(NSString *)path error:(NSError **)error {
+   NSMutableArray *result=[NSMutableArray array];
+   WIN32_FIND_DATAW findData;
+   HANDLE          handle=FindFirstFileW([[path stringByAppendingString:@"\\*.*"] fileSystemRepresentationW],&findData);
+
+   if(handle==INVALID_HANDLE_VALUE)
+    return nil;
+
+   do{
+    if(wcscmp(findData.cFileName,L".")!=0 && wcscmp(findData.cFileName,L"..")!=0)
+     [result addObject:[NSString stringWithCharacters:findData.cFileName length:wcslen(findData.cFileName)]];
+   }while(FindNextFileW(handle,&findData));
+
+   FindClose(handle);
+
+   return result;
+}
+
 -(BOOL)createFileAtPath:(NSString *)path contents:(NSData *)data 
              attributes:(NSDictionary *)attributes {
    return [[NSPlatform currentPlatform] writeContentsOfFile:path bytes:[data bytes] length:[data length] atomically:YES];
@@ -170,6 +232,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(NSDictionary *)fileAttributesAtPath:(NSString *)path traverseLink:(BOOL)traverse {
+// FIXME: use attributesOfItemAtPath
    NSMutableDictionary       *result=[NSMutableDictionary dictionary];
    WIN32_FILE_ATTRIBUTE_DATA  fileData;
    NSDate                    *date;

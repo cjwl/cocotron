@@ -99,7 +99,8 @@ const NSTableViewDefaultRowHeight=16.;
     [_tableColumns makeObjectsPerformSelector:@selector(setTableView:) withObject:self];
     _backgroundColor=[[keyed decodeObjectForKey:@"NSBackgroundColor"] retain];
     _gridColor=[[keyed decodeObjectForKey:@"NSGridColor"] retain];
-    _rowHeights=malloc(0);
+    _rowHeightsCount=0;
+    _rowHeights=NULL;
     _standardRowHeight=[keyed decodeFloatForKey:@"NSRowHeight"];
     _allowsColumnReordering=(flags&0x80000000)?YES:NO;
     _allowsColumnResizing=(flags&0x40000000)?YES:NO;
@@ -131,7 +132,8 @@ const NSTableViewDefaultRowHeight=16.;
 
 -initWithFrame:(NSRect)frame {
     [super initWithFrame:frame];
-    _rowHeights=malloc(0);
+    _rowHeightsCount=0;
+    _rowHeights=NULL;
     _standardRowHeight = NSTableViewDefaultRowHeight;
     _intercellSpacing = NSMakeSize(3.0,2.0);
     _selectedRowIndexes = [[NSIndexSet alloc] init];
@@ -165,7 +167,7 @@ const NSTableViewDefaultRowHeight=16.;
 }
 
 -(void)dealloc {
-   free(_rowHeights);
+   NSZoneFree(NULL,_rowHeights);
    [_headerView release];
    [_cornerView release];
    [_tableColumns release];
@@ -313,6 +315,13 @@ const NSTableViewDefaultRowHeight=16.;
     return nil;
 }
 
+static float rowHeightAtIndex(NSTableView *self,int index){
+   if(index<self->_rowHeightsCount)
+    return self->_rowHeights[index];
+
+   return self->_standardRowHeight;
+}
+
 -(NSRect)rectOfRow:(NSInteger)row {
     NSRect rect = _bounds;
     NSInteger i, count;
@@ -324,13 +333,13 @@ const NSTableViewDefaultRowHeight=16.;
     rect.origin.x = 0.;
     rect.origin.y = 0.;
     for (i = 0; i < row; i++)
-        rect.origin.y += _rowHeights[i] + _intercellSpacing.height;
+        rect.origin.y += rowHeightAtIndex(self,i)+ _intercellSpacing.height;
 
     rect.size.width = 0.;
     count = [_tableColumns count];
     for (i = 0; i < count; i++)
         rect.size.width += [[_tableColumns objectAtIndex:i] width] + _intercellSpacing.width;
-    rect.size.height = _rowHeights[row] + _intercellSpacing.height;
+    rect.size.height = rowHeightAtIndex(self,row) + _intercellSpacing.height;
 
     return rect;
 }
@@ -353,7 +362,7 @@ const NSTableViewDefaultRowHeight=16.;
     rect.size.width = [[_tableColumns objectAtIndex:column] width] + _intercellSpacing.width;
     rect.size.height = 0.;
     for (i = 0; i < numberOfRows; i++)
-        rect.size.height += _rowHeights[i] + _intercellSpacing.height;
+        rect.size.height += rowHeightAtIndex(self,i) + _intercellSpacing.height;
     rect.size.height = MAX(rect.size.height, [[self superview] bounds].size.height);
 
     return rect;
@@ -365,11 +374,14 @@ const NSTableViewDefaultRowHeight=16.;
     NSInteger i;
     float height = 0.;
 
+    _rowHeightsCount=numberOfRows;
+    _rowHeights=realloc(_rowHeights,sizeof(float)*_rowHeightsCount);
+
     for (i = 0; i < numberOfRows; i++) {
-        if (height + _rowHeights[i] + _intercellSpacing.height > rect.origin.y)
+        if (height + rowHeightAtIndex(self,i) + _intercellSpacing.height > rect.origin.y)
             break;
         else
-            height += _rowHeights[i] + _intercellSpacing.height;
+            height += rowHeightAtIndex(self,i) + _intercellSpacing.height;
     }
     if (i < numberOfRows) {
         range.location = i;
@@ -378,7 +390,7 @@ const NSTableViewDefaultRowHeight=16.;
             if (height > rect.origin.y + rect.size.height)
                 break;
             else
-                height += _rowHeights[i] + _intercellSpacing.height;
+                height += rowHeightAtIndex(self,i) + _intercellSpacing.height;
         }
         if (i < numberOfRows)
             range.length = i - range.location + 1;
@@ -455,10 +467,10 @@ const NSTableViewDefaultRowHeight=16.;
 
    frame.origin.y = 0.;
    for (i = 0; i < row; i++)
-    frame.origin.y += _rowHeights[i] + _intercellSpacing.height;
+    frame.origin.y += rowHeightAtIndex(self,i) + _intercellSpacing.height;
 
    frame.size.width = [[_tableColumns objectAtIndex:column] width] + _intercellSpacing.width;
-   frame.size.height = _rowHeights[row] + _intercellSpacing.height;
+   frame.size.height = rowHeightAtIndex(self,row) + _intercellSpacing.height;
 
    return frame;
 }
@@ -531,7 +543,7 @@ const NSTableViewDefaultRowHeight=16.;
         // Cocoa doesn't even NSLog() here, instead the table isn't drawn.
         _standardRowHeight = 0.;
 
-    for (i = 0; i < numberOfRows; i++)
+    for (i = 0; i < _rowHeightsCount; i++)
         _rowHeights[i] = _standardRowHeight;
 
     [self tile];
