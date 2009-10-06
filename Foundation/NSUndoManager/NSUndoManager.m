@@ -201,6 +201,11 @@ NSString *NSUndoManagerDidRedoChangeNotification=@"NSUndoManagerDidRedoChangeNot
 
 - (void)runLoopUndo:(id)dummy
 {
+   return;
+
+// FIXME: grouping by event is broken, causes a constant spin condition on the run loop by requeueing this method in itself
+// is the run loop method broken or this one?
+
     if (_groupsByEvent == YES) {
         if (_currentGroup != nil)
             [self endUndoGrouping];
