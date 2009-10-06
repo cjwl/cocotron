@@ -5,7 +5,7 @@
 #import <Foundation/NSString_win32.h>
 #import "Win32Font.h"
 
-@implementation KGFont(GDI)
+@implementation O2Font(GDI)
 
 +allocWithZone:(NSZone *)zone {
    return NSAllocateObject([KGFont_gdi class],0,NULL);

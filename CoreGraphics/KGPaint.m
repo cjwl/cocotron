@@ -27,15 +27,17 @@
  *-------------------------------------------------------------------*/
 #import "KGPaint.h"
 
-@implementation KGPaint
+@implementation O2Paint
 
--init {
-   self->m_surfaceToPaintMatrix=CGAffineTransformIdentity;
-   return self;
+O2PaintRef O2PaintRetain(O2PaintRef self) {
+   return [self retain];
 }
 
+void O2PaintRelease(O2PaintRef self) {
+   [self release];
+}
 
-void KGPaintSetSurfaceToPaintMatrix(KGPaint *self,CGAffineTransform surfaceToPaintMatrix) {
+void O2PaintSetSurfaceToPaintMatrix(O2Paint *self,CGAffineTransform surfaceToPaintMatrix) {
 	self->m_surfaceToPaintMatrix = surfaceToPaintMatrix;
 }
 

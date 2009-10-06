@@ -10,26 +10,26 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "KGPDFContext.h"
 #import <Foundation/NSString.h>
 
-@implementation KGPDFObject_Real
+@implementation O2PDFObject_Real
 
--initWithReal:(KGPDFReal)value {
+-initWithReal:(O2PDFReal)value {
    _value=value;
    return self;
 }
 
-+pdfObjectWithReal:(KGPDFReal)value {
++pdfObjectWithReal:(O2PDFReal)value {
    return [[[self alloc] initWithReal:value] autorelease];
 }
 
--(KGPDFObjectType)objectType {
+-(O2PDFObjectType)objectType {
    return kKGPDFObjectTypeReal;
 }
 
--(BOOL)checkForType:(KGPDFObjectType)type value:(void *)value {
+-(BOOL)checkForType:(O2PDFObjectType)type value:(void *)value {
    if(type!=kKGPDFObjectTypeReal)
     return NO;
    
-   *((KGPDFReal *)value)=_value;
+   *((O2PDFReal *)value)=_value;
    return YES;
 }
 
@@ -37,7 +37,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return [NSString stringWithFormat:@"<%@ %f>",isa,_value];
 }
 
--(void)encodeWithPDFContext:(KGPDFContext *)encoder {
+-(void)encodeWithPDFContext:(O2PDFContext *)encoder {
    [encoder appendFormat:@"%f ",_value];
 }
 

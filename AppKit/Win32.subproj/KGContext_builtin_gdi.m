@@ -48,20 +48,20 @@ static inline BOOL transformIsFlipped(CGAffineTransform matrix){
 -(void)deviceClipToNonZeroPath:(O2Path *)path {
    [super deviceClipToNonZeroPath:path];
 
-   KGGraphicsState *state=[self currentState];
+   O2GState *state=[self currentState];
    [[self deviceContext] clipToNonZeroPath:path withTransform:CGAffineTransformInvert(state->_userSpaceTransform) deviceTransform:state->_deviceSpaceTransform];
 }
 
 -(void)deviceClipToEvenOddPath:(O2Path *)path {
    [super deviceClipToEvenOddPath:path];
 
-   KGGraphicsState *state=[self currentState];
+   O2GState *state=[self currentState];
    [[self deviceContext] clipToEvenOddPath:path withTransform:CGAffineTransformInvert(state->_userSpaceTransform) deviceTransform:state->_deviceSpaceTransform];
 }
 
 -(void)showGlyphs:(const CGGlyph *)glyphs count:(unsigned)count {
    CGAffineTransform transformToDevice=[self userSpaceToDeviceSpaceTransform];
-   KGGraphicsState  *gState=[self currentState];
+   O2GState  *gState=[self currentState];
    CGAffineTransform Trm=CGAffineTransformConcat(gState->_textTransform,transformToDevice);
    NSPoint           point=CGPointApplyAffineTransform(NSMakePoint(0,0),Trm);
    
@@ -69,7 +69,7 @@ static inline BOOL transformIsFlipped(CGAffineTransform matrix){
 
    ExtTextOutW(_dc,lroundf(point.x),lroundf(point.y),ETO_GLYPH_INDEX,NULL,(void *)glyphs,count,NULL);
 
-   KGFont *font=[gState font];
+   O2Font *font=[gState font];
    int     i,advances[count];
    CGFloat unitsPerEm=CGFontGetUnitsPerEm(font);
    
@@ -98,7 +98,7 @@ static inline BOOL transformIsFlipped(CGAffineTransform matrix){
 }
 
 -(void)establishFontStateInDevice {
-   KGGraphicsState *gState=[self currentState];
+   O2GState *gState=[self currentState];
    [_gdiFont release];
    _gdiFont=[(KGFont_gdi *)[gState font] createGDIFontSelectedInDC:_dc pointSize:[gState pointSize]];
 }
@@ -107,7 +107,7 @@ static inline BOOL transformIsFlipped(CGAffineTransform matrix){
    [self establishFontStateInDevice];
 }
 
--(void)setFont:(KGFont *)font {
+-(void)setFont:(O2Font *)font {
    [super setFont:font];
    [self establishFontState];
 }

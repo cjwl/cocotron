@@ -14,14 +14,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSString.h>
 #import <stddef.h>
 
-@implementation KGPDFArray
+@implementation O2PDFArray
 
-+(KGPDFArray *)pdfArray {
++(O2PDFArray *)pdfArray {
    return [[[self alloc] init] autorelease];
 }
 
-+(KGPDFArray *)pdfArrayWithRect:(CGRect)rect {
-   KGPDFArray *result=[self pdfArray];
++(O2PDFArray *)pdfArrayWithRect:(CGRect)rect {
+   O2PDFArray *result=[self pdfArray];
    
    [result addNumber:rect.origin.x];
    [result addNumber:rect.origin.y];
@@ -31,8 +31,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return result;
 }
 
-+(KGPDFArray *)pdfArrayWithNumbers:(KGPDFReal *)values count:(unsigned)count {
-   KGPDFArray *result=[self pdfArray];
++(O2PDFArray *)pdfArrayWithNumbers:(O2PDFReal *)values count:(unsigned)count {
+   O2PDFArray *result=[self pdfArray];
    int         i;
    
    for(i=0;i<count;i++)
@@ -41,8 +41,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return result;
 }
 
-+(KGPDFArray *)pdfArrayWithIntegers:(KGPDFInteger *)values count:(unsigned)count {
-   KGPDFArray *result=[self pdfArray];
++(O2PDFArray *)pdfArrayWithIntegers:(O2PDFInteger *)values count:(unsigned)count {
+   O2PDFArray *result=[self pdfArray];
    int         i;
    
    for(i=0;i<count;i++)
@@ -55,7 +55,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -init {
    _capacity=1;
    _count=0;
-   _objects=NSZoneMalloc(NULL,sizeof(KGPDFObject *)*_capacity);
+   _objects=NSZoneMalloc(NULL,sizeof(O2PDFObject *)*_capacity);
    return self;
 }
 
@@ -64,19 +64,19 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [super dealloc];
 }
 
--(KGPDFObjectType)objectType { return kKGPDFObjectTypeArray; }
+-(O2PDFObjectType)objectType { return kKGPDFObjectTypeArray; }
 
--(BOOL)checkForType:(KGPDFObjectType)type value:(void *)value {
+-(BOOL)checkForType:(O2PDFObjectType)type value:(void *)value {
    if(type!=kKGPDFObjectTypeArray)
     return NO;
    
-   *((KGPDFArray **)value)=self;
+   *((O2PDFArray **)value)=self;
    return YES;
 }
 
 -(unsigned)count { return _count; }
 
--(void)addObject:(KGPDFObject *)object {
+-(void)addObject:(O2PDFObject *)object {
    [object retain];
 
    _count++;
@@ -87,90 +87,90 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    _objects[_count-1]=object;
 }
 
--(void)addNumber:(KGPDFReal)value {
-   [self addObject:[KGPDFObject_Real pdfObjectWithReal:value]];
+-(void)addNumber:(O2PDFReal)value {
+   [self addObject:[O2PDFObject_Real pdfObjectWithReal:value]];
 }
 
--(void)addInteger:(KGPDFInteger)value {
-   [self addObject:[KGPDFObject_Integer pdfObjectWithInteger:value]];
+-(void)addInteger:(O2PDFInteger)value {
+   [self addObject:[O2PDFObject_Integer pdfObjectWithInteger:value]];
 }
 
--(void)addBoolean:(KGPDFBoolean)value {
-   [self addObject:[KGPDFObject_Boolean pdfObjectWithBoolean:value]];
+-(void)addBoolean:(O2PDFBoolean)value {
+   [self addObject:[O2PDFObject_Boolean pdfObjectWithBoolean:value]];
 }
 
--(KGPDFObject *)objectAtIndex:(unsigned)index {
+-(O2PDFObject *)objectAtIndex:(unsigned)index {
    if(index<_count)
     return _objects[index];
    else 
     return nil;
 }
 
--(BOOL)getObjectAtIndex:(unsigned)index value:(KGPDFObject **)objectp {
+-(BOOL)getObjectAtIndex:(unsigned)index value:(O2PDFObject **)objectp {
    *objectp=[[self objectAtIndex:index] realObject];
    
    return YES;
 }
 
 -(BOOL)getNullAtIndex:(unsigned)index {
-   KGPDFObject *object=[self objectAtIndex:index];
+   O2PDFObject *object=[self objectAtIndex:index];
    
    return ([object objectType]==kKGPDFObjectTypeNull)?YES:NO;
 }
 
--(BOOL)getBooleanAtIndex:(unsigned)index value:(KGPDFBoolean *)valuep {
-   KGPDFObject *object=[self objectAtIndex:index];
+-(BOOL)getBooleanAtIndex:(unsigned)index value:(O2PDFBoolean *)valuep {
+   O2PDFObject *object=[self objectAtIndex:index];
    
    return [object checkForType:kKGPDFObjectTypeBoolean value:valuep];
 }
 
--(BOOL)getIntegerAtIndex:(unsigned)index value:(KGPDFInteger *)valuep {
-   KGPDFObject *object=[self objectAtIndex:index];
+-(BOOL)getIntegerAtIndex:(unsigned)index value:(O2PDFInteger *)valuep {
+   O2PDFObject *object=[self objectAtIndex:index];
    
    return [object checkForType:kKGPDFObjectTypeInteger value:valuep];
 }
 
--(BOOL)getNumberAtIndex:(unsigned)index value:(KGPDFReal *)valuep {
-   KGPDFObject *object=[self objectAtIndex:index];
+-(BOOL)getNumberAtIndex:(unsigned)index value:(O2PDFReal *)valuep {
+   O2PDFObject *object=[self objectAtIndex:index];
    
    return [object checkForType:kKGPDFObjectTypeReal value:valuep];
 }
 
 -(BOOL)getNameAtIndex:(unsigned)index value:(char **)namep {
-   KGPDFObject *object=[self objectAtIndex:index];
+   O2PDFObject *object=[self objectAtIndex:index];
    
    return [object checkForType:kKGPDFObjectTypeName value:namep];
 }
 
--(BOOL)getStringAtIndex:(unsigned)index value:(KGPDFString **)stringp {
-   KGPDFObject *object=[self objectAtIndex:index];
+-(BOOL)getStringAtIndex:(unsigned)index value:(O2PDFString **)stringp {
+   O2PDFObject *object=[self objectAtIndex:index];
    
    return [object checkForType:kKGPDFObjectTypeString value:stringp];
 }
 
--(BOOL)getArrayAtIndex:(unsigned)index value:(KGPDFArray **)arrayp {
-   KGPDFObject *object=[self objectAtIndex:index];
+-(BOOL)getArrayAtIndex:(unsigned)index value:(O2PDFArray **)arrayp {
+   O2PDFObject *object=[self objectAtIndex:index];
    
    return [object checkForType:kKGPDFObjectTypeArray value:arrayp];
 }
 
--(BOOL)getDictionaryAtIndex:(unsigned)index value:(KGPDFDictionary **)dictionaryp {
-   KGPDFObject *object=[self objectAtIndex:index];
+-(BOOL)getDictionaryAtIndex:(unsigned)index value:(O2PDFDictionary **)dictionaryp {
+   O2PDFObject *object=[self objectAtIndex:index];
    
    return [object checkForType:kKGPDFObjectTypeDictionary value:dictionaryp];
 }
 
--(BOOL)getStreamAtIndex:(unsigned)index value:(KGPDFStream **)streamp {
-   KGPDFObject *object=[self objectAtIndex:index];
+-(BOOL)getStreamAtIndex:(unsigned)index value:(O2PDFStream **)streamp {
+   O2PDFObject *object=[self objectAtIndex:index];
    
    return [object checkForType:kKGPDFObjectTypeStream value:streamp];
 }
 
--(BOOL)getNumbers:(KGPDFReal **)numbersp count:(unsigned *)countp {
+-(BOOL)getNumbers:(O2PDFReal **)numbersp count:(unsigned *)countp {
    unsigned   i,count=[self count];
-   KGPDFReal *numbers;
+   O2PDFReal *numbers;
    
-   numbers=NSZoneMalloc(NULL,sizeof(KGPDFReal)*count);
+   numbers=NSZoneMalloc(NULL,sizeof(O2PDFReal)*count);
    for(i=0;i<count;i++){
     if(![self getNumberAtIndex:i value:numbers+i]){
      NSZoneFree(NULL,numbers);
@@ -197,7 +197,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return result;
 }
 
--(void)encodeWithPDFContext:(KGPDFContext *)encoder {
+-(void)encodeWithPDFContext:(O2PDFContext *)encoder {
    int i;
    
    [encoder appendString:@"[ "];

@@ -22,10 +22,10 @@ typedef enum {
 @interface Win32Window : CGWindow {
    HWND                   _handle;
    NSSize                 _size;
-   KGContext             *_cgContext;
+   O2Context             *_cgContext;
 
    Win32BackingStoreType  _backingType;
-   KGContext             *_backingContext;
+   O2Context             *_backingContext;
 
    BOOL                  _isLayered;
    BOOL                  _ignoreMinMaxMessage;

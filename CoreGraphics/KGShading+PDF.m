@@ -7,8 +7,8 @@
 
 @implementation KGShading(PDF)
 
--(KGPDFObject *)encodeReferenceWithContext:(KGPDFContext *)context {
-   KGPDFDictionary *result=[KGPDFDictionary pdfDictionary];
+-(O2PDFObject *)encodeReferenceWithContext:(O2PDFContext *)context {
+   O2PDFDictionary *result=[O2PDFDictionary pdfDictionary];
    int              type;
    float            coords[6];
    int              coordsCount;
@@ -34,11 +34,11 @@
    [result setIntegerForKey:"ShadingType" value:type];
    [result setObjectForKey:"ColorSpace" value:[_colorSpace encodeReferenceWithContext:context]];
 
-   [result setObjectForKey:"Coords" value:[KGPDFArray pdfArrayWithNumbers:coords count:coordsCount]];
+   [result setObjectForKey:"Coords" value:[O2PDFArray pdfArrayWithNumbers:coords count:coordsCount]];
 
-   [result setObjectForKey:"Domain" value:[KGPDFArray pdfArrayWithNumbers:_domain count:2]];
+   [result setObjectForKey:"Domain" value:[O2PDFArray pdfArrayWithNumbers:_domain count:2]];
    [result setObjectForKey:"Function" value:[_function encodeReferenceWithContext:context]];
-   KGPDFArray *extend=[KGPDFArray pdfArray];
+   O2PDFArray *extend=[O2PDFArray pdfArray];
    
    [extend addBoolean:_extendStart];
    [extend addBoolean:_extendEnd];
@@ -47,17 +47,17 @@
    return [context encodeIndirectPDFObject:result];
 }
 
-KGShading *axialShading(KGPDFDictionary *dictionary,O2ColorSpaceRef colorSpace){
-   KGPDFArray *coordsArray;
-   KGPDFArray *domainArray;
+KGShading *axialShading(O2PDFDictionary *dictionary,O2ColorSpaceRef colorSpace){
+   O2PDFArray *coordsArray;
+   O2PDFArray *domainArray;
    float       domain[2]={0,1};
-   KGPDFDictionary *fnDictionary;
-   KGPDFArray *extendArray;
+   O2PDFDictionary *fnDictionary;
+   O2PDFArray *extendArray;
    CGPoint     start;
    CGPoint     end;
-   KGFunction *function;
-   KGPDFBoolean extendStart=NO;
-   KGPDFBoolean extendEnd=NO;
+   O2Function *function;
+   O2PDFBoolean extendStart=NO;
+   O2PDFBoolean extendEnd=NO;
    
 //NSLog(@"axialShading=%@",dictionary);
 
@@ -101,7 +101,7 @@ KGShading *axialShading(KGPDFDictionary *dictionary,O2ColorSpaceRef colorSpace){
     NSLog(@"No Function entry in axial shader");
     return NULL;
    }
-   if((function=[KGFunction pdfFunctionWithDictionary:fnDictionary])==NULL)
+   if((function=[O2Function pdfFunctionWithDictionary:fnDictionary])==NULL)
     return NULL;
     
    if([dictionary getArrayForKey:"Extend" value:&extendArray]){
@@ -118,19 +118,19 @@ KGShading *axialShading(KGPDFDictionary *dictionary,O2ColorSpaceRef colorSpace){
    return [[KGShading alloc] initWithColorSpace:colorSpace startPoint:start endPoint:end function:function extendStart:extendStart extendEnd:extendEnd domain:domain];    
 }
 
-KGShading *radialShading(KGPDFDictionary *dictionary,O2ColorSpaceRef colorSpace){
-   KGPDFArray *coordsArray;
-   KGPDFArray *domainArray;
+KGShading *radialShading(O2PDFDictionary *dictionary,O2ColorSpaceRef colorSpace){
+   O2PDFArray *coordsArray;
+   O2PDFArray *domainArray;
    float       domain[2]={0,1};
-   KGPDFDictionary *fnDictionary;
-   KGPDFArray *extendArray;
+   O2PDFDictionary *fnDictionary;
+   O2PDFArray *extendArray;
    CGPoint     start;
-   KGPDFReal    startRadius;
+   O2PDFReal    startRadius;
    CGPoint     end;
-   KGPDFReal    endRadius;
-   KGFunction *function;
-   KGPDFBoolean extendStart=NO;
-   KGPDFBoolean extendEnd=NO;
+   O2PDFReal    endRadius;
+   O2Function *function;
+   O2PDFBoolean extendStart=NO;
+   O2PDFBoolean extendEnd=NO;
    
 //NSLog(@"axialShading=%@",dictionary);
 
@@ -182,7 +182,7 @@ KGShading *radialShading(KGPDFDictionary *dictionary,O2ColorSpaceRef colorSpace)
     NSLog(@"No Function entry in radial shader");
     return NULL;
    }
-   if((function=[KGFunction pdfFunctionWithDictionary:fnDictionary])==NULL)
+   if((function=[O2Function pdfFunctionWithDictionary:fnDictionary])==NULL)
     return NULL;
     
    if([dictionary getArrayForKey:"Extend" value:&extendArray]){
@@ -199,12 +199,12 @@ KGShading *radialShading(KGPDFDictionary *dictionary,O2ColorSpaceRef colorSpace)
    return [[KGShading alloc] initWithColorSpace:colorSpace startPoint:start startRadius:startRadius endPoint:end endRadius:endRadius function:function extendStart:extendStart extendEnd:extendEnd domain:domain];        
 }
 
-+(KGShading *)shadingWithPDFObject:(KGPDFObject *)object {
-   KGPDFDictionary *dictionary;
++(KGShading *)shadingWithPDFObject:(O2PDFObject *)object {
+   O2PDFDictionary *dictionary;
    KGShading       *result=nil;
-   KGPDFObject     *colorSpaceObject;
+   O2PDFObject     *colorSpaceObject;
    O2ColorSpace    *colorSpace;
-   KGPDFInteger     shadingType;
+   O2PDFInteger     shadingType;
    
    if(![object checkForType:kKGPDFObjectTypeDictionary value:&dictionary])
     return nil;

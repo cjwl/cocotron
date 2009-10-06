@@ -27,7 +27,7 @@
  *-------------------------------------------------------------------*/
 #import "KGPaint_ramp.h"
 
-@interface KGPaint_axialGradient : KGPaint_ramp {
+@interface O2Paint_axialGradient : O2Paint_ramp {
    CGPoint _u;
    CGFloat _oou;
    CGFloat _rho;

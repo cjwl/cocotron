@@ -225,7 +225,7 @@ static inline void KGRGBAffffConvertSpan(KGRGBAffff *span,int length,VGColorInte
 typedef void (*KGSurfaceWriteSpan_RGBA8888)(KGSurface *self,int x,int y,KGRGBA8888 *span,int length);
 typedef void (*KGSurfaceWriteSpan_RGBAffff)(KGSurface *self,int x,int y,KGRGBAffff *span,int length);
 
-@interface KGSurface : KGImage {
+@interface KGSurface : O2Image {
    unsigned char              *_pixelBytes;
    KGSurfaceWriteSpan_RGBA8888 _writeRGBA8888;
    KGSurfaceWriteSpan_RGBAffff _writeRGBAffff;
@@ -247,7 +247,7 @@ BOOL KGSurfaceIsValidFormat(int format);
 void KGSurfaceClear(KGSurface *self,VGColor clearColor, int x, int y, int w, int h);
 void KGSurfaceBlit(KGSurface *self,KGSurface * src, int sx, int sy, int dx, int dy, int w, int h, BOOL dither);
 void KGSurfaceMask(KGSurface *self,KGSurface* src, VGMaskOperation operation, int x, int y, int w, int h);
-VGColor KGSurfaceReadPixel(KGImage *self,int x, int y);
+VGColor KGSurfaceReadPixel(O2Image *self,int x, int y);
 
 void KGSurfaceWritePixel(KGSurface *self,int x, int y, VGColor c);
 void KGSurfaceWriteSpan_lRGBA8888_PRE(KGSurface *self,int x,int y,KGRGBA8888 *span,int length);
@@ -267,7 +267,7 @@ void KGGaussianKernelRelease(KGGaussianKernelRef kernel);
 void KGSurfaceColorMatrix(KGSurface *self,KGSurface * src, const CGFloat* matrix, BOOL filterFormatLinear, BOOL filterFormatPremultiplied, VGbitfield channelMask);
 void KGSurfaceConvolve(KGSurface *self,KGSurface * src, int kernelWidth, int kernelHeight, int shiftX, int shiftY, const RIint16* kernel, CGFloat scale, CGFloat bias, VGTilingMode tilingMode, VGColor edgeFillColor, BOOL filterFormatLinear, BOOL filterFormatPremultiplied, VGbitfield channelMask);
 void KGSurfaceSeparableConvolve(KGSurface *self,KGSurface * src, int kernelWidth, int kernelHeight, int shiftX, int shiftY, const RIint16* kernelX, const RIint16* kernelY, CGFloat scale, CGFloat bias, VGTilingMode tilingMode, VGColor edgeFillColor, BOOL filterFormatLinear, BOOL filterFormatPremultiplied, VGbitfield channelMask);
-void KGSurfaceGaussianBlur(KGSurface *self,KGImage * src, KGGaussianKernelRef kernel);
+void KGSurfaceGaussianBlur(KGSurface *self,O2Image * src, KGGaussianKernelRef kernel);
 void KGSurfaceLookup(KGSurface *self,KGSurface * src, const uint8_t * redLUT, const uint8_t * greenLUT, const uint8_t * blueLUT, const uint8_t * alphaLUT, BOOL outputLinear, BOOL outputPremultiplied, BOOL filterFormatLinear, BOOL filterFormatPremultiplied, VGbitfield channelMask);
 void KGSurfaceLookupSingle(KGSurface *self,KGSurface * src, const RIuint32 * lookupTable, KGSurfaceChannel sourceChannel, BOOL outputLinear, BOOL outputPremultiplied, BOOL filterFormatLinear, BOOL filterFormatPremultiplied, VGbitfield channelMask);
 

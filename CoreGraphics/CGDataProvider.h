@@ -9,9 +9,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSObject.h>
 #import <CoreGraphics/CoreGraphicsExport.h>
 
-@class KGDataProvider,NSData;
+@class O2DataProvider,NSData;
 
-typedef KGDataProvider *CGDataProviderRef;
+typedef O2DataProvider *CGDataProviderRef;
 
 typedef void (*CGDataProviderReleaseDataCallback)(void *info,const void *data,size_t size);
 

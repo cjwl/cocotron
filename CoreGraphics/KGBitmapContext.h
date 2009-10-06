@@ -10,7 +10,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @class KGSurface;
 
-@interface KGBitmapContext : KGContext {
+@interface O2BitmapContext : O2Context {
    KGSurface *_surface;
 }
 
@@ -29,6 +29,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(size_t)bitsPerPixel;
 -(CGImageAlphaInfo)alphaInfo;
--(KGImage *)createImage;
+-(O2Image *)createImage;
 
 @end

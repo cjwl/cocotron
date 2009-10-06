@@ -7,13 +7,15 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 #import <Foundation/NSObject.h>
 #import <CoreGraphics/CoreGraphics.h>
+#import "KGDataProvider.h"
+#import "KGImage.h"
 
-@class KGFont;
-typedef KGFont *O2FontRef;
+@class O2Font;
+typedef O2Font *O2FontRef;
 
 @class NSData;
 
-@interface KGFont : NSObject {
+@interface O2Font : NSObject {
    NSString *_name;
    int       _unitsPerEm;
    int       _ascent;
@@ -29,9 +31,11 @@ typedef KGFont *O2FontRef;
    CGGlyph  *_MacRomanEncoding;
 }
 
-+(KGFont *)createWithFontName:(NSString *)name;
++(O2Font *)createWithFontName:(NSString *)name;
 
 -initWithFontName:(NSString *)name;
+-initWithDataProvider:(O2DataProviderRef)provider;
+
 -(NSData *)copyTableForTag:(uint32_t)tag;
 
 -(CGGlyph)glyphWithGlyphName:(NSString *)name;
@@ -43,6 +47,7 @@ typedef KGFont *O2FontRef;
 -(CGGlyph *)glyphTableForEncoding:(CGTextEncoding)encoding;
 
 O2FontRef O2FontCreateWithFontName(NSString *name);
+O2FontRef O2FontCreateWithDataProvider(O2DataProviderRef provider);
 O2FontRef O2FontRetain(O2FontRef self);
 void      O2FontRelease(O2FontRef self);
 

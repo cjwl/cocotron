@@ -8,10 +8,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "KGFont.h"
 #import "KGExceptions.h"
 
-@implementation KGFont
+@implementation O2Font
 
 -initWithFontName:(NSString *)name {
    _name=[name copy];
+   return self;
+}
+
+-initWithDataProvider:(O2DataProviderRef)provider {
    return self;
 }
 
@@ -24,7 +28,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [super dealloc];
 }
 
-+(KGFont *)createWithFontName:(NSString *)name {
++(O2Font *)createWithFontName:(NSString *)name {
    return [[self alloc] initWithFontName:name];
 }
 
@@ -323,7 +327,11 @@ NSString *O2MacRomanGlyphNames[256]={
 }
 
 O2FontRef O2FontCreateWithFontName(NSString *name) {
-   return [[KGFont alloc] initWithFontName:name];
+   return [[O2Font alloc] initWithFontName:name];
+}
+
+O2FontRef O2FontCreateWithDataProvider(O2DataProviderRef provider) {
+   return [[O2Font alloc] initWithDataProvider:provider];
 }
 
 O2FontRef O2FontRetain(O2FontRef self) {

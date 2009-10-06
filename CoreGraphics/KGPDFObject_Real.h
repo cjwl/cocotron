@@ -8,10 +8,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import "KGPDFObject.h"
 
-@interface KGPDFObject_Real : KGPDFObject {
-   KGPDFReal _value;
+@interface O2PDFObject_Real : O2PDFObject {
+   O2PDFReal _value;
 }
 
-+pdfObjectWithReal:(KGPDFReal)value;
++pdfObjectWithReal:(O2PDFReal)value;
 
 @end

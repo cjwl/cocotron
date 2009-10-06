@@ -11,7 +11,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSString.h>
 #import <string.h>
 
-@implementation KGPDFObject_Name
+@implementation O2PDFObject_Name
 
 -initWithBytes:(const char *)bytes length:(unsigned)length {
    _length=length;
@@ -27,7 +27,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 +pdfObjectWithBytes:(const char *)bytes length:(unsigned)length {
-   return [[(KGPDFObject_Name *)[self alloc] initWithBytes:bytes length:length] autorelease];
+   return [[(O2PDFObject_Name *)[self alloc] initWithBytes:bytes length:length] autorelease];
 }
 
 +pdfObjectWithCString:(const char *)cString {
@@ -38,11 +38,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return _bytes;
 }
 
--(KGPDFObjectType)objectType {
+-(O2PDFObjectType)objectType {
    return kKGPDFObjectTypeName;
 }
 
--(BOOL)checkForType:(KGPDFObjectType)type value:(void *)value {
+-(BOOL)checkForType:(O2PDFObjectType)type value:(void *)value {
    if(type!=kKGPDFObjectTypeName)
     return NO;
    
@@ -50,7 +50,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return YES;
 }
 
--(void)encodeWithPDFContext:(KGPDFContext *)encoder {
+-(void)encodeWithPDFContext:(O2PDFContext *)encoder {
    [encoder appendFormat:@"/%s ",_bytes];
 }
 

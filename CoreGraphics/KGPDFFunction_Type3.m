@@ -13,10 +13,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSArray.h>
 #import <stddef.h>
 
-@implementation KGPDFFunction_Type3
+@implementation O2PDFFunction_Type3
 
 static void evaluate(void *info,const float *input,float *output) {
-   KGPDFFunction_Type3 *self=info;
+   O2PDFFunction_Type3 *self=info;
    float                x=input[0];
    float                bounds[2],encode[2];
    int                  i;
@@ -36,10 +36,10 @@ static void evaluate(void *info,const float *input,float *output) {
    x=(encode[1]-encode[0])/x;
    x+=encode[0];
 
-   [self->_functions[i] evaluateInput:x output:output];
+   O2FunctionEvaluate(self->_functions[i],x,output);
 }
 
--initWithDomain:(KGPDFArray *)domain range:(KGPDFArray *)range functions:(NSArray *)functions bounds:(KGPDFArray *)bounds encode:(KGPDFArray *)encode {
+-initWithDomain:(O2PDFArray *)domain range:(O2PDFArray *)range functions:(NSArray *)functions bounds:(O2PDFArray *)bounds encode:(O2PDFArray *)encode {
    int i;
    
    if([super initWithDomain:domain range:range]==nil)
@@ -52,7 +52,7 @@ static void evaluate(void *info,const float *input,float *output) {
     [self dealloc];
     return nil;
    }
-   _functions=NSZoneMalloc(NULL,sizeof(KGFunction *)*_functionCount);
+   _functions=NSZoneMalloc(NULL,sizeof(O2Function *)*_functionCount);
    for(i=0;i<_functionCount;i++)
     _functions[i]=[[functions objectAtIndex:i] retain];
     
@@ -109,16 +109,16 @@ static void evaluate(void *info,const float *input,float *output) {
    return NO;
 }
 
--(KGPDFObject *)encodeReferenceWithContext:(KGPDFContext *)context {
-   KGPDFDictionary *result=[KGPDFDictionary pdfDictionary];
+-(O2PDFObject *)encodeReferenceWithContext:(O2PDFContext *)context {
+   O2PDFDictionary *result=[O2PDFDictionary pdfDictionary];
    int              i;
    
    [result setIntegerForKey:"FunctionType" value:3];
-   [result setObjectForKey:"Domain" value:[KGPDFArray pdfArrayWithNumbers:_domain count:_domainCount]];
-   [result setObjectForKey:"Range" value:[KGPDFArray pdfArrayWithNumbers:_range count:_rangeCount]];
-   [result setObjectForKey:"Bounds" value:[KGPDFArray pdfArrayWithNumbers:_bounds count:_boundsCount]];
-   [result setObjectForKey:"Encode" value:[KGPDFArray pdfArrayWithNumbers:_encode count:_encodeCount]];
-   KGPDFArray *fnArray=[KGPDFArray pdfArray];
+   [result setObjectForKey:"Domain" value:[O2PDFArray pdfArrayWithNumbers:_domain count:_domainCount]];
+   [result setObjectForKey:"Range" value:[O2PDFArray pdfArrayWithNumbers:_range count:_rangeCount]];
+   [result setObjectForKey:"Bounds" value:[O2PDFArray pdfArrayWithNumbers:_bounds count:_boundsCount]];
+   [result setObjectForKey:"Encode" value:[O2PDFArray pdfArrayWithNumbers:_encode count:_encodeCount]];
+   O2PDFArray *fnArray=[O2PDFArray pdfArray];
    for(i=0;i<_functionCount;i++)
     [fnArray addObject:[_functions[i] encodeReferenceWithContext:context]];
    [result setObjectForKey:"Functions" value:fnArray];

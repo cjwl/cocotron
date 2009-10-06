@@ -9,18 +9,18 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSObject.h>
 #import <Foundation/NSMapTable.h>
 
-@class KGPDFScanner;
+@class O2PDFScanner;
 
-typedef void (*KGPDFOperatorCallback)(KGPDFScanner *scanner,void *info);
+typedef void (*O2PDFOperatorCallback)(O2PDFScanner *scanner,void *info);
 
-@interface KGPDFOperatorTable : NSObject {
+@interface O2PDFOperatorTable : NSObject {
    NSMapTable *_table;
 }
 
-+(KGPDFOperatorTable *)renderingOperatorTable;
++(O2PDFOperatorTable *)renderingOperatorTable;
 
--(KGPDFOperatorCallback)callbackForName:(const char *)name;
+-(O2PDFOperatorCallback)callbackForName:(const char *)name;
 
--(void)setCallback:(KGPDFOperatorCallback)callback forName:(const char *)name;
+-(void)setCallback:(O2PDFOperatorCallback)callback forName:(const char *)name;
 
 @end

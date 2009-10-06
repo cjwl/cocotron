@@ -11,7 +11,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSString.h>
 #import <string.h>
 
-@implementation KGPDFString
+@implementation O2PDFString
 
 -initWithBytes:(const char *)bytes length:(unsigned)length {
    _length=length;
@@ -35,32 +35,32 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 +pdfObjectWithBytes:(const char *)bytes length:(unsigned)length {
-   return [[(KGPDFString *)[self alloc] initWithBytes:bytes length:length] autorelease];
+   return [[(O2PDFString *)[self alloc] initWithBytes:bytes length:length] autorelease];
 }
 
 +pdfObjectWithBytesNoCopyNoFree:(const char *)bytes length:(unsigned)length {
-   return [[(KGPDFString *)[self alloc] initWithBytesNoCopyNoFree:bytes length:length] autorelease];
+   return [[(O2PDFString *)[self alloc] initWithBytesNoCopyNoFree:bytes length:length] autorelease];
 }
 
 +pdfObjectWithCString:(const char *)cString {
-   return [[(KGPDFString *)[self alloc] initWithBytes:cString length:strlen(cString)] autorelease];
+   return [[(O2PDFString *)[self alloc] initWithBytes:cString length:strlen(cString)] autorelease];
 }
 
 +pdfObjectWithString:(NSString *)string {
    NSData *data=[string dataUsingEncoding:NSISOLatin1StringEncoding];
    
-   return [[(KGPDFString *)[self alloc] initWithBytes:[data bytes] length:[data length]] autorelease];
+   return [[(O2PDFString *)[self alloc] initWithBytes:[data bytes] length:[data length]] autorelease];
 }
 
--(KGPDFObjectType)objectType {
+-(O2PDFObjectType)objectType {
    return kKGPDFObjectTypeString;
 }
 
--(BOOL)checkForType:(KGPDFObjectType)type value:(void *)value {
+-(BOOL)checkForType:(O2PDFObjectType)type value:(void *)value {
    if(type!=kKGPDFObjectTypeString)
     return NO;
    
-   *((KGPDFString **)value)=self;
+   *((O2PDFString **)value)=self;
    return YES;
 }
 
@@ -72,7 +72,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return _bytes;
 }
 
--(void)encodeWithPDFContext:(KGPDFContext *)encoder {
+-(void)encodeWithPDFContext:(O2PDFContext *)encoder {
    [encoder appendPDFStringWithBytes:_bytes length:_length];
 }
 

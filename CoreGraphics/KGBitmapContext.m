@@ -14,11 +14,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "KGExceptions.h"
 #import "KGSurface.h"
 
-@implementation KGBitmapContext
+@implementation O2BitmapContext
 
 -initWithSurface:(KGSurface *)surface flipped:(BOOL)flipped {
    CGAffineTransform flip=flipped?CGAffineTransformIdentity:CGAffineTransformMake(1,0,0,-1,0,[surface height]);
-   KGGraphicsState  *initialState=[[[KGGraphicsState alloc] initWithDeviceTransform:flip] autorelease];
+   O2GState  *initialState=[[[O2GState alloc] initWithDeviceTransform:flip] autorelease];
 
    [super initWithGraphicsState:initialState];
    _surface=[surface retain];
@@ -108,14 +108,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return [self bitmapInfo]&kCGBitmapAlphaInfoMask;
 }
 
--(KGImage *)createImage {
+-(O2Image *)createImage {
 #if 1
 // FIXME: this needs to be either a copy or a copy on write
    return [_surface retain];
 #else
   CGDataProviderRef provider=CGDataProviderCreateWithData(NULL,_data,_pixelsWide*_pixelsHigh*4,NULL);
   
-  KGImage *image=CGImageCreate(_width,_height,_bitsPerComponent,_bitsPerPixel,_bytesPerRow,_colorSpace,
+  O2Image *image=CGImageCreate(_width,_height,_bitsPerComponent,_bitsPerPixel,_bytesPerRow,_colorSpace,
      _bitmapInfo,provider,NULL,NO,kCGRenderingIntentDefault);
   
   CGDataProviderRelease(provider);

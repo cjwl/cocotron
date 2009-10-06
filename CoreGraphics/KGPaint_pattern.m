@@ -28,17 +28,18 @@
 #import "KGPaint_pattern.h"
 #import "KGSurface.h"
 
-@implementation KGPaint_pattern
+@implementation O2Paint_pattern
 
-static void KGPaintReadPremultipliedPatternSpan(KGPaint *selfX,int x,int y,KGRGBAffff *span,int length){
-   KGPaint_pattern *self=(KGPaint_pattern *)selfX;
+static int O2PaintReadPremultipliedPatternSpan(O2Paint *selfX,int x,int y,KGRGBAffff *span,int length){
+   O2Paint_pattern *self=(O2Paint_pattern *)selfX;
    
    KGImageReadPatternSpan_lRGBAffff_PRE(self->m_pattern,x, y,span,length, self->m_surfaceToPaintMatrix, kCGPatternTilingConstantSpacing);
+   return length;
 }
 
--initWithImage:(KGImage *)image {
-   [super init];
-   _read_lRGBAffff_PRE=KGPaintReadPremultipliedPatternSpan;
+-initWithImage:(O2Image *)image {
+   self->m_surfaceToPaintMatrix=CGAffineTransformIdentity;
+   _paint_lRGBAffff_PRE=O2PaintReadPremultipliedPatternSpan;
    m_pattern=[image retain];
    return self;
 }

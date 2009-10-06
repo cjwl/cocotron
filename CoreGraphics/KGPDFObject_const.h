@@ -8,8 +8,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import "KGPDFObject.h"
 
-@interface KGPDFObject_const : KGPDFObject {
-   KGPDFObjectType _objectType;
+@interface O2PDFObject_const : O2PDFObject {
+   O2PDFObjectType _objectType;
 }
 
 +pdfObjectArrayMark;

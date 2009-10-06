@@ -11,15 +11,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @class NSArray;
 
-@interface KGPDFFunction_Type3 : KGFunction {
+@interface O2PDFFunction_Type3 : O2Function {
    unsigned        _functionCount;
-   KGFunction **_functions;
+   O2Function **_functions;
    unsigned        _boundsCount;
-   KGPDFReal      *_bounds;
+   O2PDFReal      *_bounds;
    unsigned        _encodeCount;
-   KGPDFReal      *_encode;
+   O2PDFReal      *_encode;
 }
 
--initWithDomain:(KGPDFArray *)domain range:(KGPDFArray *)range functions:(NSArray *)functions bounds:(KGPDFArray *)bounds encode:(KGPDFArray *)encode;
+-initWithDomain:(O2PDFArray *)domain range:(O2PDFArray *)range functions:(NSArray *)functions bounds:(O2PDFArray *)bounds encode:(O2PDFArray *)encode;
 
 @end

@@ -10,33 +10,33 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "KGPDFObject.h"
 
 typedef enum {
- KGPDFIdentifierUnknown,
- KGPDFIdentifier_true,
- KGPDFIdentifier_false,
- KGPDFIdentifier_null,
- KGPDFIdentifier_f,
- KGPDFIdentifier_n,
- KGPDFIdentifier_R,
- KGPDFIdentifier_xref,
- KGPDFIdentifier_trailer,
- KGPDFIdentifier_startxref,
- KGPDFIdentifier_obj,
- KGPDFIdentifier_endobj,
- KGPDFIdentifier_stream,
- KGPDFIdentifier_endstream,
-} KGPDFIdentifier;
+ O2PDFIdentifierUnknown,
+ O2PDFIdentifier_true,
+ O2PDFIdentifier_false,
+ O2PDFIdentifier_null,
+ O2PDFIdentifier_f,
+ O2PDFIdentifier_n,
+ O2PDFIdentifier_R,
+ O2PDFIdentifier_xref,
+ O2PDFIdentifier_trailer,
+ O2PDFIdentifier_startxref,
+ O2PDFIdentifier_obj,
+ O2PDFIdentifier_endobj,
+ O2PDFIdentifier_stream,
+ O2PDFIdentifier_endstream,
+} O2PDFIdentifier;
 
-KGPDFIdentifier KGPDFClassifyIdentifier(const char *bytes,unsigned length);
+O2PDFIdentifier O2PDFClassifyIdentifier(const char *bytes,unsigned length);
 
-@interface KGPDFObject_identifier : KGPDFObject {
-   KGPDFIdentifier _identifier;
+@interface O2PDFObject_identifier : O2PDFObject {
+   O2PDFIdentifier _identifier;
    unsigned        _length;
    char           *_bytes;
 }
 
-+pdfObjectWithIdentifier:(KGPDFIdentifier)identifier name:(const char *)bytes length:(unsigned)length;
++pdfObjectWithIdentifier:(O2PDFIdentifier)identifier name:(const char *)bytes length:(unsigned)length;
 
--(KGPDFIdentifier)identifier;
+-(O2PDFIdentifier)identifier;
 
 -(const char *)name;
 

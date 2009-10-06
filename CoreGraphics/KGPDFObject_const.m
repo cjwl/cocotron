@@ -9,27 +9,27 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "KGPDFObject_const.h"
 #import <Foundation/NSString.h>
 
-@implementation KGPDFObject_const
+@implementation O2PDFObject_const
 
--initWithObjectType:(KGPDFObjectType)type {
+-initWithObjectType:(O2PDFObjectType)type {
    _objectType=type;
    return self;
 }
 
 +pdfObjectArrayMark {
-   return [[[self alloc] initWithObjectType:KGPDFObjectTypeMark_array_open] autorelease];
+   return [[[self alloc] initWithObjectType:O2PDFObjectTypeMark_array_open] autorelease];
 }
 
 +pdfObjectArrayMarkEnd {
-   return [[[self alloc] initWithObjectType:KGPDFObjectTypeMark_array_close] autorelease];
+   return [[[self alloc] initWithObjectType:O2PDFObjectTypeMark_array_close] autorelease];
 }
 
 +pdfObjectDictionaryMark {
-   return [[[self alloc] initWithObjectType:KGPDFObjectTypeMark_dictionary_open] autorelease];
+   return [[[self alloc] initWithObjectType:O2PDFObjectTypeMark_dictionary_open] autorelease];
 }
 
 +pdfObjectDictionaryMarkEnd {
-   return [[[self alloc] initWithObjectType:KGPDFObjectTypeMark_dictionary_close] autorelease];
+   return [[[self alloc] initWithObjectType:O2PDFObjectTypeMark_dictionary_close] autorelease];
 }
 
 +pdfObjectWithNull {
@@ -37,11 +37,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 
--(KGPDFObjectType)objectType {
+-(O2PDFObjectType)objectType {
    return _objectType;
 }
 
--(BOOL)checkForType:(KGPDFObjectType)type value:(void *)value {
+-(BOOL)checkForType:(O2PDFObjectType)type value:(void *)value {
    if(type!=_objectType)
     return NO;
    

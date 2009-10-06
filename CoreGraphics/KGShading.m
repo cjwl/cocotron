@@ -13,7 +13,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @implementation KGShading
 
--initWithColorSpace:(O2ColorSpaceRef)colorSpace startPoint:(CGPoint)startPoint endPoint:(CGPoint)endPoint function:(KGFunction *)function extendStart:(BOOL)extendStart extendEnd:(BOOL)extendEnd domain:(float[])domain {
+-initWithColorSpace:(O2ColorSpaceRef)colorSpace startPoint:(CGPoint)startPoint endPoint:(CGPoint)endPoint function:(O2Function *)function extendStart:(BOOL)extendStart extendEnd:(BOOL)extendEnd domain:(float[])domain {
    _colorSpace=[colorSpace retain];
    _startPoint=startPoint;
    _endPoint=endPoint;
@@ -26,7 +26,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return self;
 }
 
--initWithColorSpace:(O2ColorSpaceRef)colorSpace startPoint:(CGPoint)startPoint startRadius:(float)startRadius endPoint:(CGPoint)endPoint endRadius:(float)endRadius function:(KGFunction *)function extendStart:(BOOL)extendStart extendEnd:(BOOL)extendEnd domain:(float[])domain {
+-initWithColorSpace:(O2ColorSpaceRef)colorSpace startPoint:(CGPoint)startPoint startRadius:(float)startRadius endPoint:(CGPoint)endPoint endRadius:(float)endRadius function:(O2Function *)function extendStart:(BOOL)extendStart extendEnd:(BOOL)extendEnd domain:(float[])domain {
    _colorSpace=[colorSpace retain];
    _startPoint=startPoint;
    _endPoint=endPoint;
@@ -75,7 +75,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return _extendEnd;
 }
 
--(KGFunction *)function {
+-(O2Function *)function {
    return _function;
 }
 

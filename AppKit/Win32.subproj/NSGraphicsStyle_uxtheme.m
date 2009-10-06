@@ -137,14 +137,14 @@ static inline RECT transformToRECT(CGAffineTransform matrix,NSRect rect) {
    return result;
 }
 
--(KGContext *)context {
-   KGContext *context=[[NSGraphicsContext currentContext] graphicsPort];
+-(O2Context *)context {
+   O2Context *context=[[NSGraphicsContext currentContext] graphicsPort];
    
    return context;
 }
 
 -(KGDeviceContext_gdi *)deviceContext {
-   KGContext *context=[[NSGraphicsContext currentContext] graphicsPort];
+   O2Context *context=[[NSGraphicsContext currentContext] graphicsPort];
    
    if([context respondsToSelector:@selector(deviceContext)]){
     KGDeviceContext_gdi *result=[context performSelector:@selector(deviceContext)];

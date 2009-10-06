@@ -9,7 +9,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "KGFunction+PDF.h"
 #import "KGPDFObject.h"
 
-@interface KGPDFFunction_Type2 : KGFunction {
+@interface O2PDFFunction_Type2 : O2Function {
    unsigned _C0Count;
    float   *_C0;
    unsigned _C1Count;
@@ -17,6 +17,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    float    _N;
 }
 
--initWithDomain:(KGPDFArray *)domain range:(KGPDFArray *)range C0:(KGPDFArray *)C0 C1:(KGPDFArray *)C1 N:(KGPDFReal)N;
+-initWithDomain:(O2PDFArray *)domain range:(O2PDFArray *)range C0:(O2PDFArray *)C0 C1:(O2PDFArray *)C1 N:(O2PDFReal)N;
 
 @end

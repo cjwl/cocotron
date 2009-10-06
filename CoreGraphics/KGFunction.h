@@ -9,7 +9,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSObject.h>
 #import <CoreGraphics/CoreGraphics.h>
 
-@interface KGFunction : NSObject {
+@class O2Function;
+typedef O2Function *O2FunctionRef;
+
+@interface O2Function : NSObject {
    void               *_info;
    unsigned            _domainCount;
    float              *_domain;
@@ -18,7 +21,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    CGFunctionCallbacks _callbacks;
 }
 
--initWithInfo:(void *)info domainCount:(unsigned)domainCount domain:(const float *)domain rangeCount:(unsigned)rangeCount range:(const float *)range callbacks:(const CGFunctionCallbacks *)callbacks;
+O2FunctionRef O2FunctionCreate(void *info,size_t domainDimension,const CGFloat *domain,size_t rangeDimension,const CGFloat *range,const CGFunctionCallbacks *callbacks);
+
+O2FunctionRef O2FunctionRetain(O2FunctionRef self);
+void O2FunctionRelease(O2FunctionRef self);
+
+// FIX, only works for one input value
+void O2FunctionEvaluate(O2FunctionRef self,CGFloat in,CGFloat *out);
+
+-initWithInfo:(void *)info domainDimension:(unsigned)domainCount domain:(const float *)domain rangeDimension:(unsigned)rangeCount range:(const float *)range callbacks:(const CGFunctionCallbacks *)callbacks;
 
 -(unsigned)domainCount;
 -(const float *)domain;
@@ -26,8 +37,5 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(const float *)range;
 
 -(BOOL)isLinear;
-
-// FIX, only works for one input value
--(void)evaluateInput:(float)x output:(float *)outp;
 
 @end

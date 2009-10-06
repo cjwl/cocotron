@@ -190,7 +190,7 @@ static int errorHandler(Display* display,
    return 0;
 }
 
--(KGContext *)graphicsPortForPrintOperationWithView:(NSView *)view printInfo:(NSPrintInfo *)printInfo pageRange:(NSRange)pageRange {
+-(O2Context *)graphicsPortForPrintOperationWithView:(NSView *)view printInfo:(NSPrintInfo *)printInfo pageRange:(NSRange)pageRange {
    NSUnimplementedMethod();
    return nil;
 }

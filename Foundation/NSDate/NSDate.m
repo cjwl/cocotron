@@ -97,7 +97,7 @@ const NSTimeInterval NSTimeIntervalSince1970 = (NSTimeInterval)978307200.0;
 
 
 -copyWithZone:(NSZone *)zone {
-    return [NSDate dateWithTimeIntervalSinceReferenceDate:[self timeIntervalSinceReferenceDate]];
+    return [self retain];
 }
 
 -(Class)classForCoder {

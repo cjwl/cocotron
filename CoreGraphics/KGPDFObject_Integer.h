@@ -8,10 +8,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import "KGPDFObject.h"
 
-@interface KGPDFObject_Integer : KGPDFObject {
-   KGPDFInteger _value;
+@interface O2PDFObject_Integer : O2PDFObject {
+   O2PDFInteger _value;
 }
 
-+pdfObjectWithInteger:(KGPDFInteger)value;
++pdfObjectWithInteger:(O2PDFInteger)value;
 
 @end

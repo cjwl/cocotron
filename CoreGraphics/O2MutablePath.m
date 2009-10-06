@@ -50,7 +50,7 @@ O2MutablePathRef O2PathCreateMutable(void) {
 
 // Bezier and arc to bezier algorithms from: Windows Graphics Programming by Feng Yuan
 #if 0
-static void bezier(KGGraphicsState *self,double x1,double y1,double x2, double y2,double x3,double y3,double x4,double y4){
+static void bezier(O2GState *self,double x1,double y1,double x2, double y2,double x3,double y3,double x4,double y4){
    // Ax+By+C=0 is the line (x1,y1) (x4,y4);
    double A=y4-y1;
    double B=x1-x4;

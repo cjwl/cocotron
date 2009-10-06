@@ -8,15 +8,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/NSObject.h>
 
-@class KGPDFDictionary,NSData;
+@class O2PDFDictionary,NSData;
 
-NSData *KGPDFFilterWithName(const char *name,NSData *data,KGPDFDictionary *parameters);
+NSData *O2PDFFilterWithName(const char *name,NSData *data,O2PDFDictionary *parameters);
 
-@interface KGPDFFilter : NSObject {
-   KGPDFDictionary *_parameters;
+@interface O2PDFFilter : NSObject {
+   O2PDFDictionary *_parameters;
 }
 
-+(NSData *)decodeWithName:(const char *)name data:(NSData *)data parameters:(KGPDFDictionary *)parameters;
-+(NSData *)LZWDecode_data:(NSData *)data parameters:(KGPDFDictionary *)parameters;
++(NSData *)decodeWithName:(const char *)name data:(NSData *)data parameters:(O2PDFDictionary *)parameters;
++(NSData *)LZWDecode_data:(NSData *)data parameters:(O2PDFDictionary *)parameters;
 
 @end

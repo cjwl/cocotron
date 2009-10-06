@@ -7,7 +7,7 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
 #import "KGContext.h"
-#import "KGBitmapContext.h"
+#import "kGBitmapContext.h"
 #import "KGGraphicsState.h"
 #import "O2Color.h"
 #import "O2ColorSpace.h"
@@ -19,7 +19,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSBundle.h>
 #import <Foundation/NSArray.h>
 
-@implementation KGContext
+@implementation O2Context
 
 static NSMutableArray *possibleContextClasses=nil;
 
@@ -59,7 +59,7 @@ static NSMutableArray *possibleContextClasses=nil;
    return result;
 }
 
-+(KGContext *)createContextWithSize:(CGSize)size window:(CGWindow *)window {
++(O2Context *)createContextWithSize:(CGSize)size window:(CGWindow *)window {
    NSArray *array=[self allContextClasses];
    int      count=[array count];
    
@@ -67,7 +67,7 @@ static NSMutableArray *possibleContextClasses=nil;
     Class check=[array objectAtIndex:count];
     
     if([check canInitWithWindow:window]){
-     KGContext *result=[[check alloc] initWithSize:size window:window];
+     O2Context *result=[[check alloc] initWithSize:size window:window];
      
      if(result!=nil)
       return result;
@@ -77,7 +77,7 @@ static NSMutableArray *possibleContextClasses=nil;
    return nil;
 }
 
-+(KGContext *)createBackingContextWithSize:(CGSize)size context:(KGContext *)context deviceDictionary:(NSDictionary *)deviceDictionary {
++(O2Context *)createBackingContextWithSize:(CGSize)size context:(O2Context *)context deviceDictionary:(NSDictionary *)deviceDictionary {
    NSArray *array=[self allContextClasses];
    int      count=[array count];
    
@@ -85,7 +85,7 @@ static NSMutableArray *possibleContextClasses=nil;
     Class check=[array objectAtIndex:count];
     
     if([check canInitBackingWithContext:context deviceDictionary:deviceDictionary]){
-     KGContext *result=[[check alloc] initWithSize:size context:context];
+     O2Context *result=[[check alloc] initWithSize:size context:context];
 
      if(result!=nil)
       return result;
@@ -95,7 +95,7 @@ static NSMutableArray *possibleContextClasses=nil;
    return nil;
 }
 
-+(KGContext *)createWithBytes:(void *)bytes width:(size_t)width height:(size_t)height bitsPerComponent:(size_t)bitsPerComponent bytesPerRow:(size_t)bytesPerRow colorSpace:(O2ColorSpaceRef)colorSpace bitmapInfo:(CGBitmapInfo)bitmapInfo {
++(O2Context *)createWithBytes:(void *)bytes width:(size_t)width height:(size_t)height bitsPerComponent:(size_t)bitsPerComponent bytesPerRow:(size_t)bytesPerRow colorSpace:(O2ColorSpaceRef)colorSpace bitmapInfo:(CGBitmapInfo)bitmapInfo {
    NSArray *array=[self allContextClasses];
    int      count=[array count];
    
@@ -103,7 +103,7 @@ static NSMutableArray *possibleContextClasses=nil;
     Class check=[array objectAtIndex:count];
     
     if([check canInitBitmap]){
-     KGContext *result=[[check alloc] initWithBytes:bytes width:width height:height bitsPerComponent:bitsPerComponent bytesPerRow:bytesPerRow colorSpace:colorSpace bitmapInfo:bitmapInfo flipped:NO];
+     O2Context *result=[[check alloc] initWithBytes:bytes width:width height:height bitsPerComponent:bitsPerComponent bytesPerRow:bytesPerRow colorSpace:colorSpace bitmapInfo:bitmapInfo flipped:NO];
 
      if(result!=nil)
       return result;
@@ -117,7 +117,7 @@ static NSMutableArray *possibleContextClasses=nil;
    return NO;
 }
 
-+(BOOL)canInitBackingWithContext:(KGContext *)context deviceDictionary:(NSDictionary *)deviceDictionary {
++(BOOL)canInitBackingWithContext:(O2Context *)context deviceDictionary:(NSDictionary *)deviceDictionary {
    return NO;
 }
 
@@ -130,12 +130,12 @@ static NSMutableArray *possibleContextClasses=nil;
    return nil;
 }
 
--initWithSize:(CGSize)size context:(KGContext *)context {
+-initWithSize:(CGSize)size context:(O2Context *)context {
    KGInvalidAbstractInvocation();
    return nil;
 }
 
--initWithGraphicsState:(KGGraphicsState *)state {
+-initWithGraphicsState:(O2GState *)state {
    _userToDeviceTransform=[state userSpaceToDeviceSpaceTransform];
    _layerStack=[NSMutableArray new];
    _stateStack=[NSMutableArray new];
@@ -146,7 +146,7 @@ static NSMutableArray *possibleContextClasses=nil;
 }
 
 -init {
-   return [self initWithGraphicsState:[[[KGGraphicsState alloc] init] autorelease]];
+   return [self initWithGraphicsState:[[[O2GState alloc] init] autorelease]];
 }
 
 -(void)dealloc {
@@ -156,7 +156,7 @@ static NSMutableArray *possibleContextClasses=nil;
    [super dealloc];
 }
 
-static inline KGGraphicsState *currentState(KGContext *self){        
+static inline O2GState *currentState(O2Context *self){        
    return [self->_stateStack lastObject];
 }
 
@@ -282,12 +282,12 @@ static inline KGGraphicsState *currentState(KGContext *self){
    KGUnimplementedMethod();
 }
 
--(KGGraphicsState *)currentState {
+-(O2GState *)currentState {
    return currentState(self);
 }
 
 -(void)saveGState {
-   KGGraphicsState *current=currentState(self),*next;
+   O2GState *current=currentState(self),*next;
 
    next=[current copy];
    [_stateStack addObject:next];
@@ -303,23 +303,23 @@ static inline KGGraphicsState *currentState(KGContext *self){
    [self deviceClipReset];
    
    for(i=0;i<count;i++){
-    KGClipPhase *phase=[phases objectAtIndex:i];
+    O2ClipPhase *phase=[phases objectAtIndex:i];
     
     switch([phase phaseType]){
     
-     case KGClipPhaseNonZeroPath:{
+     case O2ClipPhaseNonZeroPath:{
        O2Path *path=[phase object];
        [self deviceClipToNonZeroPath:path];
       }
       break;
       
-     case KGClipPhaseEOPath:{
+     case O2ClipPhaseEOPath:{
        O2Path *path=[phase object];
        [self deviceClipToEvenOddPath:path];
       }
       break;
       
-     case KGClipPhaseMask:
+     case O2ClipPhaseMask:
       break;
     }
     
@@ -418,7 +418,7 @@ static inline KGGraphicsState *currentState(KGContext *self){
    O2PathReset(_path);
 }
 
--(void)clipToMask:(KGImage *)image inRect:(CGRect)rect {
+-(void)clipToMask:(O2Image *)image inRect:(CGRect)rect {
    [currentState(self) addClipToMask:image inRect:rect];
    [self deviceClipToMask:image inRect:rect];
 }
@@ -641,7 +641,7 @@ static inline KGGraphicsState *currentState(KGContext *self){
    [currentState(self) setTextDrawingMode:textMode];
 }
 
--(void)setFont:(KGFont *)font {
+-(void)setFont:(O2Font *)font {
    [currentState(self) setFont:font];
 }
 
@@ -824,7 +824,7 @@ static inline KGGraphicsState *currentState(KGContext *self){
    KGInvalidAbstractInvocation();
 }
 
--(void)drawImage:(KGImage *)image inRect:(CGRect)rect {
+-(void)drawImage:(O2Image *)image inRect:(CGRect)rect {
    KGInvalidAbstractInvocation();
 }
 
@@ -839,7 +839,7 @@ static inline KGGraphicsState *currentState(KGContext *self){
    KGInvalidAbstractInvocation();
 }
 
--(void)drawPDFPage:(KGPDFPage *)page {
+-(void)drawPDFPage:(O2PDFPage *)page {
    [page drawInContext:self];
 }
    
@@ -914,13 +914,13 @@ static inline KGGraphicsState *currentState(KGContext *self){
    return 0;
 }
 
--(KGImage *)createImage {
+-(O2Image *)createImage {
    return nil;
 }
 
 // temporary
 
--(void)drawBackingContext:(KGContext *)other size:(CGSize)size {
+-(void)drawBackingContext:(O2Context *)other size:(CGSize)size {
    KGInvalidAbstractInvocation();
 }
 
@@ -967,7 +967,7 @@ static inline KGGraphicsState *currentState(KGContext *self){
    KGInvalidAbstractInvocation();
 }
 
--(void)deviceClipToMask:(KGImage *)mask inRect:(CGRect)rect {
+-(void)deviceClipToMask:(O2Image *)mask inRect:(CGRect)rect {
    KGInvalidAbstractInvocation();
 }
 

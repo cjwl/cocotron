@@ -11,9 +11,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "KGPDFContext.h"
 #import <Foundation/NSString.h>
 
-@implementation KGPDFObject_R
+@implementation O2PDFObject_R
 
--initWithNumber:(KGPDFInteger)number generation:(KGPDFInteger)generation xref:(KGPDFxref *)xref {
+-initWithNumber:(O2PDFInteger)number generation:(O2PDFInteger)generation xref:(O2PDFxref *)xref {
    _number=number;
    _generation=generation;
    _xref=[xref retain];
@@ -25,23 +25,23 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [super dealloc];
 }
 
-+pdfObjectWithNumber:(KGPDFInteger)number generation:(KGPDFInteger)generation xref:(KGPDFxref *)xref {
++pdfObjectWithNumber:(O2PDFInteger)number generation:(O2PDFInteger)generation xref:(O2PDFxref *)xref {
    return [[[self alloc] initWithNumber:number generation:generation xref:xref] autorelease];
 }
 
--(KGPDFObject *)realObject {
+-(O2PDFObject *)realObject {
    return [_xref objectAtNumber:_number generation:_generation];
 }
 
--(KGPDFObjectType)objectTypeNoParsing {
-   return KGPDFObjectType_R;
+-(O2PDFObjectType)objectTypeNoParsing {
+   return O2PDFObjectType_R;
 }
 
--(KGPDFObjectType)objectType {
+-(O2PDFObjectType)objectType {
    return [[_xref objectAtNumber:_number generation:_generation] objectType];
 }
 
--(BOOL)checkForType:(KGPDFObjectType)type value:(void *)value {
+-(BOOL)checkForType:(O2PDFObjectType)type value:(void *)value {
    return [[_xref objectAtNumber:_number generation:_generation] checkForType:type value:value];
 }
 
@@ -49,7 +49,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return [NSString stringWithFormat:@"<%@ (%d %d) %@>",isa,_number,_generation,[self realObject]];
 }
 
--(void)encodeWithPDFContext:(KGPDFContext *)encoder {
+-(void)encodeWithPDFContext:(O2PDFContext *)encoder {
    [encoder appendFormat:@"%d %d R ",_number,_generation];
 }
 

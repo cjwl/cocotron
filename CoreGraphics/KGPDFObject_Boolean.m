@@ -10,9 +10,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "KGPDFContext.h"
 #import <Foundation/NSString.h>
 
-@implementation KGPDFObject_Boolean
+@implementation O2PDFObject_Boolean
 
--initWithBoolean:(KGPDFBoolean)value {
+-initWithBoolean:(O2PDFBoolean)value {
    _value=value;
    return self;
 }
@@ -25,19 +25,19 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return [[[self alloc] initWithBoolean:NO] autorelease];
 }
 
-+pdfObjectWithBoolean:(KGPDFBoolean)value {
++pdfObjectWithBoolean:(O2PDFBoolean)value {
    return [[[self alloc] initWithBoolean:value] autorelease];
 }
 
--(KGPDFObjectType)objectType {
+-(O2PDFObjectType)objectType {
    return kKGPDFObjectTypeBoolean;
 }
 
--(BOOL)checkForType:(KGPDFObjectType)type value:(void *)value {
+-(BOOL)checkForType:(O2PDFObjectType)type value:(void *)value {
    if(type!=kKGPDFObjectTypeBoolean)
     return NO;
    
-   *((KGPDFBoolean *)value)=_value;
+   *((O2PDFBoolean *)value)=_value;
    return YES;
 }
 
@@ -45,7 +45,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return [NSString stringWithFormat:@"<%@ %s>",isa,_value?"true":"false"];
 }
 
--(void)encodeWithPDFContext:(KGPDFContext *)encoder {
+-(void)encodeWithPDFContext:(O2PDFContext *)encoder {
    [encoder appendCString:_value?"true ":"false "];
 }
 

@@ -3,7 +3,7 @@
 
 @class Win32Font;
 
-@interface KGFont_gdi : KGFont {
+@interface KGFont_gdi : O2Font {
    BOOL     _useMacMetrics;
    unichar *_glyphsToCharacters;
 }

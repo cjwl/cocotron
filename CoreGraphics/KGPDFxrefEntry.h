@@ -8,18 +8,18 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import "KGPDFObject.h"
 
-@interface KGPDFxrefEntry : NSObject {
-   KGPDFInteger _position;
-   KGPDFInteger _number;
-   KGPDFInteger _generation;
+@interface O2PDFxrefEntry : NSObject {
+   O2PDFInteger _position;
+   O2PDFInteger _number;
+   O2PDFInteger _generation;
 }
 
-+(KGPDFxrefEntry *)xrefEntryWithPosition:(KGPDFInteger)position number:(KGPDFInteger)number generation:(KGPDFInteger)generation;
++(O2PDFxrefEntry *)xrefEntryWithPosition:(O2PDFInteger)position number:(O2PDFInteger)number generation:(O2PDFInteger)generation;
 
--(KGPDFInteger)position;
--(KGPDFInteger)number;
--(KGPDFInteger)generation;
+-(O2PDFInteger)position;
+-(O2PDFInteger)number;
+-(O2PDFInteger)generation;
 
--(void)setPosition:(KGPDFInteger)value;
+-(void)setPosition:(O2PDFInteger)value;
 
 @end

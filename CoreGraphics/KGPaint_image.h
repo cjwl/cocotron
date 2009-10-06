@@ -27,13 +27,13 @@
  *-------------------------------------------------------------------*/
 #import "KGPaint.h"
 
-@interface KGPaint_image : KGPaint {
-   KGImage *_image;
+@interface O2Paint_image : O2Paint {
+   O2Image *_image;
    KGSurfaceMode _mode;
-   KGPaint *_paint;
+   O2Paint *_paint;
    CGInterpolationQuality _interpolationQuality;
 }
 
--initWithImage:(KGImage *)image mode:(KGSurfaceMode)mode paint:(KGPaint *)paint interpolationQuality:(CGInterpolationQuality)interpolationQuality;
+-initWithImage:(O2Image *)image mode:(KGSurfaceMode)mode paint:(O2Paint *)paint interpolationQuality:(CGInterpolationQuality)interpolationQuality;
 
 @end

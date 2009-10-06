@@ -9,12 +9,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import "KGPDFObject.h"
 
-@interface KGPDFObject_Boolean : KGPDFObject {
-   KGPDFBoolean _value;
+@interface O2PDFObject_Boolean : O2PDFObject {
+   O2PDFBoolean _value;
 }
 
 +pdfObjectWithTrue;
 +pdfObjectWithFalse;
-+pdfObjectWithBoolean:(KGPDFBoolean)value;
++pdfObjectWithBoolean:(O2PDFBoolean)value;
 
 @end

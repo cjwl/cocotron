@@ -10,9 +10,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <CoreGraphics/CoreGraphics.h>
 #import "O2ColorSpace.h"
 
-@class O2Color,KGShading,KGImage,KGGraphicsState,O2MutablePath,O2Path,KGPattern,KGLayer,KGPDFPage,NSMutableArray,CGWindow,KGSurface,NSDictionary,NSData,KGFont;
+@class O2Color,KGShading,O2Image,O2GState,O2MutablePath,O2Path,KGPattern,KGLayer,O2PDFPage,NSMutableArray,CGWindow,KGSurface,NSDictionary,NSData,O2Font;
 
-@interface KGContext : NSObject {
+@interface O2Context : NSObject {
    CGAffineTransform _userToDeviceTransform;
    NSMutableArray   *_layerStack;
    NSMutableArray   *_stateStack;
@@ -20,18 +20,18 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    BOOL              _allowsAntialiasing;
 }
 
-+(KGContext *)createContextWithSize:(CGSize)size window:(CGWindow *)window;
-+(KGContext *)createBackingContextWithSize:(CGSize)size context:(KGContext *)context deviceDictionary:(NSDictionary *)deviceDictionary;
-+(KGContext *)createWithBytes:(void *)bytes width:(size_t)width height:(size_t)height bitsPerComponent:(size_t)bitsPerComponent bytesPerRow:(size_t)bytesPerRow colorSpace:(O2ColorSpaceRef)colorSpace bitmapInfo:(CGBitmapInfo)bitmapInfo;
++(O2Context *)createContextWithSize:(CGSize)size window:(CGWindow *)window;
++(O2Context *)createBackingContextWithSize:(CGSize)size context:(O2Context *)context deviceDictionary:(NSDictionary *)deviceDictionary;
++(O2Context *)createWithBytes:(void *)bytes width:(size_t)width height:(size_t)height bitsPerComponent:(size_t)bitsPerComponent bytesPerRow:(size_t)bytesPerRow colorSpace:(O2ColorSpaceRef)colorSpace bitmapInfo:(CGBitmapInfo)bitmapInfo;
 
 +(BOOL)canInitWithWindow:(CGWindow *)window;
-+(BOOL)canInitBackingWithContext:(KGContext *)context deviceDictionary:(NSDictionary *)deviceDictionary;
++(BOOL)canInitBackingWithContext:(O2Context *)context deviceDictionary:(NSDictionary *)deviceDictionary;
 +(BOOL)canInitBitmap;
 
 -initWithSize:(CGSize)size window:(CGWindow *)window;
--initWithSize:(CGSize)size context:(KGContext *)context;
+-initWithSize:(CGSize)size context:(O2Context *)context;
 
--initWithGraphicsState:(KGGraphicsState *)state;
+-initWithGraphicsState:(O2GState *)state;
 -init;
 
 -(KGSurface *)surface;
@@ -62,7 +62,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)addPath:(O2Path *)path;
 -(void)replacePathWithStrokedPath;
 
--(KGGraphicsState *)currentState;
+-(O2GState *)currentState;
 -(void)saveGState;
 -(void)restoreGState;
 
@@ -87,7 +87,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)clipToPath;
 -(void)evenOddClipToPath;
--(void)clipToMask:(KGImage *)image inRect:(CGRect)rect;
+-(void)clipToMask:(O2Image *)image inRect:(CGRect)rect;
 -(void)clipToRect:(CGRect)rect;
 -(void)clipToRects:(const CGRect *)rects count:(unsigned)count;
 
@@ -130,7 +130,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)setCharacterSpacing:(float)spacing;
 -(void)setTextDrawingMode:(int)textMode;
 
--(void)setFont:(KGFont *)font;
+-(void)setFont:(O2Font *)font;
 -(void)setFontSize:(float)size;
 -(void)selectFontWithName:(const char *)name size:(float)size encoding:(CGTextEncoding)encoding;
 -(void)setShouldSmoothFonts:(BOOL)yesOrNo;
@@ -178,10 +178,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)showText:(const char *)text length:(unsigned)length atPoint:(float)x:(float)y;
 
 -(void)drawShading:(KGShading *)shading;
--(void)drawImage:(KGImage *)image inRect:(CGRect)rect;
+-(void)drawImage:(O2Image *)image inRect:(CGRect)rect;
 -(void)drawLayer:(KGLayer *)layer atPoint:(CGPoint)point;
 -(void)drawLayer:(KGLayer *)layer inRect:(CGRect)rect;
--(void)drawPDFPage:(KGPDFPage *)page;
+-(void)drawPDFPage:(O2PDFPage *)page;
    
 -(void)flush;
 -(void)synchronize;
@@ -207,11 +207,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(size_t)bitsPerPixel;
 -(CGImageAlphaInfo)alphaInfo;
--(KGImage *)createImage;
+-(O2Image *)createImage;
 
 // temporary
 
--(void)drawBackingContext:(KGContext *)other size:(CGSize)size;
+-(void)drawBackingContext:(O2Context *)other size:(CGSize)size;
 
 -(void)resetClip;
 
@@ -226,6 +226,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)deviceClipReset;
 -(void)deviceClipToNonZeroPath:(O2Path *)path;
 -(void)deviceClipToEvenOddPath:(O2Path *)path;
--(void)deviceClipToMask:(KGImage *)mask inRect:(CGRect)rect;
+-(void)deviceClipToMask:(O2Image *)mask inRect:(CGRect)rect;
 
 @end

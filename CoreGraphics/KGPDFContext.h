@@ -9,9 +9,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "KGContext.h"
 #import <Foundation/NSMapTable.h>
 
-@class KGPDFContext, KGPDFxref,KGPDFObject, KGPDFDictionary,KGPDFArray,NSMutableData,NSMutableDictionary,KGDataConsumer;
+@class O2PDFContext, O2PDFxref,O2PDFObject, O2PDFDictionary,O2PDFArray,NSMutableData,NSMutableDictionary,KGDataConsumer;
 
-@interface KGPDFContext : KGContext {
+@interface O2PDFContext : O2Context {
    KGDataConsumer  *_dataConsumer;
    NSMutableData   *_mutableData;
    NSMutableDictionary *_fontCache;
@@ -19,12 +19,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    NSMutableArray *_indirectObjects;
    NSMutableArray *_indirectEntries;
    unsigned        _nextNumber;
-   KGPDFxref       *_xref;
-   KGPDFDictionary *_info;
-   KGPDFDictionary *_catalog;
-   KGPDFDictionary *_pages;
-   KGPDFArray      *_kids;
-   KGPDFDictionary *_page;
+   O2PDFxref       *_xref;
+   O2PDFDictionary *_info;
+   O2PDFDictionary *_catalog;
+   O2PDFDictionary *_pages;
+   O2PDFArray      *_kids;
+   O2PDFDictionary *_page;
    NSMutableDictionary *_categoryToNext;
    NSMutableArray  *_textStateStack;
    NSMutableArray  *_contentStreamStack;
@@ -42,11 +42,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)appendFormat:(NSString *)format,...;
 -(void)appendPDFStringWithBytes:(const void *)bytes length:(unsigned)length;
 
--(KGPDFObject *)referenceForFontWithName:(NSString *)name size:(float)size;
--(void)setReference:(KGPDFObject *)reference forFontWithName:(NSString *)name size:(float)size;
--(KGPDFObject *)referenceForObject:(KGPDFObject *)object;
+-(O2PDFObject *)referenceForFontWithName:(NSString *)name size:(float)size;
+-(void)setReference:(O2PDFObject *)reference forFontWithName:(NSString *)name size:(float)size;
+-(O2PDFObject *)referenceForObject:(O2PDFObject *)object;
 
--(void)encodePDFObject:(KGPDFObject *)object;
--(KGPDFObject *)encodeIndirectPDFObject:(KGPDFObject *)object;
+-(void)encodePDFObject:(O2PDFObject *)object;
+-(O2PDFObject *)encodeIndirectPDFObject:(O2PDFObject *)object;
 
 @end

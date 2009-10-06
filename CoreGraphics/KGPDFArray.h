@@ -9,39 +9,39 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "KGPDFObject.h"
 #import <CoreGraphics/CoreGraphics.h>
 
-@class KGPDFString,KGPDFArray,KGPDFDictionary,KGPDFStream;
+@class O2PDFString,O2PDFArray,O2PDFDictionary,O2PDFStream;
 
-@interface KGPDFArray : KGPDFObject {
+@interface O2PDFArray : O2PDFObject {
    unsigned      _capacity;
    unsigned      _count;
-   KGPDFObject **_objects;
+   O2PDFObject **_objects;
 }
 
-+(KGPDFArray *)pdfArray;
-+(KGPDFArray *)pdfArrayWithRect:(CGRect)rect;
-+(KGPDFArray *)pdfArrayWithNumbers:(KGPDFReal *)values count:(unsigned)count;
-+(KGPDFArray *)pdfArrayWithIntegers:(KGPDFInteger *)values count:(unsigned)count;
++(O2PDFArray *)pdfArray;
++(O2PDFArray *)pdfArrayWithRect:(CGRect)rect;
++(O2PDFArray *)pdfArrayWithNumbers:(O2PDFReal *)values count:(unsigned)count;
++(O2PDFArray *)pdfArrayWithIntegers:(O2PDFInteger *)values count:(unsigned)count;
 
 -(unsigned)count;
 
--(void)addObject:(KGPDFObject *)anObject;
--(void)addNumber:(KGPDFReal)value;
--(void)addInteger:(KGPDFInteger)value;
--(void)addBoolean:(KGPDFBoolean)value;
+-(void)addObject:(O2PDFObject *)anObject;
+-(void)addNumber:(O2PDFReal)value;
+-(void)addInteger:(O2PDFInteger)value;
+-(void)addBoolean:(O2PDFBoolean)value;
 
--(KGPDFObject *)objectAtIndex:(unsigned)index;
+-(O2PDFObject *)objectAtIndex:(unsigned)index;
 
--(BOOL)getObjectAtIndex:(unsigned)index value:(KGPDFObject **)objectp;
+-(BOOL)getObjectAtIndex:(unsigned)index value:(O2PDFObject **)objectp;
 -(BOOL)getNullAtIndex:(unsigned)index;
--(BOOL)getBooleanAtIndex:(unsigned)index value:(KGPDFBoolean *)valuep;
--(BOOL)getIntegerAtIndex:(unsigned)index value:(KGPDFInteger *)valuep;
--(BOOL)getNumberAtIndex:(unsigned)index value:(KGPDFReal *)valuep;
+-(BOOL)getBooleanAtIndex:(unsigned)index value:(O2PDFBoolean *)valuep;
+-(BOOL)getIntegerAtIndex:(unsigned)index value:(O2PDFInteger *)valuep;
+-(BOOL)getNumberAtIndex:(unsigned)index value:(O2PDFReal *)valuep;
 -(BOOL)getNameAtIndex:(unsigned)index value:(const char **)namep;
--(BOOL)getStringAtIndex:(unsigned)index value:(KGPDFString **)stringp;
--(BOOL)getArrayAtIndex:(unsigned)index value:(KGPDFArray **)arrayp;
--(BOOL)getDictionaryAtIndex:(unsigned)index value:(KGPDFDictionary **)dictionaryp;
--(BOOL)getStreamAtIndex:(unsigned)index value:(KGPDFStream **)streamp;
+-(BOOL)getStringAtIndex:(unsigned)index value:(O2PDFString **)stringp;
+-(BOOL)getArrayAtIndex:(unsigned)index value:(O2PDFArray **)arrayp;
+-(BOOL)getDictionaryAtIndex:(unsigned)index value:(O2PDFDictionary **)dictionaryp;
+-(BOOL)getStreamAtIndex:(unsigned)index value:(O2PDFStream **)streamp;
 
--(BOOL)getNumbers:(KGPDFReal **)numbersp count:(unsigned *)count;
+-(BOOL)getNumbers:(O2PDFReal **)numbersp count:(unsigned *)count;
 
 @end

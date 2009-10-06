@@ -17,16 +17,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <limits.h>
 
-@implementation KGPDFDocument
+@implementation O2PDFDocument
 
 -initWithData:(NSData *)data {   
-   if(!KGPDFScanVersion([data bytes],[data length],&_version)){
+   if(!O2PDFScanVersion([data bytes],[data length],&_version)){
     [self dealloc];
     return nil;
    }
    [_version retain];
    
-   if(!KGPDFParse_xref(data,&_xref)){
+   if(!O2PDFParse_xref(data,&_xref)){
     [self dealloc];
     return nil;
    }
@@ -35,7 +35,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return self;
 }
 
--initWithDataProvider:(KGDataProvider *)provider {
+-initWithDataProvider:(O2DataProvider *)provider {
    return [self initWithData:[provider data]];
 }
 
@@ -44,16 +44,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [super dealloc];
 }
 
--(KGPDFxref *)xref {
+-(O2PDFxref *)xref {
    return _xref;
 }
 
--(KGPDFDictionary *)trailer {
+-(O2PDFDictionary *)trailer {
    return [_xref trailer];
 }
 
--(KGPDFDictionary *)catalog {
-   KGPDFDictionary *result;
+-(O2PDFDictionary *)catalog {
+   O2PDFDictionary *result;
    
    if(![[self trailer] getDictionaryForKey:"Root" value:&result])
     return nil;
@@ -61,8 +61,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return result;
 }
 
--(KGPDFDictionary *)infoDictionary {
-   KGPDFDictionary *result;
+-(O2PDFDictionary *)infoDictionary {
+   O2PDFDictionary *result;
    
    if(![[self trailer] getDictionaryForKey:"Info" value:&result])
     return nil;
@@ -70,8 +70,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return result;
 }
 
--(KGPDFDictionary *)encryptDictionary {
-   KGPDFDictionary *result;
+-(O2PDFDictionary *)encryptDictionary {
+   O2PDFDictionary *result;
    
    if(![[self trailer] getDictionaryForKey:"Encrypt" value:&result])
     return nil;
@@ -79,8 +79,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return result;
 }
 
--(KGPDFDictionary *)pagesRoot {
-   KGPDFDictionary *result;
+-(O2PDFDictionary *)pagesRoot {
+   O2PDFDictionary *result;
    
    if(![[self catalog] getDictionaryForKey:"Pages" value:&result])
     return nil;
@@ -89,7 +89,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(int)pageCount {
-   KGPDFInteger result;
+   O2PDFInteger result;
    
    if(![[self pagesRoot] getIntegerForKey:"Count" value:&result])
     return 0;
@@ -97,9 +97,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return result;
 }
 
--(KGPDFPage *)pageAtNumber:(int)pageNumber pages:(KGPDFDictionary *)pages pagesOffset:(int)pagesOffset {
-   KGPDFArray  *kids;
-   KGPDFInteger i,kidsCount,pageCount;
+-(O2PDFPage *)pageAtNumber:(int)pageNumber pages:(O2PDFDictionary *)pages pagesOffset:(int)pagesOffset {
+   O2PDFArray  *kids;
+   O2PDFInteger i,kidsCount,pageCount;
    
    if(![pages getArrayForKey:"Kids" value:&kids])
     return nil;
@@ -109,7 +109,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
    kidsCount=[kids count];
    for(i=0;i<kidsCount;i++){
-    KGPDFDictionary *check;
+    O2PDFDictionary *check;
     const char      *type;
         
     if(![kids getDictionaryAtIndex:i value:&check])
@@ -120,17 +120,17 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     
     if(strcmp(type,"Page")==0){
      if(pagesOffset==pageNumber)
-      return [KGPDFPage pdfPageWithDocument:self pageNumber:pageNumber dictionary:check];
+      return [O2PDFPage pdfPageWithDocument:self pageNumber:pageNumber dictionary:check];
       
      pagesOffset++;
     }
     else if(strcmp(type,"Pages")==0){
-     KGPDFPage *checkPage=[self pageAtNumber:pageNumber pages:check pagesOffset:pagesOffset];
+     O2PDFPage *checkPage=[self pageAtNumber:pageNumber pages:check pagesOffset:pagesOffset];
      
      if(checkPage!=nil)
       return checkPage;
      else {
-      KGPDFInteger checkCount;
+      O2PDFInteger checkCount;
      
       if(![check getIntegerForKey:"Count" value:&checkCount])
        return nil;
@@ -144,9 +144,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return nil;
 }
 
--(KGPDFPage *)pageAtNumber:(int)pageNumber {
-   KGPDFDictionary *pages=[self pagesRoot];
-   KGPDFPage       *page=[self pageAtNumber:pageNumber-1 pages:pages pagesOffset:0];
+-(O2PDFPage *)pageAtNumber:(int)pageNumber {
+   O2PDFDictionary *pages=[self pagesRoot];
+   O2PDFPage       *page=[self pageAtNumber:pageNumber-1 pages:pages pagesOffset:0];
 
    return page;
 }

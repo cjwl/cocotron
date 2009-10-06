@@ -14,7 +14,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSValue.h>
 #import <string.h>
 
-@implementation KGDataProvider
+@implementation O2DataProvider
 
 -initWithData:(NSData *)data {
    _inputStream=[[NSInputStream inputStreamWithData:data] retain];
@@ -51,6 +51,22 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [data release];
    
    return result;
+}
+
+O2DataProviderRef O2DataProviderCreateWithFilename(const char *pathCString) {
+   return [[O2DataProvider alloc] initWithFilename:pathCString];
+}
+
+O2DataProviderRef O2DataProviderRetain(O2DataProviderRef self) {
+   return [self retain];
+}
+
+void O2DataProviderRelease(O2DataProviderRef self) {
+   [self release];
+}
+
+NSData *O2DataProviderCopyData(O2DataProviderRef self) {
+   return [self copyData];
 }
 
 -(void)dealloc {

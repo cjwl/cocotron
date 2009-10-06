@@ -11,18 +11,18 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "KGPDFDictionary.h"
 #import <string.h>
 
-@implementation KGPDFOperatorTable
+@implementation O2PDFOperatorTable
 
-+(KGPDFOperatorTable *)renderingOperatorTable {
-   KGPDFOperatorTable *result=[[[KGPDFOperatorTable alloc] init] autorelease];
++(O2PDFOperatorTable *)renderingOperatorTable {
+   O2PDFOperatorTable *result=[[[O2PDFOperatorTable alloc] init] autorelease];
    
-   KGPDF_render_populateOperatorTable(result);
+   O2PDF_render_populateOperatorTable(result);
    
    return result;
 }
 
 -init {
-   _table=NSCreateMapTable(KGPDFOwnedCStringKeyCallBacks,NSNonOwnedPointerMapValueCallBacks,0);
+   _table=NSCreateMapTable(O2PDFOwnedCStringKeyCallBacks,NSNonOwnedPointerMapValueCallBacks,0);
    return self;
 }
 
@@ -31,11 +31,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [super dealloc];
 }
 
--(KGPDFOperatorCallback)callbackForName:(const char *)name {
+-(O2PDFOperatorCallback)callbackForName:(const char *)name {
    return NSMapGet(_table,name);
 }
 
--(void)setCallback:(KGPDFOperatorCallback)callback forName:(const char *)name {
+-(void)setCallback:(O2PDFOperatorCallback)callback forName:(const char *)name {
    char *copy=NSZoneMalloc(NULL,strlen(name)+1);
    
    strcpy(copy,name);

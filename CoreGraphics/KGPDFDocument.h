@@ -9,23 +9,23 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/Foundation.h>
 
-@class KGPDFString,KGPDFxref,KGPDFDictionary,KGPDFPage,KGDataProvider;
+@class O2PDFString,O2PDFxref,O2PDFDictionary,O2PDFPage,O2DataProvider;
 
-@interface KGPDFDocument : NSObject {
-   KGPDFString *_version;
-   KGPDFxref   *_xref;
+@interface O2PDFDocument : NSObject {
+   O2PDFString *_version;
+   O2PDFxref   *_xref;
 }
 
 -initWithData:(NSData *)data;
--initWithDataProvider:(KGDataProvider *)provider;
+-initWithDataProvider:(O2DataProvider *)provider;
 
--(KGPDFxref *)xref;
+-(O2PDFxref *)xref;
 
--(KGPDFDictionary *)catalog;
--(KGPDFDictionary *)infoDictionary;
--(KGPDFDictionary *)encryptDictionary;
+-(O2PDFDictionary *)catalog;
+-(O2PDFDictionary *)infoDictionary;
+-(O2PDFDictionary *)encryptDictionary;
 
 -(int)pageCount;
--(KGPDFPage *)pageAtNumber:(int)pageNumber;
+-(O2PDFPage *)pageAtNumber:(int)pageNumber;
 
 @end

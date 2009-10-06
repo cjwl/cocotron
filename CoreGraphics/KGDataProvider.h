@@ -11,7 +11,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @class NSData,NSInputStream,NSURL;
 
-@interface KGDataProvider : NSObject {
+@class O2DataProvider;
+
+typedef O2DataProvider *O2DataProviderRef;
+
+@interface O2DataProvider : NSObject {
    NSInputStream *_inputStream;
    NSData        *_data;
    NSString      *_path;
@@ -24,6 +28,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -initWithBytes:(const void *)bytes length:(size_t)length;
 -initWithFilename:(const char *)pathCString;
 -initWithURL:(NSURL *)url;
+
+O2DataProviderRef O2DataProviderCreateWithFilename(const char *pathCString);
+O2DataProviderRef O2DataProviderRetain(O2DataProviderRef self);
+void O2DataProviderRelease(O2DataProviderRef self);
+NSData *O2DataProviderCopyData(O2DataProviderRef self);
 
 -(NSInputStream *)inputStream;
 

@@ -9,9 +9,9 @@ THE SOFTWARE IS PROVIDED "AS IS",WITHOUT WARRANTY OF ANY KIND,EXPRESS OR IMPLIED
 #import <Foundation/NSObject.h>
 #import <CoreGraphics/CoreGraphicsExport.h>
 
-@class KGContext;
+@class O2Context;
 
-typedef KGContext *CGContextRef;
+typedef O2Context *CGContextRef;
 
 #import <CoreGraphics/CGGeometry.h>
 #import <CoreGraphics/CGAffineTransform.h>

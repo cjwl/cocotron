@@ -30,7 +30,7 @@
 #import "O2ColorSpace.h"
 #import "KGFunction.h"
 
-@implementation KGPaint_ramp
+@implementation O2Paint_ramp
 
 static inline void GrayAToRGBA(float *input,float *output){
    output[0]=input[0];
@@ -56,8 +56,6 @@ static inline void CMYKAToRGBA(float *input,float *output){
 }
 
 -initWithShading:(KGShading *)shading deviceTransform:(CGAffineTransform)deviceTransform numberOfSamples:(int)numberOfSamples {
-   [super init];
-
    m_surfaceToPaintMatrix=CGAffineTransformInvert(deviceTransform);
    
    _startPoint=[shading startPoint];
@@ -65,7 +63,7 @@ static inline void CMYKAToRGBA(float *input,float *output){
    _extendStart=[shading extendStart];
    _extendEnd=[shading extendEnd];
    
-   KGFunction      *function=[shading function];
+   O2Function      *function=[shading function];
    O2ColorSpace    *colorSpace=[shading colorSpace];
    O2ColorSpaceType colorSpaceType=[colorSpace type];
    float            output[[colorSpace numberOfComponents]+1];
@@ -93,6 +91,7 @@ static inline void CMYKAToRGBA(float *input,float *output){
    }
 
    _numberOfColorStops=numberOfSamples;
+   
    _colorStops=NSZoneMalloc(NULL,_numberOfColorStops*sizeof(GradientStop));
    int i;
    for(i=0;i<_numberOfColorStops;i++){
@@ -100,8 +99,9 @@ static inline void CMYKAToRGBA(float *input,float *output){
 
 // FIXME: This assumes range=0..1, we need to map this to the functions range
 
-    [function evaluateInput:_colorStops[i].offset output:output];
+    O2FunctionEvaluate(function,_colorStops[i].offset,output);
     outputToRGBA(output,rgba);
+    
     _colorStops[i].color=KGRGBAffffPremultiply(KGRGBAffffInit(rgba[0],rgba[1],rgba[2],rgba[3]));
    }
 
@@ -128,7 +128,7 @@ static KGRGBAffff readStopColor(GradientStop *colorRampStops,int colorRampStopsC
 	return  colorRampStops[i].color;
 }
 
-KGRGBAffff KGPaintIntegrateColorRamp(KGPaint_ramp *self,CGFloat gmin, CGFloat gmax) {
+KGRGBAffff O2PaintIntegrateColorRamp(O2Paint_ramp *self,CGFloat gmin, CGFloat gmax) { 
 	RI_ASSERT(gmin <= gmax);
 	RI_ASSERT(gmin >= 0.0f && gmin <= 1.0f);
 	RI_ASSERT(gmax >= 0.0f && gmax <= 1.0f);
@@ -180,6 +180,7 @@ KGRGBAffff KGPaintIntegrateColorRamp(KGPaint_ramp *self,CGFloat gmin, CGFloat gm
 			break;
 		}
 	}
+
 	return c;
 }
 
@@ -190,7 +191,7 @@ KGRGBAffff KGPaintIntegrateColorRamp(KGPaint_ramp *self,CGFloat gmin, CGFloat gm
 * \note		
 *//*-------------------------------------------------------------------*/
 
-KGRGBAffff KGPaintColorRamp(KGPaint_ramp *self,CGFloat gradient, CGFloat rho)  {
+KGRGBAffff O2PaintColorRamp(O2Paint_ramp *self,CGFloat gradient, CGFloat rho,int *skip)  {
 	RI_ASSERT(self);
 	RI_ASSERT(rho >= 0.0f);
 
@@ -222,13 +223,19 @@ KGRGBAffff KGPaintColorRamp(KGPaint_ramp *self,CGFloat gradient, CGFloat rho)  {
 	CGFloat gmin = gradient - rho*0.5f;			//filter starting from the gradient point (if starts earlier, radial gradient center will be an average of the first and the last stop, which doesn't look good)
 	CGFloat gmax = gradient + rho*0.5f;
 
+    if(gmin<0.0f){
+     *skip=0;
+    }
+    if(gmax>1.0f){
+     *skip=0;
+    }
 		if(gmin < 0.0f)
 			c=KGRGBAffffAdd(c,KGRGBAffffMultiplyByFloat(readStopColor(self->_colorStops,self->_numberOfColorStops, 0), (RI_MIN(gmax, 0.0f) - gmin)));
 		if(gmax > 1.0f)
 			c=KGRGBAffffAdd(c,KGRGBAffffMultiplyByFloat(readStopColor(self->_colorStops,self->_numberOfColorStops, self->_numberOfColorStops-1) , (gmax - RI_MAX(gmin, 1.0f))));
 		gmin = RI_CLAMP(gmin, 0.0f, 1.0f);
 		gmax = RI_CLAMP(gmax, 0.0f, 1.0f);
-		c=KGRGBAffffAdd(c, KGPaintIntegrateColorRamp(self,gmin, gmax));
+		c=KGRGBAffffAdd(c, O2PaintIntegrateColorRamp(self,gmin, gmax));
 		c=KGRGBAffffMultiplyByFloat(c , 1.0f/rho);
 		c=KGRGBAffffClamp(c);	//clamp needed due to numerical inaccuracies
 		return c;

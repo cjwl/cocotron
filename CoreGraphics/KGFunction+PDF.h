@@ -1,9 +1,9 @@
 #import "KGFunction.h"
 
-@class KGPDFArray,KGPDFDictionary,KGPDFObject,KGPDFContext;
+@class O2PDFArray,O2PDFDictionary,O2PDFObject,O2PDFContext;
 
-@interface KGFunction(PDF)
--initWithDomain:(KGPDFArray *)domain range:(KGPDFArray *)range;  
--(KGPDFObject *)encodeReferenceWithContext:(KGPDFContext *)context;
-+(KGFunction *)pdfFunctionWithDictionary:(KGPDFDictionary *)dictionary;
+@interface O2Function(PDF)
+-initWithDomain:(O2PDFArray *)domain range:(O2PDFArray *)range;  
+-(O2PDFObject *)encodeReferenceWithContext:(O2PDFContext *)context;
++(O2Function *)pdfFunctionWithDictionary:(O2PDFDictionary *)dictionary;
 @end

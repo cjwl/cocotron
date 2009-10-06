@@ -9,16 +9,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSObject.h>
 #import <CoreGraphics/CoreGraphics.h>
 
-@class KGContext,NSDictionary;
+@class O2Context,NSDictionary;
 
 @interface KGLayer : NSObject {
    CGSize        _size;
    NSDictionary *_unused;
 }
 
--initRelativeToContext:(KGContext *)context size:(CGSize)size unused:(NSDictionary *)unused;
+-initRelativeToContext:(O2Context *)context size:(CGSize)size unused:(NSDictionary *)unused;
 
 -(CGSize)size;
--(KGContext *)context;
+-(O2Context *)context;
 
 @end

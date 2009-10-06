@@ -17,14 +17,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "KGzlib.h"
 #import <string.h>
 
-NSData *KGPDFFilterWithName(const char *name,NSData *data,KGPDFDictionary *parameters) {
-   return [KGPDFFilter decodeWithName:name data:data parameters:parameters];
+NSData *O2PDFFilterWithName(const char *name,NSData *data,O2PDFDictionary *parameters) {
+   return [O2PDFFilter decodeWithName:name data:data parameters:parameters];
 }
 
-@implementation KGPDFFilter
+@implementation O2PDFFilter
 
 
-+(NSData *)FlateDecode_data:(NSData *)data parameters:(KGPDFDictionary *)parameters {
++(NSData *)FlateDecode_data:(NSData *)data parameters:(O2PDFDictionary *)parameters {
    int len;
    unsigned char *result=stbi_zlib_decode_malloc([data bytes],[data length],&len);
    
@@ -34,13 +34,13 @@ NSData *KGPDFFilterWithName(const char *name,NSData *data,KGPDFDictionary *param
    return [NSData dataWithBytesNoCopy:result length:len];
 }
 
-+(NSData *)LZWDecode_data:(NSData *)data parameters:(KGPDFDictionary *)parameters {
++(NSData *)LZWDecode_data:(NSData *)data parameters:(O2PDFDictionary *)parameters {
    return nil;
 }
 
-+(NSData *)decodeWithName:(const char *)name data:(NSData *)data parameters:(KGPDFDictionary *)parameters {
++(NSData *)decodeWithName:(const char *)name data:(NSData *)data parameters:(O2PDFDictionary *)parameters {
    if((strcmp(name,"FlateDecode")==0) || (strcmp(name,"LZWDecode")==0)){
-    KGPDFInteger predictor;
+    O2PDFInteger predictor;
     
     if(strcmp(name,"FlateDecode")==0)
      data=[self FlateDecode_data:data parameters:parameters];
@@ -52,9 +52,9 @@ NSData *KGPDFFilterWithName(const char *name,NSData *data,KGPDFDictionary *param
       NSMutableData *mutable=[NSMutableData data];
       const  char *bytes=[data bytes];
       unsigned             length=[data length];
-      KGPDFInteger colors;
-      KGPDFInteger bitsPerComponent;
-      KGPDFInteger columns;
+      O2PDFInteger colors;
+      O2PDFInteger bitsPerComponent;
+      O2PDFInteger columns;
       int          bytesPerRow;
       int          row,rowLength,numberOfRows;
       
@@ -118,7 +118,7 @@ NSData *KGPDFFilterWithName(const char *name,NSData *data,KGPDFDictionary *param
    
     return data;
    }
-   NSLog(@"Unknown KGPDFFilter name = %s, parameters=%@",name,parameters);
+   NSLog(@"Unknown O2PDFFilter name = %s, parameters=%@",name,parameters);
    return nil;
 }
 

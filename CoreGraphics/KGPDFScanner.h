@@ -9,38 +9,38 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "KGPDFObject.h"
 
 @class NSData,NSMutableArray;
-@class KGPDFContentStream,KGPDFOperatorTable;
-@class KGPDFString,KGPDFArray,KGPDFDictionary,KGPDFStream,KGPDFxref,KGPDFObject_identifier;
+@class O2PDFContentStream,O2PDFOperatorTable;
+@class O2PDFString,O2PDFArray,O2PDFDictionary,O2PDFStream,O2PDFxref,O2PDFObject_identifier;
 
-BOOL KGPDFScanBackwardsByLines(const char *bytes,unsigned length,KGPDFInteger position,KGPDFInteger *lastPosition,int delta);
-BOOL KGPDFScanVersion(const char *bytes,unsigned length,KGPDFString **string);
-BOOL KGPDFScanObject(const char *bytes,unsigned length,KGPDFInteger position,KGPDFInteger *lastPosition,KGPDFObject **objectp);
-BOOL KGPDFScanIdentifier(const char *bytes,unsigned length,KGPDFInteger position,KGPDFInteger *lastPosition,KGPDFObject_identifier **identifier);
-BOOL KGPDFScanInteger(const char *bytes,unsigned length,KGPDFInteger position,KGPDFInteger *lastPosition,KGPDFInteger *value);
+BOOL O2PDFScanBackwardsByLines(const char *bytes,unsigned length,O2PDFInteger position,O2PDFInteger *lastPosition,int delta);
+BOOL O2PDFScanVersion(const char *bytes,unsigned length,O2PDFString **string);
+BOOL O2PDFScanObject(const char *bytes,unsigned length,O2PDFInteger position,O2PDFInteger *lastPosition,O2PDFObject **objectp);
+BOOL O2PDFScanIdentifier(const char *bytes,unsigned length,O2PDFInteger position,O2PDFInteger *lastPosition,O2PDFObject_identifier **identifier);
+BOOL O2PDFScanInteger(const char *bytes,unsigned length,O2PDFInteger position,O2PDFInteger *lastPosition,O2PDFInteger *value);
 
-BOOL KGPDFParse_xref(NSData *data,KGPDFxref **xrefp);
-BOOL KGPDFParseIndirectObject(NSData *data,KGPDFInteger position,KGPDFObject **objectp,KGPDFInteger number,KGPDFInteger generation,KGPDFxref *xref);
+BOOL O2PDFParse_xref(NSData *data,O2PDFxref **xrefp);
+BOOL O2PDFParseIndirectObject(NSData *data,O2PDFInteger position,O2PDFObject **objectp,O2PDFInteger number,O2PDFInteger generation,O2PDFxref *xref);
 
-@interface KGPDFScanner : NSObject {
+@interface O2PDFScanner : NSObject {
    NSMutableArray     *_stack;
-   KGPDFContentStream *_stream;
-   KGPDFOperatorTable *_operatorTable;
+   O2PDFContentStream *_stream;
+   O2PDFOperatorTable *_operatorTable;
    void               *_info;
 }
 
--initWithContentStream:(KGPDFContentStream *)stream operatorTable:(KGPDFOperatorTable *)operatorTable info:(void *)info;
+-initWithContentStream:(O2PDFContentStream *)stream operatorTable:(O2PDFOperatorTable *)operatorTable info:(void *)info;
 
--(KGPDFContentStream *)contentStream;
+-(O2PDFContentStream *)contentStream;
 
--(BOOL)popObject:(KGPDFObject **)value;
--(BOOL)popBoolean:(KGPDFBoolean *)value;
--(BOOL)popInteger:(KGPDFInteger *)value;
--(BOOL)popNumber:(KGPDFReal *)value;
+-(BOOL)popObject:(O2PDFObject **)value;
+-(BOOL)popBoolean:(O2PDFBoolean *)value;
+-(BOOL)popInteger:(O2PDFInteger *)value;
+-(BOOL)popNumber:(O2PDFReal *)value;
 -(BOOL)popName:(const char **)value;
--(BOOL)popString:(KGPDFString **)stringp;
--(BOOL)popArray:(KGPDFArray **)arrayp;
--(BOOL)popDictionary:(KGPDFDictionary **)dictionaryp;
--(BOOL)popStream:(KGPDFStream **)streamp;
+-(BOOL)popString:(O2PDFString **)stringp;
+-(BOOL)popArray:(O2PDFArray **)arrayp;
+-(BOOL)popDictionary:(O2PDFDictionary **)dictionaryp;
+-(BOOL)popStream:(O2PDFStream **)streamp;
 
 -(BOOL)scan;
 

@@ -28,40 +28,75 @@
 #import "KGPaint_axialGradient.h"
 #import "KGShading.h"
 
-@implementation KGPaint_axialGradient
+@implementation O2Paint_axialGradient
 
-static inline KGRGBAffff linearGradientColorAt(KGPaint_axialGradient *self,int x,int y){
-   CGFloat g;
+static int linear_span_lRGBA8888_PRE(O2Paint *selfX,int x,int y,KGRGBA8888 *span,int length){
+   O2Paint_axialGradient *self=(O2Paint_axialGradient *)selfX;
+   int i;
+   int previous=-1;
+   CGPoint point=CGPointMake(x+0.5f, y+0.5f);
+   CGSize  delta=CGSizeMake(1.0f,0.0f);
    
-   if(self->_rho==0.0f)	//points are equal, gradient is always 1.0f
-    g=1.0f;
-   else {
-    CGPoint p=CGPointApplyAffineTransform(CGPointMake(x+0.5f, y+0.5f),self->m_surfaceToPaintMatrix);
+   point=CGPointApplyAffineTransform(point,self->m_surfaceToPaintMatrix);
+   point=Vector2Subtract(point,self->_startPoint);
+   delta=CGSizeApplyAffineTransform(delta,self->m_surfaceToPaintMatrix);
+   
+   for(i=0;i<length;i++,x++,point.x+=delta.width){
+    CGFloat g;
     
-    p=Vector2Subtract(p,self->_startPoint);
+    if(self->_rho==0.0f)	//points are equal, gradient is always 1.0f
+     g=1.0f;
+    else { 
+     CGPoint p=point;   
 
-    g=Vector2Dot(p, self->_u) * self->_oou;
+     g=Vector2Dot(p, self->_u)*self->_oou;
+    }
+
+    int skip=0;
+    KGRGBAffff  value=O2PaintColorRamp(self,g, self->_rho,&skip);
+    
+    if(skip!=previous){
+     if(previous==-1)
+      previous=skip;
+     else
+      return (previous==1)?-i:i;
+    }
+    
+    span[i]=KGRGBA8888FromKGRGBAffff(value);
    }
-   
-   return KGPaintColorRamp(self,g, self->_rho);
+   return (previous==1)?-length:length;
 }
 
-static void linear_span_lRGBA8888_PRE(KGPaint *selfX,int x,int y,KGRGBA8888 *span,int length){
-   KGPaint_axialGradient *self=(KGPaint_axialGradient *)selfX;
+static int linear_span_lRGBAffff_PRE(O2Paint *selfX,int x,int y,KGRGBAffff *span,int length){
+   O2Paint_axialGradient *self=(O2Paint_axialGradient *)selfX;
    int i;
+   int previous=-1;
    
    for(i=0;i<length;i++,x++){
-    span[i]=KGRGBA8888FromKGRGBAffff(linearGradientColorAt(self,x,y));
-   }
-}
+    CGFloat g;
+    
+    if(self->_rho==0.0f)	//points are equal, gradient is always 1.0f
+     g=1.0f;
+    else {    
+     CGPoint p=CGPointMake(x+0.5f, y+0.5f);
+     p=CGPointApplyAffineTransform(p,self->m_surfaceToPaintMatrix);
+     p=Vector2Subtract(p,self->_startPoint);
+     g=Vector2Dot(p, self->_u)*self->_oou;
+    }
 
-static void linear_span_lRGBAffff_PRE(KGPaint *selfX,int x,int y,KGRGBAffff *span,int length){
-   KGPaint_axialGradient *self=(KGPaint_axialGradient *)selfX;
-   int i;
-   
-   for(i=0;i<length;i++,x++){
-    span[i]=linearGradientColorAt(self,x,y);
+    int skip=0;
+    KGRGBAffff  value=O2PaintColorRamp(self,g, self->_rho,&skip);
+    
+    if(skip!=previous){
+     if(previous==-1)
+      previous=skip;
+     else
+      return (previous==1)?-i:i;
+    }
+    
+    span[i]=(value);
    }
+   return (previous==1)?-length:length;
 }
 
 -initWithShading:(KGShading *)shading deviceTransform:(CGAffineTransform)deviceTransform {
@@ -78,8 +113,8 @@ static void linear_span_lRGBAffff_PRE(KGPaint *selfX,int x,int y,KGRGBAffff *spa
 
    [super initWithShading:shading deviceTransform:deviceTransform numberOfSamples:numberOfSamples];
 
-   _read_lRGBA8888_PRE=linear_span_lRGBA8888_PRE;
-   _read_lRGBAffff_PRE=linear_span_lRGBAffff_PRE;
+   _paint_lRGBA8888_PRE=linear_span_lRGBA8888_PRE;
+   _paint_lRGBAffff_PRE=linear_span_lRGBAffff_PRE;
    _u=Vector2Subtract(_endPoint,_startPoint);
    CGFloat usq=Vector2Dot(_u,_u);
    

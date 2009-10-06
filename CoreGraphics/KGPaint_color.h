@@ -28,7 +28,7 @@
 
 #import "KGPaint.h"
 
-@interface KGPaint_color : KGPaint {
+@interface O2Paint_color : O2Paint {
    VGColor m_paintColor;
    KGRGBAffff _RGBAffff_PRE;
    KGRGBA8888 _RGBA8888_PRE;

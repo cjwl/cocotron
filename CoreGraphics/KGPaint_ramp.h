@@ -34,7 +34,7 @@ typedef struct  {
    KGRGBAffff color;
 } GradientStop;
 
-@interface KGPaint_ramp : KGPaint {
+@interface O2Paint_ramp : O2Paint {
    CGPoint _startPoint;
    CGPoint _endPoint;
    BOOL    _extendStart;
@@ -44,8 +44,8 @@ typedef struct  {
    GradientStop *_colorStops;
 }
 
-KGRGBAffff KGPaintIntegrateColorRamp(KGPaint_ramp *self,CGFloat gmin, CGFloat gmax);
-KGRGBAffff KGPaintColorRamp(KGPaint_ramp *self,CGFloat gradient, CGFloat rho);
+KGRGBAffff O2PaintIntegrateColorRamp(O2Paint_ramp *self,CGFloat gmin, CGFloat gmax);
+KGRGBAffff O2PaintColorRamp(O2Paint_ramp *self,CGFloat gradient, CGFloat rho,int *skip);
 
 -initWithShading:(KGShading *)shading deviceTransform:(CGAffineTransform)deviceTransform numberOfSamples:(int)numberOfSamples;
 

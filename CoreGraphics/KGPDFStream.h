@@ -9,22 +9,22 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "KGPDFObject.h"
 
 @class NSData,NSMutableData;
-@class KGPDFDictionary,KGPDFxref;
+@class O2PDFDictionary,O2PDFxref;
 
-@interface KGPDFStream : KGPDFObject {
-   KGPDFDictionary *_dictionary;
+@interface O2PDFStream : O2PDFObject {
+   O2PDFDictionary *_dictionary;
    NSData          *_data;
-   KGPDFxref       *_xref;
+   O2PDFxref       *_xref;
 }
 
-+(KGPDFStream *)pdfStream;
-+(KGPDFStream *)pdfStreamWithData:(NSData *)data;
-+(KGPDFStream *)pdfStreamWithBytes:(const void *)bytes length:(unsigned)length;
++(O2PDFStream *)pdfStream;
++(O2PDFStream *)pdfStreamWithData:(NSData *)data;
++(O2PDFStream *)pdfStreamWithBytes:(const void *)bytes length:(unsigned)length;
 
--initWithDictionary:(KGPDFDictionary *)dictionary xref:(KGPDFxref *)xref position:(KGPDFInteger)position;
+-initWithDictionary:(O2PDFDictionary *)dictionary xref:(O2PDFxref *)xref position:(O2PDFInteger)position;
 
--(KGPDFxref *)xref;
--(KGPDFDictionary *)dictionary;
+-(O2PDFxref *)xref;
+-(O2PDFDictionary *)dictionary;
 -(NSData *)data;
 -(NSMutableData *)mutableData;
 

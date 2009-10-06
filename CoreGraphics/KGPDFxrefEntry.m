@@ -9,16 +9,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "KGPDFxrefEntry.h"
 #import "KGPDFObject.h"
 
-@implementation KGPDFxrefEntry
+@implementation O2PDFxrefEntry
 
--initWithPosition:(KGPDFInteger)position number:(KGPDFInteger)number generation:(KGPDFInteger)generation {
+-initWithPosition:(O2PDFInteger)position number:(O2PDFInteger)number generation:(O2PDFInteger)generation {
    _position=position;
    _number=number;
    _generation=generation;
    return self;
 }
 
-+(KGPDFxrefEntry *)xrefEntryWithPosition:(KGPDFInteger)position number:(KGPDFInteger)number generation:(KGPDFInteger)generation {
++(O2PDFxrefEntry *)xrefEntryWithPosition:(O2PDFInteger)position number:(O2PDFInteger)number generation:(O2PDFInteger)generation {
    return [[[self alloc] initWithPosition:position number:number generation:generation] autorelease];
 }
 
@@ -27,9 +27,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(BOOL)isEqual:other {
-   KGPDFxrefEntry *otherEntry;
+   O2PDFxrefEntry *otherEntry;
    
-   if(![other isKindOfClass:[KGPDFxrefEntry class]])
+   if(![other isKindOfClass:[O2PDFxrefEntry class]])
     return NO;
    
    otherEntry=other;
@@ -37,19 +37,19 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return (_number==otherEntry->_number) && (_generation==otherEntry->_generation);
 }
 
--(KGPDFInteger)position {
+-(O2PDFInteger)position {
    return _position;
 }
 
--(KGPDFInteger)number {
+-(O2PDFInteger)number {
    return _number;
 }
 
--(KGPDFInteger)generation {
+-(O2PDFInteger)generation {
    return _generation;
 }
 
--(void)setPosition:(KGPDFInteger)value {
+-(void)setPosition:(O2PDFInteger)value {
    _position=value;
 }
 

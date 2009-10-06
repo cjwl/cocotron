@@ -14,9 +14,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "KGPDFDictionary.h"
 #import "KGPDFArray.h"
 
-@implementation KGPDFPage
+@implementation O2PDFPage
 
--initWithDocument:(KGPDFDocument *)document pageNumber:(int)pageNumber dictionary:(KGPDFDictionary *)dictionary {
+-initWithDocument:(O2PDFDocument *)document pageNumber:(int)pageNumber dictionary:(O2PDFDictionary *)dictionary {
    _document=[document retain];
    _pageNumber=pageNumber;
    _dictionary=[dictionary retain];
@@ -29,11 +29,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [super dealloc];
 }
 
-+(KGPDFPage *)pdfPageWithDocument:(KGPDFDocument *)document pageNumber:(int)pageNumber dictionary:(KGPDFDictionary *)dictionary {
++(O2PDFPage *)pdfPageWithDocument:(O2PDFDocument *)document pageNumber:(int)pageNumber dictionary:(O2PDFDictionary *)dictionary {
    return [[[self alloc] initWithDocument:document pageNumber:pageNumber dictionary:dictionary] autorelease];
 }
 
--(KGPDFDocument *)document {
+-(O2PDFDocument *)document {
    return _document;
 }
 
@@ -41,15 +41,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return _pageNumber;
 }
 
--(KGPDFDictionary *)dictionary {
+-(O2PDFDictionary *)dictionary {
    return _dictionary;
 }
 
-BOOL KGPDFGetPageObjectForKey(KGPDFPage *page,const char *key,KGPDFObject **object){
-   KGPDFDictionary *dictionary=[page dictionary];
+BOOL O2PDFGetPageObjectForKey(O2PDFPage *page,const char *key,O2PDFObject **object){
+   O2PDFDictionary *dictionary=[page dictionary];
    
    do{
-    KGPDFObject *check;
+    O2PDFObject *check;
     
     if([dictionary getObjectForKey:key value:&check]){
      *object=check;
@@ -61,10 +61,10 @@ BOOL KGPDFGetPageObjectForKey(KGPDFPage *page,const char *key,KGPDFObject **obje
    return NO;
 }
 
-BOOL KGPDFGetPageArrayForKey(KGPDFPage *page,const char *key,KGPDFArray **arrayp){
-   KGPDFObject *check;
+BOOL O2PDFGetPageArrayForKey(O2PDFPage *page,const char *key,O2PDFArray **arrayp){
+   O2PDFObject *check;
    
-   if(!KGPDFGetPageObjectForKey(page,key,&check))
+   if(!O2PDFGetPageObjectForKey(page,key,&check))
     return NO;
     
    return [check checkForType:kKGPDFObjectTypeArray value:arrayp];
@@ -72,8 +72,8 @@ BOOL KGPDFGetPageArrayForKey(KGPDFPage *page,const char *key,KGPDFArray **arrayp
 
 -(BOOL)getRect:(CGRect *)rect forBox:(CGPDFBox)box {
    const char *string=NULL;
-   KGPDFArray *array;
-   KGPDFReal  *numbers;
+   O2PDFArray *array;
+   O2PDFReal  *numbers;
    unsigned    count;
    
    switch(box){
@@ -86,7 +86,7 @@ BOOL KGPDFGetPageArrayForKey(KGPDFPage *page,const char *key,KGPDFArray **arrayp
    
    if(string==NULL)
     return NO;
-   if(!KGPDFGetPageArrayForKey(self,string,&array))
+   if(!O2PDFGetPageArrayForKey(self,string,&array))
     return NO;
    
    if(![array getNumbers:&numbers count:&count])
@@ -125,10 +125,10 @@ BOOL KGPDFGetPageArrayForKey(KGPDFPage *page,const char *key,KGPDFArray **arrayp
    return result;
 }
 
--(void)drawInContext:(KGContext *)context {
-   KGPDFContentStream *contentStream=[[[KGPDFContentStream alloc] initWithPage:self] autorelease];
-   KGPDFOperatorTable *operatorTable=[KGPDFOperatorTable renderingOperatorTable];
-   KGPDFScanner       *scanner=[[[KGPDFScanner alloc] initWithContentStream:contentStream operatorTable:operatorTable info:context] autorelease];
+-(void)drawInContext:(O2Context *)context {
+   O2PDFContentStream *contentStream=[[[O2PDFContentStream alloc] initWithPage:self] autorelease];
+   O2PDFOperatorTable *operatorTable=[O2PDFOperatorTable renderingOperatorTable];
+   O2PDFScanner       *scanner=[[[O2PDFScanner alloc] initWithContentStream:contentStream operatorTable:operatorTable info:context] autorelease];
 
    [scanner scan];
 }

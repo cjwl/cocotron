@@ -8,7 +8,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/Foundation.h>
 
-@class KGContext,CGEvent;
+@class O2Context,CGEvent;
 
 @interface CGWindow : NSObject
 
@@ -17,7 +17,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)invalidate;
 
--(KGContext *)cgContext;
+-(O2Context *)cgContext;
 
 -(void)setTitle:(NSString *)title;
 -(void)setFrame:(NSRect)frame;

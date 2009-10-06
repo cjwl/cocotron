@@ -8,7 +8,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import "KGPDFObject.h"
 
-@interface KGPDFString : KGPDFObject {
+@interface O2PDFString : O2PDFObject {
    unsigned _length:31;
    unsigned _noCopyNoFree:1;
    char    *_bytes;

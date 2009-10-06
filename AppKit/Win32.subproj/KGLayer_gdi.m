@@ -3,7 +3,7 @@
 
 @implementation KGLayer_gdi
 
--initRelativeToContext:(KGContext *)context size:(NSSize)size unused:(NSDictionary *)unused {
+-initRelativeToContext:(O2Context *)context size:(NSSize)size unused:(NSDictionary *)unused {
    [super initRelativeToContext:context size:size unused:unused];
    _context=[[KGContext_gdi alloc] initWithSize:size context:context];
    return self;
@@ -15,7 +15,7 @@
    [super dealloc];
 }
 
--(KGContext *)cgContext {
+-(O2Context *)cgContext {
    return _context;
 }
 

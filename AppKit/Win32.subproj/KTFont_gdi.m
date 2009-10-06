@@ -387,7 +387,7 @@ static inline CGGlyphMetrics *fetchGlyphAdvancementIfNeeded(KTFont_gdi *self,CGG
    _metrics.underlinePosition=ttMetrics->otmsUnderscorePosition;
 }
 
--initWithFont:(KGFont *)font size:(CGFloat)size {
+-initWithFont:(O2Font *)font size:(CGFloat)size {
    [super initWithFont:font size:size];
    [self fetchMetrics];
    _glyphRangeTable=NULL;
@@ -398,7 +398,7 @@ static inline CGGlyphMetrics *fetchGlyphAdvancementIfNeeded(KTFont_gdi *self,CGG
 }
 
 -initWithUIFontType:(CTFontUIFontType)uiFontType size:(CGFloat)size language:(NSString *)language {
-   KGFont *font=nil;
+   O2Font *font=nil;
    
    switch(uiFontType){
   
@@ -406,7 +406,7 @@ static inline CGGlyphMetrics *fetchGlyphAdvancementIfNeeded(KTFont_gdi *self,CGG
     case kCTFontMenuItemFontType:
      if(size==0)
       size=10;
-     font=[KGFont createWithFontName:@"Tahoma"];
+     font=[O2Font createWithFontName:@"Tahoma"];
      
 #if 0
 // We should be able to get the menu font but this doesnt work

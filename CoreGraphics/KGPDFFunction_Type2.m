@@ -14,10 +14,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <stddef.h>
 #import <math.h>
 
-@implementation KGPDFFunction_Type2
+@implementation O2PDFFunction_Type2
 
 static void evaluate(void *info,const float *input,float *output) {
-   KGPDFFunction_Type2 *self=info;
+   O2PDFFunction_Type2 *self=info;
    float x=input[0];
    int i;
    
@@ -33,7 +33,7 @@ static void evaluate(void *info,const float *input,float *output) {
    }
 }
 
--initWithDomain:(KGPDFArray *)domain range:(KGPDFArray *)range C0:(KGPDFArray *)C0 C1:(KGPDFArray *)C1 N:(KGPDFReal)N {
+-initWithDomain:(O2PDFArray *)domain range:(O2PDFArray *)range C0:(O2PDFArray *)C0 C1:(O2PDFArray *)C1 N:(O2PDFReal)N {
    if([super initWithDomain:domain range:range]==nil)
     return nil;
    
@@ -80,14 +80,14 @@ static void evaluate(void *info,const float *input,float *output) {
    return (_N==1.0)?YES:NO;
 }
 
--(KGPDFObject *)encodeReferenceWithContext:(KGPDFContext *)context {
-   KGPDFDictionary *result=[KGPDFDictionary pdfDictionary];
+-(O2PDFObject *)encodeReferenceWithContext:(O2PDFContext *)context {
+   O2PDFDictionary *result=[O2PDFDictionary pdfDictionary];
    
    [result setIntegerForKey:"FunctionType" value:2];
-   [result setObjectForKey:"Domain" value:[KGPDFArray pdfArrayWithNumbers:_domain count:_domainCount]];
-   [result setObjectForKey:"Range" value:[KGPDFArray pdfArrayWithNumbers:_range count:_rangeCount]];
-   [result setObjectForKey:"C0" value:[KGPDFArray pdfArrayWithNumbers:_C0 count:_C0Count]];
-   [result setObjectForKey:"C1" value:[KGPDFArray pdfArrayWithNumbers:_C1 count:_C1Count]];
+   [result setObjectForKey:"Domain" value:[O2PDFArray pdfArrayWithNumbers:_domain count:_domainCount]];
+   [result setObjectForKey:"Range" value:[O2PDFArray pdfArrayWithNumbers:_range count:_rangeCount]];
+   [result setObjectForKey:"C0" value:[O2PDFArray pdfArrayWithNumbers:_C0 count:_C0Count]];
+   [result setObjectForKey:"C1" value:[O2PDFArray pdfArrayWithNumbers:_C1 count:_C1Count]];
    [result setNumberForKey:"N" value:_N];
    
    return [context encodeIndirectPDFObject:result];

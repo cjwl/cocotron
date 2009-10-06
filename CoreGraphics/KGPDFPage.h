@@ -9,22 +9,22 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSObject.h>
 #import <CoreGraphics/CoreGraphics.h>
 
-@class KGPDFDocument,KGPDFDictionary,KGContext;
+@class O2PDFDocument,O2PDFDictionary,O2Context;
 
-@interface KGPDFPage : NSObject {
-   KGPDFDocument   *_document;
+@interface O2PDFPage : NSObject {
+   O2PDFDocument   *_document;
    int                _pageNumber;
-   KGPDFDictionary *_dictionary;
+   O2PDFDictionary *_dictionary;
 }
 
--initWithDocument:(KGPDFDocument *)document pageNumber:(int)pageNumber dictionary:(KGPDFDictionary *)dictionary;
+-initWithDocument:(O2PDFDocument *)document pageNumber:(int)pageNumber dictionary:(O2PDFDictionary *)dictionary;
 
-+(KGPDFPage *)pdfPageWithDocument:(KGPDFDocument *)document pageNumber:(int)pageNumber dictionary:(KGPDFDictionary *)dictionary;
++(O2PDFPage *)pdfPageWithDocument:(O2PDFDocument *)document pageNumber:(int)pageNumber dictionary:(O2PDFDictionary *)dictionary;
 
--(KGPDFDocument *)document;
+-(O2PDFDocument *)document;
 -(int)pageNumber;
 
--(KGPDFDictionary *)dictionary;
+-(O2PDFDictionary *)dictionary;
 
 -(BOOL)getRect:(CGRect *)rect forBox:(CGPDFBox)box;
 
@@ -32,6 +32,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(CGAffineTransform)drawingTransformForBox:(CGPDFBox)box inRect:(CGRect)rect rotate:(int)degrees preserveAspectRatio:(BOOL)preserveAspectRatio;
 
--(void)drawInContext:(KGContext *)context;
+-(void)drawInContext:(O2Context *)context;
 
 @end

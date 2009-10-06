@@ -8,10 +8,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/NSObject.h>
 #import <CoreGraphics/CoreGraphics.h>
+#import "KGFont.h"
 
-@class KGImage,O2ColorSpace,O2Color,KGPattern,O2MutablePath,O2Path,NSArray,NSMutableArray,KGFont;
+@class O2Image,O2ColorSpace,O2Color,KGPattern,O2MutablePath,O2Path,NSArray,NSMutableArray,O2Font;
 
-@interface KGGraphicsState : NSObject <NSCopying> {
+@interface O2GState : NSObject <NSCopying> {
 @public
    CGAffineTransform   _deviceSpaceTransform;
    CGAffineTransform   _userSpaceTransform;
@@ -20,7 +21,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    NSMutableArray     *_clipPhases;
    O2Color            *_strokeColor;
    O2Color            *_fillColor;
-   KGFont             *_font;
+   O2FontRef           _font;
    CGFloat             _pointSize;
    CGTextEncoding      _textEncoding;
    id                  _fontState;
@@ -74,7 +75,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)removeAllClipPhases;
 -(void)addClipToPath:(O2Path *)path;
 -(void)addEvenOddClipToPath:(O2Path *)path;
--(void)addClipToMask:(KGImage *)image inRect:(CGRect)rect;
+-(void)addClipToMask:(O2Image *)image inRect:(CGRect)rect;
 
 -(O2Color *)strokeColor;
 -(O2Color *)fillColor;
@@ -90,13 +91,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)setTextPosition:(float)x:(float)y;
 -(void)setCharacterSpacing:(float)spacing;
 -(void)setTextDrawingMode:(int)textMode;
--(KGFont *)font;
+-(O2Font *)font;
 -(CGFloat)pointSize;
 -(CGTextEncoding)textEncoding;
 -(CGGlyph *)glyphTableForTextEncoding;
 -(id)fontState;
 -(void)setFontState:(id)fontState;
--(void)setFont:(KGFont *)font;
+-(void)setFont:(O2Font *)font;
 -(void)setFontSize:(float)size;
 -(void)selectFontWithName:(const char *)name size:(float)size encoding:(CGTextEncoding)encoding;
 -(void)setShouldSmoothFonts:(BOOL)yesOrNo;

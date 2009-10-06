@@ -28,9 +28,9 @@
 #import "KGPaint_radialGradient.h"
 #import "KGShading.h"
 
-@implementation KGPaint_radialGradient
+@implementation O2Paint_radialGradient
 
-void KGPaintRadialGradient(KGPaint_radialGradient *self,CGFloat *g, CGFloat *rho, CGFloat x, CGFloat y) {
+void O2PaintRadialGradient(O2Paint_radialGradient *self,CGFloat *g, CGFloat *rho, CGFloat x, CGFloat y) {
 	RI_ASSERT(self);
 	if( self->_endRadius <= 0.0f )
 	{
@@ -65,38 +65,63 @@ void KGPaintRadialGradient(KGPaint_radialGradient *self,CGFloat *g, CGFloat *rho
 }
 
 
-static inline KGRGBAffff radialGradientColorAt(KGPaint_radialGradient *self,int x,int y){
+static inline KGRGBAffff radialGradientColorAt(O2Paint_radialGradient *self,int x,int y,int *skip){
    KGRGBAffff result;
    
    CGFloat g, rho;
-   KGPaintRadialGradient(self,&g, &rho, x+0.5f, y+0.5f);
-   result = KGPaintColorRamp(self,g, rho);
+   O2PaintRadialGradient(self,&g, &rho, x+0.5f, y+0.5f);
+
+   result = O2PaintColorRamp(self,g, rho,skip);
 
    return result;
 }
 
-static void radial_span_lRGBA8888_PRE(KGPaint *selfX,int x,int y,KGRGBA8888 *span,int length){
-   KGPaint_radialGradient *self=(KGPaint_radialGradient *)selfX;
+static int radial_span_lRGBA8888_PRE(O2Paint *selfX,int x,int y,KGRGBA8888 *span,int length){
+   O2Paint_radialGradient *self=(O2Paint_radialGradient *)selfX;
    int i;
+   int previous=-1;
    
    for(i=0;i<length;i++,x++){
-    span[i]=KGRGBA8888FromKGRGBAffff(radialGradientColorAt(self,x,y));
+    int skip=0;
+    KGRGBAffff value=radialGradientColorAt(self,x,y,&skip);
+    
+    if(skip!=previous){
+     if(previous==-1)
+      previous=skip;
+     else
+      return (previous==1)?-i:i;
+    }
+    
+    span[i]=KGRGBA8888FromKGRGBAffff(value);
    }
+   return (previous==1)?-length:length;
 }
 
-static void radial_span_lRGBAffff_PRE(KGPaint *selfX,int x,int y,KGRGBAffff *span,int length){
-   KGPaint_radialGradient *self=(KGPaint_radialGradient *)selfX;
+static int radial_span_lRGBAffff_PRE(O2Paint *selfX,int x,int y,KGRGBAffff *span,int length){
+   O2Paint_radialGradient *self=(O2Paint_radialGradient *)selfX;
    int i;
+   int previous=-1;
    
    for(i=0;i<length;i++,x++){
-    span[i]=radialGradientColorAt(self,x,y);
+    int skip=0;
+    KGRGBAffff value=radialGradientColorAt(self,x,y,&skip);
+    
+    if(skip!=previous){
+     if(previous==-1)
+      previous=skip;
+     else
+      return (previous==1)?-i:i;
+    }
+    
+    span[i]=value;
    }
+   return (previous==1)?-length:length;
 }
 
 -initWithShading:(KGShading *)shading deviceTransform:(CGAffineTransform)deviceTransform {
    [super initWithShading:shading deviceTransform:deviceTransform numberOfSamples:1024];
-   _read_lRGBA8888_PRE=radial_span_lRGBA8888_PRE;
-   _read_lRGBAffff_PRE=radial_span_lRGBAffff_PRE;
+   _paint_lRGBA8888_PRE=radial_span_lRGBA8888_PRE;
+   _paint_lRGBAffff_PRE=radial_span_lRGBAffff_PRE;
    _endRadius=[shading endRadius];
 
    return self;

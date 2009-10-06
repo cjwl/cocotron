@@ -8,9 +8,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import "CoreGraphicsExport.h"
 
-@class KGPDFDocument;
+@class O2PDFDocument;
 
-typedef KGPDFDocument *CGPDFDocumentRef;
+typedef O2PDFDocument *CGPDFDocumentRef;
 
 #import "CGPDFPage.h"
 #import "CGDataProvider.h"

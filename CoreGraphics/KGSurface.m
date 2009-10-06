@@ -538,11 +538,11 @@ static BOOL initFunctionsForParameters(KGSurface *self,size_t bitsPerComponent,s
 }
 
 -initWithBytes:(void *)bytes width:(size_t)width height:(size_t)height bitsPerComponent:(size_t)bitsPerComponent bytesPerRow:(size_t)bytesPerRow colorSpace:(O2ColorSpaceRef)colorSpace bitmapInfo:(CGBitmapInfo)bitmapInfo {
-   KGDataProvider *provider;
+   O2DataProvider *provider;
    int bitsPerPixel=32;
    
    if(bytes!=NULL){
-    provider=[[[KGDataProvider alloc] initWithBytes:bytes length:bytesPerRow*height] autorelease];
+    provider=[[[O2DataProvider alloc] initWithBytes:bytes length:bytesPerRow*height] autorelease];
     m_ownsData=NO;
    }
    else {
@@ -550,7 +550,7 @@ static BOOL initFunctionsForParameters(KGSurface *self,size_t bitsPerComponent,s
      bytesPerRow=(width*bitsPerPixel)/8;
      
     NSMutableData *data=[NSMutableData dataWithLength:bytesPerRow*height*sizeof(uint8_t)]; // this will also zero the bytes
-    provider=[[[KGDataProvider alloc] initWithData:data] autorelease];
+    provider=[[[O2DataProvider alloc] initWithData:data] autorelease];
   	m_ownsData=YES;
    }
    
@@ -613,7 +613,7 @@ static BOOL initFunctionsForParameters(KGSurface *self,size_t bitsPerComponent,s
     [_provider release];
     
     NSMutableData *data=[NSMutableData dataWithLength:size];
-    _provider=[[KGDataProvider alloc] initWithData:data];
+    _provider=[[O2DataProvider alloc] initWithData:data];
     _pixelBytes=[data mutableBytes];
    }
 }
@@ -659,7 +659,7 @@ void KGSurfaceClear(KGSurface *self,VGColor clearColor, int x, int y, int w, int
 * \note		
 *//*-------------------------------------------------------------------*/
 
-VGColor KGSurfaceReadPixel(KGImage *self,int x, int y) {
+VGColor KGSurfaceReadPixel(O2Image *self,int x, int y) {
 	RI_ASSERT(self->_pixelBytes);
 	RI_ASSERT(x >= 0 && x < self->_width);
 	RI_ASSERT(y >= 0 && y < self->_height);
@@ -1418,7 +1418,7 @@ void KGGaussianKernelRelease(KGGaussianKernelRef kernel) {
    }
 }
 
-void KGSurfaceGaussianBlur(KGSurface *self,KGImage * src, KGGaussianKernel *kernel){
+void KGSurfaceGaussianBlur(KGSurface *self,O2Image * src, KGGaussianKernel *kernel){
 	RI_ASSERT(src->_pixelBytes);	//source exists
 	RI_ASSERT(self->_pixelBytes);	//destination exists
 

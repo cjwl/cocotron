@@ -45,11 +45,25 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     case 2:
      [self performTest:@selector(drawBlending) withObject:nil];
      break;
+     
     case 3:
      [self performTest:@selector(drawBitmapImageRep) withObject:nil];
      break;
 
     case 4:
+     [self performTest:@selector(drawAxialGradient) withObject:nil];
+     
+     break;
+     
+    case 5:
+     [self performTest:@selector(drawRadialGradient) withObject:nil];
+     break;
+     
+    case 6:
+     [self performTest:@selector(drawGlyphs) withObject:nil];
+     break;
+     
+    case 7:
      [self performTest:@selector(drawPDF) withObject:nil];
      break;
    }

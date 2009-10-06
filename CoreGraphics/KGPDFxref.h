@@ -10,35 +10,35 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSMapTable.h>
 @class NSData,NSMutableArray;
 
-@class KGPDFObject;
-@class KGPDFxrefEntry;
-@class KGPDFDictionary;
+@class O2PDFObject;
+@class O2PDFxrefEntry;
+@class O2PDFDictionary;
 
-@interface KGPDFxref : NSObject {
+@interface O2PDFxref : NSObject {
    NSData          *_data;
-   KGPDFxref       *_previous;
+   O2PDFxref       *_previous;
    NSMapTable      *_numberToEntries;
    NSMapTable      *_entryToObject;
    NSMutableArray  *_entriesInOrder;
-   KGPDFDictionary *_trailer;
+   O2PDFDictionary *_trailer;
 }
 
 -initWithData:(NSData *)data;
 
 -(NSData *)data;
 
--(KGPDFxref *)previous;
+-(O2PDFxref *)previous;
 -(NSArray *)allEntries;
 
--(KGPDFObject *)objectAtNumber:(KGPDFInteger)number generation:(KGPDFInteger)generation;
+-(O2PDFObject *)objectAtNumber:(O2PDFInteger)number generation:(O2PDFInteger)generation;
 
--(KGPDFDictionary *)trailer;
+-(O2PDFDictionary *)trailer;
 
--(void)setPreviousTable:(KGPDFxref *)table;
--(void)addEntry:(KGPDFxrefEntry *)entry;
--(void)addEntry:(KGPDFxrefEntry *)entry object:(KGPDFObject *)object;
--(void)setTrailer:(KGPDFDictionary *)trailer;
+-(void)setPreviousTable:(O2PDFxref *)table;
+-(void)addEntry:(O2PDFxrefEntry *)entry;
+-(void)addEntry:(O2PDFxrefEntry *)entry object:(O2PDFObject *)object;
+-(void)setTrailer:(O2PDFDictionary *)trailer;
 
--(void)encodeWithPDFContext:(KGPDFContext *)encoder;
+-(void)encodeWithPDFContext:(O2PDFContext *)encoder;
 
 @end

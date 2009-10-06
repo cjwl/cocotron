@@ -7,11 +7,11 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
 #import <Foundation/NSObject.h>
-#import <CoreGraphics/CoreGraphicsExport.h>
+#import <CoreGraphics/CGGeometry.h>
 
-@class KGFunction;
+@class O2Function;
 
-typedef KGFunction *CGFunctionRef;
+typedef O2Function *CGFunctionRef;
 
 typedef struct {
    unsigned version;
@@ -22,4 +22,4 @@ typedef struct {
 COREGRAPHICS_EXPORT CGFunctionRef CGFunctionRetain(CGFunctionRef self);
 COREGRAPHICS_EXPORT void          CGFunctionRelease(CGFunctionRef self);
 
-COREGRAPHICS_EXPORT CGFunctionRef CGFunctionCreate(void *info,unsigned numberOfInputs,const float *inputBounds,unsigned numberOfOutputs,const float *outputBounds,const CGFunctionCallbacks *callbacks);
+COREGRAPHICS_EXPORT CGFunctionRef CGFunctionCreate(void *info,size_t domainDimension,const CGFloat *domain,size_t rangeDimension,const CGFloat *range,const CGFunctionCallbacks *callbacks);

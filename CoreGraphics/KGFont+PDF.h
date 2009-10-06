@@ -1,8 +1,8 @@
 #import "KGFont.h"
 
-@class KGPDFObject,KGPDFContext;
+@class O2PDFObject,O2PDFContext;
 
-@interface KGFont(PDF)
+@interface O2Font(PDF)
 -(void)getMacRomanBytes:(unsigned char *)bytes forGlyphs:(const CGGlyph *)glyphs length:(unsigned)length;
--(KGPDFObject *)encodeReferenceWithContext:(KGPDFContext *)context size:(CGFloat)size;
+-(O2PDFObject *)encodeReferenceWithContext:(O2PDFContext *)context size:(CGFloat)size;
 @end

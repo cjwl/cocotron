@@ -4,7 +4,7 @@
 #import "KGPDFContext.h"
 #import <Foundation/NSArray.h>
 
-@implementation KGFont(PDF)
+@implementation O2Font(PDF)
 
 extern NSString *O2MacRomanGlyphNames[256];
 
@@ -22,16 +22,16 @@ uint8_t O2PDFMacRomanPositionOfGlyphName(NSString *name){
    return [[map objectForKey:name] intValue];
 }
 
-KGPDFArray *O2FontCreatePDFWidthsWithEncoding(O2FontRef self,CGGlyph encoding[256]){
+O2PDFArray *O2FontCreatePDFWidthsWithEncoding(O2FontRef self,CGGlyph encoding[256]){
    CGFloat       unitsPerEm=O2FontGetUnitsPerEm(self);
-   KGPDFArray   *result=[[KGPDFArray alloc] init];
+   O2PDFArray   *result=[[O2PDFArray alloc] init];
    int           widths[256];
    int           i;
    
    O2FontGetGlyphAdvances(self,encoding,256,widths);
 
    for(i=32;i<256;i++){
-    KGPDFReal width=(widths[i]/unitsPerEm)*1000; // normalized to 1000
+    O2PDFReal width=(widths[i]/unitsPerEm)*1000; // normalized to 1000
     
     [result addNumber:width];
    }
@@ -56,15 +56,15 @@ KGPDFArray *O2FontCreatePDFWidthsWithEncoding(O2FontRef self,CGGlyph encoding[25
    return [[[self->_name componentsSeparatedByString:@" "] componentsJoinedByString:@","] cString];
 }
 
--(KGPDFDictionary *)_pdfFontDescriptorWithSize:(CGFloat)size {
-   KGPDFDictionary *result=[KGPDFDictionary pdfDictionary];
+-(O2PDFDictionary *)_pdfFontDescriptorWithSize:(CGFloat)size {
+   O2PDFDictionary *result=[O2PDFDictionary pdfDictionary];
 
    [result setNameForKey:"Type" value:"FontDescriptor"];
    [result setNameForKey:"FontName" value:[self pdfFontName]];
    [result setIntegerForKey:"Flags" value:4];
    
    CGFloat   unitsPerEm=O2FontGetUnitsPerEm(self);
-   KGPDFReal bbox[4];
+   O2PDFReal bbox[4];
    CGRect    bRect=O2FontGetFontBBox(self);
    bRect.origin.x/=unitsPerEm*size;
    bRect.origin.y/=unitsPerEm*size;
@@ -75,7 +75,7 @@ KGPDFArray *O2FontCreatePDFWidthsWithEncoding(O2FontRef self,CGGlyph encoding[25
    bbox[1]=bRect.origin.y;
    bbox[2]=bRect.size.width;
    bbox[3]=bRect.size.height;
-   [result setObjectForKey:"FontBBox" value:[KGPDFArray pdfArrayWithNumbers:bbox count:4]];
+   [result setObjectForKey:"FontBBox" value:[O2PDFArray pdfArrayWithNumbers:bbox count:4]];
    [result setIntegerForKey:"ItalicAngle" value:O2FontGetItalicAngle(self)/unitsPerEm*size];
    [result setIntegerForKey:"Ascent" value:O2FontGetAscent(self)/unitsPerEm*size];
    [result setIntegerForKey:"Descent" value:O2FontGetDescent(self)/unitsPerEm*size];
@@ -86,11 +86,11 @@ KGPDFArray *O2FontCreatePDFWidthsWithEncoding(O2FontRef self,CGGlyph encoding[25
    return result;
 }
 
--(KGPDFObject *)encodeReferenceWithContext:(KGPDFContext *)context size:(CGFloat)size {
-   KGPDFObject *reference=[context referenceForFontWithName:self->_name size:size];
+-(O2PDFObject *)encodeReferenceWithContext:(O2PDFContext *)context size:(CGFloat)size {
+   O2PDFObject *reference=[context referenceForFontWithName:self->_name size:size];
    
    if(reference==nil){
-    KGPDFDictionary *result=[KGPDFDictionary pdfDictionary];
+    O2PDFDictionary *result=[O2PDFDictionary pdfDictionary];
     CGGlyph         *encoding=[self MacRomanEncoding];
     int              i;    
      
@@ -99,7 +99,7 @@ KGPDFArray *O2FontCreatePDFWidthsWithEncoding(O2FontRef self,CGGlyph encoding[25
     [result setNameForKey:"BaseFont" value:[self pdfFontName]];
     [result setIntegerForKey:"FirstChar" value:32];
     [result setIntegerForKey:"LastChar" value:255];
-    KGPDFArray *widths=O2FontCreatePDFWidthsWithEncoding(self,encoding);
+    O2PDFArray *widths=O2FontCreatePDFWidthsWithEncoding(self,encoding);
     [result setObjectForKey:"Widths" value:[context encodeIndirectPDFObject:widths]];
     [widths release];
     

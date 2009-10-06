@@ -9,22 +9,22 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "KGPDFObject.h"
 #import <Foundation/NSString.h>
 
-@implementation KGPDFObject
+@implementation O2PDFObject
 
--(KGPDFObject *)realObject {
+-(O2PDFObject *)realObject {
    return self;
 }
 
--(KGPDFObjectType)objectTypeNoParsing {
+-(O2PDFObjectType)objectTypeNoParsing {
    return [self objectType];
 }
 
--(KGPDFObjectType)objectType {
+-(O2PDFObjectType)objectType {
    NSLog(@"objectType not defined for %@",self);
    return -1;
 }
 
--(BOOL)checkForType:(KGPDFObjectType)type value:(void *)value {
+-(BOOL)checkForType:(O2PDFObjectType)type value:(void *)value {
    NSLog(@"checkForType not defined for %@",self);
    return NO;
 }
@@ -33,7 +33,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return NO;
 }
 
--(void)encodeWithPDFContext:(KGPDFContext *)encoder {
+-(void)encodeWithPDFContext:(O2PDFContext *)encoder {
    NSLog(@"encodeWithPDFContext not defined for %@",self);
 }
 

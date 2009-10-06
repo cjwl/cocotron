@@ -11,14 +11,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @class KGDeviceContext_gdi,Win32Font;
 
-@interface KGContext_gdi : KGContext {
+@interface KGContext_gdi : O2Context {
    KGDeviceContext_gdi *_deviceContext;
    HDC  _dc;
    BOOL _isAdvanced;
    Win32Font *_gdiFont;
 }
 
--initWithGraphicsState:(KGGraphicsState *)state deviceContext:(KGDeviceContext_gdi *)deviceContext;
+-initWithGraphicsState:(O2GState *)state deviceContext:(KGDeviceContext_gdi *)deviceContext;
 -initWithHWND:(HWND)handle;
 -initWithPrinterDC:(HDC)printer auxiliaryInfo:(NSDictionary *)auxiliaryInfo;
 

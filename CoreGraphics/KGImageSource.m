@@ -13,7 +13,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @implementation KGImageSource
 
-+(KGImageSource *)newImageSourceWithDataProvider:(KGDataProvider *)provider options:(NSDictionary *)options {
++(KGImageSource *)newImageSourceWithDataProvider:(O2DataProvider *)provider options:(NSDictionary *)options {
    NSString *classes[]={
     @"KGImageSource_PNG",
     @"KGImageSource_TIFF",
@@ -37,24 +37,24 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 +(KGImageSource *)newImageSourceWithData:(NSData *)data options:(NSDictionary *)options {
-   KGDataProvider *provider=[[KGDataProvider alloc] initWithData:data];
+   O2DataProvider *provider=[[O2DataProvider alloc] initWithData:data];
    KGImageSource  *result=[self newImageSourceWithDataProvider:provider options:options];
    [provider release];
    return result;
 }
 
 +(KGImageSource *)newImageSourceWitURL:(NSURL *)url options:(NSDictionary *)options {
-   KGDataProvider *provider=[[KGDataProvider alloc] initWithURL:url];
+   O2DataProvider *provider=[[O2DataProvider alloc] initWithURL:url];
    KGImageSource  *result=[self newImageSourceWithDataProvider:provider options:options];
    [provider release];
    return result;
 }
 
-+(BOOL)isPresentInDataProvider:(KGDataProvider *)provider {
++(BOOL)isPresentInDataProvider:(O2DataProvider *)provider {
    return NO;
 }
 
--initWithDataProvider:(KGDataProvider *)provider options:(NSDictionary *)options {
+-initWithDataProvider:(O2DataProvider *)provider options:(NSDictionary *)options {
    _provider=[provider retain];
    _options=[options retain];
    return self;
@@ -69,7 +69,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return nil;
 }
 
--(KGImage *)createImageAtIndex:(unsigned)index options:(NSDictionary *)options {
+-(O2Image *)createImageAtIndex:(unsigned)index options:(NSDictionary *)options {
   KGInvalidAbstractInvocation();
   return nil;
 }

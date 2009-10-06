@@ -10,28 +10,28 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "KGPDFContext.h"
 #import <Foundation/NSString.h>
 
-@implementation KGPDFObject_Integer
+@implementation O2PDFObject_Integer
 
--initWithInteger:(KGPDFInteger)value {
+-initWithInteger:(O2PDFInteger)value {
    _value=value;
    return self;
 }
 
-+pdfObjectWithInteger:(KGPDFInteger)value {
++pdfObjectWithInteger:(O2PDFInteger)value {
    return [[[self alloc] initWithInteger:value] autorelease];
 }
 
--(KGPDFObjectType)objectType {
+-(O2PDFObjectType)objectType {
    return kKGPDFObjectTypeInteger;
 }
 
--(BOOL)checkForType:(KGPDFObjectType)type value:(void *)value {
+-(BOOL)checkForType:(O2PDFObjectType)type value:(void *)value {
    if(type==kKGPDFObjectTypeInteger){
-    *((KGPDFInteger *)value)=_value;
+    *((O2PDFInteger *)value)=_value;
     return YES;
    }
    if(type==kKGPDFObjectTypeReal){
-    *((KGPDFReal *)value)=_value;
+    *((O2PDFReal *)value)=_value;
     return YES;
    }
    return NO;
@@ -41,7 +41,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return [NSString stringWithFormat:@"<%@ %d>",isa,_value];
 }
 
--(void)encodeWithPDFContext:(KGPDFContext *)encoder {
+-(void)encodeWithPDFContext:(O2PDFContext *)encoder {
    [encoder appendFormat:@"%d ",_value];
 }
 

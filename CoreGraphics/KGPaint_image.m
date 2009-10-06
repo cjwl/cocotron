@@ -27,55 +27,61 @@
  *-------------------------------------------------------------------*/
 #import "KGPaint_image.h"
 
-@implementation KGPaint_image
+@implementation O2Paint_image
 
-static void KGPaintReadResampledHighSpan_lRGBAffff_PRE(KGPaint *selfX,int x,int y,KGRGBAffff *span,int length){   
-   KGPaint_image *self=(KGPaint_image *)selfX;
+static int O2PaintReadResampledHighSpan_lRGBAffff_PRE(O2Paint *selfX,int x,int y,KGRGBAffff *span,int length){   
+   O2Paint_image *self=(O2Paint_image *)selfX;
    
    KGImageBicubic_lRGBAffff_PRE(self->_image,x,y,span,length,self->m_surfaceToPaintMatrix);
+   return length;
 }
 
-static void KGPaintReadResampledLowSpan_lRGBAffff_PRE(KGPaint *selfX,int x,int y,KGRGBAffff *span,int length){   
-   KGPaint_image *self=(KGPaint_image *)selfX;
+static int O2PaintReadResampledLowSpan_lRGBAffff_PRE(O2Paint *selfX,int x,int y,KGRGBAffff *span,int length){   
+   O2Paint_image *self=(O2Paint_image *)selfX;
    
    KGImageBilinear_lRGBAffff_PRE(self->_image,x,y,span,length,self->m_surfaceToPaintMatrix);
+   return length;
 }
 
-static void KGPaintReadResampledNoneSpan_lRGBAffff_PRE(KGPaint *selfX,int x,int y,KGRGBAffff *span,int length){   
-   KGPaint_image *self=(KGPaint_image *)selfX;
+static int O2PaintReadResampledNoneSpan_lRGBAffff_PRE(O2Paint *selfX,int x,int y,KGRGBAffff *span,int length){   
+   O2Paint_image *self=(O2Paint_image *)selfX;
    
    KGImagePointSampling_lRGBAffff_PRE(self->_image,x,y,span,length,self->m_surfaceToPaintMatrix);
+   return length;
 }
 
 //
 
-static void KGPaintReadResampledHighSpan_lRGBA8888_PRE(KGPaint *selfX,int x,int y,KGRGBA8888 *span,int length){   
-   KGPaint_image *self=(KGPaint_image *)selfX;
+static int O2PaintReadResampledHighSpan_lRGBA8888_PRE(O2Paint *selfX,int x,int y,KGRGBA8888 *span,int length){   
+   O2Paint_image *self=(O2Paint_image *)selfX;
 
    KGImageBicubic_lRGBA8888_PRE(self->_image,x,y,span,length,self->m_surfaceToPaintMatrix);
+   return length;
 }
 
-static void KGPaintReadResampledLowSpan_lRGBA8888_PRE(KGPaint *selfX,int x,int y,KGRGBA8888 *span,int length){   
-   KGPaint_image *self=(KGPaint_image *)selfX;
+static int O2PaintReadResampledLowSpan_lRGBA8888_PRE(O2Paint *selfX,int x,int y,KGRGBA8888 *span,int length){   
+   O2Paint_image *self=(O2Paint_image *)selfX;
 
    KGImageBilinear_lRGBA8888_PRE(self->_image,x,y,span,length,self->m_surfaceToPaintMatrix);
+   return length;
 }
 
-static void KGPaintReadResampledNoneSpan_lRGBA8888_PRE(KGPaint *selfX,int x,int y,KGRGBA8888 *span,int length){   
-   KGPaint_image *self=(KGPaint_image *)selfX;
+static int O2PaintReadResampledNoneSpan_lRGBA8888_PRE(O2Paint *selfX,int x,int y,KGRGBA8888 *span,int length){   
+   O2Paint_image *self=(O2Paint_image *)selfX;
 
    KGImagePointSampling_lRGBA8888_PRE(self->_image,x,y,span,length,self->m_surfaceToPaintMatrix);
+   return length;
 }
 
-static void multiply(KGPaint *selfX,int x,int y,KGRGBAffff *span,int length){
-   KGPaint_image *self=(KGPaint_image *)selfX;
+static int multiply(O2Paint *selfX,int x,int y,KGRGBAffff *span,int length){
+   O2Paint_image *self=(O2Paint_image *)selfX;
 
-   KGPaintReadSpan_lRGBAffff_PRE(self->_paint,x,y,span,length);
+   O2PaintReadSpan_lRGBAffff_PRE(self->_paint,x,y,span,length);
 
    KGRGBAffff imageSpan[length];
    
 // FIXME: Should this take into account the interpolation quality? (depends on how it is used)
-   KGPaintReadResampledNoneSpan_lRGBAffff_PRE(self,x,y,imageSpan,length);
+   O2PaintReadResampledNoneSpan_lRGBAffff_PRE(self,x,y,imageSpan,length);
 
    int i;
    
@@ -95,15 +101,17 @@ static void multiply(KGPaint *selfX,int x,int y,KGRGBAffff *span,int length){
 
     span[i]=s;
    }
+   return length;
 }
-static void stencil(KGPaint *selfX,int x,int y,KGRGBAffff *span,int length){
-   KGPaint_image *self=(KGPaint_image *)selfX;
 
-   self->_paint->_read_lRGBAffff_PRE(self->_paint,x,y,span,length);
+static int stencil(O2Paint *selfX,int x,int y,KGRGBAffff *span,int length){
+   O2Paint_image *self=(O2Paint_image *)selfX;
+
+   self->_paint->_paint_lRGBAffff_PRE(self->_paint,x,y,span,length);
 
    KGRGBAffff imageSpan[length];
 // FIXME: Should this take into account the interpolation quality? (depends on how it is used)
-   KGPaintReadResampledNoneSpan_lRGBAffff_PRE(self,x,y,imageSpan,length);
+   O2PaintReadResampledNoneSpan_lRGBAffff_PRE(self,x,y,imageSpan,length);
 
    int i;
    
@@ -145,38 +153,39 @@ static void stencil(KGPaint *selfX,int x,int y,KGRGBAffff *span,int length){
 
     span[i]=s;
    }
+   return length;
 }
 
 
--initWithImage:(KGImage *)image mode:(KGSurfaceMode)mode paint:(KGPaint *)paint interpolationQuality:(CGInterpolationQuality)interpolationQuality {
-   [super init];
+-initWithImage:(O2Image *)image mode:(KGSurfaceMode)mode paint:(O2Paint *)paint interpolationQuality:(CGInterpolationQuality)interpolationQuality {
+   self->m_surfaceToPaintMatrix=CGAffineTransformIdentity;
    switch(mode){
    
     case VG_DRAW_IMAGE_MULTIPLY:
-     _read_lRGBAffff_PRE=multiply;
+     _paint_lRGBAffff_PRE=multiply;
      break;
      
     case VG_DRAW_IMAGE_STENCIL:
-     _read_lRGBAffff_PRE=stencil;
+     _paint_lRGBAffff_PRE=stencil;
      break;
      
     default:
      switch(interpolationQuality){
      
       case kCGInterpolationHigh:
-       _read_lRGBA8888_PRE=KGPaintReadResampledHighSpan_lRGBA8888_PRE;
-       _read_lRGBAffff_PRE=KGPaintReadResampledHighSpan_lRGBAffff_PRE;
+       _paint_lRGBA8888_PRE=O2PaintReadResampledHighSpan_lRGBA8888_PRE;
+       _paint_lRGBAffff_PRE=O2PaintReadResampledHighSpan_lRGBAffff_PRE;
        break;
        
       case kCGInterpolationLow:
-       _read_lRGBA8888_PRE=KGPaintReadResampledLowSpan_lRGBA8888_PRE;
-       _read_lRGBAffff_PRE=KGPaintReadResampledLowSpan_lRGBAffff_PRE;
+       _paint_lRGBA8888_PRE=O2PaintReadResampledLowSpan_lRGBA8888_PRE;
+       _paint_lRGBAffff_PRE=O2PaintReadResampledLowSpan_lRGBAffff_PRE;
        break;
 
       case kCGInterpolationNone:
       default:
-       _read_lRGBA8888_PRE=KGPaintReadResampledNoneSpan_lRGBA8888_PRE;
-       _read_lRGBAffff_PRE=KGPaintReadResampledNoneSpan_lRGBAffff_PRE;
+       _paint_lRGBA8888_PRE=O2PaintReadResampledNoneSpan_lRGBA8888_PRE;
+       _paint_lRGBAffff_PRE=O2PaintReadResampledNoneSpan_lRGBAffff_PRE;
        break;
     
      }

@@ -19,11 +19,11 @@ void CGImageRelease(CGImageRef image) {
 }
 
 CGImageRef CGImageCreate(size_t width,size_t height,size_t bitsPerComponent,size_t bitsPerPixel,size_t bytesPerRow,CGColorSpaceRef colorSpace,CGBitmapInfo bitmapInfo,CGDataProviderRef dataProvider,const CGFloat *decode,BOOL interpolate,CGColorRenderingIntent renderingIntent) {
-   return [[KGImage alloc] initWithWidth:width height:height bitsPerComponent:bitsPerComponent bitsPerPixel:bitsPerPixel bytesPerRow:bytesPerRow colorSpace:colorSpace bitmapInfo:bitmapInfo provider:dataProvider decode:decode interpolate:interpolate renderingIntent:renderingIntent];
+   return [[O2Image alloc] initWithWidth:width height:height bitsPerComponent:bitsPerComponent bitsPerPixel:bitsPerPixel bytesPerRow:bytesPerRow colorSpace:colorSpace bitmapInfo:bitmapInfo provider:dataProvider decode:decode interpolate:interpolate renderingIntent:renderingIntent];
 }
 
 CGImageRef CGImageMaskCreate(size_t width,size_t height,size_t bitsPerComponent,size_t bitsPerPixel,size_t bytesPerRow,CGDataProviderRef dataProvider,const CGFloat *decode,BOOL interpolate) {
-   return [[KGImage alloc] initMaskWithWidth:width height:height bitsPerComponent:bitsPerComponent bitsPerPixel:bitsPerPixel bytesPerRow:bytesPerRow provider:dataProvider decode:decode interpolate:interpolate];
+   return [[O2Image alloc] initMaskWithWidth:width height:height bitsPerComponent:bitsPerComponent bitsPerPixel:bitsPerPixel bytesPerRow:bytesPerRow provider:dataProvider decode:decode interpolate:interpolate];
 }
 
 CGImageRef CGImageCreateCopy(CGImageRef self) {
@@ -39,11 +39,11 @@ CGImageRef CGImageCreateWithImageInRect(CGImageRef self,CGRect rect) {
 }
 
 CGImageRef CGImageCreateWithJPEGDataProvider(CGDataProviderRef jpegProvider,const CGFloat *decode,BOOL interpolate,CGColorRenderingIntent renderingIntent) {
-   return [[KGImage alloc] initWithJPEGDataProvider:jpegProvider decode:decode interpolate:interpolate renderingIntent:renderingIntent];
+   return [[O2Image alloc] initWithJPEGDataProvider:jpegProvider decode:decode interpolate:interpolate renderingIntent:renderingIntent];
 }
 
 CGImageRef CGImageCreateWithPNGDataProvider(CGDataProviderRef pngProvider,const CGFloat *decode,BOOL interpolate,CGColorRenderingIntent renderingIntent) {
-   return [[KGImage alloc] initWithPNGDataProvider:pngProvider decode:decode interpolate:interpolate renderingIntent:renderingIntent];
+   return [[O2Image alloc] initWithPNGDataProvider:pngProvider decode:decode interpolate:interpolate renderingIntent:renderingIntent];
 }
 
 CGImageRef CGImageCreateWithMask(CGImageRef self,CGImageRef mask) {

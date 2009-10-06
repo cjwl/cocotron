@@ -148,7 +148,7 @@
 }
 
 
--(KGContext *)cgContext {
+-(O2Context *)cgContext {
    if(!_backingContext)
    {
       _backingContext=[[CairoContext alloc] initWithSize:_frame.size];

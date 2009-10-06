@@ -6,7 +6,7 @@
 #import "KGPDFStream.h"
 #import "KGPDFContext.h"
 
-@implementation KGImage(PDF)
+@implementation O2Image(PDF)
 
 CGColorRenderingIntent KGImageRenderingIntentWithName(const char *name) {
    if(name==NULL)
@@ -43,9 +43,9 @@ const char *KGImageNameWithIntent(CGColorRenderingIntent intent){
    } 
 }
 
--(KGPDFObject *)encodeReferenceWithContext:(KGPDFContext *)context {
-   KGPDFStream     *result=[KGPDFStream pdfStream];
-   KGPDFDictionary *dictionary=[KGPDFDictionary pdfDictionary];
+-(O2PDFObject *)encodeReferenceWithContext:(O2PDFContext *)context {
+   O2PDFStream     *result=[O2PDFStream pdfStream];
+   O2PDFDictionary *dictionary=[O2PDFDictionary pdfDictionary];
 
    [dictionary setNameForKey:"Type" value:"XObject"];
    [dictionary setNameForKey:"Subtype" value:"Image"];
@@ -59,7 +59,7 @@ const char *KGImageNameWithIntent(CGColorRenderingIntent intent){
    if(_mask!=nil)
     [dictionary setObjectForKey:"Mask" value:[_mask encodeReferenceWithContext:context]];
    if(_decode!=NULL)
-    [dictionary setObjectForKey:"Decode" value:[KGPDFArray pdfArrayWithNumbers:_decode count:[_colorSpace numberOfComponents]*2]];
+    [dictionary setObjectForKey:"Decode" value:[O2PDFArray pdfArrayWithNumbers:_decode count:[_colorSpace numberOfComponents]*2]];
    [dictionary setBooleanForKey:"Interpolate" value:_interpolate];
    /* FIX, generate soft mask
     [dictionary setObjectForKey:"SMask" value:[softMask encodeReferenceWithContext:context]];
@@ -73,23 +73,23 @@ const char *KGImageNameWithIntent(CGColorRenderingIntent intent){
 
 
 
-+(KGImage *)imageWithPDFObject:(KGPDFObject *)object {
-   KGPDFStream     *stream=(KGPDFStream *)object;
-   KGPDFDictionary *dictionary=[stream dictionary];
-   KGPDFInteger width;
-   KGPDFInteger height;
-   KGPDFObject *colorSpaceObject;
-   KGPDFInteger bitsPerComponent;
++(O2Image *)imageWithPDFObject:(O2PDFObject *)object {
+   O2PDFStream     *stream=(O2PDFStream *)object;
+   O2PDFDictionary *dictionary=[stream dictionary];
+   O2PDFInteger width;
+   O2PDFInteger height;
+   O2PDFObject *colorSpaceObject;
+   O2PDFInteger bitsPerComponent;
    const char  *intent;
-   KGPDFBoolean isImageMask;
-   KGPDFObject *imageMaskObject=NULL;
+   O2PDFBoolean isImageMask;
+   O2PDFObject *imageMaskObject=NULL;
    O2ColorSpaceRef colorSpace=NULL;
     int               componentsPerPixel;
-   KGPDFArray     *decodeArray;
+   O2PDFArray     *decodeArray;
    float            *decode=NULL;
    BOOL              interpolate;
-   KGPDFStream *softMaskStream=nil;
-   KGImage *softMask=NULL;
+   O2PDFStream *softMaskStream=nil;
+   O2Image *softMask=NULL;
     
    // NSLog(@"Image=%@",dictionary);
     
@@ -137,7 +137,7 @@ const char *KGImageNameWithIntent(CGColorRenderingIntent intent){
     
     decode=__builtin_alloca(sizeof(float)*count);
     for(i=0;i<count;i++){
-     KGPDFReal number;
+     O2PDFReal number;
       
      if(![decodeArray getNumberAtIndex:i value:&number]){
       NSLog(@"Invalid decode array entry at %d",i);
@@ -159,8 +159,8 @@ const char *KGImageNameWithIntent(CGColorRenderingIntent intent){
     int               bitsPerPixel=componentsPerPixel*bitsPerComponent;
     int               bytesPerRow=((width*bitsPerPixel)+7)/8;
     NSData           *data=[stream data];
-    KGDataProvider * provider;
-    KGImage *image=NULL;
+    O2DataProvider * provider;
+    O2Image *image=NULL;
        
 //     NSLog(@"width=%d,height=%d,bpc=%d,bpp=%d,bpr=%d,cpp=%d",width,height,bitsPerComponent,bitsPerPixel,bytesPerRow,componentsPerPixel);
      
@@ -175,17 +175,12 @@ const char *KGImageNameWithIntent(CGColorRenderingIntent intent){
      data=mutable;
       //return NULL;
     }
-    provider=[[KGDataProvider alloc] initWithData:data];
-    if(isImageMask){
-     float decodeDefault[2]={0,1};
-      
-     if(decode==NULL)
-      decode=decodeDefault;
-      
-     image=[[KGImage alloc] initMaskWithWidth:width height:height bitsPerComponent:bitsPerComponent bitsPerPixel:bitsPerPixel bytesPerRow:bytesPerRow provider:provider decode:decode interpolate:interpolate];
+    provider=[[O2DataProvider alloc] initWithData:data];
+    if(isImageMask){      
+     image=[[O2Image alloc] initMaskWithWidth:width height:height bitsPerComponent:bitsPerComponent bitsPerPixel:bitsPerPixel bytesPerRow:bytesPerRow provider:provider decode:decode interpolate:interpolate];
     }
     else {
-     image=[[KGImage alloc] initWithWidth:width height:height bitsPerComponent:bitsPerComponent bitsPerPixel:bitsPerPixel bytesPerRow:bytesPerRow colorSpace:colorSpace bitmapInfo:0 provider:provider decode:decode interpolate:interpolate renderingIntent:KGImageRenderingIntentWithName(intent)];
+     image=[[O2Image alloc] initWithWidth:width height:height bitsPerComponent:bitsPerComponent bitsPerPixel:bitsPerPixel bytesPerRow:bytesPerRow colorSpace:colorSpace bitmapInfo:0 provider:provider decode:decode interpolate:interpolate renderingIntent:KGImageRenderingIntentWithName(intent)];
 
      if(softMask!=NULL)
       [image addMask:softMask];

@@ -13,7 +13,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @implementation KGImageSource_GIF
 
-+(BOOL)isPresentInDataProvider:(KGDataProvider *)provider {
++(BOOL)isPresentInDataProvider:(O2DataProvider *)provider {
    enum { signatureLength=4 };
    unsigned char signature[signatureLength] = { 'G','I','F','8' };
    unsigned char check[signatureLength];
@@ -29,7 +29,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return YES;
 }
 
--initWithDataProvider:(KGDataProvider *)provider options:(NSDictionary *)options {
+-initWithDataProvider:(O2DataProvider *)provider options:(NSDictionary *)options {
    [super initWithDataProvider:provider options:options];
 
    NSInputStream *stream=[_provider inputStream];
@@ -57,7 +57,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return nil;
 }
 
--(KGImage *)createImageAtIndex:(unsigned)index options:(NSDictionary *)options {
+-(O2Image *)createImageAtIndex:(unsigned)index options:(NSDictionary *)options {
 
    if(index>=_gif->ImageCount)
     return nil;
@@ -137,10 +137,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     }
    }
   
-   KGDataProvider *provider=[[KGDataProvider alloc] initWithData:bitmap];
+   O2DataProvider *provider=[[O2DataProvider alloc] initWithData:bitmap];
    CGBitmapInfo    info=kCGBitmapByteOrder32Big|kCGImageAlphaPremultipliedLast;
 
-   KGImage        *result=[[KGImage alloc] initWithWidth:width height:height bitsPerComponent:bitsPerComponent bitsPerPixel:bitsPerPixel bytesPerRow:bytesPerRow colorSpace:colorSpace bitmapInfo:info provider:provider decode:NULL interpolate:NO renderingIntent:kCGRenderingIntentDefault];
+   O2Image        *result=[[O2Image alloc] initWithWidth:width height:height bitsPerComponent:bitsPerComponent bitsPerPixel:bitsPerPixel bytesPerRow:bytesPerRow colorSpace:colorSpace bitmapInfo:info provider:provider decode:NULL interpolate:NO renderingIntent:kCGRenderingIntentDefault];
 
    [colorSpace release];
    [provider release];

@@ -395,7 +395,7 @@ stbi_uc *stbi_bmp_load_from_memory (const stbi_uc *buffer, int len, int *x, int 
 
 @implementation KGImageSource_BMP
 
-+(BOOL)isPresentInDataProvider:(KGDataProvider *)provider {
++(BOOL)isPresentInDataProvider:(O2DataProvider *)provider {
    enum { signatureLength=2 };
    unsigned char signature[signatureLength] = { 'B','M' };
    unsigned char check[signatureLength];
@@ -411,7 +411,7 @@ stbi_uc *stbi_bmp_load_from_memory (const stbi_uc *buffer, int len, int *x, int 
    return YES;
 }
 
--initWithDataProvider:(KGDataProvider *)provider options:(NSDictionary *)options {
+-initWithDataProvider:(O2DataProvider *)provider options:(NSDictionary *)options {
    [super initWithDataProvider:provider options:options];
    _bmp=[provider copyData];
    return self;
@@ -426,7 +426,7 @@ stbi_uc *stbi_bmp_load_from_memory (const stbi_uc *buffer, int len, int *x, int 
    return 1;
 }
 
--(KGImage *)createImageAtIndex:(unsigned)index options:(NSDictionary *)options {
+-(O2Image *)createImageAtIndex:(unsigned)index options:(NSDictionary *)options {
    int            width,height;
    int            comp;
    unsigned char *pixels=stbi_bmp_load_from_memory([_bmp bytes],[_bmp length],&width,&height,&comp,STBI_rgb_alpha);
@@ -437,9 +437,9 @@ stbi_uc *stbi_bmp_load_from_memory (const stbi_uc *buffer, int len, int *x, int 
    
    bitmap=[[NSData alloc] initWithBytesNoCopy:pixels length:bytesPerRow*height];
 
-   KGDataProvider *provider=[[KGDataProvider alloc] initWithData:bitmap];
+   O2DataProvider *provider=[[O2DataProvider alloc] initWithData:bitmap];
    O2ColorSpace   *colorSpace=[[O2ColorSpace alloc] initWithDeviceRGB];
-   KGImage        *image=[[KGImage alloc] initWithWidth:width height:height bitsPerComponent:8 bitsPerPixel:bitsPerPixel bytesPerRow:bytesPerRow
+   O2Image        *image=[[O2Image alloc] initWithWidth:width height:height bitsPerComponent:8 bitsPerPixel:bitsPerPixel bytesPerRow:bytesPerRow
       colorSpace:colorSpace bitmapInfo:kCGBitmapByteOrder32Big|kCGImageAlphaPremultipliedLast provider:provider decode:NULL interpolate:NO renderingIntent:kCGRenderingIntentDefault];
       
    [colorSpace release];

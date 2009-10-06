@@ -18,7 +18,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "KGExceptions.h"
 #import "KGSurface.h"
 
-@implementation KGGraphicsState
+@implementation O2GState
 
 -initWithDeviceTransform:(CGAffineTransform)deviceTransform {
    _deviceSpaceTransform=deviceTransform;
@@ -59,7 +59,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -copyWithZone:(NSZone *)zone {
-   KGGraphicsState *copy=NSCopyObject(self,0,zone);
+   O2GState *copy=NSCopyObject(self,0,zone);
 
    copy->_clipPhases=[[NSMutableArray alloc] initWithArray:_clipPhases];
    copy->_strokeColor=O2ColorCreateCopy(_strokeColor);
@@ -155,21 +155,21 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)addClipToPath:(O2Path *)path {
-   KGClipPhase *phase=[[KGClipPhase alloc] initWithNonZeroPath:path];
+   O2ClipPhase *phase=[[O2ClipPhase alloc] initWithNonZeroPath:path];
    
    [_clipPhases addObject:phase];
    [phase release];
 }
 
 -(void)addEvenOddClipToPath:(O2Path *)path {
-   KGClipPhase *phase=[[KGClipPhase alloc] initWithEOPath:path];
+   O2ClipPhase *phase=[[O2ClipPhase alloc] initWithEOPath:path];
    
    [_clipPhases addObject:phase];
    [phase release];
 }
 
--(void)addClipToMask:(KGImage *)image inRect:(CGRect)rect {
-   KGClipPhase *phase=[[KGClipPhase alloc] initWithMask:image rect:rect transform:_deviceSpaceTransform];
+-(void)addClipToMask:(O2Image *)image inRect:(CGRect)rect {
+   O2ClipPhase *phase=[[O2ClipPhase alloc] initWithMask:image rect:rect transform:_deviceSpaceTransform];
    
    [_clipPhases addObject:phase];
    [phase release];
@@ -222,7 +222,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    _textDrawingMode=textMode;
 }
 
--(KGFont *)font {
+-(O2Font *)font {
    return _font;
 }
 
@@ -248,7 +248,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    _fontState=fontState;
 }
 
--(void)setFont:(KGFont *)font {
+-(void)setFont:(O2Font *)font {
    font=[font retain];
    [_font release];
    _font=font;
@@ -259,7 +259,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)selectFontWithName:(const char *)name size:(float)size encoding:(CGTextEncoding)encoding {
-   KGFont *font=O2FontCreateWithFontName([NSString stringWithCString:name]);
+   O2Font *font=O2FontCreateWithFontName([NSString stringWithCString:name]);
    
    if(font!=nil){
     [_font release];

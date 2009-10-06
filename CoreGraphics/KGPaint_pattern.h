@@ -28,10 +28,10 @@
 
 #import "KGPaint.h"
 
-@interface KGPaint_pattern : KGPaint {
-   KGImage *m_pattern;
+@interface O2Paint_pattern : O2Paint {
+   O2Image *m_pattern;
 }
 
--initWithImage:(KGImage *)image;
+-initWithImage:(O2Image *)image;
 
 @end

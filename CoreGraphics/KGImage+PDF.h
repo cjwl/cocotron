@@ -1,10 +1,10 @@
 #import "KGImage.h"
 
-@class O2ColorSpace,KGDataProvider,KGPDFObject,KGPDFContext;
+@class O2ColorSpace,O2DataProvider,O2PDFObject,O2PDFContext;
 
-@interface KGImage(PDF)
+@interface O2Image(PDF)
 
--(KGPDFObject *)encodeReferenceWithContext:(KGPDFContext *)context;
-+(KGImage *)imageWithPDFObject:(KGPDFObject *)object;
+-(O2PDFObject *)encodeReferenceWithContext:(O2PDFContext *)context;
++(O2Image *)imageWithPDFObject:(O2PDFObject *)object;
 
 @end

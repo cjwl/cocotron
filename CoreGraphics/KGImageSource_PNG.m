@@ -503,7 +503,7 @@ unsigned char *stbi_png_load_from_memory(const unsigned char *buffer, int len, i
 
 @implementation KGImageSource_PNG
 
-+(BOOL)isPresentInDataProvider:(KGDataProvider *)provider {
++(BOOL)isPresentInDataProvider:(O2DataProvider *)provider {
    enum { signatureLength=8 };
    unsigned char signature[signatureLength] = { 137,80,78,71,13,10,26,10 };
    unsigned char check[signatureLength];
@@ -519,7 +519,7 @@ unsigned char *stbi_png_load_from_memory(const unsigned char *buffer, int len, i
    return YES;
 }
 
--initWithDataProvider:(KGDataProvider *)provider options:(NSDictionary *)options {
+-initWithDataProvider:(O2DataProvider *)provider options:(NSDictionary *)options {
    [super initWithDataProvider:provider options:options];
    _png=[provider copyData];
    return self;
@@ -534,7 +534,7 @@ unsigned char *stbi_png_load_from_memory(const unsigned char *buffer, int len, i
    return 1;
 }
 
--(KGImage *)createImageAtIndex:(unsigned)index options:(NSDictionary *)options {
+-(O2Image *)createImageAtIndex:(unsigned)index options:(NSDictionary *)options {
    int            width,height;
    int            comp;
    unsigned char *pixels=stbi_png_load_from_memory([_png bytes],[_png length],&width,&height,&comp,STBI_rgb_alpha);
@@ -543,7 +543,7 @@ unsigned char *stbi_png_load_from_memory(const unsigned char *buffer, int len, i
    int            bytesPerRow=(bitsPerPixel/(sizeof(char)*8))*width;
    NSData        *bitmap;
    
-// clamp premultiplied data, this should probably be moved into the KGImage init
+// clamp premultiplied data, this should probably be moved into the O2Image init
    int i;
    for(i=0;i<bytesPerRow*height;i+=4){
     pixels[i]=MIN(pixels[i],pixels[i+3]);
@@ -553,9 +553,9 @@ unsigned char *stbi_png_load_from_memory(const unsigned char *buffer, int len, i
 
    bitmap=[[NSData alloc] initWithBytesNoCopy:pixels length:bytesPerRow*height];
 
-   KGDataProvider *provider=[[KGDataProvider alloc] initWithData:bitmap];
+   O2DataProvider *provider=[[O2DataProvider alloc] initWithData:bitmap];
    O2ColorSpaceRef colorSpace=[[O2ColorSpace alloc] initWithDeviceRGB];
-   KGImage *image=[[KGImage alloc] initWithWidth:width height:height bitsPerComponent:8 bitsPerPixel:bitsPerPixel bytesPerRow:bytesPerRow
+   O2Image *image=[[O2Image alloc] initWithWidth:width height:height bitsPerComponent:8 bitsPerPixel:bitsPerPixel bytesPerRow:bytesPerRow
       colorSpace:colorSpace bitmapInfo:kCGBitmapByteOrder32Big|kCGImageAlphaPremultipliedLast provider:provider decode:NULL interpolate:NO renderingIntent:kCGRenderingIntentDefault];
       
    [colorSpace release];

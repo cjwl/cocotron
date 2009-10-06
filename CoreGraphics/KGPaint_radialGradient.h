@@ -27,7 +27,7 @@
  *-------------------------------------------------------------------*/
 #import "KGPaint_ramp.h"
 
-@interface KGPaint_radialGradient : KGPaint_ramp {
+@interface O2Paint_radialGradient : O2Paint_ramp {
    CGFloat _startRadius;
    CGFloat _endRadius;
 }

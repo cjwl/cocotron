@@ -1,21 +1,21 @@
 #import "KGClipPhase.h"
 
-@implementation KGClipPhase
+@implementation O2ClipPhase
 
 -initWithNonZeroPath:(O2Path *)path {
-   _type=KGClipPhaseNonZeroPath;
+   _type=O2ClipPhaseNonZeroPath;
    _object=[path copy];
    return self;
 }
 
 -initWithEOPath:(O2Path *)path {
-   _type=KGClipPhaseEOPath;
+   _type=O2ClipPhaseEOPath;
    _object=[path copy];
    return self;
 }
 
--initWithMask:(KGImage *)mask rect:(CGRect)rect transform:(CGAffineTransform)transform {
-   _type=KGClipPhaseMask;
+-initWithMask:(O2Image *)mask rect:(CGRect)rect transform:(CGAffineTransform)transform {
+   _type=O2ClipPhaseMask;
    _object=[mask retain];
    _rect=rect;
    _transform=transform;
@@ -27,7 +27,7 @@
    [super dealloc];
 }
 
--(KGClipPhaseType)phaseType {
+-(O2ClipPhaseType)phaseType {
    return _type;
 }
 

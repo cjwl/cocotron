@@ -94,7 +94,7 @@ static RECT NSRectToRECT(NSRect rect) {
    return YES;
 }
 
-+(BOOL)canInitBackingWithContext:(KGContext *)context deviceDictionary:(NSDictionary *)deviceDictionary {
++(BOOL)canInitBackingWithContext:(O2Context *)context deviceDictionary:(NSDictionary *)deviceDictionary {
    NSString *name=[deviceDictionary objectForKey:@"CGContext"];
    
    if(name==nil || [name isEqual:@"GDI"])
@@ -103,7 +103,7 @@ static RECT NSRectToRECT(NSRect rect) {
    return NO;
 }
 
--initWithGraphicsState:(KGGraphicsState *)state deviceContext:(KGDeviceContext_gdi *)deviceContext {
+-initWithGraphicsState:(O2GState *)state deviceContext:(KGDeviceContext_gdi *)deviceContext {
    [self initWithGraphicsState:state];
    _deviceContext=[deviceContext retain];
    _dc=[_deviceContext dc];
@@ -116,7 +116,7 @@ static RECT NSRectToRECT(NSRect rect) {
    KGDeviceContext_gdi    *deviceContext=[[[Win32DeviceContextWindow alloc] initWithWindowHandle:handle] autorelease];
    NSSize                  size=[deviceContext pixelSize];
    CGAffineTransform       flip={1,0,0,-1,0,size.height};
-   KGGraphicsState        *initialState=[[[KGGraphicsState alloc] initWithDeviceTransform:flip] autorelease];
+   O2GState        *initialState=[[[O2GState alloc] initWithDeviceTransform:flip] autorelease];
 
    return [self initWithGraphicsState:initialState deviceContext:deviceContext];
 }
@@ -127,7 +127,7 @@ static RECT NSRectToRECT(NSRect rect) {
    NSSize                  pixelsPerInch=[deviceContext pixelsPerInch];
    CGAffineTransform       flip={1,0,0,-1,0, pointSize.height};
    CGAffineTransform       scale=CGAffineTransformConcat(flip,CGAffineTransformMakeScale(pixelsPerInch.width/72.0,pixelsPerInch.height/72.0));
-   KGGraphicsState        *initialState=[[[KGGraphicsState alloc] initWithDeviceTransform:scale] autorelease];
+   O2GState        *initialState=[[[O2GState alloc] initWithDeviceTransform:scale] autorelease];
       
    if([self initWithGraphicsState:initialState deviceContext:deviceContext]==nil)
     return nil;
@@ -146,17 +146,17 @@ static RECT NSRectToRECT(NSRect rect) {
    HWND                    handle=[(Win32Window *)window windowHandle];
    KGDeviceContext_gdi    *deviceContext=[[[Win32DeviceContextWindow alloc] initWithWindowHandle:handle] autorelease];
    CGAffineTransform       flip={1,0,0,-1,0,size.height};
-   KGGraphicsState        *initialState=[[[KGGraphicsState alloc] initWithDeviceTransform:flip] autorelease];
+   O2GState        *initialState=[[[O2GState alloc] initWithDeviceTransform:flip] autorelease];
 
    return [self initWithGraphicsState:initialState deviceContext:deviceContext];
 }
 
--initWithSize:(NSSize)size context:(KGContext *)otherX {
+-initWithSize:(NSSize)size context:(O2Context *)otherX {
    KGContext_gdi          *other=(KGContext_gdi *)otherX;
  //  KGDeviceContext_gdi    *deviceContext=[[[KGDeviceContext_gdi_ddb alloc] initWithSize:size deviceContext:[other deviceContext]] autorelease];
    KGDeviceContext_gdi    *deviceContext=[[[KGDeviceContext_gdiDIBSection alloc] initWithWidth:size.width height:size.height deviceContext:[other deviceContext]] autorelease];
    CGAffineTransform       flip={1,0,0,-1,0,size.height};
-   KGGraphicsState        *initialState=[[[KGGraphicsState alloc] initWithDeviceTransform:flip] autorelease];
+   O2GState        *initialState=[[[O2GState alloc] initWithDeviceTransform:flip] autorelease];
 
    return [self initWithGraphicsState:initialState deviceContext:deviceContext];
 }
@@ -192,7 +192,7 @@ static RECT NSRectToRECT(NSRect rect) {
 }
 
 -(void)establishFontStateInDevice {
-   KGGraphicsState *gState=[self currentState];
+   O2GState *gState=[self currentState];
    [_gdiFont release];
    _gdiFont=[(KGFont_gdi *)[gState font] createGDIFontSelectedInDC:_dc pointSize:[gState pointSize]];
 }
@@ -201,7 +201,7 @@ static RECT NSRectToRECT(NSRect rect) {
    [self establishFontStateInDevice];
 }
 
--(void)setFont:(KGFont *)font {
+-(void)setFont:(O2Font *)font {
    [super setFont:font];
    [self establishFontState];
 }
@@ -227,20 +227,20 @@ static RECT NSRectToRECT(NSRect rect) {
 }
 
 -(void)deviceClipToNonZeroPath:(O2Path *)path {
-   KGGraphicsState *state=[self currentState];
+   O2GState *state=[self currentState];
    [_deviceContext clipToNonZeroPath:path withTransform:CGAffineTransformInvert(state->_userSpaceTransform) deviceTransform:state->_deviceSpaceTransform];
 }
 
 -(void)deviceClipToEvenOddPath:(O2Path *)path {
-   KGGraphicsState *state=[self currentState];
+   O2GState *state=[self currentState];
    [_deviceContext clipToEvenOddPath:path withTransform:CGAffineTransformInvert(state->_userSpaceTransform) deviceTransform:state->_deviceSpaceTransform];
 }
 
--(void)deviceClipToMask:(KGImage *)mask inRect:(NSRect)rect {
+-(void)deviceClipToMask:(O2Image *)mask inRect:(NSRect)rect {
 // do nothing, see image drawing for how clip masks are used (1x1 alpha mask)
 }
 
--(void)drawPathInDeviceSpace:(O2Path *)path drawingMode:(int)mode state:(KGGraphicsState *)state {
+-(void)drawPathInDeviceSpace:(O2Path *)path drawingMode:(int)mode state:(O2GState *)state {
    CGAffineTransform deviceTransform=state->_deviceSpaceTransform;
    O2Color *fillColor=state->_fillColor;
    O2Color *strokeColor=state->_strokeColor;
@@ -339,7 +339,7 @@ static RECT NSRectToRECT(NSRect rect) {
 
 -(void)showGlyphs:(const CGGlyph *)glyphs count:(unsigned)count {
    CGAffineTransform transformToDevice=[self userSpaceToDeviceSpaceTransform];
-   KGGraphicsState  *gState=[self currentState];
+   O2GState  *gState=[self currentState];
    CGAffineTransform Trm=CGAffineTransformConcat(gState->_textTransform,transformToDevice);
    NSPoint           point=CGPointApplyAffineTransform(NSMakePoint(0,0),Trm);
    
@@ -347,7 +347,7 @@ static RECT NSRectToRECT(NSRect rect) {
 
    ExtTextOutW(_dc,lroundf(point.x),lroundf(point.y),ETO_GLYPH_INDEX,NULL,(void *)glyphs,count,NULL);
 
-   KGFont *font=[gState font];
+   O2Font *font=[gState font];
    int     i,advances[count];
    CGFloat unitsPerEm=CGFontGetUnitsPerEm(font);
    
@@ -383,7 +383,7 @@ static RECT NSRectToRECT(NSRect rect) {
 // we could test for cases where the angle is a multiple of 90 and use the _H or _V constants if we dont have transformations
 // we could decompose this better to platform generalize it
 
-static inline float axialBandIntervalFromMagnitude(KGFunction *function,float magnitude){
+static inline float axialBandIntervalFromMagnitude(O2Function *function,float magnitude){
    if(magnitude<1)
     return 0;
 
@@ -405,7 +405,7 @@ static inline float axialBandIntervalFromMagnitude(KGFunction *function,float ma
 -(void)drawInUserSpace:(CGAffineTransform)matrix axialShading:(KGShading *)shading {
    O2ColorSpaceRef colorSpace=[shading colorSpace];
    O2ColorSpaceType colorSpaceType=[colorSpace type];
-   KGFunction   *function=[shading function];
+   O2Function   *function=[shading function];
    const float  *domain=[function domain];
    const float  *range=[function range];
    BOOL          extendStart=[shading extendStart];
@@ -461,7 +461,7 @@ static inline float axialBandIntervalFromMagnitude(KGFunction *function,float ma
    }
       
    if(extendStart){
-    [function evaluateInput:domain[0] output:output];
+    O2FunctionEvaluate(function,domain[0],output);
     outputToRGBA(output,rgba);
     
     rect[rectIndex].UpperLeft=vertexIndex;
@@ -490,7 +490,7 @@ static inline float axialBandIntervalFromMagnitude(KGFunction *function,float ma
 
     rectIndex++;
    }
-   
+  
    for(i=0;i<bandCount;i++){
     float x0=domain[0]+i*domainInterval;
     float x1=domain[0]+(i+1)*domainInterval;
@@ -498,7 +498,7 @@ static inline float axialBandIntervalFromMagnitude(KGFunction *function,float ma
     rect[rectIndex].UpperLeft=vertexIndex;
     vertices[vertexIndex].x=float2int(i*rectWidth);
     vertices[vertexIndex].y=float2int(-maxHeight);
-    [function evaluateInput:x0 output:output];
+    O2FunctionEvaluate(function,x0,output);
     outputToRGBA(output,rgba);
     vertices[vertexIndex].Red=rgba[0]*0xFFFF;
     vertices[vertexIndex].Green=rgba[1]*0xFFFF;
@@ -509,7 +509,7 @@ static inline float axialBandIntervalFromMagnitude(KGFunction *function,float ma
     rect[rectIndex].LowerRight=vertexIndex;
     vertices[vertexIndex].x=float2int((i+1)*rectWidth);
     vertices[vertexIndex].y=float2int(maxHeight);
-    [function evaluateInput:x1 output:output];
+    O2FunctionEvaluate(function,x1,output);
     outputToRGBA(output,rgba);
     vertices[vertexIndex].Red=rgba[0]*0xFFFF;
     vertices[vertexIndex].Green=rgba[1]*0xFFFF;
@@ -521,7 +521,7 @@ static inline float axialBandIntervalFromMagnitude(KGFunction *function,float ma
    }
    
    if(extendEnd){
-    [function evaluateInput:domain[1] output:output];
+    O2FunctionEvaluate(function,domain[1],output);
     outputToRGBA(output,rgba);
 
     rect[rectIndex].UpperLeft=vertexIndex;
@@ -567,7 +567,6 @@ static inline float axialBandIntervalFromMagnitude(KGFunction *function,float ma
     if(!SetWorldTransform(_dc,&current))
      NSLog(@"GetWorldTransform failed");
    }
-   
 }
 
 static int appendCircle(NSPoint *cp,int position,float x,float y,float radius,CGAffineTransform matrix){
@@ -600,7 +599,7 @@ static void appendCircleToPath(HDC dc,float x,float y,float radius,CGAffineTrans
    appendCircleToDC(dc,cp);
 }
 
-static inline float numberOfRadialBands(KGFunction *function,NSPoint startPoint,NSPoint endPoint,float startRadius,float endRadius,CGAffineTransform matrix){
+static inline float numberOfRadialBands(O2Function *function,NSPoint startPoint,NSPoint endPoint,float startRadius,float endRadius,CGAffineTransform matrix){
    NSPoint startRadiusPoint=NSMakePoint(startRadius,0);
    NSPoint endRadiusPoint=NSMakePoint(endRadius,0);
    
@@ -733,7 +732,7 @@ static void extend(HDC dc,int i,int direction,float bandInterval,NSPoint startPo
  */
    O2ColorSpaceRef colorSpace=[shading colorSpace];
    O2ColorSpaceType colorSpaceType=[colorSpace type];
-   KGFunction   *function=[shading function];
+   O2Function   *function=[shading function];
    const float  *domain=[function domain];
    const float  *range=[function range];
    BOOL          extendStart=[shading extendStart];
@@ -772,7 +771,7 @@ static void extend(HDC dc,int i,int direction,float bandInterval,NSPoint startPo
    if(extendStart){
     HBRUSH brush;
 
-    [function evaluateInput:domain[0] output:output];
+    O2FunctionEvaluate(function,domain[0],output);
     outputToRGBA(output,rgba);
     brush=CreateSolidBrush(RGB(rgba[0]*255,rgba[1]*255,rgba[2]*255));
     SelectObject(_dc,brush);
@@ -806,7 +805,7 @@ static void extend(HDC dc,int i,int direction,float bandInterval,NSPoint startPo
 
     EndPath(_dc);
 
-    [function evaluateInput:x0 output:output];
+    O2FunctionEvaluate(function,x0,output);
     outputToRGBA(output,rgba);
     brush=CreateSolidBrush(RGB(output[0]*255,output[1]*255,output[2]*255));
     SelectObject(_dc,brush);
@@ -818,7 +817,7 @@ static void extend(HDC dc,int i,int direction,float bandInterval,NSPoint startPo
    if(extendEnd){
     HBRUSH brush;
     
-    [function evaluateInput:domain[1] output:output];
+    O2FunctionEvaluate(function,domain[1],output);
     outputToRGBA(output,rgba);
     brush=CreateSolidBrush(RGB(rgba[0]*255,rgba[1]*255,rgba[2]*255));
     SelectObject(_dc,brush);
@@ -840,7 +839,7 @@ static void extend(HDC dc,int i,int direction,float bandInterval,NSPoint startPo
 
 #if 1
 
-static void sourceOverImage(KGImage *image,KGRGBA8888 *resultBGRX,int width,int height,float fraction){
+static void sourceOverImage(O2Image *image,KGRGBA8888 *resultBGRX,int width,int height,float fraction){
    KGRGBA8888 *span=__builtin_alloca(width*sizeof(KGRGBA8888));
    int y,coverage=RI_INT_CLAMP(fraction*256,0,256);
    
@@ -921,7 +920,7 @@ void CGGraphicsSourceOver_bgra32_onto_bgrx32(unsigned char *sourceBGRA,unsigned 
    }
 }
 
--(void)drawBitmapImage:(KGImage *)image inRect:(NSRect)rect ctm:(CGAffineTransform)ctm fraction:(float)fraction  {
+-(void)drawBitmapImage:(O2Image *)image inRect:(NSRect)rect ctm:(CGAffineTransform)ctm fraction:(float)fraction  {
    int            width=[image width];
    int            height=[image height];
    const unsigned int *data=[image directBytes];
@@ -990,7 +989,7 @@ static void zeroBytes(void *bytes,int size){
     ((char *)bytes)[i]=0;
 }
 
--(void)drawBitmapImage:(KGImage *)image inRect:(NSRect)rect ctm:(CGAffineTransform)ctm fraction:(float)fraction  {
+-(void)drawBitmapImage:(O2Image *)image inRect:(NSRect)rect ctm:(CGAffineTransform)ctm fraction:(float)fraction  {
    int            width=[image width];
    int            height=[image height];
    const unsigned char *bytes=[image bytes];
@@ -1076,10 +1075,10 @@ static void zeroBytes(void *bytes,int size){
 }
 #endif
 
--(void)drawImage:(KGImage *)image inRect:(NSRect)rect {
+-(void)drawImage:(O2Image *)image inRect:(NSRect)rect {
    CGAffineTransform transformToDevice=[self userSpaceToDeviceSpaceTransform];
-   KGGraphicsState *gState=[self currentState];
-   KGClipPhase     *phase=[[gState clipPhases] lastObject];
+   O2GState *gState=[self currentState];
+   O2ClipPhase     *phase=[[gState clipPhases] lastObject];
    
 /* The NSImage drawing methods which take a fraction use a 1x1 alpha mask to set the fraction.
    We don't do alpha masks yet but the rough fraction code already existed so we check for this
@@ -1087,8 +1086,8 @@ static void zeroBytes(void *bytes,int size){
  */
    float fraction=1.0;
 
-   if(phase!=nil && [phase phaseType]==KGClipPhaseMask){
-    KGImage *mask=[phase object];
+   if(phase!=nil && [phase phaseType]==O2ClipPhaseMask){
+    O2Image *mask=[phase object];
     
     if([mask width]==1 && [mask height]==1){
      uint8_t byte=255;
@@ -1111,7 +1110,7 @@ static void zeroBytes(void *bytes,int size){
 }
 
 -(void)drawLayer:(KGLayer *)layer inRect:(NSRect)rect {
-   KGContext *context=[layer context];
+   O2Context *context=[layer context];
    
    if(![context isKindOfClass:[KGContext_gdi class]]){
     NSLog(@"layer class is not right %@!=%@",[context class],[self class]);
@@ -1159,7 +1158,7 @@ static void zeroBytes(void *bytes,int size){
    return YES;
 }
 
--(void)drawBackingContext:(KGContext *)other size:(NSSize)size {
+-(void)drawBackingContext:(O2Context *)other size:(NSSize)size {
    KGDeviceContext_gdi *deviceContext=nil;
 
    if([other isKindOfClass:[KGContext_gdi class]])

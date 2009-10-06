@@ -10,7 +10,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "KGBitmapContext.h"
 
 CGContextRef CGBitmapContextCreate(void *bytes,size_t width,size_t height,size_t bitsPerComponent,size_t bytesPerRow,CGColorSpaceRef colorSpace,CGBitmapInfo bitmapInfo) {
-   return [KGContext createWithBytes:bytes width:width height:height bitsPerComponent:bitsPerComponent bytesPerRow:bytesPerRow colorSpace:colorSpace bitmapInfo:bitmapInfo];
+   return [O2Context createWithBytes:bytes width:width height:height bitsPerComponent:bitsPerComponent bytesPerRow:bytesPerRow colorSpace:colorSpace bitmapInfo:bitmapInfo];
 }
 
 void *CGBitmapContextGetData(CGContextRef self) {

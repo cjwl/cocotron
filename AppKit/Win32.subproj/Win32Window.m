@@ -213,22 +213,22 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return _handle;
 }
 
--(KGContext *)createCGContextIfNeeded {
+-(O2Context *)createCGContextIfNeeded {
    if(_cgContext==nil)
-    _cgContext=[KGContext createContextWithSize:_size window:self];
+    _cgContext=[O2Context createContextWithSize:_size window:self];
 
    return _cgContext;
 }
 
--(KGContext *)createBackingCGContextIfNeeded {
+-(O2Context *)createBackingCGContextIfNeeded {
    if(_backingContext==nil){
-    _backingContext=[KGContext createBackingContextWithSize:_size context:[self createCGContextIfNeeded] deviceDictionary:_deviceDictionary];
+    _backingContext=[O2Context createBackingContextWithSize:_size context:[self createCGContextIfNeeded] deviceDictionary:_deviceDictionary];
    }
    
    return _backingContext;
 }
 
--(KGContext *)cgContext {
+-(O2Context *)cgContext {
    switch(_backingType){
 
     case Win32BackingStoreRetained:

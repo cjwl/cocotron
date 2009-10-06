@@ -8,24 +8,24 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/NSObject.h>
 
-@class NSData,NSDictionary,NSURL,KGImage,KGDataProvider;
+@class NSData,NSDictionary,NSURL,O2Image,O2DataProvider;
 
 @interface KGImageSource : NSObject {
-   KGDataProvider *_provider;
+   O2DataProvider *_provider;
    NSDictionary   *_options;
 }
 
-+(KGImageSource *)newImageSourceWithDataProvider:(KGDataProvider *)provider options:(NSDictionary *)options;
++(KGImageSource *)newImageSourceWithDataProvider:(O2DataProvider *)provider options:(NSDictionary *)options;
 +(KGImageSource *)newImageSourceWithData:(NSData *)data options:(NSDictionary *)options;
 +(KGImageSource *)newImageSourceWitURL:(NSURL *)url options:(NSDictionary *)options;
 
-+(BOOL)isPresentInDataProvider:(KGDataProvider *)provider;
++(BOOL)isPresentInDataProvider:(O2DataProvider *)provider;
 
--initWithDataProvider:(KGDataProvider *)provider options:(NSDictionary *)options;
+-initWithDataProvider:(O2DataProvider *)provider options:(NSDictionary *)options;
 
 -(unsigned)count;
 
 -(NSDictionary *)copyPropertiesAtIndex:(unsigned)index options:(NSDictionary *)options;
--(KGImage *)createImageAtIndex:(unsigned)index options:(NSDictionary *)options;
+-(O2Image *)createImageAtIndex:(unsigned)index options:(NSDictionary *)options;
 
 @end

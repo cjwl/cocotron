@@ -28,30 +28,33 @@
 
 #import "KGSurface.h"
 
-@class KGPaint;
+@class O2Paint;
+typedef O2Paint *O2PaintRef;
 
-typedef void (*KGPaintReadSpan_lRGBA8888_PRE_function)(KGPaint *self,int x,int y,KGRGBA8888 *span,int length);
-typedef void (*KGPaintReadSpan_lRGBAffff_PRE_function)(KGPaint *self,int x,int y,KGRGBAffff *span,int length);
+// this function returns the number of pixels read as a positive value or skipped as a negative value
+typedef int (*O2PaintReadSpan_lRGBA8888_PRE_function)(O2Paint *self,int x,int y,KGRGBA8888 *span,int length);
+typedef int (*O2PaintReadSpan_lRGBAffff_PRE_function)(O2Paint *self,int x,int y,KGRGBAffff *span,int length);
 
-@interface KGPaint : NSObject {
+@interface O2Paint : NSObject {
 @public
-    KGPaintReadSpan_lRGBA8888_PRE_function _read_lRGBA8888_PRE;
-    KGPaintReadSpan_lRGBAffff_PRE_function _read_lRGBAffff_PRE;
+    O2PaintReadSpan_lRGBA8888_PRE_function _paint_lRGBA8888_PRE;
+    O2PaintReadSpan_lRGBAffff_PRE_function _paint_lRGBAffff_PRE;
 @protected
     CGAffineTransform               m_surfaceToPaintMatrix;
 }
 
--init;
+O2PaintRef O2PaintRetain(O2PaintRef self);
+void O2PaintRelease(O2PaintRef self);
 
-void KGPaintSetSurfaceToPaintMatrix(KGPaint *self,CGAffineTransform surfaceToPaintMatrix);
+void O2PaintSetSurfaceToPaintMatrix(O2Paint *self,CGAffineTransform surfaceToPaintMatrix);
 
 
 @end
 
-static inline void KGPaintReadSpan_lRGBA8888_PRE(KGPaint *self,int x,int y,KGRGBA8888 *span,int length) {
-   self->_read_lRGBA8888_PRE(self,x,y,span,length);
+static inline int O2PaintReadSpan_lRGBA8888_PRE(O2Paint *self,int x,int y,KGRGBA8888 *span,int length) {
+   return self->_paint_lRGBA8888_PRE(self,x,y,span,length);
 }
 
-static inline void KGPaintReadSpan_lRGBAffff_PRE(KGPaint *self,int x,int y,KGRGBAffff *span,int length) {
-   self->_read_lRGBAffff_PRE(self,x,y,span,length);
+static inline int O2PaintReadSpan_lRGBAffff_PRE(O2Paint *self,int x,int y,KGRGBAffff *span,int length) {
+   return self->_paint_lRGBAffff_PRE(self,x,y,span,length);
 }

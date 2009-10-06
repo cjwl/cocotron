@@ -1,8 +1,8 @@
 #import "O2ColorSpace.h"
 
-@class KGPDFObject,KGPDFContext;
+@class O2PDFObject,O2PDFContext;
 
 @interface O2ColorSpace(PDF)
--(KGPDFObject *)encodeReferenceWithContext:(KGPDFContext *)context;
-+(O2ColorSpaceRef)colorSpaceFromPDFObject:(KGPDFObject *)object;
+-(O2PDFObject *)encodeReferenceWithContext:(O2PDFContext *)context;
++(O2ColorSpaceRef)colorSpaceFromPDFObject:(O2PDFObject *)object;
 @end

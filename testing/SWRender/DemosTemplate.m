@@ -11,7 +11,6 @@
    void           *_data;
    CGContextRef    _context;
 
-
     CGColorRef _fillColor;
     CGColorRef _strokeColor;
     CGPathDrawingMode _pathDrawingMode;
@@ -33,6 +32,7 @@
     float       *_dashLengths;
     float        _flatness;
     
+    CGFontRef       _font;
     CGImageRef _resamplingImage;
     CGPDFDocumentRef _pdfDocument;
 }
@@ -79,13 +79,24 @@ static CGColorRef cgColorFromColor(NSColor *color){
    _dashLengthsCount=0;
    _dashLengths=NSZoneMalloc([self zone],sizeof(float)*4);
    
-   NSString *path=[[NSBundle bundleForClass:[self class]] pathForResource:@"overlay" ofType:@"png"];
+   CGDataProviderRef provider=CGDataProviderCreateWithFilename("/Library/Fonts/Times New Roman.ttf");
+   
+   if(provider==NULL)
+    NSLog(@"PROVIDER FAILED");
+    
+   if((_font=CGFontCreateWithDataProvider(provider))==NULL)
+    NSLog(@"FONT FAILED");
+   
+   CGDataProviderRelease(provider);
+   
+   
+   NSString *path=[[NSBundle bundleForClass:[self class]] pathForResource:@"pattern" ofType:@"jpg"];
  //  NSString *path=[[NSBundle bundleForClass:[self class]] pathForResource:@"redLZWSquare" ofType:@"tif"];
    NSData   *data=[NSData dataWithContentsOfFile:path];
    CGImageSourceRef source=CGImageSourceCreateWithData((CFDataRef)data,nil);
    _resamplingImage=CGImageSourceCreateImageAtIndex(source,0,nil);
 #if 0
-   if(![_resamplingImage isKindOfClass:NSClassFromString(@"KGImage")])
+   if(![_resamplingImage isKindOfClass:NSClassFromString(@"O2Image")])
     NSLog(@"IMAGE data=%@",CGDataProviderCopyData(CGImageGetDataProvider(_resamplingImage)));
 #endif
    if(_resamplingImage==nil)
@@ -279,7 +290,8 @@ static void addSliceToPath(CGMutablePathRef path,float innerRadius,float outerRa
    CGContextClearRect(_context,CGRectMake(0,0,400,400));
   
    CGAffineTransform ctm=[self ctm];
-   CGAffineTransform t=CGAffineTransformMakeTranslation(-(int)CGImageGetWidth(_resamplingImage),-(int)CGImageGetHeight(_resamplingImage));
+   CGAffineTransform t=CGAffineTransformMakeTranslation(-(int)CGImageGetWidth(_resamplingImage)/2,-(int)CGImageGetHeight(_resamplingImage)/2);
+
    ctm=CGAffineTransformConcat(t,ctm);
  //  ctm=CGAffineTransformScale(ctm,2,2);
       
@@ -390,6 +402,103 @@ static void addSliceToPath(CGMutablePathRef path,float innerRadius,float outerRa
     CGColorRelease(fillColor);
     CGPathRelease(path);
    }
+   
+   CGContextRestoreGState(_context);
+}
+
+static void evaluate(void *info,const float *in, float *output) {
+   static CGFloat _C0[4]={0,1,0,0};
+   static CGFloat _C1[4]={1,0,0,1};
+   float         x=in[0];
+   int           i;
+
+    for(i=0;i<4;i++)
+     output[i]=_C0[i]+x*(_C1[i]-_C0[i]);
+}
+
+-(void)drawAxialGradient {
+   CGAffineTransform ctm=[self ctm];
+   CGFunctionRef function;
+   CGShadingRef  shading;
+   float         domain[2]={0,1};
+   float         range[8]={0,1,0,1,0,1,0,1};
+   CGFunctionCallbacks callbacks={0,evaluate,NULL};
+   CGPoint _startPoint={0,100};
+   CGPoint _endPoint={30,100};
+   BOOL _extendStart=YES,_extendEnd=YES;
+ 
+   CGContextSaveGState(_context);
+   CGContextClearRect(_context,CGRectMake(0,0,400,400));
+   CGContextSetRGBFillColor(_context,0.5,0.5,0.5,0.5);
+   CGContextFillRect(_context,CGRectMake(0,0,400,400));
+   CGContextConcatCTM(_context,ctm);
+   [self establishContextState];
+
+   function=CGFunctionCreate(self,1,domain,4,range,&callbacks);
+
+   shading=CGShadingCreateAxial(CGColorSpaceCreateDeviceRGB(),CGPointMake(_startPoint.x,_startPoint.y),
+      CGPointMake(_endPoint.x,_endPoint.y),function,_extendStart,_extendEnd);
+   CGContextDrawShading(_context,shading);
+   CGShadingRelease(shading);
+   
+   CGFunctionRelease(function);
+   CGContextRestoreGState(_context);
+}
+
+-(void)drawRadialGradient {
+   CGAffineTransform ctm=[self ctm];
+   CGFunctionRef function;
+   CGShadingRef  shading;
+   float         domain[2]={0,1};
+   float         range[8]={0,1,0,1,0,1,0,1};
+   CGFunctionCallbacks callbacks={0,evaluate,NULL};
+   CGPoint _startPoint={0,0};
+   CGPoint _endPoint={0,0};
+   CGFloat _startRadius=30,_endRadius=100;
+   BOOL _extendStart=YES,_extendEnd=YES;
+ 
+   CGContextSaveGState(_context);
+   CGContextClearRect(_context,CGRectMake(0,0,400,400));
+   CGContextSetRGBFillColor(_context,0.5,0.5,0.5,0.5);
+   CGContextFillRect(_context,CGRectMake(0,0,400,400));
+   CGContextConcatCTM(_context,ctm);
+   [self establishContextState];
+
+   function=CGFunctionCreate(self,1,domain,4,range,&callbacks);
+
+   shading=CGShadingCreateRadial(CGColorSpaceCreateDeviceRGB(),CGPointMake(_startPoint.x,_startPoint.y),_startRadius,
+       CGPointMake(_endPoint.x,_endPoint.y),_endRadius,function,_extendStart,_extendEnd);
+    
+   CGContextDrawShading(_context,shading);
+   CGShadingRelease(shading);
+   
+   CGFunctionRelease(function);
+   CGContextRestoreGState(_context);
+}
+
+-(void)drawGlyphs {
+   CGAffineTransform ctm=[self ctm];
+   CGContextSaveGState(_context);
+   CGContextClearRect(_context,CGRectMake(0,0,400,400));
+   CGContextSetRGBFillColor(_context,1,1,1,1);
+   CGContextFillRect(_context,CGRectMake(0,0,400,400));
+   ctm=CGAffineTransformTranslate(ctm,-200,-200);
+   CGContextConcatCTM(_context,ctm);
+
+   CGContextSetRGBFillColor(_context,1,0,0,1);
+
+   NSString *string=@"Cocotron";
+   int       i,length=[string length];
+   CGGlyph   glyphs[length];
+   
+   for(i=0;i<length;i++){
+    NSString *name=[string substringWithRange:NSMakeRange(i,1)];
+    glyphs[i]=CGFontGetGlyphWithGlyphName(_font,name);
+   }
+   
+   CGContextSetFont(_context,_font);
+   CGContextSetFontSize(_context,200.0);
+   CGContextShowGlyphsAtPoint(_context,50,50,glyphs,length);
    
    CGContextRestoreGState(_context);
 }

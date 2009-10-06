@@ -1,8 +1,8 @@
 #import "KGShading.h"
 
-@class KGPDFObject,KGPDFContext;
+@class O2PDFObject,O2PDFContext;
 
 @interface KGShading(PDF)
--(KGPDFObject *)encodeReferenceWithContext:(KGPDFContext *)context;
-+(KGShading *)shadingWithPDFObject:(KGPDFObject *)object;
+-(O2PDFObject *)encodeReferenceWithContext:(O2PDFContext *)context;
++(KGShading *)shadingWithPDFObject:(O2PDFObject *)object;
 @end

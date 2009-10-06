@@ -10,37 +10,37 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "KGPDFObject.h"
 #import <Foundation/NSMapTable.h>
 
-@class KGPDFObject,KGPDFArray,KGPDFStream,KGPDFString;
+@class O2PDFObject,O2PDFArray,O2PDFStream,O2PDFString;
 
-@interface KGPDFDictionary : KGPDFObject {
+@interface O2PDFDictionary : O2PDFObject {
    NSMapTable *_table;
 }
 
-+(KGPDFDictionary *)pdfDictionary;
++(O2PDFDictionary *)pdfDictionary;
 
--(void)setObjectForKey:(const char *)key value:(KGPDFObject *)object;
--(void)setBooleanForKey:(const char *)key value:(KGPDFBoolean)value;
--(void)setIntegerForKey:(const char *)key value:(KGPDFInteger)value;
--(void)setNumberForKey:(const char *)key value:(KGPDFReal)value;
+-(void)setObjectForKey:(const char *)key value:(O2PDFObject *)object;
+-(void)setBooleanForKey:(const char *)key value:(O2PDFBoolean)value;
+-(void)setIntegerForKey:(const char *)key value:(O2PDFInteger)value;
+-(void)setNumberForKey:(const char *)key value:(O2PDFReal)value;
 -(void)setNameForKey:(const char *)key value:(const char *)value;
 
--(KGPDFObject *)inheritedForCStringKey:(const char *)cStringKey
-   typecheck:(KGPDFObjectType)aType;
+-(O2PDFObject *)inheritedForCStringKey:(const char *)cStringKey
+   typecheck:(O2PDFObjectType)aType;
 
--(BOOL)getObjectForKey:(const char *)key value:(KGPDFObject **)objectp;
+-(BOOL)getObjectForKey:(const char *)key value:(O2PDFObject **)objectp;
 -(BOOL)getNullForKey:(const char *)key;
--(BOOL)getBooleanForKey:(const char *)key value:(KGPDFBoolean *)valuep;
--(BOOL)getIntegerForKey:(const char *)key value:(KGPDFInteger *)valuep;
--(BOOL)getNumberForKey:(const char *)key value:(KGPDFReal *)valuep;
+-(BOOL)getBooleanForKey:(const char *)key value:(O2PDFBoolean *)valuep;
+-(BOOL)getIntegerForKey:(const char *)key value:(O2PDFInteger *)valuep;
+-(BOOL)getNumberForKey:(const char *)key value:(O2PDFReal *)valuep;
 -(BOOL)getNameForKey:(const char *)key value:(const char **)namep;
--(BOOL)getStringForKey:(const char *)key value:(KGPDFString **)stringp;
--(BOOL)getArrayForKey:(const char *)key value:(KGPDFArray **)arrayp;
--(BOOL)getDictionaryForKey:(const char *)key value:(KGPDFDictionary **)dictionaryp;
--(BOOL)getStreamForKey:(const char *)key value:(KGPDFStream **)streamp;
+-(BOOL)getStringForKey:(const char *)key value:(O2PDFString **)stringp;
+-(BOOL)getArrayForKey:(const char *)key value:(O2PDFArray **)arrayp;
+-(BOOL)getDictionaryForKey:(const char *)key value:(O2PDFDictionary **)dictionaryp;
+-(BOOL)getStreamForKey:(const char *)key value:(O2PDFStream **)streamp;
 
 @end
 
-unsigned KGPDFHashCString(NSMapTable *table,const void *data);
-BOOL KGPDFIsEqualCString(NSMapTable *table,const void *data1,const void *data2);
-void KGPDFFreeCString(NSMapTable *table,void *data);
-NSMapTableKeyCallBacks KGPDFOwnedCStringKeyCallBacks;
+unsigned O2PDFHashCString(NSMapTable *table,const void *data);
+BOOL O2PDFIsEqualCString(NSMapTable *table,const void *data1,const void *data2);
+void O2PDFFreeCString(NSMapTable *table,void *data);
+NSMapTableKeyCallBacks O2PDFOwnedCStringKeyCallBacks;

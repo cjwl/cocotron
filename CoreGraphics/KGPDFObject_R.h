@@ -8,14 +8,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import "KGPDFObject.h"
 
-@class KGPDFxref;
+@class O2PDFxref;
 
-@interface KGPDFObject_R : KGPDFObject {
-   KGPDFInteger _number;
-   KGPDFInteger _generation;
-   KGPDFxref   *_xref;
+@interface O2PDFObject_R : O2PDFObject {
+   O2PDFInteger _number;
+   O2PDFInteger _generation;
+   O2PDFxref   *_xref;
 }
 
-+pdfObjectWithNumber:(KGPDFInteger)number generation:(KGPDFInteger)generation xref:(KGPDFxref *)xref;
++pdfObjectWithNumber:(O2PDFInteger)number generation:(O2PDFInteger)generation xref:(O2PDFxref *)xref;
 
 @end

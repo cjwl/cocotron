@@ -11,14 +11,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSArray.h>
 #import <stddef.h>
 
-@implementation KGFunction
+@implementation O2Function
 
--initWithInfo:(void *)info domainCount:(unsigned)domainCount domain:(const float *)domain rangeCount:(unsigned)rangeCount range:(const float *)range callbacks:(const CGFunctionCallbacks *)callbacks {
+-initWithInfo:(void *)info domainDimension:(unsigned)domainCount domain:(const float *)domain rangeDimension:(unsigned)rangeCount range:(const float *)range callbacks:(const CGFunctionCallbacks *)callbacks {
    int i;
    
    _info=info;
    
-   _domainCount=domainCount;
+   _domainCount=domainCount*2;
    _domain=NSZoneMalloc(NULL,sizeof(float)*_domainCount);
    if(domain==NULL){
     for(i=0;i<_domainCount;i++)
@@ -28,8 +28,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     for(i=0;i<_domainCount;i++)
      _domain[i]=domain[i];
    }
-      
-   _rangeCount=rangeCount;
+   
+   _rangeCount=rangeCount*2;
    _range=NSZoneMalloc(NULL,sizeof(float)*_rangeCount);
    if(range==NULL){
     for(i=0;i<_rangeCount;i++)
@@ -42,6 +42,38 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    
    _callbacks=*callbacks;
    return self;
+}
+
+O2FunctionRef O2FunctionCreate(void *info,size_t domainDimension,const CGFloat *domain,size_t rangeDimension,const CGFloat *range,const CGFunctionCallbacks *callbacks) {   
+   return [[O2Function alloc] initWithInfo:info domainDimension:domainDimension domain:domain rangeDimension:rangeDimension range:range callbacks:callbacks];
+}
+
+O2FunctionRef O2FunctionRetain(O2FunctionRef self) {
+   return [self retain];
+}
+
+void O2FunctionRelease(O2FunctionRef self) {
+   [self release];
+}
+
+void O2FunctionEvaluate(O2FunctionRef self,CGFloat x,CGFloat *output){
+  float inputs[1];
+  int   i;
+
+  if(x<self->_domain[0])
+   x=self->_domain[0];
+  else if(x>self->_domain[1])
+   x=self->_domain[1];
+
+  inputs[0]=x; 
+  self->_callbacks.evaluate(self->_info,inputs,output);
+  
+  for(i=0;i<self->_rangeCount/2;i++){
+   if(output[i]<self->_range[i*2])
+    output[i]=self->_range[i*2];
+   else if(output[i]>self->_range[i*2+1])
+    output[i]=self->_range[i*2+1];
+  }
 }
 
 -(void)dealloc {
@@ -73,26 +105,5 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(BOOL)isLinear {
    return NO;
 }
-
--(void)evaluateInput:(float)x output:(float *)output {
-  float inputs[1];
-  int   i;
-
-  if(x<_domain[0])
-   x=_domain[0];
-  else if(x>_domain[1])
-   x=_domain[1];
-
-  inputs[0]=x; 
-  _callbacks.evaluate(_info,inputs,output);
-  
-  for(i=0;i<_rangeCount/2;i++){
-   if(output[i]<_range[i*2])
-    output[i]=_range[i*2];
-   else if(output[i]>_range[i*2+1])
-    output[i]=_range[i*2+1];
-  }
-}
-
 
 @end

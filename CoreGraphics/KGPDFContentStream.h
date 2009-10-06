@@ -8,18 +8,18 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/NSObject.h>
 
-@class KGPDFPage,KGPDFStream,KGPDFDictionary,KGPDFArray,NSArray,KGPDFObject;
+@class O2PDFPage,O2PDFStream,O2PDFDictionary,O2PDFArray,NSArray,O2PDFObject;
 
-@interface KGPDFContentStream : NSObject {
+@interface O2PDFContentStream : NSObject {
    NSArray            *_streams;
-   KGPDFDictionary    *_resources;
-   KGPDFContentStream *_parent;
+   O2PDFDictionary    *_resources;
+   O2PDFContentStream *_parent;
 }
 
--initWithPage:(KGPDFPage *)page;
--initWithStream:(KGPDFStream *)stream resources:(KGPDFDictionary *)resources parent:(KGPDFContentStream *)parent;
+-initWithPage:(O2PDFPage *)page;
+-initWithStream:(O2PDFStream *)stream resources:(O2PDFDictionary *)resources parent:(O2PDFContentStream *)parent;
 
 -(NSArray *)streams;
--(KGPDFObject *)resourceForCategory:(const char *)category name:(const char *)name;
+-(O2PDFObject *)resourceForCategory:(const char *)category name:(const char *)name;
 
 @end

@@ -18,7 +18,7 @@ void CGPDFDocumentRelease(CGPDFDocumentRef self) {
 }
 
 CGPDFDocumentRef CGPDFDocumentCreateWithProvider(CGDataProviderRef provider) {
-   return [[KGPDFDocument alloc] initWithDataProvider:provider];
+   return [[O2PDFDocument alloc] initWithDataProvider:provider];
 }
 
 size_t CGPDFDocumentGetNumberOfPages(CGPDFDocumentRef self) {

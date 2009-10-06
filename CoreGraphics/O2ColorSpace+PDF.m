@@ -9,22 +9,22 @@
 
 @implementation O2ColorSpace(PDF)
 
--(KGPDFObject *)encodeReferenceWithContext:(KGPDFContext *)context {
-   KGPDFObject *name;
+-(O2PDFObject *)encodeReferenceWithContext:(O2PDFContext *)context {
+   O2PDFObject *name;
    
    switch(_type){
    
     case O2ColorSpaceDeviceGray:
-     name=[KGPDFObject_Name pdfObjectWithCString:"DeviceGray"];
+     name=[O2PDFObject_Name pdfObjectWithCString:"DeviceGray"];
      break;
      
     case O2ColorSpaceDeviceRGB:
     case O2ColorSpacePlatformRGB:  // wrong
-     name=[KGPDFObject_Name pdfObjectWithCString:"DeviceRGB"];
+     name=[O2PDFObject_Name pdfObjectWithCString:"DeviceRGB"];
      break;
 
     case O2ColorSpaceDeviceCMYK:
-     name=[KGPDFObject_Name pdfObjectWithCString:"DeviceCMYK"];
+     name=[O2PDFObject_Name pdfObjectWithCString:"DeviceCMYK"];
      break;
 
     default:
@@ -34,9 +34,9 @@
    return [context encodeIndirectPDFObject:name];
 }
 
-+(O2ColorSpaceRef)colorSpaceFromPDFObject:(KGPDFObject *)object {
++(O2ColorSpaceRef)colorSpaceFromPDFObject:(O2PDFObject *)object {
    const char  *colorSpaceName;
-   KGPDFArray  *colorSpaceArray;
+   O2PDFArray  *colorSpaceArray;
 
    if([object checkForType:kKGPDFObjectTypeName value:&colorSpaceName]){
     if(strcmp(colorSpaceName,"DeviceGray")==0)
@@ -58,12 +58,12 @@
     }
     
     if(strcmp(name,"Indexed")==0){
-     KGPDFObject    *baseObject;
+     O2PDFObject    *baseObject;
      O2ColorSpaceRef baseColorSpace;
-     KGPDFString    *tableString;
-     KGPDFStream    *tableStream;
+     O2PDFString    *tableString;
+     O2PDFStream    *tableStream;
      int             baseNumberOfComponents;
-     KGPDFInteger    hival,tableSize;
+     O2PDFInteger    hival,tableSize;
 
      if(![colorSpaceArray getObjectAtIndex:1 value:&baseObject]){
       NSLog(@"Indexed color space missing base");
@@ -108,9 +108,9 @@
      }
     }
     else if(strcmp(name,"ICCBased")==0){
-     KGPDFStream     *stream;
-     KGPDFDictionary *dictionary;
-     KGPDFInteger     numberOfComponents;
+     O2PDFStream     *stream;
+     O2PDFDictionary *dictionary;
+     O2PDFInteger     numberOfComponents;
      
      if(![colorSpaceArray getStreamAtIndex:1 value:&stream]){
       NSLog(@"second element of ICCBased color space array is not a stream");
@@ -153,14 +153,14 @@
 @end
 
 @implementation O2ColorSpace_indexed(PDF)
--(KGPDFObject *)encodeReferenceWithContext:(KGPDFContext *)context {   
-   KGPDFArray *result=[KGPDFArray pdfArray];
+-(O2PDFObject *)encodeReferenceWithContext:(O2PDFContext *)context {   
+   O2PDFArray *result=[O2PDFArray pdfArray];
    int         max=[_base numberOfComponents]*(_hival+1);
      
-   [result addObject:[KGPDFObject_Name pdfObjectWithCString:"Indexed"]];
+   [result addObject:[O2PDFObject_Name pdfObjectWithCString:"Indexed"]];
    [result addObject:[_base encodeReferenceWithContext:context]];
-   [result addObject:[KGPDFObject_Integer pdfObjectWithInteger:_hival]];
-   [result addObject:[KGPDFStream pdfStreamWithBytes:_bytes length:max]];
+   [result addObject:[O2PDFObject_Integer pdfObjectWithInteger:_hival]];
+   [result addObject:[O2PDFStream pdfStreamWithBytes:_bytes length:max]];
    
    return [context encodeIndirectPDFObject:result];
 }

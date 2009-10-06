@@ -12,6 +12,7 @@
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 		FE0997430D87095000033630 /* overlay.png in Resources */ = {isa = PBXBuildFile; fileRef = FE0997420D87095000033630 /* overlay.png */; };
+		FE14CD00106934D700B0FFAF /* pattern.jpg in Resources */ = {isa = PBXBuildFile; fileRef = FE14CCFF106934D700B0FFAF /* pattern.jpg */; };
 		FE14EC4B0DBD9BF00070928C /* DemoCGContext.m in Sources */ = {isa = PBXBuildFile; fileRef = FE14EC490DBD9BF00070928C /* DemoCGContext.m */; };
 		FE14EC4C0DBD9BF00070928C /* DemoKGContext.m in Sources */ = {isa = PBXBuildFile; fileRef = FE14EC4A0DBD9BF00070928C /* DemoKGContext.m */; };
 		FE14EC960DBDA5420070928C /* DemoContext.m in Sources */ = {isa = PBXBuildFile; fileRef = FE14EC950DBDA5420070928C /* DemoContext.m */; };
@@ -31,6 +32,7 @@
 		FE4F4CC30E10397000A5A5F8 /* KGFunction+PDF.m in Sources */ = {isa = PBXBuildFile; fileRef = FE4F4CBC0E10397000A5A5F8 /* KGFunction+PDF.m */; };
 		FE4F4CC40E10397000A5A5F8 /* KGImage+PDF.m in Sources */ = {isa = PBXBuildFile; fileRef = FE4F4CBE0E10397000A5A5F8 /* KGImage+PDF.m */; };
 		FE4F4CC50E10397000A5A5F8 /* KGShading+PDF.m in Sources */ = {isa = PBXBuildFile; fileRef = FE4F4CC00E10397000A5A5F8 /* KGShading+PDF.m */; };
+		FE619A32107A56A100807E7E /* O2Font_CG.m in Sources */ = {isa = PBXBuildFile; fileRef = FE619A31107A56A100807E7E /* O2Font_CG.m */; };
 		FE6EDCE60DB78E7C005503A1 /* KGBitmapContext.m in Sources */ = {isa = PBXBuildFile; fileRef = FE6EDCCB0DB78E7C005503A1 /* KGBitmapContext.m */; };
 		FE6EDCE70DB78E7C005503A1 /* KGClipPhase.m in Sources */ = {isa = PBXBuildFile; fileRef = FE6EDCCD0DB78E7C005503A1 /* KGClipPhase.m */; };
 		FE6EDCE80DB78E7C005503A1 /* O2Color.m in Sources */ = {isa = PBXBuildFile; fileRef = FE6EDCCF0DB78E7C005503A1 /* O2Color.m */; };
@@ -76,7 +78,9 @@
 		FE9552810D77CA67009B765B /* KGSurface.m in Sources */ = {isa = PBXBuildFile; fileRef = FE9552780D77CA67009B765B /* KGSurface.m */; };
 		FE9552830D77CA67009B765B /* VGPath.m in Sources */ = {isa = PBXBuildFile; fileRef = FE95527C0D77CA67009B765B /* VGPath.m */; };
 		FEA47EC2101E44CD005820F3 /* redLZWSquare.tif in Resources */ = {isa = PBXBuildFile; fileRef = FEA47EC1101E44CD005820F3 /* redLZWSquare.tif */; };
+		FEBF54F3107444B90020F40C /* O2TTFDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = FEBF54F2107444B90020F40C /* O2TTFDecoder.m */; };
 		FEBF55B90DCA0DE500CE5A1C /* KGPaint.m in Sources */ = {isa = PBXBuildFile; fileRef = FEBF55B80DCA0DE500CE5A1C /* KGPaint.m */; };
+		FEBF5649107537FF0020F40C /* O2Font_ttf.m in Sources */ = {isa = PBXBuildFile; fileRef = FEBF5648107537FF0020F40C /* O2Font_ttf.m */; };
 		FEBF575B0DCA60CD00CE5A1C /* KGPaint_image.m in Sources */ = {isa = PBXBuildFile; fileRef = FEBF575A0DCA60CD00CE5A1C /* KGPaint_image.m */; };
 		FEBF59190DCC063400CE5A1C /* KGPaint_pattern.m in Sources */ = {isa = PBXBuildFile; fileRef = FEBF59050DCC063400CE5A1C /* KGPaint_pattern.m */; };
 		FEBF59350DCC0E2000CE5A1C /* KGPaint_color.m in Sources */ = {isa = PBXBuildFile; fileRef = FEBF59340DCC0E2000CE5A1C /* KGPaint_color.m */; };
@@ -108,6 +112,7 @@
 		8D1107320486CEB800E47090 /* SWRender.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SWRender.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FE0997420D87095000033630 /* overlay.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = overlay.png; sourceTree = "<group>"; };
 		FE1474D20DB44967001B5634 /* KGBlending.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGBlending.h; sourceTree = "<group>"; };
+		FE14CCFF106934D700B0FFAF /* pattern.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = pattern.jpg; sourceTree = "<group>"; };
 		FE14EC480DBD9BF00070928C /* DemoContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DemoContext.h; sourceTree = "<group>"; };
 		FE14EC490DBD9BF00070928C /* DemoCGContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DemoCGContext.m; sourceTree = "<group>"; };
 		FE14EC4A0DBD9BF00070928C /* DemoKGContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DemoKGContext.m; sourceTree = "<group>"; };
@@ -145,6 +150,8 @@
 		FE4F4CBE0E10397000A5A5F8 /* KGImage+PDF.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "KGImage+PDF.m"; sourceTree = "<group>"; };
 		FE4F4CBF0E10397000A5A5F8 /* KGShading+PDF.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "KGShading+PDF.h"; sourceTree = "<group>"; };
 		FE4F4CC00E10397000A5A5F8 /* KGShading+PDF.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "KGShading+PDF.m"; sourceTree = "<group>"; };
+		FE619A30107A56A100807E7E /* O2Font_CG.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O2Font_CG.h; sourceTree = "<group>"; };
+		FE619A31107A56A100807E7E /* O2Font_CG.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = O2Font_CG.m; sourceTree = "<group>"; };
 		FE6EDCCA0DB78E7C005503A1 /* KGBitmapContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGBitmapContext.h; sourceTree = "<group>"; };
 		FE6EDCCB0DB78E7C005503A1 /* KGBitmapContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGBitmapContext.m; sourceTree = "<group>"; };
 		FE6EDCCC0DB78E7C005503A1 /* KGClipPhase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGClipPhase.h; sourceTree = "<group>"; };
@@ -236,8 +243,12 @@
 		FE95527B0D77CA67009B765B /* VGPath.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = VGPath.h; sourceTree = "<group>"; };
 		FE95527C0D77CA67009B765B /* VGPath.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = VGPath.m; sourceTree = "<group>"; };
 		FEA47EC1101E44CD005820F3 /* redLZWSquare.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; path = redLZWSquare.tif; sourceTree = "<group>"; };
+		FEBF54F1107444B90020F40C /* O2TTFDecoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O2TTFDecoder.h; sourceTree = "<group>"; };
+		FEBF54F2107444B90020F40C /* O2TTFDecoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = O2TTFDecoder.m; sourceTree = "<group>"; };
 		FEBF55B70DCA0DE500CE5A1C /* KGPaint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGPaint.h; sourceTree = "<group>"; };
 		FEBF55B80DCA0DE500CE5A1C /* KGPaint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGPaint.m; sourceTree = "<group>"; };
+		FEBF5647107537FF0020F40C /* O2Font_ttf.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O2Font_ttf.h; sourceTree = "<group>"; };
+		FEBF5648107537FF0020F40C /* O2Font_ttf.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = O2Font_ttf.m; sourceTree = "<group>"; };
 		FEBF57590DCA60CD00CE5A1C /* KGPaint_image.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGPaint_image.h; sourceTree = "<group>"; };
 		FEBF575A0DCA60CD00CE5A1C /* KGPaint_image.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGPaint_image.m; sourceTree = "<group>"; };
 		FEBF59040DCC063400CE5A1C /* KGPaint_pattern.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGPaint_pattern.h; sourceTree = "<group>"; };
@@ -294,6 +305,8 @@
 			children = (
 				FE21384A0DC2303100CEDC65 /* CoreGraphics */,
 				FE14EC950DBDA5420070928C /* DemoContext.m */,
+				FE619A30107A56A100807E7E /* O2Font_CG.h */,
+				FE619A31107A56A100807E7E /* O2Font_CG.m */,
 				FE14EC480DBD9BF00070928C /* DemoContext.h */,
 				FE14EC490DBD9BF00070928C /* DemoCGContext.m */,
 				FE14EC4A0DBD9BF00070928C /* DemoKGContext.m */,
@@ -324,6 +337,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				FE14CCFF106934D700B0FFAF /* pattern.jpg */,
 				FEA47EC1101E44CD005820F3 /* redLZWSquare.tif */,
 				FE45EE640DC254C700F49290 /* overlay.jpg */,
 				FE0997420D87095000033630 /* overlay.png */,
@@ -374,6 +388,10 @@
 		FE6EDCC70DB78E3C005503A1 /* CoreGraphics */ = {
 			isa = PBXGroup;
 			children = (
+				FEBF5647107537FF0020F40C /* O2Font_ttf.h */,
+				FEBF5648107537FF0020F40C /* O2Font_ttf.m */,
+				FEBF54F1107444B90020F40C /* O2TTFDecoder.h */,
+				FEBF54F2107444B90020F40C /* O2TTFDecoder.m */,
 				FE4F4CB70E10397000A5A5F8 /* O2ColorSpace+PDF.h */,
 				FE4F4CB80E10397000A5A5F8 /* O2ColorSpace+PDF.m */,
 				FE4F4CBB0E10397000A5A5F8 /* KGFunction+PDF.h */,
@@ -539,6 +557,7 @@
 				FE0997430D87095000033630 /* overlay.png in Resources */,
 				FE45EE650DC254C700F49290 /* overlay.jpg in Resources */,
 				FEA47EC2101E44CD005820F3 /* redLZWSquare.tif in Resources */,
+				FE14CD00106934D700B0FFAF /* pattern.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -619,6 +638,9 @@
 				FE8CA8ED10181DD500F78535 /* O2LZW.m in Sources */,
 				FE452BCE101F412D00585DFE /* KGImageSource_GIF.m in Sources */,
 				FE452BD1101F414700585DFE /* gif_lib.m in Sources */,
+				FEBF54F3107444B90020F40C /* O2TTFDecoder.m in Sources */,
+				FEBF5649107537FF0020F40C /* O2Font_ttf.m in Sources */,
+				FE619A32107A56A100807E7E /* O2Font_CG.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -655,15 +677,15 @@
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_ENABLE_CPP_EXCEPTIONS = NO;
 				GCC_ENABLE_CPP_RTTI = NO;
-				GCC_ENABLE_SSE3_EXTENSIONS = NO;
-				GCC_ENABLE_SUPPLEMENTAL_SSE3_INSTRUCTIONS = NO;
+				GCC_ENABLE_SSE3_EXTENSIONS = YES;
+				GCC_ENABLE_SUPPLEMENTAL_SSE3_INSTRUCTIONS = YES;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
 				GCC_INSTRUMENT_PROGRAM_FLOW_ARCS = NO;
 				GCC_MODEL_PPC64 = NO;
 				GCC_MODEL_TUNING = "";
 				GCC_OPTIMIZATION_LEVEL = 3;
 				GCC_STRICT_ALIASING = YES;
-				GCC_UNROLL_LOOPS = NO;
+				GCC_UNROLL_LOOPS = YES;
 				GCC_VERSION = 4.2;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = NO;
 				GCC_WARN_SHADOW = NO;

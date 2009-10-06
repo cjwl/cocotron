@@ -7,11 +7,11 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 #import <Foundation/NSObject.h>
 
-@class KGPDFContext;
+@class O2PDFContext;
 
-typedef BOOL  KGPDFBoolean;
-typedef int   KGPDFInteger;
-typedef float KGPDFReal;
+typedef BOOL  O2PDFBoolean;
+typedef int   O2PDFInteger;
+typedef float O2PDFReal;
 
 typedef enum {
    kKGPDFObjectTypeNull=1,
@@ -25,25 +25,25 @@ typedef enum {
    kKGPDFObjectTypeStream,
    
 ///------------
-   KGPDFObjectType_R,
-   KGPDFObjectType_identifier,
+   O2PDFObjectType_R,
+   O2PDFObjectType_identifier,
 
-   KGPDFObjectTypeMark_array_open,
-   KGPDFObjectTypeMark_dictionary_open,
-   KGPDFObjectTypeMark_array_close,
-   KGPDFObjectTypeMark_dictionary_close,
-} KGPDFObjectType;
+   O2PDFObjectTypeMark_array_open,
+   O2PDFObjectTypeMark_dictionary_open,
+   O2PDFObjectTypeMark_array_close,
+   O2PDFObjectTypeMark_dictionary_close,
+} O2PDFObjectType;
 
-@interface KGPDFObject : NSObject
+@interface O2PDFObject : NSObject
 
--(KGPDFObject *)realObject;
+-(O2PDFObject *)realObject;
 
--(KGPDFObjectType)objectTypeNoParsing;
--(KGPDFObjectType)objectType;
+-(O2PDFObjectType)objectTypeNoParsing;
+-(O2PDFObjectType)objectType;
 
--(BOOL)checkForType:(KGPDFObjectType)type value:(void *)value;
+-(BOOL)checkForType:(O2PDFObjectType)type value:(void *)value;
 
 -(BOOL)isByReference;
--(void)encodeWithPDFContext:(KGPDFContext *)encoder;
+-(void)encodeWithPDFContext:(O2PDFContext *)encoder;
 
 @end

@@ -17,7 +17,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSString.h>
 #import "KGExceptions.h"
 
-@implementation KGPDFxref
+@implementation O2PDFxref
 
 -initWithData:(NSData *)data {
    _data=[data retain];
@@ -47,7 +47,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return _data;
 }
 
--(KGPDFxref *)previous {
+-(O2PDFxref *)previous {
    return _previous;
 }
 
@@ -68,7 +68,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 
--(KGPDFxrefEntry *)entryWithNumber:(KGPDFInteger)number generation:(KGPDFInteger)generation {
+-(O2PDFxrefEntry *)entryWithNumber:(O2PDFInteger)number generation:(O2PDFInteger)generation {
    void *key=(void *)number;
    id    check=NSMapGet(_numberToEntries,key);
       
@@ -80,7 +80,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     int      i,count=[check count];
     
     for(i=0;i<count;i++){
-     KGPDFxrefEntry *entry=[array objectAtIndex:i];
+     O2PDFxrefEntry *entry=[array objectAtIndex:i];
      
      if([entry generation]==generation)
       return entry;
@@ -90,17 +90,17 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return check;
 }
 
--(KGPDFObject *)objectAtNumber:(KGPDFInteger)number generation:(KGPDFInteger)generation {
-   KGPDFxrefEntry *lookup=[self entryWithNumber:number generation:generation];
+-(O2PDFObject *)objectAtNumber:(O2PDFInteger)number generation:(O2PDFInteger)generation {
+   O2PDFxrefEntry *lookup=[self entryWithNumber:number generation:generation];
    
    if(lookup==nil)
-    return [KGPDFObject_const pdfObjectWithNull];
+    return [O2PDFObject_const pdfObjectWithNull];
    else {
-    KGPDFObject *result=NSMapGet(_entryToObject,lookup);
+    O2PDFObject *result=NSMapGet(_entryToObject,lookup);
 
     if(result==nil){
-     if(!KGPDFParseIndirectObject(_data,[lookup position],&result,number,generation,self))
-      result=[KGPDFObject_const pdfObjectWithNull];
+     if(!O2PDFParseIndirectObject(_data,[lookup position],&result,number,generation,self))
+      result=[O2PDFObject_const pdfObjectWithNull];
       
      NSMapInsert(_entryToObject,lookup,result);
     }
@@ -109,16 +109,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    }
 }
 
--(KGPDFDictionary *)trailer {
+-(O2PDFDictionary *)trailer {
    return _trailer;
 }
 
--(void)setPreviousTable:(KGPDFxref *)table {
+-(void)setPreviousTable:(O2PDFxref *)table {
    [_previous autorelease];
    _previous=[table retain];
 }
 
--(void)addEntry:(KGPDFxrefEntry *)entry {
+-(void)addEntry:(O2PDFxrefEntry *)entry {
    void *key=(void *)[entry number];
    id    check=NSMapGet(_numberToEntries,key);
    
@@ -128,28 +128,28 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     NSMapInsert(_numberToEntries,key,entry);
    if([check isKindOfClass:[NSMutableArray class]])
     [check addObject:entry];
-   else if([check isKindOfClass:[KGPDFxrefEntry class]])
+   else if([check isKindOfClass:[O2PDFxrefEntry class]])
     NSMapInsert(_numberToEntries,key,[NSMutableArray arrayWithObject:entry]);
 }
 
--(void)addEntry:(KGPDFxrefEntry *)entry object:(KGPDFObject *)object {
+-(void)addEntry:(O2PDFxrefEntry *)entry object:(O2PDFObject *)object {
    [self addEntry:entry];
    NSMapInsert(_entryToObject,entry,object);
 }
 
--(void)setTrailer:(KGPDFDictionary *)trailer {
+-(void)setTrailer:(O2PDFDictionary *)trailer {
    [_trailer autorelease];
    _trailer=[trailer retain];
 }
 
--(void)encodeWithPDFContext:(KGPDFContext *)encoder {
+-(void)encodeWithPDFContext:(O2PDFContext *)encoder {
    unsigned startxref=[encoder length];
    int      i,count=[_entriesInOrder count];
    
    [encoder appendCString:"xref\n"];
    [encoder appendFormat:@"%d %d\n",1,count];
    for(i=0;i<count;i++){
-    KGPDFxrefEntry *entry=[_entriesInOrder objectAtIndex:i];
+    O2PDFxrefEntry *entry=[_entriesInOrder objectAtIndex:i];
     
     [encoder appendFormat:@"%010d %06d n\n",[entry position],[entry generation]];
    }

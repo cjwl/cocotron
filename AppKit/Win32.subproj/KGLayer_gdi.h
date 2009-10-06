@@ -1,11 +1,11 @@
 #import <CoreGraphics/KGLayer.h>
 
 @interface KGLayer_gdi : KGLayer {
-   KGContext *_context;
+   O2Context *_context;
 }
 
--initRelativeToContext:(KGContext *)context size:(NSSize)size unused:(NSDictionary *)unused;
+-initRelativeToContext:(O2Context *)context size:(NSSize)size unused:(NSDictionary *)unused;
 
--(KGContext *)cgContext;
+-(O2Context *)cgContext;
 
 @end

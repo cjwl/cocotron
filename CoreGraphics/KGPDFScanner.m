@@ -38,10 +38,10 @@ typedef struct {
    unsigned       capacity;
    unsigned       length;
     char *bytes;
-} KGPDFByteBuffer;
+} O2PDFByteBuffer;
 
-static inline KGPDFByteBuffer *KGPDFByteBufferCreate(){
-   KGPDFByteBuffer *result=NSZoneMalloc(NULL,sizeof(KGPDFByteBuffer));
+static inline O2PDFByteBuffer *O2PDFByteBufferCreate(){
+   O2PDFByteBuffer *result=NSZoneMalloc(NULL,sizeof(O2PDFByteBuffer));
    
    result->capacity=0;
    result->length=0;
@@ -50,17 +50,17 @@ static inline KGPDFByteBuffer *KGPDFByteBufferCreate(){
    return result;
 }
 
-static inline void KGPDFByteBufferFree(KGPDFByteBuffer *buffer){
+static inline void O2PDFByteBufferFree(O2PDFByteBuffer *buffer){
    if(buffer->bytes!=NULL)
     NSZoneFree(NULL,buffer->bytes);
    NSZoneFree(NULL,buffer);
 }
 
-static inline void KGPDFByteBufferReset(KGPDFByteBuffer *buffer){
+static inline void O2PDFByteBufferReset(O2PDFByteBuffer *buffer){
    buffer->length=0;
 }
 
-static inline void KGPDFByteBufferAppend(KGPDFByteBuffer *buffer,unsigned char c){
+static inline void O2PDFByteBufferAppend(O2PDFByteBuffer *buffer,unsigned char c){
    if(buffer->length>=buffer->capacity){
     if(buffer->capacity==0){
      buffer->capacity=128;
@@ -74,7 +74,7 @@ static inline void KGPDFByteBufferAppend(KGPDFByteBuffer *buffer,unsigned char c
    buffer->bytes[buffer->length++]=c;
 }
 
-static inline unsigned char KGPDFByteBufferDecodeNibble(unsigned char nibble){
+static inline unsigned char O2PDFByteBufferDecodeNibble(unsigned char nibble){
    if(nibble>='a' && nibble<='f')
     return (nibble-'a')+10;
    else if(nibble>='A' && nibble<='F')
@@ -85,17 +85,17 @@ static inline unsigned char KGPDFByteBufferDecodeNibble(unsigned char nibble){
    return 0xFF;
 }
 
-static inline BOOL KGPDFByteBufferAppendHighNibble(KGPDFByteBuffer *buffer,unsigned char nibble){
-   if((nibble=KGPDFByteBufferDecodeNibble(nibble))==0xFF)
+static inline BOOL O2PDFByteBufferAppendHighNibble(O2PDFByteBuffer *buffer,unsigned char nibble){
+   if((nibble=O2PDFByteBufferDecodeNibble(nibble))==0xFF)
     return NO;
     
    nibble<<=4;
-   KGPDFByteBufferAppend(buffer,nibble);
+   O2PDFByteBufferAppend(buffer,nibble);
    return YES;
 }
 
-static inline BOOL KGPDFByteBufferAppendLowNibble(KGPDFByteBuffer *buffer,unsigned char nibble){
-   if((nibble=KGPDFByteBufferDecodeNibble(nibble))==0xFF)
+static inline BOOL O2PDFByteBufferAppendLowNibble(O2PDFByteBuffer *buffer,unsigned char nibble){
+   if((nibble=O2PDFByteBufferDecodeNibble(nibble))==0xFF)
     return NO;
     
    buffer->bytes[buffer->length]|=nibble;
@@ -103,13 +103,13 @@ static inline BOOL KGPDFByteBufferAppendLowNibble(KGPDFByteBuffer *buffer,unsign
    return YES;
 }
 
-static inline BOOL KGPDFByteBufferAppendOctal(KGPDFByteBuffer *buffer,char octal){
+static inline BOOL O2PDFByteBufferAppendOctal(O2PDFByteBuffer *buffer,char octal){
    octal-='0';
-   KGPDFByteBufferAppend(buffer,octal);
+   O2PDFByteBufferAppend(buffer,octal);
 
    return YES;
 }
-static inline BOOL KGPDFByteBufferAddOctal(KGPDFByteBuffer *buffer,char octal){
+static inline BOOL O2PDFByteBufferAddOctal(O2PDFByteBuffer *buffer,char octal){
    octal-='0';
    buffer->bytes[buffer->length]<<=3;
    buffer->bytes[buffer->length]|=octal;
@@ -117,14 +117,14 @@ static inline BOOL KGPDFByteBufferAddOctal(KGPDFByteBuffer *buffer,char octal){
    return YES;
 }
 
-static void debugTracev(const char *bytes,unsigned length,KGPDFInteger position,NSString *format,va_list arguments) {
+static void debugTracev(const char *bytes,unsigned length,O2PDFInteger position,NSString *format,va_list arguments) {
    NSString *dump=[NSString stringWithCString:bytes+position length:MIN(80,(length-position))];
    
    NSLogv(format,arguments);
    NSLog(@"position=%d,dump=[%@]",position,dump);
 }
 
-static void debugTrace(const char *bytes,unsigned length,KGPDFInteger position,NSString *format,...) {
+static void debugTrace(const char *bytes,unsigned length,O2PDFInteger position,NSString *format,...) {
    va_list arguments;
 
    va_start(arguments,format);
@@ -132,7 +132,7 @@ static void debugTrace(const char *bytes,unsigned length,KGPDFInteger position,N
    debugTracev(bytes,length,position,format,arguments);
 }
 
-static BOOL debugError(const char *bytes,unsigned length,KGPDFInteger position,NSString *format,...) {
+static BOOL debugError(const char *bytes,unsigned length,O2PDFInteger position,NSString *format,...) {
    va_list arguments;
 
    va_start(arguments,format);
@@ -141,7 +141,7 @@ static BOOL debugError(const char *bytes,unsigned length,KGPDFInteger position,N
    return NO;
 }
 
-BOOL KGPDFScanBackwardsByLines(const char *bytes,unsigned length,KGPDFInteger position,KGPDFInteger *lastPosition,int delta) {
+BOOL O2PDFScanBackwardsByLines(const char *bytes,unsigned length,O2PDFInteger position,O2PDFInteger *lastPosition,int delta) {
    enum {
     STATE_LF_OR_CR,
     STATE_CR_OR_LINE,
@@ -186,7 +186,7 @@ BOOL KGPDFScanBackwardsByLines(const char *bytes,unsigned length,KGPDFInteger po
 }
 
 #if 0
--(BOOL)scanData:(NSData *)data position:(KGPDFInteger)position lastPosition:(KGPDFInteger *)lastPosition linesForward:(int)delta {
+-(BOOL)scanData:(NSData *)data position:(O2PDFInteger)position lastPosition:(O2PDFInteger *)lastPosition linesForward:(int)delta {
    const char *bytes=[data bytes];
    unsigned    length=[bytes length];
    enum {
@@ -217,8 +217,8 @@ BOOL KGPDFScanBackwardsByLines(const char *bytes,unsigned length,KGPDFInteger po
 }
 #endif
 
-BOOL KGPDFScanVersion(const char *bytes,unsigned length,KGPDFString **versionp) {
-   KGPDFInteger position=length;
+BOOL O2PDFScanVersion(const char *bytes,unsigned length,O2PDFString **versionp) {
+   O2PDFInteger position=length;
    
    if(length<8)
     return NO;
@@ -226,9 +226,9 @@ BOOL KGPDFScanVersion(const char *bytes,unsigned length,KGPDFString **versionp) 
    if(strncmp(bytes,"%PDF-",5)!=0)
     return debugError(bytes,length,position,@"Does not begin with %PDF-");
    
-   *versionp=[KGPDFString pdfObjectWithBytes:bytes+5 length:3];
+   *versionp=[O2PDFString pdfObjectWithBytes:bytes+5 length:3];
    
-   if(!KGPDFScanBackwardsByLines(bytes,length,position,&position,1))
+   if(!O2PDFScanBackwardsByLines(bytes,length,position,&position,1))
     return debugError(bytes,length,position,@"Unable to back up one line");
    
    if(strncmp(bytes+position,"%%EOF",5)!=0)
@@ -237,11 +237,11 @@ BOOL KGPDFScanVersion(const char *bytes,unsigned length,KGPDFString **versionp) 
    return YES;
 }
 
-BOOL KGPDFScanObject(const char *bytes,unsigned length,KGPDFInteger position,KGPDFInteger *lastPosition,KGPDFObject **objectp) {
-   KGPDFInteger     currentSign=1,currentInt=0;
-   KGPDFReal        currentReal=0,currentFraction=0;
+BOOL O2PDFScanObject(const char *bytes,unsigned length,O2PDFInteger position,O2PDFInteger *lastPosition,O2PDFObject **objectp) {
+   O2PDFInteger     currentSign=1,currentInt=0;
+   O2PDFReal        currentReal=0,currentFraction=0;
    int              inlineLocation=0;
-   KGPDFByteBuffer *byteBuffer=NULL;
+   O2PDFByteBuffer *byteBuffer=NULL;
    
    enum {
     STATE_SCANNING,
@@ -324,12 +324,12 @@ BOOL KGPDFScanObject(const char *bytes,unsigned length,KGPDFInteger position,KGP
         break;
 
        case '[':
-        *objectp=[KGPDFObject_const pdfObjectArrayMark];
+        *objectp=[O2PDFObject_const pdfObjectArrayMark];
         *lastPosition=position+1;
         return YES;
 
        case ']':
-        *objectp=[KGPDFObject_const pdfObjectArrayMarkEnd];
+        *objectp=[O2PDFObject_const pdfObjectArrayMarkEnd];
         *lastPosition=position+1;
         return YES;
 
@@ -363,7 +363,7 @@ BOOL KGPDFScanObject(const char *bytes,unsigned length,KGPDFInteger position,KGP
       else if(code>='0' && code<='9')
        currentInt=currentInt*10+code-'0';
       else {
-       *objectp=[KGPDFObject_Integer pdfObjectWithInteger:currentSign*currentInt];
+       *objectp=[O2PDFObject_Integer pdfObjectWithInteger:currentSign*currentInt];
        *lastPosition=position;
        return YES;
       }
@@ -375,7 +375,7 @@ BOOL KGPDFScanObject(const char *bytes,unsigned length,KGPDFInteger position,KGP
        currentFraction*=0.1;
       }
       else {
-       *objectp=[KGPDFObject_Real pdfObjectWithReal:currentSign*currentReal];
+       *objectp=[O2PDFObject_Real pdfObjectWithReal:currentSign*currentReal];
        *lastPosition=position;
        return YES;
       }
@@ -383,16 +383,16 @@ BOOL KGPDFScanObject(const char *bytes,unsigned length,KGPDFInteger position,KGP
 
      case STATE_STRING_NOFREE:
       if(code==')'){
-       *objectp=[KGPDFString pdfObjectWithBytesNoCopyNoFree:bytes+inlineLocation length:position-inlineLocation];
+       *objectp=[O2PDFString pdfObjectWithBytesNoCopyNoFree:bytes+inlineLocation length:position-inlineLocation];
        *lastPosition=position+1;
        return YES;
       }
       else if(code=='\\'){
        int pos;
        
-       byteBuffer=KGPDFByteBufferCreate();
+       byteBuffer=O2PDFByteBufferCreate();
        for(pos=inlineLocation;pos<position;pos++)
-        KGPDFByteBufferAppend(byteBuffer,bytes[pos]);
+        O2PDFByteBufferAppend(byteBuffer,bytes[pos]);
         
        state=STATE_STRING_ESCAPE;
        break;
@@ -401,8 +401,8 @@ BOOL KGPDFScanObject(const char *bytes,unsigned length,KGPDFInteger position,KGP
       
      case STATE_STRING_FREE:
       if(code==')'){
-       *objectp=[KGPDFString pdfObjectWithBytes:byteBuffer->bytes length:byteBuffer->length];
-       KGPDFByteBufferFree(byteBuffer);
+       *objectp=[O2PDFString pdfObjectWithBytes:byteBuffer->bytes length:byteBuffer->length];
+       O2PDFByteBufferFree(byteBuffer);
        *lastPosition=position+1;
        return YES;
       }
@@ -411,41 +411,41 @@ BOOL KGPDFScanObject(const char *bytes,unsigned length,KGPDFInteger position,KGP
        break;
       }
       else {
-       KGPDFByteBufferAppend(byteBuffer,bytes[position]);
+       O2PDFByteBufferAppend(byteBuffer,bytes[position]);
       }
       break;
 
      case STATE_STRING_ESCAPE:
       if(code=='n'){
-       KGPDFByteBufferAppend(byteBuffer,'\n');
+       O2PDFByteBufferAppend(byteBuffer,'\n');
        state=STATE_STRING_FREE;
       }
       else if(code=='r'){
-       KGPDFByteBufferAppend(byteBuffer,'\r');
+       O2PDFByteBufferAppend(byteBuffer,'\r');
        state=STATE_STRING_FREE;
       }
       else if(code=='t'){
-       KGPDFByteBufferAppend(byteBuffer,'\t');
+       O2PDFByteBufferAppend(byteBuffer,'\t');
        state=STATE_STRING_FREE;
       }
       else if(code=='b'){
-       KGPDFByteBufferAppend(byteBuffer,'\b');
+       O2PDFByteBufferAppend(byteBuffer,'\b');
        state=STATE_STRING_FREE;
       }
       else if(code=='f'){
-       KGPDFByteBufferAppend(byteBuffer,'\f');
+       O2PDFByteBufferAppend(byteBuffer,'\f');
        state=STATE_STRING_FREE;
       }
       else if(code=='\\'){
-       KGPDFByteBufferAppend(byteBuffer,'\\');
+       O2PDFByteBufferAppend(byteBuffer,'\\');
        state=STATE_STRING_FREE;
       }
       else if(code=='('){
-       KGPDFByteBufferAppend(byteBuffer,'(');
+       O2PDFByteBufferAppend(byteBuffer,'(');
        state=STATE_STRING_FREE;
       }
       else if(code==')'){
-       KGPDFByteBufferAppend(byteBuffer,')');
+       O2PDFByteBufferAppend(byteBuffer,')');
        state=STATE_STRING_FREE;
       }
       else if(code==CR)
@@ -453,18 +453,18 @@ BOOL KGPDFScanObject(const char *bytes,unsigned length,KGPDFInteger position,KGP
       else if(code==LF)
        state=STATE_STRING_FREE;
       else if(code>='0' || code<='7'){
-       KGPDFByteBufferAppendOctal(byteBuffer,code);
+       O2PDFByteBufferAppendOctal(byteBuffer,code);
        state=STATE_STRING_0XX;
       }
       else{
-       KGPDFByteBufferFree(byteBuffer);
+       O2PDFByteBufferFree(byteBuffer);
        return debugError(bytes,length,position,@"Invalid escape sequence code=0x%02X",code);
       }
       break;
 
      case STATE_STRING_0XX:
       if(code>='0' || code<='7'){
-       KGPDFByteBufferAddOctal(byteBuffer,code);
+       O2PDFByteBufferAddOctal(byteBuffer,code);
        state=STATE_STRING_00X;
       }
       else{
@@ -475,7 +475,7 @@ BOOL KGPDFScanObject(const char *bytes,unsigned length,KGPDFInteger position,KGP
 
      case STATE_STRING_00X:
       if(code>='0' || code<='7')
-       KGPDFByteBufferAddOctal(byteBuffer,code);
+       O2PDFByteBufferAddOctal(byteBuffer,code);
       else
        position--;
        
@@ -484,13 +484,13 @@ BOOL KGPDFScanObject(const char *bytes,unsigned length,KGPDFInteger position,KGP
 
      case STATE_OPEN_ANGLE:
       if(code=='<'){
-       *objectp=[KGPDFObject_const pdfObjectDictionaryMark];
+       *objectp=[O2PDFObject_const pdfObjectDictionaryMark];
        *lastPosition=position+1;
        return YES;
       }
       else {
-       byteBuffer=KGPDFByteBufferCreate();
-       if(KGPDFByteBufferAppendHighNibble(byteBuffer,code))
+       byteBuffer=O2PDFByteBufferCreate();
+       if(O2PDFByteBufferAppendHighNibble(byteBuffer,code))
         state=STATE_HEX_STRING_NIBBLE2;
        else
         return debugError(bytes,length,position,@"Invalid hex character code=0x%02X",code);
@@ -500,26 +500,26 @@ BOOL KGPDFScanObject(const char *bytes,unsigned length,KGPDFInteger position,KGP
      case STATE_HEX_STRING_NIBBLE1:
      case STATE_HEX_STRING_NIBBLE2:
       if(code=='>'){
-       *objectp=[KGPDFString pdfObjectWithBytes:byteBuffer->bytes length:byteBuffer->length];
-       KGPDFByteBufferFree(byteBuffer);
+       *objectp=[O2PDFString pdfObjectWithBytes:byteBuffer->bytes length:byteBuffer->length];
+       O2PDFByteBufferFree(byteBuffer);
        *lastPosition=position+1;
        return YES;
       }
       else if(code==' ' || code==CR || code==FF || code==LF || code=='\t' || code=='\0')
        break;
       else if(state==STATE_HEX_STRING_NIBBLE1){
-       if(KGPDFByteBufferAppendHighNibble(byteBuffer,code)){
+       if(O2PDFByteBufferAppendHighNibble(byteBuffer,code)){
         state=STATE_HEX_STRING_NIBBLE2;
         break;
        }
       }
       else if(state==STATE_HEX_STRING_NIBBLE2){
-       if(KGPDFByteBufferAppendLowNibble(byteBuffer,code)){
+       if(O2PDFByteBufferAppendLowNibble(byteBuffer,code)){
         state=STATE_HEX_STRING_NIBBLE1;
         break;
        }
       }
-      KGPDFByteBufferFree(byteBuffer);
+      O2PDFByteBufferFree(byteBuffer);
       return debugError(bytes,length,position,@"Invalid hex character code=0x%02X",code);
 
      case STATE_NAME:
@@ -529,7 +529,7 @@ BOOL KGPDFScanObject(const char *bytes,unsigned length,KGPDFInteger position,KGP
        if(inlineLocation==position)
         return debugError(bytes,length,position,@"Invalid character in name, code=0x%02X",code);
 
-       *objectp=[KGPDFObject_Name pdfObjectWithBytes:bytes+inlineLocation length:(position-inlineLocation)];
+       *objectp=[O2PDFObject_Name pdfObjectWithBytes:bytes+inlineLocation length:(position-inlineLocation)];
        *lastPosition=position;
        return YES;
       }
@@ -537,7 +537,7 @@ BOOL KGPDFScanObject(const char *bytes,unsigned length,KGPDFInteger position,KGP
 
      case STATE_CLOSE_ANGLE:
       if(code=='>'){
-       *objectp=[KGPDFObject_const pdfObjectDictionaryMarkEnd];
+       *objectp=[O2PDFObject_const pdfObjectDictionaryMarkEnd];
        *lastPosition=position+1;
        return YES;
       }
@@ -549,16 +549,16 @@ BOOL KGPDFScanObject(const char *bytes,unsigned length,KGPDFInteger position,KGP
          code=='[' || code=='{' || code=='}' || code=='/'){
        const char     *name=bytes+inlineLocation;
        unsigned        length=position-inlineLocation;
-       KGPDFIdentifier identifier=KGPDFClassifyIdentifier(name,length);
+       O2PDFIdentifier identifier=O2PDFClassifyIdentifier(name,length);
        
-       if(identifier==KGPDFIdentifier_true)
-        *objectp=[KGPDFObject_Boolean pdfObjectWithTrue];
-       else if(identifier==KGPDFIdentifier_false)
-        *objectp=[KGPDFObject_Boolean pdfObjectWithFalse];
-       else if(identifier==KGPDFIdentifier_null)
-        *objectp=[KGPDFObject_const pdfObjectWithNull];
+       if(identifier==O2PDFIdentifier_true)
+        *objectp=[O2PDFObject_Boolean pdfObjectWithTrue];
+       else if(identifier==O2PDFIdentifier_false)
+        *objectp=[O2PDFObject_Boolean pdfObjectWithFalse];
+       else if(identifier==O2PDFIdentifier_null)
+        *objectp=[O2PDFObject_const pdfObjectWithNull];
        else
-        *objectp=[KGPDFObject_identifier pdfObjectWithIdentifier:identifier name:name length:length];
+        *objectp=[O2PDFObject_identifier pdfObjectWithIdentifier:identifier name:name length:length];
 
        *lastPosition=position;
        return YES;
@@ -568,41 +568,41 @@ BOOL KGPDFScanObject(const char *bytes,unsigned length,KGPDFInteger position,KGP
    }
    
    if(byteBuffer!=NULL)
-    KGPDFByteBufferFree(byteBuffer);
+    O2PDFByteBufferFree(byteBuffer);
    return NO;
 }
 
-BOOL KGPDFScanIdentifier(const char *bytes,unsigned length,KGPDFInteger position,KGPDFInteger *lastPosition,KGPDFObject_identifier **identifier) {
-   KGPDFObject *object;
+BOOL O2PDFScanIdentifier(const char *bytes,unsigned length,O2PDFInteger position,O2PDFInteger *lastPosition,O2PDFObject_identifier **identifier) {
+   O2PDFObject *object;
    
-   if(!KGPDFScanObject(bytes,length,position,lastPosition,&object))
+   if(!O2PDFScanObject(bytes,length,position,lastPosition,&object))
     return NO;
    
-   if([object objectType]!=KGPDFObjectType_identifier)
+   if([object objectType]!=O2PDFObjectType_identifier)
     return NO;
    
-   *identifier=(KGPDFObject_identifier *)object;
+   *identifier=(O2PDFObject_identifier *)object;
    return YES;
 }
 
-BOOL KGPDFScanInteger(const char *bytes,unsigned length,KGPDFInteger position,KGPDFInteger *lastPosition,KGPDFInteger *value) {
-   KGPDFObject *object;
+BOOL O2PDFScanInteger(const char *bytes,unsigned length,O2PDFInteger position,O2PDFInteger *lastPosition,O2PDFInteger *value) {
+   O2PDFObject *object;
    
-   if(!KGPDFScanObject(bytes,length,position,lastPosition,&object))
+   if(!O2PDFScanObject(bytes,length,position,lastPosition,&object))
     return NO;
 
    return [object checkForType:kKGPDFObjectTypeInteger value:value];
 }
 
 
-BOOL KGPDFParseObject(const char *bytes,unsigned length,KGPDFInteger position,KGPDFInteger *lastPosition,KGPDFObject **objectp,KGPDFxref *xref) {
+BOOL O2PDFParseObject(const char *bytes,unsigned length,O2PDFInteger position,O2PDFInteger *lastPosition,O2PDFObject **objectp,O2PDFxref *xref) {
    NSMutableArray *stack=nil;
-   KGPDFObject    *check;
+   O2PDFObject    *check;
    
    debugTrace(bytes,length,position,@"KGPDFParseObject");
    while(YES) {
 
-    if(!KGPDFScanObject(bytes,length,position,&position,&check))
+    if(!O2PDFScanObject(bytes,length,position,&position,&check))
      return NO;
     
     debugTrace(bytes,length,position,@"check=%@",check);
@@ -624,23 +624,23 @@ BOOL KGPDFParseObject(const char *bytes,unsigned length,KGPDFInteger position,KG
       }
       break;
            
-     case KGPDFObjectTypeMark_array_open:
-     case KGPDFObjectTypeMark_dictionary_open:
+     case O2PDFObjectTypeMark_array_open:
+     case O2PDFObjectTypeMark_dictionary_open:
        if(stack==nil)
         stack=[NSMutableArray array];
        [stack addObject:check];
        break;
 
-     case KGPDFObjectTypeMark_array_close:{
-       KGPDFArray *array=[KGPDFArray pdfArray];
+     case O2PDFObjectTypeMark_array_close:{
+       O2PDFArray *array=[O2PDFArray pdfArray];
        int         count=[stack count];
        int         index=count;
        NSRange     remove;
        
        while(--index>=0){
-        KGPDFObject *check=[stack objectAtIndex:index];
+        O2PDFObject *check=[stack objectAtIndex:index];
         
-        if([check objectTypeNoParsing]==KGPDFObjectTypeMark_array_open)
+        if([check objectTypeNoParsing]==O2PDFObjectTypeMark_array_open)
          break;
        }
        if(index<0)
@@ -655,20 +655,20 @@ BOOL KGPDFParseObject(const char *bytes,unsigned length,KGPDFInteger position,KG
        [stack addObject:array];
 
        if([stack count]==1){
-        *objectp=(KGPDFObject *)array;
+        *objectp=(O2PDFObject *)array;
         *lastPosition=position;
         return YES;
        }
       }
       break;
       
-     case KGPDFObjectTypeMark_dictionary_close:{
-       KGPDFDictionary *dictionary=[KGPDFDictionary pdfDictionary];
+     case O2PDFObjectTypeMark_dictionary_close:{
+       O2PDFDictionary *dictionary=[O2PDFDictionary pdfDictionary];
        
        while((check=[stack lastObject])!=nil){
         const char *key;
              
-        if([check objectTypeNoParsing]==KGPDFObjectTypeMark_dictionary_open){
+        if([check objectTypeNoParsing]==O2PDFObjectTypeMark_dictionary_open){
          if([stack count]==1){
           *objectp=dictionary;
           *lastPosition=position;
@@ -694,13 +694,13 @@ BOOL KGPDFParseObject(const char *bytes,unsigned length,KGPDFInteger position,KG
       }
       break;
       
-     case KGPDFObjectType_identifier:{
-       KGPDFIdentifier identifier=[(KGPDFObject_identifier *)check identifier];
+     case O2PDFObjectType_identifier:{
+       O2PDFIdentifier identifier=[(O2PDFObject_identifier *)check identifier];
 
-       if(identifier==KGPDFIdentifier_R){
-        KGPDFInteger generation;
-        KGPDFInteger number;
-        KGPDFObject *object;
+       if(identifier==O2PDFIdentifier_R){
+        O2PDFInteger generation;
+        O2PDFInteger number;
+        O2PDFObject *object;
         
         if(![[stack lastObject] checkForType:kKGPDFObjectTypeInteger value:&generation])
          return NO;
@@ -709,7 +709,7 @@ BOOL KGPDFParseObject(const char *bytes,unsigned length,KGPDFInteger position,KG
          return NO;
         [stack removeLastObject];
         
-        object=[KGPDFObject_R pdfObjectWithNumber:number generation:generation xref:xref];
+        object=[O2PDFObject_R pdfObjectWithNumber:number generation:generation xref:xref];
         
         if(stack!=nil)
          [stack addObject:object];
@@ -737,42 +737,42 @@ BOOL KGPDFParseObject(const char *bytes,unsigned length,KGPDFInteger position,KG
    return NO;
 }
 
-BOOL KGPDFParseDictionary(const char *bytes,unsigned length,KGPDFInteger position,KGPDFInteger *lastPosition,KGPDFDictionary **dictionaryp,KGPDFxref *xref) {
-   KGPDFObject *object;
+BOOL O2PDFParseDictionary(const char *bytes,unsigned length,O2PDFInteger position,O2PDFInteger *lastPosition,O2PDFDictionary **dictionaryp,O2PDFxref *xref) {
+   O2PDFObject *object;
    
-   if(!KGPDFParseObject(bytes,length,position,lastPosition,&object,xref))
+   if(!O2PDFParseObject(bytes,length,position,lastPosition,&object,xref))
     return NO;
    
    return [object checkForType:kKGPDFObjectTypeDictionary value:dictionaryp];
 }
 
-BOOL KGPDFParse_xrefAtPosition(NSData *data,KGPDFInteger position,KGPDFxref **xrefp) {
+BOOL O2PDFParse_xrefAtPosition(NSData *data,O2PDFInteger position,O2PDFxref **xrefp) {
    const char             *bytes=[data bytes];
    unsigned                length=[data length];
-   KGPDFxref         *table;
-   KGPDFDictionary        *trailer;
-   KGPDFObject_identifier *identifier=nil;
+   O2PDFxref         *table;
+   O2PDFDictionary        *trailer;
+   O2PDFObject_identifier *identifier=nil;
 
-   if(!KGPDFScanIdentifier(bytes,length,position,&position,&identifier))
+   if(!O2PDFScanIdentifier(bytes,length,position,&position,&identifier))
     return debugError(bytes,length,position,@"Expecting xref identifier",identifier);
 
-   if([identifier identifier]!=KGPDFIdentifier_xref)
+   if([identifier identifier]!=O2PDFIdentifier_xref)
     return debugError(bytes,length,position,@"Expecting xref, got %@",identifier);
 
-   *xrefp=table=[[[KGPDFxref alloc] initWithData:data] autorelease];
+   *xrefp=table=[[[O2PDFxref alloc] initWithData:data] autorelease];
    do {
-    KGPDFObject *object;
-    KGPDFInteger number;
-    KGPDFInteger count;
+    O2PDFObject *object;
+    O2PDFInteger number;
+    O2PDFInteger count;
     
-    if(!KGPDFScanObject(bytes,length,position,&position,&object))
+    if(!O2PDFScanObject(bytes,length,position,&position,&object))
      return debugError(bytes,length,position,@"Expecting object");
     
-    if([object objectType]==KGPDFObjectType_identifier){
-     if([(KGPDFObject_identifier *)object identifier]!=KGPDFIdentifier_trailer)
+    if([object objectType]==O2PDFObjectType_identifier){
+     if([(O2PDFObject_identifier *)object identifier]!=O2PDFIdentifier_trailer)
       return debugError(bytes,length,position,@"Expecting trailer identifier,got %@",object);
      else {
-      if(!KGPDFParseDictionary(bytes,length,position,&position,&trailer,table))
+      if(!O2PDFParseDictionary(bytes,length,position,&position,&trailer,table))
        return NO;
        
       [table setTrailer:trailer];
@@ -783,26 +783,26 @@ BOOL KGPDFParse_xrefAtPosition(NSData *data,KGPDFInteger position,KGPDFxref **xr
     if(![object checkForType:kKGPDFObjectTypeInteger value:&number])
      return debugError(bytes,length,position,@"Expecting integer,got %@",object);
     
-    if(!KGPDFScanInteger(bytes,length,position,&position,&count))
+    if(!O2PDFScanInteger(bytes,length,position,&position,&count))
      return debugError(bytes,length,position,@"Expecting integer");
     
     for(;--count>=0;number++){
-     KGPDFInteger fieldOne,fieldTwo;
+     O2PDFInteger fieldOne,fieldTwo;
      
-     if(!KGPDFScanInteger(bytes,length,position,&position,&fieldOne))
+     if(!O2PDFScanInteger(bytes,length,position,&position,&fieldOne))
       return debugError(bytes,length,position,@"Expecting integer");
-     if(!KGPDFScanInteger(bytes,length,position,&position,&fieldTwo))
+     if(!O2PDFScanInteger(bytes,length,position,&position,&fieldTwo))
       return debugError(bytes,length,position,@"Expecting integer");
-     if(!KGPDFScanIdentifier(bytes,length,position,&position,&identifier))
+     if(!O2PDFScanIdentifier(bytes,length,position,&position,&identifier))
       return debugError(bytes,length,position,@"Expecting identifier");
       
      switch([identifier identifier]){
      
-      case KGPDFIdentifier_f:
+      case O2PDFIdentifier_f:
        break;
 
-      case KGPDFIdentifier_n:
-       [table addEntry:[KGPDFxrefEntry xrefEntryWithPosition:fieldOne number:number generation:fieldTwo]];
+      case O2PDFIdentifier_n:
+       [table addEntry:[O2PDFxrefEntry xrefEntryWithPosition:fieldOne number:number generation:fieldTwo]];
        break;
 
       default:
@@ -813,29 +813,29 @@ BOOL KGPDFParse_xrefAtPosition(NSData *data,KGPDFInteger position,KGPDFxref **xr
    }while(YES);
 }
 
-BOOL KGPDFParse_xref(NSData *data,KGPDFxref **xrefp) {
+BOOL O2PDFParse_xref(NSData *data,O2PDFxref **xrefp) {
    const char             *bytes=[data bytes];
    unsigned                length=[data length];
-   KGPDFInteger            position,ignore;
-   KGPDFObject_identifier *identifier;
-   KGPDFxref         *lastTable=nil;
+   O2PDFInteger            position,ignore;
+   O2PDFObject_identifier *identifier;
+   O2PDFxref         *lastTable=nil;
     
-   if(!KGPDFScanBackwardsByLines(bytes,length,length,&position,3))
+   if(!O2PDFScanBackwardsByLines(bytes,length,length,&position,3))
     return debugError(bytes,length,position,@"Unable to back up 3 lines to find startxref");
 
-   if(!KGPDFScanIdentifier(bytes,length,position,&position,&identifier))
+   if(!O2PDFScanIdentifier(bytes,length,position,&position,&identifier))
     return debugError(bytes,length,position,@"Expecting startxref identifier");
 
-   if([identifier identifier]!=KGPDFIdentifier_startxref)
+   if([identifier identifier]!=O2PDFIdentifier_startxref)
     return debugError(bytes,length,position,@"Expecting startxref, got %@",identifier);
 
-   if(!KGPDFScanInteger(bytes,length,position,&ignore,&position))
+   if(!O2PDFScanInteger(bytes,length,position,&ignore,&position))
     return debugError(bytes,length,position,@"Expecting integer");
    
    do {
-    KGPDFxref  *table;
+    O2PDFxref  *table;
     
-    if(!KGPDFParse_xrefAtPosition(data,position,&table))
+    if(!O2PDFParse_xrefAtPosition(data,position,&table))
      return NO;
      
     if(lastTable==nil)
@@ -853,39 +853,39 @@ BOOL KGPDFParse_xref(NSData *data,KGPDFxref **xrefp) {
    return YES;
 }
 
-BOOL KGPDFParseIndirectObject(NSData *data,KGPDFInteger position,KGPDFObject **objectp,KGPDFInteger number,KGPDFInteger generation,KGPDFxref *xref){
+BOOL O2PDFParseIndirectObject(NSData *data,O2PDFInteger position,O2PDFObject **objectp,O2PDFInteger number,O2PDFInteger generation,O2PDFxref *xref){
    const char             *bytes=[data bytes];
    unsigned                length=[data length];
-   KGPDFInteger            check;
-   KGPDFObject_identifier *identifier;
-   KGPDFObject            *object;
+   O2PDFInteger            check;
+   O2PDFObject_identifier *identifier;
+   O2PDFObject            *object;
    
    debugTrace(bytes,length,position,@"KGPDFParseIndirectObject");
 
-   if(!KGPDFScanInteger(bytes,length,position,&position,&check))
+   if(!O2PDFScanInteger(bytes,length,position,&position,&check))
     return debugError(bytes,length,position,@"Expecting integer");
    if(check!=number)
     return debugError(bytes,length,position,@"Object number %d does not match indirect reference %d",check,number);
     
-   if(!KGPDFScanInteger(bytes,length,position,&position,&check))
+   if(!O2PDFScanInteger(bytes,length,position,&position,&check))
     return debugError(bytes,length,position,@"Expecting integer");
    if(check!=generation)
     return debugError(bytes,length,position,@"Generation number %d does not match indirect reference %d",check,number);
 
-   if(!KGPDFScanIdentifier(bytes,length,position,&position,&identifier))
+   if(!O2PDFScanIdentifier(bytes,length,position,&position,&identifier))
     return debugError(bytes,length,position,@"Expecting obj identifier");
-   if([identifier identifier]!=KGPDFIdentifier_obj)
+   if([identifier identifier]!=O2PDFIdentifier_obj)
     return debugError(bytes,length,position,@"Expecting obj identifier, got %@",identifier);
    
-   if(!KGPDFParseObject(bytes,length,position,&position,&object,xref))
+   if(!O2PDFParseObject(bytes,length,position,&position,&object,xref))
     return debugError(bytes,length,position,@"Expecting object");
    
-   if(!KGPDFScanIdentifier(bytes,length,position,&position,&identifier))
+   if(!O2PDFScanIdentifier(bytes,length,position,&position,&identifier))
     return debugError(bytes,length,position,@"Expecting identifier");
     
-   if([identifier identifier]==KGPDFIdentifier_stream){
-    KGPDFDictionary *dictionary;
-    KGPDFInteger     streamLength;
+   if([identifier identifier]==O2PDFIdentifier_stream){
+    O2PDFDictionary *dictionary;
+    O2PDFInteger     streamLength;
     
     if(![object checkForType:kKGPDFObjectTypeDictionary value:&dictionary])
      return debugError(bytes,length,position,@"Expecting dictionary for stream, got %@",object);
@@ -898,29 +898,29 @@ BOOL KGPDFParseIndirectObject(NSData *data,KGPDFInteger position,KGPDFObject **o
     if(bytes[position]==LF)
      position++;
     
-    object=[[[KGPDFStream alloc] initWithDictionary:dictionary xref:xref position:position] autorelease];
+    object=[[[O2PDFStream alloc] initWithDictionary:dictionary xref:xref position:position] autorelease];
 
     position+=streamLength;
 
-    if(!KGPDFScanIdentifier(bytes,length,position,&position,&identifier))
+    if(!O2PDFScanIdentifier(bytes,length,position,&position,&identifier))
      return debugError(bytes,length,position,@"Expecting identifier");
-    if([identifier identifier]!=KGPDFIdentifier_endstream)
+    if([identifier identifier]!=O2PDFIdentifier_endstream)
      return debugError(bytes,length,position,@"Expecting endstream identifier, got %@",identifier);
 
-    if(!KGPDFScanIdentifier(bytes,length,position,&position,&identifier))
+    if(!O2PDFScanIdentifier(bytes,length,position,&position,&identifier))
      return debugError(bytes,length,position,@"Expecting identifier");
    }
    
-   if([identifier identifier]!=KGPDFIdentifier_endobj)
+   if([identifier identifier]!=O2PDFIdentifier_endobj)
     return debugError(bytes,length,position,@"Expecting endobj identifier, got %@",identifier);
     
    *objectp=object;
    return YES;
 }
 
-@implementation KGPDFScanner
+@implementation O2PDFScanner
 
--initWithContentStream:(KGPDFContentStream *)stream operatorTable:(KGPDFOperatorTable *)operatorTable info:(void *)info {
+-initWithContentStream:(O2PDFContentStream *)stream operatorTable:(O2PDFOperatorTable *)operatorTable info:(void *)info {
    _stack=[NSMutableArray new];
    _stream=[stream retain];
    _operatorTable=[operatorTable retain];
@@ -935,11 +935,11 @@ BOOL KGPDFParseIndirectObject(NSData *data,KGPDFInteger position,KGPDFObject **o
    [super dealloc];
 }
 
--(KGPDFContentStream *)contentStream {
+-(O2PDFContentStream *)contentStream {
    return _stream;
 }
 
--(BOOL)popObject:(KGPDFObject **)value {
+-(BOOL)popObject:(O2PDFObject **)value {
    id lastObject=[[[_stack lastObject] retain] autorelease];
    
    if(lastObject==nil)
@@ -951,7 +951,7 @@ BOOL KGPDFParseIndirectObject(NSData *data,KGPDFInteger position,KGPDFObject **o
    return YES;
 }
 
--(BOOL)popBoolean:(KGPDFBoolean *)value {
+-(BOOL)popBoolean:(O2PDFBoolean *)value {
    BOOL result=[[_stack lastObject] checkForType:kKGPDFObjectTypeBoolean value:value];
    
    [_stack removeLastObject];
@@ -959,7 +959,7 @@ BOOL KGPDFParseIndirectObject(NSData *data,KGPDFInteger position,KGPDFObject **o
    return result;
 }
 
--(BOOL)popInteger:(KGPDFInteger *)value {
+-(BOOL)popInteger:(O2PDFInteger *)value {
    BOOL result=[[_stack lastObject] checkForType:kKGPDFObjectTypeInteger value:value];
    
    [_stack removeLastObject];
@@ -967,7 +967,7 @@ BOOL KGPDFParseIndirectObject(NSData *data,KGPDFInteger position,KGPDFObject **o
    return result;
 }
 
--(BOOL)popNumber:(KGPDFReal *)value {
+-(BOOL)popNumber:(O2PDFReal *)value {
    BOOL result=[[_stack lastObject] checkForType:kKGPDFObjectTypeReal value:value];
 
    [_stack removeLastObject];
@@ -986,7 +986,7 @@ BOOL KGPDFParseIndirectObject(NSData *data,KGPDFInteger position,KGPDFObject **o
    return [lastObject checkForType:kKGPDFObjectTypeName value:value];
 }
 
--(BOOL)popString:(KGPDFString **)stringp {
+-(BOOL)popString:(O2PDFString **)stringp {
    id lastObject=[[[_stack lastObject] retain] autorelease];
    
    if(lastObject==nil)
@@ -997,7 +997,7 @@ BOOL KGPDFParseIndirectObject(NSData *data,KGPDFInteger position,KGPDFObject **o
    return [lastObject checkForType:kKGPDFObjectTypeString value:stringp];
 }
 
--(BOOL)popArray:(KGPDFArray **)arrayp {
+-(BOOL)popArray:(O2PDFArray **)arrayp {
    id lastObject=[[[_stack lastObject] retain] autorelease];
    
    if(lastObject==nil)
@@ -1008,7 +1008,7 @@ BOOL KGPDFParseIndirectObject(NSData *data,KGPDFInteger position,KGPDFObject **o
    return [lastObject checkForType:kKGPDFObjectTypeArray value:arrayp];
 }
 
--(BOOL)popDictionary:(KGPDFDictionary **)dictionaryp {
+-(BOOL)popDictionary:(O2PDFDictionary **)dictionaryp {
    id lastObject=[[[_stack lastObject] retain] autorelease];
    
    if(lastObject==nil)
@@ -1019,7 +1019,7 @@ BOOL KGPDFParseIndirectObject(NSData *data,KGPDFInteger position,KGPDFObject **o
    return [lastObject checkForType:kKGPDFObjectTypeDictionary value:dictionaryp];
 }
 
--(BOOL)popStream:(KGPDFStream **)streamp {
+-(BOOL)popStream:(O2PDFStream **)streamp {
    id lastObject=[[[_stack lastObject] retain] autorelease];
    
    if(lastObject==nil)
@@ -1030,25 +1030,25 @@ BOOL KGPDFParseIndirectObject(NSData *data,KGPDFInteger position,KGPDFObject **o
    return [lastObject checkForType:kKGPDFObjectTypeStream value:streamp];
 }
 
--(BOOL)scanStream:(KGPDFStream *)stream {
-   KGPDFxref   *xref=[stream xref];
+-(BOOL)scanStream:(O2PDFStream *)stream {
+   O2PDFxref   *xref=[stream xref];
    NSData      *data=[stream data];
    const char  *bytes=[data bytes];
    unsigned     length=[data length];
-   KGPDFInteger position=0;
+   O2PDFInteger position=0;
    
    //NSLog(@"data[%d]=%@",[data length],[[[NSString alloc] initWithData:data encoding:NSISOLatin1StringEncoding] autorelease]);
    
    while(position<length) {
-    KGPDFObject *object;
+    O2PDFObject *object;
     
-    if(!KGPDFParseObject(bytes,length,position,&position,&object,xref))
+    if(!O2PDFParseObject(bytes,length,position,&position,&object,xref))
      return NO;
 
-    if([object objectTypeNoParsing]!=KGPDFObjectType_identifier)
+    if([object objectTypeNoParsing]!=O2PDFObjectType_identifier)
      [_stack addObject:object];
      else {
-      KGPDFOperatorCallback callback=[_operatorTable callbackForName:[(KGPDFObject_identifier *)object name]];
+      O2PDFOperatorCallback callback=[_operatorTable callbackForName:[(O2PDFObject_identifier *)object name]];
       
       //NSLog(@"op=[%s]",[object name]);
 
@@ -1071,8 +1071,8 @@ BOOL KGPDFParseIndirectObject(NSData *data,KGPDFInteger position,KGPDFObject **o
    int      i,count=[streams count];
    
    for(i=0;(i<count) && result;i++){
-    KGPDFObject *object=[streams objectAtIndex:i];
-    KGPDFStream *scan;
+    O2PDFObject *object=[streams objectAtIndex:i];
+    O2PDFStream *scan;
     
     if(![object checkForType:kKGPDFObjectTypeStream value:&scan])
      return NO;

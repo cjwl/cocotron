@@ -10,13 +10,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "KGFunction.h"
 
 CGFunctionRef CGFunctionRetain(CGFunctionRef self) {
-   return [self retain];
+   return O2FunctionRetain(self);
 }
 
 void CGFunctionRelease(CGFunctionRef self) {
-   [self release];
+   O2FunctionRelease(self);
 }
 
-CGFunctionRef CGFunctionCreate(void *info,unsigned numberOfInputs,const float *inputBounds,unsigned numberOfOutputs,const float *outputBounds,const CGFunctionCallbacks *callbacks) {
-   return [[KGFunction alloc] initWithInfo:info domainCount:numberOfInputs*2 domain:inputBounds rangeCount:numberOfOutputs*2 range:outputBounds callbacks:callbacks];
+CGFunctionRef CGFunctionCreate(void *info,size_t domainDimension,const CGFloat *domain,size_t rangeDimension,const CGFloat *range,const CGFunctionCallbacks *callbacks) {
+   return O2FunctionCreate(info,domainDimension,domain,rangeDimension,range,callbacks);
 }

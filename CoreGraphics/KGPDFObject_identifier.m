@@ -10,7 +10,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <string.h>
 #import <Foundation/NSString.h>
 
-KGPDFIdentifier KGPDFClassifyIdentifier(const char *bytes,unsigned length) {
+O2PDFIdentifier O2PDFClassifyIdentifier(const char *bytes,unsigned length) {
    char name[length+1];
    
    strncpy(name,bytes,length);
@@ -18,42 +18,42 @@ KGPDFIdentifier KGPDFClassifyIdentifier(const char *bytes,unsigned length) {
 
    
    if(strcmp(name,"true")==0)
-    return KGPDFIdentifier_true;
+    return O2PDFIdentifier_true;
    if(strcmp(name,"false")==0)
-    return KGPDFIdentifier_false;
+    return O2PDFIdentifier_false;
    if(strcmp(name,"null")==0)
-    return KGPDFIdentifier_null;
+    return O2PDFIdentifier_null;
 
    if(strcmp(name,"f")==0)
-    return KGPDFIdentifier_f;
+    return O2PDFIdentifier_f;
    if(strcmp(name,"n")==0)
-    return KGPDFIdentifier_n;
+    return O2PDFIdentifier_n;
    if(strcmp(name,"R")==0)
-    return KGPDFIdentifier_R;
+    return O2PDFIdentifier_R;
    if(strcmp(name,"xref")==0)
-    return KGPDFIdentifier_xref;
+    return O2PDFIdentifier_xref;
    if(strcmp(name,"trailer")==0)
-    return KGPDFIdentifier_trailer;
+    return O2PDFIdentifier_trailer;
    if(strcmp(name,"startxref")==0)
-    return KGPDFIdentifier_startxref;
+    return O2PDFIdentifier_startxref;
    if(strcmp(name,"obj")==0)
-    return KGPDFIdentifier_obj;
+    return O2PDFIdentifier_obj;
    if(strcmp(name,"endobj")==0)
-    return KGPDFIdentifier_endobj;
+    return O2PDFIdentifier_endobj;
    if(strcmp(name,"stream")==0)
-    return KGPDFIdentifier_stream;
+    return O2PDFIdentifier_stream;
    if(strcmp(name,"endstream")==0)
-    return KGPDFIdentifier_endstream;
+    return O2PDFIdentifier_endstream;
     
    //NSLog(@"KGPDFClassifyIdentifier UNKNOWN [%s]",name);
    
-   return KGPDFIdentifierUnknown;
+   return O2PDFIdentifierUnknown;
 }
 
 
-@implementation KGPDFObject_identifier
+@implementation O2PDFObject_identifier
 
--initWithIdentifier:(KGPDFIdentifier)identifier name:(const char *)bytes length:(unsigned)length {
+-initWithIdentifier:(O2PDFIdentifier)identifier name:(const char *)bytes length:(unsigned)length {
    _identifier=identifier;
    _length=length;
    _bytes=NSZoneMalloc(NULL,_length+1);
@@ -67,15 +67,15 @@ KGPDFIdentifier KGPDFClassifyIdentifier(const char *bytes,unsigned length) {
    [super dealloc];
 }
 
-+pdfObjectWithIdentifier:(KGPDFIdentifier)identifier name:(const char *)bytes length:(unsigned)length {
++pdfObjectWithIdentifier:(O2PDFIdentifier)identifier name:(const char *)bytes length:(unsigned)length {
    return [[[self alloc] initWithIdentifier:identifier name:bytes length:length] autorelease];
 }
 
--(KGPDFObjectType)objectType {
-   return KGPDFObjectType_identifier;
+-(O2PDFObjectType)objectType {
+   return O2PDFObjectType_identifier;
 }
 
--(KGPDFIdentifier)identifier {
+-(O2PDFIdentifier)identifier {
    return _identifier;
 }
 

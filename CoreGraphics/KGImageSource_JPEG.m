@@ -664,7 +664,7 @@ static int process_marker(jpeg *z, int m)
        NSData *data=[NSData dataWithBytes:z->s.img_buffer+6 length:size-6];
        
        KGImageSource *tiffSource=[[KGImageSource_TIFF alloc] initWithData:data options:nil];
-       KGImage       *image=[tiffSource imageAtIndex:0 options:nil];
+       O2Image       *image=[tiffSource imageAtIndex:0 options:nil];
 #endif       
       // skip(&z->s, size-2);
       }
@@ -1060,7 +1060,7 @@ static unsigned char *stbi_jpeg_load_from_memory(jpeg *j,stbi_uc const *buffer, 
    return load_jpeg_image(j, x,y,comp,req_comp);
 }
 
-+(BOOL)isPresentInDataProvider:(KGDataProvider *)provider {
++(BOOL)isPresentInDataProvider:(O2DataProvider *)provider {
    enum { signatureLength=2 };
    unsigned char signature[signatureLength] = {0xFF,0xD8};
    unsigned char check[signatureLength];
@@ -1076,7 +1076,7 @@ static unsigned char *stbi_jpeg_load_from_memory(jpeg *j,stbi_uc const *buffer, 
    return YES;
 }
 
--initWithDataProvider:(KGDataProvider *)provider options:(NSDictionary *)options {
+-initWithDataProvider:(O2DataProvider *)provider options:(NSDictionary *)options {
    [super initWithDataProvider:provider options:options];
    _jpg=[provider copyData];
    return self;
@@ -1091,7 +1091,7 @@ static unsigned char *stbi_jpeg_load_from_memory(jpeg *j,stbi_uc const *buffer, 
    return 1;
 }
 
--(KGImage *)createImageAtIndex:(unsigned)index options:(NSDictionary *)options {
+-(O2Image *)createImageAtIndex:(unsigned)index options:(NSDictionary *)options {
    int            width=0,height=0;
    int            comp;
 
@@ -1102,9 +1102,9 @@ static unsigned char *stbi_jpeg_load_from_memory(jpeg *j,stbi_uc const *buffer, 
 
    bitmap=[[NSData alloc] initWithBytesNoCopy:_bitmap length:bytesPerRow*height];
 
-   KGDataProvider *provider=[[KGDataProvider alloc] initWithData:bitmap];
+   O2DataProvider *provider=[[O2DataProvider alloc] initWithData:bitmap];
    O2ColorSpace   *colorSpace=[[O2ColorSpace alloc] initWithDeviceRGB];
-   KGImage        *image=[[KGImage alloc] initWithWidth:width height:height bitsPerComponent:8 bitsPerPixel:bitsPerPixel bytesPerRow:bytesPerRow
+   O2Image        *image=[[O2Image alloc] initWithWidth:width height:height bitsPerComponent:8 bitsPerPixel:bitsPerPixel bytesPerRow:bytesPerRow
       colorSpace:colorSpace bitmapInfo:kCGBitmapByteOrder32Big|kCGImageAlphaPremultipliedLast provider:provider decode:NULL interpolate:NO renderingIntent:kCGRenderingIntentDefault];
       
    [colorSpace release];

@@ -31,7 +31,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSPathUtilities.h>
 #import "KGExceptions.h"
 
-@implementation KGPDFContext
+@implementation O2PDFContext
 
 -initWithConsumer:(KGDataConsumer *)consumer mediaBox:(const CGRect *)mediaBox auxiliaryInfo:(NSDictionary *)auxiliaryInfo {
    [super init];
@@ -43,26 +43,26 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    _indirectObjects=[NSMutableArray new];
    _indirectEntries=[NSMutableArray new];
    _nextNumber=1;
-   _xref=[[KGPDFxref alloc] initWithData:nil];
-   [_xref setTrailer:[KGPDFDictionary pdfDictionary]];
+   _xref=[[O2PDFxref alloc] initWithData:nil];
+   [_xref setTrailer:[O2PDFDictionary pdfDictionary]];
    
    [self appendCString:"%PDF-1.3\n"];
    
-   _info=[[KGPDFDictionary pdfDictionary] retain];
-   [_info setObjectForKey:"Author" value:[KGPDFString pdfObjectWithString:NSFullUserName()]];
-   [_info setObjectForKey:"Creator" value:[KGPDFString pdfObjectWithString:[[NSProcessInfo processInfo] processName]]];
-   [_info setObjectForKey:"Producer" value:[KGPDFString pdfObjectWithCString:"THE COCOTRON http://www.cocotron.org KGPDFContext"]];
+   _info=[[O2PDFDictionary pdfDictionary] retain];
+   [_info setObjectForKey:"Author" value:[O2PDFString pdfObjectWithString:NSFullUserName()]];
+   [_info setObjectForKey:"Creator" value:[O2PDFString pdfObjectWithString:[[NSProcessInfo processInfo] processName]]];
+   [_info setObjectForKey:"Producer" value:[O2PDFString pdfObjectWithCString:"THE COCOTRON http://www.cocotron.org O2PDFContext"]];
    [[_xref trailer] setObjectForKey:"Info" value:_info];
    
-   _catalog=[[KGPDFDictionary pdfDictionary] retain];
+   _catalog=[[O2PDFDictionary pdfDictionary] retain];
    [[_xref trailer] setObjectForKey:"Root" value:_catalog];
    
-   _pages=[[KGPDFDictionary pdfDictionary] retain];
+   _pages=[[O2PDFDictionary pdfDictionary] retain];
    [_catalog setNameForKey:"Type" value:"Catalog"];
    [_catalog setObjectForKey:"Pages" value:_pages];
    [_pages setIntegerForKey:"Count" value:0];
    
-   _kids=[[KGPDFArray pdfArray] retain];
+   _kids=[[O2PDFArray pdfArray] retain];
    [_pages setNameForKey:"Type" value:"Pages"];
    [_pages setObjectForKey:"Kids" value:_kids];
    
@@ -75,7 +75,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    if(title==nil)
     title=@"Untitled";
     
-   [_info setObjectForKey:"Title" value:[KGPDFString pdfObjectWithString:title]];
+   [_info setObjectForKey:"Title" value:[O2PDFString pdfObjectWithString:title]];
     
    [self referenceForObject:_catalog];
    [self referenceForObject:_info];
@@ -182,19 +182,19 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [self appendPDFStringWithBytes:bytes length:length mutableData:_mutableData];
 }
 
--(BOOL)hasReferenceForObject:(KGPDFObject *)object {
-   KGPDFObject *result=NSMapGet(_objectToRef,object);
+-(BOOL)hasReferenceForObject:(O2PDFObject *)object {
+   O2PDFObject *result=NSMapGet(_objectToRef,object);
    
    return (result==nil)?NO:YES;
 }
 
--(KGPDFObject *)referenceForObject:(KGPDFObject *)object {
-   KGPDFObject *result=NSMapGet(_objectToRef,object);
+-(O2PDFObject *)referenceForObject:(O2PDFObject *)object {
+   O2PDFObject *result=NSMapGet(_objectToRef,object);
    
    if(result==nil){
-    KGPDFxrefEntry *entry=[KGPDFxrefEntry xrefEntryWithPosition:0 number:_nextNumber generation:0];
+    O2PDFxrefEntry *entry=[O2PDFxrefEntry xrefEntryWithPosition:0 number:_nextNumber generation:0];
 
-    result=[KGPDFObject_R pdfObjectWithNumber:_nextNumber generation:0 xref:_xref];
+    result=[O2PDFObject_R pdfObjectWithNumber:_nextNumber generation:0 xref:_xref];
     NSMapInsert(_objectToRef,object,result);
     
     [_xref addEntry:entry object:object];
@@ -207,18 +207,18 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return result;
 }
 
--(void)encodePDFObject:(KGPDFObject *)object {
+-(void)encodePDFObject:(O2PDFObject *)object {
    if(![object isByReference] && ![self hasReferenceForObject:object])
     [object encodeWithPDFContext:self];
    else {
-    KGPDFObject *ref=[self referenceForObject:object];
+    O2PDFObject *ref=[self referenceForObject:object];
     
     [ref encodeWithPDFContext:self];
    }
 }
 
--(KGPDFObject *)encodeIndirectPDFObject:(KGPDFObject *)object {
-   KGPDFObject *result=[self referenceForObject:object];
+-(O2PDFObject *)encodeIndirectPDFObject:(O2PDFObject *)object {
+   O2PDFObject *result=[self referenceForObject:object];
    
    
    return result;
@@ -247,11 +247,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [self appendPDFStringWithBytes:bytes length:length mutableData:[[_contentStreamStack lastObject] mutableData]];
 }
 
--(KGPDFObject *)referenceForFontWithName:(NSString *)name size:(float)size {
+-(O2PDFObject *)referenceForFontWithName:(NSString *)name size:(float)size {
    return [(NSDictionary *)[_fontCache objectForKey:name] objectForKey:[NSNumber numberWithFloat:size]];
 }
 
--(void)setReference:(KGPDFObject *)reference forFontWithName:(NSString *)name size:(float)size {
+-(void)setReference:(O2PDFObject *)reference forFontWithName:(NSString *)name size:(float)size {
    NSMutableDictionary *sizes=[_fontCache objectForKey:name];
    
    if(sizes==nil){
@@ -262,17 +262,17 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [sizes setObject:reference forKey:[NSNumber numberWithFloat:size]];
 }
 
--(KGPDFObject *)nameForResource:(KGPDFObject *)pdfObject inCategory:(const char *)categoryName {
-   KGPDFDictionary *resources;
-   KGPDFDictionary *category;
+-(O2PDFObject *)nameForResource:(O2PDFObject *)pdfObject inCategory:(const char *)categoryName {
+   O2PDFDictionary *resources;
+   O2PDFDictionary *category;
    
    if(![_page getDictionaryForKey:"Resources" value:&resources]){
-    resources=[KGPDFDictionary pdfDictionary];
+    resources=[O2PDFDictionary pdfDictionary];
     [_page setObjectForKey:"Resources" value:resources];
    }
    
    if(![resources getDictionaryForKey:categoryName value:&category]){
-    category=[KGPDFDictionary pdfDictionary];
+    category=[O2PDFDictionary pdfDictionary];
     [resources setObjectForKey:categoryName value:category];
    }
    
@@ -285,7 +285,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    const char *objectName=[[NSString stringWithFormat:@"%s%d",categoryName,[next intValue]] cString];
    [category setObjectForKey:objectName value:pdfObject];
    
-   return [KGPDFObject_Name pdfObjectWithCString:objectName];
+   return [O2PDFObject_Name pdfObjectWithCString:objectName];
 }
 
 -(void)beginPath {
@@ -446,9 +446,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [self contentWithString:@"W* "];
 }
 
--(void)clipToMask:(KGImage *)image inRect:(CGRect)rect {
-   KGPDFObject *pdfObject=[image encodeReferenceWithContext:self];
-   KGPDFObject *name=[self nameForResource:pdfObject inCategory:"XObject"];
+-(void)clipToMask:(O2Image *)image inRect:(CGRect)rect {
+   O2PDFObject *pdfObject=[image encodeReferenceWithContext:self];
+   O2PDFObject *name=[self nameForResource:pdfObject inCategory:"XObject"];
    
    [self contentWithString:@"q "];
    [self translateCTM:rect.origin.x:rect.origin.y];
@@ -547,7 +547,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)setLineDashPhase:(float)phase lengths:(const float *)lengths count:(unsigned)count {
    [super setLineDashPhase:phase lengths:lengths count:count];
    
-   KGPDFArray *array=[KGPDFArray pdfArray];
+   O2PDFArray *array=[O2PDFArray pdfArray];
    int         i;
    
    for(i=0;i<count;i++)
@@ -650,9 +650,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)showText:(const char *)text length:(unsigned)length {
    [self contentWithString:@"BT "];
    
-   KGGraphicsState *state=[self currentState];
-   KGPDFObject *pdfObject=[[state font] encodeReferenceWithContext:self size:[state pointSize]];
-   KGPDFObject *name=[self nameForResource:pdfObject inCategory:"Font"];
+   O2GState *state=[self currentState];
+   O2PDFObject *pdfObject=[[state font] encodeReferenceWithContext:self size:[state pointSize]];
+   O2PDFObject *name=[self nameForResource:pdfObject inCategory:"Font"];
 
    [self contentWithFormat:@"%@ %g Tf ",name,[[self currentState] pointSize]];
 
@@ -666,15 +666,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)drawShading:(KGShading *)shading {
-   KGPDFObject *pdfObject=[shading encodeReferenceWithContext:self];
-   KGPDFObject *name=[self nameForResource:pdfObject inCategory:"Shading"];
+   O2PDFObject *pdfObject=[shading encodeReferenceWithContext:self];
+   O2PDFObject *name=[self nameForResource:pdfObject inCategory:"Shading"];
     
    [self contentWithFormat:@"%@ sh ",name];
 }
 
--(void)drawImage:(KGImage *)image inRect:(CGRect)rect {
-   KGPDFObject *pdfObject=[image encodeReferenceWithContext:self];
-   KGPDFObject *name=[self nameForResource:pdfObject inCategory:"XObject"];
+-(void)drawImage:(O2Image *)image inRect:(CGRect)rect {
+   O2PDFObject *pdfObject=[image encodeReferenceWithContext:self];
+   O2PDFObject *name=[self nameForResource:pdfObject inCategory:"XObject"];
    
    [self contentWithString:@"q "];
    [self translateCTM:rect.origin.x:rect.origin.y];
@@ -687,14 +687,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)beginPage:(const CGRect *)mediaBox {
-   KGPDFObject *stream;
+   O2PDFObject *stream;
    
-   _page=[[KGPDFDictionary pdfDictionary] retain];
+   _page=[[O2PDFDictionary pdfDictionary] retain];
    
    [_page setNameForKey:"Type" value:"Page"];
-   [_page setObjectForKey:"MediaBox" value:[KGPDFArray pdfArrayWithRect:*mediaBox]];
+   [_page setObjectForKey:"MediaBox" value:[O2PDFArray pdfArrayWithRect:*mediaBox]];
 
-   stream=[KGPDFStream pdfStream];
+   stream=[O2PDFStream pdfStream];
    [_page setObjectForKey:"Contents" value:stream];
    [_contentStreamStack addObject:stream];
    
@@ -707,8 +707,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    int i;
 
    for(i=0;i<[_indirectObjects count];i++){ // do not cache 'count', can grow during encoding
-    KGPDFxrefEntry *entry=[_indirectEntries objectAtIndex:i];
-    KGPDFObject    *object=[_indirectObjects objectAtIndex:i];
+    O2PDFxrefEntry *entry=[_indirectEntries objectAtIndex:i];
+    O2PDFObject    *object=[_indirectObjects objectAtIndex:i];
     unsigned        position=[_mutableData length];
     
     [entry setPosition:position];
@@ -721,7 +721,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)endPage {
-   KGPDFInteger pageCount=0;
+   O2PDFInteger pageCount=0;
    
    [_contentStreamStack removeLastObject];
       

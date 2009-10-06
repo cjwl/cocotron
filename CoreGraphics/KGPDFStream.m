@@ -15,10 +15,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSData.h>
 #import <Foundation/NSString.h>
 
-@implementation KGPDFStream
+@implementation O2PDFStream
 
--initWithDictionary:(KGPDFDictionary *)dictionary xref:(KGPDFxref *)xref position:(KGPDFInteger)position {
-   KGPDFInteger length;
+-initWithDictionary:(O2PDFDictionary *)dictionary xref:(O2PDFxref *)xref position:(O2PDFInteger)position {
+   O2PDFInteger length;
    
    _dictionary=[dictionary retain];
    
@@ -31,7 +31,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return self;
 }
 
--initWithDictionary:(KGPDFDictionary *)dictionary data:(NSData *)data {
+-initWithDictionary:(O2PDFDictionary *)dictionary data:(NSData *)data {
    _dictionary=[dictionary retain];
    _data=[data retain];
    _xref=nil;
@@ -45,46 +45,46 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [super dealloc];
 }
 
-+(KGPDFStream *)pdfStream {
++(O2PDFStream *)pdfStream {
    return [self pdfStreamWithData:[NSMutableData data]];
 }
 
-+(KGPDFStream *)pdfStreamWithData:(NSData *)data {
-   KGPDFDictionary *dictionary=[KGPDFDictionary pdfDictionary];
++(O2PDFStream *)pdfStreamWithData:(NSData *)data {
+   O2PDFDictionary *dictionary=[O2PDFDictionary pdfDictionary];
    
    [dictionary setIntegerForKey:"Length" value:[data length]];
    
    return [[[self alloc] initWithDictionary:dictionary data:data] autorelease];
 }
 
-+(KGPDFStream *)pdfStreamWithBytes:(const void *)bytes length:(unsigned)length {
++(O2PDFStream *)pdfStreamWithBytes:(const void *)bytes length:(unsigned)length {
    return [self pdfStreamWithData:[NSData dataWithBytes:bytes length:length]];
 }
 
--(KGPDFObjectType)objectType { return kKGPDFObjectTypeStream; }
+-(O2PDFObjectType)objectType { return kKGPDFObjectTypeStream; }
 
--(BOOL)checkForType:(KGPDFObjectType)type value:(void *)value {
+-(BOOL)checkForType:(O2PDFObjectType)type value:(void *)value {
    if(type!=kKGPDFObjectTypeStream)
     return NO;
    
-   *((KGPDFStream **)value)=self;
+   *((O2PDFStream **)value)=self;
    return YES;
 }
 
--(KGPDFDictionary *)dictionary {
+-(O2PDFDictionary *)dictionary {
    return _dictionary;
 }
 
--(KGPDFxref *)xref {
+-(O2PDFxref *)xref {
    return _xref;
 }
 
 -(NSData *)data {
-   KGPDFInteger     length;
+   O2PDFInteger     length;
    NSData          *result;
    const char      *name;
-   KGPDFDictionary *parameters;
-   KGPDFArray      *filters;
+   O2PDFDictionary *parameters;
+   O2PDFArray      *filters;
 
    if(![_dictionary getIntegerForKey:"Length" value:&length])
     return nil;
@@ -96,10 +96,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     if(![_dictionary getDictionaryForKey:"DecodeParms" value:&parameters])
      parameters=nil;
 
-    result=KGPDFFilterWithName(name,result,parameters);
+    result=O2PDFFilterWithName(name,result,parameters);
    }
    else if([_dictionary getArrayForKey:"Filter" value:&filters]){
-    KGPDFArray *parameterArray;
+    O2PDFArray *parameterArray;
     int         i,count=[filters count];
     
     if(![_dictionary getArrayForKey:"DecodeParms" value:&parameterArray])
@@ -112,7 +112,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
      }
      if(![parameterArray getDictionaryAtIndex:i value:&parameters])
       parameters=nil;
-	 result=KGPDFFilterWithName(name,result,parameters);
+	 result=O2PDFFilterWithName(name,result,parameters);
     }
     
    }
@@ -132,7 +132,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return YES;
 }
 
--(void)encodeWithPDFContext:(KGPDFContext *)encoder {
+-(void)encodeWithPDFContext:(O2PDFContext *)encoder {
    [_dictionary setIntegerForKey:"Length" value:[_data length]];
    
    [encoder encodePDFObject:_dictionary];

@@ -30,7 +30,7 @@
 #import "VGmath.h"
 #import "KGSurface.h"
 
-@class KGPaint;
+@class O2Paint;
 
 typedef enum {
 // These are winding masks, do not change value
@@ -59,15 +59,15 @@ typedef struct Edge {
 
 typedef void (*KGBlendSpan_RGBA8888)(KGRGBA8888 *src,KGRGBA8888 *dst,int length);
 typedef void (*KGBlendSpan_RGBAffff)(KGRGBAffff *src,KGRGBAffff *dst,int length);
-typedef void (*KGWriteCoverage_RGBA8888)(KGSurface *surface,KGSurface *mask,KGPaint *paint,int x, int y,int coverage,int length,KGBlendSpan_RGBA8888 blendFunction);
+typedef void (*KGWriteCoverage_RGBA8888)(KGSurface *surface,KGSurface *mask,O2Paint *paint,int x, int y,int coverage,int length,KGBlendSpan_RGBA8888 blendFunction);
 
 @class KGSurface,KGContext_builtin;
 
 #define KGRasterizer KGContext_builtin
 
-@interface KGContext_builtin : KGBitmapContext {
+@interface KGContext_builtin : O2BitmapContext {
 
-   KGPaint           *_paint;
+   O2Paint           *_paint;
    KGContext_builtin *_clipContext;
    
    KGBlendSpan_RGBA8888     _blend_lRGBA8888_PRE;
@@ -106,7 +106,7 @@ void KGRasterizerFill(KGRasterizer *self,int fillRule);
 
 void KGRasterizeSetBlendMode(KGRasterizer *self,CGBlendMode blendMode);
 void KGRasterizeSetMask(KGRasterizer *self,KGSurface* mask);
-void O2DContextSetPaint(KGRasterizer *self,KGPaint* paint);
+void O2DContextSetPaint(KGRasterizer *self,O2Paint* paint);
 
 void KGBlendSpanNormal_8888_coverage(KGRGBA8888 *src,KGRGBA8888 *dst,int coverage,int length);
 

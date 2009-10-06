@@ -13,19 +13,19 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSArray.h>
 #import <Foundation/NSString.h>
 
-@implementation KGPDFContentStream
+@implementation O2PDFContentStream
 
--initWithStreams:(NSArray *)streams resources:(KGPDFDictionary *)resources parent:(KGPDFContentStream *)parent {
+-initWithStreams:(NSArray *)streams resources:(O2PDFDictionary *)resources parent:(O2PDFContentStream *)parent {
    _streams=[streams retain];
    _resources=[resources retain];
    _parent=[parent retain];
    return self;
 }
 
--initWithPage:(KGPDFPage *)page {
-   KGPDFDictionary *dictionary=[page dictionary];
-   KGPDFDictionary *resources;
-   KGPDFObject     *contents;
+-initWithPage:(O2PDFPage *)page {
+   O2PDFDictionary *dictionary=[page dictionary];
+   O2PDFDictionary *resources;
+   O2PDFObject     *contents;
    NSMutableArray  *streams=[NSMutableArray array];
    
    if(![dictionary getDictionaryForKey:"Resources" value:&resources])
@@ -33,7 +33,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    if(![dictionary getObjectForKey:"Contents" value:&contents])
     contents=nil;
    else if([contents objectType]==kKGPDFObjectTypeArray){
-    KGPDFArray *array=(KGPDFArray *)contents;
+    O2PDFArray *array=(O2PDFArray *)contents;
     int         i,count=[array count];
     
     for(i=0;i<count;i++)
@@ -48,7 +48,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return [self initWithStreams:streams resources:resources parent:nil];
 }
 
--initWithStream:(KGPDFStream *)stream resources:(KGPDFDictionary *)resources parent:(KGPDFContentStream *)parent {
+-initWithStream:(O2PDFStream *)stream resources:(O2PDFDictionary *)resources parent:(O2PDFContentStream *)parent {
    NSArray *array=[NSArray arrayWithObject:stream];
       
    return [self initWithStreams:array resources:resources parent:parent];
@@ -65,9 +65,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return _streams;
 }
 
--(KGPDFObject *)resourceForCategory:(const char *)category name:(const char *)name {
-   KGPDFObject     *result;
-   KGPDFDictionary *sub;
+-(O2PDFObject *)resourceForCategory:(const char *)category name:(const char *)name {
+   O2PDFObject     *result;
+   O2PDFDictionary *sub;
    
    if([_resources getDictionaryForKey:category value:&sub])
     if([sub getObjectForKey:name value:&result])

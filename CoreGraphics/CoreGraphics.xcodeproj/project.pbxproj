@@ -577,6 +577,13 @@
 /* End PBXBuildRule section */
 
 /* Begin PBXContainerItemProxy section */
+		FE14CDD91069660900B0FFAF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FE6F7BC00FD5572F00C3244F /* Foundation.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 15D921C0105E918000171406;
+			remoteInfo = "Foundation-Linux-arm";
+		};
 		FE6F7BCA0FD5572F00C3244F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FE6F7BC00FD5572F00C3244F /* Foundation.xcodeproj */;
@@ -1109,6 +1116,7 @@
 				FE6F7BD30FD5572F00C3244F /* Foundation.framework */,
 				FE6F7BD50FD5572F00C3244F /* Foundation.framework */,
 				FE8F93BD0FE344D6003F38A6 /* Foundation.framework */,
+				FE14CDDA1069660900B0FFAF /* Foundation.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1506,6 +1514,13 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		FE14CDDA1069660900B0FFAF /* Foundation.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Foundation.framework;
+			remoteRef = FE14CDD91069660900B0FFAF /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		FE6F7BCB0FD5572F00C3244F /* Foundation.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;

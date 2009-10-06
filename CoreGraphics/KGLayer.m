@@ -12,7 +12,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @implementation KGLayer
 
--initRelativeToContext:(KGContext *)context size:(CGSize)size unused:(NSDictionary *)unused {
+-initRelativeToContext:(O2Context *)context size:(CGSize)size unused:(NSDictionary *)unused {
    _size=size;
    _unused=[unused copy];
    return self;
@@ -27,7 +27,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return _size;
 }
 
--(KGContext *)context {
+-(O2Context *)context {
    KGInvalidAbstractInvocation();
    return nil;
 }

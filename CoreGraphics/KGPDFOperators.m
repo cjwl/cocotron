@@ -31,72 +31,72 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <stddef.h>
 
-static KGContext *kgContextFromInfo(void *info) {
-   return (KGContext *)info;
+static O2Context *kgContextFromInfo(void *info) {
+   return (O2Context *)info;
 }
 
 // closepath, fill, stroke
-void KGPDF_render_b(KGPDFScanner *scanner,void *info) {
-   KGContext *context=kgContextFromInfo(info);
+void O2PDF_render_b(O2PDFScanner *scanner,void *info) {
+   O2Context *context=kgContextFromInfo(info);
    
    [context closePath];
    [context fillAndStrokePath];
 }
 
 // fill, stroke
-void KGPDF_render_B(KGPDFScanner *scanner,void *info) {
-   KGContext *context=kgContextFromInfo(info);
+void O2PDF_render_B(O2PDFScanner *scanner,void *info) {
+   O2Context *context=kgContextFromInfo(info);
    
    [context fillAndStrokePath];
 }
 
 // closepath, eofill, stroke
-void KGPDF_render_b_star(KGPDFScanner *scanner,void *info) {
-   KGContext *context=kgContextFromInfo(info);
+void O2PDF_render_b_star(O2PDFScanner *scanner,void *info) {
+   O2Context *context=kgContextFromInfo(info);
    
    [context closePath];
    [context evenOddFillAndStrokePath];
 }
 
 // eofill, stroke
-void KGPDF_render_B_star(KGPDFScanner *scanner,void *info) {
-   KGContext *context=kgContextFromInfo(info);
+void O2PDF_render_B_star(O2PDFScanner *scanner,void *info) {
+   O2Context *context=kgContextFromInfo(info);
    
    [context evenOddFillAndStrokePath];
 }
 
 // Begin marked-content sequence with property list
-void KGPDF_render_BDC(KGPDFScanner *scanner,void *info) {
+void O2PDF_render_BDC(O2PDFScanner *scanner,void *info) {
    //NSLog(@"BDC");
 }
 
 // Begin inline image object
-void KGPDF_render_BI(KGPDFScanner *scanner,void *info) {
+void O2PDF_render_BI(O2PDFScanner *scanner,void *info) {
    //NSLog(@"BI");
 }
 
 // Begin marked-content sequence
-void KGPDF_render_BMC(KGPDFScanner *scanner,void *info) {
+void O2PDF_render_BMC(O2PDFScanner *scanner,void *info) {
    //NSLog(@"BMC");
 }
 
 // Begin text object
-void KGPDF_render_BT(KGPDFScanner *scanner,void *info) {
-   KGContext *context=kgContextFromInfo(info);
+void O2PDF_render_BT(O2PDFScanner *scanner,void *info) {
+   O2Context *context=kgContextFromInfo(info);
    
    [context setTextMatrix:CGAffineTransformIdentity];
    //NSLog(@"BT");
 }
 
 // Begin compatibility section
-void KGPDF_render_BX(KGPDFScanner *scanner,void *info) {
+void O2PDF_render_BX(O2PDFScanner *scanner,void *info) {
    //NSLog(@"BX");
 }
 
 // curveto, Append curved segment to path, three control points
-void KGPDF_render_c(KGPDFScanner *scanner,void *info) {
-   KGContext *context=kgContextFromInfo(info);
-   KGPDFReal    x1,y1,x2,y2,x3,y3;
+void O2PDF_render_c(O2PDFScanner *scanner,void *info) {
+   O2Context *context=kgContextFromInfo(info);
+   O2PDFReal    x1,y1,x2,y2,x3,y3;
    
    if(![scanner popNumber:&y3])
     return;
@@ -115,8 +115,8 @@ void KGPDF_render_c(KGPDFScanner *scanner,void *info) {
 }
 
 // concat, Concatenate matrix to current transformation matrix
-void KGPDF_render_cm(KGPDFScanner *scanner,void *info) {
-   KGContext        *context=kgContextFromInfo(info);
+void O2PDF_render_cm(O2PDFScanner *scanner,void *info) {
+   O2Context        *context=kgContextFromInfo(info);
    CGAffineTransform matrix;
    
    if(![scanner popNumber:&matrix.ty])
@@ -136,7 +136,7 @@ void KGPDF_render_cm(KGPDFScanner *scanner,void *info) {
 }
 
 
-O2ColorSpaceRef colorSpaceFromScannerInfo(KGPDFScanner *scanner,void *info,const char *name) {
+O2ColorSpaceRef colorSpaceFromScannerInfo(O2PDFScanner *scanner,void *info,const char *name) {
    O2ColorSpaceRef result=NULL;
    
    if(strcmp(name,"DeviceGray")==0)
@@ -146,8 +146,8 @@ O2ColorSpaceRef colorSpaceFromScannerInfo(KGPDFScanner *scanner,void *info,const
    else if(strcmp(name,"DeviceCMYK")==0)
     result=[[O2ColorSpace alloc] initWithDeviceCMYK];
    else {
-    KGPDFContentStream *content=[scanner contentStream];
-    KGPDFObject        *object=[content resourceForCategory:"ColorSpace" name:name];
+    O2PDFContentStream *content=[scanner contentStream];
+    O2PDFObject        *object=[content resourceForCategory:"ColorSpace" name:name];
     
     if(object==nil){
      NSLog(@"Unable to find color space named %s",name);
@@ -161,8 +161,8 @@ O2ColorSpaceRef colorSpaceFromScannerInfo(KGPDFScanner *scanner,void *info,const
 }
 
 // setcolorspace, Set color space for stroking operations
-void KGPDF_render_CS(KGPDFScanner *scanner,void *info) {
-   KGContext *context=kgContextFromInfo(info);
+void O2PDF_render_CS(O2PDFScanner *scanner,void *info) {
+   O2Context *context=kgContextFromInfo(info);
    const char     *name;
    O2ColorSpaceRef colorSpace;
    
@@ -178,8 +178,8 @@ void KGPDF_render_CS(KGPDFScanner *scanner,void *info) {
 }
 
 // setcolorspace, Set color space for nonstroking operations
-void KGPDF_render_cs(KGPDFScanner *scanner,void *info) {
-   KGContext *context=kgContextFromInfo(info);
+void O2PDF_render_cs(O2PDFScanner *scanner,void *info) {
+   O2Context *context=kgContextFromInfo(info);
    const char     *name;
    O2ColorSpaceRef colorSpace;
    
@@ -195,10 +195,10 @@ void KGPDF_render_cs(KGPDFScanner *scanner,void *info) {
 }
 
 // setdash, Set line dash pattern
-void KGPDF_render_d(KGPDFScanner *scanner,void *info) {
-   KGContext *context=kgContextFromInfo(info);
-   KGPDFReal    phase;
-   KGPDFArray  *array;
+void O2PDF_render_d(O2PDFScanner *scanner,void *info) {
+   O2Context *context=kgContextFromInfo(info);
+   O2PDFReal    phase;
+   O2PDFArray  *array;
    int          i,count;
    
    if(![scanner popNumber:&phase])
@@ -207,7 +207,7 @@ void KGPDF_render_d(KGPDFScanner *scanner,void *info) {
     return;
    count=[array count];
    {
-    KGPDFReal lengths[count];
+    O2PDFReal lengths[count];
    
     for(i=0;i<count;i++)
      if(![array getNumberAtIndex:i value:lengths+i])
@@ -218,23 +218,23 @@ void KGPDF_render_d(KGPDFScanner *scanner,void *info) {
 }
 
 // setcharwidth, Set glyph with in Type 3 font
-void KGPDF_render_d0(KGPDFScanner *scanner,void *info) {
+void O2PDF_render_d0(O2PDFScanner *scanner,void *info) {
    //NSLog(@"d0");
 }
 
 // setcachedevice, Set glyph width and bounding box in Type 3 font
-void KGPDF_render_d1(KGPDFScanner *scanner,void *info) {
+void O2PDF_render_d1(O2PDFScanner *scanner,void *info) {
    //NSLog(@"d1");
 }
 
 // Invoke named XObject
-void KGPDF_render_Do(KGPDFScanner *scanner,void *info) {
-   KGContext *context=kgContextFromInfo(info);
-   KGPDFContentStream *content=[scanner contentStream];
+void O2PDF_render_Do(O2PDFScanner *scanner,void *info) {
+   O2Context *context=kgContextFromInfo(info);
+   O2PDFContentStream *content=[scanner contentStream];
    const char         *name;
-   KGPDFObject        *resource;
-   KGPDFStream        *stream;
-   KGPDFDictionary    *dictionary;
+   O2PDFObject        *resource;
+   O2PDFStream        *stream;
+   O2PDFDictionary    *dictionary;
    const char         *subtype;
    
    if(![scanner popName:&name])
@@ -257,11 +257,11 @@ void KGPDF_render_Do(KGPDFScanner *scanner,void *info) {
     return;
     
    if(strcmp(subtype,"Form")==0){
-    KGPDFDictionary    *resources;
-    KGPDFContentStream *contentStream;
-    KGPDFOperatorTable *operatorTable;
-    KGPDFScanner       *doScanner;
-    KGPDFDictionary    *group;
+    O2PDFDictionary    *resources;
+    O2PDFContentStream *contentStream;
+    O2PDFOperatorTable *operatorTable;
+    O2PDFScanner       *doScanner;
+    O2PDFDictionary    *group;
     BOOL doIt=YES;
     
     if(![dictionary getDictionaryForKey:"Resources" value:&resources])
@@ -278,15 +278,15 @@ void KGPDF_render_Do(KGPDFScanner *scanner,void *info) {
      }
     }
         
-    contentStream=[[[KGPDFContentStream alloc] initWithStream:stream resources:resources parent:[scanner contentStream]] autorelease];
-    operatorTable=[KGPDFOperatorTable renderingOperatorTable];
-    doScanner=[[[KGPDFScanner alloc] initWithContentStream:contentStream operatorTable:operatorTable info:info] autorelease];
+    contentStream=[[[O2PDFContentStream alloc] initWithStream:stream resources:resources parent:[scanner contentStream]] autorelease];
+    operatorTable=[O2PDFOperatorTable renderingOperatorTable];
+    doScanner=[[[O2PDFScanner alloc] initWithContentStream:contentStream operatorTable:operatorTable info:info] autorelease];
 
 if(doIt)
     [doScanner scan];
    }
    else if(strcmp(subtype,"Image")==0){
-    KGImage *image=[KGImage imageWithPDFObject:stream];
+    O2Image *image=[O2Image imageWithPDFObject:stream];
     
     if(image!=NULL){
      [context drawImage:image inRect:CGRectMake(0,0,1,1)];
@@ -304,55 +304,55 @@ if(doIt)
 }
 
 // Define marked-content point with property list
-void KGPDF_render_DP(KGPDFScanner *scanner,void *info) {
+void O2PDF_render_DP(O2PDFScanner *scanner,void *info) {
    //NSLog(@"DP");
 }
 
 // End inline image object
-void KGPDF_render_EI(KGPDFScanner *scanner,void *info) {
+void O2PDF_render_EI(O2PDFScanner *scanner,void *info) {
    //NSLog(@"EI");
 }
 
 // End marked-content sequence
-void KGPDF_render_EMC(KGPDFScanner *scanner,void *info) {
+void O2PDF_render_EMC(O2PDFScanner *scanner,void *info) {
    //NSLog(@"EMC");
 }
 
 // End text object
-void KGPDF_render_ET(KGPDFScanner *scanner,void *info) {
+void O2PDF_render_ET(O2PDFScanner *scanner,void *info) {
    //NSLog(@"ET");
 }
 
 // End compatibility section
-void KGPDF_render_EX(KGPDFScanner *scanner,void *info) {
+void O2PDF_render_EX(O2PDFScanner *scanner,void *info) {
    //NSLog(@"EX");
 }
 
 // fill, fill path using nonzero winding number rule
-void KGPDF_render_f(KGPDFScanner *scanner,void *info) {
-   KGContext *context=kgContextFromInfo(info);
+void O2PDF_render_f(O2PDFScanner *scanner,void *info) {
+   O2Context *context=kgContextFromInfo(info);
    
    [context fillPath];
 }
 
 // fill, fill path using nonzero winding number rule (obsolete)
-void KGPDF_render_F(KGPDFScanner *scanner,void *info) {
-   KGContext *context=kgContextFromInfo(info);
+void O2PDF_render_F(O2PDFScanner *scanner,void *info) {
+   O2Context *context=kgContextFromInfo(info);
    
    [context fillPath];
 }
 
 // eofill, fill path using even-odd rule
-void KGPDF_render_f_star(KGPDFScanner *scanner,void *info) {
-   KGContext *context=kgContextFromInfo(info);
+void O2PDF_render_f_star(O2PDFScanner *scanner,void *info) {
+   O2Context *context=kgContextFromInfo(info);
    
    [context evenOddFillPath];
 }
 
 // setgray, set gray level for stroking operations
-void KGPDF_render_G(KGPDFScanner *scanner,void *info) {
-   KGContext *context=kgContextFromInfo(info);
-   KGPDFReal    gray;
+void O2PDF_render_G(O2PDFScanner *scanner,void *info) {
+   O2Context *context=kgContextFromInfo(info);
+   O2PDFReal    gray;
    
    if(![scanner popNumber:&gray])
     return;
@@ -361,9 +361,9 @@ void KGPDF_render_G(KGPDFScanner *scanner,void *info) {
 }
 
 // setgray, set gray level for nonstroking operations
-void KGPDF_render_g(KGPDFScanner *scanner,void *info) {
-   KGContext *context=kgContextFromInfo(info);
-   KGPDFReal    gray;
+void O2PDF_render_g(O2PDFScanner *scanner,void *info) {
+   O2Context *context=kgContextFromInfo(info);
+   O2PDFReal    gray;
    
    if(![scanner popNumber:&gray])
     return;
@@ -372,17 +372,17 @@ void KGPDF_render_g(KGPDFScanner *scanner,void *info) {
 }
 
 // Set parameters from graphics state parameter dictionary
-void KGPDF_render_gs(KGPDFScanner *scanner,void *info) {
-   KGContext *context=kgContextFromInfo(info);
-   KGPDFContentStream *content=[scanner contentStream];
-   KGPDFObject        *resource;
-   KGPDFDictionary    *graphicsState;
+void O2PDF_render_gs(O2PDFScanner *scanner,void *info) {
+   O2Context *context=kgContextFromInfo(info);
+   O2PDFContentStream *content=[scanner contentStream];
+   O2PDFObject        *resource;
+   O2PDFDictionary    *graphicsState;
    const char         *name;
-   KGPDFReal           number;
-   KGPDFInteger        integer;
-   KGPDFArray         *array;
-   KGPDFDictionary    *dictionary;
-   KGPDFBoolean        boolean;
+   O2PDFReal           number;
+   O2PDFInteger        integer;
+   O2PDFArray         *array;
+   O2PDFDictionary    *dictionary;
+   O2PDFBoolean        boolean;
    
    if(![scanner popName:&name])
     return;
@@ -474,16 +474,16 @@ void KGPDF_render_gs(KGPDFScanner *scanner,void *info) {
 }
 
 // closepath
-void KGPDF_render_h(KGPDFScanner *scanner,void *info) {
-   KGContext *context=kgContextFromInfo(info);
+void O2PDF_render_h(O2PDFScanner *scanner,void *info) {
+   O2Context *context=kgContextFromInfo(info);
    
    [context closePath];
 }
 
 // setflat, Set flatness tolerance
-void KGPDF_render_i(KGPDFScanner *scanner,void *info) {
-   KGContext *context=kgContextFromInfo(info);
-   KGPDFReal    flatness;
+void O2PDF_render_i(O2PDFScanner *scanner,void *info) {
+   O2Context *context=kgContextFromInfo(info);
+   O2PDFReal    flatness;
    
    if(![scanner popNumber:&flatness])
     return;
@@ -492,14 +492,14 @@ void KGPDF_render_i(KGPDFScanner *scanner,void *info) {
 }
 
 // Begin inline image data
-void KGPDF_render_ID(KGPDFScanner *scanner,void *info) {
+void O2PDF_render_ID(O2PDFScanner *scanner,void *info) {
    //NSLog(@"ID");
 }
 
 // setlinejoin, Set line join style
-void KGPDF_render_j(KGPDFScanner *scanner,void *info) {
-   KGContext *context=kgContextFromInfo(info);
-   KGPDFInteger linejoin;
+void O2PDF_render_j(O2PDFScanner *scanner,void *info) {
+   O2Context *context=kgContextFromInfo(info);
+   O2PDFInteger linejoin;
    
    if(![scanner popInteger:&linejoin])
     return;
@@ -508,9 +508,9 @@ void KGPDF_render_j(KGPDFScanner *scanner,void *info) {
 }
 
 // setlinecap, Set line cap style
-void KGPDF_render_J(KGPDFScanner *scanner,void *info) {
-   KGContext *context=kgContextFromInfo(info);
-   KGPDFInteger linecap;
+void O2PDF_render_J(O2PDFScanner *scanner,void *info) {
+   O2Context *context=kgContextFromInfo(info);
+   O2PDFInteger linecap;
    
    if(![scanner popInteger:&linecap])
     return;
@@ -519,9 +519,9 @@ void KGPDF_render_J(KGPDFScanner *scanner,void *info) {
 }
 
 // setcmykcolor, Set CMYK color for stroking operations
-void KGPDF_render_K(KGPDFScanner *scanner,void *info) {
-   KGContext *context=kgContextFromInfo(info);
-   KGPDFReal    c,m,y,k;
+void O2PDF_render_K(O2PDFScanner *scanner,void *info) {
+   O2Context *context=kgContextFromInfo(info);
+   O2PDFReal    c,m,y,k;
    
    if(![scanner popNumber:&k])
     return;
@@ -536,9 +536,9 @@ void KGPDF_render_K(KGPDFScanner *scanner,void *info) {
 }
 
 // setcmykcolor, Set CMYK color for nonstroking operations
-void KGPDF_render_k(KGPDFScanner *scanner,void *info) {
-   KGContext *context=kgContextFromInfo(info);
-   KGPDFReal    c,m,y,k;
+void O2PDF_render_k(O2PDFScanner *scanner,void *info) {
+   O2Context *context=kgContextFromInfo(info);
+   O2PDFReal    c,m,y,k;
    
    if(![scanner popNumber:&k])
     return;
@@ -553,9 +553,9 @@ void KGPDF_render_k(KGPDFScanner *scanner,void *info) {
 }
 
 // lineto, Append straight line segment to path
-void KGPDF_render_l(KGPDFScanner *scanner,void *info) {
-   KGContext *context=kgContextFromInfo(info);
-   KGPDFReal    x,y;
+void O2PDF_render_l(O2PDFScanner *scanner,void *info) {
+   O2Context *context=kgContextFromInfo(info);
+   O2PDFReal    x,y;
    
    if(![scanner popNumber:&y])
     return;
@@ -566,9 +566,9 @@ void KGPDF_render_l(KGPDFScanner *scanner,void *info) {
 }
 
 // moveto, Begin new subpath
-void KGPDF_render_m(KGPDFScanner *scanner,void *info) {
-   KGContext *context=kgContextFromInfo(info);
-   KGPDFReal    x,y;
+void O2PDF_render_m(O2PDFScanner *scanner,void *info) {
+   O2Context *context=kgContextFromInfo(info);
+   O2PDFReal    x,y;
    
    if(![scanner popNumber:&y])
     return;
@@ -579,9 +579,9 @@ void KGPDF_render_m(KGPDFScanner *scanner,void *info) {
 }
 
 // setmiterlimit, Set miter limit
-void KGPDF_render_M(KGPDFScanner *scanner,void *info) {
-   KGContext *context=kgContextFromInfo(info);
-   KGPDFReal    limit;
+void O2PDF_render_M(O2PDFScanner *scanner,void *info) {
+   O2Context *context=kgContextFromInfo(info);
+   O2PDFReal    limit;
    
    if(![scanner popNumber:&limit])
     return;
@@ -589,34 +589,34 @@ void KGPDF_render_M(KGPDFScanner *scanner,void *info) {
    [context setMiterLimit:limit];
 }
 
-void KGPDF_render_MP(KGPDFScanner *scanner,void *info) {
+void O2PDF_render_MP(O2PDFScanner *scanner,void *info) {
   // NSLog(@"MP");
 }
 
 // End path without filling or stroking
-void KGPDF_render_n(KGPDFScanner *scanner,void *info) {
-   KGContext *context=kgContextFromInfo(info);
+void O2PDF_render_n(O2PDFScanner *scanner,void *info) {
+   O2Context *context=kgContextFromInfo(info);
    
    [context beginPath];
 }
 
 // gsave
-void KGPDF_render_q(KGPDFScanner *scanner,void *info) {
-   KGContext *context=kgContextFromInfo(info);
+void O2PDF_render_q(O2PDFScanner *scanner,void *info) {
+   O2Context *context=kgContextFromInfo(info);
    
    [context saveGState];
 }
 
 // grestore
-void KGPDF_render_Q(KGPDFScanner *scanner,void *info) {
-   KGContext *context=kgContextFromInfo(info);
+void O2PDF_render_Q(O2PDFScanner *scanner,void *info) {
+   O2Context *context=kgContextFromInfo(info);
    
    [context restoreGState];
 }
 
 // Append rectangle to path
-void KGPDF_render_re(KGPDFScanner *scanner,void *info) {
-   KGContext *context=kgContextFromInfo(info);
+void O2PDF_render_re(O2PDFScanner *scanner,void *info) {
+   O2Context *context=kgContextFromInfo(info);
    CGRect     rect;
 
    if(![scanner popNumber:&rect.size.height])
@@ -632,9 +632,9 @@ void KGPDF_render_re(KGPDFScanner *scanner,void *info) {
 }
 
 // setrgbcolor, Set RGB color for stroking operations
-void KGPDF_render_RG(KGPDFScanner *scanner,void *info) {
-   KGContext *context=kgContextFromInfo(info);
-   KGPDFReal    r,g,b;
+void O2PDF_render_RG(O2PDFScanner *scanner,void *info) {
+   O2Context *context=kgContextFromInfo(info);
+   O2PDFReal    r,g,b;
 
    if(![scanner popNumber:&b])
     return;
@@ -647,9 +647,9 @@ void KGPDF_render_RG(KGPDFScanner *scanner,void *info) {
 }
 
 // setrgbcolor, Set RGB color for nonstroking operations
-void KGPDF_render_rg(KGPDFScanner *scanner,void *info) {
-   KGContext *context=kgContextFromInfo(info);
-   KGPDFReal    r,g,b;
+void O2PDF_render_rg(O2PDFScanner *scanner,void *info) {
+   O2Context *context=kgContextFromInfo(info);
+   O2PDFReal    r,g,b;
 
    if(![scanner popNumber:&b])
     return;
@@ -664,8 +664,8 @@ void KGPDF_render_rg(KGPDFScanner *scanner,void *info) {
 }
 
 // name ri, Set color rendering intent
-void KGPDF_render_ri(KGPDFScanner *scanner,void *info) {
-   KGContext  *context=kgContextFromInfo(info);
+void O2PDF_render_ri(O2PDFScanner *scanner,void *info) {
+   O2Context  *context=kgContextFromInfo(info);
    const char *name;
    
    if(![scanner popName:&name])
@@ -675,23 +675,23 @@ void KGPDF_render_ri(KGPDFScanner *scanner,void *info) {
 }
 
 // closepath stroke
-void KGPDF_render_s(KGPDFScanner *scanner,void *info) {
-   KGContext *context=kgContextFromInfo(info);
+void O2PDF_render_s(O2PDFScanner *scanner,void *info) {
+   O2Context *context=kgContextFromInfo(info);
    
    [context closePath];
    [context strokePath];
 }
 
 // stroke
-void KGPDF_render_S(KGPDFScanner *scanner,void *info) {
-   KGContext *context=kgContextFromInfo(info);
+void O2PDF_render_S(O2PDFScanner *scanner,void *info) {
+   O2Context *context=kgContextFromInfo(info);
    
    [context strokePath];
 }
 
 // setcolor, Set color for stroking operations
-void KGPDF_render_SC(KGPDFScanner *scanner,void *info) {
-   KGContext    *context=kgContextFromInfo(info);
+void O2PDF_render_SC(O2PDFScanner *scanner,void *info) {
+   O2Context    *context=kgContextFromInfo(info);
    O2Color      *color=[context strokeColor];
    O2ColorSpaceRef colorSpace=O2ColorGetColorSpace(color);
    unsigned      numberOfComponents=[colorSpace numberOfComponents];
@@ -709,8 +709,8 @@ void KGPDF_render_SC(KGPDFScanner *scanner,void *info) {
 }
 
 // setcolor, Set color for nonstroking operations
-void KGPDF_render_sc(KGPDFScanner *scanner,void *info) {
-   KGContext    *context=kgContextFromInfo(info);
+void O2PDF_render_sc(O2PDFScanner *scanner,void *info) {
+   O2Context    *context=kgContextFromInfo(info);
    O2Color      *color=[context fillColor];
    O2ColorSpaceRef colorSpace=O2ColorGetColorSpace(color);
    unsigned      numberOfComponents=[colorSpace numberOfComponents];
@@ -728,8 +728,8 @@ void KGPDF_render_sc(KGPDFScanner *scanner,void *info) {
 }
 
 // setcolor, Set color for stroking operations, ICCBased and special color spaces
-void KGPDF_render_SCN(KGPDFScanner *scanner,void *info) {
-   KGContext    *context=kgContextFromInfo(info);
+void O2PDF_render_SCN(O2PDFScanner *scanner,void *info) {
+   O2Context    *context=kgContextFromInfo(info);
    O2Color      *color=[context strokeColor];
    O2ColorSpaceRef colorSpace=O2ColorGetColorSpace(color);
    unsigned      numberOfComponents=[colorSpace numberOfComponents];
@@ -747,13 +747,13 @@ void KGPDF_render_SCN(KGPDFScanner *scanner,void *info) {
 }
 
 // setcolor, Set color for nonstroking operations, ICCBased and special color spaces
-void KGPDF_render_scn(KGPDFScanner *scanner,void *info) {
-   KGContext    *context=kgContextFromInfo(info);
+void O2PDF_render_scn(O2PDFScanner *scanner,void *info) {
+   O2Context    *context=kgContextFromInfo(info);
    O2Color      *color=[context fillColor];
    O2ColorSpaceRef colorSpace=O2ColorGetColorSpace(color);
    unsigned      numberOfComponents=[colorSpace numberOfComponents];
    int           count=numberOfComponents;
-   KGPDFReal     components[count+1];
+   O2PDFReal     components[count+1];
    
    components[count]=O2ColorGetAlpha(color);
    while(--count>=0)
@@ -768,10 +768,10 @@ void KGPDF_render_scn(KGPDFScanner *scanner,void *info) {
 
 
 // shfill, Paint area defined by shading pattern
-void KGPDF_render_sh(KGPDFScanner *scanner,void *info) {
-   KGContext *context=kgContextFromInfo(info);
-   KGPDFContentStream *content=[scanner contentStream];
-   KGPDFObject        *resource;
+void O2PDF_render_sh(O2PDFScanner *scanner,void *info) {
+   O2Context *context=kgContextFromInfo(info);
+   O2PDFContentStream *content=[scanner contentStream];
+   O2PDFObject        *resource;
    const char         *name;
    KGShading *shading=NULL;
    
@@ -790,14 +790,14 @@ void KGPDF_render_sh(KGPDFScanner *scanner,void *info) {
 }
 
 // Move to start of next text line
-void KGPDF_render_T_star(KGPDFScanner *scanner,void *info) {
+void O2PDF_render_T_star(O2PDFScanner *scanner,void *info) {
    NSLog(@"T*");
 }
 
 // Set character spacing
-void KGPDF_render_Tc(KGPDFScanner *scanner,void *info) {
-   KGContext *context=kgContextFromInfo(info);
-   KGPDFReal  spacing;
+void O2PDF_render_Tc(O2PDFScanner *scanner,void *info) {
+   O2Context *context=kgContextFromInfo(info);
+   O2PDFReal  spacing;
    
    if(![scanner popNumber:&spacing])
     return;
@@ -806,9 +806,9 @@ void KGPDF_render_Tc(KGPDFScanner *scanner,void *info) {
 }
 
 // Move text position
-void KGPDF_render_Td(KGPDFScanner *scanner,void *info) {
-   KGContext *context=kgContextFromInfo(info);
-   KGPDFReal    x,y;
+void O2PDF_render_Td(O2PDFScanner *scanner,void *info) {
+   O2Context *context=kgContextFromInfo(info);
+   O2PDFReal    x,y;
    
    if(![scanner popNumber:&y])
     return;
@@ -820,9 +820,9 @@ void KGPDF_render_Td(KGPDFScanner *scanner,void *info) {
 }
 
 // Move text position and set leading
-void KGPDF_render_TD(KGPDFScanner *scanner,void *info) {
-   KGContext *context=kgContextFromInfo(info);
-   KGPDFReal    x,y;
+void O2PDF_render_TD(O2PDFScanner *scanner,void *info) {
+   O2Context *context=kgContextFromInfo(info);
+   O2PDFReal    x,y;
    
    if(![scanner popNumber:&y])
     return;
@@ -834,14 +834,14 @@ void KGPDF_render_TD(KGPDFScanner *scanner,void *info) {
 }
 
 // Set text font and size
-void KGPDF_render_Tf(KGPDFScanner *scanner,void *info) {
-   KGContext *context=kgContextFromInfo(info);
-   KGPDFContentStream *content=[scanner contentStream];
-   KGPDFReal        scale;
+void O2PDF_render_Tf(O2PDFScanner *scanner,void *info) {
+   O2Context *context=kgContextFromInfo(info);
+   O2PDFContentStream *content=[scanner contentStream];
+   O2PDFReal        scale;
    const char      *name;
    const char      *subtype;
-   KGPDFObject     *resource;
-   KGPDFDictionary *dictionary;
+   O2PDFObject     *resource;
+   O2PDFDictionary *dictionary;
 
    if(![scanner popNumber:&scale])
     return;
@@ -899,9 +899,9 @@ void KGPDF_render_Tf(KGPDFScanner *scanner,void *info) {
 }
 
 // show
-void KGPDF_render_Tj(KGPDFScanner *scanner,void *info) {
-   KGContext *context=kgContextFromInfo(info);
-   KGPDFString *string;
+void O2PDF_render_Tj(O2PDFScanner *scanner,void *info) {
+   O2Context *context=kgContextFromInfo(info);
+   O2PDFString *string;
    
    if(![scanner popString:&string])
     return;
@@ -910,9 +910,9 @@ void KGPDF_render_Tj(KGPDFScanner *scanner,void *info) {
 }
 
 // Show text, alowing individual glyph positioning
-void KGPDF_render_TJ(KGPDFScanner *scanner,void *info) {
-   KGContext *context=kgContextFromInfo(info);
-   KGPDFArray  *array;
+void O2PDF_render_TJ(O2PDFScanner *scanner,void *info) {
+   O2Context *context=kgContextFromInfo(info);
+   O2PDFArray  *array;
    int          i,count;
    
    if(![scanner popArray:&array])
@@ -920,9 +920,9 @@ void KGPDF_render_TJ(KGPDFScanner *scanner,void *info) {
     
    count=[array count];
    for(i=0;i<count;i++){
-    KGPDFObject    *object;
-    KGPDFReal       real;
-    KGPDFString    *string;
+    O2PDFObject    *object;
+    O2PDFReal       real;
+    O2PDFString    *string;
 
     if(![array getObjectAtIndex:i value:&object])
      return;
@@ -939,13 +939,13 @@ void KGPDF_render_TJ(KGPDFScanner *scanner,void *info) {
 }
 
 // Set text leading
-void KGPDF_render_TL(KGPDFScanner *scanner,void *info) {
+void O2PDF_render_TL(O2PDFScanner *scanner,void *info) {
    //NSLog(@"TL");
 }
 
 // Set text matrix and text line matrix
-void KGPDF_render_Tm(KGPDFScanner *scanner,void *info) {
-   KGContext        *context=kgContextFromInfo(info);
+void O2PDF_render_Tm(O2PDFScanner *scanner,void *info) {
+   O2Context        *context=kgContextFromInfo(info);
    CGAffineTransform matrix;
    
    if(![scanner popNumber:&matrix.ty])
@@ -966,19 +966,19 @@ void KGPDF_render_Tm(KGPDFScanner *scanner,void *info) {
 }
 
 // Set text rendering mode
-void KGPDF_render_Tr(KGPDFScanner *scanner,void *info) {
+void O2PDF_render_Tr(O2PDFScanner *scanner,void *info) {
    //NSLog(@"Tr");
 }
 
 // Set text rise
-void KGPDF_render_Ts(KGPDFScanner *scanner,void *info) {
+void O2PDF_render_Ts(O2PDFScanner *scanner,void *info) {
   // NSLog(@"Ts");
 }
 
 // Set word spacing
-void KGPDF_render_Tw(KGPDFScanner *scanner,void *info) {
-   KGContext *context=kgContextFromInfo(info);
-   KGPDFReal    spacing;
+void O2PDF_render_Tw(O2PDFScanner *scanner,void *info) {
+   O2Context *context=kgContextFromInfo(info);
+   O2PDFReal    spacing;
 
    if(![scanner popNumber:&spacing])
     return;
@@ -987,15 +987,15 @@ void KGPDF_render_Tw(KGPDFScanner *scanner,void *info) {
 }
 
 // Set horizontal text scaling
-void KGPDF_render_Tz(KGPDFScanner *scanner,void *info) {
+void O2PDF_render_Tz(O2PDFScanner *scanner,void *info) {
     // NSLog(@"Tz");
  
 }
 
 // curveto, Append curved segment to path, initial point replicated
-void KGPDF_render_v(KGPDFScanner *scanner,void *info) {
-   KGContext *context=kgContextFromInfo(info);
-   KGPDFReal    x2,y2,x3,y3;
+void O2PDF_render_v(O2PDFScanner *scanner,void *info) {
+   O2Context *context=kgContextFromInfo(info);
+   O2PDFReal    x2,y2,x3,y3;
    
    if(![scanner popNumber:&y3])
     return;
@@ -1010,9 +1010,9 @@ void KGPDF_render_v(KGPDFScanner *scanner,void *info) {
 }
 
 // setlinewidth, Set line width
-void KGPDF_render_w(KGPDFScanner *scanner,void *info) {
-   KGContext *context=kgContextFromInfo(info);
-   KGPDFReal    width;
+void O2PDF_render_w(O2PDFScanner *scanner,void *info) {
+   O2Context *context=kgContextFromInfo(info);
+   O2PDFReal    width;
 
    if(![scanner popNumber:&width])
     return;
@@ -1021,23 +1021,23 @@ void KGPDF_render_w(KGPDFScanner *scanner,void *info) {
 }
 
 // clip, Set clipping path using nonzero winding number rule
-void KGPDF_render_W(KGPDFScanner *scanner,void *info) {
-   KGContext *context=kgContextFromInfo(info);
+void O2PDF_render_W(O2PDFScanner *scanner,void *info) {
+   O2Context *context=kgContextFromInfo(info);
    
    [context clipToPath];
 }
 
 // eoclip, Set clipping path using even-odd rule
-void KGPDF_render_W_star(KGPDFScanner *scanner,void *info) {
-   KGContext *context=kgContextFromInfo(info);
+void O2PDF_render_W_star(O2PDFScanner *scanner,void *info) {
+   O2Context *context=kgContextFromInfo(info);
    
    [context evenOddClipToPath];
 }
 
 // curveto, Append curved segment to path, final point replicated
-void KGPDF_render_y(KGPDFScanner *scanner,void *info) {
-   KGContext *context=kgContextFromInfo(info);
-   KGPDFReal    x1,y1,x3,y3;
+void O2PDF_render_y(O2PDFScanner *scanner,void *info) {
+   O2Context *context=kgContextFromInfo(info);
+   O2PDFReal    x1,y1,x3,y3;
    
    if(![scanner popNumber:&y3])
     return;
@@ -1053,18 +1053,18 @@ void KGPDF_render_y(KGPDFScanner *scanner,void *info) {
 
 // Move to next line and show text
 // T*string Tj
-void KGPDF_render_quote(KGPDFScanner *scanner,void *info) {   
-   KGPDF_render_T_star(scanner,info);
-   KGPDF_render_Tj(scanner,info);
+void O2PDF_render_quote(O2PDFScanner *scanner,void *info) {   
+   O2PDF_render_T_star(scanner,info);
+   O2PDF_render_Tj(scanner,info);
 }
 
 // Set word and character spacing, move to next line, and show text
 // same as w Tw c Tc string '
-void KGPDF_render_dquote(KGPDFScanner *scanner,void *info) {
-   KGContext *context=kgContextFromInfo(info);
-   KGPDFString *string;
-   KGPDFReal    cspacing;
-   KGPDFReal    wspacing;
+void O2PDF_render_dquote(O2PDFScanner *scanner,void *info) {
+   O2Context *context=kgContextFromInfo(info);
+   O2PDFString *string;
+   O2PDFReal    cspacing;
+   O2PDFReal    wspacing;
    
    if(![scanner popString:&string])
     return;
@@ -1078,84 +1078,84 @@ void KGPDF_render_dquote(KGPDFScanner *scanner,void *info) {
    [context showText:[string bytes] length:[string length]];
 }
 
-void KGPDF_render_populateOperatorTable(KGPDFOperatorTable *table) {
+void O2PDF_render_populateOperatorTable(O2PDFOperatorTable *table) {
    struct {
     const char           *name;
-    KGPDFOperatorCallback callback;
+    O2PDFOperatorCallback callback;
    } ops[]={
-    { "b", KGPDF_render_b },
-    { "B", KGPDF_render_B },
-    { "b*", KGPDF_render_b_star },
-    { "B*", KGPDF_render_B_star },
-    { "BDC", KGPDF_render_BDC },
-    { "BI", KGPDF_render_BI },
-    { "BMC", KGPDF_render_BMC },
-    { "BT", KGPDF_render_BT },
-    { "BX", KGPDF_render_BX },
-    { "c", KGPDF_render_c },
-    { "cm", KGPDF_render_cm },
-    { "CS", KGPDF_render_CS },
-    { "cs", KGPDF_render_cs },
-    { "d", KGPDF_render_d },
-    { "d0", KGPDF_render_d0 },
-    { "d1", KGPDF_render_d1 },
-    { "Do", KGPDF_render_Do },
-    { "DP", KGPDF_render_DP },
-    { "EI", KGPDF_render_EI },
-    { "EMC", KGPDF_render_EMC },
-    { "ET", KGPDF_render_ET },
-    { "EX", KGPDF_render_EX },
-    { "f", KGPDF_render_f },
-    { "F", KGPDF_render_F },
-    { "f*", KGPDF_render_f_star },
-    { "G", KGPDF_render_G },
-    { "g", KGPDF_render_g },
-    { "gs", KGPDF_render_gs },
-    { "h", KGPDF_render_h },
-    { "i", KGPDF_render_i },
-    { "ID", KGPDF_render_ID },
-    { "j", KGPDF_render_j },
-    { "J", KGPDF_render_J },
-    { "K", KGPDF_render_K },
-    { "k", KGPDF_render_k },
-    { "l", KGPDF_render_l },
-    { "m", KGPDF_render_m },
-    { "M", KGPDF_render_M },
-    { "MP", KGPDF_render_MP },
-    { "n", KGPDF_render_n },
-    { "q", KGPDF_render_q },
-    { "Q", KGPDF_render_Q },
-    { "re", KGPDF_render_re },
-    { "RG", KGPDF_render_RG },
-    { "rg", KGPDF_render_rg },
-    { "ri", KGPDF_render_ri },
-    { "s", KGPDF_render_s },
-    { "S", KGPDF_render_S },
-    { "SC", KGPDF_render_SC },
-    { "sc", KGPDF_render_sc },
-    { "SCN", KGPDF_render_SCN },
-    { "scn", KGPDF_render_scn },
-    { "sh", KGPDF_render_sh },
-    { "T*", KGPDF_render_T_star },
-    { "Tc", KGPDF_render_Tc },
-    { "Td", KGPDF_render_Td },
-    { "TD", KGPDF_render_TD },
-    { "Tf", KGPDF_render_Tf },
-    { "Tj", KGPDF_render_Tj },
-    { "TJ", KGPDF_render_TJ },
-    { "TL", KGPDF_render_TL },
-    { "Tm", KGPDF_render_Tm },
-    { "Tr", KGPDF_render_Tr },
-    { "Ts", KGPDF_render_Ts },
-    { "Tw", KGPDF_render_Tw },
-    { "Tz", KGPDF_render_Tz },
-    { "v", KGPDF_render_v },
-    { "w", KGPDF_render_w },
-    { "W", KGPDF_render_W },
-    { "W*", KGPDF_render_W_star },
-    { "y", KGPDF_render_y },
-    { "\'", KGPDF_render_quote },
-    { "\"", KGPDF_render_dquote },
+    { "b", O2PDF_render_b },
+    { "B", O2PDF_render_B },
+    { "b*", O2PDF_render_b_star },
+    { "B*", O2PDF_render_B_star },
+    { "BDC", O2PDF_render_BDC },
+    { "BI", O2PDF_render_BI },
+    { "BMC", O2PDF_render_BMC },
+    { "BT", O2PDF_render_BT },
+    { "BX", O2PDF_render_BX },
+    { "c", O2PDF_render_c },
+    { "cm", O2PDF_render_cm },
+    { "CS", O2PDF_render_CS },
+    { "cs", O2PDF_render_cs },
+    { "d", O2PDF_render_d },
+    { "d0", O2PDF_render_d0 },
+    { "d1", O2PDF_render_d1 },
+    { "Do", O2PDF_render_Do },
+    { "DP", O2PDF_render_DP },
+    { "EI", O2PDF_render_EI },
+    { "EMC", O2PDF_render_EMC },
+    { "ET", O2PDF_render_ET },
+    { "EX", O2PDF_render_EX },
+    { "f", O2PDF_render_f },
+    { "F", O2PDF_render_F },
+    { "f*", O2PDF_render_f_star },
+    { "G", O2PDF_render_G },
+    { "g", O2PDF_render_g },
+    { "gs", O2PDF_render_gs },
+    { "h", O2PDF_render_h },
+    { "i", O2PDF_render_i },
+    { "ID", O2PDF_render_ID },
+    { "j", O2PDF_render_j },
+    { "J", O2PDF_render_J },
+    { "K", O2PDF_render_K },
+    { "k", O2PDF_render_k },
+    { "l", O2PDF_render_l },
+    { "m", O2PDF_render_m },
+    { "M", O2PDF_render_M },
+    { "MP", O2PDF_render_MP },
+    { "n", O2PDF_render_n },
+    { "q", O2PDF_render_q },
+    { "Q", O2PDF_render_Q },
+    { "re", O2PDF_render_re },
+    { "RG", O2PDF_render_RG },
+    { "rg", O2PDF_render_rg },
+    { "ri", O2PDF_render_ri },
+    { "s", O2PDF_render_s },
+    { "S", O2PDF_render_S },
+    { "SC", O2PDF_render_SC },
+    { "sc", O2PDF_render_sc },
+    { "SCN", O2PDF_render_SCN },
+    { "scn", O2PDF_render_scn },
+    { "sh", O2PDF_render_sh },
+    { "T*", O2PDF_render_T_star },
+    { "Tc", O2PDF_render_Tc },
+    { "Td", O2PDF_render_Td },
+    { "TD", O2PDF_render_TD },
+    { "Tf", O2PDF_render_Tf },
+    { "Tj", O2PDF_render_Tj },
+    { "TJ", O2PDF_render_TJ },
+    { "TL", O2PDF_render_TL },
+    { "Tm", O2PDF_render_Tm },
+    { "Tr", O2PDF_render_Tr },
+    { "Ts", O2PDF_render_Ts },
+    { "Tw", O2PDF_render_Tw },
+    { "Tz", O2PDF_render_Tz },
+    { "v", O2PDF_render_v },
+    { "w", O2PDF_render_w },
+    { "W", O2PDF_render_W },
+    { "W*", O2PDF_render_W_star },
+    { "y", O2PDF_render_y },
+    { "\'", O2PDF_render_quote },
+    { "\"", O2PDF_render_dquote },
     { NULL, NULL }
    };
    int i;

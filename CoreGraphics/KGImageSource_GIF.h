@@ -9,7 +9,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "KGImageSource.h"
 #import "gif_lib.h"
 
-@class KGDataProvider;
+@class O2DataProvider;
 
 @interface KGImageSource_GIF : KGImageSource {
    GifFileType    *_gif;
@@ -17,6 +17,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(unsigned)count;
 
--(KGImage *)createImageAtIndex:(unsigned)index options:(NSDictionary *)options;
+-(O2Image *)createImageAtIndex:(unsigned)index options:(NSDictionary *)options;
 
 @end

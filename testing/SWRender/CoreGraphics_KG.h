@@ -8,17 +8,23 @@
 #import "KGDataProvider.h"
 #import "KGPDFDocument.h"
 #import "KGPDFPage.h"
+#import "KGFunction.h"
+#import "KGShading.h"
+#import "KGFont.h"
 
-#define CGContextRef KGContext *
+#define CGContextRef O2Context *
 #define CGColorRef O2ColorRef
 #define CGColorSpaceRef O2ColorSpaceRef
 #define CGPathRef O2PathRef
 #define CGMutablePathRef O2MutablePathRef
-#define CGDataProviderRef KGDataProvider *
-#define CGImageRef KGImage *
+#define CGDataProviderRef O2DataProvider *
+#define CGImageRef O2Image *
 #define CGImageSourceRef KGImageSource *
-#define CGPDFDocumentRef KGPDFDocument *
-#define CGPDFPageRef KGPDFPage *
+#define CGPDFDocumentRef O2PDFDocument *
+#define CGPDFPageRef O2PDFPage *
+#define CGFunctionRef O2Function *
+#define CGShadingRef KGShading *
+#define CGFontRef O2Font *
 
 #define CGContextRetain(context) \
     [context retain]
@@ -212,8 +218,8 @@
     [context clearRect:rect]
 #define CGContextShowGlyphs(context,glyphs,count) \
     [context showGlyphs:glyphs count:count]
-#define CGContextShowGlyphsAtPoint(context,x,y,glyphs,count) \
-    [context showGlyphs:glyphs count:count atPoint:x:y]
+#define CGContextShowGlyphsAtPoint(context,x,y,glyphs,c) \
+    [context showGlyphs:glyphs count:c atPoint:x:y]
 #define CGContextShowGlyphsWithAdvances(context,glyphs,advances,count) \
     [context showGlyphs:glyphs count:count advances:advances]
 #define CGContextShowText(context,text,count) \
@@ -242,7 +248,7 @@
 // bitmap context
 
 #define CGBitmapContextCreate(bytes,w,h,bpc,bpr,cs,bi) \
-   [KGContext createWithBytes:bytes width:w height:h bitsPerComponent:bpc bytesPerRow:bpr colorSpace:cs bitmapInfo:bi]
+   [O2Context createWithBytes:bytes width:w height:h bitsPerComponent:bpc bytesPerRow:bpr colorSpace:cs bitmapInfo:bi]
 
 #define CGBitmapContextGetData(self) \
    [self pixelBytes]
@@ -340,11 +346,11 @@
 
 
 #define  CGImageCreate(w,h,bpc,bpp,bpr,cs,bi,dp,dec,interp,ri) \
-   [[KGImage alloc] initWithWidth:w height:h bitsPerComponent:bpc bitsPerPixel:bpp bytesPerRow:bpr colorSpace:cs bitmapInfo:bi provider:dp decode:dec interpolate:interp renderingIntent:ri]
+   [[O2Image alloc] initWithWidth:w height:h bitsPerComponent:bpc bitsPerPixel:bpp bytesPerRow:bpr colorSpace:cs bitmapInfo:bi provider:dp decode:dec interpolate:interp renderingIntent:ri]
 
 
 #define  CGImageMaskCreate(w,h,bpc,bpp,bpr,dp,dec,interp) \
-   [[KGImage alloc] initMaskWithWidth:w height:h bitsPerComponent:bpc bitsPerPixel:bpp bytesPerRow:bpr provider:dp decode:dec interpolate:interp]
+   [[O2Image alloc] initMaskWithWidth:w height:h bitsPerComponent:bpc bitsPerPixel:bpp bytesPerRow:bpr provider:dp decode:dec interpolate:interp]
 
 
 #define  CGImageCreateCopy(self) \
@@ -360,11 +366,11 @@
 
 
 #define  CGImageCreateWithJPEGDataProvider(jpegProvider,dec,interpolate, renderingIntent) \
-   [[KGImage alloc] initWithJPEGDataProvider:jpegProvider decode:dec interpolate:interpolate renderingIntent:renderingIntent]
+   [[O2Image alloc] initWithJPEGDataProvider:jpegProvider decode:dec interpolate:interpolate renderingIntent:renderingIntent]
 
 
 #define  CGImageCreateWithPNGDataProvider(pngProvider,dec,interpolate,renderingIntent) \
-   [[KGImage alloc] initWithPNGDataProvider:pngProvider decode:dec interpolate:interpolate renderingIntent:renderingIntent]
+   [[O2Image alloc] initWithPNGDataProvider:pngProvider decode:dec interpolate:interpolate renderingIntent:renderingIntent]
 
 
 #define  CGImageCreateWithMask(self,mask) \
@@ -429,10 +435,10 @@
 // data provider
 
 #define CGDataProviderCreateWithData(info,data,size, releaseCallback) \
-   [[KGDataProvider alloc] initWithBytes:data length:size]
+   [[O2DataProvider alloc] initWithBytes:data length:size]
 
 #define CGDataProviderCreateWithCFData(data) \
-   [[KGDataProvider alloc] initWithData:data]
+   [[O2DataProvider alloc] initWithData:data]
    
 // image source
 
@@ -452,7 +458,7 @@
    [self release]
 
 #define CGPDFDocumentCreateWithProvider(provider) \
-   [[KGPDFDocument alloc] initWithDataProvider:provider]
+   [[O2PDFDocument alloc] initWithDataProvider:provider]
 
 #define CGPDFDocumentGetNumberOfPages(self) \
    [self pageCount]
@@ -468,3 +474,20 @@
 #define CGPDFPageRelease(self) \
    [self release]
 
+// shadings
+#define CGFunctionCreate O2FunctionCreate
+
+#define CGShadingCreateAxial(cs,sp,ep,f,es,ee) [[KGShading alloc] initWithColorSpace:cs startPoint:sp endPoint:ep function:f extendStart:es extendEnd:ee domain:domain]
+
+#define CGShadingCreateRadial(cs,sp,sr,ep,er,f,es,ee) [[KGShading alloc] initWithColorSpace:cs startPoint:sp startRadius:sr endPoint:ep endRadius:er function:f extendStart:es extendEnd:ee domain:domain]
+
+
+#define CGShadingRelease(self) [self release]
+#define CGFunctionRelease O2FunctionRelease
+
+#define CGFontCreateWithDataProvider O2FontCreateWithDataProvider
+#define CGFontGetGlyphWithGlyphName O2FontGetGlyphWithGlyphName
+
+#define CGDataProviderCreateWithFilename O2DataProviderCreateWithFilename
+#define CGDataProviderRetain O2DataProviderRetain
+#define CGDataProviderRelease O2DataProviderRelease
