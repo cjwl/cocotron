@@ -22,7 +22,8 @@ static inline BOOL transformIsFlipped(CGAffineTransform matrix){
 
 -initWithSurface:(KGSurface *)surface flipped:(BOOL)flipped {
    [super initWithSurface:surface flipped:flipped];
-   _dc=[[(KGSurface_DIBSection *)[self surface] deviceContext] dc];
+   if([[self surface] isKindOfClass:[KGSurface_DIBSection class]])
+    _dc=[[(KGSurface_DIBSection *)[self surface] deviceContext] dc];
    _gdiFont=nil;
    return self;
 }

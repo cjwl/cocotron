@@ -423,31 +423,31 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return [NSColor colorWithCalibratedRed:1.0 green:1.0 blue:0.0 alpha:1.0];
 }
 
-+(NSColor *)colorWithDeviceWhite:(float)white alpha:(float)alpha {
++(NSColor *)colorWithDeviceWhite:(CGFloat)white alpha:(CGFloat)alpha {
    return [NSColor_whiteDevice colorWithGray:white alpha:alpha];
 }
 
-+(NSColor *)colorWithDeviceRed:(float)red green:(float)green blue:(float)blue alpha:(float)alpha {
++(NSColor *)colorWithDeviceRed:(CGFloat)red green:(CGFloat)green blue:(CGFloat)blue alpha:(CGFloat)alpha {
    return [NSColor_rgbDevice colorWithRed:red green:green blue:blue alpha:alpha];
 }
 
-+(NSColor *)colorWithDeviceHue:(float)hue saturation:(float)saturation brightness:(float)brightness alpha:(float)alpha {
++(NSColor *)colorWithDeviceHue:(CGFloat)hue saturation:(CGFloat)saturation brightness:(CGFloat)brightness alpha:(CGFloat)alpha {
    return [NSColor_rgbDevice colorWithHue:hue saturation:saturation brightness:brightness alpha:alpha];
 }
 
-+(NSColor *)colorWithDeviceCyan:(float)cyan magenta:(float)magenta yellow:(float)yellow black:(float)black alpha:(float)alpha {
++(NSColor *)colorWithDeviceCyan:(CGFloat)cyan magenta:(CGFloat)magenta yellow:(CGFloat)yellow black:(CGFloat)black alpha:(CGFloat)alpha {
    return [NSColor_cmykDevice colorWithCyan:cyan magenta:magenta yellow:yellow black:black alpha:alpha];
 }
 
-+(NSColor *)colorWithCalibratedWhite:(float)white alpha:(float)alpha {
++(NSColor *)colorWithCalibratedWhite:(CGFloat)white alpha:(CGFloat)alpha {
    return [NSColor_whiteCalibrated colorWithGray:white alpha:alpha];
 }
 
-+(NSColor *)colorWithCalibratedRed:(float)red green:(float)green blue:(float)blue alpha:(float)alpha {
++(NSColor *)colorWithCalibratedRed:(CGFloat)red green:(CGFloat)green blue:(CGFloat)blue alpha:(CGFloat)alpha {
    return [NSColor_rgbCalibrated colorWithRed:red green:green blue:blue alpha:alpha];
 }
 
-+(NSColor *)colorWithCalibratedHue:(float)hue saturation:(float)saturation brightness:(float)brightness alpha:(float)alpha {
++(NSColor *)colorWithCalibratedHue:(CGFloat)hue saturation:(CGFloat)saturation brightness:(CGFloat)brightness alpha:(CGFloat)alpha {
    return [NSColor_rgbCalibrated colorWithHue:hue saturation:saturation brightness:brightness alpha:alpha];
 }
 
@@ -506,14 +506,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     NSInvalidAbstractInvocation();
 }
 
--(float)whiteComponent {
+-(CGFloat)whiteComponent {
     float white;
 
     [self getWhite:&white alpha:NULL];
     return white;
 }
 
--(float)redComponent {
+-(CGFloat)redComponent {
    float red;
 
    [self getRed:&red green:NULL blue:NULL alpha:NULL];
@@ -521,7 +521,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return red;
 }
 
--(float)greenComponent {
+-(CGFloat)greenComponent {
    float green;
 
    [self getRed:NULL green:&green blue:NULL alpha:NULL];
@@ -529,7 +529,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return green;
 }
 
--(float)blueComponent {
+-(CGFloat)blueComponent {
    float blue;
 
    [self getRed:NULL green:NULL blue:&blue alpha:NULL];
@@ -537,7 +537,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return blue;
 }
 
--(float)hueComponent {
+-(CGFloat)hueComponent {
    float hue;
 
    [self getHue:&hue saturation:NULL brightness:NULL alpha:NULL];
@@ -545,7 +545,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return hue;
 }
 
--(float)saturationComponent {
+-(CGFloat)saturationComponent {
    float saturation;
 
    [self getHue:NULL saturation:&saturation brightness:NULL alpha:NULL];
@@ -553,7 +553,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return saturation;
 }
 
--(float)brightnessComponent {
+-(CGFloat)brightnessComponent {
    float brightness;
 
    [self getHue:NULL saturation:NULL brightness:&brightness alpha:NULL];
@@ -561,40 +561,41 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return brightness;
 }
 
--(float)cyanComponent {
+-(CGFloat)cyanComponent {
     float cyan;
 
     [self getCyan:&cyan magenta:NULL yellow:NULL black:NULL alpha:NULL];
     return cyan;
 }
 
--(float)magentaComponent {
+-(CGFloat)magentaComponent {
     float magenta;
 
     [self getCyan:NULL magenta:&magenta yellow:NULL black:NULL alpha:NULL];
     return magenta;
 }
 
--(float)yellowComponent {
+-(CGFloat)yellowComponent {
     float yellow;
 
     [self getCyan:NULL magenta:NULL yellow:&yellow black:NULL alpha:NULL];
     return yellow;
 }
 
--(float)blackComponent {
+-(CGFloat)blackComponent {
     float black;
 
     [self getCyan:NULL magenta:NULL yellow:NULL black:&black alpha:NULL];
     return black;
 }
 
--(float)alphaComponent {
+-(CGFloat)alphaComponent {
     return 1.0;
 }
 
--(NSColor *)colorWithAlphaComponent:(float)alpha {
-   if (alpha >= 1.0) return self; 
+-(NSColor *)colorWithAlphaComponent:(CGFloat)alpha {
+   if (alpha >= 1.0)
+    return self; 
    return nil; 
 }
 
@@ -610,7 +611,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return self;
 }
 
--(NSColor *)blendedColorWithFraction:(float)fraction ofColor:(NSColor *)color {
+-(NSColor *)blendedColorWithFraction:(CGFloat)fraction ofColor:(NSColor *)color {
    NSColor *primary=[color colorUsingColorSpaceName:NSCalibratedRGBColorSpace];
    NSColor *secondary=[self colorUsingColorSpaceName:NSCalibratedRGBColorSpace];
 

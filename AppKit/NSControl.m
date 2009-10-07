@@ -354,6 +354,10 @@ static NSMutableDictionary *cellClassDictionary = nil;
    NSUnimplementedMethod();
 }
 
+-(void)setNeedsDisplay {
+   [self setNeedsDisplay:YES];
+}
+
 -(BOOL)acceptsFirstResponder {
    return ![self refusesFirstResponder];
 }

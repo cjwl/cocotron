@@ -6,17 +6,15 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
-// Original - David Young <daver@geeks.org>
 #import <AppKit/AppKit.h>
 
 #import <AppKit/NSColorPickerSliders.h>
 
 @implementation NSColorPickerSliders
 
-- (id)initWithPickerMask:(int)mask colorPanel:(NSColorPanel *)colorPanel
-{
+-initWithPickerMask:(int)mask colorPanel:(NSColorPanel *)colorPanel {
     [super initWithPickerMask:mask colorPanel:colorPanel];
-    {
+
     NSSize size=[_grayscaleConstantsMatrix cellSize];
     int i;
 
@@ -34,7 +32,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
      [[_grayscaleConstantsMatrix cellAtRow:0 column:i] setImage:image];
     }
-    }
 
     [self matrixClicked:matrix];
 
@@ -44,7 +41,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 - (void)matrixClicked:(id)sender
 {
     NSView *newView = nil;
-    NSColor *color = [[NSColorPanel sharedColorPanel] color];
+    NSColor *color = [[self colorPanel] color];
 
     switch ([[sender selectedCell] tag]) {
         case NSGrayModeColorPanel: {
@@ -127,7 +124,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         currentView = [newView retain];
     }
 
-    [[NSColorPanel sharedColorPanel] setColor:color];
+    [[self colorPanel] setColor:color];
 }
 
 // doesn't matter who sends these actions, the sliders or the textfields.
@@ -139,7 +136,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     [greyscaleTextField setIntValue:intValue];
     [greyscaleSlider setIntValue:intValue];
 
-    [[NSColorPanel sharedColorPanel] setColor:[NSColor colorWithCalibratedWhite:intValue/100.0 alpha:1.0]];
+    [[self colorPanel] setColor:[NSColor colorWithCalibratedWhite:intValue/100.0 alpha:[[self colorPanel] alpha]]];
 }
 
 -(void)grayscaleConstant:sender {
@@ -150,7 +147,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     [greyscaleTextField setIntValue:value*100];
     [greyscaleSlider setIntValue:value*100];
     
-    [[NSColorPanel sharedColorPanel] setColor:color];
+    [[self colorPanel] setColor:color];
 }
 
 - (NSImage *)provideNewButtonImage
@@ -168,10 +165,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [[rgbTextFieldMatrix cellAtRow:1 column:0] setIntValue:[green intValue]];
    [[rgbTextFieldMatrix cellAtRow:2 column:0] setIntValue:[blue intValue]];
 
-   [[NSColorPanel sharedColorPanel] setColor:[NSColor colorWithCalibratedRed:[red floatValue]/255.0
+   [[self colorPanel] setColor:[NSColor colorWithCalibratedRed:[red floatValue]/255.0
                                                                        green:[green floatValue]/255.0
                                                                         blue:[blue floatValue]/255.0
-                                                                       alpha:1.0]];
+                                                                       alpha:[[self colorPanel] alpha]]];
 }
 
 -(void)rgbSliderChanged:sender {
@@ -193,11 +190,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     [_yellowSlider setIntValue:[yellow intValue]];
     [_blackSlider setIntValue:[black intValue]];
 
-    [[NSColorPanel sharedColorPanel] setColor:[NSColor colorWithDeviceCyan:[cyan floatValue]/100.0
+    [[self colorPanel] setColor:[NSColor colorWithDeviceCyan:[cyan floatValue]/100.0
                                                                    magenta:[magenta floatValue]/100.0
                                                                     yellow:[yellow floatValue]/100.0
                                                                      black:[black floatValue]/100.0
-                                                                     alpha:1.0]];
+                                                                     alpha:[[self colorPanel] alpha]]];
 }
 
 -(void)cmykSliderChanged:sender {
@@ -217,10 +214,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     [_saturationSlider setIntValue:[saturation intValue]];
     [_brightnessSlider setIntValue:[brightness intValue]];
 
-    [[NSColorPanel sharedColorPanel] setColor:[NSColor colorWithCalibratedHue:[hue floatValue]/359.0
+    [[self colorPanel] setColor:[NSColor colorWithCalibratedHue:[hue floatValue]/359.0
                                                                    saturation:[saturation floatValue]/100.0
                                                                    brightness:[brightness floatValue]/100.0
-                                                                        alpha:1.0]];
+                                                                        alpha:[[self colorPanel] alpha]]];
 }
 
 -(void)hsbSliderChanged:sender {

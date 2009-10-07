@@ -231,7 +231,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    double percent=(value-_minValue)/(_maxValue-_minValue);
    NSRect sliderRect=[self _sliderRect];
    NSRect knobRect;
-   NSSize knobSize=[[_controlView graphicsStyle] sliderKnobSize];
+   NSSize knobSize=[[_controlView graphicsStyle] sliderKnobSizeForControlSize:[self controlSize]];
    
    if ([self isVertical]) {
     knobRect.size.height=knobSize.width;

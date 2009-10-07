@@ -176,11 +176,18 @@ static void pfdFromPixelFormat(PIXELFORMATDESCRIPTOR *pfd,NSOpenGLPixelFormat *p
    return [_view window];
 }
 
--(void)adjustEventLocation:(NSPoint *)location {
+-(void)adjustEventLocation:(NSPoint *)location {   
+   NSWindow    *window=[_view window];
+   Win32Window *parent=(Win32Window *)[window platformWindow];
+
    if(![_view isFlipped])
     location->y=([_view frame].size.height-1)-location->y;
-    
-   *location=[_view convertPoint:*location toView:nil];
+
+   RECT myRect,parentRect;
+   GetWindowRect(_windowHandle,&myRect);
+   GetWindowRect([parent windowHandle],&parentRect);
+   location->x+=(myRect.left-parentRect.left);
+   location->y+=(parentRect.bottom-myRect.bottom);
 }
 
 -(HDC)dc {

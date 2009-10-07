@@ -75,14 +75,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 +(NSColor *)whiteColor;
 +(NSColor *)yellowColor;
 
-+(NSColor *)colorWithDeviceWhite:(float)white alpha:(float)alpha;
-+(NSColor *)colorWithDeviceRed:(float)red green:(float)green blue:(float)blue alpha:(float)alpha;
-+(NSColor *)colorWithDeviceHue:(float)hue saturation:(float)saturation brightness:(float)brightness alpha:(float)alpha;
-+(NSColor *)colorWithDeviceCyan:(float)cyan magenta:(float)magenta yellow:(float)yellow black:(float)black alpha:(float)alpha;
++(NSColor *)colorWithDeviceWhite:(CGFloat)white alpha:(CGFloat)alpha;
++(NSColor *)colorWithDeviceRed:(CGFloat)red green:(CGFloat)green blue:(CGFloat)blue alpha:(CGFloat)alpha;
++(NSColor *)colorWithDeviceHue:(CGFloat)hue saturation:(CGFloat)saturation brightness:(CGFloat)brightness alpha:(CGFloat)alpha;
++(NSColor *)colorWithDeviceCyan:(CGFloat)cyan magenta:(CGFloat)magenta yellow:(CGFloat)yellow black:(CGFloat)black alpha:(CGFloat)alpha;
 
-+(NSColor *)colorWithCalibratedWhite:(float)white alpha:(float)alpha;
-+(NSColor *)colorWithCalibratedRed:(float)red green:(float)green blue:(float)blue alpha:(float)alpha;
-+(NSColor *)colorWithCalibratedHue:(float)hue saturation:(float)saturation brightness:(float)brightness alpha:(float)alpha;
++(NSColor *)colorWithCalibratedWhite:(CGFloat)white alpha:(CGFloat)alpha;
++(NSColor *)colorWithCalibratedRed:(CGFloat)red green:(CGFloat)green blue:(CGFloat)blue alpha:(CGFloat)alpha;
++(NSColor *)colorWithCalibratedHue:(CGFloat)hue saturation:(CGFloat)saturation brightness:(CGFloat)brightness alpha:(CGFloat)alpha;
 
 +(NSColor *)colorWithCatalogName:(NSString *)catalogName colorName:(NSString *)colorName;
 
@@ -100,29 +100,29 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)getHue:(float *)hue saturation:(float *)saturation brightness:(float *)brightness alpha:(float *)alpha;
 -(void)getCyan:(float *)cyan magenta:(float *)magenta yellow:(float *)yellow black:(float *)black alpha:(float *)alpha;
 
--(float)whiteComponent;
+-(CGFloat)whiteComponent;
 
--(float)redComponent;
--(float)greenComponent;
--(float)blueComponent;
+-(CGFloat)redComponent;
+-(CGFloat)greenComponent;
+-(CGFloat)blueComponent;
 
--(float)hueComponent;
--(float)saturationComponent;
--(float)brightnessComponent;
+-(CGFloat)hueComponent;
+-(CGFloat)saturationComponent;
+-(CGFloat)brightnessComponent;
 
--(float)cyanComponent;
--(float)magentaComponent;
--(float)yellowComponent;
--(float)blackComponent;
+-(CGFloat)cyanComponent;
+-(CGFloat)magentaComponent;
+-(CGFloat)yellowComponent;
+-(CGFloat)blackComponent;
 
--(float)alphaComponent;
+-(CGFloat)alphaComponent;
 
--(NSColor *)colorWithAlphaComponent:(float)alpha;
+-(NSColor *)colorWithAlphaComponent:(CGFloat)alpha;
 
 -(NSColor *)colorUsingColorSpaceName:(NSString *)colorSpace;
 -(NSColor *)colorUsingColorSpaceName:(NSString *)colorSpace device:(NSDictionary *)device;
 
--(NSColor *)blendedColorWithFraction:(float)fraction ofColor:(NSColor *)color;
+-(NSColor *)blendedColorWithFraction:(CGFloat)fraction ofColor:(NSColor *)color;
 
 -(void)set;
 -(void)setStroke;

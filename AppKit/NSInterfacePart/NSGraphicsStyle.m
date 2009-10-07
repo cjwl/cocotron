@@ -302,8 +302,20 @@ pointSize:10 color:color] autorelease];
    [self drawScrollerTrackInRect:rect vertical:vertical upOrLeft:NO];
 }
 
--(NSSize)sliderKnobSize {
-   return NSMakeSize(12,19); // this is Windows specific, uxtheme part size request was failing, hardcoded, sigh
+-(NSSize)sliderKnobSizeForControlSize:(NSControlSize)controlSize {
+
+   switch(controlSize){
+    default:
+    case NSRegularControlSize: // aqua is 17x19
+      return NSMakeSize(12,15); // this is Windows specific, uxtheme part size request was failing, hardcoded, sigh
+     
+    case NSSmallControlSize: // aqua is 13x15
+      return NSMakeSize(9,13);
+     
+    case NSMiniControlSize: // aqua is 11x11
+      return NSMakeSize(11,11);
+   }
+   
 }
 
 -(void)drawSliderKnobInRect:(NSRect)rect vertical:(BOOL)vertical highlighted:(BOOL)highlighted hasTickMarks:(BOOL)hasTickMarks tickMarkPosition:(NSTickMarkPosition)tickMarkPosition {

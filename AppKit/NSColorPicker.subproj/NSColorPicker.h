@@ -1,4 +1,4 @@
-/* Copyright (c) 2006-2007 Christopher J. W. Lloyd
+/* Copyright (c) 2006-2007 Christopher J. W. Lloyd <cjwl@objc.net>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
@@ -6,15 +6,15 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
-#import <Foundation/Foundation.h>
+#import <AppKit/NSColorPanel.h>
 
-@class NSColorPanel, NSImage, NSButtonCell, NSColorList, NSView, NSColor;
+@class NSImage, NSButtonCell;
 
 @protocol NSColorPickingDefault
 
--initWithPickerMask:(int)mask colorPanel:(NSColorPanel *)colorPanel;
+-initWithPickerMask:(NSUInteger)mask colorPanel:(NSColorPanel *)colorPanel;
 
--(void)setMode:(int)mode;
+-(void)setMode:(NSColorPanelMode)mode;
 -(void)attachColorList:(NSColorList *)colorList;
 -(void)detachColorList:(NSColorList *)colorList;
 
@@ -26,12 +26,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)viewSizeChanged:sender;
 
+-(NSSize)minContentSize;
+-(NSString *)buttonToolTip;
+
+
 @end
 
 @protocol NSColorPickingCustom
 
--(int)currentMode;
--(BOOL)supportsMode:(int)mode;
+-(NSColorPanelMode)currentMode;
+-(BOOL)supportsMode:(NSColorPanelMode)mode;
 
 -(void)setColor:(NSColor *)color;
 
@@ -39,7 +43,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @end
 
-@interface NSColorPicker : NSObject <NSColorPickingDefault, NSColorPickingCustom> {
+@interface NSColorPicker : NSObject <NSColorPickingDefault> {
    int           _mask;
    NSColorPanel *_colorPanel;
    NSView       *_subview;

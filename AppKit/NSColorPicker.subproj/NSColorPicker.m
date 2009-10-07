@@ -15,7 +15,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @implementation NSColorPicker
 
-- initWithPickerMask:(int)mask colorPanel:(NSColorPanel *)colorPanel
+- initWithPickerMask:(NSUInteger)mask colorPanel:(NSColorPanel *)colorPanel
 {
     if (![NSBundle loadNibNamed:[[self class] description] owner:self])
          NSLog(@"Couldn't load %@.nib", [[self class] description]);
@@ -46,49 +46,52 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 {
 }
 
--(void)detachColorList:(NSColorList *)colorList
-{
+-(void)detachColorList:(NSColorList *)colorList {
 }
 
-- (NSImage *)provideNewButtonImage
-{
+-(NSImage *)provideNewButtonImage {
     return [NSImage imageNamed:@"NSAlertPanelExclamation"];
 }
 
-- (void)insertNewButtonImage:(NSImage *)image in:(NSButtonCell *)buttonCell
-{
+-(void)insertNewButtonImage:(NSImage *)image in:(NSButtonCell *)buttonCell {
     [buttonCell setImage:image];
 }
 
-- (void)alphaControlAddedOrRemoved:sender
-{
+-(void)alphaControlAddedOrRemoved:sender {
 }
 
-- (void)viewSizeChanged:sender
-{
+- (void)viewSizeChanged:sender {
     NSInvalidAbstractInvocation();
 }
 
-- (int)currentMode
-{
+- (int)currentMode {
     return [_colorPanel mode];
 }
 
-- (BOOL)supportsMode:(int)mode
-{
+- (BOOL)supportsMode:(int)mode {
     return NO;
 }
 
-- (void)setColor:(NSColor *)color
-{
+- (void)setColor:(NSColor *)color {
     NSInvalidAbstractInvocation();
 }
 
-- (NSView *)provideNewView:(BOOL)firstTime
-{
+- (NSView *)provideNewView:(BOOL)firstTime {
     return _subview;
 }
 
-- (NSColorPanel *)colorPanel { return _colorPanel; }
+-(NSSize)minContentSize {
+    NSInvalidAbstractInvocation();
+    return NSMakeSize(0,0);
+}
+
+-(NSString *)buttonToolTip {
+    NSInvalidAbstractInvocation();
+    return nil;
+}
+
+- (NSColorPanel *)colorPanel { 
+   return _colorPanel;
+}
 
 @end
