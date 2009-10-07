@@ -60,8 +60,13 @@ NSString *_NSColorWellDidBecomeExclusiveNotification=@"_NSColorWellDidBecomeExcl
    return self;
 }
 
--(id)initWithFrame:(NSRect)frame {
+-initWithFrame:(NSRect)frame {
     [super initWithFrame:frame];
+    _isEnabled=YES;
+    _isContinuous=YES;
+    _isBordered=YES;
+    _color=[[NSColor whiteColor] copy];
+    
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(colorPanelWillClose:)
                                                      name:NSWindowWillCloseNotification

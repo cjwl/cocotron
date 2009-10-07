@@ -96,6 +96,7 @@ APPKIT_EXPORT NSString *NSControlTextDidEndEditingNotification;
 
 -(void)calcSize;
 -(void)sizeToFit;
+-(void)setNeedsDisplay;
 
 @end
 
