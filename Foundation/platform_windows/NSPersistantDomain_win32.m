@@ -1,4 +1,4 @@
-/* Copyright (c) 2006-2007 Christopher J. W. Lloyd
+/* Copyright (c) 2006-2007 Christopher J. W. Lloyd <cjwl@objc.net>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
@@ -10,8 +10,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSArray.h>
 #import <Foundation/NSDictionary.h>
 #import <Foundation/NSData.h>
-#import <Foundation/NSPropertyListReader.h>
-#import <Foundation/NSPropertyListWriter_vintage.h>
+#import <Foundation/NSPropertyList.h>
 #import <Foundation/NSException.h>
 
 #import <windows.h>
@@ -26,8 +25,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    LONG  error;
 
    for(i=0;i<count;i++){
-    error=RegCreateKeyEx(previous,[[_path objectAtIndex:i] cString],0,"",
-         REG_OPTION_NON_VOLATILE,KEY_ALL_ACCESS,NULL,&current,&disposition);
+    error=RegCreateKeyEx(previous,[[_path objectAtIndex:i] cString],0,"",REG_OPTION_NON_VOLATILE,KEY_ALL_ACCESS,NULL,&current,&disposition);
 
     if(error!=ERROR_SUCCESS)
      NSLog(@"RegCreateKeyEx failed %@",_path);
@@ -42,8 +40,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -initWithName:(NSString *)name {
-   _path=[[NSArray arrayWithObjects:
-     @"Software",@"Cocotron",name,nil] retain];
+   _path=[[NSArray arrayWithObjects:@"Software",@"Cocotron",name,nil] retain];
    _handle=[self rootHandle];
    _cache=[NSMutableDictionary new];
    return self;
@@ -89,23 +86,34 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    id result=[_cache objectForKey:key];
 
    if(result==nil){
+    const char *keyCString=[key cString];
     LONG      error;
     DWORD     type;
-    char      buffer[8192];
-    DWORD     length=8192;
+    void     *buffer=NULL;
+    DWORD     length=0;
 
 //NSLog(@"-[%@ %s] %@ %@",isa,sel_getName(_cmd),_path,key);
 
-    error=RegQueryValueEx(_handle,[key cString],NULL,&type,(void *)buffer,&length);
+    error=RegQueryValueExA(_handle,keyCString,NULL,&type,NULL,&length);
     if(error!=ERROR_SUCCESS){
      //NSLog(@"RegQueryValueEx failed %@ %@",_path,key);
+     return nil;
     }
 
-    if(error!=ERROR_SUCCESS)
+    buffer=NSZoneMalloc(NULL,length);
+     
+    error=RegQueryValueExA(_handle,keyCString,NULL,&type,buffer,&length);
+    if(error!=ERROR_SUCCESS){
      return nil;
+    }
 
+    NSData *data=[NSData dataWithBytesNoCopy:buffer length:length freeWhenDone:YES];
+    
     NS_DURING
-     result=[[NSString stringWithCString:buffer] propertyList];
+     NSPropertyListFormat format;
+     NSString *errorDescription=nil;
+     
+     result=[NSPropertyListSerialization propertyListFromData:data mutabilityOption:NSPropertyListImmutable format:&format errorDescription:&errorDescription];
     NS_HANDLER
      result=nil;
     NS_ENDHANDLER
@@ -118,11 +126,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)setObject:object forKey:(NSString *)key {
    LONG      error;
-   NSData   *data=[NSPropertyListWriter_vintage dataWithPropertyList:object];
+   NSString *errorDescription=nil;
+   NSData   *data=[NSPropertyListSerialization dataFromPropertyList:object format:NSPropertyListXMLFormat_v1_0 errorDescription:&errorDescription];
    
    [_cache removeObjectForKey:key];
 
-   error=RegSetValueEx(_handle,[key cString],0,REG_SZ,[data bytes],[data length]);
+   error=RegSetValueExA(_handle,[key cString],0,REG_SZ,[data bytes],[data length]);
    if(error!=ERROR_SUCCESS){
     NSLog(@"RegSetValueEx failed %@ %@",_path,key);
    }
@@ -133,7 +142,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
    [_cache removeObjectForKey:key];
 
-   error=RegDeleteValue(_handle,[key cString]);
+   error=RegDeleteValueA(_handle,[key cString]);
    if(error!=ERROR_SUCCESS){
     NSLog(@"RegDeleteValue failed %@ %@",_path,key);
    }

@@ -1,4 +1,4 @@
-/* Copyright (c) 2006-2007 Christopher J. W. Lloyd
+/* Copyright (c) 2006-2007 Christopher J. W. Lloyd <cjwl@objc.net>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
@@ -117,28 +117,6 @@ static inline void appendCharacter(NSPropertyListReader_vintage *self,uint8_t c)
    self->_buffer[self->_bufferSize++]=c;
 }
 
--(id)convertValue:(id)value
-{
-   if(![value isKindOfClass:_stringClass])
-      return value;
-   
-   id scanner=[NSScanner scannerWithString:value];
-   double d;
-   long long l;
-   
-   if([scanner scanLongLong:&l] && [scanner isAtEnd])
-   {
-      return [NSNumber numberWithLongLong:l];
-   }
-   [scanner setScanLocation:0];
-   if([scanner scanDouble:&d] && [scanner isAtEnd])
-   {
-      return [NSNumber numberWithDouble:d];
-   }
-   return value;
-   
-}
-
 -(NSObject *)propertyListWithInfo:(NSString *)info {
    enum {
     STATE_WHITESPACE,
@@ -223,7 +201,7 @@ static inline void appendCharacter(NSPropertyListReader_vintage *self,uint8_t c)
         [object release];
         return [self internalError:_dictionaryClass];
        }
-       [dictionary setObject:[self convertValue:object] forKey:key];
+       [dictionary setObject:object forKey:key];
        [key release];
        [object release];
        expect=EXPECT_KEY;
@@ -259,7 +237,7 @@ static inline void appendCharacter(NSPropertyListReader_vintage *self,uint8_t c)
         return [self internalError:_arrayClass];
        }
 
-       [array addObject:[self convertValue:object]];
+       [array addObject:object];
        [object release];
        expect=EXPECT_VAL;
       }
@@ -282,7 +260,7 @@ static inline void appendCharacter(NSPropertyListReader_vintage *self,uint8_t c)
        }
 
        if(object!=nil){
-        [array addObject:[self convertValue:object]];
+        [array addObject:object];
         [object release];
        }
 
@@ -443,7 +421,7 @@ static inline void appendCharacter(NSPropertyListReader_vintage *self,uint8_t c)
    if(state==STATE_NAME && _stackSize==0){
     NSString *result=[NSString stringWithCharacters:_buffer length:_bufferSize];
 
-      return [self convertValue:result];
+      return result;
    }
 
    if(state!=STATE_WHITESPACE)
@@ -464,7 +442,7 @@ static inline void appendCharacter(NSPropertyListReader_vintage *self,uint8_t c)
    }
 
    // FIX, make sure _stackSize is 1?
-   return [self convertValue:[popObject(self) autorelease]];
+   return [popObject(self) autorelease];
 }
 
 +(NSObject *)propertyListFromData:(NSData *)data {
