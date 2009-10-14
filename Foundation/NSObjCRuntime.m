@@ -12,50 +12,91 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/NSStringFormatter.h>
 #import <Foundation/NSString_cString.h>
+#import <Foundation/NSStringUTF8.h>
 #import <Foundation/NSRaise.h>
 #import <Foundation/NSPlatform.h>
 
 #import <objc/runtime.h>
 #import <Foundation/objc_size_alignment.h>
 #import <objc/objc.h>
-#include <ctype.h>
+#import <ctype.h>
+#import <assert.h>
 
-static void NSLogFormat(NSString *format,...){
+typedef void (*NSLogCStringFunc)(const char *string, unsigned length, BOOL withSyslogBanner);
+
+// These are private-yet-sort-of-documented in Cocoa.
+FOUNDATION_EXPORT NSLogCStringFunc _NSLogCStringFunction(void);
+FOUNDATION_EXPORT void _NSSetLogCStringFunction(NSLogCStringFunc proc);
+
+static void NSLogDefaultCStringFunction(const char *string, unsigned length, BOOL withSyslogBanner);
+
+static NSLogCStringFunc sNSLogCString = NSLogDefaultCStringFunction;
+
+
+static void NSLogFormat(NSString *format,...) {
    NSString *string;
    va_list   arguments;
 
    va_start(arguments,format);
-
    string=NSStringNewWithFormat(format,nil,arguments,NULL);
+   va_end(arguments);
 
    NSPlatformLogString(string);
 
    [string release];
 }
 
-static inline void NSLogMessageString(NSString *string){
-   NSString *date=[[NSDate date]
-       descriptionWithCalendarFormat:@"%Y-%m-%d %H:%M:%S.%F"
-                            timeZone:nil locale:nil];
-   NSString *process=[[NSProcessInfo processInfo] processName];
-
-   NSLogFormat(@"%@ %@[%d:%lx] %@",date,process,NSPlatformProcessID(),NSPlatformThreadID(),string);
+static void NSLogDefaultCStringFunction(const char *string, unsigned length, BOOL withSyslogBanner) {
+   NSString *message = [[NSString alloc] initWithBytes:string length:length encoding:NSUTF8StringEncoding];
+   if (withSyslogBanner)
+   {
+      NSString *date=[[NSDate date]
+                      descriptionWithCalendarFormat:@"%Y-%m-%d %H:%M:%S.%F"
+                      timeZone:nil locale:nil];
+      NSString *process=[[NSProcessInfo processInfo] processName];
+      
+      NSLogFormat(@"%@ %@[%d:%lx] %@",date,process,NSPlatformProcessID(),NSPlatformThreadID(),message);
+   }
+   else
+   {
+      NSPlatformLogString(message);
+   }
+   [message release];
 }
 
 void NSLogv(NSString *format,va_list arguments) {
    NSString *string=NSStringNewWithFormat(format,nil,arguments,NULL);
-
-   NSLogMessageString(string);
-
+   
+   NSUInteger length=[string length],byteLength;
+   unichar  unicode[length];
+   char    *bytes;
+   
+   [string getCharacters:unicode];
+   bytes=NSUnicodeToUTF8(unicode,length,NO,&byteLength,NULL,YES);
    [string release];
+   if (bytes == NULL) return;
+   
+   assert(sNSLogCString != NULL);
+   sNSLogCString(bytes,byteLength,YES);
+   NSZoneFree(NULL,bytes);
 }
 
 void NSLog(NSString *format,...) {
    va_list arguments;
 
    va_start(arguments,format);
-
    NSLogv(format,arguments);
+   va_end(arguments);
+}
+
+NSLogCStringFunc _NSLogCStringFunction(void)
+{
+   return sNSLogCString;
+}
+
+void _NSSetLogCStringFunction(NSLogCStringFunc proc)
+{
+   sNSLogCString=proc?proc:NSLogDefaultCStringFunction;
 }
 
 const char *NSGetSizeAndAlignment(const char *type,NSUInteger *size,NSUInteger *alignment) {
