@@ -7,13 +7,13 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 #import "NSRelationshipDescription.h"
 #import "NSEntityDescription.h"
-#import <AppKit/NSNibKeyedUnarchiver.h>
+#import <Foundation/NSKeyedUnarchiver.h>
 
 @implementation NSRelationshipDescription
 
 - (id) initWithCoder: (NSCoder *) coder {
-   if([coder isKindOfClass: [NSNibKeyedUnarchiver class]]) {
-       NSNibKeyedUnarchiver *keyed = (NSNibKeyedUnarchiver *) coder;
+   if([coder isKindOfClass: [NSKeyedUnarchiver class]]) {
+       NSKeyedUnarchiver *keyed = (NSKeyedUnarchiver *) coder;
        _deleteRule = [keyed decodeIntForKey: @"NSDeleteRule"];
        _destinationEntity = [keyed decodeObjectForKey: @"NSDestinationEntity"];
        _entity = [keyed decodeObjectForKey: @"NSEntity"];

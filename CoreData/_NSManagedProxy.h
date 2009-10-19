@@ -8,7 +8,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 //  -*- mode: objc -*-
 
 #import <Cocoa/Cocoa.h>
-#import <AppKit/NSNibKeyedUnarchiver.h>
+#import <Foundation/NSKeyedUnarchiver.h>
 
 
 @interface _NSManagedProxy_observerInfo : NSObject {

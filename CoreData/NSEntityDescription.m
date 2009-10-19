@@ -13,7 +13,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "NSAttributeDescription.h"
 #import "NSRelationshipDescription.h"
 #import "NSManagedObject.h"
-#import <AppKit/NSNibKeyedUnarchiver.h>
+#import <Foundation/NSKeyedUnarchiver.h>
+#import <AppKit/NSRaise.h>
 #import <objc/objc-class.h>
 #import <ctype.h>
 #import <string.h>
@@ -24,8 +25,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @synthesize _selectorPropertyMap;
 
 - (id) initWithCoder: (NSCoder *) coder {
-   if([coder isKindOfClass: [NSNibKeyedUnarchiver class]]) {
-       NSNibKeyedUnarchiver *keyed = (NSNibKeyedUnarchiver *) coder;
+   if([coder isKindOfClass: [NSKeyedUnarchiver class]]) {
+       NSKeyedUnarchiver *keyed = (NSKeyedUnarchiver *) coder;
        _className = [[keyed decodeObjectForKey: @"NSClassNameForEntity"] retain];
        _name = [[keyed decodeObjectForKey: @"NSEntityName"] retain];
        _model = [keyed decodeObjectForKey: @"NSManagedObjectModel"];

@@ -6,7 +6,8 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 #import "NSManagedObjectModel.h"
-#import <AppKit/NSNibKeyedUnarchiver.h>
+#import <Foundation/NSKeyedUnarchiver.h>
+#import <AppKit/NSRaise.h>
 
 @implementation NSManagedObjectModel
 
@@ -19,8 +20,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     if(!data) return nil;
     NSDictionary *nameTable
 	= [NSDictionary dictionaryWithObject: self forKey: @"NSOwner"];
-    NSNibKeyedUnarchiver *unarchiver
-	= [[[NSNibKeyedUnarchiver alloc] initForReadingWithData: data
+    NSKeyedUnarchiver *unarchiver
+	= [[[NSKeyedUnarchiver alloc] initForReadingWithData: data
 					 externalNameTable: nameTable] autorelease];
     NSManagedObjectModel *result = [unarchiver decodeObjectForKey: @"root"];
     return result;
@@ -28,8 +29,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 
 - (id) initWithCoder: (NSCoder *) coder {
-   if([coder isKindOfClass: [NSNibKeyedUnarchiver class]]) {
-       NSNibKeyedUnarchiver *keyed = (NSNibKeyedUnarchiver *) coder;
+   if([coder isKindOfClass: [NSKeyedUnarchiver class]]) {
+       NSKeyedUnarchiver *keyed = (NSKeyedUnarchiver *) coder;
        _entities = [[keyed decodeObjectForKey: @"NSEntities"] retain];
        _fetchRequestTemplates
 	   = [[keyed decodeObjectForKey: @"NSFetchRequestTemplates"] retain];

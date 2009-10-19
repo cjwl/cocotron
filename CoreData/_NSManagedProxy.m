@@ -23,8 +23,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @implementation _NSManagedProxy
 - (id) initWithCoder: (NSCoder *) coder {
-   if([coder isKindOfClass: [NSNibKeyedUnarchiver class]]){
-       NSNibKeyedUnarchiver *keyed = (NSNibKeyedUnarchiver *) coder;
+   if([coder isKindOfClass: [NSKeyedUnarchiver class]]){
+       NSKeyedUnarchiver *keyed = (NSKeyedUnarchiver *) coder;
        _object = nil;
        _context = nil;
        _entity = nil;
