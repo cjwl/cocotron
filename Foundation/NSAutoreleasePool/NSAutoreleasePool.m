@@ -107,4 +107,10 @@ id NSAutorelease(id object){
 {
 	[self release];
 }
+
+-retain {
+   [NSException raise:NSInvalidArgumentException format:@"-[NSAutoreleasePool retain] not allowed"];
+   return nil;
+}
+
 @end
