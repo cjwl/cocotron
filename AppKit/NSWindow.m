@@ -1405,12 +1405,16 @@ NSString *NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification";
 }
 
 -(void)display {
-   NSAutoreleasePool *pool=[NSAutoreleasePool new];
-   [self disableFlushWindow];
-   [_backgroundView display];
-   [self enableFlushWindow];
-   [self flushWindowIfNeeded];
-   [pool release];
+/* FIXME: See Issue #405, display when the window is not visible causes layout problems (maybe the underlying Win32 window doesnt exist and we're not getting resize feedback messages?), so there is a problem. The fix is to not display when we aren't visible, displayIfNeeded does this already so it makes sense. The underlying problem should be fixed too though.
+ */
+   if([self isVisible]){
+    NSAutoreleasePool *pool=[NSAutoreleasePool new];
+    [self disableFlushWindow];
+    [_backgroundView display];
+    [self enableFlushWindow];
+    [self flushWindowIfNeeded];
+    [pool release];
+   }
 }
 
 -(void)invalidateShadow {
