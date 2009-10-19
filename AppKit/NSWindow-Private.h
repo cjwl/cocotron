@@ -31,6 +31,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)_setStyleMask:(unsigned)mask;
 -(void)_animateWithContext:(NSWindowAnimationContext *)context;
 -(NSWindowAnimationContext *)_animationContext;
+-(void)_hideMenuViewIfNeeded;
+-(void)_showMenuViewIfNeeded;
+
 -(void)undo:sender;
 -(void)redo:sender;
 -(BOOL)validateMenuItem:(NSMenuItem *)item;

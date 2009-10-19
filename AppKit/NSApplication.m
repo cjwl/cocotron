@@ -683,6 +683,7 @@ id NSApp=nil;
 
    [_modalStack addObject:session];
 
+   [window _hideMenuViewIfNeeded];
    [window center];
    [window makeKeyAndOrderFront:self];
 
@@ -711,6 +712,10 @@ id NSApp=nil;
 }
 
 -(void)endModalSession:(NSModalSession)session {
+   if(session!=[_modalStack lastObject])   
+    [NSException raise:NSInvalidArgumentException format:@"-[%@ %s] modal session %@ is not the current one %@",isa,sel_getName(_cmd),session,[_modalStack lastObject]];
+
+   [[session modalWindow] _showMenuViewIfNeeded];
    [_modalStack removeLastObject];
 }
 

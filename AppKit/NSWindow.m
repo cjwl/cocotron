@@ -2021,15 +2021,14 @@ NSString *NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification";
 }
 #endif
 
--(void)setMenu:(NSMenu *)menu {
-   if(_menuView!=nil){
-    NSSize  oldSize=[_menuView frame].size,newSize;
+-(void)_resizeWithOldMenuViewSize:(NSSize)oldSize {
     NSSize  backSize=[_backgroundView frame].size;
+    NSSize  newSize;
     NSRect  frame;
 
-    [_menuView setMenu:menu];
-
     newSize=[_menuView frame].size;
+    if([_menuView isHidden])
+     newSize.height=0;
    
     backSize.height+=(newSize.height-oldSize.height);
     [_backgroundView setAutoresizesSubviews:NO];
@@ -2042,6 +2041,29 @@ NSString *NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification";
     [self setFrame:frame display:NO];
     // do we even need this?
     [_backgroundView setNeedsDisplay:YES]; 
+}
+
+-(void)_hideMenuViewIfNeeded {
+   if(_menuView!=nil && ![_menuView isHidden]){
+    [_menuView setHidden:YES];
+    [self _resizeWithOldMenuViewSize:[_menuView frame].size];
+   }
+}
+
+-(void)_showMenuViewIfNeeded {
+   if(_menuView!=nil && [_menuView isHidden]){
+    [_menuView setHidden:NO];
+    [self _resizeWithOldMenuViewSize:NSMakeSize(0,0)];
+   }
+}
+
+-(void)setMenu:(NSMenu *)menu {
+   if(_menuView!=nil){
+    NSSize  oldSize=[_menuView frame].size;
+    
+    [_menuView setMenu:menu];
+    
+    [self _resizeWithOldMenuViewSize:oldSize];
    }
 
    _menu=[menu copy];
