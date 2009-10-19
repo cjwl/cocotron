@@ -91,10 +91,16 @@ static NSGraphicsContext *_currentContext() {
 }
 
 CGContextRef NSCurrentGraphicsPort() {
+   if(_currentContext()==nil)
+    return NULL;
+    
    return _currentContext()->_graphicsPort;
 }
 
 NSMutableArray *NSCurrentFocusStack() {
+   if(_currentContext()==nil)
+    return nil;
+
    return _currentContext()->_focusStack;
 }
 
