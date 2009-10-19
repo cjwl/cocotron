@@ -27,6 +27,7 @@ APPKIT_EXPORT NSString *NSOutlineViewSelectionIsChangingNotification;
     NSTableColumn *_outlineTableColumn;
     NSMapTable *_rowToItem;
     NSMapTable *_itemToRow;
+    NSMapTable *_itemToParent;
     NSMapTable *_itemToLevel;
     NSMapTable *_itemToExpansionState;
     NSMapTable *_itemToNumberOfChildren;
@@ -48,6 +49,7 @@ APPKIT_EXPORT NSString *NSOutlineViewSelectionIsChangingNotification;
 
 -itemAtRow:(int)row;
 -(int)rowForItem:item;
+-parentForItem:item;
 
 -(BOOL)isExpandable:item;
 -(int)levelForItem:item;

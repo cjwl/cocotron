@@ -106,6 +106,7 @@ static inline id childOfItemAtIndex(NSOutlineView *self,id item,int index){
 
     _rowToItem=NSCreateMapTable(NSIntegerMapKeyCallBacks, NSNonOwnedPointerMapValueCallBacks, 0);
     _itemToRow = NSCreateMapTable(NSNonOwnedPointerOrNullMapKeyCallBacks, NSIntegerMapValueCallBacks, 0);
+    _itemToParent=NSCreateMapTable(NSNonOwnedPointerOrNullMapKeyCallBacks, NSNonOwnedPointerMapValueCallBacks, 0);
     _itemToLevel = NSCreateMapTable(NSNonOwnedPointerOrNullMapKeyCallBacks, NSIntegerMapValueCallBacks, 0);
     _itemToExpansionState = NSCreateMapTable(NSNonOwnedPointerOrNullMapKeyCallBacks, NSIntegerMapValueCallBacks, 0);
     _itemToNumberOfChildren = NSCreateMapTable(NSNonOwnedPointerOrNullMapKeyCallBacks, NSIntegerMapValueCallBacks, 0);
@@ -134,6 +135,7 @@ static inline id childOfItemAtIndex(NSOutlineView *self,id item,int index){
    [super initWithFrame:frame];
     _rowToItem = NSCreateMapTable(NSIntegerMapKeyCallBacks, NSNonOwnedPointerMapValueCallBacks, 0);
     _itemToRow = NSCreateMapTable(NSNonOwnedPointerOrNullMapKeyCallBacks, NSIntegerMapValueCallBacks, 0);
+    _itemToParent=NSCreateMapTable(NSNonOwnedPointerOrNullMapKeyCallBacks, NSNonOwnedPointerMapValueCallBacks, 0);
     _itemToLevel = NSCreateMapTable(NSNonOwnedPointerOrNullMapKeyCallBacks, NSIntegerMapValueCallBacks, 0);
     _itemToExpansionState = NSCreateMapTable(NSNonOwnedPointerOrNullMapKeyCallBacks, NSIntegerMapValueCallBacks, 0);
     _itemToNumberOfChildren = NSCreateMapTable(NSNonOwnedPointerOrNullMapKeyCallBacks, NSIntegerMapValueCallBacks, 0);
@@ -156,6 +158,7 @@ static inline id childOfItemAtIndex(NSOutlineView *self,id item,int index){
 -(void)dealloc {
     NSFreeMapTable(_rowToItem);
     NSFreeMapTable(_itemToRow);
+    NSFreeMapTable(_itemToParent);
     NSFreeMapTable(_itemToLevel);
     NSFreeMapTable(_itemToExpansionState);
     NSFreeMapTable(_itemToNumberOfChildren);
@@ -177,6 +180,10 @@ static inline id childOfItemAtIndex(NSOutlineView *self,id item,int index){
 
 -(int)rowForItem:(id)item {
     return (int)NSMapGet(_itemToRow, item);
+}
+
+-parentForItem:item {
+    return NSMapGet(_itemToParent, item);
 }
 
 - (BOOL)isExpandable:(id)item
@@ -382,6 +389,7 @@ static inline id childOfItemAtIndex(NSOutlineView *self,id item,int index){
 -(void)_resetMapTables {
     NSResetMapTable(_rowToItem);
     NSResetMapTable(_itemToRow);
+    NSResetMapTable(_itemToParent);
     NSResetMapTable(_itemToLevel);
    // NSResetMapTable(_itemToExpansionState);
     NSResetMapTable(_itemToNumberOfChildren);
@@ -478,6 +486,7 @@ static void loadItemIntoMapTables(NSOutlineView *self,id item,unsigned *rowCount
 
         NSMapInsert(self->_rowToItem, (void *)(*rowCountPtr), child);
         NSMapInsert(self->_itemToRow, child, (void *)(*rowCountPtr));
+        NSMapInsert(self->_itemToParent, child, item);
         NSMapInsert(self->_itemToLevel, child, (void *)recursionLevel);
 
         (*rowCountPtr)++;
