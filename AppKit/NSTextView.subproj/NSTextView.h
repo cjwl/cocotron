@@ -79,7 +79,7 @@ APPKIT_EXPORT NSString *NSOldSelectedCharacterRange;
    BOOL             _rulerVisible;
    BOOL             _allowsUndo;
 
-   NSRange                _selectedRange;
+   NSMutableArray        *_selectedRanges;
    NSSelectionAffinity    _selectionAffinity;
    NSSelectionGranularity _selectionGranularity;
    NSDictionary          *_selectedTextAttributes;
@@ -119,6 +119,7 @@ APPKIT_EXPORT NSString *NSOldSelectedCharacterRange;
 -(NSColor *)insertionPointColor;
 -(NSDictionary *)typingAttributes;
 -(NSDictionary *)selectedTextAttributes;
+-(NSArray *)selectedRanges;
 
 -(void)setTextContainer:(NSTextContainer *)container;
 -(void)setTextContainerInset:(NSSize)size;
@@ -133,6 +134,9 @@ APPKIT_EXPORT NSString *NSOldSelectedCharacterRange;
 -(NSRange)selectionRangeForProposedRange:(NSRange)range granularity:(NSSelectionGranularity)granularity;
 
 -(void)setSelectedRange:(NSRange)range affinity:(NSSelectionAffinity)affinity stillSelecting:(BOOL)stillSelecting;
+-(void)setSelectedRanges:(NSArray *)ranges affinity:(NSSelectionAffinity)affinity stillSelecting:(BOOL)stillSelecting;
+
+-(void)setSelectedRanges:(NSArray *)value;
 
 -(NSRange)rangeForUserCompletion;
 -(NSArray *)completionsForPartialWordRange:(NSRange)range indexOfSelectedItem:(int *)index;
@@ -193,9 +197,9 @@ APPKIT_EXPORT NSString *NSOldSelectedCharacterRange;
 
 -(void)textViewDidChangeSelection:(NSNotification *)note;
 
-- (NSRange)                  textView: (NSTextView *) textView
-willChangeSelectionFromCharacterRange: (NSRange)      oldSelectedCharRange    
-                     toCharacterRange: (NSRange)      newSelectedCharRange;
+-(NSRange)textView:(NSTextView *)textView willChangeSelectionFromCharacterRange:(NSRange)oldSelectedCharRange toCharacterRange:(NSRange)newSelectedCharRange;
+-(NSArray *)textView:(NSTextView *)textView willChangeSelectionFromCharacterRanges:(NSArray *)oldSelectedCharRanges toCharacterRanges:(NSArray *)newSelectedCharRanges;
+
 
 - (BOOL)       textView: (NSTextView *) textView
 shouldChangeTextInRange: (NSRange)      affectedCharRange

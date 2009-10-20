@@ -57,8 +57,8 @@ NSString *NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
 - (BOOL) _delegateChangeTextInRange: (NSRange)    range
                   replacementString: (NSString *) string;
 
-- (NSRange) _delegateChangeSelectionFromRange: (NSRange) from
-                                      toRange: (NSRange) to;
+-(NSArray *)_delegateChangeSelectionFromRanges:(NSArray *)from toRanges:(NSArray *)to;
+
 @end
 
 @implementation NSTextView
@@ -120,7 +120,9 @@ NSString *NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
     _minSize=NSMakeSize(0,0);
     _isHorizontallyResizable=NO;
     _isVerticallyResizable=YES;
-    _selectedRange=NSMakeRange(0,0);
+    _selectedRanges=[[NSMutableArray alloc] init];
+    [_selectedRanges addObject:[NSValue valueWithRange:NSMakeRange(0,0)]];
+    
     _rangeForUserCompletion=NSMakeRange(NSNotFound, 0);
     _selectedTextAttributes=[[NSDictionary dictionaryWithObjectsAndKeys:
        [NSColor selectedTextColor],NSForegroundColorAttributeName,
@@ -161,7 +163,9 @@ NSString *NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
    _maxSize=[self bounds].size;
    _isHorizontallyResizable=NO;
    _isVerticallyResizable=YES;
-   _selectedRange=NSMakeRange(0,0);
+   _selectedRanges=[[NSMutableArray alloc] init];
+   [_selectedRanges addObject:[NSValue valueWithRange:NSMakeRange(0,0)]];
+    
    _rangeForUserCompletion=NSMakeRange(NSNotFound, 0);
    _selectedTextAttributes=[[NSDictionary dictionaryWithObjectsAndKeys:
       [NSColor selectedTextColor],NSForegroundColorAttributeName,
@@ -208,6 +212,7 @@ NSString *NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
    [_insertionPointColor release];
    [_insertionPointTimer invalidate];
    [_insertionPointTimer release];
+   [_selectedRanges release];
    [_selectedTextAttributes release];
    [_fieldEditorUndoManager release];
    [_undoString release];
@@ -272,6 +277,10 @@ NSString *NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
 
 -(NSDictionary *)selectedTextAttributes {
    return _selectedTextAttributes;
+}
+
+-(NSArray *)selectedRanges {
+   return _selectedRanges;
 }
 
 -(void)setTextContainer:(NSTextContainer *)container {
@@ -345,21 +354,34 @@ NSString *NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
 }
 
 -(void)setSelectedRange:(NSRange)range affinity:(NSSelectionAffinity)affinity stillSelecting:(BOOL)stillSelecting {
-    if (stillSelecting == NO && range.length == 0)
-        _selectionOrigin = range.location;
-
-   NSRange oldRange=_selectedRange;
+   NSArray *ranges=[NSArray arrayWithObject:[NSValue valueWithRange:range]];
    
-   _selectedRange = [self _delegateChangeSelectionFromRange: oldRange
-                                                    toRange: range];
+   [self setSelectedRanges:ranges affinity:affinity stillSelecting:stillSelecting];
+}
+
+-(void)setSelectedRanges:(NSArray *)ranges affinity:(NSSelectionAffinity)affinity stillSelecting:(BOOL)stillSelecting {
+    if([ranges count]==0)
+     [NSException raise:NSInvalidArgumentException format:@"-[%@ %s] ranges should not be empty",isa,_cmd];
+     
+    if (stillSelecting == NO && [[ranges objectAtIndex:0] rangeValue].length==0)
+        _selectionOrigin = [[ranges objectAtIndex:0] rangeValue].length;
+
+   NSArray *oldRanges=[[_selectedRanges copy] autorelease];
+   
+   [_selectedRanges setArray:[self _delegateChangeSelectionFromRanges:oldRanges toRanges:ranges]];
+   
    _selectionAffinity=affinity;
    _selectionGranularity=NSSelectByCharacter;
    _insertionPointOn=[self shouldDrawInsertionPoint];
    [self setNeedsDisplay:YES];
 
-   if((!stillSelecting) && (!NSEqualRanges(oldRange ,_selectedRange))){
-    [[NSNotificationCenter defaultCenter] postNotificationName: NSTextViewDidChangeSelectionNotification  object: self userInfo:[NSDictionary dictionaryWithObject: [NSValue valueWithRange: oldRange] forKey: NSOldSelectedCharacterRange]];
+   if((!stillSelecting) && ![oldRanges isEqual:[self selectedRanges]]){
+    [[NSNotificationCenter defaultCenter] postNotificationName: NSTextViewDidChangeSelectionNotification  object: self userInfo:[NSDictionary dictionaryWithObject: [oldRanges objectAtIndex:0] forKey: NSOldSelectedCharacterRange]];
    }
+}
+
+-(void)setSelectedRanges:(NSArray *)ranges {
+   [self setSelectedRanges:ranges affinity:_selectionAffinity stillSelecting:NO];
 }
 
 - (NSRange)rangeForUserCompletion {
@@ -449,7 +471,7 @@ NSString *NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
     if (_isEditable == NO)
         return NSMakeRange(NSNotFound, 0);
     
-   return _selectedRange;
+   return [self selectedRange];
 }
 
 -(NSRange)rangeForUserCharacterAttributeChange {
@@ -457,7 +479,7 @@ NSString *NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
         return NSMakeRange(NSNotFound, 0);
     
     if (_isRichText)
-        return _selectedRange;
+        return [self selectedRange];
     else
         return NSMakeRange(0, [[_textStorage string] length]); 
 }
@@ -467,7 +489,7 @@ NSString *NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
         return NSMakeRange(NSNotFound, 0);
         
     if (_isRichText)
-        return [[_textStorage string] lineRangeForRange:_selectedRange];
+        return [[_textStorage string] lineRangeForRange:[self selectedRange]];
     else
         return NSMakeRange(0, [[_textStorage string] length]); 
 }
@@ -1802,7 +1824,10 @@ NSString *NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
 }
 
 -(NSRange)selectedRange {
-   return _selectedRange;
+   if([_selectedRanges count]==0)
+    return NSMakeRange(0,0);
+    
+   return [[_selectedRanges objectAtIndex:0] rangeValue];
 }
 
 -(void)setDelegate:delegate {
@@ -2053,7 +2078,6 @@ NSString *NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
 
 -(void)setSelectedRange:(NSRange)range {
    [self setSelectedRange:range affinity:_selectionAffinity stillSelecting:NO];
-//   [self setSelectedRange:range affinity:NSSelectionAffinityUpstream stillSelecting:NO];
 }
 
 // This should be done in NSTextContainer with notifications
@@ -2400,7 +2424,8 @@ NSString *NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
    if(fraction>=0.5)
     location++;
 
-   _selectedRange=NSMakeRange(location,0);
+   [_selectedRanges removeAllObjects];
+   [_selectedRanges addObject:[NSValue valueWithRange:NSMakeRange(location,0)]];
    [self setNeedsDisplay:YES];
 
    if([sender draggingSourceOperationMask]&NSDragOperationGeneric)
@@ -2494,23 +2519,20 @@ NSString *NSOldSelectedCharacterRange=@"NSOldSelectedCharacterRange";
     return YES;
 }		
 
-- (NSRange) _delegateChangeSelectionFromRange: (NSRange) from
-                                      toRange: (NSRange) to
-{
-    NSRange newSelectedRange;
+-(NSArray *)_delegateChangeSelectionFromRanges:(NSArray *)from toRanges:(NSArray *)to {
+    NSArray *result=to;
 	
-    if ([_delegate respondsToSelector: @selector(textView:willChangeSelectionFromCharacterRange:toCharacterRange:)])
-    {
-        newSelectedRange = [_delegate textView: self
-         willChangeSelectionFromCharacterRange: from
-                              toCharacterRange: to];
+    if ([_delegate respondsToSelector:@selector(textView:willChangeSelectionFromCharacterRanges:toCharacterRanges:)])
+     result=[_delegate textView: self willChangeSelectionFromCharacterRanges:from toCharacterRanges:to];
+    else if([_delegate respondsToSelector:@selector(textView:willChangeSelectionFromCharacterRange:toCharacterRange:)]){
+     NSRange fromRange=[[from objectAtIndex:0] rangeValue];
+     NSRange toRange=[[to objectAtIndex:0] rangeValue];
+     NSRange resultRange=[_delegate textView: self willChangeSelectionFromCharacterRange:fromRange toCharacterRange:toRange];
+     
+     result=[NSArray arrayWithObject:[NSValue valueWithRange:resultRange]];
     }		
-    else
-    {
-        newSelectedRange = to;
-    }
 
-    return newSelectedRange;
+    return result;
 }
 
 @end
