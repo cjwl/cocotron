@@ -86,11 +86,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -initTextCell:(NSString *)string {
-
    _focusRingType=[isa defaultFocusRingType];
    _state=NSOffState;
    _font=[[NSFont userFontOfSize:0] retain];
-   _objectValue=[string copy];
+   _objectValue=[[NSNumber alloc] initWithBool:NO];
+   _titleOrAttributedTitle=[string copy];
    _image=nil;
    _cellType=NSTextCellType;
    _isEnabled=YES;
@@ -105,11 +105,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -initImageCell:(NSImage *)image {
-
    _focusRingType=[isa defaultFocusRingType];
    _state=NSOffState;
    _font=nil;
-   _objectValue=nil;
+   _objectValue=[[NSNumber alloc] initWithBool:NO];
    _image=[image retain];
    _cellType=NSImageCellType;
    _isEnabled=YES;

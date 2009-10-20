@@ -145,6 +145,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return self;
 }
 
+-init {
+   return [self initTextCell:@"Button"];
+}
+
 -(void)dealloc {
    [_alternateTitle release];
    [_alternateImage release];
@@ -589,8 +593,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 				break;
 		}
 	}
-
-	else if((_bezelStyle==NSRoundedBezelStyle) && (_highlightsBy&NSPushInCellMask) && (_highlightsBy&NSChangeGrayCellMask) && (_showsStateBy==NSNoCellMask) || [self isKindOfClass:[NSPopUpButtonCell class]]) 
+	else if((_bezelStyle==NSRoundedBezelStyle) && (_highlightsBy&NSPushInCellMask) && (_highlightsBy&NSChangeGrayCellMask) && (_showsStateBy==NSNoCellMask)) 
 	{
 		frame.size.width  = 10 - _controlSize*2;
 		frame.size.height = 10 - _controlSize*2;
