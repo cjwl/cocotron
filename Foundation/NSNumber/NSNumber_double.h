@@ -13,4 +13,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 @end
 
+@interface NSNumber_double_const : NSNumber_double
+@end
+
 NSNumber *NSNumber_doubleNew(NSZone *zone,double value);
+
+// Returns a constant value if one matches, otherwise nil.
+NSNumber *NSNumber_doubleSpecial(double value);

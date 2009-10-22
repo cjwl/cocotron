@@ -9,12 +9,42 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSNumber_double.h>
 #import <Foundation/NSStringFormatter.h>
 
+#if __APPLE__
+#import <Foundation/NSNumber_double_const.h>
+#else
+#import <Foundation/NSNumber_double_const_impl.h>
+#endif
+
+
+NSNumber *NSNumber_doubleSpecial(double value)
+{
+   switch (fpclassify(value))
+   {
+      case FP_INFINITE:
+         return signbit(value)?kNSNumberNegativeInfinity:kNSNumberPositiveInfinity;
+      case FP_NAN:
+         return kNSNumberNaN;
+      case FP_ZERO:
+         return signbit(value)?kNSNumberNegativeZero:kNSNumberPositiveZero;
+      default:
+         if(0) {}  // Without profiling, I'm assuming no one value is more likely than every other value put together, and the compiler will optimize for the first if() branch.
+         else if (value == 1.0) return kNSNumberPositiveOne;
+         else if (value == -1.0) return kNSNumberNegativeOne;
+         return nil;
+   }
+}
+
 @implementation NSNumber_double
 
 NSNumber *NSNumber_doubleNew(NSZone *zone,double value) {
-   NSNumber_double *self=NSAllocateObject([NSNumber_double class],0,zone);
-   self->_value=value;
-   return self;
+   NSNumber *result=NSNumber_doubleSpecial(value);
+   if (result==nil)
+   {
+      NSNumber_double *self=NSAllocateObject([NSNumber_double class],0,zone);
+      self->_value=value;
+      result=self;
+   }
+   return result;
 }
 
 -(void)getValue:(void *)value {
@@ -87,6 +117,39 @@ NSNumber *NSNumber_doubleNew(NSZone *zone,double value) {
 
 -(NSString *)descriptionWithLocale:(NSDictionary *)locale {
    return NSStringWithFormatAndLocale(@"%0.16g",locale,_value);
+}
+
+@end
+
+
+@implementation NSNumber_double_const
+
++ (id) allocWithZone:(NSZone *)zone {
+   [NSException raise:NSInternalInconsistencyException format:@"Private class NSNumber_double_const is not intended to be alloced."];
+   return nil;
+}
+
+-(void)dealloc {
+   return;
+   [super dealloc];  // Silence compiler warning
+}
+
+-(id)retain {
+   return self;
+}
+
+-(void)release {}
+
+-(id)autorelease {
+   return self;
+}
+
+-(NSUInteger)retainCount {
+   /* "For objects that never get released (that is, their release method
+      does nothing), this method should return UINT_MAX, as defined in
+      <limits.h>." -- NSObject Protocol Reference
+   */
+   return UINT_MAX;
 }
 
 @end

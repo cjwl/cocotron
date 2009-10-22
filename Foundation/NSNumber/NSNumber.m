@@ -335,7 +335,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 
 +(NSNumber *)numberWithBool:(BOOL)value {
-   return [[[self allocWithZone:NULL] initWithBool:value] autorelease];
+   return NSNumber_BOOLNew(NULL,value);
 }
 
 +(NSNumber *)numberWithChar:(char)value {

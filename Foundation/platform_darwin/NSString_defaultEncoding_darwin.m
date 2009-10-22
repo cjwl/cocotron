@@ -12,6 +12,7 @@
 #import <pwd.h>
 #import <string.h>
 #import <stdio.h>
+#import <unistd.h>
 
 NSStringEncoding defaultEnconding()
 {

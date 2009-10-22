@@ -201,7 +201,7 @@ static NSArray *stringListFromBytes(const unichar unicode[],NSInteger length){
        if(c=='\\')
         state=STATE_STRING_SLASH;
        else
-        strSize+=UnicodeToUTF8(c,&strBuf[strSize]);
+        strSize+=UnicodeToUTF8(c,(uint8_t *)&strBuf[strSize]);
       }
       break;
 

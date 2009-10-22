@@ -68,11 +68,6 @@ typedef char       Boolean;
 typedef CFInteger  CFIndex;
 typedef CFUInteger CFOptionFlags;
 
-enum {
-   kCFBooleanFalse=0,
-   kCFBooleanTrue =1,
-};
-
 typedef struct {
    CFIndex location;
    CFIndex length;
