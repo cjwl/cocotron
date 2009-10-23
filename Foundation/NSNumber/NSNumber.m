@@ -32,7 +32,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 +allocWithZone:(NSZone *)zone {
    if(self==objc_lookUpClass("NSNumber"))
-    return NSAllocateObject([NSNumber_placeholder class],0,NULL);
+      return [NSNumber_placeholder _sharedInstance];
 
    return NSAllocateObject(self,0,zone);
 }

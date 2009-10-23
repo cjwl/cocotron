@@ -25,70 +25,97 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSException.h>
 #import <Foundation/NSCoder.h>
 
+
+static NSNumber_placeholder *sSharedInstance;
+
 @implementation NSNumber_placeholder
 
++(void)initialize {
+   if(self==objc_lookUpClass("NSNumber_placeholder"))
+      sSharedInstance=NSAllocateObject([NSNumber_placeholder class],0,NULL);
+}
+
++_sharedInstance {
+   return sSharedInstance;
+}
+
++allocWithZone:(NSZone *)zone {
+   [NSException raise:NSInternalInconsistencyException format:@"Private class NSNumber_placeholder is not intended to be alloced."];
+   return nil;
+}
+
+-(void)dealloc {
+   return;
+   [super dealloc];  // Silence compiler warning
+}
+
+-(id)retain {
+   return self;
+}
+
+-(void)release {}
+
+-(id)autorelease {
+   return self;
+}
+
+-(NSUInteger)retainCount {
+   /* "For objects that never get released (that is, their release method
+      does nothing), this method should return UINT_MAX, as defined in
+      <limits.h>." -- NSObject Protocol Reference
+   */
+   return UINT_MAX;
+}
+
 -initWithChar:(char)value {
-   NSDeallocateObject(self);
    return NSNumber_charNew(NULL,value);
 }
 
 -initWithUnsignedChar:(unsigned char)value {
-   NSDeallocateObject(self);
    return NSNumber_unsignedCharNew(NULL,value);
 }
 
 -initWithShort:(short)value {
-   NSDeallocateObject(self);
    return NSNumber_shortNew(NULL,value);
 }
 
 -initWithUnsignedShort:(unsigned short)value {
-   NSDeallocateObject(self);
    return NSNumber_unsignedShortNew(NULL,value);
 }
 
 -initWithInt:(int)value {
-   NSDeallocateObject(self);
    return NSNumber_intNew(NULL,value);
 }
 
 -initWithUnsignedInt:(unsigned int)value {
-   NSDeallocateObject(self);
    return NSNumber_unsignedIntNew(NULL,value);
 }
 
 -initWithLong:(long)value {
-   NSDeallocateObject(self);
    return NSNumber_longNew(NULL,value);
 }
 
 -initWithUnsignedLong:(unsigned long)value {
-   NSDeallocateObject(self);
    return NSNumber_unsignedLongNew(NULL,value);
 }
 
 -initWithLongLong:(long long)value {
-   NSDeallocateObject(self);
    return NSNumber_longLongNew(NULL,value);
 }
 
 -initWithUnsignedLongLong:(unsigned long long)value {
-   NSDeallocateObject(self);
    return NSNumber_unsignedLongLongNew(NULL,value);
 }
 
 -initWithFloat:(float)value {
-   NSDeallocateObject(self);
    return NSNumber_floatNew(NULL,value);
 }
 
 -initWithDouble:(double)value {
-   NSDeallocateObject(self);
    return NSNumber_doubleNew(NULL,value);
 }
 
 -initWithBool:(BOOL)value {
-   NSDeallocateObject(self);
    return NSNumber_BOOLNew(NULL,value);
 }
 
