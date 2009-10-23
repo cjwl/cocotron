@@ -2,10 +2,10 @@
 #define COREFOUNDATION_INSIDE_BUILD 1
 #import <CoreFoundation/CFCharacterSet.h>
 #import <Foundation/NSRaise.h>
+#import <Foundation/NSCFTypeID.h>
 
 CFTypeID CFCharacterSetGetTypeID(void){
-   NSUnimplementedFunction();
-   return 0;
+   return kNSCFTypeCharacterSet;
 }
 
 

@@ -2,6 +2,7 @@
 #define COREFOUNDATION_INSIDE_BUILD 1
 #import <CoreFoundation/CFBase.h>
 #import <Foundation/NSRaise.h>
+#import <Foundation/NSCFTypeID.h>
 
 const CFAllocatorRef kCFAllocatorDefault;
 const CFAllocatorRef kCFAllocatorSystemDefault;
@@ -19,8 +20,7 @@ void CFAllocatorSetDefault(CFAllocatorRef self){
 }
 
 CFTypeID CFAllocatorGetTypeID(void){
-   NSUnimplementedFunction();
-   return 0;
+   return kNSCFTypeAllocator;
 }
 
 CFAllocatorRef CFAllocatorCreate(CFAllocatorRef self,CFAllocatorContext *context){
@@ -49,8 +49,7 @@ void *CFAllocatorReallocate(CFAllocatorRef self,void *ptr,CFIndex size,CFOptionF
 
 
 CFTypeID CFGetTypeID(CFTypeRef self){
-   NSUnimplementedFunction();
-   return 0;
+   return [(id)self _cfTypeID];
 }
 
 CFTypeRef CFRetain(CFTypeRef self){

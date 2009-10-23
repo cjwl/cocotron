@@ -358,3 +358,17 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 @end
+
+
+#if CF_ENABLED
+#import <Foundation/NSCFTypeID.h>
+
+@implementation NSSet (CFTypeID)
+
+- (unsigned) _cfTypeID
+{
+   return kNSCFTypeSet;
+}
+
+@end
+#endif

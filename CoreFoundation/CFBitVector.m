@@ -2,10 +2,10 @@
 #define COREFOUNDATION_INSIDE_BUILD 1
 #import <CoreFoundation/CFBitVector.h>
 #import <Foundation/NSRaise.h>
+#import <Foundation/NSCFTypeID.h>
 
 CFTypeID CFBitVectorGetTypeID(void) {
-   NSUnimplementedFunction();
-   return 0;
+   return kNSCFTypeBitVector;
 }
 
 CFBitVectorRef CFBitVectorCreate(CFAllocatorRef allocator,const uint8_t *bytes,CFIndex count) {

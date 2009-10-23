@@ -2,13 +2,13 @@
 #define COREFOUNDATION_INSIDE_BUILD 1
 #import <CoreFoundation/CFBinaryHeap.h>
 #import <Foundation/NSRaise.h>
+#import <Foundation/NSCFTypeID.h>
 
 const CFBinaryHeapCallBacks kCFStringBinaryHeapCallBacks={
 };
 
 CFTypeID CFBinaryHeapGetTypeID(void){
-   NSUnimplementedFunction();
-   return 0;
+   return kNSCFTypeBinaryHeap;
 }
 
 void CFBinaryHeapAddValue(CFBinaryHeapRef self,const void *value){

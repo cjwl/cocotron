@@ -2,11 +2,11 @@
 #define COREFOUNDATION_INSIDE_BUILD 1
 #import <CoreFoundation/CFUUID.h>
 #import <Foundation/NSRaise.h>
+#import <Foundation/NSCFTypeID.h>
 
 
 CFTypeID CFUUIDGetTypeID(void){
-   NSUnimplementedFunction();
-   return 0;
+   return kNSCFTypeUUID;
 }
 
 CFUUIDRef CFUUIDCreate(CFAllocatorRef alloc){

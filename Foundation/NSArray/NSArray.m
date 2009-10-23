@@ -533,3 +533,17 @@ void objc_enumerationMutation(id collection)
 {
 	[NSException raise:NSInternalInconsistencyException format:@"Collection %p of class %@ was mutated during enumeration. Break on objc_enumerationMutation to debug.", collection, [collection className]];
 }
+
+
+#if CF_ENABLED
+#import <Foundation/NSCFTypeID.h>
+
+@implementation NSArray (CFTypeID)
+
+- (unsigned) _cfTypeID
+{
+   return kNSCFTypeArray;
+}
+
+@end
+#endif

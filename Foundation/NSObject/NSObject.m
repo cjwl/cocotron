@@ -352,3 +352,16 @@ BOOL NSObjectIsKindOfClass(id object,Class kindOf) {
 
 @end
 
+
+#if CF_ENABLED
+#import <Foundation/NSCFTypeID.h>
+
+@implementation NSObject (CFTypeID)
+
+- (unsigned) _cfTypeID
+{
+   return kNSCFTypeObject;
+}
+
+@end
+#endif

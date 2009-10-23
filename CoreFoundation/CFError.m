@@ -2,6 +2,7 @@
 #define COREFOUNDATION_INSIDE_BUILD 1
 #import <CoreFoundation/CFError.h>
 #import <Foundation/NSRaise.h>
+#import <Foundation/NSCFTypeID.h>
 
 // FIXME: fix all string constants so they match NS* contents
 const CFStringRef kCFErrorDomainPOSIX=(CFStringRef)@"FIXME";
@@ -16,8 +17,7 @@ const CFStringRef kCFErrorLocalizedFailureReasonKey=(CFStringRef)@"FIXME";
 const CFStringRef kCFErrorLocalizedRecoverySuggestionKey=(CFStringRef)@"FIXME";
 
 CFTypeID CFErrorGetTypeID(void) {
-   NSUnimplementedFunction();
-   return 0;
+   return kNSCFTypeError;
 }
 
 CFErrorRef CFErrorCreate(CFAllocatorRef allocator,CFStringRef domain,CFIndex code,CFDictionaryRef userInfo){

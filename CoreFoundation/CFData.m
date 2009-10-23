@@ -2,10 +2,10 @@
 #define COREFOUNDATION_INSIDE_BUILD 1
 #import <CoreFoundation/CFData.h>
 #import <Foundation/NSRaise.h>
+#import <Foundation/NSCFTypeID.h>
 
 CFTypeID CFDataGetTypeID(void){
-   NSUnimplementedFunction();
-   return 0;
+   return kNSCFTypeData;
 }
 
 CFDataRef CFDataCreate(CFAllocatorRef allocator,const uint8_t *bytes,CFIndex length){

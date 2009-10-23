@@ -122,3 +122,17 @@ NSNumber *NSNumber_BOOLNew(NSZone *zone,BOOL value) {
 }
 
 @end
+
+
+#if CF_ENABLED
+#import <Foundation/NSCFTypeID.h>
+
+@implementation NSNumber_BOOL (CFTypeID)
+
+- (unsigned) _cfTypeID
+{
+   return kNSCFTypeBoolean;
+}
+
+@end
+#endif

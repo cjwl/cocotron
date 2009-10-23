@@ -2,6 +2,7 @@
 #define COREFOUNDATION_INSIDE_BUILD 1
 #import <CoreFoundation/CFBag.h>
 #import <Foundation/NSRaise.h>
+#import <Foundation/NSCFTypeID.h>
 
 const CFBagCallBacks kCFTypeBagCallBacks={
 };
@@ -10,8 +11,7 @@ const CFBagCallBacks kCFCopyStringBagCallBacks={
 };
 
 CFTypeID CFBagGetTypeID(void){
-   NSUnimplementedFunction();
-   return 0;
+   return kNSCFTypeBag;
 }
 
 void CFBagApplyFunction(CFBagRef self,CFBagApplierFunction function,void *context){

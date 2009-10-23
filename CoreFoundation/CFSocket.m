@@ -3,15 +3,11 @@
 #import <CoreFoundation/CFSocket.h>
 #import <Foundation/NSRaise.h>
 #import <Foundation/NSSocket.h>
+#import <Foundation/NSCFTypeID.h>
 
 #define NSSocketCast(_) ((NSSocket *)_)
 
 @implementation NSSocket(CFSocket)
-
-+(CFTypeID)typeID {
-   NSInvalidAbstractInvocation();
-   return 0;
-}
 
 +(CFSocketRef)createWithAllocator:(CFAllocatorRef)allocator protocolFamily:(CFInteger)protocolFamily type:(CFInteger)socketType protocol:(CFInteger)protocol options:(CFOptionFlags)flags callback:(CFSocketCallBack)callback context:(const CFSocketContext *)context {
    NSInvalidAbstractInvocation();
@@ -99,7 +95,7 @@
 }
 
 CFTypeID CFSocketGetTypeID() {
-   return [NSSocket typeID];
+   return kNSCFTypeSocket;
 }
 
 CFSocketRef CFSocketCreate(CFAllocatorRef allocator,CFInteger protocolFamily,CFInteger socketType,CFInteger protocol,CFOptionFlags flags,CFSocketCallBack callback,const CFSocketContext *context) {

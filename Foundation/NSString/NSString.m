@@ -1552,3 +1552,17 @@ U+2029 (Unicode paragraph separator), \r\n, in that order (also known as CRLF)
 }
 
 @end
+
+
+#if CF_ENABLED
+#import <Foundation/NSCFTypeID.h>
+
+@implementation NSString (CFTypeID)
+
+- (unsigned) _cfTypeID
+{
+   return kNSCFTypeString;
+}
+
+@end
+#endif

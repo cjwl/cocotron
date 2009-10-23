@@ -2,6 +2,7 @@
 #define COREFOUNDATION_INSIDE_BUILD 1
 #import <CoreFoundation/CFSet.h>
 #import <Foundation/NSRaise.h>
+#import <Foundation/NSCFTypeID.h>
 
 const CFSetCallBacks kCFTypeSetCallBacks={
 };
@@ -10,8 +11,7 @@ const CFSetCallBacks kCFCopyStringSetCallBacks={
 };
 
 CFTypeID CFSetGetTypeID(void){
-   NSUnimplementedFunction();
-   return 0;
+   return kNSCFTypeSet;
 }
 
 CFSetRef CFSetCreate(CFAllocatorRef allocator,const void **values,CFIndex count,const CFSetCallBacks *callbacks){

@@ -2,10 +2,10 @@
 #define COREFOUNDATION_INSIDE_BUILD 1
 #import <CoreFoundation/CFAttributedString.h>
 #import <Foundation/NSRaise.h>
+#import <Foundation/NSCFTypeID.h>
 
 CFTypeID CFAttributedStringGetTypeID(void){
-   NSUnimplementedFunction();
-   return 0;
+   return kNSCFTypeAttributedString;
 }
 
 CFAttributedStringRef CFAttributedStringCreate(CFAllocatorRef allocator,CFStringRef string,CFDictionaryRef attributes){

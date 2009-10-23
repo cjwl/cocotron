@@ -3,15 +3,15 @@
 #import <CoreFoundation/CFArray.h>
 #import <Foundation/NSRaise.h>
 #import <Foundation/NSArray.h>
+#import <Foundation/NSCFTypeID.h>
 
 const CFArrayCallBacks kCFTypeArrayCallBacks={
 };
 
 #define nsrange(r) NSMakeRange(r.location,r.length)
 
-CFTypeID    CFArrayGetTypeID(void) {
-   NSUnimplementedFunction();
-   return 0;
+CFTypeID CFArrayGetTypeID(void) {
+   return kNSCFTypeArray;
 }
 
 CFArrayRef CFArrayCreate(CFAllocatorRef allocator,const void **values,CFIndex count,const CFArrayCallBacks *callbacks) {

@@ -2,10 +2,10 @@
 #define COREFOUNDATION_INSIDE_BUILD 1
 #import <CoreFoundation/CFDictionary.h>
 #import <Foundation/NSRaise.h>
+#import <Foundation/NSCFTypeID.h>
 
 CFTypeID CFDictionaryGetTypeID(void){
-   NSUnimplementedFunction();
-   return 0;
+   return kNSCFTypeDictionary;
 }
 
 CFDictionaryRef CFDictionaryCreate(CFAllocatorRef allocator,const void **keys,const void **values,CFIndex count,const CFDictionaryKeyCallBacks *keyCallbacks,const CFDictionaryValueCallBacks *valueCallbacks){

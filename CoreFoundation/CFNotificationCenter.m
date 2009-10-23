@@ -2,10 +2,10 @@
 #define COREFOUNDATION_INSIDE_BUILD 1
 #import <CoreFoundation/CFNotificationCenter.h>
 #import <Foundation/NSRaise.h>
+#import <Foundation/NSCFTypeID.h>
 
 CFTypeID CFNotificationCenterGetTypeID(void){
-   NSUnimplementedFunction();
-   return 0;
+   return kNSCFTypeNotificationCenter;
 }
 
 CFNotificationCenterRef CFNotificationCenterGetLocalCenter(void){
