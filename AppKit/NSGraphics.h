@@ -81,7 +81,8 @@ APPKIT_EXPORT void NSRectFill(NSRect rect);
 APPKIT_EXPORT void NSRectFillListUsingOperation(const NSRect *rects,int count,NSCompositingOperation operation);
 APPKIT_EXPORT void NSRectFillUsingOperation(NSRect rect,NSCompositingOperation operation);
 
-APPKIT_EXPORT void NSFrameRectWithWidth(NSRect rect,float width);
+APPKIT_EXPORT void NSFrameRectWithWidth(NSRect rect,CGFloat width);
+APPKIT_EXPORT void NSFrameRectWithWidthUsingOperation(NSRect rect,CGFloat width,NSCompositingOperation operation);
 APPKIT_EXPORT void NSFrameRect(NSRect rect);
 APPKIT_EXPORT void NSDottedFrameRect(NSRect rect);
 

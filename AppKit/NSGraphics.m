@@ -129,8 +129,38 @@ void NSRectFillUsingOperation(NSRect rect,NSCompositingOperation op) {
    CGContextRestoreGState(context);
 }
 
-void NSFrameRectWithWidth(NSRect rect,float width) {
-   CGContextStrokeRectWithWidth(NSCurrentGraphicsPort(),rect,width);
+void NSFrameRectWithWidth(NSRect rect,CGFloat width) {
+   NSFrameRectWithWidthUsingOperation(rect,width,NSCompositeCopy);
+}
+
+void NSFrameRectWithWidthUsingOperation(NSRect rect,CGFloat width,NSCompositingOperation operation) {
+   CGContextRef context=NSCurrentGraphicsPort();
+   CGContextSaveGState(context);
+   CGContextSetBlendMode(context,blendModeForCompositeOp(operation));
+   CGRect edge[4];
+   // left
+   edge[0].origin.x=rect.origin.x;
+   edge[0].origin.y=rect.origin.y;
+   edge[0].size.width=width;
+   edge[0].size.height=rect.size.height;
+   // right
+   edge[1].origin.x=NSMaxX(rect)-width;
+   edge[1].origin.y=rect.origin.y;
+   edge[1].size.width=width;
+   edge[1].size.height=rect.size.height;
+   // bottom
+   edge[2].origin.x=rect.origin.x+width;
+   edge[2].origin.y=rect.origin.y;
+   edge[2].size.width=rect.size.width-width*2;
+   edge[2].size.height=width;
+   // top
+   edge[3].origin.x=rect.origin.x+width;
+   edge[3].origin.y=NSMaxY(rect)-width;
+   edge[3].size.width=rect.size.width-width*2;
+   edge[3].size.height=width;
+   
+   CGContextFillRects(NSCurrentGraphicsPort(),edge,4);
+   CGContextRestoreGState(context);
 }
 
 void NSFrameRect(NSRect rect) {
