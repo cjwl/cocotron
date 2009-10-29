@@ -3,7 +3,7 @@
 
 #import "opengl_dll.h"
 
-struct CGLContextObj {
+struct _CGLContextObj {
    CRITICAL_SECTION lock; // FIXME: this should be converted to the OS*Lock* functions when they appear
    HDC              dc;
    HGLRC            glrc;
@@ -40,7 +40,7 @@ CGL_EXPORT CGLError CGLSetCurrentContext(CGLContextObj context) {
 CGL_EXPORT CGLError CGLCreateContext(CGLPixelFormatObj pixelFormat,CGLContextObj other,CGLContextObj *resultp) {
 // FIXME: yes, this is bogus
    HDC           dc=(HDC)other;
-   CGLContextObj result=NSZoneMalloc(NULL,sizeof(struct CGLContextObj));
+   CGLContextObj result=NSZoneMalloc(NULL,sizeof(struct _CGLContextObj));
    
    InitializeCriticalSection(&(result->lock));
    result->dc=dc;

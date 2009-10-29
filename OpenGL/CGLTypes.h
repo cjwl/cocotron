@@ -48,6 +48,6 @@ typedef enum {
    kCGLBadConnection=10017,
 } CGLError;
 
-typedef struct CGLContextObj *CGLContextObj;
-typedef struct CGLPixelFormatObj *CGLPixelFormatObj;
-typedef struct CGLPBufferObj *CGLPBufferObj;
+typedef struct _CGLContextObj *CGLContextObj;
+typedef struct _CGLPixelFormatObj *CGLPixelFormatObj;
+typedef struct _CGLPBufferObj *CGLPBufferObj;
