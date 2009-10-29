@@ -27,6 +27,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 // hmmm
 -(NSDictionary *)locale;
 
+- (NSString *)stringFromDate:(NSDate *)date;
+- (NSArray *)shortStandaloneWeekdaySymbols;
+- (NSArray *)standaloneWeekdaySymbols;
+
 @end
 
 // internal use

@@ -4,6 +4,7 @@
 #import <Foundation/NSRaise.h>
 #import <Foundation/NSArray.h>
 #import <Foundation/NSCFTypeID.h>
+#import <Foundation/NSArray_concrete.h>
 
 const CFArrayCallBacks kCFTypeArrayCallBacks={
 };
@@ -15,13 +16,11 @@ CFTypeID CFArrayGetTypeID(void) {
 }
 
 CFArrayRef CFArrayCreate(CFAllocatorRef allocator,const void **values,CFIndex count,const CFArrayCallBacks *callbacks) {
-   NSUnimplementedFunction();
-   return 0;
+	return (CFArrayRef)NSArray_concreteNew(NULL, (id*)values, count);
 }
 
 CFArrayRef CFArrayCreateCopy(CFAllocatorRef allocator,CFArrayRef self) {
-   NSUnimplementedFunction();
-   return 0;
+	return (CFArrayRef)[(id) self copy]; 
 }
 
 

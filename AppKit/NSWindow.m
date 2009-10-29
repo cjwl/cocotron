@@ -2221,7 +2221,8 @@ NSString *NSWindowDidAnimateNotification=@"NSWindowDidAnimateNotification";
        [_drawers makeObjectsPerformSelector:@selector(parentWindowDidDeactivate:) withObject:self];
 
    _isActive=NO;
-
+   if([self isMainWindow])
+    [self resignMainWindow];
    if([self isKeyWindow])
     [self resignKeyWindow];
 

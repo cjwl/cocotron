@@ -17,10 +17,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSScanner.h>
 #import <Foundation/NSCharacterSet.h>
 #import <Foundation/NSKeyedUnarchiver.h>
-
-// anyway, the code in this file has been subjected to a rather grueling
-// test suite (see dateTester.m) which appears to prove that the code
-// works for all dates (note: not times) from 1/1/1 0:0:0 to 4009-08-30 0:0:0. (distantFuture)
+#import <Foundation/NSCalendar.h>
 
 @implementation NSDateFormatter
 
@@ -68,6 +65,33 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(NSDictionary *)locale {
     return _locale;
+}
+
+NSTimeZone *getTimeZoneFromDate(NSDate *date) {
+	NSTimeZone *tz;
+	if ([date respondsToSelector:@selector(timeZone)]) {
+		tz = [date performSelector:@selector(timeZone)];
+	}
+	else {
+		tz = [[NSCalendar currentCalendar] timeZone];
+	}
+	return tz;
+}
+
+- (NSString *)stringFromDate:(NSDate *)date {
+	NSTimeZone *tz = getTimeZoneFromDate(date);
+	return NSStringWithDateFormatLocale([date timeIntervalSinceReferenceDate], [self 
+dateFormat], nil, tz);
+}
+
+- (NSArray *)shortStandaloneWeekdaySymbols {
+	
+	return [[[NSUserDefaults standardUserDefaults] dictionaryRepresentation] objectForKey: 
+NSShortWeekDayNameArray];
+}
+- (NSArray *)standaloneWeekdaySymbols {
+	return [[[NSUserDefaults standardUserDefaults] dictionaryRepresentation] objectForKey: 
+NSWeekDayNameArray];
 }
 
 -(NSString *)stringForObjectValue:(id)object {
@@ -206,7 +230,7 @@ NSInteger NSYearFromTimeInterval(NSTimeInterval interval) {
     NSInteger days = NSDayOfCommonEraFromTimeInterval(interval);
     NSInteger year = days/366;
 
-    while (days > numberOfDaysInCommonEraOfDayMonthAndYear(1, 1, year+1)) 
+    while (days >= numberOfDaysInCommonEraOfDayMonthAndYear(1, 1, year+1)) 
         year++;
 
     return year;
@@ -579,7 +603,7 @@ NSDictionary *locale) {
                         if (![scanner scanCharactersFromSet:[NSCharacterSet letterCharacterSet] intoString:&temp])
                             return nil;
 
-                        months = [shortMonthNames indexOfObject:temp];
+                        months = [shortMonthNames indexOfObject:temp] + 1;
                         if (months == NSNotFound) // unknown month name
                             return nil;
                     }
@@ -591,7 +615,7 @@ NSDictionary *locale) {
                         if (![scanner scanCharactersFromSet:[NSCharacterSet letterCharacterSet] intoString:&temp])
                             return nil;
 
-                        months = [monthNames indexOfObject:temp];
+                        months = [monthNames indexOfObject:temp] + 1;
                         if (months == NSNotFound) // unknown month name
                             return nil;
                     }

@@ -8,7 +8,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/Foundation.h>
 
-typedef unsigned NSStringDrawingOptions;
+enum {
+   NSStringDrawingUsesLineFragmentOrigin        =0x01,
+   NSStringDrawingUsesFontLeading               =0x02,
+   NSStringDrawingDisableScreenFontSubstitution =0x04,
+   NSStringDrawingUsesDeviceMetrics             =0x08,
+   NSStringDrawingOneShot                       =0x10,
+   NSStringDrawingTruncatesLastVisibleLine      =0x20,
+};
+
+typedef NSInteger NSStringDrawingOptions;
 
 @interface NSString(NSStringDrawing)
 -(void)drawAtPoint:(NSPoint)point withAttributes:(NSDictionary *)attributes;

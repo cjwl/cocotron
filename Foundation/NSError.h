@@ -10,6 +10,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @class NSDictionary,NSArray;
 
 FOUNDATION_EXPORT NSString *NSPOSIXErrorDomain;
+FOUNDATION_EXPORT NSString *NSOSStatusErrorDomain;
 // temporary until we can map it
 FOUNDATION_EXPORT NSString *NSWINSOCKErrorDomain;
 FOUNDATION_EXPORT NSString *NSCocoaErrorDomain;

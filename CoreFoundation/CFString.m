@@ -3,8 +3,7 @@
 #import <CoreFoundation/CFString.h>
 #import <Foundation/NSString.h>
 
-CFStringRef CFSTR(const char *cString)
-{
+CFStringRef CFStringMakeConstant(const char *cString) {
 	return (CFStringRef)[[NSString alloc]initWithUTF8String:cString];
 }
 

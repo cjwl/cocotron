@@ -641,15 +641,23 @@ static float rowHeightAtIndex(NSTableView *self,int index){
 }
 
 -(id)dataSourceObjectValueForTableColumn:(NSTableColumn *)tableColumn row:(int)row {
-
-   if (_dataSource!=nil &&
-       [_dataSource respondsToSelector:@selector(tableView:objectValueForTableColumn:row:)]==YES)
-    return [_dataSource tableView:self objectValueForTableColumn:tableColumn row:row];
-  
-   // Apple AppKit only logs here, so we do the same.
-   NSLog(@"data source %@ does not respond to tableView:objectValueForTableColumn:row:", _dataSource);
-   return nil;
+	
+	if (_dataSource!=nil &&
+		[_dataSource 
+respondsToSelector:@selector(tableView:objectValueForTableColumn:row:)]==YES)
+		return [_dataSource tableView:self objectValueForTableColumn:tableColumn row:row];
+	
+	id binder = [tableColumn _binderForBinding:@"value"];
+	id vals = [[binder destination] valueForKeyPath:[binder valueForKey:@"keyPath"]];
+	if (vals != nil)
+		return [vals objectAtIndex:row];
+	
+	// Apple AppKit only logs here, so we do the same.
+	NSLog(@"data source %@ does not respond to tableView:objectValueForTableColumn:row:", 
+_dataSource);
+	return nil;
 }
+
 
 -(NSRect)_adjustedFrame:(NSRect)frame forCell:(NSCell *)dataCell {
    frame.origin.x    += _intercellSpacing.width - 1.;

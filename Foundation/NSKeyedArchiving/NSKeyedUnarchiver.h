@@ -11,6 +11,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @class NSDictionary,NSMutableArray,NSMutableDictionary;
 
+FOUNDATION_EXPORT NSString* NSInvalidUnarchiveOperationException;
+
 @interface NSKeyedUnarchiver : NSCoder {
    id                   _delegate;
    NSMutableDictionary *_nameToReplacementClass;

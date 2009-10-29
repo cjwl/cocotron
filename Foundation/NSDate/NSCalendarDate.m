@@ -40,16 +40,15 @@ static NSString *DEFAULT_CALENDAR_FORMAT = @"%Y-%m-%d %H:%M:%S %z";
 
 -initWithYear:(NSInteger)year month:(NSUInteger)month day:(NSUInteger)day
          hour:(NSUInteger)hour minute:(NSUInteger)minute second:(NSUInteger)second
-     timeZone:(NSTimeZone *)timeZone {
-    [super init];
-    _timeInterval = NSTimeIntervalWithComponents(year, month, day, hour, minute, second, 0);
-    if(timeZone == nil) {
-        _timeZone =[[NSTimeZone localTimeZone] retain];
-        _timeInterval = _timeInterval - [_timeZone secondsFromGMT];
-    }
-    else
-        _timeZone = [timeZone retain];
-    _format = DEFAULT_CALENDAR_FORMAT;
+timeZone:(NSTimeZone *)aTimeZone; {
+	NSTimeInterval interval = NSTimeIntervalWithComponents(year, month, day, hour, minute, 
+second, 0);
+	NSTimeZone *tz = (aTimeZone == nil ? [NSTimeZone localTimeZone] : aTimeZone);
+	interval = interval - [tz secondsFromGMT];
+	
+	[self initWithTimeIntervalSinceReferenceDate: interval];
+    [_timeZone release];
+	_timeZone = [tz retain];
     
     return self;
 }

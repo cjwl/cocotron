@@ -65,7 +65,13 @@ CFStringRef      CFStringGetNameOfEncoding(CFStringEncoding encoding);
 CFStringEncoding CFStringGetMostCompatibleMacStringEncoding(CFStringEncoding encoding);
 CFIndex CFStringGetMaximumSizeForEncoding(CFIndex length,CFStringEncoding encoding);
 
-CFStringRef CFSTR(const char *cString);
+#ifdef __OBJC__
+#define CFSTR(s) (NSString*)(@##s)
+#else
+
+#define CFSTR(s) CFStringMakeConstant(const char *s);
+#endif
+
 CFStringRef CFStringCreateByCombiningStrings(CFAllocatorRef allocator,CFArrayRef array,CFStringRef separator);
 CFStringRef CFStringCreateCopy(CFAllocatorRef allocator,CFStringRef self);
 CFStringRef CFStringCreateWithBytes(CFAllocatorRef allocator,const uint8_t *bytes,CFIndex length,CFStringEncoding encoding,Boolean isExternalRepresentation);
