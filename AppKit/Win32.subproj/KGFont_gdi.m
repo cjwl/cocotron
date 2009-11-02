@@ -131,11 +131,11 @@ static HFONT Win32FontHandleWithName(NSString *name,int unitsPerEm){
    [super dealloc];
 }
 
--(CGGlyph)glyphWithGlyphName:(NSString *)name {
+-(O2Glyph)glyphWithGlyphName:(NSString *)name {
    return 0;
 }
 
--(NSString *)copyGlyphNameForGlyph:(CGGlyph)glyph {
+-(NSString *)copyGlyphNameForGlyph:(O2Glyph)glyph {
    return nil;
 }
 
@@ -170,7 +170,7 @@ static HFONT Win32FontHandleWithName(NSString *name,int unitsPerEm){
     NSLog(@"GetCharABCWidthsFloat failed");
    else {
     for(i=max;--i>=0;){
-     CGGlyph glyph=glyphs[i];
+     O2Glyph glyph=glyphs[i];
      
      if(glyph<_numberOfGlyphs)
       _advances[glyph]=abc[i].abcfA+abc[i].abcfB+abc[i].abcfC;
@@ -229,7 +229,7 @@ static HFONT Win32FontHandleWithName(NSString *name,int unitsPerEm){
    }
 }
 
--(void)getMacRomanBytes:(unsigned char *)bytes forGlyphs:(const CGGlyph *)glyphs length:(unsigned)length {
+-(void)getMacRomanBytes:(unsigned char *)bytes forGlyphs:(const O2Glyph *)glyphs length:(unsigned)length {
    if(_glyphsToCharacters==NULL)
     [self fetchGlyphsToCharacters];
 
@@ -249,7 +249,7 @@ static HFONT Win32FontHandleWithName(NSString *name,int unitsPerEm){
    }
 }
 
--(CGGlyph *)MacRomanEncoding {
+-(O2Glyph *)MacRomanEncoding {
    if(_MacRomanEncoding==NULL){
     HDC      dc=GetDC(NULL);
     unichar  characters[256];
@@ -257,7 +257,7 @@ static HFONT Win32FontHandleWithName(NSString *name,int unitsPerEm){
     FARPROC  getGlyphIndices=GetProcAddress(library,"GetGlyphIndicesW");
     int      i;
    
-    _MacRomanEncoding=NSZoneMalloc(NULL,sizeof(CGGlyph)*256);
+    _MacRomanEncoding=NSZoneMalloc(NULL,sizeof(O2Glyph)*256);
     for(i=0;i<256;i++)
      characters[i]=i;
     

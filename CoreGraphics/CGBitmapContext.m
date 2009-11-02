@@ -10,46 +10,46 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "KGBitmapContext.h"
 
 CGContextRef CGBitmapContextCreate(void *bytes,size_t width,size_t height,size_t bitsPerComponent,size_t bytesPerRow,CGColorSpaceRef colorSpace,CGBitmapInfo bitmapInfo) {
-   return [O2Context createWithBytes:bytes width:width height:height bitsPerComponent:bitsPerComponent bytesPerRow:bytesPerRow colorSpace:colorSpace bitmapInfo:bitmapInfo];
+   return O2BitmapContextCreate(bytes,width,height,bitsPerComponent,bytesPerRow,colorSpace,bitmapInfo);
 }
 
 void *CGBitmapContextGetData(CGContextRef self) {
-   return [self pixelBytes];
+   return O2BitmapContextGetData(self);
 }
 
 size_t CGBitmapContextGetWidth(CGContextRef self) {
-   return [self width];
+   return O2BitmapContextGetWidth(self);
 }
 
 size_t CGBitmapContextGetHeight(CGContextRef self) {
-   return [self height];
+   return O2BitmapContextGetHeight(self);
 }
 
 size_t CGBitmapContextGetBitsPerComponent(CGContextRef self) {
-   return [self bitsPerComponent];
+   return O2BitmapContextGetBitsPerComponent(self);
 }
 
 size_t CGBitmapContextGetBytesPerRow(CGContextRef self) {
-   return [self bytesPerRow];
+   return O2BitmapContextGetBytesPerRow(self);
 }
 
 CGColorSpaceRef CGBitmapContextGetColorSpace(CGContextRef self) {
-   return [self colorSpace];
+   return O2BitmapContextGetColorSpace(self);
 }
 
 CGBitmapInfo CGBitmapContextGetBitmapInfo(CGContextRef self) {
-   return [self bitmapInfo];
+   return O2BitmapContextGetBitmapInfo(self);
 }
 
 size_t CGBitmapContextGetBitsPerPixel(CGContextRef self) {
-   return [self bitsPerPixel];
+   return O2BitmapContextGetBitsPerPixel(self);
 }
 
 CGImageAlphaInfo CGBitmapContextGetAlphaInfo(CGContextRef self) {
-   return [self alphaInfo];
+   return O2BitmapContextGetAlphaInfo(self);
 }
 
 CGImageRef CGBitmapContextCreateImage(CGContextRef self) {
-   return [self createImage];
+   return O2BitmapContextCreateImage(self);
 }
- 
+

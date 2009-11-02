@@ -591,7 +591,7 @@ BOOL O2PDFScanInteger(const char *bytes,unsigned length,O2PDFInteger position,O2
    if(!O2PDFScanObject(bytes,length,position,lastPosition,&object))
     return NO;
 
-   return [object checkForType:kKGPDFObjectTypeInteger value:value];
+   return [object checkForType:kO2PDFObjectTypeInteger value:value];
 }
 
 
@@ -609,12 +609,12 @@ BOOL O2PDFParseObject(const char *bytes,unsigned length,O2PDFInteger position,O2
     
     switch([check objectType]){
    
-     case kKGPDFObjectTypeNull:
-     case kKGPDFObjectTypeBoolean:
-     case kKGPDFObjectTypeInteger:
-     case kKGPDFObjectTypeReal:
-     case kKGPDFObjectTypeName:
-     case kKGPDFObjectTypeString:
+     case kO2PDFObjectTypeNull:
+     case kO2PDFObjectTypeBoolean:
+     case kO2PDFObjectTypeInteger:
+     case kO2PDFObjectTypeReal:
+     case kO2PDFObjectTypeName:
+     case kO2PDFObjectTypeString:
       if(stack!=nil)
        [stack addObject:check];
       else {
@@ -683,7 +683,7 @@ BOOL O2PDFParseObject(const char *bytes,unsigned length,O2PDFInteger position,O2
         
         [[check retain] autorelease];
         [stack removeLastObject];
-        if(![[stack lastObject] checkForType:kKGPDFObjectTypeName value:&key])
+        if(![[stack lastObject] checkForType:kO2PDFObjectTypeName value:&key])
          return debugError(bytes,length,position,@"Expecting name on stack for dictionary");
          
         [dictionary setObjectForKey:key value:check];
@@ -702,10 +702,10 @@ BOOL O2PDFParseObject(const char *bytes,unsigned length,O2PDFInteger position,O2
         O2PDFInteger number;
         O2PDFObject *object;
         
-        if(![[stack lastObject] checkForType:kKGPDFObjectTypeInteger value:&generation])
+        if(![[stack lastObject] checkForType:kO2PDFObjectTypeInteger value:&generation])
          return NO;
         [stack removeLastObject];
-        if(![[stack lastObject] checkForType:kKGPDFObjectTypeInteger value:&number])
+        if(![[stack lastObject] checkForType:kO2PDFObjectTypeInteger value:&number])
          return NO;
         [stack removeLastObject];
         
@@ -743,7 +743,7 @@ BOOL O2PDFParseDictionary(const char *bytes,unsigned length,O2PDFInteger positio
    if(!O2PDFParseObject(bytes,length,position,lastPosition,&object,xref))
     return NO;
    
-   return [object checkForType:kKGPDFObjectTypeDictionary value:dictionaryp];
+   return [object checkForType:kO2PDFObjectTypeDictionary value:dictionaryp];
 }
 
 BOOL O2PDFParse_xrefAtPosition(NSData *data,O2PDFInteger position,O2PDFxref **xrefp) {
@@ -780,7 +780,7 @@ BOOL O2PDFParse_xrefAtPosition(NSData *data,O2PDFInteger position,O2PDFxref **xr
      }
     }
     
-    if(![object checkForType:kKGPDFObjectTypeInteger value:&number])
+    if(![object checkForType:kO2PDFObjectTypeInteger value:&number])
      return debugError(bytes,length,position,@"Expecting integer,got %@",object);
     
     if(!O2PDFScanInteger(bytes,length,position,&position,&count))
@@ -887,7 +887,7 @@ BOOL O2PDFParseIndirectObject(NSData *data,O2PDFInteger position,O2PDFObject **o
     O2PDFDictionary *dictionary;
     O2PDFInteger     streamLength;
     
-    if(![object checkForType:kKGPDFObjectTypeDictionary value:&dictionary])
+    if(![object checkForType:kO2PDFObjectTypeDictionary value:&dictionary])
      return debugError(bytes,length,position,@"Expecting dictionary for stream, got %@",object);
     
     if(![dictionary getIntegerForKey:"Length" value:&streamLength])
@@ -952,7 +952,7 @@ BOOL O2PDFParseIndirectObject(NSData *data,O2PDFInteger position,O2PDFObject **o
 }
 
 -(BOOL)popBoolean:(O2PDFBoolean *)value {
-   BOOL result=[[_stack lastObject] checkForType:kKGPDFObjectTypeBoolean value:value];
+   BOOL result=[[_stack lastObject] checkForType:kO2PDFObjectTypeBoolean value:value];
    
    [_stack removeLastObject];
    
@@ -960,7 +960,7 @@ BOOL O2PDFParseIndirectObject(NSData *data,O2PDFInteger position,O2PDFObject **o
 }
 
 -(BOOL)popInteger:(O2PDFInteger *)value {
-   BOOL result=[[_stack lastObject] checkForType:kKGPDFObjectTypeInteger value:value];
+   BOOL result=[[_stack lastObject] checkForType:kO2PDFObjectTypeInteger value:value];
    
    [_stack removeLastObject];
    
@@ -968,7 +968,7 @@ BOOL O2PDFParseIndirectObject(NSData *data,O2PDFInteger position,O2PDFObject **o
 }
 
 -(BOOL)popNumber:(O2PDFReal *)value {
-   BOOL result=[[_stack lastObject] checkForType:kKGPDFObjectTypeReal value:value];
+   BOOL result=[[_stack lastObject] checkForType:kO2PDFObjectTypeReal value:value];
 
    [_stack removeLastObject];
    
@@ -983,7 +983,7 @@ BOOL O2PDFParseIndirectObject(NSData *data,O2PDFInteger position,O2PDFObject **o
 
    [_stack removeLastObject];
 
-   return [lastObject checkForType:kKGPDFObjectTypeName value:value];
+   return [lastObject checkForType:kO2PDFObjectTypeName value:value];
 }
 
 -(BOOL)popString:(O2PDFString **)stringp {
@@ -994,7 +994,7 @@ BOOL O2PDFParseIndirectObject(NSData *data,O2PDFInteger position,O2PDFObject **o
 
    [_stack removeLastObject];
 
-   return [lastObject checkForType:kKGPDFObjectTypeString value:stringp];
+   return [lastObject checkForType:kO2PDFObjectTypeString value:stringp];
 }
 
 -(BOOL)popArray:(O2PDFArray **)arrayp {
@@ -1005,7 +1005,7 @@ BOOL O2PDFParseIndirectObject(NSData *data,O2PDFInteger position,O2PDFObject **o
 
    [_stack removeLastObject];
 
-   return [lastObject checkForType:kKGPDFObjectTypeArray value:arrayp];
+   return [lastObject checkForType:kO2PDFObjectTypeArray value:arrayp];
 }
 
 -(BOOL)popDictionary:(O2PDFDictionary **)dictionaryp {
@@ -1016,7 +1016,7 @@ BOOL O2PDFParseIndirectObject(NSData *data,O2PDFInteger position,O2PDFObject **o
 
    [_stack removeLastObject];
 
-   return [lastObject checkForType:kKGPDFObjectTypeDictionary value:dictionaryp];
+   return [lastObject checkForType:kO2PDFObjectTypeDictionary value:dictionaryp];
 }
 
 -(BOOL)popStream:(O2PDFStream **)streamp {
@@ -1027,7 +1027,7 @@ BOOL O2PDFParseIndirectObject(NSData *data,O2PDFInteger position,O2PDFObject **o
 
    [_stack removeLastObject];
 
-   return [lastObject checkForType:kKGPDFObjectTypeStream value:streamp];
+   return [lastObject checkForType:kO2PDFObjectTypeStream value:streamp];
 }
 
 -(BOOL)scanStream:(O2PDFStream *)stream {
@@ -1074,7 +1074,7 @@ BOOL O2PDFParseIndirectObject(NSData *data,O2PDFInteger position,O2PDFObject **o
     O2PDFObject *object=[streams objectAtIndex:i];
     O2PDFStream *scan;
     
-    if(![object checkForType:kKGPDFObjectTypeStream value:&scan])
+    if(![object checkForType:kO2PDFObjectTypeStream value:&scan])
      return NO;
 
     if(![self scanStream:scan])

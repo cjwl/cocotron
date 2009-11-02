@@ -28,11 +28,57 @@
  *-------------------------------------------------------------------*/
 
 #import <Foundation/NSObject.h>
-#import <CoreGraphics/CoreGraphics.h>
-#import "O2ColorSpace.h"
-#import "VGmath.h"
+#import "O2Geometry.h"
+#import "O2AffineTransform.h"
+
+@class O2Image;
+
+typedef O2Image *O2ImageRef;
 
 @class O2ColorSpace,O2DataProvider;
+
+#define kO2BitmapAlphaInfoMask 0x1F
+
+typedef enum {
+   kO2ImageAlphaNone,
+   kO2ImageAlphaPremultipliedLast,
+   kO2ImageAlphaPremultipliedFirst,
+   kO2ImageAlphaLast,
+   kO2ImageAlphaFirst,
+   kO2ImageAlphaNoneSkipLast,
+   kO2ImageAlphaNoneSkipFirst,
+} O2ImageAlphaInfo;
+
+enum {
+   kO2BitmapFloatComponents=0x100,
+};
+
+#define kO2BitmapByteOrderMask 0x7000
+
+enum {
+   kO2BitmapByteOrderDefault=0,
+   kO2BitmapByteOrder16Little=0x1000,
+   kO2BitmapByteOrder32Little=0x2000,
+   kO2BitmapByteOrder16Big=0x3000,
+   kO2BitmapByteOrder32Big=0x4000,
+   
+#ifdef __BIG_ENDIAN__
+   kO2BitmapByteOrder16Host=kO2BitmapByteOrder16Big,
+   kO2BitmapByteOrder32Host=kO2BitmapByteOrder32Big,
+#endif
+
+#ifdef __LITTLE_ENDIAN__
+   kO2BitmapByteOrder16Host=kO2BitmapByteOrder16Little,
+   kO2BitmapByteOrder32Host=kO2BitmapByteOrder32Little,
+#endif
+};
+
+typedef unsigned O2BitmapInfo;
+
+#import "O2ColorSpace.h"
+#import "KGPattern.h"
+#import "KGDataProvider.h"
+#import "VGmath.h"
 
 typedef enum {
   /* RGB{A,X} channel ordering */
@@ -80,7 +126,9 @@ typedef enum {
   VG_lXBGR_8888                               =  7 | (1 << 6) | (1 << 7),
   VG_lABGR_8888                               =  8 | (1 << 6) | (1 << 7),
   VG_lABGR_8888_PRE                           =  9 | (1 << 6) | (1 << 7)
-} KGImageFormat;
+} O2ImageFormat;
+
+typedef float O2Float32;
 
 enum {
  VGColorNONLINEAR		= (1<<0),
@@ -114,14 +162,14 @@ typedef struct  {
 
 
 typedef struct {
-   CGFloat a;
-   CGFloat r;
-   CGFloat g;
-   CGFloat b;
-} KGRGBAffff;
+   O2Float32 a;
+   O2Float32 r;
+   O2Float32 g;
+   O2Float32 b;
+} O2argb32f;
 
-static inline KGRGBAffff KGRGBAffffInit(CGFloat r,CGFloat g,CGFloat b,CGFloat a){
-   KGRGBAffff result;
+static inline O2argb32f O2argb32fInit(O2Float r,O2Float g,O2Float b,O2Float a){
+   O2argb32f result;
    result.r=r;
    result.g=g;
    result.b=b;
@@ -129,7 +177,7 @@ static inline KGRGBAffff KGRGBAffffInit(CGFloat r,CGFloat g,CGFloat b,CGFloat a)
    return result;
 }
 
-static inline KGRGBAffff KGRGBAffffMultiplyByFloat(KGRGBAffff result,CGFloat value){
+static inline O2argb32f O2argb32fMultiplyByFloat(O2argb32f result,O2Float value){
    result.r*=value;
    result.g*=value;
    result.b*=value;
@@ -137,7 +185,7 @@ static inline KGRGBAffff KGRGBAffffMultiplyByFloat(KGRGBAffff result,CGFloat val
    return result;
 }
 
-static inline KGRGBAffff KGRGBAffffAdd(KGRGBAffff result,KGRGBAffff other){
+static inline O2argb32f O2argb32fAdd(O2argb32f result,O2argb32f other){
    result.r+=other.r;
    result.g+=other.g;
    result.b+=other.b;
@@ -145,7 +193,7 @@ static inline KGRGBAffff KGRGBAffffAdd(KGRGBAffff result,KGRGBAffff other){
    return result;
 }
 
-static inline KGRGBAffff KGRGBAffffSubtract(KGRGBAffff result,KGRGBAffff other){
+static inline O2argb32f O2argb32fSubtract(O2argb32f result,O2argb32f other){
    result.r-=other.r;
    result.g-=other.g;
    result.b-=other.b;
@@ -153,13 +201,13 @@ static inline KGRGBAffff KGRGBAffffSubtract(KGRGBAffff result,KGRGBAffff other){
    return result;
 }
 
-static inline KGRGBAffff KGRGBAffffPremultiply(KGRGBAffff result){
+static inline O2argb32f O2argb32fPremultiply(O2argb32f result){
    result.r*=result.a;
    result.g*=result.a;
    result.b*=result.a;
    return result;
 }
-static inline KGRGBAffff KGRGBAffffClamp(KGRGBAffff result){
+static inline O2argb32f O2argb32fClamp(O2argb32f result){
    result.r=RI_CLAMP(result.r,0.0f,1.0f);
    result.g=RI_CLAMP(result.g,0.0f,1.0f);
    result.b=RI_CLAMP(result.b,0.0f,1.0f);
@@ -167,15 +215,6 @@ static inline KGRGBAffff KGRGBAffffClamp(KGRGBAffff result){
    return result;
 }
 
-static inline void KGRGBPremultiplySpan(KGRGBAffff *span,int length){
-   int i;
-      
-   for(i=0;i<length;i++){
-    span[i].r*=span[i].a;
-    span[i].g*=span[i].a;
-    span[i].b*=span[i].a; 
-   }
-}
 
 typedef struct {
    uint8_t a;
@@ -199,14 +238,14 @@ typedef struct {
 } KGARGB32Little;
 
 #ifdef __LITTLE_ENDIAN__
-typedef KGARGB32Little KGRGBA8888;
+typedef KGARGB32Little O2argb8u;
 #endif
 #ifdef __BIG_ENDIAN__
-typedef KGARGB32Big KGRGBA8888;
+typedef KGARGB32Big O2argb8u;
 #endif
 
-static inline KGRGBA8888 KGRGBA8888Init(uint8_t r,uint8_t g,uint8_t b,uint8_t a){
-   KGRGBA8888 result;
+static inline O2argb8u O2argb8uInit(uint8_t r,uint8_t g,uint8_t b,uint8_t a){
+   O2argb8u result;
    result.r=r;
    result.g=g;
    result.b=b;
@@ -214,30 +253,30 @@ static inline KGRGBA8888 KGRGBA8888Init(uint8_t r,uint8_t g,uint8_t b,uint8_t a)
    return result;
 }
 
-static inline CGFloat CGFloatFromByte(uint8_t i){
-	return (CGFloat)(i) / (CGFloat)0xFF;
+static inline O2Float O2Float32FromByte(uint8_t i){
+	return (O2Float)(i) / (O2Float)0xFF;
 }
 
-static inline uint8_t CGByteFromFloat(CGFloat c){
-	return RI_INT_MIN(RI_INT_MAX(RI_FLOOR_TO_INT(c * (CGFloat)0xFF + 0.5f), 0), 0xFF);
+static inline uint8_t O2ByteFromFloat(O2Float c){
+	return RI_INT_MIN(RI_INT_MAX(RI_FLOOR_TO_INT(c * (O2Float)0xFF + 0.5f), 0), 0xFF);
 }
 
-static inline KGRGBA8888 KGRGBA8888FromKGRGBAffff(KGRGBAffff rgba){
-   KGRGBA8888 result;
-   result.r=CGByteFromFloat(rgba.r);
-   result.g=CGByteFromFloat(rgba.g);
-   result.b=CGByteFromFloat(rgba.b);
-   result.a=CGByteFromFloat(rgba.a);
+static inline O2argb8u O2argb8uFromO2argb32f(O2argb32f rgba){
+   O2argb8u result;
+   result.r=O2ByteFromFloat(rgba.r);
+   result.g=O2ByteFromFloat(rgba.g);
+   result.b=O2ByteFromFloat(rgba.b);
+   result.a=O2ByteFromFloat(rgba.a);
    return result;
 }
 
 #define COVERAGE_MULTIPLIER 256
 
-static inline CGFloat zeroToOneFromCoverage(int coverage){
-   return (CGFloat)coverage/(CGFloat)COVERAGE_MULTIPLIER;
+static inline O2Float zeroToOneFromCoverage(int coverage){
+   return (O2Float)coverage/(O2Float)COVERAGE_MULTIPLIER;
 }
 
-static inline CGFloat coverageFromZeroToOne(CGFloat value){
+static inline O2Float coverageFromZeroToOne(O2Float value){
    return value*COVERAGE_MULTIPLIER;
 }
 
@@ -249,7 +288,7 @@ static inline int multiplyByCoverage(int value,int coverage){
    return (value*coverage)/COVERAGE_MULTIPLIER;
 }
 
-static inline unsigned char divideBy255(unsigned short t){
+static inline int divideBy255(int t){
 // t/255
 // From Imaging Compositing Fundamentals, Technical Memo 4 by Alvy Ray Smith, Aug 15, 1995
 // Faster and more accurate in that it rounds instead of truncates   
@@ -259,11 +298,11 @@ static inline unsigned char divideBy255(unsigned short t){
    return t;
 }
 
-static inline unsigned char alphaMultiply(unsigned short c,unsigned short a){
+static inline int alphaMultiply(int c,int a){
    return divideBy255(c*a);
 }
 
-static inline KGRGBA8888 KGRGBA8888MultiplyByCoverage(KGRGBA8888 result,unsigned short value){
+static inline O2argb8u O2argb8uMultiplyByCoverage(O2argb8u result,int value){
    if(value!=COVERAGE_MULTIPLIER){
     result.r=((int)result.r*value)/COVERAGE_MULTIPLIER;
     result.g=((int)result.g*value)/COVERAGE_MULTIPLIER;
@@ -273,22 +312,18 @@ static inline KGRGBA8888 KGRGBA8888MultiplyByCoverage(KGRGBA8888 result,unsigned
    return result;
 }
 
-static inline KGRGBA8888 KGRGBA8888Add(KGRGBA8888 result,KGRGBA8888 other){
-   result.r=MIN((int)result.r+(int)other.r,255);
-   result.g=MIN((int)result.g+(int)other.g,255);
-   result.b=MIN((int)result.b+(int)other.b,255);
-   result.a=MIN((int)result.a+(int)other.a,255);
+static inline O2argb8u O2argb8uAdd(O2argb8u result,O2argb8u other){
+   result.r=RI_INT_MIN((int)result.r+(int)other.r,255);
+   result.g=RI_INT_MIN((int)result.g+(int)other.g,255);
+   result.b=RI_INT_MIN((int)result.b+(int)other.b,255);
+   result.a=RI_INT_MIN((int)result.a+(int)other.a,255);
    return result;
 }
 
-@class O2Image;
-
-typedef O2Image *O2ImageRef;
-
-typedef KGRGBA8888 *(*KGImageReadSpan_RGBA8888)(O2Image *self,int x,int y,KGRGBA8888 *span,int length);
-typedef KGRGBAffff *(*KGImageReadSpan_RGBAffff)(O2Image *self,int x,int y,KGRGBAffff *span,int length);
-typedef uint8_t    *(*KGImageReadSpan_A8)(O2Image *self,int x,int y,uint8_t *span,int length);
-typedef CGFloat    *(*KGImageReadSpan_Af)(O2Image *self,int x,int y,CGFloat *span,int length);
+typedef O2argb8u *(*O2ImageReadSpan_RGBA8888)(O2Image *self,int x,int y,O2argb8u *span,int length);
+typedef O2argb32f *(*O2ImageReadSpan_RGBAffff)(O2Image *self,int x,int y,O2argb32f *span,int length);
+typedef uint8_t    *(*O2ImageReadSpan_A8)(O2Image *self,int x,int y,uint8_t *span,int length);
+typedef O2Float    *(*O2ImageReadSpan_Af)(O2Image *self,int x,int y,O2Float *span,int length);
 
 @interface O2Image : NSObject <NSCopying> {
    size_t _width;
@@ -298,12 +333,12 @@ typedef CGFloat    *(*KGImageReadSpan_Af)(O2Image *self,int x,int y,CGFloat *spa
    size_t _bytesPerRow;
    
    O2ColorSpaceRef        _colorSpace;
-   CGBitmapInfo           _bitmapInfo;
+   O2BitmapInfo           _bitmapInfo;
    O2DataProvider        *_provider;
-   float                 *_decode;
+   O2Float               *_decode;
    BOOL                   _interpolate;
    BOOL                   _isMask;
-   CGColorRenderingIntent _renderingIntent;
+   O2ColorRenderingIntent _renderingIntent;
    O2Image               *_mask;
 
    NSData              *_directData;
@@ -316,42 +351,59 @@ typedef CGFloat    *(*KGImageReadSpan_Af)(O2Image *self,int x,int y,CGFloat *spa
    BOOL			     	m_mipmapsValid;
    int                 _mipmapsCount;
    int                 _mipmapsCapacity;
-   struct KGSurface    **_mipmaps;
+   struct O2Surface    **_mipmaps;
 
 @public
-   KGImageReadSpan_RGBA8888 _read_lRGBA8888_PRE;
-   KGImageReadSpan_RGBAffff _read_lRGBAffff_PRE;
-   KGImageReadSpan_A8 _readA8;
-   KGImageReadSpan_Af _readAf;
+   O2ImageReadSpan_RGBA8888 _read_lRGBA8888_PRE;
+   O2ImageReadSpan_RGBAffff _read_lRGBAffff_PRE;
+   O2ImageReadSpan_A8 _readA8;
+   O2ImageReadSpan_Af _readAf;
 }
 
--initWithWidth:(size_t)width height:(size_t)height bitsPerComponent:(size_t)bitsPerComponent bitsPerPixel:(size_t)bitsPerPixel bytesPerRow:(size_t)bytesPerRow colorSpace:(O2ColorSpaceRef)colorSpace bitmapInfo:(CGBitmapInfo)bitmapInfo provider:(O2DataProvider *)provider decode:(const CGFloat *)decode interpolate:(BOOL)interpolate renderingIntent:(CGColorRenderingIntent)renderingIntent;
+-initWithWidth:(size_t)width height:(size_t)height bitsPerComponent:(size_t)bitsPerComponent bitsPerPixel:(size_t)bitsPerPixel bytesPerRow:(size_t)bytesPerRow colorSpace:(O2ColorSpaceRef)colorSpace bitmapInfo:(O2BitmapInfo)bitmapInfo provider:(O2DataProvider *)provider decode:(const O2Float *)decode interpolate:(BOOL)interpolate renderingIntent:(O2ColorRenderingIntent)renderingIntent;
 
 -initMaskWithWidth:(size_t)width height:(size_t)height bitsPerComponent:(size_t)bitsPerComponent bitsPerPixel:(size_t)bitsPerPixel bytesPerRow:(size_t)bytesPerRow provider:(O2DataProvider *)provider decode:(const float *)decode interpolate:(BOOL)interpolate ;
 
--initWithJPEGDataProvider:(O2DataProvider *)jpegProvider decode:(const CGFloat *)decode interpolate:(BOOL)interpolate renderingIntent:(CGColorRenderingIntent)renderingIntent;
--initWithPNGDataProvider:(O2DataProvider *)jpegProvider decode:(const CGFloat *)decode interpolate:(BOOL)interpolate renderingIntent:(CGColorRenderingIntent)renderingIntent;
+-initWithJPEGDataProvider:(O2DataProvider *)jpegProvider decode:(const O2Float *)decode interpolate:(BOOL)interpolate renderingIntent:(O2ColorRenderingIntent)renderingIntent;
+-initWithPNGDataProvider:(O2DataProvider *)jpegProvider decode:(const O2Float *)decode interpolate:(BOOL)interpolate renderingIntent:(O2ColorRenderingIntent)renderingIntent;
 
 -(O2Image *)copyWithColorSpace:(O2ColorSpaceRef)colorSpace;
--(O2Image *)childImageInRect:(CGRect)rect;
+-(O2Image *)childImageInRect:(O2Rect)rect;
 
 -(void)addMask:(O2Image *)mask;
 -copyWithMask:(O2Image *)image;
--copyWithMaskingColors:(const CGFloat *)components;
+-copyWithMaskingColors:(const O2Float *)components;
 
--(size_t)width;
--(size_t)height;
--(size_t)bitsPerComponent;
--(size_t)bitsPerPixel;
--(size_t)bytesPerRow;
--(O2ColorSpaceRef)colorSpace;
--(CGBitmapInfo)bitmapInfo;
--(O2DataProvider *)dataProvider;
--(const CGFloat *)decode;
--(BOOL)shouldInterpolate;
--(CGColorRenderingIntent)renderingIntent;
--(BOOL)isMask;
--(CGImageAlphaInfo)alphaInfo;
+O2ImageRef O2ImageCreate(size_t width,size_t height,size_t bitsPerComponent,size_t bitsPerPixel,size_t bytesPerRow,O2ColorSpaceRef colorSpace,O2BitmapInfo bitmapInfo,O2DataProviderRef dataProvider,const O2Float *decode,BOOL shouldInterpolate,O2ColorRenderingIntent renderingIntent);
+O2ImageRef O2ImageMaskCreate(size_t width,size_t height,size_t bitsPerComponent,size_t bitsPerPixel,size_t bytesPerRow,O2DataProviderRef dataProvider,const O2Float *decode,BOOL shouldInterpolate);
+O2ImageRef O2ImageCreateCopy(O2ImageRef image);
+O2ImageRef O2ImageCreateCopyWithColorSpace(O2ImageRef self,O2ColorSpaceRef colorSpace);
+O2ImageRef O2ImageCreateWithJPEGDataProvider(O2DataProviderRef jpegProvider,const O2Float *decode,BOOL interpolate,O2ColorRenderingIntent renderingIntent);
+O2ImageRef O2ImageCreateWithPNGDataProvider(O2DataProviderRef pngProvider,const O2Float *decode,BOOL interpolate,O2ColorRenderingIntent renderingIntent);
+
+O2ImageRef O2ImageCreateWithImageInRect(O2ImageRef self,O2Rect rect);
+O2ImageRef O2ImageCreateWithMask(O2ImageRef self,O2ImageRef mask);
+O2ImageRef O2ImageCreateWithMaskingColors(O2ImageRef self,const O2Float *components);
+
+O2ImageRef O2ImageRetain(O2ImageRef self);
+void O2ImageRelease(O2ImageRef self);
+BOOL O2ImageIsMask(O2ImageRef self);
+
+size_t O2ImageGetWidth(O2ImageRef self);
+size_t O2ImageGetHeight(O2ImageRef self);
+
+size_t O2ImageGetBitsPerComponent(O2ImageRef self);
+size_t O2ImageGetBitsPerPixel(O2ImageRef self);
+size_t O2ImageGetBytesPerRow(O2ImageRef self);
+O2ColorSpaceRef O2ImageGetColorSpace(O2ImageRef self);
+
+O2ImageAlphaInfo O2ImageGetAlphaInfo(O2ImageRef self);
+O2DataProviderRef O2ImageGetDataProvider(O2ImageRef self);
+const O2Float *O2ImageGetDecode(O2ImageRef self);
+BOOL O2ImageGetShouldInterpolate(O2ImageRef self);
+O2ColorRenderingIntent O2ImageGetRenderingIntent(O2ImageRef self);
+O2BitmapInfo O2ImageGetBitmapInfo(O2ImageRef self);
+
 
 -(NSData *)directData;
 -(const void *)directBytes;
@@ -359,58 +411,56 @@ typedef CGFloat    *(*KGImageReadSpan_Af)(O2Image *self,int x,int y,CGFloat *spa
 
 @end
 
-VGPixelDecode KGImageParametersToPixelLayout(KGImageFormat format,size_t *bitsPerPixel,VGColorInternalFormat *colorFormat);
+VGPixelDecode O2ImageParametersToPixelLayout(O2ImageFormat format,size_t *bitsPerPixel,VGColorInternalFormat *colorFormat);
 
-CGColorRenderingIntent KGImageRenderingIntentWithName(const char *name);
-const char *KGImageNameWithIntent(CGColorRenderingIntent intent);
+O2ColorRenderingIntent O2ImageRenderingIntentWithName(const char *name);
+const char *O2ImageNameWithIntent(O2ColorRenderingIntent intent);
 
-size_t KGImageGetWidth(O2Image *self);
-size_t KGImageGetHeight(O2Image *self);
 
-/* O2Image and KGSurface can read and write any image format provided functions are provided to translate to/from either KGRGBA8888 or KGRGBAffff spans.
+/* O2Image and O2Surface can read and write any image format provided functions are provided to translate to/from either O2argb8u or O2argb32f spans.
 
   The return value will be either NULL or a pointer to the image data if direct access is available for the given format. You must use the return value if it is not NULL. If the value is not NULL you don't do a write back. This is a big boost for native ARGB format as it avoids a copy out and a copy in.
   
   The nomenclature for the RGBA8888 functions is the bit sequencing in big endian
  */
 
-uint8_t *KGImageRead_G8_to_A8(O2Image *self,int x,int y,uint8_t *alpha,int length);
-CGFloat *KGImageRead_ANY_to_A8_to_Af(O2Image *self,int x,int y,CGFloat *alpha,int length);
-uint8_t *KGImageRead_ANY_to_RGBA8888_to_A8(O2Image *self,int x,int y,uint8_t *alpha,int length);
+uint8_t *O2ImageRead_G8_to_A8(O2Image *self,int x,int y,uint8_t *alpha,int length);
+O2Float *O2ImageRead_ANY_to_A8_to_Af(O2Image *self,int x,int y,O2Float *alpha,int length);
+uint8_t *O2ImageRead_ANY_to_RGBA8888_to_A8(O2Image *self,int x,int y,uint8_t *alpha,int length);
 
-KGRGBA8888 *KGImageRead_G8_to_RGBA8888(O2Image *self,int x,int y,KGRGBA8888 *span,int length);
-KGRGBA8888 *KGImageRead_GA88_to_RGBA8888(O2Image *self,int x,int y,KGRGBA8888 *span,int length);
-KGRGBA8888 *KGImageRead_RGBA8888_to_RGBA8888(O2Image *self,int x,int y,KGRGBA8888 *span,int length);
-KGRGBA8888 *KGImageRead_ABGR8888_to_RGBA8888(O2Image *self,int x,int y,KGRGBA8888 *span,int length);
-KGRGBA8888 *KGImageRead_BGRA8888_to_RGBA8888(O2Image *self,int x,int y,KGRGBA8888 *span,int length);
-KGRGBA8888 *KGImageRead_RGB888_to_RGBA8888(O2Image *self,int x,int y,KGRGBA8888 *span,int length);
-KGRGBA8888 *KGImageRead_BGRX8888_to_RGBA8888(O2Image *self,int x,int y,KGRGBA8888 *span,int length);
-KGRGBA8888 *KGImageRead_XRGB8888_to_RGBA8888(O2Image *self,int x,int y,KGRGBA8888 *span,int length);
-KGRGBA8888 *KGImageRead_G3B5X1R5G2_to_RGBA8888(O2Image *self,int x,int y,KGRGBA8888 *span,int length);
-KGRGBA8888 *KGImageRead_RGBA4444_to_RGBA8888(O2Image *self,int x,int y,KGRGBA8888 *span,int length);
-KGRGBA8888 *KGImageRead_BARG4444_to_RGBA8888(O2Image *self,int x,int y,KGRGBA8888 *span,int length);
-KGRGBA8888 *KGImageRead_RGBA2222_to_RGBA8888(O2Image *self,int x,int y,KGRGBA8888 *span,int length);
-KGRGBA8888 *KGImageRead_CMYK8888_to_RGBA8888(O2Image *self,int x,int y,KGRGBA8888 *span,int length);
-KGRGBA8888 *KGImageRead_I8_to_RGBA8888(O2Image *self,int x,int y,KGRGBA8888 *span,int length);
+O2argb8u *O2ImageRead_G8_to_RGBA8888(O2Image *self,int x,int y,O2argb8u *span,int length);
+O2argb8u *O2ImageRead_GA88_to_RGBA8888(O2Image *self,int x,int y,O2argb8u *span,int length);
+O2argb8u *O2ImageRead_RGBA8888_to_RGBA8888(O2Image *self,int x,int y,O2argb8u *span,int length);
+O2argb8u *O2ImageRead_ABGR8888_to_RGBA8888(O2Image *self,int x,int y,O2argb8u *span,int length);
+O2argb8u *O2ImageRead_BGRA8888_to_RGBA8888(O2Image *self,int x,int y,O2argb8u *span,int length);
+O2argb8u *O2ImageRead_RGB888_to_RGBA8888(O2Image *self,int x,int y,O2argb8u *span,int length);
+O2argb8u *O2ImageRead_BGRX8888_to_RGBA8888(O2Image *self,int x,int y,O2argb8u *span,int length);
+O2argb8u *O2ImageRead_XRGB8888_to_RGBA8888(O2Image *self,int x,int y,O2argb8u *span,int length);
+O2argb8u *O2ImageRead_G3B5X1R5G2_to_RGBA8888(O2Image *self,int x,int y,O2argb8u *span,int length);
+O2argb8u *O2ImageRead_RGBA4444_to_RGBA8888(O2Image *self,int x,int y,O2argb8u *span,int length);
+O2argb8u *O2ImageRead_BARG4444_to_RGBA8888(O2Image *self,int x,int y,O2argb8u *span,int length);
+O2argb8u *O2ImageRead_RGBA2222_to_RGBA8888(O2Image *self,int x,int y,O2argb8u *span,int length);
+O2argb8u *O2ImageRead_CMYK8888_to_RGBA8888(O2Image *self,int x,int y,O2argb8u *span,int length);
+O2argb8u *O2ImageRead_I8_to_RGBA8888(O2Image *self,int x,int y,O2argb8u *span,int length);
 
-KGRGBAffff *KGImageRead_ANY_to_RGBA8888_to_RGBAffff(O2Image *self,int x,int y,KGRGBAffff *span,int length);
+O2argb32f *O2ImageRead_ANY_to_RGBA8888_to_RGBAffff(O2Image *self,int x,int y,O2argb32f *span,int length);
 
-KGRGBAffff *KGImageRead_RGBAffffLittle_to_RGBAffff(O2Image *self,int x,int y,KGRGBAffff *span,int length);
-KGRGBAffff *KGImageRead_RGBAffffBig_to_RGBAffff(O2Image *self,int x,int y,KGRGBAffff *span,int length);
+O2argb32f *O2ImageRead_RGBAffffLittle_to_RGBAffff(O2Image *self,int x,int y,O2argb32f *span,int length);
+O2argb32f *O2ImageRead_RGBAffffBig_to_RGBAffff(O2Image *self,int x,int y,O2argb32f *span,int length);
 
-KGRGBAffff *KGImageReadSpan_lRGBAffff_PRE(O2Image *self,int x,int y,KGRGBAffff *span,int length);
-uint8_t    *KGImageReadSpan_A8_MASK(O2Image *self,int x,int y,uint8_t *coverage,int length);
-CGFloat    *KGImageReadSpan_Af_MASK(O2Image *self,int x,int y,CGFloat *coverage,int length);
+O2argb32f *O2ImageReadSpan_lRGBAffff_PRE(O2Image *self,int x,int y,O2argb32f *span,int length);
+uint8_t    *O2ImageReadSpan_A8_MASK(O2Image *self,int x,int y,uint8_t *coverage,int length);
+O2Float    *O2ImageReadSpan_Af_MASK(O2Image *self,int x,int y,O2Float *coverage,int length);
 
-void KGImageReadTileSpanExtendEdge_lRGBA8888_PRE(O2Image *self,int u, int v, KGRGBA8888 *span,int length);
-void KGImageReadTileSpanExtendEdge_lRGBAffff_PRE(O2Image *self,int u, int v, KGRGBAffff *span,int length);
+void O2ImageReadTileSpanExtendEdge_lRGBA8888_PRE(O2Image *self,int u, int v, O2argb8u *span,int length);
+void O2ImageReadTileSpanExtendEdge_lRGBAffff_PRE(O2Image *self,int u, int v, O2argb32f *span,int length);
 
-void KGImageEWAOnMipmaps_lRGBAffff_PRE(O2Image *self,int x, int y,KGRGBAffff *span,int length, CGAffineTransform surfaceToImage);
-void KGImageBicubic_lRGBA8888_PRE(O2Image *self,int x, int y,KGRGBA8888 *span,int length, CGAffineTransform surfaceToImage);
-void KGImageBicubic_lRGBAffff_PRE(O2Image *self,int x, int y,KGRGBAffff *span,int length, CGAffineTransform surfaceToImage);
-void KGImageBilinear_lRGBA8888_PRE(O2Image *self,int x, int y,KGRGBA8888 *span,int length, CGAffineTransform surfaceToImage);
-void KGImageBilinear_lRGBAffff_PRE(O2Image *self,int x, int y,KGRGBAffff *span,int length, CGAffineTransform surfaceToImage);
-void KGImagePointSampling_lRGBA8888_PRE(O2Image *self,int x, int y,KGRGBA8888 *span,int length, CGAffineTransform surfaceToImage);
-void KGImagePointSampling_lRGBAffff_PRE(O2Image *self,int x, int y,KGRGBAffff *span,int length, CGAffineTransform surfaceToImage);
+void O2ImageEWAOnMipmaps_lRGBAffff_PRE(O2Image *self,int x, int y,O2argb32f *span,int length, O2AffineTransform surfaceToImage);
+void O2ImageBicubic_lRGBA8888_PRE(O2Image *self,int x, int y,O2argb8u *span,int length, O2AffineTransform surfaceToImage);
+void O2ImageBicubic_lRGBAffff_PRE(O2Image *self,int x, int y,O2argb32f *span,int length, O2AffineTransform surfaceToImage);
+void O2ImageBilinear_lRGBA8888_PRE(O2Image *self,int x, int y,O2argb8u *span,int length, O2AffineTransform surfaceToImage);
+void O2ImageBilinear_lRGBAffff_PRE(O2Image *self,int x, int y,O2argb32f *span,int length, O2AffineTransform surfaceToImage);
+void O2ImagePointSampling_lRGBA8888_PRE(O2Image *self,int x, int y,O2argb8u *span,int length, O2AffineTransform surfaceToImage);
+void O2ImagePointSampling_lRGBAffff_PRE(O2Image *self,int x, int y,O2argb32f *span,int length, O2AffineTransform surfaceToImage);
 
-void KGImageReadPatternSpan_lRGBAffff_PRE(O2Image *self,CGFloat x, CGFloat y, KGRGBAffff *span,int length, CGAffineTransform surfaceToImage, CGPatternTiling distortion);
+void O2ImageReadPatternSpan_lRGBAffff_PRE(O2Image *self,O2Float x, O2Float y, O2argb32f *span,int length, O2AffineTransform surfaceToImage, O2PatternTiling distortion);

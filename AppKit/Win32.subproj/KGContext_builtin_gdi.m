@@ -16,11 +16,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @implementation KGContext_builtin_gdi
 
-static inline BOOL transformIsFlipped(CGAffineTransform matrix){
+static inline O2GState *currentState(O2Context *self){        
+   return [self->_stateStack lastObject];
+}
+
+static inline BOOL transformIsFlipped(O2AffineTransform matrix){
    return (matrix.d<0)?YES:NO;
 }
 
--initWithSurface:(KGSurface *)surface flipped:(BOOL)flipped {
+-initWithSurface:(O2Surface *)surface flipped:(BOOL)flipped {
    [super initWithSurface:surface flipped:flipped];
    if([[self surface] isKindOfClass:[KGSurface_DIBSection class]])
     _dc=[[(KGSurface_DIBSection *)[self surface] deviceContext] dc];
@@ -49,22 +53,34 @@ static inline BOOL transformIsFlipped(CGAffineTransform matrix){
 -(void)deviceClipToNonZeroPath:(O2Path *)path {
    [super deviceClipToNonZeroPath:path];
 
-   O2GState *state=[self currentState];
-   [[self deviceContext] clipToNonZeroPath:path withTransform:CGAffineTransformInvert(state->_userSpaceTransform) deviceTransform:state->_deviceSpaceTransform];
+   O2GState *state=currentState(self);
+   [[self deviceContext] clipToNonZeroPath:path withTransform:O2AffineTransformInvert(state->_userSpaceTransform) deviceTransform:state->_deviceSpaceTransform];
 }
 
 -(void)deviceClipToEvenOddPath:(O2Path *)path {
    [super deviceClipToEvenOddPath:path];
 
-   O2GState *state=[self currentState];
-   [[self deviceContext] clipToEvenOddPath:path withTransform:CGAffineTransformInvert(state->_userSpaceTransform) deviceTransform:state->_deviceSpaceTransform];
+   O2GState *state=currentState(self);
+   [[self deviceContext] clipToEvenOddPath:path withTransform:O2AffineTransformInvert(state->_userSpaceTransform) deviceTransform:state->_deviceSpaceTransform];
 }
 
--(void)showGlyphs:(const CGGlyph *)glyphs count:(unsigned)count {
-   CGAffineTransform transformToDevice=[self userSpaceToDeviceSpaceTransform];
-   O2GState  *gState=[self currentState];
-   CGAffineTransform Trm=CGAffineTransformConcat(gState->_textTransform,transformToDevice);
-   NSPoint           point=CGPointApplyAffineTransform(NSMakePoint(0,0),Trm);
+-(void)establishFontStateInDeviceIfDirty {
+   O2GState *gState=currentState(self);
+   
+   if(gState->_fontIsDirty){
+    [gState clearFontIsDirty];
+    [_gdiFont release];
+    _gdiFont=[(KGFont_gdi *)[gState font] createGDIFontSelectedInDC:_dc pointSize:[gState pointSize]];
+   }
+}
+
+-(void)showGlyphs:(const O2Glyph *)glyphs count:(unsigned)count {
+   O2AffineTransform transformToDevice=O2ContextGetUserSpaceToDeviceSpaceTransform(self);
+   O2GState  *gState=currentState(self);
+   O2AffineTransform Trm=O2AffineTransformConcat(gState->_textTransform,transformToDevice);
+   NSPoint           point=O2PointApplyAffineTransform(NSMakePoint(0,0),Trm);
+   
+   [self establishFontStateInDeviceIfDirty];
    
    SetTextColor(_dc,COLORREFFromColor([self fillColor]));
 
@@ -72,60 +88,30 @@ static inline BOOL transformIsFlipped(CGAffineTransform matrix){
 
    O2Font *font=[gState font];
    int     i,advances[count];
-   CGFloat unitsPerEm=CGFontGetUnitsPerEm(font);
+   O2Float unitsPerEm=O2FontGetUnitsPerEm(font);
    
    O2FontGetGlyphAdvances(font,glyphs,count,advances);
    
-   CGFloat total=0;
+   O2Float total=0;
    
    for(i=0;i<count;i++)
     total+=advances[i];
     
-   total=(total/CGFontGetUnitsPerEm(font))*gState->_pointSize;
+   total=(total/O2FontGetUnitsPerEm(font))*gState->_pointSize;
       
-   [self currentState]->_textTransform.tx+=total;
-   [self currentState]->_textTransform.ty+=0;
+   currentState(self)->_textTransform.tx+=total;
+   currentState(self)->_textTransform.ty+=0;
 }
 
 -(void)showText:(const char *)text length:(unsigned)length {
-   CGGlyph *encoding=[[self currentState] glyphTableForTextEncoding];
-   CGGlyph  glyphs[length];
+   O2Glyph *encoding=[currentState(self) glyphTableForTextEncoding];
+   O2Glyph  glyphs[length];
    int      i;
    
    for(i=0;i<length;i++)
     glyphs[i]=encoding[(uint8_t)text[i]];
     
    [self showGlyphs:glyphs count:length];
-}
-
--(void)establishFontStateInDevice {
-   O2GState *gState=[self currentState];
-   [_gdiFont release];
-   _gdiFont=[(KGFont_gdi *)[gState font] createGDIFontSelectedInDC:_dc pointSize:[gState pointSize]];
-}
-
--(void)establishFontState {
-   [self establishFontStateInDevice];
-}
-
--(void)setFont:(O2Font *)font {
-   [super setFont:font];
-   [self establishFontState];
-}
-
--(void)setFontSize:(float)size {
-   [super setFontSize:size];
-   [self establishFontState];
-}
-
--(void)selectFontWithName:(const char *)name size:(float)size encoding:(int)encoding {
-   [super selectFontWithName:name size:size encoding:encoding];
-   [self establishFontState];
-}
-
--(void)restoreGState {
-   [super restoreGState];
-   [self establishFontStateInDevice];
 }
 
 @end

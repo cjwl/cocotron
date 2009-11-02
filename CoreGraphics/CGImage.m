@@ -11,98 +11,98 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "KGImage.h"
 
 CGImageRef CGImageRetain(CGImageRef image) {
-   return [image retain];
+   return O2ImageRetain(image);
 }
 
 void CGImageRelease(CGImageRef image) {
-   [image release];
+   O2ImageRelease(image);
 }
 
 CGImageRef CGImageCreate(size_t width,size_t height,size_t bitsPerComponent,size_t bitsPerPixel,size_t bytesPerRow,CGColorSpaceRef colorSpace,CGBitmapInfo bitmapInfo,CGDataProviderRef dataProvider,const CGFloat *decode,BOOL interpolate,CGColorRenderingIntent renderingIntent) {
-   return [[O2Image alloc] initWithWidth:width height:height bitsPerComponent:bitsPerComponent bitsPerPixel:bitsPerPixel bytesPerRow:bytesPerRow colorSpace:colorSpace bitmapInfo:bitmapInfo provider:dataProvider decode:decode interpolate:interpolate renderingIntent:renderingIntent];
+   return O2ImageCreate(width,height,bitsPerComponent,bitsPerPixel,bytesPerRow,colorSpace,bitmapInfo,dataProvider,decode,interpolate,renderingIntent);
 }
 
 CGImageRef CGImageMaskCreate(size_t width,size_t height,size_t bitsPerComponent,size_t bitsPerPixel,size_t bytesPerRow,CGDataProviderRef dataProvider,const CGFloat *decode,BOOL interpolate) {
-   return [[O2Image alloc] initMaskWithWidth:width height:height bitsPerComponent:bitsPerComponent bitsPerPixel:bitsPerPixel bytesPerRow:bytesPerRow provider:dataProvider decode:decode interpolate:interpolate];
+   return O2ImageMaskCreate(width,height,bitsPerComponent,bitsPerPixel,bytesPerRow,dataProvider,decode,interpolate);
 }
 
 CGImageRef CGImageCreateCopy(CGImageRef self) {
-   return [self copy];
+   return O2ImageCreateCopy(self);
 }
 
 CGImageRef CGImageCreateCopyWithColorSpace(CGImageRef self,CGColorSpaceRef colorSpace) {
-   return [self copyWithColorSpace:colorSpace];
+   return O2ImageCreateCopyWithColorSpace(self,colorSpace);
 }
 
 CGImageRef CGImageCreateWithImageInRect(CGImageRef self,CGRect rect) {
-   return [self childImageInRect:rect];
+   return O2ImageCreateWithImageInRect(self,rect);
 }
 
 CGImageRef CGImageCreateWithJPEGDataProvider(CGDataProviderRef jpegProvider,const CGFloat *decode,BOOL interpolate,CGColorRenderingIntent renderingIntent) {
-   return [[O2Image alloc] initWithJPEGDataProvider:jpegProvider decode:decode interpolate:interpolate renderingIntent:renderingIntent];
+   return O2ImageCreateWithJPEGDataProvider(jpegProvider,decode,interpolate,renderingIntent);
 }
 
 CGImageRef CGImageCreateWithPNGDataProvider(CGDataProviderRef pngProvider,const CGFloat *decode,BOOL interpolate,CGColorRenderingIntent renderingIntent) {
-   return [[O2Image alloc] initWithPNGDataProvider:pngProvider decode:decode interpolate:interpolate renderingIntent:renderingIntent];
+   return O2ImageCreateWithPNGDataProvider(pngProvider,decode,interpolate,renderingIntent);
 }
 
 CGImageRef CGImageCreateWithMask(CGImageRef self,CGImageRef mask) {
-   return [self copyWithMask:mask];
+   return O2ImageCreateWithMask(self,mask);
 }
 
 CGImageRef CGImageCreateWithMaskingColors(CGImageRef self,const CGFloat *components) {
-   return [self copyWithMaskingColors:components];
+   return O2ImageCreateWithMaskingColors(self,components);
 }
 
 size_t CGImageGetWidth(CGImageRef self) {
-   return [self width];
+   return O2ImageGetWidth(self);
 }
 
 size_t CGImageGetHeight(CGImageRef self) {
-   return [self height];
+   return O2ImageGetHeight(self);
 }
 
 size_t CGImageGetBitsPerComponent(CGImageRef self) {
-   return [self bitsPerComponent];
+   return O2ImageGetBitsPerComponent(self);
 }
 
 size_t CGImageGetBitsPerPixel(CGImageRef self) {
-   return [self bitsPerPixel];
+   return O2ImageGetBitsPerPixel(self);
 }
 
 size_t CGImageGetBytesPerRow(CGImageRef self) {
-   return [self bytesPerRow];
+   return O2ImageGetBytesPerRow(self);
 }
 
 CGColorSpaceRef CGImageGetColorSpace(CGImageRef self) {
-   return [self colorSpace];
+   return O2ImageGetColorSpace(self);
 }
 
 CGBitmapInfo CGImageGetBitmapInfo(CGImageRef self) {
-   return [self bitmapInfo];
+   return O2ImageGetBitmapInfo(self);
 }
 
 CGDataProviderRef CGImageGetDataProvider(CGImageRef self) {
-   return [self dataProvider];
+   return O2ImageGetDataProvider(self);
 }
 
 const CGFloat *CGImageGetDecode(CGImageRef self) {
-   return [self decode];
+   return O2ImageGetDecode(self);
 }
 
 BOOL CGImageGetShouldInterpolate(CGImageRef self) {
-   return [self shouldInterpolate];
+   return O2ImageGetShouldInterpolate(self);
 }
 
 CGColorRenderingIntent CGImageGetRenderingIntent(CGImageRef self) {
-   return [self renderingIntent];
+   return O2ImageGetRenderingIntent(self);
 }
 
 BOOL CGImageIsMask(CGImageRef self) {
-   return [self isMask];
+   return O2ImageIsMask(self);
 }
 
 CGImageAlphaInfo CGImageGetAlphaInfo(CGImageRef self) {
-   return [self alphaInfo];
+   return O2ImageGetAlphaInfo(self);
 }
 

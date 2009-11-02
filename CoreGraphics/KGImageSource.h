@@ -10,6 +10,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @class NSData,NSDictionary,NSURL,O2Image,O2DataProvider;
 
+extern NSString *kO2ImagePropertyDPIWidth;
+extern NSString *kO2ImagePropertyDPIHeight;
+
 @interface KGImageSource : NSObject {
    O2DataProvider *_provider;
    NSDictionary   *_options;

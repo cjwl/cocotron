@@ -8,6 +8,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <CoreGraphics/CGPDFPage.h>
 #import "KGPDFPage.h"
+#import "CGConversions.h"
 
 CGPDFPageRef CGPDFPageRetain(CGPDFPageRef self) {
    return [self retain];
@@ -27,6 +28,6 @@ CGRect CGPDFPageGetBoxRect(CGPDFPageRef self,CGPDFBox box) {
 }
 
 CGAffineTransform CGPDFPageGetDrawingTransform(CGPDFPageRef self,CGPDFBox box,CGRect rect,int clockwiseDegrees,BOOL preserveAspectRatio) {
-   return [self drawingTransformForBox:box inRect:rect rotate:clockwiseDegrees preserveAspectRatio:preserveAspectRatio];
+   return CGAffineTransformFromO2([self drawingTransformForBox:box inRect:rect rotate:clockwiseDegrees preserveAspectRatio:preserveAspectRatio]);
 }
 

@@ -27,7 +27,7 @@
  *-------------------------------------------------------------------*/
 
 #import <math.h>
-#import <CoreGraphics/CoreGraphics.h>
+#import "O2Geometry.h"
 #import <Foundation/Foundation.h>
 
 //#define RI_ASSERT(_) NSCParameterAssert(_)
@@ -37,11 +37,11 @@ static inline int RI_ISNAN(float a) {
     return (a!=a)?1:0;
 }
 
-static inline CGFloat	RI_MAX(CGFloat a, CGFloat b)				{ return (a > b) ? a : b; }
-static inline CGFloat	RI_MIN(CGFloat a, CGFloat b)				{ return (a < b) ? a : b; }
-static inline CGFloat	RI_CLAMP(CGFloat a, CGFloat l, CGFloat h)	{ if(RI_ISNAN(a)) return l; RI_ASSERT(l <= h); return (a < l) ? l : (a > h) ? h : a; }
-static inline CGFloat	RI_SQR(CGFloat a)							{ return a * a; }
-static inline CGFloat	RI_MOD(CGFloat a, CGFloat b){
+static inline O2Float	RI_MAX(O2Float a, O2Float b)				{ return (a > b) ? a : b; }
+static inline O2Float	RI_MIN(O2Float a, O2Float b)				{ return (a < b) ? a : b; }
+static inline O2Float	RI_CLAMP(O2Float a, O2Float l, O2Float h)	{ if(RI_ISNAN(a)) return l; RI_ASSERT(l <= h); return (a < l) ? l : (a > h) ? h : a; }
+static inline O2Float	RI_SQR(O2Float a)							{ return a * a; }
+static inline O2Float	RI_MOD(O2Float a, O2Float b){
    if(RI_ISNAN(a) || RI_ISNAN(b))
     return 0.0f;
     
@@ -50,7 +50,7 @@ static inline CGFloat	RI_MOD(CGFloat a, CGFloat b){
    if(b == 0.0f)
     return 0.0f;
     
-   CGFloat f = (CGFloat)fmod(a, b);
+   O2Float f = (O2Float)fmod(a, b);
    
    if(f < 0.0f)
     f += b;
@@ -63,18 +63,18 @@ static inline int RI_INT_MIN(int a, int b)			{ return (a < b) ? a : b; }
 static inline int RI_INT_MOD(int a, int b)			{ RI_ASSERT(b >= 0); if(!b) return 0; int i = a % b; if(i < 0) i += b; RI_ASSERT(i >= 0 && i < b); return i; }
 static inline int RI_INT_CLAMP(int a, int l, int h)	{ RI_ASSERT(l <= h); return (a < l) ? l : (a > h) ? h : a; }
 
-static inline int RI_FLOOR_TO_INT(CGFloat value){
+static inline int RI_FLOOR_TO_INT(O2Float value){
    if(value<0)
     return floor(value);
     
    return value;
 }
 
-static inline CGPoint Vector2Subtract(CGPoint v1,CGPoint v2){
-   return CGPointMake(v1.x-v2.x, v1.y-v2.y);
+static inline O2Point Vector2Subtract(O2Point v1,O2Point v2){
+   return O2PointMake(v1.x-v2.x, v1.y-v2.y);
 }
 
-static inline CGFloat Vector2Dot(CGPoint v1,CGPoint v2){
+static inline O2Float Vector2Dot(O2Point v1,O2Point v2){
    return v1.x*v2.x+v1.y*v2.y;
 }
 

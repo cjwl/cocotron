@@ -29,56 +29,56 @@
 #import "VGPath.h"
 #import "VGmath.h"
 
-static inline void		RI_SWAP(CGFloat *a, CGFloat *b)				{ CGFloat tmp = *a; *a = *b; *b = tmp; }
-static inline CGFloat	RI_RAD_TO_DEG(CGFloat a)					{ return (CGFloat)(a * 180.0f/ M_PI); }
+static inline void		RI_SWAP(O2Float *a, O2Float *b)				{ O2Float tmp = *a; *a = *b; *b = tmp; }
+static inline O2Float	RI_RAD_TO_DEG(O2Float a)					{ return (O2Float)(a * 180.0f/ M_PI); }
 
-static inline CGPoint Vector2Negate(CGPoint result){
-   return CGPointMake(-result.x,-result.y);
+static inline O2Point Vector2Negate(O2Point result){
+   return O2PointMake(-result.x,-result.y);
 }
 
-static inline CGFloat Vector2Length(CGPoint v){
+static inline O2Float Vector2Length(O2Point v){
    return sqrt((double)v.x*(double)v.x+(double)v.y*(double)v.y);
 }
 
-static inline BOOL Vector2IsEqual(CGPoint v1,CGPoint v2 ){
+static inline BOOL Vector2IsEqual(O2Point v1,O2Point v2 ){
    return (v1.x == v2.x) && (v1.y == v2.y);
 }
 
-static inline BOOL Vector2IsZero(CGPoint v){
+static inline BOOL Vector2IsZero(O2Point v){
   return (v.x == 0.0f) && (v.y == 0.0f);
 }
 
-static inline CGPoint Vector2MultiplyByFloat(CGPoint v,CGFloat f){
-   return CGPointMake(v.x*f,v.y*f);
+static inline O2Point Vector2MultiplyByFloat(O2Point v,O2Float f){
+   return O2PointMake(v.x*f,v.y*f);
 }
 
-static inline CGPoint Vector2Add(CGPoint v1,CGPoint v2 ){
-   return CGPointMake(v1.x+v2.x, v1.y+v2.y);
+static inline O2Point Vector2Add(O2Point v1,O2Point v2 ){
+   return O2PointMake(v1.x+v2.x, v1.y+v2.y);
 }
 
 //if v is a zero vector, returns a zero vector
-static inline CGPoint Vector2Normalize(CGPoint v){
+static inline O2Point Vector2Normalize(O2Point v){
    double l = (double)v.x*(double)v.x+(double)v.y*(double)v.y;
    
    if( l != 0.0 )
     l = 1.0 / sqrt(l);
     
-   return CGPointMake((CGFloat)((double)v.x * l), (CGFloat)((double)v.y * l));
+   return O2PointMake((O2Float)((double)v.x * l), (O2Float)((double)v.y * l));
 }
 
-static inline CGPoint Vector2PerpendicularCW(CGPoint v){
-   return CGPointMake(v.y, -v.x);
+static inline O2Point Vector2PerpendicularCW(O2Point v){
+   return O2PointMake(v.y, -v.x);
 }
 
-static inline CGPoint Vector2PerpendicularCCW(CGPoint v){
-   return CGPointMake(-v.y, v.x);
+static inline O2Point Vector2PerpendicularCCW(O2Point v){
+   return O2PointMake(-v.y, v.x);
 }
 
-static inline CGPoint Vector2Perpendicular(CGPoint v, BOOL cw){
+static inline O2Point Vector2Perpendicular(O2Point v, BOOL cw){
    if(cw)
-    return CGPointMake(v.y, -v.x);
+    return O2PointMake(v.y, -v.x);
     
-   return CGPointMake(-v.y, v.x);
+   return O2PointMake(-v.y, v.x);
 }
 
 
@@ -92,9 +92,9 @@ enum VertexFlags {
 };
 
 typedef struct Vertex {
-   CGPoint			userPosition;
-   CGPoint			userTangent;
-   CGFloat			pathLength;
+   O2Point			userPosition;
+   O2Point			userTangent;
+   O2Float			pathLength;
    unsigned int	flags;
 } Vertex;
     
@@ -105,11 +105,11 @@ typedef struct VertexIndex {
 } VertexIndex;
 
 typedef struct  {
-   CGPoint			p;
-   CGPoint			t;
-   CGPoint			ccw;
-   CGPoint			cw;
-   CGFloat			pathLength;
+   O2Point			p;
+   O2Point			t;
+   O2Point			ccw;
+   O2Point			cw;
+   O2Float			pathLength;
    unsigned int	flags;
    BOOL			inDash;
 } StrokeVertex;
@@ -117,10 +117,10 @@ typedef struct  {
 static inline StrokeVertex StrokeVertexInit(){
    StrokeVertex result;
    
-   result.p=CGPointMake(0,0);
-   result.t=CGPointMake(0,0);
-   result.ccw=CGPointMake(0,0);
-   result.cw=CGPointMake(0,0);
+   result.p=O2PointMake(0,0);
+   result.t=O2PointMake(0,0);
+   result.ccw=O2PointMake(0,0);
+   result.cw=O2PointMake(0,0);
    result.pathLength=0;
    result.flags=0;
    result.inDash=NO;
@@ -141,9 +141,9 @@ static inline StrokeVertex StrokeVertexInit(){
 * \note		
 *//*-------------------------------------------------------------------*/
 
-static CGPoint unitAverageWithDirection(CGPoint u0, CGPoint u1, BOOL cw) {
-   CGPoint u =Vector2MultiplyByFloat(Vector2Add(u0 , u1), 0.5f);
-   CGPoint n0 = Vector2PerpendicularCCW(u0);
+static O2Point unitAverageWithDirection(O2Point u0, O2Point u1, BOOL cw) {
+   O2Point u =Vector2MultiplyByFloat(Vector2Add(u0 , u1), 0.5f);
+   O2Point n0 = Vector2PerpendicularCCW(u0);
 
    if( Vector2Dot(u, u) > 0.25f ){
     //the average is long enough and thus reliable
@@ -152,7 +152,7 @@ static CGPoint unitAverageWithDirection(CGPoint u0, CGPoint u1, BOOL cw) {
    }
    else {
     // the average is too short, use the average of the normals to the vectors instead
-    CGPoint n1 = Vector2PerpendicularCW(u1);
+    O2Point n1 = Vector2PerpendicularCW(u1);
     u = Vector2MultiplyByFloat(Vector2Add(n0 , n1), 0.5f);
    }
    
@@ -171,13 +171,13 @@ static CGPoint unitAverageWithDirection(CGPoint u0, CGPoint u1, BOOL cw) {
 * \note		
 *//*-------------------------------------------------------------------*/
 
-static CGPoint unitAverage(CGPoint u0, CGPoint u1){
-   CGPoint u =Vector2MultiplyByFloat(Vector2Add(u0 , u1), 0.5f);
+static O2Point unitAverage(O2Point u0, O2Point u1){
+   O2Point u =Vector2MultiplyByFloat(Vector2Add(u0 , u1), 0.5f);
 
    if( Vector2Dot(u, u) < 0.25f ){
    	// the average is unreliable, use the average of the normals to the vectors instead
-    CGPoint n0 = Vector2PerpendicularCCW(u0);
-    CGPoint n1 = Vector2PerpendicularCW(u1);
+    O2Point n0 = Vector2PerpendicularCCW(u0);
+    O2Point n1 = Vector2PerpendicularCW(u1);
     u = Vector2MultiplyByFloat(Vector2Add(n0 , n1) , 0.5f);
     if( Vector2Dot(n1, u0) < 0.0f )
      u = Vector2Negate(u);
@@ -188,14 +188,14 @@ static CGPoint unitAverage(CGPoint u0, CGPoint u1){
 
 // Interpolate the given unit tangent vectors to the given direction on a unit circle.
 
-static CGPoint circularLerpWithDirection(CGPoint t0, CGPoint t1, CGFloat ratio, BOOL cw) {
-   CGPoint u0 = t0, u1 = t1;
-   CGFloat l0 = 0.0f, l1 = 1.0f;
+static O2Point circularLerpWithDirection(O2Point t0, O2Point t1, O2Float ratio, BOOL cw) {
+   O2Point u0 = t0, u1 = t1;
+   O2Float l0 = 0.0f, l1 = 1.0f;
    int i;
     
    for(i=0;i<8;i++) {
-    CGPoint n = unitAverageWithDirection(u0, u1, cw);
-    CGFloat l = 0.5f * (l0 + l1);
+    O2Point n = unitAverageWithDirection(u0, u1, cw);
+    O2Float l = 0.5f * (l0 + l1);
     if( ratio < l ){
      u1 = n;
      l1 = l;
@@ -211,14 +211,14 @@ static CGPoint circularLerpWithDirection(CGPoint t0, CGPoint t1, CGFloat ratio, 
 
 // Interpolate the given unit tangent vectors on a unit circle. Smaller angle between the vectors is used.
 
-static CGPoint circularLerp(CGPoint t0, CGPoint t1, CGFloat ratio){
-   CGPoint u0 = t0, u1 = t1;
-   CGFloat l0 = 0.0f, l1 = 1.0f;
+static O2Point circularLerp(O2Point t0, O2Point t1, O2Float ratio){
+   O2Point u0 = t0, u1 = t1;
+   O2Float l0 = 0.0f, l1 = 1.0f;
    int i;
    
    for(i=0;i<8;i++) {
-    CGPoint n = unitAverage(u0, u1);
-    CGFloat l = 0.5f * (l0 + l1);
+    O2Point n = unitAverage(u0, u1);
+    O2Float l = 0.5f * (l0 + l1);
     if( ratio < l ){
      u1 = n;
      l1 = l;
@@ -256,7 +256,7 @@ static CGPoint circularLerp(CGPoint t0, CGPoint t1, CGFloat ratio){
 
 /// Given a path segment type, returns the number of coordinates it uses.
 
-int CGPathElementTypeToNumCoordinates(CGPathElementType segment){
+int O2PathElementTypeToNumCoordinates(O2PathElementType segment){
 	RI_ASSERT(((int)segment) >= 0 && ((int)segment) <= 4);
 	static const int coords[5] = {1,1,2,3,0};
 	return coords[(int)segment];
@@ -271,26 +271,26 @@ int VGPathCountNumCoordinates(const uint8_t* segments, int numSegments){
    int coordinates = 0;
    int i;
    for(i=0;i<numSegments;i++)
-    coordinates += CGPathElementTypeToNumCoordinates((CGPathElementType)segments[i]);
+    coordinates += O2PathElementTypeToNumCoordinates((O2PathElementType)segments[i]);
     
    return coordinates;
 }
 
-// Tessellates a path for filling and appends resulting edges to a rasterizer.
+// Tessellates a path for filling and appends resulting edges to a context.
 
-void VGPathFill(VGPath *self,CGAffineTransform pathToSurface, KGRasterizer *rasterizer){
+void VGPathFill(VGPath *self,O2AffineTransform pathToSurface, O2Context_builtin *context){
 
    VGPathTessellateIfNeeded(self);
 
-   CGPoint p0=CGPointMake(0,0);
+   O2Point p0=O2PointMake(0,0);
    int     i;
    
    for(i=0;i<self->_vertexCount;i++){
-    CGPoint p1 = CGPointApplyAffineTransform(self->_vertices[i].userPosition,pathToSurface );
+    O2Point p1 = O2PointApplyAffineTransform(self->_vertices[i].userPosition,pathToSurface );
 
     if(!(self->_vertices[i].flags & START_SEGMENT)){
     	//in the middle of a segment
-     O2DContextAddEdge(rasterizer,p0, p1);
+     O2DContextAddEdge(context,p0, p1);
     }
 
     p0 = p1;
@@ -304,53 +304,53 @@ void VGPathFill(VGPath *self,CGAffineTransform pathToSurface, KGRasterizer *rast
    The resulting polygons are closed. */
 
 
-void VGPathInterpolateStroke(CGAffineTransform pathToSurface, KGRasterizer *rasterizer,StrokeVertex v0,StrokeVertex v1, CGFloat strokeWidth){
-	CGPoint ppccw = CGPointApplyAffineTransform(v0.ccw,pathToSurface);
-	CGPoint ppcw = CGPointApplyAffineTransform(v0.cw,pathToSurface);
-	CGPoint endccw = CGPointApplyAffineTransform(v1.ccw,pathToSurface);
-	CGPoint endcw = CGPointApplyAffineTransform(v1.cw,pathToSurface);
+void VGPathInterpolateStroke(O2AffineTransform pathToSurface, O2Context_builtin *context,StrokeVertex v0,StrokeVertex v1, O2Float strokeWidth){
+	O2Point ppccw = O2PointApplyAffineTransform(v0.ccw,pathToSurface);
+	O2Point ppcw = O2PointApplyAffineTransform(v0.cw,pathToSurface);
+	O2Point endccw = O2PointApplyAffineTransform(v1.ccw,pathToSurface);
+	O2Point endcw = O2PointApplyAffineTransform(v1.cw,pathToSurface);
 
-	const CGFloat tessellationAngle = 5.0f;
+	const O2Float tessellationAngle = 5.0f;
 
-	CGFloat angle = RI_RAD_TO_DEG((CGFloat)acos(RI_CLAMP(Vector2Dot(v0.t, v1.t), -1.0f, 1.0f))) / tessellationAngle;
+	O2Float angle = RI_RAD_TO_DEG((O2Float)acos(RI_CLAMP(Vector2Dot(v0.t, v1.t), -1.0f, 1.0f))) / tessellationAngle;
 	int samples = RI_INT_MAX((int)ceil(angle), 1);
-	CGPoint prev = v0.p;
-	CGPoint prevt = v0.t;
-	CGPoint position = v0.p;
-	CGPoint pnccw = ppccw;
-	CGPoint pncw = ppcw;
+	O2Point prev = v0.p;
+	O2Point prevt = v0.t;
+	O2Point position = v0.p;
+	O2Point pnccw = ppccw;
+	O2Point pncw = ppcw;
     int     j;
     
 	for(j=0;j<samples;j++){
-		CGFloat t = (CGFloat)(j+1) / (CGFloat)samples;
+		O2Float t = (O2Float)(j+1) / (O2Float)samples;
 		position = Vector2Add(Vector2MultiplyByFloat(v0.p , (1.0f - t)) , Vector2MultiplyByFloat(v1.p ,t));
-		CGPoint tangent = circularLerp(v0.t, v1.t, t);
-		CGPoint n = Vector2MultiplyByFloat(Vector2Normalize(Vector2PerpendicularCCW(tangent)) , strokeWidth * 0.5f);
+		O2Point tangent = circularLerp(v0.t, v1.t, t);
+		O2Point n = Vector2MultiplyByFloat(Vector2Normalize(Vector2PerpendicularCCW(tangent)) , strokeWidth * 0.5f);
 
 		if(j == samples-1)
 			position = v1.p;
 
-		CGPoint npccw = CGPointApplyAffineTransform(Vector2Add(prev, n),pathToSurface);
-		CGPoint npcw = CGPointApplyAffineTransform(Vector2Subtract(prev, n),pathToSurface);
-		CGPoint nnccw = CGPointApplyAffineTransform(Vector2Add(position,n),pathToSurface);
-		CGPoint nncw = CGPointApplyAffineTransform(Vector2Subtract(position , n),pathToSurface);
+		O2Point npccw = O2PointApplyAffineTransform(Vector2Add(prev, n),pathToSurface);
+		O2Point npcw = O2PointApplyAffineTransform(Vector2Subtract(prev, n),pathToSurface);
+		O2Point nnccw = O2PointApplyAffineTransform(Vector2Add(position,n),pathToSurface);
+		O2Point nncw = O2PointApplyAffineTransform(Vector2Subtract(position , n),pathToSurface);
 
-		O2DContextAddEdge(rasterizer,npccw, nnccw);
-		O2DContextAddEdge(rasterizer,nnccw, nncw);
-		O2DContextAddEdge(rasterizer,nncw, npcw);	
-		O2DContextAddEdge(rasterizer,npcw, npccw);
+		O2DContextAddEdge(context,npccw, nnccw);
+		O2DContextAddEdge(context,nnccw, nncw);
+		O2DContextAddEdge(context,nncw, npcw);	
+		O2DContextAddEdge(context,npcw, npccw);
 
 		if(Vector2Dot(n,prevt) <= 0.0f){
-			O2DContextAddEdge(rasterizer,pnccw, npcw);
-			O2DContextAddEdge(rasterizer,npcw, pncw);	
-			O2DContextAddEdge(rasterizer,pncw, npccw);
-			O2DContextAddEdge(rasterizer,npccw, pnccw);
+			O2DContextAddEdge(context,pnccw, npcw);
+			O2DContextAddEdge(context,npcw, pncw);	
+			O2DContextAddEdge(context,pncw, npccw);
+			O2DContextAddEdge(context,npccw, pnccw);
 		}
 		else {
-			O2DContextAddEdge(rasterizer,pnccw, npccw);
-			O2DContextAddEdge(rasterizer,npccw, pncw);
-			O2DContextAddEdge(rasterizer,pncw, npcw);	
-			O2DContextAddEdge(rasterizer,npcw, pnccw);
+			O2DContextAddEdge(context,pnccw, npccw);
+			O2DContextAddEdge(context,npccw, pncw);
+			O2DContextAddEdge(context,pncw, npcw);	
+			O2DContextAddEdge(context,npcw, pnccw);
 		}
 
 		ppccw = npccw;
@@ -362,68 +362,68 @@ void VGPathInterpolateStroke(CGAffineTransform pathToSurface, KGRasterizer *rast
 	}
 
 	//connect the last segment to the end coordinates
-	CGPoint n = Vector2PerpendicularCCW(v1.t);
+	O2Point n = Vector2PerpendicularCCW(v1.t);
     
    if(Vector2Dot(n,prevt) <= 0.0f){
-    O2DContextAddEdge(rasterizer,pnccw, endcw);
-    O2DContextAddEdge(rasterizer,endcw, pncw);
-    O2DContextAddEdge(rasterizer,pncw, endccw);
-    O2DContextAddEdge(rasterizer,endccw, pnccw);
+    O2DContextAddEdge(context,pnccw, endcw);
+    O2DContextAddEdge(context,endcw, pncw);
+    O2DContextAddEdge(context,pncw, endccw);
+    O2DContextAddEdge(context,endccw, pnccw);
    }
    else {
-    O2DContextAddEdge(rasterizer,pnccw, endccw);
-    O2DContextAddEdge(rasterizer,endccw, pncw);
-    O2DContextAddEdge(rasterizer,pncw, endcw);
-    O2DContextAddEdge(rasterizer,endcw, pnccw);
+    O2DContextAddEdge(context,pnccw, endccw);
+    O2DContextAddEdge(context,endccw, pncw);
+    O2DContextAddEdge(context,pncw, endcw);
+    O2DContextAddEdge(context,endcw, pnccw);
    }
 }
 
 // Generate edges for stroke caps. Resulting polygons are closed.
 
-void VGPathDoCap(CGAffineTransform pathToSurface, KGRasterizer *rasterizer,StrokeVertex v, CGFloat strokeWidth, CGLineCap capStyle){
-	CGPoint ccwt = CGPointApplyAffineTransform(v.ccw,pathToSurface);
-	CGPoint cwt = CGPointApplyAffineTransform(v.cw,pathToSurface);
+void VGPathDoCap(O2AffineTransform pathToSurface, O2Context_builtin *context,StrokeVertex v, O2Float strokeWidth, O2LineCap capStyle){
+	O2Point ccwt = O2PointApplyAffineTransform(v.ccw,pathToSurface);
+	O2Point cwt = O2PointApplyAffineTransform(v.cw,pathToSurface);
 
 	switch(capStyle){
     
-	case kCGLineCapButt:
+	case kO2LineCapButt:
 		break;
 
-	case kCGLineCapRound: {
-		const CGFloat tessellationAngle = 5.0f;
+	case kO2LineCapRound: {
+		const O2Float tessellationAngle = 5.0f;
 
-		CGFloat angle = 180.0f / tessellationAngle;
+		O2Float angle = 180.0f / tessellationAngle;
 
 		int samples = (int)ceil(angle);
-		CGFloat step = 1.0f / samples;
-		CGFloat t = step;
-		CGPoint u0 = Vector2Normalize(Vector2Subtract(v.ccw,v.p));
-		CGPoint u1 = Vector2Normalize(Vector2Subtract(v.cw,v.p));
-		CGPoint prev = ccwt;
-		O2DContextAddEdge(rasterizer,cwt, ccwt);
+		O2Float step = 1.0f / samples;
+		O2Float t = step;
+		O2Point u0 = Vector2Normalize(Vector2Subtract(v.ccw,v.p));
+		O2Point u1 = Vector2Normalize(Vector2Subtract(v.cw,v.p));
+		O2Point prev = ccwt;
+		O2DContextAddEdge(context,cwt, ccwt);
         int j;
         
 		for(j=1;j<samples;j++){
-			CGPoint next = Vector2Add(v.p , Vector2MultiplyByFloat(circularLerpWithDirection(u0, u1, t, YES) , strokeWidth * 0.5f));
-			next = CGPointApplyAffineTransform(next,pathToSurface);
+			O2Point next = Vector2Add(v.p , Vector2MultiplyByFloat(circularLerpWithDirection(u0, u1, t, YES) , strokeWidth * 0.5f));
+			next = O2PointApplyAffineTransform(next,pathToSurface);
 
-			O2DContextAddEdge(rasterizer,prev, next);
+			O2DContextAddEdge(context,prev, next);
 			prev = next;
 			t += step;
 		}
-		O2DContextAddEdge(rasterizer,prev, cwt);
+		O2DContextAddEdge(context,prev, cwt);
 		break;
 	}
 
-	case kCGLineCapSquare: {
-		CGPoint t = v.t;
+	case kO2LineCapSquare: {
+		O2Point t = v.t;
 		t=Vector2Normalize(t);
-		CGPoint ccws = CGPointApplyAffineTransform(Vector2Add(v.ccw , Vector2MultiplyByFloat(t , strokeWidth * 0.5f)),pathToSurface );
-		CGPoint cws = CGPointApplyAffineTransform(Vector2Add(v.cw , Vector2MultiplyByFloat(t , strokeWidth * 0.5f)),pathToSurface );
-		O2DContextAddEdge(rasterizer,cwt, ccwt);
-		O2DContextAddEdge(rasterizer,ccwt, ccws);
-		O2DContextAddEdge(rasterizer,ccws, cws);
-		O2DContextAddEdge(rasterizer,cws, cwt);
+		O2Point ccws = O2PointApplyAffineTransform(Vector2Add(v.ccw , Vector2MultiplyByFloat(t , strokeWidth * 0.5f)),pathToSurface );
+		O2Point cws = O2PointApplyAffineTransform(Vector2Add(v.cw , Vector2MultiplyByFloat(t , strokeWidth * 0.5f)),pathToSurface );
+		O2DContextAddEdge(context,cwt, ccwt);
+		O2DContextAddEdge(context,ccwt, ccws);
+		O2DContextAddEdge(context,ccws, cws);
+		O2DContextAddEdge(context,cws, cwt);
 		break;
 	}
 	}
@@ -431,16 +431,16 @@ void VGPathDoCap(CGAffineTransform pathToSurface, KGRasterizer *rasterizer,Strok
 
 // Generate edges for stroke joins. Resulting polygons are closed.
 
-void VGPathDoJoin(CGAffineTransform pathToSurface, KGRasterizer *rasterizer, StrokeVertex v0, StrokeVertex v1, CGFloat strokeWidth, CGLineJoin joinStyle, CGFloat miterLimit){
-	CGPoint ccw0t = CGPointApplyAffineTransform(v0.ccw,pathToSurface);
-	CGPoint cw0t = CGPointApplyAffineTransform(v0.cw,pathToSurface);
-	CGPoint ccw1t = CGPointApplyAffineTransform(v1.ccw,pathToSurface);
-	CGPoint cw1t = CGPointApplyAffineTransform(v1.cw,pathToSurface);
-	CGPoint m0t = CGPointApplyAffineTransform(v0.p,pathToSurface);
-	CGPoint m1t = CGPointApplyAffineTransform(v1.p,pathToSurface);
+void VGPathDoJoin(O2AffineTransform pathToSurface, O2Context_builtin *context, StrokeVertex v0, StrokeVertex v1, O2Float strokeWidth, O2LineJoin joinStyle, O2Float miterLimit){
+	O2Point ccw0t = O2PointApplyAffineTransform(v0.ccw,pathToSurface);
+	O2Point cw0t = O2PointApplyAffineTransform(v0.cw,pathToSurface);
+	O2Point ccw1t = O2PointApplyAffineTransform(v1.ccw,pathToSurface);
+	O2Point cw1t = O2PointApplyAffineTransform(v1.cw,pathToSurface);
+	O2Point m0t = O2PointApplyAffineTransform(v0.p,pathToSurface);
+	O2Point m1t = O2PointApplyAffineTransform(v1.p,pathToSurface);
 
-	CGPoint tccw = Vector2Subtract(v1.ccw,v0.ccw);
-	CGPoint s, e, m, st, et;
+	O2Point tccw = Vector2Subtract(v1.ccw,v0.ccw);
+	O2Point s, e, m, st, et;
 	BOOL cw;
 
 	if( Vector2Dot(tccw, v0.t) > 0.0f )
@@ -451,9 +451,9 @@ void VGPathDoJoin(CGAffineTransform pathToSurface, KGRasterizer *rasterizer, Str
 		et = v1.t;
 		m = v0.ccw;
 		cw = NO;
-		O2DContextAddEdge(rasterizer,m0t, ccw0t);
-		O2DContextAddEdge(rasterizer,ccw1t, m1t);
-		O2DContextAddEdge(rasterizer,m1t, m0t);
+		O2DContextAddEdge(context,m0t, ccw0t);
+		O2DContextAddEdge(context,ccw1t, m1t);
+		O2DContextAddEdge(context,m1t, m0t);
 	}
 	else
 	{	//draw cw miter (draw from point 1 to 0)
@@ -463,74 +463,74 @@ void VGPathDoJoin(CGAffineTransform pathToSurface, KGRasterizer *rasterizer, Str
 		et = v0.t;
 		m = v0.cw;
 		cw = YES;
-		O2DContextAddEdge(rasterizer,cw0t, m0t);
-		O2DContextAddEdge(rasterizer,m1t, cw1t);
-		O2DContextAddEdge(rasterizer,m0t, m1t);
+		O2DContextAddEdge(context,cw0t, m0t);
+		O2DContextAddEdge(context,m1t, cw1t);
+		O2DContextAddEdge(context,m0t, m1t);
 	}
 
 	switch(joinStyle)
 	{
-	case kCGLineJoinMiter:
+	case kO2LineJoinMiter:
 	{
-		CGFloat theta = (CGFloat)acos(RI_CLAMP(Vector2Dot(v0.t, Vector2Negate(v1.t)), -1.0f, 1.0f));
-		CGFloat miterLengthPerStrokeWidth = 1.0f / (CGFloat)sin(theta*0.5f);
+		O2Float theta = (O2Float)acos(RI_CLAMP(Vector2Dot(v0.t, Vector2Negate(v1.t)), -1.0f, 1.0f));
+		O2Float miterLengthPerStrokeWidth = 1.0f / (O2Float)sin(theta*0.5f);
 		if( miterLengthPerStrokeWidth < miterLimit )
 		{	//miter
-			CGFloat l = (CGFloat)cos(theta*0.5f) * miterLengthPerStrokeWidth * (strokeWidth * 0.5f);
+			O2Float l = (O2Float)cos(theta*0.5f) * miterLengthPerStrokeWidth * (strokeWidth * 0.5f);
 			l = RI_MIN(l, RI_FLOAT_MAX);	//force finite
-			CGPoint c = Vector2Add(m , Vector2MultiplyByFloat(v0.t, l));
-			c = CGPointApplyAffineTransform(c,pathToSurface);
-			O2DContextAddEdge(rasterizer,s, c);
-			O2DContextAddEdge(rasterizer,c, e);
+			O2Point c = Vector2Add(m , Vector2MultiplyByFloat(v0.t, l));
+			c = O2PointApplyAffineTransform(c,pathToSurface);
+			O2DContextAddEdge(context,s, c);
+			O2DContextAddEdge(context,c, e);
 		}
 		else
 		{	//bevel
-			O2DContextAddEdge(rasterizer,s, e);
+			O2DContextAddEdge(context,s, e);
 		}
 		break;
 	}
 
-	case kCGLineJoinRound:
+	case kO2LineJoinRound:
 	{
-		const CGFloat tessellationAngle = 5.0f;
+		const O2Float tessellationAngle = 5.0f;
 
-		CGPoint prev = s;
-		CGFloat angle = RI_RAD_TO_DEG((CGFloat)acos(RI_CLAMP(Vector2Dot(st, et), -1.0f, 1.0f))) / tessellationAngle;
+		O2Point prev = s;
+		O2Float angle = RI_RAD_TO_DEG((O2Float)acos(RI_CLAMP(Vector2Dot(st, et), -1.0f, 1.0f))) / tessellationAngle;
 		int samples = (int)ceil(angle);
 		if( samples )
 		{
-			CGFloat step = 1.0f / samples;
-			CGFloat t = step;
+			O2Float step = 1.0f / samples;
+			O2Float t = step;
             int     j;
 			for(j=1;j<samples;j++)
 			{
-				CGPoint position = Vector2Add(Vector2MultiplyByFloat(v0.p , (1.0f - t)) , Vector2MultiplyByFloat(v1.p , t));
-				CGPoint tangent = circularLerpWithDirection(st, et, t, YES);
+				O2Point position = Vector2Add(Vector2MultiplyByFloat(v0.p , (1.0f - t)) , Vector2MultiplyByFloat(v1.p , t));
+				O2Point tangent = circularLerpWithDirection(st, et, t, YES);
 
-				CGPoint next = Vector2Add(position , Vector2MultiplyByFloat(Vector2Normalize(Vector2Perpendicular(tangent, cw)) , strokeWidth * 0.5f));
-				next = CGPointApplyAffineTransform(next,pathToSurface);
+				O2Point next = Vector2Add(position , Vector2MultiplyByFloat(Vector2Normalize(Vector2Perpendicular(tangent, cw)) , strokeWidth * 0.5f));
+				next = O2PointApplyAffineTransform(next,pathToSurface);
 
-				O2DContextAddEdge(rasterizer,prev, next);
+				O2DContextAddEdge(context,prev, next);
 				prev = next;
 				t += step;
 			}
 		}
-		O2DContextAddEdge(rasterizer,prev, e);
+		O2DContextAddEdge(context,prev, e);
 		break;
 	}
 
-	case kCGLineJoinBevel:
+	case kO2LineJoinBevel:
 		if(!cw)
-			O2DContextAddEdge(rasterizer,ccw0t, ccw1t);
+			O2DContextAddEdge(context,ccw0t, ccw1t);
 		else
-			O2DContextAddEdge(rasterizer,cw1t, cw0t);	
+			O2DContextAddEdge(context,cw1t, cw0t);	
 		break;
 	}
 }
 
-// Tessellate a path, apply stroking, dashing, caps and joins, and append resulting edges to a rasterizer.
+// Tessellate a path, apply stroking, dashing, caps and joins, and append resulting edges to a context.
 
-void VGPathStroke(VGPath *self,CGAffineTransform pathToSurface, KGRasterizer *rasterizer, const CGFloat* dashPattern,int dashPatternSize, CGFloat dashPhase, BOOL dashPhaseReset, CGFloat strokeWidth, CGLineCap capStyle, CGLineJoin joinStyle, CGFloat miterLimit){
+void VGPathStroke(VGPath *self,O2AffineTransform pathToSurface, O2Context_builtin *context, const O2Float* dashPattern,int dashPatternSize, O2Float dashPhase, BOOL dashPhaseReset, O2Float strokeWidth, O2LineCap capStyle, O2LineJoin joinStyle, O2Float miterLimit){
 	RI_ASSERT(strokeWidth >= 0.0f);
 	RI_ASSERT(miterLimit >= 1.0f);
 
@@ -543,7 +543,7 @@ void VGPathStroke(VGPath *self,CGAffineTransform pathToSurface, KGRasterizer *ra
 
 	if( dashPatternSize & 1 )
 		dashPatternSize--;	//odd number of dash pattern entries, discard the last one
-	CGFloat dashPatternLength = 0.0f;
+	O2Float dashPatternLength = 0.0f;
     int     i;
 	for(i=0;i<dashPatternSize;i++)
 		dashPatternLength += RI_MAX(dashPattern[i], 0.0f);
@@ -560,7 +560,7 @@ void VGPathStroke(VGPath *self,CGAffineTransform pathToSurface, KGRasterizer *ra
 
 	//loop vertex events
 	{
-		CGFloat nextDash = 0.0f;
+		O2Float nextDash = 0.0f;
 		int d = 0;
 		BOOL inDash = YES;
 		StrokeVertex v0=StrokeVertexInit(), v1=StrokeVertexInit(), vs=StrokeVertexInit();
@@ -592,7 +592,7 @@ void VGPathStroke(VGPath *self,CGAffineTransform pathToSurface, KGRasterizer *ra
 							nextDash = v1.pathLength - RI_MOD(dashPhase, dashPatternLength);
 							for(;;)
 							{
-								CGFloat prevDash = nextDash;
+								O2Float prevDash = nextDash;
 								nextDash = prevDash + RI_MAX(dashPattern[d], 0.0f);
 								if(nextDash >= v1.pathLength)
 									break;
@@ -616,21 +616,21 @@ void VGPathStroke(VGPath *self,CGAffineTransform pathToSurface, KGRasterizer *ra
 					if( v.flags & IMPLICIT_CLOSE_SUBPATH )
 					{	//do caps for the start and end of the current subpath
 						if( v0.inDash )
-							VGPathDoCap(pathToSurface, rasterizer, v0, strokeWidth, capStyle);	//end cap
+							VGPathDoCap(pathToSurface, context, v0, strokeWidth, capStyle);	//end cap
 						if( vs.inDash )
 						{
 							StrokeVertex vi = vs;
 							vi.t = Vector2Negate(vi.t);
 							RI_SWAP(&vi.ccw.x, &vi.cw.x);
 							RI_SWAP(&vi.ccw.y, &vi.cw.y);
-							VGPathDoCap(pathToSurface, rasterizer, vi, strokeWidth, capStyle);	//start cap
+							VGPathDoCap(pathToSurface, context, vi, strokeWidth, capStyle);	//start cap
 						}
 					}
 					else
 					{	//join two segments
 						RI_ASSERT(v0.inDash == v1.inDash);
 						if( v0.inDash )
-							VGPathDoJoin(pathToSurface, rasterizer, v0, v1, strokeWidth, joinStyle, miterLimit);
+							VGPathDoJoin(pathToSurface, context, v0, v1, strokeWidth, joinStyle, miterLimit);
 					}
 				}
 			}
@@ -651,8 +651,8 @@ void VGPathStroke(VGPath *self,CGAffineTransform pathToSurface, KGRasterizer *ra
 						int numDashStops = 0;
 						while(nextDash < v1.pathLength || (nextDash <= v1.pathLength && dashPattern[(d+1) % dashPatternSize] == 0.0f))
 						{
-							CGFloat edgeLength = v1.pathLength - v0.pathLength;
-							CGFloat ratio = 0.0f;
+							O2Float edgeLength = v1.pathLength - v0.pathLength;
+							O2Float ratio = 0.0f;
 							if(edgeLength > 0.0f)
 								ratio = (nextDash - v0.pathLength) / edgeLength;
 							StrokeVertex nextDashVertex=StrokeVertexInit();
@@ -669,10 +669,10 @@ void VGPathStroke(VGPath *self,CGAffineTransform pathToSurface, KGRasterizer *ra
 									vi.t = Vector2Negate(vi.t);
 									RI_SWAP(&vi.ccw.x, &vi.cw.x);
 									RI_SWAP(&vi.ccw.y, &vi.cw.y);
-									VGPathDoCap(pathToSurface, rasterizer, vi, strokeWidth, capStyle);
+									VGPathDoCap(pathToSurface, context, vi, strokeWidth, capStyle);
 								}
-								VGPathInterpolateStroke(pathToSurface, rasterizer, prevDashVertex, nextDashVertex, strokeWidth);
-								VGPathDoCap(pathToSurface, rasterizer, nextDashVertex, strokeWidth, capStyle);	//end cap
+								VGPathInterpolateStroke(pathToSurface, context, prevDashVertex, nextDashVertex, strokeWidth);
+								VGPathDoCap(pathToSurface, context, nextDashVertex, strokeWidth, capStyle);	//end cap
 							}
 							prevDashVertex = nextDashVertex;
 
@@ -699,34 +699,34 @@ void VGPathStroke(VGPath *self,CGAffineTransform pathToSurface, KGRasterizer *ra
 								vi.t = Vector2Negate(vi.t);
 								RI_SWAP(&vi.ccw.x, &vi.cw.x);
 								RI_SWAP(&vi.ccw.y, &vi.cw.y);
-								VGPathDoCap(pathToSurface, rasterizer, vi, strokeWidth, capStyle);
+								VGPathDoCap(pathToSurface, context, vi, strokeWidth, capStyle);
 							}
-							VGPathInterpolateStroke(pathToSurface, rasterizer, prevDashVertex, v1, strokeWidth);
+							VGPathInterpolateStroke(pathToSurface, context, prevDashVertex, v1, strokeWidth);
 							//no cap, leave path open
 						}
 
 						v1.inDash = inDash;	//update inDash status of the segment end point
 					}
 					else	//no dashing, just interpolate segment end points
-						VGPathInterpolateStroke(pathToSurface, rasterizer, v0, v1, strokeWidth);
+						VGPathInterpolateStroke(pathToSurface, context, v0, v1, strokeWidth);
 				}
 			}
 
 			if((v.flags & END_SEGMENT) && (v.flags & CLOSE_SUBPATH))
 			{	//join start and end of the current subpath
 				if( v1.inDash && vs.inDash )
-					VGPathDoJoin(pathToSurface, rasterizer, v1, vs, strokeWidth, joinStyle, miterLimit);
+					VGPathDoJoin(pathToSurface, context, v1, vs, strokeWidth, joinStyle, miterLimit);
 				else
 				{	//both start and end are not in dash, cap them
 					if( v1.inDash )
-						VGPathDoCap(pathToSurface, rasterizer, v1, strokeWidth, capStyle);	//end cap
+						VGPathDoCap(pathToSurface, context, v1, strokeWidth, capStyle);	//end cap
 					if( vs.inDash )
 					{
 						StrokeVertex vi = vs;
 						vi.t = Vector2Negate(vi.t);
 						RI_SWAP(&vi.ccw.x, &vi.cw.x);
 						RI_SWAP(&vi.ccw.y, &vi.cw.y);
-						VGPathDoCap(pathToSurface, rasterizer, vi, strokeWidth, capStyle);	//start cap
+						VGPathDoCap(pathToSurface, context, vi, strokeWidth, capStyle);	//start cap
 					}
 				}
 			}
@@ -739,7 +739,7 @@ void VGPathStroke(VGPath *self,CGAffineTransform pathToSurface, KGRasterizer *ra
 
 // Tessellates a path, and returns a position and a tangent on the path given a distance along the path.
 
-void VGPathGetPointAlong(VGPath *self,int startIndex, int numSegments, CGFloat distance, CGPoint *p, CGPoint *t){
+void VGPathGetPointAlong(VGPath *self,int startIndex, int numSegments, O2Float distance, O2Point *p, O2Point *t){
 	RI_ASSERT(startIndex >= 0 && startIndex + numSegments <= self->_numberOfElements && numSegments > 0);
 
 	VGPathTessellateIfNeeded(self);
@@ -752,8 +752,8 @@ void VGPathGetPointAlong(VGPath *self,int startIndex, int numSegments, CGFloat d
 
 	if(!self->_vertexCount || (startVertex == -1 && endVertex == -1))
 	{	// no vertices in the tessellated path. The path is empty or consists only of zero-length segments.
-		*p=CGPointMake(0,0);
-		*t=CGPointMake(1,0);
+		*p=O2PointMake(0,0);
+		*t=O2PointMake(1,0);
 		return;
 	}
 	if(startVertex == -1)
@@ -800,9 +800,9 @@ void VGPathGetPointAlong(VGPath *self,int startIndex, int numSegments, CGFloat d
 				Vertex v1 = self->_vertices[i+1];
 				if(distance >= v0.pathLength && distance < v1.pathLength)
 				{	//segment found, interpolate linearly between its end points
-					CGFloat edgeLength = v1.pathLength - v0.pathLength;
+					O2Float edgeLength = v1.pathLength - v0.pathLength;
 					RI_ASSERT(edgeLength > 0.0f);
-					CGFloat r = (distance - v0.pathLength) / edgeLength;
+					O2Float r = (distance - v0.pathLength) / edgeLength;
 					*p = Vector2Add(Vector2MultiplyByFloat(v0.userPosition , (1.0f - r)) , Vector2MultiplyByFloat(v1.userPosition , r));
 					*t = Vector2Add(Vector2MultiplyByFloat(v0.userTangent,(1.0f - r))  , Vector2MultiplyByFloat(v1.userTangent,r));
 					return;
@@ -816,7 +816,7 @@ void VGPathGetPointAlong(VGPath *self,int startIndex, int numSegments, CGFloat d
 
 // Tessellates a path, and computes its length.
 
-CGFloat VGPathGetLength(VGPath *self,int startIndex, int numSegments){
+O2Float VGPathGetLength(VGPath *self,int startIndex, int numSegments){
 	RI_ASSERT(startIndex >= 0 && startIndex + numSegments <= self->_numberOfElements && numSegments > 0);
 
 	VGPathTessellateIfNeeded(self);
@@ -830,13 +830,13 @@ CGFloat VGPathGetLength(VGPath *self,int startIndex, int numSegments){
 	if(!self->_vertexCount)
 		return 0.0f;
 
-	CGFloat startPathLength = 0.0f;
+	O2Float startPathLength = 0.0f;
 	if(startVertex >= 0)
 	{
 		RI_ASSERT(startVertex >= 0 && startVertex < self->_vertexCount);
 		startPathLength = self->_vertices[startVertex].pathLength;
 	}
-	CGFloat endPathLength = 0.0f;
+	O2Float endPathLength = 0.0f;
 	if(endVertex >= 0)
 	{
 		RI_ASSERT(endVertex >= 0 && endVertex < self->_vertexCount);
@@ -848,7 +848,7 @@ CGFloat VGPathGetLength(VGPath *self,int startIndex, int numSegments){
 
 // Tessellates a path, and computes its bounding box in user space.
 
-void VGPathGetPathBounds(VGPath *self,CGFloat *minx, CGFloat *miny, CGFloat *maxx, CGFloat *maxy){
+void VGPathGetPathBounds(VGPath *self,O2Float *minx, O2Float *miny, O2Float *maxx, O2Float *maxy){
 	VGPathTessellateIfNeeded(self);
 
 	if(self->_vertexCount)
@@ -867,7 +867,7 @@ void VGPathGetPathBounds(VGPath *self,CGFloat *minx, CGFloat *miny, CGFloat *max
 
 // Tessellates a path, and computes its bounding box in surface space.
 
-void VGPathGetPathTransformedBounds(VGPath *self,CGAffineTransform pathToSurface, CGFloat *minx, CGFloat *miny, CGFloat *maxx, CGFloat *maxy){
+void VGPathGetPathTransformedBounds(VGPath *self,O2AffineTransform pathToSurface, O2Float *minx, O2Float *miny, O2Float *maxx, O2Float *maxy){
 
 	VGPathTessellateIfNeeded(self);
 
@@ -876,14 +876,14 @@ void VGPathGetPathTransformedBounds(VGPath *self,CGAffineTransform pathToSurface
 		*maxx = *maxy = -1;
 	}
     else {
-		CGPoint p0=CGPointMake(self->m_userMinx, self->m_userMiny);
-		CGPoint p1=CGPointMake(self->m_userMinx, self->m_userMaxy);
-		CGPoint p2=CGPointMake(self->m_userMaxx, self->m_userMaxy);
-		CGPoint p3=CGPointMake(self->m_userMaxx, self->m_userMiny);
-		p0 = CGPointApplyAffineTransform(p0,pathToSurface);
-		p1 = CGPointApplyAffineTransform(p1,pathToSurface);
-		p2 = CGPointApplyAffineTransform(p2,pathToSurface);
-		p3 = CGPointApplyAffineTransform(p3,pathToSurface);
+		O2Point p0=O2PointMake(self->m_userMinx, self->m_userMiny);
+		O2Point p1=O2PointMake(self->m_userMinx, self->m_userMaxy);
+		O2Point p2=O2PointMake(self->m_userMaxx, self->m_userMaxy);
+		O2Point p3=O2PointMake(self->m_userMaxx, self->m_userMiny);
+		p0 = O2PointApplyAffineTransform(p0,pathToSurface);
+		p1 = O2PointApplyAffineTransform(p1,pathToSurface);
+		p2 = O2PointApplyAffineTransform(p2,pathToSurface);
+		p3 = O2PointApplyAffineTransform(p3,pathToSurface);
 
 		*minx = RI_MIN(RI_MIN(RI_MIN(p0.x, p1.x), p2.x), p3.x);
 		*miny = RI_MIN(RI_MIN(RI_MIN(p0.y, p1.y), p2.y), p3.y);
@@ -894,7 +894,7 @@ void VGPathGetPathTransformedBounds(VGPath *self,CGAffineTransform pathToSurface
 
 // Adds a vertex to a tessellated path.
 
-void VGPathAddVertex(VGPath *self,CGPoint p, CGPoint t, CGFloat pathLength, unsigned int flags){
+void VGPathAddVertex(VGPath *self,O2Point p, O2Point t, O2Float pathLength, unsigned int flags){
 	RI_ASSERT(!Vector2IsZero(t));
 
 	Vertex v;
@@ -917,8 +917,8 @@ void VGPathAddVertex(VGPath *self,CGPoint p, CGPoint t, CGFloat pathLength, unsi
 
 // Adds an edge to a tessellated path.
 
-void VGPathAddEdge(VGPath *self,CGPoint p0, CGPoint p1, CGPoint t0, CGPoint t1, unsigned int startFlags, unsigned int endFlags){
-	CGFloat pathLength = 0.0f;
+void VGPathAddEdge(VGPath *self,O2Point p0, O2Point p1, O2Point t0, O2Point t1, unsigned int startFlags, unsigned int endFlags){
+	O2Float pathLength = 0.0f;
 
 	RI_ASSERT(!Vector2IsZero(t0) && !Vector2IsZero(t1));
 
@@ -935,7 +935,7 @@ void VGPathAddEdge(VGPath *self,CGPoint p0, CGPoint p1, CGPoint t0, CGPoint t1, 
 	if( !(endFlags & IMPLICIT_CLOSE_SUBPATH) )
 	{
 		//NOTE: with extremely large coordinates the floating point path length is infinite
-		CGFloat l = Vector2Length(Vector2Subtract(p1,p0));
+		O2Float l = Vector2Length(Vector2Subtract(p1,p0));
 		pathLength = self->_vertices[self->_vertexCount-1].pathLength + l;
 		pathLength = RI_MIN(pathLength, RI_FLOAT_MAX);
 	}
@@ -945,10 +945,10 @@ void VGPathAddEdge(VGPath *self,CGPoint p0, CGPoint p1, CGPoint t0, CGPoint t1, 
 
 // Tessellates a close-path segment.
 
-void VGPathAddEndPath(VGPath *self,CGPoint p0, CGPoint p1, BOOL subpathHasGeometry, unsigned int flags){
+void VGPathAddEndPath(VGPath *self,O2Point p0, O2Point p1, BOOL subpathHasGeometry, unsigned int flags){
 	if(!subpathHasGeometry)
 	{	//single vertex
-		CGPoint t=CGPointMake(1.0f,0.0f);
+		O2Point t=O2PointMake(1.0f,0.0f);
 		VGPathAddEdge(self,p0, p1, t, t, START_SEGMENT | START_SUBPATH, END_SEGMENT | END_SUBPATH);
 		VGPathAddEdge(self,p0, p1, Vector2Negate(t), Vector2Negate(t), IMPLICIT_CLOSE_SUBPATH | START_SEGMENT, IMPLICIT_CLOSE_SUBPATH | END_SEGMENT);
 		return;
@@ -959,7 +959,7 @@ void VGPathAddEndPath(VGPath *self,CGPoint p0, CGPoint p1, BOOL subpathHasGeomet
 	RI_ASSERT(self->_vertexCount > 0);
 	self->_vertices[self->_vertexCount-1].flags |= END_SUBPATH;
 
-	CGPoint t = Vector2Normalize(Vector2Subtract(p1,p0));
+	O2Point t = Vector2Normalize(Vector2Subtract(p1,p0));
 	if(Vector2IsZero(t))
 		t = self->_vertices[self->_vertexCount-1].userTangent;	//if the segment is zero-length, use the tangent of the last segment end point so that proper join will be generated
 	RI_ASSERT(!Vector2IsZero(t));
@@ -969,12 +969,12 @@ void VGPathAddEndPath(VGPath *self,CGPoint p0, CGPoint p1, BOOL subpathHasGeomet
 
 // Tessellates a line-to segment.
 
-BOOL VGPathAddLineTo(VGPath *self,CGPoint p0, CGPoint p1, BOOL subpathHasGeometry){
+BOOL VGPathAddLineTo(VGPath *self,O2Point p0, O2Point p1, BOOL subpathHasGeometry){
 	if(Vector2IsEqual(p0 ,p1))
 		return NO;	//discard zero-length segments
 
 	//compute end point tangents
-	CGPoint t = Vector2Normalize(Vector2Subtract(p1,p0));
+	O2Point t = Vector2Normalize(Vector2Subtract(p1,p0));
 	RI_ASSERT(!Vector2IsZero(t));
 
 	unsigned int startFlags = START_SEGMENT;
@@ -990,7 +990,7 @@ BOOL VGPathAddLineTo(VGPath *self,CGPoint p0, CGPoint p1, BOOL subpathHasGeometr
  Given a quadratic Bézier curve with control points (x0, y0), (x1, y1), and (x2, y2), an identical cubic Bézier curve may be formed using the control points (x0, y0), (x0 + 2*x1, y0 + 2*y1)/3, (x2 + 2*x1, y2 + 2*y1)/3, (x2, y2)
   */
   
-BOOL VGPathAddQuadTo(VGPath *self,CGPoint p0, CGPoint p1, CGPoint p2, BOOL subpathHasGeometry){
+BOOL VGPathAddQuadTo(VGPath *self,O2Point p0, O2Point p1, O2Point p2, BOOL subpathHasGeometry){
 	if(Vector2IsEqual(p0,p1) && Vector2IsEqual(p0,p2))
 	{
 		RI_ASSERT(Vector2IsEqual(p1,p2));
@@ -999,8 +999,8 @@ BOOL VGPathAddQuadTo(VGPath *self,CGPoint p0, CGPoint p1, CGPoint p2, BOOL subpa
 
 	//compute end point tangents
 
-	CGPoint incomingTangent = Vector2Normalize(Vector2Subtract(p1,p0));
-	CGPoint outgoingTangent = Vector2Normalize(Vector2Subtract(p2,p1));
+	O2Point incomingTangent = Vector2Normalize(Vector2Subtract(p1,p0));
+	O2Point outgoingTangent = Vector2Normalize(Vector2Subtract(p2,p1));
 	if(Vector2IsEqual(p0,p1))
 		incomingTangent = Vector2Normalize(Vector2Subtract(p2,p0));
 	if(Vector2IsEqual(p1,p2))
@@ -1012,16 +1012,16 @@ BOOL VGPathAddQuadTo(VGPath *self,CGPoint p0, CGPoint p1, CGPoint p2, BOOL subpa
 		startFlags |= START_SUBPATH;
 
 	const int segments = 256;
-	CGPoint pp = p0;
-	CGPoint tp = incomingTangent;
+	O2Point pp = p0;
+	O2Point tp = incomingTangent;
 	unsigned int prevFlags = startFlags;
     int i;
 	for(i=1;i<segments;i++)
 	{
-		CGFloat t = (CGFloat)i / (CGFloat)segments;
-		CGFloat u = 1.0f-t;
-		CGPoint pn = Vector2Add(Vector2Add(Vector2MultiplyByFloat(p0,u*u) , Vector2MultiplyByFloat(p1,2.0f*t*u)),Vector2MultiplyByFloat(p2,t*t));
-		CGPoint tn = Vector2Add(Vector2Add(Vector2MultiplyByFloat(p0,(-1.0f+t)), Vector2MultiplyByFloat(p1,(1.0f-2.0f*t))),Vector2MultiplyByFloat(p2,t));
+		O2Float t = (O2Float)i / (O2Float)segments;
+		O2Float u = 1.0f-t;
+		O2Point pn = Vector2Add(Vector2Add(Vector2MultiplyByFloat(p0,u*u) , Vector2MultiplyByFloat(p1,2.0f*t*u)),Vector2MultiplyByFloat(p2,t*t));
+		O2Point tn = Vector2Add(Vector2Add(Vector2MultiplyByFloat(p0,(-1.0f+t)), Vector2MultiplyByFloat(p1,(1.0f-2.0f*t))),Vector2MultiplyByFloat(p2,t));
 		tn = Vector2Normalize(tn);
 		if(Vector2IsZero(tn))
 			tn = tp;
@@ -1039,7 +1039,7 @@ BOOL VGPathAddQuadTo(VGPath *self,CGPoint p0, CGPoint p1, CGPoint p2, BOOL subpa
 // Tessellates a cubic-to segment.
 
 // Bezier to lines from: Windows Graphics Programming by Feng Yuan
-static void bezier(VGPath *self,double x1,double y1,double x2, double y2,double x3,double y3,double x4,double y4,unsigned *prevFlags,CGPoint *pp,CGPoint *tp){
+static void bezier(VGPath *self,double x1,double y1,double x2, double y2,double x3,double y3,double x4,double y4,unsigned *prevFlags,O2Point *pp,O2Point *tp){
    // Ax+By+C=0 is the line (x1,y1) (x4,y4);
    double A=y4-y1;
    double B=x1-x4;
@@ -1047,9 +1047,9 @@ static void bezier(VGPath *self,double x1,double y1,double x2, double y2,double 
    double AB=A*A+B*B;
 
    if((A*x2+B*y2+C)*(A*x2+B*y2+C)<AB && (A*x3+B*y3+C)*(A*x3+B*y3+C)<AB){
-    CGPoint v0=CGPointMake(x1,y1);
-    CGPoint v1=CGPointMake(x4,y4);
-    CGPoint t = Vector2Normalize(Vector2Subtract(v1,v0));
+    O2Point v0=O2PointMake(x1,y1);
+    O2Point v1=O2PointMake(x4,y4);
+    O2Point t = Vector2Normalize(Vector2Subtract(v1,v0));
 
     VGPathAddEdge(self,v0, v1, *tp, t, *prevFlags, 0);
     *prevFlags=0;
@@ -1076,7 +1076,7 @@ static void bezier(VGPath *self,double x1,double y1,double x2, double y2,double 
    }
 }
 
-BOOL VGPathAddCubicTo(VGPath *self,CGPoint p0, CGPoint p1, CGPoint p2, CGPoint p3, BOOL subpathHasGeometry){
+BOOL VGPathAddCubicTo(VGPath *self,O2Point p0, O2Point p1, O2Point p2, O2Point p3, BOOL subpathHasGeometry){
 	if(Vector2IsEqual(p0,p1) && Vector2IsEqual(p0,p2) && Vector2IsEqual(p0 ,p3))
 	{
 		RI_ASSERT(Vector2IsEqual(p1 , p2) && Vector2IsEqual(p1 , p3) && Vector2IsEqual(p2 , p3));
@@ -1084,8 +1084,8 @@ BOOL VGPathAddCubicTo(VGPath *self,CGPoint p0, CGPoint p1, CGPoint p2, CGPoint p
 	}
 
 	//compute end point tangents
-	CGPoint incomingTangent = Vector2Normalize(Vector2Subtract(p1, p0));
-	CGPoint outgoingTangent = Vector2Normalize(Vector2Subtract(p3, p2));
+	O2Point incomingTangent = Vector2Normalize(Vector2Subtract(p1, p0));
+	O2Point outgoingTangent = Vector2Normalize(Vector2Subtract(p3, p2));
 	if(Vector2IsEqual(p0 , p1))
 	{
 		incomingTangent = Vector2Normalize(Vector2Subtract(p2 ,p0));
@@ -1107,22 +1107,22 @@ BOOL VGPathAddCubicTo(VGPath *self,CGPoint p0, CGPoint p1, CGPoint p2, CGPoint p
 #if 1
 // This works, but does not take the CTM (i.e. scaling) into effect
 	unsigned int prevFlags = startFlags;
-	CGPoint pp = p0;
-	CGPoint tp = incomingTangent;
+	O2Point pp = p0;
+	O2Point tp = incomingTangent;
     bezier(self,p0.x,p0.y,p1.x,p1.y,p2.x,p2.y,p3.x,p3.y,&prevFlags,&pp,&tp);
 	VGPathAddEdge(self,pp, p3, tp, outgoingTangent, prevFlags, END_SEGMENT);
 #else
 	const int segments = 256;
-	CGPoint pp = p0;
-	CGPoint tp = incomingTangent;
+	O2Point pp = p0;
+	O2Point tp = incomingTangent;
 	unsigned int prevFlags = startFlags;
     int i;
 	for(i=1;i<segments;i++)
 	{
-		CGFloat t = (CGFloat)i / (CGFloat)segments;
-		CGFloat u = 1.0f-t;
-		CGPoint pn = Vector2Add(Vector2Add(Vector2Add(Vector2MultiplyByFloat(p0,u*u*u), Vector2MultiplyByFloat(p1,3.0f*t*u*u)) ,Vector2MultiplyByFloat(p2,3.0f*t*t*u)),Vector2MultiplyByFloat(p3,t*t*t));
-		CGPoint tn = Vector2Add(Vector2Add(Vector2Add(Vector2MultiplyByFloat(p0,(-1.0f + 2.0f*t - t*t)) , Vector2MultiplyByFloat(p1,(1.0f - 4.0f*t + 3.0f*t*t))) , Vector2MultiplyByFloat(p2,(2.0f*t - 3.0f*t*t) )) ,Vector2MultiplyByFloat(p3,t*t));
+		O2Float t = (O2Float)i / (O2Float)segments;
+		O2Float u = 1.0f-t;
+		O2Point pn = Vector2Add(Vector2Add(Vector2Add(Vector2MultiplyByFloat(p0,u*u*u), Vector2MultiplyByFloat(p1,3.0f*t*u*u)) ,Vector2MultiplyByFloat(p2,3.0f*t*t*u)),Vector2MultiplyByFloat(p3,t*t*t));
+		O2Point tn = Vector2Add(Vector2Add(Vector2Add(Vector2MultiplyByFloat(p0,(-1.0f + 2.0f*t - t*t)) , Vector2MultiplyByFloat(p1,(1.0f - 4.0f*t + 3.0f*t*t))) , Vector2MultiplyByFloat(p2,(2.0f*t - 3.0f*t*t) )) ,Vector2MultiplyByFloat(p3,t*t));
 		tn = Vector2Normalize(tn);
 		if(Vector2IsZero(tn))
 			tn = tp;
@@ -1157,37 +1157,37 @@ void VGPathTessellateIfNeeded(VGPath *self){
 	self->m_userMaxy = -RI_FLOAT_MAX;
 
 	{
-        unsigned numberOfElements=[self->_path numberOfElements];
+        unsigned numberOfElements=O2PathNumberOfElements(self->_path);
         if(self->_segmentToVertexCapacity<numberOfElements){
          self->_segmentToVertexCapacity=numberOfElements;
          self->_segmentToVertex=NSZoneRealloc(NULL,self->_segmentToVertex,self->_segmentToVertexCapacity*sizeof(VertexIndex));
         }
         
 		int coordIndex = 0;
-		CGPoint s=CGPointMake(0,0);		//the beginning of the current subpath
-		CGPoint o=CGPointMake(0,0);		//the last point of the previous segment
-		CGPoint p=CGPointMake(0,0);		//the last internal control point of the previous segment, if the segment was a (regular or smooth) quadratic or cubic Bezier, or else the last point of the previous segment
+		O2Point s=O2PointMake(0,0);		//the beginning of the current subpath
+		O2Point o=O2PointMake(0,0);		//the last point of the previous segment
+		O2Point p=O2PointMake(0,0);		//the last internal control point of the previous segment, if the segment was a (regular or smooth) quadratic or cubic Bezier, or else the last point of the previous segment
 
 		//tessellate the path segments
 		coordIndex = 0;
-		s=CGPointMake(0,0);
-		o=CGPointMake(0,0);
-		p=CGPointMake(0,0);
+		s=O2PointMake(0,0);
+		o=O2PointMake(0,0);
+		p=O2PointMake(0,0);
 		BOOL subpathHasGeometry = NO;
-		CGPathElementType prevSegment = kCGPathElementMoveToPoint;
+		O2PathElementType prevSegment = kO2PathElementMoveToPoint;
         int i;
-        const unsigned char *elements=[self->_path elements];
-        const CGPoint *points=[self->_path points];
+        const unsigned char *elements=O2PathElements(self->_path);
+        const O2Point *points=O2PathPoints(self->_path);
         
 		for(i=0;i<numberOfElements;i++)
 		{
-			CGPathElementType segment = elements[i];
-			int coords = CGPathElementTypeToNumCoordinates(segment);
+			O2PathElementType segment = elements[i];
+			int coords = O2PathElementTypeToNumCoordinates(segment);
 			self->_segmentToVertex[i].start = self->_vertexCount;
 
 			switch(segment)
 			{
-			case kCGPathElementCloseSubpath:
+			case kO2PathElementCloseSubpath:
 			{
 				RI_ASSERT(coords == 0);
 				VGPathAddEndPath(self,o, s, subpathHasGeometry, CLOSE_SUBPATH);
@@ -1197,11 +1197,11 @@ void VGPathTessellateIfNeeded(VGPath *self){
 				break;
 			}
 
-			case kCGPathElementMoveToPoint:
+			case kO2PathElementMoveToPoint:
 			{
 				RI_ASSERT(coords == 1);
-				CGPoint c=points[coordIndex];
-				if(prevSegment != kCGPathElementMoveToPoint && prevSegment != kCGPathElementCloseSubpath)
+				O2Point c=points[coordIndex];
+				if(prevSegment != kO2PathElementMoveToPoint && prevSegment != kO2PathElementCloseSubpath)
 					VGPathAddEndPath(self,o, s, subpathHasGeometry, IMPLICIT_CLOSE_SUBPATH);
 				s = c;
 				p = c;
@@ -1210,10 +1210,10 @@ void VGPathTessellateIfNeeded(VGPath *self){
 				break;
 			}
 
-			case kCGPathElementAddLineToPoint:
+			case kO2PathElementAddLineToPoint:
 			{
 				RI_ASSERT(coords == 1);
-				CGPoint c=points[coordIndex];
+				O2Point c=points[coordIndex];
 				if(VGPathAddLineTo(self,o, c, subpathHasGeometry))
 					subpathHasGeometry = YES;
 				p = c;
@@ -1221,11 +1221,11 @@ void VGPathTessellateIfNeeded(VGPath *self){
 				break;
 			}
 
-			case kCGPathElementAddQuadCurveToPoint:
+			case kO2PathElementAddQuadCurveToPoint:
 			{
 				RI_ASSERT(coords == 2);
-				CGPoint c0=points[coordIndex];
-				CGPoint c1=points[coordIndex+1];
+				O2Point c0=points[coordIndex];
+				O2Point c1=points[coordIndex+1];
 				if(VGPathAddQuadTo(self,o, c0, c1, subpathHasGeometry))
 					subpathHasGeometry = YES;
 				p = c0;
@@ -1233,12 +1233,12 @@ void VGPathTessellateIfNeeded(VGPath *self){
 				break;
 			}
 
-			case kCGPathElementAddCurveToPoint:
+			case kO2PathElementAddCurveToPoint:
 			{
 				RI_ASSERT(coords == 3);
-				CGPoint c0=points[coordIndex+0];
-				CGPoint c1=points[coordIndex+1];
-				CGPoint c2=points[coordIndex+2];
+				O2Point c0=points[coordIndex+0];
+				O2Point c1=points[coordIndex+1];
+				O2Point c2=points[coordIndex+2];
 				if(VGPathAddCubicTo(self,o, c0, c1, c2, subpathHasGeometry))
 					subpathHasGeometry = YES;
 				p = c1;
@@ -1263,7 +1263,7 @@ void VGPathTessellateIfNeeded(VGPath *self){
 		//add an implicit MOVE_TO to the end to close the last subpath.
 		//if the subpath contained only zero-length segments, this produces the necessary geometry to get it stroked
 		// and included in path bounds. The geometry won't be included in the pointAlongPath query.
-		if(prevSegment != kCGPathElementMoveToPoint && prevSegment != kCGPathElementCloseSubpath)
+		if(prevSegment != kO2PathElementMoveToPoint && prevSegment != kO2PathElementCloseSubpath)
 			VGPathAddEndPath(self,o, s, subpathHasGeometry, IMPLICIT_CLOSE_SUBPATH);
 
 #if 0 // DEBUG

@@ -37,9 +37,13 @@
 
 #define MAX_SAMPLES     COVERAGE_MULTIPLIER
 
-void O2DContextClipAndFillEdges(KGRasterizer *self,int fillRuleMask);
+void O2DContextClipAndFillEdges(O2Context_builtin *self,int fillRuleMask);
 
-@implementation KGContext_builtin
+@implementation O2Context_builtin
+
+static inline O2GState *currentState(O2Context *self){        
+   return [self->_stateStack lastObject];
+}
 
 static BOOL _isAvailable=NO;
 
@@ -64,7 +68,7 @@ static BOOL _isAvailable=NO;
 }
 
 -(void)reallocateForSurface {
-   size_t width=KGImageGetWidth(_surface);
+   size_t width=O2ImageGetWidth(_surface);
    
     free(self->_winding);
     // +1 is so we can modify the the next winding value without a bounds check
@@ -77,13 +81,13 @@ static BOOL _isAvailable=NO;
 }
 
 
--initWithSurface:(KGSurface *)surface flipped:(BOOL)flipped {
+-initWithSurface:(O2Surface *)surface flipped:(BOOL)flipped {
    [super initWithSurface:surface flipped:flipped];
         
    _clipContext=nil;
    _paint=[[O2Paint_color alloc] initWithGray:0 alpha:1];
 
-   KGRasterizeSetBlendMode(self,kCGBlendModeNormal);
+   KGRasterizeSetBlendMode(self,kO2BlendModeNormal);
 
    _vpwidth=self->_vpheight=0;
    
@@ -92,15 +96,15 @@ static BOOL _isAvailable=NO;
    _edges=NSZoneMalloc(NULL,self->_edgeCapacity*sizeof(Edge *));
    _sortCache=NSZoneMalloc(NULL,(self->_edgeCapacity/2 + 1)*sizeof(Edge *));
    
-   samplesX=NSZoneMalloc(NULL,MAX_SAMPLES*sizeof(CGFloat));
+   samplesX=NSZoneMalloc(NULL,MAX_SAMPLES*sizeof(O2Float));
 
-   KGRasterizerSetViewport(self,0,0,KGImageGetWidth(_surface),KGImageGetHeight(_surface));
+   KGRasterizerSetViewport(self,0,0,O2ImageGetWidth(_surface),O2ImageGetHeight(_surface));
    [self reallocateForSurface];
    return self;
 }
 
--initWithSize:(CGSize)size context:(O2Context *)context {
-   KGSurface *surface=[context createSurfaceWithWidth:size.width height:size.height];
+-initWithSize:(O2Size)size context:(O2Context *)context {
+   O2Surface *surface=[context createSurfaceWithWidth:size.width height:size.height];
    
    if(surface==nil){
     [self dealloc];
@@ -133,35 +137,67 @@ static BOOL _isAvailable=NO;
    [super dealloc];
 }
 
--(KGSurface *)surface {
+-(O2Surface *)surface {
    return _surface;
 }
 
 -(void)setWidth:(size_t)width height:(size_t)height reallocateOnlyIfRequired:(BOOL)roir {
    [_surface setWidth:width height:height reallocateOnlyIfRequired:roir];
    [self reallocateForSurface];
-   KGRasterizerSetViewport(self,0,0,KGImageGetWidth(_surface),KGImageGetHeight(_surface));
-   CGAffineTransform flip={1,0,0,-1,0,[_surface height]};
-   [[self currentState] setDeviceSpaceCTM:flip];
+   KGRasterizerSetViewport(self,0,0,O2ImageGetWidth(_surface),O2ImageGetHeight(_surface));
+   O2AffineTransform flip={1,0,0,-1,0,O2ImageGetHeight(_surface)};
+   [currentState(self) setDeviceSpaceCTM:flip];
+}
+
+-(O2Surface *)createSurfaceWithWidth:(size_t)width height:(size_t)height {
+  return [[O2Surface alloc] initWithBytes:NULL width:width height:height bitsPerComponent:O2ImageGetBitsPerComponent(_surface) bytesPerRow:O2ImageGetBytesPerRow(_surface) colorSpace:O2ImageGetColorSpace(_surface) bitmapInfo:O2ImageGetBitmapInfo(_surface)];
+}
+
+-(O2Size)size {
+   return O2SizeMake(O2ImageGetWidth(_surface),O2ImageGetHeight(_surface));
+}
+
+-(void)beginTransparencyLayerWithInfo:(NSDictionary *)unused {
+   O2LayerRef layer=O2LayerCreateWithContext(self,[self size],unused);
+   
+   [self->_layerStack addObject:layer];
+   O2LayerRelease(layer);
+   O2ContextSaveGState(self);
+}
+
+-(void)endTransparencyLayer {
+   O2LayerRef layer=O2LayerRetain([self->_layerStack lastObject]);
+   
+   O2ContextRestoreGState(self);
+   [self->_layerStack removeLastObject];
+   
+   O2Surface *shadow=[self createSurfaceWithWidth:O2ImageGetWidth(_surface) height:O2ImageGetHeight(_surface)];
+   O2Size size=[self size];
+   
+   O2SurfaceGaussianBlur(shadow,O2LayerGetSurface(layer),currentState(self)->_shadowKernel,currentState(self)->_shadowColor);
+   O2ContextDrawImage(self,O2RectMake(currentState(self)->_shadowOffset.width,currentState(self)->_shadowOffset.height,size.width,size.height),shadow);
+   
+   O2ContextDrawLayerInRect(self,O2RectMake(0,0,size.width,size.height),layer);
+   O2LayerRelease(layer);
 }
 
 -(void)deviceClipReset {
-   KGRasterizerSetViewport(self,0,0,KGImageGetWidth(_surface),KGImageGetHeight(_surface));
+   KGRasterizerSetViewport(self,0,0,O2ImageGetWidth(_surface),O2ImageGetHeight(_surface));
 }
 
 -(void)deviceClipToNonZeroPath:(O2Path *)path {
    O2MutablePath *copy=[path mutableCopy];
     
-   O2PathApplyTransform(copy,CGAffineTransformInvert([self currentState]->_userSpaceTransform));
-   O2PathApplyTransform(copy,[self currentState]->_deviceSpaceTransform);
-   CGRect rect=O2PathGetBoundingBox(copy);
+   O2PathApplyTransform(copy,O2AffineTransformInvert(currentState(self)->_userSpaceTransform));
+   O2PathApplyTransform(copy,currentState(self)->_deviceSpaceTransform);
+   O2Rect rect=O2PathGetBoundingBox(copy);
    
    [copy release];
 
    _vpx=MAX(rect.origin.x,0);
-   _vpwidth=MIN(KGImageGetWidth(_surface),CGRectGetMaxX(rect))-_vpx;
+   _vpwidth=MIN(O2ImageGetWidth(_surface),O2RectGetMaxX(rect))-_vpx;
    _vpy=MAX(rect.origin.y,0);
-   _vpheight=MIN(KGImageGetHeight(_surface),CGRectGetMaxY(rect))-_vpy;
+   _vpheight=MIN(O2ImageGetHeight(_surface),O2RectGetMaxY(rect))-_vpy;
 }
 
 static O2Paint *paintFromColor(O2Color *color){
@@ -176,8 +212,8 @@ static O2Paint *paintFromColor(O2Color *color){
    return [[O2Paint_color alloc] initWithGray:0 alpha:1];
 }
 
--(void)drawPath:(CGPathDrawingMode)drawingMode {
-   O2GState *gState=[self currentState];
+-(void)drawPath:(O2PathDrawingMode)drawingMode {
+   O2GState *gState=currentState(self);
    
    KGRasterizeSetBlendMode(self,gState->_blendMode);
 
@@ -185,37 +221,37 @@ static O2Paint *paintFromColor(O2Color *color){
 
 /* Path construction is affected by the CTM, and the stroke pen is affected by the CTM , this means path points and the stroke can be affected by different transforms as the CTM can change during path construction and before stroking. For example, creation of transformed shapes which are drawn using an untransformed pen. The current tesselator expects everything to be in user coordinates and it tesselates from there into device space, but the path points are already in base coordinates. So, path points are brought from base coordinates into the active coordinate space using an inverted transform and then everything is tesselated using the CTM into device space.  */
  
-   CGAffineTransform userToSurfaceMatrix=gState->_deviceSpaceTransform;
+   O2AffineTransform userToSurfaceMatrix=gState->_deviceSpaceTransform;
 
-   O2PathApplyTransform(_path,CGAffineTransformInvert(gState->_userSpaceTransform));
+   O2PathApplyTransform(_path,O2AffineTransformInvert(gState->_userSpaceTransform));
    VGPath *vgPath=[[VGPath alloc] initWithKGPath:_path];
 
-   if(drawingMode!=kCGPathStroke){
+   if(drawingMode!=kO2PathStroke){
     O2Paint *paint=paintFromColor(gState->_fillColor);
     O2DContextSetPaint(self,paint);
     [paint release];
     
-    CGAffineTransform surfaceToPaintMatrix =userToSurfaceMatrix;//context->m_pathUserToSurface * context->m_fillPaintToUser;
+    O2AffineTransform surfaceToPaintMatrix =userToSurfaceMatrix;//context->m_pathUserToSurface * context->m_fillPaintToUser;
     
-    surfaceToPaintMatrix=CGAffineTransformInvert(surfaceToPaintMatrix);
+    surfaceToPaintMatrix=O2AffineTransformInvert(surfaceToPaintMatrix);
      O2PaintSetSurfaceToPaintMatrix(paint,surfaceToPaintMatrix);
 
      VGPathFill(vgPath,userToSurfaceMatrix,self);
                 
-     VGFillRuleMask fillRule=(drawingMode==kCGPathFill || drawingMode==kCGPathFillStroke)?VG_NON_ZERO:VG_EVEN_ODD;
+     VGFillRuleMask fillRule=(drawingMode==kO2PathFill || drawingMode==kO2PathFillStroke)?VG_NON_ZERO:VG_EVEN_ODD;
                 
      O2DContextClipAndFillEdges(self,fillRule);
    }
 
-   if(drawingMode>=kCGPathStroke){
+   if(drawingMode>=kO2PathStroke){
     if(gState->_lineWidth > 0.0f){
      O2Paint *paint=paintFromColor(gState->_strokeColor);
      O2DContextSetPaint(self,paint);
      [paint release];
      
-     CGAffineTransform surfaceToPaintMatrix=userToSurfaceMatrix;// = context->m_pathUserToSurface * context->m_strokePaintToUser;
+     O2AffineTransform surfaceToPaintMatrix=userToSurfaceMatrix;// = context->m_pathUserToSurface * context->m_strokePaintToUser;
 
-     surfaceToPaintMatrix=CGAffineTransformInvert(surfaceToPaintMatrix);
+     surfaceToPaintMatrix=O2AffineTransformInvert(surfaceToPaintMatrix);
       O2PaintSetSurfaceToPaintMatrix(paint,surfaceToPaintMatrix);
 
       KGRasterizerClear(self);
@@ -232,20 +268,20 @@ static O2Paint *paintFromColor(O2Color *color){
    O2PathReset(_path);
 }
 
--(void)showGlyphs:(const CGGlyph *)glyphs count:(unsigned)count {
+-(void)showGlyphs:(const O2Glyph *)glyphs count:(unsigned)count {
 #if 0
-   O2FontRef font=[self currentState]->_font;
+   O2FontRef font=currentState(self)->_font;
    int i;
    
    for(i=0;i<count;i++){
-    CGGlyph    glyph=glyphs[i];
+    O2Glyph    glyph=glyphs[i];
     O2ImageRef stencil;
    }
 #endif
 }
 
--(void)drawShading:(KGShading *)shading {
-   O2GState *gState=[self currentState];
+-(void)drawShading:(O2Shading *)shading {
+   O2GState *gState=currentState(self);
    O2Paint         *paint;
 
    KGRasterizeSetBlendMode(self,gState->_blendMode);
@@ -262,93 +298,93 @@ static O2Paint *paintFromColor(O2Color *color){
    O2DContextSetPaint(self,paint);
    [paint release];
  
-   O2DContextAddEdge(self,CGPointMake(0,0), CGPointMake(0,KGImageGetHeight(_surface)));
-   O2DContextAddEdge(self,CGPointMake(KGImageGetWidth(_surface),0), CGPointMake(KGImageGetWidth(_surface),KGImageGetHeight(_surface)));
+   O2DContextAddEdge(self,O2PointMake(0,0), O2PointMake(0,O2ImageGetHeight(_surface)));
+   O2DContextAddEdge(self,O2PointMake(O2ImageGetWidth(_surface),0), O2PointMake(O2ImageGetWidth(_surface),O2ImageGetHeight(_surface)));
 
    O2DContextClipAndFillEdges(self,VG_NON_ZERO);
    KGRasterizerClear(self);
 }
 
--(void)drawImage:(O2Image *)image inRect:(CGRect)rect {
-   O2GState *gState=[self currentState];
+-(void)drawImage:(O2Image *)image inRect:(O2Rect)rect {
+   O2GState *gState=currentState(self);
    
-CGAffineTransform xform=CGAffineTransformMakeTranslation(rect.origin.x,rect.origin.y);
-xform=CGAffineTransformScale(xform,rect.size.width/(CGFloat)[image width],rect.size.height/(CGFloat)[image height]);
-xform=CGAffineTransformConcat(xform,gState->_deviceSpaceTransform);
+   O2AffineTransform xform=O2AffineTransformMakeTranslation(rect.origin.x,rect.origin.y);
+   
+   xform=O2AffineTransformScale(xform,rect.size.width/(O2Float)O2ImageGetWidth(image),rect.size.height/(O2Float)O2ImageGetHeight(image));
+   xform=O2AffineTransformConcat(xform,gState->_deviceSpaceTransform);
 
-CGAffineTransform i2u=CGAffineTransformMakeTranslation(0,(int)[image height]);
-i2u=CGAffineTransformScale(i2u,1,-1);
+   O2AffineTransform i2u=O2AffineTransformMakeTranslation(0,O2ImageGetHeight(image));
+   i2u=O2AffineTransformScale(i2u,1,-1);
 
-xform=CGAffineTransformConcat(i2u,xform);
+   xform=O2AffineTransformConcat(i2u,xform);
 
-        CGAffineTransform imageUserToSurface=xform;
+   O2AffineTransform imageUserToSurface=xform;
 
  // FIX, adjustable
-        CGAffineTransform fillPaintToUser=CGAffineTransformIdentity;
+   O2AffineTransform fillPaintToUser=O2AffineTransformIdentity;
         
 		//transform image corners into the surface space
-		CGPoint p0=CGPointMake(0, 0);
-		CGPoint p1=CGPointMake(0, (CGFloat)KGImageGetHeight(image));
-		CGPoint p2=CGPointMake((CGFloat)KGImageGetWidth(image), (CGFloat)KGImageGetHeight(image));
-		CGPoint p3=CGPointMake((CGFloat)KGImageGetWidth(image), 0);
-		p0 = CGPointApplyAffineTransform(p0,imageUserToSurface);
-		p1 = CGPointApplyAffineTransform(p1,imageUserToSurface);
-		p2 = CGPointApplyAffineTransform(p2,imageUserToSurface);
-		p3 = CGPointApplyAffineTransform(p3,imageUserToSurface);
+   O2Point p0=O2PointMake(0, 0);
+   O2Point p1=O2PointMake(0, (O2Float)O2ImageGetHeight(image));
+   O2Point p2=O2PointMake((O2Float)O2ImageGetWidth(image), (O2Float)O2ImageGetHeight(image));
+   O2Point p3=O2PointMake((O2Float)O2ImageGetWidth(image), 0);
+   p0 = O2PointApplyAffineTransform(p0,imageUserToSurface);
+   p1 = O2PointApplyAffineTransform(p1,imageUserToSurface);
+   p2 = O2PointApplyAffineTransform(p2,imageUserToSurface);
+   p3 = O2PointApplyAffineTransform(p3,imageUserToSurface);
 
 
-       KGRasterizerSetShouldAntialias(self,gState->_shouldAntialias,gState->_antialiasingQuality);
+   KGRasterizerSetShouldAntialias(self,gState->_shouldAntialias,gState->_antialiasingQuality);
 
-        O2Paint *paint=paintFromColor(gState->_fillColor);
-        CGInterpolationQuality iq;
-        if(gState->_interpolationQuality==kCGInterpolationDefault)
-            iq=kCGInterpolationLow;
-        else
-            iq=gState->_interpolationQuality;
+   O2Paint *paint=paintFromColor(gState->_fillColor);
+   O2InterpolationQuality iq;
+   if(gState->_interpolationQuality==kO2InterpolationDefault)
+    iq=kO2InterpolationLow;
+   else
+    iq=gState->_interpolationQuality;
 
-        O2Paint *imagePaint=[[O2Paint_image alloc] initWithImage:image mode:VG_DRAW_IMAGE_NORMAL paint:paint interpolationQuality:iq];
+   O2Paint *imagePaint=[[O2Paint_image alloc] initWithImage:image mode:VG_DRAW_IMAGE_NORMAL paint:paint interpolationQuality:iq];
         
-        O2DContextSetPaint(self,imagePaint);
+   O2DContextSetPaint(self,imagePaint);
 
+   KGRasterizeSetBlendMode(self,gState->_blendMode);
+
+   O2AffineTransform surfaceToImageMatrix = imageUserToSurface;
+   O2AffineTransform surfaceToPaintMatrix = O2AffineTransformConcat(imageUserToSurface,fillPaintToUser);
         
-		KGRasterizeSetBlendMode(self,gState->_blendMode);
+   surfaceToImageMatrix=O2AffineTransformInvert(surfaceToImageMatrix);
+   surfaceToPaintMatrix=O2AffineTransformInvert(surfaceToPaintMatrix);
+   O2PaintSetSurfaceToPaintMatrix(paint,surfaceToPaintMatrix);
+   O2PaintSetSurfaceToPaintMatrix(imagePaint,surfaceToImageMatrix);
 
-		CGAffineTransform surfaceToImageMatrix = imageUserToSurface;
-		CGAffineTransform surfaceToPaintMatrix = CGAffineTransformConcat(imageUserToSurface,fillPaintToUser);
-        
-        surfaceToImageMatrix=CGAffineTransformInvert(surfaceToImageMatrix);
-        surfaceToPaintMatrix=CGAffineTransformInvert(surfaceToPaintMatrix);
-			O2PaintSetSurfaceToPaintMatrix(paint,surfaceToPaintMatrix);
-			O2PaintSetSurfaceToPaintMatrix(imagePaint,surfaceToImageMatrix);
+   O2DContextAddEdge(self,p0, p1);
+   O2DContextAddEdge(self,p1, p2);
+   O2DContextAddEdge(self,p2, p3);
+   O2DContextAddEdge(self,p3, p0);
+   O2DContextClipAndFillEdges(self,VG_EVEN_ODD);
 
-			O2DContextAddEdge(self,p0, p1);
-			O2DContextAddEdge(self,p1, p2);
-			O2DContextAddEdge(self,p2, p3);
-			O2DContextAddEdge(self,p3, p0);
-			O2DContextClipAndFillEdges(self,VG_EVEN_ODD);
-
-        O2DContextSetPaint(self,nil);
-        [paint release];
-        [imagePaint release];
+   O2DContextSetPaint(self,nil);
+   O2PaintRelease(paint);
+   O2PaintRelease(imagePaint);
 
    KGRasterizerClear(self);
 }
 
--(void)drawLayer:(KGLayer *)layer inRect:(CGRect)rect {
-   //KGInvalidAbstractInvocation();
+-(void)drawLayer:(O2LayerRef)layer inRect:(O2Rect)rect {
+   O2ImageRef image=O2LayerGetSurface(layer);
+   
+   [self drawImage:image inRect:rect];
 }
-
-
 
 -(void)deviceClipToEvenOddPath:(O2Path *)path {
 //   KGInvalidAbstractInvocation();
 }
 
--(void)deviceClipToMask:(O2Image *)mask inRect:(CGRect)rect {
+-(void)deviceClipToMask:(O2Image *)mask inRect:(O2Rect)rect {
 //   KGInvalidAbstractInvocation();
 }
 
-void KGRasterizerSetViewport(KGRasterizer *self,int x,int y,int width,int height) {
+void KGRasterizerSetViewport(O2Context_builtin *self,int x,int y,int width,int height) {
 	RI_ASSERT(vpwidth >= 0 && vpheight >= 0);
     self->_vpx=x;
     self->_vpy=y;
@@ -356,7 +392,7 @@ void KGRasterizerSetViewport(KGRasterizer *self,int x,int y,int width,int height
     self->_vpheight=height;
 }
 
-void KGRasterizerClear(KGRasterizer *self) {
+void KGRasterizerClear(O2Context_builtin *self) {
    int i;
    for(i=0;i<self->_edgeCount;i++)
     NSZoneFree(NULL,self->_edges[i]);
@@ -364,7 +400,7 @@ void KGRasterizerClear(KGRasterizer *self) {
    self->_edgeCount=0;   
 }
 
-void O2DContextAddEdge(KGRasterizer *self,const CGPoint v0, const CGPoint v1) {
+void O2DContextAddEdge(O2Context_builtin *self,const O2Point v0, const O2Point v1) {
 
 	if(v0.y == v1.y)
 		return;	//skip horizontal edges (they don't affect rasterization since we scan horizontally)
@@ -418,7 +454,7 @@ static double radicalInverseBase2(unsigned int i)
 	return p;
 }
 
-void KGRasterizerSetShouldAntialias(KGRasterizer *self,BOOL antialias,int quality) {
+void KGRasterizerSetShouldAntialias(O2Context_builtin *self,BOOL antialias,int quality) {
  
 	//make a sampling pattern
 
@@ -447,54 +483,54 @@ void KGRasterizerSetShouldAntialias(KGRasterizer *self,BOOL antialias,int qualit
 		self->numSamples = numberOfSamples;
         int i;
 
-		 self->samplesInitialY = ((CGFloat)(0.5f)) / (CGFloat)numberOfSamples;
-		 self->samplesDeltaY = ((CGFloat)(1.0f)) / (CGFloat)numberOfSamples;
+		 self->samplesInitialY = ((O2Float)(0.5f)) / (O2Float)numberOfSamples;
+		 self->samplesDeltaY = ((O2Float)(1.0f)) / (O2Float)numberOfSamples;
         for(i=0;i<numberOfSamples;i++){
-	     self->samplesX[i] = (CGFloat)radicalInverseBase2(i);
+	     self->samplesX[i] = (O2Float)radicalInverseBase2(i);
          self->samplesWeight=MAX_SAMPLES/numberOfSamples;
         }
     }
 }
 
-static void KGApplyCoverageAndMaskToSpan_lRGBAffff_PRE(KGRGBAffff *dst,int icoverage,CGFloat *mask,KGRGBAffff *src,int length){
+static void KGApplyCoverageAndMaskToSpan_lRGBAffff_PRE(O2argb32f *dst,int icoverage,O2Float *mask,O2argb32f *src,int length){
    int i;
    
    for(i=0;i<length;i++){
-    KGRGBAffff r=src[i];
-    KGRGBAffff d=dst[i];
-    CGFloat coverage=zeroToOneFromCoverage(icoverage);
-    CGFloat cov=mask[i]*coverage;
+    O2argb32f r=src[i];
+    O2argb32f d=dst[i];
+    O2Float coverage=zeroToOneFromCoverage(icoverage);
+    O2Float cov=mask[i]*coverage;
      
-    dst[i]=KGRGBAffffAdd(KGRGBAffffMultiplyByFloat(r , cov) , KGRGBAffffMultiplyByFloat(d , (1.0f - cov)));
+    dst[i]=O2argb32fAdd(O2argb32fMultiplyByFloat(r , cov) , O2argb32fMultiplyByFloat(d , (1.0f - cov)));
    }
 }
 
-static void KGApplyCoverageToSpan_lRGBAffff_PRE(KGRGBAffff *dst,int icoverage,KGRGBAffff *src,int length){
+static void KGApplyCoverageToSpan_lRGBAffff_PRE(O2argb32f *dst,int icoverage,O2argb32f *src,int length){
    int i;
-   CGFloat coverage=zeroToOneFromCoverage(icoverage);
+   O2Float coverage=zeroToOneFromCoverage(icoverage);
    
    for(i=0;i<length;i++){
-    KGRGBAffff r=src[i];
-    KGRGBAffff d=dst[i];
+    O2argb32f r=src[i];
+    O2argb32f d=dst[i];
      
-    dst[i]=KGRGBAffffAdd(KGRGBAffffMultiplyByFloat(r , coverage) , KGRGBAffffMultiplyByFloat(d , (1.0f - coverage)));
+    dst[i]=O2argb32fAdd(O2argb32fMultiplyByFloat(r , coverage) , O2argb32fMultiplyByFloat(d , (1.0f - coverage)));
    }
 }
          
-static void KGApplyCoverageAndMaskToSpan_lRGBA8888_PRE(KGRGBA8888 *dst,int icoverage,uint8_t *mask,KGRGBA8888 *src,int length){
+static void KGApplyCoverageAndMaskToSpan_lRGBA8888_PRE(O2argb8u *dst,int icoverage,uint8_t *mask,O2argb8u *src,int length){
    int i;
    
    for(i=0;i<length;i++){
-    KGRGBA8888 r=src[i];
-    KGRGBA8888 d=dst[i];
+    O2argb8u r=src[i];
+    O2argb8u d=dst[i];
     int cov=(mask[i]*icoverage)/255;
     int oneMinusCov=inverseCoverage(cov);
      
-    dst[i]=KGRGBA8888Add(KGRGBA8888MultiplyByCoverage(r , cov) , KGRGBA8888MultiplyByCoverage(d , oneMinusCov));
+    dst[i]=O2argb8uAdd(O2argb8uMultiplyByCoverage(r , cov) , O2argb8uMultiplyByCoverage(d , oneMinusCov));
    }
 }
 
-void KGApplyCoverageToSpan_lRGBA8888_PRE(KGRGBA8888 *dst,int coverage,KGRGBA8888 *src,int length){
+void KGApplyCoverageToSpan_lRGBA8888_PRE(O2argb8u *dst,int coverage,O2argb8u *src,int length){
    int i;
    
    if(coverage==256){   
@@ -506,23 +542,23 @@ void KGApplyCoverageToSpan_lRGBA8888_PRE(KGRGBA8888 *dst,int coverage,KGRGBA8888
     int oneMinusCoverage=inverseCoverage(coverage);
    
     for(i=0;i<length;i++,src++,dst++){
-     KGRGBA8888 r=*src;
-     KGRGBA8888 d=*dst;
+     O2argb8u r=*src;
+     O2argb8u d=*dst;
     
-     *dst=KGRGBA8888Add(KGRGBA8888MultiplyByCoverage(r , coverage) , KGRGBA8888MultiplyByCoverage(d , oneMinusCoverage));
+     *dst=O2argb8uAdd(O2argb8uMultiplyByCoverage(r , coverage) , O2argb8uMultiplyByCoverage(d , oneMinusCoverage));
     }
    }
 }
 
-void KGBlendSpanNormal_8888_coverage(KGRGBA8888 *src,KGRGBA8888 *dst,int coverage,int length){
+void O2BlendSpanNormal_8888_coverage(O2argb8u *src,O2argb8u *dst,int coverage,int length){
 // Passes Visual Test
    int i;
    
    if(coverage==256){
     for(i=0;i<length;i++,src++,dst++){
-     KGRGBA8888 s=*src;
-     KGRGBA8888 d=*dst;
-     KGRGBA8888 r;
+     O2argb8u s=*src;
+     O2argb8u d=*dst;
+     O2argb8u r;
     
      if(s.a==255)
       r=*src;
@@ -541,9 +577,9 @@ void KGBlendSpanNormal_8888_coverage(KGRGBA8888 *src,KGRGBA8888 *dst,int coverag
     int oneMinusCoverage=inverseCoverage(coverage);
 
     for(i=0;i<length;i++,src++,dst++){
-     KGRGBA8888 s=*src;
-     KGRGBA8888 d=*dst;
-     KGRGBA8888 r;
+     O2argb8u s=*src;
+     O2argb8u d=*dst;
+     O2argb8u r;
      unsigned char sa=255-s.a;
      
      r.r=RI_INT_MIN((int)s.r+alphaMultiply(d.r,sa),255);
@@ -571,7 +607,7 @@ void KGBlendSpanNormal_8888_coverage(KGRGBA8888 *src,KGRGBA8888 *dst,int coverag
    }
 }
 
-static void KGBlendSpanCopy_8888_coverage(KGRGBA8888 *src,KGRGBA8888 *dst,int coverage,int length){
+static void O2BlendSpanCopy_8888_coverage(O2argb8u *src,O2argb8u *dst,int coverage,int length){
 // Passes Visual Test
    int i;
 
@@ -583,8 +619,8 @@ static void KGBlendSpanCopy_8888_coverage(KGRGBA8888 *src,KGRGBA8888 *dst,int co
     int oneMinusCoverage=256-coverage;
 
     for(i=0;i<length;i++,src++,dst++){
-     KGRGBA8888 d=*dst;
-     KGRGBA8888 r=*src;
+     O2argb8u d=*dst;
+     O2argb8u r=*src;
     
      r.r=multiplyByCoverage(r.r,coverage);
      d.r=(d.r*oneMinusCoverage)/256;
@@ -609,14 +645,14 @@ static void KGBlendSpanCopy_8888_coverage(KGRGBA8888 *src,KGRGBA8888 *dst,int co
 
 /* Paint functions can selectively paint or not paint at all, e.g. gradients with extend turned off, they do this by returning a negative chunk for a pixels which aren't generated and positive chunk for pixels that are. We need to make sure we cover the entire span so we loop until the span is complete.
  */
-static inline void KGRasterizeWriteCoverageSpan8888_Normal(KGSurface *surface,KGSurface *mask,O2Paint *paint,int x, int y,int coverage,int length,KGBlendSpan_RGBA8888 blendFunction) {
-    KGRGBA8888 *dst=__builtin_alloca(length*sizeof(KGRGBA8888));
-    KGRGBA8888 *direct=surface->_read_lRGBA8888_PRE(surface,x,y,dst,length);
+static inline void KGRasterizeWriteCoverageSpan8888_Normal(O2Surface *surface,O2Surface *mask,O2Paint *paint,int x, int y,int coverage,int length,O2BlendSpan_RGBA8888 blendFunction) {
+    O2argb8u *dst=__builtin_alloca(length*sizeof(O2argb8u));
+    O2argb8u *direct=surface->_read_lRGBA8888_PRE(surface,x,y,dst,length);
    
     if(direct!=NULL)
      dst=direct;
      
-    KGRGBA8888 *src=__builtin_alloca(length*sizeof(KGRGBA8888));
+    O2argb8u *src=__builtin_alloca(length*sizeof(O2argb8u));
     
     while(YES){
      int chunk=O2PaintReadSpan_lRGBA8888_PRE(paint,x,y,src,length);
@@ -624,12 +660,12 @@ static inline void KGRasterizeWriteCoverageSpan8888_Normal(KGSurface *surface,KG
      if(chunk<0) // skip
       chunk=-chunk;
      else {
-      KGBlendSpanNormal_8888_coverage(src,dst,coverage,chunk);
+      O2BlendSpanNormal_8888_coverage(src,dst,coverage,chunk);
      // FIXME: doesnt handle mask if present
 
       if(direct==NULL){
    	 //write result to the destination surface
-       KGSurfaceWriteSpan_lRGBA8888_PRE(surface,x,y,dst,chunk);
+       O2SurfaceWriteSpan_lRGBA8888_PRE(surface,x,y,dst,chunk);
       }
      }
      length-=chunk;
@@ -643,14 +679,14 @@ static inline void KGRasterizeWriteCoverageSpan8888_Normal(KGSurface *surface,KG
 }
 
 
-static inline void KGRasterizeWriteCoverageSpan8888_Copy(KGSurface *surface,KGSurface *mask,O2Paint *paint,int x, int y,int coverage,int length,KGBlendSpan_RGBA8888 blendFunction) {
-   KGRGBA8888 *dst=__builtin_alloca(length*sizeof(KGRGBA8888));
-   KGRGBA8888 *direct=surface->_read_lRGBA8888_PRE(surface,x,y,dst,length);
+static inline void KGRasterizeWriteCoverageSpan8888_Copy(O2Surface *surface,O2Surface *mask,O2Paint *paint,int x, int y,int coverage,int length,O2BlendSpan_RGBA8888 blendFunction) {
+   O2argb8u *dst=__builtin_alloca(length*sizeof(O2argb8u));
+   O2argb8u *direct=surface->_read_lRGBA8888_PRE(surface,x,y,dst,length);
    
    if(direct!=NULL)
     dst=direct;
      
-   KGRGBA8888 *src=__builtin_alloca(length*sizeof(KGRGBA8888));
+   O2argb8u *src=__builtin_alloca(length*sizeof(O2argb8u));
     
    while(YES){
     int chunk=O2PaintReadSpan_lRGBA8888_PRE(paint,x,y,src,length);
@@ -658,12 +694,12 @@ static inline void KGRasterizeWriteCoverageSpan8888_Copy(KGSurface *surface,KGSu
     if(chunk<0) // skip
      chunk=-chunk;
     else {
-     KGBlendSpanCopy_8888_coverage(src,dst,coverage,chunk);
+     O2BlendSpanCopy_8888_coverage(src,dst,coverage,chunk);
      // FIXME: doesnt handle mask if present
 
      if(direct==NULL){
      //write result to the destination surface
-      KGSurfaceWriteSpan_lRGBA8888_PRE(surface,x,y,dst,chunk);
+      O2SurfaceWriteSpan_lRGBA8888_PRE(surface,x,y,dst,chunk);
      }
     }
     
@@ -677,14 +713,14 @@ static inline void KGRasterizeWriteCoverageSpan8888_Copy(KGSurface *surface,KGSu
    }
 }
 
-static inline void KGRasterizeWriteCoverageSpan8888(KGSurface *surface,KGSurface *mask,O2Paint *paint,int x, int y,int coverage,int length,KGBlendSpan_RGBA8888 blendFunction) {
-   KGRGBA8888 *dst=__builtin_alloca(length*sizeof(KGRGBA8888));
-   KGRGBA8888 *direct=surface->_read_lRGBA8888_PRE(surface,x,y,dst,length);
+static inline void KGRasterizeWriteCoverageSpan8888(O2Surface *surface,O2Surface *mask,O2Paint *paint,int x, int y,int coverage,int length,O2BlendSpan_RGBA8888 blendFunction) {
+   O2argb8u *dst=__builtin_alloca(length*sizeof(O2argb8u));
+   O2argb8u *direct=surface->_read_lRGBA8888_PRE(surface,x,y,dst,length);
    
    if(direct!=NULL)
     dst=direct;
      
-   KGRGBA8888 *src=__builtin_alloca(length*sizeof(KGRGBA8888));
+   O2argb8u *src=__builtin_alloca(length*sizeof(O2argb8u));
    
    while(YES){
     int chunk=O2PaintReadSpan_lRGBA8888_PRE(paint,x,y,src,length);
@@ -700,13 +736,13 @@ static inline void KGRasterizeWriteCoverageSpan8888(KGSurface *surface,KGSurface
      else {
       uint8_t maskSpan[chunk];
      
-      KGImageReadSpan_A8_MASK(mask,x,y,maskSpan,chunk);
+      O2ImageReadSpan_A8_MASK(mask,x,y,maskSpan,chunk);
       KGApplyCoverageAndMaskToSpan_lRGBA8888_PRE(dst,coverage,maskSpan,src,chunk);
      }
 
      if(direct==NULL){
       //write result to the destination surface
-      KGSurfaceWriteSpan_lRGBA8888_PRE(surface,x,y,dst,chunk);
+      O2SurfaceWriteSpan_lRGBA8888_PRE(surface,x,y,dst,chunk);
      }
     }
     
@@ -720,14 +756,14 @@ static inline void KGRasterizeWriteCoverageSpan8888(KGSurface *surface,KGSurface
    }
 }
 
-static inline void KGRasterizeWriteCoverageSpanffff(KGSurface *surface,KGSurface *mask,O2Paint *paint,int x, int y,int coverage,int length,KGBlendSpan_RGBAffff blendFunction) {
-   KGRGBAffff *dst=__builtin_alloca(length*sizeof(KGRGBAffff));
-   KGRGBAffff *direct=KGImageReadSpan_lRGBAffff_PRE(surface,x,y,dst,length);
+static inline void KGRasterizeWriteCoverageSpanffff(O2Surface *surface,O2Surface *mask,O2Paint *paint,int x, int y,int coverage,int length,O2BlendSpan_RGBAffff blendFunction) {
+   O2argb32f *dst=__builtin_alloca(length*sizeof(O2argb32f));
+   O2argb32f *direct=O2ImageReadSpan_lRGBAffff_PRE(surface,x,y,dst,length);
 
    if(direct!=NULL)
     dst=direct;
 
-   KGRGBAffff *src=__builtin_alloca(length*sizeof(KGRGBAffff));
+   O2argb32f *src=__builtin_alloca(length*sizeof(O2argb32f));
 
    while(YES){
     int chunk=O2PaintReadSpan_lRGBAffff_PRE(paint,x,y,src,length);
@@ -741,15 +777,15 @@ static inline void KGRasterizeWriteCoverageSpanffff(KGSurface *surface,KGSurface
  	 if(mask==NULL)
       KGApplyCoverageToSpan_lRGBAffff_PRE(dst,coverage,src,chunk);
      else {
-      CGFloat maskSpan[length];
+      O2Float maskSpan[length];
      
-      KGImageReadSpan_Af_MASK(mask,x,y,maskSpan,chunk);
+      O2ImageReadSpan_Af_MASK(mask,x,y,maskSpan,chunk);
       KGApplyCoverageAndMaskToSpan_lRGBAffff_PRE(dst,coverage,maskSpan,src,chunk);
      }
     
      if(direct==NULL){
   	 //write result to the destination surface
-      KGSurfaceWriteSpan_lRGBAffff_PRE(surface,x,y,dst,chunk);
+      O2SurfaceWriteSpan_lRGBAffff_PRE(surface,x,y,dst,chunk);
      }
     }
 
@@ -796,11 +832,11 @@ static inline void sortEdgesByMinY(Edge **edges,int count,Edge **B){
   }
 }
 
-static inline void initEdgeForAET(KGRasterizer *self,Edge *edge,int scany){
+static inline void initEdgeForAET(O2Context_builtin *self,Edge *edge,int scany){
    //compute edge min and max x-coordinates for this scanline
    
-   CGPoint vd = Vector2Subtract(edge->v1,edge->v0);
-   CGFloat wl = 1.0f /vd.y;
+   O2Point vd = Vector2Subtract(edge->v1,edge->v0);
+   O2Float wl = 1.0f /vd.y;
    edge->vdxwl=vd.x*wl;
 
    if(edge->v0.x<edge->v1.x){
@@ -819,25 +855,25 @@ static inline void initEdgeForAET(KGRasterizer *self,Edge *edge,int scany){
    edge->sxPre+=(scany-1)*edge->vdxwl;
    edge->exPre+=(scany+1)*edge->vdxwl;
 
-   CGFloat autosx = RI_CLAMP(edge->sxPre, edge->bminx, edge->bmaxx);
-   CGFloat autoex  = RI_CLAMP(edge->exPre, edge->bminx, edge->bmaxx); 
-   CGFloat minx=RI_MIN(autosx,autoex);
+   O2Float autosx = RI_CLAMP(edge->sxPre, edge->bminx, edge->bmaxx);
+   O2Float autoex  = RI_CLAMP(edge->exPre, edge->bminx, edge->bmaxx); 
+   O2Float minx=RI_MIN(autosx,autoex);
       
    edge->minx = MAX(self->_vpx,minx);
-   edge->samples=NSZoneMalloc(NULL,sizeof(CGFloat)*self->numSamples);
+   edge->samples=NSZoneMalloc(NULL,sizeof(O2Float)*self->numSamples);
    
-   CGFloat *pre=edge->samples;
+   O2Float *pre=edge->samples;
    int      i,numberOfSamples=self->numSamples;
-   CGFloat  sampleY=self->samplesInitialY;
-   CGFloat  deltaY=self->samplesDeltaY;
-   CGFloat *samplesX=self->samplesX;
+   O2Float  sampleY=self->samplesInitialY;
+   O2Float  deltaY=self->samplesDeltaY;
+   O2Float *samplesX=self->samplesX;
        
-   CGFloat  normalX=edge->v0.y-edge->v1.y;
-   CGFloat  normalY=edge->v0.x-edge->v1.x;
-   CGFloat min=0,max=0;
+   O2Float  normalX=edge->v0.y-edge->v1.y;
+   O2Float  normalY=edge->v0.x-edge->v1.x;
+   O2Float min=0,max=0;
        
    for(i=0;i<numberOfSamples;sampleY+=deltaY,samplesX++,i++){
-    CGFloat value=sampleY*normalY-*samplesX*normalX;
+    O2Float value=sampleY*normalY-*samplesX*normalX;
         
     *pre++ = value;
         
@@ -856,9 +892,9 @@ static inline void incrementEdgeForAET(Edge *edge,int vpx){
    edge->sxPre+= edge->vdxwl;
    edge->exPre+= edge->vdxwl;
    
-   CGFloat autosx=RI_CLAMP(edge->sxPre, edge->bminx, edge->bmaxx);
-   CGFloat autoex=RI_CLAMP(edge->exPre, edge->bminx, edge->bmaxx); 
-   CGFloat minx=RI_MIN(autosx,autoex);
+   O2Float autosx=RI_CLAMP(edge->sxPre, edge->bminx, edge->bmaxx);
+   O2Float autoex=RI_CLAMP(edge->exPre, edge->bminx, edge->bmaxx); 
+   O2Float minx=RI_MIN(autosx,autoex);
       
    edge->minx = MAX(vpx,minx);
 }
@@ -874,7 +910,7 @@ typedef struct CoverageNode {
    int length;
 } CoverageNode;
 
-void O2DContextFillEdgesOnSurface(KGRasterizer *self,KGSurface *surface,O2Image *mask,O2Paint *paint,int fillRuleMask) {
+void O2DContextFillEdgesOnSurface(O2Context_builtin *self,O2Surface *surface,O2Image *mask,O2Paint *paint,int fillRuleMask) {
    int    edgeCount=self->_edgeCount;
    Edge **edges=self->_edges;
       
@@ -978,7 +1014,7 @@ void O2DContextFillEdgesOnSurface(KGRasterizer *self,KGSurface *surface,O2Image 
     }
     
     int minx=xlimit,maxx=0;
-    int *increase;
+    int *increase=self->_increase;
 
     for(edge=activeRoot;edge!=NULL;edge=edge->next){
      if(edge->minx>=xlimit){
@@ -986,10 +1022,10 @@ void O2DContextFillEdgesOnSurface(KGRasterizer *self,KGSurface *surface,O2Image 
       continue;
      }
 
-     CGFloat  deltaY=self->samplesDeltaY;
-     CGFloat  scanFloatY=scany+self->samplesInitialY;
-     CGFloat  v0y=edge->v0.y;
-     CGFloat  v1y=edge->v1.y;
+     O2Float  deltaY=self->samplesDeltaY;
+     O2Float  scanFloatY=scany+self->samplesInitialY;
+     O2Float  v0y=edge->v0.y;
+     O2Float  v1y=edge->v1.y;
 
      int      belowY=0;
      int      aboveY;
@@ -1014,14 +1050,13 @@ void O2DContextFillEdgesOnSurface(KGRasterizer *self,KGSurface *surface,O2Image 
        
      minx=MIN(minx,scanx);
 
-     CGFloat normalX=edge->v0.y-edge->v1.y;
-     CGFloat normalY=edge->v0.x-edge->v1.x;
-     CGFloat pcxnormal=(scanx-edge->v0.x)*normalX-(scany-edge->v0.y)*normalY;
+     O2Float normalX=edge->v0.y-edge->v1.y;
+     O2Float normalY=edge->v0.x-edge->v1.x;
+     O2Float pcxnormal=(scanx-edge->v0.x)*normalX-(scany-edge->v0.y)*normalY;
         
      int *windptr=winding+(scanx<<shiftNumberOfSamples);
-     increase=self->_increase;
             
-     CGFloat *pre=edge->samples;
+     O2Float *pre=edge->samples;
             
      for(;;pcxnormal+=normalX,windptr+=numberOfSamples){
       /*
@@ -1074,7 +1109,6 @@ void O2DContextFillEdgesOnSurface(KGRasterizer *self,KGSurface *surface,O2Image 
     minx=MAX(self->_vpx,minx);
     maxx=MIN(xlimit,maxx+1);
         
-    increase=self->_increase;
     int *maxAdvance=increase+maxx;
 
     increase+=minx;
@@ -1126,7 +1160,7 @@ void O2DContextFillEdgesOnSurface(KGRasterizer *self,KGSurface *surface,O2Image 
        break;
       }
 
-	 if(coverage>0){
+	    if(coverage>0){
 
       if(self->alias)
        coverage=256;
@@ -1177,138 +1211,144 @@ void O2DContextFillEdgesOnSurface(KGRasterizer *self,KGSurface *surface,O2Image 
    }
 }
 
-void O2DContextClipAndFillEdges(KGRasterizer *self,int fillRuleMask){
+void O2DContextClipAndFillEdges(O2Context_builtin *self,int fillRuleMask){
    O2Image *mask=(self->_clipContext!=nil)?self->_clipContext->_surface:nil;
+   O2Surface *surface;
    
-   O2DContextFillEdgesOnSurface(self,self->_surface,mask,self->_paint,fillRuleMask);
+   if([self->_layerStack count]>0)
+    surface=O2LayerGetSurface([self->_layerStack lastObject]);
+   else
+    surface=self->_surface;
+    
+   O2DContextFillEdgesOnSurface(self,surface,mask,self->_paint,fillRuleMask);
 }
 
-void KGRasterizeSetBlendMode(KGRasterizer *self,CGBlendMode blendMode) {
-   RI_ASSERT(blendMode >= kCGBlendModeNormal && blendMode <= kCGBlendModePlusLighter);
+void KGRasterizeSetBlendMode(O2Context_builtin *self,O2BlendMode blendMode) {
+   RI_ASSERT(blendMode >= kO2BlendModeNormal && blendMode <= kO2BlendModePlusLighter);
    
    self->_blend_lRGBA8888_PRE=NULL;
    self->_writeCoverage_lRGBA8888_PRE=NULL;
    
    switch(blendMode){
    
-    case kCGBlendModeNormal:
-     self->_blend_lRGBA8888_PRE=KGBlendSpanNormal_8888;
-     self->_blend_lRGBAffff_PRE=KGBlendSpanNormal_ffff;
+    case kO2BlendModeNormal:
+     self->_blend_lRGBA8888_PRE=O2BlendSpanNormal_8888;
+     self->_blend_lRGBAffff_PRE=O2BlendSpanNormal_ffff;
      self->_writeCoverage_lRGBA8888_PRE=KGRasterizeWriteCoverageSpan8888_Normal;
      break;
      
-	case kCGBlendModeMultiply:
-     self->_blend_lRGBAffff_PRE=KGBlendSpanMultiply_ffff;
+	case kO2BlendModeMultiply:
+     self->_blend_lRGBAffff_PRE=O2BlendSpanMultiply_ffff;
      break;
      
-	case kCGBlendModeScreen:
-     self->_blend_lRGBAffff_PRE=KGBlendSpanScreen_ffff;
+	case kO2BlendModeScreen:
+     self->_blend_lRGBAffff_PRE=O2BlendSpanScreen_ffff;
 	 break;
 
-	case kCGBlendModeOverlay:
-     self->_blend_lRGBAffff_PRE=KGBlendSpanOverlay_ffff;
+	case kO2BlendModeOverlay:
+     self->_blend_lRGBAffff_PRE=O2BlendSpanOverlay_ffff;
      break;
         
-	case kCGBlendModeDarken:
-     self->_blend_lRGBAffff_PRE=KGBlendSpanDarken_ffff;
+	case kO2BlendModeDarken:
+     self->_blend_lRGBAffff_PRE=O2BlendSpanDarken_ffff;
      break;
 
-	case kCGBlendModeLighten:
-     self->_blend_lRGBAffff_PRE=KGBlendSpanLighten_ffff;
+	case kO2BlendModeLighten:
+     self->_blend_lRGBAffff_PRE=O2BlendSpanLighten_ffff;
      break;
 
-	case kCGBlendModeColorDodge:
-     self->_blend_lRGBAffff_PRE=KGBlendSpanColorDodge_ffff;
+	case kO2BlendModeColorDodge:
+     self->_blend_lRGBAffff_PRE=O2BlendSpanColorDodge_ffff;
      break;
         
-	case kCGBlendModeColorBurn:
-     self->_blend_lRGBAffff_PRE=KGBlendSpanColorBurn_ffff;
+	case kO2BlendModeColorBurn:
+     self->_blend_lRGBAffff_PRE=O2BlendSpanColorBurn_ffff;
      break;
         
-	case kCGBlendModeHardLight:
-     self->_blend_lRGBAffff_PRE=KGBlendSpanHardLight_ffff;
+	case kO2BlendModeHardLight:
+     self->_blend_lRGBAffff_PRE=O2BlendSpanHardLight_ffff;
      break;
         
-	case kCGBlendModeSoftLight:
-     self->_blend_lRGBAffff_PRE=KGBlendSpanSoftLight_ffff;
+	case kO2BlendModeSoftLight:
+     self->_blend_lRGBAffff_PRE=O2BlendSpanSoftLight_ffff;
      break;
         
-	case kCGBlendModeDifference:
-     self->_blend_lRGBAffff_PRE=KGBlendSpanDifference_ffff;
+	case kO2BlendModeDifference:
+     self->_blend_lRGBAffff_PRE=O2BlendSpanDifference_ffff;
      break;
         
-	case kCGBlendModeExclusion:
-     self->_blend_lRGBAffff_PRE=KGBlendSpanExclusion_ffff;
+	case kO2BlendModeExclusion:
+     self->_blend_lRGBAffff_PRE=O2BlendSpanExclusion_ffff;
      break;
         
-	case kCGBlendModeHue:
-     self->_blend_lRGBAffff_PRE=KGBlendSpanHue_ffff;
+	case kO2BlendModeHue:
+     self->_blend_lRGBAffff_PRE=O2BlendSpanHue_ffff;
      break; 
         
-	case kCGBlendModeSaturation:
-     self->_blend_lRGBAffff_PRE=KGBlendSpanSaturation_ffff;
+	case kO2BlendModeSaturation:
+     self->_blend_lRGBAffff_PRE=O2BlendSpanSaturation_ffff;
      break;
         
-	case kCGBlendModeColor:
-     self->_blend_lRGBAffff_PRE=KGBlendSpanColor_ffff;
+	case kO2BlendModeColor:
+     self->_blend_lRGBAffff_PRE=O2BlendSpanColor_ffff;
      break;
         
-	case kCGBlendModeLuminosity:
-     self->_blend_lRGBAffff_PRE=KGBlendSpanLuminosity_ffff;
+	case kO2BlendModeLuminosity:
+     self->_blend_lRGBAffff_PRE=O2BlendSpanLuminosity_ffff;
      break;
         
-	case kCGBlendModeClear:
-     self->_blend_lRGBA8888_PRE=KGBlendSpanClear_8888;
-     self->_blend_lRGBAffff_PRE=KGBlendSpanClear_ffff;
+	case kO2BlendModeClear:
+     self->_blend_lRGBA8888_PRE=O2BlendSpanClear_8888;
+     self->_blend_lRGBAffff_PRE=O2BlendSpanClear_ffff;
      break;
 
-	case kCGBlendModeCopy:
-     self->_blend_lRGBA8888_PRE=KGBlendSpanCopy_8888;
-     self->_blend_lRGBAffff_PRE=KGBlendSpanCopy_ffff;
+	case kO2BlendModeCopy:
+     self->_blend_lRGBA8888_PRE=O2BlendSpanCopy_8888;
+     self->_blend_lRGBAffff_PRE=O2BlendSpanCopy_ffff;
      self->_writeCoverage_lRGBA8888_PRE=KGRasterizeWriteCoverageSpan8888_Copy;
      break;
 
-	case kCGBlendModeSourceIn:
-     self->_blend_lRGBA8888_PRE=KGBlendSpanSourceIn_8888;
-     self->_blend_lRGBAffff_PRE=KGBlendSpanSourceIn_ffff;
+	case kO2BlendModeSourceIn:
+     self->_blend_lRGBA8888_PRE=O2BlendSpanSourceIn_8888;
+     self->_blend_lRGBAffff_PRE=O2BlendSpanSourceIn_ffff;
      break;
 
-	case kCGBlendModeSourceOut:
-     self->_blend_lRGBAffff_PRE=KGBlendSpanSourceOut_ffff;
+	case kO2BlendModeSourceOut:
+     self->_blend_lRGBAffff_PRE=O2BlendSpanSourceOut_ffff;
      break;
 
-	case kCGBlendModeSourceAtop:
-     self->_blend_lRGBAffff_PRE=KGBlendSpanSourceAtop_ffff;
+	case kO2BlendModeSourceAtop:
+     self->_blend_lRGBAffff_PRE=O2BlendSpanSourceAtop_ffff;
      break;
 
-	case kCGBlendModeDestinationOver:
-     self->_blend_lRGBAffff_PRE=KGBlendSpanDestinationOver_ffff;
+	case kO2BlendModeDestinationOver:
+     self->_blend_lRGBAffff_PRE=O2BlendSpanDestinationOver_ffff;
      break;
 
-	case kCGBlendModeDestinationIn:
-     self->_blend_lRGBAffff_PRE=KGBlendSpanDestinationIn_ffff;
+	case kO2BlendModeDestinationIn:
+     self->_blend_lRGBAffff_PRE=O2BlendSpanDestinationIn_ffff;
      break;
 
-	case kCGBlendModeDestinationOut:
-     self->_blend_lRGBAffff_PRE=KGBlendSpanDestinationOut_ffff;
+	case kO2BlendModeDestinationOut:
+     self->_blend_lRGBAffff_PRE=O2BlendSpanDestinationOut_ffff;
      break;
 
-	case kCGBlendModeDestinationAtop:
-     self->_blend_lRGBAffff_PRE=KGBlendSpanDestinationAtop_ffff;
+	case kO2BlendModeDestinationAtop:
+     self->_blend_lRGBAffff_PRE=O2BlendSpanDestinationAtop_ffff;
      break;
 
-	case kCGBlendModeXOR:
-     self->_blend_lRGBA8888_PRE=KGBlendSpanXOR_8888;
-     self->_blend_lRGBAffff_PRE=KGBlendSpanXOR_ffff;
+	case kO2BlendModeXOR:
+     self->_blend_lRGBA8888_PRE=O2BlendSpanXOR_8888;
+     self->_blend_lRGBAffff_PRE=O2BlendSpanXOR_ffff;
      break;
 
-	case kCGBlendModePlusDarker:
-     self->_blend_lRGBAffff_PRE=KGBlendSpanPlusDarker_ffff;
+	case kO2BlendModePlusDarker:
+     self->_blend_lRGBAffff_PRE=O2BlendSpanPlusDarker_ffff;
      break;
 
-	case kCGBlendModePlusLighter:
-     self->_blend_lRGBA8888_PRE=KGBlendSpanPlusLighter_8888;
-     self->_blend_lRGBAffff_PRE=KGBlendSpanPlusLighter_ffff;
+	case kO2BlendModePlusLighter:
+     self->_blend_lRGBA8888_PRE=O2BlendSpanPlusLighter_8888;
+     self->_blend_lRGBAffff_PRE=O2BlendSpanPlusLighter_ffff;
      break;
    }
 
@@ -1328,7 +1368,7 @@ void KGRasterizeSetBlendMode(KGRasterizer *self,CGBlendMode blendMode) {
    }
 }
 
-void O2DContextSetPaint(KGRasterizer *self, O2Paint* paint) {
+void O2DContextSetPaint(O2Context_builtin *self, O2Paint* paint) {
    paint=O2PaintRetain(paint);
    O2PaintRelease(self->_paint);
    self->_paint=paint;

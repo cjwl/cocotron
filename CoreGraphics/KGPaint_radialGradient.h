@@ -28,10 +28,10 @@
 #import "KGPaint_ramp.h"
 
 @interface O2Paint_radialGradient : O2Paint_ramp {
-   CGFloat _startRadius;
-   CGFloat _endRadius;
+   O2Float _startRadius;
+   O2Float _endRadius;
 }
 
--initWithShading:(KGShading *)shading deviceTransform:(CGAffineTransform)deviceTransform;
+-initWithShading:(O2Shading *)shading deviceTransform:(O2AffineTransform)deviceTransform;
 
 @end

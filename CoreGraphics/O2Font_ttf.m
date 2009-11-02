@@ -12,8 +12,8 @@
    return self;
 }
 
--(CGGlyph)glyphWithGlyphName:(NSString *)name {
-   return (CGGlyph)NSMapGet(_nameToGlyph,name);
+-(O2Glyph)glyphWithGlyphName:(NSString *)name {
+   return (O2Glyph)NSMapGet(_nameToGlyph,name);
 }
 
 @end

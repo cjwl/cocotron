@@ -39,16 +39,39 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return _type;
 }
 
--(unsigned)numberOfComponents {
-   switch(_type){
+O2ColorSpaceRef O2ColorSpaceRetain(O2ColorSpaceRef self) {
+   return [self retain];
+}
+
+void O2ColorSpaceRelease(O2ColorSpaceRef self) {
+   [self release];
+}
+
+O2ColorSpaceRef O2ColorSpaceCreateDeviceGray(void) {
+   return [[O2ColorSpace alloc] initWithDeviceGray];
+}
+
+O2ColorSpaceRef O2ColorSpaceCreateDeviceRGB(void) {
+   return [[O2ColorSpace alloc] initWithDeviceRGB];
+}
+
+O2ColorSpaceRef O2ColorSpaceCreateDeviceCMYK(void) {
+   return [[O2ColorSpace alloc] initWithDeviceCMYK];
+}
+
+size_t O2ColorSpaceGetNumberOfComponents(O2ColorSpaceRef self) {
+   switch(self->_type){
     case O2ColorSpaceDeviceGray:
      return 1;
     case O2ColorSpaceDeviceRGB: 
     case O2ColorSpacePlatformRGB:
      return 3;
-    case O2ColorSpaceDeviceCMYK: return 4;
-    case O2ColorSpaceIndexed: return 1;
-    default: return 0;
+    case O2ColorSpaceDeviceCMYK:
+     return 4;
+    case O2ColorSpaceIndexed:
+     return 1;
+    default:
+     return 0;
    }
 }
 
@@ -67,7 +90,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @implementation O2ColorSpace_indexed
 
 -initWithColorSpace:(O2ColorSpaceRef)baseColorSpace hival:(unsigned)hival bytes:(const unsigned char *)bytes  {
-   int i,max=[baseColorSpace numberOfComponents]*(hival+1);
+   int i,max=O2ColorSpaceGetNumberOfComponents(baseColorSpace)*(hival+1);
   
    _type=O2ColorSpaceIndexed;
    _base=[baseColorSpace retain];
@@ -94,7 +117,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    if(self->_hival!=other->_hival)
     return NO;
     
-   int i,max=[self->_base numberOfComponents]*(self->_hival+1);
+   int i,max=O2ColorSpaceGetNumberOfComponents(self->_base)*(self->_hival+1);
    for(i=0;i<max;i++)
     if(self->_bytes[i]!=other->_bytes[i])
      return NO;
@@ -115,3 +138,5 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 @end
+
+

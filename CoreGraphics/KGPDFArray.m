@@ -20,7 +20,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return [[[self alloc] init] autorelease];
 }
 
-+(O2PDFArray *)pdfArrayWithRect:(CGRect)rect {
++(O2PDFArray *)pdfArrayWithRect:(O2Rect)rect {
    O2PDFArray *result=[self pdfArray];
    
    [result addNumber:rect.origin.x];
@@ -64,10 +64,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [super dealloc];
 }
 
--(O2PDFObjectType)objectType { return kKGPDFObjectTypeArray; }
+-(O2PDFObjectType)objectType { return kO2PDFObjectTypeArray; }
 
 -(BOOL)checkForType:(O2PDFObjectType)type value:(void *)value {
-   if(type!=kKGPDFObjectTypeArray)
+   if(type!=kO2PDFObjectTypeArray)
     return NO;
    
    *((O2PDFArray **)value)=self;
@@ -115,55 +115,55 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(BOOL)getNullAtIndex:(unsigned)index {
    O2PDFObject *object=[self objectAtIndex:index];
    
-   return ([object objectType]==kKGPDFObjectTypeNull)?YES:NO;
+   return ([object objectType]==kO2PDFObjectTypeNull)?YES:NO;
 }
 
 -(BOOL)getBooleanAtIndex:(unsigned)index value:(O2PDFBoolean *)valuep {
    O2PDFObject *object=[self objectAtIndex:index];
    
-   return [object checkForType:kKGPDFObjectTypeBoolean value:valuep];
+   return [object checkForType:kO2PDFObjectTypeBoolean value:valuep];
 }
 
 -(BOOL)getIntegerAtIndex:(unsigned)index value:(O2PDFInteger *)valuep {
    O2PDFObject *object=[self objectAtIndex:index];
    
-   return [object checkForType:kKGPDFObjectTypeInteger value:valuep];
+   return [object checkForType:kO2PDFObjectTypeInteger value:valuep];
 }
 
 -(BOOL)getNumberAtIndex:(unsigned)index value:(O2PDFReal *)valuep {
    O2PDFObject *object=[self objectAtIndex:index];
    
-   return [object checkForType:kKGPDFObjectTypeReal value:valuep];
+   return [object checkForType:kO2PDFObjectTypeReal value:valuep];
 }
 
 -(BOOL)getNameAtIndex:(unsigned)index value:(char **)namep {
    O2PDFObject *object=[self objectAtIndex:index];
    
-   return [object checkForType:kKGPDFObjectTypeName value:namep];
+   return [object checkForType:kO2PDFObjectTypeName value:namep];
 }
 
 -(BOOL)getStringAtIndex:(unsigned)index value:(O2PDFString **)stringp {
    O2PDFObject *object=[self objectAtIndex:index];
    
-   return [object checkForType:kKGPDFObjectTypeString value:stringp];
+   return [object checkForType:kO2PDFObjectTypeString value:stringp];
 }
 
 -(BOOL)getArrayAtIndex:(unsigned)index value:(O2PDFArray **)arrayp {
    O2PDFObject *object=[self objectAtIndex:index];
    
-   return [object checkForType:kKGPDFObjectTypeArray value:arrayp];
+   return [object checkForType:kO2PDFObjectTypeArray value:arrayp];
 }
 
 -(BOOL)getDictionaryAtIndex:(unsigned)index value:(O2PDFDictionary **)dictionaryp {
    O2PDFObject *object=[self objectAtIndex:index];
    
-   return [object checkForType:kKGPDFObjectTypeDictionary value:dictionaryp];
+   return [object checkForType:kO2PDFObjectTypeDictionary value:dictionaryp];
 }
 
 -(BOOL)getStreamAtIndex:(unsigned)index value:(O2PDFStream **)streamp {
    O2PDFObject *object=[self objectAtIndex:index];
    
-   return [object checkForType:kKGPDFObjectTypeStream value:streamp];
+   return [object checkForType:kO2PDFObjectTypeStream value:streamp];
 }
 
 -(BOOL)getNumbers:(O2PDFReal **)numbersp count:(unsigned *)countp {

@@ -7,10 +7,16 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
 #import <Foundation/NSObject.h>
-#import <CoreGraphics/CoreGraphics.h>
+#import "O2Geometry.h"
 
 @class O2Function;
 typedef O2Function *O2FunctionRef;
+
+typedef struct {
+   unsigned version;
+   void    (*evaluate)(void *,const float *,float *);
+   void    (*releaseInfo)(void *);
+} O2FunctionCallbacks;
 
 @interface O2Function : NSObject {
    void               *_info;
@@ -18,18 +24,18 @@ typedef O2Function *O2FunctionRef;
    float              *_domain;
    unsigned            _rangeCount;
    float              *_range;
-   CGFunctionCallbacks _callbacks;
+   O2FunctionCallbacks _callbacks;
 }
 
-O2FunctionRef O2FunctionCreate(void *info,size_t domainDimension,const CGFloat *domain,size_t rangeDimension,const CGFloat *range,const CGFunctionCallbacks *callbacks);
+O2FunctionRef O2FunctionCreate(void *info,size_t domainDimension,const O2Float *domain,size_t rangeDimension,const O2Float *range,const O2FunctionCallbacks *callbacks);
 
 O2FunctionRef O2FunctionRetain(O2FunctionRef self);
 void O2FunctionRelease(O2FunctionRef self);
 
 // FIX, only works for one input value
-void O2FunctionEvaluate(O2FunctionRef self,CGFloat in,CGFloat *out);
+void O2FunctionEvaluate(O2FunctionRef self,O2Float in,O2Float *out);
 
--initWithInfo:(void *)info domainDimension:(unsigned)domainCount domain:(const float *)domain rangeDimension:(unsigned)rangeCount range:(const float *)range callbacks:(const CGFunctionCallbacks *)callbacks;
+-initWithInfo:(void *)info domainDimension:(unsigned)domainCount domain:(const float *)domain rangeDimension:(unsigned)rangeCount range:(const float *)range callbacks:(const O2FunctionCallbacks *)callbacks;
 
 -(unsigned)domainCount;
 -(const float *)domain;

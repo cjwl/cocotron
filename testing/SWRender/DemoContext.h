@@ -1,5 +1,4 @@
-#import <AppKit/AppKit.h>
-#import <ApplicationServices/ApplicationServices.h>
+#import <Foundation/Foundation.h>
 
 @interface DemoContext : NSObject
 
@@ -15,13 +14,13 @@
 -(CGBitmapInfo)bitmapInfo;
 -(void *)bytes;
 
--(void)setStrokeColor:(NSColor *)color;
--(void)setFillColor:(NSColor *)color;
+-(void)setStrokeColor:(float)r:(float)g:(float)b:(float)a;
+-(void)setFillColor:(float)r:(float)g:(float)b:(float)a;
 -(void)setBlendMode:(CGBlendMode)mode;
 -(void)setShadowBlur:(float)value;
 -(void)setShadowOffsetX:(float)value;
 -(void)setShadowOffsetY:(float)value;
--(void)setShadowColor:(NSColor *)color;
+-(void)setShadowColor:(float)r:(float)g:(float)b:(float)a;
 -(void)setPathDrawingMode:(CGPathDrawingMode)mode;
 -(void)setLineWidth:(float)width;
 -(void)setDashPhase:(float)phase;

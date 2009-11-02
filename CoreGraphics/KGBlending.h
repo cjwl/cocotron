@@ -142,14 +142,14 @@ static inline void RGBToHSL(float r,float g,float b,float *huep,float *saturatio
     *luminancep=luminance;
 }
 
-static void KGBlendSpanNormal_8888(KGRGBA8888 *src,KGRGBA8888 *dst,int length){
+static void O2BlendSpanNormal_8888(O2argb8u *src,O2argb8u *dst,int length){
 // Passes Visual Test
    int i;
    
    for(i=0;i<length;i++){
-    KGRGBA8888 s=src[i];
-    KGRGBA8888 d=dst[i];
-    KGRGBA8888 r;
+    O2argb8u s=src[i];
+    O2argb8u d=dst[i];
+    O2argb8u r;
     unsigned char sa=255-s.a;
     
     r.r=RI_INT_MIN((unsigned)s.r+alphaMultiply(d.r,sa),255);
@@ -161,14 +161,14 @@ static void KGBlendSpanNormal_8888(KGRGBA8888 *src,KGRGBA8888 *dst,int length){
    }
 }
 
-static void KGBlendSpanNormal_ffff(KGRGBAffff *src,KGRGBAffff *dst,int length){
+static void O2BlendSpanNormal_ffff(O2argb32f *src,O2argb32f *dst,int length){
 // Passes Visual Test
    int i;
    
    for(i=0;i<length;i++){
-    KGRGBAffff s=src[i];
-    KGRGBAffff d=dst[i];
-    KGRGBAffff r;
+    O2argb32f s=src[i];
+    O2argb32f d=dst[i];
+    O2argb32f r;
     
     r.r = s.r + d.r * (1.0f - s.a);
     r.g = s.g + d.g * (1.0f - s.a);
@@ -179,14 +179,14 @@ static void KGBlendSpanNormal_ffff(KGRGBAffff *src,KGRGBAffff *dst,int length){
    }
 }
 
-static void KGBlendSpanMultiply_ffff(KGRGBAffff *src,KGRGBAffff *dst,int length){
+static void O2BlendSpanMultiply_ffff(O2argb32f *src,O2argb32f *dst,int length){
 // Passes Visual Test
    int i;
    
    for(i=0;i<length;i++){
-    KGRGBAffff s=src[i];
-    KGRGBAffff d=dst[i];
-    KGRGBAffff r;
+    O2argb32f s=src[i];
+    O2argb32f d=dst[i];
+    O2argb32f r;
 
     r.r = s.r * (1.0f - d.a + d.r) + d.r * (1.0f - s.a);
     r.g = s.g * (1.0f - d.a + d.g) + d.g * (1.0f - s.a);
@@ -197,14 +197,14 @@ static void KGBlendSpanMultiply_ffff(KGRGBAffff *src,KGRGBAffff *dst,int length)
    }
 }
 
-static void KGBlendSpanScreen_ffff(KGRGBAffff *src,KGRGBAffff *dst,int length){
+static void O2BlendSpanScreen_ffff(O2argb32f *src,O2argb32f *dst,int length){
 // Passes Visual Test
    int i;
    
    for(i=0;i<length;i++){
-    KGRGBAffff s=src[i];
-    KGRGBAffff d=dst[i];
-    KGRGBAffff r;
+    O2argb32f s=src[i];
+    O2argb32f d=dst[i];
+    O2argb32f r;
     
     r.r = s.r + d.r - s.r*d.r;
     r.g = s.g + d.g - s.g*d.g;
@@ -215,18 +215,18 @@ static void KGBlendSpanScreen_ffff(KGRGBAffff *src,KGRGBAffff *dst,int length){
    }
 }
 
-static void KGBlendSpanOverlay_ffff(KGRGBAffff *src,KGRGBAffff *dst,int length){
+static void O2BlendSpanOverlay_ffff(O2argb32f *src,O2argb32f *dst,int length){
 // broken
    int i;
    
    for(i=0;i<length;i++){
-    KGRGBAffff s=src[i];
-    KGRGBAffff d=dst[i];
-    KGRGBAffff r;
+    O2argb32f s=src[i];
+    O2argb32f d=dst[i];
+    O2argb32f r;
     
-    CGFloat max=RI_MAX(s.r,RI_MAX(s.g,s.b));
-    CGFloat min=RI_MIN(s.r,RI_MIN(s.g,s.b));
-    CGFloat lum=(max+min)/2*(1.0-d.a);
+    O2Float max=RI_MAX(s.r,RI_MAX(s.g,s.b));
+    O2Float min=RI_MIN(s.r,RI_MIN(s.g,s.b));
+    O2Float lum=(max+min)/2*(1.0-d.a);
     if(lum<=0.5)
      r.r = s.r * (1.0f - d.a + d.r) + d.r * (1.0f - s.a);
     else
@@ -247,14 +247,14 @@ static void KGBlendSpanOverlay_ffff(KGRGBAffff *src,KGRGBAffff *dst,int length){
     src[i]=r;
    }
 }
-static void KGBlendSpanDarken_ffff(KGRGBAffff *src,KGRGBAffff *dst,int length){
+static void O2BlendSpanDarken_ffff(O2argb32f *src,O2argb32f *dst,int length){
 // Passes Visual Test
    int i;
    
    for(i=0;i<length;i++){
-    KGRGBAffff s=src[i];
-    KGRGBAffff d=dst[i];
-    KGRGBAffff r;
+    O2argb32f s=src[i];
+    O2argb32f d=dst[i];
+    O2argb32f r;
     
     r.r = RI_MIN(s.r + d.r * (1.0f - s.a), d.r + s.r * (1.0f - d.a));
     r.g = RI_MIN(s.g + d.g * (1.0f - s.a), d.g + s.g * (1.0f - d.a));
@@ -263,14 +263,14 @@ static void KGBlendSpanDarken_ffff(KGRGBAffff *src,KGRGBAffff *dst,int length){
     src[i]=r;
    }
 }
-static void KGBlendSpanLighten_ffff(KGRGBAffff *src,KGRGBAffff *dst,int length){
+static void O2BlendSpanLighten_ffff(O2argb32f *src,O2argb32f *dst,int length){
 // Passes Visual Test
    int i;
    
    for(i=0;i<length;i++){
-    KGRGBAffff s=src[i];
-    KGRGBAffff d=dst[i];
-    KGRGBAffff r;
+    O2argb32f s=src[i];
+    O2argb32f d=dst[i];
+    O2argb32f r;
     
     r.r = RI_MAX(s.r + d.r * (1.0f - s.a), d.r + s.r * (1.0f - d.a));
     r.g = RI_MAX(s.g + d.g * (1.0f - s.a), d.g + s.g * (1.0f - d.a));
@@ -283,14 +283,14 @@ static void KGBlendSpanLighten_ffff(KGRGBAffff *src,KGRGBAffff *dst,int length){
     src[i]=r;
    }
 }
-static void KGBlendSpanColorDodge_ffff(KGRGBAffff *src,KGRGBAffff *dst,int length){
+static void O2BlendSpanColorDodge_ffff(O2argb32f *src,O2argb32f *dst,int length){
 // broken
    int i;
    
    for(i=0;i<length;i++){
-    KGRGBAffff s=src[i];
-    KGRGBAffff d=dst[i];
-    KGRGBAffff r;
+    O2argb32f s=src[i];
+    O2argb32f d=dst[i];
+    O2argb32f r;
 
     r.r=(s.r==1.0f)?1.0f:RI_MIN(1.0f,d.r/(1.0f-s.r));
     r.g=(s.g==1.0f)?1.0f:RI_MIN(1.0f,d.g/(1.0f-s.g));
@@ -300,14 +300,14 @@ static void KGBlendSpanColorDodge_ffff(KGRGBAffff *src,KGRGBAffff *dst,int lengt
     src[i]=r;
    }
 }
-static void KGBlendSpanColorBurn_ffff(KGRGBAffff *src,KGRGBAffff *dst,int length){
+static void O2BlendSpanColorBurn_ffff(O2argb32f *src,O2argb32f *dst,int length){
 // broken
    int i;
    
    for(i=0;i<length;i++){
-    KGRGBAffff s=src[i];
-    KGRGBAffff d=dst[i];
-    KGRGBAffff r;
+    O2argb32f s=src[i];
+    O2argb32f d=dst[i];
+    O2argb32f r;
 
     r.r=(s.r==0)?0:1.0-RI_MIN(1.0,(1.0-d.r)/s.r);
     r.g=(s.g==0)?0:1.0-RI_MIN(1.0,(1.0-d.g)/s.g);
@@ -316,14 +316,14 @@ static void KGBlendSpanColorBurn_ffff(KGRGBAffff *src,KGRGBAffff *dst,int length
     src[i]=r;
    }
 }
-static void KGBlendSpanHardLight_ffff(KGRGBAffff *src,KGRGBAffff *dst,int length){
+static void O2BlendSpanHardLight_ffff(O2argb32f *src,O2argb32f *dst,int length){
 // broken
    int i;
    
    for(i=0;i<length;i++){
-    KGRGBAffff s=src[i];
-    KGRGBAffff d=dst[i];
-    KGRGBAffff r=d;
+    O2argb32f s=src[i];
+    O2argb32f d=dst[i];
+    O2argb32f r=d;
     
 
     if(s.r<=0.5){
@@ -357,26 +357,26 @@ static void KGBlendSpanHardLight_ffff(KGRGBAffff *src,KGRGBAffff *dst,int length
     src[i]=r;
    }
 }
-static void KGBlendSpanSoftLight_ffff(KGRGBAffff *src,KGRGBAffff *dst,int length){
+static void O2BlendSpanSoftLight_ffff(O2argb32f *src,O2argb32f *dst,int length){
 // broken
    int i;
    
    for(i=0;i<length;i++){
-    //KGRGBAffff s=src[i];
-    KGRGBAffff d=dst[i];
-    KGRGBAffff r=d;
+    //O2argb32f s=src[i];
+    O2argb32f d=dst[i];
+    O2argb32f r=d;
     
     src[i]=r;
    }
 }
-static void KGBlendSpanDifference_ffff(KGRGBAffff *src,KGRGBAffff *dst,int length){
+static void O2BlendSpanDifference_ffff(O2argb32f *src,O2argb32f *dst,int length){
 // Passes Visual Test
    int i;
    
    for(i=0;i<length;i++){
-    KGRGBAffff s=src[i];
-    KGRGBAffff d=dst[i];
-    KGRGBAffff r;
+    O2argb32f s=src[i];
+    O2argb32f d=dst[i];
+    O2argb32f r;
     
     r.r=s.r+d.r-2*(RI_MIN(s.r*d.a,d.r*s.a));
     r.g=s.g+d.g-2*(RI_MIN(s.g*d.a,d.g*s.a));
@@ -385,14 +385,14 @@ static void KGBlendSpanDifference_ffff(KGRGBAffff *src,KGRGBAffff *dst,int lengt
     src[i]=r;
    }
 }
-static void KGBlendSpanExclusion_ffff(KGRGBAffff *src,KGRGBAffff *dst,int length){
+static void O2BlendSpanExclusion_ffff(O2argb32f *src,O2argb32f *dst,int length){
 // Passes Visual Test
    int i;
    
    for(i=0;i<length;i++){
-    KGRGBAffff s=src[i];
-    KGRGBAffff d=dst[i];
-    KGRGBAffff r;
+    O2argb32f s=src[i];
+    O2argb32f d=dst[i];
+    O2argb32f r;
     
     r.r = (s.r * d.a + d.r * s.a - 2 * s.r * d.r) + s.r * (1 - d.a) + d.r * (1 - s.a);
     r.g = (s.g * d.a + d.g * s.a - 2 * s.g * d.g) + s.g * (1 - d.a) + d.g * (1 - s.a);
@@ -401,17 +401,17 @@ static void KGBlendSpanExclusion_ffff(KGRGBAffff *src,KGRGBAffff *dst,int length
     src[i]=r;
    }
 }
-static void KGBlendSpanHue_ffff(KGRGBAffff *src,KGRGBAffff *dst,int length){
+static void O2BlendSpanHue_ffff(O2argb32f *src,O2argb32f *dst,int length){
 // broken
    int i;
    
    for(i=0;i<length;i++){
-    KGRGBAffff s=src[i];
-    KGRGBAffff d=dst[i];
-    KGRGBAffff r;
+    O2argb32f s=src[i];
+    O2argb32f d=dst[i];
+    O2argb32f r;
     
-    CGFloat sh,ss,sl;
-    CGFloat dh,ds,dl;
+    O2Float sh,ss,sl;
+    O2Float dh,ds,dl;
         
     RGBToHSL(s.r,s.g,s.b,&sh,&ss,&sl);
     RGBToHSL(d.r,d.g,d.b,&dh,&ds,&dl);
@@ -420,17 +420,17 @@ static void KGBlendSpanHue_ffff(KGRGBAffff *src,KGRGBAffff *dst,int length){
     src[i]=r;
    }
 }
-static void KGBlendSpanSaturation_ffff(KGRGBAffff *src,KGRGBAffff *dst,int length){
+static void O2BlendSpanSaturation_ffff(O2argb32f *src,O2argb32f *dst,int length){
 // broken
    int i;
    
    for(i=0;i<length;i++){
-    KGRGBAffff s=src[i];
-    KGRGBAffff d=dst[i];
-    KGRGBAffff r;
+    O2argb32f s=src[i];
+    O2argb32f d=dst[i];
+    O2argb32f r;
     
-    CGFloat sh,ss,sl;
-    CGFloat dh,ds,dl;
+    O2Float sh,ss,sl;
+    O2Float dh,ds,dl;
         
     RGBToHSL(s.r,s.g,s.b,&sh,&ss,&sl);
     RGBToHSL(d.r,d.g,d.b,&dh,&ds,&dl);
@@ -439,37 +439,37 @@ static void KGBlendSpanSaturation_ffff(KGRGBAffff *src,KGRGBAffff *dst,int lengt
     src[i]=r;
    }
 }
-static void KGBlendSpanColor_ffff(KGRGBAffff *src,KGRGBAffff *dst,int length){
+static void O2BlendSpanColor_ffff(O2argb32f *src,O2argb32f *dst,int length){
 // broken
    int i;
    
    for(i=0;i<length;i++){
-    //KGRGBAffff s=src[i];
-    KGRGBAffff d=dst[i];
-    KGRGBAffff r=d;
+    //O2argb32f s=src[i];
+    O2argb32f d=dst[i];
+    O2argb32f r=d;
     
     src[i]=r;
    }
 }
-static void KGBlendSpanLuminosity_ffff(KGRGBAffff *src,KGRGBAffff *dst,int length){
+static void O2BlendSpanLuminosity_ffff(O2argb32f *src,O2argb32f *dst,int length){
 // broken
    int i;
    
    for(i=0;i<length;i++){
-    //KGRGBAffff s=src[i];
-    KGRGBAffff d=dst[i];
-    KGRGBAffff r=d;
+    //O2argb32f s=src[i];
+    O2argb32f d=dst[i];
+    O2argb32f r=d;
     
     src[i]=r;
    }
 }
 
-static void KGBlendSpanClear_8888(KGRGBA8888 *src,KGRGBA8888 *dst,int length){
+static void O2BlendSpanClear_8888(O2argb8u *src,O2argb8u *dst,int length){
 // Passes Visual Test
    int i;
    
    for(i=0;i<length;i++){
-    KGRGBA8888 r;
+    O2argb8u r;
     
     r.r=0;
     r.g=0;
@@ -480,12 +480,12 @@ static void KGBlendSpanClear_8888(KGRGBA8888 *src,KGRGBA8888 *dst,int length){
    }
 }
 
-static void KGBlendSpanClear_ffff(KGRGBAffff *src,KGRGBAffff *dst,int length){
+static void O2BlendSpanClear_ffff(O2argb32f *src,O2argb32f *dst,int length){
 // Passes Visual Test
    int i;
    
    for(i=0;i<length;i++){
-    KGRGBAffff r;
+    O2argb32f r;
     
     r.r=0;
     r.g=0;
@@ -496,24 +496,24 @@ static void KGBlendSpanClear_ffff(KGRGBAffff *src,KGRGBAffff *dst,int length){
    }
 }
 
-static void KGBlendSpanCopy_8888(KGRGBA8888 *src,KGRGBA8888 *dst,int length){
+static void O2BlendSpanCopy_8888(O2argb8u *src,O2argb8u *dst,int length){
 // Passes Visual Test
    // do nothing src already contains values
 }
 
-static void KGBlendSpanCopy_ffff(KGRGBAffff *src,KGRGBAffff *dst,int length){
+static void O2BlendSpanCopy_ffff(O2argb32f *src,O2argb32f *dst,int length){
 // Passes Visual Test
    // do nothing src already contains values
 }
 
-static void KGBlendSpanSourceIn_8888(KGRGBA8888 *src,KGRGBA8888 *dst,int length){
+static void O2BlendSpanSourceIn_8888(O2argb8u *src,O2argb8u *dst,int length){
 // Passes Visual Test
    int i;
    
    for(i=0;i<length;i++){
-    KGRGBA8888 s=src[i];
-    KGRGBA8888 d=dst[i];
-    KGRGBA8888 r;
+    O2argb8u s=src[i];
+    O2argb8u d=dst[i];
+    O2argb8u r;
 
     r.r = alphaMultiply(s.r , d.a);
     r.g = alphaMultiply(s.g , d.a);
@@ -524,14 +524,14 @@ static void KGBlendSpanSourceIn_8888(KGRGBA8888 *src,KGRGBA8888 *dst,int length)
    }
 }
 
-static void KGBlendSpanSourceIn_ffff(KGRGBAffff *src,KGRGBAffff *dst,int length){
+static void O2BlendSpanSourceIn_ffff(O2argb32f *src,O2argb32f *dst,int length){
 // Passes Visual Test
    int i;
    
    for(i=0;i<length;i++){
-    KGRGBAffff s=src[i];
-    KGRGBAffff d=dst[i];
-    KGRGBAffff r;
+    O2argb32f s=src[i];
+    O2argb32f d=dst[i];
+    O2argb32f r;
     
     r.r = s.r * d.a;
     r.g = s.g * d.a;
@@ -540,14 +540,14 @@ static void KGBlendSpanSourceIn_ffff(KGRGBAffff *src,KGRGBAffff *dst,int length)
     src[i]=r;
    }
 }
-static void KGBlendSpanSourceOut_ffff(KGRGBAffff *src,KGRGBAffff *dst,int length){
+static void O2BlendSpanSourceOut_ffff(O2argb32f *src,O2argb32f *dst,int length){
 // Passes Visual Test
    int i;
    
    for(i=0;i<length;i++){
-    KGRGBAffff s=src[i];
-    KGRGBAffff d=dst[i];
-    KGRGBAffff r;
+    O2argb32f s=src[i];
+    O2argb32f d=dst[i];
+    O2argb32f r;
     
     r.r = s.r *(1.0- d.a);
     r.g = s.g * (1.0- d.a);
@@ -556,14 +556,14 @@ static void KGBlendSpanSourceOut_ffff(KGRGBAffff *src,KGRGBAffff *dst,int length
     src[i]=r;
    }
 }
-static void KGBlendSpanSourceAtop_ffff(KGRGBAffff *src,KGRGBAffff *dst,int length){
+static void O2BlendSpanSourceAtop_ffff(O2argb32f *src,O2argb32f *dst,int length){
 // Passes Visual Test
    int i;
    
    for(i=0;i<length;i++){
-    KGRGBAffff s=src[i];
-    KGRGBAffff d=dst[i];
-    KGRGBAffff r;
+    O2argb32f s=src[i];
+    O2argb32f d=dst[i];
+    O2argb32f r;
     
     r.r = s.r*d.a+d.r*(1.0-s.a);
     r.g = s.g*d.a+d.g*(1.0-s.a);
@@ -572,14 +572,14 @@ static void KGBlendSpanSourceAtop_ffff(KGRGBAffff *src,KGRGBAffff *dst,int lengt
     src[i]=r;
    }
 }
-static void KGBlendSpanDestinationOver_ffff(KGRGBAffff *src,KGRGBAffff *dst,int length){
+static void O2BlendSpanDestinationOver_ffff(O2argb32f *src,O2argb32f *dst,int length){
 // Passes Visual Test
    int i;
    
    for(i=0;i<length;i++){
-    KGRGBAffff s=src[i];
-    KGRGBAffff d=dst[i];
-    KGRGBAffff r;
+    O2argb32f s=src[i];
+    O2argb32f d=dst[i];
+    O2argb32f r;
     
     r.r = s.r * (1.0f - d.a) + d.r;
     r.g = s.g * (1.0f - d.a) + d.g;
@@ -589,14 +589,14 @@ static void KGBlendSpanDestinationOver_ffff(KGRGBAffff *src,KGRGBAffff *dst,int 
     src[i]=r;
    }
 }
-static void KGBlendSpanDestinationIn_ffff(KGRGBAffff *src,KGRGBAffff *dst,int length){
+static void O2BlendSpanDestinationIn_ffff(O2argb32f *src,O2argb32f *dst,int length){
 // Passes Visual Test
    int i;
    
    for(i=0;i<length;i++){
-    KGRGBAffff s=src[i];
-    KGRGBAffff d=dst[i];
-    KGRGBAffff r;
+    O2argb32f s=src[i];
+    O2argb32f d=dst[i];
+    O2argb32f r;
     
     r.r = d.r * s.a;
     r.g = d.g * s.a;
@@ -606,14 +606,14 @@ static void KGBlendSpanDestinationIn_ffff(KGRGBAffff *src,KGRGBAffff *dst,int le
     src[i]=r;
    }
 }
-static void KGBlendSpanDestinationOut_ffff(KGRGBAffff *src,KGRGBAffff *dst,int length){
+static void O2BlendSpanDestinationOut_ffff(O2argb32f *src,O2argb32f *dst,int length){
 // Passes Visual Test
    int i;
    
    for(i=0;i<length;i++){
-    KGRGBAffff s=src[i];
-    KGRGBAffff d=dst[i];
-    KGRGBAffff r;
+    O2argb32f s=src[i];
+    O2argb32f d=dst[i];
+    O2argb32f r;
     
     r.r = d.r *(1.0- s.a);
     r.g = d.g * (1.0- s.a);
@@ -624,14 +624,14 @@ static void KGBlendSpanDestinationOut_ffff(KGRGBAffff *src,KGRGBAffff *dst,int l
    }
 }
 
-static void KGBlendSpanDestinationAtop_ffff(KGRGBAffff *src,KGRGBAffff *dst,int length){
+static void O2BlendSpanDestinationAtop_ffff(O2argb32f *src,O2argb32f *dst,int length){
 // Passes Visual Test
    int i;
    
    for(i=0;i<length;i++){
-    KGRGBAffff s=src[i];
-    KGRGBAffff d=dst[i];
-    KGRGBAffff r;
+    O2argb32f s=src[i];
+    O2argb32f d=dst[i];
+    O2argb32f r;
     
     r.r=s.r*(1.0-d.a)+d.r*s.a;
     r.g=s.g*(1.0-d.a)+d.g*s.a;
@@ -642,14 +642,14 @@ static void KGBlendSpanDestinationAtop_ffff(KGRGBAffff *src,KGRGBAffff *dst,int 
    }
 }
 
-static void KGBlendSpanXOR_8888(KGRGBA8888 *src,KGRGBA8888 *dst,int length){
+static void O2BlendSpanXOR_8888(O2argb8u *src,O2argb8u *dst,int length){
 // Passes Visual Test
    int i;
    
    for(i=0;i<length;i++){
-    KGRGBA8888 s=src[i];
-    KGRGBA8888 d=dst[i];
-    KGRGBA8888 r;
+    O2argb8u s=src[i];
+    O2argb8u d=dst[i];
+    O2argb8u r;
     
     r.r=RI_INT_MIN(((unsigned)s.r*(255-(unsigned)d.a)+(unsigned)d.r*(255-(unsigned)s.a))/255,255);
     r.g=RI_INT_MIN(((unsigned)s.g*(255-(unsigned)d.a)+(unsigned)d.g*(255-(unsigned)s.a))/255,255);
@@ -660,14 +660,14 @@ static void KGBlendSpanXOR_8888(KGRGBA8888 *src,KGRGBA8888 *dst,int length){
    }
 }
 
-static void KGBlendSpanXOR_ffff(KGRGBAffff *src,KGRGBAffff *dst,int length){
+static void O2BlendSpanXOR_ffff(O2argb32f *src,O2argb32f *dst,int length){
 // Passes Visual Test
    int i;
    
    for(i=0;i<length;i++){
-    KGRGBAffff s=src[i];
-    KGRGBAffff d=dst[i];
-    KGRGBAffff r;
+    O2argb32f s=src[i];
+    O2argb32f d=dst[i];
+    O2argb32f r;
     
     r.r=s.r*(1.0-d.a)+d.r*(1.0-s.a);
     r.g=s.g*(1.0-d.a)+d.g*(1.0-s.a);
@@ -678,14 +678,14 @@ static void KGBlendSpanXOR_ffff(KGRGBAffff *src,KGRGBAffff *dst,int length){
    }
 }
 
-static void KGBlendSpanPlusDarker_ffff(KGRGBAffff *src,KGRGBAffff *dst,int length){
+static void O2BlendSpanPlusDarker_ffff(O2argb32f *src,O2argb32f *dst,int length){
 // broken
    int i;
    
    for(i=0;i<length;i++){
-    KGRGBAffff s=src[i];
-    KGRGBAffff d=dst[i];
-    KGRGBAffff r;
+    O2argb32f s=src[i];
+    O2argb32f d=dst[i];
+    O2argb32f r;
     
 #if 1
 // Doc.s say:  R = MAX(0, (1 - D) + (1 - S)). No workie.
@@ -698,15 +698,15 @@ static void KGBlendSpanPlusDarker_ffff(KGRGBAffff *src,KGRGBAffff *dst,int lengt
    }
 }
 
-static void KGBlendSpanPlusLighter_8888(KGRGBA8888 *src,KGRGBA8888 *dst,int length){
+static void O2BlendSpanPlusLighter_8888(O2argb8u *src,O2argb8u *dst,int length){
 // Passes Visual Test
 // Doc.s say: R = MIN(1, S + D). That works
    int i;
    
    for(i=0;i<length;i++){
-    KGRGBA8888 s=src[i];
-    KGRGBA8888 d=dst[i];
-    KGRGBA8888 r;
+    O2argb8u s=src[i];
+    O2argb8u d=dst[i];
+    O2argb8u r;
     
     r.r = RI_INT_MIN((unsigned)s.r + (unsigned)d.r, 255);
     r.g = RI_INT_MIN((unsigned)s.g + (unsigned)d.g, 255);
@@ -717,15 +717,15 @@ static void KGBlendSpanPlusLighter_8888(KGRGBA8888 *src,KGRGBA8888 *dst,int leng
    }
 }
 
-static void KGBlendSpanPlusLighter_ffff(KGRGBAffff *src,KGRGBAffff *dst,int length){
+static void O2BlendSpanPlusLighter_ffff(O2argb32f *src,O2argb32f *dst,int length){
 // Passes Visual Test
 // Doc.s say: R = MIN(1, S + D). That works
    int i;
    
    for(i=0;i<length;i++){
-    KGRGBAffff s=src[i];
-    KGRGBAffff d=dst[i];
-    KGRGBAffff r;
+    O2argb32f s=src[i];
+    O2argb32f d=dst[i];
+    O2argb32f r;
     
     r.r = RI_MIN(s.r + d.r, 1.0f);
     r.g = RI_MIN(s.g + d.g, 1.0f);

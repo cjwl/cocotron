@@ -10,22 +10,22 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "KGLayer.h"
 
 CGLayerRef CGLayerRetain(CGLayerRef self) {
-   return [self retain];
+   return O2LayerRetain(self);
 }
 
 void CGLayerRelease(CGLayerRef self) {
-   [self release];
+   O2LayerRelease(self);
 }
 
 CGLayerRef CGLayerCreateWithContext(CGContextRef context,CGSize size,id unused) {
-   return [[KGLayer alloc] initRelativeToContext:context size:size unused:unused];
+   return O2LayerCreateWithContext(context,size,unused);
 }
 
 CGSize CGLayerGetSize(CGLayerRef self) {
-   return [self size];
+   return O2LayerGetSize(self);
 }
 
 CGContextRef CGLayerGetContext(CGLayerRef self) {
-   return [self context];
+   return O2LayerGetContext(self);
 }
 

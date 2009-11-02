@@ -32,7 +32,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)selectTest:sender;
 
--(void)selectDestinationColor:sender;
+-(void)selectFillColor:sender;
 -(void)setectSourceColor:sender;
 -(void)selectBlendMode:sender;
 
@@ -54,5 +54,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)selectInterpolationQuality:sender;
 
 -(void)selectPDFPath:sender;
+
+-(void)selectFillColor:sender;
+-(void)selectShadowColor:sender;
 
 @end

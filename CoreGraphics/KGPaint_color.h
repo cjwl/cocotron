@@ -30,11 +30,11 @@
 
 @interface O2Paint_color : O2Paint {
    VGColor m_paintColor;
-   KGRGBAffff _RGBAffff_PRE;
-   KGRGBA8888 _RGBA8888_PRE;
+   O2argb32f _RGBAffff_PRE;
+   O2argb8u _RGBA8888_PRE;
 }
 
--initWithGray:(CGFloat)gray alpha:(CGFloat)alpha;
--initWithRed:(CGFloat)red green:(CGFloat)green blue:(CGFloat)blue alpha:(CGFloat)alpha;
+-initWithGray:(O2Float)gray alpha:(O2Float)alpha;
+-initWithRed:(O2Float)red green:(O2Float)green blue:(O2Float)blue alpha:(O2Float)alpha;
 
 @end

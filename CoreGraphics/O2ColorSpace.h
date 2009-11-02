@@ -13,6 +13,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 typedef O2ColorSpace *O2ColorSpaceRef;
 
 typedef enum {
+   kO2RenderingIntentDefault,
+   kO2RenderingIntentAbsoluteColorimetric,
+   kO2RenderingIntentRelativeColorimetric,
+   kO2RenderingIntentSaturation,
+   kO2RenderingIntentPerceptual,
+} O2ColorRenderingIntent;
+
+typedef enum {
    O2ColorSpaceDeviceGray,
    O2ColorSpaceDeviceRGB,
    O2ColorSpaceDeviceCMYK,
@@ -26,12 +34,16 @@ typedef enum {
 
 -(O2ColorSpaceType)type;
 
--initWithDeviceGray;
--initWithDeviceRGB;
--initWithDeviceCMYK;
--initWithPlatformRGB;
+O2ColorSpaceRef O2ColorSpaceRetain(O2ColorSpaceRef self);
+void            O2ColorSpaceRelease(O2ColorSpaceRef self);
 
--(unsigned)numberOfComponents;
+O2ColorSpaceRef O2ColorSpaceCreateDeviceGray(void);
+O2ColorSpaceRef O2ColorSpaceCreateDeviceRGB(void);
+O2ColorSpaceRef O2ColorSpaceCreateDeviceCMYK(void);
+
+size_t          O2ColorSpaceGetNumberOfComponents(O2ColorSpaceRef self);
+
+-initWithPlatformRGB;
 
 -(BOOL)isEqualToColorSpace:(O2ColorSpaceRef)other;
 
@@ -49,3 +61,4 @@ typedef enum {
 -(const unsigned char *)paletteBytes;
 
 @end
+

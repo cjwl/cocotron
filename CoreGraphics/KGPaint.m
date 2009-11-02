@@ -37,7 +37,7 @@ void O2PaintRelease(O2PaintRef self) {
    [self release];
 }
 
-void O2PaintSetSurfaceToPaintMatrix(O2Paint *self,CGAffineTransform surfaceToPaintMatrix) {
+void O2PaintSetSurfaceToPaintMatrix(O2Paint *self,O2AffineTransform surfaceToPaintMatrix) {
 	self->m_surfaceToPaintMatrix = surfaceToPaintMatrix;
 }
 

@@ -8,7 +8,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import "NSTIFFImageFileDirectory.h"
 #import "NSTIFFReader.h"
-#import <CoreGraphics/CoreGraphics.h>
+#import "KGImageSource.h"
 #import "O2LZW.h"
 
 @implementation NSTIFFImageFileDirectory
@@ -475,10 +475,10 @@ void depredict_R8G8B8A8(uint8_t *pixelBytes,unsigned bytesPerRow,unsigned height
 
 -(NSDictionary *)properties {
    NSMutableDictionary *result=[NSMutableDictionary new];
-   
-   [result setObject:[NSNumber numberWithDouble:_xResolution] forKey:kCGImagePropertyDPIWidth];
-   [result setObject:[NSNumber numberWithDouble:_yResolution] forKey:kCGImagePropertyDPIHeight];
-   
+
+   [result setObject:[NSNumber numberWithDouble:_xResolution] forKey:kO2ImagePropertyDPIWidth];
+   [result setObject:[NSNumber numberWithDouble:_yResolution] forKey:kO2ImagePropertyDPIHeight];
+
    return result;
 }
 

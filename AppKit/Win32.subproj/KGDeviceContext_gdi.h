@@ -8,7 +8,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/NSObject.h>
 #import <Foundation/NSGeometry.h>
-#import <ApplicationServices/ApplicationServices.h>
+#import <CoreGraphics/O2AffineTransform.h>
+#import <CoreGraphics/O2Color.h>
 #import <windows.h>
 
 @class Win32DeviceContextWindow,O2Path;
@@ -23,10 +24,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(Win32DeviceContextWindow *)windowDeviceContext;
 
--(void)establishDeviceSpacePath:(O2Path *)path withTransform:(CGAffineTransform)xform;
+-(void)establishDeviceSpacePath:(O2Path *)path withTransform:(O2AffineTransform)xform;
 -(void)clipReset;
--(void)clipToNonZeroPath:(O2Path *)path withTransform:(CGAffineTransform)xform deviceTransform:(CGAffineTransform)deviceXFORM;
--(void)clipToEvenOddPath:(O2Path *)path withTransform:(CGAffineTransform)xform deviceTransform:(CGAffineTransform)deviceXFORM;
+-(void)clipToNonZeroPath:(O2Path *)path withTransform:(O2AffineTransform)xform deviceTransform:(O2AffineTransform)deviceXFORM;
+-(void)clipToEvenOddPath:(O2Path *)path withTransform:(O2AffineTransform)xform deviceTransform:(O2AffineTransform)deviceXFORM;
 
 -(void)beginPrintingWithDocumentName:(NSString *)name;
 -(void)endPrinting;

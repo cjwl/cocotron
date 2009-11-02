@@ -8,37 +8,37 @@
 
 @implementation O2Image(PDF)
 
-CGColorRenderingIntent KGImageRenderingIntentWithName(const char *name) {
+O2ColorRenderingIntent O2ImageRenderingIntentWithName(const char *name) {
    if(name==NULL)
-    return kCGRenderingIntentDefault;
+    return kO2RenderingIntentDefault;
     
    if(strcmp(name,"AbsoluteColorimetric")==0)
-    return kCGRenderingIntentAbsoluteColorimetric;
+    return kO2RenderingIntentAbsoluteColorimetric;
    else if(strcmp(name,"RelativeColorimetric")==0)
-    return kCGRenderingIntentRelativeColorimetric;
+    return kO2RenderingIntentRelativeColorimetric;
    else if(strcmp(name,"Saturation")==0)
-    return kCGRenderingIntentSaturation;
+    return kO2RenderingIntentSaturation;
    else if(strcmp(name,"Perceptual")==0)
-    return kCGRenderingIntentPerceptual;
+    return kO2RenderingIntentPerceptual;
    else
-    return kCGRenderingIntentDefault; // unknown
+    return kO2RenderingIntentDefault; // unknown
 }
 
-const char *KGImageNameWithIntent(CGColorRenderingIntent intent){
+const char *O2ImageNameWithIntent(O2ColorRenderingIntent intent){
    switch(intent){
    
-    case kCGRenderingIntentAbsoluteColorimetric:
+    case kO2RenderingIntentAbsoluteColorimetric:
      return "AbsoluteColorimetric";
 
-    case kCGRenderingIntentRelativeColorimetric:
+    case kO2RenderingIntentRelativeColorimetric:
      return "RelativeColorimetric";
 
-    case kCGRenderingIntentSaturation:
+    case kO2RenderingIntentSaturation:
      return "Saturation";
      
     default:
-    case kCGRenderingIntentDefault:
-    case kCGRenderingIntentPerceptual:
+    case kO2RenderingIntentDefault:
+    case kO2RenderingIntentPerceptual:
      return "Perceptual";
    } 
 }
@@ -54,12 +54,12 @@ const char *KGImageNameWithIntent(CGColorRenderingIntent intent){
    if(_colorSpace!=nil)
     [dictionary setObjectForKey:"ColorSpace" value:[_colorSpace encodeReferenceWithContext:context]];
    [dictionary setIntegerForKey:"BitsPerComponent" value:_bitsPerComponent];
-   [dictionary setNameForKey:"Intent" value:KGImageNameWithIntent(_renderingIntent)];
+   [dictionary setNameForKey:"Intent" value:O2ImageNameWithIntent(_renderingIntent)];
    [dictionary setBooleanForKey:"ImageMask" value:_isMask];
    if(_mask!=nil)
     [dictionary setObjectForKey:"Mask" value:[_mask encodeReferenceWithContext:context]];
    if(_decode!=NULL)
-    [dictionary setObjectForKey:"Decode" value:[O2PDFArray pdfArrayWithNumbers:_decode count:[_colorSpace numberOfComponents]*2]];
+    [dictionary setObjectForKey:"Decode" value:[O2PDFArray pdfArrayWithNumbers:_decode count:O2ColorSpaceGetNumberOfComponents(_colorSpace)*2]];
    [dictionary setBooleanForKey:"Interpolate" value:_interpolate];
    /* FIX, generate soft mask
     [dictionary setObjectForKey:"SMask" value:[softMask encodeReferenceWithContext:context]];
@@ -109,7 +109,7 @@ const char *KGImageNameWithIntent(CGColorRenderingIntent intent){
    if((colorSpace=[O2ColorSpace colorSpaceFromPDFObject:colorSpaceObject])==NULL)
     return NULL;
           
-   componentsPerPixel=[colorSpace numberOfComponents];
+   componentsPerPixel=O2ColorSpaceGetNumberOfComponents(colorSpace);
     
    if(![dictionary getIntegerForKey:"BitsPerComponent" value:&bitsPerComponent]){
     NSLog(@"Image has no BitsPerComponent");
@@ -180,7 +180,7 @@ const char *KGImageNameWithIntent(CGColorRenderingIntent intent){
      image=[[O2Image alloc] initMaskWithWidth:width height:height bitsPerComponent:bitsPerComponent bitsPerPixel:bitsPerPixel bytesPerRow:bytesPerRow provider:provider decode:decode interpolate:interpolate];
     }
     else {
-     image=[[O2Image alloc] initWithWidth:width height:height bitsPerComponent:bitsPerComponent bitsPerPixel:bitsPerPixel bytesPerRow:bytesPerRow colorSpace:colorSpace bitmapInfo:0 provider:provider decode:decode interpolate:interpolate renderingIntent:KGImageRenderingIntentWithName(intent)];
+     image=[[O2Image alloc] initWithWidth:width height:height bitsPerComponent:bitsPerComponent bitsPerPixel:bitsPerPixel bytesPerRow:bytesPerRow colorSpace:colorSpace bitmapInfo:0 provider:provider decode:decode interpolate:interpolate renderingIntent:O2ImageRenderingIntentWithName(intent)];
 
      if(softMask!=NULL)
       [image addMask:softMask];

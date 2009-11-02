@@ -99,11 +99,11 @@ static inline int float2int(float coord){
    return floorf(coord);
 }
 
--(void)establishDeviceSpacePath:(O2Path *)path withTransform:(CGAffineTransform)xform {
-   unsigned             opCount=[path numberOfElements];
-   const unsigned char *elements=[path elements];
-   unsigned             pointCount=[path numberOfPoints];
-   const NSPoint       *points=[path points];
+-(void)establishDeviceSpacePath:(O2Path *)path withTransform:(O2AffineTransform)xform {
+   unsigned             opCount=O2PathNumberOfElements(path);
+   const unsigned char *elements=O2PathElements(path);
+   unsigned             pointCount=O2PathNumberOfPoints(path);
+   const NSPoint       *points=O2PathPoints(path);
    unsigned             i,pointIndex;
        
    BeginPath(_dc);
@@ -112,24 +112,24 @@ static inline int float2int(float coord){
    for(i=0;i<opCount;i++){
     switch(elements[i]){
 
-     case kCGPathElementMoveToPoint:{
-       NSPoint point=CGPointApplyAffineTransform(points[pointIndex++],xform);
+     case kO2PathElementMoveToPoint:{
+       NSPoint point=O2PointApplyAffineTransform(points[pointIndex++],xform);
         
        MoveToEx(_dc,float2int(point.x),float2int(point.y),NULL);
       }
       break;
        
-     case kCGPathElementAddLineToPoint:{
-       NSPoint point=CGPointApplyAffineTransform(points[pointIndex++],xform);
+     case kO2PathElementAddLineToPoint:{
+       NSPoint point=O2PointApplyAffineTransform(points[pointIndex++],xform);
         
        LineTo(_dc,float2int(point.x),float2int(point.y));
       }
       break;
 
-     case kCGPathElementAddCurveToPoint:{
-       NSPoint cp1=CGPointApplyAffineTransform(points[pointIndex++],xform);
-       NSPoint cp2=CGPointApplyAffineTransform(points[pointIndex++],xform);
-       NSPoint end=CGPointApplyAffineTransform(points[pointIndex++],xform);
+     case kO2PathElementAddCurveToPoint:{
+       NSPoint cp1=O2PointApplyAffineTransform(points[pointIndex++],xform);
+       NSPoint cp2=O2PointApplyAffineTransform(points[pointIndex++],xform);
+       NSPoint end=O2PointApplyAffineTransform(points[pointIndex++],xform);
        POINT   points[3]={
         { float2int(cp1.x), float2int(cp1.y) },
         { float2int(cp2.x), float2int(cp2.y) },
@@ -141,9 +141,9 @@ static inline int float2int(float coord){
       break;
 
 // FIX, this is wrong
-     case kCGPathElementAddQuadCurveToPoint:{
-       NSPoint cp1=CGPointApplyAffineTransform(points[pointIndex++],xform);
-       NSPoint cp2=CGPointApplyAffineTransform(points[pointIndex++],xform);
+     case kO2PathElementAddQuadCurveToPoint:{
+       NSPoint cp1=O2PointApplyAffineTransform(points[pointIndex++],xform);
+       NSPoint cp2=O2PointApplyAffineTransform(points[pointIndex++],xform);
        NSPoint end=cp2;
        POINT   points[3]={
         { float2int(cp1.x), float2int(cp1.y) },
@@ -155,7 +155,7 @@ static inline int float2int(float coord){
       }
       break;
 
-     case kCGPathElementCloseSubpath:
+     case kO2PathElementCloseSubpath:
       CloseFigure(_dc);
       break;
     }
@@ -169,7 +169,7 @@ static inline int float2int(float coord){
    DeleteObject(_clipRegion);
 }
 
--(void)clipToPath:(O2Path *)path withTransform:(CGAffineTransform)xform deviceTransform:(CGAffineTransform)deviceXFORM evenOdd:(BOOL)evenOdd {
+-(void)clipToPath:(O2Path *)path withTransform:(O2AffineTransform)xform deviceTransform:(O2AffineTransform)deviceXFORM evenOdd:(BOOL)evenOdd {
    XFORM current;
    XFORM userToDevice={deviceXFORM.a,deviceXFORM.b,deviceXFORM.c,deviceXFORM.d,deviceXFORM.tx,deviceXFORM.ty};
 
@@ -182,18 +182,18 @@ static inline int float2int(float coord){
    [self establishDeviceSpacePath:path withTransform:xform];
    SetPolyFillMode(_dc,evenOdd?ALTERNATE:WINDING);
    if(!SelectClipPath(_dc,RGN_AND))
-    NSLog(@"SelectClipPath failed (%i), path size= %d", GetLastError(),[path numberOfElements]);
+    NSLog(@"SelectClipPath failed (%i), path size= %d", GetLastError(),O2PathNumberOfElements(path));
 
    if(!SetWorldTransform(_dc,&current))
     NSLog(@"SetWorldTransform failed");
 }
 
--(void)clipToNonZeroPath:(O2Path *)path withTransform:(CGAffineTransform)xform deviceTransform:(CGAffineTransform)deviceXFORM {
-   [self clipToPath:(O2Path *)path withTransform:(CGAffineTransform)xform deviceTransform:(CGAffineTransform)deviceXFORM evenOdd:NO];
+-(void)clipToNonZeroPath:(O2Path *)path withTransform:(O2AffineTransform)xform deviceTransform:(O2AffineTransform)deviceXFORM {
+   [self clipToPath:(O2Path *)path withTransform:(O2AffineTransform)xform deviceTransform:(O2AffineTransform)deviceXFORM evenOdd:NO];
 }
 
--(void)clipToEvenOddPath:(O2Path *)path withTransform:(CGAffineTransform)xform deviceTransform:(CGAffineTransform)deviceXFORM {
-   [self clipToPath:(O2Path *)path withTransform:(CGAffineTransform)xform deviceTransform:(CGAffineTransform)deviceXFORM evenOdd:YES];
+-(void)clipToEvenOddPath:(O2Path *)path withTransform:(O2AffineTransform)xform deviceTransform:(O2AffineTransform)deviceXFORM {
+   [self clipToPath:(O2Path *)path withTransform:(O2AffineTransform)xform deviceTransform:(O2AffineTransform)deviceXFORM evenOdd:YES];
 }
 
 -(void)beginPrintingWithDocumentName:(NSString *)name {

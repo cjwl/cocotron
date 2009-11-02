@@ -18,6 +18,8 @@
 		FE14EC960DBDA5420070928C /* DemoContext.m in Sources */ = {isa = PBXBuildFile; fileRef = FE14EC950DBDA5420070928C /* DemoContext.m */; };
 		FE1F93630D7EF19900969491 /* KGImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = FE1F93620D7EF19900969491 /* KGImageView.m */; };
 		FE1F937A0D7EF1F800969491 /* KGRenderController.m in Sources */ = {isa = PBXBuildFile; fileRef = FE1F93790D7EF1F800969491 /* KGRenderController.m */; };
+		FE3C83B6108759100018252A /* O2Geometry.m in Sources */ = {isa = PBXBuildFile; fileRef = FE3C83B5108759100018252A /* O2Geometry.m */; };
+		FE3C83C9108759A50018252A /* O2AffineTransform.m in Sources */ = {isa = PBXBuildFile; fileRef = FE3C83C8108759A50018252A /* O2AffineTransform.m */; };
 		FE452BCE101F412D00585DFE /* KGImageSource_GIF.m in Sources */ = {isa = PBXBuildFile; fileRef = FE452BCD101F412D00585DFE /* KGImageSource_GIF.m */; };
 		FE452BD1101F414700585DFE /* gif_lib.m in Sources */ = {isa = PBXBuildFile; fileRef = FE452BD0101F414700585DFE /* gif_lib.m */; };
 		FE45ED3D0DC2374E00F49290 /* KGImageSource.m in Sources */ = {isa = PBXBuildFile; fileRef = FE45ED340DC2374E00F49290 /* KGImageSource.m */; };
@@ -123,6 +125,10 @@
 		FE1F93790D7EF1F800969491 /* KGRenderController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGRenderController.m; sourceTree = "<group>"; };
 		FE3396000DBA8CF7009AB3E0 /* CoreGraphics_KG.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreGraphics_KG.h; sourceTree = "<group>"; };
 		FE33964B0DBAE733009AB3E0 /* DemosTemplate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DemosTemplate.m; sourceTree = "<group>"; };
+		FE3C8387108758940018252A /* O2Geometry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O2Geometry.h; sourceTree = "<group>"; };
+		FE3C83B5108759100018252A /* O2Geometry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = O2Geometry.m; sourceTree = "<group>"; };
+		FE3C83C7108759A50018252A /* O2AffineTransform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = O2AffineTransform.h; sourceTree = "<group>"; };
+		FE3C83C8108759A50018252A /* O2AffineTransform.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = O2AffineTransform.m; sourceTree = "<group>"; };
 		FE452BCC101F412D00585DFE /* KGImageSource_GIF.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGImageSource_GIF.h; sourceTree = "<group>"; };
 		FE452BCD101F412D00585DFE /* KGImageSource_GIF.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGImageSource_GIF.m; sourceTree = "<group>"; };
 		FE452BCF101F414700585DFE /* gif_lib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gif_lib.h; sourceTree = "<group>"; };
@@ -388,6 +394,10 @@
 		FE6EDCC70DB78E3C005503A1 /* CoreGraphics */ = {
 			isa = PBXGroup;
 			children = (
+				FE3C83C7108759A50018252A /* O2AffineTransform.h */,
+				FE3C83C8108759A50018252A /* O2AffineTransform.m */,
+				FE3C83B5108759100018252A /* O2Geometry.m */,
+				FE3C8387108758940018252A /* O2Geometry.h */,
 				FEBF5647107537FF0020F40C /* O2Font_ttf.h */,
 				FEBF5648107537FF0020F40C /* O2Font_ttf.m */,
 				FEBF54F1107444B90020F40C /* O2TTFDecoder.h */,
@@ -641,6 +651,8 @@
 				FEBF54F3107444B90020F40C /* O2TTFDecoder.m in Sources */,
 				FEBF5649107537FF0020F40C /* O2Font_ttf.m in Sources */,
 				FE619A32107A56A100807E7E /* O2Font_CG.m in Sources */,
+				FE3C83B6108759100018252A /* O2Geometry.m in Sources */,
+				FE3C83C9108759A50018252A /* O2AffineTransform.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -677,15 +689,18 @@
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_ENABLE_CPP_EXCEPTIONS = NO;
 				GCC_ENABLE_CPP_RTTI = NO;
-				GCC_ENABLE_SSE3_EXTENSIONS = YES;
-				GCC_ENABLE_SUPPLEMENTAL_SSE3_INSTRUCTIONS = YES;
+				GCC_ENABLE_SSE3_EXTENSIONS = NO;
+				GCC_ENABLE_SSE41_EXTENSIONS = NO;
+				GCC_ENABLE_SSE42_EXTENSIONS = NO;
+				GCC_ENABLE_SUPPLEMENTAL_SSE3_INSTRUCTIONS = NO;
+				GCC_FAST_MATH = YES;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
 				GCC_INSTRUMENT_PROGRAM_FLOW_ARCS = NO;
 				GCC_MODEL_PPC64 = NO;
 				GCC_MODEL_TUNING = "";
-				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_OPTIMIZATION_LEVEL = s;
 				GCC_STRICT_ALIASING = YES;
-				GCC_UNROLL_LOOPS = YES;
+				GCC_UNROLL_LOOPS = NO;
 				GCC_VERSION = 4.2;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = NO;
 				GCC_WARN_SHADOW = NO;

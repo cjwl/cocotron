@@ -358,7 +358,7 @@
 -(void)drawImage:(id)image inRect:(CGRect)rect {
    BOOL shouldFreeImage=NO;
    cairo_surface_t *img=NULL;
-   KGRGBA8888 *data=NULL;
+   O2argb8u *data=NULL;
    
    if([image respondsToSelector:@selector(_cairoSurface)])
 	{
@@ -369,7 +369,7 @@
       NSAssert([image isKindOfClass:[KGImage class]], nil);
       KGImage *ki=image;
       int w=[ki width], h=[ki height], i, j;
-      data=calloc(sizeof(KGRGBA8888), w*h);
+      data=calloc(sizeof(O2argb8u), w*h);
       
       for(i=0; i<h; i++) {
          ki->_read_lRGBA8888_PRE(ki, 0, i, &data[w*i], w);
@@ -381,7 +381,7 @@
                                               CAIRO_FORMAT_ARGB32,
                                               w,
                                               h,
-                                              w*sizeof(KGRGBA8888));
+                                              w*sizeof(O2argb8u));
 	}
    
    NSAssert(img, nil);
@@ -414,7 +414,26 @@
    }
 }
 
+-(void)establishFontStateInDeviceIfDirty {
+   KGGraphicsState *gState=[self currentState];
+   
+   if(gState->_fontIsDirty){
+    [gState clearFontIsDirty];
+
+    KGFont *cgFont=[state font];
+    KTFont *fontState=[[TTFFont alloc] initWithFont:cgFont size:[state pointSize]];
+    NSString    *name=[fontState name];
+    CGFloat      pointSize=[fontState pointSize];
+   
+    [state setFontState:fontState];
+    [fontState release];
+   }
+}
+
+
 -(void)showGlyphs:(const CGGlyph *)glyphs count:(unsigned)count {
+   [self establishFontStateInDeviceIfDirty];
+   
    TTFFont *fontState=(TTFFont*)[[self currentState] fontState];
    int i;
    cairo_glyph_t *cg=alloca(sizeof(cairo_glyph_t)*count);
@@ -449,6 +468,8 @@
 }
 
 -(void)showText:(const char *)text length:(unsigned)length {
+   [self establishFontStateInDeviceIfDirty];
+
    unichar unicode[length];
    CGGlyph glyphs[length];
    int     i;
@@ -532,41 +553,6 @@ cairo_status_t writeToData(void		  *closure,
    
 	cairo_paint(_context);
    [other resetDirtyRect];
-}
-
--(void)establishFontStateInDevice {
-   
-}
-
--(void)establishFontState {
-   KGGraphicsState *state=[self currentState];
-   KGFont *cgFont=[state font];
-   KTFont *fontState=[[TTFFont alloc] initWithFont:cgFont size:[state pointSize]];
-   NSString    *name=[fontState name];
-   CGFloat      pointSize=[fontState pointSize];
-   
-   [state setFontState:fontState];
-   [fontState release];
-}
-
--(void)setFont:(KGFont *)font {
-   [super setFont:font];
-   [self establishFontState];
-}
-
--(void)setFontSize:(float)size {
-   [super setFontSize:size];
-   [self establishFontState];
-}
-
--(void)selectFontWithName:(const char *)name size:(float)size encoding:(int)encoding {
-   [super selectFontWithName:name size:size encoding:encoding];
-   [self establishFontState];
-}
-
--(void)restoreGState {
-   [super restoreGState];
-   [self establishFontStateInDevice];
 }
 
 @end

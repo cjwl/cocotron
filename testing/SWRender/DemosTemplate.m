@@ -40,12 +40,15 @@
 
 @implementation DEMONAME(Context)
 
-static CGColorRef cgColorFromColor(NSColor *color){
-   NSColor *rgbColor=[color colorUsingColorSpaceName:NSDeviceRGBColorSpace];
-   float rgba[4];
+static CGColorRef createCGColor(float r,float g,float b,float a){
+   float rgba[4]={r,g,b,a};
    
-   [rgbColor getComponents:rgba];
-   return CGColorCreate(CGColorSpaceCreateDeviceRGB(),rgba);
+   CGColorSpaceRef colorSpace=CGColorSpaceCreateDeviceRGB();
+   CGColorRef result=CGColorCreate(colorSpace,rgba);
+   
+   CGColorSpaceRelease(colorSpace);
+   
+   return result;
 }
 
 -init {
@@ -59,8 +62,8 @@ static CGColorRef cgColorFromColor(NSColor *color){
    _data=NSZoneMalloc(NULL,_bytesPerRow*_pixelsHigh);
    _context=CGBitmapContextCreate(_data,_pixelsWide,_pixelsHigh,_bitsPerComponent,_bytesPerRow,_colorSpace,_bitmapInfo);
    
-   _fillColor=cgColorFromColor([NSColor blueColor]);
-   _strokeColor=cgColorFromColor([NSColor redColor]);
+   _fillColor=createCGColor(0,0,1,1);
+   _strokeColor=createCGColor(1,0,0,1);
    _pathDrawingMode=kCGPathStroke;
    _shouldAntialias=YES;
    _interpolationQuality=kCGInterpolationLow;
@@ -68,8 +71,8 @@ static CGColorRef cgColorFromColor(NSColor *color){
    _scaley=1;
    _rotation=0;
    _blendMode=kCGBlendModeNormal;
-   _shadowColor=cgColorFromColor([NSColor blackColor]);
-   _shadowBlur=0;
+   _shadowColor=createCGColor(0,0,0,1);
+   _shadowBlur=1;
    _shadowOffset=CGSizeMake(10,10);
    _lineWidth=1;
    _lineCap=kCGLineCapButt;
@@ -140,14 +143,14 @@ static CGColorRef cgColorFromColor(NSColor *color){
    return _data;
 }
 
--(void)setStrokeColor:(NSColor *)color {
+-(void)setStrokeColor:(float)r:(float)g:(float)b:(float)a {
    CGColorRelease(_strokeColor);
-   _strokeColor=cgColorFromColor(color);
+   _strokeColor=createCGColor(r,g,b,a);
 }
 
--(void)setFillColor:(NSColor *)color {
+-(void)setFillColor:(float)r:(float)g:(float)b:(float)a {
    CGColorRelease(_fillColor);
-   _fillColor=cgColorFromColor(color);
+   _fillColor=createCGColor(r,g,b,a);
 }
 
 -(void)setBlendMode:(CGBlendMode)mode {
@@ -165,9 +168,9 @@ static CGColorRef cgColorFromColor(NSColor *color){
    _shadowOffset.height=value;
 }
 
--(void)setShadowColor:(NSColor *)color {
+-(void)setShadowColor:(float)r:(float)g:(float)b:(float)a {
    CGColorRelease(_shadowColor);
-   _shadowColor=cgColorFromColor(color);
+   _shadowColor=createCGColor(r,g,b,a);
 }
 
 -(void)setPathDrawingMode:(CGPathDrawingMode)mode {
@@ -372,7 +375,8 @@ static void addSliceToPath(CGMutablePathRef path,float innerRadius,float outerRa
     CGMutablePathRef path=CGPathCreateMutable();
     float      g=(i+1)/(float)limit;
     float      components[4]={g,g,g,g};
-    CGColorRef fillColor=CGColorCreate(CGColorSpaceCreateDeviceRGB(),components);
+    CGColorSpaceRef colorSpace=CGColorSpaceCreateDeviceRGB();
+    CGColorRef fillColor=CGColorCreate(colorSpace,components);
 
     CGPathAddRect(path,NULL,CGRectMake(i*width/limit,0,width/limit,height));
     
@@ -383,6 +387,7 @@ static void addSliceToPath(CGMutablePathRef path,float innerRadius,float outerRa
    CGContextDrawPath(_context,_pathDrawingMode);
 
     CGColorRelease(fillColor);
+    CGColorSpaceRelease(colorSpace);
     CGPathRelease(path);
    }
 
@@ -390,7 +395,8 @@ static void addSliceToPath(CGMutablePathRef path,float innerRadius,float outerRa
     CGMutablePathRef path=CGPathCreateMutable();
     float      g=(i+1)/(float)limit;
     float      components[4]={g/2,(1.0-g),g,g};
-    CGColorRef fillColor=CGColorCreate(CGColorSpaceCreateDeviceRGB(),components);
+    CGColorSpaceRef colorSpace=CGColorSpaceCreateDeviceRGB();
+    CGColorRef fillColor=CGColorCreate(colorSpace,components);
 
     CGPathAddRect(path,NULL,CGRectMake(0,0,width,height-i*height/limit));
    CGContextAddPath(_context,path);
@@ -400,6 +406,7 @@ static void addSliceToPath(CGMutablePathRef path,float innerRadius,float outerRa
    CGContextDrawPath(_context,_pathDrawingMode);
 
     CGColorRelease(fillColor);
+    CGColorSpaceRelease(colorSpace);
     CGPathRelease(path);
    }
    
@@ -521,6 +528,24 @@ static void evaluate(void *info,const float *in, float *output) {
    CGContextRestoreGState(_context);
 }
 
+-(void)drawLayers {
+   CGAffineTransform ctm=[self ctm];
+   
+   CGContextSaveGState(_context);
+   CGContextClearRect(_context,CGRectMake(0,0,400,400));
+   CGContextSetRGBFillColor(_context,1,1,1,1);
+   CGContextFillRect(_context,CGRectMake(0,0,400,400));
+   CGContextSetShadowWithColor(_context,CGSizeMake(30,30),_shadowBlur,_shadowColor);
+   CGContextBeginTransparencyLayer(_context,NULL);
+//   CGContextConcatCTM(_context,ctm);
+//   CGContextSetShadow(_context,CGSizeMake(10,10),5.0);
+   CGContextAddEllipseInRect(_context,CGRectMake(50,50,100,100));
+   CGContextSetFillColorWithColor(_context,_fillColor);
+   CGContextFillPath(_context);
+   CGContextEndTransparencyLayer(_context);
+   CGContextRestoreGState(_context);
+}
+
 #if 0
 
 -(void)drawSampleInRender:(KGRender *)render {
@@ -552,7 +577,7 @@ static void evaluate(void *info,const float *in, float *output) {
    CGAffineTransform ctm=[self ctm];
    
 #if 0   
-   [render setShadowColor:cgColorFromColor(gState->_shadowColor)];
+   [render setShadowColor:createCGColor(gState->_shadowColor)];
    [render setShadowOffset:CGSizeMake(gState->_shadowOffset.width,gState->_shadowOffset.height)];
    [render setShadowBlur:gState->_shadowBlur];
 #endif

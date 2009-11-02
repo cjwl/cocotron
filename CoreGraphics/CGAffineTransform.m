@@ -10,22 +10,22 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 const CGAffineTransform CGAffineTransformIdentity={1,0,0,1,0,0};
 
-CGAffineTransform CGAffineTransformMake(float a,float b,float c,float d,float tx,float ty){
+CGAffineTransform CGAffineTransformMake(CGFloat a,CGFloat b,CGFloat c,CGFloat d,CGFloat tx,CGFloat ty){
    CGAffineTransform xform={a,b,c,d,tx,ty};
    return xform;
 }
 
-CGAffineTransform CGAffineTransformMakeRotation(float radians){
+CGAffineTransform CGAffineTransformMakeRotation(CGFloat radians){
    CGAffineTransform xform={cos(radians),sin(radians),-sin(radians),cos(radians),0,0};
    return xform;
 }
 
-CGAffineTransform CGAffineTransformMakeScale(float scalex,float scaley){
+CGAffineTransform CGAffineTransformMakeScale(CGFloat scalex,CGFloat scaley){
    CGAffineTransform xform={scalex,0,0,scaley,0,0};
    return xform;
 }
 
-CGAffineTransform CGAffineTransformMakeTranslation(float tx,float ty){
+CGAffineTransform CGAffineTransformMakeTranslation(CGFloat tx,CGFloat ty){
    CGAffineTransform xform={1,0,0,1,tx,ty};
    return xform;
 }
@@ -45,7 +45,7 @@ CGAffineTransform CGAffineTransformConcat(CGAffineTransform xform,CGAffineTransf
 
 CGAffineTransform CGAffineTransformInvert(CGAffineTransform xform){
    CGAffineTransform result;
-   float determinant;
+   CGFloat determinant;
 
    determinant=xform.a*xform.d-xform.c*xform.b;
    if(determinant==0){
@@ -62,17 +62,17 @@ CGAffineTransform CGAffineTransformInvert(CGAffineTransform xform){
    return result;
 }
 
-CGAffineTransform CGAffineTransformRotate(CGAffineTransform xform,float radians){
+CGAffineTransform CGAffineTransformRotate(CGAffineTransform xform,CGFloat radians){
    CGAffineTransform rotate=CGAffineTransformMakeRotation(radians);
    return CGAffineTransformConcat(rotate,xform);
 }
 
-CGAffineTransform CGAffineTransformScale(CGAffineTransform xform,float scalex,float scaley){
+CGAffineTransform CGAffineTransformScale(CGAffineTransform xform,CGFloat scalex,CGFloat scaley){
    CGAffineTransform scale=CGAffineTransformMakeScale(scalex,scaley);
    return CGAffineTransformConcat(scale,xform);
 }
 
-CGAffineTransform CGAffineTransformTranslate(CGAffineTransform xform,float tx,float ty){
+CGAffineTransform CGAffineTransformTranslate(CGAffineTransform xform,CGFloat tx,CGFloat ty){
    CGAffineTransform translate=CGAffineTransformMakeTranslation(tx,ty);
    return CGAffineTransformConcat(translate,xform);
 }

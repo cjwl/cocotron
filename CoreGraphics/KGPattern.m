@@ -8,9 +8,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import "KGPattern.h"
 
-@implementation KGPattern
+@implementation O2Pattern
 
--initWithInfo:(void *)info bounds:(CGRect)bounds matrix:(CGAffineTransform)matrix xstep:(CGFloat)xstep ystep:(CGFloat)ystep tiling:(CGPatternTiling)tiling isColored:(BOOL)isColored callbacks:(const CGPatternCallbacks *)callbacks {
+-initWithInfo:(void *)info bounds:(O2Rect)bounds matrix:(O2AffineTransform)matrix xstep:(O2Float)xstep ystep:(O2Float)ystep tiling:(O2PatternTiling)tiling isColored:(BOOL)isColored callbacks:(const O2PatternCallbacks *)callbacks {
    _info=info;
    _bounds=bounds;
    _matrix=matrix;

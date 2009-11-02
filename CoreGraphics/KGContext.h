@@ -7,225 +7,335 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
 #import <Foundation/NSObject.h>
-#import <CoreGraphics/CoreGraphics.h>
-#import "O2ColorSpace.h"
+#import "O2Geometry.h"
 
-@class O2Color,KGShading,O2Image,O2GState,O2MutablePath,O2Path,KGPattern,KGLayer,O2PDFPage,NSMutableArray,CGWindow,KGSurface,NSDictionary,NSData,O2Font;
+@class O2Context,O2Color,O2Shading,O2Image,O2GState,O2MutablePath,O2Path,O2Pattern,O2Layer,O2PDFPage,NSMutableArray,CGWindow,O2Surface,NSDictionary,NSData,O2Font;
+
+typedef O2Context *O2ContextRef;
+
+typedef enum {
+   kO2EncodingFontSpecific,
+   kO2EncodingMacRoman,
+} O2TextEncoding;
+
+typedef enum {
+   kO2LineCapButt,
+   kO2LineCapRound,
+   kO2LineCapSquare,
+} O2LineCap;
+
+typedef enum {
+   kO2LineJoinMiter,
+   kO2LineJoinRound,
+   kO2LineJoinBevel,
+} O2LineJoin;
+
+typedef enum {
+   kO2PathFill,
+   kO2PathEOFill,
+   kO2PathStroke,
+   kO2PathFillStroke,
+   kO2PathEOFillStroke
+} O2PathDrawingMode;
+
+typedef enum {
+   kO2InterpolationDefault,
+   kO2InterpolationNone,
+   kO2InterpolationLow,
+   kO2InterpolationHigh,
+} O2InterpolationQuality;
+
+typedef enum {
+// seperable
+   kO2BlendModeNormal,
+   kO2BlendModeMultiply,
+   kO2BlendModeScreen,
+   kO2BlendModeOverlay,
+   kO2BlendModeDarken,
+   kO2BlendModeLighten,
+   kO2BlendModeColorDodge,
+   kO2BlendModeColorBurn,
+   kO2BlendModeHardLight,
+   kO2BlendModeSoftLight,
+   kO2BlendModeDifference,
+   kO2BlendModeExclusion,
+// nonseperable  
+   kO2BlendModeHue,
+   kO2BlendModeSaturation,
+   kO2BlendModeColor,
+   kO2BlendModeLuminosity,
+// Porter-Duff
+   kO2BlendModeClear,
+   kO2BlendModeCopy,
+   kO2BlendModeSourceIn,
+   kO2BlendModeSourceOut,
+   kO2BlendModeSourceAtop,
+   kO2BlendModeDestinationOver,
+   kO2BlendModeDestinationIn,
+   kO2BlendModeDestinationOut,
+   kO2BlendModeDestinationAtop,
+   kO2BlendModeXOR,
+   kO2BlendModePlusDarker,
+   kO2BlendModePlusLighter,
+} O2BlendMode;
+
+typedef int O2TextDrawingMode;
+
+#import "KGFont.h"
+#import "KGLayer.h"
+#import "O2Color.h"
+#import "O2ColorSpace.h"
+#import "KGImage.h"
+#import "O2Path.h"
+#import "KGPattern.h"
+#import "KGShading.h"
+#import "KGPDFPage.h"
 
 @interface O2Context : NSObject {
-   CGAffineTransform _userToDeviceTransform;
+   O2AffineTransform _userToDeviceTransform;
    NSMutableArray   *_layerStack;
    NSMutableArray   *_stateStack;
    O2MutablePath    *_path;
    BOOL              _allowsAntialiasing;
 }
 
-+(O2Context *)createContextWithSize:(CGSize)size window:(CGWindow *)window;
-+(O2Context *)createBackingContextWithSize:(CGSize)size context:(O2Context *)context deviceDictionary:(NSDictionary *)deviceDictionary;
-+(O2Context *)createWithBytes:(void *)bytes width:(size_t)width height:(size_t)height bitsPerComponent:(size_t)bitsPerComponent bytesPerRow:(size_t)bytesPerRow colorSpace:(O2ColorSpaceRef)colorSpace bitmapInfo:(CGBitmapInfo)bitmapInfo;
++(O2Context *)createContextWithSize:(O2Size)size window:(CGWindow *)window;
++(O2Context *)createBackingContextWithSize:(O2Size)size context:(O2Context *)context deviceDictionary:(NSDictionary *)deviceDictionary;
 
 +(BOOL)canInitWithWindow:(CGWindow *)window;
 +(BOOL)canInitBackingWithContext:(O2Context *)context deviceDictionary:(NSDictionary *)deviceDictionary;
 +(BOOL)canInitBitmap;
 
--initWithSize:(CGSize)size window:(CGWindow *)window;
--initWithSize:(CGSize)size context:(O2Context *)context;
+-initWithSize:(O2Size)size window:(CGWindow *)window;
+-initWithSize:(O2Size)size context:(O2Context *)context;
 
 -initWithGraphicsState:(O2GState *)state;
 -init;
 
--(KGSurface *)surface;
--(KGSurface *)createSurfaceWithWidth:(size_t)width height:(size_t)height;
-
--(void)setAllowsAntialiasing:(BOOL)yesOrNo;
+-(O2Surface *)surface;
+-(O2Surface *)createSurfaceWithWidth:(size_t)width height:(size_t)height;
 
 -(void)beginTransparencyLayerWithInfo:(NSDictionary *)unused;
 -(void)endTransparencyLayer;
 
--(BOOL)pathIsEmpty;
--(CGPoint)pathCurrentPoint;
--(CGRect)pathBoundingBox;
--(BOOL)pathContainsPoint:(CGPoint)point drawingMode:(int)pathMode;
-
--(void)beginPath;
--(void)closePath;
--(void)moveToPoint:(float)x:(float)y;
--(void)addLineToPoint:(float)x:(float)y;
--(void)addCurveToPoint:(float)cx1:(float)cy1:(float)cx2:(float)cy2:(float)x:(float)y;
--(void)addQuadCurveToPoint:(float)cx1:(float)cy1:(float)x:(float)y;
--(void)addLinesWithPoints:(const CGPoint *)points count:(unsigned)count;
--(void)addRect:(CGRect)rect;
--(void)addRects:(const CGRect *)rect count:(unsigned)count;
--(void)addArc:(float)x:(float)y:(float)radius:(float)startRadian:(float)endRadian:(int)clockwise;
--(void)addArcToPoint:(float)x1:(float)y1:(float)x2:(float)y2:(float)radius;
--(void)addEllipseInRect:(CGRect)rect;
--(void)addPath:(O2Path *)path;
--(void)replacePathWithStrokedPath;
-
--(O2GState *)currentState;
--(void)saveGState;
--(void)restoreGState;
-
--(CGAffineTransform)userSpaceToDeviceSpaceTransform;
--(CGAffineTransform)ctm;
--(CGRect)clipBoundingBox;
--(CGAffineTransform)textMatrix;
--(int)interpolationQuality;
--(CGPoint)textPosition;
--(CGPoint)convertPointToDeviceSpace:(CGPoint)point;
--(CGPoint)convertPointToUserSpace:(CGPoint)point;
--(CGSize)convertSizeToDeviceSpace:(CGSize)size;
--(CGSize)convertSizeToUserSpace:(CGSize)size;
--(CGRect)convertRectToDeviceSpace:(CGRect)rect;
--(CGRect)convertRectToUserSpace:(CGRect)rect;
-
--(void)setCTM:(CGAffineTransform)matrix;
--(void)concatCTM:(CGAffineTransform)matrix;
--(void)translateCTM:(float)translatex:(float)translatey;
--(void)scaleCTM:(float)scalex:(float)scaley;
--(void)rotateCTM:(float)radians;
-
--(void)clipToPath;
--(void)evenOddClipToPath;
--(void)clipToMask:(O2Image *)image inRect:(CGRect)rect;
--(void)clipToRect:(CGRect)rect;
--(void)clipToRects:(const CGRect *)rects count:(unsigned)count;
-
 -(O2Color *)strokeColor;
 -(O2Color *)fillColor;
-
--(void)setStrokeColorSpace:(O2ColorSpaceRef)colorSpace;
--(void)setFillColorSpace:(O2ColorSpaceRef)colorSpace;
-
--(void)setStrokeColorWithComponents:(const float *)components;
--(void)setStrokeColor:(O2Color *)color;
--(void)setGrayStrokeColor:(float)gray:(float)alpha;
--(void)setRGBStrokeColor:(float)r:(float)g:(float)b:(float)alpha;
--(void)setCMYKStrokeColor:(float)c:(float)m:(float)y:(float)k:(float)alpha;
-
--(void)setFillColorWithComponents:(const float *)components;
--(void)setFillColor:(O2Color *)color;
--(void)setGrayFillColor:(float)gray:(float)alpha;
--(void)setRGBFillColor:(float)r:(float)g:(float)b:(float)alpha;
--(void)setCMYKFillColor:(float)c:(float)m:(float)y:(float)k:(float)alpha;
-
--(void)setStrokeAndFillAlpha:(float)alpha;
    
--(void)setStrokeAlpha:(float)alpha;
--(void)setGrayStrokeColor:(float)gray;
--(void)setRGBStrokeColor:(float)r:(float)g:(float)b;
--(void)setCMYKStrokeColor:(float)c:(float)m:(float)y:(float)k;
+-(void)setStrokeAlpha:(O2Float)alpha;
+-(void)setGrayStrokeColor:(O2Float)gray;
+-(void)setRGBStrokeColor:(O2Float)r:(O2Float)g:(O2Float)b;
+-(void)setCMYKStrokeColor:(O2Float)c:(O2Float)m:(O2Float)y:(O2Float)k;
 
--(void)setFillAlpha:(float)alpha;
--(void)setGrayFillColor:(float)gray;
--(void)setRGBFillColor:(float)r:(float)g:(float)b;
--(void)setCMYKFillColor:(float)c:(float)m:(float)y:(float)k;
+-(void)setFillAlpha:(O2Float)alpha;
+-(void)setGrayFillColor:(O2Float)gray;
+-(void)setRGBFillColor:(O2Float)r:(O2Float)g:(O2Float)b;
+-(void)setCMYKFillColor:(O2Float)c:(O2Float)m:(O2Float)y:(O2Float)k;
 
--(void)setPatternPhase:(CGSize)phase;
--(void)setStrokePattern:(KGPattern *)pattern components:(const float *)components;
--(void)setFillPattern:(KGPattern *)pattern components:(const float *)components;
+-(void)drawPath:(O2PathDrawingMode)pathMode;
 
--(void)setTextMatrix:(CGAffineTransform)matrix;
--(void)setTextPosition:(float)x:(float)y;
--(void)setCharacterSpacing:(float)spacing;
--(void)setTextDrawingMode:(int)textMode;
-
--(void)setFont:(O2Font *)font;
--(void)setFontSize:(float)size;
--(void)selectFontWithName:(const char *)name size:(float)size encoding:(CGTextEncoding)encoding;
--(void)setShouldSmoothFonts:(BOOL)yesOrNo;
-
--(void)setLineWidth:(float)width;
--(void)setLineCap:(int)lineCap;
--(void)setLineJoin:(int)lineJoin;
--(void)setMiterLimit:(float)limit;
--(void)setLineDashPhase:(float)phase lengths:(const float *)lengths count:(unsigned)count;
-
--(void)setRenderingIntent:(CGColorRenderingIntent)intent;
--(void)setBlendMode:(int)mode;
-
--(void)setFlatness:(float)flatness;
--(void)setInterpolationQuality:(CGInterpolationQuality)quality;
-   
--(void)setShadowOffset:(CGSize)offset blur:(float)blur color:(O2Color *)color;
--(void)setShadowOffset:(CGSize)offset blur:(float)blur;
-
--(void)setShouldAntialias:(BOOL)yesOrNo;
-
--(void)strokeLineSegmentsWithPoints:(const CGPoint *)points count:(unsigned)count;
--(void)strokeRect:(CGRect)rect;
--(void)strokeRect:(CGRect)rect width:(float)width;
--(void)strokeEllipseInRect:(CGRect)rect;
-   
--(void)fillRect:(CGRect)rect;
--(void)fillRects:(const CGRect *)rects count:(unsigned)count;
--(void)fillEllipseInRect:(CGRect)rect;
-
--(void)drawPath:(CGPathDrawingMode)pathMode;
--(void)strokePath;
--(void)fillPath;
--(void)evenOddFillPath;
--(void)fillAndStrokePath;
--(void)evenOddFillAndStrokePath;
-
--(void)clearRect:(CGRect)rect;
-
--(void)showGlyphs:(const CGGlyph *)glyphs count:(unsigned)count;
--(void)showGlyphs:(const CGGlyph *)glyphs count:(unsigned)count atPoint:(float)x:(float)y;
--(void)showGlyphs:(const CGGlyph *)glyphs count:(unsigned)count advances:(const CGSize *)advances;
-
+-(void)showGlyphs:(const O2Glyph *)glyphs count:(unsigned)count;
 -(void)showText:(const char *)text length:(unsigned)length;
--(void)showText:(const char *)text length:(unsigned)length atPoint:(float)x:(float)y;
 
--(void)drawShading:(KGShading *)shading;
--(void)drawImage:(O2Image *)image inRect:(CGRect)rect;
--(void)drawLayer:(KGLayer *)layer atPoint:(CGPoint)point;
--(void)drawLayer:(KGLayer *)layer inRect:(CGRect)rect;
--(void)drawPDFPage:(O2PDFPage *)page;
+-(void)drawShading:(O2Shading *)shading;
+-(void)drawImage:(O2Image *)image inRect:(O2Rect)rect;
+-(void)drawLayer:(O2LayerRef)layer inRect:(O2Rect)rect;
    
 -(void)flush;
 -(void)synchronize;
 
--(void)beginPage:(const CGRect *)mediaBox;
+-(void)beginPage:(const O2Rect *)mediaBox;
 -(void)endPage;
 -(void)close;
 
--(KGLayer *)layerWithSize:(CGSize)size unused:(NSDictionary *)unused;
+-(O2Size)size;
+-(O2ContextRef)createCompatibleContextWithSize:(O2Size)size unused:(NSDictionary *)unused;
 
--(BOOL)getImageableRect:(CGRect *)rect;
-
-// bitmap context
-
--(NSData *)pixelData;
--(void *)pixelBytes;
--(size_t)width;
--(size_t)height;
--(size_t)bitsPerComponent;
--(size_t)bytesPerRow;
--(O2ColorSpaceRef)colorSpace;
--(CGBitmapInfo)bitmapInfo;
-
--(size_t)bitsPerPixel;
--(CGImageAlphaInfo)alphaInfo;
--(O2Image *)createImage;
+-(BOOL)getImageableRect:(O2Rect *)rect;
 
 // temporary
 
--(void)drawBackingContext:(O2Context *)other size:(CGSize)size;
-
--(void)resetClip;
+-(void)drawBackingContext:(O2Context *)other size:(O2Size)size;
 
 -(void)setAntialiasingQuality:(int)value;
--(void)setWordSpacing:(float)spacing;
--(void)setTextLeading:(float)leading;
+-(void)setWordSpacing:(O2Float)spacing;
+-(void)setTextLeading:(O2Float)leading;
 
--(void)copyBitsInRect:(CGRect)rect toPoint:(CGPoint)point gState:(int)gState;
+-(void)copyBitsInRect:(O2Rect)rect toPoint:(O2Point)point gState:(int)gState;
 
--(NSData *)captureBitmapInRect:(CGRect)rect;
+-(NSData *)captureBitmapInRect:(O2Rect)rect;
 
 -(void)deviceClipReset;
 -(void)deviceClipToNonZeroPath:(O2Path *)path;
 -(void)deviceClipToEvenOddPath:(O2Path *)path;
--(void)deviceClipToMask:(O2Image *)mask inRect:(CGRect)rect;
+-(void)deviceClipToMask:(O2Image *)mask inRect:(O2Rect)rect;
+
+
+O2ContextRef O2ContextRetain(O2ContextRef self);
+void         O2ContextRelease(O2ContextRef self);
+
+// context state
+void O2ContextSetAllowsAntialiasing(O2ContextRef self,BOOL yesOrNo);
+
+// layers
+void O2ContextBeginTransparencyLayer(O2ContextRef self,NSDictionary *unused);
+void O2ContextEndTransparencyLayer(O2ContextRef self);
+
+// path
+BOOL    O2ContextIsPathEmpty(O2ContextRef self);
+O2Point O2ContextGetPathCurrentPoint(O2ContextRef self);
+O2Rect  O2ContextGetPathBoundingBox(O2ContextRef self);
+BOOL    O2ContextPathContainsPoint(O2ContextRef self,O2Point point,O2PathDrawingMode pathMode);
+
+void O2ContextBeginPath(O2ContextRef self);
+void O2ContextClosePath(O2ContextRef self);
+void O2ContextMoveToPoint(O2ContextRef self,O2Float x,O2Float y);
+void O2ContextAddLineToPoint(O2ContextRef self,O2Float x,O2Float y);
+void O2ContextAddCurveToPoint(O2ContextRef self,O2Float cx1,O2Float cy1,O2Float cx2,O2Float cy2,O2Float x,O2Float y);
+void O2ContextAddQuadCurveToPoint(O2ContextRef self,O2Float cx1,O2Float cy1,O2Float x,O2Float y);
+
+void O2ContextAddLines(O2ContextRef self,const O2Point *points,unsigned count);
+void O2ContextAddRect(O2ContextRef self,O2Rect rect);
+void O2ContextAddRects(O2ContextRef self,const O2Rect *rects,unsigned count);
+
+void O2ContextAddArc(O2ContextRef self,O2Float x,O2Float y,O2Float radius,O2Float startRadian,O2Float endRadian,BOOL clockwise);
+void O2ContextAddArcToPoint(O2ContextRef self,O2Float x1,O2Float y1,O2Float x2,O2Float y2,O2Float radius);
+void O2ContextAddEllipseInRect(O2ContextRef self,O2Rect rect);
+
+void O2ContextAddPath(O2ContextRef self,O2PathRef path);
+
+void O2ContextReplacePathWithStrokedPath(O2ContextRef self);
+
+// gstate
+
+void O2ContextSaveGState(O2ContextRef self);
+void O2ContextRestoreGState(O2ContextRef self);
+
+O2AffineTransform      O2ContextGetUserSpaceToDeviceSpaceTransform(O2ContextRef self);
+O2AffineTransform      O2ContextGetCTM(O2ContextRef self);
+O2Rect                 O2ContextGetClipBoundingBox(O2ContextRef self);
+O2AffineTransform      O2ContextGetTextMatrix(O2ContextRef self);
+O2InterpolationQuality O2ContextGetInterpolationQuality(O2ContextRef self);
+O2Point                O2ContextGetTextPosition(O2ContextRef self);
+
+O2Point O2ContextConvertPointToDeviceSpace(O2ContextRef self,O2Point point);
+O2Point O2ContextConvertPointToUserSpace(O2ContextRef self,O2Point point);
+O2Size  O2ContextConvertSizeToDeviceSpace(O2ContextRef self,O2Size size);
+O2Size  O2ContextConvertSizeToUserSpace(O2ContextRef self,O2Size size);
+O2Rect  O2ContextConvertRectToDeviceSpace(O2ContextRef self,O2Rect rect);
+O2Rect  O2ContextConvertRectToUserSpace(O2ContextRef self,O2Rect rect);
+
+void O2ContextConcatCTM(O2ContextRef self,O2AffineTransform matrix);
+void O2ContextTranslateCTM(O2ContextRef self,O2Float translatex,O2Float translatey);
+void O2ContextScaleCTM(O2ContextRef self,O2Float scalex,O2Float scaley);
+void O2ContextRotateCTM(O2ContextRef self,O2Float radians);
+
+void O2ContextClip(O2ContextRef self);
+void O2ContextEOClip(O2ContextRef self);
+void O2ContextClipToMask(O2ContextRef self,O2Rect rect,O2ImageRef image);
+void O2ContextClipToRect(O2ContextRef self,O2Rect rect);
+void O2ContextClipToRects(O2ContextRef self,const O2Rect *rects,unsigned count);
+
+void O2ContextSetStrokeColorSpace(O2ContextRef self,O2ColorSpaceRef colorSpace);
+void O2ContextSetFillColorSpace(O2ContextRef self,O2ColorSpaceRef colorSpace);
+
+void O2ContextSetStrokeColor(O2ContextRef self,const O2Float *components);
+void O2ContextSetStrokeColorWithColor(O2ContextRef self,O2ColorRef color);
+void O2ContextSetGrayStrokeColor(O2ContextRef self,O2Float gray,O2Float alpha);
+void O2ContextSetRGBStrokeColor(O2ContextRef self,O2Float r,O2Float g,O2Float b,O2Float alpha);
+void O2ContextSetCMYKStrokeColor(O2ContextRef self,O2Float c,O2Float m,O2Float y,O2Float k,O2Float alpha);
+void O2ContextSetCalibratedRGBStrokeColor(O2ContextRef self,O2Float red,O2Float green,O2Float blue,O2Float alpha);
+void O2ContextSetCalibratedGrayStrokeColor(O2ContextRef self,O2Float gray,O2Float alpha);
+
+void O2ContextSetFillColor(O2ContextRef self,const O2Float *components);
+void O2ContextSetFillColorWithColor(O2ContextRef self,O2ColorRef color);
+void O2ContextSetGrayFillColor(O2ContextRef self,O2Float gray,O2Float alpha);
+void O2ContextSetRGBFillColor(O2ContextRef self,O2Float r,O2Float g,O2Float b,O2Float alpha);
+void O2ContextSetCMYKFillColor(O2ContextRef self,O2Float c,O2Float m,O2Float y,O2Float k,O2Float alpha);
+void O2ContextSetCalibratedGrayFillColor(O2ContextRef self,O2Float gray,O2Float alpha);
+void O2ContextSetCalibratedRGBFillColor(O2ContextRef self,O2Float red,O2Float green,O2Float blue,O2Float alpha);
+
+void O2ContextSetAlpha(O2ContextRef self,O2Float alpha);
+
+void O2ContextSetPatternPhase(O2ContextRef self,O2Size phase);
+void O2ContextSetStrokePattern(O2ContextRef self,O2PatternRef pattern,const O2Float *components);
+void O2ContextSetFillPattern(O2ContextRef self,O2PatternRef pattern,const O2Float *components);
+
+void O2ContextSetTextMatrix(O2ContextRef self,O2AffineTransform matrix);
+
+void O2ContextSetTextPosition(O2ContextRef self,O2Float x,O2Float y);
+void O2ContextSetCharacterSpacing(O2ContextRef self,O2Float spacing);
+void O2ContextSetTextDrawingMode(O2ContextRef self,O2TextDrawingMode textMode);
+
+void O2ContextSetFont(O2ContextRef self,O2FontRef font);
+void O2ContextSetFontSize(O2ContextRef self,O2Float size);
+void O2ContextSelectFont(O2ContextRef self,const char *name,O2Float size,O2TextEncoding encoding);
+void O2ContextSetShouldSmoothFonts(O2ContextRef self,BOOL yesOrNo);
+
+void O2ContextSetLineWidth(O2ContextRef self,O2Float width);
+void O2ContextSetLineCap(O2ContextRef self,O2LineCap lineCap);
+void O2ContextSetLineJoin(O2ContextRef self,O2LineJoin lineJoin);
+void O2ContextSetMiterLimit(O2ContextRef self,O2Float miterLimit);
+void O2ContextSetLineDash(O2ContextRef self,O2Float phase,const O2Float *lengths,unsigned count);
+
+void O2ContextSetRenderingIntent(O2ContextRef self,O2ColorRenderingIntent renderingIntent);
+void O2ContextSetBlendMode(O2ContextRef self,O2BlendMode blendMode);
+
+void O2ContextSetFlatness(O2ContextRef self,O2Float flatness);
+
+void O2ContextSetInterpolationQuality(O2ContextRef self,O2InterpolationQuality quality);
+
+void O2ContextSetShadowWithColor(O2ContextRef self,O2Size offset,O2Float blur,O2ColorRef color);
+void O2ContextSetShadow(O2ContextRef self,O2Size offset,O2Float blur);
+
+void O2ContextSetShouldAntialias(O2ContextRef self,BOOL yesOrNo);
+
+// drawing
+void O2ContextStrokeLineSegments(O2ContextRef self,const O2Point *points,unsigned count);
+
+void O2ContextStrokeRect(O2ContextRef self,O2Rect rect);
+void O2ContextStrokeRectWithWidth(O2ContextRef self,O2Rect rect,O2Float width);
+void O2ContextStrokeEllipseInRect(O2ContextRef self,O2Rect rect);
+
+void O2ContextFillRect(O2ContextRef self,O2Rect rect);
+void O2ContextFillRects(O2ContextRef self,const O2Rect *rects,unsigned count);
+void O2ContextFillEllipseInRect(O2ContextRef self,O2Rect rect);
+
+void O2ContextDrawPath(O2ContextRef self,O2PathDrawingMode pathMode);
+void O2ContextStrokePath(O2ContextRef self);
+void O2ContextFillPath(O2ContextRef self);
+void O2ContextEOFillPath(O2ContextRef self);
+
+void O2ContextClearRect(O2ContextRef self,O2Rect rect);
+
+void O2ContextShowGlyphs(O2ContextRef self,const O2Glyph *glyphs,unsigned count);
+void O2ContextShowGlyphsAtPoint(O2ContextRef self,O2Float x,O2Float y,const O2Glyph *glyphs,unsigned count);
+void O2ContextShowGlyphsWithAdvances(O2ContextRef self,const O2Glyph *glyphs,const O2Size *advances,unsigned count);
+
+void O2ContextShowText(O2ContextRef self,const char *text,unsigned count);
+void O2ContextShowTextAtPoint(O2ContextRef self,O2Float x,O2Float y,const char *text,unsigned count);
+
+void O2ContextDrawShading(O2ContextRef self,O2ShadingRef shading);
+void O2ContextDrawImage(O2ContextRef self,O2Rect rect,O2ImageRef image);
+void O2ContextDrawLayerAtPoint(O2ContextRef self,O2Point point,O2LayerRef layer);
+void O2ContextDrawLayerInRect(O2ContextRef self,O2Rect rect,O2LayerRef layer);
+void O2ContextDrawPDFPage(O2ContextRef self,O2PDFPageRef page);
+
+void O2ContextFlush(O2ContextRef self);
+void O2ContextSynchronize(O2ContextRef self);
+
+// pagination
+
+void O2ContextBeginPage(O2ContextRef self,const O2Rect *mediaBox);
+void O2ContextEndPage(O2ContextRef self);
+
+// **PRIVATE** These are private in Apple's implementation as well as ours.
+
+void O2ContextSetCTM(O2ContextRef self,O2AffineTransform matrix);
+void O2ContextResetClip(O2ContextRef self);
+
+// Temporary hacks
+
+NSData *O2ContextCaptureBitmap(O2ContextRef self,O2Rect rect);
+void O2ContextCopyBits(O2ContextRef self,O2Rect rect,O2Point point,int gState);
 
 @end

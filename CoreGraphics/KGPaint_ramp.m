@@ -55,8 +55,8 @@ static inline void CMYKAToRGBA(float *input,float *output){
    output[3]=input[4];
 }
 
--initWithShading:(KGShading *)shading deviceTransform:(CGAffineTransform)deviceTransform numberOfSamples:(int)numberOfSamples {
-   m_surfaceToPaintMatrix=CGAffineTransformInvert(deviceTransform);
+-initWithShading:(O2Shading *)shading deviceTransform:(O2AffineTransform)deviceTransform numberOfSamples:(int)numberOfSamples {
+   m_surfaceToPaintMatrix=O2AffineTransformInvert(deviceTransform);
    
    _startPoint=[shading startPoint];
    _endPoint=[shading endPoint];
@@ -66,7 +66,7 @@ static inline void CMYKAToRGBA(float *input,float *output){
    O2Function      *function=[shading function];
    O2ColorSpace    *colorSpace=[shading colorSpace];
    O2ColorSpaceType colorSpaceType=[colorSpace type];
-   float            output[[colorSpace numberOfComponents]+1];
+   float            output[O2ColorSpaceGetNumberOfComponents(colorSpace)+1];
    void           (*outputToRGBA)(float *,float *);
    float            rgba[4];
 
@@ -95,14 +95,14 @@ static inline void CMYKAToRGBA(float *input,float *output){
    _colorStops=NSZoneMalloc(NULL,_numberOfColorStops*sizeof(GradientStop));
    int i;
    for(i=0;i<_numberOfColorStops;i++){
-    _colorStops[i].offset=(CGFloat)i/(CGFloat)(_numberOfColorStops-1);
+    _colorStops[i].offset=(O2Float)i/(O2Float)(_numberOfColorStops-1);
 
 // FIXME: This assumes range=0..1, we need to map this to the functions range
 
     O2FunctionEvaluate(function,_colorStops[i].offset,output);
     outputToRGBA(output,rgba);
     
-    _colorStops[i].color=KGRGBAffffPremultiply(KGRGBAffffInit(rgba[0],rgba[1],rgba[2],rgba[3]));
+    _colorStops[i].color=O2argb32fPremultiply(O2argb32fInit(rgba[0],rgba[1],rgba[2],rgba[3]));
    }
 
    return self;
@@ -122,61 +122,56 @@ static inline void CMYKAToRGBA(float *input,float *output){
 * \note		
 *//*-------------------------------------------------------------------*/
 
-static KGRGBAffff readStopColor(GradientStop *colorRampStops,int colorRampStopsCount, int i)
-{
+static inline O2argb32f readStopColor(GradientStop *colorRampStops,int colorRampStopsCount, int i) {
 	RI_ASSERT(i >= 0 && i < colorRampStopsCount);
 	return  colorRampStops[i].color;
 }
 
-KGRGBAffff O2PaintIntegrateColorRamp(O2Paint_ramp *self,CGFloat gmin, CGFloat gmax) { 
+O2argb32f O2PaintIntegrateColorRamp(O2Paint_ramp *self,O2Float gmin, O2Float gmax) { 
 	RI_ASSERT(gmin <= gmax);
 	RI_ASSERT(gmin >= 0.0f && gmin <= 1.0f);
 	RI_ASSERT(gmax >= 0.0f && gmax <= 1.0f);
 	RI_ASSERT(self->_numberOfColorStops >= 2);	//there are at least two stops
 
-	KGRGBAffff c=KGRGBAffffInit(0,0,0,0);
+	O2argb32f c=O2argb32fInit(0,0,0,0);
 	if(gmin == 1.0f || gmax == 0.0f)
 		return c;
 
-	int i=floor(gmin*(self->_numberOfColorStops-1));
-	for(;i<self->_numberOfColorStops-1;i++)
-	{
-		if(gmin >= self->_colorStops[i].offset && gmin < self->_colorStops[i+1].offset)
-		{
-			CGFloat s = self->_colorStops[i].offset;
-			CGFloat e = self->_colorStops[i+1].offset;
-			RI_ASSERT(s < e);
-			CGFloat g = (gmin - s) / (e - s);
+   int i=RI_FLOOR_TO_INT(gmin*(self->_numberOfColorStops-1));
+   for(;i<self->_numberOfColorStops-1;i++) {
+    if(gmin >= self->_colorStops[i].offset && gmin < self->_colorStops[i+1].offset) {
+     O2Float s = self->_colorStops[i].offset;
+     O2Float e = self->_colorStops[i+1].offset;
+     RI_ASSERT(s < e);
+     O2Float g = (gmin - s) / (e - s);
 
-			KGRGBAffff sc = readStopColor(self->_colorStops,self->_numberOfColorStops, i);
-			KGRGBAffff ec = readStopColor(self->_colorStops,self->_numberOfColorStops, i+1);
-			KGRGBAffff rc = KGRGBAffffAdd(KGRGBAffffMultiplyByFloat(sc, (1.0f-g)),KGRGBAffffMultiplyByFloat(ec , g));
+     O2argb32f sc = readStopColor(self->_colorStops,self->_numberOfColorStops, i);
+     O2argb32f ec = readStopColor(self->_colorStops,self->_numberOfColorStops, i+1);
+     O2argb32f rc = O2argb32fAdd(O2argb32fMultiplyByFloat(sc, (1.0f-g)),O2argb32fMultiplyByFloat(ec , g));
 
-			//subtract the average color from the start of the stop to gmin
-			c=KGRGBAffffSubtract(c,KGRGBAffffMultiplyByFloat(KGRGBAffffAdd(sc,rc) , 0.5f*(gmin - s)));
-			break;
-		}
-	}
+     //subtract the average color from the start of the stop to gmin
+     c=O2argb32fSubtract(c,O2argb32fMultiplyByFloat(O2argb32fAdd(sc,rc) , 0.5f*(gmin - s)));
+     break;
+		  }
+   }
 
-	for(;i<self->_numberOfColorStops-1;i++)
-	{
-		CGFloat s = self->_colorStops[i].offset;
-		CGFloat e = self->_colorStops[i+1].offset;
+	for(;i<self->_numberOfColorStops-1;i++) {
+		O2Float s = self->_colorStops[i].offset;
+		O2Float e = self->_colorStops[i+1].offset;
 		RI_ASSERT(s <= e);
 
-		KGRGBAffff sc = readStopColor(self->_colorStops,self->_numberOfColorStops, i);
-		KGRGBAffff ec = readStopColor(self->_colorStops,self->_numberOfColorStops, i+1);
+		O2argb32f sc = readStopColor(self->_colorStops,self->_numberOfColorStops, i);
+		O2argb32f ec = readStopColor(self->_colorStops,self->_numberOfColorStops, i+1);
 
 		//average of the stop
-		c=KGRGBAffffAdd(c , KGRGBAffffMultiplyByFloat(KGRGBAffffAdd(sc , ec), 0.5f*(e-s)));
+		c=O2argb32fAdd(c , O2argb32fMultiplyByFloat(O2argb32fAdd(sc , ec), 0.5f*(e-s)));
 
-		if(gmax >= self->_colorStops[i].offset && gmax < self->_colorStops[i+1].offset)
-		{
-			CGFloat g = (gmax - s) / (e - s);
-			KGRGBAffff rc = KGRGBAffffAdd(KGRGBAffffMultiplyByFloat(sc , (1.0f-g)),KGRGBAffffMultiplyByFloat( ec , g));
+		if(gmax >= self->_colorStops[i].offset && gmax < self->_colorStops[i+1].offset) {
+			O2Float g = (gmax - s) / (e - s);
+			O2argb32f rc = O2argb32fAdd(O2argb32fMultiplyByFloat(sc , (1.0f-g)),O2argb32fMultiplyByFloat( ec , g));
 
 			//subtract the average color from gmax to the end of the stop
-			c=KGRGBAffffSubtract(c,KGRGBAffffMultiplyByFloat(KGRGBAffffAdd(rc , ec) , 0.5f*(e - gmax)));
+			c=O2argb32fSubtract(c,O2argb32fMultiplyByFloat(O2argb32fAdd(rc , ec) , 0.5f*(e - gmax)));
 			break;
 		}
 	}
@@ -191,37 +186,35 @@ KGRGBAffff O2PaintIntegrateColorRamp(O2Paint_ramp *self,CGFloat gmin, CGFloat gm
 * \note		
 *//*-------------------------------------------------------------------*/
 
-KGRGBAffff O2PaintColorRamp(O2Paint_ramp *self,CGFloat gradient, CGFloat rho,int *skip)  {
+O2argb32f O2PaintColorRamp(O2Paint_ramp *self,O2Float gradient, O2Float rho,int *skip)  {
 	RI_ASSERT(self);
 	RI_ASSERT(rho >= 0.0f);
 
-	KGRGBAffff c=KGRGBAffffInit(0,0,0,0);
+	O2argb32f c=O2argb32fInit(0,0,0,0);
 
-	if(rho == 0.0f)
-	{	//filter size is zero or gradient is degenerate
+	if(rho == 0.0f) {	//filter size is zero or gradient is degenerate
 
 			gradient = RI_CLAMP(gradient, 0.0f, 1.0f);
 
         int i;
-		for(i=0;i<self->_numberOfColorStops-1;i++)
-		{
+		for(i=0;i<self->_numberOfColorStops-1;i++) {
 			if(gradient >= self->_colorStops[i].offset && gradient < self->_colorStops[i+1].offset)
 			{
-				CGFloat s = self->_colorStops[i].offset;
-				CGFloat e = self->_colorStops[i+1].offset;
+				O2Float s = self->_colorStops[i].offset;
+				O2Float e = self->_colorStops[i+1].offset;
 				RI_ASSERT(s < e);
-				CGFloat g = RI_CLAMP((gradient - s) / (e - s), 0.0f, 1.0f);	//clamp needed due to numerical inaccuracies
+				O2Float g = RI_CLAMP((gradient - s) / (e - s), 0.0f, 1.0f);	//clamp needed due to numerical inaccuracies
 
-				KGRGBAffff sc = readStopColor(self->_colorStops,self->_numberOfColorStops, i);
-				KGRGBAffff ec = readStopColor(self->_colorStops,self->_numberOfColorStops, i+1);
-				return KGRGBAffffAdd(KGRGBAffffMultiplyByFloat(sc , (1.0f-g)) , KGRGBAffffMultiplyByFloat(ec , g));	//return interpolated value
+				O2argb32f sc = readStopColor(self->_colorStops,self->_numberOfColorStops, i);
+				O2argb32f ec = readStopColor(self->_colorStops,self->_numberOfColorStops, i+1);
+				return O2argb32fAdd(O2argb32fMultiplyByFloat(sc , (1.0f-g)) , O2argb32fMultiplyByFloat(ec , g));	//return interpolated value
 			}
 		}
 		return readStopColor(self->_colorStops,self->_numberOfColorStops, self->_numberOfColorStops-1);
 	}
 
-	CGFloat gmin = gradient - rho*0.5f;			//filter starting from the gradient point (if starts earlier, radial gradient center will be an average of the first and the last stop, which doesn't look good)
-	CGFloat gmax = gradient + rho*0.5f;
+	O2Float gmin = gradient - rho*0.5f;			//filter starting from the gradient point (if starts earlier, radial gradient center will be an average of the first and the last stop, which doesn't look good)
+	O2Float gmax = gradient + rho*0.5f;
 
     if(gmin<0.0f){
      *skip=0;
@@ -230,14 +223,14 @@ KGRGBAffff O2PaintColorRamp(O2Paint_ramp *self,CGFloat gradient, CGFloat rho,int
      *skip=0;
     }
 		if(gmin < 0.0f)
-			c=KGRGBAffffAdd(c,KGRGBAffffMultiplyByFloat(readStopColor(self->_colorStops,self->_numberOfColorStops, 0), (RI_MIN(gmax, 0.0f) - gmin)));
+			c=O2argb32fAdd(c,O2argb32fMultiplyByFloat(readStopColor(self->_colorStops,self->_numberOfColorStops, 0), (RI_MIN(gmax, 0.0f) - gmin)));
 		if(gmax > 1.0f)
-			c=KGRGBAffffAdd(c,KGRGBAffffMultiplyByFloat(readStopColor(self->_colorStops,self->_numberOfColorStops, self->_numberOfColorStops-1) , (gmax - RI_MAX(gmin, 1.0f))));
+			c=O2argb32fAdd(c,O2argb32fMultiplyByFloat(readStopColor(self->_colorStops,self->_numberOfColorStops, self->_numberOfColorStops-1) , (gmax - RI_MAX(gmin, 1.0f))));
 		gmin = RI_CLAMP(gmin, 0.0f, 1.0f);
 		gmax = RI_CLAMP(gmax, 0.0f, 1.0f);
-		c=KGRGBAffffAdd(c, O2PaintIntegrateColorRamp(self,gmin, gmax));
-		c=KGRGBAffffMultiplyByFloat(c , 1.0f/rho);
-		c=KGRGBAffffClamp(c);	//clamp needed due to numerical inaccuracies
+		c=O2argb32fAdd(c, O2PaintIntegrateColorRamp(self,gmin, gmax));
+		c=O2argb32fMultiplyByFloat(c , 1.0f/rho);
+		c=O2argb32fClamp(c);	//clamp needed due to numerical inaccuracies
 		return c;
 
 }

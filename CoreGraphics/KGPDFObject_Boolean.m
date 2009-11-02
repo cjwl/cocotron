@@ -30,11 +30,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(O2PDFObjectType)objectType {
-   return kKGPDFObjectTypeBoolean;
+   return kO2PDFObjectTypeBoolean;
 }
 
 -(BOOL)checkForType:(O2PDFObjectType)type value:(void *)value {
-   if(type!=kKGPDFObjectTypeBoolean)
+   if(type!=kO2PDFObjectTypeBoolean)
     return NO;
    
    *((O2PDFBoolean *)value)=_value;

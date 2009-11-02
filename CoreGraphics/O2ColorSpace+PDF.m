@@ -38,18 +38,18 @@
    const char  *colorSpaceName;
    O2PDFArray  *colorSpaceArray;
 
-   if([object checkForType:kKGPDFObjectTypeName value:&colorSpaceName]){
+   if([object checkForType:kO2PDFObjectTypeName value:&colorSpaceName]){
     if(strcmp(colorSpaceName,"DeviceGray")==0)
-     return [[O2ColorSpace alloc] initWithDeviceGray];
+     return O2ColorSpaceCreateDeviceGray();
     else if(strcmp(colorSpaceName,"DeviceRGB")==0)
-     return [[O2ColorSpace alloc] initWithDeviceRGB];
+     return O2ColorSpaceCreateDeviceRGB();
     else if(strcmp(colorSpaceName,"DeviceCMYK")==0)
-     return [[O2ColorSpace alloc] initWithDeviceCMYK];
+     return O2ColorSpaceCreateDeviceCMYK();
     else {
      NSLog(@"does not handle color space named %s",colorSpaceName);
     }
    }
-   else if([object checkForType:kKGPDFObjectTypeArray value:&colorSpaceArray]){
+   else if([object checkForType:kO2PDFObjectTypeArray value:&colorSpaceArray]){
     const char *name;
      
     if(![colorSpaceArray getNameAtIndex:0 value:&name]){
@@ -84,7 +84,7 @@
       NSLog(@"hival > 255, %d",hival);
       return nil;
      }
-     baseNumberOfComponents=[baseColorSpace numberOfComponents];
+     baseNumberOfComponents=O2ColorSpaceGetNumberOfComponents(baseColorSpace);
      tableSize=baseNumberOfComponents*(hival+1);
      
      if([colorSpaceArray getStringAtIndex:3 value:&tableString]){
@@ -124,13 +124,13 @@
      switch(numberOfComponents){
 
       case 1:
-       return [[O2ColorSpace alloc] initWithDeviceGray];
+       return O2ColorSpaceCreateDeviceGray();
        
       case 3:
-       return [[O2ColorSpace alloc] initWithDeviceRGB];
+       return O2ColorSpaceCreateDeviceRGB();
        
       case 4:
-       return [[O2ColorSpace alloc] initWithDeviceCMYK];
+       return O2ColorSpaceCreateDeviceCMYK();
        
       default:
        NSLog(@"Invalid N in ICCBased stream");
@@ -155,8 +155,8 @@
 @implementation O2ColorSpace_indexed(PDF)
 -(O2PDFObject *)encodeReferenceWithContext:(O2PDFContext *)context {   
    O2PDFArray *result=[O2PDFArray pdfArray];
-   int         max=[_base numberOfComponents]*(_hival+1);
-     
+   int         max=O2ColorSpaceGetNumberOfComponents(_base)*(_hival+1);
+    
    [result addObject:[O2PDFObject_Name pdfObjectWithCString:"Indexed"]];
    [result addObject:[_base encodeReferenceWithContext:context]];
    [result addObject:[O2PDFObject_Integer pdfObjectWithInteger:_hival]];

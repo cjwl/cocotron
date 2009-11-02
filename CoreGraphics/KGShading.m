@@ -11,9 +11,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "KGFunction.h"
 #import <Foundation/NSString.h>
 
-@implementation KGShading
+@implementation O2Shading
 
--initWithColorSpace:(O2ColorSpaceRef)colorSpace startPoint:(CGPoint)startPoint endPoint:(CGPoint)endPoint function:(O2Function *)function extendStart:(BOOL)extendStart extendEnd:(BOOL)extendEnd domain:(float[])domain {
+-initWithColorSpace:(O2ColorSpaceRef)colorSpace startPoint:(O2Point)startPoint endPoint:(O2Point)endPoint function:(O2Function *)function extendStart:(BOOL)extendStart extendEnd:(BOOL)extendEnd domain:(float[])domain {
    _colorSpace=[colorSpace retain];
    _startPoint=startPoint;
    _endPoint=endPoint;
@@ -26,7 +26,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return self;
 }
 
--initWithColorSpace:(O2ColorSpaceRef)colorSpace startPoint:(CGPoint)startPoint startRadius:(float)startRadius endPoint:(CGPoint)endPoint endRadius:(float)endRadius function:(O2Function *)function extendStart:(BOOL)extendStart extendEnd:(BOOL)extendEnd domain:(float[])domain {
+-initWithColorSpace:(O2ColorSpaceRef)colorSpace startPoint:(O2Point)startPoint startRadius:(float)startRadius endPoint:(O2Point)endPoint endRadius:(float)endRadius function:(O2Function *)function extendStart:(BOOL)extendStart extendEnd:(BOOL)extendEnd domain:(float[])domain {
    _colorSpace=[colorSpace retain];
    _startPoint=startPoint;
    _endPoint=endPoint;
@@ -51,11 +51,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return _colorSpace;
 }
 
--(CGPoint)startPoint {
+-(O2Point)startPoint {
    return _startPoint;
 }
 
--(CGPoint)endPoint {
+-(O2Point)endPoint {
    return _endPoint;
 }
 
@@ -82,5 +82,26 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(BOOL)isAxial {
    return _isRadial?NO:YES;
 }
+
+O2ShadingRef O2ShadingCreateAxial(O2ColorSpaceRef colorSpace,O2Point start,O2Point end,O2FunctionRef function,BOOL extendStart,BOOL extendEnd) {
+   O2Float domain[2]={0.0f,1.0f};
+
+   return [[O2Shading alloc] initWithColorSpace:colorSpace startPoint:start endPoint:end function:function extendStart:extendStart extendEnd:extendEnd domain:domain];
+}
+
+O2ShadingRef O2ShadingCreateRadial(O2ColorSpaceRef colorSpace,O2Point start,O2Float startRadius,O2Point end,O2Float endRadius,O2FunctionRef function,BOOL extendStart,BOOL extendEnd) {
+   O2Float domain[2]={0.0f,1.0f};
+
+   return [[O2Shading alloc] initWithColorSpace:colorSpace startPoint:start startRadius:startRadius endPoint:end endRadius:endRadius function:function extendStart:extendStart extendEnd:extendEnd domain:domain];
+}
+
+O2ShadingRef O2ShadingRetain(O2ShadingRef self) {
+   return [self retain];
+}
+
+void O2ShadingRelease(O2ShadingRef self) {
+   [self release];
+}
+
 
 @end

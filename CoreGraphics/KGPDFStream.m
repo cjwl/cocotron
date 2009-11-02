@@ -61,10 +61,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return [self pdfStreamWithData:[NSData dataWithBytes:bytes length:length]];
 }
 
--(O2PDFObjectType)objectType { return kKGPDFObjectTypeStream; }
+-(O2PDFObjectType)objectType { return kO2PDFObjectTypeStream; }
 
 -(BOOL)checkForType:(O2PDFObjectType)type value:(void *)value {
-   if(type!=kKGPDFObjectTypeStream)
+   if(type!=kO2PDFObjectTypeStream)
     return NO;
    
    *((O2PDFStream **)value)=self;

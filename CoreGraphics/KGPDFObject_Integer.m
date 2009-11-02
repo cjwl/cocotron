@@ -22,15 +22,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(O2PDFObjectType)objectType {
-   return kKGPDFObjectTypeInteger;
+   return kO2PDFObjectTypeInteger;
 }
 
 -(BOOL)checkForType:(O2PDFObjectType)type value:(void *)value {
-   if(type==kKGPDFObjectTypeInteger){
+   if(type==kO2PDFObjectTypeInteger){
     *((O2PDFInteger *)value)=_value;
     return YES;
    }
-   if(type==kKGPDFObjectTypeReal){
+   if(type==kO2PDFObjectTypeReal){
     *((O2PDFReal *)value)=_value;
     return YES;
    }

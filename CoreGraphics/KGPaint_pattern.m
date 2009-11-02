@@ -30,15 +30,15 @@
 
 @implementation O2Paint_pattern
 
-static int O2PaintReadPremultipliedPatternSpan(O2Paint *selfX,int x,int y,KGRGBAffff *span,int length){
+static int O2PaintReadPremultipliedPatternSpan(O2Paint *selfX,int x,int y,O2argb32f *span,int length){
    O2Paint_pattern *self=(O2Paint_pattern *)selfX;
    
-   KGImageReadPatternSpan_lRGBAffff_PRE(self->m_pattern,x, y,span,length, self->m_surfaceToPaintMatrix, kCGPatternTilingConstantSpacing);
+   O2ImageReadPatternSpan_lRGBAffff_PRE(self->m_pattern,x, y,span,length, self->m_surfaceToPaintMatrix, kO2PatternTilingConstantSpacing);
    return length;
 }
 
 -initWithImage:(O2Image *)image {
-   self->m_surfaceToPaintMatrix=CGAffineTransformIdentity;
+   self->m_surfaceToPaintMatrix=O2AffineTransformIdentity;
    _paint_lRGBAffff_PRE=O2PaintReadPremultipliedPatternSpan;
    m_pattern=[image retain];
    return self;

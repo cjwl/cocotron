@@ -7,40 +7,42 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
 #import <Foundation/NSObject.h>
-#import <CoreGraphics/CoreGraphics.h>
-#import "O2ColorSpace.h"
+#import "O2Geometry.h"
 
-@class KGPattern;
+@class O2Pattern;
 @class O2Color;
 
 typedef O2Color *O2ColorRef;
 
+#import "O2ColorSpace.h"
+#import "KGPattern.h"
+
 @interface O2Color : NSObject {
   O2ColorSpaceRef _colorSpace;
   unsigned      _numberOfComponents;
-  CGFloat      *_components;
-  KGPattern    *_pattern;
+  O2Float      *_components;
+  O2Pattern    *_pattern;
 }
 
 O2ColorRef O2ColorRetain(O2ColorRef self);
 void       O2ColorRelease(O2ColorRef self);
 
-O2ColorRef O2ColorCreate(O2ColorSpaceRef colorSpace,const CGFloat *components);
-O2ColorRef O2ColorCreateGenericGray(CGFloat gray,CGFloat a);
-O2ColorRef O2ColorCreateGenericRGB(CGFloat r,CGFloat g,CGFloat b,CGFloat a);
-O2ColorRef O2ColorCreateGenericCMYK(CGFloat c,CGFloat m,CGFloat y,CGFloat k,CGFloat a);
-O2ColorRef O2ColorCreateWithPattern(O2ColorSpaceRef colorSpace,CGPatternRef pattern,const CGFloat *components);
+O2ColorRef O2ColorCreate(O2ColorSpaceRef colorSpace,const O2Float *components);
+O2ColorRef O2ColorCreateGenericGray(O2Float gray,O2Float a);
+O2ColorRef O2ColorCreateGenericRGB(O2Float r,O2Float g,O2Float b,O2Float a);
+O2ColorRef O2ColorCreateGenericCMYK(O2Float c,O2Float m,O2Float y,O2Float k,O2Float a);
+O2ColorRef O2ColorCreateWithPattern(O2ColorSpaceRef colorSpace,O2PatternRef pattern,const O2Float *components);
 
 O2ColorRef O2ColorCreateCopy(O2ColorRef self);
-O2ColorRef O2ColorCreateCopyWithAlpha(O2ColorRef self,CGFloat a);
+O2ColorRef O2ColorCreateCopyWithAlpha(O2ColorRef self,O2Float a);
 
 BOOL       O2ColorEqualToColor(O2ColorRef self,O2ColorRef other);
 
 O2ColorSpaceRef O2ColorGetColorSpace(O2ColorRef self);
 size_t          O2ColorGetNumberOfComponents(O2ColorRef self);
-const CGFloat  *O2ColorGetComponents(O2ColorRef self);
-CGFloat         O2ColorGetAlpha(O2ColorRef self);
+const O2Float  *O2ColorGetComponents(O2ColorRef self);
+O2Float         O2ColorGetAlpha(O2ColorRef self);
 
-CGPatternRef    O2ColorGetPattern(O2ColorRef self);
+O2PatternRef    O2ColorGetPattern(O2ColorRef self);
 
 @end

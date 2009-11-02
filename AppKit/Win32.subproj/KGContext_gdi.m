@@ -6,7 +6,6 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 #import "KGContext_gdi.h"
-#import "KGLayer_gdi.h"
 #import "Win32Window.h"
 #import "Win32DeviceContextPrinter.h"
 #import "KGDeviceContext_gdi_ddb.h"
@@ -22,6 +21,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <CoreGraphics/KGShading.h>
 #import <CoreGraphics/KGFunction.h>
 #import <CoreGraphics/KGContext_builtin.h>
+#import <CoreGraphics/KGPDFContext.h>
 #import "KGFont_gdi.h"
 #import <CoreGraphics/KGImage.h>
 #import <CoreGraphics/KGClipPhase.h>
@@ -32,13 +32,13 @@ static inline int float2int(float coord){
    return floorf(coord);
 }
 
-static inline BOOL transformIsFlipped(CGAffineTransform matrix){
+static inline BOOL transformIsFlipped(O2AffineTransform matrix){
    return (matrix.d<0)?YES:NO;
 }
 
-static NSRect Win32TransformRect(CGAffineTransform matrix,NSRect rect) {
-   NSPoint point1=CGPointApplyAffineTransform(rect.origin,matrix);
-   NSPoint point2=CGPointApplyAffineTransform(NSMakePoint(NSMaxX(rect),NSMaxY(rect)),matrix);
+static NSRect Win32TransformRect(O2AffineTransform matrix,NSRect rect) {
+   NSPoint point1=O2PointApplyAffineTransform(rect.origin,matrix);
+   NSPoint point2=O2PointApplyAffineTransform(NSMakePoint(NSMaxX(rect),NSMaxY(rect)),matrix);
 
    if(point2.y<point1.y){
     float temp=point2.y;
@@ -90,12 +90,16 @@ static RECT NSRectToRECT(NSRect rect) {
 
 @implementation KGContext_gdi
 
+static inline O2GState *currentState(O2Context *self){        
+   return [self->_stateStack lastObject];
+}
+
 +(BOOL)canInitWithWindow:(CGWindow *)window {
    return YES;
 }
 
 +(BOOL)canInitBackingWithContext:(O2Context *)context deviceDictionary:(NSDictionary *)deviceDictionary {
-   NSString *name=[deviceDictionary objectForKey:@"CGContext"];
+   NSString *name=[deviceDictionary objectForKey:@"O2Context"];
    
    if(name==nil || [name isEqual:@"GDI"])
     return YES;
@@ -115,7 +119,7 @@ static RECT NSRectToRECT(NSRect rect) {
 -initWithHWND:(HWND)handle {
    KGDeviceContext_gdi    *deviceContext=[[[Win32DeviceContextWindow alloc] initWithWindowHandle:handle] autorelease];
    NSSize                  size=[deviceContext pixelSize];
-   CGAffineTransform       flip={1,0,0,-1,0,size.height};
+   O2AffineTransform       flip={1,0,0,-1,0,size.height};
    O2GState        *initialState=[[[O2GState alloc] initWithDeviceTransform:flip] autorelease];
 
    return [self initWithGraphicsState:initialState deviceContext:deviceContext];
@@ -125,14 +129,14 @@ static RECT NSRectToRECT(NSRect rect) {
    KGDeviceContext_gdi    *deviceContext=[[[Win32DeviceContextPrinter alloc] initWithDC:printer] autorelease];
    NSSize                  pointSize=[deviceContext pointSize];
    NSSize                  pixelsPerInch=[deviceContext pixelsPerInch];
-   CGAffineTransform       flip={1,0,0,-1,0, pointSize.height};
-   CGAffineTransform       scale=CGAffineTransformConcat(flip,CGAffineTransformMakeScale(pixelsPerInch.width/72.0,pixelsPerInch.height/72.0));
+   O2AffineTransform       flip={1,0,0,-1,0, pointSize.height};
+   O2AffineTransform       scale=O2AffineTransformConcat(flip,O2AffineTransformMakeScale(pixelsPerInch.width/72.0,pixelsPerInch.height/72.0));
    O2GState        *initialState=[[[O2GState alloc] initWithDeviceTransform:scale] autorelease];
       
    if([self initWithGraphicsState:initialState deviceContext:deviceContext]==nil)
     return nil;
    
-   NSString *title=[auxiliaryInfo objectForKey:kCGPDFContextTitle];
+   NSString *title=[auxiliaryInfo objectForKey:kO2PDFContextTitle];
    
    if(title==nil)
     title=@"Untitled";
@@ -145,7 +149,7 @@ static RECT NSRectToRECT(NSRect rect) {
 -initWithSize:(NSSize)size window:(CGWindow *)window {
    HWND                    handle=[(Win32Window *)window windowHandle];
    KGDeviceContext_gdi    *deviceContext=[[[Win32DeviceContextWindow alloc] initWithWindowHandle:handle] autorelease];
-   CGAffineTransform       flip={1,0,0,-1,0,size.height};
+   O2AffineTransform       flip={1,0,0,-1,0,size.height};
    O2GState        *initialState=[[[O2GState alloc] initWithDeviceTransform:flip] autorelease];
 
    return [self initWithGraphicsState:initialState deviceContext:deviceContext];
@@ -155,7 +159,7 @@ static RECT NSRectToRECT(NSRect rect) {
    KGContext_gdi          *other=(KGContext_gdi *)otherX;
  //  KGDeviceContext_gdi    *deviceContext=[[[KGDeviceContext_gdi_ddb alloc] initWithSize:size deviceContext:[other deviceContext]] autorelease];
    KGDeviceContext_gdi    *deviceContext=[[[KGDeviceContext_gdiDIBSection alloc] initWithWidth:size.width height:size.height deviceContext:[other deviceContext]] autorelease];
-   CGAffineTransform       flip={1,0,0,-1,0,size.height};
+   O2AffineTransform       flip={1,0,0,-1,0,size.height};
    O2GState        *initialState=[[[O2GState alloc] initWithDeviceTransform:flip] autorelease];
 
    return [self initWithGraphicsState:initialState deviceContext:deviceContext];
@@ -167,7 +171,7 @@ static RECT NSRectToRECT(NSRect rect) {
    [super dealloc];
 }
 
--(KGSurface *)createSurfaceWithWidth:(size_t)width height:(size_t)height {
+-(O2Surface *)createSurfaceWithWidth:(size_t)width height:(size_t)height {
    return [[KGSurface_DIBSection alloc] initWithWidth:width height:height compatibleWithDeviceContext:[self deviceContext]];
 }
 
@@ -191,49 +195,18 @@ static RECT NSRectToRECT(NSRect rect) {
    return _deviceContext;
 }
 
--(void)establishFontStateInDevice {
-   O2GState *gState=[self currentState];
-   [_gdiFont release];
-   _gdiFont=[(KGFont_gdi *)[gState font] createGDIFontSelectedInDC:_dc pointSize:[gState pointSize]];
-}
-
--(void)establishFontState {
-   [self establishFontStateInDevice];
-}
-
--(void)setFont:(O2Font *)font {
-   [super setFont:font];
-   [self establishFontState];
-}
-
--(void)setFontSize:(float)size {
-   [super setFontSize:size];
-   [self establishFontState];
-}
-
--(void)selectFontWithName:(const char *)name size:(float)size encoding:(int)encoding {
-   [super selectFontWithName:name size:size encoding:encoding];
-   [self establishFontState];
-}
-
--(void)restoreGState {
-   [super restoreGState];
-   [self establishFontStateInDevice];
-}
-
-
 -(void)deviceClipReset {
    [_deviceContext clipReset];
 }
 
 -(void)deviceClipToNonZeroPath:(O2Path *)path {
-   O2GState *state=[self currentState];
-   [_deviceContext clipToNonZeroPath:path withTransform:CGAffineTransformInvert(state->_userSpaceTransform) deviceTransform:state->_deviceSpaceTransform];
+   O2GState *state=currentState(self);
+   [_deviceContext clipToNonZeroPath:path withTransform:O2AffineTransformInvert(state->_userSpaceTransform) deviceTransform:state->_deviceSpaceTransform];
 }
 
 -(void)deviceClipToEvenOddPath:(O2Path *)path {
-   O2GState *state=[self currentState];
-   [_deviceContext clipToEvenOddPath:path withTransform:CGAffineTransformInvert(state->_userSpaceTransform) deviceTransform:state->_deviceSpaceTransform];
+   O2GState *state=currentState(self);
+   [_deviceContext clipToEvenOddPath:path withTransform:O2AffineTransformInvert(state->_userSpaceTransform) deviceTransform:state->_deviceSpaceTransform];
 }
 
 -(void)deviceClipToMask:(O2Image *)mask inRect:(NSRect)rect {
@@ -241,7 +214,7 @@ static RECT NSRectToRECT(NSRect rect) {
 }
 
 -(void)drawPathInDeviceSpace:(O2Path *)path drawingMode:(int)mode state:(O2GState *)state {
-   CGAffineTransform deviceTransform=state->_deviceSpaceTransform;
+   O2AffineTransform deviceTransform=state->_deviceSpaceTransform;
    O2Color *fillColor=state->_fillColor;
    O2Color *strokeColor=state->_strokeColor;
    XFORM current;
@@ -254,17 +227,17 @@ static RECT NSRectToRECT(NSRect rect) {
    if(!SetWorldTransform(_dc,&userToDevice))
     NSLog(@"ModifyWorldTransform failed");
 
-   [_deviceContext establishDeviceSpacePath:path withTransform:CGAffineTransformInvert(state->_userSpaceTransform)];
+   [_deviceContext establishDeviceSpacePath:path withTransform:O2AffineTransformInvert(state->_userSpaceTransform)];
       
    {
     HBRUSH fillBrush=CreateSolidBrush(COLORREFFromColor(fillColor));
     HBRUSH oldBrush=SelectObject(_dc,fillBrush);
 
-    if(mode==kCGPathFill || mode==kCGPathFillStroke){
+    if(mode==kO2PathFill || mode==kO2PathFillStroke){
      SetPolyFillMode(_dc,WINDING);
      FillPath(_dc);
     }
-    if(mode==kCGPathEOFill || mode==kCGPathEOFillStroke){
+    if(mode==kO2PathEOFill || mode==kO2PathEOFillStroke){
      SetPolyFillMode(_dc,ALTERNATE);
      FillPath(_dc);
     }
@@ -272,7 +245,7 @@ static RECT NSRectToRECT(NSRect rect) {
     DeleteObject(fillBrush);
    }
    
-   if(mode==kCGPathStroke || mode==kCGPathFillStroke || mode==kCGPathEOFillStroke){
+   if(mode==kO2PathStroke || mode==kO2PathFillStroke || mode==kO2PathEOFillStroke){
     DWORD    style;
     LOGBRUSH logBrush={BS_SOLID,COLORREFFromColor(strokeColor),0};
     
@@ -283,25 +256,25 @@ static RECT NSRectToRECT(NSRect rect) {
      style|=PS_USERSTYLE;
      
     switch(state->_lineCap){
-     case kCGLineCapButt:
+     case kO2LineCapButt:
       style|=PS_ENDCAP_FLAT;
       break;
-     case kCGLineCapRound:
+     case kO2LineCapRound:
       style|=PS_ENDCAP_ROUND;
       break;
-     case kCGLineCapSquare:
+     case kO2LineCapSquare:
       style|=PS_ENDCAP_SQUARE;
       break;
     }
     
     switch(state->_lineJoin){
-     case kCGLineJoinMiter:
+     case kO2LineJoinMiter:
       style|=PS_JOIN_MITER;
       break;
-     case kCGLineJoinRound:
+     case kO2LineJoinRound:
       style|=PS_JOIN_ROUND;
       break;
-     case kCGLineJoinBevel:
+     case kO2LineJoinBevel:
       style|=PS_JOIN_BEVEL;
       break;
     }
@@ -330,43 +303,55 @@ static RECT NSRectToRECT(NSRect rect) {
 }
 
 
--(void)drawPath:(CGPathDrawingMode)pathMode {
+-(void)drawPath:(O2PathDrawingMode)pathMode {
 
-   [self drawPathInDeviceSpace:_path drawingMode:pathMode state:[self currentState] ];
+   [self drawPathInDeviceSpace:_path drawingMode:pathMode state:currentState(self) ];
    
    O2PathReset(_path);
 }
 
--(void)showGlyphs:(const CGGlyph *)glyphs count:(unsigned)count {
-   CGAffineTransform transformToDevice=[self userSpaceToDeviceSpaceTransform];
-   O2GState  *gState=[self currentState];
-   CGAffineTransform Trm=CGAffineTransformConcat(gState->_textTransform,transformToDevice);
-   NSPoint           point=CGPointApplyAffineTransform(NSMakePoint(0,0),Trm);
+-(void)establishFontStateInDeviceIfDirty {
+   O2GState *gState=currentState(self);
    
+   if(gState->_fontIsDirty){
+    [gState clearFontIsDirty];
+    [_gdiFont release];
+    _gdiFont=[(KGFont_gdi *)[gState font] createGDIFontSelectedInDC:_dc pointSize:[gState pointSize]];
+   }
+}
+
+-(void)showGlyphs:(const O2Glyph *)glyphs count:(unsigned)count {
+   O2AffineTransform transformToDevice=O2ContextGetUserSpaceToDeviceSpaceTransform(self);
+   O2GState  *gState=currentState(self);
+   O2AffineTransform Trm=O2AffineTransformConcat(gState->_textTransform,transformToDevice);
+   NSPoint           point=O2PointApplyAffineTransform(NSMakePoint(0,0),Trm);
+   
+   [self establishFontStateInDeviceIfDirty];
+
    SetTextColor(_dc,COLORREFFromColor([self fillColor]));
 
    ExtTextOutW(_dc,lroundf(point.x),lroundf(point.y),ETO_GLYPH_INDEX,NULL,(void *)glyphs,count,NULL);
 
    O2Font *font=[gState font];
    int     i,advances[count];
-   CGFloat unitsPerEm=CGFontGetUnitsPerEm(font);
+   O2Float unitsPerEm=O2FontGetUnitsPerEm(font);
    
    O2FontGetGlyphAdvances(font,glyphs,count,advances);
    
-   CGFloat total=0;
+   O2Float total=0;
    
    for(i=0;i<count;i++)
     total+=advances[i];
     
-   total=(total/CGFontGetUnitsPerEm(font))*gState->_pointSize;
+   total=(total/O2FontGetUnitsPerEm(font))*gState->_pointSize;
       
-   [self currentState]->_textTransform.tx+=total;
-   [self currentState]->_textTransform.ty+=0;
+   currentState(self)->_textTransform.tx+=total;
+   currentState(self)->_textTransform.ty+=0;
 }
 
 -(void)showText:(const char *)text length:(unsigned)length {
-   CGGlyph *encoding=[[self currentState] glyphTableForTextEncoding];
-   CGGlyph  glyphs[length];
+   O2Glyph *encoding=[currentState(self) glyphTableForTextEncoding];
+   O2Glyph  glyphs[length];
    int      i;
    
    for(i=0;i<length;i++)
@@ -402,7 +387,7 @@ static inline float axialBandIntervalFromMagnitude(O2Function *function,float ma
 #define GRADIENT_FILL_RECT_H 0
 #endif
 
--(void)drawInUserSpace:(CGAffineTransform)matrix axialShading:(KGShading *)shading {
+-(void)drawInUserSpace:(O2AffineTransform)matrix axialShading:(O2ShadingRef)shading {
    O2ColorSpaceRef colorSpace=[shading colorSpace];
    O2ColorSpaceType colorSpaceType=[colorSpace type];
    O2Function   *function=[shading function];
@@ -410,8 +395,8 @@ static inline float axialBandIntervalFromMagnitude(O2Function *function,float ma
    const float  *range=[function range];
    BOOL          extendStart=[shading extendStart];
    BOOL          extendEnd=[shading extendEnd];
-   NSPoint       startPoint=CGPointApplyAffineTransform([shading startPoint],matrix);
-   NSPoint       endPoint=CGPointApplyAffineTransform([shading endPoint],matrix);
+   NSPoint       startPoint=O2PointApplyAffineTransform([shading startPoint],matrix);
+   NSPoint       endPoint=O2PointApplyAffineTransform([shading endPoint],matrix);
    NSPoint       vector=NSMakePoint(endPoint.x-startPoint.x,endPoint.y-startPoint.y);
    float         magnitude=ceilf(sqrtf(vector.x*vector.x+vector.y*vector.y));
    float         angle=(magnitude==0)?0:(atanf(vector.y/vector.x)+((vector.x<0)?M_PI:0));
@@ -423,7 +408,7 @@ static inline float axialBandIntervalFromMagnitude(O2Function *function,float ma
    GRADIENT_RECT rect[1+bandCount+1];
    int           vertexIndex=0;
    TRIVERTEX     vertices[(1+bandCount+1)*2];
-   float         output[[colorSpace numberOfComponents]+1];
+   float         output[O2ColorSpaceGetNumberOfComponents(colorSpace)+1];
    float         rgba[4];
    void        (*outputToRGBA)(float *,float *);
    // should use something different here so we dont get huge numbers on printers, the clip bbox?
@@ -569,12 +554,12 @@ static inline float axialBandIntervalFromMagnitude(O2Function *function,float ma
    }
 }
 
-static int appendCircle(NSPoint *cp,int position,float x,float y,float radius,CGAffineTransform matrix){
+static int appendCircle(NSPoint *cp,int position,float x,float y,float radius,O2AffineTransform matrix){
    int i;
    
    O2MutablePathEllipseToBezier(cp+position,x,y,radius,radius);
    for(i=0;i<13;i++)
-    cp[position+i]=CGPointApplyAffineTransform(cp[position+i],matrix);
+    cp[position+i]=O2PointApplyAffineTransform(cp[position+i],matrix);
     
    return position+13;
 }
@@ -592,22 +577,22 @@ static void appendCircleToDC(HDC dc,NSPoint *cp){
    PolyBezierTo(dc,cPOINT+1,count-1);
 }
 
-static void appendCircleToPath(HDC dc,float x,float y,float radius,CGAffineTransform matrix){
+static void appendCircleToPath(HDC dc,float x,float y,float radius,O2AffineTransform matrix){
    NSPoint cp[13];
    
    appendCircle(cp,0,x,y,radius,matrix);
    appendCircleToDC(dc,cp);
 }
 
-static inline float numberOfRadialBands(O2Function *function,NSPoint startPoint,NSPoint endPoint,float startRadius,float endRadius,CGAffineTransform matrix){
+static inline float numberOfRadialBands(O2Function *function,NSPoint startPoint,NSPoint endPoint,float startRadius,float endRadius,O2AffineTransform matrix){
    NSPoint startRadiusPoint=NSMakePoint(startRadius,0);
    NSPoint endRadiusPoint=NSMakePoint(endRadius,0);
    
-   startPoint=CGPointApplyAffineTransform(startPoint,matrix);
-   endPoint=CGPointApplyAffineTransform(endPoint,matrix);
+   startPoint=O2PointApplyAffineTransform(startPoint,matrix);
+   endPoint=O2PointApplyAffineTransform(endPoint,matrix);
    
-   startRadiusPoint=CGPointApplyAffineTransform(startRadiusPoint,matrix);
-   endRadiusPoint=CGPointApplyAffineTransform(endRadiusPoint,matrix);
+   startRadiusPoint=O2PointApplyAffineTransform(startRadiusPoint,matrix);
+   endRadiusPoint=O2PointApplyAffineTransform(endRadiusPoint,matrix);
 {
    NSPoint lineVector=NSMakePoint(endPoint.x-startPoint.x,endPoint.y-startPoint.y);
    float   lineMagnitude=ceilf(sqrtf(lineVector.x*lineVector.x+lineVector.y*lineVector.y));
@@ -651,7 +636,7 @@ static BOOL controlPointsOutsideClip(HDC dc,NSPoint cp[13]){
 }
 
 
-static void extend(HDC dc,int i,int direction,float bandInterval,NSPoint startPoint,NSPoint endPoint,float startRadius,float endRadius,CGAffineTransform matrix){
+static void extend(HDC dc,int i,int direction,float bandInterval,NSPoint startPoint,NSPoint endPoint,float startRadius,float endRadius,O2AffineTransform matrix){
 // - some edge cases of extend are either slow or don't fill bands accurately but these are undesirable gradients
 
     {
@@ -663,11 +648,11 @@ static void extend(HDC dc,int i,int direction,float bandInterval,NSPoint startPo
       if(direction<0)
        appendCircleToPath(dc,startPoint.x,startPoint.y,startRadius,matrix);
       else {
-       NSPoint point=CGPointApplyAffineTransform(endPoint,matrix);
+       NSPoint point=O2PointApplyAffineTransform(endPoint,matrix);
 
        appendCircleToPath(dc,endPoint.x,endPoint.y,endRadius,matrix);
        // FIX, lame
-       appendCircleToPath(dc,point.x,point.y,1000000,CGAffineTransformIdentity);
+       appendCircleToPath(dc,point.x,point.y,1000000,O2AffineTransformIdentity);
       }
       EndPath(dc);
       FillPath(dc);
@@ -677,11 +662,11 @@ static void extend(HDC dc,int i,int direction,float bandInterval,NSPoint startPo
      if((lineMagnitude+endRadius)<startRadius){
       BeginPath(dc);
       if(direction<0){
-       NSPoint point=CGPointApplyAffineTransform(startPoint,matrix);
+       NSPoint point=O2PointApplyAffineTransform(startPoint,matrix);
        
        appendCircleToPath(dc,startPoint.x,startPoint.y,startRadius,matrix);
        // FIX, lame
-       appendCircleToPath(dc,point.x,point.y,1000000,CGAffineTransformIdentity);
+       appendCircleToPath(dc,point.x,point.y,1000000,O2AffineTransformIdentity);
       }
       else {
        appendCircleToPath(dc,endPoint.x,endPoint.y,endRadius,matrix);
@@ -725,7 +710,7 @@ static void extend(HDC dc,int i,int direction,float bandInterval,NSPoint startPo
     }
 }
 
--(void)drawInUserSpace:(CGAffineTransform)matrix radialShading:(KGShading *)shading {
+-(void)drawInUserSpace:(O2AffineTransform)matrix radialShading:(O2ShadingRef)shading {
 /* - band interval needs to be improved
     - does not factor resolution/scaling can cause banding
     - does not factor color sampling rate, generates multiple bands for same color
@@ -744,7 +729,7 @@ static void extend(HDC dc,int i,int direction,float bandInterval,NSPoint startPo
    float         bandInterval=numberOfRadialBands(function,startPoint,endPoint,startRadius,endRadius,matrix);
    int           i,bandCount=bandInterval;
    float         domainInterval=(bandCount==0)?0:(domain[1]-domain[0])/bandInterval;
-   float         output[[colorSpace numberOfComponents]+1];
+   float         output[O2ColorSpaceGetNumberOfComponents(colorSpace)+1];
    float         rgba[4];
    void        (*outputToRGBA)(float *,float *);
 
@@ -828,8 +813,8 @@ static void extend(HDC dc,int i,int direction,float bandInterval,NSPoint startPo
    }
 }
 
--(void)drawShading:(KGShading *)shading {
-   CGAffineTransform transformToDevice=[self userSpaceToDeviceSpaceTransform];
+-(void)drawShading:(O2ShadingRef)shading {
+   O2AffineTransform transformToDevice=O2ContextGetUserSpaceToDeviceSpaceTransform(self);
 
   if([shading isAxial])
    [self drawInUserSpace:transformToDevice axialShading:shading];
@@ -839,13 +824,13 @@ static void extend(HDC dc,int i,int direction,float bandInterval,NSPoint startPo
 
 #if 1
 
-static void sourceOverImage(O2Image *image,KGRGBA8888 *resultBGRX,int width,int height,float fraction){
-   KGRGBA8888 *span=__builtin_alloca(width*sizeof(KGRGBA8888));
+static void sourceOverImage(O2Image *image,O2argb8u *resultBGRX,int width,int height,float fraction){
+   O2argb8u *span=__builtin_alloca(width*sizeof(O2argb8u));
    int y,coverage=RI_INT_CLAMP(fraction*256,0,256);
    
    for(y=0;y<height;y++){
-    KGRGBA8888 *direct=image->_read_lRGBA8888_PRE(image,0,y,span,width);
-    KGRGBA8888 *combine=resultBGRX+width*y;
+    O2argb8u *direct=image->_read_lRGBA8888_PRE(image,0,y,span,width);
+    O2argb8u *combine=resultBGRX+width*y;
     
     if(direct!=NULL){
      int x;
@@ -854,11 +839,11 @@ static void sourceOverImage(O2Image *image,KGRGBA8888 *resultBGRX,int width,int 
       span[x]=direct[x];
     }
     
-    KGBlendSpanNormal_8888_coverage(span,combine,coverage,width);
+    O2BlendSpanNormal_8888_coverage(span,combine,coverage,width);
    }
 }
 
-void CGGraphicsSourceOver_rgba32_onto_bgrx32(unsigned char *sourceRGBA,unsigned char *resultBGRX,int width,int height,float fraction) {
+void O2GraphicsSourceOver_rgba32_onto_bgrx32(unsigned char *sourceRGBA,unsigned char *resultBGRX,int width,int height,float fraction) {
    int sourceIndex=0;
    int sourceLength=width*height*4;
    int destinationReadIndex=0;
@@ -889,7 +874,7 @@ void CGGraphicsSourceOver_rgba32_onto_bgrx32(unsigned char *sourceRGBA,unsigned 
    }
 }
 
-void CGGraphicsSourceOver_bgra32_onto_bgrx32(unsigned char *sourceBGRA,unsigned char *resultBGRX,int width,int height,float fraction) {
+void O2GraphicsSourceOver_bgra32_onto_bgrx32(unsigned char *sourceBGRA,unsigned char *resultBGRX,int width,int height,float fraction) {
    int sourceIndex=0;
    int sourceLength=width*height*4;
    int destinationReadIndex=0;
@@ -920,19 +905,19 @@ void CGGraphicsSourceOver_bgra32_onto_bgrx32(unsigned char *sourceBGRA,unsigned 
    }
 }
 
--(void)drawBitmapImage:(O2Image *)image inRect:(NSRect)rect ctm:(CGAffineTransform)ctm fraction:(float)fraction  {
-   int            width=[image width];
-   int            height=[image height];
+-(void)drawBitmapImage:(O2Image *)image inRect:(NSRect)rect ctm:(O2AffineTransform)ctm fraction:(float)fraction  {
+   int            width=O2ImageGetWidth(image);
+   int            height=O2ImageGetHeight(image);
    const unsigned int *data=[image directBytes];
    HDC            sourceDC=_dc;
    HDC            combineDC;
    int            combineWidth=width;
    int            combineHeight=height;
-   NSPoint        point=CGPointApplyAffineTransform(rect.origin,ctm);
+   NSPoint        point=O2PointApplyAffineTransform(rect.origin,ctm);
    HBITMAP        bitmap;
    BITMAPINFO     info;
    void          *bits;
-   KGRGBA8888    *combineBGRX;
+   O2argb8u    *combineBGRX;
    unsigned char *imageRGBA=(void *)data;
 
    if(transformIsFlipped(ctm))
@@ -966,10 +951,10 @@ void CGGraphicsSourceOver_bgra32_onto_bgrx32(unsigned char *sourceBGRA,unsigned 
    GdiFlush();
 
 #if 1
-   if((CGImageGetAlphaInfo(image)==kCGImageAlphaPremultipliedFirst) && ([image bitmapInfo]&kCGBitmapByteOrderMask)==kCGBitmapByteOrder32Little)
-    CGGraphicsSourceOver_bgra32_onto_bgrx32(imageRGBA,(unsigned char *)combineBGRX,width,height,fraction);
+   if((O2ImageGetAlphaInfo(image)==kO2ImageAlphaPremultipliedFirst) && (O2ImageGetBitmapInfo(image)&kO2BitmapByteOrderMask)==kO2BitmapByteOrder32Little)
+    O2GraphicsSourceOver_bgra32_onto_bgrx32(imageRGBA,(unsigned char *)combineBGRX,width,height,fraction);
    else
-    CGGraphicsSourceOver_rgba32_onto_bgrx32(imageRGBA,(unsigned char *)combineBGRX,width,height,fraction);
+    O2GraphicsSourceOver_rgba32_onto_bgrx32(imageRGBA,(unsigned char *)combineBGRX,width,height,fraction);
 #else
    sourceOverImage(image,combineBGRX,width,height,fraction);
 #endif
@@ -989,7 +974,7 @@ static void zeroBytes(void *bytes,int size){
     ((char *)bytes)[i]=0;
 }
 
--(void)drawBitmapImage:(O2Image *)image inRect:(NSRect)rect ctm:(CGAffineTransform)ctm fraction:(float)fraction  {
+-(void)drawBitmapImage:(O2Image *)image inRect:(NSRect)rect ctm:(O2AffineTransform)ctm fraction:(float)fraction  {
    int            width=[image width];
    int            height=[image height];
    const unsigned char *bytes=[image bytes];
@@ -1076,8 +1061,8 @@ static void zeroBytes(void *bytes,int size){
 #endif
 
 -(void)drawImage:(O2Image *)image inRect:(NSRect)rect {
-   CGAffineTransform transformToDevice=[self userSpaceToDeviceSpaceTransform];
-   O2GState *gState=[self currentState];
+   O2AffineTransform transformToDevice=O2ContextGetUserSpaceToDeviceSpaceTransform(self);
+   O2GState *gState=currentState(self);
    O2ClipPhase     *phase=[[gState clipPhases] lastObject];
    
 /* The NSImage drawing methods which take a fraction use a 1x1 alpha mask to set the fraction.
@@ -1089,10 +1074,10 @@ static void zeroBytes(void *bytes,int size){
    if(phase!=nil && [phase phaseType]==O2ClipPhaseMask){
     O2Image *mask=[phase object];
     
-    if([mask width]==1 && [mask height]==1){
+    if(O2ImageGetWidth(mask)==1 && O2ImageGetHeight(mask)==1){
      uint8_t byte=255;
      
-     if([[mask dataProvider] getBytes:&byte range:NSMakeRange(0,1)]==1)
+     if([O2ImageGetDataProvider(mask) getBytes:&byte range:NSMakeRange(0,1)]==1)
       fraction=(float)byte/255.0f;
     }
    }
@@ -1100,8 +1085,8 @@ static void zeroBytes(void *bytes,int size){
    [self drawBitmapImage:image inRect:rect ctm:transformToDevice fraction:fraction];
 }
 
--(void)drawDeviceContext:(KGDeviceContext_gdi *)deviceContext inRect:(NSRect)rect ctm:(CGAffineTransform)ctm {
-   rect.origin=CGPointApplyAffineTransform(rect.origin,ctm);
+-(void)drawDeviceContext:(KGDeviceContext_gdi *)deviceContext inRect:(NSRect)rect ctm:(O2AffineTransform)ctm {
+   rect.origin=O2PointApplyAffineTransform(rect.origin,ctm);
 
    if(transformIsFlipped(ctm))
     rect.origin.y-=rect.size.height;
@@ -1109,8 +1094,8 @@ static void zeroBytes(void *bytes,int size){
    BitBlt([self dc],rect.origin.x,rect.origin.y,rect.size.width,rect.size.height,[deviceContext dc],0,0,SRCCOPY);
 }
 
--(void)drawLayer:(KGLayer *)layer inRect:(NSRect)rect {
-   O2Context *context=[layer context];
+-(void)drawLayer:(O2Layer *)layer inRect:(NSRect)rect {
+   O2ContextRef context=O2LayerGetContext(layer);
    
    if(![context isKindOfClass:[KGContext_gdi class]]){
     NSLog(@"layer class is not right %@!=%@",[context class],[self class]);
@@ -1118,11 +1103,11 @@ static void zeroBytes(void *bytes,int size){
    }
    KGDeviceContext_gdi *deviceContext=[(KGContext_gdi *)context deviceContext];
    
-   [self drawDeviceContext:deviceContext inRect:rect ctm:[self currentState]->_deviceSpaceTransform];
+   [self drawDeviceContext:deviceContext inRect:rect ctm:currentState(self)->_deviceSpaceTransform];
 }
 
 -(void)copyBitsInRect:(NSRect)rect toPoint:(NSPoint)point gState:(int)gState {
-   CGAffineTransform transformToDevice=[self userSpaceToDeviceSpaceTransform];
+   O2AffineTransform transformToDevice=O2ContextGetUserSpaceToDeviceSpaceTransform(self);
    NSRect  srcRect=Win32TransformRect(transformToDevice,rect);
    NSRect  dstRect=Win32TransformRect(transformToDevice,NSMakeRect(point.x,point.y,rect.size.width,rect.size.height));
    NSRect  scrollRect=NSUnionRect(srcRect,dstRect);
@@ -1131,10 +1116,6 @@ static void zeroBytes(void *bytes,int size){
    RECT    winScrollRect=NSRectToRECT(scrollRect);
 
    ScrollDC(_dc,dx,dy,&winScrollRect,&winScrollRect,NULL,NULL);
-}
-
--(KGLayer *)layerWithSize:(NSSize)size unused:(NSDictionary *)unused {
-   return [[[KGLayer_gdi alloc] initRelativeToContext:self size:size unused:unused] autorelease];
 }
 
 -(void)close {
@@ -1164,14 +1145,14 @@ static void zeroBytes(void *bytes,int size){
    if([other isKindOfClass:[KGContext_gdi class]])
     deviceContext=[(KGContext_gdi *)other deviceContext];
    else {
-    KGSurface *surface=[other surface];
+    O2Surface *surface=[other surface];
     
     if([surface isKindOfClass:[KGSurface_DIBSection class]])
      deviceContext=[(KGSurface_DIBSection *)surface deviceContext];
    }
 
    if(deviceContext!=nil)
-    [self drawDeviceContext:deviceContext inRect:NSMakeRect(0,0,size.width,size.height) ctm:CGAffineTransformIdentity];
+    [self drawDeviceContext:deviceContext inRect:NSMakeRect(0,0,size.width,size.height) ctm:O2AffineTransformIdentity];
 }
 
 -(void)flush {
@@ -1179,8 +1160,8 @@ static void zeroBytes(void *bytes,int size){
 }
 
 -(NSData *)captureBitmapInRect:(NSRect)rect {
-   CGAffineTransform transformToDevice=[self userSpaceToDeviceSpaceTransform];
-   NSPoint           pt = CGPointApplyAffineTransform(rect.origin, transformToDevice);
+   O2AffineTransform transformToDevice=O2ContextGetUserSpaceToDeviceSpaceTransform(self);
+   NSPoint           pt = O2PointApplyAffineTransform(rect.origin, transformToDevice);
    int               width = rect.size.width;
    int               height = rect.size.height;
    unsigned long     bmSize = 4*width*height;

@@ -413,7 +413,7 @@ stbi_uc *stbi_bmp_load_from_memory (const stbi_uc *buffer, int len, int *x, int 
 
 -initWithDataProvider:(O2DataProvider *)provider options:(NSDictionary *)options {
    [super initWithDataProvider:provider options:options];
-   _bmp=[provider copyData];
+   _bmp=O2DataProviderCopyData(provider);
    return self;
 }
 
@@ -438,9 +438,9 @@ stbi_uc *stbi_bmp_load_from_memory (const stbi_uc *buffer, int len, int *x, int 
    bitmap=[[NSData alloc] initWithBytesNoCopy:pixels length:bytesPerRow*height];
 
    O2DataProvider *provider=[[O2DataProvider alloc] initWithData:bitmap];
-   O2ColorSpace   *colorSpace=[[O2ColorSpace alloc] initWithDeviceRGB];
+   O2ColorSpace   *colorSpace=O2ColorSpaceCreateDeviceRGB();
    O2Image        *image=[[O2Image alloc] initWithWidth:width height:height bitsPerComponent:8 bitsPerPixel:bitsPerPixel bytesPerRow:bytesPerRow
-      colorSpace:colorSpace bitmapInfo:kCGBitmapByteOrder32Big|kCGImageAlphaPremultipliedLast provider:provider decode:NULL interpolate:NO renderingIntent:kCGRenderingIntentDefault];
+      colorSpace:colorSpace bitmapInfo:kO2BitmapByteOrder32Big|kO2ImageAlphaPremultipliedLast provider:provider decode:NULL interpolate:NO renderingIntent:kO2RenderingIntentDefault];
       
    [colorSpace release];
    [provider release];

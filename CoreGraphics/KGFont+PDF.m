@@ -22,7 +22,7 @@ uint8_t O2PDFMacRomanPositionOfGlyphName(NSString *name){
    return [[map objectForKey:name] intValue];
 }
 
-O2PDFArray *O2FontCreatePDFWidthsWithEncoding(O2FontRef self,CGGlyph encoding[256]){
+O2PDFArray *O2FontCreatePDFWidthsWithEncoding(O2FontRef self,O2Glyph encoding[256]){
    CGFloat       unitsPerEm=O2FontGetUnitsPerEm(self);
    O2PDFArray   *result=[[O2PDFArray alloc] init];
    int           widths[256];
@@ -40,7 +40,7 @@ O2PDFArray *O2FontCreatePDFWidthsWithEncoding(O2FontRef self,CGGlyph encoding[25
 }
 
 // this is overriden for GDI
--(void)getMacRomanBytes:(unsigned char *)bytes forGlyphs:(const CGGlyph *)glyphs length:(unsigned)length {
+-(void)getMacRomanBytes:(unsigned char *)bytes forGlyphs:(const O2Glyph *)glyphs length:(unsigned)length {
    int i;
    
    for(i=0;i<length;i++){
@@ -65,7 +65,7 @@ O2PDFArray *O2FontCreatePDFWidthsWithEncoding(O2FontRef self,CGGlyph encoding[25
    
    CGFloat   unitsPerEm=O2FontGetUnitsPerEm(self);
    O2PDFReal bbox[4];
-   CGRect    bRect=O2FontGetFontBBox(self);
+   O2Rect    bRect=O2FontGetFontBBox(self);
    bRect.origin.x/=unitsPerEm*size;
    bRect.origin.y/=unitsPerEm*size;
    bRect.size.width/=unitsPerEm*size;
@@ -91,7 +91,7 @@ O2PDFArray *O2FontCreatePDFWidthsWithEncoding(O2FontRef self,CGGlyph encoding[25
    
    if(reference==nil){
     O2PDFDictionary *result=[O2PDFDictionary pdfDictionary];
-    CGGlyph         *encoding=[self MacRomanEncoding];
+    O2Glyph         *encoding=[self MacRomanEncoding];
     int              i;    
      
     [result setNameForKey:"Type" value:"Font"];

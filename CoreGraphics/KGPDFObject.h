@@ -14,15 +14,15 @@ typedef int   O2PDFInteger;
 typedef float O2PDFReal;
 
 typedef enum {
-   kKGPDFObjectTypeNull=1,
-   kKGPDFObjectTypeBoolean,
-   kKGPDFObjectTypeInteger,
-   kKGPDFObjectTypeReal,
-   kKGPDFObjectTypeName,
-   kKGPDFObjectTypeString,
-   kKGPDFObjectTypeArray,
-   kKGPDFObjectTypeDictionary,
-   kKGPDFObjectTypeStream,
+   kO2PDFObjectTypeNull=1,
+   kO2PDFObjectTypeBoolean,
+   kO2PDFObjectTypeInteger,
+   kO2PDFObjectTypeReal,
+   kO2PDFObjectTypeName,
+   kO2PDFObjectTypeString,
+   kO2PDFObjectTypeArray,
+   kO2PDFObjectTypeDictionary,
+   kO2PDFObjectTypeStream,
    
 ///------------
    O2PDFObjectType_R,

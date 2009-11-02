@@ -37,12 +37,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return nil;
 }
 
--(CGGlyph)glyphWithGlyphName:(NSString *)name {
+-(O2Glyph)glyphWithGlyphName:(NSString *)name {
    KGInvalidAbstractInvocation();
    return 0;
 }
 
--(NSString *)copyGlyphNameForGlyph:(CGGlyph)glyph {
+-(NSString *)copyGlyphNameForGlyph:(O2Glyph)glyph {
    KGInvalidAbstractInvocation();
    return nil;
 }
@@ -310,11 +310,11 @@ NSString *O2MacRomanGlyphNames[256]={
 @"caron",
 };
 
--(CGGlyph *)MacRomanEncoding {
+-(O2Glyph *)MacRomanEncoding {
    if(_MacRomanEncoding==NULL){
     int i;
    
-    _MacRomanEncoding=NSZoneMalloc(NULL,sizeof(CGGlyph)*256);
+    _MacRomanEncoding=NSZoneMalloc(NULL,sizeof(O2Glyph)*256);
     
     for(i=0;i<256;i++)
      _MacRomanEncoding[i]=O2FontGetGlyphWithGlyphName(self,O2MacRomanGlyphNames[i]);
@@ -322,7 +322,7 @@ NSString *O2MacRomanGlyphNames[256]={
    return _MacRomanEncoding;
 }
 
--(CGGlyph *)glyphTableForEncoding:(CGTextEncoding)encoding {
+-(O2Glyph *)glyphTableForEncoding:(O2TextEncoding)encoding {
    return [self MacRomanEncoding];
 }
 
@@ -371,15 +371,15 @@ int       O2FontGetXHeight(O2FontRef self) {
    return self->_xHeight;
 }
 
-CGFloat   O2FontGetItalicAngle(O2FontRef self){
+O2Float   O2FontGetItalicAngle(O2FontRef self){
    return self->_italicAngle;
 }
 
-CGFloat   O2FontGetStemV(O2FontRef self) {
+O2Float   O2FontGetStemV(O2FontRef self) {
    return self->_stemV;
 }
 
-CGRect    O2FontGetFontBBox(O2FontRef self) {
+O2Rect    O2FontGetFontBBox(O2FontRef self) {
    return self->_bbox;
 }
 
@@ -387,14 +387,14 @@ size_t    O2FontGetNumberOfGlyphs(O2FontRef self) {
    return self->_numberOfGlyphs;
 }
 
-BOOL O2FontGetGlyphAdvances(O2FontRef self,const CGGlyph *glyphs,size_t count,int *advances) {
+BOOL O2FontGetGlyphAdvances(O2FontRef self,const O2Glyph *glyphs,size_t count,int *advances) {
    size_t i;
    
    if(self->_advances==NULL)
     [self fetchAdvances];
     
    for(i=0;i<count;i++){
-    CGGlyph glyph=glyphs[i];
+    O2Glyph glyph=glyphs[i];
     
     if(glyph<self->_numberOfGlyphs)
      advances[i]=self->_advances[glyph];
@@ -404,11 +404,11 @@ BOOL O2FontGetGlyphAdvances(O2FontRef self,const CGGlyph *glyphs,size_t count,in
    return YES;
 }
 
-CGGlyph   O2FontGetGlyphWithGlyphName(O2FontRef self,NSString *name) {
+O2Glyph   O2FontGetGlyphWithGlyphName(O2FontRef self,NSString *name) {
    return [self glyphWithGlyphName:name];
 }
 
-NSString *O2FontCopyGlyphNameForGlyph(O2FontRef self,CGGlyph glyph) {
+NSString *O2FontCopyGlyphNameForGlyph(O2FontRef self,O2Glyph glyph) {
    return [self copyGlyphNameForGlyph:glyph];
 }
 

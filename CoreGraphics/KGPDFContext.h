@@ -11,6 +11,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @class O2PDFContext, O2PDFxref,O2PDFObject, O2PDFDictionary,O2PDFArray,NSMutableData,NSMutableDictionary,KGDataConsumer;
 
+const NSString *kO2PDFContextTitle;
+
 @interface O2PDFContext : O2Context {
    KGDataConsumer  *_dataConsumer;
    NSMutableData   *_mutableData;
@@ -30,7 +32,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    NSMutableArray  *_contentStreamStack;
 }
 
--initWithConsumer:(KGDataConsumer *)consumer mediaBox:(const CGRect *)mediaBox auxiliaryInfo:(NSDictionary *)auxiliaryInfo;
+-initWithConsumer:(KGDataConsumer *)consumer mediaBox:(const O2Rect *)mediaBox auxiliaryInfo:(NSDictionary *)auxiliaryInfo;
 
 -(unsigned)length;
 -(NSData *)data;

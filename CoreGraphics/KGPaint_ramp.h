@@ -27,16 +27,16 @@
  *-------------------------------------------------------------------*/
 #import "KGPaint.h"
 
-@class KGShading;
+@class O2Shading;
 
 typedef struct  {
-   CGFloat    offset;
-   KGRGBAffff color;
+   O2Float    offset;
+   O2argb32f color;
 } GradientStop;
 
 @interface O2Paint_ramp : O2Paint {
-   CGPoint _startPoint;
-   CGPoint _endPoint;
+   O2Point _startPoint;
+   O2Point _endPoint;
    BOOL    _extendStart;
    BOOL    _extendEnd;
    
@@ -44,9 +44,9 @@ typedef struct  {
    GradientStop *_colorStops;
 }
 
-KGRGBAffff O2PaintIntegrateColorRamp(O2Paint_ramp *self,CGFloat gmin, CGFloat gmax);
-KGRGBAffff O2PaintColorRamp(O2Paint_ramp *self,CGFloat gradient, CGFloat rho,int *skip);
+O2argb32f O2PaintIntegrateColorRamp(O2Paint_ramp *self,O2Float gmin, O2Float gmax);
+O2argb32f O2PaintColorRamp(O2Paint_ramp *self,O2Float gradient, O2Float rho,int *skip);
 
--initWithShading:(KGShading *)shading deviceTransform:(CGAffineTransform)deviceTransform numberOfSamples:(int)numberOfSamples;
+-initWithShading:(O2Shading *)shading deviceTransform:(O2AffineTransform)deviceTransform numberOfSamples:(int)numberOfSamples;
 
 @end

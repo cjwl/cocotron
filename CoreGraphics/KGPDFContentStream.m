@@ -32,14 +32,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     resources=nil;
    if(![dictionary getObjectForKey:"Contents" value:&contents])
     contents=nil;
-   else if([contents objectType]==kKGPDFObjectTypeArray){
+   else if([contents objectType]==kO2PDFObjectTypeArray){
     O2PDFArray *array=(O2PDFArray *)contents;
     int         i,count=[array count];
     
     for(i=0;i<count;i++)
      [streams addObject:[array objectAtIndex:i]];
    }
-   else if([contents objectType]==kKGPDFObjectTypeStream)
+   else if([contents objectType]==kO2PDFObjectTypeStream)
     [streams addObject:contents];
    else {
     NSLog(@"contents is not an array or stream, got %@",contents);

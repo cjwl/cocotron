@@ -111,10 +111,10 @@ typedef struct {
    int           num_bits;
    zhuffman      z_length;
    zhuffman      z_distance;
-} KGFlateDecode;
+} O2FlateDecode;
 
 
-static unsigned char KGFlateDecodeNextByte(KGFlateDecode *inflate){
+static unsigned char O2FlateDecodeNextByte(O2FlateDecode *inflate){
    if(inflate->inPosition<inflate->inLength)
     return inflate->inBytes[inflate->inPosition++];
    
@@ -140,16 +140,16 @@ static int dist_extra[32] = {
  0,0,0,0,1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8,9,9,10,10,11,11,12,12,13,13
 };
 
-static void fill_bits(KGFlateDecode *inflate) {
+static void fill_bits(O2FlateDecode *inflate) {
    do {
     assert(inflate->code_buffer < (1U << inflate->num_bits));
     
-    inflate->code_buffer |= KGFlateDecodeNextByte(inflate) << inflate->num_bits;
+    inflate->code_buffer |= O2FlateDecodeNextByte(inflate) << inflate->num_bits;
     inflate->num_bits += 8;
    } while (inflate->num_bits <= 24);
 }
 
-static unsigned int zreceive(KGFlateDecode *inflate,int n) {
+static unsigned int zreceive(O2FlateDecode *inflate,int n) {
    unsigned int k;
    
    if (inflate->num_bits < n)
@@ -162,7 +162,7 @@ static unsigned int zreceive(KGFlateDecode *inflate,int n) {
    return k;   
 }
 
-static int zhuffman_decode(KGFlateDecode *inflate,zhuffman *z) {
+static int zhuffman_decode(O2FlateDecode *inflate,zhuffman *z) {
    int b,s,k;
    
    if (inflate->num_bits < 16)
@@ -198,7 +198,7 @@ static int zhuffman_decode(KGFlateDecode *inflate,zhuffman *z) {
 }
 
  // need to make room for n bytes
-static void expand(KGFlateDecode *inflate,int n)  {   
+static void expand(O2FlateDecode *inflate,int n)  {   
    if(inflate->outPosition+n>inflate->outLength){
     do{
      inflate->outLength*=2;
@@ -208,14 +208,14 @@ static void expand(KGFlateDecode *inflate,int n)  {
    }
 }
 
-static void appendBytes(KGFlateDecode *inflate,const unsigned char *bytes,unsigned length){
+static void appendBytes(O2FlateDecode *inflate,const unsigned char *bytes,unsigned length){
    unsigned i;
       
    for(i=0;i<length;i++)
     inflate->outBytes[inflate->outPosition++]=bytes[i];
 }
 
-static int parse_huffman_block(KGFlateDecode *inflate) {
+static int parse_huffman_block(O2FlateDecode *inflate) {
    for(;;) {
       int z = zhuffman_decode(inflate,&(inflate->z_length));
       
@@ -254,7 +254,7 @@ static int parse_huffman_block(KGFlateDecode *inflate) {
    }
 }
 
-static int compute_huffman_codes(KGFlateDecode *inflate) {
+static int compute_huffman_codes(O2FlateDecode *inflate) {
    static unsigned char length_dezigzag[19] = { 16,17,18,0,8,7,9,6,10,5,11,4,12,3,13,2,14,1,15 };
     zhuffman z_codelength;
    unsigned char lencodes[286+32+137];//padding for maximum single op
@@ -307,7 +307,7 @@ static int compute_huffman_codes(KGFlateDecode *inflate) {
    return 1;
 }
 
-static int parse_uncompressed_block(KGFlateDecode *inflate) {
+static int parse_uncompressed_block(O2FlateDecode *inflate) {
    unsigned char header[4];
    int len,nlen,k;
    
@@ -326,7 +326,7 @@ static int parse_uncompressed_block(KGFlateDecode *inflate) {
    
    // now fill header the normal way
    while (k < 4)
-      header[k++] = KGFlateDecodeNextByte(inflate);
+      header[k++] = O2FlateDecodeNextByte(inflate);
       
    len  = header[1] * 256 + header[0];
    nlen = header[3] * 256 + header[2];
@@ -343,11 +343,11 @@ static int parse_uncompressed_block(KGFlateDecode *inflate) {
    return 1;
 }
 
-static int parse_zlib_header(KGFlateDecode *inflate) {
-   int cmf   = KGFlateDecodeNextByte(inflate);
+static int parse_zlib_header(O2FlateDecode *inflate) {
+   int cmf   = O2FlateDecodeNextByte(inflate);
       int cm       = cmf & 15;
      // int cinfo    = cmf >> 4;
-   int flg   = KGFlateDecodeNextByte(inflate);
+   int flg   = O2FlateDecodeNextByte(inflate);
    
    if ((cmf*256+flg) % 31 != 0)
     return e("bad zlib header"); // zlib spec
@@ -394,7 +394,7 @@ static const unsigned char default_distance[32] = {
  5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,
 };
 
-static int parse_zlib(KGFlateDecode *inflate) {
+static int parse_zlib(O2FlateDecode *inflate) {
    int final, type;
    
    if (!parse_zlib_header(inflate))
@@ -428,8 +428,8 @@ static int parse_zlib(KGFlateDecode *inflate) {
 }
 
 unsigned char *stbi_zlib_decode_malloc(const unsigned char *buffer, int len, int *outlen) {
-   KGFlateDecode  inflateX;
-   KGFlateDecode *inflate=&inflateX;
+   O2FlateDecode  inflateX;
+   O2FlateDecode *inflate=&inflateX;
    int initial_size=8192;
    unsigned char *p = NSZoneMalloc(NULL,initial_size);
 

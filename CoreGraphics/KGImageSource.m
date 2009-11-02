@@ -11,6 +11,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "KGDataProvider.h"
 #import "KGExceptions.h"
 
+NSString *kO2ImagePropertyDPIWidth=@"kCGImagePropertyDPIWidth";
+NSString *kO2ImagePropertyDPIHeight=@"kCGImagePropertyDPIHeight";
+
 @implementation KGImageSource
 
 +(KGImageSource *)newImageSourceWithDataProvider:(O2DataProvider *)provider options:(NSDictionary *)options {

@@ -8,28 +8,39 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import "KGLayer.h"
 #import "KGExceptions.h"
+#import "KGBitmapContext.h"
 #import <Foundation/NSDictionary.h>
 
-@implementation KGLayer
+@implementation O2Layer
 
--initRelativeToContext:(O2Context *)context size:(CGSize)size unused:(NSDictionary *)unused {
-   _size=size;
-   _unused=[unused copy];
+O2Surface *O2LayerGetSurface(O2LayerRef self) {
+   return [self->_context surface];
+}
+
+O2LayerRef O2LayerCreateWithContext(O2ContextRef context,O2Size size,NSDictionary *unused) {
+   O2LayerRef self=NSAllocateObject([O2Layer class],0,NULL);
+   
+   self->_context=[context createCompatibleContextWithSize:size unused:unused];
+   self->_size=size;
+   self->_unused=[unused copy];
+   self->_surface=[context surface];
    return self;
 }
 
--(void)dealloc {
-   [_unused release];
-   [super dealloc];
+O2LayerRef O2LayerRetain(O2LayerRef self) {
+   return [self retain];
 }
 
--(CGSize)size {
-   return _size;
+void O2LayerRelease(O2LayerRef self) {
+   [self release];
 }
 
--(O2Context *)context {
-   KGInvalidAbstractInvocation();
-   return nil;
+O2Size O2LayerGetSize(O2LayerRef self) {
+   return self->_size;
+}
+
+O2ContextRef O2LayerGetContext(O2LayerRef self) {
+   return self->_context;
 }
 
 @end

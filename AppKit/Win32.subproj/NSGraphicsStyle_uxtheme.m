@@ -118,10 +118,10 @@ static BOOL drawThemeBackground(HANDLE theme,HDC dc,int partId,int stateId,const
    return openThemeData(windowHandle,classList);
 }
 
-static inline RECT transformToRECT(CGAffineTransform matrix,NSRect rect) {
+static inline RECT transformToRECT(O2AffineTransform matrix,NSRect rect) {
    RECT    result;
-   NSPoint point1=CGPointApplyAffineTransform(rect.origin,matrix);
-   NSPoint point2=CGPointApplyAffineTransform(NSMakePoint(NSMaxX(rect),NSMaxY(rect)),matrix);
+   NSPoint point1=O2PointApplyAffineTransform(rect.origin,matrix);
+   NSPoint point2=O2PointApplyAffineTransform(NSMakePoint(NSMaxX(rect),NSMaxY(rect)),matrix);
 
    if(point2.y<point1.y){
     float temp=point2.y;
@@ -184,10 +184,10 @@ static inline RECT transformToRECT(CGAffineTransform matrix,NSRect rect) {
     return NO;
        
    if((theme=[[deviceContext windowDeviceContext] theme:uxthClassId])!=NULL){
-    CGAffineTransform matrix;
+    O2AffineTransform matrix;
     RECT tlbr;
 
-    matrix=[[self context] userSpaceToDeviceSpaceTransform];
+    matrix=O2ContextGetUserSpaceToDeviceSpaceTransform([self context]);
     tlbr=transformToRECT(matrix,rect);
 
     drawThemeBackground(theme,[deviceContext dc],partId,stateId,&tlbr,NULL);

@@ -10,25 +10,25 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "O2ColorSpace.h"
 
 CGColorSpaceRef CGColorSpaceRetain(CGColorSpaceRef colorSpace) {
-   return [colorSpace retain];
+   return O2ColorSpaceRetain(colorSpace);
 }
 
 void CGColorSpaceRelease(CGColorSpaceRef colorSpace) {
-   [colorSpace release];
+   O2ColorSpaceRelease(colorSpace);
 }
 
 CGColorSpaceRef CGColorSpaceCreateDeviceRGB() {
-   return [[O2ColorSpace alloc] initWithDeviceRGB];
+   return O2ColorSpaceCreateDeviceRGB();
 }
 
 CGColorSpaceRef CGColorSpaceCreateDeviceGray() {
-   return [[O2ColorSpace alloc] initWithDeviceGray];
+   return O2ColorSpaceCreateDeviceGray();
 }
 
 CGColorSpaceRef CGColorSpaceCreateDeviceCMYK() {
-   return [[O2ColorSpace alloc] initWithDeviceCMYK];
+   return O2ColorSpaceCreateDeviceCMYK();
 }
 
 size_t CGColorSpaceGetNumberOfComponents(CGColorSpaceRef self) {
-   return [self numberOfComponents];
+   return O2ColorSpaceGetNumberOfComponents(self);
 }

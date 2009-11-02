@@ -29,11 +29,11 @@
 
 @interface O2Paint_image : O2Paint {
    O2Image *_image;
-   KGSurfaceMode _mode;
+   O2SurfaceMode _mode;
    O2Paint *_paint;
-   CGInterpolationQuality _interpolationQuality;
+   O2InterpolationQuality _interpolationQuality;
 }
 
--initWithImage:(O2Image *)image mode:(KGSurfaceMode)mode paint:(O2Paint *)paint interpolationQuality:(CGInterpolationQuality)interpolationQuality;
+-initWithImage:(O2Image *)image mode:(O2SurfaceMode)mode paint:(O2Paint *)paint interpolationQuality:(O2InterpolationQuality)interpolationQuality;
 
 @end

@@ -8,6 +8,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <CoreGraphics/CGPattern.h>
 #import "KGPattern.h"
+#import "CGConversions.h"
 
 CGPatternRef CGPatternRetain(CGPatternRef self) {
    return [self retain];
@@ -18,6 +19,6 @@ void CGPatternRelease(CGPatternRef self) {
 }
 
 CGPatternRef CGPatternCreate(void *info,CGRect bounds,CGAffineTransform matrix,CGFloat xstep,CGFloat ystep,CGPatternTiling tiling,BOOL isColored,const CGPatternCallbacks *callbacks) {
-   return [[KGPattern alloc] initWithInfo:info bounds:bounds matrix:matrix xstep:xstep ystep:ystep tiling:tiling isColored:isColored callbacks:callbacks];
+   return [[O2Pattern alloc] initWithInfo:info bounds:bounds matrix:O2AffineTransformFromCG(matrix) xstep:xstep ystep:ystep tiling:tiling isColored:isColored callbacks:O2PatternCallbacksFromCG(callbacks)];
 }
 

@@ -39,21 +39,21 @@
     int     _segmentToVertexCapacity;
     struct VertexIndex *_segmentToVertex;
     
-	CGFloat				m_userMinx;
-	CGFloat				m_userMiny;
-	CGFloat				m_userMaxx;
-	CGFloat				m_userMaxy;
+	O2Float				m_userMinx;
+	O2Float				m_userMiny;
+	O2Float				m_userMaxx;
+	O2Float				m_userMaxy;
 }
 
 -initWithKGPath:(O2Path *)path;
 
-void VGPathFill(VGPath *self,CGAffineTransform pathToSurface, KGRasterizer *rasterizer);	
-void VGPathStroke(VGPath *self,CGAffineTransform pathToSurface, KGRasterizer *rasterizer, const CGFloat* dashPattern,int dashPatternSize, CGFloat dashPhase, BOOL dashPhaseReset, CGFloat strokeWidth, CGLineCap capStyle, CGLineJoin joinStyle, CGFloat miterLimit);	
+void VGPathFill(VGPath *self,O2AffineTransform pathToSurface, O2Context_builtin *context);	
+void VGPathStroke(VGPath *self,O2AffineTransform pathToSurface, O2Context_builtin *context, const O2Float* dashPattern,int dashPatternSize, O2Float dashPhase, BOOL dashPhaseReset, O2Float strokeWidth, O2LineCap capStyle, O2LineJoin joinStyle, O2Float miterLimit);	
 
-void VGPathGetPointAlong(VGPath *self,int startIndex, int numSegments, CGFloat distance, CGPoint *p, CGPoint *t);	
-CGFloat VGPathGetLength(VGPath *self,int startIndex, int numSegments);	
-void VGPathGetPathBounds(VGPath *self,CGFloat *minx, CGFloat *miny, CGFloat *maxx, CGFloat *maxy);	
-void VGPathGetPathTransformedBounds(VGPath *self,CGAffineTransform pathToSurface, CGFloat *minx, CGFloat *miny, CGFloat *maxx, CGFloat *maxy);
+void VGPathGetPointAlong(VGPath *self,int startIndex, int numSegments, O2Float distance, O2Point *p, O2Point *t);	
+O2Float VGPathGetLength(VGPath *self,int startIndex, int numSegments);	
+void VGPathGetPathBounds(VGPath *self,O2Float *minx, O2Float *miny, O2Float *maxx, O2Float *maxy);	
+void VGPathGetPathTransformedBounds(VGPath *self,O2AffineTransform pathToSurface, O2Float *minx, O2Float *miny, O2Float *maxx, O2Float *maxy);
 
 void VGPathTessellateIfNeeded(VGPath *self);	
 

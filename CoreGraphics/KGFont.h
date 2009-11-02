@@ -6,12 +6,17 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 #import <Foundation/NSObject.h>
-#import <CoreGraphics/CoreGraphics.h>
-#import "KGDataProvider.h"
-#import "KGImage.h"
+#import "O2Geometry.h"
 
 @class O2Font;
+
 typedef O2Font *O2FontRef;
+
+typedef uint16_t O2Glyph;
+
+#import "KGContext.h"
+#import "KGDataProvider.h"
+#import "KGImage.h"
 
 @class NSData;
 
@@ -23,12 +28,12 @@ typedef O2Font *O2FontRef;
    int       _leading;
    int       _capHeight;
    int       _xHeight;
-   CGFloat   _italicAngle;
-   CGFloat   _stemV;
-   CGRect    _bbox;
+   O2Float   _italicAngle;
+   O2Float   _stemV;
+   O2Rect    _bbox;
    int       _numberOfGlyphs;
    int      *_advances;
-   CGGlyph  *_MacRomanEncoding;
+   O2Glyph  *_MacRomanEncoding;
 }
 
 +(O2Font *)createWithFontName:(NSString *)name;
@@ -38,13 +43,13 @@ typedef O2Font *O2FontRef;
 
 -(NSData *)copyTableForTag:(uint32_t)tag;
 
--(CGGlyph)glyphWithGlyphName:(NSString *)name;
--(NSString *)copyGlyphNameForGlyph:(CGGlyph)glyph;
+-(O2Glyph)glyphWithGlyphName:(NSString *)name;
+-(NSString *)copyGlyphNameForGlyph:(O2Glyph)glyph;
 
 -(void)fetchAdvances;
 
--(CGGlyph *)MacRomanEncoding;
--(CGGlyph *)glyphTableForEncoding:(CGTextEncoding)encoding;
+-(O2Glyph *)MacRomanEncoding;
+-(O2Glyph *)glyphTableForEncoding:(O2TextEncoding)encoding;
 
 O2FontRef O2FontCreateWithFontName(NSString *name);
 O2FontRef O2FontCreateWithDataProvider(O2DataProviderRef provider);
@@ -58,15 +63,15 @@ int       O2FontGetDescent(O2FontRef self);
 int       O2FontGetLeading(O2FontRef self);
 int       O2FontGetCapHeight(O2FontRef self);
 int       O2FontGetXHeight(O2FontRef self);
-CGFloat   O2FontGetItalicAngle(O2FontRef self);
-CGFloat   O2FontGetStemV(O2FontRef self);
-CGRect    O2FontGetFontBBox(O2FontRef self);
+O2Float   O2FontGetItalicAngle(O2FontRef self);
+O2Float   O2FontGetStemV(O2FontRef self);
+O2Rect    O2FontGetFontBBox(O2FontRef self);
 
 size_t    O2FontGetNumberOfGlyphs(O2FontRef self);
-BOOL      O2FontGetGlyphAdvances(O2FontRef self,const CGGlyph *glyphs,size_t count,int *advances);
+BOOL      O2FontGetGlyphAdvances(O2FontRef self,const O2Glyph *glyphs,size_t count,int *advances);
 
-CGGlyph   O2FontGetGlyphWithGlyphName(O2FontRef self,NSString *name);
-NSString *O2FontCopyGlyphNameForGlyph(O2FontRef self,CGGlyph glyph);
+O2Glyph   O2FontGetGlyphWithGlyphName(O2FontRef self,NSString *name);
+NSString *O2FontCopyGlyphNameForGlyph(O2FontRef self,O2Glyph glyph);
 
 NSData   *O2FontCopyTableForTag(O2FontRef self,uint32_t tag);
 

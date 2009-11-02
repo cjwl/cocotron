@@ -32,29 +32,29 @@
 typedef O2Paint *O2PaintRef;
 
 // this function returns the number of pixels read as a positive value or skipped as a negative value
-typedef int (*O2PaintReadSpan_lRGBA8888_PRE_function)(O2Paint *self,int x,int y,KGRGBA8888 *span,int length);
-typedef int (*O2PaintReadSpan_lRGBAffff_PRE_function)(O2Paint *self,int x,int y,KGRGBAffff *span,int length);
+typedef int (*O2PaintReadSpan_lRGBA8888_PRE_function)(O2Paint *self,int x,int y,O2argb8u *span,int length);
+typedef int (*O2PaintReadSpan_lRGBAffff_PRE_function)(O2Paint *self,int x,int y,O2argb32f *span,int length);
 
 @interface O2Paint : NSObject {
 @public
     O2PaintReadSpan_lRGBA8888_PRE_function _paint_lRGBA8888_PRE;
     O2PaintReadSpan_lRGBAffff_PRE_function _paint_lRGBAffff_PRE;
 @protected
-    CGAffineTransform               m_surfaceToPaintMatrix;
+    O2AffineTransform               m_surfaceToPaintMatrix;
 }
 
 O2PaintRef O2PaintRetain(O2PaintRef self);
 void O2PaintRelease(O2PaintRef self);
 
-void O2PaintSetSurfaceToPaintMatrix(O2Paint *self,CGAffineTransform surfaceToPaintMatrix);
+void O2PaintSetSurfaceToPaintMatrix(O2Paint *self,O2AffineTransform surfaceToPaintMatrix);
 
 
 @end
 
-static inline int O2PaintReadSpan_lRGBA8888_PRE(O2Paint *self,int x,int y,KGRGBA8888 *span,int length) {
+static inline int O2PaintReadSpan_lRGBA8888_PRE(O2Paint *self,int x,int y,O2argb8u *span,int length) {
    return self->_paint_lRGBA8888_PRE(self,x,y,span,length);
 }
 
-static inline int O2PaintReadSpan_lRGBAffff_PRE(O2Paint *self,int x,int y,KGRGBAffff *span,int length) {
+static inline int O2PaintReadSpan_lRGBAffff_PRE(O2Paint *self,int x,int y,O2argb32f *span,int length) {
    return self->_paint_lRGBAffff_PRE(self,x,y,span,length);
 }

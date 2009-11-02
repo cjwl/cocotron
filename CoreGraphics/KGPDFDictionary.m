@@ -74,10 +74,10 @@ NSMapTableKeyCallBacks O2PDFOwnedCStringKeyCallBacks={
    [super dealloc];
 }
 
--(O2PDFObjectType)objectType { return kKGPDFObjectTypeDictionary; }
+-(O2PDFObjectType)objectType { return kO2PDFObjectTypeDictionary; }
 
 -(BOOL)checkForType:(O2PDFObjectType)type value:(void *)value {
-   if(type!=kKGPDFObjectTypeDictionary)
+   if(type!=kO2PDFObjectTypeDictionary)
     return NO;
    
    *((O2PDFDictionary **)value)=self;
@@ -139,55 +139,55 @@ NSMapTableKeyCallBacks O2PDFOwnedCStringKeyCallBacks={
 -(BOOL)getNullForKey:(const char *)key {
    O2PDFObject *object=[self objectForCStringKey:key];
    
-   return ([object objectType]==kKGPDFObjectTypeNull)?YES:NO;
+   return ([object objectType]==kO2PDFObjectTypeNull)?YES:NO;
 }
 
 -(BOOL)getBooleanForKey:(const char *)key value:(O2PDFBoolean *)valuep {
    O2PDFObject *object=[self objectForCStringKey:key];
    
-   return [object checkForType:kKGPDFObjectTypeBoolean value:valuep];
+   return [object checkForType:kO2PDFObjectTypeBoolean value:valuep];
 }
 
 -(BOOL)getIntegerForKey:(const char *)key value:(O2PDFInteger *)valuep {
    O2PDFObject *object=[self objectForCStringKey:key];
    
-   return [object checkForType:kKGPDFObjectTypeInteger value:valuep];
+   return [object checkForType:kO2PDFObjectTypeInteger value:valuep];
 }
 
 -(BOOL)getNumberForKey:(const char *)key value:(O2PDFReal *)valuep {
    O2PDFObject *object=[self objectForCStringKey:key];
    
-   return [object checkForType:kKGPDFObjectTypeReal value:valuep];
+   return [object checkForType:kO2PDFObjectTypeReal value:valuep];
 }
 
 -(BOOL)getNameForKey:(const char *)key value:(const char **)namep {
    O2PDFObject *object=[self objectForCStringKey:key];
    
-   return [object checkForType:kKGPDFObjectTypeName value:namep];
+   return [object checkForType:kO2PDFObjectTypeName value:namep];
 }
 
 -(BOOL)getStringForKey:(const char *)key value:(O2PDFString **)stringp {
    O2PDFObject *object=[self objectForCStringKey:key];
    
-   return [object checkForType:kKGPDFObjectTypeString value:stringp];
+   return [object checkForType:kO2PDFObjectTypeString value:stringp];
 }
 
 -(BOOL)getArrayForKey:(const char *)key value:(O2PDFArray **)arrayp {
    O2PDFObject *object=[self objectForCStringKey:key];
    
-   return [object checkForType:kKGPDFObjectTypeArray value:arrayp];
+   return [object checkForType:kO2PDFObjectTypeArray value:arrayp];
 }
 
 -(BOOL)getDictionaryForKey:(const char *)key value:(O2PDFDictionary **)dictionaryp {
    O2PDFObject *object=[self objectForCStringKey:key];
    
-   return [object checkForType:kKGPDFObjectTypeDictionary value:dictionaryp];
+   return [object checkForType:kO2PDFObjectTypeDictionary value:dictionaryp];
 }
 
 -(BOOL)getStreamForKey:(const char *)key value:(O2PDFStream **)streamp {
    O2PDFObject *object=[self objectForCStringKey:key];
    
-   return [object checkForType:kKGPDFObjectTypeStream value:streamp];
+   return [object checkForType:kO2PDFObjectTypeStream value:streamp];
 }
 
 -(NSString *)description {

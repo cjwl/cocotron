@@ -7,7 +7,20 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
 #import <Foundation/NSObject.h>
-#import <CoreGraphics/CoreGraphics.h>
+#import "O2Geometry.h"
+#import "O2AffineTransform.h"
+
+@class O2PDFPage;
+
+typedef O2PDFPage *O2PDFPageRef;
+
+typedef enum {
+   kO2PDFMediaBox,
+   kO2PDFCropBox,
+   kO2PDFBleedBox,
+   kO2PDFTrimBox,
+   kO2PDFArtBox,
+} O2PDFBox;
 
 @class O2PDFDocument,O2PDFDictionary,O2Context;
 
@@ -26,11 +39,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(O2PDFDictionary *)dictionary;
 
--(BOOL)getRect:(CGRect *)rect forBox:(CGPDFBox)box;
+-(BOOL)getRect:(O2Rect *)rect forBox:(O2PDFBox)box;
 
 -(int)rotationAngle;
 
--(CGAffineTransform)drawingTransformForBox:(CGPDFBox)box inRect:(CGRect)rect rotate:(int)degrees preserveAspectRatio:(BOOL)preserveAspectRatio;
+-(O2AffineTransform)drawingTransformForBox:(O2PDFBox)box inRect:(O2Rect)rect rotate:(int)degrees preserveAspectRatio:(BOOL)preserveAspectRatio;
 
 -(void)drawInContext:(O2Context *)context;
 

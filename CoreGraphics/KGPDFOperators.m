@@ -39,30 +39,30 @@ static O2Context *kgContextFromInfo(void *info) {
 void O2PDF_render_b(O2PDFScanner *scanner,void *info) {
    O2Context *context=kgContextFromInfo(info);
    
-   [context closePath];
-   [context fillAndStrokePath];
+   O2ContextClosePath(context);
+   O2ContextDrawPath(context,kO2PathFillStroke);
 }
 
 // fill, stroke
 void O2PDF_render_B(O2PDFScanner *scanner,void *info) {
    O2Context *context=kgContextFromInfo(info);
    
-   [context fillAndStrokePath];
+   O2ContextDrawPath(context,kO2PathFillStroke);
 }
 
 // closepath, eofill, stroke
 void O2PDF_render_b_star(O2PDFScanner *scanner,void *info) {
    O2Context *context=kgContextFromInfo(info);
    
-   [context closePath];
-   [context evenOddFillAndStrokePath];
+   O2ContextClosePath(context);
+   O2ContextDrawPath(context,kO2PathEOFillStroke);
 }
 
 // eofill, stroke
 void O2PDF_render_B_star(O2PDFScanner *scanner,void *info) {
    O2Context *context=kgContextFromInfo(info);
    
-   [context evenOddFillAndStrokePath];
+   O2ContextDrawPath(context,kO2PathEOFillStroke);
 }
 
 // Begin marked-content sequence with property list
@@ -84,7 +84,7 @@ void O2PDF_render_BMC(O2PDFScanner *scanner,void *info) {
 void O2PDF_render_BT(O2PDFScanner *scanner,void *info) {
    O2Context *context=kgContextFromInfo(info);
    
-   [context setTextMatrix:CGAffineTransformIdentity];
+   O2ContextSetTextMatrix(context,O2AffineTransformIdentity);
    //NSLog(@"BT");
 }
 
@@ -111,13 +111,13 @@ void O2PDF_render_c(O2PDFScanner *scanner,void *info) {
    if(![scanner popNumber:&x1])
     return;
    
-   [context addCurveToPoint:x1:y1:x2:y2:x3:y3];
+   O2ContextAddCurveToPoint(context,x1,y1,x2,y2,x3,y3);
 }
 
 // concat, Concatenate matrix to current transformation matrix
 void O2PDF_render_cm(O2PDFScanner *scanner,void *info) {
    O2Context        *context=kgContextFromInfo(info);
-   CGAffineTransform matrix;
+   O2AffineTransform matrix;
    
    if(![scanner popNumber:&matrix.ty])
     return;
@@ -132,7 +132,7 @@ void O2PDF_render_cm(O2PDFScanner *scanner,void *info) {
    if(![scanner popNumber:&matrix.a])
     return;
   
-   [context concatCTM:matrix];
+   O2ContextConcatCTM(context,matrix);
 }
 
 
@@ -140,11 +140,11 @@ O2ColorSpaceRef colorSpaceFromScannerInfo(O2PDFScanner *scanner,void *info,const
    O2ColorSpaceRef result=NULL;
    
    if(strcmp(name,"DeviceGray")==0)
-    result=[[O2ColorSpace alloc] initWithDeviceGray];
+    result=O2ColorSpaceCreateDeviceGray();
    else if(strcmp(name,"DeviceRGB")==0)
-    result=[[O2ColorSpace alloc] initWithDeviceRGB];
+    result=O2ColorSpaceCreateDeviceRGB();
    else if(strcmp(name,"DeviceCMYK")==0)
-    result=[[O2ColorSpace alloc] initWithDeviceCMYK];
+    result=O2ColorSpaceCreateDeviceCMYK();
    else {
     O2PDFContentStream *content=[scanner contentStream];
     O2PDFObject        *object=[content resourceForCategory:"ColorSpace" name:name];
@@ -172,7 +172,7 @@ void O2PDF_render_CS(O2PDFScanner *scanner,void *info) {
    colorSpace=colorSpaceFromScannerInfo(scanner,info,name);
    
    if(colorSpace!=NULL){
-    [context setStrokeColorSpace:colorSpace];
+    O2ContextSetStrokeColorSpace(context,colorSpace);
     [colorSpace release];
    }
 }
@@ -189,7 +189,7 @@ void O2PDF_render_cs(O2PDFScanner *scanner,void *info) {
    colorSpace=colorSpaceFromScannerInfo(scanner,info,name);
    
    if(colorSpace!=NULL){
-    [context setFillColorSpace:colorSpace];
+    O2ContextSetFillColorSpace(context,colorSpace);
     [colorSpace release];
    }
 }
@@ -213,7 +213,7 @@ void O2PDF_render_d(O2PDFScanner *scanner,void *info) {
      if(![array getNumberAtIndex:i value:lengths+i])
       return;
    
-    [context setLineDashPhase:phase lengths:lengths count:count];
+    O2ContextSetLineDash(context,phase,lengths,count);
    }
 }
 
@@ -244,7 +244,7 @@ void O2PDF_render_Do(O2PDFScanner *scanner,void *info) {
     return;
   // NSLog(@"name=%s",name);
    
-   if(![resource checkForType:kKGPDFObjectTypeStream value:&stream])
+   if(![resource checkForType:kO2PDFObjectTypeStream value:&stream])
     return;
    
    dictionary=[stream dictionary];
@@ -289,7 +289,7 @@ if(doIt)
     O2Image *image=[O2Image imageWithPDFObject:stream];
     
     if(image!=NULL){
-     [context drawImage:image inRect:CGRectMake(0,0,1,1)];
+     [context drawImage:image inRect:O2RectMake(0,0,1,1)];
     }
 
     if(image!=NULL)
@@ -332,21 +332,21 @@ void O2PDF_render_EX(O2PDFScanner *scanner,void *info) {
 void O2PDF_render_f(O2PDFScanner *scanner,void *info) {
    O2Context *context=kgContextFromInfo(info);
    
-   [context fillPath];
+   O2ContextFillPath(context);
 }
 
 // fill, fill path using nonzero winding number rule (obsolete)
 void O2PDF_render_F(O2PDFScanner *scanner,void *info) {
    O2Context *context=kgContextFromInfo(info);
    
-   [context fillPath];
+   O2ContextFillPath(context);
 }
 
 // eofill, fill path using even-odd rule
 void O2PDF_render_f_star(O2PDFScanner *scanner,void *info) {
    O2Context *context=kgContextFromInfo(info);
    
-   [context evenOddFillPath];
+   O2ContextEOFillPath(context);
 }
 
 // setgray, set gray level for stroking operations
@@ -390,7 +390,7 @@ void O2PDF_render_gs(O2PDFScanner *scanner,void *info) {
    if((resource=[content resourceForCategory:"ExtGState" name:name])==nil)
     return;
    
-   if(![resource checkForType:kKGPDFObjectTypeDictionary value:&graphicsState])
+   if(![resource checkForType:kO2PDFObjectTypeDictionary value:&graphicsState])
     return;
    
    //NSLog(@"gs=%@",graphicsState);
@@ -400,13 +400,13 @@ void O2PDF_render_gs(O2PDFScanner *scanner,void *info) {
      return;
 
    if([graphicsState getNumberForKey:"LW" value:&number])
-    [context setLineWidth:number];
+    O2ContextSetLineWidth(context,number);
    if([graphicsState getIntegerForKey:"LC" value:&integer])
-    [context setLineCap:integer];
+    O2ContextSetLineCap(context,integer);
    if([graphicsState getIntegerForKey:"LJ" value:&integer])
-    [context setLineJoin:integer];
+    O2ContextSetLineJoin(context,integer);
    if([graphicsState getNumberForKey:"ML" value:&number])
-    [context setMiterLimit:number];
+    O2ContextSetMiterLimit(context,number);
    if([graphicsState getArrayForKey:"D" value:&array]){
    }
    if([graphicsState getNameForKey:"RI" value:&name]){
@@ -424,37 +424,37 @@ void O2PDF_render_gs(O2PDFScanner *scanner,void *info) {
    
    if([graphicsState getNameForKey:"BM" value:&name]){
     if(strcmp(name,"Normal")==0)
-     [context setBlendMode:kCGBlendModeNormal];
+     O2ContextSetBlendMode(context,kO2BlendModeNormal);
     else if(strcmp(name,"Multiply")==0)
-     [context setBlendMode:kCGBlendModeMultiply];
+     O2ContextSetBlendMode(context,kO2BlendModeMultiply);
     else if(strcmp(name,"Screen")==0)
-     [context setBlendMode:kCGBlendModeScreen];
+     O2ContextSetBlendMode(context,kO2BlendModeScreen);
     else if(strcmp(name,"Overlay")==0)
-     [context setBlendMode:kCGBlendModeOverlay];
+     O2ContextSetBlendMode(context,kO2BlendModeOverlay);
     else if(strcmp(name,"Darken")==0)
-     [context setBlendMode:kCGBlendModeDarken];
+     O2ContextSetBlendMode(context,kO2BlendModeDarken);
     else if(strcmp(name,"Lighten")==0)
-     [context setBlendMode:kCGBlendModeLighten];
+     O2ContextSetBlendMode(context,kO2BlendModeLighten);
     else if(strcmp(name,"ColorDodge")==0)
-     [context setBlendMode:kCGBlendModeColorDodge];
+     O2ContextSetBlendMode(context,kO2BlendModeColorDodge);
     else if(strcmp(name,"ColorBurn")==0)
-     [context setBlendMode:kCGBlendModeColorBurn];
+     O2ContextSetBlendMode(context,kO2BlendModeColorBurn);
     else if(strcmp(name,"HardLight")==0)
-     [context setBlendMode:kCGBlendModeHardLight];
+     O2ContextSetBlendMode(context,kO2BlendModeHardLight);
     else if(strcmp(name,"SoftLight")==0)
-     [context setBlendMode:kCGBlendModeSoftLight];
+     O2ContextSetBlendMode(context,kO2BlendModeSoftLight);
     else if(strcmp(name,"Difference")==0)
-     [context setBlendMode:kCGBlendModeDifference];
+     O2ContextSetBlendMode(context,kO2BlendModeDifference);
     else if(strcmp(name,"Exclusion")==0)
-     [context setBlendMode:kCGBlendModeExclusion];
+     O2ContextSetBlendMode(context,kO2BlendModeExclusion);
     else if(strcmp(name,"Hue")==0)
-     [context setBlendMode:kCGBlendModeHue];
+     O2ContextSetBlendMode(context,kO2BlendModeHue);
     else if(strcmp(name,"Saturation")==0)
-     [context setBlendMode:kCGBlendModeSaturation];
+     O2ContextSetBlendMode(context,kO2BlendModeSaturation);
     else if(strcmp(name,"Color")==0)
-     [context setBlendMode:kCGBlendModeColor];
+     O2ContextSetBlendMode(context,kO2BlendModeColor);
     else if(strcmp(name,"Luminosity")==0)
-     [context setBlendMode:kCGBlendModeLuminosity];
+     O2ContextSetBlendMode(context,kO2BlendModeLuminosity);
     else
      NSLog(@"Unknown blend mode %s",name);
    }
@@ -477,7 +477,7 @@ void O2PDF_render_gs(O2PDFScanner *scanner,void *info) {
 void O2PDF_render_h(O2PDFScanner *scanner,void *info) {
    O2Context *context=kgContextFromInfo(info);
    
-   [context closePath];
+   O2ContextClosePath(context);
 }
 
 // setflat, Set flatness tolerance
@@ -488,7 +488,7 @@ void O2PDF_render_i(O2PDFScanner *scanner,void *info) {
    if(![scanner popNumber:&flatness])
     return;
 
-   [context setFlatness:flatness];
+   O2ContextSetFlatness(context,flatness);
 }
 
 // Begin inline image data
@@ -504,7 +504,7 @@ void O2PDF_render_j(O2PDFScanner *scanner,void *info) {
    if(![scanner popInteger:&linejoin])
     return;
 
-   [context setLineJoin:linejoin];
+   O2ContextSetLineJoin(context,linejoin);
 }
 
 // setlinecap, Set line cap style
@@ -515,7 +515,7 @@ void O2PDF_render_J(O2PDFScanner *scanner,void *info) {
    if(![scanner popInteger:&linecap])
     return;
 
-   [context setLineCap:linecap];
+   O2ContextSetLineCap(context,linecap);
 }
 
 // setcmykcolor, Set CMYK color for stroking operations
@@ -562,7 +562,7 @@ void O2PDF_render_l(O2PDFScanner *scanner,void *info) {
    if(![scanner popNumber:&x])
     return;
    
-   [context addLineToPoint:x:y];
+   O2ContextAddLineToPoint(context,x,y);
 }
 
 // moveto, Begin new subpath
@@ -575,7 +575,7 @@ void O2PDF_render_m(O2PDFScanner *scanner,void *info) {
    if(![scanner popNumber:&x])
     return;
    
-   [context moveToPoint:x:y];
+   O2ContextMoveToPoint(context,x,y);
 }
 
 // setmiterlimit, Set miter limit
@@ -586,7 +586,7 @@ void O2PDF_render_M(O2PDFScanner *scanner,void *info) {
    if(![scanner popNumber:&limit])
     return;
 
-   [context setMiterLimit:limit];
+   O2ContextSetMiterLimit(context,limit);
 }
 
 void O2PDF_render_MP(O2PDFScanner *scanner,void *info) {
@@ -597,27 +597,27 @@ void O2PDF_render_MP(O2PDFScanner *scanner,void *info) {
 void O2PDF_render_n(O2PDFScanner *scanner,void *info) {
    O2Context *context=kgContextFromInfo(info);
    
-   [context beginPath];
+   O2ContextBeginPath(context);
 }
 
 // gsave
 void O2PDF_render_q(O2PDFScanner *scanner,void *info) {
    O2Context *context=kgContextFromInfo(info);
    
-   [context saveGState];
+   O2ContextSaveGState(context);
 }
 
 // grestore
 void O2PDF_render_Q(O2PDFScanner *scanner,void *info) {
    O2Context *context=kgContextFromInfo(info);
    
-   [context restoreGState];
+   O2ContextRestoreGState(context);
 }
 
 // Append rectangle to path
 void O2PDF_render_re(O2PDFScanner *scanner,void *info) {
    O2Context *context=kgContextFromInfo(info);
-   CGRect     rect;
+   O2Rect     rect;
 
    if(![scanner popNumber:&rect.size.height])
     return;
@@ -628,7 +628,7 @@ void O2PDF_render_re(O2PDFScanner *scanner,void *info) {
    if(![scanner popNumber:&rect.origin.x])
     return;
 
-   [context addRect:rect];
+   O2ContextAddRect(context,rect);
 }
 
 // setrgbcolor, Set RGB color for stroking operations
@@ -671,22 +671,22 @@ void O2PDF_render_ri(O2PDFScanner *scanner,void *info) {
    if(![scanner popName:&name])
     return;
    
-   [context setRenderingIntent:KGImageRenderingIntentWithName(name)];
+   O2ContextSetRenderingIntent(context,O2ImageRenderingIntentWithName(name));
 }
 
 // closepath stroke
 void O2PDF_render_s(O2PDFScanner *scanner,void *info) {
    O2Context *context=kgContextFromInfo(info);
    
-   [context closePath];
-   [context strokePath];
+   O2ContextClosePath(context);
+   O2ContextStrokePath(context);
 }
 
 // stroke
 void O2PDF_render_S(O2PDFScanner *scanner,void *info) {
    O2Context *context=kgContextFromInfo(info);
    
-   [context strokePath];
+   O2ContextStrokePath(context);
 }
 
 // setcolor, Set color for stroking operations
@@ -694,7 +694,7 @@ void O2PDF_render_SC(O2PDFScanner *scanner,void *info) {
    O2Context    *context=kgContextFromInfo(info);
    O2Color      *color=[context strokeColor];
    O2ColorSpaceRef colorSpace=O2ColorGetColorSpace(color);
-   unsigned      numberOfComponents=[colorSpace numberOfComponents];
+   unsigned      numberOfComponents=O2ColorSpaceGetNumberOfComponents(colorSpace);
    int           count=numberOfComponents;
    float         components[count+1];
    
@@ -705,7 +705,7 @@ void O2PDF_render_SC(O2PDFScanner *scanner,void *info) {
      return;
     }
     
-   [context setStrokeColorWithComponents:components];
+   O2ContextSetStrokeColor(context,components);
 }
 
 // setcolor, Set color for nonstroking operations
@@ -713,7 +713,7 @@ void O2PDF_render_sc(O2PDFScanner *scanner,void *info) {
    O2Context    *context=kgContextFromInfo(info);
    O2Color      *color=[context fillColor];
    O2ColorSpaceRef colorSpace=O2ColorGetColorSpace(color);
-   unsigned      numberOfComponents=[colorSpace numberOfComponents];
+   unsigned      numberOfComponents=O2ColorSpaceGetNumberOfComponents(colorSpace);
    int           count=numberOfComponents;
    float         components[count+1];
    
@@ -724,7 +724,7 @@ void O2PDF_render_sc(O2PDFScanner *scanner,void *info) {
      return;
     }
     
-   [context setFillColorWithComponents:components];
+   O2ContextSetFillColor(context,components);
 }
 
 // setcolor, Set color for stroking operations, ICCBased and special color spaces
@@ -732,7 +732,7 @@ void O2PDF_render_SCN(O2PDFScanner *scanner,void *info) {
    O2Context    *context=kgContextFromInfo(info);
    O2Color      *color=[context strokeColor];
    O2ColorSpaceRef colorSpace=O2ColorGetColorSpace(color);
-   unsigned      numberOfComponents=[colorSpace numberOfComponents];
+   unsigned      numberOfComponents=O2ColorSpaceGetNumberOfComponents(colorSpace);
    int           count=numberOfComponents;
    float         components[count+1];
    
@@ -743,7 +743,7 @@ void O2PDF_render_SCN(O2PDFScanner *scanner,void *info) {
      return;
     }
     
-   [context setStrokeColorWithComponents:components];
+   O2ContextSetStrokeColor(context,components);
 }
 
 // setcolor, Set color for nonstroking operations, ICCBased and special color spaces
@@ -751,7 +751,7 @@ void O2PDF_render_scn(O2PDFScanner *scanner,void *info) {
    O2Context    *context=kgContextFromInfo(info);
    O2Color      *color=[context fillColor];
    O2ColorSpaceRef colorSpace=O2ColorGetColorSpace(color);
-   unsigned      numberOfComponents=[colorSpace numberOfComponents];
+   unsigned      numberOfComponents=O2ColorSpaceGetNumberOfComponents(colorSpace);
    int           count=numberOfComponents;
    O2PDFReal     components[count+1];
    
@@ -762,7 +762,7 @@ void O2PDF_render_scn(O2PDFScanner *scanner,void *info) {
      return;
     }
 
-   [context setFillColorWithComponents:components];
+   O2ContextSetFillColor(context,components);
 }
 
 
@@ -773,7 +773,7 @@ void O2PDF_render_sh(O2PDFScanner *scanner,void *info) {
    O2PDFContentStream *content=[scanner contentStream];
    O2PDFObject        *resource;
    const char         *name;
-   KGShading *shading=NULL;
+   O2Shading *shading=NULL;
    
    if(![scanner popName:&name])
     return;
@@ -781,7 +781,7 @@ void O2PDF_render_sh(O2PDFScanner *scanner,void *info) {
    if((resource=[content resourceForCategory:"Shading" name:name])==nil)
     return;
    
-   shading=[KGShading shadingWithPDFObject:resource];
+   shading=[O2Shading shadingWithPDFObject:resource];
    
    if(shading!=NULL){
     [context drawShading:shading];
@@ -802,7 +802,7 @@ void O2PDF_render_Tc(O2PDFScanner *scanner,void *info) {
    if(![scanner popNumber:&spacing])
     return;
    
-   [context setCharacterSpacing:spacing];
+   O2ContextSetCharacterSpacing(context,spacing);
 }
 
 // Move text position
@@ -815,7 +815,7 @@ void O2PDF_render_Td(O2PDFScanner *scanner,void *info) {
    if(![scanner popNumber:&x])
     return;
     
-   [context setTextPosition:x:y];
+   O2ContextSetTextPosition(context,x,y);
    
 }
 
@@ -830,7 +830,7 @@ void O2PDF_render_TD(O2PDFScanner *scanner,void *info) {
     return;
     
    [context setTextLeading:-y];
-   [context setTextPosition:x:y];
+   O2ContextSetTextPosition(context,x,y);
 }
 
 // Set text font and size
@@ -851,7 +851,7 @@ void O2PDF_render_Tf(O2PDFScanner *scanner,void *info) {
    if((resource=[content resourceForCategory:"Font" name:name])==nil)
     return;
    
-   if(![resource checkForType:kKGPDFObjectTypeDictionary value:&dictionary])
+   if(![resource checkForType:kO2PDFObjectTypeDictionary value:&dictionary])
     return;
     
    if([dictionary getNameForKey:"Type" value:&name])
@@ -861,7 +861,7 @@ void O2PDF_render_Tf(O2PDFScanner *scanner,void *info) {
    if(![dictionary getNameForKey:"Subtype" value:&subtype])
     return;
 
-   [context setTextMatrix:CGAffineTransformIdentity];
+   O2ContextSetTextMatrix(context,O2AffineTransformIdentity);
    
    if(strcmp(subtype,"Type0")==0){
     NSLog(@"Font subtype %s not implemented",subtype);
@@ -872,7 +872,7 @@ void O2PDF_render_Tf(O2PDFScanner *scanner,void *info) {
     if(![dictionary getNameForKey:"BaseFont" value:&baseFont])
      return;
 //NSLog(@"Type1 baseFont=%s,scale=%f",baseFont,scale);
-    [context selectFontWithName:baseFont size:scale encoding:0];
+    O2ContextSelectFont(context,baseFont,scale,0);
    }
    else if(strcmp(subtype,"MMType1")==0){
     NSLog(@"Font subtype %s not implemented",subtype);
@@ -886,7 +886,7 @@ void O2PDF_render_Tf(O2PDFScanner *scanner,void *info) {
     if(![dictionary getNameForKey:"BaseFont" value:&baseFont])
      return;
 //NSLog(@"Type1 baseFont=%s,scale=%f",baseFont,scale);
-    [context selectFontWithName:baseFont size:scale encoding:0];
+    O2ContextSelectFont(context,baseFont,scale,0);
    }
    else if(strcmp(subtype,"CIDFontType0")==0){
     NSLog(@"Font subtype %s not implemented",subtype);
@@ -927,10 +927,10 @@ void O2PDF_render_TJ(O2PDFScanner *scanner,void *info) {
     if(![array getObjectAtIndex:i value:&object])
      return;
 
-    if([object checkForType:kKGPDFObjectTypeReal value:&real]){
+    if([object checkForType:kO2PDFObjectTypeReal value:&real]){
      // translate text matrix, change position
     }
-    else if([object checkForType:kKGPDFObjectTypeString value:&string]){
+    else if([object checkForType:kO2PDFObjectTypeString value:&string]){
      [context showText:[string bytes] length:[string length]];
     }
     else
@@ -946,7 +946,7 @@ void O2PDF_render_TL(O2PDFScanner *scanner,void *info) {
 // Set text matrix and text line matrix
 void O2PDF_render_Tm(O2PDFScanner *scanner,void *info) {
    O2Context        *context=kgContextFromInfo(info);
-   CGAffineTransform matrix;
+   O2AffineTransform matrix;
    
    if(![scanner popNumber:&matrix.ty])
     return;
@@ -962,7 +962,7 @@ void O2PDF_render_Tm(O2PDFScanner *scanner,void *info) {
     return;
      
    //NSLog(@"%f %f %f %f %f %f",matrix.a,matrix.b,matrix.c,matrix.d,matrix.tx,matrix.ty);
-   [context setTextMatrix:matrix];
+   O2ContextSetTextMatrix(context,matrix);
 }
 
 // Set text rendering mode
@@ -1006,7 +1006,7 @@ void O2PDF_render_v(O2PDFScanner *scanner,void *info) {
    if(![scanner popNumber:&x2])
     return;
    
-   [context addQuadCurveToPoint:x2:y2:x3:y3];
+   O2ContextAddQuadCurveToPoint(context,x2,y2,x3,y3);
 }
 
 // setlinewidth, Set line width
@@ -1017,21 +1017,21 @@ void O2PDF_render_w(O2PDFScanner *scanner,void *info) {
    if(![scanner popNumber:&width])
     return;
    
-   [context setLineWidth:width];
+   O2ContextSetLineWidth(context,width);
 }
 
 // clip, Set clipping path using nonzero winding number rule
 void O2PDF_render_W(O2PDFScanner *scanner,void *info) {
    O2Context *context=kgContextFromInfo(info);
    
-   [context clipToPath];
+   O2ContextClip(context);
 }
 
 // eoclip, Set clipping path using even-odd rule
 void O2PDF_render_W_star(O2PDFScanner *scanner,void *info) {
    O2Context *context=kgContextFromInfo(info);
    
-   [context evenOddClipToPath];
+   O2ContextEOClip(context);
 }
 
 // curveto, Append curved segment to path, final point replicated
@@ -1048,7 +1048,7 @@ void O2PDF_render_y(O2PDFScanner *scanner,void *info) {
    if(![scanner popNumber:&x1])
     return;
    
-   [context addCurveToPoint:x1:y1:x3:y3:x3:y3];
+   O2ContextAddCurveToPoint(context,x1,y1,x3,y3,x3,y3);
 }
 
 // Move to next line and show text
@@ -1074,7 +1074,7 @@ void O2PDF_render_dquote(O2PDFScanner *scanner,void *info) {
     return;
    
    [context setWordSpacing:wspacing];
-   [context setCharacterSpacing:cspacing];
+   O2ContextSetCharacterSpacing(context,cspacing);
    [context showText:[string bytes] length:[string length]];
 }
 

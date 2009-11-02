@@ -18,9 +18,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     [super dealloc];
     return nil;
    }
-   O2ColorSpaceRef colorSpace=[[O2ColorSpace alloc] initWithDeviceRGB];
+   O2ColorSpaceRef colorSpace=O2ColorSpaceCreateDeviceRGB();
    
-   if([super initWithBytes:[_deviceContext bitmapBytes] width:width height:height bitsPerComponent:[_deviceContext bitsPerComponent] bytesPerRow:[_deviceContext bytesPerRow] colorSpace:[[O2ColorSpace alloc] initWithDeviceRGB] bitmapInfo:kCGImageAlphaPremultipliedFirst|kCGBitmapByteOrder32Little]==nil){
+   if([super initWithBytes:[_deviceContext bitmapBytes] width:width height:height bitsPerComponent:[_deviceContext bitsPerComponent] bytesPerRow:[_deviceContext bytesPerRow] colorSpace:colorSpace bitmapInfo:kO2ImageAlphaPremultipliedFirst|kO2BitmapByteOrder32Little]==nil){
     [colorSpace release];
     return nil;
    }

@@ -70,7 +70,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    int             colorCount=colorMap->ColorCount;
    GifColorType   *colorLUT=colorMap->Colors;
    unsigned char  *gifRaster=gifImage->RasterBits;
-   O2ColorSpaceRef colorSpace=[[O2ColorSpace alloc] initWithDeviceRGB];
+   O2ColorSpaceRef colorSpace=O2ColorSpaceCreateDeviceRGB();
    size_t         width=gifImage->ImageDesc.Width;
    size_t         height=gifImage->ImageDesc.Height;
    size_t         bytesPerRow=width*sizeof(KGRGBA32Big);
@@ -138,9 +138,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    }
   
    O2DataProvider *provider=[[O2DataProvider alloc] initWithData:bitmap];
-   CGBitmapInfo    info=kCGBitmapByteOrder32Big|kCGImageAlphaPremultipliedLast;
+   O2BitmapInfo    info=kO2BitmapByteOrder32Big|kO2ImageAlphaPremultipliedLast;
 
-   O2Image        *result=[[O2Image alloc] initWithWidth:width height:height bitsPerComponent:bitsPerComponent bitsPerPixel:bitsPerPixel bytesPerRow:bytesPerRow colorSpace:colorSpace bitmapInfo:info provider:provider decode:NULL interpolate:NO renderingIntent:kCGRenderingIntentDefault];
+   O2Image        *result=[[O2Image alloc] initWithWidth:width height:height bitsPerComponent:bitsPerComponent bitsPerPixel:bitsPerPixel bytesPerRow:bytesPerRow colorSpace:colorSpace bitmapInfo:info provider:provider decode:NULL interpolate:NO renderingIntent:kO2RenderingIntentDefault];
 
    [colorSpace release];
    [provider release];

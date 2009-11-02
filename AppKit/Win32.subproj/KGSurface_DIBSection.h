@@ -9,7 +9,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @class KGDeviceContext_gdi,KGDeviceContext_gdiDIBSection;
 
-@interface KGSurface_DIBSection : KGSurface {
+@interface KGSurface_DIBSection : O2Surface {
    KGDeviceContext_gdiDIBSection *_deviceContext;
 }
 

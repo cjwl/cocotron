@@ -7,18 +7,27 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
 #import <Foundation/NSObject.h>
-#import <CoreGraphics/CoreGraphics.h>
+#import "O2Geometry.h"
+@class O2Context,NSDictionary,O2Layer,O2Surface;
 
-@class O2Context,NSDictionary;
+typedef O2Layer *O2LayerRef;
 
-@interface KGLayer : NSObject {
-   CGSize        _size;
+#import "KGContext.h"
+#import "KGImage.h"
+
+@interface O2Layer : NSObject {
+   O2ContextRef  _context;
+   O2Size        _size;
    NSDictionary *_unused;
+   O2Surface    *_surface;
 }
 
--initRelativeToContext:(O2Context *)context size:(CGSize)size unused:(NSDictionary *)unused;
+O2Surface *O2LayerGetSurface(O2LayerRef self);
 
--(CGSize)size;
--(O2Context *)context;
+O2LayerRef   O2LayerCreateWithContext(O2ContextRef context,O2Size size,NSDictionary *unused);
+O2LayerRef   O2LayerRetain(O2LayerRef self);
+void         O2LayerRelease(O2LayerRef self);
+O2Size       O2LayerGetSize(O2LayerRef self);
+O2ContextRef O2LayerGetContext(O2LayerRef self);
 
 @end

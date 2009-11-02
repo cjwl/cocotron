@@ -7,40 +7,41 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
 #import <Foundation/NSObject.h>
-#import <CoreGraphics/CoreGraphics.h>
+#import "O2Geometry.h"
 #import "KGFont.h"
 
-@class O2Image,O2ColorSpace,O2Color,KGPattern,O2MutablePath,O2Path,NSArray,NSMutableArray,O2Font;
+@class O2Image,O2ColorSpace,O2Color,O2Pattern,O2MutablePath,O2Path,NSArray,NSMutableArray,O2Font;
 
 @interface O2GState : NSObject <NSCopying> {
 @public
-   CGAffineTransform   _deviceSpaceTransform;
-   CGAffineTransform   _userSpaceTransform;
-   CGAffineTransform   _textTransform;
+   O2AffineTransform   _deviceSpaceTransform;
+   O2AffineTransform   _userSpaceTransform;
+   O2AffineTransform   _textTransform;
    
    NSMutableArray     *_clipPhases;
    O2Color            *_strokeColor;
    O2Color            *_fillColor;
    O2FontRef           _font;
-   CGFloat             _pointSize;
-   CGTextEncoding      _textEncoding;
+   O2Float             _pointSize;
+   BOOL                _fontIsDirty;
+   O2TextEncoding      _textEncoding;
    id                  _fontState;
-   CGSize              _patternPhase;   
+   O2Size              _patternPhase;   
    float               _characterSpacing;
    int                 _textDrawingMode;
    BOOL                _shouldSmoothFonts;
    float               _lineWidth;
-   CGLineCap           _lineCap;
-   CGLineJoin          _lineJoin;
+   O2LineCap           _lineCap;
+   O2LineJoin          _lineJoin;
    float               _miterLimit;
    float               _dashPhase;
    int                 _dashLengthsCount;
    float              *_dashLengths;
-   CGColorRenderingIntent _renderingIntent;
-   CGBlendMode          _blendMode;
+   O2ColorRenderingIntent _renderingIntent;
+   O2BlendMode          _blendMode;
    float               _flatness;
-   CGInterpolationQuality _interpolationQuality;
-   CGSize              _shadowOffset;
+   O2InterpolationQuality _interpolationQuality;
+   O2Size              _shadowOffset;
    float               _shadowBlur;
    O2Color            *_shadowColor;
    void               *_shadowKernel;
@@ -51,31 +52,31 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    float               _textLeading;
 }
 
--initWithDeviceTransform:(CGAffineTransform)deviceTransform;
+-initWithDeviceTransform:(O2AffineTransform)deviceTransform;
 -init;
 
--(CGAffineTransform)userSpaceToDeviceSpaceTransform;
--(CGAffineTransform)userSpaceTransform;
--(CGRect)clipBoundingBox;
--(CGAffineTransform)textMatrix;
--(CGInterpolationQuality)interpolationQuality;
--(CGPoint)textPosition;
--(CGPoint)convertPointToDeviceSpace:(CGPoint)point;
--(CGPoint)convertPointToUserSpace:(CGPoint)point;
--(CGSize)convertSizeToDeviceSpace:(CGSize)size;
--(CGSize)convertSizeToUserSpace:(CGSize)size;
--(CGRect)convertRectToDeviceSpace:(CGRect)rect;
--(CGRect)convertRectToUserSpace:(CGRect)rect;
+-(O2AffineTransform)userSpaceToDeviceSpaceTransform;
+-(O2AffineTransform)userSpaceTransform;
+-(O2Rect)clipBoundingBox;
+-(O2AffineTransform)textMatrix;
+-(O2InterpolationQuality)interpolationQuality;
+-(O2Point)textPosition;
+-(O2Point)convertPointToDeviceSpace:(O2Point)point;
+-(O2Point)convertPointToUserSpace:(O2Point)point;
+-(O2Size)convertSizeToDeviceSpace:(O2Size)size;
+-(O2Size)convertSizeToUserSpace:(O2Size)size;
+-(O2Rect)convertRectToDeviceSpace:(O2Rect)rect;
+-(O2Rect)convertRectToUserSpace:(O2Rect)rect;
 
--(void)setDeviceSpaceCTM:(CGAffineTransform)transform;
--(void)setUserSpaceCTM:(CGAffineTransform)transform;
--(void)concatCTM:(CGAffineTransform)transform;
+-(void)setDeviceSpaceCTM:(O2AffineTransform)transform;
+-(void)setUserSpaceCTM:(O2AffineTransform)transform;
+-(void)concatCTM:(O2AffineTransform)transform;
 
 -(NSArray *)clipPhases;
 -(void)removeAllClipPhases;
 -(void)addClipToPath:(O2Path *)path;
 -(void)addEvenOddClipToPath:(O2Path *)path;
--(void)addClipToMask:(O2Image *)image inRect:(CGRect)rect;
+-(void)addClipToMask:(O2Image *)image inRect:(O2Rect)rect;
 
 -(O2Color *)strokeColor;
 -(O2Color *)fillColor;
@@ -83,23 +84,24 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)setStrokeColor:(O2Color *)color;
 -(void)setFillColor:(O2Color *)color;
 
--(void)setPatternPhase:(CGSize)phase;
--(void)setStrokePattern:(KGPattern *)pattern components:(const float *)components;
--(void)setFillPattern:(KGPattern *)pattern components:(const float *)components;
+-(void)setPatternPhase:(O2Size)phase;
+-(void)setStrokePattern:(O2Pattern *)pattern components:(const float *)components;
+-(void)setFillPattern:(O2Pattern *)pattern components:(const float *)components;
 
--(void)setTextMatrix:(CGAffineTransform)transform;
+-(void)setTextMatrix:(O2AffineTransform)transform;
 -(void)setTextPosition:(float)x:(float)y;
 -(void)setCharacterSpacing:(float)spacing;
 -(void)setTextDrawingMode:(int)textMode;
 -(O2Font *)font;
--(CGFloat)pointSize;
--(CGTextEncoding)textEncoding;
--(CGGlyph *)glyphTableForTextEncoding;
+-(O2Float)pointSize;
+-(O2TextEncoding)textEncoding;
+-(O2Glyph *)glyphTableForTextEncoding;
+-(void)clearFontIsDirty;
 -(id)fontState;
 -(void)setFontState:(id)fontState;
 -(void)setFont:(O2Font *)font;
 -(void)setFontSize:(float)size;
--(void)selectFontWithName:(const char *)name size:(float)size encoding:(CGTextEncoding)encoding;
+-(void)selectFontWithName:(const char *)name size:(float)size encoding:(O2TextEncoding)encoding;
 -(void)setShouldSmoothFonts:(BOOL)yesOrNo;
 
 -(void)setLineWidth:(float)width;
@@ -108,14 +110,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)setMiterLimit:(float)limit;
 -(void)setLineDashPhase:(float)phase lengths:(const float *)lengths count:(unsigned)count;
 
--(void)setRenderingIntent:(CGColorRenderingIntent)intent;
--(void)setBlendMode:(CGBlendMode)mode;
+-(void)setRenderingIntent:(O2ColorRenderingIntent)intent;
+-(void)setBlendMode:(O2BlendMode)mode;
 
 -(void)setFlatness:(float)flatness;
--(void)setInterpolationQuality:(CGInterpolationQuality)quality;
+-(void)setInterpolationQuality:(O2InterpolationQuality)quality;
 
--(void)setShadowOffset:(CGSize)offset blur:(float)blur color:(O2Color *)color;
--(void)setShadowOffset:(CGSize)offset blur:(float)blur;
+-(void)setShadowOffset:(O2Size)offset blur:(float)blur color:(O2Color *)color;
+-(void)setShadowOffset:(O2Size)offset blur:(float)blur;
 
 -(void)setShouldAntialias:(BOOL)flag;
 

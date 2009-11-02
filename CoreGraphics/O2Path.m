@@ -12,7 +12,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @implementation O2Path
 
--initWithOperators:(unsigned char *)elements numberOfElements:(unsigned)numberOfElements points:(CGPoint *)points numberOfPoints:(unsigned)numberOfPoints {
+-initWithOperators:(unsigned char *)elements numberOfElements:(unsigned)numberOfElements points:(O2Point *)points numberOfPoints:(unsigned)numberOfPoints {
    int i;
    
    _numberOfElements=numberOfElements;
@@ -21,7 +21,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     _elements[i]=elements[i];
 
    _numberOfPoints=numberOfPoints;
-   _points=NSZoneMalloc(NULL,(_numberOfPoints==0?1:_numberOfPoints)*sizeof(CGPoint));
+   _points=NSZoneMalloc(NULL,(_numberOfPoints==0?1:_numberOfPoints)*sizeof(O2Point));
    for(i=0;i<_numberOfPoints;i++)
     _points[i]=points[i];
     
@@ -62,45 +62,45 @@ O2MutablePathRef O2PathCreateMutableCopy(O2PathRef self) {
    return [self mutableCopyWithZone:NULL];
 }
 
--(unsigned)numberOfElements {
-   return _numberOfElements;
+unsigned O2PathNumberOfElements(O2PathRef self) {
+   return self->_numberOfElements;
 }
 
--(const unsigned char *)elements {
-   return _elements;
+const unsigned char *O2PathElements(O2PathRef self) {
+   return self->_elements;
 }
 
--(unsigned)numberOfPoints {
-   return _numberOfPoints;
+unsigned O2PathNumberOfPoints(O2PathRef self) {
+   return self->_numberOfPoints;
 }
 
--(const CGPoint *)points {
-   return _points;
+const O2Point *O2PathPoints(O2PathRef self) {
+   return self->_points;
 }
 
-CGPoint O2PathGetCurrentPoint(O2PathRef self) {
+O2Point O2PathGetCurrentPoint(O2PathRef self) {
 // this is wrong w/ closepath last
-   return (self->_numberOfPoints==0)?CGPointZero:self->_points[self->_numberOfPoints-1];
+   return (self->_numberOfPoints==0)?O2PointZero:self->_points[self->_numberOfPoints-1];
 }
 
 BOOL    O2PathEqualToPath(O2PathRef self,O2PathRef other){
-   unsigned otherNumberOfOperators=[other numberOfElements];
+   unsigned otherNumberOfOperators=O2PathNumberOfElements(other);
    
    if(self->_numberOfElements==otherNumberOfOperators){
-    unsigned otherNumberOfPoints=[other numberOfPoints];
+    unsigned otherNumberOfPoints=O2PathNumberOfPoints(other);
     
     if(self->_numberOfPoints==otherNumberOfPoints){
-     const unsigned char *otherOperators=[other elements];
-     const CGPoint       *otherPoints;
+     const unsigned char *otherOperators=O2PathElements(other);
+     const O2Point       *otherPoints;
      int i;
      
      for(i=0;i<self->_numberOfElements;i++)
       if(self->_elements[i]!=otherOperators[i])
        return NO;
        
-     otherPoints=[other points];
+     otherPoints=O2PathPoints(other);
      for(i=0;i<self->_numberOfPoints;i++)
-      if(!CGPointEqualToPoint(self->_points[i],otherPoints[i]))
+      if(!O2PointEqualToPoint(self->_points[i],otherPoints[i]))
        return NO;
        
      return YES;
@@ -114,18 +114,18 @@ BOOL O2PathIsEmpty(O2PathRef self) {
    return self->_numberOfElements==0;
 }
 
-BOOL O2PathIsRect(O2PathRef self,CGRect *rect) {
+BOOL O2PathIsRect(O2PathRef self,O2Rect *rect) {
    if(self->_numberOfElements!=5)
     return NO;
-   if(self->_elements[0]!=kCGPathElementMoveToPoint)
+   if(self->_elements[0]!=kO2PathElementMoveToPoint)
     return NO;
-   if(self->_elements[1]!=kCGPathElementAddLineToPoint)
+   if(self->_elements[1]!=kO2PathElementAddLineToPoint)
     return NO;
-   if(self->_elements[2]!=kCGPathElementAddLineToPoint)
+   if(self->_elements[2]!=kO2PathElementAddLineToPoint)
     return NO;
-   if(self->_elements[3]!=kCGPathElementAddLineToPoint)
+   if(self->_elements[3]!=kO2PathElementAddLineToPoint)
     return NO;
-   if(self->_elements[4]!=kCGPathElementCloseSubpath)
+   if(self->_elements[4]!=kO2PathElementCloseSubpath)
     return NO;
    
    if(self->_points[0].x!=self->_points[1].x)
@@ -138,39 +138,39 @@ BOOL O2PathIsRect(O2PathRef self,CGRect *rect) {
     return NO;
    
    rect->origin=self->_points[0];
-   rect->size=CGSizeMake(self->_points[2].x-self->_points[0].x,self->_points[2].y-self->_points[0].y);
+   rect->size=O2SizeMake(self->_points[2].x-self->_points[0].x,self->_points[2].y-self->_points[0].y);
    
    return YES;
 }
 
-BOOL O2PathContainsPoint(O2PathRef self,const CGAffineTransform *xform,CGPoint point,BOOL evenOdd) {
+BOOL O2PathContainsPoint(O2PathRef self,const O2AffineTransform *xform,O2Point point,BOOL evenOdd) {
    KGUnimplementedFunction();
    return NO;
 }
 
-CGRect O2PathGetBoundingBox(O2PathRef self) {
-   CGRect result;
+O2Rect O2PathGetBoundingBox(O2PathRef self) {
+   O2Rect result;
    int i;
    
    if(self->_numberOfPoints==0)
-    return CGRectZero;
+    return O2RectZero;
    
    result.origin=self->_points[0];
-   result.size=CGSizeMake(0,0);
+   result.size=O2SizeMake(0,0);
    for(i=1;i<self->_numberOfPoints;i++){
-    CGPoint point=self->_points[i];
+    O2Point point=self->_points[i];
     
-    if(point.x>CGRectGetMaxX(result))
-     result.size.width=point.x-CGRectGetMinX(result);
+    if(point.x>O2RectGetMaxX(result))
+     result.size.width=point.x-O2RectGetMinX(result);
     else if(point.x<result.origin.x){
-     result.size.width=CGRectGetMaxX(result)-point.x;
+     result.size.width=O2RectGetMaxX(result)-point.x;
      result.origin.x=point.x;
     }
     
-    if(point.y>CGRectGetMaxY(result))
-     result.size.height=point.y-CGRectGetMinY(result);
+    if(point.y>O2RectGetMaxY(result))
+     result.size.height=point.y-O2RectGetMinY(result);
     else if(point.y<result.origin.y){
-     result.size.height=CGRectGetMaxY(result)-point.y;
+     result.size.height=O2RectGetMaxY(result)-point.y;
      result.origin.y=point.y;
     }
    }   
@@ -178,9 +178,9 @@ CGRect O2PathGetBoundingBox(O2PathRef self) {
    return result;
 }
 
-void O2PathApply(O2PathRef self,void *info,CGPathApplierFunction function) {
+void O2PathApply(O2PathRef self,void *info,O2PathApplierFunction function) {
    int           i,pointIndex=0;
-   CGPathElement element;
+   O2PathElement element;
    
    for(i=0;i<self->_numberOfElements;i++){
     element.type=self->_elements[i];
@@ -188,27 +188,27 @@ void O2PathApply(O2PathRef self,void *info,CGPathApplierFunction function) {
 
     switch(element.type){
     
-     case kCGPathElementMoveToPoint:
+     case kO2PathElementMoveToPoint:
       pointIndex+=1;
       break;
        
-     case kCGPathElementAddLineToPoint:
+     case kO2PathElementAddLineToPoint:
       pointIndex+=1;
       break;
 
-     case kCGPathElementAddCurveToPoint:
+     case kO2PathElementAddCurveToPoint:
       pointIndex+=3;
       break;
 
-     case kCGPathElementAddQuadCurveToPoint:
+     case kO2PathElementAddQuadCurveToPoint:
       pointIndex+=2;
       break;
 
-     case kCGPathElementCloseSubpath:
+     case kO2PathElementCloseSubpath:
       pointIndex+=0;
       break;
      }
-    if(function!=NULL) // CG will ignore function if NULL
+    if(function!=NULL) // O2 will ignore function if NULL
      function(info,&element);
    }
 }

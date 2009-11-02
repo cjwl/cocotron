@@ -98,7 +98,7 @@ void decode_format_0(O2TTFDecoderRef self){
 }
 void decode_format_2(O2TTFDecoderRef self){
 }
-void decode_format_4(O2TTFDecoderRef self,CGGlyph **twoLevel){
+void decode_format_4(O2TTFDecoderRef self,O2Glyph **twoLevel){
    struct segment {
     uint16_t endCode;
     uint16_t startCode;
@@ -166,7 +166,7 @@ void decode_format_4(O2TTFDecoderRef self,CGGlyph **twoLevel){
       uint8_t  index=code&0xFF;
       
       if(twoLevel[group]==NULL)
-       twoLevel[group]=NSZoneCalloc(NULL,256,sizeof(CGGlyph));
+       twoLevel[group]=NSZoneCalloc(NULL,256,sizeof(O2Glyph));
        
       twoLevel[group][index]=glyph;      
      }
@@ -180,7 +180,7 @@ void decode_format_4(O2TTFDecoderRef self,CGGlyph **twoLevel){
       uint8_t  index=code&0xFF;
       
       if(twoLevel[group]==NULL)
-       twoLevel[group]=NSZoneCalloc(NULL,256,sizeof(CGGlyph));
+       twoLevel[group]=NSZoneCalloc(NULL,256,sizeof(O2Glyph));
        
       twoLevel[group][index]=glyph;      
      }
@@ -190,7 +190,7 @@ void decode_format_4(O2TTFDecoderRef self,CGGlyph **twoLevel){
 void decode_format_6(O2TTFDecoderRef self){
 }
 
-void decode_subtable(O2TTFDecoderRef self,CGGlyph **twoLevel){
+void decode_subtable(O2TTFDecoderRef self,O2Glyph **twoLevel){
    uint16_t platformID=decode_uint16(self);
    dump(self,@"platformID=%d",platformID);
    uint16_t platformSpecificID=decode_uint16(self);
@@ -230,8 +230,8 @@ void decode_subtable(O2TTFDecoderRef self,CGGlyph **twoLevel){
    self->_position=save;
 }
 
-CGGlyph **O2TTFecoderTwoLevelUnicode_cmap(O2TTFDecoderRef self){
-   CGGlyph **twoLevel=NSZoneCalloc(NULL,256,sizeof(CGGlyph *));
+O2Glyph **O2TTFecoderTwoLevelUnicode_cmap(O2TTFDecoderRef self){
+   O2Glyph **twoLevel=NSZoneCalloc(NULL,256,sizeof(O2Glyph *));
    
    uint16_t version=decode_uint16(self);
    dump(self,@"version=%d",version);
@@ -277,7 +277,7 @@ BOOL seekToTable(O2TTFDecoderRef self,uint32_t seekToTag){
 }
 static struct {
 // FIXME: remove the glyph entry, pointless
-    CGGlyph   glyph;
+    O2Glyph   glyph;
     NSString *name;
    } MacintoshNameMapping[258]={
     { 0,@".notdef" },

@@ -8,6 +8,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <CoreGraphics/CGFunction.h>
 #import "KGFunction.h"
+#import "CGConversions.h"
 
 CGFunctionRef CGFunctionRetain(CGFunctionRef self) {
    return O2FunctionRetain(self);
@@ -18,5 +19,5 @@ void CGFunctionRelease(CGFunctionRef self) {
 }
 
 CGFunctionRef CGFunctionCreate(void *info,size_t domainDimension,const CGFloat *domain,size_t rangeDimension,const CGFloat *range,const CGFunctionCallbacks *callbacks) {
-   return O2FunctionCreate(info,domainDimension,domain,rangeDimension,range,callbacks);
+   return O2FunctionCreate(info,domainDimension,domain,rangeDimension,range,O2FunctionCallbacksFromCG(callbacks));
 }

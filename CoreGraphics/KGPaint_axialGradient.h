@@ -28,11 +28,11 @@
 #import "KGPaint_ramp.h"
 
 @interface O2Paint_axialGradient : O2Paint_ramp {
-   CGPoint _u;
-   CGFloat _oou;
-   CGFloat _rho;
+   O2Point _u;
+   O2Float _oou;
+   O2Float _rho;
 }
 
--initWithShading:(KGShading *)shading deviceTransform:(CGAffineTransform)deviceTransform;
+-initWithShading:(O2Shading *)shading deviceTransform:(O2AffineTransform)deviceTransform;
 
 @end

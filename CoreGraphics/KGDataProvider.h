@@ -8,12 +8,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/NSObject.h>
 #import <Foundation/NSRange.h>
+#import "O2Geometry.h"
 
 @class NSData,NSInputStream,NSURL;
 
 @class O2DataProvider;
 
 typedef O2DataProvider *O2DataProviderRef;
+
+typedef void (*O2DataProviderReleaseDataCallback)(void *info,const void *data,size_t size);
 
 @interface O2DataProvider : NSObject {
    NSInputStream *_inputStream;
@@ -24,11 +27,11 @@ typedef O2DataProvider *O2DataProviderRef;
    size_t         _length;
 }
 
--initWithData:(NSData *)data;
--initWithBytes:(const void *)bytes length:(size_t)length;
--initWithFilename:(const char *)pathCString;
 -initWithURL:(NSURL *)url;
 
+O2DataProviderRef O2DataProviderCreateWithData(void *info,const void *data,size_t size,O2DataProviderReleaseDataCallback releaseCallback);
+O2DataProviderRef O2DataProviderCreateWithCFData(NSData *data);
+O2DataProviderRef O2DataProviderCreateWithURL(NSURL *url);
 O2DataProviderRef O2DataProviderCreateWithFilename(const char *pathCString);
 O2DataProviderRef O2DataProviderRetain(O2DataProviderRef self);
 void O2DataProviderRelease(O2DataProviderRef self);
@@ -46,7 +49,5 @@ NSData *O2DataProviderCopyData(O2DataProviderRef self);
 
 -(void)rewind;
 -(NSInteger)getBytes:(void *)bytes range:(NSRange)range;
-
--(NSData *)copyData;
 
 @end

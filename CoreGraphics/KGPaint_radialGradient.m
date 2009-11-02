@@ -30,7 +30,7 @@
 
 @implementation O2Paint_radialGradient
 
-void O2PaintRadialGradient(O2Paint_radialGradient *self,CGFloat *g, CGFloat *rho, CGFloat x, CGFloat y) {
+void O2PaintRadialGradient(O2Paint_radialGradient *self,O2Float *g, O2Float *rho, O2Float x, O2Float y) {
 	RI_ASSERT(self);
 	if( self->_endRadius <= 0.0f )
 	{
@@ -39,36 +39,36 @@ void O2PaintRadialGradient(O2Paint_radialGradient *self,CGFloat *g, CGFloat *rho
 		return;
 	}
 
-	CGFloat r = self->_endRadius;
-	CGPoint c = self->_endPoint;
-	CGPoint f = self->_startPoint;
-	CGPoint gx=CGPointMake(self->m_surfaceToPaintMatrix.a, self->m_surfaceToPaintMatrix.b);
-	CGPoint gy=CGPointMake(self->m_surfaceToPaintMatrix.c,self->m_surfaceToPaintMatrix.d);
+	O2Float r = self->_endRadius;
+	O2Point c = self->_endPoint;
+	O2Point f = self->_startPoint;
+	O2Point gx=O2PointMake(self->m_surfaceToPaintMatrix.a, self->m_surfaceToPaintMatrix.b);
+	O2Point gy=O2PointMake(self->m_surfaceToPaintMatrix.c,self->m_surfaceToPaintMatrix.d);
 
-	CGPoint fp = Vector2Subtract(f,c);
+	O2Point fp = Vector2Subtract(f,c);
 
-	CGFloat D = -1.0f / (Vector2Dot(fp,fp) - r*r);
-	CGPoint p=CGPointMake(x, y);
-	p = Vector2Subtract(CGPointApplyAffineTransform(p,self->m_surfaceToPaintMatrix), c);
-	CGPoint d = Vector2Subtract(p,fp);
-	CGFloat s = (CGFloat)sqrt(r*r*Vector2Dot(d,d) - RI_SQR(p.x*fp.y - p.y*fp.x));
+	O2Float D = -1.0f / (Vector2Dot(fp,fp) - r*r);
+	O2Point p=O2PointMake(x, y);
+	p = Vector2Subtract(O2PointApplyAffineTransform(p,self->m_surfaceToPaintMatrix), c);
+	O2Point d = Vector2Subtract(p,fp);
+	O2Float s = (O2Float)sqrt(r*r*Vector2Dot(d,d) - RI_SQR(p.x*fp.y - p.y*fp.x));
 	*g = (Vector2Dot(fp,d) + s) * D;
 	if(RI_ISNAN(*g))
 		*g = 0.0f;
         
-	CGFloat dgdx = D*Vector2Dot(fp,gx) + (r*r*Vector2Dot(d,gx) - (gx.x*fp.y - gx.y*fp.x)*(p.x*fp.y - p.y*fp.x)) * (D / s);
-	CGFloat dgdy = D*Vector2Dot(fp,gy) + (r*r*Vector2Dot(d,gy) - (gy.x*fp.y - gy.y*fp.x)*(p.x*fp.y - p.y*fp.x)) * (D / s);
-	*rho = (CGFloat)sqrt(dgdx*dgdx + dgdy*dgdy);
+	O2Float dgdx = D*Vector2Dot(fp,gx) + (r*r*Vector2Dot(d,gx) - (gx.x*fp.y - gx.y*fp.x)*(p.x*fp.y - p.y*fp.x)) * (D / s);
+	O2Float dgdy = D*Vector2Dot(fp,gy) + (r*r*Vector2Dot(d,gy) - (gy.x*fp.y - gy.y*fp.x)*(p.x*fp.y - p.y*fp.x)) * (D / s);
+	*rho = (O2Float)sqrt(dgdx*dgdx + dgdy*dgdy);
 	if(RI_ISNAN(*rho))
 		*rho = 0.0f;
 	RI_ASSERT(*rho >= 0.0f);
 }
 
 
-static inline KGRGBAffff radialGradientColorAt(O2Paint_radialGradient *self,int x,int y,int *skip){
-   KGRGBAffff result;
+static inline O2argb32f radialGradientColorAt(O2Paint_radialGradient *self,int x,int y,int *skip){
+   O2argb32f result;
    
-   CGFloat g, rho;
+   O2Float g, rho;
    O2PaintRadialGradient(self,&g, &rho, x+0.5f, y+0.5f);
 
    result = O2PaintColorRamp(self,g, rho,skip);
@@ -76,14 +76,14 @@ static inline KGRGBAffff radialGradientColorAt(O2Paint_radialGradient *self,int 
    return result;
 }
 
-static int radial_span_lRGBA8888_PRE(O2Paint *selfX,int x,int y,KGRGBA8888 *span,int length){
+static int radial_span_lRGBA8888_PRE(O2Paint *selfX,int x,int y,O2argb8u *span,int length){
    O2Paint_radialGradient *self=(O2Paint_radialGradient *)selfX;
    int i;
    int previous=-1;
    
    for(i=0;i<length;i++,x++){
     int skip=0;
-    KGRGBAffff value=radialGradientColorAt(self,x,y,&skip);
+    O2argb32f value=radialGradientColorAt(self,x,y,&skip);
     
     if(skip!=previous){
      if(previous==-1)
@@ -92,19 +92,19 @@ static int radial_span_lRGBA8888_PRE(O2Paint *selfX,int x,int y,KGRGBA8888 *span
       return (previous==1)?-i:i;
     }
     
-    span[i]=KGRGBA8888FromKGRGBAffff(value);
+    span[i]=O2argb8uFromO2argb32f(value);
    }
    return (previous==1)?-length:length;
 }
 
-static int radial_span_lRGBAffff_PRE(O2Paint *selfX,int x,int y,KGRGBAffff *span,int length){
+static int radial_span_lRGBAffff_PRE(O2Paint *selfX,int x,int y,O2argb32f *span,int length){
    O2Paint_radialGradient *self=(O2Paint_radialGradient *)selfX;
    int i;
    int previous=-1;
    
    for(i=0;i<length;i++,x++){
     int skip=0;
-    KGRGBAffff value=radialGradientColorAt(self,x,y,&skip);
+    O2argb32f value=radialGradientColorAt(self,x,y,&skip);
     
     if(skip!=previous){
      if(previous==-1)
@@ -118,7 +118,7 @@ static int radial_span_lRGBAffff_PRE(O2Paint *selfX,int x,int y,KGRGBAffff *span
    return (previous==1)?-length:length;
 }
 
--initWithShading:(KGShading *)shading deviceTransform:(CGAffineTransform)deviceTransform {
+-initWithShading:(O2Shading *)shading deviceTransform:(O2AffineTransform)deviceTransform {
    [super initWithShading:shading deviceTransform:deviceTransform numberOfSamples:1024];
    _paint_lRGBA8888_PRE=radial_span_lRGBA8888_PRE;
    _paint_lRGBAffff_PRE=radial_span_lRGBAffff_PRE;

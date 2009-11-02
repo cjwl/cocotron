@@ -33,7 +33,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 +pdfObjectWithNull {
-   return [[[self alloc] initWithObjectType:kKGPDFObjectTypeNull] autorelease];
+   return [[[self alloc] initWithObjectType:kO2PDFObjectTypeNull] autorelease];
 }
 
 

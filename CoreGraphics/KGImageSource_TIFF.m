@@ -43,7 +43,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -initWithDataProvider:(O2DataProvider *)provider options:(NSDictionary *)options {
    [super initWithDataProvider:provider options:options];
    
-   NSData *data=[provider copyData];
+   NSData *data=O2DataProviderCopyData(provider);
    _reader=[[NSTIFFReader alloc] initWithData:data];
    [data release];
    
@@ -108,9 +108,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    bitmap=[[NSData alloc] initWithBytesNoCopy:bytes length:bytesPerRow*height];
 
    O2DataProvider *provider=[[O2DataProvider alloc] initWithData:bitmap];
-   O2ColorSpaceRef colorSpace=[[O2ColorSpace alloc] initWithDeviceRGB];
+   O2ColorSpaceRef colorSpace=O2ColorSpaceCreateDeviceRGB();
    O2Image *image=[[O2Image alloc] initWithWidth:width height:height bitsPerComponent:8 bitsPerPixel:bitsPerPixel bytesPerRow:bytesPerRow
-      colorSpace:colorSpace bitmapInfo:kCGBitmapByteOrder32Big|kCGImageAlphaPremultipliedLast provider:provider decode:NULL interpolate:NO renderingIntent:kCGRenderingIntentDefault];
+      colorSpace:colorSpace bitmapInfo:kO2BitmapByteOrder32Big|kO2ImageAlphaPremultipliedLast provider:provider decode:NULL interpolate:NO renderingIntent:kO2RenderingIntentDefault];
       
    [colorSpace release];
    [provider release];

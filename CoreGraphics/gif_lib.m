@@ -2251,7 +2251,7 @@ static int SortCmpRtnB(const void * Entry1,const void * Entry2) {
 static int SubdivColorMap(NewColorMapType * NewColorSubdiv,unsigned int ColorMapSize,unsigned int *NewColorMapSize) {
 
     int MaxSize;
-    int SortRGBAxis;
+    int SortRGBAxis=0;
     unsigned int i, j, Index = 0, NumEntries, MinColor, MaxColor;
     long Sum, Count;
     QuantizedColorType *QuantizedColor, **SortArray;

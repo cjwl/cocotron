@@ -7,7 +7,7 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
 #import "O2Path.h"
-#import <CoreGraphics/CoreGraphics.h>
+#import "O2Geometry.h"
 
 @interface O2MutablePath : O2Path <NSCopying> {
    unsigned _capacityOfElements;
@@ -17,20 +17,20 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 void O2PathReset(O2MutablePathRef self);
 
 O2MutablePathRef O2PathCreateMutable(void);
-void O2PathMoveToPoint(O2MutablePathRef self,const CGAffineTransform *matrix,CGFloat x,CGFloat y);
-void O2PathAddLineToPoint(O2MutablePathRef self,const CGAffineTransform *matrix,CGFloat x,CGFloat y);
-void O2PathAddCurveToPoint(O2MutablePathRef self,const CGAffineTransform *matrix,CGFloat cp1x,CGFloat cp1y,CGFloat cp2x,CGFloat cp2y,CGFloat x,CGFloat y);
-void O2PathAddQuadCurveToPoint(O2MutablePathRef self,const CGAffineTransform *matrix,CGFloat cpx,CGFloat cpy,CGFloat x,CGFloat y);
+void O2PathMoveToPoint(O2MutablePathRef self,const O2AffineTransform *matrix,O2Float x,O2Float y);
+void O2PathAddLineToPoint(O2MutablePathRef self,const O2AffineTransform *matrix,O2Float x,O2Float y);
+void O2PathAddCurveToPoint(O2MutablePathRef self,const O2AffineTransform *matrix,O2Float cp1x,O2Float cp1y,O2Float cp2x,O2Float cp2y,O2Float x,O2Float y);
+void O2PathAddQuadCurveToPoint(O2MutablePathRef self,const O2AffineTransform *matrix,O2Float cpx,O2Float cpy,O2Float x,O2Float y);
 void O2PathCloseSubpath(O2MutablePathRef self);
-void O2PathAddLines(O2MutablePathRef self,const CGAffineTransform *matrix,const CGPoint *points,size_t count);
-void O2PathAddRect(O2MutablePathRef self,const CGAffineTransform *matrix,CGRect rect);
-void O2PathAddRects(O2MutablePathRef self,const CGAffineTransform *matrix,const CGRect *rects,size_t count);
-void O2PathAddArc(O2MutablePathRef self,const CGAffineTransform *matrix,CGFloat x,CGFloat y,CGFloat radius,CGFloat startRadian,CGFloat endRadian,BOOL clockwise);
-void O2PathAddArcToPoint(O2MutablePathRef self,const CGAffineTransform *matrix,CGFloat tx1,CGFloat ty1,CGFloat tx2,CGFloat ty2,CGFloat radius);
-void O2PathAddEllipseInRect(O2MutablePathRef self,const CGAffineTransform *matrix,CGRect rect);
-void O2PathAddPath(O2MutablePathRef self,const CGAffineTransform *matrix,O2PathRef other);
+void O2PathAddLines(O2MutablePathRef self,const O2AffineTransform *matrix,const O2Point *points,size_t count);
+void O2PathAddRect(O2MutablePathRef self,const O2AffineTransform *matrix,O2Rect rect);
+void O2PathAddRects(O2MutablePathRef self,const O2AffineTransform *matrix,const O2Rect *rects,size_t count);
+void O2PathAddArc(O2MutablePathRef self,const O2AffineTransform *matrix,O2Float x,O2Float y,O2Float radius,O2Float startRadian,O2Float endRadian,BOOL clockwise);
+void O2PathAddArcToPoint(O2MutablePathRef self,const O2AffineTransform *matrix,O2Float tx1,O2Float ty1,O2Float tx2,O2Float ty2,O2Float radius);
+void O2PathAddEllipseInRect(O2MutablePathRef self,const O2AffineTransform *matrix,O2Rect rect);
+void O2PathAddPath(O2MutablePathRef self,const O2AffineTransform *matrix,O2PathRef other);
 
-void O2PathApplyTransform(O2MutablePathRef self,const CGAffineTransform matrix);
-void O2MutablePathEllipseToBezier(CGPoint *cp,float x,float y,float xrad,float yrad);
+void O2PathApplyTransform(O2MutablePathRef self,const O2AffineTransform matrix);
+void O2MutablePathEllipseToBezier(O2Point *cp,float x,float y,float xrad,float yrad);
 
 @end

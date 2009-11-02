@@ -30,7 +30,7 @@
 #import "O2ColorSpace.h"
 #import "KGDataProvider.h"
 
-@implementation KGSurface
+@implementation O2Surface
 
 #define RI_MAX_GAUSSIAN_STD_DEVIATION	128.0f
 
@@ -42,25 +42,25 @@
 *//*-------------------------------------------------------------------*/
 
 // Can't use 'gamma' ?
-static CGFloat dogamma(CGFloat c)
+static O2Float dogamma(O2Float c)
 {    
 	if( c <= 0.00304f )
 		c *= 12.92f;
 	else
-		c = 1.0556f * (CGFloat)pow(c, 1.0f/2.4f) - 0.0556f;
+		c = 1.0556f * (O2Float)pow(c, 1.0f/2.4f) - 0.0556f;
 	return c;
 }
 
-static CGFloat invgamma(CGFloat c)
+static O2Float invgamma(O2Float c)
 {
 	if( c <= 0.03928f )
 		c /= 12.92f;
 	else
-		c = (CGFloat)pow((c + 0.0556f)/1.0556f, 2.4f);
+		c = (O2Float)pow((c + 0.0556f)/1.0556f, 2.4f);
 	return c;
 }
 
-static CGFloat lRGBtoL(CGFloat r, CGFloat g, CGFloat b)
+static O2Float lRGBtoL(O2Float r, O2Float g, O2Float b)
 {
 	return 0.2126f*r + 0.7152f*g + 0.0722f*b;
 }
@@ -80,7 +80,7 @@ VGColor VGColorConvert(VGColor result,VGColorInternalFormat outputFormat){
 		RI_ASSERT(result.r <= result.a);
 		RI_ASSERT(result.g <= result.a);
 		RI_ASSERT(result.b <= result.a);
-		CGFloat ooa = (result.a != 0.0f) ? 1.0f / result.a : (CGFloat)0.0f;
+		O2Float ooa = (result.a != 0.0f) ? 1.0f / result.a : (O2Float)0.0f;
 		result.r *= ooa;
 		result.g *= ooa;
 		result.b *= ooa;
@@ -134,7 +134,7 @@ VGColor VGColorConvert(VGColor result,VGColorInternalFormat outputFormat){
     return result;
 }
 
-static void colorToBytesLittle(CGFloat color,uint8_t *scanline){
+static void colorToBytesLittle(O2Float color,uint8_t *scanline){
    union {
     unsigned char bytes[4];
     float         f;
@@ -155,13 +155,13 @@ static void colorToBytesLittle(CGFloat color,uint8_t *scanline){
 #endif
 }
 
-static void KGSurfaceWrite_RGBAffff_to_RGBAffffLittle(KGSurface *self,int x,int y,KGRGBAffff *span,int length){
+static void O2SurfaceWrite_RGBAffff_to_RGBAffffLittle(O2Surface *self,int x,int y,O2argb32f *span,int length){
    uint8_t* scanline = self->_pixelBytes + y * self->_bytesPerRow;
    int i;
    
    scanline+=x*16;
    for(i=0;i<length;i++){
-    KGRGBAffff rgba=*span++;
+    O2argb32f rgba=*span++;
 
     colorToBytesLittle(rgba.r,scanline);
     scanline+=4;
@@ -174,7 +174,7 @@ static void KGSurfaceWrite_RGBAffff_to_RGBAffffLittle(KGSurface *self,int x,int 
    }
 }
 
-static void colorToBytesBig(CGFloat color,uint8_t *scanline){
+static void colorToBytesBig(O2Float color,uint8_t *scanline){
    union {
     unsigned char bytes[4];
     float         f;
@@ -195,13 +195,13 @@ static void colorToBytesBig(CGFloat color,uint8_t *scanline){
 #endif
 }
 
-static void KGSurfaceWrite_RGBAffff_to_RGBAffffBig(KGSurface *self,int x,int y,KGRGBAffff *span,int length){
+static void O2SurfaceWrite_RGBAffff_to_RGBAffffBig(O2Surface *self,int x,int y,O2argb32f *span,int length){
    uint8_t* scanline = self->_pixelBytes + y * self->_bytesPerRow;
    int i;
    
    scanline+=x*16;
    for(i=0;i<length;i++){
-    KGRGBAffff rgba=*span++;
+    O2argb32f rgba=*span++;
 
     colorToBytesBig(rgba.r,scanline);
     scanline+=4;
@@ -214,58 +214,58 @@ static void KGSurfaceWrite_RGBAffff_to_RGBAffffBig(KGSurface *self,int x,int y,K
    }
 }
 
-static unsigned char colorToNibble(CGFloat c){
-	return RI_INT_MIN(RI_INT_MAX(RI_FLOOR_TO_INT(c * (CGFloat)0xF + 0.5f), 0), 0xF);
+static unsigned char colorToNibble(O2Float c){
+	return RI_INT_MIN(RI_INT_MAX(RI_FLOOR_TO_INT(c * (O2Float)0xF + 0.5f), 0), 0xF);
 }
 
-static void KGSurfaceWrite_RGBAffff_to_GA88(KGSurface *self,int x,int y,KGRGBAffff *span,int length){
+static void O2SurfaceWrite_RGBAffff_to_GA88(O2Surface *self,int x,int y,O2argb32f *span,int length){
    uint8_t* scanline = self->_pixelBytes + y * self->_bytesPerRow;
    int i;
    
    scanline+=x*2;
    for(i=0;i<length;i++){
-    KGRGBAffff rgba=*span++;
+    O2argb32f rgba=*span++;
 
-    *scanline++=CGByteFromFloat(rgba.r);
-    *scanline++=CGByteFromFloat(rgba.a);
+    *scanline++=O2ByteFromFloat(rgba.r);
+    *scanline++=O2ByteFromFloat(rgba.a);
    }
 }
 
-static void KGSurfaceWrite_RGBAffff_to_G8(KGSurface *self,int x,int y,KGRGBAffff *span,int length){
+static void O2SurfaceWrite_RGBAffff_to_G8(O2Surface *self,int x,int y,O2argb32f *span,int length){
    uint8_t* scanline = self->_pixelBytes + y * self->_bytesPerRow;
    int i;
    
    scanline+=x;
    for(i=0;i<length;i++){
-    KGRGBAffff rgba=*span++;
+    O2argb32f rgba=*span++;
 
-    *scanline++=CGByteFromFloat(lRGBtoL(rgba.r,rgba.g,rgba.b));
+    *scanline++=O2ByteFromFloat(lRGBtoL(rgba.r,rgba.g,rgba.b));
    }
 }
 
 
-static void KGSurfaceWrite_RGBAffff_to_RGBA8888(KGSurface *self,int x,int y,KGRGBAffff *span,int length){
+static void O2SurfaceWrite_RGBAffff_to_RGBA8888(O2Surface *self,int x,int y,O2argb32f *span,int length){
    uint8_t* scanline = self->_pixelBytes + y * self->_bytesPerRow;
    int i;
    
    scanline+=x*4;
    for(i=0;i<length;i++){
-    KGRGBAffff rgba=*span++;
+    O2argb32f rgba=*span++;
 
-    *scanline++=CGByteFromFloat(rgba.r);
-    *scanline++=CGByteFromFloat(rgba.g);
-    *scanline++=CGByteFromFloat(rgba.b);
-    *scanline++=CGByteFromFloat(rgba.a);
+    *scanline++=O2ByteFromFloat(rgba.r);
+    *scanline++=O2ByteFromFloat(rgba.g);
+    *scanline++=O2ByteFromFloat(rgba.b);
+    *scanline++=O2ByteFromFloat(rgba.a);
    }
 }
 
-static void KGSurfaceWrite_RGBA8888_to_RGBA8888(KGSurface *self,int x,int y,KGRGBA8888 *span,int length){
+static void O2SurfaceWrite_RGBA8888_to_RGBA8888(O2Surface *self,int x,int y,O2argb8u *span,int length){
    uint8_t* scanline = self->_pixelBytes + y * self->_bytesPerRow;
    int i;
    
    scanline+=x*4;
    for(i=0;i<length;i++){
-    KGRGBA8888 rgba=*span++;
+    O2argb8u rgba=*span++;
 
     *scanline++=rgba.r;
     *scanline++=rgba.g;
@@ -274,28 +274,28 @@ static void KGSurfaceWrite_RGBA8888_to_RGBA8888(KGSurface *self,int x,int y,KGRG
    }
 }
 
-static void KGSurfaceWrite_RGBAffff_to_ABGR8888(KGSurface *self,int x,int y,KGRGBAffff *span,int length){
+static void O2SurfaceWrite_RGBAffff_to_ABGR8888(O2Surface *self,int x,int y,O2argb32f *span,int length){
    uint8_t* scanline = self->_pixelBytes + y * self->_bytesPerRow;
    int i;
    
    scanline+=x*4;
    for(i=0;i<length;i++){
-    KGRGBAffff rgba=*span++;
+    O2argb32f rgba=*span++;
 
-    *scanline++=CGByteFromFloat(rgba.a);
-    *scanline++=CGByteFromFloat(rgba.b);
-    *scanline++=CGByteFromFloat(rgba.g);
-    *scanline++=CGByteFromFloat(rgba.r);
+    *scanline++=O2ByteFromFloat(rgba.a);
+    *scanline++=O2ByteFromFloat(rgba.b);
+    *scanline++=O2ByteFromFloat(rgba.g);
+    *scanline++=O2ByteFromFloat(rgba.r);
    }
 }
 
-static void KGSurfaceWrite_RGBA8888_to_ABGR8888(KGSurface *self,int x,int y,KGRGBA8888 *span,int length){
+static void O2SurfaceWrite_RGBA8888_to_ABGR8888(O2Surface *self,int x,int y,O2argb8u *span,int length){
    uint8_t* scanline = self->_pixelBytes + y * self->_bytesPerRow;
    int i;
    
    scanline+=x*4;
    for(i=0;i<length;i++){
-    KGRGBA8888 rgba=*span++;
+    O2argb8u rgba=*span++;
 
     *scanline++=rgba.a;
     *scanline++=rgba.b;
@@ -304,13 +304,13 @@ static void KGSurfaceWrite_RGBA8888_to_ABGR8888(KGSurface *self,int x,int y,KGRG
    }
 }
 
-static void KGSurfaceWrite_RGBA8888_to_BGRA8888(KGSurface *self,int x,int y,KGRGBA8888 *span,int length){
+static void O2SurfaceWrite_RGBA8888_to_BGRA8888(O2Surface *self,int x,int y,O2argb8u *span,int length){
    uint8_t* scanline = self->_pixelBytes + y * self->_bytesPerRow;
    int i;
    
    scanline+=x*4;
    for(i=0;i<length;i++){
-    KGRGBA8888 rgba=*span++;
+    O2argb8u rgba=*span++;
 
     *scanline++=rgba.b;
     *scanline++=rgba.g;
@@ -319,76 +319,76 @@ static void KGSurfaceWrite_RGBA8888_to_BGRA8888(KGSurface *self,int x,int y,KGRG
    }
 }
 
-static void KGSurfaceWrite_RGBAffff_to_RGBA4444(KGSurface *self,int x,int y,KGRGBAffff *span,int length){
+static void O2SurfaceWrite_RGBAffff_to_RGBA4444(O2Surface *self,int x,int y,O2argb32f *span,int length){
    uint8_t* scanline = self->_pixelBytes + y * self->_bytesPerRow;
    int i;
    
    scanline+=x*2;
    for(i=0;i<length;i++){
-    KGRGBAffff rgba=*span++;
+    O2argb32f rgba=*span++;
 
     *scanline++=colorToNibble(rgba.r)<<4|colorToNibble(rgba.g);
     *scanline++=colorToNibble(rgba.b)<<4|colorToNibble(rgba.a);
    }
 }
 
-static void KGSurfaceWrite_RGBAffff_to_BARG4444(KGSurface *self,int x,int y,KGRGBAffff *span,int length){
+static void O2SurfaceWrite_RGBAffff_to_BARG4444(O2Surface *self,int x,int y,O2argb32f *span,int length){
    uint8_t* scanline = self->_pixelBytes + y * self->_bytesPerRow;
    int i;
    
    scanline+=x*2;
    for(i=0;i<length;i++){
-    KGRGBAffff rgba=*span++;
+    O2argb32f rgba=*span++;
 
     *scanline++=colorToNibble(rgba.b)<<4|colorToNibble(rgba.a);
     *scanline++=colorToNibble(rgba.r)<<4|colorToNibble(rgba.g);
    }
 }
 
-static void KGSurfaceWrite_RGBAffff_to_RGBA2222(KGSurface *self,int x,int y,KGRGBAffff *span,int length){
+static void O2SurfaceWrite_RGBAffff_to_RGBA2222(O2Surface *self,int x,int y,O2argb32f *span,int length){
    uint8_t* scanline = self->_pixelBytes + y * self->_bytesPerRow;
    int i;
    
    scanline+=x;
    for(i=0;i<length;i++){
-    KGRGBAffff rgba=*span++;
+    O2argb32f rgba=*span++;
 
     *scanline++=colorToNibble(rgba.a)<<6|colorToNibble(rgba.a)<<6|colorToNibble(rgba.a)<<2|colorToNibble(rgba.b);
    }
 }
 
-static void KGSurfaceWrite_RGBAffff_to_CMYK8888(KGSurface *self,int x,int y,KGRGBAffff *span,int length){
+static void O2SurfaceWrite_RGBAffff_to_CMYK8888(O2Surface *self,int x,int y,O2argb32f *span,int length){
    uint8_t* scanline = self->_pixelBytes + y * self->_bytesPerRow;
    int i;
    
    scanline+=x*4;
    for(i=0;i<length;i++){
-    KGRGBAffff rgba=*span++;
+    O2argb32f rgba=*span++;
 
-    *scanline++=CGByteFromFloat(1.0-rgba.r);
-    *scanline++=CGByteFromFloat(1.0-rgba.g);
-    *scanline++=CGByteFromFloat(1.0-rgba.b);
-    *scanline++=CGByteFromFloat(0);
+    *scanline++=O2ByteFromFloat(1.0-rgba.r);
+    *scanline++=O2ByteFromFloat(1.0-rgba.g);
+    *scanline++=O2ByteFromFloat(1.0-rgba.b);
+    *scanline++=O2ByteFromFloat(0);
    }
 }
 
-static void KGSurfaceWrite_RGBAffff_to_RGBA8888_to_ANY(KGSurface *self,int x,int y,KGRGBAffff *span,int length){
-   KGRGBA8888 span8888[length];
+static void O2SurfaceWrite_RGBAffff_to_RGBA8888_to_ANY(O2Surface *self,int x,int y,O2argb32f *span,int length){
+   O2argb8u span8888[length];
    int i;
    
    for(i=0;i<length;i++){
-    KGRGBAffff rgba=*span++;
+    O2argb32f rgba=*span++;
 
-    span8888[i].r=CGByteFromFloat(rgba.r);
-    span8888[i].g=CGByteFromFloat(rgba.g);
-    span8888[i].b=CGByteFromFloat(rgba.b);
-    span8888[i].a=CGByteFromFloat(rgba.a);
+    span8888[i].r=O2ByteFromFloat(rgba.r);
+    span8888[i].g=O2ByteFromFloat(rgba.g);
+    span8888[i].b=O2ByteFromFloat(rgba.b);
+    span8888[i].a=O2ByteFromFloat(rgba.a);
    }
    self->_writeRGBA8888(self,x,y,span8888,length);
 }
 
-static BOOL initFunctionsForParameters(KGSurface *self,size_t bitsPerComponent,size_t bitsPerPixel,O2ColorSpaceRef colorSpace,CGBitmapInfo bitmapInfo){
-   self->_writeRGBAffff=KGSurfaceWrite_RGBAffff_to_RGBA8888_to_ANY;// default
+static BOOL initFunctionsForParameters(O2Surface *self,size_t bitsPerComponent,size_t bitsPerPixel,O2ColorSpaceRef colorSpace,O2BitmapInfo bitmapInfo){
+   self->_writeRGBAffff=O2SurfaceWrite_RGBAffff_to_RGBA8888_to_ANY;// default
    
    switch(bitsPerComponent){
    
@@ -397,16 +397,16 @@ static BOOL initFunctionsForParameters(KGSurface *self,size_t bitsPerComponent,s
       case 32:
        break;
       case 128:
-       switch(bitmapInfo&kCGBitmapByteOrderMask){
-        case kCGBitmapByteOrderDefault:
-        case kCGBitmapByteOrder16Little:
-        case kCGBitmapByteOrder32Little:
-         self->_writeRGBAffff=KGSurfaceWrite_RGBAffff_to_RGBAffffLittle;
+       switch(bitmapInfo&kO2BitmapByteOrderMask){
+        case kO2BitmapByteOrderDefault:
+        case kO2BitmapByteOrder16Little:
+        case kO2BitmapByteOrder32Little:
+         self->_writeRGBAffff=O2SurfaceWrite_RGBAffff_to_RGBAffffLittle;
          return YES;
          
-        case kCGBitmapByteOrder16Big:
-        case kCGBitmapByteOrder32Big:
-         self->_writeRGBAffff=KGSurfaceWrite_RGBAffff_to_RGBAffffBig;
+        case kO2BitmapByteOrder16Big:
+        case kO2BitmapByteOrder32Big:
+         self->_writeRGBAffff=O2SurfaceWrite_RGBAffff_to_RGBAffffBig;
          return YES;
        }
      }
@@ -416,11 +416,11 @@ static BOOL initFunctionsForParameters(KGSurface *self,size_t bitsPerComponent,s
      switch(bitsPerPixel){
      
       case 8:
-       self->_writeRGBAffff=KGSurfaceWrite_RGBAffff_to_G8;
+       self->_writeRGBAffff=O2SurfaceWrite_RGBAffff_to_G8;
        return YES;
 
       case 16:
-       self->_writeRGBAffff=KGSurfaceWrite_RGBAffff_to_GA88;
+       self->_writeRGBAffff=O2SurfaceWrite_RGBAffff_to_GA88;
        return YES;
 
       case 24:
@@ -429,59 +429,59 @@ static BOOL initFunctionsForParameters(KGSurface *self,size_t bitsPerComponent,s
       case 32:
        if([colorSpace type]==O2ColorSpaceDeviceRGB){
 
-        switch(bitmapInfo&kCGBitmapAlphaInfoMask){
-         case kCGImageAlphaNone:
+        switch(bitmapInfo&kO2BitmapAlphaInfoMask){
+         case kO2ImageAlphaNone:
           break;
           
-         case kCGImageAlphaLast:
-         case kCGImageAlphaPremultipliedLast:
-          switch(bitmapInfo&kCGBitmapByteOrderMask){
-           case kCGBitmapByteOrderDefault:
-           case kCGBitmapByteOrder16Little:
-           case kCGBitmapByteOrder32Little:
-            self->_writeRGBAffff=KGSurfaceWrite_RGBAffff_to_ABGR8888;
-            self->_writeRGBA8888=KGSurfaceWrite_RGBA8888_to_ABGR8888;
+         case kO2ImageAlphaLast:
+         case kO2ImageAlphaPremultipliedLast:
+          switch(bitmapInfo&kO2BitmapByteOrderMask){
+           case kO2BitmapByteOrderDefault:
+           case kO2BitmapByteOrder16Little:
+           case kO2BitmapByteOrder32Little:
+            self->_writeRGBAffff=O2SurfaceWrite_RGBAffff_to_ABGR8888;
+            self->_writeRGBA8888=O2SurfaceWrite_RGBA8888_to_ABGR8888;
             return YES;
 
-           case kCGBitmapByteOrder16Big:
-           case kCGBitmapByteOrder32Big:
-            self->_writeRGBAffff=KGSurfaceWrite_RGBAffff_to_RGBA8888;
-            self->_writeRGBA8888=KGSurfaceWrite_RGBA8888_to_RGBA8888;
+           case kO2BitmapByteOrder16Big:
+           case kO2BitmapByteOrder32Big:
+            self->_writeRGBAffff=O2SurfaceWrite_RGBAffff_to_RGBA8888;
+            self->_writeRGBA8888=O2SurfaceWrite_RGBA8888_to_RGBA8888;
             return YES;
           }
 
           break;
           
-         case kCGImageAlphaPremultipliedFirst:
-          switch(bitmapInfo&kCGBitmapByteOrderMask){
-           case kCGBitmapByteOrderDefault:
-           case kCGBitmapByteOrder16Little:
-           case kCGBitmapByteOrder32Little:
-            self->_writeRGBA8888=KGSurfaceWrite_RGBA8888_to_BGRA8888;
+         case kO2ImageAlphaPremultipliedFirst:
+          switch(bitmapInfo&kO2BitmapByteOrderMask){
+           case kO2BitmapByteOrderDefault:
+           case kO2BitmapByteOrder16Little:
+           case kO2BitmapByteOrder32Little:
+            self->_writeRGBA8888=O2SurfaceWrite_RGBA8888_to_BGRA8888;
             return YES;
           }
           break;
                     
-         case kCGImageAlphaFirst:
+         case kO2ImageAlphaFirst:
           break;
           
-         case kCGImageAlphaNoneSkipLast:
+         case kO2ImageAlphaNoneSkipLast:
           break;
           
-         case kCGImageAlphaNoneSkipFirst:
+         case kO2ImageAlphaNoneSkipFirst:
           break;
         }
        }
        else if([colorSpace type]==O2ColorSpaceDeviceCMYK){
-        switch(bitmapInfo&kCGBitmapByteOrderMask){
-         case kCGBitmapByteOrderDefault:
-         case kCGBitmapByteOrder16Little:
-         case kCGBitmapByteOrder32Little:
+        switch(bitmapInfo&kO2BitmapByteOrderMask){
+         case kO2BitmapByteOrderDefault:
+         case kO2BitmapByteOrder16Little:
+         case kO2BitmapByteOrder32Little:
           break;
          
-         case kCGBitmapByteOrder16Big:
-         case kCGBitmapByteOrder32Big:
-          self->_writeRGBAffff=KGSurfaceWrite_RGBAffff_to_CMYK8888;
+         case kO2BitmapByteOrder16Big:
+         case kO2BitmapByteOrder32Big:
+          self->_writeRGBAffff=O2SurfaceWrite_RGBAffff_to_CMYK8888;
          return YES;
         }
        }
@@ -496,16 +496,16 @@ static BOOL initFunctionsForParameters(KGSurface *self,size_t bitsPerComponent,s
       case 12:
        break;
       case 16:
-       switch(bitmapInfo&kCGBitmapByteOrderMask){
-        case kCGBitmapByteOrderDefault:
-        case kCGBitmapByteOrder16Little:
-        case kCGBitmapByteOrder32Little:
-         self->_writeRGBAffff=KGSurfaceWrite_RGBAffff_to_BARG4444;
+       switch(bitmapInfo&kO2BitmapByteOrderMask){
+        case kO2BitmapByteOrderDefault:
+        case kO2BitmapByteOrder16Little:
+        case kO2BitmapByteOrder32Little:
+         self->_writeRGBAffff=O2SurfaceWrite_RGBAffff_to_BARG4444;
          return YES;
          
-        case kCGBitmapByteOrder16Big:
-        case kCGBitmapByteOrder32Big:
-         self->_writeRGBAffff=KGSurfaceWrite_RGBAffff_to_RGBA4444;
+        case kO2BitmapByteOrder16Big:
+        case kO2BitmapByteOrder32Big:
+         self->_writeRGBAffff=O2SurfaceWrite_RGBAffff_to_RGBA4444;
          return YES;
        }
      }
@@ -518,7 +518,7 @@ static BOOL initFunctionsForParameters(KGSurface *self,size_t bitsPerComponent,s
       case 6:
        break;
       case 8:
-       self->_writeRGBAffff=KGSurfaceWrite_RGBAffff_to_RGBA2222;
+       self->_writeRGBAffff=O2SurfaceWrite_RGBAffff_to_RGBA2222;
        return YES;
      }
      break;
@@ -526,7 +526,7 @@ static BOOL initFunctionsForParameters(KGSurface *self,size_t bitsPerComponent,s
     case  1:
      switch(bitsPerPixel){
       case 1:
-       //  self->_writeRGBAffff=KGSurfaceWriteSpan_lRGBAffff_PRE_01;
+       //  self->_writeRGBAffff=O2SurfaceWriteSpan_lRGBAffff_PRE_01;
        return YES;
        
       case 3:
@@ -537,7 +537,7 @@ static BOOL initFunctionsForParameters(KGSurface *self,size_t bitsPerComponent,s
    return NO;   
 }
 
--initWithBytes:(void *)bytes width:(size_t)width height:(size_t)height bitsPerComponent:(size_t)bitsPerComponent bytesPerRow:(size_t)bytesPerRow colorSpace:(O2ColorSpaceRef)colorSpace bitmapInfo:(CGBitmapInfo)bitmapInfo {
+-initWithBytes:(void *)bytes width:(size_t)width height:(size_t)height bitsPerComponent:(size_t)bitsPerComponent bytesPerRow:(size_t)bytesPerRow colorSpace:(O2ColorSpaceRef)colorSpace bitmapInfo:(O2BitmapInfo)bitmapInfo {
    O2DataProvider *provider;
    int bitsPerPixel=32;
    
@@ -554,7 +554,7 @@ static BOOL initFunctionsForParameters(KGSurface *self,size_t bitsPerComponent,s
   	m_ownsData=YES;
    }
    
-   if([super initWithWidth:width height:height bitsPerComponent:bitsPerComponent bitsPerPixel:bitsPerPixel bytesPerRow:bytesPerRow colorSpace:colorSpace bitmapInfo:bitmapInfo provider:provider decode:NULL interpolate:YES renderingIntent:kCGRenderingIntentDefault]==nil)
+   if([super initWithWidth:width height:height bitsPerComponent:bitsPerComponent bitsPerPixel:bitsPerPixel bytesPerRow:bytesPerRow colorSpace:colorSpace bitmapInfo:bitmapInfo provider:provider decode:NULL interpolate:YES renderingIntent:kO2RenderingIntentDefault]==nil)
     return nil;
    
    if([provider isDirectAccess])
@@ -564,7 +564,7 @@ static BOOL initFunctionsForParameters(KGSurface *self,size_t bitsPerComponent,s
     NSLog(@"KGSurface -init error, return");
 
    size_t checkBPP;
-   m_desc=KGImageParametersToPixelLayout(VG_lRGBA_8888_PRE,&checkBPP,&(_colorFormat));
+   m_desc=O2ImageParametersToPixelLayout(VG_lRGBA_8888_PRE,&checkBPP,&(_colorFormat));
    RI_ASSERT(checkBPP==bitsPerPixel);
 
    _clampExternalPixels=NO; // only set to yes if premultiplied
@@ -572,7 +572,7 @@ static BOOL initFunctionsForParameters(KGSurface *self,size_t bitsPerComponent,s
 
    _mipmapsCount=0;
    _mipmapsCapacity=2;
-   _mipmaps=(KGSurface **)NSZoneMalloc(NULL,_mipmapsCapacity*sizeof(KGSurface *));
+   _mipmaps=(O2Surface **)NSZoneMalloc(NULL,_mipmapsCapacity*sizeof(O2Surface *));
    return self;
 }
 
@@ -587,10 +587,6 @@ static BOOL initFunctionsForParameters(KGSurface *self,size_t bitsPerComponent,s
     _pixelBytes=NULL; // if we own it, it's in the provider, if not, no release
 
     [super dealloc];
-}
-
--(NSData *)pixelData {
-   return [_provider data];
 }
 
 -(void *)pixelBytes {
@@ -625,7 +621,7 @@ static BOOL initFunctionsForParameters(KGSurface *self,size_t bitsPerComponent,s
 * \note		
 *//*-------------------------------------------------------------------*/
 
-void KGSurfaceClear(KGSurface *self,VGColor clearColor, int x, int y, int w, int h){
+void O2SurfaceClear(O2Surface *self,VGColor clearColor, int x, int y, int w, int h){
 	RI_ASSERT(self->_pixelBytes);
 
 	//intersect clear region with image bounds
@@ -644,7 +640,7 @@ void KGSurfaceClear(KGSurface *self,VGColor clearColor, int x, int y, int w, int
         int i;
 		for(i=r.x;i<r.x + r.width;i++)
 		{
-			KGSurfaceWritePixel(self,i, j, col);
+			O2SurfaceWritePixel(self,i, j, col);
 		}
 	}
 
@@ -659,12 +655,12 @@ void KGSurfaceClear(KGSurface *self,VGColor clearColor, int x, int y, int w, int
 * \note		
 *//*-------------------------------------------------------------------*/
 
-VGColor KGSurfaceReadPixel(O2Image *self,int x, int y) {
+VGColor O2SurfaceReadPixel(O2Image *self,int x, int y) {
 	RI_ASSERT(self->_pixelBytes);
 	RI_ASSERT(x >= 0 && x < self->_width);
 	RI_ASSERT(y >= 0 && y < self->_height);
  
-    KGRGBAffff span,*direct=KGImageReadSpan_lRGBAffff_PRE(self,x,y,&span,1);
+    O2argb32f span,*direct=O2ImageReadSpan_lRGBAffff_PRE(self,x,y,&span,1);
    
     if(direct!=NULL)
      return VGColorFromRGBAffff(*direct,VGColor_lRGBA_PRE);
@@ -681,15 +677,15 @@ VGColor KGSurfaceReadPixel(O2Image *self,int x, int y) {
 * \note		
 *//*-------------------------------------------------------------------*/
 
-static CGFloat ditherChannel(CGFloat c, int bits, CGFloat m)
+static O2Float ditherChannel(O2Float c, int bits, O2Float m)
 {
-	CGFloat fc = c * (CGFloat)((1<<bits)-1);
-	CGFloat ic = (CGFloat)floor(fc);
+	O2Float fc = c * (O2Float)((1<<bits)-1);
+	O2Float ic = (O2Float)floor(fc);
 	if(fc - ic > m) ic += 1.0f;
-	return RI_MIN(ic / (CGFloat)((1<<bits)-1), 1.0f);
+	return RI_MIN(ic / (O2Float)((1<<bits)-1), 1.0f);
 }
 
-void KGSurfaceBlit(KGSurface *self,KGSurface * src, int sx, int sy, int dx, int dy, int w, int h, BOOL dither) {
+void O2SurfaceBlit(O2Surface *self,O2Surface * src, int sx, int sy, int dx, int dy, int w, int h, BOOL dither) {
 	RI_ASSERT(src->_pixelBytes);	//source exists
 	RI_ASSERT(self->_pixelBytes);	//destination exists
 	RI_ASSERT(w > 0 && h > 0);
@@ -763,7 +759,7 @@ void KGSurfaceBlit(KGSurface *self,KGSurface * src, int sx, int sy, int dx, int 
         int i;
 		for(i=0;i<w;i++)
 		{
-			VGColor c = KGSurfaceReadPixel(src,srcsx + i, srcsy + j);
+			VGColor c = O2SurfaceReadPixel(src,srcsx + i, srcsy + j);
 			c=VGColorConvert(c,self->_colorFormat);
 			tmp[j*w+i] = c;
 		}
@@ -793,7 +789,7 @@ void KGSurfaceBlit(KGSurface *self,KGSurface * src, int sx, int sy, int dx, int 
 					15, 7,  13, 5};
 				int x = i & 3;
 				int y = j & 3;
-				CGFloat m = matrix[y*4+x] / 16.0f;
+				O2Float m = matrix[y*4+x] / 16.0f;
 
 				if(rbits) col.r = ditherChannel(col.r, rbits, m);
 				if(gbits) col.g = ditherChannel(col.g, gbits, m);
@@ -801,7 +797,7 @@ void KGSurfaceBlit(KGSurface *self,KGSurface * src, int sx, int sy, int dx, int 
 				if(abits) col.a = ditherChannel(col.a, abits, m);
 			}
 
-			KGSurfaceWritePixel(self,dstsx + i, dstsy + j, col);
+			O2SurfaceWritePixel(self,dstsx + i, dstsy + j, col);
 		}
 	}
     NSZoneFree(NULL,tmp);
@@ -815,19 +811,19 @@ void KGSurfaceBlit(KGSurface *self,KGSurface * src, int sx, int sy, int dx, int 
 * \note		
 *//*-------------------------------------------------------------------*/
 
-void KGSurfaceMask(KGSurface *self,KGSurface* src, VGMaskOperation operation, int x, int y, int w, int h) {
+void O2SurfaceMask(O2Surface *self,O2Surface* src, VGMaskOperation operation, int x, int y, int w, int h) {
 	RI_ASSERT(self->_pixelBytes);	//destination exists
 	RI_ASSERT(w > 0 && h > 0);
 
 	self->m_mipmapsValid = NO;
 	if(operation == VG_CLEAR_MASK)
 	{
-		KGSurfaceClear(self,VGColorRGBA(0,0,0,0,VGColor_lRGBA), x, y, w, h);
+		O2SurfaceClear(self,VGColorRGBA(0,0,0,0,VGColor_lRGBA), x, y, w, h);
 		return;
 	}
 	if(operation == VG_FILL_MASK)
 	{
-		KGSurfaceClear(self,VGColorRGBA(1,1,1,1,VGColor_lRGBA), x, y, w, h);
+		O2SurfaceClear(self,VGColorRGBA(1,1,1,1,VGColor_lRGBA), x, y, w, h);
 		return;
 	}
 
@@ -889,11 +885,11 @@ void KGSurfaceMask(KGSurface *self,KGSurface* src, VGMaskOperation operation, in
         int i;
 		for(i=0;i<w;i++)
 		{
-			CGFloat aprev,amask ;
-			CGFloat anew = 0.0f;
+			O2Float aprev,amask ;
+			O2Float anew = 0.0f;
             
-            KGImageReadSpan_Af_MASK(self,dstsx + i,dstsy + j,&aprev,1);
-            KGImageReadSpan_Af_MASK(src,srcsx + i,srcsy + j,&amask,1);
+            O2ImageReadSpan_Af_MASK(self,dstsx + i,dstsy + j,&aprev,1);
+            O2ImageReadSpan_Af_MASK(src,srcsx + i,srcsy + j,&amask,1);
             
 			switch(operation)
 			{
@@ -914,41 +910,41 @@ void KGSurfaceMask(KGSurface *self,KGSurface* src, VGMaskOperation operation, in
 				anew = aprev * (1.0f - amask);
 				break;
 			}
-			KGSurfaceWriteMaskPixel(self,dstsx + i, dstsy + j, anew);
+			O2SurfaceWriteMaskPixel(self,dstsx + i, dstsy + j, anew);
 		}
 	}
 }
 
-void KGSurfaceWriteSpan_lRGBA8888_PRE(KGSurface *self,int x,int y,KGRGBA8888 *span,int length) {   
+void O2SurfaceWriteSpan_lRGBA8888_PRE(O2Surface *self,int x,int y,O2argb8u *span,int length) {   
    if(length==0)
     return;
 
-  // KGRGBA8888ConvertSpan(span,length,VGColor_lRGBA_PRE,self->_colorFormat);
+  // O2argb8uConvertSpan(span,length,VGColor_lRGBA_PRE,self->_colorFormat);
    
    self->_writeRGBA8888(self,x,y,span,length);
    
    self->m_mipmapsValid = NO;
 }
 
-void KGSurfaceWriteSpan_lRGBAffff_PRE(KGSurface *self,int x,int y,KGRGBAffff *span,int length) {   
+void O2SurfaceWriteSpan_lRGBAffff_PRE(O2Surface *self,int x,int y,O2argb32f *span,int length) {   
    if(length==0)
     return;
     
-   KGRGBAffffConvertSpan(span,length,VGColor_lRGBA_PRE,self->_colorFormat);
+   O2argb32fConvertSpan(span,length,VGColor_lRGBA_PRE,self->_colorFormat);
    
    self->_writeRGBAffff(self,x,y,span,length);
    
    self->m_mipmapsValid = NO;
 }
 
-void KGSurfaceWritePixel(KGSurface *self,int x, int y, VGColor c) {
+void O2SurfaceWritePixel(O2Surface *self,int x, int y, VGColor c) {
 	RI_ASSERT(self->_pixelBytes);
 	RI_ASSERT(x >= 0 && x < self->_width);
 	RI_ASSERT(y >= 0 && y < self->_height);
 	RI_ASSERT(c.m_format == self->_colorFormat);
-    KGRGBAffff span=KGRGBAffffFromColor(VGColorConvert(c,VGColor_lRGBA_PRE));
+    O2argb32f span=O2argb32fFromColor(VGColorConvert(c,VGColor_lRGBA_PRE));
     
-    KGSurfaceWriteSpan_lRGBAffff_PRE(self,x,y,&span,1);
+    O2SurfaceWriteSpan_lRGBAffff_PRE(self,x,y,&span,1);
 	self->m_mipmapsValid = NO;
 }
 
@@ -961,7 +957,7 @@ void KGSurfaceWritePixel(KGSurface *self,int x, int y, VGColor c) {
 * \note		
 *//*-------------------------------------------------------------------*/
 
-void KGSurfaceWriteFilteredPixel(KGSurface *self,int i, int j, VGColor color, VGbitfield channelMask) {
+void O2SurfaceWriteFilteredPixel(O2Surface *self,int i, int j, VGColor color, VGbitfield channelMask) {
 	//section 3.4.4: before color space conversion, premultiplied colors are
 	//clamped to alpha, and the color is converted to nonpremultiplied format
 	//section 11.2: how to deal with channel mask
@@ -974,7 +970,7 @@ void KGSurfaceWriteFilteredPixel(KGSurface *self,int i, int j, VGColor color, VG
 	f=VGColorConvert(f,(VGColorInternalFormat)(self->_colorFormat & (VGColorNONLINEAR | VGColorLUMINANCE)));
 
 	//step 3: read the destination color and convert it to nonpremultiplied
-	VGColor d = KGSurfaceReadPixel(self,i,j);
+	VGColor d = O2SurfaceReadPixel(self,i,j);
 	d=VGColorUnpremultiply(d);
 	RI_ASSERT(d.m_format == f.m_format);
 
@@ -992,7 +988,7 @@ void KGSurfaceWriteFilteredPixel(KGSurface *self,int i, int j, VGColor color, VG
 	if(self->_colorFormat & VGColorPREMULTIPLIED)
 		d=VGColorPremultiply(d);
 	//write the color to destination
-	KGSurfaceWritePixel(self,i,j,d);
+	O2SurfaceWritePixel(self,i,j,d);
 }
 
 /*-------------------------------------------------------------------*//*!
@@ -1002,7 +998,7 @@ void KGSurfaceWriteFilteredPixel(KGSurface *self,int i, int j, VGColor color, VG
 * \note		
 *//*-------------------------------------------------------------------*/
 
-void KGSurfaceWriteMaskPixel(KGSurface *self,int x, int y, CGFloat m)	//can write only to VG_A_8
+void O2SurfaceWriteMaskPixel(O2Surface *self,int x, int y, O2Float m)	//can write only to VG_A_8
 {
 	RI_ASSERT(self->_pixelBytes);
 	RI_ASSERT(x >= 0 && x < self->_width);
@@ -1010,7 +1006,7 @@ void KGSurfaceWriteMaskPixel(KGSurface *self,int x, int y, CGFloat m)	//can writ
 	RI_ASSERT(self->m_desc.alphaBits == 8 && self->m_desc.redBits == 0 && self->m_desc.greenBits == 0 && self->m_desc.blueBits == 0 && self->m_desc.luminanceBits == 0 && self->_bitsPerPixel == 8);
 
 	uint8_t* s = ((uint8_t*)(self->_pixelBytes + y * self->_bytesPerRow)) + x;
-	*s = (uint8_t)CGByteFromFloat(m);
+	*s = (uint8_t)O2ByteFromFloat(m);
 	self->m_mipmapsValid = NO;
 }
 
@@ -1022,7 +1018,7 @@ void KGSurfaceWriteMaskPixel(KGSurface *self,int x, int y, CGFloat m)	//can writ
 * \note		
 *//*-------------------------------------------------------------------*/
 
-void KGSurfaceColorMatrix(KGSurface *self,KGSurface * src, const CGFloat* matrix, BOOL filterFormatLinear, BOOL filterFormatPremultiplied, VGbitfield channelMask) {
+void O2SurfaceColorMatrix(O2Surface *self,O2Surface * src, const O2Float* matrix, BOOL filterFormatLinear, BOOL filterFormatPremultiplied, VGbitfield channelMask) {
 	RI_ASSERT(src->_pixelBytes);	//source exists
 	RI_ASSERT(self->_pixelBytes);	//destination exists
 	RI_ASSERT(matrix);
@@ -1048,7 +1044,7 @@ void KGSurfaceColorMatrix(KGSurface *self,KGSurface * src, const CGFloat* matrix
 	{
 		for(i=0;i<w;i++)
 		{
-			VGColor s = KGSurfaceReadPixel(src,i,j);	//convert to RGBA [0,1]
+			VGColor s = O2SurfaceReadPixel(src,i,j);	//convert to RGBA [0,1]
 			s=VGColorConvert(s,procFormat);
 
 			VGColor d=VGColorRGBA(0,0,0,0,procFormat);
@@ -1057,7 +1053,7 @@ void KGSurfaceColorMatrix(KGSurface *self,KGSurface * src, const CGFloat* matrix
 			d.b = matrix[2+4*0] * s.r + matrix[2+4*1] * s.g + matrix[2+4*2] * s.b + matrix[2+4*3] * s.a + matrix[2+4*4];
 			d.a = matrix[3+4*0] * s.r + matrix[3+4*1] * s.g + matrix[3+4*2] * s.b + matrix[3+4*3] * s.a + matrix[3+4*4];
 
-			KGSurfaceWriteFilteredPixel(self,i, j, d, channelMask);
+			O2SurfaceWriteFilteredPixel(self,i, j, d, channelMask);
 		}
 	}
 }
@@ -1130,7 +1126,7 @@ static VGColorInternalFormat getProcessingFormat(VGColorInternalFormat srcFormat
 * \note		
 *//*-------------------------------------------------------------------*/
 
-void KGSurfaceConvolve(KGSurface *self,KGSurface * src, int kernelWidth, int kernelHeight, int shiftX, int shiftY, const RIint16* kernel, CGFloat scale, CGFloat bias, VGTilingMode tilingMode, VGColor edgeFillColor, BOOL filterFormatLinear, BOOL filterFormatPremultiplied, VGbitfield channelMask) {
+void O2SurfaceConvolve(O2Surface *self,O2Surface * src, int kernelWidth, int kernelHeight, int shiftX, int shiftY, const RIint16* kernel, O2Float scale, O2Float bias, VGTilingMode tilingMode, VGColor edgeFillColor, BOOL filterFormatLinear, BOOL filterFormatPremultiplied, VGbitfield channelMask) {
 	RI_ASSERT(src->_pixelBytes);	//source exists
 	RI_ASSERT(self->_pixelBytes);	//destination exists
 	RI_ASSERT(kernel && kernelWidth > 0 && kernelHeight > 0);
@@ -1156,7 +1152,7 @@ void KGSurfaceConvolve(KGSurface *self,KGSurface * src, int kernelWidth, int ker
         int i;
 		for(i=0;i<src->_width;i++)
 		{
-			VGColor s = KGSurfaceReadPixel(src,i, j);
+			VGColor s = O2SurfaceReadPixel(src,i, j);
 			s=VGColorConvert(s,procFormat);
 			tmp[j*src->_width+i] = s;
 		}
@@ -1182,7 +1178,7 @@ void KGSurfaceConvolve(KGSurface *self,KGSurface * src, int kernelWidth, int ker
 					int ky = kernelHeight-kj-1;
 					RI_ASSERT(kx >= 0 && kx < kernelWidth && ky >= 0 && ky < kernelHeight);
 
-					sum=VGColorAdd(sum, VGColorMultiplyByFloat(s,(CGFloat)kernel[kx*kernelHeight+ky]));
+					sum=VGColorAdd(sum, VGColorMultiplyByFloat(s,(O2Float)kernel[kx*kernelHeight+ky]));
 				}
 			}
 
@@ -1192,7 +1188,7 @@ void KGSurfaceConvolve(KGSurface *self,KGSurface * src, int kernelWidth, int ker
 			sum.b += bias;
 			sum.a += bias;
 
-			KGSurfaceWriteFilteredPixel(self,i, j, sum, channelMask);
+			O2SurfaceWriteFilteredPixel(self,i, j, sum, channelMask);
 		}
 	}
     NSZoneFree(NULL,tmp);
@@ -1205,7 +1201,7 @@ void KGSurfaceConvolve(KGSurface *self,KGSurface * src, int kernelWidth, int ker
 * \note		
 *//*-------------------------------------------------------------------*/
 
-void KGSurfaceSeparableConvolve(KGSurface *self,KGSurface * src, int kernelWidth, int kernelHeight, int shiftX, int shiftY, const RIint16* kernelX, const RIint16* kernelY, CGFloat scale, CGFloat bias, VGTilingMode tilingMode, VGColor edgeFillColor, BOOL filterFormatLinear, BOOL filterFormatPremultiplied, VGbitfield channelMask) {
+void O2SurfaceSeparableConvolve(O2Surface *self,O2Surface * src, int kernelWidth, int kernelHeight, int shiftX, int shiftY, const RIint16* kernelX, const RIint16* kernelY, O2Float scale, O2Float bias, VGTilingMode tilingMode, VGColor edgeFillColor, BOOL filterFormatLinear, BOOL filterFormatPremultiplied, VGbitfield channelMask) {
 	RI_ASSERT(src->_pixelBytes);	//source exists
 	RI_ASSERT(self->_pixelBytes);	//destination exists
 	RI_ASSERT(kernelX && kernelY && kernelWidth > 0 && kernelHeight > 0);
@@ -1231,7 +1227,7 @@ void KGSurfaceSeparableConvolve(KGSurface *self,KGSurface * src, int kernelWidth
         int i;
 		for(i=0;i<src->_width;i++)
 		{
-			VGColor s = KGSurfaceReadPixel(src,i, j);
+			VGColor s = O2SurfaceReadPixel(src,i, j);
 			s=VGColorConvert(s,procFormat);
 			tmp[j*src->_width+i] = s;
 		}
@@ -1255,7 +1251,7 @@ void KGSurfaceSeparableConvolve(KGSurface *self,KGSurface * src, int kernelWidth
 				int kx = kernelWidth-ki-1;
 				RI_ASSERT(kx >= 0 && kx < kernelWidth);
 
-				sum=VGColorAdd(sum , VGColorMultiplyByFloat(s,(CGFloat)kernelX[kx])) ;
+				sum=VGColorAdd(sum , VGColorMultiplyByFloat(s,(O2Float)kernelX[kx])) ;
 			}
 			tmp2[j*w+i] = sum;
 		}
@@ -1267,7 +1263,7 @@ void KGSurfaceSeparableConvolve(KGSurface *self,KGSurface * src, int kernelWidth
         int ki;
 		for(ki=0;ki<kernelWidth;ki++)
 		{
-			sum=VGColorAdd(sum, VGColorMultiplyByFloat(edge, (CGFloat)kernelX[ki]));
+			sum=VGColorAdd(sum, VGColorMultiplyByFloat(edge, (O2Float)kernelX[ki]));
 		}
 		edge = sum;
 	}
@@ -1287,7 +1283,7 @@ void KGSurfaceSeparableConvolve(KGSurface *self,KGSurface * src, int kernelWidth
 				int ky = kernelHeight-kj-1;
 				RI_ASSERT(ky >= 0 && ky < kernelHeight);
 
-				sum=VGColorAdd(sum, VGColorMultiplyByFloat(s, (CGFloat)kernelY[ky]));
+				sum=VGColorAdd(sum, VGColorMultiplyByFloat(s, (O2Float)kernelY[ky]));
 			}
 
 			sum=VGColorMultiplyByFloat(sum,scale);
@@ -1296,7 +1292,7 @@ void KGSurfaceSeparableConvolve(KGSurface *self,KGSurface * src, int kernelWidth
 			sum.b += bias;
 			sum.a += bias;
 
-			KGSurfaceWriteFilteredPixel(self,i, j, sum, channelMask);
+			O2SurfaceWriteFilteredPixel(self,i, j, sum, channelMask);
 		}
 	}
     NSZoneFree(NULL,tmp);
@@ -1310,10 +1306,10 @@ void KGSurfaceSeparableConvolve(KGSurface *self,KGSurface * src, int kernelWidth
 * \note		
 *//*-------------------------------------------------------------------*/
 
-static KGRGBAffff gaussianReadPixel(int x, int y, int w, int h,KGRGBAffff *image)
+static O2argb32f gaussianReadPixel(int x, int y, int w, int h,O2argb32f *image)
 {
 	if(x < 0 || x >= w || y < 0 || y >= h) {	//apply tiling mode
-	 return KGRGBAffffInit(0,0,0,0);
+	 return O2argb32fInit(0,0,0,0);
 	}
 	else
 	{
@@ -1326,73 +1322,73 @@ typedef struct KGGaussianKernel {
  int      refCount;
  int      xSize;
  int      xShift;
- CGFloat  xScale;
- CGFloat *xValues;
+ O2Float  xScale;
+ O2Float *xValues;
 
  int      ySize;
  int      yShift;
- CGFloat  yScale;
- CGFloat *yValues;
+ O2Float  yScale;
+ O2Float *yValues;
 } KGGaussianKernel;
 
-KGGaussianKernel *KGCreateGaussianKernelWithDeviation(CGFloat stdDeviation){
+KGGaussianKernel *KGCreateGaussianKernelWithDeviation(O2Float stdDeviation){
    KGGaussianKernel *kernel=NSZoneMalloc(NULL,sizeof(KGGaussianKernel));
    
    kernel->refCount=1;
    
-   CGFloat stdDeviationX=stdDeviation;
-   CGFloat stdDeviationY=stdDeviation;
+   O2Float stdDeviationX=stdDeviation;
+   O2Float stdDeviationY=stdDeviation;
    
 	RI_ASSERT(stdDeviationX > 0.0f && stdDeviationY > 0.0f);
 	RI_ASSERT(stdDeviationX <= RI_MAX_GAUSSIAN_STD_DEVIATION && stdDeviationY <= RI_MAX_GAUSSIAN_STD_DEVIATION);
-
+   
 	//find a size for the kernel
-	CGFloat totalWeightX = stdDeviationX*(CGFloat)sqrt(2.0f*M_PI);
-	CGFloat totalWeightY = stdDeviationY*(CGFloat)sqrt(2.0f*M_PI);
-	const CGFloat tolerance = 0.99f;	//use a kernel that covers 99% of the total Gaussian support
+	O2Float totalWeightX = stdDeviationX*(O2Float)sqrt(2.0f*M_PI);
+	O2Float totalWeightY = stdDeviationY*(O2Float)sqrt(2.0f*M_PI);
+	const O2Float tolerance = 0.99f;	//use a kernel that covers 99% of the total Gaussian support
 
-	CGFloat expScaleX = -1.0f / (2.0f*stdDeviationX*stdDeviationX);
-	CGFloat expScaleY = -1.0f / (2.0f*stdDeviationY*stdDeviationY);
+	O2Float expScaleX = -1.0f / (2.0f*stdDeviationX*stdDeviationX);
+	O2Float expScaleY = -1.0f / (2.0f*stdDeviationY*stdDeviationY);
 
 	int kernelWidth = 0;
-	CGFloat e = 0.0f;
-	CGFloat sumX = 1.0f;	//the weight of the middle entry counted already
+	O2Float e = 0.0f;
+	O2Float sumX = 1.0f;	//the weight of the middle entry counted already
 	do{
 		kernelWidth++;
-		e = (CGFloat)exp((CGFloat)(kernelWidth * kernelWidth) * expScaleX);
+		e = (O2Float)exp((O2Float)(kernelWidth * kernelWidth) * expScaleX);
 		sumX += e*2.0f;	//count left&right lobes
 	}while(sumX < tolerance*totalWeightX);
 
 	int kernelHeight = 0;
 	e = 0.0f;
-	CGFloat sumY = 1.0f;	//the weight of the middle entry counted already
+	O2Float sumY = 1.0f;	//the weight of the middle entry counted already
 	do{
 		kernelHeight++;
-		e = (CGFloat)exp((CGFloat)(kernelHeight * kernelHeight) * expScaleY);
+		e = (O2Float)exp((O2Float)(kernelHeight * kernelHeight) * expScaleY);
 		sumY += e*2.0f;	//count left&right lobes
 	}while(sumY < tolerance*totalWeightY);
 
 	//make a separable kernel
     kernel->xSize=kernelWidth*2+1;
-    kernel->xValues=NSZoneMalloc(NULL,sizeof(CGFloat)*kernel->xSize);
+    kernel->xValues=NSZoneMalloc(NULL,sizeof(O2Float)*kernel->xSize);
     kernel->xShift = kernelWidth;
     kernel->xScale = 0.0f;
     int i;
 	for(i=0;i<kernel->xSize;i++){
 		int x = i-kernel->xShift;
-		kernel->xValues[i] = (CGFloat)exp((CGFloat)x*(CGFloat)x * expScaleX);
+		kernel->xValues[i] = (O2Float)exp((O2Float)x*(O2Float)x * expScaleX);
 		kernel->xScale += kernel->xValues[i];
 	}
 	kernel->xScale = 1.0f / kernel->xScale;	//NOTE: using the mathematical definition of the scaling term doesn't work since we cut the filter support early for performance
 
     kernel->ySize=kernelHeight*2+1;
-    kernel->yValues=NSZoneMalloc(NULL,sizeof(CGFloat)*kernel->ySize);
+    kernel->yValues=NSZoneMalloc(NULL,sizeof(O2Float)*kernel->ySize);
     kernel->yShift = kernelHeight;
     kernel->yScale = 0.0f;
 	for(i=0;i<kernel->ySize;i++)
 	{
 		int y = i-kernel->yShift;
-		kernel->yValues[i] = (CGFloat)exp((CGFloat)y*(CGFloat)y * expScaleY);
+		kernel->yValues[i] = (O2Float)exp((O2Float)y*(O2Float)y * expScaleY);
 		kernel->yScale += kernel->yValues[i];
 	}
 	kernel->yScale = 1.0f / kernel->yScale;	//NOTE: using the mathematical definition of the scaling term doesn't work since we cut the filter support early for performance
@@ -1418,56 +1414,74 @@ void KGGaussianKernelRelease(KGGaussianKernelRef kernel) {
    }
 }
 
-void KGSurfaceGaussianBlur(KGSurface *self,O2Image * src, KGGaussianKernel *kernel){
-	RI_ASSERT(src->_pixelBytes);	//source exists
-	RI_ASSERT(self->_pixelBytes);	//destination exists
+static O2argb32f argbFromColor(O2ColorRef color){   
+   size_t    count=O2ColorGetNumberOfComponents(color);
+   const float *components=O2ColorGetComponents(color);
 
+   if(count==2)
+    return O2argb32fInit(components[0],components[0],components[0],components[1]);
+   if(count==4)
+    return O2argb32fInit(components[0],components[1],components[2],components[3]);
+    
+   return O2argb32fInit(1,0,0,1);
+}
+
+void O2SurfaceGaussianBlur(O2Surface *self,O2Image * src, KGGaussianKernel *kernel,O2ColorRef color){
+   O2argb32f argbColor=argbFromColor(color);
+   
 	//the area to be written is an intersection of source and destination image areas.
 	//lower-left corners of the images are aligned.
 	int w = RI_INT_MIN(self->_width, src->_width);
 	int h = RI_INT_MIN(self->_height, src->_height);
 	RI_ASSERT(w > 0 && h > 0);
     
-	KGRGBAffff *tmp=NSZoneMalloc(NULL,src->_width*src->_height*sizeof(KGRGBAffff));
+	O2argb32f *tmp=NSZoneMalloc(NULL,src->_width*src->_height*sizeof(O2argb32f));
 
 	//copy source region to tmp and do conversion
     int i,j;
 	for(j=0;j<src->_height;j++){
-     KGRGBAffff *tmpRow=tmp+j*src->_width;
+     O2argb32f *tmpRow=tmp+j*src->_width;
      int         i,width=src->_width;
-     KGRGBAffff *direct=KGImageReadSpan_lRGBAffff_PRE(src,0,j,tmpRow,width);
+     O2argb32f *direct=O2ImageReadSpan_lRGBAffff_PRE(src,0,j,tmpRow,width);
      
      if(direct!=NULL){
       for(i=0;i<width;i++)
        tmpRow[i]=direct[i];
      }
+     for(i=0;i<width;i++){
+      tmpRow[i].a=argbColor.a*tmpRow[i].a;
+      tmpRow[i].r=argbColor.r*tmpRow[i].a;
+      tmpRow[i].g=argbColor.g*tmpRow[i].a;
+      tmpRow[i].b=argbColor.b*tmpRow[i].a;
+     }
+     
   	}
 
-	KGRGBAffff *tmp2=NSZoneMalloc(NULL,w*src->_height*sizeof(KGRGBAffff));
+	O2argb32f *tmp2=NSZoneMalloc(NULL,w*src->_height*sizeof(O2argb32f));
 
 	//horizontal pass
 	for(j=0;j<src->_height;j++){
 		for(i=0;i<w;i++){
-			KGRGBAffff sum=KGRGBAffffInit(0,0,0,0);
+			O2argb32f sum=O2argb32fInit(0,0,0,0);
             int ki;
 			for(ki=0;ki<kernel->xSize;ki++){
 				int x = i+ki-kernel->xShift;
-				sum=KGRGBAffffAdd(sum, KGRGBAffffMultiplyByFloat(gaussianReadPixel(x, j, src->_width, src->_height, tmp),kernel->xValues[ki]));
+				sum=O2argb32fAdd(sum, O2argb32fMultiplyByFloat(gaussianReadPixel(x, j, src->_width, src->_height, tmp),kernel->xValues[ki]));
 			}
-			tmp2[j*w+i] = KGRGBAffffMultiplyByFloat(sum, kernel->xScale);
+			tmp2[j*w+i] = O2argb32fMultiplyByFloat(sum, kernel->xScale);
 		}
 	}
 	//vertical pass
 	for(j=0;j<h;j++){
 		for(i=0;i<w;i++){
-			KGRGBAffff sum=KGRGBAffffInit(0,0,0,0);
+			O2argb32f sum=O2argb32fInit(0,0,0,0);
             int kj;
 			for(kj=0;kj<kernel->ySize;kj++){
 				int y = j+kj-kernel->yShift;
-				sum=KGRGBAffffAdd(sum,  KGRGBAffffMultiplyByFloat(gaussianReadPixel(i, y, w, src->_height, tmp2), kernel->yValues[kj]));
+				sum=O2argb32fAdd(sum,  O2argb32fMultiplyByFloat(gaussianReadPixel(i, y, w, src->_height, tmp2), kernel->yValues[kj]));
 			}
-            sum=KGRGBAffffMultiplyByFloat(sum, kernel->yScale);
-			KGSurfaceWriteSpan_lRGBAffff_PRE(self,i, j, &sum,1);
+            sum=O2argb32fMultiplyByFloat(sum, kernel->yScale);
+			O2SurfaceWriteSpan_lRGBAffff_PRE(self,i, j, &sum,1);
 		}
 	}
     NSZoneFree(NULL,tmp);
@@ -1500,7 +1514,7 @@ static VGColorInternalFormat getLUTFormat(BOOL outputLinear, BOOL outputPremulti
 * \note		
 *//*-------------------------------------------------------------------*/
 
-void KGSurfaceLookup(KGSurface *self,KGSurface * src, const uint8_t * redLUT, const uint8_t * greenLUT, const uint8_t * blueLUT, const uint8_t * alphaLUT, BOOL outputLinear, BOOL outputPremultiplied, BOOL filterFormatLinear, BOOL filterFormatPremultiplied, VGbitfield channelMask){
+void O2SurfaceLookup(O2Surface *self,O2Surface * src, const uint8_t * redLUT, const uint8_t * greenLUT, const uint8_t * blueLUT, const uint8_t * alphaLUT, BOOL outputLinear, BOOL outputPremultiplied, BOOL filterFormatLinear, BOOL filterFormatPremultiplied, VGbitfield channelMask){
 	RI_ASSERT(src->_pixelBytes);	//source exists
 	RI_ASSERT(self->_pixelBytes);	//destination exists
 	RI_ASSERT(redLUT && greenLUT && blueLUT && alphaLUT);
@@ -1520,16 +1534,16 @@ void KGSurfaceLookup(KGSurface *self,KGSurface * src, const uint8_t * redLUT, co
         int i;
 		for(i=0;i<w;i++)
 		{
-			VGColor s = KGSurfaceReadPixel(src,i,j);	//convert to RGBA [0,1]
+			VGColor s = O2SurfaceReadPixel(src,i,j);	//convert to RGBA [0,1]
 			s=VGColorConvert(s,procFormat);
 
 			VGColor d=VGColorRGBA(0,0,0,0,lutFormat);
-			d.r = CGFloatFromByte(  redLUT[CGByteFromFloat(s.r)]);
-			d.g = CGFloatFromByte(greenLUT[CGByteFromFloat(s.g)]);
-			d.b = CGFloatFromByte( blueLUT[CGByteFromFloat(s.b)]);
-			d.a = CGFloatFromByte(alphaLUT[CGByteFromFloat(s.a)]);
+			d.r = O2Float32FromByte(  redLUT[O2ByteFromFloat(s.r)]);
+			d.g = O2Float32FromByte(greenLUT[O2ByteFromFloat(s.g)]);
+			d.b = O2Float32FromByte( blueLUT[O2ByteFromFloat(s.b)]);
+			d.a = O2Float32FromByte(alphaLUT[O2ByteFromFloat(s.a)]);
 
-			KGSurfaceWriteFilteredPixel(self,i, j, d, channelMask);
+			O2SurfaceWriteFilteredPixel(self,i, j, d, channelMask);
 		}
 	}
 }
@@ -1541,7 +1555,7 @@ void KGSurfaceLookup(KGSurface *self,KGSurface * src, const uint8_t * redLUT, co
 * \note		
 *//*-------------------------------------------------------------------*/
 
-void KGSurfaceLookupSingle(KGSurface *self,KGSurface * src, const RIuint32 * lookupTable, KGSurfaceChannel sourceChannel, BOOL outputLinear, BOOL outputPremultiplied, BOOL filterFormatLinear, BOOL filterFormatPremultiplied, VGbitfield channelMask){
+void O2SurfaceLookupSingle(O2Surface *self,O2Surface * src, const RIuint32 * lookupTable, O2SurfaceChannel sourceChannel, BOOL outputLinear, BOOL outputPremultiplied, BOOL filterFormatLinear, BOOL filterFormatPremultiplied, VGbitfield channelMask){
 	RI_ASSERT(src->_pixelBytes);	//source exists
 	RI_ASSERT(self->_pixelBytes);	//destination exists
 	RI_ASSERT(lookupTable);
@@ -1569,34 +1583,34 @@ void KGSurfaceLookupSingle(KGSurface *self,KGSurface * src, const RIuint32 * loo
         int i;
 		for(i=0;i<w;i++)
 		{
-			VGColor s = KGSurfaceReadPixel(src,i,j);	//convert to RGBA [0,1]
+			VGColor s = O2SurfaceReadPixel(src,i,j);	//convert to RGBA [0,1]
 			s=VGColorConvert(s,procFormat);
 			int e;
 			switch(sourceChannel)
 			{
 			case VG_RED:
-				e = CGByteFromFloat(s.r);
+				e = O2ByteFromFloat(s.r);
 				break;
 			case VG_GREEN:
-				e = CGByteFromFloat(s.g);
+				e = O2ByteFromFloat(s.g);
 				break;
 			case VG_BLUE:
-				e = CGByteFromFloat(s.b);
+				e = O2ByteFromFloat(s.b);
 				break;
 			default:
 				RI_ASSERT(sourceChannel == VG_ALPHA);
-				e = CGByteFromFloat(s.a);
+				e = O2ByteFromFloat(s.a);
 				break;
 			}
 
 			RIuint32 l = ((const RIuint32*)lookupTable)[e];
 			VGColor d=VGColorRGBA(0,0,0,0,lutFormat);
-			d.r = CGFloatFromByte((l>>24));
-			d.g = CGFloatFromByte((l>>16));
-			d.b = CGFloatFromByte((l>> 8));
-			d.a = CGFloatFromByte((l    ));
+			d.r = O2Float32FromByte((l>>24));
+			d.g = O2Float32FromByte((l>>16));
+			d.b = O2Float32FromByte((l>> 8));
+			d.a = O2Float32FromByte((l    ));
 
-			KGSurfaceWriteFilteredPixel(self,i, j, d, channelMask);
+			O2SurfaceWriteFilteredPixel(self,i, j, d, channelMask);
 		}
 	}
 }

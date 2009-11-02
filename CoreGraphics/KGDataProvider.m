@@ -32,7 +32,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -initWithFilename:(const char *)pathCString {
-// why doesn't CGDataProvider use CFString's, ugh
+// why doesn't O2DataProvider use CFString's, ugh
    NSUInteger len=strlen(pathCString);
    _path=[[[NSFileManager defaultManager] stringWithFileSystemRepresentation:pathCString length:len] copy];
    _inputStream=[[NSInputStream inputStreamWithFileAtPath:_path] retain];
@@ -53,6 +53,18 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return result;
 }
 
+O2DataProviderRef O2DataProviderCreateWithData(void *info,const void *data,size_t size,O2DataProviderReleaseDataCallback releaseCallback) {
+   return [[O2DataProvider alloc] initWithBytes:data length:size];
+}
+
+O2DataProviderRef O2DataProviderCreateWithCFData(NSData *data) {
+   return [[O2DataProvider alloc] initWithData:data];
+}
+
+O2DataProviderRef O2DataProviderCreateWithURL(NSURL *url) {
+   return [[O2DataProvider alloc] initWithURL:url];
+}
+
 O2DataProviderRef O2DataProviderCreateWithFilename(const char *pathCString) {
    return [[O2DataProvider alloc] initWithFilename:pathCString];
 }
@@ -66,7 +78,10 @@ void O2DataProviderRelease(O2DataProviderRef self) {
 }
 
 NSData *O2DataProviderCopyData(O2DataProviderRef self) {
-   return [self copyData];
+   if(self->_data!=nil)
+    return [self->_data copy];
+   else
+    return [[NSData alloc] initWithContentsOfMappedFile:self->_path]; 
 }
 
 -(void)dealloc {
@@ -136,13 +151,6 @@ NSData *O2DataProviderCopyData(O2DataProviderRef self) {
     
     return check;
    }
-}
-
--(NSData *)copyData {
-   if(_data!=nil)
-    return [_data copy];
-   else
-    return [[NSData alloc] initWithContentsOfMappedFile:_path]; 
 }
 
 @end

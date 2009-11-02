@@ -12,12 +12,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <CoreGraphics/CGGeometry.h>
 
 typedef struct {
-   float a;
-   float b;
-   float c;
-   float d;
-   float tx;
-   float ty;
+   CGFloat a;
+   CGFloat b;
+   CGFloat c;
+   CGFloat d;
+   CGFloat tx;
+   CGFloat ty;
 } CGAffineTransform;
 
 COREGRAPHICS_EXPORT const CGAffineTransform CGAffineTransformIdentity;

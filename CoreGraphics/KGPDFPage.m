@@ -67,21 +67,21 @@ BOOL O2PDFGetPageArrayForKey(O2PDFPage *page,const char *key,O2PDFArray **arrayp
    if(!O2PDFGetPageObjectForKey(page,key,&check))
     return NO;
     
-   return [check checkForType:kKGPDFObjectTypeArray value:arrayp];
+   return [check checkForType:kO2PDFObjectTypeArray value:arrayp];
 }
 
--(BOOL)getRect:(CGRect *)rect forBox:(CGPDFBox)box {
+-(BOOL)getRect:(O2Rect *)rect forBox:(O2PDFBox)box {
    const char *string=NULL;
    O2PDFArray *array;
    O2PDFReal  *numbers;
    unsigned    count;
    
    switch(box){
-    case kCGPDFMediaBox: string="MediaBox"; break;
-    case kCGPDFCropBox:  string="CropBox"; break;
-    case kCGPDFBleedBox: string="BleedBox"; break;
-    case kCGPDFTrimBox:  string="TrimBox"; break;
-    case kCGPDFArtBox:   string="ArtBox"; break;
+    case kO2PDFMediaBox: string="MediaBox"; break;
+    case kO2PDFCropBox:  string="CropBox"; break;
+    case kO2PDFBleedBox: string="BleedBox"; break;
+    case kO2PDFTrimBox:  string="TrimBox"; break;
+    case kO2PDFArtBox:   string="ArtBox"; break;
    }
    
    if(string==NULL)
@@ -112,14 +112,14 @@ BOOL O2PDFGetPageArrayForKey(O2PDFPage *page,const char *key,O2PDFArray **arrayp
 }
 
 
--(CGAffineTransform)drawingTransformForBox:(CGPDFBox)box inRect:(CGRect)rect rotate:(int)degrees preserveAspectRatio:(BOOL)preserveAspectRatio {
-   CGAffineTransform result=CGAffineTransformIdentity;
-   CGRect boxRect;
+-(O2AffineTransform)drawingTransformForBox:(O2PDFBox)box inRect:(O2Rect)rect rotate:(int)degrees preserveAspectRatio:(BOOL)preserveAspectRatio {
+   O2AffineTransform result=O2AffineTransformIdentity;
+   O2Rect boxRect;
    
    if([self getRect:&boxRect forBox:box]){   
-    result=CGAffineTransformTranslate(result,-boxRect.origin.x,-boxRect.origin.y);
-    result=CGAffineTransformTranslate(result,rect.origin.x,rect.origin.y);
-    result=CGAffineTransformScale(result,rect.size.width/boxRect.size.width,rect.size.height/boxRect.size.height);
+    result=O2AffineTransformTranslate(result,-boxRect.origin.x,-boxRect.origin.y);
+    result=O2AffineTransformTranslate(result,rect.origin.x,rect.origin.y);
+    result=O2AffineTransformScale(result,rect.size.width/boxRect.size.width,rect.size.height/boxRect.size.height);
    }
    
    return result;

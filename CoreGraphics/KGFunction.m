@@ -13,7 +13,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @implementation O2Function
 
--initWithInfo:(void *)info domainDimension:(unsigned)domainCount domain:(const float *)domain rangeDimension:(unsigned)rangeCount range:(const float *)range callbacks:(const CGFunctionCallbacks *)callbacks {
+-initWithInfo:(void *)info domainDimension:(unsigned)domainCount domain:(const float *)domain rangeDimension:(unsigned)rangeCount range:(const float *)range callbacks:(const O2FunctionCallbacks *)callbacks {
    int i;
    
    _info=info;
@@ -44,7 +44,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return self;
 }
 
-O2FunctionRef O2FunctionCreate(void *info,size_t domainDimension,const CGFloat *domain,size_t rangeDimension,const CGFloat *range,const CGFunctionCallbacks *callbacks) {   
+O2FunctionRef O2FunctionCreate(void *info,size_t domainDimension,const O2Float *domain,size_t rangeDimension,const O2Float *range,const O2FunctionCallbacks *callbacks) {   
    return [[O2Function alloc] initWithInfo:info domainDimension:domainDimension domain:domain rangeDimension:rangeDimension range:range callbacks:callbacks];
 }
 
@@ -56,7 +56,7 @@ void O2FunctionRelease(O2FunctionRef self) {
    [self release];
 }
 
-void O2FunctionEvaluate(O2FunctionRef self,CGFloat x,CGFloat *output){
+void O2FunctionEvaluate(O2FunctionRef self,O2Float x,O2Float *output){
   float inputs[1];
   int   i;
 

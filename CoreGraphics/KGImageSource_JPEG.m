@@ -1078,7 +1078,7 @@ static unsigned char *stbi_jpeg_load_from_memory(jpeg *j,stbi_uc const *buffer, 
 
 -initWithDataProvider:(O2DataProvider *)provider options:(NSDictionary *)options {
    [super initWithDataProvider:provider options:options];
-   _jpg=[provider copyData];
+   _jpg=O2DataProviderCopyData(provider);
    return self;
 }
 
@@ -1103,9 +1103,9 @@ static unsigned char *stbi_jpeg_load_from_memory(jpeg *j,stbi_uc const *buffer, 
    bitmap=[[NSData alloc] initWithBytesNoCopy:_bitmap length:bytesPerRow*height];
 
    O2DataProvider *provider=[[O2DataProvider alloc] initWithData:bitmap];
-   O2ColorSpace   *colorSpace=[[O2ColorSpace alloc] initWithDeviceRGB];
+   O2ColorSpace   *colorSpace=O2ColorSpaceCreateDeviceRGB();
    O2Image        *image=[[O2Image alloc] initWithWidth:width height:height bitsPerComponent:8 bitsPerPixel:bitsPerPixel bytesPerRow:bytesPerRow
-      colorSpace:colorSpace bitmapInfo:kCGBitmapByteOrder32Big|kCGImageAlphaPremultipliedLast provider:provider decode:NULL interpolate:NO renderingIntent:kCGRenderingIntentDefault];
+      colorSpace:colorSpace bitmapInfo:kO2BitmapByteOrder32Big|kO2ImageAlphaPremultipliedLast provider:provider decode:NULL interpolate:NO renderingIntent:kO2RenderingIntentDefault];
       
    [colorSpace release];
    [provider release];

@@ -30,9 +30,9 @@
 
 @implementation O2Paint_color
 
-static int color_lRGBA8888_PRE(O2Paint *selfX,int x,int y,KGRGBA8888 *span,int length){
+static int color_lRGBA8888_PRE(O2Paint *selfX,int x,int y,O2argb8u *span,int length){
    O2Paint_color *self=(O2Paint_color *)selfX;
-   KGRGBA8888  rgba=self->_RGBA8888_PRE;
+   O2argb8u  rgba=self->_RGBA8888_PRE;
    int i;
    
    for(i=0;i<length;i++)
@@ -41,9 +41,9 @@ static int color_lRGBA8888_PRE(O2Paint *selfX,int x,int y,KGRGBA8888 *span,int l
    return length;
 }
 
-static int color_lRGBAffff_PRE(O2Paint *selfX,int x,int y,KGRGBAffff *span,int length){
+static int color_lRGBAffff_PRE(O2Paint *selfX,int x,int y,O2argb32f *span,int length){
    O2Paint_color *self=(O2Paint_color *)selfX;
-   KGRGBAffff  rgba=self->_RGBAffff_PRE;
+   O2argb32f  rgba=self->_RGBAffff_PRE;
    int i;
    
    for(i=0;i<length;i++)
@@ -52,27 +52,27 @@ static int color_lRGBAffff_PRE(O2Paint *selfX,int x,int y,KGRGBAffff *span,int l
    return length;
 }
 
--initWithGray:(CGFloat)gray alpha:(CGFloat)alpha {
-   self->m_surfaceToPaintMatrix=CGAffineTransformIdentity;
+-initWithGray:(O2Float)gray alpha:(O2Float)alpha {
+   self->m_surfaceToPaintMatrix=O2AffineTransformIdentity;
    _paint_lRGBA8888_PRE=color_lRGBA8888_PRE;
    _paint_lRGBAffff_PRE=color_lRGBAffff_PRE;
    m_paintColor=VGColorRGBA(gray,gray,gray,alpha,VGColor_lRGBA);
    m_paintColor=VGColorClamp(m_paintColor);
    m_paintColor=VGColorPremultiply(m_paintColor);
-   _RGBAffff_PRE=KGRGBAffffFromColor(VGColorConvert(self->m_paintColor,VGColor_lRGBA_PRE));
-   _RGBA8888_PRE=KGRGBA8888FromKGRGBAffff(_RGBAffff_PRE);
+   _RGBAffff_PRE=O2argb32fFromColor(VGColorConvert(self->m_paintColor,VGColor_lRGBA_PRE));
+   _RGBA8888_PRE=O2argb8uFromO2argb32f(_RGBAffff_PRE);
    return self;
 }
 
--initWithRed:(CGFloat)red green:(CGFloat)green blue:(CGFloat)blue alpha:(CGFloat)alpha {
-   self->m_surfaceToPaintMatrix=CGAffineTransformIdentity;
+-initWithRed:(O2Float)red green:(O2Float)green blue:(O2Float)blue alpha:(O2Float)alpha {
+   self->m_surfaceToPaintMatrix=O2AffineTransformIdentity;
    _paint_lRGBA8888_PRE=color_lRGBA8888_PRE;
    _paint_lRGBAffff_PRE=color_lRGBAffff_PRE;
    m_paintColor=VGColorRGBA(red,green,blue,alpha,VGColor_lRGBA);
    m_paintColor=VGColorClamp(m_paintColor);
    m_paintColor=VGColorPremultiply(m_paintColor);
-   _RGBAffff_PRE=KGRGBAffffFromColor(VGColorConvert(self->m_paintColor,VGColor_lRGBA_PRE));
-   _RGBA8888_PRE=KGRGBA8888FromKGRGBAffff(_RGBAffff_PRE);
+   _RGBAffff_PRE=O2argb32fFromColor(VGColorConvert(self->m_paintColor,VGColor_lRGBA_PRE));
+   _RGBA8888_PRE=O2argb8uFromO2argb32f(_RGBAffff_PRE);
    return self;
 }
 

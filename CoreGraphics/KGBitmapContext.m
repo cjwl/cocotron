@@ -16,8 +16,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @implementation O2BitmapContext
 
--initWithSurface:(KGSurface *)surface flipped:(BOOL)flipped {
-   CGAffineTransform flip=flipped?CGAffineTransformIdentity:CGAffineTransformMake(1,0,0,-1,0,[surface height]);
+-initWithSurface:(O2Surface *)surface flipped:(BOOL)flipped {
+   O2AffineTransform flip=flipped?O2AffineTransformIdentity:O2AffineTransformMake(1,0,0,-1,0,O2ImageGetHeight(surface));
    O2GState  *initialState=[[[O2GState alloc] initWithDeviceTransform:flip] autorelease];
 
    [super initWithGraphicsState:initialState];
@@ -25,10 +25,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return self;
 }
 
--initWithBytes:(void *)bytes width:(size_t)width height:(size_t)height bitsPerComponent:(size_t)bitsPerComponent bytesPerRow:(size_t)bytesPerRow colorSpace:(O2ColorSpaceRef)colorSpace bitmapInfo:(CGBitmapInfo)bitmapInfo flipped:(BOOL)flipped {
-   KGSurface *surface=[[KGSurface alloc] initWithBytes:bytes width:width height:height bitsPerComponent:bitsPerComponent bytesPerRow:bytesPerRow colorSpace:colorSpace bitmapInfo:bitmapInfo];
+-initWithBytes:(void *)bytes width:(size_t)width height:(size_t)height bitsPerComponent:(size_t)bitsPerComponent bytesPerRow:(size_t)bytesPerRow colorSpace:(O2ColorSpaceRef)colorSpace bitmapInfo:(O2BitmapInfo)bitmapInfo releaseCallback:(O2BitmapContextReleaseDataCallback)releaseCallback releaseInfo:(void *)releaseInfo {
+   O2Surface *surface=[[O2Surface alloc] initWithBytes:bytes width:width height:height bitsPerComponent:bitsPerComponent bytesPerRow:bytesPerRow colorSpace:colorSpace bitmapInfo:bitmapInfo];
 
-   [self initWithSurface:surface flipped:flipped];
+   [self initWithSurface:surface flipped:NO];
    [surface release];
    return self;
 }
@@ -38,87 +38,112 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [super dealloc];
 }
 
--(NSData *)pixelData {
-   return [_surface pixelData];
+-(O2Surface *)surface {
+   return _surface;
 }
 
--(void *)pixelBytes {
-   return [_surface pixelBytes];
+O2ContextRef O2BitmapContextCreateWithData(void *data,size_t width,size_t height,size_t bitsPerComponent,size_t bytesPerRow,O2ColorSpaceRef colorSpace,O2BitmapInfo bitmapInfo,O2BitmapContextReleaseDataCallback releaseCallback,void *releaseInfo) {
+   return [O2Context createWithBytes:data width:width height:height bitsPerComponent:bitsPerComponent bytesPerRow:bytesPerRow colorSpace:colorSpace bitmapInfo:bitmapInfo releaseCallback:releaseCallback releaseInfo:releaseInfo];
 }
 
--(size_t)width {
-   return [_surface width];
+O2ContextRef O2BitmapContextCreate(void *data,size_t width,size_t height,size_t bitsPerComponent,size_t bytesPerRow,O2ColorSpaceRef colorSpace,O2BitmapInfo bitmapInfo) {
+   return O2BitmapContextCreateWithData(data,width,height,bitsPerComponent,bytesPerRow,colorSpace,bitmapInfo,NULL,NULL);
 }
 
--(size_t)height {
-   return [_surface height];
-}
-
--(size_t)bitsPerComponent {
-   return [_surface bitsPerComponent];
-}
-
--(size_t)bytesPerRow {
-   return [_surface bytesPerRow];
-}
-
--(O2ColorSpaceRef)colorSpace {
-   return [_surface colorSpace];
-}
-
--(CGBitmapInfo)bitmapInfo {
-   return [_surface bitmapInfo];
-}
-
--(size_t)bitsPerPixel {
-   size_t result=[self bitsPerComponent]*[[self colorSpace] numberOfComponents];
+void  *O2BitmapContextGetData(O2ContextRef selfX) {
+   O2BitmapContextRef self=(O2BitmapContextRef)selfX;
    
-   switch([self bitmapInfo]&kCGBitmapAlphaInfoMask){
+   return [self->_surface pixelBytes];
+}
+
+size_t O2BitmapContextGetWidth(O2ContextRef selfX) {
+   O2BitmapContextRef self=(O2BitmapContextRef)selfX;
+
+   return O2ImageGetWidth(self->_surface);
+}
+
+size_t O2BitmapContextGetHeight(O2ContextRef selfX) {
+   O2BitmapContextRef self=(O2BitmapContextRef)selfX;
+
+   return O2ImageGetHeight(self->_surface);
+}
+
+size_t O2BitmapContextGetBitsPerComponent(O2ContextRef selfX) {
+   O2BitmapContextRef self=(O2BitmapContextRef)selfX;
+
+   return O2ImageGetBitsPerComponent(self->_surface);
+}
+
+size_t O2BitmapContextGetBitsPerPixel(O2ContextRef self) {
+   size_t result=O2BitmapContextGetBitsPerComponent(self)*O2ColorSpaceGetNumberOfComponents(O2BitmapContextGetColorSpace(self));
    
-    case kCGImageAlphaNone:
+   switch(O2BitmapContextGetAlphaInfo(self)){
+   
+    case kO2ImageAlphaNone:
      break;
      
-    case kCGImageAlphaPremultipliedLast:
-     result+=[self bitsPerComponent];
+    case kO2ImageAlphaPremultipliedLast:
+     result+=O2BitmapContextGetBitsPerComponent(self);
      break;
 
-    case kCGImageAlphaPremultipliedFirst:
-     result+=[self bitsPerComponent];
+    case kO2ImageAlphaPremultipliedFirst:
+     result+=O2BitmapContextGetBitsPerComponent(self);
      break;
 
-    case kCGImageAlphaLast:
-     result+=[self bitsPerComponent];
+    case kO2ImageAlphaLast:
+     result+=O2BitmapContextGetBitsPerComponent(self);
      break;
 
-    case kCGImageAlphaFirst:
-     result+=[self bitsPerComponent];
+    case kO2ImageAlphaFirst:
+     result+=O2BitmapContextGetBitsPerComponent(self);
      break;
 
-    case kCGImageAlphaNoneSkipLast:
+    case kO2ImageAlphaNoneSkipLast:
      break;
 
-    case kCGImageAlphaNoneSkipFirst:
+    case kO2ImageAlphaNoneSkipFirst:
      break;
    }
    
    return result;
 }
 
--(CGImageAlphaInfo)alphaInfo {
-   return [self bitmapInfo]&kCGBitmapAlphaInfoMask;
+size_t O2BitmapContextGetBytesPerRow(O2ContextRef selfX) {
+   O2BitmapContextRef self=(O2BitmapContextRef)selfX;
+
+   return O2ImageGetBytesPerRow(self->_surface);
 }
 
--(O2Image *)createImage {
+O2ColorSpaceRef  O2BitmapContextGetColorSpace(O2ContextRef selfX) {
+   O2BitmapContextRef self=(O2BitmapContextRef)selfX;
+
+   return O2ImageGetColorSpace(self->_surface);
+}
+
+O2ImageAlphaInfo O2BitmapContextGetAlphaInfo(O2ContextRef selfX) {
+   O2BitmapContextRef self=(O2BitmapContextRef)selfX;
+
+   return O2ImageGetAlphaInfo(self->_surface);
+}
+
+O2BitmapInfo O2BitmapContextGetBitmapInfo(O2ContextRef selfX) {
+   O2BitmapContextRef self=(O2BitmapContextRef)selfX;
+
+   return O2ImageGetBitmapInfo(self->_surface);
+}
+
+O2ImageRef O2BitmapContextCreateImage(O2ContextRef selfX) {
+   O2BitmapContextRef self=(O2BitmapContextRef)selfX;
 #if 1
 // FIXME: this needs to be either a copy or a copy on write
-   return [_surface retain];
+   return [self->_surface retain];
 #else
-  CGDataProviderRef provider=CGDataProviderCreateWithData(NULL,_data,_pixelsWide*_pixelsHigh*4,NULL);
+  O2DataProviderRef provider=O2DataProviderCreateWithData(NULL,_data,_pixelsWide*_pixelsHigh*4,NULL);
   
-  O2Image *image=CGImageCreate(_width,_height,_bitsPerComponent,_bitsPerPixel,_bytesPerRow,_colorSpace,
-     _bitmapInfo,provider,NULL,NO,kCGRenderingIntentDefault);
+  O2Image *image=O2ImageCreate(_width,_height,_bitsPerComponent,_bitsPerPixel,_bytesPerRow,_colorSpace,
+     _bitmapInfo,provider,NULL,NO,kO2RenderingIntentDefault);
   
-  CGDataProviderRelease(provider);
+  O2DataProviderRelease(provider);
   
   return image;
 #endif

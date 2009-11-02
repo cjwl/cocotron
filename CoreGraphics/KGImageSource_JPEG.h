@@ -9,7 +9,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 /*  JPEG decode is based on the public domain implementation by Sean Barrett  http://www.nothings.org/stb_image.c  V 1.14 */
 
 #import <Foundation/NSObject.h>
-#import <CoreGraphics/CoreGraphics.h>
 #import "KGImageSource.h"
 
 @class NSData,NSDictionary;

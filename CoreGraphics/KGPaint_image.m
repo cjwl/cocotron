@@ -29,56 +29,56 @@
 
 @implementation O2Paint_image
 
-static int O2PaintReadResampledHighSpan_lRGBAffff_PRE(O2Paint *selfX,int x,int y,KGRGBAffff *span,int length){   
+static int O2PaintReadResampledHighSpan_lRGBAffff_PRE(O2Paint *selfX,int x,int y,O2argb32f *span,int length){   
    O2Paint_image *self=(O2Paint_image *)selfX;
    
-   KGImageBicubic_lRGBAffff_PRE(self->_image,x,y,span,length,self->m_surfaceToPaintMatrix);
+   O2ImageBicubic_lRGBAffff_PRE(self->_image,x,y,span,length,self->m_surfaceToPaintMatrix);
    return length;
 }
 
-static int O2PaintReadResampledLowSpan_lRGBAffff_PRE(O2Paint *selfX,int x,int y,KGRGBAffff *span,int length){   
+static int O2PaintReadResampledLowSpan_lRGBAffff_PRE(O2Paint *selfX,int x,int y,O2argb32f *span,int length){   
    O2Paint_image *self=(O2Paint_image *)selfX;
    
-   KGImageBilinear_lRGBAffff_PRE(self->_image,x,y,span,length,self->m_surfaceToPaintMatrix);
+   O2ImageBilinear_lRGBAffff_PRE(self->_image,x,y,span,length,self->m_surfaceToPaintMatrix);
    return length;
 }
 
-static int O2PaintReadResampledNoneSpan_lRGBAffff_PRE(O2Paint *selfX,int x,int y,KGRGBAffff *span,int length){   
+static int O2PaintReadResampledNoneSpan_lRGBAffff_PRE(O2Paint *selfX,int x,int y,O2argb32f *span,int length){   
    O2Paint_image *self=(O2Paint_image *)selfX;
    
-   KGImagePointSampling_lRGBAffff_PRE(self->_image,x,y,span,length,self->m_surfaceToPaintMatrix);
+   O2ImagePointSampling_lRGBAffff_PRE(self->_image,x,y,span,length,self->m_surfaceToPaintMatrix);
    return length;
 }
 
 //
 
-static int O2PaintReadResampledHighSpan_lRGBA8888_PRE(O2Paint *selfX,int x,int y,KGRGBA8888 *span,int length){   
+static int O2PaintReadResampledHighSpan_lRGBA8888_PRE(O2Paint *selfX,int x,int y,O2argb8u *span,int length){   
    O2Paint_image *self=(O2Paint_image *)selfX;
 
-   KGImageBicubic_lRGBA8888_PRE(self->_image,x,y,span,length,self->m_surfaceToPaintMatrix);
+   O2ImageBicubic_lRGBA8888_PRE(self->_image,x,y,span,length,self->m_surfaceToPaintMatrix);
    return length;
 }
 
-static int O2PaintReadResampledLowSpan_lRGBA8888_PRE(O2Paint *selfX,int x,int y,KGRGBA8888 *span,int length){   
+static int O2PaintReadResampledLowSpan_lRGBA8888_PRE(O2Paint *selfX,int x,int y,O2argb8u *span,int length){   
    O2Paint_image *self=(O2Paint_image *)selfX;
 
-   KGImageBilinear_lRGBA8888_PRE(self->_image,x,y,span,length,self->m_surfaceToPaintMatrix);
+   O2ImageBilinear_lRGBA8888_PRE(self->_image,x,y,span,length,self->m_surfaceToPaintMatrix);
    return length;
 }
 
-static int O2PaintReadResampledNoneSpan_lRGBA8888_PRE(O2Paint *selfX,int x,int y,KGRGBA8888 *span,int length){   
+static int O2PaintReadResampledNoneSpan_lRGBA8888_PRE(O2Paint *selfX,int x,int y,O2argb8u *span,int length){   
    O2Paint_image *self=(O2Paint_image *)selfX;
 
-   KGImagePointSampling_lRGBA8888_PRE(self->_image,x,y,span,length,self->m_surfaceToPaintMatrix);
+   O2ImagePointSampling_lRGBA8888_PRE(self->_image,x,y,span,length,self->m_surfaceToPaintMatrix);
    return length;
 }
 
-static int multiply(O2Paint *selfX,int x,int y,KGRGBAffff *span,int length){
+static int multiply(O2Paint *selfX,int x,int y,O2argb32f *span,int length){
    O2Paint_image *self=(O2Paint_image *)selfX;
 
    O2PaintReadSpan_lRGBAffff_PRE(self->_paint,x,y,span,length);
 
-   KGRGBAffff imageSpan[length];
+   O2argb32f imageSpan[length];
    
 // FIXME: Should this take into account the interpolation quality? (depends on how it is used)
    O2PaintReadResampledNoneSpan_lRGBAffff_PRE(self,x,y,imageSpan,length);
@@ -87,8 +87,8 @@ static int multiply(O2Paint *selfX,int x,int y,KGRGBAffff *span,int length){
    
    for(i=0;i<length;i++,x++){
 	//evaluate paint
-	KGRGBAffff s=span[i];
-    KGRGBAffff im=imageSpan[i];
+	O2argb32f s=span[i];
+    O2argb32f im=imageSpan[i];
     
 	//apply image 
 	// paint MULTIPLY image: convert paint to image number of channels, multiply with image, and convert to dst
@@ -104,12 +104,12 @@ static int multiply(O2Paint *selfX,int x,int y,KGRGBAffff *span,int length){
    return length;
 }
 
-static int stencil(O2Paint *selfX,int x,int y,KGRGBAffff *span,int length){
+static int stencil(O2Paint *selfX,int x,int y,O2argb32f *span,int length){
    O2Paint_image *self=(O2Paint_image *)selfX;
 
    self->_paint->_paint_lRGBAffff_PRE(self->_paint,x,y,span,length);
 
-   KGRGBAffff imageSpan[length];
+   O2argb32f imageSpan[length];
 // FIXME: Should this take into account the interpolation quality? (depends on how it is used)
    O2PaintReadResampledNoneSpan_lRGBAffff_PRE(self,x,y,imageSpan,length);
 
@@ -117,8 +117,8 @@ static int stencil(O2Paint *selfX,int x,int y,KGRGBAffff *span,int length){
    
    for(i=0;i<length;i++,x++){
 	//evaluate paint
-	KGRGBAffff s=span[i];
-    KGRGBAffff im=imageSpan[i];
+	O2argb32f s=span[i];
+    O2argb32f im=imageSpan[i];
     
 	//apply image 
 	// paint STENCIL image: convert paint to dst, convert image to dst number of channels, multiply
@@ -127,7 +127,7 @@ static int stencil(O2Paint *selfX,int x,int y,KGRGBAffff *span,int length){
  // FIX
  // This needs to be changed to a nonpremultplied form. This is the only case which used ar, ag, ab premultiplied values for source.
 
-	CGFloat ar = s.a, ag = s.a, ab = s.a;
+	O2Float ar = s.a, ag = s.a, ab = s.a;
 			//the result will be in paint color space.
 			//dst == RGB && image == RGB: RGB*RGB
 			//dst == RGB && image == L  : RGB*LLL
@@ -157,8 +157,8 @@ static int stencil(O2Paint *selfX,int x,int y,KGRGBAffff *span,int length){
 }
 
 
--initWithImage:(O2Image *)image mode:(KGSurfaceMode)mode paint:(O2Paint *)paint interpolationQuality:(CGInterpolationQuality)interpolationQuality {
-   self->m_surfaceToPaintMatrix=CGAffineTransformIdentity;
+-initWithImage:(O2Image *)image mode:(O2SurfaceMode)mode paint:(O2Paint *)paint interpolationQuality:(O2InterpolationQuality)interpolationQuality {
+   self->m_surfaceToPaintMatrix=O2AffineTransformIdentity;
    switch(mode){
    
     case VG_DRAW_IMAGE_MULTIPLY:
@@ -172,17 +172,17 @@ static int stencil(O2Paint *selfX,int x,int y,KGRGBAffff *span,int length){
     default:
      switch(interpolationQuality){
      
-      case kCGInterpolationHigh:
+      case kO2InterpolationHigh:
        _paint_lRGBA8888_PRE=O2PaintReadResampledHighSpan_lRGBA8888_PRE;
        _paint_lRGBAffff_PRE=O2PaintReadResampledHighSpan_lRGBAffff_PRE;
        break;
        
-      case kCGInterpolationLow:
+      case kO2InterpolationLow:
        _paint_lRGBA8888_PRE=O2PaintReadResampledLowSpan_lRGBA8888_PRE;
        _paint_lRGBAffff_PRE=O2PaintReadResampledLowSpan_lRGBAffff_PRE;
        break;
 
-      case kCGInterpolationNone:
+      case kO2InterpolationNone:
       default:
        _paint_lRGBA8888_PRE=O2PaintReadResampledNoneSpan_lRGBA8888_PRE;
        _paint_lRGBAffff_PRE=O2PaintReadResampledNoneSpan_lRGBAffff_PRE;
@@ -201,7 +201,7 @@ static int stencil(O2Paint *selfX,int x,int y,KGRGBAffff *span,int length){
 
 -(void)dealloc {
    [_image release];
-   [_paint release];
+   O2PaintRelease(_paint);
    [super dealloc];
 }
 

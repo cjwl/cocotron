@@ -30,10 +30,17 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSData.h>
 #import <Foundation/NSPathUtilities.h>
 #import "KGExceptions.h"
+#import "KGClipPhase.h"
+
+const NSString *kO2PDFContextTitle=@"kO2PDFContextTitle";
 
 @implementation O2PDFContext
 
--initWithConsumer:(KGDataConsumer *)consumer mediaBox:(const CGRect *)mediaBox auxiliaryInfo:(NSDictionary *)auxiliaryInfo {
+static inline O2GState *currentState(O2Context *self){        
+   return [self->_stateStack lastObject];
+}
+
+-initWithConsumer:(KGDataConsumer *)consumer mediaBox:(const O2Rect *)mediaBox auxiliaryInfo:(NSDictionary *)auxiliaryInfo {
    [super init];
    
    _dataConsumer=[consumer retain];
@@ -70,7 +77,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    _categoryToNext=[NSMutableDictionary new];
    _contentStreamStack=[NSMutableArray new];
    
-   NSString *title=[auxiliaryInfo objectForKey:kCGPDFContextTitle];
+   NSString *title=[auxiliaryInfo objectForKey:kO2PDFContextTitle];
    
    if(title==nil)
     title=@"Untitled";
@@ -220,7 +227,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(O2PDFObject *)encodeIndirectPDFObject:(O2PDFObject *)object {
    O2PDFObject *result=[self referenceForObject:object];
    
-   
    return result;
 }
 
@@ -288,185 +294,70 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return [O2PDFObject_Name pdfObjectWithCString:objectName];
 }
 
--(void)beginPath {
-   if(!O2PathIsEmpty(_path))
-    [self contentWithString:@"n "];
-   [super beginPath];
-}
-
--(void)closePath {
-   [super closePath];
-   [self contentWithString:@"h "];
-}
-
--(void)moveToPoint:(float)x:(float)y {
-   [super moveToPoint:x:y];
-   [self contentWithFormat:@"%g %g m ",x,y];
-}
-
--(void)addLineToPoint:(float)x:(float)y {
-   [super addLineToPoint:x:y];
-   [self contentWithFormat:@"%g %g l ",x,y];
-}
-
--(void)addCurveToPoint:(float)cx1:(float)cy1:(float)cx2:(float)cy2:(float)x:(float)y {
-   [super addCurveToPoint:cx1:cy1:cx2:cy2:x:y];
-   [self contentWithFormat:@"%g %g %g %g %g %g c ",cx1,cy1,cx2,cy2,x,y];
-}
-
--(void)addQuadCurveToPoint:(float)cx1:(float)cy1:(float)x:(float)y {
-   [super addQuadCurveToPoint:(float)cx1:(float)cy1:(float)x:(float)y];
-   [self contentWithFormat:@"%g %g %g %g v ",cx1,cy1,x,y];
-}
-
--(void)addLinesWithPoints:(const CGPoint *)points count:(unsigned)count {
-   [super addLinesWithPoints:points count:count];
-   
-   int i;
-   
-   for(i=0;i<count;i++)
-    [self contentWithFormat:@"%g %g l ",points[i].x,points[i].y];
-}
-
--(void)addRects:(const CGRect *)rects count:(unsigned)count {
-   [super addRects:rects count:count];
-   
-   int i;
-   
-   for(i=0;i<count;i++)
-    [self contentWithFormat:@"%g %g %g %g re ",rects[i].origin.x,rects[i].origin.y,rects[i].size.width,rects[i].size.height];
-}
-
--(void)_pathContentFromOperator:(int)start {
-   int                  i,numberOfElements=[_path numberOfElements];
-   const unsigned char *elements=[_path elements];
-   const CGPoint       *points=[_path points];
+-(void)emitPath:(O2PathRef)path {
+   int                  i,numberOfElements=O2PathNumberOfElements(path);
+   const unsigned char *elements=O2PathElements(path);
+   const O2Point       *points=O2PathPoints(path);
    int                  pi=0;
-   CGAffineTransform    invertUserSpaceTransform=CGAffineTransformInvert([[self currentState] userSpaceTransform]);
+   O2AffineTransform    invertUserSpaceTransform=O2AffineTransformInvert([currentState(self) userSpaceTransform]);
    
    for(i=0;i<numberOfElements;i++){
     switch(elements[i]){
     
-     case kCGPathElementMoveToPoint:{
-       CGPoint point=CGPointApplyAffineTransform(points[pi++],invertUserSpaceTransform);
+     case kO2PathElementMoveToPoint:{
+       O2Point point=O2PointApplyAffineTransform(points[pi++],invertUserSpaceTransform);
        
-       if(i>=start)
-        [self contentWithFormat:@"%g %g m ",point.x,point.y];
+       [self contentWithFormat:@"%g %g m ",point.x,point.y];
       }
       break;
       
-     case kCGPathElementAddLineToPoint:{
-       CGPoint point=CGPointApplyAffineTransform(points[pi++],invertUserSpaceTransform);
+     case kO2PathElementAddLineToPoint:{
+       O2Point point=O2PointApplyAffineTransform(points[pi++],invertUserSpaceTransform);
 
-       if(i>=start)
-        [self contentWithFormat:@"%g %g l ",point.x,point.y];
+       [self contentWithFormat:@"%g %g l ",point.x,point.y];
       }
       break;
 
-     case kCGPathElementAddCurveToPoint:{
-       CGPoint c1=CGPointApplyAffineTransform(points[pi++],invertUserSpaceTransform);
-       CGPoint c2=CGPointApplyAffineTransform(points[pi++],invertUserSpaceTransform);
-       CGPoint end=CGPointApplyAffineTransform(points[pi++],invertUserSpaceTransform);
+     case kO2PathElementAddQuadCurveToPoint:{
+       O2Point c1=O2PointApplyAffineTransform(points[pi++],invertUserSpaceTransform);
+       O2Point end=O2PointApplyAffineTransform(points[pi++],invertUserSpaceTransform);
 
-       if(i>=start)
-        [self contentWithFormat:@"%g %g %g %g %g %g c ",c1.x,c1.y,c2.x,c2.y,end.x,end.y];
+       [self contentWithFormat:@"%g %g %g %g v ",c1.x,c1.y,end.x,end.y];
+      }
+      break;
+
+     case kO2PathElementAddCurveToPoint:{
+       O2Point c1=O2PointApplyAffineTransform(points[pi++],invertUserSpaceTransform);
+       O2Point c2=O2PointApplyAffineTransform(points[pi++],invertUserSpaceTransform);
+       O2Point end=O2PointApplyAffineTransform(points[pi++],invertUserSpaceTransform);
+
+       [self contentWithFormat:@"%g %g %g %g %g %g c ",c1.x,c1.y,c2.x,c2.y,end.x,end.y];
       }
       break;
       
-     case kCGPathElementCloseSubpath:
+     case kO2PathElementCloseSubpath:
       [self contentWithString:@"h "];
       break;
       
-     case kCGPathElementAddQuadCurveToPoint:{
-       CGPoint c1=CGPointApplyAffineTransform(points[pi++],invertUserSpaceTransform);
-       CGPoint end=CGPointApplyAffineTransform(points[pi++],invertUserSpaceTransform);
-
-       if(i>=start)
-        [self contentWithFormat:@"%g %g %g %g v ",c1.x,c1.y,end.x,end.y];
-      }
-      break;
     }
    }
-   
 }
 
--(void)addArc:(float)x:(float)y:(float)radius:(float)startRadian:(float)endRadian:(int)clockwise {
-   int start=[_path numberOfElements];
-   
-   [super addArc:x:y:radius:startRadian:endRadian:clockwise];
-   [self _pathContentFromOperator:start];
-}
-
--(void)addArcToPoint:(float)x1:(float)y1:(float)x2:(float)y2:(float)radius {
-   int start=[_path numberOfElements];
-   [super addArcToPoint:x1:y1:x2:y2:radius];
-   [self _pathContentFromOperator:start];
-}
-
--(void)addEllipseInRect:(CGRect)rect {
-   int start=[_path numberOfElements];
-   [super addEllipseInRect:rect];
-   [self _pathContentFromOperator:start];
-}
-
--(void)addPath:(O2Path *)path {
-   int start=[_path numberOfElements];
-   [super addPath:path];
-   [self _pathContentFromOperator:start];
-   
-}
-
--(void)saveGState {
-   [super saveGState];
+-(void)emitSaveGState {
    [self contentWithString:@"q "];
 }
 
--(void)restoreGState {
-   [super restoreGState];
+-(void)emitRestoreGState {
    [self contentWithString:@"Q "];
 }
 
--(void)setCTM:(CGAffineTransform)matrix {
-   [super setCTM:matrix];
-   KGUnimplementedMethod();
-}
-
--(void)concatCTM:(CGAffineTransform)matrix {
-   [super concatCTM:matrix];
-   [self contentWithFormat:@"%g %g %g %g %g %g cm ",matrix.a,matrix.b,matrix.c,matrix.d,matrix.tx,matrix.ty];
-}
-
--(void)clipToPath {
-   [super clipToPath];
-   [self contentWithString:@"W "];
-}
-
--(void)evenOddClipToPath {
-   [super evenOddClipToPath];
-   [self contentWithString:@"W* "];
-}
-
--(void)clipToMask:(O2Image *)image inRect:(CGRect)rect {
-   O2PDFObject *pdfObject=[image encodeReferenceWithContext:self];
-   O2PDFObject *name=[self nameForResource:pdfObject inCategory:"XObject"];
+-(void)emitCurrentGState {
+  O2GState *gState=currentState(self);
+  
+  {
+  const float *components=O2ColorGetComponents(gState->_strokeColor);
    
-   [self contentWithString:@"q "];
-   [self translateCTM:rect.origin.x:rect.origin.y];
-   [self scaleCTM:rect.size.width:rect.size.height];
-   [self contentWithFormat:@"%@ Do ",name];
-   [self contentWithString:@"Q "];
-}
-
--(void)clipToRects:(const CGRect *)rects count:(unsigned)count {
-   [self beginPath];
-   [self addRects:rects count:count];
-   [self clipToPath];
-}
-
--(void)setStrokeColor:(O2Color *)color {
-   const float *components=O2ColorGetComponents(color);
-   
-   switch([O2ColorGetColorSpace(color) type]){
+   switch([O2ColorGetColorSpace(gState->_strokeColor) type]){
    
     case O2ColorSpaceDeviceGray:
      [self contentWithFormat:@"%f G ",components[0]];
@@ -481,12 +372,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
      [self contentWithFormat:@"%f %f %f %f K ",components[0],components[1],components[2],components[3]];
      break;
    }
-}
+  }
 
--(void)setFillColor:(O2Color *)color {
-   const float *components=O2ColorGetComponents(color);
+  {
+   const float *components=O2ColorGetComponents(gState->_fillColor);
    
-   switch([O2ColorGetColorSpace(color) type]){
+   switch([O2ColorGetColorSpace(gState->_fillColor) type]){
    
     case O2ColorSpaceDeviceGray:
      [self contentWithFormat:@"%f g ",components[0]];
@@ -501,192 +392,177 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
      [self contentWithFormat:@"%f %f %f %f k ",components[0],components[1],components[2],components[3]];
      break;
    }
-}
-
--(void)setPatternPhase:(CGSize)phase {
-   [super setPatternPhase:phase];
-}
-
--(void)setStrokePattern:(KGPattern *)pattern components:(const float *)components {
-   [super setStrokePattern:pattern components:components];
-}
-
--(void)setFillPattern:(KGPattern *)pattern components:(const float *)components {
-   [super setFillPattern:pattern components:components];
-}
-
--(void)setCharacterSpacing:(float)spacing {
-   [super setCharacterSpacing:spacing];
-   [self contentWithFormat:@"%g Tc ",spacing];
-}
-
--(void)setTextDrawingMode:(int)textMode {
-   [super setTextDrawingMode:textMode];   
-}
-
--(void)setLineWidth:(float)width {
-   [super setLineWidth:width];
-   [self contentWithFormat:@"%g w ",width];
-}
-
--(void)setLineCap:(int)lineCap {
-   [super setLineCap:lineCap];
-   [self contentWithFormat:@"%d J ",lineCap];
-}
-
--(void)setLineJoin:(int)lineJoin {
-   [super setLineJoin:lineJoin];
-   [self contentWithFormat:@"%d j ",lineJoin];
-}
-
--(void)setMiterLimit:(float)limit {
-   [super setMiterLimit:limit];
-   [self contentWithFormat:@"%g M ",limit];
-}
-
--(void)setLineDashPhase:(float)phase lengths:(const float *)lengths count:(unsigned)count {
-   [super setLineDashPhase:phase lengths:lengths count:count];
-   
+  }
+  
+   [self contentWithFormat:@"%g Tc ",gState->_characterSpacing];
+   [self contentWithFormat:@"%g w ",gState->_lineWidth];
+   [self contentWithFormat:@"%d J ",gState->_lineCap];
+   [self contentWithFormat:@"%d j ",gState->_lineJoin];
+   [self contentWithFormat:@"%g M ",gState->_miterLimit];
    O2PDFArray *array=[O2PDFArray pdfArray];
-   int         i;
+   int         i,count=gState->_dashLengthsCount;
    
    for(i=0;i<count;i++)
-    [array addNumber:lengths[i]];
+    [array addNumber:gState->_dashLengths[i]];
    
-   [self contentWithFormat:@"%@ %g d ",array,phase];
-}
+   [self contentWithFormat:@"%@ %g d ",array,gState->_dashPhase];
 
--(void)setRenderingIntent:(CGColorRenderingIntent)intent {
-   [super setRenderingIntent:intent];
-   
    const char *name;
    
-   switch(intent){
+   switch(gState->_renderingIntent){
    
-    case kCGRenderingIntentAbsoluteColorimetric:
+    case kO2RenderingIntentAbsoluteColorimetric:
      name="AbsoluteColorimetric";
      break;
      
     default:
-    case kCGRenderingIntentRelativeColorimetric:
+    case kO2RenderingIntentRelativeColorimetric:
      name="RelativeColorimetric";
      break;
 
-    case kCGRenderingIntentSaturation:
+    case kO2RenderingIntentSaturation:
      name="Saturation";
      break;
      
-    case kCGRenderingIntentPerceptual:
+    case kO2RenderingIntentPerceptual:
      name="Perceptual";
      break;
    }
    [self contentWithFormat:@"/%s ri ",name];
-}
 
--(void)setBlendMode:(int)mode {
-   [super setBlendMode:mode];
+   [self contentWithFormat:@"%g i ",gState->_flatness];
+
+   O2AffineTransform matrix=gState->_userSpaceTransform;
+   [self contentWithFormat:@"%g %g %g %g %g %g cm ",matrix.a,matrix.b,matrix.c,matrix.d,matrix.tx,matrix.ty];
    
-}
-
--(void)setFlatness:(float)flatness {
-   [super setFlatness:flatness];
+   NSArray *clipPhases=gState->_clipPhases;
    
-   [self contentWithFormat:@"%g i ",flatness];
-}
-
--(void)setInterpolationQuality:(CGInterpolationQuality)quality {
-   [super setInterpolationQuality:quality];
-}
-
--(void)setShadowOffset:(CGSize)offset blur:(float)blur color:(O2Color *)color {
-   [super setShadowOffset:offset blur:blur color:color];
+   for(O2ClipPhase *phase in clipPhases){
+    switch([phase phaseType]){
+    
+     case O2ClipPhaseNonZeroPath:{
+       O2Path *path=[phase object];
+       [self emitPath:path];
+       [self contentWithString:@"W "];
+      }
+      break;
+      
+     case O2ClipPhaseEOPath:{
+       O2Path *path=[phase object];
+       [self emitPath:path];
+       [self contentWithString:@"W* "];
+      }
+      break;
+      
+     case O2ClipPhaseMask:
+#if 0
+      O2PDFObject *pdfObject=[image encodeReferenceWithContext:self];
+      O2PDFObject *name=[self nameForResource:pdfObject inCategory:"XObject"];
    
+     [self contentWithString:@"q "];
+     [self translateCTM:rect.origin.x:rect.origin.y];
+     [self scaleCTM:rect.size.width:rect.size.height];
+     [self contentWithFormat:@"%@ Do ",name];
+     [self contentWithString:@"Q "];
+#endif
+      break;
+    }
+   }
 }
 
--(void)setShadowOffset:(CGSize)offset blur:(float)blur {
-   [super setShadowOffset:offset blur:blur];
+
+-(void)drawPath:(O2PathDrawingMode)pathMode {
+   [self emitSaveGState];
+   [self emitPath:_path];
+   [self emitCurrentGState];
    
-}
-
--(void)setShouldAntialias:(BOOL)yesOrNo {
-   [super setShouldAntialias:yesOrNo];
-   
-}
-
--(void)drawPath:(CGPathDrawingMode)pathMode {
    switch(pathMode){
    
-    case kCGPathFill:
+    case kO2PathFill:
      [self contentWithString:@"f "];
      break;
      
-    case kCGPathEOFill:
+    case kO2PathEOFill:
      [self contentWithString:@"f* "];
      break;
      
-    case kCGPathStroke:
+    case kO2PathStroke:
      [self contentWithString:@"S "];
      break;
 
-    case kCGPathFillStroke:
+    case kO2PathFillStroke:
      [self contentWithString:@"B "];
      break;
 
-    case kCGPathEOFillStroke:
+    case kO2PathEOFillStroke:
      [self contentWithString:@"B* "];
      break;
          
    }
    O2PathReset(_path);
+   [self emitRestoreGState];
 }
 
--(void)showGlyphs:(const CGGlyph *)glyphs count:(unsigned)count {
-    unsigned char bytes[count];
+-(void)showGlyphs:(const O2Glyph *)glyphs count:(unsigned)count {
+   [self emitSaveGState];
+   [self emitCurrentGState];
+   unsigned char bytes[count];
 
-   [[[self currentState] font] getMacRomanBytes:bytes forGlyphs:glyphs length:count];
-   [self showText:bytes length:count];
+   [[currentState(self) font] getMacRomanBytes:bytes forGlyphs:glyphs length:count];
+   [self showText:(char *)bytes length:count];
+   [self emitRestoreGState];
 }
 
 -(void)showText:(const char *)text length:(unsigned)length {
+   [self emitSaveGState];
+   [self emitCurrentGState];
    [self contentWithString:@"BT "];
    
-   O2GState *state=[self currentState];
+   O2GState *state=currentState(self);
    O2PDFObject *pdfObject=[[state font] encodeReferenceWithContext:self size:[state pointSize]];
    O2PDFObject *name=[self nameForResource:pdfObject inCategory:"Font"];
 
-   [self contentWithFormat:@"%@ %g Tf ",name,[[self currentState] pointSize]];
+   [self contentWithFormat:@"%@ %g Tf ",name,[currentState(self) pointSize]];
 
-   CGAffineTransform matrix=[self textMatrix];
+   O2AffineTransform matrix=O2ContextGetTextMatrix(self);
    [self contentWithFormat:@"%g %g %g %g %g %g Tm ",matrix.a,matrix.b,matrix.c,matrix.d,matrix.tx,matrix.ty];
    
    [self contentPDFStringWithBytes:text length:length];
    [self contentWithString:@" Tj "];
    
    [self contentWithString:@"ET "];
+   [self emitRestoreGState];
 }
 
--(void)drawShading:(KGShading *)shading {
+-(void)drawShading:(O2Shading *)shading {
+   [self emitSaveGState];
+   [self emitCurrentGState];
    O2PDFObject *pdfObject=[shading encodeReferenceWithContext:self];
    O2PDFObject *name=[self nameForResource:pdfObject inCategory:"Shading"];
     
    [self contentWithFormat:@"%@ sh ",name];
+   [self emitRestoreGState];
 }
 
--(void)drawImage:(O2Image *)image inRect:(CGRect)rect {
+-(void)drawImage:(O2Image *)image inRect:(O2Rect)rect {
+   [self emitSaveGState];
+   [self emitCurrentGState];
    O2PDFObject *pdfObject=[image encodeReferenceWithContext:self];
    O2PDFObject *name=[self nameForResource:pdfObject inCategory:"XObject"];
    
    [self contentWithString:@"q "];
-   [self translateCTM:rect.origin.x:rect.origin.y];
-   [self scaleCTM:rect.size.width:rect.size.height];
+// FIXME: enable these ctm changes
+//   [self translateCTM:rect.origin.x:rect.origin.y];
+//   [self scaleCTM:rect.size.width:rect.size.height];
    [self contentWithFormat:@"%@ Do ",name];
    [self contentWithString:@"Q "];
+   [self emitRestoreGState];
 }
 
--(void)drawLayer:(KGLayer *)layer inRect:(CGRect)rect {
+-(void)drawLayer:(O2LayerRef)layer inRect:(O2Rect)rect {
 }
 
--(void)beginPage:(const CGRect *)mediaBox {
+-(void)beginPage:(const O2Rect *)mediaBox {
    O2PDFObject *stream;
    
    _page=[[O2PDFDictionary pdfDictionary] retain];
@@ -741,9 +617,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)close {
    [self internIndirectObjects];
    [self encodePDFObject:(id)_xref];
-}
-
--(void)deviceClipReset {
 }
 
 @end

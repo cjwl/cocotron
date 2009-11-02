@@ -66,6 +66,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     case 7:
      [self performTest:@selector(drawPDF) withObject:nil];
      break;
+     
+    case 8:
+     [self performTest:@selector(drawLayers) withObject:nil];
+     break;
    }
    
    CGDataProviderRef provider;
@@ -126,14 +130,14 @@ int i,max=[_kgContext bytesPerRow]*[_kgContext pixelsHigh];
    [self setNeedsDisplay];
 }
 
--(void)setDestinationColor:(NSColor *)color {
-   [_cgContext setFillColor:color];
-   [_kgContext setFillColor:color];
+-(void)setFillColor:(NSColor *)color {
+   [_cgContext setFillColor:[color redComponent]:[color greenComponent]:[color blueComponent]:[color alphaComponent]];
+   [_kgContext setFillColor:[color redComponent]:[color greenComponent]:[color blueComponent]:[color alphaComponent]];
 }
 
 -(void)setSourceColor:(NSColor *)color {
-   [_cgContext setStrokeColor:color];
-   [_kgContext setStrokeColor:color];
+   [_cgContext setStrokeColor:[color redComponent]:[color greenComponent]:[color blueComponent]:[color alphaComponent]];
+   [_kgContext setStrokeColor:[color redComponent]:[color greenComponent]:[color blueComponent]:[color alphaComponent]];
 }
 
 -(void)setBlendMode:(CGBlendMode)blendMode {
@@ -156,9 +160,9 @@ int i,max=[_kgContext bytesPerRow]*[_kgContext pixelsHigh];
    [_kgContext setShadowOffsetY:value];
 }
 
--(void)setShadowColor:(NSColor *)value {
-   [_cgContext setShadowColor:value];
-   [_kgContext setShadowColor:value];
+-(void)setShadowColor:(NSColor *)color {
+   [_cgContext setShadowColor:[color redComponent]:[color greenComponent]:[color blueComponent]:[color alphaComponent]];
+   [_kgContext setShadowColor:[color redComponent]:[color greenComponent]:[color blueComponent]:[color alphaComponent]];
 }
 
 -(void)setPathDrawingMode:(CGPathDrawingMode)pathDrawingMode {
@@ -212,8 +216,8 @@ int i,max=[_kgContext bytesPerRow]*[_kgContext pixelsHigh];
 }
 
 
--(void)selectDestinationColor:sender {
-   [self setDestinationColor:[sender color]];
+-(void)selectFillColor:sender {
+   [self setFillColor:[sender color]];
    [self setNeedsDisplay];
 }
 

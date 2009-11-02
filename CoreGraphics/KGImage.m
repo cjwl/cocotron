@@ -37,13 +37,13 @@
 @implementation O2Image
 
 /*-------------------------------------------------------------------*//*!
-* \brief	Creates a pixel format descriptor out of KGImageFormat
+* \brief	Creates a pixel format descriptor out of O2ImageFormat
 * \param	
 * \return	
 * \note		
 *//*-------------------------------------------------------------------*/
 
-VGPixelDecode KGImageParametersToPixelLayout(KGImageFormat format,size_t *bitsPerPixel,VGColorInternalFormat	*colorFormat){
+VGPixelDecode O2ImageParametersToPixelLayout(O2ImageFormat format,size_t *bitsPerPixel,VGColorInternalFormat	*colorFormat){
 	VGPixelDecode desc;
 	memset(&desc, 0, sizeof(VGPixelDecode));
 
@@ -115,7 +115,7 @@ VGPixelDecode KGImageParametersToPixelLayout(KGImageFormat format,size_t *bitsPe
 	return desc;
 }
 
-static BOOL initFunctionsForRGBColorSpace(O2Image *self,size_t bitsPerComponent,size_t bitsPerPixel,CGBitmapInfo bitmapInfo){   
+static BOOL initFunctionsForRGBColorSpace(O2Image *self,size_t bitsPerComponent,size_t bitsPerPixel,O2BitmapInfo bitmapInfo){   
 
    switch(bitsPerComponent){
    
@@ -124,15 +124,15 @@ static BOOL initFunctionsForRGBColorSpace(O2Image *self,size_t bitsPerComponent,
       case 32:
        break;
       case 128:
-       switch(bitmapInfo&kCGBitmapByteOrderMask){
-        case kCGBitmapByteOrder16Little:
-        case kCGBitmapByteOrder32Little:
-         self->_read_lRGBAffff_PRE=KGImageRead_RGBAffffLittle_to_RGBAffff;
+       switch(bitmapInfo&kO2BitmapByteOrderMask){
+        case kO2BitmapByteOrder16Little:
+        case kO2BitmapByteOrder32Little:
+         self->_read_lRGBAffff_PRE=O2ImageRead_RGBAffffLittle_to_RGBAffff;
          return YES;
          
-        case kCGBitmapByteOrder16Big:
-        case kCGBitmapByteOrder32Big:
-         self->_read_lRGBAffff_PRE=KGImageRead_RGBAffffBig_to_RGBAffff;
+        case kO2BitmapByteOrder16Big:
+        case kO2BitmapByteOrder32Big:
+         self->_read_lRGBAffff_PRE=O2ImageRead_RGBAffffBig_to_RGBAffff;
          return YES;
        }
      }
@@ -142,80 +142,80 @@ static BOOL initFunctionsForRGBColorSpace(O2Image *self,size_t bitsPerComponent,
      switch(bitsPerPixel){
      
       case 8:
-       self->_readA8=KGImageRead_G8_to_A8;
-       self->_read_lRGBA8888_PRE=KGImageRead_G8_to_RGBA8888;
+       self->_readA8=O2ImageRead_G8_to_A8;
+       self->_read_lRGBA8888_PRE=O2ImageRead_G8_to_RGBA8888;
        return YES;
       
       case 16:
-       self->_read_lRGBA8888_PRE=KGImageRead_GA88_to_RGBA8888;
+       self->_read_lRGBA8888_PRE=O2ImageRead_GA88_to_RGBA8888;
        return YES;
        
       case 24:
-       switch(bitmapInfo&kCGBitmapAlphaInfoMask){
-        case kCGImageAlphaNone:
+       switch(bitmapInfo&kO2BitmapAlphaInfoMask){
+        case kO2ImageAlphaNone:
           // FIXME: how is endian ness interpreted ?
-         self->_read_lRGBA8888_PRE=KGImageRead_RGB888_to_RGBA8888;
+         self->_read_lRGBA8888_PRE=O2ImageRead_RGB888_to_RGBA8888;
          return YES;
        }
        break;
        
       case 32:
-        switch(bitmapInfo&kCGBitmapAlphaInfoMask){
-         case kCGImageAlphaNone:
+        switch(bitmapInfo&kO2BitmapAlphaInfoMask){
+         case kO2ImageAlphaNone:
           break;
           
-         case kCGImageAlphaLast:
-         case kCGImageAlphaPremultipliedLast:
-          switch(bitmapInfo&kCGBitmapByteOrderMask){
-           case kCGBitmapByteOrder16Little:
-           case kCGBitmapByteOrder32Little:
-            self->_read_lRGBA8888_PRE=KGImageRead_ABGR8888_to_RGBA8888;
+         case kO2ImageAlphaLast:
+         case kO2ImageAlphaPremultipliedLast:
+          switch(bitmapInfo&kO2BitmapByteOrderMask){
+           case kO2BitmapByteOrder16Little:
+           case kO2BitmapByteOrder32Little:
+            self->_read_lRGBA8888_PRE=O2ImageRead_ABGR8888_to_RGBA8888;
             return YES;
 
-           case kCGBitmapByteOrder16Big:
-           case kCGBitmapByteOrder32Big:
-            self->_read_lRGBA8888_PRE=KGImageRead_RGBA8888_to_RGBA8888;
+           case kO2BitmapByteOrder16Big:
+           case kO2BitmapByteOrder32Big:
+            self->_read_lRGBA8888_PRE=O2ImageRead_RGBA8888_to_RGBA8888;
             return YES;
           }
           break;
 
-         case kCGImageAlphaPremultipliedFirst:
-          switch(bitmapInfo&kCGBitmapByteOrderMask){
-           case kCGBitmapByteOrder16Little:
-           case kCGBitmapByteOrder32Little:
-            self->_read_lRGBA8888_PRE=KGImageRead_BGRA8888_to_RGBA8888;
+         case kO2ImageAlphaPremultipliedFirst:
+          switch(bitmapInfo&kO2BitmapByteOrderMask){
+           case kO2BitmapByteOrder16Little:
+           case kO2BitmapByteOrder32Little:
+            self->_read_lRGBA8888_PRE=O2ImageRead_BGRA8888_to_RGBA8888;
             return YES;
           }
           break;
                     
-         case kCGImageAlphaFirst:
+         case kO2ImageAlphaFirst:
           break;
           
-         case kCGImageAlphaNoneSkipLast:
-          switch(bitmapInfo&kCGBitmapByteOrderMask){
-           case kCGBitmapByteOrder16Little:
-           case kCGBitmapByteOrder32Little:
-            self->_read_lRGBA8888_PRE=KGImageRead_ABGR8888_to_RGBA8888;
+         case kO2ImageAlphaNoneSkipLast:
+          switch(bitmapInfo&kO2BitmapByteOrderMask){
+           case kO2BitmapByteOrder16Little:
+           case kO2BitmapByteOrder32Little:
+            self->_read_lRGBA8888_PRE=O2ImageRead_ABGR8888_to_RGBA8888;
             return YES;
 
-           case kCGBitmapByteOrder16Big:
-           case kCGBitmapByteOrder32Big:
-            self->_read_lRGBA8888_PRE=KGImageRead_RGBA8888_to_RGBA8888;
+           case kO2BitmapByteOrder16Big:
+           case kO2BitmapByteOrder32Big:
+            self->_read_lRGBA8888_PRE=O2ImageRead_RGBA8888_to_RGBA8888;
             return YES;
           }
           break;
           
-         case kCGImageAlphaNoneSkipFirst:
-          switch(bitmapInfo&kCGBitmapByteOrderMask){
+         case kO2ImageAlphaNoneSkipFirst:
+          switch(bitmapInfo&kO2BitmapByteOrderMask){
            
-           case kCGBitmapByteOrder16Little:
-           case kCGBitmapByteOrder32Little:
-            self->_read_lRGBA8888_PRE=KGImageRead_BGRX8888_to_RGBA8888;
+           case kO2BitmapByteOrder16Little:
+           case kO2BitmapByteOrder32Little:
+            self->_read_lRGBA8888_PRE=O2ImageRead_BGRX8888_to_RGBA8888;
             return YES;
 
-           case kCGBitmapByteOrder16Big:
-           case kCGBitmapByteOrder32Big:
-            self->_read_lRGBA8888_PRE=KGImageRead_XRGB8888_to_RGBA8888;
+           case kO2BitmapByteOrder16Big:
+           case kO2BitmapByteOrder32Big:
+            self->_read_lRGBA8888_PRE=O2ImageRead_XRGB8888_to_RGBA8888;
             return YES;
           }
           break;
@@ -229,8 +229,8 @@ static BOOL initFunctionsForRGBColorSpace(O2Image *self,size_t bitsPerComponent,
      switch(bitsPerPixel){
      
       case 16:
-       if(bitmapInfo==(kCGBitmapByteOrder16Little|kCGImageAlphaNoneSkipFirst)){
-        self->_read_lRGBA8888_PRE=KGImageRead_G3B5X1R5G2_to_RGBA8888;
+       if(bitmapInfo==(kO2BitmapByteOrder16Little|kO2ImageAlphaNoneSkipFirst)){
+        self->_read_lRGBA8888_PRE=O2ImageRead_G3B5X1R5G2_to_RGBA8888;
         return YES;
        }
        break;
@@ -244,15 +244,15 @@ static BOOL initFunctionsForRGBColorSpace(O2Image *self,size_t bitsPerComponent,
       case 12:
        break;
       case 16:
-       switch(bitmapInfo&kCGBitmapByteOrderMask){
-        case kCGBitmapByteOrder16Little:
-        case kCGBitmapByteOrder32Little:
-         self->_read_lRGBA8888_PRE=KGImageRead_BARG4444_to_RGBA8888;
+       switch(bitmapInfo&kO2BitmapByteOrderMask){
+        case kO2BitmapByteOrder16Little:
+        case kO2BitmapByteOrder32Little:
+         self->_read_lRGBA8888_PRE=O2ImageRead_BARG4444_to_RGBA8888;
          return YES;
          
-        case kCGBitmapByteOrder16Big:
-        case kCGBitmapByteOrder32Big:
-         self->_read_lRGBA8888_PRE=KGImageRead_RGBA4444_to_RGBA8888;
+        case kO2BitmapByteOrder16Big:
+        case kO2BitmapByteOrder32Big:
+         self->_read_lRGBA8888_PRE=O2ImageRead_RGBA4444_to_RGBA8888;
          return YES;
        }
 
@@ -267,7 +267,7 @@ static BOOL initFunctionsForRGBColorSpace(O2Image *self,size_t bitsPerComponent,
       case 6:
        break;
       case 8:
-       self->_read_lRGBA8888_PRE=KGImageRead_RGBA2222_to_RGBA8888;
+       self->_read_lRGBA8888_PRE=O2ImageRead_RGBA2222_to_RGBA8888;
        return YES;
      }
      break;
@@ -275,7 +275,7 @@ static BOOL initFunctionsForRGBColorSpace(O2Image *self,size_t bitsPerComponent,
     case  1:
      switch(bitsPerPixel){
       case 1:
-    //   self->_read_lRGBAffff_PRE=KGImageReadPixelSpan_01;
+    //   self->_read_lRGBAffff_PRE=O2ImageReadPixelSpan_01;
      //  return YES;
        
       case 3:
@@ -287,17 +287,17 @@ static BOOL initFunctionsForRGBColorSpace(O2Image *self,size_t bitsPerComponent,
       
 }
 
-static BOOL initFunctionsForCMYKColorSpace(O2Image *self,size_t bitsPerComponent,size_t bitsPerPixel,CGBitmapInfo bitmapInfo){   
+static BOOL initFunctionsForCMYKColorSpace(O2Image *self,size_t bitsPerComponent,size_t bitsPerPixel,O2BitmapInfo bitmapInfo){   
    switch(bitsPerComponent){
         
     case  8:
      switch(bitsPerPixel){
      
       case 32:
-        switch(bitmapInfo&kCGBitmapByteOrderMask){
-         case kCGBitmapByteOrder16Big:
-         case kCGBitmapByteOrder32Big:
-          self->_read_lRGBA8888_PRE=KGImageRead_CMYK8888_to_RGBA8888;
+        switch(bitmapInfo&kO2BitmapByteOrderMask){
+         case kO2BitmapByteOrder16Big:
+         case kO2BitmapByteOrder32Big:
+          self->_read_lRGBA8888_PRE=O2ImageRead_CMYK8888_to_RGBA8888;
           return YES;
         }
        break;
@@ -307,25 +307,25 @@ static BOOL initFunctionsForCMYKColorSpace(O2Image *self,size_t bitsPerComponent
    return NO;
 }
 
-static BOOL initFunctionsForIndexedColorSpace(O2Image *self,size_t bitsPerComponent,size_t bitsPerPixel,O2ColorSpaceRef colorSpace,CGBitmapInfo bitmapInfo){
+static BOOL initFunctionsForIndexedColorSpace(O2Image *self,size_t bitsPerComponent,size_t bitsPerPixel,O2ColorSpaceRef colorSpace,O2BitmapInfo bitmapInfo){
 
    switch([[(O2ColorSpace_indexed *)colorSpace baseColorSpace] type]){
     case O2ColorSpaceDeviceRGB:
-     self->_read_lRGBA8888_PRE=KGImageRead_I8_to_RGBA8888;
+     self->_read_lRGBA8888_PRE=O2ImageRead_I8_to_RGBA8888;
      return YES;
    }
    
    return NO;
 }
 
-static BOOL initFunctionsForParameters(O2Image *self,size_t bitsPerComponent,size_t bitsPerPixel,O2ColorSpaceRef colorSpace,CGBitmapInfo bitmapInfo){
+static BOOL initFunctionsForParameters(O2Image *self,size_t bitsPerComponent,size_t bitsPerPixel,O2ColorSpaceRef colorSpace,O2BitmapInfo bitmapInfo){
 
-   self->_readA8=KGImageRead_ANY_to_RGBA8888_to_A8;
-   self->_readAf=KGImageRead_ANY_to_A8_to_Af;
-   self->_read_lRGBAffff_PRE=KGImageRead_ANY_to_RGBA8888_to_RGBAffff;
+   self->_readA8=O2ImageRead_ANY_to_RGBA8888_to_A8;
+   self->_readAf=O2ImageRead_ANY_to_A8_to_Af;
+   self->_read_lRGBAffff_PRE=O2ImageRead_ANY_to_RGBA8888_to_RGBAffff;
 
-   if((bitmapInfo&kCGBitmapByteOrderMask)==kCGBitmapByteOrderDefault)
-    bitmapInfo|=kCGBitmapByteOrder32Big;
+   if((bitmapInfo&kO2BitmapByteOrderMask)==kO2BitmapByteOrderDefault)
+    bitmapInfo|=kO2BitmapByteOrder32Big;
    
    switch([colorSpace type]){
     case O2ColorSpaceDeviceGray:
@@ -342,7 +342,7 @@ static BOOL initFunctionsForParameters(O2Image *self,size_t bitsPerComponent,siz
       
 }
 
--initWithWidth:(size_t)width height:(size_t)height bitsPerComponent:(size_t)bitsPerComponent bitsPerPixel:(size_t)bitsPerPixel bytesPerRow:(size_t)bytesPerRow colorSpace:(O2ColorSpaceRef)colorSpace bitmapInfo:(unsigned)bitmapInfo provider:(O2DataProvider *)provider decode:(const CGFloat *)decode interpolate:(BOOL)interpolate renderingIntent:(CGColorRenderingIntent)renderingIntent {
+-initWithWidth:(size_t)width height:(size_t)height bitsPerComponent:(size_t)bitsPerComponent bitsPerPixel:(size_t)bitsPerPixel bytesPerRow:(size_t)bytesPerRow colorSpace:(O2ColorSpaceRef)colorSpace bitmapInfo:(unsigned)bitmapInfo provider:(O2DataProvider *)provider decode:(const O2Float *)decode interpolate:(BOOL)interpolate renderingIntent:(O2ColorRenderingIntent)renderingIntent {
    _width=width;
    _height=height;
    _bitsPerComponent=bitsPerComponent;
@@ -362,28 +362,28 @@ static BOOL initFunctionsForParameters(O2Image *self,size_t bitsPerComponent,siz
 
    _clampExternalPixels=NO; // only do this if premultiplied format
    if(!initFunctionsForParameters(self,bitsPerComponent,bitsPerPixel,colorSpace,bitmapInfo)){
-    NSLog(@"O2Image failed to init with bpc=%d, bpp=%d,colorSpace=%@,bitmapInfo=0x%0X",bitsPerComponent,bitsPerPixel,colorSpace,bitmapInfo);
+    NSLog(@"KGImage failed to init with bpc=%d, bpp=%d,colorSpace=%@,bitmapInfo=0x%0X",bitsPerComponent,bitsPerPixel,colorSpace,bitmapInfo);
     [self dealloc];
     return nil;
    }
    
-    KGImageFormat imageFormat=VG_lRGBA_8888;
-    switch(bitmapInfo&kCGBitmapAlphaInfoMask){
-     case kCGImageAlphaPremultipliedLast:
-     case kCGImageAlphaPremultipliedFirst:
+    O2ImageFormat imageFormat=VG_lRGBA_8888;
+    switch(bitmapInfo&kO2BitmapAlphaInfoMask){
+     case kO2ImageAlphaPremultipliedLast:
+     case kO2ImageAlphaPremultipliedFirst:
       imageFormat|=VGColorPREMULTIPLIED;
       break;
       
-     case kCGImageAlphaNone:
-     case kCGImageAlphaLast:
-     case kCGImageAlphaFirst:
-     case kCGImageAlphaNoneSkipLast:
-     case kCGImageAlphaNoneSkipFirst:
+     case kO2ImageAlphaNone:
+     case kO2ImageAlphaLast:
+     case kO2ImageAlphaFirst:
+     case kO2ImageAlphaNoneSkipLast:
+     case kO2ImageAlphaNoneSkipFirst:
       break;
     }
     
     size_t checkBPP;
-	KGImageParametersToPixelLayout(imageFormat,&checkBPP,&(self->_colorFormat));
+	O2ImageParametersToPixelLayout(imageFormat,&checkBPP,&(self->_colorFormat));
     RI_ASSERT(checkBPP==bitsPerPixel);
     m_mipmapsValid=NO;
     _mipmapsCount=0;
@@ -392,12 +392,12 @@ static BOOL initFunctionsForParameters(O2Image *self,size_t bitsPerComponent,siz
    return self;
 }
 
--initWithJPEGDataProvider:(O2DataProvider *)jpegProvider decode:(const CGFloat *)decode interpolate:(BOOL)interpolate renderingIntent:(CGColorRenderingIntent)renderingIntent {
+-initWithJPEGDataProvider:(O2DataProvider *)jpegProvider decode:(const O2Float *)decode interpolate:(BOOL)interpolate renderingIntent:(O2ColorRenderingIntent)renderingIntent {
    KGUnimplementedMethod();
    return nil;
 }
 
--initWithPNGDataProvider:(O2DataProvider *)jpegProvider decode:(const CGFloat *)decode interpolate:(BOOL)interpolate renderingIntent:(CGColorRenderingIntent)renderingIntent {
+-initWithPNGDataProvider:(O2DataProvider *)jpegProvider decode:(const O2Float *)decode interpolate:(BOOL)interpolate renderingIntent:(O2ColorRenderingIntent)renderingIntent {
    KGUnimplementedMethod();
    return nil;
 }
@@ -440,7 +440,7 @@ static BOOL initFunctionsForParameters(O2Image *self,size_t bitsPerComponent,siz
    return nil;
 }
 
--(O2Image *)childImageInRect:(CGRect)rect {
+-(O2Image *)childImageInRect:(O2Rect)rect {
    KGUnimplementedMethod();
    return nil;
 }
@@ -456,61 +456,9 @@ static BOOL initFunctionsForParameters(O2Image *self,size_t bitsPerComponent,siz
    return nil;
 }
 
--copyWithMaskingColors:(const CGFloat *)components {
+-copyWithMaskingColors:(const O2Float *)components {
    KGUnimplementedMethod();
    return nil;
-}
-
--(size_t)width {
-   return _width;
-}
-
--(size_t)height {
-   return _height;
-}
-
--(size_t)bitsPerComponent {
-   return _bitsPerComponent;
-}
-
--(size_t)bitsPerPixel {
-   return _bitsPerPixel;
-}
-
--(size_t)bytesPerRow {
-   return _bytesPerRow;
-}
-
--(O2ColorSpaceRef)colorSpace {
-   return _colorSpace;
-}
-
--(CGBitmapInfo)bitmapInfo {
-   return _bitmapInfo;
-}
-
--(O2DataProvider *)dataProvider {
-   return _provider;
-}
-
--(const CGFloat *)decode {
-   return _decode;
-}
-
--(BOOL)shouldInterpolate {
-   return _interpolate;
-}
-
--(CGColorRenderingIntent)renderingIntent {
-   return _renderingIntent;
-}
-
--(BOOL)isMask {
-   return _isMask;
-}
-
--(CGImageAlphaInfo)alphaInfo {
-   return _bitmapInfo&kCGBitmapAlphaInfoMask;
 }
 
 static inline const void *directBytes(O2Image *self){
@@ -521,7 +469,7 @@ static inline const void *directBytes(O2Image *self){
      self->_directLength=[self->_provider length];
    }
     else {
-     self->_directData=[self->_provider copyData];
+     self->_directData=O2DataProviderCopyData(self->_provider);
      self->_directBytes=[self->_directData bytes];
      self->_directLength=[self->_directData length];
     }
@@ -558,29 +506,117 @@ static inline const void *scanlineAtY(O2Image *self,int y){
    }
 }
 
-size_t KGImageGetWidth(O2Image *self) {
+O2ImageRef O2ImageCreate(size_t width,size_t height,size_t bitsPerComponent,size_t bitsPerPixel,size_t bytesPerRow,O2ColorSpaceRef colorSpace,O2BitmapInfo bitmapInfo,O2DataProviderRef dataProvider,const O2Float *decode,BOOL shouldInterpolate,O2ColorRenderingIntent renderingIntent) {
+   return [[O2Image alloc] initWithWidth:width height:height bitsPerComponent:bitsPerComponent bitsPerPixel:bitsPerPixel bytesPerRow:bytesPerRow colorSpace:colorSpace bitmapInfo:bitmapInfo provider:dataProvider decode:decode interpolate:shouldInterpolate renderingIntent:renderingIntent];
+}
+
+O2ImageRef O2ImageMaskCreate(size_t width,size_t height,size_t bitsPerComponent,size_t bitsPerPixel,size_t bytesPerRow,O2DataProviderRef dataProvider,const O2Float *decode,BOOL shouldInterpolate) {
+   return [[O2Image alloc] initMaskWithWidth:width height:height bitsPerComponent:bitsPerComponent bitsPerPixel:bitsPerPixel bytesPerRow:bytesPerRow provider:dataProvider decode:decode interpolate:shouldInterpolate];
+}
+
+O2ImageRef O2ImageCreateCopy(O2ImageRef self) {
+   return [self copy];
+}
+
+O2ImageRef O2ImageCreateCopyWithColorSpace(O2ImageRef self,O2ColorSpaceRef colorSpace) {
+   return [self copyWithColorSpace:colorSpace];
+}
+
+O2ImageRef O2ImageCreateWithJPEGDataProvider(O2DataProviderRef jpegProvider,const O2Float *decode,BOOL interpolate,O2ColorRenderingIntent renderingIntent) {
+   return [[O2Image alloc] initWithJPEGDataProvider:jpegProvider decode:decode interpolate:interpolate renderingIntent:renderingIntent];
+}
+
+O2ImageRef O2ImageCreateWithPNGDataProvider(O2DataProviderRef pngProvider,const O2Float *decode,BOOL interpolate,O2ColorRenderingIntent renderingIntent) {
+   return [[O2Image alloc] initWithPNGDataProvider:pngProvider decode:decode interpolate:interpolate renderingIntent:renderingIntent];
+}
+
+O2ImageRef O2ImageCreateWithImageInRect(O2ImageRef self,O2Rect rect) {
+   return [self childImageInRect:rect];
+}
+
+O2ImageRef O2ImageCreateWithMask(O2ImageRef self,O2ImageRef mask) {
+   return [self copyWithMask:mask];
+}
+
+O2ImageRef O2ImageCreateWithMaskingColors(O2ImageRef self,const O2Float *components) {
+   return [self copyWithMaskingColors:components];
+}
+
+O2ImageRef O2ImageRetain(O2ImageRef self) {
+   return [self retain];
+}
+
+void O2ImageRelease(O2ImageRef self) {
+   [self release];
+}
+
+BOOL O2ImageIsMask(O2ImageRef self) {
+   return self->_isMask;
+}
+
+size_t O2ImageGetWidth(O2Image *self) {
    return self->_width;
 }
 
-size_t KGImageGetHeight(O2Image *self) {
+size_t O2ImageGetHeight(O2Image *self) {
    return self->_height;
 }
 
-KGRGBAffff *KGImageRead_ANY_to_RGBA8888_to_RGBAffff(O2Image *self,int x,int y,KGRGBAffff *span,int length){
-   KGRGBA8888 *span8888=__builtin_alloca(length*sizeof(KGRGBA8888));
-   KGRGBA8888 *direct=self->_read_lRGBA8888_PRE(self,x,y,span8888,length);
+size_t O2ImageGetBitsPerComponent(O2ImageRef self) {
+   return self->_bitsPerComponent;
+}
+
+size_t O2ImageGetBitsPerPixel(O2ImageRef self) {
+   return self->_bitsPerPixel;
+}
+
+size_t O2ImageGetBytesPerRow(O2ImageRef self) {
+   return self->_bytesPerRow;
+}
+
+O2ColorSpaceRef O2ImageGetColorSpace(O2ImageRef self) {
+   return self->_colorSpace;
+}
+
+O2ImageAlphaInfo O2ImageGetAlphaInfo(O2ImageRef self) {
+   return self->_bitmapInfo&kO2BitmapAlphaInfoMask;
+}
+
+O2DataProviderRef O2ImageGetDataProvider(O2ImageRef self) {
+   return self->_provider;
+}
+
+const O2Float *O2ImageGetDecode(O2ImageRef self) {
+   return self->_decode;
+}
+
+BOOL O2ImageGetShouldInterpolate(O2ImageRef self) {
+   return self->_interpolate;
+}
+
+O2ColorRenderingIntent O2ImageGetRenderingIntent(O2ImageRef self) {
+   return self->_renderingIntent;
+}
+
+O2BitmapInfo O2ImageGetBitmapInfo(O2ImageRef self) {
+   return self->_bitmapInfo;
+}
+
+O2argb32f *O2ImageRead_ANY_to_RGBA8888_to_RGBAffff(O2Image *self,int x,int y,O2argb32f *span,int length){
+   O2argb8u *span8888=__builtin_alloca(length*sizeof(O2argb8u));
+   O2argb8u *direct=self->_read_lRGBA8888_PRE(self,x,y,span8888,length);
    
    if(direct!=NULL)
     span8888=direct;
     
    int i;
    for(i=0;i<length;i++){
-    KGRGBAffff  result;
+    O2argb32f  result;
     
-    result.r = CGFloatFromByte(span8888[i].r);
-    result.g = CGFloatFromByte(span8888[i].g);
-    result.b = CGFloatFromByte(span8888[i].b);
-	result.a = CGFloatFromByte(span8888[i].a);
+    result.r = O2Float32FromByte(span8888[i].r);
+    result.g = O2Float32FromByte(span8888[i].g);
+    result.b = O2Float32FromByte(span8888[i].b);
+	result.a = O2Float32FromByte(span8888[i].a);
     *span++=result;
    }
    return NULL;
@@ -607,7 +643,7 @@ float bytesLittleToFloat(const unsigned char *scanline){
    return u.f;
 }
 
-KGRGBAffff *KGImageRead_RGBAffffLittle_to_RGBAffff(O2Image *self,int x,int y,KGRGBAffff *span,int length){
+O2argb32f *O2ImageRead_RGBAffffLittle_to_RGBAffff(O2Image *self,int x,int y,O2argb32f *span,int length){
    const uint8_t *scanline = scanlineAtY(self,y);
    int i;
    
@@ -616,7 +652,7 @@ KGRGBAffff *KGImageRead_RGBAffffLittle_to_RGBAffff(O2Image *self,int x,int y,KGR
     
    scanline+=x*16;
    for(i=0;i<length;i++){
-    KGRGBAffff result;
+    O2argb32f result;
     
     result.r=bytesLittleToFloat(scanline);
     scanline+=4;
@@ -653,7 +689,7 @@ float bytesBigToFloat(const unsigned char *scanline){
    return u.f;
 }
 
-KGRGBAffff *KGImageRead_RGBAffffBig_to_RGBAffff(O2Image *self,int x,int y,KGRGBAffff *span,int length){
+O2argb32f *O2ImageRead_RGBAffffBig_to_RGBAffff(O2Image *self,int x,int y,O2argb32f *span,int length){
    const uint8_t *scanline = scanlineAtY(self,y);
    int i;
    
@@ -662,7 +698,7 @@ KGRGBAffff *KGImageRead_RGBAffffBig_to_RGBAffff(O2Image *self,int x,int y,KGRGBA
     
    scanline+=x*16;
    for(i=0;i<length;i++){
-    KGRGBAffff result;
+    O2argb32f result;
     
     result.r=bytesBigToFloat(scanline);
     scanline+=4;
@@ -678,7 +714,7 @@ KGRGBAffff *KGImageRead_RGBAffffBig_to_RGBAffff(O2Image *self,int x,int y,KGRGBA
    return NULL;
 }
 
-uint8_t *KGImageRead_G8_to_A8(O2Image *self,int x,int y,uint8_t *alpha,int length) {
+uint8_t *O2ImageRead_G8_to_A8(O2Image *self,int x,int y,uint8_t *alpha,int length) {
    const uint8_t *scanline = scanlineAtY(self,y);
    int i;
    
@@ -692,11 +728,11 @@ uint8_t *KGImageRead_G8_to_A8(O2Image *self,int x,int y,uint8_t *alpha,int lengt
    return NULL;
 }
 
-uint8_t *KGImageRead_ANY_to_RGBA8888_to_A8(O2Image *self,int x,int y,uint8_t *alpha,int length) {
-   KGRGBA8888 *span=__builtin_alloca(length*sizeof(KGRGBA8888));
+uint8_t *O2ImageRead_ANY_to_RGBA8888_to_A8(O2Image *self,int x,int y,uint8_t *alpha,int length) {
+   O2argb8u *span=__builtin_alloca(length*sizeof(O2argb8u));
    int i;
    
-   KGRGBA8888 *direct=self->_read_lRGBA8888_PRE(self,x,y,span,length);
+   O2argb8u *direct=self->_read_lRGBA8888_PRE(self,x,y,span,length);
    if(direct!=NULL)
     span=direct;
     
@@ -706,18 +742,18 @@ uint8_t *KGImageRead_ANY_to_RGBA8888_to_A8(O2Image *self,int x,int y,uint8_t *al
    return NULL;
 }
 
-CGFloat *KGImageRead_ANY_to_A8_to_Af(O2Image *self,int x,int y,CGFloat *alpha,int length) {
+O2Float *O2ImageRead_ANY_to_A8_to_Af(O2Image *self,int x,int y,O2Float *alpha,int length) {
    uint8_t span[length];
    int     i;
    
    self->_readA8(self,x,y,span,length);
    for(i=0;i<length;i++)
-    alpha[i]=CGFloatFromByte(span[i]);
+    alpha[i]=O2Float32FromByte(span[i]);
     
    return NULL;
 }
 
-KGRGBA8888 *KGImageRead_G8_to_RGBA8888(O2Image *self,int x,int y,KGRGBA8888 *span,int length){
+O2argb8u *O2ImageRead_G8_to_RGBA8888(O2Image *self,int x,int y,O2argb8u *span,int length){
    const uint8_t *scanline = scanlineAtY(self,y);
    int i;
 
@@ -726,7 +762,7 @@ KGRGBA8888 *KGImageRead_G8_to_RGBA8888(O2Image *self,int x,int y,KGRGBA8888 *spa
     
    scanline+=x;
    for(i=0;i<length;i++){
-    KGRGBA8888 result;
+    O2argb8u result;
     
     result.r=*scanline++;
     result.g=result.r;
@@ -738,7 +774,7 @@ KGRGBA8888 *KGImageRead_G8_to_RGBA8888(O2Image *self,int x,int y,KGRGBA8888 *spa
    return NULL;
 }
 
-KGRGBA8888 *KGImageRead_GA88_to_RGBA8888(O2Image *self,int x,int y,KGRGBA8888 *span,int length){
+O2argb8u *O2ImageRead_GA88_to_RGBA8888(O2Image *self,int x,int y,O2argb8u *span,int length){
    const uint8_t *scanline = scanlineAtY(self,y);
    int i;
 
@@ -747,7 +783,7 @@ KGRGBA8888 *KGImageRead_GA88_to_RGBA8888(O2Image *self,int x,int y,KGRGBA8888 *s
     
    scanline+=x*2;
    for(i=0;i<length;i++){
-    KGRGBA8888  result;
+    O2argb8u  result;
     
     result.r = *scanline++;
     result.g=result.r;
@@ -758,7 +794,7 @@ KGRGBA8888 *KGImageRead_GA88_to_RGBA8888(O2Image *self,int x,int y,KGRGBA8888 *s
    return NULL;
 }
 
-KGRGBA8888 *KGImageRead_RGBA8888_to_RGBA8888(O2Image *self,int x,int y,KGRGBA8888 *span,int length){
+O2argb8u *O2ImageRead_RGBA8888_to_RGBA8888(O2Image *self,int x,int y,O2argb8u *span,int length){
    const uint8_t *scanline = scanlineAtY(self,y);
    int i;
    
@@ -767,7 +803,7 @@ KGRGBA8888 *KGImageRead_RGBA8888_to_RGBA8888(O2Image *self,int x,int y,KGRGBA888
 
    scanline+=x*4;
    for(i=0;i<length;i++){
-    KGRGBA8888  result;
+    O2argb8u  result;
     
     result.r = *scanline++;
     result.g = *scanline++;
@@ -778,7 +814,7 @@ KGRGBA8888 *KGImageRead_RGBA8888_to_RGBA8888(O2Image *self,int x,int y,KGRGBA888
    return NULL;
 }
 
-KGRGBA8888 *KGImageRead_ABGR8888_to_RGBA8888(O2Image *self,int x,int y,KGRGBA8888 *span,int length){
+O2argb8u *O2ImageRead_ABGR8888_to_RGBA8888(O2Image *self,int x,int y,O2argb8u *span,int length){
    const uint8_t *scanline = scanlineAtY(self,y);
    int i;
    
@@ -787,7 +823,7 @@ KGRGBA8888 *KGImageRead_ABGR8888_to_RGBA8888(O2Image *self,int x,int y,KGRGBA888
 
    scanline+=x*4;
    for(i=0;i<length;i++){
-    KGRGBA8888  result;
+    O2argb8u  result;
     
     result.a = *scanline++;
     result.b = *scanline++;
@@ -798,7 +834,7 @@ KGRGBA8888 *KGImageRead_ABGR8888_to_RGBA8888(O2Image *self,int x,int y,KGRGBA888
    return NULL;
 }
 
-KGRGBA8888 *KGImageRead_BGRA8888_to_RGBA8888(O2Image *self,int x,int y,KGRGBA8888 *span,int length) {
+O2argb8u *O2ImageRead_BGRA8888_to_RGBA8888(O2Image *self,int x,int y,O2argb8u *span,int length) {
    const uint8_t *scanline = scanlineAtY(self,y);
    int i;
    
@@ -807,11 +843,11 @@ KGRGBA8888 *KGImageRead_BGRA8888_to_RGBA8888(O2Image *self,int x,int y,KGRGBA888
 
    scanline+=x*4;
 #ifdef __LITTLE_ENDIAN__
-   return (KGRGBA8888 *)scanline;
+   return (O2argb8u *)scanline;
 #endif
    
    for(i=0;i<length;i++){
-    KGRGBA8888  result;
+    O2argb8u  result;
     
     result.b = *scanline++;
     result.g = *scanline++;
@@ -822,7 +858,7 @@ KGRGBA8888 *KGImageRead_BGRA8888_to_RGBA8888(O2Image *self,int x,int y,KGRGBA888
    return NULL;
 }
 
-KGRGBA8888 *KGImageRead_RGB888_to_RGBA8888(O2Image *self,int x,int y,KGRGBA8888 *span,int length) {
+O2argb8u *O2ImageRead_RGB888_to_RGBA8888(O2Image *self,int x,int y,O2argb8u *span,int length) {
    const uint8_t *scanline = scanlineAtY(self,y);
    int i;
    
@@ -832,7 +868,7 @@ KGRGBA8888 *KGImageRead_RGB888_to_RGBA8888(O2Image *self,int x,int y,KGRGBA8888 
    scanline+=x*3;
    
    for(i=0;i<length;i++){
-    KGRGBA8888  result;
+    O2argb8u  result;
     
     result.r = *scanline++;
     result.g = *scanline++;
@@ -843,7 +879,7 @@ KGRGBA8888 *KGImageRead_RGB888_to_RGBA8888(O2Image *self,int x,int y,KGRGBA8888 
    return NULL;
 }
 
-KGRGBA8888 *KGImageRead_BGRX8888_to_RGBA8888(O2Image *self,int x,int y,KGRGBA8888 *span,int length) {
+O2argb8u *O2ImageRead_BGRX8888_to_RGBA8888(O2Image *self,int x,int y,O2argb8u *span,int length) {
    const uint8_t *scanline = scanlineAtY(self,y);
    int i;
    
@@ -853,7 +889,7 @@ KGRGBA8888 *KGImageRead_BGRX8888_to_RGBA8888(O2Image *self,int x,int y,KGRGBA888
    scanline+=x*4;
 
    for(i=0;i<length;i++){
-    KGRGBA8888  result;
+    O2argb8u  result;
     
     result.b = *scanline++;
     result.g = *scanline++;
@@ -864,7 +900,7 @@ KGRGBA8888 *KGImageRead_BGRX8888_to_RGBA8888(O2Image *self,int x,int y,KGRGBA888
    return NULL;
 }
 
-KGRGBA8888 *KGImageRead_XRGB8888_to_RGBA8888(O2Image *self,int x,int y,KGRGBA8888 *span,int length) {
+O2argb8u *O2ImageRead_XRGB8888_to_RGBA8888(O2Image *self,int x,int y,O2argb8u *span,int length) {
    const uint8_t *scanline = scanlineAtY(self,y);
    int i;
    
@@ -874,7 +910,7 @@ KGRGBA8888 *KGImageRead_XRGB8888_to_RGBA8888(O2Image *self,int x,int y,KGRGBA888
    scanline+=x*4;
    
    for(i=0;i<length;i++){
-    KGRGBA8888  result;
+    O2argb8u  result;
     
     result.a = *scanline++;
     result.r = *scanline++;
@@ -885,8 +921,8 @@ KGRGBA8888 *KGImageRead_XRGB8888_to_RGBA8888(O2Image *self,int x,int y,KGRGBA888
    return NULL;
 }
 
-// kCGBitmapByteOrder16Little|kCGImageAlphaNoneSkipFirst
-KGRGBA8888 *KGImageRead_G3B5X1R5G2_to_RGBA8888(O2Image *self,int x,int y,KGRGBA8888 *span,int length){
+// kO2BitmapByteOrder16Little|kO2ImageAlphaNoneSkipFirst
+O2argb8u *O2ImageRead_G3B5X1R5G2_to_RGBA8888(O2Image *self,int x,int y,O2argb8u *span,int length){
    const uint8_t *scanline = scanlineAtY(self,y);
    int i;
    
@@ -898,7 +934,7 @@ KGRGBA8888 *KGImageRead_G3B5X1R5G2_to_RGBA8888(O2Image *self,int x,int y,KGRGBA8
     unsigned short low=*scanline++;
     unsigned short high=*scanline;
     unsigned short value=low|(high<<8);
-    KGRGBA8888  result;
+    O2argb8u  result;
     
     result.r = ((value>>10)&0x1F)<<3;
     result.g = ((value>>5)&0x1F)<<3;
@@ -910,7 +946,7 @@ KGRGBA8888 *KGImageRead_G3B5X1R5G2_to_RGBA8888(O2Image *self,int x,int y,KGRGBA8
    return NULL;
 }
 
-KGRGBA8888 *KGImageRead_RGBA4444_to_RGBA8888(O2Image *self,int x,int y,KGRGBA8888 *span,int length){
+O2argb8u *O2ImageRead_RGBA4444_to_RGBA8888(O2Image *self,int x,int y,O2argb8u *span,int length){
    const uint8_t *scanline = scanlineAtY(self,y);
    int i;
    
@@ -919,7 +955,7 @@ KGRGBA8888 *KGImageRead_RGBA4444_to_RGBA8888(O2Image *self,int x,int y,KGRGBA888
 
    scanline+=x*2;
    for(i=0;i<length;i++){
-    KGRGBA8888  result;
+    O2argb8u  result;
     
     result.r = *scanline&0xF0;
     result.g = (*scanline&0x0F)<<4;
@@ -932,7 +968,7 @@ KGRGBA8888 *KGImageRead_RGBA4444_to_RGBA8888(O2Image *self,int x,int y,KGRGBA888
    return NULL;
 }
 
-KGRGBA8888 *KGImageRead_BARG4444_to_RGBA8888(O2Image *self,int x,int y,KGRGBA8888 *span,int length){
+O2argb8u *O2ImageRead_BARG4444_to_RGBA8888(O2Image *self,int x,int y,O2argb8u *span,int length){
    const uint8_t *scanline = scanlineAtY(self,y);
    int i;
    
@@ -941,7 +977,7 @@ KGRGBA8888 *KGImageRead_BARG4444_to_RGBA8888(O2Image *self,int x,int y,KGRGBA888
 
    scanline+=x*2;
    for(i=0;i<length;i++){
-    KGRGBA8888  result;
+    O2argb8u  result;
     
     result.b = *scanline&0xF0;
     result.a = (*scanline&0x0F)<<4;
@@ -954,7 +990,7 @@ KGRGBA8888 *KGImageRead_BARG4444_to_RGBA8888(O2Image *self,int x,int y,KGRGBA888
    return NULL;
 }
 
-KGRGBA8888 *KGImageRead_RGBA2222_to_RGBA8888(O2Image *self,int x,int y,KGRGBA8888 *span,int length){
+O2argb8u *O2ImageRead_RGBA2222_to_RGBA8888(O2Image *self,int x,int y,O2argb8u *span,int length){
    const uint8_t *scanline = scanlineAtY(self,y);
    int i;
    
@@ -963,7 +999,7 @@ KGRGBA8888 *KGImageRead_RGBA2222_to_RGBA8888(O2Image *self,int x,int y,KGRGBA888
 
    scanline+=x;
    for(i=0;i<length;i++){
-    KGRGBA8888  result;
+    O2argb8u  result;
     
     result.r = *scanline&0xC0;
     result.g = (*scanline&0x03)<<2;
@@ -975,7 +1011,7 @@ KGRGBA8888 *KGImageRead_RGBA2222_to_RGBA8888(O2Image *self,int x,int y,KGRGBA888
    return NULL;
 }
 
-KGRGBA8888 *KGImageRead_CMYK8888_to_RGBA8888(O2Image *self,int x,int y,KGRGBA8888 *span,int length){
+O2argb8u *O2ImageRead_CMYK8888_to_RGBA8888(O2Image *self,int x,int y,O2argb8u *span,int length){
 // poor results
    const uint8_t *scanline = scanlineAtY(self,y);
    int i;
@@ -985,7 +1021,7 @@ KGRGBA8888 *KGImageRead_CMYK8888_to_RGBA8888(O2Image *self,int x,int y,KGRGBA888
 
    scanline+=x*4;
    for(i=0;i<length;i++){
-    KGRGBA8888  result;
+    O2argb8u  result;
     unsigned char c=*scanline++;
     unsigned char y=*scanline++;
     unsigned char m=*scanline++;
@@ -1001,7 +1037,7 @@ KGRGBA8888 *KGImageRead_CMYK8888_to_RGBA8888(O2Image *self,int x,int y,KGRGBA888
    return NULL;
 }
 
-KGRGBA8888 *KGImageRead_I8_to_RGBA8888(O2Image *self,int x,int y,KGRGBA8888 *span,int length) {
+O2argb8u *O2ImageRead_I8_to_RGBA8888(O2Image *self,int x,int y,O2argb8u *span,int length) {
    O2ColorSpace_indexed *indexed=(O2ColorSpace_indexed *)self->_colorSpace;
    unsigned hival=[indexed hival];
    const unsigned char *palette=[indexed paletteBytes];
@@ -1016,7 +1052,7 @@ KGRGBA8888 *KGImageRead_I8_to_RGBA8888(O2Image *self,int x,int y,KGRGBA8888 *spa
 
    for(i=0;i<length;i++){
     unsigned index=*scanline++;
-    KGRGBA8888 argb;
+    O2argb8u argb;
 
     RI_INT_CLAMP(index,0,hival); // it is external data after all
     
@@ -1039,16 +1075,16 @@ KGRGBA8888 *KGImageRead_I8_to_RGBA8888(O2Image *self,int x,int y,KGRGBA8888 *spa
 * \note		
 *//*-------------------------------------------------------------------*/
 
-/* KGImageReadTileSpanExtendEdge__ is used by the image resampling functions to read
+/* O2ImageReadTileSpanExtendEdge__ is used by the image resampling functions to read
    translated spans. When a coordinate is outside the image it uses the edge
    value. This works better than say, zero, with averaging algorithms (bilinear,bicubic, etc)
    as you get good values at the edges.
    
    Ideally the averaging algorithms would only use the available pixels on the edges */
    
-void KGImageReadTileSpanExtendEdge_lRGBA8888_PRE(O2Image *self,int u, int v, KGRGBA8888 *span,int length){
+void O2ImageReadTileSpanExtendEdge_lRGBA8888_PRE(O2Image *self,int u, int v, O2argb8u *span,int length){
    int i;
-   KGRGBA8888 *direct;
+   O2argb8u *direct;
    v = RI_INT_CLAMP(v,0,self->_height-1);
       
    for(i=0;i<length && u<0;u++,i++){
@@ -1078,20 +1114,20 @@ void KGImageReadTileSpanExtendEdge_lRGBA8888_PRE(O2Image *self,int u, int v, KGR
    }
 }
 
-void KGImageReadTileSpanExtendEdge__lRGBAffff_PRE(O2Image *self,int u, int v, KGRGBAffff *span,int length){
+void O2ImageReadTileSpanExtendEdge__lRGBAffff_PRE(O2Image *self,int u, int v, O2argb32f *span,int length){
    int i;
-   KGRGBAffff *direct;
+   O2argb32f *direct;
    
    v = RI_INT_CLAMP(v,0,self->_height-1);
    
    for(i=0;i<length && u<0;u++,i++){
-    direct=KGImageReadSpan_lRGBAffff_PRE(self,0,v,span+i,1);
+    direct=O2ImageReadSpan_lRGBAffff_PRE(self,0,v,span+i,1);
     if(direct!=NULL)
      span[i]=direct[0];
    }
    
    int chunk=RI_MIN(length-i,self->_width-u);
-   direct=KGImageReadSpan_lRGBAffff_PRE(self,u,v,span+i,chunk);
+   direct=O2ImageReadSpan_lRGBAffff_PRE(self,u,v,span+i,chunk);
    if(direct!=NULL) {
     int k;
     
@@ -1102,7 +1138,7 @@ void KGImageReadTileSpanExtendEdge__lRGBAffff_PRE(O2Image *self,int u, int v, KG
    u+=chunk;
 
    for(;i<length;i++){
-    direct=KGImageReadSpan_lRGBAffff_PRE(self,self->_width-1,v,span+i,1);
+    direct=O2ImageReadSpan_lRGBAffff_PRE(self,self->_width-1,v,span+i,1);
     if(direct!=NULL)
      span[i]=direct[0];
    }
@@ -1117,7 +1153,7 @@ void KGImageReadTileSpanExtendEdge__lRGBAffff_PRE(O2Image *self,int u, int v, KG
 *			filter for downsampling.
 *//*-------------------------------------------------------------------*/
 
-void KGImageMakeMipMaps(O2Image *self) {
+void O2ImageMakeMipMaps(O2Image *self) {
 	RI_ASSERT(directBytes(self));
 
 	if(self->m_mipmapsValid)
@@ -1149,22 +1185,22 @@ void KGImageMakeMipMaps(O2Image *self) {
              else
               self->_mipmapsCapacity*=2;
               
-             self->_mipmaps=(KGSurface **)NSZoneRealloc(NULL,self->_mipmaps,sizeof(KGSurface *)*self->_mipmapsCapacity);
+             self->_mipmaps=(O2Surface **)NSZoneRealloc(NULL,self->_mipmaps,sizeof(O2Surface *)*self->_mipmapsCapacity);
             }
             self->_mipmapsCount++;
 			self->_mipmaps[self->_mipmapsCount-1] = NULL;
 
-			KGSurface* next =[[KGSurface alloc] initWithBytes:NULL width:nextw height:nexth bitsPerComponent:self->_bitsPerComponent bytesPerRow:self->_bytesPerRow colorSpace:self->_colorSpace bitmapInfo:self->_bitmapInfo];
+			O2Surface* next =[[O2Surface alloc] initWithBytes:NULL width:nextw height:nexth bitsPerComponent:self->_bitsPerComponent bytesPerRow:self->_bytesPerRow colorSpace:self->_colorSpace bitmapInfo:self->_bitmapInfo];
             
             int j;
-			for(j=0;j<KGImageGetHeight(next);j++)
+			for(j=0;j<O2ImageGetHeight(next);j++)
 			{
-				for(i=0;i<KGImageGetWidth(next);i++)
+				for(i=0;i<O2ImageGetWidth(next);i++)
 				{
-					CGFloat u0 = (CGFloat)i / (CGFloat)KGImageGetWidth(next);
-					CGFloat u1 = (CGFloat)(i+1) / (CGFloat)KGImageGetWidth(next);
-					CGFloat v0 = (CGFloat)j / (CGFloat)KGImageGetHeight(next);
-					CGFloat v1 = (CGFloat)(j+1) / (CGFloat)KGImageGetHeight(next);
+					O2Float u0 = (O2Float)i / (O2Float)O2ImageGetWidth(next);
+					O2Float u1 = (O2Float)(i+1) / (O2Float)O2ImageGetWidth(next);
+					O2Float v0 = (O2Float)j / (O2Float)O2ImageGetHeight(next);
+					O2Float v1 = (O2Float)(j+1) / (O2Float)O2ImageGetHeight(next);
 
 					u0 *= prev->_width;
 					u1 *= prev->_width;
@@ -1184,7 +1220,7 @@ void KGImageMakeMipMaps(O2Image *self) {
                         int x;
 						for(x=su;x<eu;x++)
 						{
-							VGColor p = KGSurfaceReadPixel(prev,x, y);
+							VGColor p = O2SurfaceReadPixel(prev,x, y);
 							p=VGColorConvert(p,procFormat);
 							c=VGColorAdd(c, p);
 							samples++;
@@ -1192,7 +1228,7 @@ void KGImageMakeMipMaps(O2Image *self) {
 					}
 					c=VGColorMultiplyByFloat(c,(1.0f/samples));
 					c=VGColorConvert(c,self->_colorFormat);
-					KGSurfaceWritePixel(next,i,j,c);
+					O2SurfaceWritePixel(next,i,j,c);
 				}
 			}
 			self->_mipmaps[self->_mipmapsCount-1] = next;
@@ -1233,7 +1269,7 @@ static inline float fastExp(float value){
    return table[(int)(-value*2)];
 }
 
-O2Image *KGImageMipMapForLevel(O2Image *self,int level){
+O2Image *O2ImageMipMapForLevel(O2Image *self,int level){
 	O2Image* image = self;
     
 	if( level > 0 ){
@@ -1245,41 +1281,41 @@ O2Image *KGImageMipMapForLevel(O2Image *self,int level){
 }
 
 
-void KGImageEWAOnMipmaps_lRGBAffff_PRE(O2Image *self,int x, int y,KGRGBAffff *span,int length, CGAffineTransform surfaceToImage){
+void O2ImageEWAOnMipmaps_lRGBAffff_PRE(O2Image *self,int x, int y,O2argb32f *span,int length, O2AffineTransform surfaceToImage){
    int i;
-   		CGFloat m_pixelFilterRadius = 1.25f;
-		CGFloat m_resamplingFilterRadius = 1.25f;
+   		O2Float m_pixelFilterRadius = 1.25f;
+		O2Float m_resamplingFilterRadius = 1.25f;
 
-   KGImageMakeMipMaps(self);
+   O2ImageMakeMipMaps(self);
    
-   CGPoint uv=CGPointMake(0,0);
-   uv=CGPointApplyAffineTransform(uv,surfaceToImage);
+   O2Point uv=O2PointMake(0,0);
+   uv=O2PointApplyAffineTransform(uv,surfaceToImage);
 
    
-		CGFloat Ux = (surfaceToImage.a ) * m_pixelFilterRadius;
-		CGFloat Vx = (surfaceToImage.b ) * m_pixelFilterRadius;
-		CGFloat Uy = (surfaceToImage.c ) * m_pixelFilterRadius;
-		CGFloat Vy = (surfaceToImage.d ) * m_pixelFilterRadius;
+		O2Float Ux = (surfaceToImage.a ) * m_pixelFilterRadius;
+		O2Float Vx = (surfaceToImage.b ) * m_pixelFilterRadius;
+		O2Float Uy = (surfaceToImage.c ) * m_pixelFilterRadius;
+		O2Float Vy = (surfaceToImage.d ) * m_pixelFilterRadius;
 
 		//calculate mip level
 		int level = 0;
-		CGFloat axis1sq = Ux*Ux + Vx*Vx;
-		CGFloat axis2sq = Uy*Uy + Vy*Vy;
-		CGFloat minorAxissq = RI_MIN(axis1sq,axis2sq);
+		O2Float axis1sq = Ux*Ux + Vx*Vx;
+		O2Float axis2sq = Uy*Uy + Vy*Vy;
+		O2Float minorAxissq = RI_MIN(axis1sq,axis2sq);
 		while(minorAxissq > 9.0f && level < self->_mipmapsCount)	//half the minor axis must be at least three texels
 		{
 			level++;
 			minorAxissq *= 0.25f;
 		}
 
-		CGFloat sx = 1.0f;
-		CGFloat sy = 1.0f;
+		O2Float sx = 1.0f;
+		O2Float sy = 1.0f;
 		if(level > 0)
 		{
-			sx = (CGFloat)KGImageGetWidth(self->_mipmaps[level-1]) / (CGFloat)self->_width;
-			sy = (CGFloat)KGImageGetHeight(self->_mipmaps[level-1]) / (CGFloat)self->_height;
+			sx = (O2Float)O2ImageGetWidth(self->_mipmaps[level-1]) / (O2Float)self->_width;
+			sy = (O2Float)O2ImageGetHeight(self->_mipmaps[level-1]) / (O2Float)self->_height;
 		}
-        O2Image *mipmap=KGImageMipMapForLevel(self,level);
+        O2Image *mipmap=O2ImageMipMapForLevel(self,level);
         
 		Ux *= sx;
 		Vx *= sx;
@@ -1287,54 +1323,54 @@ void KGImageEWAOnMipmaps_lRGBAffff_PRE(O2Image *self,int x, int y,KGRGBAffff *sp
 		Vy *= sy;
 
 		//clamp filter size so that filtering doesn't take excessive amount of time (clamping results in aliasing)
-		CGFloat lim = 100.0f;
+		O2Float lim = 100.0f;
 		axis1sq = Ux*Ux + Vx*Vx;
 		axis2sq = Uy*Uy + Vy*Vy;
 		if( axis1sq > lim*lim )
 		{
-			CGFloat s = lim / (CGFloat)sqrt(axis1sq);
+			O2Float s = lim / (O2Float)sqrt(axis1sq);
 			Ux *= s;
 			Vx *= s;
 		}
 		if( axis2sq > lim*lim )
 		{
-			CGFloat s = lim / (CGFloat)sqrt(axis2sq);
+			O2Float s = lim / (O2Float)sqrt(axis2sq);
 			Uy *= s;
 			Vy *= s;
 		}
 
 		//form elliptic filter by combining texel and pixel filters
-		CGFloat A = Vx*Vx + Vy*Vy + 1.0f;
-		CGFloat B = -2.0f*(Ux*Vx + Uy*Vy);
-		CGFloat C = Ux*Ux + Uy*Uy + 1.0f;
+		O2Float A = Vx*Vx + Vy*Vy + 1.0f;
+		O2Float B = -2.0f*(Ux*Vx + Uy*Vy);
+		O2Float C = Ux*Ux + Uy*Uy + 1.0f;
 		//scale by the user-defined size of the kernel
 		A *= m_resamplingFilterRadius;
 		B *= m_resamplingFilterRadius;
 		C *= m_resamplingFilterRadius;
 
 		//calculate bounding box in texture space
-		CGFloat usize = (CGFloat)sqrt(C);
-		CGFloat vsize = (CGFloat)sqrt(A);
+		O2Float usize = (O2Float)sqrt(C);
+		O2Float vsize = (O2Float)sqrt(A);
 
 		//scale the filter so that Q = 1 at the cutoff radius
-		CGFloat F = A*C - 0.25f * B*B;
+		O2Float F = A*C - 0.25f * B*B;
 		if( F <= 0.0f ){
          for(i=0;i<length;i++)
-		  span[i]=KGRGBAffffInit(0,0,0,0);	//invalid filter shape due to numerical inaccuracies => return black
+		  span[i]=O2argb32fInit(0,0,0,0);	//invalid filter shape due to numerical inaccuracies => return black
           
          return ;
         }
-		CGFloat ooF = 1.0f / F;
+		O2Float ooF = 1.0f / F;
 		A *= ooF;
 		B *= ooF;
 		C *= ooF;
 
    for(i=0;i<length;i++,x++){
-    uv=CGPointMake(x+0.5f,y+0.5f);
-    uv=CGPointApplyAffineTransform(uv,surfaceToImage);
+    uv=O2PointMake(x+0.5f,y+0.5f);
+    uv=O2PointApplyAffineTransform(uv,surfaceToImage);
    
-		CGFloat U0 = uv.x;
-		CGFloat V0 = uv.y;
+		O2Float U0 = uv.x;
+		O2Float V0 = uv.y;
 		U0 *= sx;
 		V0 *= sy;
 		
@@ -1343,38 +1379,38 @@ void KGImageEWAOnMipmaps_lRGBAffff_PRE(O2Image *self,int x, int y,KGRGBAffff *sp
 		int v1 = RI_FLOOR_TO_INT(V0 - vsize + 0.5f);
 		int v2 = RI_FLOOR_TO_INT(V0 + vsize + 0.5f);
 		if( u1 == u2 || v1 == v2 ){
-			span[i]=KGRGBAffffInit(0,0,0,0);
+			span[i]=O2argb32fInit(0,0,0,0);
             continue;
         }
         
 		
 		//evaluate filter by using forward differences to calculate Q = A*U^2 + B*U*V + C*V^2
-		KGRGBAffff color=KGRGBAffffInit(0,0,0,0);
-		CGFloat sumweight = 0.0f;
-		CGFloat DDQ = 2.0f * A;
-		CGFloat U = (CGFloat)u1 - U0 + 0.5f;
+		O2argb32f color=O2argb32fInit(0,0,0,0);
+		O2Float sumweight = 0.0f;
+		O2Float DDQ = 2.0f * A;
+		O2Float U = (O2Float)u1 - U0 + 0.5f;
         int v;
         
 		for(v=v1;v<v2;v++)
 		{
-			CGFloat V = (CGFloat)v - V0 + 0.5f;
-			CGFloat DQ = A*(2.0f*U+1.0f) + B*V;
-			CGFloat Q = (C*V+B*U)*V + A*U*U;
+			O2Float V = (O2Float)v - V0 + 0.5f;
+			O2Float DQ = A*(2.0f*U+1.0f) + B*V;
+			O2Float Q = (C*V+B*U)*V + A*U*U;
             int u;
             
-            KGRGBAffff texel[u2-u1];
-            KGImageReadTileSpanExtendEdge__lRGBAffff_PRE(mipmap,u1, v,texel,(u2-u1));
+            O2argb32f texel[u2-u1];
+            O2ImageReadTileSpanExtendEdge__lRGBAffff_PRE(mipmap,u1, v,texel,(u2-u1));
 			for(u=u1;u<u2;u++)
 			{
 				if( Q >= 0.0f && Q < 1.0f )
 				{	//Q = r^2, fit gaussian to the range [0,1]
 #if 0
-					CGFloat weight = (CGFloat)expf(-0.5f * 10.0f * Q);	//gaussian at radius 10 equals 0.0067
+					O2Float weight = (O2Float)expf(-0.5f * 10.0f * Q);	//gaussian at radius 10 equals 0.0067
 #else
-					CGFloat weight = (CGFloat)fastExp(-0.5f * 10.0f * Q);	//gaussian at radius 10 equals 0.0067
+					O2Float weight = (O2Float)fastExp(-0.5f * 10.0f * Q);	//gaussian at radius 10 equals 0.0067
 #endif
                     
-					color=KGRGBAffffAdd(color,  KGRGBAffffMultiplyByFloat(texel[u-u1],weight));
+					color=O2argb32fAdd(color,  O2argb32fMultiplyByFloat(texel[u-u1],weight));
 					sumweight += weight;
 				}
 				Q += DQ;
@@ -1382,12 +1418,12 @@ void KGImageEWAOnMipmaps_lRGBAffff_PRE(O2Image *self,int x, int y,KGRGBAffff *sp
 			}
 		}
 		if( sumweight == 0.0f ){
-			span[i]=KGRGBAffffInit(0,0,0,0);
+			span[i]=O2argb32fInit(0,0,0,0);
             continue;
         }
 		RI_ASSERT(sumweight > 0.0f);
 		sumweight = 1.0f / sumweight;
-		span[i]=KGRGBAffffMultiplyByFloat(color,sumweight);
+		span[i]=O2argb32fMultiplyByFloat(color,sumweight);
 	}
 }
 
@@ -1398,21 +1434,21 @@ static inline int cubic_8(int v0,int v1,int v2,int v3,int fraction){
   return RI_INT_CLAMP((p * (fraction*fraction*fraction))/(256*256*256) + (q * fraction*fraction)/(256*256) + ((v2 - v0) * fraction)/256 + v1,0,255);
 }
 
-static inline KGRGBA8888 bicubic_lRGBA8888_PRE(KGRGBA8888 a,KGRGBA8888 b,KGRGBA8888 c,KGRGBA8888 d,int fraction) {
-  return KGRGBA8888Init(
+static inline O2argb8u bicubic_lRGBA8888_PRE(O2argb8u a,O2argb8u b,O2argb8u c,O2argb8u d,int fraction) {
+  return O2argb8uInit(
    cubic_8(a.r, b.r, c.r, d.r, fraction),
    cubic_8(a.g, b.g, c.g, d.g, fraction),
    cubic_8(a.b, b.b, c.b, d.b, fraction),
    cubic_8(a.a, b.a, c.a, d.a, fraction));
 }
 
-void KGImageBicubic_lRGBA8888_PRE(O2Image *self,int x, int y,KGRGBA8888 *span,int length, CGAffineTransform surfaceToImage){
+void O2ImageBicubic_lRGBA8888_PRE(O2Image *self,int x, int y,O2argb8u *span,int length, O2AffineTransform surfaceToImage){
    double du=(x+0.5) * surfaceToImage.a+(y+0.5)* surfaceToImage.c+surfaceToImage.tx;
    double dv=(x+0.5) * surfaceToImage.b+(y+0.5)* surfaceToImage.d+surfaceToImage.ty;
    int i;
    
    for(i=0;i<length;i++,x++){
-    CGPoint uv=CGPointMake(du,dv);
+    O2Point uv=O2PointMake(du,dv);
 
     uv.x -= 0.5f;
     uv.y -= 0.5f;
@@ -1422,19 +1458,19 @@ void KGImageBicubic_lRGBA8888_PRE(O2Image *self,int x, int y,KGRGBA8888 *span,in
     int v = RI_FLOOR_TO_INT(uv.y);
     int vfrac=coverageFromZeroToOne(uv.y-v);
         
-    KGRGBA8888 t0,t1,t2,t3;
-    KGRGBA8888 cspan[4];
+    O2argb8u t0,t1,t2,t3;
+    O2argb8u cspan[4];
      
-    KGImageReadTileSpanExtendEdge_lRGBA8888_PRE(self,u - 1,v - 1,cspan,4);
+    O2ImageReadTileSpanExtendEdge_lRGBA8888_PRE(self,u - 1,v - 1,cspan,4);
     t0 = bicubic_lRGBA8888_PRE(cspan[0],cspan[1],cspan[2],cspan[3],ufrac);
       
-    KGImageReadTileSpanExtendEdge_lRGBA8888_PRE(self,u - 1,v,cspan,4);
+    O2ImageReadTileSpanExtendEdge_lRGBA8888_PRE(self,u - 1,v,cspan,4);
     t1 = bicubic_lRGBA8888_PRE(cspan[0],cspan[1],cspan[2],cspan[3],ufrac);
      
-    KGImageReadTileSpanExtendEdge_lRGBA8888_PRE(self,u - 1,v+1,cspan,4);     
+    O2ImageReadTileSpanExtendEdge_lRGBA8888_PRE(self,u - 1,v+1,cspan,4);     
     t2 = bicubic_lRGBA8888_PRE(cspan[0],cspan[1],cspan[2],cspan[3],ufrac);
      
-    KGImageReadTileSpanExtendEdge_lRGBA8888_PRE(self,u - 1,v+2,cspan,4);     
+    O2ImageReadTileSpanExtendEdge_lRGBA8888_PRE(self,u - 1,v+2,cspan,4);     
     t3 = bicubic_lRGBA8888_PRE(cspan[0],cspan[1],cspan[2],cspan[3],ufrac);
 
     span[i]=bicubic_lRGBA8888_PRE(t0,t1,t2,t3, vfrac);
@@ -1451,21 +1487,21 @@ static inline float cubic_f(float v0,float v1,float v2,float v3,float fraction){
   return RI_CLAMP((p * (fraction*fraction*fraction)) + (q * fraction*fraction) + ((v2 - v0) * fraction) + v1,0,1);
 }
 
-KGRGBAffff bicubic_lRGBAffff_PRE(KGRGBAffff a,KGRGBAffff b,KGRGBAffff c,KGRGBAffff d,float fraction) {
-  return KGRGBAffffInit(
+O2argb32f bicubic_lRGBAffff_PRE(O2argb32f a,O2argb32f b,O2argb32f c,O2argb32f d,float fraction) {
+  return O2argb32fInit(
    cubic_f(a.r, b.r, c.r, d.r, fraction),
    cubic_f(a.g, b.g, c.g, d.g, fraction),
    cubic_f(a.b, b.b, c.b, d.b, fraction),
    cubic_f(a.a, b.a, c.a, d.a, fraction));
 }
 
-void KGImageBicubic_lRGBAffff_PRE(O2Image *self,int x, int y,KGRGBAffff *span,int length, CGAffineTransform surfaceToImage){
+void O2ImageBicubic_lRGBAffff_PRE(O2Image *self,int x, int y,O2argb32f *span,int length, O2AffineTransform surfaceToImage){
    double du=(x+0.5) * surfaceToImage.a+(y+0.5)* surfaceToImage.c+surfaceToImage.tx;
    double dv=(x+0.5) * surfaceToImage.b+(y+0.5)* surfaceToImage.d+surfaceToImage.ty;
    int i;
    
    for(i=0;i<length;i++,x++){
-    CGPoint uv=CGPointMake(du,dv);
+    O2Point uv=O2PointMake(du,dv);
 
     uv.x -= 0.5f;
     uv.y -= 0.5f;
@@ -1475,19 +1511,19 @@ void KGImageBicubic_lRGBAffff_PRE(O2Image *self,int x, int y,KGRGBAffff *span,in
     int v = RI_FLOOR_TO_INT(uv.y);
     float vfrac=uv.y-v;
         
-    KGRGBAffff t0,t1,t2,t3;
-    KGRGBAffff cspan[4];
+    O2argb32f t0,t1,t2,t3;
+    O2argb32f cspan[4];
      
-    KGImageReadTileSpanExtendEdge__lRGBAffff_PRE(self,u - 1,v - 1,cspan,4);
+    O2ImageReadTileSpanExtendEdge__lRGBAffff_PRE(self,u - 1,v - 1,cspan,4);
     t0 = bicubic_lRGBAffff_PRE(cspan[0],cspan[1],cspan[2],cspan[3],ufrac);
       
-    KGImageReadTileSpanExtendEdge__lRGBAffff_PRE(self,u - 1,v,cspan,4);
+    O2ImageReadTileSpanExtendEdge__lRGBAffff_PRE(self,u - 1,v,cspan,4);
     t1 = bicubic_lRGBAffff_PRE(cspan[0],cspan[1],cspan[2],cspan[3],ufrac);
      
-    KGImageReadTileSpanExtendEdge__lRGBAffff_PRE(self,u - 1,v+1,cspan,4);     
+    O2ImageReadTileSpanExtendEdge__lRGBAffff_PRE(self,u - 1,v+1,cspan,4);     
     t2 = bicubic_lRGBAffff_PRE(cspan[0],cspan[1],cspan[2],cspan[3],ufrac);
      
-    KGImageReadTileSpanExtendEdge__lRGBAffff_PRE(self,u - 1,v+2,cspan,4);     
+    O2ImageReadTileSpanExtendEdge__lRGBAffff_PRE(self,u - 1,v+2,cspan,4);     
     t3 = bicubic_lRGBAffff_PRE(cspan[0],cspan[1],cspan[2],cspan[3],ufrac);
 
     span[i]=bicubic_lRGBAffff_PRE(t0,t1,t2,t3, vfrac);
@@ -1497,30 +1533,30 @@ void KGImageBicubic_lRGBAffff_PRE(O2Image *self,int x, int y,KGRGBAffff *span,in
    }
 }
 
-void KGImageBilinear_lRGBA8888_PRE(O2Image *self,int x, int y,KGRGBA8888 *span,int length, CGAffineTransform surfaceToImage){
+void O2ImageBilinear_lRGBA8888_PRE(O2Image *self,int x, int y,O2argb8u *span,int length, O2AffineTransform surfaceToImage){
    double du=(x+0.5) * surfaceToImage.a+(y+0.5)* surfaceToImage.c+surfaceToImage.tx;
    double dv=(x+0.5) * surfaceToImage.b+(y+0.5)* surfaceToImage.d+surfaceToImage.ty;
    int i;
    
    for(i=0;i<length;i++,x++){
-    CGPoint uv=CGPointMake(du,dv);
+    O2Point uv=O2PointMake(du,dv);
     uv.x-=0.5f;
     uv.y-=0.5f;
 	int u = RI_FLOOR_TO_INT(uv.x);
 	int v = RI_FLOOR_TO_INT(uv.y);
-	KGRGBA8888 c00c01[2];
-    KGImageReadTileSpanExtendEdge_lRGBA8888_PRE(self,u,v,c00c01,2);
+	O2argb8u c00c01[2];
+    O2ImageReadTileSpanExtendEdge_lRGBA8888_PRE(self,u,v,c00c01,2);
 
-    KGRGBA8888 c01c11[2];
-    KGImageReadTileSpanExtendEdge_lRGBA8888_PRE(self,u,v+1,c01c11,2);
+    O2argb8u c01c11[2];
+    O2ImageReadTileSpanExtendEdge_lRGBA8888_PRE(self,u,v+1,c01c11,2);
 
-    int fu = coverageFromZeroToOne(uv.x - (CGFloat)u);
+    int fu = coverageFromZeroToOne(uv.x - (O2Float)u);
     int oneMinusFu=inverseCoverage(fu);
-    int fv = coverageFromZeroToOne(uv.y - (CGFloat)v);
+    int fv = coverageFromZeroToOne(uv.y - (O2Float)v);
     int oneMinusFv=inverseCoverage(fv);
-    KGRGBA8888 c0 = KGRGBA8888Add(KGRGBA8888MultiplyByCoverage(c00c01[0],oneMinusFu),KGRGBA8888MultiplyByCoverage(c00c01[1],fu));
-    KGRGBA8888 c1 = KGRGBA8888Add(KGRGBA8888MultiplyByCoverage(c01c11[0],oneMinusFu),KGRGBA8888MultiplyByCoverage(c01c11[1],fu));
-    span[i]=KGRGBA8888Add(KGRGBA8888MultiplyByCoverage(c0,oneMinusFv),KGRGBA8888MultiplyByCoverage(c1, fv));
+    O2argb8u c0 = O2argb8uAdd(O2argb8uMultiplyByCoverage(c00c01[0],oneMinusFu),O2argb8uMultiplyByCoverage(c00c01[1],fu));
+    O2argb8u c1 = O2argb8uAdd(O2argb8uMultiplyByCoverage(c01c11[0],oneMinusFu),O2argb8uMultiplyByCoverage(c01c11[1],fu));
+    span[i]=O2argb8uAdd(O2argb8uMultiplyByCoverage(c0,oneMinusFv),O2argb8uMultiplyByCoverage(c1, fv));
     
     du+=surfaceToImage.a;
     dv+=surfaceToImage.b;
@@ -1528,59 +1564,59 @@ void KGImageBilinear_lRGBA8888_PRE(O2Image *self,int x, int y,KGRGBA8888 *span,i
 }
 
 
-void KGImageBilinear_lRGBAffff_PRE(O2Image *self,int x, int y,KGRGBAffff *span,int length, CGAffineTransform surfaceToImage){
+void O2ImageBilinear_lRGBAffff_PRE(O2Image *self,int x, int y,O2argb32f *span,int length, O2AffineTransform surfaceToImage){
    double du=(x+0.5) * surfaceToImage.a+(y+0.5)* surfaceToImage.c+surfaceToImage.tx;
    double dv=(x+0.5) * surfaceToImage.b+(y+0.5)* surfaceToImage.d+surfaceToImage.ty;
    int i;
 
    for(i=0;i<length;i++,x++){
-    CGPoint uv=CGPointMake(du,dv);
+    O2Point uv=O2PointMake(du,dv);
 
     uv.x -= 0.5f;
 	uv.y -= 0.5f;
 	int u = RI_FLOOR_TO_INT(uv.x);
 	int v = RI_FLOOR_TO_INT(uv.y);
-	KGRGBAffff c00c01[2];
-    KGImageReadTileSpanExtendEdge__lRGBAffff_PRE(self,u,v,c00c01,2);
+	O2argb32f c00c01[2];
+    O2ImageReadTileSpanExtendEdge__lRGBAffff_PRE(self,u,v,c00c01,2);
 
-    KGRGBAffff c01c11[2];
-    KGImageReadTileSpanExtendEdge__lRGBAffff_PRE(self,u,v+1,c01c11,2);
+    O2argb32f c01c11[2];
+    O2ImageReadTileSpanExtendEdge__lRGBAffff_PRE(self,u,v+1,c01c11,2);
 
-    CGFloat fu = uv.x - (CGFloat)u;
-    CGFloat fv = uv.y - (CGFloat)v;
-    KGRGBAffff c0 = KGRGBAffffAdd(KGRGBAffffMultiplyByFloat(c00c01[0],(1.0f - fu)),KGRGBAffffMultiplyByFloat(c00c01[1],fu));
-    KGRGBAffff c1 = KGRGBAffffAdd(KGRGBAffffMultiplyByFloat(c01c11[0],(1.0f - fu)),KGRGBAffffMultiplyByFloat(c01c11[1],fu));
-    span[i]=KGRGBAffffAdd(KGRGBAffffMultiplyByFloat(c0,(1.0f - fv)),KGRGBAffffMultiplyByFloat(c1, fv));
-
-    du+=surfaceToImage.a;
-    dv+=surfaceToImage.b;
-   }
-}
-
-void KGImagePointSampling_lRGBA8888_PRE(O2Image *self,int x, int y,KGRGBA8888 *span,int length, CGAffineTransform surfaceToImage){
-   double du=(x+0.5) * surfaceToImage.a+(y+0.5)* surfaceToImage.c+surfaceToImage.tx;
-   double dv=(x+0.5) * surfaceToImage.b+(y+0.5)* surfaceToImage.d+surfaceToImage.ty;
-   int i;
-   
-   for(i=0;i<length;i++,x++){
-    CGPoint uv=CGPointMake(du,dv);
-
-    KGImageReadTileSpanExtendEdge_lRGBA8888_PRE(self,RI_FLOOR_TO_INT(uv.x), RI_FLOOR_TO_INT(uv.y),span+i,1);
+    O2Float fu = uv.x - (O2Float)u;
+    O2Float fv = uv.y - (O2Float)v;
+    O2argb32f c0 = O2argb32fAdd(O2argb32fMultiplyByFloat(c00c01[0],(1.0f - fu)),O2argb32fMultiplyByFloat(c00c01[1],fu));
+    O2argb32f c1 = O2argb32fAdd(O2argb32fMultiplyByFloat(c01c11[0],(1.0f - fu)),O2argb32fMultiplyByFloat(c01c11[1],fu));
+    span[i]=O2argb32fAdd(O2argb32fMultiplyByFloat(c0,(1.0f - fv)),O2argb32fMultiplyByFloat(c1, fv));
 
     du+=surfaceToImage.a;
     dv+=surfaceToImage.b;
    }
 }
 
-void KGImagePointSampling_lRGBAffff_PRE(O2Image *self,int x, int y,KGRGBAffff *span,int length, CGAffineTransform surfaceToImage){
+void O2ImagePointSampling_lRGBA8888_PRE(O2Image *self,int x, int y,O2argb8u *span,int length, O2AffineTransform surfaceToImage){
    double du=(x+0.5) * surfaceToImage.a+(y+0.5)* surfaceToImage.c+surfaceToImage.tx;
    double dv=(x+0.5) * surfaceToImage.b+(y+0.5)* surfaceToImage.d+surfaceToImage.ty;
    int i;
    
    for(i=0;i<length;i++,x++){
-    CGPoint uv=CGPointMake(du,dv);
+    O2Point uv=O2PointMake(du,dv);
 
-    KGImageReadTileSpanExtendEdge__lRGBAffff_PRE(self,RI_FLOOR_TO_INT(uv.x), RI_FLOOR_TO_INT(uv.y),span+i,1);
+    O2ImageReadTileSpanExtendEdge_lRGBA8888_PRE(self,RI_FLOOR_TO_INT(uv.x), RI_FLOOR_TO_INT(uv.y),span+i,1);
+
+    du+=surfaceToImage.a;
+    dv+=surfaceToImage.b;
+   }
+}
+
+void O2ImagePointSampling_lRGBAffff_PRE(O2Image *self,int x, int y,O2argb32f *span,int length, O2AffineTransform surfaceToImage){
+   double du=(x+0.5) * surfaceToImage.a+(y+0.5)* surfaceToImage.c+surfaceToImage.tx;
+   double dv=(x+0.5) * surfaceToImage.b+(y+0.5)* surfaceToImage.d+surfaceToImage.ty;
+   int i;
+   
+   for(i=0;i<length;i++,x++){
+    O2Point uv=O2PointMake(du,dv);
+
+    O2ImageReadTileSpanExtendEdge__lRGBAffff_PRE(self,RI_FLOOR_TO_INT(uv.x), RI_FLOOR_TO_INT(uv.y),span+i,1);
 
     du+=surfaceToImage.a;
     dv+=surfaceToImage.b;
@@ -1588,7 +1624,7 @@ void KGImagePointSampling_lRGBAffff_PRE(O2Image *self,int x, int y,KGRGBAffff *s
 }
 
 //clamp premultiplied color to alpha to enforce consistency
-static void clampSpan_lRGBAffff_PRE(KGRGBAffff *span,int length){
+static void clampSpan_lRGBAffff_PRE(O2argb32f *span,int length){
    int i;
    
    for(i=0;i<length;i++){
@@ -1598,16 +1634,26 @@ static void clampSpan_lRGBAffff_PRE(KGRGBAffff *span,int length){
    }
 }
 
-KGRGBAffff *KGImageReadSpan_lRGBAffff_PRE(O2Image *self,int x,int y,KGRGBAffff *span,int length) {
+static inline void KGRGBPremultiplySpan(O2argb32f *span,int length){
+   int i;
+      
+   for(i=0;i<length;i++){
+    span[i].r*=span[i].a;
+    span[i].g*=span[i].a;
+    span[i].b*=span[i].a; 
+   }
+}
+
+O2argb32f *O2ImageReadSpan_lRGBAffff_PRE(O2Image *self,int x,int y,O2argb32f *span,int length) {
    VGColorInternalFormat format=self->_colorFormat;
    
-   KGRGBAffff *direct=self->_read_lRGBAffff_PRE(self,x,y,span,length);
+   O2argb32f *direct=self->_read_lRGBAffff_PRE(self,x,y,span,length);
    
    if(direct!=NULL)
     span=direct;
     
    if(format&VGColorNONLINEAR){
-    KGRGBAffffConvertSpan(span,length,format,VGColor_lRGBA_PRE);
+    O2argb32fConvertSpan(span,length,format,VGColor_lRGBA_PRE);
    }
    if(!(format&VGColorPREMULTIPLIED)){
     KGRGBPremultiplySpan(span,length);
@@ -1627,11 +1673,11 @@ KGRGBAffff *KGImageReadSpan_lRGBAffff_PRE(O2Image *self,int x,int y,KGRGBAffff *
 * \note		
 *//*-------------------------------------------------------------------*/
 
-uint8_t *KGImageReadSpan_A8_MASK(O2Image *self,int x,int y,uint8_t *coverage,int length){
+uint8_t *O2ImageReadSpan_A8_MASK(O2Image *self,int x,int y,uint8_t *coverage,int length){
    return self->_readA8(self,x,y,coverage,length);
 }
 
-CGFloat *KGImageReadSpan_Af_MASK(O2Image *self,int x,int y,CGFloat *coverage,int length) {
+O2Float *O2ImageReadSpan_Af_MASK(O2Image *self,int x,int y,O2Float *coverage,int length) {
    return self->_readAf(self,x,y,coverage,length);
 }
 
@@ -1644,7 +1690,7 @@ CGFloat *KGImageReadSpan_Af_MASK(O2Image *self,int x,int y,CGFloat *coverage,int
 * \note		
 *//*-------------------------------------------------------------------*/
 
-void KGImageReadTexelTileRepeat(O2Image *self,int u, int v, KGRGBAffff *span,int length){
+void O2ImageReadTexelTileRepeat(O2Image *self,int u, int v, O2argb32f *span,int length){
    int i;
 
    v = RI_INT_MOD(v, self->_height);
@@ -1652,67 +1698,67 @@ void KGImageReadTexelTileRepeat(O2Image *self,int u, int v, KGRGBAffff *span,int
    for(i=0;i<length;i++,u++){
     u = RI_INT_MOD(u, self->_width);
 
-    KGRGBAffff *direct=KGImageReadSpan_lRGBAffff_PRE(self,u,v,span+i,1);
+    O2argb32f *direct=O2ImageReadSpan_lRGBAffff_PRE(self,u,v,span+i,1);
     if(direct!=NULL)
      span[i]=direct[0];
    }
 }
 
-void KGImagePattern_Bilinear(O2Image *self,CGFloat x, CGFloat y,KGRGBAffff *span,int length, CGAffineTransform surfaceToImage){
+void O2ImagePattern_Bilinear(O2Image *self,O2Float x, O2Float y,O2argb32f *span,int length, O2AffineTransform surfaceToImage){
    double du=(x+0.5) * surfaceToImage.a+(y+0.5)* surfaceToImage.c+surfaceToImage.tx;
    double dv=(x+0.5) * surfaceToImage.b+(y+0.5)* surfaceToImage.d+surfaceToImage.ty;
    int i;
    
    for(i=0;i<length;i++,x++){
-    CGPoint uv=CGPointMake(du,dv);
+    O2Point uv=O2PointMake(du,dv);
 
     uv.x -= 0.5f;
 	uv.y -= 0.5f;
 	int u = RI_FLOOR_TO_INT(uv.x);
 	int v = RI_FLOOR_TO_INT(uv.y);
-	KGRGBAffff c00c01[2];
-    KGImageReadTexelTileRepeat(self,u,v,c00c01,2);
+	O2argb32f c00c01[2];
+    O2ImageReadTexelTileRepeat(self,u,v,c00c01,2);
 
-    KGRGBAffff c01c11[2];
-    KGImageReadTexelTileRepeat(self,u,v+1,c01c11,2);
+    O2argb32f c01c11[2];
+    O2ImageReadTexelTileRepeat(self,u,v+1,c01c11,2);
 
-    CGFloat fu = uv.x - (CGFloat)u;
-    CGFloat fv = uv.y - (CGFloat)v;
-    KGRGBAffff c0 = KGRGBAffffAdd(KGRGBAffffMultiplyByFloat(c00c01[0],(1.0f - fu)),KGRGBAffffMultiplyByFloat(c00c01[1],fu));
-    KGRGBAffff c1 = KGRGBAffffAdd(KGRGBAffffMultiplyByFloat(c01c11[0],(1.0f - fu)),KGRGBAffffMultiplyByFloat(c01c11[1],fu));
-    span[i]=KGRGBAffffAdd(KGRGBAffffMultiplyByFloat(c0,(1.0f - fv)),KGRGBAffffMultiplyByFloat(c1, fv));
+    O2Float fu = uv.x - (O2Float)u;
+    O2Float fv = uv.y - (O2Float)v;
+    O2argb32f c0 = O2argb32fAdd(O2argb32fMultiplyByFloat(c00c01[0],(1.0f - fu)),O2argb32fMultiplyByFloat(c00c01[1],fu));
+    O2argb32f c1 = O2argb32fAdd(O2argb32fMultiplyByFloat(c01c11[0],(1.0f - fu)),O2argb32fMultiplyByFloat(c01c11[1],fu));
+    span[i]=O2argb32fAdd(O2argb32fMultiplyByFloat(c0,(1.0f - fv)),O2argb32fMultiplyByFloat(c1, fv));
 
     du+=surfaceToImage.a;
     dv+=surfaceToImage.b;
    }
 }
 
-void KGImagePattern_PointSampling(O2Image *self,CGFloat x, CGFloat y,KGRGBAffff *span,int length, CGAffineTransform surfaceToImage){	//point sampling
+void O2ImagePattern_PointSampling(O2Image *self,O2Float x, O2Float y,O2argb32f *span,int length, O2AffineTransform surfaceToImage){	//point sampling
    double du=(x+0.5) * surfaceToImage.a+(y+0.5)* surfaceToImage.c+surfaceToImage.tx;
    double dv=(x+0.5) * surfaceToImage.b+(y+0.5)* surfaceToImage.d+surfaceToImage.ty;
    int i;
    
    for(i=0;i<length;i++,x++){
-    CGPoint uv=CGPointMake(du,dv);
+    O2Point uv=O2PointMake(du,dv);
 
-    KGImageReadTexelTileRepeat(self,RI_FLOOR_TO_INT(uv.x), RI_FLOOR_TO_INT(uv.y),span+i,1);
+    O2ImageReadTexelTileRepeat(self,RI_FLOOR_TO_INT(uv.x), RI_FLOOR_TO_INT(uv.y),span+i,1);
 
     du+=surfaceToImage.a;
     dv+=surfaceToImage.b;
    }
 }
 
-void KGImageReadPatternSpan_lRGBAffff_PRE(O2Image *self,CGFloat x, CGFloat y, KGRGBAffff *span,int length, CGAffineTransform surfaceToImage, CGPatternTiling distortion)	{
+void O2ImageReadPatternSpan_lRGBAffff_PRE(O2Image *self,O2Float x, O2Float y, O2argb32f *span,int length, O2AffineTransform surfaceToImage, O2PatternTiling distortion)	{
     
    switch(distortion){
-    case kCGPatternTilingNoDistortion:
-      KGImagePattern_PointSampling(self,x,y,span,length,surfaceToImage);
+    case kO2PatternTilingNoDistortion:
+      O2ImagePattern_PointSampling(self,x,y,span,length,surfaceToImage);
       break;
 
-    case kCGPatternTilingConstantSpacingMinimalDistortion:
-    case kCGPatternTilingConstantSpacing:
+    case kO2PatternTilingConstantSpacingMinimalDistortion:
+    case kO2PatternTilingConstantSpacing:
      default:
-      KGImagePattern_Bilinear(self,x,y,span,length,surfaceToImage);
+      O2ImagePattern_Bilinear(self,x,y,span,length,surfaceToImage);
       break;
    }
 }

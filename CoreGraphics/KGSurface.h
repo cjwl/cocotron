@@ -46,14 +46,14 @@ typedef enum {
    VG_DRAW_IMAGE_NORMAL,
    VG_DRAW_IMAGE_MULTIPLY,
    VG_DRAW_IMAGE_STENCIL,
-} KGSurfaceMode;
+} O2SurfaceMode;
 
 typedef enum {
   VG_RED                                      = (1 << 3),
   VG_GREEN                                    = (1 << 2),
   VG_BLUE                                     = (1 << 1),
   VG_ALPHA                                    = (1 << 0)
-} KGSurfaceChannel;
+} O2SurfaceChannel;
 
 typedef enum {
   VG_CLEAR_MASK                               = 0x1500,
@@ -109,14 +109,14 @@ static inline KGIntRect KGIntRectIntersect(KGIntRect self,KGIntRect other) {
 
 
 typedef struct VGColor {
-	CGFloat		r;
-	CGFloat		g;
-	CGFloat		b;
-	CGFloat		a;
+	O2Float		r;
+	O2Float		g;
+	O2Float		b;
+	O2Float		a;
 	VGColorInternalFormat	m_format;
 } VGColor;
 
-static inline VGColor VGColorFromRGBAffff(KGRGBAffff rgba,VGColorInternalFormat format){
+static inline VGColor VGColorFromRGBAffff(O2argb32f rgba,VGColorInternalFormat format){
    VGColor result;
    
    result.r=rgba.r;
@@ -128,8 +128,8 @@ static inline VGColor VGColorFromRGBAffff(KGRGBAffff rgba,VGColorInternalFormat 
    return result;
 }
 
-static inline KGRGBAffff KGRGBAffffFromColor(VGColor color){
-   KGRGBAffff result;
+static inline O2argb32f O2argb32fFromColor(VGColor color){
+   O2argb32f result;
    result.r=color.r;
    result.g=color.g;
    result.b=color.b;
@@ -150,7 +150,7 @@ static inline VGColor VGColorZero(){
    return result;
 }
 
-static inline VGColor VGColorRGBA(CGFloat cr, CGFloat cg, CGFloat cb, CGFloat ca, VGColorInternalFormat cs){
+static inline VGColor VGColorRGBA(O2Float cr, O2Float cg, O2Float cb, O2Float ca, VGColorInternalFormat cs){
    VGColor result;
    
    RI_ASSERT(cs == VGColor_lRGBA || cs == VGColor_sRGBA || cs == VGColor_lRGBA_PRE || cs == VGColor_sRGBA_PRE || cs == VGColor_lLA || cs == VGColor_sLA || cs == VGColor_lLA_PRE || cs == VGColor_sLA_PRE);
@@ -163,7 +163,7 @@ static inline VGColor VGColorRGBA(CGFloat cr, CGFloat cg, CGFloat cb, CGFloat ca
    return result;
 }
 
-static inline VGColor VGColorMultiplyByFloat(VGColor c,CGFloat f){
+static inline VGColor VGColorMultiplyByFloat(VGColor c,O2Float f){
    return VGColorRGBA(c.r*f, c.g*f, c.b*f, c.a*f, c.m_format);
 }
 
@@ -184,7 +184,7 @@ static inline VGColor VGColorSubtract(VGColor result,VGColor c1){
 //clamps nonpremultiplied colors and alpha to [0,1] range, and premultiplied alpha to [0,1], colors to [0,a]
 static inline VGColor VGColorClamp(VGColor result){
    result.a = RI_CLAMP(result.a,0.0f,1.0f);
-   CGFloat u = (result.m_format & VGColorPREMULTIPLIED) ? result.a : (CGFloat)1.0f;
+   O2Float u = (result.m_format & VGColorPREMULTIPLIED) ? result.a : (O2Float)1.0f;
    result.r = RI_CLAMP(result.r,0.0f,u);
    result.g = RI_CLAMP(result.g,0.0f,u);
    result.b = RI_CLAMP(result.b,0.0f,u);
@@ -201,7 +201,7 @@ static inline VGColor VGColorPremultiply(VGColor result){
 
 static inline VGColor VGColorUnpremultiply(VGColor result){
    if(result.m_format & VGColorPREMULTIPLIED) {
-    CGFloat ooa = (result.a != 0.0f) ? 1.0f/result.a : (CGFloat)0.0f;
+    O2Float ooa = (result.a != 0.0f) ? 1.0f/result.a : (O2Float)0.0f;
     result.r *= ooa; result.g *= ooa; result.b *= ooa;
     result.m_format = (VGColorInternalFormat) (result.m_format & ~VGColorPREMULTIPLIED);
    }
@@ -210,65 +210,64 @@ static inline VGColor VGColorUnpremultiply(VGColor result){
 
 VGColor VGColorConvert(VGColor result,VGColorInternalFormat outputFormat);
 
-static inline void KGRGBAffffConvertSpan(KGRGBAffff *span,int length,VGColorInternalFormat fromFormat,VGColorInternalFormat toFormat){
+static inline void O2argb32fConvertSpan(O2argb32f *span,int length,VGColorInternalFormat fromFormat,VGColorInternalFormat toFormat){
    if(fromFormat!=toFormat){
     int i;
    
     for(i=0;i<length;i++)
-     span[i]=KGRGBAffffFromColor(VGColorConvert(VGColorFromRGBAffff(span[i],fromFormat),toFormat));
+     span[i]=O2argb32fFromColor(VGColorConvert(VGColorFromRGBAffff(span[i],fromFormat),toFormat));
    }
 }
 
 
-@class KGSurface;
+@class O2Surface;
 
-typedef void (*KGSurfaceWriteSpan_RGBA8888)(KGSurface *self,int x,int y,KGRGBA8888 *span,int length);
-typedef void (*KGSurfaceWriteSpan_RGBAffff)(KGSurface *self,int x,int y,KGRGBAffff *span,int length);
+typedef void (*O2SurfaceWriteSpan_RGBA8888)(O2Surface *self,int x,int y,O2argb8u *span,int length);
+typedef void (*O2SurfaceWriteSpan_RGBAffff)(O2Surface *self,int x,int y,O2argb32f *span,int length);
 
-@interface KGSurface : O2Image {
+@interface O2Surface : O2Image {
    unsigned char              *_pixelBytes;
-   KGSurfaceWriteSpan_RGBA8888 _writeRGBA8888;
-   KGSurfaceWriteSpan_RGBAffff _writeRGBAffff;
+   O2SurfaceWriteSpan_RGBA8888 _writeRGBA8888;
+   O2SurfaceWriteSpan_RGBAffff _writeRGBAffff;
    
 	BOOL           m_ownsData;
 	VGPixelDecode	m_desc;
 } 
 
--initWithBytes:(void *)bytes width:(size_t)width height:(size_t)height bitsPerComponent:(size_t)bitsPerComponent bytesPerRow:(size_t)bytesPerRow colorSpace:(O2ColorSpaceRef)colorSpace bitmapInfo:(CGBitmapInfo)bitmapInfo;
+-initWithBytes:(void *)bytes width:(size_t)width height:(size_t)height bitsPerComponent:(size_t)bitsPerComponent bytesPerRow:(size_t)bytesPerRow colorSpace:(O2ColorSpaceRef)colorSpace bitmapInfo:(O2BitmapInfo)bitmapInfo;
 
--(NSData *)pixelData;
 -(void *)pixelBytes;
 
 -(void)setWidth:(size_t)width height:(size_t)height reallocateOnlyIfRequired:(BOOL)roir;
 
 
-BOOL KGSurfaceIsValidFormat(int format);
+BOOL O2SurfaceIsValidFormat(int format);
 
-void KGSurfaceClear(KGSurface *self,VGColor clearColor, int x, int y, int w, int h);
-void KGSurfaceBlit(KGSurface *self,KGSurface * src, int sx, int sy, int dx, int dy, int w, int h, BOOL dither);
-void KGSurfaceMask(KGSurface *self,KGSurface* src, VGMaskOperation operation, int x, int y, int w, int h);
-VGColor KGSurfaceReadPixel(O2Image *self,int x, int y);
+void O2SurfaceClear(O2Surface *self,VGColor clearColor, int x, int y, int w, int h);
+void O2SurfaceBlit(O2Surface *self,O2Surface * src, int sx, int sy, int dx, int dy, int w, int h, BOOL dither);
+void O2SurfaceMask(O2Surface *self,O2Surface* src, VGMaskOperation operation, int x, int y, int w, int h);
+VGColor O2SurfaceReadPixel(O2Image *self,int x, int y);
 
-void KGSurfaceWritePixel(KGSurface *self,int x, int y, VGColor c);
-void KGSurfaceWriteSpan_lRGBA8888_PRE(KGSurface *self,int x,int y,KGRGBA8888 *span,int length);
-void KGSurfaceWriteSpan_lRGBAffff_PRE(KGSurface *self,int x,int y,KGRGBAffff *span,int length);
+void O2SurfaceWritePixel(O2Surface *self,int x, int y, VGColor c);
+void O2SurfaceWriteSpan_lRGBA8888_PRE(O2Surface *self,int x,int y,O2argb8u *span,int length);
+void O2SurfaceWriteSpan_lRGBAffff_PRE(O2Surface *self,int x,int y,O2argb32f *span,int length);
 
-void KGSurfaceWriteFilteredPixel(KGSurface *self,int x, int y, VGColor c, VGbitfield channelMask);
+void O2SurfaceWriteFilteredPixel(O2Surface *self,int x, int y, VGColor c, VGbitfield channelMask);
 
-void KGSurfaceWriteMaskPixel(KGSurface *self,int x, int y, CGFloat m);	//can write only to VG_A_8
+void O2SurfaceWriteMaskPixel(O2Surface *self,int x, int y, O2Float m);	//can write only to VG_A_8
 
 typedef struct KGGaussianKernel *KGGaussianKernelRef;
 
-KGGaussianKernelRef KGCreateGaussianKernelWithDeviation(CGFloat stdDeviation);
+KGGaussianKernelRef KGCreateGaussianKernelWithDeviation(O2Float stdDeviation);
 KGGaussianKernelRef KGGaussianKernelRetain(KGGaussianKernelRef kernel);
 void KGGaussianKernelRelease(KGGaussianKernelRef kernel);
 
 
-void KGSurfaceColorMatrix(KGSurface *self,KGSurface * src, const CGFloat* matrix, BOOL filterFormatLinear, BOOL filterFormatPremultiplied, VGbitfield channelMask);
-void KGSurfaceConvolve(KGSurface *self,KGSurface * src, int kernelWidth, int kernelHeight, int shiftX, int shiftY, const RIint16* kernel, CGFloat scale, CGFloat bias, VGTilingMode tilingMode, VGColor edgeFillColor, BOOL filterFormatLinear, BOOL filterFormatPremultiplied, VGbitfield channelMask);
-void KGSurfaceSeparableConvolve(KGSurface *self,KGSurface * src, int kernelWidth, int kernelHeight, int shiftX, int shiftY, const RIint16* kernelX, const RIint16* kernelY, CGFloat scale, CGFloat bias, VGTilingMode tilingMode, VGColor edgeFillColor, BOOL filterFormatLinear, BOOL filterFormatPremultiplied, VGbitfield channelMask);
-void KGSurfaceGaussianBlur(KGSurface *self,O2Image * src, KGGaussianKernelRef kernel);
-void KGSurfaceLookup(KGSurface *self,KGSurface * src, const uint8_t * redLUT, const uint8_t * greenLUT, const uint8_t * blueLUT, const uint8_t * alphaLUT, BOOL outputLinear, BOOL outputPremultiplied, BOOL filterFormatLinear, BOOL filterFormatPremultiplied, VGbitfield channelMask);
-void KGSurfaceLookupSingle(KGSurface *self,KGSurface * src, const RIuint32 * lookupTable, KGSurfaceChannel sourceChannel, BOOL outputLinear, BOOL outputPremultiplied, BOOL filterFormatLinear, BOOL filterFormatPremultiplied, VGbitfield channelMask);
+void O2SurfaceColorMatrix(O2Surface *self,O2Surface * src, const O2Float* matrix, BOOL filterFormatLinear, BOOL filterFormatPremultiplied, VGbitfield channelMask);
+void O2SurfaceConvolve(O2Surface *self,O2Surface * src, int kernelWidth, int kernelHeight, int shiftX, int shiftY, const RIint16* kernel, O2Float scale, O2Float bias, VGTilingMode tilingMode, VGColor edgeFillColor, BOOL filterFormatLinear, BOOL filterFormatPremultiplied, VGbitfield channelMask);
+void O2SurfaceSeparableConvolve(O2Surface *self,O2Surface * src, int kernelWidth, int kernelHeight, int shiftX, int shiftY, const RIint16* kernelX, const RIint16* kernelY, O2Float scale, O2Float bias, VGTilingMode tilingMode, VGColor edgeFillColor, BOOL filterFormatLinear, BOOL filterFormatPremultiplied, VGbitfield channelMask);
+void O2SurfaceGaussianBlur(O2Surface *self,O2Image * src, KGGaussianKernelRef kernel,O2ColorRef color);
+void O2SurfaceLookup(O2Surface *self,O2Surface * src, const uint8_t * redLUT, const uint8_t * greenLUT, const uint8_t * blueLUT, const uint8_t * alphaLUT, BOOL outputLinear, BOOL outputPremultiplied, BOOL filterFormatLinear, BOOL filterFormatPremultiplied, VGbitfield channelMask);
+void O2SurfaceLookupSingle(O2Surface *self,O2Surface * src, const RIuint32 * lookupTable, O2SurfaceChannel sourceChannel, BOOL outputLinear, BOOL outputPremultiplied, BOOL filterFormatLinear, BOOL filterFormatPremultiplied, VGbitfield channelMask);
 
 @end

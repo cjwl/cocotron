@@ -10,21 +10,17 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "KGShading.h"
 
 CGShadingRef CGShadingRetain(CGShadingRef self) {
-   return [self retain];
+   return O2ShadingRetain(self);
 }
 
 void CGShadingRelease(CGShadingRef self) {
-   [self release];
+   O2ShadingRelease(self);
 }
 
 CGShadingRef CGShadingCreateAxial(CGColorSpaceRef colorSpace,CGPoint startPoint,CGPoint endPoint,CGFunctionRef function,BOOL extendStart,BOOL extendEnd) {
-   float domain[2]={0,1};
-   
-   return [[KGShading alloc] initWithColorSpace:colorSpace startPoint:startPoint endPoint:endPoint function:function extendStart:extendStart extendEnd:extendEnd domain:domain];
+   return O2ShadingCreateAxial(colorSpace,startPoint,endPoint,function,extendStart,extendEnd);
 }
 
 CGShadingRef CGShadingCreateRadial(CGColorSpaceRef colorSpace,CGPoint startPoint,float startRadius,CGPoint endPoint,float endRadius,CGFunctionRef function,BOOL extendStart,BOOL extendEnd) {
-   float domain[2]={0,1};
-
-   return [[KGShading alloc] initWithColorSpace:colorSpace startPoint:startPoint startRadius:startRadius endPoint:endPoint endRadius:endRadius function:function extendStart:extendStart extendEnd:extendEnd domain:domain];
+   return O2ShadingCreateRadial(colorSpace,startPoint,startRadius,endPoint,endRadius,function,extendStart,extendEnd);
 }

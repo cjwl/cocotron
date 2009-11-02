@@ -10,7 +10,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @class Win32Font,KGDeviceContext_gdi;
 
-@interface KGContext_builtin_gdi : KGContext_builtin {
+@interface KGContext_builtin_gdi : O2Context_builtin {
    HDC        _dc;
    Win32Font *_gdiFont;
 }

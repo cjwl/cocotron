@@ -14,7 +14,7 @@
    return self;
 }
 
--initWithMask:(O2Image *)mask rect:(CGRect)rect transform:(CGAffineTransform)transform {
+-initWithMask:(O2Image *)mask rect:(O2Rect)rect transform:(O2AffineTransform)transform {
    _type=O2ClipPhaseMask;
    _object=[mask retain];
    _rect=rect;

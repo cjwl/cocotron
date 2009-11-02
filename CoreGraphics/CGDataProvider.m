@@ -10,22 +10,22 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import "KGDataProvider.h"
 
 CGDataProviderRef CGDataProviderRetain(CGDataProviderRef provider) {
-   return [provider retain];
+   return O2DataProviderRetain(provider);
 }
 
 void CGDataProviderRelease(CGDataProviderRef provider) {
-   return [provider release];
+   return O2DataProviderRelease(provider);
 }
 
 CGDataProviderRef CGDataProviderCreateWithCFData(NSData *data) {
-   return [[O2DataProvider alloc] initWithData:data];
+   return O2DataProviderCreateWithCFData(data);
 }
 
 COREGRAPHICS_EXPORT CGDataProviderRef CGDataProviderCreateWithData(void *info,const void *data,size_t size,CGDataProviderReleaseDataCallback releaseCallback) {
-   return [[O2DataProvider alloc] initWithBytes:data length:size];
+   return O2DataProviderCreateWithData(info,data,size,releaseCallback);
 }
 
 COREGRAPHICS_EXPORT NSData *CGDataProviderCopyData(CGDataProviderRef self) {
-   return [self copyData];
+   return O2DataProviderCopyData(self);
 }
 
