@@ -21,15 +21,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSRaiseException.h>
 #import "NSSocket_bsd.h"
 
-#import <stdio.h>
 #import <unistd.h>
-#include <sys/types.h>
+#import <sys/socket.h>
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <errno.h>
-#include <string.h>
-#import <sys/socket.h>
 #import <sys/un.h>
+#import <stdio.h>
+#include <sys/types.h>
+#include <string.h>
 
 @implementation NSFileHandle(ImplementedInSubclass)
 

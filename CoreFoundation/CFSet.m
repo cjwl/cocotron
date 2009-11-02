@@ -1,5 +1,3 @@
-#ifdef CF_ENABLED
-#define COREFOUNDATION_INSIDE_BUILD 1
 #import <CoreFoundation/CFSet.h>
 #import <Foundation/NSRaise.h>
 #import <Foundation/NSCFTypeID.h>
@@ -86,5 +84,3 @@ void CFSetReplaceValue(CFMutableSetRef self,const void *value){
 void CFSetSetValue(CFMutableSetRef self,const void *value){
    NSUnimplementedFunction();
 }
-
-#endif

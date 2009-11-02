@@ -9,20 +9,12 @@
 
 #import <Foundation/Foundation.h>
 #import "NSConstObject.h"
-
-
-#if CF_ENABLED
-#define COREFOUNDATION_INSIDE_BUILD 1
 #import <CoreFoundation/CoreFoundation.h>
 
 #define kNSNumberPositiveInfinity ((NSNumber *)kCFNumberPositiveInfinity)
 #define kNSNumberNegativeInfinity ((NSNumber *)kCFNumberNegativeInfinity)
 #define kNSNumberNaN ((NSNumber *)kCFNumberNaN)
-#else
-NS_CONSTOBJ_DECL NSNumber * const kNSNumberPositiveInfinity;
-NS_CONSTOBJ_DECL NSNumber * const kNSNumberNegativeInfinity;
-NS_CONSTOBJ_DECL NSNumber * const kNSNumberNaN;
-#endif
+
 NS_CONSTOBJ_DECL NSNumber * const kNSNumberPositiveZero;
 NS_CONSTOBJ_DECL NSNumber * const kNSNumberNegativeZero;
 NS_CONSTOBJ_DECL NSNumber * const kNSNumberPositiveOne;

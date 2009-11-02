@@ -68,15 +68,10 @@ static const NSNumber_double_Def kNegativeOneDef =
    -1.0
 };
 
-#if CF_ENABLED
 const CFNumberRef kCFNumberPositiveInfinity = (CFNumberRef)&kPositiveInfinityDef;
 const CFNumberRef kCFNumberNegativeInfinity = (CFNumberRef)&kNegativeInfinityDef;
 const CFNumberRef kCFNumberNaN = (CFNumberRef)&kNaNDef;
-#else
-NS_CONSTOBJ_DEF NSNumber * const kNSNumberPositiveInfinity = (NSNumber *)&kPositiveInfinityDef;
-NS_CONSTOBJ_DEF NSNumber * const kNSNumberNegativeInfinity = (NSNumber *)&kNegativeInfinityDef;
-NS_CONSTOBJ_DEF NSNumber * const kNSNumberNaN = (NSNumber *)&kNaNDef;
-#endif
+
 NS_CONSTOBJ_DEF NSNumber * const kNSNumberPositiveZero = (NSNumber *)&kPositiveZeroDef;
 NS_CONSTOBJ_DEF NSNumber * const kNSNumberNegativeZero = (NSNumber *)&kNegativeZeroDef;
 NS_CONSTOBJ_DEF NSNumber * const kNSNumberPositiveOne = (NSNumber *)&kPositiveOneDef;

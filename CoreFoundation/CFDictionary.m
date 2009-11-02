@@ -1,5 +1,3 @@
-#ifdef CF_ENABLED
-#define COREFOUNDATION_INSIDE_BUILD 1
 #import <CoreFoundation/CFDictionary.h>
 #import <Foundation/NSRaise.h>
 #import <Foundation/NSCFTypeID.h>
@@ -90,4 +88,3 @@ void CFDictionaryReplaceValue(CFMutableDictionaryRef self,const void *key,const 
 void CFDictionarySetValue(CFMutableDictionaryRef self,const void *key,const void *value){
    NSUnimplementedFunction();
 }
-#endif

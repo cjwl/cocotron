@@ -151,7 +151,7 @@ const unichar _mapMacOSRomanToUnichar(const unsigned char c)
 {
 	if(c>= 0x80)
 	{
-		static size = sizeof(mapping_array) / sizeof(mapping_array[0]);
+		static int size = sizeof(mapping_array) / sizeof(mapping_array[0]);
 		int j = 0;
 		
 		for(;j < size;j++)
@@ -194,7 +194,7 @@ char *NSUnicodeToMacOSRoman(const unichar *characters,NSUInteger length,
 		else
 		{
 			
-			static size = sizeof(mapping_array) / sizeof(mapping_array[0]);
+			static int size = sizeof(mapping_array) / sizeof(mapping_array[0]);
 			int j = 0;
 			BOOL found = NO;
 			

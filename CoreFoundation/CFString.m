@@ -1,5 +1,3 @@
-#ifdef CF_ENABLED
-#define COREFOUNDATION_INSIDE_BUILD 1
 #import <CoreFoundation/CFString.h>
 #import <Foundation/NSString.h>
 
@@ -19,4 +17,3 @@ CFStringRef CFStringCreateWithFileSystemRepresentation(CFAllocatorRef allocator,
 CFStringRef CFStringCreateWithFormat(CFAllocatorRef allocator,CFDictionaryRef formatOptions,CFStringRef format,...){}
 CFStringRef CFStringCreateWithFormatAndArguments(CFAllocatorRef allocator,CFDictionaryRef formatOptions,CFStringRef format,va_list arguments){}
 CFStringRef CFStringCreateFromExternalRepresentation(CFAllocatorRef allocator,CFDataRef data,CFStringEncoding encoding){}
-#endif

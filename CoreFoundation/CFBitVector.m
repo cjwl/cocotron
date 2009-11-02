@@ -1,5 +1,3 @@
-#ifdef CF_ENABLED
-#define COREFOUNDATION_INSIDE_BUILD 1
 #import <CoreFoundation/CFBitVector.h>
 #import <Foundation/NSRaise.h>
 #import <Foundation/NSCFTypeID.h>
@@ -51,4 +49,3 @@ CFIndex CFBitVectorGetLastIndexOfBit(CFBitVectorRef self,CFRange range,CFBit val
    NSUnimplementedFunction();
    return 0;
 }
-#endif

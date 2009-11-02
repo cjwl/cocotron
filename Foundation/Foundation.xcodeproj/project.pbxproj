@@ -5631,6 +5631,76 @@
 			remoteGlobalIDString = FE651A9D0FBC84DD00464BFD;
 			remoteInfo = "objc-Darwin-i386 copy";
 		};
+		FEA828AA109B74B200C7A732 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FEA828A3109B74B200C7A732 /* CoreFoundation.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 8DC2EF5B0486A6940098B216;
+			remoteInfo = "CoreFoundation-Windows-i386";
+		};
+		FEA828AC109B752F00C7A732 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FEA828A3109B74B200C7A732 /* CoreFoundation.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 8DC2EF4F0486A6940098B216;
+			remoteInfo = "CoreFoundation-Windows-i386";
+		};
+		FEA828E7109B754B00C7A732 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FEA828A3109B74B200C7A732 /* CoreFoundation.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = FEA828E4109B754A00C7A732;
+			remoteInfo = "CoreFoundation-Windows-i386 copy";
+		};
+		FEA82959109B75D700C7A732 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FEA828A3109B74B200C7A732 /* CoreFoundation.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = FEA82956109B75D600C7A732;
+			remoteInfo = "CoreFoundation-Linux-ppc copy";
+		};
+		FEA8295B109B771000C7A732 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FEA828A3109B74B200C7A732 /* CoreFoundation.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = FEA828B3109B754A00C7A732;
+			remoteInfo = "CoreFoundation-Linux-i386";
+		};
+		FEA8295D109B772000C7A732 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FEA828A3109B74B200C7A732 /* CoreFoundation.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = FEA82925109B75D600C7A732;
+			remoteInfo = "CoreFoundation-Darwin-i386";
+		};
+		FEA82993109B775200C7A732 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FEA828A3109B74B200C7A732 /* CoreFoundation.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = FEA82990109B773300C7A732;
+			remoteInfo = "CoreFoundation-Linux-arm";
+		};
+		FEA82995109B777800C7A732 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FEA828A3109B74B200C7A732 /* CoreFoundation.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = FEA8295F109B773300C7A732;
+			remoteInfo = "CoreFoundation-Linux-arm";
+		};
+		FEA829D0109B7C1B00C7A732 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FEA828A3109B74B200C7A732 /* CoreFoundation.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = FEA829CD109B7BFD00C7A732;
+			remoteInfo = "CoreFoundation-Linux-ppc";
+		};
+		FEA829D2109B7C2500C7A732 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FEA828A3109B74B200C7A732 /* CoreFoundation.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = FEA8299C109B7BFD00C7A732;
+			remoteInfo = "CoreFoundation-Linux-ppc";
+		};
 		FEB6CC470B4A1922004FADF2 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FEB6CC400B4A1922004FADF2 /* objc.xcodeproj */;
@@ -5721,7 +5791,6 @@
 		151B5CC3105EA25E009092D5 /* objc_msg_sendv-Disabled.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "objc_msg_sendv-Disabled.m"; sourceTree = "<group>"; };
 		151B5D1A105EA94F009092D5 /* NSAtomicCompareAndSwap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSAtomicCompareAndSwap.h; sourceTree = "<group>"; };
 		15D921C0105E918000171406 /* Foundation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Foundation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		15D921C1105E918100171406 /* Info copy.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Info copy.plist"; sourceTree = "<group>"; };
 		1A27BFF01090CBCD00C44FD7 /* NSNumber_BOOL_const_impl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NSNumber_BOOL_const_impl.h; path = NSNumber/NSNumber_BOOL_const_impl.h; sourceTree = "<group>"; };
 		1A27BFF11090CBCD00C44FD7 /* NSNumber_double_const_impl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NSNumber_double_const_impl.h; path = NSNumber/NSNumber_double_const_impl.h; sourceTree = "<group>"; };
 		1A27C0021090CC0500C44FD7 /* NSNumber_double_const.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NSNumber_double_const.m; path = NSNumber/NSNumber_double_const.m; sourceTree = "<group>"; };
@@ -6321,6 +6390,7 @@
 		FE9E1A300D5C0676004AE7BA /* NSLocale+windows.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = "NSLocale+windows.m"; sourceTree = "<group>"; };
 		FEA317850FD5843900F480D4 /* NSRaiseException.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSRaiseException.h; sourceTree = "<group>"; };
 		FEA36F250C24C57000025A9C /* objc_cache.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = objc_cache.h; sourceTree = "<group>"; };
+		FEA828A3109B74B200C7A732 /* CoreFoundation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CoreFoundation.xcodeproj; path = ../CoreFoundation/CoreFoundation.xcodeproj; sourceTree = SOURCE_ROOT; };
 		FEA9D0880D16C55E00123D51 /* NSPropertyListReader_binary1.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = NSPropertyListReader_binary1.h; sourceTree = "<group>"; };
 		FEA9D0890D16C55E00123D51 /* NSPropertyListReader_binary1.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = NSPropertyListReader_binary1.m; sourceTree = "<group>"; };
 		FEA9D3050F5D9C2100772064 /* NSRunLoopState_windows.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSRunLoopState_windows.h; sourceTree = "<group>"; };
@@ -6549,6 +6619,7 @@
 		0867D691FE84028FC02AAC07 /* Foundation */ = {
 			isa = PBXGroup;
 			children = (
+				FEA828A3109B74B200C7A732 /* CoreFoundation.xcodeproj */,
 				151B5D1A105EA94F009092D5 /* NSAtomicCompareAndSwap.h */,
 				FE463E54102CD5C700B265D6 /* NSPointerArray.h */,
 				FE463E55102CD5C700B265D6 /* NSPointerArray.m */,
@@ -6705,7 +6776,6 @@
 				6E280B2709747EC800EC542B /* NSTimeZone */,
 				8DC2EF5A0486A6940098B216 /* Info.plist */,
 				6E280B2B09747F4900EC542B /* NSUserDefaults.plist */,
-				15D921C1105E918100171406 /* Info copy.plist */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -7635,6 +7705,18 @@
 				FE9D953B0C0387D5006DB214 /* NSValueTransformer_UnarchiveFromData.m */,
 			);
 			path = NSValueTransformer;
+			sourceTree = "<group>";
+		};
+		FEA828A4109B74B200C7A732 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				FEA828AB109B74B200C7A732 /* CoreFoundation.framework */,
+				FEA828E8109B754B00C7A732 /* CoreFoundation.framework */,
+				FEA8295A109B75D700C7A732 /* CoreFoundation.framework */,
+				FEA82994109B775200C7A732 /* CoreFoundation.framework */,
+				FEA829D1109B7C1B00C7A732 /* CoreFoundation.framework */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		FEB6CC410B4A1922004FADF2 /* Products */ = {
@@ -10421,6 +10503,7 @@
 			);
 			dependencies = (
 				15D921EB105E927F00171406 /* PBXTargetDependency */,
+				FEA82996109B777800C7A732 /* PBXTargetDependency */,
 			);
 			name = "Foundation-Linux-arm";
 			productInstallPath = "$(HOME)/Library/Frameworks";
@@ -10443,6 +10526,7 @@
 			);
 			dependencies = (
 				28D487AF0FE04F3F00DC03EF /* PBXTargetDependency */,
+				FEA829D3109B7C2500C7A732 /* PBXTargetDependency */,
 			);
 			name = "Foundation-Linux-ppc";
 			productInstallPath = "$(HOME)/Library/Frameworks";
@@ -10488,6 +10572,7 @@
 			);
 			dependencies = (
 				FEB6CC510B4A194C004FADF2 /* PBXTargetDependency */,
+				FEA8295C109B771000C7A732 /* PBXTargetDependency */,
 			);
 			name = "Foundation-Linux-i386";
 			productInstallPath = "$(HOME)/Library/Frameworks";
@@ -10510,6 +10595,7 @@
 			);
 			dependencies = (
 				FE01A7F30C5D9B9100AEA51A /* PBXTargetDependency */,
+				FEA828AD109B752F00C7A732 /* PBXTargetDependency */,
 			);
 			name = "Foundation-Windows-i386";
 			productInstallPath = "$(HOME)/Library/Frameworks";
@@ -10550,6 +10636,7 @@
 			);
 			dependencies = (
 				FED70AB60C3B3FAC000CBE5B /* PBXTargetDependency */,
+				FEA8295E109B772000C7A732 /* PBXTargetDependency */,
 			);
 			name = "Foundation-Darwin-i386";
 			productInstallPath = "$(HOME)/Library/Frameworks";
@@ -10592,6 +10679,10 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
+					ProductGroup = FEA828A4109B74B200C7A732 /* Products */;
+					ProjectRef = FEA828A3109B74B200C7A732 /* CoreFoundation.xcodeproj */;
+				},
+				{
 					ProductGroup = FEB6CC410B4A1922004FADF2 /* Products */;
 					ProjectRef = FEB6CC400B4A1922004FADF2 /* objc.xcodeproj */;
 				},
@@ -10631,6 +10722,41 @@
 			fileType = wrapper.framework;
 			path = objc.framework;
 			remoteRef = FE651AA00FBC84DD00464BFD /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FEA828AB109B74B200C7A732 /* CoreFoundation.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = CoreFoundation.framework;
+			remoteRef = FEA828AA109B74B200C7A732 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FEA828E8109B754B00C7A732 /* CoreFoundation.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = CoreFoundation.framework;
+			remoteRef = FEA828E7109B754B00C7A732 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FEA8295A109B75D700C7A732 /* CoreFoundation.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = CoreFoundation.framework;
+			remoteRef = FEA82959109B75D700C7A732 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FEA82994109B775200C7A732 /* CoreFoundation.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = CoreFoundation.framework;
+			remoteRef = FEA82993109B775200C7A732 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FEA829D1109B7C1B00C7A732 /* CoreFoundation.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = CoreFoundation.framework;
+			remoteRef = FEA829D0109B7C1B00C7A732 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		FEB6CC480B4A1922004FADF2 /* objc.framework */ = {
@@ -13707,6 +13833,31 @@
 			name = "objc-Darwin";
 			targetProxy = FE6518180FBC844C00464BFD /* PBXContainerItemProxy */;
 		};
+		FEA828AD109B752F00C7A732 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "CoreFoundation-Windows-i386";
+			targetProxy = FEA828AC109B752F00C7A732 /* PBXContainerItemProxy */;
+		};
+		FEA8295C109B771000C7A732 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "CoreFoundation-Linux-i386";
+			targetProxy = FEA8295B109B771000C7A732 /* PBXContainerItemProxy */;
+		};
+		FEA8295E109B772000C7A732 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "CoreFoundation-Darwin-i386";
+			targetProxy = FEA8295D109B772000C7A732 /* PBXContainerItemProxy */;
+		};
+		FEA82996109B777800C7A732 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "CoreFoundation-Linux-arm";
+			targetProxy = FEA82995109B777800C7A732 /* PBXContainerItemProxy */;
+		};
+		FEA829D3109B7C2500C7A732 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "CoreFoundation-Linux-ppc";
+			targetProxy = FEA829D2109B7C2500C7A732 /* PBXContainerItemProxy */;
+		};
 		FEB6CC510B4A194C004FADF2 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = "objc-Linux-i386";
@@ -13764,7 +13915,7 @@
 				DSTROOT = /;
 				EXECUTABLE_PREFIX = lib;
 				EXECUTABLE_SUFFIX = .so;
-				GCC_C_LANGUAGE_STANDARD = gnu89;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
@@ -13801,10 +13952,10 @@
 				DSTROOT = /;
 				EXECUTABLE_PREFIX = lib;
 				EXECUTABLE_SUFFIX = .so;
-				GCC_C_LANGUAGE_STANDARD = gnu89;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_VERSION = 4.2;
-				INFOPLIST_FILE = "Info copy.plist";
+				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = /Developer/Cocotron/1.0/Linux/arm/Frameworks;
 				OTHER_CFLAGS = (
 					"-DCOCOTRON_USE_NONATOMIC_COMPARE_AND_SWAP=1",
@@ -13835,7 +13986,7 @@
 				DSTROOT = /;
 				EXECUTABLE_PREFIX = lib;
 				EXECUTABLE_SUFFIX = .so;
-				GCC_C_LANGUAGE_STANDARD = gnu89;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
@@ -13869,7 +14020,7 @@
 				DSTROOT = /;
 				EXECUTABLE_PREFIX = lib;
 				EXECUTABLE_SUFFIX = .so;
-				GCC_C_LANGUAGE_STANDARD = gnu89;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = /Developer/Cocotron/1.0/Linux/ppc/Frameworks;
@@ -13896,7 +14047,7 @@
 		6E2801BB09746B8900EC542B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				OTHER_CFLAGS = "$(COCOTRON_FOUNDATION_OTHER_CFLAGSX)";
+				OTHER_CFLAGS = "-DCOREFOUNDATION_INSIDE_BUILD=1";
 			};
 			name = Release;
 		};
@@ -13919,7 +14070,7 @@
 				DSTROOT = /;
 				EXECUTABLE_PREFIX = lib;
 				EXECUTABLE_SUFFIX = .so;
-				GCC_C_LANGUAGE_STANDARD = gnu89;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
@@ -13953,7 +14104,7 @@
 				DSTROOT = /;
 				EXECUTABLE_PREFIX = lib;
 				EXECUTABLE_SUFFIX = .so;
-				GCC_C_LANGUAGE_STANDARD = gnu89;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
@@ -13988,7 +14139,7 @@
 				DEPLOYMENT_LOCATION = YES;
 				DSTROOT = /;
 				EXECUTABLE_SUFFIX = .1.0.dll;
-				GCC_C_LANGUAGE_STANDARD = gnu89;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_ENABLE_CPP_EXCEPTIONS = NO;
 				GCC_ENABLE_CPP_RTTI = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -14028,7 +14179,7 @@
 				DSTROOT = /;
 				EXECUTABLE_PREFIX = lib;
 				EXECUTABLE_SUFFIX = .so;
-				GCC_C_LANGUAGE_STANDARD = gnu89;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = /Developer/Cocotron/1.0/Linux/i386/Frameworks;
@@ -14061,7 +14212,7 @@
 				DSTROOT = /;
 				EXECUTABLE_PREFIX = lib;
 				EXECUTABLE_SUFFIX = .so;
-				GCC_C_LANGUAGE_STANDARD = gnu89;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				INFOPLIST_FILE = Info.plist;
@@ -14093,7 +14244,7 @@
 				DEPLOYMENT_LOCATION = YES;
 				DSTROOT = /;
 				FRAMEWORK_SEARCH_PATHS = /Developer/Cocotron/1.0/Darwin/i386/Frameworks;
-				GCC_C_LANGUAGE_STANDARD = gnu89;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_VERSION = 4.2;
@@ -14123,7 +14274,7 @@
 				DEPLOYMENT_LOCATION = YES;
 				DSTROOT = /;
 				FRAMEWORK_SEARCH_PATHS = /Developer/Cocotron/1.0/Darwin/ppc/Frameworks;
-				GCC_C_LANGUAGE_STANDARD = gnu89;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				INFOPLIST_FILE = Info.plist;
@@ -14156,7 +14307,7 @@
 		7E891F1C0D4964FF008150D3 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				OTHER_CFLAGS = "$(COCOTRON_FOUNDATION_OTHER_CFLAGS)";
+				OTHER_CFLAGS = "-DCOREFOUNDATION_INSIDE_BUILD=1";
 			};
 			name = Debug;
 		};
@@ -14168,7 +14319,7 @@
 				DEPLOYMENT_POSTPROCESSING = YES;
 				DSTROOT = /;
 				EXECUTABLE_SUFFIX = .1.0.dll;
-				GCC_C_LANGUAGE_STANDARD = gnu89;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_ENABLE_CPP_EXCEPTIONS = NO;
 				GCC_ENABLE_CPP_RTTI = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
@@ -14212,7 +14363,7 @@
 				DEPLOYMENT_LOCATION = YES;
 				DSTROOT = /;
 				FRAMEWORK_SEARCH_PATHS = /Developer/Cocotron/1.0/Darwin/x86_64/Frameworks;
-				GCC_C_LANGUAGE_STANDARD = gnu89;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
@@ -14243,7 +14394,7 @@
 				DEPLOYMENT_LOCATION = YES;
 				DSTROOT = /;
 				FRAMEWORK_SEARCH_PATHS = /Developer/Cocotron/1.0/Darwin/i386/Frameworks;
-				GCC_C_LANGUAGE_STANDARD = gnu89;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_VERSION = 4.2;
@@ -14273,7 +14424,7 @@
 				DEPLOYMENT_LOCATION = YES;
 				DSTROOT = /;
 				FRAMEWORK_SEARCH_PATHS = /Developer/Cocotron/1.0/Darwin/i386/Frameworks;
-				GCC_C_LANGUAGE_STANDARD = gnu89;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
@@ -14304,7 +14455,7 @@
 				DEPLOYMENT_LOCATION = YES;
 				DSTROOT = /;
 				FRAMEWORK_SEARCH_PATHS = /Developer/Cocotron/1.0/Darwin/ppc/Frameworks;
-				GCC_C_LANGUAGE_STANDARD = gnu89;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;

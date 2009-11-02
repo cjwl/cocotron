@@ -1,5 +1,3 @@
-#ifdef CF_ENABLED
-#define COREFOUNDATION_INSIDE_BUILD 1
 #import <CoreFoundation/CFBinaryHeap.h>
 #import <Foundation/NSRaise.h>
 #import <Foundation/NSCFTypeID.h>
@@ -65,4 +63,3 @@ void CFBinaryHeapRemoveAllValues(CFBinaryHeapRef self){
 void CFBinaryHeapRemoveMinimumValue(CFBinaryHeapRef self){
    NSUnimplementedFunction();
 }
-#endif

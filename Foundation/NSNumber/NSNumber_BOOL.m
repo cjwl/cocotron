@@ -123,8 +123,6 @@ NSNumber *NSNumber_BOOLNew(NSZone *zone,BOOL value) {
 
 @end
 
-
-#if CF_ENABLED
 #import <Foundation/NSCFTypeID.h>
 
 @implementation NSNumber_BOOL (CFTypeID)
@@ -135,4 +133,3 @@ NSNumber *NSNumber_BOOLNew(NSZone *zone,BOOL value) {
 }
 
 @end
-#endif

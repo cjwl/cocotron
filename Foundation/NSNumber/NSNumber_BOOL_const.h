@@ -9,15 +9,7 @@
 
 #import <Foundation/Foundation.h>
 #import <Foundation/NSConstObject.h>
-
-
-#if CF_ENABLED
-#define COREFOUNDATION_INSIDE_BUILD 1
 #import <CoreFoundation/CoreFoundation.h>
 
 #define kNSNumberTrue ((NSNumber *)kCFBooleanTrue)
 #define kNSNumberFalse ((NSNumber *)kCFBooleanFalse)
-#else
-NS_CONSTOBJ_DECL NSNumber * const kNSNumberTrue;
-NS_CONSTOBJ_DECL NSNumber * const kNSNumberFalse;
-#endif

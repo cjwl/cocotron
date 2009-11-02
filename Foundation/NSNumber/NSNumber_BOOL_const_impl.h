@@ -33,10 +33,5 @@ static const NSNumber_BOOL_Def kFalseDef =
    NO
 };
 
-#if CF_ENABLED
 const CFBooleanRef kCFBooleanTrue = (CFBooleanRef)&kTrueDef;
 const CFBooleanRef kCFBooleanFalse = (CFBooleanRef)&kFalseDef;
-#else
-NS_CONSTOBJ_DEF NSNumber * const kNSNumberTrue = (NSNumber *)&kTrueDef;
-NS_CONSTOBJ_DEF NSNumber * const kNSNumberFalse = (NSNumber *)&kFalseDef;
-#endif
