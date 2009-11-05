@@ -8,7 +8,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSObject.h>
 #import <Foundation/NSRange.h>
 
-@interface NSIndexSet : NSObject <NSCopying,NSMutableCopying> {
+@interface NSIndexSet : NSObject <NSCoding,NSCopying,NSMutableCopying> {
    NSUInteger _length;
    NSRange *_ranges; 
 }
@@ -39,6 +39,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(NSUInteger)indexLessThanOrEqualToIndex:(NSUInteger)index;
 
 -(BOOL)intersectsIndexesInRange:(NSRange)range;
+
+-(void)encodeWithCoder:(NSCoder *)encoder;
+-(id)initWithCoder:(NSCoder *)decoder;
 
 @end
 

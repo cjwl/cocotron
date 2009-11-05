@@ -8,6 +8,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSMutableIndexSet.h>
 #import <Foundation/NSIndexSet.h>
 #import <Foundation/NSRaise.h>
+#import <Foundation/NSKeyValueCoding.h>
+#import <Foundation/NSCoder.h> 
+#import <Foundation/NSKeyedUnarchiver.h> 
+#import <Foundation/NSNumber.h>
 #import <limits.h>
 
 // FIX: assert range values on init/insert/remove
@@ -191,6 +195,30 @@ static void removeRangeAtPosition(NSRange *ranges,NSUInteger length,NSUInteger p
 
 -(void)shiftIndexesStartingAtIndex:(NSUInteger)index by:(NSInteger)delta {
    NSUnimplementedMethod();
+}
+
+-(void)encodeWithCoder:(NSCoder *)coder {
+	//Structure of this method is based on NSSortDescriptor r662
+	[super encodeWithCoder:coder];
+	if ([coder allowsKeyedCoding]) {
+		[coder encodeObject:[NSNumber numberWithInt:_capacity] forKey:@"capacity"];
+	}
+	else {
+		[coder encodeValueOfObjCType:@encode(NSUInteger) at:&_capacity];
+	}
+}
+	
+-(id)initWithCoder:(NSCoder *)coder {
+	//Structure of this method is based on NSSortDescriptor r662
+	[super initWithCoder:coder];
+	if ([coder isKindOfClass:[NSKeyedUnarchiver class]]) {
+		NSKeyedUnarchiver *keyed = (NSKeyedUnarchiver *)coder;
+		_capacity = [[keyed decodeObjectForKey:@"capacity"] intValue];
+	}
+	else {
+		[coder decodeValueOfObjCType:@encode(NSUInteger) at:&_capacity];
+	}
+	return self;
 }
 
 @end

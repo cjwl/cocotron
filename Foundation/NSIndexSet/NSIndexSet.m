@@ -8,6 +8,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSIndexSet.h>
 #import <Foundation/NSMutableIndexSet.h>
 #import <Foundation/NSString.h>
+#import <Foundation/NSKeyValueCoding.h>
+#import <Foundation/NSCoder.h> 
+#import <Foundation/NSKeyedUnarchiver.h> 
+#import <Foundation/NSNumber.h>
 
 @implementation NSIndexSet
 
@@ -269,6 +273,44 @@ static NSUInteger positionOfRangeLessThanOrEqualToLocation(NSRange *ranges,NSUIn
     [result appendFormat:@"%d-%d%@",_ranges[i].location,NSMaxRange(_ranges[i])-1,(i+1<_length)?@" ":@""];
    [result appendString:@")]"];
    return result;
+}
+
+-(void)encodeWithCoder:(NSCoder *)coder {
+	//Structure of this method is based on what I saw in NSSortDescriptor r662
+	if ([coder allowsKeyedCoding]) {
+		[coder encodeObject:[NSNumber numberWithInt:_length] forKey:@"length"];
+		[coder encodeBytes:(uint8_t *)_ranges length:_length * sizeof(NSRange) forKey:@"ranges"];
+	}
+	else {
+		[coder encodeValueOfObjCType:@encode(NSUInteger) at:&_length];
+		[coder encodeBytes:(uint8_t *)_ranges length:_length * sizeof(NSRange)];
+	}
+}
+
+-(id)initWithCoder:(NSCoder *)coder {
+	//Structure of this method is based on what I saw in NSSortDescriptor r662
+	if ([coder isKindOfClass:[NSKeyedUnarchiver class]]) {
+		NSKeyedUnarchiver *keyed = (NSKeyedUnarchiver *)coder;
+		_length = [[keyed decodeObjectForKey:@"length"] intValue];
+		NSUInteger length;
+		int i;
+		const uint8_t *rangebytes = [keyed decodeBytesForKey:@"ranges" returnedLength:&length];
+		NSRange *ranges = (NSRange *)rangebytes;
+		_ranges = NSZoneMalloc([self zone],sizeof(NSRange)*((_length==0)?1:_length));
+		for(i=0; i<_length; i++)
+			_ranges[i] = ranges[i];		
+	}
+	else {
+		[coder decodeValueOfObjCType:@encode(NSUInteger) at:&_length];
+		NSUInteger length;
+		int i;
+		const uint8_t *rangebytes = [coder decodeBytesWithReturnedLength:&length];
+		NSRange *ranges = (NSRange *)rangebytes;
+		_ranges = NSZoneMalloc([self zone],sizeof(NSRange)*((_length==0)?1:_length));
+		for(i=0; i<_length; i++)
+			_ranges[i] = ranges[i];		
+	}
+	return self;
 }
 
 @end

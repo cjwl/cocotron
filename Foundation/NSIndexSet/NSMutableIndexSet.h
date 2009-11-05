@@ -22,4 +22,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(void)shiftIndexesStartingAtIndex:(NSUInteger)index by:(NSInteger)delta;
 
+-(void)encodeWithCoder:(NSCoder *)coder;
+-(id)initWithCoder:(NSCoder *)coder;
+
 @end
