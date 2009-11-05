@@ -47,7 +47,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    _delegate=delegate;
 }
 
--(void)setShouldProcessNamespace:(BOOL)flag {
+-(void)setShouldProcessNamespaces:(BOOL)flag {
    _shouldProcessNamespaces=flag;
 }
 

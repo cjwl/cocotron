@@ -32,7 +32,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(BOOL)shouldResolveExternalEntities;
 
 -(void)setDelegate:delegate;
--(void)setShouldProcessNamespace:(BOOL)flag;
+-(void)setShouldProcessNamespaces:(BOOL)flag;
 -(void)setShouldReportNamespacePrefixes:(BOOL)flag;
 -(void)setShouldResolveExternalEntities:(BOOL)flag;
 
