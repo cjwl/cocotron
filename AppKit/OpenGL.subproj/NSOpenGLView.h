@@ -11,26 +11,26 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @class NSOpenGLPixelFormat,NSOpenGLContext;
 
 @interface NSOpenGLView : NSView {
-   NSOpenGLPixelFormat *_pixelFormat;
-   NSOpenGLContext     *_context;
-   BOOL                 _needsPrepare;
-   BOOL                 _needsReshape;
+	NSOpenGLPixelFormat *_pixelFormat;
+	NSOpenGLContext     *_context;
+	BOOL                 _needsPrepare;
+	BOOL                 _needsReshape;
 }
 
-+(NSOpenGLPixelFormat *)defaultPixelFormat;
++ (NSOpenGLPixelFormat *)defaultPixelFormat;
 
--initWithFrame:(NSRect)frame pixelFormat:(NSOpenGLPixelFormat *)pixelFormat;
+- (id)initWithFrame:(NSRect)frame pixelFormat:(NSOpenGLPixelFormat *)pixelFormat;
 
--(NSOpenGLPixelFormat *)pixelFormat;
--(NSOpenGLContext *)openGLContext;
+- (NSOpenGLPixelFormat *)pixelFormat;
+- (NSOpenGLContext *)openGLContext;
 
--(void)setPixelFormat:(NSOpenGLPixelFormat *)pixelFormat;
--(void)setOpenGLContext:(NSOpenGLContext *)context;
+- (void)setPixelFormat:(NSOpenGLPixelFormat *)pixelFormat;
+- (void)setOpenGLContext:(NSOpenGLContext *)context;
 
--(void)update;
--(void)reshape;
+- (void)update;
+- (void)reshape;
 
--(void)prepareOpenGL;
--(void)clearGLContext;
+- (void)prepareOpenGL;
+- (void)clearGLContext;
 
 @end
