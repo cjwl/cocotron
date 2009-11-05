@@ -164,5 +164,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [self setNeedsDisplay:YES];
 }
 
+-(id)_replacementKeyPathForBinding:(id)binding
+{
+    if([binding isEqual:@"minValue"])
+        return @"minDate";
+	if([binding isEqual:@"maxValue"])
+        return @"maxDate";
+
+	return [super _replacementKeyPathForBinding:binding];
+}
 
 @end
