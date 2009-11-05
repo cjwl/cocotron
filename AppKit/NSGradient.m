@@ -149,47 +149,54 @@ void _NSGradientInterpolator(void *info, float const *inData, float *outData)
 
 - (void)drawInRect:(NSRect)rect angle:(CGFloat)angle
 {
-	if ([_colors count] < 2)
+	if ([_colors count] < 2 || 0 == rect.size.width)
 		return;
 
-	CGPoint start;
-	CGPoint end;
+	CGPoint start; //start coordinate of gradient
+	CGPoint end; //end coordinate of gradient
+	//tanSize is the rectangle size for atan2 operation. It is the size of the rect in relation to the offset start point
+	CGPoint tanSize; 
 
-	float width = rect.size.width;
-	float height = rect.size.height;
-	
 	angle = (CGFloat)fmod(angle, 360);
-	CGFloat radAngleToEndFromCenter;
+	
 	if (angle < 90)
 	{
-		start = CGPointMake(0, 0);
-		radAngleToEndFromCenter = (angle * 2 - 45) / 180 * M_PI;
+		start = CGPointMake(rect.origin.x, rect.origin.y);
+		tanSize = CGPointMake(rect.size.width, rect.size.height);
 	}
 	else if (angle < 180)
 	{
-		start = CGPointMake(width, 0);
-		radAngleToEndFromCenter = ((angle - 90) * 2 + 45) / 180 * M_PI;
+		start = CGPointMake(rect.origin.x + rect.size.width, rect.origin.y);
+		tanSize = CGPointMake(-rect.size.width, rect.size.height);
 	}
 	else if (angle < 270)
 	{
-		start = CGPointMake(width, height);
-		radAngleToEndFromCenter = ((angle - 180) * 2 + 135) / 180 * M_PI;
+		start = CGPointMake(rect.origin.x + rect.size.width, rect.origin.y + rect.size.height);
+		tanSize = CGPointMake(-rect.size.width, -rect.size.height);
 	}
 	else
 	{
-		start = CGPointMake(0, height);
-		radAngleToEndFromCenter = ((angle - 270) * 2 + 225) / 180 * M_PI;
+		start = CGPointMake(rect.origin.x, rect.origin.y + rect.size.height);
+		tanSize = CGPointMake(rect.size.width, -rect.size.height);
 	}
 	
-	end.x = (0.5f + cos(radAngleToEndFromCenter) / sqrt(2)) * width;
-	end.y = (0.5f + sin(radAngleToEndFromCenter) / sqrt(2)) * height;
+	
+	CGFloat radAngle = angle / 180 * M_PI; //Angle in radians
+	//The trig for this is difficult to describe without an illustration, so I'm attaching an illustration
+	//to Cocotron issue number 438 along with this patch
+	CGFloat distanceToEnd = cos(atan2(tanSize.y,tanSize.x) - radAngle) * 
+		sqrt(rect.size.width * rect.size.width + rect.size.height * rect.size.height);
+	end = CGPointMake(cos(radAngle) * distanceToEnd + start.x, sin(radAngle) * distanceToEnd + start.y);
 		
 	CGFunctionCallbacks callbacks = { 0, &_NSGradientInterpolator, NULL }; 
 	CGFunctionRef function = CGFunctionCreate(self, 1, NULL, 4, NULL, &callbacks);
 	CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
-	CGShadingRef shading = CGShadingCreateAxial(colorSpace, start, end, function, NO, YES);
+	CGShadingRef shading = CGShadingCreateAxial(colorSpace, start, end, function, NO, NO);
 	CGContextRef context = (CGContextRef)[[NSGraphicsContext currentContext] graphicsPort];
+	CGContextSaveGState(context);
+	CGContextClipToRect(context, rect);
 	CGContextDrawShading(context, shading);
+	CGContextRestoreGState(context);
 	
 	CGFunctionRelease(function);
 	CGColorSpaceRelease(colorSpace);
