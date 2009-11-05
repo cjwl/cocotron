@@ -8,6 +8,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <AppKit/NSDatePicker.h>
 #import <AppKit/NSDatePickerCell.h>
+#import <AppKit/NSObject+BindingSupport.h>
 
 @implementation NSDatePicker
 

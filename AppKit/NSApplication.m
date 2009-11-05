@@ -785,7 +785,9 @@ id NSApp=nil;
        break;
 
      function=[[context modalDelegate] methodForSelector:[context didEndSelector]];
-     function([context modalDelegate],[context didEndSelector],sheet,returnCode,[context contextInfo]);
+     
+     if(function!=NULL)
+      function([context modalDelegate],[context didEndSelector],sheet,returnCode,[context contextInfo]);
 
      return;
     }
