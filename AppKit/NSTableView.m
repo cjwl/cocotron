@@ -1637,7 +1637,14 @@ _dataSource);
 } 
 
 - (int)_getDraggedRow:(id <NSDraggingInfo>)info { 
-    return [self rowAtPoint:[self convertPoint:[info draggingLocation] fromView:nil]];
+	NSPoint dragPoint = [self convertPoint:[info draggingLocation] fromView:nil];
+	NSInteger draggedRow = [self rowAtPoint:dragPoint];
+	if (-1 == draggedRow) {
+		if (dragPoint.y >= [self rectOfRow:[self numberOfRows]-1].origin.y) {
+			draggedRow = [self numberOfRows];
+		}
+	}
+    return draggedRow;
 } 
 
 - (unsigned)_validateDraggedRow:(id <NSDraggingInfo>)info { 
