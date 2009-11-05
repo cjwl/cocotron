@@ -12,6 +12,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSBundle.h>
 
 NSString *NSPOSIXErrorDomain=@"NSPOSIXErrorDomain";
+NSString *NSOSStatusErrorDomain=@"NSOSStatusErrorDomain";
 NSString *NSWINSOCKErrorDomain=@"NSWINSOCKErrorDomain";
 NSString *NSCocoaErrorDomain=@"NSCocoaErrorDomain";
 
