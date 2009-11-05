@@ -79,6 +79,14 @@ static inline CFRange CFRangeMake(CFIndex loc,CFIndex len){
    return result;
 }
 
+#ifndef TRUE
+#define TRUE ((BOOL)1)
+#endif
+
+#ifndef FALSE
+#define FALSE ((BOOL)0)
+#endif
+
 typedef enum  {
    kCFCompareLessThan  = -1,
    kCFCompareEqualTo   = 0,

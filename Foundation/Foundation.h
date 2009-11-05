@@ -34,6 +34,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
   #import <inttypes.h>
 #endif
 
+#import <CoreFoundation/CoreFoundation.h>
+
 #import <Foundation/FoundationErrors.h>
 #import <Foundation/NSAffineTransform.h>
 #import <Foundation/NSArchiver.h>
