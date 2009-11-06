@@ -632,7 +632,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)highlight:(BOOL)highlight withFrame:(NSRect)frame inView:(NSView *)view {
    if(_isHighlighted!=highlight){
     _isHighlighted=highlight;
-    [self drawWithFrame:frame inView:view];
    }
 }
 
@@ -653,8 +652,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
    if(![self startTrackingAt:[event locationInWindow] inView:view])
     return NO;
-
-   [self drawWithFrame:frame inView:view];
 
    do{
     NSPoint currentPoint;
@@ -698,8 +695,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
                           NSLeftMouseDraggedMask];
 
    }while(YES);
-
-   [self drawWithFrame:frame inView:view];
 
    return result;
 }

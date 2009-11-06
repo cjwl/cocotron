@@ -435,6 +435,7 @@ static NSMutableDictionary *cellClassDictionary = nil;
 
     if(NSMouseInRect(point,[self bounds],[self isFlipped])){
      [_cell highlight:YES withFrame:[self bounds] inView:self];
+     [self setNeedsDisplay:YES];
 
      if([_cell trackMouse:event inRect:[self bounds] ofView:self untilMouseUp:NO]){
       [_cell setState:![_cell state]];

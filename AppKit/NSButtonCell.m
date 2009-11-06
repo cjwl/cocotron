@@ -285,6 +285,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(BOOL)isOpaque {
+   if(_bezelStyle==NSDisclosureBezelStyle)
+    return NO;
    return ![self isTransparent] && [self isBordered];
 }
 
