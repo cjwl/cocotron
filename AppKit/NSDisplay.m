@@ -151,10 +151,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return result;
 }
 
--(BOOL)hasEventsMatchingMask {
-   return [_eventQueue count]>0;
-}
-
 -(unsigned)modifierForDefault:(NSString *)key:(unsigned)standard {
    NSDictionary *modmap=[[NSUserDefaults standardUserDefaults] dictionaryForKey:@"NSModifierFlagMapping"];
    NSString     *remap=[modmap objectForKey:key];

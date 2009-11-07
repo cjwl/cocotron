@@ -45,7 +45,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(void)postEvent:(NSEvent *)event atStart:(BOOL)atStart;
 
 -(BOOL)containsAndRemovePeriodicEvents;
--(BOOL)hasEventsMatchingMask;
 
 -(unsigned)modifierForDefault:(NSString *)key:(unsigned)standard;
 
