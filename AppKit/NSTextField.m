@@ -235,4 +235,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [_cell setRefusesFirstResponder:flag];
 }
 
+-(void)doCommandBySelector:(SEL)selector {
+   BOOL didSelector=NO;
+   
+   if([_delegate respondsToSelector:@selector(control:textView:doCommandBySelector:)])
+    didSelector=[_delegate control:self textView:(NSTextView *)_currentEditor doCommandBySelector:selector];
+   
+   if(!didSelector)
+    [super doCommandBySelector:selector];
+}
+
+
 @end

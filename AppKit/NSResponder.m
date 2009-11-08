@@ -56,9 +56,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)doCommandBySelector:(SEL)selector {
-   //NSLog(@"checking %@...",  self);
+
     if([self respondsToSelector:selector]) {
-      // NSLog(@"...%@ responds to %@", self, NSStringFromSelector(selector));
         [self performSelector:selector withObject:nil];
     }
     else

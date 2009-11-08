@@ -9,7 +9,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSView.h>
 #import <AppKit/NSText.h>
 
-@class NSCell, NSFont, NSText;
+@class NSCell,NSFont,NSText,NSTextView;
 
 APPKIT_EXPORT NSString *NSControlTextDidBeginEditingNotification;
 APPKIT_EXPORT NSString *NSControlTextDidChangeNotification;
@@ -106,5 +106,12 @@ APPKIT_EXPORT NSString *NSControlTextDidEndEditingNotification;
 -(void)controlTextDidBeginEditing:(NSNotification *)note;
 -(void)controlTextDidChange:(NSNotification *)note;
 -(void)controlTextDidEndEditing:(NSNotification *)note;
+@end
+
+@protocol NSControlTextEditingDelegate <NSObject>
+
+@optional
+-(BOOL)control:(NSControl *)control textView:(NSTextView *)textView doCommandBySelector:(SEL)selector;
+
 @end
 
