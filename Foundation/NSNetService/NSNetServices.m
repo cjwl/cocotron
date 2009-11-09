@@ -30,6 +30,13 @@
 #endif
 #import <string.h>
 
+// debugging stuff and laziness on my part
+#if defined( VERBOSE )
+#  define LOG( f, args... )	NSDebugLLog(@"NSNetServices", f, ##args )
+#else
+#  define LOG( f, args... )
+#endif /* DEBUG */
+
 #import "bonjour.h"
 
 NSString *NSNetServicesErrorCode = @"NSNetServicesErrorCode";

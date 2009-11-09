@@ -16,6 +16,7 @@ typedef struct __NSMutableString *CFMutableStringRef;
 #import <CoreFoundation/CFLocale.h>
 #import <CoreFoundation/CFData.h>
 #import <CoreFoundation/CFCharacterSet.h>
+#import <stdarg.h>
 
 typedef CFOptionFlags CFStringCompareFlags;
 
