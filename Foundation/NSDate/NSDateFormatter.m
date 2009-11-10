@@ -590,37 +590,66 @@ NSDictionary *locale) {
                         if (![scanner scanCharactersFromSet:[NSCharacterSet letterCharacterSet] intoString:NULL])
                             return nil;
                         break;
-                        
+                        break;
+
                     case 'A':
                         if (![scanner scanCharactersFromSet:[NSCharacterSet letterCharacterSet] intoString:NULL])
                             return nil;
                         break;
 
                         // month or its abbreviation. look it up in the arrays..
-                    case 'b': {
+                    case 'b':{
                         NSString *temp;
+                        NSEnumerator *enumerator = [shortMonthNames objectEnumerator];
+                        NSString *shortMonthName;
+                        months = NSNotFound;
+                        int month = 1;
+                        
+                        if (![scanner scanCharactersFromSet:[NSCharacterSet letterCharacterSet] intoString:&temp])
+                            return nil;
+                        while ((shortMonthName = [enumerator nextObject]) != nil) {
+                            if ([shortMonthName caseInsensitiveCompare:temp] == NSOrderedSame) {
+                                months = month;
+                                break; 
+                            }
+                            else {
+                                month++;
+                            }
+                        }
+                        
+                        //month not found
+                        if(months == NSNotFound) {
+                            return nil;
+                        }
+                        break;
+                    }
+                                        
+                    case 'B':{
+                        NSString *temp;
+                        NSEnumerator *enumerator = [monthNames objectEnumerator];
+                        NSString *monthName;
+                        months = NSNotFound;
+                        int month = 1;
 
                         if (![scanner scanCharactersFromSet:[NSCharacterSet letterCharacterSet] intoString:&temp])
                             return nil;
-
-                        months = [shortMonthNames indexOfObject:temp] + 1;
-                        if (months == NSNotFound) // unknown month name
+                        while ((monthName = [enumerator nextObject]) != nil) {
+                            if ([monthName caseInsensitiveCompare:temp] == NSOrderedSame) {
+                                months = month;
+                                break; 
+                            }
+                            else {
+                                month++;
+                            }
+                        }
+                        
+                        //month not found
+                        if(months == NSNotFound) {
                             return nil;
-                    }
+                        }
                         break;
-
-                    case 'B': {
-                        NSString *temp;
-
-                        if (![scanner scanCharactersFromSet:[NSCharacterSet letterCharacterSet] intoString:&temp])
-                            return nil;
-
-                        months = [monthNames indexOfObject:temp] + 1;
-                        if (months == NSNotFound) // unknown month name
-                            return nil;
                     }
-                        break;
-
+                        
                     case 'c':
                         return NSCalendarDateWithStringDateFormatLocale(string, [locale objectForKey:NSTimeDateFormatString], locale);
 

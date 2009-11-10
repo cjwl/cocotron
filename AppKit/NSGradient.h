@@ -24,29 +24,19 @@ typedef enum
 	NSMutableArray *_stops;
 }
 
-#pragma mark Initialization
-
 -initWithStartingColor:(NSColor *)startingColor endingColor:(NSColor *)endingColor;
 -initWithColors:(NSArray *)colors;
 -initWithColorsAndLocations:(NSColor *)firstColor, ...;
 -initWithColors:(NSArray *)colors atLocations:(const CGFloat *)locations colorSpace:(NSColorSpace *)colorSpace;
 
-#pragma mark Primitive Drawing Methods
-
 - (void)drawFromPoint:(NSPoint)startingPoint toPoint:(NSPoint)endingPoint options:(NSGradientDrawingOptions)options;
 - (void)drawFromCenter:(NSPoint)startCenter radius:(CGFloat)startRadius toCenter:(NSPoint)endCenter radius:(CGFloat)endRadius options:(NSGradientDrawingOptions)options;
-
-#pragma mark Drawing Linear Gradients
 
 - (void)drawInRect:(NSRect)rect angle:(CGFloat)angle;
 - (void)drawInBezierPath:(NSBezierPath *)path angle:(CGFloat)angle;
 
-#pragma mark Drawing Radial Gradients
-
 - (void)drawInRect:(NSRect)rect relativeCenterPosition:(NSPoint)center;
 - (void)drawInBezierPath:(NSBezierPath *)path relativeCenterPosition:(NSPoint)center;
-
-#pragma mark Getting Gradient Properties
 
 - (NSColorSpace *)colorSpace;
 - (int)numberOfColorStops;
