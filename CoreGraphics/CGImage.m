@@ -18,11 +18,11 @@ void CGImageRelease(CGImageRef image) {
    O2ImageRelease(image);
 }
 
-CGImageRef CGImageCreate(size_t width,size_t height,size_t bitsPerComponent,size_t bitsPerPixel,size_t bytesPerRow,CGColorSpaceRef colorSpace,CGBitmapInfo bitmapInfo,CGDataProviderRef dataProvider,const CGFloat *decode,BOOL interpolate,CGColorRenderingIntent renderingIntent) {
+CGImageRef CGImageCreate(size_t width,size_t height,size_t bitsPerComponent,size_t bitsPerPixel,size_t bytesPerRow,CGColorSpaceRef colorSpace,CGBitmapInfo bitmapInfo,CGDataProviderRef dataProvider,const CGFloat *decode,bool interpolate,CGColorRenderingIntent renderingIntent) {
    return O2ImageCreate(width,height,bitsPerComponent,bitsPerPixel,bytesPerRow,colorSpace,bitmapInfo,dataProvider,decode,interpolate,renderingIntent);
 }
 
-CGImageRef CGImageMaskCreate(size_t width,size_t height,size_t bitsPerComponent,size_t bitsPerPixel,size_t bytesPerRow,CGDataProviderRef dataProvider,const CGFloat *decode,BOOL interpolate) {
+CGImageRef CGImageMaskCreate(size_t width,size_t height,size_t bitsPerComponent,size_t bitsPerPixel,size_t bytesPerRow,CGDataProviderRef dataProvider,const CGFloat *decode,bool interpolate) {
    return O2ImageMaskCreate(width,height,bitsPerComponent,bitsPerPixel,bytesPerRow,dataProvider,decode,interpolate);
 }
 
@@ -38,11 +38,11 @@ CGImageRef CGImageCreateWithImageInRect(CGImageRef self,CGRect rect) {
    return O2ImageCreateWithImageInRect(self,rect);
 }
 
-CGImageRef CGImageCreateWithJPEGDataProvider(CGDataProviderRef jpegProvider,const CGFloat *decode,BOOL interpolate,CGColorRenderingIntent renderingIntent) {
+CGImageRef CGImageCreateWithJPEGDataProvider(CGDataProviderRef jpegProvider,const CGFloat *decode,bool interpolate,CGColorRenderingIntent renderingIntent) {
    return O2ImageCreateWithJPEGDataProvider(jpegProvider,decode,interpolate,renderingIntent);
 }
 
-CGImageRef CGImageCreateWithPNGDataProvider(CGDataProviderRef pngProvider,const CGFloat *decode,BOOL interpolate,CGColorRenderingIntent renderingIntent) {
+CGImageRef CGImageCreateWithPNGDataProvider(CGDataProviderRef pngProvider,const CGFloat *decode,bool interpolate,CGColorRenderingIntent renderingIntent) {
    return O2ImageCreateWithPNGDataProvider(pngProvider,decode,interpolate,renderingIntent);
 }
 
@@ -90,7 +90,7 @@ const CGFloat *CGImageGetDecode(CGImageRef self) {
    return O2ImageGetDecode(self);
 }
 
-BOOL CGImageGetShouldInterpolate(CGImageRef self) {
+bool CGImageGetShouldInterpolate(CGImageRef self) {
    return O2ImageGetShouldInterpolate(self);
 }
 
@@ -98,7 +98,7 @@ CGColorRenderingIntent CGImageGetRenderingIntent(CGImageRef self) {
    return O2ImageGetRenderingIntent(self);
 }
 
-BOOL CGImageIsMask(CGImageRef self) {
+bool CGImageIsMask(CGImageRef self) {
    return O2ImageIsMask(self);
 }
 

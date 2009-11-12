@@ -19,19 +19,19 @@ void CGContextRelease(CGContextRef context) {
    O2ContextRelease(context);
 }
 
-void CGContextSetAllowsAntialiasing(CGContextRef context,BOOL yesOrNo) {
+void CGContextSetAllowsAntialiasing(CGContextRef context,bool yesOrNo) {
    O2ContextSetAllowsAntialiasing(context,yesOrNo);
 }
 
-void CGContextBeginTransparencyLayer(CGContextRef context,NSDictionary *unused) {
-   O2ContextBeginTransparencyLayer(context,unused);
+void CGContextBeginTransparencyLayer(CGContextRef context,CFDictionaryRef unused) {
+   O2ContextBeginTransparencyLayer(context,(NSDictionary *)unused);
 }
 
 void CGContextEndTransparencyLayer(CGContextRef context) {
    O2ContextEndTransparencyLayer(context);
 }
 
-BOOL CGContextIsPathEmpty(CGContextRef context) {
+bool CGContextIsPathEmpty(CGContextRef context) {
    return O2ContextIsPathEmpty(context);
 }
 
@@ -43,7 +43,7 @@ CGRect CGContextGetPathBoundingBox(CGContextRef context) {
    return O2ContextGetPathBoundingBox(context);
 }
 
-BOOL CGContextPathContainsPoint(CGContextRef context,CGPoint point,CGPathDrawingMode pathMode) {
+bool CGContextPathContainsPoint(CGContextRef context,CGPoint point,CGPathDrawingMode pathMode) {
    return O2ContextPathContainsPoint(context,point,pathMode);
 }
 
@@ -83,7 +83,7 @@ void CGContextAddRects(CGContextRef context,const CGRect *rects,unsigned count) 
    O2ContextAddRects(context,rects,count);
 }
 
-void CGContextAddArc(CGContextRef context,float x,float y,float radius,float startRadian,float endRadian,BOOL clockwise) {
+void CGContextAddArc(CGContextRef context,float x,float y,float radius,float startRadian,float endRadian,bool clockwise) {
    O2ContextAddArc(context,x,y,radius,startRadian,endRadian,clockwise);
 }
 
@@ -291,7 +291,7 @@ void CGContextSelectFont(CGContextRef context,const char *name,float size,CGText
    O2ContextSelectFont(context,name,size,encoding);
 }
 
-void CGContextSetShouldSmoothFonts(CGContextRef context,BOOL yesOrNo) {
+void CGContextSetShouldSmoothFonts(CGContextRef context,bool yesOrNo) {
    O2ContextSetShouldSmoothFonts(context,yesOrNo);
 }
 
@@ -339,7 +339,7 @@ void CGContextSetShadow(CGContextRef context,CGSize offset,float blur) {
    O2ContextSetShadow(context,offset,blur);
 }
 
-void CGContextSetShouldAntialias(CGContextRef context,BOOL yesOrNo) {
+void CGContextSetShouldAntialias(CGContextRef context,bool yesOrNo) {
    O2ContextSetShouldAntialias(context,yesOrNo);
 }
 
@@ -457,6 +457,6 @@ void CGContextCopyBits(CGContextRef context,CGRect rect,CGPoint point,int gState
    O2ContextCopyBits(context,rect,point,gState);
 }
 
-NSData *CGContextCaptureBitmap(CGContextRef context, CGRect rect) {
-   return O2ContextCaptureBitmap(context,rect);
+CFDataRef CGContextCaptureBitmap(CGContextRef context, CGRect rect) {
+   return (CFDataRef)O2ContextCaptureBitmap(context,rect);
 }

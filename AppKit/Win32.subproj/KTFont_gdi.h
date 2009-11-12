@@ -47,6 +47,7 @@ typedef struct CGGlyphMetricsSet {
 } CGGlyphMetricsSet;
 
 @interface KTFont_gdi : KTFont {
+   CFStringRef               _name;
    CGFontMetrics             _metrics;
    struct CGGlyphRangeTable *_glyphRangeTable;
    struct CGGlyphMetricsSet *_glyphInfoSet;

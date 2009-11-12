@@ -5,16 +5,14 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
-#import <Foundation/NSObject.h>
+
 #import <CoreGraphics/CGContext.h>
 #import <CoreGraphics/CGDataConsumer.h>
 
-@class O2PDFContext;
+typedef struct O2PDFContext *CGPDFContextRef;
 
-typedef O2PDFContext *CGPDFContextRef;
+COREGRAPHICS_EXPORT const CFStringRef kCGPDFContextTitle;
 
-COREGRAPHICS_EXPORT const NSString *kCGPDFContextTitle;
-
-COREGRAPHICS_EXPORT CGContextRef CGPDFContextCreate(CGDataConsumerRef consumer,const CGRect *mediaBox,NSDictionary *auxiliaryInfo);
+COREGRAPHICS_EXPORT CGContextRef CGPDFContextCreate(CGDataConsumerRef consumer,const CGRect *mediaBox,CFDictionaryRef auxiliaryInfo);
 
 COREGRAPHICS_EXPORT void CGPDFContextClose(CGContextRef self);

@@ -6,12 +6,9 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
-#import <Foundation/NSObject.h>
 #import <CoreGraphics/CoreGraphicsExport.h>
 #import <CoreGraphics/CGGeometry.h>
 #import <CoreGraphics/CGAffineTransform.h>
-
-@class O2Path,O2MutablePath;
 
 typedef enum {
    kCGPathElementMoveToPoint,
@@ -28,21 +25,21 @@ typedef struct {
 
 typedef void(*CGPathApplierFunction)(void *info,const CGPathElement *element);
 
-typedef O2MutablePath *CGPathRef;
-typedef O2MutablePath *CGMutablePathRef;
+typedef struct O2MutablePath *CGPathRef;
+typedef struct O2MutablePath *CGMutablePathRef;
 
 COREGRAPHICS_EXPORT void      CGPathRelease(CGPathRef self);
 COREGRAPHICS_EXPORT CGPathRef CGPathRetain(CGPathRef self);
 
-COREGRAPHICS_EXPORT BOOL             CGPathEqualToPath(CGPathRef self,CGPathRef other);
+COREGRAPHICS_EXPORT bool             CGPathEqualToPath(CGPathRef self,CGPathRef other);
 COREGRAPHICS_EXPORT CGRect           CGPathGetBoundingBox(CGPathRef self);
 COREGRAPHICS_EXPORT CGPoint          CGPathGetCurrentPoint(CGPathRef self);
-COREGRAPHICS_EXPORT BOOL             CGPathIsEmpty(CGPathRef self);
-COREGRAPHICS_EXPORT BOOL             CGPathIsRect(CGPathRef self,CGRect *rect);
+COREGRAPHICS_EXPORT bool             CGPathIsEmpty(CGPathRef self);
+COREGRAPHICS_EXPORT bool             CGPathIsRect(CGPathRef self,CGRect *rect);
 COREGRAPHICS_EXPORT void             CGPathApply(CGPathRef self,void *info,CGPathApplierFunction function);
 COREGRAPHICS_EXPORT CGMutablePathRef CGPathCreateMutableCopy(CGPathRef self);
 COREGRAPHICS_EXPORT CGPathRef        CGPathCreateCopy(CGPathRef self);
-COREGRAPHICS_EXPORT BOOL             CGPathContainsPoint(CGPathRef self,const CGAffineTransform *xform,CGPoint point,BOOL evenOdd);
+COREGRAPHICS_EXPORT bool             CGPathContainsPoint(CGPathRef self,const CGAffineTransform *xform,CGPoint point,bool evenOdd);
 
 COREGRAPHICS_EXPORT CGMutablePathRef CGPathCreateMutable(void);
 
@@ -56,7 +53,7 @@ COREGRAPHICS_EXPORT void CGPathAddLines(CGMutablePathRef self,const CGAffineTran
 COREGRAPHICS_EXPORT void CGPathAddRect(CGMutablePathRef self,const CGAffineTransform *xform,CGRect rect);
 COREGRAPHICS_EXPORT void CGPathAddRects(CGMutablePathRef self,const CGAffineTransform *xform,const CGRect *rects,size_t count);
 
-COREGRAPHICS_EXPORT void CGPathAddArc(CGMutablePathRef self,const CGAffineTransform *xform,CGFloat x,CGFloat y,CGFloat radius,CGFloat startRadian,CGFloat endRadian,BOOL clockwise);
+COREGRAPHICS_EXPORT void CGPathAddArc(CGMutablePathRef self,const CGAffineTransform *xform,CGFloat x,CGFloat y,CGFloat radius,CGFloat startRadian,CGFloat endRadian,bool clockwise);
 COREGRAPHICS_EXPORT void CGPathAddArcToPoint(CGMutablePathRef self,const CGAffineTransform *xform,CGFloat tx1,CGFloat ty1,CGFloat tx2,CGFloat ty2,CGFloat radius);
 
 COREGRAPHICS_EXPORT void CGPathAddEllipseInRect(CGMutablePathRef self,const CGAffineTransform *xform,CGRect rect);

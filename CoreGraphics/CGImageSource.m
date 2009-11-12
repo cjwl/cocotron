@@ -1,16 +1,16 @@
 #import <CoreGraphics/CGImageSource.h>
 #import "KGImageSource.h"
 
-CGImageSourceRef CGImageSourceCreateWithData(id data,id options) {
-   return [KGImageSource newImageSourceWithData:data options:options];
+CGImageSourceRef CGImageSourceCreateWithData(CFDataRef data,CFDictionaryRef options) {
+   return [KGImageSource newImageSourceWithData:(NSData *)data options:(NSDictionary *)options];
 }
 
-CGImageRef CGImageSourceCreateImageAtIndex(CGImageSourceRef self,size_t index,NSDictionary *options) {
-   return [self createImageAtIndex:index options:options];
+CGImageRef CGImageSourceCreateImageAtIndex(CGImageSourceRef self,size_t index,CFDictionaryRef options) {
+   return [self createImageAtIndex:index options:(NSDictionary *)options];
 }
 
-NSDictionary *CGImageSourceCopyPropertiesAtIndex(CGImageSourceRef self, size_t index,NSDictionary *options) {
-   return [self copyPropertiesAtIndex:index options:options];
+CFDictionaryRef CGImageSourceCopyPropertiesAtIndex(CGImageSourceRef self, size_t index,CFDictionaryRef options) {
+   return (CFDictionaryRef)[self copyPropertiesAtIndex:index options:(NSDictionary *)options];
 }
 
 COREGRAPHICS_EXPORT void CGImageSourceRelease(CGImageSourceRef self) {

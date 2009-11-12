@@ -6,12 +6,9 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS",WITHOUT WARRANTY OF ANY KIND,EXPRESS OR IMPLIED,INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,DAMAGES OR OTHER LIABILITY,WHETHER IN AN ACTION OF CONTRACT,TORT OR OTHERWISE,ARISING FROM,OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
-#import <Foundation/NSObject.h>
 #import <CoreGraphics/CoreGraphicsExport.h>
 
-@class O2Context;
-
-typedef O2Context *CGContextRef;
+typedef struct O2Context *CGContextRef;
 
 #import <CoreGraphics/CGGeometry.h>
 #import <CoreGraphics/CGAffineTransform.h>
@@ -23,8 +20,6 @@ typedef O2Context *CGContextRef;
 #import <CoreGraphics/CGShading.h>
 #import <CoreGraphics/CGPDFPage.h>
 #import <CoreGraphics/CGLayer.h>
-
-@class NSDictionary;
 
 typedef enum {
    kCGEncodingFontSpecific,
@@ -94,22 +89,21 @@ typedef enum {
 
 typedef int CGTextDrawingMode;
 
-
 COREGRAPHICS_EXPORT CGContextRef CGContextRetain(CGContextRef context);
 COREGRAPHICS_EXPORT void         CGContextRelease(CGContextRef context);
 
 // context state
-COREGRAPHICS_EXPORT void CGContextSetAllowsAntialiasing(CGContextRef context,BOOL yesOrNo);
+COREGRAPHICS_EXPORT void CGContextSetAllowsAntialiasing(CGContextRef context,bool yesOrNo);
 
 // layers
-COREGRAPHICS_EXPORT void CGContextBeginTransparencyLayer(CGContextRef context,NSDictionary *unused);
+COREGRAPHICS_EXPORT void CGContextBeginTransparencyLayer(CGContextRef context,CFDictionaryRef unused);
 COREGRAPHICS_EXPORT void CGContextEndTransparencyLayer(CGContextRef context);
 
 // path
-COREGRAPHICS_EXPORT BOOL    CGContextIsPathEmpty(CGContextRef context);
+COREGRAPHICS_EXPORT bool    CGContextIsPathEmpty(CGContextRef context);
 COREGRAPHICS_EXPORT CGPoint CGContextGetPathCurrentPoint(CGContextRef context);
 COREGRAPHICS_EXPORT CGRect  CGContextGetPathBoundingBox(CGContextRef context);
-COREGRAPHICS_EXPORT BOOL    CGContextPathContainsPoint(CGContextRef context,CGPoint point,CGPathDrawingMode pathMode);
+COREGRAPHICS_EXPORT bool    CGContextPathContainsPoint(CGContextRef context,CGPoint point,CGPathDrawingMode pathMode);
 
 COREGRAPHICS_EXPORT void CGContextBeginPath(CGContextRef context);
 COREGRAPHICS_EXPORT void CGContextClosePath(CGContextRef context);
@@ -122,7 +116,7 @@ COREGRAPHICS_EXPORT void CGContextAddLines(CGContextRef context,const CGPoint *p
 COREGRAPHICS_EXPORT void CGContextAddRect(CGContextRef context,CGRect rect);
 COREGRAPHICS_EXPORT void CGContextAddRects(CGContextRef context,const CGRect *rects,unsigned count);
 
-COREGRAPHICS_EXPORT void CGContextAddArc(CGContextRef context,float x,float y,float radius,float startRadian,float endRadian,BOOL clockwise);
+COREGRAPHICS_EXPORT void CGContextAddArc(CGContextRef context,float x,float y,float radius,float startRadian,float endRadian,bool clockwise);
 COREGRAPHICS_EXPORT void CGContextAddArcToPoint(CGContextRef context,float x1,float y1,float x2,float y2,float radius);
 COREGRAPHICS_EXPORT void CGContextAddEllipseInRect(CGContextRef context,CGRect rect);
 
@@ -194,7 +188,7 @@ COREGRAPHICS_EXPORT void CGContextSetTextDrawingMode(CGContextRef context,CGText
 COREGRAPHICS_EXPORT void CGContextSetFont(CGContextRef context,CGFontRef font);
 COREGRAPHICS_EXPORT void CGContextSetFontSize(CGContextRef context,float size);
 COREGRAPHICS_EXPORT void CGContextSelectFont(CGContextRef context,const char *name,float size,CGTextEncoding encoding);
-COREGRAPHICS_EXPORT void CGContextSetShouldSmoothFonts(CGContextRef context,BOOL yesOrNo);
+COREGRAPHICS_EXPORT void CGContextSetShouldSmoothFonts(CGContextRef context,bool yesOrNo);
 
 COREGRAPHICS_EXPORT void CGContextSetLineWidth(CGContextRef context,float width);
 COREGRAPHICS_EXPORT void CGContextSetLineCap(CGContextRef context,CGLineCap lineCap);
@@ -212,7 +206,7 @@ COREGRAPHICS_EXPORT void CGContextSetInterpolationQuality(CGContextRef context,C
 COREGRAPHICS_EXPORT void CGContextSetShadowWithColor(CGContextRef context,CGSize offset,float blur,CGColorRef color);
 COREGRAPHICS_EXPORT void CGContextSetShadow(CGContextRef context,CGSize offset,float blur);
 
-COREGRAPHICS_EXPORT void CGContextSetShouldAntialias(CGContextRef context,BOOL yesOrNo);
+COREGRAPHICS_EXPORT void CGContextSetShouldAntialias(CGContextRef context,bool yesOrNo);
 
 // drawing
 COREGRAPHICS_EXPORT void CGContextStrokeLineSegments(CGContextRef context,const CGPoint *points,unsigned count);
@@ -260,5 +254,5 @@ COREGRAPHICS_EXPORT void CGContextResetClip(CGContextRef context);
 
 // Temporary hacks
 
-COREGRAPHICS_EXPORT NSData *CGContextCaptureBitmap(CGContextRef context,CGRect rect);
+COREGRAPHICS_EXPORT CFDataRef CGContextCaptureBitmap(CGContextRef context,CGRect rect);
 COREGRAPHICS_EXPORT void CGContextCopyBits(CGContextRef context,CGRect rect,CGPoint point,int gState);

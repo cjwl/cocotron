@@ -9,8 +9,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <CoreGraphics/CGFont.h>
 #import "KGFont.h"
 
-CGFontRef CGFontCreateWithFontName(NSString *name) {
-   return O2FontCreateWithFontName(name);
+CGFontRef CGFontCreateWithFontName(CFStringRef name) {
+   return O2FontCreateWithFontName((NSString *)name);
 }
 
 CGFontRef CGFontRetain(CGFontRef self) {
@@ -21,8 +21,8 @@ void      CGFontRelease(CGFontRef self) {
    O2FontRelease(self);
 }
 
-NSString *CGFontCopyFullName(CGFontRef self) {
-   return O2FontCopyFullName(self);
+CFStringRef CGFontCopyFullName(CGFontRef self) {
+   return (CFStringRef)O2FontCopyFullName(self);
 }
 
 int       CGFontGetUnitsPerEm(CGFontRef self) {
@@ -65,18 +65,18 @@ size_t    CGFontGetNumberOfGlyphs(CGFontRef self) {
    return O2FontGetNumberOfGlyphs(self);
 }
 
-BOOL      CGFontGetGlyphAdvances(CGFontRef self,const CGGlyph *glyphs,size_t count,int *advances) {
+bool      CGFontGetGlyphAdvances(CGFontRef self,const CGGlyph *glyphs,size_t count,int *advances) {
    return O2FontGetGlyphAdvances(self,glyphs,count,advances);
 }
 
-CGGlyph   CGFontGetGlyphWithGlyphName(CGFontRef self,NSString *name) {
-   return O2FontGetGlyphWithGlyphName(self,name);
+CGGlyph   CGFontGetGlyphWithGlyphName(CGFontRef self,CFStringRef name) {
+   return O2FontGetGlyphWithGlyphName(self,(NSString *)name);
 }
 
-NSString *CGFontCopyGlyphNameForGlyph(CGFontRef self,CGGlyph glyph) {
-   return O2FontCopyGlyphNameForGlyph(self,glyph);
+CFStringRef CGFontCopyGlyphNameForGlyph(CGFontRef self,CGGlyph glyph) {
+   return (CFStringRef)O2FontCopyGlyphNameForGlyph(self,glyph);
 }
 
-NSData   *CGFontCopyTableForTag(CGFontRef self,uint32_t tag) {
-   return O2FontCopyTableForTag(self,tag);
+CFDataRef CGFontCopyTableForTag(CGFontRef self,uint32_t tag) {
+   return (CFDataRef)O2FontCopyTableForTag(self,tag);
 }

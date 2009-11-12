@@ -62,7 +62,7 @@ static inline CGGlyphMetrics *glyphInfoForGlyph(KTFont_gdi *self,CGGlyph glyph){
 
 -(Win32Font *)createGDIFontSelectedInDC:(HDC)dc {
    int        height=([self pointSize]*GetDeviceCaps(dc,LOGPIXELSY))/72.0;
-   Win32Font *result=[[Win32Font alloc] initWithName:[self name] height:height antialias:NO];
+   Win32Font *result=[[Win32Font alloc] initWithName:(NSString *)_name height:height antialias:NO];
    
    SelectObject(dc,[result fontHandle]);
    return result;
@@ -76,12 +76,12 @@ static inline CGGlyphMetrics *glyphInfoForGlyph(KTFont_gdi *self,CGGlyph glyph){
    if(nameToGlyphRanges==NULL)
     nameToGlyphRanges=NSCreateMapTable(NSObjectMapKeyCallBacks,NSNonOwnedPointerMapValueCallBacks,0);
 
-   shared=NSMapGet(nameToGlyphRanges,[self name]);
+   shared=NSMapGet(nameToGlyphRanges,_name);
 
    if(shared==NULL){
     result=NO;
     shared=NSZoneCalloc(NULL,sizeof(CGGlyphRangeTable),1);
-    NSMapInsert(nameToGlyphRanges,[self name],shared);
+    NSMapInsert(nameToGlyphRanges,_name,shared);
    }
 
    _glyphRangeTable=shared;
@@ -351,7 +351,7 @@ static inline CGGlyphMetrics *fetchGlyphAdvancementIfNeeded(KTFont_gdi *self,CGG
     return;
    }
 
-   if(![[self name] isEqualToString:@"Marlett"])
+   if(![(NSString *)_name isEqualToString:@"Marlett"])
     _useMacMetrics=YES;
 
    _metrics.emsquare=ttMetrics->otmEMSquare;
@@ -389,6 +389,7 @@ static inline CGGlyphMetrics *fetchGlyphAdvancementIfNeeded(KTFont_gdi *self,CGG
 
 -initWithFont:(O2Font *)font size:(CGFloat)size {
    [super initWithFont:font size:size];
+   _name=O2FontCopyFullName(font);
    [self fetchMetrics];
    _glyphRangeTable=NULL;
    _glyphInfoSet=NSZoneMalloc([self zone],sizeof(CGGlyphMetricsSet));

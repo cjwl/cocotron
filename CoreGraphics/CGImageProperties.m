@@ -7,11 +7,12 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
 #import <CoreGraphics/CoreGraphics.h>
+#import <Foundation/NSString.h>
 
-const NSString *kCGImagePropertyDPIWidth=@"kCGImagePropertyDPIWidth";
-const NSString *kCGImagePropertyDPIHeight=@"kCGImagePropertyDPIHeight";
+const CFStringRef kCGImagePropertyDPIWidth=(CFStringRef)@"kCGImagePropertyDPIWidth";
+const CFStringRef kCGImagePropertyDPIHeight=(CFStringRef)@"kCGImagePropertyDPIHeight";
 
-const NSString *kCGImagePropertyTIFFDictionary=@"kCGImagePropertyTIFFDictionary";
+const CFStringRef kCGImagePropertyTIFFDictionary=(CFStringRef)@"kCGImagePropertyTIFFDictionary";
 
-const NSString *kCGImagePropertyTIFFXResolution=@"kCGImagePropertyTIFFXResolution";
-const NSString *kCGImagePropertyTIFFYResolution=@"kCGImagePropertyTIFFYResolution";
+const CFStringRef kCGImagePropertyTIFFXResolution=(CFStringRef)@"kCGImagePropertyTIFFXResolution";
+const CFStringRef kCGImagePropertyTIFFYResolution=(CFStringRef)@"kCGImagePropertyTIFFYResolution";

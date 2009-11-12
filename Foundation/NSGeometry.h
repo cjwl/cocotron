@@ -7,33 +7,17 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
 #import <Foundation/NSObject.h>
+#import <CoreFoundation/CFBase.h>
 
-#ifdef __LP64__
-typedef double CGFloat;
-#else
-typedef float CGFloat;
-#endif
-
-typedef struct _CGPoint {
-   CGFloat x;
-   CGFloat y;
-} NSPoint;
+typedef CGPoint NSPoint;
+typedef CGSize NSSize;
+typedef CGRect NSRect;
 
 typedef NSPoint *NSPointArray;
 typedef NSPoint *NSPointPointer;
 
-typedef struct _CGSize {
-   CGFloat width;
-   CGFloat height;
-} NSSize;
-
 typedef NSSize *NSSizeArray;
 typedef NSSize *NSSizePointer;
-
-typedef struct _CGRect {
-   NSPoint origin;
-   NSSize  size;
-} NSRect;
 
 typedef enum {
    NSMinXEdge,
@@ -131,3 +115,14 @@ FOUNDATION_EXPORT NSRect NSRectFromString(NSString *string);
 FOUNDATION_EXPORT BOOL NSPointInRect(NSPoint point,NSRect rect);
 FOUNDATION_EXPORT BOOL NSMouseInRect(NSPoint point,NSRect rect,BOOL flipped);
 
+static inline CGRect NSRectToCGRect(NSRect rect) {
+   return rect;
+}
+
+static inline CGSize NSSizeToCGSize(NSSize size) {
+   return size;
+}
+
+static inline CGPoint NSPointToCGPoint(NSPoint point) {
+   return point;
+}

@@ -6,20 +6,18 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
-#import <Foundation/NSObject.h>
 #import <CoreGraphics/CoreGraphicsExport.h>
+#import <CoreFoundation/CFData.h>
 
-@class O2DataProvider,NSData;
-
-typedef O2DataProvider *CGDataProviderRef;
+typedef struct O2DataProvider *CGDataProviderRef;
 
 typedef void (*CGDataProviderReleaseDataCallback)(void *info,const void *data,size_t size);
 
 COREGRAPHICS_EXPORT CGDataProviderRef CGDataProviderRetain(CGDataProviderRef provider);
 COREGRAPHICS_EXPORT void CGDataProviderRelease(CGDataProviderRef provider);
 
-COREGRAPHICS_EXPORT CGDataProviderRef CGDataProviderCreateWithCFData(NSData *data);
+COREGRAPHICS_EXPORT CGDataProviderRef CGDataProviderCreateWithCFData(CFDataRef data);
 
 COREGRAPHICS_EXPORT CGDataProviderRef CGDataProviderCreateWithData(void *info,const void *data,size_t size,CGDataProviderReleaseDataCallback releaseCallback);
 
-COREGRAPHICS_EXPORT NSData *CGDataProviderCopyData(CGDataProviderRef self);
+COREGRAPHICS_EXPORT CFDataRef CGDataProviderCopyData(CGDataProviderRef self);

@@ -19,7 +19,7 @@ CGPathRef CGPathRetain(CGPathRef self) {
    return (CGPathRef)O2PathRetain(self);
 }
 
-BOOL CGPathEqualToPath(CGPathRef self,CGPathRef other) {
+bool CGPathEqualToPath(CGPathRef self,CGPathRef other) {
    return O2PathEqualToPath(self,other);
 }
 
@@ -31,11 +31,11 @@ CGPoint CGPathGetCurrentPoint(CGPathRef self) {
    return O2PathGetCurrentPoint(self);
 }
 
-BOOL CGPathIsEmpty(CGPathRef self) {
+bool CGPathIsEmpty(CGPathRef self) {
    return O2PathIsEmpty(self);
 }
 
-BOOL CGPathIsRect(CGPathRef self,CGRect *rect) {
+bool CGPathIsRect(CGPathRef self,CGRect *rect) {
    return O2PathIsRect(self,rect);
 }
 
@@ -51,7 +51,7 @@ CGPathRef CGPathCreateCopy(CGPathRef self) {
    return (CGPathRef)O2PathCreateCopy(self);
 }
 
-BOOL CGPathContainsPoint(CGPathRef self,const CGAffineTransform *xform,CGPoint point,BOOL evenOdd) {
+bool CGPathContainsPoint(CGPathRef self,const CGAffineTransform *xform,CGPoint point,bool evenOdd) {
    return O2PathContainsPoint(self,O2AffineTransformPtrFromCG(xform),point,evenOdd);
 }
 
@@ -91,7 +91,7 @@ void CGPathAddRects(CGMutablePathRef self,const CGAffineTransform *xform,const C
    O2PathAddRects(self,O2AffineTransformPtrFromCG(xform),rects,count);
 }
 
-void CGPathAddArc(CGMutablePathRef self,const CGAffineTransform *xform,CGFloat x,CGFloat y,CGFloat radius,CGFloat startRadian,CGFloat endRadian,BOOL clockwise) {
+void CGPathAddArc(CGMutablePathRef self,const CGAffineTransform *xform,CGFloat x,CGFloat y,CGFloat radius,CGFloat startRadian,CGFloat endRadian,bool clockwise) {
    O2PathAddArc(self,O2AffineTransformPtrFromCG(xform),x,y,radius,startRadian,endRadian,clockwise);
 }
 

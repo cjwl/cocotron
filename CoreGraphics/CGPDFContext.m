@@ -8,10 +8,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <CoreGraphics/CGPDFContext.h>
 #import "KGPDFContext.h"
 
-const NSString *kCGPDFContextTitle=@"kCGPDFContextTitle";
+const CFStringRef kCGPDFContextTitle=(CFStringRef)@"kCGPDFContextTitle";
 
-CGContextRef CGPDFContextCreate(CGDataConsumerRef consumer,const CGRect *mediaBox,NSDictionary *auxiliaryInfo) {
-   return [[O2PDFContext alloc] initWithConsumer:consumer mediaBox:mediaBox auxiliaryInfo:auxiliaryInfo];
+CGContextRef CGPDFContextCreate(CGDataConsumerRef consumer,const CGRect *mediaBox,CFDictionaryRef auxiliaryInfo) {
+   return [[O2PDFContext alloc] initWithConsumer:consumer mediaBox:mediaBox auxiliaryInfo:(NSDictionary *)auxiliaryInfo];
 }
 
 COREGRAPHICS_EXPORT void CGPDFContextClose(CGContextRef self) {

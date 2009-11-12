@@ -130,16 +130,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -initWithData:(NSData *)data {
-   CGImageSourceRef imageSource=CGImageSourceCreateWithData(data,nil);
+   CGImageSourceRef imageSource=CGImageSourceCreateWithData((CFDataRef)data,nil);
    CGImageRef       cgImage=CGImageSourceCreateImageAtIndex(imageSource,0,nil);
    
    if(cgImage==nil){
     [self dealloc];
     return nil;
    }
-   NSDictionary *properties=CGImageSourceCopyPropertiesAtIndex(imageSource,0,nil);
-   NSNumber *xres=[properties objectForKey:kCGImagePropertyDPIWidth];
-   NSNumber *yres=[properties objectForKey:kCGImagePropertyDPIHeight];
+   CFDictionaryRef properties=CGImageSourceCopyPropertiesAtIndex(imageSource,0,nil);
+   NSNumber *xres=(id)CFDictionaryGetValue(properties,kCGImagePropertyDPIWidth);
+   NSNumber *yres=(id)CFDictionaryGetValue(properties,kCGImagePropertyDPIHeight);
 
    _size.width=CGImageGetWidth(cgImage);
    _size.height=CGImageGetHeight(cgImage);
@@ -215,7 +215,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    
    [bitmapData release];
    
-   [properties release];
+   CFRelease(properties);
    CGImageSourceRelease(imageSource);
    return self;
 }
@@ -416,7 +416,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    if(_image!=NULL)
     return _image;
     
-   return [[self createCGImage] autorelease];
+   return (CGImageRef)[(id)[self createCGImage] autorelease];
 }
 
 -(BOOL)draw {

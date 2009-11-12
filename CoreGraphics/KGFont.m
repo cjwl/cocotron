@@ -343,8 +343,8 @@ void      O2FontRelease(O2FontRef self) {
 }
 
 
-NSString *O2FontCopyFullName(O2FontRef self) {
-   return [self->_name copy];
+CFStringRef O2FontCopyFullName(O2FontRef self) {
+   return (CFStringRef)[self->_name copy];
 }
 
 int       O2FontGetUnitsPerEm(O2FontRef self) {

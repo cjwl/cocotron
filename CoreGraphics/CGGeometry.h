@@ -6,23 +6,22 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
-#import <Foundation/Foundation.h>
 #import <CoreGraphics/CoreGraphicsExport.h>
-
-typedef NSPoint CGPoint;
-typedef NSSize CGSize;
-typedef NSRect CGRect;
+#import <CoreFoundation/CFBase.h>
+#import <stdbool.h>
 
 COREGRAPHICS_EXPORT const CGRect CGRectZero;
 COREGRAPHICS_EXPORT const CGPoint CGPointZero;
 COREGRAPHICS_EXPORT const CGSize CGSizeZero;
 
 static inline CGRect CGRectMake(CGFloat x, CGFloat y, CGFloat width, CGFloat height) {
-   return NSMakeRect(x,y,width,height);
+   CGRect result={{x,y},{width,height}};
+   return result;
 }
 
 static inline CGPoint CGPointMake(CGFloat x,CGFloat y){
-   return NSMakePoint(x,y);
+   CGPoint result={x,y};
+   return result;
 }
 
 static inline CGSize CGSizeMake(CGFloat x,CGFloat y){
@@ -46,22 +45,10 @@ static inline CGFloat CGRectGetMaxY(CGRect rect){
    return rect.origin.y+rect.size.height;
 }
 
-static inline BOOL CGRectContainsPoint(CGRect rect,CGPoint point) {
-   return (point.x>=NSMinX(rect) && point.x<=NSMaxX(rect)) && (point.y>=NSMinY(rect) && point.y<=NSMaxY(rect));
+static inline bool CGRectContainsPoint(CGRect rect,CGPoint point) {
+   return (point.x>=CGRectGetMinX(rect) && point.x<=CGRectGetMaxX(rect)) && (point.y>=CGRectGetMinY(rect) && point.y<=CGRectGetMaxY(rect));
 }
 
-static inline BOOL CGPointEqualToPoint(CGPoint a,CGPoint b){
-   return ((a.x==b.x) && (a.y==b.y))?YES:NO;
-}
-
-static inline CGRect NSRectToCGRect(NSRect rect) {
-   return rect;
-}
-
-static inline CGSize NSSizeToCGSize(NSSize size) {
-   return size;
-}
-
-static inline CGPoint NSPointToCGPoint(NSPoint point) {
-   return point;
+static inline bool CGPointEqualToPoint(CGPoint a,CGPoint b){
+   return ((a.x==b.x) && (a.y==b.y))?TRUE:FALSE;
 }

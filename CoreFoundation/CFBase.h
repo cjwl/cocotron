@@ -45,8 +45,33 @@ THE SOFTWARE IS PROVIDED "AS IS",WITHOUT WARRANTY OF ANY KIND,EXPRESS OR IMPLIED
 #define COREFOUNDATION_EXPORT extern
 #endif
 
-
 #endif // __cplusplus
+
+/* Apple's Foundation imports CoreGraphics in order to get some of the basic CG* types, unfortunately
+   this is a hassle on platforms where you just want to use Foundation, so we put them in CoreFoundation and see what happens
+*/
+ 
+#ifdef __LP64__
+typedef double CGFloat;
+#else
+typedef float CGFloat;
+#endif
+
+typedef struct CGPoint {
+   CGFloat x;
+   CGFloat y;
+} CGPoint;
+
+typedef struct CGSize {
+   CGFloat width;
+   CGFloat height;
+} CGSize;
+
+typedef struct CGRect {
+   CGPoint origin;
+   CGSize  size;
+} CGRect;
+ 
 
 // FIXME: 
 typedef int mach_port_t;
@@ -61,7 +86,7 @@ typedef int CFInteger;
 typedef int SInt32;
 typedef signed char SInt8;
 
-typedef struct __NSObject *CFTypeRef;
+typedef const void *CFTypeRef;
 typedef CFUInteger CFTypeID;
 typedef CFUInteger CFHashCode;
 typedef char       Boolean;
@@ -80,11 +105,11 @@ static inline CFRange CFRangeMake(CFIndex loc,CFIndex len){
 }
 
 #ifndef TRUE
-#define TRUE ((BOOL)1)
+#define TRUE ((Boolean)1)
 #endif
 
 #ifndef FALSE
-#define FALSE ((BOOL)0)
+#define FALSE ((Boolean)0)
 #endif
 
 typedef enum  {

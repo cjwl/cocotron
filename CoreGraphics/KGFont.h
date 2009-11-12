@@ -56,7 +56,7 @@ O2FontRef O2FontCreateWithDataProvider(O2DataProviderRef provider);
 O2FontRef O2FontRetain(O2FontRef self);
 void      O2FontRelease(O2FontRef self);
 
-NSString *O2FontCopyFullName(O2FontRef self);
+CFStringRef O2FontCopyFullName(O2FontRef self);
 int       O2FontGetUnitsPerEm(O2FontRef self);
 int       O2FontGetAscent(O2FontRef self);
 int       O2FontGetDescent(O2FontRef self);

@@ -210,16 +210,16 @@ static NSPrintOperation *_currentOperation=nil;
      return NO;
     }
    
-    if((context=[[_printInfo dictionary] objectForKey:@"_KGContext"])==nil)
+    if((context=(CGContextRef)[[_printInfo dictionary] objectForKey:@"_KGContext"])==nil)
      return nil;
    }
    else if(_type==NSPrintOperationPDFInRect){
-    NSDictionary *auxiliaryInfo=[NSDictionary dictionaryWithObject:[[_view window] title] forKey:kCGPDFContextTitle];
+    NSDictionary *auxiliaryInfo=[NSDictionary dictionaryWithObject:[[_view window] title] forKey:(NSString *)kCGPDFContextTitle];
     
     CGDataConsumerRef consumer=CGDataConsumerCreateWithCFData(_mutableData);
     
-    context=CGPDFContextCreate(consumer,&_insideRect,auxiliaryInfo);
-    [context autorelease];
+    context=CGPDFContextCreate(consumer,&_insideRect,(CFDictionaryRef)auxiliaryInfo);
+    [(id)context autorelease];
     
     CGDataConsumerRelease(consumer);
    }

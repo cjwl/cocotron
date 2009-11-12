@@ -107,7 +107,7 @@ static NSFont **_fontCache=NULL;
 
 +(NSFont *)menuFontOfSize:(float)size {
    CTFontRef ctFont=CTFontCreateUIFontForLanguage(kCTFontMenuItemFontType,size,nil);
-   NSString *name=CTFontCopyFullName(ctFont);
+   NSString *name=(NSString *)CTFontCopyFullName(ctFont);
    
    size=CTFontGetSize(ctFont);
    
@@ -121,7 +121,7 @@ static NSFont **_fontCache=NULL;
 
 +(NSFont *)menuBarFontOfSize:(float)size {
    CTFontRef ctFont=CTFontCreateUIFontForLanguage(kCTFontMenuTitleFontType,size,nil);
-   NSString *name=CTFontCopyFullName(ctFont);
+   NSString *name=(NSString *)CTFontCopyFullName(ctFont);
    
    size=CTFontGetSize(ctFont);
    
@@ -232,7 +232,7 @@ static NSFont **_fontCache=NULL;
 
    [isa addFontToCache:self];
    
-   _cgFont=CGFontCreateWithFontName(_name);
+   _cgFont=CGFontCreateWithFontName((CFStringRef)_name);
    _ctFont=CTFontCreateWithGraphicsFont(_cgFont,_pointSize,NULL,NULL);
    
    return self;

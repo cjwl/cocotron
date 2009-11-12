@@ -662,6 +662,62 @@
 			remoteGlobalIDString = FED7081C0C3B3D2C000CBE5B;
 			remoteInfo = "Foundation-Darwin-i386";
 		};
+		FE74350310A8BE84004CDF00 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FE7434FB10A8BE84004CDF00 /* CoreFoundation.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 8DC2EF5B0486A6940098B216;
+			remoteInfo = "CoreFoundation-Windows-i386";
+		};
+		FE74350510A8BE84004CDF00 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FE7434FB10A8BE84004CDF00 /* CoreFoundation.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = FEA828E4109B754A00C7A732;
+			remoteInfo = "CoreFoundation-Linux-i386";
+		};
+		FE74350710A8BE84004CDF00 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FE7434FB10A8BE84004CDF00 /* CoreFoundation.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = FEA82956109B75D600C7A732;
+			remoteInfo = "CoreFoundation-Darwin-i386";
+		};
+		FE74350910A8BE84004CDF00 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FE7434FB10A8BE84004CDF00 /* CoreFoundation.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = FEA82990109B773300C7A732;
+			remoteInfo = "CoreFoundation-Linux-arm";
+		};
+		FE74350B10A8BE84004CDF00 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FE7434FB10A8BE84004CDF00 /* CoreFoundation.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = FEA829CD109B7BFD00C7A732;
+			remoteInfo = "CoreFoundation-Linux-ppc";
+		};
+		FE74350D10A8BE94004CDF00 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FE7434FB10A8BE84004CDF00 /* CoreFoundation.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 8DC2EF4F0486A6940098B216;
+			remoteInfo = "CoreFoundation-Windows-i386";
+		};
+		FE74350F10A8BEA0004CDF00 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FE7434FB10A8BE84004CDF00 /* CoreFoundation.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = FEA828B3109B754A00C7A732;
+			remoteInfo = "CoreFoundation-Linux-i386";
+		};
+		FE74351110A8BEAB004CDF00 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FE7434FB10A8BE84004CDF00 /* CoreFoundation.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = FEA82925109B75D600C7A732;
+			remoteInfo = "CoreFoundation-Darwin-i386";
+		};
 		FE8F93BC0FE344D6003F38A6 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FE6F7BC00FD5572F00C3244F /* Foundation.xcodeproj */;
@@ -683,6 +739,7 @@
 		FE6F7BB30FD554A800C3244F /* CoreGraphics.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CoreGraphics.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FE6F7BC00FD5572F00C3244F /* Foundation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Foundation.xcodeproj; path = ../Foundation/Foundation.xcodeproj; sourceTree = SOURCE_ROOT; };
 		FE6F7C980FD55FA300C3244F /* CoreGraphics.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CoreGraphics.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		FE7434FB10A8BE84004CDF00 /* CoreFoundation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CoreFoundation.xcodeproj; path = ../CoreFoundation/CoreFoundation.xcodeproj; sourceTree = SOURCE_ROOT; };
 		FE9DB45F0FD6C38300A1CE17 /* CGDataConsumer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGDataConsumer.h; sourceTree = "<group>"; };
 		FE9DB4600FD6C38300A1CE17 /* CGDataConsumer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CGDataConsumer.m; sourceTree = "<group>"; };
 		FEA313490FD5642000F480D4 /* Foundation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Foundation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -907,15 +964,6 @@
 		0867D691FE84028FC02AAC07 /* CoreGraphics */ = {
 			isa = PBXGroup;
 			children = (
-				FE3C8539108779410018252A /* O2AffineTransform.h */,
-				FE3C853A108779410018252A /* O2AffineTransform.m */,
-				FE3C853B108779410018252A /* O2Geometry.h */,
-				FE3C853C108779410018252A /* O2Geometry.m */,
-				FEBF5BCD100D8B2C00F64C71 /* O2LZW.h */,
-				FEBF5BCE100D8B2C00F64C71 /* O2LZW.m */,
-				FEAED71A0FD6C4460043F915 /* CGPDFContext.h */,
-				FEAED71B0FD6C4460043F915 /* CGPDFContext.m */,
-				FE3C85951087928D0018252A /* CGConversions.h */,
 				FEC11A380FD4B4D600082282 /* CGAffineTransform.h */,
 				FEC11A390FD4B4D600082282 /* CGAffineTransform.m */,
 				FEC11A3A0FD4B4D600082282 /* CGBitmapContext.h */,
@@ -926,6 +974,7 @@
 				FEC11A3F0FD4B4D600082282 /* CGColorSpace.m */,
 				FEC11A400FD4B4D600082282 /* CGContext.h */,
 				FEC11A410FD4B4D600082282 /* CGContext.m */,
+				FE3C85951087928D0018252A /* CGConversions.h */,
 				FE9DB45F0FD6C38300A1CE17 /* CGDataConsumer.h */,
 				FE9DB4600FD6C38300A1CE17 /* CGDataConsumer.m */,
 				FEC11A420FD4B4D600082282 /* CGDataProvider.h */,
@@ -950,6 +999,8 @@
 				FEC11A550FD4B4D600082282 /* CGPath.m */,
 				FEC11A560FD4B4D600082282 /* CGPattern.h */,
 				FEC11A570FD4B4D600082282 /* CGPattern.m */,
+				FEAED71A0FD6C4460043F915 /* CGPDFContext.h */,
+				FEAED71B0FD6C4460043F915 /* CGPDFContext.m */,
 				FEC11A580FD4B4D600082282 /* CGPDFDocument.h */,
 				FEC11A590FD4B4D600082282 /* CGPDFDocument.m */,
 				FEC11A5A0FD4B4D600082282 /* CGPDFPage.h */,
@@ -958,6 +1009,7 @@
 				FEC11A5D0FD4B4D600082282 /* CGShading.m */,
 				FEC11A5E0FD4B4D600082282 /* CGWindow.h */,
 				FEC11A5F0FD4B4D600082282 /* CGWindow.m */,
+				FE7434FB10A8BE84004CDF00 /* CoreFoundation.xcodeproj */,
 				FEC11A600FD4B4D600082282 /* CoreGraphics.h */,
 				FEC11A610FD4B4D600082282 /* CoreGraphicsExport.h */,
 				0867D69AFE84028FC02AAC07 /* External Frameworks and Libraries */,
@@ -969,12 +1021,6 @@
 				FEC11A670FD4B4D600082282 /* KGBlending.h */,
 				FEC11A680FD4B4D600082282 /* KGClipPhase.h */,
 				FEC11A690FD4B4D600082282 /* KGClipPhase.m */,
-				FEC11A6A0FD4B4D600082282 /* O2Color.h */,
-				FEC11A6B0FD4B4D600082282 /* O2Color.m */,
-				FEC11A6C0FD4B4D600082282 /* O2ColorSpace+PDF.h */,
-				FEC11A6D0FD4B4D600082282 /* O2ColorSpace+PDF.m */,
-				FEC11A6E0FD4B4D600082282 /* O2ColorSpace.h */,
-				FEC11A6F0FD4B4D600082282 /* O2ColorSpace.m */,
 				FEC11A700FD4B4D600082282 /* KGContext.h */,
 				FEC11A710FD4B4D600082282 /* KGContext.m */,
 				FEC11A720FD4B4D600082282 /* KGContext_builtin.h */,
@@ -1010,8 +1056,6 @@
 				FEC11A8E0FD4B4D600082282 /* KGImageSource_TIFF.m */,
 				FEC11A8F0FD4B4D600082282 /* KGLayer.h */,
 				FEC11A900FD4B4D600082282 /* KGLayer.m */,
-				FEC11A910FD4B4D600082282 /* O2MutablePath.h */,
-				FEC11A920FD4B4D600082282 /* O2MutablePath.m */,
 				FEC11A930FD4B4D600082282 /* KGPaint.h */,
 				FEC11A940FD4B4D600082282 /* KGPaint.m */,
 				FEC11A950FD4B4D600082282 /* KGPaint_axialGradient.h */,
@@ -1026,8 +1070,6 @@
 				FEC11A9E0FD4B4D600082282 /* KGPaint_radialGradient.m */,
 				FEC11A9F0FD4B4D600082282 /* KGPaint_ramp.h */,
 				FEC11AA00FD4B4D600082282 /* KGPaint_ramp.m */,
-				FEC11AA10FD4B4D600082282 /* O2Path.h */,
-				FEC11AA20FD4B4D600082282 /* O2Path.m */,
 				FEC11AA30FD4B4D600082282 /* KGPattern.h */,
 				FEC11AA40FD4B4D600082282 /* KGPattern.m */,
 				FEC11AA50FD4B4D600082282 /* KGPDFArray.h */,
@@ -1090,6 +1132,22 @@
 				FEC11AE20FD4B4D600082282 /* NSTIFFImageFileDirectory.m */,
 				FEC11AE30FD4B4D600082282 /* NSTIFFReader.h */,
 				FEC11AE40FD4B4D600082282 /* NSTIFFReader.m */,
+				FE3C8539108779410018252A /* O2AffineTransform.h */,
+				FE3C853A108779410018252A /* O2AffineTransform.m */,
+				FEC11A6A0FD4B4D600082282 /* O2Color.h */,
+				FEC11A6B0FD4B4D600082282 /* O2Color.m */,
+				FEC11A6C0FD4B4D600082282 /* O2ColorSpace+PDF.h */,
+				FEC11A6D0FD4B4D600082282 /* O2ColorSpace+PDF.m */,
+				FEC11A6E0FD4B4D600082282 /* O2ColorSpace.h */,
+				FEC11A6F0FD4B4D600082282 /* O2ColorSpace.m */,
+				FE3C853B108779410018252A /* O2Geometry.h */,
+				FE3C853C108779410018252A /* O2Geometry.m */,
+				FEBF5BCD100D8B2C00F64C71 /* O2LZW.h */,
+				FEBF5BCE100D8B2C00F64C71 /* O2LZW.m */,
+				FEC11A910FD4B4D600082282 /* O2MutablePath.h */,
+				FEC11A920FD4B4D600082282 /* O2MutablePath.m */,
+				FEC11AA10FD4B4D600082282 /* O2Path.h */,
+				FEC11AA20FD4B4D600082282 /* O2Path.m */,
 				034768DFFF38A50411DB9C8B /* Products */,
 				089C1665FE841158C02AAC07 /* Resources */,
 				FEC11AE50FD4B4D600082282 /* VGmath.h */,
@@ -1142,6 +1200,18 @@
 				FE6F7BD50FD5572F00C3244F /* Foundation.framework */,
 				FE8F93BD0FE344D6003F38A6 /* Foundation.framework */,
 				FE14CDDA1069660900B0FFAF /* Foundation.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		FE7434FC10A8BE84004CDF00 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				FE74350410A8BE84004CDF00 /* CoreFoundation.framework */,
+				FE74350610A8BE84004CDF00 /* CoreFoundation.framework */,
+				FE74350810A8BE84004CDF00 /* CoreFoundation.framework */,
+				FE74350A10A8BE84004CDF00 /* CoreFoundation.framework */,
+				FE74350C10A8BE84004CDF00 /* CoreFoundation.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1472,6 +1542,7 @@
 			);
 			dependencies = (
 				FE6F7BD70FD5573B00C3244F /* PBXTargetDependency */,
+				FE74350E10A8BE94004CDF00 /* PBXTargetDependency */,
 			);
 			name = "CoreGraphics-Windows-i386";
 			productInstallPath = "$(HOME)/Library/Frameworks";
@@ -1493,6 +1564,7 @@
 			);
 			dependencies = (
 				FE6F7BD90FD5574600C3244F /* PBXTargetDependency */,
+				FE74351010A8BEA0004CDF00 /* PBXTargetDependency */,
 			);
 			name = "CoreGraphics-Linux-i386";
 			productInstallPath = "$(HOME)/Library/Frameworks";
@@ -1514,6 +1586,7 @@
 			);
 			dependencies = (
 				FE6F7C9B0FD55FB600C3244F /* PBXTargetDependency */,
+				FE74351210A8BEAB004CDF00 /* PBXTargetDependency */,
 			);
 			name = "CoreGraphics-Darwin-i386";
 			productInstallPath = "$(HOME)/Library/Frameworks";
@@ -1533,6 +1606,10 @@
 			productRefGroup = 034768DFFF38A50411DB9C8B /* Products */;
 			projectDirPath = "";
 			projectReferences = (
+				{
+					ProductGroup = FE7434FC10A8BE84004CDF00 /* Products */;
+					ProjectRef = FE7434FB10A8BE84004CDF00 /* CoreFoundation.xcodeproj */;
+				},
 				{
 					ProductGroup = FE6F7BC10FD5572F00C3244F /* Products */;
 					ProjectRef = FE6F7BC00FD5572F00C3244F /* Foundation.xcodeproj */;
@@ -1595,6 +1672,41 @@
 			fileType = wrapper.framework;
 			path = Foundation.framework;
 			remoteRef = FE6F7BD40FD5572F00C3244F /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FE74350410A8BE84004CDF00 /* CoreFoundation.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = CoreFoundation.framework;
+			remoteRef = FE74350310A8BE84004CDF00 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FE74350610A8BE84004CDF00 /* CoreFoundation.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = CoreFoundation.framework;
+			remoteRef = FE74350510A8BE84004CDF00 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FE74350810A8BE84004CDF00 /* CoreFoundation.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = CoreFoundation.framework;
+			remoteRef = FE74350710A8BE84004CDF00 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FE74350A10A8BE84004CDF00 /* CoreFoundation.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = CoreFoundation.framework;
+			remoteRef = FE74350910A8BE84004CDF00 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		FE74350C10A8BE84004CDF00 /* CoreFoundation.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = CoreFoundation.framework;
+			remoteRef = FE74350B10A8BE84004CDF00 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		FE8F93BD0FE344D6003F38A6 /* Foundation.framework */ = {
@@ -1936,6 +2048,21 @@
 			isa = PBXTargetDependency;
 			name = "Foundation-Darwin-i386";
 			targetProxy = FE6F7C9A0FD55FB600C3244F /* PBXContainerItemProxy */;
+		};
+		FE74350E10A8BE94004CDF00 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "CoreFoundation-Windows-i386";
+			targetProxy = FE74350D10A8BE94004CDF00 /* PBXContainerItemProxy */;
+		};
+		FE74351010A8BEA0004CDF00 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "CoreFoundation-Linux-i386";
+			targetProxy = FE74350F10A8BEA0004CDF00 /* PBXContainerItemProxy */;
+		};
+		FE74351210A8BEAB004CDF00 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "CoreFoundation-Darwin-i386";
+			targetProxy = FE74351110A8BEAB004CDF00 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 

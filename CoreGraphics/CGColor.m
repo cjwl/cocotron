@@ -46,7 +46,7 @@ CGColorRef CGColorCreateCopyWithAlpha(CGColorRef self,CGFloat a) {
    return O2ColorCreateCopyWithAlpha(self,a);
 }
 
-BOOL CGColorEqualToColor(CGColorRef self,CGColorRef other) {
+bool CGColorEqualToColor(CGColorRef self,CGColorRef other) {
    return O2ColorEqualToColor(self,other);
 }
 

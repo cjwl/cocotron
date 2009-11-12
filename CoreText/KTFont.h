@@ -23,7 +23,7 @@ enum {
 -initWithFont:(CGFontRef)font size:(CGFloat)size;
 -initWithUIFontType:(CTFontUIFontType)uiFontType size:(CGFloat)size language:(NSString *)language;
 
--(NSString *)name;
+-(CFStringRef)copyName;
 -(CGFloat)pointSize;
 
 -(CGRect)boundingRect;

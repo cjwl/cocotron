@@ -5,15 +5,10 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
-
-#import "CoreGraphicsExport.h"
-#import <Foundation/NSObject.h>
 #import <CoreGraphics/CGGeometry.h>
 #import <CoreGraphics/CGAffineTransform.h>
 
-@class O2PDFPage;
-
-typedef O2PDFPage *CGPDFPageRef;
+typedef struct O2PDFPage *CGPDFPageRef;
 
 typedef enum {
    kCGPDFMediaBox,
@@ -26,4 +21,4 @@ typedef enum {
 COREGRAPHICS_EXPORT CGPDFPageRef      CGPDFPageRetain(CGPDFPageRef self);
 COREGRAPHICS_EXPORT void              CGPDFPageRelease(CGPDFPageRef self);
 COREGRAPHICS_EXPORT CGRect            CGPDFPageGetBoxRect(CGPDFPageRef self,CGPDFBox box);
-COREGRAPHICS_EXPORT CGAffineTransform CGPDFPageGetDrawingTransform(CGPDFPageRef self,CGPDFBox box,CGRect rect,int clockwiseDegrees,BOOL preserveAspectRatio);
+COREGRAPHICS_EXPORT CGAffineTransform CGPDFPageGetDrawingTransform(CGPDFPageRef self,CGPDFBox box,CGRect rect,int clockwiseDegrees,bool preserveAspectRatio);

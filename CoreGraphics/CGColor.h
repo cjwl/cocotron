@@ -6,12 +6,9 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
-#import <Foundation/NSObject.h>
 #import <CoreGraphics/CoreGraphicsExport.h>
 
-@class O2Color;
-
-typedef O2Color *CGColorRef;
+typedef struct O2Color *CGColorRef;
 
 #import "CGGeometry.h"
 #import "CGColorSpace.h"
@@ -30,7 +27,7 @@ COREGRAPHICS_EXPORT CGColorRef CGColorCreateWithPattern(CGColorSpaceRef colorSpa
 COREGRAPHICS_EXPORT CGColorRef CGColorCreateCopy(CGColorRef self);
 COREGRAPHICS_EXPORT CGColorRef CGColorCreateCopyWithAlpha(CGColorRef self,CGFloat a);
 
-COREGRAPHICS_EXPORT BOOL       CGColorEqualToColor(CGColorRef self,CGColorRef other);
+COREGRAPHICS_EXPORT bool       CGColorEqualToColor(CGColorRef self,CGColorRef other);
 
 COREGRAPHICS_EXPORT CGColorSpaceRef CGColorGetColorSpace(CGColorRef self);
 COREGRAPHICS_EXPORT size_t          CGColorGetNumberOfComponents(CGColorRef self);

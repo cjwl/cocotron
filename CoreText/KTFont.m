@@ -28,8 +28,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    [super dealloc];
 }
 
--(NSString *)name {
-   return [CGFontCopyFullName(_font) autorelease];
+-(CFStringRef)copyName {
+   return CGFontCopyFullName(_font);
 }
 
 -(CGFloat)pointSize {

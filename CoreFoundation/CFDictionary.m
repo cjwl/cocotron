@@ -1,5 +1,6 @@
 #import <CoreFoundation/CFDictionary.h>
 #import <Foundation/NSRaise.h>
+#import <Foundation/NSDictionary.h>
 #import <Foundation/NSCFTypeID.h>
 
 CFTypeID CFDictionaryGetTypeID(void){
@@ -50,8 +51,7 @@ void CFDictionaryGetKeysAndValues(CFDictionaryRef self,const void **keys,const v
 }
 
 const void *CFDictionaryGetValue(CFDictionaryRef self,const void *key){
-   NSUnimplementedFunction();
-   return 0;
+   return [(NSDictionary *)self objectForKey:(id)key];
 }
 
 Boolean CFDictionaryGetValueIfPresent(CFDictionaryRef self,const void *key,const void **value){

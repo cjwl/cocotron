@@ -57,6 +57,14 @@
 		FE651A950FBC84DD00464BFD /* deprecated.h in Headers */ = {isa = PBXBuildFile; fileRef = FE88A1F50F891D970081CFC1 /* deprecated.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE651A960FBC84DD00464BFD /* Object.h in Headers */ = {isa = PBXBuildFile; fileRef = FEDB75C50F8A9EFE00AC545D /* Object.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE651A970FBC84DD00464BFD /* Protocol.h in Headers */ = {isa = PBXBuildFile; fileRef = FEDB75C60F8A9EFE00AC545D /* Protocol.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE74345F10A8A61B004CDF00 /* objc-auto.h in Headers */ = {isa = PBXBuildFile; fileRef = FE74345E10A8A61B004CDF00 /* objc-auto.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE74346010A8A61B004CDF00 /* objc-auto.h in Headers */ = {isa = PBXBuildFile; fileRef = FE74345E10A8A61B004CDF00 /* objc-auto.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE74346110A8A61B004CDF00 /* objc-auto.h in Headers */ = {isa = PBXBuildFile; fileRef = FE74345E10A8A61B004CDF00 /* objc-auto.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE74346210A8A61B004CDF00 /* objc-auto.h in Headers */ = {isa = PBXBuildFile; fileRef = FE74345E10A8A61B004CDF00 /* objc-auto.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE74346310A8A61B004CDF00 /* objc-auto.h in Headers */ = {isa = PBXBuildFile; fileRef = FE74345E10A8A61B004CDF00 /* objc-auto.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE74346410A8A61B004CDF00 /* objc-auto.h in Headers */ = {isa = PBXBuildFile; fileRef = FE74345E10A8A61B004CDF00 /* objc-auto.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE74346510A8A61B004CDF00 /* objc-auto.h in Headers */ = {isa = PBXBuildFile; fileRef = FE74345E10A8A61B004CDF00 /* objc-auto.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FE74346610A8A61B004CDF00 /* objc-auto.h in Headers */ = {isa = PBXBuildFile; fileRef = FE74345E10A8A61B004CDF00 /* objc-auto.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE85F6AC0BBF51D400E9C25C /* objc-runtime.h in Headers */ = {isa = PBXBuildFile; fileRef = FE85F6AA0BBF51D400E9C25C /* objc-runtime.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE85F6AD0BBF51D400E9C25C /* objc-runtime.h in Headers */ = {isa = PBXBuildFile; fileRef = FE85F6AA0BBF51D400E9C25C /* objc-runtime.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE88A1DA0F88F8D00081CFC1 /* runtime.h in Headers */ = {isa = PBXBuildFile; fileRef = FE88A1D90F88F8D00081CFC1 /* runtime.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -190,6 +198,7 @@
 		FE4034B90B42F24C00CEC41A /* objc-class.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "objc-class.h"; sourceTree = "<group>"; };
 		FE4034CE0B42F2C400CEC41A /* objc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = objc.h; sourceTree = "<group>"; };
 		FE651A9D0FBC84DD00464BFD /* objc.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = objc.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		FE74345E10A8A61B004CDF00 /* objc-auto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "objc-auto.h"; sourceTree = "<group>"; };
 		FE85F6AA0BBF51D400E9C25C /* objc-runtime.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = "objc-runtime.h"; sourceTree = "<group>"; };
 		FE88A1D90F88F8D00081CFC1 /* runtime.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = runtime.h; sourceTree = "<group>"; };
 		FE88A1EB0F891B440081CFC1 /* message.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = message.h; sourceTree = "<group>"; };
@@ -220,6 +229,7 @@
 		0867D691FE84028FC02AAC07 /* objc */ = {
 			isa = PBXGroup;
 			children = (
+				FE74345E10A8A61B004CDF00 /* objc-auto.h */,
 				FEDB75C50F8A9EFE00AC545D /* Object.h */,
 				FEDB75C60F8A9EFE00AC545D /* Protocol.h */,
 				FE88A1F50F891D970081CFC1 /* deprecated.h */,
@@ -283,6 +293,7 @@
 				15D921DD105E922600171406 /* deprecated.h in Headers */,
 				15D921DE105E922600171406 /* Object.h in Headers */,
 				15D921DF105E922600171406 /* Protocol.h in Headers */,
+				FE74346610A8A61B004CDF00 /* objc-auto.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -299,6 +310,7 @@
 				28D484F50FE04DDD00DC03EF /* deprecated.h in Headers */,
 				28D484F60FE04DDD00DC03EF /* Object.h in Headers */,
 				28D484F70FE04DDD00DC03EF /* Protocol.h in Headers */,
+				FE74346510A8A61B004CDF00 /* objc-auto.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -315,6 +327,7 @@
 				FE88A1F60F891D970081CFC1 /* deprecated.h in Headers */,
 				FEDB75C70F8A9EFE00AC545D /* Object.h in Headers */,
 				FEDB75C80F8A9EFE00AC545D /* Protocol.h in Headers */,
+				FE74346310A8A61B004CDF00 /* objc-auto.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -331,6 +344,7 @@
 				FE88A1F70F891D970081CFC1 /* deprecated.h in Headers */,
 				FEDB75C90F8A9EFE00AC545D /* Object.h in Headers */,
 				FEDB75CA0F8A9EFE00AC545D /* Protocol.h in Headers */,
+				FE74345F10A8A61B004CDF00 /* objc-auto.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -347,6 +361,7 @@
 				FE88A1F80F891D970081CFC1 /* deprecated.h in Headers */,
 				FEDB75CB0F8A9EFE00AC545D /* Object.h in Headers */,
 				FEDB75CC0F8A9EFE00AC545D /* Protocol.h in Headers */,
+				FE74346010A8A61B004CDF00 /* objc-auto.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -363,6 +378,7 @@
 				FE651A950FBC84DD00464BFD /* deprecated.h in Headers */,
 				FE651A960FBC84DD00464BFD /* Object.h in Headers */,
 				FE651A970FBC84DD00464BFD /* Protocol.h in Headers */,
+				FE74346410A8A61B004CDF00 /* objc-auto.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -379,6 +395,7 @@
 				FE88A1F90F891D970081CFC1 /* deprecated.h in Headers */,
 				FEDB75CD0F8A9EFE00AC545D /* Object.h in Headers */,
 				FEDB75CE0F8A9EFE00AC545D /* Protocol.h in Headers */,
+				FE74346110A8A61B004CDF00 /* objc-auto.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -395,6 +412,7 @@
 				FE88A1FA0F891D970081CFC1 /* deprecated.h in Headers */,
 				FEDB75CF0F8A9EFE00AC545D /* Object.h in Headers */,
 				FEDB75D00F8A9EFE00AC545D /* Protocol.h in Headers */,
+				FE74346210A8A61B004CDF00 /* objc-auto.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
