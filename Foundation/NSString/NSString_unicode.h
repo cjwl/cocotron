@@ -18,3 +18,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 void      NSString_unicodeInitialize(void);
 NSString *NSString_unicodeNew(NSZone *zone,
  const unichar *unicode,NSUInteger length);
+
+NSUInteger NSGetUnicodeCStringWithMaxLength(const unichar *characters,NSUInteger length,NSUInteger *location,char *cString,NSUInteger maxLength);
+char *NSUnicodeToUnicode(const unichar *characters,NSUInteger length,NSZone *zone,BOOL zeroTerminate);

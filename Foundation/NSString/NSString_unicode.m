@@ -10,6 +10,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSString_cString.h>
 #import <Foundation/NSStringHashing.h>
 #import <Foundation/NSRaiseException.h>
+#import <string.h>
 
 @implementation NSString_unicode
 
@@ -25,6 +26,32 @@ NSString *NSString_unicodeNew(NSZone *zone,
     self->_unicode[i]=unicode[i];
 
    return self;
+}
+
+NSUInteger NSGetUnicodeCStringWithMaxLength(const unichar *characters,NSUInteger length,NSUInteger *location,char *cString,NSUInteger maxLength)
+{
+    if(length*2+1 > maxLength) {
+        cString[0]='\0';
+        return 0;
+    }
+    
+    NSUInteger ucByteLen = length*sizeof(unichar) + 1;
+    memcpy(cString, characters, ucByteLen);
+    *((unichar *)(cString + ucByteLen)) = 0;
+    return ucByteLen;
+    
+}
+
+char *NSUnicodeToUnicode(const unichar *characters,NSUInteger length, NSZone *zone,BOOL zeroTerminate) {
+	char *unicode=NSZoneMalloc(zone,sizeof(char)*(length + (zeroTerminate == YES ? 1 : 0)));
+
+     memcpy(unicode, characters, length);
+	
+    if(zeroTerminate == YES) {
+        unicode[length]='\0';
+    } 
+	
+	return unicode;
 }
 
 -(NSUInteger)length {
