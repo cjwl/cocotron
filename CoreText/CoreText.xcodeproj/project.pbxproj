@@ -548,8 +548,6 @@
 				DEPLOYMENT_LOCATION = YES;
 				DEPLOYMENT_POSTPROCESSING = YES;
 				DSTROOT = /;
-				EXECUTABLE_PREFIX = lib;
-				EXECUTABLE_SUFFIX = .so;
 				FRAMEWORK_SEARCH_PATHS = (
 					/Developer/Cocotron/1.0/Darwin/i386/Frameworks,
 					"\"$(DEVELOPER_DIR)/Cocotron/1.0/Windows/i386/Frameworks\"",
