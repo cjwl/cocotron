@@ -11,7 +11,7 @@
 #import <Foundation/NSException.h>
 #import <windows.h>
 
-NSStringEncoding defaultEnconding()
+NSStringEncoding defaultEncoding()
 {
     //don't use objc calls because they call often defaultCStringEncoding
     

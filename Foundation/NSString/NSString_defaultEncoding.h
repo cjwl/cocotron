@@ -9,5 +9,5 @@
 
 #import <Foundation/NSString.h>
 
-NSStringEncoding defaultEnconding();
+NSStringEncoding defaultEncoding();
 

@@ -14,7 +14,7 @@
 #import <stdio.h>
 #import <unistd.h>
 
-NSStringEncoding defaultEnconding()
+NSStringEncoding defaultEncoding()
 {
     //don't use objc calls because they call often defaultCStringEncoding 
 

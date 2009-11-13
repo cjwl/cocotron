@@ -13,7 +13,7 @@
 #import <stdlib.h>
 #import <ctype.h>
 
-NSStringEncoding defaultEnconding()
+NSStringEncoding defaultEncoding()
 {
     //don't use objc calls because they call often defaultCStringEncoding
     
