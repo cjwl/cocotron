@@ -74,7 +74,11 @@ typedef struct CGRect {
  
 
 // FIXME: 
+#ifndef _MACH_PORT_T
+#define _MACH_PORT_T
 typedef int mach_port_t;
+#endif
+
 typedef unsigned short UniChar;
 typedef unsigned long UTF32Char;
 typedef float Float32;
