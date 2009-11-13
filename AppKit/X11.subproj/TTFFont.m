@@ -158,7 +158,7 @@ FcConfig *fontConfig;
    return 0.0;
 }
 
--initWithFont:(KGFont *)font size:(float)size {
+-initWithFont:(O2Font *)font size:(float)size {
    NSString *fontName=O2FontCopyFullName(font);
    NSString* key=[NSString stringWithFormat:@"%@@%f", fontName, size];
    [fontName release];
@@ -218,7 +218,7 @@ FcConfig *fontConfig;
 }
 
 -initWithUIFontType:(CTFontUIFontType)uiFontType size:(CGFloat)size language:(NSString *)language {
-   KGFont *font=nil;
+   O2Font *font=nil;
    
    switch(uiFontType){
   
@@ -226,7 +226,7 @@ FcConfig *fontConfig;
     case kCTFontMenuItemFontType:
      if(size==0)
       size=12;
-     font=[KGFont createWithFontName:@"Arial"];
+     font=[O2Font createWithFontName:@"Arial"];
      break;
  
     default:

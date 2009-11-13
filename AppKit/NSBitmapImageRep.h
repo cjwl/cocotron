@@ -10,8 +10,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSGraphics.h>
 #import <ApplicationServices/ApplicationServices.h>
 
-@class KGImage;
-
 typedef enum {
    NSTIFFFileType,
    NSBMPFileType,

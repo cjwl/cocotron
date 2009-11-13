@@ -38,7 +38,7 @@
 {
    NSRect frame=[w frame];
 
-   KGGraphicsState  *initialState=[[[KGGraphicsState alloc] initWithDeviceTransform:CGAffineTransformIdentity] autorelease];
+   O2GState  *initialState=[[[O2GState alloc] initWithDeviceTransform:O2AffineTransformIdentity] autorelease];
    
    if(self=[super initWithGraphicsState:initialState])
    {
@@ -51,7 +51,7 @@
 
 -(id)initWithSize:(NSSize)size
 {
-   KGGraphicsState  *initialState=[[[KGGraphicsState alloc] initWithDeviceTransform:CGAffineTransformIdentity] autorelease];
+   O2GState  *initialState=[[[O2GState alloc] initWithDeviceTransform:O2AffineTransformIdentity] autorelease];
    
    if(self=[super initWithGraphicsState:initialState])
    {
@@ -143,7 +143,7 @@
 
 -(void)appendCTM
 {
-	CGAffineTransform ctm=[self ctm];
+	O2AffineTransform ctm=[self ctm];
 	cairo_matrix_t matrix={ctm.a, ctm.b, ctm.c, ctm.d, ctm.tx, ctm.ty};
    
 
@@ -152,8 +152,8 @@
 
 -(void)synchronizeFontCTM
 {
-	CGAffineTransform ctm=[[self currentState] textMatrix];
-    CGFloat size=[[self currentState] pointSize];
+	O2AffineTransform ctm=[[self currentState] textMatrix];
+    O2Float size=[[self currentState] pointSize];
 
 	ctm = CGAffineTransformScale(ctm, size, -size);
 	
@@ -172,7 +172,7 @@
 
 -(void)synchronizeLineAttributes
 {
-   KGGraphicsState *gState=[self currentState];
+   O2GState *gState=[self currentState];
 	int i;
    
 	cairo_set_line_width(_context, gState->_lineWidth);
@@ -324,7 +324,7 @@
    }
 }
 
--(KGImage *)createImage {
+-(O2Image *)createImage {
    NSSize size=[self size];
    cairo_surface_t* img=cairo_image_surface_create(CAIRO_FORMAT_ARGB32, size.width, size.height);
    
@@ -344,7 +344,7 @@
    return ret;
 }
 
--(void)drawShading:(KGShading *)shading {
+-(void)drawShading:(O2Shading *)shading {
    if([shading isAxial]) {
       cairo_pattern_t *pat;
       pat = cairo_pattern_create_linear (0.0, 0.0,  0.0, 256.0);
@@ -366,8 +366,8 @@
 	}
 	else
 	{
-      NSAssert([image isKindOfClass:[KGImage class]], nil);
-      KGImage *ki=image;
+      NSAssert([image isKindOfClass:[O2Image class]], nil);
+      O2Image *ki=image;
       int w=[ki width], h=[ki height], i, j;
       data=calloc(sizeof(O2argb8u), w*h);
       
@@ -415,12 +415,12 @@
 }
 
 -(void)establishFontStateInDeviceIfDirty {
-   KGGraphicsState *gState=[self currentState];
+   O2GState *gState=[self currentState];
    
    if(gState->_fontIsDirty){
     [gState clearFontIsDirty];
 
-    KGFont *cgFont=[state font];
+    O2Font *cgFont=[gState font];
     KTFont *fontState=[[TTFFont alloc] initWithFont:cgFont size:[state pointSize]];
     NSString    *name=[fontState name];
     CGFloat      pointSize=[fontState pointSize];
@@ -541,8 +541,8 @@ cairo_status_t writeToData(void		  *closure,
    cairo_reset_clip(_context);
    
    
-   CGAffineTransform matrix={1, 0, 0, -1, 0, [self size].height};
-   clip.origin=CGAffineTransformTransformVector2(matrix, clip.origin);
+   O2AffineTransform matrix={1, 0, 0, -1, 0, [self size].height};
+   clip.origin=O2PointApplyAffineTransform(clip.origin,matrix);
    clip.origin.y-=clip.size.height;
    
    
