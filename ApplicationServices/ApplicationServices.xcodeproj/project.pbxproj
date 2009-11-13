@@ -40,6 +40,20 @@
 /* End PBXBuildRule section */
 
 /* Begin PBXContainerItemProxy section */
+		FE0D38D910ADE87B0003382F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FECF921A0FFB222D007AECF1 /* CoreText.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = FECF92410FFB2A0D007AECF1;
+			remoteInfo = "CoreText-Darwin-i386";
+		};
+		FE0D38DB10ADE87F0003382F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FEC11BB10FD4B86500082282 /* CoreGraphics.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = FE6F7BDB0FD55FA300C3244F;
+			remoteInfo = "CoreGraphics-Darwin-i386";
+		};
 		FE13630E0FE72ECD00DE15FA /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = FECAF5010DB7119B00BA2A8E /* Foundation.xcodeproj */;
@@ -363,6 +377,8 @@
 				C8A2E28D0F07E9B70054397C /* PBXBuildRule */,
 			);
 			dependencies = (
+				FE0D38DA10ADE87B0003382F /* PBXTargetDependency */,
+				FE0D38DC10ADE87F0003382F /* PBXTargetDependency */,
 			);
 			name = "ApplicationServices-Darwin-i386";
 			productInstallPath = "$(HOME)/Library/Frameworks";
@@ -576,6 +592,16 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		FE0D38DA10ADE87B0003382F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "CoreText-Darwin-i386";
+			targetProxy = FE0D38D910ADE87B0003382F /* PBXContainerItemProxy */;
+		};
+		FE0D38DC10ADE87F0003382F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "CoreGraphics-Darwin-i386";
+			targetProxy = FE0D38DB10ADE87F0003382F /* PBXContainerItemProxy */;
+		};
 		FEC11BB80FD4B88800082282 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = "CoreGraphics-Windows-i386";
