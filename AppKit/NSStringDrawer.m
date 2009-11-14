@@ -1,4 +1,5 @@
 /* Copyright (c) 2006-2007 Christopher J. W. Lloyd <cjwl@objc.net>
+                 2009 Markus Hitter <mah@jump-ing.de>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
@@ -14,29 +15,30 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/NSGraphicsContextFunctions.h>
 #import <ApplicationServices/ApplicationServices.h>
 
-static NSSize largeSize={1000000,1000000};
+const float NSStringDrawerLargeDimension=1000000.;
 
 @implementation NSStringDrawer
 
-NSStringDrawer *NSCurrentStringDrawer() {
++(NSStringDrawer *)sharedStringDrawer {
    return NSThreadSharedInstance(@"NSStringDrawer");
 }
 
--init {
-   return [self initWithSize:largeSize];
-}
-
--initWithSize:(NSSize)size {
-   _textStorage=[NSTextStorage new];
-   _layoutManager=[NSLayoutManager new];
-   _textContainer=[[NSTextContainer alloc] initWithContainerSize:size];
-   [_textStorage addLayoutManager:_layoutManager];
-   [_layoutManager addTextContainer:_textContainer];
+-(NSStringDrawer *)init {
+   self=[super init];
+   if (self!=nil) {
+    _textStorage=[NSTextStorage new];
+    _layoutManager=[NSLayoutManager new];
+    _textContainer=[[NSTextContainer alloc] init];
+    [_textStorage addLayoutManager:_layoutManager];
+    [_layoutManager addTextContainer:_textContainer];
+   }
    return self;
 }
 
--(NSSize)sizeOfString:(NSString *)string withAttributes:(NSDictionary *)attributes {
-   [_textContainer setContainerSize:largeSize];
+-(NSSize)sizeOfString:(NSString *)string withAttributes:(NSDictionary *)attributes  inSize:(NSSize)maxSize {
+   if(maxSize.width==NSZeroSize.width && maxSize.height==NSZeroSize.height)
+    maxSize=NSMakeSize(NSStringDrawerLargeDimension,NSStringDrawerLargeDimension);
+   [_textContainer setContainerSize:maxSize];
    [_textStorage beginEditing];
    [_textStorage replaceCharactersInRange:NSMakeRange(0,[_textStorage length]) withString:string];
    [_textStorage setAttributes:attributes range:NSMakeRange(0,[_textStorage length])];
@@ -58,10 +60,12 @@ NSStringDrawer *NSCurrentStringDrawer() {
    [_layoutManager drawGlyphsForGlyphRange:glyphRange atPoint:rect.origin];
 }
 
--(void)drawString:(NSString *)string withAttributes:(NSDictionary *)attributes atPoint:(NSPoint)point {
+-(void)drawString:(NSString *)string withAttributes:(NSDictionary *)attributes atPoint:(NSPoint)point inSize:(NSSize)maxSize {
    NSRange glyphRange;
 
-   [_textContainer setContainerSize:largeSize];
+   if(maxSize.width==NSZeroSize.width && maxSize.height==NSZeroSize.height)
+    maxSize=NSMakeSize(NSStringDrawerLargeDimension,NSStringDrawerLargeDimension);
+   [_textContainer setContainerSize:maxSize];
    [_textStorage beginEditing];
    [_textStorage replaceCharactersInRange:NSMakeRange(0,[_textStorage length]) withString:string];
    [_textStorage setAttributes:attributes range:NSMakeRange(0,[_textStorage length])];
@@ -72,8 +76,10 @@ NSStringDrawer *NSCurrentStringDrawer() {
    [_layoutManager drawGlyphsForGlyphRange:glyphRange atPoint:point];
 }
 
--(NSSize)sizeOfAttributedString:(NSAttributedString *)astring {
-   [_textContainer setContainerSize:largeSize];
+-(NSSize)sizeOfAttributedString:(NSAttributedString *)astring inSize:(NSSize)maxSize {
+   if(maxSize.width==NSZeroSize.width && maxSize.height==NSZeroSize.height)
+    maxSize=NSMakeSize(NSStringDrawerLargeDimension,NSStringDrawerLargeDimension);
+   [_textContainer setContainerSize:maxSize];
    [_textStorage setAttributedString:astring];
    return [_layoutManager usedRectForTextContainer:_textContainer].size;
 }
@@ -89,10 +95,12 @@ NSStringDrawer *NSCurrentStringDrawer() {
    [_layoutManager drawGlyphsForGlyphRange:glyphRange atPoint:rect.origin];
 }
 
--(void)drawAttributedString:(NSAttributedString *)astring atPoint:(NSPoint)point {
+-(void)drawAttributedString:(NSAttributedString *)astring atPoint:(NSPoint)point inSize:(NSSize)maxSize {
    NSRange glyphRange;
 
-   [_textContainer setContainerSize:largeSize];
+   if(maxSize.width==NSZeroSize.width && maxSize.height==NSZeroSize.height)
+    maxSize=NSMakeSize(NSStringDrawerLargeDimension,NSStringDrawerLargeDimension);
+   [_textContainer setContainerSize:maxSize];
    [_textStorage setAttributedString:astring];
 
    glyphRange=[_layoutManager glyphRangeForTextContainer:_textContainer];
@@ -109,7 +117,7 @@ NSStringDrawer *NSCurrentStringDrawer() {
 
    CGContextSaveGState(graphicsPort);
    CGContextClipToRect(graphicsPort,rect);
-   [NSCurrentStringDrawer() drawString:self withAttributes:attributes inRect:rect];
+   [[NSStringDrawer sharedStringDrawer] drawString:self withAttributes:attributes inRect:rect];
    CGContextRestoreGState(graphicsPort);
 }
 
@@ -122,7 +130,7 @@ NSStringDrawer *NSCurrentStringDrawer() {
 
    CGContextSaveGState(graphicsPort);
    CGContextClipToRect(graphicsPort,rect);
-   [NSCurrentStringDrawer() drawAttributedString:self inRect:rect];
+   [[NSStringDrawer sharedStringDrawer] drawAttributedString:self inRect:rect];
    CGContextRestoreGState(graphicsPort);
 }
 

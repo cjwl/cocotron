@@ -22,6 +22,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 -(NSSize)sizeForMenuItemTitle:(NSMenuItem *)item {
    NSString     *title=[item title];
+// FIXME: This is expensive and is used on each mouse movement for each menu item.
    NSSize        size=[title sizeWithAttributes: _itemBlackAttributes];
 
    size.height+=TITLE_TOP_MARGIN+TITLE_BOTTOM_MARGIN;

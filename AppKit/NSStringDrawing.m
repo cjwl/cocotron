@@ -1,4 +1,5 @@
 /* Copyright (c) 2006-2007 Christopher J. W. Lloyd
+                 2009 Markus Hitter <mah@jump-ing.de>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
@@ -14,15 +15,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @implementation NSString(NSStringDrawing)
 
 -(void)drawAtPoint:(NSPoint)point withAttributes:(NSDictionary *)attributes {
-   [NSCurrentStringDrawer() drawString:self withAttributes:attributes atPoint:point];
+   [[NSStringDrawer sharedStringDrawer] drawString:self withAttributes:attributes atPoint:point inSize:NSZeroSize];
 }
 
 -(void)drawInRect:(NSRect)rect withAttributes:(NSDictionary *)attributes {
-   [NSCurrentStringDrawer() drawString:self withAttributes:attributes inRect:rect];
+   [[NSStringDrawer sharedStringDrawer] drawString:self withAttributes:attributes inRect:rect];
 }
 
 -(NSSize)sizeWithAttributes:(NSDictionary *)attributes {
-   return [NSCurrentStringDrawer() sizeOfString:self withAttributes:attributes];
+   return [[NSStringDrawer sharedStringDrawer] sizeOfString:self withAttributes:attributes inSize:NSZeroSize];
 }
 
 @end
@@ -30,15 +31,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 @implementation NSAttributedString(NSStringDrawing)
 
 -(void)drawAtPoint:(NSPoint)point {
-   [NSCurrentStringDrawer() drawAttributedString:self atPoint:point];
+   [[NSStringDrawer sharedStringDrawer] drawAttributedString:self atPoint:point inSize:NSZeroSize];
 }
 
 -(void)drawInRect:(NSRect)rect {
-   [NSCurrentStringDrawer() drawAttributedString:self inRect:rect];
+   [[NSStringDrawer sharedStringDrawer] drawAttributedString:self inRect:rect];
 }
 
 -(NSSize)size {
-   return [NSCurrentStringDrawer() sizeOfAttributedString:self];
+   return [[NSStringDrawer sharedStringDrawer] sizeOfAttributedString:self inSize:NSZeroSize];
 }
 
 -(void)drawWithRect:(NSRect)rect options:(NSStringDrawingOptions)options {

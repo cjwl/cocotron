@@ -28,8 +28,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    NSImage        *image=[NSImage imageNamed:@"NSAlertPanelExclamation"];
    NSSize          imageSize=[image size];
    NSSize          size={640,480};
-   NSStringDrawer *drawer=[[[NSStringDrawer alloc] initWithSize:size] autorelease];
-   NSSize          messageSize=[drawer sizeOfString:message withAttributes:nil];
+   NSStringDrawer *drawer=[NSStringDrawer sharedStringDrawer];
+   NSSize          messageSize=[drawer sizeOfString:message withAttributes:nil inSize:size];
    NSSize          defaultSize,alternateSize,otherSize;
    NSSize          imageMessageSize=NSZeroSize;
    float           buttonWidth,buttonHeight,buttonTotalWidth,buttonTotalHeight;
@@ -40,14 +40,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    if(defaultTitle==nil)
     defaultTitle=@"OK";
 
-   defaultSize=[drawer sizeOfString:defaultTitle withAttributes:nil];
+   defaultSize=[drawer sizeOfString:defaultTitle withAttributes:nil inSize:size];
    buttonWidth=defaultSize.width;
    buttonHeight=defaultSize.height;
 
    if(alternateTitle==nil)
     alternateSize=NSZeroSize;
    else {
-    alternateSize=[drawer sizeOfString:alternateTitle withAttributes:nil];
+    alternateSize=[drawer sizeOfString:alternateTitle withAttributes:nil inSize:size];
     buttonWidth=MAX(alternateSize.width,buttonWidth);
     buttonHeight=MAX(alternateSize.height,buttonHeight);
    }
@@ -55,7 +55,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    if(otherTitle==nil)
     otherSize=NSZeroSize;
    else {
-    otherSize=[drawer sizeOfString:otherTitle withAttributes:nil];
+    otherSize=[drawer sizeOfString:otherTitle withAttributes:nil inSize:size];
     buttonWidth=MAX(otherSize.width,buttonWidth);
     buttonHeight=MAX(otherSize.height,buttonHeight);
    }

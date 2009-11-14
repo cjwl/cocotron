@@ -1,4 +1,5 @@
 /* Copyright (c) 2006-2007 Christopher J. W. Lloyd
+                 2009 Markus Hitter <mah@jump-ing.de>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
@@ -214,84 +215,115 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)layout {
-#define MAINSIZE_MINWIDTH 100
-
 #define BOTTOM_MARGIN 16
 #define TOP_MARGIN 16
 #define LEFT_MARGIN 16
 #define RIGHT_MARGIN 16
 
-#define ICON_MARGIN 8
-#define TEXT_MARGIN 8
+// A NSTextField adds a small margin around the text.
+#define TEXTFIELD_MARGIN 2.
+
+#define INTERTEXT_GAP 8.
 #define BUTTON_MARGIN 8
 #define INTERBUTTON_GAP 6
 #define OTHER_GAP 20
 #define ICON_MAIN_GAP 20
 #define MAIN_BUTTON_GAP 20
 
-   NSSize drawSize={[[NSScreen mainScreen] visibleFrame].size.width/3,INT_MAX};
-   NSStringDrawer *drawer=[[[NSStringDrawer alloc] initWithSize:drawSize] autorelease];
+   NSSize screenSize=[[NSScreen mainScreen] visibleFrame].size;
+   NSSize textSize=NSZeroSize;
+   NSStringDrawer *drawer=[NSStringDrawer sharedStringDrawer];
    NSSize iconSize=(_icon!=nil)?[_icon size]:NSZeroSize;
    NSDictionary *messageAttributes=[NSDictionary dictionaryWithObjectsAndKeys:[NSFont boldSystemFontOfSize:0],NSFontAttributeName,nil];
-   NSSize messageSize=(_messageText!=nil)?[drawer sizeOfString:_messageText withAttributes:messageAttributes]:NSZeroSize;
+   NSSize messageSize=NSZeroSize;
    NSDictionary *informativeAttributes=[NSDictionary dictionaryWithObjectsAndKeys:[NSFont systemFontOfSize:0],NSFontAttributeName,nil];
-   NSSize informativeSize=(_informativeText!=nil)?[drawer sizeOfString:_informativeText withAttributes:informativeAttributes]:NSZeroSize;
+   NSSize informativeSize=NSZeroSize;
+   float messageInformativeGap=0.;
    NSDictionary *suppressionAttributes=[NSDictionary dictionaryWithObjectsAndKeys:[NSFont systemFontOfSize:0],NSFontAttributeName,nil];
-   NSSize supressionSize=(_showsSuppressionButton)?[drawer sizeOfString:[_supressionButton title] withAttributes:suppressionAttributes]:NSZeroSize;
+   NSSize supressionSize=NSZeroSize;
+   float informativeSuppressionGap=0.;
    NSSize accessorySize=(_accessoryView!=nil)?[_accessoryView frame].size:NSZeroSize;
-   NSSize okCancelMaxSize={40,24};
-   NSSize otherMaxSize={40,24};
+   float suppressionAccessoryGap=0.;
    NSSize mainSize=NSZeroSize;
    NSSize panelSize=NSZeroSize;
-   NSSize allButtonsSize=NSZeroSize;
    int i,count=[_buttons count];
-   
+   NSSize okCancelButtonSize=NSMakeSize(40,24);
+   NSSize otherButtonSize=okCancelButtonSize;
+   NSSize allButtonsSize=NSZeroSize;
+
+   // Size the buttons.
    for(i=0;i<count && i<2;i++){
     NSButton *check=[_buttons objectAtIndex:i];
     NSAttributedString *title=[check attributedTitle];
-    NSSize    size=[drawer sizeOfAttributedString:title];
-    
-    okCancelMaxSize.width=MAX(size.width,okCancelMaxSize.width);
-    okCancelMaxSize.height=MAX(size.height,okCancelMaxSize.height);
+    NSSize size=[drawer sizeOfAttributedString:title inSize:NSZeroSize];
+
+    okCancelButtonSize.width=MAX(size.width+BUTTON_MARGIN*2,okCancelButtonSize.width);
+    okCancelButtonSize.height=MAX(size.height,okCancelButtonSize.height);
    }
-   
-   okCancelMaxSize.width+=BUTTON_MARGIN*2; 
-   
+
    for(i=0;i<count && i<2;i++)
-    [[_buttons objectAtIndex:i] setFrameSize:okCancelMaxSize];
+    [[_buttons objectAtIndex:i] setFrameSize:okCancelButtonSize];
 
    for(i=2;i<count;i++){
     NSButton *check=[_buttons objectAtIndex:i];
     NSAttributedString *title=[check attributedTitle];
-    NSSize    size=[drawer sizeOfAttributedString:title];
-    
-    otherMaxSize.width=MAX(size.width,otherMaxSize.width);
-    otherMaxSize.height=MAX(size.height,otherMaxSize.height);
-   }
-   
-   otherMaxSize.width+=BUTTON_MARGIN*2; 
-   
-   for(i=0;i<count && i<2;i++)
-    [[_buttons objectAtIndex:i] setFrameSize:otherMaxSize];
-  
-  for(i=0;i<count;i++){
-   NSButton *button=[_buttons objectAtIndex:i];
-   
-   allButtonsSize.width+=[button frame].size.width;
-   allButtonsSize.height=MAX(allButtonsSize.height,[button frame].size.height);
-   
-   allButtonsSize.width+=INTERBUTTON_GAP;
-   if(i==1)
-    allButtonsSize.width+=OTHER_GAP;
-  }
+    NSSize size=[drawer sizeOfAttributedString:title inSize:NSZeroSize];
 
-  mainSize.width=MAX(messageSize.width,MAX(informativeSize.width,MAX(supressionSize.width,accessorySize.width)))+TEXT_MARGIN*2;
-  mainSize.width=MAX(MAINSIZE_MINWIDTH,mainSize.width);
-  mainSize.height=messageSize.height+informativeSize.height+supressionSize.height+accessorySize.height+TEXT_MARGIN*2;
-  
-  panelSize.width=LEFT_MARGIN+MAX(iconSize.width+ICON_MAIN_GAP+mainSize.width,allButtonsSize.width)+RIGHT_MARGIN;
-  panelSize.height=TOP_MARGIN+MAX(mainSize.height,iconSize.height)+MAIN_BUTTON_GAP+allButtonsSize.height+BOTTOM_MARGIN;
-  
+    otherButtonSize.width=MAX(size.width+BUTTON_MARGIN*2,otherButtonSize.width);
+    otherButtonSize.height=MAX(size.height,otherButtonSize.height);
+   }
+
+   for(i=2;i<count;i++)
+    [[_buttons objectAtIndex:i] setFrameSize:otherButtonSize];
+
+   for(i=0;i<count;i++){
+    NSButton *button=[_buttons objectAtIndex:i];
+
+    allButtonsSize.width+=[button frame].size.width;
+    allButtonsSize.height=MAX(allButtonsSize.height,[button frame].size.height);
+
+    allButtonsSize.width+=INTERBUTTON_GAP;
+    if(i==1)
+     allButtonsSize.width+=OTHER_GAP;
+   }
+
+   // Size the main reasonable and at least wide enough to make all buttons fit.
+   mainSize.width=MAX(screenSize.width/3.,allButtonsSize.width-iconSize.width-ICON_MAIN_GAP);
+   mainSize.width=MAX(mainSize.width,accessorySize.width);
+
+   // Size the texts.
+   textSize=NSMakeSize(mainSize.width-TEXTFIELD_MARGIN*2,NSStringDrawerLargeDimension);
+
+   if(_messageText!=nil){
+    messageSize=[drawer sizeOfString:_messageText withAttributes:messageAttributes inSize:textSize];
+    messageSize.width+=TEXTFIELD_MARGIN*2;
+    messageSize.height+=TEXTFIELD_MARGIN*2;
+   }
+
+   if(_informativeText!=nil){
+    informativeSize=[drawer sizeOfString:_informativeText withAttributes:informativeAttributes inSize:textSize];
+    informativeSize.width+=TEXTFIELD_MARGIN*2;
+    informativeSize.height+=TEXTFIELD_MARGIN*2;
+   }
+
+   if(_messageText!=nil && _informativeText!=nil)
+    messageInformativeGap=INTERTEXT_GAP;
+
+   if(_showsSuppressionButton)
+    supressionSize=[drawer sizeOfString:[_supressionButton title] withAttributes:suppressionAttributes inSize:textSize];
+
+   if(_informativeText!=nil && _showsSuppressionButton)
+    informativeSuppressionGap=INTERTEXT_GAP;
+
+   if(_showsSuppressionButton && _accessoryView!=nil)
+    suppressionAccessoryGap=INTERTEXT_GAP;
+
+   // Now we can size the heights as well.
+   mainSize.height=messageSize.height+informativeSize.height+messageInformativeGap+supressionSize.height+informativeSuppressionGap+accessorySize.height+suppressionAccessoryGap;
+
+   panelSize.width=LEFT_MARGIN+mainSize.width+iconSize.width+ICON_MAIN_GAP+RIGHT_MARGIN;
+   panelSize.height=TOP_MARGIN+MAX(mainSize.height,iconSize.height)+MAIN_BUTTON_GAP+allButtonsSize.height+BOTTOM_MARGIN;
+
   if(_icon!=nil){
    NSRect       frame;
    NSImageView *imageView;
@@ -311,7 +343,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    frame.origin.x=LEFT_MARGIN+iconSize.width+ICON_MAIN_GAP;
    frame.origin.y=panelSize.height-TOP_MARGIN-messageSize.height;
    frame.size=messageSize;
-   frame.size.width+=TEXT_MARGIN*2;
    textField=[[[NSTextField alloc] initWithFrame:frame] autorelease];
    [textField setAttributedStringValue:[[[NSAttributedString alloc] initWithString:_messageText attributes:messageAttributes] autorelease]];
    [textField setEditable:NO];
@@ -325,7 +356,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    NSTextField *textField;
    
    frame.origin.x=LEFT_MARGIN+iconSize.width+ICON_MAIN_GAP;
-   frame.origin.y=panelSize.height-TOP_MARGIN-messageSize.height-informativeSize.height;
+   frame.origin.y=panelSize.height-TOP_MARGIN-messageSize.height-messageInformativeGap-informativeSize.height;
    frame.size=informativeSize;
    textField=[[[NSTextField alloc] initWithFrame:frame] autorelease];
    [textField setStringValue:[[[NSAttributedString alloc] initWithString:_informativeText attributes:informativeAttributes] autorelease]];
@@ -339,7 +370,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    NSRect frame;
    
    frame.origin.x=LEFT_MARGIN+iconSize.width+ICON_MAIN_GAP;
-   frame.origin.y=panelSize.height-TOP_MARGIN-messageSize.height-informativeSize.height-frame.size.height;
+   frame.origin.y=panelSize.height-TOP_MARGIN-messageSize.height-messageInformativeGap-informativeSize.height-informativeSuppressionGap-frame.size.height;
    frame.size=supressionSize;
    [_supressionButton setFrame:frame];
    [[_window contentView] addSubview:_supressionButton];
@@ -349,7 +380,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    NSRect frame=[_accessoryView frame];
    
    frame.origin.x=LEFT_MARGIN+iconSize.width+ICON_MAIN_GAP;
-   frame.origin.y=panelSize.height-TOP_MARGIN-messageSize.height-informativeSize.height-supressionSize.height-frame.size.height;
+   frame.origin.y=panelSize.height-TOP_MARGIN-messageSize.height-messageInformativeGap-informativeSize.height-informativeSuppressionGap-supressionSize.height-suppressionAccessoryGap-frame.size.height;
    [_accessoryView setFrame:frame];
    [[_window contentView] addSubview:_accessoryView];
   }
