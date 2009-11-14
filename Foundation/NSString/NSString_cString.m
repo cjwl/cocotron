@@ -95,6 +95,7 @@ char *NSString_unicodeToAnyCString(NSStringEncoding encoding, const unichar *cha
             return NSUnicodeToUTF8(characters,length,lossy,resultLength,zone, zeroTerminate);
         case NSMacOSRomanStringEncoding:
             return NSUnicodeToMacOSRoman(characters,length,lossy,resultLength,zone, zeroTerminate);
+        case NSASCIIStringEncoding:
         case NSISOLatin1StringEncoding:
             return NSUnicodeToISOLatin1(characters,length,lossy,resultLength,zone, zeroTerminate);
         case NSWindowsCP1252StringEncoding:
@@ -104,6 +105,7 @@ char *NSString_unicodeToAnyCString(NSStringEncoding encoding, const unichar *cha
         case NSUnicodeStringEncoding:
             return NSUnicodeToUnicode(characters,length,resultLength,zone, zeroTerminate);
         default:
+        NSCLog("encoding=%d",encoding);
             if(encoding != defaultEncoding()) {
                 NSUnimplementedFunction();
             }
