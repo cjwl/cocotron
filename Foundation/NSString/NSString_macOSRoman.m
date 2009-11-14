@@ -183,8 +183,8 @@ unichar *NSMacOSRomanToUnicode(const char *cString,NSUInteger length,
 }
 
 char *NSUnicodeToMacOSRoman(const unichar *characters,NSUInteger length,
-                         BOOL lossy,NSUInteger *resultLength,NSZone *zone) {
-	char *macOSRoman=NSZoneMalloc(zone,sizeof(char)*(length+1));
+                         BOOL lossy,NSUInteger *resultLength,NSZone *zone,BOOL zeroTerminate) {
+	char *macOSRoman=NSZoneMalloc(zone,sizeof(char)*(length + (zeroTerminate == YES ? 1 : 0)));
 	int   i;
 	
 	for(i=0;i<length;i++){
@@ -219,11 +219,71 @@ char *NSUnicodeToMacOSRoman(const unichar *characters,NSUInteger length,
 			}
 		}
 	}
-	
-	macOSRoman[i]='\0';
+    if(zeroTerminate == YES) {
+        macOSRoman[i++]='\0';
+    }
 	*resultLength=i;
 	
 	return macOSRoman;
+}
+
+NSString *NSMacOSRomanCStringNewWithCharacters(NSZone *zone,
+                                            const unichar *characters,NSUInteger length,BOOL lossy) {
+    NSString *string;
+    NSUInteger  bytesLength;
+    char     *bytes;
+    
+    bytes=NSUnicodeToMacOSRoman(characters,length,lossy,&bytesLength,zone, NO);
+    
+    if(bytes==NULL)
+        string=nil;
+    else{
+        string=NSString_macOSRomanNewWithBytes(zone,bytes,bytesLength);
+        NSZoneFree(zone,bytes);
+    }
+    
+    return string;
+}
+
+NSUInteger NSGetMacOSRomanCStringWithMaxLength(const unichar *characters,NSUInteger length,
+                                               NSUInteger *location,char *cString,NSUInteger maxLength,BOOL lossy)
+{
+    NSUInteger i,result=0;
+    NSUInteger  bytesLength;
+    
+    
+    if(length+1 > maxLength) {
+        cString[0]='\0';
+        return 0;
+    }
+    for(i=0;i<length && result<=maxLength;i++){
+        const unichar code=characters[i];
+        
+        if(code<0x80)
+            cString[result++]=code;
+        else {
+            unsigned char j;
+            
+            for(j=0x80;j<=0x9F;j++)
+                if(code==_mapMacOSRomanToUnichar(j))
+                    break;
+            
+            if(j<=0x9F)
+                cString[result++]=j;
+            else if(lossy)
+                cString[result++]='\0';
+            else {
+                return NSNotFound;
+            }
+        }
+    }
+    
+    cString[result]='\0';
+    
+    *location=i;
+    
+    return result;
+    
 }
 
 @implementation NSString_macOSRoman

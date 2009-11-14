@@ -19,7 +19,13 @@ unichar *NSWin1252ToUnicode(const char *cString,NSUInteger length,
 							NSUInteger *resultLength,NSZone *zone);
 
 char *NSUnicodeToWin1252(const unichar *characters,NSUInteger length,
-						 BOOL lossy,NSUInteger *resultLength,NSZone *zone);
+						 BOOL lossy,NSUInteger *resultLength,NSZone *zone,BOOL zeroTerminate);
 
 NSString *NSString_win1252NewWithBytes(NSZone *zone,
 									   const char *bytes,NSUInteger length);
+
+NSString *NSWin1252CStringNewWithCharacters(NSZone *zone,
+                                            const unichar *characters,NSUInteger length,BOOL lossy);
+
+NSUInteger NSGetWin1252CStringWithMaxLength(const unichar *characters,NSUInteger length,
+                                            NSUInteger *location,char *cString,NSUInteger maxLength,BOOL lossy);

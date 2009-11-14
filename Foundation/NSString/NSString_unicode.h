@@ -20,4 +20,4 @@ NSString *NSString_unicodeNew(NSZone *zone,
  const unichar *unicode,NSUInteger length);
 
 NSUInteger NSGetUnicodeCStringWithMaxLength(const unichar *characters,NSUInteger length,NSUInteger *location,char *cString,NSUInteger maxLength);
-char *NSUnicodeToUnicode(const unichar *characters,NSUInteger length,NSZone *zone,BOOL zeroTerminate);
+char *NSUnicodeToUnicode(const unichar *characters,NSUInteger length,NSUInteger *resultLength,NSZone *zone,BOOL zeroTerminate);

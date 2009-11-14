@@ -12,4 +12,4 @@ unichar *NSSymbolToUnicode(const char *symbols,NSUInteger length,
   NSUInteger *resultLength,NSZone *zone);
 
 FOUNDATION_EXPORT char    *NSUnicodeToSymbol(const unichar *characters,NSUInteger length,
-  BOOL lossy,NSUInteger *resultLength,NSZone *zone);
+  BOOL lossy,NSUInteger *resultLength,NSZone *zone,BOOL zeroTerminate);

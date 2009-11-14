@@ -60,41 +60,47 @@ unichar *NSNEXTSTEPToUnicode(const char *cString,NSUInteger length,
 }
 
 char *NSUnicodeToNEXTSTEP(const unichar *characters,NSUInteger length,
-  BOOL lossy,NSUInteger *resultLength,NSZone *zone) {
-   char *nextstep=NSZoneMalloc(zone,sizeof(char)*(length+1));
-   int   i,j;
-
-   for(i=0;i<length;i++){
-
-    if(characters[i]<128)
-     nextstep[i]=characters[i];
-    else{
-
-     for(j=128;j<256;j++)
-      if(characters[i]==NEXTSTEPToUnicode[j])
-       break;
-
-     if(j<256)
-      nextstep[i]=j;
-     else if(lossy)
-      nextstep[i]='\0';
-     else {
-      NSZoneFree(zone,nextstep);
-      return NULL;
-     }
+  BOOL lossy,NSUInteger *resultLength,NSZone *zone, BOOL zeroTerminate) {
+    char *nextstep=NSZoneMalloc(zone,sizeof(char)*(length + (zeroTerminate == YES ? 1 : 0)));
+    int   i,j;
+    
+    for(i=0;i<length;i++){
+        
+        if(characters[i]<128)
+            nextstep[i]=characters[i];
+        else{
+            
+            for(j=128;j<256;j++)
+                if(characters[i]==NEXTSTEPToUnicode[j])
+                    break;
+            
+            if(j<256)
+                nextstep[i]=j;
+            else if(lossy)
+                nextstep[i]='\0';
+            else {
+                NSZoneFree(zone,nextstep);
+                return NULL;
+            }
+        }
     }
-   }
-
-   nextstep[i]='\0';
-   *resultLength=i;
-
-   return nextstep;
+    if(zeroTerminate == YES)
+    {
+        nextstep[i++]='\0';
+    }
+    *resultLength=i;
+    
+    return nextstep;
 }
 
-NSUInteger NSGetNEXTSTEPStringWithMaxLength(const unichar *characters,NSUInteger length,NSUInteger *location,char *cString,NSUInteger maxLength,BOOL lossy) {
+NSUInteger NSGetNEXTSTEPCStringWithMaxLength(const unichar *characters,NSUInteger length,NSUInteger *location,char *cString,NSUInteger maxLength,BOOL lossy) {
    NSUInteger i,result=0;
 
-   for(i=0;i<length && result<maxLength;i++){
+    if(length+1 > maxLength) {
+        cString[0]='\0';
+        return 0;
+    }
+   for(i=0;i<length && result<=maxLength;i++){
     unichar code=characters[i];
 
     if(code<128)

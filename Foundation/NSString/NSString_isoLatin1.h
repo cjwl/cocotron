@@ -19,8 +19,11 @@ unichar *NSISOLatin1ToUnicode(const char *cString,NSUInteger length,
   NSUInteger *resultLength,NSZone *zone);
 
 char *NSUnicodeToISOLatin1(const unichar *characters,NSUInteger length,
-  BOOL lossy,NSUInteger *resultLength,NSZone *zone);
+  BOOL lossy,NSUInteger *resultLength,NSZone *zone,BOOL zeroTerminate);
 
 void      NSString_isoLatin1Initialize(void);
 NSString *NSString_isoLatin1NewWithBytes(NSZone *zone,
  const char *bytes,NSUInteger length);
+
+NSUInteger NSGetISOLatin1CStringWithMaxLength(const unichar *characters,NSUInteger length,
+                                            NSUInteger *location,char *cString,NSUInteger maxLength,BOOL lossy);

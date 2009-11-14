@@ -43,6 +43,7 @@ freeWhenDone:(BOOL)freeWhenDone;
 #import <Foundation/NSString_placeholder.h>
 #import <Foundation/NSString_unicode.h>
 #import <Foundation/NSString_unicodePtr.h>
+#import <Foundation/NSString_defaultEncoding.h>
 #import <Foundation/NSStringFormatter.h>
 #import <Foundation/NSAutoreleasePool-private.h>
 #import <Foundation/NSStringFileIO.h>
@@ -90,7 +91,7 @@ int __CFConstantStringClassReference[1];
 
 -initWithCStringNoCopy:(char *)cString length:(NSUInteger)length
           freeWhenDone:(BOOL)freeWhenDone {
-   NSString *string=[self initWithBytes:cString length:length encoding:NSString_cStringEncoding];
+   NSString *string=[self initWithBytes:cString length:length encoding:defaultEncoding()];
 
    if(freeWhenDone)
     NSZoneFree(NSZoneFromPointer(cString),cString);
@@ -99,11 +100,11 @@ int __CFConstantStringClassReference[1];
 }
 
 -initWithCString:(const char *)cString length:(NSUInteger)length{
-   return [self initWithBytes:cString length:length encoding:NSString_cStringEncoding];
+   return [self initWithBytes:cString length:length encoding:defaultEncoding()];
 }
 
 -initWithCString:(const char *)cString {
-   return [self initWithBytes:cString length:strlen(cString) encoding:NSString_cStringEncoding];
+   return [self initWithBytes:cString length:strlen(cString) encoding:defaultEncoding()];
 }
 
 -initWithCString:(const char *)cString encoding:(NSStringEncoding)encoding {
@@ -1322,28 +1323,14 @@ U+2029 (Unicode paragraph separator), \r\n, in that order (also known as CRLF)
    char    *bytes=NULL;
 
    [self getCharacters:unicode];
- 
-   if(encoding==NSNEXTSTEPStringEncoding)
-    bytes=NSUnicodeToNEXTSTEP(unicode,length,lossy,&byteLength,zone);
-   else if(encoding==NSISOLatin1StringEncoding || encoding==NSASCIIStringEncoding) // NSASCII not correct
-    bytes=NSUnicodeToISOLatin1(unicode,length,lossy,&byteLength,zone);
-   else if(encoding==NSSymbolStringEncoding)
-    bytes=NSUnicodeToSymbol(unicode,length,lossy,&byteLength,zone);
-   else if(encoding==NSUTF8StringEncoding)
-    bytes=NSUnicodeToUTF8(unicode,length,lossy,&byteLength,zone,NO);
-   else if(encoding==NSUnicodeStringEncoding){
-    buffer[0]=0xFEFF;
-    return [NSData dataWithBytes:buffer length:(1+length)*sizeof(unichar)];
-   }
-   else if(encoding==NSWindowsCP1252StringEncoding)
-	bytes=NSUnicodeToWin1252(unicode,length,lossy,&byteLength,zone);
-   else {
-    NSRaiseException(NSInvalidArgumentException, self, 
-                     @selector(dataUsingEncoding:allowLossyConversion:),
-                     @"dataUsingEncoding: unsupported encoding %d", encoding);
-    return nil;
-   }
-
+    if(encoding == NSUnicodeStringEncoding)
+    {
+        buffer[0]=0xFEFF;
+        return [NSData dataWithBytes:buffer length:(1+length)*sizeof(unichar)];
+    }
+    else {
+        bytes=NSString_unicodeToAnyCString(encoding,unicode,length,lossy,&byteLength,zone,NO);
+    }
    if(bytes==NULL)
     return nil;
 
@@ -1404,82 +1391,31 @@ U+2029 (Unicode paragraph separator), \r\n, in that order (also known as CRLF)
 
 -(const char *)cStringUsingEncoding:(NSStringEncoding)encoding {
    NSUInteger length=[self length];
-   unichar buffer[length+1];
+   unichar buffer[length];
+   NSUInteger resultLength;
    
-   switch(encoding){
-
-    case NSUTF8StringEncoding:{
-      NSUInteger resultLength=0;
-      [self getCharacters:buffer];
-      char *utf8=NSUnicodeToUTF8(buffer,length,NO,&resultLength,NULL,YES);
-      NSData *data=[NSData dataWithBytesNoCopy:utf8 length:resultLength+1 freeWhenDone:YES];
-      return utf8;
-     }
-     break;
-
-    case NSUnicodeStringEncoding:
-     [self getCharacters:buffer];
-     buffer[length]=0x0000;
-
-     return [[NSData dataWithBytes:buffer length:(length+1)*sizeof(unichar)] bytes];
-     
-    default:
-     NSUnimplementedMethod();
-     break;
-   }
-   
-   return [self cString];
+   [self getCharacters:buffer];
+    char *cstr=NSString_unicodeToAnyCString(encoding, buffer,length,NO,&resultLength,NULL,YES);
+    NSData *data=[NSData dataWithBytesNoCopy:cstr length:resultLength freeWhenDone:YES];
+    return cstr;
+    
 }
 
 -(BOOL)getCString:(char *)cString maxLength:(NSUInteger)maxLength encoding:(NSStringEncoding)encoding {
     NSRange range={0,[self length]};
     
-    if (range.length > maxLength-1)
-        return NO;
-
-    BOOL result = YES;    
-    NSUInteger i;
-    unichar  unicode[range.length];
+    unichar  unicode[maxLength];
     NSUInteger location;
     [self getCharacters:unicode range:range];
-    
-    // this implementation is very basic, doesn't support most encodings
-    
-    switch (encoding) {
-        case NSASCIIStringEncoding: {
-            NSGetCStringWithMaxLength(unicode,range.length,&range.location,cString,maxLength-1,NO);
-            for (i = 0; i < maxLength-1; i++) {
-                if ((unsigned char)cString[i] > 127) {  // invalid character for ASCII encoding
-                    cString[i] = 0;
-                    result = NO;
-                    break;
-                }
-            }
-            break;
-        }
-        case NSUnicodeStringEncoding: {
-            NSUInteger ucByteLen = (range.length+1)*sizeof(unichar);
-            result = (ucByteLen <= maxLength);
-            if (result) {
-                memcpy(cString, unicode, ucByteLen);
-                *((unichar *)(cString + ucByteLen)) = 0;
-            }
-            break;
-        }
-        case NSNEXTSTEPStringEncoding:
-            NSGetNEXTSTEPStringWithMaxLength(unicode,range.length,&range.location,cString,maxLength-1,NO);
-            break;
-        
-        default:
-            result = NO;
-            NSUnimplementedMethod();
-   }
-   
-    return result;
+    if(NSGetAnyCStringWithMaxLength(encoding, unicode,range.length,&range.location,cString,maxLength,YES) <= 0) {
+        return NO;
+    }
+
+    return YES;
 }
 
 +(NSStringEncoding)defaultCStringEncoding {
-   return NSString_cStringEncoding;
+   return defaultEncoding();
 }
 
 -(void)getCString:(char *)cString maxLength:(NSUInteger)maxLength
@@ -1489,7 +1425,7 @@ U+2029 (Unicode paragraph separator), \r\n, in that order (also known as CRLF)
 
    [self getCharacters:unicode range:range];
 
-   NSGetCStringWithMaxLength(unicode,range.length,&location,cString,maxLength,YES);
+   NSGetCStringWithMaxLength(unicode,range.length,&location,cString,maxLength+1,YES);
 
    if(leftoverRange!=NULL){
     leftoverRange->location=range.location+location;
@@ -1499,12 +1435,12 @@ U+2029 (Unicode paragraph separator), \r\n, in that order (also known as CRLF)
 
 -(void)getCString:(char *)cString maxLength:(NSUInteger)maxLength {
    NSRange range={0,[self length]};
-   [self getCString:cString maxLength:maxLength range:range remainingRange:NULL];
+   [self getCString:cString maxLength:maxLength+1 range:range remainingRange:NULL];
 }
 
 -(void)getCString:(char *)cString {
    NSRange range={0,[self length]};
-   [self getCString:cString maxLength:NSMaximumStringLength range:range remainingRange:NULL];
+   [self getCString:cString maxLength:NSMaximumStringLength+1 range:range remainingRange:NULL];
 }
 
 -(NSUInteger)cStringLength {
@@ -1516,8 +1452,7 @@ U+2029 (Unicode paragraph separator), \r\n, in that order (also known as CRLF)
 
    [self getCharacters:unicode];
 
-   cString=NSString_cStringFromCharacters(unicode,length,YES,
-                           &cStringLength,NULL);
+   cString=NSString_cStringFromCharacters(unicode,length,YES,&cStringLength,NULL,NO);
 
    NSZoneFree(NULL,cString);
 
@@ -1525,17 +1460,7 @@ U+2029 (Unicode paragraph separator), \r\n, in that order (also known as CRLF)
 }
 
 -(const char *)cString {
-   NSUInteger  length=[self length];
-   unichar   unicode[length];
-   NSString *string;
-
-   [self getCharacters:unicode];
-
-   if((string=[NSString_cStringNewWithCharacters(NULL,unicode,length,NO) autorelease])==nil){
-    // FIX raise exception
-   }
-
-   return [string cString];
+    return [self cStringUsingEncoding:defaultEncoding()];
 }
 
 

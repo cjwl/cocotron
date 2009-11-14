@@ -65,7 +65,7 @@ NSString *NSNEXTSTEPCStringNewWithCharacters(NSZone *zone,
    NSUInteger  bytesLength;
    char     *bytes;
 
-   bytes=NSUnicodeToNEXTSTEP(characters,length,lossy,&bytesLength,zone);
+   bytes=NSUnicodeToNEXTSTEP(characters,length,lossy,&bytesLength,zone, NO);
 
    if(bytes==NULL)
     string=nil;

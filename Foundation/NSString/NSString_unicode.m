@@ -42,16 +42,17 @@ NSUInteger NSGetUnicodeCStringWithMaxLength(const unichar *characters,NSUInteger
     
 }
 
-char *NSUnicodeToUnicode(const unichar *characters,NSUInteger length, NSZone *zone,BOOL zeroTerminate) {
-	char *unicode=NSZoneMalloc(zone,sizeof(char)*(length + (zeroTerminate == YES ? 1 : 0)));
+char *NSUnicodeToUnicode(const unichar *characters,NSUInteger length,NSUInteger *resultLength, NSZone *zone,BOOL zeroTerminate) {
+	unichar *unicode=NSZoneMalloc(zone,sizeof(unichar)*(length + (zeroTerminate ? 1 : 0)));
 
-     memcpy(unicode, characters, length);
+     memcpy(unicode, characters, length*sizeof(unichar));
 	
-    if(zeroTerminate == YES) {
-        unicode[length]='\0';
-    } 
-	
-	return unicode;
+    if(zeroTerminate) {
+        unicode[length++]='\0';
+    }
+	*resultLength=length;
+    
+	return (char *)unicode;
 }
 
 -(NSUInteger)length {

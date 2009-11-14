@@ -72,7 +72,7 @@ void NSLogv(NSString *format,va_list arguments) {
    char    *bytes;
    
    [string getCharacters:unicode];
-   bytes=NSUnicodeToUTF8(unicode,length,NO,&byteLength,NULL,YES);
+   bytes=NSUnicodeToUTF8(unicode,length,NO,&byteLength,NULL,NO);
    [string release];
    if (bytes == NULL) return;
    

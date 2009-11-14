@@ -53,9 +53,11 @@ char    *NSUnicodeToUTF8(const unichar *characters,NSUInteger length,
   char     *utf8=NSZoneMalloc(NULL,(utf8Length+(zeroTerminate?1:0))*sizeof(unsigned char));
 
   *resultLength=convertUTF16toUTF8(characters,length,(unsigned char *)utf8);
-  if(zeroTerminate)
+  if(zeroTerminate){
    utf8[*resultLength]='\0';
-   
+   (*resultLength)++;
+  }
+  
   return utf8;
 }
 

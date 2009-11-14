@@ -19,7 +19,13 @@ unichar *NSMacOSRomanToUnicode(const char *cString,NSUInteger length,
 							NSUInteger *resultLength,NSZone *zone);
 
 char *NSUnicodeToMacOSRoman(const unichar *characters,NSUInteger length,
-						 BOOL lossy,NSUInteger *resultLength,NSZone *zone);
+						 BOOL lossy,NSUInteger *resultLength,NSZone *zone,BOOL zeroTerminate);
 
 NSString *NSString_macOSRomanNewWithBytes(NSZone *zone,
 									   const char *bytes,NSUInteger length);
+
+NSString *NSMacOSRomanCStringNewWithCharacters(NSZone *zone,
+                                               const unichar *characters,NSUInteger length,BOOL lossy);
+
+NSUInteger NSGetMacOSRomanCStringWithMaxLength(const unichar *characters,NSUInteger length,
+                                            NSUInteger *location,char *cString,NSUInteger maxLength,BOOL lossy);

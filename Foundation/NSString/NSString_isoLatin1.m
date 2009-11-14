@@ -22,8 +22,8 @@ unichar *NSISOLatin1ToUnicode(const char *cString,NSUInteger length,
 }
 
 char *NSUnicodeToISOLatin1(const unichar *characters,NSUInteger length,
-  BOOL lossy,NSUInteger *resultLength,NSZone *zone) {
-   char *isolatin1=NSZoneMalloc(zone,sizeof(char)*(length+1));
+  BOOL lossy,NSUInteger *resultLength,NSZone *zone,BOOL zeroTerminate) {
+   char *isolatin1=NSZoneMalloc(zone,sizeof(char)*(length + (zeroTerminate == YES ? 1 : 0)));
    int   i;
 
    for(i=0;i<length;i++){
@@ -37,11 +37,45 @@ char *NSUnicodeToISOLatin1(const unichar *characters,NSUInteger length,
      return NULL;
     }
    }
-
-   isolatin1[i]='\0';
+   if(zeroTerminate == YES) {
+        isolatin1[i++]='\0';
+   }
    *resultLength=i;
 
    return isolatin1;
+}
+
+NSUInteger NSGetISOLatin1CStringWithMaxLength(const unichar *characters,NSUInteger length,
+                                              NSUInteger *location,char *cString,NSUInteger maxLength,BOOL lossy)
+{
+    NSUInteger i,result=0;
+    NSUInteger  bytesLength;
+    
+    
+    if(length+1 > maxLength) {
+        cString[0]='\0';
+        return 0;
+    }
+    for(i=0;i<length && result<=maxLength;i++){
+        const unichar code=characters[i];
+        
+        if(code<256)
+            cString[result++]=code;
+        else {
+            if(lossy)
+                cString[result++]='\0';
+            else {
+                return NSNotFound;
+            }
+        }
+    }
+    
+    cString[result]='\0';
+    
+    *location=i;
+    
+    return result;
+    
 }
 
 @implementation NSString_isoLatin1

@@ -11,6 +11,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSString_cString.h>
 #import <Foundation/NSString_unicode.h>
 #import <Foundation/NSString_unicodePtr.h>
+#import <Foundation/NSString_defaultEncoding.h>
 #import <Foundation/NSUnicodeCaseMapping.h>
 #import <Foundation/NSString_nextstep.h>
 #import <Foundation/NSString_isoLatin1.h>
@@ -48,7 +49,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -initWithBytes:(const void *)bytes length:(NSUInteger)length encoding:(NSStringEncoding)encoding {
    NSDeallocateObject(self);
 
-   if(encoding==NSString_cStringEncoding)
+   if(encoding==defaultEncoding())
     return NSString_cStringNewWithBytes(NULL,bytes,length);
 
    switch(encoding){

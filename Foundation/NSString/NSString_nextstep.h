@@ -18,9 +18,9 @@ unichar *NSNEXTSTEPToUnicode(const char *cString,NSUInteger length,
   NSUInteger *resultLength,NSZone *zone);
 
 char *NSUnicodeToNEXTSTEP(const unichar *characters,NSUInteger length,
-  BOOL lossy,NSUInteger *resultLength,NSZone *zone);
+  BOOL lossy,NSUInteger *resultLength,NSZone *zone,BOOL zeroTerminate);
 
 NSString *NSNEXTSTEPStringNewWithBytes(NSZone *zone,
  const char *bytes,NSUInteger length);
 
-NSUInteger NSGetNEXTSTEPStringWithMaxLength(const unichar *characters,NSUInteger length,NSUInteger *location,char *cString,NSUInteger maxLength,BOOL lossy);
+NSUInteger NSGetNEXTSTEPCStringWithMaxLength(const unichar *characters,NSUInteger length,NSUInteger *location,char *cString,NSUInteger maxLength,BOOL lossy);

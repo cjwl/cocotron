@@ -9,13 +9,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <Foundation/NSString.h>
 
-FOUNDATION_EXPORT NSStringEncoding NSString_cStringEncoding;
-
 unichar *NSCharactersFromCString(const char *cString,NSUInteger length,
   NSUInteger *resultLength,NSZone *zone);
 
 char    *NSString_cStringFromCharacters(const unichar *characters,NSUInteger length,
-  BOOL lossy,NSUInteger *resultLength,NSZone *zone);
+  BOOL lossy,NSUInteger *resultLength,NSZone *zone,BOOL zeroTerminate);
 
 NSUInteger NSGetCStringWithMaxLength(const unichar *characters,NSUInteger length,NSUInteger *location,char *cString,NSUInteger maxLength,BOOL lossy);
 
@@ -31,3 +29,19 @@ NSString *NSString_cStringNewWithCapacity(NSZone *zone,NSUInteger capacity,char 
 
 
 NSString *NSString_cStringWithBytesAndZero(NSZone *zone,const char *bytes);
+
+unichar *NSString_anyCStringToUnicode(NSStringEncoding encoding, const char *cString,NSUInteger length,
+							NSUInteger *resultLength,NSZone *zone);
+
+char *NSString_unicodeToAnyCString(NSStringEncoding encoding, const unichar *characters,NSUInteger length,
+						 BOOL lossy,NSUInteger *resultLength,NSZone *zone,BOOL zeroTerminate);
+
+NSString *NSString_anyCStringNewWithBytes(NSStringEncoding encoding, NSZone *zone,
+									   const char *bytes,NSUInteger length);
+
+NSString *NSString_anyCStringNewWithCharacters(NSStringEncoding encoding, NSZone *zone,
+                                               const unichar *characters,NSUInteger length,BOOL lossy);
+
+NSUInteger NSGetAnyCStringWithMaxLength(NSStringEncoding encoding, const unichar *characters, NSUInteger length,
+                                        NSUInteger *location,char *cString,NSUInteger maxLength,BOOL lossy);
+

@@ -10,7 +10,7 @@
 #import <Foundation/NSRaiseException.h>
 
 
-#define UNDEFINDED_UNICODE 0x0000
+#define UNDEFINED_UNICODE 0x0000
 
 typedef struct
 {
@@ -21,7 +21,7 @@ typedef struct
 static CharMapping mapping_array[]=
 {
 {(const unsigned char)0x80,	(const unichar)0x20AC},
-{(const unsigned char)0x81,	(const unichar)UNDEFINDED_UNICODE},
+{(const unsigned char)0x81,	(const unichar)UNDEFINED_UNICODE},
 {(const unsigned char)0x82,	(const unichar)0x201A},
 {(const unsigned char)0x83,	(const unichar)0x0192},
 {(const unsigned char)0x84,	(const unichar)0x201E},
@@ -33,10 +33,10 @@ static CharMapping mapping_array[]=
 {(const unsigned char)0x8A,	(const unichar)0x0160},
 {(const unsigned char)0x8B,	(const unichar)0x2039},
 {(const unsigned char)0x8C,	(const unichar)0x0152},
-{(const unsigned char)0x8D,	(const unichar)UNDEFINDED_UNICODE},
+{(const unsigned char)0x8D,	(const unichar)UNDEFINED_UNICODE},
 {(const unsigned char)0x8E,	(const unichar)0x017D},
-{(const unsigned char)0x8F,	(const unichar)UNDEFINDED_UNICODE},
-{(const unsigned char)0x90,	(const unichar)UNDEFINDED_UNICODE},
+{(const unsigned char)0x8F,	(const unichar)UNDEFINED_UNICODE},
+{(const unsigned char)0x90,	(const unichar)UNDEFINED_UNICODE},
 {(const unsigned char)0x91,	(const unichar)0x2018},
 {(const unsigned char)0x92,	(const unichar)0x2019},
 {(const unsigned char)0x93,	(const unichar)0x201C},
@@ -49,7 +49,7 @@ static CharMapping mapping_array[]=
 {(const unsigned char)0x9A,	(const unichar)0x0161},
 {(const unsigned char)0x9B,	(const unichar)0x203A},
 {(const unsigned char)0x9C,	(const unichar)0x0153},
-{(const unsigned char)0x9D,	(const unichar)UNDEFINDED_UNICODE},
+{(const unsigned char)0x9D,	(const unichar)UNDEFINED_UNICODE},
 {(const unsigned char)0x9E,	(const unichar)0x017E},
 {(const unsigned char)0x9F,	(const unichar)0x0178}
 };
@@ -92,8 +92,8 @@ unichar *NSWin1252ToUnicode(const char *cString,NSUInteger length,
 }
 
 char *NSUnicodeToWin1252(const unichar *characters,NSUInteger length,
-						   BOOL lossy,NSUInteger *resultLength,NSZone *zone) {
-	char *win1252=NSZoneMalloc(zone,sizeof(char)*(length+1));
+						   BOOL lossy,NSUInteger *resultLength,NSZone *zone,BOOL zeroTerminate) {
+	char *win1252=NSZoneMalloc(zone,sizeof(char)*(length + (zeroTerminate == YES ? 1 : 0)));
 	int   i;
 	
 	for(i=0;i<length;i++){
@@ -128,11 +128,68 @@ char *NSUnicodeToWin1252(const unichar *characters,NSUInteger length,
 			}
 		}
 	}
-	
-	win1252[i]='\0';
+	if(zeroTerminate == YES) {
+        win1252[i++]='\0';
+    } 
 	*resultLength=i;
 	
 	return win1252;
+}
+
+NSString *NSWin1252CStringNewWithCharacters(NSZone *zone,
+                                             const unichar *characters,NSUInteger length,BOOL lossy) {
+    NSString *string;
+    NSUInteger  bytesLength;
+    char     *bytes;
+    
+    bytes=NSUnicodeToWin1252(characters,length,lossy,&bytesLength,zone,NO);
+    
+    if(bytes==NULL)
+        string=nil;
+    else{
+        string=NSString_win1252NewWithBytes(zone,bytes,bytesLength);
+        NSZoneFree(zone,bytes);
+    }
+    
+    return string;
+}
+
+NSUInteger NSGetWin1252CStringWithMaxLength(const unichar *characters,NSUInteger length,NSUInteger *location,char *cString,NSUInteger maxLength,BOOL lossy) {
+    NSUInteger i,result=0;
+    NSUInteger  bytesLength;
+
+    
+    if(length+1 > maxLength) {
+        cString[0]='\0';
+        return 0;
+    }
+    for(i=0;i<length && result<=maxLength;i++){
+        const unichar code=characters[i];
+        
+        if(code<0x80)
+            cString[result++]=code;
+        else {
+            unsigned char j;
+            
+            for(j=0x80;j<=0x9F;j++)
+                if(code==_mapWin1252ToUnichar(j))
+                    break;
+            
+            if(j<=0x9F)
+                cString[result++]=j;
+            else if(lossy)
+                cString[result++]='\0';
+            else {
+                return NSNotFound;
+            }
+        }
+    }
+    
+    cString[result]='\0';
+    
+    *location=i;
+    
+    return result;
 }
 
 @implementation NSString_win1252

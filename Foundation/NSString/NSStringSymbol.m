@@ -57,8 +57,8 @@ unichar *NSSymbolToUnicode(const char *symbols,NSUInteger length,
 }
 
 char    *NSUnicodeToSymbol(const unichar *characters,NSUInteger length,
-  BOOL lossy,NSUInteger *resultLength,NSZone *zone){
-   char *symbols=NSZoneMalloc(zone,sizeof(char)*length);
+  BOOL lossy,NSUInteger *resultLength,NSZone *zone,BOOL zeroTerminate){
+   char *symbols=NSZoneMalloc(zone,sizeof(char)*(length + (zeroTerminate == YES ? 1 : 0)));
    int   i,j;
 
    for(i=0;i<length;i++){
@@ -75,6 +75,10 @@ char    *NSUnicodeToSymbol(const unichar *characters,NSUInteger length,
      NSZoneFree(zone,symbols);
      return NULL;
     }
+   }
+    
+   if(zeroTerminate == YES) {
+        symbols[i++]='\0';
    }
 
    *resultLength=i;
