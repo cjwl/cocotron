@@ -159,7 +159,7 @@ NSUInteger NSGetWin1252CStringWithMaxLength(const unichar *characters,NSUInteger
     NSUInteger  bytesLength;
 
     
-    if(length+1 > maxLength) {
+    if(length > maxLength) {
         cString[0]='\0';
         return 0;
     }
