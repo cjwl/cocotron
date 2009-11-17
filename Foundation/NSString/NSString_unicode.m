@@ -87,12 +87,6 @@ char *NSUnicodeToUnicode(const unichar *characters,NSUInteger length,NSUInteger 
     buffer[i]=_unicode[loc+i];
 }
 
--(void)getCString:(char *)cString maxLength:(NSUInteger)maxLength {
-   NSUInteger location;
-
-   NSGetCStringWithMaxLength(_unicode,_length,&location,cString,maxLength,YES);
-}
-
 -(NSUInteger)hash {
    return NSStringHashUnicode(_unicode,MIN(_length,NSHashStringLength));
 }
