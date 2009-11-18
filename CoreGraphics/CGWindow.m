@@ -6,103 +6,103 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 #import <CoreGraphics/CGWindow.h>
-#import "KGExceptions.h"
+#import "O2Exceptions.h"
 
 @implementation CGWindow
 
 -(void)setDelegate:delegate {
-   KGInvalidAbstractInvocation();
+   O2InvalidAbstractInvocation();
 }
 
 -delegate {
-   KGInvalidAbstractInvocation();
+   O2InvalidAbstractInvocation();
    return nil;
 }
 
 -(void)invalidate {
-   KGInvalidAbstractInvocation();
+   O2InvalidAbstractInvocation();
 }
 
 
 -(O2Context *)cgContext {
-   KGInvalidAbstractInvocation();
+   O2InvalidAbstractInvocation();
    return nil;
 }
 
 
 -(void)setTitle:(NSString *)title {
-   KGInvalidAbstractInvocation();
+   O2InvalidAbstractInvocation();
 }
 
 -(void)setFrame:(NSRect)frame {
-   KGInvalidAbstractInvocation();
+   O2InvalidAbstractInvocation();
 }
 
 
 -(void)showWindowForAppActivation:(NSRect)frame {
-   KGInvalidAbstractInvocation();
+   O2InvalidAbstractInvocation();
 }
 
 -(void)hideWindowForAppDeactivation:(NSRect)frame {
-   KGInvalidAbstractInvocation();
+   O2InvalidAbstractInvocation();
 }
 
 -(void)showWindowWithoutActivation {
-   KGInvalidAbstractInvocation();
+   O2InvalidAbstractInvocation();
 }
 
 -(void)hideWindow {
-   KGInvalidAbstractInvocation();
+   O2InvalidAbstractInvocation();
 }
 
 
 -(void)placeAboveWindow:(CGWindow *)other {
-   KGInvalidAbstractInvocation();
+   O2InvalidAbstractInvocation();
 }
 
 -(void)placeBelowWindow:(CGWindow *)other {
-   KGInvalidAbstractInvocation();
+   O2InvalidAbstractInvocation();
 }
 
 
 -(void)makeKey {
-   KGInvalidAbstractInvocation();
+   O2InvalidAbstractInvocation();
 }
 
 -(void)captureEvents {
-   KGInvalidAbstractInvocation();
+   O2InvalidAbstractInvocation();
 }
 
 -(void)miniaturize {
-   KGInvalidAbstractInvocation();
+   O2InvalidAbstractInvocation();
 }
 
 -(void)deminiaturize {
-   KGInvalidAbstractInvocation();
+   O2InvalidAbstractInvocation();
 }
 
 -(BOOL)isMiniaturized {
-   KGInvalidAbstractInvocation();
+   O2InvalidAbstractInvocation();
    return NO;
 }
 
 -(void)flushBuffer {
-   KGInvalidAbstractInvocation();
+   O2InvalidAbstractInvocation();
 }
 
 
 -(NSPoint)mouseLocationOutsideOfEventStream {
-   KGInvalidAbstractInvocation();
+   O2InvalidAbstractInvocation();
    return NSZeroPoint;
 }
 
 
 -(void)sendEvent:(CGEvent *)event {
-   KGInvalidAbstractInvocation();
+   O2InvalidAbstractInvocation();
 }
 
 -(void)addEntriesToDeviceDictionary:(NSDictionary *)entries {
-   KGInvalidAbstractInvocation();
+   O2InvalidAbstractInvocation();
 }
 
 @end

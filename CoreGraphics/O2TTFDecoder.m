@@ -1,6 +1,6 @@
 #import "O2TTFDecoder.h"
-#import "KGDataProvider.h"
-#import "KGFont.h"
+#import "O2DataProvider.h"
+#import "O2Font.h"
 #import "O2MutablePath.h"
 #import <Foundation/NSMapTable.h>
 

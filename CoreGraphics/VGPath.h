@@ -28,7 +28,7 @@
 
 #import "VGmath.h"
 #import "O2Path.h"
-#import "KGContext_builtin.h"
+#import "O2Context_builtin.h"
 
 @interface VGPath : NSObject {
    O2Path *_path;

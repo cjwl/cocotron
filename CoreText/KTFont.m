@@ -6,7 +6,7 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 #import "KTFont.h"
-#import <CoreGraphics/KGExceptions.h>
+#import <CoreGraphics/O2Exceptions.h>
 #import <Foundation/NSArray.h>
 
 @implementation KTFont
@@ -19,7 +19,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -initWithUIFontType:(CTFontUIFontType)uiFontType size:(CGFloat)size language:(NSString *)language {
-   KGInvalidAbstractInvocation();
+   O2InvalidAbstractInvocation();
    return nil;
 }
 
@@ -37,7 +37,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(CGRect)boundingRect {
-   KGInvalidAbstractInvocation();
+   O2InvalidAbstractInvocation();
    return CGRectZero;
 }
 
@@ -60,12 +60,12 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(CGFloat)underlineThickness {
-   KGInvalidAbstractInvocation();
+   O2InvalidAbstractInvocation();
    return 0;
 }
 
 -(CGFloat)underlinePosition {
-   KGInvalidAbstractInvocation();
+   O2InvalidAbstractInvocation();
    return 0;
 }
 
@@ -128,7 +128,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(CGPathRef)createPathForGlyph:(CGGlyph)glyph transform:(CGAffineTransform *)xform {
-   KGInvalidAbstractInvocation();
+   O2InvalidAbstractInvocation();
    return nil;
 }
 

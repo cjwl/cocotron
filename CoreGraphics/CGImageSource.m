@@ -1,8 +1,8 @@
 #import <CoreGraphics/CGImageSource.h>
-#import "KGImageSource.h"
+#import "O2ImageSource.h"
 
 CGImageSourceRef CGImageSourceCreateWithData(CFDataRef data,CFDictionaryRef options) {
-   return [KGImageSource newImageSourceWithData:(NSData *)data options:(NSDictionary *)options];
+   return [O2ImageSource newImageSourceWithData:(NSData *)data options:(NSDictionary *)options];
 }
 
 CGImageRef CGImageSourceCreateImageAtIndex(CGImageSourceRef self,size_t index,CFDictionaryRef options) {

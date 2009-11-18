@@ -3,8 +3,8 @@
 #import <CoreGraphics/CGPath.h>
 #import <CoreGraphics/CGPattern.h>
 #import "O2AffineTransform.h"
-#import "KGFunction.h"
-#import "KGPattern.h"
+#import "O2Function.h"
+#import "O2Pattern.h"
 #import "O2Path.h"
 
 static inline CGAffineTransform CGAffineTransformFromO2(O2AffineTransform xform){

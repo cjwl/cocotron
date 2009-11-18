@@ -11,10 +11,10 @@
 #import <CoreGraphics/O2MutablePath.h>
 #import <CoreGraphics/O2Color.h>
 #import <Foundation/NSException.h>
-#import <CoreGraphics/KGGraphicsState.h>
+#import <CoreGraphics/O2GraphicsState.h>
 #import <AppKit/TTFFont.h>
 #import <CoreGraphics/O2ColorSpace.h>
-#import <CoreGraphics/KGSurface.h>
+#import <CoreGraphics/O2Surface.h>
 #import <AppKit/CairoCacheImage.h>
 #import <Foundation/NSException.h>
 

@@ -1,11 +1,11 @@
 #import "O2ColorSpace+PDF.h"
-#import "KGPDFObject_Name.h"
-#import "KGPDFObject_Integer.h"
-#import "KGPDFContext.h"
-#import "KGPDFArray.h"
-#import "KGPDFStream.h"
-#import "KGPDFString.h"
-#import "KGPDFDictionary.h"
+#import "O2PDFObject_Name.h"
+#import "O2PDFObject_Integer.h"
+#import "O2PDFContext.h"
+#import "O2PDFArray.h"
+#import "O2PDFStream.h"
+#import "O2PDFString.h"
+#import "O2PDFDictionary.h"
 
 @implementation O2ColorSpace(PDF)
 

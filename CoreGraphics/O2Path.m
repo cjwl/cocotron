@@ -8,7 +8,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import "O2Path.h"
 #import "O2MutablePath.h"
-#import "KGExceptions.h"
+#import "O2Exceptions.h"
 
 @implementation O2Path
 
@@ -144,7 +144,7 @@ BOOL O2PathIsRect(O2PathRef self,O2Rect *rect) {
 }
 
 BOOL O2PathContainsPoint(O2PathRef self,const O2AffineTransform *xform,O2Point point,BOOL evenOdd) {
-   KGUnimplementedFunction();
+   O2UnimplementedFunction();
    return NO;
 }
 

@@ -15,7 +15,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <windows.h>
 
-@class NSEvent, NSColor, Win32EventInputSource,KGContext_gdi;
+@class NSEvent, NSColor, Win32EventInputSource,O2Context_gdi;
 
 @interface Win32Display : NSDisplay {
    Win32EventInputSource *_eventInputSource;

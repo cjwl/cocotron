@@ -1,4 +1,4 @@
-#import "KGFont.h"
+#import "O2Font.h"
 
 @class NSMapTable;
 

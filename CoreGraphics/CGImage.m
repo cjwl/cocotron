@@ -8,7 +8,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import <CoreGraphics/CGImage.h>
 #import <Foundation/NSString.h>
-#import "KGImage.h"
+#import "O2Image.h"
 
 CGImageRef CGImageRetain(CGImageRef image) {
    return O2ImageRetain(image);

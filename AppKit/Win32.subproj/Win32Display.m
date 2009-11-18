@@ -9,9 +9,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/Win32Event.h>
 #import <AppKit/Win32Window.h>
 #import <AppKit/Win32Cursor.h>
-#import <AppKit/KGContext_gdi.h>
+#import <AppKit/O2Context_gdi.h>
 #import <AppKit/Win32DeviceContextWindow.h>
-#import <CoreGraphics/KGGraphicsState.h>
+#import <CoreGraphics/O2GraphicsState.h>
 #import <AppKit/Win32EventInputSource.h>
 
 #import <AppKit/NSScreen.h>
@@ -913,7 +913,7 @@ static int CALLBACK buildTypeface(const LOGFONTA *lofFont_old,
     return NSCancelButton;
    else {
     NSDictionary *auxiliaryInfo=[NSDictionary dictionaryWithObject:[attributes objectForKey:@"_title"] forKey:(id)kCGPDFContextTitle];
-    KGContext_gdi *context=[[[KGContext_gdi alloc] initWithPrinterDC:printProperties.hDC auxiliaryInfo:auxiliaryInfo] autorelease];
+    O2Context_gdi *context=[[[O2Context_gdi alloc] initWithPrinterDC:printProperties.hDC auxiliaryInfo:auxiliaryInfo] autorelease];
     NSRect imageable;
     
     if([context getImageableRect:&imageable])

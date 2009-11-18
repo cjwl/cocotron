@@ -1,17 +1,17 @@
-#import "KGContext.h"
-#import "KGBitmapContext.h"
+#import "O2Context.h"
+#import "O2BitmapContext.h"
 #import "O2Path.h"
 #import "O2MutablePath.h"
 #import "O2Color.h"
 #import "O2ColorSpace.h"
-#import "KGImage.h"
-#import "KGImageSource.h"
-#import "KGDataProvider.h"
-#import "KGPDFDocument.h"
-#import "KGPDFPage.h"
-#import "KGFunction.h"
-#import "KGShading.h"
-#import "KGFont.h"
+#import "O2Image.h"
+#import "O2ImageSource.h"
+#import "O2DataProvider.h"
+#import "O2PDFDocument.h"
+#import "O2PDFPage.h"
+#import "O2Function.h"
+#import "O2Shading.h"
+#import "O2Font.h"
 
 #define CGFloat O2Float
 #define CGRect O2Rect
@@ -37,7 +37,7 @@
 #define CGMutablePathRef O2MutablePathRef
 #define CGDataProviderRef O2DataProviderRef
 #define CGImageRef O2ImageRef
-#define CGImageSourceRef KGImageSource *
+#define CGImageSourceRef O2ImageSource *
 #define CGPDFDocumentRef O2PDFDocument *
 #define CGPDFPageRef O2PDFPage *
 #define CGFunctionRef O2FunctionRef
@@ -255,7 +255,7 @@
 // image source
 
 #define CGImageSourceCreateWithData(data,opts) \
-   [KGImageSource newImageSourceWithData:data options:opts]
+   [O2ImageSource newImageSourceWithData:data options:opts]
 
 #define CGImageSourceCreateImageAtIndex(self,index,opts) \
    [self createImageAtIndex:index options:opts]

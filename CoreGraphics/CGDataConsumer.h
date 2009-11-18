@@ -9,7 +9,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <CoreGraphics/CoreGraphicsExport.h>
 #import <CoreFoundation/CFData.h>
 
-typedef struct KGDataConsumer *CGDataConsumerRef;
+typedef struct O2DataConsumer *CGDataConsumerRef;
 
 COREGRAPHICS_EXPORT CGDataConsumerRef CGDataConsumerCreateWithCFData(CFMutableDataRef data);
 COREGRAPHICS_EXPORT void CGDataConsumerRelease(CGDataConsumerRef self);

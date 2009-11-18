@@ -12,8 +12,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <AppKit/Win32Event.h>
 #import <AppKit/Win32Display.h>
 #import <Foundation/NSString_win32.h>
-#import <CoreGraphics/KGContext.h>
-#import <AppKit/KGContext_gdi.h>
+#import <CoreGraphics/O2Context.h>
+#import <AppKit/O2Context_gdi.h>
 
 #import <AppKit/NSWindow.h>
 #import <AppKit/NSPanel.h>
@@ -351,7 +351,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
     SIZE sizeWnd = {_size.width, _size.height};
     POINT ptSrc = {0, 0};
 
-    UpdateLayeredWindow([self windowHandle], NULL, NULL, &sizeWnd, [(KGContext_gdi *)_backingContext dc], &ptSrc, 0, &blend, ULW_ALPHA);
+    UpdateLayeredWindow([self windowHandle], NULL, NULL, &sizeWnd, [(O2Context_gdi *)_backingContext dc], &ptSrc, 0, &blend, ULW_ALPHA);
    }
    else {
     switch(_backingType){

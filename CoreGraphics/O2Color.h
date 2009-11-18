@@ -15,7 +15,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 typedef O2Color *O2ColorRef;
 
 #import "O2ColorSpace.h"
-#import "KGPattern.h"
+#import "O2Pattern.h"
 
 @interface O2Color : NSObject {
   O2ColorSpaceRef _colorSpace;

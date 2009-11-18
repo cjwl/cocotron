@@ -8,7 +8,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #import "O2MutablePath.h"
 #import "O2Path.h"
-#import "KGExceptions.h"
+#import "O2Exceptions.h"
 #import <math.h>
 
 // ellipse to 4 spline bezier, http://www.tinaja.com/glib/ellipse4.pdf
@@ -281,7 +281,7 @@ void O2PathAddArc(O2MutablePathRef self,const O2AffineTransform *matrix,O2Float 
 }
 
 void O2PathAddArcToPoint(O2MutablePathRef self,const O2AffineTransform *matrix,O2Float tx1,O2Float ty1,O2Float tx2,O2Float ty2,O2Float radius) {
-	KGUnimplementedFunction();
+	O2UnimplementedFunction();
 }
 
 void O2PathAddEllipseInRect(O2MutablePathRef self,const O2AffineTransform *matrix,O2Rect rect) {

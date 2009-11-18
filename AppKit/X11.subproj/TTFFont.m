@@ -8,7 +8,7 @@
 
 #import "TTFFont.h"
 #import <AppKit/KTFont.h>
-#import <CoreGraphics/KGFont.h>
+#import <CoreGraphics/O2Font.h>
 #import <AppKit/NSFontTypeface.h>
 #import <fontconfig.h>
 

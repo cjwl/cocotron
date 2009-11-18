@@ -1,0 +1,122 @@
+/* Copyright (c) 2007 Christopher J. W. Lloyd
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
+
+#import "O2ImageSource_TIFF.h"
+#import "NSTIFFReader.h"
+#import "NSTIFFImageFileDirectory.h"
+#import "O2DataProvider.h"
+#import "O2ColorSpace.h"
+#import "O2Image.h"
+
+@implementation O2ImageSource_TIFF
+
++(BOOL)isPresentInDataProvider:(O2DataProvider *)provider {
+   enum { signatureLength=4 };
+   unsigned char signature[2][signatureLength] = {
+    { 'M','M',00,42 },
+    { 'I','I',42,00 }
+   };
+   unsigned char check[signatureLength];
+   NSInteger     i,size=[provider getBytes:check range:NSMakeRange(0,signatureLength)];
+   
+   if(size!=signatureLength)
+    return NO;
+   
+   int s;
+   for(s=0;s<2;s++){
+    for(i=0;i<signatureLength;i++)
+     if(signature[s][i]!=check[i])
+      break;
+      
+    if(i==signatureLength)
+     return YES;
+   }
+   return NO;
+}
+
+
+-initWithDataProvider:(O2DataProvider *)provider options:(NSDictionary *)options {
+   [super initWithDataProvider:provider options:options];
+   
+   NSData *data=O2DataProviderCopyData(provider);
+   _reader=[[NSTIFFReader alloc] initWithData:data];
+   [data release];
+   
+   if(_reader==nil){
+    [self dealloc];
+    return nil;
+   }
+   return self;
+}
+
+-(void)dealloc {
+   [_reader release];
+   [super dealloc];
+}
+
+-(unsigned)count {
+   return [[_reader imageFileDirectory] count];
+}
+
+-(NSDictionary *)copyPropertiesAtIndex:(unsigned)index options:(NSDictionary *)options {
+   NSArray *entries=[_reader imageFileDirectory];
+   
+   if([entries count]<=index)
+    return nil;
+   
+   NSTIFFImageFileDirectory *directory=[entries objectAtIndex:index];
+   
+   return [[directory properties] copy];
+}
+
+
+-(O2Image *)createImageAtIndex:(unsigned)index options:(NSDictionary *)options {
+   NSArray *entries=[_reader imageFileDirectory];
+   
+   if([entries count]<=index)
+    return nil;
+   
+   NSTIFFImageFileDirectory *directory=[entries objectAtIndex:index];
+   
+   int            width=[directory imageWidth];
+   int            height=[directory imageLength];
+   int            bitsPerPixel=32;
+   int            bytesPerRow=(bitsPerPixel/(sizeof(char)*8))*width;
+   
+   unsigned char *bytes;
+   NSData        *bitmap;
+   
+   bytes=NSZoneMalloc([self zone],bytesPerRow*height);
+   if(![directory getRGBAImageBytes:bytes data:[_reader data]]){
+    NSZoneFree([self zone],bytes);
+    return nil;
+   }
+
+// clamp premultiplied data, this should probably be moved into the O2Image init
+   int i;
+   for(i=0;i<bytesPerRow*height;i+=4){
+    bytes[i]=MIN(bytes[i],bytes[i+3]);
+    bytes[i+1]=MIN(bytes[i+1],bytes[i+3]);
+    bytes[i+2]=MIN(bytes[i+2],bytes[i+3]);
+   }
+
+   bitmap=[[NSData alloc] initWithBytesNoCopy:bytes length:bytesPerRow*height];
+
+   O2DataProvider *provider=[[O2DataProvider alloc] initWithData:bitmap];
+   O2ColorSpaceRef colorSpace=O2ColorSpaceCreateDeviceRGB();
+   O2Image *image=[[O2Image alloc] initWithWidth:width height:height bitsPerComponent:8 bitsPerPixel:bitsPerPixel bytesPerRow:bytesPerRow
+      colorSpace:colorSpace bitmapInfo:kO2BitmapByteOrder32Big|kO2ImageAlphaPremultipliedLast provider:provider decode:NULL interpolate:NO renderingIntent:kO2RenderingIntentDefault];
+      
+   [colorSpace release];
+   [provider release];
+   [bitmap release];
+   
+   return image;
+}
+
+@end

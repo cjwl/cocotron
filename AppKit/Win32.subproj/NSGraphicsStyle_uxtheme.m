@@ -1,6 +1,6 @@
 #import "NSGraphicsStyle_uxtheme.h"
 #import <AppKit/NSGraphicsContext.h>
-#import <CoreGraphics/KGContext.h>
+#import <CoreGraphics/O2Context.h>
 #import <AppKit/NSImage.h>
 #import <AppKit/NSColor.h>
 #import "Win32DeviceContextWindow.h"
@@ -109,7 +109,7 @@ static BOOL drawThemeBackground(HANDLE theme,HDC dc,int partId,int stateId,const
 
 @implementation NSGraphicsStyle_uxtheme
 
--(HANDLE)themeForClassList:(LPCWSTR)classList deviceContext:(KGDeviceContext_gdi *)deviceContext  {
+-(HANDLE)themeForClassList:(LPCWSTR)classList deviceContext:(O2DeviceContext_gdi *)deviceContext  {
    HWND windowHandle=[[deviceContext windowDeviceContext] windowHandle];
    
    if(windowHandle==NULL)
@@ -143,13 +143,13 @@ static inline RECT transformToRECT(O2AffineTransform matrix,NSRect rect) {
    return context;
 }
 
--(KGDeviceContext_gdi *)deviceContext {
+-(O2DeviceContext_gdi *)deviceContext {
    O2Context *context=[[NSGraphicsContext currentContext] graphicsPort];
    
    if([context respondsToSelector:@selector(deviceContext)]){
-    KGDeviceContext_gdi *result=[context performSelector:@selector(deviceContext)];
+    O2DeviceContext_gdi *result=[context performSelector:@selector(deviceContext)];
     
-    if([result isKindOfClass:[KGDeviceContext_gdi class]])
+    if([result isKindOfClass:[O2DeviceContext_gdi class]])
      return result;
    }
    
@@ -157,7 +157,7 @@ static inline RECT transformToRECT(O2AffineTransform matrix,NSRect rect) {
 }
 
 -(BOOL)sizeOfPartId:(int)partId stateId:(int)stateId uxthClassId:(int)uxthClassId size:(NSSize *)result {
-   KGDeviceContext_gdi *deviceContext=[self deviceContext];
+   O2DeviceContext_gdi *deviceContext=[self deviceContext];
    HANDLE               theme;
 
    if(deviceContext==nil)
@@ -177,7 +177,7 @@ static inline RECT transformToRECT(O2AffineTransform matrix,NSRect rect) {
 }
 
 -(BOOL)drawPartId:(int)partId stateId:(int)stateId uxthClassId:(int)uxthClassId inRect:(NSRect)rect {
-   KGDeviceContext_gdi *deviceContext=[self deviceContext];
+   O2DeviceContext_gdi *deviceContext=[self deviceContext];
    HANDLE               theme;
    
    if(deviceContext==nil)
