@@ -17,6 +17,8 @@ typedef int ptrdiff_t;
 #import FT_FREETYPE_H
 #import FT_RENDER_H
 
+@class NSSet;
+
 @interface TTFFont : NSObject {
    FT_Face _face; 
    float _size;

@@ -10,6 +10,7 @@
 #import <AppKit/NSWindow.h>
 #import <AppKit/NSPanel.h>
 #import <AppKit/X11Display.h>
+#import <AppKit/NSRaise.h>
 #import <X11/Xutil.h>
 #import <AppKit/CairoContext.h>
 #import <Foundation/NSException.h>

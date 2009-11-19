@@ -15,6 +15,7 @@
 #import <AppKit/NSColor.h>
 #import <AppKit/NSImage.h>
 #import <AppKit/TTFFont.h>
+#import <AppKit/NSRaise.h>
 #import <fcntl.h>
 
 @implementation NSDisplay(X11)

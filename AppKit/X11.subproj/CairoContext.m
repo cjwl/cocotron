@@ -17,6 +17,7 @@
 #import <CoreGraphics/O2Surface.h>
 #import <AppKit/CairoCacheImage.h>
 #import <Foundation/NSException.h>
+#import <cairo/cairo-ft.h>
 
 @implementation TTFFont (CairoFont) 
 -(void)releasePlatformFont {
@@ -34,6 +35,12 @@
 
 
 @implementation CairoContext
+
+static inline O2GState *currentState(O2Context *self){        
+   return [self->_stateStack lastObject];
+}
+
+
 -(id)initWithWindow:(X11Window*)w
 {
    NSRect frame=[w frame];
@@ -143,7 +150,7 @@
 
 -(void)appendCTM
 {
-	O2AffineTransform ctm=[self ctm];
+	O2AffineTransform ctm=O2ContextGetCTM(self);
 	cairo_matrix_t matrix={ctm.a, ctm.b, ctm.c, ctm.d, ctm.tx, ctm.ty};
    
 
@@ -152,10 +159,10 @@
 
 -(void)synchronizeFontCTM
 {
-	O2AffineTransform ctm=[[self currentState] textMatrix];
-    O2Float size=[[self currentState] pointSize];
+	O2AffineTransform ctm=[currentState(self) textMatrix];
+    O2Float size=[currentState(self) pointSize];
 
-	ctm = CGAffineTransformScale(ctm, size, -size);
+	ctm = O2AffineTransformScale(ctm, size, -size);
 	
 	cairo_matrix_t matrix={ctm.a, ctm.b, ctm.c, ctm.d, ctm.tx, ctm.ty};
 
@@ -172,7 +179,7 @@
 
 -(void)synchronizeLineAttributes
 {
-   O2GState *gState=[self currentState];
+   O2GState *gState=currentState(self);
 	int i;
    
 	cairo_set_line_width(_context, gState->_lineWidth);
@@ -415,17 +422,17 @@
 }
 
 -(void)establishFontStateInDeviceIfDirty {
-   O2GState *gState=[self currentState];
+   O2GState *gState=currentState(self);
    
    if(gState->_fontIsDirty){
     [gState clearFontIsDirty];
 
     O2Font *cgFont=[gState font];
-    KTFont *fontState=[[TTFFont alloc] initWithFont:cgFont size:[state pointSize]];
+    KTFont *fontState=[[TTFFont alloc] initWithFont:cgFont size:[gState pointSize]];
     NSString    *name=[fontState name];
     CGFloat      pointSize=[fontState pointSize];
    
-    [state setFontState:fontState];
+    [gState setFontState:fontState];
     [fontState release];
    }
 }
@@ -434,7 +441,7 @@
 -(void)showGlyphs:(const CGGlyph *)glyphs count:(unsigned)count {
    [self establishFontStateInDeviceIfDirty];
    
-   TTFFont *fontState=(TTFFont*)[[self currentState] fontState];
+   TTFFont *fontState=(TTFFont*)[currentState(self) fontState];
    int i;
    cairo_glyph_t *cg=alloca(sizeof(cairo_glyph_t)*count);
    BOOL nominal;
@@ -450,7 +457,7 @@
       x+=pos.x;
    }
    
-   cairo_font_face_t *face=[[[self currentState] fontState] cairoFont];
+   cairo_font_face_t *face=[[currentState(self) fontState] cairoFont];
    cairo_set_font_face(_context, face);
    cairo_set_font_size(_context, [fontState pointSize]);
    
@@ -477,7 +484,7 @@
    id str=[NSString stringWithUTF8String:text];
    [str getCharacters:unicode range:NSMakeRange(0, length)]; 
     
-   [(KTFont*)[[self currentState] fontState] getGlyphs:glyphs forCharacters:unicode length:length];
+   [(KTFont*)[currentState(self) fontState] getGlyphs:glyphs forCharacters:unicode length:length];
    [self showGlyphs:glyphs count:length];
 }
 
