@@ -2,7 +2,7 @@
 #import <Foundation/NSString.h>
 
 CFStringRef CFStringMakeConstant(const char *cString) {
-	return (CFStringRef)[[NSString alloc]initWithUTF8String:cString];
+   return (CFStringRef)[[[NSString alloc]initWithUTF8String:cString] autorelease];
 }
 
 CFStringRef CFStringCreateByCombiningStrings(CFAllocatorRef allocator,CFArrayRef array,CFStringRef separator){}

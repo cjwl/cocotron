@@ -11,16 +11,16 @@ typedef struct CFStringTokenizer *CFStringTokenizerRef;
 
 typedef CFOptionFlags CFStringTokenizerTokenType;
 
-CFTypeID      CFStringTokenizerGetTypeID(void);
+COREFOUNDATION_EXPORT CFTypeID      CFStringTokenizerGetTypeID(void);
 
-CFOptionFlags CFStringTokenizerGetSupportedOptionsForLanguage(CFStringRef language);
+COREFOUNDATION_EXPORT CFOptionFlags CFStringTokenizerGetSupportedOptionsForLanguage(CFStringRef language);
 
-CFStringTokenizerRef CFStringTokenizerCreate(CFAllocatorRef allocator,CFStringRef string,CFRange range,CFOptionFlags options,CFLocaleRef locale);
+COREFOUNDATION_EXPORT CFStringTokenizerRef CFStringTokenizerCreate(CFAllocatorRef allocator,CFStringRef string,CFRange range,CFOptionFlags options,CFLocaleRef locale);
 
-CFStringTokenizerTokenType CFStringTokenizerAdvanceToNextToken(CFStringTokenizerRef self);
-CFStringRef                CFStringTokenizerCopyBestStringLanguage(CFStringRef string,CFRange range);
-CFTypeRef                  CFStringTokenizerCopyCurrentTokenAttribute(CFStringTokenizerRef self,CFOptionFlags attribute);
-CFIndex                    CFStringTokenizerGetCurrentSubTokens(CFStringTokenizerRef self,CFRange *ranges,CFIndex maxRangeLength,CFMutableArrayRef subTokens);
-CFRange                    CFStringTokenizerGetCurrentTokenRange(CFStringTokenizerRef self);
-CFStringTokenizerTokenType CFStringTokenizerGoToTokenAtIndex(CFStringTokenizerRef self,CFIndex index);
-void                       CFStringTokenizerSetString(CFStringTokenizerRef self,CFStringRef string,CFRange range);
+COREFOUNDATION_EXPORT CFStringTokenizerTokenType CFStringTokenizerAdvanceToNextToken(CFStringTokenizerRef self);
+COREFOUNDATION_EXPORT CFStringRef                CFStringTokenizerCopyBestStringLanguage(CFStringRef string,CFRange range);
+COREFOUNDATION_EXPORT CFTypeRef                  CFStringTokenizerCopyCurrentTokenAttribute(CFStringTokenizerRef self,CFOptionFlags attribute);
+COREFOUNDATION_EXPORT CFIndex                    CFStringTokenizerGetCurrentSubTokens(CFStringTokenizerRef self,CFRange *ranges,CFIndex maxRangeLength,CFMutableArrayRef subTokens);
+COREFOUNDATION_EXPORT CFRange                    CFStringTokenizerGetCurrentTokenRange(CFStringTokenizerRef self);
+COREFOUNDATION_EXPORT CFStringTokenizerTokenType CFStringTokenizerGoToTokenAtIndex(CFStringTokenizerRef self,CFIndex index);
+COREFOUNDATION_EXPORT void                       CFStringTokenizerSetString(CFStringTokenizerRef self,CFStringRef string,CFRange range);

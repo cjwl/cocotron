@@ -155,33 +155,33 @@ COREFOUNDATION_EXPORT const CFAllocatorRef kCFAllocatorMallocZone;
 COREFOUNDATION_EXPORT const CFAllocatorRef kCFAllocatorNull;
 COREFOUNDATION_EXPORT const CFAllocatorRef kCFAllocatorUseContext;
 
-CFAllocatorRef CFAllocatorGetDefault(void);
-void           CFAllocatorSetDefault(CFAllocatorRef self);
+COREFOUNDATION_EXPORT CFAllocatorRef CFAllocatorGetDefault(void);
+COREFOUNDATION_EXPORT void           CFAllocatorSetDefault(CFAllocatorRef self);
 
-CFTypeID       CFAllocatorGetTypeID(void);
+COREFOUNDATION_EXPORT CFTypeID       CFAllocatorGetTypeID(void);
 
-CFAllocatorRef CFAllocatorCreate(CFAllocatorRef self,CFAllocatorContext *context);
+COREFOUNDATION_EXPORT CFAllocatorRef CFAllocatorCreate(CFAllocatorRef self,CFAllocatorContext *context);
 
-void           CFAllocatorGetContext(CFAllocatorRef self,CFAllocatorContext *context);
-CFIndex        CFAllocatorGetPreferredSizeForSize(CFAllocatorRef self,CFIndex size,CFOptionFlags hint);
+COREFOUNDATION_EXPORT void           CFAllocatorGetContext(CFAllocatorRef self,CFAllocatorContext *context);
+COREFOUNDATION_EXPORT CFIndex        CFAllocatorGetPreferredSizeForSize(CFAllocatorRef self,CFIndex size,CFOptionFlags hint);
 
-void          *CFAllocatorAllocate(CFAllocatorRef self,CFIndex size,CFOptionFlags hint);
-void           CFAllocatorDeallocate(CFAllocatorRef self,void *ptr);
-void          *CFAllocatorReallocate(CFAllocatorRef self,void *ptr,CFIndex size,CFOptionFlags hint);
+COREFOUNDATION_EXPORT void          *CFAllocatorAllocate(CFAllocatorRef self,CFIndex size,CFOptionFlags hint);
+COREFOUNDATION_EXPORT void           CFAllocatorDeallocate(CFAllocatorRef self,void *ptr);
+COREFOUNDATION_EXPORT void          *CFAllocatorReallocate(CFAllocatorRef self,void *ptr,CFIndex size,CFOptionFlags hint);
 
 
-CFTypeID       CFGetTypeID(CFTypeRef self);
+COREFOUNDATION_EXPORT CFTypeID       CFGetTypeID(CFTypeRef self);
 
-CFTypeRef      CFRetain(CFTypeRef self);
-void           CFRelease(CFTypeRef self);
-CFIndex        CFGetRetainCount(CFTypeRef self);
+COREFOUNDATION_EXPORT CFTypeRef      CFRetain(CFTypeRef self);
+COREFOUNDATION_EXPORT void           CFRelease(CFTypeRef self);
+COREFOUNDATION_EXPORT CFIndex        CFGetRetainCount(CFTypeRef self);
 
-CFAllocatorRef CFGetAllocator(CFTypeRef self);
+COREFOUNDATION_EXPORT CFAllocatorRef CFGetAllocator(CFTypeRef self);
 
-CFHashCode     CFHash(CFTypeRef self);
-Boolean        CFEqual(CFTypeRef self,CFTypeRef other);
-CFStringRef    CFCopyTypeIDDescription(CFTypeID typeID);
-CFStringRef    CFCopyDescription(CFTypeRef self);
-CFTypeRef      CFMakeCollectable(CFTypeRef self);
+COREFOUNDATION_EXPORT CFHashCode     CFHash(CFTypeRef self);
+COREFOUNDATION_EXPORT Boolean        CFEqual(CFTypeRef self,CFTypeRef other);
+COREFOUNDATION_EXPORT CFStringRef    CFCopyTypeIDDescription(CFTypeID typeID);
+COREFOUNDATION_EXPORT CFStringRef    CFCopyDescription(CFTypeRef self);
+COREFOUNDATION_EXPORT CFTypeRef      CFMakeCollectable(CFTypeRef self);
 
 

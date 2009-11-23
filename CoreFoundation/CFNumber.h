@@ -8,18 +8,14 @@ THE SOFTWARE IS PROVIDED "AS IS",WITHOUT WARRANTY OF ANY KIND,EXPRESS OR IMPLIED
 
 #import <CoreFoundation/CFBase.h>
 
-
 typedef struct __CFBoolean *CFBooleanRef;
-
 
 COREFOUNDATION_EXPORT const CFBooleanRef kCFBooleanTrue;
 COREFOUNDATION_EXPORT const CFBooleanRef kCFBooleanFalse;
 
+COREFOUNDATION_EXPORT CFTypeID           CFBooleanGetTypeID(void);
 
-CFTypeID           CFBooleanGetTypeID(void);
-
-Boolean CFBooleanGetValue(CFBooleanRef boolean);
-
+COREFOUNDATION_EXPORT Boolean CFBooleanGetValue(CFBooleanRef boolean);
 
 typedef struct __NSNumber *CFNumberRef;
 
@@ -47,12 +43,12 @@ COREFOUNDATION_EXPORT const CFNumberRef kCFNumberPositiveInfinity;
 COREFOUNDATION_EXPORT const CFNumberRef kCFNumberNegativeInfinity;
 COREFOUNDATION_EXPORT const CFNumberRef kCFNumberNaN;
 
-CFTypeID           CFNumberGetTypeID(void);
+COREFOUNDATION_EXPORT CFTypeID           CFNumberGetTypeID(void);
 
-CFNumberRef        CFNumberCreate(CFAllocatorRef allocator,CFNumberType type,const void *valuep);
+COREFOUNDATION_EXPORT CFNumberRef        CFNumberCreate(CFAllocatorRef allocator,CFNumberType type,const void *valuep);
 
-CFComparisonResult CFNumberCompare(CFNumberRef self,CFNumberRef other,void *context);
-CFIndex            CFNumberGetByteSize(CFNumberRef self);
-CFNumberType       CFNumberGetType(CFNumberRef self);
-Boolean            CFNumberGetValue(CFNumberRef self,CFNumberType type,void *valuep);
-Boolean            CFNumberIsFloatType(CFNumberRef self);
+COREFOUNDATION_EXPORT CFComparisonResult CFNumberCompare(CFNumberRef self,CFNumberRef other,void *context);
+COREFOUNDATION_EXPORT CFIndex            CFNumberGetByteSize(CFNumberRef self);
+COREFOUNDATION_EXPORT CFNumberType       CFNumberGetType(CFNumberRef self);
+COREFOUNDATION_EXPORT Boolean            CFNumberGetValue(CFNumberRef self,CFNumberType type,void *valuep);
+COREFOUNDATION_EXPORT Boolean            CFNumberIsFloatType(CFNumberRef self);

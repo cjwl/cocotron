@@ -95,13 +95,13 @@ typedef struct  {
 }CFXMLEntityReferenceInfo;
 
 
-CFTypeID          CFXMLNodeGetTypeID(void);
+COREFOUNDATION_EXPORT CFTypeID          CFXMLNodeGetTypeID(void);
 
-CFXMLNodeRef      CFXMLNodeCreate(CFAllocatorRef allocator,CFXMLNodeTypeCode typeCode,CFStringRef string,const void *infoPtr,CFIndex version);
+COREFOUNDATION_EXPORT CFXMLNodeRef      CFXMLNodeCreate(CFAllocatorRef allocator,CFXMLNodeTypeCode typeCode,CFStringRef string,const void *infoPtr,CFIndex version);
 
-CFXMLNodeRef      CFXMLNodeCreateCopy(CFAllocatorRef allocator,CFXMLNodeRef self);
+COREFOUNDATION_EXPORT CFXMLNodeRef      CFXMLNodeCreateCopy(CFAllocatorRef allocator,CFXMLNodeRef self);
 
-CFXMLNodeTypeCode CFXMLNodeGetTypeCode(CFXMLNodeRef self);
-CFStringRef       CFXMLNodeGetString(CFXMLNodeRef self);
-const void       *CFXMLNodeGetInfoPtr(CFXMLNodeRef self);
-CFIndex           CFXMLNodeGetVersion(CFXMLNodeRef self);
+COREFOUNDATION_EXPORT CFXMLNodeTypeCode CFXMLNodeGetTypeCode(CFXMLNodeRef self);
+COREFOUNDATION_EXPORT CFStringRef       CFXMLNodeGetString(CFXMLNodeRef self);
+COREFOUNDATION_EXPORT const void       *CFXMLNodeGetInfoPtr(CFXMLNodeRef self);
+COREFOUNDATION_EXPORT CFIndex           CFXMLNodeGetVersion(CFXMLNodeRef self);

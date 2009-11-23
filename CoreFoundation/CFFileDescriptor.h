@@ -27,16 +27,16 @@ typedef struct {
    CFAllocatorCopyDescriptionCallBack copyDescription;
 } CFFileDescriptorContext;
 
-CFTypeID                         CFFileDescriptorGetTypeID(void);
+COREFOUNDATION_EXPORT CFTypeID                         CFFileDescriptorGetTypeID(void);
 
-CFFileDescriptorRef              CFFileDescriptorCreate(CFAllocatorRef allocator,CFFileDescriptorNativeDescriptor fd,Boolean closeOnInvalidate,CFFileDescriptorCallBack callback,const CFFileDescriptorContext *context);
+COREFOUNDATION_EXPORT CFFileDescriptorRef              CFFileDescriptorCreate(CFAllocatorRef allocator,CFFileDescriptorNativeDescriptor fd,Boolean closeOnInvalidate,CFFileDescriptorCallBack callback,const CFFileDescriptorContext *context);
 
-CFFileDescriptorNativeDescriptor CFFileDescriptorGetNativeDescriptor(CFFileDescriptorRef self);
-void                             CFFileDescriptorGetContext(CFFileDescriptorRef self,CFFileDescriptorContext *context);
+COREFOUNDATION_EXPORT CFFileDescriptorNativeDescriptor CFFileDescriptorGetNativeDescriptor(CFFileDescriptorRef self);
+COREFOUNDATION_EXPORT void                             CFFileDescriptorGetContext(CFFileDescriptorRef self,CFFileDescriptorContext *context);
 
-CFRunLoopSourceRef               CFFileDescriptorCreateRunLoopSource(CFAllocatorRef allocator,CFFileDescriptorRef self,CFIndex order);
-void                             CFFileDescriptorDisableCallBacks(CFFileDescriptorRef self,CFOptionFlags flags);
-void                             CFFileDescriptorEnableCallBacks(CFFileDescriptorRef self,CFOptionFlags flags);
-void                             CFFileDescriptorInvalidate(CFFileDescriptorRef self);
-Boolean                          CFFileDescriptorIsValid(CFFileDescriptorRef self);
+COREFOUNDATION_EXPORT CFRunLoopSourceRef               CFFileDescriptorCreateRunLoopSource(CFAllocatorRef allocator,CFFileDescriptorRef self,CFIndex order);
+COREFOUNDATION_EXPORT void                             CFFileDescriptorDisableCallBacks(CFFileDescriptorRef self,CFOptionFlags flags);
+COREFOUNDATION_EXPORT void                             CFFileDescriptorEnableCallBacks(CFFileDescriptorRef self,CFOptionFlags flags);
+COREFOUNDATION_EXPORT void                             CFFileDescriptorInvalidate(CFFileDescriptorRef self);
+COREFOUNDATION_EXPORT Boolean                          CFFileDescriptorIsValid(CFFileDescriptorRef self);
 

@@ -9,8 +9,6 @@ THE SOFTWARE IS PROVIDED "AS IS",WITHOUT WARRANTY OF ANY KIND,EXPRESS OR IMPLIED
 #import <CoreFoundation/CFString.h>
 #import <CoreFoundation/CFDictionary.h>
 
-
-
 typedef struct __NSMutableAttributedString *CFAttributedStringRef;
 typedef struct __NSMutableAttributedString *CFMutableAttributedStringRef;
 

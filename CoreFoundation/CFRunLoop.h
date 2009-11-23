@@ -76,60 +76,60 @@ typedef struct  {
 
 typedef void (*CFRunLoopObserverCallBack)(CFRunLoopObserverRef self,CFRunLoopActivity activity,void *info);
 
-CFTypeID       CFRunLoopGetTypeID(void);
+COREFOUNDATION_EXPORT CFTypeID       CFRunLoopGetTypeID(void);
 
-CFRunLoopRef   CFRunLoopGetCurrent(void);
-CFRunLoopRef   CFRunLoopGetMain(void);
-void           CFRunLoopRun(void);
+COREFOUNDATION_EXPORT CFRunLoopRef   CFRunLoopGetCurrent(void);
+COREFOUNDATION_EXPORT CFRunLoopRef   CFRunLoopGetMain(void);
+COREFOUNDATION_EXPORT void           CFRunLoopRun(void);
 
-void           CFRunLoopAddCommonMode(CFRunLoopRef self,CFStringRef mode);
+COREFOUNDATION_EXPORT void           CFRunLoopAddCommonMode(CFRunLoopRef self,CFStringRef mode);
 
-void           CFRunLoopAddObserver(CFRunLoopRef self,CFRunLoopObserverRef observer,CFStringRef mode);
-void           CFRunLoopRemoveObserver(CFRunLoopRef self,CFRunLoopObserverRef observer,CFStringRef mode);
-Boolean        CFRunLoopContainsObserver(CFRunLoopRef self,CFRunLoopObserverRef observer,CFStringRef mode);
+COREFOUNDATION_EXPORT void           CFRunLoopAddObserver(CFRunLoopRef self,CFRunLoopObserverRef observer,CFStringRef mode);
+COREFOUNDATION_EXPORT void           CFRunLoopRemoveObserver(CFRunLoopRef self,CFRunLoopObserverRef observer,CFStringRef mode);
+COREFOUNDATION_EXPORT Boolean        CFRunLoopContainsObserver(CFRunLoopRef self,CFRunLoopObserverRef observer,CFStringRef mode);
 
-void           CFRunLoopAddSource(CFRunLoopRef self,CFRunLoopSourceRef source,CFStringRef mode);
-void           CFRunLoopRemoveSource(CFRunLoopRef self,CFRunLoopSourceRef source,CFStringRef mode);
-Boolean        CFRunLoopContainsSource(CFRunLoopRef self,CFRunLoopSourceRef source,CFStringRef mode);
+COREFOUNDATION_EXPORT void           CFRunLoopAddSource(CFRunLoopRef self,CFRunLoopSourceRef source,CFStringRef mode);
+COREFOUNDATION_EXPORT void           CFRunLoopRemoveSource(CFRunLoopRef self,CFRunLoopSourceRef source,CFStringRef mode);
+COREFOUNDATION_EXPORT Boolean        CFRunLoopContainsSource(CFRunLoopRef self,CFRunLoopSourceRef source,CFStringRef mode);
 
-void           CFRunLoopAddTimer(CFRunLoopRef self,CFRunLoopTimerRef timer,CFStringRef mode);
-void           CFRunLoopRemoveTimer(CFRunLoopRef self,CFRunLoopTimerRef timer,CFStringRef mode);
-Boolean        CFRunLoopContainsTimer(CFRunLoopRef self,CFRunLoopTimerRef timer,CFStringRef mode);
+COREFOUNDATION_EXPORT void           CFRunLoopAddTimer(CFRunLoopRef self,CFRunLoopTimerRef timer,CFStringRef mode);
+COREFOUNDATION_EXPORT void           CFRunLoopRemoveTimer(CFRunLoopRef self,CFRunLoopTimerRef timer,CFStringRef mode);
+COREFOUNDATION_EXPORT Boolean        CFRunLoopContainsTimer(CFRunLoopRef self,CFRunLoopTimerRef timer,CFStringRef mode);
 
-CFStringRef    CFRunLoopCopyCurrentMode(CFRunLoopRef self);
-CFArrayRef     CFRunLoopCopyAllModes(CFRunLoopRef self);
+COREFOUNDATION_EXPORT CFStringRef    CFRunLoopCopyCurrentMode(CFRunLoopRef self);
+COREFOUNDATION_EXPORT CFArrayRef     CFRunLoopCopyAllModes(CFRunLoopRef self);
 
-Boolean        CFRunLoopIsWaiting(CFRunLoopRef self);
-CFAbsoluteTime CFRunLoopGetNextTimerFireDate(CFRunLoopRef self,CFStringRef mode);
-CFInteger      CFRunLoopRunInMode(CFStringRef mode,CFTimeInterval seconds,Boolean returnAfterSourceHandled);
-void           CFRunLoopStop(CFRunLoopRef self);
-void           CFRunLoopWakeUp(CFRunLoopRef self);
+COREFOUNDATION_EXPORT Boolean        CFRunLoopIsWaiting(CFRunLoopRef self);
+COREFOUNDATION_EXPORT CFAbsoluteTime CFRunLoopGetNextTimerFireDate(CFRunLoopRef self,CFStringRef mode);
+COREFOUNDATION_EXPORT CFInteger      CFRunLoopRunInMode(CFStringRef mode,CFTimeInterval seconds,Boolean returnAfterSourceHandled);
+COREFOUNDATION_EXPORT void           CFRunLoopStop(CFRunLoopRef self);
+COREFOUNDATION_EXPORT void           CFRunLoopWakeUp(CFRunLoopRef self);
 
 // sources
 
-CFTypeID           CFRunLoopSourceGetTypeID(void);
+COREFOUNDATION_EXPORT CFTypeID           CFRunLoopSourceGetTypeID(void);
 
-CFRunLoopSourceRef CFRunLoopSourceCreate(CFAllocatorRef allocator,CFIndex order,CFRunLoopSourceContext *context);
+COREFOUNDATION_EXPORT CFRunLoopSourceRef CFRunLoopSourceCreate(CFAllocatorRef allocator,CFIndex order,CFRunLoopSourceContext *context);
 
-CFIndex            CFRunLoopSourceGetOrder(CFRunLoopSourceRef self);
-void               CFRunLoopSourceGetContext(CFRunLoopSourceRef self,CFRunLoopSourceContext *context);
+COREFOUNDATION_EXPORT CFIndex            CFRunLoopSourceGetOrder(CFRunLoopSourceRef self);
+COREFOUNDATION_EXPORT void               CFRunLoopSourceGetContext(CFRunLoopSourceRef self,CFRunLoopSourceContext *context);
 
-void               CFRunLoopSourceInvalidate(CFRunLoopSourceRef self);
-Boolean            CFRunLoopSourceIsValid(CFRunLoopSourceRef self);
+COREFOUNDATION_EXPORT void               CFRunLoopSourceInvalidate(CFRunLoopSourceRef self);
+COREFOUNDATION_EXPORT Boolean            CFRunLoopSourceIsValid(CFRunLoopSourceRef self);
 
-void               CFRunLoopSourceSignal(CFRunLoopSourceRef self);
+COREFOUNDATION_EXPORT void               CFRunLoopSourceSignal(CFRunLoopSourceRef self);
 
 // observers
 
-CFTypeID             CFRunLoopObserverGetTypeID(void);
+COREFOUNDATION_EXPORT CFTypeID             CFRunLoopObserverGetTypeID(void);
 
-CFRunLoopObserverRef CFRunLoopObserverCreate(CFAllocatorRef allocator,CFOptionFlags activities,Boolean repeats,CFIndex order,CFRunLoopObserverCallBack callback,CFRunLoopObserverContext *context);
+COREFOUNDATION_EXPORT CFRunLoopObserverRef CFRunLoopObserverCreate(CFAllocatorRef allocator,CFOptionFlags activities,Boolean repeats,CFIndex order,CFRunLoopObserverCallBack callback,CFRunLoopObserverContext *context);
 
-CFOptionFlags        CFRunLoopObserverGetActivities(CFRunLoopObserverRef self);
-Boolean              CFRunLoopObserverDoesRepeat(CFRunLoopObserverRef self);
-CFIndex              CFRunLoopObserverGetOrder(CFRunLoopObserverRef self);
-void                 CFRunLoopObserverGetContext(CFRunLoopObserverRef self,CFRunLoopObserverContext *context);
+COREFOUNDATION_EXPORT CFOptionFlags        CFRunLoopObserverGetActivities(CFRunLoopObserverRef self);
+COREFOUNDATION_EXPORT Boolean              CFRunLoopObserverDoesRepeat(CFRunLoopObserverRef self);
+COREFOUNDATION_EXPORT CFIndex              CFRunLoopObserverGetOrder(CFRunLoopObserverRef self);
+COREFOUNDATION_EXPORT void                 CFRunLoopObserverGetContext(CFRunLoopObserverRef self,CFRunLoopObserverContext *context);
 
-void                 CFRunLoopObserverInvalidate(CFRunLoopObserverRef self);
-Boolean              CFRunLoopObserverIsValid(CFRunLoopObserverRef self);
+COREFOUNDATION_EXPORT void                 CFRunLoopObserverInvalidate(CFRunLoopObserverRef self);
+COREFOUNDATION_EXPORT Boolean              CFRunLoopObserverIsValid(CFRunLoopObserverRef self);
 

@@ -53,27 +53,27 @@ typedef struct  {
 
 typedef int CFSocketNativeHandle;
 
-CFTypeID CFSocketGetTypeID();
+COREFOUNDATION_EXPORT CFTypeID CFSocketGetTypeID();
 
-CFSocketRef CFSocketCreate(CFAllocatorRef allocator,CFInteger protocolFamily,CFInteger socketType,CFInteger protocol,CFOptionFlags flags,CFSocketCallBack callback,const CFSocketContext *context);
-CFSocketRef CFSocketCreateConnectedToSocketSignature(CFAllocatorRef allocator,const CFSocketSignature *signature,CFOptionFlags flags,CFSocketCallBack callback,const CFSocketContext *context,CFTimeInterval timeout);
+COREFOUNDATION_EXPORT CFSocketRef CFSocketCreate(CFAllocatorRef allocator,CFInteger protocolFamily,CFInteger socketType,CFInteger protocol,CFOptionFlags flags,CFSocketCallBack callback,const CFSocketContext *context);
+COREFOUNDATION_EXPORT CFSocketRef CFSocketCreateConnectedToSocketSignature(CFAllocatorRef allocator,const CFSocketSignature *signature,CFOptionFlags flags,CFSocketCallBack callback,const CFSocketContext *context,CFTimeInterval timeout);
 
-CFSocketRef          CFSocketCreateWithNative(CFAllocatorRef allocator,CFSocketNativeHandle native,CFOptionFlags flags,CFSocketCallBack callback,const CFSocketContext *context);
-CFSocketRef          CFSocketCreateWithSocketSignature(CFAllocatorRef allocator,const CFSocketSignature *signature,CFOptionFlags flags,CFSocketCallBack callback,const CFSocketContext *context);
+COREFOUNDATION_EXPORT CFSocketRef          CFSocketCreateWithNative(CFAllocatorRef allocator,CFSocketNativeHandle native,CFOptionFlags flags,CFSocketCallBack callback,const CFSocketContext *context);
+COREFOUNDATION_EXPORT CFSocketRef          CFSocketCreateWithSocketSignature(CFAllocatorRef allocator,const CFSocketSignature *signature,CFOptionFlags flags,CFSocketCallBack callback,const CFSocketContext *context);
 
-CFSocketError        CFSocketConnectToAddress(CFSocketRef self,CFDataRef address,CFTimeInterval timeout);
-CFDataRef            CFSocketCopyAddress(CFSocketRef self);
-CFDataRef            CFSocketCopyPeerAddress(CFSocketRef self);
-CFRunLoopSourceRef   CFSocketCreateRunLoopSource(CFAllocatorRef allocator,CFSocketRef self,CFIndex order);
-void                 CFSocketDisableCallBacks(CFSocketRef self,CFOptionFlags flags);
-void                 CFSocketEnableCallBacks(CFSocketRef self,CFOptionFlags flags);
-void                 CFSocketGetContext(CFSocketRef self,CFSocketContext *context);
-CFSocketNativeHandle CFSocketGetNative(CFSocketRef self);
-CFOptionFlags        CFSocketGetSocketFlags(CFSocketRef self);
+COREFOUNDATION_EXPORT CFSocketError        CFSocketConnectToAddress(CFSocketRef self,CFDataRef address,CFTimeInterval timeout);
+COREFOUNDATION_EXPORT CFDataRef            CFSocketCopyAddress(CFSocketRef self);
+COREFOUNDATION_EXPORT CFDataRef            CFSocketCopyPeerAddress(CFSocketRef self);
+COREFOUNDATION_EXPORT CFRunLoopSourceRef   CFSocketCreateRunLoopSource(CFAllocatorRef allocator,CFSocketRef self,CFIndex order);
+COREFOUNDATION_EXPORT void                 CFSocketDisableCallBacks(CFSocketRef self,CFOptionFlags flags);
+COREFOUNDATION_EXPORT void                 CFSocketEnableCallBacks(CFSocketRef self,CFOptionFlags flags);
+COREFOUNDATION_EXPORT void                 CFSocketGetContext(CFSocketRef self,CFSocketContext *context);
+COREFOUNDATION_EXPORT CFSocketNativeHandle CFSocketGetNative(CFSocketRef self);
+COREFOUNDATION_EXPORT CFOptionFlags        CFSocketGetSocketFlags(CFSocketRef self);
 
-void                 CFSocketInvalidate(CFSocketRef self);
-Boolean              CFSocketIsValid(CFSocketRef self);
-CFSocketError        CFSocketSendData(CFSocketRef self,CFDataRef address,CFDataRef data,CFTimeInterval timeout);
-CFSocketError        CFSocketSetAddress(CFSocketRef self,CFDataRef address);
-void                 CFSocketSetSocketFlags(CFSocketRef self,CFOptionFlags flags);
+COREFOUNDATION_EXPORT void                 CFSocketInvalidate(CFSocketRef self);
+COREFOUNDATION_EXPORT Boolean              CFSocketIsValid(CFSocketRef self);
+COREFOUNDATION_EXPORT CFSocketError        CFSocketSendData(CFSocketRef self,CFDataRef address,CFDataRef data,CFTimeInterval timeout);
+COREFOUNDATION_EXPORT CFSocketError        CFSocketSetAddress(CFSocketRef self,CFDataRef address);
+COREFOUNDATION_EXPORT void                 CFSocketSetSocketFlags(CFSocketRef self,CFOptionFlags flags);
 

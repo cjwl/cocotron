@@ -6,7 +6,6 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS",WITHOUT WARRANTY OF ANY KIND,EXPRESS OR IMPLIED,INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,DAMAGES OR OTHER LIABILITY,WHETHER IN AN ACTION OF CONTRACT,TORT OR OTHERWISE,ARISING FROM,OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
-
 typedef struct __NSStream       *CFStreamRef;
 typedef struct __NSInputStream  *CFReadStreamRef;
 typedef struct __NSOutputStream *CFWriteStreamRef;
@@ -75,57 +74,57 @@ COREFOUNDATION_EXPORT const CFStringRef kCFStreamPropertySocketNativeHandle;
 COREFOUNDATION_EXPORT const CFStringRef kCFStreamPropertySocketRemoteHostName;
 COREFOUNDATION_EXPORT const CFStringRef kCFStreamPropertySocketRemotePortNumber;
 
-void CFStreamCreateBoundPair(CFAllocatorRef allocator,CFReadStreamRef *readStream,CFWriteStreamRef *writeStream,CFIndex bufferSize);
-void CFStreamCreatePairWithPeerSocketSignature(CFAllocatorRef allocator,const CFSocketSignature *signature,CFReadStreamRef *readStream,CFWriteStreamRef *writeStream);
-void CFStreamCreatePairWithSocket(CFAllocatorRef allocator,CFSocketNativeHandle sock,CFReadStreamRef *readStream,CFWriteStreamRef *writeStream);
-void CFStreamCreatePairWithSocketToHost(CFAllocatorRef allocator,CFStringRef host,CFUInteger port,CFReadStreamRef *readStream,CFWriteStreamRef *writeStream);
+COREFOUNDATION_EXPORT void CFStreamCreateBoundPair(CFAllocatorRef allocator,CFReadStreamRef *readStream,CFWriteStreamRef *writeStream,CFIndex bufferSize);
+COREFOUNDATION_EXPORT void CFStreamCreatePairWithPeerSocketSignature(CFAllocatorRef allocator,const CFSocketSignature *signature,CFReadStreamRef *readStream,CFWriteStreamRef *writeStream);
+COREFOUNDATION_EXPORT void CFStreamCreatePairWithSocket(CFAllocatorRef allocator,CFSocketNativeHandle sock,CFReadStreamRef *readStream,CFWriteStreamRef *writeStream);
+COREFOUNDATION_EXPORT void CFStreamCreatePairWithSocketToHost(CFAllocatorRef allocator,CFStringRef host,CFUInteger port,CFReadStreamRef *readStream,CFWriteStreamRef *writeStream);
 // ReadStream
 
-CFTypeID        CFReadStreamGetTypeID(void);
+COREFOUNDATION_EXPORT CFTypeID        CFReadStreamGetTypeID(void);
 
-CFReadStreamRef CFReadStreamCreateWithBytesNoCopy(CFAllocatorRef allocator,const uint8_t *bytes,CFIndex length,CFAllocatorRef bytesDeallocator);
-CFReadStreamRef CFReadStreamCreateWithFile(CFAllocatorRef allocator,CFURLRef url);
+COREFOUNDATION_EXPORT CFReadStreamRef CFReadStreamCreateWithBytesNoCopy(CFAllocatorRef allocator,const uint8_t *bytes,CFIndex length,CFAllocatorRef bytesDeallocator);
+COREFOUNDATION_EXPORT CFReadStreamRef CFReadStreamCreateWithFile(CFAllocatorRef allocator,CFURLRef url);
 
-Boolean         CFReadStreamSetClient(CFReadStreamRef self,CFOptionFlags events,CFReadStreamClientCallBack callback,CFStreamClientContext *context);
+COREFOUNDATION_EXPORT Boolean         CFReadStreamSetClient(CFReadStreamRef self,CFOptionFlags events,CFReadStreamClientCallBack callback,CFStreamClientContext *context);
 
-CFTypeRef       CFReadStreamCopyProperty(CFReadStreamRef self,CFStringRef key);
-Boolean         CFReadStreamSetProperty(CFReadStreamRef self,CFStringRef key,CFTypeRef value);
+COREFOUNDATION_EXPORT CFTypeRef       CFReadStreamCopyProperty(CFReadStreamRef self,CFStringRef key);
+COREFOUNDATION_EXPORT Boolean         CFReadStreamSetProperty(CFReadStreamRef self,CFStringRef key,CFTypeRef value);
 
-const uint8_t * CFReadStreamGetBuffer(CFReadStreamRef self,CFIndex limit,CFIndex *available);
-Boolean         CFReadStreamOpen(CFReadStreamRef self);
-void            CFReadStreamClose(CFReadStreamRef self);
-Boolean         CFReadStreamHasBytesAvailable(CFReadStreamRef self);
-CFIndex         CFReadStreamRead(CFReadStreamRef self,uint8_t *bytes,CFIndex length);
+COREFOUNDATION_EXPORT const uint8_t * CFReadStreamGetBuffer(CFReadStreamRef self,CFIndex limit,CFIndex *available);
+COREFOUNDATION_EXPORT Boolean         CFReadStreamOpen(CFReadStreamRef self);
+COREFOUNDATION_EXPORT void            CFReadStreamClose(CFReadStreamRef self);
+COREFOUNDATION_EXPORT Boolean         CFReadStreamHasBytesAvailable(CFReadStreamRef self);
+COREFOUNDATION_EXPORT CFIndex         CFReadStreamRead(CFReadStreamRef self,uint8_t *bytes,CFIndex length);
 
-CFErrorRef      CFReadStreamCopyError(CFReadStreamRef self);
-CFStreamError   CFReadStreamGetError(CFReadStreamRef self);
-CFStreamStatus  CFReadStreamGetStatus(CFReadStreamRef self);
+COREFOUNDATION_EXPORT CFErrorRef      CFReadStreamCopyError(CFReadStreamRef self);
+COREFOUNDATION_EXPORT CFStreamError   CFReadStreamGetError(CFReadStreamRef self);
+COREFOUNDATION_EXPORT CFStreamStatus  CFReadStreamGetStatus(CFReadStreamRef self);
 
-void            CFReadStreamScheduleWithRunLoop(CFReadStreamRef self,CFRunLoopRef runLoop,CFStringRef mode);
-void            CFReadStreamUnscheduleFromRunLoop(CFReadStreamRef self,CFRunLoopRef runLoop,CFStringRef mode);
+COREFOUNDATION_EXPORT void            CFReadStreamScheduleWithRunLoop(CFReadStreamRef self,CFRunLoopRef runLoop,CFStringRef mode);
+COREFOUNDATION_EXPORT void            CFReadStreamUnscheduleFromRunLoop(CFReadStreamRef self,CFRunLoopRef runLoop,CFStringRef mode);
 
 // Write Stream
 
-CFTypeID         CFWriteStreamGetTypeID(void);
+COREFOUNDATION_EXPORT CFTypeID         CFWriteStreamGetTypeID(void);
 
-CFWriteStreamRef CFWriteStreamCreateWithAllocatedBuffers(CFAllocatorRef allocator,CFAllocatorRef bufferAllocator);
-CFWriteStreamRef CFWriteStreamCreateWithBuffer(CFAllocatorRef allocator,uint8_t *bytes,CFIndex capacity);
-CFWriteStreamRef CFWriteStreamCreateWithFile(CFAllocatorRef allocator,CFURLRef url);
+COREFOUNDATION_EXPORT CFWriteStreamRef CFWriteStreamCreateWithAllocatedBuffers(CFAllocatorRef allocator,CFAllocatorRef bufferAllocator);
+COREFOUNDATION_EXPORT CFWriteStreamRef CFWriteStreamCreateWithBuffer(CFAllocatorRef allocator,uint8_t *bytes,CFIndex capacity);
+COREFOUNDATION_EXPORT CFWriteStreamRef CFWriteStreamCreateWithFile(CFAllocatorRef allocator,CFURLRef url);
 
-Boolean          CFWriteStreamSetClient(CFWriteStreamRef self,CFOptionFlags events,CFWriteStreamClientCallBack callback,CFStreamClientContext *context);
+COREFOUNDATION_EXPORT Boolean          CFWriteStreamSetClient(CFWriteStreamRef self,CFOptionFlags events,CFWriteStreamClientCallBack callback,CFStreamClientContext *context);
 
-CFTypeRef        CFWriteStreamCopyProperty(CFWriteStreamRef self,CFStringRef key);
-Boolean          CFWriteStreamSetProperty(CFWriteStreamRef self,CFStringRef key,CFTypeRef value);
+COREFOUNDATION_EXPORT CFTypeRef        CFWriteStreamCopyProperty(CFWriteStreamRef self,CFStringRef key);
+COREFOUNDATION_EXPORT Boolean          CFWriteStreamSetProperty(CFWriteStreamRef self,CFStringRef key,CFTypeRef value);
 
-Boolean          CFWriteStreamOpen(CFWriteStreamRef self);
-void             CFWriteStreamClose(CFWriteStreamRef self);
-Boolean          CFWriteStreamCanAcceptBytes(CFWriteStreamRef self);
-CFIndex          CFWriteStreamWrite(CFWriteStreamRef self,const uint8_t *bytes,CFIndex length);
+COREFOUNDATION_EXPORT Boolean          CFWriteStreamOpen(CFWriteStreamRef self);
+COREFOUNDATION_EXPORT void             CFWriteStreamClose(CFWriteStreamRef self);
+COREFOUNDATION_EXPORT Boolean          CFWriteStreamCanAcceptBytes(CFWriteStreamRef self);
+COREFOUNDATION_EXPORT CFIndex          CFWriteStreamWrite(CFWriteStreamRef self,const uint8_t *bytes,CFIndex length);
 
-CFErrorRef       CFWriteStreamCopyError(CFReadStreamRef self);
-CFStreamError    CFWriteStreamGetError(CFWriteStreamRef self);
-CFStreamStatus   CFWriteStreamGetStatus(CFWriteStreamRef self);
+COREFOUNDATION_EXPORT CFErrorRef       CFWriteStreamCopyError(CFReadStreamRef self);
+COREFOUNDATION_EXPORT CFStreamError    CFWriteStreamGetError(CFWriteStreamRef self);
+COREFOUNDATION_EXPORT CFStreamStatus   CFWriteStreamGetStatus(CFWriteStreamRef self);
 
-void             CFWriteStreamScheduleWithRunLoop(CFWriteStreamRef self,CFRunLoopRef runLoop,CFStringRef mode);
-void             CFWriteStreamUnscheduleFromRunLoop(CFWriteStreamRef self,CFRunLoopRef runLoop,CFStringRef mode);
+COREFOUNDATION_EXPORT void             CFWriteStreamScheduleWithRunLoop(CFWriteStreamRef self,CFRunLoopRef runLoop,CFStringRef mode);
+COREFOUNDATION_EXPORT void             CFWriteStreamUnscheduleFromRunLoop(CFWriteStreamRef self,CFRunLoopRef runLoop,CFStringRef mode);
 

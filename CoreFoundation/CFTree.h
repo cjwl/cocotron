@@ -7,7 +7,6 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS",WITHOUT WARRANTY OF ANY KIND,EXPRESS OR IMPLIED,INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,DAMAGES OR OTHER LIABILITY,WHETHER IN AN ACTION OF CONTRACT,TORT OR OTHERWISE,ARISING FROM,OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 #import <CoreFoundation/CFBase.h>
 
-
 typedef struct CFTree *CFTreeRef;
 
 typedef CFAllocatorRetainCallBack          CFTreeRetainCallBack;
@@ -24,24 +23,24 @@ typedef struct {
 
 typedef void (*CFTreeApplierFunction)(const void *value,void *context);
 
-CFTypeID  CFTreeGetTypeID(void);
+COREFOUNDATION_EXPORT CFTypeID  CFTreeGetTypeID(void);
 
-CFTreeRef CFTreeCreate(CFAllocatorRef allocator,const CFTreeContext *context);
+COREFOUNDATION_EXPORT CFTreeRef CFTreeCreate(CFAllocatorRef allocator,const CFTreeContext *context);
 
-void      CFTreeGetContext(CFTreeRef self,CFTreeContext *context);
+COREFOUNDATION_EXPORT void      CFTreeGetContext(CFTreeRef self,CFTreeContext *context);
 
-void      CFTreeAppendChild(CFTreeRef self,CFTreeRef child);
-void      CFTreeApplyFunctionToChildren(CFTreeRef self,CFTreeApplierFunction function,void *context);
-CFTreeRef CFTreeFindRoot(CFTreeRef self);
-CFTreeRef CFTreeGetChildAtIndex(CFTreeRef self,CFIndex index);
-CFIndex   CFTreeGetChildCount(CFTreeRef self);
-void      CFTreeGetChildren(CFTreeRef self,CFTreeRef *children);
-CFTreeRef CFTreeGetFirstChild(CFTreeRef self);
-CFTreeRef CFTreeGetNextSibling(CFTreeRef self);
-CFTreeRef CFTreeGetParent(CFTreeRef self);
-void      CFTreeInsertSibling(CFTreeRef self,CFTreeRef sibling);
-void      CFTreePrependChild(CFTreeRef self,CFTreeRef child);
-void      CFTreeRemove(CFTreeRef self);
-void      CFTreeRemoveAllChildren(CFTreeRef self);
-void      CFTreeSetContext(CFTreeRef self,const CFTreeContext *context);
-void      CFTreeSortChildren(CFTreeRef self,CFComparatorFunction function,void *context);
+COREFOUNDATION_EXPORT void      CFTreeAppendChild(CFTreeRef self,CFTreeRef child);
+COREFOUNDATION_EXPORT void      CFTreeApplyFunctionToChildren(CFTreeRef self,CFTreeApplierFunction function,void *context);
+COREFOUNDATION_EXPORT CFTreeRef CFTreeFindRoot(CFTreeRef self);
+COREFOUNDATION_EXPORT CFTreeRef CFTreeGetChildAtIndex(CFTreeRef self,CFIndex index);
+COREFOUNDATION_EXPORT CFIndex   CFTreeGetChildCount(CFTreeRef self);
+COREFOUNDATION_EXPORT void      CFTreeGetChildren(CFTreeRef self,CFTreeRef *children);
+COREFOUNDATION_EXPORT CFTreeRef CFTreeGetFirstChild(CFTreeRef self);
+COREFOUNDATION_EXPORT CFTreeRef CFTreeGetNextSibling(CFTreeRef self);
+COREFOUNDATION_EXPORT CFTreeRef CFTreeGetParent(CFTreeRef self);
+COREFOUNDATION_EXPORT void      CFTreeInsertSibling(CFTreeRef self,CFTreeRef sibling);
+COREFOUNDATION_EXPORT void      CFTreePrependChild(CFTreeRef self,CFTreeRef child);
+COREFOUNDATION_EXPORT void      CFTreeRemove(CFTreeRef self);
+COREFOUNDATION_EXPORT void      CFTreeRemoveAllChildren(CFTreeRef self);
+COREFOUNDATION_EXPORT void      CFTreeSetContext(CFTreeRef self,const CFTreeContext *context);
+COREFOUNDATION_EXPORT void      CFTreeSortChildren(CFTreeRef self,CFComparatorFunction function,void *context);

@@ -8,8 +8,6 @@ THE SOFTWARE IS PROVIDED "AS IS",WITHOUT WARRANTY OF ANY KIND,EXPRESS OR IMPLIED
 #import <CoreFoundation/CFBase.h>
 #import <CoreFoundation/CFRunLoop.h>
 
-
-
 typedef struct __NSMessagePort *CFMessagePortRef;
 
 typedef void (*CFMessagePortInvalidationCallBack)(CFMessagePortRef self,void *info);
@@ -32,18 +30,18 @@ enum {
 
 typedef CFDataRef (*CFMessagePortCallBack)(CFMessagePortRef local,CFInteger msgId,CFDataRef data,void *info);
 
-CFTypeID                          CFMessagePortGetTypeID(void);
+COREFOUNDATION_EXPORT CFTypeID                          CFMessagePortGetTypeID(void);
 
-CFMessagePortRef                  CFMessagePortCreateLocal(CFAllocatorRef allocator,CFStringRef name,CFMessagePortCallBack callback,CFMessagePortContext *context,Boolean *callerFreeInfo);
-CFMessagePortRef                  CFMessagePortCreateRemote(CFAllocatorRef allocator,CFStringRef name);
+COREFOUNDATION_EXPORT CFMessagePortRef                  CFMessagePortCreateLocal(CFAllocatorRef allocator,CFStringRef name,CFMessagePortCallBack callback,CFMessagePortContext *context,Boolean *callerFreeInfo);
+COREFOUNDATION_EXPORT CFMessagePortRef                  CFMessagePortCreateRemote(CFAllocatorRef allocator,CFStringRef name);
 
-CFRunLoopSourceRef                CFMessagePortCreateRunLoopSource(CFAllocatorRef allocator,CFMessagePortRef self,CFIndex order);
-void                              CFMessagePortGetContext(CFMessagePortRef self,CFMessagePortContext *context);
-CFMessagePortInvalidationCallBack CFMessagePortGetInvalidationCallBack(CFMessagePortRef self);
-CFStringRef                       CFMessagePortGetName(CFMessagePortRef self);
-void                              CFMessagePortInvalidate(CFMessagePortRef self);
-Boolean                           CFMessagePortIsRemote(CFMessagePortRef self);
-Boolean                           CFMessagePortIsValid(CFMessagePortRef self);
-CFInteger                         CFMessagePortSendRequest(CFMessagePortRef self,CFInteger msgId,CFDataRef data,CFTimeInterval sendTimeout,CFTimeInterval receiveTimeout,CFStringRef replyMode,CFDataRef *replyData);
-void                              CFMessagePortSetInvalidationCallBack(CFMessagePortRef self,CFMessagePortInvalidationCallBack callback);
-Boolean                           CFMessagePortSetName(CFMessagePortRef self,CFStringRef name);
+COREFOUNDATION_EXPORT CFRunLoopSourceRef                CFMessagePortCreateRunLoopSource(CFAllocatorRef allocator,CFMessagePortRef self,CFIndex order);
+COREFOUNDATION_EXPORT void                              CFMessagePortGetContext(CFMessagePortRef self,CFMessagePortContext *context);
+COREFOUNDATION_EXPORT CFMessagePortInvalidationCallBack CFMessagePortGetInvalidationCallBack(CFMessagePortRef self);
+COREFOUNDATION_EXPORT CFStringRef                       CFMessagePortGetName(CFMessagePortRef self);
+COREFOUNDATION_EXPORT void                              CFMessagePortInvalidate(CFMessagePortRef self);
+COREFOUNDATION_EXPORT Boolean                           CFMessagePortIsRemote(CFMessagePortRef self);
+COREFOUNDATION_EXPORT Boolean                           CFMessagePortIsValid(CFMessagePortRef self);
+COREFOUNDATION_EXPORT CFInteger                         CFMessagePortSendRequest(CFMessagePortRef self,CFInteger msgId,CFDataRef data,CFTimeInterval sendTimeout,CFTimeInterval receiveTimeout,CFStringRef replyMode,CFDataRef *replyData);
+COREFOUNDATION_EXPORT void                              CFMessagePortSetInvalidationCallBack(CFMessagePortRef self,CFMessagePortInvalidationCallBack callback);
+COREFOUNDATION_EXPORT Boolean                           CFMessagePortSetName(CFMessagePortRef self,CFStringRef name);

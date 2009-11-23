@@ -22,11 +22,11 @@ typedef enum  {
    kCFPropertyListMutableContainersAndLeaves=2,
 } CFPropertyListMutabilityOptions;
 
-CFPropertyListRef CFPropertyListCreateFromStream(CFAllocatorRef allocator,CFReadStreamRef stream,CFIndex length,CFOptionFlags options,CFPropertyListFormat *format,CFStringRef *error);
-CFPropertyListRef CFPropertyListCreateFromXMLData(CFAllocatorRef allocator,CFDataRef data,CFOptionFlags options,CFStringRef *error);
+COREFOUNDATION_EXPORT CFPropertyListRef CFPropertyListCreateFromStream(CFAllocatorRef allocator,CFReadStreamRef stream,CFIndex length,CFOptionFlags options,CFPropertyListFormat *format,CFStringRef *error);
+COREFOUNDATION_EXPORT CFPropertyListRef CFPropertyListCreateFromXMLData(CFAllocatorRef allocator,CFDataRef data,CFOptionFlags options,CFStringRef *error);
 
-CFPropertyListRef CFPropertyListCreateDeepCopy(CFAllocatorRef allocator,CFPropertyListRef self,CFOptionFlags options);
+COREFOUNDATION_EXPORT CFPropertyListRef CFPropertyListCreateDeepCopy(CFAllocatorRef allocator,CFPropertyListRef self,CFOptionFlags options);
 
-CFDataRef         CFPropertyListCreateXMLData(CFAllocatorRef allocator,CFPropertyListRef self);
-Boolean           CFPropertyListIsValid(CFPropertyListRef self,CFPropertyListFormat format);
-CFIndex           CFPropertyListWriteToStream(CFPropertyListRef self,CFWriteStreamRef stream,CFPropertyListFormat format,CFStringRef *error);
+COREFOUNDATION_EXPORT CFDataRef         CFPropertyListCreateXMLData(CFAllocatorRef allocator,CFPropertyListRef self);
+COREFOUNDATION_EXPORT Boolean           CFPropertyListIsValid(CFPropertyListRef self,CFPropertyListFormat format);
+COREFOUNDATION_EXPORT CFIndex           CFPropertyListWriteToStream(CFPropertyListRef self,CFWriteStreamRef stream,CFPropertyListFormat format,CFStringRef *error);

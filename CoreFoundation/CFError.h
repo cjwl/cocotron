@@ -20,14 +20,14 @@ COREFOUNDATION_EXPORT const CFStringRef kCFErrorUnderlyingErrorKey;
 COREFOUNDATION_EXPORT const CFStringRef kCFErrorLocalizedFailureReasonKey;
 COREFOUNDATION_EXPORT const CFStringRef kCFErrorLocalizedRecoverySuggestionKey;
 
-CFTypeID        CFErrorGetTypeID(void);
+COREFOUNDATION_EXPORT CFTypeID        CFErrorGetTypeID(void);
 
-CFErrorRef      CFErrorCreate(CFAllocatorRef allocator,CFStringRef domain,CFIndex code,CFDictionaryRef userInfo);
-CFErrorRef      CFErrorCreateWithUserInfoKeysAndValues(CFAllocatorRef allocator,CFStringRef domain,CFIndex code,const void *const *userInfoKeys,const void *const *userInfoValues,CFIndex userInfoCount);
+COREFOUNDATION_EXPORT CFErrorRef      CFErrorCreate(CFAllocatorRef allocator,CFStringRef domain,CFIndex code,CFDictionaryRef userInfo);
+COREFOUNDATION_EXPORT CFErrorRef      CFErrorCreateWithUserInfoKeysAndValues(CFAllocatorRef allocator,CFStringRef domain,CFIndex code,const void *const *userInfoKeys,const void *const *userInfoValues,CFIndex userInfoCount);
 
-CFStringRef     CFErrorGetDomain(CFErrorRef self);
-CFIndex         CFErrorGetCode(CFErrorRef self);
-CFDictionaryRef CFErrorCopyUserInfo(CFErrorRef self);
-CFStringRef     CFErrorCopyFailureReason(CFErrorRef self);
-CFStringRef     CFErrorCopyRecoverySuggestion(CFErrorRef self);
-CFStringRef     CFErrorCopyDescription(CFErrorRef self);
+COREFOUNDATION_EXPORT CFStringRef     CFErrorGetDomain(CFErrorRef self);
+COREFOUNDATION_EXPORT CFIndex         CFErrorGetCode(CFErrorRef self);
+COREFOUNDATION_EXPORT CFDictionaryRef CFErrorCopyUserInfo(CFErrorRef self);
+COREFOUNDATION_EXPORT CFStringRef     CFErrorCopyFailureReason(CFErrorRef self);
+COREFOUNDATION_EXPORT CFStringRef     CFErrorCopyRecoverySuggestion(CFErrorRef self);
+COREFOUNDATION_EXPORT CFStringRef     CFErrorCopyDescription(CFErrorRef self);

@@ -71,19 +71,19 @@ typedef struct CFXMLParserContext {
 } CFXMLParserContext;
 
 
-CFTypeID CFXMLParserGetTypeID();
+COREFOUNDATION_EXPORT CFTypeID CFXMLParserGetTypeID();
 
-CFXMLParserRef CFXMLParserCreate(CFAllocatorRef allocator,CFDataRef data,CFURLRef url,CFOptionFlags options,CFIndex nodeVersion,CFXMLParserCallBacks *callbacks,CFXMLParserContext *context);
-CFXMLParserRef CFXMLParserCreateWithDataFromURL(CFAllocatorRef allocator,CFURLRef url,CFOptionFlags options,CFIndex nodeVersion,CFXMLParserCallBacks *callbacks,CFXMLParserContext *context);
+COREFOUNDATION_EXPORT CFXMLParserRef CFXMLParserCreate(CFAllocatorRef allocator,CFDataRef data,CFURLRef url,CFOptionFlags options,CFIndex nodeVersion,CFXMLParserCallBacks *callbacks,CFXMLParserContext *context);
+COREFOUNDATION_EXPORT CFXMLParserRef CFXMLParserCreateWithDataFromURL(CFAllocatorRef allocator,CFURLRef url,CFOptionFlags options,CFIndex nodeVersion,CFXMLParserCallBacks *callbacks,CFXMLParserContext *context);
 
-void                  CFXMLParserAbort(CFXMLParserRef self,CFXMLParserStatusCode statusCode,CFStringRef errorDescription);
-CFStringRef           CFXMLParserCopyErrorDescription(CFXMLParserRef self);
-void                  CFXMLParserGetCallBacks(CFXMLParserRef self,CFXMLParserCallBacks *callbacks);
-void                  CFXMLParserGetContext(CFXMLParserRef self,CFXMLParserContext *context);
-void                 *CFXMLParserGetDocument(CFXMLParserRef self);
-CFIndex               CFXMLParserGetLineNumber(CFXMLParserRef self);
-CFIndex               CFXMLParserGetLocation(CFXMLParserRef self);
-CFURLRef              CFXMLParserGetSourceURL(CFXMLParserRef self);
-CFXMLParserStatusCode CFXMLParserGetStatusCode(CFXMLParserRef self);
+COREFOUNDATION_EXPORT void                  CFXMLParserAbort(CFXMLParserRef self,CFXMLParserStatusCode statusCode,CFStringRef errorDescription);
+COREFOUNDATION_EXPORT CFStringRef           CFXMLParserCopyErrorDescription(CFXMLParserRef self);
+COREFOUNDATION_EXPORT void                  CFXMLParserGetCallBacks(CFXMLParserRef self,CFXMLParserCallBacks *callbacks);
+COREFOUNDATION_EXPORT void                  CFXMLParserGetContext(CFXMLParserRef self,CFXMLParserContext *context);
+COREFOUNDATION_EXPORT void                 *CFXMLParserGetDocument(CFXMLParserRef self);
+COREFOUNDATION_EXPORT CFIndex               CFXMLParserGetLineNumber(CFXMLParserRef self);
+COREFOUNDATION_EXPORT CFIndex               CFXMLParserGetLocation(CFXMLParserRef self);
+COREFOUNDATION_EXPORT CFURLRef              CFXMLParserGetSourceURL(CFXMLParserRef self);
+COREFOUNDATION_EXPORT CFXMLParserStatusCode CFXMLParserGetStatusCode(CFXMLParserRef self);
 
 Boolean               CFXMLParserParse(CFXMLParserRef self);

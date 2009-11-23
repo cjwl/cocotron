@@ -6,7 +6,6 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS",WITHOUT WARRANTY OF ANY KIND,EXPRESS OR IMPLIED,INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,DAMAGES OR OTHER LIABILITY,WHETHER IN AN ACTION OF CONTRACT,TORT OR OTHERWISE,ARISING FROM,OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
-
 typedef struct __NSMutableString *CFStringRef;
 typedef struct __NSMutableString *CFMutableStringRef;
 
@@ -57,87 +56,85 @@ typedef struct CFStringInlineBuffer {
   int nothing;
 } CFStringInlineBuffer;
 
-CFTypeID CFStringGetTypeID(void);
+COREFOUNDATION_EXPORT CFTypeID CFStringGetTypeID(void);
 
-CFStringEncoding CFStringGetSystemEncoding(void);
-const CFStringEncoding *CFStringGetListOfAvailableEncodings(void);
-Boolean          CFStringIsEncodingAvailable(CFStringEncoding encoding);
-CFStringRef      CFStringGetNameOfEncoding(CFStringEncoding encoding);
-CFStringEncoding CFStringGetMostCompatibleMacStringEncoding(CFStringEncoding encoding);
-CFIndex CFStringGetMaximumSizeForEncoding(CFIndex length,CFStringEncoding encoding);
+COREFOUNDATION_EXPORT CFStringEncoding CFStringGetSystemEncoding(void);
+COREFOUNDATION_EXPORT const CFStringEncoding *CFStringGetListOfAvailableEncodings(void);
+COREFOUNDATION_EXPORT Boolean          CFStringIsEncodingAvailable(CFStringEncoding encoding);
+COREFOUNDATION_EXPORT CFStringRef      CFStringGetNameOfEncoding(CFStringEncoding encoding);
+COREFOUNDATION_EXPORT CFStringEncoding CFStringGetMostCompatibleMacStringEncoding(CFStringEncoding encoding);
+COREFOUNDATION_EXPORT CFIndex CFStringGetMaximumSizeForEncoding(CFIndex length,CFStringEncoding encoding);
 
 #ifdef __OBJC__
-#define CFSTR(s) (NSString*)(@##s)
+#define CFSTR(s) (CFStringRef)(@s)
 #else
-
 #define CFSTR(s) CFStringMakeConstant(const char *s);
 #endif
 
-CFStringRef CFStringCreateByCombiningStrings(CFAllocatorRef allocator,CFArrayRef array,CFStringRef separator);
-CFStringRef CFStringCreateCopy(CFAllocatorRef allocator,CFStringRef self);
-CFStringRef CFStringCreateWithBytes(CFAllocatorRef allocator,const uint8_t *bytes,CFIndex length,CFStringEncoding encoding,Boolean isExternalRepresentation);
-CFStringRef CFStringCreateWithBytesNoCopy(CFAllocatorRef allocator,const uint8_t *bytes,CFIndex length,CFStringEncoding encoding,Boolean isExternalRepresentation,CFAllocatorRef contentsDeallocator);
-CFStringRef CFStringCreateWithCharacters(CFAllocatorRef allocator,const UniChar *chars,CFIndex length);
-CFStringRef CFStringCreateWithCharactersNoCopy(CFAllocatorRef allocator,const UniChar *chars,CFIndex length,CFAllocatorRef contentsDeallocator);
-CFStringRef CFStringCreateWithCString(CFAllocatorRef allocator,const char *cString,CFStringEncoding encoding);
-CFStringRef CFStringCreateWithCStringNoCopy(CFAllocatorRef allocator,const char *cString,CFStringEncoding encoding,CFAllocatorRef contentsDeallocator);
-CFStringRef CFStringCreateWithFileSystemRepresentation(CFAllocatorRef allocator,const char *buffer);
-CFStringRef CFStringCreateWithFormat(CFAllocatorRef allocator,CFDictionaryRef formatOptions,CFStringRef format,...);
-CFStringRef CFStringCreateWithFormatAndArguments(CFAllocatorRef allocator,CFDictionaryRef formatOptions,CFStringRef format,va_list arguments);
-CFStringRef CFStringCreateFromExternalRepresentation(CFAllocatorRef allocator,CFDataRef data,CFStringEncoding encoding);
+COREFOUNDATION_EXPORT CFStringRef CFStringCreateByCombiningStrings(CFAllocatorRef allocator,CFArrayRef array,CFStringRef separator);
+COREFOUNDATION_EXPORT CFStringRef CFStringCreateCopy(CFAllocatorRef allocator,CFStringRef self);
+COREFOUNDATION_EXPORT CFStringRef CFStringCreateWithBytes(CFAllocatorRef allocator,const uint8_t *bytes,CFIndex length,CFStringEncoding encoding,Boolean isExternalRepresentation);
+COREFOUNDATION_EXPORT CFStringRef CFStringCreateWithBytesNoCopy(CFAllocatorRef allocator,const uint8_t *bytes,CFIndex length,CFStringEncoding encoding,Boolean isExternalRepresentation,CFAllocatorRef contentsDeallocator);
+COREFOUNDATION_EXPORT CFStringRef CFStringCreateWithCharacters(CFAllocatorRef allocator,const UniChar *chars,CFIndex length);
+COREFOUNDATION_EXPORT CFStringRef CFStringCreateWithCharactersNoCopy(CFAllocatorRef allocator,const UniChar *chars,CFIndex length,CFAllocatorRef contentsDeallocator);
+COREFOUNDATION_EXPORT CFStringRef CFStringCreateWithCString(CFAllocatorRef allocator,const char *cString,CFStringEncoding encoding);
+COREFOUNDATION_EXPORT CFStringRef CFStringCreateWithCStringNoCopy(CFAllocatorRef allocator,const char *cString,CFStringEncoding encoding,CFAllocatorRef contentsDeallocator);
+COREFOUNDATION_EXPORT CFStringRef CFStringCreateWithFileSystemRepresentation(CFAllocatorRef allocator,const char *buffer);
+COREFOUNDATION_EXPORT CFStringRef CFStringCreateWithFormat(CFAllocatorRef allocator,CFDictionaryRef formatOptions,CFStringRef format,...);
+COREFOUNDATION_EXPORT CFStringRef CFStringCreateWithFormatAndArguments(CFAllocatorRef allocator,CFDictionaryRef formatOptions,CFStringRef format,va_list arguments);
+COREFOUNDATION_EXPORT CFStringRef CFStringCreateFromExternalRepresentation(CFAllocatorRef allocator,CFDataRef data,CFStringEncoding encoding);
 
-CFStringRef CFStringCreateWithSubstring(CFAllocatorRef allocator,CFStringRef self,CFRange range);
+COREFOUNDATION_EXPORT CFStringRef CFStringCreateWithSubstring(CFAllocatorRef allocator,CFStringRef self,CFRange range);
 
-void CFShow(CFTypeRef self);
-void CFShowStr(CFStringRef self);
+COREFOUNDATION_EXPORT void CFShow(CFTypeRef self);
+COREFOUNDATION_EXPORT void CFShowStr(CFStringRef self);
 
+COREFOUNDATION_EXPORT CFComparisonResult CFStringCompare(CFStringRef self,CFStringRef other,CFOptionFlags options);
+COREFOUNDATION_EXPORT CFComparisonResult CFStringCompareWithOptions(CFStringRef self,CFStringRef other,CFRange rangeToCompare,CFOptionFlags options);
+COREFOUNDATION_EXPORT CFComparisonResult CFStringCompareWithOptionsAndLocale(CFStringRef self,CFStringRef other,CFRange rangeToCompare,CFOptionFlags options,CFLocaleRef locale);
 
-CFComparisonResult CFStringCompare(CFStringRef self,CFStringRef other,CFOptionFlags options);
-CFComparisonResult CFStringCompareWithOptions(CFStringRef self,CFStringRef other,CFRange rangeToCompare,CFOptionFlags options);
-CFComparisonResult CFStringCompareWithOptionsAndLocale(CFStringRef self,CFStringRef other,CFRange rangeToCompare,CFOptionFlags options,CFLocaleRef locale);
+COREFOUNDATION_EXPORT CFStringRef CFStringConvertEncodingToIANACharSetName(CFStringEncoding encoding);
+COREFOUNDATION_EXPORT CFUInteger CFStringConvertEncodingToNSStringEncoding(CFStringEncoding encoding);
+COREFOUNDATION_EXPORT CFUInteger CFStringConvertEncodingToWindowsCodepage(CFStringEncoding encoding);
 
-CFStringRef CFStringConvertEncodingToIANACharSetName(CFStringEncoding encoding);
-CFUInteger CFStringConvertEncodingToNSStringEncoding(CFStringEncoding encoding);
-CFUInteger CFStringConvertEncodingToWindowsCodepage(CFStringEncoding encoding);
+COREFOUNDATION_EXPORT CFStringEncoding CFStringConvertIANACharSetNameToEncoding(CFStringRef self);
+COREFOUNDATION_EXPORT CFStringEncoding CFStringConvertNSStringEncodingToEncoding(CFUInteger encoding);
+COREFOUNDATION_EXPORT CFStringEncoding CFStringConvertWindowsCodepageToEncoding(CFUInteger codepage);
+COREFOUNDATION_EXPORT CFArrayRef       CFStringCreateArrayBySeparatingStrings(CFAllocatorRef allocator,CFStringRef self,CFStringRef separatorString);
+COREFOUNDATION_EXPORT CFArrayRef       CFStringCreateArrayWithFindResults(CFAllocatorRef allocator,CFStringRef self,CFStringRef stringToFind,CFRange range,CFOptionFlags options);
+COREFOUNDATION_EXPORT CFDataRef        CFStringCreateExternalRepresentation(CFAllocatorRef allocator,CFStringRef self,CFStringEncoding encoding,uint8_t lossByte);
 
-CFStringEncoding CFStringConvertIANACharSetNameToEncoding(CFStringRef self);
-CFStringEncoding CFStringConvertNSStringEncodingToEncoding(CFUInteger encoding);
-CFStringEncoding CFStringConvertWindowsCodepageToEncoding(CFUInteger codepage);
-CFArrayRef       CFStringCreateArrayBySeparatingStrings(CFAllocatorRef allocator,CFStringRef self,CFStringRef separatorString);
-CFArrayRef       CFStringCreateArrayWithFindResults(CFAllocatorRef allocator,CFStringRef self,CFStringRef stringToFind,CFRange range,CFOptionFlags options);
-CFDataRef        CFStringCreateExternalRepresentation(CFAllocatorRef allocator,CFStringRef self,CFStringEncoding encoding,uint8_t lossByte);
+COREFOUNDATION_EXPORT Boolean          CFStringHasPrefix(CFStringRef self,CFStringRef prefix);
+COREFOUNDATION_EXPORT Boolean          CFStringHasSuffix(CFStringRef self,CFStringRef suffix);
+COREFOUNDATION_EXPORT CFRange          CFStringFind(CFStringRef self,CFStringRef stringToFind,CFOptionFlags options);
+COREFOUNDATION_EXPORT Boolean          CFStringFindCharacterFromSet(CFStringRef self,CFCharacterSetRef set,CFRange range,CFOptionFlags options,CFRange *result);
+COREFOUNDATION_EXPORT Boolean          CFStringFindWithOptions(CFStringRef self,CFStringRef stringToFind,CFRange range,CFOptionFlags options,CFRange *result);
+COREFOUNDATION_EXPORT Boolean          CFStringFindWithOptionsAndLocale(CFStringRef self,CFStringRef stringToFind,CFRange range,CFOptionFlags options,CFLocaleRef locale,CFRange *result);
+COREFOUNDATION_EXPORT CFIndex          CFStringGetBytes(CFStringRef self,CFRange range,CFStringEncoding encoding,uint8_t lossByte,Boolean isExternalRepresentation,uint8_t *bytes,CFIndex length,CFIndex *resultLength);
 
-Boolean          CFStringHasPrefix(CFStringRef self,CFStringRef prefix);
-Boolean          CFStringHasSuffix(CFStringRef self,CFStringRef suffix);
-CFRange          CFStringFind(CFStringRef self,CFStringRef stringToFind,CFOptionFlags options);
-Boolean          CFStringFindCharacterFromSet(CFStringRef self,CFCharacterSetRef set,CFRange range,CFOptionFlags options,CFRange *result);
-Boolean          CFStringFindWithOptions(CFStringRef self,CFStringRef stringToFind,CFRange range,CFOptionFlags options,CFRange *result);
-Boolean          CFStringFindWithOptionsAndLocale(CFStringRef self,CFStringRef stringToFind,CFRange range,CFOptionFlags options,CFLocaleRef locale,CFRange *result);
-CFIndex          CFStringGetBytes(CFStringRef self,CFRange range,CFStringEncoding encoding,uint8_t lossByte,Boolean isExternalRepresentation,uint8_t *bytes,CFIndex length,CFIndex *resultLength);
+COREFOUNDATION_EXPORT CFIndex          CFStringGetLength(CFStringRef self);
+COREFOUNDATION_EXPORT UniChar          CFStringGetCharacterAtIndex(CFStringRef self,CFIndex index);
 
-CFIndex          CFStringGetLength(CFStringRef self);
-UniChar          CFStringGetCharacterAtIndex(CFStringRef self,CFIndex index);
+COREFOUNDATION_EXPORT void             CFStringGetCharacters(CFStringRef self,CFRange range,UniChar *buffer);
+COREFOUNDATION_EXPORT const UniChar   *CFStringGetCharactersPtr(CFStringRef self);
 
-void             CFStringGetCharacters(CFStringRef self,CFRange range,UniChar *buffer);
-const UniChar   *CFStringGetCharactersPtr(CFStringRef self);
+COREFOUNDATION_EXPORT Boolean         CFStringGetCString(CFStringRef self,char *buffer,CFIndex bufferSize,CFStringEncoding encoding);
+COREFOUNDATION_EXPORT const char     *CFStringGetCStringPtr(CFStringRef self,CFStringEncoding encoding);
 
-Boolean         CFStringGetCString(CFStringRef self,char *buffer,CFIndex bufferSize,CFStringEncoding encoding);
-const char     *CFStringGetCStringPtr(CFStringRef self,CFStringEncoding encoding);
+COREFOUNDATION_EXPORT void            CFStringInitInlineBuffer(CFStringRef self,CFStringInlineBuffer *buffer,CFRange range);
+COREFOUNDATION_EXPORT UniChar         CFStringGetCharacterFromInlineBuffer(CFStringInlineBuffer *buffer,CFIndex index);
 
-void            CFStringInitInlineBuffer(CFStringRef self,CFStringInlineBuffer *buffer,CFRange range);
-UniChar         CFStringGetCharacterFromInlineBuffer(CFStringInlineBuffer *buffer,CFIndex index);
+COREFOUNDATION_EXPORT CFInteger        CFStringGetIntValue(CFStringRef self);
+COREFOUNDATION_EXPORT double           CFStringGetDoubleValue(CFStringRef self);
+COREFOUNDATION_EXPORT CFStringEncoding CFStringGetFastestEncoding(CFStringRef self);
+COREFOUNDATION_EXPORT CFStringEncoding CFStringGetSmallestEncoding(CFStringRef self);
 
-CFInteger        CFStringGetIntValue(CFStringRef self);
-double           CFStringGetDoubleValue(CFStringRef self);
-CFStringEncoding CFStringGetFastestEncoding(CFStringRef self);
-CFStringEncoding CFStringGetSmallestEncoding(CFStringRef self);
+COREFOUNDATION_EXPORT CFIndex          CFStringGetMaximumSizeOfFileSystemRepresentation(CFStringRef self);
+COREFOUNDATION_EXPORT Boolean          CFStringGetFileSystemRepresentation(CFStringRef self,char *buffer,CFIndex bufferCapacity);
 
-CFIndex          CFStringGetMaximumSizeOfFileSystemRepresentation(CFStringRef self);
-Boolean          CFStringGetFileSystemRepresentation(CFStringRef self,char *buffer,CFIndex bufferCapacity);
-
-void             CFStringGetLineBounds(CFStringRef self,CFRange range,CFIndex *beginIndex,CFIndex *endIndex,CFIndex *contentsEndIndex);
-void             CFStringGetParagraphBounds(CFStringRef self,CFRange range,CFIndex *beginIndex,CFIndex *endIndex,CFIndex *contentsEndIndex);
-CFRange          CFStringGetRangeOfComposedCharactersAtIndex(CFStringRef self,CFIndex index);
+COREFOUNDATION_EXPORT void             CFStringGetLineBounds(CFStringRef self,CFRange range,CFIndex *beginIndex,CFIndex *endIndex,CFIndex *contentsEndIndex);
+COREFOUNDATION_EXPORT void             CFStringGetParagraphBounds(CFStringRef self,CFRange range,CFIndex *beginIndex,CFIndex *endIndex,CFIndex *contentsEndIndex);
+COREFOUNDATION_EXPORT CFRange          CFStringGetRangeOfComposedCharactersAtIndex(CFStringRef self,CFIndex index);
 
 
 

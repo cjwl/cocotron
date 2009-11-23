@@ -7,11 +7,9 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS",WITHOUT WARRANTY OF ANY KIND,EXPRESS OR IMPLIED,INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,DAMAGES OR OTHER LIABILITY,WHETHER IN AN ACTION OF CONTRACT,TORT OR OTHERWISE,ARISING FROM,OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 #import <CoreFoundation/CFBase.h>
 
-
 typedef struct __NSTimeZone *CFTimeZoneRef;
 
 #import <CoreFoundation/CFDate.h>
-
 
 enum {
    kCFTimeZoneNameStyleStandard           =0,
@@ -23,25 +21,25 @@ typedef CFIndex CFTimeZoneNameStyle;
 
 COREFOUNDATION_EXPORT const CFStringRef kCFTimeZoneSystemTimeZoneDidChangeNotification;
 
-CFTypeID        CFTimeZoneGetTypeID(void);
-CFDictionaryRef CFTimeZoneCopyAbbreviationDictionary(void);
-CFTimeZoneRef   CFTimeZoneCopyDefault(void);
-CFArrayRef      CFTimeZoneCopyKnownNames(void);
-CFTimeZoneRef   CFTimeZoneCopySystem(void);
-void            CFTimeZoneResetSystem(void);
-void            CFTimeZoneSetAbbreviationDictionary(CFDictionaryRef dictionary);
-void            CFTimeZoneSetDefault(CFTimeZoneRef self);
+COREFOUNDATION_EXPORT CFTypeID        CFTimeZoneGetTypeID(void);
+COREFOUNDATION_EXPORT CFDictionaryRef CFTimeZoneCopyAbbreviationDictionary(void);
+COREFOUNDATION_EXPORT CFTimeZoneRef   CFTimeZoneCopyDefault(void);
+COREFOUNDATION_EXPORT CFArrayRef      CFTimeZoneCopyKnownNames(void);
+COREFOUNDATION_EXPORT CFTimeZoneRef   CFTimeZoneCopySystem(void);
+COREFOUNDATION_EXPORT void            CFTimeZoneResetSystem(void);
+COREFOUNDATION_EXPORT void            CFTimeZoneSetAbbreviationDictionary(CFDictionaryRef dictionary);
+COREFOUNDATION_EXPORT void            CFTimeZoneSetDefault(CFTimeZoneRef self);
 
-CFTimeZoneRef CFTimeZoneCreate(CFAllocatorRef allocator,CFStringRef name,CFDataRef data);
-CFTimeZoneRef CFTimeZoneCreateWithName(CFAllocatorRef allocator,CFStringRef name,Boolean checkAbbreviations);
-CFTimeZoneRef CFTimeZoneCreateWithTimeIntervalFromGMT(CFAllocatorRef allocator,CFTimeInterval timeInterval);
+COREFOUNDATION_EXPORT CFTimeZoneRef CFTimeZoneCreate(CFAllocatorRef allocator,CFStringRef name,CFDataRef data);
+COREFOUNDATION_EXPORT CFTimeZoneRef CFTimeZoneCreateWithName(CFAllocatorRef allocator,CFStringRef name,Boolean checkAbbreviations);
+COREFOUNDATION_EXPORT CFTimeZoneRef CFTimeZoneCreateWithTimeIntervalFromGMT(CFAllocatorRef allocator,CFTimeInterval timeInterval);
 
-CFStringRef     CFTimeZoneGetName(CFTimeZoneRef self);
-CFDataRef       CFTimeZoneGetData(CFTimeZoneRef self);
+COREFOUNDATION_EXPORT CFStringRef     CFTimeZoneGetName(CFTimeZoneRef self);
+COREFOUNDATION_EXPORT CFDataRef       CFTimeZoneGetData(CFTimeZoneRef self);
 
-CFTimeInterval  CFTimeZoneGetSecondsFromGMT(CFTimeZoneRef self,CFAbsoluteTime absoluteTime);
-CFStringRef     CFTimeZoneCopyAbbreviation(CFTimeZoneRef self,CFAbsoluteTime absoluteTime);
-CFStringRef     CFTimeZoneCopyLocalizedName(CFTimeZoneRef self,CFTimeZoneNameStyle style,CFLocaleRef locale);
-CFTimeInterval  CFTimeZoneGetDaylightSavingTimeOffset(CFTimeZoneRef self,CFAbsoluteTime absoluteTime);
-CFAbsoluteTime  CFTimeZoneGetNextDaylightSavingTimeTransition(CFTimeZoneRef self,CFAbsoluteTime absoluteTime);
-Boolean         CFTimeZoneIsDaylightSavingTime(CFTimeZoneRef self,CFAbsoluteTime absoluteTime);
+COREFOUNDATION_EXPORT CFTimeInterval  CFTimeZoneGetSecondsFromGMT(CFTimeZoneRef self,CFAbsoluteTime absoluteTime);
+COREFOUNDATION_EXPORT CFStringRef     CFTimeZoneCopyAbbreviation(CFTimeZoneRef self,CFAbsoluteTime absoluteTime);
+COREFOUNDATION_EXPORT CFStringRef     CFTimeZoneCopyLocalizedName(CFTimeZoneRef self,CFTimeZoneNameStyle style,CFLocaleRef locale);
+COREFOUNDATION_EXPORT CFTimeInterval  CFTimeZoneGetDaylightSavingTimeOffset(CFTimeZoneRef self,CFAbsoluteTime absoluteTime);
+COREFOUNDATION_EXPORT CFAbsoluteTime  CFTimeZoneGetNextDaylightSavingTimeTransition(CFTimeZoneRef self,CFAbsoluteTime absoluteTime);
+COREFOUNDATION_EXPORT Boolean         CFTimeZoneIsDaylightSavingTime(CFTimeZoneRef self,CFAbsoluteTime absoluteTime);

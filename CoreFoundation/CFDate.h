@@ -53,17 +53,16 @@ COREFOUNDATION_EXPORT CFComparisonResult CFDateCompare(CFDateRef self,CFDateRef 
 COREFOUNDATION_EXPORT CFAbsoluteTime     CFDateGetAbsoluteTime(CFDateRef self);
 COREFOUNDATION_EXPORT CFTimeInterval     CFDateGetTimeIntervalSinceDate(CFDateRef self,CFDateRef other);
 
+COREFOUNDATION_EXPORT CFAbsoluteTime   CFAbsoluteTimeGetCurrent();
 
-CFAbsoluteTime   CFAbsoluteTimeGetCurrent();
+COREFOUNDATION_EXPORT SInt32           CFAbsoluteTimeGetWeekOfYear(CFAbsoluteTime absoluteTime,CFTimeZoneRef timeZone);
+COREFOUNDATION_EXPORT SInt32           CFAbsoluteTimeGetDayOfWeek(CFAbsoluteTime absoluteTime,CFTimeZoneRef timeZone);
+COREFOUNDATION_EXPORT SInt32           CFAbsoluteTimeGetDayOfYear(CFAbsoluteTime absoluteTime,CFTimeZoneRef timeZone);
 
-SInt32           CFAbsoluteTimeGetWeekOfYear(CFAbsoluteTime absoluteTime,CFTimeZoneRef timeZone);
-SInt32           CFAbsoluteTimeGetDayOfWeek(CFAbsoluteTime absoluteTime,CFTimeZoneRef timeZone);
-SInt32           CFAbsoluteTimeGetDayOfYear(CFAbsoluteTime absoluteTime,CFTimeZoneRef timeZone);
+COREFOUNDATION_EXPORT CFAbsoluteTime   CFAbsoluteTimeAddGregorianUnits(CFAbsoluteTime absoluteTime,CFTimeZoneRef timeZone,CFGregorianUnits units);
+COREFOUNDATION_EXPORT CFGregorianUnits CFAbsoluteTimeGetDifferenceAsGregorianUnits (CFAbsoluteTime absoluteTime,CFAbsoluteTime other,CFTimeZoneRef timeZone,CFOptionFlags unitFlags);
+COREFOUNDATION_EXPORT CFGregorianDate  CFAbsoluteTimeGetGregorianDate(CFAbsoluteTime absoluteTime,CFTimeZoneRef timeZone);
 
-CFAbsoluteTime   CFAbsoluteTimeAddGregorianUnits(CFAbsoluteTime absoluteTime,CFTimeZoneRef timeZone,CFGregorianUnits units);
-CFGregorianUnits CFAbsoluteTimeGetDifferenceAsGregorianUnits (CFAbsoluteTime absoluteTime,CFAbsoluteTime other,CFTimeZoneRef timeZone,CFOptionFlags unitFlags);
-CFGregorianDate  CFAbsoluteTimeGetGregorianDate(CFAbsoluteTime absoluteTime,CFTimeZoneRef timeZone);
+COREFOUNDATION_EXPORT CFAbsoluteTime   CFGregorianDateGetAbsoluteTime(CFGregorianDate gregorianDate,CFTimeZoneRef timeZone);
 
-CFAbsoluteTime   CFGregorianDateGetAbsoluteTime(CFGregorianDate gregorianDate,CFTimeZoneRef timeZone);
-
-Boolean          CFGregorianDateIsValid(CFGregorianDate gregorianDate,CFOptionFlags unitFlags);
+COREFOUNDATION_EXPORT Boolean          CFGregorianDateIsValid(CFGregorianDate gregorianDate,CFOptionFlags unitFlags);
