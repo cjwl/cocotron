@@ -26,6 +26,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    return NSAutorelease(NSEnumerator_dictionaryKeysNew(_table));
 }
 
+-init {
+   return [self initWithObjects:NULL forKeys:NULL count:0];
+}
+
 -initWithObjects:(id *)objects forKeys:(id *)keys count:(NSUInteger)count {
    NSInteger i;
 

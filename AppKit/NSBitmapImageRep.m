@@ -126,7 +126,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -initWithFocusedViewRect:(NSRect)rect {
-   return [self initWithData:CGContextCaptureBitmap(NSCurrentGraphicsPort(), rect)];
+   return [self initWithData:(NSData *)CGContextCaptureBitmap(NSCurrentGraphicsPort(), rect)];
 }
 
 -initWithData:(NSData *)data {

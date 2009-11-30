@@ -18,7 +18,7 @@ void CGDataProviderRelease(CGDataProviderRef provider) {
 }
 
 CGDataProviderRef CGDataProviderCreateWithCFData(CFDataRef data) {
-   return O2DataProviderCreateWithCFData(data);
+   return O2DataProviderCreateWithCFData((NSData *)data);
 }
 
 COREGRAPHICS_EXPORT CGDataProviderRef CGDataProviderCreateWithData(void *info,const void *data,size_t size,CGDataProviderReleaseDataCallback releaseCallback) {

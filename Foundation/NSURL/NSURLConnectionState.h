@@ -18,6 +18,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(BOOL)isRunning;
+-(void)receiveAllData;
 -(NSURLResponse *)response;
 -(NSError *)error;
 -(NSMutableData *)data;

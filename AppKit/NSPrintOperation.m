@@ -216,7 +216,7 @@ static NSPrintOperation *_currentOperation=nil;
    else if(_type==NSPrintOperationPDFInRect){
     NSDictionary *auxiliaryInfo=[NSDictionary dictionaryWithObject:[[_view window] title] forKey:(NSString *)kCGPDFContextTitle];
     
-    CGDataConsumerRef consumer=CGDataConsumerCreateWithCFData(_mutableData);
+    CGDataConsumerRef consumer=CGDataConsumerCreateWithCFData((CFMutableDataRef)_mutableData);
     
     context=CGPDFContextCreate(consumer,&_insideRect,(CFDictionaryRef)auxiliaryInfo);
     [(id)context autorelease];

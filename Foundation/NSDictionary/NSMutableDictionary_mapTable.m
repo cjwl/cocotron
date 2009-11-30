@@ -50,6 +50,10 @@ static inline void setObjectForKey(NSMutableDictionary_mapTable *self,id object,
    NSMapRemove(_table,key);
 }
 
+-init {
+   return [self initWithObjects:NULL forKeys:NULL count:0];
+}
+
 -initWithCapacity:(NSUInteger)capacity {
    _table=NSCreateMapTableWithZone(NSObjectMapKeyCallBacks,
      NSObjectMapValueCallBacks,capacity,NULL);
