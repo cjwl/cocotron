@@ -109,7 +109,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)URLProtocol:(NSURLProtocol *)urlProtocol cachedResponseIsValid:(NSCachedURLResponse *)response {
-  // [_delegate connection:self ];
+  // [_delegate connection:self];
 }
 
 -(void)URLProtocol:(NSURLProtocol *)urlProtocol didLoadData:(NSData *)data {
