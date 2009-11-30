@@ -44,8 +44,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 
 -(void)fire {
-   [_target performSelector:_selector withObject:self];
-   [super fire];
+	SEL selector=_selector;
+	id target=[[_target retain] autorelease];
+	[super fire];
+   [target performSelector:selector withObject:self];
 }
 
 

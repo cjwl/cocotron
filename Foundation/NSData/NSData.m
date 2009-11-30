@@ -18,6 +18,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #import <Foundation/NSCoder.h>
 #import <Foundation/NSURL.h>
 #import <Foundation/NSRaiseException.h>
+#import <Foundation/NSURLConnection.h>
+#import <Foundation/NSURLRequest.h>
 
 @implementation NSData
 
@@ -85,8 +87,17 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -initWithContentsOfURL:(NSURL *)url options:(NSUInteger)options error:(NSError **)errorp {
 
    if(![url isFileURL]){
-    [self dealloc];
-    [NSException raise:NSRangeException format:@"-[NSData initWithContentsOfURL:options:error:] currently, only file:// urls are supported"];
+	   if ( [[url scheme] isEqual:@"http"] ) {
+		   NSError *error=nil;
+		   NSURLResponse *response=nil;
+		   NSLog(@"will run NSURLConnection");
+		   NSData *data = [NSURLConnection sendSynchronousRequest:[NSURLRequest requestWithURL:url] returningResponse:&response error:&error];
+		   NSLog(@"did run NSURLConnection");
+		   return [self initWithData:data];
+	   } else {
+		   [self dealloc];
+		   [NSException raise:NSRangeException format:@"-[NSData initWithContentsOfURL:options:error:] currently, only file:// urls are supported"];
+	   }
     return nil;
    }
 

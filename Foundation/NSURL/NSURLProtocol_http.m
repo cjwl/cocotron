@@ -39,21 +39,27 @@ enum {
 @implementation NSURLProtocol_http
 
 -(void)status:(NSString *)status {
-   NSLog(@"status=[%@]",status);
+   NSLog(@"status:  [%@]",status);
 }
 
 -(void)headers:(NSDictionary *)headers {
-   NSLog(@"headers=%@",headers);
+   NSLog(@"headers: %@",headers);
 }
 
 -(void)entityChunk:(NSData *)data {
-  // NSLog(@"entity chunk %@",[[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease]);
-	[_client URLProtocol:self didLoadData:data];
+//	NSLog(@"entity chunk %@",[[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease]);
+	if ( [data length] ) {
+		[_client URLProtocol:self didLoadData:data];
+	}
 }
 
 -(void)entity:(NSData *)data {
-  // NSLog(@"entity %@",[[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease]);
-	[_client URLProtocol:self didLoadData:data];
+// NSLog(@"entity %@",[[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease]);
+	NSLog(@"will send didLoadData");
+	if ( [data length] ) {
+		[_client URLProtocol:self didLoadData:data];
+	}
+	NSLog(@"did send didLoadData, will send finishLoading");
 	[_client URLProtocolDidFinishLoading:self];
 }
 
@@ -82,11 +88,20 @@ enum {
 }
 
 -(void)_entity {
-   [self entity:[NSData dataWithBytes:_bytes+_range.location length:_range.length]];
+	NSLog(@"_entity");
+	id data=[NSData dataWithBytes:_bytes+_range.location length:_range.length];
+	NSLog(@"_entity  - data with length: %d",[data length]);
+   [self entity:data];
+	NSLog(@"_entity did send data");
+	
 }
 
 -(void)_entityChunk {
+	NSLog(@"_entityChunk");
    [self entityChunk:[NSData dataWithBytes:_bytes+_range.location length:_range.length]];
+	_range.location=NSMaxRange(_range);
+	_range.length=0;
+	NSLog(@"did pass to entityChunk");
 }
 
 -(BOOL)contentIsChunked {
@@ -193,6 +208,12 @@ enum {
       else {
        _state=STATE_entity_body;
        rangeAction=advanceLocationToCurrent;
+		  NSLog(@"will try to check for extra <lf>");
+		  if ( NSMaxRange(_range)<_length && _bytes[NSMaxRange(_range)] == '\012' ) {
+			  NSLog(@"=== advance over trailing <lf> before body === ");
+			  _range.length++;
+		  }
+		  NSLog(@"after <lf> check");
       }
       break;
 
@@ -234,7 +255,7 @@ NSLog(@"parse error %d",__LINE__);
        _chunkSize=0;
        if(code=='\015')
         NSLog(@"got cr");
-NSLog(@"chunk done");
+		  NSLog(@"chunk done");
        [self _entityChunk];
       }
       break;
@@ -247,7 +268,7 @@ NSLog(@"chunk done");
 
      case STATE_entity_body:
       if(_range.length>=[self contentLength]){
-NSLog(@"transfer completed");
+		  NSLog(@"transfer completed");
        [self _entity];
        _state=STATE_done;
        return YES;
@@ -282,14 +303,14 @@ NSLog(@"transfer completed");
    [_data appendData:data];
    _bytes=[_data bytes];
    _length=[_data length];
-   NSLog(@"length=%d",_length);
+//   NSLog(@"length=%d",_length);
 }
 
 -(void)startLoading {
    NSURL    *url=[_request URL];
    NSString *hostName=[url host];
    NSNumber *portNumber=[url port];
-	NSLog(@"startloading");
+//	NSLog(@"startloading");
 	sentrequest=NO;
    
    if(portNumber==nil)
@@ -307,7 +328,7 @@ NSLog(@"transfer completed");
 	[_outputStream retain];
 	[_inputStream open];
 	[_outputStream open];
-	NSLog(@"input stream %@",_inputStream);
+//	NSLog(@"input stream %@",_inputStream);
 
    _data=[NSMutableData new];
    _range=NSMakeRange(0,0);
@@ -323,17 +344,27 @@ NSLog(@"transfer completed");
 {
 	uint8_t buffer[1024];
 	NSInteger size=[stream read:buffer maxLength:sizeof(buffer)];
+//	NSLog(@"stream event: %d bytes read: %d",streamEvent,size);
 	if (size>0)
 	{
 		[self appendData:[NSData dataWithBytes:buffer length:size]];
 		if ([self advanceIsEndOfReply])
 		{
-			//[_client URLProtocol:self didLoadData: ]
+			NSLog(@"done");
+//			[_client URLProtocol:self didLoadData:[NSData dataWithBytes:buffer length:size] ];
+//			[_client URLProtocolDidFinishLoading:self];
 		}
 		else
 		{
+//			NSLog(@"not done yet");
 			//[_client URLProtocol:didLoadData:];
-			[_client URLProtocolDidFinishLoading:self];
+//			[_client URLProtocolDidFinishLoading:self];
+		}
+	} else {
+		if ( streamEvent == 16 ) {
+			[self _entity];
+//			[_client URLProtocolDidFinishLoading:self];
+			[self stopLoading];
 		}
 	}
 	
@@ -345,11 +376,19 @@ NSLog(@"transfer completed");
 	if(streamEvent==NSStreamEventHasSpaceAvailable && sentrequest==NO)
 	{
 		NSURL* url=[_request URL];
-		NSString* path=[url relativeString];
+		NSLog(@"will get path");
+		NSString* path=[url relativePath];
+		if ( [[url query] length] ) {
+			path=[NSString stringWithFormat:@"%@?%@",path,[url query]];
+		}
+		
+		
 		NSString* host=[url host];
 		NSMutableString* httprequest=[NSMutableString string];
 		[httprequest appendFormat:@"GET %@ HTTP/1.1\r\n",path];
 		[httprequest appendFormat:@"Host: %@\r\n",host];
+		[httprequest appendFormat:@"Accept: */*\r\n"];
+		[httprequest appendFormat:@"User-Agent: Cocotron\r\n"];
 		[httprequest appendString:@"\r\n"];
 		NSLog(@"request %@ ",httprequest);
 		const char* crequest=[httprequest UTF8String];

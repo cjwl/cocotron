@@ -40,10 +40,15 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 +(NSData *)sendSynchronousRequest:(NSURLRequest *)request returningResponse:(NSURLResponse **)responsep error:(NSError **)errorp {
-   NSURLConnectionState *state=[[[NSURLConnectionState alloc] init] autorelease];
-   NSURLConnection      *connection=[[NSURLConnection alloc] initWithRequest:request delegate:state];
+	NSLog(@"sendSynchronousRequest");
+//	NSURLConnectionState *state=[[[NSURLConnectionState alloc] init] autorelease];
+	NSURLConnectionState *state=[[NSURLConnectionState alloc] init];
+	NSLog(@"state: %@",state);
+   NSURLConnection      *connection=[[self alloc] initWithRequest:request delegate:state];
    
-   
+	NSLog(@"will receive data");
+	[state receiveAllData];
+	NSLog(@"did receive data");
    if(errorp!=NULL)
     *errorp=[state error];
    if(responsep!=NULL)
@@ -78,6 +83,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)start {
+	NSLog(@"start -> startLoading");
    [_protocol startLoading];
 }
 
@@ -107,6 +113,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)URLProtocol:(NSURLProtocol *)urlProtocol didLoadData:(NSData *)data {
+	NSLog(@"URLProtocol:didLoadData:");
    [_delegate connection:self didReceiveData:data];
 }
 
@@ -115,6 +122,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 }
 
 -(void)URLProtocolDidFinishLoading:(NSURLProtocol *)urlProtocol {
+	NSLog(@"URLProtocolDidFinishLoading:");
 	if([_delegate respondsToSelector:@selector(connectionDidFinishLoading:)])
 		[_delegate performSelector:@selector(connectionDidFinishLoading:) withObject:self];
 }
